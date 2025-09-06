@@ -465,7 +465,7 @@ namespace OpenRCT2::Ui::Windows
                         { windowPos.x + ddWidget->left, windowPos.y + ddWidget->top }, ddWidget->height() + 1, colours[1], 0,
                         Dropdown::Flag::StayOpen, std::size(items), ddWidget->width() - 2);
 
-                    SetChecked(EnumValue(_settings.algorithm), true);
+                    gDropdown.items[EnumValue(_settings.algorithm)].setChecked(true);
                     break;
                 }
             }
@@ -1125,7 +1125,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WIDX_FLOOR_TEXTURE:
                     if (dropdownIndex == -1)
-                        dropdownIndex = gDropdownHighlightedIndex;
+                        dropdownIndex = gDropdown.highlightedIndex;
 
                     type = (dropdownIndex == -1) ? _settings.landTexture : dropdownIndex;
 
@@ -1142,7 +1142,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 case WIDX_WALL_TEXTURE:
                     if (dropdownIndex == -1)
-                        dropdownIndex = gDropdownHighlightedIndex;
+                        dropdownIndex = gDropdown.highlightedIndex;
 
                     type = (dropdownIndex == -1) ? _settings.edgeTexture : dropdownIndex;
 

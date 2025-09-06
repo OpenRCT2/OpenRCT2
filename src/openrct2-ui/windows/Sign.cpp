@@ -172,12 +172,12 @@ namespace OpenRCT2::Ui::Windows
                     if (_isSmall)
                     {
                         CoordsXYZD wallLocation = { bannerCoords, tileElement->GetBaseZ(), tileElement->GetDirection() };
-                        auto wallRemoveAction = WallRemoveAction(wallLocation);
+                        auto wallRemoveAction = GameActions::WallRemoveAction(wallLocation);
                         GameActions::Execute(&wallRemoveAction);
                     }
                     else
                     {
-                        auto sceneryRemoveAction = LargeSceneryRemoveAction(
+                        auto sceneryRemoveAction = GameActions::LargeSceneryRemoveAction(
                             { bannerCoords, tileElement->GetBaseZ(), tileElement->GetDirection() },
                             tileElement->AsLargeScenery()->GetSequenceIndex());
                         GameActions::Execute(&sceneryRemoveAction);
@@ -213,7 +213,8 @@ namespace OpenRCT2::Ui::Windows
                     if (dropdownIndex == -1)
                         return;
                     _mainColour = ColourDropDownIndexToColour(dropdownIndex);
-                    auto signSetStyleAction = SignSetStyleAction(GetBannerIndex(), _mainColour, _textColour, !_isSmall);
+                    auto signSetStyleAction = GameActions::SignSetStyleAction(
+                        GetBannerIndex(), _mainColour, _textColour, !_isSmall);
                     GameActions::Execute(&signSetStyleAction);
                     break;
                 }
@@ -222,7 +223,8 @@ namespace OpenRCT2::Ui::Windows
                     if (dropdownIndex == -1)
                         return;
                     _textColour = ColourDropDownIndexToColour(dropdownIndex);
-                    auto signSetStyleAction = SignSetStyleAction(GetBannerIndex(), _mainColour, _textColour, !_isSmall);
+                    auto signSetStyleAction = GameActions::SignSetStyleAction(
+                        GetBannerIndex(), _mainColour, _textColour, !_isSmall);
                     GameActions::Execute(&signSetStyleAction);
                     break;
                 }
@@ -237,7 +239,7 @@ namespace OpenRCT2::Ui::Windows
         {
             if (widgetIndex == WIDX_SIGN_TEXT && !text.empty())
             {
-                auto signSetNameAction = SignSetNameAction(GetBannerIndex(), std::string(text));
+                auto signSetNameAction = GameActions::SignSetNameAction(GetBannerIndex(), std::string(text));
                 GameActions::Execute(&signSetNameAction);
             }
         }

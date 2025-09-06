@@ -91,6 +91,7 @@ bool ClimateIsRaining();
 bool ClimateTransitioningToSnow();
 bool ClimateIsSnowing();
 bool ClimateIsSnowingHeavily();
+bool ClimateIsPrecipitating();
 bool WeatherIsDry(WeatherType);
 bool ClimateHasWeatherEffect();
 FilterPaletteID ClimateGetWeatherGloomPaletteId(const WeatherState& state);

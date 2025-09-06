@@ -559,10 +559,13 @@ namespace OpenRCT2::Ui
 
         topLeft = w.windowPos + ScreenCoordsXY{ widget->left + 2, widget->top + 1 };
         int32_t width = widget->width() - 4;
-        if ((widget + 1)->type == WidgetType::closeBox)
+
+        if (static_cast<size_t>(widgetIndex + 1) < w.widgets.size()
+            && (w.widgets[widgetIndex + 1]).type == WidgetType::closeBox)
         {
             width -= kCloseButtonSize;
-            if ((widget + 2)->type == WidgetType::closeBox)
+            if (static_cast<size_t>(widgetIndex + 2) < w.widgets.size()
+                && (w.widgets[widgetIndex + 2]).type == WidgetType::closeBox)
                 width -= kCloseButtonSize;
         }
         topLeft.x += width / 2;

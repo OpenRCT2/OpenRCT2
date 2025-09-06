@@ -902,20 +902,15 @@ namespace OpenRCT2::Ui::Windows
             if (widgetIndex != WIDX_SORT_CUSTOMISE)
                 return;
 
-            gDropdownItems[0].Format = STR_TOGGLE_OPTION;
-            gDropdownItems[1].Format = STR_TOGGLE_OPTION;
-            gDropdownItems[2].Format = STR_TOGGLE_OPTION;
-            gDropdownItems[3].Format = kStringIdEmpty;
-            gDropdownItems[4].Format = STR_DROPDOWN_BULLET_OPTION;
-            gDropdownItems[5].Format = STR_DROPDOWN_BULLET_OPTION;
-            gDropdownItems[6].Format = STR_DROPDOWN_BULLET_OPTION;
+            gDropdown.items[0] = Dropdown::ToggleOption(STR_FILEBROWSER_CUSTOMISE_FILENAME);
+            gDropdown.items[1] = Dropdown::ToggleOption(STR_FILEBROWSER_CUSTOMISE_SIZE);
+            gDropdown.items[2] = Dropdown::ToggleOption(STR_FILEBROWSER_CUSTOMISE_DATE);
 
-            gDropdownItems[0].Args = STR_FILEBROWSER_CUSTOMISE_FILENAME;
-            gDropdownItems[1].Args = STR_FILEBROWSER_CUSTOMISE_SIZE;
-            gDropdownItems[2].Args = STR_FILEBROWSER_CUSTOMISE_DATE;
-            gDropdownItems[4].Args = STR_FILEBROWSER_PREVIEW_DISABLED;
-            gDropdownItems[5].Args = STR_FILEBROWSER_PREVIEW_MINIMAP;
-            gDropdownItems[6].Args = STR_FILEBROWSER_PREVIEW_SCREENSHOT;
+            gDropdown.items[3] = Dropdown::Separator();
+
+            gDropdown.items[4] = Dropdown::MenuLabel(STR_FILEBROWSER_PREVIEW_DISABLED);
+            gDropdown.items[5] = Dropdown::MenuLabel(STR_FILEBROWSER_PREVIEW_MINIMAP);
+            gDropdown.items[6] = Dropdown::MenuLabel(STR_FILEBROWSER_PREVIEW_SCREENSHOT);
 
             Widget* widget = &widgets[WIDX_SORT_CUSTOMISE];
 
@@ -925,12 +920,12 @@ namespace OpenRCT2::Ui::Windows
 
             auto& config = Config::Get().general;
 
-            Dropdown::SetChecked(0, true);
-            Dropdown::SetChecked(1, config.FileBrowserShowSizeColumn);
-            Dropdown::SetChecked(2, config.FileBrowserShowDateColumn);
-            Dropdown::SetChecked(4, config.FileBrowserPreviewType == ParkPreviewPref::disabled);
-            Dropdown::SetChecked(5, config.FileBrowserPreviewType == ParkPreviewPref::miniMap);
-            Dropdown::SetChecked(6, config.FileBrowserPreviewType == ParkPreviewPref::screenshot);
+            gDropdown.items[0].setChecked(true);
+            gDropdown.items[1].setChecked(config.FileBrowserShowSizeColumn);
+            gDropdown.items[2].setChecked(config.FileBrowserShowDateColumn);
+            gDropdown.items[4].setChecked(config.FileBrowserPreviewType == ParkPreviewPref::disabled);
+            gDropdown.items[5].setChecked(config.FileBrowserPreviewType == ParkPreviewPref::miniMap);
+            gDropdown.items[6].setChecked(config.FileBrowserPreviewType == ParkPreviewPref::screenshot);
         }
 
         void OnDropdown(WidgetIndex widgetIndex, int32_t selectedIndex) override

@@ -67,7 +67,7 @@ DiscordService::~DiscordService()
 static std::string GetParkName()
 {
     auto& gameState = getGameState();
-    return gameState.park.Name;
+    return gameState.park.name;
 }
 
 void DiscordService::Tick()

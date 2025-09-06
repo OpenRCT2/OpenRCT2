@@ -15,10 +15,12 @@
 #include "../../Track.h"
 
 // clang-format off
+namespace OpenRCT2
+{
 constexpr RideTypeDescriptor HeartlineTwisterCoasterRTD =
 {
     .Category = RideCategory::rollerCoaster,
-    .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
+    .StartTrackPiece = TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::heartlineTwisterCoaster,
         .supportType = WoodenSupportType::mine,
@@ -39,7 +41,7 @@ constexpr RideTypeDescriptor HeartlineTwisterCoasterRTD =
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION),
     .Heights = { 22, 24, 15, 9, },
     .MaxMass = 18,
-    .LiftData = { OpenRCT2::Audio::SoundId::LiftClassic, 4, 6 },
+    .LiftData = { Audio::SoundId::LiftClassic, 4, 6 },
     .RatingsMultipliers = { 50, 30, 10 },
     .UpkeepCosts = { 47, 20, 80, 11, 3, 10 },
     .BuildCosts = { 72.50_GBP, 3.50_GBP, 30, },
@@ -58,13 +60,13 @@ constexpr RideTypeDescriptor HeartlineTwisterCoasterRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { MakeRideRating(3, 00), MakeRideRating(1, 70), MakeRideRating(1, 65) },
+        { RideRating::make(3, 00), RideRating::make(1, 70), RideRating::make(1, 65) },
         18,
         -1,
         false,
         {
             { RatingsModifierType::BonusLength,           6000, 764, 0, 0 },
-            { RatingsModifierType::BonusSynchronisation,  0,    MakeRideRating(0, 20), MakeRideRating(0, 04), 0 },
+            { RatingsModifierType::BonusSynchronisation,  0,    RideRating::make(0, 20), RideRating::make(0, 04), 0 },
             { RatingsModifierType::BonusTrainLength,      0,    187245, 0, 0 },
             { RatingsModifierType::BonusMaxSpeed,         0,    97418, 123987, 70849 },
             { RatingsModifierType::BonusAverageSpeed,     0,    291271, 436906, 0 },
@@ -81,4 +83,5 @@ constexpr RideTypeDescriptor HeartlineTwisterCoasterRTD =
         },
     },
 };
+} // namespace OpenRCT2
 // clang-format on

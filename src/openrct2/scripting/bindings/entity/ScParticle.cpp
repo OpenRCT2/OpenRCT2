@@ -49,7 +49,7 @@ namespace OpenRCT2::Scripting
 
     VehicleCrashParticle* ScCrashedVehicleParticle::GetCrashedVehicleParticle() const
     {
-        return ::GetEntity<VehicleCrashParticle>(_id);
+        return OpenRCT2::GetEntity<VehicleCrashParticle>(_id);
     }
 
     void ScCrashedVehicleParticle::frame_set(uint8_t value)

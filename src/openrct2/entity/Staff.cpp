@@ -39,6 +39,7 @@
 #include "../ride/Station.h"
 #include "../ride/Track.h"
 #include "../ride/Vehicle.h"
+#include "../scenario/Scenario.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
 #include "../world/Entrance.h"
@@ -969,15 +970,15 @@ int32_t Staff::GetHireDate() const
 
 colour_t StaffGetColour(StaffType staffType)
 {
-    const auto& gameState = getGameState();
+    const auto& park = getGameState().park;
     switch (staffType)
     {
         case StaffType::Handyman:
-            return gameState.staffHandymanColour;
+            return park.staffHandymanColour;
         case StaffType::Mechanic:
-            return gameState.staffMechanicColour;
+            return park.staffMechanicColour;
         case StaffType::Security:
-            return gameState.staffSecurityColour;
+            return park.staffSecurityColour;
         case StaffType::Entertainer:
             return 0;
         default:
@@ -988,17 +989,17 @@ colour_t StaffGetColour(StaffType staffType)
 
 GameActions::Result StaffSetColour(StaffType staffType, colour_t value)
 {
-    auto& gameState = getGameState();
+    auto& park = getGameState().park;
     switch (staffType)
     {
         case StaffType::Handyman:
-            gameState.staffHandymanColour = value;
+            park.staffHandymanColour = value;
             break;
         case StaffType::Mechanic:
-            gameState.staffMechanicColour = value;
+            park.staffMechanicColour = value;
             break;
         case StaffType::Security:
-            gameState.staffSecurityColour = value;
+            park.staffSecurityColour = value;
             break;
         default:
             return GameActions::Result(

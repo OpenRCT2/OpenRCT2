@@ -2162,7 +2162,6 @@ STR_3136    :Warning: This design will be built with an alternative vehicle type
 STR_3137    :Select Nearby Scenery
 STR_3138    :Reset Selection
 STR_3139    :Cable lift unable to work in this operating mode
-STR_3140    :Cable lift hill must start immediately after station
 STR_3141    :Multi-circuit per ride not possible with cable lift hill
 STR_3142    :{WINDOW_COLOUR_2}Capacity: {BLACK}{STRINGID}
 STR_3143    :Show people on map
@@ -3368,7 +3367,6 @@ STR_6331    :إنشاء البط
 STR_6332    :حذف البط
 STR_6333    :زيادة عامل الحجم
 STR_6334    :تقليل عامل الحجم
-STR_6335    :معاين البلاط: أدرج العنصر التالف
 STR_6336    :معاين البلاط: نسخ العنصر
 STR_6337    :معاين البلاط: لصق العنصر
 STR_6338    :معاين البلاط: حذف العنصر

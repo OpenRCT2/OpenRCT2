@@ -11,25 +11,28 @@
 
 #include "GameAction.h"
 
-class LandRaiseAction final : public GameActionBase<GameCommand::RaiseLand>
+namespace OpenRCT2::GameActions
 {
-private:
-    CoordsXY _coords;
-    MapRange _range;
-    uint8_t _selectionType{};
+    class LandRaiseAction final : public GameActionBase<GameCommand::RaiseLand>
+    {
+    private:
+        CoordsXY _coords;
+        MapRange _range;
+        uint8_t _selectionType{};
 
-public:
-    LandRaiseAction() = default;
-    LandRaiseAction(const CoordsXY& coords, MapRange range, uint8_t selectionType);
+    public:
+        LandRaiseAction() = default;
+        LandRaiseAction(const CoordsXY& coords, MapRange range, uint8_t selectionType);
 
-    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor&) final;
 
-    uint16_t GetActionFlags() const override;
+        uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser& stream) override;
-    OpenRCT2::GameActions::Result Query() const override;
-    OpenRCT2::GameActions::Result Execute() const override;
+        void Serialise(DataSerialiser& stream) override;
+        Result Query() const override;
+        Result Execute() const override;
 
-private:
-    OpenRCT2::GameActions::Result QueryExecute(bool isExecuting) const;
-};
+    private:
+        Result QueryExecute(bool isExecuting) const;
+    };
+} // namespace OpenRCT2::GameActions

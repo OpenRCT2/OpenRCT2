@@ -11,20 +11,23 @@
 
 #include "GameAction.h"
 
-class ParkSetEntranceFeeAction final : public GameActionBase<GameCommand::SetParkEntranceFee>
+namespace OpenRCT2::GameActions
 {
-private:
-    money64 _fee{ kMoney64Undefined };
+    class ParkSetEntranceFeeAction final : public GameActionBase<GameCommand::SetParkEntranceFee>
+    {
+    private:
+        money64 _fee{ kMoney64Undefined };
 
-public:
-    ParkSetEntranceFeeAction() = default;
-    ParkSetEntranceFeeAction(money64 fee);
+    public:
+        ParkSetEntranceFeeAction() = default;
+        ParkSetEntranceFeeAction(money64 fee);
 
-    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor&) final;
 
-    uint16_t GetActionFlags() const override;
+        uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser& stream) override;
-    OpenRCT2::GameActions::Result Query() const override;
-    OpenRCT2::GameActions::Result Execute() const override;
-};
+        void Serialise(DataSerialiser& stream) override;
+        Result Query() const override;
+        Result Execute() const override;
+    };
+} // namespace OpenRCT2::GameActions

@@ -12,32 +12,35 @@
 #include "../entity/Staff.h"
 #include "GameAction.h"
 
-struct StaffHireNewActionResult
+namespace OpenRCT2::GameActions
 {
-    EntityId StaffEntityId = EntityId::GetNull();
-};
+    struct StaffHireNewActionResult
+    {
+        EntityId StaffEntityId = EntityId::GetNull();
+    };
 
-class StaffHireNewAction final : public GameActionBase<GameCommand::HireNewStaffMember>
-{
-private:
-    bool _autoPosition{};
-    uint8_t _staffType{ EnumValue(StaffType::Count) };
-    ObjectEntryIndex _costumeIndex;
-    uint32_t _staffOrders{};
+    class StaffHireNewAction final : public GameActionBase<GameCommand::HireNewStaffMember>
+    {
+    private:
+        bool _autoPosition{};
+        uint8_t _staffType{ EnumValue(StaffType::Count) };
+        ObjectEntryIndex _costumeIndex;
+        uint32_t _staffOrders{};
 
-public:
-    StaffHireNewAction() = default;
-    StaffHireNewAction(bool autoPosition, StaffType staffType, ObjectEntryIndex costumeIndex, uint32_t staffOrders);
+    public:
+        StaffHireNewAction() = default;
+        StaffHireNewAction(bool autoPosition, StaffType staffType, ObjectEntryIndex costumeIndex, uint32_t staffOrders);
 
-    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor&) final;
 
-    uint16_t GetActionFlags() const override;
+        uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser& stream) override;
-    OpenRCT2::GameActions::Result Query() const override;
-    OpenRCT2::GameActions::Result Execute() const override;
+        void Serialise(DataSerialiser& stream) override;
+        Result Query() const override;
+        Result Execute() const override;
 
-private:
-    OpenRCT2::GameActions::Result QueryExecute(bool execute) const;
-    void AutoPositionNewStaff(Peep* newPeep) const;
-};
+    private:
+        Result QueryExecute(bool execute) const;
+        void AutoPositionNewStaff(Peep* newPeep) const;
+    };
+} // namespace OpenRCT2::GameActions

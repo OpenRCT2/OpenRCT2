@@ -11,42 +11,48 @@
 
 #include "GameAction.h"
 
-struct LargeSceneryPlaceActionResult
+namespace OpenRCT2
 {
-    uint8_t GroundFlags{ 0 };
-    int32_t firstTileHeight{ 0 };
-    BannerIndex bannerId = BannerIndex::GetNull();
-};
+    struct LargeSceneryTile;
+    struct LargeSceneryElement;
+} // namespace OpenRCT2
 
-struct LargeSceneryTile;
-struct LargeSceneryElement;
-
-class LargeSceneryPlaceAction final : public GameActionBase<GameCommand::PlaceLargeScenery>
+namespace OpenRCT2::GameActions
 {
-private:
-    CoordsXYZD _loc;
-    ObjectEntryIndex _sceneryType{ kObjectEntryIndexNull };
-    uint8_t _primaryColour{};
-    uint8_t _secondaryColour{};
-    uint8_t _tertiaryColour{};
+    struct LargeSceneryPlaceActionResult
+    {
+        uint8_t GroundFlags{ 0 };
+        int32_t firstTileHeight{ 0 };
+        BannerIndex bannerId = BannerIndex::GetNull();
+    };
 
-public:
-    LargeSceneryPlaceAction() = default;
+    class LargeSceneryPlaceAction final : public GameActionBase<GameCommand::PlaceLargeScenery>
+    {
+    private:
+        CoordsXYZD _loc;
+        ObjectEntryIndex _sceneryType{ kObjectEntryIndexNull };
+        uint8_t _primaryColour{};
+        uint8_t _secondaryColour{};
+        uint8_t _tertiaryColour{};
 
-    LargeSceneryPlaceAction(
-        const CoordsXYZD& loc, ObjectEntryIndex sceneryType, uint8_t primaryColour, uint8_t secondaryColour,
-        uint8_t tertiaryColour);
+    public:
+        LargeSceneryPlaceAction() = default;
 
-    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        LargeSceneryPlaceAction(
+            const CoordsXYZD& loc, ObjectEntryIndex sceneryType, uint8_t primaryColour, uint8_t secondaryColour,
+            uint8_t tertiaryColour);
 
-    uint16_t GetActionFlags() const override;
+        void AcceptParameters(GameActionParameterVisitor&) final;
 
-    void Serialise(DataSerialiser& stream) override;
-    OpenRCT2::GameActions::Result Query() const override;
-    OpenRCT2::GameActions::Result Execute() const override;
+        uint16_t GetActionFlags() const override;
 
-private:
-    bool CheckMapCapacity(std::span<const LargeSceneryTile> tiles, size_t numTiles) const;
-    int16_t GetMaxSurfaceHeight(std::span<const LargeSceneryTile> tiles) const;
-    void SetNewLargeSceneryElement(LargeSceneryElement& sceneryElement, uint8_t tileNum) const;
-};
+        void Serialise(DataSerialiser& stream) override;
+        Result Query() const override;
+        Result Execute() const override;
+
+    private:
+        bool CheckMapCapacity(std::span<const LargeSceneryTile> tiles, size_t numTiles) const;
+        int16_t GetMaxSurfaceHeight(std::span<const LargeSceneryTile> tiles) const;
+        void SetNewLargeSceneryElement(LargeSceneryElement& sceneryElement, uint8_t tileNum) const;
+    };
+} // namespace OpenRCT2::GameActions

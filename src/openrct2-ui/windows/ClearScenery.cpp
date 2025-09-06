@@ -187,7 +187,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Draw cost amount
             if (_clearSceneryCost != kMoney64Undefined && _clearSceneryCost != 0
-                && !(getGameState().park.Flags & PARK_FLAGS_NO_MONEY))
+                && !(getGameState().park.flags & PARK_FLAGS_NO_MONEY))
             {
                 auto ft = Formatter();
                 ft.Add<money64>(_clearSceneryCost);
@@ -197,20 +197,20 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        ClearAction GetClearAction()
+        GameActions::ClearAction GetClearAction()
         {
             auto range = MapRange(gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y);
 
-            ClearableItems itemsToClear = 0;
+            GameActions::ClearableItems itemsToClear = 0;
 
             if (_clearSmallScenery)
-                itemsToClear |= CLEARABLE_ITEMS::kScenerySmall;
+                itemsToClear |= GameActions::CLEARABLE_ITEMS::kScenerySmall;
             if (_clearLargeScenery)
-                itemsToClear |= CLEARABLE_ITEMS::kSceneryLarge;
+                itemsToClear |= GameActions::CLEARABLE_ITEMS::kSceneryLarge;
             if (_clearFootpath)
-                itemsToClear |= CLEARABLE_ITEMS::kSceneryFootpath;
+                itemsToClear |= GameActions::CLEARABLE_ITEMS::kSceneryFootpath;
 
-            return ClearAction(range, itemsToClear);
+            return GameActions::ClearAction(range, itemsToClear);
         }
 
         int8_t ToolUpdateClearLandPaint(const ScreenCoordsXY& screenPos)

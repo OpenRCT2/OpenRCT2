@@ -2163,7 +2163,6 @@ STR_3136    :Advarsel: Denne forlystelse vil blive bygget med en alternativ vogn
 STR_3137    :Vælg sceneri i nærheden
 STR_3138    :nulstil valg
 STR_3139    :Kædeløft virker ikke i denne operations tilstand
-STR_3140    :Kædeløft bakke skal starte umiddelbart efter stationen
 STR_3141    :Multi-kredsløb per tur ikke muligt med kædeløft bakke
 STR_3142    :{WINDOW_COLOUR_2}Kapacitet: {BLACK}{STRINGID}
 STR_3143    :Vis folk på kortet

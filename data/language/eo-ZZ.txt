@@ -2952,7 +2952,7 @@ STR_5858    :Uzi grafikan procesoron por bildigi anstataŭ ĉefprocesoro. Plibon
 STR_5859    :Ŝaltas kadro-interpoladon por {NEWLINE}pli vide glata ludado. Se malŝaltita,{NEWLINE}la ludo funkcios je 40 kadroj sekunde.
 STR_5860    :Baskuligi originalan/retrokompilitan trakdesegnaĵon
 STR_5861    :Ŝlosilokontrolo malsukcesis.
-STR_5862    :Bari nekonatajn ludantojn.
+STR_5862    :Bari nekonatajn ludantojn
 STR_5863    :Permesi, ke nur ludantoj kun konataj ŝlosiloj aliĝu.
 STR_5864    :Ĉi tiu servilo nur permesas blanklistajn ludantojn.
 STR_5865    :Protokoli babilejo-historion
@@ -3836,3 +3836,6 @@ STR_6797    :Neniu antaŭrigardo
 STR_6798    :Ekrankopio
 STR_6799    :Eta mapo
 STR_7000    :aŭ
+STR_7001    :Nomo de atrakcio
+STR_7002    :{STRINGID} {STRINGID}
+STR_7003    :Sondosiero ‘{STRING}’ estas distranĉita. Atendis sonpecon {INT32}, sed nur {INT32} disponeblas. Konsideru reinstali je RCT2.

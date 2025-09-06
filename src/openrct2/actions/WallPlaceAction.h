@@ -15,56 +15,61 @@
 #include "../world/Scenery.h"
 #include "GameAction.h"
 
-struct WallSceneryEntry;
-
-struct WallPlaceActionResult
+namespace OpenRCT2
 {
-    int32_t BaseHeight{};
-    BannerIndex BannerId = BannerIndex::GetNull();
-};
+    struct WallSceneryEntry;
+}
 
-class WallPlaceAction final : public GameActionBase<GameCommand::PlaceWall>
+namespace OpenRCT2::GameActions
 {
-private:
-    ObjectEntryIndex _wallType{ kObjectEntryIndexNull };
-    CoordsXYZ _loc;
-    Direction _edge{ kInvalidDirection };
-    int32_t _primaryColour{ COLOUR_BLACK };
-    int32_t _secondaryColour{ COLOUR_BLACK };
-    int32_t _tertiaryColour{ COLOUR_BLACK };
+    struct WallPlaceActionResult
+    {
+        int32_t BaseHeight{};
+        BannerIndex BannerId = BannerIndex::GetNull();
+    };
 
-public:
-    WallPlaceAction() = default;
-    WallPlaceAction(
-        ObjectEntryIndex wallType, const CoordsXYZ& loc, uint8_t edge, int32_t primaryColour, int32_t secondaryColour,
-        int32_t tertiaryColour);
+    class WallPlaceAction final : public GameActionBase<GameCommand::PlaceWall>
+    {
+    private:
+        ObjectEntryIndex _wallType{ kObjectEntryIndexNull };
+        CoordsXYZ _loc;
+        Direction _edge{ kInvalidDirection };
+        int32_t _primaryColour{ COLOUR_BLACK };
+        int32_t _secondaryColour{ COLOUR_BLACK };
+        int32_t _tertiaryColour{ COLOUR_BLACK };
 
-    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+    public:
+        WallPlaceAction() = default;
+        WallPlaceAction(
+            ObjectEntryIndex wallType, const CoordsXYZ& loc, uint8_t edge, int32_t primaryColour, int32_t secondaryColour,
+            int32_t tertiaryColour);
 
-    uint16_t GetActionFlags() const override final;
+        void AcceptParameters(GameActionParameterVisitor&) final;
 
-    void Serialise(DataSerialiser& stream) override;
-    OpenRCT2::GameActions::Result Query() const override;
-    OpenRCT2::GameActions::Result Execute() const override;
+        uint16_t GetActionFlags() const final;
 
-private:
-    /**
-     *
-     *  rct2: 0x006E5CBA
-     */
-    bool WallCheckObstructionWithTrack(
-        const WallSceneryEntry* wall, int32_t z0, TrackElement* trackElement, bool* wallAcrossTrack) const;
-    /**
-     *
-     *  rct2: 0x006E5C1A
-     */
-    OpenRCT2::GameActions::Result WallCheckObstruction(
-        const WallSceneryEntry* wall, int32_t z0, int32_t z1, bool* wallAcrossTrack) const;
+        void Serialise(DataSerialiser& stream) override;
+        Result Query() const override;
+        Result Execute() const override;
 
-    /**
-     * Gets whether the given track type can have a wall placed on the edge of the given direction.
-     * Some thin tracks for example are allowed to have walls either side of the track, but wider tracks can not.
-     */
-    static bool TrackIsAllowedWallEdges(
-        ride_type_t rideType, OpenRCT2::TrackElemType trackType, uint8_t trackSequence, uint8_t direction);
-};
+    private:
+        /**
+         *
+         *  rct2: 0x006E5CBA
+         */
+        bool WallCheckObstructionWithTrack(
+            const WallSceneryEntry* wall, int32_t z0, TrackElement* trackElement, bool* wallAcrossTrack) const;
+        /**
+         *
+         *  rct2: 0x006E5C1A
+         */
+        Result WallCheckObstruction(const WallSceneryEntry* wall, int32_t z0, int32_t z1, bool* wallAcrossTrack) const;
+
+        /**
+         * Gets whether the given track type can have a wall placed on the edge of the given direction.
+         * Some thin tracks for example are allowed to have walls either side of the track, but wider tracks can not.
+         */
+        static bool TrackIsAllowedWallEdges(
+            ride_type_t rideType, OpenRCT2::TrackElemType trackType, uint8_t trackSequence, uint8_t direction);
+    };
+} // namespace OpenRCT2::GameActions

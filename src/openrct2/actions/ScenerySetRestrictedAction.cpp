@@ -12,47 +12,48 @@
 #include "../object/SceneryGroupObject.h"
 #include "../world/Scenery.h"
 
-using namespace OpenRCT2;
-
-ScenerySetRestrictedAction::ScenerySetRestrictedAction(ObjectType objectType, ObjectEntryIndex entryIndex, bool isRestricted)
-    : _objectType(objectType)
-    , _objectIndex(entryIndex)
-    , _isRestricted(isRestricted)
+namespace OpenRCT2::GameActions
 {
-}
-
-void ScenerySetRestrictedAction::Serialise(DataSerialiser& stream)
-{
-    GameAction::Serialise(stream);
-
-    stream << DS_TAG(_objectType) << DS_TAG(_objectIndex) << DS_TAG(_isRestricted);
-}
-
-uint16_t ScenerySetRestrictedAction::GetActionFlags() const
-{
-    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
-}
-
-GameActions::Result ScenerySetRestrictedAction::Query() const
-{
-    if (!ObjectTypeCanBeRestricted(_objectType))
+    ScenerySetRestrictedAction::ScenerySetRestrictedAction(
+        ObjectType objectType, ObjectEntryIndex entryIndex, bool isRestricted)
+        : _objectType(objectType)
+        , _objectIndex(entryIndex)
+        , _isRestricted(isRestricted)
     {
-        return GameActions::Result(
-            GameActions::Status::InvalidParameters, STR_CANT_RESTRICT_OBJECT, STR_OBJECT_TYPE_CANNOT_BE_RESTRICTED);
-    }
-    const auto* loadedObject = ObjectEntryGetObject(_objectType, _objectIndex);
-    if (loadedObject == nullptr)
-    {
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_RESTRICT_OBJECT, STR_OBJECT_NOT_FOUND);
     }
 
-    return GameActions::Result();
-}
+    void ScenerySetRestrictedAction::Serialise(DataSerialiser& stream)
+    {
+        GameAction::Serialise(stream);
 
-GameActions::Result ScenerySetRestrictedAction::Execute() const
-{
-    auto sceneryType = GetSceneryTypeFromObjectType(_objectType);
-    SetSceneryItemRestricted({ sceneryType, _objectIndex }, _isRestricted);
+        stream << DS_TAG(_objectType) << DS_TAG(_objectIndex) << DS_TAG(_isRestricted);
+    }
 
-    return GameActions::Result();
-}
+    uint16_t ScenerySetRestrictedAction::GetActionFlags() const
+    {
+        return GameAction::GetActionFlags() | Flags::AllowWhilePaused;
+    }
+
+    Result ScenerySetRestrictedAction::Query() const
+    {
+        if (!ObjectTypeCanBeRestricted(_objectType))
+        {
+            return Result(Status::InvalidParameters, STR_CANT_RESTRICT_OBJECT, STR_OBJECT_TYPE_CANNOT_BE_RESTRICTED);
+        }
+        const auto* loadedObject = ObjectEntryGetObject(_objectType, _objectIndex);
+        if (loadedObject == nullptr)
+        {
+            return Result(Status::InvalidParameters, STR_CANT_RESTRICT_OBJECT, STR_OBJECT_NOT_FOUND);
+        }
+
+        return Result();
+    }
+
+    Result ScenerySetRestrictedAction::Execute() const
+    {
+        auto sceneryType = GetSceneryTypeFromObjectType(_objectType);
+        SetSceneryItemRestricted({ sceneryType, _objectIndex }, _isRestricted);
+
+        return Result();
+    }
+} // namespace OpenRCT2::GameActions

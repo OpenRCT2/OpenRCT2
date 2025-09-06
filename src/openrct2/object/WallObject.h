@@ -12,23 +12,26 @@
 #include "SceneryObject.h"
 #include "WallSceneryEntry.h"
 
-class WallObject final : public SceneryObject
+namespace OpenRCT2
 {
-private:
-    WallSceneryEntry _legacyType = {};
-
-public:
-    static constexpr ObjectType kObjectType = ObjectType::walls;
-
-    void* GetLegacyData() override
+    class WallObject final : public SceneryObject
     {
-        return &_legacyType;
-    }
+    private:
+        WallSceneryEntry _legacyType = {};
 
-    void ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream) override;
-    void ReadJson(IReadObjectContext* context, json_t& root) override;
-    void Load() override;
-    void Unload() override;
+    public:
+        static constexpr ObjectType kObjectType = ObjectType::walls;
 
-    void DrawPreview(RenderTarget& rt, int32_t width, int32_t height) const override;
-};
+        void* GetLegacyData() override
+        {
+            return &_legacyType;
+        }
+
+        void ReadLegacy(IReadObjectContext* context, IStream* stream) override;
+        void ReadJson(IReadObjectContext* context, json_t& root) override;
+        void Load() override;
+        void Unload() override;
+
+        void DrawPreview(RenderTarget& rt, int32_t width, int32_t height) const override;
+    };
+} // namespace OpenRCT2

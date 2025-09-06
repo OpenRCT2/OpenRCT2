@@ -1072,7 +1072,7 @@ void ScriptEngine::RemoveNetworkPlugins()
     }
 }
 
-GameActions::Result ScriptEngine::QueryOrExecuteCustomGameAction(const CustomAction& customAction, bool isExecute)
+GameActions::Result ScriptEngine::QueryOrExecuteCustomGameAction(const GameActions::CustomAction& customAction, bool isExecute)
 {
     std::string actionz = customAction.GetId();
     auto kvp = _customActions.find(actionz);
@@ -1143,7 +1143,7 @@ GameActions::Result ScriptEngine::DukToGameActionResult(const DukValue& d)
         if (!expenditureType.empty())
         {
             auto expenditure = StringToExpenditureType(expenditureType);
-            if (expenditure != ExpenditureType::Count)
+            if (expenditure != ExpenditureType::count)
             {
                 result.Expenditure = expenditure;
             }
@@ -1192,10 +1192,10 @@ ExpenditureType ScriptEngine::StringToExpenditureType(std::string_view expenditu
     {
         return static_cast<ExpenditureType>(std::distance(std::begin(ExpenditureTypes), it));
     }
-    return ExpenditureType::Count;
+    return ExpenditureType::count;
 }
 
-DukValue ScriptEngine::GameActionResultToDuk(const GameAction& action, const GameActions::Result& result)
+DukValue ScriptEngine::GameActionResultToDuk(const GameActions::GameAction& action, const GameActions::Result& result)
 {
     DukStackFrame frame(_context);
     DukObject obj(_context);
@@ -1215,7 +1215,7 @@ DukValue ScriptEngine::GameActionResultToDuk(const GameAction& action, const Gam
     {
         obj.Set("position", ToDuk(_context, result.Position));
     }
-    if (result.Expenditure != ExpenditureType::Count)
+    if (result.Expenditure != ExpenditureType::count)
     {
         obj.Set("expenditureType", ExpenditureTypeToString(result.Expenditure));
     }
@@ -1234,7 +1234,7 @@ DukValue ScriptEngine::GameActionResultToDuk(const GameAction& action, const Gam
     {
         if (result.Error == GameActions::Status::Ok)
         {
-            const auto actionResult = result.GetData<StaffHireNewActionResult>();
+            const auto actionResult = result.GetData<GameActions::StaffHireNewActionResult>();
             if (!actionResult.StaffEntityId.IsNull())
             {
                 obj.Set("peep", actionResult.StaffEntityId.ToUnderlying());
@@ -1246,13 +1246,13 @@ DukValue ScriptEngine::GameActionResultToDuk(const GameAction& action, const Gam
     switch (action.GetType())
     {
         case GameCommand::PlaceBanner:
-            bannerId = result.GetData<BannerPlaceActionResult>().bannerId;
+            bannerId = result.GetData<GameActions::BannerPlaceActionResult>().bannerId;
             break;
         case GameCommand::PlaceLargeScenery:
-            bannerId = result.GetData<LargeSceneryPlaceActionResult>().bannerId;
+            bannerId = result.GetData<GameActions::LargeSceneryPlaceActionResult>().bannerId;
             break;
         case GameCommand::PlaceWall:
-            bannerId = result.GetData<WallPlaceActionResult>().BannerId;
+            bannerId = result.GetData<GameActions::WallPlaceActionResult>().BannerId;
             break;
         default:
             break;
@@ -1298,7 +1298,7 @@ void ScriptEngine::RemoveCustomGameActions(const std::shared_ptr<Plugin>& plugin
     }
 }
 
-class DukToGameActionParameterVisitor : public GameActionParameterVisitor
+class DukToGameActionParameterVisitor : public GameActions::GameActionParameterVisitor
 {
 private:
     DukValue _dukValue;
@@ -1325,7 +1325,7 @@ public:
     }
 };
 
-class DukFromGameActionParameterVisitor : public GameActionParameterVisitor
+class DukFromGameActionParameterVisitor : public GameActions::GameActionParameterVisitor
 {
 private:
     DukObject& _dukObject;
@@ -1451,7 +1451,7 @@ static std::string GetActionName(GameCommand commandId)
     return {};
 }
 
-static std::unique_ptr<GameAction> CreateGameActionFromActionId(const std::string& name)
+static std::unique_ptr<GameActions::GameAction> CreateGameActionFromActionId(const std::string& name)
 {
     auto result = ActionNameToType.find(name);
     if (result != ActionNameToType.end())
@@ -1461,7 +1461,7 @@ static std::unique_ptr<GameAction> CreateGameActionFromActionId(const std::strin
     return nullptr;
 }
 
-void ScriptEngine::RunGameActionHooks(const GameAction& action, GameActions::Result& result, bool isExecute)
+void ScriptEngine::RunGameActionHooks(const GameActions::GameAction& action, GameActions::Result& result, bool isExecute)
 {
     DukStackFrame frame(_context);
 
@@ -1473,7 +1473,7 @@ void ScriptEngine::RunGameActionHooks(const GameAction& action, GameActions::Res
         auto actionId = action.GetType();
         if (action.GetType() == GameCommand::Custom)
         {
-            auto customAction = static_cast<const CustomAction&>(action);
+            auto customAction = static_cast<const GameActions::CustomAction&>(action);
             obj.Set("action", customAction.GetId());
 
             auto dukArgs = DuktapeTryParseJson(_context, customAction.GetJson());
@@ -1497,8 +1497,8 @@ void ScriptEngine::RunGameActionHooks(const GameAction& action, GameActions::Res
 
             DukObject args(_context);
             DukFromGameActionParameterVisitor visitor(args);
-            const_cast<GameAction&>(action).AcceptParameters(visitor);
-            const_cast<GameAction&>(action).AcceptFlags(visitor);
+            const_cast<GameActions::GameAction&>(action).AcceptParameters(visitor);
+            const_cast<GameActions::GameAction&>(action).AcceptFlags(visitor);
             obj.Set("args", args.Take());
         }
 
@@ -1530,7 +1530,7 @@ void ScriptEngine::RunGameActionHooks(const GameAction& action, GameActions::Res
     }
 }
 
-std::unique_ptr<GameAction> ScriptEngine::CreateGameAction(
+std::unique_ptr<GameActions::GameAction> ScriptEngine::CreateGameAction(
     const std::string& actionid, const DukValue& args, const std::string& pluginName)
 {
     auto action = CreateGameActionFromActionId(actionid);
@@ -1559,7 +1559,7 @@ std::unique_ptr<GameAction> ScriptEngine::CreateGameAction(
     auto jsonz = duk_json_encode(ctx, -1);
     auto json = std::string(jsonz);
     duk_pop(ctx);
-    auto customAction = std::make_unique<CustomAction>(actionid, json, pluginName);
+    auto customAction = std::make_unique<GameActions::CustomAction>(actionid, json, pluginName);
 
     if (customAction->GetPlayer() == -1 && NetworkGetMode() != NETWORK_MODE_NONE)
     {

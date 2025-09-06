@@ -8,7 +8,7 @@ using namespace OpenRCT2;
 
 namespace OpenRCT2::GameActions
 {
-    Result::Result(GameActions::Status error, StringId title, StringId message, uint8_t* args /*= nullptr*/)
+    Result::Result(Status error, StringId title, StringId message, uint8_t* args /*= nullptr*/)
         : Error(error)
         , ErrorTitle(title)
         , ErrorMessage(message)
@@ -33,12 +33,12 @@ namespace OpenRCT2::GameActions
         }
     };
 
-    std::string GameActions::Result::GetErrorTitle() const
+    std::string Result::GetErrorTitle() const
     {
         return std::visit(StringVariantVisitor{ ErrorMessageArgs.data() }, ErrorTitle);
     }
 
-    std::string GameActions::Result::GetErrorMessage() const
+    std::string Result::GetErrorMessage() const
     {
         return std::visit(StringVariantVisitor{ ErrorMessageArgs.data() }, ErrorMessage);
     }

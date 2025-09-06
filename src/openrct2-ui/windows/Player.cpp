@@ -507,7 +507,7 @@ namespace OpenRCT2::Ui::Windows
                 break;
                 case WIDX_KICK:
                 {
-                    auto kickPlayerAction = PlayerKickAction(number);
+                    auto kickPlayerAction = GameActions::PlayerKickAction(number);
                     GameActions::Execute(&kickPlayerAction);
                 }
                 break;
@@ -528,14 +528,15 @@ namespace OpenRCT2::Ui::Windows
             }
             const auto groupId = NetworkGetGroupID(dropdownIndex);
             const auto windowHandle = std::make_pair(classification, number);
-            auto playerSetGroupAction = PlayerSetGroupAction(playerId, groupId);
-            playerSetGroupAction.SetCallback([windowHandle](const GameAction* ga, const GameActions::Result* result) {
-                if (result->Error == GameActions::Status::Ok)
-                {
-                    auto* windowMgr = Ui::GetWindowManager();
-                    windowMgr->InvalidateByNumber(windowHandle.first, windowHandle.second);
-                }
-            });
+            auto playerSetGroupAction = GameActions::PlayerSetGroupAction(playerId, groupId);
+            playerSetGroupAction.SetCallback(
+                [windowHandle](const GameActions::GameAction* ga, const GameActions::Result* result) {
+                    if (result->Error == GameActions::Status::Ok)
+                    {
+                        auto* windowMgr = Ui::GetWindowManager();
+                        windowMgr->InvalidateByNumber(windowHandle.first, windowHandle.second);
+                    }
+                });
             GameActions::Execute(&playerSetGroupAction);
         }
 
@@ -559,11 +560,10 @@ namespace OpenRCT2::Ui::Windows
 
             for (i = 0; i < NetworkGetNumGroups(); i++)
             {
-                gDropdownItems[i].Format = STR_OPTIONS_DROPDOWN_ITEM;
-                gDropdownItems[i].Args = reinterpret_cast<uintptr_t>(NetworkGetGroupName(i));
+                gDropdown.items[i] = Dropdown::MenuLabel(NetworkGetGroupName(i));
             }
 
-            Dropdown::SetChecked(NetworkGetGroupIndex(NetworkGetPlayerGroup(player)), true);
+            gDropdown.items[NetworkGetGroupIndex(NetworkGetPlayerGroup(player))].setChecked(true);
         }
 
 #pragma endregion

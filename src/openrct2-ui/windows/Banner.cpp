@@ -167,8 +167,7 @@ namespace OpenRCT2::Ui::Windows
                     auto numItems = std::size(kBannerColouredTextFormats) - 1;
                     for (size_t i = 0; i < numItems; ++i)
                     {
-                        gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
-                        gDropdownItems[i].Args = kBannerColouredTextFormats[i + 1];
+                        gDropdown.items[i] = Dropdown::MenuLabel(kBannerColouredTextFormats[i + 1]);
                     }
 
                     // Switch to the dropdown box widget.
@@ -178,7 +177,7 @@ namespace OpenRCT2::Ui::Windows
                         { widget->left + windowPos.x, widget->top + windowPos.y }, widget->height() + 1, colours[1], 0,
                         Dropdown::Flag::StayOpen, numItems, widget->width() - 3);
 
-                    Dropdown::SetChecked(EnumValue(banner->textColour) - 1, true);
+                    gDropdown.items[EnumValue(banner->textColour) - 1].setChecked(true);
                     break;
             }
         }
@@ -202,7 +201,7 @@ namespace OpenRCT2::Ui::Windows
                     if (bannerElement == nullptr)
                         break;
 
-                    auto bannerRemoveAction = BannerRemoveAction(
+                    auto bannerRemoveAction = GameActions::BannerRemoveAction(
                         { banner->position.ToCoordsXY(), bannerElement->GetBaseZ(), bannerElement->GetPosition() });
                     GameActions::Execute(&bannerRemoveAction);
                     break;
@@ -214,8 +213,8 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_BANNER_NO_ENTRY:
                 {
                     TextinputCancel();
-                    auto bannerSetStyle = BannerSetStyleAction(
-                        BannerSetStyleType::NoEntry, GetBannerIndex(), !banner->flags.has(BannerFlag::noEntry));
+                    auto bannerSetStyle = GameActions::BannerSetStyleAction(
+                        GameActions::BannerSetStyleType::NoEntry, GetBannerIndex(), !banner->flags.has(BannerFlag::noEntry));
                     GameActions::Execute(&bannerSetStyle);
                     break;
                 }
@@ -231,8 +230,9 @@ namespace OpenRCT2::Ui::Windows
                     if (dropdownIndex == -1)
                         break;
 
-                    auto bannerSetStyle = BannerSetStyleAction(
-                        BannerSetStyleType::PrimaryColour, GetBannerIndex(), ColourDropDownIndexToColour(dropdownIndex));
+                    auto bannerSetStyle = GameActions::BannerSetStyleAction(
+                        GameActions::BannerSetStyleType::PrimaryColour, GetBannerIndex(),
+                        ColourDropDownIndexToColour(dropdownIndex));
                     GameActions::Execute(&bannerSetStyle);
                     break;
                 }
@@ -240,8 +240,8 @@ namespace OpenRCT2::Ui::Windows
                 {
                     if (dropdownIndex == -1)
                         break;
-                    auto bannerSetStyle = BannerSetStyleAction(
-                        BannerSetStyleType::TextColour, GetBannerIndex(), dropdownIndex + 1);
+                    auto bannerSetStyle = GameActions::BannerSetStyleAction(
+                        GameActions::BannerSetStyleType::TextColour, GetBannerIndex(), dropdownIndex + 1);
                     GameActions::Execute(&bannerSetStyle);
                     break;
                 }
@@ -252,7 +252,7 @@ namespace OpenRCT2::Ui::Windows
         {
             if (widgetIndex == WIDX_BANNER_TEXT)
             {
-                auto bannerSetNameAction = BannerSetNameAction(GetBannerIndex(), std::string(text));
+                auto bannerSetNameAction = GameActions::BannerSetNameAction(GetBannerIndex(), std::string(text));
                 GameActions::Execute(&bannerSetNameAction);
             }
         }

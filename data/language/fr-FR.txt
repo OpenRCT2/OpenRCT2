@@ -252,10 +252,6 @@ STR_0831    :Zoom arrière
 STR_0832    :Tourner la vue de 90° dans le sens des aiguilles d’une montre
 STR_0833    :Mettre en pause le jeu
 STR_0834    :Options du jeu et du disque
-STR_0839    :{UINT16} x {UINT16}
-STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
-# The following six strings were used for display resolutions, but have been replaced.
-#end
 STR_0847    :A propos d’OpenRCT2
 STR_0850    :{WINDOW_COLOUR_2}Copyright © 2002 Chris Sawyer, tous droits réservés
 STR_0851    :{WINDOW_COLOUR_2}Conçu et programmé par Chris Sawyer
@@ -525,7 +521,7 @@ STR_1124    :Démarre
 STR_1125    :Fonctionne
 STR_1126    :S’arrête
 STR_1127    :Dépose des passagers
-STR_1128    :Arrêté par les freins de blocs
+STR_1128    :Arrêté par les freins de bloc
 STR_1129    :Tous les véhicules de la même couleur
 STR_1130    :Couleurs différentes par {STRINGID}
 STR_1131    :Couleurs différentes par véhicule
@@ -1085,7 +1081,7 @@ STR_1685    :Taille de base 2 x 4
 STR_1686    :Taille de base 5 x 1
 STR_1687    :Plongeon
 STR_1688    :Taille de base 4 x 1
-STR_1689    :Freins de blocs
+STR_1689    :Freins de bloc
 STR_1690    :{WINDOW_COLOUR_2}{STRINGID}{NEWLINE}{BLACK}{STRINGID}
 STR_1691    :{WINDOW_COLOUR_2}  Coût : {BLACK}{CURRENCY}
 STR_1692    :{WINDOW_COLOUR_2}  Coût : {BLACK}de {CURRENCY}
@@ -2239,9 +2235,9 @@ STR_3225    :Activer/désactiver la formation aléatoire d’un ensemble d’obj
 STR_3226    :Construire une entrée du parc
 STR_3227    :Trop d’entrées du parc !
 STR_3228    :Définir la position de départ pour les visiteurs
-STR_3229    :Les freins de blocs ne peuvent être posés directement après la station
-STR_3230    :Les freins de blocs ne peuvent être posés les uns derrière les autres
-STR_3231    :Les freins de blocs ne peuvent être posés directement après le sommet d’une remontée
+STR_3229    :Les freins de bloc ne peuvent être posés directement après la station
+STR_3230    :Les freins de bloc ne peuvent être posés les uns derrière les autres
+STR_3231    :Les freins de bloc ne peuvent être posés directement après le sommet d’une remontée
 STR_3232    :Options — Finances
 STR_3233    :Options — Visiteurs
 STR_3235    :Voir les options financières
@@ -3763,7 +3759,7 @@ STR_6715    :Date de modification
 STR_6716    :Taille
 STR_6717    :Taille {STRINGID}
 STR_6718    :Animations de personnel
-STR_6719    :Au moins un objet d’animations de personnel doit être sélectionné
+STR_6719    :Au moins un objet d’animations de visiteur doit être sélectionné
 STR_6720    :Au moins un objet d’animations d’agent d’entretien doit être sélectionné
 STR_6721    :Au moins un objet d’animations de mécanicien doit être sélectionné
 STR_6722    :Au moins un objet d’animations d’agent de sécurité doit être sélectionné
@@ -3846,3 +3842,6 @@ STR_6797    :Pas d’aperçu
 STR_6798    :Capture d’écran
 STR_6799    :Mini-carte
 STR_7000    :ou
+STR_7001    :Nom de l’attraction
+STR_7002    :{STRINGID} {STRINGID}
+STR_7003    :Le fichier audio « {STRING} » est tronqué. L’échantillon {INT32} était attendu, mais seulement {INT32} sont disponibles. Songez à réinstaller RCT2.

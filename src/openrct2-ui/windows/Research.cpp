@@ -478,15 +478,14 @@ namespace OpenRCT2::Ui::Windows
 
         for (std::size_t i = 0; i < std::size(kResearchFundingLevelNames); i++)
         {
-            gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
-            gDropdownItems[i].Args = kResearchFundingLevelNames[i];
+            gDropdown.items[i] = Dropdown::MenuLabel(kResearchFundingLevelNames[i]);
         }
         WindowDropdownShowTextCustomWidth(
             { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
             w->colours[1], 0, Dropdown::Flag::StayOpen, 4, dropdownWidget->width() - 3);
 
         int32_t currentResearchLevel = gameState.researchFundingLevel;
-        Dropdown::SetChecked(currentResearchLevel, true);
+        gDropdown.items[currentResearchLevel].setChecked(true);
     }
 
     void WindowResearchFundingMouseUp(WidgetIndex widgetIndex, WidgetIndex baseWidgetIndex)
@@ -506,7 +505,8 @@ namespace OpenRCT2::Ui::Windows
             {
                 auto activeResearchTypes = gameState.researchPriorities;
                 activeResearchTypes ^= 1uLL << (widgetIndex - (WIDX_TRANSPORT_RIDES + widgetOffset));
-                auto gameAction = ParkSetResearchFundingAction(activeResearchTypes, gameState.researchFundingLevel);
+                auto gameAction = GameActions::ParkSetResearchFundingAction(
+                    activeResearchTypes, gameState.researchFundingLevel);
                 GameActions::Execute(&gameAction);
                 break;
             }
@@ -521,7 +521,7 @@ namespace OpenRCT2::Ui::Windows
         if (widgetIndex != (WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON + widgetOffset) || selectedIndex == -1)
             return;
 
-        auto gameAction = ParkSetResearchFundingAction(gameState.researchPriorities, selectedIndex);
+        auto gameAction = GameActions::ParkSetResearchFundingAction(gameState.researchPriorities, selectedIndex);
         GameActions::Execute(&gameAction);
     }
 
@@ -530,7 +530,7 @@ namespace OpenRCT2::Ui::Windows
         const auto& gameState = getGameState();
         auto widgetOffset = GetWidgetIndexOffset(baseWidgetIndex, WIDX_RESEARCH_FUNDING);
 
-        if ((gameState.park.Flags & PARK_FLAGS_NO_MONEY) || gameState.researchProgressStage == RESEARCH_STAGE_FINISHED_ALL)
+        if ((gameState.park.flags & PARK_FLAGS_NO_MONEY) || gameState.researchProgressStage == RESEARCH_STAGE_FINISHED_ALL)
         {
             w->widgets[WIDX_RESEARCH_FUNDING + widgetOffset].type = WidgetType::empty;
             w->widgets[WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON + widgetOffset].type = WidgetType::empty;
@@ -575,12 +575,12 @@ namespace OpenRCT2::Ui::Windows
     void WindowResearchFundingDraw(WindowBase* w, RenderTarget& rt)
     {
         const auto& gameState = getGameState();
-        if (gameState.park.Flags & PARK_FLAGS_NO_MONEY)
+        if (gameState.park.flags & PARK_FLAGS_NO_MONEY)
             return;
 
         int32_t currentResearchLevel = gameState.researchFundingLevel;
         auto ft = Formatter();
-        ft.Add<money64>(research_cost_table[currentResearchLevel]);
+        ft.Add<money64>(kResearchCosts[currentResearchLevel]);
         DrawTextBasic(
             rt, w->windowPos + ScreenCoordsXY{ 10, w->widgets[WIDX_TAB_1].top + 60 }, STR_RESEARCH_COST_PER_MONTH, ft);
     }

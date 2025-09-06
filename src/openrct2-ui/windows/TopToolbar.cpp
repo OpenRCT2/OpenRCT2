@@ -308,7 +308,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_PAUSE:
                     if (NetworkGetMode() != NETWORK_MODE_CLIENT)
                     {
-                        auto pauseToggleAction = PauseToggleAction();
+                        auto pauseToggleAction = GameActions::PauseToggleAction();
                         GameActions::Execute(&pauseToggleAction);
                         _waitingForPause = true;
                     }
@@ -444,14 +444,14 @@ namespace OpenRCT2::Ui::Windows
                     {
                         case DDIDX_NEW_GAME:
                         {
-                            auto loadOrQuitAction = LoadOrQuitAction(
-                                LoadOrQuitModes::OpenSavePrompt, PromptMode::saveBeforeNewGame);
+                            auto loadOrQuitAction = GameActions::LoadOrQuitAction(
+                                GameActions::LoadOrQuitModes::OpenSavePrompt, PromptMode::saveBeforeNewGame);
                             GameActions::Execute(&loadOrQuitAction);
                             break;
                         }
                         case DDIDX_LOAD_GAME:
                         {
-                            auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::OpenSavePrompt);
+                            auto loadOrQuitAction = GameActions::LoadOrQuitAction(GameActions::LoadOrQuitModes::OpenSavePrompt);
                             GameActions::Execute(&loadOrQuitAction);
                             break;
                         }
@@ -465,7 +465,7 @@ namespace OpenRCT2::Ui::Windows
                                 auto intent = Intent(WindowClass::Loadsave);
                                 intent.PutEnumExtra<LoadSaveAction>(INTENT_EXTRA_LOADSAVE_ACTION, LoadSaveAction::save);
                                 intent.PutEnumExtra<LoadSaveType>(INTENT_EXTRA_LOADSAVE_TYPE, LoadSaveType::landscape);
-                                intent.PutExtra(INTENT_EXTRA_PATH, getGameState().scenarioName);
+                                intent.PutExtra(INTENT_EXTRA_PATH, getGameState().scenarioOptions.name);
                                 ContextOpenIntent(&intent);
                             }
                             else
@@ -504,8 +504,8 @@ namespace OpenRCT2::Ui::Windows
                             auto* windowMgr = Ui::GetWindowManager();
                             windowMgr->CloseByClass(WindowClass::ManageTrackDesign);
                             windowMgr->CloseByClass(WindowClass::TrackDeletePrompt);
-                            auto loadOrQuitAction = LoadOrQuitAction(
-                                LoadOrQuitModes::OpenSavePrompt, PromptMode::saveBeforeQuit);
+                            auto loadOrQuitAction = GameActions::LoadOrQuitAction(
+                                GameActions::LoadOrQuitModes::OpenSavePrompt, PromptMode::saveBeforeQuit);
                             GameActions::Execute(&loadOrQuitAction);
                             break;
                         }
@@ -648,7 +648,7 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_PAUSE].type = WidgetType::empty;
             }
 
-            if ((getGameState().park.Flags & PARK_FLAGS_NO_MONEY) || !Config::Get().interface.ToolbarShowFinances)
+            if ((getGameState().park.flags & PARK_FLAGS_NO_MONEY) || !Config::Get().interface.ToolbarShowFinances)
                 widgets[WIDX_FINANCES].type = WidgetType::empty;
         }
 
@@ -889,7 +889,8 @@ namespace OpenRCT2::Ui::Windows
                 imgId = SPR_TOOLBAR_STAFF;
                 if (widgetIsPressed(*this, WIDX_STAFF))
                     imgId++;
-                GfxDrawSprite(rt, ImageId(imgId, gameState.staffHandymanColour, gameState.staffMechanicColour), screenPos);
+                GfxDrawSprite(
+                    rt, ImageId(imgId, gameState.park.staffHandymanColour, gameState.park.staffMechanicColour), screenPos);
             }
 
             // Draw fast forward button
@@ -905,7 +906,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     GfxDrawSprite(rt, ImageId(SPR_G2_SPEED_ARROW), screenPos + ScreenCoordsXY{ 5 + i * 5, 15 });
                 }
-                for (int32_t i = 0; i < 3 && i < gGameSpeed - 4 && gGameSpeed >= 5; i++)
+                for (int32_t i = 0; i < 3 && gGameSpeed >= 5; i++)
                 {
                     GfxDrawSprite(rt, ImageId(SPR_G2_HYPER_ARROW), screenPos + ScreenCoordsXY{ 5 + i * 6, 15 });
                 }
@@ -1030,7 +1031,7 @@ namespace OpenRCT2::Ui::Windows
             ToggleOption(DDIDX_TRANSPARENT_WATER, STR_VIEWPORT_TRANSPARENT_WATER),
             ToggleOption(DDIDX_HIDE_BASE, STR_REMOVE_BASE_LAND),
             ToggleOption(DDIDX_HIDE_VERTICAL, STR_REMOVE_VERTICAL_FACES),
-            Separator(),
+            ExtSeparator(),
             ToggleOption(DDIDX_HIDE_RIDES, STR_SEE_THROUGH_RIDES),
             ToggleOption(DDIDX_HIDE_VEHICLES, STR_SEE_THROUGH_VEHICLES),
             ToggleOption(DDIDX_HIDE_VEGETATION, STR_SEE_THROUGH_VEGETATION),
@@ -1039,14 +1040,14 @@ namespace OpenRCT2::Ui::Windows
             ToggleOption(DDIDX_HIDE_SUPPORTS, STR_SEE_THROUGH_SUPPORTS),
             ToggleOption(DDIDX_HIDE_GUESTS, STR_SEE_THROUGH_GUESTS),
             ToggleOption(DDIDX_HIDE_STAFF, STR_SEE_THROUGH_STAFF),
-            Separator(),
+            ExtSeparator(),
             ToggleOption(DDIDX_LAND_HEIGHTS, STR_HEIGHT_MARKS_ON_LAND),
             ToggleOption(DDIDX_TRACK_HEIGHTS, STR_HEIGHT_MARKS_ON_RIDE_TRACKS),
             ToggleOption(DDIDX_PATH_HEIGHTS, STR_HEIGHT_MARKS_ON_PATHS),
-            Separator(),
+            ExtSeparator(),
             ToggleOption(DDIDX_VIEW_CLIPPING, STR_VIEW_CLIPPING_MENU),
             ToggleOption(DDIDX_HIGHLIGHT_PATH_ISSUES, STR_HIGHLIGHT_PATH_ISSUES_MENU),
-            Separator(),
+            ExtSeparator(),
             ToggleOption(DDIDX_TRANSPARENCY, STR_TRANSPARENCY_OPTIONS),
         };
 
@@ -1059,25 +1060,25 @@ namespace OpenRCT2::Ui::Windows
             colours[1].withFlag(ColourFlag::translucent, true), 0, TOP_TOOLBAR_VIEW_MENU_COUNT);
 
         auto mvpFlags = WindowGetMain()->viewport->flags;
-        SetChecked(DDIDX_UNDERGROUND_INSIDE, mvpFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE);
-        SetChecked(DDIDX_TRANSPARENT_WATER, Config::Get().general.TransparentWater);
-        SetChecked(DDIDX_HIDE_BASE, mvpFlags & VIEWPORT_FLAG_HIDE_BASE);
-        SetChecked(DDIDX_HIDE_VERTICAL, mvpFlags & VIEWPORT_FLAG_HIDE_VERTICAL);
-        SetChecked(DDIDX_HIDE_RIDES, mvpFlags & VIEWPORT_FLAG_HIDE_RIDES);
-        SetChecked(DDIDX_HIDE_VEHICLES, mvpFlags & VIEWPORT_FLAG_HIDE_VEHICLES);
-        SetChecked(DDIDX_HIDE_VEGETATION, mvpFlags & VIEWPORT_FLAG_HIDE_VEGETATION);
-        SetChecked(DDIDX_HIDE_SCENERY, mvpFlags & VIEWPORT_FLAG_HIDE_SCENERY);
-        SetChecked(DDIDX_HIDE_PATHS, mvpFlags & VIEWPORT_FLAG_HIDE_PATHS);
-        SetChecked(DDIDX_HIDE_SUPPORTS, mvpFlags & VIEWPORT_FLAG_HIDE_SUPPORTS);
-        SetChecked(DDIDX_HIDE_GUESTS, mvpFlags & VIEWPORT_FLAG_HIDE_GUESTS);
-        SetChecked(DDIDX_HIDE_STAFF, mvpFlags & VIEWPORT_FLAG_HIDE_STAFF);
-        SetChecked(DDIDX_LAND_HEIGHTS, mvpFlags & VIEWPORT_FLAG_LAND_HEIGHTS);
-        SetChecked(DDIDX_TRACK_HEIGHTS, mvpFlags & VIEWPORT_FLAG_TRACK_HEIGHTS);
-        SetChecked(DDIDX_PATH_HEIGHTS, mvpFlags & VIEWPORT_FLAG_PATH_HEIGHTS);
-        SetChecked(DDIDX_VIEW_CLIPPING, mvpFlags & VIEWPORT_FLAG_CLIP_VIEW);
-        SetChecked(DDIDX_HIGHLIGHT_PATH_ISSUES, mvpFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES);
+        gDropdown.items[DDIDX_UNDERGROUND_INSIDE].setChecked(mvpFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE);
+        gDropdown.items[DDIDX_TRANSPARENT_WATER].setChecked(Config::Get().general.TransparentWater);
+        gDropdown.items[DDIDX_HIDE_BASE].setChecked(mvpFlags & VIEWPORT_FLAG_HIDE_BASE);
+        gDropdown.items[DDIDX_HIDE_VERTICAL].setChecked(mvpFlags & VIEWPORT_FLAG_HIDE_VERTICAL);
+        gDropdown.items[DDIDX_HIDE_RIDES].setChecked(mvpFlags & VIEWPORT_FLAG_HIDE_RIDES);
+        gDropdown.items[DDIDX_HIDE_VEHICLES].setChecked(mvpFlags & VIEWPORT_FLAG_HIDE_VEHICLES);
+        gDropdown.items[DDIDX_HIDE_VEGETATION].setChecked(mvpFlags & VIEWPORT_FLAG_HIDE_VEGETATION);
+        gDropdown.items[DDIDX_HIDE_SCENERY].setChecked(mvpFlags & VIEWPORT_FLAG_HIDE_SCENERY);
+        gDropdown.items[DDIDX_HIDE_PATHS].setChecked(mvpFlags & VIEWPORT_FLAG_HIDE_PATHS);
+        gDropdown.items[DDIDX_HIDE_SUPPORTS].setChecked(mvpFlags & VIEWPORT_FLAG_HIDE_SUPPORTS);
+        gDropdown.items[DDIDX_HIDE_GUESTS].setChecked(mvpFlags & VIEWPORT_FLAG_HIDE_GUESTS);
+        gDropdown.items[DDIDX_HIDE_STAFF].setChecked(mvpFlags & VIEWPORT_FLAG_HIDE_STAFF);
+        gDropdown.items[DDIDX_LAND_HEIGHTS].setChecked(mvpFlags & VIEWPORT_FLAG_LAND_HEIGHTS);
+        gDropdown.items[DDIDX_TRACK_HEIGHTS].setChecked(mvpFlags & VIEWPORT_FLAG_TRACK_HEIGHTS);
+        gDropdown.items[DDIDX_PATH_HEIGHTS].setChecked(mvpFlags & VIEWPORT_FLAG_PATH_HEIGHTS);
+        gDropdown.items[DDIDX_VIEW_CLIPPING].setChecked(mvpFlags & VIEWPORT_FLAG_CLIP_VIEW);
+        gDropdown.items[DDIDX_HIGHLIGHT_PATH_ISSUES].setChecked(mvpFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES);
 
-        gDropdownDefaultIndex = DDIDX_UNDERGROUND_INSIDE;
+        gDropdown.defaultIndex = DDIDX_UNDERGROUND_INSIDE;
     }
 
     void TopToolbar::ViewMenuDropdown(int16_t dropdownIndex)
@@ -1163,25 +1164,23 @@ namespace OpenRCT2::Ui::Windows
     void TopToolbar::InitMapMenu(Widget& widget)
     {
         auto i = 0;
-        gDropdownItems[i++].Format = STR_SHORTCUT_SHOW_MAP;
-        gDropdownItems[i++].Format = STR_EXTRA_VIEWPORT;
+        gDropdown.items[i++] = Dropdown::PlainMenuLabel(STR_SHORTCUT_SHOW_MAP);
+        gDropdown.items[i++] = Dropdown::PlainMenuLabel(STR_EXTRA_VIEWPORT);
         if (gLegacyScene == LegacyScene::scenarioEditor && getGameState().editorStep == EditorStep::LandscapeEditor)
         {
-            gDropdownItems[i++].Format = STR_MAPGEN_MENU_ITEM;
+            gDropdown.items[i++] = Dropdown::PlainMenuLabel(STR_MAPGEN_MENU_ITEM);
         }
 
 #ifdef ENABLE_SCRIPTING
         const auto& customMenuItems = OpenRCT2::Scripting::CustomMenuItems;
         if (!customMenuItems.empty())
         {
-            gDropdownItems[i++].Format = kStringIdEmpty;
+            gDropdown.items[i++] = Dropdown::Separator();
             for (const auto& item : customMenuItems)
             {
                 if (item.Kind == OpenRCT2::Scripting::CustomToolbarMenuItemKind::Standard)
                 {
-                    gDropdownItems[i].Format = STR_STRING;
-                    auto sz = item.Text.c_str();
-                    std::memcpy(&gDropdownItems[i].Args, &sz, sizeof(const char*));
+                    gDropdown.items[i] = Dropdown::PlainMenuLabel(item.Text.c_str());
                     i++;
                 }
             }
@@ -1191,7 +1190,7 @@ namespace OpenRCT2::Ui::Windows
         WindowDropdownShowText(
             { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height() + 1,
             colours[1].withFlag(ColourFlag::translucent, true), 0, i);
-        gDropdownDefaultIndex = DDIDX_SHOW_MAP;
+        gDropdown.defaultIndex = DDIDX_SHOW_MAP;
     }
 
     void TopToolbar::MapMenuDropdown(int16_t dropdownIndex)
@@ -1242,22 +1241,18 @@ namespace OpenRCT2::Ui::Windows
     void TopToolbar::InitFastforwardMenu(Widget& widget)
     {
         int32_t num_items = 4;
-        gDropdownItems[0].Format = STR_TOGGLE_OPTION;
-        gDropdownItems[1].Format = STR_TOGGLE_OPTION;
-        gDropdownItems[2].Format = STR_TOGGLE_OPTION;
-        gDropdownItems[3].Format = STR_TOGGLE_OPTION;
+        gDropdown.items[0] = Dropdown::MenuLabel(STR_SPEED_NORMAL);
+        gDropdown.items[1] = Dropdown::MenuLabel(STR_SPEED_QUICK);
+        gDropdown.items[2] = Dropdown::MenuLabel(STR_SPEED_FAST);
+        gDropdown.items[3] = Dropdown::MenuLabel(STR_SPEED_TURBO);
+
         if (Config::Get().general.DebuggingTools)
         {
-            gDropdownItems[4].Format = kStringIdEmpty;
-            gDropdownItems[5].Format = STR_TOGGLE_OPTION;
-            gDropdownItems[5].Args = STR_SPEED_HYPER;
             num_items = 6;
-        }
 
-        gDropdownItems[0].Args = STR_SPEED_NORMAL;
-        gDropdownItems[1].Args = STR_SPEED_QUICK;
-        gDropdownItems[2].Args = STR_SPEED_FAST;
-        gDropdownItems[3].Args = STR_SPEED_TURBO;
+            gDropdown.items[4] = Dropdown::Separator();
+            gDropdown.items[5] = Dropdown::MenuLabel(STR_SPEED_HYPER);
+        }
 
         WindowDropdownShowText(
             { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height() + 1,
@@ -1266,24 +1261,24 @@ namespace OpenRCT2::Ui::Windows
         // Set checkmarks
         if (gGameSpeed <= 4)
         {
-            Dropdown::SetChecked(gGameSpeed - 1, true);
+            gDropdown.items[gGameSpeed - 1].setChecked(true);
         }
         if (gGameSpeed == 8)
         {
-            Dropdown::SetChecked(5, true);
+            gDropdown.items[5].setChecked(true);
         }
 
         if (Config::Get().general.DebuggingTools)
         {
-            gDropdownDefaultIndex = (gGameSpeed == 8 ? 0 : gGameSpeed);
+            gDropdown.defaultIndex = (gGameSpeed == 8 ? 0 : gGameSpeed);
         }
         else
         {
-            gDropdownDefaultIndex = (gGameSpeed >= 4 ? 0 : gGameSpeed);
+            gDropdown.defaultIndex = (gGameSpeed >= 4 ? 0 : gGameSpeed);
         }
-        if (gDropdownDefaultIndex == 4)
+        if (gDropdown.defaultIndex == 4)
         {
-            gDropdownDefaultIndex = 5;
+            gDropdown.defaultIndex = 5;
         }
     }
 
@@ -1298,7 +1293,7 @@ namespace OpenRCT2::Ui::Windows
                 if (newSpeed >= 5)
                     newSpeed = 8;
 
-                auto setSpeedAction = GameSetSpeedAction(newSpeed);
+                auto setSpeedAction = GameActions::GameSetSpeedAction(newSpeed);
                 GameActions::Execute(&setSpeedAction);
             }
         }
@@ -1309,66 +1304,66 @@ namespace OpenRCT2::Ui::Windows
         int32_t numItems = 0;
         if (isInTrackDesignerOrManager())
         {
-            gDropdownItems[numItems++].Format = STR_SCREENSHOT;
-            gDropdownItems[numItems++].Format = STR_GIANT_SCREENSHOT;
-            gDropdownItems[numItems++].Format = kStringIdEmpty;
-            gDropdownItems[numItems++].Format = STR_ABOUT;
-            gDropdownItems[numItems++].Format = STR_FILE_BUG_ON_GITHUB;
+            gDropdown.items[numItems++] = Dropdown::PlainMenuLabel(STR_SCREENSHOT);
+            gDropdown.items[numItems++] = Dropdown::PlainMenuLabel(STR_GIANT_SCREENSHOT);
+            gDropdown.items[numItems++] = Dropdown::Separator();
+            gDropdown.items[numItems++] = Dropdown::PlainMenuLabel(STR_ABOUT);
+            gDropdown.items[numItems++] = Dropdown::PlainMenuLabel(STR_FILE_BUG_ON_GITHUB);
 
             if (OpenRCT2::GetContext()->HasNewVersionInfo())
-                gDropdownItems[numItems++].Format = STR_UPDATE_AVAILABLE;
+                gDropdown.items[numItems++] = Dropdown::PlainMenuLabel(STR_UPDATE_AVAILABLE);
 
-            gDropdownItems[numItems++].Format = STR_OPTIONS;
-            gDropdownItems[numItems++].Format = kStringIdEmpty;
+            gDropdown.items[numItems++] = Dropdown::PlainMenuLabel(STR_OPTIONS);
+            gDropdown.items[numItems++] = Dropdown::Separator();
 
             if (gLegacyScene == LegacyScene::trackDesigner)
-                gDropdownItems[numItems++].Format = STR_QUIT_ROLLERCOASTER_DESIGNER;
+                gDropdown.items[numItems++] = Dropdown::PlainMenuLabel(STR_QUIT_ROLLERCOASTER_DESIGNER);
             else
-                gDropdownItems[numItems++].Format = STR_QUIT_TRACK_DESIGNS_MANAGER;
+                gDropdown.items[numItems++] = Dropdown::PlainMenuLabel(STR_QUIT_TRACK_DESIGNS_MANAGER);
 
-            gDropdownItems[numItems++].Format = STR_EXIT_OPENRCT2;
+            gDropdown.items[numItems++] = Dropdown::PlainMenuLabel(STR_EXIT_OPENRCT2);
         }
         else if (gLegacyScene == LegacyScene::scenarioEditor)
         {
-            gDropdownItems[numItems++].Format = STR_LOAD_LANDSCAPE;
-            gDropdownItems[numItems++].Format = kStringIdEmpty;
-            gDropdownItems[numItems++].Format = STR_SAVE_LANDSCAPE;
-            gDropdownItems[numItems++].Format = kStringIdEmpty;
-            gDropdownItems[numItems++].Format = STR_SCREENSHOT;
-            gDropdownItems[numItems++].Format = STR_GIANT_SCREENSHOT;
-            gDropdownItems[numItems++].Format = kStringIdEmpty;
-            gDropdownItems[numItems++].Format = STR_ABOUT;
-            gDropdownItems[numItems++].Format = STR_FILE_BUG_ON_GITHUB;
+            gDropdown.items[numItems++] = Dropdown::PlainMenuLabel(STR_LOAD_LANDSCAPE);
+            gDropdown.items[numItems++] = Dropdown::Separator();
+            gDropdown.items[numItems++] = Dropdown::PlainMenuLabel(STR_SAVE_LANDSCAPE);
+            gDropdown.items[numItems++] = Dropdown::Separator();
+            gDropdown.items[numItems++] = Dropdown::PlainMenuLabel(STR_SCREENSHOT);
+            gDropdown.items[numItems++] = Dropdown::PlainMenuLabel(STR_GIANT_SCREENSHOT);
+            gDropdown.items[numItems++] = Dropdown::Separator();
+            gDropdown.items[numItems++] = Dropdown::PlainMenuLabel(STR_ABOUT);
+            gDropdown.items[numItems++] = Dropdown::PlainMenuLabel(STR_FILE_BUG_ON_GITHUB);
 
             if (OpenRCT2::GetContext()->HasNewVersionInfo())
-                gDropdownItems[numItems++].Format = STR_UPDATE_AVAILABLE;
+                gDropdown.items[numItems++] = Dropdown::PlainMenuLabel(STR_UPDATE_AVAILABLE);
 
-            gDropdownItems[numItems++].Format = STR_OPTIONS;
-            gDropdownItems[numItems++].Format = kStringIdEmpty;
-            gDropdownItems[numItems++].Format = STR_QUIT_SCENARIO_EDITOR;
-            gDropdownItems[numItems++].Format = STR_EXIT_OPENRCT2;
+            gDropdown.items[numItems++] = Dropdown::PlainMenuLabel(STR_OPTIONS);
+            gDropdown.items[numItems++] = Dropdown::Separator();
+            gDropdown.items[numItems++] = Dropdown::PlainMenuLabel(STR_QUIT_SCENARIO_EDITOR);
+            gDropdown.items[numItems++] = Dropdown::PlainMenuLabel(STR_EXIT_OPENRCT2);
         }
         else
         {
-            gDropdownItems[numItems++].Format = STR_NEW_GAME;
-            gDropdownItems[numItems++].Format = STR_LOAD_GAME;
-            gDropdownItems[numItems++].Format = kStringIdEmpty;
-            gDropdownItems[numItems++].Format = STR_SAVE_GAME;
-            gDropdownItems[numItems++].Format = STR_SAVE_GAME_AS;
-            gDropdownItems[numItems++].Format = kStringIdEmpty;
-            gDropdownItems[numItems++].Format = STR_SCREENSHOT;
-            gDropdownItems[numItems++].Format = STR_GIANT_SCREENSHOT;
-            gDropdownItems[numItems++].Format = kStringIdEmpty;
-            gDropdownItems[numItems++].Format = STR_ABOUT;
-            gDropdownItems[numItems++].Format = STR_FILE_BUG_ON_GITHUB;
+            gDropdown.items[numItems++] = Dropdown::PlainMenuLabel(STR_NEW_GAME);
+            gDropdown.items[numItems++] = Dropdown::PlainMenuLabel(STR_LOAD_GAME);
+            gDropdown.items[numItems++] = Dropdown::Separator();
+            gDropdown.items[numItems++] = Dropdown::PlainMenuLabel(STR_SAVE_GAME);
+            gDropdown.items[numItems++] = Dropdown::PlainMenuLabel(STR_SAVE_GAME_AS);
+            gDropdown.items[numItems++] = Dropdown::Separator();
+            gDropdown.items[numItems++] = Dropdown::PlainMenuLabel(STR_SCREENSHOT);
+            gDropdown.items[numItems++] = Dropdown::PlainMenuLabel(STR_GIANT_SCREENSHOT);
+            gDropdown.items[numItems++] = Dropdown::Separator();
+            gDropdown.items[numItems++] = Dropdown::PlainMenuLabel(STR_ABOUT);
+            gDropdown.items[numItems++] = Dropdown::PlainMenuLabel(STR_FILE_BUG_ON_GITHUB);
 
             if (OpenRCT2::GetContext()->HasNewVersionInfo())
-                gDropdownItems[numItems++].Format = STR_UPDATE_AVAILABLE;
+                gDropdown.items[numItems++] = Dropdown::PlainMenuLabel(STR_UPDATE_AVAILABLE);
 
-            gDropdownItems[numItems++].Format = STR_OPTIONS;
-            gDropdownItems[numItems++].Format = kStringIdEmpty;
-            gDropdownItems[numItems++].Format = STR_QUIT_TO_MENU;
-            gDropdownItems[numItems++].Format = STR_EXIT_OPENRCT2;
+            gDropdown.items[numItems++] = Dropdown::PlainMenuLabel(STR_OPTIONS);
+            gDropdown.items[numItems++] = Dropdown::Separator();
+            gDropdown.items[numItems++] = Dropdown::PlainMenuLabel(STR_QUIT_TO_MENU);
+            gDropdown.items[numItems++] = Dropdown::PlainMenuLabel(STR_EXIT_OPENRCT2);
         }
 
         WindowDropdownShowText(
@@ -1386,7 +1381,7 @@ namespace OpenRCT2::Ui::Windows
             ToggleOption(DDIDX_OBJECT_SELECTION, STR_DEBUG_DROPDOWN_OBJECT_SELECTION),
             ToggleOption(DDIDX_INVENTIONS_LIST, STR_DEBUG_DROPDOWN_INVENTIONS_LIST),
             ToggleOption(DDIDX_SCENARIO_OPTIONS, STR_DEBUG_DROPDOWN_SCENARIO_OPTIONS),
-            Separator(),
+            ExtSeparator(),
             ToggleOption(DDIDX_ENABLE_SANDBOX_MODE, STR_ENABLE_SANDBOX_MODE),
             ToggleOption(DDIDX_DISABLE_CLEARANCE_CHECKS, STR_DISABLE_CLEARANCE_CHECKS),
             ToggleOption(DDIDX_DISABLE_SUPPORT_LIMITS, STR_DISABLE_SUPPORT_LIMITS),
@@ -1402,33 +1397,33 @@ namespace OpenRCT2::Ui::Windows
         // Disable items that are not yet available in multiplayer
         if (NetworkGetMode() != NETWORK_MODE_NONE)
         {
-            Dropdown::SetDisabled(DDIDX_OBJECT_SELECTION, true);
-            Dropdown::SetDisabled(DDIDX_INVENTIONS_LIST, true);
+            gDropdown.items[DDIDX_OBJECT_SELECTION].setDisabled(true);
+            gDropdown.items[DDIDX_INVENTIONS_LIST].setDisabled(true);
         }
 
         if (isInEditorMode())
         {
-            Dropdown::SetDisabled(DDIDX_OBJECT_SELECTION, true);
-            Dropdown::SetDisabled(DDIDX_INVENTIONS_LIST, true);
-            Dropdown::SetDisabled(DDIDX_SCENARIO_OPTIONS, true);
-            Dropdown::SetDisabled(DDIDX_ENABLE_SANDBOX_MODE, true);
+            gDropdown.items[DDIDX_OBJECT_SELECTION].setDisabled(true);
+            gDropdown.items[DDIDX_INVENTIONS_LIST].setDisabled(true);
+            gDropdown.items[DDIDX_SCENARIO_OPTIONS].setDisabled(true);
+            gDropdown.items[DDIDX_ENABLE_SANDBOX_MODE].setDisabled(true);
         }
 
         auto& gameState = getGameState();
         if (gameState.cheats.sandboxMode)
         {
-            Dropdown::SetChecked(DDIDX_ENABLE_SANDBOX_MODE, true);
+            gDropdown.items[DDIDX_ENABLE_SANDBOX_MODE].setChecked(true);
         }
         if (gameState.cheats.disableClearanceChecks)
         {
-            Dropdown::SetChecked(DDIDX_DISABLE_CLEARANCE_CHECKS, true);
+            gDropdown.items[DDIDX_DISABLE_CLEARANCE_CHECKS].setChecked(true);
         }
         if (gameState.cheats.disableSupportLimits)
         {
-            Dropdown::SetChecked(DDIDX_DISABLE_SUPPORT_LIMITS, true);
+            gDropdown.items[DDIDX_DISABLE_SUPPORT_LIMITS].setChecked(true);
         }
 
-        gDropdownDefaultIndex = DDIDX_CHEATS;
+        gDropdown.defaultIndex = DDIDX_CHEATS;
     }
 
     void TopToolbar::CheatsMenuDropdown(int16_t dropdownIndex)
@@ -1468,17 +1463,16 @@ namespace OpenRCT2::Ui::Windows
 
     void TopToolbar::InitDebugMenu(Widget& widget)
     {
-        gDropdownItems[DDIDX_CONSOLE].Format = STR_TOGGLE_OPTION;
-        gDropdownItems[DDIDX_CONSOLE].Args = STR_DEBUG_DROPDOWN_CONSOLE;
-        gDropdownItems[DDIDX_DEBUG_PAINT].Format = STR_TOGGLE_OPTION;
-        gDropdownItems[DDIDX_DEBUG_PAINT].Args = STR_DEBUG_DROPDOWN_DEBUG_PAINT;
+        gDropdown.items[DDIDX_CONSOLE] = Dropdown::ToggleOption(STR_DEBUG_DROPDOWN_CONSOLE);
+        gDropdown.items[DDIDX_DEBUG_PAINT] = Dropdown::ToggleOption(STR_DEBUG_DROPDOWN_DEBUG_PAINT);
 
         WindowDropdownShowText(
             { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height() + 1,
             colours[0].withFlag(ColourFlag::translucent, true), Dropdown::Flag::StayOpen, TOP_TOOLBAR_DEBUG_COUNT);
 
         auto* windowMgr = GetWindowManager();
-        Dropdown::SetChecked(DDIDX_DEBUG_PAINT, windowMgr->FindByClass(WindowClass::DebugPaint) != nullptr);
+        gDropdown.items[DDIDX_CONSOLE].setChecked(windowMgr->FindByClass(WindowClass::Console) != nullptr);
+        gDropdown.items[DDIDX_DEBUG_PAINT].setChecked(windowMgr->FindByClass(WindowClass::DebugPaint) != nullptr);
     }
 
     void TopToolbar::DebugMenuDropdown(int16_t dropdownIndex)
@@ -1513,16 +1507,16 @@ namespace OpenRCT2::Ui::Windows
 
     void TopToolbar::InitNetworkMenu(Widget& widget)
     {
-        gDropdownItems[DDIDX_MULTIPLAYER].Format = STR_MULTIPLAYER;
-        gDropdownItems[DDIDX_MULTIPLAYER_RECONNECT].Format = STR_MULTIPLAYER_RECONNECT;
+        gDropdown.items[DDIDX_MULTIPLAYER] = Dropdown::PlainMenuLabel(STR_MULTIPLAYER);
+        gDropdown.items[DDIDX_MULTIPLAYER_RECONNECT] = Dropdown::PlainMenuLabel(STR_MULTIPLAYER_RECONNECT);
 
         WindowDropdownShowText(
             { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height() + 1,
             colours[0].withFlag(ColourFlag::translucent, true), 0, TOP_TOOLBAR_NETWORK_COUNT);
 
-        Dropdown::SetDisabled(DDIDX_MULTIPLAYER_RECONNECT, !NetworkIsDesynchronised());
+        gDropdown.items[DDIDX_MULTIPLAYER_RECONNECT].setDisabled(!NetworkIsDesynchronised());
 
-        gDropdownDefaultIndex = DDIDX_MULTIPLAYER;
+        gDropdown.defaultIndex = DDIDX_MULTIPLAYER;
     }
 
     void TopToolbar::NetworkMenuDropdown(int16_t dropdownIndex)

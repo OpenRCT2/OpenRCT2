@@ -9,24 +9,24 @@
 
 #if defined(__APPLE__) && defined(__MACH__)
 
-#    include "Platform.h"
+    #include "Platform.h"
 
-#    include "../Date.h"
-#    include "../OpenRCT2.h"
-#    include "../core/Path.hpp"
-#    include "../core/String.hpp"
-#    include "../localisation/Language.h"
+    #include "../Date.h"
+    #include "../OpenRCT2.h"
+    #include "../core/Path.hpp"
+    #include "../core/String.hpp"
+    #include "../localisation/Language.h"
 
-// undefine `interface` and `abstract`, because it's causing conflicts with Objective-C's keywords
-#    undef interface
-#    undef abstract
+    // undefine `interface` and `abstract`, because it's causing conflicts with Objective-C's keywords
+    #undef interface
+    #undef abstract
 
-#    include <AvailabilityMacros.h>
-#    include <CoreText/CoreText.h>
-#    include <Foundation/Foundation.h>
-#    include <mach-o/dyld.h>
-#    include <mach/mach_time.h>
-#    include <pwd.h>
+    #include <AvailabilityMacros.h>
+    #include <CoreText/CoreText.h>
+    #include <Foundation/Foundation.h>
+    #include <mach-o/dyld.h>
+    #include <mach/mach_time.h>
+    #include <pwd.h>
 
 namespace OpenRCT2::Platform
 {

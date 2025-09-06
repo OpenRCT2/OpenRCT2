@@ -11,22 +11,25 @@
 
 #include "GameAction.h"
 
-class ParkSetResearchFundingAction final : public GameActionBase<GameCommand::SetResearchFunding>
+namespace OpenRCT2::GameActions
 {
-private:
-    // TODO change to std::optional when C++17
-    uint32_t _priorities{};
-    uint8_t _fundingAmount{};
+    class ParkSetResearchFundingAction final : public GameActionBase<GameCommand::SetResearchFunding>
+    {
+    private:
+        // TODO change to std::optional when C++17
+        uint32_t _priorities{};
+        uint8_t _fundingAmount{};
 
-public:
-    ParkSetResearchFundingAction() = default;
-    ParkSetResearchFundingAction(uint32_t priorities, uint8_t fundingAmount);
+    public:
+        ParkSetResearchFundingAction() = default;
+        ParkSetResearchFundingAction(uint32_t priorities, uint8_t fundingAmount);
 
-    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor&) final;
 
-    uint16_t GetActionFlags() const override;
+        uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser& stream) override;
-    OpenRCT2::GameActions::Result Query() const override;
-    OpenRCT2::GameActions::Result Execute() const override;
-};
+        void Serialise(DataSerialiser& stream) override;
+        Result Query() const override;
+        Result Execute() const override;
+    };
+} // namespace OpenRCT2::GameActions

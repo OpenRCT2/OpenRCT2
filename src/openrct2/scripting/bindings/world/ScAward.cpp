@@ -35,7 +35,7 @@ namespace OpenRCT2::Scripting
 
     Award* ScAward::GetAward() const
     {
-        return &getGameState().currentAwards[_index];
+        return &getGameState().park.currentAwards[_index];
     }
 
     std::string ScAward::type_get() const

@@ -11,20 +11,23 @@
 
 #include "GameAction.h"
 
-class ScenerySetRestrictedAction final : public GameActionBase<GameCommand::SetRestrictedScenery>
+namespace OpenRCT2::GameActions
 {
-private:
-    ObjectType _objectType;
-    ObjectEntryIndex _objectIndex;
-    bool _isRestricted;
+    class ScenerySetRestrictedAction final : public GameActionBase<GameCommand::SetRestrictedScenery>
+    {
+    private:
+        ObjectType _objectType;
+        ObjectEntryIndex _objectIndex;
+        bool _isRestricted;
 
-public:
-    ScenerySetRestrictedAction() = default;
-    ScenerySetRestrictedAction(ObjectType objectType, ObjectEntryIndex entryIndex, bool isRestricted);
+    public:
+        ScenerySetRestrictedAction() = default;
+        ScenerySetRestrictedAction(ObjectType objectType, ObjectEntryIndex entryIndex, bool isRestricted);
 
-    uint16_t GetActionFlags() const override;
+        uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser& stream) override;
-    OpenRCT2::GameActions::Result Query() const override;
-    OpenRCT2::GameActions::Result Execute() const override;
-};
+        void Serialise(DataSerialiser& stream) override;
+        Result Query() const override;
+        Result Execute() const override;
+    };
+} // namespace OpenRCT2::GameActions

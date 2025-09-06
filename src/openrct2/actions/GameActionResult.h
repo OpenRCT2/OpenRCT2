@@ -6,6 +6,7 @@
  *
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
+
 #pragma once
 
 #include "../management/Finance.h"
@@ -56,13 +57,13 @@ namespace OpenRCT2::GameActions
     public:
         using StringVariant = std::variant<std::string, StringId>;
 
-        OpenRCT2::GameActions::Status Error = OpenRCT2::GameActions::Status::Ok;
+        Status Error = Status::Ok;
         StringVariant ErrorTitle = kStringIdNone;
         StringVariant ErrorMessage = kStringIdNone;
         std::array<uint8_t, 32> ErrorMessageArgs{};
         CoordsXYZ Position = { kLocationNull, kLocationNull, kLocationNull };
         money64 Cost = 0;
-        ExpenditureType Expenditure = ExpenditureType::Count;
+        ExpenditureType Expenditure = ExpenditureType::count;
 
 #ifdef __ANDROID__
         // Any_cast throws a bad_any_cast exception on Android
@@ -74,7 +75,7 @@ namespace OpenRCT2::GameActions
 #endif
 
         Result() = default;
-        Result(OpenRCT2::GameActions::Status error, StringId title, StringId message, uint8_t* args = nullptr);
+        Result(Status error, StringId title, StringId message, uint8_t* args = nullptr);
 
         std::string GetErrorTitle() const;
         std::string GetErrorMessage() const;

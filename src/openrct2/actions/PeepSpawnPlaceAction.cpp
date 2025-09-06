@@ -19,124 +19,121 @@
 #include "../world/Park.h"
 #include "../world/tile_element/SurfaceElement.h"
 
-using namespace OpenRCT2;
-
-PeepSpawnPlaceAction::PeepSpawnPlaceAction(const CoordsXYZD& location)
-    : _location(location)
+namespace OpenRCT2::GameActions
 {
-}
-
-void PeepSpawnPlaceAction::AcceptParameters(GameActionParameterVisitor& visitor)
-{
-    visitor.Visit(_location);
-}
-
-uint16_t PeepSpawnPlaceAction::GetActionFlags() const
-{
-    return GameActionBase::GetActionFlags() | GameActions::Flags::EditorOnly | GameActions::Flags::AllowWhilePaused;
-}
-
-void PeepSpawnPlaceAction::Serialise(DataSerialiser& stream)
-{
-    GameAction::Serialise(stream);
-
-    stream << DS_TAG(_location.x) << DS_TAG(_location.y) << DS_TAG(_location.z) << DS_TAG(_location.direction);
-}
-
-GameActions::Result PeepSpawnPlaceAction::Query() const
-{
-    if (!isInEditorMode() && !getGameState().cheats.sandboxMode)
+    PeepSpawnPlaceAction::PeepSpawnPlaceAction(const CoordsXYZD& location)
+        : _location(location)
     {
-        return GameActions::Result(GameActions::Status::NotInEditorMode, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, kStringIdNone);
     }
 
-    auto res = GameActions::Result();
-    res.Expenditure = ExpenditureType::LandPurchase;
-    res.Position = _location;
-
-    auto mapSizeUnits = GetMapSizeUnits() - CoordsXY{ 16, 16 };
-    if (!LocationValid(_location) || _location.x <= 16 || _location.y <= 16 || _location.x >= mapSizeUnits.x
-        || _location.y >= mapSizeUnits.y)
+    void PeepSpawnPlaceAction::AcceptParameters(GameActionParameterVisitor& visitor)
     {
-        return GameActions::Result(
-            GameActions::Status::InvalidParameters, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_OFF_EDGE_OF_MAP);
+        visitor.Visit(_location);
     }
 
-    // Verify footpath exists at location, and retrieve coordinates
-    auto pathElement = MapGetPathElementAt(TileCoordsXYZ{ _location });
-    if (pathElement == nullptr)
+    uint16_t PeepSpawnPlaceAction::GetActionFlags() const
     {
-        return GameActions::Result(
-            GameActions::Status::InvalidParameters, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_CAN_ONLY_BE_BUILT_ON_PATHS);
+        return GameActionBase::GetActionFlags() | Flags::EditorOnly | Flags::AllowWhilePaused;
     }
 
-    // Verify location is unowned
-    auto surfaceMapElement = MapGetSurfaceElementAt(_location);
-    if (surfaceMapElement == nullptr)
+    void PeepSpawnPlaceAction::Serialise(DataSerialiser& stream)
     {
-        return GameActions::Result(
-            GameActions::Status::Unknown, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
-    }
-    if (surfaceMapElement->GetOwnership() != OWNERSHIP_UNOWNED)
-    {
-        return GameActions::Result(
-            GameActions::Status::InvalidParameters, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE,
-            STR_ERR_MUST_BE_OUTSIDE_PARK_BOUNDARIES);
+        GameAction::Serialise(stream);
+
+        stream << DS_TAG(_location.x) << DS_TAG(_location.y) << DS_TAG(_location.z) << DS_TAG(_location.direction);
     }
 
-    return res;
-}
-
-GameActions::Result PeepSpawnPlaceAction::Execute() const
-{
-    auto res = GameActions::Result();
-    res.Expenditure = ExpenditureType::LandPurchase;
-    res.Position = _location;
-
-    // Shift the spawn point to the edge of the tile
-    auto spawnPos = CoordsXY{ _location.ToTileCentre() }
-        + CoordsXY{ DirectionOffsets[_location.direction].x * 15, DirectionOffsets[_location.direction].y * 15 };
-
-    PeepSpawn spawn;
-    spawn.x = spawnPos.x;
-    spawn.y = spawnPos.y;
-    spawn.z = _location.z;
-    spawn.direction = _location.direction;
-
-    auto& gameState = getGameState();
-    // When attempting to place a peep spawn on a tile that already contains it,
-    // remove that peep spawn instead.
-    if (!gameState.peepSpawns.empty())
+    Result PeepSpawnPlaceAction::Query() const
     {
-        // When searching for existing spawns, ignore the direction.
-        auto foundSpawn = std::find_if(
-            gameState.peepSpawns.begin(), gameState.peepSpawns.end(), [spawn](const CoordsXYZ& existingSpawn) {
-                {
-                    return existingSpawn.ToTileStart() == spawn.ToTileStart();
-                }
-            });
-
-        if (foundSpawn != std::end(gameState.peepSpawns))
+        if (!isInEditorMode() && !getGameState().cheats.sandboxMode)
         {
-            gameState.peepSpawns.erase(foundSpawn);
-            MapInvalidateTileFull(spawn);
-            return res;
+            return Result(Status::NotInEditorMode, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, kStringIdNone);
         }
+
+        auto res = Result();
+        res.Expenditure = ExpenditureType::landPurchase;
+        res.Position = _location;
+
+        auto mapSizeUnits = GetMapSizeUnits() - CoordsXY{ 16, 16 };
+        if (!LocationValid(_location) || _location.x <= 16 || _location.y <= 16 || _location.x >= mapSizeUnits.x
+            || _location.y >= mapSizeUnits.y)
+        {
+            return Result(Status::InvalidParameters, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_OFF_EDGE_OF_MAP);
+        }
+
+        // Verify footpath exists at location, and retrieve coordinates
+        auto pathElement = MapGetPathElementAt(TileCoordsXYZ{ _location });
+        if (pathElement == nullptr)
+        {
+            return Result(Status::InvalidParameters, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_CAN_ONLY_BE_BUILT_ON_PATHS);
+        }
+
+        // Verify location is unowned
+        auto surfaceMapElement = MapGetSurfaceElementAt(_location);
+        if (surfaceMapElement == nullptr)
+        {
+            return Result(Status::Unknown, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
+        }
+        if (surfaceMapElement->GetOwnership() != OWNERSHIP_UNOWNED)
+        {
+            return Result(
+                Status::InvalidParameters, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_ERR_MUST_BE_OUTSIDE_PARK_BOUNDARIES);
+        }
+
+        return res;
     }
 
-    // If we have reached our max peep spawns, remove the oldest spawns
-    while (gameState.peepSpawns.size() >= Limits::kMaxPeepSpawns)
+    Result PeepSpawnPlaceAction::Execute() const
     {
-        PeepSpawn oldestSpawn = *gameState.peepSpawns.begin();
-        gameState.peepSpawns.erase(gameState.peepSpawns.begin());
-        MapInvalidateTileFull(oldestSpawn);
+        auto res = Result();
+        res.Expenditure = ExpenditureType::landPurchase;
+        res.Position = _location;
+
+        // Shift the spawn point to the edge of the tile
+        auto spawnPos = CoordsXY{ _location.ToTileCentre() }
+            + CoordsXY{ DirectionOffsets[_location.direction].x * 15, DirectionOffsets[_location.direction].y * 15 };
+
+        PeepSpawn spawn;
+        spawn.x = spawnPos.x;
+        spawn.y = spawnPos.y;
+        spawn.z = _location.z;
+        spawn.direction = _location.direction;
+
+        auto& gameState = getGameState();
+        // When attempting to place a peep spawn on a tile that already contains it,
+        // remove that peep spawn instead.
+        if (!gameState.peepSpawns.empty())
+        {
+            // When searching for existing spawns, ignore the direction.
+            auto foundSpawn = std::find_if(
+                gameState.peepSpawns.begin(), gameState.peepSpawns.end(), [spawn](const CoordsXYZ& existingSpawn) {
+                    {
+                        return existingSpawn.ToTileStart() == spawn.ToTileStart();
+                    }
+                });
+
+            if (foundSpawn != std::end(gameState.peepSpawns))
+            {
+                gameState.peepSpawns.erase(foundSpawn);
+                MapInvalidateTileFull(spawn);
+                return res;
+            }
+        }
+
+        // If we have reached our max peep spawns, remove the oldest spawns
+        while (gameState.peepSpawns.size() >= Limits::kMaxPeepSpawns)
+        {
+            PeepSpawn oldestSpawn = *gameState.peepSpawns.begin();
+            gameState.peepSpawns.erase(gameState.peepSpawns.begin());
+            MapInvalidateTileFull(oldestSpawn);
+        }
+
+        // Set peep spawn
+        gameState.peepSpawns.push_back(spawn);
+
+        // Invalidate tile
+        MapInvalidateTileFull(_location);
+
+        return res;
     }
-
-    // Set peep spawn
-    gameState.peepSpawns.push_back(spawn);
-
-    // Invalidate tile
-    MapInvalidateTileFull(_location);
-
-    return res;
-}
+} // namespace OpenRCT2::GameActions

@@ -238,7 +238,7 @@ struct RatingsModifier
 struct RideRatingsDescriptor
 {
     RatingsCalculationType Type;
-    RatingTuple BaseRatings;
+    OpenRCT2::RideRating::Tuple BaseRatings;
     uint8_t Unreliability;
     // Used for rides with a set sheltered 8ths value (-1 = normal calculation)
     int8_t RideShelter;
@@ -489,7 +489,7 @@ struct RideTypeDescriptor
     /** rct2: 0x0097D7C8, 0x0097D7C9, 0x0097D7CA */
     RideLiftData LiftData{};
     // rct2: 0x0097CD1E
-    RatingTuple RatingsMultipliers{};
+    OpenRCT2::RideRating::Tuple RatingsMultipliers{};
     UpkeepCostsDescriptor UpkeepCosts{};
     // rct2: 0x0097DD78
     RideBuildCost BuildCosts{};
@@ -638,7 +638,7 @@ constexpr RideTypeDescriptor kDummyRTD =
 	.RatingsData =
     {
         RatingsCalculationType::FlatRide,
-        { MakeRideRating(1, 00), MakeRideRating(1, 00), MakeRideRating(1, 00) },
+        { OpenRCT2::RideRating::make(1, 00), OpenRCT2::RideRating::make(1, 00), OpenRCT2::RideRating::make(1, 00) },
         1,
         -1,
         false,

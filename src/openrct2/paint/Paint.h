@@ -23,10 +23,14 @@
 #include <thread>
 
 struct EntityBase;
-struct TileElement;
-struct SurfaceElement;
 enum class RailingEntrySupportType : uint8_t;
 enum class ViewportInteractionItem : uint8_t;
+
+namespace OpenRCT2
+{
+    struct TileElement;
+    struct SurfaceElement;
+} // namespace OpenRCT2
 
 struct AttachedPaintStruct
 {
@@ -54,7 +58,7 @@ struct PaintStruct
     AttachedPaintStruct* Attached;
     PaintStruct* Children;
     PaintStruct* NextQuadrantEntry;
-    TileElement* Element;
+    OpenRCT2::TileElement* Element;
     EntityBase* Entity;
     ImageId image_id;
     ScreenCoordsXY ScreenPos;
@@ -132,12 +136,12 @@ struct PaintSessionCore
     PaintStringStruct* PSStringHead;
     PaintStringStruct* LastPSString;
     AttachedPaintStruct* LastAttachedPS;
-    const SurfaceElement* Surface;
+    const OpenRCT2::SurfaceElement* Surface;
     EntityBase* CurrentlyDrawnEntity;
-    TileElement* CurrentlyDrawnTileElement;
-    const TileElement* PathElementOnSameHeight;
-    const TileElement* TrackElementOnSameHeight;
-    const TileElement* SelectedElement;
+    OpenRCT2::TileElement* CurrentlyDrawnTileElement;
+    const OpenRCT2::TileElement* PathElementOnSameHeight;
+    const OpenRCT2::TileElement* TrackElementOnSameHeight;
+    const OpenRCT2::TileElement* SelectedElement;
     PaintStruct* WoodenSupportsPrependTo;
     CoordsXY SpritePosition;
     CoordsXY MapPosition;
@@ -149,10 +153,8 @@ struct PaintSessionCore
     SupportHeight SupportSegments[9];
     SupportHeight Support;
     uint16_t WaterHeight;
-    TunnelEntry LeftTunnels[kTunnelMaxCount];
-    TunnelEntry RightTunnels[kTunnelMaxCount];
-    uint8_t LeftTunnelCount;
-    uint8_t RightTunnelCount;
+    sfl::static_vector<TunnelEntry, kTunnelMaxCount> LeftTunnels;
+    sfl::static_vector<TunnelEntry, kTunnelMaxCount> RightTunnels;
     uint8_t VerticalTunnelHeight;
     uint8_t CurrentRotation;
     uint8_t Flags;

@@ -11,24 +11,27 @@
 
 #include "GameAction.h"
 
-class WaterRaiseAction final : public GameActionBase<GameCommand::RaiseWater>
+namespace OpenRCT2::GameActions
 {
-private:
-    MapRange _range;
+    class WaterRaiseAction final : public GameActionBase<GameCommand::RaiseWater>
+    {
+    private:
+        MapRange _range;
 
-public:
-    WaterRaiseAction() = default;
-    WaterRaiseAction(MapRange range);
+    public:
+        WaterRaiseAction() = default;
+        WaterRaiseAction(MapRange range);
 
-    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor&) final;
 
-    uint16_t GetActionFlags() const override;
+        uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser& stream) override;
-    OpenRCT2::GameActions::Result Query() const override;
-    OpenRCT2::GameActions::Result Execute() const override;
+        void Serialise(DataSerialiser& stream) override;
+        Result Query() const override;
+        Result Execute() const override;
 
-private:
-    OpenRCT2::GameActions::Result QueryExecute(bool isExecuting) const;
-    uint16_t GetHighestHeight(const MapRange& validRange) const;
-};
+    private:
+        Result QueryExecute(bool isExecuting) const;
+        uint16_t GetHighestHeight(const MapRange& validRange) const;
+    };
+} // namespace OpenRCT2::GameActions

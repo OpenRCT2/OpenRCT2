@@ -232,7 +232,8 @@ namespace OpenRCT2::Ui::Windows
             }
             if (widgetIndex == WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER)
             {
-                auto action = StaffSetColourAction(GetSelectedStaffType(), ColourDropDownIndexToColour(dropdownIndex));
+                auto action = GameActions::StaffSetColourAction(
+                    GetSelectedStaffType(), ColourDropDownIndexToColour(dropdownIndex));
                 GameActions::Execute(&action);
             }
         }
@@ -274,7 +275,7 @@ namespace OpenRCT2::Ui::Windows
             DrawWidgets(rt);
             DrawTabImages(rt);
 
-            if (!(getGameState().park.Flags & PARK_FLAGS_NO_MONEY))
+            if (!(getGameState().park.flags & PARK_FLAGS_NO_MONEY))
             {
                 auto ft = Formatter();
                 ft.Add<money64>(GetStaffWage(GetSelectedStaffType()));
@@ -341,7 +342,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     if (_quickFireMode)
                     {
-                        auto staffFireAction = StaffFireAction(entry.Id);
+                        auto staffFireAction = GameActions::StaffFireAction(entry.Id);
                         GameActions::Execute(&staffFireAction);
                     }
                     else
@@ -536,12 +537,12 @@ namespace OpenRCT2::Ui::Windows
             else
                 costume = findPeepAnimationsIndexForType(animPeepType);
 
-            auto hireStaffAction = StaffHireNewAction(autoPosition, staffType, costume, staffOrders);
-            hireStaffAction.SetCallback([=](const GameAction*, const GameActions::Result* res) -> void {
+            auto hireStaffAction = GameActions::StaffHireNewAction(autoPosition, staffType, costume, staffOrders);
+            hireStaffAction.SetCallback([=](const GameActions::GameAction*, const GameActions::Result* res) -> void {
                 if (res->Error != GameActions::Status::Ok)
                     return;
 
-                auto actionResult = res->GetData<StaffHireNewActionResult>();
+                auto actionResult = res->GetData<GameActions::StaffHireNewActionResult>();
                 auto* staff = GetEntity<Staff>(actionResult.StaffEntityId);
                 if (staff == nullptr)
                     return;
@@ -552,20 +553,22 @@ namespace OpenRCT2::Ui::Windows
                     CoordsXYZ nullLoc{};
                     nullLoc.SetNull();
 
-                    PeepPickupAction pickupAction{ PeepPickupType::Pickup, staff->Id, nullLoc, NetworkGetCurrentPlayerId() };
-                    pickupAction.SetCallback([staffId = staff->Id](const GameAction* ga, const GameActions::Result* result) {
-                        if (result->Error != GameActions::Status::Ok)
-                            return;
+                    GameActions::PeepPickupAction pickupAction{ GameActions::PeepPickupType::Pickup, staff->Id, nullLoc,
+                                                                NetworkGetCurrentPlayerId() };
+                    pickupAction.SetCallback(
+                        [staffId = staff->Id](const GameActions::GameAction* ga, const GameActions::Result* result) {
+                            if (result->Error != GameActions::Status::Ok)
+                                return;
 
-                        auto* staff2 = GetEntity<Staff>(staffId);
-                        auto intent = Intent(WindowClass::Peep);
-                        intent.PutExtra(INTENT_EXTRA_PEEP, staff2);
-                        auto* wind = ContextOpenIntent(&intent);
-                        if (wind != nullptr)
-                        {
-                            ToolSet(*wind, WC_STAFF__WIDX_PICKUP, Tool::picker);
-                        }
-                    });
+                            auto* staff2 = GetEntity<Staff>(staffId);
+                            auto intent = Intent(WindowClass::Peep);
+                            intent.PutExtra(INTENT_EXTRA_PEEP, staff2);
+                            auto* wind = ContextOpenIntent(&intent);
+                            if (wind != nullptr)
+                            {
+                                ToolSet(*wind, WC_STAFF__WIDX_PICKUP, Tool::picker);
+                            }
+                        });
                     GameActions::Execute(&pickupAction);
                 }
                 else
@@ -588,9 +591,9 @@ namespace OpenRCT2::Ui::Windows
         void DrawTabImages(RenderTarget& rt) const
         {
             const auto& gameState = getGameState();
-            DrawTabImage(rt, WINDOW_STAFF_LIST_TAB_HANDYMEN, AnimationPeepType::Handyman, gameState.staffHandymanColour);
-            DrawTabImage(rt, WINDOW_STAFF_LIST_TAB_MECHANICS, AnimationPeepType::Mechanic, gameState.staffMechanicColour);
-            DrawTabImage(rt, WINDOW_STAFF_LIST_TAB_SECURITY, AnimationPeepType::Security, gameState.staffSecurityColour);
+            DrawTabImage(rt, WINDOW_STAFF_LIST_TAB_HANDYMEN, AnimationPeepType::Handyman, gameState.park.staffHandymanColour);
+            DrawTabImage(rt, WINDOW_STAFF_LIST_TAB_MECHANICS, AnimationPeepType::Mechanic, gameState.park.staffMechanicColour);
+            DrawTabImage(rt, WINDOW_STAFF_LIST_TAB_SECURITY, AnimationPeepType::Security, gameState.park.staffSecurityColour);
             DrawTabImage(rt, WINDOW_STAFF_LIST_TAB_ENTERTAINERS, AnimationPeepType::Entertainer);
         }
 

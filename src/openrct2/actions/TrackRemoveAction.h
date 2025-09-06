@@ -11,22 +11,25 @@
 
 #include "GameAction.h"
 
-class TrackRemoveAction final : public GameActionBase<GameCommand::RemoveTrack>
+namespace OpenRCT2::GameActions
 {
-private:
-    OpenRCT2::TrackElemType _trackType{};
-    int32_t _sequence{};
-    CoordsXYZD _origin;
+    class TrackRemoveAction final : public GameActionBase<GameCommand::RemoveTrack>
+    {
+    private:
+        TrackElemType _trackType{};
+        int32_t _sequence{};
+        CoordsXYZD _origin;
 
-public:
-    TrackRemoveAction() = default;
-    TrackRemoveAction(OpenRCT2::TrackElemType trackType, int32_t sequence, const CoordsXYZD& origin);
+    public:
+        TrackRemoveAction() = default;
+        TrackRemoveAction(TrackElemType trackType, int32_t sequence, const CoordsXYZD& origin);
 
-    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor&) final;
 
-    uint16_t GetActionFlags() const override final;
+        uint16_t GetActionFlags() const final;
 
-    void Serialise(DataSerialiser& stream) override;
-    OpenRCT2::GameActions::Result Query() const override;
-    OpenRCT2::GameActions::Result Execute() const override;
-};
+        void Serialise(DataSerialiser& stream) override;
+        Result Query() const override;
+        Result Execute() const override;
+    };
+} // namespace OpenRCT2::GameActions

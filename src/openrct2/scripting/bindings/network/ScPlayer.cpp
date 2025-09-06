@@ -54,7 +54,7 @@ namespace OpenRCT2::Scripting
     void ScPlayer::group_set(int32_t value)
     {
     #ifndef DISABLE_NETWORK
-        auto playerSetGroupAction = PlayerSetGroupAction(_id, value);
+        auto playerSetGroupAction = GameActions::PlayerSetGroupAction(_id, value);
         GameActions::Execute(&playerSetGroupAction);
     #endif
     }

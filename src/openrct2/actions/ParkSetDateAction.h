@@ -11,22 +11,25 @@
 
 #include "GameAction.h"
 
-class ParkSetDateAction final : public GameActionBase<GameCommand::SetDate>
+namespace OpenRCT2::GameActions
 {
-private:
-    int32_t _year{};
-    int32_t _month{};
-    int32_t _day{};
+    class ParkSetDateAction final : public GameActionBase<GameCommand::SetDate>
+    {
+    private:
+        int32_t _year{};
+        int32_t _month{};
+        int32_t _day{};
 
-public:
-    ParkSetDateAction() = default;
-    ParkSetDateAction(int32_t year, int32_t month, int32_t day);
+    public:
+        ParkSetDateAction() = default;
+        ParkSetDateAction(int32_t year, int32_t month, int32_t day);
 
-    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor&) final;
 
-    uint16_t GetActionFlags() const override;
+        uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser& stream) override;
-    OpenRCT2::GameActions::Result Query() const override;
-    OpenRCT2::GameActions::Result Execute() const override;
-};
+        void Serialise(DataSerialiser& stream) override;
+        Result Query() const override;
+        Result Execute() const override;
+    };
+} // namespace OpenRCT2::GameActions

@@ -517,7 +517,7 @@ static StringId window_cheats_page_titles[] = {
                         SetWidgetDisabled(WIDX_NO_MONEY, true);
                     }
 
-                    auto moneyDisabled = (gameState.park.Flags & PARK_FLAGS_NO_MONEY) != 0;
+                    auto moneyDisabled = (gameState.park.flags & PARK_FLAGS_NO_MONEY) != 0;
                     SetCheckboxValue(WIDX_NO_MONEY, moneyDisabled);
                     SetWidgetDisabled(WIDX_ADD_SET_MONEY_GROUP, moneyDisabled);
                     SetWidgetDisabled(WIDX_MONEY_SPINNER, moneyDisabled);
@@ -540,7 +540,7 @@ static StringId window_cheats_page_titles[] = {
                 }
                 case WINDOW_CHEATS_PAGE_PARK:
                     widgets[WIDX_OPEN_CLOSE_PARK].text = STR_CHEAT_OPEN_PARK;
-                    if (gameState.park.Flags & PARK_FLAGS_PARK_OPEN)
+                    if (gameState.park.flags & PARK_FLAGS_PARK_OPEN)
                         widgets[WIDX_OPEN_CLOSE_PARK].text = STR_CHEAT_CLOSE_PARK;
 
                     SetCheckboxValue(WIDX_FORCE_PARK_RATING, Park::GetForcedRating() >= 0);
@@ -916,14 +916,15 @@ static StringId window_cheats_page_titles[] = {
                     break;
                 case WIDX_DATE_SET:
                 {
-                    auto setDateAction = ParkSetDateAction(_yearSpinnerValue - 1, _monthSpinnerValue - 1, _daySpinnerValue - 1);
+                    auto setDateAction = GameActions::ParkSetDateAction(
+                        _yearSpinnerValue - 1, _monthSpinnerValue - 1, _daySpinnerValue - 1);
                     GameActions::Execute(&setDateAction);
                     windowMgr->InvalidateByClass(WindowClass::BottomToolbar);
                     break;
                 }
                 case WIDX_DATE_RESET:
                 {
-                    auto setDateAction = ParkSetDateAction(0, 0, 0);
+                    auto setDateAction = GameActions::ParkSetDateAction(0, 0, 0);
                     GameActions::Execute(&setDateAction);
                     windowMgr->InvalidateByClass(WindowClass::BottomToolbar);
                     InvalidateWidget(WIDX_YEAR_BOX);
@@ -939,7 +940,7 @@ static StringId window_cheats_page_titles[] = {
             switch (widgetIndex)
             {
                 case WIDX_NO_MONEY:
-                    CheatsSet(CheatType::NoMoney, getGameState().park.Flags & PARK_FLAGS_NO_MONEY ? 0 : 1);
+                    CheatsSet(CheatType::NoMoney, getGameState().park.flags & PARK_FLAGS_NO_MONEY ? 0 : 1);
                     break;
                 case WIDX_MONEY_SPINNER:
                     MoneyToString(_moneySpinnerValue, _moneySpinnerText, kMoneyStringMaxlength, false);
@@ -965,7 +966,8 @@ static StringId window_cheats_page_titles[] = {
                     InvalidateWidget(WIDX_PARK_RATING_SPINNER);
                     if (Park::GetForcedRating() >= 0)
                     {
-                        auto cheatSetAction = CheatSetAction(CheatType::SetForcedParkRating, _parkRatingSpinnerValue);
+                        auto cheatSetAction = GameActions::CheatSetAction(
+                            CheatType::SetForcedParkRating, _parkRatingSpinnerValue);
                         GameActions::Execute(&cheatSetAction);
                     }
                     break;
@@ -994,14 +996,13 @@ static StringId window_cheats_page_titles[] = {
 
                     for (size_t i = 0; i < std::size(_staffSpeedNames); i++)
                     {
-                        gDropdownItems[i].Args = _staffSpeedNames[i];
-                        gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
+                        gDropdown.items[i] = Dropdown::MenuLabel(_staffSpeedNames[i]);
                     }
 
                     WindowDropdownShowTextCustomWidth(
                         { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
                         colours[1], 0, Dropdown::Flag::StayOpen, 3, dropdownWidget->width() - 3);
-                    Dropdown::SetChecked(EnumValue(gameState.cheats.selectedStaffSpeed), true);
+                    gDropdown.items[EnumValue(gameState.cheats.selectedStaffSpeed)].setChecked(true);
                 }
             }
         }
@@ -1018,15 +1019,14 @@ static StringId window_cheats_page_titles[] = {
 
                     for (size_t i = 0; i < std::size(WeatherTypes); i++)
                     {
-                        gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
-                        gDropdownItems[i].Args = WeatherTypes[i];
+                        gDropdown.items[i] = Dropdown::MenuLabel(WeatherTypes[i]);
                     }
                     WindowDropdownShowTextCustomWidth(
                         { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
                         colours[1], 0, Dropdown::Flag::StayOpen, std::size(WeatherTypes), dropdownWidget->width() - 3);
 
                     auto currentWeather = gameState.weatherCurrent.weatherType;
-                    Dropdown::SetChecked(EnumValue(currentWeather), true);
+                    gDropdown.items[EnumValue(currentWeather)].setChecked(true);
 
                     break;
                 }

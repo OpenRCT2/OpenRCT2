@@ -16,14 +16,15 @@
 #include "../../Track.h"
 
 // clang-format off
+namespace OpenRCT2 {
 constexpr RideTypeDescriptor MonorailRTD =
 {
     .Category = RideCategory::transport,
-    .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
+    .StartTrackPiece = TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::monorail,
         .supportType = MetalSupportType::boxed,
-        .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::slope, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge},
+        .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::slope, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::diagSlope},
         .extraTrackGroups = {},
     }),
     .InvertedTrackPaintFunctions = {},
@@ -40,7 +41,7 @@ constexpr RideTypeDescriptor MonorailRTD =
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_DOORS_STUCK_CLOSED) | (1 << BREAKDOWN_DOORS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION),
     .Heights = { 8, 32, 8, 9, },
     .MaxMass = 78,
-    .LiftData = { OpenRCT2::Audio::SoundId::Null, 5, 5 },
+    .LiftData = { Audio::SoundId::Null, 5, 5 },
     .RatingsMultipliers = { 70, 6, -10 },
     .UpkeepCosts = { 65, 20, 0, 10, 3, 10 },
     .BuildCosts = { 21.00_GBP, 2.50_GBP, 50, },
@@ -61,7 +62,7 @@ constexpr RideTypeDescriptor MonorailRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { MakeRideRating(2, 00), MakeRideRating(0, 00), MakeRideRating(0, 00) },
+        { RideRating::make(2, 00), RideRating::make(0, 00), RideRating::make(0, 00) },
         14,
         -1,
         false,
@@ -79,6 +80,7 @@ constexpr RideTypeDescriptor MonorailRTD =
         },
     },
     .UpdateRotating = UpdateRotatingDefault,
-    .LightFXAddLightsMagicVehicle = OpenRCT2::Drawing::LightFx::AddLightsMagicVehicle_Monorail,
+    .LightFXAddLightsMagicVehicle = Drawing::LightFx::AddLightsMagicVehicle_Monorail,
 };
+} // namespace OpenRCT2
 // clang-format on

@@ -21,83 +21,82 @@
 
 #include <iterator>
 
-using namespace OpenRCT2;
-
-ParkMarketingAction::ParkMarketingAction(int32_t type, int32_t item, int32_t numWeeks)
-    : _type(type)
-    , _item(item)
-    , _numWeeks(numWeeks)
+namespace OpenRCT2::GameActions
 {
-}
-
-void ParkMarketingAction::AcceptParameters(GameActionParameterVisitor& visitor)
-{
-    visitor.Visit("type", _type);
-    visitor.Visit("item", _item);
-    visitor.Visit("duration", _numWeeks);
-}
-
-uint16_t ParkMarketingAction::GetActionFlags() const
-{
-    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
-}
-
-void ParkMarketingAction::Serialise(DataSerialiser& stream)
-{
-    GameAction::Serialise(stream);
-    stream << DS_TAG(_type) << DS_TAG(_item) << DS_TAG(_numWeeks);
-}
-
-GameActions::Result ParkMarketingAction::Query() const
-{
-    if (static_cast<size_t>(_type) >= std::size(AdvertisingCampaignPricePerWeek) || _numWeeks >= 256)
+    ParkMarketingAction::ParkMarketingAction(int32_t type, int32_t item, int32_t numWeeks)
+        : _type(type)
+        , _item(item)
+        , _numWeeks(numWeeks)
     {
-        return GameActions::Result(
-            GameActions::Status::InvalidParameters, STR_CANT_START_MARKETING_CAMPAIGN, STR_ERR_VALUE_OUT_OF_RANGE);
-    }
-    if (getGameState().park.Flags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN)
-    {
-        return GameActions::Result(
-            GameActions::Status::Disallowed, STR_CANT_START_MARKETING_CAMPAIGN,
-            STR_MARKETING_CAMPAIGNS_FORBIDDEN_BY_LOCAL_AUTHORITY);
     }
 
-    return CreateResult();
-}
-
-GameActions::Result ParkMarketingAction::Execute() const
-{
-    MarketingCampaign campaign{};
-    campaign.Type = _type;
-    campaign.WeeksLeft = _numWeeks;
-    campaign.flags = { MarketingCampaignFlag::firstWeek };
-    if (campaign.Type == ADVERTISING_CAMPAIGN_RIDE_FREE || campaign.Type == ADVERTISING_CAMPAIGN_RIDE)
+    void ParkMarketingAction::AcceptParameters(GameActionParameterVisitor& visitor)
     {
-        campaign.RideId = RideId::FromUnderlying(_item);
+        visitor.Visit("type", _type);
+        visitor.Visit("item", _item);
+        visitor.Visit("duration", _numWeeks);
     }
-    else if (campaign.Type == ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE)
+
+    uint16_t ParkMarketingAction::GetActionFlags() const
     {
-        campaign.ShopItemType = ShopItem(_item);
+        return GameAction::GetActionFlags() | Flags::AllowWhilePaused;
     }
-    MarketingNewCampaign(campaign);
 
-    // We are only interested in invalidating the finances (marketing) window
-    auto windowManager = OpenRCT2::Ui::GetWindowManager();
-    windowManager->BroadcastIntent(Intent(INTENT_ACTION_UPDATE_CASH));
+    void ParkMarketingAction::Serialise(DataSerialiser& stream)
+    {
+        GameAction::Serialise(stream);
+        stream << DS_TAG(_type) << DS_TAG(_item) << DS_TAG(_numWeeks);
+    }
 
-    return CreateResult();
-}
+    Result ParkMarketingAction::Query() const
+    {
+        if (static_cast<size_t>(_type) >= std::size(AdvertisingCampaignPricePerWeek) || _numWeeks >= 256)
+        {
+            return Result(Status::InvalidParameters, STR_CANT_START_MARKETING_CAMPAIGN, STR_ERR_VALUE_OUT_OF_RANGE);
+        }
+        if (getGameState().park.flags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN)
+        {
+            return Result(
+                Status::Disallowed, STR_CANT_START_MARKETING_CAMPAIGN, STR_MARKETING_CAMPAIGNS_FORBIDDEN_BY_LOCAL_AUTHORITY);
+        }
 
-GameActions::Result ParkMarketingAction::CreateResult() const
-{
-    auto result = GameActions::Result();
-    result.ErrorTitle = STR_CANT_START_MARKETING_CAMPAIGN;
-    result.Expenditure = ExpenditureType::Marketing;
-    result.Cost = CalculatePrice();
-    return result;
-}
+        return CreateResult();
+    }
 
-money64 ParkMarketingAction::CalculatePrice() const
-{
-    return _numWeeks * AdvertisingCampaignPricePerWeek[_type];
-}
+    Result ParkMarketingAction::Execute() const
+    {
+        MarketingCampaign campaign{};
+        campaign.Type = _type;
+        campaign.WeeksLeft = _numWeeks;
+        campaign.flags = { MarketingCampaignFlag::firstWeek };
+        if (campaign.Type == ADVERTISING_CAMPAIGN_RIDE_FREE || campaign.Type == ADVERTISING_CAMPAIGN_RIDE)
+        {
+            campaign.RideId = RideId::FromUnderlying(_item);
+        }
+        else if (campaign.Type == ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE)
+        {
+            campaign.ShopItemType = ShopItem(_item);
+        }
+        MarketingNewCampaign(campaign);
+
+        // We are only interested in invalidating the finances (marketing) window
+        auto windowManager = OpenRCT2::Ui::GetWindowManager();
+        windowManager->BroadcastIntent(Intent(INTENT_ACTION_UPDATE_CASH));
+
+        return CreateResult();
+    }
+
+    Result ParkMarketingAction::CreateResult() const
+    {
+        auto result = Result();
+        result.ErrorTitle = STR_CANT_START_MARKETING_CAMPAIGN;
+        result.Expenditure = ExpenditureType::marketing;
+        result.Cost = CalculatePrice();
+        return result;
+    }
+
+    money64 ParkMarketingAction::CalculatePrice() const
+    {
+        return _numWeeks * AdvertisingCampaignPricePerWeek[_type];
+    }
+} // namespace OpenRCT2::GameActions

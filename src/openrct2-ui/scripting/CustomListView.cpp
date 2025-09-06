@@ -125,7 +125,8 @@ namespace OpenRCT2::Scripting
         else if (d.type() == DukValue::Type::OBJECT)
         {
             auto type = ProcessString(d["type"]);
-            if (type == "seperator")
+            // This type was misspelt between 2020 and 2025.
+            if (type == "separator" || type == "seperator")
             {
                 auto text = ProcessString(d["text"]);
                 result = ListViewItem(text);
@@ -584,7 +585,7 @@ void CustomListView::Paint(WindowBase* w, RenderTarget& rt, const ScrollArea* sc
             {
                 const auto& text = item.Cells[0];
                 ScreenSize cellSize = { LastKnownSize.width, kListRowHeight };
-                PaintSeperator(rt, { 0, y }, cellSize, text.c_str());
+                PaintSeparator(rt, { 0, y }, cellSize, text.c_str());
             }
             else
             {
@@ -703,7 +704,7 @@ void CustomListView::PaintHeading(
     }
 }
 
-void CustomListView::PaintSeperator(RenderTarget& rt, const ScreenCoordsXY& pos, const ScreenSize& size, const char* text) const
+void CustomListView::PaintSeparator(RenderTarget& rt, const ScreenCoordsXY& pos, const ScreenSize& size, const char* text) const
 {
     auto hasText = text != nullptr && text[0] != '\0';
     auto left = pos.x + 4;

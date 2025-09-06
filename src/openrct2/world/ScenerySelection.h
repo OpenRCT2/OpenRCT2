@@ -17,7 +17,7 @@
 struct ScenerySelection
 {
     uint8_t SceneryType{};
-    ObjectEntryIndex EntryIndex = kObjectEntryIndexNull;
+    OpenRCT2::ObjectEntryIndex EntryIndex = OpenRCT2::kObjectEntryIndexNull;
 
     inline bool operator==(const ScenerySelection& rhs) const
     {
@@ -31,6 +31,6 @@ struct ScenerySelection
 
     bool IsUndefined() const
     {
-        return EntryIndex == kObjectEntryIndexNull;
+        return EntryIndex == OpenRCT2::kObjectEntryIndexNull;
     }
 };

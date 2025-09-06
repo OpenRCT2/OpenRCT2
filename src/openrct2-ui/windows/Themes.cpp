@@ -440,15 +440,14 @@ namespace OpenRCT2::Ui::Windows
                     widget--;
                     for (int32_t i = 0; i < num_items; i++)
                     {
-                        gDropdownItems[i].Format = STR_OPTIONS_DROPDOWN_ITEM;
-                        gDropdownItems[i].Args = reinterpret_cast<uintptr_t>(ThemeManagerGetAvailableThemeName(i));
+                        gDropdown.items[i] = Dropdown::MenuLabel(ThemeManagerGetAvailableThemeName(i));
                     }
 
                     WindowDropdownShowTextCustomWidth(
                         { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height() + 1, colours[1], 0,
                         Dropdown::Flag::StayOpen, num_items, widget->width() - 3);
 
-                    Dropdown::SetChecked(static_cast<int32_t>(ThemeManagerGetAvailableThemeIndex()), true);
+                    gDropdown.items[static_cast<int32_t>(ThemeManagerGetAvailableThemeIndex())].setChecked(true);
                     break;
                 }
                 case WIDX_THEMES_RCT1_RIDE_LIGHTS:

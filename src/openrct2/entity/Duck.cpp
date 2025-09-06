@@ -6,6 +6,7 @@
  *
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
+
 #include "Duck.h"
 
 #include "../Game.h"
@@ -16,6 +17,7 @@
 #include "../entity/EntityList.h"
 #include "../paint/Paint.h"
 #include "../profiling/Profiling.h"
+#include "../scenario/Scenario.h"
 #include "../world/tile_element/SurfaceElement.h"
 #include "EntityRegistry.h"
 

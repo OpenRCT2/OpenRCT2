@@ -171,7 +171,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WIDX_FLOOR:
                     if (dropdownIndex == -1)
-                        dropdownIndex = gDropdownHighlightedIndex;
+                        dropdownIndex = gDropdown.highlightedIndex;
 
                     type = (dropdownIndex == -1)
                         ? _selectedFloorTexture
@@ -190,7 +190,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 case WIDX_WALL:
                     if (dropdownIndex == -1)
-                        dropdownIndex = gDropdownHighlightedIndex;
+                        dropdownIndex = gDropdown.highlightedIndex;
 
                     type = (dropdownIndex == -1) ? _selectedWallTexture
                                                  : LandTool::GetEdgeStyleFromDropdownIndex(static_cast<size_t>(dropdownIndex));
@@ -280,7 +280,7 @@ namespace OpenRCT2::Ui::Windows
 
             screenCoords = { windowPos.x + previewWidget->midX(), windowPos.y + previewWidget->bottom + 5 };
 
-            if (!(getGameState().park.Flags & PARK_FLAGS_NO_MONEY))
+            if (!(getGameState().park.flags & PARK_FLAGS_NO_MONEY))
             {
                 // Draw raise cost amount
                 if (_landToolRaiseCost != kMoney64Undefined && _landToolRaiseCost != 0)
@@ -339,7 +339,7 @@ namespace OpenRCT2::Ui::Windows
 
             if (_landToolMountainMode)
             {
-                auto landSmoothAction = LandSmoothAction(
+                auto landSmoothAction = GameActions::LandSmoothAction(
                     { centreX, centreY },
                     { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
                     gMapSelectType, false);
@@ -348,7 +348,7 @@ namespace OpenRCT2::Ui::Windows
                 return res.Error == GameActions::Status::Ok ? res.Cost : kMoney64Undefined;
             }
 
-            auto landRaiseAction = LandRaiseAction(
+            auto landRaiseAction = GameActions::LandRaiseAction(
                 { centreX, centreY },
                 { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y }, gMapSelectType);
             auto res = (flag & GAME_COMMAND_FLAG_APPLY) ? GameActions::Execute(&landRaiseAction)
@@ -370,7 +370,7 @@ namespace OpenRCT2::Ui::Windows
 
             if (_landToolMountainMode)
             {
-                auto landSmoothAction = LandSmoothAction(
+                auto landSmoothAction = GameActions::LandSmoothAction(
                     { centreX, centreY },
                     { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
                     gMapSelectType, true);
@@ -379,7 +379,7 @@ namespace OpenRCT2::Ui::Windows
                 return res.Error == GameActions::Status::Ok ? res.Cost : kMoney64Undefined;
             }
 
-            auto landLowerAction = LandLowerAction(
+            auto landLowerAction = GameActions::LandLowerAction(
                 { centreX, centreY },
                 { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y }, gMapSelectType);
             auto res = (flag & GAME_COMMAND_FLAG_APPLY) ? GameActions::Execute(&landLowerAction)
@@ -521,7 +521,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_BACKGROUND:
                     if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE)
                     {
-                        auto surfaceSetStyleAction = SurfaceSetStyleAction(
+                        auto surfaceSetStyleAction = GameActions::SurfaceSetStyleAction(
                             { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
                             gLandToolTerrainSurface, gLandToolTerrainEdge);
 
@@ -548,7 +548,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE)
                         {
-                            auto surfaceSetStyleAction = SurfaceSetStyleAction(
+                            auto surfaceSetStyleAction = GameActions::SurfaceSetStyleAction(
                                 { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
                                 gLandToolTerrainSurface, gLandToolTerrainEdge);
 

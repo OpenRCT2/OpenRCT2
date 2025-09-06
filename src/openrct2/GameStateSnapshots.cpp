@@ -26,6 +26,8 @@
 static constexpr size_t kMaximumGameStateSnapshots = 32;
 static constexpr uint32_t kInvalidTick = 0xFFFFFFFF;
 
+using namespace OpenRCT2;
+
 #pragma pack(push, 1)
 union EntitySnapshot
 {

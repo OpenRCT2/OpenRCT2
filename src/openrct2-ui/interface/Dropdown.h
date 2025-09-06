@@ -12,7 +12,9 @@
 #include <array>
 #include <openrct2-ui/UiStringIds.h>
 #include <openrct2/core/EnumUtils.hpp>
+#include <openrct2/core/StringTypes.h>
 #include <openrct2/interface/Window.h>
+#include <span>
 
 struct ImageId;
 
@@ -24,24 +26,26 @@ namespace OpenRCT2::Dropdown
     constexpr StringId kFormatColourPicker = 0xFFFE;
     constexpr StringId kFormatLandPicker = 0xFFFF;
     constexpr int32_t kItemsMaxSize = 512;
+
+    struct DropdownState;
 } // namespace OpenRCT2::Dropdown
 
 namespace OpenRCT2::Ui::Windows
 {
-    extern int32_t gDropdownNumItems;
-    extern std::array<Dropdown::Item, Dropdown::kItemsMaxSize> gDropdownItems;
-    extern std::array<StringId, Dropdown::kItemsMaxSize> gDropdownTooltips;
-    extern bool gDropdownHasTooltips;
-    extern int32_t gDropdownLastTooltipHover;
-    extern int32_t gDropdownHighlightedIndex;
-    extern int32_t gDropdownDefaultIndex;
+    extern Dropdown::DropdownState gDropdown;
 
     void WindowDropdownShowText(
         const ScreenCoordsXY& screenPos, int32_t extray, ColourWithFlags colour, uint8_t flags, size_t num_items,
         size_t prefRowsPerColumn = 0);
+    void WindowDropdownShowText(
+        const ScreenCoordsXY& screenPos, int32_t extray, ColourWithFlags colour, uint8_t flags,
+        std::span<const Dropdown::Item> items, size_t prefRowsPerColumn = 0);
     void WindowDropdownShowTextCustomWidth(
         const ScreenCoordsXY& screenPos, int32_t extray, ColourWithFlags colour, uint8_t custom_height, uint8_t flags,
         size_t num_items, int32_t width, size_t prefRowsPerColumn = 0);
+    void WindowDropdownShowTextCustomWidth(
+        const ScreenCoordsXY& screenPos, int32_t extray, ColourWithFlags colour, uint8_t custom_height, uint8_t flags,
+        std::span<const Dropdown::Item> items, int32_t width, size_t prefRowsPerColumn = 0);
 
     void WindowDropdownShowImage(
         int32_t x, int32_t y, int32_t extray, ColourWithFlags colour, uint8_t flags, int32_t numItems, int32_t itemWidth,
@@ -54,8 +58,6 @@ namespace OpenRCT2::Ui::Windows
     void WindowDropdownShowColour(
         WindowBase* w, Widget* widget, ColourWithFlags dropdownColour, colour_t selectedColour,
         bool alwaysHideSpecialColours = false);
-    void WindowDropdownShowColourAvailable(
-        WindowBase* w, Widget* widget, uint8_t dropdownColour, uint8_t selectedColour, uint32_t availableColours);
 
     colour_t ColourDropDownIndexToColour(uint8_t ddidx);
 
@@ -64,12 +66,6 @@ namespace OpenRCT2::Ui::Windows
 
 namespace OpenRCT2::Dropdown
 {
-    bool IsChecked(int32_t index);
-    bool IsDisabled(int32_t index);
-    void SetChecked(int32_t index, bool value);
-    void SetDisabled(int32_t index, bool value);
-    void SetImage(int32_t index, ImageId image);
-
     enum Flag
     {
         CustomHeight = (1 << 6), // never set?
@@ -78,29 +74,46 @@ namespace OpenRCT2::Dropdown
 
     enum class ItemFlag : uint8_t
     {
-        IsDisabled = (1 << 0),
-        IsChecked = (1 << 1),
+        isDisabled = 0,
+        isChecked = 1,
     };
+    using ItemFlags = FlagHolder<uint8_t, ItemFlag>;
 
     struct Item
     {
-        StringId Format;
-        int64_t Args;
-        uint8_t Flags;
-
-        constexpr bool IsSeparator() const
+        StringId format{};
+        union
         {
-            return Format == kSeparatorString;
+            int64_t generic;
+            const utf8* string;
+            ImageId image;
+        } args{};
+        ItemFlags flags{};
+        StringId tooltip{};
+
+        constexpr bool isSeparator() const
+        {
+            return format == kSeparatorString;
         }
 
-        constexpr bool IsDisabled() const
+        constexpr bool isDisabled() const
         {
-            return (Flags & EnumValue(ItemFlag::IsDisabled));
+            return flags.has(ItemFlag::isDisabled);
         }
 
-        constexpr bool IsChecked() const
+        constexpr void setDisabled(bool on)
         {
-            return (Flags & EnumValue(ItemFlag::IsChecked));
+            flags.set(ItemFlag::isDisabled, on);
+        }
+
+        constexpr bool isChecked() const
+        {
+            return flags.has(ItemFlag::isChecked);
+        }
+
+        constexpr void setChecked(bool on)
+        {
+            flags.set(ItemFlag::isChecked, on);
         }
     };
 
@@ -123,10 +136,57 @@ namespace OpenRCT2::Dropdown
         return ItemExt(_expectedItemIndex, STR_TOGGLE_OPTION, _stringId);
     }
 
-    constexpr ItemExt Separator()
+    constexpr ItemExt ExtSeparator()
     {
         return ItemExt(-1, Dropdown::kSeparatorString, kStringIdEmpty);
     }
+
+    /**
+     * Regular menu item, which shows a » symbol when selected
+     */
+    constexpr Item MenuLabel(StringId stringId)
+    {
+        return Item{ STR_DROPDOWN_MENU_LABEL, stringId };
+    }
+
+    /**
+     * Leaves out the left padding where a checkmark can be drawn, use only for menu where no item can be checked.
+     */
+    constexpr Item PlainMenuLabel(StringId stringId)
+    {
+        return Item{ stringId };
+    }
+
+    Item MenuLabel(const utf8* string);
+    Item PlainMenuLabel(const utf8* string);
+
+    /**
+     * Like MenuLabel, but shows a tick when selected.
+     */
+    constexpr Item ToggleOption(StringId stringId)
+    {
+        return Item{ STR_TOGGLE_OPTION, stringId };
+    }
+
+    constexpr Item Separator()
+    {
+        return Item{ kSeparatorString };
+    }
+
+    constexpr Item ImageItem(ImageId image, StringId tooltip = kStringIdEmpty)
+    {
+        return Item{ .format = Dropdown::kFormatLandPicker, .args = { .image = image }, .tooltip = tooltip };
+    }
+
+    struct DropdownState
+    {
+        int32_t numItems{};
+        std::array<Dropdown::Item, Dropdown::kItemsMaxSize> items{};
+        bool hasTooltips{};
+        int32_t lastTooltipHover{};
+        int32_t highlightedIndex{};
+        int32_t defaultIndex{};
+    };
 
     template<int N>
     void SetItems(const Dropdown::ItemExt (&items)[N])
@@ -134,8 +194,8 @@ namespace OpenRCT2::Dropdown
         for (int i = 0; i < N; ++i)
         {
             const ItemExt& item = items[i];
-            OpenRCT2::Ui::Windows::gDropdownItems[i].Format = item.itemFormat;
-            OpenRCT2::Ui::Windows::gDropdownItems[i].Args = item.stringId;
+            OpenRCT2::Ui::Windows::gDropdown.items[i].format = item.itemFormat;
+            OpenRCT2::Ui::Windows::gDropdown.items[i].args.generic = item.stringId;
         }
     }
 

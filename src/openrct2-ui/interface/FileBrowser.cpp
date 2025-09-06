@@ -24,6 +24,7 @@
 #include <openrct2/platform/Platform.h>
 #include <openrct2/rct2/T6Exporter.h>
 #include <openrct2/ride/TrackDesign.h>
+#include <openrct2/scenario/Scenario.h>
 #include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
@@ -275,12 +276,12 @@ namespace OpenRCT2::Ui::FileBrowser
                     case (LoadSaveType::scenario):
                     {
                         SetAndSaveConfigPath(Config::Get().general.LastSaveScenarioDirectory, pathBuffer);
-                        int32_t parkFlagsBackup = gameState.park.Flags;
-                        gameState.park.Flags &= ~PARK_FLAGS_SPRITES_INITIALISED;
+                        int32_t parkFlagsBackup = gameState.park.flags;
+                        gameState.park.flags &= ~PARK_FLAGS_SPRITES_INITIALISED;
                         gameState.editorStep = EditorStep::Invalid;
                         gameState.scenarioFileName = std::string(String::toStringView(pathBuffer, std::size(pathBuffer)));
                         int32_t success = ScenarioSave(gameState, pathBuffer, Config::Get().general.SavePluginData ? 3 : 2);
-                        gameState.park.Flags = parkFlagsBackup;
+                        gameState.park.flags = parkFlagsBackup;
 
                         if (success)
                         {
@@ -364,12 +365,12 @@ namespace OpenRCT2::Ui::FileBrowser
                     case LoadSaveType::scenario:
                     {
                         SetAndSaveConfigPath(Config::Get().general.LastSaveScenarioDirectory, pathBuffer);
-                        int32_t parkFlagsBackup = gameState.park.Flags;
-                        gameState.park.Flags &= ~PARK_FLAGS_SPRITES_INITIALISED;
+                        int32_t parkFlagsBackup = gameState.park.flags;
+                        gameState.park.flags &= ~PARK_FLAGS_SPRITES_INITIALISED;
                         gameState.editorStep = EditorStep::Invalid;
                         gameState.scenarioFileName = std::string(String::toStringView(pathBuffer, std::size(pathBuffer)));
                         int32_t success = ScenarioSave(gameState, pathBuffer, Config::Get().general.SavePluginData ? 3 : 2);
-                        gameState.park.Flags = parkFlagsBackup;
+                        gameState.park.flags = parkFlagsBackup;
 
                         if (success)
                         {
@@ -503,7 +504,7 @@ namespace OpenRCT2::Ui::FileBrowser
             }
             else
             {
-                auto buffer = getGameState().park.Name;
+                auto buffer = getGameState().park.name;
                 if (buffer.empty())
                 {
                     buffer = LanguageGetString(STR_UNNAMED_PARK);

@@ -15,14 +15,16 @@
 #include "../../Track.h"
 
 // clang-format off
+namespace OpenRCT2
+{
 constexpr RideTypeDescriptor SuspendedSwingingCoasterRTD =
 {
     .Category = RideCategory::rollerCoaster,
-    .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
+    .StartTrackPiece = TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::suspendedSwingingCoaster,
         .supportType = MetalSupportType::tubes,
-        .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::slopeCurve, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::helixDownUnbankedQuarter, TrackGroup::helixUpUnbankedQuarter, TrackGroup::brakes, TrackGroup::blockBrakes},
+        .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::slopeCurve, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::helixDownUnbankedQuarter, TrackGroup::helixUpUnbankedQuarter, TrackGroup::brakes, TrackGroup::blockBrakes, TrackGroup::diagSlope, TrackGroup::diagSlopeSteepUp, TrackGroup::diagSlopeSteepDown},
         .extraTrackGroups = {},
     }),
     .InvertedTrackPaintFunctions = {},
@@ -35,7 +37,7 @@ constexpr RideTypeDescriptor SuspendedSwingingCoasterRTD =
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE),
     .Heights = { 24, 40, 29, 8, },
     .MaxMass = 26,
-    .LiftData = { OpenRCT2::Audio::SoundId::LiftClassic, 4, 6 },
+    .LiftData = { Audio::SoundId::LiftClassic, 4, 6 },
     .RatingsMultipliers = { 50, 30, 10 },
     .UpkeepCosts = { 40, 20, 80, 20, 3, 10 },
     .BuildCosts = { 47.50_GBP, 2.50_GBP, 50, },
@@ -55,13 +57,13 @@ constexpr RideTypeDescriptor SuspendedSwingingCoasterRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { MakeRideRating(3, 30), MakeRideRating(2, 90), MakeRideRating(3, 50) },
+        { RideRating::make(3, 30), RideRating::make(2, 90), RideRating::make(3, 50) },
         18,
         -1,
         false,
         {
             { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },
-            { RatingsModifierType::BonusSynchronisation,  0,                MakeRideRating(0, 40), MakeRideRating(0, 10), 0 },
+            { RatingsModifierType::BonusSynchronisation,  0,                RideRating::make(0, 40), RideRating::make(0, 10), 0 },
             { RatingsModifierType::BonusTrainLength,      0,                187245, 0, 0 },
             { RatingsModifierType::BonusMaxSpeed,         0,                44281, 88562, 35424 },
             { RatingsModifierType::BonusAverageSpeed,     0,                291271, 436906, 0 },
@@ -81,4 +83,5 @@ constexpr RideTypeDescriptor SuspendedSwingingCoasterRTD =
         },
     },
 };
+} // namespace OpenRCT2
 // clang-format on

@@ -22,12 +22,14 @@
 #include "platform/Platform.h"
 #include "profiling/Profiling.h"
 #include "ride/Vehicle.h"
+#include "scenario/Scenario.h"
 #include "scenes/title/TitleScene.h"
 #include "scenes/title/TitleSequencePlayer.h"
 #include "scripting/ScriptEngine.h"
 #include "ui/UiContext.h"
 #include "windows/Intent.h"
 #include "world/MapAnimation.h"
+#include "world/Park.h"
 #include "world/Scenery.h"
 
 using namespace OpenRCT2::Scripting;
@@ -317,7 +319,7 @@ namespace OpenRCT2
         }
 
         ResearchUpdate();
-        RideRatingsUpdateAll();
+        RideRating::UpdateAll();
         RideMeasurementsUpdate();
         News::UpdateCurrentItem();
 

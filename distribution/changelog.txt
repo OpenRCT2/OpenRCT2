@@ -1,3 +1,50 @@
+0.4.26 (in development)
+------------------------------------------------------------------------
+- Feature: [#24949] Add an option to the command line screenshot function to draw debug bounding boxes.
+- Improved: [#9890, #18714] Rides using block-sectioned operating modes can now enter simulating mode without having to complete the circuit first.
+- Improved: [#24734] Save files now use Zstd compression for faster saving and smaller files.
+- Improved: [#24890] The ride list is now searchable.
+- Improved: [#24893] The ride list now has headers, and can be sorted in both directions.
+- Improved: [#24921] The command line sprite build command now prints out the images table entry for the compiled sprite file.
+- Improved: [#24953] Opening the Scenario Editor, Track Designer or Track Designs Manager now display the progress bar.
+- Improved: [#25027] Land style dropdown now has tooltips with the name of the land types.
+- Improved: [#25057] The progress window now has a Go Karts variant.
+- Change: [#23351] Diagonal sloped Go-Kart track can no longer be built without cheats if the karts do not have sprites for them.
+- Change: [#24606] Increase Misc Entity limit from 1600 to 3200.
+- Change: [#24974] Raise the Go-Karts maximum support height to allow 2 large sloped turns to be built on flat ground.
+- Change: [#25024] Guests in mazes no longer jump during heavy snow or blizzards, as they would when it rains.
+- Fix: [#12831] Zooming to cursor on land edges sometimes causes the camera to move to the wrong position.
+- Fix: [#16988] AppImage version does not show changelog.
+- Fix: [#19137] Non-inverted left corkscrew supports are incorrect at one angle (original bug).
+- Fix: [#23440] Quarter loops do not block metal supports correctly (original bug).
+- Fix: [#24001] Sloped diagonal metal supports that are offset with a crossbeam draw incorrectly.
+- Fix: [#24151] Sprites are cut off by 1 row of pixels when using OpenGL on Intel Macs.
+- Fix: [#24173] Allow all game speeds between 1 and 8 when debugging tools are enabled.
+- Fix: [#24745] Potential crash when lighting effects are enabled and loading a save or a new scenario.
+- Fix: [#24835] Dive loop track pieces do not have tunnels.
+- Fix: [#24884] Smooth map and add beaches functions use incorrect map size with height map image files.
+- Fix: [#24915] LIM Launched (original bug), Corkscrew and Twister Roller Coaster inline twists have some incorrect tunnels.
+- Fix: [#24916] LIM Launched inline twists can draw over land edges when built underground (original bug).
+- Fix: [#24953] Crash when opening the Scenario Editor, Track Designer or Track Designs Manager.
+- Fix: [#24955] Hybrid Zero G Rolls do not fully block metal supports.
+- Fix: [#24958] Android: fix crash when device is offline.
+- Fix: [#24961] Queues with corner connections set with the tile inspector draw incorrect sprites.
+- Fix: [#24972] Fix crash when closing windows would open other windows.
+- Fix: [#24986] LIM Launched Roller Coaster inline twists block metal supports on the wrong side (original bug).
+- Fix: [#24989] Classic Wooden Roller Coaster small banked turns do not block metal supports correctly.
+- Fix: [#24993] The Mine Train Coaster sloped left medium turn has an incorrectly rotated support at one angle.
+- Fix: [#24994] The Alpine Coaster and Mine Ride left s-bends have an incorrectly rotated support at certain angles.
+- Fix: [#25001] The Hybrid Coaster small banked sloped right turn and large sloped right turn to orthogonal have some incorrectly rotated supports.
+- Fix: [#25002] The large right turn to diagonal on the Miniature Railway draws incorrectly at certain angles.
+- Fix: [#25005] The Corkscrew Roller Coaster inline twist inverted supports draw below the track.
+- Fix: [#25006] The Twister Roller Coaster inline twists do not draw in tunnels at some angles.
+- Fix: [#25046] Zooming with the zoom buttons on the extra viewport is not focused on the centre of the viewport.
+- Fix: [#25054] Panning a viewport in a window that is partially outside the game’s window can draw incorrectly or crash in software rendering.
+- Fix: [#25062] Certain peep actions cannot be triggered if they are under or inside a track piece due to faulty verification of them being on a level crossing.
+- Fix: [#25067] Progress bars can flicker when downloading maps in multiplayer mode.
+- Fix: [#25075] The Hybrid Coaster quarter loops draw over land edges and walls directly next to them.
+- Fix: [#25080] Water has missing land edges when opposite corners of the tile and adjacent tile are the same height and the others are lower.
+
 0.4.25 (2025-08-03)
 ------------------------------------------------------------------------
 - Feature: [#24468] [Plugin] Add awards to plugin API.

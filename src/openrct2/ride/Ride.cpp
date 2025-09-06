@@ -47,6 +47,7 @@
 #include "../object/StationObject.h"
 #include "../profiling/Profiling.h"
 #include "../rct1/RCT1.h"
+#include "../scenario/Scenario.h"
 #include "../ui/WindowManager.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
@@ -1128,13 +1129,13 @@ void Ride::update()
         if (mode == RideMode::continuousCircuitBlockSectioned || mode == RideMode::poweredLaunchBlockSectioned)
         {
             // We require this to execute right away during the simulation, always ignore network and queue.
-            RideSetStatusAction gameAction = RideSetStatusAction(id, RideStatus::closed);
+            auto gameAction = GameActions::RideSetStatusAction(id, RideStatus::closed);
             GameActions::ExecuteNested(&gameAction);
         }
         else
         {
             // We require this to execute right away during the simulation, always ignore network and queue.
-            RideSetStatusAction gameAction = RideSetStatusAction(id, RideStatus::simulating);
+            auto gameAction = GameActions::RideSetStatusAction(id, RideStatus::simulating);
             GameActions::ExecuteNested(&gameAction);
         }
     }
@@ -1433,7 +1434,7 @@ static void RideBreakdownUpdate(Ride& ride)
 static int32_t RideGetNewBreakdownProblem(const Ride& ride)
 {
     // Brake failure is more likely when it's raining or heavily snowing (HeavySnow and Blizzard)
-    _breakdownProblemProbabilities[BREAKDOWN_BRAKES_FAILURE] = (ClimateIsRaining() || ClimateIsSnowingHeavily()) ? 20 : 3;
+    _breakdownProblemProbabilities[BREAKDOWN_BRAKES_FAILURE] = ClimateIsPrecipitating() ? 20 : 3;
 
     if (!ride.canBreakDown())
         return -1;
@@ -2692,7 +2693,7 @@ void Ride::chainQueues() const
  *
  *  rct2: 0x006D3319
  */
-static ResultWithMessage RideCheckBlockBrakes(const CoordsXYE& input, CoordsXYE* output)
+static ResultWithMessage RideCheckBlockBrakes(const CoordsXYE& input, CoordsXYE* output, bool shouldCheckCompleteCircuit)
 {
     if (input.element == nullptr || input.element->GetType() != TileElementType::Track)
         return { false };
@@ -2729,7 +2730,7 @@ static ResultWithMessage RideCheckBlockBrakes(const CoordsXYE& input, CoordsXYE*
             }
         }
     }
-    if (!it.looped)
+    if (!it.looped && shouldCheckCompleteCircuit)
     {
         // Not sure why this is the case...
         *output = it.last;
@@ -3448,14 +3449,14 @@ static TrainReference VehicleCreateTrain(
     return train;
 }
 
-static bool VehicleCreateTrains(Ride& ride, const CoordsXYZ& trainsPos, TrackElement* trackElement)
+static bool VehicleCreateTrains(Ride& ride, const CoordsXYZ& trainsPos, TrackElement* trackElement, int16_t numberOfTrains)
 {
     TrainReference firstTrain = {};
     TrainReference lastTrain = {};
     int32_t remainingDistance = 0;
     bool allTrainsCreated = true;
 
-    for (int32_t vehicleIndex = 0; vehicleIndex < ride.numTrains; vehicleIndex++)
+    for (int32_t vehicleIndex = 0; vehicleIndex < numberOfTrains; vehicleIndex++)
     {
         if (ride.isBlockSectioned())
         {
@@ -3575,7 +3576,7 @@ static void RidecreateVehiclesFindFirstBlock(const Ride& ride, CoordsXYE* outXYE
  * Create and place the rides vehicles
  *  rct2: 0x006DD84C
  */
-ResultWithMessage Ride::createVehicles(const CoordsXYE& element, bool isApplying)
+ResultWithMessage Ride::createVehicles(const CoordsXYE& element, bool isApplying, bool isSimulating)
 {
     updateMaxVehicles();
     if (subtype == kObjectEntryIndexNull)
@@ -3584,7 +3585,12 @@ ResultWithMessage Ride::createVehicles(const CoordsXYE& element, bool isApplying
     }
 
     // Check if there are enough free sprite slots for all the vehicles
-    int32_t totalCars = numTrains * numCarsPerTrain;
+    int32_t numberOfTrains = numTrains;
+    if (isBlockSectioned() && isSimulating)
+    {
+        numberOfTrains = 1;
+    }
+    int32_t totalCars = numberOfTrains * numCarsPerTrain;
     if (totalCars > count_free_misc_sprite_slots())
     {
         return { false, STR_UNABLE_TO_CREATE_ENOUGH_VEHICLES };
@@ -3609,7 +3615,7 @@ ResultWithMessage Ride::createVehicles(const CoordsXYE& element, bool isApplying
         vehiclePos.z = trackElement->GetBaseZ();
     }
 
-    if (!VehicleCreateTrains(*this, vehiclePos, trackElement))
+    if (!VehicleCreateTrains(*this, vehiclePos, trackElement, numberOfTrains))
     {
         // This flag is needed for Ride::removeVehicles()
         lifecycleFlags |= RIDE_LIFECYCLE_ON_TRACK;
@@ -3629,7 +3635,7 @@ ResultWithMessage Ride::createVehicles(const CoordsXYE& element, bool isApplying
     //
     if (type != RIDE_TYPE_SPACE_RINGS && !getRideTypeDescriptor().HasFlag(RtdFlag::vehicleIsIntegral))
     {
-        if (isBlockSectioned())
+        if (isBlockSectioned() && !isSimulating)
         {
             CoordsXYE firstBlock{};
             RidecreateVehiclesFindFirstBlock(*this, &firstBlock);
@@ -4057,18 +4063,18 @@ ResultWithMessage Ride::test(bool isApplying)
         return message;
     }
 
-    message = changeStatusCheckTrackValidity(trackElement);
+    message = changeStatusCheckTrackValidity(trackElement, false);
     if (!message.Successful)
     {
         return message;
     }
 
-    return changeStatusCreateVehicles(isApplying, trackElement);
+    return changeStatusCreateVehicles(isApplying, trackElement, false);
 }
 
 ResultWithMessage Ride::simulate(bool isApplying)
 {
-    CoordsXYE trackElement, problematicTrackElement = {};
+    CoordsXYE trackElement = {};
     if (type == kRideTypeNull)
     {
         LOG_WARNING("Invalid ride type for ride %u", id.ToUnderlying());
@@ -4088,19 +4094,13 @@ ResultWithMessage Ride::simulate(bool isApplying)
         return message;
     }
 
-    if (isBlockSectioned() && findTrackGap(trackElement, &problematicTrackElement))
-    {
-        RideScrollToTrackError(problematicTrackElement);
-        return { false, STR_TRACK_IS_NOT_A_COMPLETE_CIRCUIT };
-    }
-
-    message = changeStatusCheckTrackValidity(trackElement);
+    message = changeStatusCheckTrackValidity(trackElement, true);
     if (!message.Successful)
     {
         return message;
     }
 
-    return changeStatusCreateVehicles(isApplying, trackElement);
+    return changeStatusCreateVehicles(isApplying, trackElement, true);
 }
 
 /**
@@ -4152,13 +4152,13 @@ ResultWithMessage Ride::open(bool isApplying)
         return message;
     }
 
-    message = changeStatusCheckTrackValidity(trackElement);
+    message = changeStatusCheckTrackValidity(trackElement, false);
     if (!message.Successful)
     {
         return message;
     }
 
-    return changeStatusCreateVehicles(isApplying, trackElement);
+    return changeStatusCreateVehicles(isApplying, trackElement, false);
 }
 
 /**
@@ -4929,6 +4929,12 @@ OpenRCT2::BitSet<EnumValue(TrackGroup::count)> RideEntryGetSupportedTrackPieces(
           SpritePrecision::Sprites4, SpriteGroupType::Slopes25InlineTwists, SpritePrecision::Sprites4,
           SpriteGroupType::SlopesLoop, SpritePrecision::Sprites4, SpriteGroupType::SlopeInverted,
           SpritePrecision::Sprites4 }, // TrackGroup::diveLoop
+        { SpriteGroupType::Slopes8, SpritePrecision::Sprites4, SpriteGroupType::Slopes16,
+          SpritePrecision::Sprites4 }, // TrackGroup::diagSlope
+        { SpriteGroupType::Slopes25, SpritePrecision::Sprites8, SpriteGroupType::Slopes42, SpritePrecision::Sprites8,
+          SpriteGroupType::Slopes50, SpritePrecision::Sprites4 }, // TrackGroup::diagSlopeSteepUp
+        { SpriteGroupType::Slopes25, SpritePrecision::Sprites8, SpriteGroupType::Slopes42, SpritePrecision::Sprites8,
+          SpriteGroupType::Slopes50, SpritePrecision::Sprites4 }, // TrackGroup::diagSlopeSteepDown
     };
 
     static_assert(std::size(trackPieceRequiredSprites) == EnumValue(TrackGroup::count));
@@ -5216,25 +5222,28 @@ void Ride::updateNumberOfCircuits()
 void Ride::setRideEntry(ObjectEntryIndex entryIndex)
 {
     auto colour = RideGetUnusedPresetVehicleColour(entryIndex);
-    auto rideSetVehicleAction = RideSetVehicleAction(id, RideSetVehicleType::RideEntry, entryIndex, colour);
+    auto rideSetVehicleAction = GameActions::RideSetVehicleAction(
+        id, GameActions::RideSetVehicleType::RideEntry, entryIndex, colour);
     GameActions::Execute(&rideSetVehicleAction);
 }
 
 void Ride::setNumTrains(int32_t newNumTrains)
 {
-    auto rideSetVehicleAction = RideSetVehicleAction(id, RideSetVehicleType::NumTrains, newNumTrains);
+    auto rideSetVehicleAction = GameActions::RideSetVehicleAction(id, GameActions::RideSetVehicleType::NumTrains, newNumTrains);
     GameActions::Execute(&rideSetVehicleAction);
 }
 
 void Ride::setNumCarsPerTrain(int32_t numCarsPerVehicle)
 {
-    auto rideSetVehicleAction = RideSetVehicleAction(id, RideSetVehicleType::NumCarsPerTrain, numCarsPerVehicle);
+    auto rideSetVehicleAction = GameActions::RideSetVehicleAction(
+        id, GameActions::RideSetVehicleType::NumCarsPerTrain, numCarsPerVehicle);
     GameActions::Execute(&rideSetVehicleAction);
 }
 
 void Ride::setReversedTrains(bool reverseTrains)
 {
-    auto rideSetVehicleAction = RideSetVehicleAction(id, RideSetVehicleType::TrainsReversed, reverseTrains);
+    auto rideSetVehicleAction = GameActions::RideSetVehicleAction(
+        id, GameActions::RideSetVehicleType::TrainsReversed, reverseTrains);
     GameActions::Execute(&rideSetVehicleAction);
 }
 
@@ -5245,7 +5254,7 @@ void Ride::setToDefaultInspectionInterval()
     {
         if (defaultInspectionInterval <= RIDE_INSPECTION_NEVER)
         {
-            SetOperatingSetting(id, RideSetSetting::InspectionInterval, defaultInspectionInterval);
+            SetOperatingSetting(id, GameActions::RideSetSetting::InspectionInterval, defaultInspectionInterval);
         }
     }
 }
@@ -5339,7 +5348,7 @@ bool Ride::isRide() const
 
 money64 RideGetPrice(const Ride& ride)
 {
-    if (getGameState().park.Flags & PARK_FLAGS_NO_MONEY)
+    if (getGameState().park.flags & PARK_FLAGS_NO_MONEY)
         return 0;
     if (ride.isRide())
     {
@@ -5921,13 +5930,13 @@ ResultWithMessage Ride::changeStatusCheckCompleteCircuit(const CoordsXYE& trackE
     return { true };
 }
 
-ResultWithMessage Ride::changeStatusCheckTrackValidity(const CoordsXYE& trackElement)
+ResultWithMessage Ride::changeStatusCheckTrackValidity(const CoordsXYE& trackElement, bool isSimulating)
 {
     CoordsXYE problematicTrackElement = {};
 
     if (isBlockSectioned())
     {
-        auto blockBrakeCheck = RideCheckBlockBrakes(trackElement, &problematicTrackElement);
+        auto blockBrakeCheck = RideCheckBlockBrakes(trackElement, &problematicTrackElement, !isSimulating);
         if (!blockBrakeCheck.Successful)
         {
             RideScrollToTrackError(problematicTrackElement);
@@ -5983,7 +5992,7 @@ ResultWithMessage Ride::changeStatusCheckTrackValidity(const CoordsXYE& trackEle
     return { true };
 }
 
-ResultWithMessage Ride::changeStatusCreateVehicles(bool isApplying, const CoordsXYE& trackElement)
+ResultWithMessage Ride::changeStatusCreateVehicles(bool isApplying, const CoordsXYE& trackElement, bool isSimulating)
 {
     if (isApplying)
         RideSetStartFinishPoints(id, trackElement);
@@ -5991,7 +6000,7 @@ ResultWithMessage Ride::changeStatusCreateVehicles(bool isApplying, const Coords
     const auto& rtd = getRideTypeDescriptor();
     if (!rtd.HasFlag(RtdFlag::noVehicles) && !(lifecycleFlags & RIDE_LIFECYCLE_ON_TRACK))
     {
-        const auto createVehicleResult = createVehicles(trackElement, isApplying);
+        const auto createVehicleResult = createVehicles(trackElement, isApplying, isSimulating);
         if (!createVehicleResult.Successful)
         {
             return { false, createVehicleResult.Message };

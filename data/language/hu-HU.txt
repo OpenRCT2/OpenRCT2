@@ -2165,7 +2165,6 @@ STR_3136    :Figyelmeztetés: A terv alternatív járműtípussal lesz megépít
 STR_3137    :Közeli díszletek kiválasztása
 STR_3138    :Kiválasztás törlése
 STR_3139    :A kábeles felvonó nem tud üzemelni ebben a működési módban
-STR_3140    :A kábeles felvonószakasznak közvetlenül az állomás után kell kezdődnie
 STR_3141    :Nem lehetséges többkörös utazás kábeles felvonószakasszal
 STR_3142    :{WINDOW_COLOUR_2}Befogadóképesség: {BLACK}{STRINGID}
 STR_3143    :Emberek megjelenítése a térképen
@@ -2953,7 +2952,7 @@ STR_5858    :CPU helyett a GPU használata megjelenítéshez. Nagyobb kompatibil
 STR_5859    :A képkocka fázisolás bekapcsolása, hogy {NEWLINE}folyamatosabb legyen a játékmenet megjelenítése. Ha ki van kapcsolva,{NEWLINE}a játék 40 FPS-el fut.
 STR_5860    :Váltás az eredeti és a visszafejtett pályarajzok között
 STR_5861    :Kulcs hitelesítési hiba.
-STR_5862    :Ismeretlen játékosok blokkolása.
+STR_5862    :Ismeretlen játékosok blokkolása
 STR_5863    :Csak az ismert kulcsokkal rendelkező játékosok csatlakozhassanak.
 STR_5864    :Ehhez a szerverhez csak fehérlistás játékosok csatlakozhatnak.
 STR_5865    :Chat előzmények naplózása
@@ -3837,3 +3836,6 @@ STR_6797    :Nincs előnézet
 STR_6798    :Képernyőkép
 STR_6799    :Mini térkép
 STR_7000    :vagy
+STR_7001    :Játéknév
+STR_7002    :{STRINGID} {STRINGID}
+STR_7003    :A(z) „{STRING}” hangfájl csonka. Minta {INT32} lenne az elvárt, de csak {INT32} érhető el. Fontold meg az RCT2 újratelepítését.

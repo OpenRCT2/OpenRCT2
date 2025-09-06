@@ -16,6 +16,7 @@
 #include "../core/Guard.hpp"
 #include "../drawing/IDrawingEngine.h"
 #include "../drawing/Text.h"
+#include "../interface/Viewport.h"
 #include "../localisation/Formatting.h"
 #include "../paint/Paint.h"
 #include "../paint/VirtualFloor.h"
@@ -185,6 +186,9 @@ PaintSession* Painter::CreateSession(RenderTarget& rt, uint32_t viewFlags, uint8
     session->CurrentlyDrawnTileElement = nullptr;
     session->Surface = nullptr;
     session->SelectedElement = OpenRCT2::TileInspector::GetSelectedElement();
+    session->InteractionType = ViewportInteractionItem::None;
+    session->PathElementOnSameHeight = nullptr;
+    session->TrackElementOnSameHeight = nullptr;
 
     return session;
 }

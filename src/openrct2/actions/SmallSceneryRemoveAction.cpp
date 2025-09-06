@@ -25,139 +25,137 @@
 #include "GameAction.h"
 #include "SmallSceneryPlaceAction.h"
 
-using namespace OpenRCT2;
-
-SmallSceneryRemoveAction::SmallSceneryRemoveAction(const CoordsXYZ& location, uint8_t quadrant, ObjectEntryIndex sceneryType)
-    : _loc(location)
-    , _quadrant(quadrant)
-    , _sceneryType(sceneryType)
+namespace OpenRCT2::GameActions
 {
-}
-
-void SmallSceneryRemoveAction::AcceptParameters(GameActionParameterVisitor& visitor)
-{
-    visitor.Visit(_loc);
-    visitor.Visit("object", _sceneryType);
-    visitor.Visit("quadrant", _quadrant);
-}
-
-uint16_t SmallSceneryRemoveAction::GetActionFlags() const
-{
-    return GameAction::GetActionFlags();
-}
-
-void SmallSceneryRemoveAction::Serialise(DataSerialiser& stream)
-{
-    GameAction::Serialise(stream);
-
-    stream << DS_TAG(_loc) << DS_TAG(_quadrant) << DS_TAG(_sceneryType);
-}
-
-GameActions::Result SmallSceneryRemoveAction::Query() const
-{
-    GameActions::Result res = GameActions::Result();
-
-    if (!LocationValid(_loc))
+    SmallSceneryRemoveAction::SmallSceneryRemoveAction(
+        const CoordsXYZ& location, uint8_t quadrant, ObjectEntryIndex sceneryType)
+        : _loc(location)
+        , _quadrant(quadrant)
+        , _sceneryType(sceneryType)
     {
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_OFF_EDGE_OF_MAP);
     }
 
-    auto* entry = OpenRCT2::ObjectManager::GetObjectEntry<SmallSceneryEntry>(_sceneryType);
-    if (entry == nullptr)
+    void SmallSceneryRemoveAction::AcceptParameters(GameActionParameterVisitor& visitor)
     {
-        LOG_ERROR("Invalid small scenery type %u", _sceneryType);
-        return GameActions::Result(
-            GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
+        visitor.Visit(_loc);
+        visitor.Visit("object", _sceneryType);
+        visitor.Visit("quadrant", _quadrant);
     }
 
-    res.Cost = entry->removal_price;
-    res.Expenditure = ExpenditureType::Landscaping;
-    res.Position = _loc;
-
-    if (gLegacyScene != LegacyScene::scenarioEditor && !(GetFlags() & GAME_COMMAND_FLAG_GHOST)
-        && !getGameState().cheats.sandboxMode)
+    uint16_t SmallSceneryRemoveAction::GetActionFlags() const
     {
-        // Check if allowed to remove item
-        if (getGameState().park.Flags & PARK_FLAGS_FORBID_TREE_REMOVAL)
+        return GameAction::GetActionFlags();
+    }
+
+    void SmallSceneryRemoveAction::Serialise(DataSerialiser& stream)
+    {
+        GameAction::Serialise(stream);
+
+        stream << DS_TAG(_loc) << DS_TAG(_quadrant) << DS_TAG(_sceneryType);
+    }
+
+    Result SmallSceneryRemoveAction::Query() const
+    {
+        Result res = Result();
+
+        if (!LocationValid(_loc))
         {
-            if (entry->HasFlag(SMALL_SCENERY_FLAG_IS_TREE))
+            return Result(Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_OFF_EDGE_OF_MAP);
+        }
+
+        auto* entry = OpenRCT2::ObjectManager::GetObjectEntry<SmallSceneryEntry>(_sceneryType);
+        if (entry == nullptr)
+        {
+            LOG_ERROR("Invalid small scenery type %u", _sceneryType);
+            return Result(Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
+        }
+
+        res.Cost = entry->removal_price;
+        res.Expenditure = ExpenditureType::landscaping;
+        res.Position = _loc;
+
+        if (gLegacyScene != LegacyScene::scenarioEditor && !(GetFlags() & GAME_COMMAND_FLAG_GHOST)
+            && !getGameState().cheats.sandboxMode)
+        {
+            // Check if allowed to remove item
+            if (getGameState().park.flags & PARK_FLAGS_FORBID_TREE_REMOVAL)
             {
-                res.Error = GameActions::Status::NoClearance;
+                if (entry->HasFlag(SMALL_SCENERY_FLAG_IS_TREE))
+                {
+                    res.Error = Status::NoClearance;
+                    res.ErrorTitle = STR_CANT_REMOVE_THIS;
+                    res.ErrorMessage = STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY;
+                    return res;
+                }
+            }
+
+            // Check if the land is owned
+            if (!MapIsLocationOwned(_loc))
+            {
+                res.Error = Status::NoClearance;
                 res.ErrorTitle = STR_CANT_REMOVE_THIS;
-                res.ErrorMessage = STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY;
+                res.ErrorMessage = STR_LAND_NOT_OWNED_BY_PARK;
                 return res;
             }
         }
 
-        // Check if the land is owned
-        if (!MapIsLocationOwned(_loc))
+        TileElement* tileElement = FindSceneryElement();
+        if (tileElement == nullptr)
         {
-            res.Error = GameActions::Status::NoClearance;
-            res.ErrorTitle = STR_CANT_REMOVE_THIS;
-            res.ErrorMessage = STR_LAND_NOT_OWNED_BY_PARK;
-            return res;
+            LOG_ERROR("Small scenery of type %u not found at x = %d, y = %d, z = &d", _sceneryType, _loc.x, _loc.y, _loc.z);
+            return Result(Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
         }
+
+        return res;
     }
 
-    TileElement* tileElement = FindSceneryElement();
-    if (tileElement == nullptr)
+    Result SmallSceneryRemoveAction::Execute() const
     {
-        LOG_ERROR("Small scenery of type %u not found at x = %d, y = %d, z = &d", _sceneryType, _loc.x, _loc.y, _loc.z);
-        return GameActions::Result(
-            GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
+        Result res = Result();
+
+        auto* entry = OpenRCT2::ObjectManager::GetObjectEntry<SmallSceneryEntry>(_sceneryType);
+        if (entry == nullptr)
+        {
+            LOG_ERROR("Invalid small scenery type %u", _sceneryType);
+            return Result(Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
+        }
+
+        res.Cost = entry->removal_price;
+        res.Expenditure = ExpenditureType::landscaping;
+        res.Position = _loc;
+
+        TileElement* tileElement = FindSceneryElement();
+        if (tileElement == nullptr)
+        {
+            return Result(Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
+        }
+
+        MapInvalidateTileFull(_loc);
+        TileElementRemove(tileElement);
+
+        return res;
     }
 
-    return res;
-}
-
-GameActions::Result SmallSceneryRemoveAction::Execute() const
-{
-    GameActions::Result res = GameActions::Result();
-
-    auto* entry = OpenRCT2::ObjectManager::GetObjectEntry<SmallSceneryEntry>(_sceneryType);
-    if (entry == nullptr)
+    TileElement* SmallSceneryRemoveAction::FindSceneryElement() const
     {
-        LOG_ERROR("Invalid small scenery type %u", _sceneryType);
-        return GameActions::Result(
-            GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
+        const bool isGhost = GetFlags() & GAME_COMMAND_FLAG_GHOST;
+        for (auto* sceneryElement : TileElementsView<SmallSceneryElement>(_loc))
+        {
+            // If we are removing ghost elements
+            if (isGhost && sceneryElement->IsGhost() == false)
+                continue;
+
+            if (sceneryElement->GetSceneryQuadrant() != _quadrant)
+                continue;
+
+            if (sceneryElement->GetBaseZ() != _loc.z)
+                continue;
+
+            if (sceneryElement->GetEntryIndex() != _sceneryType)
+                continue;
+
+            return sceneryElement->as<TileElement>();
+        }
+        return nullptr;
     }
-
-    res.Cost = entry->removal_price;
-    res.Expenditure = ExpenditureType::Landscaping;
-    res.Position = _loc;
-
-    TileElement* tileElement = FindSceneryElement();
-    if (tileElement == nullptr)
-    {
-        return GameActions::Result(
-            GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
-    }
-
-    MapInvalidateTileFull(_loc);
-    TileElementRemove(tileElement);
-
-    return res;
-}
-
-TileElement* SmallSceneryRemoveAction::FindSceneryElement() const
-{
-    const bool isGhost = GetFlags() & GAME_COMMAND_FLAG_GHOST;
-    for (auto* sceneryElement : TileElementsView<SmallSceneryElement>(_loc))
-    {
-        // If we are removing ghost elements
-        if (isGhost && sceneryElement->IsGhost() == false)
-            continue;
-
-        if (sceneryElement->GetSceneryQuadrant() != _quadrant)
-            continue;
-
-        if (sceneryElement->GetBaseZ() != _loc.z)
-            continue;
-
-        if (sceneryElement->GetEntryIndex() != _sceneryType)
-            continue;
-
-        return sceneryElement->as<TileElement>();
-    }
-    return nullptr;
-}
+} // namespace OpenRCT2::GameActions

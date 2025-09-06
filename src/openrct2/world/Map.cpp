@@ -1490,7 +1490,7 @@ void ClearElementAt(const CoordsXY& loc, TileElement** elementPtr)
                     seqLoc -= CoordsDirectionDelta[rotation];
                     break;
             }
-            auto parkEntranceRemoveAction = ParkEntranceRemoveAction(CoordsXYZ{ seqLoc, element->GetBaseZ() });
+            auto parkEntranceRemoveAction = GameActions::ParkEntranceRemoveAction(CoordsXYZ{ seqLoc, element->GetBaseZ() });
             auto result = GameActions::ExecuteNested(&parkEntranceRemoveAction);
             // If asking nicely did not work, forcibly remove this to avoid an infinite loop.
             if (result.Error != GameActions::Status::Ok)
@@ -1502,7 +1502,7 @@ void ClearElementAt(const CoordsXY& loc, TileElement** elementPtr)
         case TileElementType::Wall:
         {
             CoordsXYZD wallLocation = { loc.x, loc.y, element->GetBaseZ(), element->GetDirection() };
-            auto wallRemoveAction = WallRemoveAction(wallLocation);
+            auto wallRemoveAction = GameActions::WallRemoveAction(wallLocation);
             auto result = GameActions::ExecuteNested(&wallRemoveAction);
             // If asking nicely did not work, forcibly remove this to avoid an infinite loop.
             if (result.Error != GameActions::Status::Ok)
@@ -1513,7 +1513,7 @@ void ClearElementAt(const CoordsXY& loc, TileElement** elementPtr)
         break;
         case TileElementType::LargeScenery:
         {
-            auto removeSceneryAction = LargeSceneryRemoveAction(
+            auto removeSceneryAction = GameActions::LargeSceneryRemoveAction(
                 { loc.x, loc.y, element->GetBaseZ(), element->GetDirection() }, element->AsLargeScenery()->GetSequenceIndex());
             auto result = GameActions::ExecuteNested(&removeSceneryAction);
             // If asking nicely did not work, forcibly remove this to avoid an infinite loop.
@@ -1525,7 +1525,7 @@ void ClearElementAt(const CoordsXY& loc, TileElement** elementPtr)
         break;
         case TileElementType::Banner:
         {
-            auto bannerRemoveAction = BannerRemoveAction(
+            auto bannerRemoveAction = GameActions::BannerRemoveAction(
                 { loc.x, loc.y, element->GetBaseZ(), element->AsBanner()->GetPosition() });
             auto result = GameActions::ExecuteNested(&bannerRemoveAction);
             // If asking nicely did not work, forcibly remove this to avoid an infinite loop.
@@ -2306,7 +2306,7 @@ void ShiftMap(const TileCoordsXY& amount)
     for (auto& spawn : gameState.peepSpawns)
         shiftIfNotNull(spawn, amountToMove);
 
-    for (auto& entrance : gameState.park.Entrances)
+    for (auto& entrance : gameState.park.entrances)
         shiftIfNotNull(entrance, amountToMove);
 
     // Entities

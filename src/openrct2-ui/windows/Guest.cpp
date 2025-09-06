@@ -489,7 +489,7 @@ namespace OpenRCT2::Ui::Windows
                 if (!widgetIsDisabled(*this, WIDX_PICKUP))
                     Invalidate();
             }
-            if (getGameState().park.Flags & PARK_FLAGS_NO_MONEY)
+            if (getGameState().park.flags & PARK_FLAGS_NO_MONEY)
             {
                 newDisabledWidgets |= (1uLL << WIDX_TAB_4); // Disable finance tab if no money
             }
@@ -651,18 +651,20 @@ namespace OpenRCT2::Ui::Windows
                     _pickedPeepX = peep->x;
                     CoordsXYZ nullLoc{};
                     nullLoc.SetNull();
-                    PeepPickupAction pickupAction{ PeepPickupType::Pickup, EntityId::FromUnderlying(number), nullLoc,
-                                                   NetworkGetCurrentPlayerId() };
-                    pickupAction.SetCallback([peepnum = number](const GameAction* ga, const GameActions::Result* result) {
-                        if (result->Error != GameActions::Status::Ok)
-                            return;
-                        auto* windowMgr = GetWindowManager();
-                        WindowBase* wind = windowMgr->FindByNumber(WindowClass::Peep, peepnum);
-                        if (wind != nullptr)
-                        {
-                            ToolSet(*wind, WC_PEEP__WIDX_PICKUP, Tool::picker);
-                        }
-                    });
+                    GameActions::PeepPickupAction pickupAction{ GameActions::PeepPickupType::Pickup,
+                                                                EntityId::FromUnderlying(number), nullLoc,
+                                                                NetworkGetCurrentPlayerId() };
+                    pickupAction.SetCallback(
+                        [peepnum = number](const GameActions::GameAction* ga, const GameActions::Result* result) {
+                            if (result->Error != GameActions::Status::Ok)
+                                return;
+                            auto* windowMgr = GetWindowManager();
+                            WindowBase* wind = windowMgr->FindByNumber(WindowClass::Peep, peepnum);
+                            if (wind != nullptr)
+                            {
+                                ToolSet(*wind, WC_PEEP__WIDX_PICKUP, Tool::picker);
+                            }
+                        });
                     GameActions::Execute(&pickupAction);
                 }
                 break;
@@ -677,7 +679,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     uint32_t guestFlags = peep->PeepFlags ^ PEEP_FLAGS_TRACKING;
 
-                    auto guestSetFlagsAction = GuestSetFlagsAction(EntityId::FromUnderlying(number), guestFlags);
+                    auto guestSetFlagsAction = GameActions::GuestSetFlagsAction(EntityId::FromUnderlying(number), guestFlags);
                     GameActions::Execute(&guestSetFlagsAction);
                 }
                 break;
@@ -715,12 +717,14 @@ namespace OpenRCT2::Ui::Windows
 
         void ShowLocateDropdown(Widget& widget)
         {
-            gDropdownItems[0].Format = STR_LOCATE_SUBJECT_TIP;
-            gDropdownItems[1].Format = STR_FOLLOW_SUBJECT_TIP;
+            constexpr std::array<Dropdown::Item, 2> dropdownItems = {
+                Dropdown::Item{ STR_LOCATE_SUBJECT_TIP },
+                Dropdown::Item{ STR_FOLLOW_SUBJECT_TIP },
+            };
 
             WindowDropdownShowText(
-                { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height() + 1, colours[1], 0, 2);
-            gDropdownDefaultIndex = 0;
+                { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height() + 1, colours[1], 0, dropdownItems);
+            gDropdown.defaultIndex = 0;
         }
 
         void GuestFollow()
@@ -959,7 +963,7 @@ namespace OpenRCT2::Ui::Windows
             if (text.empty())
                 return;
             std::string sText(text);
-            auto gameAction = GuestSetNameAction(EntityId::FromUnderlying(number), sText);
+            auto gameAction = GameActions::GuestSetNameAction(EntityId::FromUnderlying(number), sText);
             GameActions::Execute(&gameAction);
         }
 
@@ -1016,11 +1020,11 @@ namespace OpenRCT2::Ui::Windows
             if (destCoords.IsNull())
                 return;
 
-            PeepPickupAction pickupAction{ PeepPickupType::Place,
-                                           EntityId::FromUnderlying(number),
-                                           { destCoords, tileElement->GetBaseZ() },
-                                           NetworkGetCurrentPlayerId() };
-            pickupAction.SetCallback([](const GameAction* ga, const GameActions::Result* result) {
+            GameActions::PeepPickupAction pickupAction{ GameActions::PeepPickupType::Place,
+                                                        EntityId::FromUnderlying(number),
+                                                        { destCoords, tileElement->GetBaseZ() },
+                                                        NetworkGetCurrentPlayerId() };
+            pickupAction.SetCallback([](const GameActions::GameAction* ga, const GameActions::Result* result) {
                 if (result->Error != GameActions::Status::Ok)
                     return;
                 ToolCancel();
@@ -1034,9 +1038,10 @@ namespace OpenRCT2::Ui::Windows
             if (widgetIndex != WIDX_PICKUP)
                 return;
 
-            PeepPickupAction pickupAction{
-                PeepPickupType::Cancel, EntityId::FromUnderlying(number), { _pickedPeepX, 0, 0 }, NetworkGetCurrentPlayerId()
-            };
+            GameActions::PeepPickupAction pickupAction{ GameActions::PeepPickupType::Cancel,
+                                                        EntityId::FromUnderlying(number),
+                                                        { _pickedPeepX, 0, 0 },
+                                                        NetworkGetCurrentPlayerId() };
             GameActions::Execute(&pickupAction);
         }
 
@@ -1618,7 +1623,7 @@ namespace OpenRCT2::Ui::Windows
 
         std::pair<ImageId, Formatter> InventoryFormatItem(Guest& guest, ShopItem item) const
         {
-            auto parkName = getGameState().park.Name.c_str();
+            auto parkName = getGameState().park.name.c_str();
 
             // Default item image
             auto& itemDesc = GetShopItemDescriptor(item);

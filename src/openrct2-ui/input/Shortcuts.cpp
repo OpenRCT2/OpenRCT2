@@ -268,7 +268,7 @@ static void ShortcutShowFinancialInformation()
         return;
 
     if (!(isInTrackDesignerOrManager()))
-        if (!(getGameState().park.Flags & PARK_FLAGS_NO_MONEY))
+        if (!(getGameState().park.flags & PARK_FLAGS_NO_MONEY))
             ContextOpenWindow(WindowClass::Finances);
 }
 
@@ -420,7 +420,7 @@ static void ShortcutQuickSaveGame()
         auto intent = Intent(WindowClass::Loadsave);
         intent.PutEnumExtra<LoadSaveAction>(INTENT_EXTRA_LOADSAVE_ACTION, LoadSaveAction::save);
         intent.PutEnumExtra<LoadSaveType>(INTENT_EXTRA_LOADSAVE_TYPE, LoadSaveType::landscape);
-        intent.PutExtra(INTENT_EXTRA_PATH, getGameState().scenarioName);
+        intent.PutExtra(INTENT_EXTRA_PATH, getGameState().scenarioOptions.name);
         ContextOpenIntent(&intent);
     }
 }
@@ -429,7 +429,7 @@ static void ShortcutLoadGame()
 {
     if (!(isInTrackDesignerOrManager()))
     {
-        auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::OpenSavePrompt);
+        auto loadOrQuitAction = GameActions::LoadOrQuitAction(GameActions::LoadOrQuitModes::OpenSavePrompt);
         GameActions::Execute(&loadOrQuitAction);
     }
 }
@@ -522,8 +522,9 @@ static void ShortcutToggleWallSlope()
     int32_t newSlopeValue = (currSlopeValue + 1) % 3;
 
     extern TileCoordsXY windowTileInspectorTile;
-    auto modifyTile = TileModifyAction(
-        windowTileInspectorTile.ToCoordsXY(), TileModifyType::WallSetSlope, windowTileInspectorSelectedIndex, newSlopeValue);
+    auto modifyTile = GameActions::TileModifyAction(
+        windowTileInspectorTile.ToCoordsXY(), GameActions::TileModifyType::WallSetSlope, windowTileInspectorSelectedIndex,
+        newSlopeValue);
     GameActions::Execute(&modifyTile);
 }
 
@@ -609,7 +610,7 @@ static void ShortcutDecreaseElementHeight()
 
 static void ShortcutToggleClearanceChecks()
 {
-    auto cheatSetAction = CheatSetAction(
+    auto cheatSetAction = GameActions::CheatSetAction(
         CheatType::DisableClearanceChecks, getGameState().cheats.disableClearanceChecks ? 0 : 1);
     GameActions::Execute(&cheatSetAction);
 }
@@ -782,7 +783,7 @@ void ShortcutManager::RegisterDefaultShortcuts()
     RegisterShortcut(ShortcutId::kInterfacePause, STR_SHORTCUT_PAUSE_GAME, "PAUSE", []() {
         if (gLegacyScene != LegacyScene::titleSequence && gLegacyScene != LegacyScene::scenarioEditor && gLegacyScene != LegacyScene::trackDesignsManager)
         {
-            auto pauseToggleAction = PauseToggleAction();
+            auto pauseToggleAction = GameActions::PauseToggleAction();
             GameActions::Execute(&pauseToggleAction);
         }
     });

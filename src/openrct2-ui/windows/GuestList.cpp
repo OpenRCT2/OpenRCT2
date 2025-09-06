@@ -338,27 +338,25 @@ namespace OpenRCT2::Ui::Windows
 
                     for (size_t i = 0; i < _numPages; i++)
                     {
-                        gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
-                        uint16_t* args = reinterpret_cast<uint16_t*>(&gDropdownItems[i].Args);
+                        gDropdown.items[i].format = STR_DROPDOWN_MENU_LABEL;
+                        uint16_t* args = reinterpret_cast<uint16_t*>(&gDropdown.items[i].args.generic);
                         args[0] = STR_PAGE_X;
                         args[1] = static_cast<uint16_t>(i + 1);
                     }
-                    Dropdown::SetChecked(static_cast<int32_t>(_selectedPage), true);
+                    gDropdown.items[static_cast<int32_t>(_selectedPage)].setChecked(true);
                     break;
                 }
                 case WIDX_INFO_TYPE_DROPDOWN_BUTTON:
                 {
-                    gDropdownItems[0].Format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItems[0].Args = GetViewName(GuestViewType::Actions);
-                    gDropdownItems[1].Format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItems[1].Args = GetViewName(GuestViewType::Thoughts);
+                    gDropdown.items[0] = Dropdown::MenuLabel(GetViewName(GuestViewType::Actions));
+                    gDropdown.items[1] = Dropdown::MenuLabel(GetViewName(GuestViewType::Thoughts));
 
                     auto* widget = &widgets[widgetIndex - 1];
                     WindowDropdownShowTextCustomWidth(
                         { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height() + 1, colours[1], 0,
                         Dropdown::Flag::StayOpen, 2, widget->width() - 3);
 
-                    Dropdown::SetChecked(static_cast<int32_t>(_selectedView), true);
+                    gDropdown.items[static_cast<int32_t>(_selectedView)].setChecked(true);
                     break;
                 }
             }
@@ -943,7 +941,7 @@ namespace OpenRCT2::Ui::Windows
 
         static GuestItem::CompareFunc GetGuestCompareFunc()
         {
-            return getGameState().park.Flags & PARK_FLAGS_SHOW_REAL_GUEST_NAMES ? CompareGuestItem<true>
+            return getGameState().park.flags & PARK_FLAGS_SHOW_REAL_GUEST_NAMES ? CompareGuestItem<true>
                                                                                 : CompareGuestItem<false>;
         }
     };

@@ -13,26 +13,29 @@
 
     #include "GameAction.h"
 
-class CustomAction final : public GameActionBase<GameCommand::Custom>
+namespace OpenRCT2::GameActions
 {
-private:
-    std::string _id;
-    std::string _json;
-    std::string _pluginName;
+    class CustomAction final : public GameActionBase<GameCommand::Custom>
+    {
+    private:
+        std::string _id;
+        std::string _json;
+        std::string _pluginName;
 
-public:
-    CustomAction() = default;
-    CustomAction(const std::string& id, const std::string& json, const std::string& pluginName);
+    public:
+        CustomAction() = default;
+        CustomAction(const std::string& id, const std::string& json, const std::string& pluginName);
 
-    std::string GetId() const;
-    std::string GetJson() const;
-    std::string GetPluginName() const;
+        std::string GetId() const;
+        std::string GetJson() const;
+        std::string GetPluginName() const;
 
-    uint16_t GetActionFlags() const override;
+        uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser& stream) override;
-    OpenRCT2::GameActions::Result Query() const override;
-    OpenRCT2::GameActions::Result Execute() const override;
-};
+        void Serialise(DataSerialiser& stream) override;
+        Result Query() const override;
+        Result Execute() const override;
+    };
+} // namespace OpenRCT2::GameActions
 
 #endif

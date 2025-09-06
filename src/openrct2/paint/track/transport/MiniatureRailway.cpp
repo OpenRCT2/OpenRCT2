@@ -311,7 +311,7 @@ static constexpr CoordsXYZ miniature_railway_track_pieces_right_eight_to_diag_bo
     {
         { 32, 32, 2 },
         { 34, 16, 2 },
-        { 16, 16, 2 },
+        { 14, 14, 2 },
         { 32, 34, 0 },
     },
     {
@@ -1655,7 +1655,7 @@ static constexpr CoordsXYZ kFloorPiecesRightEighthToDiagBounds[4][5] = {
     {
         { 32, 32, 2 },
         { 34, 16, 2 },
-        { 16, 16, 2 },
+        { 14, 14, 2 },
         { 16, 16, 0 },
         { 32, 34, 0 },
     },

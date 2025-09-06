@@ -20,7 +20,7 @@ endif()
 
 include(ExternalProject)
 ExternalProject_Add(libs
-    URL https://github.com/OpenRCT2/openrct2-dependencies-android/releases/download/v12/${ANDROID_ABI}-android-dynamic.tar.zst
+    URL https://github.com/OpenRCT2/openrct2-dependencies-android/releases/download/v13/${ANDROID_ABI}-android-dynamic.tar.zst
 
     SOURCE_DIR "${CMAKE_BINARY_DIR}/libs"
 
@@ -46,6 +46,7 @@ ExternalProject_Add(libs
         ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_SHARED_LIBRARY_PREFIX}icui18n${CMAKE_SHARED_LIBRARY_SUFFIX}
         ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_SHARED_LIBRARY_PREFIX}icuuc${CMAKE_SHARED_LIBRARY_SUFFIX}
         ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_SHARED_LIBRARY_PREFIX}z${CMAKE_SHARED_LIBRARY_SUFFIX}
+        ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_SHARED_LIBRARY_PREFIX}zstd${CMAKE_SHARED_LIBRARY_SUFFIX}
         ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_STATIC_LIBRARY_PREFIX}SDL2main${CMAKE_STATIC_LIBRARY_SUFFIX}
 
     LOG_DOWNLOAD 1
@@ -78,6 +79,7 @@ add_custom_command(TARGET libs POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/libs/lib/libspeexdsp.so" ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
     COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/libs/lib/libssl.so" ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
     COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/libs/lib/libz.so" ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
+    COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/libs/lib/libzstd.so" ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
 )
 
 add_library(freetype SHARED IMPORTED)
@@ -97,6 +99,12 @@ set_target_properties(z PROPERTIES IMPORTED_LOCATION
     ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_SHARED_LIBRARY_PREFIX}z${CMAKE_SHARED_LIBRARY_SUFFIX}
 )
 add_dependencies(z libs)
+
+add_library(zstd SHARED IMPORTED)
+set_target_properties(zstd PROPERTIES IMPORTED_LOCATION
+    ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_SHARED_LIBRARY_PREFIX}zstd${CMAKE_SHARED_LIBRARY_SUFFIX}
+)
+add_dependencies(zstd libs)
 
 add_library(SDL2 SHARED IMPORTED)
 set_target_properties(SDL2 PROPERTIES IMPORTED_LOCATION
@@ -250,7 +258,7 @@ file(GLOB_RECURSE OPENRCT2_CLI_SOURCES
     "${ORCT2_ROOT}/src/openrct2-cli/*.hpp")
 
 add_library(openrct2 SHARED ${LIBOPENRCT2_SOURCES})
-target_link_libraries(openrct2 android stdc++ log dl SDL2 png z icu icuuc icudata crypto ssl freetype)
+target_link_libraries(openrct2 android stdc++ log dl SDL2 png z zstd icu icuuc icudata crypto ssl freetype)
 
 add_library(openrct2-ui SHARED ${OPENRCT2_GUI_SOURCES})
 target_link_libraries(openrct2-ui openrct2 android stdc++ GLESv1_CM GLESv2 SDL2main speexdsp brotlicommon brotlidec bz2 freetype ogg vorbis vorbisfile FLAC)

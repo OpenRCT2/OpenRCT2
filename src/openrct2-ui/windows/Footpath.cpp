@@ -529,7 +529,7 @@ namespace OpenRCT2::Ui::Windows
                 + ScreenCoordsXY{ widgets[WIDX_CONSTRUCT].midX(), widgets[WIDX_CONSTRUCT].bottom - 12 };
             if (_windowFootpathCost != kMoney64Undefined)
             {
-                if (!(getGameState().park.Flags & PARK_FLAGS_NO_MONEY))
+                if (!(getGameState().park.flags & PARK_FLAGS_NO_MONEY))
                 {
                     auto ft = Formatter();
                     ft.Add<money64>(_windowFootpathCost);
@@ -702,9 +702,7 @@ namespace OpenRCT2::Ui::Windows
                     defaultIndex = numPathTypes;
                 }
 
-                gDropdownItems[numPathTypes].Format = kStringIdNone;
-                gDropdownTooltips[numPathTypes] = pathType->NameStringId;
-                Dropdown::SetImage(numPathTypes, ImageId(pathType->PreviewImageId));
+                gDropdown.items[numPathTypes] = Dropdown::ImageItem(ImageId(pathType->PreviewImageId), pathType->NameStringId);
                 _dropdownEntries.push_back({ ObjectType::footpathSurface, i });
                 numPathTypes++;
             }
@@ -728,10 +726,8 @@ namespace OpenRCT2::Ui::Windows
                     defaultIndex = numPathTypes;
                 }
 
-                gDropdownItems[numPathTypes].Format = kStringIdNone;
-                gDropdownTooltips[numPathTypes] = pathEntry->string_idx;
-                Dropdown::SetImage(
-                    numPathTypes, ImageId(showQueues ? pathEntry->GetQueuePreviewImage() : pathEntry->GetPreviewImage()));
+                auto image = ImageId(showQueues ? pathEntry->GetQueuePreviewImage() : pathEntry->GetPreviewImage());
+                gDropdown.items[numPathTypes] = Dropdown::ImageItem(image, pathEntry->string_idx);
                 _dropdownEntries.push_back({ ObjectType::paths, i });
                 numPathTypes++;
             }
@@ -741,10 +737,10 @@ namespace OpenRCT2::Ui::Windows
                 windowPos.x + widget->left, windowPos.y + widget->top, widget->height() + 1, colours[1], 0, numPathTypes, 47,
                 36, itemsPerRow);
 
-            gDropdownHasTooltips = true;
+            gDropdown.hasTooltips = true;
 
             if (defaultIndex)
-                gDropdownDefaultIndex = static_cast<int32_t>(*defaultIndex);
+                gDropdown.defaultIndex = static_cast<int32_t>(*defaultIndex);
         }
 
         void WindowFootpathShowRailingsTypesDialog(Widget* widget)
@@ -766,9 +762,8 @@ namespace OpenRCT2::Ui::Windows
                     defaultIndex = numRailingsTypes;
                 }
 
-                gDropdownItems[numRailingsTypes].Format = kStringIdNone;
-                gDropdownTooltips[numRailingsTypes] = railingsEntry->NameStringId;
-                Dropdown::SetImage(numRailingsTypes, ImageId(railingsEntry->PreviewImageId));
+                gDropdown.items[numRailingsTypes] = Dropdown::ImageItem(
+                    ImageId(railingsEntry->PreviewImageId), railingsEntry->NameStringId);
                 _dropdownEntries.push_back({ ObjectType::footpathRailings, i });
                 numRailingsTypes++;
             }
@@ -778,10 +773,10 @@ namespace OpenRCT2::Ui::Windows
                 windowPos.x + widget->left, windowPos.y + widget->top, widget->height() + 1, colours[1], 0, numRailingsTypes,
                 47, 36, itemsPerRow);
 
-            gDropdownHasTooltips = true;
+            gDropdown.hasTooltips = true;
 
             if (defaultIndex)
-                gDropdownDefaultIndex = static_cast<int32_t>(*defaultIndex);
+                gDropdown.defaultIndex = static_cast<int32_t>(*defaultIndex);
         }
 
         /**
@@ -1145,9 +1140,9 @@ namespace OpenRCT2::Ui::Windows
             auto selectedType = gFootpathSelection.GetSelectedSurface();
             PathConstructFlags constructFlags = FootpathCreateConstructFlags(selectedType);
 
-            auto footpathPlaceAction = FootpathPlaceAction(
+            auto footpathPlaceAction = GameActions::FootpathPlaceAction(
                 { *mapPos, baseZ }, slope, selectedType, gFootpathSelection.Railings, kInvalidDirection, constructFlags);
-            footpathPlaceAction.SetCallback([this](const GameAction* ga, const GameActions::Result* result) {
+            footpathPlaceAction.SetCallback([this](const GameActions::GameAction* ga, const GameActions::Result* result) {
                 if (result->Error == GameActions::Status::Ok)
                 {
                     // Don't play sound if it is no cost to prevent multiple sounds. TODO: make this work in no money scenarios
@@ -1237,49 +1232,50 @@ namespace OpenRCT2::Ui::Windows
 
             PathConstructFlags constructFlags = FootpathCreateConstructFlags(type);
 
-            auto footpathPlaceAction = FootpathPlaceAction(
+            auto footpathPlaceAction = GameActions::FootpathPlaceAction(
                 footpathLoc, slope, type, gFootpathSelection.Railings, _footpathConstructDirection, constructFlags);
 
-            footpathPlaceAction.SetCallback([footpathLoc](const GameAction* ga, const GameActions::Result* result) {
-                if (result->Error == GameActions::Status::Ok)
-                {
-                    Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, result->Position);
-                }
-
-                auto* windowMgr = GetWindowManager();
-                auto* self = static_cast<FootpathWindow*>(windowMgr->FindByClass(WindowClass::Footpath));
-                if (self == nullptr)
-                {
-                    return;
-                }
-
-                if (result->Error == GameActions::Status::Ok)
-                {
-                    if (gFootpathConstructSlope == 0)
+            footpathPlaceAction.SetCallback(
+                [footpathLoc](const GameActions::GameAction* ga, const GameActions::Result* result) {
+                    if (result->Error == GameActions::Status::Ok)
                     {
-                        self->_footpathConstructValidDirections = kInvalidDirection;
-                    }
-                    else
-                    {
-                        self->_footpathConstructValidDirections = self->_footpathConstructDirection;
+                        Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, result->Position);
                     }
 
-                    if (gFootpathGroundFlags & ELEMENT_IS_UNDERGROUND)
+                    auto* windowMgr = GetWindowManager();
+                    auto* self = static_cast<FootpathWindow*>(windowMgr->FindByClass(WindowClass::Footpath));
+                    if (self == nullptr)
                     {
-                        ViewportSetVisibility(ViewportVisibility::UndergroundViewOn);
+                        return;
                     }
 
-                    gFootpathConstructFromPosition = footpathLoc;
-                    // If we have just built an upwards slope, the next path to construct is
-                    // a bit higher. Note that the z returned by footpath_get_next_path_info
-                    // already is lowered if we are building a downwards slope.
-                    if (gFootpathConstructSlope == 2)
+                    if (result->Error == GameActions::Status::Ok)
                     {
-                        gFootpathConstructFromPosition.z += kPathHeightStep;
+                        if (gFootpathConstructSlope == 0)
+                        {
+                            self->_footpathConstructValidDirections = kInvalidDirection;
+                        }
+                        else
+                        {
+                            self->_footpathConstructValidDirections = self->_footpathConstructDirection;
+                        }
+
+                        if (gFootpathGroundFlags & ELEMENT_IS_UNDERGROUND)
+                        {
+                            ViewportSetVisibility(ViewportVisibility::UndergroundViewOn);
+                        }
+
+                        gFootpathConstructFromPosition = footpathLoc;
+                        // If we have just built an upwards slope, the next path to construct is
+                        // a bit higher. Note that the z returned by footpath_get_next_path_info
+                        // already is lowered if we are building a downwards slope.
+                        if (gFootpathConstructSlope == 2)
+                        {
+                            gFootpathConstructFromPosition.z += kPathHeightStep;
+                        }
                     }
-                }
-                self->WindowFootpathSetEnabledAndPressedWidgets();
-            });
+                    self->WindowFootpathSetEnabledAndPressedWidgets();
+                });
             GameActions::Execute(&footpathPlaceAction);
         }
 
@@ -1320,7 +1316,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             gFootpathConstructFromPosition.z = tileElement->GetBaseZ();
-            auto action = FootpathRemoveAction(gFootpathConstructFromPosition);
+            auto action = GameActions::FootpathRemoveAction(gFootpathConstructFromPosition);
             GameActions::Execute(&action);
 
             // Move selection
@@ -1756,7 +1752,7 @@ namespace OpenRCT2::Ui::Windows
 
         FootpathRemoveProvisional();
 
-        auto footpathPlaceAction = FootpathPlaceAction(
+        auto footpathPlaceAction = GameActions::FootpathPlaceAction(
             footpathLoc, slope, type, railingsType, kInvalidDirection, constructFlags);
         footpathPlaceAction.SetFlags(GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
         auto res = GameActions::Execute(&footpathPlaceAction);
@@ -1814,7 +1810,7 @@ namespace OpenRCT2::Ui::Windows
         {
             _provisionalFootpath.flags.unset(ProvisionalPathFlag::placed);
 
-            auto action = FootpathRemoveAction(_provisionalFootpath.position);
+            auto action = GameActions::FootpathRemoveAction(_provisionalFootpath.position);
             action.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
             GameActions::Execute(&action);
         }

@@ -112,7 +112,7 @@ void ScreenshotCheck()
 
 static std::string ScreenshotGetParkName()
 {
-    return getGameState().park.Name;
+    return getGameState().park.name;
 }
 
 static std::string ScreenshotGetDirectory()
@@ -421,6 +421,11 @@ static void ApplyOptions(const ScreenshotOptions* options, Viewport& viewport)
     if (options->transparent || Config::Get().general.TransparentScreenshot)
     {
         viewport.flags |= VIEWPORT_FLAG_TRANSPARENT_BACKGROUND;
+    }
+
+    if (options->draw_bounding_boxes)
+    {
+        gPaintBoundingBoxes = true;
     }
 }
 

@@ -3826,3 +3826,15 @@ STR_6788    :Gevoeligheid:
 STR_6789    :Gevoeligheidsfactor voor de analoge stick
 STR_6790    :Dode zone: {COMMA32}%
 STR_6791    :Gevoeligheid: {COMMA32}%
+STR_6792    :Ingangen
+STR_6793    :Bezoekers en werknemers
+STR_6794    :Decor en thema’s
+STR_6795    :{MOVE_X}{10}{STRINGID}
+STR_6796    :•{MOVE_X}{10}{STRINGID}
+STR_6797    :Geen preview
+STR_6798    :Screenshot
+STR_6799    :Bovenaanzicht
+STR_7000    :of
+STR_7001    :Attractienaam
+STR_7002    :{STRINGID} {STRINGID}
+STR_7003    :Audiobestand ‘{STRING}’ is beschadigd. Sample nr. {INT32} kon niet worden geladen, aangezien er maar {INT32} beschikbaar zijn. Installeer RollerCoaster Tycoon 2 opnieuw.

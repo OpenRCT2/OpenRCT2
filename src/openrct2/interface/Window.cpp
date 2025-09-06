@@ -411,62 +411,6 @@ static constexpr float kWindowScrollLocations[][2] = {
         }
     }
 
-    void WindowViewportGetMapCoordsByCursor(
-        const WindowBase& w, int32_t* map_x, int32_t* map_y, int32_t* offset_x, int32_t* offset_y)
-    {
-        // Get mouse position to offset against.
-        auto mouseCoords = ContextGetCursorPositionScaled();
-
-        // Compute map coordinate by mouse position.
-        auto viewportPos = w.viewport->ScreenToViewportCoord(mouseCoords);
-        auto coordsXYZ = ViewportAdjustForMapHeight(viewportPos, w.viewport->rotation);
-        auto mapCoords = ViewportPosToMapPos(viewportPos, coordsXYZ.z, w.viewport->rotation);
-        *map_x = mapCoords.x;
-        *map_y = mapCoords.y;
-
-        // Get viewport coordinates centring around the tile.
-        int32_t z = TileElementHeight(mapCoords);
-
-        auto centreLoc = centre_2d_coordinates({ mapCoords.x, mapCoords.y, z }, w.viewport);
-        if (!centreLoc)
-        {
-            LOG_ERROR("Invalid location.");
-            return;
-        }
-
-        // Rebase mouse position onto centre of window, and compensate for zoom level.
-        int32_t rebased_x = w.viewport->zoom.ApplyTo(w.width / 2 - mouseCoords.x);
-        int32_t rebased_y = w.viewport->zoom.ApplyTo(w.height / 2 - mouseCoords.y);
-
-        // Compute cursor offset relative to tile.
-        *offset_x = w.viewport->zoom.ApplyTo(w.savedViewPos.x - (centreLoc->x + rebased_x));
-        *offset_y = w.viewport->zoom.ApplyTo(w.savedViewPos.y - (centreLoc->y + rebased_y));
-    }
-
-    void WindowViewportCentreTileAroundCursor(WindowBase& w, int32_t map_x, int32_t map_y, int32_t offset_x, int32_t offset_y)
-    {
-        // Get viewport coordinates centring around the tile.
-        int32_t z = TileElementHeight({ map_x, map_y });
-        auto centreLoc = centre_2d_coordinates({ map_x, map_y, z }, w.viewport);
-
-        if (!centreLoc.has_value())
-        {
-            LOG_ERROR("Invalid location.");
-            return;
-        }
-
-        // Get mouse position to offset against.
-        auto mouseCoords = ContextGetCursorPositionScaled();
-
-        // Rebase mouse position onto centre of window, and compensate for zoom level.
-        int32_t rebased_x = w.viewport->zoom.ApplyTo((w.width >> 1) - mouseCoords.x);
-        int32_t rebased_y = w.viewport->zoom.ApplyTo((w.height >> 1) - mouseCoords.y);
-
-        // Apply offset to the viewport.
-        w.savedViewPos = { centreLoc->x + rebased_x + w.viewport->zoom.ApplyInversedTo(offset_x),
-                           centreLoc->y + rebased_y + w.viewport->zoom.ApplyInversedTo(offset_y) };
-    }
-
     /**
      * For all windows with viewports, ensure they do not have a zoom level less than the minimum.
      */
@@ -490,15 +434,7 @@ static constexpr float kWindowScrollLocations[][2] = {
         if (v->zoom == zoomLevel)
             return;
 
-        // Zooming to cursor? Remember where we're pointing at the moment.
-        int32_t saved_map_x = 0;
-        int32_t saved_map_y = 0;
-        int32_t offset_x = 0;
-        int32_t offset_y = 0;
-        if (Config::Get().general.ZoomToCursor && atCursor)
-        {
-            WindowViewportGetMapCoordsByCursor(w, &saved_map_x, &saved_map_y, &offset_x, &offset_y);
-        }
+        const ZoomLevel previousZoomLevel = v->zoom;
 
         // Zoom in
         while (v->zoom > zoomLevel)
@@ -516,11 +452,25 @@ static constexpr float kWindowScrollLocations[][2] = {
             w.savedViewPos.y -= v->ViewHeight() / 4;
         }
 
-        // Zooming to cursor? Centre around the tile we were hovering over just now.
         if (Config::Get().general.ZoomToCursor && atCursor)
         {
-            WindowViewportCentreTileAroundCursor(w, saved_map_x, saved_map_y, offset_x, offset_y);
+            const auto mouseCoords = ContextGetCursorPositionScaled() - v->pos;
+            const int32_t diffX = (mouseCoords.x - (zoomLevel.ApplyInversedTo(v->ViewWidth()) / 2));
+            const int32_t diffY = (mouseCoords.y - (zoomLevel.ApplyInversedTo(v->ViewHeight()) / 2));
+            if (previousZoomLevel > zoomLevel)
+            {
+                w.savedViewPos.x += zoomLevel.ApplyTo(diffX);
+                w.savedViewPos.y += zoomLevel.ApplyTo(diffY);
+            }
+            else
+            {
+                w.savedViewPos.x -= previousZoomLevel.ApplyTo(diffX);
+                w.savedViewPos.y -= previousZoomLevel.ApplyTo(diffY);
+            }
         }
+
+        v->viewPos.x = w.savedViewPos.x;
+        v->viewPos.y = w.savedViewPos.y;
 
         // HACK: Prevents the redraw from failing when there is
         // a window on top of the viewport.

@@ -20,7 +20,6 @@
 struct PaintSession;
 struct PaintStruct;
 struct RenderTarget;
-struct TileElement;
 struct EntityBase;
 struct Guest;
 struct Staff;
@@ -28,6 +27,7 @@ struct PaintEntry;
 
 namespace OpenRCT2
 {
+    struct TileElement;
     struct WindowBase;
 
     struct Viewport

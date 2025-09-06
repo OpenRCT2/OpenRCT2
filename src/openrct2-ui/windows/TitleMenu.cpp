@@ -147,7 +147,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         windowMgr->CloseByClass(WindowClass::ScenarioSelect);
                         windowMgr->CloseByClass(WindowClass::ServerList);
-                        auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::OpenSavePrompt);
+                        auto loadOrQuitAction = GameActions::LoadOrQuitAction(GameActions::LoadOrQuitModes::OpenSavePrompt);
                         GameActions::Execute(&loadOrQuitAction);
                     }
                     break;
@@ -175,11 +175,11 @@ namespace OpenRCT2::Ui::Windows
             if (widgetIndex == WIDX_GAME_TOOLS)
             {
                 int32_t i = 0;
-                gDropdownItems[i++].Format = STR_SCENARIO_EDITOR;
-                gDropdownItems[i++].Format = STR_CONVERT_SAVED_GAME_TO_SCENARIO;
-                gDropdownItems[i++].Format = STR_ROLLER_COASTER_DESIGNER;
-                gDropdownItems[i++].Format = STR_TRACK_DESIGNS_MANAGER;
-                gDropdownItems[i++].Format = STR_OPEN_USER_CONTENT_FOLDER;
+                gDropdown.items[i++] = Dropdown::PlainMenuLabel(STR_SCENARIO_EDITOR);
+                gDropdown.items[i++] = Dropdown::PlainMenuLabel(STR_CONVERT_SAVED_GAME_TO_SCENARIO);
+                gDropdown.items[i++] = Dropdown::PlainMenuLabel(STR_ROLLER_COASTER_DESIGNER);
+                gDropdown.items[i++] = Dropdown::PlainMenuLabel(STR_TRACK_DESIGNS_MANAGER);
+                gDropdown.items[i++] = Dropdown::PlainMenuLabel(STR_OPEN_USER_CONTENT_FOLDER);
 
 #ifdef ENABLE_SCRIPTING
                 auto hasCustomItems = false;
@@ -190,16 +190,13 @@ namespace OpenRCT2::Ui::Windows
                     {
                         if (item.Kind == OpenRCT2::Scripting::CustomToolbarMenuItemKind::Toolbox)
                         {
-                            // Add seperator
                             if (!hasCustomItems)
                             {
                                 hasCustomItems = true;
-                                gDropdownItems[i++].Format = kStringIdEmpty;
+                                gDropdown.items[i++] = Dropdown::Separator();
                             }
 
-                            gDropdownItems[i].Format = STR_STRING;
-                            auto sz = item.Text.c_str();
-                            std::memcpy(&gDropdownItems[i].Args, &sz, sizeof(const char*));
+                            gDropdown.items[i] = Dropdown::PlainMenuLabel(item.Text.c_str());
                             i++;
                         }
                     }

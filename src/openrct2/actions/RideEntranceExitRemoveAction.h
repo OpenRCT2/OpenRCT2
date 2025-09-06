@@ -11,23 +11,26 @@
 
 #include "GameAction.h"
 
-class RideEntranceExitRemoveAction final : public GameActionBase<GameCommand::RemoveRideEntranceOrExit>
+namespace OpenRCT2::GameActions
 {
-private:
-    CoordsXY _loc;
-    RideId _rideIndex{ RideId::GetNull() };
-    StationIndex _stationNum{ StationIndex::GetNull() };
-    bool _isExit{};
+    class RideEntranceExitRemoveAction final : public GameActionBase<GameCommand::RemoveRideEntranceOrExit>
+    {
+    private:
+        CoordsXY _loc;
+        RideId _rideIndex{ RideId::GetNull() };
+        StationIndex _stationNum{ StationIndex::GetNull() };
+        bool _isExit{};
 
-public:
-    RideEntranceExitRemoveAction() = default;
-    RideEntranceExitRemoveAction(const CoordsXY& loc, RideId rideIndex, StationIndex stationNum, bool isExit);
+    public:
+        RideEntranceExitRemoveAction() = default;
+        RideEntranceExitRemoveAction(const CoordsXY& loc, RideId rideIndex, StationIndex stationNum, bool isExit);
 
-    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor&) final;
 
-    uint16_t GetActionFlags() const override;
+        uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser& stream) override;
-    OpenRCT2::GameActions::Result Query() const override;
-    OpenRCT2::GameActions::Result Execute() const override;
-};
+        void Serialise(DataSerialiser& stream) override;
+        Result Query() const override;
+        Result Execute() const override;
+    };
+} // namespace OpenRCT2::GameActions

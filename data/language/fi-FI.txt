@@ -2168,7 +2168,6 @@ STR_3136    :Varoitus: Tämä malli rakennetaan korvaavalla ajoneuvotyypillä, j
 STR_3137    :Valitse lähistön maisemoinnit
 STR_3138    :Tyhjennä valinta
 STR_3139    :Nostomäki ei toimi tässä toimintatilassa
-STR_3140    :Nostomäen tulee alkaa heti aseman jälkeen
 STR_3141    :Monikierrokset eivät ole mahdollisia nostomäen kanssa
 STR_3142    :{WINDOW_COLOUR_2}Kapasiteetti: {BLACK}{STRINGID}
 STR_3143    :Näytä ihmiset kartalla

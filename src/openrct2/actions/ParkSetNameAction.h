@@ -11,20 +11,23 @@
 
 #include "GameAction.h"
 
-class ParkSetNameAction final : public GameActionBase<GameCommand::SetParkName>
+namespace OpenRCT2::GameActions
 {
-private:
-    std::string _name;
+    class ParkSetNameAction final : public GameActionBase<GameCommand::SetParkName>
+    {
+    private:
+        std::string _name;
 
-public:
-    ParkSetNameAction() = default;
-    ParkSetNameAction(const std::string& name);
+    public:
+        ParkSetNameAction() = default;
+        ParkSetNameAction(const std::string& name);
 
-    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor&) final;
 
-    uint16_t GetActionFlags() const override;
+        uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser& stream) override;
-    OpenRCT2::GameActions::Result Query() const override;
-    OpenRCT2::GameActions::Result Execute() const override;
-};
+        void Serialise(DataSerialiser& stream) override;
+        Result Query() const override;
+        Result Execute() const override;
+    };
+} // namespace OpenRCT2::GameActions

@@ -20,48 +20,49 @@
 #include "../windows/Intent.h"
 #include "../world/Park.h"
 
-using namespace OpenRCT2;
-
-ParkSetNameAction::ParkSetNameAction(const std::string& name)
-    : _name(name)
+namespace OpenRCT2::GameActions
 {
-}
-
-void ParkSetNameAction::AcceptParameters(GameActionParameterVisitor& visitor)
-{
-    visitor.Visit("name", _name);
-}
-
-uint16_t ParkSetNameAction::GetActionFlags() const
-{
-    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
-}
-
-void ParkSetNameAction::Serialise(DataSerialiser& stream)
-{
-    GameAction::Serialise(stream);
-    stream << DS_TAG(_name);
-}
-
-GameActions::Result ParkSetNameAction::Query() const
-{
-    if (_name.empty())
+    ParkSetNameAction::ParkSetNameAction(const std::string& name)
+        : _name(name)
     {
-        LOG_ERROR("Can't set park name to empty string");
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_RENAME_PARK, STR_INVALID_NAME_FOR_PARK);
     }
-    return GameActions::Result();
-}
 
-GameActions::Result ParkSetNameAction::Execute() const
-{
-    // Do a no-op if new name is the same as the current name is the same
-    auto& park = getGameState().park;
-    if (_name != park.Name)
+    void ParkSetNameAction::AcceptParameters(GameActionParameterVisitor& visitor)
     {
-        park.Name = _name;
-        ScrollingTextInvalidate();
-        GfxInvalidateScreen();
+        visitor.Visit("name", _name);
     }
-    return GameActions::Result();
-}
+
+    uint16_t ParkSetNameAction::GetActionFlags() const
+    {
+        return GameAction::GetActionFlags() | Flags::AllowWhilePaused;
+    }
+
+    void ParkSetNameAction::Serialise(DataSerialiser& stream)
+    {
+        GameAction::Serialise(stream);
+        stream << DS_TAG(_name);
+    }
+
+    Result ParkSetNameAction::Query() const
+    {
+        if (_name.empty())
+        {
+            LOG_ERROR("Can't set park name to empty string");
+            return Result(Status::InvalidParameters, STR_CANT_RENAME_PARK, STR_INVALID_NAME_FOR_PARK);
+        }
+        return Result();
+    }
+
+    Result ParkSetNameAction::Execute() const
+    {
+        // Do a no-op if new name is the same as the current name is the same
+        auto& park = getGameState().park;
+        if (_name != park.name)
+        {
+            park.name = _name;
+            ScrollingTextInvalidate();
+            GfxInvalidateScreen();
+        }
+        return Result();
+    }
+} // namespace OpenRCT2::GameActions

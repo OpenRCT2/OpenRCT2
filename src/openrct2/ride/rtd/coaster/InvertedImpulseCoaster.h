@@ -15,10 +15,12 @@
 #include "../../Track.h"
 
 // clang-format off
+namespace OpenRCT2
+{
 constexpr RideTypeDescriptor InvertedImpulseCoasterRTD =
 {
     .Category = RideCategory::rollerCoaster,
-    .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
+    .StartTrackPiece = TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::invertedImpulseCoaster,
         .supportType = MetalSupportType::tubesInverted,
@@ -39,7 +41,7 @@ constexpr RideTypeDescriptor InvertedImpulseCoasterRTD =
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION),
     .Heights = { 45, 40, 29, 8, },
     .MaxMass = 23,
-    .LiftData = { OpenRCT2::Audio::SoundId::LiftClassic, 4, 7 },
+    .LiftData = { Audio::SoundId::LiftClassic, 4, 7 },
     .RatingsMultipliers = { 50, 30, 10 },
     .UpkeepCosts = { 180, 20, 80, 11, 3, 10 },
     .BuildCosts = { 62.50_GBP, 2.50_GBP, 25, },
@@ -60,13 +62,13 @@ constexpr RideTypeDescriptor InvertedImpulseCoasterRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { MakeRideRating(4, 00), MakeRideRating(3, 00), MakeRideRating(3, 20) },
+        { RideRating::make(4, 00), RideRating::make(3, 00), RideRating::make(3, 20) },
         20,
         -1,
         false,
         {
             { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },
-            { RatingsModifierType::BonusSynchronisation,  0,                MakeRideRating(0, 42), MakeRideRating(0, 05), 0 },
+            { RatingsModifierType::BonusSynchronisation,  0,                RideRating::make(0, 42), RideRating::make(0, 05), 0 },
             { RatingsModifierType::BonusTrainLength,      0,                187245, 0, 0 },
             { RatingsModifierType::BonusMaxSpeed,         0,                44281, 88562, 35424 },
             { RatingsModifierType::BonusAverageSpeed,     0,                291271, 436906, 0 },
@@ -83,4 +85,5 @@ constexpr RideTypeDescriptor InvertedImpulseCoasterRTD =
         },
     },
 };
+} // namespace OpenRCT2
 // clang-format on

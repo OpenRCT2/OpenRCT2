@@ -16,14 +16,16 @@
 #include "../../Track.h"
 
 // clang-format off
+namespace OpenRCT2
+{
 constexpr RideTypeDescriptor VerticalDropCoasterRTD =
 {
     .Category = RideCategory::rollerCoaster,
-    .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
+    .StartTrackPiece = TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::twisterRollerCoaster,
         .supportType = MetalSupportType::boxed,
-        .enabledTrackGroups = {TrackGroup::flat, TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::liftHillSteep, TrackGroup::flatRollBanking, TrackGroup::verticalLoop, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::flatToSteepSlope, TrackGroup::slopeCurve, TrackGroup::slopeCurveSteep, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::helixDownBankedHalf, TrackGroup::helixUpBankedHalf, TrackGroup::brakes, TrackGroup::onridePhoto, TrackGroup::slopeVertical, TrackGroup::slopeCurveBanked, TrackGroup::blockBrakes, TrackGroup::slopeRollBanking, TrackGroup::curveVertical, TrackGroup::halfLoopLarge, TrackGroup::brakeForDrop, TrackGroup::diagBrakes, TrackGroup::diagBlockBrakes, TrackGroup::slopeCurveLarge, TrackGroup::halfLoopMedium, TrackGroup::zeroGRoll, TrackGroup::zeroGRollLarge, TrackGroup::corkscrew, TrackGroup::corkscrewLarge, TrackGroup::diveLoop},
+        .enabledTrackGroups = {TrackGroup::flat, TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::liftHillSteep, TrackGroup::flatRollBanking, TrackGroup::verticalLoop, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::flatToSteepSlope, TrackGroup::slopeCurve, TrackGroup::slopeCurveSteep, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::helixDownBankedHalf, TrackGroup::helixUpBankedHalf, TrackGroup::brakes, TrackGroup::onridePhoto, TrackGroup::slopeVertical, TrackGroup::slopeCurveBanked, TrackGroup::blockBrakes, TrackGroup::slopeRollBanking, TrackGroup::curveVertical, TrackGroup::halfLoopLarge, TrackGroup::brakeForDrop, TrackGroup::diagBrakes, TrackGroup::diagBlockBrakes, TrackGroup::slopeCurveLarge, TrackGroup::halfLoopMedium, TrackGroup::zeroGRoll, TrackGroup::zeroGRollLarge, TrackGroup::corkscrew, TrackGroup::corkscrewLarge, TrackGroup::diveLoop, TrackGroup::diagSlope, TrackGroup::diagSlopeSteepUp, TrackGroup::diagSlopeSteepDown},
         .extraTrackGroups = {TrackGroup::halfLoop, TrackGroup::barrelRoll, TrackGroup::poweredLift, TrackGroup::halfLoopLarge, TrackGroup::quarterLoop, TrackGroup::booster, TrackGroup::twist, TrackGroup::slopeSteepLong, TrackGroup::diagSlopeSteepLong},
     }),
     .InvertedTrackPaintFunctions = {},
@@ -39,7 +41,7 @@ constexpr RideTypeDescriptor VerticalDropCoasterRTD =
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE),
     .Heights = { 55, 24, 8, 11, },
     .MaxMass = 25,
-    .LiftData = { OpenRCT2::Audio::SoundId::LiftBM, 4, 5 },
+    .LiftData = { Audio::SoundId::LiftBM, 4, 5 },
     .RatingsMultipliers = { 52, 38, 10 },
     .UpkeepCosts = { 44, 20, 80, 11, 3, 10 },
     .BuildCosts = { 60.00_GBP, 2.50_GBP, 42, },
@@ -60,13 +62,13 @@ constexpr RideTypeDescriptor VerticalDropCoasterRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { MakeRideRating(3, 20), MakeRideRating(0, 80), MakeRideRating(0, 30) },
+        { RideRating::make(3, 20), RideRating::make(0, 80), RideRating::make(0, 30) },
         16,
         -1,
         false,
         {
             { RatingsModifierType::BonusLength,           4000,             1146, 0, 0 },
-            { RatingsModifierType::BonusSynchronisation,  0,                MakeRideRating(0, 40), MakeRideRating(0, 05), 0 },
+            { RatingsModifierType::BonusSynchronisation,  0,                RideRating::make(0, 40), RideRating::make(0, 05), 0 },
             { RatingsModifierType::BonusMaxSpeed,         0,                97418, 141699, 70849 },
             { RatingsModifierType::BonusAverageSpeed,     0,                291271, 436906, 0 },
             { RatingsModifierType::BonusDuration,         150,              26214, 0, 0 },
@@ -84,4 +86,5 @@ constexpr RideTypeDescriptor VerticalDropCoasterRTD =
         },
     },
 };
+} // namespace OpenRCT2
 // clang-format on

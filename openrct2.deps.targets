@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  
+
   <!-- DownloadDependency task -->
   <UsingTask TaskName="DownloadDependency"
              TaskFactory="CodeTaskFactory"
@@ -8,7 +8,7 @@
     <ParameterGroup>
       <Name            Required="true"  ParameterType="System.String" />
       <Url             Required="true"  ParameterType="System.String" />
-      <Sha1            Required="true"  ParameterType="System.String" />
+      <Sha256          Required="true"  ParameterType="System.String" />
       <CheckFile       Required="false" ParameterType="System.String" />
       <OutputDirectory Required="true"  ParameterType="System.String" />
     </ParameterGroup>
@@ -28,8 +28,8 @@
           {
               if (!String.IsNullOrEmpty(CheckFile))
               {
-                  string checkSha1 = GetSha1FromCheckFile(CheckFile, Name);
-                  if (String.Equals(checkSha1, Sha1, StringComparison.OrdinalIgnoreCase) && Directory.Exists(OutputDirectory))
+                  string checkSha256 = GetSha256FromCheckFile(CheckFile, Name);
+                  if (String.Equals(checkSha256, Sha256, StringComparison.OrdinalIgnoreCase) && Directory.Exists(OutputDirectory))
                   {
                       Log.LogMessage(MessageImportance.Normal, String.Format("{0} up to date", Name));
                       return true;
@@ -45,10 +45,10 @@
                   client.DownloadFile(Url, tempFile);
 
                   // Check the file matches
-                  string actualSha1;
-                  if (!CheckFileSha1(tempFile, Sha1, out actualSha1))
+                  string actualSha256;
+                  if (!CheckFileSha256(tempFile, Sha256, out actualSha256))
                   {
-                      Log.LogError("Download file did not match expected SHA1\n  expected: {0}\n  actual: {1}", Sha1, actualSha1);
+                      Log.LogError("Download file did not match expected SHA256\n  expected: {0}\n  actual: {1}", Sha256, actualSha256);
                       return false;
                   }
 
@@ -60,7 +60,7 @@
                   }
                   ExtractZip(tempFile, OutputDirectory, overwrite: true);
 
-                  SetSha1InCheckFile(CheckFile, Name, Sha1);
+                  SetSha256InCheckFile(CheckFile, Name, Sha256);
               }
               catch (Exception ex)
               {
@@ -80,7 +80,7 @@
               return true;
           }
 
-          private string GetSha1FromCheckFile(string checkFile, string name)
+          private string GetSha256FromCheckFile(string checkFile, string name)
           {
               string result = null;
               try
@@ -88,9 +88,9 @@
                   if (File.Exists(checkFile))
                   {
                       string[] lines = File.ReadAllLines(checkFile);
-                      string sha1;
-                      GetCheckFileLineIndexSha1(lines, name, out sha1);
-                      return sha1;
+                      string sha256;
+                      GetCheckFileLineIndexSha256(lines, name, out sha256);
+                      return sha256;
                   }
               }
               catch (Exception ex)
@@ -100,18 +100,18 @@
               return result;
           }
 
-          private void SetSha1InCheckFile(string checkFile, string name, string sha1)
+          private void SetSha256InCheckFile(string checkFile, string name, string sha256)
           {
               try
               {
-                  string newLine = String.Format("{0} = {1}", name, sha1.ToLower());
+                  string newLine = String.Format("{0} = {1}", name, sha256.ToLower());
                   string[] lines = new string[0];
                   int lineIndex = -1;
                   if (File.Exists(checkFile))
                   {
                       lines = File.ReadAllLines(checkFile);
-                      string oldsha1;
-                      lineIndex = GetCheckFileLineIndexSha1(lines, name, out oldsha1);
+                      string oldsha256;
+                      lineIndex = GetCheckFileLineIndexSha256(lines, name, out oldsha256);
                   }
                   if (lineIndex == -1)
                   {
@@ -133,7 +133,7 @@
               }
           }
 
-          private int GetCheckFileLineIndexSha1(string[] lines, string name, out string sha1)
+          private int GetCheckFileLineIndexSha256(string[] lines, string name, out string sha256)
           {
               for (int i = 0; i < lines.Length; i++)
               {
@@ -142,26 +142,26 @@
                   if (lineParts.Length == 2)
                   {
                       string lineTag = lineParts[0].Trim();
-                      string lineSha1 = lineParts[1].Trim();
+                      string lineSha256 = lineParts[1].Trim();
                       if (lineTag == name)
                       {
-                          sha1 = lineSha1;
+                          sha256 = lineSha256;
                           return i;
                       }
                   }
               }
-              sha1 = null;
+              sha256 = null;
               return -1;
           }
 
-          private bool CheckFileSha1(string file, string expectedSha1, out string actualSha1)
+          private bool CheckFileSha256(string file, string expectedSha256, out string actualSha256)
           {
               using (var fs = new FileStream(file, FileMode.Open))
               {
-                  var hasher = System.Security.Cryptography.SHA1.Create();
+                  var hasher = System.Security.Cryptography.SHA256.Create();
                   byte[] hash = hasher.ComputeHash(fs);
-                  actualSha1 = BytesToHexString(hash);
-                  if (String.Equals(actualSha1, expectedSha1, StringComparison.OrdinalIgnoreCase))
+                  actualSha256 = BytesToHexString(hash);
+                  if (String.Equals(actualSha256, expectedSha256, StringComparison.OrdinalIgnoreCase))
                   {
                       return true;
                   }
@@ -205,34 +205,34 @@
       </Code>
     </Task>
   </UsingTask>
-  
+
   <!-- 3rd party libraries / dependencies -->
   <PropertyGroup>
     <RootDir>$(MsBuildThisFileDirectory)</RootDir>
     <DependenciesCheckFile>$(RootDir).dependencies</DependenciesCheckFile>
-    <LibsUrl Condition="'$(Platform)'=='ARM64'">https://github.com/OpenRCT2/Dependencies/releases/download/v37/openrct2-libs-v37-arm64-windows-static.zip</LibsUrl>
-    <LibsSha1 Condition="'$(Platform)'=='ARM64'">508bbd39b9be3d746ed8e17b6c0e7a79f6fa13c8</LibsSha1>
-    <LibsUrl Condition="'$(Platform)'=='x64'">https://github.com/OpenRCT2/Dependencies/releases/download/v37/openrct2-libs-v37-x64-windows-static.zip</LibsUrl>
-    <LibsSha1 Condition="'$(Platform)'=='x64'">28fabdb3fe8ddb7c73cd1c5e57ec8df5bd6232e5</LibsSha1>
-    <LibsUrl Condition="'$(Platform)'=='Win32'">https://github.com/OpenRCT2/Dependencies/releases/download/v37/openrct2-libs-v37-x86-windows-static.zip</LibsUrl>
-    <LibsSha1 Condition="'$(Platform)'=='Win32'">9984c1e317dcfb3aaf8e17f1db2ebb0f771e2373</LibsSha1>
+    <LibsUrl Condition="'$(Platform)'=='ARM64'">https://github.com/OpenRCT2/Dependencies/releases/download/v38/openrct2-libs-v38-arm64-windows-static.zip</LibsUrl>
+    <LibsSha256 Condition="'$(Platform)'=='ARM64'">00ef08029e6eb251917a73a92063472dba92422ae91846cfa75d83bbdcdb3a4d</LibsSha256>
+    <LibsUrl Condition="'$(Platform)'=='x64'">https://github.com/OpenRCT2/Dependencies/releases/download/v38/openrct2-libs-v38-x64-windows-static.zip</LibsUrl>
+    <LibsSha256 Condition="'$(Platform)'=='x64'">c9fdda3556305b4b9276d5901b37067b73eae80d95427189f026b78753e84f7b</LibsSha256>
+    <LibsUrl Condition="'$(Platform)'=='Win32'">https://github.com/OpenRCT2/Dependencies/releases/download/v38/openrct2-libs-v38-x86-windows-static.zip</LibsUrl>
+    <LibsSha256 Condition="'$(Platform)'=='Win32'">dd58ad06d747caf2b6d34cfc90de217fb92379bde75183dbc91a25e191ec81fa</LibsSha256>
     <TitleSequencesUrl>https://github.com/OpenRCT2/title-sequences/releases/download/v0.4.14/title-sequences.zip</TitleSequencesUrl>
-    <TitleSequencesSha1>6c04781b959b468e1f65ec2d2f21f5aaa5e5724d</TitleSequencesSha1>
-    <ObjectsUrl>https://github.com/OpenRCT2/objects/releases/download/v1.7.2/objects.zip</ObjectsUrl>
-    <ObjectsSha1>ab0f05744105528067c6403a9e837fb6a2c52f74</ObjectsSha1>
+    <TitleSequencesSha256>140df714e806fed411cc49763e7f16b0fcf2a487a57001d1e50fce8f9148a9f3</TitleSequencesSha256>
+    <ObjectsUrl>https://github.com/OpenRCT2/objects/releases/download/v1.7.3/objects.zip</ObjectsUrl>
+    <ObjectsSha256>c81029264578706ed1db88665e12a70a583e71dc4d3eb4db262535d2f0589eab</ObjectsSha256>
     <OpenSFXUrl>https://github.com/OpenRCT2/OpenSoundEffects/releases/download/v1.0.6/opensound.zip</OpenSFXUrl>
-    <OpenSFXSha1>e8b6f24b3fb9d1ed5dc27022a50aaea98923d872</OpenSFXSha1>
+    <OpenSFXSha256>06b90f3e19c216752df441d551b26a9e3e1ba7755bdd2102504b73bf993608be</OpenSFXSha256>
     <OpenMSXUrl>https://github.com/OpenRCT2/OpenMusic/releases/download/v1.6.1/openmusic.zip</OpenMSXUrl>
-    <OpenMSXSha1>5168c852b1a10b623c10f0ff2a590ba494df4edb</OpenMSXSha1>
+    <OpenMSXSha256>994b350d3b180ee1cb9619fe27f7ebae3a1a5232840c4bd47a89f33fa89de1a1</OpenMSXSha256>
     <ReplaysUrl>https://github.com/OpenRCT2/replays/releases/download/v0.0.89/replays.zip</ReplaysUrl>
-    <ReplaysSha1>089CB8EEA76A98028367FDDE72675E9309AB9036</ReplaysSha1>
+    <ReplaysSha256>04607bb1f67a0f31d841ed70b38d65b8f7a9e19749e414ff74b8a434bc90b42a</ReplaysSha256>
   </PropertyGroup>
-  
+
   <!-- Unified Dependency Target -->
-  <Target Name="DownloadAllDependencies" 
+  <Target Name="DownloadAllDependencies"
           BeforeTargets="PrepareForBuild"
           DependsOnTargets="DownloadLibs;DownloadTitleSequences;DownloadObjects;DownloadOpenSFX;DownloadOpenMSX;DownloadReplays">
-    
+
     <!-- Add completion marker -->
     <Touch Files="$(DependenciesCheckFile)" AlwaysCreate="true" />
   </Target>
@@ -242,19 +242,17 @@
     <!-- libs -->
     <DownloadDependency Name="Libs"
                         Url="$(LibsUrl)"
-                        Sha1="$(LibsSha1)"
+                        Sha256="$(LibsSha256)"
                         CheckFile="$(DependenciesCheckFile)"
                         OutputDirectory="$(RootDir)lib\$(Platform)" />
-                        
 
-                        
   </Target>
-                        
+
   <!-- Target to download the title sequences -->
   <Target Name="DownloadTitleSequences">
     <DownloadDependency Name="TitleSequences"
                         Url="$(TitleSequencesUrl)"
-                        Sha1="$(TitleSequencesSha1)"
+                        Sha256="$(TitleSequencesSha256)"
                         CheckFile="$(DependenciesCheckFile)"
                         OutputDirectory="$(TargetDir)data\sequence" />
   </Target>
@@ -263,7 +261,7 @@
   <Target Name="DownloadObjects">
     <DownloadDependency Name="Objects"
                         Url="$(ObjectsUrl)"
-                        Sha1="$(ObjectsSha1)"
+                        Sha256="$(ObjectsSha256)"
                         CheckFile="$(DependenciesCheckFile)"
                         OutputDirectory="$(TargetDir)data\object" />
   </Target>
@@ -272,7 +270,7 @@
   <Target Name="DownloadOpenSFX">
     <DownloadDependency Name="OpenSFX"
                         Url="$(OpenSFXUrl)"
-                        Sha1="$(OpenSFXSha1)"
+                        Sha256="$(OpenSFXSha256)"
                         CheckFile="$(DependenciesCheckFile)"
                         OutputDirectory="$(TargetDir)data" />
   </Target>
@@ -281,7 +279,7 @@
   <Target Name="DownloadOpenMSX">
     <DownloadDependency Name="OpenMSX"
                         Url="$(OpenMSXUrl)"
-                        Sha1="$(OpenMSXSha1)"
+                        Sha256="$(OpenMSXSha256)"
                         CheckFile="$(DependenciesCheckFile)"
                         OutputDirectory="$(TargetDir)data" />
   </Target>
@@ -290,9 +288,9 @@
   <Target Name="DownloadReplays">
     <DownloadDependency Name="Replays"
                         Url="$(ReplaysUrl)"
-                        Sha1="$(ReplaysSha1)"
+                        Sha256="$(ReplaysSha256)"
                         CheckFile="$(DependenciesCheckFile)"
                         OutputDirectory="$(TargetDir)testdata\replays" />
   </Target>
-  
+
 </Project>

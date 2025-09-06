@@ -20,7 +20,16 @@
 #include <cstdint>
 #include <optional>
 
-struct TileElement;
+namespace OpenRCT2
+{
+    struct TileElement;
+}
+
+namespace OpenRCT2::GameActions
+{
+    enum class RideSetSetting : uint8_t;
+}
+
 struct CoordsXYE;
 struct RideTypeDescriptor;
 struct TrackDrawerDescriptor;
@@ -128,6 +137,9 @@ void RideSelectPreviousSection();
 
 bool RideModify(const CoordsXYE& input);
 
+money64 SetOperatingSetting(RideId rideId, OpenRCT2::GameActions::RideSetSetting setting, uint8_t value);
+money64 SetOperatingSettingNested(RideId rideId, OpenRCT2::GameActions::RideSetSetting setting, uint8_t value, uint8_t flags);
+
 bool RideSelectBackwardsFromFront();
 bool RideSelectForwardsFromBack();
 
@@ -139,5 +151,5 @@ OpenRCT2::TrackElemType GetTrackTypeFromCurve(
     TrackCurve curve, bool startsDiagonal, TrackPitch startSlope, TrackPitch endSlope, TrackRoll startBank, TrackRoll endBank);
 
 std::optional<CoordsXYZ> GetTrackElementOriginAndApplyChanges(
-    const CoordsXYZD& location, OpenRCT2::TrackElemType type, uint16_t extra_params, TileElement** output_element,
+    const CoordsXYZD& location, OpenRCT2::TrackElemType type, uint16_t extra_params, OpenRCT2::TileElement** output_element,
     TrackElementSetFlags flags);

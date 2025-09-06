@@ -38,6 +38,7 @@
 #include "../platform/Platform.h"
 #include "../profiling/Profiling.h"
 #include "../rct12/RCT12.h"
+#include "../scenario/Scenario.h"
 #include "../scripting/HookEngine.h"
 #include "../scripting/ScriptEngine.h"
 #include "../ui/WindowManager.h"
@@ -2864,7 +2865,7 @@ void Vehicle::UpdateCollisionSetup()
         if (curRide->status != RideStatus::closed)
         {
             // We require this to execute right away during the simulation, always ignore network and queue.
-            auto gameAction = RideSetStatusAction(curRide->id, RideStatus::closed);
+            auto gameAction = GameActions::RideSetStatusAction(curRide->id, RideStatus::closed);
             GameActions::ExecuteNested(&gameAction);
         }
     }
@@ -4571,10 +4572,11 @@ static void ride_train_crash(Ride& ride, uint16_t numFatalities)
                 ride.id.ToUnderlying(), ft);
         }
 
-        auto& gameState = getGameState();
-        if (gameState.park.RatingCasualtyPenalty < 500)
+        // TODO: get park id from ride/vehicle
+        auto& park = getGameState().park;
+        if (park.ratingCasualtyPenalty < 500)
         {
-            gameState.park.RatingCasualtyPenalty += 200;
+            park.ratingCasualtyPenalty += 200;
         }
     }
 }
@@ -4655,7 +4657,7 @@ void Vehicle::CrashOnLand()
         if (curRide->status != RideStatus::closed)
         {
             // We require this to execute right away during the simulation, always ignore network and queue.
-            auto gameAction = RideSetStatusAction(curRide->id, RideStatus::closed);
+            auto gameAction = GameActions::RideSetStatusAction(curRide->id, RideStatus::closed);
             GameActions::ExecuteNested(&gameAction);
         }
     }
@@ -4723,7 +4725,7 @@ void Vehicle::CrashOnWater()
         if (curRide->status != RideStatus::closed)
         {
             // We require this to execute right away during the simulation, always ignore network and queue.
-            auto gameAction = RideSetStatusAction(curRide->id, RideStatus::closed);
+            auto gameAction = GameActions::RideSetStatusAction(curRide->id, RideStatus::closed);
             GameActions::ExecuteNested(&gameAction);
         }
     }

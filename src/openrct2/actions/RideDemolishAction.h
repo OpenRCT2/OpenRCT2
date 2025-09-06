@@ -11,35 +11,38 @@
 
 #include "GameAction.h"
 
-enum class RideModifyType : uint8_t
+namespace OpenRCT2::GameActions
 {
-    demolish,
-    renew,
-};
+    enum class RideModifyType : uint8_t
+    {
+        demolish,
+        renew,
+    };
 
-class RideDemolishAction final : public GameActionBase<GameCommand::DemolishRide>
-{
-private:
-    RideId _rideIndex{ RideId::GetNull() };
-    RideModifyType _modifyType{ RideModifyType::demolish };
+    class RideDemolishAction final : public GameActionBase<GameCommand::DemolishRide>
+    {
+    private:
+        RideId _rideIndex{ RideId::GetNull() };
+        RideModifyType _modifyType{ RideModifyType::demolish };
 
-public:
-    RideDemolishAction() = default;
-    RideDemolishAction(RideId rideIndex, RideModifyType modifyType);
+    public:
+        RideDemolishAction() = default;
+        RideDemolishAction(RideId rideIndex, RideModifyType modifyType);
 
-    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor&) final;
 
-    uint32_t GetCooldownTime() const override;
+        uint32_t GetCooldownTime() const final;
 
-    void Serialise(DataSerialiser& stream) override;
-    OpenRCT2::GameActions::Result Query() const override;
-    OpenRCT2::GameActions::Result Execute() const override;
+        void Serialise(DataSerialiser& stream) override;
+        Result Query() const override;
+        Result Execute() const override;
 
-private:
-    OpenRCT2::GameActions::Result DemolishRide(Ride& ride) const;
-    money64 MazeRemoveTrack(const CoordsXYZD& coords) const;
-    money64 DemolishTracks() const;
-    OpenRCT2::GameActions::Result RefurbishRide(Ride& ride) const;
-    money64 GetRefurbishPrice(const Ride& ride) const;
-    money64 GetRefundPrice(const Ride& ride) const;
-};
+    private:
+        Result DemolishRide(Ride& ride) const;
+        money64 MazeRemoveTrack(const CoordsXYZD& coords) const;
+        money64 DemolishTracks() const;
+        Result RefurbishRide(Ride& ride) const;
+        money64 GetRefurbishPrice(const Ride& ride) const;
+        money64 GetRefundPrice(const Ride& ride) const;
+    };
+} // namespace OpenRCT2::GameActions

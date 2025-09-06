@@ -197,7 +197,7 @@ static constexpr TunnelDescriptor kTunnels[] = {
     { 2, 3, -16,  4, TunnelType::Doors5,              96 },  // TunnelType::DoorsFlatTo25Deg5
     { 2, 3, -16,  4, TunnelType::Doors6,              100 }, // TunnelType::DoorsFlatTo25Deg6
 };
-static_assert(std::size(kTunnels) == EnumValue(TunnelType::Count));
+static_assert(std::size(kTunnels) == kTunnelTypeCount);
 
 // clang-format on
 // tunnel offset
@@ -518,7 +518,6 @@ static void ViewportSurfaceDrawTileSideBottom(
     CoordsXY tunnelBounds = { 1, 1 };
     CoordsXY tunnelTopBoundBoxOffset = { 0, 0 };
 
-    const TunnelEntry* tunnelArray;
     switch (edge)
     {
         case EDGE_BOTTOMLEFT:
@@ -532,8 +531,6 @@ static void ViewportSurfaceDrawTileSideBottom(
             bounds.y = 30;
             tunnelBounds.x = 32;
             tunnelTopBoundBoxOffset.y = 31;
-
-            tunnelArray = session.LeftTunnels;
             break;
 
         case EDGE_BOTTOMRIGHT:
@@ -547,8 +544,6 @@ static void ViewportSurfaceDrawTileSideBottom(
             bounds.x = 30;
             tunnelBounds.y = 32;
             tunnelTopBoundBoxOffset.x = 31;
-
-            tunnelArray = session.RightTunnels;
             break;
 
         default:
@@ -573,8 +568,9 @@ static void ViewportSurfaceDrawTileSideBottom(
             return;
         }
 
-        neighbourCornerHeight1 = std::max(cornerHeight1, neighbourCornerHeight1);
-        neighbourCornerHeight2 = std::max(cornerHeight2, neighbourCornerHeight2);
+        const int16_t minimumNeighbourCornerHeight = std::min(neighbourCornerHeight1, neighbourCornerHeight2);
+        neighbourCornerHeight1 = std::max(cornerHeight1, minimumNeighbourCornerHeight);
+        neighbourCornerHeight2 = std::max(cornerHeight2, minimumNeighbourCornerHeight);
 
         cornerHeight1 = height;
         cornerHeight2 = height;
@@ -618,50 +614,27 @@ static void ViewportSurfaceDrawTileSideBottom(
 
     neighbourCornerHeight1 = cornerHeight2;
 
-    for (auto tunnelIndex = 0; tunnelIndex < kTunnelMaxCount;)
+    const auto lowestCornerHeight = std::min(cornerHeight1, cornerHeight2);
+
+    const auto& tunnels = edge == EDGE_BOTTOMLEFT ? session.LeftTunnels : session.RightTunnels;
+    for (auto& tunnel : tunnels)
     {
-        if (curHeight >= cornerHeight1 || curHeight >= cornerHeight2)
+        if (curHeight > tunnel.height || tunnel.height >= lowestCornerHeight)
         {
-            // If top of edge isn't straight, add a filler
-            uint32_t image_offset = 1;
-            if (curHeight >= cornerHeight1)
-            {
-                image_offset = 2;
-
-                if (curHeight >= cornerHeight2)
-                {
-                    return;
-                }
-            }
-
-            auto imageId = baseImageId.WithIndexOffset(image_offset);
-            PaintAddImageAsParent(session, imageId, { offset, curHeight * kCoordsZPerTinyZ }, { bounds, 15 });
-
-            return;
+            continue;
         }
 
-        if (curHeight != tunnelArray[tunnelIndex].height)
+        const auto tdOriginal = kTunnels[EnumValue(tunnel.type)];
+
+        // Draw land edges up to the bottom of the tunnel
+        while (curHeight < tunnel.height)
         {
-            // Normal walls
-            while (curHeight > tunnelArray[tunnelIndex].height)
-            {
-                tunnelIndex++;
-            }
-
-            if (isWater || curHeight != tunnelArray[tunnelIndex].height)
-            {
-                const auto td = kTunnels[EnumValue(tunnelArray[tunnelIndex].type)];
-                const auto boundBoxZ = curHeight == tunnelArray[tunnelIndex].height - 1 ? td.lowerEdgeBoundingBoxZ : 15;
-                PaintAddImageAsParent(session, baseImageId, { offset, curHeight * kCoordsZPerTinyZ }, { bounds, boundBoxZ });
-
-                curHeight++;
-                continue;
-            }
+            const auto boundBoxZ = curHeight == tunnel.height - 1 ? tdOriginal.lowerEdgeBoundingBoxZ : kCoordsZPerTinyZ - 1;
+            PaintAddImageAsParent(session, baseImageId, { offset, curHeight * kCoordsZPerTinyZ }, { bounds, boundBoxZ });
+            curHeight++;
         }
 
-        // Tunnels
-        auto tunnelType = tunnelArray[tunnelIndex].type;
-        const auto tdOriginal = kTunnels[EnumValue(tunnelType)];
+        auto tunnelType = tunnel.type;
         auto td = tdOriginal;
         uint8_t tunnelHeight = td.height;
         int16_t zOffset = curHeight;
@@ -704,7 +677,21 @@ static void ViewportSurfaceDrawTileSideBottom(
             { { tunnelTopBoundBoxOffset, boundBoxOffsetZ }, { tunnelBounds, boundBoxLength - 1 } });
 
         curHeight += td.height;
-        tunnelIndex++;
+    }
+
+    // Draw land edges up to the lowest corner
+    while (curHeight < lowestCornerHeight)
+    {
+        PaintAddImageAsParent(session, baseImageId, { offset, curHeight * kCoordsZPerTinyZ }, { bounds, kCoordsZPerTinyZ - 1 });
+        curHeight++;
+    }
+
+    // Draw filler edges if the top edge is not straight
+    if (curHeight < cornerHeight1 || curHeight < cornerHeight2)
+    {
+        const uint32_t imageOffset = curHeight >= cornerHeight1 ? 2 : 1;
+        const auto imageId = baseImageId.WithIndexOffset(imageOffset);
+        PaintAddImageAsParent(session, imageId, { offset, curHeight * kCoordsZPerTinyZ }, { bounds, kCoordsZPerTinyZ - 1 });
     }
 }
 

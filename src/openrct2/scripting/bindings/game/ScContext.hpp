@@ -16,6 +16,7 @@
     #include "../../../interface/Screenshot.h"
     #include "../../../localisation/Formatting.h"
     #include "../../../object/ObjectManager.h"
+    #include "../../../scenario/Scenario.h"
     #include "../../Duktape.hpp"
     #include "../../HookEngine.h"
     #include "../../IconNames.hpp"
@@ -333,7 +334,8 @@ namespace OpenRCT2::Scripting
                     if (isExecute)
                     {
                         action->SetCallback(
-                            [this, plugin, callback](const GameAction* act, const GameActions::Result* res) -> void {
+                            [this, plugin,
+                             callback](const GameActions::GameAction* act, const GameActions::Result* res) -> void {
                                 HandleGameActionResult(plugin, *act, *res, callback);
                             });
                         GameActions::Execute(action.get());
@@ -356,7 +358,7 @@ namespace OpenRCT2::Scripting
         }
 
         void HandleGameActionResult(
-            const std::shared_ptr<Plugin>& plugin, const GameAction& action, const GameActions::Result& res,
+            const std::shared_ptr<Plugin>& plugin, const GameActions::GameAction& action, const GameActions::Result& res,
             const DukValue& callback)
         {
             if (callback.is_function())

@@ -13281,10 +13281,7 @@ static void TwisterRCTrack90DegToInvertedFlatQuarterLoopUp(
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomRight), direction),
-                0xFFFF, 0);
+                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 1:
@@ -13312,10 +13309,7 @@ static void TwisterRCTrack90DegToInvertedFlatQuarterLoopUp(
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomRight), direction),
-                0xFFFF, 0);
+                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 2:
@@ -13347,10 +13341,7 @@ static void TwisterRCTrack90DegToInvertedFlatQuarterLoopUp(
                 PaintUtilPushTunnelRotated(session, direction, height + 16, kTunnelGroup, TunnelSubType::Flat);
             }
             PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomRight), direction),
-                0xFFFF, 0);
+                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
@@ -13404,22 +13395,22 @@ static void TwisterRCTrackLeftTwistDownToUp(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(27430), { 0, 6, height - 5 },
-                        { { 0, 0, height + 6 }, { 32, 20, 3 } });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(27436), { 0, 6, height - 5 },
-                        { { 0, 0, height + 6 }, { 32, 20, 3 } });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(27429), { 0, 6, height - 5 },
-                        { { 0, 0, height + 6 }, { 32, 20, 3 } });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(27435), { 0, 6, height - 5 },
-                        { { 0, 0, height + 6 }, { 32, 20, 3 } });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
             MetalASupportsPaintSetup(
@@ -13502,10 +13493,10 @@ static void TwisterRCTrackLeftTwistDownToUp(
             switch (direction)
             {
                 case 1:
-                    PaintUtilPushTunnelRight(session, height - 32, kTunnelGroup, TunnelSubType::Flat);
+                    PaintUtilPushTunnelRight(session, height - 32, kTunnelGroup, TunnelSubType::Tall);
                     break;
                 case 2:
-                    PaintUtilPushTunnelLeft(session, height - 32, kTunnelGroup, TunnelSubType::Flat);
+                    PaintUtilPushTunnelLeft(session, height - 32, kTunnelGroup, TunnelSubType::Tall);
                     break;
             }
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -13525,22 +13516,22 @@ static void TwisterRCTrackRightTwistDownToUp(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(27442), { 0, 6, height - 5 },
-                        { { 0, 0, height + 6 }, { 32, 20, 3 } });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(27448), { 0, 6, height - 5 },
-                        { { 0, 0, height + 6 }, { 32, 20, 3 } });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(27441), { 0, 6, height - 5 },
-                        { { 0, 0, height + 6 }, { 32, 20, 3 } });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(27447), { 0, 6, height - 5 },
-                        { { 0, 0, height + 6 }, { 32, 20, 3 } });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
             MetalASupportsPaintSetup(
@@ -13623,10 +13614,10 @@ static void TwisterRCTrackRightTwistDownToUp(
             switch (direction)
             {
                 case 1:
-                    PaintUtilPushTunnelRight(session, height - 16, kTunnelGroup, TunnelSubType::Flat);
+                    PaintUtilPushTunnelRight(session, height - 32, kTunnelGroup, TunnelSubType::Tall);
                     break;
                 case 2:
-                    PaintUtilPushTunnelLeft(session, height - 16, kTunnelGroup, TunnelSubType::Flat);
+                    PaintUtilPushTunnelLeft(session, height - 32, kTunnelGroup, TunnelSubType::Tall);
                     break;
             }
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -13673,7 +13664,7 @@ static void TwisterRCTrackLeftTwistUpToDown(
 
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height - 24, kTunnelGroup, TunnelSubType::Flat);
+                PaintUtilPushTunnelRotated(session, direction, height - 32, kTunnelGroup, TunnelSubType::Tall);
             }
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
@@ -13713,22 +13704,22 @@ static void TwisterRCTrackLeftTwistUpToDown(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(27429), { 0, 6, height - 5 },
-                        { { 0, 0, height + 6 }, { 32, 20, 3 } });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(27435), { 0, 6, height - 5 },
-                        { { 0, 0, height + 6 }, { 32, 20, 3 } });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(27430), { 0, 6, height - 5 },
-                        { { 0, 0, height + 6 }, { 32, 20, 3 } });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(27436), { 0, 6, height - 5 },
-                        { { 0, 0, height + 6 }, { 32, 20, 3 } });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
             MetalASupportsPaintSetup(
@@ -13794,7 +13785,7 @@ static void TwisterRCTrackRightTwistUpToDown(
 
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+                PaintUtilPushTunnelRotated(session, direction, height - 32, kTunnelGroup, TunnelSubType::Tall);
             }
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
@@ -13834,22 +13825,22 @@ static void TwisterRCTrackRightTwistUpToDown(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(27441), { 0, 6, height - 5 },
-                        { { 0, 0, height + 6 }, { 32, 20, 3 } });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(27447), { 0, 6, height - 5 },
-                        { { 0, 0, height + 6 }, { 32, 20, 3 } });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(27442), { 0, 6, height - 5 },
-                        { { 0, 0, height + 6 }, { 32, 20, 3 } });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(27448), { 0, 6, height - 5 },
-                        { { 0, 0, height + 6 }, { 32, 20, 3 } });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
             MetalASupportsPaintSetup(
@@ -13857,10 +13848,10 @@ static void TwisterRCTrackRightTwistUpToDown(
             switch (direction)
             {
                 case 1:
-                    PaintUtilPushTunnelRight(session, height - 16, kTunnelGroup, TunnelSubType::Flat);
+                    PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
                 case 2:
-                    PaintUtilPushTunnelLeft(session, height - 16, kTunnelGroup, TunnelSubType::Flat);
+                    PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -19836,6 +19827,7 @@ static void TwisterRCTrackLeftEighthDiveLoopUpToOrthogonal(
                         { -16, -16, height }, { { 0, 6, height + 32 }, { 32, 20, 1 } });
                     MetalASupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::topLeftSide, 0, height + 41, session.SupportColours);
+                    PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::Tall);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -19843,6 +19835,7 @@ static void TwisterRCTrackLeftEighthDiveLoopUpToOrthogonal(
                         { -16, -16, height }, { { 0, 6, height + 32 }, { 32, 20, 1 } });
                     MetalASupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::topRightSide, 0, height + 41, session.SupportColours);
+                    PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::Tall);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -20013,6 +20006,7 @@ static void TwisterRCTrackRightEighthDiveLoopUpToOrthogonal(
                         { -16, -16, height }, { { 6, 0, height + 32 }, { 20, 32, 1 } });
                     MetalASupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::topLeftSide, 0, height + 41, session.SupportColours);
+                    PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::Tall);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -20020,6 +20014,7 @@ static void TwisterRCTrackRightEighthDiveLoopUpToOrthogonal(
                         { -16, -16, height }, { { 6, 0, height + 32 }, { 20, 32, 1 } });
                     MetalASupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::topRightSide, 0, height + 41, session.SupportColours);
+                    PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::Tall);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(

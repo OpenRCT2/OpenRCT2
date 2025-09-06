@@ -16,77 +16,76 @@
 #include "../ui/WindowManager.h"
 #include "../world/Park.h"
 
-using namespace OpenRCT2;
-
-ParkSetParameterAction::ParkSetParameterAction(ParkParameter parameter, uint64_t value)
-    : _parameter(parameter)
-    , _value(value)
+namespace OpenRCT2::GameActions
 {
-}
-
-void ParkSetParameterAction::AcceptParameters(GameActionParameterVisitor& visitor)
-{
-    visitor.Visit("parameter", _parameter);
-    visitor.Visit("value", _value);
-}
-
-uint16_t ParkSetParameterAction::GetActionFlags() const
-{
-    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
-}
-
-void ParkSetParameterAction::Serialise(DataSerialiser& stream)
-{
-    GameAction::Serialise(stream);
-    stream << DS_TAG(_parameter) << DS_TAG(_value);
-}
-
-GameActions::Result ParkSetParameterAction::Query() const
-{
-    if (_parameter >= ParkParameter::Count)
+    ParkSetParameterAction::ParkSetParameterAction(ParkParameter parameter, uint64_t value)
+        : _parameter(parameter)
+        , _value(value)
     {
-        LOG_ERROR("Invalid park parameter %d", _parameter);
-        return GameActions::Result(
-            GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
     }
 
-    auto res = GameActions::Result();
-    res.ErrorTitle = kErrorTitles[EnumValue(_parameter)];
-    return res;
-}
-
-GameActions::Result ParkSetParameterAction::Execute() const
-{
-    auto& gameState = getGameState();
-    auto* windowMgr = Ui::GetWindowManager();
-
-    switch (_parameter)
+    void ParkSetParameterAction::AcceptParameters(GameActionParameterVisitor& visitor)
     {
-        case ParkParameter::Close:
-            if (gameState.park.Flags & PARK_FLAGS_PARK_OPEN)
-            {
-                gameState.park.Flags &= ~PARK_FLAGS_PARK_OPEN;
-                windowMgr->InvalidateByClass(WindowClass::ParkInformation);
-            }
-            break;
-        case ParkParameter::Open:
-            if (!(gameState.park.Flags & PARK_FLAGS_PARK_OPEN))
-            {
-                gameState.park.Flags |= PARK_FLAGS_PARK_OPEN;
-                windowMgr->InvalidateByClass(WindowClass::ParkInformation);
-            }
-            break;
-        case ParkParameter::SamePriceInPark:
-            gameState.samePriceThroughoutPark = _value;
-            windowMgr->InvalidateByClass(WindowClass::Ride);
-            break;
-        default:
+        visitor.Visit("parameter", _parameter);
+        visitor.Visit("value", _value);
+    }
+
+    uint16_t ParkSetParameterAction::GetActionFlags() const
+    {
+        return GameAction::GetActionFlags() | Flags::AllowWhilePaused;
+    }
+
+    void ParkSetParameterAction::Serialise(DataSerialiser& stream)
+    {
+        GameAction::Serialise(stream);
+        stream << DS_TAG(_parameter) << DS_TAG(_value);
+    }
+
+    Result ParkSetParameterAction::Query() const
+    {
+        if (_parameter >= ParkParameter::Count)
+        {
             LOG_ERROR("Invalid park parameter %d", _parameter);
-            return GameActions::Result(
-                GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
+            return Result(Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
+        }
+
+        auto res = Result();
+        res.ErrorTitle = kErrorTitles[EnumValue(_parameter)];
+        return res;
     }
 
-    auto res = GameActions::Result();
-    res.ErrorTitle = kErrorTitles[EnumValue(_parameter)];
-    return res;
-}
+    Result ParkSetParameterAction::Execute() const
+    {
+        auto& park = getGameState().park;
+        auto* windowMgr = Ui::GetWindowManager();
+
+        switch (_parameter)
+        {
+            case ParkParameter::Close:
+                if (park.flags & PARK_FLAGS_PARK_OPEN)
+                {
+                    park.flags &= ~PARK_FLAGS_PARK_OPEN;
+                    windowMgr->InvalidateByClass(WindowClass::ParkInformation);
+                }
+                break;
+            case ParkParameter::Open:
+                if (!(park.flags & PARK_FLAGS_PARK_OPEN))
+                {
+                    park.flags |= PARK_FLAGS_PARK_OPEN;
+                    windowMgr->InvalidateByClass(WindowClass::ParkInformation);
+                }
+                break;
+            case ParkParameter::SamePriceInPark:
+                park.samePriceThroughoutPark = _value;
+                windowMgr->InvalidateByClass(WindowClass::Ride);
+                break;
+            default:
+                LOG_ERROR("Invalid park parameter %d", _parameter);
+                return Result(Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
+        }
+
+        auto res = Result();
+        res.ErrorTitle = kErrorTitles[EnumValue(_parameter)];
+        return res;
+    }
+} // namespace OpenRCT2::GameActions

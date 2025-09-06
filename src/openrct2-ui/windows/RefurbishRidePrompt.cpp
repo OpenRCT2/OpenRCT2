@@ -61,7 +61,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WIDX_REFURBISH:
                 {
-                    auto gameAction = RideDemolishAction(rideId, RideModifyType::renew);
+                    auto gameAction = GameActions::RideDemolishAction(rideId, GameActions::RideModifyType::renew);
                     GameActions::Execute(&gameAction);
                     break;
                 }
@@ -79,7 +79,7 @@ namespace OpenRCT2::Ui::Windows
             auto currentRide = GetRide(rideId);
             if (currentRide != nullptr)
             {
-                auto stringId = (getGameState().park.Flags & PARK_FLAGS_NO_MONEY) ? STR_REFURBISH_RIDE_ID_NO_MONEY
+                auto stringId = (getGameState().park.flags & PARK_FLAGS_NO_MONEY) ? STR_REFURBISH_RIDE_ID_NO_MONEY
                                                                                   : STR_REFURBISH_RIDE_ID_MONEY;
                 auto ft = Formatter();
                 currentRide->formatNameTo(ft);

@@ -43,7 +43,7 @@ StationIndex gRideEntranceExitGhostStationIndex;
 static money64 RideEntranceExitPlaceGhost(
     RideId rideIndex, const CoordsXY& entranceExitCoords, Direction direction, uint8_t placeType, StationIndex stationNum)
 {
-    auto rideEntranceExitPlaceAction = RideEntranceExitPlaceAction(
+    auto rideEntranceExitPlaceAction = GameActions::RideEntranceExitPlaceAction(
         entranceExitCoords, direction, rideIndex, stationNum, placeType == ENTRANCE_TYPE_RIDE_EXIT);
     rideEntranceExitPlaceAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_GHOST);
     auto res = GameActions::Execute(&rideEntranceExitPlaceAction);
@@ -60,7 +60,7 @@ void ParkEntranceRemoveGhost()
     if (gParkEntranceGhostExists)
     {
         gParkEntranceGhostExists = false;
-        auto parkEntranceRemoveAction = ParkEntranceRemoveAction(gParkEntranceGhostPosition);
+        auto parkEntranceRemoveAction = GameActions::ParkEntranceRemoveAction(gParkEntranceGhostPosition);
         parkEntranceRemoveAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
         GameActions::Execute(&parkEntranceRemoveAction);
     }
@@ -69,7 +69,7 @@ void ParkEntranceRemoveGhost()
 int32_t ParkEntranceGetIndex(const CoordsXYZ& entrancePos)
 {
     int32_t i = 0;
-    for (const auto& entrance : getGameState().park.Entrances)
+    for (const auto& entrance : getGameState().park.entrances)
     {
         if (entrancePos == entrance)
         {
@@ -82,7 +82,7 @@ int32_t ParkEntranceGetIndex(const CoordsXYZ& entrancePos)
 
 void ParkEntranceReset()
 {
-    getGameState().park.Entrances.clear();
+    getGameState().park.entrances.clear();
 }
 
 void RideEntranceExitPlaceProvisionalGhost()
@@ -99,7 +99,7 @@ void RideEntranceExitRemoveGhost()
 {
     if (_currentTrackSelectionFlags.has(TrackSelectionFlag::entranceOrExit))
     {
-        auto rideEntranceExitRemove = RideEntranceExitRemoveAction(
+        auto rideEntranceExitRemove = GameActions::RideEntranceExitRemoveAction(
             gRideEntranceExitGhostPosition, _currentRideIndex, gRideEntranceExitGhostStationIndex,
             gRideEntranceExitPlaceType == ENTRANCE_TYPE_RIDE_EXIT);
 
@@ -211,19 +211,19 @@ void MazeEntranceHedgeRemoval(const CoordsXYE& entrance)
 
 void ParkEntranceFixLocations(void)
 {
-    auto& gameState = getGameState();
+    auto& park = getGameState().park;
     // Fix ParkEntrance locations for which the tile_element no longer exists
-    gameState.park.Entrances.erase(
+    park.entrances.erase(
         std::remove_if(
-            gameState.park.Entrances.begin(), gameState.park.Entrances.end(),
+            park.entrances.begin(), park.entrances.end(),
             [](const auto& entrance) { return MapGetParkEntranceElementAt(entrance, false) == nullptr; }),
-        gameState.park.Entrances.end());
+        park.entrances.end());
 }
 
 void ParkEntranceUpdateLocations()
 {
-    auto& gameState = getGameState();
-    gameState.park.Entrances.clear();
+    auto& park = getGameState().park;
+    park.entrances.clear();
     TileElementIterator it;
     TileElementIteratorBegin(&it);
     while (TileElementIteratorNext(&it))
@@ -233,7 +233,7 @@ void ParkEntranceUpdateLocations()
             && entranceElement->GetSequenceIndex() == 0 && !entranceElement->IsGhost())
         {
             auto entrance = TileCoordsXYZD(it.x, it.y, it.element->BaseHeight, it.element->GetDirection()).ToCoordsXYZD();
-            gameState.park.Entrances.push_back(entrance);
+            park.entrances.push_back(entrance);
         }
     }
 }

@@ -52,12 +52,9 @@ enum class TunnelType : uint8_t
     DoorsFlatTo25Deg4 = 27,
     DoorsFlatTo25Deg5 = 28,
     DoorsFlatTo25Deg6 = 29,
-
-    Count,
-
-    Null = 255,
 };
 constexpr uint8_t kRegularTunnelTypeCount = 16;
+constexpr uint8_t kTunnelTypeCount = 30;
 
 enum class TunnelGroup : uint8_t
 {
@@ -81,6 +78,10 @@ struct TunnelEntry
 {
     uint8_t height;
     TunnelType type;
+
+    constexpr TunnelEntry(const uint8_t _height, const TunnelType _type)
+        : height(_height)
+        , type(_type) {};
 };
 
 TunnelType GetTunnelType(TunnelGroup tunnelGroup, TunnelSubType tunnelSubType);

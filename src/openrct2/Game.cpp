@@ -57,6 +57,7 @@
 #include "ride/TrackDesign.h"
 #include "ride/Vehicle.h"
 #include "sawyer_coding/SawyerCoding.h"
+#include "scenario/Scenario.h"
 #include "scenes/title/TitleScene.h"
 #include "scripting/ScriptEngine.h"
 #include "ui/UiContext.h"
@@ -101,7 +102,7 @@ using namespace OpenRCT2;
 
 void GameResetSpeed()
 {
-    auto setSpeedAction = GameSetSpeedAction(1);
+    auto setSpeedAction = GameActions::GameSetSpeedAction(1);
     GameActions::Execute(&setSpeedAction);
 }
 
@@ -111,7 +112,7 @@ void GameIncreaseGameSpeed()
     if (newSpeed == 5)
         newSpeed = 8;
 
-    auto setSpeedAction = GameSetSpeedAction(newSpeed);
+    auto setSpeedAction = GameActions::GameSetSpeedAction(newSpeed);
     GameActions::Execute(&setSpeedAction);
 }
 
@@ -121,7 +122,7 @@ void GameReduceGameSpeed()
     if (newSpeed == 7)
         newSpeed = 4;
 
-    auto setSpeedAction = GameSetSpeedAction(newSpeed);
+    auto setSpeedAction = GameActions::GameSetSpeedAction(newSpeed);
     GameActions::Execute(&setSpeedAction);
 }
 
@@ -183,8 +184,6 @@ void RCT2StringToUTF8Self(char* buffer, size_t length)
 
 static void FixGuestsHeadingToParkCount()
 {
-    auto& gameState = getGameState();
-
     uint32_t guestsHeadingToPark = 0;
 
     for (auto* peep : EntityList<Guest>())
@@ -195,13 +194,14 @@ static void FixGuestsHeadingToParkCount()
         }
     }
 
-    if (gameState.numGuestsHeadingForPark != guestsHeadingToPark)
+    auto& park = getGameState().park;
+    if (park.numGuestsHeadingForPark != guestsHeadingToPark)
     {
         LOG_WARNING(
-            "Corrected bad amount of guests heading to park: %u -> %u", gameState.numGuestsHeadingForPark, guestsHeadingToPark);
+            "Corrected bad amount of guests heading to park: %u -> %u", park.numGuestsHeadingForPark, guestsHeadingToPark);
     }
 
-    gameState.numGuestsHeadingForPark = guestsHeadingToPark;
+    park.numGuestsHeadingForPark = guestsHeadingToPark;
 }
 
 static void FixGuestCount()
@@ -217,13 +217,13 @@ static void FixGuestCount()
         }
     }
 
-    auto& gameState = getGameState();
-    if (gameState.numGuestsInPark != guestCount)
+    auto& park = getGameState().park;
+    if (park.numGuestsInPark != guestCount)
     {
-        LOG_WARNING("Corrected bad amount of guests in park: %u -> %u", gameState.numGuestsInPark, guestCount);
+        LOG_WARNING("Corrected bad amount of guests in park: %u -> %u", park.numGuestsInPark, guestCount);
     }
 
-    gameState.numGuestsInPark = guestCount;
+    park.numGuestsInPark = guestCount;
 }
 
 static void FixPeepsWithInvalidRideReference()
@@ -655,7 +655,7 @@ void GameLoadOrQuitNoSavePrompt()
     {
         case PromptMode::saveBeforeLoad:
         {
-            auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::CloseSavePrompt);
+            auto loadOrQuitAction = GameActions::LoadOrQuitAction(GameActions::LoadOrQuitModes::CloseSavePrompt);
             GameActions::Execute(&loadOrQuitAction);
             ToolCancel();
             if (gLegacyScene == LegacyScene::scenarioEditor)
@@ -674,7 +674,7 @@ void GameLoadOrQuitNoSavePrompt()
         }
         case PromptMode::saveBeforeQuit:
         {
-            auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::CloseSavePrompt);
+            auto loadOrQuitAction = GameActions::LoadOrQuitAction(GameActions::LoadOrQuitModes::CloseSavePrompt);
             GameActions::Execute(&loadOrQuitAction);
             ToolCancel();
             if (gInputFlags.has(InputFlag::unk5))
@@ -692,7 +692,7 @@ void GameLoadOrQuitNoSavePrompt()
         }
         case PromptMode::saveBeforeNewGame:
         {
-            auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::CloseSavePrompt);
+            auto loadOrQuitAction = GameActions::LoadOrQuitAction(GameActions::LoadOrQuitModes::CloseSavePrompt);
             GameActions::Execute(&loadOrQuitAction);
             ToolCancel();
             auto intent = Intent(WindowClass::ScenarioSelect);

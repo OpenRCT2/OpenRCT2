@@ -11,30 +11,33 @@
 
 #include "GameAction.h"
 
-class SmallScenerySetColourAction final : public GameActionBase<GameCommand::SetSceneryColour>
+namespace OpenRCT2::GameActions
 {
-private:
-    CoordsXYZ _loc;
-    uint8_t _quadrant{};
-    ObjectEntryIndex _sceneryType{};
-    uint8_t _primaryColour{};
-    uint8_t _secondaryColour{};
-    uint8_t _tertiaryColour{};
+    class SmallScenerySetColourAction final : public GameActionBase<GameCommand::SetSceneryColour>
+    {
+    private:
+        CoordsXYZ _loc;
+        uint8_t _quadrant{};
+        ObjectEntryIndex _sceneryType{};
+        uint8_t _primaryColour{};
+        uint8_t _secondaryColour{};
+        uint8_t _tertiaryColour{};
 
-public:
-    SmallScenerySetColourAction() = default;
-    SmallScenerySetColourAction(
-        const CoordsXYZ& loc, uint8_t quadrant, ObjectEntryIndex sceneryType, uint8_t primaryColour, uint8_t secondaryColour,
-        uint8_t tertiaryColour);
+    public:
+        SmallScenerySetColourAction() = default;
+        SmallScenerySetColourAction(
+            const CoordsXYZ& loc, uint8_t quadrant, ObjectEntryIndex sceneryType, uint8_t primaryColour,
+            uint8_t secondaryColour, uint8_t tertiaryColour);
 
-    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor&) final;
 
-    uint16_t GetActionFlags() const override;
+        uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser& stream) override;
-    OpenRCT2::GameActions::Result Query() const override;
-    OpenRCT2::GameActions::Result Execute() const override;
+        void Serialise(DataSerialiser& stream) override;
+        Result Query() const override;
+        Result Execute() const override;
 
-private:
-    OpenRCT2::GameActions::Result QueryExecute(bool isExecuting) const;
-};
+    private:
+        Result QueryExecute(bool isExecuting) const;
+    };
+} // namespace OpenRCT2::GameActions

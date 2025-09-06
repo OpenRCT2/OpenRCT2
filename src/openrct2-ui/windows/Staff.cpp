@@ -381,19 +381,21 @@ namespace OpenRCT2::Ui::Windows
                     _pickedPeepOldX = staff->x;
                     CoordsXYZ nullLoc{};
                     nullLoc.SetNull();
-                    PeepPickupAction pickupAction{ PeepPickupType::Pickup, EntityId::FromUnderlying(number), nullLoc,
-                                                   NetworkGetCurrentPlayerId() };
-                    pickupAction.SetCallback([peepnum = number](const GameAction* ga, const GameActions::Result* result) {
-                        if (result->Error != GameActions::Status::Ok)
-                            return;
+                    GameActions::PeepPickupAction pickupAction{ GameActions::PeepPickupType::Pickup,
+                                                                EntityId::FromUnderlying(number), nullLoc,
+                                                                NetworkGetCurrentPlayerId() };
+                    pickupAction.SetCallback(
+                        [peepnum = number](const GameActions::GameAction* ga, const GameActions::Result* result) {
+                            if (result->Error != GameActions::Status::Ok)
+                                return;
 
-                        auto* windowMgr = GetWindowManager();
-                        WindowBase* wind = windowMgr->FindByNumber(WindowClass::Peep, peepnum);
-                        if (wind != nullptr)
-                        {
-                            ToolSet(*wind, WC_STAFF__WIDX_PICKUP, Tool::picker);
-                        }
-                    });
+                            auto* windowMgr = GetWindowManager();
+                            WindowBase* wind = windowMgr->FindByNumber(WindowClass::Peep, peepnum);
+                            if (wind != nullptr)
+                            {
+                                ToolSet(*wind, WC_STAFF__WIDX_PICKUP, Tool::picker);
+                            }
+                        });
                     GameActions::Execute(&pickupAction);
                 }
                 break;
@@ -427,13 +429,13 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_PATROL:
                 {
                     // Dropdown names
-                    gDropdownItems[0].Format = STR_SET_PATROL_AREA;
-                    gDropdownItems[1].Format = STR_CLEAR_PATROL_AREA;
+                    gDropdown.items[0] = Dropdown::PlainMenuLabel(STR_SET_PATROL_AREA);
+                    gDropdown.items[1] = Dropdown::PlainMenuLabel(STR_CLEAR_PATROL_AREA);
 
                     auto ddPos = ScreenCoordsXY{ widget->left + windowPos.x, widget->top + windowPos.y };
                     int32_t extraHeight = widget->height() + 1;
                     WindowDropdownShowText(ddPos, extraHeight, colours[1], 0, 2);
-                    gDropdownDefaultIndex = 0;
+                    gDropdown.defaultIndex = 0;
 
                     auto staff = GetStaff();
                     if (staff == nullptr)
@@ -444,7 +446,7 @@ namespace OpenRCT2::Ui::Windows
                     // Disable clear patrol area if no area is set.
                     if (!staff->HasPatrolArea())
                     {
-                        Dropdown::SetDisabled(1, true);
+                        gDropdown.items[1].setDisabled(true);
                     }
                 }
             }
@@ -480,8 +482,8 @@ namespace OpenRCT2::Ui::Windows
                         auto* windowMgr = Ui::GetWindowManager();
                         windowMgr->CloseByClass(WindowClass::PatrolArea);
 
-                        auto staffSetPatrolAreaAction = StaffSetPatrolAreaAction(
-                            staff->Id, {}, StaffSetPatrolAreaMode::ClearAll);
+                        auto staffSetPatrolAreaAction = GameActions::StaffSetPatrolAreaAction(
+                            staff->Id, {}, GameActions::StaffSetPatrolAreaMode::ClearAll);
                         GameActions::Execute(&staffSetPatrolAreaAction);
                     }
                     else
@@ -706,10 +708,11 @@ namespace OpenRCT2::Ui::Windows
             if (destCoords.IsNull())
                 return;
 
-            PeepPickupAction pickupAction{
-                PeepPickupType::Place, staffEntityId, { destCoords, tileElement->GetBaseZ() }, NetworkGetCurrentPlayerId()
-            };
-            pickupAction.SetCallback([](const GameAction* ga, const GameActions::Result* result) {
+            GameActions::PeepPickupAction pickupAction{ GameActions::PeepPickupType::Place,
+                                                        staffEntityId,
+                                                        { destCoords, tileElement->GetBaseZ() },
+                                                        NetworkGetCurrentPlayerId() };
+            pickupAction.SetCallback([](const GameActions::GameAction* ga, const GameActions::Result* result) {
                 if (result->Error != GameActions::Status::Ok)
                     return;
                 ToolCancel();
@@ -723,9 +726,10 @@ namespace OpenRCT2::Ui::Windows
             if (widgetIndex != WIDX_PICKUP)
                 return;
 
-            PeepPickupAction pickupAction{
-                PeepPickupType::Cancel, EntityId::FromUnderlying(number), { _pickedPeepOldX, 0, 0 }, NetworkGetCurrentPlayerId()
-            };
+            GameActions::PeepPickupAction pickupAction{ GameActions::PeepPickupType::Cancel,
+                                                        EntityId::FromUnderlying(number),
+                                                        { _pickedPeepOldX, 0, 0 },
+                                                        NetworkGetCurrentPlayerId() };
             GameActions::Execute(&pickupAction);
         }
 
@@ -742,7 +746,7 @@ namespace OpenRCT2::Ui::Windows
             if (text.empty())
                 return;
 
-            auto gameAction = StaffSetNameAction(EntityId::FromUnderlying(number), std::string{ text });
+            auto gameAction = GameActions::StaffSetNameAction(EntityId::FromUnderlying(number), std::string{ text });
             GameActions::Execute(&gameAction);
         }
 #pragma endregion
@@ -780,10 +784,7 @@ namespace OpenRCT2::Ui::Windows
             auto numCostumes = _availableCostumes.size();
             for (auto i = 0u; i < numCostumes; i++)
             {
-                // TODO: rework interface to dropdown arguments so memcpy won't be needed
-                auto* nameStr = _availableCostumes[i].friendlyName.c_str();
-                std::memcpy(&gDropdownItems[i].Args, &nameStr, sizeof(const char*));
-                gDropdownItems[i].Format = STR_OPTIONS_DROPDOWN_ITEM;
+                gDropdown.items[i] = Dropdown::MenuLabel(_availableCostumes[i].friendlyName.c_str());
 
                 // Remember what item to check for the end of this event function
                 auto costumeIndex = _availableCostumes[i].index;
@@ -798,7 +799,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Set selection
             if (checkedIndex != -1)
-                Dropdown::SetChecked(checkedIndex, true);
+                gDropdown.items[checkedIndex].setChecked(true);
         }
 
         void OptionsOnDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex)
@@ -812,7 +813,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
 
             ObjectEntryIndex costume = _availableCostumes[dropdownIndex].index;
-            auto staffSetCostumeAction = StaffSetCostumeAction(EntityId::FromUnderlying(number), costume);
+            auto staffSetCostumeAction = GameActions::StaffSetCostumeAction(EntityId::FromUnderlying(number), costume);
             GameActions::Execute(&staffSetCostumeAction);
         }
 
@@ -931,7 +932,7 @@ namespace OpenRCT2::Ui::Windows
 
             auto screenCoords = windowPos + ScreenCoordsXY{ widgets[WIDX_RESIZE].left + 4, widgets[WIDX_RESIZE].top + 4 };
 
-            if (!(getGameState().park.Flags & PARK_FLAGS_NO_MONEY))
+            if (!(getGameState().park.flags & PARK_FLAGS_NO_MONEY))
             {
                 auto ft = Formatter();
                 ft.Add<money64>(GetStaffWage(staff->AssignedStaffType));
@@ -1099,7 +1100,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             uint8_t newOrders = staff->StaffOrders ^ (1 << orderId);
-            auto staffSetOrdersAction = StaffSetOrdersAction(EntityId::FromUnderlying(number), newOrders);
+            auto staffSetOrdersAction = GameActions::StaffSetOrdersAction(EntityId::FromUnderlying(number), newOrders);
             GameActions::Execute(&staffSetOrdersAction);
         }
 
@@ -1164,12 +1165,12 @@ namespace OpenRCT2::Ui::Windows
 
         void ShowLocateDropdown(Widget* widget)
         {
-            gDropdownItems[0].Format = STR_LOCATE_SUBJECT_TIP;
-            gDropdownItems[1].Format = STR_FOLLOW_SUBJECT_TIP;
+            gDropdown.items[0] = Dropdown::PlainMenuLabel(STR_LOCATE_SUBJECT_TIP);
+            gDropdown.items[1] = Dropdown::PlainMenuLabel(STR_FOLLOW_SUBJECT_TIP);
 
             WindowDropdownShowText(
                 { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height() + 1, colours[1], 0, 2);
-            gDropdownDefaultIndex = 0;
+            gDropdown.defaultIndex = 0;
         }
 
         void FollowPeep()

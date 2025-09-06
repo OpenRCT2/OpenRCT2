@@ -14,52 +14,51 @@
 #include "../entity/EntityRegistry.h"
 #include "GameAction.h"
 
-using namespace OpenRCT2;
-
-BalloonPressAction::BalloonPressAction(EntityId spriteIndex)
-    : _spriteIndex(spriteIndex)
+namespace OpenRCT2::GameActions
 {
-}
-
-void BalloonPressAction::AcceptParameters(GameActionParameterVisitor& visitor)
-{
-    visitor.Visit("id", _spriteIndex);
-}
-
-uint16_t BalloonPressAction::GetActionFlags() const
-{
-    return GameAction::GetActionFlags();
-}
-
-void BalloonPressAction::Serialise(DataSerialiser& stream)
-{
-    GameAction::Serialise(stream);
-    stream << DS_TAG(_spriteIndex);
-}
-
-GameActions::Result BalloonPressAction::Query() const
-{
-    auto balloon = TryGetEntity<Balloon>(_spriteIndex);
-    if (balloon == nullptr)
+    BalloonPressAction::BalloonPressAction(EntityId spriteIndex)
+        : _spriteIndex(spriteIndex)
     {
-        LOG_ERROR("Balloon not found for spriteIndex %u", _spriteIndex);
-        return GameActions::Result(
-            GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_BALLOON_NOT_FOUND);
-    }
-    return GameActions::Result();
-}
-
-GameActions::Result BalloonPressAction::Execute() const
-{
-    auto balloon = TryGetEntity<Balloon>(_spriteIndex);
-    if (balloon == nullptr)
-    {
-        LOG_ERROR("Balloon not found for spriteIndex %u", _spriteIndex);
-        return GameActions::Result(
-            GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_BALLOON_NOT_FOUND);
     }
 
-    balloon->Press();
+    void BalloonPressAction::AcceptParameters(GameActionParameterVisitor& visitor)
+    {
+        visitor.Visit("id", _spriteIndex);
+    }
 
-    return GameActions::Result();
-}
+    uint16_t BalloonPressAction::GetActionFlags() const
+    {
+        return GameAction::GetActionFlags();
+    }
+
+    void BalloonPressAction::Serialise(DataSerialiser& stream)
+    {
+        GameAction::Serialise(stream);
+        stream << DS_TAG(_spriteIndex);
+    }
+
+    Result BalloonPressAction::Query() const
+    {
+        auto balloon = TryGetEntity<Balloon>(_spriteIndex);
+        if (balloon == nullptr)
+        {
+            LOG_ERROR("Balloon not found for spriteIndex %u", _spriteIndex);
+            return Result(Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_BALLOON_NOT_FOUND);
+        }
+        return Result();
+    }
+
+    Result BalloonPressAction::Execute() const
+    {
+        auto balloon = TryGetEntity<Balloon>(_spriteIndex);
+        if (balloon == nullptr)
+        {
+            LOG_ERROR("Balloon not found for spriteIndex %u", _spriteIndex);
+            return Result(Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_BALLOON_NOT_FOUND);
+        }
+
+        balloon->Press();
+
+        return Result();
+    }
+} // namespace OpenRCT2::GameActions

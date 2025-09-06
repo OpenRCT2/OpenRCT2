@@ -61,7 +61,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WIDX_YES:
                 {
-                    auto staffFireAction = StaffFireAction(EntityId::FromUnderlying(number));
+                    auto staffFireAction = GameActions::StaffFireAction(EntityId::FromUnderlying(number));
                     GameActions::Execute(&staffFireAction);
                     break;
                 }

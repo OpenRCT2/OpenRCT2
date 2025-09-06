@@ -16,10 +16,12 @@
 #include "../../Track.h"
 
 // clang-format off
+namespace OpenRCT2
+{
 constexpr RideTypeDescriptor BoatHireRTD =
 {
     .Category = RideCategory::water,
-    .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
+    .StartTrackPiece = TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::boatHire,
         .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::curveVerySmall, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::sBend},
@@ -36,7 +38,7 @@ constexpr RideTypeDescriptor BoatHireRTD =
     .AvailableBreakdowns = (1 << BREAKDOWN_VEHICLE_MALFUNCTION),
     .Heights = { 255, 16, 0, 3, },
     .MaxMass = 255,
-    .LiftData = { OpenRCT2::Audio::SoundId::Null, 5, 5 },
+    .LiftData = { Audio::SoundId::Null, 5, 5 },
     .RatingsMultipliers = { 70, 6, 0 },
     .UpkeepCosts = { 50, 1, 0, 4, 0, 0 },
     .BuildCosts = { 27.50_GBP, 0.00_GBP, 5, },
@@ -62,17 +64,18 @@ constexpr RideTypeDescriptor BoatHireRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { MakeRideRating(1, 90), MakeRideRating(0, 80), MakeRideRating(0, 90) },
+        { RideRating::make(1, 90), RideRating::make(0, 80), RideRating::make(0, 90) },
         7,
         0,
         false,
         {
-            { RatingsModifierType::BonusBoatHireNoCircuit, 0, MakeRideRating(0, 20), 0, 0 },
+            { RatingsModifierType::BonusBoatHireNoCircuit, 0, RideRating::make(0, 20), 0, 0 },
             { RatingsModifierType::BonusProximity,         0, 11183, 0, 0 },
             { RatingsModifierType::BonusScenery,           0, 22310, 0, 0 },
         },
     },
     .UpdateRotating = UpdateRotatingDefault,
-    .LightFXAddLightsMagicVehicle = OpenRCT2::Drawing::LightFx::AddLightsMagicVehicle_BoatHire,
+    .LightFXAddLightsMagicVehicle = Drawing::LightFx::AddLightsMagicVehicle_BoatHire,
 };
+} // namespace OpenRCT2
 // clang-format on

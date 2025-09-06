@@ -310,13 +310,13 @@ private:
             { "mapSize", mapSize },
             { "day", date.GetMonthTicks() },
             { "month", date.GetMonthsElapsed() },
-            { "guests", gameState.numGuestsInPark },
-            { "parkValue", gameState.park.Value },
+            { "guests", gameState.park.numGuestsInPark },
+            { "parkValue", gameState.park.value },
         };
 
-        if (!(gameState.park.Flags & PARK_FLAGS_NO_MONEY))
+        if (!(gameState.park.flags & PARK_FLAGS_NO_MONEY))
         {
-            gameInfo["cash"] = gameState.cash;
+            gameInfo["cash"] = gameState.park.cash;
         }
 
         root["gameInfo"] = gameInfo;

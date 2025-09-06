@@ -33,6 +33,7 @@ struct ScreenshotOptions
     bool remove_litter = false;
     bool tidy_up_park = false;
     bool transparent = false;
+    bool draw_bounding_boxes = false;
 };
 
 struct CaptureView

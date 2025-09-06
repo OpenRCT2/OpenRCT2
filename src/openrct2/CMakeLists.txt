@@ -19,7 +19,16 @@ if (ENABLE_SCRIPTING)
     endif ()
 endif ()
 
-add_library(libopenrct2 ${OPENRCT2_CORE_SOURCES} ${OPENRCT2_CORE_MM_SOURCES} ${OPENRCT2_DUKTAPE_SOURCES})
+# On macOS the compiler computes typeids to different values in shared library and in the executable.
+# This causes issues with RTTI and results in "bad any cast" exception getting thrown at runtime.
+# It should be possible to expose relevant types with visibility default attribute, but we can make the whole issue go away by
+# linking the library and executable statically. There is no openrct2-cli in macOS package, so no code gets duplicated.
+# https://github.com/OpenRCT2/OpenRCT2/issues/24936
+set(LIBOPENRCT2_LINKAGE)
+if (APPLE)
+  set(LIBOPENRCT2_LINKAGE STATIC)
+endif()
+add_library(libopenrct2 ${LIBOPENRCT2_LINKAGE} ${OPENRCT2_CORE_SOURCES} ${OPENRCT2_CORE_MM_SOURCES} ${OPENRCT2_DUKTAPE_SOURCES})
 add_library(OpenRCT2::libopenrct2 ALIAS libopenrct2)
 
 if (CMAKE_COMPILER_IS_GNUCXX AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS "13")
@@ -81,15 +90,15 @@ if (NOT DISABLE_TTF)
     if (UNIX AND NOT APPLE AND NOT MSVC)
         PKG_CHECK_MODULES(FONTCONFIG REQUIRED fontconfig)
     endif ()
-        
+
     if (MSVC)
         find_package(freetype REQUIRED)
     else ()
         PKG_CHECK_MODULES(FREETYPE REQUIRED IMPORTED_TARGET freetype2)
     endif ()
-        
+
     target_include_directories(libopenrct2 SYSTEM PRIVATE ${FREETYPE_INCLUDE_DIRS})
-        
+
     if (UNIX AND NOT APPLE)
         target_include_directories(libopenrct2 SYSTEM PRIVATE ${FONTCONFIG_INCLUDE_DIRS})
     endif ()
@@ -121,12 +130,14 @@ if (EMSCRIPTEN)
 elseif (MSVC)
     find_package(png 1.6 REQUIRED)
     find_package(zlib REQUIRED)
+    find_package(zstd REQUIRED)
 
     find_path(LIBZIP_INCLUDE_DIRS zip.h)
     find_library(LIBZIP_LIBRARIES zip)
 else ()
     PKG_CHECK_MODULES(LIBZIP REQUIRED IMPORTED_TARGET libzip>=1.0)
     PKG_CHECK_MODULES(ZLIB REQUIRED IMPORTED_TARGET zlib)
+    PKG_CHECK_MODULES(ZSTD REQUIRED IMPORTED_TARGET libzstd)
 
     PKG_CHECK_MODULES(PNG IMPORTED_TARGET libpng>=1.6)
     if (NOT PNG_FOUND)
@@ -144,18 +155,21 @@ if (STATIC)
     target_link_libraries(libopenrct2
                                      ${PNG_STATIC_LIBRARIES}
                                      ${ZLIB_STATIC_LIBRARIES}
-                                     ${LIBZIP_STATIC_LIBRARIES})
+                                     ${LIBZIP_STATIC_LIBRARIES}
+                                     ${ZSTD_STATIC_LIBRARIES})
 else ()
     if (NOT MSVC AND NOT EMSCRIPTEN)
         target_link_libraries(libopenrct2
                                      PkgConfig::PNG
                                      PkgConfig::ZLIB
-                                     PkgConfig::LIBZIP)
+                                     PkgConfig::LIBZIP
+                                     PkgConfig::ZSTD)
     else ()
         target_link_libraries(libopenrct2
                                      ${PNG_LIBRARIES}
                                      ${ZLIB_LIBRARIES}
-                                     ${LIBZIP_LIBRARIES})
+                                     ${LIBZIP_LIBRARIES}
+                                     ${ZSTD_LIBRARIES})
     endif ()
 endif ()
 
@@ -188,9 +202,9 @@ if (NOT MINGW AND NOT MSVC AND NOT EMSCRIPTEN)
     endif ()
     # For unicode code page conversion.
     find_package(ICU 59.0 REQUIRED COMPONENTS uc)
-        
+
     target_include_directories(libopenrct2 SYSTEM PRIVATE ${ICU_INCLUDE_DIRS})
-        
+
     if (STATIC)
         target_link_libraries(libopenrct2 ${ICU_STATIC_LIBRARIES})
     else ()
@@ -201,7 +215,7 @@ endif ()
 if (NOT DISABLE_TTF)
     if (STATIC)
         target_link_libraries(libopenrct2 ${FREETYPE_STATIC_LIBRARIES})
-            
+
         if (UNIX AND NOT APPLE)
             target_link_libraries(libopenrct2 ${FONTCONFIG_STATIC_LIBRARIES})
         endif ()
@@ -211,7 +225,7 @@ if (NOT DISABLE_TTF)
         else ()
             target_link_libraries(libopenrct2 ${FREETYPE_LIBRARIES})
         endif ()
-            
+
         if (UNIX AND NOT APPLE)
             target_link_libraries(libopenrct2 ${FONTCONFIG_LIBRARIES})
         endif ()
@@ -235,6 +249,7 @@ endif()
 target_include_directories(libopenrct2 SYSTEM PRIVATE ${LIBZIP_INCLUDE_DIRS})
 target_include_directories(libopenrct2 SYSTEM PRIVATE ${PNG_INCLUDE_DIRS}
                                                           ${ZLIB_INCLUDE_DIRS})
+target_include_directories(libopenrct2 SYSTEM PRIVATE ${ZSTD_INCLUDE_DIRS})
 include_directories(libopenrct2 SYSTEM ${CMAKE_CURRENT_LIST_DIR}/../thirdparty)
 
 # To avoid unnecessary rebuilds set the current branch and

@@ -11,37 +11,40 @@
 
 #include "GameAction.h"
 
-enum class RideSetAppearanceType : uint8_t
+namespace OpenRCT2::GameActions
 {
-    TrackColourMain,
-    TrackColourAdditional,
-    TrackColourSupports,
-    MazeStyle = TrackColourSupports,
-    VehicleColourBody,
-    VehicleColourTrim,
-    VehicleColourTertiary,
-    VehicleColourScheme,
-    EntranceStyle,
-    SellingItemColourIsRandom
-};
+    enum class RideSetAppearanceType : uint8_t
+    {
+        TrackColourMain,
+        TrackColourAdditional,
+        TrackColourSupports,
+        MazeStyle = TrackColourSupports,
+        VehicleColourBody,
+        VehicleColourTrim,
+        VehicleColourTertiary,
+        VehicleColourScheme,
+        EntranceStyle,
+        SellingItemColourIsRandom
+    };
 
-class RideSetAppearanceAction final : public GameActionBase<GameCommand::SetRideAppearance>
-{
-private:
-    RideId _rideIndex{ RideId::GetNull() };
-    RideSetAppearanceType _type{};
-    uint16_t _value{};
-    uint32_t _index{};
+    class RideSetAppearanceAction final : public GameActionBase<GameCommand::SetRideAppearance>
+    {
+    private:
+        RideId _rideIndex{ RideId::GetNull() };
+        RideSetAppearanceType _type{};
+        uint16_t _value{};
+        uint32_t _index{};
 
-public:
-    RideSetAppearanceAction() = default;
-    RideSetAppearanceAction(RideId rideIndex, RideSetAppearanceType type, uint16_t value, uint32_t index);
+    public:
+        RideSetAppearanceAction() = default;
+        RideSetAppearanceAction(RideId rideIndex, RideSetAppearanceType type, uint16_t value, uint32_t index);
 
-    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor&) final;
 
-    uint16_t GetActionFlags() const override;
+        uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser& stream) override;
-    OpenRCT2::GameActions::Result Query() const override;
-    OpenRCT2::GameActions::Result Execute() const override;
-};
+        void Serialise(DataSerialiser& stream) override;
+        Result Query() const override;
+        Result Execute() const override;
+    };
+} // namespace OpenRCT2::GameActions

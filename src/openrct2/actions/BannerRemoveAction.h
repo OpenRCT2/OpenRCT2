@@ -11,23 +11,26 @@
 
 #include "GameAction.h"
 
-class BannerRemoveAction final : public GameActionBase<GameCommand::RemoveBanner>
+namespace OpenRCT2::GameActions
 {
-private:
-    CoordsXYZD _loc;
+    class BannerRemoveAction final : public GameActionBase<GameCommand::RemoveBanner>
+    {
+    private:
+        CoordsXYZD _loc;
 
-public:
-    BannerRemoveAction() = default;
-    BannerRemoveAction(const CoordsXYZD& loc);
+    public:
+        BannerRemoveAction() = default;
+        BannerRemoveAction(const CoordsXYZD& loc);
 
-    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor&) final;
 
-    uint16_t GetActionFlags() const override;
+        uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser& stream) override;
-    OpenRCT2::GameActions::Result Query() const override;
-    OpenRCT2::GameActions::Result Execute() const override;
+        void Serialise(DataSerialiser& stream) override;
+        Result Query() const override;
+        Result Execute() const override;
 
-private:
-    BannerElement* GetBannerElementAt() const;
-};
+    private:
+        BannerElement* GetBannerElementAt() const;
+    };
+} // namespace OpenRCT2::GameActions

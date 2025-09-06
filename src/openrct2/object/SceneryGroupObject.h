@@ -14,36 +14,39 @@
 
 #include <vector>
 
-struct ObjectRepositoryItem;
-
-class SceneryGroupObject final : public Object
+namespace OpenRCT2
 {
-private:
-    SceneryGroupEntry _legacyType = {};
-    std::vector<ObjectEntryDescriptor> _items;
+    struct ObjectRepositoryItem;
 
-public:
-    static constexpr ObjectType kObjectType = ObjectType::sceneryGroup;
-
-    void* GetLegacyData() override
+    class SceneryGroupObject final : public Object
     {
-        return &_legacyType;
-    }
-    void ReadJson(IReadObjectContext* context, json_t& root) override;
+    private:
+        SceneryGroupEntry _legacyType = {};
+        std::vector<ObjectEntryDescriptor> _items;
 
-    void ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream) override;
-    void Load() override;
-    void Unload() override;
-    void UpdateEntryIndexes();
+    public:
+        static constexpr ObjectType kObjectType = ObjectType::sceneryGroup;
 
-    void DrawPreview(RenderTarget& rt, int32_t width, int32_t height) const override;
+        void* GetLegacyData() override
+        {
+            return &_legacyType;
+        }
+        void ReadJson(IReadObjectContext* context, json_t& root) override;
 
-    void SetRepositoryItem(ObjectRepositoryItem* item) const override;
+        void ReadLegacy(IReadObjectContext* context, IStream* stream) override;
+        void Load() override;
+        void Unload() override;
+        void UpdateEntryIndexes();
 
-    uint16_t GetNumIncludedObjects() const;
-    const std::vector<ObjectEntryDescriptor>& GetItems() const;
+        void DrawPreview(RenderTarget& rt, int32_t width, int32_t height) const override;
 
-private:
-    static std::vector<ObjectEntryDescriptor> ReadItems(OpenRCT2::IStream* stream);
-    static std::vector<ObjectEntryDescriptor> ReadJsonEntries(IReadObjectContext* context, json_t& jEntries);
-};
+        void SetRepositoryItem(ObjectRepositoryItem* item) const override;
+
+        uint16_t GetNumIncludedObjects() const;
+        const std::vector<ObjectEntryDescriptor>& GetItems() const;
+
+    private:
+        static std::vector<ObjectEntryDescriptor> ReadItems(IStream* stream);
+        static std::vector<ObjectEntryDescriptor> ReadJsonEntries(IReadObjectContext* context, json_t& jEntries);
+    };
+} // namespace OpenRCT2

@@ -15,14 +15,16 @@
 #include "../../Track.h"
 
 // clang-format off
+namespace OpenRCT2
+{
 constexpr RideTypeDescriptor SteeplechaseRTD =
 {
     .Category = RideCategory::rollerCoaster,
-    .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
+    .StartTrackPiece = TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::steeplechase,
         .supportType = MetalSupportType::stick,
-        .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::slope, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::brakes, TrackGroup::blockBrakes, TrackGroup::diagBrakes, TrackGroup::diagBlockBrakes},
+        .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::slope, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::brakes, TrackGroup::blockBrakes, TrackGroup::diagBrakes, TrackGroup::diagBlockBrakes, TrackGroup::diagSlope},
         .extraTrackGroups = {},
     }),
     .InvertedTrackPaintFunctions = {},
@@ -35,7 +37,7 @@ constexpr RideTypeDescriptor SteeplechaseRTD =
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE),
     .Heights = { 14, 24, 7, 7, },
     .MaxMass = 4,
-    .LiftData = { OpenRCT2::Audio::SoundId::LiftClassic, 4, 5 },
+    .LiftData = { Audio::SoundId::LiftClassic, 4, 5 },
     .RatingsMultipliers = { 50, 30, 10 },
     .UpkeepCosts = { 40, 20, 80, 10, 3, 10 },
     .BuildCosts = { 28.50_GBP, 2.00_GBP, 40, },
@@ -58,13 +60,13 @@ constexpr RideTypeDescriptor SteeplechaseRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { MakeRideRating(2, 70), MakeRideRating(2, 40), MakeRideRating(1, 80) },
+        { RideRating::make(2, 70), RideRating::make(2, 40), RideRating::make(1, 80) },
         14,
         -1,
         false,
         {
             { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },
-            { RatingsModifierType::BonusSynchronisation,  0,                MakeRideRating(0, 75), MakeRideRating(0, 9), 0 },
+            { RatingsModifierType::BonusSynchronisation,  0,                RideRating::make(0, 75), RideRating::make(0, 9), 0 },
             { RatingsModifierType::BonusTrainLength,      0,                187245, 0, 0 },
             { RatingsModifierType::BonusMaxSpeed,         0,                44281, 88562, 35424 },
             { RatingsModifierType::BonusAverageSpeed,     0,                291271, 436906, 0 },
@@ -84,4 +86,5 @@ constexpr RideTypeDescriptor SteeplechaseRTD =
         },
     },
 };
+} // namespace OpenRCT2
 // clang-format on

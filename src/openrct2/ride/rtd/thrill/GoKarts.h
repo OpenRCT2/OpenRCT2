@@ -16,15 +16,17 @@
 #include "../../Track.h"
 
 // clang-format off
+namespace OpenRCT2
+{
 constexpr RideTypeDescriptor GoKartsRTD =
 {
     .Category = RideCategory::thrill,
-    .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
+    .StartTrackPiece = TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::goKarts,
         .supportType = WoodenSupportType::truss,
-        .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::slope, TrackGroup::curveVerySmall, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::slopeCurve, TrackGroup::slopeCurveLarge, TrackGroup::sBend},
-        .extraTrackGroups = {TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::slopeSteepLong},
+        .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::slope, TrackGroup::curveVerySmall, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::slopeCurve, TrackGroup::slopeCurveLarge, TrackGroup::sBend, TrackGroup::diagSlope},
+        .extraTrackGroups = {TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::slopeSteepLong, TrackGroup::diagSlopeSteepUp, TrackGroup::diagSlopeSteepDown},
     }),
     .InvertedTrackPaintFunctions = {},
     .Flags = EnumsToFlags(RtdFlag::hasTrackColourMain, RtdFlag::hasTrackColourSupports, RtdFlag::noTestMode, RtdFlag::hasOneStation,
@@ -36,9 +38,9 @@ constexpr RideTypeDescriptor GoKartsRTD =
     .Naming = { STR_RIDE_NAME_GO_KARTS, STR_RIDE_DESCRIPTION_GO_KARTS },
     .NameConvention = { RideComponentType::Car, RideComponentType::Track, RideComponentType::Station },
     .AvailableBreakdowns = (1 << BREAKDOWN_VEHICLE_MALFUNCTION),
-    .Heights = { 7, 24, 2, 1, },
+    .Heights = { 8, 24, 2, 1, },
     .MaxMass = 255,
-    .LiftData = { OpenRCT2::Audio::SoundId::Null, 5, 5 },
+    .LiftData = { Audio::SoundId::Null, 5, 5 },
     .RatingsMultipliers = { 120, 20, 0 },
     .UpkeepCosts = { 50, 20, 0, 8, 0, 0 },
     .BuildCosts = { 31.00_GBP, 2.00_GBP, 20, },
@@ -58,13 +60,13 @@ constexpr RideTypeDescriptor GoKartsRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { MakeRideRating(1, 42), MakeRideRating(1, 73), MakeRideRating(0, 40) },
+        { RideRating::make(1, 42), RideRating::make(1, 73), RideRating::make(0, 40) },
         16,
         -1,
         false,
         {
             { RatingsModifierType::BonusLength,            700, 32768, 0, 0 },
-            { RatingsModifierType::BonusGoKartRace,        4,   MakeRideRating(1, 40), MakeRideRating(0, 50), 0 },
+            { RatingsModifierType::BonusGoKartRace,        4,   RideRating::make(1, 40), RideRating::make(0, 50), 0 },
             { RatingsModifierType::BonusTurns,             0,   4458, 3476, 5718 },
             { RatingsModifierType::BonusDrops,             0,   8738, 5461, 6553 },
             { RatingsModifierType::BonusSheltered,         0,   2570, 8738, 2340 },
@@ -74,6 +76,7 @@ constexpr RideTypeDescriptor GoKartsRTD =
         },
     },
     .UpdateRotating = UpdateRotatingDefault,
-    .LightFXAddLightsMagicVehicle = OpenRCT2::Drawing::LightFx::AddLightsMagicVehicle_BoatHire,
+    .LightFXAddLightsMagicVehicle = Drawing::LightFx::AddLightsMagicVehicle_BoatHire,
 };
+} // namespace OpenRCT2
 // clang-format on

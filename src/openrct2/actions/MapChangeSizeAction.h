@@ -12,21 +12,24 @@
 #include "../world/Map.h"
 #include "GameAction.h"
 
-class MapChangeSizeAction final : public GameActionBase<GameCommand::ChangeMapSize>
+namespace OpenRCT2::GameActions
 {
-public:
-    MapChangeSizeAction() = default;
-    MapChangeSizeAction(const TileCoordsXY& targetSize);
-    MapChangeSizeAction(const TileCoordsXY& targetSize, const TileCoordsXY& shift);
+    class MapChangeSizeAction final : public GameActionBase<GameCommand::ChangeMapSize>
+    {
+    public:
+        MapChangeSizeAction() = default;
+        MapChangeSizeAction(const TileCoordsXY& targetSize);
+        MapChangeSizeAction(const TileCoordsXY& targetSize, const TileCoordsXY& shift);
 
-    void AcceptParameters(GameActionParameterVisitor& visitor) override;
-    uint16_t GetActionFlags() const override;
+        void AcceptParameters(GameActionParameterVisitor&) final;
+        uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser& stream) override;
-    OpenRCT2::GameActions::Result Query() const override;
-    OpenRCT2::GameActions::Result Execute() const override;
+        void Serialise(DataSerialiser& stream) override;
+        Result Query() const override;
+        Result Execute() const override;
 
-private:
-    TileCoordsXY _targetSize;
-    TileCoordsXY _shift;
-};
+    private:
+        TileCoordsXY _targetSize;
+        TileCoordsXY _shift;
+    };
+} // namespace OpenRCT2::GameActions

@@ -2159,7 +2159,6 @@ STR_3136    :Advarsel: Dette designet vil bli bygget med en alternativ type kjø
 STR_3137    :Velg Dekorasjon i Nærheten
 STR_3138    :Nullstill Utvalg
 STR_3139    :Kabeltrekk fungerer ikke i denne driftsmodusen
-STR_3140    :Kabeltrekk må starte umiddelbart etter stasjon
 STR_3141    :Flerkrets per tur ikke mulig med kabeltrekk
 STR_3142    :{WINDOW_COLOUR_2}Kapasitet: {BLACK}{STRINGID}
 STR_3143    :Vis folk på kart

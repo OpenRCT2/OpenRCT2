@@ -16,10 +16,12 @@
 #include "../../Track.h"
 
 // clang-format off
+namespace OpenRCT2
+{
 constexpr RideTypeDescriptor DodgemsRTD =
 {
     .Category = RideCategory::gentle,
-    .StartTrackPiece = OpenRCT2::TrackElemType::FlatTrack4x4,
+    .StartTrackPiece = TrackElemType::FlatTrack4x4,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::dodgems,
         .enabledTrackGroups = {},
@@ -39,7 +41,7 @@ constexpr RideTypeDescriptor DodgemsRTD =
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT),
     .Heights = { 9, 48, 2, 2, },
     .MaxMass = 255,
-    .LiftData = { OpenRCT2::Audio::SoundId::Null, 5, 5 },
+    .LiftData = { Audio::SoundId::Null, 5, 5 },
     .RatingsMultipliers = { 40, 20, 0 },
     .UpkeepCosts = { 50, 1, 0, 5, 0, 0 },
     .BuildCosts = { 27.50_GBP, 1.00_GBP, 1, },
@@ -60,18 +62,19 @@ constexpr RideTypeDescriptor DodgemsRTD =
     .RatingsData = 
     {
         RatingsCalculationType::FlatRide,
-        { MakeRideRating(1, 30), MakeRideRating(0, 50), MakeRideRating(0, 35) },
+        { RideRating::make(1, 30), RideRating::make(0, 50), RideRating::make(0, 35) },
         16,
         7,
         false,
         {
             // Special case, passing -2 to represent division by 2
             { RatingsModifierType::BonusOperationOption, 0, 1, -2, 0 }, 
-            { RatingsModifierType::BonusNumTrains,       4, MakeRideRating(0, 80), 0, 0 },
+            { RatingsModifierType::BonusNumTrains,       4, RideRating::make(0, 80), 0, 0 },
             { RatingsModifierType::BonusScenery,         0, 5577, 0, 0 },
         },
     },
     .UpdateRotating = UpdateRotatingDefault,
-    .LightFXAddLightsMagicVehicle = OpenRCT2::Drawing::LightFx::AddLightsMagicVehicle_BoatHire,
+    .LightFXAddLightsMagicVehicle = Drawing::LightFx::AddLightsMagicVehicle_BoatHire,
 };
+} // namespace OpenRCT2
 // clang-format on

@@ -62,7 +62,7 @@
 #include <openrct2/world/tile_element/SurfaceElement.h>
 #include <openrct2/world/tile_element/WallElement.h>
 
-using namespace OpenRCT2::Numerics;
+using namespace Numerics;
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -199,7 +199,7 @@ namespace OpenRCT2::Ui::Windows
 
             const SceneryGroupEntry* GetSceneryGroupEntry() const
             {
-                return OpenRCT2::ObjectManager::GetObjectEntry<SceneryGroupEntry>(SceneryGroupIndex);
+                return ObjectManager::GetObjectEntry<SceneryGroupEntry>(SceneryGroupIndex);
             }
         };
 
@@ -329,7 +329,8 @@ namespace OpenRCT2::Ui::Windows
                     {
                         const auto newStatus = !IsSceneryItemRestricted(tabSelectedScenery);
                         const auto objectType = GetObjectTypeFromSceneryType(tabSelectedScenery.SceneryType);
-                        auto action = ScenerySetRestrictedAction(objectType, tabSelectedScenery.EntryIndex, newStatus);
+                        auto action = GameActions::ScenerySetRestrictedAction(
+                            objectType, tabSelectedScenery.EntryIndex, newStatus);
                         GameActions::Execute(&action);
                     }
                     break;
@@ -554,22 +555,22 @@ namespace OpenRCT2::Ui::Windows
                     else if (tabSelectedScenery.SceneryType == SCENERY_TYPE_LARGE)
                     {
                         gCurrentToolId = static_cast<Tool>(
-                            OpenRCT2::ObjectManager::GetObjectEntry<LargeSceneryEntry>(tabSelectedScenery.EntryIndex)->tool_id);
+                            ObjectManager::GetObjectEntry<LargeSceneryEntry>(tabSelectedScenery.EntryIndex)->tool_id);
                     }
                     else if (tabSelectedScenery.SceneryType == SCENERY_TYPE_WALL)
                     {
                         gCurrentToolId = static_cast<Tool>(
-                            OpenRCT2::ObjectManager::GetObjectEntry<WallSceneryEntry>(tabSelectedScenery.EntryIndex)->tool_id);
+                            ObjectManager::GetObjectEntry<WallSceneryEntry>(tabSelectedScenery.EntryIndex)->tool_id);
                     }
                     else if (tabSelectedScenery.SceneryType == SCENERY_TYPE_PATH_ITEM)
                     {
                         gCurrentToolId = static_cast<Tool>(
-                            OpenRCT2::ObjectManager::GetObjectEntry<PathAdditionEntry>(tabSelectedScenery.EntryIndex)->tool_id);
+                            ObjectManager::GetObjectEntry<PathAdditionEntry>(tabSelectedScenery.EntryIndex)->tool_id);
                     }
                     else
                     { // small scenery
                         gCurrentToolId = static_cast<Tool>(
-                            OpenRCT2::ObjectManager::GetObjectEntry<SmallSceneryEntry>(tabSelectedScenery.EntryIndex)->tool_id);
+                            ObjectManager::GetObjectEntry<SmallSceneryEntry>(tabSelectedScenery.EntryIndex)->tool_id);
                     }
                 }
                 else
@@ -699,8 +700,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     widgets[WIDX_SCENERY_BUILD_CLUSTER_BUTTON].type = WidgetType::flatBtn;
 
-                    auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<SmallSceneryEntry>(
-                        tabSelectedScenery.EntryIndex);
+                    auto* sceneryEntry = ObjectManager::GetObjectEntry<SmallSceneryEntry>(tabSelectedScenery.EntryIndex);
                     if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_ROTATABLE))
                     {
                         widgets[WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].type = WidgetType::flatBtn;
@@ -739,8 +739,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 if (tabSelectedScenery.SceneryType == SCENERY_TYPE_BANNER)
                 {
-                    auto* bannerEntry = OpenRCT2::ObjectManager::GetObjectEntry<BannerSceneryEntry>(
-                        tabSelectedScenery.EntryIndex);
+                    auto* bannerEntry = ObjectManager::GetObjectEntry<BannerSceneryEntry>(tabSelectedScenery.EntryIndex);
                     if (bannerEntry->flags & BANNER_ENTRY_FLAG_HAS_PRIMARY_COLOUR)
                     {
                         widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].type = WidgetType::colourBtn;
@@ -748,8 +747,7 @@ namespace OpenRCT2::Ui::Windows
                 }
                 else if (tabSelectedScenery.SceneryType == SCENERY_TYPE_LARGE)
                 {
-                    auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<LargeSceneryEntry>(
-                        tabSelectedScenery.EntryIndex);
+                    auto* sceneryEntry = ObjectManager::GetObjectEntry<LargeSceneryEntry>(tabSelectedScenery.EntryIndex);
 
                     if (sceneryEntry->flags & LARGE_SCENERY_FLAG_HAS_PRIMARY_COLOUR
                         && !(sceneryEntry->flags & LARGE_SCENERY_FLAG_HIDE_PRIMARY_REMAP_BUTTON))
@@ -762,7 +760,7 @@ namespace OpenRCT2::Ui::Windows
                 }
                 else if (tabSelectedScenery.SceneryType == SCENERY_TYPE_WALL)
                 {
-                    auto* wallEntry = OpenRCT2::ObjectManager::GetObjectEntry<WallSceneryEntry>(tabSelectedScenery.EntryIndex);
+                    auto* wallEntry = ObjectManager::GetObjectEntry<WallSceneryEntry>(tabSelectedScenery.EntryIndex);
                     if (wallEntry->flags & (WALL_SCENERY_HAS_PRIMARY_COLOUR | WALL_SCENERY_HAS_GLASS))
                     {
                         widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].type = WidgetType::colourBtn;
@@ -780,8 +778,7 @@ namespace OpenRCT2::Ui::Windows
                 }
                 else if (tabSelectedScenery.SceneryType == SCENERY_TYPE_SMALL)
                 {
-                    auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<SmallSceneryEntry>(
-                        tabSelectedScenery.EntryIndex);
+                    auto* sceneryEntry = ObjectManager::GetObjectEntry<SmallSceneryEntry>(tabSelectedScenery.EntryIndex);
 
                     if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR | SMALL_SCENERY_FLAG_HAS_GLASS))
                     {
@@ -867,7 +864,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             auto [name, price] = GetNameAndPrice(selectedSceneryEntry);
-            if (price != kMoney64Undefined && !(getGameState().park.Flags & PARK_FLAGS_NO_MONEY))
+            if (price != kMoney64Undefined && !(getGameState().park.flags & PARK_FLAGS_NO_MONEY))
             {
                 auto ft = Formatter();
                 ft.Add<money64>(price);
@@ -978,7 +975,7 @@ namespace OpenRCT2::Ui::Windows
                 gWindowSceneryRotation = rotation.value();
             }
             gWindowSceneryEyedropperEnabled = false;
-            OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Click1, 0, ContextGetWidth() / 2);
+            Audio::Play(Audio::SoundId::Click1, 0, ContextGetWidth() / 2);
             _hoverCounter = -16;
             gSceneryPlaceCost = kMoney64Undefined;
             Invalidate();
@@ -1007,7 +1004,7 @@ namespace OpenRCT2::Ui::Windows
 
             for (ObjectEntryIndex scenerySetIndex = 0; scenerySetIndex < kMaxTabs - kReservedTabCount; scenerySetIndex++)
             {
-                const auto* sceneryGroupEntry = OpenRCT2::ObjectManager::GetObjectEntry<SceneryGroupEntry>(scenerySetIndex);
+                const auto* sceneryGroupEntry = ObjectManager::GetObjectEntry<SceneryGroupEntry>(scenerySetIndex);
                 if (sceneryGroupEntry != nullptr && SceneryGroupIsInvented(scenerySetIndex))
                 {
                     SceneryTabInfo tabInfo;
@@ -1036,7 +1033,7 @@ namespace OpenRCT2::Ui::Windows
             // small scenery
             for (ObjectEntryIndex sceneryId = 0; sceneryId < kMaxSmallSceneryObjects; sceneryId++)
             {
-                const auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<SmallSceneryEntry>(sceneryId);
+                const auto* sceneryEntry = ObjectManager::GetObjectEntry<SmallSceneryEntry>(sceneryId);
                 if (sceneryEntry != nullptr)
                 {
                     InitSceneryEntry({ SCENERY_TYPE_SMALL, sceneryId }, sceneryEntry->scenery_tab_id);
@@ -1046,7 +1043,7 @@ namespace OpenRCT2::Ui::Windows
             // large scenery
             for (ObjectEntryIndex sceneryId = 0; sceneryId < kMaxLargeSceneryObjects; sceneryId++)
             {
-                const auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<LargeSceneryEntry>(sceneryId);
+                const auto* sceneryEntry = ObjectManager::GetObjectEntry<LargeSceneryEntry>(sceneryId);
                 if (sceneryEntry != nullptr)
                 {
                     InitSceneryEntry({ SCENERY_TYPE_LARGE, sceneryId }, sceneryEntry->scenery_tab_id);
@@ -1056,7 +1053,7 @@ namespace OpenRCT2::Ui::Windows
             // walls
             for (ObjectEntryIndex sceneryId = 0; sceneryId < kMaxWallSceneryObjects; sceneryId++)
             {
-                const auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<WallSceneryEntry>(sceneryId);
+                const auto* sceneryEntry = ObjectManager::GetObjectEntry<WallSceneryEntry>(sceneryId);
                 if (sceneryEntry != nullptr)
                 {
                     InitSceneryEntry({ SCENERY_TYPE_WALL, sceneryId }, sceneryEntry->scenery_tab_id);
@@ -1066,7 +1063,7 @@ namespace OpenRCT2::Ui::Windows
             // banners
             for (ObjectEntryIndex sceneryId = 0; sceneryId < kMaxBannerObjects; sceneryId++)
             {
-                const auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<BannerSceneryEntry>(sceneryId);
+                const auto* sceneryEntry = ObjectManager::GetObjectEntry<BannerSceneryEntry>(sceneryId);
                 if (sceneryEntry != nullptr)
                 {
                     InitSceneryEntry({ SCENERY_TYPE_BANNER, sceneryId }, sceneryEntry->scenery_tab_id);
@@ -1075,7 +1072,7 @@ namespace OpenRCT2::Ui::Windows
 
             for (ObjectEntryIndex sceneryId = 0; sceneryId < kMaxPathAdditionObjects; sceneryId++)
             {
-                const auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<PathAdditionEntry>(sceneryId);
+                const auto* sceneryEntry = ObjectManager::GetObjectEntry<PathAdditionEntry>(sceneryId);
                 if (sceneryEntry != nullptr)
                 {
                     InitSceneryEntry({ SCENERY_TYPE_PATH_ITEM, sceneryId }, sceneryEntry->scenery_tab_id);
@@ -1514,7 +1511,7 @@ namespace OpenRCT2::Ui::Windows
             _sceneryPaintEnabled = false;
             gWindowSceneryEyedropperEnabled = false;
 
-            OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Click1, 0, windowPos.x + (width / 2));
+            Audio::Play(Audio::SoundId::Click1, 0, windowPos.x + (width / 2));
             _hoverCounter = -16;
             gSceneryPlaceCost = kMoney64Undefined;
             Invalidate();
@@ -1544,8 +1541,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     case SCENERY_TYPE_SMALL:
                     {
-                        auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<SmallSceneryEntry>(
-                            selectedScenery.EntryIndex);
+                        auto* sceneryEntry = ObjectManager::GetObjectEntry<SmallSceneryEntry>(selectedScenery.EntryIndex);
                         if (sceneryEntry != nullptr)
                         {
                             price = sceneryEntry->price;
@@ -1555,8 +1551,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     case SCENERY_TYPE_PATH_ITEM:
                     {
-                        auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<PathAdditionEntry>(
-                            selectedScenery.EntryIndex);
+                        auto* sceneryEntry = ObjectManager::GetObjectEntry<PathAdditionEntry>(selectedScenery.EntryIndex);
                         if (sceneryEntry != nullptr)
                         {
                             price = sceneryEntry->price;
@@ -1566,8 +1561,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     case SCENERY_TYPE_WALL:
                     {
-                        auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<WallSceneryEntry>(
-                            selectedScenery.EntryIndex);
+                        auto* sceneryEntry = ObjectManager::GetObjectEntry<WallSceneryEntry>(selectedScenery.EntryIndex);
                         if (sceneryEntry != nullptr)
                         {
                             price = sceneryEntry->price;
@@ -1577,8 +1571,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     case SCENERY_TYPE_LARGE:
                     {
-                        auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<LargeSceneryEntry>(
-                            selectedScenery.EntryIndex);
+                        auto* sceneryEntry = ObjectManager::GetObjectEntry<LargeSceneryEntry>(selectedScenery.EntryIndex);
                         if (sceneryEntry != nullptr)
                         {
                             price = sceneryEntry->price;
@@ -1588,8 +1581,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     case SCENERY_TYPE_BANNER:
                     {
-                        auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<BannerSceneryEntry>(
-                            selectedScenery.EntryIndex);
+                        auto* sceneryEntry = ObjectManager::GetObjectEntry<BannerSceneryEntry>(selectedScenery.EntryIndex);
                         if (sceneryEntry != nullptr)
                         {
                             price = sceneryEntry->price;
@@ -1621,14 +1613,14 @@ namespace OpenRCT2::Ui::Windows
         {
             if (scenerySelection.SceneryType == SCENERY_TYPE_BANNER)
             {
-                auto bannerEntry = OpenRCT2::ObjectManager::GetObjectEntry<BannerSceneryEntry>(scenerySelection.EntryIndex);
+                auto bannerEntry = ObjectManager::GetObjectEntry<BannerSceneryEntry>(scenerySelection.EntryIndex);
                 auto imageId = ImageId(bannerEntry->image + gWindowSceneryRotation * 2, _sceneryPrimaryColour);
                 GfxDrawSprite(rt, imageId, { 33, 40 });
                 GfxDrawSprite(rt, imageId.WithIndexOffset(1), { 33, 40 });
             }
             else if (scenerySelection.SceneryType == SCENERY_TYPE_LARGE)
             {
-                auto sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<LargeSceneryEntry>(scenerySelection.EntryIndex);
+                auto sceneryEntry = ObjectManager::GetObjectEntry<LargeSceneryEntry>(scenerySelection.EntryIndex);
                 auto imageId = ImageId(sceneryEntry->image + gWindowSceneryRotation);
                 if (sceneryEntry->flags & LARGE_SCENERY_FLAG_HAS_PRIMARY_COLOUR)
                     imageId = imageId.WithPrimary(_sceneryPrimaryColour);
@@ -1640,7 +1632,7 @@ namespace OpenRCT2::Ui::Windows
             }
             else if (scenerySelection.SceneryType == SCENERY_TYPE_WALL)
             {
-                auto wallEntry = OpenRCT2::ObjectManager::GetObjectEntry<WallSceneryEntry>(scenerySelection.EntryIndex);
+                auto wallEntry = ObjectManager::GetObjectEntry<WallSceneryEntry>(scenerySelection.EntryIndex);
                 auto imageId = ImageId(wallEntry->image);
                 auto spriteTop = (wallEntry->height * 2) + 0x32;
                 if (wallEntry->flags & WALL_SCENERY_HAS_GLASS)
@@ -1676,14 +1668,13 @@ namespace OpenRCT2::Ui::Windows
             }
             else if (scenerySelection.SceneryType == SCENERY_TYPE_PATH_ITEM)
             {
-                auto* pathAdditionEntry = OpenRCT2::ObjectManager::GetObjectEntry<PathAdditionEntry>(
-                    scenerySelection.EntryIndex);
+                auto* pathAdditionEntry = ObjectManager::GetObjectEntry<PathAdditionEntry>(scenerySelection.EntryIndex);
                 auto imageId = ImageId(pathAdditionEntry->image);
                 GfxDrawSprite(rt, imageId, { 11, 16 });
             }
             else
             {
-                auto sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<SmallSceneryEntry>(scenerySelection.EntryIndex);
+                auto sceneryEntry = ObjectManager::GetObjectEntry<SmallSceneryEntry>(scenerySelection.EntryIndex);
                 auto imageId = ImageId(sceneryEntry->image + gWindowSceneryRotation);
                 if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR))
                 {
@@ -1844,7 +1835,7 @@ namespace OpenRCT2::Ui::Windows
                         gMapSelectPositionB.y = mapTile.y;
                     }
 
-                    auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<SmallSceneryEntry>(selection.EntryIndex);
+                    auto* sceneryEntry = ObjectManager::GetObjectEntry<SmallSceneryEntry>(selection.EntryIndex);
 
                     gMapSelectType = MAP_SELECT_TYPE_FULL;
                     if (!sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_FULL_TILE) && !gWindowSceneryScatterEnabled)
@@ -1991,7 +1982,7 @@ namespace OpenRCT2::Ui::Windows
                         return;
                     }
 
-                    auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<LargeSceneryEntry>(selection.EntryIndex);
+                    auto* sceneryEntry = ObjectManager::GetObjectEntry<LargeSceneryEntry>(selection.EntryIndex);
                     gMapSelectionTiles.clear();
 
                     for (auto& tile : sceneryEntry->tiles)
@@ -2096,14 +2087,14 @@ namespace OpenRCT2::Ui::Windows
             SceneryRemoveGhostToolPlacement();
 
             // 6e252b
-            auto smallSceneryPlaceAction = SmallSceneryPlaceAction(
+            auto smallSceneryPlaceAction = GameActions::SmallSceneryPlaceAction(
                 loc, quadrant, entryIndex, primaryColour, secondaryColour, tertiaryColour);
             smallSceneryPlaceAction.SetFlags(GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
             auto res = GameActions::Execute(&smallSceneryPlaceAction);
             if (res.Error != GameActions::Status::Ok)
                 return kMoney64Undefined;
 
-            const auto placementData = res.GetData<SmallSceneryPlaceActionResult>();
+            const auto placementData = res.GetData<GameActions::SmallSceneryPlaceActionResult>();
 
             gSceneryPlaceRotation = loc.direction;
             gSceneryPlaceObject.SceneryType = SCENERY_TYPE_SMALL;
@@ -2131,9 +2122,9 @@ namespace OpenRCT2::Ui::Windows
             SceneryRemoveGhostToolPlacement();
 
             // 6e265b
-            auto footpathAdditionPlaceAction = FootpathAdditionPlaceAction(loc, entryIndex);
+            auto footpathAdditionPlaceAction = GameActions::FootpathAdditionPlaceAction(loc, entryIndex);
             footpathAdditionPlaceAction.SetFlags(GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
-            footpathAdditionPlaceAction.SetCallback([=](const GameAction* ga, const GameActions::Result* result) {
+            footpathAdditionPlaceAction.SetCallback([=](const GameActions::GameAction* ga, const GameActions::Result* result) {
                 if (result->Error != GameActions::Status::Ok)
                 {
                     return;
@@ -2155,14 +2146,15 @@ namespace OpenRCT2::Ui::Windows
             SceneryRemoveGhostToolPlacement();
 
             // 6e26b0
-            auto wallPlaceAction = WallPlaceAction(entryIndex, loc, edge, primaryColour, secondaryColour, tertiaryColour);
+            auto wallPlaceAction = GameActions::WallPlaceAction(
+                entryIndex, loc, edge, primaryColour, secondaryColour, tertiaryColour);
             wallPlaceAction.SetFlags(
                 GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND);
-            wallPlaceAction.SetCallback([=](const GameAction* ga, const GameActions::Result* result) {
+            wallPlaceAction.SetCallback([=](const GameActions::GameAction* ga, const GameActions::Result* result) {
                 if (result->Error != GameActions::Status::Ok)
                     return;
 
-                const auto placementData = result->GetData<WallPlaceActionResult>();
+                const auto placementData = result->GetData<GameActions::WallPlaceActionResult>();
                 gSceneryGhostPosition = { loc, placementData.BaseHeight };
                 gSceneryGhostWallRotation = edge;
 
@@ -2183,14 +2175,15 @@ namespace OpenRCT2::Ui::Windows
             SceneryRemoveGhostToolPlacement();
 
             // 6e25a7
-            auto sceneryPlaceAction = LargeSceneryPlaceAction(loc, entryIndex, primaryColour, secondaryColour, tertiaryColour);
+            auto sceneryPlaceAction = GameActions::LargeSceneryPlaceAction(
+                loc, entryIndex, primaryColour, secondaryColour, tertiaryColour);
             sceneryPlaceAction.SetFlags(
                 GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND);
             auto res = GameActions::Execute(&sceneryPlaceAction);
             if (res.Error != GameActions::Status::Ok)
                 return kMoney64Undefined;
 
-            const auto placementData = res.GetData<LargeSceneryPlaceActionResult>();
+            const auto placementData = res.GetData<GameActions::LargeSceneryPlaceActionResult>();
 
             gSceneryPlaceRotation = loc.direction;
 
@@ -2216,7 +2209,7 @@ namespace OpenRCT2::Ui::Windows
 
             // 6e2612
             auto primaryColour = _sceneryPrimaryColour;
-            auto bannerPlaceAction = BannerPlaceAction(loc, entryIndex, primaryColour);
+            auto bannerPlaceAction = GameActions::BannerPlaceAction(loc, entryIndex, primaryColour);
             bannerPlaceAction.SetFlags(
                 GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND);
             auto res = GameActions::Execute(&bannerPlaceAction);
@@ -2251,7 +2244,7 @@ namespace OpenRCT2::Ui::Windows
                         return;
 
                     uint8_t quadrant = info.Element->AsSmallScenery()->GetSceneryQuadrant();
-                    auto repaintScenery = SmallScenerySetColourAction(
+                    auto repaintScenery = GameActions::SmallScenerySetColourAction(
                         { info.Loc, info.Element->GetBaseZ() }, quadrant, info.Element->AsSmallScenery()->GetEntryIndex(),
                         _sceneryPrimaryColour, _scenerySecondaryColour, _sceneryTertiaryColour);
 
@@ -2266,7 +2259,7 @@ namespace OpenRCT2::Ui::Windows
                     if (!(scenery_entry->flags & (WALL_SCENERY_HAS_PRIMARY_COLOUR | WALL_SCENERY_HAS_GLASS)))
                         return;
 
-                    auto repaintScenery = WallSetColourAction(
+                    auto repaintScenery = GameActions::WallSetColourAction(
                         { info.Loc, info.Element->GetBaseZ(), info.Element->GetDirection() }, _sceneryPrimaryColour,
                         _scenerySecondaryColour, _sceneryTertiaryColour);
 
@@ -2281,7 +2274,7 @@ namespace OpenRCT2::Ui::Windows
                     if (!(sceneryEntry->flags & LARGE_SCENERY_FLAG_HAS_PRIMARY_COLOUR))
                         return;
 
-                    auto repaintScenery = LargeScenerySetColourAction(
+                    auto repaintScenery = GameActions::LargeScenerySetColourAction(
                         { info.Loc, info.Element->GetBaseZ(), info.Element->GetDirection() },
                         info.Element->AsLargeScenery()->GetSequenceIndex(), _sceneryPrimaryColour, _scenerySecondaryColour,
                         _sceneryTertiaryColour);
@@ -2294,10 +2287,10 @@ namespace OpenRCT2::Ui::Windows
                     auto banner = info.Element->AsBanner()->GetBanner();
                     if (banner != nullptr)
                     {
-                        auto* bannerEntry = OpenRCT2::ObjectManager::GetObjectEntry<BannerSceneryEntry>(banner->type);
+                        auto* bannerEntry = ObjectManager::GetObjectEntry<BannerSceneryEntry>(banner->type);
                         if (bannerEntry->flags & BANNER_ENTRY_FLAG_HAS_PRIMARY_COLOUR)
                         {
-                            auto repaintScenery = BannerSetColourAction(
+                            auto repaintScenery = GameActions::BannerSetColourAction(
                                 { info.Loc, info.Element->GetBaseZ(), info.Element->AsBanner()->GetPosition() },
                                 _sceneryPrimaryColour);
 
@@ -2323,7 +2316,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     SmallSceneryElement* sceneryElement = info.Element->AsSmallScenery();
                     auto entryIndex = sceneryElement->GetEntryIndex();
-                    auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<SmallSceneryEntry>(entryIndex);
+                    auto* sceneryEntry = ObjectManager::GetObjectEntry<SmallSceneryEntry>(entryIndex);
                     if (sceneryEntry != nullptr)
                     {
                         WindowScenerySetSelectedItem(
@@ -2336,7 +2329,7 @@ namespace OpenRCT2::Ui::Windows
                 case ViewportInteractionItem::Wall:
                 {
                     auto entryIndex = info.Element->AsWall()->GetEntryIndex();
-                    auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<WallSceneryEntry>(entryIndex);
+                    auto* sceneryEntry = ObjectManager::GetObjectEntry<WallSceneryEntry>(entryIndex);
                     if (sceneryEntry != nullptr)
                     {
                         WindowScenerySetSelectedItem(
@@ -2349,7 +2342,7 @@ namespace OpenRCT2::Ui::Windows
                 case ViewportInteractionItem::LargeScenery:
                 {
                     auto entryIndex = info.Element->AsLargeScenery()->GetEntryIndex();
-                    auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<LargeSceneryEntry>(entryIndex);
+                    auto* sceneryEntry = ObjectManager::GetObjectEntry<LargeSceneryEntry>(entryIndex);
                     if (sceneryEntry != nullptr)
                     {
                         WindowScenerySetSelectedItem(
@@ -2364,7 +2357,7 @@ namespace OpenRCT2::Ui::Windows
                     auto banner = info.Element->AsBanner()->GetBanner();
                     if (banner != nullptr)
                     {
-                        auto sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<BannerSceneryEntry>(banner->type);
+                        auto sceneryEntry = ObjectManager::GetObjectEntry<BannerSceneryEntry>(banner->type);
                         if (sceneryEntry != nullptr)
                         {
                             WindowScenerySetSelectedItem(
@@ -2376,7 +2369,7 @@ namespace OpenRCT2::Ui::Windows
                 case ViewportInteractionItem::PathAddition:
                 {
                     auto entryIndex = info.Element->AsPath()->GetAdditionEntryIndex();
-                    auto* pathAdditionEntry = OpenRCT2::ObjectManager::GetObjectEntry<PathAdditionEntry>(entryIndex);
+                    auto* pathAdditionEntry = ObjectManager::GetObjectEntry<PathAdditionEntry>(entryIndex);
                     if (pathAdditionEntry != nullptr)
                     {
                         WindowScenerySetSelectedItem(
@@ -2481,7 +2474,7 @@ namespace OpenRCT2::Ui::Windows
                 std::numeric_limits<decltype(TileElement::BaseHeight)>::max() - 32);
             bool can_raise_item = false;
 
-            const auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<SmallSceneryEntry>(sceneryIndex);
+            const auto* sceneryEntry = ObjectManager::GetObjectEntry<SmallSceneryEntry>(sceneryIndex);
             if (sceneryEntry == nullptr)
             {
                 gridPos.SetNull();
@@ -2712,7 +2705,7 @@ namespace OpenRCT2::Ui::Windows
             uint16_t maxPossibleHeight = ZoomLevel::max().ApplyTo(
                 std::numeric_limits<decltype(TileElement::BaseHeight)>::max() - 32);
 
-            auto* wallEntry = OpenRCT2::ObjectManager::GetObjectEntry<WallSceneryEntry>(sceneryIndex);
+            auto* wallEntry = ObjectManager::GetObjectEntry<WallSceneryEntry>(sceneryIndex);
             if (wallEntry != nullptr)
             {
                 maxPossibleHeight -= wallEntry->height;
@@ -2803,7 +2796,7 @@ namespace OpenRCT2::Ui::Windows
             uint16_t maxPossibleHeight = ZoomLevel::max().ApplyTo(
                 std::numeric_limits<decltype(TileElement::BaseHeight)>::max() - 32);
 
-            auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<LargeSceneryEntry>(sceneryIndex);
+            auto* sceneryEntry = ObjectManager::GetObjectEntry<LargeSceneryEntry>(sceneryIndex);
             if (sceneryEntry)
             {
                 int16_t maxClearZ = 0;
@@ -3000,7 +2993,7 @@ namespace OpenRCT2::Ui::Windows
                     for (int32_t q = 0; q < quantity; q++)
                     {
                         int32_t zCoordinate = gSceneryPlaceZ;
-                        auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<SmallSceneryEntry>(selectedScenery);
+                        auto* sceneryEntry = ObjectManager::GetObjectEntry<SmallSceneryEntry>(selectedScenery);
 
                         int16_t cur_grid_x = gridPos.x;
                         int16_t cur_grid_y = gridPos.y;
@@ -3038,7 +3031,7 @@ namespace OpenRCT2::Ui::Windows
                         // Try find a valid z coordinate
                         for (; zAttemptRange != 0; zAttemptRange--)
                         {
-                            auto smallSceneryPlaceAction = SmallSceneryPlaceAction(
+                            auto smallSceneryPlaceAction = GameActions::SmallSceneryPlaceAction(
                                 { cur_grid_x, cur_grid_y, gSceneryPlaceZ, gSceneryPlaceRotation }, quadrant, selectedScenery,
                                 _sceneryPrimaryColour, _scenerySecondaryColour, _sceneryTertiaryColour);
                             auto res = GameActions::Query(&smallSceneryPlaceAction);
@@ -3061,16 +3054,17 @@ namespace OpenRCT2::Ui::Windows
                         // Actually place
                         if (success == GameActions::Status::Ok || ((q + 1 == quantity) && forceError))
                         {
-                            auto smallSceneryPlaceAction = SmallSceneryPlaceAction(
+                            auto smallSceneryPlaceAction = GameActions::SmallSceneryPlaceAction(
                                 { cur_grid_x, cur_grid_y, gSceneryPlaceZ, gSceneryPlaceRotation }, quadrant, selectedScenery,
                                 _sceneryPrimaryColour, _scenerySecondaryColour, _sceneryTertiaryColour);
 
-                            smallSceneryPlaceAction.SetCallback([=](const GameAction* ga, const GameActions::Result* result) {
-                                if (result->Error == GameActions::Status::Ok)
-                                {
-                                    OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, result->Position);
-                                }
-                            });
+                            smallSceneryPlaceAction.SetCallback(
+                                [=](const GameActions::GameAction* ga, const GameActions::Result* result) {
+                                    if (result->Error == GameActions::Status::Ok)
+                                    {
+                                        Audio::Play3D(Audio::SoundId::PlaceItem, result->Position);
+                                    }
+                                });
                             auto res = GameActions::Execute(&smallSceneryPlaceAction);
                             if (res.Error == GameActions::Status::Ok)
                             {
@@ -3093,15 +3087,17 @@ namespace OpenRCT2::Ui::Windows
                     if (gridPos.IsNull())
                         return;
 
-                    auto footpathAdditionPlaceAction = FootpathAdditionPlaceAction({ gridPos, z }, selectedScenery);
+                    auto footpathAdditionPlaceAction = GameActions::FootpathAdditionPlaceAction(
+                        { gridPos, z }, selectedScenery);
 
-                    footpathAdditionPlaceAction.SetCallback([](const GameAction* ga, const GameActions::Result* result) {
-                        if (result->Error != GameActions::Status::Ok)
-                        {
-                            return;
-                        }
-                        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, result->Position);
-                    });
+                    footpathAdditionPlaceAction.SetCallback(
+                        [](const GameActions::GameAction* ga, const GameActions::Result* result) {
+                            if (result->Error != GameActions::Status::Ok)
+                            {
+                                return;
+                            }
+                            Audio::Play3D(Audio::SoundId::PlaceItem, result->Position);
+                        });
                     auto res = GameActions::Execute(&footpathAdditionPlaceAction);
                     break;
                 }
@@ -3120,7 +3116,7 @@ namespace OpenRCT2::Ui::Windows
 
                     for (; zAttemptRange != 0; zAttemptRange--)
                     {
-                        auto wallPlaceAction = WallPlaceAction(
+                        auto wallPlaceAction = GameActions::WallPlaceAction(
                             selectedScenery, { gridPos, gSceneryPlaceZ }, edges, _sceneryPrimaryColour, _scenerySecondaryColour,
                             _sceneryTertiaryColour);
 
@@ -3144,14 +3140,14 @@ namespace OpenRCT2::Ui::Windows
                         }
                     }
 
-                    auto wallPlaceAction = WallPlaceAction(
+                    auto wallPlaceAction = GameActions::WallPlaceAction(
                         selectedScenery, { gridPos, gSceneryPlaceZ }, edges, _sceneryPrimaryColour, _scenerySecondaryColour,
                         _sceneryTertiaryColour);
 
-                    wallPlaceAction.SetCallback([](const GameAction* ga, const GameActions::Result* result) {
+                    wallPlaceAction.SetCallback([](const GameActions::GameAction* ga, const GameActions::Result* result) {
                         if (result->Error == GameActions::Status::Ok)
                         {
-                            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, result->Position);
+                            Audio::Play3D(Audio::SoundId::PlaceItem, result->Position);
                         }
                     });
                     auto res = GameActions::Execute(&wallPlaceAction);
@@ -3174,7 +3170,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         CoordsXYZD loc = { gridPos, gSceneryPlaceZ, direction };
 
-                        auto sceneryPlaceAction = LargeSceneryPlaceAction(
+                        auto sceneryPlaceAction = GameActions::LargeSceneryPlaceAction(
                             loc, selectedScenery, _sceneryPrimaryColour, _scenerySecondaryColour, _sceneryTertiaryColour);
 
                         auto res = GameActions::Query(&sceneryPlaceAction);
@@ -3199,16 +3195,16 @@ namespace OpenRCT2::Ui::Windows
 
                     CoordsXYZD loc = { gridPos, gSceneryPlaceZ, direction };
 
-                    auto sceneryPlaceAction = LargeSceneryPlaceAction(
+                    auto sceneryPlaceAction = GameActions::LargeSceneryPlaceAction(
                         loc, selectedScenery, _sceneryPrimaryColour, _scenerySecondaryColour, _sceneryTertiaryColour);
-                    sceneryPlaceAction.SetCallback([=](const GameAction* ga, const GameActions::Result* result) {
+                    sceneryPlaceAction.SetCallback([=](const GameActions::GameAction* ga, const GameActions::Result* result) {
                         if (result->Error == GameActions::Status::Ok)
                         {
-                            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, result->Position);
+                            Audio::Play3D(Audio::SoundId::PlaceItem, result->Position);
                         }
                         else
                         {
-                            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::Error, { loc.x, loc.y, gSceneryPlaceZ });
+                            Audio::Play3D(Audio::SoundId::Error, { loc.x, loc.y, gSceneryPlaceZ });
                         }
                     });
                     auto res = GameActions::Execute(&sceneryPlaceAction);
@@ -3224,12 +3220,12 @@ namespace OpenRCT2::Ui::Windows
 
                     CoordsXYZD loc{ gridPos, z, direction };
                     auto primaryColour = _sceneryPrimaryColour;
-                    auto bannerPlaceAction = BannerPlaceAction(loc, selectedScenery, primaryColour);
-                    bannerPlaceAction.SetCallback([=](const GameAction* ga, const GameActions::Result* result) {
+                    auto bannerPlaceAction = GameActions::BannerPlaceAction(loc, selectedScenery, primaryColour);
+                    bannerPlaceAction.SetCallback([=](const GameActions::GameAction* ga, const GameActions::Result* result) {
                         if (result->Error == GameActions::Status::Ok)
                         {
-                            auto data = result->GetData<BannerPlaceActionResult>();
-                            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, result->Position);
+                            auto data = result->GetData<GameActions::BannerPlaceActionResult>();
+                            Audio::Play3D(Audio::SoundId::PlaceItem, result->Position);
                             ContextOpenDetailWindow(WD_BANNER, data.bannerId.ToUnderlying());
                         }
                     });
