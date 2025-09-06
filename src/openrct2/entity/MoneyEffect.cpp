@@ -10,6 +10,7 @@
 #include "MoneyEffect.h"
 
 #include "../Diagnostic.h"
+#include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../config/Config.h"
 #include "../core/DataSerialiser.h"
@@ -47,7 +48,7 @@ void MoneyEffect::CreateAt(money64 value, const CoordsXYZ& effectPos, bool guest
     if (value == 0.00_GBP)
         return;
 
-    MoneyEffect* moneyEffect = CreateEntity<MoneyEffect>();
+    MoneyEffect* moneyEffect = getGameState().entities.CreateEntity<MoneyEffect>();
     if (moneyEffect == nullptr)
         return;
 
@@ -151,7 +152,7 @@ void MoneyEffect::Update()
         return;
     }
 
-    EntityRemove(this);
+    getGameState().entities.EntityRemove(this);
 }
 
 std::pair<StringId, money64> MoneyEffect::GetStringId() const

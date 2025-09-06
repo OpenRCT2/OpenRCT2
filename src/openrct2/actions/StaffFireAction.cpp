@@ -10,6 +10,7 @@
 #include "StaffFireAction.h"
 
 #include "../Diagnostic.h"
+#include "../GameState.h"
 #include "../entity/EntityRegistry.h"
 #include "../entity/Staff.h"
 #include "../ui/WindowManager.h"
@@ -45,7 +46,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
         }
 
-        auto staff = TryGetEntity<Staff>(_spriteId);
+        auto staff = getGameState().entities.TryGetEntity<Staff>(_spriteId);
         if (staff == nullptr)
         {
             LOG_ERROR("Staff entity not found for spriteId %u", _spriteId);
@@ -66,7 +67,7 @@ namespace OpenRCT2::GameActions
 
     Result StaffFireAction::Execute() const
     {
-        auto staff = TryGetEntity<Staff>(_spriteId);
+        auto staff = getGameState().entities.TryGetEntity<Staff>(_spriteId);
         if (staff == nullptr)
         {
             LOG_ERROR("Staff entity not found for spriteId %u", _spriteId);

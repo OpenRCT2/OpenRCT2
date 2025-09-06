@@ -2268,10 +2268,10 @@ void ShiftMap(const TileCoordsXY& amount)
     for (auto i = 0; i < EnumValue(EntityType::Count); i++)
     {
         auto entityType = static_cast<EntityType>(i);
-        auto& list = GetEntityList(entityType);
+        auto& list = getGameState().entities.GetEntityList(entityType);
         for (const auto& entityId : list)
         {
-            auto entity = GetEntity(entityId);
+            auto entity = getGameState().entities.GetEntity(entityId);
 
             // Do not tween the entity
             entityTweener.RemoveEntity(entity);

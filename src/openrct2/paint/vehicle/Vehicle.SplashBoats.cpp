@@ -9,6 +9,7 @@
 
 #include "../../ride/Vehicle.h"
 
+#include "../../GameState.h"
 #include "../../entity/EntityRegistry.h"
 #include "../../ride/Ride.h"
 #include "../Paint.h"
@@ -26,8 +27,11 @@ namespace OpenRCT2
         PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
         const CarEntry* carEntry)
     {
-        auto* vehicleToPaint = vehicle->IsHead() ? GetEntity<Vehicle>(vehicle->next_vehicle_on_ride)
-                                                 : GetEntity<Vehicle>(vehicle->prev_vehicle_on_ride);
+        // TODO: pass as parameter?
+        auto& entityRegistry = getGameState().entities;
+
+        auto* vehicleToPaint = vehicle->IsHead() ? entityRegistry.GetEntity<Vehicle>(vehicle->next_vehicle_on_ride)
+                                                 : entityRegistry.GetEntity<Vehicle>(vehicle->prev_vehicle_on_ride);
         if (vehicleToPaint == nullptr)
         {
             return;

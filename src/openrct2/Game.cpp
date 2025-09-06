@@ -270,7 +270,7 @@ static void FixPeepsWithInvalidRideReference()
     if (!peepsToRemove.empty())
     {
         // Some broken saves have broken spatial indexes
-        ResetEntitySpatialIndices();
+        getGameState().entities.ResetEntitySpatialIndices();
     }
 
     for (auto ptr : peepsToRemove)
@@ -374,7 +374,7 @@ void GameLoadInit()
     {
         GameActions::ClearQueue();
     }
-    ResetEntitySpatialIndices();
+    getGameState().entities.ResetEntitySpatialIndices();
     ResetAllSpriteQuadrantPlacements();
 
     gWindowUpdateTicks = 0;
@@ -443,7 +443,7 @@ void ResetAllSpriteQuadrantPlacements()
 {
     for (EntityId::UnderlyingType i = 0; i < kMaxEntities; i++)
     {
-        auto* spr = GetEntity(EntityId::FromUnderlying(i));
+        auto* spr = getGameState().entities.GetEntity(EntityId::FromUnderlying(i));
         if (spr != nullptr && spr->Type != EntityType::Null)
         {
             spr->MoveTo(spr->GetLocation());
@@ -702,7 +702,7 @@ void GameLoadOrQuitNoSavePrompt()
         }
         default:
             GameUnloadScripts();
-            ResetAllEntities();
+            getGameState().entities.ResetAllEntities();
             OpenRCT2Finish();
             break;
     }

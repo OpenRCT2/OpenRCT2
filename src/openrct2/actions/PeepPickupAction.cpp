@@ -10,6 +10,7 @@
 #include "PeepPickupAction.h"
 
 #include "../Diagnostic.h"
+#include "../GameState.h"
 #include "../Input.h"
 #include "../entity/EntityRegistry.h"
 #include "../entity/Peep.h"
@@ -58,7 +59,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::InvalidParameters, STR_ERR_CANT_PLACE_PERSON_HERE, kStringIdNone);
         }
 
-        auto* const peep = TryGetEntity<Peep>(_entityId);
+        auto* const peep = getGameState().entities.TryGetEntity<Peep>(_entityId);
         if (peep == nullptr)
         {
             LOG_ERROR("Failed to pick up peep for sprite %d", _entityId);
@@ -116,7 +117,7 @@ namespace OpenRCT2::GameActions
 
     Result PeepPickupAction::Execute() const
     {
-        Peep* const peep = TryGetEntity<Peep>(_entityId);
+        Peep* const peep = getGameState().entities.TryGetEntity<Peep>(_entityId);
         if (peep == nullptr)
         {
             LOG_ERROR("Failed to pick up peep for sprite %d", _entityId);

@@ -2155,15 +2155,15 @@ namespace OpenRCT2
         }
 
         template<typename T>
-        void WriteEntitiesOfType(OrcaStream& os, OrcaStream::ChunkStream& cs);
+        void WriteEntitiesOfType(GameState_t& gameState, OrcaStream& os, OrcaStream::ChunkStream& cs);
         template<typename... T>
-        void WriteEntitiesOfTypes(OrcaStream& os, OrcaStream::ChunkStream& cs);
+        void WriteEntitiesOfTypes(GameState_t& gameState, OrcaStream& os, OrcaStream::ChunkStream& cs);
 
         template<typename T>
-        void ReadEntitiesOfType(OrcaStream& os, OrcaStream::ChunkStream& cs);
+        void ReadEntitiesOfType(GameState_t& gameState, OrcaStream& os, OrcaStream::ChunkStream& cs);
 
         template<typename... T>
-        void ReadEntitiesOfTypes(OrcaStream& os, OrcaStream::ChunkStream& cs);
+        void ReadEntitiesOfTypes(GameState_t& gameState, OrcaStream& os, OrcaStream::ChunkStream& cs);
 
         void ReadWriteEntitiesChunk(GameState_t& gameState, OrcaStream& os);
 
@@ -2637,9 +2637,9 @@ namespace OpenRCT2
     }
 
     template<typename T>
-    void ParkFile::WriteEntitiesOfType(OrcaStream& os, OrcaStream::ChunkStream& cs)
+    void ParkFile::WriteEntitiesOfType(GameState_t& gameState, OrcaStream& os, OrcaStream::ChunkStream& cs)
     {
-        uint16_t count = GetEntityListCount(T::cEntityType);
+        uint16_t count = gameState.entities.GetEntityListCount(T::cEntityType);
         cs.write(T::cEntityType);
         cs.write(count);
         for (auto* ent : EntityList<T>())
@@ -2650,13 +2650,13 @@ namespace OpenRCT2
     }
 
     template<typename... T>
-    void ParkFile::WriteEntitiesOfTypes(OrcaStream& os, OrcaStream::ChunkStream& cs)
+    void ParkFile::WriteEntitiesOfTypes(GameState_t& gameState, OrcaStream& os, OrcaStream::ChunkStream& cs)
     {
-        (WriteEntitiesOfType<T>(os, cs), ...);
+        (WriteEntitiesOfType<T>(gameState, os, cs), ...);
     }
 
     template<typename T>
-    void ParkFile::ReadEntitiesOfType(OrcaStream& os, OrcaStream::ChunkStream& cs)
+    void ParkFile::ReadEntitiesOfType(GameState_t& gameState, OrcaStream& os, OrcaStream::ChunkStream& cs)
     {
         [[maybe_unused]] auto t = cs.read<EntityType>();
         assert(t == T::cEntityType);
@@ -2666,7 +2666,7 @@ namespace OpenRCT2
             T placeholder{};
 
             auto index = cs.read<EntityId>();
-            auto* ent = CreateEntityAt<T>(index);
+            auto* ent = getGameState().entities.CreateEntityAt<T>(index);
             if (ent == nullptr)
             {
                 // Unable to allocate entity
@@ -2677,9 +2677,9 @@ namespace OpenRCT2
     }
 
     template<typename... T>
-    void ParkFile::ReadEntitiesOfTypes(OrcaStream& os, OrcaStream::ChunkStream& cs)
+    void ParkFile::ReadEntitiesOfTypes(GameState_t& gameState, OrcaStream& os, OrcaStream::ChunkStream& cs)
     {
-        (ReadEntitiesOfType<T>(os, cs), ...);
+        (ReadEntitiesOfType<T>(gameState, os, cs), ...);
     }
 
     void ParkFile::ReadWriteEntitiesChunk(GameState_t& gameState, OrcaStream& os)
@@ -2687,7 +2687,7 @@ namespace OpenRCT2
         os.readWriteChunk(ParkFileChunkType::ENTITIES, [this, &gameState, &os](OrcaStream::ChunkStream& cs) {
             if (cs.getMode() == OrcaStream::Mode::reading)
             {
-                ResetAllEntities();
+                getGameState().entities.ResetAllEntities();
             }
 
             std::vector<uint16_t> entityIndices;
@@ -2695,7 +2695,7 @@ namespace OpenRCT2
             {
                 ReadEntitiesOfTypes<
                     Vehicle, Guest, Staff, Litter, SteamParticle, MoneyEffect, VehicleCrashParticle, ExplosionCloud,
-                    CrashSplashParticle, ExplosionFlare, JumpingFountain, Balloon, Duck>(os, cs);
+                    CrashSplashParticle, ExplosionFlare, JumpingFountain, Balloon, Duck>(gameState, os, cs);
 
                 auto version = os.getHeader().targetVersion;
                 if (version < kPeepAnimationObjectsVersion)
@@ -2707,7 +2707,7 @@ namespace OpenRCT2
             {
                 WriteEntitiesOfTypes<
                     Vehicle, Guest, Staff, Litter, SteamParticle, MoneyEffect, VehicleCrashParticle, ExplosionCloud,
-                    CrashSplashParticle, ExplosionFlare, JumpingFountain, Balloon, Duck>(os, cs);
+                    CrashSplashParticle, ExplosionFlare, JumpingFountain, Balloon, Duck>(gameState, os, cs);
             }
         });
     }

@@ -7,6 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../../../GameState.h"
 #include "../../../entity/EntityRegistry.h"
 #include "../../../entity/Guest.h"
 #include "../../../interface/Viewport.h"
@@ -52,7 +53,7 @@ static void PaintSpaceRingsStructure(
 
     int32_t frameNum = direction;
     uint32_t baseImageId = rideEntry->Cars[0].base_image_id;
-    auto vehicle = GetEntity<Vehicle>(ride.vehicles[vehicleIndex]);
+    auto vehicle = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[vehicleIndex]);
     if (ride.lifecycleFlags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
     {
         session.InteractionType = ViewportInteractionItem::Entity;
@@ -75,7 +76,7 @@ static void PaintSpaceRingsStructure(
 
     if (vehicle != nullptr && vehicle->num_peeps > 0)
     {
-        auto* rider = GetEntity<Guest>(vehicle->peep[0]);
+        auto* rider = getGameState().entities.GetEntity<Guest>(vehicle->peep[0]);
         if (rider != nullptr)
         {
             stationColour = ImageId(0, rider->TshirtColour, rider->TrousersColour);

@@ -196,7 +196,7 @@ namespace OpenRCT2::Scripting
     protected:
         Peep* GetPeep() const
         {
-            return OpenRCT2::GetEntity<Peep>(_id);
+            return OpenRCT2::getGameState().entities.GetEntity<Peep>(_id);
         }
     };
 

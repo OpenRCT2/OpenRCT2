@@ -302,7 +302,7 @@ namespace OpenRCT2::Editor
             staff->SetName({});
         }
 
-        ResetAllEntities();
+        getGameState().entities.ResetAllEntities();
         UpdateConsolidatedPatrolAreas();
 
         auto& gameState = getGameState();

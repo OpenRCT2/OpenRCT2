@@ -1518,7 +1518,7 @@ namespace OpenRCT2::Ui::Windows
                 const auto* rideEntry = ride->getRideEntry();
                 if (rideEntry != nullptr && rideEntry->TabCar != 0)
                 {
-                    Vehicle* vehicle = GetEntity<Vehicle>(vehId);
+                    Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(vehId);
                     if (vehicle == nullptr)
                     {
                         vehId = EntityId::GetNull();
@@ -1978,7 +1978,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         if (_viewIndex <= ride->numTrains)
                         {
-                            Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[_viewIndex - 1]);
+                            Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(ride->vehicles[_viewIndex - 1]);
                             if (vehicle != nullptr)
                             {
                                 auto headVehicleSpriteIndex = vehicle->Id;
@@ -2275,7 +2275,7 @@ namespace OpenRCT2::Ui::Windows
 
                     if (_viewIndex <= ride->numTrains)
                     {
-                        Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[_viewIndex - 1]);
+                        Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(ride->vehicles[_viewIndex - 1]);
                         if (vehicle == nullptr
                             || (vehicle->status != Vehicle::Status::Travelling
                                 && vehicle->status != Vehicle::Status::TravellingCableLift
@@ -2469,7 +2469,7 @@ namespace OpenRCT2::Ui::Windows
             if (ride == nullptr)
                 return kStringIdEmpty;
 
-            auto vehicle = GetEntity<Vehicle>(ride->vehicles[_viewIndex - 1]);
+            auto vehicle = getGameState().entities.GetEntity<Vehicle>(ride->vehicles[_viewIndex - 1]);
             if (vehicle == nullptr)
                 return kStringIdEmpty;
 
@@ -3899,8 +3899,9 @@ namespace OpenRCT2::Ui::Windows
                                     break;
                                 for (int32_t i = 0; i < ride->numTrains; ++i)
                                 {
-                                    for (vehicle = GetEntity<Vehicle>(ride->vehicles[i]); vehicle != nullptr;
-                                         vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
+                                    for (vehicle = getGameState().entities.GetEntity<Vehicle>(ride->vehicles[i]);
+                                         vehicle != nullptr;
+                                         vehicle = getGameState().entities.GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
                                     {
                                         vehicle->ClearFlag(
                                             VehicleFlags::CarIsBroken | VehicleFlags::StoppedOnLift
@@ -3912,14 +3913,14 @@ namespace OpenRCT2::Ui::Windows
                             case BREAKDOWN_RESTRAINTS_STUCK_OPEN:
                             case BREAKDOWN_DOORS_STUCK_CLOSED:
                             case BREAKDOWN_DOORS_STUCK_OPEN:
-                                vehicle = GetEntity<Vehicle>(ride->vehicles[ride->brokenTrain]);
+                                vehicle = getGameState().entities.GetEntity<Vehicle>(ride->vehicles[ride->brokenTrain]);
                                 if (vehicle != nullptr)
                                 {
                                     vehicle->ClearFlag(VehicleFlags::CarIsBroken);
                                 }
                                 break;
                             case BREAKDOWN_VEHICLE_MALFUNCTION:
-                                vehicle = GetEntity<Vehicle>(ride->vehicles[ride->brokenTrain]);
+                                vehicle = getGameState().entities.GetEntity<Vehicle>(ride->vehicles[ride->brokenTrain]);
                                 if (vehicle != nullptr)
                                 {
                                     vehicle->ClearFlag(VehicleFlags::TrainIsBroken);
@@ -4127,7 +4128,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     else
                     {
-                        auto staff = GetEntity<Staff>(ride->mechanic);
+                        auto staff = getGameState().entities.GetEntity<Staff>(ride->mechanic);
                         if (staff != nullptr && staff->IsMechanic())
                         {
                             ft = Formatter();
@@ -7100,7 +7101,7 @@ namespace OpenRCT2::Ui::Windows
                 int32_t numPeepsLeft = vehicle->num_peeps;
                 for (int32_t i = 0; i < 32 && numPeepsLeft > 0; i++)
                 {
-                    Peep* peep = GetEntity<Guest>(vehicle->peep[i]);
+                    Peep* peep = getGameState().entities.GetEntity<Guest>(vehicle->peep[i]);
                     if (peep == nullptr)
                         continue;
 

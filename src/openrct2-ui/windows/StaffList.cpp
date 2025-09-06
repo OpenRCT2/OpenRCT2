@@ -185,10 +185,10 @@ namespace OpenRCT2::Ui::Windows
             {
                 for (auto peep : EntityList<Staff>())
                 {
-                    EntitySetFlashing(peep, false);
+                    getGameState().entities.EntitySetFlashing(peep, false);
                     if (peep->AssignedStaffType == GetSelectedStaffType())
                     {
-                        EntitySetFlashing(peep, true);
+                        getGameState().entities.EntitySetFlashing(peep, true);
                     }
                 }
             }
@@ -347,7 +347,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     else
                     {
-                        auto peep = GetEntity<Staff>(entry.Id);
+                        auto peep = getGameState().entities.GetEntity<Staff>(entry.Id);
                         if (peep != nullptr)
                         {
                             auto intent = Intent(WindowClass::Peep);
@@ -386,7 +386,7 @@ namespace OpenRCT2::Ui::Windows
 
                 if (y + 11 >= rt.y)
                 {
-                    const auto* peep = GetEntity<Staff>(entry.Id);
+                    const auto* peep = getGameState().entities.GetEntity<Staff>(entry.Id);
                     if (peep == nullptr)
                     {
                         continue;
@@ -485,10 +485,10 @@ namespace OpenRCT2::Ui::Windows
 
             for (auto* peep : EntityList<Staff>())
             {
-                EntitySetFlashing(peep, false);
+                getGameState().entities.EntitySetFlashing(peep, false);
                 if (peep->AssignedStaffType == GetSelectedStaffType())
                 {
-                    EntitySetFlashing(peep, true);
+                    getGameState().entities.EntitySetFlashing(peep, true);
 
                     StaffEntry entry;
                     entry.Id = peep->Id;
@@ -543,7 +543,7 @@ namespace OpenRCT2::Ui::Windows
                     return;
 
                 auto actionResult = res->GetData<GameActions::StaffHireNewActionResult>();
-                auto* staff = GetEntity<Staff>(actionResult.StaffEntityId);
+                auto* staff = getGameState().entities.GetEntity<Staff>(actionResult.StaffEntityId);
                 if (staff == nullptr)
                     return;
 
@@ -560,7 +560,7 @@ namespace OpenRCT2::Ui::Windows
                             if (result->Error != GameActions::Status::Ok)
                                 return;
 
-                            auto* staff2 = GetEntity<Staff>(staffId);
+                            auto* staff2 = getGameState().entities.GetEntity<Staff>(staffId);
                             auto intent = Intent(WindowClass::Peep);
                             intent.PutExtra(INTENT_EXTRA_PEEP, staff2);
                             auto* wind = ContextOpenIntent(&intent);

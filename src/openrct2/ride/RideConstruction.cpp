@@ -157,14 +157,14 @@ static void ride_remove_cable_lift(Ride& ride)
         auto spriteIndex = ride.cableLift;
         do
         {
-            Vehicle* vehicle = GetEntity<Vehicle>(spriteIndex);
+            Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(spriteIndex);
             if (vehicle == nullptr)
             {
                 return;
             }
             vehicle->Invalidate();
             spriteIndex = vehicle->next_vehicle_on_train;
-            EntityRemove(vehicle);
+            getGameState().entities.EntityRemove(vehicle);
         } while (!spriteIndex.IsNull());
     }
 }
@@ -185,14 +185,14 @@ void Ride::removeVehicles()
             auto spriteIndex = vehicles[i];
             while (!spriteIndex.IsNull())
             {
-                Vehicle* vehicle = GetEntity<Vehicle>(spriteIndex);
+                Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(spriteIndex);
                 if (vehicle == nullptr)
                 {
                     break;
                 }
                 vehicle->Invalidate();
                 spriteIndex = vehicle->next_vehicle_on_train;
-                EntityRemove(vehicle);
+                getGameState().entities.EntityRemove(vehicle);
             }
 
             vehicles[i] = EntityId::GetNull();
@@ -207,7 +207,7 @@ void Ride::removeVehicles()
             if (vehicle->ride == id)
             {
                 vehicle->Invalidate();
-                EntityRemove(vehicle);
+                getGameState().entities.EntityRemove(vehicle);
             }
         }
     }

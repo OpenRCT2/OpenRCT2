@@ -12,6 +12,7 @@
 #ifdef ENABLE_SCRIPTING
 
     #include "../../../Context.h"
+    #include "../../../GameState.h"
     #include "../../../entity/EntityList.h"
     #include "../../../entity/EntityRegistry.h"
     #include "../../../entity/Peep.h"
@@ -180,7 +181,7 @@ namespace OpenRCT2::Scripting
                     case EntityType::Balloon:
                     case EntityType::Duck:
                     case EntityType::Litter:
-                        EntityRemove(entity);
+                        getGameState().entities.EntityRemove(entity);
                         break;
                     case EntityType::Null:
                         break;
@@ -192,7 +193,7 @@ namespace OpenRCT2::Scripting
 
         EntityBase* GetEntity() const
         {
-            return OpenRCT2::GetEntity(_id);
+            return OpenRCT2::getGameState().entities.GetEntity(_id);
         }
 
     public:

@@ -8,6 +8,7 @@
  *****************************************************************************/
 #include "Particle.h"
 
+#include "../GameState.h"
 #include "../SpriteIds.h"
 #include "../audio/Audio.h"
 #include "../core/DataSerialiser.h"
@@ -84,7 +85,7 @@ void VehicleCrashParticle::Launch()
  */
 void VehicleCrashParticle::Create(VehicleColour& colours, const CoordsXYZ& vehiclePos)
 {
-    VehicleCrashParticle* sprite = CreateEntity<VehicleCrashParticle>();
+    VehicleCrashParticle* sprite = getGameState().entities.CreateEntity<VehicleCrashParticle>();
     if (sprite != nullptr)
     {
         sprite->MoveTo(vehiclePos);
@@ -105,7 +106,7 @@ void VehicleCrashParticle::Update()
     time_to_live--;
     if (time_to_live == 0)
     {
-        EntityRemove(this);
+        getGameState().entities.EntityRemove(this);
         return;
     }
 
@@ -137,7 +138,7 @@ void VehicleCrashParticle::Update()
         // Splash
         OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::Water2, { x, y, waterZ });
         CrashSplashParticle::Create({ x, y, waterZ });
-        EntityRemove(this);
+        getGameState().entities.EntityRemove(this);
         return;
     }
 
@@ -192,7 +193,7 @@ void VehicleCrashParticle::Paint(PaintSession& session, int32_t imageDirection) 
  */
 void CrashSplashParticle::Create(const CoordsXYZ& splashPos)
 {
-    auto* sprite = CreateEntity<CrashSplashParticle>();
+    auto* sprite = getGameState().entities.CreateEntity<CrashSplashParticle>();
     if (sprite != nullptr)
     {
         sprite->SpriteData.Width = 33;
@@ -213,7 +214,7 @@ void CrashSplashParticle::Update()
     frame += 85;
     if (frame >= 7168)
     {
-        EntityRemove(this);
+        getGameState().entities.EntityRemove(this);
     }
 }
 
@@ -240,7 +241,7 @@ void SteamParticle::Create(const CoordsXYZ& coords)
     auto surfaceElement = MapGetSurfaceElementAt(coords);
     if (surfaceElement != nullptr && coords.z > surfaceElement->GetBaseZ())
     {
-        SteamParticle* steam = CreateEntity<SteamParticle>();
+        SteamParticle* steam = getGameState().entities.CreateEntity<SteamParticle>();
         if (steam == nullptr)
             return;
 
@@ -270,7 +271,7 @@ void SteamParticle::Update()
     frame += 64;
     if (frame >= (56 * 64))
     {
-        EntityRemove(this);
+        getGameState().entities.EntityRemove(this);
     }
 }
 
@@ -295,7 +296,7 @@ void SteamParticle::Paint(PaintSession& session, int32_t imageDirection) const
  */
 void ExplosionCloud::Create(const CoordsXYZ& cloudPos)
 {
-    auto* entity = CreateEntity<ExplosionCloud>();
+    auto* entity = getGameState().entities.CreateEntity<ExplosionCloud>();
     if (entity != nullptr)
     {
         entity->SpriteData.Width = 44;
@@ -316,7 +317,7 @@ void ExplosionCloud::Update()
     frame += 128;
     if (frame >= (36 * 128))
     {
-        EntityRemove(this);
+        getGameState().entities.EntityRemove(this);
     }
 }
 
@@ -340,7 +341,7 @@ void ExplosionCloud::Paint(PaintSession& session, int32_t imageDirection) const
  */
 void ExplosionFlare::Create(const CoordsXYZ& flarePos)
 {
-    auto* entity = CreateEntity<ExplosionFlare>();
+    auto* entity = getGameState().entities.CreateEntity<ExplosionFlare>();
     if (entity != nullptr)
     {
         entity->SpriteData.Width = 25;
@@ -361,7 +362,7 @@ void ExplosionFlare::Update()
     frame += 64;
     if (frame >= (124 * 64))
     {
-        EntityRemove(this);
+        getGameState().entities.EntityRemove(this);
     }
 }
 

@@ -432,8 +432,9 @@ namespace OpenRCT2::Title
             auto windowManager = Ui::GetWindowManager();
             auto& gameState = getGameState();
             windowManager->SetMainView(gameState.savedView, gameState.savedViewZoom, gameState.savedViewRotation);
-            ResetEntitySpatialIndices();
+            gameState.entities.ResetEntitySpatialIndices();
             ResetAllSpriteQuadrantPlacements();
+
             auto intent = Intent(INTENT_ACTION_REFRESH_NEW_RIDES);
             ContextBroadcastIntent(&intent);
             Ui::Windows::WindowScenerySetDefaultPlacementConfiguration();

@@ -7,6 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../GameState.h"
 #include "../core/Speed.hpp"
 #include "../entity/EntityRegistry.h"
 #include "Vehicle.h"
@@ -137,7 +138,7 @@ int32_t Vehicle::CalculateRiderBraking() const
     RiderControlSettings riderSettings = riderTable[peep[0].ToUnderlying() & 0xFF];
 
     // Brake if close to the vehicle in front
-    Vehicle* prevVehicle = GetEntity<Vehicle>(prev_vehicle_on_ride);
+    Vehicle* prevVehicle = getGameState().entities.GetEntity<Vehicle>(prev_vehicle_on_ride);
     if (prevVehicle != nullptr && this != prevVehicle && _vehicleVelocityF64E08 > minFollowVelocity)
     {
         int32_t followDistance = std::max(minFollowDistance, (riderSettings.followDistance * _vehicleVelocityF64E08) >> 15);

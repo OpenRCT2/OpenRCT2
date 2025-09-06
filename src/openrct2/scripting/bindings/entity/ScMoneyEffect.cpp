@@ -11,6 +11,7 @@
 
     #include "ScMoneyEffect.hpp"
 
+    #include "../../../GameState.h"
     #include "../../../entity/MoneyEffect.h"
 
 namespace OpenRCT2::Scripting
@@ -28,7 +29,7 @@ namespace OpenRCT2::Scripting
 
     MoneyEffect* ScMoneyEffect::GetMoneyEffect() const
     {
-        return OpenRCT2::GetEntity<MoneyEffect>(_id);
+        return OpenRCT2::getGameState().entities.GetEntity<MoneyEffect>(_id);
     }
 
     money64 ScMoneyEffect::value_get() const

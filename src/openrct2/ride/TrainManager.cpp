@@ -21,7 +21,7 @@ namespace OpenRCT2::TrainManager
 
         while (iter != end && Entity == nullptr)
         {
-            Entity = GetEntity<Vehicle>(*iter++);
+            Entity = getGameState().entities.GetEntity<Vehicle>(*iter++);
             if (Entity != nullptr && !Entity->IsHead())
             {
                 Entity = nullptr;
@@ -32,6 +32,6 @@ namespace OpenRCT2::TrainManager
 
     View::View()
     {
-        vec = &GetEntityList(EntityType::Vehicle);
+        vec = &getGameState().entities.GetEntityList(EntityType::Vehicle);
     }
 } // namespace OpenRCT2::TrainManager

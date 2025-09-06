@@ -11,6 +11,7 @@
 
 #include "../Context.h"
 #include "../Diagnostic.h"
+#include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../entity/EntityRegistry.h"
 
@@ -42,7 +43,8 @@ namespace OpenRCT2::GameActions
 
     Result GuestSetFlagsAction::Query() const
     {
-        auto* peep = TryGetEntity<Guest>(_peepId);
+        auto& gameState = getGameState();
+        auto* peep = gameState.entities.TryGetEntity<Guest>(_peepId);
         if (peep == nullptr)
         {
             LOG_ERROR("Guest entity not found for peepID %u", _peepId.ToUnderlying());
@@ -53,7 +55,8 @@ namespace OpenRCT2::GameActions
 
     Result GuestSetFlagsAction::Execute() const
     {
-        auto* peep = TryGetEntity<Guest>(_peepId);
+        auto& gameState = getGameState();
+        auto* peep = gameState.entities.TryGetEntity<Guest>(_peepId);
         if (peep == nullptr)
         {
             LOG_ERROR("Guest entity not found for peepID %u", _peepId.ToUnderlying());

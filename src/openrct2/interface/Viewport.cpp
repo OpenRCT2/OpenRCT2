@@ -148,7 +148,7 @@ namespace OpenRCT2
                     return arg;
                 else if constexpr (std::is_same_v<T, Focus::EntityFocus>)
                 {
-                    auto* centreEntity = GetEntity(arg);
+                    auto* centreEntity = getGameState().entities.GetEntity(arg);
                     if (centreEntity != nullptr)
                     {
                         return CoordsXYZ{ centreEntity->x, centreEntity->y, centreEntity->z };
@@ -663,7 +663,7 @@ namespace OpenRCT2
     {
         if (!window->viewport_target_sprite.IsNull() && window->viewport != nullptr)
         {
-            auto* sprite = GetEntity(window->viewport_target_sprite);
+            auto* sprite = getGameState().entities.GetEntity(window->viewport_target_sprite);
             if (sprite == nullptr)
             {
                 return;
@@ -687,7 +687,7 @@ namespace OpenRCT2
 
     void ViewportUpdateSmartFollowEntity(WindowBase* window)
     {
-        auto entity = TryGetEntity(window->viewport_smart_follow_sprite);
+        auto entity = getGameState().entities.TryGetEntity(window->viewport_smart_follow_sprite);
         if (entity == nullptr || entity->Type == EntityType::Null)
         {
             window->viewport_smart_follow_sprite = EntityId::GetNull();
@@ -748,7 +748,7 @@ namespace OpenRCT2
             auto ride = GetRide(peep.CurrentRide);
             if (ride != nullptr && (ride->lifecycleFlags & RIDE_LIFECYCLE_ON_TRACK))
             {
-                auto train = GetEntity<Vehicle>(ride->vehicles[peep.CurrentTrain]);
+                auto train = getGameState().entities.GetEntity<Vehicle>(ride->vehicles[peep.CurrentTrain]);
                 if (train != nullptr)
                 {
                     const auto car = train->GetCar(peep.CurrentCar);
