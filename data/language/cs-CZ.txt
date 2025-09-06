@@ -550,8 +550,8 @@ STR_1152    :jakékoliv naložení
 STR_1153    :Výškové popisky atrakcí
 STR_1154    :Výškové popisky krajiny
 STR_1155    :Výškové popisky cest
-STR_1156    :{MOVE_X}{10}{STRINGID}
-STR_1157    :✓{MOVE_X}{10}{STRINGID}
+STR_1156    :{MOVE_X}{10}{STRING}
+STR_1157    :✓{MOVE_X}{10}{STRING}
 STR_1158    :Tohle nelze odstranit…
 STR_1159    :Nástroj pro kulisy, květiny a ostatní doplňky
 STR_1160    :Nástroj pro vodní plochy

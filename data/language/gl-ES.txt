@@ -550,7 +550,7 @@ STR_1153    :Marcas de altura en vías das atraccións
 STR_1154    :marcas de altura no terreo
 STR_1155    :marcas de altura nos camiños
 STR_1156    :{MOVE_X}{10}{STRINGID}
-STR_1157    :✓{MOVE_X}{10}{STRINGID}
+STR_1157    :✓{MOVE_X}{10}{STRING}
 STR_1158    :Non se pode eliminar isto…
 STR_1159    :Colocar elementos decorativos, xardíns e outros accesorios
 STR_1160    :Crear/axustar lagos e auga

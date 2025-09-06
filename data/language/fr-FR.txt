@@ -549,8 +549,8 @@ STR_1152    :N’importe quelle charge
 STR_1153    :Repères de hauteur sur les voies
 STR_1154    :Repères de hauteur sur le terrain
 STR_1155    :Repères de hauteur sur les chemins
-STR_1156    :{MOVE_X}{10}{STRINGID}
-STR_1157    :✓{MOVE_X}{10}{STRINGID}
+STR_1156    :{MOVE_X}{10}{STRING}
+STR_1157    :✓{MOVE_X}{10}{STRING}
 STR_1158    :Impossible de supprimer ceci…
 STR_1159    :Placer le décor, les jardins, et autres accessoires
 STR_1160    :Créer/ajuster les étendues d’eau

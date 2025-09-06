@@ -549,8 +549,8 @@ STR_1152    :随意载客量
 STR_1153    :轨道高度标记
 STR_1154    :土地高度标记
 STR_1155    :道路高度标记
-STR_1156    :{MOVE_X}{10}{STRINGID}
-STR_1157    :✓{MOVE_X}{10}{STRINGID}
+STR_1156    :{MOVE_X}{10}{STRING}
+STR_1157    :✓{MOVE_X}{10}{STRING}
 STR_1158    :不能移除此物……
 STR_1159    :放置景观，花园和其他美化物
 STR_1160    :创建/调整湖泊和水体

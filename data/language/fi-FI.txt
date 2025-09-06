@@ -546,8 +546,8 @@ STR_1152    :Mitä tahansa lastia
 STR_1153    :Korkeusmerkinnät radoissa
 STR_1154    :Korkeusmerkinnät maanpinnassa
 STR_1155    :Korkeusmerkinnät poluissa
-STR_1156    :{MOVE_X}{10}{STRINGID}
-STR_1157    :✓{MOVE_X}{10}{STRINGID}
+STR_1156    :{MOVE_X}{10}{STRING}
+STR_1157    :✓{MOVE_X}{10}{STRING}
 STR_1158    :Tämän poistaminen ei onnistu…
 STR_1159    :Sijoita maisemointeja, kasveja ja somisteita
 STR_1160    :Luo/säädä järviä ja vettä

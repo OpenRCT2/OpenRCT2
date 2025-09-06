@@ -315,7 +315,6 @@ namespace OpenRCT2::Ui::Windows
                     lastType = INFORMATION_TYPE_RUNNING_COST;
 
                 int32_t numItems = 0;
-                int32_t selectedIndex = -1;
                 for (int32_t type = INFORMATION_TYPE_STATUS; type <= lastType; type++)
                 {
                     if ((getGameState().park.flags & PARK_FLAGS_NO_MONEY))
@@ -326,12 +325,12 @@ namespace OpenRCT2::Ui::Windows
                         }
                     }
 
+                    gDropdown.items[numItems] = Dropdown::MenuLabel(ride_info_type_string_mapping[type]);
+                    gDropdown.items[numItems].value = type;
                     if (type == _windowRideListInformationType)
                     {
-                        selectedIndex = numItems;
+                        gDropdown.items[numItems].setChecked(true);
                     }
-
-                    gDropdown.items[numItems] = Dropdown::MenuLabel(ride_info_type_string_mapping[type]);
                     numItems++;
                 }
 
@@ -342,11 +341,6 @@ namespace OpenRCT2::Ui::Windows
                 WindowDropdownShowTextCustomWidth(
                     { windowPos.x + headerWidget.left, windowPos.y + headerWidget.top }, headerWidget.height(), colours[1], 0,
                     Dropdown::Flag::StayOpen, numItems, totalWidth);
-
-                if (selectedIndex != -1)
-                {
-                    gDropdown.items[selectedIndex].setChecked(true);
-                }
             }
         }
 
@@ -375,14 +369,9 @@ namespace OpenRCT2::Ui::Windows
                     return;
 
                 int32_t informationType = INFORMATION_TYPE_STATUS;
-                uint32_t arg = static_cast<uint32_t>(gDropdown.items[dropdownIndex].args.generic);
-                for (size_t i = 0; i < std::size(ride_info_type_string_mapping); i++)
-                {
-                    if (arg == ride_info_type_string_mapping[i])
-                    {
-                        informationType = static_cast<int32_t>(i);
-                    }
-                }
+                auto selectedValue = gDropdown.items[dropdownIndex].value;
+                if (selectedValue < std::size(ride_info_type_string_mapping))
+                    informationType = selectedValue;
 
                 _windowRideListInformationType = InformationType(informationType);
                 Invalidate();

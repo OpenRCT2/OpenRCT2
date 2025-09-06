@@ -229,18 +229,9 @@ namespace OpenRCT2::Ui::Windows
                             auto curRide = GetRide(rideIndex);
                             if (curRide != nullptr)
                             {
-                                // HACK until dropdown items have longer argument buffers
-                                gDropdown.items[numItems].format = STR_DROPDOWN_MENU_LABEL;
-                                Formatter ft(reinterpret_cast<uint8_t*>(&gDropdown.items[numItems].args.generic));
-                                if (curRide->customName.empty())
-                                {
-                                    curRide->formatNameTo(ft);
-                                }
-                                else
-                                {
-                                    gDropdown.items[numItems].format = STR_OPTIONS_DROPDOWN_ITEM;
-                                    ft.Add<const char*>(curRide->customName.c_str());
-                                }
+                                auto name = curRide->getName();
+                                gDropdown.items[numItems] = Dropdown::MenuLabel(name);
+
                                 numItems++;
                             }
                         }

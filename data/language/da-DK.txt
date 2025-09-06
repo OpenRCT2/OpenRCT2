@@ -547,8 +547,8 @@ STR_1152    :Vilkårlig last
 STR_1153    :Højdeangivelse på forlystelses skinner
 STR_1154    :Højdeangivelse på land
 STR_1155    :Højdeangivelse på stier
-STR_1156    :{MOVE_X}{10}{STRINGID}
-STR_1157    :✓{MOVE_X}{10}{STRINGID}
+STR_1156    :{MOVE_X}{10}{STRING}
+STR_1157    :✓{MOVE_X}{10}{STRING}
 STR_1158    :Kan ikke fjerne dette…
 STR_1159    :Placer sceneri, haver, og andet pynt
 STR_1160    :lav/juster søer og vand

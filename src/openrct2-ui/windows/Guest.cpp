@@ -718,9 +718,9 @@ namespace OpenRCT2::Ui::Windows
 
         void ShowLocateDropdown(Widget& widget)
         {
-            constexpr std::array<Dropdown::Item, 2> dropdownItems = {
-                Dropdown::Item{ STR_LOCATE_SUBJECT_TIP },
-                Dropdown::Item{ STR_FOLLOW_SUBJECT_TIP },
+            std::array<Dropdown::Item, 2> dropdownItems = {
+                Dropdown::PlainMenuLabel(STR_LOCATE_SUBJECT_TIP),
+                Dropdown::PlainMenuLabel(STR_FOLLOW_SUBJECT_TIP),
             };
 
             WindowDropdownShowText(

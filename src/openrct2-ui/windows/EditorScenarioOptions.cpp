@@ -732,6 +732,7 @@ namespace OpenRCT2::Ui::Windows
         {
             const auto& gameState = getGameState();
             const auto& scenarioOptions = gameState.scenarioOptions;
+            auto objectiveType = EnumValue(scenarioOptions.objective.Type);
 
             int32_t numItems = 0;
             for (auto i = 0; i < EnumValue(Scenario::ObjectiveType::count); i++)
@@ -750,6 +751,11 @@ namespace OpenRCT2::Ui::Windows
                 if (objectiveAllowedByMoneyUsage && objectiveAllowedByPaymentSettings)
                 {
                     gDropdown.items[numItems] = Dropdown::MenuLabel(ObjectiveDropdownOptionNames[i]);
+                    gDropdown.items[numItems].value = i;
+                    if (i == objectiveType)
+                    {
+                        gDropdown.items[numItems].setChecked(true);
+                    }
                     numItems++;
                 }
             }
@@ -758,16 +764,6 @@ namespace OpenRCT2::Ui::Windows
             WindowDropdownShowTextCustomWidth(
                 { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
                 colours[1], 0, Dropdown::Flag::StayOpen, numItems, dropdownWidget->width() - 3);
-
-            auto objectiveType = EnumValue(scenarioOptions.objective.Type);
-            for (int32_t j = 0; j < numItems; j++)
-            {
-                if (gDropdown.items[j].args.generic - STR_OBJECTIVE_DROPDOWN_NONE == objectiveType)
-                {
-                    gDropdown.items[j].setChecked(true);
-                    break;
-                }
-            }
         }
 
         void ShowCategoryDropdown()
@@ -1017,9 +1013,7 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_OBJECTIVE_DROPDOWN:
-                    // TODO: Don't rely on string ID order
-                    auto newObjectiveType = static_cast<Scenario::ObjectiveType>(
-                        gDropdown.items[dropdownIndex].args.generic - STR_OBJECTIVE_DROPDOWN_NONE);
+                    auto newObjectiveType = static_cast<Scenario::ObjectiveType>(gDropdown.items[dropdownIndex].value);
                     if (gameState.scenarioOptions.objective.Type != newObjectiveType)
                         SetObjective(newObjectiveType);
                     break;

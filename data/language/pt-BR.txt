@@ -549,8 +549,8 @@ STR_1152    :Qualquer carga
 STR_1153    :Marcas de altura nas Pistas dos Brinquedos
 STR_1154    :Marcas de altura no Terreno
 STR_1155    :Marcas de altura nos Caminhos
-STR_1156    :{MOVE_X}{10}{STRINGID}
-STR_1157    :✓{MOVE_X}{10}{STRINGID}
+STR_1156    :{MOVE_X}{10}{STRING}
+STR_1157    :✓{MOVE_X}{10}{STRING}
 STR_1158    :Impossível remover isto…
 STR_1159    :Coloque cenários, jardins, e outros acessórios
 STR_1160    :Criar/ajustar lagos e água

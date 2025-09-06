@@ -338,10 +338,9 @@ namespace OpenRCT2::Ui::Windows
 
                     for (size_t i = 0; i < _numPages; i++)
                     {
-                        gDropdown.items[i].format = STR_DROPDOWN_MENU_LABEL;
-                        uint16_t* args = reinterpret_cast<uint16_t*>(&gDropdown.items[i].args.generic);
-                        args[0] = STR_PAGE_X;
-                        args[1] = static_cast<uint16_t>(i + 1);
+                        Formatter ft;
+                        ft.Add<uint16_t>(i + 1);
+                        gDropdown.items[i] = Dropdown::MenuLabel(STR_PAGE_X, ft);
                     }
                     gDropdown.items[static_cast<int32_t>(_selectedPage)].setChecked(true);
                     break;

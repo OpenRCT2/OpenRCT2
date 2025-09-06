@@ -549,8 +549,8 @@ STR_1152    :Bất kỳ tải nào
 STR_1153    :Dấu chiều cao trên đường ray
 STR_1154    :Dấu chiều cao trên đất liền
 STR_1155    :Dấu chiều cao trên đường đi
-STR_1156    :{MOVE_X}{10}{STRINGID}
-STR_1157    :✓{MOVE_X}{10}{STRINGID}
+STR_1156    :{MOVE_X}{10}{STRING}
+STR_1157    :✓{MOVE_X}{10}{STRING}
 STR_1158    :Không thể xóa cái này…
 STR_1159    :Đặt phong cảnh, vườn tược và các phụ kiện khác
 STR_1160    :Tạo/điều chỉnh hồ & nước

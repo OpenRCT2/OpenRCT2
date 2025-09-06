@@ -544,8 +544,8 @@ STR_1152    :أي حمل
 STR_1153    :Height Marks on Ride Tracks
 STR_1154    :Height Marks on Land
 STR_1155    :Height Marks on Paths
-STR_1156    :{MOVE_X}{10}{STRINGID}
-STR_1157    :✓{MOVE_X}{10}{STRINGID}
+STR_1156    :{MOVE_X}{10}{STRING}
+STR_1157    :✓{MOVE_X}{10}{STRING}
 STR_1158    :…لا يمكن مسح هذا
 STR_1159    :Place scenery, gardens, and other accessories
 STR_1160    :Create/adjust lakes & water

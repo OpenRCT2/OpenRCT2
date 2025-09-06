@@ -221,8 +221,8 @@ namespace OpenRCT2::Ui::Windows
                 const auto& listWidget = widgets[WIDX_LIST];
 
                 std::array<Dropdown::Item, 2> dropdownItems = {
-                    Dropdown::Item{ STR_JOIN_GAME },
-                    Dropdown::Item{ server.Favourite ? STR_REMOVE_FROM_FAVOURITES : STR_ADD_TO_FAVOURITES },
+                    Dropdown::PlainMenuLabel(STR_JOIN_GAME),
+                    Dropdown::PlainMenuLabel(server.Favourite ? STR_REMOVE_FROM_FAVOURITES : STR_ADD_TO_FAVOURITES),
                 };
 
                 auto dropdownPos = ScreenCoordsXY{

@@ -822,12 +822,10 @@ namespace OpenRCT2::Ui::Windows
                     {
                         const Resolution& resolution = resolutions[i];
 
-                        gDropdown.items[i].format = STR_DROPDOWN_MENU_LABEL;
-
-                        uint16_t* args = reinterpret_cast<uint16_t*>(&gDropdown.items[i].args.generic);
-                        args[0] = STR_RESOLUTION_X_BY_Y;
-                        args[1] = resolution.Width;
-                        args[2] = resolution.Height;
+                        Formatter ft;
+                        ft.Add<uint16_t>(resolution.Width);
+                        ft.Add<uint16_t>(resolution.Height);
+                        gDropdown.items[i] = Dropdown::MenuLabel(STR_RESOLUTION_X_BY_Y, ft);
 
                         if (resolution.Width == Config::Get().general.FullscreenWidth
                             && resolution.Height == Config::Get().general.FullscreenHeight)
