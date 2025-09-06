@@ -210,12 +210,12 @@
   <PropertyGroup>
     <RootDir>$(MsBuildThisFileDirectory)</RootDir>
     <DependenciesCheckFile>$(RootDir).dependencies</DependenciesCheckFile>
-    <LibsUrl Condition="'$(Platform)'=='ARM64'">https://github.com/OpenRCT2/Dependencies/releases/download/v38/openrct2-libs-v38-arm64-windows-static.zip</LibsUrl>
-    <LibsSha256 Condition="'$(Platform)'=='ARM64'">00ef08029e6eb251917a73a92063472dba92422ae91846cfa75d83bbdcdb3a4d</LibsSha256>
-    <LibsUrl Condition="'$(Platform)'=='x64'">https://github.com/OpenRCT2/Dependencies/releases/download/v38/openrct2-libs-v38-x64-windows-static.zip</LibsUrl>
-    <LibsSha256 Condition="'$(Platform)'=='x64'">c9fdda3556305b4b9276d5901b37067b73eae80d95427189f026b78753e84f7b</LibsSha256>
-    <LibsUrl Condition="'$(Platform)'=='Win32'">https://github.com/OpenRCT2/Dependencies/releases/download/v38/openrct2-libs-v38-x86-windows-static.zip</LibsUrl>
-    <LibsSha256 Condition="'$(Platform)'=='Win32'">dd58ad06d747caf2b6d34cfc90de217fb92379bde75183dbc91a25e191ec81fa</LibsSha256>
+    <LibsUrl Condition="'$(Platform)'=='ARM64'">https://github.com/OpenRCT2/Dependencies/releases/download/v41/openrct2-libs-v41-arm64-windows-static.zip</LibsUrl>
+    <LibsSha256 Condition="'$(Platform)'=='ARM64'">5d171f23eee584bdc29b1186dc7a86d935a6ea58efa42b5674c196c5b581923b</LibsSha256>
+    <LibsUrl Condition="'$(Platform)'=='x64'">https://github.com/OpenRCT2/Dependencies/releases/download/v41/openrct2-libs-v41-x64-windows-static.zip</LibsUrl>
+    <LibsSha256 Condition="'$(Platform)'=='x64'">8e78f1c3c09c50cb0f509eab6845a93dd69771ff95cdf82d747568093d138f73</LibsSha256>
+    <LibsUrl Condition="'$(Platform)'=='Win32'">https://github.com/OpenRCT2/Dependencies/releases/download/v41/openrct2-libs-v41-x86-windows-static.zip</LibsUrl>
+    <LibsSha256 Condition="'$(Platform)'=='Win32'">490263b873dd02c13a043a04d26bb9837d2d378dacd8b2c8d29660fef44db3db</LibsSha256>
     <TitleSequencesUrl>https://github.com/OpenRCT2/title-sequences/releases/download/v0.4.14/title-sequences.zip</TitleSequencesUrl>
     <TitleSequencesSha256>140df714e806fed411cc49763e7f16b0fcf2a487a57001d1e50fce8f9148a9f3</TitleSequencesSha256>
     <ObjectsUrl>https://github.com/OpenRCT2/objects/releases/download/v1.7.3/objects.zip</ObjectsUrl>
