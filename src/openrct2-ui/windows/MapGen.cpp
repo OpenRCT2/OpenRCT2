@@ -26,6 +26,7 @@
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Map.h>
+#include <openrct2/world/map_generator/Erosion.h>
 #include <openrct2/world/map_generator/MapGen.h>
 #include <openrct2/world/map_generator/PngTerrainGenerator.h>
 
@@ -92,6 +93,10 @@ namespace OpenRCT2::Ui::Windows
         WIDX_WALL_TEXTURE,
         WIDX_RANDOM_TERRAIN,
         WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES,
+        WIDX_HEIGHTMAP_EROSION,
+        WIDX_HEIGHTMAP_EROSION_PPT,
+        WIDX_HEIGHTMAP_EROSION_PPT_UP,
+        WIDX_HEIGHTMAP_EROSION_PPT_DOWN,
 
         WIDX_WATER_LEVEL = TAB_BEGIN,
         WIDX_WATER_LEVEL_UP,
@@ -152,7 +157,9 @@ namespace OpenRCT2::Ui::Windows
         makeWidget        ({179,  88}, { 47, 36}, WidgetType::flatBtn,  WindowColour::secondary, 0xFFFFFFFF, STR_CHANGE_BASE_LAND_TIP    ),
         makeWidget        ({236,  88}, { 47, 36}, WidgetType::flatBtn,  WindowColour::secondary, 0xFFFFFFFF, STR_CHANGE_VERTICAL_LAND_TIP),
         makeWidget        ({ 10, 106}, {150, 12}, WidgetType::checkbox, WindowColour::secondary, STR_MAPGEN_OPTION_RANDOM_TERRAIN        ),
-        makeWidget        ({ 10, 122}, {150, 12}, WidgetType::checkbox, WindowColour::secondary, STR_MAPGEN_SMOOTH_TILE                  )  // WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES
+        makeWidget        ({ 10, 122}, {150, 12}, WidgetType::checkbox, WindowColour::secondary, STR_MAPGEN_SMOOTH_TILE                  ), // WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES
+        makeWidget        ({ 10, 138}, {255, 12}, WidgetType::checkbox, WindowColour::secondary, STR_EROSION                             ), // WIDX_HEIGHTMAP_EROSION
+        makeSpinnerWidgets({179, 154}, {109, 12}, WidgetType::spinner,  WindowColour::secondary                                          )  // WIDX_HEIGHTMAP_EROSION_PARTICLES
     );
 
     static constexpr auto WaterWidgets = makeWidgets(
@@ -211,7 +218,9 @@ namespace OpenRCT2::Ui::Windows
         (1uLL << WIDX_HEIGHTMAP_LOW_UP) |
         (1uLL << WIDX_HEIGHTMAP_LOW_DOWN) |
         (1uLL << WIDX_HEIGHTMAP_HIGH_UP) |
-        (1uLL << WIDX_HEIGHTMAP_HIGH_DOWN),
+        (1uLL << WIDX_HEIGHTMAP_HIGH_DOWN) |
+        (1uLL << WIDX_HEIGHTMAP_EROSION_PPT_UP) |
+        (1uLL << WIDX_HEIGHTMAP_EROSION_PPT_DOWN) ,
 
         (1uLL << WIDX_WATER_LEVEL_UP) |
         (1uLL << WIDX_WATER_LEVEL_DOWN),
@@ -1053,6 +1062,21 @@ namespace OpenRCT2::Ui::Windows
                     SetCheckboxValue(WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES, _settings.smoothTileEdges);
                     InvalidateWidget(WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES);
                     break;
+
+                case WIDX_HEIGHTMAP_EROSION:
+                    _settings.simulate_erosion = !_settings.simulate_erosion;
+                    SetCheckboxValue(WIDX_HEIGHTMAP_EROSION, _settings.simulate_erosion);
+                    InvalidateWidget(WIDX_HEIGHTMAP_EROSION);
+                    break;
+
+                case WIDX_HEIGHTMAP_EROSION_PPT:
+                    Formatter ft;
+                    ft.Add<int32_t>(MapGenerator::kMinParticlesPerTile);
+                    ft.Add<int32_t>(MapGenerator::kMaxParticlesPerTile);
+                    WindowTextInputOpen(
+                        this, widgetIndex, STR_EROSION_PPT, STR_ENTER_EROSION_PPT, ft, STR_FORMAT_COMMA2DP32,
+                        _settings.particles_per_tile, 4);
+                    break;
             }
         }
 
@@ -1088,6 +1112,16 @@ namespace OpenRCT2::Ui::Windows
                     _settings.heightmapLow = std::min(_settings.heightmapLow, _settings.heightmapHigh - 2);
                     InvalidateWidget(WIDX_HEIGHTMAP_HIGH);
                     break;
+                case WIDX_HEIGHTMAP_EROSION_PPT_DOWN:
+                    _settings.particles_per_tile = std::max<int32_t>(
+                        _settings.particles_per_tile - 5, MapGenerator::kMinParticlesPerTile);
+                    InvalidateWidget(WIDX_HEIGHTMAP_EROSION_PPT);
+                    break;
+                case WIDX_HEIGHTMAP_EROSION_PPT_UP:
+                    _settings.particles_per_tile = std::min<int32_t>(
+                        _settings.particles_per_tile + 5, MapGenerator::kMaxParticlesPerTile);
+                    InvalidateWidget(WIDX_HEIGHTMAP_EROSION_PPT);
+                    break;
             }
         }
 
@@ -1111,6 +1145,10 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_HEIGHTMAP_HIGH:
                     _settings.heightmapHigh = value;
                     _settings.heightmapLow = std::min(_settings.heightmapLow, _settings.heightmapHigh);
+                    break;
+                case WIDX_HEIGHTMAP_EROSION_PPT:
+                    _settings.particles_per_tile = std::clamp(
+                        value, MapGenerator::kMinParticlesPerTile, MapGenerator::kMaxParticlesPerTile);
                     break;
             }
 
@@ -1209,18 +1247,26 @@ namespace OpenRCT2::Ui::Windows
 
         void TerrainPrepareDraw()
         {
+            bool isNotFlatland = _settings.algorithm != MapGenerator::Algorithm::blank;
+
             SetCheckboxValue(WIDX_RANDOM_TERRAIN, _randomTerrain != 0);
             SetCheckboxValue(WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES, _settings.smoothTileEdges);
+            SetCheckboxValue(WIDX_HEIGHTMAP_EROSION, _settings.simulate_erosion);
 
             // Only allow floor and wall texture options if random terrain is disabled
             SetWidgetEnabled(WIDX_FLOOR_TEXTURE, !_randomTerrain);
             SetWidgetEnabled(WIDX_WALL_TEXTURE, !_randomTerrain);
 
             // Max land height option is irrelevant for flatland
-            SetWidgetEnabled(WIDX_HEIGHTMAP_HIGH, _settings.algorithm != MapGenerator::Algorithm::blank);
+            SetWidgetEnabled(WIDX_HEIGHTMAP_HIGH, isNotFlatland);
 
             // Only offer terrain edge smoothing if we don't use flatland terrain
-            SetWidgetEnabled(WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES, _settings.algorithm != MapGenerator::Algorithm::blank);
+            SetWidgetEnabled(WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES, isNotFlatland);
+
+            // Erosion can't be used with flatland
+            SetWidgetEnabled(WIDX_HEIGHTMAP_EROSION, isNotFlatland);
+            SetWidgetEnabled(WIDX_HEIGHTMAP_EROSION_PPT, _settings.simulate_erosion && isNotFlatland);
+
             SetPressedTab();
         }
 
@@ -1261,6 +1307,23 @@ namespace OpenRCT2::Ui::Windows
             DrawTextBasic(
                 rt, windowPos + ScreenCoordsXY{ widgets[WIDX_HEIGHTMAP_HIGH].left + 1, widgets[WIDX_HEIGHTMAP_HIGH].top + 1 },
                 STR_RIDE_LENGTH_ENTRY, ft, { maxLandColour });
+
+            // Erosion particle count label and value
+            const auto particleColour = IsWidgetDisabled(WIDX_HEIGHTMAP_EROSION) || !_settings.simulate_erosion ? disabledColour
+                                                                                                                : enabledColour;
+
+            DrawTextBasic(
+                rt, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_HEIGHTMAP_EROSION_PPT].top + 1 }, STR_EROSION_PPT, {},
+                { particleColour });
+
+            ft = Formatter();
+            ft.Add<int32_t>(_settings.particles_per_tile);
+            DrawTextBasic(
+                rt,
+                windowPos
+                    + ScreenCoordsXY{ widgets[WIDX_HEIGHTMAP_EROSION_PPT].left + 1,
+                                      widgets[WIDX_HEIGHTMAP_EROSION_PPT].top + 1 },
+                STR_FORMAT_COMMA2DP32, ft, { particleColour });
         }
 
 #pragma endregion
@@ -1469,7 +1532,8 @@ namespace OpenRCT2::Ui::Windows
 
             // Convert text to integer value
             int32_t value{};
-            if (page == WINDOW_MAPGEN_PAGE_BASE && widgetIndex == WIDX_SIMPLEX_BASE_FREQ)
+            if ((page == WINDOW_MAPGEN_PAGE_BASE && widgetIndex == WIDX_SIMPLEX_BASE_FREQ)
+                || (page == WINDOW_MAPGEN_PAGE_TERRAIN && widgetIndex == WIDX_HEIGHTMAP_EROSION_PPT))
                 value = 100 * strtof(strText.c_str(), &end);
             else
                 value = strtol(strText.c_str(), &end, 10);
@@ -1479,7 +1543,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Take care of unit conversion
             int32_t rawValue = value;
-            if (page != WINDOW_MAPGEN_PAGE_BASE)
+            if (page != WINDOW_MAPGEN_PAGE_BASE && widgetIndex != WIDX_HEIGHTMAP_EROSION_PPT)
             {
                 switch (Config::Get().general.MeasurementFormat)
                 {

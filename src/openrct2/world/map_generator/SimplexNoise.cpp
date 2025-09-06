@@ -10,6 +10,7 @@
 #include "SimplexNoise.h"
 
 #include "../../util/Util.h"
+#include "Erosion.h"
 #include "HeightMap.hpp"
 #include "MapGen.h"
 #include "MapHelpers.h"
@@ -25,34 +26,40 @@ namespace OpenRCT2::World::MapGenerator
      *   - https://code.google.com/p/fractalterraingeneration/wiki/Fractional_Brownian_Motion
      */
 
-    static float Generate(float x, float y);
     static int32_t FastFloor(float x);
     static float Grad(int32_t hash, float x, float y);
 
-    static uint8_t perm[512];
-
-    void NoiseRand()
+    SimplexNoise::SimplexNoise()
+        : SimplexNoise(std::random_device{}())
     {
-        for (auto& i : perm)
+    }
+
+    SimplexNoise::SimplexNoise(const uint32_t seed)
+    {
+        std::mt19937 prng(seed);
+        // char types are not permitted as type params of uniform_int_distribution...
+        std::uniform_int_distribution<uint16_t> uniDist(0, 255);
+        for (auto& i : _perm)
         {
-            i = UtilRand() & 0xFF;
+            i = static_cast<uint8_t>(uniDist(prng));
         }
     }
 
-    float FractalNoise(int32_t x, int32_t y, float frequency, int32_t octaves, float lacunarity, float persistence)
+    float SimplexFbmNoise::Generate(float x, float y)
     {
         float total = 0.0f;
-        float amplitude = persistence;
-        for (int32_t i = 0; i < octaves; i++)
+        float amplitude = _persistence;
+        float frequency = _frequency;
+        for (int32_t i = 0; i < _octaves; i++)
         {
-            total += Generate(x * frequency, y * frequency) * amplitude;
-            frequency *= lacunarity;
-            amplitude *= persistence;
+            total += SimplexNoise::Generate(x * frequency, y * frequency) * amplitude;
+            frequency *= _lacunarity;
+            amplitude *= _persistence;
         }
         return total;
     }
 
-    static float Generate(float x, float y)
+    float SimplexNoise::Generate(float x, float y)
     {
         const float F2 = 0.366025403f; // F2 = 0.5*(sqrt(3.0)-1.0)
         const float G2 = 0.211324865f; // G2 = (3.0-sqrt(3.0))/6.0
@@ -108,7 +115,7 @@ namespace OpenRCT2::World::MapGenerator
         else
         {
             t0 *= t0;
-            n0 = t0 * t0 * Grad(perm[ii + perm[jj]], x0, y0);
+            n0 = t0 * t0 * Grad(_perm[ii + _perm[jj]], x0, y0);
         }
 
         float t1 = 0.5f - x1 * x1 - y1 * y1;
@@ -119,7 +126,7 @@ namespace OpenRCT2::World::MapGenerator
         else
         {
             t1 *= t1;
-            n1 = t1 * t1 * Grad(perm[ii + i1 + perm[jj + j1]], x1, y1);
+            n1 = t1 * t1 * Grad(_perm[ii + i1 + _perm[jj + j1]], x1, y1);
         }
 
         float t2 = 0.5f - x2 * x2 - y2 * y2;
@@ -130,7 +137,7 @@ namespace OpenRCT2::World::MapGenerator
         else
         {
             t2 *= t2;
-            n2 = t2 * t2 * Grad(perm[ii + 1 + perm[jj + 1]], x2, y2);
+            n2 = t2 * t2 * Grad(_perm[ii + 1 + _perm[jj + 1]], x2, y2);
         }
 
         // Add contributions from each corner to get the final noise value.
@@ -159,19 +166,24 @@ namespace OpenRCT2::World::MapGenerator
         for (auto i = 0; i < iterations; i++)
         {
             auto copyHeight = heightMap;
-            for (auto y = 1; y < heightMap.height - 1; y++)
+            for (auto y = 0; y < heightMap.height; y++)
             {
-                for (auto x = 1; x < heightMap.width - 1; x++)
+                for (auto x = 0; x < heightMap.width; x++)
                 {
                     auto avg = 0;
                     for (auto yy = -1; yy <= 1; yy++)
                     {
                         for (auto xx = -1; xx <= 1; xx++)
                         {
-                            avg += copyHeight[{ y + yy, x + xx }];
+                            auto dx = x + xx;
+                            auto dy = y + yy;
+
+                            // Use tile height if OOB
+                            auto oob = dy < 0 || dx < 0 || dy >= heightMap.width || dx >= heightMap.height;
+                            avg += oob ? copyHeight[{ x, y }] : copyHeight[{ dx, dy }];
                         }
                     }
-                    avg /= 9;
+                    avg /= 9.0f;
                     heightMap[{ x, y }] = avg;
                 }
             }
@@ -183,41 +195,48 @@ namespace OpenRCT2::World::MapGenerator
         float freq = settings->simplex_base_freq / 100.0f * (1.0f / heightMap.width);
         int32_t octaves = settings->simplex_octaves;
 
-        int32_t low = settings->heightmapLow / 2;
-        int32_t high = settings->heightmapHigh / 2 - low;
+        float low = settings->heightmapLow;
+        float high = settings->heightmapHigh - low;
 
-        NoiseRand();
+        SimplexFbmNoise simplex_fbm{ freq, octaves, 2.0f, 0.65f };
         for (int32_t y = 0; y < heightMap.height; y++)
         {
             for (int32_t x = 0; x < heightMap.width; x++)
             {
-                float noiseValue = std::clamp(FractalNoise(x, y, freq, octaves, 2.0f, 0.65f), -1.0f, 1.0f);
+                float noiseValue = std::clamp(simplex_fbm.Generate(x, y), -1.0f, 1.0f);
                 float normalisedNoiseValue = (noiseValue + 1.0f) / 2.0f;
 
-                heightMap[{ x, y }] = low + static_cast<int32_t>(normalisedNoiseValue * high);
+                heightMap[{ x, y }] = low + normalisedNoiseValue * high;
             }
         }
     }
 
     void generateSimplexMap(Settings* settings)
     {
-        resetSurfaces(settings);
-
         // Create the temporary height map and initialise
         const auto& mapSize = settings->mapSize;
-        const auto density = 2;
-        auto heightMap = HeightMap(mapSize.x, mapSize.y, density);
+        auto heightMap = HeightMap(mapSize.x, mapSize.y);
 
         generateSimplexNoise(settings, heightMap);
-        smoothHeightMap(2 + (UtilRand() % 6), heightMap);
+
+        if (settings->simulate_erosion)
+        {
+            auto erosionSettings = ErosionSettings(*settings);
+            simulateErosion(erosionSettings, heightMap);
+        }
+        else
+        {
+            smoothHeightMap(2 + (UtilRand() % 6), heightMap);
+        }
 
         // Set the game map to the height map
+        resetSurfaces(settings);
         setMapHeight(settings, heightMap);
 
         if (settings->smoothTileEdges)
         {
-            // Set the tile slopes so that there are no cliffs
-            smoothMap(settings->mapSize, smoothTileStrong);
+            // Set the tile slopes so that there are no cliffs, use the weak version with erosion.
+            smoothMap(settings->mapSize, settings->simulate_erosion ? smoothTileWeak : smoothTileStrong);
         }
 
         // Add the water

@@ -17,6 +17,7 @@
 #include "../../localisation/StringIds.h"
 #include "../Map.h"
 #include "../tile_element/SurfaceElement.h"
+#include "Erosion.h"
 #include "HeightMap.hpp"
 #include "MapGen.h"
 #include "MapHelpers.h"
@@ -161,11 +162,16 @@ namespace OpenRCT2::World::MapGenerator
 
         // The x and y axis are flipped in the world, so this uses y for x and x for y.
         TileCoordsXY flippedMapSize{ mapHeight, mapWidth };
-        MapInit(flippedMapSize);
 
         if (settings->smooth_height_map)
         {
             SmoothHeightmap(dest, settings->smooth_strength);
+        }
+
+        if (settings->simulate_erosion)
+        {
+            auto erosionSettings = ErosionSettings(*settings);
+            simulateErosion(erosionSettings, dest);
         }
 
         uint8_t maxValue = 255;
@@ -202,6 +208,7 @@ namespace OpenRCT2::World::MapGenerator
         const uint8_t rangeIn = maxValue - minValue;
         const uint8_t rangeOut = (settings->heightmapHigh - settings->heightmapLow) * 2;
 
+        MapInit(flippedMapSize);
         for (auto y = 0; y < dest.height; y++)
         {
             for (auto x = 0; x < dest.width; x++)
