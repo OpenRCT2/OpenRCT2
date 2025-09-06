@@ -10,19 +10,14 @@
 #pragma once
 
 #include "../core/Numerics.hpp"
+#include "../world/MapLimits.h"
 
 #include <cstdint>
 
 constexpr int16_t kLocationNull = -32768;
-
-constexpr int32_t kCoordsXYStep = 32;
-constexpr int32_t kCoordsXYHalfTile = (kCoordsXYStep / 2);
-constexpr int32_t kCoordsZStep = 8;
-constexpr int32_t kCoordsZPerTinyZ = 16;
+constexpr int32_t kCoordsNull = 0xFFFF8000;
 
 constexpr auto kNumOrthogonalDirections = 4;
-
-constexpr int32_t kCoordsNull = 0xFFFF8000;
 
 constexpr int32_t kScreenCoordsTileWidth = 64;
 constexpr int32_t kScreenCoordsTileWidthHalf = kScreenCoordsTileWidth / 2;
@@ -341,6 +336,28 @@ struct CoordsXYRangedZ : public CoordsXY
         , clearanceZ(_clearanceZ)
     {
     }
+};
+
+namespace OpenRCT2
+{
+    struct TileElement;
+}
+
+struct CoordsXYE : public CoordsXY
+{
+    CoordsXYE() = default;
+    constexpr CoordsXYE(int32_t _x, int32_t _y, OpenRCT2::TileElement* _e)
+        : CoordsXY(_x, _y)
+        , element(_e)
+    {
+    }
+
+    constexpr CoordsXYE(const CoordsXY& c, OpenRCT2::TileElement* _e)
+        : CoordsXY(c)
+        , element(_e)
+    {
+    }
+    OpenRCT2::TileElement* element = nullptr;
 };
 
 struct TileCoordsXY

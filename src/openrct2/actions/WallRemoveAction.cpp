@@ -16,6 +16,7 @@
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
 #include "../world/Location.hpp"
+#include "../world/Map.h"
 #include "../world/TileElementsView.h"
 #include "../world/tile_element/WallElement.h"
 

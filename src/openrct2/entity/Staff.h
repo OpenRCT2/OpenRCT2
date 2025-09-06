@@ -11,13 +11,20 @@
 
 #include "../core/EnumUtils.hpp"
 #include "../core/Money.hpp"
-#include "../world/Map.h"
 #include "Peep.h"
 
 #include <cstdint>
+#include <vector>
+
+namespace OpenRCT2
+{
+    struct TileElement;
+    struct PathElement;
+} // namespace OpenRCT2
 
 class DataSerialiser;
 class PatrolArea;
+struct Ride;
 
 using colour_t = uint8_t;
 

@@ -14,6 +14,7 @@
 #include "../OpenRCT2.h"
 #include "../management/Finance.h"
 #include "../object/LargeSceneryEntry.h"
+#include "../world/Map.h"
 #include "../world/Scenery.h"
 #include "../world/tile_element/LargeSceneryElement.h"
 

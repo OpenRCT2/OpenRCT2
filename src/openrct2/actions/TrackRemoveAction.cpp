@@ -17,6 +17,7 @@
 #include "../ride/TrackData.h"
 #include "../ride/TrackDesign.h"
 #include "../world/Footpath.h"
+#include "../world/Map.h"
 #include "../world/tile_element/SurfaceElement.h"
 #include "../world/tile_element/TrackElement.h"
 #include "RideSetSettingAction.h"

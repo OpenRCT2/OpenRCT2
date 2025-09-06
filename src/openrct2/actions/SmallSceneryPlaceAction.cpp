@@ -22,6 +22,7 @@
 #include "../ride/TrackDesign.h"
 #include "../world/ConstructionClearance.h"
 #include "../world/Footpath.h"
+#include "../world/Map.h"
 #include "../world/MapAnimation.h"
 #include "../world/Park.h"
 #include "../world/QuarterTile.h"

@@ -30,6 +30,7 @@
 #include "../ui/WindowManager.h"
 #include "../util/Util.h"
 #include "../world/Climate.h"
+#include "../world/Map.h"
 #include "../world/tile_element/SurfaceElement.h"
 #include "AudioChannel.h"
 #include "AudioContext.h"

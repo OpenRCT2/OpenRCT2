@@ -17,7 +17,6 @@
 #include "ride/Ride.h"
 #include "world/Climate.h"
 #include "world/Footpath.h"
-#include "world/Map.h"
 #include "world/Park.h"
 #include "world/Scenery.h"
 

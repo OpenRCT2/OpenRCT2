@@ -13,7 +13,6 @@
 #include "../../core/Guard.hpp"
 #include "../../interface/WindowClasses.h"
 #include "../../ui/WindowManager.h"
-#include "../Map.h"
 #include "BannerElement.h"
 #include "EntranceElement.h"
 #include "LargeSceneryElement.h"

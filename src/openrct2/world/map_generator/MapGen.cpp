@@ -13,6 +13,7 @@
 #include "../../GameState.h"
 #include "../../object/ObjectManager.h"
 #include "../../util/Util.h"
+#include "../Map.h"
 #include "../tile_element/Slope.h"
 #include "../tile_element/SurfaceElement.h"
 #include "HeightMap.hpp"

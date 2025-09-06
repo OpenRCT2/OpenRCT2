@@ -91,15 +91,6 @@ const TileCoordsXY TileDirectionDelta[] = {
 
 constexpr size_t MIN_TILE_ELEMENTS = 1024;
 
-uint16_t gMapSelectFlags;
-uint16_t gMapSelectType;
-CoordsXY gMapSelectPositionA;
-CoordsXY gMapSelectPositionB;
-CoordsXYZ gMapSelectArrowPosition;
-uint8_t gMapSelectArrowDirection;
-
-std::vector<CoordsXY> gMapSelectionTiles;
-
 uint32_t gLandRemainingOwnershipSales;
 uint32_t gLandRemainingConstructionSales;
 
@@ -1084,20 +1075,7 @@ void MapRemoveAllRides()
     } while (TileElementIteratorNext(&it));
 }
 
-/**
- *
- *  rct2: 0x0068AB1B
- */
-void MapInvalidateMapSelectionTiles()
-{
-    if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE_CONSTRUCT))
-        return;
-
-    for (const auto& position : gMapSelectionTiles)
-        MapInvalidateTileFull(position);
-}
-
-static void MapGetBoundingBox(const MapRange& _range, int32_t* left, int32_t* top, int32_t* right, int32_t* bottom)
+void MapGetBoundingBox(const MapRange& _range, int32_t* left, int32_t* top, int32_t* right, int32_t* bottom)
 {
     uint32_t rotation = GetCurrentRotation();
     const std::array corners{
@@ -1124,30 +1102,6 @@ static void MapGetBoundingBox(const MapRange& _range, int32_t* left, int32_t* to
         if (screenCoord.y < *top)
             *top = screenCoord.y;
     }
-}
-
-/**
- *
- *  rct2: 0x0068AAE1
- */
-void MapInvalidateSelectionRect()
-{
-    int32_t x0, y0, x1, y1, left, right, top, bottom;
-
-    if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
-        return;
-
-    x0 = gMapSelectPositionA.x + 16;
-    y0 = gMapSelectPositionA.y + 16;
-    x1 = gMapSelectPositionB.x + 16;
-    y1 = gMapSelectPositionB.y + 16;
-    MapGetBoundingBox({ x0, y0, x1, y1 }, &left, &top, &right, &bottom);
-    left -= 32;
-    right += 32;
-    bottom += 32;
-    top -= 32 + 2080;
-
-    ViewportsInvalidate({ { left, top }, { right, bottom } });
 }
 
 static size_t CountElementsOnTile(const CoordsXY& loc)

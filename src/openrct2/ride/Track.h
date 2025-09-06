@@ -11,7 +11,7 @@
 
 #include "../Identifiers.h"
 #include "../object/Object.h"
-#include "../world/Map.h"
+#include "../world/Location.hpp"
 #include "../world/QuarterTile.h"
 
 #include <optional>
@@ -28,6 +28,7 @@ namespace OpenRCT2
     enum class TrackElemType : uint16_t;
 
     struct TileElement;
+    struct TrackElement;
 } // namespace OpenRCT2
 
 struct ResultWithMessage;

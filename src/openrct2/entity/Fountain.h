@@ -10,7 +10,7 @@
 #pragma once
 
 #include "../core/FlagHolder.hpp"
-#include "../world/Map.h"
+#include "../world/Location.hpp"
 #include "EntityBase.h"
 
 class DataSerialiser;
@@ -28,6 +28,8 @@ namespace OpenRCT2
         direction = 7,
     };
     using FountainFlags = FlagHolder<uint8_t, FountainFlag>;
+
+    struct TileElement;
 } // namespace OpenRCT2
 
 enum class JumpingFountainType : uint8_t

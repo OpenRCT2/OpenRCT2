@@ -15,7 +15,6 @@
 #include "../object/Object.h"
 #include "../ride/RideColour.h"
 #include "../ride/Track.h"
-#include "../world/Map.h"
 #include "RideRatings.h"
 #include "VehicleColour.h"
 

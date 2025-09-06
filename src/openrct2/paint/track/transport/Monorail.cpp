@@ -12,7 +12,6 @@
 #include "../../../ride/RideData.h"
 #include "../../../ride/Track.h"
 #include "../../../ride/TrackPaint.h"
-#include "../../../world/Map.h"
 #include "../../Boundbox.h"
 #include "../../Paint.h"
 #include "../../support/MetalSupports.h"

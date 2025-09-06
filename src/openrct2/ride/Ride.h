@@ -18,7 +18,6 @@
 #include "../object/MusicObject.h"
 #include "../rct2/DATLimits.h"
 #include "../rct2/Limits.h"
-#include "../world/Map.h"
 #include "RideColour.h"
 #include "RideEntry.h"
 #include "RideRatings.h"

@@ -13,7 +13,7 @@
 #include "../drawing/Drawing.h"
 #include "../interface/Colour.h"
 #include "../world/Location.hpp"
-#include "../world/Map.h"
+#include "../world/MapLimits.h"
 #include "Boundbox.h"
 #include "tile_element/Paint.Tunnel.h"
 

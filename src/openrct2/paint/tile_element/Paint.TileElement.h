@@ -9,7 +9,19 @@
 
 #pragma once
 
-#include "../../world/Map.h"
+#include "../../world/Location.hpp"
+
+namespace OpenRCT2
+{
+    struct BannerElement;
+    struct EntranceElement;
+    struct LargeSceneryElement;
+    struct PathElement;
+    struct SmallSceneryElement;
+    struct SurfaceElement;
+    struct TrackElement;
+    struct WallElement;
+} // namespace OpenRCT2
 
 struct PaintSession;
 

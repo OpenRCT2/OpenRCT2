@@ -22,7 +22,6 @@
 #include "../../ride/Track.h"
 #include "../../ride/TrackDesign.h"
 #include "../../world/Banner.h"
-#include "../../world/Map.h"
 #include "../../world/Scenery.h"
 #include "../../world/TileInspector.h"
 #include "../../world/tile_element/WallElement.h"

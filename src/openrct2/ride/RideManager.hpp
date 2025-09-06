@@ -13,6 +13,8 @@
 
 namespace OpenRCT2
 {
+    struct GameState_t;
+
     struct RideManager
     {
     private:

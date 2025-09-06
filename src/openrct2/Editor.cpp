@@ -45,6 +45,8 @@
 #include "world/Climate.h"
 #include "world/Entrance.h"
 #include "world/Footpath.h"
+#include "world/Map.h"
+#include "world/MapLimits.h"
 #include "world/Park.h"
 #include "world/Scenery.h"
 

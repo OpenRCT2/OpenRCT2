@@ -17,6 +17,7 @@
 #include <openrct2/ride/TrainManager.h>
 #include <openrct2/ride/Vehicle.h>
 #include <openrct2/util/Util.h>
+#include <openrct2/world/Map.h>
 #include <openrct2/world/tile_element/SurfaceElement.h>
 #include <sfl/static_vector.hpp>
 

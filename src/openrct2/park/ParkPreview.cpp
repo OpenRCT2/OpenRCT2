@@ -19,6 +19,7 @@
 #include "../interface/Viewport.h"
 #include "../interface/Window.h"
 #include "../ride/RideManager.hpp"
+#include "../world/Map.h"
 #include "../world/tile_element/SurfaceElement.h"
 #include "../world/tile_element/TileElement.h"
 

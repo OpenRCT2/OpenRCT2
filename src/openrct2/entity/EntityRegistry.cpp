@@ -26,6 +26,7 @@
 #include "../peep/RideUseSystem.h"
 #include "../profiling/Profiling.h"
 #include "../ride/Vehicle.h"
+#include "../world/Map.h"
 #include "Balloon.h"
 #include "Duck.h"
 #include "EntityTweener.h"
