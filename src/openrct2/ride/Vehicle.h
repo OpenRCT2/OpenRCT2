@@ -107,8 +107,16 @@ struct Vehicle : EntityBase
     };
 
     Type SubType;
-    uint8_t pitch;
-    uint8_t roll;
+    union
+    {
+        uint8_t pitch;
+        uint8_t flatRideAnimationFrame;
+    };
+    union
+    {
+        uint8_t roll;
+        uint8_t flatRideSecondaryAnimationFrame;
+    };
     int32_t remaining_distance;
     int32_t velocity;
     int32_t acceleration;

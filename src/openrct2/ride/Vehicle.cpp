@@ -1501,7 +1501,7 @@ void Vehicle::TrainReadyToDepart(uint8_t num_peeps_on_train, uint8_t num_used_se
 
     if (curRide->mode == RideMode::forwardRotation || curRide->mode == RideMode::backwardRotation)
     {
-        uint8_t seat = ((-pitch) / 8) & 0xF;
+        uint8_t seat = ((-flatRideAnimationFrame) / 8) & 0xF;
         if (!peep[seat].IsNull())
         {
             curRide->getStation(current_station).TrainAtStation = RideStation::kNoTrain;
@@ -1791,7 +1791,7 @@ void Vehicle::UpdateWaitingToDepart()
     {
         if (curRide->mode == RideMode::forwardRotation || curRide->mode == RideMode::backwardRotation)
         {
-            uint8_t seat = ((-pitch) >> 3) & 0xF;
+            uint8_t seat = ((-flatRideAnimationFrame) >> 3) & 0xF;
             if (peep[seat * 2].IsNull())
             {
                 if (num_peeps == 0)
@@ -1917,13 +1917,13 @@ void Vehicle::UpdateWaitingToDepart()
                 }
             }
             current_time = -1;
-            pitch = 0;
-            roll = 0;
+            flatRideAnimationFrame = 0;
+            flatRideSecondaryAnimationFrame = 0;
             UpdateTopSpinOperating();
             break;
         case RideMode::forwardRotation:
         case RideMode::backwardRotation:
-            SetState(Vehicle::Status::FerrisWheelRotating, pitch);
+            SetState(Vehicle::Status::FerrisWheelRotating, flatRideAnimationFrame);
             NumRotations = 0;
             ferris_wheel_var_0 = 8;
             ferris_wheel_var_1 = 8;
@@ -1960,19 +1960,19 @@ void Vehicle::UpdateWaitingToDepart()
             break;
         case RideMode::spaceRings:
             SetState(Vehicle::Status::SpaceRingsOperating);
-            pitch = 0;
+            flatRideAnimationFrame = 0;
             current_time = -1;
             UpdateSpaceRingsOperating();
             break;
         case RideMode::hauntedHouse:
             SetState(Vehicle::Status::HauntedHouseOperating);
-            pitch = 0;
+            flatRideAnimationFrame = 0;
             current_time = -1;
             UpdateHauntedHouseOperating();
             break;
         case RideMode::crookedHouse:
             SetState(Vehicle::Status::CrookedHouseOperating);
-            pitch = 0;
+            flatRideAnimationFrame = 0;
             current_time = -1;
             UpdateCrookedHouseOperating();
             break;
@@ -3425,7 +3425,7 @@ void Vehicle::UpdateUnloadingPassengers()
 
     if (curRide->mode == RideMode::forwardRotation || curRide->mode == RideMode::backwardRotation)
     {
-        uint8_t seat = ((-pitch) >> 3) & 0xF;
+        uint8_t seat = ((-flatRideAnimationFrame) >> 3) & 0xF;
         if (restraints_position == 255 && !peep[seat * 2].IsNull())
         {
             next_free_seat -= 2;
@@ -4074,10 +4074,10 @@ void Vehicle::UpdateSwinging()
     if (spriteType != -128)
     {
         current_time++;
-        if (static_cast<uint8_t>(spriteType) != pitch)
+        if (static_cast<uint8_t>(spriteType) != flatRideAnimationFrame)
         {
             // Used to know which sprite to draw
-            pitch = static_cast<uint8_t>(spriteType);
+            flatRideAnimationFrame = static_cast<uint8_t>(spriteType);
             Invalidate();
         }
         return;
@@ -4152,14 +4152,14 @@ void Vehicle::UpdateFerrisWheelRotating()
         ferris_wheel_var_1 = curFerrisWheelVar0;
     }
 
-    uint8_t rotation = pitch;
+    uint8_t rotation = flatRideAnimationFrame;
     if (curRide->mode == RideMode::forwardRotation)
         rotation++;
     else
         rotation--;
 
     rotation &= 0x7F;
-    pitch = rotation;
+    flatRideAnimationFrame = rotation;
 
     if (rotation == sub_state)
         NumRotations++;
@@ -4173,7 +4173,7 @@ void Vehicle::UpdateFerrisWheelRotating()
         subState--;
     subState &= 0x7F;
 
-    if (subState == pitch)
+    if (subState == flatRideAnimationFrame)
     {
         bool shouldStop = true;
         if (curRide->status != RideStatus::closed)
@@ -4200,7 +4200,7 @@ void Vehicle::UpdateFerrisWheelRotating()
         subState -= 8;
     subState &= 0x7F;
 
-    if (subState != pitch)
+    if (subState != flatRideAnimationFrame)
         return;
 
     SetState(Vehicle::Status::Arriving);
@@ -4222,9 +4222,9 @@ void Vehicle::UpdateSimulatorOperating()
     if (al != 0xFF)
     {
         current_time++;
-        if (al == pitch)
+        if (al == flatRideAnimationFrame)
             return;
-        pitch = al;
+        flatRideAnimationFrame = al;
         Invalidate();
         return;
     }
@@ -4295,9 +4295,9 @@ void Vehicle::UpdateRotating()
     if (sprite != 0xFF)
     {
         current_time = time;
-        if (sprite == pitch)
+        if (sprite == flatRideAnimationFrame)
             return;
-        pitch = sprite;
+        flatRideAnimationFrame = sprite;
         Invalidate();
         return;
     }
@@ -4348,9 +4348,9 @@ void Vehicle::UpdateSpaceRingsOperating()
     if (spriteType != 255)
     {
         current_time++;
-        if (spriteType != pitch)
+        if (spriteType != flatRideAnimationFrame)
         {
-            pitch = spriteType;
+            flatRideAnimationFrame = spriteType;
             Invalidate();
         }
     }
@@ -4370,15 +4370,15 @@ void Vehicle::UpdateHauntedHouseOperating()
     if (_vehicleBreakdown == 0)
         return;
 
-    if (pitch != 0)
+    if (flatRideAnimationFrame != 0)
     {
         if (getGameState().currentTicks & 1)
         {
-            pitch++;
+            flatRideAnimationFrame++;
             Invalidate();
 
-            if (pitch == 19)
-                pitch = 0;
+            if (flatRideAnimationFrame == 19)
+                flatRideAnimationFrame = 0;
         }
     }
 
@@ -4396,7 +4396,7 @@ void Vehicle::UpdateHauntedHouseOperating()
             OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::HauntedHouseScare, GetLocation());
             break;
         case 75:
-            pitch = 1;
+            flatRideAnimationFrame = 1;
             Invalidate();
             break;
         case 400:
@@ -4406,7 +4406,7 @@ void Vehicle::UpdateHauntedHouseOperating()
             OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::HauntedHouseScare, GetLocation());
             break;
         case 775:
-            pitch = 1;
+            flatRideAnimationFrame = 1;
             Invalidate();
             break;
         case 1100:
@@ -4449,15 +4449,15 @@ void Vehicle::UpdateTopSpinOperating()
     if (rotation != 0xFF)
     {
         current_time = current_time + 1;
-        if (rotation != pitch)
+        if (rotation != flatRideAnimationFrame)
         {
-            pitch = rotation;
+            flatRideAnimationFrame = rotation;
             Invalidate();
         }
         rotation = sprite_map[current_time].bank_rotation;
-        if (rotation != roll)
+        if (rotation != flatRideSecondaryAnimationFrame)
         {
-            roll = rotation;
+            flatRideSecondaryAnimationFrame = rotation;
             Invalidate();
         }
         return;
