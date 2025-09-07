@@ -12,6 +12,7 @@
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Windows.h>
+#include <openrct2/GameState.h>
 #include <openrct2/Input.h>
 #include <openrct2/SpriteIds.h>
 #include <openrct2/actions/PlayerKickAction.h>
@@ -509,7 +510,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_KICK:
                 {
                     auto kickPlayerAction = GameActions::PlayerKickAction(number);
-                    GameActions::Execute(&kickPlayerAction);
+                    GameActions::Execute(&kickPlayerAction, getGameState());
                 }
                 break;
             }
@@ -538,7 +539,7 @@ namespace OpenRCT2::Ui::Windows
                         windowMgr->InvalidateByNumber(windowHandle.first, windowHandle.second);
                     }
                 });
-            GameActions::Execute(&playerSetGroupAction);
+            GameActions::Execute(&playerSetGroupAction, getGameState());
         }
 
         void ShowGroupDropdownOverview(Widget* widget)

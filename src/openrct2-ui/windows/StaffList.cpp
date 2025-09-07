@@ -234,7 +234,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 auto action = GameActions::StaffSetColourAction(
                     GetSelectedStaffType(), ColourDropDownIndexToColour(dropdownIndex));
-                GameActions::Execute(&action);
+                GameActions::Execute(&action, getGameState());
             }
         }
 
@@ -336,6 +336,8 @@ namespace OpenRCT2::Ui::Windows
         void OnScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
             int32_t i = screenCoords.y / kScrollableRowHeight;
+            auto& gameState = getGameState();
+
             for (const auto& entry : _staffList)
             {
                 if (i == 0)
@@ -343,11 +345,11 @@ namespace OpenRCT2::Ui::Windows
                     if (_quickFireMode)
                     {
                         auto staffFireAction = GameActions::StaffFireAction(entry.Id);
-                        GameActions::Execute(&staffFireAction);
+                        GameActions::Execute(&staffFireAction, gameState);
                     }
                     else
                     {
-                        auto peep = getGameState().entities.GetEntity<Staff>(entry.Id);
+                        auto peep = gameState.entities.GetEntity<Staff>(entry.Id);
                         if (peep != nullptr)
                         {
                             auto intent = Intent(WindowClass::Peep);
@@ -537,6 +539,8 @@ namespace OpenRCT2::Ui::Windows
             else
                 costume = findPeepAnimationsIndexForType(animPeepType);
 
+            auto& gameState = getGameState();
+
             auto hireStaffAction = GameActions::StaffHireNewAction(autoPosition, staffType, costume, staffOrders);
             hireStaffAction.SetCallback([=](const GameActions::GameAction*, const GameActions::Result* res) -> void {
                 if (res->Error != GameActions::Status::Ok)
@@ -569,7 +573,7 @@ namespace OpenRCT2::Ui::Windows
                                 ToolSet(*wind, WC_STAFF__WIDX_PICKUP, Tool::picker);
                             }
                         });
-                    GameActions::Execute(&pickupAction);
+                    GameActions::Execute(&pickupAction, getGameState());
                 }
                 else
                 {
@@ -580,7 +584,7 @@ namespace OpenRCT2::Ui::Windows
                 }
             });
 
-            GameActions::Execute(&hireStaffAction);
+            GameActions::Execute(&hireStaffAction, gameState);
         }
 
         StaffType GetSelectedStaffType() const

@@ -507,7 +507,7 @@ namespace OpenRCT2::Ui::Windows
                 activeResearchTypes ^= 1uLL << (widgetIndex - (WIDX_TRANSPORT_RIDES + widgetOffset));
                 auto gameAction = GameActions::ParkSetResearchFundingAction(
                     activeResearchTypes, gameState.researchFundingLevel);
-                GameActions::Execute(&gameAction);
+                GameActions::Execute(&gameAction, getGameState());
                 break;
             }
         }
@@ -522,7 +522,7 @@ namespace OpenRCT2::Ui::Windows
             return;
 
         auto gameAction = GameActions::ParkSetResearchFundingAction(gameState.researchPriorities, selectedIndex);
-        GameActions::Execute(&gameAction);
+        GameActions::Execute(&gameAction, getGameState());
     }
 
     void WindowResearchFundingPrepareDraw(WindowBase* w, WidgetIndex baseWidgetIndex)

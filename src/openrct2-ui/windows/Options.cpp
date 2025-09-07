@@ -19,6 +19,7 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Diagnostic.h>
+#include <openrct2/GameState.h>
 #include <openrct2/PlatformEnvironment.h>
 #include <openrct2/SpriteIds.h>
 #include <openrct2/actions/ScenarioSetSettingAction.h>
@@ -1887,7 +1888,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         auto setAllowEarlyCompletionAction = GameActions::ScenarioSetSettingAction(
                             GameActions::ScenarioSetSetting::AllowEarlyCompletion, Config::Get().general.AllowEarlyCompletion);
-                        GameActions::Execute(&setAllowEarlyCompletionAction);
+                        GameActions::Execute(&setAllowEarlyCompletionAction, getGameState());
                     }
                     Config::Save();
                     Invalidate();

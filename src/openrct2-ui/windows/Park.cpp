@@ -492,7 +492,7 @@ namespace OpenRCT2::Ui::Windows
             if (widgetIndex == WIDX_RENAME && !text.empty())
             {
                 auto action = GameActions::ParkSetNameAction(std::string(text));
-                GameActions::Execute(&action);
+                GameActions::Execute(&action, getGameState());
             }
         }
 
@@ -810,21 +810,21 @@ namespace OpenRCT2::Ui::Windows
 
         void OnMouseDownPrice(WidgetIndex widgetIndex)
         {
-            const auto& gameState = getGameState();
+            auto& gameState = getGameState();
             switch (widgetIndex)
             {
                 case WIDX_INCREASE_PRICE:
                 {
                     const auto newFee = std::min(kMaxEntranceFee, gameState.park.entranceFee + 1.00_GBP);
                     auto gameAction = GameActions::ParkSetEntranceFeeAction(newFee);
-                    GameActions::Execute(&gameAction);
+                    GameActions::Execute(&gameAction, gameState);
                     break;
                 }
                 case WIDX_DECREASE_PRICE:
                 {
                     const auto newFee = std::max(0.00_GBP, gameState.park.entranceFee - 1.00_GBP);
                     auto gameAction = GameActions::ParkSetEntranceFeeAction(newFee);
-                    GameActions::Execute(&gameAction);
+                    GameActions::Execute(&gameAction, gameState);
                     break;
                 }
                 case WIDX_PRICE:
@@ -1039,7 +1039,7 @@ namespace OpenRCT2::Ui::Windows
 
                 money = std::clamp(money, 0.00_GBP, kMaxEntranceFee);
                 auto gameAction = GameActions::ParkSetEntranceFeeAction(money);
-                GameActions::Execute(&gameAction);
+                GameActions::Execute(&gameAction, getGameState());
             }
         }
 

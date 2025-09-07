@@ -12,6 +12,7 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
+#include <openrct2/GameState.h>
 #include <openrct2/Input.h>
 #include <openrct2/SpriteIds.h>
 #include <openrct2/actions/ParkEntrancePlaceAction.h>
@@ -200,7 +201,7 @@ namespace OpenRCT2::Ui::Windows
                 parkEntrancePosition, gFootpathSelectedId, _selectedEntranceType);
             gameAction.SetFlags(GAME_COMMAND_FLAG_GHOST);
 
-            auto result = GameActions::Execute(&gameAction);
+            auto result = GameActions::Execute(&gameAction, getGameState());
             if (result.Error == GameActions::Status::Ok)
             {
                 gParkEntranceGhostPosition = parkEntrancePosition;
@@ -217,7 +218,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 auto gameAction = GameActions::ParkEntrancePlaceAction(
                     parkEntrancePosition, gFootpathSelectedId, _selectedEntranceType);
-                auto result = GameActions::Execute(&gameAction);
+                auto result = GameActions::Execute(&gameAction, getGameState());
                 if (result.Error == GameActions::Status::Ok)
                 {
                     Audio::Play3D(Audio::SoundId::PlaceItem, result.Position);
