@@ -14,8 +14,16 @@
 
 #include <cstdint>
 
-constexpr const size_t VehicleTrackSubpositionSizeDefault = EnumValue(OpenRCT2::TrackElemType::Count)
-    * kNumOrthogonalDirections;
+using namespace OpenRCT2;
+
+constexpr const size_t kVehicleTrackSubpositionSizeDefault = EnumValue(TrackElemType::Count) * kNumOrthogonalDirections;
+constexpr const size_t kVehicleTrackSubpositionSizeChairliftGoingOut = EnumValue(TrackElemType::LogFlumeReverser) * 4 + 4;
+constexpr const size_t kVehicleTrackSubpositionSizeChairliftGoingBack = EnumValue(TrackElemType::Booster) * 4 + 4;
+constexpr const size_t kVehicleTrackSubpositionSizeGoKartsLane = EnumValue(TrackElemType::RightEighthToOrthogonalDown25) * 4
+    + 4;
+constexpr const size_t kVehicleTrackSubpositionSizeGoKartsSwitchingLanes = EnumValue(TrackElemType::DiagFlat) * 4 + 4;
+constexpr const size_t kVehicleTrackSubpositionSizeMinigolf = EnumValue(TrackElemType::MinigolfHoleE) * 4 + 4;
+constexpr const size_t kVehicleTrackSubpositionSizeReverserBogies = EnumValue(TrackElemType::BlockBrakes) * 4 + 4;
 
 struct VehicleInfo;
 
