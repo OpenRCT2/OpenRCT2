@@ -316,7 +316,7 @@ namespace OpenRCT2::Ui::Windows
                     if (Network::GetMode() != Network::Mode::client)
                     {
                         auto pauseToggleAction = GameActions::PauseToggleAction();
-                        GameActions::Execute(&pauseToggleAction);
+                        GameActions::Execute(&pauseToggleAction, getGameState());
                         _waitingForPause = true;
                     }
                     break;
@@ -425,6 +425,8 @@ namespace OpenRCT2::Ui::Windows
             {
                 return;
             }
+
+            auto& gameState = getGameState();
             switch (widgetIndex)
             {
                 case WIDX_FILE_MENU:
@@ -453,13 +455,13 @@ namespace OpenRCT2::Ui::Windows
                         {
                             auto loadOrQuitAction = GameActions::LoadOrQuitAction(
                                 GameActions::LoadOrQuitModes::OpenSavePrompt, PromptMode::saveBeforeNewGame);
-                            GameActions::Execute(&loadOrQuitAction);
+                            GameActions::Execute(&loadOrQuitAction, gameState);
                             break;
                         }
                         case DDIDX_LOAD_GAME:
                         {
                             auto loadOrQuitAction = GameActions::LoadOrQuitAction(GameActions::LoadOrQuitModes::OpenSavePrompt);
-                            GameActions::Execute(&loadOrQuitAction);
+                            GameActions::Execute(&loadOrQuitAction, gameState);
                             break;
                         }
                         case DDIDX_SAVE_GAME:
@@ -513,7 +515,7 @@ namespace OpenRCT2::Ui::Windows
                             windowMgr->CloseByClass(WindowClass::TrackDeletePrompt);
                             auto loadOrQuitAction = GameActions::LoadOrQuitAction(
                                 GameActions::LoadOrQuitModes::OpenSavePrompt, PromptMode::saveBeforeQuit);
-                            GameActions::Execute(&loadOrQuitAction);
+                            GameActions::Execute(&loadOrQuitAction, gameState);
                             break;
                         }
                         case DDIDX_EXIT_OPENRCT2:
@@ -1301,7 +1303,7 @@ namespace OpenRCT2::Ui::Windows
                     newSpeed = 8;
 
                 auto setSpeedAction = GameActions::GameSetSpeedAction(newSpeed);
-                GameActions::Execute(&setSpeedAction);
+                GameActions::Execute(&setSpeedAction, getGameState());
             }
         }
     }

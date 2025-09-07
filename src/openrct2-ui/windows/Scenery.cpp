@@ -333,7 +333,7 @@ namespace OpenRCT2::Ui::Windows
                         const auto objectType = GetObjectTypeFromSceneryType(tabSelectedScenery.SceneryType);
                         auto action = GameActions::ScenerySetRestrictedAction(
                             objectType, tabSelectedScenery.EntryIndex, newStatus);
-                        GameActions::Execute(&action);
+                        GameActions::Execute(&action, getGameState());
                     }
                     break;
                 }
@@ -2092,7 +2092,7 @@ namespace OpenRCT2::Ui::Windows
             auto smallSceneryPlaceAction = GameActions::SmallSceneryPlaceAction(
                 loc, quadrant, entryIndex, primaryColour, secondaryColour, tertiaryColour);
             smallSceneryPlaceAction.SetFlags(GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
-            auto res = GameActions::Execute(&smallSceneryPlaceAction);
+            auto res = GameActions::Execute(&smallSceneryPlaceAction, getGameState());
             if (res.Error != GameActions::Status::Ok)
                 return kMoney64Undefined;
 
@@ -2134,7 +2134,7 @@ namespace OpenRCT2::Ui::Windows
                 gSceneryGhostPosition = loc;
                 gSceneryGhostType |= SCENERY_GHOST_FLAG_1;
             });
-            auto res = GameActions::Execute(&footpathAdditionPlaceAction);
+            auto res = GameActions::Execute(&footpathAdditionPlaceAction, getGameState());
             if (res.Error != GameActions::Status::Ok)
                 return kMoney64Undefined;
 
@@ -2163,7 +2163,7 @@ namespace OpenRCT2::Ui::Windows
                 gSceneryGhostType |= SCENERY_GHOST_FLAG_2;
             });
 
-            auto res = GameActions::Execute(&wallPlaceAction);
+            auto res = GameActions::Execute(&wallPlaceAction, getGameState());
             if (res.Error != GameActions::Status::Ok)
                 return kMoney64Undefined;
 
@@ -2181,7 +2181,7 @@ namespace OpenRCT2::Ui::Windows
                 loc, entryIndex, primaryColour, secondaryColour, tertiaryColour);
             sceneryPlaceAction.SetFlags(
                 GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND);
-            auto res = GameActions::Execute(&sceneryPlaceAction);
+            auto res = GameActions::Execute(&sceneryPlaceAction, getGameState());
             if (res.Error != GameActions::Status::Ok)
                 return kMoney64Undefined;
 
@@ -2214,7 +2214,7 @@ namespace OpenRCT2::Ui::Windows
             auto bannerPlaceAction = GameActions::BannerPlaceAction(loc, entryIndex, primaryColour);
             bannerPlaceAction.SetFlags(
                 GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND);
-            auto res = GameActions::Execute(&bannerPlaceAction);
+            auto res = GameActions::Execute(&bannerPlaceAction, getGameState());
             if (res.Error != GameActions::Status::Ok)
                 return kMoney64Undefined;
 
@@ -2235,6 +2235,7 @@ namespace OpenRCT2::Ui::Windows
                 ViewportInteractionItem::Scenery, ViewportInteractionItem::Wall, ViewportInteractionItem::LargeScenery,
                 ViewportInteractionItem::Banner);
             auto info = GetMapCoordinatesFromPos(screenCoords, flag);
+            auto& gameState = getGameState();
             switch (info.interactionType)
             {
                 case ViewportInteractionItem::Scenery:
@@ -2250,7 +2251,7 @@ namespace OpenRCT2::Ui::Windows
                         { info.Loc, info.Element->GetBaseZ() }, quadrant, info.Element->AsSmallScenery()->GetEntryIndex(),
                         _sceneryPrimaryColour, _scenerySecondaryColour, _sceneryTertiaryColour);
 
-                    GameActions::Execute(&repaintScenery);
+                    GameActions::Execute(&repaintScenery, gameState);
                     break;
                 }
                 case ViewportInteractionItem::Wall:
@@ -2265,7 +2266,7 @@ namespace OpenRCT2::Ui::Windows
                         { info.Loc, info.Element->GetBaseZ(), info.Element->GetDirection() }, _sceneryPrimaryColour,
                         _scenerySecondaryColour, _sceneryTertiaryColour);
 
-                    GameActions::Execute(&repaintScenery);
+                    GameActions::Execute(&repaintScenery, gameState);
                     break;
                 }
                 case ViewportInteractionItem::LargeScenery:
@@ -2281,7 +2282,7 @@ namespace OpenRCT2::Ui::Windows
                         info.Element->AsLargeScenery()->GetSequenceIndex(), _sceneryPrimaryColour, _scenerySecondaryColour,
                         _sceneryTertiaryColour);
 
-                    GameActions::Execute(&repaintScenery);
+                    GameActions::Execute(&repaintScenery, gameState);
                     break;
                 }
                 case ViewportInteractionItem::Banner:
@@ -2296,7 +2297,7 @@ namespace OpenRCT2::Ui::Windows
                                 { info.Loc, info.Element->GetBaseZ(), info.Element->AsBanner()->GetPosition() },
                                 _sceneryPrimaryColour);
 
-                            GameActions::Execute(&repaintScenery);
+                            GameActions::Execute(&repaintScenery, gameState);
                         }
                     }
                     break;
@@ -2958,6 +2959,8 @@ namespace OpenRCT2::Ui::Windows
             uint16_t selectedScenery = selectedTab.EntryIndex;
             CoordsXY gridPos;
 
+            auto& gameState = getGameState();
+
             switch (sceneryType)
             {
                 case SCENERY_TYPE_SMALL:
@@ -3036,7 +3039,7 @@ namespace OpenRCT2::Ui::Windows
                             auto smallSceneryPlaceAction = GameActions::SmallSceneryPlaceAction(
                                 { cur_grid_x, cur_grid_y, gSceneryPlaceZ, gSceneryPlaceRotation }, quadrant, selectedScenery,
                                 _sceneryPrimaryColour, _scenerySecondaryColour, _sceneryTertiaryColour);
-                            auto res = GameActions::Query(&smallSceneryPlaceAction);
+                            auto res = GameActions::Query(&smallSceneryPlaceAction, gameState);
                             success = res.Error;
                             if (res.Error == GameActions::Status::Ok)
                             {
@@ -3067,7 +3070,7 @@ namespace OpenRCT2::Ui::Windows
                                         Audio::Play3D(Audio::SoundId::PlaceItem, result->Position);
                                     }
                                 });
-                            auto res = GameActions::Execute(&smallSceneryPlaceAction);
+                            auto res = GameActions::Execute(&smallSceneryPlaceAction, gameState);
                             if (res.Error == GameActions::Status::Ok)
                             {
                                 forceError = false;
@@ -3100,7 +3103,7 @@ namespace OpenRCT2::Ui::Windows
                             }
                             Audio::Play3D(Audio::SoundId::PlaceItem, result->Position);
                         });
-                    auto res = GameActions::Execute(&footpathAdditionPlaceAction);
+                    auto res = GameActions::Execute(&footpathAdditionPlaceAction, gameState);
                     break;
                 }
                 case SCENERY_TYPE_WALL:
@@ -3122,7 +3125,7 @@ namespace OpenRCT2::Ui::Windows
                             selectedScenery, { gridPos, gSceneryPlaceZ }, edges, _sceneryPrimaryColour, _scenerySecondaryColour,
                             _sceneryTertiaryColour);
 
-                        auto res = GameActions::Query(&wallPlaceAction);
+                        auto res = GameActions::Query(&wallPlaceAction, gameState);
                         if (res.Error == GameActions::Status::Ok)
                         {
                             break;
@@ -3152,7 +3155,7 @@ namespace OpenRCT2::Ui::Windows
                             Audio::Play3D(Audio::SoundId::PlaceItem, result->Position);
                         }
                     });
-                    auto res = GameActions::Execute(&wallPlaceAction);
+                    auto res = GameActions::Execute(&wallPlaceAction, gameState);
                     break;
                 }
                 case SCENERY_TYPE_LARGE:
@@ -3175,7 +3178,7 @@ namespace OpenRCT2::Ui::Windows
                         auto sceneryPlaceAction = GameActions::LargeSceneryPlaceAction(
                             loc, selectedScenery, _sceneryPrimaryColour, _scenerySecondaryColour, _sceneryTertiaryColour);
 
-                        auto res = GameActions::Query(&sceneryPlaceAction);
+                        auto res = GameActions::Query(&sceneryPlaceAction, gameState);
                         if (res.Error == GameActions::Status::Ok)
                         {
                             break;
@@ -3209,7 +3212,7 @@ namespace OpenRCT2::Ui::Windows
                             Audio::Play3D(Audio::SoundId::Error, { loc.x, loc.y, gSceneryPlaceZ });
                         }
                     });
-                    auto res = GameActions::Execute(&sceneryPlaceAction);
+                    auto res = GameActions::Execute(&sceneryPlaceAction, gameState);
                     break;
                 }
                 case SCENERY_TYPE_BANNER:
@@ -3231,7 +3234,7 @@ namespace OpenRCT2::Ui::Windows
                             ContextOpenDetailWindow(WD_BANNER, data.bannerId.ToUnderlying());
                         }
                     });
-                    GameActions::Execute(&bannerPlaceAction);
+                    GameActions::Execute(&bannerPlaceAction, gameState);
                     break;
                 }
             }

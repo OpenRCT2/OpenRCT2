@@ -13,6 +13,7 @@
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Editor.h>
 #include <openrct2/Game.h>
+#include <openrct2/GameState.h>
 #include <openrct2/Input.h>
 #include <openrct2/ParkImporter.h>
 #include <openrct2/PlatformEnvironment.h>
@@ -148,7 +149,7 @@ namespace OpenRCT2::Ui::Windows
                         windowMgr->CloseByClass(WindowClass::ScenarioSelect);
                         windowMgr->CloseByClass(WindowClass::ServerList);
                         auto loadOrQuitAction = GameActions::LoadOrQuitAction(GameActions::LoadOrQuitModes::OpenSavePrompt);
-                        GameActions::Execute(&loadOrQuitAction);
+                        GameActions::Execute(&loadOrQuitAction, getGameState());
                     }
                     break;
                 case WIDX_MULTIPLAYER:

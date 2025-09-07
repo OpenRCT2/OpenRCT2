@@ -430,7 +430,7 @@ static void ShortcutLoadGame()
     if (!(isInTrackDesignerOrManager()))
     {
         auto loadOrQuitAction = GameActions::LoadOrQuitAction(GameActions::LoadOrQuitModes::OpenSavePrompt);
-        GameActions::Execute(&loadOrQuitAction);
+        GameActions::Execute(&loadOrQuitAction, getGameState());
     }
 }
 
@@ -525,7 +525,7 @@ static void ShortcutToggleWallSlope()
     auto modifyTile = GameActions::TileModifyAction(
         windowTileInspectorTile.ToCoordsXY(), GameActions::TileModifyType::WallSetSlope, windowTileInspectorSelectedIndex,
         newSlopeValue);
-    GameActions::Execute(&modifyTile);
+    GameActions::Execute(&modifyTile, getGameState());
 }
 
 static void ShortcutIncreaseElementHeight()
@@ -610,9 +610,10 @@ static void ShortcutDecreaseElementHeight()
 
 static void ShortcutToggleClearanceChecks()
 {
+    auto& gameState = getGameState();
     auto cheatSetAction = GameActions::CheatSetAction(
-        CheatType::DisableClearanceChecks, getGameState().cheats.disableClearanceChecks ? 0 : 1);
-    GameActions::Execute(&cheatSetAction);
+        CheatType::DisableClearanceChecks, gameState.cheats.disableClearanceChecks ? 0 : 1);
+    GameActions::Execute(&cheatSetAction, gameState);
 }
 
 static void ShortcutToggleConsole()
@@ -784,7 +785,7 @@ void ShortcutManager::RegisterDefaultShortcuts()
         if (gLegacyScene != LegacyScene::titleSequence && gLegacyScene != LegacyScene::scenarioEditor && gLegacyScene != LegacyScene::trackDesignsManager)
         {
             auto pauseToggleAction = GameActions::PauseToggleAction();
-            GameActions::Execute(&pauseToggleAction);
+            GameActions::Execute(&pauseToggleAction, getGameState());
         }
     });
     RegisterShortcut(ShortcutId::kInterfaceDecreaseSpeed, STR_SHORTCUT_REDUCE_GAME_SPEED, "-", ShortcutReduceGameSpeed);
