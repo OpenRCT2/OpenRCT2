@@ -3605,7 +3605,7 @@ void PeepUpdateRideLeaveEntranceSpiralSlide(Guest& guest, Ride& ride, CoordsXYZD
     entrance_loc += kSpiralSlideWalkingPath[guest.Var37];
 
     guest.SetDestination(entrance_loc);
-    guest.CurrentCar = 0;
+    guest.timesSlidDown = 0;
 
     ride.curNumCustomers++;
     guest.OnEnterRide(ride);
@@ -4711,11 +4711,11 @@ void Guest::UpdateRideApproachSpiralSlide()
         bool lastRide = false;
         if (ride->status != RideStatus::open)
             lastRide = true;
-        else if (CurrentCar++ != 0)
+        else if (timesSlidDown++ != 0)
         {
             if (ride->mode == RideMode::singleRidePerAdmission)
                 lastRide = true;
-            if (static_cast<uint8_t>(CurrentCar - 1) > (ScenarioRand() & 0xF))
+            if (static_cast<uint8_t>(timesSlidDown - 1) > (ScenarioRand() & 0xF))
                 lastRide = true;
         }
 
@@ -4795,10 +4795,10 @@ void Guest::UpdateRideOnSpiralSlide()
                 SetDestination(destination);
                 return;
             case 1:
-                if (ride->slideInUse != 0)
+                if (ride->slideInUse)
                     return;
 
-                ride->slideInUse++;
+                ride->slideInUse = 1;
                 ride->slidePeep = Id;
                 ride->slidePeepTShirtColour = TshirtColour;
                 ride->spiralSlideProgress = 0;
