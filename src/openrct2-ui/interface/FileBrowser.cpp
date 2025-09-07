@@ -29,6 +29,13 @@
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 
+#ifdef __EMSCRIPTEN__
+extern "C" {
+extern void EmscriptenLoadGame(LoadSaveType type);
+extern void EmscriptenSaveGame(bool isTrackDesign, bool isAutosave, LoadSaveType type);
+}
+#endif
+
 namespace OpenRCT2::Ui::FileBrowser
 {
     static LoadSaveCallback _loadSaveCallback;
@@ -37,6 +44,19 @@ namespace OpenRCT2::Ui::FileBrowser
         LoadSaveAction action, LoadSaveType type, u8string defaultPath, LoadSaveCallback callback, TrackDesign* trackDesign)
     {
         RegisterCallback(callback);
+
+#ifdef __EMSCRIPTEN__
+        if (action == LoadSaveAction::save)
+        {
+            Select("/save.park", action, type, trackDesign);
+            EmscriptenSaveGame(type == LoadSaveType::track, false, type);
+        }
+        else
+        {
+            EmscriptenLoadGame(type);
+        }
+        return nullptr;
+#endif
 
         auto hasFilePicker = OpenRCT2::GetContext()->GetUiContext().HasFilePicker();
         auto& config = Config::Get().general;
@@ -527,3 +547,10 @@ namespace OpenRCT2::Ui::FileBrowser
         return ContextOpenCommonFileDialog(desc);
     }
 } // namespace OpenRCT2::Ui::FileBrowser
+
+#ifdef __EMSCRIPTEN__
+extern "C" void LoadGameCallback(const char* path, LoadSaveType action)
+{
+    OpenRCT2::Ui::FileBrowser::Select(path, LoadSaveAction::load, action, nullptr);
+}
+#endif

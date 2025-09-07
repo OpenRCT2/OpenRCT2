@@ -7,7 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#if defined(__unix__) && !defined(__ANDROID__) && !defined(__APPLE__)
+#if defined(__unix__) && !defined(__ANDROID__) && !defined(__APPLE__) && !defined(__EMSCRIPTEN__)
 
     #include "../Diagnostic.h"
 
@@ -201,7 +201,7 @@ namespace OpenRCT2::Platform
         {
             LOG_FATAL("failed to get process path");
         }
-    #elif defined(__OpenBSD__) || defined(__EMSCRIPTEN__)
+    #elif defined(__OpenBSD__)
         // There is no way to get the path name of a running executable.
         // If you are not using the port or package, you may have to change this line!
         strlcpy(exePath, "/usr/local/bin/", sizeof(exePath));

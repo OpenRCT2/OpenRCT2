@@ -191,7 +191,7 @@ target_link_libraries(libopenrct2 Threads::Threads)
 
 # For some reason, these flags break the check for pthreads. Add them after.
 if (EMSCRIPTEN)
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -s EXPORTED_FUNCTIONS=_GetVersion,_main --js-library ${ROOT_DIR}/emscripten/deps.js")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -s EXPORTED_FUNCTIONS=${EMSCRIPTEN_EXPORTED_FUNCTIONS} --js-library ${ROOT_DIR}/emscripten/deps.js")
 endif()
 
 if (NOT MINGW AND NOT MSVC AND NOT EMSCRIPTEN)

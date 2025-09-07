@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -x
+
 mkdir -p build
 cd build
 
@@ -28,7 +30,8 @@ emcmake cmake ../ \
 	-DLIBZIP_LIBRARIES="$LIBZIP_ROOT/build/lib/libzip.a" \
 	-DZSTD_LIBRARIES="$ZSTD_ROOT/build/build/lib/libzstd.a" \
 	-DEMSCRIPTEN_FLAGS="-s USE_SDL=2 -s USE_ZLIB=1 -s USE_BZIP2=1 -s USE_LIBPNG=1 -pthread -O3" \
-	-DEMSCRIPTEN_LDFLAGS="-Wno-pthreads-mem-growth -s SAFE_HEAP=0 -s ALLOW_MEMORY_GROWTH=1 -s MAXIMUM_MEMORY=4GB -s INITIAL_MEMORY=2GB -s STACK_SIZE=8388608 -s MIN_WEBGL_VERSION=2 -s MAX_WEBGL_VERSION=2 -s PTHREAD_POOL_SIZE=120 -pthread -s EXPORTED_RUNTIME_METHODS=ccall,FS,callMain,UTF8ToString,stringToNewUTF8 -lidbfs.js --use-preload-plugins -s MODULARIZE=1 -s 'EXPORT_NAME=\"OPENRCT2_WEB\"'"
+	-DEMSCRIPTEN_EXPORTED_FUNCTIONS="_GetVersion,_main" \
+	-DEMSCRIPTEN_LDFLAGS="-Wno-pthreads-mem-growth -s SAFE_HEAP=0 -s ALLOW_MEMORY_GROWTH=1 -s MAXIMUM_MEMORY=4GB -s INITIAL_MEMORY=2GB -s STACK_SIZE=8388608 -s MIN_WEBGL_VERSION=2 -s MAX_WEBGL_VERSION=2 -s PTHREAD_POOL_SIZE=120 -pthread -s EXPORTED_RUNTIME_METHODS=ccall,FS,callMain,UTF8ToString,stringToNewUTF8 -lidbfs.js --use-preload-plugins -s MODULARIZE=1 -s 'EXPORT_NAME=\"OPENRCT2_WEB\"' -Wl,--export-if-defined=LoadGameCallback"
 
 emmake ninja
 

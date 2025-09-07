@@ -77,6 +77,13 @@
 #include <iterator>
 #include <memory>
 
+#ifdef __EMSCRIPTEN__
+extern "C" {
+extern void EmscriptenSaveGame(bool isTrackDesign, bool isAutosave, LoadSaveType type);
+extern void EmscriptenResetAutosave();
+}
+#endif
+
 using namespace OpenRCT2;
 
 uint16_t gCurrentDeltaTime;
@@ -455,8 +462,14 @@ void SaveGame()
 {
     if (!gFirstTimeSaving && !gIsAutosaveLoaded)
     {
+#ifndef __EMSCRIPTEN__
         const auto savePath = Path::WithExtension(gScenarioSavePath, ".park");
         SaveGameWithName(savePath);
+#else
+        const auto savePath = Path::WithExtension("save", ".park");
+        SaveGameWithName(savePath);
+        EmscriptenSaveGame(false, false, LoadSaveType::park);
+#endif
     }
     else
     {
@@ -508,10 +521,14 @@ std::unique_ptr<Intent> CreateSaveGameAsIntent()
 
 void SaveGameAs()
 {
+#ifdef __EMSCRIPTEN__
+    EmscriptenResetAutosave();
+#endif
     auto intent = CreateSaveGameAsIntent();
     ContextOpenIntent(intent.get());
 }
 
+#ifndef __EMSCRIPTEN__
 static void LimitAutosaveCount(const size_t numberOfFilesToKeep, bool processLandscapeFolder)
 {
     size_t autosavesCount = 0;
@@ -613,6 +630,14 @@ void GameAutosave()
     if (!ScenarioSave(gameState, path, saveFlags))
         Console::Error::WriteLine("Could not autosave the scenario. Is the save folder writeable?");
 }
+#else
+void GameAutosave()
+{
+    const auto savePath = Path::WithExtension("save", ".park");
+    SaveGameWithName(savePath);
+    EmscriptenSaveGame(false, true, LoadSaveType::park);
+}
+#endif // __EMSCRIPTEN__
 
 static void GameLoadOrQuitNoSavePromptCallback(ModalResult result, const utf8* path)
 {
@@ -643,6 +668,9 @@ static void NewGameWindowCallback(const utf8* path)
     GetContext()->LoadParkFromFile(path, false, true);
     GameLoadScripts();
     GameNotifyMapChanged();
+#ifdef __EMSCRIPTEN__
+    EmscriptenResetAutosave();
+#endif
 }
 
 /**
@@ -685,6 +713,9 @@ void GameLoadOrQuitNoSavePrompt()
             gFirstTimeSaving = true;
             GameNotifyMapChange();
             GameUnloadScripts();
+#ifdef __EMSCRIPTEN__
+            EmscriptenResetAutosave();
+#endif
 
             auto* context = OpenRCT2::GetContext();
             context->SetActiveScene(context->GetTitleScene());
