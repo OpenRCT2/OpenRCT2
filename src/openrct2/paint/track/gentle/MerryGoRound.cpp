@@ -82,7 +82,7 @@ static void PaintCarousel(
     if (vehicle != nullptr)
     {
         auto rotation = ((vehicle->Orientation >> 3) + session.CurrentRotation) << 5;
-        rotationOffset = (vehicle->Pitch + rotation) % 128;
+        rotationOffset = (vehicle->pitch + rotation) % 128;
     }
 
     CoordsXYZ offset(xOffset, yOffset, height);

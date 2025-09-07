@@ -50,7 +50,7 @@ static void PaintTwistStructure(
     if (vehicle != nullptr)
     {
         frameNum += (vehicle->Orientation >> 3) << 4;
-        frameNum += vehicle->Pitch;
+        frameNum += vehicle->pitch;
         frameNum = frameNum % 216;
     }
 

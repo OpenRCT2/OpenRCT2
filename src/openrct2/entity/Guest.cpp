@@ -2512,7 +2512,7 @@ static void PeepChooseSeatFromCar(Guest* guest, const Ride& ride, Vehicle* vehic
 
     if (ride.mode == RideMode::forwardRotation || ride.mode == RideMode::backwardRotation)
     {
-        chosen_seat = (((~vehicle->Pitch + 1) >> 3) & 0xF) * 2;
+        chosen_seat = (((~vehicle->pitch + 1) >> 3) & 0xF) * 2;
         if (vehicle->next_free_seat & 1)
         {
             chosen_seat++;
@@ -2627,7 +2627,7 @@ static bool FindVehicleToEnter(
 
         if (ride.mode == RideMode::forwardRotation || ride.mode == RideMode::backwardRotation)
         {
-            uint8_t position = (((~vehicle->Pitch + 1) >> 3) & 0xF) * 2;
+            uint8_t position = (((~vehicle->pitch + 1) >> 3) & 0xF) * 2;
             if (!vehicle->peep[position].IsNull())
                 continue;
         }

@@ -2204,8 +2204,8 @@ namespace OpenRCT2
     {
         ReadWriteEntityCommon(cs, entity);
         cs.readWrite(entity.SubType);
-        cs.readWrite(entity.Pitch);
-        cs.readWrite(entity.bank_rotation);
+        cs.readWrite(entity.pitch);
+        cs.readWrite(entity.roll);
         cs.readWrite(entity.remaining_distance);
         cs.readWrite(entity.velocity);
         cs.readWrite(entity.acceleration);

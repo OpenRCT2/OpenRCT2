@@ -110,7 +110,7 @@ static void PaintSwingingShipStructure(
     auto baseImageId = rideEntry->Cars[0].base_image_id + kSwingingShipBaseSpriteOffset[direction];
     if (vehicle != nullptr)
     {
-        int32_t rotation = static_cast<int8_t>(vehicle->Pitch);
+        int32_t rotation = static_cast<int8_t>(vehicle->pitch);
         if (rotation != 0)
         {
             if (direction & 2)

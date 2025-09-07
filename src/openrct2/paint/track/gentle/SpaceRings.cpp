@@ -58,7 +58,7 @@ static void PaintSpaceRingsStructure(
     {
         session.InteractionType = ViewportInteractionItem::Entity;
         session.CurrentlyDrawnEntity = vehicle;
-        frameNum += static_cast<int8_t>(vehicle->Pitch) * 4;
+        frameNum += static_cast<int8_t>(vehicle->pitch) * 4;
     }
 
     if (ride.vehicleColourSettings != VehicleColourSettings::perTrain)

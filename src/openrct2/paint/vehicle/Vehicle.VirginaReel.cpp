@@ -36,7 +36,7 @@ namespace OpenRCT2
         const uint8_t rotation = session.CurrentRotation;
         int32_t ecx = ((vehicle->spin_sprite / 8) + (rotation * 8)) & 31;
         int32_t baseImage_id = [&] {
-            switch (vehicle->Pitch)
+            switch (vehicle->pitch)
             {
                 case 1:
                     return (imageDirection & 24) + 8;
