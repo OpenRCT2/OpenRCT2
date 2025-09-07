@@ -38,10 +38,10 @@ namespace OpenRCT2::GameActions
         Result Execute(GameState_t& gameState) const override;
 
     private:
-        Result DemolishRide(Ride& ride) const;
-        money64 MazeRemoveTrack(const CoordsXYZD& coords) const;
-        money64 DemolishTracks() const;
-        Result RefurbishRide(Ride& ride) const;
+        Result DemolishRide(GameState_t& gameState, Ride& ride) const;
+        money64 MazeRemoveTrack(GameState_t& gameState, const CoordsXYZD& coords) const;
+        money64 DemolishTracks(GameState_t& gameState) const;
+        Result RefurbishRide(GameState_t& gameState, Ride& ride) const;
         money64 GetRefurbishPrice(const Ride& ride) const;
         money64 GetRefundPrice(const Ride& ride) const;
     };

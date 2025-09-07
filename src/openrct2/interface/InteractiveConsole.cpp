@@ -318,7 +318,7 @@ static void ConsoleCommandRides(InteractiveConsole& console, const arguments_t& 
                     {
                         auto rideAction = GameActions::RideFreezeRatingAction(
                             rideIndex, GameActions::RideRatingType::Excitement, excitement);
-                        GameActions::Execute(&rideAction);
+                        GameActions::Execute(&rideAction, gameState);
                     }
                 }
             }
@@ -352,7 +352,7 @@ static void ConsoleCommandRides(InteractiveConsole& console, const arguments_t& 
                     {
                         auto rideAction = GameActions::RideFreezeRatingAction(
                             rideIndex, GameActions::RideRatingType::Intensity, intensity);
-                        GameActions::Execute(&rideAction);
+                        GameActions::Execute(&rideAction, gameState);
                     }
                 }
             }
@@ -386,7 +386,7 @@ static void ConsoleCommandRides(InteractiveConsole& console, const arguments_t& 
                     {
                         auto rideAction = GameActions::RideFreezeRatingAction(
                             rideIndex, GameActions::RideRatingType::Nausea, nausea);
-                        GameActions::Execute(&rideAction);
+                        GameActions::Execute(&rideAction, gameState);
                     }
                 }
             }
@@ -404,7 +404,7 @@ static void ConsoleCommandRides(InteractiveConsole& console, const arguments_t& 
                             for (const auto& ride : GetRideManager())
                             {
                                 auto rideSetPrice = GameActions::RideSetPriceAction(ride.id, price, true);
-                                GameActions::Execute(&rideSetPrice);
+                                GameActions::Execute(&rideSetPrice, gameState);
                             }
                         }
                         else
@@ -424,7 +424,7 @@ static void ConsoleCommandRides(InteractiveConsole& console, const arguments_t& 
                                 if (ride.type == rideType)
                                 {
                                     auto rideSetPrice = GameActions::RideSetPriceAction(ride.id, price, true);
-                                    GameActions::Execute(&rideSetPrice);
+                                    GameActions::Execute(&rideSetPrice, gameState);
                                 }
                             }
                         }
@@ -446,7 +446,7 @@ static void ConsoleCommandRides(InteractiveConsole& console, const arguments_t& 
                     else
                     {
                         auto rideSetPrice = GameActions::RideSetPriceAction(RideId::FromUnderlying(rideId), price, true);
-                        GameActions::Execute(&rideSetPrice);
+                        GameActions::Execute(&rideSetPrice, gameState);
                     }
                 }
             }
@@ -539,7 +539,7 @@ static void ConsoleCommandStaff(InteractiveConsole& console, const arguments_t& 
 
                 auto costume = static_cast<ObjectEntryIndex>(int_val[1]);
                 auto staffSetCostumeAction = GameActions::StaffSetCostumeAction(EntityId::FromUnderlying(int_val[0]), costume);
-                GameActions::Execute(&staffSetCostumeAction);
+                GameActions::Execute(&staffSetCostumeAction, gameState);
             }
         }
     }
@@ -761,7 +761,9 @@ static void ConsoleSetVariableAction(InteractiveConsole& console, std::string va
         console.EndAsyncExecution();
     });
     console.BeginAsyncExecution();
-    GameActions::Execute(&action);
+
+    auto& gameState = getGameState();
+    GameActions::Execute(&action, gameState);
 }
 
 static void ConsoleCommandSet(InteractiveConsole& console, const arguments_t& argv)
@@ -1307,7 +1309,7 @@ static void ConsoleCommandForceDate([[maybe_unused]] InteractiveConsole& console
     }
 
     auto setDateAction = GameActions::ParkSetDateAction(year - 1, month - 1, day - 1);
-    GameActions::Execute(&setDateAction);
+    GameActions::Execute(&setDateAction, getGameState());
 
     auto* windowMgr = Ui::GetWindowManager();
     windowMgr->InvalidateByClass(WindowClass::BottomToolbar);

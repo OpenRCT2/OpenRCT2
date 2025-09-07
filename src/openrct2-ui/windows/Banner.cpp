@@ -191,6 +191,9 @@ namespace OpenRCT2::Ui::Windows
                 Close();
                 return;
             }
+
+            auto& gameState = getGameState();
+
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
@@ -204,7 +207,7 @@ namespace OpenRCT2::Ui::Windows
 
                     auto bannerRemoveAction = GameActions::BannerRemoveAction(
                         { banner->position.ToCoordsXY(), bannerElement->GetBaseZ(), bannerElement->GetPosition() });
-                    GameActions::Execute(&bannerRemoveAction);
+                    GameActions::Execute(&bannerRemoveAction, gameState);
                     break;
                 }
                 case WIDX_BANNER_TEXT:
@@ -216,7 +219,7 @@ namespace OpenRCT2::Ui::Windows
                     TextinputCancel();
                     auto bannerSetStyle = GameActions::BannerSetStyleAction(
                         GameActions::BannerSetStyleType::NoEntry, GetBannerIndex(), !banner->flags.has(BannerFlag::noEntry));
-                    GameActions::Execute(&bannerSetStyle);
+                    GameActions::Execute(&bannerSetStyle, gameState);
                     break;
                 }
             }

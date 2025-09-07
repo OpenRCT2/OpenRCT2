@@ -2866,7 +2866,7 @@ void Vehicle::UpdateCollisionSetup()
         {
             // We require this to execute right away during the simulation, always ignore network and queue.
             auto gameAction = GameActions::RideSetStatusAction(curRide->id, RideStatus::closed);
-            GameActions::ExecuteNested(&gameAction);
+            GameActions::ExecuteNested(&gameAction, getGameState());
         }
     }
 
@@ -4660,7 +4660,7 @@ void Vehicle::CrashOnLand()
         {
             // We require this to execute right away during the simulation, always ignore network and queue.
             auto gameAction = GameActions::RideSetStatusAction(curRide->id, RideStatus::closed);
-            GameActions::ExecuteNested(&gameAction);
+            GameActions::ExecuteNested(&gameAction, getGameState());
         }
     }
     curRide->lifecycleFlags |= RIDE_LIFECYCLE_CRASHED;
@@ -4728,7 +4728,7 @@ void Vehicle::CrashOnWater()
         {
             // We require this to execute right away during the simulation, always ignore network and queue.
             auto gameAction = GameActions::RideSetStatusAction(curRide->id, RideStatus::closed);
-            GameActions::ExecuteNested(&gameAction);
+            GameActions::ExecuteNested(&gameAction, getGameState());
         }
     }
     curRide->lifecycleFlags |= RIDE_LIFECYCLE_CRASHED;

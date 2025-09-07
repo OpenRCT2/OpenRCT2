@@ -241,7 +241,7 @@ namespace OpenRCT2
             RideConstructionStart(*ride);
         });
 
-        GameActions::Execute(&gameAction);
+        GameActions::Execute(&gameAction, getGameState());
     }
 
     SpecialElementsDropdownState BuildSpecialElementsList(

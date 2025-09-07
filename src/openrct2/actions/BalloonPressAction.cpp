@@ -40,7 +40,6 @@ namespace OpenRCT2::GameActions
 
     Result BalloonPressAction::Query(GameState_t& gameState) const
     {
-        auto& gameState = getGameState();
         auto balloon = gameState.entities.TryGetEntity<Balloon>(_spriteIndex);
         if (balloon == nullptr)
         {
@@ -52,7 +51,6 @@ namespace OpenRCT2::GameActions
 
     Result BalloonPressAction::Execute(GameState_t& gameState) const
     {
-        auto& gameState = getGameState();
         auto balloon = gameState.entities.TryGetEntity<Balloon>(_spriteIndex);
         if (balloon == nullptr)
         {

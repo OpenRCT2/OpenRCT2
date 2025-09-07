@@ -80,7 +80,7 @@ namespace OpenRCT2::GameActions
         // Colours do not matter as will be overwritten
         auto rideCreateAction = RideCreateAction(_td.trackAndVehicle.rtdIndex, entryIndex, 0, 0, gameState.lastEntranceStyle);
         rideCreateAction.SetFlags(GetFlags());
-        auto r = ExecuteNested(&rideCreateAction);
+        auto r = ExecuteNested(&rideCreateAction, gameState);
         if (r.Error != Status::Ok)
         {
             return Result(Status::NoFreeElements, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, kStringIdNone);
@@ -112,7 +112,7 @@ namespace OpenRCT2::GameActions
         auto gameAction = RideDemolishAction(ride->id, RideModifyType::demolish);
         gameAction.SetFlags(GetFlags());
 
-        ExecuteNested(&gameAction);
+        ExecuteNested(&gameAction, gameState);
 
         if (queryRes.Error != Status::Ok)
         {
@@ -152,7 +152,7 @@ namespace OpenRCT2::GameActions
         // Colours do not matter as will be overwritten
         auto rideCreateAction = RideCreateAction(_td.trackAndVehicle.rtdIndex, entryIndex, 0, 0, gameState.lastEntranceStyle);
         rideCreateAction.SetFlags(GetFlags());
-        auto r = ExecuteNested(&rideCreateAction);
+        auto r = ExecuteNested(&rideCreateAction, gameState);
         if (r.Error != Status::Ok)
         {
             return Result(Status::NoFreeElements, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, kStringIdNone);
@@ -182,7 +182,7 @@ namespace OpenRCT2::GameActions
         {
             auto gameAction = RideDemolishAction(ride->id, RideModifyType::demolish);
             gameAction.SetFlags(GetFlags());
-            ExecuteNested(&gameAction);
+            ExecuteNested(&gameAction, gameState);
 
             res.Error = queryRes.Error;
             res.ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
@@ -200,7 +200,7 @@ namespace OpenRCT2::GameActions
         {
             auto gameAction = RideDemolishAction(ride->id, RideModifyType::demolish);
             gameAction.SetFlags(GetFlags());
-            ExecuteNested(&gameAction);
+            ExecuteNested(&gameAction, gameState);
 
             res.Error = execRes.Error;
             res.ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
@@ -215,17 +215,17 @@ namespace OpenRCT2::GameActions
             auto colour = RideGetUnusedPresetVehicleColour(entryIndex);
             auto rideSetVehicleAction = GameActions::RideSetVehicleAction(
                 ride->id, GameActions::RideSetVehicleType::RideEntry, entryIndex, colour);
-            ExecuteNested(&rideSetVehicleAction);
+            ExecuteNested(&rideSetVehicleAction, gameState);
         }
 
         SetOperatingSettingNested(ride->id, RideSetSetting::Mode, static_cast<uint8_t>(_td.operation.rideMode), flags);
         auto rideSetVehicleAction2 = GameActions::RideSetVehicleAction(
             ride->id, GameActions::RideSetVehicleType::NumTrains, _td.trackAndVehicle.numberOfTrains);
-        ExecuteNested(&rideSetVehicleAction2);
+        ExecuteNested(&rideSetVehicleAction2, gameState);
 
         auto rideSetVehicleAction3 = GameActions::RideSetVehicleAction(
             ride->id, GameActions::RideSetVehicleType::NumCarsPerTrain, _td.trackAndVehicle.numberOfCarsPerTrain);
-        ExecuteNested(&rideSetVehicleAction3);
+        ExecuteNested(&rideSetVehicleAction3, gameState);
 
         SetOperatingSettingNested(ride->id, RideSetSetting::Departure, _td.operation.departFlags, flags);
         SetOperatingSettingNested(ride->id, RideSetSetting::MinWaitingTime, _td.operation.minWaitingTime, flags);
@@ -264,7 +264,7 @@ namespace OpenRCT2::GameActions
             auto name = count == 1 ? _td.gameStateData.name : (_td.gameStateData.name + " " + std::to_string(count));
             auto gameAction = RideSetNameAction(ride->id, name);
             gameAction.SetFlags(GetFlags());
-            r = ExecuteNested(&gameAction);
+            r = ExecuteNested(&gameAction, gameState);
         }
         res.Cost = execRes.Cost;
         res.SetData(RideId{ ride->id });

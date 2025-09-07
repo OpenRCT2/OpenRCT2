@@ -338,11 +338,11 @@ namespace OpenRCT2::Scripting
                              callback](const GameActions::GameAction* act, const GameActions::Result* res) -> void {
                                 HandleGameActionResult(plugin, *act, *res, callback);
                             });
-                        GameActions::Execute(action.get());
+                        GameActions::Execute(action.get(), getGameState());
                     }
                     else
                     {
-                        auto res = GameActions::Query(action.get());
+                        auto res = GameActions::Query(action.get(), getGameState());
                         HandleGameActionResult(plugin, *action, res, callback);
                     }
                 }

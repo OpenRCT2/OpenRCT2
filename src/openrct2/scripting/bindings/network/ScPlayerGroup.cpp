@@ -12,6 +12,7 @@
     #include "ScPlayerGroup.hpp"
 
     #include "../../../Context.h"
+    #include "../../../GameState.h"
     #include "../../../actions/NetworkModifyGroupAction.h"
     #include "../../../actions/PlayerSetGroupAction.h"
     #include "../../../core/String.hpp"
@@ -47,7 +48,7 @@ namespace OpenRCT2::Scripting
     {
     #ifndef DISABLE_NETWORK
         auto action = GameActions::NetworkModifyGroupAction(GameActions::ModifyGroupType::SetName, _id, value);
-        GameActions::Execute(&action);
+        GameActions::Execute(&action, getGameState());
     #endif
     }
 
@@ -102,7 +103,7 @@ namespace OpenRCT2::Scripting
         // First clear all permissions
         auto networkAction = GameActions::NetworkModifyGroupAction(
             GameActions::ModifyGroupType::SetPermissions, _id, "", 0, GameActions::PermissionState::ClearAll);
-        GameActions::Execute(&networkAction);
+        GameActions::Execute(&networkAction, getGameState());
 
         std::vector<bool> enabledPermissions;
         enabledPermissions.resize(Network::NetworkActions::Actions.size());
@@ -130,7 +131,7 @@ namespace OpenRCT2::Scripting
                 auto networkAction2 = GameActions::NetworkModifyGroupAction(
                     GameActions::ModifyGroupType::SetPermissions, _id, "", static_cast<uint32_t>(i),
                     GameActions::PermissionState::Toggle);
-                GameActions::Execute(&networkAction2);
+                GameActions::Execute(&networkAction2, getGameState());
             }
         }
     #endif

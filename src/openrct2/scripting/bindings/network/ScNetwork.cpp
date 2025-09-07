@@ -12,6 +12,7 @@
     #include "ScNetwork.hpp"
 
     #include "../../../Context.h"
+    #include "../../../GameState.h"
     #include "../../../actions/NetworkModifyGroupAction.h"
     #include "../../../actions/PlayerKickAction.h"
     #include "../../../network/Network.h"
@@ -71,7 +72,7 @@ namespace OpenRCT2::Scripting
     {
     #ifndef DISABLE_NETWORK
         auto action = GameActions::NetworkModifyGroupAction(GameActions::ModifyGroupType::SetDefault, value);
-        GameActions::Execute(&action);
+        GameActions::Execute(&action, getGameState());
     #endif
     }
 
@@ -201,7 +202,7 @@ namespace OpenRCT2::Scripting
     {
     #ifndef DISABLE_NETWORK
         auto networkModifyGroup = GameActions::NetworkModifyGroupAction(GameActions::ModifyGroupType::AddGroup);
-        GameActions::Execute(&networkModifyGroup);
+        GameActions::Execute(&networkModifyGroup, getGameState());
     #endif
     }
 
@@ -216,7 +217,7 @@ namespace OpenRCT2::Scripting
             {
                 auto groupId = Network::GetGroupID(index);
                 auto networkAction = GameActions::NetworkModifyGroupAction(GameActions::ModifyGroupType::RemoveGroup, groupId);
-                GameActions::Execute(&networkAction);
+                GameActions::Execute(&networkAction, getGameState());
             }
         }
         else
@@ -225,7 +226,7 @@ namespace OpenRCT2::Scripting
             if (index != -1)
             {
                 auto networkAction = GameActions::NetworkModifyGroupAction(GameActions::ModifyGroupType::RemoveGroup, id);
-                GameActions::Execute(&networkAction);
+                GameActions::Execute(&networkAction, getGameState());
             }
         }
     #endif
@@ -242,7 +243,7 @@ namespace OpenRCT2::Scripting
             {
                 auto playerId = Network::GetPlayerID(index);
                 auto kickPlayerAction = GameActions::PlayerKickAction(playerId);
-                GameActions::Execute(&kickPlayerAction);
+                GameActions::Execute(&kickPlayerAction, getGameState());
             }
         }
         else
@@ -251,7 +252,7 @@ namespace OpenRCT2::Scripting
             if (index != -1)
             {
                 auto kickPlayerAction = GameActions::PlayerKickAction(id);
-                GameActions::Execute(&kickPlayerAction);
+                GameActions::Execute(&kickPlayerAction, getGameState());
             }
         }
     #endif

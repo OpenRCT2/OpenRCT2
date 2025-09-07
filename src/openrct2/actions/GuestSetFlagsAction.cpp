@@ -43,7 +43,6 @@ namespace OpenRCT2::GameActions
 
     Result GuestSetFlagsAction::Query(GameState_t& gameState) const
     {
-        auto& gameState = getGameState();
         auto* peep = gameState.entities.TryGetEntity<Guest>(_peepId);
         if (peep == nullptr)
         {
@@ -55,7 +54,6 @@ namespace OpenRCT2::GameActions
 
     Result GuestSetFlagsAction::Execute(GameState_t& gameState) const
     {
-        auto& gameState = getGameState();
         auto* peep = gameState.entities.TryGetEntity<Guest>(_peepId);
         if (peep == nullptr)
         {

@@ -12,6 +12,7 @@
     #include "ScPlayer.hpp"
 
     #include "../../../Context.h"
+    #include "../../../GameState.h"
     #include "../../../actions/PlayerSetGroupAction.h"
     #include "../../../network/Network.h"
     #include "../../../network/NetworkAction.h"
@@ -55,7 +56,7 @@ namespace OpenRCT2::Scripting
     {
     #ifndef DISABLE_NETWORK
         auto playerSetGroupAction = GameActions::PlayerSetGroupAction(_id, value);
-        GameActions::Execute(&playerSetGroupAction);
+        GameActions::Execute(&playerSetGroupAction, getGameState());
     #endif
     }
 

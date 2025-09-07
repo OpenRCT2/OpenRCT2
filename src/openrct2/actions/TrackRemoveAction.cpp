@@ -461,7 +461,7 @@ namespace OpenRCT2::GameActions
 
                         auto rideSetSetting = GameActions::RideSetSettingAction(
                             ride->id, GameActions::RideSetSetting::Mode, static_cast<uint8_t>(newMode));
-                        ExecuteNested(&rideSetSetting);
+                        ExecuteNested(&rideSetSetting, gameState);
                     }
 
                     break;
