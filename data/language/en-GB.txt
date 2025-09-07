@@ -3842,4 +3842,4 @@ STR_7000    :or
 STR_7001    :Ride name
 STR_7002    :{STRINGID} {STRINGID}
 STR_7003    :Audio file ‘{STRING}’ is truncated. Expected sample {INT32}, but only {INT32} are available. Consider reinstalling RCT2.
-STR_7004    :Walking pace
+STR_7004    :Slow
