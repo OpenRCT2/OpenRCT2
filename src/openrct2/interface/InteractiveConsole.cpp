@@ -30,6 +30,7 @@
 #include "../config/Config.h"
 #include "../core/Console.hpp"
 #include "../core/EnumUtils.hpp"
+#include "../core/File.h"
 #include "../core/Guard.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
@@ -1467,6 +1468,13 @@ static void ConsoleCommandReplayStart(InteractiveConsole& console, const argumen
     }
 
     std::string name = argv[0];
+    std::string filePath = OpenRCT2::GetContext()->GetPlatformEnvironment().GetDirectoryPath(OpenRCT2::DirBase::user, OpenRCT2::DirId::replayRecordings);
+    filePath = Path::Combine(filePath, name + ".parkrep");
+
+    if (!File::Exists(filePath)) {
+        console.WriteLineError("Could not find replay witn name: " + name);
+        return;
+    }
 
     auto* replayManager = OpenRCT2::GetContext()->GetReplayManager();
     if (replayManager->StartPlayback(name))
