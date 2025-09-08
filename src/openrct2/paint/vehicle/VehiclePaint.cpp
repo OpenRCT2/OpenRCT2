@@ -2004,6 +2004,7 @@ void VehicleVisualDefault(PaintSession& session, int32_t yaw, const int32_t z, c
     auto pitch = vehicle->pitch;
     auto selectedPaintTarget = GetTarget(pitch, roll);
 
+    // special cases introduced by Chris Sawyer. Will be removed by adjusting subposition data in a future PR.
     auto trackType = vehicle->GetTrackType();
     if ((vehicle->roll >= VehicleRoll::uninvertingUnbanked)
         || (vehicle->HasFlag(VehicleFlags::CarIsInverted) && selectedPaintTarget.HasFlag(VPTFlags::decrementCarIndexIfInverted)
@@ -2025,13 +2026,13 @@ void VehicleVisualDefault(PaintSession& session, int32_t yaw, const int32_t z, c
 
     while (!carEntry->GroupEnabled(selectedPaintTarget.spriteGroup) && pitch != VehiclePitch::nullPitch)
     {
-        // this is where the adjustments necessitated by slopes42Banked135 and slopes50Banked67 go
         pitch = selectedPaintTarget.fallbackPitch;
         roll = selectedPaintTarget.fallbackRoll;
         yaw = Add(yaw, selectedPaintTarget.fallbackYawOffset);
         selectedPaintTarget = GetTarget(pitch, roll);
     }
 
+    // special cases introduced by X123M3-256. Will be removed by adjusting subposition data in a future PR.
     // up42BankedLeft135 corkscrew frame 13 rotation + 8, fallback up42Unbanked rotation +0 (-8 after adjustment)
     // up42BankedRight135 corkscrew frame 3, fallback up42Unbanked rotation +0
     // down42BankedLeft135 corkscrew frame 8, fallback down42Unbanked rotation +0
