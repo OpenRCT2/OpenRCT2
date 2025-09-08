@@ -1567,6 +1567,9 @@ static void VehiclePitchFlat(
         case VehicleRoll::right157:
             VehiclePitchFlatBankedRight157(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
+        case VehicleRoll::uninvertingUnbanked:
+            VehiclePitchFlatUnbanked(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
+            break;
         case VehicleRoll::uninvertingLeft22:
             VehiclePitchUninvertedFlatBankedLeft22(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
@@ -1702,6 +1705,9 @@ static void VehiclePitchUp12(
             break;
         case VehicleRoll::right45:
             VehiclePitchUp12BankedRight45(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
+            break;
+        case VehicleRoll::uninvertingUnbanked:
+            VehiclePitchUp12Unbanked(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
         case VehicleRoll::uninvertingLeft22:
             VehiclePitchUp12BankedLeft22(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
@@ -2048,6 +2054,9 @@ static void VehiclePitchUp25(
             break;
         case VehicleRoll::right157:
             VehiclePitchUp25BankedRight157(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
+            break;
+        case VehicleRoll::uninvertingUnbanked:
+            VehiclePitchUp25Unbanked(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
         case VehicleRoll::uninvertingLeft22:
             VehiclePitchUp25BankedLeft22(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
@@ -2531,6 +2540,9 @@ static void VehiclePitchDown12(
         case VehicleRoll::right157:
             VehiclePitchDown12Unbanked(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
+        case VehicleRoll::uninvertingUnbanked:
+            VehiclePitchDown12Unbanked(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
+            break;
         case VehicleRoll::uninvertingLeft22:
             VehiclePitchDown12BankedLeft22(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
@@ -2879,6 +2891,9 @@ static void VehiclePitchDown25(
             break;
         case VehicleRoll::right157:
             VehiclePitchDown25BankedRight157(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
+            break;
+        case VehicleRoll::uninvertingUnbanked:
+            VehiclePitchDown25Unbanked(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
         case VehicleRoll::uninvertingLeft22:
             VehiclePitchDown25BankedLeft22(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
