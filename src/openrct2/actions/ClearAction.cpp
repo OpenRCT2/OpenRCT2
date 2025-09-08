@@ -53,12 +53,12 @@ namespace OpenRCT2::GameActions
 
     Result ClearAction::Query(GameState_t& gameState) const
     {
-        return QueryExecute(false, gameState);
+        return QueryExecute(gameState, false);
     }
 
     Result ClearAction::Execute(GameState_t& gameState) const
     {
-        return QueryExecute(true, gameState);
+        return QueryExecute(gameState, true);
     }
 
     Result ClearAction::CreateResult() const
@@ -75,7 +75,7 @@ namespace OpenRCT2::GameActions
         return result;
     }
 
-    Result ClearAction::QueryExecute(bool executing, GameState_t& gameState) const
+    Result ClearAction::QueryExecute(GameState_t& gameState, bool executing) const
     {
         auto result = CreateResult();
 

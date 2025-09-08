@@ -44,7 +44,7 @@ namespace OpenRCT2::GameActions
 
     private:
         Result CreateResult() const;
-        Result QueryExecute(bool executing, GameState_t& gameState) const;
+        Result QueryExecute(GameState_t& gameState, bool executing) const;
         money64 ClearSceneryFromTile(const CoordsXY& tilePos, bool executing, GameState_t& gameState) const;
 
         /**
