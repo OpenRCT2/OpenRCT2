@@ -378,6 +378,7 @@ namespace OpenRCT2::Config
             model->ToolbarShowChat = reader->GetBoolean("toolbar_show_chat", false);
             model->ToolbarShowZoom = reader->GetBoolean("toolbar_show_zoom", true);
             model->ToolbarShowRotateAnticlockwise = reader->GetBoolean("toolbar_show_rotate_anti_clockwise", false);
+            model->ToolbarShowFastForward = reader->GetBoolean("toolbar_show_fast_forward", true);
             model->ConsoleSmallFont = reader->GetBoolean("console_small_font", false);
             model->CurrentThemePreset = reader->GetString("current_theme", "*RCT2");
             model->CurrentTitleSequencePreset = reader->GetString("current_title_sequence", "*OPENRCT2");
@@ -405,6 +406,7 @@ namespace OpenRCT2::Config
         writer->WriteBoolean("toolbar_show_chat", model->ToolbarShowChat);
         writer->WriteBoolean("toolbar_show_zoom", model->ToolbarShowZoom);
         writer->WriteBoolean("toolbar_show_rotate_anti_clockwise", model->ToolbarShowRotateAnticlockwise);
+        writer->WriteBoolean("toolbar_show_fast_forward", model->ToolbarShowFastForward);
         writer->WriteBoolean("console_small_font", model->ConsoleSmallFont);
         writer->WriteString("current_theme", model->CurrentThemePreset);
         writer->WriteString("current_title_sequence", model->CurrentTitleSequencePreset);

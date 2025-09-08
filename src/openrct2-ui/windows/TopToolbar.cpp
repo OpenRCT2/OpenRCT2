@@ -650,6 +650,9 @@ namespace OpenRCT2::Ui::Windows
             if (!Config::Get().interface.ToolbarShowRotateAnticlockwise)
                 widgets[WIDX_ROTATE_ANTI_CLOCKWISE].type = WidgetType::empty;
 
+            if (!Config::Get().interface.ToolbarShowFastForward)
+                widgets[WIDX_FASTFORWARD].type = WidgetType::empty;
+
             if (gLegacyScene == LegacyScene::scenarioEditor || gLegacyScene == LegacyScene::trackDesignsManager)
             {
                 widgets[WIDX_PAUSE].type = WidgetType::empty;

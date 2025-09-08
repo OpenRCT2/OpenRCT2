@@ -186,6 +186,7 @@ namespace OpenRCT2::Ui::Windows
         WIDX_TOOLBAR_SHOW_CHAT,
         WIDX_TOOLBAR_SHOW_ZOOM,
         WIDX_TOOLBAR_SHOW_ROTATE_ANTI_CLOCKWISE,
+        WIDX_TOOLBAR_SHOW_FAST_FORWARD,
 
         // Controls
         WIDX_CONTROLS_GROUP = WIDX_PAGE_START,
@@ -391,7 +392,7 @@ namespace OpenRCT2::Ui::Windows
         makeWidget({288, kThemesGroupStart + 15}, { 11, 10}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,             STR_CURRENT_THEME_TIP     ),
         makeWidget({155, kThemesGroupStart + 30}, {145, 13}, WidgetType::button,       WindowColour::secondary, STR_EDIT_THEMES_BUTTON,         STR_EDIT_THEMES_BUTTON_TIP), // Themes button
 
-        makeWidget({  5, kToolbarGroupStart +  0}, {300,107}, WidgetType::groupbox, WindowColour::secondary, STR_TOOLBAR_BUTTONS_GROUP                                                         ), // Toolbar buttons group
+        makeWidget({  5, kToolbarGroupStart +  0}, {300,122}, WidgetType::groupbox, WindowColour::secondary, STR_TOOLBAR_BUTTONS_GROUP                                                         ), // Toolbar buttons group
         makeWidget({ 10, kToolbarGroupStart + 14}, {280, 12}, WidgetType::checkbox, WindowColour::tertiary,  STR_OPTIONS_TOOLBAR_BUTTONS_CENTRED, STR_OPTIONS_TOOLBAR_BUTTONS_CENTRED_TIP      ),
         makeWidget({ 10, kToolbarGroupStart + 31}, {280, 12}, WidgetType::label,    WindowColour::secondary, STR_SHOW_TOOLBAR_BUTTONS_FOR                                                      ),
         makeWidget({ 24, kToolbarGroupStart + 46}, {122, 12}, WidgetType::checkbox, WindowColour::tertiary , STR_FINANCES_BUTTON_ON_TOOLBAR,      STR_FINANCES_BUTTON_ON_TOOLBAR_TIP           ), // Finances
@@ -401,7 +402,8 @@ namespace OpenRCT2::Ui::Windows
         makeWidget({ 24, kToolbarGroupStart + 76}, {162, 12}, WidgetType::checkbox, WindowColour::tertiary , STR_MUTE_BUTTON_ON_TOOLBAR,          STR_MUTE_BUTTON_ON_TOOLBAR_TIP               ), // Mute
         makeWidget({155, kToolbarGroupStart + 76}, {145, 12}, WidgetType::checkbox, WindowColour::tertiary , STR_CHAT_BUTTON_ON_TOOLBAR,          STR_CHAT_BUTTON_ON_TOOLBAR_TIP               ), // Chat
         makeWidget({ 24, kToolbarGroupStart + 91}, {122, 12}, WidgetType::checkbox, WindowColour::tertiary , STR_ZOOM_BUTTON_ON_TOOLBAR,          STR_ZOOM_BUTTON_ON_TOOLBAR_TIP               ), // Zoom
-        makeWidget({155, kToolbarGroupStart + 91}, {145, 12}, WidgetType::checkbox, WindowColour::tertiary , STR_ROTATE_ANTI_CLOCKWISE,           STR_ROTATE_VIEW_ANTI_CLOCKWISE_IN_TOOLBAR_TIP)  // Rotate anti-clockwise
+        makeWidget({155, kToolbarGroupStart + 91}, {145, 12}, WidgetType::checkbox, WindowColour::tertiary , STR_ROTATE_ANTI_CLOCKWISE,           STR_ROTATE_VIEW_ANTI_CLOCKWISE_IN_TOOLBAR_TIP),  // Rotate anti-clockwise
+        makeWidget({ 24, kToolbarGroupStart + 106}, {122, 12}, WidgetType::checkbox, WindowColour::tertiary , STR_FAST_FORWARD_ON_TOOLBAR,          STR_FAST_FORWARD_ON_TOOLBAR_TIP               ) // Fast forward
     );
 
     constexpr int32_t kTitleSequenceStart = 53;
@@ -1779,6 +1781,9 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_TOOLBAR_SHOW_ROTATE_ANTI_CLOCKWISE:
                     ToggleToolbarSetting(Config::Get().interface.ToolbarShowRotateAnticlockwise);
                     break;
+                case WIDX_TOOLBAR_SHOW_FAST_FORWARD:
+                    ToggleToolbarSetting(Config::Get().interface.ToolbarShowFastForward);
+                    break;
                 case WIDX_THEMES_BUTTON:
                     ContextOpenWindow(WindowClass::Themes);
                     Invalidate();
@@ -1835,6 +1840,7 @@ namespace OpenRCT2::Ui::Windows
             SetCheckboxValue(WIDX_TOOLBAR_SHOW_CHAT, Config::Get().interface.ToolbarShowChat);
             SetCheckboxValue(WIDX_TOOLBAR_SHOW_ZOOM, Config::Get().interface.ToolbarShowZoom);
             SetCheckboxValue(WIDX_TOOLBAR_SHOW_ROTATE_ANTI_CLOCKWISE, Config::Get().interface.ToolbarShowRotateAnticlockwise);
+            SetCheckboxValue(WIDX_TOOLBAR_SHOW_FAST_FORWARD, Config::Get().interface.ToolbarShowFastForward);
 
             size_t activeAvailableThemeIndex = ThemeManagerGetAvailableThemeIndex();
             const utf8* activeThemeName = ThemeManagerGetAvailableThemeName(activeAvailableThemeIndex);

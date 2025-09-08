@@ -137,6 +137,7 @@ namespace OpenRCT2::Config
         bool ToolbarShowChat;
         bool ToolbarShowZoom;
         bool ToolbarShowRotateAnticlockwise;
+        bool ToolbarShowFastForward;
         bool ConsoleSmallFont;
         bool RandomTitleSequence;
         u8string CurrentThemePreset;
