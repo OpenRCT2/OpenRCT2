@@ -206,7 +206,7 @@ namespace OpenRCT2::GameActions
 
         ride->ratings.setNull();
 
-        if (!(gameState.park.flags & PARK_FLAGS_NO_MONEY))
+        if (!(getUpdatingPark(gameState).flags & PARK_FLAGS_NO_MONEY))
         {
             for (auto i = 0; i < RCT2::ObjectLimits::kMaxShopItemsPerRideEntry; i++)
             {
@@ -215,7 +215,7 @@ namespace OpenRCT2::GameActions
 
             if (rideEntry->shop_item[0] == ShopItem::none)
             {
-                if (!Park::RidePricesUnlocked() || gameState.park.entranceFee > 0)
+                if (!Park::RidePricesUnlocked() || getUpdatingPark(gameState).entranceFee > 0)
                 {
                     ride->price[0] = 0;
                 }

@@ -1574,7 +1574,9 @@ namespace OpenRCT2::PathFinding
     {
         std::optional<CoordsXYZ> chosenEntrance = std::nullopt;
         uint16_t nearestDist = 0xFFFF;
-        for (const auto& parkEntrance : getGameState().park.entrances)
+        auto& gameState = getGameState();
+        auto& park = getUpdatingPark(gameState);
+        for (const auto& parkEntrance : park.entrances)
         {
             auto dist = abs(parkEntrance.x - loc.x) + abs(parkEntrance.y - loc.y);
             if (dist < nearestDist)

@@ -40,9 +40,6 @@ namespace OpenRCT2
 {
     static auto _gameState = std::make_unique<GameState_t>();
 
-    static ParkId _playerParkId{};
-    static ParkId _updatingParkId{};
-
     GameState_t& getGameState()
     {
         return *_gameState;
@@ -327,8 +324,8 @@ namespace OpenRCT2
 
         if (!isInEditorMode())
         {
-            auto& park = gameState.park;
-            Park::Update(park, gameState);
+            for (auto& park : gameState.parks)
+                Park::Update(park, gameState);
         }
 
         ResearchUpdate();
@@ -373,35 +370,45 @@ namespace OpenRCT2
         gInUpdateCode = false;
     }
 
-    Park::ParkData& getPlayerPark()
+    const Park::ParkData& getPlayerPark(const GameState_t& gameState)
     {
-        return _gameState.parks[EnumValue(_playerParkId)];
+        return gameState.parks[gameState.playerParkId.ToUnderlying()];
     }
 
-    ParkId getPlayerParkId()
+    Park::ParkData& getPlayerPark(GameState_t& gameState)
     {
-        return _playerParkId;
+        return gameState.parks[gameState.playerParkId.ToUnderlying()];
     }
 
-    void setPlayerParkId(ParkId newParkId)
+    ParkId getPlayerParkId(const GameState_t& gameState)
     {
-        assert(EnumValue(newParkId) < _gameState.parks.size());
-        _playerParkId = newParkId;
+        return gameState.playerParkId;
     }
 
-    Park::ParkData& getUpdatingPark()
+    void setPlayerParkId(GameState_t& gameState, ParkId newParkId)
     {
-        return _gameState.parks[EnumValue(_updatingParkId)];
+        assert(newParkId.ToUnderlying() < gameState.parks.size());
+        gameState.playerParkId = newParkId;
     }
 
-    ParkId getUpdatingParkId()
+    const Park::ParkData& getUpdatingPark(const GameState_t& gameState)
     {
-        return _updatingParkId;
+        return gameState.parks[gameState.updatingParkId.ToUnderlying()];
     }
 
-    void setUpdatingParkId(ParkId newParkId)
+    Park::ParkData& getUpdatingPark(GameState_t& gameState)
     {
-        assert(EnumValue(newParkId) < _gameState.parks.size());
-        _updatingParkId = newParkId;
+        return gameState.parks[gameState.updatingParkId.ToUnderlying()];
+    }
+
+    ParkId getUpdatingParkId(const GameState_t& gameState)
+    {
+        return gameState.updatingParkId;
+    }
+
+    void setUpdatingParkId(GameState_t& gameState, ParkId newParkId)
+    {
+        assert(newParkId.ToUnderlying() < gameState.parks.size());
+        gameState.updatingParkId = newParkId;
     }
 } // namespace OpenRCT2

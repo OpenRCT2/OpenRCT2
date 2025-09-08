@@ -81,7 +81,7 @@ namespace OpenRCT2::Park
     static money64 calculateTotalRideValueForMoney(const ParkData& park, const GameState_t& gameState)
     {
         money64 totalRideValue = 0;
-        bool ridePricesUnlocked = RidePricesUnlocked() && !(gameState.park.flags & PARK_FLAGS_NO_MONEY);
+        bool ridePricesUnlocked = RidePricesUnlocked() && !(park.flags & PARK_FLAGS_NO_MONEY);
         for (auto& ride : RideManager(gameState))
         {
             if (ride.status != RideStatus::open)
@@ -268,7 +268,9 @@ namespace OpenRCT2::Park
 
     void Initialise(GameState_t& gameState)
     {
-        auto& park = gameState.park;
+        gameState.parks.clear();
+        ParkData park{};
+        gameState.parks.emplace_back(std::move(park));
 
         park.name = LanguageGetString(STR_UNNAMED_PARK);
         gameState.pluginStorage = {};
@@ -721,7 +723,7 @@ namespace OpenRCT2::Park
         auto& gameState = getGameState();
         gameState.cheats.forcedParkRating = rating;
 
-        auto& park = gameState.park;
+        auto& park = getUpdatingPark(gameState);
         park.rating = CalculateParkRating(park, gameState);
 
         auto intent = Intent(INTENT_ACTION_UPDATE_PARK_RATING);
@@ -736,7 +738,8 @@ namespace OpenRCT2::Park
     money64 GetEntranceFee()
     {
         // TODO: pass park by ref
-        auto& park = getGameState().park;
+        auto& gameState = getGameState();
+        auto& park = getUpdatingPark(gameState);
 
         if (park.flags & PARK_FLAGS_NO_MONEY)
         {
@@ -753,7 +756,8 @@ namespace OpenRCT2::Park
     bool RidePricesUnlocked()
     {
         // TODO: pass park by ref
-        auto& park = getGameState().park;
+        auto& gameState = getGameState();
+        auto& park = getUpdatingPark(gameState);
 
         if (park.flags & PARK_FLAGS_UNLOCK_ALL_PRICES)
         {
@@ -769,7 +773,8 @@ namespace OpenRCT2::Park
     bool EntranceFeeUnlocked()
     {
         // TODO: pass park by ref
-        auto& park = getGameState().park;
+        auto& gameState = getGameState();
+        auto& park = getUpdatingPark(gameState);
 
         if (park.flags & PARK_FLAGS_UNLOCK_ALL_PRICES)
         {

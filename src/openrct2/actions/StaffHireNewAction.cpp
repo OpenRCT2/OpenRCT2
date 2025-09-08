@@ -281,7 +281,7 @@ namespace OpenRCT2::GameActions
         else
         {
             // No walking guests; pick random park entrance
-            const auto& park = gameState.park;
+            const auto& park = getUpdatingPark(gameState);
             if (!park.entrances.empty())
             {
                 auto rand = ScenarioRandMax(static_cast<uint32_t>(park.entrances.size()));

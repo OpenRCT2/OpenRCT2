@@ -115,7 +115,7 @@ namespace OpenRCT2::Editor
         gameStateInitAll(gameState, kDefaultMapSize);
         gLegacyScene = LegacyScene::scenarioEditor;
         gameState.editorStep = EditorStep::ObjectSelection;
-        gameState.park.flags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
+        getUpdatingPark(gameState).flags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
         gameState.scenarioOptions.category = Scenario::Category::other;
         ObjectListLoad();
         ContextResetSubsystems();
@@ -308,9 +308,9 @@ namespace OpenRCT2::Editor
         UpdateConsolidatedPatrolAreas();
 
         auto& gameState = getGameState();
-        auto& park = gameState.park;
         auto& scenarioOptions = gameState.scenarioOptions;
 
+        auto& park = getUpdatingPark(gameState);
         park.numGuestsInPark = 0;
         park.numGuestsHeadingForPark = 0;
         park.numGuestsInParkLastWeek = 0;
@@ -500,19 +500,19 @@ namespace OpenRCT2::Editor
     ResultWithMessage CheckPark()
     {
         auto& gameState = getGameState();
-        auto& park = gameState.park;
+        auto& park = getUpdatingPark(gameState);
         int32_t parkSize = Park::UpdateSize(park);
         if (parkSize == 0)
         {
             return { false, STR_PARK_MUST_OWN_SOME_LAND };
         }
 
-        if (gameState.park.entrances.empty())
+        if (park.entrances.empty())
         {
             return { false, STR_NO_PARK_ENTRANCES };
         }
 
-        for (const auto& parkEntrance : gameState.park.entrances)
+        for (const auto& parkEntrance : park.entrances)
         {
             int32_t direction = DirectionReverse(parkEntrance.direction);
 

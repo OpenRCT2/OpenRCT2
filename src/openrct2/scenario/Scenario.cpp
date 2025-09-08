@@ -102,7 +102,7 @@ void ScenarioReset(GameState_t& gameState)
 
     News::InitQueue(gameState);
 
-    auto& park = gameState.park;
+    auto& park = getUpdatingPark(gameState);
     park.rating = Park::CalculateParkRating(park, gameState);
     park.value = Park::CalculateParkValue(park, gameState);
     park.companyValue = Park::CalculateCompanyValue(park);
@@ -191,7 +191,7 @@ void ScenarioFailure(GameState_t& gameState)
  */
 void ScenarioSuccess(GameState_t& gameState)
 {
-    auto companyValue = gameState.park.companyValue;
+    auto companyValue = getUpdatingPark(gameState).companyValue;
 
     gameState.scenarioCompletedCompanyValue = companyValue;
     PeepApplause();
@@ -199,7 +199,7 @@ void ScenarioSuccess(GameState_t& gameState)
     if (ScenarioRepositoryTryRecordHighscore(gameState.scenarioFileName.c_str(), companyValue, nullptr))
     {
         // Allow name entry
-        gameState.park.flags |= PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
+        getUpdatingPark(gameState).flags |= PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
         gameState.scenarioCompanyValueRecord = companyValue;
     }
     ScenarioEnd();
@@ -215,7 +215,7 @@ void ScenarioSuccessSubmitName(GameState_t& gameState, const char* name)
     {
         gameState.scenarioCompletedBy = name;
     }
-    gameState.park.flags &= ~PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
+    getUpdatingPark(gameState).flags &= ~PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
 }
 
 /**
@@ -224,7 +224,8 @@ void ScenarioSuccessSubmitName(GameState_t& gameState, const char* name)
  */
 static void ScenarioCheckEntranceFeeTooHigh()
 {
-    const auto& park = getGameState().park;
+    const auto& gameState = getGameState();
+    const auto& park = getUpdatingPark(gameState);
     const auto max_fee = AddClamp(park.totalRideValueForMoney, park.totalRideValueForMoney / 2);
 
     if ((park.flags & PARK_FLAGS_PARK_OPEN) && Park::GetEntranceFee() > max_fee)
@@ -300,7 +301,7 @@ static void ScenarioDayUpdate(GameState_t& gameState)
             break;
     }
 
-    auto& park = gameState.park;
+    auto& park = getUpdatingPark(gameState);
 
     // Lower the casualty penalty
     uint16_t casualtyPenaltyModifier = (park.flags & PARK_FLAGS_NO_MONEY) ? 40 : 7;
@@ -595,7 +596,7 @@ ResultWithMessage ScenarioPrepareForSave(GameState_t& gameState)
     }
 
     if (gameState.scenarioOptions.objective.Type == ObjectiveType::guestsAndRating)
-        gameState.park.flags |= PARK_FLAGS_PARK_OPEN;
+        getUpdatingPark(gameState).flags |= PARK_FLAGS_PARK_OPEN;
 
     ScenarioReset(gameState);
 
@@ -621,7 +622,7 @@ bool AllowEarlyCompletion()
 
 static void ScenarioCheckObjective(GameState_t& gameState)
 {
-    auto& park = gameState.park;
+    auto& park = getUpdatingPark(gameState);
     auto status = gameState.scenarioOptions.objective.Check(park, gameState);
     if (status == ObjectiveStatus::Success)
     {

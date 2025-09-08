@@ -325,7 +325,8 @@ namespace OpenRCT2::Ui::Windows
                 int32_t numItems = 0;
                 for (int32_t type = INFORMATION_TYPE_STATUS; type <= lastType; type++)
                 {
-                    if ((getGameState().park.flags & PARK_FLAGS_NO_MONEY))
+                    const auto& gameState = getGameState();
+                    if ((getPlayerPark(gameState).flags & PARK_FLAGS_NO_MONEY))
                     {
                         if (ride_info_type_money_mapping[type])
                         {

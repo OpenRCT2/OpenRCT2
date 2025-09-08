@@ -518,7 +518,7 @@ static StringId window_cheats_page_titles[] = {
                         setWidgetDisabled(WIDX_NO_MONEY, true);
                     }
 
-                    auto moneyDisabled = (gameState.park.flags & PARK_FLAGS_NO_MONEY) != 0;
+                    auto moneyDisabled = (getPlayerPark(gameState).flags & PARK_FLAGS_NO_MONEY) != 0;
                     setCheckboxValue(WIDX_NO_MONEY, moneyDisabled);
                     setWidgetDisabled(WIDX_ADD_SET_MONEY_GROUP, moneyDisabled);
                     setWidgetDisabled(WIDX_MONEY_SPINNER, moneyDisabled);
@@ -541,7 +541,7 @@ static StringId window_cheats_page_titles[] = {
                 }
                 case WINDOW_CHEATS_PAGE_PARK:
                     widgets[WIDX_OPEN_CLOSE_PARK].text = STR_CHEAT_OPEN_PARK;
-                    if (gameState.park.flags & PARK_FLAGS_PARK_OPEN)
+                    if (getPlayerPark(gameState).flags & PARK_FLAGS_PARK_OPEN)
                         widgets[WIDX_OPEN_CLOSE_PARK].text = STR_CHEAT_CLOSE_PARK;
 
                     setCheckboxValue(WIDX_FORCE_PARK_RATING, Park::GetForcedRating() >= 0);
@@ -928,10 +928,12 @@ static StringId window_cheats_page_titles[] = {
 
         void onMouseUpMoney(WidgetIndex widgetIndex)
         {
+            const auto& gameState = getGameState();
+
             switch (widgetIndex)
             {
                 case WIDX_NO_MONEY:
-                    CheatsSet(CheatType::noMoney, getGameState().park.flags & PARK_FLAGS_NO_MONEY ? 0 : 1);
+                    CheatsSet(CheatType::noMoney, getPlayerPark(gameState).flags & PARK_FLAGS_NO_MONEY ? 0 : 1);
                     break;
                 case WIDX_MONEY_SPINNER:
                     MoneyToString(_moneySpinnerValue, _moneySpinnerText, kMoneyStringMaxlength, false);

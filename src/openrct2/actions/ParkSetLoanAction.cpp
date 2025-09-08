@@ -42,7 +42,7 @@ namespace OpenRCT2::GameActions
 
     Result ParkSetLoanAction::Query(GameState_t& gameState) const
     {
-        auto& park = gameState.park;
+        auto& park = getUpdatingPark(gameState);
         if (_value > park.bankLoan && _value > park.maxBankLoan)
         {
             return Result(Status::disallowed, STR_CANT_BORROW_ANY_MORE_MONEY, STR_BANK_REFUSES_TO_INCREASE_LOAN);
@@ -63,7 +63,7 @@ namespace OpenRCT2::GameActions
 
     Result ParkSetLoanAction::Execute(GameState_t& gameState) const
     {
-        auto& park = gameState.park;
+        auto& park = getUpdatingPark(gameState);
 
         park.cash -= (park.bankLoan - _value);
         park.bankLoan = _value;

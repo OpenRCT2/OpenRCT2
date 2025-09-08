@@ -117,7 +117,8 @@ void MarketingUpdate()
     if (gameState.cheats.neverendingMarketing)
         return;
 
-    for (auto it = gameState.park.marketingCampaigns.begin(); it != gameState.park.marketingCampaigns.end();)
+    for (auto it = getUpdatingPark(gameState).marketingCampaigns.begin();
+         it != getUpdatingPark(gameState).marketingCampaigns.end();)
     {
         auto& campaign = *it;
         if (campaign.flags.has(MarketingCampaignFlag::firstWeek))
@@ -134,7 +135,7 @@ void MarketingUpdate()
         if (campaign.WeeksLeft == 0)
         {
             MarketingRaiseFinishedNotification(campaign);
-            it = gameState.park.marketingCampaigns.erase(it);
+            it = getUpdatingPark(gameState).marketingCampaigns.erase(it);
         }
         else
         {
@@ -236,7 +237,8 @@ bool MarketingIsCampaignTypeApplicable(int32_t campaignType)
 
 MarketingCampaign* MarketingGetCampaign(int32_t campaignType)
 {
-    for (auto& campaign : getGameState().park.marketingCampaigns)
+    auto& gameState = getGameState();
+    for (auto& campaign : getUpdatingPark(gameState).marketingCampaigns)
     {
         if (campaign.Type == campaignType)
         {
@@ -256,7 +258,8 @@ void MarketingNewCampaign(const MarketingCampaign& campaign)
     }
     else
     {
-        getGameState().park.marketingCampaigns.push_back(campaign);
+        auto& gameState = getGameState();
+        getUpdatingPark(gameState).marketingCampaigns.push_back(campaign);
     }
 }
 
@@ -270,7 +273,8 @@ void MarketingCancelCampaignsForRide(const RideId rideId)
         return false;
     };
 
-    auto& v = getGameState().park.marketingCampaigns;
+    auto& gameState = getGameState();
+    auto& v = getUpdatingPark(gameState).marketingCampaigns;
     auto removedIt = std::remove_if(v.begin(), v.end(), isCampaignForRideFn);
     v.erase(removedIt, v.end());
 }

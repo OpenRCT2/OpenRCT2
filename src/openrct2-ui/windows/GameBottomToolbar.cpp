@@ -104,19 +104,20 @@ namespace OpenRCT2::Ui::Windows
             // Figure out how much line height we have to work with.
             uint32_t line_height = FontGetLineHeight(FontStyle::medium);
 
-            auto& gameState = getGameState();
+            const auto& gameState = getGameState();
+            const auto& park = getPlayerPark(gameState);
 
             // Draw money
-            if (!(gameState.park.flags & PARK_FLAGS_NO_MONEY))
+            if (!(park.flags & PARK_FLAGS_NO_MONEY))
             {
                 const auto& widget = widgets[WIDX_MONEY];
                 auto screenCoords = ScreenCoordsXY{ windowPos.x + widget.midX(),
                                                     windowPos.y + widget.midY() - (line_height == 10 ? 5 : 6) };
 
                 auto colour = GetHoverWidgetColour(WIDX_MONEY);
-                StringId stringId = gameState.park.cash < 0 ? STR_BOTTOM_TOOLBAR_CASH_NEGATIVE : STR_BOTTOM_TOOLBAR_CASH;
+                StringId stringId = park.cash < 0 ? STR_BOTTOM_TOOLBAR_CASH_NEGATIVE : STR_BOTTOM_TOOLBAR_CASH;
                 auto ft = Formatter();
-                ft.Add<money64>(gameState.park.cash);
+                ft.Add<money64>(park.cash);
                 DrawTextBasic(rt, screenCoords, stringId, ft, { colour, TextAlignment::centre });
             }
 
@@ -137,12 +138,11 @@ namespace OpenRCT2::Ui::Windows
                 const auto& widget = widgets[WIDX_GUESTS];
                 auto screenCoords = ScreenCoordsXY{ windowPos.x + widget.midX(), windowPos.y + widget.midY() - 6 };
 
-                StringId stringId = gameState.park.numGuestsInPark == 1
-                    ? _guestCountFormatsSingular[gameState.park.guestChangeModifier]
-                    : _guestCountFormats[gameState.park.guestChangeModifier];
+                StringId stringId = park.numGuestsInPark == 1 ? _guestCountFormatsSingular[park.guestChangeModifier]
+                                                              : _guestCountFormats[park.guestChangeModifier];
                 auto colour = GetHoverWidgetColour(WIDX_GUESTS);
                 auto ft = Formatter();
-                ft.Add<uint32_t>(gameState.park.numGuestsInPark);
+                ft.Add<uint32_t>(park.numGuestsInPark);
                 DrawTextBasic(rt, screenCoords, stringId, ft, { colour, TextAlignment::centre });
             }
 
@@ -151,7 +151,7 @@ namespace OpenRCT2::Ui::Windows
                 const auto& widget = widgets[WIDX_PARK_RATING];
                 auto screenCoords = windowPos + ScreenCoordsXY{ widget.left + 11, widget.midY() - 5 };
 
-                DrawParkRating(rt, colours[3].colour, screenCoords, std::max(10, ((gameState.park.rating / 4) * 263) / 256));
+                DrawParkRating(rt, colours[3].colour, screenCoords, std::max(10, ((park.rating / 4) * 263) / 256));
             }
         }
 
@@ -438,11 +438,14 @@ namespace OpenRCT2::Ui::Windows
         {
             News::Item* newsItem;
 
+            const auto& gameState = getGameState();
+            const auto& park = getPlayerPark(gameState);
+
             switch (widgetIndex)
             {
                 case WIDX_LEFT_OUTSET:
                 case WIDX_MONEY:
-                    if (!(getGameState().park.flags & PARK_FLAGS_NO_MONEY))
+                    if (!(park.flags & PARK_FLAGS_NO_MONEY))
                         ContextOpenWindow(WindowClass::finances);
                     break;
                 case WIDX_GUESTS:
@@ -492,16 +495,17 @@ namespace OpenRCT2::Ui::Windows
         OpenRCT2String onTooltip(WidgetIndex widgetIndex, StringId fallback) override
         {
             const auto& gameState = getGameState();
+            const auto& park = getPlayerPark(gameState);
             auto ft = Formatter();
 
             switch (widgetIndex)
             {
                 case WIDX_MONEY:
-                    ft.Add<money64>(gameState.park.currentProfit);
-                    ft.Add<money64>(gameState.park.value);
+                    ft.Add<money64>(park.currentProfit);
+                    ft.Add<money64>(park.value);
                     break;
                 case WIDX_PARK_RATING:
-                    ft.Add<int16_t>(gameState.park.rating);
+                    ft.Add<int16_t>(park.rating);
                     break;
             }
             return { fallback, ft };
@@ -524,7 +528,8 @@ namespace OpenRCT2::Ui::Windows
                 + 1;
 
             // Reposition left widgets in accordance with line height... depending on whether there is money in play.
-            if (getGameState().park.flags & PARK_FLAGS_NO_MONEY)
+            const auto& gameState = getGameState();
+            if (getPlayerPark(gameState).flags & PARK_FLAGS_NO_MONEY)
             {
                 widgets[WIDX_MONEY].type = WidgetType::empty;
                 widgets[WIDX_GUESTS].top = 1;

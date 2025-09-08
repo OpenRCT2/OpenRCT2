@@ -80,7 +80,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_CANT_REMOVE_THIS, kStringIdNone);
         }
 
-        auto& park = gameState.park;
+        auto& park = getUpdatingPark(gameState);
         auto direction = (park.entrances[entranceIndex].direction - 1) & 3;
 
         // Centre (sign)
