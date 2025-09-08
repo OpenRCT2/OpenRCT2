@@ -1068,12 +1068,12 @@ struct VehiclePaintTarget
     VPTFlags flags = VPTFlags::none;
     int8_t fallbackYawOffset = 0;
 
-    bool HasFlag(VPTFlags flag)
+    constexpr bool HasFlag(VPTFlags flag)
     {
         return (flags & flag) != VPTFlags::none;
     }
 };
-using VehiclePaintTargetPitch = std::array<VehiclePaintTarget, 15>;
+using VehiclePaintTargetPitch = std::array<VehiclePaintTarget, EnumValue(VehicleRoll::normalRollCount)>;
 
 constexpr const VehiclePaintTargetPitch FlatPaintTarget = {
     // 0: flatSlope
@@ -1523,7 +1523,7 @@ static constexpr VehiclePaintTargetPitch AllSameTarget(VehiclePaintTarget target
              target, target, target, target, target, target, target };
 }
 
-static const VehiclePaintTargetPitch VehiclePaintTargets[] = {
+constexpr std::array<VehiclePaintTargetPitch, EnumValue(VehiclePitch::pitchCount)> VehiclePaintTargets = {
     FlatPaintTarget,
 
     Up12PaintTarget,
@@ -1599,8 +1599,6 @@ static const VehiclePaintTargetPitch VehiclePaintTargets[] = {
     AllSameTarget(CurvedLiftHillDown),
 };
 
-static_assert(std::size(VehiclePaintTargets) == EnumValue(VehiclePitch::pitchCount));
-
 static const VehiclePaintTarget& GetTarget(VehiclePitch pitch, VehicleRoll bank)
 {
     return VehiclePaintTargets[EnumValue(pitch)][EnumValue(bank)];
@@ -1611,7 +1609,7 @@ static const VehiclePaintTarget& GetTarget(VehiclePitch pitch, VehicleRoll bank)
 #pragma region VehicleReverseData
 
 // Opposite Pitch values for reversed cars
-const VehiclePitch PitchInvertTable[] = {
+constexpr std::array<VehiclePitch, EnumValue(VehiclePitch::pitchCount)> PitchInvertTable = {
     VehiclePitch::flat,
 
     VehiclePitch::down12,
@@ -1688,10 +1686,9 @@ const VehiclePitch PitchInvertTable[] = {
     VehiclePitch::curvedLiftHillDown,
     VehiclePitch::curvedLiftHillUp,
 };
-static_assert(std::size(PitchInvertTable) == EnumValue(VehiclePitch::pitchCount));
 
 // Opposite Roll values for reversed cars
-const VehicleRoll RollInvertTable[] = {
+constexpr std::array<VehicleRoll, EnumValue(VehicleRoll::rollCount)> RollInvertTable = {
     VehicleRoll::unbanked,
     VehicleRoll::right22,
     VehicleRoll::right45,
@@ -1713,7 +1710,6 @@ const VehicleRoll RollInvertTable[] = {
     VehicleRoll::uninvertingLeft22,
     VehicleRoll::uninvertingLeft45,
 };
-static_assert(std::size(RollInvertTable) == EnumValue(VehicleRoll::rollCount));
 
 #pragma endregion
 
@@ -1999,7 +1995,7 @@ void VehicleVisualDefault(PaintSession& session, int32_t yaw, const int32_t z, c
         return;
     }
 
-    auto maskedRoll = EnumValue(vehicle->roll) % 15;
+    auto maskedRoll = EnumValue(vehicle->roll) % EnumValue(VehicleRoll::normalRollCount);
     auto roll = static_cast<VehicleRoll>(maskedRoll);
     auto pitch = vehicle->pitch;
     auto selectedPaintTarget = GetTarget(pitch, roll);
