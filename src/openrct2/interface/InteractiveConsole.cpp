@@ -1474,7 +1474,7 @@ static void ConsoleCommandReplayStart(InteractiveConsole& console, const argumen
 
     if (!File::Exists(filePath)) 
     {
-        console.WriteLineError("Could not find replay witn name: " + name);
+        console.WriteLineError("Could not find replay with name: " + name);
         return;
     }
 
