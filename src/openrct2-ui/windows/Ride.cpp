@@ -1424,8 +1424,9 @@ namespace OpenRCT2::Ui::Windows
                 disabledTabs |= (1uLL << WIDX_TAB_6); // 0x200
             }
 
+            const auto& gameState = getGameState();
             if (rtd.specialType == RtdSpecialType::cashMachine || rtd.specialType == RtdSpecialType::firstAid
-                || (getGameState().park.flags & PARK_FLAGS_NO_MONEY) != 0)
+                || (getPlayerPark(gameState).flags & PARK_FLAGS_NO_MONEY) != 0)
                 disabledTabs |= (1uLL << WIDX_TAB_9); // 0x1000
 
             if (gLegacyScene == LegacyScene::trackDesigner)
@@ -4116,10 +4117,13 @@ namespace OpenRCT2::Ui::Windows
             drawWidgets(rt);
             drawTabImages(rt);
 
+            const auto& gameState = getGameState();
+            const auto& park = getPlayerPark(gameState);
+
             // Locate mechanic button image
             Widget* widget = &widgets[WIDX_LOCATE_MECHANIC];
             auto screenCoords = windowPos + ScreenCoordsXY{ widget->left, widget->top };
-            auto image = ImageId(SPR_MECHANIC, Drawing::Colour::black, getGameState().park.staffMechanicColour);
+            auto image = ImageId(SPR_MECHANIC, Drawing::Colour::black, park.staffMechanicColour);
             GfxDrawSprite(rt, image, screenCoords);
 
             // Inspection label
@@ -6440,7 +6444,8 @@ namespace OpenRCT2::Ui::Windows
         static void UpdateSamePriceThroughoutFlags(ShopItem shop_item)
         {
             const auto& gameState = getGameState();
-            const auto existingFlags = gameState.park.samePriceThroughoutPark;
+            const auto& park = getPlayerPark(gameState);
+            const auto existingFlags = park.samePriceThroughoutPark;
 
             auto newFlags = existingFlags;
             if (GetShopItemDescriptor(shop_item).IsPhoto())
@@ -6574,7 +6579,8 @@ namespace OpenRCT2::Ui::Windows
             auto rideEntry = ride->getRideEntry();
             const auto& rtd = ride->getRideTypeDescriptor();
 
-            auto& park = getGameState().park;
+            auto& gameState = getGameState();
+            auto& park = getPlayerPark(gameState);
 
             return Park::RidePricesUnlocked(park) || rtd.specialType == RtdSpecialType::toilet
                 || (rideEntry != nullptr && rideEntry->shop_item[0] != ShopItem::none);
@@ -6737,7 +6743,8 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_PRIMARY_PRICE_LABEL].tooltip = kStringIdNone;
             widgets[WIDX_PRIMARY_PRICE].tooltip = kStringIdNone;
 
-            auto& park = getGameState().park;
+            const auto& gameState = getGameState();
+            const auto& park = getPlayerPark(gameState);
 
             // If ride prices are locked, do not allow setting the price, unless we're dealing with a shop or toilet.
             const auto& rtd = ride->getRideTypeDescriptor();

@@ -2258,7 +2258,7 @@ namespace OpenRCT2
         for (auto& spawn : gameState.peepSpawns)
             shiftIfNotNull(spawn, amountToMove);
 
-        for (auto& entrance : gameState.park.entrances)
+        for (auto& entrance : getUpdatingPark(gameState).entrances)
             shiftIfNotNull(entrance, amountToMove);
 
         // Entities

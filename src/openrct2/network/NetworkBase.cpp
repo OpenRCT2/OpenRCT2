@@ -2831,7 +2831,8 @@ namespace OpenRCT2::Network
                 GameActions::LoadOrQuitModes::OpenSavePrompt, PromptMode::saveBeforeQuit);
 
             auto& gameState = getGameState();
-            loadOrQuitAction.Execute(gameState, gameState.park);
+            auto& park = getPlayerPark(gameState);
+            loadOrQuitAction.Execute(gameState, park);
         }
     }
 

@@ -104,7 +104,7 @@ TEST_F(PlayTests, SecondGuestInQueueShouldNotRideIfNoFunds)
     // Open park for free but charging for rides
     execute<GameActions::ParkSetParameterAction>(GameActions::ParkParameter::Open);
     execute<GameActions::ParkSetEntranceFeeAction>(0);
-    gameState.park.flags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
+    getPlayerPark(gameState).flags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
 
     // Find ferris wheel
     auto rideManager = RideManager(gameState);
@@ -164,7 +164,7 @@ TEST_F(PlayTests, CarRideWithOneCarOnlyAcceptsTwoGuests)
     // Open park for free but charging for rides
     execute<GameActions::ParkSetParameterAction>(GameActions::ParkParameter::Open);
     execute<GameActions::ParkSetEntranceFeeAction>(0);
-    gameState.park.flags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
+    getPlayerPark(gameState).flags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
 
     // Find car ride
     auto rideManager = RideManager(gameState);
