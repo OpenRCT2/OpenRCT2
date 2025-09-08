@@ -1488,7 +1488,7 @@ static void ConsoleCommandReplayStart(InteractiveConsole& console, const argumen
         OpenRCT2::DirBase::user, OpenRCT2::DirId::replayRecordings);
     filePath = Path::Combine(filePath, name + ".parkrep");
 
-    if (!File::Exists(filePath)) 
+    if (!File::Exists(filePath))
     {
         console.WriteLineError("Could not find replay with name: " + name);
         return;
