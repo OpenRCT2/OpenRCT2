@@ -3843,4 +3843,4 @@ STR_7001    :Ride name
 STR_7002    :{STRINGID} {STRINGID}
 STR_7003    :Audio file ‘{STRING}’ is truncated. Expected sample {INT32}, but only {INT32} are available. Consider reinstalling RCT2.
 STR_7004    :Game speed
-STR_7005    :Show a button in the toolbar for changing the game speed
+STR_7005    :Show a separate button in the toolbar for changing the game speed
