@@ -665,7 +665,8 @@ namespace OpenRCT2
 
         bool SerialiseParkParameters(DataSerialiser& serialiser)
         {
-            auto& park = getGameState().park;
+            auto& gameState = getGameState();
+            auto& park = getUpdatingPark(gameState);
 
             serialiser << park.guestGenerationProbability;
             serialiser << park.suggestedGuestMaximum;

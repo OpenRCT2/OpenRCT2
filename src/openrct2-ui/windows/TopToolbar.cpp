@@ -1145,7 +1145,8 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_PAUSE].type = WidgetType::empty;
             }
 
-            if ((getGameState().park.flags & PARK_FLAGS_NO_MONEY) || !Config::Get().interface.toolbarShowFinances)
+            const auto& gameState = getGameState();
+            if ((getPlayerPark(gameState).flags & PARK_FLAGS_NO_MONEY) || !Config::Get().interface.toolbarShowFinances)
                 widgets[WIDX_FINANCES].type = WidgetType::empty;
         }
 
@@ -1373,21 +1374,21 @@ namespace OpenRCT2::Ui::Windows
 
         void onDraw(RenderTarget& rt) override
         {
-            const auto& gameState = getGameState();
-            int32_t imgId;
-
             WindowDrawWidgets(*this, rt);
+
+            // TODO: use window-specific park
+            const auto& gameState = getGameState();
+            const auto& park = getPlayerPark(gameState);
 
             ScreenCoordsXY screenPos{};
             // Draw staff button image (setting masks to the staff colours)
             if (widgets[WIDX_STAFF].type != WidgetType::empty)
             {
                 screenPos = { windowPos.x + widgets[WIDX_STAFF].left, windowPos.y + widgets[WIDX_STAFF].top };
-                imgId = SPR_TOOLBAR_STAFF;
+                int32_t imgId = SPR_TOOLBAR_STAFF;
                 if (widgetIsPressed(*this, WIDX_STAFF))
                     imgId++;
-                GfxDrawSprite(
-                    rt, ImageId(imgId, gameState.park.staffHandymanColour, gameState.park.staffMechanicColour), screenPos);
+                GfxDrawSprite(rt, ImageId(imgId, park.staffHandymanColour, park.staffMechanicColour), screenPos);
             }
 
             // Draw fast forward button
@@ -1480,7 +1481,7 @@ namespace OpenRCT2::Ui::Windows
                     screenPos.y++;
 
                 // Draw (de)sync icon.
-                imgId = (Network::IsDesynchronised() ? SPR_G2_MULTIPLAYER_DESYNC : SPR_G2_MULTIPLAYER_SYNC);
+                int32_t imgId = (Network::IsDesynchronised() ? SPR_G2_MULTIPLAYER_DESYNC : SPR_G2_MULTIPLAYER_SYNC);
                 GfxDrawSprite(rt, ImageId(imgId), screenPos + ScreenCoordsXY{ 3, 11 });
 
                 // Draw number of players.

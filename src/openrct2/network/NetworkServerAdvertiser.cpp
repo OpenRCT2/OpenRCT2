@@ -327,19 +327,21 @@ namespace OpenRCT2::Network
             };
 
             const auto& gameState = getGameState();
+            const auto& park = getUpdatingPark(gameState);
             const auto& date = GetDate();
+
             json_t mapSize = { { "x", gameState.mapSize.x - 2 }, { "y", gameState.mapSize.y - 2 } };
             json_t gameInfo = {
                 { "mapSize", mapSize },
                 { "day", date.GetMonthTicks() },
                 { "month", date.GetMonthsElapsed() },
-                { "guests", gameState.park.numGuestsInPark },
-                { "parkValue", gameState.park.value },
+                { "guests", park.numGuestsInPark },
+                { "parkValue", park.value },
             };
 
-            if (!(gameState.park.flags & PARK_FLAGS_NO_MONEY))
+            if (!(park.flags & PARK_FLAGS_NO_MONEY))
             {
-                gameInfo["cash"] = gameState.park.cash;
+                gameInfo["cash"] = park.cash;
             }
 
             root["gameInfo"] = gameInfo;

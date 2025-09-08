@@ -493,7 +493,9 @@ namespace OpenRCT2::Ui::Windows
                 if (!widgetIsDisabled(*this, WIDX_PICKUP))
                     invalidate();
             }
-            if (getGameState().park.flags & PARK_FLAGS_NO_MONEY)
+
+            const auto& gameState = getGameState();
+            if (getPlayerPark(gameState).flags & PARK_FLAGS_NO_MONEY)
             {
                 newDisabledWidgets |= (1uLL << WIDX_TAB_4); // Disable finance tab if no money
             }
@@ -1627,7 +1629,8 @@ namespace OpenRCT2::Ui::Windows
 
         std::pair<ImageId, Formatter> InventoryFormatItem(Guest& guest, ShopItem item) const
         {
-            auto parkName = getGameState().park.name.c_str();
+            const auto& gameState = getGameState();
+            auto parkName = getPlayerPark(gameState).name.c_str();
 
             // Default item image
             auto& itemDesc = GetShopItemDescriptor(item);
