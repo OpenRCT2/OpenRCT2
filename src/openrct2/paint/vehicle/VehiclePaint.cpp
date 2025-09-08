@@ -1021,9 +1021,9 @@ static void vehicle_sprite_paint(
     }
 
     auto baseImageId = static_cast<uint32_t>(spriteIndex);
-    if (carEntry->flags & CAR_ENTRY_FLAG_SPINNING_ADDITIONAL_FRAMES)
+    if (carEntry->flags & CAR_ENTRY_FLAG_SPINNING_COMBINED_WITH_NONSPINNING)
     {
-        baseImageId += (vehicle->spin_sprite / 8) & 31;
+        baseImageId += carEntry->spinningNumFrames * vehicle->spin_sprite / 256;
     }
     if (carEntry->flags & CAR_ENTRY_FLAG_VEHICLE_ANIMATION)
     {

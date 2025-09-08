@@ -205,6 +205,7 @@ const CarEntry kCableLiftVehicle = {
         .Longitudinal = 0,
         .Vertical = 0,
     },
+    .spinningNumFrames = 0,
 };
 
 /* rct2: 0x009A0AA0 */
