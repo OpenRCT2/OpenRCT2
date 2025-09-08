@@ -35,17 +35,20 @@ namespace OpenRCT2::GameActions
         uint16_t GetActionFlags() const override;
 
         void Serialise(DataSerialiser& stream) override;
-        Result Query() const override;
-        Result Execute() const override;
+        Result Query(GameState_t& gameState) const override;
+        Result Execute(GameState_t& gameState) const override;
 
     private:
-        Result SmoothLandTile(int32_t direction, bool isExecuting, const CoordsXY& loc, SurfaceElement* surfaceElement) const;
+        Result SmoothLandTile(
+            GameState_t& gameState, int32_t direction, bool isExecuting, const CoordsXY& loc,
+            SurfaceElement* surfaceElement) const;
         money64 SmoothLandRowByEdge(
-            bool isExecuting, const CoordsXY& loc, int32_t expectedLandHeight1, int32_t expectedLandHeight2, int32_t stepX,
-            int32_t stepY, int32_t direction1, int32_t direction2, int32_t checkDirection1, int32_t checkDirection2) const;
+            GameState_t& gameState, bool isExecuting, const CoordsXY& loc, int32_t expectedLandHeight1,
+            int32_t expectedLandHeight2, int32_t stepX, int32_t stepY, int32_t direction1, int32_t direction2,
+            int32_t checkDirection1, int32_t checkDirection2) const;
         money64 SmoothLandRowByCorner(
-            bool isExecuting, const CoordsXY& loc, int32_t expectedLandHeight, int32_t stepX, int32_t stepY, int32_t direction,
-            int32_t checkDirection) const;
-        Result SmoothLand(bool isExecuting) const;
+            GameState_t& gameState, bool isExecuting, const CoordsXY& loc, int32_t expectedLandHeight, int32_t stepX,
+            int32_t stepY, int32_t direction, int32_t checkDirection) const;
+        Result SmoothLand(GameState_t& gameState, bool isExecuting) const;
     };
 } // namespace OpenRCT2::GameActions

@@ -909,7 +909,7 @@ static bool ride_modify_entrance_or_exit(const CoordsXYE& tileElement)
             ToolSet(*constructionWindow, newToolWidgetIndex, Tool::crosshair);
         });
 
-        GameActions::Execute(&rideEntranceExitRemove);
+        GameActions::Execute(&rideEntranceExitRemove, getGameState());
     }
 
     windowMgr->InvalidateByClass(WindowClass::RideConstruction);
@@ -978,7 +978,7 @@ bool RideModify(const CoordsXYE& input)
     if (ride->status != RideStatus::simulating)
     {
         auto gameAction = GameActions::RideSetStatusAction(ride->id, RideStatus::closed);
-        GameActions::Execute(&gameAction);
+        GameActions::Execute(&gameAction, getGameState());
     }
 
     // Check if element is a station entrance or exit
@@ -1128,7 +1128,7 @@ money64 RideGetRefundPrice(const Ride& ride)
             { trackElement.x, trackElement.y, trackElement.element->GetBaseZ(), direction });
         trackRemoveAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
 
-        auto res = GameActions::Query(&trackRemoveAction);
+        auto res = GameActions::Query(&trackRemoveAction, getGameState());
 
         cost += res.Cost;
 
@@ -1156,7 +1156,7 @@ money64 RideGetRefundPrice(const Ride& ride)
 money64 SetOperatingSetting(RideId rideId, GameActions::RideSetSetting setting, uint8_t value)
 {
     auto rideSetSetting = GameActions::RideSetSettingAction(rideId, setting, value);
-    auto res = GameActions::Execute(&rideSetSetting);
+    auto res = GameActions::Execute(&rideSetSetting, getGameState());
     return res.Error == GameActions::Status::Ok ? 0 : kMoney64Undefined;
 }
 
@@ -1164,8 +1164,10 @@ money64 SetOperatingSettingNested(RideId rideId, GameActions::RideSetSetting set
 {
     auto rideSetSetting = GameActions::RideSetSettingAction(rideId, setting, value);
     rideSetSetting.SetFlags(flags);
-    auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&rideSetSetting)
-                                               : GameActions::QueryNested(&rideSetSetting);
+
+    auto& gameState = getGameState();
+    auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&rideSetSetting, gameState)
+                                               : GameActions::QueryNested(&rideSetSetting, gameState);
     return res.Error == GameActions::Status::Ok ? 0 : kMoney64Undefined;
 }
 

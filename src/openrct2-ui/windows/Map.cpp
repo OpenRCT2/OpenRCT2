@@ -484,7 +484,7 @@ namespace OpenRCT2::Ui::Windows
             int32_t mapZ = tileElement->GetBaseZ();
 
             auto gameAction = GameActions::PeepSpawnPlaceAction({ mapCoords, mapZ, static_cast<Direction>(direction) });
-            auto result = GameActions::Execute(&gameAction);
+            auto result = GameActions::Execute(&gameAction, getGameState());
             if (result.Error == GameActions::Status::Ok)
             {
                 Audio::Play3D(Audio::SoundId::PlaceItem, result.Position);
@@ -518,7 +518,7 @@ namespace OpenRCT2::Ui::Windows
                             newMapSize.x = size;
 
                         auto mapChangeSizeAction = GameActions::MapChangeSizeAction(newMapSize);
-                        GameActions::Execute(&mapChangeSizeAction);
+                        GameActions::Execute(&mapChangeSizeAction, getGameState());
                         Invalidate();
                     }
                     break;
@@ -766,7 +766,7 @@ namespace OpenRCT2::Ui::Windows
                 newMapSize.x++;
 
             auto increaseMapSizeAction = GameActions::MapChangeSizeAction(newMapSize);
-            GameActions::Execute(&increaseMapSizeAction);
+            GameActions::Execute(&increaseMapSizeAction, getGameState());
         }
 
         void DecreaseMapSize()
@@ -778,7 +778,7 @@ namespace OpenRCT2::Ui::Windows
                 newMapSize.x--;
 
             auto decreaseMapSizeAction = GameActions::MapChangeSizeAction(newMapSize);
-            GameActions::Execute(&decreaseMapSizeAction);
+            GameActions::Execute(&decreaseMapSizeAction, getGameState());
         }
 
         void SetMapPixels()

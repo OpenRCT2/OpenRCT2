@@ -47,7 +47,7 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_spriteIndex) << DS_TAG(_name);
     }
 
-    Result StaffSetNameAction::Query() const
+    Result StaffSetNameAction::Query(GameState_t& gameState) const
     {
         if (_spriteIndex.ToUnderlying() >= kMaxEntities || _spriteIndex.IsNull())
         {
@@ -65,7 +65,7 @@ namespace OpenRCT2::GameActions
         return Result();
     }
 
-    Result StaffSetNameAction::Execute() const
+    Result StaffSetNameAction::Execute(GameState_t& gameState) const
     {
         auto staff = getGameState().entities.TryGetEntity<Staff>(_spriteIndex);
         if (staff == nullptr)

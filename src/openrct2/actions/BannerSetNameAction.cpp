@@ -45,7 +45,7 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_bannerIndex) << DS_TAG(_name);
     }
 
-    Result BannerSetNameAction::Query() const
+    Result BannerSetNameAction::Query(GameState_t& gameState) const
     {
         auto banner = GetBanner(_bannerIndex);
         if (banner == nullptr)
@@ -77,7 +77,7 @@ namespace OpenRCT2::GameActions
         return Result();
     }
 
-    Result BannerSetNameAction::Execute() const
+    Result BannerSetNameAction::Execute(GameState_t& gameState) const
     {
         auto banner = GetBanner(_bannerIndex);
         if (banner == nullptr)

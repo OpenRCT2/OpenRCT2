@@ -1016,7 +1016,7 @@ static void FootpathFixOwnership(const CoordsXY& mapPos)
     auto landSetRightsAction = GameActions::LandSetRightsAction(
         mapPos, GameActions::LandSetRightSetting::SetOwnershipWithChecks, ownership);
     landSetRightsAction.SetFlags(GAME_COMMAND_FLAG_NO_SPEND);
-    GameActions::Execute(&landSetRightsAction);
+    GameActions::Execute(&landSetRightsAction, getGameState());
 }
 
 static bool GetNextDirection(uint32_t edges, int32_t* direction)

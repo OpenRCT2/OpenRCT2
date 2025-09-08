@@ -225,7 +225,7 @@ namespace OpenRCT2::Ui::Windows
                             _hasPlacementGhost = true;
                         }
                     });
-                    res = GameActions::Execute(&tdAction);
+                    res = GameActions::Execute(&tdAction, getGameState());
                     cost = res.Error == GameActions::Status::Ok ? res.Cost : kMoney64Undefined;
 
                     VirtualFloorSetHeight(trackLoc.z);
@@ -318,7 +318,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                 }
             });
-            GameActions::Execute(&tdAction);
+            GameActions::Execute(&tdAction, getGameState());
         }
 
         void OnToolAbort(WidgetIndex widgetIndex) override
@@ -382,7 +382,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 auto tdAction = GameActions::TrackDesignAction({ _placementGhostLoc }, *_trackDesign);
                 tdAction.SetFlags(GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
-                auto res = GameActions::Execute(&tdAction);
+                auto res = GameActions::Execute(&tdAction, getGameState());
                 if (res.Error != GameActions::Status::Ok)
                 {
                     _hasPlacementGhost = false;
@@ -708,7 +708,7 @@ namespace OpenRCT2::Ui::Windows
                 auto tdAction = GameActions::TrackDesignAction(
                     CoordsXYZD{ loc.x, loc.y, loc.z, _currentTrackPieceDirection }, *_trackDesign);
                 tdAction.SetFlags(newFlags);
-                res = GameActions::Query(&tdAction);
+                res = GameActions::Query(&tdAction, getGameState());
 
                 // If successful don't keep trying.
                 // If failure due to no money then increasing height only makes problem worse

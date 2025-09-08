@@ -50,7 +50,7 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_bannerIndex) << DS_TAG(_mainColour) << DS_TAG(_textColour) << DS_TAG(_isLarge);
     }
 
-    Result SignSetStyleAction::Query() const
+    Result SignSetStyleAction::Query(GameState_t& gameState) const
     {
         auto banner = GetBanner(_bannerIndex);
         if (banner == nullptr)
@@ -102,7 +102,7 @@ namespace OpenRCT2::GameActions
         return Result();
     }
 
-    Result SignSetStyleAction::Execute() const
+    Result SignSetStyleAction::Execute(GameState_t& gameState) const
     {
         auto banner = GetBanner(_bannerIndex);
         if (banner == nullptr)

@@ -39,12 +39,12 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_mode) << DS_TAG(_savePromptMode);
     }
 
-    Result LoadOrQuitAction::Query() const
+    Result LoadOrQuitAction::Query(GameState_t& gameState) const
     {
         return Result();
     }
 
-    Result LoadOrQuitAction::Execute() const
+    Result LoadOrQuitAction::Execute(GameState_t& gameState) const
     {
         auto mode = static_cast<LoadOrQuitModes>(_mode);
         switch (mode)

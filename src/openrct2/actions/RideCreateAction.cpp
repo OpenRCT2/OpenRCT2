@@ -73,7 +73,7 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_rideType) << DS_TAG(_subType) << DS_TAG(_entranceObjectIndex) << DS_TAG(_colour1) << DS_TAG(_colour2);
     }
 
-    Result RideCreateAction::Query() const
+    Result RideCreateAction::Query(GameState_t& gameState) const
     {
         auto rideIndex = GetNextFreeRideId();
         if (rideIndex.IsNull())
@@ -121,7 +121,7 @@ namespace OpenRCT2::GameActions
         return res;
     }
 
-    Result RideCreateAction::Execute() const
+    Result RideCreateAction::Execute(GameState_t& gameState) const
     {
         auto res = Result();
 
@@ -154,7 +154,6 @@ namespace OpenRCT2::GameActions
         ride->status = RideStatus::closed;
         ride->numTrains = 1;
 
-        auto& gameState = getGameState();
         if (gameState.cheats.disableTrainLengthLimit)
         {
             // Reduce amount of proposed trains to prevent 32 trains from always spawning when limits are disabled

@@ -533,16 +533,17 @@ namespace OpenRCT2::Ui::Windows
             if (!state_changed)
                 return;
 
+            auto& gameState = getGameState();
             if (IsOwnershipMode())
             {
                 auto landSetRightsAction = GetLandSetAction();
-                auto res = GameActions::Query(&landSetRightsAction);
+                auto res = GameActions::Query(&landSetRightsAction, gameState);
                 _landRightsCost = res.Error == GameActions::Status::Ok ? res.Cost : kMoney64Undefined;
             }
             else
             {
                 auto landBuyRightsAction = GetLandBuyAction();
-                auto res = GameActions::Query(&landBuyRightsAction);
+                auto res = GameActions::Query(&landBuyRightsAction, gameState);
                 _landRightsCost = res.Error == GameActions::Status::Ok ? res.Cost : kMoney64Undefined;
             }
         }
@@ -561,15 +562,16 @@ namespace OpenRCT2::Ui::Windows
             if (screenCoords.x == kLocationNull)
                 return;
 
+            auto& gameState = getGameState();
             if (IsOwnershipMode())
             {
                 auto landSetRightsAction = GetLandSetAction();
-                GameActions::Execute(&landSetRightsAction);
+                GameActions::Execute(&landSetRightsAction, gameState);
             }
             else
             {
                 auto landBuyRightsAction = GetLandBuyAction();
-                GameActions::Execute(&landBuyRightsAction);
+                GameActions::Execute(&landBuyRightsAction, gameState);
             }
         }
 

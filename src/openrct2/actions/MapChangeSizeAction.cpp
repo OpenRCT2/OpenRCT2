@@ -43,7 +43,7 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_shift);
     }
 
-    Result MapChangeSizeAction::Query() const
+    Result MapChangeSizeAction::Query(GameState_t& gameState) const
     {
         if (_targetSize.x > kMaximumMapSizeTechnical || _targetSize.y > kMaximumMapSizeTechnical)
         {
@@ -56,9 +56,8 @@ namespace OpenRCT2::GameActions
         return Result();
     }
 
-    Result MapChangeSizeAction::Execute() const
+    Result MapChangeSizeAction::Execute(GameState_t& gameState) const
     {
-        auto& gameState = getGameState();
         // Expand map
         while (_targetSize.x > gameState.mapSize.x)
         {

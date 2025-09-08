@@ -55,7 +55,7 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_rideIndex) << DS_TAG(_modifyType);
     }
 
-    Result RideDemolishAction::Query() const
+    Result RideDemolishAction::Query(GameState_t& gameState) const
     {
         auto ride = GetRide(_rideIndex);
         if (ride == nullptr)
@@ -100,7 +100,7 @@ namespace OpenRCT2::GameActions
         return result;
     }
 
-    Result RideDemolishAction::Execute() const
+    Result RideDemolishAction::Execute(GameState_t& gameState) const
     {
         auto ride = GetRide(_rideIndex);
         if (ride == nullptr)
@@ -112,18 +112,18 @@ namespace OpenRCT2::GameActions
         switch (_modifyType)
         {
             case RideModifyType::demolish:
-                return DemolishRide(*ride);
+                return DemolishRide(gameState, *ride);
             case RideModifyType::renew:
-                return RefurbishRide(*ride);
+                return RefurbishRide(gameState, *ride);
             default:
                 LOG_ERROR("Unknown ride demolish type %d", _modifyType);
                 return Result(Status::InvalidParameters, STR_CANT_DO_THIS, STR_ERR_VALUE_OUT_OF_RANGE);
         }
     }
 
-    Result RideDemolishAction::DemolishRide(Ride& ride) const
+    Result RideDemolishAction::DemolishRide(GameState_t& gameState, Ride& ride) const
     {
-        money64 refundPrice = DemolishTracks();
+        money64 refundPrice = DemolishTracks(gameState);
 
         RideClearForConstruction(ride);
         ride.removePeeps();
@@ -166,10 +166,9 @@ namespace OpenRCT2::GameActions
         windowMgr->CloseByClass(WindowClass::NewCampaign);
 
         // Refresh windows that display the ride name
-        auto windowManager = OpenRCT2::Ui::GetWindowManager();
-        windowManager->BroadcastIntent(Intent(INTENT_ACTION_REFRESH_CAMPAIGN_RIDE_LIST));
-        windowManager->BroadcastIntent(Intent(INTENT_ACTION_REFRESH_RIDE_LIST));
-        windowManager->BroadcastIntent(Intent(INTENT_ACTION_REFRESH_GUEST_LIST));
+        windowMgr->BroadcastIntent(Intent(INTENT_ACTION_REFRESH_CAMPAIGN_RIDE_LIST));
+        windowMgr->BroadcastIntent(Intent(INTENT_ACTION_REFRESH_RIDE_LIST));
+        windowMgr->BroadcastIntent(Intent(INTENT_ACTION_REFRESH_GUEST_LIST));
 
         ScrollingTextInvalidate();
         GfxInvalidateScreen();
@@ -177,12 +176,12 @@ namespace OpenRCT2::GameActions
         return res;
     }
 
-    money64 RideDemolishAction::MazeRemoveTrack(const CoordsXYZD& coords) const
+    money64 RideDemolishAction::MazeRemoveTrack(GameState_t& gameState, const CoordsXYZD& coords) const
     {
         auto setMazeTrack = MazeSetTrackAction(coords, false, _rideIndex, GC_SET_MAZE_TRACK_FILL);
         setMazeTrack.SetFlags(GetFlags());
 
-        auto execRes = ExecuteNested(&setMazeTrack);
+        auto execRes = ExecuteNested(&setMazeTrack, gameState);
         if (execRes.Error == Status::Ok)
         {
             return execRes.Cost;
@@ -191,13 +190,12 @@ namespace OpenRCT2::GameActions
         return kMoney64Undefined;
     }
 
-    money64 RideDemolishAction::DemolishTracks() const
+    money64 RideDemolishAction::DemolishTracks(GameState_t& gameState) const
     {
         money64 refundPrice = 0;
 
         uint8_t oldpaused = gGamePaused;
         gGamePaused = 0;
-        auto& gameState = getGameState();
 
         for (TileCoordsXY tilePos = {}; tilePos.x < gameState.mapSize.x; ++tilePos.x)
         {
@@ -230,7 +228,7 @@ namespace OpenRCT2::GameActions
                         auto trackRemoveAction = TrackRemoveAction(type, trackElement->GetSequenceIndex(), location);
                         trackRemoveAction.SetFlags(GAME_COMMAND_FLAG_NO_SPEND);
 
-                        auto removRes = ExecuteNested(&trackRemoveAction);
+                        auto removRes = ExecuteNested(&trackRemoveAction, gameState);
                         if (removRes.Error != Status::Ok)
                         {
                             TileElementRemove(tileElement);
@@ -251,7 +249,7 @@ namespace OpenRCT2::GameActions
                         for (Direction dir : kAllDirections)
                         {
                             const CoordsXYZ off = { kDirOffsets[dir], 0 };
-                            money64 removePrice = MazeRemoveTrack({ location + off, dir });
+                            money64 removePrice = MazeRemoveTrack(gameState, { location + off, dir });
                             if (removePrice != kMoney64Undefined)
                             {
                                 refundPrice += removePrice;
@@ -269,7 +267,7 @@ namespace OpenRCT2::GameActions
         return refundPrice;
     }
 
-    Result RideDemolishAction::RefurbishRide(Ride& ride) const
+    Result RideDemolishAction::RefurbishRide(GameState_t& gameState, Ride& ride) const
     {
         auto res = Result();
         res.Expenditure = ExpenditureType::rideConstruction;

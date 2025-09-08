@@ -289,7 +289,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
 
             auto action = GetClearAction();
-            auto result = GameActions::Query(&action);
+            auto result = GameActions::Query(&action, getGameState());
             auto cost = (result.Error == GameActions::Status::Ok ? result.Cost : kMoney64Undefined);
             if (_clearSceneryCost != cost)
             {
@@ -317,7 +317,7 @@ namespace OpenRCT2::Ui::Windows
                     if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE)
                     {
                         auto action = GetClearAction();
-                        GameActions::Execute(&action);
+                        GameActions::Execute(&action, getGameState());
                         gCurrentToolId = Tool::bulldozer;
                     }
                     break;
@@ -334,7 +334,7 @@ namespace OpenRCT2::Ui::Windows
                     if (windowMgr->FindByClass(WindowClass::Error) == nullptr && (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
                     {
                         auto action = GetClearAction();
-                        GameActions::Execute(&action);
+                        GameActions::Execute(&action, getGameState());
                         gCurrentToolId = Tool::bulldozer;
                     }
                     break;

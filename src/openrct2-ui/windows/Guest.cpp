@@ -641,6 +641,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
+            auto& gameState = getGameState();
             switch (widgetIndex)
             {
                 case WIDX_PICKUP:
@@ -666,7 +667,7 @@ namespace OpenRCT2::Ui::Windows
                                 ToolSet(*wind, WC_PEEP__WIDX_PICKUP, Tool::picker);
                             }
                         });
-                    GameActions::Execute(&pickupAction);
+                    GameActions::Execute(&pickupAction, gameState);
                 }
                 break;
                 case WIDX_RENAME:
@@ -681,7 +682,7 @@ namespace OpenRCT2::Ui::Windows
                     uint32_t guestFlags = peep->PeepFlags ^ PEEP_FLAGS_TRACKING;
 
                     auto guestSetFlagsAction = GameActions::GuestSetFlagsAction(EntityId::FromUnderlying(number), guestFlags);
-                    GameActions::Execute(&guestSetFlagsAction);
+                    GameActions::Execute(&guestSetFlagsAction, gameState);
                 }
                 break;
             }
@@ -965,7 +966,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
             std::string sText(text);
             auto gameAction = GameActions::GuestSetNameAction(EntityId::FromUnderlying(number), sText);
-            GameActions::Execute(&gameAction);
+            GameActions::Execute(&gameAction, getGameState());
         }
 
         void OnToolUpdateOverview(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
@@ -1031,7 +1032,7 @@ namespace OpenRCT2::Ui::Windows
                 ToolCancel();
                 gPickupPeepImage = ImageId();
             });
-            GameActions::Execute(&pickupAction);
+            GameActions::Execute(&pickupAction, getGameState());
         }
 
         void OnToolAbortOverview(WidgetIndex widgetIndex)
@@ -1043,7 +1044,7 @@ namespace OpenRCT2::Ui::Windows
                                                         EntityId::FromUnderlying(number),
                                                         { _pickedPeepX, 0, 0 },
                                                         Network::GetCurrentPlayerId() };
-            GameActions::Execute(&pickupAction);
+            GameActions::Execute(&pickupAction, getGameState());
         }
 
 #pragma endregion

@@ -142,7 +142,7 @@ namespace OpenRCT2::GameActions
 
             Guard::Assert(action != nullptr);
 
-            Result result = Execute(action);
+            Result result = Execute(action, getGameState());
             if (result.Error == Status::Ok && Network::GetMode() == Network::Mode::server)
             {
                 // Relay this action to all other clients.
@@ -188,7 +188,7 @@ namespace OpenRCT2::GameActions
         return false;
     }
 
-    static Result QueryInternal(const GameAction* action, bool topLevel)
+    static Result QueryInternal(const GameAction* action, GameState_t& gameState, bool topLevel)
     {
         Guard::ArgumentNotNull(action);
 
@@ -204,7 +204,7 @@ namespace OpenRCT2::GameActions
             return result;
         }
 
-        auto result = action->Query();
+        auto result = action->Query(gameState);
 
         if (result.Error == Status::Ok)
         {
@@ -219,14 +219,14 @@ namespace OpenRCT2::GameActions
         return result;
     }
 
-    Result Query(const GameAction* action)
+    Result Query(const GameAction* action, GameState_t& gameState)
     {
-        return QueryInternal(action, true);
+        return QueryInternal(action, gameState, true);
     }
 
-    Result QueryNested(const GameAction* action)
+    Result QueryNested(const GameAction* action, GameState_t& gameState)
     {
-        return QueryInternal(action, false);
+        return QueryInternal(action, gameState, false);
     }
 
     static const char* GetRealm()
@@ -283,7 +283,7 @@ namespace OpenRCT2::GameActions
         Network::AppendServerLog(text);
     }
 
-    static Result ExecuteInternal(const GameAction* action, bool topLevel)
+    static Result ExecuteInternal(const GameAction* action, GameState_t& gameState, bool topLevel)
     {
         Guard::ArgumentNotNull(action);
 
@@ -309,7 +309,7 @@ namespace OpenRCT2::GameActions
             }
         }
 
-        Result result = QueryInternal(action, topLevel);
+        Result result = QueryInternal(action, gameState, topLevel);
 #ifdef ENABLE_SCRIPTING
         if (result.Error == Status::Ok
             && ((Network::GetMode() == Network::Mode::none) || (flags & GAME_COMMAND_FLAG_NETWORKED)))
@@ -354,7 +354,7 @@ namespace OpenRCT2::GameActions
             LogActionBegin(logContext, action);
 
             // Execute the action, changing the game state
-            result = action->Execute();
+            result = action->Execute(gameState);
 #ifdef ENABLE_SCRIPTING
             if (result.Error == Status::Ok)
             {
@@ -456,14 +456,14 @@ namespace OpenRCT2::GameActions
         return result;
     }
 
-    Result Execute(const GameAction* action)
+    Result Execute(const GameAction* action, GameState_t& gameState)
     {
-        return ExecuteInternal(action, true);
+        return ExecuteInternal(action, gameState, true);
     }
 
-    Result ExecuteNested(const GameAction* action)
+    Result ExecuteNested(const GameAction* action, GameState_t& gameState)
     {
-        return ExecuteInternal(action, false);
+        return ExecuteInternal(action, gameState, false);
     }
 
     const char* GameAction::GetName() const

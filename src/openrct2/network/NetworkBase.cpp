@@ -2075,7 +2075,7 @@ namespace OpenRCT2::Network
                                                         pickup_peep->Id,
                                                         { GetPickupPeepOldX(connection_player->Id), 0, 0 },
                                                         GetCurrentPlayerId() };
-            auto res = GameActions::Execute(&pickupAction);
+            auto res = GameActions::Execute(&pickupAction, getGameState());
         }
         ServerSendEventPlayerDisconnected(
             const_cast<char*>(connection_player->Name.c_str()), connection->GetLastDisconnectReason());
@@ -2840,7 +2840,7 @@ namespace OpenRCT2::Network
                 // Something went wrong, game is not loaded. Return to main screen.
                 auto loadOrQuitAction = GameActions::LoadOrQuitAction(
                     GameActions::LoadOrQuitModes::OpenSavePrompt, PromptMode::saveBeforeQuit);
-                GameActions::Execute(&loadOrQuitAction);
+                GameActions::Execute(&loadOrQuitAction, getGameState());
             }
             if (has_to_free)
             {

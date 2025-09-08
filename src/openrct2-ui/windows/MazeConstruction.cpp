@@ -14,6 +14,7 @@
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
+#include <openrct2/GameState.h>
 #include <openrct2/Input.h>
 #include <openrct2/SpriteIds.h>
 #include <openrct2/actions/MazeSetTrackAction.h>
@@ -134,7 +135,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     auto gameAction = GameActions::RideDemolishAction(currentRide->id, GameActions::RideModifyType::demolish);
                     gameAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
-                    GameActions::Execute(&gameAction);
+                    GameActions::Execute(&gameAction, getGameState());
                 }
                 else
                 {
@@ -393,7 +394,7 @@ namespace OpenRCT2::Ui::Windows
                     WindowMazeConstructionUpdatePressedWidgets();
                 }
             });
-            auto res = GameActions::Execute(&rideEntranceExitPlaceAction);
+            auto res = GameActions::Execute(&rideEntranceExitPlaceAction, getGameState());
         }
 
         void WindowMazeConstructionConstruct(int32_t direction)
@@ -426,7 +427,7 @@ namespace OpenRCT2::Ui::Windows
             const auto loc = CoordsXYZD{ x, y, z, static_cast<uint8_t>(direction) };
             auto action = GameActions::MazeSetTrackAction(loc, false, _currentRideIndex, mode);
             action.SetFlags(actionFlags);
-            const auto res = GameActions::Execute(&action);
+            const auto res = GameActions::Execute(&action, getGameState());
             if (res.Error != GameActions::Status::Ok)
             {
                 return;

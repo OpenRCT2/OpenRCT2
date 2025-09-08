@@ -29,10 +29,10 @@ namespace OpenRCT2::GameActions
         uint16_t GetActionFlags() const override;
 
         void Serialise(DataSerialiser& stream) override;
-        Result Query() const override;
-        Result Execute() const override;
+        Result Query(GameState_t& gameState) const override;
+        Result Execute(GameState_t& gameState) const override;
 
     private:
-        Result QueryExecute(bool isExecuting) const;
+        Result QueryExecute(GameState_t& gameState, bool isExecuting) const;
     };
 } // namespace OpenRCT2::GameActions

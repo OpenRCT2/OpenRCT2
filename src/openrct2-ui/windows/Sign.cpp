@@ -14,6 +14,7 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Game.h>
+#include <openrct2/GameState.h>
 #include <openrct2/SpriteIds.h>
 #include <openrct2/actions/LargeSceneryRemoveAction.h>
 #include <openrct2/actions/SignSetNameAction.h>
@@ -154,6 +155,8 @@ namespace OpenRCT2::Ui::Windows
                 Close();
                 return;
             }
+
+            auto& gameState = getGameState();
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
@@ -173,14 +176,14 @@ namespace OpenRCT2::Ui::Windows
                     {
                         CoordsXYZD wallLocation = { bannerCoords, tileElement->GetBaseZ(), tileElement->GetDirection() };
                         auto wallRemoveAction = GameActions::WallRemoveAction(wallLocation);
-                        GameActions::Execute(&wallRemoveAction);
+                        GameActions::Execute(&wallRemoveAction, gameState);
                     }
                     else
                     {
                         auto sceneryRemoveAction = GameActions::LargeSceneryRemoveAction(
                             { bannerCoords, tileElement->GetBaseZ(), tileElement->GetDirection() },
                             tileElement->AsLargeScenery()->GetSequenceIndex());
-                        GameActions::Execute(&sceneryRemoveAction);
+                        GameActions::Execute(&sceneryRemoveAction, gameState);
                     }
                     break;
                 }
@@ -206,6 +209,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex) override
         {
+            auto& gameState = getGameState();
             switch (widgetIndex)
             {
                 case WIDX_MAIN_COLOUR:
@@ -215,7 +219,7 @@ namespace OpenRCT2::Ui::Windows
                     _mainColour = ColourDropDownIndexToColour(dropdownIndex);
                     auto signSetStyleAction = GameActions::SignSetStyleAction(
                         GetBannerIndex(), _mainColour, _textColour, !_isSmall);
-                    GameActions::Execute(&signSetStyleAction);
+                    GameActions::Execute(&signSetStyleAction, gameState);
                     break;
                 }
                 case WIDX_TEXT_COLOUR:
@@ -225,7 +229,7 @@ namespace OpenRCT2::Ui::Windows
                     _textColour = ColourDropDownIndexToColour(dropdownIndex);
                     auto signSetStyleAction = GameActions::SignSetStyleAction(
                         GetBannerIndex(), _mainColour, _textColour, !_isSmall);
-                    GameActions::Execute(&signSetStyleAction);
+                    GameActions::Execute(&signSetStyleAction, gameState);
                     break;
                 }
                 default:
@@ -240,7 +244,7 @@ namespace OpenRCT2::Ui::Windows
             if (widgetIndex == WIDX_SIGN_TEXT && !text.empty())
             {
                 auto signSetNameAction = GameActions::SignSetNameAction(GetBannerIndex(), std::string(text));
-                GameActions::Execute(&signSetNameAction);
+                GameActions::Execute(&signSetNameAction, getGameState());
             }
         }
 

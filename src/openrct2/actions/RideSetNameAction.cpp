@@ -46,7 +46,7 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_rideIndex) << DS_TAG(_name);
     }
 
-    Result RideSetNameAction::Query() const
+    Result RideSetNameAction::Query(GameState_t& gameState) const
     {
         auto ride = GetRide(_rideIndex);
         if (ride == nullptr)
@@ -63,7 +63,7 @@ namespace OpenRCT2::GameActions
         return Result();
     }
 
-    Result RideSetNameAction::Execute() const
+    Result RideSetNameAction::Execute(GameState_t& gameState) const
     {
         auto ride = GetRide(_rideIndex);
         if (ride == nullptr)

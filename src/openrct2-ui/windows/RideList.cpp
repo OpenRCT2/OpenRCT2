@@ -462,7 +462,7 @@ namespace OpenRCT2::Ui::Windows
             if (_quickDemolishMode && Network::GetMode() != Network::Mode::client)
             {
                 auto gameAction = GameActions::RideDemolishAction(selectedRideId, GameActions::RideModifyType::demolish);
-                GameActions::Execute(&gameAction);
+                GameActions::Execute(&gameAction, getGameState());
                 RefreshList();
             }
             else
@@ -1099,7 +1099,7 @@ namespace OpenRCT2::Ui::Windows
                     && rideRef.getClassification() == static_cast<RideClassification>(page))
                 {
                     auto gameAction = GameActions::RideSetStatusAction(rideRef.id, RideStatus::closed);
-                    GameActions::Execute(&gameAction);
+                    GameActions::Execute(&gameAction, getGameState());
                 }
             }
         }
@@ -1112,7 +1112,7 @@ namespace OpenRCT2::Ui::Windows
                 if (rideRef.status != RideStatus::open && rideRef.getClassification() == static_cast<RideClassification>(page))
                 {
                     auto gameAction = GameActions::RideSetStatusAction(rideRef.id, RideStatus::open);
-                    GameActions::Execute(&gameAction);
+                    GameActions::Execute(&gameAction, getGameState());
                 }
             }
         }

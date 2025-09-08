@@ -223,7 +223,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 MapRange range(gMapSelectPositionA, gMapSelectPositionB);
                 auto staffSetPatrolAreaAction = GameActions::StaffSetPatrolAreaAction(_staffId, range, _mode);
-                GameActions::Execute(&staffSetPatrolAreaAction);
+                GameActions::Execute(&staffSetPatrolAreaAction, getGameState());
             }
         }
 

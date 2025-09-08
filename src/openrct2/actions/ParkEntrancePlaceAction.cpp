@@ -55,7 +55,7 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_entranceType);
     }
 
-    Result ParkEntrancePlaceAction::Query() const
+    Result ParkEntrancePlaceAction::Query(GameState_t& gameState) const
     {
         if (!isInEditorMode() && !getGameState().cheats.sandboxMode)
         {
@@ -78,7 +78,6 @@ namespace OpenRCT2::GameActions
             return Result(Status::NoFreeElements, STR_CANT_BUILD_THIS_HERE, STR_ERR_LANDSCAPE_DATA_AREA_FULL);
         }
 
-        const auto& gameState = getGameState();
         if (gameState.park.entrances.size() >= OpenRCT2::Limits::kMaxParkEntrances)
         {
             return Result(Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_ERR_TOO_MANY_PARK_ENTRANCES);
@@ -116,7 +115,7 @@ namespace OpenRCT2::GameActions
         return res;
     }
 
-    Result ParkEntrancePlaceAction::Execute() const
+    Result ParkEntrancePlaceAction::Execute(GameState_t& gameState) const
     {
         auto res = Result();
         res.Expenditure = ExpenditureType::landPurchase;

@@ -1130,13 +1130,13 @@ void Ride::update()
         {
             // We require this to execute right away during the simulation, always ignore network and queue.
             auto gameAction = GameActions::RideSetStatusAction(id, RideStatus::closed);
-            GameActions::ExecuteNested(&gameAction);
+            GameActions::ExecuteNested(&gameAction, getGameState());
         }
         else
         {
             // We require this to execute right away during the simulation, always ignore network and queue.
             auto gameAction = GameActions::RideSetStatusAction(id, RideStatus::simulating);
-            GameActions::ExecuteNested(&gameAction);
+            GameActions::ExecuteNested(&gameAction, getGameState());
         }
     }
 }
@@ -5226,27 +5226,27 @@ void Ride::setRideEntry(ObjectEntryIndex entryIndex)
     auto colour = RideGetUnusedPresetVehicleColour(entryIndex);
     auto rideSetVehicleAction = GameActions::RideSetVehicleAction(
         id, GameActions::RideSetVehicleType::RideEntry, entryIndex, colour);
-    GameActions::Execute(&rideSetVehicleAction);
+    GameActions::Execute(&rideSetVehicleAction, getGameState());
 }
 
 void Ride::setNumTrains(int32_t newNumTrains)
 {
     auto rideSetVehicleAction = GameActions::RideSetVehicleAction(id, GameActions::RideSetVehicleType::NumTrains, newNumTrains);
-    GameActions::Execute(&rideSetVehicleAction);
+    GameActions::Execute(&rideSetVehicleAction, getGameState());
 }
 
 void Ride::setNumCarsPerTrain(int32_t numCarsPerVehicle)
 {
     auto rideSetVehicleAction = GameActions::RideSetVehicleAction(
         id, GameActions::RideSetVehicleType::NumCarsPerTrain, numCarsPerVehicle);
-    GameActions::Execute(&rideSetVehicleAction);
+    GameActions::Execute(&rideSetVehicleAction, getGameState());
 }
 
 void Ride::setReversedTrains(bool reverseTrains)
 {
     auto rideSetVehicleAction = GameActions::RideSetVehicleAction(
         id, GameActions::RideSetVehicleType::TrainsReversed, reverseTrains);
-    GameActions::Execute(&rideSetVehicleAction);
+    GameActions::Execute(&rideSetVehicleAction, getGameState());
 }
 
 void Ride::setToDefaultInspectionInterval()

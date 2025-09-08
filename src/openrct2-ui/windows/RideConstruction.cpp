@@ -306,6 +306,8 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
+            auto& gameState = getGameState();
+
             if (RideTryGetOriginElement(*currentRide, nullptr))
             {
                 // Auto open shops if required.
@@ -317,7 +319,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         _autoOpeningShop = true;
                         auto gameAction = GameActions::RideSetStatusAction(currentRide->id, RideStatus::open);
-                        GameActions::Execute(&gameAction);
+                        GameActions::Execute(&gameAction, gameState);
                         _autoOpeningShop = false;
                     }
                 }
@@ -331,7 +333,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 auto gameAction = GameActions::RideDemolishAction(currentRide->id, GameActions::RideModifyType::demolish);
                 gameAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
-                GameActions::Execute(&gameAction);
+                GameActions::Execute(&gameAction, gameState);
             }
         }
 
@@ -1104,7 +1106,7 @@ namespace OpenRCT2::Ui::Windows
                         auto status = currentRide->status == RideStatus::simulating ? RideStatus::closed
                                                                                     : RideStatus::simulating;
                         auto gameAction = GameActions::RideSetStatusAction(currentRide->id, status);
-                        GameActions::Execute(&gameAction);
+                        GameActions::Execute(&gameAction, getGameState());
                     }
                     break;
                 }
@@ -2333,8 +2335,8 @@ namespace OpenRCT2::Ui::Windows
             {
                 trackPlaceAction.SetCallback(RideConstructPlacedForwardGameActionCallback);
             }
-            auto res = GameActions::Execute(&trackPlaceAction);
-            // Used by some functions
+
+            auto res = GameActions::Execute(&trackPlaceAction, getGameState());
             if (res.Error != GameActions::Status::Ok)
             {
                 _trackPlaceCost = kMoney64Undefined;
@@ -2350,7 +2352,8 @@ namespace OpenRCT2::Ui::Windows
             {
                 return;
             }
-            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, trackPos);
+
+            Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, trackPos);
 
             if (Network::GetMode() != Network::Mode::none)
             {
@@ -2478,7 +2481,7 @@ namespace OpenRCT2::Ui::Windows
                 }
             });
 
-            GameActions::Execute(&trackRemoveAction);
+            GameActions::Execute(&trackRemoveAction, getGameState());
         }
 
         void Rotate()
@@ -2576,7 +2579,7 @@ namespace OpenRCT2::Ui::Windows
                 trackSetBrakeSpeed.SetCallback([](const GameActions::GameAction* ga, const GameActions::Result* result) {
                     WindowRideConstructionUpdateActiveElements();
                 });
-                GameActions::Execute(&trackSetBrakeSpeed);
+                GameActions::Execute(&trackSetBrakeSpeed, getGameState());
                 return;
             }
             WindowRideConstructionUpdateActiveElements();
@@ -2692,7 +2695,7 @@ namespace OpenRCT2::Ui::Windows
                         ToolSet(*this, newToolWidgetIndex, Tool::crosshair);
                     }
                 });
-            auto res = GameActions::Execute(&rideEntranceExitPlaceAction);
+            auto res = GameActions::Execute(&rideEntranceExitPlaceAction, getGameState());
         }
 
         void DrawTrackPiece(
@@ -3709,7 +3712,7 @@ namespace OpenRCT2::Ui::Windows
 
                 auto gameAction = GameActions::MazeSetTrackAction(
                     CoordsXYZD{ _currentTrackBegin, 0 }, true, _currentRideIndex, GC_SET_MAZE_TRACK_BUILD);
-                auto mazeSetTrackResult = GameActions::Execute(&gameAction);
+                auto mazeSetTrackResult = GameActions::Execute(&gameAction, getGameState());
                 if (mazeSetTrackResult.Error == GameActions::Status::Ok)
                 {
                     _trackPlaceCost = mazeSetTrackResult.Cost;
@@ -4770,7 +4773,7 @@ namespace OpenRCT2::Ui::Windows
             auto gameAction = GameActions::MazeSetTrackAction(
                 CoordsXYZD{ trackPos, 0 }, true, rideIndex, GC_SET_MAZE_TRACK_BUILD);
             gameAction.SetFlags(flags);
-            auto result = GameActions::Execute(&gameAction);
+            auto result = GameActions::Execute(&gameAction, getGameState());
 
             if (result.Error != GameActions::Status::Ok)
                 return kMoney64Undefined;
@@ -4789,7 +4792,7 @@ namespace OpenRCT2::Ui::Windows
             liftHillAndAlternativeState, false);
         trackPlaceAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
         // This command must not be sent over the network
-        auto res = GameActions::Execute(&trackPlaceAction);
+        auto res = GameActions::Execute(&trackPlaceAction, getGameState());
         if (res.Error != GameActions::Status::Ok)
             return kMoney64Undefined;
 
@@ -5158,7 +5161,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 auto gameAction = GameActions::MazeSetTrackAction(quadrant, false, rideIndex, GC_SET_MAZE_TRACK_FILL);
                 gameAction.SetFlags(flags);
-                auto res = GameActions::Execute(&gameAction);
+                auto res = GameActions::Execute(&gameAction, getGameState());
             }
         }
         else
@@ -5179,7 +5182,7 @@ namespace OpenRCT2::Ui::Windows
                 };
                 trackRemoveAction.SetFlags(
                     GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
-                GameActions::Execute(&trackRemoveAction);
+                GameActions::Execute(&trackRemoveAction, getGameState());
             }
         }
     }

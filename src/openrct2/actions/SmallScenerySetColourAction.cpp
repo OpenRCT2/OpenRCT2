@@ -59,12 +59,12 @@ namespace OpenRCT2::GameActions
                << DS_TAG(_secondaryColour) << DS_TAG(_tertiaryColour);
     }
 
-    Result SmallScenerySetColourAction::Query() const
+    Result SmallScenerySetColourAction::Query(GameState_t& gameState) const
     {
         return QueryExecute(false);
     }
 
-    Result SmallScenerySetColourAction::Execute() const
+    Result SmallScenerySetColourAction::Execute(GameState_t& gameState) const
     {
         return QueryExecute(true);
     }

@@ -73,7 +73,7 @@ namespace OpenRCT2::GameActions
                << DS_TAG(_constructFlags);
     }
 
-    Result FootpathPlaceAction::Query() const
+    Result FootpathPlaceAction::Query(GameState_t& gameState) const
     {
         auto res = Result();
         res.Cost = 0;
@@ -124,7 +124,7 @@ namespace OpenRCT2::GameActions
         return ElementUpdateQuery(tileElement, std::move(res));
     }
 
-    Result FootpathPlaceAction::Execute() const
+    Result FootpathPlaceAction::Execute(GameState_t& gameState) const
     {
         auto res = Result();
         res.Cost = 0;

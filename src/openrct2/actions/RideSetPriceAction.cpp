@@ -50,7 +50,7 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_rideIndex) << DS_TAG(_price) << DS_TAG(_primaryPrice);
     }
 
-    Result RideSetPriceAction::Query() const
+    Result RideSetPriceAction::Query(GameState_t& gameState) const
     {
         auto ride = GetRide(_rideIndex);
         if (ride == nullptr)
@@ -75,7 +75,7 @@ namespace OpenRCT2::GameActions
         return Result();
     }
 
-    Result RideSetPriceAction::Execute() const
+    Result RideSetPriceAction::Execute(GameState_t& gameState) const
     {
         Result res = Result();
         res.Expenditure = ExpenditureType::parkRideTickets;

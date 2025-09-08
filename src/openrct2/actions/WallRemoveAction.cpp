@@ -39,7 +39,7 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_loc);
     }
 
-    Result WallRemoveAction::Query() const
+    Result WallRemoveAction::Query(GameState_t& gameState) const
     {
         Result res = Result();
         res.Cost = 0;
@@ -67,7 +67,7 @@ namespace OpenRCT2::GameActions
         return res;
     }
 
-    Result WallRemoveAction::Execute() const
+    Result WallRemoveAction::Execute(GameState_t& gameState) const
     {
         Result res = Result();
         res.Cost = 0;

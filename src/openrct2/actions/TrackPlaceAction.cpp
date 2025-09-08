@@ -77,7 +77,7 @@ namespace OpenRCT2::GameActions
                << DS_TAG(_colour) << DS_TAG(_seatRotation) << DS_TAG(_trackPlaceFlags.holder);
     }
 
-    Result TrackPlaceAction::Query() const
+    Result TrackPlaceAction::Query(GameState_t& gameState) const
     {
         auto ride = GetRide(_rideIndex);
         if (ride == nullptr)
@@ -99,7 +99,6 @@ namespace OpenRCT2::GameActions
                 Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_ERR_VALUE_OUT_OF_RANGE);
         }
 
-        auto& gameState = getGameState();
         if (_rideType != ride->type && !gameState.cheats.allowArbitraryRideTypeChanges)
         {
             return Result(Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, kStringIdNone);
@@ -408,7 +407,7 @@ namespace OpenRCT2::GameActions
         return res;
     }
 
-    Result TrackPlaceAction::Execute() const
+    Result TrackPlaceAction::Execute(GameState_t& gameState) const
     {
         auto ride = GetRide(_rideIndex);
         if (ride == nullptr)
@@ -487,7 +486,6 @@ namespace OpenRCT2::GameActions
                 }
             }
 
-            auto& gameState = getGameState();
             if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST) && !gameState.cheats.disableClearanceChecks)
             {
                 FootpathRemoveLitter(mapLoc);
@@ -697,7 +695,7 @@ namespace OpenRCT2::GameActions
 
                     auto rideSetSetting = GameActions::RideSetSettingAction(
                         ride->id, GameActions::RideSetSetting::Mode, static_cast<uint8_t>(newMode));
-                    ExecuteNested(&rideSetSetting);
+                    ExecuteNested(&rideSetSetting, gameState);
                     break;
                 }
                 default:

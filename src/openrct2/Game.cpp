@@ -110,7 +110,7 @@ using namespace OpenRCT2;
 void GameResetSpeed()
 {
     auto setSpeedAction = GameActions::GameSetSpeedAction(1);
-    GameActions::Execute(&setSpeedAction);
+    GameActions::Execute(&setSpeedAction, getGameState());
 }
 
 void GameIncreaseGameSpeed()
@@ -120,7 +120,7 @@ void GameIncreaseGameSpeed()
         newSpeed = 8;
 
     auto setSpeedAction = GameActions::GameSetSpeedAction(newSpeed);
-    GameActions::Execute(&setSpeedAction);
+    GameActions::Execute(&setSpeedAction, getGameState());
 }
 
 void GameReduceGameSpeed()
@@ -130,7 +130,7 @@ void GameReduceGameSpeed()
         newSpeed = 4;
 
     auto setSpeedAction = GameActions::GameSetSpeedAction(newSpeed);
-    GameActions::Execute(&setSpeedAction);
+    GameActions::Execute(&setSpeedAction, getGameState());
 }
 
 /**
@@ -679,12 +679,14 @@ static void NewGameWindowCallback(const utf8* path)
  */
 void GameLoadOrQuitNoSavePrompt()
 {
+    auto& gameState = getGameState();
+
     switch (gSavePromptMode)
     {
         case PromptMode::saveBeforeLoad:
         {
             auto loadOrQuitAction = GameActions::LoadOrQuitAction(GameActions::LoadOrQuitModes::CloseSavePrompt);
-            GameActions::Execute(&loadOrQuitAction);
+            GameActions::Execute(&loadOrQuitAction, gameState);
             ToolCancel();
             if (gLegacyScene == LegacyScene::scenarioEditor)
             {
@@ -703,7 +705,7 @@ void GameLoadOrQuitNoSavePrompt()
         case PromptMode::saveBeforeQuit:
         {
             auto loadOrQuitAction = GameActions::LoadOrQuitAction(GameActions::LoadOrQuitModes::CloseSavePrompt);
-            GameActions::Execute(&loadOrQuitAction);
+            GameActions::Execute(&loadOrQuitAction, gameState);
             ToolCancel();
             if (gInputFlags.has(InputFlag::unk5))
             {
@@ -724,7 +726,7 @@ void GameLoadOrQuitNoSavePrompt()
         case PromptMode::saveBeforeNewGame:
         {
             auto loadOrQuitAction = GameActions::LoadOrQuitAction(GameActions::LoadOrQuitModes::CloseSavePrompt);
-            GameActions::Execute(&loadOrQuitAction);
+            GameActions::Execute(&loadOrQuitAction, gameState);
             ToolCancel();
             auto intent = Intent(WindowClass::ScenarioSelect);
             intent.PutExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<CloseCallback>(NewGameWindowCallback));

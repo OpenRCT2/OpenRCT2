@@ -34,7 +34,7 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_rideIndex) << DS_TAG(_type) << DS_TAG(_value);
     }
 
-    Result RideFreezeRatingAction::Query() const
+    Result RideFreezeRatingAction::Query(GameState_t& gameState) const
     {
         auto ride = GetRide(_rideIndex);
         if (ride == nullptr)
@@ -52,7 +52,7 @@ namespace OpenRCT2::GameActions
         return Result();
     }
 
-    Result RideFreezeRatingAction::Execute() const
+    Result RideFreezeRatingAction::Execute(GameState_t& gameState) const
     {
         auto ride = GetRide(_rideIndex);
 

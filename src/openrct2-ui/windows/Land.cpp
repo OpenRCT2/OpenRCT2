@@ -338,22 +338,24 @@ namespace OpenRCT2::Ui::Windows
             centreX += 16;
             centreY += 16;
 
+            auto& gameState = getGameState();
+
             if (_landToolMountainMode)
             {
                 auto landSmoothAction = GameActions::LandSmoothAction(
                     { centreX, centreY },
                     { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
                     gMapSelectType, false);
-                auto res = (flag & GAME_COMMAND_FLAG_APPLY) ? GameActions::Execute(&landSmoothAction)
-                                                            : GameActions::Query(&landSmoothAction);
+                auto res = (flag & GAME_COMMAND_FLAG_APPLY) ? GameActions::Execute(&landSmoothAction, gameState)
+                                                            : GameActions::Query(&landSmoothAction, gameState);
                 return res.Error == GameActions::Status::Ok ? res.Cost : kMoney64Undefined;
             }
 
             auto landRaiseAction = GameActions::LandRaiseAction(
                 { centreX, centreY },
                 { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y }, gMapSelectType);
-            auto res = (flag & GAME_COMMAND_FLAG_APPLY) ? GameActions::Execute(&landRaiseAction)
-                                                        : GameActions::Query(&landRaiseAction);
+            auto res = (flag & GAME_COMMAND_FLAG_APPLY) ? GameActions::Execute(&landRaiseAction, gameState)
+                                                        : GameActions::Query(&landRaiseAction, gameState);
 
             return res.Error == GameActions::Status::Ok ? res.Cost : kMoney64Undefined;
         }
@@ -369,22 +371,24 @@ namespace OpenRCT2::Ui::Windows
             centreX += 16;
             centreY += 16;
 
+            auto& gameState = getGameState();
+
             if (_landToolMountainMode)
             {
                 auto landSmoothAction = GameActions::LandSmoothAction(
                     { centreX, centreY },
                     { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
                     gMapSelectType, true);
-                auto res = (flag & GAME_COMMAND_FLAG_APPLY) ? GameActions::Execute(&landSmoothAction)
-                                                            : GameActions::Query(&landSmoothAction);
+                auto res = (flag & GAME_COMMAND_FLAG_APPLY) ? GameActions::Execute(&landSmoothAction, gameState)
+                                                            : GameActions::Query(&landSmoothAction, gameState);
                 return res.Error == GameActions::Status::Ok ? res.Cost : kMoney64Undefined;
             }
 
             auto landLowerAction = GameActions::LandLowerAction(
                 { centreX, centreY },
                 { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y }, gMapSelectType);
-            auto res = (flag & GAME_COMMAND_FLAG_APPLY) ? GameActions::Execute(&landLowerAction)
-                                                        : GameActions::Query(&landLowerAction);
+            auto res = (flag & GAME_COMMAND_FLAG_APPLY) ? GameActions::Execute(&landLowerAction, gameState)
+                                                        : GameActions::Query(&landLowerAction, gameState);
 
             return res.Error == GameActions::Status::Ok ? res.Cost : kMoney64Undefined;
         }
@@ -526,7 +530,7 @@ namespace OpenRCT2::Ui::Windows
                             { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
                             gLandToolTerrainSurface, gLandToolTerrainEdge);
 
-                        GameActions::Execute(&surfaceSetStyleAction);
+                        GameActions::Execute(&surfaceSetStyleAction, getGameState());
 
                         gCurrentToolId = Tool::upDownArrow;
                     }
@@ -553,7 +557,7 @@ namespace OpenRCT2::Ui::Windows
                                 { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
                                 gLandToolTerrainSurface, gLandToolTerrainEdge);
 
-                            GameActions::Execute(&surfaceSetStyleAction);
+                            GameActions::Execute(&surfaceSetStyleAction, getGameState());
 
                             // The tool is set to 12 here instead of 3 so that the dragging cursor is not the elevation change
                             // cursor

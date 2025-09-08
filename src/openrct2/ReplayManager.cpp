@@ -812,7 +812,8 @@ namespace OpenRCT2
         {
             auto& replayQueue = _currentReplay->commands;
 
-            const auto currentTicks = getGameState().currentTicks;
+            auto& gameState = getGameState();
+            const auto currentTicks = gameState.currentTicks;
 
             while (replayQueue.begin() != replayQueue.end())
             {
@@ -838,7 +839,7 @@ namespace OpenRCT2
                 GameAction* action = command.action.get();
                 action->SetFlags(action->GetFlags() | GAME_COMMAND_FLAG_REPLAY);
 
-                GameActions::Result result = GameActions::Execute(action);
+                GameActions::Result result = GameActions::Execute(action, gameState);
                 if (result.Error == GameActions::Status::Ok)
                 {
                     isPositionValid = true;

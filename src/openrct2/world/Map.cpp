@@ -1408,6 +1408,8 @@ static void MapExtendBoundarySurfaceShiftY(const int32_t amount, const int32_t m
  */
 void ClearElementAt(const CoordsXY& loc, TileElement** elementPtr)
 {
+    auto& gameState = getGameState();
+
     TileElement* element = *elementPtr;
     switch (element->GetType())
     {
@@ -1440,7 +1442,7 @@ void ClearElementAt(const CoordsXY& loc, TileElement** elementPtr)
                     break;
             }
             auto parkEntranceRemoveAction = GameActions::ParkEntranceRemoveAction(CoordsXYZ{ seqLoc, element->GetBaseZ() });
-            auto result = GameActions::ExecuteNested(&parkEntranceRemoveAction);
+            auto result = GameActions::ExecuteNested(&parkEntranceRemoveAction, gameState);
             // If asking nicely did not work, forcibly remove this to avoid an infinite loop.
             if (result.Error != GameActions::Status::Ok)
             {
@@ -1452,7 +1454,7 @@ void ClearElementAt(const CoordsXY& loc, TileElement** elementPtr)
         {
             CoordsXYZD wallLocation = { loc.x, loc.y, element->GetBaseZ(), element->GetDirection() };
             auto wallRemoveAction = GameActions::WallRemoveAction(wallLocation);
-            auto result = GameActions::ExecuteNested(&wallRemoveAction);
+            auto result = GameActions::ExecuteNested(&wallRemoveAction, gameState);
             // If asking nicely did not work, forcibly remove this to avoid an infinite loop.
             if (result.Error != GameActions::Status::Ok)
             {
@@ -1464,7 +1466,7 @@ void ClearElementAt(const CoordsXY& loc, TileElement** elementPtr)
         {
             auto removeSceneryAction = GameActions::LargeSceneryRemoveAction(
                 { loc.x, loc.y, element->GetBaseZ(), element->GetDirection() }, element->AsLargeScenery()->GetSequenceIndex());
-            auto result = GameActions::ExecuteNested(&removeSceneryAction);
+            auto result = GameActions::ExecuteNested(&removeSceneryAction, gameState);
             // If asking nicely did not work, forcibly remove this to avoid an infinite loop.
             if (result.Error != GameActions::Status::Ok)
             {
@@ -1476,7 +1478,7 @@ void ClearElementAt(const CoordsXY& loc, TileElement** elementPtr)
         {
             auto bannerRemoveAction = GameActions::BannerRemoveAction(
                 { loc.x, loc.y, element->GetBaseZ(), element->AsBanner()->GetPosition() });
-            auto result = GameActions::ExecuteNested(&bannerRemoveAction);
+            auto result = GameActions::ExecuteNested(&bannerRemoveAction, gameState);
             // If asking nicely did not work, forcibly remove this to avoid an infinite loop.
             if (result.Error != GameActions::Status::Ok)
             {

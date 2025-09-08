@@ -16,6 +16,7 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Game.h>
+#include <openrct2/GameState.h>
 #include <openrct2/Input.h>
 #include <openrct2/SpriteIds.h>
 #include <openrct2/actions/TileModifyAction.h>
@@ -1866,14 +1867,14 @@ static uint64_t PageDisabledWidgets[] = {
         {
             Guard::Assert(elementIndex >= 0 && elementIndex < windowTileInspectorElementCount, "elementIndex out of range");
             auto modifyTile = GameActions::TileModifyAction(_toolMap, GameActions::TileModifyType::AnyRemove, elementIndex);
-            GameActions::Execute(&modifyTile);
+            GameActions::Execute(&modifyTile, getGameState());
         }
 
         void RotateElement(int32_t elementIndex)
         {
             Guard::Assert(elementIndex >= 0 && elementIndex < windowTileInspectorElementCount, "elementIndex out of range");
             auto modifyTile = GameActions::TileModifyAction(_toolMap, GameActions::TileModifyType::AnyRotate, elementIndex);
-            GameActions::Execute(&modifyTile);
+            GameActions::Execute(&modifyTile, getGameState());
         }
 
         // Swap element with its parent
@@ -1885,14 +1886,14 @@ static uint64_t PageDisabledWidgets[] = {
             if (!firstInRange || !secondInRange)
                 return;
             auto modifyTile = GameActions::TileModifyAction(_toolMap, GameActions::TileModifyType::AnySwap, first, second);
-            GameActions::Execute(&modifyTile);
+            GameActions::Execute(&modifyTile, getGameState());
         }
 
         void SortElements()
         {
             Guard::Assert(_tileSelected, "No tile selected");
             auto modifyTile = GameActions::TileModifyAction(_toolMap, GameActions::TileModifyType::AnySort);
-            GameActions::Execute(&modifyTile);
+            GameActions::Execute(&modifyTile, getGameState());
         }
 
         void CopyElement()
@@ -1917,55 +1918,55 @@ static uint64_t PageDisabledWidgets[] = {
         {
             auto modifyTile = GameActions::TileModifyAction(
                 _toolMap, GameActions::TileModifyType::AnyPaste, 0, 0, _copiedElement, _copiedBanner);
-            GameActions::Execute(&modifyTile);
+            GameActions::Execute(&modifyTile, getGameState());
         }
 
         void BaseHeightOffset(int16_t elementIndex, int8_t heightOffset)
         {
             auto modifyTile = GameActions::TileModifyAction(
                 _toolMap, GameActions::TileModifyType::AnyBaseHeightOffset, elementIndex, heightOffset);
-            GameActions::Execute(&modifyTile);
+            GameActions::Execute(&modifyTile, getGameState());
         }
 
         void SurfaceShowParkFences(bool showFences)
         {
             auto modifyTile = GameActions::TileModifyAction(
                 _toolMap, GameActions::TileModifyType::SurfaceShowParkFences, showFences);
-            GameActions::Execute(&modifyTile);
+            GameActions::Execute(&modifyTile, getGameState());
         }
 
         void SurfaceToggleCorner(int32_t cornerIndex)
         {
             auto modifyTile = GameActions::TileModifyAction(
                 _toolMap, GameActions::TileModifyType::SurfaceToggleCorner, cornerIndex);
-            GameActions::Execute(&modifyTile);
+            GameActions::Execute(&modifyTile, getGameState());
         }
 
         void SurfaceToggleDiagonal()
         {
             auto modifyTile = GameActions::TileModifyAction(_toolMap, GameActions::TileModifyType::SurfaceToggleDiagonal);
-            GameActions::Execute(&modifyTile);
+            GameActions::Execute(&modifyTile, getGameState());
         }
 
         void PathSetSloped(int32_t elementIndex, bool sloped)
         {
             auto modifyTile = GameActions::TileModifyAction(
                 _toolMap, GameActions::TileModifyType::PathSetSlope, elementIndex, sloped);
-            GameActions::Execute(&modifyTile);
+            GameActions::Execute(&modifyTile, getGameState());
         }
 
         void PathSetJunctionRailings(int32_t elementIndex, bool hasJunctionRailings)
         {
             auto modifyTile = GameActions::TileModifyAction(
                 _toolMap, GameActions::TileModifyType::PathSetJunctionRailings, elementIndex, hasJunctionRailings);
-            GameActions::Execute(&modifyTile);
+            GameActions::Execute(&modifyTile, getGameState());
         }
 
         void PathSetBroken(int32_t elementIndex, bool broken)
         {
             auto modifyTile = GameActions::TileModifyAction(
                 _toolMap, GameActions::TileModifyType::PathSetBroken, elementIndex, broken);
-            GameActions::Execute(&modifyTile);
+            GameActions::Execute(&modifyTile, getGameState());
         }
 
         void PathToggleEdge(int32_t elementIndex, int32_t cornerIndex)
@@ -1974,7 +1975,7 @@ static uint64_t PageDisabledWidgets[] = {
             Guard::Assert(cornerIndex >= 0 && cornerIndex < 8, "cornerIndex out of range");
             auto modifyTile = GameActions::TileModifyAction(
                 _toolMap, GameActions::TileModifyType::PathToggleEdge, elementIndex, cornerIndex);
-            GameActions::Execute(&modifyTile);
+            GameActions::Execute(&modifyTile, getGameState());
         }
 
         void EntranceMakeUsable(int32_t elementIndex)
@@ -1982,7 +1983,7 @@ static uint64_t PageDisabledWidgets[] = {
             Guard::ArgumentInRange(elementIndex, 0, windowTileInspectorElementCount - 1);
             auto modifyTile = GameActions::TileModifyAction(
                 _toolMap, GameActions::TileModifyType::EntranceMakeUsable, elementIndex);
-            GameActions::Execute(&modifyTile);
+            GameActions::Execute(&modifyTile, getGameState());
         }
 
         void WallSetSlope(int32_t elementIndex, int32_t slopeValue)
@@ -1991,21 +1992,21 @@ static uint64_t PageDisabledWidgets[] = {
             Guard::Assert((slopeValue & 3) == slopeValue, "slopeValue doesn't match its mask");
             auto modifyTile = GameActions::TileModifyAction(
                 _toolMap, GameActions::TileModifyType::WallSetSlope, elementIndex, slopeValue);
-            GameActions::Execute(&modifyTile);
+            GameActions::Execute(&modifyTile, getGameState());
         }
 
         void WallAnimationFrameOffset(int16_t elementIndex, int8_t animationFrameOffset)
         {
             auto modifyTile = GameActions::TileModifyAction(
                 _toolMap, GameActions::TileModifyType::WallSetAnimationFrame, elementIndex, animationFrameOffset);
-            GameActions::Execute(&modifyTile);
+            GameActions::Execute(&modifyTile, getGameState());
         }
 
         void TrackBlockHeightOffset(int32_t elementIndex, int8_t heightOffset)
         {
             auto modifyTile = GameActions::TileModifyAction(
                 _toolMap, GameActions::TileModifyType::TrackBaseHeightOffset, elementIndex, heightOffset);
-            GameActions::Execute(&modifyTile);
+            GameActions::Execute(&modifyTile, getGameState());
         }
 
         void TrackBlockSetLift(int32_t elementIndex, bool entireTrackBlock, bool chain)
@@ -2014,21 +2015,21 @@ static uint64_t PageDisabledWidgets[] = {
                 _toolMap,
                 entireTrackBlock ? GameActions::TileModifyType::TrackSetChainBlock : GameActions::TileModifyType::TrackSetChain,
                 elementIndex, chain);
-            GameActions::Execute(&modifyTile);
+            GameActions::Execute(&modifyTile, getGameState());
         }
 
         void TrackSetBrakeClosed(int32_t elementIndex, bool isClosed)
         {
             auto modifyTile = GameActions::TileModifyAction(
                 _toolMap, GameActions::TileModifyType::TrackSetBrake, elementIndex, isClosed);
-            GameActions::Execute(&modifyTile);
+            GameActions::Execute(&modifyTile, getGameState());
         }
 
         void TrackSetIndestructible(int32_t elementIndex, bool isIndestructible)
         {
             auto modifyTile = GameActions::TileModifyAction(
                 _toolMap, GameActions::TileModifyType::TrackSetIndestructible, elementIndex, isIndestructible);
-            GameActions::Execute(&modifyTile);
+            GameActions::Execute(&modifyTile, getGameState());
         }
 
         void QuarterTileSet(int32_t elementIndex, const int32_t quarterIndex)
@@ -2038,7 +2039,7 @@ static uint64_t PageDisabledWidgets[] = {
             auto modifyTile = GameActions::TileModifyAction(
                 _toolMap, GameActions::TileModifyType::ScenerySetQuarterLocation, elementIndex,
                 (quarterIndex - GetCurrentRotation()) & 3);
-            GameActions::Execute(&modifyTile);
+            GameActions::Execute(&modifyTile, getGameState());
         }
 
         // ToggleQuadrantCollision?
@@ -2047,7 +2048,7 @@ static uint64_t PageDisabledWidgets[] = {
             auto modifyTile = GameActions::TileModifyAction(
                 _toolMap, GameActions::TileModifyType::ScenerySetQuarterCollision, elementIndex,
                 (quadrantIndex + 2 - GetCurrentRotation()) & 3);
-            GameActions::Execute(&modifyTile);
+            GameActions::Execute(&modifyTile, getGameState());
         }
 
         void BannerToggleBlock(int32_t elementIndex, int32_t edgeIndex)
@@ -2057,7 +2058,7 @@ static uint64_t PageDisabledWidgets[] = {
             edgeIndex = (edgeIndex - GetCurrentRotation()) & 3;
             auto modifyTile = GameActions::TileModifyAction(
                 _toolMap, GameActions::TileModifyType::BannerToggleBlockingEdge, elementIndex, edgeIndex);
-            GameActions::Execute(&modifyTile);
+            GameActions::Execute(&modifyTile, getGameState());
         }
 
         void ToggleInvisibility(int32_t elementIndex)
@@ -2065,14 +2066,14 @@ static uint64_t PageDisabledWidgets[] = {
             Guard::Assert(elementIndex >= 0 && elementIndex < windowTileInspectorElementCount, "elementIndex out of range");
             auto modifyTile = GameActions::TileModifyAction(
                 _toolMap, GameActions::TileModifyType::AnyToggleInvisilibity, elementIndex);
-            GameActions::Execute(&modifyTile);
+            GameActions::Execute(&modifyTile, getGameState());
         }
 
         void WallSetAnimationIsBackwards(int32_t elementIndex, bool backwards)
         {
             auto modifyTile = GameActions::TileModifyAction(
                 _toolMap, GameActions::TileModifyType::WallSetAnimationIsBackwards, elementIndex, backwards);
-            GameActions::Execute(&modifyTile);
+            GameActions::Execute(&modifyTile, getGameState());
         }
 
         void OnPrepareDraw() override

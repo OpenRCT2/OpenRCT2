@@ -45,12 +45,12 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_spriteId) << DS_TAG(_range) << DS_TAG(_mode);
     }
 
-    Result StaffSetPatrolAreaAction::Query() const
+    Result StaffSetPatrolAreaAction::Query(GameState_t& gameState) const
     {
         return QueryExecute(false);
     }
 
-    Result StaffSetPatrolAreaAction::Execute() const
+    Result StaffSetPatrolAreaAction::Execute(GameState_t& gameState) const
     {
         return QueryExecute(true);
     }

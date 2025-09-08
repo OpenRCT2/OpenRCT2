@@ -64,7 +64,7 @@ namespace OpenRCT2::GameActions
                << DS_TAG(_tertiaryColour);
     }
 
-    Result LargeSceneryPlaceAction::Query() const
+    Result LargeSceneryPlaceAction::Query(GameState_t& gameState) const
     {
         auto res = Result();
         res.ErrorTitle = STR_CANT_POSITION_THIS_HERE;
@@ -75,8 +75,6 @@ namespace OpenRCT2::GameActions
         res.Position.z = surfaceHeight;
 
         auto resultData = LargeSceneryPlaceActionResult{};
-
-        auto& gameState = getGameState();
 
         money64 supportsCost = 0;
 
@@ -193,7 +191,7 @@ namespace OpenRCT2::GameActions
         return res;
     }
 
-    Result LargeSceneryPlaceAction::Execute() const
+    Result LargeSceneryPlaceAction::Execute(GameState_t& gameState) const
     {
         auto res = Result();
         res.ErrorTitle = STR_CANT_POSITION_THIS_HERE;

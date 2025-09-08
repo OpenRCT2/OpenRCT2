@@ -56,17 +56,17 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_coords) << DS_TAG(_range) << DS_TAG(_selectionType);
     }
 
-    Result LandRaiseAction::Query() const
+    Result LandRaiseAction::Query(GameState_t& gameState) const
     {
-        return QueryExecute(false);
+        return QueryExecute(gameState, false);
     }
 
-    Result LandRaiseAction::Execute() const
+    Result LandRaiseAction::Execute(GameState_t& gameState) const
     {
-        return QueryExecute(true);
+        return QueryExecute(gameState, true);
     }
 
-    Result LandRaiseAction::QueryExecute(bool isExecuting) const
+    Result LandRaiseAction::QueryExecute(GameState_t& gameState, bool isExecuting) const
     {
         auto res = Result();
         size_t tableRow = _selectionType;
@@ -129,7 +129,8 @@ namespace OpenRCT2::GameActions
 
                 auto landSetHeightAction = LandSetHeightAction({ x, y }, height, newSlope);
                 landSetHeightAction.SetFlags(GetFlags());
-                auto result = isExecuting ? ExecuteNested(&landSetHeightAction) : QueryNested(&landSetHeightAction);
+                auto result = isExecuting ? ExecuteNested(&landSetHeightAction, gameState)
+                                          : QueryNested(&landSetHeightAction, gameState);
                 if (result.Error == Status::Ok)
                 {
                     res.Cost += result.Cost;

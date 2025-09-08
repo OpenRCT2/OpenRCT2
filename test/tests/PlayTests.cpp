@@ -83,7 +83,7 @@ template<class GA, class... Args>
 static void execute(Args&&... args)
 {
     GA ga(std::forward<Args>(args)...);
-    GameActions::Execute(&ga);
+    GameActions::Execute(&ga, getGameState());
 }
 
 TEST_F(PlayTests, SecondGuestInQueueShouldNotRideIfNoFunds)

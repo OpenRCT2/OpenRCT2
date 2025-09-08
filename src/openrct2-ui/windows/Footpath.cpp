@@ -1158,7 +1158,7 @@ namespace OpenRCT2::Ui::Windows
                     _footpathErrorOccured = true;
                 }
             });
-            GameActions::Execute(&footpathPlaceAction);
+            GameActions::Execute(&footpathPlaceAction, getGameState());
         }
 
         /**
@@ -1278,7 +1278,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     self->WindowFootpathSetEnabledAndPressedWidgets();
                 });
-            GameActions::Execute(&footpathPlaceAction);
+            GameActions::Execute(&footpathPlaceAction, getGameState());
         }
 
         /**
@@ -1319,7 +1319,7 @@ namespace OpenRCT2::Ui::Windows
 
             gFootpathConstructFromPosition.z = tileElement->GetBaseZ();
             auto action = GameActions::FootpathRemoveAction(gFootpathConstructFromPosition);
-            GameActions::Execute(&action);
+            GameActions::Execute(&action, getGameState());
 
             // Move selection
             edge = DirectionReverse(edge);
@@ -1750,15 +1750,15 @@ namespace OpenRCT2::Ui::Windows
         ObjectEntryIndex type, ObjectEntryIndex railingsType, const CoordsXYZ& footpathLoc, int32_t slope,
         PathConstructFlags constructFlags)
     {
-        money64 cost;
-
         FootpathRemoveProvisional();
 
         auto footpathPlaceAction = GameActions::FootpathPlaceAction(
             footpathLoc, slope, type, railingsType, kInvalidDirection, constructFlags);
         footpathPlaceAction.SetFlags(GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
-        auto res = GameActions::Execute(&footpathPlaceAction);
-        cost = res.Error == GameActions::Status::Ok ? res.Cost : kMoney64Undefined;
+
+        auto res = GameActions::Execute(&footpathPlaceAction, getGameState());
+        money64 cost = res.Error == GameActions::Status::Ok ? res.Cost : kMoney64Undefined;
+
         if (res.Error == GameActions::Status::Ok)
         {
             _provisionalFootpath.surfaceIndex = type;
@@ -1814,7 +1814,7 @@ namespace OpenRCT2::Ui::Windows
 
             auto action = GameActions::FootpathRemoveAction(_provisionalFootpath.position);
             action.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
-            GameActions::Execute(&action);
+            GameActions::Execute(&action, getGameState());
         }
     }
 

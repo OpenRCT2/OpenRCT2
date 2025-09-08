@@ -548,7 +548,7 @@ namespace OpenRCT2::Ui::Windows
                         newLoan = std::min(gameState.park.maxBankLoan, newLoan);
                     }
                     auto gameAction = GameActions::ParkSetLoanAction(newLoan);
-                    GameActions::Execute(&gameAction);
+                    GameActions::Execute(&gameAction, gameState);
                     break;
                 }
                 case WIDX_LOAN_DECREASE:
@@ -564,7 +564,7 @@ namespace OpenRCT2::Ui::Windows
                             newLoan = std::max(static_cast<money64>(0LL), newLoan);
                         }
                         auto gameAction = GameActions::ParkSetLoanAction(newLoan);
-                        GameActions::Execute(&gameAction);
+                        GameActions::Execute(&gameAction, gameState);
                     }
                     break;
                 }

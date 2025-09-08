@@ -865,7 +865,8 @@ static StringId window_cheats_page_titles[] = {
 
         void OnMouseDownDate(WidgetIndex widgetIndex)
         {
-            auto* windowMgr = Ui::GetWindowManager();
+            auto* windowMgr = GetWindowManager();
+            auto& gameState = getGameState();
 
             switch (widgetIndex)
             {
@@ -911,14 +912,14 @@ static StringId window_cheats_page_titles[] = {
                 {
                     auto setDateAction = GameActions::ParkSetDateAction(
                         _yearSpinnerValue - 1, _monthSpinnerValue - 1, _daySpinnerValue - 1);
-                    GameActions::Execute(&setDateAction);
+                    GameActions::Execute(&setDateAction, gameState);
                     windowMgr->InvalidateByClass(WindowClass::BottomToolbar);
                     break;
                 }
                 case WIDX_DATE_RESET:
                 {
                     auto setDateAction = GameActions::ParkSetDateAction(0, 0, 0);
-                    GameActions::Execute(&setDateAction);
+                    GameActions::Execute(&setDateAction, gameState);
                     windowMgr->InvalidateByClass(WindowClass::BottomToolbar);
                     InvalidateWidget(WIDX_YEAR_BOX);
                     InvalidateWidget(WIDX_MONTH_BOX);
@@ -961,7 +962,7 @@ static StringId window_cheats_page_titles[] = {
                     {
                         auto cheatSetAction = GameActions::CheatSetAction(
                             CheatType::SetForcedParkRating, _parkRatingSpinnerValue);
-                        GameActions::Execute(&cheatSetAction);
+                        GameActions::Execute(&cheatSetAction, getGameState());
                     }
                     break;
                 case WIDX_DECREASE_PARK_RATING:

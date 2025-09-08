@@ -51,14 +51,14 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_range) << DS_TAG(_itemsToClear);
     }
 
-    Result ClearAction::Query() const
+    Result ClearAction::Query(GameState_t& gameState) const
     {
-        return QueryExecute(false);
+        return QueryExecute(gameState, false);
     }
 
-    Result ClearAction::Execute() const
+    Result ClearAction::Execute(GameState_t& gameState) const
     {
-        return QueryExecute(true);
+        return QueryExecute(gameState, true);
     }
 
     Result ClearAction::CreateResult() const
@@ -75,7 +75,7 @@ namespace OpenRCT2::GameActions
         return result;
     }
 
-    Result ClearAction::QueryExecute(bool executing) const
+    Result ClearAction::QueryExecute(GameState_t& gameState, bool executing) const
     {
         auto result = CreateResult();
 
@@ -89,9 +89,9 @@ namespace OpenRCT2::GameActions
         {
             for (int32_t x = validRange.GetLeft(); x <= validRange.GetRight(); x += kCoordsXYStep)
             {
-                if (LocationValid({ x, y }) && MapCanClearAt({ x, y }))
+                if (LocationValid({ x, y }) && MapCanClearAt(gameState, { x, y }))
                 {
-                    auto cost = ClearSceneryFromTile({ x, y }, executing);
+                    auto cost = ClearSceneryFromTile({ x, y }, executing, gameState);
                     if (cost != kMoney64Undefined)
                     {
                         noValidTiles = false;
@@ -108,7 +108,7 @@ namespace OpenRCT2::GameActions
 
         if (_itemsToClear & CLEARABLE_ITEMS::kSceneryLarge)
         {
-            ResetClearLargeSceneryFlag();
+            ResetClearLargeSceneryFlag(gameState);
         }
 
         if (noValidTiles)
@@ -121,7 +121,7 @@ namespace OpenRCT2::GameActions
         return result;
     }
 
-    money64 ClearAction::ClearSceneryFromTile(const CoordsXY& tilePos, bool executing) const
+    money64 ClearAction::ClearSceneryFromTile(const CoordsXY& tilePos, bool executing, GameState_t& gameState) const
     {
         // Pass down all flags.
         TileElement* tileElement = nullptr;
@@ -146,7 +146,8 @@ namespace OpenRCT2::GameActions
                             auto footpathRemoveAction = FootpathRemoveAction({ tilePos, tileElement->GetBaseZ() });
                             footpathRemoveAction.SetFlags(GetFlags());
 
-                            auto res = executing ? ExecuteNested(&footpathRemoveAction) : QueryNested(&footpathRemoveAction);
+                            auto res = executing ? ExecuteNested(&footpathRemoveAction, gameState)
+                                                 : QueryNested(&footpathRemoveAction, gameState);
 
                             if (res.Error == Status::Ok)
                             {
@@ -163,7 +164,8 @@ namespace OpenRCT2::GameActions
                                 tileElement->AsSmallScenery()->GetEntryIndex());
                             removeSceneryAction.SetFlags(GetFlags());
 
-                            auto res = executing ? ExecuteNested(&removeSceneryAction) : QueryNested(&removeSceneryAction);
+                            auto res = executing ? ExecuteNested(&removeSceneryAction, gameState)
+                                                 : QueryNested(&removeSceneryAction, gameState);
 
                             if (res.Error == Status::Ok)
                             {
@@ -179,7 +181,8 @@ namespace OpenRCT2::GameActions
                             auto wallRemoveAction = WallRemoveAction(wallLocation);
                             wallRemoveAction.SetFlags(GetFlags());
 
-                            auto res = executing ? ExecuteNested(&wallRemoveAction) : QueryNested(&wallRemoveAction);
+                            auto res = executing ? ExecuteNested(&wallRemoveAction, gameState)
+                                                 : QueryNested(&wallRemoveAction, gameState);
 
                             if (res.Error == Status::Ok)
                             {
@@ -196,7 +199,8 @@ namespace OpenRCT2::GameActions
                                 tileElement->AsLargeScenery()->GetSequenceIndex());
                             removeSceneryAction.SetFlags(GetFlags() | GAME_COMMAND_FLAG_TRACK_DESIGN);
 
-                            auto res = executing ? ExecuteNested(&removeSceneryAction) : QueryNested(&removeSceneryAction);
+                            auto res = executing ? ExecuteNested(&removeSceneryAction, gameState)
+                                                 : QueryNested(&removeSceneryAction, gameState);
 
                             if (res.Error == Status::Ok)
                             {
@@ -214,9 +218,8 @@ namespace OpenRCT2::GameActions
         return totalCost;
     }
 
-    void ClearAction::ResetClearLargeSceneryFlag()
+    void ClearAction::ResetClearLargeSceneryFlag(GameState_t& gameState)
     {
-        auto& gameState = getGameState();
         // TODO: Improve efficiency of this
         for (int32_t y = 0; y < gameState.mapSize.y; y++)
         {
@@ -236,9 +239,9 @@ namespace OpenRCT2::GameActions
         }
     }
 
-    bool ClearAction::MapCanClearAt(const CoordsXY& location)
+    bool ClearAction::MapCanClearAt(const GameState_t& gameState, const CoordsXY& location)
     {
-        return gLegacyScene == LegacyScene::scenarioEditor || getGameState().cheats.sandboxMode
+        return gLegacyScene == LegacyScene::scenarioEditor || gameState.cheats.sandboxMode
             || MapIsLocationOwnedOrHasRights(location);
     }
 } // namespace OpenRCT2::GameActions

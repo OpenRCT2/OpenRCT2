@@ -47,7 +47,7 @@ static money64 RideEntranceExitPlaceGhost(
     auto rideEntranceExitPlaceAction = GameActions::RideEntranceExitPlaceAction(
         entranceExitCoords, direction, rideIndex, stationNum, placeType == ENTRANCE_TYPE_RIDE_EXIT);
     rideEntranceExitPlaceAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_GHOST);
-    auto res = GameActions::Execute(&rideEntranceExitPlaceAction);
+    auto res = GameActions::Execute(&rideEntranceExitPlaceAction, getGameState());
 
     return res.Error == GameActions::Status::Ok ? res.Cost : kMoney64Undefined;
 }
@@ -63,7 +63,7 @@ void ParkEntranceRemoveGhost()
         gParkEntranceGhostExists = false;
         auto parkEntranceRemoveAction = GameActions::ParkEntranceRemoveAction(gParkEntranceGhostPosition);
         parkEntranceRemoveAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
-        GameActions::Execute(&parkEntranceRemoveAction);
+        GameActions::Execute(&parkEntranceRemoveAction, getGameState());
     }
 }
 
@@ -105,7 +105,7 @@ void RideEntranceExitRemoveGhost()
             gRideEntranceExitPlaceType == ENTRANCE_TYPE_RIDE_EXIT);
 
         rideEntranceExitRemove.SetFlags(GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
-        GameActions::Execute(&rideEntranceExitRemove);
+        GameActions::Execute(&rideEntranceExitRemove, getGameState());
     }
 }
 

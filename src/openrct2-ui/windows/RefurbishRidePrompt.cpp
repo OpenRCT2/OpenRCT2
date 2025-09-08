@@ -62,7 +62,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_REFURBISH:
                 {
                     auto gameAction = GameActions::RideDemolishAction(rideId, GameActions::RideModifyType::renew);
-                    GameActions::Execute(&gameAction);
+                    GameActions::Execute(&gameAction, getGameState());
                     break;
                 }
                 case WIDX_CANCEL:
