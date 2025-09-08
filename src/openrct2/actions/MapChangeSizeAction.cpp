@@ -84,8 +84,8 @@ namespace OpenRCT2::GameActions
         auto& uiContext = ctx->GetUiContext();
         auto* windowManager = uiContext.GetWindowManager();
 
-        auto& park = gameState.park;
-        Park::UpdateSize(park);
+        for (auto& park : gameState.parks)
+            Park::UpdateSize(park);
 
         windowManager->BroadcastIntent(Intent(INTENT_ACTION_MAP));
         GfxInvalidateScreen();

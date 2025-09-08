@@ -64,15 +64,15 @@ namespace OpenRCT2::GameActions
 
     Result StaffHireNewAction::Query(GameState_t& gameState) const
     {
-        return QueryExecute(false);
+        return QueryExecute(gameState, false);
     }
 
     Result StaffHireNewAction::Execute(GameState_t& gameState) const
     {
-        return QueryExecute(true);
+        return QueryExecute(gameState, true);
     }
 
-    Result StaffHireNewAction::QueryExecute(bool execute) const
+    Result StaffHireNewAction::QueryExecute(GameState_t& gameState, bool execute) const
     {
         auto res = Result();
         res.Expenditure = ExpenditureType::wages;
@@ -171,7 +171,7 @@ namespace OpenRCT2::GameActions
 
             if (_autoPosition)
             {
-                AutoPositionNewStaff(newPeep);
+                AutoPositionNewStaff(gameState, newPeep);
             }
             else
             {
@@ -221,7 +221,7 @@ namespace OpenRCT2::GameActions
         return res;
     }
 
-    void StaffHireNewAction::AutoPositionNewStaff(Peep* newPeep) const
+    void StaffHireNewAction::AutoPositionNewStaff(GameState_t& gameState, Peep* newPeep) const
     {
         // Find a location to place new staff member
         newPeep->State = PeepState::falling;
@@ -281,7 +281,7 @@ namespace OpenRCT2::GameActions
         else
         {
             // No walking guests; pick random park entrance
-            const auto& park = getGameState().park;
+            const auto& park = getUpdatingPark(gameState);
             if (!park.entrances.empty())
             {
                 auto rand = ScenarioRandMax(static_cast<uint32_t>(park.entrances.size()));

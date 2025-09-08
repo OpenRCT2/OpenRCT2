@@ -176,7 +176,7 @@ namespace OpenRCT2
             }
 
             // Initial cash will eventually be removed
-            gameState.scenarioOptions.initialCash = gameState.park.cash;
+            gameState.scenarioOptions.initialCash = gameState.parks[0].cash;
         }
 
         void Save(GameState_t& gameState, IStream& stream, int16_t compressionLevel)
@@ -487,7 +487,7 @@ namespace OpenRCT2
             os.readWriteChunk(ParkFileChunkType::SCENARIO, [&gameState, &os](OrcaStream::ChunkStream& cs) {
                 cs.readWrite(gameState.scenarioOptions.category);
                 ReadWriteStringTable(cs, gameState.scenarioOptions.name, "en-GB");
-                ReadWriteStringTable(cs, gameState.park.name, "en-GB");
+                ReadWriteStringTable(cs, gameState.parks[0].name, "en-GB");
                 ReadWriteStringTable(cs, gameState.scenarioOptions.details, "en-GB");
 
                 cs.readWrite(gameState.scenarioOptions.objective.Type);
@@ -892,7 +892,7 @@ namespace OpenRCT2
         void ReadWriteParkChunk(GameState_t& gameState, OrcaStream& os)
         {
             // TODO: load/save all parks
-            auto& park = gameState.park;
+            auto& park = gameState.parks[0];
 
             os.readWriteChunk(
                 ParkFileChunkType::PARK, [version = os.getHeader().targetVersion, &park](OrcaStream::ChunkStream& cs) {

@@ -352,7 +352,7 @@ namespace OpenRCT2::RCT1
             // Do map initialisation, same kind of stuff done when loading scenario editor
             gameStateInitAll(gameState, { mapSize, mapSize });
             gameState.editorStep = EditorStep::ObjectSelection;
-            gameState.park.flags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
+            gameState.parks[0].flags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
             gameState.scenarioOptions.category = Scenario::Category::other;
         }
 
@@ -1478,7 +1478,7 @@ namespace OpenRCT2::RCT1
 
         void ImportFinance(GameState_t& gameState)
         {
-            auto& park = gameState.park;
+            auto& park = gameState.parks[0];
 
             park.entranceFee = _s4.ParkEntranceFee;
             gameState.scenarioOptions.landPrice = ToMoney64(_s4.LandPrice);
@@ -2197,7 +2197,7 @@ namespace OpenRCT2::RCT1
                 }
             }
 
-            auto& park = gameState.park;
+            auto& park = gameState.parks[0];
             park.name = std::move(parkName);
         }
 
@@ -2246,7 +2246,7 @@ namespace OpenRCT2::RCT1
             ScenarioRandSeed(_s4.RandomA, _s4.RandomB);
             gameState.date = Date{ _s4.Month, _s4.Day };
 
-            auto& park = gameState.park;
+            auto& park = gameState.parks[0];
 
             // Park rating
             park.rating = _s4.ParkRating;
@@ -2436,7 +2436,7 @@ namespace OpenRCT2::RCT1
             gameState.scenarioOptions.details = std::move(details);
             if (_isScenario && !parkName.empty())
             {
-                auto& park = gameState.park;
+                auto& park = gameState.parks[0];
                 park.name = std::move(parkName);
             }
         }
@@ -2530,7 +2530,7 @@ namespace OpenRCT2::RCT1
 
         void FixEntrancePositions(GameState_t& gameState)
         {
-            auto& park = gameState.park;
+            auto& park = gameState.parks[0];
             park.entrances.clear();
 
             TileElementIterator it;

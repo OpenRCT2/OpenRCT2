@@ -60,7 +60,8 @@ static constexpr bool kCountTowardsCurrentExpenditure[EnumValue(ExpenditureType:
  */
 bool FinanceCheckMoneyRequired(uint32_t flags)
 {
-    if (getGameState().park.flags & PARK_FLAGS_NO_MONEY)
+    const auto& gameState = getGameState();
+    if (getUpdatingPark(gameState).flags & PARK_FLAGS_NO_MONEY)
         return false;
     if (isInEditorMode())
         return false;
@@ -78,7 +79,8 @@ bool FinanceCheckMoneyRequired(uint32_t flags)
  */
 bool FinanceCheckAffordability(money64 cost, uint32_t flags)
 {
-    return !FinanceCheckMoneyRequired(flags) || cost <= 0 || cost <= getGameState().park.cash;
+    const auto& gameState = getGameState();
+    return !FinanceCheckMoneyRequired(flags) || cost <= 0 || cost <= getUpdatingPark(gameState).cash;
 }
 
 /**
@@ -90,7 +92,8 @@ bool FinanceCheckAffordability(money64 cost, uint32_t flags)
 void FinancePayment(money64 amount, ExpenditureType type)
 {
     // overflow check
-    auto& park = getGameState().park;
+    auto& gameState = getGameState();
+    auto& park = getUpdatingPark(gameState);
     park.cash = AddClamp<money64>(park.cash, -amount);
 
     park.expenditureTable[0][EnumValue(type)] -= amount;
@@ -112,7 +115,8 @@ void FinancePayWages()
 {
     PROFILED_FUNCTION();
 
-    if (getGameState().park.flags & PARK_FLAGS_NO_MONEY)
+    const auto& gameState = getGameState();
+    if (getUpdatingPark(gameState).flags & PARK_FLAGS_NO_MONEY)
     {
         return;
     }
@@ -130,7 +134,7 @@ void FinancePayWages()
 void FinancePayResearch()
 {
     const auto& gameState = getGameState();
-    if (getGameState().park.flags & PARK_FLAGS_NO_MONEY)
+    if (getUpdatingPark(gameState).flags & PARK_FLAGS_NO_MONEY)
     {
         return;
     }
@@ -145,7 +149,8 @@ void FinancePayResearch()
  */
 void FinancePayInterest()
 {
-    const auto& park = getGameState().park;
+    const auto& gameState = getGameState();
+    const auto& park = getUpdatingPark(gameState);
 
     if (park.flags & PARK_FLAGS_NO_MONEY)
     {
@@ -178,7 +183,7 @@ void FinancePayRideUpkeep()
             ride.renew();
         }
 
-        if (ride.status != RideStatus::closed && !(gameState.park.flags & PARK_FLAGS_NO_MONEY))
+        if (ride.status != RideStatus::closed && !(getUpdatingPark(gameState).flags & PARK_FLAGS_NO_MONEY))
         {
             auto upkeep = ride.upkeepCost;
             if (upkeep != kMoney64Undefined)
@@ -198,7 +203,8 @@ void FinancePayRideUpkeep()
 
 void FinanceResetHistory()
 {
-    auto& park = getGameState().park;
+    auto& gameState = getGameState();
+    auto& park = getUpdatingPark(gameState);
     for (auto i = 0; i < kFinanceHistorySize; i++)
     {
         park.cashHistory[i] = kMoney64Undefined;
@@ -222,7 +228,9 @@ void FinanceResetHistory()
 void FinanceInit()
 {
     auto& gameState = getGameState();
-    auto& park = gameState.park;
+
+    // TODO: for all parks
+    auto& park = getUpdatingPark(gameState);
 
     // It only initialises the first month
     for (uint32_t i = 0; i < static_cast<int32_t>(ExpenditureType::count); i++)
@@ -261,7 +269,9 @@ void FinanceUpdateDailyProfit()
     PROFILED_FUNCTION();
 
     auto& gameState = getGameState();
-    auto& park = gameState.park;
+
+    // TODO: for all parks
+    auto& park = getUpdatingPark(gameState);
 
     park.currentProfit = 7 * park.currentExpenditure;
     park.currentExpenditure = 0; // Reset daily expenditure
@@ -314,7 +324,8 @@ void FinanceUpdateDailyProfit()
  */
 void FinanceShiftExpenditureTable()
 {
-    auto& park = getGameState().park;
+    auto& gameState = getGameState();
+    auto& park = getUpdatingPark(gameState);
 
     // If kExpenditureTableMonthCount months have passed then is full, sum the oldest month
     if (GetDate().GetMonthsElapsed() >= kExpenditureTableMonthCount)
@@ -352,7 +363,7 @@ void FinanceShiftExpenditureTable()
 void FinanceResetCashToInitial()
 {
     auto& gameState = getGameState();
-    getGameState().park.cash = gameState.scenarioOptions.initialCash;
+    getUpdatingPark(gameState).cash = gameState.scenarioOptions.initialCash;
 }
 
 /**
@@ -363,7 +374,8 @@ money64 FinanceGetLastMonthShopProfit()
     money64 profit = 0;
     if (GetDate().GetMonthsElapsed() != 0)
     {
-        const auto* lastMonthExpenditure = getGameState().park.expenditureTable[1];
+        const auto& gameState = getGameState();
+        const auto* lastMonthExpenditure = getUpdatingPark(gameState).expenditureTable[1];
 
         profit += lastMonthExpenditure[EnumValue(ExpenditureType::shopSales)];
         profit += lastMonthExpenditure[EnumValue(ExpenditureType::shopStock)];

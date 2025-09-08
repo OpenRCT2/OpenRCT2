@@ -69,8 +69,11 @@ void ParkEntranceRemoveGhost()
 
 int32_t ParkEntranceGetIndex(const CoordsXYZ& entrancePos)
 {
+    const auto& gameState = getGameState();
+    const auto& park = getUpdatingPark(gameState);
+
     int32_t i = 0;
-    for (const auto& entrance : getGameState().park.entrances)
+    for (const auto& entrance : park.entrances)
     {
         if (entrancePos == entrance)
         {
@@ -83,7 +86,8 @@ int32_t ParkEntranceGetIndex(const CoordsXYZ& entrancePos)
 
 void ParkEntranceReset()
 {
-    getGameState().park.entrances.clear();
+    auto& gameState = getGameState();
+    getUpdatingPark(gameState).entrances.clear();
 }
 
 void RideEntranceExitPlaceProvisionalGhost()
@@ -212,7 +216,8 @@ void MazeEntranceHedgeRemoval(const CoordsXYE& entrance)
 
 void ParkEntranceFixLocations(void)
 {
-    auto& park = getGameState().park;
+    auto& gameState = getGameState();
+    auto& park = getUpdatingPark(gameState);
     // Fix ParkEntrance locations for which the tile_element no longer exists
     park.entrances.erase(
         std::remove_if(
@@ -223,7 +228,8 @@ void ParkEntranceFixLocations(void)
 
 void ParkEntranceUpdateLocations()
 {
-    auto& park = getGameState().park;
+    auto& gameState = getGameState();
+    auto& park = getUpdatingPark(gameState);
     park.entrances.clear();
     TileElementIterator it;
     TileElementIteratorBegin(&it);
