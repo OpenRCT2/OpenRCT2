@@ -3842,3 +3842,5 @@ STR_7000    :or
 STR_7001    :Ride name
 STR_7002    :{STRINGID} {STRINGID}
 STR_7003    :Audio file ‘{STRING}’ is truncated. Expected sample {INT32}, but only {INT32} are available. Consider reinstalling RCT2.
+STR_7010    :Could not start replay, file '{STRING}' not found
+STR_7011    :Could not start replay
