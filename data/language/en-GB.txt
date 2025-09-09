@@ -3846,3 +3846,5 @@ STR_7004    :Force Redraw
 STR_7005    :Drag an area of footpath
 STR_7006    :Draw border around image buttons
 STR_7007    :Ride Type
+STR_7010    :Could not start replay, file '{STRING}' not found
+STR_7011    :Could not start replay
