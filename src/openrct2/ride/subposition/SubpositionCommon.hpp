@@ -15,7 +15,7 @@
 #include <cstddef>
 
 #define CREATE_VEHICLE_INFO(VAR, ...)                                                                                          \
-    constexpr VehicleInfo VAR##_data[] = __VA_ARGS__;                                                                   \
+    constexpr VehicleInfo VAR##_data[] = __VA_ARGS__;                                                                          \
     constexpr OpenRCT2::Subposition::VehicleInfoList VAR = { static_cast<uint16_t>(std::size(VAR##_data)), VAR##_data };
 
 CREATE_VEHICLE_INFO(

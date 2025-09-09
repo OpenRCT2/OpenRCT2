@@ -541,7 +541,8 @@ constexpr uint8_t kVehicleSeatNumMask = 0x7F;
 Vehicle* TryGetVehicle(EntityId spriteIndex);
 void VehicleUpdateAll();
 void VehicleSoundsUpdate();
-uint16_t VehicleGetMoveInfoSize(OpenRCT2::Subposition::VehicleTrackSubposition trackSubposition, OpenRCT2::TrackElemType type, uint8_t direction);
+uint16_t VehicleGetMoveInfoSize(
+    OpenRCT2::Subposition::VehicleTrackSubposition trackSubposition, OpenRCT2::TrackElemType type, uint8_t direction);
 
 void RideUpdateMeasurementsSpecialElements_Default(Ride& ride, const OpenRCT2::TrackElemType trackType);
 void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const OpenRCT2::TrackElemType trackType);
