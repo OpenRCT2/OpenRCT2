@@ -1866,7 +1866,10 @@ namespace OpenRCT2::Ui::Windows
             SetDropdown(info, RideStatus::open, STR_OPEN_RIDE);
             WindowDropdownShowText(
                 { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height() + 1, colours[1], 0, info.NumItems);
-            gDropdown.items[info.CheckedIndex].setChecked(true);
+            if (info.CheckedIndex != -1)
+            {
+                gDropdown.items[info.CheckedIndex].setChecked(true);
+            }
             gDropdown.defaultIndex = info.DefaultIndex;
         }
 
