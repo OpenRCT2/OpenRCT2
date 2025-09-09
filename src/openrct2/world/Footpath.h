@@ -95,6 +95,11 @@ struct FootpathSlope
 {
     FootpathSlopeType type{};
     Direction direction{};
+
+    constexpr bool operator==(const FootpathSlope& rhs) const
+    {
+        return type == rhs.type && direction == rhs.direction;
+    }
 };
 
 struct FootpathPlacementResult
