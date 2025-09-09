@@ -23,10 +23,6 @@ namespace OpenRCT2::Subposition
     static constexpr VehicleInfo VAR##_data[] = __VA_ARGS__;                                                                   \
     static constexpr VehicleInfoList VAR = { static_cast<uint16_t>(std::size(VAR##_data)), VAR##_data };
 
-#define MINI_GOLF_STATE(STATE) { kLocationNull, EnumValue(MiniGolfState::STATE), 0, 0, flat, unbanked }
-#define MINI_GOLF_ANIMATION(VALUE)                                                                                             \
-    { kLocationNull, EnumValue(MiniGolfState::Unk4), EnumValue(MiniGolfAnimation::VALUE), 0, flat, unbanked }
-
     CREATE_VEHICLE_INFO(
         TrackVehicleInfo_000000,
         {

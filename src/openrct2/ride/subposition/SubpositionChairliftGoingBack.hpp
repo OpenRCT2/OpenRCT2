@@ -352,107 +352,107 @@ namespace OpenRCT2::Subposition::ChairliftGoingBack
     })
 
     static constexpr const VehicleInfoList * TrackVehicleInfoListChairliftGoingBack[] = {
-        &Flat_0,                                   &Flat_1,                                   &Flat_2,                                   &Flat_3,                                   // Flat
-        &Flat_0,                                   &Flat_1,                                   &Flat_2,                                   &Flat_3,                                   // EndStation
-        &Flat_0,                                   &Flat_1,                                   &Flat_2,                                   &Flat_3,                                   // BeginStation
-        &Flat_0,                                   &Flat_1,                                   &Flat_2,                                   &Flat_3,                                   // MiddleStation
-        &Up25_0,                                   &Up25_1,                                   &Up25_2,                                   &Up25_3,                                   // Up25
-        &Default::Up60_0,                          &Default::Up60_1,                          &Default::Up60_2,                          &Default::Up60_3,                          // Up60
-        &FlatToUp25_0,                             &FlatToUp25_1,                             &FlatToUp25_2,                             &FlatToUp25_3,                             // FlatToUp25
-        &Default::Up25ToUp60_0,                    &Default::Up25ToUp60_1,                    &Default::Up25ToUp60_2,                    &Default::Up25ToUp60_3,                    // Up25ToUp60
-        &Default::Up60ToUp25_0,                    &Default::Up60ToUp25_1,                    &Default::Up60ToUp25_2,                    &Default::Up60ToUp25_3,                    // Up60ToUp25
-        &Up25ToFlat_0,                             &Up25ToFlat_1,                             &Up25ToFlat_2,                             &Up25ToFlat_3,                             // Up25ToFlat
-        &Down25_0,                                 &Down25_1,                                 &Down25_2,                                 &Down25_3,                                 // Down25
-        &Default::Down60_0,                        &Default::Down60_1,                        &Default::Down60_2,                        &Default::Down60_3,                        // Down60
-        &FlatToDown25_0,                           &FlatToDown25_1,                           &FlatToDown25_2,                           &FlatToDown25_3,                           // FlatToDown25
-        &Default::Down25ToDown60_0,                &Default::Down25ToDown60_1,                &Default::Down25ToDown60_2,                &Default::Down25ToDown60_3,                // Down25ToDown60
-        &Default::Down60ToDown25_0,                &Default::Down60ToDown25_1,                &Default::Down60ToDown25_2,                &Default::Down60ToDown25_3,                // Down60ToDown25
-        &Down25ToFlat_0,                           &Down25ToFlat_1,                           &Down25ToFlat_2,                           &Down25ToFlat_3,                           // Down25ToFlat
-        &Default::LeftQuarterTurn5Tiles_0,         &Default::LeftQuarterTurn5Tiles_1,         &Default::LeftQuarterTurn5Tiles_2,         &Default::LeftQuarterTurn5Tiles_3,         // LeftQuarterTurn5Tiles
-        &Default::RightQuarterTurn5Tiles_0,        &Default::RightQuarterTurn5Tiles_1,        &Default::RightQuarterTurn5Tiles_2,        &Default::RightQuarterTurn5Tiles_3,        // RightQuarterTurn5Tiles
-        &Default::FlatToLeftBank_0,                &Default::FlatToLeftBank_1,                &Default::FlatToLeftBank_2,                &Default::FlatToLeftBank_3,                // FlatToLeftBank
-        &Default::FlatToRightBank_0,               &Default::FlatToRightBank_1,               &Default::FlatToRightBank_2,               &Default::FlatToRightBank_3,               // FlatToRightBank
-        &Default::LeftBankToFlat_0,                &Default::LeftBankToFlat_1,                &Default::LeftBankToFlat_2,                &Default::LeftBankToFlat_3,                // LeftBankToFlat
-        &Default::RightBankToFlat_0,               &Default::RightBankToFlat_1,               &Default::RightBankToFlat_2,               &Default::RightBankToFlat_3,               // RightBankToFlat
-        &Default::BankedLeftQuarterTurn5Tiles_0,   &Default::BankedLeftQuarterTurn5Tiles_1,   &Default::BankedLeftQuarterTurn5Tiles_2,   &Default::BankedLeftQuarterTurn5Tiles_3,   // BankedLeftQuarterTurn5Tiles
-        &Default::BankedRightQuarterTurn5Tiles_0,  &Default::BankedRightQuarterTurn5Tiles_1,  &Default::BankedRightQuarterTurn5Tiles_2,  &Default::BankedRightQuarterTurn5Tiles_3,  // BankedRightQuarterTurn5Tiles
-        &Default::LeftBankToUp25_0,                &Default::LeftBankToUp25_1,                &Default::LeftBankToUp25_2,                &Default::LeftBankToUp25_3,                // LeftBankToUp25
-        &Default::RightBankToUp25_0,               &Default::RightBankToUp25_1,               &Default::RightBankToUp25_2,               &Default::RightBankToUp25_3,               // RightBankToUp25
-        &Default::Up25ToLeftBank_0,                &Default::Up25ToLeftBank_1,                &Default::Up25ToLeftBank_2,                &Default::Up25ToLeftBank_3,                // Up25ToLeftBank
-        &Default::Up25ToRightBank_0,               &Default::Up25ToRightBank_1,               &Default::Up25ToRightBank_2,               &Default::Up25ToRightBank_3,               // Up25ToRightBank
-        &Default::LeftBankToDown25_0,              &Default::LeftBankToDown25_1,              &Default::LeftBankToDown25_2,              &Default::LeftBankToDown25_3,              // LeftBankToDown25
-        &Default::RightBankToDown25_0,             &Default::RightBankToDown25_1,             &Default::RightBankToDown25_2,             &Default::RightBankToDown25_3,             // RightBankToDown25
-        &Default::Down25ToLeftBank_0,              &Default::Down25ToLeftBank_1,              &Default::Down25ToLeftBank_2,              &Default::Down25ToLeftBank_3,              // Down25ToLeftBank
-        &Default::Down25ToRightBank_0,             &Default::Down25ToRightBank_1,             &Default::Down25ToRightBank_2,             &Default::Down25ToRightBank_3,             // Down25ToRightBank
-        &Default::LeftBank_0,                      &Default::LeftBank_1,                      &Default::LeftBank_2,                      &Default::LeftBank_3,                      // LeftBank
-        &Default::RightBank_0,                     &Default::RightBank_1,                     &Default::RightBank_2,                     &Default::RightBank_3,                     // RightBank
-        &Default::LeftQuarterTurn5TilesUp25_0,     &Default::LeftQuarterTurn5TilesUp25_1,     &Default::LeftQuarterTurn5TilesUp25_2,     &Default::LeftQuarterTurn5TilesUp25_3,     // LeftQuarterTurn5TilesUp25
-        &Default::RightQuarterTurn5TilesUp25_0,    &Default::RightQuarterTurn5TilesUp25_1,    &Default::RightQuarterTurn5TilesUp25_2,    &Default::RightQuarterTurn5TilesUp25_3,    // RightQuarterTurn5TilesUp25
-        &Default::LeftQuarterTurn5TilesDown25_0,   &Default::LeftQuarterTurn5TilesDown25_1,   &Default::LeftQuarterTurn5TilesDown25_2,   &Default::LeftQuarterTurn5TilesDown25_3,   // LeftQuarterTurn5TilesDown25
-        &Default::RightQuarterTurn5TilesDown25_0,  &Default::RightQuarterTurn5TilesDown25_1,  &Default::RightQuarterTurn5TilesDown25_2,  &Default::RightQuarterTurn5TilesDown25_3,  // RightQuarterTurn5TilesDown25
-        &Default::SBendLeft_0,                     &Default::SBendLeft_1,                     &Default::SBendLeft_2,                     &Default::SBendLeft_3,                     // SBendLeft
-        &Default::SBendRight_0,                    &Default::SBendRight_1,                    &Default::SBendRight_2,                    &Default::SBendRight_3,                    // SBendRight
-        &Default::LeftVerticalLoop_0,              &Default::LeftVerticalLoop_1,              &Default::LeftVerticalLoop_2,              &Default::LeftVerticalLoop_3,              // LeftVerticalLoop
-        &Default::RightVerticalLoop_0,             &Default::RightVerticalLoop_1,             &Default::RightVerticalLoop_2,             &Default::RightVerticalLoop_3,             // RightVerticalLoop
-        &Default::LeftQuarterTurn3Tiles_0,         &Default::LeftQuarterTurn3Tiles_1,         &Default::LeftQuarterTurn3Tiles_2,         &Default::LeftQuarterTurn3Tiles_3,         // LeftQuarterTurn3Tiles
-        &Default::RightQuarterTurn3Tiles_0,        &Default::RightQuarterTurn3Tiles_1,        &Default::RightQuarterTurn3Tiles_2,        &Default::RightQuarterTurn3Tiles_3,        // RightQuarterTurn3Tiles
-        &Default::LeftBankedQuarterTurn3Tiles_0,   &Default::LeftBankedQuarterTurn3Tiles_1,   &Default::LeftBankedQuarterTurn3Tiles_2,   &Default::LeftBankedQuarterTurn3Tiles_3,   // LeftBankedQuarterTurn3Tiles
-        &Default::RightBankedQuarterTurn3Tiles_0,  &Default::RightBankedQuarterTurn3Tiles_1,  &Default::RightBankedQuarterTurn3Tiles_2,  &Default::RightBankedQuarterTurn3Tiles_3,  // RightBankedQuarterTurn3Tiles
-        &Default::LeftQuarterTurn3TilesUp25_0,     &Default::LeftQuarterTurn3TilesUp25_1,     &Default::LeftQuarterTurn3TilesUp25_2,     &Default::LeftQuarterTurn3TilesUp25_3,     // LeftQuarterTurn3TilesUp25
-        &Default::RightQuarterTurn3TilesUp25_0,    &Default::RightQuarterTurn3TilesUp25_1,    &Default::RightQuarterTurn3TilesUp25_2,    &Default::RightQuarterTurn3TilesUp25_3,    // RightQuarterTurn3TilesUp25
-        &Default::LeftQuarterTurn3TilesDown25_0,   &Default::LeftQuarterTurn3TilesDown25_1,   &Default::LeftQuarterTurn3TilesDown25_2,   &Default::LeftQuarterTurn3TilesDown25_3,   // LeftQuarterTurn3TilesDown25
-        &Default::RightQuarterTurn3TilesDown25_0,  &Default::RightQuarterTurn3TilesDown25_1,  &Default::RightQuarterTurn3TilesDown25_2,  &Default::RightQuarterTurn3TilesDown25_3,  // RightQuarterTurn3TilesDown25
-        &LeftQuarterTurn1Tile_0,                   &LeftQuarterTurn1Tile_1,                   &LeftQuarterTurn1Tile_2,                   &LeftQuarterTurn1Tile_3,                   // LeftQuarterTurn1Tile
-        &RightQuarterTurn1Tile_0,                  &RightQuarterTurn1Tile_1,                  &RightQuarterTurn1Tile_2,                  &RightQuarterTurn1Tile_3,                  // RightQuarterTurn1Tile
-        &Default::LeftTwistDownToUp_0,             &Default::LeftTwistDownToUp_1,             &Default::LeftTwistDownToUp_2,             &Default::LeftTwistDownToUp_3,             // LeftTwistDownToUp
-        &Default::RightTwistDownToUp_0,            &Default::RightTwistDownToUp_1,            &Default::RightTwistDownToUp_2,            &Default::RightTwistDownToUp_3,            // RightTwistDownToUp
-        &Default::LeftTwistUpToDown_0,             &Default::LeftTwistUpToDown_1,             &Default::LeftTwistUpToDown_2,             &Default::LeftTwistUpToDown_3,             // LeftTwistUpToDown
-        &Default::RightTwistUpToDown_0,            &Default::RightTwistUpToDown_1,            &Default::RightTwistUpToDown_2,            &Default::RightTwistUpToDown_3,            // RightTwistUpToDown
-        &Default::HalfLoopUp_0,                    &Default::HalfLoopUp_1,                    &Default::HalfLoopUp_2,                    &Default::HalfLoopUp_3,                    // HalfLoopUp
-        &Default::HalfLoopDown_0,                  &Default::HalfLoopDown_1,                  &Default::HalfLoopDown_2,                  &Default::HalfLoopDown_3,                  // HalfLoopDown
-        &Default::LeftCorkscrewUp_0,               &Default::LeftCorkscrewUp_1,               &Default::LeftCorkscrewUp_2,               &Default::LeftCorkscrewUp_3,               // LeftCorkscrewUp
-        &Default::RightCorkscrewUp_0,              &Default::RightCorkscrewUp_1,              &Default::RightCorkscrewUp_2,              &Default::RightCorkscrewUp_3,              // RightCorkscrewUp
-        &Default::LeftCorkscrewDown_0,             &Default::LeftCorkscrewDown_1,             &Default::LeftCorkscrewDown_2,             &Default::LeftCorkscrewDown_3,             // LeftCorkscrewDown
-        &Default::RightCorkscrewDown_0,            &Default::RightCorkscrewDown_1,            &Default::RightCorkscrewDown_2,            &Default::RightCorkscrewDown_3,            // RightCorkscrewDown
-        &Default::FlatToUp60_0,                    &Default::FlatToUp60_1,                    &Default::FlatToUp60_2,                    &Default::FlatToUp60_3,                    // FlatToUp60
-        &Default::Up60ToFlat_0,                    &Default::Up60ToFlat_1,                    &Default::Up60ToFlat_2,                    &Default::Up60ToFlat_3,                    // Up60ToFlat
-        &Default::FlatToDown60_0,                  &Default::FlatToDown60_1,                  &Default::FlatToDown60_2,                  &Default::FlatToDown60_3,                  // FlatToDown60
-        &Default::Down60ToFlat_0,                  &Default::Down60ToFlat_1,                  &Default::Down60ToFlat_2,                  &Default::Down60ToFlat_3,                  // Down60ToFlat
-        &Default::TowerBase_0,                     &Default::TowerBase_1,                     &Default::TowerBase_2,                     &Default::TowerBase_3,                     // TowerBase
-        &Default::TowerSection_0,                  &Default::TowerSection_1,                  &Default::TowerSection_2,                  &Default::TowerSection_3,                  // TowerSection
-        &Default::Flat_0,                          &Default::Flat_1,                          &Default::Flat_2,                          &Default::Flat_3,                          // FlatCovered
-        &Default::Up25_0,                          &Default::Up25_1,                          &Default::Up25_2,                          &Default::Up25_3,                          // Up25Covered
-        &Default::Up60_0,                          &Default::Up60_1,                          &Default::Up60_2,                          &Default::Up60_3,                          // Up60Covered
-        &Default::FlatToUp25_0,                    &Default::FlatToUp25_1,                    &Default::FlatToUp25_2,                    &Default::FlatToUp25_3,                    // FlatToUp25Covered
-        &Default::Up25ToUp60_0,                    &Default::Up25ToUp60_1,                    &Default::Up25ToUp60_2,                    &Default::Up25ToUp60_3,                    // Up25ToUp60Covered
-        &Default::Up60ToUp25_0,                    &Default::Up60ToUp25_1,                    &Default::Up60ToUp25_2,                    &Default::Up60ToUp25_3,                    // Up60ToUp25Covered
-        &Default::Up25ToFlat_0,                    &Default::Up25ToFlat_1,                    &Default::Up25ToFlat_2,                    &Default::Up25ToFlat_3,                    // Up25ToFlatCovered
-        &Default::Down25_0,                        &Default::Down25_1,                        &Default::Down25_2,                        &Default::Down25_3,                        // Down25Covered
-        &Default::Down60_0,                        &Default::Down60_1,                        &Default::Down60_2,                        &Default::Down60_3,                        // Down60Covered
-        &Default::FlatToDown25_0,                  &Default::FlatToDown25_1,                  &Default::FlatToDown25_2,                  &Default::FlatToDown25_3,                  // FlatToDown25Covered
-        &Default::Down25ToDown60_0,                &Default::Down25ToDown60_1,                &Default::Down25ToDown60_2,                &Default::Down25ToDown60_3,                // Down25ToDown60Covered
-        &Default::Down60ToDown25_0,                &Default::Down60ToDown25_1,                &Default::Down60ToDown25_2,                &Default::Down60ToDown25_3,                // Down60ToDown25Covered
-        &Default::Down25ToFlat_0,                  &Default::Down25ToFlat_1,                  &Default::Down25ToFlat_2,                  &Default::Down25ToFlat_3,                  // Down25ToFlatCovered
-        &Default::LeftQuarterTurn5Tiles_0,         &Default::LeftQuarterTurn5Tiles_1,         &Default::LeftQuarterTurn5Tiles_2,         &Default::LeftQuarterTurn5Tiles_3,         // LeftQuarterTurn5TilesCovered
-        &Default::RightQuarterTurn5Tiles_0,        &Default::RightQuarterTurn5Tiles_1,        &Default::RightQuarterTurn5Tiles_2,        &Default::RightQuarterTurn5Tiles_3,        // RightQuarterTurn5TilesCovered
-        &Default::SBendLeft_0,                     &Default::SBendLeft_1,                     &Default::SBendLeft_2,                     &Default::SBendLeft_3,                     // SBendLeftCovered
-        &Default::SBendRight_0,                    &Default::SBendRight_1,                    &Default::SBendRight_2,                    &Default::SBendRight_3,                    // SBendRightCovered
-        &Default::LeftQuarterTurn3Tiles_0,         &Default::LeftQuarterTurn3Tiles_1,         &Default::LeftQuarterTurn3Tiles_2,         &Default::LeftQuarterTurn3Tiles_3,         // LeftQuarterTurn3TilesCovered
-        &Default::RightQuarterTurn3Tiles_0,        &Default::RightQuarterTurn3Tiles_1,        &Default::RightQuarterTurn3Tiles_2,        &Default::RightQuarterTurn3Tiles_3,        // RightQuarterTurn3TilesCovered
-        &Default::LeftHalfBankedHelixUpSmall_0,    &Default::LeftHalfBankedHelixUpSmall_1,    &Default::LeftHalfBankedHelixUpSmall_2,    &Default::LeftHalfBankedHelixUpSmall_3,    // LeftHalfBankedHelixUpSmall
-        &Default::RightHalfBankedHelixUpSmall_0,   &Default::RightHalfBankedHelixUpSmall_1,   &Default::RightHalfBankedHelixUpSmall_2,   &Default::RightHalfBankedHelixUpSmall_3,   // RightHalfBankedHelixUpSmall
-        &Default::LeftHalfBankedHelixDownSmall_0,  &Default::LeftHalfBankedHelixDownSmall_1,  &Default::LeftHalfBankedHelixDownSmall_2,  &Default::LeftHalfBankedHelixDownSmall_3,  // LeftHalfBankedHelixDownSmall
-        &Default::RightHalfBankedHelixDownSmall_0, &Default::RightHalfBankedHelixDownSmall_1, &Default::RightHalfBankedHelixDownSmall_2, &Default::RightHalfBankedHelixDownSmall_3, // RightHalfBankedHelixDownSmall
-        &Default::LeftHalfBankedHelixUpLarge_0,    &Default::LeftHalfBankedHelixUpLarge_1,    &Default::LeftHalfBankedHelixUpLarge_2,    &Default::LeftHalfBankedHelixUpLarge_3,    // LeftHalfBankedHelixUpLarge
-        &Default::RightHalfBankedHelixUpLarge_0,   &Default::RightHalfBankedHelixUpLarge_1,   &Default::RightHalfBankedHelixUpLarge_2,   &Default::RightHalfBankedHelixUpLarge_3,   // RightHalfBankedHelixUpLarge
-        &Default::LeftHalfBankedHelixDownLarge_0,  &Default::LeftHalfBankedHelixDownLarge_1,  &Default::LeftHalfBankedHelixDownLarge_2,  &Default::LeftHalfBankedHelixDownLarge_3,  // LeftHalfBankedHelixDownLarge
-        &Default::RightHalfBankedHelixDownLarge_0, &Default::RightHalfBankedHelixDownLarge_1, &Default::RightHalfBankedHelixDownLarge_2, &Default::RightHalfBankedHelixDownLarge_3, // RightHalfBankedHelixDownLarge
-        &Default::LeftQuarterTurn1TileUp60_0,      &Default::LeftQuarterTurn1TileUp60_1,      &Default::LeftQuarterTurn1TileUp60_2,      &Default::LeftQuarterTurn1TileUp60_3,      // LeftQuarterTurn1TileUp60
-        &Default::RightQuarterTurn1TileUp60_0,     &Default::RightQuarterTurn1TileUp60_1,     &Default::RightQuarterTurn1TileUp60_2,     &Default::RightQuarterTurn1TileUp60_3,     // RightQuarterTurn1TileUp60
-        &Default::LeftQuarterTurn1TileDown60_0,    &Default::LeftQuarterTurn1TileDown60_1,    &Default::LeftQuarterTurn1TileDown60_2,    &Default::LeftQuarterTurn1TileDown60_3,    // LeftQuarterTurn1TileDown60
-        &Default::RightQuarterTurn1TileDown60_0,   &Default::RightQuarterTurn1TileDown60_1,   &Default::RightQuarterTurn1TileDown60_2,   &Default::RightQuarterTurn1TileDown60_3,   // RightQuarterTurn1TileDown60
-        &Flat_0,                                   &Flat_1,                                   &Flat_2,                                   &Flat_3,                                   // Brakes
-        &Flat_0,                                   &Flat_1,                                   &Flat_2,                                   &Flat_3,                                   // Booster
+        &Flat_0,                                   &Flat_1,                                   &Flat_2,                                   &Flat_3,
+        &Flat_0,                                   &Flat_1,                                   &Flat_2,                                   &Flat_3,
+        &Flat_0,                                   &Flat_1,                                   &Flat_2,                                   &Flat_3,
+        &Flat_0,                                   &Flat_1,                                   &Flat_2,                                   &Flat_3,
+        &Up25_0,                                   &Up25_1,                                   &Up25_2,                                   &Up25_3,
+        &Default::Up60_0,                          &Default::Up60_1,                          &Default::Up60_2,                          &Default::Up60_3,
+        &FlatToUp25_0,                             &FlatToUp25_1,                             &FlatToUp25_2,                             &FlatToUp25_3,
+        &Default::Up25ToUp60_0,                    &Default::Up25ToUp60_1,                    &Default::Up25ToUp60_2,                    &Default::Up25ToUp60_3,
+        &Default::Up60ToUp25_0,                    &Default::Up60ToUp25_1,                    &Default::Up60ToUp25_2,                    &Default::Up60ToUp25_3,
+        &Up25ToFlat_0,                             &Up25ToFlat_1,                             &Up25ToFlat_2,                             &Up25ToFlat_3,
+        &Down25_0,                                 &Down25_1,                                 &Down25_2,                                 &Down25_3,
+        &Default::Down60_0,                        &Default::Down60_1,                        &Default::Down60_2,                        &Default::Down60_3,
+        &FlatToDown25_0,                           &FlatToDown25_1,                           &FlatToDown25_2,                           &FlatToDown25_3,
+        &Default::Down25ToDown60_0,                &Default::Down25ToDown60_1,                &Default::Down25ToDown60_2,                &Default::Down25ToDown60_3,
+        &Default::Down60ToDown25_0,                &Default::Down60ToDown25_1,                &Default::Down60ToDown25_2,                &Default::Down60ToDown25_3,
+        &Down25ToFlat_0,                           &Down25ToFlat_1,                           &Down25ToFlat_2,                           &Down25ToFlat_3,
+        &Default::LeftQuarterTurn5Tiles_0,         &Default::LeftQuarterTurn5Tiles_1,         &Default::LeftQuarterTurn5Tiles_2,         &Default::LeftQuarterTurn5Tiles_3,
+        &Default::RightQuarterTurn5Tiles_0,        &Default::RightQuarterTurn5Tiles_1,        &Default::RightQuarterTurn5Tiles_2,        &Default::RightQuarterTurn5Tiles_3,
+        &Default::FlatToLeftBank_0,                &Default::FlatToLeftBank_1,                &Default::FlatToLeftBank_2,                &Default::FlatToLeftBank_3,
+        &Default::FlatToRightBank_0,               &Default::FlatToRightBank_1,               &Default::FlatToRightBank_2,               &Default::FlatToRightBank_3,
+        &Default::LeftBankToFlat_0,                &Default::LeftBankToFlat_1,                &Default::LeftBankToFlat_2,                &Default::LeftBankToFlat_3,
+        &Default::RightBankToFlat_0,               &Default::RightBankToFlat_1,               &Default::RightBankToFlat_2,               &Default::RightBankToFlat_3,
+        &Default::BankedLeftQuarterTurn5Tiles_0,   &Default::BankedLeftQuarterTurn5Tiles_1,   &Default::BankedLeftQuarterTurn5Tiles_2,   &Default::BankedLeftQuarterTurn5Tiles_3,
+        &Default::BankedRightQuarterTurn5Tiles_0,  &Default::BankedRightQuarterTurn5Tiles_1,  &Default::BankedRightQuarterTurn5Tiles_2,  &Default::BankedRightQuarterTurn5Tiles_3,
+        &Default::LeftBankToUp25_0,                &Default::LeftBankToUp25_1,                &Default::LeftBankToUp25_2,                &Default::LeftBankToUp25_3,
+        &Default::RightBankToUp25_0,               &Default::RightBankToUp25_1,               &Default::RightBankToUp25_2,               &Default::RightBankToUp25_3,
+        &Default::Up25ToLeftBank_0,                &Default::Up25ToLeftBank_1,                &Default::Up25ToLeftBank_2,                &Default::Up25ToLeftBank_3,
+        &Default::Up25ToRightBank_0,               &Default::Up25ToRightBank_1,               &Default::Up25ToRightBank_2,               &Default::Up25ToRightBank_3,
+        &Default::LeftBankToDown25_0,              &Default::LeftBankToDown25_1,              &Default::LeftBankToDown25_2,              &Default::LeftBankToDown25_3,
+        &Default::RightBankToDown25_0,             &Default::RightBankToDown25_1,             &Default::RightBankToDown25_2,             &Default::RightBankToDown25_3,
+        &Default::Down25ToLeftBank_0,              &Default::Down25ToLeftBank_1,              &Default::Down25ToLeftBank_2,              &Default::Down25ToLeftBank_3,
+        &Default::Down25ToRightBank_0,             &Default::Down25ToRightBank_1,             &Default::Down25ToRightBank_2,             &Default::Down25ToRightBank_3,
+        &Default::LeftBank_0,                      &Default::LeftBank_1,                      &Default::LeftBank_2,                      &Default::LeftBank_3,
+        &Default::RightBank_0,                     &Default::RightBank_1,                     &Default::RightBank_2,                     &Default::RightBank_3,
+        &Default::LeftQuarterTurn5TilesUp25_0,     &Default::LeftQuarterTurn5TilesUp25_1,     &Default::LeftQuarterTurn5TilesUp25_2,     &Default::LeftQuarterTurn5TilesUp25_3,
+        &Default::RightQuarterTurn5TilesUp25_0,    &Default::RightQuarterTurn5TilesUp25_1,    &Default::RightQuarterTurn5TilesUp25_2,    &Default::RightQuarterTurn5TilesUp25_3,
+        &Default::LeftQuarterTurn5TilesDown25_0,   &Default::LeftQuarterTurn5TilesDown25_1,   &Default::LeftQuarterTurn5TilesDown25_2,   &Default::LeftQuarterTurn5TilesDown25_3,
+        &Default::RightQuarterTurn5TilesDown25_0,  &Default::RightQuarterTurn5TilesDown25_1,  &Default::RightQuarterTurn5TilesDown25_2,  &Default::RightQuarterTurn5TilesDown25_3,
+        &Default::SBendLeft_0,                     &Default::SBendLeft_1,                     &Default::SBendLeft_2,                     &Default::SBendLeft_3,
+        &Default::SBendRight_0,                    &Default::SBendRight_1,                    &Default::SBendRight_2,                    &Default::SBendRight_3,
+        &Default::LeftVerticalLoop_0,              &Default::LeftVerticalLoop_1,              &Default::LeftVerticalLoop_2,              &Default::LeftVerticalLoop_3,
+        &Default::RightVerticalLoop_0,             &Default::RightVerticalLoop_1,             &Default::RightVerticalLoop_2,             &Default::RightVerticalLoop_3,
+        &Default::LeftQuarterTurn3Tiles_0,         &Default::LeftQuarterTurn3Tiles_1,         &Default::LeftQuarterTurn3Tiles_2,         &Default::LeftQuarterTurn3Tiles_3,
+        &Default::RightQuarterTurn3Tiles_0,        &Default::RightQuarterTurn3Tiles_1,        &Default::RightQuarterTurn3Tiles_2,        &Default::RightQuarterTurn3Tiles_3,
+        &Default::LeftBankedQuarterTurn3Tiles_0,   &Default::LeftBankedQuarterTurn3Tiles_1,   &Default::LeftBankedQuarterTurn3Tiles_2,   &Default::LeftBankedQuarterTurn3Tiles_3,
+        &Default::RightBankedQuarterTurn3Tiles_0,  &Default::RightBankedQuarterTurn3Tiles_1,  &Default::RightBankedQuarterTurn3Tiles_2,  &Default::RightBankedQuarterTurn3Tiles_3,
+        &Default::LeftQuarterTurn3TilesUp25_0,     &Default::LeftQuarterTurn3TilesUp25_1,     &Default::LeftQuarterTurn3TilesUp25_2,     &Default::LeftQuarterTurn3TilesUp25_3,
+        &Default::RightQuarterTurn3TilesUp25_0,    &Default::RightQuarterTurn3TilesUp25_1,    &Default::RightQuarterTurn3TilesUp25_2,    &Default::RightQuarterTurn3TilesUp25_3,
+        &Default::LeftQuarterTurn3TilesDown25_0,   &Default::LeftQuarterTurn3TilesDown25_1,   &Default::LeftQuarterTurn3TilesDown25_2,   &Default::LeftQuarterTurn3TilesDown25_3,
+        &Default::RightQuarterTurn3TilesDown25_0,  &Default::RightQuarterTurn3TilesDown25_1,  &Default::RightQuarterTurn3TilesDown25_2,  &Default::RightQuarterTurn3TilesDown25_3,
+        &LeftQuarterTurn1Tile_0,                   &LeftQuarterTurn1Tile_1,                   &LeftQuarterTurn1Tile_2,                   &LeftQuarterTurn1Tile_3,
+        &RightQuarterTurn1Tile_0,                  &RightQuarterTurn1Tile_1,                  &RightQuarterTurn1Tile_2,                  &RightQuarterTurn1Tile_3,
+        &Default::LeftTwistDownToUp_0,             &Default::LeftTwistDownToUp_1,             &Default::LeftTwistDownToUp_2,             &Default::LeftTwistDownToUp_3,
+        &Default::RightTwistDownToUp_0,            &Default::RightTwistDownToUp_1,            &Default::RightTwistDownToUp_2,            &Default::RightTwistDownToUp_3,
+        &Default::LeftTwistUpToDown_0,             &Default::LeftTwistUpToDown_1,             &Default::LeftTwistUpToDown_2,             &Default::LeftTwistUpToDown_3,
+        &Default::RightTwistUpToDown_0,            &Default::RightTwistUpToDown_1,            &Default::RightTwistUpToDown_2,            &Default::RightTwistUpToDown_3,
+        &Default::HalfLoopUp_0,                    &Default::HalfLoopUp_1,                    &Default::HalfLoopUp_2,                    &Default::HalfLoopUp_3,
+        &Default::HalfLoopDown_0,                  &Default::HalfLoopDown_1,                  &Default::HalfLoopDown_2,                  &Default::HalfLoopDown_3,
+        &Default::LeftCorkscrewUp_0,               &Default::LeftCorkscrewUp_1,               &Default::LeftCorkscrewUp_2,               &Default::LeftCorkscrewUp_3,
+        &Default::RightCorkscrewUp_0,              &Default::RightCorkscrewUp_1,              &Default::RightCorkscrewUp_2,              &Default::RightCorkscrewUp_3,
+        &Default::LeftCorkscrewDown_0,             &Default::LeftCorkscrewDown_1,             &Default::LeftCorkscrewDown_2,             &Default::LeftCorkscrewDown_3,
+        &Default::RightCorkscrewDown_0,            &Default::RightCorkscrewDown_1,            &Default::RightCorkscrewDown_2,            &Default::RightCorkscrewDown_3,
+        &Default::FlatToUp60_0,                    &Default::FlatToUp60_1,                    &Default::FlatToUp60_2,                    &Default::FlatToUp60_3,
+        &Default::Up60ToFlat_0,                    &Default::Up60ToFlat_1,                    &Default::Up60ToFlat_2,                    &Default::Up60ToFlat_3,
+        &Default::FlatToDown60_0,                  &Default::FlatToDown60_1,                  &Default::FlatToDown60_2,                  &Default::FlatToDown60_3,
+        &Default::Down60ToFlat_0,                  &Default::Down60ToFlat_1,                  &Default::Down60ToFlat_2,                  &Default::Down60ToFlat_3,
+        &Default::TowerBase_0,                     &Default::TowerBase_1,                     &Default::TowerBase_2,                     &Default::TowerBase_3,
+        &Default::TowerSection_0,                  &Default::TowerSection_1,                  &Default::TowerSection_2,                  &Default::TowerSection_3,
+        &Default::Flat_0,                          &Default::Flat_1,                          &Default::Flat_2,                          &Default::Flat_3,
+        &Default::Up25_0,                          &Default::Up25_1,                          &Default::Up25_2,                          &Default::Up25_3,
+        &Default::Up60_0,                          &Default::Up60_1,                          &Default::Up60_2,                          &Default::Up60_3,
+        &Default::FlatToUp25_0,                    &Default::FlatToUp25_1,                    &Default::FlatToUp25_2,                    &Default::FlatToUp25_3,
+        &Default::Up25ToUp60_0,                    &Default::Up25ToUp60_1,                    &Default::Up25ToUp60_2,                    &Default::Up25ToUp60_3,
+        &Default::Up60ToUp25_0,                    &Default::Up60ToUp25_1,                    &Default::Up60ToUp25_2,                    &Default::Up60ToUp25_3,
+        &Default::Up25ToFlat_0,                    &Default::Up25ToFlat_1,                    &Default::Up25ToFlat_2,                    &Default::Up25ToFlat_3,
+        &Default::Down25_0,                        &Default::Down25_1,                        &Default::Down25_2,                        &Default::Down25_3,
+        &Default::Down60_0,                        &Default::Down60_1,                        &Default::Down60_2,                        &Default::Down60_3,
+        &Default::FlatToDown25_0,                  &Default::FlatToDown25_1,                  &Default::FlatToDown25_2,                  &Default::FlatToDown25_3,
+        &Default::Down25ToDown60_0,                &Default::Down25ToDown60_1,                &Default::Down25ToDown60_2,                &Default::Down25ToDown60_3,
+        &Default::Down60ToDown25_0,                &Default::Down60ToDown25_1,                &Default::Down60ToDown25_2,                &Default::Down60ToDown25_3,
+        &Default::Down25ToFlat_0,                  &Default::Down25ToFlat_1,                  &Default::Down25ToFlat_2,                  &Default::Down25ToFlat_3,
+        &Default::LeftQuarterTurn5Tiles_0,         &Default::LeftQuarterTurn5Tiles_1,         &Default::LeftQuarterTurn5Tiles_2,         &Default::LeftQuarterTurn5Tiles_3,
+        &Default::RightQuarterTurn5Tiles_0,        &Default::RightQuarterTurn5Tiles_1,        &Default::RightQuarterTurn5Tiles_2,        &Default::RightQuarterTurn5Tiles_3,
+        &Default::SBendLeft_0,                     &Default::SBendLeft_1,                     &Default::SBendLeft_2,                     &Default::SBendLeft_3,
+        &Default::SBendRight_0,                    &Default::SBendRight_1,                    &Default::SBendRight_2,                    &Default::SBendRight_3,
+        &Default::LeftQuarterTurn3Tiles_0,         &Default::LeftQuarterTurn3Tiles_1,         &Default::LeftQuarterTurn3Tiles_2,         &Default::LeftQuarterTurn3Tiles_3,
+        &Default::RightQuarterTurn3Tiles_0,        &Default::RightQuarterTurn3Tiles_1,        &Default::RightQuarterTurn3Tiles_2,        &Default::RightQuarterTurn3Tiles_3,
+        &Default::LeftHalfBankedHelixUpSmall_0,    &Default::LeftHalfBankedHelixUpSmall_1,    &Default::LeftHalfBankedHelixUpSmall_2,    &Default::LeftHalfBankedHelixUpSmall_3,
+        &Default::RightHalfBankedHelixUpSmall_0,   &Default::RightHalfBankedHelixUpSmall_1,   &Default::RightHalfBankedHelixUpSmall_2,   &Default::RightHalfBankedHelixUpSmall_3,
+        &Default::LeftHalfBankedHelixDownSmall_0,  &Default::LeftHalfBankedHelixDownSmall_1,  &Default::LeftHalfBankedHelixDownSmall_2,  &Default::LeftHalfBankedHelixDownSmall_3,
+        &Default::RightHalfBankedHelixDownSmall_0, &Default::RightHalfBankedHelixDownSmall_1, &Default::RightHalfBankedHelixDownSmall_2, &Default::RightHalfBankedHelixDownSmall_3,
+        &Default::LeftHalfBankedHelixUpLarge_0,    &Default::LeftHalfBankedHelixUpLarge_1,    &Default::LeftHalfBankedHelixUpLarge_2,    &Default::LeftHalfBankedHelixUpLarge_3,
+        &Default::RightHalfBankedHelixUpLarge_0,   &Default::RightHalfBankedHelixUpLarge_1,   &Default::RightHalfBankedHelixUpLarge_2,   &Default::RightHalfBankedHelixUpLarge_3,
+        &Default::LeftHalfBankedHelixDownLarge_0,  &Default::LeftHalfBankedHelixDownLarge_1,  &Default::LeftHalfBankedHelixDownLarge_2,  &Default::LeftHalfBankedHelixDownLarge_3,
+        &Default::RightHalfBankedHelixDownLarge_0, &Default::RightHalfBankedHelixDownLarge_1, &Default::RightHalfBankedHelixDownLarge_2, &Default::RightHalfBankedHelixDownLarge_3,
+        &Default::LeftQuarterTurn1TileUp60_0,      &Default::LeftQuarterTurn1TileUp60_1,      &Default::LeftQuarterTurn1TileUp60_2,      &Default::LeftQuarterTurn1TileUp60_3,
+        &Default::RightQuarterTurn1TileUp60_0,     &Default::RightQuarterTurn1TileUp60_1,     &Default::RightQuarterTurn1TileUp60_2,     &Default::RightQuarterTurn1TileUp60_3,
+        &Default::LeftQuarterTurn1TileDown60_0,    &Default::LeftQuarterTurn1TileDown60_1,    &Default::LeftQuarterTurn1TileDown60_2,    &Default::LeftQuarterTurn1TileDown60_3,
+        &Default::RightQuarterTurn1TileDown60_0,   &Default::RightQuarterTurn1TileDown60_1,   &Default::RightQuarterTurn1TileDown60_2,   &Default::RightQuarterTurn1TileDown60_3,
+        &Flat_0,                                   &Flat_1,                                   &Flat_2,                                   &Flat_3,
+        &Flat_0,                                   &Flat_1,                                   &Flat_2,                                   &Flat_3,
     };
     // clang-format on
     static_assert(std::size(TrackVehicleInfoListChairliftGoingBack) == kVehicleTrackSubpositionSizeChairliftGoingBack);
