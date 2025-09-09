@@ -1050,17 +1050,17 @@ static constexpr std::array<BoundBoxTablePair, BoundBoxType::count> BoundBoxTabl
 
 static constexpr uint32_t GetBoundBoxIndex(BoundBoxType type, uint32_t yaw)
 {
-    if (type < BoundBoxType::null)
+    if (type & BoundBoxType::reverseBoundBox)
     {
-        if (type & BoundBoxType::reverseBoundBox)
-        {
-            type = static_cast<BoundBoxType>(type ^ BoundBoxType::reverseBoundBox);
-            yaw = Add(yaw, kBaseRotation / 2);
-        }
-        auto pair = BoundBoxTablePairs[type];
-        return pair.index + YawToPrecision(yaw, pair.precision);
+        type = static_cast<BoundBoxType>(type ^ BoundBoxType::reverseBoundBox);
+        yaw = Add(yaw, kBaseRotation / 2);
     }
-    return 0;
+    if (type >= BoundBoxType::count)
+    {
+        return BoundBoxTablePairs[0].index + YawToPrecision(yaw, BoundBoxTablePairs[0].precision);
+    }
+    auto pair = BoundBoxTablePairs[type];
+    return pair.index + YawToPrecision(yaw, pair.precision);
 }
 
 #pragma endregion
@@ -1141,6 +1141,8 @@ static constexpr VehiclePaintTargetPitch Up12PaintTarget = {
     Up12,
 };
 
+// intentional change from vanilla: all vehicles use flatBanked45 bound boxes on 45 degree banks, not just vehicles of
+// draw_order < 5
 static constexpr VehiclePaintTargetPitch Up25PaintTarget = {
     // 2: slopeUp25
     VehiclePaintTarget(SpriteGroupType::Slopes25, 0, BoundBoxType::slopes25),                 // flat
@@ -1230,7 +1232,8 @@ static constexpr VehiclePaintTargetPitch Down12PaintTarget = {
     Down12,
 };
 
-// intentional change from previous: banks 67 through 157 use reverse bound boxes to match vanilla
+// intentional change from vanilla: all vehicles use flatBanked45 bound boxes on 45 degree banks, not just vehicles of
+// draw_order < 5
 static constexpr VehiclePaintTargetPitch Down25PaintTarget = {
     // 6: slopeDown25
     VehiclePaintTarget(
@@ -1245,11 +1248,11 @@ static constexpr VehiclePaintTargetPitch Down25PaintTarget = {
       VehicleRoll::unbanked },                                                                                       // right45
     { SpriteGroupType::Slopes25Banked67, 2, BoundBoxType::flatBanked67, VehiclePitch::down25, VehicleRoll::left45 }, // left67
     { SpriteGroupType::Slopes25Banked90, 2, BoundBoxType::flatBanked90, VehiclePitch::flat, VehicleRoll::left90 },   // left90
-    { SpriteGroupType::Slopes25InlineTwists, 2, BoundBoxType::flatBanked112Reversed, VehiclePitch::flat,
+    { SpriteGroupType::Slopes25InlineTwists, 2, BoundBoxType::flatBanked112, VehiclePitch::flat,
       VehicleRoll::left112 }, // left112
-    { SpriteGroupType::Slopes25InlineTwists, 6, BoundBoxType::flatBanked135Reversed, VehiclePitch::flat,
+    { SpriteGroupType::Slopes25InlineTwists, 6, BoundBoxType::flatBanked135, VehiclePitch::flat,
       VehicleRoll::left135 }, // left135
-    { SpriteGroupType::Slopes25InlineTwists, 10, BoundBoxType::flatBanked157Reversed, VehiclePitch::flat,
+    { SpriteGroupType::Slopes25InlineTwists, 10, BoundBoxType::flatBanked157, VehiclePitch::flat,
       VehicleRoll::left157 }, // left157
     { SpriteGroupType::Slopes25Banked67, 3, BoundBoxType::flatBanked67Reversed, VehiclePitch::down25,
       VehicleRoll::right45 }, // right67
@@ -1263,6 +1266,7 @@ static constexpr VehiclePaintTargetPitch Down25PaintTarget = {
       VehicleRoll::right157 }, // right157
 };
 
+// intentional change: banked down42 use reversed slopes42 bound box, to match unbanked slope42
 static constexpr VehiclePaintTarget Down42 = { SpriteGroupType::Slopes42, 1, BoundBoxType::slopes42Reversed,
                                                VehiclePitch::down25, VehicleRoll::unbanked };
 static constexpr VehiclePaintTargetPitch Down42PaintTarget = {
