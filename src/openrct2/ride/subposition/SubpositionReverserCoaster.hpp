@@ -11,11 +11,11 @@
 #include "SubpositionCommon.hpp"
 #include "SubpositionDefault.hpp"
 
-using enum VehiclePitch;
-using enum VehicleRoll;
-
 namespace OpenRCT2::Subposition::ReverserCoaster
 {
+    using enum VehiclePitch;
+    using enum VehicleRoll;
+
     namespace FrontBogie
     {
         // clang-format off

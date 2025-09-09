@@ -11,11 +11,11 @@
 #include "SubpositionCommon.hpp"
 #include "SubpositionDefault.hpp"
 
-using enum VehiclePitch;
-using enum VehicleRoll;
-
 namespace OpenRCT2::Subposition::ChairliftBullwheels
 {
+    using enum VehiclePitch;
+    using enum VehicleRoll;
+
     // clang-format off
     CREATE_VEHICLE_INFO(EndBullwheel_0, {
         { 31,  6, 0,  0, flat, unbanked }, { 30,  6, 0,  0, flat, unbanked }, { 29,  6, 0,  0, flat, unbanked }, { 28,  6, 0,  0, flat, unbanked }, { 27,  6, 0,  0, flat, unbanked },
@@ -30,7 +30,7 @@ namespace OpenRCT2::Subposition::ChairliftBullwheels
         { 16, 26, 0, 16, flat, unbanked }, { 17, 26, 0, 16, flat, unbanked }, { 18, 26, 0, 16, flat, unbanked }, { 19, 26, 0, 16, flat, unbanked }, { 20, 26, 0, 16, flat, unbanked },
         { 21, 26, 0, 16, flat, unbanked }, { 22, 26, 0, 16, flat, unbanked }, { 23, 26, 0, 16, flat, unbanked }, { 24, 26, 0, 16, flat, unbanked }, { 25, 26, 0, 16, flat, unbanked },
         { 26, 26, 0, 16, flat, unbanked }, { 27, 26, 0, 16, flat, unbanked }, { 28, 26, 0, 16, flat, unbanked }, { 29, 26, 0, 16, flat, unbanked }, { 30, 26, 0, 16, flat, unbanked },
-        { 31, 26, 0, 16, flat, unbanked },
+        { 31, 26, 0, 16, flat, unbanked }
     })
 
     CREATE_VEHICLE_INFO(EndBullwheel_1, {

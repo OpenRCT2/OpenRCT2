@@ -11,11 +11,11 @@
 #include "SubpositionCommon.hpp"
 #include "SubpositionDefault.hpp"
 
-using enum VehiclePitch;
-using enum VehicleRoll;
-
 namespace OpenRCT2::Subposition::GoKartsMovingToLeftLane
 {
+    using enum VehiclePitch;
+    using enum VehicleRoll;
+
     // clang-format off
     CREATE_VEHICLE_INFO(Flat_0, {
         { 31, 23, 0,  0, flat, unbanked }, { 30, 23, 0,  0, flat, unbanked }, { 29, 23, 0,  0, flat, unbanked }, { 28, 23, 0,  0, flat, unbanked }, { 27, 22, 0, 30, flat, unbanked },

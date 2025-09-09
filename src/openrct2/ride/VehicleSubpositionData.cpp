@@ -21,29 +21,28 @@
 #include "subposition/SubpositionMinigolf.hpp"
 #include "subposition/SubpositionReverserCoaster.hpp"
 
-using namespace OpenRCT2;
-using enum VehiclePitch;
-using enum VehicleRoll;
-
-using namespace OpenRCT2::Subposition;
-
-// rct2: 0x008B8F30
-constexpr const VehicleInfoList* const* gTrackVehicleInfo[EnumValue(VehicleTrackSubposition::Count)] = {
-    Default::TrackVehicleInfoListDefault,                                   // VehicleTrackSubposition::Default
-    ChairliftGoingOut::TrackVehicleInfoListChairliftGoingOut,               // VehicleTrackSubposition::ChairliftGoingOut
-    ChairliftGoingBack::TrackVehicleInfoListChairliftGoingBack,             // VehicleTrackSubposition::ChairliftGoingBack
-    ChairliftBullwheels::TrackVehicleInfoListChairliftEndBullwheel,         // VehicleTrackSubposition::ChairliftEndBullwheel
-    ChairliftBullwheels::TrackVehicleInfoListChairliftStartBullwheel,       // VehicleTrackSubposition::ChairliftStartBullwheel
-    GoKartsLeftLane::TrackVehicleInfoListGoKartsLeftLane,                   // VehicleTrackSubposition::GoKartsLeftLane
-    GoKartsRightLane::TrackVehicleInfoListGoKartsRightLane,                 // VehicleTrackSubposition::GoKartsRightLane
-    GoKartsMovingToRightLane::TrackVehicleInfoListGoKartsMovingToRightLane, // VehicleTrackSubposition::GoKartsMovingToRightLane
-    GoKartsMovingToLeftLane::TrackVehicleInfoListGoKartsMovingToLeftLane,   // VehicleTrackSubposition::GoKartsMovingToLeftLane
-    Minigolf::PlayerPathA::PlayerPathA, // VehicleTrackSubposition::MiniGolfStart9, VehicleTrackSubposition::MiniGolfPathA9
-    Minigolf::BallPathA::BallPathA,     // VehicleTrackSubposition::MiniGolfBallPathA10
-    Minigolf::PlayerPathB::PlayerPathB, // VehicleTrackSubposition::MiniGolfPathB11
-    Minigolf::BallPathB::BallPathB,     // VehicleTrackSubposition::MiniGolfBallPathB12
-    Minigolf::PlayerPathC::PlayerPathC, // VehicleTrackSubposition::MiniGolfPathC13
-    Minigolf::BallPathC::BallPathC,     // VehicleTrackSubposition::MiniGolfBallPathC14
-    ReverserCoaster::FrontBogie::TrackVehicleInfoListReverserRCFrontBogie, // VehicleTrackSubposition::ReverserRCFrontBogie
-    ReverserCoaster::RearBogie::TrackVehicleInfoListReverserRCRearBogie,   // VehicleTrackSubposition::ReverserRCRearBogie
-};
+namespace OpenRCT2::Subposition
+{
+    // rct2: 0x008B8F30
+    constexpr const VehicleInfoList* const* gTrackVehicleInfo[EnumValue(VehicleTrackSubposition::Count)] = {
+        Default::TrackVehicleInfoListDefault,                             // VehicleTrackSubposition::Default
+        ChairliftGoingOut::TrackVehicleInfoListChairliftGoingOut,         // VehicleTrackSubposition::ChairliftGoingOut
+        ChairliftGoingBack::TrackVehicleInfoListChairliftGoingBack,       // VehicleTrackSubposition::ChairliftGoingBack
+        ChairliftBullwheels::TrackVehicleInfoListChairliftEndBullwheel,   // VehicleTrackSubposition::ChairliftEndBullwheel
+        ChairliftBullwheels::TrackVehicleInfoListChairliftStartBullwheel, // VehicleTrackSubposition::ChairliftStartBullwheel
+        GoKartsLeftLane::TrackVehicleInfoListGoKartsLeftLane,             // VehicleTrackSubposition::GoKartsLeftLane
+        GoKartsRightLane::TrackVehicleInfoListGoKartsRightLane,           // VehicleTrackSubposition::GoKartsRightLane
+        GoKartsMovingToRightLane::
+            TrackVehicleInfoListGoKartsMovingToRightLane, // VehicleTrackSubposition::GoKartsMovingToRightLane
+        GoKartsMovingToLeftLane::
+            TrackVehicleInfoListGoKartsMovingToLeftLane, // VehicleTrackSubposition::GoKartsMovingToLeftLane
+        Minigolf::PlayerPathA::PlayerPathA, // VehicleTrackSubposition::MiniGolfStart9, VehicleTrackSubposition::MiniGolfPathA9
+        Minigolf::BallPathA::BallPathA,     // VehicleTrackSubposition::MiniGolfBallPathA10
+        Minigolf::PlayerPathB::PlayerPathB, // VehicleTrackSubposition::MiniGolfPathB11
+        Minigolf::BallPathB::BallPathB,     // VehicleTrackSubposition::MiniGolfBallPathB12
+        Minigolf::PlayerPathC::PlayerPathC, // VehicleTrackSubposition::MiniGolfPathC13
+        Minigolf::BallPathC::BallPathC,     // VehicleTrackSubposition::MiniGolfBallPathC14
+        ReverserCoaster::FrontBogie::TrackVehicleInfoListReverserRCFrontBogie, // VehicleTrackSubposition::ReverserRCFrontBogie
+        ReverserCoaster::RearBogie::TrackVehicleInfoListReverserRCRearBogie,   // VehicleTrackSubposition::ReverserRCRearBogie
+    };
+} // namespace OpenRCT2::Subposition

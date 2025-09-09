@@ -10,15 +10,15 @@
 #pragma once
 #include "SubpositionCommon.hpp"
 
-using enum VehiclePitch;
-using enum VehicleRoll;
+namespace OpenRCT2::Subposition::Minigolf
+{
+    using enum VehiclePitch;
+    using enum VehicleRoll;
 
 #define MINI_GOLF_STATE(STATE) { kLocationNull, EnumValue(MiniGolfState::STATE), 0, 0, flat, unbanked }
 #define MINI_GOLF_ANIMATION(VALUE)                                                                                             \
     { kLocationNull, EnumValue(MiniGolfState::Unk4), EnumValue(MiniGolfAnimation::VALUE), 0, flat, unbanked }
 
-namespace OpenRCT2::Subposition::Minigolf
-{
     // clang-format off
     CREATE_VEHICLE_INFO(Flat_0, {
         { 30, 16, 0, 0, flat, unbanked }, { 28, 16, 0, 0, flat, unbanked }, { 26, 16, 0, 0, flat, unbanked }, { 24, 16, 0, 0, flat, unbanked }, { 22, 16, 0, 0, flat, unbanked }, { 20, 16, 0, 0, flat, unbanked },

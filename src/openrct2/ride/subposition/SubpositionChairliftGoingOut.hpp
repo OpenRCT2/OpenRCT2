@@ -11,11 +11,11 @@
 #include "SubpositionCommon.hpp"
 #include "SubpositionDefault.hpp"
 
-using enum VehiclePitch;
-using enum VehicleRoll;
-
 namespace OpenRCT2::Subposition::ChairliftGoingOut
 {
+    using enum VehiclePitch;
+    using enum VehicleRoll;
+
     // clang-format off
     CREATE_VEHICLE_INFO(Flat_0, {
         { 31, 6, 0, 0, flat, unbanked }, { 30, 6, 0, 0, flat, unbanked }, { 29, 6, 0, 0, flat, unbanked }, { 28, 6, 0, 0, flat, unbanked }, { 27, 6, 0, 0, flat, unbanked }, { 26, 6, 0, 0, flat, unbanked },
