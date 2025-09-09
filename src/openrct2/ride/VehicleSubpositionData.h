@@ -14,8 +14,6 @@
 
 #include <cstdint>
 
-using namespace OpenRCT2;
-
 constexpr const size_t kVehicleTrackSubpositionSizeDefault = EnumValue(TrackElemType::Count) * kNumOrthogonalDirections;
 constexpr const size_t kVehicleTrackSubpositionSizeChairliftGoingOut = EnumValue(TrackElemType::LogFlumeReverser) * 4 + 4;
 constexpr const size_t kVehicleTrackSubpositionSizeChairliftGoingBack = EnumValue(TrackElemType::Booster) * 4 + 4;
