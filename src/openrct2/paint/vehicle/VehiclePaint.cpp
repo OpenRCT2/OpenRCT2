@@ -1056,7 +1056,9 @@ constexpr uint32_t kBoundBoxIndex120 = 80;
 constexpr uint32_t kBoundBoxIndex135 = 84;
 constexpr uint32_t kBoundBoxIndex150 = 88;
 constexpr uint32_t kBoundBoxIndex165 = 92;
-constexpr uint32_t kBoundBoxIndexInverted = 96; // 100-107 unused??
+constexpr uint32_t kBoundBoxIndexInverted = 96;
+constexpr uint32_t kBoundBoxIndex16 = 100;
+constexpr uint32_t kBoundBoxIndex50 = 104;
 constexpr uint32_t kBoundBoxIndexFlatBanked45 = 108;
 constexpr uint32_t kBoundBoxIndexFlatBanked67 = 124;
 constexpr uint32_t kBoundBoxIndexFlatBanked90 = 128;
@@ -3716,7 +3718,7 @@ static void VehiclePitchUp16Unbanked(
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundBoxIndexUndefined ? boundingBoxIndex
-                                                                   : YawTo16(imageDirection) + kBoundBoxIndexFlat;
+                                                                   : YawTo4(imageDirection) + kBoundBoxIndex16;
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes16))
     {
         const int32_t spriteIndex = carEntry->SpriteOffset(SpriteGroupType::Slopes16, imageDirection, 0);
@@ -3733,7 +3735,7 @@ static void VehiclePitchUp16BankedLeft22(
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundBoxIndexUndefined ? boundingBoxIndex
-                                                                   : YawTo16(imageDirection) + kBoundBoxIndexFlat;
+                                                                   : YawTo4(imageDirection) + kBoundBoxIndex16;
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes16Banked22))
     {
         const int32_t spriteIndex = carEntry->SpriteOffset(SpriteGroupType::Slopes16Banked22, imageDirection, 0);
@@ -3750,7 +3752,7 @@ static void VehiclePitchUp16BankedRight22(
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundBoxIndexUndefined ? boundingBoxIndex
-                                                                   : YawTo16(imageDirection) + kBoundBoxIndexFlat;
+                                                                   : YawTo4(imageDirection) + kBoundBoxIndex16;
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes16Banked22))
     {
         const int32_t spriteIndex = carEntry->SpriteOffset(SpriteGroupType::Slopes16Banked22, imageDirection, 1);
@@ -3767,7 +3769,7 @@ static void VehiclePitchUp16BankedLeft45(
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundBoxIndexUndefined ? boundingBoxIndex
-                                                                   : YawTo16(imageDirection) + kBoundBoxIndexFlat;
+                                                                   : YawTo4(imageDirection) + kBoundBoxIndex16;
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes16Banked45))
     {
         const int32_t spriteIndex = carEntry->SpriteOffset(SpriteGroupType::Slopes16Banked45, imageDirection, 0);
@@ -3784,7 +3786,7 @@ static void VehiclePitchUp16BankedRight45(
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundBoxIndexUndefined ? boundingBoxIndex
-                                                                   : YawTo16(imageDirection) + kBoundBoxIndexFlat;
+                                                                   : YawTo4(imageDirection) + kBoundBoxIndex16;
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes16Banked45))
     {
         const int32_t spriteIndex = carEntry->SpriteOffset(SpriteGroupType::Slopes16Banked45, imageDirection, 1);
@@ -3833,7 +3835,7 @@ static void VehiclePitchUp50Unbanked(
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundBoxIndexUndefined ? boundingBoxIndex
-                                                                   : YawTo16(imageDirection) + kBoundBoxIndexFlat;
+                                                                   : YawTo4(imageDirection) + kBoundBoxIndex50;
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes50))
     {
         const int32_t spriteIndex = carEntry->SpriteOffset(SpriteGroupType::Slopes50, imageDirection, 0);
@@ -4116,7 +4118,7 @@ static void VehiclePitchDown16Unbanked(
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundBoxIndexUndefined ? boundingBoxIndex
-                                                                   : YawTo16(imageDirection) + kBoundBoxIndexFlat;
+                                                                   : ((YawTo4(imageDirection)) ^ 2) + kBoundBoxIndex16;
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes16))
     {
         const int32_t spriteIndex = carEntry->SpriteOffset(SpriteGroupType::Slopes16, imageDirection, 1);
@@ -4133,7 +4135,7 @@ static void VehiclePitchDown16BankedLeft22(
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundBoxIndexUndefined ? boundingBoxIndex
-                                                                   : YawTo16(imageDirection) + kBoundBoxIndexFlat;
+                                                                   : ((YawTo4(imageDirection)) ^ 2) + kBoundBoxIndex16;
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes16Banked22))
     {
         const int32_t spriteIndex = carEntry->SpriteOffset(SpriteGroupType::Slopes16Banked22, imageDirection, 2);
@@ -4150,7 +4152,7 @@ static void VehiclePitchDown16BankedRight22(
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundBoxIndexUndefined ? boundingBoxIndex
-                                                                   : YawTo16(imageDirection) + kBoundBoxIndexFlat;
+                                                                   : ((YawTo4(imageDirection)) ^ 2) + kBoundBoxIndex16;
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes16Banked22))
     {
         const int32_t spriteIndex = carEntry->SpriteOffset(SpriteGroupType::Slopes16Banked22, imageDirection, 3);
@@ -4167,7 +4169,7 @@ static void VehiclePitchDown16BankedLeft45(
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundBoxIndexUndefined ? boundingBoxIndex
-                                                                   : YawTo16(imageDirection) + kBoundBoxIndexFlat;
+                                                                   : ((YawTo4(imageDirection)) ^ 2) + kBoundBoxIndex16;
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes16Banked45))
     {
         const int32_t spriteIndex = carEntry->SpriteOffset(SpriteGroupType::Slopes16Banked45, imageDirection, 2);
@@ -4184,7 +4186,7 @@ static void VehiclePitchDown16BankedRight45(
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundBoxIndexUndefined ? boundingBoxIndex
-                                                                   : YawTo16(imageDirection) + kBoundBoxIndexFlat;
+                                                                   : ((YawTo4(imageDirection)) ^ 2) + kBoundBoxIndex16;
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes16Banked45))
     {
         const int32_t spriteIndex = carEntry->SpriteOffset(SpriteGroupType::Slopes16Banked45, imageDirection, 3);
@@ -4233,7 +4235,7 @@ static void VehiclePitchDown50Unbanked(
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundBoxIndexUndefined ? boundingBoxIndex
-                                                                   : YawTo16(imageDirection) + kBoundBoxIndexFlat;
+                                                                   : ((YawTo4(imageDirection)) ^ 2) + kBoundBoxIndex50;
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes50))
     {
         const int32_t spriteIndex = carEntry->SpriteOffset(SpriteGroupType::Slopes50, imageDirection, 1);
