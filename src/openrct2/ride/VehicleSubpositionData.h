@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../core/EnumUtils.hpp"
+#include "Angles.h"
 #include "Track.h"
 
 #include <cstdint>
@@ -58,4 +59,4 @@ namespace OpenRCT2::Subposition
     };
 
     extern const VehicleInfoList* const* const gTrackVehicleInfo[EnumValue(VehicleTrackSubposition::Count)];
-}
+} // namespace OpenRCT2::Subposition

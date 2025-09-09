@@ -2042,7 +2042,7 @@ namespace OpenRCT2::RCT2
         dst->animation_frame = src->AnimationFrame;
         dst->animationState = src->AnimationState;
         dst->scream_sound_id = static_cast<OpenRCT2::Audio::SoundId>(src->ScreamSoundId);
-        dst->TrackSubposition = VehicleTrackSubposition{ src->TrackSubposition };
+        dst->TrackSubposition = OpenRCT2::Subposition::VehicleTrackSubposition{ src->TrackSubposition };
         dst->NumLaps = src->NumLaps;
         dst->brake_speed = src->BrakeSpeed;
         dst->lost_time_out = src->LostTimeOut;

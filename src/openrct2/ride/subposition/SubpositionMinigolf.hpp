@@ -8,6 +8,7 @@
  *****************************************************************************/
 
 #pragma once
+#include "../Vehicle.h"
 #include "SubpositionCommon.hpp"
 
 namespace OpenRCT2::Subposition::Minigolf

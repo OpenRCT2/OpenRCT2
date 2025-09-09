@@ -15,11 +15,11 @@
 #include <cstddef>
 
 #define CREATE_VEHICLE_INFO(VAR, ...)                                                                                          \
-    static constexpr VehicleInfo VAR##_data[] = __VA_ARGS__;                                                                   \
-    static constexpr VehicleInfoList VAR = { static_cast<uint16_t>(std::size(VAR##_data)), VAR##_data };
+    constexpr VehicleInfo VAR##_data[] = __VA_ARGS__;                                                                   \
+    constexpr OpenRCT2::Subposition::VehicleInfoList VAR = { static_cast<uint16_t>(std::size(VAR##_data)), VAR##_data };
 
 CREATE_VEHICLE_INFO(
     TrackVehicleInfo_000000,
     {
-        { 0, 0, 0, 0, flat, unbanked },
+        { 0, 0, 0, 0, VehiclePitch::flat, VehicleRoll::unbanked },
     })
