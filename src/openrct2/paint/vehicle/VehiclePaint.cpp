@@ -953,6 +953,8 @@ enum BoundBoxType : uint8_t
     slopes150,
     slopes165,
     slopeInverted,
+    slopes16,
+    slopes50,
     flatBanked45,
     flatBanked67,
     flatBanked90,
@@ -992,6 +994,8 @@ enum BoundBoxType : uint8_t
     slopes135Reversed = slopes135 | reverseBoundBox,
     slopes150Reversed = slopes150 | reverseBoundBox,
     slopes165Reversed = slopes165 | reverseBoundBox,
+    slopes16Reversed = slopes16 | reverseBoundBox,
+    slopes50Reversed = slopes50 | reverseBoundBox,
     flatBanked45Reversed = flatBanked45 | reverseBoundBox,
     flatBanked67Reversed = flatBanked67 | reverseBoundBox,
     flatBanked90Reversed = flatBanked90 | reverseBoundBox,
@@ -1019,6 +1023,8 @@ static constexpr std::array<BoundBoxTablePair, BoundBoxType::count> BoundBoxTabl
     BoundBoxTablePair{ 88, SpritePrecision::Sprites4 },   // slopes150
     BoundBoxTablePair{ 92, SpritePrecision::Sprites4 },   // slopes165
     BoundBoxTablePair{ 96, SpritePrecision::Sprites4 },   // slopeInverted
+    BoundBoxTablePair{ 100, SpritePrecision::Sprites4 },  // slopes16
+    BoundBoxTablePair{ 104, SpritePrecision::Sprites4 },  // slopes50
     BoundBoxTablePair{ 108, SpritePrecision::Sprites16 }, // flatBanked45
     BoundBoxTablePair{ 124, SpritePrecision::Sprites4 },  // flatBanked67
     BoundBoxTablePair{ 128, SpritePrecision::Sprites4 },  // flatBanked90
@@ -1378,14 +1384,14 @@ static constexpr VehiclePaintTargetPitch Up8PaintTarget = {
     Up8,
 };
 
-static constexpr VehiclePaintTarget Up16 = { SpriteGroupType::Slopes16, 0, BoundBoxType::slopeFlat };
+static constexpr VehiclePaintTarget Up16 = { SpriteGroupType::Slopes16, 0, BoundBoxType::slopes16 };
 static constexpr VehiclePaintTargetPitch Up16PaintTarget = {
     // 51: slopeUp16
     Up16,
-    { SpriteGroupType::Slopes16Banked22, 0, BoundBoxType::slopeFlat, VehiclePitch::up25, VehicleRoll::left45 },
-    { SpriteGroupType::Slopes16Banked45, 0, BoundBoxType::slopeFlat, VehiclePitch::up16, VehicleRoll::left22 },
-    { SpriteGroupType::Slopes16Banked22, 1, BoundBoxType::slopeFlat, VehiclePitch::up25, VehicleRoll::right45 },
-    { SpriteGroupType::Slopes16Banked45, 1, BoundBoxType::slopeFlat, VehiclePitch::up16, VehicleRoll::right22 },
+    { SpriteGroupType::Slopes16Banked22, 0, BoundBoxType::slopes16, VehiclePitch::up25, VehicleRoll::left45 },
+    { SpriteGroupType::Slopes16Banked45, 0, BoundBoxType::slopes16, VehiclePitch::up16, VehicleRoll::left22 },
+    { SpriteGroupType::Slopes16Banked22, 1, BoundBoxType::slopes16, VehiclePitch::up25, VehicleRoll::right45 },
+    { SpriteGroupType::Slopes16Banked45, 1, BoundBoxType::slopes16, VehiclePitch::up16, VehicleRoll::right22 },
     Up16,
     Up16,
     Up16,
@@ -1398,7 +1404,7 @@ static constexpr VehiclePaintTargetPitch Up16PaintTarget = {
     Up16,
 };
 
-static constexpr VehiclePaintTarget Up50 = { SpriteGroupType::Slopes50, 0, BoundBoxType::slopes60 };
+static constexpr VehiclePaintTarget Up50 = { SpriteGroupType::Slopes50, 0, BoundBoxType::slopes50 };
 static constexpr VehiclePaintTargetPitch Up50PaintTarget = {
     // 52: slopeUp50
     Up50,
@@ -1406,16 +1412,16 @@ static constexpr VehiclePaintTargetPitch Up50PaintTarget = {
     { SpriteGroupType::Slopes50Banked45, 0, BoundBoxType::slopes60, VehiclePitch::up50 },
     Up50,
     { SpriteGroupType::Slopes50Banked45, 1, BoundBoxType::slopes60, VehiclePitch::up50 },
-    { SpriteGroupType::Slopes50Banked67, 0, BoundBoxType::slopes60, VehiclePitch::up25, VehicleRoll::left45, VPTFlags::none,
+    { SpriteGroupType::Slopes50Banked67, 0, BoundBoxType::slopes50, VehiclePitch::up25, VehicleRoll::left45, VPTFlags::none,
       2 }, // fallback reorients sprite by +22.5 degrees (+2/32)
-    { SpriteGroupType::Slopes50Banked90, 0, BoundBoxType::slopes60, VehiclePitch::corkscrewUpLeft2, VehicleRoll::unbanked,
+    { SpriteGroupType::Slopes50Banked90, 0, BoundBoxType::slopes50, VehiclePitch::corkscrewUpLeft2, VehicleRoll::unbanked,
       VPTFlags::none, 8 }, // fallback reorients sprite by +8
     Up50,
     Up50,
     Up50,
-    { SpriteGroupType::Slopes50Banked67, 1, BoundBoxType::slopes60, VehiclePitch::up25, VehicleRoll::right45, VPTFlags::none,
+    { SpriteGroupType::Slopes50Banked67, 1, BoundBoxType::slopes50, VehiclePitch::up25, VehicleRoll::right45, VPTFlags::none,
       -2 }, // fallback reorients sprite by -22.5 degrees (-2/32)
-    { SpriteGroupType::Slopes50Banked90, 1, BoundBoxType::slopes60, VehiclePitch::corkscrewUpRight2 },
+    { SpriteGroupType::Slopes50Banked90, 1, BoundBoxType::slopes50, VehiclePitch::corkscrewUpRight2 },
     Up50,
     Up50,
     Up50,
@@ -1441,14 +1447,14 @@ static constexpr VehiclePaintTargetPitch Down8PaintTarget = {
     Down8,
 };
 
-static constexpr VehiclePaintTarget Down16 = { SpriteGroupType::Slopes16, 1, BoundBoxType::slopeFlat };
+static constexpr VehiclePaintTarget Down16 = { SpriteGroupType::Slopes16, 1, BoundBoxType::slopes16Reversed };
 static constexpr VehiclePaintTargetPitch Down16PaintTarget = {
     // 54: slopeDown16
     Down16,
-    { SpriteGroupType::Slopes16Banked22, 2, BoundBoxType::slopeFlat, VehiclePitch::down25, VehicleRoll::left45 },
-    { SpriteGroupType::Slopes16Banked45, 2, BoundBoxType::slopeFlat, VehiclePitch::flat, VehicleRoll::left22 },
-    { SpriteGroupType::Slopes16Banked22, 3, BoundBoxType::slopeFlat, VehiclePitch::down25, VehicleRoll::right45 },
-    { SpriteGroupType::Slopes16Banked45, 3, BoundBoxType::slopeFlat, VehiclePitch::flat, VehicleRoll::right22 },
+    { SpriteGroupType::Slopes16Banked22, 2, BoundBoxType::slopes16Reversed, VehiclePitch::down25, VehicleRoll::left45 },
+    { SpriteGroupType::Slopes16Banked45, 2, BoundBoxType::slopes16Reversed, VehiclePitch::flat, VehicleRoll::left22 },
+    { SpriteGroupType::Slopes16Banked22, 3, BoundBoxType::slopes16Reversed, VehiclePitch::down25, VehicleRoll::right45 },
+    { SpriteGroupType::Slopes16Banked45, 3, BoundBoxType::slopes16Reversed, VehiclePitch::flat, VehicleRoll::right22 },
     Down16,
     Down16,
     Down16,
@@ -1461,7 +1467,7 @@ static constexpr VehiclePaintTargetPitch Down16PaintTarget = {
     Down16,
 };
 
-static constexpr VehiclePaintTarget Down50 = { SpriteGroupType::Slopes50, 1, BoundBoxType::slopeFlat };
+static constexpr VehiclePaintTarget Down50 = { SpriteGroupType::Slopes50, 1, BoundBoxType::slopes50Reversed };
 // original did not use reverse bound box
 static constexpr VehiclePaintTargetPitch Down50PaintTarget = {
     // 55: slopeDown50
@@ -1470,16 +1476,16 @@ static constexpr VehiclePaintTargetPitch Down50PaintTarget = {
     { SpriteGroupType::Slopes50Banked45, 2, BoundBoxType::slopes60Reversed, VehiclePitch::down50, VehicleRoll::unbanked },
     Down50,
     { SpriteGroupType::Slopes50Banked45, 3, BoundBoxType::slopes60Reversed, VehiclePitch::down50, VehicleRoll::unbanked },
-    { SpriteGroupType::Slopes50Banked67, 2, BoundBoxType::slopes60Reversed, VehiclePitch::down25, VehicleRoll::left45,
+    { SpriteGroupType::Slopes50Banked67, 2, BoundBoxType::slopes50Reversed, VehiclePitch::down25, VehicleRoll::left45,
       VPTFlags::none, -2 }, // fallback reorients sprite by -22.5 degrees (-2/32)
     { SpriteGroupType::Slopes50Banked90, 2, BoundBoxType::slopes60Reversed, VehiclePitch::corkscrewDownLeft2,
       VehicleRoll::unbanked },
     Down50, // leftBanked122
     Down50, // leftBanked135
     Down50, // leftBanked157
-    { SpriteGroupType::Slopes50Banked67, 3, BoundBoxType::slopes60Reversed, VehiclePitch::down25, VehicleRoll::right45,
+    { SpriteGroupType::Slopes50Banked67, 3, BoundBoxType::slopes50Reversed, VehiclePitch::down25, VehicleRoll::right45,
       VPTFlags::none, 2 }, // fallback reorients sprite by +22.5 degrees (+2/32)
-    { SpriteGroupType::Slopes50Banked90, 3, BoundBoxType::slopes60Reversed, VehiclePitch::corkscrewDownLeft2,
+    { SpriteGroupType::Slopes50Banked90, 3, BoundBoxType::slopes50Reversed, VehiclePitch::corkscrewDownLeft2,
       VehicleRoll::unbanked, VPTFlags::none, 8 }, // fallback reorients sprite by +90 degrees (+8/32)
     Down50,                                       // rightBanked122
     Down50,                                       // rightBanked135
