@@ -3266,8 +3266,8 @@ static Vehicle* VehicleCreateCar(
     vehicle->animation_frame = 0;
     vehicle->animationState = 0;
     vehicle->scream_sound_id = OpenRCT2::Audio::SoundId::Null;
-    vehicle->pitch = 0;
-    vehicle->roll = 0;
+    vehicle->pitch = VehiclePitch::flat;
+    vehicle->roll = VehicleRoll::unbanked;
     vehicle->target_seat_rotation = 4;
     vehicle->seat_rotation = 4;
     for (size_t i = 0; i < std::size(vehicle->peep); i++)

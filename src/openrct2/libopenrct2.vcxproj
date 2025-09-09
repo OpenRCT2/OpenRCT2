@@ -425,6 +425,7 @@
     <ClInclude Include="rct2\RCT2.h" />
     <ClInclude Include="rct2\T6Exporter.h" />
     <ClInclude Include="ReplayManager.h" />
+    <ClInclude Include="ride\Angles.h" />
     <ClInclude Include="ride\CableLift.h" />
     <ClInclude Include="ride\CarEntry.h" />
     <ClInclude Include="ride\MazeCost.h" />
