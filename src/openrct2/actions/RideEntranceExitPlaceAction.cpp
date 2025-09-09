@@ -20,6 +20,7 @@
 #include "../world/MapAnimation.h"
 #include "../world/Wall.h"
 #include "../world/tile_element/EntranceElement.h"
+#include "../world/tile_element/Slope.h"
 
 namespace OpenRCT2::GameActions
 {
@@ -115,7 +116,7 @@ namespace OpenRCT2::GameActions
         }
         auto clear_z = z + (_isExit ? RideExitHeight : RideEntranceHeight);
         auto canBuild = MapCanConstructWithClearAt(
-            { _loc, z, clear_z }, &MapPlaceNonSceneryClearFunc, { 0b1111, 0 }, GetFlags());
+            { _loc, z, clear_z }, &MapPlaceNonSceneryClearFunc, { 0b1111, 0 }, GetFlags(), kTileSlopeFlat);
         if (canBuild.Error != Status::Ok)
         {
             canBuild.ErrorTitle = errorTitle;
@@ -185,7 +186,8 @@ namespace OpenRCT2::GameActions
 
         auto clear_z = z + (_isExit ? RideExitHeight : RideEntranceHeight);
         auto canBuild = MapCanConstructWithClearAt(
-            { _loc, z, clear_z }, &MapPlaceNonSceneryClearFunc, { 0b1111, 0 }, GetFlags() | GAME_COMMAND_FLAG_APPLY);
+            { _loc, z, clear_z }, &MapPlaceNonSceneryClearFunc, { 0b1111, 0 }, GetFlags() | GAME_COMMAND_FLAG_APPLY,
+            kTileSlopeFlat);
         if (canBuild.Error != Status::Ok)
         {
             canBuild.ErrorTitle = errorTitle;
@@ -251,7 +253,8 @@ namespace OpenRCT2::GameActions
         }
         int16_t baseZ = loc.z;
         int16_t clearZ = baseZ + (isExit ? RideExitHeight : RideEntranceHeight);
-        auto canBuild = MapCanConstructWithClearAt({ loc, baseZ, clearZ }, &MapPlaceNonSceneryClearFunc, { 0b1111, 0 }, 0);
+        auto canBuild = MapCanConstructWithClearAt(
+            { loc, baseZ, clearZ }, &MapPlaceNonSceneryClearFunc, { 0b1111, 0 }, 0, kTileSlopeFlat);
         if (canBuild.Error != Status::Ok)
         {
             canBuild.ErrorTitle = errorTitle;

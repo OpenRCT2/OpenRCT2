@@ -18,6 +18,7 @@
 #include "../world/Footpath.h"
 #include "../world/Map.h"
 #include "../world/Wall.h"
+#include "../world/tile_element/Slope.h"
 #include "../world/tile_element/SurfaceElement.h"
 #include "../world/tile_element/TrackElement.h"
 
@@ -106,7 +107,8 @@ namespace OpenRCT2::GameActions
         }
 
         auto canBuild = MapCanConstructWithClearAt(
-            { _loc.ToTileStart(), baseHeight, clearanceHeight }, &MapPlaceNonSceneryClearFunc, { 0b1111, 0 }, GetFlags());
+            { _loc.ToTileStart(), baseHeight, clearanceHeight }, &MapPlaceNonSceneryClearFunc, { 0b1111, 0 }, GetFlags(),
+            kTileSlopeFlat);
         if (canBuild.Error != Status::Ok)
         {
             canBuild.ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
@@ -171,7 +173,7 @@ namespace OpenRCT2::GameActions
 
         auto canBuild = MapCanConstructWithClearAt(
             { _loc.ToTileStart(), baseHeight, clearanceHeight }, &MapPlaceNonSceneryClearFunc, { 0b1111, 0 },
-            GetFlags() | GAME_COMMAND_FLAG_APPLY);
+            GetFlags() | GAME_COMMAND_FLAG_APPLY, kTileSlopeFlat);
         if (canBuild.Error != Status::Ok)
         {
             canBuild.ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;

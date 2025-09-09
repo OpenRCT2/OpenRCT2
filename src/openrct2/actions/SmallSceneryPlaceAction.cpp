@@ -267,7 +267,8 @@ namespace OpenRCT2::GameActions
         QuarterTile quarterTile = QuarterTile{ collisionQuadrants, supports }.Rotate(quadRotation);
         const auto isTree = sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_IS_TREE);
         auto canBuild = MapCanConstructWithClearAt(
-            { _loc, zLow, zHigh }, &MapPlaceSceneryClearFunc, quarterTile, GetFlags(), CreateCrossingMode::none, isTree);
+            { _loc, zLow, zHigh }, &MapPlaceSceneryClearFunc, quarterTile, GetFlags(), kTileSlopeFlat, CreateCrossingMode::none,
+            isTree);
         if (canBuild.Error != Status::Ok)
         {
             canBuild.ErrorTitle = STR_CANT_POSITION_THIS_HERE;
@@ -405,7 +406,7 @@ namespace OpenRCT2::GameActions
         QuarterTile quarterTile = QuarterTile{ collisionQuadrants, supports }.Rotate(quadRotation);
         const auto isTree = sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_IS_TREE);
         auto canBuild = MapCanConstructWithClearAt(
-            { _loc, zLow, zHigh }, &MapPlaceSceneryClearFunc, quarterTile, GetFlags() | GAME_COMMAND_FLAG_APPLY,
+            { _loc, zLow, zHigh }, &MapPlaceSceneryClearFunc, quarterTile, GetFlags() | GAME_COMMAND_FLAG_APPLY, kTileSlopeFlat,
             CreateCrossingMode::none, isTree);
         if (canBuild.Error != Status::Ok)
         {
