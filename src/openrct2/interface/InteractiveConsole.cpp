@@ -1487,7 +1487,9 @@ static void ConsoleCommandReplayStart(InteractiveConsole& console, const argumen
 
         console.WriteFormatLine(logFmt, info.FilePath.c_str(), recordingDate, info.Ticks, info.NumCommands, info.NumChecksums);
         Console::WriteLine(logFmt, info.FilePath.c_str(), recordingDate, info.Ticks, info.NumCommands, info.NumChecksums);
-    } else {
+    } 
+    else 
+    {
         console.WriteLineError("Could not find replay with name: " + name);
     }
 }
