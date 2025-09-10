@@ -670,7 +670,7 @@ namespace OpenRCT2::Ui::Windows
             if (!mapCoords.IsNull())
             {
                 gMapSelectFlags.set(MapSelectFlag::enable);
-                gMapSelectType = MAP_SELECT_TYPE_FULL;
+                gMapSelectType = MapSelectType::full;
                 gMapSelectPositionA = mapCoords;
                 gMapSelectPositionB = mapCoords;
                 MapInvalidateSelectionRect();

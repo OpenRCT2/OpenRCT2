@@ -11,6 +11,8 @@
 
 #include "GameAction.h"
 
+enum class MapSelectType : uint8_t;
+
 namespace OpenRCT2::GameActions
 {
     class LandLowerAction final : public GameActionBase<GameCommand::LowerLand>
@@ -18,11 +20,11 @@ namespace OpenRCT2::GameActions
     private:
         CoordsXY _coords;
         MapRange _range;
-        uint8_t _selectionType{};
+        MapSelectType _selectionType{};
 
     public:
         LandLowerAction() = default;
-        LandLowerAction(const CoordsXY& coords, MapRange range, uint8_t selectionType);
+        LandLowerAction(const CoordsXY& coords, MapRange range, MapSelectType selectionType);
 
         void AcceptParameters(GameActionParameterVisitor&) final;
 

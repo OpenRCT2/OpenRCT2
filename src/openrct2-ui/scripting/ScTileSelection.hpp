@@ -61,7 +61,7 @@ namespace OpenRCT2::Scripting
                     gMapSelectPositionA.y = range->GetTop();
                     gMapSelectPositionB.x = range->GetRight();
                     gMapSelectPositionB.y = range->GetBottom();
-                    gMapSelectType = MAP_SELECT_TYPE_FULL;
+                    gMapSelectType = MapSelectType::full;
                     gMapSelectFlags.set(MapSelectFlag::enable);
                 }
             }

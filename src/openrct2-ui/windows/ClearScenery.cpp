@@ -234,9 +234,9 @@ namespace OpenRCT2::Ui::Windows
                 state_changed++;
             }
 
-            if (gMapSelectType != MAP_SELECT_TYPE_FULL)
+            if (gMapSelectType != MapSelectType::full)
             {
-                gMapSelectType = MAP_SELECT_TYPE_FULL;
+                gMapSelectType = MapSelectType::full;
                 state_changed++;
             }
 

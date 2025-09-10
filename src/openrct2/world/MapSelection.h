@@ -23,27 +23,39 @@ enum class MapSelectFlag : uint8_t
 };
 using MapSelectFlags = FlagHolder<uint8_t, MapSelectFlag>;
 
-enum
+enum class MapSelectType : uint8_t
 {
-    MAP_SELECT_TYPE_CORNER_0,
-    MAP_SELECT_TYPE_CORNER_1,
-    MAP_SELECT_TYPE_CORNER_2,
-    MAP_SELECT_TYPE_CORNER_3,
-    MAP_SELECT_TYPE_FULL,
-    MAP_SELECT_TYPE_FULL_WATER,
-    MAP_SELECT_TYPE_FULL_LAND_RIGHTS,
-    MAP_SELECT_TYPE_QUARTER_0,
-    MAP_SELECT_TYPE_QUARTER_1,
-    MAP_SELECT_TYPE_QUARTER_2,
-    MAP_SELECT_TYPE_QUARTER_3,
-    MAP_SELECT_TYPE_EDGE_0,
-    MAP_SELECT_TYPE_EDGE_1,
-    MAP_SELECT_TYPE_EDGE_2,
-    MAP_SELECT_TYPE_EDGE_3,
+    corner0,
+    corner1,
+    corner2,
+    corner3,
+    full,
+    fullWater,
+    fullLandRights,
+    quarter0,
+    quarter1,
+    quarter2,
+    quarter3,
+    edge0,
+    edge1,
+    edge2,
+    edge3,
 };
+constexpr MapSelectType getMapSelectCorner(Direction direction)
+{
+    return static_cast<MapSelectType>(EnumValue(MapSelectType::corner0) + direction);
+}
+constexpr MapSelectType getMapSelectQuarter(Direction direction)
+{
+    return static_cast<MapSelectType>(EnumValue(MapSelectType::quarter0) + direction);
+}
+constexpr MapSelectType getMapSelectEdge(Direction direction)
+{
+    return static_cast<MapSelectType>(EnumValue(MapSelectType::edge0) + direction);
+}
 
 extern MapSelectFlags gMapSelectFlags;
-extern uint16_t gMapSelectType;
+extern MapSelectType gMapSelectType;
 extern CoordsXY gMapSelectPositionA;
 extern CoordsXY gMapSelectPositionB;
 extern CoordsXYZ gMapSelectArrowPosition;

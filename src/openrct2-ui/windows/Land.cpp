@@ -460,9 +460,9 @@ namespace OpenRCT2::Ui::Windows
                 state_changed++;
             }
 
-            if (gMapSelectType != MAP_SELECT_TYPE_FULL)
+            if (gMapSelectType != MapSelectType::full)
             {
-                gMapSelectType = MAP_SELECT_TYPE_FULL;
+                gMapSelectType = MapSelectType::full;
                 state_changed++;
             }
 
@@ -635,9 +635,10 @@ namespace OpenRCT2::Ui::Windows
             gMapSelectFlags.unset(MapSelectFlag::enable);
             if (tool_size == 1)
             {
-                int32_t selectionType;
+                int32_t direction;
                 // Get selection type and map coordinates from mouse x,y position
-                ScreenPosToMapPos(screenPos, &selectionType);
+                ScreenPosToMapPos(screenPos, &direction);
+                MapSelectType selectionType = static_cast<MapSelectType>(direction);
                 mapTile = ScreenGetMapXYSide(screenPos, &side);
 
                 if (!mapTile.has_value())
@@ -668,9 +669,10 @@ namespace OpenRCT2::Ui::Windows
                     state_changed++;
                 }
 
-                if ((gMapSelectType != MAP_SELECT_TYPE_EDGE_0 + (side & 0xFF)) && mapCtrlPressed)
+                MapSelectType selectedSide = getMapSelectEdge(side & 0xFF);
+                if (gMapSelectType != selectedSide && mapCtrlPressed)
                 {
-                    gMapSelectType = MAP_SELECT_TYPE_EDGE_0 + (side & 0xFF);
+                    gMapSelectType = selectedSide;
                     state_changed++;
                 }
 
@@ -739,15 +741,16 @@ namespace OpenRCT2::Ui::Windows
                 state_changed++;
             }
 
-            if (gMapSelectType != MAP_SELECT_TYPE_FULL)
+            if (gMapSelectType != MapSelectType::full)
             {
-                gMapSelectType = MAP_SELECT_TYPE_FULL;
+                gMapSelectType = MapSelectType::full;
                 state_changed++;
             }
 
-            if ((gMapSelectType != MAP_SELECT_TYPE_EDGE_0 + (side & 0xFF)) && mapCtrlPressed)
+            MapSelectType selectedSide = getMapSelectEdge(side & 0xFF);
+            if (gMapSelectType != selectedSide && mapCtrlPressed)
             {
-                gMapSelectType = MAP_SELECT_TYPE_EDGE_0 + (side & 0xFF);
+                gMapSelectType = selectedSide;
                 state_changed++;
             }
 
@@ -759,14 +762,14 @@ namespace OpenRCT2::Ui::Windows
             // Decide on shape of the brush for bigger selection size
             switch (gMapSelectType)
             {
-                case MAP_SELECT_TYPE_EDGE_0:
-                case MAP_SELECT_TYPE_EDGE_2:
+                case MapSelectType::edge0:
+                case MapSelectType::edge2:
                     // Line
                     mapTile->y -= (tool_size - 1) * 16;
                     mapTile->y = mapTile->ToTileStart().y;
                     break;
-                case MAP_SELECT_TYPE_EDGE_1:
-                case MAP_SELECT_TYPE_EDGE_3:
+                case MapSelectType::edge1:
+                case MapSelectType::edge3:
                     // Line
                     mapTile->x -= (tool_size - 1) * 16;
                     mapTile->x = mapTile->ToTileStart().x;
@@ -794,17 +797,17 @@ namespace OpenRCT2::Ui::Windows
             // Go to other side
             switch (gMapSelectType)
             {
-                case MAP_SELECT_TYPE_EDGE_0:
-                case MAP_SELECT_TYPE_EDGE_2:
+                case MapSelectType::edge0:
+                case MapSelectType::edge2:
                     // Line
                     mapTile->y += tool_length;
-                    gMapSelectType = MAP_SELECT_TYPE_FULL;
+                    gMapSelectType = MapSelectType::full;
                     break;
-                case MAP_SELECT_TYPE_EDGE_1:
-                case MAP_SELECT_TYPE_EDGE_3:
+                case MapSelectType::edge1:
+                case MapSelectType::edge3:
                     // Line
                     mapTile->x += tool_length;
-                    gMapSelectType = MAP_SELECT_TYPE_FULL;
+                    gMapSelectType = MapSelectType::full;
                     break;
                 default:
                     mapTile->x += tool_length;

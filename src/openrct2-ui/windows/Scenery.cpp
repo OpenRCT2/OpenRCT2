@@ -1839,10 +1839,10 @@ namespace OpenRCT2::Ui::Windows
 
                     auto* sceneryEntry = ObjectManager::GetObjectEntry<SmallSceneryEntry>(selection.EntryIndex);
 
-                    gMapSelectType = MAP_SELECT_TYPE_FULL;
+                    gMapSelectType = MapSelectType::full;
                     if (!sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_FULL_TILE) && !gWindowSceneryScatterEnabled)
                     {
-                        gMapSelectType = MAP_SELECT_TYPE_QUARTER_0 + (quadrant ^ 2);
+                        gMapSelectType = getMapSelectQuarter((quadrant ^ 2));
                     }
 
                     MapInvalidateSelectionRect();
@@ -1898,7 +1898,7 @@ namespace OpenRCT2::Ui::Windows
                     gMapSelectPositionA.y = mapTile.y;
                     gMapSelectPositionB.x = mapTile.x;
                     gMapSelectPositionB.y = mapTile.y;
-                    gMapSelectType = MAP_SELECT_TYPE_FULL;
+                    gMapSelectType = MapSelectType::full;
 
                     MapInvalidateSelectionRect();
 
@@ -1934,7 +1934,7 @@ namespace OpenRCT2::Ui::Windows
                     gMapSelectPositionA.y = mapTile.y;
                     gMapSelectPositionB.x = mapTile.x;
                     gMapSelectPositionB.y = mapTile.y;
-                    gMapSelectType = MAP_SELECT_TYPE_EDGE_0 + edge;
+                    gMapSelectType = getMapSelectEdge(edge);
 
                     MapInvalidateSelectionRect();
 
@@ -2055,7 +2055,7 @@ namespace OpenRCT2::Ui::Windows
                     gMapSelectPositionA.y = mapTile.y;
                     gMapSelectPositionB.x = mapTile.x;
                     gMapSelectPositionB.y = mapTile.y;
-                    gMapSelectType = MAP_SELECT_TYPE_FULL;
+                    gMapSelectType = MapSelectType::full;
 
                     MapInvalidateSelectionRect();
 

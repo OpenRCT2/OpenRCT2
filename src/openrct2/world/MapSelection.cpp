@@ -13,7 +13,7 @@
 #include "Map.h"
 
 MapSelectFlags gMapSelectFlags;
-uint16_t gMapSelectType;
+MapSelectType gMapSelectType;
 CoordsXY gMapSelectPositionA;
 CoordsXY gMapSelectPositionB;
 CoordsXYZ gMapSelectArrowPosition;

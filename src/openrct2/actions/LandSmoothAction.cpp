@@ -32,7 +32,7 @@
 
 namespace OpenRCT2::GameActions
 {
-    LandSmoothAction::LandSmoothAction(const CoordsXY& coords, MapRange range, uint8_t selectionType, bool isLowering)
+    LandSmoothAction::LandSmoothAction(const CoordsXY& coords, MapRange range, MapSelectType selectionType, bool isLowering)
         : _coords(coords)
         , _range(range)
         , _selectionType(selectionType)
@@ -337,7 +337,7 @@ namespace OpenRCT2::GameActions
     Result LandSmoothAction::SmoothLand(GameState_t& gameState, bool isExecuting) const
     {
         const bool raiseLand = !_isLowering;
-        const int32_t selectionType = _selectionType;
+        const auto selectionType = _selectionType;
         const int32_t heightOffset = raiseLand ? 2 : -2;
 
         auto normRange = _range.Normalise();
@@ -358,7 +358,7 @@ namespace OpenRCT2::GameActions
         // Do the smoothing
         switch (selectionType)
         {
-            case MAP_SELECT_TYPE_FULL:
+            case MapSelectType::full:
             {
                 uint8_t minHeight = heightOffset + MapGetLowestLandHeight(validRange);
                 uint8_t maxHeight = heightOffset + MapGetHighestLandHeight(validRange);
@@ -458,24 +458,25 @@ namespace OpenRCT2::GameActions
                 }
                 break;
             }
-            case MAP_SELECT_TYPE_CORNER_0:
-            case MAP_SELECT_TYPE_CORNER_1:
-            case MAP_SELECT_TYPE_CORNER_2:
-            case MAP_SELECT_TYPE_CORNER_3:
+            case MapSelectType::corner0:
+            case MapSelectType::corner1:
+            case MapSelectType::corner2:
+            case MapSelectType::corner3:
             {
                 auto surfaceElement = MapGetSurfaceElementAt(CoordsXY{ validRange.GetLeft(), validRange.GetTop() });
                 if (surfaceElement == nullptr)
                     break;
                 uint8_t newBaseZ = surfaceElement->BaseHeight;
                 uint8_t newSlope = surfaceElement->GetSlope();
+                auto direction = static_cast<Direction>(selectionType);
 
                 if (raiseLand)
                 {
-                    newSlope = RaiseSurfaceCornerFlags(selectionType, newSlope);
+                    newSlope = RaiseSurfaceCornerFlags(direction, newSlope);
                 }
                 else
                 {
-                    newSlope = LowerSurfaceCornerFlags(selectionType, newSlope);
+                    newSlope = LowerSurfaceCornerFlags(direction, newSlope);
                 }
 
                 if (newSlope & kTileSlopeRaiseOrLowerBaseHeight)
@@ -501,7 +502,7 @@ namespace OpenRCT2::GameActions
                 // Smooth the edges
                 switch (selectionType)
                 {
-                    case MAP_SELECT_TYPE_CORNER_0:
+                    case MapSelectType::corner0:
                         z = MapGetCornerHeight(newBaseZ, newSlope, 0);
                         res.Cost += SmoothLandRowByCorner(
                             gameState, isExecuting, { validRange.GetLeft(), validRange.GetTop() }, z, 32, 0, 3, 0);
@@ -514,7 +515,7 @@ namespace OpenRCT2::GameActions
                         res.Cost += SmoothLandRowByCorner(
                             gameState, isExecuting, { validRange.GetLeft(), validRange.GetTop() }, z, 0, -32, 0, 1);
                         break;
-                    case MAP_SELECT_TYPE_CORNER_1:
+                    case MapSelectType::corner1:
                         z = MapGetCornerHeight(newBaseZ, newSlope, 1);
                         res.Cost += SmoothLandRowByCorner(
                             gameState, isExecuting, { validRange.GetLeft(), validRange.GetTop() }, z, 32, 0, 2, 1);
@@ -527,7 +528,7 @@ namespace OpenRCT2::GameActions
                         res.Cost += SmoothLandRowByCorner(
                             gameState, isExecuting, { validRange.GetLeft(), validRange.GetTop() }, z, 0, 32, 1, 0);
                         break;
-                    case MAP_SELECT_TYPE_CORNER_2:
+                    case MapSelectType::corner2:
                         z = MapGetCornerHeight(newBaseZ, newSlope, 2);
                         res.Cost += SmoothLandRowByCorner(
                             gameState, isExecuting, { validRange.GetLeft(), validRange.GetTop() }, z, -32, 0, 1, 2);
@@ -540,7 +541,7 @@ namespace OpenRCT2::GameActions
                         res.Cost += SmoothLandRowByCorner(
                             gameState, isExecuting, { validRange.GetLeft(), validRange.GetTop() }, z, 0, 32, 2, 3);
                         break;
-                    case MAP_SELECT_TYPE_CORNER_3:
+                    case MapSelectType::corner3:
                         z = MapGetCornerHeight(newBaseZ, newSlope, 3);
                         res.Cost += SmoothLandRowByCorner(
                             gameState, isExecuting, { validRange.GetLeft(), validRange.GetTop() }, z, -32, 0, 0, 3);
@@ -552,14 +553,16 @@ namespace OpenRCT2::GameActions
                         z = MapGetCornerHeight(newBaseZ, newSlope, 2);
                         res.Cost += SmoothLandRowByCorner(
                             gameState, isExecuting, { validRange.GetLeft(), validRange.GetTop() }, z, 0, -32, 3, 2);
+                        break;
+                    default:
                         break;
                 }
                 break;
             }
-            case MAP_SELECT_TYPE_EDGE_0:
-            case MAP_SELECT_TYPE_EDGE_1:
-            case MAP_SELECT_TYPE_EDGE_2:
-            case MAP_SELECT_TYPE_EDGE_3:
+            case MapSelectType::edge0:
+            case MapSelectType::edge1:
+            case MapSelectType::edge2:
+            case MapSelectType::edge3:
             {
                 // TODO: Handle smoothing by edge
                 // Get the two corners to raise
@@ -568,7 +571,8 @@ namespace OpenRCT2::GameActions
                     break;
                 uint8_t newBaseZ = surfaceElement->BaseHeight;
                 uint8_t oldSlope = surfaceElement->GetSlope();
-                int32_t rowIndex = selectionType - (MAP_SELECT_TYPE_EDGE_0 - MAP_SELECT_TYPE_FULL - 1);
+                int32_t rowIndex = EnumValue(selectionType)
+                    - (EnumValue(MapSelectType::edge0) - EnumValue(MapSelectType::full) - 1);
                 uint8_t newSlope = raiseLand ? RaiseSurfaceCornerFlags(rowIndex, oldSlope)
                                              : LowerSurfaceCornerFlags(rowIndex, oldSlope);
 
@@ -579,15 +583,15 @@ namespace OpenRCT2::GameActions
                     newSlope &= ~kTileSlopeRaiseOrLowerBaseHeight;
                 }
 
-                const uint8_t edge = selectionType - MAP_SELECT_TYPE_EDGE_0;
+                const uint8_t edge = EnumValue(selectionType) - EnumValue(MapSelectType::edge0);
 
                 // Table with corners for each edge selection. The first two are the selected corners, the latter
                 // two are the opposites
                 static constexpr uint8_t cornerIndices[][4] = {
-                    { 2, 3, 1, 0 }, // MAP_SELECT_TYPE_EDGE_0
-                    { 3, 0, 2, 1 }, // MAP_SELECT_TYPE_EDGE_1
-                    { 0, 1, 3, 2 }, // MAP_SELECT_TYPE_EDGE_2
-                    { 1, 2, 0, 3 }, // MAP_SELECT_TYPE_EDGE_3
+                    { 2, 3, 1, 0 }, // MapSelectType::edge0
+                    { 3, 0, 2, 1 }, // MapSelectType::edge1
+                    { 0, 1, 3, 2 }, // MapSelectType::edge2
+                    { 1, 2, 0, 3 }, // MapSelectType::edge3
                 };
                 // Big coordinate offsets for the neighbouring tile for the given edge selection
                 static constexpr CoordsXY stepOffsets[] = {

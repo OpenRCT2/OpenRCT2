@@ -351,9 +351,9 @@ namespace OpenRCT2::Ui::Windows
                 state_changed++;
             }
 
-            if (gMapSelectType != MAP_SELECT_TYPE_FULL_WATER)
+            if (gMapSelectType != MapSelectType::fullWater)
             {
-                gMapSelectType = MAP_SELECT_TYPE_FULL_WATER;
+                gMapSelectType = MapSelectType::fullWater;
                 state_changed++;
             }
 

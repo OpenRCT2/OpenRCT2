@@ -462,7 +462,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             gMapSelectFlags.set(MapSelectFlag::enable, MapSelectFlag::enableArrow);
-            gMapSelectType = MAP_SELECT_TYPE_FULL;
+            gMapSelectType = MapSelectType::full;
             gMapSelectPositionA = mapCoords;
             gMapSelectPositionB = mapCoords;
             gMapSelectArrowPosition = CoordsXYZ{ mapCoords, mapZ };

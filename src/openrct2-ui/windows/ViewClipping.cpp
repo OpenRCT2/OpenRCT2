@@ -222,7 +222,7 @@ namespace OpenRCT2::Ui::Windows
                 MapInvalidateTileFull(gMapSelectPositionA);
                 gMapSelectPositionA = gMapSelectPositionB = mapCoords.value();
                 MapInvalidateTileFull(mapCoords.value());
-                gMapSelectType = MAP_SELECT_TYPE_FULL;
+                gMapSelectType = MapSelectType::full;
             }
         }
 
@@ -254,7 +254,7 @@ namespace OpenRCT2::Ui::Windows
                 gMapSelectPositionB.x = std::max(_selectionStart.x, mapCoords->x);
                 gMapSelectPositionA.y = std::min(_selectionStart.y, mapCoords->y);
                 gMapSelectPositionB.y = std::max(_selectionStart.y, mapCoords->y);
-                gMapSelectType = MAP_SELECT_TYPE_FULL;
+                gMapSelectType = MapSelectType::full;
                 MapInvalidateSelectionRect();
             }
         }

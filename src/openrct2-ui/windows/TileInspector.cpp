@@ -995,7 +995,7 @@ static uint64_t PageDisabledWidgets[] = {
             else
                 gMapSelectFlags.unset(MapSelectFlag::enable);
 
-            gMapSelectType = MAP_SELECT_TYPE_FULL;
+            gMapSelectType = MapSelectType::full;
             MapInvalidateSelectionRect();
         }
 
