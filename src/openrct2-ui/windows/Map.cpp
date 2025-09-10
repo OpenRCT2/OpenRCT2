@@ -447,8 +447,7 @@ namespace OpenRCT2::Ui::Windows
             int32_t direction;
             TileElement* tileElement;
             MapInvalidateSelectionRect();
-            gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
-            gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
+            gMapSelectFlags.unset(MapSelectFlag::enable, MapSelectFlag::enableArrow);
             auto mapCoords = FootpathBridgeGetInfoFromPos(screenCoords, &direction, &tileElement);
             if (mapCoords.IsNull())
                 return;
@@ -462,8 +461,7 @@ namespace OpenRCT2::Ui::Windows
                     mapZ += 16;
             }
 
-            gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
-            gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_ARROW;
+            gMapSelectFlags.set(MapSelectFlag::enable, MapSelectFlag::enableArrow);
             gMapSelectType = MAP_SELECT_TYPE_FULL;
             gMapSelectPositionA = mapCoords;
             gMapSelectPositionB = mapCoords;

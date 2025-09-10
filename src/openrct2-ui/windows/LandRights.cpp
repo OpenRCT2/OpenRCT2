@@ -460,7 +460,7 @@ namespace OpenRCT2::Ui::Windows
         void OnToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
             MapInvalidateSelectionRect();
-            gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
+            gMapSelectFlags.unset(MapSelectFlag::enable);
 
             auto info = GetMapCoordinatesFromPos(
                 screenCoords, EnumsToFlags(ViewportInteractionItem::Terrain, ViewportInteractionItem::Water));
@@ -479,9 +479,9 @@ namespace OpenRCT2::Ui::Windows
 
             uint8_t state_changed = 0;
 
-            if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
+            if (!(gMapSelectFlags.has(MapSelectFlag::enable)))
             {
-                gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
+                gMapSelectFlags.set(MapSelectFlag::enable);
                 state_changed++;
             }
 

@@ -119,8 +119,8 @@ namespace OpenRCT2::Ui::Windows
             ViewportSetVisibility(ViewportVisibility::Default);
 
             MapInvalidateMapSelectionTiles();
-            gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
-            gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
+            gMapSelectFlags.unset(MapSelectFlag::enableConstruct);
+            gMapSelectFlags.unset(MapSelectFlag::enableArrow);
 
             // In order to cancel the yellow arrow correctly the
             // selection tool should be cancelled.
@@ -346,8 +346,8 @@ namespace OpenRCT2::Ui::Windows
 
             MapInvalidateSelectionRect();
 
-            gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
-            gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
+            gMapSelectFlags.unset(MapSelectFlag::enable);
+            gMapSelectFlags.unset(MapSelectFlag::enableArrow);
 
             CoordsXYZD entranceOrExitCoords = RideGetEntranceOrExitPositionFromScreenPosition(screenCoords);
             if (entranceOrExitCoords.IsNull())
@@ -403,7 +403,7 @@ namespace OpenRCT2::Ui::Windows
 
             _currentTrackSelectionFlags.clearAll();
             _rideConstructionNextArrowPulse = 0;
-            gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
+            gMapSelectFlags.unset(MapSelectFlag::enableArrow);
             RideConstructionInvalidateCurrentTrack();
 
             x = _currentTrackBegin.x + (CoordsDirectionDelta[direction].x / 2);

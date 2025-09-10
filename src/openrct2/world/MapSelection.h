@@ -9,17 +9,19 @@
 
 #pragma once
 
+#include "../core/FlagHolder.hpp"
 #include "Location.hpp"
 
 #include <vector>
 
-enum
+enum class MapSelectFlag : uint8_t
 {
-    MAP_SELECT_FLAG_ENABLE = 1 << 0,
-    MAP_SELECT_FLAG_ENABLE_CONSTRUCT = 1 << 1,
-    MAP_SELECT_FLAG_ENABLE_ARROW = 1 << 2,
-    MAP_SELECT_FLAG_GREEN = 1 << 3,
+    enable,
+    enableConstruct,
+    enableArrow,
+    green,
 };
+using MapSelectFlags = FlagHolder<uint8_t, MapSelectFlag>;
 
 enum
 {
@@ -40,7 +42,7 @@ enum
     MAP_SELECT_TYPE_EDGE_3,
 };
 
-extern uint16_t gMapSelectFlags;
+extern MapSelectFlags gMapSelectFlags;
 extern uint16_t gMapSelectType;
 extern CoordsXY gMapSelectPositionA;
 extern CoordsXY gMapSelectPositionB;

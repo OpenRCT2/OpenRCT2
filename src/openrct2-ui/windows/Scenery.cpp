@@ -1782,8 +1782,8 @@ namespace OpenRCT2::Ui::Windows
             MapInvalidateSelectionRect();
             MapInvalidateMapSelectionTiles();
 
-            gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
-            gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
+            gMapSelectFlags.unset(MapSelectFlag::enable);
+            gMapSelectFlags.unset(MapSelectFlag::enableConstruct);
 
             if (_sceneryPaintEnabled)
                 return;
@@ -1815,7 +1815,7 @@ namespace OpenRCT2::Ui::Windows
                         return;
                     }
 
-                    gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
+                    gMapSelectFlags.set(MapSelectFlag::enable);
                     if (gWindowSceneryScatterEnabled)
                     {
                         uint16_t cluster_size = (gWindowSceneryScatterSize - 1) * kCoordsXYStep;
@@ -1893,7 +1893,7 @@ namespace OpenRCT2::Ui::Windows
                         return;
                     }
 
-                    gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
+                    gMapSelectFlags.set(MapSelectFlag::enable);
                     gMapSelectPositionA.x = mapTile.x;
                     gMapSelectPositionA.y = mapTile.y;
                     gMapSelectPositionB.x = mapTile.x;
@@ -1929,7 +1929,7 @@ namespace OpenRCT2::Ui::Windows
                         return;
                     }
 
-                    gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
+                    gMapSelectFlags.set(MapSelectFlag::enable);
                     gMapSelectPositionA.x = mapTile.x;
                     gMapSelectPositionA.y = mapTile.y;
                     gMapSelectPositionB.x = mapTile.x;
@@ -1998,7 +1998,7 @@ namespace OpenRCT2::Ui::Windows
                         gMapSelectionTiles.push_back(rotatedTileCoords);
                     }
 
-                    gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
+                    gMapSelectFlags.set(MapSelectFlag::enableConstruct);
                     MapInvalidateMapSelectionTiles();
 
                     // If no change in ghost placement
@@ -2050,7 +2050,7 @@ namespace OpenRCT2::Ui::Windows
                         return;
                     }
 
-                    gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
+                    gMapSelectFlags.set(MapSelectFlag::enable);
                     gMapSelectPositionA.x = mapTile.x;
                     gMapSelectPositionA.y = mapTile.y;
                     gMapSelectPositionB.x = mapTile.x;

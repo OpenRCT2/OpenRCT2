@@ -526,7 +526,7 @@ void RideConstructionInvalidateCurrentTrack()
             if (_currentTrackSelectionFlags.has(TrackSelectionFlag::arrow))
             {
                 _currentTrackSelectionFlags.unset(TrackSelectionFlag::arrow);
-                gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
+                gMapSelectFlags.unset(MapSelectFlag::enableArrow);
                 MapInvalidateTileFull(_currentTrackBegin);
             }
             RideConstructionRemoveGhosts();
@@ -769,7 +769,7 @@ void RideSelectNextSection()
     }
     else if (_rideConstructionState == RideConstructionState::Back)
     {
-        gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
+        gMapSelectFlags.unset(MapSelectFlag::enableArrow);
 
         if (RideSelectForwardsFromBack())
         {
@@ -825,7 +825,7 @@ void RideSelectPreviousSection()
     }
     else if (_rideConstructionState == RideConstructionState::Front)
     {
-        gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
+        gMapSelectFlags.unset(MapSelectFlag::enableArrow);
 
         if (RideSelectBackwardsFromFront())
         {
@@ -890,7 +890,7 @@ static bool ride_modify_entrance_or_exit(const CoordsXYE& tileElement)
         }
 
         WindowRideConstructionUpdateActiveElements();
-        gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
+        gMapSelectFlags.unset(MapSelectFlag::enableConstruct);
     }
     else
     {
@@ -934,7 +934,7 @@ static bool ride_modify_maze(const CoordsXYE& tileElement)
             _currentTrackBegin.z = trackElement->GetBaseZ();
             _currentTrackSelectionFlags.clearAll();
             _rideConstructionNextArrowPulse = 0;
-            gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
+            gMapSelectFlags.unset(MapSelectFlag::enableArrow);
 
             auto intent = Intent(INTENT_ACTION_UPDATE_MAZE_CONSTRUCTION);
             ContextBroadcastIntent(&intent);
@@ -1018,7 +1018,7 @@ bool RideModify(const CoordsXYE& input)
     _currentTrackPieceType = type;
     _currentTrackSelectionFlags.clearAll();
     _rideConstructionNextArrowPulse = 0;
-    gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
+    gMapSelectFlags.unset(MapSelectFlag::enableArrow);
 
     if (!ride->getRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
     {

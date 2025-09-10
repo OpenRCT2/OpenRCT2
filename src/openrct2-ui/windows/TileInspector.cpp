@@ -967,7 +967,7 @@ static uint64_t PageDisabledWidgets[] = {
         void OnToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
             MapInvalidateSelectionRect();
-            gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
+            gMapSelectFlags.set(MapSelectFlag::enable);
 
             CoordsXY mapCoords;
             TileElement* clickedElement = nullptr;
@@ -993,7 +993,7 @@ static uint64_t PageDisabledWidgets[] = {
             else if (_tileSelected)
                 gMapSelectPositionA = gMapSelectPositionB = _toolMap;
             else
-                gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
+                gMapSelectFlags.unset(MapSelectFlag::enable);
 
             gMapSelectType = MAP_SELECT_TYPE_FULL;
             MapInvalidateSelectionRect();

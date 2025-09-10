@@ -159,7 +159,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
 
             auto stateChanged = false;
-            if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
+            if (!(gMapSelectFlags.has(MapSelectFlag::enable)))
                 stateChanged = true;
 
             if (gMapSelectType != MAP_SELECT_TYPE_FULL)
@@ -185,7 +185,7 @@ namespace OpenRCT2::Ui::Windows
                 MapInvalidateSelectionRect();
 
                 // Update and invalidate new area
-                gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
+                gMapSelectFlags.set(MapSelectFlag::enable);
                 gMapSelectType = MAP_SELECT_TYPE_FULL;
                 gMapSelectPositionA = posA;
                 gMapSelectPositionB = posB;

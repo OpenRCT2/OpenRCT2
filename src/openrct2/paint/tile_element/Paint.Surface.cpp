@@ -808,7 +808,7 @@ static std::pair<int32_t, int32_t> SurfaceGetHeightAboveWater(
 
 std::optional<colour_t> GetPatrolAreaTileColour(const CoordsXY& pos)
 {
-    bool selected = gMapSelectFlags & MAP_SELECT_FLAG_ENABLE && gMapSelectType == MAP_SELECT_TYPE_FULL
+    bool selected = gMapSelectFlags.has(MapSelectFlag::enable) && gMapSelectType == MAP_SELECT_TYPE_FULL
         && pos.x >= gMapSelectPositionA.x && pos.x <= gMapSelectPositionB.x && pos.y >= gMapSelectPositionA.y
         && pos.y <= gMapSelectPositionB.y;
 
@@ -1090,7 +1090,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
     // ebp[4] = ebp;
     // ebp[8] = ebx
 
-    if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE)
+    if (gMapSelectFlags.has(MapSelectFlag::enable))
     {
         // Loc660FB8:
         const CoordsXY& pos = session.MapPosition;
@@ -1164,7 +1164,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
         }
     }
 
-    if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE_CONSTRUCT)
+    if (gMapSelectFlags.has(MapSelectFlag::enableConstruct))
     {
         const CoordsXY& pos = session.MapPosition;
 
@@ -1176,7 +1176,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
             }
 
             FilterPaletteID fpId = FilterPaletteID::PaletteSceneryGroundMarker;
-            if (gMapSelectFlags & MAP_SELECT_FLAG_GREEN)
+            if (gMapSelectFlags.has(MapSelectFlag::green))
             {
                 fpId = FilterPaletteID::PaletteRideGroundMarker;
             }

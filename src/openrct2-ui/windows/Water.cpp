@@ -201,7 +201,7 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_BACKGROUND:
-                    if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE)
+                    if (gMapSelectFlags.has(MapSelectFlag::enable))
                     {
                         gCurrentToolId = Tool::upDownArrow;
                     }
@@ -225,7 +225,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WIDX_BACKGROUND:
                     MapInvalidateSelectionRect();
-                    gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
+                    gMapSelectFlags.unset(MapSelectFlag::enable);
                     gCurrentToolId = Tool::waterDown;
                     break;
             }
@@ -302,7 +302,7 @@ namespace OpenRCT2::Ui::Windows
 
             if (gCurrentToolId == Tool::upDownArrow)
             {
-                if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
+                if (!(gMapSelectFlags.has(MapSelectFlag::enable)))
                     return;
 
                 auto waterLowerAction = GameActions::WaterLowerAction(
@@ -325,7 +325,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
+            gMapSelectFlags.unset(MapSelectFlag::enable);
 
             auto info = GetMapCoordinatesFromPos(
                 screenPos, EnumsToFlags(ViewportInteractionItem::Terrain, ViewportInteractionItem::Water));
@@ -345,9 +345,9 @@ namespace OpenRCT2::Ui::Windows
 
             uint8_t state_changed = 0;
 
-            if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
+            if (!(gMapSelectFlags.has(MapSelectFlag::enable)))
             {
-                gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
+                gMapSelectFlags.set(MapSelectFlag::enable);
                 state_changed++;
             }
 
