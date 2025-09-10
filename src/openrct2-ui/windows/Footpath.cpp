@@ -54,11 +54,17 @@ namespace OpenRCT2::Ui::Windows
         ObjectEntryIndex type, ObjectEntryIndex railingsType, const CoordsXYZ& footpathLoc, int32_t slope,
         PathConstructFlags constructFlags);
 
-    enum
+    enum class PathConstructionMode : uint8_t
     {
-        PATH_CONSTRUCTION_MODE_LAND,
-        PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL_TOOL,
-        PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL
+        land,
+        /**
+         * When picking a location to start the bridge or tunnel
+         */
+        bridgeOrTunnelPick,
+        /**
+         * When actually building a bridge or tunnel (enables the appropriate buttons)
+         */
+        bridgeOrTunnel,
     };
 
     enum class ProvisionalPathFlag : uint8_t
@@ -191,7 +197,7 @@ namespace OpenRCT2::Ui::Windows
 
         uint8_t _footpathConstructDirection;
         uint8_t _footpathConstructValidDirections;
-        uint8_t _footpathConstructionMode;
+        PathConstructionMode _footpathConstructionMode;
 
         std::vector<std::pair<ObjectType, ObjectEntryIndex>> _dropdownEntries;
 
@@ -221,7 +227,7 @@ namespace OpenRCT2::Ui::Windows
             ShowGridlines();
 
             ToolCancel();
-            _footpathConstructionMode = PATH_CONSTRUCTION_MODE_LAND;
+            _footpathConstructionMode = PathConstructionMode::land;
             ToolSet(*this, WIDX_CONSTRUCT_ON_LAND, Tool::pathDown);
             gInputFlags.set(InputFlag::unk6);
             _footpathErrorOccured = false;
@@ -258,12 +264,12 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Check tool
-            if (_footpathConstructionMode == PATH_CONSTRUCTION_MODE_LAND)
+            if (_footpathConstructionMode == PathConstructionMode::land)
             {
                 if (!isToolActive(WindowClass::Footpath, WIDX_CONSTRUCT_ON_LAND))
                     Close();
             }
-            else if (_footpathConstructionMode == PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL_TOOL)
+            else if (_footpathConstructionMode == PathConstructionMode::bridgeOrTunnelPick)
             {
                 if (!isToolActive(WindowClass::Footpath, WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL))
                     Close();
@@ -321,7 +327,7 @@ namespace OpenRCT2::Ui::Windows
                     Close();
                     break;
                 case WIDX_CONSTRUCT_ON_LAND:
-                    if (_footpathConstructionMode == PATH_CONSTRUCTION_MODE_LAND)
+                    if (_footpathConstructionMode == PathConstructionMode::land)
                     {
                         break;
                     }
@@ -331,14 +337,14 @@ namespace OpenRCT2::Ui::Windows
                     FootpathUpdateProvisional();
                     MapInvalidateMapSelectionTiles();
                     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
-                    _footpathConstructionMode = PATH_CONSTRUCTION_MODE_LAND;
+                    _footpathConstructionMode = PathConstructionMode::land;
                     ToolSet(*this, WIDX_CONSTRUCT_ON_LAND, Tool::pathDown);
                     gInputFlags.set(InputFlag::unk6);
                     _footpathErrorOccured = false;
                     WindowFootpathSetEnabledAndPressedWidgets();
                     break;
                 case WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL:
-                    if (_footpathConstructionMode == PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL_TOOL)
+                    if (_footpathConstructionMode == PathConstructionMode::bridgeOrTunnelPick)
                     {
                         break;
                     }
@@ -348,7 +354,7 @@ namespace OpenRCT2::Ui::Windows
                     FootpathUpdateProvisional();
                     MapInvalidateMapSelectionTiles();
                     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
-                    _footpathConstructionMode = PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL_TOOL;
+                    _footpathConstructionMode = PathConstructionMode::bridgeOrTunnelPick;
                     ToolSet(*this, WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL, Tool::crosshair);
                     gInputFlags.set(InputFlag::unk6);
                     _footpathErrorOccured = false;
@@ -452,7 +458,7 @@ namespace OpenRCT2::Ui::Windows
                                                                   : (1uLL << WIDX_FOOTPATH_TYPE);
 
             // Enable / disable construct button
-            widgets[WIDX_CONSTRUCT].type = _footpathConstructionMode == PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL
+            widgets[WIDX_CONSTRUCT].type = _footpathConstructionMode == PathConstructionMode::bridgeOrTunnel
                 ? WidgetType::imgBtn
                 : WidgetType::empty;
 
@@ -549,7 +555,7 @@ namespace OpenRCT2::Ui::Windows
          */
         void WindowFootpathUpdateProvisionalPathForBridgeMode()
         {
-            if (_footpathConstructionMode != PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL)
+            if (_footpathConstructionMode != PathConstructionMode::bridgeOrTunnel)
             {
                 return;
             }
@@ -1213,7 +1219,7 @@ namespace OpenRCT2::Ui::Windows
             _footpathConstructDirection = direction;
             _provisionalFootpath.flags.clearAll();
             gFootpathConstructSlope = 0;
-            _footpathConstructionMode = PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL;
+            _footpathConstructionMode = PathConstructionMode::bridgeOrTunnel;
             _footpathConstructValidDirections = kInvalidDirection;
             WindowFootpathSetEnabledAndPressedWidgets();
         }
@@ -1410,7 +1416,7 @@ namespace OpenRCT2::Ui::Windows
          */
         void WindowFootpathSetEnabledAndPressedWidgets()
         {
-            if (_footpathConstructionMode == PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL)
+            if (_footpathConstructionMode == PathConstructionMode::bridgeOrTunnel)
             {
                 MapInvalidateMapSelectionTiles();
                 gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
@@ -1429,7 +1435,7 @@ namespace OpenRCT2::Ui::Windows
                     | (1LL << WIDX_DIRECTION_SE) | (1LL << WIDX_SLOPEDOWN) | (1LL << WIDX_LEVEL) | (1LL << WIDX_SLOPEUP));
             uint64_t disabledWidgets = 0;
             int32_t currentRotation = GetCurrentRotation();
-            if (_footpathConstructionMode >= PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL)
+            if (_footpathConstructionMode == PathConstructionMode::bridgeOrTunnel)
             {
                 // Set pressed directional widget
                 int32_t direction = (_footpathConstructDirection + currentRotation) & 3;
@@ -1519,7 +1525,8 @@ namespace OpenRCT2::Ui::Windows
         void KeyboardShortcutTurnLeft()
         {
             if (IsWidgetDisabled(WIDX_DIRECTION_NW) || IsWidgetDisabled(WIDX_DIRECTION_NE)
-                || IsWidgetDisabled(WIDX_DIRECTION_SW) || IsWidgetDisabled(WIDX_DIRECTION_SE) || _footpathConstructionMode != 2)
+                || IsWidgetDisabled(WIDX_DIRECTION_SW) || IsWidgetDisabled(WIDX_DIRECTION_SE)
+                || _footpathConstructionMode != PathConstructionMode::bridgeOrTunnel)
             {
                 return;
             }
@@ -1531,7 +1538,8 @@ namespace OpenRCT2::Ui::Windows
         void KeyboardShortcutTurnRight()
         {
             if (IsWidgetDisabled(WIDX_DIRECTION_NW) || IsWidgetDisabled(WIDX_DIRECTION_NE)
-                || IsWidgetDisabled(WIDX_DIRECTION_SW) || IsWidgetDisabled(WIDX_DIRECTION_SE) || _footpathConstructionMode != 2)
+                || IsWidgetDisabled(WIDX_DIRECTION_SW) || IsWidgetDisabled(WIDX_DIRECTION_SE)
+                || _footpathConstructionMode != PathConstructionMode::bridgeOrTunnel)
             {
                 return;
             }
