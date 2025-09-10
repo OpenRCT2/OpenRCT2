@@ -8771,6 +8771,7 @@ void Vehicle::UpdateCrossings() const
                 if (!playedClaxon && !pathElement->IsBlockedByVehicle())
                 {
                     Claxon();
+                    playedClaxon = true;
                 }
                 crossingBonus = 4;
                 pathElement->SetIsBlockedByVehicle(true);
