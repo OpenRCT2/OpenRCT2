@@ -256,7 +256,8 @@ const RideObjectEntry* Ride::getRideEntry() const
 
 int32_t RideGetCount()
 {
-    return static_cast<int32_t>(GetRideManager().size());
+    auto& gameState = getGameState();
+    return static_cast<int32_t>(RideManager(gameState).size());
 }
 
 size_t Ride::getNumPrices() const
@@ -365,7 +366,8 @@ void Ride::queueInsertGuestAtFront(StationIndex stationIndex, Guest* peep)
  */
 void RideUpdateFavouritedStat()
 {
-    for (auto& ride : GetRideManager())
+    auto& gameState = getGameState();
+    for (auto& ride : RideManager(gameState))
         ride.guestsFavourite = 0;
 
     for (auto peep : EntityList<Guest>())
@@ -938,7 +940,8 @@ void RideInitAll()
  */
 void ResetAllRideBuildDates()
 {
-    for (auto& ride : GetRideManager())
+    auto& gameState = getGameState();
+    for (auto& ride : RideManager(gameState))
     {
         ride.buildDate -= GetDate().GetMonthsElapsed();
     }
@@ -960,6 +963,8 @@ void Ride::updateAll()
 {
     PROFILED_FUNCTION();
 
+    auto& gameState = getGameState();
+
     // Remove all rides if scenario editor
     if (gLegacyScene == LegacyScene::scenarioEditor)
     {
@@ -968,9 +973,11 @@ void Ride::updateAll()
             case EditorStep::ObjectSelection:
             case EditorStep::LandscapeEditor:
             case EditorStep::InventionsListSetUp:
-                for (auto& ride : GetRideManager())
+            {
+                for (auto& ride : RideManager(gameState))
                     ride.remove();
                 break;
+            }
             case EditorStep::OptionsSelection:
             case EditorStep::ObjectiveSelection:
             case EditorStep::ScenarioDetails:
@@ -986,7 +993,7 @@ void Ride::updateAll()
     WindowUpdateViewportRideMusic();
 
     // Update rides
-    for (auto& ride : GetRideManager())
+    for (auto& ride : RideManager(gameState))
         ride.update();
 
     OpenRCT2::RideAudio::UpdateMusicChannels();
@@ -2065,8 +2072,10 @@ void RideMeasurementsUpdate()
     if (gLegacyScene == LegacyScene::scenarioEditor)
         return;
 
+    auto& gameState = getGameState();
+
     // For each ride measurement
-    for (auto& ride : GetRideManager())
+    for (auto& ride : RideManager(gameState))
     {
         auto measurement = ride.measurement.get();
         if (measurement != nullptr && (ride.lifecycleFlags & RIDE_LIFECYCLE_ON_TRACK) && ride.status != RideStatus::simulating)
@@ -2081,7 +2090,7 @@ void RideMeasurementsUpdate()
                 for (int32_t j = 0; j < ride.numTrains; j++)
                 {
                     auto vehicleSpriteIdx = ride.vehicles[j];
-                    auto vehicle = getGameState().entities.GetEntity<Vehicle>(vehicleSpriteIdx);
+                    auto vehicle = gameState.entities.GetEntity<Vehicle>(vehicleSpriteIdx);
                     if (vehicle != nullptr)
                     {
                         if (vehicle->status == Vehicle::Status::Departing
@@ -2111,7 +2120,9 @@ static void RideFreeOldMeasurements()
     {
         Ride* lruRide{};
         numRideMeasurements = 0;
-        for (auto& ride : GetRideManager())
+
+        auto& gameState = getGameState();
+        for (auto& ride : RideManager(gameState))
         {
             if (ride.measurement != nullptr)
             {
@@ -2177,7 +2188,8 @@ VehicleColour RideGetVehicleColour(const Ride& ride, int32_t vehicleIndex)
 
 static bool RideTypeVehicleColourExists(ObjectEntryIndex subType, const VehicleColour& vehicleColour)
 {
-    for (auto& ride : GetRideManager())
+    auto& gameState = getGameState();
+    for (auto& ride : RideManager(gameState))
     {
         if (ride.subtype != subType)
             continue;
@@ -2258,7 +2270,8 @@ void RideSetVehicleColoursToRandomPreset(Ride& ride, uint8_t preset_index)
  */
 void RideCheckAllReachable()
 {
-    for (auto& ride : GetRideManager())
+    auto& gameState = getGameState();
+    for (auto& ride : RideManager(gameState))
     {
         if (ride.connectedMessageThrottle != 0)
             ride.connectedMessageThrottle--;
@@ -4233,7 +4246,8 @@ RideMode Ride::getDefaultMode() const
 
 static bool RideTypeWithTrackColoursExists(ride_type_t rideType, const TrackColour& colours)
 {
-    for (auto& ride : GetRideManager())
+    auto& gameState = getGameState();
+    for (auto& ride : RideManager(gameState))
     {
         if (ride.type != rideType)
             continue;
@@ -4251,13 +4265,15 @@ static bool RideTypeWithTrackColoursExists(ride_type_t rideType, const TrackColo
 
 bool Ride::nameExists(std::string_view name, RideId excludeRideId)
 {
-    char buffer[256]{};
-    for (auto& ride : GetRideManager())
+    auto& gameState = getGameState();
+    for (auto& ride : RideManager(gameState))
     {
         if (ride.id != excludeRideId)
         {
             Formatter ft;
             ride.formatNameTo(ft);
+
+            char buffer[256]{};
             FormatStringLegacy(buffer, 256, STR_STRINGID, ft.Data());
             if (name == buffer && RideHasAnyTrackElements(ride))
             {
@@ -4330,7 +4346,8 @@ void Ride::setColourPreset(uint8_t index)
 
 money64 RideGetCommonPrice(const Ride& forRide)
 {
-    for (const auto& ride : GetRideManager())
+    auto& gameState = getGameState();
+    for (const auto& ride : RideManager(gameState))
     {
         if (ride.type == forRide.type && ride.id != forRide.id)
         {
@@ -5479,7 +5496,8 @@ int32_t GetUnifiedBoosterSpeed(ride_type_t rideType, int32_t relativeSpeed)
 
 void FixInvalidVehicleSpriteSizes()
 {
-    for (const auto& ride : GetRideManager())
+    auto& gameState = getGameState();
+    for (const auto& ride : RideManager(gameState))
     {
         for (auto entityIndex : ride.vehicles)
         {
@@ -5574,7 +5592,8 @@ void DetermineRideEntranceAndExitLocations()
 {
     LOG_VERBOSE("Inspecting ride entrance / exit locations");
 
-    for (auto& ride : GetRideManager())
+    auto& gameState = getGameState();
+    for (auto& ride : RideManager(gameState))
     {
         for (auto& station : ride.getStations())
         {
@@ -5624,7 +5643,6 @@ void DetermineRideEntranceAndExitLocations()
             // Search the map to find it. Skip the outer ring of invisible tiles.
             bool alreadyFoundEntrance = false;
             bool alreadyFoundExit = false;
-            auto& gameState = getGameState();
             for (int32_t y = 1; y < gameState.mapSize.y - 1; y++)
             {
                 for (int32_t x = 1; x < gameState.mapSize.x - 1; x++)
@@ -5873,7 +5891,8 @@ std::vector<RideId> GetTracklessRides()
     }
 
     // Get all rides that did not get seen during map iteration
-    const auto& rideManager = GetRideManager();
+    auto& gameState = getGameState();
+    const auto& rideManager = RideManager(gameState);
     std::vector<RideId> result;
     for (const auto& ride : rideManager)
     {

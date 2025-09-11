@@ -1244,7 +1244,9 @@ namespace OpenRCT2::Ui::Windows
 
             const auto oldSize = _riddenRides.size();
             _riddenRides.clear();
-            for (const auto& r : GetRideManager())
+
+            const auto& gameState = getGameState();
+            for (const auto& r : RideManager(gameState))
             {
                 if (r.isRide() && guest->HasRidden(r))
                 {

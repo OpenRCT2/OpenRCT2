@@ -155,14 +155,14 @@ namespace OpenRCT2::GameActions
         }
 
         // Synchronize prices if enabled.
-        RideSetCommonPrice(shopItem);
+        RideSetCommonPrice(gameState, shopItem);
 
         return res;
     }
 
-    void RideSetPriceAction::RideSetCommonPrice(ShopItem shopItem) const
+    void RideSetPriceAction::RideSetCommonPrice(GameState_t& gameState, ShopItem shopItem) const
     {
-        for (auto& ride : GetRideManager())
+        for (auto& ride : RideManager(gameState))
         {
             auto invalidate = false;
             auto rideEntry = GetRideEntryByIndex(ride.subtype);

@@ -541,7 +541,8 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_CLOSE_LIGHT].type = WidgetType::imgBtn;
                 widgets[WIDX_OPEN_LIGHT].type = WidgetType::imgBtn;
 
-                const auto& rideManager = GetRideManager();
+                const auto& gameState = getGameState();
+                const auto& rideManager = RideManager(gameState);
                 auto allClosed = true;
                 auto allOpen = false;
                 if (_rideList.size() > 0 && std::size(rideManager) != 0)
@@ -950,7 +951,8 @@ namespace OpenRCT2::Ui::Windows
         void RefreshList()
         {
             _rideList.clear();
-            for (auto& rideRef : GetRideManager())
+            const auto& gameState = getGameState();
+            for (auto& rideRef : RideManager(gameState))
             {
                 if (rideRef.getClassification() != static_cast<RideClassification>(page)
                     || (rideRef.status == RideStatus::closed && !RideHasAnyTrackElements(rideRef)))
@@ -1093,7 +1095,8 @@ namespace OpenRCT2::Ui::Windows
         // window_ride_list_close_all
         void CloseAllRides()
         {
-            for (auto& rideRef : GetRideManager())
+            const auto& gameState = getGameState();
+            for (auto& rideRef : RideManager(gameState))
             {
                 if (rideRef.status != RideStatus::closed
                     && rideRef.getClassification() == static_cast<RideClassification>(page))
@@ -1107,7 +1110,8 @@ namespace OpenRCT2::Ui::Windows
         // window_ride_list_open_all
         void OpenAllRides()
         {
-            for (auto& rideRef : GetRideManager())
+            const auto& gameState = getGameState();
+            for (auto& rideRef : RideManager(gameState))
             {
                 if (rideRef.status != RideStatus::open && rideRef.getClassification() == static_cast<RideClassification>(page))
                 {

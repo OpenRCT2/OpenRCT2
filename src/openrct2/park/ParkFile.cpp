@@ -1382,7 +1382,7 @@ namespace OpenRCT2
         void ReadWriteRidesChunk(GameState_t& gameState, OrcaStream& os)
         {
             const auto version = os.getHeader().targetVersion;
-            os.readWriteChunk(ParkFileChunkType::RIDES, [this, &version, &os](OrcaStream::ChunkStream& cs) {
+            os.readWriteChunk(ParkFileChunkType::RIDES, [this, &version, &os, &gameState](OrcaStream::ChunkStream& cs) {
                 std::vector<RideId> rideIds;
                 if (cs.getMode() == OrcaStream::Mode::reading)
                 {
@@ -1393,7 +1393,7 @@ namespace OpenRCT2
                     if (OmitTracklessRides)
                     {
                         auto tracklessRides = GetTracklessRides();
-                        for (const auto& ride : GetRideManager())
+                        for (const auto& ride : RideManager(gameState))
                         {
                             auto it = std::find(tracklessRides.begin(), tracklessRides.end(), ride.id);
                             if (it == tracklessRides.end())
@@ -1404,7 +1404,7 @@ namespace OpenRCT2
                     }
                     else
                     {
-                        for (const auto& ride : GetRideManager())
+                        for (const auto& ride : RideManager(gameState))
                         {
                             rideIds.push_back(ride.id);
                         }

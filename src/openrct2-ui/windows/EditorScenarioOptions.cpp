@@ -538,7 +538,8 @@ namespace OpenRCT2::Ui::Windows
         bool AnyRidesExist()
         {
             // Check if there are any rides (not shops or facilities)
-            const auto& rideManager = GetRideManager();
+            const auto& gameState = getGameState();
+            const auto& rideManager = RideManager(gameState);
             return std::any_of(
                 rideManager.begin(), rideManager.end(), [](const Ride& rideToCheck) { return rideToCheck.isRide(); });
         }
@@ -2238,7 +2239,9 @@ namespace OpenRCT2::Ui::Windows
 
             const auto oldSize = _rideableRides.size();
             _rideableRides.clear();
-            for (auto& currentRide : GetRideManager())
+
+            const auto& gameState = getGameState();
+            for (auto& currentRide : RideManager(gameState))
             {
                 if (currentRide.isRide())
                 {

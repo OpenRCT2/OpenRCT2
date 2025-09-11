@@ -158,7 +158,7 @@ namespace OpenRCT2::GameActions
                 gameState.cheats.disableLittering = _param1 != 0;
                 break;
             case CheatType::NoMoney:
-                SetScenarioNoMoney(_param1 != 0);
+                SetScenarioNoMoney(gameState, _param1 != 0);
                 break;
             case CheatType::AddMoney:
                 AddMoney(_param1);
@@ -176,13 +176,13 @@ namespace OpenRCT2::GameActions
                 GenerateGuests(_param1);
                 break;
             case CheatType::RemoveAllGuests:
-                RemoveAllGuests();
+                RemoveAllGuests(gameState);
                 break;
             case CheatType::GiveAllGuests:
                 GiveObjectToGuests(_param1);
                 break;
             case CheatType::SetGrassLength:
-                SetGrassLength(_param1);
+                SetGrassLength(gameState, _param1);
                 break;
             case CheatType::WaterPlants:
                 WaterPlants();
@@ -191,7 +191,7 @@ namespace OpenRCT2::GameActions
                 FixVandalism();
                 break;
             case CheatType::RemoveLitter:
-                RemoveLitter();
+                RemoveLitter(gameState);
                 break;
             case CheatType::DisablePlantAging:
                 gameState.cheats.disablePlantAging = _param1 != 0;
@@ -200,20 +200,20 @@ namespace OpenRCT2::GameActions
                 SetStaffSpeed(_param1);
                 break;
             case CheatType::RenewRides:
-                RenewRides();
+                RenewRides(gameState);
                 break;
             case CheatType::MakeDestructible:
                 gameState.cheats.makeAllDestructible = _param1 != 0;
                 windowMgr->InvalidateByClass(WindowClass::Ride);
                 break;
             case CheatType::FixRides:
-                FixBrokenRides();
+                FixBrokenRides(gameState);
                 break;
             case CheatType::ResetCrashStatus:
-                ResetRideCrashStatus();
+                ResetRideCrashStatus(gameState);
                 break;
             case CheatType::TenMinuteInspections:
-                Set10MinuteInspection();
+                Set10MinuteInspection(gameState);
                 break;
             case CheatType::WinScenario:
                 ScenarioSuccess(gameState);
@@ -436,9 +436,8 @@ namespace OpenRCT2::GameActions
         return { { 0, 0 }, { 0, 0 } };
     }
 
-    void CheatSetAction::SetGrassLength(int32_t length) const
+    void CheatSetAction::SetGrassLength(GameState_t& gameState, int32_t length) const
     {
-        auto& gameState = getGameState();
         for (int32_t y = 0; y < gameState.mapSize.y; y++)
         {
             for (int32_t x = 0; x < gameState.mapSize.x; x++)
@@ -493,11 +492,11 @@ namespace OpenRCT2::GameActions
         GfxInvalidateScreen();
     }
 
-    void CheatSetAction::RemoveLitter() const
+    void CheatSetAction::RemoveLitter(GameState_t& gameState) const
     {
         for (auto litter : EntityList<Litter>())
         {
-            getGameState().entities.EntityRemove(litter);
+            gameState.entities.EntityRemove(litter);
         }
 
         TileElementIterator it{};
@@ -520,9 +519,9 @@ namespace OpenRCT2::GameActions
         GfxInvalidateScreen();
     }
 
-    void CheatSetAction::FixBrokenRides() const
+    void CheatSetAction::FixBrokenRides(GameState_t& gameState) const
     {
-        for (auto& ride : GetRideManager())
+        for (auto& ride : RideManager(gameState))
         {
             if (ride.lifecycleFlags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN))
             {
@@ -548,9 +547,9 @@ namespace OpenRCT2::GameActions
         }
     }
 
-    void CheatSetAction::RenewRides() const
+    void CheatSetAction::RenewRides(GameState_t& gameState) const
     {
-        for (auto& ride : GetRideManager())
+        for (auto& ride : RideManager(gameState))
         {
             ride.renew();
         }
@@ -558,9 +557,9 @@ namespace OpenRCT2::GameActions
         windowMgr->InvalidateByClass(WindowClass::Ride);
     }
 
-    void CheatSetAction::ResetRideCrashStatus() const
+    void CheatSetAction::ResetRideCrashStatus(GameState_t& gameState) const
     {
-        for (auto& ride : GetRideManager())
+        for (auto& ride : RideManager(gameState))
         {
             // Reset crash status and history
             ride.lifecycleFlags &= ~RIDE_LIFECYCLE_CRASHED;
@@ -570,9 +569,9 @@ namespace OpenRCT2::GameActions
         windowMgr->InvalidateByClass(WindowClass::Ride);
     }
 
-    void CheatSetAction::Set10MinuteInspection() const
+    void CheatSetAction::Set10MinuteInspection(GameState_t& gameState) const
     {
-        for (auto& ride : GetRideManager())
+        for (auto& ride : RideManager(gameState))
         {
             // Set inspection interval to 10 minutes
             ride.inspectionInterval = RIDE_INSPECTION_EVERY_10_MINUTES;
@@ -581,9 +580,9 @@ namespace OpenRCT2::GameActions
         windowMgr->InvalidateByClass(WindowClass::Ride);
     }
 
-    void CheatSetAction::SetScenarioNoMoney(bool enabled) const
+    void CheatSetAction::SetScenarioNoMoney(GameState_t& gameState, bool enabled) const
     {
-        auto& park = getGameState().park;
+        auto& park = gameState.park;
         if (enabled)
         {
             park.flags |= PARK_FLAGS_NO_MONEY;
@@ -717,9 +716,9 @@ namespace OpenRCT2::GameActions
         windowMgr->InvalidateByClass(WindowClass::Peep);
     }
 
-    void CheatSetAction::RemoveAllGuests() const
+    void CheatSetAction::RemoveAllGuests(GameState_t& gameState) const
     {
-        for (auto& ride : GetRideManager())
+        for (auto& ride : RideManager(gameState))
         {
             ride.numRiders = 0;
 

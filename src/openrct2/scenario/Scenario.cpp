@@ -530,7 +530,7 @@ static ResultWithMessage ScenarioPrepareRidesForSave(GameState_t& gameState)
     bool isFiveCoasterObjective = gameState.scenarioOptions.objective.Type == ObjectiveType::finishFiveRollercoasters;
     uint8_t rcs = 0;
 
-    for (auto& ride : GetRideManager())
+    for (auto& ride : RideManager(gameState))
     {
         const auto* rideEntry = ride.getRideEntry();
         if (rideEntry != nullptr)

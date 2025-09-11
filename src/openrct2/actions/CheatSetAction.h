@@ -36,22 +36,22 @@ namespace OpenRCT2::GameActions
 
     private:
         ParametersRange GetParameterRange(CheatType cheatType) const;
-        void SetGrassLength(int32_t length) const;
+        void SetGrassLength(GameState_t& gameState, int32_t length) const;
         void WaterPlants() const;
         void FixVandalism() const;
-        void RemoveLitter() const;
-        void FixBrokenRides() const;
-        void RenewRides() const;
-        void ResetRideCrashStatus() const;
-        void Set10MinuteInspection() const;
-        void SetScenarioNoMoney(bool enabled) const;
+        void RemoveLitter(GameState_t& gameState) const;
+        void FixBrokenRides(GameState_t& gameState) const;
+        void RenewRides(GameState_t& gameState) const;
+        void ResetRideCrashStatus(GameState_t& gameState) const;
+        void Set10MinuteInspection(GameState_t& gameState) const;
+        void SetScenarioNoMoney(GameState_t& gameState, bool enabled) const;
         void SetMoney(money64 amount) const;
         void AddMoney(money64 amount) const;
         void ClearLoan(GameState_t& gameState) const;
         void GenerateGuests(int32_t count) const;
         void SetGuestParameter(int32_t parameter, int32_t value) const;
         void GiveObjectToGuests(int32_t object) const;
-        void RemoveAllGuests() const;
+        void RemoveAllGuests(GameState_t& gameState) const;
         void SetStaffSpeed(uint8_t value) const;
         void OwnAllLand() const;
         void ParkSetOpen(bool isOpen, GameState_t& gameState) const;

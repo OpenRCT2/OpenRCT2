@@ -272,7 +272,8 @@ static bool ShouldSkipRatingCalculation(const Ride& ride)
 
 static RideId GetNextRideToUpdate(RideId currentRide)
 {
-    auto rm = GetRideManager();
+    auto& gameState = getGameState();
+    auto rm = RideManager(gameState);
     if (rm.size() == 0)
     {
         return RideId::GetNull();
@@ -1186,7 +1187,8 @@ static void RideRatingsCalculateValue(Ride& ride)
     }
 
     // Other ride of same type penalty
-    const auto& rideManager = GetRideManager();
+    const auto& gameState = getGameState();
+    const auto& rideManager = RideManager(gameState);
     auto rideType = ride.type;
     auto otherRidesOfSameType = std::count_if(rideManager.begin(), rideManager.end(), [rideType](const Ride& r) {
         return r.status == RideStatus::open && r.type == rideType;

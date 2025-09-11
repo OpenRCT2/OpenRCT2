@@ -152,7 +152,7 @@ static void ConsoleCommandRides(InteractiveConsole& console, const arguments_t& 
     {
         if (argv[0] == "list")
         {
-            for (const auto& ride : GetRideManager())
+            for (const auto& ride : RideManager(gameState))
             {
                 auto name = ride.getName();
                 console.WriteFormatLine(
@@ -401,7 +401,7 @@ static void ConsoleCommandRides(InteractiveConsole& console, const arguments_t& 
                         auto price = arg1;
                         if (int_valid[0])
                         {
-                            for (const auto& ride : GetRideManager())
+                            for (const auto& ride : RideManager(gameState))
                             {
                                 auto rideSetPrice = GameActions::RideSetPriceAction(ride.id, price, true);
                                 GameActions::Execute(&rideSetPrice, gameState);
@@ -419,7 +419,7 @@ static void ConsoleCommandRides(InteractiveConsole& console, const arguments_t& 
 
                         if (int_valid[0] && int_valid[1])
                         {
-                            for (const auto& ride : GetRideManager())
+                            for (const auto& ride : RideManager(gameState))
                             {
                                 if (ride.type == rideType)
                                 {

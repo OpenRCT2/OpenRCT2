@@ -13,10 +13,7 @@
 
 namespace OpenRCT2
 {
-    RideManager::RideManager()
-        : _gameState(getGameState()) {};
-
-    RideManager::RideManager(GameState_t& gameState)
+    RideManager::RideManager(const GameState_t& gameState)
         : _gameState(gameState) {};
 
     size_t RideManager::size() const
@@ -45,10 +42,5 @@ namespace OpenRCT2
     RideManager::Iterator RideManager::get(RideId rideId)
     {
         return RideManager::Iterator(*this, rideId.ToUnderlying(), _gameState.ridesEndOfUsedRange);
-    }
-
-    RideManager GetRideManager()
-    {
-        return {};
     }
 } // namespace OpenRCT2
