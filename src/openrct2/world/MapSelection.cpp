@@ -12,8 +12,8 @@
 #include "../interface/Viewport.h"
 #include "Map.h"
 
-uint16_t gMapSelectFlags;
-uint16_t gMapSelectType;
+MapSelectFlags gMapSelectFlags;
+MapSelectType gMapSelectType;
 CoordsXY gMapSelectPositionA;
 CoordsXY gMapSelectPositionB;
 CoordsXYZ gMapSelectArrowPosition;
@@ -27,7 +27,7 @@ std::vector<CoordsXY> gMapSelectionTiles;
  */
 void MapInvalidateMapSelectionTiles()
 {
-    if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE_CONSTRUCT))
+    if (!(gMapSelectFlags.has(MapSelectFlag::enableConstruct)))
         return;
 
     for (const auto& position : gMapSelectionTiles)
@@ -42,7 +42,7 @@ void MapInvalidateSelectionRect()
 {
     int32_t x0, y0, x1, y1, left, right, top, bottom;
 
-    if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
+    if (!(gMapSelectFlags.has(MapSelectFlag::enable)))
         return;
 
     x0 = gMapSelectPositionA.x + 16;

@@ -18,7 +18,7 @@ using namespace OpenRCT2;
 // 0x1F = new slope
 // 0x20 = base height increases
 constexpr uint8_t kTileElementRaiseStyles[9][32] = {
-    // MAP_SELECT_TYPE_CORNER_0
+    // MapSelectType::corner0
     { kTileSlopeNCornerUp,
       kTileSlopeDiagonalFlag | kTileSlopeNCornerUp | kTileSlopeECornerUp | kTileSlopeWCornerUp,
       kTileSlopeNCornerUp | kTileSlopeECornerUp,
@@ -52,7 +52,7 @@ constexpr uint8_t kTileElementRaiseStyles[9][32] = {
       kTileSlopeRaiseOrLowerBaseHeight | kTileSlopeNCornerUp | kTileSlopeWCornerUp,
       kTileSlopeRaiseOrLowerBaseHeight | kTileSlopeSCornerUp,
       kTileSlopeDiagonalFlag | kTileSlopeNCornerUp | kTileSlopeECornerUp | kTileSlopeSCornerUp | kTileSlopeWCornerUp },
-    // MAP_SELECT_TYPE_CORNER_1
+    // MapSelectType::corner1
     { kTileSlopeECornerUp,
       kTileSlopeNCornerUp | kTileSlopeECornerUp,
       kTileSlopeDiagonalFlag | kTileSlopeNCornerUp | kTileSlopeECornerUp | kTileSlopeSCornerUp,
@@ -86,7 +86,7 @@ constexpr uint8_t kTileElementRaiseStyles[9][32] = {
       kTileSlopeRaiseOrLowerBaseHeight | kTileSlopeWCornerUp,
       kTileSlopeRaiseOrLowerBaseHeight | kTileSlopeECornerUp | kTileSlopeSCornerUp,
       kTileSlopeDiagonalFlag | kTileSlopeNCornerUp | kTileSlopeECornerUp | kTileSlopeSCornerUp | kTileSlopeWCornerUp },
-    // MAP_SELECT_TYPE_CORNER_2
+    // MapSelectType::corner2
     { kTileSlopeSCornerUp,
       kTileSlopeNCornerUp | kTileSlopeSCornerUp,
       kTileSlopeECornerUp | kTileSlopeSCornerUp,
@@ -120,7 +120,7 @@ constexpr uint8_t kTileElementRaiseStyles[9][32] = {
       kTileSlopeRaiseOrLowerBaseHeight | kTileSlopeDiagonalFlag | kTileSlopeECornerUp | kTileSlopeSCornerUp
           | kTileSlopeWCornerUp,
       kTileSlopeDiagonalFlag | kTileSlopeNCornerUp | kTileSlopeECornerUp | kTileSlopeSCornerUp | kTileSlopeWCornerUp },
-    // MAP_SELECT_TYPE_CORNER_3
+    // MapSelectType::corner3
     { kTileSlopeWCornerUp,
       kTileSlopeNCornerUp | kTileSlopeWCornerUp,
       kTileSlopeECornerUp | kTileSlopeWCornerUp,
@@ -154,7 +154,7 @@ constexpr uint8_t kTileElementRaiseStyles[9][32] = {
           | kTileSlopeWCornerUp,
       kTileSlopeRaiseOrLowerBaseHeight | kTileSlopeSCornerUp | kTileSlopeWCornerUp,
       kTileSlopeDiagonalFlag | kTileSlopeNCornerUp | kTileSlopeECornerUp | kTileSlopeSCornerUp | kTileSlopeWCornerUp },
-    // MAP_SELECT_TYPE_FULL
+    // MapSelectType::full
     { kTileSlopeRaiseOrLowerBaseHeight,
       kTileSlopeRaiseOrLowerBaseHeight,
       kTileSlopeRaiseOrLowerBaseHeight,
@@ -187,7 +187,7 @@ constexpr uint8_t kTileElementRaiseStyles[9][32] = {
       kTileSlopeRaiseOrLowerBaseHeight | kTileSlopeWCornerUp,
       kTileSlopeRaiseOrLowerBaseHeight | kTileSlopeSCornerUp,
       kTileSlopeRaiseOrLowerBaseHeight },
-    // MAP_SELECT_TYPE_EDGE_0
+    // MapSelectType::edge0
     { kTileSlopeSCornerUp | kTileSlopeWCornerUp,
       kTileSlopeNCornerUp | kTileSlopeSCornerUp | kTileSlopeWCornerUp,
       kTileSlopeECornerUp | kTileSlopeSCornerUp | kTileSlopeWCornerUp,
@@ -220,7 +220,7 @@ constexpr uint8_t kTileElementRaiseStyles[9][32] = {
       kTileSlopeRaiseOrLowerBaseHeight | kTileSlopeSCornerUp | kTileSlopeWCornerUp,
       kTileSlopeRaiseOrLowerBaseHeight | kTileSlopeSCornerUp | kTileSlopeWCornerUp,
       kTileSlopeRaiseOrLowerBaseHeight | kTileSlopeSCornerUp | kTileSlopeWCornerUp },
-    // MAP_SELECT_TYPE_EDGE_1
+    // MapSelectType::edge1
     { kTileSlopeNCornerUp | kTileSlopeWCornerUp,
       kTileSlopeNCornerUp | kTileSlopeWCornerUp,
       kTileSlopeNCornerUp | kTileSlopeECornerUp | kTileSlopeWCornerUp,
@@ -253,7 +253,7 @@ constexpr uint8_t kTileElementRaiseStyles[9][32] = {
       kTileSlopeRaiseOrLowerBaseHeight | kTileSlopeNCornerUp | kTileSlopeWCornerUp,
       kTileSlopeRaiseOrLowerBaseHeight | kTileSlopeSCornerUp,
       kTileSlopeRaiseOrLowerBaseHeight | kTileSlopeNCornerUp | kTileSlopeWCornerUp },
-    // MAP_SELECT_TYPE_EDGE_2
+    // MapSelectType::edge2
     { kTileSlopeNCornerUp | kTileSlopeECornerUp,
       kTileSlopeNCornerUp | kTileSlopeECornerUp,
       kTileSlopeNCornerUp | kTileSlopeECornerUp,
@@ -286,7 +286,7 @@ constexpr uint8_t kTileElementRaiseStyles[9][32] = {
       kTileSlopeRaiseOrLowerBaseHeight | kTileSlopeWCornerUp,
       kTileSlopeRaiseOrLowerBaseHeight | kTileSlopeSCornerUp,
       kTileSlopeRaiseOrLowerBaseHeight | kTileSlopeNCornerUp | kTileSlopeECornerUp },
-    // MAP_SELECT_TYPE_EDGE_3
+    // MapSelectType::edge3
     { kTileSlopeECornerUp | kTileSlopeSCornerUp,
       kTileSlopeNCornerUp | kTileSlopeECornerUp | kTileSlopeSCornerUp,
       kTileSlopeECornerUp | kTileSlopeSCornerUp,
@@ -327,7 +327,7 @@ constexpr uint8_t kTileElementRaiseStyles[9][32] = {
 // 0x1F = new slope
 // 0x20 = base height increases
 constexpr uint8_t kTileElementLowerStyles[9][32] = {
-    // MAP_SELECT_TYPE_CORNER_0
+    // MapSelectType::corner0
     { kTileSlopeRaiseOrLowerBaseHeight | kTileSlopeECornerUp | kTileSlopeSCornerUp | kTileSlopeWCornerUp,
       0,
       kTileSlopeRaiseOrLowerBaseHeight | kTileSlopeECornerUp | kTileSlopeSCornerUp | kTileSlopeWCornerUp,
@@ -365,7 +365,7 @@ constexpr uint8_t kTileElementLowerStyles[9][32] = {
       kTileSlopeRaiseOrLowerBaseHeight | kTileSlopeDiagonalFlag | kTileSlopeECornerUp | kTileSlopeSCornerUp
           | kTileSlopeWCornerUp,
       kTileSlopeDiagonalFlag | kTileSlopeNCornerUp | kTileSlopeECornerUp | kTileSlopeSCornerUp | kTileSlopeWCornerUp },
-    // MAP_SELECT_TYPE_CORNER_1
+    // MapSelectType::corner1
     { kTileSlopeRaiseOrLowerBaseHeight | kTileSlopeNCornerUp | kTileSlopeSCornerUp | kTileSlopeWCornerUp,
       kTileSlopeRaiseOrLowerBaseHeight | kTileSlopeNCornerUp | kTileSlopeSCornerUp | kTileSlopeWCornerUp,
       0,
@@ -403,7 +403,7 @@ constexpr uint8_t kTileElementLowerStyles[9][32] = {
           | kTileSlopeWCornerUp,
       kTileSlopeSCornerUp | kTileSlopeWCornerUp,
       kTileSlopeDiagonalFlag | kTileSlopeNCornerUp | kTileSlopeECornerUp | kTileSlopeSCornerUp | kTileSlopeWCornerUp },
-    // MAP_SELECT_TYPE_CORNER_2
+    // MapSelectType::corner2
     { kTileSlopeRaiseOrLowerBaseHeight | kTileSlopeNCornerUp | kTileSlopeECornerUp | kTileSlopeWCornerUp,
       kTileSlopeRaiseOrLowerBaseHeight | kTileSlopeDiagonalFlag | kTileSlopeNCornerUp | kTileSlopeECornerUp
           | kTileSlopeWCornerUp,
@@ -441,7 +441,7 @@ constexpr uint8_t kTileElementLowerStyles[9][32] = {
       kTileSlopeNCornerUp | kTileSlopeWCornerUp,
       kTileSlopeECornerUp | kTileSlopeSCornerUp | kTileSlopeWCornerUp,
       kTileSlopeDiagonalFlag | kTileSlopeNCornerUp | kTileSlopeECornerUp | kTileSlopeSCornerUp | kTileSlopeWCornerUp },
-    // MAP_SELECT_TYPE_CORNER_3
+    // MapSelectType::corner3
     { kTileSlopeRaiseOrLowerBaseHeight | kTileSlopeNCornerUp | kTileSlopeECornerUp | kTileSlopeSCornerUp,
       kTileSlopeRaiseOrLowerBaseHeight | kTileSlopeNCornerUp | kTileSlopeECornerUp | kTileSlopeSCornerUp,
       kTileSlopeRaiseOrLowerBaseHeight | kTileSlopeDiagonalFlag | kTileSlopeNCornerUp | kTileSlopeECornerUp
@@ -479,7 +479,7 @@ constexpr uint8_t kTileElementLowerStyles[9][32] = {
       kTileSlopeNCornerUp | kTileSlopeSCornerUp | kTileSlopeWCornerUp,
       kTileSlopeECornerUp | kTileSlopeSCornerUp,
       kTileSlopeDiagonalFlag | kTileSlopeNCornerUp | kTileSlopeECornerUp | kTileSlopeSCornerUp | kTileSlopeWCornerUp },
-    // MAP_SELECT_TYPE_FULL
+    // MapSelectType::full
     { kTileSlopeRaiseOrLowerBaseHeight,
       0,
       0,
@@ -512,7 +512,7 @@ constexpr uint8_t kTileElementLowerStyles[9][32] = {
       kTileSlopeNCornerUp | kTileSlopeSCornerUp | kTileSlopeWCornerUp,
       kTileSlopeECornerUp | kTileSlopeSCornerUp | kTileSlopeWCornerUp,
       0 },
-    // MAP_SELECT_TYPE_EDGE_0
+    // MapSelectType::edge0
     { kTileSlopeRaiseOrLowerBaseHeight | kTileSlopeNCornerUp | kTileSlopeECornerUp,
       kTileSlopeRaiseOrLowerBaseHeight | kTileSlopeNCornerUp | kTileSlopeECornerUp,
       kTileSlopeRaiseOrLowerBaseHeight | kTileSlopeNCornerUp | kTileSlopeECornerUp,
@@ -545,7 +545,7 @@ constexpr uint8_t kTileElementLowerStyles[9][32] = {
       kTileSlopeNCornerUp | kTileSlopeSCornerUp | kTileSlopeWCornerUp,
       kTileSlopeECornerUp | kTileSlopeSCornerUp | kTileSlopeWCornerUp,
       kTileSlopeNCornerUp | kTileSlopeECornerUp },
-    // MAP_SELECT_TYPE_EDGE_1
+    // MapSelectType::edge1
     { kTileSlopeRaiseOrLowerBaseHeight | kTileSlopeECornerUp | kTileSlopeSCornerUp,
       0,
       kTileSlopeRaiseOrLowerBaseHeight | kTileSlopeECornerUp | kTileSlopeSCornerUp,
@@ -578,7 +578,7 @@ constexpr uint8_t kTileElementLowerStyles[9][32] = {
       kTileSlopeNCornerUp | kTileSlopeSCornerUp | kTileSlopeWCornerUp,
       kTileSlopeECornerUp | kTileSlopeSCornerUp,
       kTileSlopeECornerUp | kTileSlopeSCornerUp },
-    // MAP_SELECT_TYPE_EDGE_2
+    // MapSelectType::edge2
     { kTileSlopeRaiseOrLowerBaseHeight | kTileSlopeSCornerUp | kTileSlopeWCornerUp,
       0,
       0,
@@ -611,7 +611,7 @@ constexpr uint8_t kTileElementLowerStyles[9][32] = {
       kTileSlopeSCornerUp | kTileSlopeWCornerUp,
       kTileSlopeSCornerUp | kTileSlopeWCornerUp,
       kTileSlopeSCornerUp | kTileSlopeWCornerUp },
-    // MAP_SELECT_TYPE_EDGE_3
+    // MapSelectType::edge3
     { kTileSlopeRaiseOrLowerBaseHeight | kTileSlopeNCornerUp | kTileSlopeWCornerUp,
       kTileSlopeRaiseOrLowerBaseHeight | kTileSlopeNCornerUp | kTileSlopeWCornerUp,
       0,

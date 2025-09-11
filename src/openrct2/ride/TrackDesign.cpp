@@ -345,9 +345,9 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
     // Resave global vars for scenery reasons.
     tds.origin = startPos;
 
-    gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
-    gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
-    gMapSelectFlags &= ~MAP_SELECT_FLAG_GREEN;
+    gMapSelectFlags.unset(MapSelectFlag::enableConstruct);
+    gMapSelectFlags.unset(MapSelectFlag::enableArrow);
+    gMapSelectFlags.unset(MapSelectFlag::green);
 
     statistics.spaceRequired = TileCoordsXY(tds.previewMax - tds.previewMin) + TileCoordsXY{ 1, 1 };
     return { true, warningMessage };
@@ -457,9 +457,9 @@ ResultWithMessage TrackDesign::CreateTrackDesignMaze(TrackDesignState& tds, cons
     TrackDesignPreviewDrawOutlines(tds, *this, RideGetTemporaryForPreview(), { 4096, 4096, 0, _currentTrackPieceDirection });
     tds.origin = { startLoc.x, startLoc.y, startZ };
 
-    gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
-    gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
-    gMapSelectFlags &= ~MAP_SELECT_FLAG_GREEN;
+    gMapSelectFlags.unset(MapSelectFlag::enableConstruct);
+    gMapSelectFlags.unset(MapSelectFlag::enableArrow);
+    gMapSelectFlags.unset(MapSelectFlag::green);
 
     statistics.spaceRequired = TileCoordsXY(tds.previewMax - tds.previewMin) + TileCoordsXY{ 1, 1 };
 
@@ -1806,9 +1806,9 @@ static GameActions::Result TrackDesignPlaceVirtual(
     // 0x6D0FE6
     if (tds.placeOperation == TrackPlaceOperation::drawOutlines)
     {
-        gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
-        gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_ARROW;
-        gMapSelectFlags &= ~MAP_SELECT_FLAG_GREEN;
+        gMapSelectFlags.set(MapSelectFlag::enableConstruct);
+        gMapSelectFlags.set(MapSelectFlag::enableArrow);
+        gMapSelectFlags.unset(MapSelectFlag::green);
         MapInvalidateMapSelectionTiles();
     }
 

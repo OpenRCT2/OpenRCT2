@@ -808,7 +808,7 @@ static std::pair<int32_t, int32_t> SurfaceGetHeightAboveWater(
 
 std::optional<colour_t> GetPatrolAreaTileColour(const CoordsXY& pos)
 {
-    bool selected = gMapSelectFlags & MAP_SELECT_FLAG_ENABLE && gMapSelectType == MAP_SELECT_TYPE_FULL
+    bool selected = gMapSelectFlags.has(MapSelectFlag::enable) && gMapSelectType == MapSelectType::full
         && pos.x >= gMapSelectPositionA.x && pos.x <= gMapSelectPositionB.x && pos.y >= gMapSelectPositionA.y
         && pos.y <= gMapSelectPositionB.y;
 
@@ -1090,41 +1090,41 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
     // ebp[4] = ebp;
     // ebp[8] = ebx
 
-    if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE)
+    if (gMapSelectFlags.has(MapSelectFlag::enable))
     {
         // Loc660FB8:
         const CoordsXY& pos = session.MapPosition;
         if (pos.x >= gMapSelectPositionA.x && pos.x <= gMapSelectPositionB.x && pos.y >= gMapSelectPositionA.y
             && pos.y <= gMapSelectPositionB.y)
         {
-            const uint16_t mapSelectionType = gMapSelectType;
-            if (mapSelectionType >= MAP_SELECT_TYPE_EDGE_0)
+            const auto mapSelectionType = gMapSelectType;
+            if (mapSelectionType >= MapSelectType::edge0)
             {
                 // Walls
                 // Loc661089:
                 const auto fpId = static_cast<FilterPaletteID>(
-                    (((mapSelectionType - MAP_SELECT_TYPE_EDGE_0 + 1) + rotation) & 3)
+                    (((EnumValue(mapSelectionType) - EnumValue(MapSelectType::edge0) + 1) + rotation) & 3)
                     + static_cast<uint32_t>(FilterPaletteID::PaletteLandMarker0));
                 const auto image_id = ImageId(SPR_TERRAIN_SELECTION_EDGE + Byte97B444[surfaceShape], fpId);
                 PaintAttachToPreviousPS(session, image_id, 0, 0);
             }
-            else if (mapSelectionType >= MAP_SELECT_TYPE_QUARTER_0)
+            else if (mapSelectionType >= MapSelectType::quarter0)
             {
                 // Loc661051:(no jump)
                 // Selection split into four quarter segments
                 const auto fpId = static_cast<FilterPaletteID>(
-                    (((mapSelectionType - MAP_SELECT_TYPE_QUARTER_0) + rotation) & 3)
+                    (((EnumValue(mapSelectionType) - EnumValue(MapSelectType::quarter0)) + rotation) & 3)
                     + static_cast<uint32_t>(FilterPaletteID::PaletteQuarterMarker0));
                 const auto image_id = ImageId(SPR_TERRAIN_SELECTION_QUARTER + Byte97B444[surfaceShape], fpId);
                 PaintAttachToPreviousPS(session, image_id, 0, 0);
             }
-            else if (mapSelectionType <= MAP_SELECT_TYPE_FULL)
+            else if (mapSelectionType <= MapSelectType::full)
             {
                 // Corners
-                uint32_t eax = mapSelectionType;
-                if (mapSelectionType != MAP_SELECT_TYPE_FULL)
+                uint32_t eax = EnumValue(mapSelectionType);
+                if (mapSelectionType != MapSelectType::full)
                 {
-                    eax = (mapSelectionType + rotation) & 3;
+                    eax = (eax + rotation) & 3;
                 }
 
                 const auto fpId = static_cast<FilterPaletteID>(
@@ -1132,7 +1132,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
                 const auto image_id = ImageId(SPR_TERRAIN_SELECTION_CORNER + Byte97B444[surfaceShape], fpId);
                 PaintAttachToPreviousPS(session, image_id, 0, 0);
             }
-            else if (mapSelectionType == MAP_SELECT_TYPE_FULL_LAND_RIGHTS)
+            else if (mapSelectionType == MapSelectType::fullLandRights)
             {
                 auto [waterHeight, waterSurfaceShape] = SurfaceGetHeightAboveWater(tileElement, height, surfaceShape);
 
@@ -1164,7 +1164,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
         }
     }
 
-    if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE_CONSTRUCT)
+    if (gMapSelectFlags.has(MapSelectFlag::enableConstruct))
     {
         const CoordsXY& pos = session.MapPosition;
 
@@ -1176,7 +1176,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
             }
 
             FilterPaletteID fpId = FilterPaletteID::PaletteSceneryGroundMarker;
-            if (gMapSelectFlags & MAP_SELECT_FLAG_GREEN)
+            if (gMapSelectFlags.has(MapSelectFlag::green))
             {
                 fpId = FilterPaletteID::PaletteRideGroundMarker;
             }

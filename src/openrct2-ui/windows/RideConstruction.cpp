@@ -287,8 +287,8 @@ namespace OpenRCT2::Ui::Windows
             ViewportSetVisibility(ViewportVisibility::Default);
 
             MapInvalidateMapSelectionTiles();
-            gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
-            gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
+            gMapSelectFlags.unset(MapSelectFlag::enableConstruct);
+            gMapSelectFlags.unset(MapSelectFlag::enableArrow);
 
             // In order to cancel the yellow arrow correctly the
             // selection tool should be cancelled. Don't do a tool cancel if
@@ -1136,12 +1136,12 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 case WIDX_NEXT_SECTION:
                     RideSelectNextSection();
-                    if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
+                    if (!(gMapSelectFlags.has(MapSelectFlag::enable)))
                         VirtualFloorSetHeight(_currentTrackBegin.z);
                     break;
                 case WIDX_PREVIOUS_SECTION:
                     RideSelectPreviousSection();
-                    if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
+                    if (!(gMapSelectFlags.has(MapSelectFlag::enable)))
                         VirtualFloorSetHeight(_currentTrackBegin.z);
                     break;
                 case WIDX_LEFT_CURVE:
@@ -2242,8 +2242,8 @@ namespace OpenRCT2::Ui::Windows
             CoordsXYZ trackPos{};
 
             MapInvalidateMapSelectionTiles();
-            gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
-            gMapSelectFlags |= MAP_SELECT_FLAG_GREEN;
+            gMapSelectFlags.set(MapSelectFlag::enableConstruct);
+            gMapSelectFlags.set(MapSelectFlag::green);
 
             switch (_rideConstructionState)
             {
@@ -2653,8 +2653,8 @@ namespace OpenRCT2::Ui::Windows
         {
             RideConstructionInvalidateCurrentTrack();
             MapInvalidateSelectionRect();
-            gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
-            gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
+            gMapSelectFlags.unset(MapSelectFlag::enable);
+            gMapSelectFlags.unset(MapSelectFlag::enableArrow);
 
             CoordsXYZD entranceOrExitCoords = RideGetEntranceOrExitPositionFromScreenPosition(screenCoords);
             if (gRideEntranceExitPlaceDirection == kInvalidDirection)
@@ -2978,7 +2978,7 @@ namespace OpenRCT2::Ui::Windows
                 _currentTrackSelectionFlags.clearAll();
                 _rideConstructionState = RideConstructionState::Selected;
                 _rideConstructionNextArrowPulse = 0;
-                gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
+                gMapSelectFlags.unset(MapSelectFlag::enableArrow);
                 RideSelectNextSection();
             }
             else
@@ -3025,7 +3025,7 @@ namespace OpenRCT2::Ui::Windows
                 _currentTrackSelectionFlags.clearAll();
                 _rideConstructionState = RideConstructionState::Selected;
                 _rideConstructionNextArrowPulse = 0;
-                gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
+                gMapSelectFlags.unset(MapSelectFlag::enableArrow);
                 RideSelectPreviousSection();
             }
             else
@@ -3260,7 +3260,7 @@ namespace OpenRCT2::Ui::Windows
                             rideIndex, type, direction, liftHillAndAlternativeState, trackPos);
                         WindowRideConstructionUpdateActiveElements();
 
-                        if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
+                        if (!(gMapSelectFlags.has(MapSelectFlag::enable)))
                         {
                             // Set height to where the next track piece would begin
                             VirtualFloorSetHeight(_currentTrackBegin.z);
@@ -3284,9 +3284,9 @@ namespace OpenRCT2::Ui::Windows
                     direction = DirectionReverse(direction);
                 gMapSelectArrowPosition = trackPos;
                 gMapSelectArrowDirection = direction;
-                gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
+                gMapSelectFlags.unset(MapSelectFlag::enableArrow);
                 if (_currentTrackSelectionFlags.has(TrackSelectionFlag::arrow))
-                    gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_ARROW;
+                    gMapSelectFlags.set(MapSelectFlag::enableArrow);
                 MapInvalidateTileFull(trackPos);
                 break;
             }
@@ -3334,9 +3334,9 @@ namespace OpenRCT2::Ui::Windows
                             gMapSelectArrowDirection = 7;
                     }
                 }
-                gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
+                gMapSelectFlags.unset(MapSelectFlag::enableArrow);
                 if (_currentTrackSelectionFlags.has(TrackSelectionFlag::arrow))
-                    gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_ARROW;
+                    gMapSelectFlags.set(MapSelectFlag::enableArrow);
                 MapInvalidateTileFull(trackPos);
                 break;
             }
@@ -3354,9 +3354,9 @@ namespace OpenRCT2::Ui::Windows
         int32_t z;
 
         MapInvalidateMapSelectionTiles();
-        gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
-        gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
-        gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
+        gMapSelectFlags.unset(MapSelectFlag::enable);
+        gMapSelectFlags.unset(MapSelectFlag::enableConstruct);
+        gMapSelectFlags.unset(MapSelectFlag::enableArrow);
         auto mapCoords = RideGetPlacePositionFromScreenPosition(screenCoords);
         if (!mapCoords)
         {
@@ -3369,9 +3369,9 @@ namespace OpenRCT2::Ui::Windows
         if (z == 0)
             z = MapGetHighestZ(*mapCoords);
 
-        gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
-        gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_ARROW;
-        gMapSelectFlags &= ~MAP_SELECT_FLAG_GREEN;
+        gMapSelectFlags.set(MapSelectFlag::enableConstruct);
+        gMapSelectFlags.set(MapSelectFlag::enableArrow);
+        gMapSelectFlags.unset(MapSelectFlag::green);
         gMapSelectArrowPosition = CoordsXYZ{ *mapCoords, z };
         gMapSelectArrowDirection = _currentTrackPieceDirection;
         gMapSelectionTiles.clear();
@@ -3414,7 +3414,7 @@ namespace OpenRCT2::Ui::Windows
         if (_trackPlaceZ == 0)
         {
             // Raise z above all slopes and water
-            if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE_CONSTRUCT)
+            if (gMapSelectFlags.has(MapSelectFlag::enableConstruct))
             {
                 int32_t highestZ = 0;
                 for (const auto& selectedTile : gMapSelectionTiles)
@@ -3574,18 +3574,18 @@ namespace OpenRCT2::Ui::Windows
     {
         MapInvalidateSelectionRect();
         MapInvalidateMapSelectionTiles();
-        gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
-        gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
-        gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
+        gMapSelectFlags.unset(MapSelectFlag::enable);
+        gMapSelectFlags.unset(MapSelectFlag::enableConstruct);
+        gMapSelectFlags.unset(MapSelectFlag::enableArrow);
         CoordsXYZD entranceOrExitCoords = RideGetEntranceOrExitPositionFromScreenPosition(screenCoords);
         if (gRideEntranceExitPlaceDirection == kInvalidDirection)
         {
             RideConstructionInvalidateCurrentTrack();
             return;
         }
-        gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
-        gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_ARROW;
-        gMapSelectType = MAP_SELECT_TYPE_FULL;
+        gMapSelectFlags.set(MapSelectFlag::enable);
+        gMapSelectFlags.set(MapSelectFlag::enableArrow);
+        gMapSelectType = MapSelectType::full;
         gMapSelectPositionA = entranceOrExitCoords;
         gMapSelectPositionB = entranceOrExitCoords;
         gMapSelectArrowPosition = entranceOrExitCoords;
@@ -3633,7 +3633,7 @@ namespace OpenRCT2::Ui::Windows
 
         // Raise z above all slopes and water
         highestZ = 0;
-        if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE_CONSTRUCT)
+        if (gMapSelectFlags.has(MapSelectFlag::enableConstruct))
         {
             for (const auto& selectedTile : gMapSelectionTiles)
             {
@@ -3646,9 +3646,9 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
-        gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
-        gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
+        gMapSelectFlags.unset(MapSelectFlag::enable);
+        gMapSelectFlags.unset(MapSelectFlag::enableConstruct);
+        gMapSelectFlags.unset(MapSelectFlag::enableArrow);
         auto ridePlacePosition = RideGetPlacePositionFromScreenPosition(screenCoords);
         if (!ridePlacePosition)
             return;
@@ -4819,7 +4819,7 @@ namespace OpenRCT2::Ui::Windows
         if (_currentTrackPitchEnd != TrackPitch::None)
             ViewportSetVisibility(ViewportVisibility::TrackHeights);
 
-        if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
+        if (!(gMapSelectFlags.has(MapSelectFlag::enable)))
         {
             // Set height to where the next track piece would begin
             VirtualFloorSetHeight(trackPos.z - zBegin + zEnd);

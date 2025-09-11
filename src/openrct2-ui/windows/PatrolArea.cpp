@@ -159,10 +159,10 @@ namespace OpenRCT2::Ui::Windows
                 return;
 
             auto stateChanged = false;
-            if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
+            if (!(gMapSelectFlags.has(MapSelectFlag::enable)))
                 stateChanged = true;
 
-            if (gMapSelectType != MAP_SELECT_TYPE_FULL)
+            if (gMapSelectType != MapSelectType::full)
                 stateChanged = true;
 
             auto toolSize = std::max<uint16_t>(1, gLandToolSize);
@@ -185,8 +185,8 @@ namespace OpenRCT2::Ui::Windows
                 MapInvalidateSelectionRect();
 
                 // Update and invalidate new area
-                gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
-                gMapSelectType = MAP_SELECT_TYPE_FULL;
+                gMapSelectFlags.set(MapSelectFlag::enable);
+                gMapSelectType = MapSelectType::full;
                 gMapSelectPositionA = posA;
                 gMapSelectPositionB = posB;
                 MapInvalidateSelectionRect();

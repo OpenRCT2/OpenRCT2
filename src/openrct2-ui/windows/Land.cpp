@@ -445,7 +445,7 @@ namespace OpenRCT2::Ui::Windows
             uint8_t state_changed = 0;
 
             MapInvalidateSelectionRect();
-            gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
+            gMapSelectFlags.unset(MapSelectFlag::enable);
 
             auto mapTile = ScreenGetMapXY(screenPos, nullptr);
 
@@ -454,15 +454,15 @@ namespace OpenRCT2::Ui::Windows
                 return state_changed;
             }
 
-            if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
+            if (!(gMapSelectFlags.has(MapSelectFlag::enable)))
             {
-                gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
+                gMapSelectFlags.set(MapSelectFlag::enable);
                 state_changed++;
             }
 
-            if (gMapSelectType != MAP_SELECT_TYPE_FULL)
+            if (gMapSelectType != MapSelectType::full)
             {
-                gMapSelectType = MAP_SELECT_TYPE_FULL;
+                gMapSelectType = MapSelectType::full;
                 state_changed++;
             }
 
@@ -524,7 +524,7 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_BACKGROUND:
-                    if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE)
+                    if (gMapSelectFlags.has(MapSelectFlag::enable))
                     {
                         auto surfaceSetStyleAction = GameActions::SurfaceSetStyleAction(
                             { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
@@ -551,7 +551,7 @@ namespace OpenRCT2::Ui::Windows
                     // Custom setting to only change land style instead of raising or lowering land
                     if (_landToolPaintMode)
                     {
-                        if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE)
+                        if (gMapSelectFlags.has(MapSelectFlag::enable))
                         {
                             auto surfaceSetStyleAction = GameActions::SurfaceSetStyleAction(
                                 { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
@@ -583,7 +583,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WIDX_BACKGROUND:
                     MapInvalidateSelectionRect();
-                    gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
+                    gMapSelectFlags.unset(MapSelectFlag::enable);
                     gCurrentToolId = Tool::digDown;
                     break;
             }
@@ -613,7 +613,7 @@ namespace OpenRCT2::Ui::Windows
 
             if (gCurrentToolId == Tool::upDownArrow)
             {
-                if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
+                if (!(gMapSelectFlags.has(MapSelectFlag::enable)))
                     return;
 
                 money64 lower_cost = SelectionLowerLand(0);
@@ -632,12 +632,13 @@ namespace OpenRCT2::Ui::Windows
             std::optional<CoordsXY> mapTile;
             uint8_t side{};
 
-            gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
+            gMapSelectFlags.unset(MapSelectFlag::enable);
             if (tool_size == 1)
             {
-                int32_t selectionType;
+                int32_t direction;
                 // Get selection type and map coordinates from mouse x,y position
-                ScreenPosToMapPos(screenPos, &selectionType);
+                ScreenPosToMapPos(screenPos, &direction);
+                MapSelectType selectionType = static_cast<MapSelectType>(direction);
                 mapTile = ScreenGetMapXYSide(screenPos, &side);
 
                 if (!mapTile.has_value())
@@ -656,9 +657,9 @@ namespace OpenRCT2::Ui::Windows
 
                 uint8_t state_changed = 0;
 
-                if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
+                if (!(gMapSelectFlags.has(MapSelectFlag::enable)))
                 {
-                    gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
+                    gMapSelectFlags.set(MapSelectFlag::enable);
                     state_changed++;
                 }
 
@@ -668,9 +669,10 @@ namespace OpenRCT2::Ui::Windows
                     state_changed++;
                 }
 
-                if ((gMapSelectType != MAP_SELECT_TYPE_EDGE_0 + (side & 0xFF)) && mapCtrlPressed)
+                MapSelectType selectedSide = getMapSelectEdge(side & 0xFF);
+                if (gMapSelectType != selectedSide && mapCtrlPressed)
                 {
-                    gMapSelectType = MAP_SELECT_TYPE_EDGE_0 + (side & 0xFF);
+                    gMapSelectType = selectedSide;
                     state_changed++;
                 }
 
@@ -733,21 +735,22 @@ namespace OpenRCT2::Ui::Windows
 
             uint8_t state_changed = 0;
 
-            if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
+            if (!(gMapSelectFlags.has(MapSelectFlag::enable)))
             {
-                gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
+                gMapSelectFlags.set(MapSelectFlag::enable);
                 state_changed++;
             }
 
-            if (gMapSelectType != MAP_SELECT_TYPE_FULL)
+            if (gMapSelectType != MapSelectType::full)
             {
-                gMapSelectType = MAP_SELECT_TYPE_FULL;
+                gMapSelectType = MapSelectType::full;
                 state_changed++;
             }
 
-            if ((gMapSelectType != MAP_SELECT_TYPE_EDGE_0 + (side & 0xFF)) && mapCtrlPressed)
+            MapSelectType selectedSide = getMapSelectEdge(side & 0xFF);
+            if (gMapSelectType != selectedSide && mapCtrlPressed)
             {
-                gMapSelectType = MAP_SELECT_TYPE_EDGE_0 + (side & 0xFF);
+                gMapSelectType = selectedSide;
                 state_changed++;
             }
 
@@ -759,14 +762,14 @@ namespace OpenRCT2::Ui::Windows
             // Decide on shape of the brush for bigger selection size
             switch (gMapSelectType)
             {
-                case MAP_SELECT_TYPE_EDGE_0:
-                case MAP_SELECT_TYPE_EDGE_2:
+                case MapSelectType::edge0:
+                case MapSelectType::edge2:
                     // Line
                     mapTile->y -= (tool_size - 1) * 16;
                     mapTile->y = mapTile->ToTileStart().y;
                     break;
-                case MAP_SELECT_TYPE_EDGE_1:
-                case MAP_SELECT_TYPE_EDGE_3:
+                case MapSelectType::edge1:
+                case MapSelectType::edge3:
                     // Line
                     mapTile->x -= (tool_size - 1) * 16;
                     mapTile->x = mapTile->ToTileStart().x;
@@ -794,17 +797,17 @@ namespace OpenRCT2::Ui::Windows
             // Go to other side
             switch (gMapSelectType)
             {
-                case MAP_SELECT_TYPE_EDGE_0:
-                case MAP_SELECT_TYPE_EDGE_2:
+                case MapSelectType::edge0:
+                case MapSelectType::edge2:
                     // Line
                     mapTile->y += tool_length;
-                    gMapSelectType = MAP_SELECT_TYPE_FULL;
+                    gMapSelectType = MapSelectType::full;
                     break;
-                case MAP_SELECT_TYPE_EDGE_1:
-                case MAP_SELECT_TYPE_EDGE_3:
+                case MapSelectType::edge1:
+                case MapSelectType::edge3:
                     // Line
                     mapTile->x += tool_length;
-                    gMapSelectType = MAP_SELECT_TYPE_FULL;
+                    gMapSelectType = MapSelectType::full;
                     break;
                 default:
                     mapTile->x += tool_length;

@@ -108,7 +108,7 @@ namespace OpenRCT2
         gPressedWidget.window_classification = WindowClass::Null;
         gPickupPeepImage = ImageId();
         ResetTooltipNotShown();
-        gMapSelectFlags = 0;
+        gMapSelectFlags.clearAll();
         ClearPatrolAreaToRender();
         TextinputCancel();
     }
