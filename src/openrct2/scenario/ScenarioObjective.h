@@ -79,14 +79,14 @@ namespace OpenRCT2::Scenario
         ObjectiveStatus Check(GameState_t& gameState) const;
 
     private:
-        ObjectiveStatus CheckGuestsBy() const;
-        ObjectiveStatus CheckParkValueBy() const;
-        ObjectiveStatus Check10RollerCoasters() const;
-        ObjectiveStatus CheckGuestsAndRating() const;
-        ObjectiveStatus CheckMonthlyRideIncome() const;
-        ObjectiveStatus Check10RollerCoastersLength() const;
-        ObjectiveStatus CheckFinish5RollerCoasters() const;
-        ObjectiveStatus CheckRepayLoanAndParkValue() const;
-        ObjectiveStatus CheckMonthlyFoodIncome() const;
+        ObjectiveStatus CheckGuestsBy(GameState_t& gameState) const;
+        ObjectiveStatus CheckParkValueBy(GameState_t& gameState) const;
+        ObjectiveStatus Check10RollerCoasters(GameState_t& gameState) const;
+        ObjectiveStatus CheckGuestsAndRating(GameState_t& gameState) const;
+        ObjectiveStatus CheckMonthlyRideIncome(GameState_t& gameState) const;
+        ObjectiveStatus Check10RollerCoastersLength(GameState_t& gameState) const;
+        ObjectiveStatus CheckFinish5RollerCoasters(GameState_t& gameState) const;
+        ObjectiveStatus CheckRepayLoanAndParkValue(GameState_t& gameState) const;
+        ObjectiveStatus CheckMonthlyFoodIncome(GameState_t& gameState) const;
     };
 } // namespace OpenRCT2::Scenario

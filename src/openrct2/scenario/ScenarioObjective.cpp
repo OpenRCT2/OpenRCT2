@@ -18,14 +18,14 @@
 
 namespace OpenRCT2::Scenario
 {
-    ObjectiveStatus Objective::CheckGuestsBy() const
+    ObjectiveStatus Objective::CheckGuestsBy(GameState_t& gameState) const
     {
-        auto parkRating = getGameState().park.rating;
+        auto parkRating = gameState.park.rating;
         int32_t currentMonthYear = GetDate().GetMonthsElapsed();
 
         if (currentMonthYear == MONTH_COUNT * Year || AllowEarlyCompletion())
         {
-            if (parkRating >= 600 && getGameState().park.numGuestsInPark >= NumGuests)
+            if (parkRating >= 600 && gameState.park.numGuestsInPark >= NumGuests)
             {
                 return ObjectiveStatus::Success;
             }
@@ -39,11 +39,11 @@ namespace OpenRCT2::Scenario
         return ObjectiveStatus::Undecided;
     }
 
-    ObjectiveStatus Objective::CheckParkValueBy() const
+    ObjectiveStatus Objective::CheckParkValueBy(GameState_t& gameState) const
     {
         int32_t currentMonthYear = GetDate().GetMonthsElapsed();
         money64 objectiveParkValue = Currency;
-        money64 parkValue = getGameState().park.value;
+        money64 parkValue = gameState.park.value;
 
         if (currentMonthYear == MONTH_COUNT * Year || AllowEarlyCompletion())
         {
@@ -66,11 +66,11 @@ namespace OpenRCT2::Scenario
      * excitement >= 600 .
      * rct2:
      **/
-    ObjectiveStatus Objective::Check10RollerCoasters() const
+    ObjectiveStatus Objective::Check10RollerCoasters(GameState_t& gameState) const
     {
         auto rcs = 0;
         BitSet<kMaxRideObjects> type_already_counted;
-        for (const auto& ride : GetRideManager())
+        for (const auto& ride : RideManager(gameState))
         {
             if (ride.status == RideStatus::open && ride.ratings.excitement >= RideRating::make(6, 00)
                 && ride.subtype != kObjectEntryIndexNull)
@@ -98,10 +98,9 @@ namespace OpenRCT2::Scenario
      *
      *  rct2: 0x0066A13C
      */
-    ObjectiveStatus Objective::CheckGuestsAndRating() const
+    ObjectiveStatus Objective::CheckGuestsAndRating(GameState_t& gameState) const
     {
-        auto& gameState = getGameState();
-        auto& park = getGameState().park;
+        auto& park = gameState.park;
 
         // TODO: make park-specific
         if (park.rating < 700 && GetDate().GetMonthsElapsed() >= 1)
@@ -155,10 +154,10 @@ namespace OpenRCT2::Scenario
         return ObjectiveStatus::Undecided;
     }
 
-    ObjectiveStatus Objective::CheckMonthlyRideIncome() const
+    ObjectiveStatus Objective::CheckMonthlyRideIncome(GameState_t& gameState) const
     {
         // TODO: pass park by ref
-        const auto& park = getGameState().park;
+        const auto& park = gameState.park;
 
         money64 lastMonthRideIncome = park.expenditureTable[1][EnumValue(ExpenditureType::parkRideTickets)];
         if (lastMonthRideIncome >= Currency)
@@ -174,11 +173,11 @@ namespace OpenRCT2::Scenario
      * excitement > 700 and a minimum length;
      *  rct2: 0x0066A6B5
      */
-    ObjectiveStatus Objective::Check10RollerCoastersLength() const
+    ObjectiveStatus Objective::Check10RollerCoastersLength(GameState_t& gameState) const
     {
         BitSet<kMaxRideObjects> type_already_counted;
         auto rcs = 0;
-        for (const auto& ride : GetRideManager())
+        for (const auto& ride : RideManager(gameState))
         {
             if (ride.status == RideStatus::open && ride.ratings.excitement >= RideRating::make(7, 00)
                 && ride.subtype != kObjectEntryIndexNull)
@@ -205,12 +204,12 @@ namespace OpenRCT2::Scenario
         return ObjectiveStatus::Undecided;
     }
 
-    ObjectiveStatus Objective::CheckFinish5RollerCoasters() const
+    ObjectiveStatus Objective::CheckFinish5RollerCoasters(GameState_t& gameState) const
     {
         // Originally, this did not check for null rides, neither did it check if
         // the rides are even rollercoasters, never mind the right rollercoasters to be finished.
         auto rcs = 0;
-        for (const auto& ride : GetRideManager())
+        for (const auto& ride : RideManager(gameState))
         {
             if (ride.status != RideStatus::closed && ride.ratings.excitement >= MinimumExcitement)
             {
@@ -233,10 +232,10 @@ namespace OpenRCT2::Scenario
         return ObjectiveStatus::Undecided;
     }
 
-    ObjectiveStatus Objective::CheckRepayLoanAndParkValue() const
+    ObjectiveStatus Objective::CheckRepayLoanAndParkValue(GameState_t& gameState) const
     {
         // TODO: pass park by ref
-        const auto& park = getGameState().park;
+        const auto& park = gameState.park;
         money64 parkValue = park.value;
         money64 currentLoan = park.bankLoan;
 
@@ -248,10 +247,10 @@ namespace OpenRCT2::Scenario
         return ObjectiveStatus::Undecided;
     }
 
-    ObjectiveStatus Objective::CheckMonthlyFoodIncome() const
+    ObjectiveStatus Objective::CheckMonthlyFoodIncome(GameState_t& gameState) const
     {
         // TODO: pass park by ref
-        const auto& park = getGameState().park;
+        const auto& park = gameState.park;
 
         const auto* lastMonthExpenditure = park.expenditureTable[1];
         auto lastMonthProfit = lastMonthExpenditure[EnumValue(ExpenditureType::shopSales)]
@@ -281,23 +280,23 @@ namespace OpenRCT2::Scenario
         switch (Type)
         {
             case ObjectiveType::guestsBy:
-                return CheckGuestsBy();
+                return CheckGuestsBy(gameState);
             case ObjectiveType::parkValueBy:
-                return CheckParkValueBy();
+                return CheckParkValueBy(gameState);
             case ObjectiveType::tenRollercoasters:
-                return Check10RollerCoasters();
+                return Check10RollerCoasters(gameState);
             case ObjectiveType::guestsAndRating:
-                return CheckGuestsAndRating();
+                return CheckGuestsAndRating(gameState);
             case ObjectiveType::monthlyRideIncome:
-                return CheckMonthlyRideIncome();
+                return CheckMonthlyRideIncome(gameState);
             case ObjectiveType::tenRollercoastersLength:
-                return Check10RollerCoastersLength();
+                return Check10RollerCoastersLength(gameState);
             case ObjectiveType::finishFiveRollercoasters:
-                return CheckFinish5RollerCoasters();
+                return CheckFinish5RollerCoasters(gameState);
             case ObjectiveType::repayLoanAndParkValue:
-                return CheckRepayLoanAndParkValue();
+                return CheckRepayLoanAndParkValue(gameState);
             case ObjectiveType::monthlyFoodIncome:
-                return CheckMonthlyFoodIncome();
+                return CheckMonthlyFoodIncome(gameState);
             default:
                 return ObjectiveStatus::Undecided;
         }
