@@ -2194,10 +2194,6 @@ bool Guest::ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, b
             if (value != kRideValueUndefined && !GuestHasVoucherForFreeRide(*this, ride)
                 && !(gameState.park.flags & PARK_FLAGS_NO_MONEY))
             {
-                // The amount peeps are willing to pay is decreased by 75% if they had to pay to enter the park.
-                if (PeepFlags & PEEP_FLAGS_HAS_PAID_FOR_PARK_ENTRY)
-                    value /= 4;
-
                 // Peeps won't pay more than twice the value of the ride.
                 ridePrice = RideGetPrice(ride);
                 if ((ridePrice > (value * 2)) && !(gameState.cheats.ignorePrice))
