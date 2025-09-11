@@ -13,6 +13,7 @@
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/String.hpp>
+#include <openrct2/localisation/CurrencyTypes.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Formatting.h>
 #include <openrct2/localisation/Language.h>
