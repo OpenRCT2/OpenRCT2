@@ -14,17 +14,20 @@
 
 #include <memory>
 
-struct ILanguagePack
+namespace OpenRCT2
 {
-    virtual ~ILanguagePack() = default;
+    struct ILanguagePack
+    {
+        virtual ~ILanguagePack() = default;
 
-    virtual uint16_t GetId() const = 0;
-    virtual uint32_t GetCount() const = 0;
+        virtual uint16_t GetId() const = 0;
+        virtual uint32_t GetCount() const = 0;
 
-    virtual void RemoveString(StringId stringId) = 0;
-    virtual void SetString(StringId stringId, const std::string& str) = 0;
-    virtual const utf8* GetString(StringId stringId) const = 0;
-};
+        virtual void RemoveString(StringId stringId) = 0;
+        virtual void SetString(StringId stringId, const std::string& str) = 0;
+        virtual const utf8* GetString(StringId stringId) const = 0;
+    };
+} // namespace OpenRCT2
 
 namespace OpenRCT2::LanguagePackFactory
 {

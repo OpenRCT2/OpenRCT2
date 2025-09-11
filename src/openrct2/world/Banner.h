@@ -17,10 +17,9 @@
 
 #include <string>
 
-class Formatter;
-
 namespace OpenRCT2
 {
+    class Formatter;
     struct GameState_t;
     struct TileElement;
     struct WallElement;
@@ -58,8 +57,8 @@ struct Banner
     }
 
     std::string getText() const;
-    void formatTextWithColourTo(Formatter&) const;
-    void formatTextTo(Formatter&) const;
+    void formatTextWithColourTo(OpenRCT2::Formatter&) const;
+    void formatTextTo(OpenRCT2::Formatter&) const;
 };
 
 void BannerInit(OpenRCT2::GameState_t& gameState);

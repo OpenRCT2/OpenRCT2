@@ -14,7 +14,7 @@
 
 struct TextInputSession;
 
-namespace OpenRCT2
+namespace OpenRCT2::Ui
 {
     constexpr ScreenSize kMaxWindowSize = { 5000, 5000 };
 
@@ -50,7 +50,7 @@ namespace OpenRCT2
     void ApplyScreenSaverLockSetting();
     void WindowAlignTabs(WindowBase* w, WidgetIndex start_tab_id, WidgetIndex end_tab_id);
     ScreenCoordsXY WindowGetViewportSoundIconPos(WindowBase& w);
-} // namespace OpenRCT2
+} // namespace OpenRCT2::Ui
 
 namespace OpenRCT2::Ui::Windows
 {

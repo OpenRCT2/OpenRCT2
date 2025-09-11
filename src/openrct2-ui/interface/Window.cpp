@@ -30,15 +30,10 @@
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Location.hpp>
 
-class Formatter;
-
-namespace OpenRCT2
+namespace OpenRCT2::Ui
 {
-    using namespace OpenRCT2::Ui;
-
     // The amount of pixels to scroll per wheel click
     constexpr int32_t kWindowScrollPixels = 17;
-
     static int32_t _previousAbsoluteWheel = 0;
 
     static int32_t WindowGetWidgetIndex(const WindowBase& w, Widget* widget)
@@ -522,7 +517,7 @@ namespace OpenRCT2
         const uint8_t buttonOffset = (Config::Get().interface.WindowButtonsOnTheLeft) ? kCloseButtonSize + 2 : 0;
         return w.windowPos + ScreenCoordsXY{ 2 + buttonOffset, 2 };
     }
-} // namespace OpenRCT2
+} // namespace OpenRCT2::Ui
 
 namespace OpenRCT2::Ui::Windows
 {

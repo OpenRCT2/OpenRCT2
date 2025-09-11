@@ -13,6 +13,8 @@
 
 #include <gtest/gtest.h>
 
+using namespace OpenRCT2;
+
 class Localisation : public testing::Test
 {
 };

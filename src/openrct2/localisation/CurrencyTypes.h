@@ -11,34 +11,37 @@
 
 #include <cstdint>
 
-// List of currencies
-enum class CurrencyType : uint8_t
+namespace OpenRCT2
 {
-    Pounds,       // British Pound
-    Dollars,      // US Dollar
-    Franc,        // French Franc
-    DeutscheMark, // Deutsche Mark
-    Yen,          // Japanese Yen
-    Peseta,       // Spanish Peseta
-    Lira,         // Italian Lira
-    Guilders,     // Dutch Gilder
-    Krona,        // Swedish Krona
-    Euros,        // Euro
-    Won,          // South Korean Won
-    Rouble,       // Russian Rouble
-    CzechKoruna,  // Czech koruna
-    HKD,          // Hong Kong Dollar
-    TWD,          // New Taiwan Dollar
-    Yuan,         // Chinese Yuan
-    Forint,       // Hungarian Forint
+    // List of currencies
+    enum class CurrencyType : uint8_t
+    {
+        Pounds,       // British Pound
+        Dollars,      // US Dollar
+        Franc,        // French Franc
+        DeutscheMark, // Deutsche Mark
+        Yen,          // Japanese Yen
+        Peseta,       // Spanish Peseta
+        Lira,         // Italian Lira
+        Guilders,     // Dutch Gilder
+        Krona,        // Swedish Krona
+        Euros,        // Euro
+        Won,          // South Korean Won
+        Rouble,       // Russian Rouble
+        CzechKoruna,  // Czech koruna
+        HKD,          // Hong Kong Dollar
+        TWD,          // New Taiwan Dollar
+        Yuan,         // Chinese Yuan
+        Forint,       // Hungarian Forint
 
-    Custom, // Custom currency
+        Custom, // Custom currency
 
-    Count // Last item
-};
+        Count // Last item
+    };
 
-enum class CurrencyAffix
-{
-    Prefix,
-    Suffix
-};
+    enum class CurrencyAffix : uint8_t
+    {
+        Prefix,
+        Suffix
+    };
+} // namespace OpenRCT2

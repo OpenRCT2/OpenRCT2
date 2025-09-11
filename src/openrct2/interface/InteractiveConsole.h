@@ -16,8 +16,6 @@
 struct RenderTarget;
 struct TextInputSession;
 
-enum class FormatToken : uint8_t;
-
 enum class ConsoleInput : uint8_t
 {
     None,
@@ -28,6 +26,11 @@ enum class ConsoleInput : uint8_t
     ScrollPrevious,
     ScrollNext,
 };
+
+namespace OpenRCT2
+{
+    enum class FormatToken : uint8_t;
+}
 
 class InteractiveConsole
 {
@@ -53,5 +56,5 @@ public:
     virtual void Clear() = 0;
     virtual void Close() = 0;
     virtual void Hide() = 0;
-    virtual void WriteLine(const std::string& s, FormatToken colourFormat) = 0;
+    virtual void WriteLine(const std::string& s, OpenRCT2::FormatToken colourFormat) = 0;
 };
