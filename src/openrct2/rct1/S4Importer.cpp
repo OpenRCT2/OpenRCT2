@@ -288,6 +288,23 @@ namespace OpenRCT2::RCT1
             return {};
         }
 
+    private:
+        uint8_t calcParkValueConversionFactor(const Park::ParkData& park, const GameState_t& gameState)
+        {
+            if (_s4.ParkValue != 0)
+            {
+                // Use the ratio between the old and new park value to calcute the ratio to
+                // use for the park value history and the goal.
+                // TODO: split up this function so this can pass the actual park/gamestate as needed
+                return (Park::CalculateParkValue(park, gameState) * 10) / _s4.ParkValue;
+            }
+            else
+            {
+                // In new games, the park value isn't set.
+                return 100;
+            }
+        }
+
         money64 CorrectRCT1ParkValue(money32 oldParkValue)
         {
             if (oldParkValue == kMoney32Undefined)
@@ -295,26 +312,11 @@ namespace OpenRCT2::RCT1
                 return kMoney64Undefined;
             }
 
-            if (_parkValueConversionFactor == 0)
-            {
-                if (_s4.ParkValue != 0)
-                {
-                    // Use the ratio between the old and new park value to calcute the ratio to
-                    // use for the park value history and the goal.
-                    // TODO: split up this function so this can pass the actual park/gamestate as needed
-                    _parkValueConversionFactor = (Park::CalculateParkValue() * 10) / _s4.ParkValue;
-                }
-                else
-                {
-                    // In new games, the park value isn't set.
-                    _parkValueConversionFactor = 100;
-                }
-            }
+            assert(_parkValueConversionFactor != 0);
 
             return (oldParkValue * _parkValueConversionFactor) / 10;
         }
 
-    private:
         std::unique_ptr<S4> ReadAndDecodeS4(IStream* stream, bool isScenario)
         {
             auto s4 = std::make_unique<S4>();
@@ -345,7 +347,9 @@ namespace OpenRCT2::RCT1
         void Initialise(GameState_t& gameState)
         {
             // Avoid reusing the value used for last import
-            _parkValueConversionFactor = 0;
+            auto& park = gameState.park;
+            park.value = 0;
+            _parkValueConversionFactor = calcParkValueConversionFactor(park, gameState);
 
             uint16_t mapSize = _s4.MapSize == 0 ? Limits::kMaxMapSize : _s4.MapSize;
 
@@ -1513,6 +1517,9 @@ namespace OpenRCT2::RCT1
             park.companyValue = ToMoney64(_s4.CompanyValue);
             park.value = CorrectRCT1ParkValue(_s4.ParkValue);
             park.currentProfit = ToMoney64(_s4.Profit);
+
+            // With park value known, we can recalculate the conversion factor
+            _parkValueConversionFactor = calcParkValueConversionFactor(park, gameState);
 
             for (size_t i = 0; i < Limits::kFinanceGraphSize; i++)
             {
