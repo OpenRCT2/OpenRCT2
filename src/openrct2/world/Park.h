@@ -27,10 +27,11 @@ namespace OpenRCT2::Park
     void Initialise(GameState_t& gameState);
     void Update(GameState_t& gameState, const Date& date);
 
-    uint32_t CalculateParkSize();
-    int32_t CalculateParkRating();
+    uint32_t CalculateParkSize(ParkData& park);
+    int32_t CalculateParkRating(const ParkData& park, const GameState_t& gameState);
+    money64 CalculateParkValue(const ParkData& park, const GameState_t& gameState);
     money64 CalculateParkValue();
-    money64 CalculateCompanyValue();
+    money64 CalculateCompanyValue(const ParkData& park);
 
     Guest* GenerateGuest();
 
@@ -39,7 +40,7 @@ namespace OpenRCT2::Park
     void SetForcedRating(int32_t rating);
     int32_t GetForcedRating();
 
-    uint32_t UpdateSize(GameState_t& gameState);
+    uint32_t UpdateSize(ParkData& park, GameState_t& gameState);
 
     void UpdateFences(const CoordsXY& coords);
     void UpdateFencesAroundTile(const CoordsXY& coords);

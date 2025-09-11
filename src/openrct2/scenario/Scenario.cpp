@@ -102,9 +102,9 @@ void ScenarioReset(GameState_t& gameState)
     News::InitQueue(gameState);
 
     auto& park = gameState.park;
-    park.rating = Park::CalculateParkRating();
-    park.value = Park::CalculateParkValue();
-    park.companyValue = Park::CalculateCompanyValue();
+    park.rating = Park::CalculateParkRating(park, gameState);
+    park.value = Park::CalculateParkValue(park, gameState);
+    park.companyValue = Park::CalculateCompanyValue(park);
     park.historicalProfit = gameState.scenarioOptions.initialCash - park.bankLoan;
     park.cash = gameState.scenarioOptions.initialCash;
 
@@ -138,7 +138,7 @@ void ScenarioReset(GameState_t& gameState)
     ResetAllRideBuildDates();
     ResetDate();
     Duck::RemoveAll();
-    Park::UpdateSize(gameState);
+    Park::UpdateSize(park, gameState);
     MapCountRemainingLandRights();
     Staff::ResetStats();
 

@@ -156,7 +156,8 @@ namespace OpenRCT2::GameActions
         }
 
         ride.remove();
-        getGameState().park.value = Park::CalculateParkValue();
+        auto& park = gameState.park;
+        park.value = Park::CalculateParkValue(park, gameState);
 
         // Close windows related to the demolished ride
         auto* windowMgr = Ui::GetWindowManager();
