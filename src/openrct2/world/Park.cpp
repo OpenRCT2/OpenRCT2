@@ -51,12 +51,6 @@ using namespace OpenRCT2::Scripting;
 
 namespace OpenRCT2::Park
 {
-    static money64 calculateRideValue(const Ride& ride);
-    static money64 calculateTotalRideValueForMoney();
-    static uint32_t calculateSuggestedMaxGuests();
-    static uint32_t calculateGuestGenerationProbability();
-
-    static void generateGuests(GameState_t& gameState);
     static Guest* generateGuestFromCampaign(int32_t campaign);
 
     /**
