@@ -12,7 +12,10 @@
 #include <cstdint>
 #include <openrct2/localisation/StringIdType.h>
 
-class Formatter;
+namespace OpenRCT2
+{
+    class Formatter;
+}
 
 namespace OpenRCT2::Scenario
 {

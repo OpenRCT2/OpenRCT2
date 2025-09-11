@@ -14,6 +14,8 @@
 #include "../localisation/Formatting.h"
 #include "Drawing.h"
 
+using namespace OpenRCT2;
+
 class StaticLayout
 {
 private:

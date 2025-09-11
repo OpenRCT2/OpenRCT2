@@ -17,11 +17,10 @@
 #include <string_view>
 #include <vector>
 
-struct ILanguagePack;
-struct IObjectManager;
-
 namespace OpenRCT2
 {
+    struct ILanguagePack;
+    struct IObjectManager;
     struct IPlatformEnvironment;
 }
 

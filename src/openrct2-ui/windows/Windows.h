@@ -15,8 +15,6 @@
 #include <optional>
 #include <string_view>
 
-class Formatter;
-
 struct OpenRCT2String;
 struct Peep;
 struct Ride;
@@ -32,6 +30,7 @@ using ScenarioSelectCallback = void (*)(const utf8* path);
 
 namespace OpenRCT2
 {
+    class Formatter;
     struct ObjectEntryDescriptor;
     struct TileElement;
 } // namespace OpenRCT2

@@ -14,7 +14,7 @@
 
 struct TextInputSession;
 
-namespace OpenRCT2
+namespace OpenRCT2::Ui
 {
     constexpr ScreenSize kMaxWindowSize = { 5000, 5000 };
 

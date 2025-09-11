@@ -41,7 +41,10 @@ using namespace OpenRCT2;
 using namespace OpenRCT2::Ui;
 using namespace OpenRCT2::Ui::Windows;
 
-class Formatter;
+namespace OpenRCT2
+{
+    class Formatter;
+}
 
 namespace WindowCloseFlags
 {
