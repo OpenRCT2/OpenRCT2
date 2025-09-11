@@ -176,7 +176,7 @@ namespace OpenRCT2::Localisation
     {
         return _languageOrder;
     }
-}
+} // namespace OpenRCT2::Localisation
 
 int32_t LocalisationService_GetCurrentLanguage()
 {

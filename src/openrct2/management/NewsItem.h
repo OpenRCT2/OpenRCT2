@@ -26,7 +26,7 @@ namespace OpenRCT2
 {
     class Formatter;
     struct GameState_t;
-}
+} // namespace OpenRCT2
 
 namespace OpenRCT2::News
 {

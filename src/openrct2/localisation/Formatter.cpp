@@ -33,4 +33,4 @@ namespace OpenRCT2
     {
         return Formatter{ gCommonFormatArgs };
     }
-}
+} // namespace OpenRCT2

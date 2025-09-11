@@ -102,4 +102,4 @@ namespace OpenRCT2
         auto& localisationService = OpenRCT2::GetContext()->GetLocalisationService();
         return localisationService.AllocateObjectString(target);
     }
-}
+} // namespace OpenRCT2

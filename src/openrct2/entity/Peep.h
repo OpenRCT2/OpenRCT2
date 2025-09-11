@@ -34,7 +34,7 @@ namespace OpenRCT2
 {
     class Formatter;
     struct TileElement;
-}
+} // namespace OpenRCT2
 
 namespace OpenRCT2::GameActions
 {

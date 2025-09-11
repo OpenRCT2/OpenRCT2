@@ -180,4 +180,4 @@ namespace OpenRCT2
             snprintf(buffer_to_put_value_to, buffer_len, "0");
         }
     }
-}
+} // namespace OpenRCT2

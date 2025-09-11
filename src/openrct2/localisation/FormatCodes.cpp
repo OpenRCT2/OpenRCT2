@@ -170,4 +170,4 @@ namespace OpenRCT2
 
         return tokens[EnumValue(textColour)];
     }
-}
+} // namespace OpenRCT2

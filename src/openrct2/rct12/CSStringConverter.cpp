@@ -242,4 +242,4 @@ namespace OpenRCT2
         auto decoded = DecodeToMultiByte(src);
         return String::convertToUtf8(decoded, codePage);
     }
-}
+} // namespace OpenRCT2
