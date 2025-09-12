@@ -12,7 +12,10 @@
 #include <openrct2/interface/Window.h>
 #include <openrct2/interface/WindowBase.h>
 
-struct TextInputSession;
+namespace OpenRCT2
+{
+    struct TextInputSession;
+}
 
 namespace OpenRCT2::Ui
 {

@@ -17,74 +17,28 @@
 
 #include <memory>
 
-struct IScenarioRepository;
-enum class DrawingEngine : int32_t;
 enum class CursorID : uint8_t;
-
-namespace OpenRCT2
-{
-    class Formatter;
-    class Intent;
-    struct IObjectManager;
-    struct IObjectRepository;
-    struct IStream;
-    struct WindowBase;
-} // namespace OpenRCT2
-
-struct ITrackDesignRepository;
+enum class DrawingEngine : int32_t;
 struct IGameStateSnapshots;
-
+struct IScenarioRepository;
+struct ITrackDesignRepository;
 struct NewVersionInfo;
-
 struct TTFFontDescriptor;
-namespace OpenRCT2::Ui
-{
-    struct FileDialogDesc;
-}
-
-struct CursorState
-{
-    ScreenCoordsXY position;
-    uint8_t left, middle, right, any;
-    int32_t wheel;
-    int32_t old;
-    bool touch, touchIsDouble;
-    uint32_t touchDownTimestamp;
-};
-
-struct TextInputSession
-{
-    u8string* Buffer;      // UTF-8 string buffer, non-owning.
-    size_t Length;         // Number of codepoints
-    size_t MaxLength;      // Maximum length of text, Length can't be larger than this.
-    size_t SelectionStart; // Selection start, in bytes
-    size_t SelectionSize;  // Selection length in bytes
-
-    const utf8* ImeBuffer; // IME UTF-8 stream
-};
-
-struct Resolution
-{
-    int32_t Width;
-    int32_t Height;
-};
-
-enum
-{
-    CURSOR_UP = 0,
-    CURSOR_DOWN = 1,
-    CURSOR_CHANGED = 2,
-    CURSOR_RELEASED = CURSOR_UP | CURSOR_CHANGED,
-    CURSOR_PRESSED = CURSOR_DOWN | CURSOR_CHANGED,
-};
 
 namespace OpenRCT2
 {
     class AssetPackManager;
-
+    class Formatter;
+    class Intent;
+    struct CursorState;
+    struct IObjectManager;
+    struct IObjectRepository;
     struct IPlatformEnvironment;
     struct IReplayManager;
     struct IScene;
+    struct IStream;
+    struct TextInputSession;
+    struct WindowBase;
 
     namespace Audio
     {
@@ -113,8 +67,9 @@ namespace OpenRCT2
 
     namespace Ui
     {
+        struct FileDialogDesc;
         struct IUiContext;
-    }
+    } // namespace Ui
 
     namespace Paint
     {
@@ -191,54 +146,39 @@ namespace OpenRCT2
         std::unique_ptr<IPlatformEnvironment>&& env, std::unique_ptr<Audio::IAudioContext>&& audioContext,
         std::unique_ptr<Ui::IUiContext>&& uiContext);
     [[nodiscard]] IContext* GetContext();
+
+    void ContextInit();
+    void ContextSetCurrentCursor(CursorID cursor);
+    void ContextUpdateCursorScale();
+    void ContextHideCursor();
+    void ContextShowCursor();
+    ScreenCoordsXY ContextGetCursorPosition();
+    ScreenCoordsXY ContextGetCursorPositionScaled();
+    void ContextSetCursorPosition(const ScreenCoordsXY& cursorPosition);
+    const CursorState* ContextGetCursorState();
+    const uint8_t* ContextGetKeysState();
+    const uint8_t* ContextGetKeysPressed();
+    TextInputSession* ContextStartTextInput(u8string& buffer, size_t maxLength);
+    void ContextStopTextInput();
+    bool ContextIsInputActive();
+    void ContextTriggerResize();
+    void ContextSetFullscreenMode(int32_t mode);
+    void ContextRecreateWindow();
+    int32_t ContextGetWidth();
+    int32_t ContextGetHeight();
+    bool ContextHasFocus();
+    void ContextSetCursorTrap(bool value);
+    OpenRCT2::WindowBase* ContextOpenWindow(WindowClass wc);
+    OpenRCT2::WindowBase* ContextOpenDetailWindow(uint8_t type, int32_t id);
+    OpenRCT2::WindowBase* ContextOpenWindowView(uint8_t view);
+    OpenRCT2::WindowBase* ContextShowError(
+        StringId title, StringId message, const class OpenRCT2::Formatter& args, bool autoClose = false);
+    OpenRCT2::WindowBase* ContextOpenIntent(OpenRCT2::Intent* intent);
+    void ContextBroadcastIntent(OpenRCT2::Intent* intent);
+    void ContextForceCloseWindowByClass(WindowClass wc);
+    void ContextHandleInput();
+    void ContextInputHandleKeyboard(bool isTitle);
+    void ContextQuit();
+    bool ContextLoadParkFromStream(void* stream);
+    u8string ContextOpenCommonFileDialog(OpenRCT2::Ui::FileDialogDesc& desc);
 } // namespace OpenRCT2
-
-namespace
-{
-    // The number of logical update / ticks per second.
-    constexpr uint32_t kGameUpdateFPS = 40;
-    // The maximum amount of updates in case rendering is slower
-    constexpr uint32_t kGameMaxUpdates = 4;
-    // The game update interval in milliseconds, (1000 / 40fps) = 25ms
-    constexpr float kGameUpdateTimeMS = 1.0f / kGameUpdateFPS;
-    // The maximum threshold to advance.
-    constexpr float kGameUpdateMaxThreshold = kGameUpdateTimeMS * kGameMaxUpdates;
-}; // namespace
-
-constexpr float kGameMinTimeScale = 0.1f;
-constexpr float kGameMaxTimeScale = 5.0f;
-
-void ContextInit();
-void ContextSetCurrentCursor(CursorID cursor);
-void ContextUpdateCursorScale();
-void ContextHideCursor();
-void ContextShowCursor();
-ScreenCoordsXY ContextGetCursorPosition();
-ScreenCoordsXY ContextGetCursorPositionScaled();
-void ContextSetCursorPosition(const ScreenCoordsXY& cursorPosition);
-const CursorState* ContextGetCursorState();
-const uint8_t* ContextGetKeysState();
-const uint8_t* ContextGetKeysPressed();
-TextInputSession* ContextStartTextInput(u8string& buffer, size_t maxLength);
-void ContextStopTextInput();
-bool ContextIsInputActive();
-void ContextTriggerResize();
-void ContextSetFullscreenMode(int32_t mode);
-void ContextRecreateWindow();
-int32_t ContextGetWidth();
-int32_t ContextGetHeight();
-bool ContextHasFocus();
-void ContextSetCursorTrap(bool value);
-OpenRCT2::WindowBase* ContextOpenWindow(WindowClass wc);
-OpenRCT2::WindowBase* ContextOpenDetailWindow(uint8_t type, int32_t id);
-OpenRCT2::WindowBase* ContextOpenWindowView(uint8_t view);
-OpenRCT2::WindowBase* ContextShowError(
-    StringId title, StringId message, const class OpenRCT2::Formatter& args, bool autoClose = false);
-OpenRCT2::WindowBase* ContextOpenIntent(OpenRCT2::Intent* intent);
-void ContextBroadcastIntent(OpenRCT2::Intent* intent);
-void ContextForceCloseWindowByClass(WindowClass wc);
-void ContextHandleInput();
-void ContextInputHandleKeyboard(bool isTitle);
-void ContextQuit();
-bool ContextLoadParkFromStream(void* stream);
-u8string ContextOpenCommonFileDialog(OpenRCT2::Ui::FileDialogDesc& desc);
