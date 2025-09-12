@@ -307,26 +307,6 @@ void FinanceUpdateDailyProfit()
     windowMgr->InvalidateByClass(WindowClass::Finances);
 }
 
-money64 FinanceGetInitialCash()
-{
-    return getGameState().scenarioOptions.initialCash;
-}
-
-money64 FinanceGetCurrentLoan()
-{
-    return getGameState().park.bankLoan;
-}
-
-money64 FinanceGetMaximumLoan()
-{
-    return getGameState().park.maxBankLoan;
-}
-
-money64 FinanceGetCurrentCash()
-{
-    return getGameState().park.cash;
-}
-
 /**
  * Shift the expenditure table history one month to the left
  * If the table is full, accumulate the sum of the oldest month first

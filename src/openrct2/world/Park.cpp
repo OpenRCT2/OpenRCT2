@@ -533,7 +533,7 @@ namespace OpenRCT2::Park
         auto result = park.value - park.bankLoan;
 
         // Clamp addition to prevent overflow
-        result = AddClamp<money64>(result, FinanceGetCurrentCash());
+        result = AddClamp<money64>(result, park.cash);
 
         return result;
     }
@@ -611,7 +611,7 @@ namespace OpenRCT2::Park
         HistoryPushRecord<uint32_t, numGuestsHistorySize>(park.guestsInParkHistory, park.numGuestsInPark);
 
         constexpr auto cashHistorySize = std::extent_v<decltype(ParkData::cashHistory)>;
-        HistoryPushRecord<money64, cashHistorySize>(park.cashHistory, FinanceGetCurrentCash() - park.bankLoan);
+        HistoryPushRecord<money64, cashHistorySize>(park.cashHistory, park.cash - park.bankLoan);
 
         // Update weekly profit history
         auto currentWeeklyProfit = park.weeklyProfitAverageDividend;
