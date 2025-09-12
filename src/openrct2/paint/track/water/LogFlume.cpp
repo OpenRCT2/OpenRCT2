@@ -902,7 +902,7 @@ static void LogFlumeTrack25Down60(
         PaintUtilPushTunnelRotated(session, direction, height + 24, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 56);
+    PaintUtilSetGeneralSupportHeight(session, height + 72);
 }
 
 static void LogFlumeTrack60Down(
@@ -942,7 +942,7 @@ static void LogFlumeTrack60Down(
         PaintUtilPushTunnelRotated(session, direction, height + 56, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 56);
+    PaintUtilSetGeneralSupportHeight(session, height + 104);
 }
 
 static void LogFlumeTrack60Down25(
@@ -982,7 +982,7 @@ static void LogFlumeTrack60Down25(
         }
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 56);
+    PaintUtilSetGeneralSupportHeight(session, height + 72);
 }
 
 TrackPaintFunction GetTrackPaintFunctionLogFlume(OpenRCT2::TrackElemType trackType)

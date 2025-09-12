@@ -10,7 +10,6 @@
 #pragma once
 
 #include "../core/StringTypes.h"
-#include "../localisation/CurrencyTypes.h"
 #include "ConfigTypes.h"
 
 #include <atomic>
@@ -69,7 +68,7 @@ namespace OpenRCT2::Config
 
         // Localisation
         int32_t Language;
-        ::MeasurementFormat MeasurementFormat;
+        OpenRCT2::MeasurementFormat MeasurementFormat;
         TemperatureUnit TemperatureFormat;
         bool ShowHeightAsUnits;
         int32_t DateFormat;

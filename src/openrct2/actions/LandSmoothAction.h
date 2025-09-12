@@ -11,6 +11,8 @@
 
 #include "GameAction.h"
 
+enum class MapSelectType : uint8_t;
+
 namespace OpenRCT2::GameActions
 {
     class LandSmoothAction final : public GameActionBase<GameCommand::EditLandSmooth>
@@ -18,7 +20,7 @@ namespace OpenRCT2::GameActions
     private:
         CoordsXY _coords;
         MapRange _range;
-        uint8_t _selectionType{};
+        MapSelectType _selectionType{};
         bool _isLowering{};
 
         constexpr static StringId kErrorTitles[] = {
@@ -28,7 +30,7 @@ namespace OpenRCT2::GameActions
 
     public:
         LandSmoothAction() = default;
-        LandSmoothAction(const CoordsXY& coords, MapRange range, uint8_t selectionType, bool isLowering);
+        LandSmoothAction(const CoordsXY& coords, MapRange range, MapSelectType selectionType, bool isLowering);
 
         void AcceptParameters(GameActionParameterVisitor&) final;
 

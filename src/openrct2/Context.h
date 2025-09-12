@@ -23,6 +23,7 @@ enum class CursorID : uint8_t;
 
 namespace OpenRCT2
 {
+    class Formatter;
     class Intent;
     struct IObjectManager;
     struct IObjectRepository;
@@ -231,7 +232,8 @@ void ContextSetCursorTrap(bool value);
 OpenRCT2::WindowBase* ContextOpenWindow(WindowClass wc);
 OpenRCT2::WindowBase* ContextOpenDetailWindow(uint8_t type, int32_t id);
 OpenRCT2::WindowBase* ContextOpenWindowView(uint8_t view);
-OpenRCT2::WindowBase* ContextShowError(StringId title, StringId message, const class Formatter& args, bool autoClose = false);
+OpenRCT2::WindowBase* ContextShowError(
+    StringId title, StringId message, const class OpenRCT2::Formatter& args, bool autoClose = false);
 OpenRCT2::WindowBase* ContextOpenIntent(OpenRCT2::Intent* intent);
 void ContextBroadcastIntent(OpenRCT2::Intent* intent);
 void ContextForceCloseWindowByClass(WindowClass wc);

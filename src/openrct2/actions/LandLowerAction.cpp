@@ -29,7 +29,7 @@
 
 namespace OpenRCT2::GameActions
 {
-    LandLowerAction::LandLowerAction(const CoordsXY& coords, MapRange range, uint8_t selectionType)
+    LandLowerAction::LandLowerAction(const CoordsXY& coords, MapRange range, MapSelectType selectionType)
         : _coords(coords)
         , _range(range)
         , _selectionType(selectionType)
@@ -68,11 +68,11 @@ namespace OpenRCT2::GameActions
     Result LandLowerAction::QueryExecute(GameState_t& gameState, bool isExecuting) const
     {
         auto res = Result();
-        size_t tableRow = _selectionType;
+        size_t tableRow = EnumValue(_selectionType);
 
-        // The selections between MAP_SELECT_TYPE_FULL and MAP_SELECT_TYPE_EDGE_0 are not included in the tables
-        if (_selectionType >= MAP_SELECT_TYPE_EDGE_0 && _selectionType <= MAP_SELECT_TYPE_EDGE_3)
-            tableRow -= MAP_SELECT_TYPE_EDGE_0 - MAP_SELECT_TYPE_FULL - 1;
+        // The selections between MapSelectType::full and MapSelectType::edge0 are not included in the tables
+        if (_selectionType >= MapSelectType::edge0 && _selectionType <= MapSelectType::edge3)
+            tableRow -= EnumValue(MapSelectType::edge0) - EnumValue(MapSelectType::full) - 1;
 
         auto validRange = ClampRangeWithinMap(_range);
 

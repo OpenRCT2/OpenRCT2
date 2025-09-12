@@ -99,13 +99,13 @@ void VirtualFloorInvalidate(const bool alwaysInvalidate)
     CoordsXY min_position = { std::numeric_limits<int32_t>::max(), std::numeric_limits<int32_t>::max() };
     CoordsXY max_position = { std::numeric_limits<int32_t>::lowest(), std::numeric_limits<int32_t>::lowest() };
 
-    if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE)
+    if (gMapSelectFlags.has(MapSelectFlag::enable))
     {
         min_position = gMapSelectPositionA;
         max_position = gMapSelectPositionB;
     }
 
-    if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE_CONSTRUCT)
+    if (gMapSelectFlags.has(MapSelectFlag::enableConstruct))
     {
         for (const auto& tile : gMapSelectionTiles)
         {
@@ -168,12 +168,12 @@ bool VirtualFloorTileIsFloor(const CoordsXY& loc)
     // and if the current tile is near or on them
     // (short-circuit to false otherwise - we don't want to show a second
     //  virtual floor from e. g. an open ride construction window)
-    if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE)
+    if (gMapSelectFlags.has(MapSelectFlag::enable))
     {
         return loc >= gMapSelectPositionA - kVirtualFloorBaseSizeXY && loc <= gMapSelectPositionB + kVirtualFloorBaseSizeXY;
     }
 
-    if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE_CONSTRUCT)
+    if (gMapSelectFlags.has(MapSelectFlag::enableConstruct))
     {
         // Check if we are anywhere near the selection tiles (larger scenery / rides)
         for (const auto& tile : gMapSelectionTiles)
@@ -201,7 +201,7 @@ static void VirtualFloorGetTileProperties(
     *tileOwned = false;
 
     // See if we are a selected tile
-    if ((gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
+    if ((gMapSelectFlags.has(MapSelectFlag::enable)))
     {
         if (loc >= gMapSelectPositionA && loc <= gMapSelectPositionB)
         {
@@ -210,7 +210,7 @@ static void VirtualFloorGetTileProperties(
     }
 
     // See if we are on top of the selection tiles
-    if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE_CONSTRUCT)
+    if (gMapSelectFlags.has(MapSelectFlag::enableConstruct))
     {
         for (const auto& tile : gMapSelectionTiles)
         {

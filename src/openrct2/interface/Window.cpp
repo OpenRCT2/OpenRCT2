@@ -698,7 +698,7 @@ static constexpr float kWindowScrollLocations[][2] = {
             MapInvalidateMapSelectionTiles();
 
             // Reset map selection
-            gMapSelectFlags = 0;
+            gMapSelectFlags.clearAll();
 
             if (gCurrentToolWidget.widget_index != kWidgetIndexNull)
             {

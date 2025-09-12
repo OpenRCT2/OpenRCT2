@@ -13,8 +13,11 @@
 #include <string>
 #include <string_view>
 
-enum class RCT2LanguageId : uint8_t;
+namespace OpenRCT2
+{
+    enum class RCT2LanguageId : uint8_t;
 
-wchar_t EncodingConvertRCT2ToUnicode(wchar_t rct2str);
+    wchar_t EncodingConvertRCT2ToUnicode(wchar_t rct2str);
 
-std::string RCT2StringToUTF8(std::string_view src, RCT2LanguageId languageId);
+    std::string RCT2StringToUTF8(std::string_view src, RCT2LanguageId languageId);
+} // namespace OpenRCT2

@@ -219,7 +219,7 @@ namespace OpenRCT2::Ui::Windows
             uint8_t state_changed = 0;
 
             MapInvalidateSelectionRect();
-            gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
+            gMapSelectFlags.unset(MapSelectFlag::enable);
 
             auto mapTile = ScreenGetMapXY(screenPos, nullptr);
 
@@ -228,15 +228,15 @@ namespace OpenRCT2::Ui::Windows
                 return state_changed;
             }
 
-            if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
+            if (!(gMapSelectFlags.has(MapSelectFlag::enable)))
             {
-                gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
+                gMapSelectFlags.set(MapSelectFlag::enable);
                 state_changed++;
             }
 
-            if (gMapSelectType != MAP_SELECT_TYPE_FULL)
+            if (gMapSelectType != MapSelectType::full)
             {
-                gMapSelectType = MAP_SELECT_TYPE_FULL;
+                gMapSelectType = MapSelectType::full;
                 state_changed++;
             }
 
@@ -314,7 +314,7 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_BACKGROUND:
-                    if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE)
+                    if (gMapSelectFlags.has(MapSelectFlag::enable))
                     {
                         auto action = GetClearAction();
                         GameActions::Execute(&action, getGameState());
@@ -331,7 +331,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_BACKGROUND:
                 {
                     auto* windowMgr = GetWindowManager();
-                    if (windowMgr->FindByClass(WindowClass::Error) == nullptr && (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
+                    if (windowMgr->FindByClass(WindowClass::Error) == nullptr && (gMapSelectFlags.has(MapSelectFlag::enable)))
                     {
                         auto action = GetClearAction();
                         GameActions::Execute(&action, getGameState());
@@ -348,7 +348,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WIDX_BACKGROUND:
                     MapInvalidateSelectionRect();
-                    gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
+                    gMapSelectFlags.unset(MapSelectFlag::enable);
                     gCurrentToolId = Tool::bulldozer;
                     break;
             }

@@ -165,9 +165,7 @@ namespace OpenRCT2::Ui::Windows
         {
             MapInvalidateSelectionRect();
             MapInvalidateMapSelectionTiles();
-            gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
-            gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
-            gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
+            gMapSelectFlags.unset(MapSelectFlag::enable, MapSelectFlag::enableArrow, MapSelectFlag::enableConstruct);
             CoordsXYZD parkEntrancePosition = PlaceParkEntranceGetMapPosition(screenCoords);
             if (parkEntrancePosition.IsNull())
             {
@@ -188,7 +186,7 @@ namespace OpenRCT2::Ui::Windows
             gMapSelectArrowPosition = parkEntrancePosition;
             gMapSelectArrowDirection = parkEntrancePosition.direction;
 
-            gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_CONSTRUCT | MAP_SELECT_FLAG_ENABLE_ARROW;
+            gMapSelectFlags.set(MapSelectFlag::enableConstruct, MapSelectFlag::enableArrow);
             MapInvalidateMapSelectionTiles();
             if (gParkEntranceGhostExists && parkEntrancePosition == gParkEntranceGhostPosition)
             {

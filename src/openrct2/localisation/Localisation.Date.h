@@ -12,9 +12,12 @@
 #include "../Date.h"
 #include "../localisation/StringIdType.h"
 
-extern const StringId DateFormatStringIDs[];
-extern const StringId DateFormatStringFormatIds[];
+namespace OpenRCT2
+{
+    extern const StringId DateFormatStringIDs[];
+    extern const StringId DateFormatStringFormatIds[];
 
-extern const StringId DateDayNames[31];
-extern const StringId DateGameMonthNames[MONTH_COUNT];
-extern const StringId DateGameShortMonthNames[MONTH_COUNT];
+    extern const StringId DateDayNames[31];
+    extern const StringId DateGameMonthNames[MONTH_COUNT];
+    extern const StringId DateGameShortMonthNames[MONTH_COUNT];
+} // namespace OpenRCT2

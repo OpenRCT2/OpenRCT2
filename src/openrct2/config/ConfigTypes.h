@@ -11,56 +11,58 @@
 
 #include <cstdint>
 
-enum class MeasurementFormat : int32_t;
-enum class TemperatureUnit : int32_t;
-enum class CurrencyType : uint8_t;
-enum class ScaleQuality : int32_t;
 enum class VirtualFloorStyles : int32_t;
 enum class DrawingEngine : int32_t;
 enum class TitleMusicKind : int32_t;
 
-enum class FileBrowserSort : int32_t
+namespace OpenRCT2
 {
-    NameAscending,
-    NameDescending,
-    SizeAscending,
-    SizeDescending,
-    DateAscending,
-    DateDescending,
-};
+    enum class CurrencyType : uint8_t;
+    enum class CurrencyAffix : uint8_t;
 
-enum class ParkPreviewPref : int32_t
-{
-    disabled,
-    miniMap,
-    screenshot,
-};
+    enum class FileBrowserSort : int32_t
+    {
+        NameAscending,
+        NameDescending,
+        SizeAscending,
+        SizeDescending,
+        DateAscending,
+        DateDescending,
+    };
 
-enum class TemperatureUnit : int32_t
-{
-    Celsius,
-    Fahrenheit
-};
+    enum class ParkPreviewPref : int32_t
+    {
+        disabled,
+        miniMap,
+        screenshot,
+    };
 
-enum class ScaleQuality : int32_t
-{
-    NearestNeighbour,
-    Linear,
-    SmoothNearestNeighbour
-};
+    enum class TemperatureUnit : int32_t
+    {
+        Celsius,
+        Fahrenheit
+    };
 
-enum class MeasurementFormat : int32_t
-{
-    Imperial,
-    Metric,
-    SI
-};
+    enum class ScaleQuality : int32_t
+    {
+        NearestNeighbour,
+        Linear,
+        SmoothNearestNeighbour
+    };
 
-enum class TitleMusicKind : int32_t
-{
-    None,
-    Random,
-    OpenRCT2,
-    RCT1,
-    RCT2,
-};
+    enum class MeasurementFormat : int32_t
+    {
+        Imperial,
+        Metric,
+        SI
+    };
+
+    enum class TitleMusicKind : int32_t
+    {
+        None,
+        Random,
+        OpenRCT2,
+        RCT1,
+        RCT2,
+    };
+} // namespace OpenRCT2

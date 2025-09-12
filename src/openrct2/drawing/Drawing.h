@@ -584,10 +584,14 @@ void TTFDrawString(
 void ScrollingTextInitialiseBitmaps();
 void ScrollingTextInvalidate();
 
-class Formatter;
+namespace OpenRCT2
+{
+    class Formatter;
+}
 
 ImageId ScrollingTextSetup(
-    struct PaintSession& session, StringId stringId, Formatter& ft, uint16_t scroll, uint16_t scrollingMode, colour_t colour);
+    struct PaintSession& session, StringId stringId, OpenRCT2::Formatter& ft, uint16_t scroll, uint16_t scrollingMode,
+    colour_t colour);
 
 size_t G1CalculateDataSize(const G1Element* g1);
 

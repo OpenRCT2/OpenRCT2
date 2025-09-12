@@ -451,7 +451,7 @@ enum
     EASTEREGG_PEEP_NAME_DAVID_ELLIS
 };
 
-void PeepThoughtSetFormatArgs(const PeepThought* thought, Formatter& ft);
+void PeepThoughtSetFormatArgs(const PeepThought* thought, OpenRCT2::Formatter& ft);
 
 void IncrementGuestsInPark();
 void IncrementGuestsHeadingForPark();
