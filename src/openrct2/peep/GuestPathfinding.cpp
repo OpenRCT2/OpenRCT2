@@ -567,12 +567,12 @@ namespace OpenRCT2::PathFinding
      */
     static uint8_t PeepPathfindGetMaxNumberJunctions(Peep& peep)
     {
-        if (peep.Is<Staff>())
-            return kMaxJunctionsStaff;
-
         auto* guest = peep.As<Guest>();
         if (guest == nullptr)
+        {
+            // Peep can be only Staff and Guest, so when not a Guest it means its Staff.
             return kMaxJunctionsStaff;
+        }
 
         bool isLeavingPark = (guest->PeepFlags & PEEP_FLAGS_LEAVING_PARK) != 0;
         if (isLeavingPark && guest->GuestIsLostCountdown < 90)
