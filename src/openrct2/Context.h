@@ -63,12 +63,6 @@ struct TextInputSession
     const utf8* ImeBuffer; // IME UTF-8 stream
 };
 
-struct Resolution
-{
-    int32_t Width;
-    int32_t Height;
-};
-
 enum
 {
     CURSOR_UP = 0,
