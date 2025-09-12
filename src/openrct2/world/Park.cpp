@@ -322,15 +322,12 @@ namespace OpenRCT2::Park
         gameState.scenarioOptions.details = String::toStd(LanguageGetString(STR_NO_DETAILS_YET));
     }
 
-    void Update(GameState_t& gameState, const Date& date)
+    void Update(ParkData& park, GameState_t& gameState)
     {
         PROFILED_FUNCTION();
 
-        // TODO: pass park by ref
-        auto& park = gameState.park;
-
         // Every new week
-        if (date.IsWeekStart())
+        if (gameState.date.IsWeekStart())
         {
             UpdateHistories(park);
         }
