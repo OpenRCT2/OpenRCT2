@@ -80,6 +80,18 @@ struct EntityBase
         return Is<T>() ? reinterpret_cast<const T*>(this) : nullptr;
     }
 
+    template<typename T>
+    T* cast()
+    {
+        return reinterpret_cast<T*>(this);
+    }
+
+    template<typename T>
+    const T* cast() const
+    {
+        return reinterpret_cast<const T*>(this);
+    }
+
     void Serialise(class DataSerialiser& stream);
 
     void Paint() const;
