@@ -56,15 +56,18 @@ namespace OpenRCT2::Network
     enum class Mode : int32_t;
 }
 
-extern OpenRCT2::Network::Mode gNetworkStart;
-extern std::string gNetworkStartHost;
-extern int32_t gNetworkStartPort;
-extern std::string gNetworkStartAddress;
+namespace OpenRCT2
+{
+    extern OpenRCT2::Network::Mode gNetworkStart;
+    extern std::string gNetworkStartHost;
+    extern int32_t gNetworkStartPort;
+    extern std::string gNetworkStartAddress;
+
+    int32_t CommandLineRun(const char** argv, int32_t argc);
+} // namespace OpenRCT2
 #endif
 
 extern uint32_t gCurrentDrawCount;
 extern LegacyScene gLegacyScene;
 extern uint32_t gScreenAge;
 extern PromptMode gSavePromptMode;
-
-int32_t CommandLineRun(const char** argv, int32_t argc);
