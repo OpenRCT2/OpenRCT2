@@ -62,10 +62,13 @@ namespace OpenRCT2
     extern std::string gNetworkStartHost;
     extern int32_t gNetworkStartPort;
     extern std::string gNetworkStartAddress;
-
-    int32_t CommandLineRun(const char** argv, int32_t argc);
 } // namespace OpenRCT2
 #endif
+
+namespace OpenRCT2
+{
+    int32_t CommandLineRun(const char** argv, int32_t argc);
+} // namespace OpenRCT2
 
 extern uint32_t gCurrentDrawCount;
 extern LegacyScene gLegacyScene;
