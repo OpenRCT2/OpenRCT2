@@ -6,6 +6,7 @@
 - Fix: [#25134] Vehicles visually glitch on diagonal steep slopes.
 - Fix: [#25146] The support clearance height of the diagonal brakes for the Junior, inverted Flying and inverted Lay-down Roller Coasters is too high.
 - Fix: [#25147] The wooden support clearance heights for steep Log Flume track pieces are too low.
+- Fix: [#25160] The Go-Karts steep to flat track piece has incorrect wooden support clearance heights.
 
 0.4.26 (2025-09-06)
 ------------------------------------------------------------------------
