@@ -500,7 +500,7 @@ namespace OpenRCT2::Editor
     {
         auto& gameState = getGameState();
         auto& park = gameState.park;
-        int32_t parkSize = Park::UpdateSize(park, gameState);
+        int32_t parkSize = Park::UpdateSize(park);
         if (parkSize == 0)
         {
             return { false, STR_PARK_MUST_OWN_SOME_LAND };

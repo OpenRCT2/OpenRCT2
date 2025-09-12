@@ -356,8 +356,7 @@ namespace OpenRCT2::Park
         // Every ~102 seconds
         if (currentTicks % 4096 == 0)
         {
-            park.size = CalculateParkSize(park);
-            windowMgr->InvalidateByClass(WindowClass::ParkInformation);
+            Park::UpdateSize(park);
         }
 
         generateGuests(park, gameState);
@@ -378,14 +377,6 @@ namespace OpenRCT2::Park
                 }
             }
         } while (TileElementIteratorNext(&it));
-
-        // TODO: pass park by ref
-        if (tiles != park.size)
-        {
-            park.size = tiles;
-            auto* windowMgr = Ui::GetWindowManager();
-            windowMgr->InvalidateByClass(WindowClass::ParkInformation);
-        }
 
         return tiles;
     }
@@ -637,9 +628,9 @@ namespace OpenRCT2::Park
         windowMgr->InvalidateByClass(WindowClass::Finances);
     }
 
-    uint32_t UpdateSize(ParkData& park, GameState_t& gameState)
+    uint32_t UpdateSize(ParkData& park)
     {
-        auto tiles = CalculateParkSize(park, gameState);
+        auto tiles = CalculateParkSize(park);
         if (tiles != park.size)
         {
             park.size = tiles;

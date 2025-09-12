@@ -138,7 +138,7 @@ void ScenarioReset(GameState_t& gameState)
     ResetAllRideBuildDates();
     ResetDate();
     Duck::RemoveAll();
-    Park::UpdateSize(park, gameState);
+    Park::UpdateSize(park);
     MapCountRemainingLandRights();
     Staff::ResetStats();
 

@@ -40,7 +40,7 @@ namespace OpenRCT2::Park
     void SetForcedRating(int32_t rating);
     int32_t GetForcedRating();
 
-    uint32_t UpdateSize(ParkData& park, GameState_t& gameState);
+    uint32_t UpdateSize(ParkData& park);
 
     void UpdateFences(const CoordsXY& coords);
     void UpdateFencesAroundTile(const CoordsXY& coords);
