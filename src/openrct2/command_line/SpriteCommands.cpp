@@ -12,57 +12,58 @@
 #include "../core/String.hpp"
 #include "CommandLine.hpp"
 
-using namespace OpenRCT2;
-
 #define SZ_DEFAULT "default"
 #define SZ_CLOSEST "closest"
 #define SZ_DITHERING "dithering"
 
-using ImportMode = OpenRCT2::Drawing::ImportMode;
-
-ImportMode gSpriteMode = ImportMode::Default;
-
-static const char* _mode;
-
-// clang-format off
-static constexpr CommandLineOptionDefinition kSpriteOptions[]
+namespace OpenRCT2
 {
-    { CMDLINE_TYPE_STRING, &_mode, 'm', "mode", "the type of sprite conversion <" SZ_DEFAULT "|" SZ_CLOSEST "|" SZ_DITHERING ">" },
-    kOptionTableEnd
-};
+    using ImportMode = Drawing::ImportMode;
 
-static exitcode_t HandleSprite(CommandLineArgEnumerator *argEnumerator);
+    ImportMode gSpriteMode = ImportMode::Default;
 
-const CommandLineCommand CommandLine::kSpriteCommands[]
-{
-    // Main commands
-    DefineCommand("append",       "<spritefile> <input> [x_offset y_offset]", kSpriteOptions, HandleSprite),
-    DefineCommand("build",        "<spritefile> <json path> [silent]",        kSpriteOptions, HandleSprite),
-    DefineCommand("combine",      "<index file> <image file> <output>",       kSpriteOptions, HandleSprite),
-    DefineCommand("create",       "<spritefile>",                             kSpriteOptions, HandleSprite),
-    DefineCommand("details",      "<spritefile> [idx]",                       kSpriteOptions, HandleSprite),
-    DefineCommand("export",       "<spritefile> <idx> <output>",              kSpriteOptions, HandleSprite),
-    DefineCommand("exportall",    "<spritefile> <output directory>",          kSpriteOptions, HandleSprite),
-    DefineCommand("exportalldat", "<DAT identifier> <output directory>",      kSpriteOptions, HandleSprite),
+    static const char* _mode;
 
-    kCommandTableEnd
-};
-// clang-format on
-
-static exitcode_t HandleSprite(CommandLineArgEnumerator* argEnumerator)
-{
-    if (String::iequals(_mode, SZ_CLOSEST))
-        gSpriteMode = ImportMode::Closest;
-    else if (String::iequals(_mode, SZ_DITHERING))
-        gSpriteMode = ImportMode::Dithering;
-    Memory::Free(_mode);
-
-    const char** argv = const_cast<const char**>(argEnumerator->GetArguments()) + argEnumerator->GetIndex() - 1;
-    int32_t argc = argEnumerator->GetCount() - argEnumerator->GetIndex() + 1;
-    int32_t result = CommandLineForSprite(argv, argc);
-    if (result < 0)
+    // clang-format off
+    static constexpr CommandLineOptionDefinition kSpriteOptions[]
     {
-        return EXITCODE_FAIL;
+        { CMDLINE_TYPE_STRING, &_mode, 'm', "mode", "the type of sprite conversion <" SZ_DEFAULT "|" SZ_CLOSEST "|" SZ_DITHERING ">" },
+        kOptionTableEnd
+    };
+
+    static exitcode_t HandleSprite(CommandLineArgEnumerator *argEnumerator);
+
+    const CommandLineCommand CommandLine::kSpriteCommands[]
+    {
+        // Main commands
+        DefineCommand("append",       "<spritefile> <input> [x_offset y_offset]", kSpriteOptions, HandleSprite),
+        DefineCommand("build",        "<spritefile> <json path> [silent]",        kSpriteOptions, HandleSprite),
+        DefineCommand("combine",      "<index file> <image file> <output>",       kSpriteOptions, HandleSprite),
+        DefineCommand("create",       "<spritefile>",                             kSpriteOptions, HandleSprite),
+        DefineCommand("details",      "<spritefile> [idx]",                       kSpriteOptions, HandleSprite),
+        DefineCommand("export",       "<spritefile> <idx> <output>",              kSpriteOptions, HandleSprite),
+        DefineCommand("exportall",    "<spritefile> <output directory>",          kSpriteOptions, HandleSprite),
+        DefineCommand("exportalldat", "<DAT identifier> <output directory>",      kSpriteOptions, HandleSprite),
+
+        kCommandTableEnd
+    };
+    // clang-format on
+
+    static exitcode_t HandleSprite(CommandLineArgEnumerator* argEnumerator)
+    {
+        if (String::iequals(_mode, SZ_CLOSEST))
+            gSpriteMode = ImportMode::Closest;
+        else if (String::iequals(_mode, SZ_DITHERING))
+            gSpriteMode = ImportMode::Dithering;
+        Memory::Free(_mode);
+
+        const char** argv = const_cast<const char**>(argEnumerator->GetArguments()) + argEnumerator->GetIndex() - 1;
+        int32_t argc = argEnumerator->GetCount() - argEnumerator->GetIndex() + 1;
+        int32_t result = CommandLineForSprite(argv, argc);
+        if (result < 0)
+        {
+            return EXITCODE_FAIL;
+        }
+        return EXITCODE_OK;
     }
-    return EXITCODE_OK;
-}
+} // namespace OpenRCT2
