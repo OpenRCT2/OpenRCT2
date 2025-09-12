@@ -183,7 +183,7 @@ namespace OpenRCT2::GameActions
             }
 
             // Staff uses this
-            newPeep->As<Staff>()->SetHireDate(GetDate().GetMonthsElapsed());
+            newPeep->SetHireDate(GetDate().GetMonthsElapsed());
             newPeep->PathfindGoal.x = 0xFF;
             newPeep->PathfindGoal.y = 0xFF;
             newPeep->PathfindGoal.z = 0xFF;
