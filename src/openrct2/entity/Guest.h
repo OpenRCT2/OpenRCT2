@@ -368,6 +368,7 @@ public:
     void ChoseNotToGoOnRide(const Ride& ride, bool peepAtRide, bool updateLastRide);
     void OnEnterRide(Ride& ride);
     void OnExitRide(Ride& ride);
+    void ThrowUp();
 
 private:
     bool ShouldFindBench();

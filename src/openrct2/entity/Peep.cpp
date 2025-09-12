@@ -460,9 +460,12 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
     }
 
     // Should we throw up, and are we at the frame where sick appears?
-    if (Action == PeepActionType::ThrowUp && AnimationFrameNum == 15 && Is<Guest>())
+    if (auto* guest = As<Guest>(); guest != nullptr)
     {
-        ThrowUp();
+        if (Action == PeepActionType::ThrowUp && AnimationFrameNum == 15)
+        {
+            guest->ThrowUp();
+        }
     }
 
     return { { x, y } };
@@ -541,35 +544,6 @@ void Peep::UpdateWalkingAnimation()
         WalkingAnimationFrameNum = 0;
     }
     AnimationImageIdOffset = peepAnimation.frame_offsets[WalkingAnimationFrameNum];
-}
-
-void Peep::ThrowUp()
-{
-    auto* guest = As<Guest>();
-    if (guest == nullptr)
-        return;
-
-    guest->Hunger /= 2;
-    guest->NauseaTarget /= 2;
-
-    if (guest->Nausea < 30)
-        guest->Nausea = 0;
-    else
-        guest->Nausea -= 30;
-
-    WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_2;
-
-    const auto curLoc = GetLocation();
-    Litter::Create({ curLoc, Orientation }, (Id.ToUnderlying() & 1) ? Litter::Type::VomitAlt : Litter::Type::Vomit);
-
-    static constexpr OpenRCT2::Audio::SoundId coughs[4] = {
-        OpenRCT2::Audio::SoundId::Cough1,
-        OpenRCT2::Audio::SoundId::Cough2,
-        OpenRCT2::Audio::SoundId::Cough3,
-        OpenRCT2::Audio::SoundId::Cough4,
-    };
-    auto soundId = coughs[ScenarioRand() & 3];
-    OpenRCT2::Audio::Play3D(soundId, curLoc);
 }
 
 /**
