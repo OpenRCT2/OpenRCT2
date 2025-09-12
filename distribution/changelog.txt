@@ -3,6 +3,7 @@
 - Improved: [#2296, #2307] The land tool now takes sloped track and paths into account when modifying land.
 - Fix: [#25131] The Reverse Freefall Coaster On-ride photo section track has incorrectly coloured ties.
 - Fix: [#25132] Crash when trying to use simulate on incomplete ride.
+- Fix: [#25146] The support clearance height of the diagonal brakes for the Junior, inverted Flying and inverted Lay-down Roller Coasters is too high.
 - Fix: [#25147] The wooden support clearance heights for steep Log Flume track pieces are too low.
 
 0.4.26 (2025-09-06)

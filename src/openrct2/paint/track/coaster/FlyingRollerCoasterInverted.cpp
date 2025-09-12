@@ -8521,7 +8521,7 @@ static void InvertedFlyingRCTrackDiagBrakes(
             session, supportType.metal, MetalSupportPlace::leftCorner, direction, 0, height + kSupportHeight,
             session.SupportColours);
     }
-    PaintUtilSetGeneralSupportHeight(session, height + 48);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 static void InvertedFlyingRCTrackDiagBlockBrakes(
