@@ -10,6 +10,7 @@
 #pragma once
 
 #include "core/FlagHolder.hpp"
+#include "core/StringTypes.h"
 #include "interface/Window.h"
 
 namespace OpenRCT2
@@ -52,6 +53,36 @@ namespace OpenRCT2
         ScrollLeft,
         Resizing,
         ScrollRight
+    };
+
+    struct CursorState
+    {
+        ScreenCoordsXY position;
+        uint8_t left, middle, right, any;
+        int32_t wheel;
+        int32_t old;
+        bool touch, touchIsDouble;
+        uint32_t touchDownTimestamp;
+    };
+
+    struct TextInputSession
+    {
+        u8string* Buffer;      // UTF-8 string buffer, non-owning.
+        size_t Length;         // Number of codepoints
+        size_t MaxLength;      // Maximum length of text, Length can't be larger than this.
+        size_t SelectionStart; // Selection start, in bytes
+        size_t SelectionSize;  // Selection length in bytes
+
+        const utf8* ImeBuffer; // IME UTF-8 stream
+    };
+
+    enum
+    {
+        CURSOR_UP = 0,
+        CURSOR_DOWN = 1,
+        CURSOR_CHANGED = 2,
+        CURSOR_RELEASED = CURSOR_UP | CURSOR_CHANGED,
+        CURSOR_PRESSED = CURSOR_DOWN | CURSOR_CHANGED,
     };
 
     extern WidgetRef gHoverWidget;

@@ -736,7 +736,7 @@ void GameLoadOrQuitNoSavePrompt()
         default:
             GameUnloadScripts();
             getGameState().entities.ResetAllEntities();
-            OpenRCT2Finish();
+            GetContext()->Finish();
             break;
     }
 }

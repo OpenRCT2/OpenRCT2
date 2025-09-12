@@ -14,7 +14,6 @@
 #include <string>
 
 struct RenderTarget;
-struct TextInputSession;
 
 enum class ConsoleInput : uint8_t
 {
@@ -30,7 +29,8 @@ enum class ConsoleInput : uint8_t
 namespace OpenRCT2
 {
     enum class FormatToken : uint8_t;
-}
+    struct TextInputSession;
+} // namespace OpenRCT2
 
 class InteractiveConsole
 {

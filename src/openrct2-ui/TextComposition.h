@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include <openrct2/Context.h>
+#include <openrct2/Input.h>
 
 union SDL_Event;
 

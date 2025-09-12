@@ -15,6 +15,7 @@
 #include <algorithm>
 #include <cstring>
 #include <openrct2/Context.h>
+#include <openrct2/Input.h>
 #include <openrct2/Version.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/UTF8.h>

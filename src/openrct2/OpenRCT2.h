@@ -67,6 +67,4 @@ extern LegacyScene gLegacyScene;
 extern uint32_t gScreenAge;
 extern PromptMode gSavePromptMode;
 
-void OpenRCT2Finish();
-
 int32_t CommandLineRun(const char** argv, int32_t argc);
