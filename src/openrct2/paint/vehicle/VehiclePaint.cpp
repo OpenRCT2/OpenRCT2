@@ -1096,13 +1096,14 @@ struct VehiclePaintTarget
 };
 using VehiclePaintTargetPitch = std::array<VehiclePaintTarget, EnumValue(VehicleRoll::normalRollCount)>;
 
+static constexpr VehiclePaintTarget Flat = { SpriteGroupType::SlopeFlat, 0, BoundBoxType::slopeFlat, VehiclePitch::nullPitch,
+                                          VehicleRoll::nullRoll };
 static constexpr VehiclePaintTargetPitch FlatPaintTarget = {
     // 0: flatSlope
-    VehiclePaintTarget(
-        SpriteGroupType::SlopeFlat, 0, BoundBoxType::slopeFlat, VehiclePitch::nullPitch, VehicleRoll::nullRoll), // flat
-    VehiclePaintTarget{ SpriteGroupType::FlatBanked22, 0, BoundBoxType::slopeFlat },                             // left22
-    VehiclePaintTarget{ SpriteGroupType::FlatBanked45, 0, BoundBoxType::flatBanked45 },                          // left45
-    VehiclePaintTarget{ SpriteGroupType::FlatBanked22, 1, BoundBoxType::slopeFlat },                             // right22
+    Flat,                                                                               // flat
+    VehiclePaintTarget{ SpriteGroupType::FlatBanked22, 0, BoundBoxType::slopeFlat },    // left22
+    VehiclePaintTarget{ SpriteGroupType::FlatBanked45, 0, BoundBoxType::flatBanked45 }, // left45
+    VehiclePaintTarget{ SpriteGroupType::FlatBanked22, 1, BoundBoxType::slopeFlat },    // right22
     VehiclePaintTarget{ SpriteGroupType::FlatBanked45, 1, BoundBoxType::flatBanked45Reversed, VehiclePitch::flat,
                         VehicleRoll::unbanked }, // right45
     VehiclePaintTarget{ SpriteGroupType::FlatBanked67, 0, BoundBoxType::flatBanked67, VehiclePitch::flat, VehicleRoll::left45,
@@ -1529,7 +1530,7 @@ static constexpr VehiclePaintTargetPitch AllSameTarget(VehiclePaintTarget target
              target, target, target, target, target, target, target };
 }
 
-static constexpr std::array<VehiclePaintTargetPitch, EnumValue(VehiclePitch::pitchCount)> VehiclePaintTargets = {
+static constexpr auto VehiclePaintTargets = std::to_array<VehiclePaintTargetPitch>({
     FlatPaintTarget,
 
     Up12PaintTarget,
@@ -1603,11 +1604,17 @@ static constexpr std::array<VehiclePaintTargetPitch, EnumValue(VehiclePitch::pit
 
     AllSameTarget(CurvedLiftHillUp),
     AllSameTarget(CurvedLiftHillDown),
-};
+});
 
-static const VehiclePaintTarget& GetTarget(VehiclePitch pitch, VehicleRoll bank)
+static_assert(std::size(VehiclePaintTargets) == EnumValue(VehiclePitch::pitchCount));
+
+static const VehiclePaintTarget& GetTarget(VehiclePitch pitch, VehicleRoll roll)
 {
-    return VehiclePaintTargets[EnumValue(pitch)][EnumValue(bank)];
+    if (pitch == VehiclePitch::nullPitch || roll == VehicleRoll::nullRoll)
+    {
+        return Flat;
+    }
+    return VehiclePaintTargets[EnumValue(pitch)][EnumValue(roll)];
 }
 
 #pragma endregion
@@ -2027,10 +2034,10 @@ void VehicleVisualDefault(PaintSession& session, int32_t yaw, const int32_t z, c
 
     while (!carEntry->GroupEnabled(selectedPaintTarget.spriteGroup) && pitch != VehiclePitch::nullPitch)
     {
+        selectedPaintTarget = GetTarget(pitch, roll);
+        yaw = Add(yaw, selectedPaintTarget.fallbackYawOffset);
         pitch = selectedPaintTarget.fallbackPitch;
         roll = selectedPaintTarget.fallbackRoll;
-        yaw = Add(yaw, selectedPaintTarget.fallbackYawOffset);
-        selectedPaintTarget = GetTarget(pitch, roll);
     }
 
     // special cases introduced by X123M3-256. Will be removed by adjusting subposition data in a future PR.
@@ -2058,9 +2065,11 @@ void VehicleVisualDefault(PaintSession& session, int32_t yaw, const int32_t z, c
         yaw = Add(yaw, offsetTable[remapIndex]);
     }
 
-    if (pitch == VehiclePitch::nullPitch)
+    if (pitch == VehiclePitch::nullPitch || roll == VehicleRoll::nullRoll)
     {
-        return;
+        // draw the green square for backwards compatibility
+        // sad day for dkso when g1 is obsolete and sprite 0 is not the green square
+        PaintAddImageAsParent(session, ImageId(0), { 0, 0, z }, { { 0, 0, z }, { 0, 0, 0 } });
     }
 
     if (pitch == VehiclePitch::flat && roll == VehicleRoll::unbanked)
