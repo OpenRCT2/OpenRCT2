@@ -9,6 +9,7 @@
 - Fix: [#25160] The Go-Karts steep to flat track piece has incorrect wooden support clearance heights.
 - Fix: [#25163] Some of the Junior Roller Coaster flat to steep track wooden support clearance heights are different to RCT1.
 - Fix: [#25173] Desync when placing a park entrance in multiplayer.
+- Fix: [#25179] The LIM Launched Roller Coaster inline twists have incorrect wooden support clearance heights (original bug).
 
 0.4.26 (2025-09-06)
 ------------------------------------------------------------------------
