@@ -1097,7 +1097,7 @@ struct VehiclePaintTarget
 using VehiclePaintTargetPitch = std::array<VehiclePaintTarget, EnumValue(VehicleRoll::normalRollCount)>;
 
 static constexpr VehiclePaintTarget Flat = { SpriteGroupType::SlopeFlat, 0, BoundBoxType::slopeFlat, VehiclePitch::nullPitch,
-                                          VehicleRoll::nullRoll };
+                                             VehicleRoll::nullRoll };
 static constexpr VehiclePaintTargetPitch FlatPaintTarget = {
     // 0: flatSlope
     Flat,                                                                               // flat
