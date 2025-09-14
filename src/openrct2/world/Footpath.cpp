@@ -52,8 +52,6 @@ using namespace OpenRCT2::TrackMetaData;
 void FootpathUpdateQueueEntranceBanner(const CoordsXY& footpathPos, TileElement* tileElement);
 
 FootpathSelection gFootpathSelection;
-CoordsXYZ gFootpathConstructFromPosition;
-uint8_t gFootpathConstructSlope;
 uint8_t gFootpathGroundFlags;
 
 static RideId* _footpathQueueChainNext;

@@ -136,8 +136,6 @@ enum
 };
 
 extern FootpathSelection gFootpathSelection;
-extern CoordsXYZ gFootpathConstructFromPosition;
-extern uint8_t gFootpathConstructSlope;
 extern uint8_t gFootpathGroundFlags;
 
 // Given a direction, this will return how to increase/decrease the x and y coordinates.
