@@ -5788,19 +5788,19 @@ int32_t Vehicle::GetSwingAmount() const
 
 static uint8_t GetSwingSprite(int16_t swingPosition)
 {
-    if (swingPosition < -10012)
+    if (swingPosition < -10010)
         return 11;
-    if (swingPosition > 10012)
+    if (swingPosition > 10010)
         return 12;
 
-    if (swingPosition < -8191)
+    if (swingPosition < -8190)
         return 9;
-    if (swingPosition > 8191)
+    if (swingPosition > 8190)
         return 10;
 
-    if (swingPosition < -6371)
+    if (swingPosition < -6370)
         return 7;
-    if (swingPosition > 6371)
+    if (swingPosition > 6370)
         return 8;
 
     if (swingPosition < -4550)
