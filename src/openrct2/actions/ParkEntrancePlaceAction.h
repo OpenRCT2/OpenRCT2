@@ -19,10 +19,12 @@ namespace OpenRCT2::GameActions
         CoordsXYZD _loc;
         ObjectEntryIndex _pathType;
         ObjectEntryIndex _entranceType;
+        bool _pathTypeIsLegacy;
 
     public:
         ParkEntrancePlaceAction() = default;
-        ParkEntrancePlaceAction(const CoordsXYZD& location, ObjectEntryIndex pathType, ObjectEntryIndex entranceType);
+        ParkEntrancePlaceAction(
+            const CoordsXYZD& location, ObjectEntryIndex pathType, ObjectEntryIndex entranceType, bool pathTypeIsLegacy);
 
         void AcceptParameters(GameActionParameterVisitor&) final;
 

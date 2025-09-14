@@ -252,7 +252,7 @@ namespace OpenRCT2::Ui::Windows
             InitMap();
             gWindowSceneryRotation = 0;
             CentreMapOnViewPoint();
-            FootpathSelectDefault();
+            WindowFootpathSelectDefault();
 
             auto& gameState = getGameState();
             _mapWidthAndHeightLinked = gameState.mapSize.x == gameState.mapSize.y;

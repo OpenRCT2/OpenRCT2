@@ -26,3 +26,5 @@ void WallRemoveAtZ(const CoordsXYZ& wallPos);
 void WallRemoveIntersectingWalls(const CoordsXYRangedZ& wallPos, Direction direction);
 
 uint8_t GetWallSlopeFromEdgeSlope(uint8_t Slope, uint8_t Edge);
+
+bool WallInTheWay(const CoordsXYRangedZ& fencePos, int32_t direction);

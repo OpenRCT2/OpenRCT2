@@ -90,6 +90,8 @@ namespace OpenRCT2::Ui::Windows
     };
 
     static ProvisionalFootpath _provisionalFootpath;
+    static CoordsXYZ _footpathConstructFromPosition;
+    static uint8_t _footpathConstructSlope;
 
 #pragma region Measurements
 
@@ -463,11 +465,11 @@ namespace OpenRCT2::Ui::Windows
                 // Get construction image
                 uint8_t direction = (_footpathConstructDirection + GetCurrentRotation()) % 4;
                 uint8_t slope = 0;
-                if (gFootpathConstructSlope == 2)
+                if (_footpathConstructSlope == 2)
                 {
                     slope = kTileSlopeNCornerUp;
                 }
-                else if (gFootpathConstructSlope == 6)
+                else if (_footpathConstructSlope == 6)
                 {
                     slope = kTileSlopeECornerUp;
                 }
@@ -529,6 +531,17 @@ namespace OpenRCT2::Ui::Windows
 #pragma endregion
 
     private:
+        FootpathPlacementResult FootpathGetPlacementFromScreenCoords(const ScreenCoordsXY& screenCoords)
+        {
+            if (_footpathPlaceZ > 0)
+                return { _footpathPlaceZ, kTileSlopeFlat };
+
+            auto info = GetMapCoordinatesFromPos(
+                screenCoords, EnumsToFlags(ViewportInteractionItem::Terrain, ViewportInteractionItem::Footpath));
+
+            return FootpathGetPlacementFromInfo(info);
+        }
+
         /**
          *
          *  rct2: 0x006A7760
@@ -786,7 +799,7 @@ namespace OpenRCT2::Ui::Windows
         void WindowFootpathMousedownSlope(int32_t slope)
         {
             FootpathUpdateProvisional();
-            gFootpathConstructSlope = slope;
+            _footpathConstructSlope = slope;
             _windowFootpathCost = kMoney64Undefined;
             WindowFootpathSetEnabledAndPressedWidgets();
         }
@@ -977,30 +990,19 @@ namespace OpenRCT2::Ui::Windows
             FootpathUpdateProvisional();
 
             // Figure out what slope and height to use
-            int32_t slope = kTileSlopeFlat;
-            auto baseZ = _footpathPlaceZ;
-            if (baseZ == 0)
+            auto placement = FootpathGetPlacementFromScreenCoords(screenCoords);
+            if (!placement.isValid())
             {
-                auto info = GetMapCoordinatesFromPos(
-                    screenCoords, EnumsToFlags(ViewportInteractionItem::Terrain, ViewportInteractionItem::Footpath));
-
-                auto result = FootpathGetPlacementFromInfo(info);
-                if (!result.isValid())
-                {
-                    gMapSelectFlags.unset(MapSelectFlag::enable);
-                    FootpathUpdateProvisional();
-                    return;
-                }
-
-                baseZ = result.baseZ;
-                slope = result.slope;
+                gMapSelectFlags.unset(MapSelectFlag::enable);
+                FootpathUpdateProvisional();
+                return;
             }
 
             // Set provisional path
             auto pathType = gFootpathSelection.GetSelectedSurface();
             auto constructFlags = FootpathCreateConstructFlags(pathType);
             const auto footpathCost = FootpathProvisionalSet(
-                pathType, gFootpathSelection.Railings, { *mapPos, baseZ }, slope, constructFlags);
+                pathType, gFootpathSelection.Railings, { *mapPos, placement.baseZ }, placement.slope, constructFlags);
 
             if (_windowFootpathCost != footpathCost)
             {
@@ -1068,24 +1070,15 @@ namespace OpenRCT2::Ui::Windows
             if (!mapPos)
                 return;
 
-            auto slope = kTileSlopeFlat;
-            auto baseZ = _footpathPlaceZ;
-            if (baseZ == 0)
-            {
-                const auto info = GetMapCoordinatesFromPos(
-                    screenCoords, EnumsToFlags(ViewportInteractionItem::Terrain, ViewportInteractionItem::Footpath));
-
-                auto result = FootpathGetPlacementFromInfo(info);
-                baseZ = result.baseZ;
-                slope = result.slope;
-            }
+            auto placement = FootpathGetPlacementFromScreenCoords(screenCoords);
 
             // Try and place path
             auto selectedType = gFootpathSelection.GetSelectedSurface();
             PathConstructFlags constructFlags = FootpathCreateConstructFlags(selectedType);
 
             auto footpathPlaceAction = GameActions::FootpathPlaceAction(
-                { *mapPos, baseZ }, slope, selectedType, gFootpathSelection.Railings, kInvalidDirection, constructFlags);
+                { *mapPos, placement.baseZ }, placement.slope, selectedType, gFootpathSelection.Railings, kInvalidDirection,
+                constructFlags);
             footpathPlaceAction.SetCallback([this](const GameActions::GameAction* ga, const GameActions::Result* result) {
                 if (result->Error == GameActions::Status::Ok)
                 {
@@ -1151,10 +1144,10 @@ namespace OpenRCT2::Ui::Windows
             }
 
             ToolCancel();
-            gFootpathConstructFromPosition = { mapCoords, z };
+            _footpathConstructFromPosition = { mapCoords, z };
             _footpathConstructDirection = direction;
             _provisionalFootpath.flags.clearAll();
-            gFootpathConstructSlope = 0;
+            _footpathConstructSlope = 0;
             _footpathConstructionMode = PathConstructionMode::bridgeOrTunnel;
             _footpathConstructValidDirections = kInvalidDirection;
             WindowFootpathSetEnabledAndPressedWidgets();
@@ -1195,7 +1188,7 @@ namespace OpenRCT2::Ui::Windows
 
                     if (result->Error == GameActions::Status::Ok)
                     {
-                        if (gFootpathConstructSlope == 0)
+                        if (_footpathConstructSlope == 0)
                         {
                             self->_footpathConstructValidDirections = kInvalidDirection;
                         }
@@ -1209,13 +1202,13 @@ namespace OpenRCT2::Ui::Windows
                             ViewportSetVisibility(ViewportVisibility::UndergroundViewOn);
                         }
 
-                        gFootpathConstructFromPosition = footpathLoc;
+                        _footpathConstructFromPosition = footpathLoc;
                         // If we have just built an upwards slope, the next path to construct is
                         // a bit higher. Note that the z returned by footpath_get_next_path_info
                         // already is lowered if we are building a downwards slope.
-                        if (gFootpathConstructSlope == 2)
+                        if (_footpathConstructSlope == 2)
                         {
-                            gFootpathConstructFromPosition.z += kPathHeightStep;
+                            _footpathConstructFromPosition.z += kPathHeightStep;
                         }
                     }
                     self->WindowFootpathSetEnabledAndPressedWidgets();
@@ -1259,15 +1252,15 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
 
-            gFootpathConstructFromPosition.z = tileElement->GetBaseZ();
-            auto action = GameActions::FootpathRemoveAction(gFootpathConstructFromPosition);
+            _footpathConstructFromPosition.z = tileElement->GetBaseZ();
+            auto action = GameActions::FootpathRemoveAction(_footpathConstructFromPosition);
             GameActions::Execute(&action, getGameState());
 
             // Move selection
             edge = DirectionReverse(edge);
-            gFootpathConstructFromPosition.x -= CoordsDirectionDelta[edge].x;
-            gFootpathConstructFromPosition.y -= CoordsDirectionDelta[edge].y;
-            gFootpathConstructFromPosition.z = z;
+            _footpathConstructFromPosition.x -= CoordsDirectionDelta[edge].x;
+            _footpathConstructFromPosition.y -= CoordsDirectionDelta[edge].y;
+            _footpathConstructFromPosition.z = z;
             _footpathConstructDirection = edge;
             _footpathConstructValidDirections = kInvalidDirection;
         }
@@ -1281,15 +1274,15 @@ namespace OpenRCT2::Ui::Windows
             TileElement* tileElement;
             int32_t z, zLow;
 
-            if (!MapIsLocationValid(gFootpathConstructFromPosition))
+            if (!MapIsLocationValid(_footpathConstructFromPosition))
             {
                 return nullptr;
             }
 
-            z = std::min(255 * kCoordsZStep, gFootpathConstructFromPosition.z);
+            z = std::min(255 * kCoordsZStep, _footpathConstructFromPosition.z);
             zLow = z - kPathHeightStep;
 
-            tileElement = MapGetFirstElementAt(gFootpathConstructFromPosition);
+            tileElement = MapGetFirstElementAt(_footpathConstructFromPosition);
             do
             {
                 if (tileElement == nullptr)
@@ -1360,8 +1353,8 @@ namespace OpenRCT2::Ui::Windows
                 int32_t direction = _footpathConstructDirection;
                 gMapSelectionTiles.clear();
                 gMapSelectionTiles.push_back(
-                    { gFootpathConstructFromPosition.x + CoordsDirectionDelta[direction].x,
-                      gFootpathConstructFromPosition.y + CoordsDirectionDelta[direction].y });
+                    { _footpathConstructFromPosition.x + CoordsDirectionDelta[direction].x,
+                      _footpathConstructFromPosition.y + CoordsDirectionDelta[direction].y });
                 MapInvalidateMapSelectionTiles();
             }
 
@@ -1377,7 +1370,7 @@ namespace OpenRCT2::Ui::Windows
                 pressedWidgets |= (1LL << (WIDX_DIRECTION_NW + direction));
 
                 // Set pressed slope widget
-                int32_t slope = gFootpathConstructSlope;
+                int32_t slope = _footpathConstructSlope;
                 if (slope == kTileSlopeSESideUp)
                 {
                     pressedWidgets |= (1uLL << WIDX_SLOPEDOWN);
@@ -1423,18 +1416,18 @@ namespace OpenRCT2::Ui::Windows
         void FootpathGetNextPathInfo(ObjectEntryIndex* type, CoordsXYZ& footpathLoc, int32_t* slope)
         {
             auto direction = _footpathConstructDirection;
-            footpathLoc.x = gFootpathConstructFromPosition.x + CoordsDirectionDelta[direction].x;
-            footpathLoc.y = gFootpathConstructFromPosition.y + CoordsDirectionDelta[direction].y;
-            footpathLoc.z = gFootpathConstructFromPosition.z;
+            footpathLoc.x = _footpathConstructFromPosition.x + CoordsDirectionDelta[direction].x;
+            footpathLoc.y = _footpathConstructFromPosition.y + CoordsDirectionDelta[direction].y;
+            footpathLoc.z = _footpathConstructFromPosition.z;
             if (type != nullptr)
             {
                 *type = gFootpathSelection.GetSelectedSurface();
             }
             *slope = kTileSlopeFlat;
-            if (gFootpathConstructSlope != 0)
+            if (_footpathConstructSlope != 0)
             {
                 *slope = _footpathConstructDirection | kTileSlopeSCornerUp;
-                if (gFootpathConstructSlope != 2)
+                if (_footpathConstructSlope != 2)
                 {
                     footpathLoc.z -= kPathHeightStep;
                     *slope ^= kTileSlopeECornerUp;
@@ -1491,7 +1484,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            switch (gFootpathConstructSlope)
+            switch (_footpathConstructSlope)
             {
                 case 0:
                     OnMouseDown(WIDX_SLOPEDOWN);
@@ -1513,7 +1506,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            switch (gFootpathConstructSlope)
+            switch (_footpathConstructSlope)
             {
                 case 6:
                     OnMouseDown(WIDX_LEVEL);
@@ -1530,7 +1523,7 @@ namespace OpenRCT2::Ui::Windows
         void KeyboardShortcutSlopeLevel()
         {
             if (IsWidgetDisabled(WIDX_SLOPEDOWN) || IsWidgetDisabled(WIDX_LEVEL) || IsWidgetDisabled(WIDX_SLOPEUP)
-                || widgets[WIDX_LEVEL].type == WidgetType::empty || gFootpathConstructSlope == 0)
+                || widgets[WIDX_LEVEL].type == WidgetType::empty || _footpathConstructSlope == 0)
             {
                 return;
             }
@@ -1568,7 +1561,7 @@ namespace OpenRCT2::Ui::Windows
      */
     WindowBase* FootpathOpen()
     {
-        if (!FootpathSelectDefault())
+        if (!WindowFootpathSelectDefault())
         {
             // No path objects to select from, don't open window
             return nullptr;
@@ -1730,7 +1723,7 @@ namespace OpenRCT2::Ui::Windows
             }
             else if (
                 _provisionalFootpath.slope == kTileSlopeFlat
-                || _provisionalFootpath.position.z < gFootpathConstructFromPosition.z)
+                || _provisionalFootpath.position.z < _footpathConstructFromPosition.z)
             {
                 // Going either straight on, or down.
                 VirtualFloorSetHeight(_provisionalFootpath.position.z);
@@ -1772,7 +1765,7 @@ namespace OpenRCT2::Ui::Windows
             _provisionalFootpath.flags.unset(ProvisionalPathFlag::showArrow);
 
             gMapSelectFlags.unset(MapSelectFlag::enableArrow);
-            MapInvalidateTileFull(gFootpathConstructFromPosition);
+            MapInvalidateTileFull(_footpathConstructFromPosition);
         }
         FootpathRemoveProvisional();
     }
@@ -1800,5 +1793,140 @@ namespace OpenRCT2::Ui::Windows
     void FootpathRecheckProvisional()
     {
         _provisionalFootpath.flags.set(ProvisionalPathFlag::forceRecheck);
+    }
+
+    static ObjectEntryIndex FootpathGetDefaultSurface(bool queue)
+    {
+        bool showEditorPaths = (gLegacyScene == LegacyScene::scenarioEditor || getGameState().cheats.sandboxMode);
+        for (ObjectEntryIndex i = 0; i < kMaxFootpathSurfaceObjects; i++)
+        {
+            auto pathEntry = GetPathSurfaceEntry(i);
+            if (pathEntry != nullptr)
+            {
+                if (!showEditorPaths && (pathEntry->Flags & FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR))
+                {
+                    continue;
+                }
+                if (queue == ((pathEntry->Flags & FOOTPATH_ENTRY_FLAG_IS_QUEUE) != 0))
+                {
+                    return i;
+                }
+            }
+        }
+        return kObjectEntryIndexNull;
+    }
+
+    static bool FootpathIsSurfaceEntryOkay(ObjectEntryIndex index, bool queue)
+    {
+        auto pathEntry = GetPathSurfaceEntry(index);
+        if (pathEntry != nullptr)
+        {
+            bool showEditorPaths = (gLegacyScene == LegacyScene::scenarioEditor || getGameState().cheats.sandboxMode);
+            if (!showEditorPaths && (pathEntry->Flags & FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR))
+            {
+                return false;
+            }
+            if (queue == ((pathEntry->Flags & FOOTPATH_ENTRY_FLAG_IS_QUEUE) != 0))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    static ObjectEntryIndex FootpathGetDefaultRailings()
+    {
+        for (ObjectEntryIndex i = 0; i < kMaxFootpathRailingsObjects; i++)
+        {
+            const auto* railingEntry = GetPathRailingsEntry(i);
+            if (railingEntry != nullptr)
+            {
+                return i;
+            }
+        }
+        return kObjectEntryIndexNull;
+    }
+
+    static bool FootpathIsLegacyPathEntryOkay(ObjectEntryIndex index)
+    {
+        bool showEditorPaths = (gLegacyScene == LegacyScene::scenarioEditor || getGameState().cheats.sandboxMode);
+        auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
+        auto footpathObj = objManager.GetLoadedObject<FootpathObject>(index);
+        if (footpathObj != nullptr)
+        {
+            auto pathEntry = reinterpret_cast<FootpathEntry*>(footpathObj->GetLegacyData());
+            return showEditorPaths || !(pathEntry->flags & FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR);
+        }
+        return false;
+    }
+
+    static ObjectEntryIndex FootpathGetDefaultLegacyPath()
+    {
+        for (ObjectEntryIndex i = 0; i < kMaxPathObjects; i++)
+        {
+            if (FootpathIsLegacyPathEntryOkay(i))
+            {
+                return i;
+            }
+        }
+        return kObjectEntryIndexNull;
+    }
+
+    bool WindowFootpathSelectDefault()
+    {
+        // Select default footpath
+        auto surfaceIndex = FootpathGetDefaultSurface(false);
+        if (FootpathIsSurfaceEntryOkay(gFootpathSelection.NormalSurface, false))
+        {
+            surfaceIndex = gFootpathSelection.NormalSurface;
+        }
+
+        // Select default queue
+        auto queueIndex = FootpathGetDefaultSurface(true);
+        if (FootpathIsSurfaceEntryOkay(gFootpathSelection.QueueSurface, true))
+        {
+            queueIndex = gFootpathSelection.QueueSurface;
+        }
+
+        // Select default railing
+        auto railingIndex = FootpathGetDefaultRailings();
+        const auto* railingEntry = GetPathRailingsEntry(gFootpathSelection.Railings);
+        if (railingEntry != nullptr)
+        {
+            railingIndex = gFootpathSelection.Railings;
+        }
+
+        // Select default legacy path
+        auto legacyPathIndex = FootpathGetDefaultLegacyPath();
+        if (gFootpathSelection.LegacyPath != kObjectEntryIndexNull)
+        {
+            if (FootpathIsLegacyPathEntryOkay(gFootpathSelection.LegacyPath))
+            {
+                // Keep legacy path selected
+                legacyPathIndex = gFootpathSelection.LegacyPath;
+            }
+            else
+            {
+                // Reset legacy path, we default to a surface (if there are any)
+                gFootpathSelection.LegacyPath = kObjectEntryIndexNull;
+            }
+        }
+
+        if (surfaceIndex == kObjectEntryIndexNull)
+        {
+            if (legacyPathIndex == kObjectEntryIndexNull)
+            {
+                // No surfaces or legacy paths available
+                return false;
+            }
+
+            // No surfaces available, so default to legacy path
+            gFootpathSelection.LegacyPath = legacyPathIndex;
+        }
+
+        gFootpathSelection.NormalSurface = surfaceIndex;
+        gFootpathSelection.QueueSurface = queueIndex;
+        gFootpathSelection.Railings = railingIndex;
+        return true;
     }
 } // namespace OpenRCT2::Ui::Windows
