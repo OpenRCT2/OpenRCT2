@@ -14,6 +14,7 @@
 #include "../OpenRCT2.h"
 #include "../audio/Audio.h"
 #include "../core/EnumMap.hpp"
+#include "../core/FlagHolder.hpp"
 #include "../core/IStream.hpp"
 #include "../core/Json.hpp"
 #include "../core/Memory.hpp"
@@ -130,6 +131,29 @@ namespace OpenRCT2
             }
         }
     }
+
+    enum CarSpriteFlag : uint8_t
+    {
+        flat,
+        gentleSlopes,
+        steepSlopes,
+        verticalSlopes,
+        diagonalSlopes,
+        flatBanked,
+        inlineTwists,
+        flatToGentleSlopeBankedTransitions,
+        diagonalGentleSlopeBankedTransitions,
+        gentleSlopeBankedTransitions,
+        gentleSlopeBankedTurns,
+        flatToGentleSlopeWhileBankedTransitions,
+        corkscrews,
+        restraintAnimation,
+        curvedLiftHill,
+        has4RotationFrames,
+    };
+    using CarSpriteFlags = FlagHolder<uint32_t, CarSpriteFlag>;
+
+    static void ReadLegacySpriteGroups(CarEntry* vehicle, CarSpriteFlags carSpriteFlags);
 
     void RideObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
     {
@@ -404,7 +428,8 @@ namespace OpenRCT2
         car->car_mass = stream->ReadValue<uint16_t>();
         car->tab_height = stream->ReadValue<int8_t>();
         car->num_seats = stream->ReadValue<uint8_t>();
-        uint16_t spriteGroups = stream->ReadValue<uint16_t>();
+        CarSpriteFlags carSpriteFlags;
+        carSpriteFlags.holder = stream->ReadValue<uint16_t>();
         car->sprite_width = stream->ReadValue<uint8_t>();
         car->sprite_height_negative = stream->ReadValue<uint8_t>();
         car->sprite_height_positive = stream->ReadValue<uint8_t>();
@@ -444,7 +469,7 @@ namespace OpenRCT2
         {
             car->spinningNumFrames = 32;
         }
-        ReadLegacySpriteGroups(car, spriteGroups);
+        ReadLegacySpriteGroups(car, carSpriteFlags);
     }
 
     uint8_t RideObject::CalculateNumVerticalFrames(const CarEntry& carEntry)
@@ -864,28 +889,27 @@ namespace OpenRCT2
         auto jFrames = jCar["frames"];
         if (jFrames.is_object())
         {
-            uint16_t spriteFlags = Json::GetFlags<uint32_t>(
+            auto carSpriteFlags = Json::GetFlagHolder<CarSpriteFlags, CarSpriteFlag>(
                 jFrames,
                 {
-                    { "flat", CAR_SPRITE_FLAG_FLAT },
-                    { "gentleSlopes", CAR_SPRITE_FLAG_GENTLE_SLOPES },
-                    { "steepSlopes", CAR_SPRITE_FLAG_STEEP_SLOPES },
-                    { "verticalSlopes", CAR_SPRITE_FLAG_VERTICAL_SLOPES },
-                    { "diagonalSlopes", CAR_SPRITE_FLAG_DIAGONAL_SLOPES },
-                    { "flatBanked", CAR_SPRITE_FLAG_FLAT_BANKED },
-                    { "inlineTwists", CAR_SPRITE_FLAG_INLINE_TWISTS },
-                    { "flatToGentleSlopeBankedTransitions", CAR_SPRITE_FLAG_FLAT_TO_GENTLE_SLOPE_BANKED_TRANSITIONS },
-                    { "diagonalGentleSlopeBankedTransitions", CAR_SPRITE_FLAG_DIAGONAL_GENTLE_SLOPE_BANKED_TRANSITIONS },
-                    { "gentleSlopeBankedTransitions", CAR_SPRITE_FLAG_GENTLE_SLOPE_BANKED_TRANSITIONS },
-                    { "gentleSlopeBankedTurns", CAR_SPRITE_FLAG_GENTLE_SLOPE_BANKED_TURNS },
-                    { "flatToGentleSlopeWhileBankedTransitions",
-                      CAR_SPRITE_FLAG_FLAT_TO_GENTLE_SLOPE_WHILE_BANKED_TRANSITIONS },
-                    { "corkscrews", CAR_SPRITE_FLAG_CORKSCREWS },
-                    { "restraintAnimation", CAR_SPRITE_FLAG_RESTRAINT_ANIMATION },
-                    { "curvedLiftHill", CAR_SPRITE_FLAG_CURVED_LIFT_HILL },
-                    { "VEHICLE_SPRITE_FLAG_15", CAR_SPRITE_FLAG_USE_4_ROTATION_FRAMES },
+                    { "flat", CarSpriteFlag::flat },
+                    { "gentleSlopes", CarSpriteFlag::gentleSlopes },
+                    { "steepSlopes", CarSpriteFlag::steepSlopes },
+                    { "verticalSlopes", CarSpriteFlag::verticalSlopes },
+                    { "diagonalSlopes", CarSpriteFlag::diagonalSlopes },
+                    { "flatBanked", CarSpriteFlag::flatBanked },
+                    { "inlineTwists", CarSpriteFlag::inlineTwists },
+                    { "flatToGentleSlopeBankedTransitions", CarSpriteFlag::flatToGentleSlopeBankedTransitions },
+                    { "diagonalGentleSlopeBankedTransitions", CarSpriteFlag::diagonalGentleSlopeBankedTransitions },
+                    { "gentleSlopeBankedTransitions", CarSpriteFlag::gentleSlopeBankedTransitions },
+                    { "gentleSlopeBankedTurns", CarSpriteFlag::gentleSlopeBankedTurns },
+                    { "flatToGentleSlopeWhileBankedTransitions", CarSpriteFlag::flatToGentleSlopeWhileBankedTransitions },
+                    { "corkscrews", CarSpriteFlag::corkscrews },
+                    { "restraintAnimation", CarSpriteFlag::restraintAnimation },
+                    { "curvedLiftHill", CarSpriteFlag::curvedLiftHill },
+                    { "VEHICLE_SPRITE_FLAG_15", CarSpriteFlag::has4RotationFrames },
                 });
-            ReadLegacySpriteGroups(&car, spriteFlags);
+            ReadLegacySpriteGroups(&car, carSpriteFlags);
             return car;
         }
 
@@ -1058,83 +1082,83 @@ namespace OpenRCT2
     }
 
     // Converts legacy sprite groups into OpenRCT2 sprite groups
-    void RideObject::ReadLegacySpriteGroups(CarEntry* vehicle, uint16_t spriteGroups)
+    void ReadLegacySpriteGroups(CarEntry* vehicle, CarSpriteFlags carSpriteFlags)
     {
         auto baseSpritePrecision = SpritePrecision::Sprites32;
         if (vehicle->flags & CAR_ENTRY_FLAG_USE_16_ROTATION_FRAMES)
             baseSpritePrecision = SpritePrecision::Sprites16;
-        if (spriteGroups & CAR_SPRITE_FLAG_USE_4_ROTATION_FRAMES)
+        if (carSpriteFlags.has(CarSpriteFlag::has4RotationFrames))
             baseSpritePrecision = SpritePrecision::Sprites4;
 
-        if (spriteGroups & CAR_SPRITE_FLAG_FLAT)
+        if (carSpriteFlags.has(CarSpriteFlag::flat))
         {
             vehicle->SpriteGroups[EnumValue(SpriteGroupType::SlopeFlat)].spritePrecision = baseSpritePrecision;
         }
-        if (spriteGroups & CAR_SPRITE_FLAG_GENTLE_SLOPES)
+        if (carSpriteFlags.has(CarSpriteFlag::gentleSlopes))
         {
             vehicle->SpriteGroups[EnumValue(SpriteGroupType::Slopes12)].spritePrecision = SpritePrecision::Sprites4;
             vehicle->SpriteGroups[EnumValue(SpriteGroupType::Slopes25)].spritePrecision = baseSpritePrecision;
             if (vehicle->flags & CAR_ENTRY_FLAG_SPINNING_COMBINED_WITH_NONSPINNING)
                 vehicle->SpriteGroups[EnumValue(SpriteGroupType::Slopes25)].spritePrecision = SpritePrecision::Sprites4;
         }
-        if (spriteGroups & CAR_SPRITE_FLAG_STEEP_SLOPES)
+        if (carSpriteFlags.has(CarSpriteFlag::steepSlopes))
         {
             vehicle->SpriteGroups[EnumValue(SpriteGroupType::Slopes42)].spritePrecision = SpritePrecision::Sprites8;
             vehicle->SpriteGroups[EnumValue(SpriteGroupType::Slopes60)].spritePrecision = baseSpritePrecision;
         }
-        if (spriteGroups & CAR_SPRITE_FLAG_VERTICAL_SLOPES)
+        if (carSpriteFlags.has(CarSpriteFlag::verticalSlopes))
         {
             vehicle->SpriteGroups[EnumValue(SpriteGroupType::Slopes75)].spritePrecision = SpritePrecision::Sprites4;
             vehicle->SpriteGroups[EnumValue(SpriteGroupType::Slopes90)].spritePrecision = baseSpritePrecision;
             vehicle->SpriteGroups[EnumValue(SpriteGroupType::SlopesLoop)].spritePrecision = SpritePrecision::Sprites4;
             vehicle->SpriteGroups[EnumValue(SpriteGroupType::SlopeInverted)].spritePrecision = SpritePrecision::Sprites4;
         }
-        if (spriteGroups & CAR_SPRITE_FLAG_DIAGONAL_SLOPES)
+        if (carSpriteFlags.has(CarSpriteFlag::diagonalSlopes))
         {
             vehicle->SpriteGroups[EnumValue(SpriteGroupType::Slopes8)].spritePrecision = SpritePrecision::Sprites4;
             vehicle->SpriteGroups[EnumValue(SpriteGroupType::Slopes16)].spritePrecision = SpritePrecision::Sprites4;
             vehicle->SpriteGroups[EnumValue(SpriteGroupType::Slopes50)].spritePrecision = SpritePrecision::Sprites4;
         }
-        if (spriteGroups & CAR_SPRITE_FLAG_FLAT_BANKED)
+        if (carSpriteFlags.has(CarSpriteFlag::flatBanked))
         {
             vehicle->SpriteGroups[EnumValue(SpriteGroupType::FlatBanked22)].spritePrecision = SpritePrecision::Sprites8;
             vehicle->SpriteGroups[EnumValue(SpriteGroupType::FlatBanked45)].spritePrecision = baseSpritePrecision;
         }
-        if (spriteGroups & CAR_SPRITE_FLAG_INLINE_TWISTS)
+        if (carSpriteFlags.has(CarSpriteFlag::inlineTwists))
         {
             vehicle->SpriteGroups[EnumValue(SpriteGroupType::FlatBanked67)].spritePrecision = SpritePrecision::Sprites4;
             vehicle->SpriteGroups[EnumValue(SpriteGroupType::FlatBanked90)].spritePrecision = SpritePrecision::Sprites4;
             vehicle->SpriteGroups[EnumValue(SpriteGroupType::InlineTwists)].spritePrecision = SpritePrecision::Sprites4;
         }
-        if (spriteGroups & CAR_SPRITE_FLAG_FLAT_TO_GENTLE_SLOPE_BANKED_TRANSITIONS)
+        if (carSpriteFlags.has(CarSpriteFlag::flatToGentleSlopeBankedTransitions))
         {
             vehicle->SpriteGroups[EnumValue(SpriteGroupType::Slopes12Banked22)].spritePrecision = baseSpritePrecision;
         }
-        if (spriteGroups & CAR_SPRITE_FLAG_DIAGONAL_GENTLE_SLOPE_BANKED_TRANSITIONS)
+        if (carSpriteFlags.has(CarSpriteFlag::diagonalGentleSlopeBankedTransitions))
         {
             vehicle->SpriteGroups[EnumValue(SpriteGroupType::Slopes8Banked22)].spritePrecision = SpritePrecision::Sprites4;
         }
-        if (spriteGroups & CAR_SPRITE_FLAG_GENTLE_SLOPE_BANKED_TRANSITIONS)
+        if (carSpriteFlags.has(CarSpriteFlag::gentleSlopeBankedTransitions))
         {
             vehicle->SpriteGroups[EnumValue(SpriteGroupType::Slopes25Banked22)].spritePrecision = SpritePrecision::Sprites4;
         }
-        if (spriteGroups & CAR_SPRITE_FLAG_GENTLE_SLOPE_BANKED_TURNS)
+        if (carSpriteFlags.has(CarSpriteFlag::gentleSlopeBankedTurns))
         {
             vehicle->SpriteGroups[EnumValue(SpriteGroupType::Slopes25Banked45)].spritePrecision = baseSpritePrecision;
         }
-        if (spriteGroups & CAR_SPRITE_FLAG_FLAT_TO_GENTLE_SLOPE_WHILE_BANKED_TRANSITIONS)
+        if (carSpriteFlags.has(CarSpriteFlag::flatToGentleSlopeWhileBankedTransitions))
         {
             vehicle->SpriteGroups[EnumValue(SpriteGroupType::Slopes12Banked45)].spritePrecision = SpritePrecision::Sprites4;
         }
-        if (spriteGroups & CAR_SPRITE_FLAG_CORKSCREWS)
+        if (carSpriteFlags.has(CarSpriteFlag::corkscrews))
         {
             vehicle->SpriteGroups[EnumValue(SpriteGroupType::Corkscrews)].spritePrecision = SpritePrecision::Sprites4;
         }
-        if (spriteGroups & CAR_SPRITE_FLAG_RESTRAINT_ANIMATION)
+        if (carSpriteFlags.has(CarSpriteFlag::restraintAnimation))
         {
             vehicle->SpriteGroups[EnumValue(SpriteGroupType::RestraintAnimation)].spritePrecision = SpritePrecision::Sprites4;
         }
-        if (spriteGroups & CAR_SPRITE_FLAG_CURVED_LIFT_HILL)
+        if (carSpriteFlags.has(CarSpriteFlag::curvedLiftHill))
         {
             vehicle->SpriteGroups[EnumValue(SpriteGroupType::CurvedLiftHillUp)].spritePrecision = baseSpritePrecision;
         }

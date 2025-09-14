@@ -143,6 +143,28 @@ namespace OpenRCT2::Json
     }
 
     /**
+     * Helper function to convert a json object and an initializer list to a FlagHolder
+     * @param THolderType FlagHolder type
+     * @param TEnumType Flag enum type
+     * @param jsonObj JSON object containing boolean values
+     * @param list List of pairs of keys and bits to enable if that key in the object is true
+     * @return FlagHolder with the relevant flags set
+     */
+    template<typename THolderType, typename TEnumType>
+    THolderType GetFlagHolder(const json_t& jsonObj, std::initializer_list<std::pair<std::string, TEnumType>> list)
+    {
+        THolderType flagholder;
+        for (const auto& item : list)
+        {
+            if (jsonObj.contains(item.first) && Json::GetBoolean(jsonObj[item.first]))
+            {
+                flagholder.set(item.second);
+            }
+        }
+        return flagholder;
+    }
+
+    /**
      * Used by the GetFlags function to allow for inverted values
      */
     enum class FlagType : uint8_t

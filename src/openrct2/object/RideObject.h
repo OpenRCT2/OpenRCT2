@@ -73,7 +73,6 @@ namespace OpenRCT2
         static ShopItem ParseShopItem(const std::string& s);
         static colour_t ParseColour(const std::string& s);
 
-        void ReadLegacySpriteGroups(CarEntry* vehicle, uint16_t spriteGroups);
         uint8_t GetDefaultClearance() const;
     };
 } // namespace OpenRCT2
