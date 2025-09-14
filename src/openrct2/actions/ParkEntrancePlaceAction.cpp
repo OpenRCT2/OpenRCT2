@@ -27,7 +27,7 @@
 namespace OpenRCT2::GameActions
 {
     ParkEntrancePlaceAction::ParkEntrancePlaceAction(
-        const CoordsXYZD& location, ObjectEntryIndex pathType, ObjectEntryIndex entranceType)
+        const CoordsXYZD& location, ObjectEntryIndex pathType, ObjectEntryIndex entranceType, bool pathTypeIsLegacy)
         : _loc(location)
         , _pathType(pathType)
         , _entranceType(entranceType)
@@ -39,6 +39,7 @@ namespace OpenRCT2::GameActions
         visitor.Visit(_loc);
         visitor.Visit("footpathSurfaceObject", _pathType);
         visitor.Visit("entranceObject", _entranceType);
+        visitor.Visit("footpathTypeIsLegacy", _pathTypeIsLegacy);
     }
 
     uint16_t ParkEntrancePlaceAction::GetActionFlags() const
@@ -53,6 +54,7 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_loc);
         stream << DS_TAG(_pathType);
         stream << DS_TAG(_entranceType);
+        stream << DS_TAG(_pathTypeIsLegacy);
     }
 
     Result ParkEntrancePlaceAction::Query(GameState_t& gameState) const
@@ -64,7 +66,7 @@ namespace OpenRCT2::GameActions
 
         auto res = Result();
         res.Expenditure = ExpenditureType::landPurchase;
-        res.Position = { _loc.x, _loc.y, _loc.z };
+        res.Position = _loc;
 
         auto mapSizeUnits = GetMapSizeUnits() - CoordsXY{ kCoordsXYStep, kCoordsXYStep };
         if (!LocationValid(_loc) || _loc.x <= kCoordsXYStep || _loc.y <= kCoordsXYStep || _loc.x >= mapSizeUnits.x
@@ -159,13 +161,13 @@ namespace OpenRCT2::GameActions
             entranceElement->SetSequenceIndex(index);
             entranceElement->SetEntranceType(ENTRANCE_TYPE_PARK_ENTRANCE);
             entranceElement->setEntryIndex(_entranceType);
-            if (gFootpathSelection.LegacyPath == kObjectEntryIndexNull)
+            if (!_pathTypeIsLegacy)
             {
-                entranceElement->SetSurfaceEntryIndex(gFootpathSelection.NormalSurface);
+                entranceElement->SetSurfaceEntryIndex(_pathType);
             }
             else
             {
-                entranceElement->SetLegacyPathEntryIndex(gFootpathSelection.LegacyPath);
+                entranceElement->SetLegacyPathEntryIndex(_pathType);
             }
 
             if (!entranceElement->IsGhost())
