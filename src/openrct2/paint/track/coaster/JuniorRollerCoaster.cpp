@@ -4733,7 +4733,7 @@ static void JuniorRCPaintTrackDiagFlatTo60DegDown(
 
     int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 48);
+    PaintUtilSetGeneralSupportHeight(session, height + 72);
 }
 
 template<JuniorRCSubType TSubType>
@@ -5617,7 +5617,7 @@ static void JuniorRCFlatTo60DegUpPaintSetup(
         PaintUtilRotateSegments(
             EnumsToFlags(PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::topRight), direction),
         0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 72);
+    PaintUtilSetGeneralSupportHeight(session, height + 64);
 }
 
 static void JuniorRC60DegDownToFlatPaintSetup(
