@@ -16,7 +16,6 @@ struct Guest;
 
 namespace OpenRCT2
 {
-    struct Date;
     struct GameState_t;
 } // namespace OpenRCT2
 
@@ -25,12 +24,13 @@ namespace OpenRCT2::Park
     struct ParkData;
 
     void Initialise(GameState_t& gameState);
-    void Update(GameState_t& gameState, const Date& date);
+    void Update(ParkData& park, GameState_t& gameState);
 
-    uint32_t CalculateParkSize();
-    int32_t CalculateParkRating();
+    uint32_t CalculateParkSize(ParkData& park);
+    int32_t CalculateParkRating(const ParkData& park, const GameState_t& gameState);
+    money64 CalculateParkValue(const ParkData& park, const GameState_t& gameState);
     money64 CalculateParkValue();
-    money64 CalculateCompanyValue();
+    money64 CalculateCompanyValue(const ParkData& park);
 
     Guest* GenerateGuest();
 
@@ -39,7 +39,7 @@ namespace OpenRCT2::Park
     void SetForcedRating(int32_t rating);
     int32_t GetForcedRating();
 
-    uint32_t UpdateSize(GameState_t& gameState);
+    uint32_t UpdateSize(ParkData& park);
 
     void UpdateFences(const CoordsXY& coords);
     void UpdateFencesAroundTile(const CoordsXY& coords);

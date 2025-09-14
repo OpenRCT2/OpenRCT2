@@ -12,6 +12,7 @@
 #include <gtest/gtest.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
+#include <openrct2/GameState.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/audio/AudioContext.h>
 #include <openrct2/core/File.h>
@@ -30,7 +31,8 @@ class RideRatings : public testing::Test
 protected:
     void CalculateRatingsForAllRides()
     {
-        for (const auto& ride : GetRideManager())
+        auto& gameState = getGameState();
+        for (const auto& ride : RideManager(gameState))
         {
             OpenRCT2::RideRating::UpdateRide(ride);
         }
@@ -38,7 +40,8 @@ protected:
 
     void DumpRatings()
     {
-        for (const auto& ride : GetRideManager())
+        auto& gameState = getGameState();
+        for (const auto& ride : RideManager(gameState))
         {
             std::string line = FormatRatings(ride);
             printf("%s\n", line.c_str());
@@ -80,7 +83,8 @@ protected:
 
         // Check ride ratings
         int expI = 0;
-        for (const auto& ride : GetRideManager())
+        auto& gameState = getGameState();
+        for (const auto& ride : RideManager(gameState))
         {
             auto actual = FormatRatings(ride);
             auto expected = expectedRatings[expI];

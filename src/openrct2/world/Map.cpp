@@ -2348,7 +2348,7 @@ void ShiftMap(const TileCoordsXY& amount)
     UpdateConsolidatedPatrolAreas();
 
     // Rides
-    for (auto& ride : GetRideManager())
+    for (auto& ride : RideManager(gameState))
     {
         auto stations = ride.getStations();
         for (auto& station : stations)

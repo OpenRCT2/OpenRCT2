@@ -224,7 +224,9 @@ RideId BannerGetClosestRideIndex(const CoordsXYZ& mapPos)
 
     auto rideIndex = RideId::GetNull();
     auto resultDistance = std::numeric_limits<int32_t>::max();
-    for (auto& ride : GetRideManager())
+
+    auto& gameState = getGameState();
+    for (auto& ride : RideManager(gameState))
     {
         if (ride.getRideTypeDescriptor().HasFlag(RtdFlag::isShopOrFacility))
             continue;

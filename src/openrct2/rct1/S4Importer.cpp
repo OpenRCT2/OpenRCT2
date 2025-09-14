@@ -211,7 +211,7 @@ namespace OpenRCT2::RCT1
             }
             FixNextGuestNumber(gameState);
             CountBlockSections();
-            SetDefaultNames();
+            SetDefaultNames(gameState);
             DetermineRideEntranceAndExitLocations();
 
             ResearchDetermineFirstOfType();
@@ -301,6 +301,7 @@ namespace OpenRCT2::RCT1
                 {
                     // Use the ratio between the old and new park value to calcute the ratio to
                     // use for the park value history and the goal.
+                    // TODO: split up this function so this can pass the actual park/gamestate as needed
                     _parkValueConversionFactor = (Park::CalculateParkValue() * 10) / _s4.ParkValue;
                 }
                 else
@@ -2682,9 +2683,9 @@ namespace OpenRCT2::RCT1
          * This has to be done after importing tile elements, because it needs those to detect if a pre-existing ride
          * name should be considered reserved.
          */
-        void SetDefaultNames()
+        void SetDefaultNames(GameState_t& gameState)
         {
-            for (auto& ride : GetRideManager())
+            for (auto& ride : RideManager(gameState))
             {
                 if (ride.customName.empty())
                 {

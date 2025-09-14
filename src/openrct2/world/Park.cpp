@@ -51,12 +51,6 @@ using namespace OpenRCT2::Scripting;
 
 namespace OpenRCT2::Park
 {
-    static money64 calculateRideValue(const Ride& ride);
-    static money64 calculateTotalRideValueForMoney();
-    static uint32_t calculateSuggestedMaxGuests();
-    static uint32_t calculateGuestGenerationProbability();
-
-    static void generateGuests(GameState_t& gameState);
     static Guest* generateGuestFromCampaign(int32_t campaign);
 
     /**
@@ -84,11 +78,11 @@ namespace OpenRCT2::Park
         return result;
     }
 
-    static money64 calculateTotalRideValueForMoney()
+    static money64 calculateTotalRideValueForMoney(const ParkData& park, const GameState_t& gameState)
     {
         money64 totalRideValue = 0;
-        bool ridePricesUnlocked = RidePricesUnlocked() && !(getGameState().park.flags & PARK_FLAGS_NO_MONEY);
-        for (auto& ride : GetRideManager())
+        bool ridePricesUnlocked = RidePricesUnlocked() && !(gameState.park.flags & PARK_FLAGS_NO_MONEY);
+        for (auto& ride : RideManager(gameState))
         {
             if (ride.status != RideStatus::open)
                 continue;
@@ -114,15 +108,12 @@ namespace OpenRCT2::Park
         return totalRideValue;
     }
 
-    static uint32_t calculateSuggestedMaxGuests()
+    static uint32_t calculateSuggestedMaxGuests(const ParkData& park, const GameState_t& gameState)
     {
         uint32_t suggestedMaxGuests = 0;
         uint32_t difficultGenerationBonus = 0;
 
-        // TODO: pass park by ref
-        auto& park = getGameState().park;
-
-        for (auto& ride : GetRideManager())
+        for (auto& ride : RideManager(gameState))
         {
             if (ride.status != RideStatus::open)
                 continue;
@@ -178,11 +169,8 @@ namespace OpenRCT2::Park
         return suggestedMaxGuests;
     }
 
-    static uint32_t calculateGuestGenerationProbability()
+    static uint32_t calculateGuestGenerationProbability(ParkData& park)
     {
-        // TODO: pass park by ref
-        auto& park = getGameState().park;
-
         // Begin with 50 + park rating
         uint32_t probability = 50 + std::clamp(park.rating - 200, 0, 650);
 
@@ -233,11 +221,8 @@ namespace OpenRCT2::Park
         return probability;
     }
 
-    static void generateGuests(GameState_t& gameState)
+    static void generateGuests(ParkData& park, GameState_t& gameState)
     {
-        // TODO: pass park by ref
-        auto& park = gameState.park;
-
         // Generate a new guest for some probability
         if (static_cast<int32_t>(ScenarioRand() & 0xFFFF) < park.guestGenerationProbability)
         {
@@ -337,15 +322,12 @@ namespace OpenRCT2::Park
         gameState.scenarioOptions.details = String::toStd(LanguageGetString(STR_NO_DETAILS_YET));
     }
 
-    void Update(GameState_t& gameState, const Date& date)
+    void Update(ParkData& park, GameState_t& gameState)
     {
         PROFILED_FUNCTION();
 
-        // TODO: pass park by ref
-        auto& park = gameState.park;
-
         // Every new week
-        if (date.IsWeekStart())
+        if (gameState.date.IsWeekStart())
         {
             UpdateHistories(park);
         }
@@ -356,12 +338,12 @@ namespace OpenRCT2::Park
         // Every ~13 seconds
         if (currentTicks % 512 == 0)
         {
-            park.rating = CalculateParkRating();
-            park.value = Park::CalculateParkValue();
-            park.companyValue = CalculateCompanyValue();
-            park.totalRideValueForMoney = calculateTotalRideValueForMoney();
-            park.suggestedGuestMaximum = calculateSuggestedMaxGuests();
-            park.guestGenerationProbability = calculateGuestGenerationProbability();
+            park.rating = CalculateParkRating(park, gameState);
+            park.value = CalculateParkValue(park, gameState);
+            park.companyValue = CalculateCompanyValue(park);
+            park.totalRideValueForMoney = calculateTotalRideValueForMoney(park, gameState);
+            park.suggestedGuestMaximum = calculateSuggestedMaxGuests(park, gameState);
+            park.guestGenerationProbability = calculateGuestGenerationProbability(park);
 
             windowMgr->InvalidateByClass(WindowClass::Finances);
             auto intent = Intent(INTENT_ACTION_UPDATE_PARK_RATING);
@@ -371,14 +353,13 @@ namespace OpenRCT2::Park
         // Every ~102 seconds
         if (currentTicks % 4096 == 0)
         {
-            park.size = CalculateParkSize();
-            windowMgr->InvalidateByClass(WindowClass::ParkInformation);
+            Park::UpdateSize(park);
         }
 
-        generateGuests(gameState);
+        generateGuests(park, gameState);
     }
 
-    uint32_t CalculateParkSize()
+    uint32_t CalculateParkSize(ParkData& park)
     {
         uint32_t tiles = 0;
         TileElementIterator it;
@@ -394,29 +375,18 @@ namespace OpenRCT2::Park
             }
         } while (TileElementIteratorNext(&it));
 
-        // TODO: pass park by ref
-        auto& park = getGameState().park;
-        if (tiles != park.size)
-        {
-            park.size = tiles;
-            auto* windowMgr = Ui::GetWindowManager();
-            windowMgr->InvalidateByClass(WindowClass::ParkInformation);
-        }
-
         return tiles;
     }
 
-    int32_t CalculateParkRating()
+    int32_t CalculateParkRating(const ParkData& park, const GameState_t& gameState)
     {
-        auto& gameState = getGameState();
-
         if (gameState.cheats.forcedParkRating != kForcedParkRatingDisabled)
         {
             return gameState.cheats.forcedParkRating;
         }
 
         int32_t result = 1150;
-        if (gameState.park.flags & PARK_FLAGS_DIFFICULT_PARK_RATING)
+        if (park.flags & PARK_FLAGS_DIFFICULT_PARK_RATING)
         {
             result = 1050;
         }
@@ -424,7 +394,7 @@ namespace OpenRCT2::Park
         // Guests
         {
             // -150 to +3 based on a range of guests from 0 to 2000
-            result -= 150 - (std::min<int32_t>(2000, gameState.park.numGuestsInPark) / 13);
+            result -= 150 - (std::min<int32_t>(2000, park.numGuestsInPark) / 13);
 
             // Find the number of happy peeps and the number of peeps who can't find the park exit
             uint32_t happyGuestCount = 0;
@@ -446,9 +416,9 @@ namespace OpenRCT2::Park
 
             // Peep happiness -500 to +0
             result -= 500;
-            if (gameState.park.numGuestsInPark > 0)
+            if (park.numGuestsInPark > 0)
             {
-                result += 2 * std::min(250u, (happyGuestCount * 300) / gameState.park.numGuestsInPark);
+                result += 2 * std::min(250u, (happyGuestCount * 300) / park.numGuestsInPark);
             }
 
             // Up to 25 guests can be lost without affecting the park rating.
@@ -465,7 +435,7 @@ namespace OpenRCT2::Park
             int32_t totalRideUptime = 0;
             int32_t totalRideIntensity = 0;
             int32_t totalRideExcitement = 0;
-            for (auto& ride : GetRideManager())
+            for (auto& ride : RideManager(gameState))
             {
                 totalRideUptime += 100 - ride.downtime;
                 if (RideHasRatings(ride))
@@ -519,22 +489,19 @@ namespace OpenRCT2::Park
             result -= 600 - (4 * (150 - std::min<int32_t>(150, litterCount)));
         }
 
-        result -= gameState.park.ratingCasualtyPenalty;
+        result -= park.ratingCasualtyPenalty;
         result = std::clamp(result, 0, 999);
         return result;
     }
 
-    money64 CalculateParkValue()
+    money64 CalculateParkValue(const ParkData& park, const GameState_t& gameState)
     {
         // Sum ride values
         money64 result = 0;
-        for (const auto& ride : GetRideManager())
+        for (const auto& ride : RideManager(gameState))
         {
             result += calculateRideValue(ride);
         }
-
-        // TODO: pass park by ref
-        auto& park = getGameState().park;
 
         // +7.00 per guest
         result += static_cast<money64>(park.numGuestsInPark) * 7.00_GBP;
@@ -542,15 +509,19 @@ namespace OpenRCT2::Park
         return result;
     }
 
-    money64 CalculateCompanyValue()
+    // TODO: refactor S4Importer so this hack is no longer needed
+    money64 CalculateParkValue()
     {
-        // TODO: pass park by ref
-        auto& park = getGameState().park;
+        auto& gameState = getGameState();
+        return CalculateParkValue(gameState.park, gameState);
+    }
 
+    money64 CalculateCompanyValue(const ParkData& park)
+    {
         auto result = park.value - park.bankLoan;
 
         // Clamp addition to prevent overflow
-        result = AddClamp<money64>(result, FinanceGetCurrentCash());
+        result = AddClamp<money64>(result, park.cash);
 
         return result;
     }
@@ -628,7 +599,7 @@ namespace OpenRCT2::Park
         HistoryPushRecord<uint32_t, numGuestsHistorySize>(park.guestsInParkHistory, park.numGuestsInPark);
 
         constexpr auto cashHistorySize = std::extent_v<decltype(ParkData::cashHistory)>;
-        HistoryPushRecord<money64, cashHistorySize>(park.cashHistory, FinanceGetCurrentCash() - park.bankLoan);
+        HistoryPushRecord<money64, cashHistorySize>(park.cashHistory, park.cash - park.bankLoan);
 
         // Update weekly profit history
         auto currentWeeklyProfit = park.weeklyProfitAverageDividend;
@@ -654,12 +625,9 @@ namespace OpenRCT2::Park
         windowMgr->InvalidateByClass(WindowClass::Finances);
     }
 
-    uint32_t UpdateSize(GameState_t& gameState)
+    uint32_t UpdateSize(ParkData& park)
     {
-        // TODO: pass park by ref
-        auto& park = gameState.park;
-
-        auto tiles = CalculateParkSize();
+        auto tiles = CalculateParkSize(park);
         if (tiles != park.size)
         {
             park.size = tiles;
@@ -760,7 +728,9 @@ namespace OpenRCT2::Park
     {
         auto& gameState = getGameState();
         gameState.cheats.forcedParkRating = rating;
-        gameState.park.rating = CalculateParkRating();
+
+        auto& park = gameState.park;
+        park.rating = CalculateParkRating(park, gameState);
 
         auto intent = Intent(INTENT_ACTION_UPDATE_PARK_RATING);
         ContextBroadcastIntent(&intent);

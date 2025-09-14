@@ -4,6 +4,7 @@
 #include <memory>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
+#include <openrct2/GameState.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/ParkImporter.h>
 #include <openrct2/core/String.hpp>
@@ -57,7 +58,8 @@ public:
 protected:
     static Ride* FindRideByName(const char* name)
     {
-        for (auto& ride : GetRideManager())
+        auto& gameState = getGameState();
+        for (auto& ride : RideManager(gameState))
         {
             auto thisName = ride.getName();
             if (String::startsWith(thisName, u8string{ name }, true))

@@ -33,6 +33,6 @@ namespace OpenRCT2::GameActions
         Result Execute(GameState_t& gameState) const override;
 
     private:
-        void RideSetCommonPrice(ShopItem shopItem) const;
+        void RideSetCommonPrice(GameState_t& gameState, ShopItem shopItem) const;
     };
 } // namespace OpenRCT2::GameActions

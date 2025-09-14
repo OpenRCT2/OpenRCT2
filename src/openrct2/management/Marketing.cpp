@@ -185,6 +185,8 @@ void MarketingSetGuestCampaign(Guest* peep, int32_t campaignType)
 
 bool MarketingIsCampaignTypeApplicable(int32_t campaignType)
 {
+    auto& gameState = getGameState();
+
     switch (campaignType)
     {
         case ADVERTISING_CAMPAIGN_PARK_ENTRY_FREE:
@@ -200,7 +202,7 @@ bool MarketingIsCampaignTypeApplicable(int32_t campaignType)
             [[fallthrough]];
         case ADVERTISING_CAMPAIGN_RIDE:
             // Check if any rides exist
-            for (auto& ride : GetRideManager())
+            for (auto& ride : RideManager(gameState))
             {
                 if (ride.isRide())
                 {
@@ -211,7 +213,7 @@ bool MarketingIsCampaignTypeApplicable(int32_t campaignType)
 
         case ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE:
             // Check if any food or drink stalls exist
-            for (auto& ride : GetRideManager())
+            for (auto& ride : RideManager(gameState))
             {
                 auto rideEntry = ride.getRideEntry();
                 if (rideEntry != nullptr)

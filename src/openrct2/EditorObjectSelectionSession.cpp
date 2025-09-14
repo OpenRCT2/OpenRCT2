@@ -245,7 +245,8 @@ void SetupInUseSelectionFlags()
         }
     } while (TileElementIteratorNext(&iter));
 
-    for (auto& ride : GetRideManager())
+    auto& gameState = getGameState();
+    for (auto& ride : RideManager(gameState))
     {
         Editor::SetSelectedObject(ObjectType::ride, ride.subtype, ObjectSelectionFlags::InUse);
         Editor::SetSelectedObject(ObjectType::station, ride.entranceStyle, ObjectSelectionFlags::InUse);

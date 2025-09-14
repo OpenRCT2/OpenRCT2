@@ -316,7 +316,8 @@ namespace OpenRCT2
 
         if (!isInEditorMode())
         {
-            Park::Update(gameState, gameState.date);
+            auto& park = gameState.park;
+            Park::Update(park, gameState);
         }
 
         ResearchUpdate();

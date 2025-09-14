@@ -1884,7 +1884,8 @@ static OpenRCT2::BitSet<OpenRCT2::Limits::kMaxRidesInPark> GuestFindRidesToGoOn(
     if (guest.HasItem(ShopItem::Map))
     {
         // Consider rides that peep hasn't been on yet
-        for (auto& ride : GetRideManager())
+        auto& gameState = getGameState();
+        for (auto& ride : RideManager(gameState))
         {
             if (!guest.HasRidden(ride))
             {
@@ -1918,7 +1919,8 @@ static OpenRCT2::BitSet<OpenRCT2::Limits::kMaxRidesInPark> GuestFindRidesToGoOn(
         }
 
         // Always take the tall rides into consideration (realistic as you can usually see them from anywhere in the park)
-        for (auto& ride : GetRideManager())
+        auto& gameState = getGameState();
+        for (auto& ride : RideManager(gameState))
         {
             if (ride.highestDropHeight > 66 || ride.ratings.excitement >= RideRating::make(8, 00))
             {
@@ -1935,7 +1937,9 @@ static Ride* GuestFindBestRideToGoOn(Guest& guest)
     // Pick the most exciting ride
     auto rideConsideration = GuestFindRidesToGoOn(guest);
     Ride* mostExcitingRide = nullptr;
-    for (auto& ride : GetRideManager())
+
+    auto& gameState = getGameState();
+    for (auto& ride : RideManager(gameState))
     {
         const auto rideIndex = ride.id.ToUnderlying();
         if (rideConsideration.size() > rideIndex && rideConsideration[rideIndex])
@@ -3187,7 +3191,8 @@ static void PeepHeadForNearestRide(Guest& guest, bool considerOnlyCloseRides, T 
     if (!considerOnlyCloseRides && (guest.HasItem(ShopItem::Map)))
     {
         // Consider all rides in the park
-        for (const auto& ride : GetRideManager())
+        auto& gameState = getGameState();
+        for (const auto& ride : RideManager(gameState))
         {
             if (predicate(ride))
             {
@@ -3228,7 +3233,9 @@ static void PeepHeadForNearestRide(Guest& guest, bool considerOnlyCloseRides, T 
     // Filter the considered rides
     RideId potentialRides[OpenRCT2::Limits::kMaxRidesInPark];
     size_t numPotentialRides = 0;
-    for (auto& ride : GetRideManager())
+
+    auto& gameState = getGameState();
+    for (auto& ride : RideManager(gameState))
     {
         if (rideConsideration[ride.id.ToUnderlying()])
         {

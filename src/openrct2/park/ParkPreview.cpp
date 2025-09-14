@@ -40,7 +40,7 @@ namespace OpenRCT2
             .day = gameState.date.GetDay(),
             .parkUsesMoney = !(gameState.park.flags & PARK_FLAGS_NO_MONEY),
             .cash = gameState.park.cash,
-            .numRides = static_cast<uint16_t>(RideManager().size()),
+            .numRides = static_cast<uint16_t>(RideManager(gameState).size()),
             .numGuests = static_cast<uint16_t>(gameState.park.numGuestsInPark),
         };
 

@@ -112,7 +112,8 @@ namespace OpenRCT2::Ui::Windows
         void GetShopItems()
         {
             BitSet<EnumValue(ShopItem::Count)> items = {};
-            for (auto& curRide : GetRideManager())
+            const auto& gameState = getGameState();
+            for (auto& curRide : RideManager(gameState))
             {
                 auto rideEntry = curRide.getRideEntry();
                 if (rideEntry != nullptr)
@@ -142,7 +143,8 @@ namespace OpenRCT2::Ui::Windows
         {
             // Get all applicable rides
             RideList.clear();
-            for (const auto& curRide : GetRideManager())
+            const auto& gameState = getGameState();
+            for (const auto& curRide : RideManager(gameState))
             {
                 if (curRide.status == RideStatus::open)
                 {

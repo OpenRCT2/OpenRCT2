@@ -92,7 +92,8 @@ namespace OpenRCT2::Ui::Windows
         }
 
         // Set research required for rides in use
-        for (const auto& ride : GetRideManager())
+        const auto& gameState = getGameState();
+        for (const auto& ride : RideManager(gameState))
         {
             Editor::SetSelectedObject(
                 ObjectType::ride, ride.subtype, ObjectSelectionFlags::Selected | ObjectSelectionFlags::InUse);
