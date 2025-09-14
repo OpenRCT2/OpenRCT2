@@ -531,6 +531,17 @@ namespace OpenRCT2::Ui::Windows
 #pragma endregion
 
     private:
+        FootpathPlacementResult FootpathGetPlacementFromScreenCoords(const ScreenCoordsXY& screenCoords)
+        {
+            if (_footpathPlaceZ > 0)
+                return { _footpathPlaceZ, kTileSlopeFlat };
+
+            auto info = GetMapCoordinatesFromPos(
+                screenCoords, EnumsToFlags(ViewportInteractionItem::Terrain, ViewportInteractionItem::Footpath));
+
+            return FootpathGetPlacementFromInfo(info);
+        }
+
         /**
          *
          *  rct2: 0x006A7760
@@ -979,30 +990,19 @@ namespace OpenRCT2::Ui::Windows
             FootpathUpdateProvisional();
 
             // Figure out what slope and height to use
-            int32_t slope = kTileSlopeFlat;
-            auto baseZ = _footpathPlaceZ;
-            if (baseZ == 0)
+            auto placement = FootpathGetPlacementFromScreenCoords(screenCoords);
+            if (!placement.isValid())
             {
-                auto info = GetMapCoordinatesFromPos(
-                    screenCoords, EnumsToFlags(ViewportInteractionItem::Terrain, ViewportInteractionItem::Footpath));
-
-                auto result = FootpathGetPlacementFromInfo(info);
-                if (!result.isValid())
-                {
-                    gMapSelectFlags.unset(MapSelectFlag::enable);
-                    FootpathUpdateProvisional();
-                    return;
-                }
-
-                baseZ = result.baseZ;
-                slope = result.slope;
+                gMapSelectFlags.unset(MapSelectFlag::enable);
+                FootpathUpdateProvisional();
+                return;
             }
 
             // Set provisional path
             auto pathType = gFootpathSelection.GetSelectedSurface();
             auto constructFlags = FootpathCreateConstructFlags(pathType);
             const auto footpathCost = FootpathProvisionalSet(
-                pathType, gFootpathSelection.Railings, { *mapPos, baseZ }, slope, constructFlags);
+                pathType, gFootpathSelection.Railings, { *mapPos, placement.baseZ }, placement.slope, constructFlags);
 
             if (_windowFootpathCost != footpathCost)
             {
@@ -1070,24 +1070,15 @@ namespace OpenRCT2::Ui::Windows
             if (!mapPos)
                 return;
 
-            auto slope = kTileSlopeFlat;
-            auto baseZ = _footpathPlaceZ;
-            if (baseZ == 0)
-            {
-                const auto info = GetMapCoordinatesFromPos(
-                    screenCoords, EnumsToFlags(ViewportInteractionItem::Terrain, ViewportInteractionItem::Footpath));
-
-                auto result = FootpathGetPlacementFromInfo(info);
-                baseZ = result.baseZ;
-                slope = result.slope;
-            }
+            auto placement = FootpathGetPlacementFromScreenCoords(screenCoords);
 
             // Try and place path
             auto selectedType = gFootpathSelection.GetSelectedSurface();
             PathConstructFlags constructFlags = FootpathCreateConstructFlags(selectedType);
 
             auto footpathPlaceAction = GameActions::FootpathPlaceAction(
-                { *mapPos, baseZ }, slope, selectedType, gFootpathSelection.Railings, kInvalidDirection, constructFlags);
+                { *mapPos, placement.baseZ }, placement.slope, selectedType, gFootpathSelection.Railings, kInvalidDirection,
+                constructFlags);
             footpathPlaceAction.SetCallback([this](const GameActions::GameAction* ga, const GameActions::Result* result) {
                 if (result->Error == GameActions::Status::Ok)
                 {
