@@ -136,7 +136,6 @@ enum
 };
 
 extern FootpathSelection gFootpathSelection;
-extern uint16_t gFootpathSelectedId;
 extern CoordsXYZ gFootpathConstructFromPosition;
 extern uint8_t gFootpathConstructSlope;
 extern uint8_t gFootpathGroundFlags;
