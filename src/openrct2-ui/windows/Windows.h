@@ -110,6 +110,7 @@ namespace OpenRCT2::Ui::Windows
     void WindowFootpathKeyboardShortcutSlopeUp();
     void WindowFootpathKeyboardShortcutBuildCurrent();
     void WindowFootpathKeyboardShortcutDemolishCurrent();
+    bool WindowFootpathSelectDefault();
 
     // GameBottomToolbar
     extern uint8_t gToolbarDirtyFlags;

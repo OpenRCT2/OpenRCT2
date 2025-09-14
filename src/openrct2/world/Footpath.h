@@ -158,7 +158,6 @@ bool FootpathIsBlockedByVehicle(const TileCoordsXYZ& position);
 int32_t FootpathIsConnectedToMapEdge(const CoordsXYZ& footpathPos, int32_t direction, int32_t flags);
 void FootpathRemoveEdgesAt(const CoordsXY& footpathPos, OpenRCT2::TileElement* tileElement);
 
-bool FootpathSelectDefault();
 const OpenRCT2::FootpathObject* GetLegacyFootpathEntry(OpenRCT2::ObjectEntryIndex entryIndex);
 const OpenRCT2::FootpathSurfaceObject* GetPathSurfaceEntry(OpenRCT2::ObjectEntryIndex entryIndex);
 const OpenRCT2::FootpathRailingsObject* GetPathRailingsEntry(OpenRCT2::ObjectEntryIndex entryIndex);
