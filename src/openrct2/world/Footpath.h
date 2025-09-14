@@ -19,6 +19,7 @@ namespace OpenRCT2
     class FootpathRailingsObject;
 
     struct PathElement;
+    struct SurfaceElement;
     struct TileElement;
 } // namespace OpenRCT2
 
@@ -72,6 +73,17 @@ struct FootpathSelection
     OpenRCT2::ObjectEntryIndex GetSelectedSurface() const
     {
         return IsQueueSelected ? QueueSurface : NormalSurface;
+    }
+};
+
+struct FootpathPlacementResult
+{
+    int32_t baseZ{};
+    uint8_t slope{};
+
+    bool isValid()
+    {
+        return baseZ > 0;
     }
 };
 
@@ -157,3 +169,6 @@ const OpenRCT2::FootpathRailingsObject* GetPathRailingsEntry(OpenRCT2::ObjectEnt
 void FootpathQueueChainReset();
 void FootpathQueueChainPush(RideId rideIndex);
 bool FootpathIsZAndDirectionValid(const OpenRCT2::PathElement& tileElement, int32_t currentZ, int32_t currentDirection);
+
+FootpathPlacementResult FootpathGetOnTerrainPlacement(const TileCoordsXY& location);
+FootpathPlacementResult FootpathGetOnTerrainPlacement(const OpenRCT2::SurfaceElement& surfaceElement);
