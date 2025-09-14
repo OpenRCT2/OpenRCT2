@@ -30,6 +30,7 @@ namespace OpenRCT2::Path
     u8string GetExtension(u8string_view path);
     u8string WithExtension(u8string_view path, u8string_view newExtension);
     bool IsAbsolute(u8string_view path);
+    bool IsRelative(u8string_view path);
     u8string GetAbsolute(u8string_view relative);
     u8string GetRelative(u8string_view path, u8string_view base);
     bool Equals(u8string_view a, u8string_view b);
