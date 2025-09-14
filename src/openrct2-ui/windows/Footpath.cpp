@@ -162,26 +162,6 @@ namespace OpenRCT2::Ui::Windows
 
 #pragma endregion
 
-    /** rct2: 0x0098D8B4 */
-    static constexpr uint8_t DefaultPathSlope[] = {
-        0,
-        SLOPE_IS_IRREGULAR_FLAG,
-        SLOPE_IS_IRREGULAR_FLAG,
-        FOOTPATH_PROPERTIES_FLAG_IS_SLOPED | 2,
-        SLOPE_IS_IRREGULAR_FLAG,
-        SLOPE_IS_IRREGULAR_FLAG,
-        FOOTPATH_PROPERTIES_FLAG_IS_SLOPED | 3,
-        RAISE_FOOTPATH_FLAG,
-        SLOPE_IS_IRREGULAR_FLAG,
-        FOOTPATH_PROPERTIES_FLAG_IS_SLOPED | 1,
-        SLOPE_IS_IRREGULAR_FLAG,
-        RAISE_FOOTPATH_FLAG,
-        FOOTPATH_PROPERTIES_FLAG_IS_SLOPED | 0,
-        RAISE_FOOTPATH_FLAG,
-        RAISE_FOOTPATH_FLAG,
-        SLOPE_IS_IRREGULAR_FLAG,
-    };
-
     /** rct2: 0x0098D7E0 */
     static constexpr uint8_t ConstructionPreviewImages[][4] = {
         { 5, 10, 5, 10 },   // Flat
@@ -925,13 +905,13 @@ namespace OpenRCT2::Ui::Windows
             return mapCoords.ToTileStart();
         }
 
-        int32_t FootpathGetSlopeFromInfo(const InteractionInfo& info)
+        FootpathPlacementResult FootpathGetPlacementFromInfo(const InteractionInfo& info)
         {
             if (info.interactionType == ViewportInteractionItem::None || info.Element == nullptr)
             {
                 gMapSelectFlags.unset(MapSelectFlag::enable);
                 FootpathUpdateProvisional();
-                return kTileSlopeFlat;
+                return {};
             }
 
             switch (info.interactionType)
@@ -941,7 +921,7 @@ namespace OpenRCT2::Ui::Windows
                     auto surfaceElement = info.Element->AsSurface();
                     if (surfaceElement != nullptr)
                     {
-                        return DefaultPathSlope[surfaceElement->GetSlope() & kTileSlopeRaisedCornersMask];
+                        return FootpathGetOnTerrainPlacement(*surfaceElement);
                     }
                     break;
                 }
@@ -955,7 +935,7 @@ namespace OpenRCT2::Ui::Windows
                         {
                             slope |= FOOTPATH_PROPERTIES_FLAG_IS_SLOPED;
                         }
-                        return slope;
+                        return { pathElement->GetBaseZ(), slope };
                     }
                     break;
                 }
@@ -963,41 +943,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
             }
 
-            return kTileSlopeFlat;
-        }
-
-        int32_t FootpathGetBaseZFromInfo(const InteractionInfo& info)
-        {
-            if (info.interactionType == ViewportInteractionItem::None || info.Element == nullptr)
-            {
-                return 0;
-            }
-
-            switch (info.interactionType)
-            {
-                case ViewportInteractionItem::Terrain:
-                {
-                    auto surfaceElement = info.Element->AsSurface();
-                    if (surfaceElement != nullptr)
-                    {
-                        return surfaceElement->GetBaseZ();
-                    }
-                    break;
-                }
-                case ViewportInteractionItem::Footpath:
-                {
-                    auto pathElement = info.Element->AsPath();
-                    if (pathElement != nullptr)
-                    {
-                        return pathElement->GetBaseZ();
-                    }
-                    break;
-                }
-                default:
-                    break;
-            }
-
-            return 0;
+            return {};
         }
 
         /**
@@ -1038,20 +984,16 @@ namespace OpenRCT2::Ui::Windows
                 auto info = GetMapCoordinatesFromPos(
                     screenCoords, EnumsToFlags(ViewportInteractionItem::Terrain, ViewportInteractionItem::Footpath));
 
-                baseZ = FootpathGetBaseZFromInfo(info);
-                slope = FootpathGetSlopeFromInfo(info);
-                if (slope & RAISE_FOOTPATH_FLAG)
-                {
-                    slope &= ~RAISE_FOOTPATH_FLAG;
-                    baseZ += kPathHeightStep;
-                }
-
-                if (baseZ == 0)
+                auto result = FootpathGetPlacementFromInfo(info);
+                if (!result.isValid())
                 {
                     gMapSelectFlags.unset(MapSelectFlag::enable);
                     FootpathUpdateProvisional();
                     return;
                 }
+
+                baseZ = result.baseZ;
+                slope = result.slope;
             }
 
             // Set provisional path
@@ -1133,13 +1075,9 @@ namespace OpenRCT2::Ui::Windows
                 const auto info = GetMapCoordinatesFromPos(
                     screenCoords, EnumsToFlags(ViewportInteractionItem::Terrain, ViewportInteractionItem::Footpath));
 
-                slope = FootpathGetSlopeFromInfo(info);
-                baseZ = FootpathGetBaseZFromInfo(info);
-                if (slope & RAISE_FOOTPATH_FLAG)
-                {
-                    slope &= ~RAISE_FOOTPATH_FLAG;
-                    baseZ += kPathHeightStep;
-                }
+                auto result = FootpathGetPlacementFromInfo(info);
+                baseZ = result.baseZ;
+                slope = result.slope;
             }
 
             // Try and place path

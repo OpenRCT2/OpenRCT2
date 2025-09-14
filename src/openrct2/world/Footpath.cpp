@@ -103,6 +103,26 @@ static constexpr uint8_t connected_path_count[] = {
     4, // 0b1111
 };
 
+/** rct2: 0x0098D8B4 */
+static constexpr uint8_t kDefaultPathSlope[] = {
+    0,
+    SLOPE_IS_IRREGULAR_FLAG,
+    SLOPE_IS_IRREGULAR_FLAG,
+    FOOTPATH_PROPERTIES_FLAG_IS_SLOPED | 2,
+    SLOPE_IS_IRREGULAR_FLAG,
+    SLOPE_IS_IRREGULAR_FLAG,
+    FOOTPATH_PROPERTIES_FLAG_IS_SLOPED | 3,
+    RAISE_FOOTPATH_FLAG,
+    SLOPE_IS_IRREGULAR_FLAG,
+    FOOTPATH_PROPERTIES_FLAG_IS_SLOPED | 1,
+    SLOPE_IS_IRREGULAR_FLAG,
+    RAISE_FOOTPATH_FLAG,
+    FOOTPATH_PROPERTIES_FLAG_IS_SLOPED | 0,
+    RAISE_FOOTPATH_FLAG,
+    RAISE_FOOTPATH_FLAG,
+    SLOPE_IS_IRREGULAR_FLAG,
+};
+
 static bool entrance_has_direction(const EntranceElement& entranceElement, int32_t direction)
 {
     return entranceElement.GetDirections() & (1 << (direction & 3));
@@ -2059,4 +2079,26 @@ bool FootpathIsZAndDirectionValid(const PathElement& pathElement, int32_t curren
             return false;
     }
     return true;
+}
+
+FootpathPlacementResult FootpathGetOnTerrainPlacement(const TileCoordsXY& location)
+{
+    auto* surfaceElement = MapGetSurfaceElementAt(location);
+    if (surfaceElement == nullptr)
+        return {};
+
+    return FootpathGetOnTerrainPlacement(*surfaceElement);
+}
+
+FootpathPlacementResult FootpathGetOnTerrainPlacement(const SurfaceElement& surfaceElement)
+{
+    int32_t baseZ = surfaceElement.GetBaseZ();
+    uint8_t slope = kDefaultPathSlope[surfaceElement.GetSlope() & kTileSlopeRaisedCornersMask];
+    if (slope & RAISE_FOOTPATH_FLAG)
+    {
+        slope &= ~RAISE_FOOTPATH_FLAG;
+        baseZ += kPathHeightStep;
+    }
+
+    return { baseZ, slope };
 }
