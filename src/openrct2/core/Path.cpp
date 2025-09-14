@@ -105,6 +105,12 @@ namespace OpenRCT2::Path
         return p.is_absolute();
     }
 
+    bool IsRelative(u8string_view path)
+    {
+        auto p = fs::u8path(path);
+        return p.is_relative();
+    }
+
     u8string GetAbsolute(u8string_view relative)
     {
         std::error_code ec;

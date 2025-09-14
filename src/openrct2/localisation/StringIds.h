@@ -1757,8 +1757,9 @@ enum : StringId
     // Window: Error
     STR_AUDIO_FILE_TRUNCATED = 7003,
 
-    STR_REPLAY_FILE_NOT_FOUND = 7010,
-    STR_REPLAY_NOT_STARTED = 7011,
+    STR_REPLAY_FILE_NOT_FOUND = 7004,
+    STR_REPLAY_WITH_PATH_NOT_FOUND = 7005,
+    STR_REPLAY_NOT_STARTED = 7006,
 
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings

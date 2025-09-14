@@ -1507,14 +1507,25 @@ static void ConsoleCommandReplayStart(InteractiveConsole& console, const argumen
     }
     else
     {
-        std::string filePath = OpenRCT2::GetContext()->GetPlatformEnvironment().GetDirectoryPath(
-            OpenRCT2::DirBase::user, OpenRCT2::DirId::replayRecordings);
-        filePath = Path::Combine(filePath, name + ".parkrep");
-
-        if (!File::Exists(filePath))
+        if (Path::IsAbsolute(name))
         {
-            console.WriteLineError(FormatStringID(STR_REPLAY_FILE_NOT_FOUND, name));
-            return;
+            if (!File::Exists(name))
+            {
+                console.WriteLineError(FormatStringID(STR_REPLAY_WITH_PATH_NOT_FOUND, name));
+                return;
+            }
+        }
+        else if (Path::IsRelative(name))
+        {
+            std::string filePath = OpenRCT2::GetContext()->GetPlatformEnvironment().GetDirectoryPath(
+                OpenRCT2::DirBase::user, OpenRCT2::DirId::replayRecordings);
+            filePath = Path::Combine(filePath, name + ".parkrep");
+
+            if (!File::Exists(filePath))
+            {
+                console.WriteLineError(FormatStringID(STR_REPLAY_FILE_NOT_FOUND, name));
+                return;
+            }
         }
         else
         {
