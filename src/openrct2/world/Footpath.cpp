@@ -36,6 +36,7 @@
 #include "Location.hpp"
 #include "Map.h"
 #include "MapAnimation.h"
+#include "Wall.h"
 #include "tile_element/BannerElement.h"
 #include "tile_element/EntranceElement.h"
 #include "tile_element/PathElement.h"
@@ -183,39 +184,6 @@ void FootpathInterruptPeeps(const CoordsXYZ& footpathPos)
             }
         }
     }
-}
-
-/**
- * Returns true if the edge of tile x, y specified by direction is occupied by a fence
- * between heights z0 and z1.
- *
- * Note that there may still be a fence on the opposing tile.
- *
- *  rct2: 0x006E59DC
- */
-bool WallInTheWay(const CoordsXYRangedZ& fencePos, int32_t direction)
-{
-    TileElement* tileElement;
-
-    tileElement = MapGetFirstElementAt(fencePos);
-    if (tileElement == nullptr)
-        return false;
-    do
-    {
-        if (tileElement->GetType() != TileElementType::Wall)
-            continue;
-        if (tileElement->IsGhost())
-            continue;
-        if (fencePos.baseZ >= tileElement->GetClearanceZ())
-            continue;
-        if (fencePos.clearanceZ <= tileElement->GetBaseZ())
-            continue;
-        if ((tileElement->GetDirection()) != direction)
-            continue;
-
-        return true;
-    } while (!(tileElement++)->IsLastForTile());
-    return false;
 }
 
 static PathElement* FootpathConnectCornersGetNeighbour(const CoordsXYZ& footpathPos, int32_t requireEdges)

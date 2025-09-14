@@ -148,7 +148,6 @@ void FootpathInterruptPeeps(const CoordsXYZ& footpathPos);
 void FootpathRemoveLitter(const CoordsXYZ& footpathPos);
 void FootpathConnectEdges(const CoordsXY& footpathPos, OpenRCT2::TileElement* tileElement, int32_t flags);
 void FootpathUpdateQueueChains();
-bool WallInTheWay(const CoordsXYRangedZ& fencePos, int32_t direction);
 void FootpathChainRideQueue(
     RideId rideIndex, StationIndex entranceIndex, const CoordsXY& footpathPos, OpenRCT2::TileElement* tileElement,
     int32_t direction);
