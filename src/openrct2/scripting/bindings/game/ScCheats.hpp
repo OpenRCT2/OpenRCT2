@@ -9,377 +9,461 @@
 
 #pragma once
 
-#ifdef ENABLE_SCRIPTING
+#ifdef ENABLE_SCRIPTING_REFACTOR
 
     #include "../../../Cheats.h"
     #include "../../../GameState.h"
     #include "../../../world/Park.h"
-    #include "../../Duktape.hpp"
     #include "../../ScriptEngine.h"
 
 namespace OpenRCT2::Scripting
 {
-    class ScCheats
+    class ScCheats;
+    extern ScCheats gScCheats;
+
+    class ScCheats final : public ScBase
     {
     public:
-        static void Register(duk_context* ctx)
+        JSValue New(JSContext* ctx)
         {
-            dukglue_register_property(
-                ctx, &ScCheats::allowArbitraryRideTypeChanges_get, &ScCheats::allowArbitraryRideTypeChanges_set,
-                "allowArbitraryRideTypeChanges");
-            dukglue_register_property(
-                ctx, &ScCheats::allowTrackPlaceInvalidHeights_get, &ScCheats::allowTrackPlaceInvalidHeights_set,
-                "allowTrackPlaceInvalidHeights");
-            dukglue_register_property(
-                ctx, &ScCheats::buildInPauseMode_get, &ScCheats::buildInPauseMode_set, "buildInPauseMode");
-            dukglue_register_property(
-                ctx, &ScCheats::disableAllBreakdowns_get, &ScCheats::disableAllBreakdowns_set, "disableAllBreakdowns");
-            dukglue_register_property(
-                ctx, &ScCheats::disableBrakesFailure_get, &ScCheats::disableBrakesFailure_set, "disableBrakesFailure");
-            dukglue_register_property(
-                ctx, &ScCheats::disableClearanceChecks_get, &ScCheats::disableClearanceChecks_set, "disableClearanceChecks");
-            dukglue_register_property(
-                ctx, &ScCheats::disableLittering_get, &ScCheats::disableLittering_set, "disableLittering");
-            dukglue_register_property(
-                ctx, &ScCheats::disablePlantAging_get, &ScCheats::disablePlantAging_set, "disablePlantAging");
-            dukglue_register_property(
-                ctx, &ScCheats::allowRegularPathAsQueue_get, &ScCheats::allowRegularPathAsQueue_set, "allowRegularPathAsQueue");
-            dukglue_register_property(
-                ctx, &ScCheats::allowSpecialColourSchemes_get, &ScCheats::allowSpecialColourSchemes_set,
-                "allowSpecialColourSchemes");
-            dukglue_register_property(
-                ctx, &ScCheats::disableRideValueAging_get, &ScCheats::disableRideValueAging_set, "disableRideValueAging");
-            dukglue_register_property(
-                ctx, &ScCheats::disableSupportLimits_get, &ScCheats::disableSupportLimits_set, "disableSupportLimits");
-            dukglue_register_property(
-                ctx, &ScCheats::disableTrainLengthLimit_get, &ScCheats::disableTrainLengthLimit_set, "disableTrainLengthLimit");
-            dukglue_register_property(
-                ctx, &ScCheats::disableVandalism_get, &ScCheats::disableVandalism_set, "disableVandalism");
-            dukglue_register_property(
-                ctx, &ScCheats::enableAllDrawableTrackPieces_get, &ScCheats::enableAllDrawableTrackPieces_set,
-                "enableAllDrawableTrackPieces");
-            dukglue_register_property(
-                ctx, &ScCheats::enableChainLiftOnAllTrack_get, &ScCheats::enableChainLiftOnAllTrack_set,
-                "enableChainLiftOnAllTrack");
-            dukglue_register_property(ctx, &ScCheats::fastLiftHill_get, &ScCheats::fastLiftHill_set, "fastLiftHill");
-            dukglue_register_property(ctx, &ScCheats::freezeWeather_get, &ScCheats::freezeWeather_set, "freezeWeather");
-            dukglue_register_property(
-                ctx, &ScCheats::ignoreResearchStatus_get, &ScCheats::ignoreResearchStatus_set, "ignoreResearchStatus");
-            dukglue_register_property(
-                ctx, &ScCheats::ignoreRideIntensity_get, &ScCheats::ignoreRideIntensity_set, "ignoreRideIntensity");
-            dukglue_register_property(ctx, &ScCheats::ignoreRidePrice_get, &ScCheats::ignoreRidePrice_set, "ignoreRidePrice");
-            dukglue_register_property(
-                ctx, &ScCheats::neverendingMarketing_get, &ScCheats::neverendingMarketing_set, "neverendingMarketing");
-            dukglue_register_property(
-                ctx, &ScCheats::forcedParkRating_get, &ScCheats::forcedParkRating_set, "forcedParkRating");
-            dukglue_register_property(ctx, &ScCheats::sandboxMode_get, &ScCheats::sandboxMode_set, "sandboxMode");
-            dukglue_register_property(
-                ctx, &ScCheats::showAllOperatingModes_get, &ScCheats::showAllOperatingModes_set, "showAllOperatingModes");
-            dukglue_register_property(
-                ctx, &ScCheats::showVehiclesFromOtherTrackTypes_get, &ScCheats::showVehiclesFromOtherTrackTypes_set,
-                "showVehiclesFromOtherTrackTypes");
-            dukglue_register_property(
-                ctx, &ScCheats::makeAllDestructible_get, &ScCheats::makeAllDestructible_set, "makeAllDestructible");
+            static constexpr JSCFunctionListEntry funcs[] = {
+                JS_CGETSET_DEF(
+                    "allowArbitraryRideTypeChanges", &ScCheats::allowArbitraryRideTypeChanges_get,
+                    &ScCheats::allowArbitraryRideTypeChanges_set),
+                JS_CGETSET_DEF(
+                    "allowTrackPlaceInvalidHeights", &ScCheats::allowTrackPlaceInvalidHeights_get,
+                    &ScCheats::allowTrackPlaceInvalidHeights_set),
+                JS_CGETSET_DEF("buildInPauseMode", &ScCheats::buildInPauseMode_get, &ScCheats::buildInPauseMode_set),
+                JS_CGETSET_DEF(
+                    "disableAllBreakdowns", &ScCheats::disableAllBreakdowns_get, &ScCheats::disableAllBreakdowns_set),
+                JS_CGETSET_DEF(
+                    "disableBrakesFailure", &ScCheats::disableBrakesFailure_get, &ScCheats::disableBrakesFailure_set),
+                JS_CGETSET_DEF(
+                    "disableClearanceChecks", &ScCheats::disableClearanceChecks_get, &ScCheats::disableClearanceChecks_set),
+                JS_CGETSET_DEF("disableLittering", &ScCheats::disableLittering_get, &ScCheats::disableLittering_set),
+                JS_CGETSET_DEF("disablePlantAging", &ScCheats::disablePlantAging_get, &ScCheats::disablePlantAging_set),
+                JS_CGETSET_DEF(
+                    "allowRegularPathAsQueue", &ScCheats::allowRegularPathAsQueue_get, &ScCheats::allowRegularPathAsQueue_set),
+                JS_CGETSET_DEF(
+                    "allowSpecialColourSchemes", &ScCheats::allowSpecialColourSchemes_get,
+                    &ScCheats::allowSpecialColourSchemes_set),
+                JS_CGETSET_DEF(
+                    "disableRideValueAging", &ScCheats::disableRideValueAging_get, &ScCheats::disableRideValueAging_set),
+                JS_CGETSET_DEF(
+                    "disableSupportLimits", &ScCheats::disableSupportLimits_get, &ScCheats::disableSupportLimits_set),
+                JS_CGETSET_DEF(
+                    "disableTrainLengthLimit", &ScCheats::disableTrainLengthLimit_get, &ScCheats::disableTrainLengthLimit_set),
+                JS_CGETSET_DEF("disableVandalism", &ScCheats::disableVandalism_get, &ScCheats::disableVandalism_set),
+                JS_CGETSET_DEF(
+                    "enableAllDrawableTrackPieces", &ScCheats::enableAllDrawableTrackPieces_get,
+                    &ScCheats::enableAllDrawableTrackPieces_set),
+                JS_CGETSET_DEF(
+                    "enableChainLiftOnAllTrack", &ScCheats::enableChainLiftOnAllTrack_get,
+                    &ScCheats::enableChainLiftOnAllTrack_set),
+                JS_CGETSET_DEF("fastLiftHill", &ScCheats::fastLiftHill_get, &ScCheats::fastLiftHill_set),
+                JS_CGETSET_DEF("freezeWeather", &ScCheats::freezeWeather_get, &ScCheats::freezeWeather_set),
+                JS_CGETSET_DEF(
+                    "ignoreResearchStatus", &ScCheats::ignoreResearchStatus_get, &ScCheats::ignoreResearchStatus_set),
+                JS_CGETSET_DEF("ignoreRideIntensity", &ScCheats::ignoreRideIntensity_get, &ScCheats::ignoreRideIntensity_set),
+                JS_CGETSET_DEF("ignoreRidePrice", &ScCheats::ignoreRidePrice_get, &ScCheats::ignoreRidePrice_set),
+                JS_CGETSET_DEF(
+                    "neverendingMarketing", &ScCheats::neverendingMarketing_get, &ScCheats::neverendingMarketing_set),
+                JS_CGETSET_DEF("forcedParkRating", &ScCheats::forcedParkRating_get, &ScCheats::forcedParkRating_set),
+                JS_CGETSET_DEF("sandboxMode", &ScCheats::sandboxMode_get, &ScCheats::sandboxMode_set),
+                JS_CGETSET_DEF(
+                    "showAllOperatingModes", &ScCheats::showAllOperatingModes_get, &ScCheats::showAllOperatingModes_set),
+                JS_CGETSET_DEF(
+                    "showVehiclesFromOtherTrackTypes", &ScCheats::showVehiclesFromOtherTrackTypes_get,
+                    &ScCheats::showVehiclesFromOtherTrackTypes_set),
+                JS_CGETSET_DEF("makeAllDestructible", &ScCheats::makeAllDestructible_get, &ScCheats::makeAllDestructible_set)
+            };
+            return MakeWithOpaque(ctx, funcs, nullptr);
+        }
+
+        void Register(JSContext* ctx)
+        {
+            RegisterBaseStr(ctx, "Cheats");
         }
 
     private:
-        bool allowArbitraryRideTypeChanges_get()
+        static JSValue allowArbitraryRideTypeChanges_get(JSContext* ctx, JSValue thisVal)
         {
-            return getGameState().cheats.allowArbitraryRideTypeChanges;
+            return JS_NewBool(ctx, getGameState().cheats.allowArbitraryRideTypeChanges);
         }
 
-        void allowArbitraryRideTypeChanges_set(bool value)
+        static JSValue allowArbitraryRideTypeChanges_set(JSContext* ctx, JSValue thisVal, JSValue value)
         {
-            ThrowIfGameStateNotMutable();
-            getGameState().cheats.allowArbitraryRideTypeChanges = value;
+            JS_UNPACK_BOOL(valueBool, ctx, value)
+            JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+            getGameState().cheats.allowArbitraryRideTypeChanges = valueBool;
+
+            return JS_UNDEFINED;
         }
 
-        bool allowTrackPlaceInvalidHeights_get()
+        static JSValue allowTrackPlaceInvalidHeights_get(JSContext* ctx, JSValue thisVal)
         {
-            return getGameState().cheats.allowTrackPlaceInvalidHeights;
+            return JS_NewBool(ctx, getGameState().cheats.allowTrackPlaceInvalidHeights);
         }
 
-        void allowTrackPlaceInvalidHeights_set(bool value)
+        static JSValue allowTrackPlaceInvalidHeights_set(JSContext* ctx, JSValue thisVal, JSValue value)
         {
-            ThrowIfGameStateNotMutable();
-            getGameState().cheats.allowTrackPlaceInvalidHeights = value;
+            JS_UNPACK_BOOL(valueBool, ctx, value)
+            JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+            getGameState().cheats.allowTrackPlaceInvalidHeights = valueBool;
+
+            return JS_UNDEFINED;
         }
 
-        bool buildInPauseMode_get()
+        static JSValue buildInPauseMode_get(JSContext* ctx, JSValue thisVal)
         {
-            return getGameState().cheats.buildInPauseMode;
+            return JS_NewBool(ctx, getGameState().cheats.buildInPauseMode);
         }
 
-        void buildInPauseMode_set(bool value)
+        static JSValue buildInPauseMode_set(JSContext* ctx, JSValue thisVal, JSValue value)
         {
-            ThrowIfGameStateNotMutable();
-            getGameState().cheats.buildInPauseMode = value;
+            JS_UNPACK_BOOL(valueBool, ctx, value)
+            JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+            getGameState().cheats.buildInPauseMode = valueBool;
+
+            return JS_UNDEFINED;
         }
 
-        bool disableAllBreakdowns_get()
+        static JSValue disableAllBreakdowns_get(JSContext* ctx, JSValue thisVal)
         {
-            return getGameState().cheats.disableAllBreakdowns;
+            return JS_NewBool(ctx, getGameState().cheats.disableAllBreakdowns);
         }
 
-        void disableAllBreakdowns_set(bool value)
+        static JSValue disableAllBreakdowns_set(JSContext* ctx, JSValue thisVal, JSValue value)
         {
-            ThrowIfGameStateNotMutable();
-            getGameState().cheats.disableAllBreakdowns = value;
+            JS_UNPACK_BOOL(valueBool, ctx, value)
+            JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+            getGameState().cheats.disableAllBreakdowns = valueBool;
+
+            return JS_UNDEFINED;
         }
 
-        bool disableBrakesFailure_get()
+        static JSValue disableBrakesFailure_get(JSContext* ctx, JSValue thisVal)
         {
-            return getGameState().cheats.disableBrakesFailure;
+            return JS_NewBool(ctx, getGameState().cheats.disableBrakesFailure);
         }
 
-        void disableBrakesFailure_set(bool value)
+        static JSValue disableBrakesFailure_set(JSContext* ctx, JSValue thisVal, JSValue value)
         {
-            ThrowIfGameStateNotMutable();
-            getGameState().cheats.disableBrakesFailure = value;
+            JS_UNPACK_BOOL(valueBool, ctx, value)
+            JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+            getGameState().cheats.disableBrakesFailure = valueBool;
+
+            return JS_UNDEFINED;
         }
 
-        bool disableClearanceChecks_get()
+        static JSValue disableClearanceChecks_get(JSContext* ctx, JSValue thisVal)
         {
-            return getGameState().cheats.disableClearanceChecks;
+            return JS_NewBool(ctx, getGameState().cheats.disableClearanceChecks);
         }
 
-        void disableClearanceChecks_set(bool value)
+        static JSValue disableClearanceChecks_set(JSContext* ctx, JSValue thisVal, JSValue value)
         {
-            ThrowIfGameStateNotMutable();
-            getGameState().cheats.disableClearanceChecks = value;
+            JS_UNPACK_BOOL(valueBool, ctx, value)
+            JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+            getGameState().cheats.disableClearanceChecks = valueBool;
+
+            return JS_UNDEFINED;
         }
 
-        bool disableLittering_get()
+        static JSValue disableLittering_get(JSContext* ctx, JSValue thisVal)
         {
-            return getGameState().cheats.disableLittering;
+            return JS_NewBool(ctx, getGameState().cheats.disableLittering);
         }
 
-        void disableLittering_set(bool value)
+        static JSValue disableLittering_set(JSContext* ctx, JSValue thisVal, JSValue value)
         {
-            ThrowIfGameStateNotMutable();
-            getGameState().cheats.disableLittering = value;
+            JS_UNPACK_BOOL(valueBool, ctx, value);
+            JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+            getGameState().cheats.disableLittering = valueBool;
+
+            return JS_UNDEFINED;
         }
 
-        bool disablePlantAging_get()
+        static JSValue disablePlantAging_get(JSContext* ctx, JSValue thisVal)
         {
-            return getGameState().cheats.disablePlantAging;
+            return JS_NewBool(ctx, getGameState().cheats.disablePlantAging);
         }
 
-        void disablePlantAging_set(bool value)
+        static JSValue disablePlantAging_set(JSContext* ctx, JSValue thisVal, JSValue value)
         {
-            ThrowIfGameStateNotMutable();
-            getGameState().cheats.disablePlantAging = value;
+            JS_UNPACK_BOOL(valueBool, ctx, value);
+            JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+            getGameState().cheats.disablePlantAging = valueBool;
+
+            return JS_UNDEFINED;
         }
 
-        bool allowRegularPathAsQueue_get()
+        static JSValue allowRegularPathAsQueue_get(JSContext* ctx, JSValue thisVal)
         {
-            return getGameState().cheats.allowRegularPathAsQueue;
+            return JS_NewBool(ctx, getGameState().cheats.allowRegularPathAsQueue);
         }
 
-        void allowRegularPathAsQueue_set(bool value)
+        static JSValue allowRegularPathAsQueue_set(JSContext* ctx, JSValue thisVal, JSValue value)
         {
-            ThrowIfGameStateNotMutable();
-            getGameState().cheats.allowRegularPathAsQueue = value;
+            JS_UNPACK_BOOL(valueBool, ctx, value);
+            JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+            getGameState().cheats.allowRegularPathAsQueue = valueBool;
+
+            return JS_UNDEFINED;
         }
 
-        bool allowSpecialColourSchemes_get()
+        static JSValue allowSpecialColourSchemes_get(JSContext* ctx, JSValue thisVal)
         {
-            return getGameState().cheats.allowSpecialColourSchemes;
+            return JS_NewBool(ctx, getGameState().cheats.allowSpecialColourSchemes);
         }
 
-        void allowSpecialColourSchemes_set(bool value)
+        static JSValue allowSpecialColourSchemes_set(JSContext* ctx, JSValue thisVal, JSValue value)
         {
-            ThrowIfGameStateNotMutable();
-            getGameState().cheats.allowSpecialColourSchemes = value;
+            JS_UNPACK_BOOL(valueBool, ctx, value);
+            JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+            getGameState().cheats.allowSpecialColourSchemes = valueBool;
+
+            return JS_UNDEFINED;
         }
 
-        bool disableRideValueAging_get()
+        static JSValue disableRideValueAging_get(JSContext* ctx, JSValue thisVal)
         {
-            return getGameState().cheats.disableRideValueAging;
+            return JS_NewBool(ctx, getGameState().cheats.disableRideValueAging);
         }
 
-        void disableRideValueAging_set(bool value)
+        static JSValue disableRideValueAging_set(JSContext* ctx, JSValue thisVal, JSValue value)
         {
-            ThrowIfGameStateNotMutable();
-            getGameState().cheats.disableRideValueAging = value;
+            JS_UNPACK_BOOL(valueBool, ctx, value);
+            JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+            getGameState().cheats.disableRideValueAging = valueBool;
+
+            return JS_UNDEFINED;
         }
 
-        bool disableSupportLimits_get()
+        static JSValue disableSupportLimits_get(JSContext* ctx, JSValue thisVal)
         {
-            return getGameState().cheats.disableSupportLimits;
+            return JS_NewBool(ctx, getGameState().cheats.disableSupportLimits);
         }
 
-        void disableSupportLimits_set(bool value)
+        static JSValue disableSupportLimits_set(JSContext* ctx, JSValue thisVal, JSValue value)
         {
-            ThrowIfGameStateNotMutable();
-            getGameState().cheats.disableSupportLimits = value;
+            JS_UNPACK_BOOL(valueBool, ctx, value);
+            JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+            getGameState().cheats.disableSupportLimits = valueBool;
+
+            return JS_UNDEFINED;
         }
 
-        bool disableTrainLengthLimit_get()
+        static JSValue disableTrainLengthLimit_get(JSContext* ctx, JSValue thisVal)
         {
-            return getGameState().cheats.disableTrainLengthLimit;
+            return JS_NewBool(ctx, getGameState().cheats.disableTrainLengthLimit);
         }
 
-        void disableTrainLengthLimit_set(bool value)
+        static JSValue disableTrainLengthLimit_set(JSContext* ctx, JSValue thisVal, JSValue value)
         {
-            ThrowIfGameStateNotMutable();
-            getGameState().cheats.disableTrainLengthLimit = value;
+            JS_UNPACK_BOOL(valueBool, ctx, value);
+            JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+            getGameState().cheats.disableTrainLengthLimit = valueBool;
+
+            return JS_UNDEFINED;
         }
 
-        bool disableVandalism_get()
+        static JSValue disableVandalism_get(JSContext* ctx, JSValue thisVal)
         {
-            return getGameState().cheats.disableVandalism;
+            return JS_NewBool(ctx, getGameState().cheats.disableVandalism);
         }
 
-        void disableVandalism_set(bool value)
+        static JSValue disableVandalism_set(JSContext* ctx, JSValue thisVal, JSValue value)
         {
-            ThrowIfGameStateNotMutable();
-            getGameState().cheats.disableVandalism = value;
+            JS_UNPACK_BOOL(valueBool, ctx, value);
+            JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+            getGameState().cheats.disableVandalism = valueBool;
+
+            return JS_UNDEFINED;
         }
 
-        bool enableAllDrawableTrackPieces_get()
+        static JSValue enableAllDrawableTrackPieces_get(JSContext* ctx, JSValue thisVal)
         {
-            return getGameState().cheats.enableAllDrawableTrackPieces;
+            return JS_NewBool(ctx, getGameState().cheats.enableAllDrawableTrackPieces);
         }
 
-        void enableAllDrawableTrackPieces_set(bool value)
+        static JSValue enableAllDrawableTrackPieces_set(JSContext* ctx, JSValue thisVal, JSValue value)
         {
-            ThrowIfGameStateNotMutable();
-            getGameState().cheats.enableAllDrawableTrackPieces = value;
+            JS_UNPACK_BOOL(valueBool, ctx, value);
+            JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+            getGameState().cheats.enableAllDrawableTrackPieces = valueBool;
+
+            return JS_UNDEFINED;
         }
 
-        bool enableChainLiftOnAllTrack_get()
+        static JSValue enableChainLiftOnAllTrack_get(JSContext* ctx, JSValue thisVal)
         {
-            return getGameState().cheats.enableChainLiftOnAllTrack;
+            return JS_NewBool(ctx, getGameState().cheats.enableChainLiftOnAllTrack);
         }
 
-        void enableChainLiftOnAllTrack_set(bool value)
+        static JSValue enableChainLiftOnAllTrack_set(JSContext* ctx, JSValue thisVal, JSValue value)
         {
-            ThrowIfGameStateNotMutable();
-            getGameState().cheats.enableChainLiftOnAllTrack = value;
+            JS_UNPACK_BOOL(valueBool, ctx, value);
+            JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+            getGameState().cheats.enableChainLiftOnAllTrack = valueBool;
+
+            return JS_UNDEFINED;
         }
 
-        bool fastLiftHill_get()
+        static JSValue fastLiftHill_get(JSContext* ctx, JSValue thisVal)
         {
-            return getGameState().cheats.unlockOperatingLimits;
+            return JS_NewBool(ctx, getGameState().cheats.unlockOperatingLimits);
         }
 
-        void fastLiftHill_set(bool value)
+        static JSValue fastLiftHill_set(JSContext* ctx, JSValue thisVal, JSValue value)
         {
-            ThrowIfGameStateNotMutable();
-            getGameState().cheats.unlockOperatingLimits = value;
+            JS_UNPACK_BOOL(valueBool, ctx, value);
+            JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+            getGameState().cheats.unlockOperatingLimits = valueBool;
+
+            return JS_UNDEFINED;
         }
 
-        bool freezeWeather_get()
+        static JSValue freezeWeather_get(JSContext* ctx, JSValue thisVal)
         {
-            return getGameState().cheats.freezeWeather;
+            return JS_NewBool(ctx, getGameState().cheats.freezeWeather);
         }
 
-        void freezeWeather_set(bool value)
+        static JSValue freezeWeather_set(JSContext* ctx, JSValue thisVal, JSValue value)
         {
-            ThrowIfGameStateNotMutable();
-            getGameState().cheats.freezeWeather = value;
+            JS_UNPACK_BOOL(valueBool, ctx, value);
+            JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+            getGameState().cheats.freezeWeather = valueBool;
+
+            return JS_UNDEFINED;
         }
 
-        bool ignoreResearchStatus_get()
+        static JSValue ignoreResearchStatus_get(JSContext* ctx, JSValue thisVal)
         {
-            return getGameState().cheats.ignoreResearchStatus;
+            return JS_NewBool(ctx, getGameState().cheats.ignoreResearchStatus);
         }
 
-        void ignoreResearchStatus_set(bool value)
+        static JSValue ignoreResearchStatus_set(JSContext* ctx, JSValue thisVal, JSValue value)
         {
-            ThrowIfGameStateNotMutable();
-            getGameState().cheats.ignoreResearchStatus = value;
+            JS_UNPACK_BOOL(valueBool, ctx, value)
+            JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+            getGameState().cheats.ignoreResearchStatus = valueBool;
+
+            return JS_UNDEFINED;
         }
 
-        bool ignoreRideIntensity_get()
+        static JSValue ignoreRideIntensity_get(JSContext* ctx, JSValue thisVal)
         {
-            return getGameState().cheats.ignoreRideIntensity;
+            return JS_NewBool(ctx, getGameState().cheats.ignoreRideIntensity);
         }
 
-        void ignoreRideIntensity_set(bool value)
+        static JSValue ignoreRideIntensity_set(JSContext* ctx, JSValue thisVal, JSValue value)
         {
-            ThrowIfGameStateNotMutable();
-            getGameState().cheats.ignoreRideIntensity = value;
+            JS_UNPACK_BOOL(valueBool, ctx, value)
+            JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+            getGameState().cheats.ignoreRideIntensity = valueBool;
+
+            return JS_UNDEFINED;
         }
 
-        bool ignoreRidePrice_get()
+        static JSValue ignoreRidePrice_get(JSContext* ctx, JSValue thisVal)
         {
-            return getGameState().cheats.ignorePrice;
+            return JS_NewBool(ctx, getGameState().cheats.ignorePrice);
         }
 
-        void ignoreRidePrice_set(bool value)
+        static JSValue ignoreRidePrice_set(JSContext* ctx, JSValue thisVal, JSValue value)
         {
-            ThrowIfGameStateNotMutable();
-            getGameState().cheats.ignorePrice = value;
+            JS_UNPACK_BOOL(valueBool, ctx, value);
+            JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+            getGameState().cheats.ignorePrice = valueBool;
+
+            return JS_UNDEFINED;
         }
 
-        bool neverendingMarketing_get()
+        static JSValue neverendingMarketing_get(JSContext* ctx, JSValue thisVal)
         {
-            return getGameState().cheats.neverendingMarketing;
+            return JS_NewBool(ctx, getGameState().cheats.neverendingMarketing);
         }
 
-        void neverendingMarketing_set(bool value)
+        static JSValue neverendingMarketing_set(JSContext* ctx, JSValue thisVal, JSValue value)
         {
-            ThrowIfGameStateNotMutable();
-            getGameState().cheats.neverendingMarketing = value;
+            JS_UNPACK_BOOL(valueBool, ctx, value);
+            JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+            getGameState().cheats.neverendingMarketing = valueBool;
+
+            return JS_UNDEFINED;
         }
 
-        int32_t forcedParkRating_get()
+        static JSValue forcedParkRating_get(JSContext* ctx, JSValue thisVal)
         {
-            return getGameState().cheats.forcedParkRating;
+            return JS_NewInt32(ctx, getGameState().cheats.forcedParkRating);
         }
 
-        void forcedParkRating_set(int32_t value)
+        static JSValue forcedParkRating_set(JSContext* ctx, JSValue thisVal, JSValue value)
         {
-            ThrowIfGameStateNotMutable();
-            int32_t adjusted = std::max(-1, std::min(value, 999));
+            JS_UNPACK_INT32(valueInt, ctx, value);
+            JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+            int32_t adjusted = std::max(-1, std::min(valueInt, 999));
             getGameState().cheats.forcedParkRating = adjusted;
             Park::SetForcedRating(adjusted);
+
+            return JS_UNDEFINED;
         }
 
-        bool sandboxMode_get()
+        static JSValue sandboxMode_get(JSContext* ctx, JSValue thisVal)
         {
-            return getGameState().cheats.sandboxMode;
+            return JS_NewBool(ctx, getGameState().cheats.sandboxMode);
         }
 
-        void sandboxMode_set(bool value)
+        static JSValue sandboxMode_set(JSContext* ctx, JSValue thisVal, JSValue value)
         {
-            ThrowIfGameStateNotMutable();
-            getGameState().cheats.sandboxMode = value;
+            JS_UNPACK_BOOL(valueBool, ctx, value);
+            JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+            getGameState().cheats.sandboxMode = valueBool;
+
+            return JS_UNDEFINED;
         }
 
-        bool showAllOperatingModes_get()
+        static JSValue showAllOperatingModes_get(JSContext* ctx, JSValue thisVal)
         {
-            return getGameState().cheats.showAllOperatingModes;
+            return JS_NewBool(ctx, getGameState().cheats.showAllOperatingModes);
         }
 
-        void showAllOperatingModes_set(bool value)
+        static JSValue showAllOperatingModes_set(JSContext* ctx, JSValue thisVal, JSValue value)
         {
-            ThrowIfGameStateNotMutable();
-            getGameState().cheats.showAllOperatingModes = value;
+            JS_UNPACK_BOOL(valueBool, ctx, value);
+            JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+            getGameState().cheats.showAllOperatingModes = valueBool;
+
+            return JS_UNDEFINED;
         }
 
-        bool showVehiclesFromOtherTrackTypes_get()
+        static JSValue showVehiclesFromOtherTrackTypes_get(JSContext* ctx, JSValue thisVal)
         {
-            return getGameState().cheats.showVehiclesFromOtherTrackTypes;
+            return JS_NewBool(ctx, getGameState().cheats.showVehiclesFromOtherTrackTypes);
         }
 
-        void showVehiclesFromOtherTrackTypes_set(bool value)
+        static JSValue showVehiclesFromOtherTrackTypes_set(JSContext* ctx, JSValue thisVal, JSValue value)
         {
-            ThrowIfGameStateNotMutable();
-            getGameState().cheats.showVehiclesFromOtherTrackTypes = value;
+            JS_UNPACK_BOOL(valueBool, ctx, value);
+            JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+            getGameState().cheats.showVehiclesFromOtherTrackTypes = valueBool;
+
+            return JS_UNDEFINED;
         }
 
-        bool makeAllDestructible_get()
+        static JSValue makeAllDestructible_get(JSContext* ctx, JSValue thisVal)
         {
-            return getGameState().cheats.makeAllDestructible;
+            return JS_NewBool(ctx, getGameState().cheats.makeAllDestructible);
         }
 
-        void makeAllDestructible_set(bool value)
+        static JSValue makeAllDestructible_set(JSContext* ctx, JSValue thisVal, JSValue value)
         {
-            ThrowIfGameStateNotMutable();
-            getGameState().cheats.makeAllDestructible = value;
+            JS_UNPACK_BOOL(valueBool, ctx, value);
+            JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+            getGameState().cheats.makeAllDestructible = valueBool;
+
+            return JS_UNDEFINED;
         }
     };
 } // namespace OpenRCT2::Scripting

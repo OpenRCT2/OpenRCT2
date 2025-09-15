@@ -448,6 +448,7 @@ void ScriptEngine::Initialise()
 }
 
 JSRuntime* ScriptEngine::_runtime = nullptr;
+ScCheats Scripting::gScCheats;
 ScConfiguration Scripting::gScConfiguration;
 ScConsole Scripting::gScConsole;
 ScContext Scripting::gScContext;
@@ -458,7 +459,7 @@ void ScriptEngine::RegisterClasses(JSContext* ctx)
 {
     // TODO (mber) register C functions
     // ScAward::Register(ctx);
-    // ScCheats::Register(ctx);
+    gScCheats.Register(ctx);
     // ScClimate::Register(ctx);
     // ScClimateState::Register(ctx);
     gScConfiguration.Register(ctx);
@@ -540,7 +541,7 @@ void ScriptEngine::FreeContext(JSContext* ctx) const
 void ScriptEngine::InitialiseContext(JSContext* ctx) const
 {
     JSValue glb = JS_GetGlobalObject(ctx);
-    // dukglue_register_global(ctx, std::make_shared<ScCheats>(), "cheats");
+    JS_SetPropertyStr(ctx, glb, "cheats", gScCheats.New(ctx));
     // dukglue_register_global(ctx, std::make_shared<ScClimate>(), "climate");
     JS_SetPropertyStr(ctx, glb, "console", gScConsole.New(ctx, _console));
     JS_SetPropertyStr(ctx, glb, "context", gScContext.New(ctx));

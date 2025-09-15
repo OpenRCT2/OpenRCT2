@@ -626,6 +626,7 @@
     <ClInclude Include="scripting\IconNames.hpp" />
     <ClInclude Include="scripting\Plugin.h" />
     <ClInclude Include="scripting\ScriptEngine.h" />
+    <ClInclude Include="scripting\ScriptUtil.hpp" />
     <ClInclude Include="scripting\SoundNames.hpp" />
     <ClInclude Include="SpriteIds.h" />
     <ClInclude Include="System.hpp" />
