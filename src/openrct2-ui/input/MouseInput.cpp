@@ -123,7 +123,7 @@ namespace OpenRCT2
             GameHandleInputMouse(screenCoords, state);
         }
 
-        if (gInputFlags.has(InputFlag::unk5))
+        if (gInputFlags.has(InputFlag::rightMousePressed))
         {
             GameHandleInputMouse(screenCoords, state);
         }
@@ -393,7 +393,7 @@ namespace OpenRCT2
                             break;
                         }
 
-                        if (!gInputFlags.has(InputFlag::unk4))
+                        if (!gInputFlags.has(InputFlag::leftMousePressed))
                             break;
 
                         if (w->classification != _dragWidget.window_classification || w->number != _dragWidget.window_number
@@ -423,7 +423,7 @@ namespace OpenRCT2
                                     w->OnToolUp(gCurrentToolWidget.widget_index, screenCoords);
                                 }
                             }
-                            else if (!gInputFlags.has(InputFlag::unk4))
+                            else if (!gInputFlags.has(InputFlag::leftMousePressed))
                             {
                                 ViewportInteractionLeftClick(screenCoords);
                             }
@@ -559,7 +559,7 @@ namespace OpenRCT2
         {
             WindowUnfollowSprite(w);
         }
-        // gInputFlags.set(InputFlag::unk5);
+        gInputFlags.set(InputFlag::rightMousePressed);
     }
 
     static void InputViewportDragContinue()
@@ -1091,7 +1091,7 @@ namespace OpenRCT2
                     w = windowMgr->FindByNumber(gCurrentToolWidget.window_classification, gCurrentToolWidget.window_number);
                     if (w != nullptr)
                     {
-                        gInputFlags.set(InputFlag::unk4);
+                        gInputFlags.set(InputFlag::leftMousePressed);
                         w->OnToolDown(gCurrentToolWidget.widget_index, screenCoords);
                     }
                 }

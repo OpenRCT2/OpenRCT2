@@ -86,7 +86,7 @@ namespace OpenRCT2::Ui::Windows
 
         // Check for cursor movement
         _cursorHoldDuration++;
-        if (abs(cursorChange.x) > 5 || abs(cursorChange.y) > 5 || (gInputFlags.has(InputFlag::unk5))
+        if (abs(cursorChange.x) > 5 || abs(cursorChange.y) > 5 || (gInputFlags.has(InputFlag::rightMousePressed))
             || InputGetState() == InputState::ViewportRight)
             _cursorHoldDuration = 0;
 
