@@ -525,7 +525,7 @@ static void ConsoleCommandStaff(InteractiveConsole& console, const arguments_t& 
                     console.WriteLineError("Invalid staff ID");
                     return;
                 }
-                if (staff->AssignedStaffType != StaffType::Entertainer)
+                if (!staff->IsEntertainer())
                 {
                     console.WriteLineError("Specified staff is not entertainer");
                     return;

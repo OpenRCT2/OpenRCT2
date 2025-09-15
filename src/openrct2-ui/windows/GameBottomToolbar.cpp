@@ -273,7 +273,7 @@ namespace OpenRCT2::Ui::Windows
 
                     auto clipCoords = ScreenCoordsXY{ 10, 19 };
                     auto* staff = peep->As<Staff>();
-                    if (staff != nullptr && staff->AssignedStaffType == StaffType::Entertainer)
+                    if (staff != nullptr && staff->IsEntertainer())
                     {
                         clipCoords.y += 3;
                     }

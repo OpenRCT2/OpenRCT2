@@ -518,7 +518,7 @@ namespace OpenRCT2::Ui::Windows
                             if (auto* staff = peep->As<Staff>(); staff != nullptr)
                             {
                                 spriteType = staff->AnimationGroup;
-                                if (staff->AssignedStaffType == StaffType::Entertainer)
+                                if (staff->IsEntertainer())
                                 {
                                     clipCoords.y += 3;
                                 }

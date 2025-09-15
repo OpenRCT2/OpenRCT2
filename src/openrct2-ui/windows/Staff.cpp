@@ -142,7 +142,7 @@ namespace OpenRCT2::Ui::Windows
             if (staff == nullptr)
                 return;
 
-            if (staff->AssignedStaffType == StaffType::Entertainer)
+            if (staff->IsEntertainer())
                 _availableCostumes = getAvailableCostumeStrings(AnimationPeepType::Entertainer);
 
             ViewportInit();
@@ -164,7 +164,7 @@ namespace OpenRCT2::Ui::Windows
             if (staff == nullptr)
                 return;
 
-            if (staff->AssignedStaffType == StaffType::Entertainer)
+            if (staff->IsEntertainer())
                 _availableCostumes = getAvailableCostumeStrings(AnimationPeepType::Entertainer);
         }
 
@@ -601,7 +601,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            if (staff->Is<Staff>() && staff->AssignedStaffType == StaffType::Entertainer)
+            if (staff->Is<Staff>() && staff->IsEntertainer())
                 screenCoords.y++;
 
             auto& objManager = GetContext()->GetObjectManager();

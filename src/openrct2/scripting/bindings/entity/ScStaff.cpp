@@ -81,7 +81,7 @@ namespace OpenRCT2::Scripting
                 peep->AnimationObjectIndex = findPeepAnimationsIndexForType(AnimationPeepType::Handyman);
                 peep->AnimationGroup = PeepAnimationGroup::Normal;
             }
-            else if (value == "mechanic" && peep->AssignedStaffType != StaffType::Mechanic)
+            else if (value == "mechanic" && !peep->IsMechanic())
             {
                 peep->AssignedStaffType = StaffType::Mechanic;
                 peep->AnimationObjectIndex = findPeepAnimationsIndexForType(AnimationPeepType::Mechanic);
@@ -93,7 +93,7 @@ namespace OpenRCT2::Scripting
                 peep->AnimationObjectIndex = findPeepAnimationsIndexForType(AnimationPeepType::Security);
                 peep->AnimationGroup = PeepAnimationGroup::Normal;
             }
-            else if (value == "entertainer" && peep->AssignedStaffType != StaffType::Entertainer)
+            else if (value == "entertainer" && !peep->IsEntertainer())
             {
                 peep->AssignedStaffType = StaffType::Entertainer;
                 peep->AnimationObjectIndex = findPeepAnimationsIndexForType(AnimationPeepType::Entertainer);
@@ -510,7 +510,7 @@ namespace OpenRCT2::Scripting
         auto& scriptEngine = GetContext()->GetScriptEngine();
         auto* ctx = scriptEngine.GetContext();
         auto peep = GetMechanic();
-        if (peep != nullptr && peep->AssignedStaffType == StaffType::Mechanic)
+        if (peep != nullptr && peep->IsMechanic())
         {
             duk_push_uint(ctx, peep->StaffRidesFixed);
         }
@@ -526,7 +526,7 @@ namespace OpenRCT2::Scripting
         auto& scriptEngine = GetContext()->GetScriptEngine();
         auto* ctx = scriptEngine.GetContext();
         auto peep = GetMechanic();
-        if (peep != nullptr && peep->AssignedStaffType == StaffType::Mechanic)
+        if (peep != nullptr && peep->IsMechanic())
         {
             duk_push_uint(ctx, peep->StaffRidesInspected);
         }
