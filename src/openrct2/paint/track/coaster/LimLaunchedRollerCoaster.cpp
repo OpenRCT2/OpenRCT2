@@ -684,7 +684,7 @@ static void LimLaunchedRCTrackLeftTwistDownToUp(
                         PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -739,7 +739,7 @@ static void LimLaunchedRCTrackLeftTwistDownToUp(
                         PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height);
+            PaintUtilSetGeneralSupportHeight(session, height + 16);
             break;
     }
 }
@@ -846,7 +846,7 @@ static void LimLaunchedRCTrackRightTwistDownToUp(
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -901,7 +901,7 @@ static void LimLaunchedRCTrackRightTwistDownToUp(
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height);
+            PaintUtilSetGeneralSupportHeight(session, height + 16);
             break;
     }
 }
@@ -961,7 +961,7 @@ static void LimLaunchedRCTrackLeftTwistUpToDown(
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height);
+            PaintUtilSetGeneralSupportHeight(session, height + 16);
             break;
         case 1:
             switch (direction)
@@ -1007,7 +1007,7 @@ static void LimLaunchedRCTrackLeftTwistUpToDown(
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
@@ -1123,7 +1123,7 @@ static void LimLaunchedRCTrackRightTwistUpToDown(
                         PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            PaintUtilSetGeneralSupportHeight(session, height + 16);
             break;
         case 1:
             switch (direction)
@@ -1169,7 +1169,7 @@ static void LimLaunchedRCTrackRightTwistUpToDown(
                         PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
             switch (direction)
