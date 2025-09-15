@@ -814,7 +814,7 @@ static constexpr float kWindowScrollLocations[][2] = {
     void WindowUpdateViewportRideMusic()
     {
         RideAudio::ClearAllViewportInstances();
-        g_music_tracking_viewport = nullptr;
+        gMusicTrackingViewport = nullptr;
 
         for (auto it = g_window_list.rbegin(); it != g_window_list.rend(); it++)
         {
@@ -823,7 +823,7 @@ static constexpr float kWindowScrollLocations[][2] = {
             if (viewport == nullptr || !(viewport->flags & VIEWPORT_FLAG_SOUND_ON))
                 continue;
 
-            g_music_tracking_viewport = viewport;
+            gMusicTrackingViewport = viewport;
             gWindowAudioExclusive = w;
 
             if (viewport->zoom <= ZoomLevel{ 0 })

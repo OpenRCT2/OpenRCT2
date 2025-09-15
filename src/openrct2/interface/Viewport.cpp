@@ -67,7 +67,7 @@ namespace OpenRCT2
     uint8_t gShowConstructionRightsRefCount;
 
     static std::list<Viewport> _viewports;
-    Viewport* g_music_tracking_viewport;
+    Viewport* gMusicTrackingViewport;
 
     static std::unique_ptr<JobPool> _paintJobs;
     static std::vector<PaintSession*> _paintColumns;

@@ -1151,7 +1151,7 @@ void PeepUpdateCrowdNoise()
     if (gLegacyScene == LegacyScene::scenarioEditor)
         return;
 
-    auto viewport = g_music_tracking_viewport;
+    auto viewport = gMusicTrackingViewport;
     if (viewport == nullptr)
         return;
 

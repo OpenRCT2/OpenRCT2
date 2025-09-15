@@ -181,7 +181,7 @@ namespace OpenRCT2
     extern uint8_t gShowConstructionRightsRefCount;
 
     // rct2: 0x014234BC
-    extern Viewport* g_music_tracking_viewport;
+    extern Viewport* gMusicTrackingViewport;
 
     void ViewportInitAll();
     std::optional<ScreenCoordsXY> centre_2d_coordinates(const CoordsXYZ& loc, Viewport* viewport);
