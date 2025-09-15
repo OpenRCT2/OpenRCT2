@@ -62,6 +62,7 @@ enum class TrackGroup : uint8_t
     straight,
     stationEnd,
     liftHill,
+    liftHillFlat,
     liftHillSteep,
     liftHillCurve,
     flatRollBanking,
@@ -743,6 +744,7 @@ ResultWithMessage TrackRemoveStationElement(const CoordsXYZD& loc, RideId rideIn
 bool TrackTypeHasSpeedSetting(OpenRCT2::TrackElemType trackType);
 bool TrackTypeIsHelix(OpenRCT2::TrackElemType trackType);
 std::optional<CoordsXYZD> GetTrackSegmentOrigin(const CoordsXYE& posEl);
+bool TrackPitchIsUp(TrackPitch pitch);
 
 constexpr bool TrackPieceDirectionIsDiagonal(const uint8_t direction)
 {

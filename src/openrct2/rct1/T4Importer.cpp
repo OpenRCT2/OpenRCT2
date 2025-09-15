@@ -13,6 +13,7 @@
 #include "../core/MemoryStream.h"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
+#include "../park/Legacy.h"
 #include "../rct1/RCT1.h"
 #include "../rct1/Tables.h"
 #include "../rct12/TD46.h"
@@ -39,6 +40,9 @@ namespace OpenRCT2::RCT1
     private:
         OpenRCT2::MemoryStream _stream;
         std::string _name;
+
+        bool _hadAChainLiftBefore = false;
+        bool _isConvertedWaterRide = false;
 
     public:
         TD4Importer()
@@ -268,8 +272,29 @@ namespace OpenRCT2::RCT1
                     TrackDesignTrackElement trackElement{};
                     trackElement.type = RCT1TrackTypeToOpenRCT2(t4TrackElement.Type, td->trackAndVehicle.rtdIndex);
                     RCT12::convertFromTD46Flags(trackElement, t4TrackElement.Flags);
+                    if (trackElement.HasFlag(TrackDesignTrackElementFlag::hasChain))
+                    {
+                        _hadAChainLiftBefore = true;
+                    }
+                    if (RideTypeHasConvertibleRollers(td->trackAndVehicle.rtdIndex))
+                    {
+                        _isConvertedWaterRide = true;
+                        if (TrackTypeMustBeMadeChained(td->trackAndVehicle.rtdIndex, trackElement.type))
+                        {
+                            trackElement.SetFlag(TrackDesignTrackElementFlag::hasChain);
+                        }
+                    }
                     td->trackElements.push_back(trackElement);
                 }
+            }
+
+            /*
+             * If a water ride already had a chain lift, it was hacked, and thus we shouldn’t touch the lift speed,
+             * or the behaviour of imported saves would change.
+             */
+            if (_isConvertedWaterRide && !_hadAChainLiftBefore)
+            {
+                td->operation.liftHillSpeed = 0;
             }
 
             td->gameStateData.name = _name;

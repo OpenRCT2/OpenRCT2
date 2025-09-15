@@ -116,6 +116,9 @@ namespace OpenRCT2
         ObjectEntryIndex _pathToQueueSurfaceMap[kMaxPathObjects];
         ObjectEntryIndex _pathToRailingsMap[kMaxPathObjects];
 
+        OpenRCT2::BitSet<Limits::kMaxRidesInPark> _hadAChainLiftBefore{};
+        OpenRCT2::BitSet<Limits::kMaxRidesInPark> _isConvertedWaterRide{};
+
         void ThrowIfIncompatibleVersion()
         {
             const auto& header = _os->getHeader();
@@ -1189,7 +1192,8 @@ namespace OpenRCT2
 
             auto found = os.readWriteChunk(
                 ParkFileChunkType::TILES,
-                [pathToSurfaceMap, pathToQueueSurfaceMap, pathToRailingsMap, &os, &gameState](OrcaStream::ChunkStream& cs) {
+                [pathToSurfaceMap, pathToQueueSurfaceMap, pathToRailingsMap, &os, &gameState,
+                 this](OrcaStream::ChunkStream& cs) {
                     cs.readWrite(gameState.mapSize.x);
                     cs.readWrite(gameState.mapSize.y);
 
@@ -1233,6 +1237,24 @@ namespace OpenRCT2
                                             trackElement->GetRideType(), trackType, os.getHeader().targetVersion))
                                     {
                                         it.element->SetInvisible(true);
+                                    }
+                                    if (os.getHeader().targetVersion < kWaterRidesWithLiftsVersion)
+                                    {
+                                        if (trackElement->HasChain())
+                                        {
+                                            auto rideIndex = trackElement->GetRideIndex().ToUnderlying();
+                                            _hadAChainLiftBefore[rideIndex] = true;
+                                        }
+
+                                        if (RideTypeHasConvertibleRollers(trackElement->GetRideType()))
+                                        {
+                                            auto rideIndex = trackElement->GetRideIndex().ToUnderlying();
+                                            _isConvertedWaterRide[rideIndex] = true;
+                                            if (TrackTypeMustBeMadeChained(trackElement->GetRideType(), trackType))
+                                            {
+                                                trackElement->SetHasChain(true);
+                                            }
+                                        }
                                     }
                                     if (os.getHeader().targetVersion < kBlockBrakeImprovementsVersion)
                                     {
@@ -1410,7 +1432,7 @@ namespace OpenRCT2
                         }
                     }
                 }
-                cs.readWriteVector(rideIds, [&cs, &version, &os](RideId& rideId) {
+                cs.readWriteVector(rideIds, [&cs, &version, &os, this](RideId& rideId) {
                     // Ride ID
                     cs.readWrite(rideId);
 
@@ -1517,7 +1539,20 @@ namespace OpenRCT2
 
                     // Operation
                     cs.readWrite(ride.operationOption);
-                    cs.readWrite(ride.liftHillSpeed);
+                    /*
+                     * If a water ride already had a chain lift, it was hacked, and thus we shouldn’t touch the lift speed,
+                     * or the behaviour of imported saves would change.
+                     */
+                    if (version < kWaterRidesWithLiftsVersion && _isConvertedWaterRide[ride.id.ToUnderlying()]
+                        && !_hadAChainLiftBefore[ride.id.ToUnderlying()])
+                    {
+                        cs.ignore<uint8_t>();
+                        ride.liftHillSpeed = 0;
+                    }
+                    else
+                    {
+                        cs.readWrite(ride.liftHillSpeed);
+                    }
                     cs.readWrite(ride.numCircuits);
 
                     // Special

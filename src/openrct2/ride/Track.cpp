@@ -778,3 +778,22 @@ std::optional<CoordsXYZD> GetTrackSegmentOrigin(const CoordsXYE& posEl)
 
     return CoordsXYZD(coords, direction);
 }
+
+bool TrackPitchIsUp(TrackPitch pitch)
+{
+    switch (pitch)
+    {
+        case TrackPitch::Up25:
+        case TrackPitch::Up60:
+        case TrackPitch::Up90:
+            return true;
+
+        case TrackPitch::None:
+        case TrackPitch::Down25:
+        case TrackPitch::Down60:
+        case TrackPitch::Down90:
+            return false;
+    }
+
+    return false;
+}

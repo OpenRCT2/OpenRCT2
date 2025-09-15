@@ -741,6 +741,13 @@ namespace OpenRCT2::Ui::Windows
             {
                 disabledWidgets |= (1uLL << WIDX_CHAIN_LIFT);
             }
+            if (!IsTrackEnabled(TrackGroup::liftHillFlat))
+            {
+                if (!TrackPitchIsUp(_previousTrackPitchEnd) && !TrackPitchIsUp(_currentTrackPitchEnd))
+                {
+                    disabledWidgets |= (1uLL << WIDX_CHAIN_LIFT);
+                }
+            }
             if (!IsTrackEnabled(TrackGroup::liftHillSteep))
             {
                 if (_previousTrackPitchEnd == TrackPitch::Up60 || _currentTrackPitchEnd == TrackPitch::Up60)
@@ -4947,6 +4954,15 @@ namespace OpenRCT2::Ui::Windows
 
         OpenRCT2::TrackElemType trackType = std::get<1>(updated_element);
         rideIndex = _currentRideIndex;
+
+        // For water rides (which don’t have flat lift), turn off the lift as soon as the track
+        // is flat on front _and_ back.
+        if (!IsTrackEnabled(TrackGroup::liftHillFlat) && _previousTrackPitchEnd == TrackPitch::None
+            && _currentTrackPitchEnd == TrackPitch::None)
+        {
+            _currentTrackHasLiftHill = false;
+        }
+
         if (_currentTrackHasLiftHill)
         {
             liftHillAndInvertedState.set(LiftHillAndInverted::liftHill);

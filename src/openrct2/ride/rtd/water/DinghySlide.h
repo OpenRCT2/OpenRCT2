@@ -26,7 +26,7 @@ constexpr RideTypeDescriptor DinghySlideRTD =
         {
             .trackStyle = TrackStyle::dinghySlide,
             .supportType = MetalSupportType::tubes,
-            .enabledTrackGroups = { TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve },
+            .enabledTrackGroups = { TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::liftHillFlat, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve },
             .extraTrackGroups = {},
             .icon = SPR_RIDE_CONSTRUCTION_U_SHAPED_TRACK,
             .tooltip = STR_RIDE_CONSTRUCTION_U_SHAPED_OPEN_TRACK_TIP,
