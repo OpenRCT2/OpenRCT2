@@ -601,7 +601,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            if (staff->Is<Staff>() && staff->isEntertainer())
+            if (staff->isEntertainer())
                 screenCoords.y++;
 
             auto& objManager = GetContext()->GetObjectManager();
