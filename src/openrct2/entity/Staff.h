@@ -69,7 +69,7 @@ public:
     void Update();
     void Tick128UpdateStaff();
     bool IsMechanic() const;
-    bool IsEntertainer() const;
+    bool isEntertainer() const;
     bool IsPatrolAreaSet(const CoordsXY& coords) const;
     bool IsLocationInPatrol(const CoordsXY& loc) const;
     bool IsLocationOnPatrolEdge(const CoordsXY& loc) const;

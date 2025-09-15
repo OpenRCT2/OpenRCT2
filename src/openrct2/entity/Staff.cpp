@@ -1728,7 +1728,7 @@ bool Staff::IsMechanic() const
     return AssignedStaffType == StaffType::Mechanic;
 }
 
-bool Staff::IsEntertainer() const
+bool Staff::isEntertainer() const
 {
     return AssignedStaffType == StaffType::Entertainer;
 }

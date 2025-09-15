@@ -93,7 +93,7 @@ namespace OpenRCT2::Scripting
                 peep->AnimationObjectIndex = findPeepAnimationsIndexForType(AnimationPeepType::Security);
                 peep->AnimationGroup = PeepAnimationGroup::Normal;
             }
-            else if (value == "entertainer" && !peep->IsEntertainer())
+            else if (value == "entertainer" && !peep->isEntertainer())
             {
                 peep->AssignedStaffType = StaffType::Entertainer;
                 peep->AnimationObjectIndex = findPeepAnimationsIndexForType(AnimationPeepType::Entertainer);

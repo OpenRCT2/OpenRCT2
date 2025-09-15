@@ -422,7 +422,7 @@ namespace OpenRCT2::Ui::Windows
                     }
 
                     auto staffOrderIcon_x = nameColumnSize + 20;
-                    if (!peep->IsEntertainer())
+                    if (!peep->isEntertainer())
                     {
                         auto staffOrders = peep->StaffOrders;
                         auto staffOrderSprite = GetStaffOrderBaseSprite(GetSelectedStaffType());
