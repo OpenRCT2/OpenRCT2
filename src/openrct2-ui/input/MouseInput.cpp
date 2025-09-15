@@ -559,7 +559,6 @@ namespace OpenRCT2
         {
             WindowUnfollowSprite(w);
         }
-        gInputFlags.set(InputFlag::rightMousePressed);
     }
 
     static void InputViewportDragContinue()
