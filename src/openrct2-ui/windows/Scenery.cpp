@@ -1105,10 +1105,18 @@ namespace OpenRCT2::Ui::Windows
     private:
         int32_t GetMinimumHeight() const
         {
-            // Minimum window height: title, one scenery button, status bar, padding
-            int32_t newMinHeight = getTitleBarTargetHeight() + kSceneryButtonHeight + kDescriptionHeight + 2 * kTabMargin;
-            newMinHeight += static_cast<int32_t>(1 + (_tabEntries.size() / GetMaxTabCountInARow())) * kTabHeight;
+            // Minimum window height: title, status bar, padding
+            int32_t newMinHeight = getTitleBarTargetHeight() + kDescriptionHeight + 2 * kTabMargin;
+
+            // Room for the search/filter widget
             newMinHeight += widgets[WIDX_FILTER_TEXT_BOX].height() + 2 * kInputMargin;
+
+            // Fit *all* rows of tabs
+            newMinHeight += static_cast<int32_t>(1 + (_tabEntries.size() / GetMaxTabCountInARow())) * kTabHeight;
+
+            // And at least 1.5 rows of scenery items
+            newMinHeight += 1.5 * kSceneryButtonHeight;
+
             return newMinHeight;
         }
 
