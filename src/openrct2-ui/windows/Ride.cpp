@@ -4169,9 +4169,9 @@ namespace OpenRCT2::Ui::Windows
         void SetTrackColourScheme(const ScreenCoordsXY& screenPos)
         {
             auto newColourScheme = static_cast<uint8_t>(_rideColour);
-            auto info = GetMapCoordinatesFromPos(screenPos, EnumsToFlags(ViewportInteractionItem::Ride));
+            auto info = GetMapCoordinatesFromPos(screenPos, EnumsToFlags(ViewportInteractionItem::ride));
 
-            if (info.interactionType != ViewportInteractionItem::Ride)
+            if (info.interactionType != ViewportInteractionItem::ride)
                 return;
             if (info.Element->GetType() != TileElementType::Track)
                 return;
@@ -5515,15 +5515,15 @@ namespace OpenRCT2::Ui::Windows
             _collectTrackDesignScenery = true; // Default to true in case user does not select anything valid
 
             constexpr auto interactionFlags = EnumsToFlags(
-                ViewportInteractionItem::Scenery, ViewportInteractionItem::Footpath, ViewportInteractionItem::Wall,
-                ViewportInteractionItem::LargeScenery);
+                ViewportInteractionItem::scenery, ViewportInteractionItem::footpath, ViewportInteractionItem::wall,
+                ViewportInteractionItem::largeScenery);
             auto info = GetMapCoordinatesFromPos(screenCoords, interactionFlags);
             switch (info.interactionType)
             {
-                case ViewportInteractionItem::Scenery:
-                case ViewportInteractionItem::LargeScenery:
-                case ViewportInteractionItem::Wall:
-                case ViewportInteractionItem::Footpath:
+                case ViewportInteractionItem::scenery:
+                case ViewportInteractionItem::largeScenery:
+                case ViewportInteractionItem::wall:
+                case ViewportInteractionItem::footpath:
                     _collectTrackDesignScenery = !TrackDesignSaveContainsTileElement(info.Element);
                     TrackDesignSaveSelectTileElement(info.interactionType, info.Loc, info.Element, _collectTrackDesignScenery);
                     break;
@@ -5540,15 +5540,15 @@ namespace OpenRCT2::Ui::Windows
             _lastSceneryY = screenCoords.y;
 
             constexpr auto interactionFlags = EnumsToFlags(
-                ViewportInteractionItem::Scenery, ViewportInteractionItem::Footpath, ViewportInteractionItem::Wall,
-                ViewportInteractionItem::LargeScenery);
+                ViewportInteractionItem::scenery, ViewportInteractionItem::footpath, ViewportInteractionItem::wall,
+                ViewportInteractionItem::largeScenery);
             auto info = GetMapCoordinatesFromPos(screenCoords, interactionFlags);
             switch (info.interactionType)
             {
-                case ViewportInteractionItem::Scenery:
-                case ViewportInteractionItem::LargeScenery:
-                case ViewportInteractionItem::Wall:
-                case ViewportInteractionItem::Footpath:
+                case ViewportInteractionItem::scenery:
+                case ViewportInteractionItem::largeScenery:
+                case ViewportInteractionItem::wall:
+                case ViewportInteractionItem::footpath:
                     TrackDesignSaveSelectTileElement(info.interactionType, info.Loc, info.Element, _collectTrackDesignScenery);
                     break;
                 default:

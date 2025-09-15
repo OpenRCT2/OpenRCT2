@@ -301,7 +301,7 @@ namespace OpenRCT2::Drawing::LightFx
 
                     TileElement* tileElement = nullptr;
 
-                    ViewportInteractionItem interactionType = ViewportInteractionItem::None;
+                    ViewportInteractionItem interactionType = ViewportInteractionItem::none;
 
                     // NOTE: When the flag VIEWPORT_FLAG_RENDERING_INHIBITED is set we can not create a paint graph.
                     if ((vp.flags & VIEWPORT_FLAG_RENDERING_INHIBITED) == 0)
@@ -335,7 +335,7 @@ namespace OpenRCT2::Drawing::LightFx
                     int32_t minDist = 0;
                     int32_t baseHeight = (-999) * kCoordsZStep;
 
-                    if (interactionType != ViewportInteractionItem::Entity && tileElement != nullptr)
+                    if (interactionType != ViewportInteractionItem::entity && tileElement != nullptr)
                     {
                         baseHeight = tileElement->GetBaseZ();
                     }

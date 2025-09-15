@@ -466,9 +466,9 @@ namespace OpenRCT2::Ui::Windows
     };
 
     static constexpr int32_t ViewportInteractionFlags = EnumsToFlags(
-        ViewportInteractionItem::Terrain, ViewportInteractionItem::Ride, ViewportInteractionItem::Scenery,
-        ViewportInteractionItem::Footpath, ViewportInteractionItem::PathAddition, ViewportInteractionItem::ParkEntrance,
-        ViewportInteractionItem::Wall, ViewportInteractionItem::LargeScenery, ViewportInteractionItem::Banner);
+        ViewportInteractionItem::terrain, ViewportInteractionItem::ride, ViewportInteractionItem::scenery,
+        ViewportInteractionItem::footpath, ViewportInteractionItem::pathAddition, ViewportInteractionItem::parkEntrance,
+        ViewportInteractionItem::wall, ViewportInteractionItem::largeScenery, ViewportInteractionItem::banner);
     // clang-format off
 
 static uint64_t PageHoldDownWidgets[] = {

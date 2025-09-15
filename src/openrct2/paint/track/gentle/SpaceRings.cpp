@@ -47,7 +47,7 @@ static void PaintSpaceRingsStructure(
     if (rideEntry == nullptr || (ride.numStations != 0 && vehicleIndex >= ride.numTrains))
     {
         session.CurrentlyDrawnEntity = nullptr;
-        session.InteractionType = ViewportInteractionItem::Ride;
+        session.InteractionType = ViewportInteractionItem::ride;
         return;
     }
 
@@ -56,7 +56,7 @@ static void PaintSpaceRingsStructure(
     auto vehicle = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[vehicleIndex]);
     if (ride.lifecycleFlags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
     {
-        session.InteractionType = ViewportInteractionItem::Entity;
+        session.InteractionType = ViewportInteractionItem::entity;
         session.CurrentlyDrawnEntity = vehicle;
         frameNum += static_cast<int8_t>(vehicle->flatRideAnimationFrame) * 4;
     }
@@ -86,7 +86,7 @@ static void PaintSpaceRingsStructure(
     }
 
     session.CurrentlyDrawnEntity = nullptr;
-    session.InteractionType = ViewportInteractionItem::Ride;
+    session.InteractionType = ViewportInteractionItem::ride;
 }
 
 /** rct2: 0x00767C40 */

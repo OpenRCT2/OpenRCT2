@@ -47,13 +47,13 @@ namespace OpenRCT2::Ui
             return position;
         }
         auto viewport = window->viewport;
-        auto info = GetMapCoordinatesFromPosWindow(window, screenCoords, EnumsToFlags(ViewportInteractionItem::Footpath));
-        if (info.interactionType != ViewportInteractionItem::Footpath
+        auto info = GetMapCoordinatesFromPosWindow(window, screenCoords, EnumsToFlags(ViewportInteractionItem::footpath));
+        if (info.interactionType != ViewportInteractionItem::footpath
             || !(viewport->flags & (VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_HIDE_VERTICAL)))
         {
             info = GetMapCoordinatesFromPosWindow(
-                window, screenCoords, EnumsToFlags(ViewportInteractionItem::Terrain, ViewportInteractionItem::Footpath));
-            if (info.interactionType == ViewportInteractionItem::None)
+                window, screenCoords, EnumsToFlags(ViewportInteractionItem::terrain, ViewportInteractionItem::footpath));
+            if (info.interactionType == ViewportInteractionItem::none)
             {
                 auto position = info.Loc;
                 position.SetNull();
@@ -66,7 +66,7 @@ namespace OpenRCT2::Ui
         auto myTileElement = info.Element;
         auto position = info.Loc.ToTileCentre();
         auto z = 0;
-        if (info.interactionType == ViewportInteractionItem::Footpath)
+        if (info.interactionType == ViewportInteractionItem::footpath)
         {
             z = myTileElement->GetBaseZ();
             if (myTileElement->AsPath()->IsSloped())
@@ -79,7 +79,7 @@ namespace OpenRCT2::Ui
 
         for (int32_t i = 0; i < 5; i++)
         {
-            if (info.interactionType != ViewportInteractionItem::Footpath)
+            if (info.interactionType != ViewportInteractionItem::footpath)
             {
                 z = TileElementHeight(position);
             }
@@ -146,9 +146,9 @@ namespace OpenRCT2::Ui
             return ret;
         }
         auto viewport = window->viewport;
-        auto info = GetMapCoordinatesFromPosWindow(window, screenCoords, EnumsToFlags(ViewportInteractionItem::Ride));
+        auto info = GetMapCoordinatesFromPosWindow(window, screenCoords, EnumsToFlags(ViewportInteractionItem::ride));
         *tileElement = info.Element;
-        if (info.interactionType == ViewportInteractionItem::Ride
+        if (info.interactionType == ViewportInteractionItem::ride
             && viewport->flags & (VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_HIDE_VERTICAL)
             && (*tileElement)->GetType() == TileElementType::Entrance)
         {
@@ -166,8 +166,8 @@ namespace OpenRCT2::Ui
 
         info = GetMapCoordinatesFromPosWindow(
             window, screenCoords,
-            EnumsToFlags(ViewportInteractionItem::Terrain, ViewportInteractionItem::Footpath, ViewportInteractionItem::Ride));
-        if (info.interactionType == ViewportInteractionItem::Ride && (*tileElement)->GetType() == TileElementType::Entrance)
+            EnumsToFlags(ViewportInteractionItem::terrain, ViewportInteractionItem::footpath, ViewportInteractionItem::ride));
+        if (info.interactionType == ViewportInteractionItem::ride && (*tileElement)->GetType() == TileElementType::Entrance)
         {
             uint32_t directions = (*tileElement)->AsEntrance()->GetDirections();
             if (directions & 0x0F)

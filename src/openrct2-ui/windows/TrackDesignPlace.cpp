@@ -117,7 +117,7 @@ namespace OpenRCT2::Ui::Windows
         void OnClose() override
         {
             ClearProvisional();
-            ViewportSetVisibility(ViewportVisibility::Default);
+            ViewportSetVisibility(ViewportVisibility::standard);
             MapInvalidateMapSelectionTiles();
             gMapSelectFlags.unset(MapSelectFlag::enableConstruct);
             gMapSelectFlags.unset(MapSelectFlag::enableArrow);
@@ -457,11 +457,11 @@ namespace OpenRCT2::Ui::Windows
             if (!_trackPlaceCtrlState && im.IsModifierKeyPressed(ModifierKey::ctrl))
             {
                 constexpr auto interactionFlags = EnumsToFlags(
-                    ViewportInteractionItem::Terrain, ViewportInteractionItem::Ride, ViewportInteractionItem::Scenery,
-                    ViewportInteractionItem::Footpath, ViewportInteractionItem::Wall, ViewportInteractionItem::LargeScenery);
+                    ViewportInteractionItem::terrain, ViewportInteractionItem::ride, ViewportInteractionItem::scenery,
+                    ViewportInteractionItem::footpath, ViewportInteractionItem::wall, ViewportInteractionItem::largeScenery);
 
                 auto info = GetMapCoordinatesFromPos(screenCoords, interactionFlags);
-                if (info.interactionType == ViewportInteractionItem::Terrain)
+                if (info.interactionType == ViewportInteractionItem::terrain)
                 {
                     _trackPlaceCtrlZ = floor2(surfaceElement->GetBaseZ(), kCoordsZStep);
 

@@ -255,7 +255,7 @@ namespace OpenRCT2::Ui::Windows
         {
             SceneryRemoveGhostToolPlacement();
             HideGridlines();
-            ViewportSetVisibility(ViewportVisibility::Default);
+            ViewportSetVisibility(ViewportVisibility::standard);
 
             if (gWindowSceneryScatterEnabled)
             {
@@ -2107,12 +2107,12 @@ namespace OpenRCT2::Ui::Windows
             if (placementData.GroundFlags & ELEMENT_IS_UNDERGROUND)
             {
                 // Set underground on
-                ViewportSetVisibility(ViewportVisibility::UndergroundViewGhostOn);
+                ViewportSetVisibility(ViewportVisibility::undergroundViewGhostOn);
             }
             else
             {
                 // Set underground off
-                ViewportSetVisibility(ViewportVisibility::UndergroundViewGhostOff);
+                ViewportSetVisibility(ViewportVisibility::undergroundViewGhostOff);
             }
 
             gSceneryGhostType |= SCENERY_GHOST_FLAG_0;
@@ -2193,12 +2193,12 @@ namespace OpenRCT2::Ui::Windows
             if (placementData.GroundFlags & ELEMENT_IS_UNDERGROUND)
             {
                 // Set underground on
-                ViewportSetVisibility(ViewportVisibility::UndergroundViewGhostOn);
+                ViewportSetVisibility(ViewportVisibility::undergroundViewGhostOn);
             }
             else
             {
                 // Set underground off
-                ViewportSetVisibility(ViewportVisibility::UndergroundViewGhostOff);
+                ViewportSetVisibility(ViewportVisibility::undergroundViewGhostOff);
             }
 
             gSceneryGhostType |= SCENERY_GHOST_FLAG_3;
@@ -2232,13 +2232,13 @@ namespace OpenRCT2::Ui::Windows
         void RepaintSceneryToolDown(const ScreenCoordsXY& screenCoords, WidgetIndex widgetIndex)
         {
             constexpr auto flag = EnumsToFlags(
-                ViewportInteractionItem::Scenery, ViewportInteractionItem::Wall, ViewportInteractionItem::LargeScenery,
-                ViewportInteractionItem::Banner);
+                ViewportInteractionItem::scenery, ViewportInteractionItem::wall, ViewportInteractionItem::largeScenery,
+                ViewportInteractionItem::banner);
             auto info = GetMapCoordinatesFromPos(screenCoords, flag);
             auto& gameState = getGameState();
             switch (info.interactionType)
             {
-                case ViewportInteractionItem::Scenery:
+                case ViewportInteractionItem::scenery:
                 {
                     auto* sceneryEntry = info.Element->AsSmallScenery()->GetEntry();
 
@@ -2254,7 +2254,7 @@ namespace OpenRCT2::Ui::Windows
                     GameActions::Execute(&repaintScenery, gameState);
                     break;
                 }
-                case ViewportInteractionItem::Wall:
+                case ViewportInteractionItem::wall:
                 {
                     auto* scenery_entry = info.Element->AsWall()->GetEntry();
 
@@ -2269,7 +2269,7 @@ namespace OpenRCT2::Ui::Windows
                     GameActions::Execute(&repaintScenery, gameState);
                     break;
                 }
-                case ViewportInteractionItem::LargeScenery:
+                case ViewportInteractionItem::largeScenery:
                 {
                     auto* sceneryEntry = info.Element->AsLargeScenery()->GetEntry();
 
@@ -2285,7 +2285,7 @@ namespace OpenRCT2::Ui::Windows
                     GameActions::Execute(&repaintScenery, gameState);
                     break;
                 }
-                case ViewportInteractionItem::Banner:
+                case ViewportInteractionItem::banner:
                 {
                     auto banner = info.Element->AsBanner()->GetBanner();
                     if (banner != nullptr)
@@ -2310,12 +2310,12 @@ namespace OpenRCT2::Ui::Windows
         void SceneryEyedropperToolDown(const ScreenCoordsXY& screenCoords, WidgetIndex widgetIndex)
         {
             constexpr auto flag = EnumsToFlags(
-                ViewportInteractionItem::Scenery, ViewportInteractionItem::Wall, ViewportInteractionItem::LargeScenery,
-                ViewportInteractionItem::Banner, ViewportInteractionItem::PathAddition);
+                ViewportInteractionItem::scenery, ViewportInteractionItem::wall, ViewportInteractionItem::largeScenery,
+                ViewportInteractionItem::banner, ViewportInteractionItem::pathAddition);
             auto info = GetMapCoordinatesFromPos(screenCoords, flag);
             switch (info.interactionType)
             {
-                case ViewportInteractionItem::Scenery:
+                case ViewportInteractionItem::scenery:
                 {
                     SmallSceneryElement* sceneryElement = info.Element->AsSmallScenery();
                     auto entryIndex = sceneryElement->GetEntryIndex();
@@ -2329,7 +2329,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     break;
                 }
-                case ViewportInteractionItem::Wall:
+                case ViewportInteractionItem::wall:
                 {
                     auto entryIndex = info.Element->AsWall()->GetEntryIndex();
                     auto* sceneryEntry = ObjectManager::GetObjectEntry<WallSceneryEntry>(entryIndex);
@@ -2342,7 +2342,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     break;
                 }
-                case ViewportInteractionItem::LargeScenery:
+                case ViewportInteractionItem::largeScenery:
                 {
                     auto entryIndex = info.Element->AsLargeScenery()->GetEntryIndex();
                     auto* sceneryEntry = ObjectManager::GetObjectEntry<LargeSceneryEntry>(entryIndex);
@@ -2355,7 +2355,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     break;
                 }
-                case ViewportInteractionItem::Banner:
+                case ViewportInteractionItem::banner:
                 {
                     auto banner = info.Element->AsBanner()->GetBanner();
                     if (banner != nullptr)
@@ -2369,7 +2369,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     break;
                 }
-                case ViewportInteractionItem::PathAddition:
+                case ViewportInteractionItem::pathAddition:
                 {
                     auto entryIndex = info.Element->AsPath()->GetAdditionEntryIndex();
                     auto* pathAdditionEntry = ObjectManager::GetObjectEntry<PathAdditionEntry>(entryIndex);
@@ -2401,12 +2401,12 @@ namespace OpenRCT2::Ui::Windows
                     {
                         // CTRL pressed
                         constexpr auto flag = EnumsToFlags(
-                            ViewportInteractionItem::Terrain, ViewportInteractionItem::Ride, ViewportInteractionItem::Scenery,
-                            ViewportInteractionItem::Footpath, ViewportInteractionItem::Wall,
-                            ViewportInteractionItem::LargeScenery);
+                            ViewportInteractionItem::terrain, ViewportInteractionItem::ride, ViewportInteractionItem::scenery,
+                            ViewportInteractionItem::footpath, ViewportInteractionItem::wall,
+                            ViewportInteractionItem::largeScenery);
                         auto info = GetMapCoordinatesFromPos(screenPos, flag);
 
-                        if (info.interactionType != ViewportInteractionItem::None)
+                        if (info.interactionType != ViewportInteractionItem::none)
                         {
                             gSceneryCtrlPressed = true;
                             gSceneryCtrlPressZ = info.Element->GetBaseZ();
@@ -2579,12 +2579,12 @@ namespace OpenRCT2::Ui::Windows
             // If CTRL not pressed
             if (!gSceneryCtrlPressed)
             {
-                constexpr auto flag = EnumsToFlags(ViewportInteractionItem::Terrain, ViewportInteractionItem::Water);
+                constexpr auto flag = EnumsToFlags(ViewportInteractionItem::terrain, ViewportInteractionItem::water);
 
                 auto info = GetMapCoordinatesFromPos(screenPos, flag);
                 gridPos = info.Loc;
 
-                if (info.interactionType == ViewportInteractionItem::None)
+                if (info.interactionType == ViewportInteractionItem::none)
                 {
                     gridPos.SetNull();
                     return;
@@ -2674,11 +2674,11 @@ namespace OpenRCT2::Ui::Windows
             Sub6E1F34UpdateScreenCoordsAndButtonsPressed(false, screenPos);
 
             // Path bits
-            constexpr auto flag = EnumsToFlags(ViewportInteractionItem::Footpath, ViewportInteractionItem::PathAddition);
+            constexpr auto flag = EnumsToFlags(ViewportInteractionItem::footpath, ViewportInteractionItem::pathAddition);
             auto info = GetMapCoordinatesFromPos(screenPos, flag);
             gridPos = info.Loc;
 
-            if (info.interactionType == ViewportInteractionItem::None)
+            if (info.interactionType == ViewportInteractionItem::none)
             {
                 gridPos.SetNull();
                 return;
@@ -2901,11 +2901,11 @@ namespace OpenRCT2::Ui::Windows
             Sub6E1F34UpdateScreenCoordsAndButtonsPressed(false, screenPos);
 
             // Banner
-            constexpr auto flag = EnumsToFlags(ViewportInteractionItem::Footpath, ViewportInteractionItem::PathAddition);
+            constexpr auto flag = EnumsToFlags(ViewportInteractionItem::footpath, ViewportInteractionItem::pathAddition);
             auto info = GetMapCoordinatesFromPos(screenPos, flag);
             gridPos = info.Loc;
 
-            if (info.interactionType == ViewportInteractionItem::None)
+            if (info.interactionType == ViewportInteractionItem::none)
             {
                 gridPos.SetNull();
                 return;

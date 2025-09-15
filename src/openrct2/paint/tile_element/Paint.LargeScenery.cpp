@@ -351,7 +351,7 @@ void PaintLargeScenery(PaintSession& session, uint8_t direction, uint16_t height
 
     auto& tile = sceneryEntry->tiles[sequenceNum];
 
-    session.InteractionType = ViewportInteractionItem::LargeScenery;
+    session.InteractionType = ViewportInteractionItem::largeScenery;
 
     auto isGhost = false;
     ImageId imageTemplate;
@@ -362,7 +362,7 @@ void PaintLargeScenery(PaintSession& session, uint8_t direction, uint16_t height
     }
     else if (tileElement.IsGhost())
     {
-        session.InteractionType = ViewportInteractionItem::None;
+        session.InteractionType = ViewportInteractionItem::none;
         imageTemplate = ImageId().WithRemap(FilterPaletteID::PaletteGhost);
         isGhost = true;
     }

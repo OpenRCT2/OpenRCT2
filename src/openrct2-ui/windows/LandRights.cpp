@@ -463,8 +463,8 @@ namespace OpenRCT2::Ui::Windows
             gMapSelectFlags.unset(MapSelectFlag::enable);
 
             auto info = GetMapCoordinatesFromPos(
-                screenCoords, EnumsToFlags(ViewportInteractionItem::Terrain, ViewportInteractionItem::Water));
-            if (info.interactionType == ViewportInteractionItem::None)
+                screenCoords, EnumsToFlags(ViewportInteractionItem::terrain, ViewportInteractionItem::water));
+            if (info.interactionType == ViewportInteractionItem::none)
             {
                 if (_landRightsCost != kMoney64Undefined)
                 {

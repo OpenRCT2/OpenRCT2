@@ -102,7 +102,7 @@ static void BlankTilesPaint(PaintSession& session, int32_t x, int32_t y)
 
     session.SpritePosition.x = x;
     session.SpritePosition.y = y;
-    session.InteractionType = ViewportInteractionItem::None;
+    session.InteractionType = ViewportInteractionItem::none;
     PaintAddImageAsParent(session, ImageId(SPR_BLANK_TILE), { 0, 0, 16 }, { 32, 32, -1 });
 }
 
@@ -174,7 +174,7 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
 
         session.SpritePosition.x = coords.x;
         session.SpritePosition.y = coords.y;
-        session.InteractionType = ViewportInteractionItem::None;
+        session.InteractionType = ViewportInteractionItem::none;
 
         PaintAddImageAsParent(session, imageId, { 0, 0, arrowZ }, { { 0, 0, arrowZ + 18 }, { 32, 32, -1 } });
     }

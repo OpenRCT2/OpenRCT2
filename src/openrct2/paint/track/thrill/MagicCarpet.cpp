@@ -193,7 +193,7 @@ static void PaintMagicCarpetStructure(
     if (vehicle != nullptr)
     {
         swing = vehicle->flatRideAnimationFrame;
-        session.InteractionType = ViewportInteractionItem::Entity;
+        session.InteractionType = ViewportInteractionItem::entity;
         session.CurrentlyDrawnEntity = vehicle;
     }
 
@@ -211,7 +211,7 @@ static void PaintMagicCarpetStructure(
     PaintMagicCarpetFrame(session, Plane::Front, direction, offset, bb);
 
     session.CurrentlyDrawnEntity = nullptr;
-    session.InteractionType = ViewportInteractionItem::Ride;
+    session.InteractionType = ViewportInteractionItem::ride;
 }
 
 static void PaintMagicCarpet(

@@ -123,7 +123,7 @@ static void PathPaintQueueBanner(
 
     uint8_t direction = pathElement.GetQueueBannerDirection();
     // Draw ride sign
-    session.InteractionType = ViewportInteractionItem::Ride;
+    session.InteractionType = ViewportInteractionItem::ride;
     if (pathElement.IsSloped())
     {
         if (pathElement.GetSlopeDirection() == direction)
@@ -183,10 +183,10 @@ static void PathPaintQueueBanner(
             { 0, 0, height + 7 }, { boundBoxOffsets, { 1, 1, 21 } });
     }
 
-    session.InteractionType = ViewportInteractionItem::Footpath;
+    session.InteractionType = ViewportInteractionItem::footpath;
     if (imageTemplate.IsRemap())
     {
-        session.InteractionType = ViewportInteractionItem::None;
+        session.InteractionType = ViewportInteractionItem::none;
     }
 }
 
@@ -777,7 +777,7 @@ void PaintPath(PaintSession& session, uint16_t height, const PathElement& tileEl
 {
     PROFILED_FUNCTION();
 
-    session.InteractionType = ViewportInteractionItem::Footpath;
+    session.InteractionType = ViewportInteractionItem::footpath;
 
     ImageId imageTemplate, sceneryImageTemplate;
     if (gTrackDesignSaveMode)
@@ -806,7 +806,7 @@ void PaintPath(PaintSession& session, uint16_t height, const PathElement& tileEl
 
     if (tileElement.IsGhost())
     {
-        session.InteractionType = ViewportInteractionItem::None;
+        session.InteractionType = ViewportInteractionItem::none;
         imageTemplate = ImageId().WithRemap(FilterPaletteID::PaletteGhost);
     }
     else if (session.SelectedElement == reinterpret_cast<const TileElement*>(&tileElement))

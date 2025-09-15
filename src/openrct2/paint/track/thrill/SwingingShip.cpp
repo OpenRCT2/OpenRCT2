@@ -99,7 +99,7 @@ static void PaintSwingingShipStructure(
     if (ride.lifecycleFlags & RIDE_LIFECYCLE_ON_TRACK && !ride.vehicles[0].IsNull())
     {
         vehicle = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[0]);
-        session.InteractionType = ViewportInteractionItem::Entity;
+        session.InteractionType = ViewportInteractionItem::entity;
         session.CurrentlyDrawnEntity = vehicle;
     }
 
@@ -151,7 +151,7 @@ static void PaintSwingingShipStructure(
     PaintAddImageAsChild(session, imageId, offset, bb);
 
     session.CurrentlyDrawnEntity = nullptr;
-    session.InteractionType = ViewportInteractionItem::Ride;
+    session.InteractionType = ViewportInteractionItem::ride;
 }
 
 static void PaintSwingingShip(

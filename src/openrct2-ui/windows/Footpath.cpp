@@ -224,7 +224,7 @@ namespace OpenRCT2::Ui::Windows
         void OnClose() override
         {
             FootpathUpdateProvisional();
-            ViewportSetVisibility(ViewportVisibility::Default);
+            ViewportSetVisibility(ViewportVisibility::standard);
             MapInvalidateMapSelectionTiles();
             gMapSelectFlags.unset(MapSelectFlag::enableConstruct);
 
@@ -537,7 +537,7 @@ namespace OpenRCT2::Ui::Windows
                 return { _footpathPlaceZ, kTileSlopeFlat };
 
             auto info = GetMapCoordinatesFromPos(
-                screenCoords, EnumsToFlags(ViewportInteractionItem::Terrain, ViewportInteractionItem::Footpath));
+                screenCoords, EnumsToFlags(ViewportInteractionItem::terrain, ViewportInteractionItem::footpath));
 
             return FootpathGetPlacementFromInfo(info);
         }
@@ -814,12 +814,12 @@ namespace OpenRCT2::Ui::Windows
                 if (im.IsModifierKeyPressed(ModifierKey::ctrl))
                 {
                     constexpr auto interactionFlags = EnumsToFlags(
-                        ViewportInteractionItem::Terrain, ViewportInteractionItem::Ride, ViewportInteractionItem::Scenery,
-                        ViewportInteractionItem::Footpath, ViewportInteractionItem::Wall,
-                        ViewportInteractionItem::LargeScenery);
+                        ViewportInteractionItem::terrain, ViewportInteractionItem::ride, ViewportInteractionItem::scenery,
+                        ViewportInteractionItem::footpath, ViewportInteractionItem::wall,
+                        ViewportInteractionItem::largeScenery);
 
                     auto info = GetMapCoordinatesFromPos(screenCoords, interactionFlags);
-                    if (info.interactionType != ViewportInteractionItem::None)
+                    if (info.interactionType != ViewportInteractionItem::none)
                     {
                         const bool allowInvalidHeights = getGameState().cheats.allowTrackPlaceInvalidHeights;
                         const auto heightStep = kCoordsZStep * (!allowInvalidHeights ? 2 : 1);
@@ -872,9 +872,9 @@ namespace OpenRCT2::Ui::Windows
             if (!_footpathPlaceCtrlState)
             {
                 auto info = GetMapCoordinatesFromPos(
-                    screenCoords, EnumsToFlags(ViewportInteractionItem::Terrain, ViewportInteractionItem::Footpath));
+                    screenCoords, EnumsToFlags(ViewportInteractionItem::terrain, ViewportInteractionItem::footpath));
 
-                if (info.interactionType == ViewportInteractionItem::None)
+                if (info.interactionType == ViewportInteractionItem::none)
                     return std::nullopt;
 
                 mapCoords = info.Loc;
@@ -920,7 +920,7 @@ namespace OpenRCT2::Ui::Windows
 
         FootpathPlacementResult FootpathGetPlacementFromInfo(const InteractionInfo& info)
         {
-            if (info.interactionType == ViewportInteractionItem::None || info.Element == nullptr)
+            if (info.interactionType == ViewportInteractionItem::none || info.Element == nullptr)
             {
                 gMapSelectFlags.unset(MapSelectFlag::enable);
                 FootpathUpdateProvisional();
@@ -929,7 +929,7 @@ namespace OpenRCT2::Ui::Windows
 
             switch (info.interactionType)
             {
-                case ViewportInteractionItem::Terrain:
+                case ViewportInteractionItem::terrain:
                 {
                     auto surfaceElement = info.Element->AsSurface();
                     if (surfaceElement != nullptr)
@@ -938,7 +938,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     break;
                 }
-                case ViewportInteractionItem::Footpath:
+                case ViewportInteractionItem::footpath:
                 {
                     auto pathElement = info.Element->AsPath();
                     if (pathElement != nullptr)
@@ -1199,7 +1199,7 @@ namespace OpenRCT2::Ui::Windows
 
                         if (gFootpathGroundFlags & ELEMENT_IS_UNDERGROUND)
                         {
-                            ViewportSetVisibility(ViewportVisibility::UndergroundViewOn);
+                            ViewportSetVisibility(ViewportVisibility::undergroundViewOn);
                         }
 
                         _footpathConstructFromPosition = footpathLoc;
@@ -1706,11 +1706,11 @@ namespace OpenRCT2::Ui::Windows
 
             if (gFootpathGroundFlags & ELEMENT_IS_UNDERGROUND)
             {
-                ViewportSetVisibility(ViewportVisibility::UndergroundViewOn);
+                ViewportSetVisibility(ViewportVisibility::undergroundViewOn);
             }
             else
             {
-                ViewportSetVisibility(ViewportVisibility::UndergroundViewOff);
+                ViewportSetVisibility(ViewportVisibility::undergroundViewOff);
             }
         }
 

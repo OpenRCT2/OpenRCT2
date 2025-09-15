@@ -705,7 +705,7 @@ static inline void PaintAttachedPS(RenderTarget& rt, PaintStruct* ps, uint32_t v
 static inline void PaintDrawStruct(PaintSession& session, PaintStruct* ps)
 {
     auto screenPos = ps->ScreenPos;
-    if (ps->InteractionItem == ViewportInteractionItem::Entity)
+    if (ps->InteractionItem == ViewportInteractionItem::entity)
     {
         if (session.DPI.zoom_level >= ZoomLevel{ 1 })
         {
@@ -845,9 +845,9 @@ static ImageId PaintPSColourifyImage(const PaintStruct* ps, ImageId imageId, uin
     auto visibility = GetPaintStructVisibility(ps, viewFlags);
     switch (visibility)
     {
-        case VisibilityKind::Partial:
+        case VisibilityKind::partial:
             return imageId.WithTransparency(FilterPaletteID::PaletteDarken1);
-        case VisibilityKind::Hidden:
+        case VisibilityKind::hidden:
             return ImageId();
         default:
             return imageId;

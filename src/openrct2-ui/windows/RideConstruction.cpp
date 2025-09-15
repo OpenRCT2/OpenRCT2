@@ -284,7 +284,7 @@ namespace OpenRCT2::Ui::Windows
         void OnClose() override
         {
             RideConstructionInvalidateCurrentTrack();
-            ViewportSetVisibility(ViewportVisibility::Default);
+            ViewportSetVisibility(ViewportVisibility::standard);
 
             MapInvalidateMapSelectionTiles();
             gMapSelectFlags.unset(MapSelectFlag::enableConstruct);
@@ -2363,14 +2363,14 @@ namespace OpenRCT2::Ui::Windows
             const auto resultData = res.GetData<GameActions::TrackPlaceActionResult>();
             if (resultData.GroundFlags & ELEMENT_IS_UNDERGROUND)
             {
-                ViewportSetVisibility(ViewportVisibility::UndergroundViewOn);
+                ViewportSetVisibility(ViewportVisibility::undergroundViewOn);
             }
 
             const bool helixSelected = (_currentlySelectedTrack.isTrackType)
                 && TrackTypeIsHelix(_currentlySelectedTrack.trackType);
             if (helixSelected || (_currentTrackPitchEnd != TrackPitch::None))
             {
-                ViewportSetVisibility(ViewportVisibility::TrackHeights);
+                ViewportSetVisibility(ViewportVisibility::trackHeights);
             }
         }
 
@@ -3056,12 +3056,12 @@ namespace OpenRCT2::Ui::Windows
             if (im.IsModifierKeyPressed(ModifierKey::ctrl))
             {
                 constexpr auto interactionFlags = EnumsToFlags(
-                    ViewportInteractionItem::Terrain, ViewportInteractionItem::Ride, ViewportInteractionItem::Footpath,
-                    ViewportInteractionItem::PathAddition, ViewportInteractionItem::LargeScenery,
-                    ViewportInteractionItem::Label, ViewportInteractionItem::Banner);
+                    ViewportInteractionItem::terrain, ViewportInteractionItem::ride, ViewportInteractionItem::footpath,
+                    ViewportInteractionItem::pathAddition, ViewportInteractionItem::largeScenery,
+                    ViewportInteractionItem::label, ViewportInteractionItem::banner);
 
                 auto info = GetMapCoordinatesFromPos(screenCoords, interactionFlags);
-                if (info.interactionType != ViewportInteractionItem::None)
+                if (info.interactionType != ViewportInteractionItem::none)
                 {
                     _trackPlaceCtrlZ = info.Element->GetBaseZ();
                     _trackPlaceCtrlState = true;
@@ -4780,9 +4780,9 @@ namespace OpenRCT2::Ui::Windows
 
             _unkF440C5 = { trackPos, static_cast<Direction>(trackDirection) };
             _currentTrackSelectionFlags.set(TrackSelectionFlag::track);
-            ViewportSetVisibility(ViewportVisibility::UndergroundViewOff);
+            ViewportSetVisibility(ViewportVisibility::undergroundViewOff);
             if (_currentTrackPitchEnd != TrackPitch::None)
-                ViewportSetVisibility(ViewportVisibility::TrackHeights);
+                ViewportSetVisibility(ViewportVisibility::trackHeights);
 
             return result.Cost;
         }
@@ -4813,11 +4813,11 @@ namespace OpenRCT2::Ui::Windows
         _currentTrackSelectionFlags.set(TrackSelectionFlag::track);
 
         const auto resultData = res.GetData<GameActions::TrackPlaceActionResult>();
-        const auto visiblity = (resultData.GroundFlags & ELEMENT_IS_UNDERGROUND) ? ViewportVisibility::UndergroundViewOn
-                                                                                 : ViewportVisibility::UndergroundViewOff;
+        const auto visiblity = (resultData.GroundFlags & ELEMENT_IS_UNDERGROUND) ? ViewportVisibility::undergroundViewOn
+                                                                                 : ViewportVisibility::undergroundViewOff;
         ViewportSetVisibility(visiblity);
         if (_currentTrackPitchEnd != TrackPitch::None)
-            ViewportSetVisibility(ViewportVisibility::TrackHeights);
+            ViewportSetVisibility(ViewportVisibility::trackHeights);
 
         if (!(gMapSelectFlags.has(MapSelectFlag::enable)))
         {

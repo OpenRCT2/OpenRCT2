@@ -93,25 +93,25 @@ namespace OpenRCT2::Ui
         info = GetMapCoordinatesFromPos(
             screenCoords,
             EnumsToFlags(
-                ViewportInteractionItem::Entity, ViewportInteractionItem::Ride, ViewportInteractionItem::ParkEntrance));
-        auto tileElement = info.interactionType != ViewportInteractionItem::Entity ? info.Element : nullptr;
-        // Only valid when info.interactionType == ViewportInteractionItem::Entity, but can't assign nullptr without compiler
+                ViewportInteractionItem::entity, ViewportInteractionItem::ride, ViewportInteractionItem::parkEntrance));
+        auto tileElement = info.interactionType != ViewportInteractionItem::entity ? info.Element : nullptr;
+        // Only valid when info.interactionType == ViewportInteractionItem::entity, but can't assign nullptr without compiler
         // complaining
         auto sprite = info.Entity;
 
         // Allows only balloons to be popped and ducks to be quacked in title screen
         if (gLegacyScene == LegacyScene::titleSequence)
         {
-            if (info.interactionType == ViewportInteractionItem::Entity && (sprite->Is<Balloon>() || sprite->Is<Duck>()))
+            if (info.interactionType == ViewportInteractionItem::entity && (sprite->Is<Balloon>() || sprite->Is<Duck>()))
                 return info;
 
-            info.interactionType = ViewportInteractionItem::None;
+            info.interactionType = ViewportInteractionItem::none;
             return info;
         }
 
         switch (info.interactionType)
         {
-            case ViewportInteractionItem::Entity:
+            case ViewportInteractionItem::entity:
                 switch (sprite->Type)
                 {
                     case EntityType::Vehicle:
@@ -120,7 +120,7 @@ namespace OpenRCT2::Ui
                         if (vehicle != nullptr && !vehicle->IsCableLift())
                             vehicle->SetMapToolbar();
                         else
-                            info.interactionType = ViewportInteractionItem::None;
+                            info.interactionType = ViewportInteractionItem::none;
                     }
                     break;
                     case EntityType::Guest:
@@ -133,7 +133,7 @@ namespace OpenRCT2::Ui
                         }
                         else
                         {
-                            info.interactionType = ViewportInteractionItem::None;
+                            info.interactionType = ViewportInteractionItem::none;
                         }
                     }
                     break;
@@ -141,11 +141,11 @@ namespace OpenRCT2::Ui
                         break;
                 }
                 break;
-            case ViewportInteractionItem::Ride:
+            case ViewportInteractionItem::ride:
                 Guard::ArgumentNotNull(tileElement);
                 RideSetMapTooltip(*tileElement);
                 break;
-            case ViewportInteractionItem::ParkEntrance:
+            case ViewportInteractionItem::parkEntrance:
             {
                 auto& gameState = getGameState();
                 auto parkName = gameState.park.name.c_str();
@@ -157,18 +157,18 @@ namespace OpenRCT2::Ui
                 break;
             }
             default:
-                info.interactionType = ViewportInteractionItem::None;
+                info.interactionType = ViewportInteractionItem::none;
                 break;
         }
 
         // If nothing is under cursor, find a close by peep
-        if (info.interactionType == ViewportInteractionItem::None)
+        if (info.interactionType == ViewportInteractionItem::none)
         {
             auto peep = ViewportInteractionGetClosestPeep(screenCoords, 32);
             if (peep != nullptr)
             {
                 info.Entity = peep;
-                info.interactionType = ViewportInteractionItem::Entity;
+                info.interactionType = ViewportInteractionItem::entity;
                 info.Loc.x = peep->x;
                 info.Loc.y = peep->y;
                 PeepSetMapTooltip(peep);
@@ -184,9 +184,9 @@ namespace OpenRCT2::Ui
 
         switch (info.interactionType)
         {
-            case ViewportInteractionItem::Entity:
-            case ViewportInteractionItem::Ride:
-            case ViewportInteractionItem::ParkEntrance:
+            case ViewportInteractionItem::entity:
+            case ViewportInteractionItem::ride:
+            case ViewportInteractionItem::parkEntrance:
                 return true;
             default:
                 return false;
@@ -200,7 +200,7 @@ namespace OpenRCT2::Ui
 
         switch (info.interactionType)
         {
-            case ViewportInteractionItem::Entity:
+            case ViewportInteractionItem::entity:
             {
                 auto entity = info.Entity;
                 switch (entity->Type)
@@ -246,14 +246,14 @@ namespace OpenRCT2::Ui
                 }
                 return true;
             }
-            case ViewportInteractionItem::Ride:
+            case ViewportInteractionItem::ride:
             {
                 auto intent = Intent(WD_TRACK);
                 intent.PutExtra(INTENT_EXTRA_TILE_ELEMENT, info.Element);
                 ContextOpenIntent(&intent);
                 return true;
             }
-            case ViewportInteractionItem::ParkEntrance:
+            case ViewportInteractionItem::parkEntrance:
                 ContextOpenWindow(WindowClass::ParkInformation);
                 return true;
             default:
@@ -279,25 +279,25 @@ namespace OpenRCT2::Ui
             return info;
 
         constexpr auto flags = static_cast<int32_t>(
-            ~EnumsToFlags(ViewportInteractionItem::Terrain, ViewportInteractionItem::Water));
+            ~EnumsToFlags(ViewportInteractionItem::terrain, ViewportInteractionItem::water));
         info = GetMapCoordinatesFromPos(screenCoords, flags);
         auto tileElement = info.Element;
 
         switch (info.interactionType)
         {
-            case ViewportInteractionItem::Entity:
+            case ViewportInteractionItem::entity:
             {
                 auto sprite = info.Entity;
                 if (gLegacyScene == LegacyScene::scenarioEditor || sprite->Type != EntityType::Vehicle)
                 {
-                    info.interactionType = ViewportInteractionItem::None;
+                    info.interactionType = ViewportInteractionItem::none;
                     return info;
                 }
 
                 auto vehicle = sprite->As<Vehicle>();
                 if (vehicle == nullptr)
                 {
-                    info.interactionType = ViewportInteractionItem::None;
+                    info.interactionType = ViewportInteractionItem::none;
                     return info;
                 }
                 ride = GetRide(vehicle->ride);
@@ -310,23 +310,23 @@ namespace OpenRCT2::Ui
                 }
                 return info;
             }
-            case ViewportInteractionItem::Ride:
+            case ViewportInteractionItem::ride:
             {
                 if (gLegacyScene == LegacyScene::scenarioEditor)
                 {
-                    info.interactionType = ViewportInteractionItem::None;
+                    info.interactionType = ViewportInteractionItem::none;
                     return info;
                 }
                 if (tileElement->GetType() == TileElementType::Path)
                 {
-                    info.interactionType = ViewportInteractionItem::None;
+                    info.interactionType = ViewportInteractionItem::none;
                     return info;
                 }
 
                 ride = GetRide(tileElement->GetRideIndex());
                 if (ride == nullptr)
                 {
-                    info.interactionType = ViewportInteractionItem::None;
+                    info.interactionType = ViewportInteractionItem::none;
                     return info;
                 }
 
@@ -381,7 +381,7 @@ namespace OpenRCT2::Ui
                     // FIXME: Why does it *2 the value?
                     if (!getGameState().cheats.sandboxMode && !MapIsLocationOwned({ info.Loc, tileElement->GetBaseZ() * 2 }))
                     {
-                        info.interactionType = ViewportInteractionItem::None;
+                        info.interactionType = ViewportInteractionItem::none;
                         return info;
                     }
 
@@ -408,7 +408,7 @@ namespace OpenRCT2::Ui
                 SetMapTooltip(ft);
                 return info;
             }
-            case ViewportInteractionItem::Wall:
+            case ViewportInteractionItem::wall:
             {
                 auto* wallEntry = tileElement->AsWall()->GetEntry();
                 if (wallEntry->scrolling_mode != kScrollingModeNone)
@@ -427,7 +427,7 @@ namespace OpenRCT2::Ui
                 }
                 break;
             }
-            case ViewportInteractionItem::LargeScenery:
+            case ViewportInteractionItem::largeScenery:
             {
                 auto* sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
                 if (sceneryEntry->scrolling_mode != kScrollingModeNone)
@@ -446,7 +446,7 @@ namespace OpenRCT2::Ui
                 }
                 break;
             }
-            case ViewportInteractionItem::Banner:
+            case ViewportInteractionItem::banner:
             {
                 auto banner = tileElement->AsBanner()->GetBanner();
                 if (banner != nullptr)
@@ -473,7 +473,7 @@ namespace OpenRCT2::Ui
             if (windowMgr->FindByClass(WindowClass::RideConstruction) == nullptr
                 && windowMgr->FindByClass(WindowClass::Footpath) == nullptr)
             {
-                info.interactionType = ViewportInteractionItem::None;
+                info.interactionType = ViewportInteractionItem::none;
                 return info;
             }
         }
@@ -481,7 +481,7 @@ namespace OpenRCT2::Ui
         auto ft = Formatter();
         switch (info.interactionType)
         {
-            case ViewportInteractionItem::Scenery:
+            case ViewportInteractionItem::scenery:
             {
                 auto* sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
                 ft.Add<StringId>(STR_MAP_TOOLTIP_STRINGID_CLICK_TO_REMOVE);
@@ -489,7 +489,7 @@ namespace OpenRCT2::Ui
                 SetMapTooltip(ft);
                 return info;
             }
-            case ViewportInteractionItem::Footpath:
+            case ViewportInteractionItem::footpath:
                 ft.Add<StringId>(STR_MAP_TOOLTIP_STRINGID_CLICK_TO_REMOVE);
                 if (tileElement->AsPath()->IsQueue())
                     ft.Add<StringId>(STR_QUEUE_LINE_MAP_TIP);
@@ -498,7 +498,7 @@ namespace OpenRCT2::Ui
                 SetMapTooltip(ft);
                 return info;
 
-            case ViewportInteractionItem::PathAddition:
+            case ViewportInteractionItem::pathAddition:
             {
                 auto* pathAddEntry = tileElement->AsPath()->GetAdditionEntry();
                 ft.Add<StringId>(STR_MAP_TOOLTIP_STRINGID_CLICK_TO_REMOVE);
@@ -510,7 +510,7 @@ namespace OpenRCT2::Ui
                 SetMapTooltip(ft);
                 return info;
             }
-            case ViewportInteractionItem::ParkEntrance:
+            case ViewportInteractionItem::parkEntrance:
                 if (gLegacyScene != LegacyScene::scenarioEditor && !getGameState().cheats.sandboxMode)
                     break;
 
@@ -522,7 +522,7 @@ namespace OpenRCT2::Ui
                 SetMapTooltip(ft);
                 return info;
 
-            case ViewportInteractionItem::Wall:
+            case ViewportInteractionItem::wall:
             {
                 auto* wallEntry = tileElement->AsWall()->GetEntry();
                 ft.Add<StringId>(STR_MAP_TOOLTIP_STRINGID_CLICK_TO_REMOVE);
@@ -530,7 +530,7 @@ namespace OpenRCT2::Ui
                 SetMapTooltip(ft);
                 return info;
             }
-            case ViewportInteractionItem::LargeScenery:
+            case ViewportInteractionItem::largeScenery:
             {
                 auto* sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
                 ft.Add<StringId>(STR_MAP_TOOLTIP_STRINGID_CLICK_TO_REMOVE);
@@ -542,7 +542,7 @@ namespace OpenRCT2::Ui
                 break;
         }
 
-        info.interactionType = ViewportInteractionItem::None;
+        info.interactionType = ViewportInteractionItem::none;
         return info;
     }
 
@@ -550,7 +550,7 @@ namespace OpenRCT2::Ui
     {
         auto info = ViewportInteractionGetItemRight(screenCoords);
 
-        return info.interactionType != ViewportInteractionItem::None;
+        return info.interactionType != ViewportInteractionItem::none;
     }
 
     /**
@@ -564,13 +564,13 @@ namespace OpenRCT2::Ui
 
         switch (info.interactionType)
         {
-            case ViewportInteractionItem::None:
-            case ViewportInteractionItem::Terrain:
-            case ViewportInteractionItem::Water:
-            case ViewportInteractionItem::Label:
+            case ViewportInteractionItem::none:
+            case ViewportInteractionItem::terrain:
+            case ViewportInteractionItem::water:
+            case ViewportInteractionItem::label:
                 return false;
 
-            case ViewportInteractionItem::Entity:
+            case ViewportInteractionItem::entity:
             {
                 auto entity = info.Entity;
                 if (entity->Type == EntityType::Vehicle)
@@ -588,29 +588,29 @@ namespace OpenRCT2::Ui
                 }
             }
             break;
-            case ViewportInteractionItem::Ride:
+            case ViewportInteractionItem::ride:
                 tileElement = { info.Loc, info.Element };
                 RideModify(tileElement);
                 break;
-            case ViewportInteractionItem::Scenery:
+            case ViewportInteractionItem::scenery:
                 ViewportInteractionRemoveScenery(*info.Element->AsSmallScenery(), info.Loc);
                 break;
-            case ViewportInteractionItem::Footpath:
+            case ViewportInteractionItem::footpath:
                 ViewportInteractionRemoveFootpath(*info.Element->AsPath(), info.Loc);
                 break;
-            case ViewportInteractionItem::PathAddition:
+            case ViewportInteractionItem::pathAddition:
                 ViewportInteractionRemovePathAddition(*info.Element->AsPath(), info.Loc);
                 break;
-            case ViewportInteractionItem::ParkEntrance:
+            case ViewportInteractionItem::parkEntrance:
                 ViewportInteractionRemoveParkEntrance(*info.Element->AsEntrance(), info.Loc);
                 break;
-            case ViewportInteractionItem::Wall:
+            case ViewportInteractionItem::wall:
                 ViewportInteractionRemoveParkWall(*info.Element->AsWall(), info.Loc);
                 break;
-            case ViewportInteractionItem::LargeScenery:
+            case ViewportInteractionItem::largeScenery:
                 ViewportInteractionRemoveLargeScenery(*info.Element->AsLargeScenery(), info.Loc);
                 break;
-            case ViewportInteractionItem::Banner:
+            case ViewportInteractionItem::banner:
                 ContextOpenDetailWindow(WD_BANNER, info.Element->AsBanner()->GetIndex().ToUnderlying());
                 break;
         }
@@ -802,17 +802,17 @@ namespace OpenRCT2::Ui
         }
         auto viewport = window->viewport;
         auto info = GetMapCoordinatesFromPosWindow(
-            window, screenCoords, EnumsToFlags(ViewportInteractionItem::Terrain, ViewportInteractionItem::Water));
+            window, screenCoords, EnumsToFlags(ViewportInteractionItem::terrain, ViewportInteractionItem::water));
         auto initialPos = info.Loc;
 
-        if (info.interactionType == ViewportInteractionItem::None)
+        if (info.interactionType == ViewportInteractionItem::none)
         {
             initialPos.SetNull();
             return initialPos;
         }
 
         int16_t waterHeight = 0;
-        if (info.interactionType == ViewportInteractionItem::Water)
+        if (info.interactionType == ViewportInteractionItem::water)
         {
             waterHeight = info.Element->AsSurface()->GetWaterHeight();
         }
@@ -823,7 +823,7 @@ namespace OpenRCT2::Ui
         for (int32_t i = 0; i < 5; i++)
         {
             int16_t z = waterHeight;
-            if (info.interactionType != ViewportInteractionItem::Water)
+            if (info.interactionType != ViewportInteractionItem::water)
             {
                 z = TileElementHeight(mapPos);
             }
