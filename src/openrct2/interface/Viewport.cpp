@@ -123,7 +123,7 @@ namespace OpenRCT2
      * out_x : ax
      * out_y : bx
      */
-    std::optional<ScreenCoordsXY> centre_2d_coordinates(const CoordsXYZ& loc, Viewport* viewport)
+    std::optional<ScreenCoordsXY> centre2dCoordinates(const CoordsXYZ& loc, Viewport* viewport)
     {
         // If the start location was invalid
         // propagate the invalid location to the output.
@@ -217,7 +217,7 @@ namespace OpenRCT2
             },
             focus.data);
 
-        auto centreLoc = centre_2d_coordinates(centrePos, viewport);
+        auto centreLoc = centre2dCoordinates(centrePos, viewport);
         if (!centreLoc.has_value())
         {
             LOG_ERROR("Invalid location for viewport.");
@@ -612,7 +612,7 @@ namespace OpenRCT2
 
         if (at_map_edge)
         {
-            auto centreLoc = centre_2d_coordinates({ mapCoord, 0 }, viewport);
+            auto centreLoc = centre2dCoordinates({ mapCoord, 0 }, viewport);
             if (centreLoc.has_value())
             {
                 window->savedViewPos = centreLoc.value();
@@ -676,7 +676,7 @@ namespace OpenRCT2
                 ViewportSetUndergroundFlag(underground, window, window->viewport);
             }
 
-            auto centreLoc = centre_2d_coordinates(sprite->GetLocation(), window->viewport);
+            auto centreLoc = centre2dCoordinates(sprite->GetLocation(), window->viewport);
             if (centreLoc.has_value())
             {
                 window->savedViewPos = *centreLoc;
@@ -830,7 +830,7 @@ namespace OpenRCT2
 
         viewport->rotation = (viewport->rotation + direction) & 3;
 
-        auto centreLoc = centre_2d_coordinates(coords, viewport);
+        auto centreLoc = centre2dCoordinates(coords, viewport);
 
         if (centreLoc.has_value())
         {

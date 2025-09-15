@@ -292,7 +292,7 @@ namespace OpenRCT2::Ui::Windows
                 auto coord = Network::GetPlayerLastActionCoord(playerIndex);
                 if (coord.x != 0 || coord.y != 0 || coord.z != 0)
                 {
-                    auto centreLoc = centre_2d_coordinates(coord, viewport);
+                    auto centreLoc = centre2dCoordinates(coord, viewport);
                     if (!centreLoc.has_value())
                     {
                         return;
