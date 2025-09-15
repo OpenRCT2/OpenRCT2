@@ -77,7 +77,7 @@ namespace OpenRCT2::Ui::Windows
             SetWidgets(_viewportWidgets);
 
             // Create viewport
-            ViewportCreate(this, windowPos, width, height, Focus(TileCoordsXYZ(128, 128, 0).ToCoordsXYZ()));
+            ViewportCreate(*this, windowPos, width, height, Focus(TileCoordsXYZ(128, 128, 0).ToCoordsXYZ()));
             if (viewport == nullptr)
             {
                 Close();

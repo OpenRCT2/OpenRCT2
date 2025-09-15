@@ -234,7 +234,7 @@ namespace OpenRCT2::Ui::Windows
                 if (viewport == nullptr)
                 {
                     const auto viewportFocus = Focus(TileCoordsXYZ(128, 128, 0).ToCoordsXYZ());
-                    ViewportCreate(this, windowPos, width, height, viewportFocus);
+                    ViewportCreate(*this, windowPos, width, height, viewportFocus);
                     flags |= WF_NO_SCROLLING;
                     OnPrepareDraw();
                     UpdateViewport(false);

@@ -812,7 +812,7 @@ namespace OpenRCT2::Ui::Windows
                     auto wheight = viewportWidget->height() - 1;
                     if (viewport == nullptr)
                     {
-                        ViewportCreate(this, { left, top }, wwidth, wheight, Focus(CoordsXYZ(0, 0, 0)));
+                        ViewportCreate(*this, { left, top }, wwidth, wheight, Focus(CoordsXYZ(0, 0, 0)));
                         flags |= WF_NO_SCROLLING;
                         Invalidate();
                     }

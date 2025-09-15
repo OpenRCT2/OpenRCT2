@@ -766,7 +766,7 @@ namespace OpenRCT2::Ui::Windows
                 int32_t widgWidth = viewWidget.width() - 1;
                 int32_t widgHeight = viewWidget.height() - 1;
 
-                ViewportCreate(this, screenPos, widgWidth, widgHeight, focus.value());
+                ViewportCreate(*this, screenPos, widgWidth, widgHeight, focus.value());
                 if (viewport != nullptr && reCreateViewport)
                 {
                     viewport->flags = origViewportFlags;

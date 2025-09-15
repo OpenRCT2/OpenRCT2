@@ -34,7 +34,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[0].right = width;
             widgets[0].bottom = height;
 
-            ViewportCreate(this, windowPos, width, height, Focus(CoordsXYZ(0x0FFF, 0x0FFF, 0)));
+            ViewportCreate(*this, windowPos, width, height, Focus(CoordsXYZ(0x0FFF, 0x0FFF, 0)));
             if (viewport != nullptr)
             {
                 SetViewportFlags();

@@ -87,7 +87,7 @@ namespace OpenRCT2::Ui::Windows
         {
             const auto& viewportWidget = widgets[WIDX_VIEWPORT];
             ViewportCreate(
-                this, windowPos + ScreenCoordsXY{ viewportWidget.left + 1, viewportWidget.top + 1 },
+                *this, windowPos + ScreenCoordsXY{ viewportWidget.left + 1, viewportWidget.top + 1 },
                 (viewportWidget.width()) - 1, (viewportWidget.height()) - 1, Focus(_bannerViewPos));
 
             if (viewport != nullptr)

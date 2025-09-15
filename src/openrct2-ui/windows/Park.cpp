@@ -642,7 +642,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     Widget* viewportWidget = &widgets[WIDX_VIEWPORT];
                     ViewportCreate(
-                        this, windowPos + ScreenCoordsXY{ viewportWidget->left + 1, viewportWidget->top + 1 },
+                        *this, windowPos + ScreenCoordsXY{ viewportWidget->left + 1, viewportWidget->top + 1 },
                         viewportWidget->width() - 1, viewportWidget->height() - 1, focus.value());
                     flags |= WF_NO_SCROLLING;
                     Invalidate();

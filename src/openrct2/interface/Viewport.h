@@ -185,7 +185,7 @@ namespace OpenRCT2
 
     void ViewportInitAll();
     std::optional<ScreenCoordsXY> centre_2d_coordinates(const CoordsXYZ& loc, Viewport* viewport);
-    void ViewportCreate(WindowBase* w, const ScreenCoordsXY& screenCoords, int32_t width, int32_t height, const Focus& focus);
+    void ViewportCreate(WindowBase& w, const ScreenCoordsXY& screenCoords, int32_t width, int32_t height, const Focus& focus);
     void ViewportRemove(Viewport* viewport);
 
     const std::list<Viewport>& GetAllViewports();

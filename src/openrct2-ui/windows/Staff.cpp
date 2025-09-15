@@ -1155,7 +1155,7 @@ namespace OpenRCT2::Ui::Windows
                     int32_t viewportWidth = viewWidget.width() - 1;
                     int32_t viewportHeight = viewWidget.height() - 1;
 
-                    ViewportCreate(this, screenPos, viewportWidth, viewportHeight, focus.value());
+                    ViewportCreate(*this, screenPos, viewportWidth, viewportHeight, focus.value());
                     flags |= WF_NO_SCROLLING;
                     Invalidate();
                 }

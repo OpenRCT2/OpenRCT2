@@ -138,8 +138,8 @@ namespace OpenRCT2::Ui::Windows
             // Create viewport
             Widget& viewportWidget = widgets[WIDX_VIEWPORT];
             ViewportCreate(
-                this, windowPos + ScreenCoordsXY{ viewportWidget.left + 1, viewportWidget.top + 1 }, viewportWidget.width() - 1,
-                viewportWidget.height() - 1, Focus(CoordsXYZ{ signViewPosition, viewZ }));
+                *this, windowPos + ScreenCoordsXY{ viewportWidget.left + 1, viewportWidget.top + 1 },
+                viewportWidget.width() - 1, viewportWidget.height() - 1, Focus(CoordsXYZ{ signViewPosition, viewZ }));
 
             viewport->flags = Config::Get().general.AlwaysShowGridlines ? VIEWPORT_FLAG_GRIDLINES : VIEWPORT_FLAG_NONE;
             Invalidate();
@@ -321,7 +321,7 @@ namespace OpenRCT2::Ui::Windows
             // Create viewport
             Widget* viewportWidget = &widgets[WIDX_VIEWPORT];
             ViewportCreate(
-                this, windowPos + ScreenCoordsXY{ viewportWidget->left + 1, viewportWidget->top + 1 },
+                *this, windowPos + ScreenCoordsXY{ viewportWidget->left + 1, viewportWidget->top + 1 },
                 viewportWidget->width() - 1, viewportWidget->height() - 1, Focus(CoordsXYZ{ signViewPos }));
             if (viewport != nullptr)
                 viewport->flags = Config::Get().general.AlwaysShowGridlines ? VIEWPORT_FLAG_GRIDLINES : VIEWPORT_FLAG_NONE;

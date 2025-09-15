@@ -180,7 +180,7 @@ namespace OpenRCT2
      *  flags:  edx top most 2 bits 0b_X1 for zoom clear see below for 2nd bit.
      *  w:      esi
      */
-    void ViewportCreate(WindowBase* w, const ScreenCoordsXY& screenCoords, int32_t width, int32_t height, const Focus& focus)
+    void ViewportCreate(WindowBase& w, const ScreenCoordsXY& screenCoords, int32_t width, int32_t height, const Focus& focus)
     {
         Viewport* viewport = nullptr;
         if (_viewports.size() >= kMaxViewportCount)
@@ -203,11 +203,11 @@ namespace OpenRCT2
 
         if (Config::Get().general.AlwaysShowGridlines)
             viewport->flags |= VIEWPORT_FLAG_GRIDLINES;
-        w->viewport = viewport;
-        viewport->isVisible = w->isVisible;
+        w.viewport = viewport;
+        viewport->isVisible = w.isVisible;
 
         CoordsXYZ centrePos = focus.GetPos();
-        w->viewport_target_sprite = std::visit(
+        w.viewport_target_sprite = std::visit(
             [](auto&& arg) {
                 using T = std::decay_t<decltype(arg)>;
                 if constexpr (std::is_same_v<T, Focus::CoordinateFocus>)
@@ -223,7 +223,7 @@ namespace OpenRCT2
             LOG_ERROR("Invalid location for viewport.");
             return;
         }
-        w->savedViewPos = *centreLoc;
+        w.savedViewPos = *centreLoc;
         viewport->viewPos = *centreLoc;
     }
 
