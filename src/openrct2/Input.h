@@ -29,9 +29,9 @@ namespace OpenRCT2
         toolActive,
 
         // Left click on a viewport
-        unk4,
+        leftMousePressed,
 
-        unk5,
+        rightMousePressed,
 
         // Some of the map tools (clear, footpath, scenery)
         // never read as far as I know.

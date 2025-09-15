@@ -675,7 +675,7 @@ static constexpr float kWindowScrollLocations[][2] = {
         }
 
         gInputFlags.set(InputFlag::toolActive);
-        gInputFlags.unset(InputFlag::unk4);
+        gInputFlags.unset(InputFlag::leftMousePressed);
         gInputFlags.unset(InputFlag::unk6);
         gCurrentToolId = tool;
         gCurrentToolWidget.window_classification = w.classification;
