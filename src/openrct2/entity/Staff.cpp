@@ -1728,6 +1728,11 @@ bool Staff::IsMechanic() const
     return AssignedStaffType == StaffType::Mechanic;
 }
 
+bool Staff::isEntertainer() const
+{
+    return AssignedStaffType == StaffType::Entertainer;
+}
+
 void Staff::Update()
 {
     if (PeepFlags & PEEP_FLAGS_POSITION_FROZEN)
