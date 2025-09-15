@@ -1111,21 +1111,7 @@ static void RideRatingsCalculateValue(Ride& ride)
     {
         int32_t months, multiplier, divisor, summand;
     };
-    static const Row ageTableNew[] = {
-        { 5, 3, 2, 0 },       // 1.5x
-        { 13, 6, 5, 0 },      // 1.2x
-        { 40, 1, 1, 0 },      // 1x
-        { 64, 3, 4, 0 },      // 0.75x
-        { 88, 9, 16, 0 },     // 0.56x
-        { 104, 27, 64, 0 },   // 0.42x
-        { 120, 81, 256, 0 },  // 0.32x
-        { 128, 81, 512, 0 },  // 0.16x
-        { 200, 81, 1024, 0 }, // 0.08x
-        { 200, 9, 16, 0 },    // 0.56x "easter egg"
-    };
-
-#ifdef ORIGINAL_RATINGS
-    static const Row ageTableOld[] = {
+    static constexpr auto kAgeTable = std::to_array<Row>({
         { 5, 1, 1, 30 },      // +30
         { 13, 1, 1, 10 },     // +10
         { 40, 1, 1, 0 },      // 1x
@@ -1136,8 +1122,7 @@ static void RideRatingsCalculateValue(Ride& ride)
         { 128, 81, 512, 0 },  // 0.16x
         { 200, 81, 1024, 0 }, // 0.08x
         { 200, 9, 16, 0 },    // 0.56x "easter egg"
-    };
-#endif
+    });
 
     if (!RideHasRatings(ride))
     {
@@ -1156,15 +1141,7 @@ static void RideRatingsCalculateValue(Ride& ride)
         monthsOld = ride.getAge();
     }
 
-    const Row* ageTable = ageTableNew;
-    size_t tableSize = std::size(ageTableNew);
-
-#ifdef ORIGINAL_RATINGS
-    ageTable = ageTableOld;
-    tableSize = std::size(ageTableOld);
-#endif
-
-    Row lastRow = ageTable[tableSize - 1];
+    Row lastRow = kAgeTable[kAgeTable.size() - 1];
 
     // Ride is older than oldest age in the table?
     if (monthsOld >= lastRow.months)
@@ -1174,10 +1151,8 @@ static void RideRatingsCalculateValue(Ride& ride)
     else
     {
         // Find the first hit in the table that matches this ride's age
-        for (size_t it = 0; it < tableSize; it++)
+        for (const Row& curr : kAgeTable)
         {
-            Row curr = ageTable[it];
-
             if (monthsOld < curr.months)
             {
                 value = (value * curr.multiplier) / curr.divisor + curr.summand;
