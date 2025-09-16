@@ -99,7 +99,7 @@ namespace OpenRCT2::RCT1
         std::string _s4Path;
         S4 _s4 = {};
         uint8_t _gameVersion = 0;
-        uint8_t _parkValueConversionFactor = 0;
+        uint8_t _parkValueConversionFactor = 100;
         bool _isScenario = false;
 
         // Lists of dynamic object entries
@@ -291,18 +291,11 @@ namespace OpenRCT2::RCT1
     private:
         uint8_t calcParkValueConversionFactor(const Park::ParkData& park, const GameState_t& gameState)
         {
-            if (_s4.ParkValue != 0)
-            {
-                // Use the ratio between the old and new park value to calcute the ratio to
-                // use for the park value history and the goal.
-                // TODO: split up this function so this can pass the actual park/gamestate as needed
-                return (Park::CalculateParkValue(park, gameState) * 10) / _s4.ParkValue;
-            }
-            else
-            {
-                // In new games, the park value isn't set.
-                return 100;
-            }
+            assert(_s4.ParkValue != 0);
+
+            // Use the ratio between the old and new park value to calcute the ratio to
+            // use for the park value history and the goal.
+            return (Park::CalculateParkValue(park, gameState) * 10) / _s4.ParkValue;
         }
 
         money64 CorrectRCT1ParkValue(money32 oldParkValue)
@@ -347,9 +340,7 @@ namespace OpenRCT2::RCT1
         void Initialise(GameState_t& gameState)
         {
             // Avoid reusing the value used for last import
-            auto& park = gameState.park;
-            park.value = 0;
-            _parkValueConversionFactor = calcParkValueConversionFactor(park, gameState);
+            _parkValueConversionFactor = 100;
 
             uint16_t mapSize = _s4.MapSize == 0 ? Limits::kMaxMapSize : _s4.MapSize;
 
