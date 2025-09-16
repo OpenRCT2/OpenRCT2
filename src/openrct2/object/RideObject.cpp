@@ -1063,7 +1063,7 @@ namespace OpenRCT2
         auto baseSpritePrecision = SpritePrecision::Sprites32;
         if (vehicle->flags & CAR_ENTRY_FLAG_USE_16_ROTATION_FRAMES)
             baseSpritePrecision = SpritePrecision::Sprites16;
-        if (vehicle->flags & CAR_SPRITE_FLAG_USE_4_ROTATION_FRAMES)
+        if (spriteGroups & CAR_SPRITE_FLAG_USE_4_ROTATION_FRAMES)
             baseSpritePrecision = SpritePrecision::Sprites4;
 
         if (spriteGroups & CAR_SPRITE_FLAG_FLAT)
