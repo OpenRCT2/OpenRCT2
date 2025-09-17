@@ -1348,7 +1348,7 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* FindCustomWindowByClassification(std::string_view classification)
     {
-        for (const auto& w : g_window_list)
+        for (const auto& w : gWindowList)
         {
             if (w->classification == WindowClass::Custom)
             {
@@ -1481,7 +1481,7 @@ namespace OpenRCT2::Ui::Windows
     {
         // Get all the windows that need closing
         std::vector<WindowBase*> customWindows;
-        for (const auto& window : g_window_list)
+        for (const auto& window : gWindowList)
         {
             if (window->classification == WindowClass::Custom)
             {

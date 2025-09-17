@@ -529,7 +529,7 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* WindowGetListening()
     {
-        for (auto it = g_window_list.rbegin(); it != g_window_list.rend(); it++)
+        for (auto it = gWindowList.rbegin(); it != gWindowList.rend(); it++)
         {
             auto& w = **it;
             if (w.flags & WF_DEAD)

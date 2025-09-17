@@ -140,7 +140,7 @@ namespace OpenRCT2::Scripting
         }
         int32_t windows_get() const
         {
-            return static_cast<int32_t>(g_window_list.size());
+            return static_cast<int32_t>(gWindowList.size());
         }
 
         std::shared_ptr<ScViewport> mainViewport_get() const
@@ -214,7 +214,7 @@ namespace OpenRCT2::Scripting
             {
                 auto index = a.as_uint();
                 size_t i = 0;
-                for (const auto& w : g_window_list)
+                for (const auto& w : gWindowList)
                 {
                     if (i == index)
                     {

@@ -38,7 +38,7 @@
 namespace OpenRCT2
 {
 
-    std::vector<std::unique_ptr<WindowBase>> g_window_list;
+    std::vector<std::unique_ptr<WindowBase>> gWindowList;
     WindowBase* gWindowAudioExclusive;
 
     WindowCloseModifier gLastCloseModifier = { { WindowClass::Null, 0 }, CloseWindowModifier::none };
@@ -78,12 +78,12 @@ static constexpr float kWindowScrollLocations[][2] = {
 
     std::vector<std::unique_ptr<WindowBase>>::iterator WindowGetIterator(const WindowBase* w)
     {
-        return std::find_if(g_window_list.begin(), g_window_list.end(), [w](auto&& w2) { return w == w2.get(); });
+        return std::find_if(gWindowList.begin(), gWindowList.end(), [w](auto&& w2) { return w == w2.get(); });
     }
 
     void WindowVisitEach(std::function<void(WindowBase*)> func)
     {
-        for (auto& w : g_window_list)
+        for (auto& w : gWindowList)
         {
             if (w->flags & WF_DEAD)
                 continue;
@@ -126,8 +126,8 @@ static constexpr float kWindowScrollLocations[][2] = {
 
     static void WindowUpdateVisibilities()
     {
-        const auto itEnd = g_window_list.end();
-        for (auto it = g_window_list.begin(); it != itEnd; ++it)
+        const auto itEnd = gWindowList.end();
+        for (auto it = gWindowList.begin(); it != itEnd; ++it)
         {
             auto& window = *(*it);
             if (window.viewport == nullptr)
@@ -167,10 +167,10 @@ static constexpr float kWindowScrollLocations[][2] = {
      */
     void WindowUpdateAll()
     {
-        // Remove all windows in g_window_list that have the WF_DEAD flag
-        g_window_list.erase(
-            std::remove_if(g_window_list.begin(), g_window_list.end(), [](auto&& w) -> bool { return w->flags & WF_DEAD; }),
-            g_window_list.end());
+        // Remove all windows in gWindowList that have the WF_DEAD flag
+        gWindowList.erase(
+            std::remove_if(gWindowList.begin(), gWindowList.end(), [](auto&& w) -> bool { return w->flags & WF_DEAD; }),
+            gWindowList.end());
 
         // Periodic update happens every second so 40 ticks.
         if (gCurrentRealTimeTicks >= gWindowUpdateTicks)
@@ -310,7 +310,7 @@ static constexpr float kWindowScrollLocations[][2] = {
      */
     WindowBase* WindowGetMain()
     {
-        for (auto& w : g_window_list)
+        for (auto& w : gWindowList)
         {
             if (w->flags & WF_DEAD)
                 continue;
@@ -369,7 +369,7 @@ static constexpr float kWindowScrollLocations[][2] = {
                 auto y2 = w.viewport->pos.y + static_cast<int32_t>(w.viewport->height * kWindowScrollLocations[i][1]);
 
                 auto it = WindowGetIterator(&w);
-                for (; it != g_window_list.end(); it++)
+                for (; it != gWindowList.end(); it++)
                 {
                     if ((*it)->flags & WF_DEAD)
                         continue;
@@ -388,7 +388,7 @@ static constexpr float kWindowScrollLocations[][2] = {
                         }
                     }
                 }
-                if (it == g_window_list.end())
+                if (it == gWindowList.end())
                 {
                     found = true;
                 }
@@ -492,7 +492,7 @@ static constexpr float kWindowScrollLocations[][2] = {
 
         // Divide the draws up for only the visible regions of the window recursively
         auto itPos = WindowGetIterator(&w);
-        for (auto it = std::next(itPos); it != g_window_list.end(); it++)
+        for (auto it = std::next(itPos); it != gWindowList.end(); it++)
         {
             // Check if this window overlaps w
             auto topwindow = it->get();
@@ -555,7 +555,7 @@ static constexpr float kWindowScrollLocations[][2] = {
             return;
 
         // Draw the window and any other overlapping transparent windows
-        for (auto it = WindowGetIterator(&w); it != g_window_list.end(); it++)
+        for (auto it = WindowGetIterator(&w); it != gWindowList.end(); it++)
         {
             auto* v = (*it).get();
             if (v->flags & WF_DEAD)
@@ -815,7 +815,7 @@ static constexpr float kWindowScrollLocations[][2] = {
         RideAudio::ClearAllViewportInstances();
         gMusicTrackingViewport = nullptr;
 
-        for (auto it = g_window_list.rbegin(); it != g_window_list.rend(); it++)
+        for (auto it = gWindowList.rbegin(); it != gWindowList.rend(); it++)
         {
             auto w = it->get();
             auto viewport = w->viewport;

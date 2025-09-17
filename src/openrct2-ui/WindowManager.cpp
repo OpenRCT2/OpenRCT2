@@ -651,7 +651,7 @@ public:
 
     WindowBase* GetOwner(const Viewport* viewport) override
     {
-        for (auto& w : g_window_list)
+        for (auto& w : gWindowList)
         {
             if (w->viewport == viewport)
             {
@@ -663,7 +663,7 @@ public:
 
     static bool WindowFitsBetweenOthers(const ScreenCoordsXY& loc, const ScreenSize windowSize)
     {
-        for (auto& w : g_window_list)
+        for (auto& w : gWindowList)
         {
             if (w->flags & WF_DEAD)
                 continue;
@@ -757,7 +757,7 @@ public:
         }
 
         // Place window next to another
-        for (auto& w : g_window_list)
+        for (auto& w : gWindowList)
         {
             if (w->flags & WF_DEAD)
                 continue;
@@ -786,7 +786,7 @@ public:
         }
 
         // Overlap
-        for (auto& w : g_window_list)
+        for (auto& w : gWindowList)
         {
             if (w->flags & WF_DEAD)
                 continue;
@@ -812,7 +812,7 @@ public:
 
         // Cascade
         auto screenPos = ScreenCoordsXY{ 0, 30 };
-        for (auto& w : g_window_list)
+        for (auto& w : gWindowList)
         {
             if (screenPos == w->windowPos)
             {
@@ -855,10 +855,10 @@ public:
 
         // Check if there are any window slots left
         // include kWindowLimitReserved for items such as the main viewport and toolbars to not appear to be counted.
-        if (g_window_list.size() >= static_cast<size_t>(Config::Get().general.WindowLimit + kWindowLimitReserved))
+        if (gWindowList.size() >= static_cast<size_t>(Config::Get().general.WindowLimit + kWindowLimitReserved))
         {
             // Close least recently used window
-            for (auto& w : g_window_list)
+            for (auto& w : gWindowList)
             {
                 if (w->flags & WF_DEAD)
                     continue;
@@ -871,10 +871,10 @@ public:
         }
 
         // Find right position to insert new window
-        auto itDestPos = g_window_list.end();
+        auto itDestPos = gWindowList.end();
         if (flags & WF_STICK_TO_BACK)
         {
-            for (auto it = g_window_list.begin(); it != g_window_list.end(); it++)
+            for (auto it = gWindowList.begin(); it != gWindowList.end(); it++)
             {
                 if ((*it)->flags & WF_DEAD)
                     continue;
@@ -886,7 +886,7 @@ public:
         }
         else if (!(flags & WF_STICK_TO_FRONT))
         {
-            for (auto it = g_window_list.rbegin(); it != g_window_list.rend(); it++)
+            for (auto it = gWindowList.rbegin(); it != gWindowList.rend(); it++)
             {
                 if ((*it)->flags & WF_DEAD)
                     continue;
@@ -923,7 +923,7 @@ public:
         wp->invalidate();
         wp->onOpen();
 
-        auto itNew = g_window_list.insert(itDestPos, std::move(wp));
+        auto itNew = gWindowList.insert(itDestPos, std::move(wp));
         return itNew->get();
     }
 
@@ -953,14 +953,14 @@ public:
     void CloseSurplus(int32_t cap, WindowClass avoid_classification) override
     {
         // find the amount of windows that are currently open
-        auto count = static_cast<int32_t>(g_window_list.size());
+        auto count = static_cast<int32_t>(gWindowList.size());
         // difference between amount open and cap = amount to close
         auto diff = count - kWindowLimitReserved - cap;
         for (auto i = 0; i < diff; i++)
         {
             // iterates through the list until it finds the newest window, or a window that can be closed
             WindowBase* foundW{};
-            for (auto& w : g_window_list)
+            for (auto& w : gWindowList)
             {
                 if (w->flags & WF_DEAD)
                     continue;
@@ -988,7 +988,7 @@ public:
         // when Close() might trigger window creation via OnClose()
         std::vector<WindowBase*> windowsToClose;
 
-        for (auto it = g_window_list.rbegin(); it != g_window_list.rend(); ++it)
+        for (auto it = gWindowList.rbegin(); it != gWindowList.rend(); ++it)
         {
             auto& wnd = *(*it);
             if (wnd.flags & WF_DEAD)
@@ -1114,7 +1114,7 @@ public:
      */
     WindowBase* FindByClass(WindowClass cls) override
     {
-        for (auto& w : g_window_list)
+        for (auto& w : gWindowList)
         {
             if (w->flags & WF_DEAD)
                 continue;
@@ -1133,7 +1133,7 @@ public:
      */
     WindowBase* FindByNumber(WindowClass cls, WindowNumber number) override
     {
-        for (auto& w : g_window_list)
+        for (auto& w : gWindowList)
         {
             if (w->flags & WF_DEAD)
                 continue;
@@ -1157,7 +1157,7 @@ public:
      */
     WindowBase* FindFromPoint(const ScreenCoordsXY& screenCoords) override
     {
-        for (auto it = g_window_list.rbegin(); it != g_window_list.rend(); it++)
+        for (auto it = gWindowList.rbegin(); it != gWindowList.rend(); it++)
         {
             auto& w = *it;
             if (w->flags & WF_DEAD)
@@ -1327,11 +1327,11 @@ public:
         if (!(w.flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)))
         {
             auto itSourcePos = WindowGetIterator(&w);
-            if (itSourcePos != g_window_list.end())
+            if (itSourcePos != gWindowList.end())
             {
                 // Insert in front of the first non-stick-to-front window
-                auto itDestPos = g_window_list.begin();
-                for (auto it = g_window_list.rbegin(); it != g_window_list.rend(); it++)
+                auto itDestPos = gWindowList.begin();
+                for (auto it = gWindowList.rbegin(); it != gWindowList.rend(); it++)
                 {
                     auto& w2 = *it;
                     if (w2->flags & WF_DEAD)
