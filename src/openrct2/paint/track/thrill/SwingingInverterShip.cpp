@@ -143,7 +143,7 @@ static void PaintSwingingInverterShip(
 
         if (stationObject != nullptr && !(stationObject->Flags & StationObjectFlags::noPlatforms))
         {
-            imageId = session.SupportColours.WithIndex(SPR_STATION_BASE_D);
+            imageId = session.SupportColours.WithIndex(SPR_STATION_BASE_BORDERLESS);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 1 });
 
             switch (direction)

@@ -127,7 +127,7 @@ static void PaintFerrisWheel(
 
     const StationObject* stationObject = ride.getStationObject();
 
-    TrackPaintUtilPaintFloor(session, edges, session.TrackColours, height, kFloorSpritesCork, stationObject);
+    TrackPaintUtilPaintFloor(session, edges, session.TrackColours, height, kFloorSpritesMulch, stationObject);
 
     ImageId imageId;
     uint8_t rotation = session.CurrentRotation;
