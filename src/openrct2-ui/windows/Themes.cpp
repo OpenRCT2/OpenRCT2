@@ -301,13 +301,13 @@ namespace OpenRCT2::Ui::Windows
 
         void OnPrepareDraw() override
         {
-            int32_t pressedWidgets = pressed_widgets
+            int32_t newPressedWidgets = pressed_widgets
                 & ~((1LL << WIDX_THEMES_SETTINGS_TAB) | (1LL << WIDX_THEMES_MAIN_UI_TAB) | (1LL << WIDX_THEMES_PARK_TAB)
                     | (1LL << WIDX_THEMES_TOOLS_TAB) | (1LL << WIDX_THEMES_RIDE_PEEPS_TAB) | (1LL << WIDX_THEMES_EDITORS_TAB)
                     | (1LL << WIDX_THEMES_MISC_TAB) | (1LL << WIDX_THEMES_PROMPTS_TAB) | (1LL << WIDX_THEMES_FEATURES_TAB));
             WidgetIndex widgetIndex = _selected_tab + WIDX_THEMES_SETTINGS_TAB;
 
-            pressed_widgets = pressedWidgets | (1 << widgetIndex);
+            pressed_widgets = newPressedWidgets | (1 << widgetIndex);
 
             auto* windowMgr = GetWindowManager();
             if (windowMgr->FindByClass(WindowClass::Dropdown) == nullptr)

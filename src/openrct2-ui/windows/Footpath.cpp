@@ -1358,54 +1358,54 @@ namespace OpenRCT2::Ui::Windows
                 MapInvalidateMapSelectionTiles();
             }
 
-            uint64_t pressedWidgets = pressed_widgets
+            uint64_t newPressedWidgets = pressed_widgets
                 & ~((1LL << WIDX_DIRECTION_NW) | (1LL << WIDX_DIRECTION_NE) | (1LL << WIDX_DIRECTION_SW)
                     | (1LL << WIDX_DIRECTION_SE) | (1LL << WIDX_SLOPEDOWN) | (1LL << WIDX_LEVEL) | (1LL << WIDX_SLOPEUP));
-            uint64_t disabledWidgets = 0;
+            uint64_t newDisabledWidgets = 0;
             int32_t currentRotation = GetCurrentRotation();
             if (_footpathConstructionMode == PathConstructionMode::bridgeOrTunnel)
             {
                 // Set pressed directional widget
                 int32_t direction = (_footpathConstructDirection + currentRotation) & 3;
-                pressedWidgets |= (1LL << (WIDX_DIRECTION_NW + direction));
+                newPressedWidgets |= (1LL << (WIDX_DIRECTION_NW + direction));
 
                 // Set pressed slope widget
                 int32_t slope = _footpathConstructSlope;
                 if (slope == kTileSlopeSESideUp)
                 {
-                    pressedWidgets |= (1uLL << WIDX_SLOPEDOWN);
+                    newPressedWidgets |= (1uLL << WIDX_SLOPEDOWN);
                 }
                 else if (slope == kTileSlopeFlat)
                 {
-                    pressedWidgets |= (1uLL << WIDX_LEVEL);
+                    newPressedWidgets |= (1uLL << WIDX_LEVEL);
                 }
                 else
                 {
-                    pressedWidgets |= (1uLL << WIDX_SLOPEUP);
+                    newPressedWidgets |= (1uLL << WIDX_SLOPEUP);
                 }
 
                 // Enable / disable directional widgets
                 direction = _footpathConstructValidDirections;
                 if (direction != kInvalidDirection)
                 {
-                    disabledWidgets |= (1uLL << WIDX_DIRECTION_NW) | (1uLL << WIDX_DIRECTION_NE) | (1uLL << WIDX_DIRECTION_SW)
-                        | (1uLL << WIDX_DIRECTION_SE);
+                    newDisabledWidgets |= (1uLL << WIDX_DIRECTION_NW) | (1uLL << WIDX_DIRECTION_NE)
+                        | (1uLL << WIDX_DIRECTION_SW) | (1uLL << WIDX_DIRECTION_SE);
 
                     direction = (direction + currentRotation) & 3;
-                    disabledWidgets &= ~(1 << (WIDX_DIRECTION_NW + direction));
+                    newDisabledWidgets &= ~(1 << (WIDX_DIRECTION_NW + direction));
                 }
             }
             else
             {
                 // Disable all bridge mode widgets
-                disabledWidgets |= (1uLL << WIDX_DIRECTION_GROUP) | (1uLL << WIDX_DIRECTION_NW) | (1uLL << WIDX_DIRECTION_NE)
+                newDisabledWidgets |= (1uLL << WIDX_DIRECTION_GROUP) | (1uLL << WIDX_DIRECTION_NW) | (1uLL << WIDX_DIRECTION_NE)
                     | (1uLL << WIDX_DIRECTION_SW) | (1uLL << WIDX_DIRECTION_SE) | (1uLL << WIDX_SLOPE_GROUP)
                     | (1uLL << WIDX_SLOPEDOWN) | (1uLL << WIDX_LEVEL) | (1uLL << WIDX_SLOPEUP) | (1uLL << WIDX_CONSTRUCT)
                     | (1uLL << WIDX_REMOVE);
             }
 
-            pressed_widgets = pressedWidgets;
-            disabled_widgets = disabledWidgets;
+            pressed_widgets = newPressedWidgets;
+            disabled_widgets = newDisabledWidgets;
             Invalidate();
         }
 
