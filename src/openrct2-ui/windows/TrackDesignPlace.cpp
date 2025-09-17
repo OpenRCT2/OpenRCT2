@@ -98,6 +98,7 @@ namespace OpenRCT2::Ui::Windows
         int32_t _trackPlaceShiftZ;
 
         int32_t _trackPlaceZ;
+        bool _triggeredUndergroundView = false;
 
     public:
         void onOpen() override
@@ -538,6 +539,27 @@ namespace OpenRCT2::Ui::Windows
             if (mapCoords.x == kLocationNull)
                 return std::nullopt;
 
+            // Trigger underground view?
+            auto* mainWnd = WindowGetMain();
+            if (mainWnd != nullptr && mainWnd->viewport != nullptr)
+            {
+                if (_trackPlaceZ < surfaceElement->GetBaseZ() && !_triggeredUndergroundView)
+                {
+                    mainWnd->viewport->flags |= VIEWPORT_FLAG_UNDERGROUND_INSIDE;
+                    _triggeredUndergroundView = true;
+                }
+                else if (_trackPlaceZ >= surfaceElement->GetBaseZ() && _triggeredUndergroundView)
+                {
+                    mainWnd->viewport->flags &= ~VIEWPORT_FLAG_UNDERGROUND_INSIDE;
+                    _triggeredUndergroundView = false;
+                }
+            }
+
+            // Force placement at the designated position if modifiers are used
+            if (_trackPlaceShiftState || _trackPlaceCtrlState)
+                return _trackPlaceZ;
+
+            // Figure out a good position to place the design, taking other elements and surface height into account
             return _trackPlaceZ
                 + TrackDesignGetZPlacement(
                        *_trackDesign, RideGetTemporaryForPreview(), { mapCoords, _trackPlaceZ, _currentTrackPieceDirection });
