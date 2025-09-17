@@ -848,7 +848,7 @@ OpenRCT2::Widget* CustomListView::GetWidget() const
 
 void CustomListView::Invalidate()
 {
-    ParentWindow->Invalidate();
+    ParentWindow->invalidate();
 }
 
 #endif

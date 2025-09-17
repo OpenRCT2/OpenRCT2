@@ -314,7 +314,7 @@ void PaintWall(PaintSession& session, uint8_t direction, int32_t height, const W
         return;
     }
 
-    session.InteractionType = ViewportInteractionItem::Wall;
+    session.InteractionType = ViewportInteractionItem::wall;
 
     ImageId imageTemplate;
     if (wallEntry->flags & WALL_SCENERY_HAS_PRIMARY_COLOUR)
@@ -344,7 +344,7 @@ void PaintWall(PaintSession& session, uint8_t direction, int32_t height, const W
 
     if (wallElement.IsGhost())
     {
-        session.InteractionType = ViewportInteractionItem::None;
+        session.InteractionType = ViewportInteractionItem::none;
         imageTemplate = ImageId().WithRemap(FilterPaletteID::PaletteGhost);
         isGhost = true;
     }

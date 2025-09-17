@@ -745,14 +745,14 @@ namespace OpenRCT2::Ui::Windows
             rideId = ride.id;
         }
 
-        void OnOpen() override
+        void onOpen() override
         {
-            SetWidgets(PageWidgets[WINDOW_RIDE_PAGE_MAIN]);
-            hold_down_widgets = PageHoldDownWidgets[WINDOW_RIDE_PAGE_MAIN];
+            setWidgets(PageWidgets[WINDOW_RIDE_PAGE_MAIN]);
+            holdDownWidgets = PageHoldDownWidgets[WINDOW_RIDE_PAGE_MAIN];
 
-            SetPage(WINDOW_RIDE_PAGE_MAIN);
-            list_information_type = 0;
-            picked_peep_frame = 0;
+            setPage(WINDOW_RIDE_PAGE_MAIN);
+            listInformationType = 0;
+            pickedPeepFrame = 0;
             DisableTabs();
 
             WindowSetResize(*this, { kMinimumWindowWidth, 180 }, { 500, 450 });
@@ -760,7 +760,7 @@ namespace OpenRCT2::Ui::Windows
             auto ride = GetRide(rideId);
             if (ride == nullptr)
             {
-                Close();
+                close();
                 return;
             }
             UpdateOverallView(*ride);
@@ -768,7 +768,7 @@ namespace OpenRCT2::Ui::Windows
             PopulateVehicleTypeDropdown(*ride, true);
         }
 
-        void OnClose() override
+        void onClose() override
         {
             switch (page)
             {
@@ -780,7 +780,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
             }
         }
-        void OnResize() override
+        void onResize() override
         {
             switch (page)
             {
@@ -817,7 +817,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnUpdate() override
+        void onUpdate() override
         {
             switch (page)
             {
@@ -854,7 +854,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnPrepareDraw() override
+        void onPrepareDraw() override
         {
             switch (page)
             {
@@ -890,7 +890,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
             }
         }
-        void OnDraw(RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
             switch (page)
             {
@@ -927,7 +927,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        OpenRCT2String OnTooltip(WidgetIndex widgetIndex, StringId fallback) override
+        OpenRCT2String onTooltip(WidgetIndex widgetIndex, StringId fallback) override
         {
             switch (page)
             {
@@ -938,7 +938,7 @@ namespace OpenRCT2::Ui::Windows
             }
             return { fallback, {} };
         }
-        void OnMouseDown(WidgetIndex widgetIndex) override
+        void onMouseDown(WidgetIndex widgetIndex) override
         {
             switch (page)
             {
@@ -971,7 +971,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
             }
         }
-        void OnMouseUp(WidgetIndex widgetIndex) override
+        void onMouseUp(WidgetIndex widgetIndex) override
         {
             switch (page)
             {
@@ -1007,7 +1007,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
             }
         }
-        void OnDropdown(WidgetIndex widgetIndex, int32_t selectedIndex) override
+        void onDropdown(WidgetIndex widgetIndex, int32_t selectedIndex) override
         {
             switch (page)
             {
@@ -1034,7 +1034,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
             }
         }
-        void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override
+        void onTextInput(WidgetIndex widgetIndex, std::string_view text) override
         {
             switch (page)
             {
@@ -1049,7 +1049,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
             }
         }
-        ScreenSize OnScrollGetSize(int32_t scrollIndex) override
+        ScreenSize onScrollGetSize(int32_t scrollIndex) override
         {
             switch (page)
             {
@@ -1060,7 +1060,7 @@ namespace OpenRCT2::Ui::Windows
             }
             return {};
         }
-        void OnScrollSelect(int32_t scrollIndex, int32_t scrollAreaType) override
+        void onScrollSelect(int32_t scrollIndex, int32_t scrollAreaType) override
         {
             switch (page)
             {
@@ -1069,7 +1069,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
             }
         }
-        void OnScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
+        void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
             switch (page)
             {
@@ -1087,7 +1087,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
             }
         }
-        void OnToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
+        void onToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
             switch (page)
             {
@@ -1099,7 +1099,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
             }
         }
-        void OnToolDrag(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
+        void onToolDrag(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
             switch (page)
             {
@@ -1111,7 +1111,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
             }
         }
-        void OnToolAbort(WidgetIndex widgetIndex) override
+        void onToolAbort(WidgetIndex widgetIndex) override
         {
             switch (page)
             {
@@ -1120,7 +1120,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
             }
         }
-        void OnViewportRotate() override
+        void onViewportRotate() override
         {
             switch (page)
             {
@@ -1130,7 +1130,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void SetPage(int32_t newPage)
+        void setPage(int32_t newPage)
         {
             if (isToolActive(classification, number))
                 ToolCancel();
@@ -1144,7 +1144,7 @@ namespace OpenRCT2::Ui::Windows
                     windowMgr->CloseByClass(WindowClass::RideConstruction);
                     // Closing the construction window sets the tab to the first page, which we don't want here,
                     // as user just clicked the Vehicle page
-                    SetPage(WINDOW_RIDE_PAGE_VEHICLE);
+                    setPage(WINDOW_RIDE_PAGE_VEHICLE);
                 }
             }
 
@@ -1161,47 +1161,47 @@ namespace OpenRCT2::Ui::Windows
                 return;
 
             page = newPage;
-            frame_no = 0;
-            picked_peep_frame = 0;
+            currentFrame = 0;
+            pickedPeepFrame = 0;
 
             // There doesn't seem to be any need for this call, and it can sometimes modify the reported number of cars per
             // train, so I've removed it if (newPage == WINDOW_RIDE_PAGE_VEHICLE) { ride_update_max_vehicles(ride);
             //}
 
-            RemoveViewport();
+            removeViewport();
 
-            hold_down_widgets = PageHoldDownWidgets[page];
-            pressed_widgets = 0;
-            SetWidgets(PageWidgets[page]);
+            holdDownWidgets = PageHoldDownWidgets[page];
+            pressedWidgets = 0;
+            setWidgets(PageWidgets[page]);
             DisableTabs();
-            Invalidate();
+            invalidate();
 
-            OnResize();
-            OnPrepareDraw();
-            InitScrollWidgets();
-            Invalidate();
+            onResize();
+            onPrepareDraw();
+            initScrollWidgets();
+            invalidate();
 
             if (listen && viewport != nullptr)
                 viewport->flags |= VIEWPORT_FLAG_SOUND_ON;
         }
 
-        void SetViewIndex(int16_t newIndex)
+        void setViewIndex(int16_t newIndex)
         {
             _viewIndex = newIndex;
-            OnViewportRotate();
+            onViewportRotate();
         }
-        int16_t GetViewIndex() const
+        int16_t getViewIndex() const
         {
             return _viewIndex;
         }
 
-        void ResetVehicleIndex()
+        void resetVehicleIndex()
         {
             _vehicleIndex = dropdownIndexToCarIndex(0);
         }
 
     private:
-        void DrawTabImage(RenderTarget& rt, int32_t tab, int32_t spriteIndex)
+        void drawTabImage(RenderTarget& rt, int32_t tab, int32_t spriteIndex)
         {
             WidgetIndex widgetIndex = WIDX_TAB_1 + tab;
 
@@ -1209,7 +1209,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 if (page == tab)
                 {
-                    int32_t frame = frame_no / PageTabAnimationDivisor[page];
+                    int32_t frame = currentFrame / PageTabAnimationDivisor[page];
                     spriteIndex += (frame % PageTabAnimationNumFrames[page]);
                 }
 
@@ -1232,17 +1232,17 @@ namespace OpenRCT2::Ui::Windows
                         case RideClassification::ride:
                             spriteIndex = SPR_TAB_RIDE_0;
                             if (page == WINDOW_RIDE_PAGE_MAIN)
-                                spriteIndex += (frame_no / 4) % 16;
+                                spriteIndex += (currentFrame / 4) % 16;
                             break;
                         case RideClassification::shopOrStall:
                             spriteIndex = SPR_TAB_SHOPS_AND_STALLS_0;
                             if (page == WINDOW_RIDE_PAGE_MAIN)
-                                spriteIndex += (frame_no / 4) % 16;
+                                spriteIndex += (currentFrame / 4) % 16;
                             break;
                         case RideClassification::kioskOrFacility:
                             spriteIndex = SPR_TAB_KIOSKS_AND_FACILITIES_0;
                             if (page == WINDOW_RIDE_PAGE_MAIN)
-                                spriteIndex += (frame_no / 4) % 8;
+                                spriteIndex += (currentFrame / 4) % 8;
                             break;
                     }
 
@@ -1305,7 +1305,7 @@ namespace OpenRCT2::Ui::Windows
                 // imageIndex represents a precision of 64
                 auto imageIndex = OpenRCT2::Entity::Yaw::YawFrom4(2) * 2;
                 if (page == WINDOW_RIDE_PAGE_VEHICLE)
-                    imageIndex += frame_no;
+                    imageIndex += currentFrame;
                 imageIndex = carEntry.SpriteByYaw(imageIndex / 2, SpriteGroupType::SlopeFlat);
                 imageIndex &= carEntry.TabRotationMask;
                 imageIndex *= carEntry.base_num_frames;
@@ -1324,7 +1324,7 @@ namespace OpenRCT2::Ui::Windows
                 const auto& widget = widgets[widgetIndex];
                 int32_t spriteIndex = 0;
                 if (page == WINDOW_RIDE_PAGE_CUSTOMER)
-                    spriteIndex = picked_peep_frame & ~3;
+                    spriteIndex = pickedPeepFrame & ~3;
 
                 auto* animObj = findPeepAnimationsObjectForType(AnimationPeepType::Guest);
                 spriteIndex += animObj->GetPeepAnimation(PeepAnimationGroup::Normal).base_image + 1;
@@ -1335,18 +1335,18 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void DrawTabImages(RenderTarget& rt)
+        void drawTabImages(RenderTarget& rt)
         {
             DrawTabVehicle(rt);
-            DrawTabImage(rt, WINDOW_RIDE_PAGE_OPERATING, SPR_TAB_GEARS_0);
-            DrawTabImage(rt, WINDOW_RIDE_PAGE_MAINTENANCE, SPR_TAB_WRENCH_0);
-            DrawTabImage(rt, WINDOW_RIDE_PAGE_INCOME, SPR_TAB_ADMISSION_0);
+            drawTabImage(rt, WINDOW_RIDE_PAGE_OPERATING, SPR_TAB_GEARS_0);
+            drawTabImage(rt, WINDOW_RIDE_PAGE_MAINTENANCE, SPR_TAB_WRENCH_0);
+            drawTabImage(rt, WINDOW_RIDE_PAGE_INCOME, SPR_TAB_ADMISSION_0);
             DrawTabMain(rt);
-            DrawTabImage(rt, WINDOW_RIDE_PAGE_MEASUREMENTS, SPR_TAB_TIMER_0);
-            DrawTabImage(rt, WINDOW_RIDE_PAGE_COLOUR, SPR_TAB_PAINT_0);
-            DrawTabImage(rt, WINDOW_RIDE_PAGE_GRAPHS, SPR_TAB_GRAPH_A_0);
+            drawTabImage(rt, WINDOW_RIDE_PAGE_MEASUREMENTS, SPR_TAB_TIMER_0);
+            drawTabImage(rt, WINDOW_RIDE_PAGE_COLOUR, SPR_TAB_PAINT_0);
+            drawTabImage(rt, WINDOW_RIDE_PAGE_GRAPHS, SPR_TAB_GRAPH_A_0);
             DrawTabCustomer(rt);
-            DrawTabImage(rt, WINDOW_RIDE_PAGE_MUSIC, SPR_TAB_MUSIC_0);
+            drawTabImage(rt, WINDOW_RIDE_PAGE_MUSIC, SPR_TAB_MUSIC_0);
         }
 
         void DisableTabs()
@@ -1401,7 +1401,7 @@ namespace OpenRCT2::Ui::Windows
                 disabledTabs |= (1uLL << WIDX_TAB_5);
             }
 
-            disabled_widgets = disabledTabs;
+            disabledWidgets = disabledTabs;
         }
 
         void UpdateOverallView(const Ride& ride) const
@@ -1469,8 +1469,8 @@ namespace OpenRCT2::Ui::Windows
         {
             int32_t i;
             for (i = 0; i < WINDOW_RIDE_PAGE_COUNT; i++)
-                pressed_widgets &= ~(1 << (WIDX_TAB_1 + i));
-            pressed_widgets |= 1LL << (WIDX_TAB_1 + page);
+                pressedWidgets &= ~(1 << (WIDX_TAB_1 + i));
+            pressedWidgets |= 1LL << (WIDX_TAB_1 + page);
         }
 
 #pragma region Main
@@ -1498,7 +1498,7 @@ namespace OpenRCT2::Ui::Windows
             return std::nullopt;
         }
 
-        void InitViewport()
+        void initViewport()
         {
             if (page != WINDOW_RIDE_PAGE_MAIN)
                 return;
@@ -1563,14 +1563,14 @@ namespace OpenRCT2::Ui::Windows
                     return;
                 }
                 newViewportFlags = viewport->flags;
-                RemoveViewport();
+                removeViewport();
             }
             else if (Config::Get().general.AlwaysShowGridlines)
             {
                 newViewportFlags |= VIEWPORT_FLAG_GRIDLINES;
             }
 
-            OnPrepareDraw();
+            onPrepareDraw();
 
             focus = newFocus;
 
@@ -1583,15 +1583,15 @@ namespace OpenRCT2::Ui::Windows
                 int32_t viewWidth = viewWidget.width() - 1;
                 int32_t viewHeight = viewWidget.height() - 1;
 
-                ViewportCreate(this, screenPos, viewWidth, viewHeight, focus.value());
+                ViewportCreate(*this, screenPos, viewWidth, viewHeight, focus.value());
 
                 flags |= WF_NO_SCROLLING;
-                Invalidate();
+                invalidate();
             }
             if (viewport != nullptr)
             {
                 viewport->flags = newViewportFlags;
-                Invalidate();
+                invalidate();
             }
         }
 
@@ -1612,7 +1612,7 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
-                    Close();
+                    close();
                     return;
                 case WIDX_TAB_1:
                 case WIDX_TAB_2:
@@ -1624,7 +1624,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_TAB_8:
                 case WIDX_TAB_9:
                 case WIDX_TAB_10:
-                    SetPage(widgetIndex - WIDX_TAB_1);
+                    setPage(widgetIndex - WIDX_TAB_1);
                     break;
                 case WIDX_CONSTRUCTION:
                 {
@@ -1635,7 +1635,7 @@ namespace OpenRCT2::Ui::Windows
                         auto* windowMgr = GetWindowManager();
                         if (windowMgr->FindByNumber(WindowClass::RideConstruction, ride->id.ToUnderlying()) != nullptr)
                         {
-                            Close();
+                            close();
                             return;
                         }
                     }
@@ -1682,10 +1682,10 @@ namespace OpenRCT2::Ui::Windows
 
         void MainResize()
         {
-            int32_t minHeight = 180;
+            int32_t newMinHeight = 180;
             if (ThemeGetFlags() & UITHEME_FLAG_USE_LIGHTS_RIDE)
             {
-                minHeight += 20 + kRCT1LightOffset;
+                newMinHeight += 20 + kRCT1LightOffset;
 
                 auto ride = GetRide(rideId);
                 if (ride != nullptr)
@@ -1693,25 +1693,25 @@ namespace OpenRCT2::Ui::Windows
 #ifdef __SIMULATE_IN_RIDE_WINDOW__
                     if (ride->supportsStatus(RideStatus::simulating))
                     {
-                        minHeight += 14;
+                        newMinHeight += 14;
                     }
 #endif
                     if (ride->supportsStatus(RideStatus::testing))
                     {
-                        minHeight += 14;
+                        newMinHeight += 14;
                     }
                 }
             }
             if (getGameState().cheats.allowArbitraryRideTypeChanges)
             {
-                minHeight += 15;
+                newMinHeight += 15;
             }
 
             flags |= WF_RESIZABLE;
-            WindowSetResize(*this, { kMinimumWindowWidth, minHeight }, { 500, 450 });
+            WindowSetResize(*this, { kMinimumWindowWidth, newMinHeight }, { 500, 450 });
             // Unlike with other windows, the focus needs to be recentred so it’s best to just reset it.
             focus = std::nullopt;
-            InitViewport();
+            initViewport();
         }
 
         size_t GetNumPeepsInTrain(const Ride& ride, int32_t trainIndex) const
@@ -2193,8 +2193,8 @@ namespace OpenRCT2::Ui::Windows
                     }
 
                     _viewIndex = dropdownIndex;
-                    InitViewport();
-                    Invalidate();
+                    initViewport();
+                    invalidate();
                     break;
                 case WIDX_OPEN:
                 {
@@ -2240,7 +2240,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     if (dropdownIndex == 0)
                     {
-                        ScrollToViewport();
+                        scrollToViewport();
                     }
                     else if (dropdownIndex == 1)
                     {
@@ -2254,9 +2254,9 @@ namespace OpenRCT2::Ui::Windows
         void MainUpdate()
         {
             // Update tab animation
-            frame_no++;
-            OnPrepareDraw();
-            InvalidateWidget(WIDX_TAB_1);
+            currentFrame++;
+            onPrepareDraw();
+            invalidateWidget(WIDX_TAB_1);
 
             // Update status
             auto ride = GetRide(rideId);
@@ -2282,7 +2282,7 @@ namespace OpenRCT2::Ui::Windows
                 }
                 ride->windowInvalidateFlags &= ~RIDE_INVALIDATE_RIDE_MAIN;
             }
-            InvalidateWidget(WIDX_STATUS);
+            invalidateWidget(WIDX_STATUS);
         }
 
         void MainOnTextInput(WidgetIndex widgetIndex, std::string_view text)
@@ -2302,7 +2302,7 @@ namespace OpenRCT2::Ui::Windows
         void MainViewportRotate()
         {
             focus = std::nullopt;
-            InitViewport();
+            initViewport();
         }
 
         void MainOnPrepareDraw()
@@ -2316,10 +2316,10 @@ namespace OpenRCT2::Ui::Windows
                 return;
 
             const auto& gameState = getGameState();
-            disabled_widgets &= ~((1uLL << WIDX_DEMOLISH) | (1uLL << WIDX_CONSTRUCTION));
+            disabledWidgets &= ~((1uLL << WIDX_DEMOLISH) | (1uLL << WIDX_CONSTRUCTION));
             if (ride->lifecycleFlags & (RIDE_LIFECYCLE_INDESTRUCTIBLE | RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK)
                 && !gameState.cheats.makeAllDestructible)
-                disabled_widgets |= (1uLL << WIDX_DEMOLISH);
+                disabledWidgets |= (1uLL << WIDX_DEMOLISH);
 
             auto ft = Formatter::Common();
             ride->formatNameTo(ft);
@@ -2570,7 +2570,7 @@ namespace OpenRCT2::Ui::Windows
         void MainOnDraw(RenderTarget& rt)
         {
             WindowDrawWidgets(*this, rt);
-            DrawTabImages(rt);
+            drawTabImages(rt);
 
             // Viewport and ear icon
             if (viewport != nullptr)
@@ -2627,7 +2627,7 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
-                    Close();
+                    close();
                     return;
                 case WIDX_TAB_1:
                 case WIDX_TAB_2:
@@ -2639,7 +2639,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_TAB_8:
                 case WIDX_TAB_9:
                 case WIDX_TAB_10:
-                    SetPage(widgetIndex - WIDX_TAB_1);
+                    setPage(widgetIndex - WIDX_TAB_1);
                     break;
             }
         }
@@ -2706,9 +2706,9 @@ namespace OpenRCT2::Ui::Windows
 
         void VehicleUpdate()
         {
-            frame_no++;
-            OnPrepareDraw();
-            InvalidateWidget(WIDX_TAB_2);
+            currentFrame++;
+            onPrepareDraw();
+            invalidateWidget(WIDX_TAB_2);
         }
 
         OpenRCT2String VehicleTooltip(const WidgetIndex widgetIndex, StringId fallback)
@@ -2816,11 +2816,11 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_VEHICLE_REVERSED_TRAINS_CHECKBOX].type = WidgetType::checkbox;
                 if (ride->hasLifecycleFlag(RIDE_LIFECYCLE_REVERSED_TRAINS))
                 {
-                    pressed_widgets |= (1uLL << WIDX_VEHICLE_REVERSED_TRAINS_CHECKBOX);
+                    pressedWidgets |= (1uLL << WIDX_VEHICLE_REVERSED_TRAINS_CHECKBOX);
                 }
                 else
                 {
-                    pressed_widgets &= ~(1uLL << WIDX_VEHICLE_REVERSED_TRAINS_CHECKBOX);
+                    pressedWidgets &= ~(1uLL << WIDX_VEHICLE_REVERSED_TRAINS_CHECKBOX);
                 }
             }
             else
@@ -2859,7 +2859,7 @@ namespace OpenRCT2::Ui::Windows
         void VehicleOnDraw(RenderTarget& rt)
         {
             WindowDrawWidgets(*this, rt);
-            DrawTabImages(rt);
+            drawTabImages(rt);
 
             auto ride = GetRide(rideId);
             if (ride == nullptr)
@@ -2927,7 +2927,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 auto heightIncrease = minimumPreviewStart - widgets[WIDX_VEHICLE_TRAINS_PREVIEW].top;
                 height += heightIncrease;
-                ResizeFrame();
+                resizeFrame();
 
                 for (auto i = EnumValue(WIDX_VEHICLE_TRAINS_PREVIEW); i <= WIDX_VEHICLE_CARS_PER_TRAIN_DECREASE; i++)
                 {
@@ -3152,7 +3152,7 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
-                    Close();
+                    close();
                     return;
                 case WIDX_TAB_1:
                 case WIDX_TAB_2:
@@ -3164,7 +3164,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_TAB_8:
                 case WIDX_TAB_9:
                 case WIDX_TAB_10:
-                    SetPage(widgetIndex - WIDX_TAB_1);
+                    setPage(widgetIndex - WIDX_TAB_1);
                     break;
                 case WIDX_LOAD_CHECKBOX:
                     SetOperatingSetting(
@@ -3391,15 +3391,15 @@ namespace OpenRCT2::Ui::Windows
 
         void OperatingUpdate()
         {
-            frame_no++;
-            OnPrepareDraw();
-            InvalidateWidget(WIDX_TAB_3);
+            currentFrame++;
+            onPrepareDraw();
+            invalidateWidget(WIDX_TAB_3);
 
             auto ride = GetRide(rideId);
             if (ride != nullptr && ride->windowInvalidateFlags & RIDE_INVALIDATE_RIDE_OPERATING)
             {
                 ride->windowInvalidateFlags &= ~RIDE_INVALIDATE_RIDE_OPERATING;
-                Invalidate();
+                invalidate();
             }
         }
 
@@ -3466,7 +3466,7 @@ namespace OpenRCT2::Ui::Windows
             ride->formatNameTo(ft);
 
             // Widget setup
-            pressed_widgets &= ~(
+            pressedWidgets &= ~(
                 (1uLL << WIDX_LOAD_CHECKBOX) | (1uLL << WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX)
                 | (1uLL << WIDX_MINIMUM_LENGTH_CHECKBOX) | (1uLL << WIDX_MAXIMUM_LENGTH_CHECKBOX)
                 | (1uLL << WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX));
@@ -3569,7 +3569,7 @@ namespace OpenRCT2::Ui::Windows
                 ft.Add<uint16_t>(ride->maxWaitingTime);
 
                 if (ride->departFlags & RIDE_DEPART_WAIT_FOR_LOAD)
-                    pressed_widgets |= (1uLL << WIDX_LOAD_CHECKBOX);
+                    pressedWidgets |= (1uLL << WIDX_LOAD_CHECKBOX);
             }
             else
             {
@@ -3589,13 +3589,13 @@ namespace OpenRCT2::Ui::Windows
             }
 
             if (ride->departFlags & RIDE_DEPART_LEAVE_WHEN_ANOTHER_ARRIVES)
-                pressed_widgets |= (1uLL << WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX);
+                pressedWidgets |= (1uLL << WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX);
             if (ride->departFlags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS)
-                pressed_widgets |= (1uLL << WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX);
+                pressedWidgets |= (1uLL << WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX);
             if (ride->departFlags & RIDE_DEPART_WAIT_FOR_MINIMUM_LENGTH)
-                pressed_widgets |= (1uLL << WIDX_MINIMUM_LENGTH_CHECKBOX);
+                pressedWidgets |= (1uLL << WIDX_MINIMUM_LENGTH_CHECKBOX);
             if (ride->departFlags & RIDE_DEPART_WAIT_FOR_MAXIMUM_LENGTH)
-                pressed_widgets |= (1uLL << WIDX_MAXIMUM_LENGTH_CHECKBOX);
+                pressedWidgets |= (1uLL << WIDX_MAXIMUM_LENGTH_CHECKBOX);
 
             // Mode specific functionality
             auto multiplier = ride->getRideTypeDescriptor().OperatingSettings.OperatingSettingMultiplier;
@@ -3666,7 +3666,7 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_MODE_TWEAK].text = format;
                 widgets[WIDX_MODE_TWEAK_INCREASE].type = WidgetType::button;
                 widgets[WIDX_MODE_TWEAK_DECREASE].type = WidgetType::button;
-                pressed_widgets &= ~(1uLL << WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX);
+                pressedWidgets &= ~(1uLL << WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX);
             }
             else
             {
@@ -3681,8 +3681,8 @@ namespace OpenRCT2::Ui::Windows
 
         void OperatingOnDraw(RenderTarget& rt)
         {
-            DrawWidgets(rt);
-            DrawTabImages(rt);
+            drawWidgets(rt);
+            drawTabImages(rt);
 
             auto ride = GetRide(rideId);
             if (ride == nullptr)
@@ -3740,7 +3740,7 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
-                    Close();
+                    close();
                     return;
                 case WIDX_TAB_1:
                 case WIDX_TAB_2:
@@ -3752,7 +3752,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_TAB_8:
                 case WIDX_TAB_9:
                 case WIDX_TAB_10:
-                    SetPage(widgetIndex - WIDX_TAB_1);
+                    setPage(widgetIndex - WIDX_TAB_1);
                     break;
                 case WIDX_LOCATE_MECHANIC:
                     LocateMechanic();
@@ -3970,15 +3970,15 @@ namespace OpenRCT2::Ui::Windows
 
         void MaintenanceUpdate()
         {
-            frame_no++;
-            OnPrepareDraw();
-            InvalidateWidget(WIDX_TAB_4);
+            currentFrame++;
+            onPrepareDraw();
+            invalidateWidget(WIDX_TAB_4);
 
             auto ride = GetRide(rideId);
             if (ride != nullptr && ride->windowInvalidateFlags & RIDE_INVALIDATE_RIDE_MAINTENANCE)
             {
                 ride->windowInvalidateFlags &= ~RIDE_INVALIDATE_RIDE_MAINTENANCE;
-                Invalidate();
+                invalidate();
             }
         }
 
@@ -4009,12 +4009,12 @@ namespace OpenRCT2::Ui::Windows
             if (ride->getRideTypeDescriptor().AvailableBreakdowns == 0
                 || !(ride->lifecycleFlags & RIDE_LIFECYCLE_EVER_BEEN_OPENED))
             {
-                disabled_widgets |= (1uLL << WIDX_REFURBISH_RIDE);
+                disabledWidgets |= (1uLL << WIDX_REFURBISH_RIDE);
                 widgets[WIDX_REFURBISH_RIDE].tooltip = STR_CANT_REFURBISH_NOT_NEEDED;
             }
             else
             {
-                disabled_widgets &= ~(1uLL << WIDX_REFURBISH_RIDE);
+                disabledWidgets &= ~(1uLL << WIDX_REFURBISH_RIDE);
                 widgets[WIDX_REFURBISH_RIDE].tooltip = STR_REFURBISH_RIDE_TIP;
             }
         }
@@ -4031,8 +4031,8 @@ namespace OpenRCT2::Ui::Windows
             uint16_t downTime = ride->downtime;
             widgetProgressBarSetNewPercentage(widgets[WIDX_DOWN_TIME_BAR], downTime);
 
-            DrawWidgets(rt);
-            DrawTabImages(rt);
+            drawWidgets(rt);
+            drawTabImages(rt);
 
             // Locate mechanic button image
             Widget* widget = &widgets[WIDX_LOCATE_MECHANIC];
@@ -4169,9 +4169,9 @@ namespace OpenRCT2::Ui::Windows
         void SetTrackColourScheme(const ScreenCoordsXY& screenPos)
         {
             auto newColourScheme = static_cast<uint8_t>(_rideColour);
-            auto info = GetMapCoordinatesFromPos(screenPos, EnumsToFlags(ViewportInteractionItem::Ride));
+            auto info = GetMapCoordinatesFromPos(screenPos, EnumsToFlags(ViewportInteractionItem::ride));
 
-            if (info.interactionType != ViewportInteractionItem::Ride)
+            if (info.interactionType != ViewportInteractionItem::ride)
                 return;
             if (info.Element->GetType() != TileElementType::Track)
                 return;
@@ -4200,7 +4200,7 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
-                    Close();
+                    close();
                     return;
                 case WIDX_TAB_1:
                 case WIDX_TAB_2:
@@ -4212,7 +4212,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_TAB_8:
                 case WIDX_TAB_9:
                 case WIDX_TAB_10:
-                    SetPage(widgetIndex - WIDX_TAB_1);
+                    setPage(widgetIndex - WIDX_TAB_1);
                     break;
                 case WIDX_PAINT_INDIVIDUAL_AREA:
                     ToolSet(*this, WIDX_PAINT_INDIVIDUAL_AREA, Tool::paintDown);
@@ -4448,7 +4448,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WIDX_TRACK_COLOUR_SCHEME_DROPDOWN:
                     _rideColour = static_cast<uint16_t>(dropdownIndex);
-                    Invalidate();
+                    invalidate();
                     break;
                 case WIDX_TRACK_MAIN_COLOUR:
                 {
@@ -4507,7 +4507,7 @@ namespace OpenRCT2::Ui::Windows
                         [this](const GameActions::GameAction* ga, const GameActions::Result* result) {
                             if (result->Error == GameActions::Status::Ok)
                             {
-                                ResetVehicleIndex();
+                                resetVehicleIndex();
                             }
                         });
                     GameActions::Execute(&rideSetAppearanceAction, gameState);
@@ -4515,7 +4515,7 @@ namespace OpenRCT2::Ui::Windows
                 }
                 case WIDX_VEHICLE_COLOUR_INDEX_DROPDOWN:
                     _vehicleIndex = dropdownIndexToCarIndex(dropdownIndex);
-                    Invalidate();
+                    invalidate();
                     break;
                 case WIDX_VEHICLE_BODY_COLOUR:
                 {
@@ -4546,10 +4546,10 @@ namespace OpenRCT2::Ui::Windows
 
         void ColourUpdate()
         {
-            frame_no++;
-            OnPrepareDraw();
-            InvalidateWidget(WIDX_TAB_5);
-            InvalidateWidget(WIDX_VEHICLE_PREVIEW);
+            currentFrame++;
+            onPrepareDraw();
+            invalidateWidget(WIDX_TAB_5);
+            invalidateWidget(WIDX_VEHICLE_PREVIEW);
         }
 
         void ColourOnToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
@@ -4644,11 +4644,11 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_SELL_ITEM_RANDOM_COLOUR_CHECKBOX].type = WidgetType::checkbox;
                 if (ride->hasLifecycleFlag(RIDE_LIFECYCLE_RANDOM_SHOP_COLOURS))
                 {
-                    pressed_widgets |= (1uLL << WIDX_SELL_ITEM_RANDOM_COLOUR_CHECKBOX);
+                    pressedWidgets |= (1uLL << WIDX_SELL_ITEM_RANDOM_COLOUR_CHECKBOX);
                 }
                 else
                 {
-                    pressed_widgets &= ~(1uLL << WIDX_SELL_ITEM_RANDOM_COLOUR_CHECKBOX);
+                    pressedWidgets &= ~(1uLL << WIDX_SELL_ITEM_RANDOM_COLOUR_CHECKBOX);
                 }
             }
             else
@@ -4817,8 +4817,8 @@ namespace OpenRCT2::Ui::Windows
             if (ride == nullptr)
                 return;
 
-            DrawWidgets(rt);
-            DrawTabImages(rt);
+            drawWidgets(rt);
+            drawTabImages(rt);
 
             // Track / shop item preview
             const auto& trackPreviewWidget = widgets[WIDX_TRACK_PREVIEW];
@@ -4946,8 +4946,8 @@ namespace OpenRCT2::Ui::Windows
             screenCoords.y += carEntry.tab_height;
 
             // Draw the coloured spinning vehicle
-            // frame_no represents a SpritePrecision of 64
-            ImageIndex imageIndex = carEntry.SpriteByYaw(frame_no / 2, SpriteGroupType::SlopeFlat);
+            // currentFrame represents a SpritePrecision of 64
+            ImageIndex imageIndex = carEntry.SpriteByYaw(currentFrame / 2, SpriteGroupType::SlopeFlat);
             imageIndex &= carEntry.TabRotationMask;
             imageIndex *= carEntry.base_num_frames;
             imageIndex += carEntry.base_image_id;
@@ -4976,7 +4976,7 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
-                    Close();
+                    close();
                     return;
                 case WIDX_TAB_1:
                 case WIDX_TAB_2:
@@ -4988,7 +4988,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_TAB_8:
                 case WIDX_TAB_9:
                 case WIDX_TAB_10:
-                    SetPage(widgetIndex - WIDX_TAB_1);
+                    setPage(widgetIndex - WIDX_TAB_1);
                     break;
                 case WIDX_PLAY_MUSIC:
                     ToggleMusic();
@@ -5007,9 +5007,9 @@ namespace OpenRCT2::Ui::Windows
             // Expand the window when music is playing
             auto isMusicActivated = (ride->lifecycleFlags & RIDE_LIFECYCLE_MUSIC) != 0;
             auto standardHeight = widgets[WIDX_MUSIC_DROPDOWN].bottom + 6;
-            auto minHeight = isMusicActivated ? standardHeight + 133 : standardHeight;
-            auto maxHeight = isMusicActivated ? standardHeight + 369 : standardHeight;
-            WindowSetResize(*this, { kMinimumWindowWidth, minHeight }, { 500, maxHeight });
+            auto newMinHeight = isMusicActivated ? standardHeight + 133 : standardHeight;
+            auto newMaxHeight = isMusicActivated ? standardHeight + 369 : standardHeight;
+            WindowSetResize(*this, { kMinimumWindowWidth, newMinHeight }, { 500, newMaxHeight });
         }
 
         static std::string GetMusicString(ObjectEntryIndex musicObjectIndex)
@@ -5111,17 +5111,17 @@ namespace OpenRCT2::Ui::Windows
 
         void MusicUpdate()
         {
-            frame_no++;
-            OnPrepareDraw();
-            InvalidateWidget(WIDX_TAB_6);
+            currentFrame++;
+            onPrepareDraw();
+            invalidateWidget(WIDX_TAB_6);
 
             if (auto ride = GetRide(rideId); ride != nullptr && ride->windowInvalidateFlags & RIDE_INVALIDATE_RIDE_MUSIC)
             {
                 ride->windowInvalidateFlags &= ~RIDE_INVALIDATE_RIDE_MUSIC;
-                Invalidate();
-                OnResize();
-                OnPrepareDraw();
-                Invalidate();
+                invalidate();
+                onResize();
+                onPrepareDraw();
+                invalidate();
             }
 
             widgetScrollUpdateThumbs(*this, WIDX_MUSIC_DATA);
@@ -5130,7 +5130,7 @@ namespace OpenRCT2::Ui::Windows
         ScreenSize MusicScrollGetSize(int32_t scrollIndex)
         {
             // Hack: can be removed when widgets are no longer shared globally
-            OnPrepareDraw();
+            onPrepareDraw();
 
             // Figure out minimum size
             ScreenSize size{};
@@ -5211,14 +5211,14 @@ namespace OpenRCT2::Ui::Windows
                     widgets[WIDX_MUSIC_DATA].right = width - 8;
                 }
 
-                pressed_widgets |= (1uLL << WIDX_PLAY_MUSIC) | (1uLL << WIDX_MUSIC_IMAGE);
-                disabled_widgets &= ~((1uLL << WIDX_MUSIC) | (1uLL << WIDX_MUSIC_DROPDOWN) | (1uLL << WIDX_MUSIC_DATA));
+                pressedWidgets |= (1uLL << WIDX_PLAY_MUSIC) | (1uLL << WIDX_MUSIC_IMAGE);
+                disabledWidgets &= ~((1uLL << WIDX_MUSIC) | (1uLL << WIDX_MUSIC_DROPDOWN) | (1uLL << WIDX_MUSIC_DATA));
             }
             else
             {
-                pressed_widgets &= ~(1uLL << WIDX_PLAY_MUSIC);
-                pressed_widgets |= (1uLL << WIDX_MUSIC_IMAGE);
-                disabled_widgets |= (1uLL << WIDX_MUSIC) | (1uLL << WIDX_MUSIC_DROPDOWN) | (1uLL << WIDX_MUSIC_DATA);
+                pressedWidgets &= ~(1uLL << WIDX_PLAY_MUSIC);
+                pressedWidgets |= (1uLL << WIDX_MUSIC_IMAGE);
+                disabledWidgets |= (1uLL << WIDX_MUSIC) | (1uLL << WIDX_MUSIC_DROPDOWN) | (1uLL << WIDX_MUSIC_DATA);
             }
 
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_10);
@@ -5226,8 +5226,8 @@ namespace OpenRCT2::Ui::Windows
 
         void MusicOnDraw(RenderTarget& rt)
         {
-            DrawWidgets(rt);
-            DrawTabImages(rt);
+            drawWidgets(rt);
+            drawTabImages(rt);
             auto ride = GetRide(rideId);
             if (ride == nullptr)
                 return;
@@ -5267,7 +5267,7 @@ namespace OpenRCT2::Ui::Windows
             if (ride == nullptr)
                 return;
 
-            // Only draw track listing when music is activated
+            // only draw track listing when music is activated
             auto isMusicActivated = (ride->lifecycleFlags & RIDE_LIFECYCLE_MUSIC) != 0;
             if (!isMusicActivated)
                 return;
@@ -5420,7 +5420,7 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
-                    Close();
+                    close();
                     return;
                 case WIDX_TAB_1:
                 case WIDX_TAB_2:
@@ -5432,7 +5432,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_TAB_8:
                 case WIDX_TAB_9:
                 case WIDX_TAB_10:
-                    SetPage(widgetIndex - WIDX_TAB_1);
+                    setPage(widgetIndex - WIDX_TAB_1);
                     break;
                 case WIDX_SELECT_NEARBY_SCENERY:
                     MeasurementsDesignSelectNearbyScenery();
@@ -5496,14 +5496,14 @@ namespace OpenRCT2::Ui::Windows
 
         void MeasurementsUpdate()
         {
-            frame_no++;
-            OnPrepareDraw();
-            InvalidateWidget(WIDX_TAB_7);
+            currentFrame++;
+            onPrepareDraw();
+            invalidateWidget(WIDX_TAB_7);
 
             Ride* const ride = GetRide(rideId);
             if (ride && ride->windowInvalidateFlags & RIDE_INVALIDATE_RIDE_RATINGS)
             {
-                Invalidate();
+                invalidate();
                 ride->windowInvalidateFlags &= ~RIDE_INVALIDATE_RIDE_RATINGS;
             }
         }
@@ -5515,15 +5515,15 @@ namespace OpenRCT2::Ui::Windows
             _collectTrackDesignScenery = true; // Default to true in case user does not select anything valid
 
             constexpr auto interactionFlags = EnumsToFlags(
-                ViewportInteractionItem::Scenery, ViewportInteractionItem::Footpath, ViewportInteractionItem::Wall,
-                ViewportInteractionItem::LargeScenery);
+                ViewportInteractionItem::scenery, ViewportInteractionItem::footpath, ViewportInteractionItem::wall,
+                ViewportInteractionItem::largeScenery);
             auto info = GetMapCoordinatesFromPos(screenCoords, interactionFlags);
             switch (info.interactionType)
             {
-                case ViewportInteractionItem::Scenery:
-                case ViewportInteractionItem::LargeScenery:
-                case ViewportInteractionItem::Wall:
-                case ViewportInteractionItem::Footpath:
+                case ViewportInteractionItem::scenery:
+                case ViewportInteractionItem::largeScenery:
+                case ViewportInteractionItem::wall:
+                case ViewportInteractionItem::footpath:
                     _collectTrackDesignScenery = !TrackDesignSaveContainsTileElement(info.Element);
                     TrackDesignSaveSelectTileElement(info.interactionType, info.Loc, info.Element, _collectTrackDesignScenery);
                     break;
@@ -5540,15 +5540,15 @@ namespace OpenRCT2::Ui::Windows
             _lastSceneryY = screenCoords.y;
 
             constexpr auto interactionFlags = EnumsToFlags(
-                ViewportInteractionItem::Scenery, ViewportInteractionItem::Footpath, ViewportInteractionItem::Wall,
-                ViewportInteractionItem::LargeScenery);
+                ViewportInteractionItem::scenery, ViewportInteractionItem::footpath, ViewportInteractionItem::wall,
+                ViewportInteractionItem::largeScenery);
             auto info = GetMapCoordinatesFromPos(screenCoords, interactionFlags);
             switch (info.interactionType)
             {
-                case ViewportInteractionItem::Scenery:
-                case ViewportInteractionItem::LargeScenery:
-                case ViewportInteractionItem::Wall:
-                case ViewportInteractionItem::Footpath:
+                case ViewportInteractionItem::scenery:
+                case ViewportInteractionItem::largeScenery:
+                case ViewportInteractionItem::wall:
+                case ViewportInteractionItem::footpath:
                     TrackDesignSaveSelectTileElement(info.interactionType, info.Loc, info.Element, _collectTrackDesignScenery);
                     break;
                 default:
@@ -5589,12 +5589,12 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_CANCEL_DESIGN].type = WidgetType::empty;
 
                 widgets[WIDX_SAVE_TRACK_DESIGN].type = WidgetType::flatBtn;
-                disabled_widgets |= (1uLL << WIDX_SAVE_TRACK_DESIGN);
+                disabledWidgets |= (1uLL << WIDX_SAVE_TRACK_DESIGN);
                 if (ride->lifecycleFlags & RIDE_LIFECYCLE_TESTED)
                 {
                     if (!ride->ratings.isNull())
                     {
-                        disabled_widgets &= ~(1uLL << WIDX_SAVE_TRACK_DESIGN);
+                        disabledWidgets &= ~(1uLL << WIDX_SAVE_TRACK_DESIGN);
                         widgets[WIDX_SAVE_TRACK_DESIGN].tooltip = STR_SAVE_TRACK_DESIGN;
                     }
                 }
@@ -5605,8 +5605,8 @@ namespace OpenRCT2::Ui::Windows
 
         void MeasurementsOnDraw(RenderTarget& rt)
         {
-            DrawWidgets(rt);
-            DrawTabImages(rt);
+            drawWidgets(rt);
+            drawTabImages(rt);
 
             if (widgets[WIDX_SAVE_DESIGN].type == WidgetType::button)
             {
@@ -5858,15 +5858,15 @@ namespace OpenRCT2::Ui::Windows
 
         void SetGraph(int32_t type)
         {
-            if (list_information_type == type)
+            if (listInformationType == type)
             {
                 _autoScrollGraph = !_autoScrollGraph;
             }
             else
             {
-                list_information_type = type;
+                listInformationType = type;
             }
-            Invalidate();
+            invalidate();
         }
 
         void GraphsOnMouseUp(WidgetIndex widgetIndex)
@@ -5874,7 +5874,7 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
-                    Close();
+                    close();
                     return;
                 case WIDX_TAB_1:
                 case WIDX_TAB_2:
@@ -5886,7 +5886,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_TAB_8:
                 case WIDX_TAB_9:
                 case WIDX_TAB_10:
-                    SetPage(widgetIndex - WIDX_TAB_1);
+                    setPage(widgetIndex - WIDX_TAB_1);
                     break;
             }
         }
@@ -5920,11 +5920,11 @@ namespace OpenRCT2::Ui::Windows
             Widget* widget;
             int32_t x;
 
-            frame_no++;
-            OnPrepareDraw();
-            InvalidateWidget(WIDX_TAB_8);
-            OnPrepareDraw();
-            InvalidateWidget(WIDX_GRAPH);
+            currentFrame++;
+            onPrepareDraw();
+            invalidateWidget(WIDX_TAB_8);
+            onPrepareDraw();
+            invalidateWidget(WIDX_GRAPH);
 
             widget = &widgets[WIDX_GRAPH];
             x = scrolls[0].contentOffsetX;
@@ -5945,7 +5945,7 @@ namespace OpenRCT2::Ui::Windows
 
         ScreenSize GraphsScrollGetSize(int32_t scrollIndex)
         {
-            OnPrepareDraw();
+            onPrepareDraw();
 
             ScreenSize size{};
             // Set minimum size
@@ -6009,11 +6009,11 @@ namespace OpenRCT2::Ui::Windows
             ride->formatNameTo(ft);
 
             // Set pressed graph button type
-            pressed_widgets &= ~(1uLL << WIDX_GRAPH_VELOCITY);
-            pressed_widgets &= ~(1uLL << WIDX_GRAPH_ALTITUDE);
-            pressed_widgets &= ~(1uLL << WIDX_GRAPH_VERTICAL);
-            pressed_widgets &= ~(1uLL << WIDX_GRAPH_LATERAL);
-            pressed_widgets |= (1LL << (WIDX_GRAPH_VELOCITY + list_information_type));
+            pressedWidgets &= ~(1uLL << WIDX_GRAPH_VELOCITY);
+            pressedWidgets &= ~(1uLL << WIDX_GRAPH_ALTITUDE);
+            pressedWidgets &= ~(1uLL << WIDX_GRAPH_VERTICAL);
+            pressedWidgets &= ~(1uLL << WIDX_GRAPH_LATERAL);
+            pressedWidgets |= (1LL << (WIDX_GRAPH_VELOCITY + listInformationType));
 
             // Hide graph buttons that are not applicable
             if (ride->getRideTypeDescriptor().HasFlag(RtdFlag::hasGForces))
@@ -6049,8 +6049,8 @@ namespace OpenRCT2::Ui::Windows
 
         void GraphsOnDraw(RenderTarget& rt)
         {
-            DrawWidgets(rt);
-            DrawTabImages(rt);
+            drawWidgets(rt);
+            drawTabImages(rt);
         }
 
         void GraphsOnScrollDraw(RenderTarget& rt, int32_t scrollIndex)
@@ -6096,7 +6096,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Horizontal grid lines
-            int32_t listType = list_information_type;
+            int32_t listType = listInformationType;
             int16_t yUnit = GraphsYAxisDetails[listType].unit;
             StringId stringID = GraphsYAxisDetails[listType].label;
             int16_t yUnitInterval = GraphsYAxisDetails[listType].unit_interval;
@@ -6395,7 +6395,7 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
-                    Close();
+                    close();
                     return;
                 case WIDX_TAB_1:
                 case WIDX_TAB_2:
@@ -6407,7 +6407,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_TAB_8:
                 case WIDX_TAB_9:
                 case WIDX_TAB_10:
-                    SetPage(widgetIndex - WIDX_TAB_1);
+                    setPage(widgetIndex - WIDX_TAB_1);
                     break;
                 case WIDX_PRIMARY_PRICE:
                 {
@@ -6470,15 +6470,15 @@ namespace OpenRCT2::Ui::Windows
 
         void IncomeUpdate()
         {
-            frame_no++;
-            OnPrepareDraw();
-            InvalidateWidget(WIDX_TAB_9);
+            currentFrame++;
+            onPrepareDraw();
+            invalidateWidget(WIDX_TAB_9);
 
             auto ride = GetRide(rideId);
             if (ride != nullptr && ride->windowInvalidateFlags & RIDE_INVALIDATE_RIDE_INCOME)
             {
                 ride->windowInvalidateFlags &= ~RIDE_INVALIDATE_RIDE_INCOME;
-                Invalidate();
+                invalidate();
             }
         }
 
@@ -6525,8 +6525,8 @@ namespace OpenRCT2::Ui::Windows
                 return;
 
             // Primary item
-            pressed_widgets &= ~(1uLL << WIDX_PRIMARY_PRICE_SAME_THROUGHOUT_PARK);
-            disabled_widgets &= ~(1uLL << WIDX_PRIMARY_PRICE);
+            pressedWidgets &= ~(1uLL << WIDX_PRIMARY_PRICE_SAME_THROUGHOUT_PARK);
+            disabledWidgets &= ~(1uLL << WIDX_PRIMARY_PRICE);
 
             widgets[WIDX_PRIMARY_PRICE_LABEL].tooltip = kStringIdNone;
             widgets[WIDX_PRIMARY_PRICE].tooltip = kStringIdNone;
@@ -6536,7 +6536,7 @@ namespace OpenRCT2::Ui::Windows
             if (!Park::RidePricesUnlocked() && rideEntry->shop_item[0] == ShopItem::None
                 && rtd.specialType != RtdSpecialType::toilet)
             {
-                disabled_widgets |= (1uLL << WIDX_PRIMARY_PRICE);
+                disabledWidgets |= (1uLL << WIDX_PRIMARY_PRICE);
                 widgets[WIDX_PRIMARY_PRICE_LABEL].tooltip = STR_RIDE_INCOME_ADMISSION_PAY_FOR_ENTRY_TIP;
                 widgets[WIDX_PRIMARY_PRICE].tooltip = STR_RIDE_INCOME_ADMISSION_PAY_FOR_ENTRY_TIP;
             }
@@ -6558,7 +6558,7 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_PRIMARY_PRICE_SAME_THROUGHOUT_PARK].type = WidgetType::checkbox;
 
                 if (ShopItemHasCommonPrice(primaryItem))
-                    pressed_widgets |= (1uLL << WIDX_PRIMARY_PRICE_SAME_THROUGHOUT_PARK);
+                    pressedWidgets |= (1uLL << WIDX_PRIMARY_PRICE_SAME_THROUGHOUT_PARK);
 
                 widgets[WIDX_PRIMARY_PRICE_LABEL].text = GetShopItemDescriptor(primaryItem).Naming.PriceLabel;
             }
@@ -6585,9 +6585,9 @@ namespace OpenRCT2::Ui::Windows
             else
             {
                 // Set same price throughout park checkbox
-                pressed_widgets &= ~(1uLL << WIDX_SECONDARY_PRICE_SAME_THROUGHOUT_PARK);
+                pressedWidgets &= ~(1uLL << WIDX_SECONDARY_PRICE_SAME_THROUGHOUT_PARK);
                 if (ShopItemHasCommonPrice(secondaryItem))
-                    pressed_widgets |= (1uLL << WIDX_SECONDARY_PRICE_SAME_THROUGHOUT_PARK);
+                    pressedWidgets |= (1uLL << WIDX_SECONDARY_PRICE_SAME_THROUGHOUT_PARK);
 
                 // Show widgets
                 widgets[WIDX_SECONDARY_PRICE_LABEL].type = WidgetType::label;
@@ -6614,8 +6614,8 @@ namespace OpenRCT2::Ui::Windows
             money64 profit;
             ShopItem primaryItem, secondaryItem;
 
-            DrawWidgets(rt);
-            DrawTabImages(rt);
+            drawWidgets(rt);
+            drawTabImages(rt);
 
             auto ride = GetRide(rideId);
             if (ride == nullptr)
@@ -6716,7 +6716,7 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
-                    Close();
+                    close();
                     return;
                 case WIDX_TAB_1:
                 case WIDX_TAB_2:
@@ -6728,7 +6728,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_TAB_8:
                 case WIDX_TAB_9:
                 case WIDX_TAB_10:
-                    SetPage(widgetIndex - WIDX_TAB_1);
+                    setPage(widgetIndex - WIDX_TAB_1);
                     break;
                 case WIDX_SHOW_GUESTS_THOUGHTS:
                 {
@@ -6766,18 +6766,18 @@ namespace OpenRCT2::Ui::Windows
 
         void CustomerUpdate()
         {
-            picked_peep_frame++;
-            if (picked_peep_frame >= 24)
-                picked_peep_frame = 0;
+            pickedPeepFrame++;
+            if (pickedPeepFrame >= 24)
+                pickedPeepFrame = 0;
 
-            OnPrepareDraw();
-            InvalidateWidget(WIDX_TAB_10);
+            onPrepareDraw();
+            invalidateWidget(WIDX_TAB_10);
 
             auto ride = GetRide(rideId);
             if (ride != nullptr && ride->windowInvalidateFlags & RIDE_INVALIDATE_RIDE_CUSTOMER)
             {
                 ride->windowInvalidateFlags &= ~RIDE_INVALIDATE_RIDE_CUSTOMER;
-                Invalidate();
+                invalidate();
             }
         }
 
@@ -6813,8 +6813,8 @@ namespace OpenRCT2::Ui::Windows
             int16_t popularity, satisfaction, queueTime;
             StringId stringId;
 
-            DrawWidgets(rt);
-            DrawTabImages(rt);
+            drawWidgets(rt);
+            drawTabImages(rt);
 
             auto ride = GetRide(rideId);
             if (ride == nullptr)
@@ -6959,11 +6959,11 @@ namespace OpenRCT2::Ui::Windows
         if (w == nullptr)
         {
             w = WindowRideOpen(ride);
-            w->SetViewIndex(0);
+            w->setViewIndex(0);
         }
-        else if (w->GetViewIndex() >= (1 + ride.numTrains + ride.numStations))
+        else if (w->getViewIndex() >= (1 + ride.numTrains + ride.numStations))
         {
-            w->SetViewIndex(0);
+            w->setViewIndex(0);
         }
 
         if (isToolActive(w->classification, w->number))
@@ -6973,10 +6973,10 @@ namespace OpenRCT2::Ui::Windows
 
         if (w->page != WINDOW_RIDE_PAGE_MAIN)
         {
-            w->SetPage(WINDOW_RIDE_PAGE_MAIN);
+            w->setPage(WINDOW_RIDE_PAGE_MAIN);
         }
 
-        w->OnViewportRotate();
+        w->onViewportRotate();
         return w;
     }
 
@@ -7013,7 +7013,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        w->SetViewIndex(1 + ride.numTrains + stationIndex.ToUnderlying());
+        w->setViewIndex(1 + ride.numTrains + stationIndex.ToUnderlying());
 
         return w;
     }
@@ -7087,7 +7087,7 @@ namespace OpenRCT2::Ui::Windows
         auto* w = static_cast<RideWindow*>(windowMgr->FindByNumber(WindowClass::Ride, ride->id.ToUnderlying()));
         if (w != nullptr)
         {
-            w->Invalidate();
+            w->invalidate();
 
             if (isToolActive(w->classification, w->number))
             {
@@ -7095,7 +7095,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             int32_t openedPeepWindow = 0;
-            if (w->GetViewIndex() == view)
+            if (w->getViewIndex() == view)
             {
                 int32_t numPeepsLeft = vehicle->num_peeps;
                 for (int32_t i = 0; i < 32 && numPeepsLeft > 0; i++)
@@ -7129,8 +7129,8 @@ namespace OpenRCT2::Ui::Windows
             w = WindowRideOpen(*ride);
         }
 
-        w->SetViewIndex(view);
-        w->Invalidate();
+        w->setViewIndex(view);
+        w->invalidate();
 
         return w;
     }
@@ -7143,14 +7143,14 @@ namespace OpenRCT2::Ui::Windows
             return;
 
         auto ride = vehicle.GetRide();
-        auto viewVehicleIndex = w->GetViewIndex() - 1;
+        auto viewVehicleIndex = w->getViewIndex() - 1;
         if (ride == nullptr || viewVehicleIndex < 0 || viewVehicleIndex >= ride->numTrains)
             return;
 
         if (vehicle.Id != ride->vehicles[viewVehicleIndex])
             return;
 
-        w->Invalidate();
+        w->invalidate();
     }
 
     void WindowRidePaintResetVehicle(RideId rideIndex)
@@ -7161,9 +7161,9 @@ namespace OpenRCT2::Ui::Windows
         {
             if (w->page == 4) // WINDOW_RIDE_PAGE_COLOUR
             {
-                w->ResetVehicleIndex();
+                w->resetVehicleIndex();
             }
-            w->Invalidate();
+            w->invalidate();
         }
     }
 

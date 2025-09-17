@@ -33,7 +33,7 @@ static void PaintCircusTent(
     auto vehicle = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[0]);
     if (ride.lifecycleFlags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
     {
-        session.InteractionType = ViewportInteractionItem::Entity;
+        session.InteractionType = ViewportInteractionItem::entity;
         session.CurrentlyDrawnEntity = vehicle;
     }
 
@@ -49,7 +49,7 @@ static void PaintCircusTent(
         { { al + 16, cl + 16, height + 3 }, { 24, 24, 47 } });
 
     session.CurrentlyDrawnEntity = nullptr;
-    session.InteractionType = ViewportInteractionItem::Ride;
+    session.InteractionType = ViewportInteractionItem::ride;
 }
 
 static void PaintCircus(

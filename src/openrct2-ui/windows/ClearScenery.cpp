@@ -64,57 +64,57 @@ namespace OpenRCT2::Ui::Windows
         money64 _clearSceneryCost = kMoney64Undefined;
 
     public:
-        void OnOpen() override
+        void onOpen() override
         {
-            SetWidgets(window_clear_scenery_widgets);
+            setWidgets(window_clear_scenery_widgets);
 
-            hold_down_widgets = (1uLL << WIDX_INCREMENT) | (1uLL << WIDX_DECREMENT);
+            holdDownWidgets = (1uLL << WIDX_INCREMENT) | (1uLL << WIDX_DECREMENT);
             WindowInitScrollWidgets(*this);
             WindowPushOthersBelow(*this);
 
             gLandToolSize = 2;
 
-            Invalidate();
+            invalidate();
         }
 
-        void OnClose() override
+        void onClose() override
         {
             if (isToolActive(WindowClass::ClearScenery, WIDX_BACKGROUND))
                 ToolCancel();
         }
 
-        void OnMouseUp(const WidgetIndex widgetIndex) override
+        void onMouseUp(const WidgetIndex widgetIndex) override
         {
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
-                    Close();
+                    close();
                     break;
                 case WIDX_PREVIEW:
                 {
                     Formatter ft;
                     ft.Add<uint16_t>(kLandToolMinimumSize);
                     ft.Add<uint16_t>(kLandToolMaximumSize);
-                    TextInputOpen(
+                    textInputOpen(
                         WIDX_PREVIEW, STR_SELECTION_SIZE, STR_ENTER_SELECTION_SIZE, ft, kStringIdNone, kStringIdNone, 3);
                     break;
                 }
                 case WIDX_SMALL_SCENERY:
                     _clearSmallScenery ^= 1;
-                    Invalidate();
+                    invalidate();
                     break;
                 case WIDX_LARGE_SCENERY:
                     _clearLargeScenery ^= 1;
-                    Invalidate();
+                    invalidate();
                     break;
                 case WIDX_FOOTPATH:
                     _clearFootpath ^= 1;
-                    Invalidate();
+                    invalidate();
                     break;
             }
         }
 
-        void OnMouseDown(const WidgetIndex widgetIndex) override
+        void onMouseDown(const WidgetIndex widgetIndex) override
         {
             switch (widgetIndex)
             {
@@ -123,19 +123,19 @@ namespace OpenRCT2::Ui::Windows
                     gLandToolSize = std::max<uint16_t>(kLandToolMinimumSize, gLandToolSize - 1);
 
                     // Invalidate the window
-                    Invalidate();
+                    invalidate();
                     break;
                 case WIDX_INCREMENT:
                     // Increment land tool size, if it stays within the limit
                     gLandToolSize = std::min<uint16_t>(kLandToolMaximumSize, gLandToolSize + 1);
 
                     // Invalidate the window
-                    Invalidate();
+                    invalidate();
                     break;
             }
         }
 
-        void OnTextInput(const WidgetIndex widgetIndex, const std::string_view text) override
+        void onTextInput(const WidgetIndex widgetIndex, const std::string_view text) override
         {
             if (widgetIndex != WIDX_PREVIEW || text.empty())
                 return;
@@ -145,7 +145,7 @@ namespace OpenRCT2::Ui::Windows
                 int32_t size = std::stol(std::string(text));
                 size = std::clamp<uint16_t>(size, kLandToolMinimumSize, kLandToolMaximumSize);
                 gLandToolSize = size;
-                Invalidate();
+                invalidate();
             }
             catch (const std::logic_error&)
             {
@@ -153,27 +153,27 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnUpdate() override
+        void onUpdate() override
         {
-            frame_no++;
+            currentFrame++;
             // Close window if another tool is open
             if (!isToolActive(WindowClass::ClearScenery, WIDX_BACKGROUND))
-                Close();
+                close();
         }
 
-        void OnPrepareDraw() override
+        void onPrepareDraw() override
         {
             // Set the preview image button to be pressed down
-            pressed_widgets = (1uLL << WIDX_PREVIEW) | (_clearSmallScenery ? (1uLL << WIDX_SMALL_SCENERY) : 0)
+            pressedWidgets = (1uLL << WIDX_PREVIEW) | (_clearSmallScenery ? (1uLL << WIDX_SMALL_SCENERY) : 0)
                 | (_clearLargeScenery ? (1uLL << WIDX_LARGE_SCENERY) : 0) | (_clearFootpath ? (1uLL << WIDX_FOOTPATH) : 0);
 
             // Update the preview image (for tool sizes up to 7)
             widgets[WIDX_PREVIEW].image = ImageId(LandTool::SizeToSpriteIndex(gLandToolSize));
         }
 
-        void OnDraw(RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
-            DrawWidgets(rt);
+            drawWidgets(rt);
 
             // Draw number for tool sizes bigger than 7
             ScreenCoordsXY screenCoords = { windowPos.x + widgets[WIDX_PREVIEW].midX(),
@@ -299,7 +299,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
+        void onToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
             switch (widgetIndex)
             {
@@ -309,7 +309,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
+        void onToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
             switch (widgetIndex)
             {
@@ -324,7 +324,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnToolDrag(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
+        void onToolDrag(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
             switch (widgetIndex)
             {
@@ -342,7 +342,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnToolUp(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
+        void onToolUp(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
             switch (widgetIndex)
             {
@@ -354,7 +354,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnToolAbort(WidgetIndex widgetIndex) override
+        void onToolAbort(WidgetIndex widgetIndex) override
         {
             switch (widgetIndex)
             {

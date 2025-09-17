@@ -45,18 +45,18 @@ namespace OpenRCT2::Ui::Windows
     class StaffFirePromptWindow final : public Window
     {
     public:
-        void SetWindowNumber(rct_windownumber windownumber)
+        void setWindowNumber(WindowNumber windownumber)
         {
             number = windownumber;
         }
 
-        void OnOpen() override
+        void onOpen() override
         {
-            SetWidgets(_staffFireWidgets);
+            setWidgets(_staffFireWidgets);
             WindowInitScrollWidgets(*this);
         }
 
-        void OnMouseUp(WidgetIndex widgetIndex) override
+        void onMouseUp(WidgetIndex widgetIndex) override
         {
             switch (widgetIndex)
             {
@@ -68,14 +68,14 @@ namespace OpenRCT2::Ui::Windows
                 }
                 case WIDX_CLOSE:
                 case WIDX_CANCEL:
-                    Close();
+                    close();
                     break;
             }
         }
 
-        void OnDraw(RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
-            DrawWidgets(rt);
+            drawWidgets(rt);
 
             Peep* peep = getGameState().entities.GetEntity<Staff>(EntityId::FromUnderlying(number));
             // The staff member may have been fired in the meantime.
@@ -97,7 +97,7 @@ namespace OpenRCT2::Ui::Windows
         auto* windowMgr = GetWindowManager();
         auto* window = windowMgr->FocusOrCreate<StaffFirePromptWindow>(
             WindowClass::FirePrompt, kWindowSize, WF_CENTRE_SCREEN | WF_TRANSPARENT);
-        window->SetWindowNumber(peep->Id.ToUnderlying());
+        window->setWindowNumber(peep->Id.ToUnderlying());
         return window;
     }
 } // namespace OpenRCT2::Ui::Windows

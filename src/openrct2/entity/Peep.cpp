@@ -573,7 +573,7 @@ void PeepWindowStateUpdate(Peep* peep)
     auto* windowMgr = Ui::GetWindowManager();
     WindowBase* w = windowMgr->FindByNumber(WindowClass::Peep, peep->Id.ToUnderlying());
     if (w != nullptr)
-        w->OnPrepareDraw();
+        w->onPrepareDraw();
 
     if (peep->Is<Guest>())
     {
@@ -1151,7 +1151,7 @@ void PeepUpdateCrowdNoise()
     if (gLegacyScene == LegacyScene::scenarioEditor)
         return;
 
-    auto viewport = g_music_tracking_viewport;
+    auto viewport = gMusicTrackingViewport;
     if (viewport == nullptr)
         return;
 

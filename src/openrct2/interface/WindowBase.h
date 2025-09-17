@@ -72,48 +72,48 @@ namespace OpenRCT2
     struct WindowBase
     {
         Viewport* viewport{};
-        uint64_t disabled_widgets{};
-        uint64_t pressed_widgets{};
-        uint64_t hold_down_widgets{};
+        uint64_t disabledWidgets{};
+        uint64_t pressedWidgets{};
+        uint64_t holdDownWidgets{};
         std::vector<Widget> widgets{};
         ScreenCoordsXY windowPos;
         int16_t width{};
         int16_t height{};
-        int16_t min_width{};
-        int16_t max_width{};
-        int16_t min_height{};
-        int16_t max_height{};
+        int16_t minWidth{};
+        int16_t maxWidth{};
+        int16_t minHeight{};
+        int16_t maxHeight{};
         union
         {
-            rct_windownumber number{};
+            WindowNumber number{};
             RideId rideId;
         };
         WindowFlags flags{};
         OpenRCT2::ScrollArea scrolls[3];
-        uint16_t no_list_items{};     // 0 for no items
-        int16_t selected_list_item{}; // -1 for none selected
+        uint16_t numListItems{};    // 0 for no items
+        int16_t selectedListItem{}; // -1 for none selected
         std::optional<Focus> focus;
         union
         {
             int16_t page{};
             TileInspectorPage tileInspectorPage;
         };
-        uint16_t frame_no{};              // updated every tic for motion in windows sprites
-        uint16_t list_information_type{}; // 0 for none
-        int16_t picked_peep_frame;        // Animation frame of picked peep in staff window and guest window
-        int16_t selected_tab{};
-        EntityId viewport_target_sprite{ EntityId::GetNull() };
+        uint16_t currentFrame{};        // updated every tic for motion in windows sprites
+        uint16_t listInformationType{}; // 0 for none
+        int16_t pickedPeepFrame;        // Animation frame of picked peep in staff window and guest window
+        int16_t selectedTab{};
+        EntityId viewportTargetSprite{ EntityId::GetNull() };
         ScreenCoordsXY savedViewPos{};
         WindowClass classification{};
         ColourWithFlags colours[6]{};
         bool isVisible = true;
-        EntityId viewport_smart_follow_sprite{ EntityId::GetNull() }; // Handles setting viewport target sprite etc
+        EntityId viewportSmartFollowSprite{ EntityId::GetNull() }; // Handles setting viewport target sprite etc
 
-        void SetViewportLocation(const CoordsXYZ& coords);
-        void Invalidate();
-        void RemoveViewport();
-        void SetWidgets(const std::span<const Widget> newWidgets);
-        void ResizeFrame();
+        void setViewportLocation(const CoordsXYZ& coords);
+        void invalidate();
+        void removeViewport();
+        void setWidgets(const std::span<const Widget> newWidgets);
+        void resizeFrame();
 
         int16_t getTitleBarTargetHeight() const;
         int16_t getTitleBarCurrentHeight() const;
@@ -128,97 +128,107 @@ namespace OpenRCT2
 
         constexpr bool canBeResized() const
         {
-            return (flags & WF_RESIZABLE) && (min_width != max_width || min_height != max_height);
+            return (flags & WF_RESIZABLE) && (minWidth != maxWidth || minHeight != maxHeight);
         }
 
         // Events
-        virtual void OnOpen()
+        virtual void onOpen()
         {
         }
-        virtual bool CanClose()
+        virtual bool canClose()
         {
             return true;
         }
-        virtual void OnClose()
+        virtual void onClose()
         {
         }
-        virtual void OnResize()
+        virtual void onResize()
         {
         }
-        virtual void OnUpdate()
+        virtual void onUpdate()
         {
         }
-        virtual void OnPeriodicUpdate()
+        virtual void onPeriodicUpdate()
         {
         }
-        virtual void OnPrepareDraw()
+        virtual void onPrepareDraw()
         {
         }
-        virtual void OnDraw(RenderTarget& rt)
+        virtual void onDraw(RenderTarget& rt)
         {
         }
-        virtual void OnDrawWidget(WidgetIndex widgetIndex, RenderTarget& rt)
+        virtual void onDrawWidget(WidgetIndex widgetIndex, RenderTarget& rt)
         {
         }
-        virtual OpenRCT2String OnTooltip(WidgetIndex widgetIndex, StringId fallback)
+        virtual OpenRCT2String onTooltip(WidgetIndex widgetIndex, StringId fallback)
         {
             return { fallback, {} };
         }
-        virtual void OnMouseDown(WidgetIndex widgetIndex)
+        virtual void onMouseDown(WidgetIndex widgetIndex)
         {
         }
-        virtual void OnMouseUp(WidgetIndex widgetIndex)
+        virtual void onMouseUp(WidgetIndex widgetIndex)
         {
         }
-        virtual void OnDropdown(WidgetIndex widgetIndex, int32_t selectedIndex)
+        virtual void onDropdown(WidgetIndex widgetIndex, int32_t selectedIndex)
         {
         }
-        virtual void OnTextInput(WidgetIndex widgetIndex, std::string_view text)
+        virtual void onTextInput(WidgetIndex widgetIndex, std::string_view text)
         {
         }
-        virtual ScreenSize OnScrollGetSize(int32_t scrollIndex)
+        virtual ScreenSize onScrollGetSize(int32_t scrollIndex)
         {
             return {};
         }
-        virtual void OnScrollSelect(int32_t scrollIndex, int32_t scrollAreaType)
+        virtual void onScrollSelect(int32_t scrollIndex, int32_t scrollAreaType)
         {
         }
-        virtual void OnScrollMouseDrag(int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
+        virtual void onScrollMouseDrag(int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
         {
         }
-        virtual void OnScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
+        virtual void onScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
         {
         }
-        virtual void OnScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
+        virtual void onScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
         {
         }
-        virtual void OnScrollDraw(int32_t scrollIndex, RenderTarget& rt)
+        virtual void onScrollDraw(int32_t scrollIndex, RenderTarget& rt)
         {
         }
-        virtual void OnToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
+        virtual void onToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
         {
         }
-        virtual void OnToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
+        virtual void onToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
         {
         }
-        virtual void OnToolDrag(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
+        virtual void onToolDrag(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
         {
         }
-        virtual void OnToolUp(WidgetIndex widgetIndex, const ScreenCoordsXY&)
+        virtual void onToolUp(WidgetIndex widgetIndex, const ScreenCoordsXY&)
         {
         }
-        virtual void OnToolAbort(WidgetIndex widgetIndex)
+        virtual void onToolAbort(WidgetIndex widgetIndex)
         {
         }
-        virtual void OnViewportRotate()
+        virtual void onViewportRotate()
         {
         }
-        virtual void OnMoved(const ScreenCoordsXY&)
+        virtual void onMoved(const ScreenCoordsXY&)
         {
         }
-        virtual CursorID OnCursor(WidgetIndex, const ScreenCoordsXY&, CursorID);
-        virtual void OnLanguageChange()
+        virtual CursorID onCursor(WidgetIndex, const ScreenCoordsXY&, CursorID);
+        virtual void onLanguageChange()
         {
+        }
+
+        int16_t right()
+        {
+            return windowPos.x + width;
+        }
+
+        int16_t bottom()
+        {
+            return windowPos.y + height;
         }
     };
 

@@ -56,29 +56,29 @@ namespace OpenRCT2::Ui::Windows
     class PatrolAreaWindow final : public Window
     {
     public:
-        void OnOpen() override
+        void onOpen() override
         {
-            SetWidgets(PatrolAreaWidgets);
+            setWidgets(PatrolAreaWidgets);
 
-            hold_down_widgets = (1uLL << WIDX_INCREMENT) | (1uLL << WIDX_DECREMENT);
+            holdDownWidgets = (1uLL << WIDX_INCREMENT) | (1uLL << WIDX_DECREMENT);
             WindowInitScrollWidgets(*this);
             WindowPushOthersBelow(*this);
             gLandToolSize = 4;
         }
 
-        void OnClose() override
+        void onClose() override
         {
             // If the tool wasn't changed, turn tool off
             if (PatrolAreaToolIsActive())
                 ToolCancel();
         }
 
-        void OnMouseUp(WidgetIndex widgetIndex) override
+        void onMouseUp(WidgetIndex widgetIndex) override
         {
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
-                    Close();
+                    close();
                     break;
                 case WIDX_PREVIEW:
                     InputSize();
@@ -86,22 +86,22 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnMouseDown(WidgetIndex widgetIndex) override
+        void onMouseDown(WidgetIndex widgetIndex) override
         {
             switch (widgetIndex)
             {
                 case WIDX_DECREMENT:
                     gLandToolSize = std::max<uint16_t>(kLandToolMinimumSize, gLandToolSize - 1);
-                    Invalidate();
+                    invalidate();
                     break;
                 case WIDX_INCREMENT:
                     gLandToolSize = std::min<uint16_t>(kLandToolMaximumSize, gLandToolSize + 1);
-                    Invalidate();
+                    invalidate();
                     break;
             }
         }
 
-        void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override
+        void onTextInput(WidgetIndex widgetIndex, std::string_view text) override
         {
             if (text.empty())
                 return;
@@ -117,28 +117,28 @@ namespace OpenRCT2::Ui::Windows
                 size = std::max<uint16_t>(kLandToolMinimumSize, size);
                 size = std::min<uint16_t>(kLandToolMaximumSize, size);
                 gLandToolSize = size;
-                Invalidate();
+                invalidate();
             }
         }
 
-        void OnUpdate() override
+        void onUpdate() override
         {
             // Close window if another tool is open or staff window gets closed
             if (!PatrolAreaToolIsActive() || !IsStaffWindowOpen())
             {
-                Close();
+                close();
             }
         }
 
-        void OnPrepareDraw() override
+        void onPrepareDraw() override
         {
-            SetWidgetPressed(WIDX_PREVIEW, true);
+            setWidgetPressed(WIDX_PREVIEW, true);
             widgets[WIDX_PREVIEW].image = ImageId(LandTool::SizeToSpriteIndex(gLandToolSize));
         }
 
-        void OnDraw(RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
-            DrawWidgets(rt);
+            drawWidgets(rt);
 
             // Draw number for tool sizes bigger than 7
             if (gLandToolSize > kLandToolMaximumSizeWithSprite)
@@ -152,7 +152,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
+        void onToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
             auto mapTile = GetBestCoordsFromPos(screenCoords);
             if (!mapTile)
@@ -193,14 +193,14 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnToolAbort(WidgetIndex widgetIndex) override
+        void onToolAbort(WidgetIndex widgetIndex) override
         {
             HideGridlines();
             ClearPatrolAreaToRender();
             GfxInvalidateScreen();
         }
 
-        void OnToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
+        void onToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
             auto mapTile = GetBestCoordsFromPos(screenCoords);
             if (mapTile)
@@ -213,10 +213,10 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
 
-            OnToolDrag(widgetIndex, screenCoords);
+            onToolDrag(widgetIndex, screenCoords);
         }
 
-        void OnToolDrag(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
+        void onToolDrag(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
             auto staff = getGameState().entities.GetEntity<Staff>(_staffId);
             if (staff != nullptr)
@@ -232,7 +232,7 @@ namespace OpenRCT2::Ui::Windows
             return _staffId;
         }
 
-        void SetStaffId(EntityId staffId)
+        void setStaffId(EntityId staffId)
         {
             _staffId = staffId;
             EnableTool();
@@ -297,7 +297,7 @@ namespace OpenRCT2::Ui::Windows
             WindowClass::PatrolArea, ScreenCoordsXY(ContextGetWidth() - kWindowSize.width, 29), kWindowSize, 0);
         if (w != nullptr)
         {
-            w->SetStaffId(staffId);
+            w->setStaffId(staffId);
         }
         return w;
     }

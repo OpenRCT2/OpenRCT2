@@ -395,7 +395,7 @@ namespace OpenRCT2::Ui::Windows
     class CustomWindow final : public Window
     {
     private:
-        static rct_windownumber _nextWindowNumber;
+        static WindowNumber _nextWindowNumber;
         CustomWindowInfo _info;
 
     public:
@@ -404,7 +404,7 @@ namespace OpenRCT2::Ui::Windows
         {
         }
 
-        void OnOpen() override
+        void onOpen() override
         {
             number = GetNewWindowNumber();
 
@@ -423,48 +423,48 @@ namespace OpenRCT2::Ui::Windows
 
             if (_info.Desc.IsResizable())
             {
-                min_width = _info.Desc.MinWidth.value_or(0);
-                min_height = _info.Desc.MinHeight.value_or(0);
-                max_width = _info.Desc.MaxWidth.value_or(kMaxWindowSize.width);
-                max_height = _info.Desc.MaxHeight.value_or(kMaxWindowSize.height);
+                minWidth = _info.Desc.MinWidth.value_or(0);
+                minHeight = _info.Desc.MinHeight.value_or(0);
+                maxWidth = _info.Desc.MaxWidth.value_or(kMaxWindowSize.width);
+                maxHeight = _info.Desc.MaxHeight.value_or(kMaxWindowSize.height);
             }
             RefreshWidgets();
         }
 
-        void OnClose() override
+        void onClose() override
         {
             InvokeEventHandler(_info.Owner, _info.Desc.OnClose);
         }
 
-        void OnResize() override
+        void onResize() override
         {
-            if (width < min_width)
+            if (width < minWidth)
             {
-                Invalidate();
-                width = min_width;
+                invalidate();
+                width = minWidth;
             }
-            if (height < min_height)
+            if (height < minHeight)
             {
-                Invalidate();
-                height = min_height;
+                invalidate();
+                height = minHeight;
             }
             UpdateViewport();
         }
 
-        void OnUpdate() override
+        void onUpdate() override
         {
             if (_info.Desc.Tabs.size() > static_cast<size_t>(page))
             {
                 const auto& tab = _info.Desc.Tabs[page];
                 if (tab.imageFrameCount != 0)
                 {
-                    frame_no++;
-                    if (frame_no >= tab.imageFrameCount * tab.imageFrameDuration)
+                    currentFrame++;
+                    if (currentFrame >= tab.imageFrameCount * tab.imageFrameDuration)
                     {
-                        frame_no = 0;
+                        currentFrame = 0;
                     }
 
-                    InvalidateWidget(WIDX_TAB_0 + this->page);
+                    invalidateWidget(WIDX_TAB_0 + this->page);
                 }
             }
 
@@ -485,7 +485,7 @@ namespace OpenRCT2::Ui::Windows
             UpdateViewport();
         }
 
-        void OnPrepareDraw() override
+        void onPrepareDraw() override
         {
             auto& closeButton = widgets[WIDX_CLOSE];
             bool translucent = colours[closeButton.colour].hasFlag(ColourFlag::translucent);
@@ -535,7 +535,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDraw(RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
             WindowDrawWidgets(*this, rt);
             DrawTabImages(rt);
@@ -549,7 +549,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDrawWidget(WidgetIndex widgetIndex, RenderTarget& rt) override
+        void onDrawWidget(WidgetIndex widgetIndex, RenderTarget& rt) override
         {
             const auto& widget = widgets[widgetIndex];
             const auto widgetDesc = _info.GetCustomWidgetDesc(this, widgetIndex);
@@ -573,11 +573,11 @@ namespace OpenRCT2::Ui::Windows
             }
             else
             {
-                Window::OnDrawWidget(widgetIndex, rt);
+                Window::onDrawWidget(widgetIndex, rt);
             }
         }
 
-        void OnMouseUp(WidgetIndex widgetIndex) override
+        void onMouseUp(WidgetIndex widgetIndex) override
         {
             switch (widgetIndex)
             {
@@ -631,7 +631,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnMouseDown(WidgetIndex widgetIndex) override
+        void onMouseDown(WidgetIndex widgetIndex) override
         {
             auto* widget = &widgets[widgetIndex];
             const auto widgetDesc = _info.GetCustomWidgetDesc(this, widgetIndex);
@@ -676,7 +676,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex) override
+        void onDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex) override
         {
             if (dropdownIndex == -1)
                 return;
@@ -695,7 +695,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override
+        void onTextInput(WidgetIndex widgetIndex, std::string_view text) override
         {
             auto widgetDesc = _info.GetCustomWidgetDesc(this, widgetIndex);
             if (widgetDesc != nullptr)
@@ -713,7 +713,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        ScreenSize OnScrollGetSize(int32_t scrollIndex) override
+        ScreenSize onScrollGetSize(int32_t scrollIndex) override
         {
             if (scrollIndex < static_cast<int32_t>(_info.ListViews.size()))
             {
@@ -723,7 +723,7 @@ namespace OpenRCT2::Ui::Windows
             return {};
         }
 
-        void OnScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
+        void onScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
             if (scrollIndex < static_cast<int32_t>(_info.ListViews.size()))
             {
@@ -731,7 +731,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnScrollMouseDrag(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
+        void onScrollMouseDrag(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
             if (scrollIndex < static_cast<int32_t>(_info.ListViews.size()))
             {
@@ -739,7 +739,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
+        void onScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
             if (scrollIndex < static_cast<int32_t>(_info.ListViews.size()))
             {
@@ -747,7 +747,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
+        void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
             if (scrollIndex < static_cast<int32_t>(_info.ListViews.size()))
             {
@@ -761,23 +761,23 @@ namespace OpenRCT2::Ui::Windows
                 return;
 
             page = static_cast<int16_t>(tabIndex);
-            frame_no = 0;
+            currentFrame = 0;
             RefreshWidgets();
 
-            Invalidate();
-            OnResize();
-            OnPrepareDraw();
+            invalidate();
+            onResize();
+            onPrepareDraw();
             WindowInitScrollWidgets(*this);
-            Invalidate();
+            invalidate();
 
             InvokeEventHandler(_info.Owner, _info.Desc.OnTabChange);
         }
 
-        const CustomWindowInfo& GetInfo() const
+        const CustomWindowInfo& getInfo() const
         {
             return _info;
         }
-        CustomWindowInfo& GetInfo()
+        CustomWindowInfo& getInfo()
         {
             return _info;
         }
@@ -812,9 +812,9 @@ namespace OpenRCT2::Ui::Windows
                     auto wheight = viewportWidget->height() - 1;
                     if (viewport == nullptr)
                     {
-                        ViewportCreate(this, { left, top }, wwidth, wheight, Focus(CoordsXYZ(0, 0, 0)));
+                        ViewportCreate(*this, { left, top }, wwidth, wheight, Focus(CoordsXYZ(0, 0, 0)));
                         flags |= WF_NO_SCROLLING;
-                        Invalidate();
+                        invalidate();
                     }
                     else
                     {
@@ -825,18 +825,18 @@ namespace OpenRCT2::Ui::Windows
                             viewport->pos.y = top;
                             viewport->width = wwidth;
                             viewport->height = wheight;
-                            Invalidate();
+                            invalidate();
                         }
                     }
                 }
                 else
                 {
-                    RemoveViewport();
+                    removeViewport();
                 }
             }
             else
             {
-                RemoveViewport();
+                removeViewport();
             }
         }
 
@@ -847,9 +847,9 @@ namespace OpenRCT2::Ui::Windows
             {
                 for (size_t i = 0; i < numTabs; i++)
                 {
-                    SetWidgetPressed(static_cast<WidgetIndex>(WIDX_TAB_0 + i), false);
+                    setWidgetPressed(static_cast<WidgetIndex>(WIDX_TAB_0 + i), false);
                 }
-                SetWidgetPressed(WIDX_TAB_0 + page, true);
+                setWidgetPressed(WIDX_TAB_0 + page, true);
             }
         }
 
@@ -867,7 +867,7 @@ namespace OpenRCT2::Ui::Windows
                     auto image = tab.imageFrameBase;
                     if (static_cast<size_t>(page) == tabIndex && tab.imageFrameDuration != 0 && tab.imageFrameCount != 0)
                     {
-                        auto frame = frame_no / tab.imageFrameDuration;
+                        auto frame = currentFrame / tab.imageFrameDuration;
                         auto imageOffset = frame % tab.imageFrameCount;
                         image = image.WithIndex(image.GetIndex() + imageOffset);
                     }
@@ -949,7 +949,7 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
 
-            SetWidgets(widgetList);
+            setWidgets(widgetList);
 
             WindowInitScrollWidgets(*this);
             UpdateViewport();
@@ -1114,7 +1114,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        static rct_windownumber GetNewWindowNumber()
+        static WindowNumber GetNewWindowNumber()
         {
             auto result = _nextWindowNumber++;
             auto* windowMgr = GetWindowManager();
@@ -1126,7 +1126,7 @@ namespace OpenRCT2::Ui::Windows
         }
     };
 
-    rct_windownumber CustomWindow::_nextWindowNumber;
+    WindowNumber CustomWindow::_nextWindowNumber;
 
     WindowBase* WindowCustomOpen(std::shared_ptr<Plugin> owner, DukValue dukDesc)
     {
@@ -1149,7 +1149,7 @@ namespace OpenRCT2::Ui::Windows
 
     static CustomWindowInfo& GetInfo(CustomWindow* w)
     {
-        return w->GetInfo();
+        return w->getInfo();
     }
 
     static void InvokeEventHandler(const std::shared_ptr<Plugin>& owner, const DukValue& dukHandler)

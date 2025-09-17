@@ -737,7 +737,7 @@ namespace OpenRCT2::Ui
 
         // Draw the scroll contents
         if (scrollRT.width > 0 && scrollRT.height > 0)
-            w.OnScrollDraw(scrollIndex, scrollRT);
+            w.onScrollDraw(scrollIndex, scrollRT);
     }
 
     static void WidgetHScrollbarDraw(
@@ -866,14 +866,14 @@ namespace OpenRCT2::Ui
     {
         if (w.classification == WindowClass::Custom)
             return w.widgets[widgetIndex].flags.has(WidgetFlag::isDisabled);
-        return (w.disabled_widgets & (1LL << widgetIndex)) != 0;
+        return (w.disabledWidgets & (1LL << widgetIndex)) != 0;
     }
 
     bool widgetIsHoldable(const WindowBase& w, WidgetIndex widgetIndex)
     {
         if (w.classification == WindowClass::Custom)
             return w.widgets[widgetIndex].flags.has(WidgetFlag::isHoldable);
-        return (w.hold_down_widgets & (1LL << widgetIndex)) != 0;
+        return (w.holdDownWidgets & (1LL << widgetIndex)) != 0;
     }
 
     bool widgetIsVisible(const WindowBase& w, WidgetIndex widgetIndex)
@@ -892,7 +892,7 @@ namespace OpenRCT2::Ui
         }
         else
         {
-            if (w.pressed_widgets & (1LL << widgetIndex))
+            if (w.pressedWidgets & (1LL << widgetIndex))
             {
                 return true;
             }
@@ -902,11 +902,11 @@ namespace OpenRCT2::Ui
         {
             if (!gInputFlags.has(InputFlag::widgetPressed))
                 return false;
-            if (gPressedWidget.window_classification != w.classification)
+            if (gPressedWidget.windowClassification != w.classification)
                 return false;
-            if (gPressedWidget.window_number != w.number)
+            if (gPressedWidget.windowNumber != w.number)
                 return false;
-            if (gPressedWidget.widget_index != widgetIndex)
+            if (gPressedWidget.widgetIndex != widgetIndex)
                 return false;
             return true;
         }
@@ -915,11 +915,11 @@ namespace OpenRCT2::Ui
 
     bool widgetIsHighlighted(const WindowBase& w, WidgetIndex widgetIndex)
     {
-        if (gHoverWidget.window_classification != w.classification)
+        if (gHoverWidget.windowClassification != w.classification)
             return false;
-        if (gHoverWidget.window_number != w.number)
+        if (gHoverWidget.windowNumber != w.number)
             return false;
-        if (gHoverWidget.widget_index != widgetIndex)
+        if (gHoverWidget.widgetIndex != widgetIndex)
             return false;
         return true;
     }
@@ -1075,11 +1075,11 @@ namespace OpenRCT2::Ui
         SafeSetWidgetFlag(w, widgetIndex, WidgetFlag::isDisabled, value);
         if (value)
         {
-            w.disabled_widgets |= (1uLL << widgetIndex);
+            w.disabledWidgets |= (1uLL << widgetIndex);
         }
         else
         {
-            w.disabled_widgets &= ~(1uLL << widgetIndex);
+            w.disabledWidgets &= ~(1uLL << widgetIndex);
         }
     }
 
@@ -1088,11 +1088,11 @@ namespace OpenRCT2::Ui
         SafeSetWidgetFlag(w, widgetIndex, WidgetFlag::isHoldable, value);
         if (value)
         {
-            w.hold_down_widgets |= (1uLL << widgetIndex);
+            w.holdDownWidgets |= (1uLL << widgetIndex);
         }
         else
         {
-            w.hold_down_widgets &= ~(1uLL << widgetIndex);
+            w.holdDownWidgets &= ~(1uLL << widgetIndex);
         }
     }
 
@@ -1105,9 +1105,9 @@ namespace OpenRCT2::Ui
     {
         SafeSetWidgetFlag(w, widgetIndex, WidgetFlag::isPressed, value);
         if (value)
-            w.pressed_widgets |= (1uLL << widgetIndex);
+            w.pressedWidgets |= (1uLL << widgetIndex);
         else
-            w.pressed_widgets &= ~(1uLL << widgetIndex);
+            w.pressedWidgets &= ~(1uLL << widgetIndex);
     }
 
     void widgetSetCheckboxValue(WindowBase& w, WidgetIndex widgetIndex, bool value)
@@ -1126,7 +1126,7 @@ namespace OpenRCT2::Ui
 
         auto& tbIdent = OpenRCT2::Ui::Windows::GetCurrentTextBox();
         bool active = w.classification == tbIdent.window.classification && w.number == tbIdent.window.number
-            && widgetIndex == tbIdent.widget_index;
+            && widgetIndex == tbIdent.widgetIndex;
 
         // GfxFillRectInset(rt, l, t, r, b, colour, 0x20 | (!active ? 0x40 : 0x00));
         GfxFillRectInset(rt, { topLeft, bottomRight }, w.colours[widget.colour], INSET_RECT_F_60);

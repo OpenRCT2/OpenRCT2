@@ -8,7 +8,7 @@
 
 namespace OpenRCT2
 {
-    void WindowBase::SetViewportLocation(const CoordsXYZ& coords)
+    void WindowBase::setViewportLocation(const CoordsXYZ& coords)
     {
         WindowScrollToLocation(*this, coords);
         flags &= ~WF_SCROLLING_TO_LOCATION;
@@ -19,15 +19,15 @@ namespace OpenRCT2
             viewport->viewPos = savedViewPos;
         }
 
-        Invalidate();
+        invalidate();
     }
 
-    void WindowBase::Invalidate()
+    void WindowBase::invalidate()
     {
         GfxSetDirtyBlocks({ windowPos, windowPos + ScreenCoordsXY{ width, height } });
     }
 
-    void WindowBase::RemoveViewport()
+    void WindowBase::removeViewport()
     {
         if (viewport == nullptr)
             return;
@@ -36,15 +36,15 @@ namespace OpenRCT2
         viewport = nullptr;
     }
 
-    void WindowBase::SetWidgets(const std::span<const Widget> newWidgets)
+    void WindowBase::setWidgets(const std::span<const Widget> newWidgets)
     {
         widgets.clear();
         widgets.insert(widgets.end(), newWidgets.begin(), newWidgets.end());
 
-        ResizeFrame();
+        resizeFrame();
     }
 
-    CursorID WindowBase::OnCursor(WidgetIndex, const ScreenCoordsXY&, CursorID)
+    CursorID WindowBase::onCursor(WidgetIndex, const ScreenCoordsXY&, CursorID)
     {
         return CursorID::Arrow;
     }
@@ -70,7 +70,7 @@ namespace OpenRCT2
             closeButton.string = !translucent ? kCloseBoxStringBlackNormal : kCloseBoxStringWhiteNormal;
     }
 
-    void WindowBase::ResizeFrame()
+    void WindowBase::resizeFrame()
     {
         if (widgets.size() < 3)
             return;
@@ -116,17 +116,17 @@ namespace OpenRCT2
         if (!hasTitleWidget || heightDifference == 0)
             return;
 
-        Invalidate();
+        invalidate();
 
         // Offset title and close button
         titleWidget.bottom += heightDifference;
         closeButton.bottom += heightDifference;
 
         height += heightDifference;
-        min_height += heightDifference;
-        max_height += heightDifference;
+        minHeight += heightDifference;
+        maxHeight += heightDifference;
 
-        Invalidate();
+        invalidate();
 
         // Resize frame again to match new height
         frameWidget.bottom = height - 1;

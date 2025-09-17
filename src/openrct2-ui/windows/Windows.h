@@ -53,7 +53,7 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* AssetPacksOpen();
 
     // Banner
-    WindowBase* BannerOpen(rct_windownumber number);
+    WindowBase* BannerOpen(WindowNumber number);
 
     // Changelog
     WindowBase* ChangelogOpen(int personality);
@@ -295,8 +295,8 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* ShortcutKeysOpen();
 
     // Sign
-    WindowBase* SignOpen(rct_windownumber number);
-    WindowBase* SignSmallOpen(rct_windownumber number);
+    WindowBase* SignOpen(WindowNumber number);
+    WindowBase* SignSmallOpen(WindowNumber number);
 
     // Staff
     WindowBase* StaffOpen(Peep* peep);

@@ -31,7 +31,7 @@ enum class CloseWindowModifier : uint8_t;
 
 namespace OpenRCT2
 {
-    using rct_windownumber = int16_t;
+    using WindowNumber = int16_t;
 
     struct WindowBase;
     struct WindowCloseModifier;
@@ -41,13 +41,13 @@ namespace OpenRCT2
     struct WindowIdentifier
     {
         WindowClass classification;
-        rct_windownumber number;
+        WindowNumber number;
     };
 
     struct WidgetIdentifier
     {
         WindowIdentifier window;
-        WidgetIndex widget_index;
+        WidgetIndex widgetIndex;
     };
 
     extern WindowCloseModifier gLastCloseModifier;
@@ -59,9 +59,6 @@ namespace OpenRCT2
     };
 
     struct Viewport;
-
-#define RCT_WINDOW_RIGHT(w) ((w)->windowPos.x + (w)->width)
-#define RCT_WINDOW_BOTTOM(w) ((w)->windowPos.y + (w)->height)
 
     enum WINDOW_FLAGS
     {
@@ -266,9 +263,9 @@ namespace OpenRCT2
 {
     struct WidgetRef
     {
-        WindowClass window_classification;
-        rct_windownumber window_number;
-        WidgetIndex widget_index;
+        WindowClass windowClassification;
+        WindowNumber windowNumber;
+        WidgetIndex widgetIndex;
     };
 
     extern Tool gCurrentToolId;
@@ -313,9 +310,9 @@ namespace OpenRCT2
     void WindowDraw(RenderTarget& rt, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom);
 
     bool isToolActive(WindowClass cls);
-    bool isToolActive(WindowClass cls, rct_windownumber number);
+    bool isToolActive(WindowClass cls, WindowNumber number);
     bool isToolActive(WindowClass cls, WidgetIndex widgetIndex);
-    bool isToolActive(WindowClass cls, WidgetIndex widgetIndex, rct_windownumber number);
+    bool isToolActive(WindowClass cls, WidgetIndex widgetIndex, WindowNumber number);
     bool isToolActive(const WindowBase& w, WidgetIndex widgetIndex);
     bool ToolSet(const WindowBase& w, WidgetIndex widgetIndex, Tool tool);
     void ToolCancel();

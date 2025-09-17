@@ -42,7 +42,7 @@ static void PaintTwistStructure(
     {
         vehicle = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[0]);
 
-        session.InteractionType = ViewportInteractionItem::Entity;
+        session.InteractionType = ViewportInteractionItem::entity;
         session.CurrentlyDrawnEntity = vehicle;
     }
 
@@ -81,7 +81,7 @@ static void PaintTwistStructure(
     }
 
     session.CurrentlyDrawnEntity = nullptr;
-    session.InteractionType = ViewportInteractionItem::Ride;
+    session.InteractionType = ViewportInteractionItem::ride;
 }
 
 /** rct2: 0x0076D858 */

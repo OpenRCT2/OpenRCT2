@@ -237,7 +237,7 @@ namespace OpenRCT2::Ui::Windows
         bool _autoOpeningShop{};
 
     public:
-        void OnOpen() override
+        void onOpen() override
         {
             auto currentRide = GetRide(_currentRideIndex);
             if (currentRide == nullptr)
@@ -245,10 +245,10 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            SetWidgets(kRideConstructionWidgets);
+            setWidgets(kRideConstructionWidgets);
             number = _currentRideIndex.ToUnderlying();
 
-            InitScrollWidgets();
+            initScrollWidgets();
 
             WindowPushOthersRight(*this);
             ShowGridlines();
@@ -281,10 +281,10 @@ namespace OpenRCT2::Ui::Windows
             UpdateTrackPieceWidgets();
         }
 
-        void OnClose() override
+        void onClose() override
         {
             RideConstructionInvalidateCurrentTrack();
-            ViewportSetVisibility(ViewportVisibility::Default);
+            ViewportSetVisibility(ViewportVisibility::standard);
 
             MapInvalidateMapSelectionTiles();
             gMapSelectFlags.unset(MapSelectFlag::enableConstruct);
@@ -349,16 +349,16 @@ namespace OpenRCT2::Ui::Windows
             const auto& rtd = currentRide->getRideTypeDescriptor();
             const auto currentTrackDrawerDescriptor = getCurrentTrackDrawerDescriptor(rtd);
 
-            uint64_t disabledWidgets = 0;
+            uint64_t newDisabledWidgets = 0;
 
             if (_rideConstructionState == RideConstructionState::Place)
             {
-                disabledWidgets |= (1uLL << WIDX_CONSTRUCT);
+                newDisabledWidgets |= (1uLL << WIDX_CONSTRUCT);
             }
 
             if (_currentlySelectedTrack.isTrackType)
             {
-                disabledWidgets |= (1uLL << WIDX_SLOPE_GROUPBOX) | (1uLL << WIDX_BANKING_GROUPBOX)
+                newDisabledWidgets |= (1uLL << WIDX_SLOPE_GROUPBOX) | (1uLL << WIDX_BANKING_GROUPBOX)
                     | (1uLL << WIDX_SLOPE_DOWN_STEEP) | (1uLL << WIDX_SLOPE_DOWN) | (1uLL << WIDX_LEVEL)
                     | (1uLL << WIDX_SLOPE_UP) | (1uLL << WIDX_SLOPE_UP_STEEP) | (1uLL << WIDX_CHAIN_LIFT)
                     | (1uLL << WIDX_BANK_LEFT) | (1uLL << WIDX_BANK_STRAIGHT) | (1uLL << WIDX_BANK_RIGHT);
@@ -371,7 +371,7 @@ namespace OpenRCT2::Ui::Windows
                     || !(_previousTrackPitchEnd == TrackPitch::Up25 || _previousTrackPitchEnd == TrackPitch::Down25)
                     || !(_currentTrackPitchEnd == TrackPitch::Up25 || _currentTrackPitchEnd == TrackPitch::Down25))
                 {
-                    disabledWidgets |= (1uLL << WIDX_LEFT_CURVE_LARGE) | (1uLL << WIDX_RIGHT_CURVE_LARGE);
+                    newDisabledWidgets |= (1uLL << WIDX_LEFT_CURVE_LARGE) | (1uLL << WIDX_RIGHT_CURVE_LARGE);
                 }
             }
             if (IsTrackEnabled(TrackGroup::slopeCurve) && IsTrackEnabled(TrackGroup::curveVerySmall))
@@ -379,7 +379,7 @@ namespace OpenRCT2::Ui::Windows
                 // Disable small curves if the start or end of the track is sloped.
                 if (_previousTrackPitchEnd != TrackPitch::None || _currentTrackPitchEnd != TrackPitch::None)
                 {
-                    disabledWidgets |= (1uLL << WIDX_LEFT_CURVE_VERY_SMALL) | (1uLL << WIDX_RIGHT_CURVE_VERY_SMALL);
+                    newDisabledWidgets |= (1uLL << WIDX_LEFT_CURVE_VERY_SMALL) | (1uLL << WIDX_RIGHT_CURVE_VERY_SMALL);
                 }
             }
             if (!IsTrackEnabled(TrackGroup::slopeCurve))
@@ -391,7 +391,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         if (_previousTrackPitchEnd != TrackPitch::Down90 || _currentTrackPitchEnd != TrackPitch::Down90)
                         {
-                            disabledWidgets |= (1uLL << WIDX_LEFT_CURVE_VERY_SMALL) | (1uLL << WIDX_LEFT_CURVE_SMALL)
+                            newDisabledWidgets |= (1uLL << WIDX_LEFT_CURVE_VERY_SMALL) | (1uLL << WIDX_LEFT_CURVE_SMALL)
                                 | (1uLL << WIDX_LEFT_CURVE) | (1uLL << WIDX_RIGHT_CURVE) | (1uLL << WIDX_RIGHT_CURVE_SMALL)
                                 | (1uLL << WIDX_RIGHT_CURVE_VERY_SMALL);
                         }
@@ -402,7 +402,7 @@ namespace OpenRCT2::Ui::Windows
                     // Disable all curves on sloped track
                     if (_previousTrackPitchEnd != TrackPitch::None || _currentTrackPitchEnd != TrackPitch::None)
                     {
-                        disabledWidgets |= (1uLL << WIDX_LEFT_CURVE_VERY_SMALL) | (1uLL << WIDX_LEFT_CURVE_SMALL)
+                        newDisabledWidgets |= (1uLL << WIDX_LEFT_CURVE_VERY_SMALL) | (1uLL << WIDX_LEFT_CURVE_SMALL)
                             | (1uLL << WIDX_LEFT_CURVE) | (1uLL << WIDX_RIGHT_CURVE) | (1uLL << WIDX_RIGHT_CURVE_SMALL)
                             | (1uLL << WIDX_RIGHT_CURVE_VERY_SMALL);
                     }
@@ -411,14 +411,14 @@ namespace OpenRCT2::Ui::Windows
             if (!IsTrackEnabled(TrackGroup::flatRollBanking))
             {
                 // Disable banking
-                disabledWidgets |= (1uLL << WIDX_BANKING_GROUPBOX) | (1uLL << WIDX_BANK_LEFT) | (1uLL << WIDX_BANK_STRAIGHT)
+                newDisabledWidgets |= (1uLL << WIDX_BANKING_GROUPBOX) | (1uLL << WIDX_BANK_LEFT) | (1uLL << WIDX_BANK_STRAIGHT)
                     | (1uLL << WIDX_BANK_RIGHT);
             }
             // Disable banking if the start track is steep and the end of the track becomes flat.
             if ((_previousTrackPitchEnd == TrackPitch::Down60 || _previousTrackPitchEnd == TrackPitch::Up60)
                 && _currentTrackPitchEnd == TrackPitch::None)
             {
-                disabledWidgets |= (1uLL << WIDX_BANK_LEFT) | (1uLL << WIDX_BANK_RIGHT);
+                newDisabledWidgets |= (1uLL << WIDX_BANK_LEFT) | (1uLL << WIDX_BANK_RIGHT);
             }
             if (!IsTrackEnabled(TrackGroup::slope) && !IsTrackEnabled(TrackGroup::slopeSteepDown)
                 && !IsTrackEnabled(TrackGroup::slopeSteepUp))
@@ -426,7 +426,7 @@ namespace OpenRCT2::Ui::Windows
                 if (!currentRide->getRideTypeDescriptor().SupportsTrackGroup(TrackGroup::reverseFreefall))
                 {
                     // Disable all slopes
-                    disabledWidgets |= (1uLL << WIDX_SLOPE_GROUPBOX) | (1uLL << WIDX_SLOPE_DOWN_STEEP)
+                    newDisabledWidgets |= (1uLL << WIDX_SLOPE_GROUPBOX) | (1uLL << WIDX_SLOPE_DOWN_STEEP)
                         | (1uLL << WIDX_SLOPE_DOWN) | (1uLL << WIDX_LEVEL) | (1uLL << WIDX_SLOPE_UP)
                         | (1uLL << WIDX_SLOPE_UP_STEEP);
                 }
@@ -437,11 +437,11 @@ namespace OpenRCT2::Ui::Windows
             {
                 if (_currentTrackPitchEnd != TrackPitch::None)
                 {
-                    disabledWidgets |= (1uLL << WIDX_BANK_LEFT) | (1uLL << WIDX_BANK_RIGHT);
+                    newDisabledWidgets |= (1uLL << WIDX_BANK_LEFT) | (1uLL << WIDX_BANK_RIGHT);
                 }
                 else if (_currentTrackRollEnd != TrackRoll::None)
                 {
-                    disabledWidgets |= (1uLL << WIDX_SLOPE_DOWN) | (1uLL << WIDX_SLOPE_UP);
+                    newDisabledWidgets |= (1uLL << WIDX_SLOPE_DOWN) | (1uLL << WIDX_SLOPE_UP);
                 }
             }
             if (currentRide->getRideTypeDescriptor().HasFlag(RtdFlag::upInclineRequiresLift)
@@ -450,15 +450,15 @@ namespace OpenRCT2::Ui::Windows
                 // Disable lift hill toggle and banking if current track piece is uphill
                 if (_previousTrackPitchEnd == TrackPitch::Up25 || _previousTrackPitchEnd == TrackPitch::Up60
                     || _currentTrackPitchEnd == TrackPitch::Up25 || _currentTrackPitchEnd == TrackPitch::Up60)
-                    disabledWidgets |= 1uLL << WIDX_CHAIN_LIFT | (1uLL << WIDX_BANK_LEFT) | (1uLL << WIDX_BANK_RIGHT);
+                    newDisabledWidgets |= 1uLL << WIDX_CHAIN_LIFT | (1uLL << WIDX_BANK_LEFT) | (1uLL << WIDX_BANK_RIGHT);
                 // Disable upward slope if current track piece is not flat
                 if ((_previousTrackPitchEnd != TrackPitch::None || _previousTrackRollEnd != TrackRoll::None)
                     && !(_currentTrackHasLiftHill))
-                    disabledWidgets |= (1uLL << WIDX_SLOPE_UP);
+                    newDisabledWidgets |= (1uLL << WIDX_SLOPE_UP);
             }
             if (_rideConstructionState == RideConstructionState::State0)
             {
-                disabledWidgets |= (1uLL << WIDX_CONSTRUCT) | (1uLL << WIDX_DEMOLISH) | (1uLL << WIDX_PREVIOUS_SECTION)
+                newDisabledWidgets |= (1uLL << WIDX_CONSTRUCT) | (1uLL << WIDX_DEMOLISH) | (1uLL << WIDX_PREVIOUS_SECTION)
                     | (1uLL << WIDX_NEXT_SECTION);
             }
             if (!_currentlySelectedTrack.isTrackType)
@@ -469,28 +469,28 @@ namespace OpenRCT2::Ui::Windows
                     case TrackCurve::LeftSmall:
                     case TrackCurve::Left:
                     case TrackCurve::LeftLarge:
-                        disabledWidgets |= (1uLL << WIDX_BANK_RIGHT);
+                        newDisabledWidgets |= (1uLL << WIDX_BANK_RIGHT);
                         if (_previousTrackRollEnd == TrackRoll::None)
                         {
-                            disabledWidgets |= (1uLL << WIDX_BANK_LEFT);
+                            newDisabledWidgets |= (1uLL << WIDX_BANK_LEFT);
                         }
                         else
                         {
-                            disabledWidgets |= (1uLL << WIDX_BANK_STRAIGHT);
+                            newDisabledWidgets |= (1uLL << WIDX_BANK_STRAIGHT);
                         }
                         break;
                     case TrackCurve::RightLarge:
                     case TrackCurve::Right:
                     case TrackCurve::RightSmall:
                     case TrackCurve::RightVerySmall:
-                        disabledWidgets |= (1uLL << WIDX_BANK_LEFT);
+                        newDisabledWidgets |= (1uLL << WIDX_BANK_LEFT);
                         if (_previousTrackRollEnd == TrackRoll::None)
                         {
-                            disabledWidgets |= (1uLL << WIDX_BANK_RIGHT);
+                            newDisabledWidgets |= (1uLL << WIDX_BANK_RIGHT);
                         }
                         else
                         {
-                            disabledWidgets |= (1uLL << WIDX_BANK_STRAIGHT);
+                            newDisabledWidgets |= (1uLL << WIDX_BANK_STRAIGHT);
                         }
                         break;
                     default:
@@ -501,7 +501,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 if (_currentTrackRollEnd != TrackRoll::None)
                 {
-                    disabledWidgets |= (1uLL << WIDX_SLOPE_DOWN) | (1uLL << WIDX_SLOPE_UP);
+                    newDisabledWidgets |= (1uLL << WIDX_SLOPE_DOWN) | (1uLL << WIDX_SLOPE_UP);
                 }
             }
             if (_previousTrackPitchEnd == _currentTrackPitchEnd)
@@ -510,20 +510,20 @@ namespace OpenRCT2::Ui::Windows
                 {
                     case TrackPitch::Up60:
                     case TrackPitch::Down60:
-                        disabledWidgets |= (1uLL << WIDX_LEFT_CURVE_VERY_SMALL) | (1uLL << WIDX_LEFT_CURVE)
+                        newDisabledWidgets |= (1uLL << WIDX_LEFT_CURVE_VERY_SMALL) | (1uLL << WIDX_LEFT_CURVE)
                             | (1uLL << WIDX_RIGHT_CURVE) | (1uLL << WIDX_RIGHT_CURVE_VERY_SMALL);
                         if (!IsTrackEnabled(TrackGroup::slopeCurveSteep))
                         {
-                            disabledWidgets |= (1uLL << WIDX_LEFT_CURVE_SMALL) | (1uLL << WIDX_RIGHT_CURVE_SMALL);
+                            newDisabledWidgets |= (1uLL << WIDX_LEFT_CURVE_SMALL) | (1uLL << WIDX_RIGHT_CURVE_SMALL);
                         }
                         break;
                     case TrackPitch::Up90:
                     case TrackPitch::Down90:
-                        disabledWidgets |= (1uLL << WIDX_LEFT_CURVE_VERY_SMALL) | (1uLL << WIDX_LEFT_CURVE)
+                        newDisabledWidgets |= (1uLL << WIDX_LEFT_CURVE_VERY_SMALL) | (1uLL << WIDX_LEFT_CURVE)
                             | (1uLL << WIDX_RIGHT_CURVE) | (1uLL << WIDX_RIGHT_CURVE_VERY_SMALL);
                         if (!IsTrackEnabled(TrackGroup::curveVertical))
                         {
-                            disabledWidgets |= (1uLL << WIDX_LEFT_CURVE_SMALL) | (1uLL << WIDX_RIGHT_CURVE_SMALL);
+                            newDisabledWidgets |= (1uLL << WIDX_LEFT_CURVE_SMALL) | (1uLL << WIDX_RIGHT_CURVE_SMALL);
                         }
                         break;
                     default:
@@ -533,7 +533,7 @@ namespace OpenRCT2::Ui::Windows
             else
             {
                 // Disable all curves
-                disabledWidgets |= (1uLL << WIDX_LEFT_CURVE_VERY_SMALL) | (1uLL << WIDX_LEFT_CURVE_SMALL)
+                newDisabledWidgets |= (1uLL << WIDX_LEFT_CURVE_VERY_SMALL) | (1uLL << WIDX_LEFT_CURVE_SMALL)
                     | (1uLL << WIDX_LEFT_CURVE) | (1uLL << WIDX_RIGHT_CURVE) | (1uLL << WIDX_RIGHT_CURVE_SMALL)
                     | (1uLL << WIDX_RIGHT_CURVE_VERY_SMALL);
             }
@@ -545,46 +545,46 @@ namespace OpenRCT2::Ui::Windows
                     case TrackPitch::None:
                         if (!IsTrackEnabled(TrackGroup::diagSlope))
                         {
-                            disabledWidgets |= (1uLL << WIDX_SLOPE_UP) | (1uLL << WIDX_SLOPE_DOWN);
+                            newDisabledWidgets |= (1uLL << WIDX_SLOPE_UP) | (1uLL << WIDX_SLOPE_DOWN);
                         }
                         if (_currentlySelectedTrack != TrackCurve::None
                             || (!IsTrackEnabled(TrackGroup::flatToSteepSlope)
                                 && !IsTrackEnabled(TrackGroup::diagSlopeSteepLong)))
                         {
-                            disabledWidgets |= (1uLL << WIDX_SLOPE_DOWN_STEEP) | (1uLL << WIDX_SLOPE_UP_STEEP);
+                            newDisabledWidgets |= (1uLL << WIDX_SLOPE_DOWN_STEEP) | (1uLL << WIDX_SLOPE_UP_STEEP);
                         }
                         break;
                     case TrackPitch::Down25:
-                        disabledWidgets |= (1uLL << WIDX_SLOPE_UP) | (1uLL << WIDX_SLOPE_UP_STEEP);
+                        newDisabledWidgets |= (1uLL << WIDX_SLOPE_UP) | (1uLL << WIDX_SLOPE_UP_STEEP);
                         if (!IsTrackEnabled(TrackGroup::diagSlopeSteepDown))
                         {
-                            disabledWidgets |= (1uLL << WIDX_SLOPE_DOWN_STEEP);
+                            newDisabledWidgets |= (1uLL << WIDX_SLOPE_DOWN_STEEP);
                         }
                         break;
                     case TrackPitch::Down60:
-                        disabledWidgets |= (1uLL << WIDX_SLOPE_UP) | (1uLL << WIDX_SLOPE_UP_STEEP);
+                        newDisabledWidgets |= (1uLL << WIDX_SLOPE_UP) | (1uLL << WIDX_SLOPE_UP_STEEP);
                         if (!IsTrackEnabled(TrackGroup::flatToSteepSlope) && !IsTrackEnabled(TrackGroup::diagSlopeSteepLong))
                         {
-                            disabledWidgets |= (1uLL << WIDX_LEVEL);
+                            newDisabledWidgets |= (1uLL << WIDX_LEVEL);
                         }
                         break;
                     case TrackPitch::Up25:
-                        disabledWidgets |= (1uLL << WIDX_SLOPE_DOWN_STEEP) | (1uLL << WIDX_SLOPE_DOWN);
+                        newDisabledWidgets |= (1uLL << WIDX_SLOPE_DOWN_STEEP) | (1uLL << WIDX_SLOPE_DOWN);
                         if (!IsTrackEnabled(TrackGroup::diagSlopeSteepUp))
                         {
-                            disabledWidgets |= (1uLL << WIDX_SLOPE_UP_STEEP);
+                            newDisabledWidgets |= (1uLL << WIDX_SLOPE_UP_STEEP);
                         }
                         break;
                     case TrackPitch::Up60:
-                        disabledWidgets |= (1uLL << WIDX_SLOPE_DOWN_STEEP) | (1uLL << WIDX_SLOPE_DOWN);
+                        newDisabledWidgets |= (1uLL << WIDX_SLOPE_DOWN_STEEP) | (1uLL << WIDX_SLOPE_DOWN);
                         if (!IsTrackEnabled(TrackGroup::flatToSteepSlope) && !IsTrackEnabled(TrackGroup::diagSlopeSteepLong))
                         {
-                            disabledWidgets |= (1uLL << WIDX_LEVEL);
+                            newDisabledWidgets |= (1uLL << WIDX_LEVEL);
                         }
                         break;
                     case TrackPitch::Down90:
                     case TrackPitch::Up90:
-                        disabledWidgets |= (1uLL << WIDX_SLOPE_DOWN) | (1uLL << WIDX_LEVEL) | (1uLL << WIDX_SLOPE_UP);
+                        newDisabledWidgets |= (1uLL << WIDX_SLOPE_DOWN) | (1uLL << WIDX_LEVEL) | (1uLL << WIDX_SLOPE_UP);
                         break;
                 }
             }
@@ -596,43 +596,43 @@ namespace OpenRCT2::Ui::Windows
                         if (_currentlySelectedTrack != TrackCurve::None
                             || (!IsTrackEnabled(TrackGroup::flatToSteepSlope) && !IsTrackEnabled(TrackGroup::slopeSteepLong)))
                         {
-                            disabledWidgets |= (1uLL << WIDX_SLOPE_DOWN_STEEP) | (1uLL << WIDX_SLOPE_UP_STEEP);
+                            newDisabledWidgets |= (1uLL << WIDX_SLOPE_DOWN_STEEP) | (1uLL << WIDX_SLOPE_UP_STEEP);
                         }
                         break;
                     case TrackPitch::Down25:
-                        disabledWidgets |= (1uLL << WIDX_SLOPE_UP) | (1uLL << WIDX_SLOPE_UP_STEEP);
+                        newDisabledWidgets |= (1uLL << WIDX_SLOPE_UP) | (1uLL << WIDX_SLOPE_UP_STEEP);
                         if (!IsTrackEnabled(TrackGroup::slopeSteepDown))
                         {
-                            disabledWidgets |= 1uLL << WIDX_SLOPE_DOWN_STEEP;
+                            newDisabledWidgets |= 1uLL << WIDX_SLOPE_DOWN_STEEP;
                         }
                         break;
                     case TrackPitch::Down60:
-                        disabledWidgets |= (1uLL << WIDX_SLOPE_UP) | (1uLL << WIDX_SLOPE_UP_STEEP);
+                        newDisabledWidgets |= (1uLL << WIDX_SLOPE_UP) | (1uLL << WIDX_SLOPE_UP_STEEP);
                         if (!IsTrackEnabled(TrackGroup::flatToSteepSlope) && !IsTrackEnabled(TrackGroup::slopeSteepLong))
                         {
-                            disabledWidgets |= (1uLL << WIDX_LEVEL);
+                            newDisabledWidgets |= (1uLL << WIDX_LEVEL);
                         }
                         break;
                     case TrackPitch::Up25:
-                        disabledWidgets |= (1uLL << WIDX_SLOPE_DOWN_STEEP) | (1uLL << WIDX_SLOPE_DOWN);
+                        newDisabledWidgets |= (1uLL << WIDX_SLOPE_DOWN_STEEP) | (1uLL << WIDX_SLOPE_DOWN);
                         if (!IsTrackEnabled(TrackGroup::slopeSteepUp))
                         {
-                            disabledWidgets |= 1uLL << WIDX_SLOPE_UP_STEEP;
+                            newDisabledWidgets |= 1uLL << WIDX_SLOPE_UP_STEEP;
                         }
                         break;
                     case TrackPitch::Up60:
-                        disabledWidgets |= (1uLL << WIDX_SLOPE_DOWN_STEEP) | (1uLL << WIDX_SLOPE_DOWN);
+                        newDisabledWidgets |= (1uLL << WIDX_SLOPE_DOWN_STEEP) | (1uLL << WIDX_SLOPE_DOWN);
                         if (!IsTrackEnabled(TrackGroup::flatToSteepSlope) && !IsTrackEnabled(TrackGroup::slopeSteepLong))
                         {
-                            disabledWidgets |= (1uLL << WIDX_LEVEL);
+                            newDisabledWidgets |= (1uLL << WIDX_LEVEL);
                         }
                         break;
                     case TrackPitch::Down90:
-                        disabledWidgets |= (1uLL << WIDX_SLOPE_DOWN) | (1uLL << WIDX_LEVEL) | (1uLL << WIDX_SLOPE_UP)
+                        newDisabledWidgets |= (1uLL << WIDX_SLOPE_DOWN) | (1uLL << WIDX_LEVEL) | (1uLL << WIDX_SLOPE_UP)
                             | (1uLL << WIDX_SLOPE_UP_STEEP);
                         break;
                     case TrackPitch::Up90:
-                        disabledWidgets |= (1uLL << WIDX_SLOPE_DOWN_STEEP) | (1uLL << WIDX_SLOPE_DOWN) | (1uLL << WIDX_LEVEL)
+                        newDisabledWidgets |= (1uLL << WIDX_SLOPE_DOWN_STEEP) | (1uLL << WIDX_SLOPE_DOWN) | (1uLL << WIDX_LEVEL)
                             | (1uLL << WIDX_SLOPE_UP);
                         break;
                 }
@@ -640,15 +640,15 @@ namespace OpenRCT2::Ui::Windows
                 {
                     if (_previousTrackPitchEnd == TrackPitch::Up60 && _currentTrackPieceDirection < 4)
                     {
-                        disabledWidgets &= ~(1uLL << WIDX_SLOPE_UP_VERTICAL);
+                        newDisabledWidgets &= ~(1uLL << WIDX_SLOPE_UP_VERTICAL);
                     }
                     if (_previousTrackPitchEnd == TrackPitch::Up90)
                     {
-                        disabledWidgets &= ~(1uLL << WIDX_SLOPE_UP_VERTICAL);
+                        newDisabledWidgets &= ~(1uLL << WIDX_SLOPE_UP_VERTICAL);
                     }
                     if (_previousTrackPitchEnd == TrackPitch::Down60 && _currentTrackPieceDirection < 4)
                     {
-                        disabledWidgets &= ~(1uLL << WIDX_SLOPE_DOWN_VERTICAL);
+                        newDisabledWidgets &= ~(1uLL << WIDX_SLOPE_DOWN_VERTICAL);
                     }
                 }
             }
@@ -658,22 +658,22 @@ namespace OpenRCT2::Ui::Windows
                 && (_previousTrackPitchEnd == TrackPitch::Up25 || _previousTrackPitchEnd == TrackPitch::Down25)
                 && !IsTrackEnabled(TrackGroup::diagSlope))
             {
-                disabledWidgets |= 1uLL << WIDX_STRAIGHT;
+                newDisabledWidgets |= 1uLL << WIDX_STRAIGHT;
             }
 
             if (_previousTrackRollEnd == TrackRoll::Left)
             {
-                disabledWidgets |= (1uLL << WIDX_RIGHT_CURVE_SMALL) | (1uLL << WIDX_RIGHT_CURVE)
+                newDisabledWidgets |= (1uLL << WIDX_RIGHT_CURVE_SMALL) | (1uLL << WIDX_RIGHT_CURVE)
                     | (1uLL << WIDX_RIGHT_CURVE_LARGE) | (1uLL << WIDX_BANK_RIGHT);
             }
             if (_previousTrackRollEnd == TrackRoll::Right)
             {
-                disabledWidgets |= (1uLL << WIDX_LEFT_CURVE_SMALL) | (1uLL << WIDX_LEFT_CURVE) | (1uLL << WIDX_LEFT_CURVE_LARGE)
-                    | (1uLL << WIDX_BANK_LEFT);
+                newDisabledWidgets |= (1uLL << WIDX_LEFT_CURVE_SMALL) | (1uLL << WIDX_LEFT_CURVE)
+                    | (1uLL << WIDX_LEFT_CURVE_LARGE) | (1uLL << WIDX_BANK_LEFT);
             }
             if (_currentTrackRollEnd != _previousTrackRollEnd)
             {
-                disabledWidgets |= (1uLL << WIDX_RIGHT_CURVE_SMALL) | (1uLL << WIDX_RIGHT_CURVE)
+                newDisabledWidgets |= (1uLL << WIDX_RIGHT_CURVE_SMALL) | (1uLL << WIDX_RIGHT_CURVE)
                     | (1uLL << WIDX_RIGHT_CURVE_LARGE) | (1uLL << WIDX_LEFT_CURVE_SMALL) | (1uLL << WIDX_LEFT_CURVE)
                     | (1uLL << WIDX_LEFT_CURVE_LARGE);
             }
@@ -685,160 +685,161 @@ namespace OpenRCT2::Ui::Windows
                     {
                         if (_currentTrackPitchEnd != TrackPitch::Up25 && _currentTrackPitchEnd != TrackPitch::Down25)
                         {
-                            disabledWidgets |= (1uLL << WIDX_BANK_LEFT) | (1uLL << WIDX_BANK_RIGHT);
+                            newDisabledWidgets |= (1uLL << WIDX_BANK_LEFT) | (1uLL << WIDX_BANK_RIGHT);
                         }
                     }
                     else
                     {
                         if (_currentTrackPitchEnd != _previousTrackPitchEnd)
                         {
-                            disabledWidgets |= (1uLL << WIDX_BANK_LEFT) | (1uLL << WIDX_BANK_RIGHT);
+                            newDisabledWidgets |= (1uLL << WIDX_BANK_LEFT) | (1uLL << WIDX_BANK_RIGHT);
                         }
                         else
                         {
                             if (_currentTrackPitchEnd != TrackPitch::Up25 && _currentTrackPitchEnd != TrackPitch::Down25)
                             {
-                                disabledWidgets |= (1uLL << WIDX_BANK_LEFT) | (1uLL << WIDX_BANK_RIGHT);
+                                newDisabledWidgets |= (1uLL << WIDX_BANK_LEFT) | (1uLL << WIDX_BANK_RIGHT);
                             }
                         }
                     }
                 }
                 else
                 {
-                    disabledWidgets |= (1uLL << WIDX_BANK_LEFT) | (1uLL << WIDX_BANK_RIGHT);
+                    newDisabledWidgets |= (1uLL << WIDX_BANK_LEFT) | (1uLL << WIDX_BANK_RIGHT);
                 }
             }
             if (_currentTrackRollEnd != TrackRoll::None || _previousTrackRollEnd != TrackRoll::None)
             {
-                disabledWidgets |= (1uLL << WIDX_SLOPE_DOWN_STEEP) | (1uLL << WIDX_SLOPE_UP_STEEP) | (1uLL << WIDX_CHAIN_LIFT);
+                newDisabledWidgets |= (1uLL << WIDX_SLOPE_DOWN_STEEP) | (1uLL << WIDX_SLOPE_UP_STEEP)
+                    | (1uLL << WIDX_CHAIN_LIFT);
             }
             if (_currentlySelectedTrack != TrackCurve::None)
             {
                 if (!IsTrackEnabled(TrackGroup::liftHillCurve))
                 {
-                    disabledWidgets |= (1uLL << WIDX_CHAIN_LIFT);
+                    newDisabledWidgets |= (1uLL << WIDX_CHAIN_LIFT);
                 }
                 if (_currentTrackPitchEnd == TrackPitch::None)
                 {
-                    disabledWidgets |= (1uLL << WIDX_CHAIN_LIFT);
+                    newDisabledWidgets |= (1uLL << WIDX_CHAIN_LIFT);
                 }
                 if (_currentTrackPitchEnd == TrackPitch::Up60)
                 {
-                    disabledWidgets |= (1uLL << WIDX_CHAIN_LIFT);
+                    newDisabledWidgets |= (1uLL << WIDX_CHAIN_LIFT);
                 }
                 if (_currentTrackPitchEnd == TrackPitch::Down60)
                 {
-                    disabledWidgets |= (1uLL << WIDX_CHAIN_LIFT);
+                    newDisabledWidgets |= (1uLL << WIDX_CHAIN_LIFT);
                 }
                 // Ensures that you can build an "unbanking turn", but not select a turn that start banked and
                 // turns to level (as that does not exist).
                 if (_currentTrackRollEnd != TrackRoll::None && _currentTrackPitchEnd != TrackPitch::None)
                 {
-                    disabledWidgets |= (1uLL << WIDX_LEVEL);
+                    newDisabledWidgets |= (1uLL << WIDX_LEVEL);
                 }
             }
             if (_currentTrackPitchEnd == TrackPitch::Up90 || _previousTrackPitchEnd == TrackPitch::Up90)
             {
-                disabledWidgets |= (1uLL << WIDX_CHAIN_LIFT);
+                newDisabledWidgets |= (1uLL << WIDX_CHAIN_LIFT);
             }
             if (!IsTrackEnabled(TrackGroup::liftHillSteep))
             {
                 if (_previousTrackPitchEnd == TrackPitch::Up60 || _currentTrackPitchEnd == TrackPitch::Up60)
                 {
-                    disabledWidgets |= (1uLL << WIDX_CHAIN_LIFT);
+                    newDisabledWidgets |= (1uLL << WIDX_CHAIN_LIFT);
                 }
             }
             if (_previousTrackRollEnd == TrackRoll::UpsideDown)
             {
-                disabledWidgets |= (1uLL << WIDX_LEFT_CURVE_SMALL) | (1uLL << WIDX_LEFT_CURVE) | (1uLL << WIDX_LEFT_CURVE_LARGE)
-                    | (1uLL << WIDX_STRAIGHT) | (1uLL << WIDX_RIGHT_CURVE_SMALL) | (1uLL << WIDX_RIGHT_CURVE)
-                    | (1uLL << WIDX_RIGHT_CURVE_LARGE);
+                newDisabledWidgets |= (1uLL << WIDX_LEFT_CURVE_SMALL) | (1uLL << WIDX_LEFT_CURVE)
+                    | (1uLL << WIDX_LEFT_CURVE_LARGE) | (1uLL << WIDX_STRAIGHT) | (1uLL << WIDX_RIGHT_CURVE_SMALL)
+                    | (1uLL << WIDX_RIGHT_CURVE) | (1uLL << WIDX_RIGHT_CURVE_LARGE);
             }
             if (_currentlySelectedTrack != TrackCurve::None)
             {
                 if (_currentTrackPitchEnd == TrackPitch::None)
                 {
-                    disabledWidgets |= (1uLL << WIDX_SLOPE_DOWN) | (1uLL << WIDX_SLOPE_UP);
+                    newDisabledWidgets |= (1uLL << WIDX_SLOPE_DOWN) | (1uLL << WIDX_SLOPE_UP);
                 }
                 if (_currentTrackPitchEnd == _previousTrackPitchEnd)
                 {
                     if (_currentTrackPitchEnd == TrackPitch::Up25)
                     {
-                        disabledWidgets |= (1uLL << WIDX_SLOPE_UP_STEEP);
+                        newDisabledWidgets |= (1uLL << WIDX_SLOPE_UP_STEEP);
                         if (_currentlySelectedTrack == TrackCurve::Left || _currentlySelectedTrack == TrackCurve::Right
                             || _rideConstructionState != RideConstructionState::Back
                             || !IsTrackEnabled(TrackGroup::slopeCurveBanked))
                         {
-                            disabledWidgets |= (1uLL << WIDX_LEVEL);
+                            newDisabledWidgets |= (1uLL << WIDX_LEVEL);
                         }
                     }
                     if (_currentTrackPitchEnd == TrackPitch::Down25)
                     {
-                        disabledWidgets |= (1uLL << WIDX_SLOPE_DOWN_STEEP);
+                        newDisabledWidgets |= (1uLL << WIDX_SLOPE_DOWN_STEEP);
                         if (_currentlySelectedTrack == TrackCurve::Left || _currentlySelectedTrack == TrackCurve::Right
                             || _rideConstructionState != RideConstructionState::Front
                             || !IsTrackEnabled(TrackGroup::slopeCurveBanked))
                         {
-                            disabledWidgets |= (1uLL << WIDX_LEVEL);
+                            newDisabledWidgets |= (1uLL << WIDX_LEVEL);
                         }
                     }
                 }
                 else if (IsTrackEnabled(TrackGroup::slopeCurveBanked))
                 {
-                    disabledWidgets |= (1uLL << WIDX_SLOPE_DOWN_STEEP) | (1uLL << WIDX_SLOPE_UP_STEEP);
+                    newDisabledWidgets |= (1uLL << WIDX_SLOPE_DOWN_STEEP) | (1uLL << WIDX_SLOPE_UP_STEEP);
                     if (_currentTrackRollEnd == TrackRoll::Left)
                     {
-                        disabledWidgets |= (1uLL << WIDX_BANK_STRAIGHT) | (1uLL << WIDX_BANK_RIGHT);
-                        disabledWidgets &= ~(1uLL << WIDX_BANK_LEFT);
+                        newDisabledWidgets |= (1uLL << WIDX_BANK_STRAIGHT) | (1uLL << WIDX_BANK_RIGHT);
+                        newDisabledWidgets &= ~(1uLL << WIDX_BANK_LEFT);
                     }
                     if (_currentTrackRollEnd == TrackRoll::Right)
                     {
-                        disabledWidgets |= (1uLL << WIDX_BANK_LEFT) | (1uLL << WIDX_BANK_STRAIGHT);
-                        disabledWidgets &= ~(1uLL << WIDX_BANK_RIGHT);
+                        newDisabledWidgets |= (1uLL << WIDX_BANK_LEFT) | (1uLL << WIDX_BANK_STRAIGHT);
+                        newDisabledWidgets &= ~(1uLL << WIDX_BANK_RIGHT);
                     }
                     if (_currentTrackRollEnd == TrackRoll::None)
                     {
-                        disabledWidgets |= (1uLL << WIDX_BANK_LEFT) | (1uLL << WIDX_BANK_RIGHT);
-                        disabledWidgets &= ~(1uLL << WIDX_BANK_STRAIGHT);
+                        newDisabledWidgets |= (1uLL << WIDX_BANK_LEFT) | (1uLL << WIDX_BANK_RIGHT);
+                        newDisabledWidgets &= ~(1uLL << WIDX_BANK_STRAIGHT);
                     }
                     if (_currentTrackPitchEnd == TrackPitch::None)
                     {
-                        disabledWidgets |= (1uLL << WIDX_SLOPE_DOWN) | (1uLL << WIDX_SLOPE_UP);
-                        disabledWidgets &= ~(1uLL << WIDX_LEVEL);
+                        newDisabledWidgets |= (1uLL << WIDX_SLOPE_DOWN) | (1uLL << WIDX_SLOPE_UP);
+                        newDisabledWidgets &= ~(1uLL << WIDX_LEVEL);
                     }
                     if (_currentTrackPitchEnd == TrackPitch::Up25)
                     {
-                        disabledWidgets |= (1uLL << WIDX_SLOPE_DOWN) | (1uLL << WIDX_LEVEL);
-                        disabledWidgets &= ~(1uLL << WIDX_SLOPE_UP);
+                        newDisabledWidgets |= (1uLL << WIDX_SLOPE_DOWN) | (1uLL << WIDX_LEVEL);
+                        newDisabledWidgets &= ~(1uLL << WIDX_SLOPE_UP);
                     }
                     if (_currentTrackPitchEnd == TrackPitch::Down25)
                     {
-                        disabledWidgets |= (1uLL << WIDX_LEVEL) | (1uLL << WIDX_SLOPE_UP);
-                        disabledWidgets &= ~(1uLL << WIDX_SLOPE_DOWN);
+                        newDisabledWidgets |= (1uLL << WIDX_LEVEL) | (1uLL << WIDX_SLOPE_UP);
+                        newDisabledWidgets &= ~(1uLL << WIDX_SLOPE_DOWN);
                     }
                     if (_currentlySelectedTrack == TrackCurve::LeftSmall)
                     {
-                        disabledWidgets &= ~(1uLL << WIDX_LEFT_CURVE_SMALL);
+                        newDisabledWidgets &= ~(1uLL << WIDX_LEFT_CURVE_SMALL);
                     }
                     if (_currentlySelectedTrack == TrackCurve::RightSmall)
                     {
-                        disabledWidgets &= ~(1uLL << WIDX_RIGHT_CURVE_SMALL);
+                        newDisabledWidgets &= ~(1uLL << WIDX_RIGHT_CURVE_SMALL);
                     }
                 }
             }
             if (_currentlySelectedTrack != TrackCurve::None && _currentTrackPitchEnd == TrackPitch::Up60)
             {
-                disabledWidgets |= (1uLL << WIDX_SLOPE_UP);
+                newDisabledWidgets |= (1uLL << WIDX_SLOPE_UP);
             }
             if (_currentlySelectedTrack != TrackCurve::None && _currentTrackPitchEnd == TrackPitch::Down60)
             {
-                disabledWidgets |= (1uLL << WIDX_SLOPE_DOWN);
+                newDisabledWidgets |= (1uLL << WIDX_SLOPE_DOWN);
             }
             if ((_currentTrackHasLiftHill) && !getGameState().cheats.enableChainLiftOnAllTrack)
             {
                 if (_currentTrackPitchEnd != TrackPitch::None && !IsTrackEnabled(TrackGroup::liftHillCurve))
                 {
-                    disabledWidgets |= (1uLL << WIDX_LEFT_CURVE_SMALL) | (1uLL << WIDX_LEFT_CURVE)
+                    newDisabledWidgets |= (1uLL << WIDX_LEFT_CURVE_SMALL) | (1uLL << WIDX_LEFT_CURVE)
                         | (1uLL << WIDX_LEFT_CURVE_LARGE) | (1uLL << WIDX_RIGHT_CURVE_SMALL) | (1uLL << WIDX_RIGHT_CURVE)
                         | (1uLL << WIDX_RIGHT_CURVE_LARGE);
                 }
@@ -846,44 +847,44 @@ namespace OpenRCT2::Ui::Windows
                 {
                     if (widgets[WIDX_SLOPE_UP_STEEP].tooltip == STR_RIDE_CONSTRUCTION_STEEP_SLOPE_UP_TIP)
                     {
-                        disabledWidgets |= (1uLL << WIDX_SLOPE_UP_STEEP);
+                        newDisabledWidgets |= (1uLL << WIDX_SLOPE_UP_STEEP);
                     }
                 }
             }
             if (_previousTrackPitchEnd == TrackPitch::Up60 && _currentlySelectedTrack != TrackCurve::None)
             {
-                disabledWidgets |= (1uLL << WIDX_SLOPE_DOWN_STEEP) | (1uLL << WIDX_LEVEL);
+                newDisabledWidgets |= (1uLL << WIDX_SLOPE_DOWN_STEEP) | (1uLL << WIDX_LEVEL);
             }
             if (_previousTrackPitchEnd == TrackPitch::Down60 && _currentlySelectedTrack != TrackCurve::None)
             {
-                disabledWidgets |= (1uLL << WIDX_LEVEL) | (1uLL << WIDX_SLOPE_UP_STEEP);
+                newDisabledWidgets |= (1uLL << WIDX_LEVEL) | (1uLL << WIDX_SLOPE_UP_STEEP);
             }
             if (_currentTrackPitchEnd == TrackPitch::Up90 || _previousTrackPitchEnd == TrackPitch::Up90)
             {
                 if (_currentlySelectedTrack != TrackCurve::None)
                 {
-                    disabledWidgets |= (1uLL << WIDX_SLOPE_UP_STEEP);
+                    newDisabledWidgets |= (1uLL << WIDX_SLOPE_UP_STEEP);
                 }
-                disabledWidgets |= (1uLL << WIDX_LEFT_CURVE_LARGE) | (1uLL << WIDX_RIGHT_CURVE_LARGE)
+                newDisabledWidgets |= (1uLL << WIDX_LEFT_CURVE_LARGE) | (1uLL << WIDX_RIGHT_CURVE_LARGE)
                     | (1uLL << WIDX_SLOPE_DOWN_STEEP);
                 if (currentRide->getRideTypeDescriptor().SupportsTrackGroup(TrackGroup::reverseFreefall))
                 {
-                    disabledWidgets |= (1uLL << WIDX_STRAIGHT) | (1uLL << WIDX_RIGHT_CURVE) | (1uLL << WIDX_RIGHT_CURVE_SMALL)
-                        | (1uLL << WIDX_LEFT_CURVE_SMALL) | (1uLL << WIDX_LEFT_CURVE);
+                    newDisabledWidgets |= (1uLL << WIDX_STRAIGHT) | (1uLL << WIDX_RIGHT_CURVE)
+                        | (1uLL << WIDX_RIGHT_CURVE_SMALL) | (1uLL << WIDX_LEFT_CURVE_SMALL) | (1uLL << WIDX_LEFT_CURVE);
                 }
             }
             else if (_currentTrackPitchEnd == TrackPitch::Down90 || _previousTrackPitchEnd == TrackPitch::Down90)
             {
                 if (_currentlySelectedTrack != TrackCurve::None)
                 {
-                    disabledWidgets |= (1uLL << WIDX_SLOPE_DOWN_STEEP);
+                    newDisabledWidgets |= (1uLL << WIDX_SLOPE_DOWN_STEEP);
                 }
-                disabledWidgets |= (1uLL << WIDX_LEFT_CURVE_LARGE) | (1uLL << WIDX_RIGHT_CURVE_LARGE)
+                newDisabledWidgets |= (1uLL << WIDX_LEFT_CURVE_LARGE) | (1uLL << WIDX_RIGHT_CURVE_LARGE)
                     | (1uLL << WIDX_SLOPE_UP_STEEP);
                 if (currentRide->getRideTypeDescriptor().SupportsTrackGroup(TrackGroup::reverseFreefall))
                 {
-                    disabledWidgets |= (1uLL << WIDX_STRAIGHT) | (1uLL << WIDX_RIGHT_CURVE) | (1uLL << WIDX_RIGHT_CURVE_SMALL)
-                        | (1uLL << WIDX_LEFT_CURVE_SMALL) | (1uLL << WIDX_LEFT_CURVE);
+                    newDisabledWidgets |= (1uLL << WIDX_STRAIGHT) | (1uLL << WIDX_RIGHT_CURVE)
+                        | (1uLL << WIDX_RIGHT_CURVE_SMALL) | (1uLL << WIDX_LEFT_CURVE_SMALL) | (1uLL << WIDX_LEFT_CURVE);
                 }
             }
             // If the previous track is flat and the next track is flat, attempt to show buttons for helixes
@@ -894,9 +895,9 @@ namespace OpenRCT2::Ui::Windows
                     && (_currentlySelectedTrack == TrackCurve::Left || _currentlySelectedTrack == TrackCurve::Right))
                 {
                     if (IsTrackEnabled(TrackGroup::helixDownUnbankedQuarter))
-                        disabledWidgets &= ~(1uLL << WIDX_SLOPE_DOWN_STEEP);
+                        newDisabledWidgets &= ~(1uLL << WIDX_SLOPE_DOWN_STEEP);
                     if (IsTrackEnabled(TrackGroup::helixUpUnbankedQuarter))
-                        disabledWidgets &= ~(1uLL << WIDX_SLOPE_UP_STEEP);
+                        newDisabledWidgets &= ~(1uLL << WIDX_SLOPE_UP_STEEP);
                 }
                 // If the track is banked left or right and curvature is standard size (2.5 tile radius), attempt to show
                 // buttons for half or quarter helixes
@@ -905,9 +906,9 @@ namespace OpenRCT2::Ui::Windows
                     && (_currentlySelectedTrack == TrackCurve::Left || _currentlySelectedTrack == TrackCurve::Right))
                 {
                     if (IsTrackEnabled(TrackGroup::helixDownBankedHalf) || IsTrackEnabled(TrackGroup::helixDownBankedQuarter))
-                        disabledWidgets &= ~(1uLL << WIDX_SLOPE_DOWN_STEEP);
+                        newDisabledWidgets &= ~(1uLL << WIDX_SLOPE_DOWN_STEEP);
                     if (IsTrackEnabled(TrackGroup::helixUpBankedHalf) || IsTrackEnabled(TrackGroup::helixUpBankedQuarter))
-                        disabledWidgets &= ~(1uLL << WIDX_SLOPE_UP_STEEP);
+                        newDisabledWidgets &= ~(1uLL << WIDX_SLOPE_UP_STEEP);
                 }
                 // If the track is banked left or right and curvature is small size (1.5 tile radius), attempt to show buttons
                 // for half helixes
@@ -916,9 +917,9 @@ namespace OpenRCT2::Ui::Windows
                     && (_currentlySelectedTrack == TrackCurve::LeftSmall || _currentlySelectedTrack == TrackCurve::RightSmall))
                 {
                     if (IsTrackEnabled(TrackGroup::helixDownBankedHalf))
-                        disabledWidgets &= ~(1uLL << WIDX_SLOPE_DOWN_STEEP);
+                        newDisabledWidgets &= ~(1uLL << WIDX_SLOPE_DOWN_STEEP);
                     if (IsTrackEnabled(TrackGroup::helixUpBankedHalf))
-                        disabledWidgets &= ~(1uLL << WIDX_SLOPE_UP_STEEP);
+                        newDisabledWidgets &= ~(1uLL << WIDX_SLOPE_UP_STEEP);
                 }
             }
             if (IsTrackEnabled(TrackGroup::slopeCurveBanked))
@@ -931,7 +932,7 @@ namespace OpenRCT2::Ui::Windows
                             && (!currentRide->getRideTypeDescriptor().HasFlag(RtdFlag::upInclineRequiresLift)
                                 || getGameState().cheats.enableAllDrawableTrackPieces))
                         {
-                            disabledWidgets &= ~(1uLL << WIDX_SLOPE_UP);
+                            newDisabledWidgets &= ~(1uLL << WIDX_SLOPE_UP);
                         }
                     }
                 }
@@ -941,41 +942,41 @@ namespace OpenRCT2::Ui::Windows
                     {
                         if (_currentTrackPitchEnd == TrackPitch::None && _previousTrackRollEnd != TrackRoll::None)
                         {
-                            disabledWidgets &= ~(1uLL << WIDX_SLOPE_DOWN);
+                            newDisabledWidgets &= ~(1uLL << WIDX_SLOPE_DOWN);
                         }
                     }
                 }
             }
             if (_currentTrackPieceDirection >= 4)
             {
-                disabledWidgets |= (1uLL << WIDX_LEFT_CURVE_VERY_SMALL) | (1uLL << WIDX_LEFT_CURVE_SMALL)
+                newDisabledWidgets |= (1uLL << WIDX_LEFT_CURVE_VERY_SMALL) | (1uLL << WIDX_LEFT_CURVE_SMALL)
                     | (1uLL << WIDX_LEFT_CURVE) | (1uLL << WIDX_RIGHT_CURVE) | (1uLL << WIDX_RIGHT_CURVE_SMALL)
                     | (1uLL << WIDX_RIGHT_CURVE_VERY_SMALL);
             }
             if (_rideConstructionState == RideConstructionState::Front)
             {
-                disabledWidgets |= (1uLL << WIDX_NEXT_SECTION);
+                newDisabledWidgets |= (1uLL << WIDX_NEXT_SECTION);
                 if (WindowRideConstructionUpdateState(nullptr, nullptr, nullptr, nullptr, nullptr, nullptr))
                 {
-                    disabledWidgets |= (1uLL << WIDX_CONSTRUCT);
+                    newDisabledWidgets |= (1uLL << WIDX_CONSTRUCT);
                 }
             }
             else if (_rideConstructionState == RideConstructionState::Back)
             {
-                disabledWidgets |= (1uLL << WIDX_PREVIOUS_SECTION);
+                newDisabledWidgets |= (1uLL << WIDX_PREVIOUS_SECTION);
                 if (WindowRideConstructionUpdateState(nullptr, nullptr, nullptr, nullptr, nullptr, nullptr))
                 {
-                    disabledWidgets |= (1uLL << WIDX_CONSTRUCT);
+                    newDisabledWidgets |= (1uLL << WIDX_CONSTRUCT);
                 }
             }
             if (currentTrackDrawerDescriptor.HasCoveredPieces())
             {
-                disabledWidgets &= ~(1uLL << WIDX_BANKING_GROUPBOX);
+                newDisabledWidgets &= ~(1uLL << WIDX_BANKING_GROUPBOX);
             }
             if (_rideConstructionState == RideConstructionState::EntranceExit
                 || _rideConstructionState == RideConstructionState::Selected)
             {
-                disabledWidgets |= (1uLL << WIDX_DIRECTION_GROUPBOX) | (1uLL << WIDX_SLOPE_GROUPBOX)
+                newDisabledWidgets |= (1uLL << WIDX_DIRECTION_GROUPBOX) | (1uLL << WIDX_SLOPE_GROUPBOX)
                     | (1uLL << WIDX_BANKING_GROUPBOX) | (1uLL << WIDX_LEFT_CURVE_VERY_SMALL) | (1uLL << WIDX_LEFT_CURVE_SMALL)
                     | (1uLL << WIDX_LEFT_CURVE) | (1uLL << WIDX_STRAIGHT) | (1uLL << WIDX_RIGHT_CURVE)
                     | (1uLL << WIDX_RIGHT_CURVE_SMALL) | (1uLL << WIDX_RIGHT_CURVE_VERY_SMALL)
@@ -986,34 +987,34 @@ namespace OpenRCT2::Ui::Windows
             }
             if (_currentlyShowingBrakeOrBoosterSpeed)
             {
-                disabledWidgets &= ~(1uLL << WIDX_BANKING_GROUPBOX);
-                disabledWidgets &= ~(1uLL << WIDX_BANK_LEFT);
-                disabledWidgets &= ~(1uLL << WIDX_BANK_STRAIGHT);
-                disabledWidgets &= ~(1uLL << WIDX_BANK_RIGHT);
+                newDisabledWidgets &= ~(1uLL << WIDX_BANKING_GROUPBOX);
+                newDisabledWidgets &= ~(1uLL << WIDX_BANK_LEFT);
+                newDisabledWidgets &= ~(1uLL << WIDX_BANK_STRAIGHT);
+                newDisabledWidgets &= ~(1uLL << WIDX_BANK_RIGHT);
             }
 
             // If chain lift cheat is enabled then show the chain lift widget no matter what
             if (getGameState().cheats.enableChainLiftOnAllTrack)
             {
-                disabledWidgets &= ~(1uLL << WIDX_CHAIN_LIFT);
+                newDisabledWidgets &= ~(1uLL << WIDX_CHAIN_LIFT);
             }
 
             // Set and invalidate the changed widgets
-            uint64_t currentDisabledWidgets = disabled_widgets;
-            if (currentDisabledWidgets == disabledWidgets)
+            uint64_t currentDisabledWidgets = disabledWidgets;
+            if (currentDisabledWidgets == newDisabledWidgets)
                 return;
 
             for (WidgetIndex i = 0; i < 64; i++)
             {
-                if ((disabledWidgets & (1uLL << i)) != (currentDisabledWidgets & (1uLL << i)))
+                if ((newDisabledWidgets & (1uLL << i)) != (currentDisabledWidgets & (1uLL << i)))
                 {
-                    InvalidateWidget(i);
+                    invalidateWidget(i);
                 }
             }
-            disabled_widgets = disabledWidgets;
+            disabledWidgets = newDisabledWidgets;
         }
 
-        void OnUpdate() override
+        void onUpdate() override
         {
             auto currentRide = GetRide(_currentRideIndex);
             if (currentRide == nullptr)
@@ -1025,7 +1026,7 @@ namespace OpenRCT2::Ui::Windows
             // editing currentRide while open will cause many issues until properly handled
             if (currentRide->status != RideStatus::closed && currentRide->status != RideStatus::simulating)
             {
-                Close();
+                close();
                 return;
             }
 
@@ -1037,7 +1038,7 @@ namespace OpenRCT2::Ui::Windows
                     case TrackElemType::Whirlpool:
                     case TrackElemType::Rapids:
                     case TrackElemType::Waterfall:
-                        InvalidateWidget(WIDX_CONSTRUCT);
+                        invalidateWidget(WIDX_CONSTRUCT);
                         break;
                     default:
                         break;
@@ -1048,7 +1049,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 if (!isToolActive(*this, WIDX_CONSTRUCT))
                 {
-                    Close();
+                    close();
                     return;
                 }
             }
@@ -1081,13 +1082,13 @@ namespace OpenRCT2::Ui::Windows
             UpdateTrackPieceWidgets();
         }
 
-        void OnMouseUp(WidgetIndex widgetIndex) override
+        void onMouseUp(WidgetIndex widgetIndex) override
         {
             WindowRideConstructionUpdateEnabledTrackPieces();
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
-                    Close();
+                    close();
                     break;
                 case WIDX_ROTATE:
                     Rotate();
@@ -1113,7 +1114,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnMouseDown(WidgetIndex widgetIndex) override
+        void onMouseDown(WidgetIndex widgetIndex) override
         {
             auto currentRide = GetRide(_currentRideIndex);
             if (currentRide == nullptr)
@@ -1534,7 +1535,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDropdown(WidgetIndex widgetIndex, int32_t selectedIndex) override
+        void onDropdown(WidgetIndex widgetIndex, int32_t selectedIndex) override
         {
             if (widgetIndex != WIDX_SPECIAL_TRACK_DROPDOWN)
                 return;
@@ -1567,7 +1568,7 @@ namespace OpenRCT2::Ui::Windows
             WindowRideConstructionUpdateActiveElements();
         }
 
-        void OnToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
+        void onToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
             switch (widgetIndex)
             {
@@ -1581,7 +1582,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
+        void onToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
             switch (widgetIndex)
             {
@@ -1595,7 +1596,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnPrepareDraw() override
+        void onPrepareDraw() override
         {
             auto currentRide = GetRide(_currentRideIndex);
             if (currentRide == nullptr)
@@ -1641,11 +1642,11 @@ namespace OpenRCT2::Ui::Windows
                 simulateWidget.type = WidgetType::flatBtn;
                 if (currentRide->status == RideStatus::simulating)
                 {
-                    pressed_widgets |= (1uLL << WIDX_SIMULATE);
+                    pressedWidgets |= (1uLL << WIDX_SIMULATE);
                 }
                 else
                 {
-                    pressed_widgets &= ~(1uLL << WIDX_SIMULATE);
+                    pressedWidgets &= ~(1uLL << WIDX_SIMULATE);
                 }
             }
 
@@ -1653,7 +1654,7 @@ namespace OpenRCT2::Ui::Windows
             currentRide->formatNameTo(ft);
         }
 
-        static void OnDrawUpdateCoveredPieces(const TrackDrawerDescriptor& trackDrawerDescriptor, std::span<Widget> widgets)
+        static void onDrawUpdateCoveredPieces(const TrackDrawerDescriptor& trackDrawerDescriptor, std::span<Widget> widgets)
         {
             widgets[WIDX_U_TRACK].type = WidgetType::empty;
             widgets[WIDX_O_TRACK].type = WidgetType::empty;
@@ -1682,13 +1683,13 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_O_TRACK].tooltip = trackDrawerDescriptor.Covered.tooltip;
         }
 
-        void OnDraw(RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
             RenderTarget clippedRT;
             Widget* widget;
             int32_t widgetWidth, widgetHeight;
 
-            DrawWidgets(rt);
+            drawWidgets(rt);
 
             widget = &widgets[WIDX_CONSTRUCT];
             if (widget->type == WidgetType::empty)
@@ -1726,7 +1727,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void UpdateWidgets()
+        void updateWidgets()
         {
             auto currentRide = GetRide(_currentRideIndex);
             if (currentRide == nullptr)
@@ -1737,7 +1738,7 @@ namespace OpenRCT2::Ui::Windows
             const auto& rtd = GetRideTypeDescriptor(currentRide->type);
             auto trackDrawerDescriptor = getCurrentTrackDrawerDescriptor(rtd);
 
-            hold_down_widgets = (1u << WIDX_CONSTRUCT) | (1u << WIDX_DEMOLISH) | (1u << WIDX_NEXT_SECTION)
+            holdDownWidgets = (1u << WIDX_CONSTRUCT) | (1u << WIDX_DEMOLISH) | (1u << WIDX_NEXT_SECTION)
                 | (1u << WIDX_PREVIOUS_SECTION);
             if (rtd.HasFlag(RtdFlag::isShopOrFacility) || !currentRide->hasStation())
             {
@@ -1987,7 +1988,7 @@ namespace OpenRCT2::Ui::Windows
             bool boosterTrackSelected = TrackTypeIsBooster(_selectedTrackType)
                 || TrackTypeIsBooster(_currentlySelectedTrack.trackType);
 
-            // Only necessary because TD6 writes speed and seat rotation to the same bits. Remove for new track design format.
+            // only necessary because TD6 writes speed and seat rotation to the same bits. Remove for new track design format.
             bool trackHasSpeedAndSeatRotation = _selectedTrackType == TrackElemType::BlockBrakes
                 || _currentlySelectedTrack == TrackElemType::BlockBrakes || _selectedTrackType > TrackElemType::HighestAlias
                 || _currentlySelectedTrack.trackType > TrackElemType::HighestAlias;
@@ -2002,7 +2003,7 @@ namespace OpenRCT2::Ui::Windows
                     widgets[WIDX_BANK_STRAIGHT].type = WidgetType::flatBtn;
                     widgets[WIDX_BANK_RIGHT].type = WidgetType::flatBtn;
                 }
-                OnDrawUpdateCoveredPieces(trackDrawerDescriptor, widgets);
+                onDrawUpdateCoveredPieces(trackDrawerDescriptor, widgets);
             }
             else
             {
@@ -2031,9 +2032,9 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_SPEED_SETTING_SPINNER_DOWN].text = STR_NUMERIC_DOWN;
 
                 auto spinnerStart = 124 + widgets[WIDX_TITLE].bottom;
-                ResizeSpinner(WIDX_SPEED_SETTING_SPINNER, { 12, spinnerStart }, { 85, kSpinnerHeight });
+                resizeSpinner(WIDX_SPEED_SETTING_SPINNER, { 12, spinnerStart }, { 85, kSpinnerHeight });
 
-                hold_down_widgets |= (1uLL << WIDX_SPEED_SETTING_SPINNER_UP) | (1uLL << WIDX_SPEED_SETTING_SPINNER_DOWN);
+                holdDownWidgets |= (1uLL << WIDX_SPEED_SETTING_SPINNER_UP) | (1uLL << WIDX_SPEED_SETTING_SPINNER_DOWN);
             }
 
             static constexpr int16_t bankingGroupboxRightNoSeatRotation = kGroupWidth;
@@ -2076,7 +2077,7 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
 
-            uint64_t pressedWidgets = pressed_widgets
+            uint64_t newPressedWidgets = pressedWidgets
                 & ((1uLL << WIDX_BACKGROUND) | (1uLL << WIDX_TITLE) | (1uLL << WIDX_CLOSE) | (1uLL << WIDX_DIRECTION_GROUPBOX)
                    | (1uLL << WIDX_SLOPE_GROUPBOX) | (1uLL << WIDX_BANKING_GROUPBOX) | (1uLL << WIDX_CONSTRUCT)
                    | (1uLL << WIDX_DEMOLISH) | (1uLL << WIDX_PREVIOUS_SECTION) | (1uLL << WIDX_NEXT_SECTION)
@@ -2119,8 +2120,8 @@ namespace OpenRCT2::Ui::Windows
                     widgets[WIDX_PREVIOUS_SECTION].type = WidgetType::empty;
                     break;
                 default:
-                    pressed_widgets = pressedWidgets;
-                    Invalidate();
+                    pressedWidgets = newPressedWidgets;
+                    invalidate();
                     return;
             }
 
@@ -2159,7 +2160,7 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
 
-            pressedWidgets |= (1uLL << widgetIndex);
+            newPressedWidgets |= (1uLL << widgetIndex);
 
             switch (_currentTrackPitchEnd)
             {
@@ -2185,7 +2186,7 @@ namespace OpenRCT2::Ui::Windows
                     widgetIndex = WIDX_LEVEL;
                     break;
             }
-            pressedWidgets |= (1uLL << widgetIndex);
+            newPressedWidgets |= (1uLL << widgetIndex);
 
             if (!_currentlyShowingBrakeOrBoosterSpeed)
             {
@@ -2193,11 +2194,11 @@ namespace OpenRCT2::Ui::Windows
                 {
                     if (_currentTrackAlternative.has(AlternativeTrackFlag::alternativePieces))
                     {
-                        pressedWidgets |= (1uLL << WIDX_O_TRACK);
+                        newPressedWidgets |= (1uLL << WIDX_O_TRACK);
                     }
                     else
                     {
-                        pressedWidgets |= (1uLL << WIDX_U_TRACK);
+                        newPressedWidgets |= (1uLL << WIDX_U_TRACK);
                     }
                 }
                 switch (_currentTrackRollEnd)
@@ -2212,17 +2213,17 @@ namespace OpenRCT2::Ui::Windows
                         widgetIndex = WIDX_BANK_RIGHT;
                         break;
                 }
-                pressedWidgets |= (1uLL << widgetIndex);
+                newPressedWidgets |= (1uLL << widgetIndex);
             }
 
             if (_currentTrackHasLiftHill)
-                pressedWidgets |= (1uLL << WIDX_CHAIN_LIFT);
+                newPressedWidgets |= (1uLL << WIDX_CHAIN_LIFT);
 
-            pressed_widgets = pressedWidgets;
-            Invalidate();
+            pressedWidgets = newPressedWidgets;
+            invalidate();
         }
 
-        void UpdatePossibleRideConfigurations()
+        void updatePossibleRideConfigurations()
         {
             auto currentRide = GetRide(_currentRideIndex);
             if (currentRide == nullptr)
@@ -2235,7 +2236,7 @@ namespace OpenRCT2::Ui::Windows
             _currentlyShowingBrakeOrBoosterSpeed = false;
         }
 
-        void UpdateMapSelection()
+        void updateMapSelection()
         {
             OpenRCT2::TrackElemType trackType;
             int32_t trackDirection;
@@ -2272,12 +2273,12 @@ namespace OpenRCT2::Ui::Windows
 
             if (GetRide(_currentRideIndex))
             {
-                SelectMapTiles(trackType, trackDirection, trackPos);
+                selectMapTiles(trackType, trackDirection, trackPos);
                 MapInvalidateMapSelectionTiles();
             }
         }
 
-        void SelectMapTiles(OpenRCT2::TrackElemType trackType, int32_t trackDirection, const CoordsXY& tileCoords)
+        void selectMapTiles(OpenRCT2::TrackElemType trackType, int32_t trackDirection, const CoordsXY& tileCoords)
         {
             // If the scenery tool is active, we do not display our tiles as it
             // will conflict with larger scenery objects selecting tiles
@@ -2363,14 +2364,14 @@ namespace OpenRCT2::Ui::Windows
             const auto resultData = res.GetData<GameActions::TrackPlaceActionResult>();
             if (resultData.GroundFlags & ELEMENT_IS_UNDERGROUND)
             {
-                ViewportSetVisibility(ViewportVisibility::UndergroundViewOn);
+                ViewportSetVisibility(ViewportVisibility::undergroundViewOn);
             }
 
             const bool helixSelected = (_currentlySelectedTrack.isTrackType)
                 && TrackTypeIsHelix(_currentlySelectedTrack.trackType);
             if (helixSelected || (_currentTrackPitchEnd != TrackPitch::None))
             {
-                ViewportSetVisibility(ViewportVisibility::TrackHeights);
+                ViewportSetVisibility(ViewportVisibility::trackHeights);
             }
         }
 
@@ -2920,7 +2921,7 @@ namespace OpenRCT2::Ui::Windows
                 }
                 else
                 {
-                    w->OnMouseUp(WIDX_ENTRANCE);
+                    w->onMouseUp(WIDX_ENTRANCE);
                 }
             }
         }
@@ -2943,7 +2944,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 if (!RideAreAllPossibleEntrancesAndExitsBuilt(*ride).Successful)
                 {
-                    w->OnMouseUp(WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE);
+                    w->onMouseUp(WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE);
                 }
             }
         }
@@ -3056,12 +3057,12 @@ namespace OpenRCT2::Ui::Windows
             if (im.IsModifierKeyPressed(ModifierKey::ctrl))
             {
                 constexpr auto interactionFlags = EnumsToFlags(
-                    ViewportInteractionItem::Terrain, ViewportInteractionItem::Ride, ViewportInteractionItem::Footpath,
-                    ViewportInteractionItem::PathAddition, ViewportInteractionItem::LargeScenery,
-                    ViewportInteractionItem::Label, ViewportInteractionItem::Banner);
+                    ViewportInteractionItem::terrain, ViewportInteractionItem::ride, ViewportInteractionItem::footpath,
+                    ViewportInteractionItem::pathAddition, ViewportInteractionItem::largeScenery,
+                    ViewportInteractionItem::label, ViewportInteractionItem::banner);
 
                 auto info = GetMapCoordinatesFromPos(screenCoords, interactionFlags);
-                if (info.interactionType != ViewportInteractionItem::None)
+                if (info.interactionType != ViewportInteractionItem::none)
                 {
                     _trackPlaceCtrlZ = info.Element->GetBaseZ();
                     _trackPlaceCtrlState = true;
@@ -3175,7 +3176,7 @@ namespace OpenRCT2::Ui::Windows
             return;
         }
 
-        window->UpdateMapSelection();
+        window->updateMapSelection();
 
         _selectedTrackType = TrackElemType::None;
         if (_rideConstructionState == RideConstructionState::Selected)
@@ -3194,8 +3195,8 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        window->UpdatePossibleRideConfigurations();
-        window->UpdateWidgets();
+        window->updatePossibleRideConfigurations();
+        window->updateWidgets();
     }
 
     /**
@@ -3407,7 +3408,7 @@ namespace OpenRCT2::Ui::Windows
             // Re-using this other code, very slight difference from original
             //   - Original code checks for MSB mask instead of 255 on trackPart->var_00
             //   - Original code checks this first as its already set origin tile, probably just a micro optimisation
-            window->SelectMapTiles(trackType, trackDirection, *mapCoords);
+            window->selectMapTiles(trackType, trackDirection, *mapCoords);
         }
 
         gMapSelectArrowPosition.z = z;
@@ -3776,7 +3777,7 @@ namespace OpenRCT2::Ui::Windows
                 break;
 
             gDisableErrorWindowSound = true;
-            w->OnMouseDown(WIDX_CONSTRUCT);
+            w->onMouseDown(WIDX_CONSTRUCT);
             gDisableErrorWindowSound = false;
 
             if (_trackPlaceCost == kMoney64Undefined)
@@ -3840,19 +3841,19 @@ namespace OpenRCT2::Ui::Windows
                 if (!widgetIsDisabled(*w, WIDX_LEFT_CURVE_VERY_SMALL)
                     && w->widgets[WIDX_LEFT_CURVE_VERY_SMALL].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_LEFT_CURVE_VERY_SMALL);
+                    w->onMouseDown(WIDX_LEFT_CURVE_VERY_SMALL);
                 }
                 break;
             case TrackCurve::Left:
                 if (!widgetIsDisabled(*w, WIDX_LEFT_CURVE_SMALL) && w->widgets[WIDX_LEFT_CURVE_SMALL].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_LEFT_CURVE_SMALL);
+                    w->onMouseDown(WIDX_LEFT_CURVE_SMALL);
                 }
                 else if (
                     !widgetIsDisabled(*w, WIDX_LEFT_CURVE_VERY_SMALL)
                     && w->widgets[WIDX_LEFT_CURVE_VERY_SMALL].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_LEFT_CURVE_VERY_SMALL);
+                    w->onMouseDown(WIDX_LEFT_CURVE_VERY_SMALL);
                 }
                 else
                 {
@@ -3862,18 +3863,18 @@ namespace OpenRCT2::Ui::Windows
             case TrackCurve::LeftLarge:
                 if (!widgetIsDisabled(*w, WIDX_LEFT_CURVE) && w->widgets[WIDX_LEFT_CURVE].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_LEFT_CURVE);
+                    w->onMouseDown(WIDX_LEFT_CURVE);
                 }
                 else if (
                     !widgetIsDisabled(*w, WIDX_LEFT_CURVE_SMALL) && w->widgets[WIDX_LEFT_CURVE_SMALL].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_LEFT_CURVE_SMALL);
+                    w->onMouseDown(WIDX_LEFT_CURVE_SMALL);
                 }
                 else if (
                     !widgetIsDisabled(*w, WIDX_LEFT_CURVE_VERY_SMALL)
                     && w->widgets[WIDX_LEFT_CURVE_VERY_SMALL].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_LEFT_CURVE_VERY_SMALL);
+                    w->onMouseDown(WIDX_LEFT_CURVE_VERY_SMALL);
                 }
                 else
                 {
@@ -3883,22 +3884,22 @@ namespace OpenRCT2::Ui::Windows
             case TrackCurve::None:
                 if (!widgetIsDisabled(*w, WIDX_LEFT_CURVE_LARGE) && w->widgets[WIDX_LEFT_CURVE_LARGE].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_LEFT_CURVE_LARGE);
+                    w->onMouseDown(WIDX_LEFT_CURVE_LARGE);
                 }
                 else if (!widgetIsDisabled(*w, WIDX_LEFT_CURVE) && w->widgets[WIDX_LEFT_CURVE].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_LEFT_CURVE);
+                    w->onMouseDown(WIDX_LEFT_CURVE);
                 }
                 else if (
                     !widgetIsDisabled(*w, WIDX_LEFT_CURVE_SMALL) && w->widgets[WIDX_LEFT_CURVE_SMALL].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_LEFT_CURVE_SMALL);
+                    w->onMouseDown(WIDX_LEFT_CURVE_SMALL);
                 }
                 else if (
                     !widgetIsDisabled(*w, WIDX_LEFT_CURVE_VERY_SMALL)
                     && w->widgets[WIDX_LEFT_CURVE_VERY_SMALL].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_LEFT_CURVE_VERY_SMALL);
+                    w->onMouseDown(WIDX_LEFT_CURVE_VERY_SMALL);
                 }
                 else
                 {
@@ -3908,27 +3909,27 @@ namespace OpenRCT2::Ui::Windows
             case TrackCurve::RightLarge:
                 if (!widgetIsDisabled(*w, WIDX_STRAIGHT) && w->widgets[WIDX_STRAIGHT].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_STRAIGHT);
+                    w->onMouseDown(WIDX_STRAIGHT);
                 }
                 else if (
                     !widgetIsDisabled(*w, WIDX_LEFT_CURVE_LARGE) && w->widgets[WIDX_LEFT_CURVE_LARGE].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_LEFT_CURVE_LARGE);
+                    w->onMouseDown(WIDX_LEFT_CURVE_LARGE);
                 }
                 else if (!widgetIsDisabled(*w, WIDX_LEFT_CURVE) && w->widgets[WIDX_LEFT_CURVE].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_LEFT_CURVE);
+                    w->onMouseDown(WIDX_LEFT_CURVE);
                 }
                 else if (
                     !widgetIsDisabled(*w, WIDX_LEFT_CURVE_SMALL) && w->widgets[WIDX_LEFT_CURVE_SMALL].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_LEFT_CURVE_SMALL);
+                    w->onMouseDown(WIDX_LEFT_CURVE_SMALL);
                 }
                 else if (
                     !widgetIsDisabled(*w, WIDX_LEFT_CURVE_VERY_SMALL)
                     && w->widgets[WIDX_LEFT_CURVE_VERY_SMALL].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_LEFT_CURVE_VERY_SMALL);
+                    w->onMouseDown(WIDX_LEFT_CURVE_VERY_SMALL);
                 }
                 else
                 {
@@ -3939,31 +3940,31 @@ namespace OpenRCT2::Ui::Windows
                 if (!widgetIsDisabled(*w, WIDX_RIGHT_CURVE_LARGE)
                     && w->widgets[WIDX_RIGHT_CURVE_LARGE].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_RIGHT_CURVE_LARGE);
+                    w->onMouseDown(WIDX_RIGHT_CURVE_LARGE);
                 }
                 else if (!widgetIsDisabled(*w, WIDX_STRAIGHT) && w->widgets[WIDX_STRAIGHT].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_STRAIGHT);
+                    w->onMouseDown(WIDX_STRAIGHT);
                 }
                 else if (
                     !widgetIsDisabled(*w, WIDX_LEFT_CURVE_LARGE) && w->widgets[WIDX_LEFT_CURVE_LARGE].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_LEFT_CURVE_LARGE);
+                    w->onMouseDown(WIDX_LEFT_CURVE_LARGE);
                 }
                 else if (!widgetIsDisabled(*w, WIDX_LEFT_CURVE) && w->widgets[WIDX_LEFT_CURVE].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_LEFT_CURVE);
+                    w->onMouseDown(WIDX_LEFT_CURVE);
                 }
                 else if (
                     !widgetIsDisabled(*w, WIDX_LEFT_CURVE_SMALL) && w->widgets[WIDX_LEFT_CURVE_SMALL].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_LEFT_CURVE_SMALL);
+                    w->onMouseDown(WIDX_LEFT_CURVE_SMALL);
                 }
                 else if (
                     !widgetIsDisabled(*w, WIDX_LEFT_CURVE_VERY_SMALL)
                     && w->widgets[WIDX_LEFT_CURVE_VERY_SMALL].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_LEFT_CURVE_VERY_SMALL);
+                    w->onMouseDown(WIDX_LEFT_CURVE_VERY_SMALL);
                 }
                 else
                 {
@@ -3973,37 +3974,37 @@ namespace OpenRCT2::Ui::Windows
             case TrackCurve::RightSmall:
                 if (!widgetIsDisabled(*w, WIDX_RIGHT_CURVE) && w->widgets[WIDX_RIGHT_CURVE].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_RIGHT_CURVE);
+                    w->onMouseDown(WIDX_RIGHT_CURVE);
                 }
                 else if (
                     !widgetIsDisabled(*w, WIDX_RIGHT_CURVE_LARGE)
                     && w->widgets[WIDX_RIGHT_CURVE_LARGE].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_RIGHT_CURVE_LARGE);
+                    w->onMouseDown(WIDX_RIGHT_CURVE_LARGE);
                 }
                 else if (!widgetIsDisabled(*w, WIDX_STRAIGHT) && w->widgets[WIDX_STRAIGHT].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_STRAIGHT);
+                    w->onMouseDown(WIDX_STRAIGHT);
                 }
                 else if (
                     !widgetIsDisabled(*w, WIDX_LEFT_CURVE_LARGE) && w->widgets[WIDX_LEFT_CURVE_LARGE].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_LEFT_CURVE_LARGE);
+                    w->onMouseDown(WIDX_LEFT_CURVE_LARGE);
                 }
                 else if (!widgetIsDisabled(*w, WIDX_LEFT_CURVE) && w->widgets[WIDX_LEFT_CURVE].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_LEFT_CURVE);
+                    w->onMouseDown(WIDX_LEFT_CURVE);
                 }
                 else if (
                     !widgetIsDisabled(*w, WIDX_LEFT_CURVE_SMALL) && w->widgets[WIDX_LEFT_CURVE_SMALL].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_LEFT_CURVE_SMALL);
+                    w->onMouseDown(WIDX_LEFT_CURVE_SMALL);
                 }
                 else if (
                     !widgetIsDisabled(*w, WIDX_LEFT_CURVE_VERY_SMALL)
                     && w->widgets[WIDX_LEFT_CURVE_VERY_SMALL].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_LEFT_CURVE_VERY_SMALL);
+                    w->onMouseDown(WIDX_LEFT_CURVE_VERY_SMALL);
                 }
                 else
                 {
@@ -4014,41 +4015,41 @@ namespace OpenRCT2::Ui::Windows
                 if (!widgetIsDisabled(*w, WIDX_RIGHT_CURVE_SMALL)
                     && w->widgets[WIDX_RIGHT_CURVE_SMALL].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_RIGHT_CURVE_SMALL);
+                    w->onMouseDown(WIDX_RIGHT_CURVE_SMALL);
                 }
                 else if (!widgetIsDisabled(*w, WIDX_RIGHT_CURVE) && w->widgets[WIDX_RIGHT_CURVE].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_RIGHT_CURVE);
+                    w->onMouseDown(WIDX_RIGHT_CURVE);
                 }
                 else if (
                     !widgetIsDisabled(*w, WIDX_RIGHT_CURVE_LARGE)
                     && w->widgets[WIDX_RIGHT_CURVE_LARGE].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_RIGHT_CURVE_LARGE);
+                    w->onMouseDown(WIDX_RIGHT_CURVE_LARGE);
                 }
                 else if (!widgetIsDisabled(*w, WIDX_STRAIGHT) && w->widgets[WIDX_STRAIGHT].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_STRAIGHT);
+                    w->onMouseDown(WIDX_STRAIGHT);
                 }
                 else if (
                     !widgetIsDisabled(*w, WIDX_LEFT_CURVE_LARGE) && w->widgets[WIDX_LEFT_CURVE_LARGE].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_LEFT_CURVE_LARGE);
+                    w->onMouseDown(WIDX_LEFT_CURVE_LARGE);
                 }
                 else if (!widgetIsDisabled(*w, WIDX_LEFT_CURVE) && w->widgets[WIDX_LEFT_CURVE].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_LEFT_CURVE);
+                    w->onMouseDown(WIDX_LEFT_CURVE);
                 }
                 else if (
                     !widgetIsDisabled(*w, WIDX_LEFT_CURVE_SMALL) && w->widgets[WIDX_LEFT_CURVE_SMALL].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_LEFT_CURVE_SMALL);
+                    w->onMouseDown(WIDX_LEFT_CURVE_SMALL);
                 }
                 else if (
                     !widgetIsDisabled(*w, WIDX_LEFT_CURVE_VERY_SMALL)
                     && w->widgets[WIDX_LEFT_CURVE_VERY_SMALL].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_LEFT_CURVE_VERY_SMALL);
+                    w->onMouseDown(WIDX_LEFT_CURVE_VERY_SMALL);
                 }
                 else
                 {
@@ -4078,20 +4079,20 @@ namespace OpenRCT2::Ui::Windows
                 if (!widgetIsDisabled(*w, WIDX_RIGHT_CURVE_VERY_SMALL)
                     && w->widgets[WIDX_RIGHT_CURVE_VERY_SMALL].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_RIGHT_CURVE_VERY_SMALL);
+                    w->onMouseDown(WIDX_RIGHT_CURVE_VERY_SMALL);
                 }
                 break;
             case TrackCurve::Right:
                 if (!widgetIsDisabled(*w, WIDX_RIGHT_CURVE_SMALL)
                     && w->widgets[WIDX_RIGHT_CURVE_SMALL].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_RIGHT_CURVE_SMALL);
+                    w->onMouseDown(WIDX_RIGHT_CURVE_SMALL);
                 }
                 else if (
                     !widgetIsDisabled(*w, WIDX_RIGHT_CURVE_VERY_SMALL)
                     && w->widgets[WIDX_RIGHT_CURVE_VERY_SMALL].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_RIGHT_CURVE_VERY_SMALL);
+                    w->onMouseDown(WIDX_RIGHT_CURVE_VERY_SMALL);
                 }
                 else
                 {
@@ -4101,19 +4102,19 @@ namespace OpenRCT2::Ui::Windows
             case TrackCurve::RightLarge:
                 if (!widgetIsDisabled(*w, WIDX_RIGHT_CURVE) && w->widgets[WIDX_RIGHT_CURVE].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_RIGHT_CURVE);
+                    w->onMouseDown(WIDX_RIGHT_CURVE);
                 }
                 else if (
                     !widgetIsDisabled(*w, WIDX_RIGHT_CURVE_SMALL)
                     && w->widgets[WIDX_RIGHT_CURVE_SMALL].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_RIGHT_CURVE_SMALL);
+                    w->onMouseDown(WIDX_RIGHT_CURVE_SMALL);
                 }
                 else if (
                     !widgetIsDisabled(*w, WIDX_RIGHT_CURVE_VERY_SMALL)
                     && w->widgets[WIDX_RIGHT_CURVE_VERY_SMALL].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_RIGHT_CURVE_VERY_SMALL);
+                    w->onMouseDown(WIDX_RIGHT_CURVE_VERY_SMALL);
                 }
                 else
                 {
@@ -4124,23 +4125,23 @@ namespace OpenRCT2::Ui::Windows
                 if (!widgetIsDisabled(*w, WIDX_RIGHT_CURVE_LARGE)
                     && w->widgets[WIDX_RIGHT_CURVE_LARGE].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_RIGHT_CURVE_LARGE);
+                    w->onMouseDown(WIDX_RIGHT_CURVE_LARGE);
                 }
                 else if (!widgetIsDisabled(*w, WIDX_LEFT_CURVE) && w->widgets[WIDX_RIGHT_CURVE].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_RIGHT_CURVE);
+                    w->onMouseDown(WIDX_RIGHT_CURVE);
                 }
                 else if (
                     !widgetIsDisabled(*w, WIDX_RIGHT_CURVE_SMALL)
                     && w->widgets[WIDX_RIGHT_CURVE_SMALL].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_RIGHT_CURVE_SMALL);
+                    w->onMouseDown(WIDX_RIGHT_CURVE_SMALL);
                 }
                 else if (
                     !widgetIsDisabled(*w, WIDX_RIGHT_CURVE_VERY_SMALL)
                     && w->widgets[WIDX_RIGHT_CURVE_VERY_SMALL].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_RIGHT_CURVE_VERY_SMALL);
+                    w->onMouseDown(WIDX_RIGHT_CURVE_VERY_SMALL);
                 }
                 else
                 {
@@ -4150,29 +4151,29 @@ namespace OpenRCT2::Ui::Windows
             case TrackCurve::LeftLarge:
                 if (!widgetIsDisabled(*w, WIDX_STRAIGHT) && w->widgets[WIDX_STRAIGHT].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_STRAIGHT);
+                    w->onMouseDown(WIDX_STRAIGHT);
                 }
                 else if (
                     !widgetIsDisabled(*w, WIDX_RIGHT_CURVE_LARGE)
                     && w->widgets[WIDX_RIGHT_CURVE_LARGE].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_RIGHT_CURVE_LARGE);
+                    w->onMouseDown(WIDX_RIGHT_CURVE_LARGE);
                 }
                 else if (!widgetIsDisabled(*w, WIDX_RIGHT_CURVE) && w->widgets[WIDX_RIGHT_CURVE].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_RIGHT_CURVE);
+                    w->onMouseDown(WIDX_RIGHT_CURVE);
                 }
                 else if (
                     !widgetIsDisabled(*w, WIDX_RIGHT_CURVE_SMALL)
                     && w->widgets[WIDX_RIGHT_CURVE_SMALL].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_RIGHT_CURVE_SMALL);
+                    w->onMouseDown(WIDX_RIGHT_CURVE_SMALL);
                 }
                 else if (
                     !widgetIsDisabled(*w, WIDX_RIGHT_CURVE_VERY_SMALL)
                     && w->widgets[WIDX_RIGHT_CURVE_VERY_SMALL].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_RIGHT_CURVE_VERY_SMALL);
+                    w->onMouseDown(WIDX_RIGHT_CURVE_VERY_SMALL);
                 }
                 else
                 {
@@ -4182,33 +4183,33 @@ namespace OpenRCT2::Ui::Windows
             case TrackCurve::Left:
                 if (!widgetIsDisabled(*w, WIDX_LEFT_CURVE_LARGE) && w->widgets[WIDX_LEFT_CURVE_LARGE].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_LEFT_CURVE_LARGE);
+                    w->onMouseDown(WIDX_LEFT_CURVE_LARGE);
                 }
                 else if (!widgetIsDisabled(*w, WIDX_STRAIGHT) && w->widgets[WIDX_STRAIGHT].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_STRAIGHT);
+                    w->onMouseDown(WIDX_STRAIGHT);
                 }
                 else if (
                     !widgetIsDisabled(*w, WIDX_RIGHT_CURVE_LARGE)
                     && w->widgets[WIDX_RIGHT_CURVE_LARGE].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_RIGHT_CURVE_LARGE);
+                    w->onMouseDown(WIDX_RIGHT_CURVE_LARGE);
                 }
                 else if (!widgetIsDisabled(*w, WIDX_RIGHT_CURVE) && w->widgets[WIDX_RIGHT_CURVE].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_RIGHT_CURVE);
+                    w->onMouseDown(WIDX_RIGHT_CURVE);
                 }
                 else if (
                     !widgetIsDisabled(*w, WIDX_RIGHT_CURVE_SMALL)
                     && w->widgets[WIDX_RIGHT_CURVE_SMALL].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_RIGHT_CURVE_SMALL);
+                    w->onMouseDown(WIDX_RIGHT_CURVE_SMALL);
                 }
                 else if (
                     !widgetIsDisabled(*w, WIDX_RIGHT_CURVE_VERY_SMALL)
                     && w->widgets[WIDX_RIGHT_CURVE_VERY_SMALL].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_RIGHT_CURVE_VERY_SMALL);
+                    w->onMouseDown(WIDX_RIGHT_CURVE_VERY_SMALL);
                 }
                 else
                 {
@@ -4218,38 +4219,38 @@ namespace OpenRCT2::Ui::Windows
             case TrackCurve::LeftSmall:
                 if (!widgetIsDisabled(*w, WIDX_LEFT_CURVE) && w->widgets[WIDX_LEFT_CURVE].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_LEFT_CURVE);
+                    w->onMouseDown(WIDX_LEFT_CURVE);
                 }
                 else if (
                     !widgetIsDisabled(*w, WIDX_LEFT_CURVE_LARGE) && w->widgets[WIDX_LEFT_CURVE_LARGE].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_LEFT_CURVE_LARGE);
+                    w->onMouseDown(WIDX_LEFT_CURVE_LARGE);
                 }
                 else if (!widgetIsDisabled(*w, WIDX_STRAIGHT) && w->widgets[WIDX_STRAIGHT].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_STRAIGHT);
+                    w->onMouseDown(WIDX_STRAIGHT);
                 }
                 else if (
                     !widgetIsDisabled(*w, WIDX_RIGHT_CURVE_LARGE)
                     && w->widgets[WIDX_RIGHT_CURVE_LARGE].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_RIGHT_CURVE_LARGE);
+                    w->onMouseDown(WIDX_RIGHT_CURVE_LARGE);
                 }
                 else if (!widgetIsDisabled(*w, WIDX_RIGHT_CURVE) && w->widgets[WIDX_RIGHT_CURVE].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_RIGHT_CURVE);
+                    w->onMouseDown(WIDX_RIGHT_CURVE);
                 }
                 else if (
                     !widgetIsDisabled(*w, WIDX_RIGHT_CURVE_SMALL)
                     && w->widgets[WIDX_RIGHT_CURVE_SMALL].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_RIGHT_CURVE_SMALL);
+                    w->onMouseDown(WIDX_RIGHT_CURVE_SMALL);
                 }
                 else if (
                     !widgetIsDisabled(*w, WIDX_RIGHT_CURVE_VERY_SMALL)
                     && w->widgets[WIDX_RIGHT_CURVE_VERY_SMALL].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_RIGHT_CURVE_VERY_SMALL);
+                    w->onMouseDown(WIDX_RIGHT_CURVE_VERY_SMALL);
                 }
                 else
                 {
@@ -4259,42 +4260,42 @@ namespace OpenRCT2::Ui::Windows
             case TrackCurve::LeftVerySmall:
                 if (!widgetIsDisabled(*w, WIDX_LEFT_CURVE_SMALL) && w->widgets[WIDX_LEFT_CURVE_SMALL].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_LEFT_CURVE_SMALL);
+                    w->onMouseDown(WIDX_LEFT_CURVE_SMALL);
                 }
                 else if (!widgetIsDisabled(*w, WIDX_LEFT_CURVE) && w->widgets[WIDX_LEFT_CURVE].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_LEFT_CURVE);
+                    w->onMouseDown(WIDX_LEFT_CURVE);
                 }
                 else if (
                     !widgetIsDisabled(*w, WIDX_LEFT_CURVE_LARGE) && w->widgets[WIDX_LEFT_CURVE_LARGE].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_LEFT_CURVE_LARGE);
+                    w->onMouseDown(WIDX_LEFT_CURVE_LARGE);
                 }
                 else if (!widgetIsDisabled(*w, WIDX_STRAIGHT) && w->widgets[WIDX_STRAIGHT].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_STRAIGHT);
+                    w->onMouseDown(WIDX_STRAIGHT);
                 }
                 else if (
                     !widgetIsDisabled(*w, WIDX_RIGHT_CURVE_LARGE)
                     && w->widgets[WIDX_RIGHT_CURVE_LARGE].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_RIGHT_CURVE_LARGE);
+                    w->onMouseDown(WIDX_RIGHT_CURVE_LARGE);
                 }
                 else if (!widgetIsDisabled(*w, WIDX_RIGHT_CURVE) && w->widgets[WIDX_RIGHT_CURVE].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_RIGHT_CURVE);
+                    w->onMouseDown(WIDX_RIGHT_CURVE);
                 }
                 else if (
                     !widgetIsDisabled(*w, WIDX_RIGHT_CURVE_SMALL)
                     && w->widgets[WIDX_RIGHT_CURVE_SMALL].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_RIGHT_CURVE_SMALL);
+                    w->onMouseDown(WIDX_RIGHT_CURVE_SMALL);
                 }
                 else if (
                     !widgetIsDisabled(*w, WIDX_RIGHT_CURVE_VERY_SMALL)
                     && w->widgets[WIDX_RIGHT_CURVE_VERY_SMALL].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_RIGHT_CURVE_VERY_SMALL);
+                    w->onMouseDown(WIDX_RIGHT_CURVE_VERY_SMALL);
                 }
                 else
                 {
@@ -4317,23 +4318,23 @@ namespace OpenRCT2::Ui::Windows
 
         if (!widgetIsDisabled(*w, WIDX_STRAIGHT) && w->widgets[WIDX_STRAIGHT].type != WidgetType::empty)
         {
-            w->OnMouseDown(WIDX_STRAIGHT);
+            w->onMouseDown(WIDX_STRAIGHT);
         }
 
         if (!widgetIsDisabled(*w, WIDX_LEVEL) && w->widgets[WIDX_LEVEL].type != WidgetType::empty)
         {
-            w->OnMouseDown(WIDX_LEVEL);
+            w->onMouseDown(WIDX_LEVEL);
         }
 
         if (!widgetIsDisabled(*w, WIDX_CHAIN_LIFT) && w->widgets[WIDX_CHAIN_LIFT].type != WidgetType::empty
             && _currentTrackHasLiftHill)
         {
-            w->OnMouseDown(WIDX_CHAIN_LIFT);
+            w->onMouseDown(WIDX_CHAIN_LIFT);
         }
 
         if (!widgetIsDisabled(*w, WIDX_BANK_STRAIGHT) && w->widgets[WIDX_BANK_STRAIGHT].type != WidgetType::empty)
         {
-            w->OnMouseDown(WIDX_BANK_STRAIGHT);
+            w->onMouseDown(WIDX_BANK_STRAIGHT);
         }
     }
 
@@ -4352,19 +4353,19 @@ namespace OpenRCT2::Ui::Windows
                 if (IsTrackEnabled(TrackGroup::slopeVertical) && !widgetIsDisabled(*w, WIDX_SLOPE_DOWN_VERTICAL)
                     && w->widgets[WIDX_SLOPE_DOWN_VERTICAL].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_SLOPE_DOWN_VERTICAL);
+                    w->onMouseDown(WIDX_SLOPE_DOWN_VERTICAL);
                 }
                 break;
             case TrackPitch::Down25:
                 if (!widgetIsDisabled(*w, WIDX_SLOPE_DOWN_STEEP) && w->widgets[WIDX_SLOPE_DOWN_STEEP].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_SLOPE_DOWN_STEEP);
+                    w->onMouseDown(WIDX_SLOPE_DOWN_STEEP);
                 }
                 break;
             case TrackPitch::None:
                 if (!widgetIsDisabled(*w, WIDX_SLOPE_DOWN) && w->widgets[WIDX_SLOPE_DOWN].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_SLOPE_DOWN);
+                    w->onMouseDown(WIDX_SLOPE_DOWN);
                 }
                 else if (IsTrackEnabled(TrackGroup::slopeVertical))
                 {
@@ -4373,7 +4374,7 @@ namespace OpenRCT2::Ui::Windows
                 else if (
                     !widgetIsDisabled(*w, WIDX_SLOPE_DOWN_STEEP) && w->widgets[WIDX_SLOPE_DOWN_STEEP].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_SLOPE_DOWN_STEEP);
+                    w->onMouseDown(WIDX_SLOPE_DOWN_STEEP);
                 }
                 else
                 {
@@ -4383,16 +4384,16 @@ namespace OpenRCT2::Ui::Windows
             case TrackPitch::Up25:
                 if (!widgetIsDisabled(*w, WIDX_LEVEL) && w->widgets[WIDX_LEVEL].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_LEVEL);
+                    w->onMouseDown(WIDX_LEVEL);
                 }
                 else if (!widgetIsDisabled(*w, WIDX_SLOPE_DOWN) && w->widgets[WIDX_SLOPE_DOWN].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_SLOPE_DOWN);
+                    w->onMouseDown(WIDX_SLOPE_DOWN);
                 }
                 else if (
                     !widgetIsDisabled(*w, WIDX_SLOPE_DOWN_STEEP) && w->widgets[WIDX_SLOPE_DOWN_STEEP].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_SLOPE_DOWN_STEEP);
+                    w->onMouseDown(WIDX_SLOPE_DOWN_STEEP);
                 }
                 else
                 {
@@ -4402,15 +4403,15 @@ namespace OpenRCT2::Ui::Windows
             case TrackPitch::Up60:
                 if (!widgetIsDisabled(*w, WIDX_SLOPE_UP) && w->widgets[WIDX_SLOPE_UP].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_SLOPE_UP);
+                    w->onMouseDown(WIDX_SLOPE_UP);
                 }
                 else if (!widgetIsDisabled(*w, WIDX_LEVEL) && w->widgets[WIDX_LEVEL].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_LEVEL);
+                    w->onMouseDown(WIDX_LEVEL);
                 }
                 else if (!widgetIsDisabled(*w, WIDX_SLOPE_DOWN) && w->widgets[WIDX_SLOPE_DOWN].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_SLOPE_DOWN);
+                    w->onMouseDown(WIDX_SLOPE_DOWN);
                 }
                 else if (IsTrackEnabled(TrackGroup::slopeVertical))
                 {
@@ -4419,7 +4420,7 @@ namespace OpenRCT2::Ui::Windows
                 else if (
                     !widgetIsDisabled(*w, WIDX_SLOPE_DOWN_STEEP) && w->widgets[WIDX_SLOPE_DOWN_STEEP].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_SLOPE_DOWN_STEEP);
+                    w->onMouseDown(WIDX_SLOPE_DOWN_STEEP);
                 }
                 else
                 {
@@ -4430,7 +4431,7 @@ namespace OpenRCT2::Ui::Windows
                 if (IsTrackEnabled(TrackGroup::slopeVertical) && !widgetIsDisabled(*w, WIDX_SLOPE_UP_STEEP)
                     && w->widgets[WIDX_SLOPE_UP_VERTICAL].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_SLOPE_UP_STEEP);
+                    w->onMouseDown(WIDX_SLOPE_UP_STEEP);
                 }
                 break;
             default:
@@ -4453,19 +4454,19 @@ namespace OpenRCT2::Ui::Windows
                 if (IsTrackEnabled(TrackGroup::slopeVertical) && !widgetIsDisabled(*w, WIDX_SLOPE_UP_VERTICAL)
                     && w->widgets[WIDX_SLOPE_UP_VERTICAL].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_SLOPE_UP_VERTICAL);
+                    w->onMouseDown(WIDX_SLOPE_UP_VERTICAL);
                 }
                 break;
             case TrackPitch::Up25:
                 if (!widgetIsDisabled(*w, WIDX_SLOPE_UP_STEEP) && w->widgets[WIDX_SLOPE_UP_STEEP].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_SLOPE_UP_STEEP);
+                    w->onMouseDown(WIDX_SLOPE_UP_STEEP);
                 }
                 break;
             case TrackPitch::None:
                 if (!widgetIsDisabled(*w, WIDX_SLOPE_UP) && w->widgets[WIDX_SLOPE_UP].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_SLOPE_UP);
+                    w->onMouseDown(WIDX_SLOPE_UP);
                 }
                 else if (IsTrackEnabled(TrackGroup::slopeVertical))
                 {
@@ -4474,7 +4475,7 @@ namespace OpenRCT2::Ui::Windows
                 else if (
                     !widgetIsDisabled(*w, WIDX_SLOPE_UP_STEEP) && w->widgets[WIDX_SLOPE_UP_STEEP].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_SLOPE_UP_STEEP);
+                    w->onMouseDown(WIDX_SLOPE_UP_STEEP);
                 }
                 else
                 {
@@ -4484,16 +4485,16 @@ namespace OpenRCT2::Ui::Windows
             case TrackPitch::Down25:
                 if (!widgetIsDisabled(*w, WIDX_LEVEL) && w->widgets[WIDX_LEVEL].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_LEVEL);
+                    w->onMouseDown(WIDX_LEVEL);
                 }
                 else if (!widgetIsDisabled(*w, WIDX_SLOPE_UP) && w->widgets[WIDX_SLOPE_UP].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_SLOPE_UP);
+                    w->onMouseDown(WIDX_SLOPE_UP);
                 }
                 else if (
                     !widgetIsDisabled(*w, WIDX_SLOPE_UP_STEEP) && w->widgets[WIDX_SLOPE_UP_STEEP].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_SLOPE_UP_STEEP);
+                    w->onMouseDown(WIDX_SLOPE_UP_STEEP);
                 }
                 else
                 {
@@ -4503,15 +4504,15 @@ namespace OpenRCT2::Ui::Windows
             case TrackPitch::Down60:
                 if (!widgetIsDisabled(*w, WIDX_SLOPE_DOWN) && w->widgets[WIDX_SLOPE_DOWN].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_SLOPE_DOWN);
+                    w->onMouseDown(WIDX_SLOPE_DOWN);
                 }
                 else if (!widgetIsDisabled(*w, WIDX_LEVEL) && w->widgets[WIDX_LEVEL].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_LEVEL);
+                    w->onMouseDown(WIDX_LEVEL);
                 }
                 else if (!widgetIsDisabled(*w, WIDX_SLOPE_UP) && w->widgets[WIDX_SLOPE_UP].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_SLOPE_UP);
+                    w->onMouseDown(WIDX_SLOPE_UP);
                 }
                 else if (IsTrackEnabled(TrackGroup::slopeVertical))
                 {
@@ -4520,7 +4521,7 @@ namespace OpenRCT2::Ui::Windows
                 else if (
                     !widgetIsDisabled(*w, WIDX_SLOPE_UP_STEEP) && w->widgets[WIDX_SLOPE_UP_STEEP].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_SLOPE_UP_STEEP);
+                    w->onMouseDown(WIDX_SLOPE_UP_STEEP);
                 }
                 else
                 {
@@ -4531,7 +4532,7 @@ namespace OpenRCT2::Ui::Windows
                 if (IsTrackEnabled(TrackGroup::slopeVertical) && !widgetIsDisabled(*w, WIDX_SLOPE_DOWN_STEEP)
                     && w->widgets[WIDX_SLOPE_DOWN_STEEP].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_SLOPE_DOWN_STEEP);
+                    w->onMouseDown(WIDX_SLOPE_DOWN_STEEP);
                 }
                 break;
             default:
@@ -4548,7 +4549,7 @@ namespace OpenRCT2::Ui::Windows
             return;
         }
 
-        w->OnMouseDown(WIDX_CHAIN_LIFT);
+        w->onMouseDown(WIDX_CHAIN_LIFT);
     }
 
     void WindowRideConstructionKeyboardShortcutBankLeft()
@@ -4566,17 +4567,17 @@ namespace OpenRCT2::Ui::Windows
             case TrackRoll::None:
                 if (!widgetIsDisabled(*w, WIDX_BANK_LEFT) && w->widgets[WIDX_BANK_LEFT].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_BANK_LEFT);
+                    w->onMouseDown(WIDX_BANK_LEFT);
                 }
                 break;
             case TrackRoll::Right:
                 if (!widgetIsDisabled(*w, WIDX_BANK_STRAIGHT) && w->widgets[WIDX_BANK_STRAIGHT].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_BANK_STRAIGHT);
+                    w->onMouseDown(WIDX_BANK_STRAIGHT);
                 }
                 else if (!widgetIsDisabled(*w, WIDX_BANK_LEFT) && w->widgets[WIDX_BANK_LEFT].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_BANK_LEFT);
+                    w->onMouseDown(WIDX_BANK_LEFT);
                 }
                 else
                 {
@@ -4603,17 +4604,17 @@ namespace OpenRCT2::Ui::Windows
             case TrackRoll::None:
                 if (!widgetIsDisabled(*w, WIDX_BANK_RIGHT) && w->widgets[WIDX_BANK_RIGHT].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_BANK_RIGHT);
+                    w->onMouseDown(WIDX_BANK_RIGHT);
                 }
                 break;
             case TrackRoll::Left:
                 if (!widgetIsDisabled(*w, WIDX_BANK_STRAIGHT) && w->widgets[WIDX_BANK_STRAIGHT].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_BANK_STRAIGHT);
+                    w->onMouseDown(WIDX_BANK_STRAIGHT);
                 }
                 else if (!widgetIsDisabled(*w, WIDX_BANK_RIGHT) && w->widgets[WIDX_BANK_RIGHT].type != WidgetType::empty)
                 {
-                    w->OnMouseDown(WIDX_BANK_RIGHT);
+                    w->onMouseDown(WIDX_BANK_RIGHT);
                 }
                 else
                 {
@@ -4635,7 +4636,7 @@ namespace OpenRCT2::Ui::Windows
             return;
         }
 
-        w->OnMouseDown(WIDX_PREVIOUS_SECTION);
+        w->onMouseDown(WIDX_PREVIOUS_SECTION);
     }
 
     void WindowRideConstructionKeyboardShortcutNextTrack()
@@ -4647,7 +4648,7 @@ namespace OpenRCT2::Ui::Windows
             return;
         }
 
-        w->OnMouseDown(WIDX_NEXT_SECTION);
+        w->onMouseDown(WIDX_NEXT_SECTION);
     }
 
     void WindowRideConstructionKeyboardShortcutBuildCurrent()
@@ -4659,7 +4660,7 @@ namespace OpenRCT2::Ui::Windows
             return;
         }
 
-        w->OnMouseDown(WIDX_CONSTRUCT);
+        w->onMouseDown(WIDX_CONSTRUCT);
     }
 
     void WindowRideConstructionKeyboardShortcutDemolishCurrent()
@@ -4671,7 +4672,7 @@ namespace OpenRCT2::Ui::Windows
             return;
         }
 
-        w->OnMouseDown(WIDX_DEMOLISH);
+        w->onMouseDown(WIDX_DEMOLISH);
     }
 
     static void WindowRideConstructionMouseUpDemolishNextPiece(const CoordsXYZD& piecePos, OpenRCT2::TrackElemType type)
@@ -4780,9 +4781,9 @@ namespace OpenRCT2::Ui::Windows
 
             _unkF440C5 = { trackPos, static_cast<Direction>(trackDirection) };
             _currentTrackSelectionFlags.set(TrackSelectionFlag::track);
-            ViewportSetVisibility(ViewportVisibility::UndergroundViewOff);
+            ViewportSetVisibility(ViewportVisibility::undergroundViewOff);
             if (_currentTrackPitchEnd != TrackPitch::None)
-                ViewportSetVisibility(ViewportVisibility::TrackHeights);
+                ViewportSetVisibility(ViewportVisibility::trackHeights);
 
             return result.Cost;
         }
@@ -4813,11 +4814,11 @@ namespace OpenRCT2::Ui::Windows
         _currentTrackSelectionFlags.set(TrackSelectionFlag::track);
 
         const auto resultData = res.GetData<GameActions::TrackPlaceActionResult>();
-        const auto visiblity = (resultData.GroundFlags & ELEMENT_IS_UNDERGROUND) ? ViewportVisibility::UndergroundViewOn
-                                                                                 : ViewportVisibility::UndergroundViewOff;
+        const auto visiblity = (resultData.GroundFlags & ELEMENT_IS_UNDERGROUND) ? ViewportVisibility::undergroundViewOn
+                                                                                 : ViewportVisibility::undergroundViewOff;
         ViewportSetVisibility(visiblity);
         if (_currentTrackPitchEnd != TrackPitch::None)
-            ViewportSetVisibility(ViewportVisibility::TrackHeights);
+            ViewportSetVisibility(ViewportVisibility::trackHeights);
 
         if (!(gMapSelectFlags.has(MapSelectFlag::enable)))
         {

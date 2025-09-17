@@ -62,9 +62,9 @@ namespace OpenRCT2::Ui::Windows
         bool ListVertically;
 
     public:
-        void OnOpen() override
+        void onOpen() override
         {
-            SetWidgets(kWindowDropdownWidgets);
+            setWidgets(kWindowDropdownWidgets);
 
             // Input state
             gDropdown.highlightedIndex = -1;
@@ -100,9 +100,9 @@ namespace OpenRCT2::Ui::Windows
             DrawTextEllipsised(rt, { screenCoords.x + 2, screenCoords.y + yOffset }, width - 7, format, ft, { colour });
         }
 
-        void OnDraw(RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
-            DrawWidgets(rt);
+            drawWidgets(rt);
 
             int32_t highlightedIndex = gDropdown.highlightedIndex;
             for (int32_t i = 0; i < gDropdown.numItems; i++)
@@ -200,7 +200,7 @@ namespace OpenRCT2::Ui::Windows
             return std::max(1, mainWindow->height - (screenPos.y + dropdownButtonHeight + 5));
         }
 
-        void SetTextItems(
+        void setTextItems(
             const ScreenCoordsXY& screenPos, int32_t extraY, ColourWithFlags colour, uint8_t customItemHeight, uint8_t txtFlags,
             size_t numItems, int32_t itemWidth, int32_t numRowsPerColumn)
         {
@@ -233,7 +233,7 @@ namespace OpenRCT2::Ui::Windows
             colours[0] = colour;
         }
 
-        void SetImageItems(
+        void setImageItems(
             const ScreenCoordsXY& screenPos, int32_t extraY, ColourWithFlags colour, int32_t numItems, int32_t itemWidth,
             int32_t itemHeight, int32_t numColumns)
         {
@@ -316,11 +316,11 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_BACKGROUND].right = ddWidth;
             widgets[WIDX_BACKGROUND].bottom = ddHeight;
 
-            Invalidate();
+            invalidate();
             width = ddWidth + 1;
             height = ddHeight + 1;
             windowPos = boundedScreenPos + ScreenCoordsXY{ 0, extraY };
-            Invalidate();
+            invalidate();
         }
     };
 
@@ -398,7 +398,7 @@ namespace OpenRCT2::Ui::Windows
         if (w != nullptr)
         {
             auto numRowsPerColumn = prefRowsPerColumn > 0 ? static_cast<int32_t>(prefRowsPerColumn) : Dropdown::kItemsMaxSize;
-            w->SetTextItems(screenPos, extray, colour, customItemHeight, flags, num_items, width, numRowsPerColumn);
+            w->setTextItems(screenPos, extray, colour, customItemHeight, flags, num_items, width, numRowsPerColumn);
         }
     }
 
@@ -441,7 +441,7 @@ namespace OpenRCT2::Ui::Windows
         auto* w = windowMgr->Create<DropdownWindow>(WindowClass::Dropdown, { itemWidth, itemHeight }, WF_STICK_TO_FRONT);
         if (w != nullptr)
         {
-            w->SetImageItems({ x, y }, extray, colour, numItems, itemWidth, itemHeight, numColumns);
+            w->setImageItems({ x, y }, extray, colour, numItems, itemWidth, itemHeight, numColumns);
         }
     }
 

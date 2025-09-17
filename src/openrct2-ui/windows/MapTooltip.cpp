@@ -36,17 +36,17 @@ namespace OpenRCT2::Ui::Windows
     class MapTooltip final : public Window
     {
     public:
-        void OnOpen() override
+        void onOpen() override
         {
-            SetWidgets(window_map_tooltip_widgets);
+            setWidgets(window_map_tooltip_widgets);
         }
 
-        void OnUpdate() override
+        void onUpdate() override
         {
-            Invalidate();
+            invalidate();
         }
 
-        void OnDraw(RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
             StringId stringId;
             std::memcpy(&stringId, _mapTooltipArgs.Data(), sizeof(StringId));
@@ -120,7 +120,7 @@ namespace OpenRCT2::Ui::Windows
         auto* windowMgr = GetWindowManager();
         if (auto w = windowMgr->FindByClass(WindowClass::MapTooltip))
         {
-            w->Invalidate();
+            w->invalidate();
             w->windowPos = pos;
             w->width = width;
             w->height = height;

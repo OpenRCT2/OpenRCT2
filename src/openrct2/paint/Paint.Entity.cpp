@@ -126,7 +126,7 @@ void EntityPaintSetup(PaintSession& session, const CoordsXY& pos)
         session.CurrentlyDrawnEntity = entity;
         session.SpritePosition.x = entityPos.x;
         session.SpritePosition.y = entityPos.y;
-        session.InteractionType = ViewportInteractionItem::Entity;
+        session.InteractionType = ViewportInteractionItem::entity;
 
         switch (entity->Type)
         {

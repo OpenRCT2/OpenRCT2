@@ -70,17 +70,17 @@ namespace OpenRCT2::Ui::Windows
         }
 
     public:
-        void OnOpen() override
+        void onOpen() override
         {
             GetFreeViewportNumber();
 
-            SetWidgets(_viewportWidgets);
+            setWidgets(_viewportWidgets);
 
             // Create viewport
-            ViewportCreate(this, windowPos, width, height, Focus(TileCoordsXYZ(128, 128, 0).ToCoordsXYZ()));
+            ViewportCreate(*this, windowPos, width, height, Focus(TileCoordsXYZ(128, 128, 0).ToCoordsXYZ()));
             if (viewport == nullptr)
             {
-                Close();
+                close();
                 ErrorOpen("Unexpected Error", "Failed to create viewport window.");
                 return;
             }
@@ -99,7 +99,7 @@ namespace OpenRCT2::Ui::Windows
             WindowSetResize(*this, kWindowSize, { (ContextGetWidth() * 4) / 5, (ContextGetHeight() * 4) / 5 });
         }
 
-        void OnUpdate() override
+        void onUpdate() override
         {
             auto* mainWindow = WindowGetMain();
             if (mainWindow == nullptr)
@@ -108,16 +108,16 @@ namespace OpenRCT2::Ui::Windows
             if (viewport != nullptr && viewport->flags != (mainWindow->viewport->flags | VIEWPORT_FLAG_INDEPENDENT_ROTATION))
             {
                 viewport->flags = mainWindow->viewport->flags | VIEWPORT_FLAG_INDEPENDENT_ROTATION;
-                InvalidateWidget(WIDX_VIEWPORT);
+                invalidateWidget(WIDX_VIEWPORT);
             }
         }
 
-        void OnMouseUp(WidgetIndex widgetIndex) override
+        void onMouseUp(WidgetIndex widgetIndex) override
         {
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
-                    Close();
+                    close();
                     break;
                 case WIDX_ZOOM_IN:
                 {
@@ -143,36 +143,36 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_ROTATE:
                 {
                     ViewportRotateSingle(this, 1);
-                    Invalidate();
+                    invalidate();
                     break;
                 }
             }
         }
 
-        void OnDraw(RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
-            DrawWidgets(rt);
+            drawWidgets(rt);
 
             // Draw viewport
             if (viewport != nullptr)
                 WindowDrawViewport(rt, *this);
         }
 
-        void OnResize() override
+        void onResize() override
         {
             int32_t screenWidth = ContextGetWidth();
             int32_t screenHeight = ContextGetHeight();
 
-            max_width = (screenWidth * 4) / 5;
-            max_height = (screenHeight * 4) / 5;
+            maxWidth = (screenWidth * 4) / 5;
+            maxHeight = (screenHeight * 4) / 5;
 
-            min_width = kWindowSize.width;
-            min_height = kWindowSize.height;
+            minWidth = kWindowSize.width;
+            minHeight = kWindowSize.height;
 
-            WindowSetResize(*this, { min_width, min_height }, { max_width, max_height });
+            WindowSetResize(*this, { minWidth, minHeight }, { maxWidth, maxHeight });
         }
 
-        void OnPrepareDraw() override
+        void onPrepareDraw() override
         {
             widgets[WIDX_ZOOM_IN].left = width - 27;
             widgets[WIDX_ZOOM_IN].right = width - 2;
@@ -189,11 +189,11 @@ namespace OpenRCT2::Ui::Windows
             Formatter::Common().Add<uint32_t>(number);
 
             // Set disabled widgets
-            disabled_widgets = 0;
+            disabledWidgets = 0;
             if (viewport != nullptr && viewport->zoom == ZoomLevel::min())
-                disabled_widgets |= 1uLL << WIDX_ZOOM_IN;
+                disabledWidgets |= 1uLL << WIDX_ZOOM_IN;
             if (viewport != nullptr && viewport->zoom >= ZoomLevel::max())
-                disabled_widgets |= 1uLL << WIDX_ZOOM_OUT;
+                disabledWidgets |= 1uLL << WIDX_ZOOM_OUT;
 
             if (viewport != nullptr)
             {

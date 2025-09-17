@@ -90,9 +90,9 @@ namespace OpenRCT2::Ui::Windows
         ScreenRect _filterRect;
 
     public:
-        void OnOpen() override
+        void onOpen() override
         {
-            SetWidgets(_titleMenuWidgets);
+            setWidgets(_titleMenuWidgets);
 
 #ifdef DISABLE_NETWORK
             widgets[WIDX_MULTIPLAYER].type = WidgetType::empty;
@@ -114,10 +114,10 @@ namespace OpenRCT2::Ui::Windows
             windowPos.x = (ContextGetWidth() - width) / 2;
             colours[1] = ColourWithFlags{ COLOUR_LIGHT_ORANGE }.withFlag(ColourFlag::translucent, true);
 
-            InitScrollWidgets();
+            initScrollWidgets();
         }
 
-        void OnMouseUp(WidgetIndex widgetIndex) override
+        void onMouseUp(WidgetIndex widgetIndex) override
         {
             WindowBase* windowToOpen = nullptr;
 
@@ -171,7 +171,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnMouseDown(WidgetIndex widgetIndex) override
+        void onMouseDown(WidgetIndex widgetIndex) override
         {
             if (widgetIndex == WIDX_GAME_TOOLS)
             {
@@ -217,7 +217,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDropdown(WidgetIndex widgetIndex, int32_t selectedIndex) override
+        void onDropdown(WidgetIndex widgetIndex, int32_t selectedIndex) override
         {
             if (selectedIndex == -1)
             {
@@ -254,13 +254,13 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        CursorID OnCursor(WidgetIndex, const ScreenCoordsXY&, CursorID cursorId) override
+        CursorID onCursor(WidgetIndex, const ScreenCoordsXY&, CursorID cursorId) override
         {
             gTooltipCloseTimeout = gCurrentRealTimeTicks + 2000;
             return cursorId;
         }
 
-        void OnPrepareDraw() override
+        void onPrepareDraw() override
         {
             _filterRect = { windowPos + ScreenCoordsXY{ 0, UpdateButtonDims.height },
                             windowPos + ScreenCoordsXY{ width - 1, MenuButtonDims.height + UpdateButtonDims.height - 1 } };
@@ -271,10 +271,10 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDraw(RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
             GfxFilterRect(rt, _filterRect, FilterPaletteID::Palette51);
-            DrawWidgets(rt);
+            drawWidgets(rt);
         }
     };
 

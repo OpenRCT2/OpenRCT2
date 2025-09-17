@@ -225,39 +225,39 @@ namespace OpenRCT2::Ui::Windows
 
         void SetDisabledTabs()
         {
-            disabled_widgets = (getGameState().park.flags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN) ? (1uLL << WIDX_TAB_5) : 0;
+            disabledWidgets = (getGameState().park.flags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN) ? (1uLL << WIDX_TAB_5) : 0;
         }
 
     public:
-        void OnOpen() override
+        void onOpen() override
         {
-            SetPage(WINDOW_FINANCES_PAGE_SUMMARY);
+            setPage(WINDOW_FINANCES_PAGE_SUMMARY);
             _lastPaintedMonth = std::numeric_limits<uint32_t>::max();
             ResearchUpdateUncompletedTypes();
             _graphProps.hoverIdx = -1;
         }
 
-        void OnUpdate() override
+        void onUpdate() override
         {
-            frame_no++;
-            InvalidateWidget(WIDX_TAB_1 + page);
+            currentFrame++;
+            invalidateWidget(WIDX_TAB_1 + page);
 
             if (page == WINDOW_FINANCES_PAGE_VALUE_GRAPH || page == WINDOW_FINANCES_PAGE_PROFIT_GRAPH
                 || page == WINDOW_FINANCES_PAGE_FINANCIAL_GRAPH)
             {
                 if (_graphProps.UpdateHoverIndex())
                 {
-                    InvalidateWidget(WIDX_BACKGROUND);
+                    invalidateWidget(WIDX_BACKGROUND);
                 }
             }
         }
 
-        void OnMouseDown(WidgetIndex widgetIndex) override
+        void onMouseDown(WidgetIndex widgetIndex) override
         {
             switch (page)
             {
                 case WINDOW_FINANCES_PAGE_SUMMARY:
-                    OnMouseDownSummary(widgetIndex);
+                    onMouseDownSummary(widgetIndex);
                     break;
                 case WINDOW_FINANCES_PAGE_RESEARCH:
                     WindowResearchFundingMouseDown(this, widgetIndex, WIDX_RESEARCH_FUNDING);
@@ -265,12 +265,12 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnMouseUp(WidgetIndex widgetIndex) override
+        void onMouseUp(WidgetIndex widgetIndex) override
         {
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
-                    Close();
+                    close();
                     break;
                 case WIDX_TAB_1:
                 case WIDX_TAB_2:
@@ -278,13 +278,13 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_TAB_4:
                 case WIDX_TAB_5:
                 case WIDX_TAB_6:
-                    SetPage(widgetIndex - WIDX_TAB_1);
+                    setPage(widgetIndex - WIDX_TAB_1);
                     break;
                 default:
                     switch (page)
                     {
                         case WINDOW_FINANCES_PAGE_MARKETING:
-                            OnMouseUpMarketing(widgetIndex);
+                            onMouseUpMarketing(widgetIndex);
                             break;
                         case WINDOW_FINANCES_PAGE_RESEARCH:
                             WindowResearchFundingMouseUp(widgetIndex, WIDX_RESEARCH_FUNDING);
@@ -293,7 +293,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDropdown(WidgetIndex widgetIndex, int32_t selectedIndex) override
+        void onDropdown(WidgetIndex widgetIndex, int32_t selectedIndex) override
         {
             if (page == WINDOW_FINANCES_PAGE_RESEARCH)
             {
@@ -301,23 +301,23 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnPrepareDraw() override
+        void onPrepareDraw() override
         {
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_6);
 
             for (auto i = 0; i < WINDOW_FINANCES_PAGE_COUNT; i++)
-                SetWidgetPressed(WIDX_TAB_1 + i, false);
-            SetWidgetPressed(WIDX_TAB_1 + page, true);
+                setWidgetPressed(WIDX_TAB_1 + i, false);
+            setWidgetPressed(WIDX_TAB_1 + page, true);
 
             Widget* graphPageWidget;
             bool centredGraph;
             switch (page)
             {
                 case WINDOW_FINANCES_PAGE_SUMMARY:
-                    OnPrepareDrawSummary();
+                    onPrepareDrawSummary();
                     return;
                 case WINDOW_FINANCES_PAGE_MARKETING:
-                    OnPrepareDrawMarketing();
+                    onPrepareDrawMarketing();
                     return;
                 case WINDOW_FINANCES_PAGE_RESEARCH:
                     WindowResearchFundingPrepareDraw(this, WIDX_RESEARCH_FUNDING);
@@ -340,18 +340,18 @@ namespace OpenRCT2::Ui::Windows
                 default:
                     return;
             }
-            OnPrepareDrawGraph(graphPageWidget, centredGraph);
+            onPrepareDrawGraph(graphPageWidget, centredGraph);
         }
 
-        void OnDraw(RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
-            DrawWidgets(rt);
+            drawWidgets(rt);
             DrawTabImages(rt);
 
             switch (page)
             {
                 case WINDOW_FINANCES_PAGE_SUMMARY:
-                    OnDrawSummary(rt);
+                    onDrawSummary(rt);
                     break;
                 case WINDOW_FINANCES_PAGE_FINANCIAL_GRAPH:
                 {
@@ -359,22 +359,22 @@ namespace OpenRCT2::Ui::Windows
                     const auto cashLessLoan = gameState.park.cash - gameState.park.bankLoan;
                     const auto fmt = cashLessLoan >= 0 ? STR_FINANCES_FINANCIAL_GRAPH_CASH_LESS_LOAN_POSITIVE
                                                        : STR_FINANCES_FINANCIAL_GRAPH_CASH_LESS_LOAN_NEGATIVE;
-                    OnDrawGraph(rt, cashLessLoan, fmt);
+                    onDrawGraph(rt, cashLessLoan, fmt);
                     break;
                 }
                 case WINDOW_FINANCES_PAGE_VALUE_GRAPH:
-                    OnDrawGraph(rt, getGameState().park.value, STR_FINANCES_PARK_VALUE);
+                    onDrawGraph(rt, getGameState().park.value, STR_FINANCES_PARK_VALUE);
                     break;
                 case WINDOW_FINANCES_PAGE_PROFIT_GRAPH:
                 {
                     auto& gameState = getGameState();
                     const auto fmt = gameState.park.currentProfit >= 0 ? STR_FINANCES_WEEKLY_PROFIT_POSITIVE
                                                                        : STR_FINANCES_WEEKLY_PROFIT_LOSS;
-                    OnDrawGraph(rt, gameState.park.currentProfit, fmt);
+                    onDrawGraph(rt, gameState.park.currentProfit, fmt);
                     break;
                 }
                 case WINDOW_FINANCES_PAGE_MARKETING:
-                    OnDrawMarketing(rt);
+                    onDrawMarketing(rt);
                     break;
                 case WINDOW_FINANCES_PAGE_RESEARCH:
                     WindowResearchFundingDraw(this, rt);
@@ -382,7 +382,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        ScreenSize OnScrollGetSize(int32_t scrollIndex) override
+        ScreenSize onScrollGetSize(int32_t scrollIndex) override
         {
             if (page == WINDOW_FINANCES_PAGE_SUMMARY)
             {
@@ -392,7 +392,7 @@ namespace OpenRCT2::Ui::Windows
             return {};
         }
 
-        void OnScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
+        void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
             if (page != WINDOW_FINANCES_PAGE_SUMMARY)
                 return;
@@ -473,16 +473,16 @@ namespace OpenRCT2::Ui::Windows
             _lastPaintedMonth = currentMonthYear;
         }
 
-        void SetPage(int32_t p)
+        void setPage(int32_t p)
         {
             // Skip setting page if we're already on this page, unless we're initialising the window
             if (page == p && !widgets.empty())
                 return;
 
             page = p;
-            frame_no = 0;
+            currentFrame = 0;
 
-            Invalidate();
+            invalidate();
             if (p == WINDOW_FINANCES_PAGE_RESEARCH)
             {
                 width = kWindowSizeResearch.width;
@@ -514,26 +514,26 @@ namespace OpenRCT2::Ui::Windows
                 flags &= ~WF_RESIZABLE;
             }
 
-            SetWidgets(_windowFinancesPageWidgets[p]);
+            setWidgets(_windowFinancesPageWidgets[p]);
             SetDisabledTabs();
 
-            hold_down_widgets = _windowFinancesPageHoldDownWidgets[p];
-            pressed_widgets = 0;
+            holdDownWidgets = _windowFinancesPageHoldDownWidgets[p];
+            pressedWidgets = 0;
 
-            ResizeFrame();
-            OnPrepareDraw();
-            InitScrollWidgets();
+            resizeFrame();
+            onPrepareDraw();
+            initScrollWidgets();
 
             // Scroll summary all the way to the right, initially.
             if (p == WINDOW_FINANCES_PAGE_SUMMARY)
-                InitialiseScrollPosition(WIDX_SUMMARY_SCROLL, 0);
+                initialiseScrollPosition(WIDX_SUMMARY_SCROLL, 0);
 
-            Invalidate();
+            invalidate();
         }
 
 #pragma region Summary Events
 
-        void OnMouseDownSummary(WidgetIndex widgetIndex)
+        void onMouseDownSummary(WidgetIndex widgetIndex)
         {
             auto& gameState = getGameState();
             switch (widgetIndex)
@@ -571,7 +571,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnPrepareDrawSummary()
+        void onPrepareDrawSummary()
         {
             // Setting loan widget's format arguments here.
             // Nothing else should use the global formatter until
@@ -582,10 +582,10 @@ namespace OpenRCT2::Ui::Windows
 
             // Keep up with new months being added in the first two years.
             if (GetDate().GetMonthsElapsed() != _lastPaintedMonth)
-                InitialiseScrollPosition(WIDX_SUMMARY_SCROLL, 0);
+                initialiseScrollPosition(WIDX_SUMMARY_SCROLL, 0);
         }
 
-        void OnDrawSummary(RenderTarget& rt)
+        void onDrawSummary(RenderTarget& rt)
         {
             auto titleBarBottom = widgets[WIDX_TITLE].bottom;
             auto screenCoords = windowPos + ScreenCoordsXY{ 8, titleBarBottom + 37 };
@@ -665,7 +665,7 @@ namespace OpenRCT2::Ui::Windows
 
 #pragma region Marketing Events
 
-        void OnMouseUpMarketing(WidgetIndex widgetIndex)
+        void onMouseUpMarketing(WidgetIndex widgetIndex)
         {
             if (widgetIndex >= WIDX_CAMPAIGN_1 && widgetIndex <= WIDX_CAMPAIGN_6)
             {
@@ -673,7 +673,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnPrepareDrawMarketing()
+        void onPrepareDrawMarketing()
         {
             // Count number of active campaigns
             int32_t numActiveCampaigns = static_cast<int32_t>(getGameState().park.marketingCampaigns.size());
@@ -703,7 +703,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDrawMarketing(RenderTarget& rt)
+        void onDrawMarketing(RenderTarget& rt)
         {
             auto screenCoords = windowPos + ScreenCoordsXY{ 8, widgets[WIDX_TAB_1].top + 45 };
             int32_t noCampaignsActive = 1;
@@ -782,7 +782,7 @@ namespace OpenRCT2::Ui::Windows
 
 #pragma region Graph Events
 
-        void OnDrawGraph(RenderTarget& rt, const money64 currentValue, const StringId fmt) const
+        void onDrawGraph(RenderTarget& rt, const money64 currentValue, const StringId fmt) const
         {
             Formatter ft;
             ft.Add<money64>(currentValue);
@@ -800,7 +800,7 @@ namespace OpenRCT2::Ui::Windows
             Graph::DrawFinanceGraph(rt, _graphProps);
         }
 
-        void OnPrepareDrawGraph(const Widget* graphPageWidget, const bool centredGraph)
+        void onPrepareDrawGraph(const Widget* graphPageWidget, const bool centredGraph)
         {
             // Calculate Y axis max and min.
             money64 maxVal = 0;
@@ -826,8 +826,8 @@ namespace OpenRCT2::Ui::Windows
             // dynamic padding for long axis labels:
             char buffer[64]{};
             FormatStringToBuffer(buffer, sizeof(buffer), "{BLACK}{CURRENCY2DP}", centredGraph ? -max : max);
-            int32_t maxWidth = GfxGetStringWidth(buffer, FontStyle::Small) + Graph::kYTickMarkPadding + 1;
-            const ScreenCoordsXY dynamicPadding{ std::max(maxWidth, kGraphTopLeftPadding.x), kGraphTopLeftPadding.y };
+            int32_t maxGraphWidth = GfxGetStringWidth(buffer, FontStyle::Small) + Graph::kYTickMarkPadding + 1;
+            const ScreenCoordsXY dynamicPadding{ std::max(maxGraphWidth, kGraphTopLeftPadding.x), kGraphTopLeftPadding.y };
 
             _graphBounds = { windowPos + ScreenCoordsXY{ graphPageWidget->left + 4, graphPageWidget->top + 15 },
                              windowPos + ScreenCoordsXY{ graphPageWidget->right - 4, graphPageWidget->bottom - 4 } };
@@ -839,7 +839,7 @@ namespace OpenRCT2::Ui::Windows
 
 #pragma endregion
 
-        void InitialiseScrollPosition(WidgetIndex widgetIndex, int32_t scrollId)
+        void initialiseScrollPosition(WidgetIndex widgetIndex, int32_t scrollId)
         {
             const auto& widget = this->widgets[widgetIndex];
             scrolls[scrollId].contentOffsetX = std::max(0, scrolls[scrollId].contentWidth - (widget.width() - 2));
@@ -851,11 +851,11 @@ namespace OpenRCT2::Ui::Windows
         {
             WidgetIndex widgetIndex = WIDX_TAB_1 + tabPage;
 
-            if (!IsWidgetDisabled(widgetIndex))
+            if (!isWidgetDisabled(widgetIndex))
             {
                 if (this->page == tabPage)
                 {
-                    int32_t frame = frame_no / 2;
+                    int32_t frame = currentFrame / 2;
                     spriteIndex += (frame % _windowFinancesTabAnimationFrames[this->page]);
                 }
 
@@ -882,7 +882,7 @@ namespace OpenRCT2::Ui::Windows
         auto* window = windowMgr->FocusOrCreate<FinancesWindow>(WindowClass::Finances, kWindowSizeSummary, WF_10);
 
         if (window != nullptr && page != WINDOW_FINANCES_PAGE_SUMMARY)
-            window->SetPage(page);
+            window->setPage(page);
 
         return window;
     }

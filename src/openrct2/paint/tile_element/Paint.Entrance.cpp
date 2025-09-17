@@ -135,7 +135,7 @@ static void PaintRideEntranceExit(PaintSession& session, uint8_t direction, int3
         return;
     }
 
-    session.InteractionType = ViewportInteractionItem::Ride;
+    session.InteractionType = ViewportInteractionItem::ride;
 
     PaintRideEntranceExitLightEffects(session, height, entranceEl);
 
@@ -150,7 +150,7 @@ static void PaintRideEntranceExit(PaintSession& session, uint8_t direction, int3
 
     if (entranceEl.IsGhost())
     {
-        session.InteractionType = ViewportInteractionItem::None;
+        session.InteractionType = ViewportInteractionItem::none;
         imageTemplate = ImageId().WithRemap(FilterPaletteID::PaletteGhost);
     }
     else if (session.SelectedElement == reinterpret_cast<const TileElement*>(&entranceEl))
@@ -284,12 +284,12 @@ static void PaintParkEntrance(PaintSession& session, uint8_t direction, int32_t 
 
     PaintParkEntranceLightEffects(session);
 
-    session.InteractionType = ViewportInteractionItem::ParkEntrance;
+    session.InteractionType = ViewportInteractionItem::parkEntrance;
 
     ImageId imageTemplate;
     if (entranceEl.IsGhost())
     {
-        session.InteractionType = ViewportInteractionItem::None;
+        session.InteractionType = ViewportInteractionItem::none;
         imageTemplate = ImageId().WithRemap(FilterPaletteID::PaletteGhost);
     }
     else if (session.SelectedElement == reinterpret_cast<const TileElement*>(&entranceEl))
@@ -371,7 +371,7 @@ void PaintEntrance(PaintSession& session, uint8_t direction, int32_t height, con
 {
     PROFILED_FUNCTION();
 
-    session.InteractionType = ViewportInteractionItem::Label;
+    session.InteractionType = ViewportInteractionItem::label;
 
     PaintHeightMarkers(session, entranceElement, height);
     switch (entranceElement.GetEntranceType())

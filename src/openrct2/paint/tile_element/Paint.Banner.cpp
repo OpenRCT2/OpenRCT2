@@ -93,7 +93,7 @@ void PaintBanner(PaintSession& session, uint8_t direction, int32_t height, const
         return;
     }
 
-    session.InteractionType = ViewportInteractionItem::Banner;
+    session.InteractionType = ViewportInteractionItem::banner;
 
     height -= 16;
 
@@ -103,7 +103,7 @@ void PaintBanner(PaintSession& session, uint8_t direction, int32_t height, const
     ImageId imageTemplate;
     if (bannerElement.IsGhost())
     {
-        session.InteractionType = ViewportInteractionItem::None;
+        session.InteractionType = ViewportInteractionItem::none;
         imageTemplate = ImageId().WithRemap(FilterPaletteID::PaletteGhost);
     }
     else if (session.SelectedElement == reinterpret_cast<const TileElement*>(&bannerElement))

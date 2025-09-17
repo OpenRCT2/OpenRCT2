@@ -139,7 +139,7 @@ namespace OpenRCT2::Ui::Windows
         }
 
     public:
-        void RefreshRides()
+        void refreshRides()
         {
             // Get all applicable rides
             RideList.clear();
@@ -172,14 +172,14 @@ namespace OpenRCT2::Ui::Windows
             std::sort(RideList.begin(), RideList.end(), RideNameCompare);
         }
 
-        void OnOpen() override
+        void onOpen() override
         {
-            SetWidgets(window_new_campaign_widgets);
-            hold_down_widgets = (1uLL << WIDX_WEEKS_INCREASE_BUTTON) | (1uLL << WIDX_WEEKS_DECREASE_BUTTON);
+            setWidgets(window_new_campaign_widgets);
+            holdDownWidgets = (1uLL << WIDX_WEEKS_INCREASE_BUTTON) | (1uLL << WIDX_WEEKS_DECREASE_BUTTON);
             WindowInitScrollWidgets(*this);
         }
 
-        void SetCampaign(int16_t campaignType)
+        void setCampaign(int16_t campaignType)
         {
             widgets[WIDX_TITLE].text = kMarketingCampaignNames[campaignType][0];
 
@@ -192,10 +192,10 @@ namespace OpenRCT2::Ui::Windows
             // Currently selected ride
             Campaign.RideId = RideId::GetNull();
 
-            RefreshRides();
+            refreshRides();
         }
 
-        void OnMouseDown(WidgetIndex widgetIndex) override
+        void onMouseDown(WidgetIndex widgetIndex) override
         {
             Widget* widget = &widgets[widgetIndex];
             Widget* dropdownWidget;
@@ -248,21 +248,21 @@ namespace OpenRCT2::Ui::Windows
                     // In RCT2, the maximum was 6 weeks
                 case WIDX_WEEKS_INCREASE_BUTTON:
                     Campaign.no_weeks = std::min(Campaign.no_weeks + 1, 12);
-                    Invalidate();
+                    invalidate();
                     break;
                 case WIDX_WEEKS_DECREASE_BUTTON:
                     Campaign.no_weeks = std::max(Campaign.no_weeks - 1, 2);
-                    Invalidate();
+                    invalidate();
                     break;
             }
         }
 
-        void OnMouseUp(WidgetIndex widgetIndex) override
+        void onMouseUp(WidgetIndex widgetIndex) override
         {
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
-                    Close();
+                    close();
                     break;
                 case WIDX_START_BUTTON:
                 {
@@ -281,7 +281,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex) override
+        void onDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex) override
         {
             if (widgetIndex != WIDX_RIDE_DROPDOWN_BUTTON)
                 return;
@@ -304,10 +304,10 @@ namespace OpenRCT2::Ui::Windows
                 Campaign.RideId = RideList[dropdownIndex];
             }
 
-            Invalidate();
+            invalidate();
         }
 
-        void OnPrepareDraw() override
+        void onPrepareDraw() override
         {
             widgets[WIDX_RIDE_LABEL].type = WidgetType::empty;
             widgets[WIDX_RIDE_DROPDOWN].type = WidgetType::empty;
@@ -354,11 +354,11 @@ namespace OpenRCT2::Ui::Windows
                 widgetSetDisabled(*this, WIDX_START_BUTTON, true);
         }
 
-        void OnDraw(RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
             ScreenCoordsXY screenCoords{};
 
-            DrawWidgets(rt);
+            drawWidgets(rt);
 
             // Number of weeks
             Widget* spinnerWidget = &widgets[WIDX_WEEKS_SPINNER];
@@ -382,7 +382,7 @@ namespace OpenRCT2::Ui::Windows
             DrawTextBasic(rt, screenCoords, STR_MARKETING_TOTAL_COST, ft);
         }
 
-        int16_t GetCampaignType() const
+        int16_t getCampaignType() const
         {
             return Campaign.campaign_type;
         }
@@ -394,16 +394,16 @@ namespace OpenRCT2::Ui::Windows
         auto* w = static_cast<NewCampaignWindow*>(windowMgr->BringToFrontByClass(WindowClass::NewCampaign));
         if (w != nullptr)
         {
-            if (w->GetCampaignType() == campaignType)
+            if (w->getCampaignType() == campaignType)
                 return w;
 
-            w->Close();
+            w->close();
         }
 
         w = windowMgr->Create<NewCampaignWindow>(WindowClass::NewCampaign, kWindowSize, 0);
         if (w != nullptr)
         {
-            w->SetCampaign(campaignType);
+            w->setCampaign(campaignType);
         }
         return w;
     }
@@ -414,7 +414,7 @@ namespace OpenRCT2::Ui::Windows
         auto w = static_cast<NewCampaignWindow*>(windowMgr->FindByClass(WindowClass::NewCampaign));
         if (w != nullptr)
         {
-            w->RefreshRides();
+            w->refreshRides();
         }
     }
 } // namespace OpenRCT2::Ui::Windows

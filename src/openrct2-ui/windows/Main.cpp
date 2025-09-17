@@ -28,13 +28,13 @@ namespace OpenRCT2::Ui::Windows
     class MainWindow final : public Window
     {
     public:
-        void OnOpen() override
+        void onOpen() override
         {
-            SetWidgets(_mainWidgets);
+            setWidgets(_mainWidgets);
             widgets[0].right = width;
             widgets[0].bottom = height;
 
-            ViewportCreate(this, windowPos, width, height, Focus(CoordsXYZ(0x0FFF, 0x0FFF, 0)));
+            ViewportCreate(*this, windowPos, width, height, Focus(CoordsXYZ(0x0FFF, 0x0FFF, 0)));
             if (viewport != nullptr)
             {
                 SetViewportFlags();
@@ -46,7 +46,7 @@ namespace OpenRCT2::Ui::Windows
             WindowFootpathResetSelectedPath();
         }
 
-        void OnDraw(RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
             ViewportRender(rt, viewport);
         }

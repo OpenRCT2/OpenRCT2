@@ -3992,7 +3992,7 @@ void Ride::constructMissingEntranceOrExit() const
         auto* windowMgr = Ui::GetWindowManager();
         w = windowMgr->FindByClass(WindowClass::RideConstruction);
         if (w != nullptr)
-            w->OnMouseUp(entranceOrExit);
+            w->onMouseUp(entranceOrExit);
     }
 }
 
@@ -4128,7 +4128,7 @@ ResultWithMessage Ride::open(bool isApplying)
     // to set the track to its final state and clean up ghosts.
     // We can't just call close as it would cause a stack overflow during shop creation
     // with auto open on.
-    if (isToolActive(WindowClass::RideConstruction, static_cast<rct_windownumber>(id.ToUnderlying())))
+    if (isToolActive(WindowClass::RideConstruction, static_cast<WindowNumber>(id.ToUnderlying())))
     {
         auto* windowMgr = Ui::GetWindowManager();
         windowMgr->CloseByNumber(WindowClass::RideConstruction, id.ToUnderlying());

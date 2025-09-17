@@ -69,11 +69,11 @@ namespace OpenRCT2::Ui::Windows
         };
 
     public:
-        void OnOpen() override
+        void onOpen() override
         {
-            SetWidgets(kEditorBottomToolbarWidgets);
+            setWidgets(kEditorBottomToolbarWidgets);
 
-            InitScrollWidgets();
+            initScrollWidgets();
             SetAllSceneryItemsInvented();
         }
 
@@ -84,7 +84,7 @@ namespace OpenRCT2::Ui::Windows
                 || gameState.park.flags & PARK_FLAGS_SPRITES_INITIALISED;
         }
 
-        void OnPrepareDraw() override
+        void onPrepareDraw() override
         {
             ColourSchemeUpdateByClass(
                 this,
@@ -122,7 +122,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDraw(RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
             auto drawPreviousButton = widgets[WIDX_PREVIOUS_STEP_BUTTON].type != WidgetType::empty;
             auto drawNextButton = widgets[WIDX_NEXT_STEP_BUTTON].type != WidgetType::empty;
@@ -133,7 +133,7 @@ namespace OpenRCT2::Ui::Windows
             if (drawNextButton)
                 DrawRightButtonBack(rt);
 
-            DrawWidgets(rt);
+            drawWidgets(rt);
 
             if (drawPreviousButton)
                 DrawLeftButton(rt);
@@ -144,7 +144,7 @@ namespace OpenRCT2::Ui::Windows
             DrawStepText(rt);
         }
 
-        void OnMouseUp(WidgetIndex widgetIndex) override
+        void onMouseUp(WidgetIndex widgetIndex) override
         {
             auto& gameState = getGameState();
             if (widgetIndex == WIDX_PREVIOUS_STEP_BUTTON)
@@ -352,8 +352,8 @@ namespace OpenRCT2::Ui::Windows
                 windowPos + ScreenCoordsXY{ widgets[WIDX_PREVIOUS_IMAGE].left + 6, widgets[WIDX_PREVIOUS_IMAGE].top + 6 });
 
             colour_t textColour = colours[1].colour;
-            if (gHoverWidget.window_classification == WindowClass::BottomToolbar
-                && gHoverWidget.widget_index == WIDX_PREVIOUS_STEP_BUTTON)
+            if (gHoverWidget.windowClassification == WindowClass::BottomToolbar
+                && gHoverWidget.widgetIndex == WIDX_PREVIOUS_STEP_BUTTON)
             {
                 textColour = COLOUR_WHITE;
             }
@@ -391,8 +391,8 @@ namespace OpenRCT2::Ui::Windows
 
             colour_t textColour = colours[1].colour;
 
-            if (gHoverWidget.window_classification == WindowClass::BottomToolbar
-                && gHoverWidget.widget_index == WIDX_NEXT_STEP_BUTTON)
+            if (gHoverWidget.windowClassification == WindowClass::BottomToolbar
+                && gHoverWidget.widgetIndex == WIDX_NEXT_STEP_BUTTON)
             {
                 textColour = COLOUR_WHITE;
             }

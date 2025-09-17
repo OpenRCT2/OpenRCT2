@@ -111,7 +111,7 @@ static constexpr float kWindowScrollLocations[][2] = {
     void WindowDispatchUpdateAll()
     {
         // gTooltipNotShownTicks++;
-        WindowVisitEach([&](WindowBase* w) { w->OnUpdate(); });
+        WindowVisitEach([&](WindowBase* w) { w->onUpdate(); });
     }
 
     void WindowUpdateAllViewports()
@@ -177,7 +177,7 @@ static constexpr float kWindowScrollLocations[][2] = {
         {
             gWindowUpdateTicks = gCurrentRealTimeTicks + kGameUpdateFPS;
 
-            WindowVisitEach([](WindowBase* w) { w->OnPeriodicUpdate(); });
+            WindowVisitEach([](WindowBase* w) { w->onPeriodicUpdate(); });
         }
 
         // Border flash invalidation
@@ -187,7 +187,7 @@ static constexpr float kWindowScrollLocations[][2] = {
                 w->flags -= WF_WHITE_BORDER_ONE;
                 if (!(w->flags & WF_WHITE_BORDER_MASK))
                 {
-                    w->Invalidate();
+                    w->invalidate();
                 }
             }
         });
@@ -200,7 +200,7 @@ static constexpr float kWindowScrollLocations[][2] = {
 
     void WindowNotifyLanguageChange()
     {
-        WindowVisitEach([&](WindowBase* w) { w->OnLanguageChange(); });
+        WindowVisitEach([&](WindowBase* w) { w->onLanguageChange(); });
     }
 
     /*
@@ -255,12 +255,12 @@ static constexpr float kWindowScrollLocations[][2] = {
             if (w->windowPos.y + w->height <= window.windowPos.y)
                 return;
 
-            w->Invalidate();
+            w->invalidate();
             if (window.windowPos.x + window.width + 13 >= ContextGetWidth())
                 return;
             auto push_amount = window.windowPos.x + window.width - w->windowPos.x + 3;
             w->windowPos.x += push_amount;
-            w->Invalidate();
+            w->invalidate();
             if (w->viewport != nullptr)
                 w->viewport->pos.x += push_amount;
         });
@@ -290,13 +290,13 @@ static constexpr float kWindowScrollLocations[][2] = {
                 return;
 
             // Invalidate the window's current area
-            w2->Invalidate();
+            w2->invalidate();
 
             int32_t push_amount = w1.windowPos.y + w1.height - w2->windowPos.y + 3;
             w2->windowPos.y += push_amount;
 
             // Invalidate the window's new area
-            w2->Invalidate();
+            w2->invalidate();
 
             // Update viewport position if necessary
             if (w2->viewport != nullptr)
@@ -345,7 +345,7 @@ static constexpr float kWindowScrollLocations[][2] = {
             if (!(w.viewport->flags & VIEWPORT_FLAG_UNDERGROUND_INSIDE))
             {
                 w.viewport->flags |= VIEWPORT_FLAG_UNDERGROUND_INSIDE;
-                w.Invalidate();
+                w.invalidate();
             }
         }
         else
@@ -353,7 +353,7 @@ static constexpr float kWindowScrollLocations[][2] = {
             if (w.viewport->flags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
             {
                 w.viewport->flags &= ~VIEWPORT_FLAG_UNDERGROUND_INSIDE;
-                w.Invalidate();
+                w.invalidate();
             }
         }
 
@@ -401,7 +401,7 @@ static constexpr float kWindowScrollLocations[][2] = {
         }
 
         // rct2: 0x006E7C76
-        if (w.viewport_target_sprite.IsNull())
+        if (w.viewportTargetSprite.IsNull())
         {
             if (!(w.flags & WF_NO_SCROLLING))
             {
@@ -478,7 +478,7 @@ static constexpr float kWindowScrollLocations[][2] = {
         // a window on top of the viewport.
         auto* windowMgr = Ui::GetWindowManager();
         windowMgr->BringToFront(w);
-        w.Invalidate();
+        w.invalidate();
     }
 
     /**
@@ -617,34 +617,34 @@ static constexpr float kWindowScrollLocations[][2] = {
 
         // Invalidate modifies the window colours so first get the correct
         // colour before setting the global variables for the string painting
-        w.OnPrepareDraw();
+        w.onPrepareDraw();
 
         // Text colouring
         gCurrentWindowColours[0] = w.colours[0].colour;
         gCurrentWindowColours[1] = w.colours[1].colour;
         gCurrentWindowColours[2] = w.colours[2].colour;
 
-        w.OnDraw(copy);
+        w.onDraw(copy);
     }
 
     bool isToolActive(WindowClass cls)
     {
-        return gInputFlags.has(InputFlag::toolActive) && gCurrentToolWidget.window_classification == cls;
+        return gInputFlags.has(InputFlag::toolActive) && gCurrentToolWidget.windowClassification == cls;
     }
 
-    bool isToolActive(WindowClass cls, rct_windownumber number)
+    bool isToolActive(WindowClass cls, WindowNumber number)
     {
-        return isToolActive(cls) && gCurrentToolWidget.window_number == number;
+        return isToolActive(cls) && gCurrentToolWidget.windowNumber == number;
     }
 
     bool isToolActive(WindowClass cls, WidgetIndex widgetIndex)
     {
-        return isToolActive(cls) && gCurrentToolWidget.widget_index == widgetIndex;
+        return isToolActive(cls) && gCurrentToolWidget.widgetIndex == widgetIndex;
     }
 
-    bool isToolActive(WindowClass cls, WidgetIndex widgetIndex, rct_windownumber number)
+    bool isToolActive(WindowClass cls, WidgetIndex widgetIndex, WindowNumber number)
     {
-        return isToolActive(cls, widgetIndex) && gCurrentToolWidget.window_number == number;
+        return isToolActive(cls, widgetIndex) && gCurrentToolWidget.windowNumber == number;
     }
 
     bool isToolActive(const WindowBase& w, WidgetIndex widgetIndex)
@@ -664,8 +664,8 @@ static constexpr float kWindowScrollLocations[][2] = {
     {
         if (gInputFlags.has(InputFlag::toolActive))
         {
-            if (w.classification == gCurrentToolWidget.window_classification && w.number == gCurrentToolWidget.window_number
-                && widgetIndex == gCurrentToolWidget.widget_index)
+            if (w.classification == gCurrentToolWidget.windowClassification && w.number == gCurrentToolWidget.windowNumber
+                && widgetIndex == gCurrentToolWidget.widgetIndex)
             {
                 ToolCancel();
                 return true;
@@ -678,9 +678,9 @@ static constexpr float kWindowScrollLocations[][2] = {
         gInputFlags.unset(InputFlag::leftMousePressed);
         gInputFlags.unset(InputFlag::unk6);
         gCurrentToolId = tool;
-        gCurrentToolWidget.window_classification = w.classification;
-        gCurrentToolWidget.window_number = w.number;
-        gCurrentToolWidget.widget_index = widgetIndex;
+        gCurrentToolWidget.windowClassification = w.classification;
+        gCurrentToolWidget.windowNumber = w.number;
+        gCurrentToolWidget.widgetIndex = widgetIndex;
         return false;
     }
 
@@ -700,20 +700,19 @@ static constexpr float kWindowScrollLocations[][2] = {
             // Reset map selection
             gMapSelectFlags.clearAll();
 
-            if (gCurrentToolWidget.widget_index != kWidgetIndexNull)
+            if (gCurrentToolWidget.widgetIndex != kWidgetIndexNull)
             {
                 auto* windowMgr = Ui::GetWindowManager();
 
                 // Invalidate tool widget
                 windowMgr->InvalidateWidgetByNumber(
-                    gCurrentToolWidget.window_classification, gCurrentToolWidget.window_number,
-                    gCurrentToolWidget.widget_index);
+                    gCurrentToolWidget.windowClassification, gCurrentToolWidget.windowNumber, gCurrentToolWidget.widgetIndex);
 
                 // Abort tool event
                 WindowBase* w = windowMgr->FindByNumber(
-                    gCurrentToolWidget.window_classification, gCurrentToolWidget.window_number);
+                    gCurrentToolWidget.windowClassification, gCurrentToolWidget.windowNumber);
                 if (w != nullptr)
-                    w->OnToolAbort(gCurrentToolWidget.widget_index);
+                    w->onToolAbort(gCurrentToolWidget.widgetIndex);
             }
         }
     }
@@ -814,7 +813,7 @@ static constexpr float kWindowScrollLocations[][2] = {
     void WindowUpdateViewportRideMusic()
     {
         RideAudio::ClearAllViewportInstances();
-        g_music_tracking_viewport = nullptr;
+        gMusicTrackingViewport = nullptr;
 
         for (auto it = g_window_list.rbegin(); it != g_window_list.rend(); it++)
         {
@@ -823,7 +822,7 @@ static constexpr float kWindowScrollLocations[][2] = {
             if (viewport == nullptr || !(viewport->flags & VIEWPORT_FLAG_SOUND_ON))
                 continue;
 
-            g_music_tracking_viewport = viewport;
+            gMusicTrackingViewport = viewport;
             gWindowAudioExclusive = w;
 
             if (viewport->zoom <= ZoomLevel{ 0 })
@@ -878,14 +877,14 @@ static constexpr float kWindowScrollLocations[][2] = {
     {
         if (spriteIndex.ToUnderlying() < kMaxEntities || spriteIndex.IsNull())
         {
-            w.viewport_smart_follow_sprite = spriteIndex;
+            w.viewportSmartFollowSprite = spriteIndex;
         }
     }
 
     void WindowUnfollowSprite(WindowBase& w)
     {
-        w.viewport_smart_follow_sprite = EntityId::GetNull();
-        w.viewport_target_sprite = EntityId::GetNull();
+        w.viewportSmartFollowSprite = EntityId::GetNull();
+        w.viewportTargetSprite = EntityId::GetNull();
     }
 
     Viewport* WindowGetViewport(WindowBase* w)

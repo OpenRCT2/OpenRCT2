@@ -105,7 +105,7 @@ namespace OpenRCT2::Ui::Windows
         void SwitchToMode(LandRightsMode mode)
         {
             auto widgetIndex = WIDX_BUY_LAND_RIGHTS + EnumValue(mode);
-            pressed_widgets = (1uLL << widgetIndex);
+            pressedWidgets = (1uLL << widgetIndex);
             _landRightsMode = mode;
 
             ToolSet(*this, widgetIndex, Tool::upArrow);
@@ -121,15 +121,15 @@ namespace OpenRCT2::Ui::Windows
             else
                 HideConstructionRights();
 
-            Invalidate();
+            invalidate();
         }
 
     public:
-        void OnOpen() override
+        void onOpen() override
         {
-            SetWidgets(window_land_rights_widgets);
+            setWidgets(window_land_rights_widgets);
 
-            hold_down_widgets = (1uLL << WIDX_INCREMENT) | (1uLL << WIDX_DECREMENT);
+            holdDownWidgets = (1uLL << WIDX_INCREMENT) | (1uLL << WIDX_DECREMENT);
             WindowInitScrollWidgets(*this);
             WindowPushOthersBelow(*this);
 
@@ -149,7 +149,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnClose() override
+        void onClose() override
         {
             HideGridlines();
             HideConstructionRights();
@@ -158,12 +158,12 @@ namespace OpenRCT2::Ui::Windows
                 ToolCancel();
         }
 
-        void OnMouseUp(WidgetIndex widgetIndex) override
+        void onMouseUp(WidgetIndex widgetIndex) override
         {
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
-                    Close();
+                    close();
                     break;
                 case WIDX_PREVIEW:
                     InputSize();
@@ -207,7 +207,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnMouseDown(WidgetIndex widgetIndex) override
+        void onMouseDown(WidgetIndex widgetIndex) override
         {
             switch (widgetIndex)
             {
@@ -216,19 +216,19 @@ namespace OpenRCT2::Ui::Windows
                     gLandToolSize = std::max<uint16_t>(kLandToolMinimumSize, gLandToolSize - 1);
 
                     // Invalidate the window
-                    Invalidate();
+                    invalidate();
                     break;
                 case WIDX_INCREMENT:
                     // Decrement land rights tool size
                     gLandToolSize = std::min<uint16_t>(kLandToolMaximumSize, gLandToolSize + 1);
 
                     // Invalidate the window
-                    Invalidate();
+                    invalidate();
                     break;
             }
         }
 
-        void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override
+        void onTextInput(WidgetIndex widgetIndex, std::string_view text) override
         {
             if (text.empty())
                 return;
@@ -244,18 +244,18 @@ namespace OpenRCT2::Ui::Windows
                 size = std::max(kLandToolMinimumSize, size);
                 size = std::min(kLandToolMaximumSize, size);
                 gLandToolSize = size;
-                Invalidate();
+                invalidate();
             }
         }
 
-        void OnUpdate() override
+        void onUpdate() override
         {
-            frame_no++;
+            currentFrame++;
 
             // Close window if another tool is open
             if (!isToolActive(WindowClass::LandRights))
             {
-                Close();
+                close();
                 return;
             }
 
@@ -277,34 +277,34 @@ namespace OpenRCT2::Ui::Windows
         {
             if (_landRightsMode == LandRightsMode::BuyLand)
             {
-                SetWidgetPressed(WIDX_BUY_LAND_RIGHTS, true);
-                SetWidgetPressed(WIDX_BUY_CONSTRUCTION_RIGHTS, false);
+                setWidgetPressed(WIDX_BUY_LAND_RIGHTS, true);
+                setWidgetPressed(WIDX_BUY_CONSTRUCTION_RIGHTS, false);
             }
             else if (_landRightsMode == LandRightsMode::BuyConstructionRights)
             {
-                SetWidgetPressed(WIDX_BUY_LAND_RIGHTS, false);
-                SetWidgetPressed(WIDX_BUY_CONSTRUCTION_RIGHTS, true);
+                setWidgetPressed(WIDX_BUY_LAND_RIGHTS, false);
+                setWidgetPressed(WIDX_BUY_CONSTRUCTION_RIGHTS, true);
             }
 
             if (gLandRemainingOwnershipSales == 0)
             {
-                SetWidgetDisabled(WIDX_BUY_LAND_RIGHTS, true);
+                setWidgetDisabled(WIDX_BUY_LAND_RIGHTS, true);
                 widgets[WIDX_BUY_LAND_RIGHTS].tooltip = STR_NO_LAND_RIGHTS_FOR_SALE_TIP;
             }
             else
             {
-                SetWidgetDisabled(WIDX_BUY_LAND_RIGHTS, false);
+                setWidgetDisabled(WIDX_BUY_LAND_RIGHTS, false);
                 widgets[WIDX_BUY_LAND_RIGHTS].tooltip = STR_BUY_LAND_RIGHTS_TIP;
             }
 
             if (gLandRemainingConstructionSales == 0)
             {
-                SetWidgetDisabled(WIDX_BUY_CONSTRUCTION_RIGHTS, true);
+                setWidgetDisabled(WIDX_BUY_CONSTRUCTION_RIGHTS, true);
                 widgets[WIDX_BUY_CONSTRUCTION_RIGHTS].tooltip = STR_NO_CONSTRUCTION_RIGHTS_FOR_SALE_TIP;
             }
             else
             {
-                SetWidgetDisabled(WIDX_BUY_CONSTRUCTION_RIGHTS, false);
+                setWidgetDisabled(WIDX_BUY_CONSTRUCTION_RIGHTS, false);
                 widgets[WIDX_BUY_CONSTRUCTION_RIGHTS].tooltip = STR_BUY_CONSTRUCTION_RIGHTS_TIP;
             }
 
@@ -360,13 +360,13 @@ namespace OpenRCT2::Ui::Windows
                 return kInGameSize;
         }
 
-        void OnPrepareDraw() override
+        void onPrepareDraw() override
         {
-            SetWidgetPressed(WIDX_PREVIEW, true);
+            setWidgetPressed(WIDX_PREVIEW, true);
             widgets[WIDX_PREVIEW].image = ImageId(LandTool::SizeToSpriteIndex(gLandToolSize));
 
             if (width != GetModeDimensions().width)
-                OnResize();
+                onResize();
 
             if (IsOwnershipMode())
             {
@@ -380,9 +380,9 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnResize() override
+        void onResize() override
         {
-            Invalidate();
+            invalidate();
 
             auto dimensions = GetModeDimensions();
             WindowSetResize(*this, dimensions, dimensions);
@@ -390,15 +390,15 @@ namespace OpenRCT2::Ui::Windows
             if (windowPos.x + width > ContextGetWidth())
                 windowPos.x = ContextGetWidth() - width;
 
-            Invalidate();
+            invalidate();
         }
 
-        void OnDraw(RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
             auto screenCoords = ScreenCoordsXY{ windowPos.x + widgets[WIDX_PREVIEW].midX(),
                                                 windowPos.y + widgets[WIDX_PREVIEW].midY() };
 
-            DrawWidgets(rt);
+            drawWidgets(rt);
             // Draw number for tool sizes bigger than 7
             if (gLandToolSize > kLandToolMaximumSizeWithSprite)
             {
@@ -457,14 +457,14 @@ namespace OpenRCT2::Ui::Windows
                 GameActions::LandSetRightSetting::SetOwnershipWithChecks, GetDesiredOwnership());
         }
 
-        void OnToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
+        void onToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
             MapInvalidateSelectionRect();
             gMapSelectFlags.unset(MapSelectFlag::enable);
 
             auto info = GetMapCoordinatesFromPos(
-                screenCoords, EnumsToFlags(ViewportInteractionItem::Terrain, ViewportInteractionItem::Water));
-            if (info.interactionType == ViewportInteractionItem::None)
+                screenCoords, EnumsToFlags(ViewportInteractionItem::terrain, ViewportInteractionItem::water));
+            if (info.interactionType == ViewportInteractionItem::none)
             {
                 if (_landRightsCost != kMoney64Undefined)
                 {
@@ -548,7 +548,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnToolAbort(WidgetIndex widgetIndex) override
+        void onToolAbort(WidgetIndex widgetIndex) override
         {
             if (kLandRightsVisibleByMode[EnumValue(_landRightsMode)])
                 HideLandRights();
@@ -557,7 +557,7 @@ namespace OpenRCT2::Ui::Windows
                 HideConstructionRights();
         }
 
-        void OnToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
+        void onToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
             if (screenCoords.x == kLocationNull)
                 return;
@@ -575,9 +575,9 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnToolDrag(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
+        void onToolDrag(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
-            OnToolDown(widgetIndex, screenCoords);
+            onToolDown(widgetIndex, screenCoords);
         }
 
     private:

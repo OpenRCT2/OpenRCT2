@@ -230,10 +230,10 @@ void Sub6A3F61PathAddition(PaintSession& session, const PathElement& pathElement
     const auto edges = pathElement.GetEdges() ^ 0b1111;
     const auto rotatedEdges = ((edges << session.CurrentRotation) & 0xF) | (((edges) << session.CurrentRotation) >> 4);
 
-    session.InteractionType = ViewportInteractionItem::PathAddition;
+    session.InteractionType = ViewportInteractionItem::pathAddition;
     if (sceneryImageTemplate.IsRemap())
     {
-        session.InteractionType = ViewportInteractionItem::None;
+        session.InteractionType = ViewportInteractionItem::none;
     }
 
     auto* pathAddEntry = pathElement.GetAdditionEntry();
@@ -259,12 +259,12 @@ void Sub6A3F61PathAddition(PaintSession& session, const PathElement& pathElement
             break;
     }
 
-    session.InteractionType = ViewportInteractionItem::Footpath;
+    session.InteractionType = ViewportInteractionItem::footpath;
 
     // Set when the path addition is a ghost.
     if (sceneryImageTemplate.IsRemap())
     {
-        session.InteractionType = ViewportInteractionItem::None;
+        session.InteractionType = ViewportInteractionItem::none;
     }
 }
 

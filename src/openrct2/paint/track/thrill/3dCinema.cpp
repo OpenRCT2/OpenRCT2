@@ -32,7 +32,7 @@ static void Paint3dCinemaDome(
 
     if (ride.lifecycleFlags & RIDE_LIFECYCLE_ON_TRACK && !ride.vehicles[0].IsNull())
     {
-        session.InteractionType = ViewportInteractionItem::Entity;
+        session.InteractionType = ViewportInteractionItem::entity;
         session.CurrentlyDrawnEntity = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[0]);
     }
 
@@ -47,7 +47,7 @@ static void Paint3dCinemaDome(
         session, imageId, { xOffset, yOffset, height + 3 }, { { xOffset + 16, yOffset + 16, height + 3 }, { 24, 24, 47 } });
 
     session.CurrentlyDrawnEntity = nullptr;
-    session.InteractionType = ViewportInteractionItem::Ride;
+    session.InteractionType = ViewportInteractionItem::ride;
 }
 
 /**

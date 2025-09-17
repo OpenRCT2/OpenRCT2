@@ -931,7 +931,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
 {
     PROFILED_FUNCTION();
 
-    session.InteractionType = ViewportInteractionItem::Terrain;
+    session.InteractionType = ViewportInteractionItem::terrain;
     session.Flags |= PaintSessionFlags::PassedSurface;
     session.Surface = &tileElement;
 
@@ -1235,7 +1235,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
     if (waterHeight > 0 && !gTrackDesignSaveMode && !waterGetsClipped)
     {
         // Loc6615A9: (water height)
-        session.InteractionType = ViewportInteractionItem::Water;
+        session.InteractionType = ViewportInteractionItem::water;
 
         const uint16_t localHeight = height + 16;
 
@@ -1270,7 +1270,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
     if ((tileElement.GetParkFences()) && !gTrackDesignSaveMode)
     {
         // Owned land boundary fences
-        session.InteractionType = ViewportInteractionItem::ParkEntrance;
+        session.InteractionType = ViewportInteractionItem::parkEntrance;
 
         uint8_t rotatedFences = Numerics::rol4(tileElement.GetParkFences(), rotation);
 
@@ -1333,7 +1333,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
         }
     }
 
-    session.InteractionType = ViewportInteractionItem::Terrain;
+    session.InteractionType = ViewportInteractionItem::terrain;
 
     switch (surfaceShape)
     {

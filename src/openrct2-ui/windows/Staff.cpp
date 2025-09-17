@@ -135,7 +135,7 @@ namespace OpenRCT2::Ui::Windows
         int32_t _pickedPeepOldX = kLocationNull;
 
     public:
-        void Initialise(EntityId entityId)
+        void initialise(EntityId entityId)
         {
             number = entityId.ToUnderlying();
             auto* staff = GetStaff();
@@ -148,17 +148,17 @@ namespace OpenRCT2::Ui::Windows
             ViewportInit();
         }
 
-        void OnOpen() override
+        void onOpen() override
         {
-            SetPage(WINDOW_STAFF_OVERVIEW);
+            setPage(WINDOW_STAFF_OVERVIEW);
         }
 
-        void OnClose() override
+        void onClose() override
         {
             CancelTools();
         }
 
-        void OnLanguageChange() override
+        void onLanguageChange() override
         {
             auto* staff = GetStaff();
             if (staff == nullptr)
@@ -168,7 +168,7 @@ namespace OpenRCT2::Ui::Windows
                 _availableCostumes = getAvailableCostumeStrings(AnimationPeepType::Entertainer);
         }
 
-        void OnMouseUp(WidgetIndex widgetIndex) override
+        void onMouseUp(WidgetIndex widgetIndex) override
         {
             if (widgetIndex <= WIDX_TAB_3)
                 CommonMouseUp(widgetIndex);
@@ -185,7 +185,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnMouseDown(WidgetIndex widgetIndex) override
+        void onMouseDown(WidgetIndex widgetIndex) override
         {
             switch (page)
             {
@@ -198,7 +198,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex) override
+        void onDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex) override
         {
             switch (page)
             {
@@ -211,7 +211,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnPrepareDraw() override
+        void onPrepareDraw() override
         {
             CommonPrepareDrawBefore();
 
@@ -228,9 +228,9 @@ namespace OpenRCT2::Ui::Windows
             CommonPrepareDrawAfter();
         }
 
-        void OnDraw(RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
-            DrawWidgets(rt);
+            drawWidgets(rt);
             DrawTabImages(rt);
 
             switch (page)
@@ -244,7 +244,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnResize() override
+        void onResize() override
         {
             switch (page)
             {
@@ -260,7 +260,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnUpdate() override
+        void onUpdate() override
         {
             switch (page)
             {
@@ -276,7 +276,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
+        void onToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
             switch (page)
             {
@@ -286,7 +286,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
+        void onToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
             switch (page)
             {
@@ -296,7 +296,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnToolAbort(WidgetIndex widgetIndex) override
+        void onToolAbort(WidgetIndex widgetIndex) override
         {
             switch (page)
             {
@@ -306,7 +306,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnViewportRotate() override
+        void onViewportRotate() override
         {
             switch (page)
             {
@@ -316,7 +316,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override
+        void onTextInput(WidgetIndex widgetIndex, std::string_view text) override
         {
             switch (page)
             {
@@ -333,12 +333,12 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
-                    Close();
+                    close();
                     break;
                 case WIDX_TAB_1:
                 case WIDX_TAB_2:
                 case WIDX_TAB_3:
-                    SetPage(widgetIndex - WIDX_TAB_1);
+                    setPage(widgetIndex - WIDX_TAB_1);
                     break;
             }
         }
@@ -463,7 +463,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     if (dropdownIndex == 0)
                     {
-                        ScrollToViewport();
+                        scrollToViewport();
                     }
                     else if (dropdownIndex == 1)
                     {
@@ -525,7 +525,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_PICKUP].left = width - 25;
             widgets[WIDX_PICKUP].right = width - 2;
 
-            SetWidgetPressed(WIDX_PATROL, WindowPatrolAreaGetCurrentStaffId() == staff->Id);
+            setWidgetPressed(WIDX_PATROL, WindowPatrolAreaGetCurrentStaffId() == staff->Id);
 
             widgets[WIDX_PATROL].left = width - 25;
             widgets[WIDX_PATROL].right = width - 2;
@@ -577,7 +577,7 @@ namespace OpenRCT2::Ui::Windows
 
         void DrawOverviewTabImage(RenderTarget& rt)
         {
-            if (IsWidgetDisabled(WIDX_TAB_1))
+            if (isWidgetDisabled(WIDX_TAB_1))
                 return;
 
             const auto& widget = widgets[WIDX_TAB_1];
@@ -644,10 +644,10 @@ namespace OpenRCT2::Ui::Windows
             const auto pickAnimLength = pickAnim.frame_offsets.size();
 
             // Update pickup animation frame
-            picked_peep_frame++;
-            picked_peep_frame %= pickAnimLength * 4;
+            pickedPeepFrame++;
+            pickedPeepFrame %= pickAnimLength * 4;
 
-            InvalidateWidget(WIDX_TAB_1);
+            invalidateWidget(WIDX_TAB_1);
 
             const std::optional<Focus> tempFocus = staff->State != PeepState::Picked ? std::optional(Focus(staff->Id))
                                                                                      : std::nullopt;
@@ -679,7 +679,7 @@ namespace OpenRCT2::Ui::Windows
             gPickupPeepImage = ImageId();
 
             auto info = GetMapCoordinatesFromPos(screenCoords, kViewportInteractionItemAll);
-            if (info.interactionType == ViewportInteractionItem::None)
+            if (info.interactionType == ViewportInteractionItem::none)
                 return;
 
             gPickupPeepX = screenCoords.x - 1;
@@ -695,7 +695,7 @@ namespace OpenRCT2::Ui::Windows
             auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(staff->AnimationObjectIndex);
 
             auto& pickupAnim = animObj->GetPeepAnimation(staff->AnimationGroup, PeepAnimationType::Hanging);
-            auto baseImageId = pickupAnim.base_image + pickupAnim.frame_offsets[picked_peep_frame >> 2];
+            auto baseImageId = pickupAnim.base_image + pickupAnim.frame_offsets[pickedPeepFrame >> 2];
             gPickupPeepImage = ImageId(baseImageId, staff->TshirtColour, staff->TrousersColour);
         }
 
@@ -893,10 +893,10 @@ namespace OpenRCT2::Ui::Windows
 
         void OptionsSetCheckboxValues()
         {
-            SetCheckboxValue(WIDX_CHECKBOX_1, false);
-            SetCheckboxValue(WIDX_CHECKBOX_2, false);
-            SetCheckboxValue(WIDX_CHECKBOX_3, false);
-            SetCheckboxValue(WIDX_CHECKBOX_4, false);
+            setCheckboxValue(WIDX_CHECKBOX_1, false);
+            setCheckboxValue(WIDX_CHECKBOX_2, false);
+            setCheckboxValue(WIDX_CHECKBOX_3, false);
+            setCheckboxValue(WIDX_CHECKBOX_4, false);
 
             auto staff = GetStaff();
             if (staff == nullptr)
@@ -908,7 +908,7 @@ namespace OpenRCT2::Ui::Windows
             for (auto index = Numerics::bitScanForward(staffOrders); index != -1; index = Numerics::bitScanForward(staffOrders))
             {
                 staffOrders &= ~(1 << index);
-                SetCheckboxValue(WIDX_CHECKBOX_1 + index, true);
+                setCheckboxValue(WIDX_CHECKBOX_1 + index, true);
             }
         }
 
@@ -919,8 +919,8 @@ namespace OpenRCT2::Ui::Windows
 
         void OptionsUpdate()
         {
-            frame_no++;
-            InvalidateWidget(WIDX_TAB_2);
+            currentFrame++;
+            invalidateWidget(WIDX_TAB_2);
         }
 #pragma endregion
 
@@ -998,8 +998,8 @@ namespace OpenRCT2::Ui::Windows
 
         void StatsUpdate()
         {
-            frame_no++;
-            InvalidateWidget(WIDX_TAB_3);
+            currentFrame++;
+            invalidateWidget(WIDX_TAB_3);
 
             auto staff = GetStaff();
             if (staff == nullptr)
@@ -1010,7 +1010,7 @@ namespace OpenRCT2::Ui::Windows
             if (staff->WindowInvalidateFlags & PEEP_INVALIDATE_STAFF_STATS)
             {
                 staff->WindowInvalidateFlags &= ~PEEP_INVALIDATE_STAFF_STATS;
-                Invalidate();
+                invalidate();
             }
         }
 #pragma endregion
@@ -1024,26 +1024,26 @@ namespace OpenRCT2::Ui::Windows
 
             for (WidgetIndex widgetIndex = WIDX_TAB_1; widgetIndex < widgets.size(); widgetIndex++)
             {
-                SetWidgetDisabled(widgetIndex, false);
+                setWidgetDisabled(widgetIndex, false);
             }
 
             if (staff->AssignedStaffType == StaffType::Security)
             {
-                SetWidgetDisabled(WIDX_TAB_2, true);
+                setWidgetDisabled(WIDX_TAB_2, true);
             }
 
             if (page == WINDOW_STAFF_OVERVIEW)
             {
                 if (staff->CanBePickedUp())
                 {
-                    SetWidgetDisabled(WIDX_PICKUP, false);
+                    setWidgetDisabled(WIDX_PICKUP, false);
                 }
                 else
                 {
-                    SetWidgetDisabled(WIDX_PICKUP, true);
+                    setWidgetDisabled(WIDX_PICKUP, true);
                 }
 
-                SetWidgetDisabled(WIDX_FIRE, staff->State == PeepState::Fixing || staff->State == PeepState::Inspecting);
+                setWidgetDisabled(WIDX_FIRE, staff->State == PeepState::Fixing || staff->State == PeepState::Inspecting);
             }
         }
 
@@ -1053,7 +1053,7 @@ namespace OpenRCT2::Ui::Windows
                 ToolCancel();
         }
 
-        void SetPage(int32_t newPage)
+        void setPage(int32_t newPage)
         {
             CancelTools();
 
@@ -1069,19 +1069,19 @@ namespace OpenRCT2::Ui::Windows
                 return;
 
             page = newPage;
-            frame_no = 0;
-            pressed_widgets = 0;
-            hold_down_widgets = 0;
-            SetWidgets(window_staff_page_widgets[page]);
+            currentFrame = 0;
+            pressedWidgets = 0;
+            holdDownWidgets = 0;
+            setWidgets(window_staff_page_widgets[page]);
 
-            RemoveViewport();
+            removeViewport();
 
-            Invalidate();
-            OnResize();
-            OnPrepareDraw();
-            InitScrollWidgets();
+            invalidate();
+            onResize();
+            onPrepareDraw();
+            initScrollWidgets();
             ViewportInit();
-            Invalidate();
+            invalidate();
 
             if (listen && viewport != nullptr)
                 viewport->flags |= VIEWPORT_FLAG_SOUND_ON;
@@ -1090,8 +1090,8 @@ namespace OpenRCT2::Ui::Windows
         void SetPressedTab()
         {
             for (int32_t i = 0; i < WINDOW_STAFF_PAGE_COUNT; i++)
-                SetWidgetPressed((WIDX_TAB_1 + i), false);
-            SetWidgetPressed(WIDX_TAB_1 + page, true);
+                setWidgetPressed((WIDX_TAB_1 + i), false);
+            setWidgetPressed(WIDX_TAB_1 + page, true);
         }
 
         void SetOrder(int32_t orderId)
@@ -1132,7 +1132,7 @@ namespace OpenRCT2::Ui::Windows
                     return;
 
                 viewport_flags = viewport->flags;
-                RemoveViewport();
+                removeViewport();
             }
             else
             {
@@ -1141,7 +1141,7 @@ namespace OpenRCT2::Ui::Windows
                     viewport_flags |= VIEWPORT_FLAG_GRIDLINES;
             }
 
-            OnPrepareDraw();
+            onPrepareDraw();
 
             focus = tempFocus;
 
@@ -1155,15 +1155,15 @@ namespace OpenRCT2::Ui::Windows
                     int32_t viewportWidth = viewWidget.width() - 1;
                     int32_t viewportHeight = viewWidget.height() - 1;
 
-                    ViewportCreate(this, screenPos, viewportWidth, viewportHeight, focus.value());
+                    ViewportCreate(*this, screenPos, viewportWidth, viewportHeight, focus.value());
                     flags |= WF_NO_SCROLLING;
-                    Invalidate();
+                    invalidate();
                 }
             }
 
             if (viewport != nullptr)
                 viewport->flags = viewport_flags;
-            Invalidate();
+            invalidate();
         }
 
         void ShowLocateDropdown(Widget* widget)
@@ -1196,11 +1196,11 @@ namespace OpenRCT2::Ui::Windows
 
             auto screenCoords = windowPos + ScreenCoordsXY{ widget->left, widget->top };
 
-            if (!IsWidgetDisabled(widgetIndex))
+            if (!isWidgetDisabled(widgetIndex))
             {
                 if (page == p)
                 {
-                    int32_t frame = frame_no / TabAnimationDivisor[page - 1];
+                    int32_t frame = currentFrame / TabAnimationDivisor[page - 1];
                     baseImageId += (frame % TabAnimationFrames);
                 }
 
@@ -1235,7 +1235,7 @@ namespace OpenRCT2::Ui::Windows
             return nullptr;
 
         if (w != nullptr)
-            w->Initialise(peep->Id);
+            w->initialise(peep->Id);
 
         return w;
     }

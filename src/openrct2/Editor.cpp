@@ -119,7 +119,7 @@ namespace OpenRCT2::Editor
         ObjectListLoad();
         ViewportInitAll();
         WindowBase* mainWindow = OpenEditorWindows();
-        mainWindow->SetViewportLocation(TileCoordsXYZ{ 75, 75, 14 }.ToCoordsXYZ());
+        mainWindow->setViewportLocation(TileCoordsXYZ{ 75, 75, 14 }.ToCoordsXYZ());
         LoadPalette();
         gScreenAge = 0;
         gameState.scenarioOptions.name = LanguageGetString(STR_MY_NEW_SCENARIO);
@@ -196,7 +196,7 @@ namespace OpenRCT2::Editor
         ObjectListLoad();
         ViewportInitAll();
         WindowBase* mainWindow = OpenEditorWindows();
-        mainWindow->SetViewportLocation(TileCoordsXYZ{ 75, 75, 14 }.ToCoordsXYZ());
+        mainWindow->setViewportLocation(TileCoordsXYZ{ 75, 75, 14 }.ToCoordsXYZ());
         LoadPalette();
 
         GameLoadScripts();
@@ -224,7 +224,7 @@ namespace OpenRCT2::Editor
         ObjectListLoad();
         ViewportInitAll();
         WindowBase* mainWindow = OpenEditorWindows();
-        mainWindow->SetViewportLocation(TileCoordsXYZ{ 75, 75, 14 }.ToCoordsXYZ());
+        mainWindow->setViewportLocation(TileCoordsXYZ{ 75, 75, 14 }.ToCoordsXYZ());
         LoadPalette();
 
         GameLoadScripts();

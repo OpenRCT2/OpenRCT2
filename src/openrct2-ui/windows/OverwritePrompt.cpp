@@ -58,12 +58,12 @@ namespace OpenRCT2::Ui::Windows
         {
         }
 
-        void OnOpen() override
+        void onOpen() override
         {
-            SetWidgets(window_overwrite_prompt_widgets);
+            setWidgets(window_overwrite_prompt_widgets);
         }
 
-        void OnMouseUp(WidgetIndex widgetIndex) override
+        void onMouseUp(WidgetIndex widgetIndex) override
         {
             switch (widgetIndex)
             {
@@ -80,14 +80,14 @@ namespace OpenRCT2::Ui::Windows
 
                 case WIDX_OVERWRITE_CANCEL:
                 case WIDX_OVERWRITE_CLOSE:
-                    Close();
+                    close();
                     break;
             }
         }
 
-        void OnDraw(RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
-            DrawWidgets(rt);
+            drawWidgets(rt);
 
             auto ft = Formatter();
             ft.Add<StringId>(STR_STRING);
@@ -121,11 +121,11 @@ namespace OpenRCT2::Ui::Windows
 
         if (keycode == SDLK_RETURN || keycode == SDLK_KP_ENTER)
         {
-            promptWindow->OnMouseUp(WIDX_OVERWRITE_OVERWRITE);
+            promptWindow->onMouseUp(WIDX_OVERWRITE_OVERWRITE);
         }
         else if (keycode == SDLK_ESCAPE)
         {
-            promptWindow->OnMouseUp(WIDX_OVERWRITE_CANCEL);
+            promptWindow->onMouseUp(WIDX_OVERWRITE_CANCEL);
         }
     }
 } // namespace OpenRCT2::Ui::Windows

@@ -80,7 +80,7 @@ namespace OpenRCT2::Ui::Windows
         colour_t GetHoverWidgetColour(WidgetIndex index)
         {
             return (
-                gHoverWidget.window_classification == WindowClass::BottomToolbar && gHoverWidget.widget_index == index
+                gHoverWidget.windowClassification == WindowClass::BottomToolbar && gHoverWidget.widgetIndex == index
                     ? static_cast<colour_t>(COLOUR_WHITE)
                     : colours[0].colour);
         }
@@ -282,7 +282,7 @@ namespace OpenRCT2::Ui::Windows
                     auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(peep->AnimationObjectIndex);
 
                     uint32_t image_id_base = animObj->GetPeepAnimation(peep->AnimationGroup).base_image;
-                    image_id_base += frame_no & 0xFFFFFFFC;
+                    image_id_base += currentFrame & 0xFFFFFFFC;
                     image_id_base++;
 
                     auto image_id = ImageId(image_id_base, peep->TshirtColour, peep->TrousersColour);
@@ -294,7 +294,7 @@ namespace OpenRCT2::Ui::Windows
 
                     // There are only 6 walking frames available for each item,
                     // as well as 1 sprite for sitting and 1 for standing still.
-                    auto itemFrame = (frame_no / 4) % 6;
+                    auto itemFrame = (currentFrame / 4) % 6;
 
                     if (guest->AnimationGroup == PeepAnimationGroup::Hat)
                     {
@@ -383,48 +383,48 @@ namespace OpenRCT2::Ui::Windows
             if (gToolbarDirtyFlags & BTM_TB_DIRTY_FLAG_MONEY)
             {
                 gToolbarDirtyFlags &= ~BTM_TB_DIRTY_FLAG_MONEY;
-                InvalidateWidget(WIDX_LEFT_INSET);
+                invalidateWidget(WIDX_LEFT_INSET);
             }
 
             if (gToolbarDirtyFlags & BTM_TB_DIRTY_FLAG_DATE)
             {
                 gToolbarDirtyFlags &= ~BTM_TB_DIRTY_FLAG_DATE;
-                InvalidateWidget(WIDX_RIGHT_INSET);
+                invalidateWidget(WIDX_RIGHT_INSET);
             }
 
             if (gToolbarDirtyFlags & BTM_TB_DIRTY_FLAG_PEEP_COUNT)
             {
                 gToolbarDirtyFlags &= ~BTM_TB_DIRTY_FLAG_PEEP_COUNT;
-                InvalidateWidget(WIDX_LEFT_INSET);
+                invalidateWidget(WIDX_LEFT_INSET);
             }
 
             if (gToolbarDirtyFlags & BTM_TB_DIRTY_FLAG_CLIMATE)
             {
                 gToolbarDirtyFlags &= ~BTM_TB_DIRTY_FLAG_CLIMATE;
-                InvalidateWidget(WIDX_RIGHT_INSET);
+                invalidateWidget(WIDX_RIGHT_INSET);
             }
 
             if (gToolbarDirtyFlags & BTM_TB_DIRTY_FLAG_PARK_RATING)
             {
                 gToolbarDirtyFlags &= ~BTM_TB_DIRTY_FLAG_PARK_RATING;
-                InvalidateWidget(WIDX_LEFT_INSET);
+                invalidateWidget(WIDX_LEFT_INSET);
             }
         }
 
     public:
         GameBottomToolbar()
         {
-            SetWidgets(window_game_bottom_toolbar_widgets);
+            setWidgets(window_game_bottom_toolbar_widgets);
 
-            frame_no = 0;
-            InitScrollWidgets();
+            currentFrame = 0;
+            initScrollWidgets();
 
             // Reset the middle widget to not show by default.
             // If it is required to be shown news_update will reshow it.
             widgets[WIDX_MIDDLE_OUTSET].type = WidgetType::empty;
         }
 
-        void OnMouseUp(WidgetIndex widgetIndex) override
+        void onMouseUp(WidgetIndex widgetIndex) override
         {
             News::Item* newsItem;
 
@@ -479,7 +479,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        OpenRCT2String OnTooltip(WidgetIndex widgetIndex, StringId fallback) override
+        OpenRCT2String onTooltip(WidgetIndex widgetIndex, StringId fallback) override
         {
             const auto& gameState = getGameState();
             auto ft = Formatter();
@@ -497,7 +497,7 @@ namespace OpenRCT2::Ui::Windows
             return { fallback, ft };
         }
 
-        void OnPrepareDraw() override
+        void onPrepareDraw() override
         {
             // Figure out how much line height we have to work with.
             uint32_t line_height = FontGetLineHeight(FontStyle::Medium);
@@ -588,30 +588,30 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_NEWS_LOCATE].type = WidgetType::flatBtn;
                 widgets[WIDX_MIDDLE_OUTSET].colour = 2;
                 widgets[WIDX_MIDDLE_INSET].colour = 2;
-                disabled_widgets &= ~(1uLL << WIDX_NEWS_SUBJECT);
-                disabled_widgets &= ~(1uLL << WIDX_NEWS_LOCATE);
+                disabledWidgets &= ~(1uLL << WIDX_NEWS_SUBJECT);
+                disabledWidgets &= ~(1uLL << WIDX_NEWS_LOCATE);
 
                 // Find out if the news item is no longer valid
                 auto subjectLoc = News::GetSubjectLocation(newsItem->type, newsItem->assoc);
 
                 if (!subjectLoc.has_value())
-                    disabled_widgets |= (1uLL << WIDX_NEWS_LOCATE);
+                    disabledWidgets |= (1uLL << WIDX_NEWS_LOCATE);
 
                 if (!(newsItem->typeHasSubject()))
                 {
-                    disabled_widgets |= (1uLL << WIDX_NEWS_SUBJECT);
+                    disabledWidgets |= (1uLL << WIDX_NEWS_SUBJECT);
                     widgets[WIDX_NEWS_SUBJECT].type = WidgetType::empty;
                 }
 
                 if (newsItem->hasButton())
                 {
-                    disabled_widgets |= (1uLL << WIDX_NEWS_SUBJECT);
-                    disabled_widgets |= (1uLL << WIDX_NEWS_LOCATE);
+                    disabledWidgets |= (1uLL << WIDX_NEWS_SUBJECT);
+                    disabledWidgets |= (1uLL << WIDX_NEWS_LOCATE);
                 }
             }
         }
 
-        void OnDraw(RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
             const auto& leftWidget = widgets[WIDX_LEFT_OUTSET];
             const auto& rightWidget = widgets[WIDX_RIGHT_OUTSET];
@@ -634,7 +634,7 @@ namespace OpenRCT2::Ui::Windows
                 GfxFilterRect(rt, { leftTop, rightBottom }, FilterPaletteID::Palette51);
             }
 
-            DrawWidgets(rt);
+            drawWidgets(rt);
 
             DrawLeftPanel(rt);
             DrawRightPanel(rt);
@@ -649,16 +649,16 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnUpdate() override
+        void onUpdate() override
         {
-            frame_no++;
-            if (frame_no >= 24)
-                frame_no = 0;
+            currentFrame++;
+            if (currentFrame >= 24)
+                currentFrame = 0;
 
             InvalidateDirtyWidgets();
         }
 
-        CursorID OnCursor(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords, CursorID cursorId) override
+        CursorID onCursor(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords, CursorID cursorId) override
         {
             switch (widgetIndex)
             {
@@ -672,7 +672,7 @@ namespace OpenRCT2::Ui::Windows
             return cursorId;
         }
 
-        void OnPeriodicUpdate() override
+        void onPeriodicUpdate() override
         {
             InvalidateDirtyWidgets();
         }

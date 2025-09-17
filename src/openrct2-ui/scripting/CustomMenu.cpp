@@ -71,18 +71,18 @@ namespace OpenRCT2::Scripting
 
     static const DukEnumMap<ViewportInteractionItem> ToolFilterMap(
         {
-            { "terrain", ViewportInteractionItem::Terrain },
-            { "entity", ViewportInteractionItem::Entity },
-            { "ride", ViewportInteractionItem::Ride },
-            { "water", ViewportInteractionItem::Water },
-            { "scenery", ViewportInteractionItem::Scenery },
-            { "footpath", ViewportInteractionItem::Footpath },
-            { "footpath_item", ViewportInteractionItem::PathAddition },
-            { "park_entrance", ViewportInteractionItem::ParkEntrance },
-            { "wall", ViewportInteractionItem::Wall },
-            { "large_scenery", ViewportInteractionItem::LargeScenery },
-            { "label", ViewportInteractionItem::Label },
-            { "banner", ViewportInteractionItem::Banner },
+            { "terrain", ViewportInteractionItem::terrain },
+            { "entity", ViewportInteractionItem::entity },
+            { "ride", ViewportInteractionItem::ride },
+            { "water", ViewportInteractionItem::water },
+            { "scenery", ViewportInteractionItem::scenery },
+            { "footpath", ViewportInteractionItem::footpath },
+            { "footpath_item", ViewportInteractionItem::pathAddition },
+            { "park_entrance", ViewportInteractionItem::parkEntrance },
+            { "wall", ViewportInteractionItem::wall },
+            { "large_scenery", ViewportInteractionItem::largeScenery },
+            { "label", ViewportInteractionItem::label },
+            { "banner", ViewportInteractionItem::banner },
         });
 
     template<>
@@ -200,7 +200,7 @@ namespace OpenRCT2::Scripting
             obj.Set("screenCoords", ToDuk(ctx, screenCoords));
             obj.Set("mapCoords", ToDuk(ctx, info.Loc));
 
-            if (info.interactionType == ViewportInteractionItem::Entity && info.Entity != nullptr)
+            if (info.interactionType == ViewportInteractionItem::entity && info.Entity != nullptr)
             {
                 obj.Set("entityId", info.Entity->Id.ToUnderlying());
             }

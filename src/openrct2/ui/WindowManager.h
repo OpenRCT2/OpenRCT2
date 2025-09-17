@@ -88,33 +88,33 @@ namespace OpenRCT2::Ui
         virtual void Close(WindowBase& window) = 0;
         virtual void CloseSurplus(int32_t cap, WindowClass avoid_classification) = 0;
         virtual void CloseByClass(WindowClass cls) = 0;
-        virtual void CloseByNumber(WindowClass cls, rct_windownumber number) = 0;
+        virtual void CloseByNumber(WindowClass cls, WindowNumber number) = 0;
         virtual void CloseByNumber(WindowClass cls, EntityId number) = 0;
         virtual void CloseTop() = 0;
         virtual void CloseAll() = 0;
         virtual void CloseAllExceptClass(WindowClass cls) = 0;
         virtual void CloseAllExceptFlags(WindowFlags flags) = 0;
-        virtual void CloseAllExceptNumberAndClass(rct_windownumber number, WindowClass cls) = 0;
+        virtual void CloseAllExceptNumberAndClass(WindowNumber number, WindowClass cls) = 0;
         virtual void CloseConstructionWindows() = 0;
 
         virtual WindowBase* FindByClass(WindowClass cls) = 0;
-        virtual WindowBase* FindByNumber(WindowClass cls, rct_windownumber number) = 0;
+        virtual WindowBase* FindByNumber(WindowClass cls, WindowNumber number) = 0;
         virtual WindowBase* FindByNumber(WindowClass cls, EntityId id) = 0;
         virtual WindowBase* FindFromPoint(const ScreenCoordsXY& screenCoords) = 0;
         virtual WidgetIndex FindWidgetFromPoint(WindowBase& w, const ScreenCoordsXY& screenCoords) = 0;
 
         virtual void InvalidateByClass(WindowClass cls) = 0;
-        virtual void InvalidateByNumber(WindowClass cls, rct_windownumber number) = 0;
+        virtual void InvalidateByNumber(WindowClass cls, WindowNumber number) = 0;
         virtual void InvalidateByNumber(WindowClass cls, EntityId id) = 0;
         virtual void InvalidateAll() = 0;
         virtual void InvalidateWidget(WindowBase& w, WidgetIndex widgetIndex) = 0;
         virtual void InvalidateWidgetByClass(WindowClass cls, WidgetIndex widgetIndex) = 0;
-        virtual void InvalidateWidgetByNumber(WindowClass cls, rct_windownumber number, WidgetIndex widgetIndex) = 0;
+        virtual void InvalidateWidgetByNumber(WindowClass cls, WindowNumber number, WidgetIndex widgetIndex) = 0;
 
         virtual WindowBase* BringToFront(WindowBase& w) = 0;
         virtual WindowBase* BringToFrontByClass(WindowClass cls) = 0;
         virtual WindowBase* BringToFrontByClassWithFlags(WindowClass cls, WindowFlags flags) = 0;
-        virtual WindowBase* BringToFrontByNumber(WindowClass cls, rct_windownumber number) = 0;
+        virtual WindowBase* BringToFrontByNumber(WindowClass cls, WindowNumber number) = 0;
     };
 
     std::unique_ptr<IWindowManager> CreateDummyWindowManager();

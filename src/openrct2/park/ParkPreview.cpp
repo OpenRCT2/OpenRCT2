@@ -216,7 +216,7 @@ namespace OpenRCT2
             .rotation = mapPosXYZD.direction,
         };
 
-        auto viewPos = centre_2d_coordinates(mapPosXYZD, &saveVp);
+        auto viewPos = centre2dCoordinates(mapPosXYZD, &saveVp);
         if (viewPos == std::nullopt)
             return std::nullopt;
 

@@ -292,7 +292,7 @@ void VirtualFloorPaint(PaintSession& session)
     uint8_t direction = session.CurrentRotation;
 
     // This is a virtual floor, so no interactions
-    session.InteractionType = ViewportInteractionItem::None;
+    session.InteractionType = ViewportInteractionItem::none;
 
     int16_t virtualFloorClipHeight = _virtualFloorHeight;
 

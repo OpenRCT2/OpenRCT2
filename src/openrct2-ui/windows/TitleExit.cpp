@@ -27,13 +27,13 @@ namespace OpenRCT2::Ui::Windows
 
     class TitleExitWindow final : public Window
     {
-        void OnOpen() override
+        void onOpen() override
         {
-            SetWidgets(_titleExitWidgets);
-            InitScrollWidgets();
+            setWidgets(_titleExitWidgets);
+            initScrollWidgets();
         }
 
-        void OnMouseUp(WidgetIndex widgetIndex) override
+        void onMouseUp(WidgetIndex widgetIndex) override
         {
             switch (widgetIndex)
             {
@@ -44,9 +44,9 @@ namespace OpenRCT2::Ui::Windows
             };
         }
 
-        void OnDraw(RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
-            DrawWidgets(rt);
+            drawWidgets(rt);
         }
     };
 

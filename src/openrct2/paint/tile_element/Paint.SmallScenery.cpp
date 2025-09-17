@@ -339,7 +339,7 @@ void PaintSmallScenery(PaintSession& session, uint8_t direction, int32_t height,
         return;
     }
 
-    session.InteractionType = ViewportInteractionItem::Scenery;
+    session.InteractionType = ViewportInteractionItem::scenery;
     ImageId imageTemplate;
     if (gTrackDesignSaveMode)
     {
@@ -350,7 +350,7 @@ void PaintSmallScenery(PaintSession& session, uint8_t direction, int32_t height,
     }
     if (sceneryElement.IsGhost())
     {
-        session.InteractionType = ViewportInteractionItem::None;
+        session.InteractionType = ViewportInteractionItem::none;
         imageTemplate = ImageId().WithRemap(FilterPaletteID::PaletteGhost);
     }
     else if (session.SelectedElement == reinterpret_cast<const TileElement*>(&sceneryElement))

@@ -76,7 +76,7 @@ namespace OpenRCT2::Ui::Windows
         ObjectEntryIndex _highlightedEntranceType = 0;
         std::vector<EntranceSelection> _entranceTypes{};
 
-        void InitParkEntranceItems()
+        void initParkEntranceItems()
         {
             _entranceTypes.clear();
             for (ObjectEntryIndex objectIndex = 0; objectIndex < kMaxParkEntranceObjects; objectIndex++)
@@ -246,65 +246,65 @@ namespace OpenRCT2::Ui::Windows
         }
 
     public:
-        void OnOpen() override
+        void onOpen() override
         {
-            SetWidgets(_widgets);
+            setWidgets(_widgets);
 
-            InitScrollWidgets();
-            InitParkEntranceItems();
+            initScrollWidgets();
+            initParkEntranceItems();
 
-            list_information_type = 0;
+            listInformationType = 0;
 
-            auto maxHeight = static_cast<int16_t>(kWindowSize.height + kImageSize * (GetNumRows() - 1));
-            WindowSetResize(*this, kWindowSize, { kWindowSize.width, maxHeight });
+            auto newMaxHeight = static_cast<int16_t>(kWindowSize.height + kImageSize * (GetNumRows() - 1));
+            WindowSetResize(*this, kWindowSize, { kWindowSize.width, newMaxHeight });
 
-            pressed_widgets |= 1LL << WIDX_TAB;
+            pressedWidgets |= 1LL << WIDX_TAB;
 
             ToolSet(*this, WIDX_LIST, Tool::entranceDown);
             gInputFlags.set(InputFlag::unk6);
         }
 
-        void OnMouseUp(WidgetIndex widgetIndex) override
+        void onMouseUp(WidgetIndex widgetIndex) override
         {
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
-                    Close();
+                    close();
                     break;
                 case WIDX_ROTATE_ENTRANCE_BUTTON:
                     gWindowSceneryRotation = DirectionNext(gWindowSceneryRotation);
-                    Invalidate();
+                    invalidate();
                     break;
             }
         }
 
-        void OnClose() override
+        void onClose() override
         {
-            if (gCurrentToolWidget.window_classification == classification)
+            if (gCurrentToolWidget.windowClassification == classification)
                 ToolCancel();
         }
 
-        void OnUpdate() override
+        void onUpdate() override
         {
-            if (gCurrentToolWidget.window_classification != classification)
-                Close();
+            if (gCurrentToolWidget.windowClassification != classification)
+                close();
         }
 
-        void OnPrepareDraw() override
+        void onPrepareDraw() override
         {
             widgets[WIDX_LIST].right = width - 30;
             widgets[WIDX_LIST].bottom = height - 5;
         }
 
-        void OnDraw(RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
-            DrawWidgets(rt);
+            drawWidgets(rt);
             GfxDrawSprite(
                 rt, ImageId(SPR_TAB_PARK_ENTRANCE),
                 windowPos + ScreenCoordsXY{ widgets[WIDX_TAB].left, widgets[WIDX_TAB].top });
         }
 
-        void OnScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
+        void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
             GfxClear(rt, ColourMapA[colours[1].colour].mid_light);
 
@@ -344,43 +344,43 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
+        void onToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
             PlaceParkEntranceToolDown(screenCoords);
         }
 
-        void OnToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
+        void onToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
             PlaceParkEntranceToolUpdate(screenCoords);
         }
 
-        void OnToolAbort(WidgetIndex widgetIndex) override
+        void onToolAbort(WidgetIndex widgetIndex) override
         {
             ParkEntranceRemoveGhost();
-            Invalidate();
+            invalidate();
             HideGridlines();
             HideLandRights();
             HideConstructionRights();
         }
 
-        ScreenSize OnScrollGetSize(int32_t scrollIndex) override
+        ScreenSize onScrollGetSize(int32_t scrollIndex) override
         {
             auto scrollHeight = static_cast<int32_t>(GetNumRows() * kImageSize);
 
             return ScreenSize(kImageSize * kNumColumns, scrollHeight);
         }
 
-        void OnScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
+        void onScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
             auto highlighted = ScrollGetEntranceListItemAt(screenCoords);
             if (highlighted != kObjectEntryIndexNull)
             {
                 _highlightedEntranceType = highlighted;
-                Invalidate();
+                invalidate();
             }
         }
 
-        void OnScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
+        void onScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
             auto selected = ScrollGetEntranceListItemAt(screenCoords);
             if (selected == kObjectEntryIndexNull)
@@ -391,7 +391,7 @@ namespace OpenRCT2::Ui::Windows
             _selectedEntranceType = selected;
 
             Audio::Play(Audio::SoundId::Click1, 0, windowPos.x + (width / 2));
-            Invalidate();
+            invalidate();
         }
     };
 
