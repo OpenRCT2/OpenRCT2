@@ -83,7 +83,7 @@ namespace OpenRCT2::Ui::Windows
     private:
         CoordsXYZ _bannerViewPos;
 
-        void CreateViewport()
+        void createViewport()
         {
             const auto& viewportWidget = widgets[WIDX_VIEWPORT];
             ViewportCreate(
@@ -92,7 +92,7 @@ namespace OpenRCT2::Ui::Windows
 
             if (viewport != nullptr)
                 viewport->flags = Config::Get().general.AlwaysShowGridlines ? VIEWPORT_FLAG_GRIDLINES : VIEWPORT_FLAG_NONE;
-            Invalidate();
+            invalidate();
         }
 
         BannerIndex GetBannerIndex() const
@@ -131,13 +131,13 @@ namespace OpenRCT2::Ui::Windows
         }
 
     public:
-        void OnOpen() override
+        void onOpen() override
         {
-            SetWidgets(window_banner_widgets);
+            setWidgets(window_banner_widgets);
             WindowInitScrollWidgets(*this);
         }
 
-        void Initialise(WindowNumber _number)
+        void initialise(WindowNumber _number)
         {
             number = _number;
             auto* banner = GetBanner(BannerIndex::FromUnderlying(number));
@@ -147,16 +147,16 @@ namespace OpenRCT2::Ui::Windows
                 return;
 
             _bannerViewPos = CoordsXYZ{ banner->position.ToCoordsXY().ToTileCentre(), bannerElement->GetBaseZ() };
-            CreateViewport();
+            createViewport();
         }
 
-        void OnMouseDown(WidgetIndex widgetIndex) override
+        void onMouseDown(WidgetIndex widgetIndex) override
         {
             Widget* widget = &widgets[widgetIndex];
             auto* banner = GetBanner(GetBannerIndex());
             if (banner == nullptr)
             {
-                Close();
+                close();
                 return;
             }
             switch (widgetIndex)
@@ -184,12 +184,12 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnMouseUp(WidgetIndex widgetIndex) override
+        void onMouseUp(WidgetIndex widgetIndex) override
         {
             auto* banner = GetBanner(GetBannerIndex());
             if (banner == nullptr)
             {
-                Close();
+                close();
                 return;
             }
 
@@ -198,7 +198,7 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
-                    Close();
+                    close();
                     break;
                 case WIDX_BANNER_DEMOLISH:
                 {
@@ -226,7 +226,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex) override
+        void onDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex) override
         {
             auto& gameState = getGameState();
             switch (widgetIndex)
@@ -254,7 +254,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override
+        void onTextInput(WidgetIndex widgetIndex, std::string_view text) override
         {
             if (widgetIndex == WIDX_BANNER_TEXT)
             {
@@ -263,15 +263,15 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnViewportRotate() override
+        void onViewportRotate() override
         {
-            RemoveViewport();
-            CreateViewport();
+            removeViewport();
+            createViewport();
         }
 
-        void OnDraw(RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
-            DrawWidgets(rt);
+            drawWidgets(rt);
 
             if (viewport != nullptr)
             {
@@ -279,7 +279,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnPrepareDraw() override
+        void onPrepareDraw() override
         {
             auto* banner = GetBanner(GetBannerIndex());
             if (banner == nullptr)
@@ -325,7 +325,7 @@ namespace OpenRCT2::Ui::Windows
         w = windowMgr->Create<BannerWindow>(WindowClass::Banner, kWindowSize, 0);
 
         if (w != nullptr)
-            w->Initialise(number);
+            w->initialise(number);
 
         return w;
     }

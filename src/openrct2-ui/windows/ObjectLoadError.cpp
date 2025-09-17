@@ -390,13 +390,13 @@ namespace OpenRCT2::Ui::Windows
             {
                 selectedListItem = index;
             }
-            InvalidateWidget(WIDX_SCROLL);
+            invalidateWidget(WIDX_SCROLL);
         }
 
     public:
-        void OnOpen() override
+        void onOpen() override
         {
-            SetWidgets(window_object_load_error_widgets);
+            setWidgets(window_object_load_error_widgets);
 
             WindowInitScrollWidgets(*this);
             colours[0] = COLOUR_LIGHT_BLUE;
@@ -404,18 +404,18 @@ namespace OpenRCT2::Ui::Windows
             colours[2] = COLOUR_LIGHT_BLUE;
         }
 
-        void OnClose() override
+        void onClose() override
         {
             _invalidEntries.clear();
             _invalidEntries.shrink_to_fit();
         }
 
-        void OnMouseUp(const WidgetIndex widgetIndex) override
+        void onMouseUp(const WidgetIndex widgetIndex) override
         {
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
-                    Close();
+                    close();
                     return;
                 case WIDX_COPY_CURRENT:
                     if (selectedListItem > -1 && selectedListItem < numListItems)
@@ -435,7 +435,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnUpdate() override
+        void onUpdate() override
         {
             currentFrame++;
 
@@ -443,7 +443,7 @@ namespace OpenRCT2::Ui::Windows
             if (!widgetIsHighlighted(*this, WIDX_SCROLL))
             {
                 _highlightedIndex = -1;
-                InvalidateWidget(WIDX_SCROLL);
+                invalidateWidget(WIDX_SCROLL);
             }
 
 #ifndef DISABLE_HTTP
@@ -466,18 +466,18 @@ namespace OpenRCT2::Ui::Windows
 #endif
         }
 
-        ScreenSize OnScrollGetSize(const int32_t scrollIndex) override
+        ScreenSize onScrollGetSize(const int32_t scrollIndex) override
         {
             return ScreenSize(0, numListItems * kScrollableRowHeight);
         }
 
-        void OnScrollMouseDown(const int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
+        void onScrollMouseDown(const int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
             const auto selectedItem = screenCoords.y / kScrollableRowHeight;
             SelectObjectFromList(selectedItem);
         }
 
-        void OnScrollMouseOver(const int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
+        void onScrollMouseOver(const int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
             // Highlight item that the cursor is over, or remove highlighting if none
             const auto selectedItem = screenCoords.y / kScrollableRowHeight;
@@ -486,10 +486,10 @@ namespace OpenRCT2::Ui::Windows
             else
                 _highlightedIndex = selectedItem;
 
-            InvalidateWidget(WIDX_SCROLL);
+            invalidateWidget(WIDX_SCROLL);
         }
 
-        void OnDraw(RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
             WindowDrawWidgets(*this, rt);
 
@@ -507,7 +507,7 @@ namespace OpenRCT2::Ui::Windows
             DrawTextEllipsised(rt, screenPos + ScreenCoordsXY{ 0, 29 }, kWindowSize.width - 5, STR_BLACK_STRING, ft);
         }
 
-        void OnScrollDraw(const int32_t scrollIndex, RenderTarget& rt) override
+        void onScrollDraw(const int32_t scrollIndex, RenderTarget& rt) override
         {
             auto rtCoords = ScreenCoordsXY{ rt.x, rt.y };
             GfxFillRect(
@@ -558,7 +558,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void Initialise(utf8* path, const size_t numMissingObjects, const ObjectEntryDescriptor* missingObjects)
+        void initialise(utf8* path, const size_t numMissingObjects, const ObjectEntryDescriptor* missingObjects)
         {
             _invalidEntries = std::vector<ObjectEntryDescriptor>(missingObjects, missingObjects + numMissingObjects);
 
@@ -566,7 +566,7 @@ namespace OpenRCT2::Ui::Windows
             numListItems = static_cast<uint16_t>(numMissingObjects);
             _filePath = path;
 
-            Invalidate();
+            invalidate();
         }
     };
 
@@ -580,7 +580,7 @@ namespace OpenRCT2::Ui::Windows
             window = windowMgr->Create<ObjectLoadErrorWindow>(WindowClass::ObjectLoadError, kWindowSize, 0);
         }
 
-        static_cast<ObjectLoadErrorWindow*>(window)->Initialise(path, numMissingObjects, missingObjects);
+        static_cast<ObjectLoadErrorWindow*>(window)->initialise(path, numMissingObjects, missingObjects);
 
         return window;
     }

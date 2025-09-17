@@ -200,9 +200,9 @@ namespace OpenRCT2::Ui::Windows
     public:
 #pragma region Window Override Events
 
-        void OnOpen() override
+        void onOpen() override
         {
-            SetWidgets(window_footpath_widgets);
+            setWidgets(window_footpath_widgets);
 
             WindowInitScrollWidgets(*this);
             WindowPushOthersRight(*this);
@@ -221,7 +221,7 @@ namespace OpenRCT2::Ui::Windows
             holdDownWidgets = (1u << WIDX_CONSTRUCT) | (1u << WIDX_REMOVE);
         }
 
-        void OnClose() override
+        void onClose() override
         {
             FootpathUpdateProvisional();
             ViewportSetVisibility(ViewportVisibility::standard);
@@ -233,7 +233,7 @@ namespace OpenRCT2::Ui::Windows
             HideGridlines();
         }
 
-        void OnUpdate() override
+        void onUpdate() override
         {
             WindowFootpathUpdateProvisionalPathForBridgeMode();
 
@@ -249,16 +249,16 @@ namespace OpenRCT2::Ui::Windows
             if (_footpathConstructionMode == PathConstructionMode::land)
             {
                 if (!isToolActive(WindowClass::Footpath, WIDX_CONSTRUCT_ON_LAND))
-                    Close();
+                    close();
             }
             else if (_footpathConstructionMode == PathConstructionMode::bridgeOrTunnelPick)
             {
                 if (!isToolActive(WindowClass::Footpath, WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL))
-                    Close();
+                    close();
             }
         }
 
-        void OnMouseDown(WidgetIndex widgetIndex) override
+        void onMouseDown(WidgetIndex widgetIndex) override
         {
             switch (widgetIndex)
             {
@@ -301,12 +301,12 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnMouseUp(WidgetIndex widgetIndex) override
+        void onMouseUp(WidgetIndex widgetIndex) override
         {
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
-                    Close();
+                    close();
                     break;
                 case WIDX_CONSTRUCT_ON_LAND:
                     if (_footpathConstructionMode == PathConstructionMode::land)
@@ -345,7 +345,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDropdown(WidgetIndex widgetIndex, int32_t selectedIndex) override
+        void onDropdown(WidgetIndex widgetIndex, int32_t selectedIndex) override
         {
             if (selectedIndex < 0 || static_cast<size_t>(selectedIndex) >= _dropdownEntries.size())
                 return;
@@ -388,10 +388,10 @@ namespace OpenRCT2::Ui::Windows
 
             FootpathUpdateProvisional();
             _windowFootpathCost = kMoney64Undefined;
-            Invalidate();
+            invalidate();
         }
 
-        void OnToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
+        void onToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
             if (widgetIndex == WIDX_CONSTRUCT_ON_LAND)
             {
@@ -403,7 +403,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnToolUp(WidgetIndex widgetIndex, const ScreenCoordsXY&) override
+        void onToolUp(WidgetIndex widgetIndex, const ScreenCoordsXY&) override
         {
             if (widgetIndex == WIDX_CONSTRUCT_ON_LAND)
             {
@@ -411,7 +411,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
+        void onToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
             if (widgetIndex == WIDX_CONSTRUCT_ON_LAND)
             {
@@ -423,7 +423,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnToolDrag(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
+        void onToolDrag(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
             if (widgetIndex == WIDX_CONSTRUCT_ON_LAND)
             {
@@ -431,7 +431,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnPrepareDraw() override
+        void onPrepareDraw() override
         {
             // Press / unpress footpath and queue type buttons
             pressedWidgets &= ~(1uLL << WIDX_FOOTPATH_TYPE);
@@ -453,13 +453,13 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDraw(RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
             ScreenCoordsXY screenCoords;
             WindowDrawWidgets(*this, rt);
             WindowFootpathDrawDropdownButtons(rt);
 
-            if (!IsWidgetDisabled(WIDX_CONSTRUCT))
+            if (!isWidgetDisabled(WIDX_CONSTRUCT))
             {
                 // Get construction image
                 uint8_t direction = (_footpathConstructDirection + GetCurrentRotation()) % 4;
@@ -571,7 +571,7 @@ namespace OpenRCT2::Ui::Windows
                 auto pathConstructFlags = FootpathCreateConstructFlags(type);
 
                 _windowFootpathCost = FootpathProvisionalSet(type, railings, footpathLoc, slope, pathConstructFlags);
-                InvalidateWidget(WIDX_CONSTRUCT);
+                invalidateWidget(WIDX_CONSTRUCT);
             }
 
             auto curTime = Platform::GetTicks();
@@ -1006,7 +1006,7 @@ namespace OpenRCT2::Ui::Windows
             if (_windowFootpathCost != footpathCost)
             {
                 _windowFootpathCost = footpathCost;
-                InvalidateWidget(WIDX_CONSTRUCT);
+                invalidateWidget(WIDX_CONSTRUCT);
             }
         }
 
@@ -1405,7 +1405,7 @@ namespace OpenRCT2::Ui::Windows
 
             pressedWidgets = newPressedWidgets;
             disabledWidgets = newDisabledWidgets;
-            Invalidate();
+            invalidate();
         }
 
         /**
@@ -1451,8 +1451,8 @@ namespace OpenRCT2::Ui::Windows
     public:
         void KeyboardShortcutTurnLeft()
         {
-            if (IsWidgetDisabled(WIDX_DIRECTION_NW) || IsWidgetDisabled(WIDX_DIRECTION_NE)
-                || IsWidgetDisabled(WIDX_DIRECTION_SW) || IsWidgetDisabled(WIDX_DIRECTION_SE)
+            if (isWidgetDisabled(WIDX_DIRECTION_NW) || isWidgetDisabled(WIDX_DIRECTION_NE)
+                || isWidgetDisabled(WIDX_DIRECTION_SW) || isWidgetDisabled(WIDX_DIRECTION_SE)
                 || _footpathConstructionMode != PathConstructionMode::bridgeOrTunnel)
             {
                 return;
@@ -1464,8 +1464,8 @@ namespace OpenRCT2::Ui::Windows
 
         void KeyboardShortcutTurnRight()
         {
-            if (IsWidgetDisabled(WIDX_DIRECTION_NW) || IsWidgetDisabled(WIDX_DIRECTION_NE)
-                || IsWidgetDisabled(WIDX_DIRECTION_SW) || IsWidgetDisabled(WIDX_DIRECTION_SE)
+            if (isWidgetDisabled(WIDX_DIRECTION_NW) || isWidgetDisabled(WIDX_DIRECTION_NE)
+                || isWidgetDisabled(WIDX_DIRECTION_SW) || isWidgetDisabled(WIDX_DIRECTION_SE)
                 || _footpathConstructionMode != PathConstructionMode::bridgeOrTunnel)
             {
                 return;
@@ -1477,7 +1477,7 @@ namespace OpenRCT2::Ui::Windows
 
         void KeyboardShortcutShortcutSlopeDown()
         {
-            if (IsWidgetDisabled(WIDX_SLOPEDOWN) || IsWidgetDisabled(WIDX_LEVEL) || IsWidgetDisabled(WIDX_SLOPEUP)
+            if (isWidgetDisabled(WIDX_SLOPEDOWN) || isWidgetDisabled(WIDX_LEVEL) || isWidgetDisabled(WIDX_SLOPEUP)
                 || widgets[WIDX_LEVEL].type == WidgetType::empty)
             {
                 return;
@@ -1486,10 +1486,10 @@ namespace OpenRCT2::Ui::Windows
             switch (_footpathConstructSlope)
             {
                 case 0:
-                    OnMouseDown(WIDX_SLOPEDOWN);
+                    onMouseDown(WIDX_SLOPEDOWN);
                     break;
                 case 2:
-                    OnMouseDown(WIDX_LEVEL);
+                    onMouseDown(WIDX_LEVEL);
                     break;
                 default:
                 case 6:
@@ -1499,7 +1499,7 @@ namespace OpenRCT2::Ui::Windows
 
         void KeyboardShortcutSlopeUp()
         {
-            if (IsWidgetDisabled(WIDX_SLOPEDOWN) || IsWidgetDisabled(WIDX_LEVEL) || IsWidgetDisabled(WIDX_SLOPEUP)
+            if (isWidgetDisabled(WIDX_SLOPEDOWN) || isWidgetDisabled(WIDX_LEVEL) || isWidgetDisabled(WIDX_SLOPEUP)
                 || widgets[WIDX_LEVEL].type == WidgetType::empty)
             {
                 return;
@@ -1508,10 +1508,10 @@ namespace OpenRCT2::Ui::Windows
             switch (_footpathConstructSlope)
             {
                 case 6:
-                    OnMouseDown(WIDX_LEVEL);
+                    onMouseDown(WIDX_LEVEL);
                     break;
                 case 0:
-                    OnMouseDown(WIDX_SLOPEUP);
+                    onMouseDown(WIDX_SLOPEUP);
                     break;
                 default:
                 case 2:
@@ -1521,18 +1521,18 @@ namespace OpenRCT2::Ui::Windows
 
         void KeyboardShortcutSlopeLevel()
         {
-            if (IsWidgetDisabled(WIDX_SLOPEDOWN) || IsWidgetDisabled(WIDX_LEVEL) || IsWidgetDisabled(WIDX_SLOPEUP)
+            if (isWidgetDisabled(WIDX_SLOPEDOWN) || isWidgetDisabled(WIDX_LEVEL) || isWidgetDisabled(WIDX_SLOPEUP)
                 || widgets[WIDX_LEVEL].type == WidgetType::empty || _footpathConstructSlope == 0)
             {
                 return;
             }
 
-            OnMouseDown(WIDX_LEVEL);
+            onMouseDown(WIDX_LEVEL);
         }
 
         void KeyboardShortcutDemolishCurrent()
         {
-            if (IsWidgetDisabled(WIDX_REMOVE) || widgets[WIDX_REMOVE].type == WidgetType::empty
+            if (isWidgetDisabled(WIDX_REMOVE) || widgets[WIDX_REMOVE].type == WidgetType::empty
                 || (!getGameState().cheats.buildInPauseMode && GameIsPaused()))
             {
                 return;
@@ -1543,12 +1543,12 @@ namespace OpenRCT2::Ui::Windows
 
         void KeyboardShortcutBuildCurrent()
         {
-            if (IsWidgetDisabled(WIDX_CONSTRUCT) || widgets[WIDX_CONSTRUCT].type == WidgetType::empty)
+            if (isWidgetDisabled(WIDX_CONSTRUCT) || widgets[WIDX_CONSTRUCT].type == WidgetType::empty)
             {
                 return;
             }
 
-            OnMouseDown(WIDX_CONSTRUCT);
+            onMouseDown(WIDX_CONSTRUCT);
         }
 
 #pragma endregion

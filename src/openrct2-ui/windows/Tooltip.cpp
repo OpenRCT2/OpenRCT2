@@ -82,9 +82,9 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnOpen() override
+        void onOpen() override
         {
-            SetWidgets(_tooltipWidgets);
+            setWidgets(_tooltipWidgets);
 
             width = _textWidth + 5;
             height = _textHeight + 4;
@@ -95,12 +95,12 @@ namespace OpenRCT2::Ui::Windows
             ResetTooltipNotShown();
         }
 
-        void OnUpdate() override
+        void onUpdate() override
         {
             UpdatePosition(gTooltipCursor);
         }
 
-        void OnDraw(RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
             int32_t left = windowPos.x;
             int32_t top = windowPos.y;
@@ -177,7 +177,7 @@ namespace OpenRCT2::Ui::Windows
             return;
 
         auto widget = &widgetWindow->widgets[widgetIndex];
-        widgetWindow->OnPrepareDraw();
+        widgetWindow->onPrepareDraw();
 
         OpenRCT2String result;
         if (widget->flags.has(WidgetFlag::tooltipIsString))
@@ -200,7 +200,7 @@ namespace OpenRCT2::Ui::Windows
             gTooltipWidget.windowClassification = widgetWindow->classification;
             gTooltipWidget.windowNumber = widgetWindow->number;
             gTooltipWidget.widgetIndex = widgetIndex;
-            result = widgetWindow->OnTooltip(widgetIndex, stringId);
+            result = widgetWindow->onTooltip(widgetIndex, stringId);
             if (result.str == kStringIdNone)
                 return;
         }

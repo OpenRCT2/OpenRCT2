@@ -113,21 +113,21 @@ namespace OpenRCT2::Ui::Windows
     class AboutWindow final : public Window
     {
     public:
-        void OnOpen() override
+        void onOpen() override
         {
-            SetPage(WINDOW_ABOUT_PAGE_OPENRCT2);
+            setPage(WINDOW_ABOUT_PAGE_OPENRCT2);
         }
 
-        void OnMouseUp(WidgetIndex widgetIndex) override
+        void onMouseUp(WidgetIndex widgetIndex) override
         {
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
-                    Close();
+                    close();
                     break;
                 case WIDX_TAB_ABOUT_OPENRCT2:
                 case WIDX_TAB_ABOUT_RCT2:
-                    SetPage(widgetIndex - WIDX_TAB_ABOUT_OPENRCT2);
+                    setPage(widgetIndex - WIDX_TAB_ABOUT_OPENRCT2);
                     break;
                 case WIDX_JOIN_DISCORD:
                     OpenRCT2::GetContext()->GetUiContext().OpenURL("https://discord.gg/ZXZd8D8");
@@ -147,9 +147,9 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDraw(RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
-            DrawWidgets(rt);
+            drawWidgets(rt);
 
             const auto& aboutOpenRCT2 = widgets[WIDX_TAB_ABOUT_OPENRCT2];
             const auto& aboutRCT2 = widgets[WIDX_TAB_ABOUT_RCT2];
@@ -187,7 +187,7 @@ namespace OpenRCT2::Ui::Windows
 
             if (newHeight != height)
             {
-                Invalidate();
+                invalidate();
                 widgets[WIDX_PAGE_BACKGROUND].bottom = newHeight;
                 widgets[WIDX_BACKGROUND].bottom = newHeight;
                 height = newHeight;
@@ -195,7 +195,7 @@ namespace OpenRCT2::Ui::Windows
         }
 
     private:
-        void SetPage(int32_t p)
+        void setPage(int32_t p)
         {
             // Skip setting page if we're already on this page, unless we're initialising the window
             if (page == p && !widgets.empty())
@@ -206,7 +206,7 @@ namespace OpenRCT2::Ui::Windows
             pressedWidgets = 0;
 
             WindowSetResize(*this, kWindowSize, kWindowSize);
-            SetWidgets(_windowAboutPageWidgets[p]);
+            setWidgets(_windowAboutPageWidgets[p]);
 
             switch (p)
             {

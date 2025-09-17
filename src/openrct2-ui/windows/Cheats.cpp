@@ -406,46 +406,46 @@ static StringId window_cheats_page_titles[] = {
         int32_t _daySpinnerValue = 1;
 
     public:
-        void OnOpen() override
+        void onOpen() override
         {
-            SetPage(WINDOW_CHEATS_PAGE_MONEY);
+            setPage(WINDOW_CHEATS_PAGE_MONEY);
             _parkRatingSpinnerValue = Park::GetForcedRating() >= 0 ? Park::GetForcedRating() : 999;
         }
 
-        void OnUpdate() override
+        void onUpdate() override
         {
             currentFrame++;
-            InvalidateWidget(WIDX_TAB_1 + page);
+            invalidateWidget(WIDX_TAB_1 + page);
         }
 
-        void OnMouseDown(WidgetIndex widgetIndex) override
+        void onMouseDown(WidgetIndex widgetIndex) override
         {
             switch (page)
             {
                 case WINDOW_CHEATS_PAGE_MONEY:
-                    OnMouseDownMoney(widgetIndex);
+                    onMouseDownMoney(widgetIndex);
                     break;
                 case WINDOW_CHEATS_PAGE_DATE:
-                    OnMouseDownDate(widgetIndex);
+                    onMouseDownDate(widgetIndex);
                     break;
                 case WINDOW_CHEATS_PAGE_PARK:
-                    OnMouseDownPark(widgetIndex);
+                    onMouseDownPark(widgetIndex);
                     break;
                 case WINDOW_CHEATS_PAGE_STAFF:
-                    OnMouseDownStaff(widgetIndex);
+                    onMouseDownStaff(widgetIndex);
                     break;
                 case WINDOW_CHEATS_PAGE_WEATHER:
-                    OnMouseDownWeather(widgetIndex);
+                    onMouseDownWeather(widgetIndex);
                     break;
             }
         }
 
-        void OnMouseUp(WidgetIndex widgetIndex) override
+        void onMouseUp(WidgetIndex widgetIndex) override
         {
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
-                    Close();
+                    close();
                     break;
                 case WIDX_TAB_1:
                 case WIDX_TAB_2:
@@ -454,55 +454,55 @@ static StringId window_cheats_page_titles[] = {
                 case WIDX_TAB_5:
                 case WIDX_TAB_6:
                 case WIDX_TAB_7:
-                    SetPage(widgetIndex - WIDX_TAB_1);
+                    setPage(widgetIndex - WIDX_TAB_1);
                     break;
                 default:
                     switch (page)
                     {
                         case WINDOW_CHEATS_PAGE_MONEY:
-                            OnMouseUpMoney(widgetIndex);
+                            onMouseUpMoney(widgetIndex);
                             break;
                         case WINDOW_CHEATS_PAGE_GUESTS:
-                            OnMouseUpGuests(widgetIndex);
+                            onMouseUpGuests(widgetIndex);
                             break;
                         case WINDOW_CHEATS_PAGE_PARK:
-                            OnMouseUpPark(widgetIndex);
+                            onMouseUpPark(widgetIndex);
                             break;
                         case WINDOW_CHEATS_PAGE_RIDES:
-                            OnMouseUpRides(widgetIndex);
+                            onMouseUpRides(widgetIndex);
                             break;
                         case WINDOW_CHEATS_PAGE_STAFF:
-                            OnMouseUpStaff(widgetIndex);
+                            onMouseUpStaff(widgetIndex);
                             break;
                         case WINDOW_CHEATS_PAGE_WEATHER:
-                            OnMouseUpWeather(widgetIndex);
+                            onMouseUpWeather(widgetIndex);
                             break;
                     }
                     break;
             }
         }
 
-        void OnDropdown(WidgetIndex widgetIndex, int32_t selectedIndex) override
+        void onDropdown(WidgetIndex widgetIndex, int32_t selectedIndex) override
         {
             if (page == WINDOW_CHEATS_PAGE_STAFF)
             {
-                OnDropdownStaff(widgetIndex, selectedIndex);
+                onDropdownStaff(widgetIndex, selectedIndex);
             }
             else if (page == WINDOW_CHEATS_PAGE_WEATHER)
             {
-                OnDropdownWeather(widgetIndex, selectedIndex);
+                onDropdownWeather(widgetIndex, selectedIndex);
             }
         }
 
-        void OnPrepareDraw() override
+        void onPrepareDraw() override
         {
             pressedWidgets = 0;
             disabledWidgets = 0;
 
             // Set correct active tab
             for (auto i = 0; i < WINDOW_CHEATS_PAGE_COUNT; i++)
-                SetWidgetPressed(WIDX_TAB_1 + i, false);
-            SetWidgetPressed(WIDX_TAB_1 + page, true);
+                setWidgetPressed(WIDX_TAB_1 + i, false);
+            setWidgetPressed(WIDX_TAB_1 + page, true);
 
             // Set title
             widgets[WIDX_TITLE].text = window_cheats_page_titles[page];
@@ -514,28 +514,28 @@ static StringId window_cheats_page_titles[] = {
                 {
                     if (isInEditorMode())
                     {
-                        SetWidgetDisabled(WIDX_NO_MONEY, true);
+                        setWidgetDisabled(WIDX_NO_MONEY, true);
                     }
 
                     auto moneyDisabled = (gameState.park.flags & PARK_FLAGS_NO_MONEY) != 0;
-                    SetCheckboxValue(WIDX_NO_MONEY, moneyDisabled);
-                    SetWidgetDisabled(WIDX_ADD_SET_MONEY_GROUP, moneyDisabled);
-                    SetWidgetDisabled(WIDX_MONEY_SPINNER, moneyDisabled);
-                    SetWidgetDisabled(WIDX_MONEY_SPINNER_INCREMENT, moneyDisabled);
-                    SetWidgetDisabled(WIDX_MONEY_SPINNER_DECREMENT, moneyDisabled);
-                    SetWidgetDisabled(WIDX_ADD_MONEY, moneyDisabled);
-                    SetWidgetDisabled(WIDX_SET_MONEY, moneyDisabled);
-                    SetWidgetDisabled(WIDX_CLEAR_LOAN, moneyDisabled);
+                    setCheckboxValue(WIDX_NO_MONEY, moneyDisabled);
+                    setWidgetDisabled(WIDX_ADD_SET_MONEY_GROUP, moneyDisabled);
+                    setWidgetDisabled(WIDX_MONEY_SPINNER, moneyDisabled);
+                    setWidgetDisabled(WIDX_MONEY_SPINNER_INCREMENT, moneyDisabled);
+                    setWidgetDisabled(WIDX_MONEY_SPINNER_DECREMENT, moneyDisabled);
+                    setWidgetDisabled(WIDX_ADD_MONEY, moneyDisabled);
+                    setWidgetDisabled(WIDX_SET_MONEY, moneyDisabled);
+                    setWidgetDisabled(WIDX_CLEAR_LOAN, moneyDisabled);
                     break;
                 }
                 case WINDOW_CHEATS_PAGE_GUESTS:
                 {
                     auto ft = Formatter::Common();
                     ft.Add<money64>(1000.00_GBP);
-                    SetCheckboxValue(WIDX_GUEST_IGNORE_RIDE_INTENSITY, gameState.cheats.ignoreRideIntensity);
-                    SetCheckboxValue(WIDX_GUEST_IGNORE_PRICE, gameState.cheats.ignorePrice);
-                    SetCheckboxValue(WIDX_DISABLE_VANDALISM, gameState.cheats.disableVandalism);
-                    SetCheckboxValue(WIDX_DISABLE_LITTERING, gameState.cheats.disableLittering);
+                    setCheckboxValue(WIDX_GUEST_IGNORE_RIDE_INTENSITY, gameState.cheats.ignoreRideIntensity);
+                    setCheckboxValue(WIDX_GUEST_IGNORE_PRICE, gameState.cheats.ignorePrice);
+                    setCheckboxValue(WIDX_DISABLE_VANDALISM, gameState.cheats.disableVandalism);
+                    setCheckboxValue(WIDX_DISABLE_LITTERING, gameState.cheats.disableLittering);
                     break;
                 }
                 case WINDOW_CHEATS_PAGE_PARK:
@@ -543,33 +543,33 @@ static StringId window_cheats_page_titles[] = {
                     if (gameState.park.flags & PARK_FLAGS_PARK_OPEN)
                         widgets[WIDX_OPEN_CLOSE_PARK].text = STR_CHEAT_CLOSE_PARK;
 
-                    SetCheckboxValue(WIDX_FORCE_PARK_RATING, Park::GetForcedRating() >= 0);
-                    SetCheckboxValue(WIDX_NEVERENDING_MARKETING, gameState.cheats.neverendingMarketing);
-                    SetCheckboxValue(WIDX_ALLOW_BUILD_IN_PAUSE_MODE, gameState.cheats.buildInPauseMode);
-                    SetCheckboxValue(WIDX_ALLOW_REGULAR_PATH_AS_QUEUE, gameState.cheats.allowRegularPathAsQueue);
-                    SetCheckboxValue(WIDX_ALLOW_SPECIAL_COLOUR_SCHEMES, gameState.cheats.allowSpecialColourSchemes);
+                    setCheckboxValue(WIDX_FORCE_PARK_RATING, Park::GetForcedRating() >= 0);
+                    setCheckboxValue(WIDX_NEVERENDING_MARKETING, gameState.cheats.neverendingMarketing);
+                    setCheckboxValue(WIDX_ALLOW_BUILD_IN_PAUSE_MODE, gameState.cheats.buildInPauseMode);
+                    setCheckboxValue(WIDX_ALLOW_REGULAR_PATH_AS_QUEUE, gameState.cheats.allowRegularPathAsQueue);
+                    setCheckboxValue(WIDX_ALLOW_SPECIAL_COLOUR_SCHEMES, gameState.cheats.allowSpecialColourSchemes);
                     break;
                 case WINDOW_CHEATS_PAGE_RIDES:
-                    SetCheckboxValue(WIDX_UNLOCK_OPERATING_LIMITS, gameState.cheats.unlockOperatingLimits);
-                    SetCheckboxValue(WIDX_DISABLE_BRAKES_FAILURE, gameState.cheats.disableBrakesFailure);
-                    SetCheckboxValue(WIDX_DISABLE_ALL_BREAKDOWNS, gameState.cheats.disableAllBreakdowns);
-                    SetCheckboxValue(WIDX_SHOW_ALL_OPERATING_MODES, gameState.cheats.showAllOperatingModes);
-                    SetCheckboxValue(
+                    setCheckboxValue(WIDX_UNLOCK_OPERATING_LIMITS, gameState.cheats.unlockOperatingLimits);
+                    setCheckboxValue(WIDX_DISABLE_BRAKES_FAILURE, gameState.cheats.disableBrakesFailure);
+                    setCheckboxValue(WIDX_DISABLE_ALL_BREAKDOWNS, gameState.cheats.disableAllBreakdowns);
+                    setCheckboxValue(WIDX_SHOW_ALL_OPERATING_MODES, gameState.cheats.showAllOperatingModes);
+                    setCheckboxValue(
                         WIDX_SHOW_VEHICLES_FROM_OTHER_TRACK_TYPES, gameState.cheats.showVehiclesFromOtherTrackTypes);
-                    SetCheckboxValue(WIDX_DISABLE_TRAIN_LENGTH_LIMITS, gameState.cheats.disableTrainLengthLimit);
-                    SetCheckboxValue(WIDX_ENABLE_CHAIN_LIFT_ON_ALL_TRACK, gameState.cheats.enableChainLiftOnAllTrack);
-                    SetCheckboxValue(WIDX_ENABLE_ARBITRARY_RIDE_TYPE_CHANGES, gameState.cheats.allowArbitraryRideTypeChanges);
-                    SetCheckboxValue(WIDX_DISABLE_RIDE_VALUE_AGING, gameState.cheats.disableRideValueAging);
-                    SetCheckboxValue(WIDX_IGNORE_RESEARCH_STATUS, gameState.cheats.ignoreResearchStatus);
-                    SetCheckboxValue(WIDX_ENABLE_ALL_DRAWABLE_TRACK_PIECES, gameState.cheats.enableAllDrawableTrackPieces);
-                    SetCheckboxValue(WIDX_ALLOW_TRACK_PLACE_INVALID_HEIGHTS, gameState.cheats.allowTrackPlaceInvalidHeights);
-                    SetCheckboxValue(WIDX_MAKE_DESTRUCTIBLE, gameState.cheats.makeAllDestructible);
+                    setCheckboxValue(WIDX_DISABLE_TRAIN_LENGTH_LIMITS, gameState.cheats.disableTrainLengthLimit);
+                    setCheckboxValue(WIDX_ENABLE_CHAIN_LIFT_ON_ALL_TRACK, gameState.cheats.enableChainLiftOnAllTrack);
+                    setCheckboxValue(WIDX_ENABLE_ARBITRARY_RIDE_TYPE_CHANGES, gameState.cheats.allowArbitraryRideTypeChanges);
+                    setCheckboxValue(WIDX_DISABLE_RIDE_VALUE_AGING, gameState.cheats.disableRideValueAging);
+                    setCheckboxValue(WIDX_IGNORE_RESEARCH_STATUS, gameState.cheats.ignoreResearchStatus);
+                    setCheckboxValue(WIDX_ENABLE_ALL_DRAWABLE_TRACK_PIECES, gameState.cheats.enableAllDrawableTrackPieces);
+                    setCheckboxValue(WIDX_ALLOW_TRACK_PLACE_INVALID_HEIGHTS, gameState.cheats.allowTrackPlaceInvalidHeights);
+                    setCheckboxValue(WIDX_MAKE_DESTRUCTIBLE, gameState.cheats.makeAllDestructible);
                     break;
                 case WINDOW_CHEATS_PAGE_STAFF:
-                    SetCheckboxValue(WIDX_DISABLE_PLANT_AGING, gameState.cheats.disablePlantAging);
+                    setCheckboxValue(WIDX_DISABLE_PLANT_AGING, gameState.cheats.disablePlantAging);
                     break;
                 case WINDOW_CHEATS_PAGE_WEATHER:
-                    SetCheckboxValue(WIDX_FREEZE_WEATHER, gameState.cheats.freezeWeather);
+                    setCheckboxValue(WIDX_FREEZE_WEATHER, gameState.cheats.freezeWeather);
                     break;
             }
 
@@ -587,15 +587,15 @@ static StringId window_cheats_page_titles[] = {
 
             if (isInEditorMode())
             {
-                SetWidgetDisabled(WIDX_TAB_2, true);
-                SetWidgetDisabled(WIDX_TAB_3, true);
+                setWidgetDisabled(WIDX_TAB_2, true);
+                setWidgetDisabled(WIDX_TAB_3, true);
                 UpdateTabPositions();
             }
         }
 
-        void OnDraw(RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
-            DrawWidgets(rt);
+            drawWidgets(rt);
             DrawTabImages(rt);
 
             static constexpr int16_t _xLcol = 14;
@@ -606,7 +606,7 @@ static StringId window_cheats_page_titles[] = {
                 auto colour = colours[1];
                 auto ft = Formatter();
                 ft.Add<money64>(_moneySpinnerValue);
-                if (IsWidgetDisabled(WIDX_MONEY_SPINNER))
+                if (isWidgetDisabled(WIDX_MONEY_SPINNER))
                 {
                     colour.setFlag(ColourFlag::inset, true);
                 }
@@ -703,7 +703,7 @@ static StringId window_cheats_page_titles[] = {
             }
         }
 
-        void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override
+        void onTextInput(WidgetIndex widgetIndex, std::string_view text) override
         {
             if (page == WINDOW_CHEATS_PAGE_MONEY && widgetIndex == WIDX_MONEY_SPINNER)
             {
@@ -712,11 +712,11 @@ static StringId window_cheats_page_titles[] = {
                 {
                     _moneySpinnerValue = val;
                 }
-                Invalidate();
+                invalidate();
             }
         }
 
-        OpenRCT2String OnTooltip(WidgetIndex widgetIndex, StringId fallback) override
+        OpenRCT2String onTooltip(WidgetIndex widgetIndex, StringId fallback) override
         {
             if (page == WINDOW_CHEATS_PAGE_RIDES && widgetIndex == WIDX_UNLOCK_OPERATING_LIMITS)
             {
@@ -728,7 +728,7 @@ static StringId window_cheats_page_titles[] = {
         }
 
     private:
-        void SetPage(int32_t p)
+        void setPage(int32_t p)
         {
             // Skip setting page if we're already on this page, unless we're initialising the window
             if (page == p && !widgets.empty())
@@ -739,7 +739,7 @@ static StringId window_cheats_page_titles[] = {
 
             holdDownWidgets = window_cheats_page_holdDownWidgets[p];
             pressedWidgets = 0;
-            SetWidgets(window_cheats_page_widgets[p]);
+            setWidgets(window_cheats_page_widgets[p]);
 
             auto maxY = 0;
             for (WidgetIndex widgetIdx = WIDX_TAB_CONTENT; widgetIdx < widgets.size(); widgetIdx++)
@@ -751,10 +751,10 @@ static StringId window_cheats_page_titles[] = {
 
             if (maxY != height)
             {
-                Invalidate();
+                invalidate();
                 height = maxY;
-                ResizeFrame();
-                Invalidate();
+                resizeFrame();
+                invalidate();
             }
         }
 
@@ -768,7 +768,7 @@ static StringId window_cheats_page_titles[] = {
             for (auto tab : tabs)
             {
                 widgets[tab].left = left;
-                if (!IsWidgetDisabled(tab))
+                if (!isWidgetDisabled(tab))
                 {
                     left += kTabWidth;
                 }
@@ -778,7 +778,7 @@ static StringId window_cheats_page_titles[] = {
         void DrawTabImages(RenderTarget& rt)
         {
             // Money tab
-            if (!IsWidgetDisabled(WIDX_TAB_1))
+            if (!isWidgetDisabled(WIDX_TAB_1))
             {
                 uint32_t sprite_idx = SPR_TAB_FINANCES_SUMMARY_0;
                 if (page == WINDOW_CHEATS_PAGE_MONEY)
@@ -788,7 +788,7 @@ static StringId window_cheats_page_titles[] = {
             }
 
             // Date tab
-            if (!IsWidgetDisabled(WIDX_TAB_2))
+            if (!isWidgetDisabled(WIDX_TAB_2))
             {
                 uint32_t sprite_idx = SPR_TAB_TIMER_0;
                 if (page == WINDOW_CHEATS_PAGE_DATE)
@@ -798,7 +798,7 @@ static StringId window_cheats_page_titles[] = {
             }
 
             // Guests tab
-            if (!IsWidgetDisabled(WIDX_TAB_3))
+            if (!isWidgetDisabled(WIDX_TAB_3))
             {
                 uint32_t sprite_idx = SPR_TAB_GUESTS_0;
                 if (page == WINDOW_CHEATS_PAGE_GUESTS)
@@ -808,7 +808,7 @@ static StringId window_cheats_page_titles[] = {
             }
 
             // Staff tab
-            if (!IsWidgetDisabled(WIDX_TAB_4))
+            if (!isWidgetDisabled(WIDX_TAB_4))
             {
                 uint32_t sprite_idx = SPR_MECHANIC;
                 GfxDrawSprite(
@@ -817,14 +817,14 @@ static StringId window_cheats_page_titles[] = {
             }
 
             // Park tab
-            if (!IsWidgetDisabled(WIDX_TAB_5))
+            if (!isWidgetDisabled(WIDX_TAB_5))
             {
                 GfxDrawSprite(
                     rt, ImageId(SPR_TAB_PARK), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_5].left, widgets[WIDX_TAB_5].top });
             }
 
             // Rides tab
-            if (!IsWidgetDisabled(WIDX_TAB_6))
+            if (!isWidgetDisabled(WIDX_TAB_6))
             {
                 uint32_t sprite_idx = SPR_TAB_RIDE_0;
                 if (page == WINDOW_CHEATS_PAGE_RIDES)
@@ -834,7 +834,7 @@ static StringId window_cheats_page_titles[] = {
             }
 
             // Nature/weather tab
-            if (!IsWidgetDisabled(WIDX_TAB_7))
+            if (!isWidgetDisabled(WIDX_TAB_7))
             {
                 uint32_t sprite_idx = SPR_WEATHER_SUN_CLOUD;
                 GfxDrawSprite(
@@ -843,19 +843,19 @@ static StringId window_cheats_page_titles[] = {
             }
         }
 
-        void OnMouseDownMoney(WidgetIndex widgetIndex)
+        void onMouseDownMoney(WidgetIndex widgetIndex)
         {
             switch (widgetIndex)
             {
                 case WIDX_MONEY_SPINNER_INCREMENT:
                     _moneySpinnerValue = AddClamp<money64>(
                         kCheatsMoneyIncrement * (_moneySpinnerValue / kCheatsMoneyIncrement), kCheatsMoneyIncrement);
-                    InvalidateWidget(WIDX_MONEY_SPINNER);
+                    invalidateWidget(WIDX_MONEY_SPINNER);
                     break;
                 case WIDX_MONEY_SPINNER_DECREMENT:
                     _moneySpinnerValue = AddClamp<money64>(
                         kCheatsMoneyIncrement * (_moneySpinnerValue / kCheatsMoneyIncrement), -kCheatsMoneyIncrement);
-                    InvalidateWidget(WIDX_MONEY_SPINNER);
+                    invalidateWidget(WIDX_MONEY_SPINNER);
                     break;
                 case WIDX_ADD_MONEY:
                     CheatsSet(CheatType::AddMoney, _moneySpinnerValue);
@@ -863,7 +863,7 @@ static StringId window_cheats_page_titles[] = {
             }
         }
 
-        void OnMouseDownDate(WidgetIndex widgetIndex)
+        void onMouseDownDate(WidgetIndex widgetIndex)
         {
             auto* windowMgr = GetWindowManager();
             auto& gameState = getGameState();
@@ -873,40 +873,40 @@ static StringId window_cheats_page_titles[] = {
                 case WIDX_YEAR_UP:
                     _yearSpinnerValue++;
                     _yearSpinnerValue = std::clamp(_yearSpinnerValue, 1, kMaxYear);
-                    InvalidateWidget(WIDX_YEAR_BOX);
+                    invalidateWidget(WIDX_YEAR_BOX);
                     break;
                 case WIDX_YEAR_DOWN:
                     _yearSpinnerValue--;
                     _yearSpinnerValue = std::clamp(_yearSpinnerValue, 1, kMaxYear);
-                    InvalidateWidget(WIDX_YEAR_BOX);
+                    invalidateWidget(WIDX_YEAR_BOX);
                     break;
                 case WIDX_MONTH_UP:
                     _monthSpinnerValue++;
                     _monthSpinnerValue = std::clamp(_monthSpinnerValue, 1, static_cast<int32_t>(MONTH_COUNT));
                     _daySpinnerValue = std::clamp(
                         _daySpinnerValue, 1, static_cast<int32_t>(Date::GetDaysInMonth(_monthSpinnerValue - 1)));
-                    InvalidateWidget(WIDX_MONTH_BOX);
-                    InvalidateWidget(WIDX_DAY_BOX);
+                    invalidateWidget(WIDX_MONTH_BOX);
+                    invalidateWidget(WIDX_DAY_BOX);
                     break;
                 case WIDX_MONTH_DOWN:
                     _monthSpinnerValue--;
                     _monthSpinnerValue = std::clamp(_monthSpinnerValue, 1, static_cast<int32_t>(MONTH_COUNT));
                     _daySpinnerValue = std::clamp(
                         _daySpinnerValue, 1, static_cast<int32_t>(Date::GetDaysInMonth(_monthSpinnerValue - 1)));
-                    InvalidateWidget(WIDX_MONTH_BOX);
-                    InvalidateWidget(WIDX_DAY_BOX);
+                    invalidateWidget(WIDX_MONTH_BOX);
+                    invalidateWidget(WIDX_DAY_BOX);
                     break;
                 case WIDX_DAY_UP:
                     _daySpinnerValue++;
                     _daySpinnerValue = std::clamp(
                         _daySpinnerValue, 1, static_cast<int32_t>(Date::GetDaysInMonth(_monthSpinnerValue - 1)));
-                    InvalidateWidget(WIDX_DAY_BOX);
+                    invalidateWidget(WIDX_DAY_BOX);
                     break;
                 case WIDX_DAY_DOWN:
                     _daySpinnerValue--;
                     _daySpinnerValue = std::clamp(
                         _daySpinnerValue, 1, static_cast<int32_t>(Date::GetDaysInMonth(_monthSpinnerValue - 1)));
-                    InvalidateWidget(WIDX_DAY_BOX);
+                    invalidateWidget(WIDX_DAY_BOX);
                     break;
                 case WIDX_DATE_SET:
                 {
@@ -921,15 +921,15 @@ static StringId window_cheats_page_titles[] = {
                     auto setDateAction = GameActions::ParkSetDateAction(0, 0, 0);
                     GameActions::Execute(&setDateAction, gameState);
                     windowMgr->InvalidateByClass(WindowClass::BottomToolbar);
-                    InvalidateWidget(WIDX_YEAR_BOX);
-                    InvalidateWidget(WIDX_MONTH_BOX);
-                    InvalidateWidget(WIDX_DAY_BOX);
+                    invalidateWidget(WIDX_YEAR_BOX);
+                    invalidateWidget(WIDX_MONTH_BOX);
+                    invalidateWidget(WIDX_DAY_BOX);
                     break;
                 }
             }
         }
 
-        void OnMouseUpMoney(WidgetIndex widgetIndex)
+        void onMouseUpMoney(WidgetIndex widgetIndex)
         {
             switch (widgetIndex)
             {
@@ -951,13 +951,13 @@ static StringId window_cheats_page_titles[] = {
             }
         }
 
-        void OnMouseDownPark(WidgetIndex widgetIndex)
+        void onMouseDownPark(WidgetIndex widgetIndex)
         {
             switch (widgetIndex)
             {
                 case WIDX_INCREASE_PARK_RATING:
                     _parkRatingSpinnerValue = std::min(999, 10 * (_parkRatingSpinnerValue / 10 + 1));
-                    InvalidateWidget(WIDX_PARK_RATING_SPINNER);
+                    invalidateWidget(WIDX_PARK_RATING_SPINNER);
                     if (Park::GetForcedRating() >= 0)
                     {
                         auto cheatSetAction = GameActions::CheatSetAction(
@@ -967,7 +967,7 @@ static StringId window_cheats_page_titles[] = {
                     break;
                 case WIDX_DECREASE_PARK_RATING:
                     _parkRatingSpinnerValue = std::max(0, 10 * (_parkRatingSpinnerValue / 10 - 1));
-                    InvalidateWidget(WIDX_PARK_RATING_SPINNER);
+                    invalidateWidget(WIDX_PARK_RATING_SPINNER);
                     if (Park::GetForcedRating() >= 0)
                     {
                         CheatsSet(CheatType::SetForcedParkRating, _parkRatingSpinnerValue);
@@ -976,7 +976,7 @@ static StringId window_cheats_page_titles[] = {
             }
         }
 
-        void OnMouseDownStaff(WidgetIndex widgetIndex)
+        void onMouseDownStaff(WidgetIndex widgetIndex)
         {
             auto* widget = &widgets[widgetIndex];
             auto& gameState = getGameState();
@@ -1001,7 +1001,7 @@ static StringId window_cheats_page_titles[] = {
             }
         }
 
-        void OnMouseDownWeather(WidgetIndex widgetIndex)
+        void onMouseDownWeather(WidgetIndex widgetIndex)
         {
             auto* widget = &widgets[widgetIndex];
             auto& gameState = getGameState();
@@ -1027,7 +1027,7 @@ static StringId window_cheats_page_titles[] = {
             }
         }
 
-        void OnMouseUpPark(WidgetIndex widgetIndex)
+        void onMouseUpPark(WidgetIndex widgetIndex)
         {
             auto& gameState = getGameState();
             switch (widgetIndex)
@@ -1072,7 +1072,7 @@ static StringId window_cheats_page_titles[] = {
             }
         }
 
-        void OnMouseUpStaff(WidgetIndex widgetIndex)
+        void onMouseUpStaff(WidgetIndex widgetIndex)
         {
             auto& gameState = getGameState();
             switch (widgetIndex)
@@ -1098,7 +1098,7 @@ static StringId window_cheats_page_titles[] = {
             }
         }
 
-        void OnMouseUpWeather(WidgetIndex widgetIndex)
+        void onMouseUpWeather(WidgetIndex widgetIndex)
         {
             auto& gameState = getGameState();
             switch (widgetIndex)
@@ -1115,7 +1115,7 @@ static StringId window_cheats_page_titles[] = {
             }
         }
 
-        void OnDropdownStaff(WidgetIndex widgetIndex, int32_t dropdownIndex)
+        void onDropdownStaff(WidgetIndex widgetIndex, int32_t dropdownIndex)
         {
             if (dropdownIndex == -1)
             {
@@ -1146,7 +1146,7 @@ static StringId window_cheats_page_titles[] = {
             }
         }
 
-        void OnDropdownWeather(WidgetIndex widgetIndex, int32_t dropdownIndex)
+        void onDropdownWeather(WidgetIndex widgetIndex, int32_t dropdownIndex)
         {
             if (dropdownIndex == -1)
             {
@@ -1159,7 +1159,7 @@ static StringId window_cheats_page_titles[] = {
             }
         }
 
-        void OnMouseUpGuests(WidgetIndex widgetIndex)
+        void onMouseUpGuests(WidgetIndex widgetIndex)
         {
             auto& gameState = getGameState();
             switch (widgetIndex)
@@ -1247,7 +1247,7 @@ static StringId window_cheats_page_titles[] = {
             }
         }
 
-        void OnMouseUpRides(WidgetIndex widgetIndex)
+        void onMouseUpRides(WidgetIndex widgetIndex)
         {
             auto& gameState = getGameState();
             switch (widgetIndex)

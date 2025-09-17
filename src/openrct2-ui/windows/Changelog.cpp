@@ -130,15 +130,15 @@ namespace OpenRCT2::Ui::Windows
                 *this, { kMinimumWindowWidth, kMinimumWindowHeight }, { (screenWidth * 4) / 5, (screenHeight * 4) / 5 });
         }
 
-        void OnOpen() override
+        void onOpen() override
         {
-            SetWidgets(_windowChangelogWidgets);
+            setWidgets(_windowChangelogWidgets);
 
             WindowInitScrollWidgets(*this);
             SetResizeDimensions();
         }
 
-        void OnResize() override
+        void onResize() override
         {
             SetResizeDimensions();
 
@@ -147,7 +147,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_OPEN_URL].right = widgets[WIDX_OPEN_URL].left + downloadButtonWidth;
         }
 
-        void OnPrepareDraw() override
+        void onPrepareDraw() override
         {
             widgets[WIDX_SCROLL].right = width - 3;
             widgets[WIDX_SCROLL].bottom = height - 22;
@@ -155,12 +155,12 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_OPEN_URL].top = height - 19;
         }
 
-        void OnMouseUp(WidgetIndex widgetIndex) override
+        void onMouseUp(WidgetIndex widgetIndex) override
         {
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
-                    Close();
+                    close();
                     break;
                 case WIDX_OPEN_URL:
                     if (_newVersionInfo != nullptr)
@@ -175,7 +175,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
+        void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
             const int32_t lineHeight = FontGetLineHeight(FontStyle::Medium);
 
@@ -190,7 +190,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        ScreenSize OnScrollGetSize(int32_t scrollIndex) override
+        ScreenSize onScrollGetSize(int32_t scrollIndex) override
         {
             return ScreenSize(
                 _changelogLongestLineWidth + 4,

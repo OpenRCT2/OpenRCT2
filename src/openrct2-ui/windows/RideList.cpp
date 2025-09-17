@@ -180,9 +180,9 @@ namespace OpenRCT2::Ui::Windows
         std::vector<RideListEntry> _rideList;
 
     public:
-        void OnOpen() override
+        void onOpen() override
         {
-            SetWidgets(_rideListWidgets);
+            setWidgets(_rideListWidgets);
             WindowInitScrollWidgets(*this);
             WindowSetResize(*this, kWindowSize, kWindowSize * 2);
 
@@ -201,16 +201,16 @@ namespace OpenRCT2::Ui::Windows
          *
          *  rct2: 0x006B38A7
          */
-        void OnResize() override
+        void onResize() override
         {
             if (width < minWidth)
             {
-                Invalidate();
+                invalidate();
                 width = minWidth;
             }
             if (height < minHeight)
             {
-                Invalidate();
+                invalidate();
                 height = minHeight;
             }
         }
@@ -219,12 +219,12 @@ namespace OpenRCT2::Ui::Windows
          *
          *  rct2: 0x006B3511
          */
-        void OnMouseUp(WidgetIndex widgetIndex) override
+        void onMouseUp(WidgetIndex widgetIndex) override
         {
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
-                    Close();
+                    close();
                     break;
                 case WIDX_HEADER_NAME:
                     if (listInformationType != INFORMATION_TYPE_STATUS)
@@ -270,7 +270,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_SEARCH_CLEAR_BUTTON:
                     _searchFilter.clear();
                     ApplySearchQuery();
-                    InvalidateWidget(WIDX_SEARCH_TEXT_BOX);
+                    invalidateWidget(WIDX_SEARCH_TEXT_BOX);
                     break;
                 case WIDX_CLOSE_LIGHT:
                     CloseAllRides();
@@ -287,7 +287,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         _quickDemolishMode = false;
                     }
-                    Invalidate();
+                    invalidate();
                     break;
             }
         }
@@ -296,7 +296,7 @@ namespace OpenRCT2::Ui::Windows
          *
          *  rct2: 0x006B3532
          */
-        void OnMouseDown(WidgetIndex widgetIndex) override
+        void onMouseDown(WidgetIndex widgetIndex) override
         {
             if (widgetIndex == WIDX_OPEN_CLOSE_ALL)
             {
@@ -348,7 +348,7 @@ namespace OpenRCT2::Ui::Windows
          *
          *  rct2: 0x006B3547
          */
-        void OnDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex) override
+        void onDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex) override
         {
             if (widgetIndex == WIDX_OPEN_CLOSE_ALL)
             {
@@ -361,7 +361,7 @@ namespace OpenRCT2::Ui::Windows
                     OpenAllRides();
                 }
 
-                Invalidate();
+                invalidate();
             }
             else if (widgetIndex == WIDX_HEADER_CUSTOMISE)
             {
@@ -374,7 +374,7 @@ namespace OpenRCT2::Ui::Windows
                     informationType = selectedValue;
 
                 _windowRideListInformationType = InformationType(informationType);
-                Invalidate();
+                invalidate();
 
                 // Automatically change sort if we're sorting by the custom/info column
                 if (listInformationType != INFORMATION_TYPE_STATUS)
@@ -389,20 +389,20 @@ namespace OpenRCT2::Ui::Windows
          *
          *  rct2: 0x006B386B
          */
-        void OnUpdate() override
+        void onUpdate() override
         {
             currentFrame = (currentFrame + 1) % 64;
-            InvalidateWidget(WIDX_TAB_1 + page);
+            invalidateWidget(WIDX_TAB_1 + page);
             if (_windowRideListInformationType != INFORMATION_TYPE_STATUS)
-                Invalidate();
+                invalidate();
         }
 
-        void OnPeriodicUpdate() override
+        void onPeriodicUpdate() override
         {
             SortList();
         }
 
-        void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override
+        void onTextInput(WidgetIndex widgetIndex, std::string_view text) override
         {
             if (widgetIndex != WIDX_SEARCH_TEXT_BOX)
                 return;
@@ -418,14 +418,14 @@ namespace OpenRCT2::Ui::Windows
          *
          *  rct2: 0x006B35A1
          */
-        ScreenSize OnScrollGetSize(int32_t scrollIndex) override
+        ScreenSize onScrollGetSize(int32_t scrollIndex) override
         {
             const auto newHeight = static_cast<int32_t>(CountVisibleItems() * kScrollableRowHeight);
             auto top = std::max(0, newHeight - widgets[WIDX_LIST].bottom + widgets[WIDX_LIST].top + 21);
             if (top < scrolls[0].contentOffsetY)
             {
                 scrolls[0].contentOffsetY = top;
-                Invalidate();
+                invalidate();
             }
 
             return { 0, newHeight };
@@ -451,7 +451,7 @@ namespace OpenRCT2::Ui::Windows
          *
          *  rct2: 0x006B361F
          */
-        void OnScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
+        void onScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
             const auto index = GetNthVisibleItemIndex(screenCoords.y / kScrollableRowHeight);
             if (index < 0)
@@ -477,21 +477,21 @@ namespace OpenRCT2::Ui::Windows
          *
          *  rct2: 0x006B35EF
          */
-        void OnScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
+        void onScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
             const auto index = GetNthVisibleItemIndex(screenCoords.y / kScrollableRowHeight);
             if (index < 0)
                 return;
 
             selectedListItem = index;
-            Invalidate();
+            invalidate();
         }
 
         /**
          *
          *  rct2: 0x006B3182
          */
-        void OnPrepareDraw() override
+        void onPrepareDraw() override
         {
             auto ft = Formatter();
             ft.Add<StringId>(STR_UP);
@@ -580,7 +580,7 @@ namespace OpenRCT2::Ui::Windows
          *
          *  rct2: 0x006B3235
          */
-        void OnDraw(RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
             WindowDrawWidgets(*this, rt);
             DrawTabImages(rt);
@@ -617,7 +617,7 @@ namespace OpenRCT2::Ui::Windows
          *
          *  rct2: 0x006B3240
          */
-        void OnScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
+        void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
             auto rtCoords = ScreenCoordsXY{ rt.x, rt.y };
             GfxFillRect(
@@ -1089,7 +1089,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             selectedListItem = -1;
-            Invalidate();
+            invalidate();
         }
 
         // window_ride_list_close_all

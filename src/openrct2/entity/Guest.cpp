@@ -1466,7 +1466,7 @@ void Guest::CheckCantFindRide()
 
     if (w != nullptr)
     {
-        w->OnPrepareDraw();
+        w->onPrepareDraw();
     }
 
     windowMgr->InvalidateByNumber(WindowClass::Peep, Id);
@@ -3163,7 +3163,7 @@ static void GuestLeavePark(Guest& guest)
     auto* windowMgr = Ui::GetWindowManager();
     WindowBase* w = windowMgr->FindByNumber(WindowClass::Peep, guest.Id);
     if (w != nullptr)
-        w->OnPrepareDraw();
+        w->onPrepareDraw();
     windowMgr->InvalidateByNumber(WindowClass::Peep, guest.Id);
 }
 

@@ -109,11 +109,11 @@ namespace OpenRCT2
         bool isVisible = true;
         EntityId viewportSmartFollowSprite{ EntityId::GetNull() }; // Handles setting viewport target sprite etc
 
-        void SetViewportLocation(const CoordsXYZ& coords);
-        void Invalidate();
-        void RemoveViewport();
-        void SetWidgets(const std::span<const Widget> newWidgets);
-        void ResizeFrame();
+        void setViewportLocation(const CoordsXYZ& coords);
+        void invalidate();
+        void removeViewport();
+        void setWidgets(const std::span<const Widget> newWidgets);
+        void resizeFrame();
 
         int16_t getTitleBarTargetHeight() const;
         int16_t getTitleBarCurrentHeight() const;
@@ -132,92 +132,92 @@ namespace OpenRCT2
         }
 
         // Events
-        virtual void OnOpen()
+        virtual void onOpen()
         {
         }
-        virtual bool CanClose()
+        virtual bool canClose()
         {
             return true;
         }
-        virtual void OnClose()
+        virtual void onClose()
         {
         }
-        virtual void OnResize()
+        virtual void onResize()
         {
         }
-        virtual void OnUpdate()
+        virtual void onUpdate()
         {
         }
-        virtual void OnPeriodicUpdate()
+        virtual void onPeriodicUpdate()
         {
         }
-        virtual void OnPrepareDraw()
+        virtual void onPrepareDraw()
         {
         }
-        virtual void OnDraw(RenderTarget& rt)
+        virtual void onDraw(RenderTarget& rt)
         {
         }
-        virtual void OnDrawWidget(WidgetIndex widgetIndex, RenderTarget& rt)
+        virtual void onDrawWidget(WidgetIndex widgetIndex, RenderTarget& rt)
         {
         }
-        virtual OpenRCT2String OnTooltip(WidgetIndex widgetIndex, StringId fallback)
+        virtual OpenRCT2String onTooltip(WidgetIndex widgetIndex, StringId fallback)
         {
             return { fallback, {} };
         }
-        virtual void OnMouseDown(WidgetIndex widgetIndex)
+        virtual void onMouseDown(WidgetIndex widgetIndex)
         {
         }
-        virtual void OnMouseUp(WidgetIndex widgetIndex)
+        virtual void onMouseUp(WidgetIndex widgetIndex)
         {
         }
-        virtual void OnDropdown(WidgetIndex widgetIndex, int32_t selectedIndex)
+        virtual void onDropdown(WidgetIndex widgetIndex, int32_t selectedIndex)
         {
         }
-        virtual void OnTextInput(WidgetIndex widgetIndex, std::string_view text)
+        virtual void onTextInput(WidgetIndex widgetIndex, std::string_view text)
         {
         }
-        virtual ScreenSize OnScrollGetSize(int32_t scrollIndex)
+        virtual ScreenSize onScrollGetSize(int32_t scrollIndex)
         {
             return {};
         }
-        virtual void OnScrollSelect(int32_t scrollIndex, int32_t scrollAreaType)
+        virtual void onScrollSelect(int32_t scrollIndex, int32_t scrollAreaType)
         {
         }
-        virtual void OnScrollMouseDrag(int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
+        virtual void onScrollMouseDrag(int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
         {
         }
-        virtual void OnScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
+        virtual void onScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
         {
         }
-        virtual void OnScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
+        virtual void onScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
         {
         }
-        virtual void OnScrollDraw(int32_t scrollIndex, RenderTarget& rt)
+        virtual void onScrollDraw(int32_t scrollIndex, RenderTarget& rt)
         {
         }
-        virtual void OnToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
+        virtual void onToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
         {
         }
-        virtual void OnToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
+        virtual void onToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
         {
         }
-        virtual void OnToolDrag(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
+        virtual void onToolDrag(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
         {
         }
-        virtual void OnToolUp(WidgetIndex widgetIndex, const ScreenCoordsXY&)
+        virtual void onToolUp(WidgetIndex widgetIndex, const ScreenCoordsXY&)
         {
         }
-        virtual void OnToolAbort(WidgetIndex widgetIndex)
+        virtual void onToolAbort(WidgetIndex widgetIndex)
         {
         }
-        virtual void OnViewportRotate()
+        virtual void onViewportRotate()
         {
         }
-        virtual void OnMoved(const ScreenCoordsXY&)
+        virtual void onMoved(const ScreenCoordsXY&)
         {
         }
-        virtual CursorID OnCursor(WidgetIndex, const ScreenCoordsXY&, CursorID);
-        virtual void OnLanguageChange()
+        virtual CursorID onCursor(WidgetIndex, const ScreenCoordsXY&, CursorID);
+        virtual void onLanguageChange()
         {
         }
 

@@ -296,11 +296,11 @@ namespace OpenRCT2::Ui::Windows
             std::fill_n(NewRideWindow::_windowNewRideTabScroll, RideTabCount, 0);
         }
 
-        void OnOpen() override
+        void onOpen() override
         {
-            SetWidgets(window_new_ride_widgets);
+            setWidgets(window_new_ride_widgets);
             PopulateRideList();
-            InitScrollWidgets();
+            initScrollWidgets();
             _filter.clear();
 
             currentFrame = 0;
@@ -313,23 +313,23 @@ namespace OpenRCT2::Ui::Windows
 
             if (_currentTab < RESEARCH_TAB)
             {
-                SetPage(_currentTab);
+                setPage(_currentTab);
                 RestoreScrollPositionForCurrentTab();
             }
         }
 
-        void OnUpdate() override
+        void onUpdate() override
         {
             currentFrame++;
             if (currentFrame >= TabAnimationLoops[_currentTab])
                 currentFrame = 0;
 
-            InvalidateWidget(WIDX_TAB_1 + static_cast<int32_t>(_currentTab));
+            invalidateWidget(WIDX_TAB_1 + static_cast<int32_t>(_currentTab));
 
             if (GetCurrentTextBox().window.classification == classification && GetCurrentTextBox().window.number == number)
             {
                 WindowUpdateTextboxCaret();
-                InvalidateWidget(WIDX_FILTER_TEXT_BOX);
+                invalidateWidget(WIDX_FILTER_TEXT_BOX);
             }
 
             if (_newRideVars.SelectedRide.Type != kRideTypeNull && _newRideVars.SelectedRideCountdown-- == 0)
@@ -347,17 +347,17 @@ namespace OpenRCT2::Ui::Windows
                 if (!widgetIsHighlighted(*this, WIDX_RIDE_LIST) && _newRideVars.HighlightedRide.Type != kRideTypeNull)
                 {
                     _newRideVars.HighlightedRide = { kRideTypeNull, kObjectEntryIndexNull };
-                    InvalidateWidget(WIDX_RIDE_LIST);
+                    invalidateWidget(WIDX_RIDE_LIST);
                 }
             }
         }
 
-        void OnMouseUp(WidgetIndex widgetIndex) override
+        void onMouseUp(WidgetIndex widgetIndex) override
         {
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
-                    Close();
+                    close();
                     break;
                 case WIDX_LAST_DEVELOPMENT_BUTTON:
                     WindowResearchDevelopmentMouseUp(widgetIndex, WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP);
@@ -369,7 +369,7 @@ namespace OpenRCT2::Ui::Windows
                     Config::Get().interface.ListRideVehiclesSeparately = !Config::Get().interface.ListRideVehiclesSeparately;
                     Config::Save();
                     PopulateRideList();
-                    Invalidate();
+                    invalidate();
                     break;
                 case WIDX_FILTER_TEXT_BOX:
                     WindowStartTextbox(*this, widgetIndex, _filter, kTextInputSize);
@@ -377,20 +377,20 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_FILTER_CLEAR_BUTTON:
                     _filter.clear();
                     scrolls->contentOffsetY = 0;
-                    Invalidate();
+                    invalidate();
                     break;
             }
         }
 
-        void OnMouseDown(WidgetIndex widgetIndex) override
+        void onMouseDown(WidgetIndex widgetIndex) override
         {
             if (widgetIndex >= WIDX_TAB_1 && widgetIndex <= WIDX_TAB_7)
             {
-                SetPage(widgetIndex - WIDX_TAB_1);
+                setPage(widgetIndex - WIDX_TAB_1);
             }
         }
 
-        void OnPrepareDraw() override
+        void onPrepareDraw() override
         {
             SetPressedTab();
 
@@ -418,9 +418,9 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_GROUP_BY_TRACK_TYPE].left = width - 8 - localizedGroupByTrackTypeWidth;
         }
 
-        void OnDraw(RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
-            DrawWidgets(rt);
+            drawWidgets(rt);
             DrawTabImages(rt);
 
             if (_currentTab != RESEARCH_TAB)
@@ -435,7 +435,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        ScreenSize OnScrollGetSize(int32_t scrollIndex) override
+        ScreenSize onScrollGetSize(int32_t scrollIndex) override
         {
             RideSelection* listItem = _windowNewRideListItems;
 
@@ -448,7 +448,7 @@ namespace OpenRCT2::Ui::Windows
             return { widgets[WIDX_RIDE_LIST].width(), ((count + 4) / 5) * 116 };
         }
 
-        void OnScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
+        void onScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
             RideSelection item = ScrollGetRideListItemAt(screenCoords);
             if (_newRideVars.HighlightedRide == item)
@@ -457,10 +457,10 @@ namespace OpenRCT2::Ui::Windows
             }
 
             _newRideVars.HighlightedRide = item;
-            Invalidate();
+            invalidate();
         }
 
-        void OnScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
+        void onScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
             RideSelection item = ScrollGetRideListItemAt(screenCoords);
             if (item.Type == kRideTypeNull && item.EntryIndex == kObjectEntryIndexNull)
@@ -472,10 +472,10 @@ namespace OpenRCT2::Ui::Windows
 
             OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Click1, 0, windowPos.x + (width / 2));
             _newRideVars.SelectedRideCountdown = 8;
-            Invalidate();
+            invalidate();
         }
 
-        void OnScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
+        void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
             if (_currentTab == RESEARCH_TAB)
             {
@@ -515,7 +515,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override
+        void onTextInput(WidgetIndex widgetIndex, std::string_view text) override
         {
             if (widgetIndex != WIDX_FILTER_TEXT_BOX)
                 return;
@@ -527,18 +527,18 @@ namespace OpenRCT2::Ui::Windows
 
             scrolls->contentOffsetY = 0;
             PopulateRideList();
-            Invalidate();
+            invalidate();
         }
 
-        void SetPage(int tab)
+        void setPage(int tab)
         {
             if (tab >= TRANSPORT_TAB && tab < TAB_COUNT)
             {
-                SetPage(static_cast<NewRideTabId>(tab));
+                setPage(static_cast<NewRideTabId>(tab));
             }
         }
 
-        void SetPage(NewRideTabId tab)
+        void setPage(NewRideTabId tab)
         {
             // Skip setting page if we're already on this page, unless we're initialising the window
             if (_currentTab == tab && !widgets.empty())
@@ -550,7 +550,7 @@ namespace OpenRCT2::Ui::Windows
             _newRideVars.SelectedRideCountdown = std::numeric_limits<uint16_t>::max();
             PopulateRideList();
             RefreshWidgetSizing();
-            Invalidate();
+            invalidate();
 
             if (tab < RESEARCH_TAB)
             {
@@ -567,7 +567,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            Close();
+            close();
 
             auto* windowMgr = Ui::GetWindowManager();
             windowMgr->CloseConstructionWindows();
@@ -861,13 +861,13 @@ namespace OpenRCT2::Ui::Windows
             {
                 ScreenSize newSize = { newWidth, newHeight };
                 WindowSetResize(*this, newSize, newSize);
-                OnResize();
+                onResize();
 
                 widgets[WIDX_GROUP_BY_TRACK_TYPE].left = newWidth - 8 - GroupByTrackTypeWidth;
                 widgets[WIDX_GROUP_BY_TRACK_TYPE].right = newWidth - 8;
             }
 
-            InitScrollWidgets();
+            initScrollWidgets();
         }
 
         RideSelection ScrollGetRideListItemAt(const ScreenCoordsXY& screenCoords)
@@ -905,7 +905,7 @@ namespace OpenRCT2::Ui::Windows
             auto& currentTabScroll = _windowNewRideTabScroll[_currentTab];
 
             // Get maximum scroll height
-            ScreenSize scrollSize = OnScrollGetSize(0);
+            ScreenSize scrollSize = onScrollGetSize(0);
             const Widget& listWidget = widgets[WIDX_RIDE_LIST];
             const int32_t listWidgetHeight = listWidget.bottom - listWidget.top - 1;
 
@@ -1086,7 +1086,7 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* NewRideOpenResearch()
     {
         auto w = static_cast<NewRideWindow*>(NewRideOpen());
-        w->SetPage(RESEARCH_TAB);
+        w->setPage(RESEARCH_TAB);
         return w;
     }
 
@@ -1108,6 +1108,6 @@ namespace OpenRCT2::Ui::Windows
             return;
 
         auto rideTypeIndex = rideEntry->GetFirstNonNullRideType();
-        w->SetPage(EnumValue(GetRideTypeDescriptor(rideTypeIndex).Category));
+        w->setPage(EnumValue(GetRideTypeDescriptor(rideTypeIndex).Category));
     }
 } // namespace OpenRCT2::Ui::Windows

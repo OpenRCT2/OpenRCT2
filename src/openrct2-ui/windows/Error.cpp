@@ -52,9 +52,9 @@ namespace OpenRCT2::Ui::Windows
         {
         }
 
-        void OnOpen() override
+        void onOpen() override
         {
-            SetWidgets(window_error_widgets);
+            setWidgets(window_error_widgets);
 
             widgets[WIDX_BACKGROUND].right = width - 1;
             widgets[WIDX_BACKGROUND].bottom = height - 1;
@@ -67,7 +67,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDraw(RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
             WindowDrawWidgets(*this, rt);
 
@@ -75,22 +75,22 @@ namespace OpenRCT2::Ui::Windows
             DrawStringCentredRaw(rt, screenCoords, _numLines, _text.data(), FontStyle::Medium);
         }
 
-        void OnPeriodicUpdate() override
+        void onPeriodicUpdate() override
         {
             // Close the window after 8 seconds of showing
             _staleCount++;
             if (_staleCount >= 8)
             {
-                Close();
+                close();
             }
         }
 
-        void OnUpdate() override
+        void onUpdate() override
         {
             // Automatically close previous screenshot messages before new screenshot is taken
             if (_autoClose && gScreenshotCountdown > 0)
             {
-                Close();
+                close();
             }
         }
     };

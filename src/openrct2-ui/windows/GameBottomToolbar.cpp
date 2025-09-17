@@ -383,48 +383,48 @@ namespace OpenRCT2::Ui::Windows
             if (gToolbarDirtyFlags & BTM_TB_DIRTY_FLAG_MONEY)
             {
                 gToolbarDirtyFlags &= ~BTM_TB_DIRTY_FLAG_MONEY;
-                InvalidateWidget(WIDX_LEFT_INSET);
+                invalidateWidget(WIDX_LEFT_INSET);
             }
 
             if (gToolbarDirtyFlags & BTM_TB_DIRTY_FLAG_DATE)
             {
                 gToolbarDirtyFlags &= ~BTM_TB_DIRTY_FLAG_DATE;
-                InvalidateWidget(WIDX_RIGHT_INSET);
+                invalidateWidget(WIDX_RIGHT_INSET);
             }
 
             if (gToolbarDirtyFlags & BTM_TB_DIRTY_FLAG_PEEP_COUNT)
             {
                 gToolbarDirtyFlags &= ~BTM_TB_DIRTY_FLAG_PEEP_COUNT;
-                InvalidateWidget(WIDX_LEFT_INSET);
+                invalidateWidget(WIDX_LEFT_INSET);
             }
 
             if (gToolbarDirtyFlags & BTM_TB_DIRTY_FLAG_CLIMATE)
             {
                 gToolbarDirtyFlags &= ~BTM_TB_DIRTY_FLAG_CLIMATE;
-                InvalidateWidget(WIDX_RIGHT_INSET);
+                invalidateWidget(WIDX_RIGHT_INSET);
             }
 
             if (gToolbarDirtyFlags & BTM_TB_DIRTY_FLAG_PARK_RATING)
             {
                 gToolbarDirtyFlags &= ~BTM_TB_DIRTY_FLAG_PARK_RATING;
-                InvalidateWidget(WIDX_LEFT_INSET);
+                invalidateWidget(WIDX_LEFT_INSET);
             }
         }
 
     public:
         GameBottomToolbar()
         {
-            SetWidgets(window_game_bottom_toolbar_widgets);
+            setWidgets(window_game_bottom_toolbar_widgets);
 
             currentFrame = 0;
-            InitScrollWidgets();
+            initScrollWidgets();
 
             // Reset the middle widget to not show by default.
             // If it is required to be shown news_update will reshow it.
             widgets[WIDX_MIDDLE_OUTSET].type = WidgetType::empty;
         }
 
-        void OnMouseUp(WidgetIndex widgetIndex) override
+        void onMouseUp(WidgetIndex widgetIndex) override
         {
             News::Item* newsItem;
 
@@ -479,7 +479,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        OpenRCT2String OnTooltip(WidgetIndex widgetIndex, StringId fallback) override
+        OpenRCT2String onTooltip(WidgetIndex widgetIndex, StringId fallback) override
         {
             const auto& gameState = getGameState();
             auto ft = Formatter();
@@ -497,7 +497,7 @@ namespace OpenRCT2::Ui::Windows
             return { fallback, ft };
         }
 
-        void OnPrepareDraw() override
+        void onPrepareDraw() override
         {
             // Figure out how much line height we have to work with.
             uint32_t line_height = FontGetLineHeight(FontStyle::Medium);
@@ -611,7 +611,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDraw(RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
             const auto& leftWidget = widgets[WIDX_LEFT_OUTSET];
             const auto& rightWidget = widgets[WIDX_RIGHT_OUTSET];
@@ -634,7 +634,7 @@ namespace OpenRCT2::Ui::Windows
                 GfxFilterRect(rt, { leftTop, rightBottom }, FilterPaletteID::Palette51);
             }
 
-            DrawWidgets(rt);
+            drawWidgets(rt);
 
             DrawLeftPanel(rt);
             DrawRightPanel(rt);
@@ -649,7 +649,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnUpdate() override
+        void onUpdate() override
         {
             currentFrame++;
             if (currentFrame >= 24)
@@ -658,7 +658,7 @@ namespace OpenRCT2::Ui::Windows
             InvalidateDirtyWidgets();
         }
 
-        CursorID OnCursor(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords, CursorID cursorId) override
+        CursorID onCursor(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords, CursorID cursorId) override
         {
             switch (widgetIndex)
             {
@@ -672,7 +672,7 @@ namespace OpenRCT2::Ui::Windows
             return cursorId;
         }
 
-        void OnPeriodicUpdate() override
+        void onPeriodicUpdate() override
         {
             InvalidateDirtyWidgets();
         }

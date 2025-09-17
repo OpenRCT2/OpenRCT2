@@ -737,7 +737,7 @@ namespace OpenRCT2::Ui
 
         // Draw the scroll contents
         if (scrollRT.width > 0 && scrollRT.height > 0)
-            w.OnScrollDraw(scrollIndex, scrollRT);
+            w.onScrollDraw(scrollIndex, scrollRT);
     }
 
     static void WidgetHScrollbarDraw(

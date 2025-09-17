@@ -232,9 +232,9 @@ namespace OpenRCT2::Ui::Windows
         uint16_t _flashingFlags = 0;
 
     public:
-        void OnOpen() override
+        void onOpen() override
         {
-            SetWidgets(window_map_widgets);
+            setWidgets(window_map_widgets);
 
             holdDownWidgets = (1uLL << WIDX_MAP_SIZE_SPINNER_Y_UP) | (1uLL << WIDX_MAP_SIZE_SPINNER_Y_DOWN)
                 | (1uLL << WIDX_MAP_SIZE_SPINNER_X_UP) | (1uLL << WIDX_MAP_SIZE_SPINNER_X_DOWN);
@@ -244,12 +244,12 @@ namespace OpenRCT2::Ui::Windows
             SetInitialWindowDimensions();
             ResetMaxWindowDimensions();
             ResizeMiniMap();
-            InitScrollWidgets();
+            initScrollWidgets();
             CalculateTextLayout();
 
             _rotation = GetCurrentRotation();
 
-            InitMap();
+            initMap();
             gWindowSceneryRotation = 0;
             CentreMapOnViewPoint();
             WindowFootpathSelectDefault();
@@ -261,7 +261,7 @@ namespace OpenRCT2::Ui::Windows
             _landRightsToolSize = 1;
         }
 
-        void OnClose() override
+        void onClose() override
         {
             _mapImageData.clear();
             _mapImageData.shrink_to_fit();
@@ -272,13 +272,13 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnMouseUp(WidgetIndex widgetIndex) override
+        void onMouseUp(WidgetIndex widgetIndex) override
         {
             auto* windowMgr = GetWindowManager();
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
-                    Close();
+                    close();
                     break;
                 case WIDX_SET_LAND_RIGHTS:
                 {
@@ -329,7 +329,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnMouseDown(WidgetIndex widgetIndex) override
+        void onMouseDown(WidgetIndex widgetIndex) override
         {
             switch (widgetIndex)
             {
@@ -352,7 +352,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnUpdate() override
+        void onUpdate() override
         {
             auto* windowMgr = GetWindowManager();
 
@@ -375,14 +375,14 @@ namespace OpenRCT2::Ui::Windows
             if (GetCurrentRotation() != _rotation)
             {
                 _rotation = GetCurrentRotation();
-                InitMap();
+                initMap();
                 CentreMapOnViewPoint();
             }
 
             for (int32_t i = 0; i < 16; i++)
                 SetMapPixels();
 
-            Invalidate();
+            invalidate();
 
             if (_adjustedForSandboxMode != isEditorOrSandbox())
             {
@@ -409,7 +409,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
+        void onToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
             switch (widgetIndex)
             {
@@ -419,7 +419,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
+        void onToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
             switch (widgetIndex)
             {
@@ -429,12 +429,12 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnToolAbort(WidgetIndex widgetIndex) override
+        void onToolAbort(WidgetIndex widgetIndex) override
         {
             switch (widgetIndex)
             {
                 case WIDX_PEOPLE_STARTING_POSITION:
-                    Invalidate();
+                    invalidate();
                     HideGridlines();
                     HideLandRights();
                     HideConstructionRights();
@@ -489,7 +489,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override
+        void onTextInput(WidgetIndex widgetIndex, std::string_view text) override
         {
             if (text.empty())
                 return;
@@ -517,14 +517,14 @@ namespace OpenRCT2::Ui::Windows
 
                         auto mapChangeSizeAction = GameActions::MapChangeSizeAction(newMapSize);
                         GameActions::Execute(&mapChangeSizeAction, getGameState());
-                        Invalidate();
+                        invalidate();
                     }
                     break;
                 }
             }
         }
 
-        ScreenSize OnScrollGetSize(int32_t scrollIndex) override
+        ScreenSize onScrollGetSize(int32_t scrollIndex) override
         {
             auto size = ScreenSize(getMiniMapWidth(), getMiniMapWidth());
 
@@ -538,7 +538,7 @@ namespace OpenRCT2::Ui::Windows
             return size;
         }
 
-        void OnScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
+        void onScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
             // Adjust coordinates for any map offset to centre
             auto adjCoords = screenCoords;
@@ -560,12 +560,12 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnScrollMouseDrag(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
+        void onScrollMouseDrag(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
-            OnScrollMouseDown(scrollIndex, screenCoords);
+            onScrollMouseDown(scrollIndex, screenCoords);
         }
 
-        void OnScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
+        void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
             GfxClear(rt, PaletteIndex::pi10);
 
@@ -594,13 +594,13 @@ namespace OpenRCT2::Ui::Windows
             PaintHudRectangle(rt, screenOffset);
         }
 
-        void OnPrepareDraw() override
+        void onPrepareDraw() override
         {
             auto* windowMgr = GetWindowManager();
 
             // Set the pressed widgets
             pressedWidgets = 0;
-            SetWidgetPressed(WIDX_MAP_SIZE_LINK, _mapWidthAndHeightLinked);
+            setWidgetPressed(WIDX_MAP_SIZE_LINK, _mapWidthAndHeightLinked);
             pressedWidgets |= (1uLL << (WIDX_PEOPLE_TAB + selectedTab));
 
             if (windowMgr->FindByClass(WindowClass::EditorParkEntrance))
@@ -614,7 +614,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Set disabled widgets
             auto& gameState = getGameState();
-            SetWidgetDisabled(WIDX_MAP_SIZE_LINK, gameState.mapSize.x != gameState.mapSize.y);
+            setWidgetDisabled(WIDX_MAP_SIZE_LINK, gameState.mapSize.x != gameState.mapSize.y);
 
             // Resize widgets to window size
             ResizeMiniMap();
@@ -660,9 +660,9 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDraw(RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
-            DrawWidgets(rt);
+            drawWidgets(rt);
             DrawTabImages(rt);
 
             if (!isEditorOrSandbox())
@@ -696,19 +696,19 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnLanguageChange() override
+        void onLanguageChange() override
         {
             CalculateTextLayout();
         }
 
         void ResetMap()
         {
-            InitMap();
+            initMap();
             CentreMapOnViewPoint();
         }
 
     private:
-        void InitMap()
+        void initMap()
         {
             _mapImageData.resize(getMiniMapWidth() * getMiniMapWidth());
             std::fill(_mapImageData.begin(), _mapImageData.end(), PaletteIndex::pi10);
@@ -758,9 +758,9 @@ namespace OpenRCT2::Ui::Windows
         void IncreaseMapSize()
         {
             auto newMapSize = getGameState().mapSize;
-            if (IsWidgetPressed(WIDX_MAP_SIZE_LINK) || _resizeDirection == ResizeDirection::Y)
+            if (isWidgetPressed(WIDX_MAP_SIZE_LINK) || _resizeDirection == ResizeDirection::Y)
                 newMapSize.y++;
-            if (IsWidgetPressed(WIDX_MAP_SIZE_LINK) || _resizeDirection == ResizeDirection::X)
+            if (isWidgetPressed(WIDX_MAP_SIZE_LINK) || _resizeDirection == ResizeDirection::X)
                 newMapSize.x++;
 
             auto increaseMapSizeAction = GameActions::MapChangeSizeAction(newMapSize);
@@ -770,9 +770,9 @@ namespace OpenRCT2::Ui::Windows
         void DecreaseMapSize()
         {
             auto newMapSize = getGameState().mapSize;
-            if (IsWidgetPressed(WIDX_MAP_SIZE_LINK) || _resizeDirection == ResizeDirection::Y)
+            if (isWidgetPressed(WIDX_MAP_SIZE_LINK) || _resizeDirection == ResizeDirection::Y)
                 newMapSize.y--;
-            if (IsWidgetPressed(WIDX_MAP_SIZE_LINK) || _resizeDirection == ResizeDirection::X)
+            if (isWidgetPressed(WIDX_MAP_SIZE_LINK) || _resizeDirection == ResizeDirection::X)
                 newMapSize.x--;
 
             auto decreaseMapSizeAction = GameActions::MapChangeSizeAction(newMapSize);
@@ -1093,7 +1093,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_BUILD_PARK_ENTRANCE].type = WidgetType::flatBtn;
             widgets[WIDX_PEOPLE_STARTING_POSITION].type = WidgetType::flatBtn;
 
-            // Only show this in the scenario editor, even when in sandbox mode.
+            // only show this in the scenario editor, even when in sandbox mode.
             if (gLegacyScene == LegacyScene::scenarioEditor)
                 widgets[WIDX_MAP_GENERATOR].type = WidgetType::flatBtn;
 
@@ -1114,7 +1114,7 @@ namespace OpenRCT2::Ui::Windows
 
         void InputMapSize(WidgetIndex callingWidget)
         {
-            if (IsWidgetPressed(WIDX_MAP_SIZE_LINK))
+            if (isWidgetPressed(WIDX_MAP_SIZE_LINK))
                 _resizeDirection = ResizeDirection::Both;
             else
                 _resizeDirection = (callingWidget == WIDX_MAP_SIZE_SPINNER_Y) ? ResizeDirection::Y : ResizeDirection::X;
@@ -1122,7 +1122,7 @@ namespace OpenRCT2::Ui::Windows
             Formatter ft;
             ft.Add<int16_t>(kMinimumMapSizePractical);
             ft.Add<int16_t>(kMaximumMapSizePractical);
-            TextInputOpen(callingWidget, STR_MAP_SIZE_2, STR_ENTER_MAP_SIZE, ft, kStringIdNone, kStringIdNone, 4);
+            textInputOpen(callingWidget, STR_MAP_SIZE_2, STR_ENTER_MAP_SIZE, ft, kStringIdNone, kStringIdNone, 4);
         }
 
         CoordsXY ScreenToMap(ScreenCoordsXY screenCoords)
@@ -1201,7 +1201,7 @@ namespace OpenRCT2::Ui::Windows
 
             _adjustedForSandboxMode = isEditorOrSandbox();
 
-            ResizeFrame();
+            resizeFrame();
         }
 
         void ResetMaxWindowDimensions()

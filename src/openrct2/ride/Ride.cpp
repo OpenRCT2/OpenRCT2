@@ -3992,7 +3992,7 @@ void Ride::constructMissingEntranceOrExit() const
         auto* windowMgr = Ui::GetWindowManager();
         w = windowMgr->FindByClass(WindowClass::RideConstruction);
         if (w != nullptr)
-            w->OnMouseUp(entranceOrExit);
+            w->onMouseUp(entranceOrExit);
     }
 }
 

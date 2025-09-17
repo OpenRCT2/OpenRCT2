@@ -90,16 +90,16 @@ namespace OpenRCT2::Ui::Windows
         {
         }
 
-        void OnOpen() override
+        void onOpen() override
         {
             bool canSave = !(isInTrackDesignerOrManager());
 
             if (canSave)
-                SetWidgets(_savePromptWidgets);
+                setWidgets(_savePromptWidgets);
             else
-                SetWidgets(_quitPromptWidgets);
+                setWidgets(_quitPromptWidgets);
 
-            InitScrollWidgets();
+            initScrollWidgets();
 
             // Pause the game if not network play.
             if (Network::GetMode() == Network::Mode::none)
@@ -127,7 +127,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnClose() override
+        void onClose() override
         {
             // Unpause the game
             if (Network::GetMode() == Network::Mode::none)
@@ -140,7 +140,7 @@ namespace OpenRCT2::Ui::Windows
             windowMgr->InvalidateByClass(WindowClass::TopToolbar);
         }
 
-        void OnMouseUp(WidgetIndex widgetIndex) override
+        void onMouseUp(WidgetIndex widgetIndex) override
         {
             if (gLegacyScene == LegacyScene::titleSequence || gLegacyScene == LegacyScene::trackDesigner
                 || gLegacyScene == LegacyScene::trackDesignsManager)
@@ -152,7 +152,7 @@ namespace OpenRCT2::Ui::Windows
                         break;
                     case WQIDX_CLOSE:
                     case WQIDX_CANCEL:
-                        Close();
+                        close();
                         break;
                 }
                 return;
@@ -175,7 +175,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         intent = CreateSaveGameAsIntent();
                     }
-                    Close();
+                    close();
                     intent->PutExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<CloseCallback>(WindowSavePromptCallback));
                     ContextOpenIntent(intent.get());
                     break;
@@ -185,14 +185,14 @@ namespace OpenRCT2::Ui::Windows
                     return;
                 case WIDX_CLOSE:
                 case WIDX_CANCEL:
-                    Close();
+                    close();
                     return;
             }
         }
 
-        void OnDraw(RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
-            DrawWidgets(rt);
+            drawWidgets(rt);
         }
     };
 

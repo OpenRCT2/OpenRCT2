@@ -259,9 +259,9 @@ namespace OpenRCT2::Ui::Windows
     public:
 #pragma region Window Override Events
 
-        void OnOpen() override
+        void onOpen() override
         {
-            SetWidgets(_themesWidgets);
+            setWidgets(_themesWidgets);
 
             WindowThemesInitVars();
             WindowInitScrollWidgets(*this);
@@ -272,7 +272,7 @@ namespace OpenRCT2::Ui::Windows
             _buttonIndex = -1;
         }
 
-        void OnResize() override
+        void onResize() override
         {
             if (_selectedTab == WINDOW_THEMES_TAB_SETTINGS)
             {
@@ -290,16 +290,16 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnUpdate() override
+        void onUpdate() override
         {
             currentFrame++;
             if (currentFrame >= window_themes_tab_animation_loops[_selectedTab])
                 currentFrame = 0;
 
-            InvalidateWidget(WIDX_THEMES_SETTINGS_TAB + _selectedTab);
+            invalidateWidget(WIDX_THEMES_SETTINGS_TAB + _selectedTab);
         }
 
-        void OnPrepareDraw() override
+        void onPrepareDraw() override
         {
             int32_t newPressedWidgets = pressedWidgets
                 & ~((1LL << WIDX_THEMES_SETTINGS_TAB) | (1LL << WIDX_THEMES_MAIN_UI_TAB) | (1LL << WIDX_THEMES_PARK_TAB)
@@ -353,12 +353,11 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_THEMES_PRESETS_DROPDOWN].type = WidgetType::empty;
                 widgets[WIDX_THEMES_COLOURBTN_MASK].type = WidgetType::empty;
 
-                widgetSetCheckboxValue(*this, WIDX_THEMES_RCT1_RIDE_LIGHTS, ThemeGetFlags() & UITHEME_FLAG_USE_LIGHTS_RIDE);
-                widgetSetCheckboxValue(*this, WIDX_THEMES_RCT1_PARK_LIGHTS, ThemeGetFlags() & UITHEME_FLAG_USE_LIGHTS_PARK);
-                widgetSetCheckboxValue(
-                    *this, WIDX_THEMES_RCT1_SCENARIO_FONT, ThemeGetFlags() & UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT);
-                widgetSetCheckboxValue(
-                    *this, WIDX_THEMES_RCT1_BOTTOM_TOOLBAR, ThemeGetFlags() & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR);
+                setCheckboxValue(WIDX_THEMES_RCT1_RIDE_LIGHTS, ThemeGetFlags() & UITHEME_FLAG_USE_LIGHTS_RIDE);
+                setCheckboxValue(WIDX_THEMES_RCT1_PARK_LIGHTS, ThemeGetFlags() & UITHEME_FLAG_USE_LIGHTS_PARK);
+                setCheckboxValue(
+                    WIDX_THEMES_RCT1_SCENARIO_FONT, ThemeGetFlags() & UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT);
+                setCheckboxValue(WIDX_THEMES_RCT1_BOTTOM_TOOLBAR, ThemeGetFlags() & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR);
             }
             else
             {
@@ -379,7 +378,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDraw(RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
             // Widgets
             WindowDrawWidgets(*this, rt);
@@ -405,7 +404,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnMouseDown(WidgetIndex widgetIndex) override
+        void onMouseDown(WidgetIndex widgetIndex) override
         {
             auto widget = &widgets[widgetIndex];
             auto* windowMgr = Ui::GetWindowManager();
@@ -428,8 +427,8 @@ namespace OpenRCT2::Ui::Windows
                     _selectedTab = static_cast<uint8_t>(newSelectedTab);
                     scrolls[0].contentOffsetY = 0;
                     currentFrame = 0;
-                    OnResize();
-                    Invalidate();
+                    onResize();
+                    invalidate();
                     break;
                 }
                 case WIDX_THEMES_PRESETS_DROPDOWN:
@@ -501,7 +500,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnMouseUp(WidgetIndex widgetIndex) override
+        void onMouseUp(WidgetIndex widgetIndex) override
         {
             size_t activeAvailableThemeIndex;
             const utf8* activeThemeName;
@@ -509,7 +508,7 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_THEMES_CLOSE:
-                    Close();
+                    close();
                     break;
                 case WIDX_THEMES_DUPLICATE_BUTTON:;
                     activeAvailableThemeIndex = ThemeManagerGetAvailableThemeIndex();
@@ -545,7 +544,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDropdown(WidgetIndex widgetIndex, int32_t selectedIndex) override
+        void onDropdown(WidgetIndex widgetIndex, int32_t selectedIndex) override
         {
             switch (widgetIndex)
             {
@@ -575,7 +574,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override
+        void onTextInput(WidgetIndex widgetIndex, std::string_view text) override
         {
             if (text.empty())
                 return;
@@ -596,7 +595,7 @@ namespace OpenRCT2::Ui::Windows
                             {
                                 ThemeRename(std::string(text).c_str());
                             }
-                            Invalidate();
+                            invalidate();
                         }
                         else
                         {
@@ -611,7 +610,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        ScreenSize OnScrollGetSize(int32_t scrollIndex) override
+        ScreenSize onScrollGetSize(int32_t scrollIndex) override
         {
             if (_selectedTab == WINDOW_THEMES_TAB_SETTINGS || _selectedTab == WINDOW_THEMES_TAB_FEATURES)
                 return {};
@@ -623,13 +622,13 @@ namespace OpenRCT2::Ui::Windows
             if (i < scrolls[0].contentOffsetY)
             {
                 scrolls[0].contentOffsetY = i;
-                Invalidate();
+                invalidate();
             }
 
             return { 420, scrollHeight };
         }
 
-        void OnScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
+        void onScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
             if (screenCoords.y / _max_row_height < GetColourSchemeTabCount())
             {
@@ -667,7 +666,7 @@ namespace OpenRCT2::Ui::Windows
                             auto colour = ThemeGetColour(wc, _buttonIndex);
                             WindowDropdownShowColour(
                                 this, &(widgets[WIDX_THEMES_COLOURBTN_MASK]), colours[1], colour.colour, true);
-                            InvalidateWidget(WIDX_THEMES_LIST);
+                            invalidateWidget(WIDX_THEMES_LIST);
                         }
                     }
                     else if (
@@ -693,7 +692,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
+        void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
             ScreenCoordsXY screenCoords;
 

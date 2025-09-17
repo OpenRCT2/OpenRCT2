@@ -270,9 +270,9 @@ namespace OpenRCT2::Ui::Windows
          *
          * rct2: 0x006AA64E
          */
-        void OnOpen() override
+        void onOpen() override
         {
-            InitWidgets();
+            initWidgets();
 
             Sub6AB211();
             ResetSelectedObjectCountAndSize();
@@ -300,7 +300,7 @@ namespace OpenRCT2::Ui::Windows
             _overrideChecks = newState;
         }
 
-        bool CanClose() override
+        bool canClose() override
         {
             // Prevent window closure when selection is invalid
             return _overrideChecks || EditorObjectSelectionWindowCheck();
@@ -310,7 +310,7 @@ namespace OpenRCT2::Ui::Windows
          *
          * rct2: 0x006AB199
          */
-        void OnClose() override
+        void onClose() override
         {
             UnloadUnselectedObjects();
             EditorLoadSelectedObjects();
@@ -341,12 +341,12 @@ namespace OpenRCT2::Ui::Windows
             ContextBroadcastIntent(&intent);
         }
 
-        void OnUpdate() override
+        void onUpdate() override
         {
             if (GetCurrentTextBox().window.classification == classification && GetCurrentTextBox().window.number == number)
             {
                 WindowUpdateTextboxCaret();
-                InvalidateWidget(WIDX_FILTER_TEXT_BOX);
+                invalidateWidget(WIDX_FILTER_TEXT_BOX);
             }
 
             auto& currentPage = ObjectSelectionPages[selectedTab];
@@ -362,14 +362,14 @@ namespace OpenRCT2::Ui::Windows
             if (currentFrame >= subTabDef.animationLength)
                 currentFrame = 0;
 
-            InvalidateWidget(WIDX_SUB_TAB_0 + _selectedSubTab);
+            invalidateWidget(WIDX_SUB_TAB_0 + _selectedSubTab);
         }
 
         /**
          *
          * rct2: 0x006AAFAB
          */
-        void OnMouseUp(WidgetIndex widgetIndex) override
+        void onMouseUp(WidgetIndex widgetIndex) override
         {
             switch (widgetIndex)
             {
@@ -419,7 +419,7 @@ namespace OpenRCT2::Ui::Windows
                     selectedListItem = -1;
                     scrolls[0].contentOffsetY = 0;
                     currentFrame = 0;
-                    Invalidate();
+                    invalidate();
                     break;
                 }
 
@@ -429,7 +429,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         selectedListItem = -1;
                     }
-                    Invalidate();
+                    invalidate();
 
                     auto intent = Intent(WindowClass::Loadsave);
                     intent.PutEnumExtra<LoadSaveAction>(INTENT_EXTRA_LOADSAVE_ACTION, LoadSaveAction::load);
@@ -444,7 +444,7 @@ namespace OpenRCT2::Ui::Windows
                     _filter.clear();
                     scrolls->contentOffsetY = 0;
                     VisibleListRefresh();
-                    Invalidate();
+                    invalidate();
                     break;
                 case WIDX_LIST_SORT_TYPE:
                     if (_listSortType == RIDE_SORT_TYPE)
@@ -488,13 +488,13 @@ namespace OpenRCT2::Ui::Windows
                     if (widgetIndex >= WIDX_TAB_1
                         && static_cast<size_t>(widgetIndex) < WIDX_TAB_1 + std::size(ObjectSelectionPages))
                     {
-                        SetPage(widgetIndex - WIDX_TAB_1);
+                        setPage(widgetIndex - WIDX_TAB_1);
                     }
                     break;
             }
         }
 
-        void OnResize() override
+        void onResize() override
         {
             WindowSetResize(*this, kMinimumWindowSize, kMaximumWindowSize);
         }
@@ -505,7 +505,7 @@ namespace OpenRCT2::Ui::Windows
             STR_OBJECT_FILTER_OPENRCT2_OFFICIAL, STR_OBJECT_FILTER_CUSTOM,
         };
 
-        void OnMouseDown(WidgetIndex widgetIndex) override
+        void onMouseDown(WidgetIndex widgetIndex) override
         {
             int32_t numSelectionItems = 0;
 
@@ -550,7 +550,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex) override
+        void onDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex) override
         {
             if (dropdownIndex == -1)
                 return;
@@ -578,7 +578,7 @@ namespace OpenRCT2::Ui::Windows
                     scrolls->contentOffsetY = 0;
 
                     VisibleListRefresh();
-                    Invalidate();
+                    invalidate();
                     break;
             }
         }
@@ -587,7 +587,7 @@ namespace OpenRCT2::Ui::Windows
          *
          * rct2: 0x006AB031
          */
-        ScreenSize OnScrollGetSize(int32_t scrollIndex) override
+        ScreenSize onScrollGetSize(int32_t scrollIndex) override
         {
             const auto newHeight = static_cast<int32_t>(_listItems.size() * kScrollableRowHeight);
             return { 0, newHeight };
@@ -597,7 +597,7 @@ namespace OpenRCT2::Ui::Windows
          *
          * rct2: 0x006AB0B6
          */
-        void OnScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
+        void onScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
             // Used for in-game object selection cheat to prevent crashing the game
             // when windows attempt to draw objects that don't exist any more
@@ -613,7 +613,7 @@ namespace OpenRCT2::Ui::Windows
             if (object_selection_flags & ObjectSelectionFlags::Flag6)
                 return;
 
-            Invalidate();
+            invalidate();
 
             const CursorState* state = ContextGetCursorState();
             Audio::Play(Audio::SoundId::Click1, 0, state->position.x);
@@ -662,7 +662,7 @@ namespace OpenRCT2::Ui::Windows
             if (IsFilterActive(FILTER_SELECTED) || IsFilterActive(FILTER_NONSELECTED))
             {
                 VisibleListRefresh();
-                Invalidate();
+                invalidate();
             }
 
             if (_gSceneryGroupPartialSelectError.has_value())
@@ -685,7 +685,7 @@ namespace OpenRCT2::Ui::Windows
          *
          * rct2: 0x006AB079
          */
-        void OnScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
+        void onScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
             int32_t selectedObject = GetObjectFromObjectSelection(GetSelectedObjectType(), screenCoords.y);
             if (selectedObject != -1)
@@ -718,11 +718,11 @@ namespace OpenRCT2::Ui::Windows
                     }
                 }
 
-                Invalidate();
+                invalidate();
             }
         }
 
-        void OnScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
+        void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
             // ScrollPaint
             ScreenCoordsXY screenCoords;
@@ -814,7 +814,7 @@ namespace OpenRCT2::Ui::Windows
          *
          * rct2: 0x006AB058
          */
-        OpenRCT2String OnTooltip(const WidgetIndex widgetIndex, const StringId fallback) override
+        OpenRCT2String onTooltip(const WidgetIndex widgetIndex, const StringId fallback) override
         {
             if (widgetIndex >= WIDX_TAB_1 && static_cast<size_t>(widgetIndex) < WIDX_TAB_1 + std::size(ObjectSelectionPages))
             {
@@ -825,7 +825,7 @@ namespace OpenRCT2::Ui::Windows
             return { fallback, {} };
         }
 
-        void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override
+        void onTextInput(WidgetIndex widgetIndex, std::string_view text) override
         {
             if (widgetIndex != WIDX_FILTER_TEXT_BOX)
                 return;
@@ -838,10 +838,10 @@ namespace OpenRCT2::Ui::Windows
             scrolls->contentOffsetY = 0;
 
             VisibleListRefresh();
-            Invalidate();
+            invalidate();
         }
 
-        void OnPrepareDraw() override
+        void onPrepareDraw() override
         {
             // Resize widgets
             widgets[WIDX_LIST].right = width - 309;
@@ -852,7 +852,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_RELOAD_OBJECT].right = width - 9;
 
             auto& dropdownWidget = widgets[WIDX_FILTER_DROPDOWN];
-            ResizeDropdown(WIDX_FILTER_DROPDOWN, { width - kFilterWidth - 10, dropdownWidget.top }, { kFilterWidth, 14 });
+            resizeDropdown(WIDX_FILTER_DROPDOWN, { width - kFilterWidth - 10, dropdownWidget.top }, { kFilterWidth, 14 });
             auto& installTrackWidget = widgets[WIDX_INSTALL_TRACK];
             installTrackWidget.moveToX(dropdownWidget.left - installTrackWidget.width() - 10);
 
@@ -889,7 +889,7 @@ namespace OpenRCT2::Ui::Windows
             // Set filter dropdown caption
             if (!IsFilterActive(FILTER_SOURCES_ALL))
             {
-                // Only one source active?
+                // only one source active?
                 uint32_t sources = _filterFlags & FILTER_SOURCES_ALL;
                 auto numSourcesActive = std::popcount(sources);
                 if (numSourcesActive == 1)
@@ -1003,9 +1003,9 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_PREVIEW].right = widgets[WIDX_PREVIEW].left + kPreviewSize;
         }
 
-        void OnDraw(RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
-            DrawWidgets(rt);
+            drawWidgets(rt);
 
             // Draw main tab images
             for (size_t i = 0; i < std::size(ObjectSelectionPages); i++)
@@ -1124,7 +1124,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 if (ObjectSelectionPages[offset].mainObjectType == objectType)
                 {
-                    SetPage(offset);
+                    setPage(offset);
                     return;
                 }
             }
@@ -1133,9 +1133,9 @@ namespace OpenRCT2::Ui::Windows
     private:
         bool tabWidgetsInitialised = false;
 
-        void InitWidgets()
+        void initWidgets()
         {
-            SetWidgets(_window_editor_object_selection_widgets);
+            setWidgets(_window_editor_object_selection_widgets);
             if (!tabWidgetsInitialised)
             {
                 // Create a new tab widget based on the initial one
@@ -1149,7 +1149,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void SetPage(int32_t _page)
+        void setPage(int32_t _page)
         {
             // Skip setting page if we're already on this page, unless we're initialising the window
             if (selectedTab == _page && !widgets.empty())
@@ -1174,7 +1174,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             VisibleListRefresh();
-            Invalidate();
+            invalidate();
         }
 
         void VisibleListRefresh()
@@ -1234,7 +1234,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                 }
             }
-            Invalidate();
+            invalidate();
         }
 
         void VisibleListClear()
@@ -1442,7 +1442,7 @@ namespace OpenRCT2::Ui::Windows
 
         bool FilterCompatibilityObject(const ObjectRepositoryItem& item, uint8_t objectFlag)
         {
-            // Only show compat objects if they are selected already.
+            // only show compat objects if they are selected already.
             return !(item.Flags & ObjectItemFlags::IsCompatibilityObject) || (objectFlag & ObjectSelectionFlags::Selected);
         }
 
@@ -1644,7 +1644,7 @@ namespace OpenRCT2::Ui::Windows
         }
         auto objSelWindow = static_cast<EditorObjectSelectionWindow*>(window);
         objSelWindow->SetOverrideChecks(true);
-        objSelWindow->Close();
+        objSelWindow->close();
     }
 
     static bool VisibleListSortRideName(const ObjectListItem& a, const ObjectListItem& b)

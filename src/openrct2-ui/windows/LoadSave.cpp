@@ -296,7 +296,7 @@ namespace OpenRCT2::Ui::Windows
                 SortList();
             }
 
-            Invalidate();
+            invalidate();
         }
 
         void ComputeMaxDateWidth()
@@ -397,7 +397,7 @@ namespace OpenRCT2::Ui::Windows
             _preview = preview;
             if (ShowPreviews())
             {
-                Invalidate();
+                invalidate();
             }
         }
 
@@ -532,9 +532,9 @@ namespace OpenRCT2::Ui::Windows
 
 #pragma region Events
     public:
-        void OnOpen() override
+        void onOpen() override
         {
-            SetWidgets(window_loadsave_widgets);
+            setWidgets(window_loadsave_widgets);
 
             const auto& uiContext = OpenRCT2::GetContext()->GetUiContext();
             if (!uiContext.HasFilePicker())
@@ -578,13 +578,13 @@ namespace OpenRCT2::Ui::Windows
             selectedListItem = -1;
 
             // Reset window dimensions
-            InitScrollWidgets();
+            initScrollWidgets();
             ComputeMaxDateWidth();
 
             WindowSetResize(*this, GetMinimumWindowSize(), kWindowSizeMax);
         }
 
-        void OnClose() override
+        void onClose() override
         {
             _listItems.clear();
 
@@ -601,7 +601,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnResize() override
+        void onResize() override
         {
             WindowSetResize(*this, GetMinimumWindowSize(), kWindowSizeMax);
 
@@ -610,16 +610,16 @@ namespace OpenRCT2::Ui::Windows
             config.FileBrowserHeight = height - getTitleBarDiffNormal();
         }
 
-        void OnUpdate() override
+        void onUpdate() override
         {
             if (GetCurrentTextBox().window.classification == classification && GetCurrentTextBox().window.number == number)
             {
                 WindowUpdateTextboxCaret();
-                InvalidateWidget(WIDX_FILENAME_TEXTBOX);
+                invalidateWidget(WIDX_FILENAME_TEXTBOX);
             }
         }
 
-        void OnPrepareDraw() override
+        void onPrepareDraw() override
         {
             auto toolbarXPos = width - 5;
             for (auto widgetIndex = 3; widgetIndex >= 0; widgetIndex--)
@@ -727,9 +727,9 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDraw(RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
-            DrawWidgets(rt);
+            drawWidgets(rt);
 
             if (ShowPreviews())
                 DrawPreview(rt);
@@ -793,19 +793,19 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnMouseUp(WidgetIndex widgetIndex) override
+        void onMouseUp(WidgetIndex widgetIndex) override
         {
             bool isSave = action == LoadSaveAction::save;
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
                     InvokeCallback(ModalResult::cancel, "");
-                    Close();
+                    close();
                     break;
 
                 case WIDX_PARENT_FOLDER:
                     PopulateList(_parentDirectory, _extensionPattern);
-                    InitScrollWidgets();
+                    initScrollWidgets();
                     numListItems = static_cast<uint16_t>(_listItems.size());
                     break;
 
@@ -826,7 +826,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         // If user cancels file dialog, refresh list
                         PopulateList(_directory, _extensionPattern);
-                        InitScrollWidgets();
+                        initScrollWidgets();
                         numListItems = static_cast<uint16_t>(_listItems.size());
                     }
                 }
@@ -843,7 +843,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     Config::Save();
                     SortList();
-                    Invalidate();
+                    invalidate();
                     break;
 
                 case WIDX_SORT_SIZE:
@@ -857,7 +857,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     Config::Save();
                     SortList();
-                    Invalidate();
+                    invalidate();
                     break;
 
                 case WIDX_SORT_DATE:
@@ -871,12 +871,12 @@ namespace OpenRCT2::Ui::Windows
                     }
                     Config::Save();
                     SortList();
-                    Invalidate();
+                    invalidate();
                     break;
 
                 case WIDX_DEFAULT_FOLDER:
                     PopulateList(GetInitialDirectoryByType(type).c_str(), _extensionPattern);
-                    InitScrollWidgets();
+                    initScrollWidgets();
                     numListItems = static_cast<uint16_t>(_listItems.size());
                     break;
 
@@ -897,7 +897,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnMouseDown(WidgetIndex widgetIndex) override
+        void onMouseDown(WidgetIndex widgetIndex) override
         {
             if (widgetIndex != WIDX_SORT_CUSTOMISE)
                 return;
@@ -928,7 +928,7 @@ namespace OpenRCT2::Ui::Windows
             gDropdown.items[6].setChecked(config.FileBrowserPreviewType == ParkPreviewPref::screenshot);
         }
 
-        void OnDropdown(WidgetIndex widgetIndex, int32_t selectedIndex) override
+        void onDropdown(WidgetIndex widgetIndex, int32_t selectedIndex) override
         {
             if (widgetIndex != WIDX_SORT_CUSTOMISE)
                 return;
@@ -950,7 +950,7 @@ namespace OpenRCT2::Ui::Windows
                 auto newPref = ParkPreviewPref(selectedIndex - 4);
                 if (config.FileBrowserPreviewType != newPref)
                 {
-                    Invalidate();
+                    invalidate();
                     width -= GetPreviewSize().width;
 
                     config.FileBrowserPreviewType = newPref;
@@ -963,13 +963,13 @@ namespace OpenRCT2::Ui::Windows
             if (changed)
             {
                 Config::Save();
-                Invalidate();
-                ResizeFrame();
-                OnResize();
+                invalidate();
+                resizeFrame();
+                onResize();
             }
         }
 
-        void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override
+        void onTextInput(WidgetIndex widgetIndex, std::string_view text) override
         {
             if (text.empty())
                 return;
@@ -995,10 +995,10 @@ namespace OpenRCT2::Ui::Windows
                     selectedListItem = -1;
 
                     PopulateList(path, _extensionPattern);
-                    InitScrollWidgets();
+                    initScrollWidgets();
 
                     numListItems = static_cast<uint16_t>(_listItems.size());
-                    Invalidate();
+                    invalidate();
                     break;
                 }
 
@@ -1014,12 +1014,12 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        ScreenSize OnScrollGetSize(int32_t scrollIndex) override
+        ScreenSize onScrollGetSize(int32_t scrollIndex) override
         {
             return { 0, numListItems * kScrollableRowHeight };
         }
 
-        void OnScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
+        void onScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
             int32_t selectedItem = screenCoords.y / kScrollableRowHeight;
             if (selectedItem >= numListItems)
@@ -1029,11 +1029,11 @@ namespace OpenRCT2::Ui::Windows
             {
                 selectedListItem = selectedItem;
                 LoadPreview();
-                Invalidate();
+                invalidate();
             }
         }
 
-        void OnScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
+        void onScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
             int32_t selectedItem;
 
@@ -1051,7 +1051,7 @@ namespace OpenRCT2::Ui::Windows
                 String::safeUtf8Copy(directory, _listItems[selectedItem].path.c_str(), sizeof(directory));
 
                 PopulateList(directory, _extensionPattern);
-                InitScrollWidgets();
+                initScrollWidgets();
 
                 numListItems = static_cast<uint16_t>(_listItems.size());
             }
@@ -1059,7 +1059,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 // Load or overwrite
                 String::set(_currentFilename, std::size(_currentFilename), _listItems[selectedItem].name.c_str());
-                InvalidateWidget(WIDX_FILENAME_TEXTBOX);
+                invalidateWidget(WIDX_FILENAME_TEXTBOX);
 
                 if (action == LoadSaveAction::save)
                 {
@@ -1073,7 +1073,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
+        void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
             GfxFillRect(
                 rt, { { rt.x, rt.y }, { rt.x + rt.width - 1, rt.y + rt.height - 1 } }, ColourMapA[colours[1].colour].mid_light);
@@ -1210,11 +1210,11 @@ namespace OpenRCT2::Ui::Windows
 
         if (keycode == SDLK_RETURN || keycode == SDLK_KP_ENTER)
         {
-            loadSaveWindow->OnMouseUp(WIDX_SAVE);
+            loadSaveWindow->onMouseUp(WIDX_SAVE);
         }
         else if (keycode == SDLK_ESCAPE)
         {
-            loadSaveWindow->Close();
+            loadSaveWindow->close();
         }
     }
 } // namespace OpenRCT2::Ui::Windows

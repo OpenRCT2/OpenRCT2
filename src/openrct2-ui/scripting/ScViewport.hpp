@@ -172,7 +172,7 @@ namespace OpenRCT2::Scripting
                     if (viewport->flags != value)
                     {
                         viewport->flags = value;
-                        w->Invalidate();
+                        w->invalidate();
                     }
                 }
             }

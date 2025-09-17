@@ -408,7 +408,7 @@ namespace OpenRCT2
                             break;
                         }
 
-                        w->OnToolDrag(gCurrentToolWidget.widgetIndex, screenCoords);
+                        w->onToolDrag(gCurrentToolWidget.widgetIndex, screenCoords);
                         break;
                     case MouseState::LeftRelease:
                         _inputState = InputState::Reset;
@@ -420,7 +420,7 @@ namespace OpenRCT2
                                     gCurrentToolWidget.windowClassification, gCurrentToolWidget.windowNumber);
                                 if (w != nullptr)
                                 {
-                                    w->OnToolUp(gCurrentToolWidget.widgetIndex, screenCoords);
+                                    w->onToolUp(gCurrentToolWidget.widgetIndex, screenCoords);
                                 }
                             }
                             else if (!gInputFlags.has(InputFlag::leftMousePressed))
@@ -501,7 +501,7 @@ namespace OpenRCT2
         _inputState = InputState::Normal;
         gTooltipCloseTimeout = 0;
         gTooltipWidget = _dragWidget;
-        w.OnMoved(screenCoords);
+        w.onMoved(screenCoords);
     }
 
     static void InputWindowResizeBegin(WindowBase& w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
@@ -661,10 +661,10 @@ namespace OpenRCT2
 
         _currentScrollArea = scroll_area;
         _currentScrollIndex = scroll_id;
-        w.OnScrollSelect(scroll_id, scroll_area);
+        w.onScrollSelect(scroll_id, scroll_area);
         if (scroll_area == SCROLL_PART_VIEW)
         {
-            w.OnScrollMouseDown(scroll_id, scrollCoords);
+            w.onScrollMouseDown(scroll_id, scrollCoords);
             return;
         }
 
@@ -756,7 +756,7 @@ namespace OpenRCT2
         switch (scroll_part)
         {
             case SCROLL_PART_VIEW:
-                w.OnScrollMouseDrag(scroll_id, newScreenCoords);
+                w.onScrollMouseDrag(scroll_id, newScreenCoords);
                 break;
             case SCROLL_PART_HSCROLLBAR_LEFT:
                 InputScrollPartUpdateHLeft(w, widgetIndex, scroll_id);
@@ -982,7 +982,7 @@ namespace OpenRCT2
 
             if (scroll_part == SCROLL_PART_VIEW)
             {
-                w->OnScrollMouseOver(scrollId, newScreenCoords);
+                w->onScrollMouseOver(scrollId, newScreenCoords);
             }
         }
 
@@ -1027,7 +1027,7 @@ namespace OpenRCT2
         WindowBase* w = windowMgr->FindByNumber(gHoverWidget.windowClassification, gHoverWidget.windowNumber);
         if (w != nullptr)
         {
-            w->OnPrepareDraw();
+            w->onPrepareDraw();
             if (w->widgets[gHoverWidget.widgetIndex].type == WidgetType::flatBtn)
             {
                 windowMgr->InvalidateWidgetByNumber(
@@ -1091,7 +1091,7 @@ namespace OpenRCT2
                     if (w != nullptr)
                     {
                         gInputFlags.set(InputFlag::leftMousePressed);
-                        w->OnToolDown(gCurrentToolWidget.widgetIndex, screenCoords);
+                        w->onToolDown(gCurrentToolWidget.widgetIndex, screenCoords);
                     }
                 }
                 break;
@@ -1136,7 +1136,7 @@ namespace OpenRCT2
                     _clickRepeatTicks = gCurrentRealTimeTicks;
 
                     windowMgr->InvalidateWidgetByNumber(windowClass, windowNumber, widgetIndex);
-                    w->OnMouseDown(widgetIndex);
+                    w->onMouseDown(widgetIndex);
                 }
                 break;
         }
@@ -1202,13 +1202,13 @@ namespace OpenRCT2
                             break;
                         }
                         // Same as default but with scroll_x/y
-                        cursorId = window->OnCursor(widgetId, scrollCoords, CursorID::Arrow);
+                        cursorId = window->onCursor(widgetId, scrollCoords, CursorID::Arrow);
                         if (cursorId == CursorID::Undefined)
                             cursorId = CursorID::Arrow;
                         break;
                     }
                     default:
-                        cursorId = window->OnCursor(widgetId, screenCoords, CursorID::Arrow);
+                        cursorId = window->onCursor(widgetId, screenCoords, CursorID::Arrow);
                         if (cursorId == CursorID::Undefined)
                             cursorId = CursorID::Arrow;
                         break;
@@ -1234,7 +1234,7 @@ namespace OpenRCT2
             if (w == nullptr)
                 ToolCancel();
             else if (InputGetState() != InputState::ViewportRight)
-                w->OnToolUpdate(gCurrentToolWidget.widgetIndex, screenCoords);
+                w->onToolUpdate(gCurrentToolWidget.widgetIndex, screenCoords);
         }
     }
 
@@ -1307,7 +1307,7 @@ namespace OpenRCT2
                     {
                         if (widgetIsHoldable(*w, widgetIndex))
                         {
-                            w->OnMouseDown(widgetIndex);
+                            w->onMouseDown(widgetIndex);
                         }
 
                         // Subtract initial delay from here on we want the event each third tick.
@@ -1397,7 +1397,7 @@ namespace OpenRCT2
                                     dropdown_index = gDropdown.defaultIndex;
                                 }
                             }
-                            cursor_w->OnDropdown(cursor_widgetIndex, dropdown_index);
+                            cursor_w->onDropdown(cursor_widgetIndex, dropdown_index);
                         }
                     }
                 }
@@ -1429,7 +1429,7 @@ namespace OpenRCT2
                     break;
 
                 windowMgr->InvalidateWidgetByNumber(cursor_w_class, cursor_w_number, widgetIndex);
-                w->OnMouseUp(widgetIndex);
+                w->onMouseUp(widgetIndex);
                 return;
 
             default:

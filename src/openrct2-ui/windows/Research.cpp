@@ -117,13 +117,13 @@ namespace OpenRCT2::Ui::Windows
     class ResearchWindow final : public Window
     {
     public:
-        void OnOpen() override
+        void onOpen() override
         {
-            SetPage(WINDOW_RESEARCH_PAGE_DEVELOPMENT);
+            setPage(WINDOW_RESEARCH_PAGE_DEVELOPMENT);
             ResearchUpdateUncompletedTypes();
         }
 
-        void SetPage(int32_t newPageIndex)
+        void setPage(int32_t newPageIndex)
         {
             if (page == newPageIndex && !widgets.empty())
                 return;
@@ -131,7 +131,7 @@ namespace OpenRCT2::Ui::Windows
             page = newPageIndex;
             currentFrame = 0;
 
-            Invalidate();
+            invalidate();
             if (newPageIndex == WINDOW_RESEARCH_PAGE_DEVELOPMENT)
             {
                 width = kWindowSizeDevelopment.width;
@@ -142,16 +142,16 @@ namespace OpenRCT2::Ui::Windows
                 width = kWindowSizeFunding.width;
                 height = kWindowSizeFunding.height;
             }
-            Invalidate();
+            invalidate();
 
-            SetWidgets(window_research_page_widgets[newPageIndex]);
+            setWidgets(window_research_page_widgets[newPageIndex]);
             holdDownWidgets = 0;
             disabledWidgets = 0;
             pressedWidgets = 0;
         }
 
     private:
-        void OnUpdate() override
+        void onUpdate() override
         {
             // Tab animation
             if (++currentFrame >= window_research_tab_animation_loops[page])
@@ -161,18 +161,18 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WINDOW_RESEARCH_PAGE_DEVELOPMENT:
                 {
-                    InvalidateWidget(WIDX_TAB_1);
+                    invalidateWidget(WIDX_TAB_1);
                     break;
                 }
                 case WINDOW_RESEARCH_PAGE_FUNDING:
                 {
-                    InvalidateWidget(WIDX_TAB_2);
+                    invalidateWidget(WIDX_TAB_2);
                     break;
                 }
             }
         }
 
-        void OnMouseDown(WidgetIndex widgetIndex) override
+        void onMouseDown(WidgetIndex widgetIndex) override
         {
             if (page == WINDOW_RESEARCH_PAGE_FUNDING)
             {
@@ -180,20 +180,20 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnMouseUp(WidgetIndex widgetIndex) override
+        void onMouseUp(WidgetIndex widgetIndex) override
         {
             // Switch tab or close
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
                 {
-                    Close();
+                    close();
                     break;
                 }
                 case WIDX_TAB_1:
                 case WIDX_TAB_2:
                 {
-                    SetPage(widgetIndex - WIDX_TAB_1);
+                    setPage(widgetIndex - WIDX_TAB_1);
                     break;
                 }
             }
@@ -214,7 +214,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDropdown(WidgetIndex widgetIndex, int32_t selectedIndex) override
+        void onDropdown(WidgetIndex widgetIndex, int32_t selectedIndex) override
         {
             if (page == WINDOW_RESEARCH_PAGE_FUNDING)
             {
@@ -222,14 +222,14 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnPrepareDraw() override
+        void onPrepareDraw() override
         {
             for (auto i = 0; i < WINDOW_RESEARCH_PAGE_COUNT; i++)
             {
-                SetWidgetPressed(WIDX_TAB_1 + i, false);
+                setWidgetPressed(WIDX_TAB_1 + i, false);
             }
 
-            SetWidgetPressed(WIDX_TAB_1 + page, true);
+            setWidgetPressed(WIDX_TAB_1 + page, true);
 
             switch (page)
             {
@@ -246,9 +246,9 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDraw(RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
-            DrawWidgets(rt);
+            drawWidgets(rt);
             DrawTabImages(rt);
 
             switch (page)
@@ -270,7 +270,7 @@ namespace OpenRCT2::Ui::Windows
         {
             WidgetIndex widgetIndex = WIDX_TAB_1 + tabPage;
 
-            if (!IsWidgetDisabled(widgetIndex))
+            if (!isWidgetDisabled(widgetIndex))
             {
                 if (page == tabPage)
                 {
@@ -297,7 +297,7 @@ namespace OpenRCT2::Ui::Windows
     {
         auto* windowMgr = GetWindowManager();
         auto* window = windowMgr->FocusOrCreate<ResearchWindow>(WindowClass::Research, kWindowSizeDevelopment, WF_10);
-        window->SetPage(WINDOW_RESEARCH_PAGE_DEVELOPMENT);
+        window->setPage(WINDOW_RESEARCH_PAGE_DEVELOPMENT);
         return window;
     }
 

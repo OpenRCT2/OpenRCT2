@@ -84,17 +84,13 @@ namespace OpenRCT2::Ui::Windows
         }
 
     public:
-        void OnOpen() override
+        void onOpen() override
         {
-            SetWidgets(_signWidgets);
+            setWidgets(_signWidgets);
             WindowInitScrollWidgets(*this);
         }
 
-        /*
-         * Initializes the window and sets it's number and if it's small
-         * @return true if successfull
-         */
-        bool Initialize(WindowNumber windowNumber, const bool isSmall)
+        bool initialise(WindowNumber windowNumber, const bool isSmall)
         {
             number = windowNumber;
             _isSmall = isSmall;
@@ -142,17 +138,17 @@ namespace OpenRCT2::Ui::Windows
                 viewportWidget.width() - 1, viewportWidget.height() - 1, Focus(CoordsXYZ{ signViewPosition, viewZ }));
 
             viewport->flags = Config::Get().general.AlwaysShowGridlines ? VIEWPORT_FLAG_GRIDLINES : VIEWPORT_FLAG_NONE;
-            Invalidate();
+            invalidate();
 
             return true;
         }
 
-        void OnMouseUp(WidgetIndex widgetIndex) override
+        void onMouseUp(WidgetIndex widgetIndex) override
         {
             auto* banner = GetBanner(GetBannerIndex());
             if (banner == nullptr)
             {
-                Close();
+                close();
                 return;
             }
 
@@ -160,14 +156,14 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
-                    Close();
+                    close();
                     break;
                 case WIDX_SIGN_DEMOLISH:
                 {
                     auto* tileElement = BannerGetTileElement(GetBannerIndex());
                     if (tileElement == nullptr)
                     {
-                        Close();
+                        close();
                         return;
                     }
                     auto bannerCoords = banner->position.ToCoordsXY();
@@ -193,7 +189,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnMouseDown(WidgetIndex widgetIndex) override
+        void onMouseDown(WidgetIndex widgetIndex) override
         {
             Widget* widget = &widgets[widgetIndex];
             switch (widgetIndex)
@@ -207,7 +203,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex) override
+        void onDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex) override
         {
             auto& gameState = getGameState();
             switch (widgetIndex)
@@ -236,10 +232,10 @@ namespace OpenRCT2::Ui::Windows
                     return;
             }
 
-            Invalidate();
+            invalidate();
         }
 
-        void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override
+        void onTextInput(WidgetIndex widgetIndex, std::string_view text) override
         {
             if (widgetIndex == WIDX_SIGN_TEXT && !text.empty())
             {
@@ -248,7 +244,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnPrepareDraw() override
+        void onPrepareDraw() override
         {
             Widget* main_colour_btn = &widgets[WIDX_MAIN_COLOUR];
             Widget* text_colour_btn = &widgets[WIDX_TEXT_COLOUR];
@@ -296,9 +292,9 @@ namespace OpenRCT2::Ui::Windows
             text_colour_btn->image = getColourButtonImage(_textColour);
         }
 
-        void OnDraw(RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
-            DrawWidgets(rt);
+            drawWidgets(rt);
 
             if (viewport != nullptr)
             {
@@ -306,9 +302,9 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnViewportRotate() override
+        void onViewportRotate() override
         {
-            RemoveViewport();
+            removeViewport();
 
             auto banner = GetBanner(GetBannerIndex());
             if (banner == nullptr)
@@ -325,7 +321,7 @@ namespace OpenRCT2::Ui::Windows
                 viewportWidget->width() - 1, viewportWidget->height() - 1, Focus(CoordsXYZ{ signViewPos }));
             if (viewport != nullptr)
                 viewport->flags = Config::Get().general.AlwaysShowGridlines ? VIEWPORT_FLAG_GRIDLINES : VIEWPORT_FLAG_NONE;
-            Invalidate();
+            invalidate();
         }
     };
 
@@ -346,7 +342,7 @@ namespace OpenRCT2::Ui::Windows
         if (w == nullptr)
             return nullptr;
 
-        bool result = w->Initialize(number, false);
+        bool result = w->initialise(number, false);
         if (result != true)
             return nullptr;
 
@@ -370,7 +366,7 @@ namespace OpenRCT2::Ui::Windows
         if (w == nullptr)
             return nullptr;
 
-        bool result = w->Initialize(number, true);
+        bool result = w->initialise(number, true);
         if (result != true)
             return nullptr;
 

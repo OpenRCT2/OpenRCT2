@@ -84,20 +84,20 @@ namespace OpenRCT2::Ui::Windows
         int8_t style = -1;
 
     public:
-        void OnOpen() override
+        void onOpen() override
         {
             Audio::StopSFX();
 
-            SetWidgets(kProgressWindowWidgets);
+            setWidgets(kProgressWindowWidgets);
             WindowSetResize(*this, kWindowSize, kWindowSize);
 
             currentFrame = 0;
 
             ApplyStyle();
-            ResizeFrame();
+            resizeFrame();
         }
 
-        void OnClose() override
+        void onClose() override
         {
             if (_onClose != nullptr)
             {
@@ -105,22 +105,22 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnMouseUp(WidgetIndex widgetIndex) override
+        void onMouseUp(WidgetIndex widgetIndex) override
         {
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
-                    Close();
+                    close();
                     break;
             }
         }
 
-        void OnUpdate() override
+        void onUpdate() override
         {
-            Invalidate();
+            invalidate();
         }
 
-        void OnPrepareDraw() override
+        void onPrepareDraw() override
         {
             if (_onClose != nullptr)
                 widgets[WIDX_CLOSE].type = WidgetType::closeBox;
@@ -171,7 +171,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDraw(RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
             WindowDrawWidgets(*this, rt);
 
@@ -205,21 +205,21 @@ namespace OpenRCT2::Ui::Windows
             GfxDrawSprite(clipDPI, variant.vehicle, ScreenCoordsXY(position, widget.bottom + 1));
         }
 
-        void SetCaption(const std::string& text)
+        void setCaption(const std::string& text)
         {
             _progressTitle = text;
             _currentProgress = 0;
             _totalCount = 0;
 
-            Invalidate();
+            invalidate();
         }
 
-        void SetCloseCallback(CloseCallback onClose)
+        void setCloseCallback(CloseCallback callback)
         {
-            _onClose = onClose;
+            _onClose = callback;
         }
 
-        void SetProgress(uint32_t currentProgress, uint32_t totalCount, StringId format)
+        void setProgress(uint32_t currentProgress, uint32_t totalCount, StringId format)
         {
             if (format == kStringIdNone)
                 _progressFormat = STR_STRING_M_OF_N;
@@ -228,7 +228,7 @@ namespace OpenRCT2::Ui::Windows
 
             _currentProgress = currentProgress;
             _totalCount = totalCount;
-            Invalidate();
+            invalidate();
         }
     };
 
@@ -249,8 +249,8 @@ namespace OpenRCT2::Ui::Windows
                 WindowClass::ProgressWindow, kWindowSize, WF_10 | WF_TRANSPARENT | WF_CENTRE_SCREEN | WF_STICK_TO_FRONT);
         }
 
-        window->SetCaption(text);
-        window->SetCloseCallback(onClose);
+        window->setCaption(text);
+        window->setCloseCallback(onClose);
         return window;
     }
 
@@ -263,7 +263,7 @@ namespace OpenRCT2::Ui::Windows
             return;
         }
         auto progressWindow = static_cast<ProgressWindow*>(window);
-        progressWindow->SetProgress(currentProgress, totalCount, format);
+        progressWindow->setProgress(currentProgress, totalCount, format);
     }
 
     // Closes the window, deliberately *without* executing the callback.
@@ -276,7 +276,7 @@ namespace OpenRCT2::Ui::Windows
             return;
         }
         auto progressWindow = static_cast<ProgressWindow*>(window);
-        progressWindow->SetCloseCallback(nullptr);
-        progressWindow->Close();
+        progressWindow->setCloseCallback(nullptr);
+        progressWindow->close();
     }
 } // namespace OpenRCT2::Ui::Windows

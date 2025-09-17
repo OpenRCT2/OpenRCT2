@@ -511,38 +511,38 @@ static uint64_t PageDisabledWidgets[] = {
         Banner _copiedBanner;
 
     public:
-        void OnOpen() override
+        void onOpen() override
         {
             WindowSetResize(*this, kMinimumWindowSize, kMaximumWindowSize);
 
             windowTileInspectorSelectedIndex = -1;
-            SetPage(TileInspectorPage::Default);
+            setPage(TileInspectorPage::Default);
             WindowInitScrollWidgets(*this);
             _tileSelected = false;
 
             ToolSet(*this, WIDX_BACKGROUND, Tool::crosshair);
         }
 
-        void OnUpdate() override
+        void onUpdate() override
         {
             // Check if the mouse is hovering over the list
             if (!widgetIsHighlighted(*this, WIDX_LIST))
             {
                 if (_highlightedIndex != -1)
-                    InvalidateWidget(WIDX_LIST);
+                    invalidateWidget(WIDX_LIST);
                 _highlightedIndex = -1;
             }
 
             if (!isToolActive(WindowClass::TileInspector))
-                Close();
+                close();
         }
 
-        void OnMouseUp(WidgetIndex widgetIndex) override
+        void onMouseUp(WidgetIndex widgetIndex) override
         {
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
-                    Close();
+                    close();
                     return;
 
                 case WIDX_BUTTON_REMOVE:
@@ -576,7 +576,7 @@ static uint64_t PageDisabledWidgets[] = {
                     break;
             }
 
-            // Only element-specific widgets from now on
+            // only element-specific widgets from now on
             if (tileInspectorPage == TileInspectorPage::Default || windowTileInspectorSelectedIndex == -1)
                 return;
 
@@ -661,12 +661,12 @@ static uint64_t PageDisabledWidgets[] = {
                     {
                         case WIDX_TRACK_CHECK_APPLY_TO_ALL:
                             _applyToAll ^= 1;
-                            InvalidateWidget(widgetIndex);
+                            invalidateWidget(widgetIndex);
                             break;
 
                         case WIDX_TRACK_CHECK_CHAIN_LIFT:
                         {
-                            bool entireTrackBlock = IsWidgetPressed(WIDX_TRACK_CHECK_APPLY_TO_ALL);
+                            bool entireTrackBlock = isWidgetPressed(WIDX_TRACK_CHECK_APPLY_TO_ALL);
                             bool newLift = !tileElement->AsTrack()->HasChain();
                             TrackBlockSetLift(windowTileInspectorSelectedIndex, entireTrackBlock, newLift);
                             break;
@@ -739,7 +739,7 @@ static uint64_t PageDisabledWidgets[] = {
             }
         }
 
-        void OnClose() override
+        void onClose() override
         {
             if (isToolActive(WindowClass::TileInspector))
                 ToolCancel();
@@ -752,21 +752,21 @@ static uint64_t PageDisabledWidgets[] = {
             windowTileInspectorSelectedIndex = -1;
         }
 
-        void OnResize() override
+        void onResize() override
         {
             if (width < minWidth)
             {
-                Invalidate();
+                invalidate();
                 width = minWidth;
             }
             if (height < minHeight)
             {
-                Invalidate();
+                invalidate();
                 height = minHeight;
             }
         }
 
-        void OnMouseDown(WidgetIndex widgetIndex) override
+        void onMouseDown(WidgetIndex widgetIndex) override
         {
             switch (widgetIndex)
             {
@@ -795,7 +795,7 @@ static uint64_t PageDisabledWidgets[] = {
                     break;
             } // switch widget index
 
-            // Only element-specific widgets from now on
+            // only element-specific widgets from now on
             if (tileInspectorPage == TileInspectorPage::Default || windowTileInspectorSelectedIndex == -1)
                 return;
 
@@ -835,14 +835,14 @@ static uint64_t PageDisabledWidgets[] = {
                     switch (widgetIndex)
                     {
                         case WIDX_TRACK_SPINNER_HEIGHT_INCREASE:
-                            if (IsWidgetPressed(WIDX_TRACK_CHECK_APPLY_TO_ALL))
+                            if (isWidgetPressed(WIDX_TRACK_CHECK_APPLY_TO_ALL))
                                 TrackBlockHeightOffset(windowTileInspectorSelectedIndex, 1);
                             else
                                 BaseHeightOffset(windowTileInspectorSelectedIndex, 1);
                             break;
 
                         case WIDX_TRACK_SPINNER_HEIGHT_DECREASE:
-                            if (IsWidgetPressed(WIDX_TRACK_CHECK_APPLY_TO_ALL))
+                            if (isWidgetPressed(WIDX_TRACK_CHECK_APPLY_TO_ALL))
                                 TrackBlockHeightOffset(windowTileInspectorSelectedIndex, -1);
                             else
                                 BaseHeightOffset(windowTileInspectorSelectedIndex, -1);
@@ -950,7 +950,7 @@ static uint64_t PageDisabledWidgets[] = {
             }
         }
 
-        void OnDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex) override
+        void onDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex) override
         {
             if (dropdownIndex == -1)
                 return;
@@ -964,7 +964,7 @@ static uint64_t PageDisabledWidgets[] = {
             }
         }
 
-        void OnToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
+        void onToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
             MapInvalidateSelectionRect();
             gMapSelectFlags.set(MapSelectFlag::enable);
@@ -999,22 +999,22 @@ static uint64_t PageDisabledWidgets[] = {
             MapInvalidateSelectionRect();
         }
 
-        void OnToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
+        void onToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
             UpdateSelectedTile(screenCoords);
         }
 
-        void OnToolDrag(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
+        void onToolDrag(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
             UpdateSelectedTile(screenCoords);
         }
 
-        ScreenSize OnScrollGetSize(int32_t scrollIndex) override
+        ScreenSize onScrollGetSize(int32_t scrollIndex) override
         {
             return ScreenSize(kWindowSize.width - 30, windowTileInspectorElementCount * kScrollableRowHeight);
         }
 
-        void OnScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
+        void onScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
             // There is nothing to interact with when no tile is selected
             if (!_tileSelected)
@@ -1033,19 +1033,19 @@ static uint64_t PageDisabledWidgets[] = {
             }
         }
 
-        void OnScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
+        void onScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
             int16_t index = windowTileInspectorElementCount - (screenCoords.y - 1) / kScrollableRowHeight - 1;
             if (index < 0 || index >= windowTileInspectorElementCount)
                 _highlightedIndex = -1;
             else
                 _highlightedIndex = index;
-            InvalidateWidget(WIDX_LIST);
+            invalidateWidget(WIDX_LIST);
         }
 
-        void OnDraw(RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
-            DrawWidgets(rt);
+            drawWidgets(rt);
             ScreenCoordsXY screenCoords(windowPos.x, windowPos.y);
 
             // Draw coordinates
@@ -1483,7 +1483,7 @@ static uint64_t PageDisabledWidgets[] = {
 
                         // Current animation frame
                         auto colour = colours[1];
-                        if (IsWidgetDisabled(WIDX_WALL_SPINNER_ANIMATION_FRAME))
+                        if (isWidgetDisabled(WIDX_WALL_SPINNER_ANIMATION_FRAME))
                         {
                             colour = colours[0].withFlag(ColourFlag::inset, true);
                         }
@@ -1581,7 +1581,7 @@ static uint64_t PageDisabledWidgets[] = {
             }
         }
 
-        void OnScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
+        void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
             const int32_t listWidth = widgets[WIDX_LIST].width();
             GfxFillRect(
@@ -1756,13 +1756,13 @@ static uint64_t PageDisabledWidgets[] = {
         }
 
     private:
-        void SetPage(const TileInspectorPage p)
+        void setPage(const TileInspectorPage p)
         {
             // Skip setting page if we're already on this page, unless we're initialising the window
             if (tileInspectorPage == p && !widgets.empty())
                 return;
 
-            Invalidate();
+            invalidate();
             // subtract current page height, then add new page height
             if (tileInspectorPage != TileInspectorPage::Default)
             {
@@ -1778,11 +1778,11 @@ static uint64_t PageDisabledWidgets[] = {
             }
             tileInspectorPage = p;
             auto pageIndex = EnumValue(p);
-            SetWidgets(PageWidgets[pageIndex]);
+            setWidgets(PageWidgets[pageIndex]);
             holdDownWidgets = PageHoldDownWidgets[pageIndex];
             disabledWidgets = PageDisabledWidgets[pageIndex];
             pressedWidgets = 0;
-            Invalidate();
+            invalidate();
         }
 
         void UpdateSelectedTile(const ScreenCoordsXY& screenCoords)
@@ -1840,7 +1840,7 @@ static uint64_t PageDisabledWidgets[] = {
             {
                 windowTileInspectorSelectedIndex = index;
             }
-            Invalidate();
+            invalidate();
         }
 
         void LoadTile(TileElement* elementToSelect)
@@ -1860,7 +1860,7 @@ static uint64_t PageDisabledWidgets[] = {
                 numItems++;
             } while (!(element++)->IsLastForTile());
             windowTileInspectorElementCount = numItems;
-            Invalidate();
+            invalidate();
         }
 
         void RemoveElement(int32_t elementIndex)
@@ -1911,7 +1911,7 @@ static uint64_t PageDisabledWidgets[] = {
                     _copiedBanner = *banner;
             }
             _elementCopied = true;
-            Invalidate();
+            invalidate();
         }
 
         void PasteElement()
@@ -2076,7 +2076,7 @@ static uint64_t PageDisabledWidgets[] = {
             GameActions::Execute(&modifyTile, getGameState());
         }
 
-        void OnPrepareDraw() override
+        void onPrepareDraw() override
         {
             const TileElement* const tileElement = OpenRCT2::TileInspector::GetSelectedElement();
 
@@ -2122,34 +2122,34 @@ static uint64_t PageDisabledWidgets[] = {
 
             if (tileInspectorPage != p)
             {
-                SetPage(p);
-                Invalidate();
+                setPage(p);
+                invalidate();
             }
             // X and Y spinners
-            SetWidgetDisabledAndInvalidate(
+            setWidgetDisabledAndInvalidate(
                 WIDX_SPINNER_X_INCREASE, !(_tileSelected && ((_toolMap.x / 32) < kMaximumMapSizeTechnical - 1)));
-            SetWidgetDisabledAndInvalidate(WIDX_SPINNER_X_DECREASE, !(_tileSelected && ((_toolMap.x / 32) > 0)));
-            SetWidgetDisabledAndInvalidate(
+            setWidgetDisabledAndInvalidate(WIDX_SPINNER_X_DECREASE, !(_tileSelected && ((_toolMap.x / 32) > 0)));
+            setWidgetDisabledAndInvalidate(
                 WIDX_SPINNER_Y_INCREASE, !(_tileSelected && ((_toolMap.y / 32) < kMaximumMapSizeTechnical - 1)));
-            SetWidgetDisabledAndInvalidate(WIDX_SPINNER_Y_DECREASE, !(_tileSelected && ((_toolMap.y / 32) > 0)));
+            setWidgetDisabledAndInvalidate(WIDX_SPINNER_Y_DECREASE, !(_tileSelected && ((_toolMap.y / 32) > 0)));
 
             // Sort buttons
-            SetWidgetDisabledAndInvalidate(WIDX_BUTTON_SORT, !(_tileSelected && windowTileInspectorElementCount > 1));
+            setWidgetDisabledAndInvalidate(WIDX_BUTTON_SORT, !(_tileSelected && windowTileInspectorElementCount > 1));
 
             // Move Up button
-            SetWidgetDisabledAndInvalidate(
+            setWidgetDisabledAndInvalidate(
                 WIDX_BUTTON_MOVE_UP,
                 !(windowTileInspectorSelectedIndex != -1
                   && windowTileInspectorSelectedIndex < windowTileInspectorElementCount - 1));
 
             // Move Down button
-            SetWidgetDisabledAndInvalidate(WIDX_BUTTON_MOVE_DOWN, !(windowTileInspectorSelectedIndex > 0));
+            setWidgetDisabledAndInvalidate(WIDX_BUTTON_MOVE_DOWN, !(windowTileInspectorSelectedIndex > 0));
 
             // Copy button
-            SetWidgetDisabledAndInvalidate(WIDX_BUTTON_COPY, !(windowTileInspectorSelectedIndex >= 0));
+            setWidgetDisabledAndInvalidate(WIDX_BUTTON_COPY, !(windowTileInspectorSelectedIndex >= 0));
 
             // Paste button
-            SetWidgetDisabledAndInvalidate(WIDX_BUTTON_PASTE, !(_tileSelected && _elementCopied));
+            setWidgetDisabledAndInvalidate(WIDX_BUTTON_PASTE, !(_tileSelected && _elementCopied));
 
             widgets[WIDX_BACKGROUND].bottom = height - 1;
 
@@ -2203,19 +2203,19 @@ static uint64_t PageDisabledWidgets[] = {
                     widgets[WIDX_SURFACE_CHECK_CORNER_W].bottom = widgets[WIDX_SURFACE_CHECK_CORNER_W].top + 13;
                     widgets[WIDX_SURFACE_CHECK_DIAGONAL].top = GBBT(propertiesAnchor, 3) + 7 * 1;
                     widgets[WIDX_SURFACE_CHECK_DIAGONAL].bottom = widgets[WIDX_SURFACE_CHECK_DIAGONAL].top + 13;
-                    SetCheckboxValue(
+                    setCheckboxValue(
                         WIDX_SURFACE_CHECK_CORNER_N,
                         tileElement->AsSurface()->GetSlope() & (1 << ((2 - GetCurrentRotation()) & 3)));
-                    SetCheckboxValue(
+                    setCheckboxValue(
                         WIDX_SURFACE_CHECK_CORNER_E,
                         tileElement->AsSurface()->GetSlope() & (1 << ((3 - GetCurrentRotation()) & 3)));
-                    SetCheckboxValue(
+                    setCheckboxValue(
                         WIDX_SURFACE_CHECK_CORNER_S,
                         tileElement->AsSurface()->GetSlope() & (1 << ((0 - GetCurrentRotation()) & 3)));
-                    SetCheckboxValue(
+                    setCheckboxValue(
                         WIDX_SURFACE_CHECK_CORNER_W,
                         tileElement->AsSurface()->GetSlope() & (1 << ((1 - GetCurrentRotation()) & 3)));
-                    SetCheckboxValue(
+                    setCheckboxValue(
                         WIDX_SURFACE_CHECK_DIAGONAL, tileElement->AsSurface()->GetSlope() & kTileSlopeDiagonalFlag);
                     break;
 
@@ -2248,24 +2248,24 @@ static uint64_t PageDisabledWidgets[] = {
                     widgets[WIDX_PATH_CHECK_EDGE_W].bottom = widgets[WIDX_PATH_CHECK_EDGE_W].top + 13;
                     widgets[WIDX_PATH_CHECK_EDGE_NW].top = GBBT(propertiesAnchor, 4) + 7 * 1;
                     widgets[WIDX_PATH_CHECK_EDGE_NW].bottom = widgets[WIDX_PATH_CHECK_EDGE_NW].top + 13;
-                    SetCheckboxValue(WIDX_PATH_CHECK_SLOPED, tileElement->AsPath()->IsSloped());
-                    SetCheckboxValue(WIDX_PATH_CHECK_JUNCTION_RAILINGS, tileElement->AsPath()->HasJunctionRailings());
-                    SetCheckboxValue(WIDX_PATH_CHECK_BROKEN, tileElement->AsPath()->IsBroken());
-                    SetCheckboxValue(
+                    setCheckboxValue(WIDX_PATH_CHECK_SLOPED, tileElement->AsPath()->IsSloped());
+                    setCheckboxValue(WIDX_PATH_CHECK_JUNCTION_RAILINGS, tileElement->AsPath()->HasJunctionRailings());
+                    setCheckboxValue(WIDX_PATH_CHECK_BROKEN, tileElement->AsPath()->IsBroken());
+                    setCheckboxValue(
                         WIDX_PATH_CHECK_EDGE_NE, tileElement->AsPath()->GetEdges() & (1 << ((0 - GetCurrentRotation()) & 3)));
-                    SetCheckboxValue(
+                    setCheckboxValue(
                         WIDX_PATH_CHECK_EDGE_SE, tileElement->AsPath()->GetEdges() & (1 << ((1 - GetCurrentRotation()) & 3)));
-                    SetCheckboxValue(
+                    setCheckboxValue(
                         WIDX_PATH_CHECK_EDGE_SW, tileElement->AsPath()->GetEdges() & (1 << ((2 - GetCurrentRotation()) & 3)));
-                    SetCheckboxValue(
+                    setCheckboxValue(
                         WIDX_PATH_CHECK_EDGE_NW, tileElement->AsPath()->GetEdges() & (1 << ((3 - GetCurrentRotation()) & 3)));
-                    SetCheckboxValue(
+                    setCheckboxValue(
                         WIDX_PATH_CHECK_EDGE_E, tileElement->AsPath()->GetCorners() & (1 << ((0 - GetCurrentRotation()) & 3)));
-                    SetCheckboxValue(
+                    setCheckboxValue(
                         WIDX_PATH_CHECK_EDGE_S, tileElement->AsPath()->GetCorners() & (1 << ((1 - GetCurrentRotation()) & 3)));
-                    SetCheckboxValue(
+                    setCheckboxValue(
                         WIDX_PATH_CHECK_EDGE_W, tileElement->AsPath()->GetCorners() & (1 << ((2 - GetCurrentRotation()) & 3)));
-                    SetCheckboxValue(
+                    setCheckboxValue(
                         WIDX_PATH_CHECK_EDGE_N, tileElement->AsPath()->GetCorners() & (1 << ((3 - GetCurrentRotation()) & 3)));
                     break;
 
@@ -2284,13 +2284,13 @@ static uint64_t PageDisabledWidgets[] = {
                     widgets[WIDX_TRACK_CHECK_BRAKE_CLOSED].bottom = GBBB(propertiesAnchor, 3);
                     widgets[WIDX_TRACK_CHECK_IS_INDESTRUCTIBLE].top = GBBT(propertiesAnchor, 4);
                     widgets[WIDX_TRACK_CHECK_IS_INDESTRUCTIBLE].bottom = GBBB(propertiesAnchor, 4);
-                    SetCheckboxValue(WIDX_TRACK_CHECK_APPLY_TO_ALL, _applyToAll);
-                    SetCheckboxValue(WIDX_TRACK_CHECK_CHAIN_LIFT, tileElement->AsTrack()->HasChain());
-                    SetCheckboxValue(WIDX_TRACK_CHECK_BRAKE_CLOSED, tileElement->AsTrack()->IsBrakeClosed());
+                    setCheckboxValue(WIDX_TRACK_CHECK_APPLY_TO_ALL, _applyToAll);
+                    setCheckboxValue(WIDX_TRACK_CHECK_CHAIN_LIFT, tileElement->AsTrack()->HasChain());
+                    setCheckboxValue(WIDX_TRACK_CHECK_BRAKE_CLOSED, tileElement->AsTrack()->IsBrakeClosed());
                     widgets[WIDX_TRACK_CHECK_BRAKE_CLOSED].content = tileElement->AsTrack()->IsBlockStart()
                         ? STR_TILE_INSPECTOR_TRACK_BLOCK_BRAKE
                         : STR_TILE_INSPECTOR_TRACK_BRAKE_CLOSED;
-                    SetCheckboxValue(WIDX_TRACK_CHECK_IS_INDESTRUCTIBLE, tileElement->AsTrack()->IsIndestructible());
+                    setCheckboxValue(WIDX_TRACK_CHECK_IS_INDESTRUCTIBLE, tileElement->AsTrack()->IsIndestructible());
                     break;
 
                 case TileElementType::SmallScenery:
@@ -2318,10 +2318,10 @@ static uint64_t PageDisabledWidgets[] = {
                     bool E = tileElement->AsSmallScenery()->GetSceneryQuadrant() == ((1 - GetCurrentRotation()) & 3);
                     bool S = tileElement->AsSmallScenery()->GetSceneryQuadrant() == ((2 - GetCurrentRotation()) & 3);
                     bool W = tileElement->AsSmallScenery()->GetSceneryQuadrant() == ((3 - GetCurrentRotation()) & 3);
-                    SetCheckboxValue(WIDX_SCENERY_CHECK_QUARTER_N, N);
-                    SetCheckboxValue(WIDX_SCENERY_CHECK_QUARTER_E, E);
-                    SetCheckboxValue(WIDX_SCENERY_CHECK_QUARTER_S, S);
-                    SetCheckboxValue(WIDX_SCENERY_CHECK_QUARTER_W, W);
+                    setCheckboxValue(WIDX_SCENERY_CHECK_QUARTER_N, N);
+                    setCheckboxValue(WIDX_SCENERY_CHECK_QUARTER_E, E);
+                    setCheckboxValue(WIDX_SCENERY_CHECK_QUARTER_S, S);
+                    setCheckboxValue(WIDX_SCENERY_CHECK_QUARTER_W, W);
 
                     // Collision checkboxes
                     widgets[WIDX_SCENERY_CHECK_COLLISION_N].top = GBBT(propertiesAnchor, 2) + 5 + 7 * 0;
@@ -2337,10 +2337,10 @@ static uint64_t PageDisabledWidgets[] = {
                     E = (occupiedQuadrants & (1 << ((3 - GetCurrentRotation()) & 3))) != 0;
                     S = (occupiedQuadrants & (1 << ((0 - GetCurrentRotation()) & 3))) != 0;
                     W = (occupiedQuadrants & (1 << ((1 - GetCurrentRotation()) & 3))) != 0;
-                    SetCheckboxValue(WIDX_SCENERY_CHECK_COLLISION_N, N);
-                    SetCheckboxValue(WIDX_SCENERY_CHECK_COLLISION_E, E);
-                    SetCheckboxValue(WIDX_SCENERY_CHECK_COLLISION_S, S);
-                    SetCheckboxValue(WIDX_SCENERY_CHECK_COLLISION_W, W);
+                    setCheckboxValue(WIDX_SCENERY_CHECK_COLLISION_N, N);
+                    setCheckboxValue(WIDX_SCENERY_CHECK_COLLISION_E, E);
+                    setCheckboxValue(WIDX_SCENERY_CHECK_COLLISION_S, S);
+                    setCheckboxValue(WIDX_SCENERY_CHECK_COLLISION_W, W);
                     break;
                 }
 
@@ -2353,7 +2353,7 @@ static uint64_t PageDisabledWidgets[] = {
                     widgets[WIDX_ENTRANCE_SPINNER_HEIGHT_DECREASE].bottom = GBBB(propertiesAnchor, 0) - 4;
                     widgets[WIDX_ENTRANCE_BUTTON_MAKE_USABLE].top = GBBT(propertiesAnchor, 1);
                     widgets[WIDX_ENTRANCE_BUTTON_MAKE_USABLE].bottom = GBBB(propertiesAnchor, 1);
-                    SetWidgetDisabled(
+                    setWidgetDisabled(
                         WIDX_ENTRANCE_BUTTON_MAKE_USABLE,
                         !(tileElement->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_PARK_ENTRANCE));
                     break;
@@ -2390,17 +2390,17 @@ static uint64_t PageDisabledWidgets[] = {
                     widgets[WIDX_WALL_ANIMATION_IS_BACKWARDS].bottom = GBBB(propertiesAnchor, 3);
 
                     // Wall slope dropdown
-                    SetWidgetDisabled(WIDX_WALL_DROPDOWN_SLOPE, !canBeSloped);
-                    InvalidateWidget(WIDX_WALL_DROPDOWN_SLOPE);
-                    SetWidgetDisabled(WIDX_WALL_DROPDOWN_SLOPE_BUTTON, !canBeSloped);
-                    InvalidateWidget(WIDX_WALL_DROPDOWN_SLOPE_BUTTON);
+                    setWidgetDisabled(WIDX_WALL_DROPDOWN_SLOPE, !canBeSloped);
+                    invalidateWidget(WIDX_WALL_DROPDOWN_SLOPE);
+                    setWidgetDisabled(WIDX_WALL_DROPDOWN_SLOPE_BUTTON, !canBeSloped);
+                    invalidateWidget(WIDX_WALL_DROPDOWN_SLOPE_BUTTON);
                     // Wall animation frame spinner
-                    SetWidgetDisabled(WIDX_WALL_SPINNER_ANIMATION_FRAME, !hasAnimation);
-                    SetWidgetDisabled(WIDX_WALL_SPINNER_ANIMATION_FRAME_INCREASE, !hasAnimation);
-                    SetWidgetDisabled(WIDX_WALL_SPINNER_ANIMATION_FRAME_DECREASE, !hasAnimation);
+                    setWidgetDisabled(WIDX_WALL_SPINNER_ANIMATION_FRAME, !hasAnimation);
+                    setWidgetDisabled(WIDX_WALL_SPINNER_ANIMATION_FRAME_INCREASE, !hasAnimation);
+                    setWidgetDisabled(WIDX_WALL_SPINNER_ANIMATION_FRAME_DECREASE, !hasAnimation);
 
-                    SetCheckboxValue(WIDX_WALL_ANIMATION_IS_BACKWARDS, tileElement->AsWall()->AnimationIsBackwards());
-                    SetWidgetDisabled(WIDX_WALL_ANIMATION_IS_BACKWARDS, !hasAnimation);
+                    setCheckboxValue(WIDX_WALL_ANIMATION_IS_BACKWARDS, tileElement->AsWall()->AnimationIsBackwards());
+                    setWidgetDisabled(WIDX_WALL_ANIMATION_IS_BACKWARDS, !hasAnimation);
                     break;
                 }
 
@@ -2428,16 +2428,16 @@ static uint64_t PageDisabledWidgets[] = {
                     widgets[WIDX_BANNER_CHECK_BLOCK_SW].bottom = GBBB(propertiesAnchor, 2);
                     widgets[WIDX_BANNER_CHECK_BLOCK_NW].top = GBBT(propertiesAnchor, 1);
                     widgets[WIDX_BANNER_CHECK_BLOCK_NW].bottom = GBBB(propertiesAnchor, 1);
-                    SetCheckboxValue(
+                    setCheckboxValue(
                         WIDX_BANNER_CHECK_BLOCK_NE,
                         (tileElement->AsBanner()->GetAllowedEdges() & (1 << ((0 - GetCurrentRotation()) & 3))));
-                    SetCheckboxValue(
+                    setCheckboxValue(
                         WIDX_BANNER_CHECK_BLOCK_SE,
                         (tileElement->AsBanner()->GetAllowedEdges() & (1 << ((1 - GetCurrentRotation()) & 3))));
-                    SetCheckboxValue(
+                    setCheckboxValue(
                         WIDX_BANNER_CHECK_BLOCK_SW,
                         (tileElement->AsBanner()->GetAllowedEdges() & (1 << ((2 - GetCurrentRotation()) & 3))));
-                    SetCheckboxValue(
+                    setCheckboxValue(
                         WIDX_BANNER_CHECK_BLOCK_NW,
                         (tileElement->AsBanner()->GetAllowedEdges() & (1 << ((3 - GetCurrentRotation()) & 3))));
                     break;

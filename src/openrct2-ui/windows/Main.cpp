@@ -28,9 +28,9 @@ namespace OpenRCT2::Ui::Windows
     class MainWindow final : public Window
     {
     public:
-        void OnOpen() override
+        void onOpen() override
         {
-            SetWidgets(_mainWidgets);
+            setWidgets(_mainWidgets);
             widgets[0].right = width;
             widgets[0].bottom = height;
 
@@ -46,7 +46,7 @@ namespace OpenRCT2::Ui::Windows
             WindowFootpathResetSelectedPath();
         }
 
-        void OnDraw(RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
             ViewportRender(rt, viewport);
         }

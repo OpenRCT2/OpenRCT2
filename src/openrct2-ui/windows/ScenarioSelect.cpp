@@ -133,35 +133,35 @@ namespace OpenRCT2::Ui::Windows
         {
         }
 
-        void OnOpen() override
+        void onOpen() override
         {
-            SetWidgets(_scenarioSelectWidgets);
+            setWidgets(_scenarioSelectWidgets);
 
             // Load scenario list
             ScenarioRepositoryScan();
 
             _highlightedScenario = nullptr;
-            InitTabs();
-            InitialiseListItems();
-            InitScrollWidgets();
+            initTabs();
+            initialiseListItems();
+            initScrollWidgets();
         }
 
-        void OnLanguageChange() override
+        void onLanguageChange() override
         {
             _listItems.clear();
             ScenarioRepositoryScan();
-            InitialiseListItems();
+            initialiseListItems();
         }
 
-        void OnMouseUp(WidgetIndex widgetIndex) override
+        void onMouseUp(WidgetIndex widgetIndex) override
         {
             if (widgetIndex == WIDX_CLOSE)
             {
-                Close();
+                close();
             }
         }
 
-        void OnMouseDown(WidgetIndex widgetIndex) override
+        void onMouseDown(WidgetIndex widgetIndex) override
         {
             if (widgetIndex >= WIDX_TAB1 && widgetIndex <= WIDX_TAB10)
             {
@@ -172,12 +172,12 @@ namespace OpenRCT2::Ui::Windows
                 _highlightedScenario = nullptr;
                 _preview = {};
 
-                InitialiseListItems();
-                Invalidate();
-                OnResize();
-                OnPrepareDraw();
-                InitScrollWidgets();
-                Invalidate();
+                initialiseListItems();
+                invalidate();
+                onResize();
+                onPrepareDraw();
+                initScrollWidgets();
+                invalidate();
             }
         }
 
@@ -260,7 +260,7 @@ namespace OpenRCT2::Ui::Windows
         void UpdateParkPreview(const ParkPreview& preview)
         {
             _preview = preview;
-            Invalidate();
+            invalidate();
         }
 
         ScreenCoordsXY DrawPreview(RenderTarget& rt, ScreenCoordsXY screenPos)
@@ -296,9 +296,9 @@ namespace OpenRCT2::Ui::Windows
             return frameEndPos;
         }
 
-        void OnDraw(RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
-            DrawWidgets(rt);
+            drawWidgets(rt);
 
             StringId format = STR_WINDOW_COLOUR_2_STRINGID;
             FontStyle fontStyle = FontStyle::Medium;
@@ -420,7 +420,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnPrepareDraw() override
+        void onPrepareDraw() override
         {
             pressedWidgets &= ~(
                 (1uLL << WIDX_CLOSE) | (1uLL << WIDX_TAB1) | (1uLL << WIDX_TAB2) | (1uLL << WIDX_TAB3) | (1uLL << WIDX_TAB4)
@@ -434,7 +434,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_SCENARIOLIST].bottom = height - bottomMargin;
         }
 
-        ScreenSize OnScrollGetSize(int32_t scrollIndex) override
+        ScreenSize onScrollGetSize(int32_t scrollIndex) override
         {
             const int32_t scenarioItemHeight = GetScenarioListItemSize();
 
@@ -455,7 +455,7 @@ namespace OpenRCT2::Ui::Windows
             return { kWindowSize.width, y };
         }
 
-        void OnScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
+        void onScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
             const int32_t scenarioItemHeight = GetScenarioListItemSize();
 
@@ -495,15 +495,15 @@ namespace OpenRCT2::Ui::Windows
             {
                 _highlightedScenario = selected;
                 LoadPreview();
-                Invalidate();
+                invalidate();
             }
             else if (_showLockedInformation != originalShowLockedInformation)
             {
-                Invalidate();
+                invalidate();
             }
         }
 
-        void OnScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
+        void onScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
             const int32_t scenarioItemHeight = GetScenarioListItemSize();
 
@@ -534,7 +534,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
+        void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
             uint8_t paletteIndex = ColourMapA[colours[1].colour].mid_light;
             GfxClear(rt, paletteIndex);
@@ -669,7 +669,7 @@ namespace OpenRCT2::Ui::Windows
             GfxDrawLine(rt, { darkLineLeftTop2, darkLineRightBottom2 }, darkColour);
         }
 
-        void InitialiseListItems()
+        void initialiseListItems()
         {
             size_t numScenarios = ScenarioRepositoryGetCount();
             _listItems.clear();
@@ -792,7 +792,7 @@ namespace OpenRCT2::Ui::Windows
             return true;
         }
 
-        void InitTabs()
+        void initTabs()
         {
             uint32_t showPages = 0;
             size_t numScenarios = ScenarioRepositoryGetCount();

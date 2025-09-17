@@ -180,14 +180,14 @@ namespace OpenRCT2::Ui::Windows
         ScreenRect _guestGraphBounds;
 
     public:
-        void OnOpen() override
+        void onOpen() override
         {
             number = 0;
             currentFrame = 0;
             _numberOfRides = -1;
             _numberOfStaff = -1;
             _peepAnimationFrame = 0;
-            SetPage(0);
+            setPage(0);
 
             _ratingProps.lineCol = colours[2];
             _guestProps.lineCol = colours[2];
@@ -195,7 +195,7 @@ namespace OpenRCT2::Ui::Windows
             _guestProps.hoverIdx = -1;
         }
 
-        void OnClose() override
+        void onClose() override
         {
             if (isToolActive(classification, number))
             {
@@ -203,12 +203,12 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnMouseUp(WidgetIndex idx) override
+        void onMouseUp(WidgetIndex idx) override
         {
             switch (idx)
             {
                 case WIDX_CLOSE:
-                    Close();
+                    close();
                     return;
                 case WIDX_TAB_1:
                 case WIDX_TAB_2:
@@ -217,176 +217,176 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_TAB_5:
                 case WIDX_TAB_6:
                 case WIDX_TAB_7:
-                    SetPage(idx - WIDX_TAB_1);
+                    setPage(idx - WIDX_TAB_1);
                     return;
             }
             switch (page)
             {
                 case WINDOW_PARK_PAGE_ENTRANCE:
-                    OnMouseUpEntrance(idx);
+                    onMouseUpEntrance(idx);
                     break;
                 case WINDOW_PARK_PAGE_OBJECTIVE:
-                    OnMouseUpObjective(idx);
+                    onMouseUpObjective(idx);
                     break;
             }
         }
 
-        void OnResize() override
+        void onResize() override
         {
             switch (page)
             {
                 case WINDOW_PARK_PAGE_ENTRANCE:
-                    OnResizeEntrance();
+                    onResizeEntrance();
                     break;
                 case WINDOW_PARK_PAGE_RATING:
-                    OnResizeRating();
+                    onResizeRating();
                     break;
                 case WINDOW_PARK_PAGE_GUESTS:
-                    OnResizeGuests();
+                    onResizeGuests();
                     break;
                 case WINDOW_PARK_PAGE_PRICE:
-                    OnResizePrice();
+                    onResizePrice();
                     break;
                 case WINDOW_PARK_PAGE_STATS:
-                    OnResizeStats();
+                    onResizeStats();
                     break;
                 case WINDOW_PARK_PAGE_OBJECTIVE:
-                    OnResizeObjective();
+                    onResizeObjective();
                     break;
                 case WINDOW_PARK_PAGE_AWARDS:
-                    OnResizeAwards();
+                    onResizeAwards();
                     break;
             }
         }
 
-        void OnMouseDown(WidgetIndex idx) override
+        void onMouseDown(WidgetIndex idx) override
         {
             switch (page)
             {
                 case WINDOW_PARK_PAGE_ENTRANCE:
-                    OnMouseDownEntrance(idx);
+                    onMouseDownEntrance(idx);
                     break;
                 case WINDOW_PARK_PAGE_PRICE:
-                    OnMouseDownPrice(idx);
+                    onMouseDownPrice(idx);
                     break;
             }
         }
 
-        void OnDropdown(WidgetIndex widgetIndex, int32_t selectedIndex) override
+        void onDropdown(WidgetIndex widgetIndex, int32_t selectedIndex) override
         {
             switch (page)
             {
                 case WINDOW_PARK_PAGE_ENTRANCE:
-                    OnDropdownEntrance(widgetIndex, selectedIndex);
+                    onDropdownEntrance(widgetIndex, selectedIndex);
                     break;
             }
         }
 
-        void OnUpdate() override
+        void onUpdate() override
         {
             switch (page)
             {
                 case WINDOW_PARK_PAGE_ENTRANCE:
-                    OnUpdateEntrance();
+                    onUpdateEntrance();
                     break;
                 case WINDOW_PARK_PAGE_RATING:
-                    OnUpdateRating();
+                    onUpdateRating();
                     break;
                 case WINDOW_PARK_PAGE_GUESTS:
-                    OnUpdateGuests();
+                    onUpdateGuests();
                     break;
                 case WINDOW_PARK_PAGE_PRICE:
-                    OnUpdatePrice();
+                    onUpdatePrice();
                     break;
                 case WINDOW_PARK_PAGE_STATS:
-                    OnUpdateStats();
+                    onUpdateStats();
                     break;
                 case WINDOW_PARK_PAGE_OBJECTIVE:
-                    OnUpdateObjective();
+                    onUpdateObjective();
                     break;
                 case WINDOW_PARK_PAGE_AWARDS:
-                    OnUpdateAwards();
+                    onUpdateAwards();
                     break;
             }
         }
 
-        void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override
+        void onTextInput(WidgetIndex widgetIndex, std::string_view text) override
         {
             switch (page)
             {
                 case WINDOW_PARK_PAGE_ENTRANCE:
-                    OnTextInputEntrance(widgetIndex, text);
+                    onTextInputEntrance(widgetIndex, text);
                     break;
                 case WINDOW_PARK_PAGE_OBJECTIVE:
-                    OnTextInputObjective(widgetIndex, text);
+                    onTextInputObjective(widgetIndex, text);
                     break;
                 case WINDOW_PARK_PAGE_PRICE:
-                    OnTextInputPrice(widgetIndex, text);
+                    onTextInputPrice(widgetIndex, text);
                     break;
             }
         }
 
-        void OnPrepareDraw() override
+        void onPrepareDraw() override
         {
             switch (page)
             {
                 case WINDOW_PARK_PAGE_ENTRANCE:
-                    OnPrepareDrawEntrance();
+                    onPrepareDrawEntrance();
                     break;
                 case WINDOW_PARK_PAGE_RATING:
-                    OnPrepareDrawRating();
+                    onPrepareDrawRating();
                     break;
                 case WINDOW_PARK_PAGE_GUESTS:
-                    OnPrepareDrawGuests();
+                    onPrepareDrawGuests();
                     break;
                 case WINDOW_PARK_PAGE_PRICE:
-                    OnPrepareDrawPrice();
+                    onPrepareDrawPrice();
                     break;
                 case WINDOW_PARK_PAGE_STATS:
-                    OnPrepareDrawStats();
+                    onPrepareDrawStats();
                     break;
                 case WINDOW_PARK_PAGE_OBJECTIVE:
-                    OnPrepareDrawObjective();
+                    onPrepareDrawObjective();
                     break;
                 case WINDOW_PARK_PAGE_AWARDS:
-                    OnPrepareDrawAwards();
+                    onPrepareDrawAwards();
                     break;
             }
         }
 
-        void OnDraw(RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
             switch (page)
             {
                 case WINDOW_PARK_PAGE_ENTRANCE:
-                    OnDrawEntrance(rt);
+                    onDrawEntrance(rt);
                     break;
                 case WINDOW_PARK_PAGE_RATING:
-                    OnDrawRating(rt);
+                    onDrawRating(rt);
                     break;
                 case WINDOW_PARK_PAGE_GUESTS:
-                    OnDrawGuests(rt);
+                    onDrawGuests(rt);
                     break;
                 case WINDOW_PARK_PAGE_PRICE:
-                    OnDrawPrice(rt);
+                    onDrawPrice(rt);
                     break;
                 case WINDOW_PARK_PAGE_STATS:
-                    OnDrawStats(rt);
+                    onDrawStats(rt);
                     break;
                 case WINDOW_PARK_PAGE_OBJECTIVE:
-                    OnDrawObjective(rt);
+                    onDrawObjective(rt);
                     break;
                 case WINDOW_PARK_PAGE_AWARDS:
-                    OnDrawAwards(rt);
+                    onDrawAwards(rt);
                     break;
             }
         }
 
-        void OnViewportRotate() override
+        void onViewportRotate() override
         {
             if (page == WINDOW_PARK_PAGE_ENTRANCE)
             {
-                InitViewport();
+                initViewport();
             }
         }
 
@@ -407,7 +407,7 @@ namespace OpenRCT2::Ui::Windows
         }
 
 #pragma region Entrance page
-        void OnMouseUpEntrance(WidgetIndex widgetIndex)
+        void onMouseUpEntrance(WidgetIndex widgetIndex)
         {
             switch (widgetIndex)
             {
@@ -415,7 +415,7 @@ namespace OpenRCT2::Ui::Windows
                     ContextOpenWindow(WindowClass::LandRights);
                     break;
                 case WIDX_LOCATE:
-                    ScrollToViewport();
+                    scrollToViewport();
                     break;
                 case WIDX_RENAME:
                 {
@@ -433,14 +433,14 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnResizeEntrance()
+        void onResizeEntrance()
         {
             flags |= WF_RESIZABLE;
             WindowSetResize(*this, { 230, 174 + 9 }, { 230 * 3, (274 + 9) * 3 });
-            InitViewport();
+            initViewport();
         }
 
-        void OnMouseDownEntrance(WidgetIndex widgetIndex)
+        void onMouseDownEntrance(WidgetIndex widgetIndex)
         {
             if (widgetIndex == WIDX_OPEN_OR_CLOSE)
             {
@@ -463,7 +463,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDropdownEntrance(WidgetIndex widgetIndex, int32_t dropdownIndex)
+        void onDropdownEntrance(WidgetIndex widgetIndex, int32_t dropdownIndex)
         {
             if (widgetIndex == WIDX_OPEN_OR_CLOSE)
             {
@@ -481,13 +481,13 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnUpdateEntrance()
+        void onUpdateEntrance()
         {
             currentFrame++;
-            InvalidateWidget(WIDX_TAB_1);
+            invalidateWidget(WIDX_TAB_1);
         }
 
-        void OnTextInputEntrance(WidgetIndex widgetIndex, std::string_view text)
+        void onTextInputEntrance(WidgetIndex widgetIndex, std::string_view text)
         {
             if (widgetIndex == WIDX_RENAME && !text.empty())
             {
@@ -496,10 +496,10 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnPrepareDrawEntrance()
+        void onPrepareDrawEntrance()
         {
             const auto& gameState = getGameState();
-            InitScrollWidgets();
+            initScrollWidgets();
 
             SetPressedTab();
 
@@ -519,13 +519,13 @@ namespace OpenRCT2::Ui::Windows
             const auto openLightImage = SPR_G2_RCT1_OPEN_BUTTON_0 + parkIsOpen * 2 + widgetIsPressed(*this, WIDX_OPEN_LIGHT);
             widgets[WIDX_OPEN_LIGHT].image = ImageId(openLightImage);
 
-            // Only allow closing of park for guest / rating objective
+            // only allow closing of park for guest / rating objective
             if (gameState.scenarioOptions.objective.Type == Scenario::ObjectiveType::guestsAndRating)
                 disabledWidgets |= (1uLL << WIDX_OPEN_OR_CLOSE) | (1uLL << WIDX_CLOSE_LIGHT) | (1uLL << WIDX_OPEN_LIGHT);
             else
                 disabledWidgets &= ~((1uLL << WIDX_OPEN_OR_CLOSE) | (1uLL << WIDX_CLOSE_LIGHT) | (1uLL << WIDX_OPEN_LIGHT));
 
-            // Only allow purchase of land when there is money
+            // only allow purchase of land when there is money
             if (gameState.park.flags & PARK_FLAGS_NO_MONEY)
                 widgets[WIDX_BUY_LAND_RIGHTS].type = WidgetType::empty;
             else
@@ -582,9 +582,9 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDrawEntrance(RenderTarget& rt)
+        void onDrawEntrance(RenderTarget& rt)
         {
-            DrawWidgets(rt);
+            drawWidgets(rt);
             DrawTabImages(rt);
 
             // Draw viewport
@@ -605,7 +605,7 @@ namespace OpenRCT2::Ui::Windows
                 ft, { TextAlignment::CENTRE });
         }
 
-        void InitViewport()
+        void initViewport()
         {
             if (page != WINDOW_PARK_PAGE_ENTRANCE)
                 return;
@@ -627,11 +627,11 @@ namespace OpenRCT2::Ui::Windows
             else
             {
                 viewportFlags = viewport->flags;
-                RemoveViewport();
+                removeViewport();
             }
 
             // Call invalidate event
-            OnPrepareDraw();
+            onPrepareDraw();
 
             focus = newFocus;
 
@@ -645,35 +645,35 @@ namespace OpenRCT2::Ui::Windows
                         *this, windowPos + ScreenCoordsXY{ viewportWidget->left + 1, viewportWidget->top + 1 },
                         viewportWidget->width() - 1, viewportWidget->height() - 1, focus.value());
                     flags |= WF_NO_SCROLLING;
-                    Invalidate();
+                    invalidate();
                 }
             }
 
             if (viewport != nullptr)
                 viewport->flags = viewportFlags;
-            Invalidate();
+            invalidate();
         }
 
 #pragma endregion
 
 #pragma region Rating page
-        void OnResizeRating()
+        void onResizeRating()
         {
             flags |= WF_RESIZABLE;
             WindowSetResize(*this, { 268, 174 + 9 }, kMaxWindowSize);
         }
 
-        void OnUpdateRating()
+        void onUpdateRating()
         {
             currentFrame++;
-            InvalidateWidget(WIDX_TAB_2);
+            invalidateWidget(WIDX_TAB_2);
             if (_ratingProps.UpdateHoverIndex())
             {
-                InvalidateWidget(WIDX_BACKGROUND);
+                invalidateWidget(WIDX_BACKGROUND);
             }
         }
 
-        void OnPrepareDrawRating()
+        void onPrepareDrawRating()
         {
             SetPressedTab();
             PrepareWindowTitleText();
@@ -697,9 +697,9 @@ namespace OpenRCT2::Ui::Windows
                 kGraphNumYLabels, kParkRatingHistorySize);
         }
 
-        void OnDrawRating(RenderTarget& rt)
+        void onDrawRating(RenderTarget& rt)
         {
-            DrawWidgets(rt);
+            drawWidgets(rt);
             DrawTabImages(rt);
 
             Widget* widget = &widgets[WIDX_PAGE_BACKGROUND];
@@ -724,24 +724,24 @@ namespace OpenRCT2::Ui::Windows
 #pragma endregion
 
 #pragma region Guests page
-        void OnResizeGuests()
+        void onResizeGuests()
         {
             flags |= WF_RESIZABLE;
             WindowSetResize(*this, { 268, 174 + 9 }, kMaxWindowSize);
         }
 
-        void OnUpdateGuests()
+        void onUpdateGuests()
         {
             currentFrame++;
             _peepAnimationFrame = (_peepAnimationFrame + 1) % 24;
-            InvalidateWidget(WIDX_TAB_3);
+            invalidateWidget(WIDX_TAB_3);
             if (_guestProps.UpdateHoverIndex())
             {
-                InvalidateWidget(WIDX_BACKGROUND);
+                invalidateWidget(WIDX_BACKGROUND);
             }
         }
 
-        void OnPrepareDrawGuests()
+        void onPrepareDrawGuests()
         {
             SetPressedTab();
             PrepareWindowTitleText();
@@ -776,9 +776,9 @@ namespace OpenRCT2::Ui::Windows
                 kGraphNumYLabels, kGuestsInParkHistorySize);
         }
 
-        void OnDrawGuests(RenderTarget& rt)
+        void onDrawGuests(RenderTarget& rt)
         {
-            DrawWidgets(rt);
+            drawWidgets(rt);
             DrawTabImages(rt);
 
             Widget* widget = &widgets[WIDX_PAGE_BACKGROUND];
@@ -803,12 +803,12 @@ namespace OpenRCT2::Ui::Windows
 #pragma endregion
 
 #pragma region Price page
-        void OnResizePrice()
+        void onResizePrice()
         {
             WindowSetResize(*this, { 230, 124 }, { 230, 124 });
         }
 
-        void OnMouseDownPrice(WidgetIndex widgetIndex)
+        void onMouseDownPrice(WidgetIndex widgetIndex)
         {
             auto& gameState = getGameState();
             switch (widgetIndex)
@@ -837,13 +837,13 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnUpdatePrice()
+        void onUpdatePrice()
         {
             currentFrame++;
-            InvalidateWidget(WIDX_TAB_4);
+            invalidateWidget(WIDX_TAB_4);
         }
 
-        void OnPrepareDrawPrice()
+        void onPrepareDrawPrice()
         {
             SetPressedTab();
             PrepareWindowTitleText();
@@ -875,9 +875,9 @@ namespace OpenRCT2::Ui::Windows
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_7);
         }
 
-        void OnDrawPrice(RenderTarget& rt)
+        void onDrawPrice(RenderTarget& rt)
         {
-            DrawWidgets(rt);
+            drawWidgets(rt);
             DrawTabImages(rt);
 
             auto screenCoords = windowPos
@@ -900,22 +900,22 @@ namespace OpenRCT2::Ui::Windows
 #pragma endregion
 
 #pragma region Stats page
-        void OnResizeStats()
+        void onResizeStats()
         {
             WindowSetResize(*this, { 230, 119 }, { 230, 119 });
         }
 
-        void OnUpdateStats()
+        void onUpdateStats()
         {
             currentFrame++;
-            InvalidateWidget(WIDX_TAB_5);
+            invalidateWidget(WIDX_TAB_5);
 
             // Invalidate ride count if changed
             const auto rideCount = RideGetCount();
             if (_numberOfRides != rideCount)
             {
                 _numberOfRides = rideCount;
-                InvalidateWidget(WIDX_PAGE_BACKGROUND);
+                invalidateWidget(WIDX_PAGE_BACKGROUND);
             }
 
             // Invalidate number of staff if changed
@@ -923,11 +923,11 @@ namespace OpenRCT2::Ui::Windows
             if (_numberOfStaff != staffCount)
             {
                 _numberOfStaff = staffCount;
-                InvalidateWidget(WIDX_PAGE_BACKGROUND);
+                invalidateWidget(WIDX_PAGE_BACKGROUND);
             }
         }
 
-        void OnPrepareDrawStats()
+        void onPrepareDrawStats()
         {
             SetPressedTab();
             PrepareWindowTitleText();
@@ -935,9 +935,9 @@ namespace OpenRCT2::Ui::Windows
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_7);
         }
 
-        void OnDrawStats(RenderTarget& rt)
+        void onDrawStats(RenderTarget& rt)
         {
-            DrawWidgets(rt);
+            drawWidgets(rt);
             DrawTabImages(rt);
 
             auto screenCoords = windowPos
@@ -988,7 +988,7 @@ namespace OpenRCT2::Ui::Windows
 #pragma endregion
 
 #pragma region Objective page
-        void OnMouseUpObjective(WidgetIndex widgetIndex)
+        void onMouseUpObjective(WidgetIndex widgetIndex)
         {
             switch (widgetIndex)
             {
@@ -1000,7 +1000,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnResizeObjective()
+        void onResizeObjective()
         {
 #ifndef DISABLE_TTF
             if (gCurrentTTFFontSet != nullptr)
@@ -1010,23 +1010,23 @@ namespace OpenRCT2::Ui::Windows
                 WindowSetResize(*this, { 230, 226 }, { 230, 226 });
         }
 
-        void OnUpdateObjective()
+        void onUpdateObjective()
         {
             currentFrame++;
-            InvalidateWidget(WIDX_TAB_6);
+            invalidateWidget(WIDX_TAB_6);
         }
 
-        void OnTextInputObjective(WidgetIndex widgetIndex, std::string_view text)
+        void onTextInputObjective(WidgetIndex widgetIndex, std::string_view text)
         {
             if (widgetIndex == WIDX_ENTER_NAME && !text.empty())
             {
                 std::string strText(text);
                 ScenarioSuccessSubmitName(getGameState(), strText.c_str());
-                Invalidate();
+                invalidate();
             }
         }
 
-        void OnTextInputPrice(WidgetIndex widgetIndex, std::string_view text)
+        void onTextInputPrice(WidgetIndex widgetIndex, std::string_view text)
         {
             if (widgetIndex == WIDX_PRICE && !text.empty())
             {
@@ -1043,7 +1043,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnPrepareDrawObjective()
+        void onPrepareDrawObjective()
         {
             SetPressedTab();
             PrepareWindowTitleText();
@@ -1061,10 +1061,10 @@ namespace OpenRCT2::Ui::Windows
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_7);
         }
 
-        void OnDrawObjective(RenderTarget& rt)
+        void onDrawObjective(RenderTarget& rt)
         {
             auto& gameState = getGameState();
-            DrawWidgets(rt);
+            drawWidgets(rt);
             DrawTabImages(rt);
 
             // Scenario description
@@ -1108,18 +1108,18 @@ namespace OpenRCT2::Ui::Windows
 #pragma endregion
 
 #pragma region Awards page
-        void OnResizeAwards()
+        void onResizeAwards()
         {
             WindowSetResize(*this, { 230, 182 }, { 230, 182 });
         }
 
-        void OnUpdateAwards()
+        void onUpdateAwards()
         {
             currentFrame++;
-            InvalidateWidget(WIDX_TAB_7);
+            invalidateWidget(WIDX_TAB_7);
         }
 
-        void OnPrepareDrawAwards()
+        void onPrepareDrawAwards()
         {
             SetPressedTab();
             PrepareWindowTitleText();
@@ -1127,9 +1127,9 @@ namespace OpenRCT2::Ui::Windows
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_7);
         }
 
-        void OnDrawAwards(RenderTarget& rt)
+        void onDrawAwards(RenderTarget& rt)
         {
-            DrawWidgets(rt);
+            drawWidgets(rt);
             DrawTabImages(rt);
 
             auto screenCoords = windowPos
@@ -1151,7 +1151,7 @@ namespace OpenRCT2::Ui::Windows
 #pragma endregion
 
 #pragma region Common
-        void SetPage(int32_t newPage)
+        void setPage(int32_t newPage)
         {
             if (isToolActive(classification, number))
                 ToolCancel();
@@ -1171,13 +1171,13 @@ namespace OpenRCT2::Ui::Windows
             page = newPage;
             currentFrame = 0;
             _peepAnimationFrame = 0;
-            RemoveViewport();
+            removeViewport();
 
             holdDownWidgets = _pagedHoldDownWidgets[newPage];
-            SetWidgets(_pagedWidgets[newPage]);
+            setWidgets(_pagedWidgets[newPage]);
             SetDisabledTabs();
-            Invalidate();
-            InitScrollWidgets();
+            invalidate();
+            initScrollWidgets();
 
             if (page == WINDOW_PARK_PAGE_GUESTS || WINDOW_PARK_PAGE_RATING)
             {
@@ -1186,9 +1186,9 @@ namespace OpenRCT2::Ui::Windows
                 height -= getTitleBarDiffNormal();
             }
 
-            OnResize();
-            OnUpdate();
-            ResizeFrame();
+            onResize();
+            onUpdate();
+            resizeFrame();
 
             if (listen && viewport != nullptr)
                 viewport->flags |= VIEWPORT_FLAG_SOUND_ON;
@@ -1288,7 +1288,7 @@ namespace OpenRCT2::Ui::Windows
         auto* wnd = windowMgr->FocusOrCreate<ParkWindow>(WindowClass::ParkInformation, { 230, 174 + 9 }, WF_10);
         if (wnd != nullptr && page != WINDOW_PARK_PAGE_ENTRANCE)
         {
-            wnd->OnMouseUp(WIDX_TAB_1 + page);
+            wnd->onMouseUp(WIDX_TAB_1 + page);
         }
         return wnd;
     }
@@ -1329,10 +1329,10 @@ namespace OpenRCT2::Ui::Windows
         auto* wnd = ParkWindowOpen(WINDOW_PARK_PAGE_OBJECTIVE);
         if (wnd != nullptr)
         {
-            wnd->Invalidate();
+            wnd->invalidate();
             wnd->windowPos.x = ContextGetWidth() / 2 - 115;
             wnd->windowPos.y = ContextGetHeight() / 2 - 87;
-            wnd->Invalidate();
+            wnd->invalidate();
         }
         return wnd;
     }

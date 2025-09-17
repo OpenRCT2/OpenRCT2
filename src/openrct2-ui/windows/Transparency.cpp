@@ -86,9 +86,9 @@ namespace OpenRCT2::Ui::Windows
     {
     private:
     public:
-        void OnOpen() override
+        void onOpen() override
         {
-            SetWidgets(_transparancyWidgets);
+            setWidgets(_transparancyWidgets);
             WindowPushOthersBelow(*this);
 
             auto* w = WindowGetMain();
@@ -96,12 +96,12 @@ namespace OpenRCT2::Ui::Windows
                 windowPos.x = ((w->width / 2) - (width / 2));
         }
 
-        void OnMouseUp(WidgetIndex widgetIndex) override
+        void onMouseUp(WidgetIndex widgetIndex) override
         {
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
-                    Close();
+                    close();
                     break;
                 default:
                     ToggleViewportFlag(widgetIndex);
@@ -109,7 +109,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnPrepareDraw() override
+        void onPrepareDraw() override
         {
             uint32_t wflags = 0;
             WindowBase* w = WindowGetMain();
@@ -120,30 +120,30 @@ namespace OpenRCT2::Ui::Windows
             if (w != nullptr)
                 wflags = w->viewport->flags;
 
-            SetWidgetPressed(WIDX_HIDE_VEGETATION, (wflags & VIEWPORT_FLAG_HIDE_VEGETATION));
-            SetWidgetPressed(WIDX_HIDE_SCENERY, (wflags & VIEWPORT_FLAG_HIDE_SCENERY));
-            SetWidgetPressed(WIDX_HIDE_PATHS, (wflags & VIEWPORT_FLAG_HIDE_PATHS));
-            SetWidgetPressed(WIDX_HIDE_RIDES, (wflags & VIEWPORT_FLAG_HIDE_RIDES));
-            SetWidgetPressed(WIDX_HIDE_VEHICLES, (wflags & VIEWPORT_FLAG_HIDE_VEHICLES));
-            SetWidgetPressed(WIDX_HIDE_SUPPORTS, (wflags & VIEWPORT_FLAG_HIDE_SUPPORTS));
-            SetWidgetPressed(WIDX_HIDE_GUESTS, (wflags & VIEWPORT_FLAG_HIDE_GUESTS));
-            SetWidgetPressed(WIDX_HIDE_STAFF, (wflags & VIEWPORT_FLAG_HIDE_STAFF));
-            SetWidgetPressed(WIDX_INVISIBLE_VEGETATION, (wflags & VIEWPORT_FLAG_INVISIBLE_VEGETATION));
-            SetWidgetPressed(WIDX_INVISIBLE_SCENERY, (wflags & VIEWPORT_FLAG_INVISIBLE_SCENERY));
-            SetWidgetPressed(WIDX_INVISIBLE_PATHS, (wflags & VIEWPORT_FLAG_INVISIBLE_PATHS));
-            SetWidgetPressed(WIDX_INVISIBLE_RIDES, (wflags & VIEWPORT_FLAG_INVISIBLE_RIDES));
-            SetWidgetPressed(WIDX_INVISIBLE_VEHICLES, (wflags & VIEWPORT_FLAG_INVISIBLE_VEHICLES));
-            SetWidgetPressed(WIDX_INVISIBLE_SUPPORTS, (wflags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS));
+            setWidgetPressed(WIDX_HIDE_VEGETATION, (wflags & VIEWPORT_FLAG_HIDE_VEGETATION));
+            setWidgetPressed(WIDX_HIDE_SCENERY, (wflags & VIEWPORT_FLAG_HIDE_SCENERY));
+            setWidgetPressed(WIDX_HIDE_PATHS, (wflags & VIEWPORT_FLAG_HIDE_PATHS));
+            setWidgetPressed(WIDX_HIDE_RIDES, (wflags & VIEWPORT_FLAG_HIDE_RIDES));
+            setWidgetPressed(WIDX_HIDE_VEHICLES, (wflags & VIEWPORT_FLAG_HIDE_VEHICLES));
+            setWidgetPressed(WIDX_HIDE_SUPPORTS, (wflags & VIEWPORT_FLAG_HIDE_SUPPORTS));
+            setWidgetPressed(WIDX_HIDE_GUESTS, (wflags & VIEWPORT_FLAG_HIDE_GUESTS));
+            setWidgetPressed(WIDX_HIDE_STAFF, (wflags & VIEWPORT_FLAG_HIDE_STAFF));
+            setWidgetPressed(WIDX_INVISIBLE_VEGETATION, (wflags & VIEWPORT_FLAG_INVISIBLE_VEGETATION));
+            setWidgetPressed(WIDX_INVISIBLE_SCENERY, (wflags & VIEWPORT_FLAG_INVISIBLE_SCENERY));
+            setWidgetPressed(WIDX_INVISIBLE_PATHS, (wflags & VIEWPORT_FLAG_INVISIBLE_PATHS));
+            setWidgetPressed(WIDX_INVISIBLE_RIDES, (wflags & VIEWPORT_FLAG_INVISIBLE_RIDES));
+            setWidgetPressed(WIDX_INVISIBLE_VEHICLES, (wflags & VIEWPORT_FLAG_INVISIBLE_VEHICLES));
+            setWidgetPressed(WIDX_INVISIBLE_SUPPORTS, (wflags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS));
 
             for (WidgetIndex i = WIDX_INVISIBLE_VEGETATION; i <= WIDX_INVISIBLE_SUPPORTS; i++)
             {
-                widgets[i].image = ImageId(IsWidgetPressed(i) ? SPR_G2_BUTTON_HIDE_FULL : SPR_G2_BUTTON_HIDE_PARTIAL);
+                widgets[i].image = ImageId(isWidgetPressed(i) ? SPR_G2_BUTTON_HIDE_FULL : SPR_G2_BUTTON_HIDE_PARTIAL);
             }
         }
 
-        void OnDraw(RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
-            DrawWidgets(rt);
+            drawWidgets(rt);
             // Locate mechanic button image
             const auto& widget = widgets[WIDX_HIDE_STAFF];
             auto screenCoords = windowPos + ScreenCoordsXY{ widget.left, widget.top };
@@ -225,7 +225,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
 
             w->viewport->flags = wflags;
-            w->Invalidate();
+            w->invalidate();
         }
 
         void SaveInConfig(uint32_t wflags)

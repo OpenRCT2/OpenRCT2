@@ -105,15 +105,15 @@ namespace OpenRCT2::Ui::Windows
     class MazeConstructionWindow final : public Window
     {
     public:
-        void OnOpen() override
+        void onOpen() override
         {
-            SetWidgets(window_maze_construction_widgets);
+            setWidgets(window_maze_construction_widgets);
             WindowInitScrollWidgets(*this);
             rideId = _currentRideIndex;
             ShowGridlines();
         }
 
-        void OnClose() override
+        void onClose() override
         {
             RideConstructionInvalidateCurrentTrack();
             ViewportSetVisibility(ViewportVisibility::standard);
@@ -146,12 +146,12 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnMouseUp(WidgetIndex widgetIndex) override
+        void onMouseUp(WidgetIndex widgetIndex) override
         {
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
-                    Close();
+                    close();
                     break;
                 case WIDX_MAZE_ENTRANCE:
                 case WIDX_MAZE_EXIT:
@@ -166,7 +166,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnResize() override
+        void onResize() override
         {
             uint64_t newDisabledWidgets = 0;
             if (_rideConstructionState == RideConstructionState::Place)
@@ -191,13 +191,13 @@ namespace OpenRCT2::Ui::Windows
             {
                 if ((newDisabledWidgets & (1uLL << i)) != (currentDisabledWidgets & (1uLL << i)))
                 {
-                    InvalidateWidget(i);
+                    invalidateWidget(i);
                 }
             }
             disabledWidgets = newDisabledWidgets;
         }
 
-        void OnMouseDown(WidgetIndex widgetIndex) override
+        void onMouseDown(WidgetIndex widgetIndex) override
         {
             switch (widgetIndex)
             {
@@ -213,12 +213,12 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnUpdate() override
+        void onUpdate() override
         {
             auto currentRide = GetRide(_currentRideIndex);
             if (currentRide == nullptr || currentRide->status != RideStatus::closed)
             {
-                Close();
+                close();
                 return;
             }
 
@@ -227,7 +227,7 @@ namespace OpenRCT2::Ui::Windows
                 case RideConstructionState::Place:
                     if (!isToolActive(*this, WIDX_MAZE_DIRECTION_GROUPBOX))
                     {
-                        Close();
+                        close();
                         return;
                     }
                     break;
@@ -258,7 +258,7 @@ namespace OpenRCT2::Ui::Windows
             UpdateGhostTrackAndArrow();
         }
 
-        void OnToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
+        void onToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
             switch (widgetIndex)
             {
@@ -272,7 +272,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
+        void onToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
             switch (widgetIndex)
             {
@@ -286,7 +286,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnPrepareDraw() override
+        void onPrepareDraw() override
         {
             auto currentRide = GetRide(_currentRideIndex);
             auto ft = Formatter::Common();
@@ -302,9 +302,9 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDraw(RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
-            DrawWidgets(rt);
+            drawWidgets(rt);
         }
 
     private:
@@ -491,6 +491,6 @@ namespace OpenRCT2::Ui::Windows
         }
 
         w->pressedWidgets = newPressedWidgets;
-        w->Invalidate();
+        w->invalidate();
     }
 } // namespace OpenRCT2::Ui::Windows

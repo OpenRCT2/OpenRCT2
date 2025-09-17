@@ -122,7 +122,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 if (listIndex == 0)
                 {
-                    Close();
+                    close();
                     RideConstructNew(_window_track_list_item);
                     return;
                 }
@@ -213,10 +213,10 @@ namespace OpenRCT2::Ui::Windows
             _window_track_list_item = item;
         }
 
-        void OnOpen() override
+        void onOpen() override
         {
             String::set(_filterString, sizeof(_filterString), "");
-            SetWidgets(_trackListWidgets);
+            setWidgets(_trackListWidgets);
             widgets[WIDX_FILTER_STRING].string = _filterString;
 
             LoadDesignsList(_window_track_list_item);
@@ -247,7 +247,7 @@ namespace OpenRCT2::Ui::Windows
             Editor::LoadTrackManager();
         }
 
-        void OnClose() override
+        void onClose() override
         {
             // Dispose track design and preview
             _loadedTrackDesign = nullptr;
@@ -268,25 +268,25 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnMouseUp(const WidgetIndex widgetIndex) override
+        void onMouseUp(const WidgetIndex widgetIndex) override
         {
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
-                    Close();
+                    close();
                     break;
                 case WIDX_ROTATE:
                     _currentTrackPieceDirection++;
                     _currentTrackPieceDirection %= 4;
-                    Invalidate();
+                    invalidate();
                     break;
                 case WIDX_TOGGLE_SCENERY:
                     gTrackDesignSceneryToggle = !gTrackDesignSceneryToggle;
                     _loadedTrackDesignIndex = kTrackDesignIndexUnloaded;
-                    Invalidate();
+                    invalidate();
                     break;
                 case WIDX_BACK:
-                    Close();
+                    close();
                     if (!(gLegacyScene == LegacyScene::trackDesignsManager))
                     {
                         ContextOpenWindow(WindowClass::ConstructRide);
@@ -316,12 +316,12 @@ namespace OpenRCT2::Ui::Windows
 
                     String::set(_filterString, sizeof(_filterString), "");
                     FilterList();
-                    Invalidate();
+                    invalidate();
                     break;
             }
         }
 
-        ScreenSize OnScrollGetSize(const int32_t scrollIndex) override
+        ScreenSize onScrollGetSize(const int32_t scrollIndex) override
         {
             size_t numItems = _filteredTrackIds.size();
             if (!(gLegacyScene == LegacyScene::trackDesignsManager))
@@ -334,7 +334,7 @@ namespace OpenRCT2::Ui::Windows
             return { width, scrollHeight };
         }
 
-        void OnScrollMouseDown(const int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
+        void onScrollMouseDown(const int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
             if (!_selectedItemIsBeingUpdated)
             {
@@ -346,7 +346,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnScrollMouseOver(const int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
+        void onScrollMouseOver(const int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
             if (!_selectedItemIsBeingUpdated)
             {
@@ -354,12 +354,12 @@ namespace OpenRCT2::Ui::Windows
                 if (i != -1 && selectedListItem != i)
                 {
                     selectedListItem = i;
-                    Invalidate();
+                    invalidate();
                 }
             }
         }
 
-        void OnTextInput(const WidgetIndex widgetIndex, std::string_view text) override
+        void onTextInput(const WidgetIndex widgetIndex, std::string_view text) override
         {
             if (widgetIndex != WIDX_FILTER_STRING)
                 return;
@@ -373,10 +373,10 @@ namespace OpenRCT2::Ui::Windows
 
             scrolls->contentOffsetY = 0;
 
-            Invalidate();
+            invalidate();
         }
 
-        void OnPrepareDraw() override
+        void onPrepareDraw() override
         {
             StringId stringId = kStringIdNone;
             const auto* entry = GetRideEntryByIndex(_window_track_list_item.EntryIndex);
@@ -432,26 +432,26 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_TOGGLE_SCENERY].top = widgets[WIDX_TOGGLE_SCENERY].bottom - kRotateAndSceneryButtonSize;
         }
 
-        void OnUpdate() override
+        void onUpdate() override
         {
             if (GetCurrentTextBox().window.classification == classification && GetCurrentTextBox().window.number == number)
             {
                 WindowUpdateTextboxCaret();
-                InvalidateWidget(WIDX_FILTER_STRING); // TODO Check this
+                invalidateWidget(WIDX_FILTER_STRING); // TODO Check this
             }
 
             if (_reloadTrackDesigns)
             {
                 LoadDesignsList(_window_track_list_item);
                 selectedListItem = 0;
-                Invalidate();
+                invalidate();
                 _reloadTrackDesigns = false;
             }
         }
 
-        void OnDraw(RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
-            DrawWidgets(rt);
+            drawWidgets(rt);
 
             int32_t listItemIndex = selectedListItem;
             if ((gLegacyScene == LegacyScene::trackDesignsManager) == 0)
@@ -670,7 +670,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnScrollDraw(const int32_t scrollIndex, RenderTarget& rt) override
+        void onScrollDraw(const int32_t scrollIndex, RenderTarget& rt) override
         {
             uint8_t paletteIndex = ColourMapA[colours[0].colour].mid_light;
             GfxClear(rt, paletteIndex);

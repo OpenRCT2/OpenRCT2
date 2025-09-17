@@ -239,7 +239,7 @@ void RideClearForConstruction(Ride& ride)
     auto* windowMgr = Ui::GetWindowManager();
     auto w = windowMgr->FindByNumber(WindowClass::Ride, ride.id.ToUnderlying());
     if (w != nullptr)
-        w->OnResize();
+        w->onResize();
 }
 
 /**

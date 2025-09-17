@@ -548,7 +548,7 @@ namespace OpenRCT2
                 if (bit)
                     return;
             }
-            window->Invalidate();
+            window->invalidate();
         }
     }
 
@@ -838,8 +838,8 @@ namespace OpenRCT2
             viewport->viewPos = *centreLoc;
         }
 
-        w.Invalidate();
-        w.OnViewportRotate();
+        w.invalidate();
+        w.onViewportRotate();
     }
 
     void ViewportRotateSingle(WindowBase* window, int32_t direction)
@@ -1175,7 +1175,7 @@ namespace OpenRCT2
                 if (!(mainWindow->viewport->flags & VIEWPORT_FLAG_GRIDLINES))
                 {
                     mainWindow->viewport->flags |= VIEWPORT_FLAG_GRIDLINES;
-                    mainWindow->Invalidate();
+                    mainWindow->invalidate();
                 }
             }
         }
@@ -1199,7 +1199,7 @@ namespace OpenRCT2
                 if (!Config::Get().general.AlwaysShowGridlines)
                 {
                     mainWindow->viewport->flags &= ~VIEWPORT_FLAG_GRIDLINES;
-                    mainWindow->Invalidate();
+                    mainWindow->invalidate();
                 }
             }
         }
@@ -1219,7 +1219,7 @@ namespace OpenRCT2
                 if (!(mainWindow->viewport->flags & VIEWPORT_FLAG_LAND_OWNERSHIP))
                 {
                     mainWindow->viewport->flags |= VIEWPORT_FLAG_LAND_OWNERSHIP;
-                    mainWindow->Invalidate();
+                    mainWindow->invalidate();
                 }
             }
         }
@@ -1243,7 +1243,7 @@ namespace OpenRCT2
                 if (mainWindow->viewport->flags & VIEWPORT_FLAG_LAND_OWNERSHIP)
                 {
                     mainWindow->viewport->flags &= ~VIEWPORT_FLAG_LAND_OWNERSHIP;
-                    mainWindow->Invalidate();
+                    mainWindow->invalidate();
                 }
             }
         }
@@ -1263,7 +1263,7 @@ namespace OpenRCT2
                 if (!(mainWindow->viewport->flags & VIEWPORT_FLAG_CONSTRUCTION_RIGHTS))
                 {
                     mainWindow->viewport->flags |= VIEWPORT_FLAG_CONSTRUCTION_RIGHTS;
-                    mainWindow->Invalidate();
+                    mainWindow->invalidate();
                 }
             }
         }
@@ -1287,7 +1287,7 @@ namespace OpenRCT2
                 if (mainWindow->viewport->flags & VIEWPORT_FLAG_CONSTRUCTION_RIGHTS)
                 {
                     mainWindow->viewport->flags &= ~VIEWPORT_FLAG_CONSTRUCTION_RIGHTS;
-                    mainWindow->Invalidate();
+                    mainWindow->invalidate();
                 }
             }
         }
@@ -1339,7 +1339,7 @@ namespace OpenRCT2
                     break;
             }
             if (invalidate != 0)
-                window->Invalidate();
+                window->invalidate();
         }
     }
 

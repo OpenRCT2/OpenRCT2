@@ -146,19 +146,19 @@ namespace OpenRCT2::Ui::Windows
         ResearchItem* _selectedResearchItem;
 
     public:
-        void OnOpen() override
+        void onOpen() override
         {
             ResearchRidesSetup();
 
-            SetWidgets(_inventionListWidgets);
-            InitScrollWidgets();
+            setWidgets(_inventionListWidgets);
+            initScrollWidgets();
             selectedTab = 0;
             _selectedResearchItem = nullptr;
 
             WindowSetResize(*this, kWindowSize, { kWindowSize.width * 2, kWindowSize.height * 2 });
         }
 
-        void OnClose() override
+        void onClose() override
         {
             ResearchRemoveFlags();
 
@@ -171,56 +171,56 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnMouseUp(WidgetIndex widx) override
+        void onMouseUp(WidgetIndex widx) override
         {
             switch (widx)
             {
                 case WIDX_CLOSE:
-                    Close();
+                    close();
                     break;
                 case WIDX_RANDOM_SHUFFLE:
                     ResearchItemsShuffle();
-                    Invalidate();
+                    invalidate();
                     break;
                 case WIDX_MOVE_ITEMS_TO_TOP:
                     ResearchItemsMakeAllResearched();
-                    InitScrollWidgets();
-                    Invalidate();
+                    initScrollWidgets();
+                    invalidate();
                     break;
                 case WIDX_MOVE_ITEMS_TO_BOTTOM:
                     ResearchItemsMakeAllUnresearched();
-                    InitScrollWidgets();
-                    Invalidate();
+                    initScrollWidgets();
+                    invalidate();
                     break;
             }
         }
 
-        void OnResize() override
+        void onResize() override
         {
             if (width < minWidth)
             {
-                Invalidate();
+                invalidate();
                 width = minWidth;
             }
             if (height < minHeight)
             {
-                Invalidate();
+                invalidate();
                 height = minHeight;
             }
         }
 
-        void OnUpdate() override
+        void onUpdate() override
         {
             currentFrame++;
-            OnPrepareDraw();
+            onPrepareDraw();
 
-            InvalidateWidget(WIDX_TAB_1);
+            invalidateWidget(WIDX_TAB_1);
 
             if (WindowEditorInventionsListDragGetItem() != nullptr)
                 return;
         }
 
-        ScreenSize OnScrollGetSize(int32_t scrollIndex) override
+        ScreenSize onScrollGetSize(int32_t scrollIndex) override
         {
             const auto& gameState = getGameState();
             ScreenSize size{};
@@ -235,13 +235,13 @@ namespace OpenRCT2::Ui::Windows
             return size;
         }
 
-        void OnScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
+        void onScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
             auto* researchItem = GetItemFromScrollY(scrollIndex == 0, screenCoords.y);
             if (researchItem != _selectedResearchItem)
             {
                 _selectedResearchItem = researchItem;
-                Invalidate();
+                invalidate();
 
                 // Prevent always-researched items from being highlighted when hovered over
                 if (researchItem != nullptr && researchItem->IsAlwaysResearched())
@@ -251,7 +251,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
+        void onScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
             auto* researchItem = GetItemFromScrollY(scrollIndex == 0, screenCoords.y);
             if (researchItem == nullptr)
@@ -261,12 +261,12 @@ namespace OpenRCT2::Ui::Windows
             if (researchItem->IsAlwaysResearched())
                 return;
 
-            Invalidate();
+            invalidate();
 
             WindowEditorInventionsListDragOpen(researchItem, windowPos, widgets[WIDX_PRE_RESEARCHED_SCROLL].right);
         }
 
-        void OnScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
+        void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
             const auto& gameState = getGameState();
 
@@ -326,7 +326,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        CursorID OnCursor(WidgetIndex widx, const ScreenCoordsXY& screenCoords, CursorID fallback) override
+        CursorID onCursor(WidgetIndex widx, const ScreenCoordsXY& screenCoords, CursorID fallback) override
         {
             bool isInvented = false;
 
@@ -351,9 +351,9 @@ namespace OpenRCT2::Ui::Windows
             return fallback;
         }
 
-        void OnDraw(RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
-            DrawWidgets(rt);
+            drawWidgets(rt);
 
             // Tab image
             auto screenPos = windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_1].left, widgets[WIDX_TAB_1].top };
@@ -440,7 +440,7 @@ namespace OpenRCT2::Ui::Windows
             DrawTextBasic(rt, screenPos, STR_INVENTION_RESEARCH_GROUP, ft);
         }
 
-        void OnPrepareDraw() override
+        void onPrepareDraw() override
         {
             pressedWidgets |= 1uLL << WIDX_PREVIEW;
             pressedWidgets |= 1uLL << WIDX_TAB_1;
@@ -509,7 +509,7 @@ namespace OpenRCT2::Ui::Windows
             return item == _selectedResearchItem;
         }
 
-        // hack to fix #17544: OnScrollMouseOver never gets called while dragging
+        // hack to fix #17544: onScrollMouseOver never gets called while dragging
         void SetSelectedResearchItem(ResearchItem* item)
         {
             _selectedResearchItem = item;
@@ -519,7 +519,7 @@ namespace OpenRCT2::Ui::Windows
         {
             auto& gameState = getGameState();
             _selectedResearchItem = nullptr;
-            Invalidate();
+            invalidate();
 
             uint32_t beforeItemRawValue = 0;
             if (beforeItem != nullptr)
@@ -599,13 +599,13 @@ namespace OpenRCT2::Ui::Windows
         ResearchItem _draggedItem;
 
     public:
-        void OnOpen() override
+        void onOpen() override
         {
-            SetWidgets(_inventionListDragWidgets);
+            setWidgets(_inventionListDragWidgets);
             colours[1] = COLOUR_WHITE;
         }
 
-        CursorID OnCursor(const WidgetIndex widx, const ScreenCoordsXY& screenCoords, const CursorID defaultCursor) override
+        CursorID onCursor(const WidgetIndex widx, const ScreenCoordsXY& screenCoords, const CursorID defaultCursor) override
         {
             auto* windowMgr = GetWindowManager();
             auto* inventionListWindow = static_cast<InventionListWindow*>(
@@ -617,21 +617,21 @@ namespace OpenRCT2::Ui::Windows
                 if (!inventionListWindow->IsResearchItemSelected(research))
                 {
                     inventionListWindow->SetSelectedResearchItem(research);
-                    inventionListWindow->Invalidate();
+                    inventionListWindow->invalidate();
                 }
             }
 
             return CursorID::HandClosed;
         }
 
-        void OnMoved(const ScreenCoordsXY& screenCoords) override
+        void onMoved(const ScreenCoordsXY& screenCoords) override
         {
             auto* windowMgr = GetWindowManager();
             auto* inventionListWindow = static_cast<InventionListWindow*>(
                 windowMgr->FindByClass(WindowClass::EditorInventionList));
             if (inventionListWindow == nullptr)
             {
-                Close();
+                close();
                 return;
             }
             std::optional<InventionListItem> res;
@@ -649,10 +649,10 @@ namespace OpenRCT2::Ui::Windows
             }
 
             windowMgr->InvalidateByClass(WindowClass::EditorInventionList);
-            Close();
+            close();
         }
 
-        void OnDraw(RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
             auto screenCoords = windowPos + ScreenCoordsXY{ 0, 2 };
 
@@ -661,15 +661,15 @@ namespace OpenRCT2::Ui::Windows
                 { ColourWithFlags{ COLOUR_BLACK }.withFlag(ColourFlag::withOutline, true) });
         }
 
-        void Init(ResearchItem& researchItem, const ScreenCoordsXY& editorPos, int objectSelectionScrollWidth)
+        void init(ResearchItem& researchItem, const ScreenCoordsXY& editorPos, int objectSelectionScrollWidth)
         {
             _draggedItem = researchItem;
 
             widgets[0].right = objectSelectionScrollWidth;
-            Invalidate();
+            invalidate();
             windowPos = ScreenCoordsXY{ editorPos.x, gTooltipCursor.y - 7 };
             width = objectSelectionScrollWidth;
-            Invalidate();
+            invalidate();
 
             InputWindowPositionBegin(*this, 0, gTooltipCursor);
         }
@@ -689,7 +689,7 @@ namespace OpenRCT2::Ui::Windows
             WindowClass::EditorInventionListDrag, { 10, 14 }, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_SNAPPING);
         if (wnd != nullptr)
         {
-            wnd->Init(*researchItem, editorPos, objectSelectionScrollWidth);
+            wnd->init(*researchItem, editorPos, objectSelectionScrollWidth);
         }
     }
 

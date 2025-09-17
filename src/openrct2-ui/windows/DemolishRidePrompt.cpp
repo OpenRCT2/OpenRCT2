@@ -50,13 +50,13 @@ namespace OpenRCT2::Ui::Windows
             _demolishRideCost = -RideGetRefundPrice(currentRide);
         }
 
-        void OnOpen() override
+        void onOpen() override
         {
-            SetWidgets(window_ride_demolish_widgets);
+            setWidgets(window_ride_demolish_widgets);
             WindowInitScrollWidgets(*this);
         }
 
-        void OnMouseUp(WidgetIndex widgetIndex) override
+        void onMouseUp(WidgetIndex widgetIndex) override
         {
             switch (widgetIndex)
             {
@@ -68,12 +68,12 @@ namespace OpenRCT2::Ui::Windows
                 }
                 case WIDX_CANCEL:
                 case WIDX_CLOSE:
-                    Close();
+                    close();
                     break;
             }
         }
 
-        void OnDraw(RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
             WindowDrawWidgets(*this, rt);
 

@@ -69,7 +69,7 @@ namespace OpenRCT2::Ui::Windows
         std::vector<uint8_t> _trackDesignPreviewPixels;
 
     public:
-        void SetupTrack(const utf8* path, std::unique_ptr<TrackDesign> trackDesign)
+        void setupTrack(const utf8* path, std::unique_ptr<TrackDesign> trackDesign)
         {
             _trackDesign = std::move(trackDesign);
             _trackPath = path;
@@ -77,18 +77,18 @@ namespace OpenRCT2::Ui::Windows
             _trackDesignPreviewPixels.resize(4 * kTrackPreviewImageSize);
 
             UpdatePreview();
-            Invalidate();
+            invalidate();
         }
 
-        void OnOpen() override
+        void onOpen() override
         {
-            SetWidgets(window_install_track_widgets);
+            setWidgets(window_install_track_widgets);
 
             WindowInitScrollWidgets(*this);
             WindowPushOthersRight(*this);
         }
 
-        void OnClose() override
+        void onClose() override
         {
             _trackPath.clear();
             _trackName.clear();
@@ -97,23 +97,23 @@ namespace OpenRCT2::Ui::Windows
             _trackDesign = nullptr;
         }
 
-        void OnMouseUp(WidgetIndex widgetIndex) override
+        void onMouseUp(WidgetIndex widgetIndex) override
         {
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
                 case WIDX_CANCEL:
-                    Close();
+                    close();
                     break;
                 case WIDX_ROTATE:
                     _currentTrackPieceDirection++;
                     _currentTrackPieceDirection %= 4;
-                    Invalidate();
+                    invalidate();
                     break;
                 case WIDX_TOGGLE_SCENERY:
                     gTrackDesignSceneryToggle = !gTrackDesignSceneryToggle;
                     UpdatePreview();
-                    Invalidate();
+                    invalidate();
                     break;
                 case WIDX_INSTALL:
                     InstallTrackDesign();
@@ -121,7 +121,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override
+        void onTextInput(WidgetIndex widgetIndex, std::string_view text) override
         {
             if (widgetIndex != WIDX_INSTALL || text.empty())
             {
@@ -130,10 +130,10 @@ namespace OpenRCT2::Ui::Windows
 
             _trackName = std::string(text);
 
-            OnMouseUp(WIDX_INSTALL);
+            onMouseUp(WIDX_INSTALL);
         }
 
-        void OnPrepareDraw() override
+        void onPrepareDraw() override
         {
             pressedWidgets |= 1uLL << WIDX_TRACK_PREVIEW;
             if (!gTrackDesignSceneryToggle)
@@ -146,9 +146,9 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDraw(RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
-            DrawWidgets(rt);
+            drawWidgets(rt);
 
             // Track preview
             Widget* widget = &widgets[WIDX_TRACK_PREVIEW];
@@ -384,7 +384,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 if (TrackRepositoryInstall(_trackPath.c_str(), _trackName.c_str()))
                 {
-                    Close();
+                    close();
                 }
                 else
                 {
@@ -424,7 +424,7 @@ namespace OpenRCT2::Ui::Windows
 
         auto* window = windowMgr->FocusOrCreate<InstallTrackWindow>(
             WindowClass::InstallTrack, kWindowSize, WF_AUTO_POSITION | WF_CENTRE_SCREEN);
-        window->SetupTrack(path, std::move(trackDesign));
+        window->setupTrack(path, std::move(trackDesign));
 
         return window;
     }

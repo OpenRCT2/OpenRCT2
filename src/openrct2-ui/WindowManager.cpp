@@ -535,7 +535,7 @@ public:
                 WindowBase* w = FindByNumber(WindowClass::Banner, bannerIndex);
                 if (w != nullptr)
                 {
-                    w->Invalidate();
+                    w->invalidate();
                 }
                 break;
             }
@@ -640,7 +640,7 @@ public:
             mainWindow->savedViewPos.x -= viewport->ViewWidth() / 2;
             mainWindow->savedViewPos.y -= viewport->ViewHeight() / 2;
 
-            mainWindow->Invalidate();
+            mainWindow->invalidate();
         }
     }
 
@@ -920,8 +920,8 @@ public:
         wp->focus = std::nullopt;
 
         ColourSchemeUpdate(wp.get());
-        wp->Invalidate();
-        wp->OnOpen();
+        wp->invalidate();
+        wp->onOpen();
 
         auto itNew = g_window_list.insert(itDestPos, std::move(wp));
         return itNew->get();
@@ -933,19 +933,19 @@ public:
      */
     void Close(WindowBase& w) override
     {
-        if (!w.CanClose())
+        if (!w.canClose())
         {
             // Something's preventing this window from closing -- bail out early
             return;
         }
 
-        w.OnClose();
+        w.onClose();
 
         // Remove viewport
-        w.RemoveViewport();
+        w.removeViewport();
 
         // Invalidate the window (area)
-        w.Invalidate();
+        w.invalidate();
 
         w.flags |= WF_DEAD;
     }
@@ -1188,7 +1188,7 @@ public:
     WidgetIndex FindWidgetFromPoint(WindowBase& w, const ScreenCoordsXY& screenCoords) override
     {
         // Invalidate the window
-        w.OnPrepareDraw();
+        w.onPrepareDraw();
 
         // Find the widget at point x, y
         WidgetIndex widget_index = kWidgetIndexNull;
@@ -1228,7 +1228,7 @@ public:
         WindowVisitEach([pred](WindowBase* w) {
             if (pred(w))
             {
-                w->Invalidate();
+                w->invalidate();
             }
         });
     }
@@ -1262,7 +1262,7 @@ public:
      */
     void InvalidateAll() override
     {
-        WindowVisitEach([](WindowBase* w) { w->Invalidate(); });
+        WindowVisitEach([](WindowBase* w) { w->invalidate(); });
     }
 
     /**
@@ -1350,7 +1350,7 @@ public:
                 {
                     std::iter_swap(itSourcePos, itDestPos);
                 }
-                w.Invalidate();
+                w.invalidate();
 
                 if (w.windowPos.x + w.width < 20)
                 {
@@ -1358,7 +1358,7 @@ public:
                     w.windowPos.x += i;
                     if (w.viewport != nullptr)
                         w.viewport->pos.x += i;
-                    w.Invalidate();
+                    w.invalidate();
                 }
             }
         }
@@ -1371,7 +1371,7 @@ public:
         if (w != nullptr)
         {
             w->flags |= flags;
-            w->Invalidate();
+            w->invalidate();
             w = BringToFront(*w);
         }
 
@@ -1393,7 +1393,7 @@ public:
         if (w != nullptr)
         {
             w->flags |= WF_WHITE_BORDER_MASK;
-            w->Invalidate();
+            w->invalidate();
             w = BringToFront(*w);
         }
 
