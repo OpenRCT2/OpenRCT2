@@ -902,11 +902,11 @@ namespace OpenRCT2::Ui
         {
             if (!gInputFlags.has(InputFlag::widgetPressed))
                 return false;
-            if (gPressedWidget.window_classification != w.classification)
+            if (gPressedWidget.windowClassification != w.classification)
                 return false;
-            if (gPressedWidget.window_number != w.number)
+            if (gPressedWidget.windowNumber != w.number)
                 return false;
-            if (gPressedWidget.widget_index != widgetIndex)
+            if (gPressedWidget.widgetIndex != widgetIndex)
                 return false;
             return true;
         }
@@ -915,11 +915,11 @@ namespace OpenRCT2::Ui
 
     bool widgetIsHighlighted(const WindowBase& w, WidgetIndex widgetIndex)
     {
-        if (gHoverWidget.window_classification != w.classification)
+        if (gHoverWidget.windowClassification != w.classification)
             return false;
-        if (gHoverWidget.window_number != w.number)
+        if (gHoverWidget.windowNumber != w.number)
             return false;
-        if (gHoverWidget.widget_index != widgetIndex)
+        if (gHoverWidget.widgetIndex != widgetIndex)
             return false;
         return true;
     }
@@ -1126,7 +1126,7 @@ namespace OpenRCT2::Ui
 
         auto& tbIdent = OpenRCT2::Ui::Windows::GetCurrentTextBox();
         bool active = w.classification == tbIdent.window.classification && w.number == tbIdent.window.number
-            && widgetIndex == tbIdent.widget_index;
+            && widgetIndex == tbIdent.widgetIndex;
 
         // GfxFillRectInset(rt, l, t, r, b, colour, 0x20 | (!active ? 0x40 : 0x00));
         GfxFillRectInset(rt, { topLeft, bottomRight }, w.colours[widget.colour], INSET_RECT_F_60);

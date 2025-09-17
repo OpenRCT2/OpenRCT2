@@ -629,22 +629,22 @@ static constexpr float kWindowScrollLocations[][2] = {
 
     bool isToolActive(WindowClass cls)
     {
-        return gInputFlags.has(InputFlag::toolActive) && gCurrentToolWidget.window_classification == cls;
+        return gInputFlags.has(InputFlag::toolActive) && gCurrentToolWidget.windowClassification == cls;
     }
 
     bool isToolActive(WindowClass cls, rct_windownumber number)
     {
-        return isToolActive(cls) && gCurrentToolWidget.window_number == number;
+        return isToolActive(cls) && gCurrentToolWidget.windowNumber == number;
     }
 
     bool isToolActive(WindowClass cls, WidgetIndex widgetIndex)
     {
-        return isToolActive(cls) && gCurrentToolWidget.widget_index == widgetIndex;
+        return isToolActive(cls) && gCurrentToolWidget.widgetIndex == widgetIndex;
     }
 
     bool isToolActive(WindowClass cls, WidgetIndex widgetIndex, rct_windownumber number)
     {
-        return isToolActive(cls, widgetIndex) && gCurrentToolWidget.window_number == number;
+        return isToolActive(cls, widgetIndex) && gCurrentToolWidget.windowNumber == number;
     }
 
     bool isToolActive(const WindowBase& w, WidgetIndex widgetIndex)
@@ -664,8 +664,8 @@ static constexpr float kWindowScrollLocations[][2] = {
     {
         if (gInputFlags.has(InputFlag::toolActive))
         {
-            if (w.classification == gCurrentToolWidget.window_classification && w.number == gCurrentToolWidget.window_number
-                && widgetIndex == gCurrentToolWidget.widget_index)
+            if (w.classification == gCurrentToolWidget.windowClassification && w.number == gCurrentToolWidget.windowNumber
+                && widgetIndex == gCurrentToolWidget.widgetIndex)
             {
                 ToolCancel();
                 return true;
@@ -678,9 +678,9 @@ static constexpr float kWindowScrollLocations[][2] = {
         gInputFlags.unset(InputFlag::leftMousePressed);
         gInputFlags.unset(InputFlag::unk6);
         gCurrentToolId = tool;
-        gCurrentToolWidget.window_classification = w.classification;
-        gCurrentToolWidget.window_number = w.number;
-        gCurrentToolWidget.widget_index = widgetIndex;
+        gCurrentToolWidget.windowClassification = w.classification;
+        gCurrentToolWidget.windowNumber = w.number;
+        gCurrentToolWidget.widgetIndex = widgetIndex;
         return false;
     }
 
@@ -700,20 +700,19 @@ static constexpr float kWindowScrollLocations[][2] = {
             // Reset map selection
             gMapSelectFlags.clearAll();
 
-            if (gCurrentToolWidget.widget_index != kWidgetIndexNull)
+            if (gCurrentToolWidget.widgetIndex != kWidgetIndexNull)
             {
                 auto* windowMgr = Ui::GetWindowManager();
 
                 // Invalidate tool widget
                 windowMgr->InvalidateWidgetByNumber(
-                    gCurrentToolWidget.window_classification, gCurrentToolWidget.window_number,
-                    gCurrentToolWidget.widget_index);
+                    gCurrentToolWidget.windowClassification, gCurrentToolWidget.windowNumber, gCurrentToolWidget.widgetIndex);
 
                 // Abort tool event
                 WindowBase* w = windowMgr->FindByNumber(
-                    gCurrentToolWidget.window_classification, gCurrentToolWidget.window_number);
+                    gCurrentToolWidget.windowClassification, gCurrentToolWidget.windowNumber);
                 if (w != nullptr)
-                    w->OnToolAbort(gCurrentToolWidget.widget_index);
+                    w->OnToolAbort(gCurrentToolWidget.widgetIndex);
             }
         }
     }

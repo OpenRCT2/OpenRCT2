@@ -560,7 +560,7 @@ namespace OpenRCT2::Ui::Windows
         _usingWidgetTextBox = true;
         _currentTextBox.window.classification = callW.classification;
         _currentTextBox.window.number = callW.number;
-        _currentTextBox.widget_index = callWidget;
+        _currentTextBox.widgetIndex = callWidget;
         _textBoxFrameNo = 0;
 
         auto* windowMgr = Ui::GetWindowManager();
@@ -583,9 +583,9 @@ namespace OpenRCT2::Ui::Windows
             _usingWidgetTextBox = false;
             if (w != nullptr)
             {
-                windowMgr->InvalidateWidget(*w, _currentTextBox.widget_index);
+                windowMgr->InvalidateWidget(*w, _currentTextBox.widgetIndex);
             }
-            _currentTextBox.widget_index = kWidgetIndexNull;
+            _currentTextBox.widgetIndex = kWidgetIndexNull;
         }
     }
 
@@ -603,8 +603,8 @@ namespace OpenRCT2::Ui::Windows
             _textBoxFrameNo = 0;
             auto* windowMgr = GetWindowManager();
             WindowBase* w = windowMgr->FindByNumber(_currentTextBox.window.classification, _currentTextBox.window.number);
-            windowMgr->InvalidateWidget(*w, _currentTextBox.widget_index);
-            w->OnTextInput(_currentTextBox.widget_index, _textBoxInput);
+            windowMgr->InvalidateWidget(*w, _currentTextBox.widgetIndex);
+            w->OnTextInput(_currentTextBox.widgetIndex, _textBoxInput);
         }
     }
     const TextInputSession* GetTextboxSession()

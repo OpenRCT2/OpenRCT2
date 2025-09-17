@@ -352,8 +352,8 @@ namespace OpenRCT2::Ui::Windows
                 windowPos + ScreenCoordsXY{ widgets[WIDX_PREVIOUS_IMAGE].left + 6, widgets[WIDX_PREVIOUS_IMAGE].top + 6 });
 
             colour_t textColour = colours[1].colour;
-            if (gHoverWidget.window_classification == WindowClass::BottomToolbar
-                && gHoverWidget.widget_index == WIDX_PREVIOUS_STEP_BUTTON)
+            if (gHoverWidget.windowClassification == WindowClass::BottomToolbar
+                && gHoverWidget.widgetIndex == WIDX_PREVIOUS_STEP_BUTTON)
             {
                 textColour = COLOUR_WHITE;
             }
@@ -391,8 +391,8 @@ namespace OpenRCT2::Ui::Windows
 
             colour_t textColour = colours[1].colour;
 
-            if (gHoverWidget.window_classification == WindowClass::BottomToolbar
-                && gHoverWidget.widget_index == WIDX_NEXT_STEP_BUTTON)
+            if (gHoverWidget.windowClassification == WindowClass::BottomToolbar
+                && gHoverWidget.widgetIndex == WIDX_NEXT_STEP_BUTTON)
             {
                 textColour = COLOUR_WHITE;
             }

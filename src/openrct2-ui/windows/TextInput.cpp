@@ -73,7 +73,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 _parentWidget.window.classification = WindowClass::Null;
                 _parentWidget.window.number = 0;
-                _parentWidget.widget_index = 0;
+                _parentWidget.widgetIndex = 0;
 
                 colours[0] = COLOUR_GREY;
                 colours[1] = COLOUR_GREY;
@@ -83,7 +83,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 _parentWidget.window.classification = parentWindow->classification;
                 _parentWidget.window.number = parentWindow->number;
-                _parentWidget.widget_index = widgetIndex;
+                _parentWidget.widgetIndex = widgetIndex;
 
                 colours[0] = parentWindow->colours[1];
                 colours[1] = parentWindow->colours[1];
@@ -329,7 +329,7 @@ namespace OpenRCT2::Ui::Windows
                     auto w = GetParentWindow();
                     if (w != nullptr)
                     {
-                        w->OnTextInput(_parentWidget.widget_index, _buffer);
+                        w->OnTextInput(_parentWidget.widgetIndex, _buffer);
                     }
                 }
             }

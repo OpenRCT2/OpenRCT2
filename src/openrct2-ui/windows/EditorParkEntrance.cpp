@@ -280,13 +280,13 @@ namespace OpenRCT2::Ui::Windows
 
         void OnClose() override
         {
-            if (gCurrentToolWidget.window_classification == classification)
+            if (gCurrentToolWidget.windowClassification == classification)
                 ToolCancel();
         }
 
         void OnUpdate() override
         {
-            if (gCurrentToolWidget.window_classification != classification)
+            if (gCurrentToolWidget.windowClassification != classification)
                 Close();
         }
 

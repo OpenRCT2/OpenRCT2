@@ -47,7 +47,7 @@ namespace OpenRCT2
     struct WidgetIdentifier
     {
         WindowIdentifier window;
-        WidgetIndex widget_index;
+        WidgetIndex widgetIndex;
     };
 
     extern WindowCloseModifier gLastCloseModifier;
@@ -266,9 +266,9 @@ namespace OpenRCT2
 {
     struct WidgetRef
     {
-        WindowClass window_classification;
-        rct_windownumber window_number;
-        WidgetIndex widget_index;
+        WindowClass windowClassification;
+        rct_windownumber windowNumber;
+        WidgetIndex widgetIndex;
     };
 
     extern Tool gCurrentToolId;

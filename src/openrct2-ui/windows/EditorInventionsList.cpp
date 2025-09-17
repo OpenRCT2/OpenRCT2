@@ -487,7 +487,7 @@ namespace OpenRCT2::Ui::Windows
                 auto& widget = widgets[widgetIndex];
                 if (widgetIndex == WIDX_PRE_RESEARCHED_SCROLL || widgetIndex == WIDX_RESEARCH_ORDER_SCROLL)
                 {
-                    gPressedWidget.widget_index = widgetIndex;
+                    gPressedWidget.widgetIndex = widgetIndex;
                     int32_t outScrollArea{};
                     ScreenCoordsXY outScrollCoords{};
                     int32_t outScrollId{};

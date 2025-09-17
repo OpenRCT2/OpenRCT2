@@ -153,7 +153,7 @@ namespace OpenRCT2::Ui::Windows
     {
         gTooltipCursor = screenCoords;
         gTooltipCloseTimeout = 0;
-        gTooltipWidget.window_classification = WindowClass::Null;
+        gTooltipWidget.windowClassification = WindowClass::Null;
         InputSetState(InputState::Normal);
         gInputFlags.unset(InputFlag::leftMousePressed);
     }
@@ -190,16 +190,16 @@ namespace OpenRCT2::Ui::Windows
             result.args = Formatter();
             result.args.Add<const char*>(tooltipString);
 
-            gTooltipWidget.window_classification = widgetWindow->classification;
-            gTooltipWidget.window_number = widgetWindow->number;
-            gTooltipWidget.widget_index = widgetIndex;
+            gTooltipWidget.windowClassification = widgetWindow->classification;
+            gTooltipWidget.windowNumber = widgetWindow->number;
+            gTooltipWidget.widgetIndex = widgetIndex;
         }
         else
         {
             auto stringId = widget->tooltip;
-            gTooltipWidget.window_classification = widgetWindow->classification;
-            gTooltipWidget.window_number = widgetWindow->number;
-            gTooltipWidget.widget_index = widgetIndex;
+            gTooltipWidget.windowClassification = widgetWindow->classification;
+            gTooltipWidget.windowNumber = widgetWindow->number;
+            gTooltipWidget.widgetIndex = widgetIndex;
             result = widgetWindow->OnTooltip(widgetIndex, stringId);
             if (result.str == kStringIdNone)
                 return;
@@ -214,6 +214,6 @@ namespace OpenRCT2::Ui::Windows
         windowMgr->CloseByClass(WindowClass::Tooltip);
 
         gTooltipCloseTimeout = 0;
-        gTooltipWidget.window_classification = WindowClass::Null;
+        gTooltipWidget.windowClassification = WindowClass::Null;
     }
 } // namespace OpenRCT2::Ui::Windows

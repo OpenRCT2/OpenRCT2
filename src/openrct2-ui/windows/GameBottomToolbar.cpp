@@ -80,7 +80,7 @@ namespace OpenRCT2::Ui::Windows
         colour_t GetHoverWidgetColour(WidgetIndex index)
         {
             return (
-                gHoverWidget.window_classification == WindowClass::BottomToolbar && gHoverWidget.widget_index == index
+                gHoverWidget.windowClassification == WindowClass::BottomToolbar && gHoverWidget.widgetIndex == index
                     ? static_cast<colour_t>(COLOUR_WHITE)
                     : colours[0].colour);
         }
