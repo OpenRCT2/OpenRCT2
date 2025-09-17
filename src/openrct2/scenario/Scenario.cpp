@@ -83,7 +83,7 @@ void ScenarioBegin(GameState_t& gameState)
     ScenarioReset(gameState);
 
     if (gameState.scenarioOptions.objective.Type != ObjectiveType::none && !gLoadKeepWindowsOpen)
-        ContextOpenWindowView(WV_PARK_OBJECTIVE);
+        ContextOpenWindowView(WindowView::parkObjective);
 
     gScreenAge = 0;
 }
@@ -171,7 +171,7 @@ static void ScenarioEnd()
     windowMgr->CloseByClass(WindowClass::dropdown);
     windowMgr->CloseAllExceptFlags(WF_STICK_TO_BACK | WF_STICK_TO_FRONT);
 
-    ContextOpenWindowView(WV_PARK_OBJECTIVE);
+    ContextOpenWindowView(WindowView::parkObjective);
 }
 
 /**

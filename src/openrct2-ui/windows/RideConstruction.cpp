@@ -2898,7 +2898,7 @@ namespace OpenRCT2::Ui::Windows
         switch (rtd.ConstructionWindowContext)
         {
             case RideConstructionWindowContext::Maze:
-                return ContextOpenWindowView(WV_MAZE_CONSTRUCTION);
+                return ContextOpenWindowView(WindowView::mazeConstruction);
             case RideConstructionWindowContext::Default:
                 return windowMgr->Create<RideConstructionWindow>(
                     WindowClass::rideConstruction, ScreenCoordsXY(0, 29), kWindowSize, WF_NO_AUTO_CLOSE);

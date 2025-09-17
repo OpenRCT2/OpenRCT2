@@ -2341,7 +2341,7 @@ namespace OpenRCT2::Network
                 connection.Disconnect();
                 break;
             case Auth::requirePassword:
-                ContextOpenWindowView(WV_NETWORK_PASSWORD);
+                ContextOpenWindowView(WindowView::networkPassword);
                 break;
             case Auth::unknownKeyDisallowed:
                 connection.SetLastDisconnectReason(STR_MULTIPLAYER_UNKNOWN_KEY_DISALLOWED);

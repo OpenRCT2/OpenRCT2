@@ -393,7 +393,7 @@ void News::OpenSubject(News::ItemType type, int32_t subject)
             ContextOpenWindow(WindowClass::finances);
             break;
         case News::ItemType::campaign:
-            ContextOpenWindowView(WV_FINANCE_MARKETING);
+            ContextOpenWindowView(WindowView::financeMarketing);
             break;
         case News::ItemType::research:
         {
@@ -421,10 +421,10 @@ void News::OpenSubject(News::ItemType type, int32_t subject)
             break;
         }
         case News::ItemType::award:
-            ContextOpenWindowView(WV_PARK_AWARDS);
+            ContextOpenWindowView(WindowView::parkAwards);
             break;
         case News::ItemType::graph:
-            ContextOpenWindowView(WV_PARK_RATING);
+            ContextOpenWindowView(WindowView::parkRating);
             break;
         case News::ItemType::null:
         case News::ItemType::blank:

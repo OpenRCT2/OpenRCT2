@@ -993,7 +993,7 @@ namespace OpenRCT2::Ui::Windows
                         }
                         break;
                         case DDIDX_UPDATE_AVAILABLE:
-                            ContextOpenWindowView(WV_NEW_VERSION_INFO);
+                            ContextOpenWindowView(WindowView::newVersionInfo);
                             break;
                         case DDIDX_QUIT_TO_MENU:
                         {

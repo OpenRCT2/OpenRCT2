@@ -363,7 +363,7 @@ namespace OpenRCT2::Ui::Windows
                     WindowResearchDevelopmentMouseUp(widgetIndex, WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP);
                     break;
                 case WIDX_RESEARCH_FUNDING_BUTTON:
-                    ContextOpenWindowView(WV_FINANCES_RESEARCH);
+                    ContextOpenWindowView(WindowView::financesResearch);
                     break;
                 case WIDX_GROUP_BY_TRACK_TYPE:
                     Config::Get().interface.ListRideVehiclesSeparately = !Config::Get().interface.ListRideVehiclesSeparately;

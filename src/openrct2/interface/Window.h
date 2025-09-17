@@ -94,21 +94,21 @@ namespace OpenRCT2
     };
     using WindowFlags = uint32_t;
 
-    enum
+    enum class WindowView : uint8_t
     {
-        WV_PARK_AWARDS,
-        WV_PARK_RATING,
-        WV_PARK_OBJECTIVE,
-        WV_PARK_GUESTS,
-        WV_FINANCES_RESEARCH,
-        WV_RIDE_RESEARCH,
-        WV_MAZE_CONSTRUCTION,
-        WV_NETWORK_PASSWORD,
-        WV_EDITOR_BOTTOM_TOOLBAR,
-        WV_CHANGELOG,
-        WV_NEW_VERSION_INFO,
-        WV_FINANCE_MARKETING,
-        WV_CONTRIBUTORS,
+        parkAwards,
+        parkRating,
+        parkObjective,
+        parkGuests,
+        financesResearch,
+        rideResearch,
+        mazeConstruction,
+        networkPassword,
+        editorBottomToolbar,
+        changelog,
+        newVersionInfo,
+        financeMarketing,
+        contributors,
     };
 
     enum class WindowDetail : uint8_t

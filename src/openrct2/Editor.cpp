@@ -95,7 +95,7 @@ namespace OpenRCT2::Editor
     {
         auto* main = ContextOpenWindow(WindowClass::mainWindow);
         ContextOpenWindow(WindowClass::topToolbar);
-        ContextOpenWindowView(WV_EDITOR_BOTTOM_TOOLBAR);
+        ContextOpenWindowView(WindowView::editorBottomToolbar);
         return main;
     }
 

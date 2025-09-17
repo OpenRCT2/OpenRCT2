@@ -185,7 +185,7 @@ static void ShortcutRemoveTopBottomToolbarToggle()
             else
             {
                 ContextOpenWindow(WindowClass::topToolbar);
-                ContextOpenWindowView(WV_EDITOR_BOTTOM_TOOLBAR);
+                ContextOpenWindowView(WindowView::editorBottomToolbar);
             }
         }
     }
@@ -279,7 +279,7 @@ static void ShortcutShowResearchInformation()
 
     if (!isInEditorMode())
     {
-        ContextOpenWindowView(WV_RIDE_RESEARCH);
+        ContextOpenWindowView(WindowView::rideResearch);
     }
 }
 

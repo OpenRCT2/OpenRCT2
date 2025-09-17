@@ -1710,10 +1710,10 @@ namespace OpenRCT2
         return windowManager->OpenWindow(wc);
     }
 
-    WindowBase* ContextOpenWindowView(uint8_t wc)
+    WindowBase* ContextOpenWindowView(WindowView view)
     {
         auto windowManager = Ui::GetWindowManager();
-        return windowManager->OpenView(wc);
+        return windowManager->openView(view);
     }
 
     WindowBase* ContextOpenDetailWindow(WindowDetail type, int32_t id)

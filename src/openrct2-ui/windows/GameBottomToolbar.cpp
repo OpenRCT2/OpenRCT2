@@ -436,10 +436,10 @@ namespace OpenRCT2::Ui::Windows
                         ContextOpenWindow(WindowClass::finances);
                     break;
                 case WIDX_GUESTS:
-                    ContextOpenWindowView(WV_PARK_GUESTS);
+                    ContextOpenWindowView(WindowView::parkGuests);
                     break;
                 case WIDX_PARK_RATING:
-                    ContextOpenWindowView(WV_PARK_RATING);
+                    ContextOpenWindowView(WindowView::parkRating);
                     break;
                 case WIDX_MIDDLE_INSET:
                     if (News::IsQueueEmpty())

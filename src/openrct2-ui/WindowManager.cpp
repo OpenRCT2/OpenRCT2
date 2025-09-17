@@ -70,7 +70,7 @@ public:
             case WindowClass::bottomToolbar:
                 return GameBottomToolbarOpen();
             case WindowClass::changelog:
-                return OpenView(WV_CHANGELOG);
+                return openView(WindowView::changelog);
             case WindowClass::cheats:
                 return CheatsOpen();
             case WindowClass::clearScenery:
@@ -167,39 +167,39 @@ public:
         }
     }
 
-    WindowBase* OpenView(uint8_t view) override
+    WindowBase* openView(WindowView view) override
     {
         switch (view)
         {
-            case WV_PARK_AWARDS:
+            case WindowView::parkAwards:
                 return ParkAwardsOpen();
-            case WV_PARK_RATING:
+            case WindowView::parkRating:
                 return ParkRatingOpen();
-            case WV_PARK_OBJECTIVE:
+            case WindowView::parkObjective:
                 return ParkObjectiveOpen();
-            case WV_PARK_GUESTS:
+            case WindowView::parkGuests:
                 return ParkGuestsOpen();
-            case WV_FINANCES_RESEARCH:
+            case WindowView::financesResearch:
                 return FinancesResearchOpen();
-            case WV_RIDE_RESEARCH:
+            case WindowView::rideResearch:
                 if (Config::Get().interface.ToolbarShowResearch)
                 {
                     return this->OpenWindow(WindowClass::research);
                 }
                 return NewRideOpenResearch();
-            case WV_MAZE_CONSTRUCTION:
+            case WindowView::mazeConstruction:
                 return MazeConstructionOpen();
-            case WV_NETWORK_PASSWORD:
+            case WindowView::networkPassword:
                 return NetworkStatusOpenPassword();
-            case WV_EDITOR_BOTTOM_TOOLBAR:
+            case WindowView::editorBottomToolbar:
                 return EditorBottomToolbarOpen();
-            case WV_CHANGELOG:
-                return ChangelogOpen(WV_CHANGELOG);
-            case WV_NEW_VERSION_INFO:
-                return ChangelogOpen(WV_NEW_VERSION_INFO);
-            case WV_CONTRIBUTORS:
-                return ChangelogOpen(WV_CONTRIBUTORS);
-            case WV_FINANCE_MARKETING:
+            case WindowView::changelog:
+                return ChangelogOpen(WindowView::changelog);
+            case WindowView::newVersionInfo:
+                return ChangelogOpen(WindowView::newVersionInfo);
+            case WindowView::contributors:
+                return ChangelogOpen(WindowView::contributors);
+            case WindowView::financeMarketing:
                 return FinancesMarketingOpen();
             default:
                 return nullptr;

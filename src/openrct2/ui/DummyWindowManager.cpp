@@ -18,7 +18,7 @@ namespace OpenRCT2::Ui
         {
             return nullptr;
         }
-        WindowBase* OpenView(uint8_t /*view*/) override
+        WindowBase* openView(WindowView /*view*/) override
         {
             return nullptr;
         }

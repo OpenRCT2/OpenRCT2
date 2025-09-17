@@ -54,7 +54,7 @@ namespace OpenRCT2::Ui::Windows
         const NewVersionInfo* _newVersionInfo;
         std::vector<std::string> _changelogLines;
         int32_t _changelogLongestLineWidth = 0;
-        int _personality = 0;
+        WindowView _personality = WindowView::changelog;
 
     public:
         /**
@@ -83,35 +83,35 @@ namespace OpenRCT2::Ui::Windows
          *
          * @param personality
          */
-        bool SetPersonality(int personality)
+        bool SetPersonality(WindowView personality)
         {
             switch (personality)
             {
-                case WV_NEW_VERSION_INFO:
+                case WindowView::newVersionInfo:
                     if (!GetContext()->HasNewVersionInfo())
                     {
                         return false;
                     }
-                    _personality = WV_NEW_VERSION_INFO;
+                    _personality = WindowView::newVersionInfo;
                     NewVersionProcessInfo();
                     widgets[WIDX_OPEN_URL].type = WidgetType::button;
                     return true;
 
-                case WV_CHANGELOG:
+                case WindowView::changelog:
                     if (!ReadFile(PathId::changelog))
                     {
                         return false;
                     }
-                    _personality = WV_CHANGELOG;
+                    _personality = WindowView::changelog;
                     widgets[WIDX_TITLE].text = STR_CHANGELOG_TITLE;
                     return true;
 
-                case WV_CONTRIBUTORS:
+                case WindowView::contributors:
                     if (!ReadFile(PathId::contributors))
                     {
                         return false;
                     }
-                    _personality = WV_CONTRIBUTORS;
+                    _personality = WindowView::contributors;
                     widgets[WIDX_TITLE].text = STR_CONTRIBUTORS_WINDOW;
                     return true;
 
@@ -277,7 +277,7 @@ namespace OpenRCT2::Ui::Windows
         }
     };
 
-    WindowBase* ChangelogOpen(int personality)
+    WindowBase* ChangelogOpen(WindowView personality)
     {
         auto* windowMgr = GetWindowManager();
         auto* window = windowMgr->BringToFrontByClass(WindowClass::changelog);

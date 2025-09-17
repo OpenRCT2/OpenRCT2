@@ -166,7 +166,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     break;
                 case WIDX_NEW_VERSION:
-                    ContextOpenWindowView(WV_NEW_VERSION_INFO);
+                    ContextOpenWindowView(WindowView::newVersionInfo);
                     break;
             }
         }

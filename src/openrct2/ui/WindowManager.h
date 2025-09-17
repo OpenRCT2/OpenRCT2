@@ -31,7 +31,7 @@ namespace OpenRCT2::Ui
         virtual ~IWindowManager() = default;
         virtual void Init() = 0;
         virtual WindowBase* OpenWindow(WindowClass wc) = 0;
-        virtual WindowBase* OpenView(uint8_t view) = 0;
+        virtual WindowBase* openView(WindowView view) = 0;
         virtual WindowBase* openDetails(WindowDetail type, int32_t id) = 0;
         virtual WindowBase* OpenIntent(Intent* intent) = 0;
         virtual void BroadcastIntent(const Intent& intent) = 0;
