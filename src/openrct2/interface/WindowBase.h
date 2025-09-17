@@ -220,6 +220,16 @@ namespace OpenRCT2
         virtual void OnLanguageChange()
         {
         }
+
+        int16_t right()
+        {
+            return windowPos.x + width;
+        }
+
+        int16_t bottom()
+        {
+            return windowPos.y + height;
+        }
     };
 
 #ifdef __WARN_SUGGEST_FINAL_METHODS__
