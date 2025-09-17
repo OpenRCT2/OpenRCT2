@@ -57,9 +57,9 @@ namespace OpenRCT2::Ui::Windows
         WIDX_MAZE_EXIT,
     };
 
-    validate_global_widx(WC_MAZE_CONSTRUCTION, WIDX_MAZE_DIRECTION_GROUPBOX);
-    validate_global_widx(WC_MAZE_CONSTRUCTION, WIDX_MAZE_ENTRANCE);
-    validate_global_widx(WC_MAZE_CONSTRUCTION, WIDX_MAZE_EXIT);
+    VALIDATE_GLOBAL_WIDX(WC_MAZE_CONSTRUCTION, WIDX_MAZE_DIRECTION_GROUPBOX);
+    VALIDATE_GLOBAL_WIDX(WC_MAZE_CONSTRUCTION, WIDX_MAZE_ENTRANCE);
+    VALIDATE_GLOBAL_WIDX(WC_MAZE_CONSTRUCTION, WIDX_MAZE_EXIT);
 
     // clang-format off
     static constexpr auto window_maze_construction_widgets = makeWidgets(

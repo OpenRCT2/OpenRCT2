@@ -107,7 +107,7 @@ namespace OpenRCT2::Ui::Windows
         WIDX_CARRYING_LABEL = WIDX_TAB_CONTENT_START,
     };
 
-    validate_global_widx(WC_PEEP, WIDX_PICKUP);
+    VALIDATE_GLOBAL_WIDX(WC_PEEP, WIDX_PICKUP);
 
     static constexpr int32_t kTabWidth = 30;
 

@@ -216,7 +216,7 @@ namespace OpenRCT2::Ui::Windows
         WIDX_TAB_1,
     };
 
-    validate_global_widx(WC_EDITOR_OBJECT_SELECTION, WIDX_TAB_1);
+    VALIDATE_GLOBAL_WIDX(WC_EDITOR_OBJECT_SELECTION, WIDX_TAB_1);
 
     // clang-format off
     static constexpr auto _window_editor_object_selection_widgets = makeWidgets(

@@ -65,7 +65,7 @@ namespace OpenRCT2::Ui::Windows
         WIDX_PRICE
     };
 
-    validate_global_widx(WC_TRACK_DESIGN_PLACE, WIDX_ROTATE);
+    VALIDATE_GLOBAL_WIDX(WC_TRACK_DESIGN_PLACE, WIDX_ROTATE);
 
     // clang-format off
     static constexpr auto _trackPlaceWidgets = makeWidgets(

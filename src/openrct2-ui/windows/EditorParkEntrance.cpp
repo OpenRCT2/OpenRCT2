@@ -57,7 +57,7 @@ namespace OpenRCT2::Ui::Windows
         WIDX_ROTATE_ENTRANCE_BUTTON,
     };
 
-    validate_global_widx(WC_EDITOR_PARK_ENTRANCE, WIDX_ROTATE_ENTRANCE_BUTTON);
+    VALIDATE_GLOBAL_WIDX(WC_EDITOR_PARK_ENTRANCE, WIDX_ROTATE_ENTRANCE_BUTTON);
 
     // clang-format off
     static constexpr auto _widgets = makeWidgets(

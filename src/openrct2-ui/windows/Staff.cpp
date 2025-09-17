@@ -81,8 +81,8 @@ namespace OpenRCT2::Ui::Windows
         WIDX_COSTUME_BTN,
     };
 
-    validate_global_widx(WC_PEEP, WIDX_PATROL);
-    validate_global_widx(WC_STAFF, WIDX_PICKUP);
+    VALIDATE_GLOBAL_WIDX(WC_PEEP, WIDX_PATROL);
+    VALIDATE_GLOBAL_WIDX(WC_STAFF, WIDX_PICKUP);
 
     // clang-format off
     static constexpr auto kMainStaffWidgets = makeWidgets(
