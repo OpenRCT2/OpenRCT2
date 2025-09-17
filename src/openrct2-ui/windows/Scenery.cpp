@@ -74,7 +74,7 @@ namespace OpenRCT2::Ui::Windows
     constexpr int32_t kSceneryButtonHeight = 80;
     constexpr int32_t kDescriptionHeight = 24;
     constexpr int32_t kInputMargin = 2;
-    constexpr int32_t kMaxWindowHeight = 473;
+    constexpr int32_t kMaxWindowHeight = 600;
     constexpr int32_t kTabMargin = 3;
     constexpr int32_t kTabWidth = 31;
     constexpr int32_t kTabHeight = 28;
