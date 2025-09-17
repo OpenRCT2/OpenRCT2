@@ -111,21 +111,21 @@ namespace OpenRCT2
         WV_CONTRIBUTORS,
     };
 
-    enum WindowDetail
+    enum class WindowDetail : uint8_t
     {
-        WD_BANNER,
-        WD_NEW_CAMPAIGN,
-        WD_DEMOLISH_RIDE,
-        WD_REFURBISH_RIDE,
-        WD_SIGN,
-        WD_SIGN_SMALL,
+        banner,
+        newCampaign,
+        demolishRide,
+        refurbishRide,
+        sign,
+        signSmall,
 
-        WD_PLAYER,
+        player,
 
-        WD_VEHICLE,
-        WD_TRACK,
+        vehicle,
+        track,
 
-        WD_NULL = 255,
+        null = 255,
     };
 } // namespace OpenRCT2
 

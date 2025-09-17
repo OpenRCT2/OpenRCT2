@@ -206,23 +206,23 @@ public:
         }
     }
 
-    WindowBase* OpenDetails(uint8_t type, int32_t id) override
+    WindowBase* openDetails(WindowDetail type, int32_t id) override
     {
         switch (type)
         {
-            case WD_BANNER:
+            case WindowDetail::banner:
                 return BannerOpen(id);
-            case WD_NEW_CAMPAIGN:
+            case WindowDetail::newCampaign:
                 return NewCampaignOpen(id);
-            case WD_DEMOLISH_RIDE:
+            case WindowDetail::demolishRide:
                 return RideDemolishPromptOpen(*GetRide(RideId::FromUnderlying(id)));
-            case WD_REFURBISH_RIDE:
+            case WindowDetail::refurbishRide:
                 return RideRefurbishPromptOpen(*GetRide(RideId::FromUnderlying(id)));
-            case WD_SIGN:
+            case WindowDetail::sign:
                 return SignOpen(id);
-            case WD_SIGN_SMALL:
+            case WindowDetail::signSmall:
                 return SignSmallOpen(id);
-            case WD_PLAYER:
+            case WindowDetail::player:
                 return PlayerOpen(id);
 
             default:
@@ -378,12 +378,12 @@ public:
 
         switch (intent->GetWindowDetail())
         {
-            case WD_VEHICLE:
+            case WindowDetail::vehicle:
                 return RideOpenVehicle(static_cast<Vehicle*>(intent->GetPointerExtra(INTENT_EXTRA_VEHICLE)));
-            case WD_TRACK:
+            case WindowDetail::track:
                 return RideOpenTrack(static_cast<TileElement*>(intent->GetPointerExtra(INTENT_EXTRA_TILE_ELEMENT)));
 
-            case WD_NULL:
+            case WindowDetail::null:
                 // Intent does not hold an window detail
                 break;
 

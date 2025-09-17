@@ -5289,7 +5289,7 @@ void Ride::crash(uint8_t vehicleIndex)
     if (gLegacyScene != LegacyScene::titleSequence && vehicle != nullptr)
     {
         // Open ride window for crashed vehicle
-        auto intent = Intent(WD_VEHICLE);
+        auto intent = Intent(WindowDetail::vehicle);
         intent.PutExtra(INTENT_EXTRA_VEHICLE, vehicle);
         WindowBase* w = ContextOpenIntent(&intent);
 

@@ -3231,7 +3231,7 @@ namespace OpenRCT2::Ui::Windows
                         {
                             auto data = result->GetData<GameActions::BannerPlaceActionResult>();
                             Audio::Play3D(Audio::SoundId::PlaceItem, result->Position);
-                            ContextOpenDetailWindow(WD_BANNER, data.bannerId.ToUnderlying());
+                            ContextOpenDetailWindow(WindowDetail::banner, data.bannerId.ToUnderlying());
                         }
                     });
                     GameActions::Execute(&bannerPlaceAction, gameState);

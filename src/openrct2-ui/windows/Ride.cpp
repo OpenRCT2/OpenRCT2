@@ -1645,7 +1645,7 @@ namespace OpenRCT2::Ui::Windows
                     Rename();
                     break;
                 case WIDX_DEMOLISH:
-                    ContextOpenDetailWindow(WD_DEMOLISH_RIDE, number);
+                    ContextOpenDetailWindow(WindowDetail::demolishRide, number);
                     break;
                 case WIDX_CLOSE_LIGHT:
                 case WIDX_SIMULATE_LIGHT:
@@ -3758,7 +3758,7 @@ namespace OpenRCT2::Ui::Windows
                     LocateMechanic();
                     break;
                 case WIDX_REFURBISH_RIDE:
-                    ContextOpenDetailWindow(WD_REFURBISH_RIDE, number);
+                    ContextOpenDetailWindow(WindowDetail::refurbishRide, number);
                     break;
             }
         }

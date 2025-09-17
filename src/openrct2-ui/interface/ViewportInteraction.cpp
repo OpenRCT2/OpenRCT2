@@ -207,7 +207,7 @@ namespace OpenRCT2::Ui
                 {
                     case EntityType::Vehicle:
                     {
-                        auto intent = Intent(WD_VEHICLE);
+                        auto intent = Intent(WindowDetail::vehicle);
                         intent.PutExtra(INTENT_EXTRA_VEHICLE, entity);
                         ContextOpenIntent(&intent);
                         break;
@@ -248,7 +248,7 @@ namespace OpenRCT2::Ui
             }
             case ViewportInteractionItem::ride:
             {
-                auto intent = Intent(WD_TRACK);
+                auto intent = Intent(WindowDetail::track);
                 intent.PutExtra(INTENT_EXTRA_TILE_ELEMENT, info.Element);
                 ContextOpenIntent(&intent);
                 return true;
@@ -611,7 +611,7 @@ namespace OpenRCT2::Ui
                 ViewportInteractionRemoveLargeScenery(*info.Element->AsLargeScenery(), info.Loc);
                 break;
             case ViewportInteractionItem::banner:
-                ContextOpenDetailWindow(WD_BANNER, info.Element->AsBanner()->GetIndex().ToUnderlying());
+                ContextOpenDetailWindow(WindowDetail::banner, info.Element->AsBanner()->GetIndex().ToUnderlying());
                 break;
         }
 
@@ -699,7 +699,7 @@ namespace OpenRCT2::Ui
         auto* wallEntry = wallElement.GetEntry();
         if (wallEntry->scrolling_mode != kScrollingModeNone)
         {
-            ContextOpenDetailWindow(WD_SIGN_SMALL, wallElement.GetBannerIndex().ToUnderlying());
+            ContextOpenDetailWindow(WindowDetail::signSmall, wallElement.GetBannerIndex().ToUnderlying());
         }
         else
         {
@@ -720,7 +720,7 @@ namespace OpenRCT2::Ui
         if (sceneryEntry->scrolling_mode != kScrollingModeNone)
         {
             auto bannerIndex = largeSceneryElement.GetBannerIndex();
-            ContextOpenDetailWindow(WD_SIGN, bannerIndex.ToUnderlying());
+            ContextOpenDetailWindow(WindowDetail::sign, bannerIndex.ToUnderlying());
         }
         else
         {
