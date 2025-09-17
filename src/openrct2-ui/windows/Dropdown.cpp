@@ -468,7 +468,7 @@ namespace OpenRCT2::Ui::Windows
         return -1;
     }
 
-    // colour_t ordered for use in color dropdown
+    // colour_t ordered for use in colour dropdown
     static constexpr colour_t kColoursDropdownOrder[] = {
         COLOUR_BLACK,
         COLOUR_SATURATED_RED,
