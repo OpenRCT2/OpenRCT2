@@ -588,7 +588,7 @@ namespace OpenRCT2::Ui::Windows
     {
         auto* windowMgr = GetWindowManager();
         return windowMgr->FocusOrCreate<InventionListWindow>(
-            WindowClass::EditorInventionList, kWindowSize, WF_NO_SCROLLING | WF_RESIZABLE | WF_CENTRE_SCREEN);
+            WindowClass::editorInventionList, kWindowSize, WF_NO_SCROLLING | WF_RESIZABLE | WF_CENTRE_SCREEN);
     }
 #pragma endregion
 
@@ -609,7 +609,7 @@ namespace OpenRCT2::Ui::Windows
         {
             auto* windowMgr = GetWindowManager();
             auto* inventionListWindow = static_cast<InventionListWindow*>(
-                windowMgr->FindByClass(WindowClass::EditorInventionList));
+                windowMgr->FindByClass(WindowClass::editorInventionList));
             if (inventionListWindow != nullptr)
             {
                 auto res = inventionListWindow->GetResearchItemAt(screenCoords);
@@ -628,7 +628,7 @@ namespace OpenRCT2::Ui::Windows
         {
             auto* windowMgr = GetWindowManager();
             auto* inventionListWindow = static_cast<InventionListWindow*>(
-                windowMgr->FindByClass(WindowClass::EditorInventionList));
+                windowMgr->FindByClass(WindowClass::editorInventionList));
             if (inventionListWindow == nullptr)
             {
                 close();
@@ -648,7 +648,7 @@ namespace OpenRCT2::Ui::Windows
                 inventionListWindow->MoveResearchItem(_draggedItem, res->research, res->isInvented);
             }
 
-            windowMgr->InvalidateByClass(WindowClass::EditorInventionList);
+            windowMgr->InvalidateByClass(WindowClass::editorInventionList);
             close();
         }
 
@@ -684,9 +684,9 @@ namespace OpenRCT2::Ui::Windows
         ResearchItem* researchItem, const ScreenCoordsXY& editorPos, int objectSelectionScrollWidth)
     {
         auto* windowMgr = Ui::GetWindowManager();
-        windowMgr->CloseByClass(WindowClass::EditorInventionListDrag);
+        windowMgr->CloseByClass(WindowClass::editorInventionListDrag);
         auto* wnd = windowMgr->Create<InventionDragWindow>(
-            WindowClass::EditorInventionListDrag, { 10, 14 }, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_SNAPPING);
+            WindowClass::editorInventionListDrag, { 10, 14 }, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_SNAPPING);
         if (wnd != nullptr)
         {
             wnd->init(*researchItem, editorPos, objectSelectionScrollWidth);
@@ -696,7 +696,7 @@ namespace OpenRCT2::Ui::Windows
     static const ResearchItem* WindowEditorInventionsListDragGetItem()
     {
         auto* windowMgr = GetWindowManager();
-        auto* wnd = static_cast<InventionDragWindow*>(windowMgr->FindByClass(WindowClass::EditorInventionListDrag));
+        auto* wnd = static_cast<InventionDragWindow*>(windowMgr->FindByClass(WindowClass::editorInventionListDrag));
         if (wnd == nullptr)
         {
             return nullptr;

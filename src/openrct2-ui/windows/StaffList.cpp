@@ -155,7 +155,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     break;
                 case WIDX_STAFF_LIST_MAP:
-                    ContextOpenWindow(WindowClass::Map);
+                    ContextOpenWindow(WindowClass::map);
                     break;
                 case WIDX_STAFF_LIST_QUICK_FIRE:
                     _quickFireMode = !_quickFireMode;
@@ -181,7 +181,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Enable highlighting of these staff members in map window
             auto* windowMgr = GetWindowManager();
-            if (windowMgr->FindByClass(WindowClass::Map) != nullptr)
+            if (windowMgr->FindByClass(WindowClass::map) != nullptr)
             {
                 for (auto peep : EntityList<Staff>())
                 {
@@ -352,7 +352,7 @@ namespace OpenRCT2::Ui::Windows
                         auto peep = gameState.entities.GetEntity<Staff>(entry.Id);
                         if (peep != nullptr)
                         {
-                            auto intent = Intent(WindowClass::Peep);
+                            auto intent = Intent(WindowClass::peep);
                             intent.PutExtra(INTENT_EXTRA_PEEP, peep);
                             ContextOpenIntent(&intent);
                         }
@@ -565,7 +565,7 @@ namespace OpenRCT2::Ui::Windows
                                 return;
 
                             auto* staff2 = getGameState().entities.GetEntity<Staff>(staffId);
-                            auto intent = Intent(WindowClass::Peep);
+                            auto intent = Intent(WindowClass::peep);
                             intent.PutExtra(INTENT_EXTRA_PEEP, staff2);
                             auto* wind = ContextOpenIntent(&intent);
                             if (wind != nullptr)
@@ -578,7 +578,7 @@ namespace OpenRCT2::Ui::Windows
                 else
                 {
                     // Open window for new staff.
-                    auto intent = Intent(WindowClass::Peep);
+                    auto intent = Intent(WindowClass::peep);
                     intent.PutExtra(INTENT_EXTRA_PEEP, staff);
                     ContextOpenIntent(&intent);
                 }
@@ -731,13 +731,13 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* StaffListOpen()
     {
         auto* windowMgr = GetWindowManager();
-        return windowMgr->FocusOrCreate<StaffListWindow>(WindowClass::StaffList, kWindowSize, WF_10 | WF_RESIZABLE);
+        return windowMgr->FocusOrCreate<StaffListWindow>(WindowClass::staffList, kWindowSize, WF_10 | WF_RESIZABLE);
     }
 
     void WindowStaffListRefresh()
     {
         auto* windowMgr = GetWindowManager();
-        auto* window = windowMgr->FindByClass(WindowClass::StaffList);
+        auto* window = windowMgr->FindByClass(WindowClass::staffList);
         if (window != nullptr)
         {
             static_cast<StaffListWindow*>(window)->RefreshList();

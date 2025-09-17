@@ -168,7 +168,7 @@ static void ScenarioEnd()
     GameResetSpeed();
 
     auto* windowMgr = Ui::GetWindowManager();
-    windowMgr->CloseByClass(WindowClass::Dropdown);
+    windowMgr->CloseByClass(WindowClass::dropdown);
     windowMgr->CloseAllExceptFlags(WF_STICK_TO_BACK | WF_STICK_TO_FRONT);
 
     ContextOpenWindowView(WV_PARK_OBJECTIVE);

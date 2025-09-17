@@ -272,14 +272,14 @@ namespace OpenRCT2::Ui::Windows
 
         bool PatrolAreaToolIsActive()
         {
-            return isToolActive(WindowClass::PatrolArea);
+            return isToolActive(WindowClass::patrolArea);
         }
 
         bool IsStaffWindowOpen()
         {
             // If staff window for this patrol area was closed, tool is no longer active
             auto* windowMgr = GetWindowManager();
-            auto staffWindow = windowMgr->FindByNumber(WindowClass::Peep, _staffId);
+            auto staffWindow = windowMgr->FindByNumber(WindowClass::peep, _staffId);
             return staffWindow != nullptr;
         }
 
@@ -294,7 +294,7 @@ namespace OpenRCT2::Ui::Windows
     {
         auto* windowMgr = GetWindowManager();
         auto* w = windowMgr->FocusOrCreate<PatrolAreaWindow>(
-            WindowClass::PatrolArea, ScreenCoordsXY(ContextGetWidth() - kWindowSize.width, 29), kWindowSize, 0);
+            WindowClass::patrolArea, ScreenCoordsXY(ContextGetWidth() - kWindowSize.width, 29), kWindowSize, 0);
         if (w != nullptr)
         {
             w->setStaffId(staffId);
@@ -305,7 +305,7 @@ namespace OpenRCT2::Ui::Windows
     EntityId WindowPatrolAreaGetCurrentStaffId()
     {
         auto* windowMgr = GetWindowManager();
-        auto current = reinterpret_cast<PatrolAreaWindow*>(windowMgr->FindByClass(WindowClass::PatrolArea));
+        auto current = reinterpret_cast<PatrolAreaWindow*>(windowMgr->FindByClass(WindowClass::patrolArea));
         return current != nullptr ? current->GetStaffId() : EntityId::GetNull();
     }
 } // namespace OpenRCT2::Ui::Windows

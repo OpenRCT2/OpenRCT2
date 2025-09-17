@@ -153,7 +153,7 @@ namespace OpenRCT2::Ui::Windows
     {
         gTooltipCursor = screenCoords;
         gTooltipCloseTimeout = 0;
-        gTooltipWidget.windowClassification = WindowClass::Null;
+        gTooltipWidget.windowClassification = WindowClass::null;
         InputSetState(InputState::Normal);
         gInputFlags.unset(InputFlag::leftMousePressed);
     }
@@ -167,7 +167,7 @@ namespace OpenRCT2::Ui::Windows
 
         auto* windowMgr = GetWindowManager();
         windowMgr->Create(
-            std::move(tooltipWindow), WindowClass::Tooltip, windowPos, { width, height },
+            std::move(tooltipWindow), WindowClass::tooltip, windowPos, { width, height },
             WF_TRANSPARENT | WF_STICK_TO_FRONT | WF_NO_TITLE_BAR);
     }
 
@@ -211,9 +211,9 @@ namespace OpenRCT2::Ui::Windows
     void WindowTooltipClose()
     {
         auto* windowMgr = Ui::GetWindowManager();
-        windowMgr->CloseByClass(WindowClass::Tooltip);
+        windowMgr->CloseByClass(WindowClass::tooltip);
 
         gTooltipCloseTimeout = 0;
-        gTooltipWidget.windowClassification = WindowClass::Null;
+        gTooltipWidget.windowClassification = WindowClass::null;
     }
 } // namespace OpenRCT2::Ui::Windows

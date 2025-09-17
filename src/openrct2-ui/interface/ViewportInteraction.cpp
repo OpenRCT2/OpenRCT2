@@ -215,7 +215,7 @@ namespace OpenRCT2::Ui
                     case EntityType::Guest:
                     case EntityType::Staff:
                     {
-                        auto intent = Intent(WindowClass::Peep);
+                        auto intent = Intent(WindowClass::peep);
                         intent.PutExtra(INTENT_EXTRA_PEEP, entity);
                         ContextOpenIntent(&intent);
                         break;
@@ -254,7 +254,7 @@ namespace OpenRCT2::Ui
                 return true;
             }
             case ViewportInteractionItem::parkEntrance:
-                ContextOpenWindow(WindowClass::ParkInformation);
+                ContextOpenWindow(WindowClass::parkInformation);
                 return true;
             default:
                 return false;
@@ -470,8 +470,8 @@ namespace OpenRCT2::Ui
         if (!gInputFlags.has(InputFlag::unk6) || !gInputFlags.has(InputFlag::toolActive))
         {
             auto* windowMgr = GetWindowManager();
-            if (windowMgr->FindByClass(WindowClass::RideConstruction) == nullptr
-                && windowMgr->FindByClass(WindowClass::Footpath) == nullptr)
+            if (windowMgr->FindByClass(WindowClass::rideConstruction) == nullptr
+                && windowMgr->FindByClass(WindowClass::footpath) == nullptr)
             {
                 info.interactionType = ViewportInteractionItem::none;
                 return info;
@@ -638,7 +638,7 @@ namespace OpenRCT2::Ui
     static void ViewportInteractionRemoveFootpath(const PathElement& pathElement, const CoordsXY& mapCoords)
     {
         auto* windowMgr = GetWindowManager();
-        WindowBase* w = windowMgr->FindByClass(WindowClass::Footpath);
+        WindowBase* w = windowMgr->FindByClass(WindowClass::footpath);
         if (w != nullptr)
             FootpathUpdateProvisional();
 

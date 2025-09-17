@@ -65,101 +65,101 @@ public:
     {
         switch (wc)
         {
-            case WindowClass::About:
+            case WindowClass::about:
                 return AboutOpen();
-            case WindowClass::BottomToolbar:
+            case WindowClass::bottomToolbar:
                 return GameBottomToolbarOpen();
-            case WindowClass::Changelog:
+            case WindowClass::changelog:
                 return OpenView(WV_CHANGELOG);
-            case WindowClass::Cheats:
+            case WindowClass::cheats:
                 return CheatsOpen();
-            case WindowClass::ClearScenery:
+            case WindowClass::clearScenery:
                 return ClearSceneryOpen();
-            case WindowClass::CustomCurrencyConfig:
+            case WindowClass::customCurrencyConfig:
                 return CustomCurrencyOpen();
-            case WindowClass::DebugPaint:
+            case WindowClass::debugPaint:
                 return DebugPaintOpen();
-            case WindowClass::EditorInventionList:
+            case WindowClass::editorInventionList:
                 return EditorInventionsListOpen();
-            case WindowClass::EditorObjectSelection:
+            case WindowClass::editorObjectSelection:
                 return EditorObjectSelectionOpen();
-            case WindowClass::EditorScenarioOptions:
+            case WindowClass::editorScenarioOptions:
                 return EditorScenarioOptionsOpen();
-            case WindowClass::Finances:
+            case WindowClass::finances:
                 return FinancesOpen();
-            case WindowClass::Footpath:
+            case WindowClass::footpath:
                 return FootpathOpen();
-            case WindowClass::GuestList:
+            case WindowClass::guestList:
                 return GuestListOpen();
-            case WindowClass::Land:
+            case WindowClass::land:
                 return LandOpen();
-            case WindowClass::LandRights:
+            case WindowClass::landRights:
                 return LandRightsOpen();
-            case WindowClass::MainWindow:
+            case WindowClass::mainWindow:
                 return MainOpen();
-            case WindowClass::Map:
+            case WindowClass::map:
                 return MapOpen();
-            case WindowClass::Mapgen:
+            case WindowClass::mapgen:
                 return MapgenOpen();
-            case WindowClass::Multiplayer:
+            case WindowClass::multiplayer:
                 return MultiplayerOpen();
-            case WindowClass::ConstructRide:
+            case WindowClass::constructRide:
                 return NewRideOpen();
-            case WindowClass::ParkInformation:
+            case WindowClass::parkInformation:
                 return ParkEntranceOpen();
-            case WindowClass::RecentNews:
+            case WindowClass::recentNews:
                 return NewsOpen();
-            case WindowClass::RideConstruction:
+            case WindowClass::rideConstruction:
                 return RideConstructionOpen();
-            case WindowClass::Research:
+            case WindowClass::research:
                 return ResearchOpen();
-            case WindowClass::RideList:
+            case WindowClass::rideList:
                 return RideListOpen();
-            case WindowClass::Options:
+            case WindowClass::options:
                 return OptionsOpen();
-            case WindowClass::SavePrompt:
+            case WindowClass::savePrompt:
                 return SavePromptOpen();
-            case WindowClass::Scenery:
+            case WindowClass::scenery:
                 return SceneryOpen();
-            case WindowClass::SceneryScatter:
+            case WindowClass::sceneryScatter:
                 return SceneryScatterOpen();
 #ifndef DISABLE_NETWORK
-            case WindowClass::ServerList:
+            case WindowClass::serverList:
                 return ServerListOpen();
-            case WindowClass::ServerStart:
+            case WindowClass::serverStart:
                 return ServerStartOpen();
 #endif
-            case WindowClass::KeyboardShortcutList:
+            case WindowClass::keyboardShortcutList:
                 return ShortcutKeysOpen();
-            case WindowClass::StaffList:
+            case WindowClass::staffList:
                 return StaffListOpen();
-            case WindowClass::Themes:
+            case WindowClass::themes:
                 return ThemesOpen();
-            case WindowClass::TileInspector:
+            case WindowClass::tileInspector:
                 return TileInspectorOpen();
-            case WindowClass::TitleExit:
+            case WindowClass::titleExit:
                 return TitleExitOpen();
-            case WindowClass::TitleLogo:
+            case WindowClass::titleLogo:
                 return TitleLogoOpen();
-            case WindowClass::TitleMenu:
+            case WindowClass::titleMenu:
                 return TitleMenuOpen();
-            case WindowClass::TitleOptions:
+            case WindowClass::titleOptions:
                 return TitleOptionsOpen();
-            case WindowClass::TitleVersion:
+            case WindowClass::titleVersion:
                 return TitleVersionOpen();
-            case WindowClass::TopToolbar:
+            case WindowClass::topToolbar:
                 return TopToolbarOpen();
-            case WindowClass::ViewClipping:
+            case WindowClass::viewClipping:
                 return ViewClippingOpen();
-            case WindowClass::Viewport:
+            case WindowClass::viewport:
                 return ViewportOpen();
-            case WindowClass::Water:
+            case WindowClass::water:
                 return WaterOpen();
-            case WindowClass::Transparency:
+            case WindowClass::transparency:
                 return TransparencyOpen();
-            case WindowClass::AssetPacks:
+            case WindowClass::assetPacks:
                 return AssetPacksOpen();
-            case WindowClass::EditorParkEntrance:
+            case WindowClass::editorParkEntrance:
                 return EditorParkEntranceOpen();
             default:
                 Console::Error::WriteLine("Unhandled window class (%d)", wc);
@@ -184,7 +184,7 @@ public:
             case WV_RIDE_RESEARCH:
                 if (Config::Get().interface.ToolbarShowResearch)
                 {
-                    return this->OpenWindow(WindowClass::Research);
+                    return this->OpenWindow(WindowClass::research);
                 }
                 return NewRideOpenResearch();
             case WV_MAZE_CONSTRUCTION:
@@ -244,17 +244,17 @@ public:
     {
         switch (intent->GetWindowClass())
         {
-            case WindowClass::Peep:
+            case WindowClass::peep:
                 return GuestOpen(static_cast<Peep*>(intent->GetPointerExtra(INTENT_EXTRA_PEEP)));
-            case WindowClass::FirePrompt:
+            case WindowClass::firePrompt:
                 return StaffFirePromptOpen(static_cast<Peep*>(intent->GetPointerExtra(INTENT_EXTRA_PEEP)));
-            case WindowClass::InstallTrack:
+            case WindowClass::installTrack:
                 return InstallTrackOpen(intent->GetStringExtra(INTENT_EXTRA_PATH).c_str());
-            case WindowClass::GuestList:
+            case WindowClass::guestList:
                 return GuestListOpenWithFilter(
                     static_cast<GuestListFilterType>(intent->GetSIntExtra(INTENT_EXTRA_GUEST_LIST_FILTER)),
                     intent->GetSIntExtra(INTENT_EXTRA_RIDE_ID));
-            case WindowClass::Loadsave:
+            case WindowClass::loadsave:
             {
                 auto action = intent->GetEnumExtra<LoadSaveAction>(INTENT_EXTRA_LOADSAVE_ACTION);
                 auto type = intent->GetEnumExtra<LoadSaveType>(INTENT_EXTRA_LOADSAVE_TYPE);
@@ -273,15 +273,15 @@ public:
                     trackDesign);
                 return w;
             }
-            case WindowClass::ManageTrackDesign:
+            case WindowClass::manageTrackDesign:
                 return TrackManageOpen(static_cast<TrackDesignFileRef*>(intent->GetPointerExtra(INTENT_EXTRA_TRACK_DESIGN)));
-            case WindowClass::NetworkStatus:
+            case WindowClass::networkStatus:
             {
                 std::string message = intent->GetStringExtra(INTENT_EXTRA_MESSAGE);
                 CloseCallback callback = intent->GetCloseCallbackExtra(INTENT_EXTRA_CALLBACK);
                 return NetworkStatusOpen(message, callback);
             }
-            case WindowClass::ObjectLoadError:
+            case WindowClass::objectLoadError:
             {
                 std::string path = intent->GetStringExtra(INTENT_EXTRA_PATH);
                 auto objects = static_cast<const ObjectEntryDescriptor*>(intent->GetPointerExtra(INTENT_EXTRA_LIST));
@@ -290,26 +290,26 @@ public:
 
                 return nullptr;
             }
-            case WindowClass::Ride:
+            case WindowClass::ride:
             {
                 const auto rideId = RideId::FromUnderlying(intent->GetSIntExtra(INTENT_EXTRA_RIDE_ID));
                 auto ride = GetRide(rideId);
                 return ride == nullptr ? nullptr : RideMainOpen(*ride);
             }
-            case WindowClass::TrackDesignPlace:
+            case WindowClass::trackDesignPlace:
                 return TrackPlaceOpen(static_cast<TrackDesignFileRef*>(intent->GetPointerExtra(INTENT_EXTRA_TRACK_DESIGN)));
-            case WindowClass::TrackDesignList:
+            case WindowClass::trackDesignList:
             {
                 RideSelection rideItem;
                 rideItem.Type = intent->GetUIntExtra(INTENT_EXTRA_RIDE_TYPE);
                 rideItem.EntryIndex = intent->GetUIntExtra(INTENT_EXTRA_RIDE_ENTRY_INDEX);
                 return TrackListOpen(rideItem);
             }
-            case WindowClass::ScenarioSelect:
+            case WindowClass::scenarioSelect:
                 return ScenarioselectOpen(
                     reinterpret_cast<ScenarioSelectCallback>(intent->GetCloseCallbackExtra(INTENT_EXTRA_CALLBACK)));
 
-            case WindowClass::Null:
+            case WindowClass::null:
                 // Intent does not hold a window class
                 break;
 
@@ -336,7 +336,7 @@ public:
             case INTENT_ACTION_NEW_SCENERY:
             {
                 // Check if window is already open
-                auto* window = BringToFrontByClass(WindowClass::Scenery);
+                auto* window = BringToFrontByClass(WindowClass::scenery);
                 if (window == nullptr)
                     ToggleSceneryWindow();
 
@@ -416,7 +416,7 @@ public:
 
             case INTENT_ACTION_REFRESH_RIDE_LIST:
             {
-                auto window = FindByClass(WindowClass::RideList);
+                auto window = FindByClass(WindowClass::rideList);
                 if (window != nullptr)
                 {
                     WindowRideListRefreshList(window);
@@ -432,12 +432,12 @@ public:
             case INTENT_ACTION_RIDE_CONSTRUCTION_FOCUS:
             {
                 auto rideIndex = intent.GetUIntExtra(INTENT_EXTRA_RIDE_ID);
-                auto w = FindByClass(WindowClass::RideConstruction);
+                auto w = FindByClass(WindowClass::rideConstruction);
                 if (w == nullptr || w->number != static_cast<int16_t>(rideIndex))
                 {
                     CloseConstructionWindows();
                     _currentRideIndex = RideId::FromUnderlying(rideIndex);
-                    OpenWindow(WindowClass::RideConstruction);
+                    OpenWindow(WindowClass::rideConstruction);
                 }
                 else
                 {
@@ -504,19 +504,19 @@ public:
 
             case INTENT_ACTION_UPDATE_CLIMATE:
                 gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_CLIMATE;
-                InvalidateByClass(WindowClass::GuestList);
+                InvalidateByClass(WindowClass::guestList);
                 break;
 
             case INTENT_ACTION_UPDATE_GUEST_COUNT:
                 gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_PEEP_COUNT;
-                InvalidateByClass(WindowClass::GuestList);
-                InvalidateByClass(WindowClass::ParkInformation);
+                InvalidateByClass(WindowClass::guestList);
+                InvalidateByClass(WindowClass::parkInformation);
                 WindowGuestListRefreshList();
                 break;
 
             case INTENT_ACTION_UPDATE_PARK_RATING:
                 gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_PARK_RATING;
-                InvalidateByClass(WindowClass::ParkInformation);
+                InvalidateByClass(WindowClass::parkInformation);
                 break;
 
             case INTENT_ACTION_UPDATE_DATE:
@@ -524,7 +524,7 @@ public:
                 break;
 
             case INTENT_ACTION_UPDATE_CASH:
-                InvalidateByClass(WindowClass::Finances);
+                InvalidateByClass(WindowClass::finances);
                 gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_MONEY;
                 break;
 
@@ -532,7 +532,7 @@ public:
             {
                 WindowNumber bannerIndex = static_cast<WindowNumber>(intent.GetUIntExtra(INTENT_EXTRA_BANNER_INDEX));
 
-                WindowBase* w = FindByNumber(WindowClass::Banner, bannerIndex);
+                WindowBase* w = FindByNumber(WindowClass::banner, bannerIndex);
                 if (w != nullptr)
                 {
                     w->invalidate();
@@ -540,8 +540,8 @@ public:
                 break;
             }
             case INTENT_ACTION_UPDATE_RESEARCH:
-                InvalidateByClass(WindowClass::Finances);
-                InvalidateByClass(WindowClass::Research);
+                InvalidateByClass(WindowClass::finances);
+                InvalidateByClass(WindowClass::research);
                 break;
 
             case INTENT_ACTION_UPDATE_VEHICLE_SOUNDS:
@@ -560,7 +560,7 @@ public:
 
             case INTENT_ACTION_TILE_MODIFY:
             {
-                InvalidateByClass(WindowClass::TileInspector);
+                InvalidateByClass(WindowClass::tileInspector);
                 break;
             }
 
@@ -585,15 +585,15 @@ public:
     {
         switch (windowClass)
         {
-            case WindowClass::EditorObjectSelection:
+            case WindowClass::editorObjectSelection:
                 EditorObjectSelectionClose();
                 break;
 
-            case WindowClass::NetworkStatus:
+            case WindowClass::networkStatus:
                 WindowNetworkStatusClose();
                 break;
 
-            case WindowClass::ProgressWindow:
+            case WindowClass::progressWindow:
                 ProgressWindowClose();
                 break;
 
@@ -971,7 +971,7 @@ public:
                 }
             }
             // skip window if window matches specified WindowClass (as user may be modifying via options)
-            if (avoid_classification != WindowClass::Null && foundW != nullptr
+            if (avoid_classification != WindowClass::null && foundW != nullptr
                 && foundW->classification == avoid_classification)
             {
                 continue;
@@ -1045,7 +1045,7 @@ public:
      */
     void CloseTop() override
     {
-        CloseByClass(WindowClass::Dropdown);
+        CloseByClass(WindowClass::dropdown);
 
         if (gLegacyScene == LegacyScene::scenarioEditor)
         {
@@ -1064,13 +1064,13 @@ public:
      */
     void CloseAll() override
     {
-        CloseByClass(WindowClass::Dropdown);
+        CloseByClass(WindowClass::dropdown);
         CloseByCondition([](WindowBase* w) -> bool { return !(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)); });
     }
 
     void CloseAllExceptClass(WindowClass cls) override
     {
-        CloseByClass(WindowClass::Dropdown);
+        CloseByClass(WindowClass::dropdown);
         CloseByCondition([cls](WindowBase* w) -> bool {
             return w->classification != cls && !(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT));
         });
@@ -1089,7 +1089,7 @@ public:
      */
     void CloseAllExceptNumberAndClass(WindowNumber number, WindowClass cls) override
     {
-        CloseByClass(WindowClass::Dropdown);
+        CloseByClass(WindowClass::dropdown);
         CloseByCondition([cls, number](WindowBase* w) -> bool {
             return (!(w->number == number && w->classification == cls) && !(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)));
         });
@@ -1101,10 +1101,10 @@ public:
      */
     void CloseConstructionWindows() override
     {
-        CloseByClass(WindowClass::RideConstruction);
-        CloseByClass(WindowClass::Footpath);
-        CloseByClass(WindowClass::TrackDesignList);
-        CloseByClass(WindowClass::TrackDesignPlace);
+        CloseByClass(WindowClass::rideConstruction);
+        CloseByClass(WindowClass::footpath);
+        CloseByClass(WindowClass::trackDesignList);
+        CloseByClass(WindowClass::trackDesignPlace);
     }
 
     /**

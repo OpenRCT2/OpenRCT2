@@ -105,7 +105,7 @@ namespace OpenRCT2
         // ?
         gInputFlags.clearAll();
         InputSetState(InputState::Reset);
-        gPressedWidget.windowClassification = WindowClass::Null;
+        gPressedWidget.windowClassification = WindowClass::null;
         gPickupPeepImage = ImageId();
         ResetTooltipNotShown();
         gMapSelectFlags.clearAll();
@@ -531,8 +531,8 @@ namespace OpenRCT2
     // rct2: 0x006E7A15
     static void ViewportSetUndergroundFlag(int32_t underground, WindowBase* window, Viewport* viewport)
     {
-        if ((window->classification != WindowClass::MainWindow && window->classification != WindowClass::Viewport)
-            || (window->classification == WindowClass::MainWindow && !window->viewportSmartFollowSprite.IsNull()))
+        if ((window->classification != WindowClass::mainWindow && window->classification != WindowClass::viewport)
+            || (window->classification == WindowClass::mainWindow && !window->viewportSmartFollowSprite.IsNull()))
         {
             if (!underground)
             {

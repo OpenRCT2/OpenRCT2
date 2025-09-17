@@ -139,7 +139,7 @@ namespace OpenRCT2::Ui::Windows
                 }
                 else
                 {
-                    auto intent = Intent(WindowClass::Ride);
+                    auto intent = Intent(WindowClass::ride);
                     intent.PutExtra(INTENT_EXTRA_RIDE_ID, currentRide->id.ToUnderlying());
                     ContextOpenIntent(&intent);
                 }
@@ -247,7 +247,7 @@ namespace OpenRCT2::Ui::Windows
                 case RideConstructionState::Front:
                 case RideConstructionState::Back:
                 case RideConstructionState::Selected:
-                    if (isToolActive(WindowClass::RideConstruction))
+                    if (isToolActive(WindowClass::rideConstruction))
                     {
                         ToolCancel();
                     }
@@ -377,13 +377,13 @@ namespace OpenRCT2::Ui::Windows
                     ToolCancel();
                     if (!currentRide->getRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
                     {
-                        windowMgr->CloseByClass(WindowClass::RideConstruction);
+                        windowMgr->CloseByClass(WindowClass::rideConstruction);
                     }
                 }
                 else
                 {
                     gRideEntranceExitPlaceType = gRideEntranceExitPlaceType ^ 1;
-                    windowMgr->InvalidateByClass(WindowClass::RideConstruction);
+                    windowMgr->InvalidateByClass(WindowClass::rideConstruction);
 
                     auto newToolWidgetIndex = (gRideEntranceExitPlaceType == ENTRANCE_TYPE_RIDE_ENTRANCE) ? WIDX_MAZE_ENTRANCE
                                                                                                           : WIDX_MAZE_EXIT;
@@ -446,13 +446,13 @@ namespace OpenRCT2::Ui::Windows
     {
         auto* windowMgr = GetWindowManager();
         return windowMgr->FocusOrCreate<MazeConstructionWindow>(
-            WindowClass::RideConstruction, ScreenCoordsXY(0, 29), kWindowSize, WF_NO_AUTO_CLOSE);
+            WindowClass::rideConstruction, ScreenCoordsXY(0, 29), kWindowSize, WF_NO_AUTO_CLOSE);
     }
 
     void WindowMazeConstructionUpdatePressedWidgets()
     {
         auto* windowMgr = GetWindowManager();
-        WindowBase* w = windowMgr->FindByClass(WindowClass::RideConstruction);
+        WindowBase* w = windowMgr->FindByClass(WindowClass::rideConstruction);
         if (w == nullptr)
             return;
 
@@ -468,7 +468,7 @@ namespace OpenRCT2::Ui::Windows
         switch (_rideConstructionState)
         {
             case RideConstructionState::EntranceExit:
-                if (isToolActive(WindowClass::RideConstruction, WIDX_MAZE_ENTRANCE))
+                if (isToolActive(WindowClass::rideConstruction, WIDX_MAZE_ENTRANCE))
                 {
                     newPressedWidgets |= EnumToFlag(WIDX_MAZE_ENTRANCE);
                 }

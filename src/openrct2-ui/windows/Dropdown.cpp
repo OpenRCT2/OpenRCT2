@@ -394,7 +394,7 @@ namespace OpenRCT2::Ui::Windows
         // Create the window (width/height position are set later)
         auto* windowMgr = GetWindowManager();
         auto* w = windowMgr->Create<DropdownWindow>(
-            WindowClass::Dropdown, { width, customItemHeight }, WF_STICK_TO_FRONT | WF_NO_TITLE_BAR);
+            WindowClass::dropdown, { width, customItemHeight }, WF_STICK_TO_FRONT | WF_NO_TITLE_BAR);
         if (w != nullptr)
         {
             auto numRowsPerColumn = prefRowsPerColumn > 0 ? static_cast<int32_t>(prefRowsPerColumn) : Dropdown::kItemsMaxSize;
@@ -438,7 +438,7 @@ namespace OpenRCT2::Ui::Windows
 
         // Create the window (width/height position are set later)
         auto* windowMgr = GetWindowManager();
-        auto* w = windowMgr->Create<DropdownWindow>(WindowClass::Dropdown, { itemWidth, itemHeight }, WF_STICK_TO_FRONT);
+        auto* w = windowMgr->Create<DropdownWindow>(WindowClass::dropdown, { itemWidth, itemHeight }, WF_STICK_TO_FRONT);
         if (w != nullptr)
         {
             w->setImageItems({ x, y }, extray, colour, numItems, itemWidth, itemHeight, numColumns);
@@ -448,7 +448,7 @@ namespace OpenRCT2::Ui::Windows
     void WindowDropdownClose()
     {
         auto* windowMgr = Ui::GetWindowManager();
-        windowMgr->CloseByClass(WindowClass::Dropdown);
+        windowMgr->CloseByClass(WindowClass::dropdown);
     }
 
     /**
@@ -457,7 +457,7 @@ namespace OpenRCT2::Ui::Windows
      */
     int32_t DropdownIndexFromPoint(const ScreenCoordsXY& loc, WindowBase* w)
     {
-        if (w->classification == WindowClass::Dropdown)
+        if (w->classification == WindowClass::dropdown)
         {
             auto* ddWnd = static_cast<DropdownWindow*>(w);
             return ddWnd->GetIndexFromPoint(loc);

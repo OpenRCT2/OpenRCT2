@@ -467,7 +467,7 @@ namespace OpenRCT2::Ui::Windows
             }
             else
             {
-                auto intent = Intent(WindowClass::Ride);
+                auto intent = Intent(WindowClass::ride);
                 intent.PutExtra(INTENT_EXTRA_RIDE_ID, selectedRideId.ToUnderlying());
                 ContextOpenIntent(&intent);
             }
@@ -1130,11 +1130,11 @@ namespace OpenRCT2::Ui::Windows
     {
         // Check if window is already open
         auto* windowMgr = GetWindowManager();
-        auto* window = windowMgr->BringToFrontByClass(WindowClass::RideList);
+        auto* window = windowMgr->BringToFrontByClass(WindowClass::rideList);
         if (window == nullptr)
         {
             window = windowMgr->Create<RideListWindow>(
-                WindowClass::RideList, ScreenCoordsXY(32, 32), kWindowSize, WF_10 | WF_RESIZABLE);
+                WindowClass::rideList, ScreenCoordsXY(32, 32), kWindowSize, WF_10 | WF_RESIZABLE);
         }
         return window;
     }

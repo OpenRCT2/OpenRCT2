@@ -69,7 +69,7 @@ namespace OpenRCT2::Ui::Windows
         void onClose() override
         {
             // If the tool wasn't changed, turn tool off
-            if (isToolActive(WindowClass::Water, WIDX_BACKGROUND))
+            if (isToolActive(WindowClass::water, WIDX_BACKGROUND))
             {
                 ToolCancel();
             }
@@ -112,7 +112,7 @@ namespace OpenRCT2::Ui::Windows
         void onUpdate() override
         {
             // Close window if another tool is open
-            if (!isToolActive(WindowClass::Water, WIDX_BACKGROUND))
+            if (!isToolActive(WindowClass::water, WIDX_BACKGROUND))
             {
                 close();
             }
@@ -320,7 +320,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     _waterToolRaiseCost = raiseCost;
                     _waterToolLowerCost = lowerCost;
-                    windowMgr->InvalidateByClass(WindowClass::Water);
+                    windowMgr->InvalidateByClass(WindowClass::water);
                 }
                 return;
             }
@@ -336,7 +336,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     _waterToolRaiseCost = kMoney64Undefined;
                     _waterToolLowerCost = kMoney64Undefined;
-                    windowMgr->InvalidateByClass(WindowClass::Water);
+                    windowMgr->InvalidateByClass(WindowClass::water);
                 }
                 return;
             }
@@ -411,7 +411,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 _waterToolRaiseCost = raiseCost;
                 _waterToolLowerCost = lowerCost;
-                windowMgr->InvalidateByClass(WindowClass::Water);
+                windowMgr->InvalidateByClass(WindowClass::water);
             }
         }
 
@@ -429,7 +429,7 @@ namespace OpenRCT2::Ui::Windows
     {
         auto* windowMgr = GetWindowManager();
         return windowMgr->FocusOrCreate<WaterWindow>(
-            WindowClass::Water, ScreenCoordsXY(ContextGetWidth() - kWindowSize.width, 29), kWindowSize, 0);
+            WindowClass::water, ScreenCoordsXY(ContextGetWidth() - kWindowSize.width, 29), kWindowSize, 0);
     }
 
     /**
@@ -438,14 +438,14 @@ namespace OpenRCT2::Ui::Windows
      */
     void ToggleWaterWindow()
     {
-        if (isToolActive(WindowClass::Water, WIDX_BACKGROUND))
+        if (isToolActive(WindowClass::water, WIDX_BACKGROUND))
         {
             ToolCancel();
         }
         else
         {
             ShowGridlines();
-            auto* toolWindow = ContextOpenWindow(WindowClass::Water);
+            auto* toolWindow = ContextOpenWindow(WindowClass::water);
             ToolSet(*toolWindow, WIDX_BACKGROUND, Tool::waterDown);
             gInputFlags.set(InputFlag::unk6);
         }

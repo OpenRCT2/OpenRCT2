@@ -152,7 +152,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_SELECT_DIFFERENT_DESIGN:
                     close();
 
-                    auto intent = Intent(WindowClass::TrackDesignList);
+                    auto intent = Intent(WindowClass::trackDesignList);
                     intent.PutExtra(INTENT_EXTRA_RIDE_TYPE, _window_track_list_item.Type);
                     intent.PutExtra(INTENT_EXTRA_RIDE_ENTRY_INDEX, _window_track_list_item.EntryIndex);
                     ContextOpenIntent(&intent);
@@ -162,7 +162,7 @@ namespace OpenRCT2::Ui::Windows
 
         void onUpdate() override
         {
-            if (!isToolActive(WindowClass::TrackDesignPlace))
+            if (!isToolActive(WindowClass::trackDesignPlace))
                 close();
         }
 
@@ -298,23 +298,23 @@ namespace OpenRCT2::Ui::Windows
                 if (getRide != nullptr)
                 {
                     auto* windowMgr = Ui::GetWindowManager();
-                    windowMgr->CloseByClass(WindowClass::Error);
+                    windowMgr->CloseByClass(WindowClass::error);
 
                     Audio::Play3D(Audio::SoundId::PlaceItem, trackLoc);
                     _currentRideIndex = rideId;
 
                     if (TrackDesignAreEntranceAndExitPlaced())
                     {
-                        auto intent = Intent(WindowClass::Ride);
+                        auto intent = Intent(WindowClass::ride);
                         intent.PutExtra(INTENT_EXTRA_RIDE_ID, rideId.ToUnderlying());
                         ContextOpenIntent(&intent);
-                        auto* wnd = windowMgr->FindByClass(WindowClass::TrackDesignPlace);
+                        auto* wnd = windowMgr->FindByClass(WindowClass::trackDesignPlace);
                         windowMgr->Close(*wnd);
                     }
                     else
                     {
                         RideInitialiseConstructionWindow(*getRide);
-                        auto* wnd = windowMgr->FindByClass(WindowClass::RideConstruction);
+                        auto* wnd = windowMgr->FindByClass(WindowClass::rideConstruction);
                         wnd->onMouseUp(WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE);
                     }
                 }
@@ -755,7 +755,7 @@ namespace OpenRCT2::Ui::Windows
         auto* windowMgr = Ui::GetWindowManager();
         windowMgr->CloseConstructionWindows();
 
-        auto* window = windowMgr->FocusOrCreate<TrackDesignPlaceWindow>(WindowClass::TrackDesignPlace, kWindowSize, 0);
+        auto* window = windowMgr->FocusOrCreate<TrackDesignPlaceWindow>(WindowClass::trackDesignPlace, kWindowSize, 0);
         if (window != nullptr)
         {
             window->init(std::move(openTrackDesign));
@@ -766,7 +766,7 @@ namespace OpenRCT2::Ui::Windows
     void TrackPlaceClearProvisionalTemporarily()
     {
         auto* windowMgr = GetWindowManager();
-        auto* trackPlaceWnd = static_cast<TrackDesignPlaceWindow*>(windowMgr->FindByClass(WindowClass::TrackDesignPlace));
+        auto* trackPlaceWnd = static_cast<TrackDesignPlaceWindow*>(windowMgr->FindByClass(WindowClass::trackDesignPlace));
         if (trackPlaceWnd != nullptr)
         {
             trackPlaceWnd->ClearProvisionalTemporarily();
@@ -776,7 +776,7 @@ namespace OpenRCT2::Ui::Windows
     void TrackPlaceRestoreProvisional()
     {
         auto* windowMgr = GetWindowManager();
-        auto* trackPlaceWnd = static_cast<TrackDesignPlaceWindow*>(windowMgr->FindByClass(WindowClass::TrackDesignPlace));
+        auto* trackPlaceWnd = static_cast<TrackDesignPlaceWindow*>(windowMgr->FindByClass(WindowClass::trackDesignPlace));
         if (trackPlaceWnd != nullptr)
         {
             trackPlaceWnd->RestoreProvisional();

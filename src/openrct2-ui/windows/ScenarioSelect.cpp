@@ -226,7 +226,7 @@ namespace OpenRCT2::Ui::Windows
                     },
                     [](const ParkPreview preview) {
                         auto* windowMgr = GetWindowManager();
-                        auto* wnd = windowMgr->FindByClass(WindowClass::ScenarioSelect);
+                        auto* wnd = windowMgr->FindByClass(WindowClass::scenarioSelect);
                         if (wnd == nullptr)
                         {
                             return;
@@ -860,14 +860,14 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* ScenarioselectOpen(std::function<void(std::string_view)> callback)
     {
         auto* windowMgr = GetWindowManager();
-        auto* window = static_cast<ScenarioSelectWindow*>(windowMgr->BringToFrontByClass(WindowClass::ScenarioSelect));
+        auto* window = static_cast<ScenarioSelectWindow*>(windowMgr->BringToFrontByClass(WindowClass::scenarioSelect));
         if (window != nullptr)
         {
             return window;
         }
 
         window = windowMgr->Create<ScenarioSelectWindow>(
-            WindowClass::ScenarioSelect, {}, kWindowSize, WF_AUTO_POSITION | WF_CENTRE_SCREEN, callback);
+            WindowClass::scenarioSelect, {}, kWindowSize, WF_AUTO_POSITION | WF_CENTRE_SCREEN, callback);
         return window;
     }
 } // namespace OpenRCT2::Ui::Windows

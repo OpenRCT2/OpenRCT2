@@ -533,7 +533,7 @@ static uint64_t PageDisabledWidgets[] = {
                 _highlightedIndex = -1;
             }
 
-            if (!isToolActive(WindowClass::TileInspector))
+            if (!isToolActive(WindowClass::tileInspector))
                 close();
         }
 
@@ -741,7 +741,7 @@ static uint64_t PageDisabledWidgets[] = {
 
         void onClose() override
         {
-            if (isToolActive(WindowClass::TileInspector))
+            if (isToolActive(WindowClass::tileInspector))
                 ToolCancel();
 
             TileElement* const elem = OpenRCT2::TileInspector::GetSelectedElement();
@@ -2451,17 +2451,17 @@ static uint64_t PageDisabledWidgets[] = {
     WindowBase* TileInspectorOpen()
     {
         auto* windowMgr = GetWindowManager();
-        WindowBase* window = windowMgr->BringToFrontByClass(WindowClass::TileInspector);
+        WindowBase* window = windowMgr->BringToFrontByClass(WindowClass::tileInspector);
         if (window == nullptr)
             window = windowMgr->Create<TileInspector>(
-                WindowClass::TileInspector, ScreenCoordsXY(0, 29), kWindowSize, WF_RESIZABLE);
+                WindowClass::tileInspector, ScreenCoordsXY(0, 29), kWindowSize, WF_RESIZABLE);
         return window;
     }
 
     void WindowTileInspectorClearClipboard()
     {
         auto* windowMgr = GetWindowManager();
-        auto* window = windowMgr->FindByClass(WindowClass::TileInspector);
+        auto* window = windowMgr->FindByClass(WindowClass::tileInspector);
         if (window != nullptr)
             static_cast<TileInspector*>(window)->ClearClipboard();
     }
@@ -2469,7 +2469,7 @@ static uint64_t PageDisabledWidgets[] = {
     void WindowTileInspectorKeyboardShortcutToggleInvisibility()
     {
         auto* windowMgr = GetWindowManager();
-        auto* window = windowMgr->FindByClass(WindowClass::TileInspector);
+        auto* window = windowMgr->FindByClass(WindowClass::tileInspector);
         if (window != nullptr)
             static_cast<TileInspector*>(window)->ToggleInvisibility();
     }

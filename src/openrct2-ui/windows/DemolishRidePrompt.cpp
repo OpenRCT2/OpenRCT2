@@ -95,7 +95,7 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* RideDemolishPromptOpen(const Ride& ride)
     {
         auto* windowMgr = GetWindowManager();
-        auto* w = windowMgr->FindByClass(WindowClass::DemolishRidePrompt);
+        auto* w = windowMgr->FindByClass(WindowClass::demolishRidePrompt);
 
         DemolishRidePromptWindow* newWindow;
         if (w != nullptr)
@@ -104,12 +104,12 @@ namespace OpenRCT2::Ui::Windows
             windowMgr->Close(*w);
 
             newWindow = windowMgr->Create<DemolishRidePromptWindow>(
-                WindowClass::DemolishRidePrompt, windowPos, kWindowSize, WF_TRANSPARENT);
+                WindowClass::demolishRidePrompt, windowPos, kWindowSize, WF_TRANSPARENT);
         }
         else
         {
             newWindow = windowMgr->Create<DemolishRidePromptWindow>(
-                WindowClass::DemolishRidePrompt, kWindowSize, WF_CENTRE_SCREEN | WF_TRANSPARENT);
+                WindowClass::demolishRidePrompt, kWindowSize, WF_CENTRE_SCREEN | WF_TRANSPARENT);
         }
 
         newWindow->SetRide(ride);

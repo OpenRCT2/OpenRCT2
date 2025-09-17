@@ -399,11 +399,11 @@ namespace OpenRCT2::Ui::Windows
     {
         // Check if window is already open
         auto* windowMgr = GetWindowManager();
-        auto* window = windowMgr->BringToFrontByClass(WindowClass::EditorParkEntrance);
+        auto* window = windowMgr->BringToFrontByClass(WindowClass::editorParkEntrance);
         if (window != nullptr)
             return window;
 
-        window = windowMgr->Create<EditorParkEntrance>(WindowClass::EditorParkEntrance, kWindowSize, WF_10 | WF_RESIZABLE);
+        window = windowMgr->Create<EditorParkEntrance>(WindowClass::editorParkEntrance, kWindowSize, WF_10 | WF_RESIZABLE);
 
         return window;
     }

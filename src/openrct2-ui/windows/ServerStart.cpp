@@ -132,7 +132,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 case WIDX_LOAD_SERVER:
                     Network::SetPassword(_password);
-                    auto intent = Intent(WindowClass::Loadsave);
+                    auto intent = Intent(WindowClass::loadsave);
                     intent.PutEnumExtra<LoadSaveAction>(INTENT_EXTRA_LOADSAVE_ACTION, LoadSaveAction::load);
                     intent.PutEnumExtra<LoadSaveType>(INTENT_EXTRA_LOADSAVE_TYPE, LoadSaveType::park);
                     intent.PutExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<CloseCallback>(LoadSaveCallback));
@@ -142,7 +142,7 @@ namespace OpenRCT2::Ui::Windows
         }
         void onPrepareDraw() override
         {
-            ColourSchemeUpdateByClass(this, WindowClass::ServerList);
+            ColourSchemeUpdateByClass(this, WindowClass::serverList);
 
             setCheckboxValue(WIDX_ADVERTISE_CHECKBOX, Config::Get().network.Advertise);
             auto ft = Formatter::Common();
@@ -275,7 +275,7 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* ServerStartOpen()
     {
         auto* windowMgr = GetWindowManager();
-        return windowMgr->FocusOrCreate<ServerStartWindow>(WindowClass::ServerStart, kWindowSize, WF_CENTRE_SCREEN);
+        return windowMgr->FocusOrCreate<ServerStartWindow>(WindowClass::serverStart, kWindowSize, WF_CENTRE_SCREEN);
     }
 } // namespace OpenRCT2::Ui::Windows
 

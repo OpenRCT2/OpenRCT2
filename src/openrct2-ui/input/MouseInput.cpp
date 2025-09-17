@@ -308,7 +308,7 @@ namespace OpenRCT2
                         InputWidgetLeft(screenCoords, w, widgetIndex);
                         break;
                     case MouseState::RightPress:
-                        windowMgr->CloseByClass(WindowClass::Tooltip);
+                        windowMgr->CloseByClass(WindowClass::tooltip);
 
                         if (w != nullptr)
                         {
@@ -555,7 +555,7 @@ namespace OpenRCT2
         // Only unfollow sprites for the main window or ‘extra viewport’ windows.
         // Don’t unfollow for windows where the viewport is always supposed to follow (e.g. Ride, Guest, Staff).
         auto mainWindow = WindowGetMain();
-        if (&w == mainWindow || w.classification == WindowClass::Viewport)
+        if (&w == mainWindow || w.classification == WindowClass::viewport)
         {
             WindowUnfollowSprite(w);
         }
@@ -961,7 +961,7 @@ namespace OpenRCT2
      */
     static void InputWidgetOver(const ScreenCoordsXY& screenCoords, WindowBase* w, WidgetIndex widgetIndex)
     {
-        WindowClass windowClass = WindowClass::Null;
+        WindowClass windowClass = WindowClass::null;
         WindowNumber windowNumber = 0;
         Widget* widget = nullptr;
 
@@ -1012,7 +1012,7 @@ namespace OpenRCT2
             gHoverWidget.widgetIndex = widgetIndex;
 
             // Invalidate new widget cursor is on if widget is a flat button
-            if (windowClass != WindowClass::Null)
+            if (windowClass != WindowClass::null)
                 InputWidgetOverFlatbuttonInvalidate();
         }
     }
@@ -1042,7 +1042,7 @@ namespace OpenRCT2
      */
     static void InputWidgetLeft(const ScreenCoordsXY& screenCoords, WindowBase* w, WidgetIndex widgetIndex)
     {
-        WindowClass windowClass = WindowClass::Null;
+        WindowClass windowClass = WindowClass::null;
         WindowNumber windowNumber = 0;
 
         if (w != nullptr)
@@ -1052,8 +1052,8 @@ namespace OpenRCT2
         }
 
         auto* windowMgr = GetWindowManager();
-        windowMgr->CloseByClass(WindowClass::Error);
-        windowMgr->CloseByClass(WindowClass::Tooltip);
+        windowMgr->CloseByClass(WindowClass::error);
+        windowMgr->CloseByClass(WindowClass::tooltip);
 
         // Window might have changed position in the list, therefore find it again
         w = windowMgr->FindByNumber(windowClass, windowNumber);
@@ -1320,7 +1320,7 @@ namespace OpenRCT2
                     if (_inputState == InputState::DropdownActive)
                     {
                         gDropdown.highlightedIndex = gDropdown.defaultIndex;
-                        windowMgr->InvalidateByClass(WindowClass::Dropdown);
+                        windowMgr->InvalidateByClass(WindowClass::dropdown);
                     }
                     return;
                 }
@@ -1339,7 +1339,7 @@ namespace OpenRCT2
                         int32_t dropdown_index = 0;
                         bool dropdownCleanup = false;
 
-                        if (w->classification == WindowClass::Dropdown)
+                        if (w->classification == WindowClass::dropdown)
                         {
                             dropdown_index = DropdownIndexFromPoint(screenCoords, w);
                             dropdownCleanup = dropdown_index == -1
@@ -1368,7 +1368,7 @@ namespace OpenRCT2
                             }
                         }
 
-                        windowMgr->CloseByClass(WindowClass::Dropdown);
+                        windowMgr->CloseByClass(WindowClass::dropdown);
 
                         if (dropdownCleanup)
                         {
@@ -1454,13 +1454,13 @@ namespace OpenRCT2
         }
 
         gDropdown.highlightedIndex = -1;
-        windowMgr->InvalidateByClass(WindowClass::Dropdown);
+        windowMgr->InvalidateByClass(WindowClass::dropdown);
         if (w == nullptr)
         {
             return;
         }
 
-        if (w->classification == WindowClass::Dropdown)
+        if (w->classification == WindowClass::dropdown)
         {
             int32_t dropdown_index = DropdownIndexFromPoint(screenCoords, w);
             if (dropdown_index == -1)
@@ -1487,7 +1487,7 @@ namespace OpenRCT2
             }
 
             gDropdown.highlightedIndex = dropdown_index;
-            windowMgr->InvalidateByClass(WindowClass::Dropdown);
+            windowMgr->InvalidateByClass(WindowClass::dropdown);
         }
         else
         {
@@ -1498,7 +1498,7 @@ namespace OpenRCT2
 
     static void InputUpdateTooltip(WindowBase* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
     {
-        if (gTooltipWidget.windowClassification == WindowClass::Null)
+        if (gTooltipWidget.windowClassification == WindowClass::null)
         {
             if (gTooltipCursor == screenCoords)
             {
@@ -1532,7 +1532,7 @@ namespace OpenRCT2
             if (gCurrentRealTimeTicks >= gTooltipCloseTimeout)
             {
                 auto* windowMgr = GetWindowManager();
-                windowMgr->CloseByClass(WindowClass::Tooltip);
+                windowMgr->CloseByClass(WindowClass::tooltip);
             }
         }
     }

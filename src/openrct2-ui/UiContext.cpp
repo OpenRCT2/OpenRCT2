@@ -154,7 +154,7 @@ public:
 
     void Draw(RenderTarget& rt) override
     {
-        auto bgColour = ThemeGetColour(WindowClass::Chat, 0);
+        auto bgColour = ThemeGetColour(WindowClass::chat, 0);
         ChatDraw(rt, bgColour);
         _inGameConsole.Draw(rt);
     }

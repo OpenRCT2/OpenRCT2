@@ -630,10 +630,10 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* PlayerOpen(uint8_t id)
     {
         auto* windowMgr = GetWindowManager();
-        auto* window = static_cast<PlayerWindow*>(windowMgr->BringToFrontByNumber(WindowClass::Player, id));
+        auto* window = static_cast<PlayerWindow*>(windowMgr->BringToFrontByNumber(WindowClass::player, id));
         if (window == nullptr)
         {
-            window = windowMgr->Create<PlayerWindow>(WindowClass::Player, { 240, 170 }, WF_RESIZABLE);
+            window = windowMgr->Create<PlayerWindow>(WindowClass::player, { 240, 170 }, WF_RESIZABLE);
         }
 
         window->init(id);

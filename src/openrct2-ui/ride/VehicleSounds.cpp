@@ -127,7 +127,7 @@ namespace OpenRCT2::Audio
         auto left = gMusicTrackingViewport->viewPos.x;
         auto bottom = gMusicTrackingViewport->viewPos.y;
 
-        if (Ui::Windows::WindowGetClassification(*gWindowAudioExclusive) == WindowClass::MainWindow)
+        if (Ui::Windows::WindowGetClassification(*gWindowAudioExclusive) == WindowClass::mainWindow)
         {
             left -= quarter_w;
             bottom -= quarter_h;
@@ -139,7 +139,7 @@ namespace OpenRCT2::Audio
         auto right = gMusicTrackingViewport->ViewWidth() + left;
         auto top = gMusicTrackingViewport->ViewHeight() + bottom;
 
-        if (Ui::Windows::WindowGetClassification(*gWindowAudioExclusive) == WindowClass::MainWindow)
+        if (Ui::Windows::WindowGetClassification(*gWindowAudioExclusive) == WindowClass::mainWindow)
         {
             right += quarter_w + quarter_w;
             top += quarter_h + quarter_h;

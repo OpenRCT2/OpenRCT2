@@ -154,7 +154,7 @@ namespace OpenRCT2::Ui::Windows
             HideGridlines();
             HideConstructionRights();
 
-            if (isToolActive(WindowClass::LandRights))
+            if (isToolActive(WindowClass::landRights))
                 ToolCancel();
         }
 
@@ -253,7 +253,7 @@ namespace OpenRCT2::Ui::Windows
             currentFrame++;
 
             // Close window if another tool is open
-            if (!isToolActive(WindowClass::LandRights))
+            if (!isToolActive(WindowClass::landRights))
             {
                 close();
                 return;
@@ -371,12 +371,12 @@ namespace OpenRCT2::Ui::Windows
             if (IsOwnershipMode())
             {
                 PrepareDrawSandbox();
-                ColourSchemeUpdateByClass(this, WindowClass::Map);
+                ColourSchemeUpdateByClass(this, WindowClass::map);
             }
             else
             {
                 PrepareDrawInGame();
-                ColourSchemeUpdateByClass(this, WindowClass::LandRights);
+                ColourSchemeUpdateByClass(this, WindowClass::landRights);
             }
         }
 
@@ -471,7 +471,7 @@ namespace OpenRCT2::Ui::Windows
                     _landRightsCost = kMoney64Undefined;
 
                     auto* windowMgr = Ui::GetWindowManager();
-                    windowMgr->InvalidateByClass(WindowClass::LandRights);
+                    windowMgr->InvalidateByClass(WindowClass::landRights);
                 }
                 return;
             }
@@ -595,6 +595,6 @@ namespace OpenRCT2::Ui::Windows
     {
         auto* windowMgr = GetWindowManager();
         return windowMgr->FocusOrCreate<LandRightsWindow>(
-            WindowClass::LandRights, ScreenCoordsXY(ContextGetWidth() - kWindowSize.width, 29), kWindowSize, 0);
+            WindowClass::landRights, ScreenCoordsXY(ContextGetWidth() - kWindowSize.width, 29), kWindowSize, 0);
     }
 } // namespace OpenRCT2::Ui::Windows

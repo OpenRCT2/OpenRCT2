@@ -234,19 +234,19 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* ProgressWindowOpen(const std::string& text, CloseCallback onClose)
     {
-        ContextForceCloseWindowByClass(WindowClass::NetworkStatus);
+        ContextForceCloseWindowByClass(WindowClass::networkStatus);
 
         auto* windowMgr = GetWindowManager();
 
         ProgressWindow* window;
-        if ((window = static_cast<ProgressWindow*>(windowMgr->FindByClass(WindowClass::ProgressWindow))) != nullptr)
+        if ((window = static_cast<ProgressWindow*>(windowMgr->FindByClass(WindowClass::progressWindow))) != nullptr)
         {
             windowMgr->BringToFront(*window);
         }
         else
         {
             window = windowMgr->Create<ProgressWindow>(
-                WindowClass::ProgressWindow, kWindowSize, WF_10 | WF_TRANSPARENT | WF_CENTRE_SCREEN | WF_STICK_TO_FRONT);
+                WindowClass::progressWindow, kWindowSize, WF_10 | WF_TRANSPARENT | WF_CENTRE_SCREEN | WF_STICK_TO_FRONT);
         }
 
         window->setCaption(text);
@@ -257,7 +257,7 @@ namespace OpenRCT2::Ui::Windows
     void ProgressWindowSet(uint32_t currentProgress, uint32_t totalCount, StringId format)
     {
         auto* windowMgr = GetWindowManager();
-        auto window = windowMgr->FindByClass(WindowClass::ProgressWindow);
+        auto window = windowMgr->FindByClass(WindowClass::progressWindow);
         if (window == nullptr)
         {
             return;
@@ -270,7 +270,7 @@ namespace OpenRCT2::Ui::Windows
     void ProgressWindowClose()
     {
         auto* windowMgr = GetWindowManager();
-        auto window = windowMgr->FindByClass(WindowClass::ProgressWindow);
+        auto window = windowMgr->FindByClass(WindowClass::progressWindow);
         if (window == nullptr)
         {
             return;

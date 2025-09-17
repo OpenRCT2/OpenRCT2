@@ -915,11 +915,11 @@ namespace OpenRCT2::Ui::Windows
     {
         // Check if window is already open
         auto* windowMgr = GetWindowManager();
-        auto* window = windowMgr->BringToFrontByClass(WindowClass::Multiplayer);
+        auto* window = windowMgr->BringToFrontByClass(WindowClass::multiplayer);
         if (window == nullptr)
         {
             window = windowMgr->Create<MultiplayerWindow>(
-                WindowClass::Multiplayer, { 320, 144 }, WF_10 | WF_RESIZABLE | WF_AUTO_POSITION);
+                WindowClass::multiplayer, { 320, 144 }, WF_10 | WF_RESIZABLE | WF_AUTO_POSITION);
         }
 
         return window;

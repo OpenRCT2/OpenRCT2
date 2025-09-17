@@ -1118,7 +1118,7 @@ namespace OpenRCT2::Ui::Windows
         {
             auto result = _nextWindowNumber++;
             auto* windowMgr = GetWindowManager();
-            while (windowMgr->FindByNumber(WindowClass::Custom, result) != nullptr)
+            while (windowMgr->FindByNumber(WindowClass::custom, result) != nullptr)
             {
                 result++;
             }
@@ -1138,11 +1138,11 @@ namespace OpenRCT2::Ui::Windows
         if (desc.X && desc.Y)
         {
             window = windowMgr->Create<CustomWindow>(
-                WindowClass::Custom, { *desc.X, *desc.Y }, desc.size, windowFlags, owner, desc);
+                WindowClass::custom, { *desc.X, *desc.Y }, desc.size, windowFlags, owner, desc);
         }
         else
         {
-            window = windowMgr->Create<CustomWindow>(WindowClass::Custom, desc.size, windowFlags, owner, desc);
+            window = windowMgr->Create<CustomWindow>(WindowClass::custom, desc.size, windowFlags, owner, desc);
         }
         return window;
     }
@@ -1167,7 +1167,7 @@ namespace OpenRCT2::Ui::Windows
 
     std::string GetWindowTitle(WindowBase* w)
     {
-        if (w->classification == WindowClass::Custom)
+        if (w->classification == WindowClass::custom)
         {
             auto& customInfo = GetInfo(static_cast<CustomWindow*>(w));
             return customInfo.Desc.Title;
@@ -1177,7 +1177,7 @@ namespace OpenRCT2::Ui::Windows
 
     void UpdateWindowTitle(WindowBase* w, std::string_view value)
     {
-        if (w->classification == WindowClass::Custom)
+        if (w->classification == WindowClass::custom)
         {
             auto& customInfo = GetInfo(static_cast<CustomWindow*>(w));
             customInfo.Desc.Title = value;
@@ -1186,7 +1186,7 @@ namespace OpenRCT2::Ui::Windows
 
     void UpdateWindowTab(WindowBase* w, int32_t tabIndex)
     {
-        if (w->classification == WindowClass::Custom)
+        if (w->classification == WindowClass::custom)
         {
             auto& customInfo = GetInfo(static_cast<CustomWindow*>(w));
             if (tabIndex >= 0 && tabIndex < static_cast<int32_t>(customInfo.Desc.Tabs.size()))
@@ -1198,7 +1198,7 @@ namespace OpenRCT2::Ui::Windows
 
     void UpdateWidgetText(WindowBase* w, WidgetIndex widgetIndex, std::string_view value)
     {
-        if (w->classification == WindowClass::Custom)
+        if (w->classification == WindowClass::custom)
         {
             auto& customInfo = GetInfo(static_cast<CustomWindow*>(w));
             auto customWidgetInfo = customInfo.GetCustomWidgetDesc(w, widgetIndex);
@@ -1215,7 +1215,7 @@ namespace OpenRCT2::Ui::Windows
 
     void UpdateWidgetItems(WindowBase* w, WidgetIndex widgetIndex, const std::vector<std::string>& items)
     {
-        if (w->classification == WindowClass::Custom)
+        if (w->classification == WindowClass::custom)
         {
             auto& customInfo = GetInfo(static_cast<CustomWindow*>(w));
             auto customWidgetInfo = customInfo.GetCustomWidgetDesc(w, widgetIndex);
@@ -1229,7 +1229,7 @@ namespace OpenRCT2::Ui::Windows
 
     void UpdateWidgetColour(WindowBase* w, WidgetIndex widgetIndex, colour_t colour)
     {
-        if (w->classification == WindowClass::Custom)
+        if (w->classification == WindowClass::custom)
         {
             auto& customInfo = GetInfo(static_cast<CustomWindow*>(w));
             auto customWidgetInfo = customInfo.GetCustomWidgetDesc(w, widgetIndex);
@@ -1258,7 +1258,7 @@ namespace OpenRCT2::Ui::Windows
 
     void UpdateWidgetSelectedIndex(WindowBase* w, WidgetIndex widgetIndex, int32_t selectedIndex)
     {
-        if (w->classification == WindowClass::Custom)
+        if (w->classification == WindowClass::custom)
         {
             auto& customInfo = GetInfo(static_cast<CustomWindow*>(w));
             auto customWidgetInfo = customInfo.GetCustomWidgetDesc(w, widgetIndex);
@@ -1306,7 +1306,7 @@ namespace OpenRCT2::Ui::Windows
 
     std::vector<std::string> GetWidgetItems(WindowBase* w, WidgetIndex widgetIndex)
     {
-        if (w->classification == WindowClass::Custom)
+        if (w->classification == WindowClass::custom)
         {
             auto& customInfo = GetInfo(static_cast<CustomWindow*>(w));
             auto customWidgetInfo = customInfo.GetCustomWidgetDesc(w, widgetIndex);
@@ -1320,7 +1320,7 @@ namespace OpenRCT2::Ui::Windows
 
     colour_t GetWidgetColour(WindowBase* w, WidgetIndex widgetIndex)
     {
-        if (w->classification == WindowClass::Custom)
+        if (w->classification == WindowClass::custom)
         {
             auto& customInfo = GetInfo(static_cast<CustomWindow*>(w));
             auto customWidgetInfo = customInfo.GetCustomWidgetDesc(w, widgetIndex);
@@ -1334,7 +1334,7 @@ namespace OpenRCT2::Ui::Windows
 
     int32_t GetWidgetSelectedIndex(WindowBase* w, WidgetIndex widgetIndex)
     {
-        if (w->classification == WindowClass::Custom)
+        if (w->classification == WindowClass::custom)
         {
             auto& customInfo = GetInfo(static_cast<CustomWindow*>(w));
             auto customWidgetInfo = customInfo.GetCustomWidgetDesc(w, widgetIndex);
@@ -1350,7 +1350,7 @@ namespace OpenRCT2::Ui::Windows
     {
         for (const auto& w : gWindowList)
         {
-            if (w->classification == WindowClass::Custom)
+            if (w->classification == WindowClass::custom)
             {
                 const auto& customInfo = GetInfo(static_cast<CustomWindow*>(w.get()));
                 if (customInfo.Desc.Classification == classification)
@@ -1364,7 +1364,7 @@ namespace OpenRCT2::Ui::Windows
 
     std::optional<WidgetIndex> FindWidgetIndexByName(WindowBase* w, std::string_view name)
     {
-        if (w->classification == WindowClass::Custom)
+        if (w->classification == WindowClass::custom)
         {
             auto& customInfo = GetInfo(static_cast<CustomWindow*>(w));
             for (size_t i = 0; i < customInfo.Widgets.size(); i++)
@@ -1384,7 +1384,7 @@ namespace OpenRCT2::Ui::Windows
 
     std::string GetWidgetName(WindowBase* w, WidgetIndex widgetIndex)
     {
-        if (w->classification == WindowClass::Custom)
+        if (w->classification == WindowClass::custom)
         {
             const auto& customInfo = GetInfo(static_cast<CustomWindow*>(w));
             auto customWidgetInfo = customInfo.GetCustomWidgetDesc(w, widgetIndex);
@@ -1398,7 +1398,7 @@ namespace OpenRCT2::Ui::Windows
 
     void SetWidgetName(WindowBase* w, WidgetIndex widgetIndex, std::string_view name)
     {
-        if (w->classification == WindowClass::Custom)
+        if (w->classification == WindowClass::custom)
         {
             auto& customInfo = GetInfo(static_cast<CustomWindow*>(w));
             auto customWidgetInfo = customInfo.GetCustomWidgetDesc(w, widgetIndex);
@@ -1411,7 +1411,7 @@ namespace OpenRCT2::Ui::Windows
 
     std::string GetWidgetTooltip(WindowBase* w, WidgetIndex widgetIndex)
     {
-        if (w->classification == WindowClass::Custom)
+        if (w->classification == WindowClass::custom)
         {
             const auto& customInfo = GetInfo(static_cast<CustomWindow*>(w));
             auto customWidgetInfo = customInfo.GetCustomWidgetDesc(w, widgetIndex);
@@ -1425,7 +1425,7 @@ namespace OpenRCT2::Ui::Windows
 
     void SetWidgetTooltip(WindowBase* w, WidgetIndex widgetIndex, std::string_view tooltip)
     {
-        if (w->classification == WindowClass::Custom)
+        if (w->classification == WindowClass::custom)
         {
             auto& customInfo = GetInfo(static_cast<CustomWindow*>(w));
             auto customWidgetInfo = customInfo.GetCustomWidgetDesc(w, widgetIndex);
@@ -1438,7 +1438,7 @@ namespace OpenRCT2::Ui::Windows
 
     CustomListView* GetCustomListView(WindowBase* w, WidgetIndex widgetIndex)
     {
-        if (w->classification == WindowClass::Custom)
+        if (w->classification == WindowClass::custom)
         {
             auto& info = GetInfo(static_cast<CustomWindow*>(w));
             auto scrollIndex = WindowGetScrollDataIndex(*w, widgetIndex);
@@ -1452,7 +1452,7 @@ namespace OpenRCT2::Ui::Windows
 
     int32_t GetWidgetMaxLength(WindowBase* w, WidgetIndex widgetIndex)
     {
-        if (w->classification == WindowClass::Custom)
+        if (w->classification == WindowClass::custom)
         {
             auto& customInfo = GetInfo(static_cast<CustomWindow*>(w));
             auto customWidgetInfo = customInfo.GetCustomWidgetDesc(w, widgetIndex);
@@ -1466,7 +1466,7 @@ namespace OpenRCT2::Ui::Windows
 
     void SetWidgetMaxLength(WindowBase* w, WidgetIndex widgetIndex, int32_t value)
     {
-        if (w->classification == WindowClass::Custom)
+        if (w->classification == WindowClass::custom)
         {
             auto& customInfo = GetInfo(static_cast<CustomWindow*>(w));
             auto customWidgetInfo = customInfo.GetCustomWidgetDesc(w, widgetIndex);
@@ -1483,7 +1483,7 @@ namespace OpenRCT2::Ui::Windows
         std::vector<WindowBase*> customWindows;
         for (const auto& window : gWindowList)
         {
-            if (window->classification == WindowClass::Custom)
+            if (window->classification == WindowClass::custom)
             {
                 auto customWindow = reinterpret_cast<CustomWindow*>(window.get());
                 auto& customInfo = GetInfo(customWindow);

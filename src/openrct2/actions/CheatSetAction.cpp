@@ -110,13 +110,13 @@ namespace OpenRCT2::GameActions
         {
             case CheatType::SandboxMode:
                 gameState.cheats.sandboxMode = _param1 != 0;
-                windowMgr->InvalidateByClass(WindowClass::Map);
-                windowMgr->InvalidateByClass(WindowClass::Footpath);
+                windowMgr->InvalidateByClass(WindowClass::map);
+                windowMgr->InvalidateByClass(WindowClass::footpath);
                 break;
             case CheatType::DisableClearanceChecks:
                 gameState.cheats.disableClearanceChecks = _param1 != 0;
                 // Required to update the clearance checks overlay on the Cheats button.
-                windowMgr->InvalidateByClass(WindowClass::TopToolbar);
+                windowMgr->InvalidateByClass(WindowClass::topToolbar);
                 break;
             case CheatType::DisableSupportLimits:
                 gameState.cheats.disableSupportLimits = _param1 != 0;
@@ -204,7 +204,7 @@ namespace OpenRCT2::GameActions
                 break;
             case CheatType::MakeDestructible:
                 gameState.cheats.makeAllDestructible = _param1 != 0;
-                windowMgr->InvalidateByClass(WindowClass::Ride);
+                windowMgr->InvalidateByClass(WindowClass::ride);
                 break;
             case CheatType::FixRides:
                 FixBrokenRides(gameState);
@@ -239,7 +239,7 @@ namespace OpenRCT2::GameActions
                 break;
             case CheatType::AllowArbitraryRideTypeChanges:
                 gameState.cheats.allowArbitraryRideTypeChanges = _param1 != 0;
-                windowMgr->InvalidateByClass(WindowClass::Ride);
+                windowMgr->InvalidateByClass(WindowClass::ride);
                 break;
             case CheatType::OwnAllLand:
                 OwnAllLand();
@@ -283,7 +283,7 @@ namespace OpenRCT2::GameActions
             Config::Save();
         }
 
-        windowMgr->InvalidateByClass(WindowClass::Cheats);
+        windowMgr->InvalidateByClass(WindowClass::cheats);
         return Result();
     }
 
@@ -554,7 +554,7 @@ namespace OpenRCT2::GameActions
             ride.renew();
         }
         auto* windowMgr = Ui::GetWindowManager();
-        windowMgr->InvalidateByClass(WindowClass::Ride);
+        windowMgr->InvalidateByClass(WindowClass::ride);
     }
 
     void CheatSetAction::ResetRideCrashStatus(GameState_t& gameState) const
@@ -566,7 +566,7 @@ namespace OpenRCT2::GameActions
             ride.lastCrashType = RIDE_CRASH_TYPE_NONE;
         }
         auto* windowMgr = Ui::GetWindowManager();
-        windowMgr->InvalidateByClass(WindowClass::Ride);
+        windowMgr->InvalidateByClass(WindowClass::ride);
     }
 
     void CheatSetAction::Set10MinuteInspection(GameState_t& gameState) const
@@ -577,7 +577,7 @@ namespace OpenRCT2::GameActions
             ride.inspectionInterval = RIDE_INSPECTION_EVERY_10_MINUTES;
         }
         auto* windowMgr = Ui::GetWindowManager();
-        windowMgr->InvalidateByClass(WindowClass::Ride);
+        windowMgr->InvalidateByClass(WindowClass::ride);
     }
 
     void CheatSetAction::SetScenarioNoMoney(GameState_t& gameState, bool enabled) const
@@ -594,13 +594,13 @@ namespace OpenRCT2::GameActions
 
         // Invalidate all windows that have anything to do with finance
         auto* windowMgr = Ui::GetWindowManager();
-        windowMgr->InvalidateByClass(WindowClass::Ride);
-        windowMgr->InvalidateByClass(WindowClass::Peep);
-        windowMgr->InvalidateByClass(WindowClass::ParkInformation);
-        windowMgr->InvalidateByClass(WindowClass::Finances);
-        windowMgr->InvalidateByClass(WindowClass::BottomToolbar);
-        windowMgr->InvalidateByClass(WindowClass::TopToolbar);
-        windowMgr->InvalidateByClass(WindowClass::Cheats);
+        windowMgr->InvalidateByClass(WindowClass::ride);
+        windowMgr->InvalidateByClass(WindowClass::peep);
+        windowMgr->InvalidateByClass(WindowClass::parkInformation);
+        windowMgr->InvalidateByClass(WindowClass::finances);
+        windowMgr->InvalidateByClass(WindowClass::bottomToolbar);
+        windowMgr->InvalidateByClass(WindowClass::topToolbar);
+        windowMgr->InvalidateByClass(WindowClass::cheats);
     }
 
     void CheatSetAction::SetMoney(money64 amount) const
@@ -608,8 +608,8 @@ namespace OpenRCT2::GameActions
         getGameState().park.cash = amount;
 
         auto* windowMgr = Ui::GetWindowManager();
-        windowMgr->InvalidateByClass(WindowClass::Finances);
-        windowMgr->InvalidateByClass(WindowClass::BottomToolbar);
+        windowMgr->InvalidateByClass(WindowClass::finances);
+        windowMgr->InvalidateByClass(WindowClass::bottomToolbar);
     }
 
     void CheatSetAction::AddMoney(money64 amount) const
@@ -618,8 +618,8 @@ namespace OpenRCT2::GameActions
         park.cash = AddClamp<money64>(park.cash, amount);
 
         auto* windowMgr = Ui::GetWindowManager();
-        windowMgr->InvalidateByClass(WindowClass::Finances);
-        windowMgr->InvalidateByClass(WindowClass::BottomToolbar);
+        windowMgr->InvalidateByClass(WindowClass::finances);
+        windowMgr->InvalidateByClass(WindowClass::bottomToolbar);
     }
 
     void CheatSetAction::ClearLoan(GameState_t& gameState) const
@@ -640,7 +640,7 @@ namespace OpenRCT2::GameActions
         }
 
         auto* windowMgr = Ui::GetWindowManager();
-        windowMgr->InvalidateByClass(WindowClass::BottomToolbar);
+        windowMgr->InvalidateByClass(WindowClass::bottomToolbar);
     }
 
     void CheatSetAction::SetGuestParameter(int32_t parameter, int32_t value) const
@@ -713,7 +713,7 @@ namespace OpenRCT2::GameActions
         }
 
         auto* windowMgr = Ui::GetWindowManager();
-        windowMgr->InvalidateByClass(WindowClass::Peep);
+        windowMgr->InvalidateByClass(WindowClass::peep);
     }
 
     void CheatSetAction::RemoveAllGuests(GameState_t& gameState) const
@@ -772,7 +772,7 @@ namespace OpenRCT2::GameActions
         }
 
         auto* windowMgr = Ui::GetWindowManager();
-        windowMgr->InvalidateByClass(WindowClass::Ride);
+        windowMgr->InvalidateByClass(WindowClass::ride);
         GfxInvalidateScreen();
     }
 

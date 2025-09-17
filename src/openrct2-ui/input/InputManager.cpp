@@ -243,7 +243,7 @@ void InputManager::HandleViewScrolling()
         {
             // Only unfollow sprites for the main window or viewport windows
             // Don't unfollow for ride windows that might be following vehicles
-            if (targetWindow == mainWindow || targetWindow->classification == WindowClass::Viewport)
+            if (targetWindow == mainWindow || targetWindow->classification == WindowClass::viewport)
             {
                 WindowUnfollowSprite(*targetWindow);
             }
@@ -349,7 +349,7 @@ void InputManager::Process(const InputEvent& e)
             auto* windowMgr = GetWindowManager();
 
             // TODO: replace with event
-            auto w = windowMgr->FindByClass(WindowClass::Textinput);
+            auto w = windowMgr->FindByClass(WindowClass::textinput);
             if (w != nullptr)
             {
                 if (e.State == InputEventState::Release)
@@ -360,7 +360,7 @@ void InputManager::Process(const InputEvent& e)
             }
 
             // TODO: replace with event
-            w = windowMgr->FindByClass(WindowClass::LoadsaveOverwritePrompt);
+            w = windowMgr->FindByClass(WindowClass::loadsaveOverwritePrompt);
             if (w != nullptr)
             {
                 if (e.State == InputEventState::Release)
@@ -371,7 +371,7 @@ void InputManager::Process(const InputEvent& e)
             }
 
             // TODO: replace with event
-            w = windowMgr->FindByClass(WindowClass::Loadsave);
+            w = windowMgr->FindByClass(WindowClass::loadsave);
             if (w != nullptr)
             {
                 if (e.State == InputEventState::Release)
@@ -576,7 +576,7 @@ bool InputManager::HasTextInputFocus() const
         return true;
 
     auto* windowMgr = GetWindowManager();
-    auto w = windowMgr->FindByClass(WindowClass::Textinput);
+    auto w = windowMgr->FindByClass(WindowClass::textinput);
     if (w != nullptr)
         return true;
 

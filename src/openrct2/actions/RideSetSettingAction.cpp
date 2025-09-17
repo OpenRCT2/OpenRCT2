@@ -241,7 +241,7 @@ namespace OpenRCT2::GameActions
             res.Position = { location, TileElementHeight(location) };
         }
         auto* windowMgr = Ui::GetWindowManager();
-        windowMgr->InvalidateByNumber(WindowClass::Ride, _rideIndex.ToUnderlying());
+        windowMgr->InvalidateByNumber(WindowClass::ride, _rideIndex.ToUnderlying());
         return res;
     }
 

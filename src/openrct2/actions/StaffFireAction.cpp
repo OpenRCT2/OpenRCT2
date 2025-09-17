@@ -75,7 +75,7 @@ namespace OpenRCT2::GameActions
         }
 
         auto* windowMgr = Ui::GetWindowManager();
-        windowMgr->CloseByClass(WindowClass::FirePrompt);
+        windowMgr->CloseByClass(WindowClass::firePrompt);
 
         PeepEntityRemove(staff);
         // Due to patrol areas best to invalidate the whole screen on removal of staff

@@ -864,14 +864,14 @@ namespace OpenRCT2::Ui
 
     bool widgetIsDisabled(const WindowBase& w, WidgetIndex widgetIndex)
     {
-        if (w.classification == WindowClass::Custom)
+        if (w.classification == WindowClass::custom)
             return w.widgets[widgetIndex].flags.has(WidgetFlag::isDisabled);
         return (w.disabledWidgets & (1LL << widgetIndex)) != 0;
     }
 
     bool widgetIsHoldable(const WindowBase& w, WidgetIndex widgetIndex)
     {
-        if (w.classification == WindowClass::Custom)
+        if (w.classification == WindowClass::custom)
             return w.widgets[widgetIndex].flags.has(WidgetFlag::isHoldable);
         return (w.holdDownWidgets & (1LL << widgetIndex)) != 0;
     }
@@ -883,7 +883,7 @@ namespace OpenRCT2::Ui
 
     bool widgetIsPressed(const WindowBase& w, WidgetIndex widgetIndex)
     {
-        if (w.classification == WindowClass::Custom)
+        if (w.classification == WindowClass::custom)
         {
             if (w.widgets[widgetIndex].flags.has(WidgetFlag::isPressed))
             {

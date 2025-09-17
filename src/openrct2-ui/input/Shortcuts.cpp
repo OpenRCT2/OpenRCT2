@@ -90,7 +90,7 @@ static void ShortcutRotateConstructionObject()
     auto* windowMgr = GetWindowManager();
 
     // Rotate scenery
-    WindowBase* w = windowMgr->FindByClass(WindowClass::Scenery);
+    WindowBase* w = windowMgr->FindByClass(WindowClass::scenery);
     if (w != nullptr && !widgetIsDisabled(*w, WC_SCENERY__WIDX_SCENERY_ROTATE_OBJECTS_BUTTON)
         && w->widgets[WC_SCENERY__WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].type != WidgetType::empty)
     {
@@ -99,7 +99,7 @@ static void ShortcutRotateConstructionObject()
     }
 
     // Rotate construction track piece
-    w = windowMgr->FindByClass(WindowClass::RideConstruction);
+    w = windowMgr->FindByClass(WindowClass::rideConstruction);
     if (w != nullptr && !widgetIsDisabled(*w, WC_RIDE_CONSTRUCTION__WIDX_ROTATE)
         && w->widgets[WC_RIDE_CONSTRUCTION__WIDX_ROTATE].type != WidgetType::empty)
     {
@@ -112,7 +112,7 @@ static void ShortcutRotateConstructionObject()
     }
 
     // Rotate track design preview
-    w = windowMgr->FindByClass(WindowClass::TrackDesignList);
+    w = windowMgr->FindByClass(WindowClass::trackDesignList);
     if (w != nullptr && !widgetIsDisabled(*w, WC_TRACK_DESIGN_LIST__WIDX_ROTATE)
         && w->widgets[WC_TRACK_DESIGN_LIST__WIDX_ROTATE].type != WidgetType::empty)
     {
@@ -121,7 +121,7 @@ static void ShortcutRotateConstructionObject()
     }
 
     // Rotate track design placement
-    w = windowMgr->FindByClass(WindowClass::TrackDesignPlace);
+    w = windowMgr->FindByClass(WindowClass::trackDesignPlace);
     if (w != nullptr && !widgetIsDisabled(*w, WC_TRACK_DESIGN_PLACE__WIDX_ROTATE)
         && w->widgets[WC_TRACK_DESIGN_PLACE__WIDX_ROTATE].type != WidgetType::empty)
     {
@@ -130,7 +130,7 @@ static void ShortcutRotateConstructionObject()
     }
 
     // Rotate park entrance
-    w = windowMgr->FindByClass(WindowClass::EditorParkEntrance);
+    w = windowMgr->FindByClass(WindowClass::editorParkEntrance);
     if (w != nullptr && !widgetIsDisabled(*w, WC_EDITOR_PARK_ENTRANCE__WIDX_ROTATE_ENTRANCE_BUTTON)
         && w->widgets[WC_EDITOR_PARK_ENTRANCE__WIDX_ROTATE_ENTRANCE_BUTTON].type != WidgetType::empty)
     {
@@ -139,7 +139,7 @@ static void ShortcutRotateConstructionObject()
     }
 
     // Rotate selected element in tile inspector
-    w = windowMgr->FindByClass(WindowClass::TileInspector);
+    w = windowMgr->FindByClass(WindowClass::tileInspector);
     if (w != nullptr && !widgetIsDisabled(*w, WC_TILE_INSPECTOR__WIDX_BUTTON_ROTATE)
         && w->widgets[WC_TILE_INSPECTOR__WIDX_BUTTON_ROTATE].type != WidgetType::empty)
     {
@@ -154,13 +154,13 @@ static void ShortcutRemoveTopBottomToolbarToggle()
 
     if (gLegacyScene == LegacyScene::titleSequence)
     {
-        if (windowMgr->FindByClass(WindowClass::TitleLogo) != nullptr)
+        if (windowMgr->FindByClass(WindowClass::titleLogo) != nullptr)
         {
-            windowMgr->CloseByClass(WindowClass::TitleLogo);
-            windowMgr->CloseByClass(WindowClass::TitleOptions);
-            windowMgr->CloseByClass(WindowClass::TitleMenu);
-            windowMgr->CloseByClass(WindowClass::TitleExit);
-            windowMgr->CloseByClass(WindowClass::TitleVersion);
+            windowMgr->CloseByClass(WindowClass::titleLogo);
+            windowMgr->CloseByClass(WindowClass::titleOptions);
+            windowMgr->CloseByClass(WindowClass::titleMenu);
+            windowMgr->CloseByClass(WindowClass::titleExit);
+            windowMgr->CloseByClass(WindowClass::titleVersion);
         }
         else
         {
@@ -169,22 +169,22 @@ static void ShortcutRemoveTopBottomToolbarToggle()
     }
     else
     {
-        if (windowMgr->FindByClass(WindowClass::TopToolbar) != nullptr)
+        if (windowMgr->FindByClass(WindowClass::topToolbar) != nullptr)
         {
-            windowMgr->CloseByClass(WindowClass::Dropdown);
-            windowMgr->CloseByClass(WindowClass::TopToolbar);
-            windowMgr->CloseByClass(WindowClass::BottomToolbar);
+            windowMgr->CloseByClass(WindowClass::dropdown);
+            windowMgr->CloseByClass(WindowClass::topToolbar);
+            windowMgr->CloseByClass(WindowClass::bottomToolbar);
         }
         else
         {
             if (gLegacyScene == LegacyScene::playing)
             {
-                ContextOpenWindow(WindowClass::TopToolbar);
-                ContextOpenWindow(WindowClass::BottomToolbar);
+                ContextOpenWindow(WindowClass::topToolbar);
+                ContextOpenWindow(WindowClass::bottomToolbar);
             }
             else
             {
-                ContextOpenWindow(WindowClass::TopToolbar);
+                ContextOpenWindow(WindowClass::topToolbar);
                 ContextOpenWindowView(WV_EDITOR_BOTTOM_TOOLBAR);
             }
         }
@@ -257,7 +257,7 @@ static void ShortcutBuildNewRide()
     {
         if (!(isInTrackDesignerOrManager()))
         {
-            ContextOpenWindow(WindowClass::ConstructRide);
+            ContextOpenWindow(WindowClass::constructRide);
         }
     }
 }
@@ -269,7 +269,7 @@ static void ShortcutShowFinancialInformation()
 
     if (!(isInTrackDesignerOrManager()))
         if (!(getGameState().park.flags & PARK_FLAGS_NO_MONEY))
-            ContextOpenWindow(WindowClass::Finances);
+            ContextOpenWindow(WindowClass::finances);
 }
 
 static void ShortcutShowResearchInformation()
@@ -290,7 +290,7 @@ static void ShortcutShowRidesList()
 
     if (!isInEditorMode())
     {
-        ContextOpenWindow(WindowClass::RideList);
+        ContextOpenWindow(WindowClass::rideList);
     }
 }
 
@@ -301,7 +301,7 @@ static void ShortcutShowParkInformation()
 
     if (!isInEditorMode())
     {
-        ContextOpenWindow(WindowClass::ParkInformation);
+        ContextOpenWindow(WindowClass::parkInformation);
     }
 }
 
@@ -312,7 +312,7 @@ static void ShortcutShowGuestList()
 
     if (!isInEditorMode())
     {
-        ContextOpenWindow(WindowClass::GuestList);
+        ContextOpenWindow(WindowClass::guestList);
     }
 }
 
@@ -323,7 +323,7 @@ static void ShortcutShowStaffList()
 
     if (!isInEditorMode())
     {
-        ContextOpenWindow(WindowClass::StaffList);
+        ContextOpenWindow(WindowClass::staffList);
     }
 }
 
@@ -333,7 +333,7 @@ static void ShortcutShowRecentMessages()
         return;
 
     if (!isInEditorMode())
-        ContextOpenWindow(WindowClass::RecentNews);
+        ContextOpenWindow(WindowClass::recentNews);
 }
 
 static void ShortcutShowMap()
@@ -343,7 +343,7 @@ static void ShortcutShowMap()
 
     if (gLegacyScene != LegacyScene::scenarioEditor || getGameState().editorStep == EditorStep::LandscapeEditor)
         if (!(isInTrackDesignerOrManager()))
-            ContextOpenWindow(WindowClass::Map);
+            ContextOpenWindow(WindowClass::map);
 }
 
 static void ShortcutReduceGameSpeed()
@@ -371,13 +371,13 @@ static void ShortcutOpenCheatWindow()
 
     // Check if window is already open
     auto* windowMgr = GetWindowManager();
-    WindowBase* window = windowMgr->FindByClass(WindowClass::Cheats);
+    WindowBase* window = windowMgr->FindByClass(WindowClass::cheats);
     if (window != nullptr)
     {
         windowMgr->Close(*window);
         return;
     }
-    ContextOpenWindow(WindowClass::Cheats);
+    ContextOpenWindow(WindowClass::cheats);
 }
 
 static void ShortcutOpenKeyboardShortcutsWindow()
@@ -390,7 +390,7 @@ static void ShortcutOpenTransparencyWindow()
     if (gLegacyScene != LegacyScene::playing)
         return;
 
-    ContextOpenWindow(WindowClass::Transparency);
+    ContextOpenWindow(WindowClass::transparency);
 }
 
 static void ShortcutClearScenery()
@@ -417,7 +417,7 @@ static void ShortcutQuickSaveGame()
     }
     else if (gLegacyScene == LegacyScene::scenarioEditor)
     {
-        auto intent = Intent(WindowClass::Loadsave);
+        auto intent = Intent(WindowClass::loadsave);
         intent.PutEnumExtra<LoadSaveAction>(INTENT_EXTRA_LOADSAVE_ACTION, LoadSaveAction::save);
         intent.PutEnumExtra<LoadSaveType>(INTENT_EXTRA_LOADSAVE_TYPE, LoadSaveType::landscape);
         intent.PutExtra(INTENT_EXTRA_PATH, getGameState().scenarioOptions.name);
@@ -442,11 +442,11 @@ static void ShortcutOpenSceneryPicker()
         return;
 
     auto* windowMgr = GetWindowManager();
-    WindowBase* sceneryWindow = windowMgr->FindByClass(WindowClass::Scenery);
+    WindowBase* sceneryWindow = windowMgr->FindByClass(WindowClass::scenery);
     if (sceneryWindow == nullptr)
         ToggleSceneryWindow();
 
-    sceneryWindow = windowMgr->FindByClass(WindowClass::Scenery);
+    sceneryWindow = windowMgr->FindByClass(WindowClass::scenery);
     if (sceneryWindow != nullptr && !widgetIsDisabled(*sceneryWindow, WC_SCENERY__WIDX_SCENERY_EYEDROPPER_BUTTON)
         && !gWindowSceneryEyedropperEnabled)
     {
@@ -478,7 +478,7 @@ static void ShortcutScaleDown()
 static void TileInspectorMouseUp(WidgetIndex widgetIndex)
 {
     auto* windowMgr = GetWindowManager();
-    auto w = windowMgr->FindByClass(WindowClass::TileInspector);
+    auto w = windowMgr->FindByClass(WindowClass::tileInspector);
     if (w != nullptr && !widgetIsDisabled(*w, widgetIndex) && w->widgets[widgetIndex].type != WidgetType::empty)
     {
         w->onMouseUp(widgetIndex);
@@ -488,7 +488,7 @@ static void TileInspectorMouseUp(WidgetIndex widgetIndex)
 static void TileInspectorMouseDown(WidgetIndex widgetIndex)
 {
     auto* windowMgr = GetWindowManager();
-    auto w = windowMgr->FindByClass(WindowClass::TileInspector);
+    auto w = windowMgr->FindByClass(WindowClass::tileInspector);
     if (w != nullptr && !widgetIsDisabled(*w, widgetIndex) && w->widgets[widgetIndex].type != WidgetType::empty)
     {
         w->onMouseDown(widgetIndex);
@@ -498,7 +498,7 @@ static void TileInspectorMouseDown(WidgetIndex widgetIndex)
 static void ShortcutToggleWallSlope()
 {
     auto* windowMgr = GetWindowManager();
-    WindowBase* window = windowMgr->FindByClass(WindowClass::TileInspector);
+    WindowBase* window = windowMgr->FindByClass(WindowClass::tileInspector);
     if (window == nullptr)
     {
         return;
@@ -531,7 +531,7 @@ static void ShortcutToggleWallSlope()
 static void ShortcutIncreaseElementHeight()
 {
     auto* windowMgr = GetWindowManager();
-    WindowBase* w = windowMgr->FindByClass(WindowClass::TileInspector);
+    WindowBase* w = windowMgr->FindByClass(WindowClass::tileInspector);
     if (w != nullptr)
     {
         int action = -1;
@@ -571,7 +571,7 @@ static void ShortcutIncreaseElementHeight()
 static void ShortcutDecreaseElementHeight()
 {
     auto* windowMgr = GetWindowManager();
-    WindowBase* w = windowMgr->FindByClass(WindowClass::TileInspector);
+    WindowBase* w = windowMgr->FindByClass(WindowClass::tileInspector);
     if (w != nullptr)
     {
         int action = -1;
@@ -636,7 +636,7 @@ static void ShortcutConstructionTurnLeft()
         return;
 
     auto* windowMgr = GetWindowManager();
-    WindowBase* window = windowMgr->FindByClass(WindowClass::Footpath);
+    WindowBase* window = windowMgr->FindByClass(WindowClass::footpath);
     if (window != nullptr)
     {
         WindowFootpathKeyboardShortcutTurnLeft();
@@ -653,7 +653,7 @@ static void ShortcutConstructionTurnRight()
         return;
 
     auto* windowMgr = GetWindowManager();
-    WindowBase* window = windowMgr->FindByClass(WindowClass::Footpath);
+    WindowBase* window = windowMgr->FindByClass(WindowClass::footpath);
     if (window != nullptr)
     {
         WindowFootpathKeyboardShortcutTurnRight();
@@ -670,7 +670,7 @@ static void ShortcutConstructionSlopeUp()
         return;
 
     auto* windowMgr = GetWindowManager();
-    WindowBase* window = windowMgr->FindByClass(WindowClass::Footpath);
+    WindowBase* window = windowMgr->FindByClass(WindowClass::footpath);
     if (window != nullptr)
     {
         WindowFootpathKeyboardShortcutSlopeUp();
@@ -687,7 +687,7 @@ static void ShortcutConstructionBuildCurrent()
         return;
 
     auto* windowMgr = GetWindowManager();
-    WindowBase* window = windowMgr->FindByClass(WindowClass::Footpath);
+    WindowBase* window = windowMgr->FindByClass(WindowClass::footpath);
     if (window != nullptr)
     {
         WindowFootpathKeyboardShortcutBuildCurrent();
@@ -704,7 +704,7 @@ static void ShortcutConstructionSlopeDown()
         return;
 
     auto* windowMgr = GetWindowManager();
-    WindowBase* window = windowMgr->FindByClass(WindowClass::Footpath);
+    WindowBase* window = windowMgr->FindByClass(WindowClass::footpath);
     if (window != nullptr)
     {
         WindowFootpathKeyboardShortcutSlopeDown();
@@ -721,7 +721,7 @@ static void ShortcutConstructionDemolishCurrent()
         return;
 
     auto* windowMgr = GetWindowManager();
-    WindowBase* window = windowMgr->FindByClass(WindowClass::Footpath);
+    WindowBase* window = windowMgr->FindByClass(WindowClass::footpath);
     if (window != nullptr)
     {
         WindowFootpathKeyboardShortcutDemolishCurrent();
@@ -770,7 +770,7 @@ void ShortcutManager::RegisterDefaultShortcuts()
         if (gLegacyScene != LegacyScene::titleSequence)
         {
             auto* windowMgr = GetWindowManager();
-            auto window = windowMgr->FindByClass(WindowClass::Error);
+            auto window = windowMgr->FindByClass(WindowClass::error);
             if (window != nullptr)
             {
                 windowMgr->Close(*window);
@@ -822,20 +822,20 @@ void ShortcutManager::RegisterDefaultShortcuts()
     RegisterShortcut(ShortcutId::kInterfaceOpenStaff, STR_SHORTCUT_SHOW_STAFF_LIST, "S", ShortcutShowStaffList);
     RegisterShortcut(ShortcutId::kInterfaceOpenMessages, STR_SHORTCUT_SHOW_RECENT_MESSAGES, "M", ShortcutShowRecentMessages);
     RegisterShortcut(ShortcutId::kInterfaceOpenMap, STR_SHORTCUT_SHOW_MAP, "TAB", ShortcutShowMap);
-    RegisterShortcut(ShortcutId::kInterfaceShowOptions, STR_SHORTCUT_SHOW_OPTIONS, std::bind(ContextOpenWindow, WindowClass::Options));
+    RegisterShortcut(ShortcutId::kInterfaceShowOptions, STR_SHORTCUT_SHOW_OPTIONS, std::bind(ContextOpenWindow, WindowClass::options));
     RegisterShortcut(ShortcutId::kInterfaceOpenKeyboardShortcuts, STR_SHORTCUT_OPEN_KEYBOARD_SHORTCUTS_WINDOW, "SHIFT+/", ShortcutOpenKeyboardShortcutsWindow);
     RegisterShortcut(ShortcutId::kInterfaceOpenTransparencyOptions, STR_SHORTCUT_OPEN_TRANSPARENCY_OPTIONS, "CTRL+T", ShortcutOpenTransparencyWindow);
     RegisterShortcut(ShortcutId::kInterfaceOpenCheats, STR_SHORTCUT_OPEN_CHEATS_WINDOW, "CTRL+ALT+C", ShortcutOpenCheatWindow);
     RegisterShortcut(ShortcutId::kInterfaceOpenTileInspector, STR_SHORTCUT_OPEN_TILE_INSPECTOR, []() {
         if (Config::Get().interface.ToolbarShowCheats)
         {
-            OpenWindow(WindowClass::TileInspector);
+            OpenWindow(WindowClass::tileInspector);
         }
     });
     RegisterShortcut(ShortcutId::kInterfaceMultiplayerShow, STR_SHORTCUT_SHOW_MULTIPLAYER, []() {
         if (Network::GetMode() != Network::Mode::none)
         {
-            OpenWindow(WindowClass::Multiplayer);
+            OpenWindow(WindowClass::multiplayer);
         }
     });
 
@@ -864,7 +864,7 @@ void ShortcutManager::RegisterDefaultShortcuts()
     RegisterShortcut(ShortcutId::kViewToggleTrackHeightMarkers, STR_SHORTCUT_HEIGHT_MARKS_ON_RIDE_TRACKS_TOGGLE, "9", std::bind(ToggleViewFlag, VIEWPORT_FLAG_TRACK_HEIGHTS));
     RegisterShortcut(ShortcutId::kViewToggleFootpathHeightMarkers, STR_SHORTCUT_HEIGHT_MARKS_ON_PATHS_TOGGLE, "0", std::bind(ToggleViewFlag, VIEWPORT_FLAG_PATH_HEIGHTS));
     RegisterShortcut(ShortcutId::kViewToggleGridlines, STR_SHORTCUT_GRIDLINES_DISPLAY_TOGGLE, "7", std::bind(ToggleViewFlag, VIEWPORT_FLAG_GRIDLINES));
-    RegisterShortcut(ShortcutId::kViewToggleCutAway, STR_SHORTCUT_VIEW_CLIPPING, std::bind(OpenWindow, WindowClass::ViewClipping));
+    RegisterShortcut(ShortcutId::kViewToggleCutAway, STR_SHORTCUT_VIEW_CLIPPING, std::bind(OpenWindow, WindowClass::viewClipping));
     RegisterShortcut(ShortcutId::kViewToggleFootpathIssues, STR_SHORTCUT_HIGHLIGHT_PATH_ISSUES_TOGGLE, "I", std::bind(ToggleViewFlag, VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES));
 
     // Window
@@ -907,14 +907,14 @@ void ShortcutManager::RegisterDefaultShortcuts()
         if (gLegacyScene != LegacyScene::titleSequence)
         {
             auto* windowMgr = GetWindowManager();
-            auto window = windowMgr->FindByClass(WindowClass::DebugPaint);
+            auto window = windowMgr->FindByClass(WindowClass::debugPaint);
             if (window != nullptr)
             {
                 windowMgr->Close(*window);
             }
             else
             {
-                ContextOpenWindow(WindowClass::DebugPaint);
+                ContextOpenWindow(WindowClass::debugPaint);
             }
         }
     });

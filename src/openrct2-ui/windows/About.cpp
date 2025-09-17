@@ -133,7 +133,7 @@ namespace OpenRCT2::Ui::Windows
                     OpenRCT2::GetContext()->GetUiContext().OpenURL("https://discord.gg/ZXZd8D8");
                     break;
                 case WIDX_CHANGELOG:
-                    ContextOpenWindow(WindowClass::Changelog);
+                    ContextOpenWindow(WindowClass::changelog);
                     break;
                 case WIDX_NEW_VERSION:
                     ContextOpenWindowView(WV_NEW_VERSION_INFO);
@@ -288,6 +288,6 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* AboutOpen()
     {
         auto* windowMgr = GetWindowManager();
-        return windowMgr->FocusOrCreate<AboutWindow>(WindowClass::About, kWindowSize, WF_CENTRE_SCREEN);
+        return windowMgr->FocusOrCreate<AboutWindow>(WindowClass::about, kWindowSize, WF_CENTRE_SCREEN);
     }
 } // namespace OpenRCT2::Ui::Windows

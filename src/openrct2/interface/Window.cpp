@@ -41,7 +41,7 @@ namespace OpenRCT2
     std::vector<std::unique_ptr<WindowBase>> gWindowList;
     WindowBase* gWindowAudioExclusive;
 
-    WindowCloseModifier gLastCloseModifier = { { WindowClass::Null, 0 }, CloseWindowModifier::none };
+    WindowCloseModifier gLastCloseModifier = { { WindowClass::null, 0 }, CloseWindowModifier::none };
 
     uint32_t gWindowUpdateTicks;
     colour_t gCurrentWindowColours[3];
@@ -135,7 +135,7 @@ static constexpr float kWindowScrollLocations[][2] = {
                 window.isVisible = true;
                 continue;
             }
-            if (window.classification == WindowClass::MainWindow)
+            if (window.classification == WindowClass::mainWindow)
             {
                 window.isVisible = true;
                 window.viewport->isVisible = true;
@@ -217,7 +217,7 @@ static constexpr float kWindowScrollLocations[][2] = {
         if (val < prev)
         {
             auto* windowMgr = Ui::GetWindowManager();
-            windowMgr->CloseSurplus(val, WindowClass::Options);
+            windowMgr->CloseSurplus(val, WindowClass::options);
         }
     }
 
@@ -314,7 +314,7 @@ static constexpr float kWindowScrollLocations[][2] = {
         {
             if (w->flags & WF_DEAD)
                 continue;
-            if (w->classification == WindowClass::MainWindow)
+            if (w->classification == WindowClass::mainWindow)
             {
                 return w.get();
             }
@@ -727,32 +727,32 @@ static constexpr float kWindowScrollLocations[][2] = {
             return;
 
         auto* windowMgr = Ui::GetWindowManager();
-        WindowBase* titleWind = windowMgr->FindByClass(WindowClass::TitleMenu);
+        WindowBase* titleWind = windowMgr->FindByClass(WindowClass::titleMenu);
         if (titleWind != nullptr)
         {
             titleWind->windowPos.x = (width - titleWind->width) / 2;
             titleWind->windowPos.y = height - 182;
         }
 
-        WindowBase* versionWind = windowMgr->FindByClass(WindowClass::TitleVersion);
+        WindowBase* versionWind = windowMgr->FindByClass(WindowClass::titleVersion);
         if (versionWind != nullptr)
             versionWind->windowPos.y = height - 30;
 
-        WindowBase* exitWind = windowMgr->FindByClass(WindowClass::TitleExit);
+        WindowBase* exitWind = windowMgr->FindByClass(WindowClass::titleExit);
         if (exitWind != nullptr)
         {
             exitWind->windowPos.x = width - 40;
             exitWind->windowPos.y = height - 64;
         }
 
-        WindowBase* optionsWind = windowMgr->FindByClass(WindowClass::TitleOptions);
+        WindowBase* optionsWind = windowMgr->FindByClass(WindowClass::titleOptions);
         if (optionsWind != nullptr)
         {
             optionsWind->windowPos.x = width - 80;
         }
 
         // Keep options window centred after a resize
-        WindowBase* optionsWindow = windowMgr->FindByClass(WindowClass::Options);
+        WindowBase* optionsWindow = windowMgr->FindByClass(WindowClass::options);
         if (optionsWindow != nullptr)
         {
             optionsWindow->windowPos.x = (ContextGetWidth() - optionsWindow->width) / 2;
@@ -760,7 +760,7 @@ static constexpr float kWindowScrollLocations[][2] = {
         }
 
         // Keep progress bar window centred after a resize
-        WindowBase* ProgressWindow = windowMgr->FindByClass(WindowClass::ProgressWindow);
+        WindowBase* ProgressWindow = windowMgr->FindByClass(WindowClass::progressWindow);
         if (ProgressWindow != nullptr)
         {
             ProgressWindow->windowPos.x = (ContextGetWidth() - ProgressWindow->width) / 2;
@@ -792,13 +792,13 @@ static constexpr float kWindowScrollLocations[][2] = {
 
         auto* windowMgr = Ui::GetWindowManager();
 
-        WindowBase* topWind = windowMgr->FindByClass(WindowClass::TopToolbar);
+        WindowBase* topWind = windowMgr->FindByClass(WindowClass::topToolbar);
         if (topWind != nullptr)
         {
             topWind->width = std::max(640, width);
         }
 
-        WindowBase* bottomWind = windowMgr->FindByClass(WindowClass::BottomToolbar);
+        WindowBase* bottomWind = windowMgr->FindByClass(WindowClass::bottomToolbar);
         if (bottomWind != nullptr)
         {
             bottomWind->windowPos.y = height - 32;
@@ -842,7 +842,7 @@ static constexpr float kWindowScrollLocations[][2] = {
     void TextinputCancel()
     {
         auto* windowMgr = Ui::GetWindowManager();
-        windowMgr->CloseByClass(WindowClass::Textinput);
+        windowMgr->CloseByClass(WindowClass::textinput);
     }
 
     /**

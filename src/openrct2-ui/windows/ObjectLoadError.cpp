@@ -116,7 +116,7 @@ namespace OpenRCT2::Ui::Windows
 
                 if (_downloadStatusInfo == DownloadStatusInfo())
                 {
-                    ContextForceCloseWindowByClass(WindowClass::NetworkStatus);
+                    ContextForceCloseWindowByClass(WindowClass::networkStatus);
                 }
                 else
                 {
@@ -140,7 +140,7 @@ namespace OpenRCT2::Ui::Windows
                             str_downloading_objects, sizeof(str_downloading_objects), STR_DOWNLOADING_OBJECTS_FROM, ft.Data());
                     }
 
-                    auto intent = Intent(WindowClass::NetworkStatus);
+                    auto intent = Intent(WindowClass::networkStatus);
                     intent.PutExtra(INTENT_EXTRA_MESSAGE, std::string(str_downloading_objects));
                     intent.PutExtra(INTENT_EXTRA_CALLBACK, []() -> void { _downloadingObjects = false; });
                     ContextOpenIntent(&intent);
@@ -574,10 +574,10 @@ namespace OpenRCT2::Ui::Windows
     {
         // Check if window is already open
         auto* windowMgr = Ui::GetWindowManager();
-        auto* window = windowMgr->BringToFrontByClass(WindowClass::ObjectLoadError);
+        auto* window = windowMgr->BringToFrontByClass(WindowClass::objectLoadError);
         if (window == nullptr)
         {
-            window = windowMgr->Create<ObjectLoadErrorWindow>(WindowClass::ObjectLoadError, kWindowSize, 0);
+            window = windowMgr->Create<ObjectLoadErrorWindow>(WindowClass::objectLoadError, kWindowSize, 0);
         }
 
         static_cast<ObjectLoadErrorWindow*>(window)->initialise(path, numMissingObjects, missingObjects);

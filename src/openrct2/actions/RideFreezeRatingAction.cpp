@@ -72,7 +72,7 @@ namespace OpenRCT2::GameActions
         ride->lifecycleFlags |= RIDE_LIFECYCLE_FIXED_RATINGS;
 
         auto* windowMgr = Ui::GetWindowManager();
-        windowMgr->InvalidateByNumber(WindowClass::Ride, _rideIndex.ToUnderlying());
+        windowMgr->InvalidateByNumber(WindowClass::ride, _rideIndex.ToUnderlying());
 
         auto res = Result();
         return res;

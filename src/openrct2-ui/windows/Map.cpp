@@ -282,18 +282,18 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 case WIDX_SET_LAND_RIGHTS:
                 {
-                    if (!windowMgr->FindByClass(WindowClass::LandRights))
-                        ContextOpenWindow(WindowClass::LandRights);
+                    if (!windowMgr->FindByClass(WindowClass::landRights))
+                        ContextOpenWindow(WindowClass::landRights);
                     else
-                        windowMgr->CloseByClass(WindowClass::LandRights);
+                        windowMgr->CloseByClass(WindowClass::landRights);
                     break;
                 }
                 case WIDX_BUILD_PARK_ENTRANCE:
                 {
-                    if (!windowMgr->FindByClass(WindowClass::EditorParkEntrance))
-                        ContextOpenWindow(WindowClass::EditorParkEntrance);
+                    if (!windowMgr->FindByClass(WindowClass::editorParkEntrance))
+                        ContextOpenWindow(WindowClass::editorParkEntrance);
                     else
-                        windowMgr->CloseByClass(WindowClass::EditorParkEntrance);
+                        windowMgr->CloseByClass(WindowClass::editorParkEntrance);
                     break;
                 }
                 case WIDX_PEOPLE_STARTING_POSITION:
@@ -312,7 +312,7 @@ namespace OpenRCT2::Ui::Windows
                     _mapWidthAndHeightLinked = !_mapWidthAndHeightLinked;
                     break;
                 case WIDX_MAP_GENERATOR:
-                    ContextOpenWindow(WindowClass::Mapgen);
+                    ContextOpenWindow(WindowClass::mapgen);
                     break;
                 default:
                     if (widgetIndex >= WIDX_PEOPLE_TAB && widgetIndex <= WIDX_RIDES_TAB)
@@ -364,12 +364,12 @@ namespace OpenRCT2::Ui::Windows
 
             // Handle guest map flashing
             _flashingFlags &= ~MapFlashingFlags::FlashGuests;
-            if (windowMgr->FindByClass(WindowClass::GuestList) != nullptr)
+            if (windowMgr->FindByClass(WindowClass::guestList) != nullptr)
                 _flashingFlags |= MapFlashingFlags::FlashGuests;
 
             // Handle staff map flashing
             _flashingFlags &= ~MapFlashingFlags::FlashStaff;
-            if (windowMgr->FindByClass(WindowClass::StaffList) != nullptr)
+            if (windowMgr->FindByClass(WindowClass::staffList) != nullptr)
                 _flashingFlags |= MapFlashingFlags::FlashStaff;
 
             if (GetCurrentRotation() != _rotation)
@@ -603,13 +603,13 @@ namespace OpenRCT2::Ui::Windows
             setWidgetPressed(WIDX_MAP_SIZE_LINK, _mapWidthAndHeightLinked);
             pressedWidgets |= (1uLL << (WIDX_PEOPLE_TAB + selectedTab));
 
-            if (windowMgr->FindByClass(WindowClass::EditorParkEntrance))
+            if (windowMgr->FindByClass(WindowClass::editorParkEntrance))
                 pressedWidgets |= (1uLL << WIDX_BUILD_PARK_ENTRANCE);
 
-            if (windowMgr->FindByClass(WindowClass::LandRights))
+            if (windowMgr->FindByClass(WindowClass::landRights))
                 pressedWidgets |= (1uLL << WIDX_SET_LAND_RIGHTS);
 
-            if (windowMgr->FindByClass(WindowClass::Mapgen))
+            if (windowMgr->FindByClass(WindowClass::mapgen))
                 pressedWidgets |= (1uLL << WIDX_MAP_GENERATOR);
 
             // Set disabled widgets
@@ -1251,7 +1251,7 @@ namespace OpenRCT2::Ui::Windows
         try
         {
             auto* windowMgr = GetWindowManager();
-            auto* w = windowMgr->FocusOrCreate<MapWindow>(WindowClass::Map, kWindowSize, WF_10);
+            auto* w = windowMgr->FocusOrCreate<MapWindow>(WindowClass::map, kWindowSize, WF_10);
             w->selectedTab = 0;
             w->listInformationType = 0;
             return w;
@@ -1266,7 +1266,7 @@ namespace OpenRCT2::Ui::Windows
     {
         // Check if window is even opened
         auto* windowMgr = GetWindowManager();
-        auto* w = windowMgr->BringToFrontByClass(WindowClass::Map);
+        auto* w = windowMgr->BringToFrontByClass(WindowClass::map);
         if (w == nullptr)
         {
             return;

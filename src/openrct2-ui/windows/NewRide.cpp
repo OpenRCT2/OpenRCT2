@@ -575,7 +575,7 @@ namespace OpenRCT2::Ui::Windows
             auto count = GetNumTrackDesigns(item);
             if (count > 0)
             {
-                auto intent = Intent(WindowClass::TrackDesignList);
+                auto intent = Intent(WindowClass::trackDesignList);
                 intent.PutExtra(INTENT_EXTRA_RIDE_TYPE, item.Type);
                 intent.PutExtra(INTENT_EXTRA_RIDE_ENTRY_INDEX, item.EntryIndex);
                 ContextOpenIntent(&intent);
@@ -1070,16 +1070,16 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* NewRideOpen()
     {
         auto* windowMgr = Ui::GetWindowManager();
-        auto* window = windowMgr->BringToFrontByClass(WindowClass::ConstructRide);
+        auto* window = windowMgr->BringToFrontByClass(WindowClass::constructRide);
         if (window)
         {
             return window;
         }
 
-        windowMgr->CloseByClass(WindowClass::TrackDesignList);
-        windowMgr->CloseByClass(WindowClass::TrackDesignPlace);
+        windowMgr->CloseByClass(WindowClass::trackDesignList);
+        windowMgr->CloseByClass(WindowClass::trackDesignPlace);
 
-        window = windowMgr->Create<NewRideWindow>(WindowClass::ConstructRide, kWindowSize, WF_10 | WF_AUTO_POSITION);
+        window = windowMgr->Create<NewRideWindow>(WindowClass::constructRide, kWindowSize, WF_10 | WF_AUTO_POSITION);
         return window;
     }
 
@@ -1097,7 +1097,7 @@ namespace OpenRCT2::Ui::Windows
     void WindowNewRideFocus(RideSelection rideItem)
     {
         auto* windowMgr = GetWindowManager();
-        auto w = static_cast<NewRideWindow*>(windowMgr->FindByClass(WindowClass::ConstructRide));
+        auto w = static_cast<NewRideWindow*>(windowMgr->FindByClass(WindowClass::constructRide));
         if (!w)
         {
             return;

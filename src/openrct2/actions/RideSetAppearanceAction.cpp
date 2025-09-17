@@ -149,7 +149,7 @@ namespace OpenRCT2::GameActions
         }
 
         auto* windowMgr = Ui::GetWindowManager();
-        windowMgr->InvalidateByNumber(WindowClass::Ride, _rideIndex.ToUnderlying());
+        windowMgr->InvalidateByNumber(WindowClass::ride, _rideIndex.ToUnderlying());
 
         auto res = GameActions::Result();
         if (!ride->overallView.IsNull())

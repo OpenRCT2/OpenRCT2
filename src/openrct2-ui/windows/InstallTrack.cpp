@@ -416,14 +416,14 @@ namespace OpenRCT2::Ui::Windows
         }
 
         auto* windowMgr = Ui::GetWindowManager();
-        windowMgr->ForceClose(WindowClass::EditorObjectSelection);
+        windowMgr->ForceClose(WindowClass::editorObjectSelection);
         windowMgr->CloseConstructionWindows();
 
         gTrackDesignSceneryToggle = false;
         _currentTrackPieceDirection = 2;
 
         auto* window = windowMgr->FocusOrCreate<InstallTrackWindow>(
-            WindowClass::InstallTrack, kWindowSize, WF_AUTO_POSITION | WF_CENTRE_SCREEN);
+            WindowClass::installTrack, kWindowSize, WF_AUTO_POSITION | WF_CENTRE_SCREEN);
         window->setupTrack(path, std::move(trackDesign));
 
         return window;
