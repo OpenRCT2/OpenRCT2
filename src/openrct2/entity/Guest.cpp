@@ -4707,7 +4707,7 @@ void Guest::UpdateRideApproachSpiralSlide()
     if (waypoint == 3)
     {
         SubState = 15;
-        SetDestination({ 0, 0 });
+        SetDestination({ 0, 0 }); // Used as a "sub-substate" for guests inside the Spiral Slide
         Var37 = (Var37 / 4) & 0xC;
         MoveTo({ kLocationNull, y, z });
         return;
@@ -4793,16 +4793,16 @@ void Guest::UpdateRideOnSpiralSlide()
     auto destination = GetDestination();
     if ((Var37 & 3) == 0)
     {
-        switch (destination.x)
+        switch (destination.x) // Used as a "sub-substate" for guests inside the Spiral Slide
         {
-            case 0:
+            case 0: // Guest is going up the slide tower
                 destination.y++;
-                if (destination.y >= 30)
-                    destination.x++;
+                if (destination.y == 30) // Guest has reached the top of the tower, go to next state
+                    destination.x = 1;
 
                 SetDestination(destination);
                 return;
-            case 1:
+            case 1: // Get guest ready to slide down
                 if (ride->slideInUse)
                     return;
 
@@ -4810,22 +4810,20 @@ void Guest::UpdateRideOnSpiralSlide()
                 ride->slidePeep = Id;
                 ride->slidePeepTShirtColour = TshirtColour;
                 ride->spiralSlideProgress = 0;
-                destination.x++;
+                destination.x = 2;
 
                 SetDestination(destination);
                 return;
-            case 2:
-                return;
-            case 3:
+            case 3: // Guest has reached the end of the sliding down animation
             {
                 auto newLocation = ride->getStation(CurrentRideStation).Start;
                 uint8_t dir = (Var37 / 4) & 3;
 
-                // Set the location that the peep walks to go on slide again
+                // Set the location that the guest walks to go on slide again
                 destination = newLocation + kSpiralSlideEndWaypoint[dir];
                 SetDestination(destination);
 
-                // Move the peep sprite to just at the end of the slide
+                // Move the guest sprite to just at the end of the slide
                 newLocation.x += kSpiralSlideEnd[dir].x;
                 newLocation.y += kSpiralSlideEnd[dir].y;
 
@@ -4836,7 +4834,7 @@ void Guest::UpdateRideOnSpiralSlide()
                 Var37++;
                 return;
             }
-            default:
+            default: // Case 2 is triggered while the guest is sliding down. Otherwise, this condition shouldn't be reached.
                 return;
         }
     }
