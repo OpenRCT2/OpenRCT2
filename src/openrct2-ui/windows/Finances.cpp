@@ -225,7 +225,7 @@ namespace OpenRCT2::Ui::Windows
 
         void SetDisabledTabs()
         {
-            disabled_widgets = (getGameState().park.flags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN) ? (1uLL << WIDX_TAB_5) : 0;
+            disabledWidgets = (getGameState().park.flags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN) ? (1uLL << WIDX_TAB_5) : 0;
         }
 
     public:
@@ -239,7 +239,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnUpdate() override
         {
-            frame_no++;
+            currentFrame++;
             InvalidateWidget(WIDX_TAB_1 + page);
 
             if (page == WINDOW_FINANCES_PAGE_VALUE_GRAPH || page == WINDOW_FINANCES_PAGE_PROFIT_GRAPH
@@ -480,7 +480,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
 
             page = p;
-            frame_no = 0;
+            currentFrame = 0;
 
             Invalidate();
             if (p == WINDOW_FINANCES_PAGE_RESEARCH)
@@ -517,8 +517,8 @@ namespace OpenRCT2::Ui::Windows
             SetWidgets(_windowFinancesPageWidgets[p]);
             SetDisabledTabs();
 
-            hold_down_widgets = _windowFinancesPageHoldDownWidgets[p];
-            pressed_widgets = 0;
+            holdDownWidgets = _windowFinancesPageHoldDownWidgets[p];
+            pressedWidgets = 0;
 
             ResizeFrame();
             OnPrepareDraw();
@@ -826,8 +826,8 @@ namespace OpenRCT2::Ui::Windows
             // dynamic padding for long axis labels:
             char buffer[64]{};
             FormatStringToBuffer(buffer, sizeof(buffer), "{BLACK}{CURRENCY2DP}", centredGraph ? -max : max);
-            int32_t maxWidth = GfxGetStringWidth(buffer, FontStyle::Small) + Graph::kYTickMarkPadding + 1;
-            const ScreenCoordsXY dynamicPadding{ std::max(maxWidth, kGraphTopLeftPadding.x), kGraphTopLeftPadding.y };
+            int32_t maxGraphWidth = GfxGetStringWidth(buffer, FontStyle::Small) + Graph::kYTickMarkPadding + 1;
+            const ScreenCoordsXY dynamicPadding{ std::max(maxGraphWidth, kGraphTopLeftPadding.x), kGraphTopLeftPadding.y };
 
             _graphBounds = { windowPos + ScreenCoordsXY{ graphPageWidget->left + 4, graphPageWidget->top + 15 },
                              windowPos + ScreenCoordsXY{ graphPageWidget->right - 4, graphPageWidget->bottom - 4 } };
@@ -855,7 +855,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 if (this->page == tabPage)
                 {
-                    int32_t frame = frame_no / 2;
+                    int32_t frame = currentFrame / 2;
                     spriteIndex += (frame % _windowFinancesTabAnimationFrames[this->page]);
                 }
 

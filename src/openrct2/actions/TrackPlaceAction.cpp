@@ -371,9 +371,9 @@ namespace OpenRCT2::GameActions
                 {
                     uint16_t maxHeight;
 
-                    if (rtd.HasFlag(RtdFlag::listVehiclesSeparately) && rideEntry->max_height != 0)
+                    if (rtd.HasFlag(RtdFlag::listVehiclesSeparately) && rideEntry->maxHeight != 0)
                     {
-                        maxHeight = rideEntry->max_height;
+                        maxHeight = rideEntry->maxHeight;
                     }
                     else
                     {

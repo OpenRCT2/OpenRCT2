@@ -754,15 +754,15 @@ static uint64_t PageDisabledWidgets[] = {
 
         void OnResize() override
         {
-            if (width < min_width)
+            if (width < minWidth)
             {
                 Invalidate();
-                width = min_width;
+                width = minWidth;
             }
-            if (height < min_height)
+            if (height < minHeight)
             {
                 Invalidate();
-                height = min_height;
+                height = minHeight;
             }
         }
 
@@ -1768,20 +1768,20 @@ static uint64_t PageDisabledWidgets[] = {
             {
                 auto index = EnumValue(tileInspectorPage) - 1;
                 height -= PageGroupBoxSettings[index].details_top_offset - kGroupboxPadding - 3;
-                min_height -= PageGroupBoxSettings[index].details_top_offset - kGroupboxPadding - 3;
+                minHeight -= PageGroupBoxSettings[index].details_top_offset - kGroupboxPadding - 3;
             }
             if (p != TileInspectorPage::Default)
             {
                 auto index = EnumValue(p) - 1;
                 height += PageGroupBoxSettings[index].details_top_offset - kGroupboxPadding - 3;
-                min_height += PageGroupBoxSettings[index].details_top_offset - kGroupboxPadding - 3;
+                minHeight += PageGroupBoxSettings[index].details_top_offset - kGroupboxPadding - 3;
             }
             tileInspectorPage = p;
             auto pageIndex = EnumValue(p);
             SetWidgets(PageWidgets[pageIndex]);
-            hold_down_widgets = PageHoldDownWidgets[pageIndex];
-            disabled_widgets = PageDisabledWidgets[pageIndex];
-            pressed_widgets = 0;
+            holdDownWidgets = PageHoldDownWidgets[pageIndex];
+            disabledWidgets = PageDisabledWidgets[pageIndex];
+            pressedWidgets = 0;
             Invalidate();
         }
 

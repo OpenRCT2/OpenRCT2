@@ -253,12 +253,12 @@ namespace OpenRCT2::Ui::Windows
             InitScrollWidgets();
             InitParkEntranceItems();
 
-            list_information_type = 0;
+            listInformationType = 0;
 
-            auto maxHeight = static_cast<int16_t>(kWindowSize.height + kImageSize * (GetNumRows() - 1));
-            WindowSetResize(*this, kWindowSize, { kWindowSize.width, maxHeight });
+            auto newMaxHeight = static_cast<int16_t>(kWindowSize.height + kImageSize * (GetNumRows() - 1));
+            WindowSetResize(*this, kWindowSize, { kWindowSize.width, newMaxHeight });
 
-            pressed_widgets |= 1LL << WIDX_TAB;
+            pressedWidgets |= 1LL << WIDX_TAB;
 
             ToolSet(*this, WIDX_LIST, Tool::entranceDown);
             gInputFlags.set(InputFlag::unk6);

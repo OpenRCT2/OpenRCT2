@@ -202,8 +202,8 @@ namespace OpenRCT2::Ui::Windows
                 return;
 
             page = p;
-            frame_no = 0;
-            pressed_widgets = 0;
+            currentFrame = 0;
+            pressedWidgets = 0;
 
             WindowSetResize(*this, kWindowSize, kWindowSize);
             SetWidgets(_windowAboutPageWidgets[p]);
@@ -211,10 +211,10 @@ namespace OpenRCT2::Ui::Windows
             switch (p)
             {
                 case WINDOW_ABOUT_PAGE_OPENRCT2:
-                    pressed_widgets |= (1uLL << WIDX_TAB_ABOUT_OPENRCT2);
+                    pressedWidgets |= (1uLL << WIDX_TAB_ABOUT_OPENRCT2);
                     break;
                 case WINDOW_ABOUT_PAGE_RCT2:
-                    pressed_widgets |= (1uLL << WIDX_TAB_ABOUT_RCT2);
+                    pressedWidgets |= (1uLL << WIDX_TAB_ABOUT_RCT2);
                     break;
             }
         }

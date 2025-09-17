@@ -302,7 +302,7 @@ namespace OpenRCT2::Ui::Windows
 
 #pragma region Enabled widgets
 
-    static uint64_t window_editor_scenario_options_page_hold_down_widgets[] = {
+    static uint64_t window_editor_scenario_options_page_holdDownWidgets[] = {
         (1uLL << WIDX_OBJECTIVE_ARG_1_INCREASE) |
             (1uLL << WIDX_OBJECTIVE_ARG_1_DECREASE) |
             (1uLL << WIDX_OBJECTIVE_ARG_2_INCREASE) |
@@ -598,7 +598,7 @@ namespace OpenRCT2::Ui::Windows
                 widget = &widgets[WIDX_TAB_1];
                 spriteIndex = SPR_TAB_OBJECTIVE_0;
                 if (page == WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_OBJECTIVE)
-                    spriteIndex += (frame_no / 4) % 16;
+                    spriteIndex += (currentFrame / 4) % 16;
 
                 GfxDrawSprite(rt, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widget->left, widget->top });
             }
@@ -609,7 +609,7 @@ namespace OpenRCT2::Ui::Windows
                 widget = &widgets[WIDX_TAB_2];
                 spriteIndex = SPR_TAB_KIOSKS_AND_FACILITIES_0;
                 if (page == WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_SCENARIO_DETAILS)
-                    spriteIndex += (frame_no / 4) % 8;
+                    spriteIndex += (currentFrame / 4) % 8;
 
                 GfxDrawSprite(rt, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widget->left, widget->top });
             }
@@ -620,7 +620,7 @@ namespace OpenRCT2::Ui::Windows
                 widget = &widgets[WIDX_TAB_3];
                 spriteIndex = SPR_TAB_FINANCES_SUMMARY_0;
                 if (page == WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_FINANCIAL)
-                    spriteIndex += (frame_no / 2) % 8;
+                    spriteIndex += (currentFrame / 2) % 8;
 
                 GfxDrawSprite(rt, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widget->left, widget->top });
             }
@@ -631,7 +631,7 @@ namespace OpenRCT2::Ui::Windows
                 widget = &widgets[WIDX_TAB_4];
                 spriteIndex = SPR_TAB_GUESTS_0;
                 if (page == WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_GUESTS)
-                    spriteIndex += (frame_no / 4) % 8;
+                    spriteIndex += (currentFrame / 4) % 8;
 
                 GfxDrawSprite(rt, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widget->left, widget->top });
             }
@@ -650,7 +650,7 @@ namespace OpenRCT2::Ui::Windows
                 widget = &widgets[WIDX_TAB_6];
                 spriteIndex = SPR_TAB_RIDE_0;
                 if (page == WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_RIDES)
-                    spriteIndex += (frame_no / 4) % 16;
+                    spriteIndex += (currentFrame / 4) % 16;
 
                 GfxDrawSprite(rt, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widget->left, widget->top });
             }
@@ -663,10 +663,10 @@ namespace OpenRCT2::Ui::Windows
                 return;
 
             page = newPage;
-            frame_no = 0;
-            disabled_widgets = 0;
-            hold_down_widgets = window_editor_scenario_options_page_hold_down_widgets[page];
-            pressed_widgets = 0;
+            currentFrame = 0;
+            disabledWidgets = 0;
+            holdDownWidgets = window_editor_scenario_options_page_holdDownWidgets[page];
+            pressedWidgets = 0;
 
             SetWidgets(window_editor_scenario_options_widgets[page]);
             Invalidate();
@@ -1027,7 +1027,7 @@ namespace OpenRCT2::Ui::Windows
          */
         void ObjectiveOnUpdate()
         {
-            frame_no++;
+            currentFrame++;
             OnPrepareDraw();
             InvalidateWidget(WIDX_TAB_1);
 
@@ -1360,7 +1360,7 @@ namespace OpenRCT2::Ui::Windows
 
         void ScenarioDetailsOnUpdate()
         {
-            frame_no++;
+            currentFrame++;
             InvalidateWidget(WIDX_TAB_1);
         }
 
@@ -1602,7 +1602,7 @@ namespace OpenRCT2::Ui::Windows
 
         void FinancialUpdate()
         {
-            frame_no++;
+            currentFrame++;
             InvalidateWidget(WIDX_TAB_1);
         }
 
@@ -1946,7 +1946,7 @@ namespace OpenRCT2::Ui::Windows
 
         void GuestsUpdate()
         {
-            frame_no++;
+            currentFrame++;
             InvalidateWidget(WIDX_TAB_2);
         }
 
@@ -2143,7 +2143,7 @@ namespace OpenRCT2::Ui::Windows
 
         void LandUpdate()
         {
-            frame_no++;
+            currentFrame++;
             InvalidateWidget(WIDX_TAB_3);
         }
 
@@ -2232,7 +2232,7 @@ namespace OpenRCT2::Ui::Windows
          */
         void RidesOnUpdate()
         {
-            frame_no++;
+            currentFrame++;
             OnPrepareDraw();
             OnResize();
             InvalidateWidget(WIDX_TAB_2);
@@ -2302,9 +2302,9 @@ namespace OpenRCT2::Ui::Windows
             if (i < 0 || i >= static_cast<int32_t>(_rideableRides.size()))
                 return;
 
-            if (selected_list_item != i)
+            if (selectedListItem != i)
             {
-                selected_list_item = i;
+                selectedListItem = i;
                 Invalidate();
             }
         }
@@ -2351,7 +2351,7 @@ namespace OpenRCT2::Ui::Windows
 
                 // Highlighted
                 auto stringId = STR_BLACK_STRING;
-                if (i == selected_list_item)
+                if (i == selectedListItem)
                 {
                     stringId = STR_WINDOW_COLOUR_2_STRINGID;
                     GfxFilterRect(rt, { 0, y, width, y + 11 }, FilterPaletteID::PaletteDarken1);

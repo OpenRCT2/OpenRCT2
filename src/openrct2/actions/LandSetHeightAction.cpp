@@ -282,7 +282,7 @@ namespace OpenRCT2::GameActions
             if (rideEntry == nullptr)
                 continue;
 
-            int32_t maxHeight = rideEntry->max_height;
+            int32_t maxHeight = rideEntry->maxHeight;
             if (maxHeight == 0)
             {
                 maxHeight = ride->getRideTypeDescriptor().Heights.MaxHeight;

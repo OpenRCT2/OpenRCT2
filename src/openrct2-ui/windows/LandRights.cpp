@@ -105,7 +105,7 @@ namespace OpenRCT2::Ui::Windows
         void SwitchToMode(LandRightsMode mode)
         {
             auto widgetIndex = WIDX_BUY_LAND_RIGHTS + EnumValue(mode);
-            pressed_widgets = (1uLL << widgetIndex);
+            pressedWidgets = (1uLL << widgetIndex);
             _landRightsMode = mode;
 
             ToolSet(*this, widgetIndex, Tool::upArrow);
@@ -129,7 +129,7 @@ namespace OpenRCT2::Ui::Windows
         {
             SetWidgets(window_land_rights_widgets);
 
-            hold_down_widgets = (1uLL << WIDX_INCREMENT) | (1uLL << WIDX_DECREMENT);
+            holdDownWidgets = (1uLL << WIDX_INCREMENT) | (1uLL << WIDX_DECREMENT);
             WindowInitScrollWidgets(*this);
             WindowPushOthersBelow(*this);
 
@@ -250,7 +250,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnUpdate() override
         {
-            frame_no++;
+            currentFrame++;
 
             // Close window if another tool is open
             if (!isToolActive(WindowClass::LandRights))

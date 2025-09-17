@@ -109,9 +109,9 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Ensure that the selected item is still in the list.
-            if (static_cast<size_t>(selected_list_item) >= _filteredTrackIds.size())
+            if (static_cast<size_t>(selectedListItem) >= _filteredTrackIds.size())
             {
-                selected_list_item = 0;
+                selectedListItem = 0;
             }
         }
 
@@ -225,10 +225,10 @@ namespace OpenRCT2::Ui::Windows
             _selectedItemIsBeingUpdated = false;
             _reloadTrackDesigns = false;
             // Start with first track highlighted
-            selected_list_item = 0;
+            selectedListItem = 0;
             if (_trackDesigns.size() != 0 && !(gLegacyScene == LegacyScene::trackDesignsManager))
             {
-                selected_list_item = 1;
+                selectedListItem = 1;
             }
             gTrackDesignSceneryToggle = false;
             WindowPushOthersRight(*this);
@@ -303,15 +303,15 @@ namespace OpenRCT2::Ui::Windows
                     // Keep the highlighted item selected
                     if (gLegacyScene == LegacyScene::trackDesignsManager)
                     {
-                        if (selected_list_item != -1 && _filteredTrackIds.size() > static_cast<size_t>(selected_list_item))
-                            selected_list_item = _filteredTrackIds[selected_list_item];
+                        if (selectedListItem != -1 && _filteredTrackIds.size() > static_cast<size_t>(selectedListItem))
+                            selectedListItem = _filteredTrackIds[selectedListItem];
                         else
-                            selected_list_item = -1;
+                            selectedListItem = -1;
                     }
                     else
                     {
-                        if (selected_list_item != 0)
-                            selected_list_item = _filteredTrackIds[selected_list_item - 1] + 1;
+                        if (selectedListItem != 0)
+                            selectedListItem = _filteredTrackIds[selectedListItem - 1] + 1;
                     }
 
                     String::set(_filterString, sizeof(_filterString), "");
@@ -351,9 +351,9 @@ namespace OpenRCT2::Ui::Windows
             if (!_selectedItemIsBeingUpdated)
             {
                 int32_t i = GetListItemFromPosition(screenCoords);
-                if (i != -1 && selected_list_item != i)
+                if (i != -1 && selectedListItem != i)
                 {
-                    selected_list_item = i;
+                    selectedListItem = i;
                     Invalidate();
                 }
             }
@@ -399,25 +399,25 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_TRACK_LIST].tooltip = STR_CLICK_ON_DESIGN_TO_BUILD_IT_TIP;
             }
 
-            if ((gLegacyScene == LegacyScene::trackDesignsManager) || selected_list_item != 0)
+            if ((gLegacyScene == LegacyScene::trackDesignsManager) || selectedListItem != 0)
             {
-                pressed_widgets |= 1uLL << WIDX_TRACK_PREVIEW;
-                disabled_widgets &= ~(1uLL << WIDX_TRACK_PREVIEW);
+                pressedWidgets |= 1uLL << WIDX_TRACK_PREVIEW;
+                disabledWidgets &= ~(1uLL << WIDX_TRACK_PREVIEW);
                 widgets[WIDX_ROTATE].type = WidgetType::flatBtn;
                 widgets[WIDX_TOGGLE_SCENERY].type = WidgetType::flatBtn;
                 if (gTrackDesignSceneryToggle)
                 {
-                    pressed_widgets &= ~(1uLL << WIDX_TOGGLE_SCENERY);
+                    pressedWidgets &= ~(1uLL << WIDX_TOGGLE_SCENERY);
                 }
                 else
                 {
-                    pressed_widgets |= (1uLL << WIDX_TOGGLE_SCENERY);
+                    pressedWidgets |= (1uLL << WIDX_TOGGLE_SCENERY);
                 }
             }
             else
             {
-                pressed_widgets &= ~(1uLL << WIDX_TRACK_PREVIEW);
-                disabled_widgets |= (1uLL << WIDX_TRACK_PREVIEW);
+                pressedWidgets &= ~(1uLL << WIDX_TRACK_PREVIEW);
+                disabledWidgets |= (1uLL << WIDX_TRACK_PREVIEW);
                 widgets[WIDX_ROTATE].type = WidgetType::empty;
                 widgets[WIDX_TOGGLE_SCENERY].type = WidgetType::empty;
             }
@@ -443,7 +443,7 @@ namespace OpenRCT2::Ui::Windows
             if (_reloadTrackDesigns)
             {
                 LoadDesignsList(_window_track_list_item);
-                selected_list_item = 0;
+                selectedListItem = 0;
                 Invalidate();
                 _reloadTrackDesigns = false;
             }
@@ -453,7 +453,7 @@ namespace OpenRCT2::Ui::Windows
         {
             DrawWidgets(rt);
 
-            int32_t listItemIndex = selected_list_item;
+            int32_t listItemIndex = selectedListItem;
             if ((gLegacyScene == LegacyScene::trackDesignsManager) == 0)
             {
                 // Because the first item in the list is "Build a custom design", lower the index by one
@@ -690,7 +690,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 // Build custom track item
                 StringId stringId;
-                if (listIndex == static_cast<size_t>(selected_list_item))
+                if (listIndex == static_cast<size_t>(selectedListItem))
                 {
                     // Highlight
                     GfxFilterRect(
@@ -715,7 +715,7 @@ namespace OpenRCT2::Ui::Windows
                 if (screenCoords.y + kScrollableRowHeight >= rt.y && screenCoords.y < rt.y + rt.height)
                 {
                     StringId stringId;
-                    if (listIndex == static_cast<size_t>(selected_list_item))
+                    if (listIndex == static_cast<size_t>(selectedListItem))
                     {
                         // Highlight
                         GfxFilterRect(

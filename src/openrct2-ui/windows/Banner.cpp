@@ -295,13 +295,13 @@ namespace OpenRCT2::Ui::Windows
             {
                 colourBtn.type = WidgetType::colourBtn;
             }
-            pressed_widgets &= ~(1uLL << WIDX_BANNER_NO_ENTRY);
-            disabled_widgets &= ~(
+            pressedWidgets &= ~(1uLL << WIDX_BANNER_NO_ENTRY);
+            disabledWidgets &= ~(
                 (1uLL << WIDX_BANNER_TEXT) | (1uLL << WIDX_TEXT_COLOUR_DROPDOWN) | (1uLL << WIDX_TEXT_COLOUR_DROPDOWN_BUTTON));
             if (banner->flags.has(BannerFlag::noEntry))
             {
-                pressed_widgets |= (1uLL << WIDX_BANNER_NO_ENTRY);
-                disabled_widgets |= (1uLL << WIDX_BANNER_TEXT) | (1uLL << WIDX_TEXT_COLOUR_DROPDOWN)
+                pressedWidgets |= (1uLL << WIDX_BANNER_NO_ENTRY);
+                disabledWidgets |= (1uLL << WIDX_BANNER_TEXT) | (1uLL << WIDX_TEXT_COLOUR_DROPDOWN)
                     | (1uLL << WIDX_TEXT_COLOUR_DROPDOWN_BUTTON);
             }
             colourBtn.image = getColourButtonImage(banner->colour);

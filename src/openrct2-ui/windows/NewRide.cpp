@@ -303,7 +303,7 @@ namespace OpenRCT2::Ui::Windows
             InitScrollWidgets();
             _filter.clear();
 
-            frame_no = 0;
+            currentFrame = 0;
             _newRideVars.SelectedRide = { kRideTypeNull, kObjectEntryIndexNull };
             _lastTrackDesignCountRideType.Type = kRideTypeNull;
             _lastTrackDesignCountRideType.EntryIndex = kObjectEntryIndexNull;
@@ -320,9 +320,9 @@ namespace OpenRCT2::Ui::Windows
 
         void OnUpdate() override
         {
-            frame_no++;
-            if (frame_no >= TabAnimationLoops[_currentTab])
-                frame_no = 0;
+            currentFrame++;
+            if (currentFrame >= TabAnimationLoops[_currentTab])
+                currentFrame = 0;
 
             InvalidateWidget(WIDX_TAB_1 + static_cast<int32_t>(_currentTab));
 
@@ -395,9 +395,9 @@ namespace OpenRCT2::Ui::Windows
             SetPressedTab();
 
             if (!Config::Get().interface.ListRideVehiclesSeparately)
-                pressed_widgets |= (1LL << WIDX_GROUP_BY_TRACK_TYPE);
+                pressedWidgets |= (1LL << WIDX_GROUP_BY_TRACK_TYPE);
             else
-                pressed_widgets &= ~(1LL << WIDX_GROUP_BY_TRACK_TYPE);
+                pressedWidgets &= ~(1LL << WIDX_GROUP_BY_TRACK_TYPE);
 
             widgets[WIDX_TITLE].text = RideTitles[_currentTab];
             widgets[WIDX_TAB_7].type = WidgetType::tab;
@@ -545,7 +545,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
 
             _currentTab = tab;
-            frame_no = 0;
+            currentFrame = 0;
             _newRideVars.HighlightedRide = { kRideTypeNull, kObjectEntryIndexNull };
             _newRideVars.SelectedRideCountdown = std::numeric_limits<uint16_t>::max();
             PopulateRideList();
@@ -799,9 +799,9 @@ namespace OpenRCT2::Ui::Windows
             int32_t i{};
             for (i = 0; i < TAB_COUNT; i++)
             {
-                pressed_widgets &= ~(1 << (WIDX_TAB_1 + i));
+                pressedWidgets &= ~(1 << (WIDX_TAB_1 + i));
             }
-            pressed_widgets |= 1LL << (WIDX_TAB_1 + static_cast<int32_t>(_currentTab));
+            pressedWidgets |= 1LL << (WIDX_TAB_1 + static_cast<int32_t>(_currentTab));
         }
 
         void RefreshWidgetSizing()
@@ -810,11 +810,11 @@ namespace OpenRCT2::Ui::Windows
 
             if (_currentTab < SHOP_TAB)
             {
-                disabled_widgets &= ~(1 << WIDX_GROUP_BY_TRACK_TYPE);
+                disabledWidgets &= ~(1 << WIDX_GROUP_BY_TRACK_TYPE);
             }
             else
             {
-                disabled_widgets |= 1LL << WIDX_GROUP_BY_TRACK_TYPE;
+                disabledWidgets |= 1LL << WIDX_GROUP_BY_TRACK_TYPE;
             }
 
             // Show or hide unrelated widgets
@@ -1007,7 +1007,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 int32_t frame = 0;
                 if (_currentTab == tab)
-                    frame = frame_no / TabAnimationDivisor[_currentTab];
+                    frame = currentFrame / TabAnimationDivisor[_currentTab];
 
                 spriteIndex += tab == THRILL_TAB ? ThrillRidesTabAnimationSequence[frame] : frame;
 

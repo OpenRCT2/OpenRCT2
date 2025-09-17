@@ -68,7 +68,7 @@ namespace OpenRCT2::Ui::Windows
         {
             SetWidgets(window_clear_scenery_widgets);
 
-            hold_down_widgets = (1uLL << WIDX_INCREMENT) | (1uLL << WIDX_DECREMENT);
+            holdDownWidgets = (1uLL << WIDX_INCREMENT) | (1uLL << WIDX_DECREMENT);
             WindowInitScrollWidgets(*this);
             WindowPushOthersBelow(*this);
 
@@ -155,7 +155,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnUpdate() override
         {
-            frame_no++;
+            currentFrame++;
             // Close window if another tool is open
             if (!isToolActive(WindowClass::ClearScenery, WIDX_BACKGROUND))
                 Close();
@@ -164,7 +164,7 @@ namespace OpenRCT2::Ui::Windows
         void OnPrepareDraw() override
         {
             // Set the preview image button to be pressed down
-            pressed_widgets = (1uLL << WIDX_PREVIEW) | (_clearSmallScenery ? (1uLL << WIDX_SMALL_SCENERY) : 0)
+            pressedWidgets = (1uLL << WIDX_PREVIEW) | (_clearSmallScenery ? (1uLL << WIDX_SMALL_SCENERY) : 0)
                 | (_clearLargeScenery ? (1uLL << WIDX_LARGE_SCENERY) : 0) | (_clearFootpath ? (1uLL << WIDX_FOOTPATH) : 0);
 
             // Update the preview image (for tool sizes up to 7)

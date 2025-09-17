@@ -183,7 +183,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Set and invalidate the changed widgets
-            uint64_t currentDisabledWidgets = disabled_widgets;
+            uint64_t currentDisabledWidgets = disabledWidgets;
             if (currentDisabledWidgets == newDisabledWidgets)
                 return;
 
@@ -194,7 +194,7 @@ namespace OpenRCT2::Ui::Windows
                     InvalidateWidget(i);
                 }
             }
-            disabled_widgets = newDisabledWidgets;
+            disabledWidgets = newDisabledWidgets;
         }
 
         void OnMouseDown(WidgetIndex widgetIndex) override
@@ -456,7 +456,7 @@ namespace OpenRCT2::Ui::Windows
         if (w == nullptr)
             return;
 
-        uint64_t newPressedWidgets = w->pressed_widgets;
+        uint64_t newPressedWidgets = w->pressedWidgets;
 
         // Unpress all the mode buttons
         newPressedWidgets &= ~EnumToFlag(WIDX_MAZE_BUILD_MODE);
@@ -490,7 +490,7 @@ namespace OpenRCT2::Ui::Windows
                 break;
         }
 
-        w->pressed_widgets = newPressedWidgets;
+        w->pressedWidgets = newPressedWidgets;
         w->Invalidate();
     }
 } // namespace OpenRCT2::Ui::Windows

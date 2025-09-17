@@ -165,8 +165,8 @@ namespace OpenRCT2::Ui::Windows
         {
             if (widgetIndex >= WIDX_TAB1 && widgetIndex <= WIDX_TAB10)
             {
-                selected_tab = widgetIndex - 4;
-                Config::Get().interface.scenarioSelectLastTab = selected_tab;
+                selectedTab = widgetIndex - 4;
+                Config::Get().interface.scenarioSelectLastTab = selectedTab;
                 Config::Save();
 
                 _highlightedScenario = nullptr;
@@ -422,12 +422,12 @@ namespace OpenRCT2::Ui::Windows
 
         void OnPrepareDraw() override
         {
-            pressed_widgets &= ~(
+            pressedWidgets &= ~(
                 (1uLL << WIDX_CLOSE) | (1uLL << WIDX_TAB1) | (1uLL << WIDX_TAB2) | (1uLL << WIDX_TAB3) | (1uLL << WIDX_TAB4)
                 | (1uLL << WIDX_TAB5) | (1uLL << WIDX_TAB6) | (1uLL << WIDX_TAB7) | (1uLL << WIDX_TAB8) | (1uLL << WIDX_TAB9)
                 | (1uLL << WIDX_TAB10));
 
-            pressed_widgets |= 1LL << (selected_tab + WIDX_TAB1);
+            pressedWidgets |= 1LL << (selectedTab + WIDX_TAB1);
 
             const int32_t bottomMargin = Config::Get().general.DebuggingTools ? 17 : 5;
             widgets[WIDX_SCENARIOLIST].right = width - GetPreviewPaneWidth() - 2 * kPadding;
@@ -695,7 +695,7 @@ namespace OpenRCT2::Ui::Windows
 
                 // Category heading
                 StringId headingStringId = kStringIdNone;
-                if (selected_tab != EnumValue(ScenarioSource::Real) && currentHeading.category != scenario->Category)
+                if (selectedTab != EnumValue(ScenarioSource::Real) && currentHeading.category != scenario->Category)
                 {
                     currentHeading.category = scenario->Category;
                     headingStringId = Scenario::kScenarioCategoryStringIds[currentHeading.raw];
@@ -774,7 +774,7 @@ namespace OpenRCT2::Ui::Windows
 
         bool IsScenarioVisible(const ScenarioIndexEntry& scenario) const
         {
-            if (static_cast<uint8_t>(scenario.SourceGame) != selected_tab)
+            if (static_cast<uint8_t>(scenario.SourceGame) != selectedTab)
             {
                 return false;
             }
@@ -786,7 +786,7 @@ namespace OpenRCT2::Ui::Windows
         {
             if (!Config::Get().general.ScenarioUnlockingEnabled)
                 return false;
-            if (selected_tab >= 6)
+            if (selectedTab >= 6)
                 return false;
 
             return true;
@@ -804,14 +804,14 @@ namespace OpenRCT2::Ui::Windows
 
             if (showPages & (1 << Config::Get().interface.scenarioSelectLastTab))
             {
-                selected_tab = Config::Get().interface.scenarioSelectLastTab;
+                selectedTab = Config::Get().interface.scenarioSelectLastTab;
             }
             else
             {
                 int32_t firstPage = Numerics::bitScanForward(showPages);
                 if (firstPage != -1)
                 {
-                    selected_tab = firstPage;
+                    selectedTab = firstPage;
                 }
             }
 

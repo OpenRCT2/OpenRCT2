@@ -172,7 +172,7 @@ namespace OpenRCT2::Ui::Windows
             if (directory.empty() && drives)
             {
                 // List Windows drives
-                disabled_widgets |= (1uLL << WIDX_NEW_FOLDER) | (1uLL << WIDX_PARENT_FOLDER);
+                disabledWidgets |= (1uLL << WIDX_NEW_FOLDER) | (1uLL << WIDX_PARENT_FOLDER);
                 static constexpr auto NumDriveLetters = 26;
                 for (int32_t x = 0; x < NumDriveLetters; x++)
                 {
@@ -217,12 +217,12 @@ namespace OpenRCT2::Ui::Windows
 
                 // Disable the Up button if the current directory is the root directory
                 if (String::isNullOrEmpty(_parentDirectory) && !drives)
-                    disabled_widgets |= (1uLL << WIDX_PARENT_FOLDER);
+                    disabledWidgets |= (1uLL << WIDX_PARENT_FOLDER);
                 else
-                    disabled_widgets &= ~(1uLL << WIDX_PARENT_FOLDER);
+                    disabledWidgets &= ~(1uLL << WIDX_PARENT_FOLDER);
 
                 // Re-enable the "new" button if it was disabled
-                disabled_widgets &= ~(1uLL << WIDX_NEW_FOLDER);
+                disabledWidgets &= ~(1uLL << WIDX_NEW_FOLDER);
 
                 // List all directories
                 auto subDirectories = Path::GetDirectories(absoluteDirectory);
@@ -338,7 +338,7 @@ namespace OpenRCT2::Ui::Windows
         {
             _preview = {};
 
-            if (selected_list_item == -1)
+            if (selectedListItem == -1)
                 return;
 
             if (!ShowPreviews())
@@ -347,10 +347,10 @@ namespace OpenRCT2::Ui::Windows
             if (type == LoadSaveType::track || type == LoadSaveType::heightmap)
                 return;
 
-            if (_listItems[selected_list_item].type == FileType::directory)
+            if (_listItems[selectedListItem].type == FileType::directory)
                 return;
 
-            auto path = _listItems[selected_list_item].path;
+            auto path = _listItems[selectedListItem].path;
 
             auto& bgWorker = GetContext()->GetBackgroundWorker();
 
@@ -539,7 +539,7 @@ namespace OpenRCT2::Ui::Windows
             const auto& uiContext = OpenRCT2::GetContext()->GetUiContext();
             if (!uiContext.HasFilePicker())
             {
-                disabled_widgets |= (1uLL << WIDX_SYSTEM_BROWSER);
+                disabledWidgets |= (1uLL << WIDX_SYSTEM_BROWSER);
                 widgets[WIDX_SYSTEM_BROWSER].type = WidgetType::empty;
             }
 
@@ -574,8 +574,8 @@ namespace OpenRCT2::Ui::Windows
             const char* pattern = GetFilterPatternByType(type, isSave);
             const auto path = GetDir(type);
             PopulateList(path, pattern);
-            no_list_items = static_cast<uint16_t>(_listItems.size());
-            selected_list_item = -1;
+            numListItems = static_cast<uint16_t>(_listItems.size());
+            selectedListItem = -1;
 
             // Reset window dimensions
             InitScrollWidgets();
@@ -806,7 +806,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_PARENT_FOLDER:
                     PopulateList(_parentDirectory, _extensionPattern);
                     InitScrollWidgets();
-                    no_list_items = static_cast<uint16_t>(_listItems.size());
+                    numListItems = static_cast<uint16_t>(_listItems.size());
                     break;
 
                 case WIDX_NEW_FOLDER:
@@ -827,7 +827,7 @@ namespace OpenRCT2::Ui::Windows
                         // If user cancels file dialog, refresh list
                         PopulateList(_directory, _extensionPattern);
                         InitScrollWidgets();
-                        no_list_items = static_cast<uint16_t>(_listItems.size());
+                        numListItems = static_cast<uint16_t>(_listItems.size());
                     }
                 }
                 break;
@@ -877,7 +877,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_DEFAULT_FOLDER:
                     PopulateList(GetInitialDirectoryByType(type).c_str(), _extensionPattern);
                     InitScrollWidgets();
-                    no_list_items = static_cast<uint16_t>(_listItems.size());
+                    numListItems = static_cast<uint16_t>(_listItems.size());
                     break;
 
                 case WIDX_FILENAME_TEXTBOX:
@@ -991,13 +991,13 @@ namespace OpenRCT2::Ui::Windows
                         return;
                     }
 
-                    no_list_items = 0;
-                    selected_list_item = -1;
+                    numListItems = 0;
+                    selectedListItem = -1;
 
                     PopulateList(path, _extensionPattern);
                     InitScrollWidgets();
 
-                    no_list_items = static_cast<uint16_t>(_listItems.size());
+                    numListItems = static_cast<uint16_t>(_listItems.size());
                     Invalidate();
                     break;
                 }
@@ -1016,18 +1016,18 @@ namespace OpenRCT2::Ui::Windows
 
         ScreenSize OnScrollGetSize(int32_t scrollIndex) override
         {
-            return { 0, no_list_items * kScrollableRowHeight };
+            return { 0, numListItems * kScrollableRowHeight };
         }
 
         void OnScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
             int32_t selectedItem = screenCoords.y / kScrollableRowHeight;
-            if (selectedItem >= no_list_items)
+            if (selectedItem >= numListItems)
                 return;
 
-            if (selected_list_item != selectedItem)
+            if (selectedListItem != selectedItem)
             {
-                selected_list_item = selectedItem;
+                selectedListItem = selectedItem;
                 LoadPreview();
                 Invalidate();
             }
@@ -1038,14 +1038,14 @@ namespace OpenRCT2::Ui::Windows
             int32_t selectedItem;
 
             selectedItem = screenCoords.y / kScrollableRowHeight;
-            if (selectedItem >= no_list_items)
+            if (selectedItem >= numListItems)
                 return;
 
             if (_listItems[selectedItem].type == FileType::directory)
             {
                 // The selected item is a folder
-                no_list_items = 0;
-                selected_list_item = -1;
+                numListItems = 0;
+                selectedListItem = -1;
 
                 char directory[MAX_PATH];
                 String::safeUtf8Copy(directory, _listItems[selectedItem].path.c_str(), sizeof(directory));
@@ -1053,7 +1053,7 @@ namespace OpenRCT2::Ui::Windows
                 PopulateList(directory, _extensionPattern);
                 InitScrollWidgets();
 
-                no_list_items = static_cast<uint16_t>(_listItems.size());
+                numListItems = static_cast<uint16_t>(_listItems.size());
             }
             else // FileType::file
             {
@@ -1085,7 +1085,7 @@ namespace OpenRCT2::Ui::Windows
 
             auto& config = Config::Get().general;
 
-            for (int32_t i = 0; i < no_list_items; i++)
+            for (int32_t i = 0; i < numListItems; i++)
             {
                 int32_t y = i * kScrollableRowHeight;
                 if (y > rt.y + rt.height)
@@ -1097,7 +1097,7 @@ namespace OpenRCT2::Ui::Windows
                 StringId stringId = STR_BLACK_STRING;
 
                 // If hovering over item, change the color and fill the backdrop.
-                if (i == selected_list_item)
+                if (i == selectedListItem)
                 {
                     stringId = STR_WINDOW_COLOUR_2_STRINGID;
                     GfxFilterRect(rt, { 0, y, listWidth, y + kScrollableRowHeight }, FilterPaletteID::PaletteDarken1);

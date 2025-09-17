@@ -947,14 +947,14 @@ uint8_t MapGetLowestLandHeight(const MapRange& range)
     MapRange validRange = { std::max(range.GetLeft(), 32), std::max(range.GetTop(), 32),
                             std::min(range.GetRight(), mapSizeMax.x), std::min(range.GetBottom(), mapSizeMax.y) };
 
-    uint8_t min_height = 0xFF;
+    uint8_t minHeight = 0xFF;
     for (int32_t yi = validRange.GetTop(); yi <= validRange.GetBottom(); yi += kCoordsXYStep)
     {
         for (int32_t xi = validRange.GetLeft(); xi <= validRange.GetRight(); xi += kCoordsXYStep)
         {
             auto* surfaceElement = MapGetSurfaceElementAt(CoordsXY{ xi, yi });
 
-            if (surfaceElement != nullptr && min_height > surfaceElement->BaseHeight)
+            if (surfaceElement != nullptr && minHeight > surfaceElement->BaseHeight)
             {
                 if (gLegacyScene != LegacyScene::scenarioEditor && !getGameState().cheats.sandboxMode)
                 {
@@ -964,11 +964,11 @@ uint8_t MapGetLowestLandHeight(const MapRange& range)
                     }
                 }
 
-                min_height = surfaceElement->BaseHeight;
+                minHeight = surfaceElement->BaseHeight;
             }
         }
     }
-    return min_height;
+    return minHeight;
 }
 
 uint8_t MapGetHighestLandHeight(const MapRange& range)
@@ -977,7 +977,7 @@ uint8_t MapGetHighestLandHeight(const MapRange& range)
     MapRange validRange = { std::max(range.GetLeft(), 32), std::max(range.GetTop(), 32),
                             std::min(range.GetRight(), mapSizeMax.x), std::min(range.GetBottom(), mapSizeMax.y) };
 
-    uint8_t max_height = 0;
+    uint8_t maxHeight = 0;
     for (int32_t yi = validRange.GetTop(); yi <= validRange.GetBottom(); yi += kCoordsXYStep)
     {
         for (int32_t xi = validRange.GetLeft(); xi <= validRange.GetRight(); xi += kCoordsXYStep)
@@ -998,12 +998,12 @@ uint8_t MapGetHighestLandHeight(const MapRange& range)
                     BaseHeight += 2;
                 if (surfaceElement->GetSlope() & kTileSlopeDiagonalFlag)
                     BaseHeight += 2;
-                if (max_height < BaseHeight)
-                    max_height = BaseHeight;
+                if (maxHeight < BaseHeight)
+                    maxHeight = BaseHeight;
             }
         }
     }
-    return max_height;
+    return maxHeight;
 }
 
 /**

@@ -152,7 +152,7 @@ namespace OpenRCT2::Ui::Windows
 
             SetWidgets(_inventionListWidgets);
             InitScrollWidgets();
-            selected_tab = 0;
+            selectedTab = 0;
             _selectedResearchItem = nullptr;
 
             WindowSetResize(*this, kWindowSize, { kWindowSize.width * 2, kWindowSize.height * 2 });
@@ -197,21 +197,21 @@ namespace OpenRCT2::Ui::Windows
 
         void OnResize() override
         {
-            if (width < min_width)
+            if (width < minWidth)
             {
                 Invalidate();
-                width = min_width;
+                width = minWidth;
             }
-            if (height < min_height)
+            if (height < minHeight)
             {
                 Invalidate();
-                height = min_height;
+                height = minHeight;
             }
         }
 
         void OnUpdate() override
         {
-            frame_no++;
+            currentFrame++;
             OnPrepareDraw();
 
             InvalidateWidget(WIDX_TAB_1);
@@ -357,7 +357,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Tab image
             auto screenPos = windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_1].left, widgets[WIDX_TAB_1].top };
-            GfxDrawSprite(rt, ImageId(SPR_TAB_FINANCES_RESEARCH_0 + (frame_no / 2) % 8), screenPos);
+            GfxDrawSprite(rt, ImageId(SPR_TAB_FINANCES_RESEARCH_0 + (currentFrame / 2) % 8), screenPos);
 
             // Pre-researched items label
             screenPos = windowPos
@@ -442,8 +442,8 @@ namespace OpenRCT2::Ui::Windows
 
         void OnPrepareDraw() override
         {
-            pressed_widgets |= 1uLL << WIDX_PREVIEW;
-            pressed_widgets |= 1uLL << WIDX_TAB_1;
+            pressedWidgets |= 1uLL << WIDX_PREVIEW;
+            pressedWidgets |= 1uLL << WIDX_TAB_1;
 
             widgets[WIDX_CLOSE].type = gLegacyScene == LegacyScene::scenarioEditor ? WidgetType::empty : WidgetType::closeBox;
 

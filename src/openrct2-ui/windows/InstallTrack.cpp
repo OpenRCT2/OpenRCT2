@@ -135,14 +135,14 @@ namespace OpenRCT2::Ui::Windows
 
         void OnPrepareDraw() override
         {
-            pressed_widgets |= 1uLL << WIDX_TRACK_PREVIEW;
+            pressedWidgets |= 1uLL << WIDX_TRACK_PREVIEW;
             if (!gTrackDesignSceneryToggle)
             {
-                pressed_widgets |= (1uLL << WIDX_TOGGLE_SCENERY);
+                pressedWidgets |= (1uLL << WIDX_TOGGLE_SCENERY);
             }
             else
             {
-                pressed_widgets &= ~(1uLL << WIDX_TOGGLE_SCENERY);
+                pressedWidgets &= ~(1uLL << WIDX_TOGGLE_SCENERY);
             }
         }
 

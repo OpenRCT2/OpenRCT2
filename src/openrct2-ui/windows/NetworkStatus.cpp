@@ -39,9 +39,9 @@ namespace OpenRCT2::Ui::Windows
             WindowSetResize(*this, kWindowSize, kWindowSize);
             SetWidgets(window_network_status_widgets);
 
-            frame_no = 0;
+            currentFrame = 0;
             page = 0;
-            list_information_type = 0;
+            listInformationType = 0;
         }
 
         void OnClose() override

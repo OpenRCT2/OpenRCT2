@@ -218,7 +218,7 @@ namespace OpenRCT2::Ui::Windows
             _footpathPlaceCtrlState = false;
             _footpathPlaceShiftState = false;
 
-            hold_down_widgets = (1u << WIDX_CONSTRUCT) | (1u << WIDX_REMOVE);
+            holdDownWidgets = (1u << WIDX_CONSTRUCT) | (1u << WIDX_REMOVE);
         }
 
         void OnClose() override
@@ -434,10 +434,9 @@ namespace OpenRCT2::Ui::Windows
         void OnPrepareDraw() override
         {
             // Press / unpress footpath and queue type buttons
-            pressed_widgets &= ~(1uLL << WIDX_FOOTPATH_TYPE);
-            pressed_widgets &= ~(1uLL << WIDX_QUEUELINE_TYPE);
-            pressed_widgets |= gFootpathSelection.IsQueueSelected ? (1uLL << WIDX_QUEUELINE_TYPE)
-                                                                  : (1uLL << WIDX_FOOTPATH_TYPE);
+            pressedWidgets &= ~(1uLL << WIDX_FOOTPATH_TYPE);
+            pressedWidgets &= ~(1uLL << WIDX_QUEUELINE_TYPE);
+            pressedWidgets |= gFootpathSelection.IsQueueSelected ? (1uLL << WIDX_QUEUELINE_TYPE) : (1uLL << WIDX_FOOTPATH_TYPE);
 
             // Enable / disable construct button
             widgets[WIDX_CONSTRUCT].type = _footpathConstructionMode == PathConstructionMode::bridgeOrTunnel
@@ -843,7 +842,7 @@ namespace OpenRCT2::Ui::Windows
             }
             else if (im.IsModifierKeyPressed(ModifierKey::shift))
             {
-                uint16_t maxHeight = ZoomLevel::max().ApplyTo(
+                uint16_t maxPathHeight = ZoomLevel::max().ApplyTo(
                     std::numeric_limits<decltype(TileElement::BaseHeight)>::max() - 32);
 
                 _footpathPlaceShiftZ = _footpathPlaceShiftStart.y - screenCoords.y + 4;
@@ -859,7 +858,7 @@ namespace OpenRCT2::Ui::Windows
                 _footpathPlaceShiftZ = floor2(_footpathPlaceShiftZ, heightStep);
 
                 // Clamp to maximum possible value of BaseHeight can offer.
-                _footpathPlaceShiftZ = std::min<int16_t>(_footpathPlaceShiftZ, maxHeight);
+                _footpathPlaceShiftZ = std::min<int16_t>(_footpathPlaceShiftZ, maxPathHeight);
 
                 screenCoords = _footpathPlaceShiftStart;
             }
@@ -1358,7 +1357,7 @@ namespace OpenRCT2::Ui::Windows
                 MapInvalidateMapSelectionTiles();
             }
 
-            uint64_t newPressedWidgets = pressed_widgets
+            uint64_t newPressedWidgets = pressedWidgets
                 & ~((1LL << WIDX_DIRECTION_NW) | (1LL << WIDX_DIRECTION_NE) | (1LL << WIDX_DIRECTION_SW)
                     | (1LL << WIDX_DIRECTION_SE) | (1LL << WIDX_SLOPEDOWN) | (1LL << WIDX_LEVEL) | (1LL << WIDX_SLOPEUP));
             uint64_t newDisabledWidgets = 0;
@@ -1404,8 +1403,8 @@ namespace OpenRCT2::Ui::Windows
                     | (1uLL << WIDX_REMOVE);
             }
 
-            pressed_widgets = newPressedWidgets;
-            disabled_widgets = newDisabledWidgets;
+            pressedWidgets = newPressedWidgets;
+            disabledWidgets = newDisabledWidgets;
             Invalidate();
         }
 

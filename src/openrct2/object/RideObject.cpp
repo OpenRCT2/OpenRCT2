@@ -164,7 +164,7 @@ namespace OpenRCT2
         _legacyType.excitement_multiplier = stream->ReadValue<int8_t>();
         _legacyType.intensity_multiplier = stream->ReadValue<int8_t>();
         _legacyType.nausea_multiplier = stream->ReadValue<int8_t>();
-        _legacyType.max_height = stream->ReadValue<uint8_t>();
+        _legacyType.maxHeight = stream->ReadValue<uint8_t>();
         // Skipping a uint64_t for the enabled track pieces and two uint8_ts for the categories.
         stream->Seek(10, STREAM_SEEK_CURRENT);
         _legacyType.shop_item[0] = static_cast<ShopItem>(stream->ReadValue<uint8_t>());
@@ -547,7 +547,7 @@ namespace OpenRCT2
                 _legacyType.ride_type[i] = rideType;
             }
 
-            _legacyType.max_height = Json::GetNumber<uint8_t>(properties["maxHeight"]);
+            _legacyType.maxHeight = Json::GetNumber<uint8_t>(properties["maxHeight"]);
             _legacyType.Clearance = Json::GetNumber<uint8_t>(properties["clearance"], GetDefaultClearance());
 
             // This needs to be set for both shops/facilities _and_ regular rides.

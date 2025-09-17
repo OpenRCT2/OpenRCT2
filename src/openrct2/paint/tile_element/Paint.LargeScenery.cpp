@@ -94,7 +94,7 @@ static std::string_view LargeSceneryCalculateDisplayText(const LargeSceneryText&
     size_t totalSize = 0;
     CodepointView view(s);
     auto it = view.begin();
-    while (it != view.end() && totalSize <= text.max_width)
+    while (it != view.end() && totalSize <= text.maxWidth)
     {
         auto glyph = text.GetGlyph(*it, ' ');
         totalSize += height ? glyph.height : glyph.width;
@@ -181,7 +181,7 @@ static bool Is3DTextSingleLine(const LargeSceneryText& text, std::string_view s)
     if (text.flags & LARGE_SCENERY_TEXT_FLAG_TWO_LINE)
     {
         auto width = text.MeasureWidth(s);
-        return width <= text.max_width;
+        return width <= text.maxWidth;
     }
     return true;
 }
@@ -273,7 +273,7 @@ static void PaintLargeScenery3DText(
                         lastWhitespaceIndex = it.GetIndex();
                     }
 
-                    if (lineWidth > text->max_width)
+                    if (lineWidth > text->maxWidth)
                     {
                         break;
                     }

@@ -423,10 +423,10 @@ namespace OpenRCT2::Ui::Windows
 
             if (_info.Desc.IsResizable())
             {
-                min_width = _info.Desc.MinWidth.value_or(0);
-                min_height = _info.Desc.MinHeight.value_or(0);
-                max_width = _info.Desc.MaxWidth.value_or(kMaxWindowSize.width);
-                max_height = _info.Desc.MaxHeight.value_or(kMaxWindowSize.height);
+                minWidth = _info.Desc.MinWidth.value_or(0);
+                minHeight = _info.Desc.MinHeight.value_or(0);
+                maxWidth = _info.Desc.MaxWidth.value_or(kMaxWindowSize.width);
+                maxHeight = _info.Desc.MaxHeight.value_or(kMaxWindowSize.height);
             }
             RefreshWidgets();
         }
@@ -438,15 +438,15 @@ namespace OpenRCT2::Ui::Windows
 
         void OnResize() override
         {
-            if (width < min_width)
+            if (width < minWidth)
             {
                 Invalidate();
-                width = min_width;
+                width = minWidth;
             }
-            if (height < min_height)
+            if (height < minHeight)
             {
                 Invalidate();
-                height = min_height;
+                height = minHeight;
             }
             UpdateViewport();
         }
@@ -458,10 +458,10 @@ namespace OpenRCT2::Ui::Windows
                 const auto& tab = _info.Desc.Tabs[page];
                 if (tab.imageFrameCount != 0)
                 {
-                    frame_no++;
-                    if (frame_no >= tab.imageFrameCount * tab.imageFrameDuration)
+                    currentFrame++;
+                    if (currentFrame >= tab.imageFrameCount * tab.imageFrameDuration)
                     {
-                        frame_no = 0;
+                        currentFrame = 0;
                     }
 
                     InvalidateWidget(WIDX_TAB_0 + this->page);
@@ -761,7 +761,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
 
             page = static_cast<int16_t>(tabIndex);
-            frame_no = 0;
+            currentFrame = 0;
             RefreshWidgets();
 
             Invalidate();
@@ -867,7 +867,7 @@ namespace OpenRCT2::Ui::Windows
                     auto image = tab.imageFrameBase;
                     if (static_cast<size_t>(page) == tabIndex && tab.imageFrameDuration != 0 && tab.imageFrameCount != 0)
                     {
-                        auto frame = frame_no / tab.imageFrameDuration;
+                        auto frame = currentFrame / tab.imageFrameDuration;
                         auto imageOffset = frame % tab.imageFrameCount;
                         image = image.WithIndex(image.GetIndex() + imageOffset);
                     }

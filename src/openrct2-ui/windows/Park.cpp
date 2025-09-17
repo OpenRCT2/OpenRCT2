@@ -183,7 +183,7 @@ namespace OpenRCT2::Ui::Windows
         void OnOpen() override
         {
             number = 0;
-            frame_no = 0;
+            currentFrame = 0;
             _numberOfRides = -1;
             _numberOfStaff = -1;
             _peepAnimationFrame = 0;
@@ -394,7 +394,7 @@ namespace OpenRCT2::Ui::Windows
         void SetDisabledTabs()
         {
             // Disable price tab if money is disabled
-            disabled_widgets = (getGameState().park.flags & PARK_FLAGS_NO_MONEY) ? (1uLL << WIDX_TAB_4) : 0;
+            disabledWidgets = (getGameState().park.flags & PARK_FLAGS_NO_MONEY) ? (1uLL << WIDX_TAB_4) : 0;
         }
 
         void PrepareWindowTitleText()
@@ -483,7 +483,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnUpdateEntrance()
         {
-            frame_no++;
+            currentFrame++;
             InvalidateWidget(WIDX_TAB_1);
         }
 
@@ -521,9 +521,9 @@ namespace OpenRCT2::Ui::Windows
 
             // Only allow closing of park for guest / rating objective
             if (gameState.scenarioOptions.objective.Type == Scenario::ObjectiveType::guestsAndRating)
-                disabled_widgets |= (1uLL << WIDX_OPEN_OR_CLOSE) | (1uLL << WIDX_CLOSE_LIGHT) | (1uLL << WIDX_OPEN_LIGHT);
+                disabledWidgets |= (1uLL << WIDX_OPEN_OR_CLOSE) | (1uLL << WIDX_CLOSE_LIGHT) | (1uLL << WIDX_OPEN_LIGHT);
             else
-                disabled_widgets &= ~((1uLL << WIDX_OPEN_OR_CLOSE) | (1uLL << WIDX_CLOSE_LIGHT) | (1uLL << WIDX_OPEN_LIGHT));
+                disabledWidgets &= ~((1uLL << WIDX_OPEN_OR_CLOSE) | (1uLL << WIDX_CLOSE_LIGHT) | (1uLL << WIDX_OPEN_LIGHT));
 
             // Only allow purchase of land when there is money
             if (gameState.park.flags & PARK_FLAGS_NO_MONEY)
@@ -665,7 +665,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnUpdateRating()
         {
-            frame_no++;
+            currentFrame++;
             InvalidateWidget(WIDX_TAB_2);
             if (_ratingProps.UpdateHoverIndex())
             {
@@ -689,8 +689,8 @@ namespace OpenRCT2::Ui::Windows
 
             char buffer[64]{};
             FormatStringToBuffer(buffer, sizeof(buffer), "{BLACK}{COMMA32}", _ratingProps.max);
-            int32_t maxWidth = GfxGetStringWidth(buffer, FontStyle::Small) + Graph::kYTickMarkPadding + 1;
-            const ScreenCoordsXY dynamicPadding{ std::max(maxWidth, kGraphTopLeftPadding.x), kGraphTopLeftPadding.y };
+            int32_t maxGraphWidth = GfxGetStringWidth(buffer, FontStyle::Small) + Graph::kYTickMarkPadding + 1;
+            const ScreenCoordsXY dynamicPadding{ std::max(maxGraphWidth, kGraphTopLeftPadding.x), kGraphTopLeftPadding.y };
 
             _ratingProps.RecalculateLayout(
                 { _ratingGraphBounds.Point1 + dynamicPadding, _ratingGraphBounds.Point2 - kGraphBottomRightPadding },
@@ -732,7 +732,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnUpdateGuests()
         {
-            frame_no++;
+            currentFrame++;
             _peepAnimationFrame = (_peepAnimationFrame + 1) % 24;
             InvalidateWidget(WIDX_TAB_3);
             if (_guestProps.UpdateHoverIndex())
@@ -768,8 +768,8 @@ namespace OpenRCT2::Ui::Windows
 
             char buffer[64]{};
             FormatStringToBuffer(buffer, sizeof(buffer), "{BLACK}{COMMA32}", _guestProps.max);
-            int32_t maxWidth = GfxGetStringWidth(buffer, FontStyle::Small) + Graph::kYTickMarkPadding + 1;
-            const ScreenCoordsXY dynamicPadding{ std::max(maxWidth, kGraphTopLeftPadding.x), kGraphTopLeftPadding.y };
+            int32_t maxGraphWidth = GfxGetStringWidth(buffer, FontStyle::Small) + Graph::kYTickMarkPadding + 1;
+            const ScreenCoordsXY dynamicPadding{ std::max(maxGraphWidth, kGraphTopLeftPadding.x), kGraphTopLeftPadding.y };
 
             _guestProps.RecalculateLayout(
                 { _guestGraphBounds.Point1 + dynamicPadding, _guestGraphBounds.Point2 - kGraphBottomRightPadding },
@@ -839,7 +839,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnUpdatePrice()
         {
-            frame_no++;
+            currentFrame++;
             InvalidateWidget(WIDX_TAB_4);
         }
 
@@ -907,7 +907,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnUpdateStats()
         {
-            frame_no++;
+            currentFrame++;
             InvalidateWidget(WIDX_TAB_5);
 
             // Invalidate ride count if changed
@@ -1012,7 +1012,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnUpdateObjective()
         {
-            frame_no++;
+            currentFrame++;
             InvalidateWidget(WIDX_TAB_6);
         }
 
@@ -1115,7 +1115,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnUpdateAwards()
         {
-            frame_no++;
+            currentFrame++;
             InvalidateWidget(WIDX_TAB_7);
         }
 
@@ -1169,11 +1169,11 @@ namespace OpenRCT2::Ui::Windows
                 return;
 
             page = newPage;
-            frame_no = 0;
+            currentFrame = 0;
             _peepAnimationFrame = 0;
             RemoveViewport();
 
-            hold_down_widgets = _pagedHoldDownWidgets[newPage];
+            holdDownWidgets = _pagedHoldDownWidgets[newPage];
             SetWidgets(_pagedWidgets[newPage]);
             SetDisabledTabs();
             Invalidate();
@@ -1197,8 +1197,8 @@ namespace OpenRCT2::Ui::Windows
         void SetPressedTab()
         {
             for (int32_t i = WIDX_TAB_1; i <= WIDX_TAB_7; i++)
-                pressed_widgets &= ~(1 << i);
-            pressed_widgets |= 1LL << (WIDX_TAB_1 + page);
+                pressedWidgets &= ~(1 << i);
+            pressedWidgets |= 1LL << (WIDX_TAB_1 + page);
         }
 
         void DrawTabImages(RenderTarget& rt)
@@ -1216,7 +1216,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 ImageId spriteIdx(SPR_TAB_GRAPH_0);
                 if (page == WINDOW_PARK_PAGE_RATING)
-                    spriteIdx = spriteIdx.WithIndexOffset((frame_no / 8) % 8);
+                    spriteIdx = spriteIdx.WithIndexOffset((currentFrame / 8) % 8);
                 GfxDrawSprite(rt, spriteIdx, windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_2].left, widgets[WIDX_TAB_2].top });
                 GfxDrawSprite(
                     rt, ImageId(SPR_RATING_HIGH),
@@ -1231,7 +1231,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 ImageId spriteIdx(SPR_TAB_GRAPH_0);
                 if (page == WINDOW_PARK_PAGE_GUESTS)
-                    spriteIdx = spriteIdx.WithIndexOffset((frame_no / 8) % 8);
+                    spriteIdx = spriteIdx.WithIndexOffset((currentFrame / 8) % 8);
                 GfxDrawSprite(rt, spriteIdx, windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_3].left, widgets[WIDX_TAB_3].top });
 
                 auto* animObj = findPeepAnimationsObjectForType(AnimationPeepType::Guest);
@@ -1249,7 +1249,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 ImageId spriteIdx(SPR_TAB_ADMISSION_0);
                 if (page == WINDOW_PARK_PAGE_PRICE)
-                    spriteIdx = spriteIdx.WithIndexOffset((frame_no / 2) % 8);
+                    spriteIdx = spriteIdx.WithIndexOffset((currentFrame / 2) % 8);
                 GfxDrawSprite(rt, spriteIdx, windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_4].left, widgets[WIDX_TAB_4].top });
             }
 
@@ -1258,7 +1258,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 ImageId spriteIdx(SPR_TAB_STATS_0);
                 if (page == WINDOW_PARK_PAGE_STATS)
-                    spriteIdx = spriteIdx.WithIndexOffset((frame_no / 4) % 7);
+                    spriteIdx = spriteIdx.WithIndexOffset((currentFrame / 4) % 7);
                 GfxDrawSprite(rt, spriteIdx, windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_5].left, widgets[WIDX_TAB_5].top });
             }
 
@@ -1267,7 +1267,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 ImageId spriteIdx(SPR_TAB_OBJECTIVE_0);
                 if (page == WINDOW_PARK_PAGE_OBJECTIVE)
-                    spriteIdx = spriteIdx.WithIndexOffset((frame_no / 4) % 16);
+                    spriteIdx = spriteIdx.WithIndexOffset((currentFrame / 4) % 16);
                 GfxDrawSprite(rt, spriteIdx, windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_6].left, widgets[WIDX_TAB_6].top });
             }
 

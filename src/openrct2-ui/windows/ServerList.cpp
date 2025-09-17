@@ -96,15 +96,15 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_PLAYER_NAME_INPUT].string = const_cast<utf8*>(_playerName.c_str());
             InitScrollWidgets();
 
-            no_list_items = 0;
-            selected_list_item = -1;
-            frame_no = 0;
+            numListItems = 0;
+            selectedListItem = -1;
+            currentFrame = 0;
             page = 0;
-            list_information_type = 0;
+            listInformationType = 0;
 
             WindowSetResize(*this, kMinimumWindowSize, kMaximumWindowSize);
 
-            no_list_items = static_cast<uint16_t>(_serverList.GetCount());
+            numListItems = static_cast<uint16_t>(_serverList.GetCount());
 
             ServerListFetchServersBegin();
         }
@@ -128,7 +128,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 case WIDX_LIST:
                 {
-                    int32_t serverIndex = selected_list_item;
+                    int32_t serverIndex = selectedListItem;
                     if (serverIndex >= 0 && serverIndex < static_cast<int32_t>(_serverList.GetCount()))
                     {
                         const auto& server = _serverList.GetServer(serverIndex);
@@ -168,7 +168,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 return;
             }
-            auto serverIndex = selected_list_item;
+            auto serverIndex = selectedListItem;
             if (serverIndex >= 0 && serverIndex < static_cast<int32_t>(_serverList.GetCount()))
             {
                 auto& server = _serverList.GetServer(serverIndex);
@@ -208,12 +208,12 @@ namespace OpenRCT2::Ui::Windows
 
         ScreenSize OnScrollGetSize(int32_t scrollIndex) override
         {
-            return { 0, no_list_items * kItemHeight };
+            return { 0, numListItems * kItemHeight };
         }
 
         void OnScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
-            int32_t serverIndex = selected_list_item;
+            int32_t serverIndex = selectedListItem;
             if (serverIndex >= 0 && serverIndex < static_cast<int32_t>(_serverList.GetCount()))
             {
                 const auto& server = _serverList.GetServer(serverIndex);
@@ -239,7 +239,7 @@ namespace OpenRCT2::Ui::Windows
 
             int32_t itemIndex = screenCoords.y / kItemHeight;
             bool showNetworkVersionTooltip = false;
-            if (itemIndex < 0 || itemIndex >= no_list_items)
+            if (itemIndex < 0 || itemIndex >= numListItems)
             {
                 itemIndex = -1;
             }
@@ -249,9 +249,9 @@ namespace OpenRCT2::Ui::Windows
                 showNetworkVersionTooltip = screenCoords.x > iconX;
             }
 
-            if (selected_list_item != itemIndex || _showNetworkVersionTooltip != showNetworkVersionTooltip)
+            if (selectedListItem != itemIndex || _showNetworkVersionTooltip != showNetworkVersionTooltip)
             {
-                selected_list_item = itemIndex;
+                selectedListItem = itemIndex;
                 _showNetworkVersionTooltip = showNetworkVersionTooltip;
 
                 listWidget.tooltip = showNetworkVersionTooltip ? static_cast<StringId>(STR_NETWORK_VERSION_TIP) : kStringIdNone;
@@ -333,13 +333,13 @@ namespace OpenRCT2::Ui::Windows
 
             ScreenCoordsXY screenCoords;
             screenCoords.y = 0;
-            for (int32_t i = 0; i < no_list_items; i++)
+            for (int32_t i = 0; i < numListItems; i++)
             {
                 if (screenCoords.y >= rt.y + rt.height)
                     continue;
 
                 const auto& serverDetails = _serverList.GetServer(i);
-                bool highlighted = i == selected_list_item;
+                bool highlighted = i == selectedListItem;
 
                 // Draw hover highlight
                 if (highlighted)
@@ -527,7 +527,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_START_SERVER].top = buttonTop;
             widgets[WIDX_START_SERVER].bottom = buttonBottom;
 
-            no_list_items = static_cast<uint16_t>(_serverList.GetCount());
+            numListItems = static_cast<uint16_t>(_serverList.GetCount());
         }
     };
 

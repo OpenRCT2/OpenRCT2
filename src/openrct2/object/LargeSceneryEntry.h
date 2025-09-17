@@ -49,7 +49,7 @@ namespace OpenRCT2
         {
             int16_t x, y;
         } offset[2];                       // 0x0
-        uint16_t max_width;                // 0x8
+        uint16_t maxWidth;                 // 0x8
         uint16_t PadA;                     // 0xA
         uint8_t flags;                     // 0xC
         uint8_t num_images;                // 0xD
@@ -100,7 +100,7 @@ namespace OpenRCT2
     struct LargeSceneryText
     {
         CoordsXY offset[2];
-        uint16_t max_width;
+        uint16_t maxWidth;
         uint8_t flags;
         uint16_t num_images;
         LargeSceneryTextGlyph glyphs[256];

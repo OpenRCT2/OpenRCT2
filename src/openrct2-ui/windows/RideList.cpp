@@ -187,9 +187,9 @@ namespace OpenRCT2::Ui::Windows
             WindowSetResize(*this, kWindowSize, kWindowSize * 2);
 
             page = PAGE_RIDES;
-            frame_no = 0;
+            currentFrame = 0;
 
-            list_information_type = INFORMATION_TYPE_STATUS;
+            listInformationType = INFORMATION_TYPE_STATUS;
             RefreshList();
 
             _windowRideListInformationType = INFORMATION_TYPE_STATUS;
@@ -203,15 +203,15 @@ namespace OpenRCT2::Ui::Windows
          */
         void OnResize() override
         {
-            if (width < min_width)
+            if (width < minWidth)
             {
                 Invalidate();
-                width = min_width;
+                width = minWidth;
             }
-            if (height < min_height)
+            if (height < minHeight)
             {
                 Invalidate();
-                height = min_height;
+                height = minHeight;
             }
         }
 
@@ -227,9 +227,9 @@ namespace OpenRCT2::Ui::Windows
                     Close();
                     break;
                 case WIDX_HEADER_NAME:
-                    if (list_information_type != INFORMATION_TYPE_STATUS)
+                    if (listInformationType != INFORMATION_TYPE_STATUS)
                     {
-                        list_information_type = INFORMATION_TYPE_STATUS;
+                        listInformationType = INFORMATION_TYPE_STATUS;
                         _windowListSortDescending = false;
                     }
                     else
@@ -239,9 +239,9 @@ namespace OpenRCT2::Ui::Windows
                     SortList();
                     break;
                 case WIDX_HEADER_OTHER:
-                    if (list_information_type != _windowRideListInformationType)
+                    if (listInformationType != _windowRideListInformationType)
                     {
-                        list_information_type = _windowRideListInformationType;
+                        listInformationType = _windowRideListInformationType;
                         _windowListSortDescending = true;
                     }
                     else
@@ -256,7 +256,7 @@ namespace OpenRCT2::Ui::Windows
                     if (page != widgetIndex - WIDX_TAB_1)
                     {
                         page = widgetIndex - WIDX_TAB_1;
-                        frame_no = 0;
+                        currentFrame = 0;
                         if (page != PAGE_RIDES && _windowRideListInformationType > INFORMATION_TYPE_RUNNING_COST)
                         {
                             _windowRideListInformationType = INFORMATION_TYPE_STATUS;
@@ -377,9 +377,9 @@ namespace OpenRCT2::Ui::Windows
                 Invalidate();
 
                 // Automatically change sort if we're sorting by the custom/info column
-                if (list_information_type != INFORMATION_TYPE_STATUS)
+                if (listInformationType != INFORMATION_TYPE_STATUS)
                 {
-                    list_information_type = _windowRideListInformationType;
+                    listInformationType = _windowRideListInformationType;
                     SortList();
                 }
             }
@@ -391,7 +391,7 @@ namespace OpenRCT2::Ui::Windows
          */
         void OnUpdate() override
         {
-            frame_no = (frame_no + 1) % 64;
+            currentFrame = (currentFrame + 1) % 64;
             InvalidateWidget(WIDX_TAB_1 + page);
             if (_windowRideListInformationType != INFORMATION_TYPE_STATUS)
                 Invalidate();
@@ -483,7 +483,7 @@ namespace OpenRCT2::Ui::Windows
             if (index < 0)
                 return;
 
-            selected_list_item = index;
+            selectedListItem = index;
             Invalidate();
         }
 
@@ -498,15 +498,15 @@ namespace OpenRCT2::Ui::Windows
 
             // Set correct active tab
             for (int32_t i = 0; i < 3; i++)
-                pressed_widgets &= ~(1 << (WIDX_TAB_1 + i));
-            pressed_widgets |= 1LL << (WIDX_TAB_1 + page);
+                pressedWidgets &= ~(1 << (WIDX_TAB_1 + i));
+            pressedWidgets |= 1LL << (WIDX_TAB_1 + page);
 
             widgets[WIDX_TITLE].text = page_names[page];
 
             if (_quickDemolishMode)
-                pressed_widgets |= (1uLL << WIDX_QUICK_DEMOLISH);
+                pressedWidgets |= (1uLL << WIDX_QUICK_DEMOLISH);
             else
-                pressed_widgets &= ~(1uLL << WIDX_QUICK_DEMOLISH);
+                pressedWidgets &= ~(1uLL << WIDX_QUICK_DEMOLISH);
 
             widgets[WIDX_LIST].right = width - 26;
             widgets[WIDX_LIST].bottom = height - 15;
@@ -587,7 +587,7 @@ namespace OpenRCT2::Ui::Windows
 
             const auto drawButtonCaption = [rt, this](Widget& widget, StringId strId, InformationType sortType) {
                 StringId indicatorId = kStringIdNone;
-                if (list_information_type == sortType && !(strId == STR_STATUS && sortType == INFORMATION_TYPE_STATUS))
+                if (listInformationType == sortType && !(strId == STR_STATUS && sortType == INFORMATION_TYPE_STATUS))
                     indicatorId = _windowListSortDescending ? STR_DOWN : STR_UP;
 
                 auto ft = Formatter();
@@ -633,7 +633,7 @@ namespace OpenRCT2::Ui::Windows
                 if (_quickDemolishMode)
                     format = STR_RED_STRINGID;
 
-                if (i == static_cast<size_t>(selected_list_item))
+                if (i == static_cast<size_t>(selectedListItem))
                 {
                     // Background highlight
                     GfxFilterRect(rt, { 0, y, 800, y + kScrollableRowHeight - 1 }, FilterPaletteID::PaletteDarken1);
@@ -874,21 +874,21 @@ namespace OpenRCT2::Ui::Windows
             // Rides tab
             sprite_idx = SPR_TAB_RIDE_0;
             if (page == PAGE_RIDES)
-                sprite_idx += frame_no / 4;
+                sprite_idx += currentFrame / 4;
             GfxDrawSprite(
                 rt, ImageId(sprite_idx), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_1].left, widgets[WIDX_TAB_1].top });
 
             // Shops and stalls tab
             sprite_idx = SPR_TAB_SHOPS_AND_STALLS_0;
             if (page == PAGE_SHOPS_AND_STALLS)
-                sprite_idx += frame_no / 4;
+                sprite_idx += currentFrame / 4;
             GfxDrawSprite(
                 rt, ImageId(sprite_idx), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_2].left, widgets[WIDX_TAB_2].top });
 
             // Information kiosks and facilities tab
             sprite_idx = SPR_TAB_KIOSKS_AND_FACILITIES_0;
             if (page == PAGE_KIOSKS_AND_FACILITIES)
-                sprite_idx += (frame_no / 4) % 8;
+                sprite_idx += (currentFrame / 4) % 8;
             GfxDrawSprite(
                 rt, ImageId(sprite_idx), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_3].left, widgets[WIDX_TAB_3].top });
         }
@@ -977,13 +977,13 @@ namespace OpenRCT2::Ui::Windows
                 _rideList.push_back(std::move(entry));
             }
 
-            selected_list_item = -1;
+            selectedListItem = -1;
             SortList();
         }
 
         void SortList()
         {
-            switch (list_information_type)
+            switch (listInformationType)
             {
                 case INFORMATION_TYPE_STATUS:
                     SortListByName();
@@ -1088,7 +1088,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
             }
 
-            selected_list_item = -1;
+            selectedListItem = -1;
             Invalidate();
         }
 

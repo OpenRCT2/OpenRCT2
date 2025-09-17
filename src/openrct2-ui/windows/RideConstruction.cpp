@@ -1000,7 +1000,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Set and invalidate the changed widgets
-            uint64_t currentDisabledWidgets = disabled_widgets;
+            uint64_t currentDisabledWidgets = disabledWidgets;
             if (currentDisabledWidgets == newDisabledWidgets)
                 return;
 
@@ -1011,7 +1011,7 @@ namespace OpenRCT2::Ui::Windows
                     InvalidateWidget(i);
                 }
             }
-            disabled_widgets = newDisabledWidgets;
+            disabledWidgets = newDisabledWidgets;
         }
 
         void OnUpdate() override
@@ -1642,11 +1642,11 @@ namespace OpenRCT2::Ui::Windows
                 simulateWidget.type = WidgetType::flatBtn;
                 if (currentRide->status == RideStatus::simulating)
                 {
-                    pressed_widgets |= (1uLL << WIDX_SIMULATE);
+                    pressedWidgets |= (1uLL << WIDX_SIMULATE);
                 }
                 else
                 {
-                    pressed_widgets &= ~(1uLL << WIDX_SIMULATE);
+                    pressedWidgets &= ~(1uLL << WIDX_SIMULATE);
                 }
             }
 
@@ -1738,7 +1738,7 @@ namespace OpenRCT2::Ui::Windows
             const auto& rtd = GetRideTypeDescriptor(currentRide->type);
             auto trackDrawerDescriptor = getCurrentTrackDrawerDescriptor(rtd);
 
-            hold_down_widgets = (1u << WIDX_CONSTRUCT) | (1u << WIDX_DEMOLISH) | (1u << WIDX_NEXT_SECTION)
+            holdDownWidgets = (1u << WIDX_CONSTRUCT) | (1u << WIDX_DEMOLISH) | (1u << WIDX_NEXT_SECTION)
                 | (1u << WIDX_PREVIOUS_SECTION);
             if (rtd.HasFlag(RtdFlag::isShopOrFacility) || !currentRide->hasStation())
             {
@@ -2034,7 +2034,7 @@ namespace OpenRCT2::Ui::Windows
                 auto spinnerStart = 124 + widgets[WIDX_TITLE].bottom;
                 ResizeSpinner(WIDX_SPEED_SETTING_SPINNER, { 12, spinnerStart }, { 85, kSpinnerHeight });
 
-                hold_down_widgets |= (1uLL << WIDX_SPEED_SETTING_SPINNER_UP) | (1uLL << WIDX_SPEED_SETTING_SPINNER_DOWN);
+                holdDownWidgets |= (1uLL << WIDX_SPEED_SETTING_SPINNER_UP) | (1uLL << WIDX_SPEED_SETTING_SPINNER_DOWN);
             }
 
             static constexpr int16_t bankingGroupboxRightNoSeatRotation = kGroupWidth;
@@ -2077,7 +2077,7 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
 
-            uint64_t newPressedWidgets = pressed_widgets
+            uint64_t newPressedWidgets = pressedWidgets
                 & ((1uLL << WIDX_BACKGROUND) | (1uLL << WIDX_TITLE) | (1uLL << WIDX_CLOSE) | (1uLL << WIDX_DIRECTION_GROUPBOX)
                    | (1uLL << WIDX_SLOPE_GROUPBOX) | (1uLL << WIDX_BANKING_GROUPBOX) | (1uLL << WIDX_CONSTRUCT)
                    | (1uLL << WIDX_DEMOLISH) | (1uLL << WIDX_PREVIOUS_SECTION) | (1uLL << WIDX_NEXT_SECTION)
@@ -2120,7 +2120,7 @@ namespace OpenRCT2::Ui::Windows
                     widgets[WIDX_PREVIOUS_SECTION].type = WidgetType::empty;
                     break;
                 default:
-                    pressed_widgets = newPressedWidgets;
+                    pressedWidgets = newPressedWidgets;
                     Invalidate();
                     return;
             }
@@ -2219,7 +2219,7 @@ namespace OpenRCT2::Ui::Windows
             if (_currentTrackHasLiftHill)
                 newPressedWidgets |= (1uLL << WIDX_CHAIN_LIFT);
 
-            pressed_widgets = newPressedWidgets;
+            pressedWidgets = newPressedWidgets;
             Invalidate();
         }
 

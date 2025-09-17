@@ -358,7 +358,7 @@ namespace OpenRCT2::Ui::Windows
                         [de](const ObjectEntryDescriptor& e) { return de.GetName() == e.GetName(); }),
                     _invalidEntries.end());
             }
-            no_list_items = static_cast<uint16_t>(_invalidEntries.size());
+            numListItems = static_cast<uint16_t>(_invalidEntries.size());
         }
 #endif
 
@@ -369,7 +369,7 @@ namespace OpenRCT2::Ui::Windows
         void CopyObjectNamesToClipboard()
         {
             std::stringstream stream;
-            for (uint16_t i = 0; i < no_list_items; i++)
+            for (uint16_t i = 0; i < numListItems; i++)
             {
                 const auto& entry = _invalidEntries[i];
                 stream << entry.GetName();
@@ -382,13 +382,13 @@ namespace OpenRCT2::Ui::Windows
 
         void SelectObjectFromList(const int32_t index)
         {
-            if (index < 0 || index > no_list_items)
+            if (index < 0 || index > numListItems)
             {
-                selected_list_item = -1;
+                selectedListItem = -1;
             }
             else
             {
-                selected_list_item = index;
+                selectedListItem = index;
             }
             InvalidateWidget(WIDX_SCROLL);
         }
@@ -418,9 +418,9 @@ namespace OpenRCT2::Ui::Windows
                     Close();
                     return;
                 case WIDX_COPY_CURRENT:
-                    if (selected_list_item > -1 && selected_list_item < no_list_items)
+                    if (selectedListItem > -1 && selectedListItem < numListItems)
                     {
-                        const auto name = std::string(_invalidEntries[selected_list_item].GetName());
+                        const auto name = std::string(_invalidEntries[selectedListItem].GetName());
                         OpenRCT2::GetContext()->GetUiContext().SetClipboardText(name.c_str());
                     }
                     break;
@@ -437,7 +437,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnUpdate() override
         {
-            frame_no++;
+            currentFrame++;
 
             // Check if the mouse is hovering over the list
             if (!widgetIsHighlighted(*this, WIDX_SCROLL))
@@ -453,7 +453,7 @@ namespace OpenRCT2::Ui::Windows
             if (_objDownloader.IsDownloading())
             {
                 // Don't do this too often as it isn't particularly efficient
-                if (frame_no % 64 == 0)
+                if (currentFrame % 64 == 0)
                 {
                     UpdateObjectList();
                 }
@@ -468,7 +468,7 @@ namespace OpenRCT2::Ui::Windows
 
         ScreenSize OnScrollGetSize(const int32_t scrollIndex) override
         {
-            return ScreenSize(0, no_list_items * kScrollableRowHeight);
+            return ScreenSize(0, numListItems * kScrollableRowHeight);
         }
 
         void OnScrollMouseDown(const int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
@@ -481,7 +481,7 @@ namespace OpenRCT2::Ui::Windows
         {
             // Highlight item that the cursor is over, or remove highlighting if none
             const auto selectedItem = screenCoords.y / kScrollableRowHeight;
-            if (selectedItem < 0 || selectedItem >= no_list_items)
+            if (selectedItem < 0 || selectedItem >= numListItems)
                 _highlightedIndex = -1;
             else
                 _highlightedIndex = selectedItem;
@@ -515,7 +515,7 @@ namespace OpenRCT2::Ui::Windows
                 ColourMapA[colours[1].colour].mid_light);
             const int32_t listWidth = widgets[WIDX_SCROLL].width();
 
-            for (int32_t i = 0; i < no_list_items; i++)
+            for (int32_t i = 0; i < numListItems; i++)
             {
                 ScreenCoordsXY screenCoords;
                 screenCoords.y = i * kScrollableRowHeight;
@@ -528,7 +528,7 @@ namespace OpenRCT2::Ui::Windows
                 const auto screenRect = ScreenRect{ { 0, screenCoords.y },
                                                     { listWidth, screenCoords.y + kScrollableRowHeight - 1 } };
                 // If hovering over item, change the color and fill the backdrop.
-                if (i == selected_list_item)
+                if (i == selectedListItem)
                     GfxFillRect(rt, screenRect, ColourMapA[colours[1].colour].darker);
                 else if (i == _highlightedIndex)
                     GfxFillRect(rt, screenRect, ColourMapA[colours[1].colour].mid_dark);
@@ -563,7 +563,7 @@ namespace OpenRCT2::Ui::Windows
             _invalidEntries = std::vector<ObjectEntryDescriptor>(missingObjects, missingObjects + numMissingObjects);
 
             // Refresh list items and path
-            no_list_items = static_cast<uint16_t>(numMissingObjects);
+            numListItems = static_cast<uint16_t>(numMissingObjects);
             _filePath = path;
 
             Invalidate();

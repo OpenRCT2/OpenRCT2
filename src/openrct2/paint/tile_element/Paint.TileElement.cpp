@@ -184,26 +184,26 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
 
     const TileElement* element = tile_element; // push tile_element
 
-    uint16_t max_height = 0;
+    uint16_t maxHeight = 0;
     do
     {
-        max_height = std::max(max_height, static_cast<uint16_t>(element->GetClearanceZ()));
+        maxHeight = std::max(maxHeight, static_cast<uint16_t>(element->GetClearanceZ()));
     } while (!(element++)->IsLastForTile());
 
     element--;
 
     if (element->GetType() == TileElementType::Surface && (element->AsSurface()->GetWaterHeight() > 0))
     {
-        max_height = std::max(max_height, static_cast<uint16_t>(element->AsSurface()->GetWaterHeight()));
+        maxHeight = std::max(maxHeight, static_cast<uint16_t>(element->AsSurface()->GetWaterHeight()));
     }
 
     if (partOfVirtualFloor)
     {
         // We must pretend this tile is at least as tall as the virtual floor
-        max_height = std::max(max_height, VirtualFloorGetHeight());
+        maxHeight = std::max(maxHeight, VirtualFloorGetHeight());
     }
 
-    if (screenMinY - (max_height + 32) >= session.DPI.WorldY() + session.DPI.WorldHeight())
+    if (screenMinY - (maxHeight + 32) >= session.DPI.WorldY() + session.DPI.WorldHeight())
         return;
 
     session.SpritePosition.x = coords.x;

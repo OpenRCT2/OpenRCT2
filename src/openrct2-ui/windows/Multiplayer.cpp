@@ -211,12 +211,12 @@ namespace OpenRCT2::Ui::Windows
         _windowInformationSize.reset();
 
         page = page_number;
-        frame_no = 0;
-        no_list_items = 0;
-        selected_list_item = -1;
+        currentFrame = 0;
+        numListItems = 0;
+        selectedListItem = -1;
 
-        hold_down_widgets = 0;
-        pressed_widgets = 0;
+        holdDownWidgets = 0;
+        pressedWidgets = 0;
         SetWidgets(window_multiplayer_page_widgets[page]);
         widgets[WIDX_TITLE].text = WindowMultiplayerPageTitles[page];
 
@@ -357,11 +357,11 @@ namespace OpenRCT2::Ui::Windows
             {
                 WindowSetResize(*this, { 420, 124 }, { 500, 450 });
 
-                no_list_items = (IsServerPlayerInvisible() ? Network::GetNumVisiblePlayers() : Network::GetNumPlayers());
+                numListItems = (IsServerPlayerInvisible() ? Network::GetNumVisiblePlayers() : Network::GetNumPlayers());
 
                 widgets[WIDX_HEADER_PING].right = width - 5;
 
-                selected_list_item = -1;
+                selectedListItem = -1;
                 Invalidate();
                 break;
             }
@@ -369,9 +369,9 @@ namespace OpenRCT2::Ui::Windows
             {
                 WindowSetResize(*this, { 320, 200 }, { 320, 500 });
 
-                no_list_items = Network::GetNumActions();
+                numListItems = Network::GetNumActions();
 
-                selected_list_item = -1;
+                selectedListItem = -1;
                 Invalidate();
                 break;
             }
@@ -385,7 +385,7 @@ namespace OpenRCT2::Ui::Windows
 
     void MultiplayerWindow::OnUpdate()
     {
-        frame_no++;
+        currentFrame++;
         InvalidateWidget(WIDX_TAB1 + page);
     }
 
@@ -570,9 +570,9 @@ namespace OpenRCT2::Ui::Windows
         {
             case WINDOW_MULTIPLAYER_PAGE_PLAYERS:
             {
-                if (selected_list_item != -1)
+                if (selectedListItem != -1)
                 {
-                    selected_list_item = -1;
+                    selectedListItem = -1;
                     Invalidate();
                 }
 
@@ -590,9 +590,9 @@ namespace OpenRCT2::Ui::Windows
 
             case WINDOW_MULTIPLAYER_PAGE_GROUPS:
             {
-                if (selected_list_item != -1)
+                if (selectedListItem != -1)
                 {
-                    selected_list_item = -1;
+                    selectedListItem = -1;
                     Invalidate();
                 }
 
@@ -618,10 +618,10 @@ namespace OpenRCT2::Ui::Windows
             case WINDOW_MULTIPLAYER_PAGE_PLAYERS:
             {
                 int32_t index = screenCoords.y / kScrollableRowHeight;
-                if (index >= no_list_items)
+                if (index >= numListItems)
                     return;
 
-                selected_list_item = index;
+                selectedListItem = index;
                 Invalidate();
 
                 int32_t player = (IsServerPlayerInvisible() ? index + 1 : index);
@@ -632,10 +632,10 @@ namespace OpenRCT2::Ui::Windows
             case WINDOW_MULTIPLAYER_PAGE_GROUPS:
             {
                 int32_t index = screenCoords.y / kScrollableRowHeight;
-                if (index >= no_list_items)
+                if (index >= numListItems)
                     return;
 
-                selected_list_item = index;
+                selectedListItem = index;
                 Invalidate();
 
                 auto networkModifyGroup = GameActions::NetworkModifyGroupAction(
@@ -655,10 +655,10 @@ namespace OpenRCT2::Ui::Windows
             case WINDOW_MULTIPLAYER_PAGE_GROUPS:
             {
                 int32_t index = screenCoords.y / kScrollableRowHeight;
-                if (index >= no_list_items)
+                if (index >= numListItems)
                     return;
 
-                selected_list_item = index;
+                selectedListItem = index;
                 Invalidate();
                 break;
             }
@@ -735,10 +735,10 @@ namespace OpenRCT2::Ui::Windows
     void MultiplayerWindow::PlayersPaint(RenderTarget& rt)
     {
         // Number of players
-        StringId stringId = no_list_items == 1 ? STR_MULTIPLAYER_PLAYER_COUNT : STR_MULTIPLAYER_PLAYER_COUNT_PLURAL;
+        StringId stringId = numListItems == 1 ? STR_MULTIPLAYER_PLAYER_COUNT : STR_MULTIPLAYER_PLAYER_COUNT_PLURAL;
         auto screenCoords = windowPos + ScreenCoordsXY{ 4, widgets[WIDX_LIST].bottom + 2 };
         auto ft = Formatter();
-        ft.Add<uint16_t>(no_list_items);
+        ft.Add<uint16_t>(numListItems);
         DrawTextBasic(rt, screenCoords, stringId, ft, { colours[2] });
     }
 
@@ -765,7 +765,7 @@ namespace OpenRCT2::Ui::Windows
 
                 // Draw player name
                 auto colour = ColourWithFlags{ COLOUR_BLACK };
-                if (listPosition == selected_list_item)
+                if (listPosition == selectedListItem)
                 {
                     GfxFilterRect(
                         rt, { 0, screenCoords.y, 800, screenCoords.y + kScrollableRowHeight - 1 },
@@ -896,7 +896,7 @@ namespace OpenRCT2::Ui::Windows
 
         for (int32_t i = 0; i < Network::GetNumActions(); i++)
         {
-            if (i == selected_list_item)
+            if (i == selectedListItem)
             {
                 GfxFilterRect(
                     rt, { 0, screenCoords.y, 800, screenCoords.y + kScrollableRowHeight - 1 }, FilterPaletteID::PaletteDarken1);
@@ -938,7 +938,7 @@ namespace OpenRCT2::Ui::Windows
                 int32_t numFrames = window_multiplayer_animation_frames[page];
                 if (numFrames > 1)
                 {
-                    int32_t frame = frame_no / window_multiplayer_animation_divisor[page];
+                    int32_t frame = currentFrame / window_multiplayer_animation_divisor[page];
                     spriteIndex += (frame % numFrames);
                 }
             }

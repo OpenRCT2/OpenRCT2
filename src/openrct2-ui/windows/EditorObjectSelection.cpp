@@ -282,15 +282,15 @@ namespace OpenRCT2::Ui::Windows
 
             WindowInitScrollWidgets(*this);
 
-            selected_tab = 0;
-            selected_list_item = -1;
+            selectedTab = 0;
+            selectedListItem = -1;
 
             WindowSetResize(*this, kMinimumWindowSize, kMaximumWindowSize);
 
             _listSortType = RIDE_SORT_TYPE;
             _listSortDescending = false;
 
-            disabled_widgets |= 1u << WIDX_FILTER_RIDE_TAB_FRAME;
+            disabledWidgets |= 1u << WIDX_FILTER_RIDE_TAB_FRAME;
 
             VisibleListRefresh();
         }
@@ -349,7 +349,7 @@ namespace OpenRCT2::Ui::Windows
                 InvalidateWidget(WIDX_FILTER_TEXT_BOX);
             }
 
-            auto& currentPage = ObjectSelectionPages[selected_tab];
+            auto& currentPage = ObjectSelectionPages[selectedTab];
             if (currentPage.subTabs.empty())
                 return;
 
@@ -358,9 +358,9 @@ namespace OpenRCT2::Ui::Windows
 
             auto& subTabDef = currentPage.subTabs[_selectedSubTab];
 
-            frame_no++;
-            if (frame_no >= subTabDef.animationLength)
-                frame_no = 0;
+            currentFrame++;
+            if (currentFrame >= subTabDef.animationLength)
+                currentFrame = 0;
 
             InvalidateWidget(WIDX_SUB_TAB_0 + _selectedSubTab);
         }
@@ -406,7 +406,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     _selectedSubTab = widgetIndex - WIDX_SUB_TAB_0;
 
-                    auto& currentPage = ObjectSelectionPages[selected_tab];
+                    auto& currentPage = ObjectSelectionPages[selectedTab];
                     auto& subTabDef = currentPage.subTabs[_selectedSubTab];
                     _filterFlags &= ~FILTER_RIDES_ALL;
                     _filterFlags |= subTabDef.flagFilter;
@@ -416,18 +416,18 @@ namespace OpenRCT2::Ui::Windows
 
                     VisibleListRefresh();
 
-                    selected_list_item = -1;
+                    selectedListItem = -1;
                     scrolls[0].contentOffsetY = 0;
-                    frame_no = 0;
+                    currentFrame = 0;
                     Invalidate();
                     break;
                 }
 
                 case WIDX_INSTALL_TRACK:
                 {
-                    if (selected_list_item != -1)
+                    if (selectedListItem != -1)
                     {
-                        selected_list_item = -1;
+                        selectedListItem = -1;
                     }
                     Invalidate();
 
@@ -697,9 +697,9 @@ namespace OpenRCT2::Ui::Windows
                     selectedObject = -1;
                 }
             }
-            if (selectedObject != selected_list_item)
+            if (selectedObject != selectedListItem)
             {
-                selected_list_item = selectedObject;
+                selectedListItem = selectedObject;
 
                 if (_loadedObject != nullptr)
                 {
@@ -743,7 +743,7 @@ namespace OpenRCT2::Ui::Windows
                             rt, { { 2, screenCoords.y }, { 11, screenCoords.y + 10 } }, colours[1], INSET_RECT_F_E0);
 
                     // Highlight background
-                    auto highlighted = i == static_cast<size_t>(selected_list_item)
+                    auto highlighted = i == static_cast<size_t>(selectedListItem)
                         && !(*listItem.flags & ObjectSelectionFlags::Flag6);
                     if (highlighted)
                     {
@@ -857,7 +857,7 @@ namespace OpenRCT2::Ui::Windows
             installTrackWidget.moveToX(dropdownWidget.left - installTrackWidget.width() - 10);
 
             // Set pressed widgets
-            pressed_widgets |= 1uLL << WIDX_PREVIEW;
+            pressedWidgets |= 1uLL << WIDX_PREVIEW;
             SetPressedTab();
 
             // Set window title and buttons
@@ -879,7 +879,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Set title parameters for current page
-            const auto& currentPage = ObjectSelectionPages[selected_tab];
+            const auto& currentPage = ObjectSelectionPages[selectedTab];
             auto ft = Formatter::Common();
             if (!currentPage.subTabs.empty())
                 ft.Add<StringId>(currentPage.subTabs[_selectedSubTab].tooltip);
@@ -957,13 +957,13 @@ namespace OpenRCT2::Ui::Windows
             {
                 widgets[WIDX_SUB_TAB_0 + i].tooltip = i < numSubTabs ? currentPage.subTabs[i].tooltip : kStringIdNone;
                 widgets[WIDX_SUB_TAB_0 + i].type = i < numSubTabs ? WidgetType::tab : WidgetType::empty;
-                pressed_widgets &= ~(1uLL << (WIDX_SUB_TAB_0 + i));
+                pressedWidgets &= ~(1uLL << (WIDX_SUB_TAB_0 + i));
             }
 
             // Mark current sub-tab as active, and toggle tab frame
             if (hasSubTabs)
             {
-                pressed_widgets |= (1uLL << (WIDX_SUB_TAB_0 + _selectedSubTab));
+                pressedWidgets |= (1uLL << (WIDX_SUB_TAB_0 + _selectedSubTab));
                 widgets[WIDX_FILTER_RIDE_TAB_FRAME].type = WidgetType::imgBtn;
             }
             else
@@ -1024,7 +1024,7 @@ namespace OpenRCT2::Ui::Windows
             };
 
             // Draw sub-tab images, if applicable
-            auto& currentPage = ObjectSelectionPages[selected_tab];
+            auto& currentPage = ObjectSelectionPages[selectedTab];
             if (!currentPage.subTabs.empty())
             {
                 for (auto i = 0u; i < currentPage.subTabs.size(); i++)
@@ -1037,7 +1037,7 @@ namespace OpenRCT2::Ui::Windows
                     int32_t frame = 0;
                     if (subTabDef.animationLength > 1 && _selectedSubTab == i)
                     {
-                        frame = frame_no / subTabDef.animationDivisor;
+                        frame = currentFrame / subTabDef.animationDivisor;
                     }
 
                     // TODO: generalise this?
@@ -1099,7 +1099,7 @@ namespace OpenRCT2::Ui::Windows
                 DrawTextEllipsised(rt, screenPos, listSortRideWidget.width(), STR_OBJECTS_SORT_RIDE, ft, { colours[1] });
             }
 
-            if (selected_list_item == -1 || _loadedObject == nullptr)
+            if (selectedListItem == -1 || _loadedObject == nullptr)
                 return;
 
             // Draw preview
@@ -1152,15 +1152,15 @@ namespace OpenRCT2::Ui::Windows
         void SetPage(int32_t _page)
         {
             // Skip setting page if we're already on this page, unless we're initialising the window
-            if (selected_tab == _page && !widgets.empty())
+            if (selectedTab == _page && !widgets.empty())
                 return;
 
-            selected_tab = _page;
+            selectedTab = _page;
             _selectedSubTab = 0;
             _filterFlags |= FILTER_RIDES_ALL;
-            selected_list_item = -1;
+            selectedListItem = -1;
             scrolls[0].contentOffsetY = 0;
-            frame_no = 0;
+            currentFrame = 0;
 
             if (_page == EnumValue(ObjectType::ride))
             {
@@ -1182,7 +1182,7 @@ namespace OpenRCT2::Ui::Windows
             int32_t numObjects = static_cast<int32_t>(ObjectRepositoryGetItemsCount());
 
             VisibleListClear();
-            selected_list_item = -1;
+            selectedListItem = -1;
 
             const ObjectRepositoryItem* items = ObjectRepositoryGetItems();
             for (int32_t i = 0; i < numObjects; i++)
@@ -1250,7 +1250,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Draw name of object
             {
-                ObjectListItem* listItem = &_listItems[selected_list_item];
+                ObjectListItem* listItem = &_listItems[selectedListItem];
 
                 auto ft = Formatter();
                 ft.Add<StringId>(STR_STRING);
@@ -1353,7 +1353,7 @@ namespace OpenRCT2::Ui::Windows
 
         void DrawDebugData(RenderTarget& rt)
         {
-            ObjectListItem* listItem = &_listItems[selected_list_item];
+            ObjectListItem* listItem = &_listItems[selectedListItem];
             auto screenPos = windowPos + ScreenCoordsXY{ width - 5, height - (kListRowHeight * 6) };
 
             // Draw fallback image warning
@@ -1563,7 +1563,7 @@ namespace OpenRCT2::Ui::Windows
 
         ObjectType GetSelectedObjectType()
         {
-            auto& currentPage = ObjectSelectionPages[selected_tab];
+            auto& currentPage = ObjectSelectionPages[selectedTab];
             auto& subTabs = currentPage.subTabs;
             if (!subTabs.empty())
                 return subTabs[_selectedSubTab].subObjectType;
@@ -1592,9 +1592,9 @@ namespace OpenRCT2::Ui::Windows
         {
             for (size_t i = 0; i < std::size(ObjectSelectionPages); i++)
             {
-                pressed_widgets &= ~(1ull << (WIDX_TAB_1 + i));
+                pressedWidgets &= ~(1ull << (WIDX_TAB_1 + i));
             }
-            pressed_widgets |= 1LL << (WIDX_TAB_1 + selected_tab);
+            pressedWidgets |= 1LL << (WIDX_TAB_1 + selectedTab);
         }
 
         /**

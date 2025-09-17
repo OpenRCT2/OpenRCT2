@@ -99,13 +99,13 @@ namespace OpenRCT2::Ui::Windows
         void OnOpen() override
         {
             page = 0;
-            frame_no = 0;
-            list_information_type = 0;
+            currentFrame = 0;
+            listInformationType = 0;
 
             WindowSetResize(*this, { 210, 134 }, { 500, 450 });
 
-            hold_down_widgets = 0;
-            pressed_widgets = 0;
+            holdDownWidgets = 0;
+            pressedWidgets = 0;
             SetPage(WINDOW_PLAYER_PAGE_OVERVIEW);
         }
 
@@ -218,10 +218,10 @@ namespace OpenRCT2::Ui::Windows
             int32_t originalPage = page;
 
             page = newPage;
-            frame_no = 0;
+            currentFrame = 0;
 
-            hold_down_widgets = 0;
-            pressed_widgets = 0;
+            holdDownWidgets = 0;
+            pressedWidgets = 0;
             SetWidgets(window_player_page_widgets[newPage]);
             Invalidate();
             OnResize();
@@ -272,7 +272,7 @@ namespace OpenRCT2::Ui::Windows
 
                 if (page == WINDOW_PLAYER_PAGE_STATISTICS)
                 {
-                    imageId += (frame_no / 2) & 7;
+                    imageId += (currentFrame / 2) & 7;
                 }
 
                 GfxDrawSprite(rt, ImageId(imageId), screenCoords);
@@ -348,7 +348,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnUpdateOverview()
         {
-            frame_no++;
+            currentFrame++;
             InvalidateWidget(WIDX_TAB_1 + page);
 
             if (Network::GetPlayerIndex(static_cast<uint8_t>(number)) == -1)
@@ -377,9 +377,9 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            pressed_widgets &= ~(WIDX_TAB_1);
-            pressed_widgets &= ~(WIDX_TAB_2);
-            pressed_widgets |= 1uLL << (page + WIDX_TAB_1);
+            pressedWidgets &= ~(WIDX_TAB_1);
+            pressedWidgets &= ~(WIDX_TAB_2);
+            pressedWidgets |= 1uLL << (page + WIDX_TAB_1);
 
             UpdateTitle();
 
@@ -579,7 +579,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnUpdateStatistics()
         {
-            frame_no++;
+            currentFrame++;
             InvalidateWidget(WIDX_TAB_1 + page);
 
             if (Network::GetPlayerIndex(static_cast<uint8_t>(number)) == -1)
@@ -590,9 +590,9 @@ namespace OpenRCT2::Ui::Windows
 
         void OnPrepareDrawStatistics()
         {
-            pressed_widgets &= ~(WIDX_TAB_1);
-            pressed_widgets &= ~(WIDX_TAB_2);
-            pressed_widgets |= 1uLL << (page + WIDX_TAB_1);
+            pressedWidgets &= ~(WIDX_TAB_1);
+            pressedWidgets &= ~(WIDX_TAB_2);
+            pressedWidgets |= 1uLL << (page + WIDX_TAB_1);
 
             UpdateTitle();
 

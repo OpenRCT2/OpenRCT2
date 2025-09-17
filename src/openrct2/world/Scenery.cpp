@@ -75,7 +75,7 @@ LargeSceneryText::LargeSceneryText(const RCTLargeSceneryText& original)
         offset[i].x = original.offset[i].x;
         offset[i].y = original.offset[i].y;
     }
-    max_width = original.max_width;
+    maxWidth = original.maxWidth;
     flags = original.flags;
     num_images = original.num_images;
     for (size_t i = 0; i < std::size(original.glyphs); i++)

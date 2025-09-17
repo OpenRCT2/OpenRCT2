@@ -283,11 +283,11 @@ namespace OpenRCT2::Ui::Windows
 
             if (IsActive())
             {
-                this->pressed_widgets |= 1uLL << WIDX_CLIP_SELECTOR;
+                this->pressedWidgets |= 1uLL << WIDX_CLIP_SELECTOR;
             }
             else
             {
-                this->pressed_widgets &= ~(1uLL << WIDX_CLIP_SELECTOR);
+                this->pressedWidgets &= ~(1uLL << WIDX_CLIP_SELECTOR);
             }
         }
 
@@ -364,7 +364,7 @@ namespace OpenRCT2::Ui::Windows
         {
             SetWidgets(_viewClippingWidgets);
 
-            this->hold_down_widgets = (1uLL << WIDX_CLIP_HEIGHT_INCREASE) | (1uL << WIDX_CLIP_HEIGHT_DECREASE);
+            this->holdDownWidgets = (1uLL << WIDX_CLIP_HEIGHT_INCREASE) | (1uL << WIDX_CLIP_HEIGHT_DECREASE);
             WindowInitScrollWidgets(*this);
 
             _clipHeightDisplayType = DisplayType::DisplayUnits;

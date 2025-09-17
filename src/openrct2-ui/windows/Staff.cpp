@@ -644,8 +644,8 @@ namespace OpenRCT2::Ui::Windows
             const auto pickAnimLength = pickAnim.frame_offsets.size();
 
             // Update pickup animation frame
-            picked_peep_frame++;
-            picked_peep_frame %= pickAnimLength * 4;
+            pickedPeepFrame++;
+            pickedPeepFrame %= pickAnimLength * 4;
 
             InvalidateWidget(WIDX_TAB_1);
 
@@ -695,7 +695,7 @@ namespace OpenRCT2::Ui::Windows
             auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(staff->AnimationObjectIndex);
 
             auto& pickupAnim = animObj->GetPeepAnimation(staff->AnimationGroup, PeepAnimationType::Hanging);
-            auto baseImageId = pickupAnim.base_image + pickupAnim.frame_offsets[picked_peep_frame >> 2];
+            auto baseImageId = pickupAnim.base_image + pickupAnim.frame_offsets[pickedPeepFrame >> 2];
             gPickupPeepImage = ImageId(baseImageId, staff->TshirtColour, staff->TrousersColour);
         }
 
@@ -919,7 +919,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OptionsUpdate()
         {
-            frame_no++;
+            currentFrame++;
             InvalidateWidget(WIDX_TAB_2);
         }
 #pragma endregion
@@ -998,7 +998,7 @@ namespace OpenRCT2::Ui::Windows
 
         void StatsUpdate()
         {
-            frame_no++;
+            currentFrame++;
             InvalidateWidget(WIDX_TAB_3);
 
             auto staff = GetStaff();
@@ -1069,9 +1069,9 @@ namespace OpenRCT2::Ui::Windows
                 return;
 
             page = newPage;
-            frame_no = 0;
-            pressed_widgets = 0;
-            hold_down_widgets = 0;
+            currentFrame = 0;
+            pressedWidgets = 0;
+            holdDownWidgets = 0;
             SetWidgets(window_staff_page_widgets[page]);
 
             RemoveViewport();
@@ -1200,7 +1200,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 if (page == p)
                 {
-                    int32_t frame = frame_no / TabAnimationDivisor[page - 1];
+                    int32_t frame = currentFrame / TabAnimationDivisor[page - 1];
                     baseImageId += (frame % TabAnimationFrames);
                 }
 

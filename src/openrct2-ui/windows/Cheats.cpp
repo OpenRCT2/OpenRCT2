@@ -360,7 +360,7 @@ static constexpr std::span<const Widget> window_cheats_page_widgets[] =
     window_cheats_weather_widgets,
 };
 
-static uint64_t window_cheats_page_hold_down_widgets[] = {
+static uint64_t window_cheats_page_holdDownWidgets[] = {
     (1uLL << WIDX_MONEY_SPINNER_INCREMENT) |
     (1uLL << WIDX_MONEY_SPINNER_DECREMENT) |
     (1uLL << WIDX_ADD_MONEY),
@@ -414,7 +414,7 @@ static StringId window_cheats_page_titles[] = {
 
         void OnUpdate() override
         {
-            frame_no++;
+            currentFrame++;
             InvalidateWidget(WIDX_TAB_1 + page);
         }
 
@@ -496,8 +496,8 @@ static StringId window_cheats_page_titles[] = {
 
         void OnPrepareDraw() override
         {
-            pressed_widgets = 0;
-            disabled_widgets = 0;
+            pressedWidgets = 0;
+            disabledWidgets = 0;
 
             // Set correct active tab
             for (auto i = 0; i < WINDOW_CHEATS_PAGE_COUNT; i++)
@@ -735,10 +735,10 @@ static StringId window_cheats_page_titles[] = {
                 return;
 
             page = p;
-            frame_no = 0;
+            currentFrame = 0;
 
-            hold_down_widgets = window_cheats_page_hold_down_widgets[p];
-            pressed_widgets = 0;
+            holdDownWidgets = window_cheats_page_holdDownWidgets[p];
+            pressedWidgets = 0;
             SetWidgets(window_cheats_page_widgets[p]);
 
             auto maxY = 0;
@@ -782,7 +782,7 @@ static StringId window_cheats_page_titles[] = {
             {
                 uint32_t sprite_idx = SPR_TAB_FINANCES_SUMMARY_0;
                 if (page == WINDOW_CHEATS_PAGE_MONEY)
-                    sprite_idx += (frame_no / 2) % 8;
+                    sprite_idx += (currentFrame / 2) % 8;
                 GfxDrawSprite(
                     rt, ImageId(sprite_idx), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_1].left, widgets[WIDX_TAB_1].top });
             }
@@ -792,7 +792,7 @@ static StringId window_cheats_page_titles[] = {
             {
                 uint32_t sprite_idx = SPR_TAB_TIMER_0;
                 if (page == WINDOW_CHEATS_PAGE_DATE)
-                    sprite_idx += (frame_no / 8) % 8;
+                    sprite_idx += (currentFrame / 8) % 8;
                 GfxDrawSprite(
                     rt, ImageId(sprite_idx), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_2].left, widgets[WIDX_TAB_2].top });
             }
@@ -802,7 +802,7 @@ static StringId window_cheats_page_titles[] = {
             {
                 uint32_t sprite_idx = SPR_TAB_GUESTS_0;
                 if (page == WINDOW_CHEATS_PAGE_GUESTS)
-                    sprite_idx += (frame_no / 3) % 8;
+                    sprite_idx += (currentFrame / 3) % 8;
                 GfxDrawSprite(
                     rt, ImageId(sprite_idx), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_3].left, widgets[WIDX_TAB_3].top });
             }
@@ -828,7 +828,7 @@ static StringId window_cheats_page_titles[] = {
             {
                 uint32_t sprite_idx = SPR_TAB_RIDE_0;
                 if (page == WINDOW_CHEATS_PAGE_RIDES)
-                    sprite_idx += (frame_no / 4) % 16;
+                    sprite_idx += (currentFrame / 4) % 16;
                 GfxDrawSprite(
                     rt, ImageId(sprite_idx), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_6].left, widgets[WIDX_TAB_6].top });
             }

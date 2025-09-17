@@ -110,7 +110,7 @@ namespace OpenRCT2::Ui::Windows
                 return false;
 
             int32_t viewZ = tileElement->GetBaseZ();
-            frame_no = viewZ;
+            currentFrame = viewZ;
 
             if (_isSmall)
             {
@@ -316,7 +316,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            auto signViewPos = CoordsXYZ{ banner->position.ToCoordsXY().ToTileCentre(), frame_no };
+            auto signViewPos = CoordsXYZ{ banner->position.ToCoordsXY().ToTileCentre(), currentFrame };
 
             // Create viewport
             Widget* viewportWidget = &widgets[WIDX_VIEWPORT];

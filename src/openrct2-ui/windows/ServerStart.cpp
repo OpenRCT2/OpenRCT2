@@ -74,9 +74,9 @@ namespace OpenRCT2::Ui::Windows
             InitScrollWidgets();
             WindowSetResize(*this, { width, height }, { width, height });
 
-            frame_no = 0;
+            currentFrame = 0;
             page = 0;
-            list_information_type = 0;
+            listInformationType = 0;
 
             snprintf(_port, 7, "%u", Config::Get().network.DefaultPort);
             String::safeUtf8Copy(_name, Config::Get().network.ServerName.c_str(), sizeof(_name));

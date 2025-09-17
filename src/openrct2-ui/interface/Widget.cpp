@@ -866,14 +866,14 @@ namespace OpenRCT2::Ui
     {
         if (w.classification == WindowClass::Custom)
             return w.widgets[widgetIndex].flags.has(WidgetFlag::isDisabled);
-        return (w.disabled_widgets & (1LL << widgetIndex)) != 0;
+        return (w.disabledWidgets & (1LL << widgetIndex)) != 0;
     }
 
     bool widgetIsHoldable(const WindowBase& w, WidgetIndex widgetIndex)
     {
         if (w.classification == WindowClass::Custom)
             return w.widgets[widgetIndex].flags.has(WidgetFlag::isHoldable);
-        return (w.hold_down_widgets & (1LL << widgetIndex)) != 0;
+        return (w.holdDownWidgets & (1LL << widgetIndex)) != 0;
     }
 
     bool widgetIsVisible(const WindowBase& w, WidgetIndex widgetIndex)
@@ -892,7 +892,7 @@ namespace OpenRCT2::Ui
         }
         else
         {
-            if (w.pressed_widgets & (1LL << widgetIndex))
+            if (w.pressedWidgets & (1LL << widgetIndex))
             {
                 return true;
             }
@@ -1075,11 +1075,11 @@ namespace OpenRCT2::Ui
         SafeSetWidgetFlag(w, widgetIndex, WidgetFlag::isDisabled, value);
         if (value)
         {
-            w.disabled_widgets |= (1uLL << widgetIndex);
+            w.disabledWidgets |= (1uLL << widgetIndex);
         }
         else
         {
-            w.disabled_widgets &= ~(1uLL << widgetIndex);
+            w.disabledWidgets &= ~(1uLL << widgetIndex);
         }
     }
 
@@ -1088,11 +1088,11 @@ namespace OpenRCT2::Ui
         SafeSetWidgetFlag(w, widgetIndex, WidgetFlag::isHoldable, value);
         if (value)
         {
-            w.hold_down_widgets |= (1uLL << widgetIndex);
+            w.holdDownWidgets |= (1uLL << widgetIndex);
         }
         else
         {
-            w.hold_down_widgets &= ~(1uLL << widgetIndex);
+            w.holdDownWidgets &= ~(1uLL << widgetIndex);
         }
     }
 
@@ -1105,9 +1105,9 @@ namespace OpenRCT2::Ui
     {
         SafeSetWidgetFlag(w, widgetIndex, WidgetFlag::isPressed, value);
         if (value)
-            w.pressed_widgets |= (1uLL << widgetIndex);
+            w.pressedWidgets |= (1uLL << widgetIndex);
         else
-            w.pressed_widgets &= ~(1uLL << widgetIndex);
+            w.pressedWidgets &= ~(1uLL << widgetIndex);
     }
 
     void widgetSetCheckboxValue(WindowBase& w, WidgetIndex widgetIndex, bool value)

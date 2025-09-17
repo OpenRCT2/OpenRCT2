@@ -237,11 +237,11 @@ namespace OpenRCT2::Ui::Windows
             _actualMinHeight = GetMinimumHeight();
 
             width = GetRequiredWidth();
-            min_width = width;
-            max_width = width;
+            minWidth = width;
+            maxWidth = width;
             height = _actualMinHeight;
-            min_height = height;
-            max_height = height;
+            minHeight = height;
+            maxHeight = height;
             if (_activeTabIndex > _tabSelections.size())
             {
                 _activeTabIndex = 0;
@@ -342,34 +342,34 @@ namespace OpenRCT2::Ui::Windows
 
         void OnResize() override
         {
-            if (width < min_width)
+            if (width < minWidth)
             {
                 Invalidate();
-                width = min_width;
+                width = minWidth;
                 Invalidate();
             }
 
-            if (width > max_width)
+            if (width > maxWidth)
             {
                 Invalidate();
-                width = max_width;
+                width = maxWidth;
                 Invalidate();
             }
 
-            if (height < min_height)
+            if (height < minHeight)
             {
                 Invalidate();
-                height = min_height;
+                height = minHeight;
                 Invalidate();
                 // HACK: For some reason invalidate has not been called
                 OnPrepareDraw();
                 ContentUpdateScroll();
             }
 
-            if (height > max_height)
+            if (height > maxHeight)
             {
                 Invalidate();
-                height = max_height;
+                height = maxHeight;
                 Invalidate();
                 // HACK: For some reason invalidate has not been called
                 OnPrepareDraw();
@@ -478,8 +478,8 @@ namespace OpenRCT2::Ui::Windows
                         {
                             if (InputGetState() != InputState::ScrollLeft)
                             {
-                                min_height = _actualMinHeight;
-                                max_height = _actualMinHeight;
+                                minHeight = _actualMinHeight;
+                                maxHeight = _actualMinHeight;
                             }
                         }
                         else
@@ -492,12 +492,12 @@ namespace OpenRCT2::Ui::Windows
                             const auto expandedWindowHeight = maxContentHeight + nonListHeight;
                             const auto windowHeight = std::clamp(expandedWindowHeight, _actualMinHeight, kMaxWindowHeight);
 
-                            min_height = windowHeight;
-                            max_height = windowHeight;
+                            minHeight = windowHeight;
+                            maxHeight = windowHeight;
 
-                            if (height < min_height)
+                            if (height < minHeight)
                             {
-                                height = min_height;
+                                height = minHeight;
                                 OnPrepareDraw();
                                 ContentUpdateScroll();
                                 Invalidate();
@@ -511,15 +511,15 @@ namespace OpenRCT2::Ui::Windows
                 _hoverCounter = 0;
                 if (InputGetState() != InputState::ScrollLeft)
                 {
-                    min_height = _actualMinHeight;
-                    max_height = _actualMinHeight;
+                    minHeight = _actualMinHeight;
+                    maxHeight = _actualMinHeight;
                 }
             }
 
-            if (height > max_height)
+            if (height > maxHeight)
             {
                 Invalidate();
-                height = max_height;
+                height = maxHeight;
                 OnPrepareDraw();
                 ContentUpdateScroll();
             }
@@ -682,14 +682,14 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_SCENERY_TITLE].text = titleStringId;
             widgets[WIDX_FILTER_TEXT_BOX].string = _filteredSceneryTab.Filter.data();
 
-            pressed_widgets = 0;
-            pressed_widgets |= 1uLL << (tabIndex + WIDX_SCENERY_TAB_1);
+            pressedWidgets = 0;
+            pressedWidgets |= 1uLL << (tabIndex + WIDX_SCENERY_TAB_1);
             if (_sceneryPaintEnabled)
-                pressed_widgets |= (1uLL << WIDX_SCENERY_REPAINT_SCENERY_BUTTON);
+                pressedWidgets |= (1uLL << WIDX_SCENERY_REPAINT_SCENERY_BUTTON);
             if (gWindowSceneryEyedropperEnabled)
-                pressed_widgets |= (1uLL << WIDX_SCENERY_EYEDROPPER_BUTTON);
+                pressedWidgets |= (1uLL << WIDX_SCENERY_EYEDROPPER_BUTTON);
             if (gWindowSceneryScatterEnabled)
-                pressed_widgets |= (1uLL << WIDX_SCENERY_BUILD_CLUSTER_BUTTON);
+                pressedWidgets |= (1uLL << WIDX_SCENERY_BUILD_CLUSTER_BUTTON);
 
             widgets[WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].type = WidgetType::empty;
             widgets[WIDX_SCENERY_BUILD_CLUSTER_BUTTON].type = WidgetType::empty;
@@ -717,9 +717,9 @@ namespace OpenRCT2::Ui::Windows
                 {
                     widgets[WIDX_RESTRICT_SCENERY].type = WidgetType::button;
                     if (IsSceneryItemRestricted(tabSelectedScenery))
-                        pressed_widgets |= (1uLL << WIDX_RESTRICT_SCENERY);
+                        pressedWidgets |= (1uLL << WIDX_RESTRICT_SCENERY);
                     else
-                        pressed_widgets &= ~(1uLL << WIDX_RESTRICT_SCENERY);
+                        pressedWidgets &= ~(1uLL << WIDX_RESTRICT_SCENERY);
                 }
             }
 
@@ -1106,10 +1106,10 @@ namespace OpenRCT2::Ui::Windows
         int32_t GetMinimumHeight() const
         {
             // Minimum window height: title, one scenery button, status bar, padding
-            int32_t minHeight = getTitleBarTargetHeight() + kSceneryButtonHeight + kDescriptionHeight + 2 * kTabMargin;
-            minHeight += static_cast<int32_t>(1 + (_tabEntries.size() / GetMaxTabCountInARow())) * kTabHeight;
-            minHeight += widgets[WIDX_FILTER_TEXT_BOX].height() + 2 * kInputMargin;
-            return minHeight;
+            int32_t newMinHeight = getTitleBarTargetHeight() + kSceneryButtonHeight + kDescriptionHeight + 2 * kTabMargin;
+            newMinHeight += static_cast<int32_t>(1 + (_tabEntries.size() / GetMaxTabCountInARow())) * kTabHeight;
+            newMinHeight += widgets[WIDX_FILTER_TEXT_BOX].height() + 2 * kInputMargin;
+            return newMinHeight;
         }
 
         int32_t GetNumColumns() const
@@ -2954,9 +2954,9 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            auto selectedTab = WindowSceneryGetTabSelection();
-            uint8_t sceneryType = selectedTab.SceneryType;
-            uint16_t selectedScenery = selectedTab.EntryIndex;
+            auto tabSelection = WindowSceneryGetTabSelection();
+            uint8_t sceneryType = tabSelection.SceneryType;
+            uint16_t selectedScenery = tabSelection.EntryIndex;
             CoordsXY gridPos;
 
             auto& gameState = getGameState();

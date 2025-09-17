@@ -129,7 +129,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
 
             page = newPageIndex;
-            frame_no = 0;
+            currentFrame = 0;
 
             Invalidate();
             if (newPageIndex == WINDOW_RESEARCH_PAGE_DEVELOPMENT)
@@ -145,17 +145,17 @@ namespace OpenRCT2::Ui::Windows
             Invalidate();
 
             SetWidgets(window_research_page_widgets[newPageIndex]);
-            hold_down_widgets = 0;
-            disabled_widgets = 0;
-            pressed_widgets = 0;
+            holdDownWidgets = 0;
+            disabledWidgets = 0;
+            pressedWidgets = 0;
         }
 
     private:
         void OnUpdate() override
         {
             // Tab animation
-            if (++frame_no >= window_research_tab_animation_loops[page])
-                frame_no = 0;
+            if (++currentFrame >= window_research_tab_animation_loops[page])
+                currentFrame = 0;
 
             switch (page)
             {
@@ -274,7 +274,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 if (page == tabPage)
                 {
-                    int32_t frame = frame_no / 2;
+                    int32_t frame = currentFrame / 2;
                     if (tabPage == WINDOW_RESEARCH_PAGE_DEVELOPMENT)
                         frame %= 8;
                     spriteIndex += frame;
@@ -556,18 +556,18 @@ namespace OpenRCT2::Ui::Windows
             // Set checkbox disabled if research type is complete
             if (uncompletedResearchTypes & mask)
             {
-                w->disabled_widgets &= ~widgetMask;
+                w->disabledWidgets &= ~widgetMask;
 
                 // Set checkbox ticked if research type is active
                 if (activeResearchTypes & mask)
-                    w->pressed_widgets |= widgetMask;
+                    w->pressedWidgets |= widgetMask;
                 else
-                    w->pressed_widgets &= ~widgetMask;
+                    w->pressedWidgets &= ~widgetMask;
             }
             else
             {
-                w->disabled_widgets |= widgetMask;
-                w->pressed_widgets &= ~widgetMask;
+                w->disabledWidgets |= widgetMask;
+                w->pressedWidgets &= ~widgetMask;
             }
         }
     }

@@ -490,7 +490,7 @@ namespace OpenRCT2::Ui::Windows
             }
             else if (im.IsModifierKeyPressed(ModifierKey::shift))
             {
-                uint16_t maxHeight = ZoomLevel::max().ApplyTo(
+                uint16_t newMaxHeight = ZoomLevel::max().ApplyTo(
                     std::numeric_limits<decltype(TileElement::BaseHeight)>::max() - 32);
 
                 _trackPlaceShiftZ = _trackPlaceShiftStart.y - screenCoords.y + 4;
@@ -504,7 +504,7 @@ namespace OpenRCT2::Ui::Windows
                 _trackPlaceShiftZ = floor2(_trackPlaceShiftZ, kCoordsZStep);
 
                 // Clamp to maximum possible value of BaseHeight can offer.
-                _trackPlaceShiftZ = std::min<int16_t>(_trackPlaceShiftZ, maxHeight);
+                _trackPlaceShiftZ = std::min<int16_t>(_trackPlaceShiftZ, newMaxHeight);
             }
             else if (_trackPlaceShiftState)
             {

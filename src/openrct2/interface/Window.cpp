@@ -401,7 +401,7 @@ static constexpr float kWindowScrollLocations[][2] = {
         }
 
         // rct2: 0x006E7C76
-        if (w.viewport_target_sprite.IsNull())
+        if (w.viewportTargetSprite.IsNull())
         {
             if (!(w.flags & WF_NO_SCROLLING))
             {
@@ -877,14 +877,14 @@ static constexpr float kWindowScrollLocations[][2] = {
     {
         if (spriteIndex.ToUnderlying() < kMaxEntities || spriteIndex.IsNull())
         {
-            w.viewport_smart_follow_sprite = spriteIndex;
+            w.viewportSmartFollowSprite = spriteIndex;
         }
     }
 
     void WindowUnfollowSprite(WindowBase& w)
     {
-        w.viewport_smart_follow_sprite = EntityId::GetNull();
-        w.viewport_target_sprite = EntityId::GetNull();
+        w.viewportSmartFollowSprite = EntityId::GetNull();
+        w.viewportTargetSprite = EntityId::GetNull();
     }
 
     Viewport* WindowGetViewport(WindowBase* w)

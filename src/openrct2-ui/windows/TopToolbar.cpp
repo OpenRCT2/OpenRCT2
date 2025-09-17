@@ -735,15 +735,15 @@ namespace OpenRCT2::Ui::Windows
 
             if (mainWindow->viewport->zoom == ZoomLevel::min())
             {
-                disabled_widgets |= (1uLL << WIDX_ZOOM_IN);
+                disabledWidgets |= (1uLL << WIDX_ZOOM_IN);
             }
             else if (mainWindow->viewport->zoom >= ZoomLevel::max())
             {
-                disabled_widgets |= (1uLL << WIDX_ZOOM_OUT);
+                disabledWidgets |= (1uLL << WIDX_ZOOM_OUT);
             }
             else
             {
-                disabled_widgets &= ~((1uLL << WIDX_ZOOM_IN) | (1uLL << WIDX_ZOOM_OUT));
+                disabledWidgets &= ~((1uLL << WIDX_ZOOM_IN) | (1uLL << WIDX_ZOOM_OUT));
             }
         }
 
@@ -752,12 +752,12 @@ namespace OpenRCT2::Ui::Windows
             bool paused = (gGamePaused & GAME_PAUSED_NORMAL);
             if (paused || _waitingForPause)
             {
-                pressed_widgets |= (1uLL << WIDX_PAUSE);
+                pressedWidgets |= (1uLL << WIDX_PAUSE);
                 if (paused)
                     _waitingForPause = false;
             }
             else
-                pressed_widgets &= ~(1uLL << WIDX_PAUSE);
+                pressedWidgets &= ~(1uLL << WIDX_PAUSE);
         }
 
         void ApplyMapRotation()
@@ -790,9 +790,9 @@ namespace OpenRCT2::Ui::Windows
             // Footpath button pressed down
             auto* windowMgr = GetWindowManager();
             if (windowMgr->FindByClass(WindowClass::Footpath) == nullptr)
-                pressed_widgets &= ~(1uLL << WIDX_PATH);
+                pressedWidgets &= ~(1uLL << WIDX_PATH);
             else
-                pressed_widgets |= (1uLL << WIDX_PATH);
+                pressedWidgets |= (1uLL << WIDX_PATH);
         }
 
         // TODO: look into using std::span

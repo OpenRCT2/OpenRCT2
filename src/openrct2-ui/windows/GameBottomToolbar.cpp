@@ -282,7 +282,7 @@ namespace OpenRCT2::Ui::Windows
                     auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(peep->AnimationObjectIndex);
 
                     uint32_t image_id_base = animObj->GetPeepAnimation(peep->AnimationGroup).base_image;
-                    image_id_base += frame_no & 0xFFFFFFFC;
+                    image_id_base += currentFrame & 0xFFFFFFFC;
                     image_id_base++;
 
                     auto image_id = ImageId(image_id_base, peep->TshirtColour, peep->TrousersColour);
@@ -294,7 +294,7 @@ namespace OpenRCT2::Ui::Windows
 
                     // There are only 6 walking frames available for each item,
                     // as well as 1 sprite for sitting and 1 for standing still.
-                    auto itemFrame = (frame_no / 4) % 6;
+                    auto itemFrame = (currentFrame / 4) % 6;
 
                     if (guest->AnimationGroup == PeepAnimationGroup::Hat)
                     {
@@ -416,7 +416,7 @@ namespace OpenRCT2::Ui::Windows
         {
             SetWidgets(window_game_bottom_toolbar_widgets);
 
-            frame_no = 0;
+            currentFrame = 0;
             InitScrollWidgets();
 
             // Reset the middle widget to not show by default.
@@ -588,25 +588,25 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_NEWS_LOCATE].type = WidgetType::flatBtn;
                 widgets[WIDX_MIDDLE_OUTSET].colour = 2;
                 widgets[WIDX_MIDDLE_INSET].colour = 2;
-                disabled_widgets &= ~(1uLL << WIDX_NEWS_SUBJECT);
-                disabled_widgets &= ~(1uLL << WIDX_NEWS_LOCATE);
+                disabledWidgets &= ~(1uLL << WIDX_NEWS_SUBJECT);
+                disabledWidgets &= ~(1uLL << WIDX_NEWS_LOCATE);
 
                 // Find out if the news item is no longer valid
                 auto subjectLoc = News::GetSubjectLocation(newsItem->type, newsItem->assoc);
 
                 if (!subjectLoc.has_value())
-                    disabled_widgets |= (1uLL << WIDX_NEWS_LOCATE);
+                    disabledWidgets |= (1uLL << WIDX_NEWS_LOCATE);
 
                 if (!(newsItem->typeHasSubject()))
                 {
-                    disabled_widgets |= (1uLL << WIDX_NEWS_SUBJECT);
+                    disabledWidgets |= (1uLL << WIDX_NEWS_SUBJECT);
                     widgets[WIDX_NEWS_SUBJECT].type = WidgetType::empty;
                 }
 
                 if (newsItem->hasButton())
                 {
-                    disabled_widgets |= (1uLL << WIDX_NEWS_SUBJECT);
-                    disabled_widgets |= (1uLL << WIDX_NEWS_LOCATE);
+                    disabledWidgets |= (1uLL << WIDX_NEWS_SUBJECT);
+                    disabledWidgets |= (1uLL << WIDX_NEWS_LOCATE);
                 }
             }
         }
@@ -651,9 +651,9 @@ namespace OpenRCT2::Ui::Windows
 
         void OnUpdate() override
         {
-            frame_no++;
-            if (frame_no >= 24)
-                frame_no = 0;
+            currentFrame++;
+            if (currentFrame >= 24)
+                currentFrame = 0;
 
             InvalidateDirtyWidgets();
         }

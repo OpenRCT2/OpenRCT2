@@ -246,7 +246,7 @@ namespace OpenRCT2::Ui::Windows
     class ThemesWindow final : public Window
     {
     private:
-        uint8_t _selected_tab = 0;
+        uint8_t _selectedTab = 0;
         int16_t _classIndex = -1;
         int8_t _buttonIndex = -1;
         const uint8_t _max_row_height = 56;
@@ -267,19 +267,19 @@ namespace OpenRCT2::Ui::Windows
             WindowInitScrollWidgets(*this);
             WindowSetResize(*this, kWindowSize, kWindowSize);
 
-            list_information_type = 0;
+            listInformationType = 0;
             _classIndex = -1;
             _buttonIndex = -1;
         }
 
         void OnResize() override
         {
-            if (_selected_tab == WINDOW_THEMES_TAB_SETTINGS)
+            if (_selectedTab == WINDOW_THEMES_TAB_SETTINGS)
             {
                 if (WindowSetResize(*this, kWindowSize, kWindowSize))
                     GfxInvalidateScreen();
             }
-            else if (_selected_tab == WINDOW_THEMES_TAB_FEATURES)
+            else if (_selectedTab == WINDOW_THEMES_TAB_FEATURES)
             {
                 if (WindowSetResize(*this, { 320, 122 }, { 320, 122 }))
                     GfxInvalidateScreen();
@@ -292,22 +292,22 @@ namespace OpenRCT2::Ui::Windows
 
         void OnUpdate() override
         {
-            frame_no++;
-            if (frame_no >= window_themes_tab_animation_loops[_selected_tab])
-                frame_no = 0;
+            currentFrame++;
+            if (currentFrame >= window_themes_tab_animation_loops[_selectedTab])
+                currentFrame = 0;
 
-            InvalidateWidget(WIDX_THEMES_SETTINGS_TAB + _selected_tab);
+            InvalidateWidget(WIDX_THEMES_SETTINGS_TAB + _selectedTab);
         }
 
         void OnPrepareDraw() override
         {
-            int32_t newPressedWidgets = pressed_widgets
+            int32_t newPressedWidgets = pressedWidgets
                 & ~((1LL << WIDX_THEMES_SETTINGS_TAB) | (1LL << WIDX_THEMES_MAIN_UI_TAB) | (1LL << WIDX_THEMES_PARK_TAB)
                     | (1LL << WIDX_THEMES_TOOLS_TAB) | (1LL << WIDX_THEMES_RIDE_PEEPS_TAB) | (1LL << WIDX_THEMES_EDITORS_TAB)
                     | (1LL << WIDX_THEMES_MISC_TAB) | (1LL << WIDX_THEMES_PROMPTS_TAB) | (1LL << WIDX_THEMES_FEATURES_TAB));
-            WidgetIndex widgetIndex = _selected_tab + WIDX_THEMES_SETTINGS_TAB;
+            WidgetIndex widgetIndex = _selectedTab + WIDX_THEMES_SETTINGS_TAB;
 
-            pressed_widgets = newPressedWidgets | (1 << widgetIndex);
+            pressedWidgets = newPressedWidgets | (1 << widgetIndex);
 
             auto* windowMgr = GetWindowManager();
             if (windowMgr->FindByClass(WindowClass::Dropdown) == nullptr)
@@ -319,7 +319,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_THEMES_LIST].right = width - 4;
             widgets[WIDX_THEMES_LIST].bottom = height - 0x0F;
 
-            if (_selected_tab == WINDOW_THEMES_TAB_SETTINGS)
+            if (_selectedTab == WINDOW_THEMES_TAB_SETTINGS)
             {
                 widgets[WIDX_THEMES_HEADER_WINDOW].type = WidgetType::empty;
                 widgets[WIDX_THEMES_HEADER_PALETTE].type = WidgetType::empty;
@@ -336,7 +336,7 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_THEMES_PRESETS_DROPDOWN].type = WidgetType::button;
                 widgets[WIDX_THEMES_COLOURBTN_MASK].type = WidgetType::empty;
             }
-            else if (_selected_tab == WINDOW_THEMES_TAB_FEATURES)
+            else if (_selectedTab == WINDOW_THEMES_TAB_FEATURES)
             {
                 widgets[WIDX_THEMES_HEADER_WINDOW].type = WidgetType::empty;
                 widgets[WIDX_THEMES_HEADER_PALETTE].type = WidgetType::empty;
@@ -385,7 +385,7 @@ namespace OpenRCT2::Ui::Windows
             WindowDrawWidgets(*this, rt);
             WindowThemesDrawTabImages(rt);
 
-            if (_selected_tab == WINDOW_THEMES_TAB_SETTINGS)
+            if (_selectedTab == WINDOW_THEMES_TAB_SETTINGS)
             {
                 DrawTextBasic(
                     rt, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_THEMES_PRESETS].top + 1 }, STR_THEMES_LABEL_CURRENT_THEME,
@@ -423,11 +423,11 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_THEMES_FEATURES_TAB:
                 {
                     auto newSelectedTab = widgetIndex - WIDX_THEMES_SETTINGS_TAB;
-                    if (_selected_tab == newSelectedTab)
+                    if (_selectedTab == newSelectedTab)
                         break;
-                    _selected_tab = static_cast<uint8_t>(newSelectedTab);
+                    _selectedTab = static_cast<uint8_t>(newSelectedTab);
                     scrolls[0].contentOffsetY = 0;
-                    frame_no = 0;
+                    currentFrame = 0;
                     OnResize();
                     Invalidate();
                     break;
@@ -613,7 +613,7 @@ namespace OpenRCT2::Ui::Windows
 
         ScreenSize OnScrollGetSize(int32_t scrollIndex) override
         {
-            if (_selected_tab == WINDOW_THEMES_TAB_SETTINGS || _selected_tab == WINDOW_THEMES_TAB_FEATURES)
+            if (_selectedTab == WINDOW_THEMES_TAB_SETTINGS || _selectedTab == WINDOW_THEMES_TAB_FEATURES)
                 return {};
 
             int32_t scrollHeight = GetTotalColoursUpTo(GetColourSchemeTabCount()) * (_button_size + 2);
@@ -697,7 +697,7 @@ namespace OpenRCT2::Ui::Windows
         {
             ScreenCoordsXY screenCoords;
 
-            if (_selected_tab == WINDOW_THEMES_TAB_SETTINGS || _selected_tab == WINDOW_THEMES_TAB_FEATURES)
+            if (_selectedTab == WINDOW_THEMES_TAB_SETTINGS || _selectedTab == WINDOW_THEMES_TAB_FEATURES)
                 return;
 
             if (!colours[1].hasFlag(ColourFlag::translucent))
@@ -792,12 +792,12 @@ namespace OpenRCT2::Ui::Windows
 
         void WindowThemesInitVars()
         {
-            _selected_tab = WINDOW_THEMES_TAB_SETTINGS;
+            _selectedTab = WINDOW_THEMES_TAB_SETTINGS;
         }
 
         WindowClass GetWindowClassTabIndex(int32_t index)
         {
-            WindowClass* classes = window_themes_tab_classes[_selected_tab];
+            WindowClass* classes = window_themes_tab_classes[_selectedTab];
             return classes[index];
         }
 
@@ -862,7 +862,7 @@ namespace OpenRCT2::Ui::Windows
 
         int32_t GetColourSchemeTabCount()
         {
-            switch (_selected_tab)
+            switch (_selectedTab)
             {
                 case 1:
                     return sizeof(window_themes_tab_1_classes);
@@ -887,8 +887,8 @@ namespace OpenRCT2::Ui::Windows
             for (int32_t i = 0; i < WINDOW_THEMES_TAB_COUNT; i++)
             {
                 int32_t sprite_idx = window_themes_tab_sprites[i];
-                if (_selected_tab == i)
-                    sprite_idx += frame_no / window_themes_tab_animation_divisor[_selected_tab];
+                if (_selectedTab == i)
+                    sprite_idx += currentFrame / window_themes_tab_animation_divisor[_selectedTab];
                 GfxDrawSprite(
                     rt, ImageId(sprite_idx),
                     windowPos

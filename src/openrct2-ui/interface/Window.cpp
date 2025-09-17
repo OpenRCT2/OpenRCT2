@@ -637,8 +637,8 @@ namespace OpenRCT2::Ui::Windows
         w.Invalidate();
 
         // Clamp new size to minimum and maximum
-        w.width = std::clamp<int16_t>(w.width + dw, w.min_width, w.max_width);
-        w.height = std::clamp<int16_t>(w.height + dh, w.min_height, w.max_height);
+        w.width = std::clamp<int16_t>(w.width + dw, w.minWidth, w.maxWidth);
+        w.height = std::clamp<int16_t>(w.height + dh, w.minHeight, w.maxHeight);
 
         w.OnResize();
         w.ResizeFrame();
@@ -955,10 +955,10 @@ namespace OpenRCT2::Ui::Windows
 
     bool WindowSetResize(WindowBase& w, ScreenSize minSize, ScreenSize maxSize)
     {
-        w.min_width = std::min(minSize.width, maxSize.width);
-        w.min_height = std::min(minSize.height, maxSize.height);
-        w.max_width = std::max(minSize.width, maxSize.width);
-        w.max_height = std::max(minSize.height, maxSize.height);
+        w.minWidth = std::min(minSize.width, maxSize.width);
+        w.minHeight = std::min(minSize.height, maxSize.height);
+        w.maxWidth = std::max(minSize.width, maxSize.width);
+        w.maxHeight = std::max(minSize.height, maxSize.height);
 
         if (Config::Get().interface.EnlargedUi)
         {
@@ -966,19 +966,19 @@ namespace OpenRCT2::Ui::Windows
             // but they currently show a deviation if we don't.
             if (w.classification == WindowClass::Custom)
             {
-                w.min_height += w.getTitleBarDiffTarget();
-                w.max_height += w.getTitleBarDiffTarget();
+                w.minHeight += w.getTitleBarDiffTarget();
+                w.maxHeight += w.getTitleBarDiffTarget();
             }
             else
             {
-                w.min_height += w.getTitleBarDiffNormal();
-                w.max_height += w.getTitleBarDiffNormal();
+                w.minHeight += w.getTitleBarDiffNormal();
+                w.maxHeight += w.getTitleBarDiffNormal();
             }
         }
 
         // Clamp width and height to minimum and maximum
-        int16_t width = std::clamp<int16_t>(w.width, w.min_width, w.max_width);
-        int16_t height = std::clamp<int16_t>(w.height, w.min_height, w.max_height);
+        int16_t width = std::clamp<int16_t>(w.width, w.minWidth, w.maxWidth);
+        int16_t height = std::clamp<int16_t>(w.height, w.minHeight, w.maxHeight);
 
         // Resize window if size has changed
         if (w.width != width || w.height != height)
@@ -996,7 +996,7 @@ namespace OpenRCT2::Ui::Windows
 
     bool WindowCanResize(const WindowBase& w)
     {
-        return (w.flags & WF_RESIZABLE) && (w.min_width != w.max_width || w.min_height != w.max_height);
+        return (w.flags & WF_RESIZABLE) && (w.minWidth != w.maxWidth || w.minHeight != w.maxHeight);
     }
 
     /**

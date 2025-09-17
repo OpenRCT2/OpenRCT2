@@ -125,8 +125,8 @@ namespace OpenRCT2::Ui::Windows
                 newWidth += 8 * 2 + 15;
 
                 width = newWidth;
-                max_width = newWidth;
-                min_width = newWidth;
+                maxWidth = newWidth;
+                minWidth = newWidth;
                 widgets[WIDX_BACKGROUND].right = newWidth - 1;
                 widgets[WIDX_TOGGLE_SHOW_WIDE_PATHS].right = newWidth - 8;
                 widgets[WIDX_TOGGLE_SHOW_BLOCKED_TILES].right = newWidth - 8;

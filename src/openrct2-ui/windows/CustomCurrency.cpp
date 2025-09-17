@@ -54,7 +54,7 @@ namespace OpenRCT2::Ui::Windows
         void OnOpen() override
         {
             SetWidgets(window_custom_currency_widgets);
-            hold_down_widgets = (1uLL << WIDX_RATE_UP) | (1uLL << WIDX_RATE_DOWN);
+            holdDownWidgets = (1uLL << WIDX_RATE_UP) | (1uLL << WIDX_RATE_DOWN);
             WindowInitScrollWidgets(*this);
             colours[0] = COLOUR_LIGHT_BROWN;
             colours[1] = COLOUR_LIGHT_BROWN;

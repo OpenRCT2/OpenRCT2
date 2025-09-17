@@ -280,13 +280,13 @@ namespace OpenRCT2::Ui::Windows
                 return;
 
             page = newPage;
-            frame_no = 0;
+            currentFrame = 0;
             RemoveViewport();
 
             SetWidgets(PageWidgets[newPage]);
-            hold_down_widgets = HoldDownWidgets[newPage];
-            disabled_widgets = PageDisabledWidgets[newPage];
-            pressed_widgets = PressedWidgets[newPage];
+            holdDownWidgets = HoldDownWidgets[newPage];
+            disabledWidgets = PageDisabledWidgets[newPage];
+            pressedWidgets = PressedWidgets[newPage];
 
             InitScrollWidgets();
             Invalidate();
@@ -295,8 +295,8 @@ namespace OpenRCT2::Ui::Windows
         void SetPressedTab()
         {
             for (auto i = 0; i < WINDOW_MAPGEN_PAGE_COUNT; i++)
-                pressed_widgets &= ~(1 << (WIDX_TAB_1 + i));
-            pressed_widgets |= 1LL << (WIDX_TAB_1 + page);
+                pressedWidgets &= ~(1 << (WIDX_TAB_1 + i));
+            pressedWidgets |= 1LL << (WIDX_TAB_1 + page);
         }
 
         void DrawTabImage(RenderTarget& rt, int32_t newPage, int32_t spriteIndex)
@@ -307,7 +307,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 if (page == newPage)
                 {
-                    int32_t frame = frame_no / TabAnimationDivisor[page];
+                    int32_t frame = currentFrame / TabAnimationDivisor[page];
                     spriteIndex += (frame % TabAnimationFrames[page]);
                 }
 
@@ -473,8 +473,8 @@ namespace OpenRCT2::Ui::Windows
         void BaseUpdate()
         {
             // Tab animation
-            if (++frame_no >= TabAnimationLoops[page])
-                frame_no = 0;
+            if (++currentFrame >= TabAnimationLoops[page])
+                currentFrame = 0;
             InvalidateWidget(WIDX_TAB_1);
         }
 
@@ -711,8 +711,8 @@ namespace OpenRCT2::Ui::Windows
         void ForestsUpdate()
         {
             // Tab animation
-            if (++frame_no >= TabAnimationLoops[page])
-                frame_no = 0;
+            if (++currentFrame >= TabAnimationLoops[page])
+                currentFrame = 0;
             InvalidateWidget(WIDX_TAB_2);
         }
 
@@ -740,9 +740,9 @@ namespace OpenRCT2::Ui::Windows
 
         void ForestsPrepareDraw()
         {
-            pressed_widgets = 0;
+            pressedWidgets = 0;
             if (_settings.trees)
-                pressed_widgets |= 1uLL << WIDX_FORESTS_PLACE_TREES;
+                pressedWidgets |= 1uLL << WIDX_FORESTS_PLACE_TREES;
 
             SetPressedTab();
 
@@ -1093,8 +1093,8 @@ namespace OpenRCT2::Ui::Windows
         void TerrainUpdate()
         {
             // Tab animation
-            if (++frame_no >= TabAnimationLoops[page])
-                frame_no = 0;
+            if (++currentFrame >= TabAnimationLoops[page])
+                currentFrame = 0;
             InvalidateWidget(WIDX_TAB_3);
         }
 
@@ -1310,8 +1310,8 @@ namespace OpenRCT2::Ui::Windows
         void WaterUpdate()
         {
             // Tab animation
-            if (++frame_no >= TabAnimationLoops[page])
-                frame_no = 0;
+            if (++currentFrame >= TabAnimationLoops[page])
+                currentFrame = 0;
             InvalidateWidget(WIDX_TAB_4);
         }
 
@@ -1361,9 +1361,9 @@ namespace OpenRCT2::Ui::Windows
 
             SetPage(WINDOW_MAPGEN_PAGE_BASE);
             Invalidate();
-            hold_down_widgets = HoldDownWidgets[WINDOW_MAPGEN_PAGE_BASE];
-            pressed_widgets = PressedWidgets[WINDOW_MAPGEN_PAGE_BASE];
-            disabled_widgets = PageDisabledWidgets[WINDOW_MAPGEN_PAGE_BASE];
+            holdDownWidgets = HoldDownWidgets[WINDOW_MAPGEN_PAGE_BASE];
+            pressedWidgets = PressedWidgets[WINDOW_MAPGEN_PAGE_BASE];
+            disabledWidgets = PageDisabledWidgets[WINDOW_MAPGEN_PAGE_BASE];
             InitScrollWidgets();
 
             _heightmapLoaded = false;

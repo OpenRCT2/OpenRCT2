@@ -213,13 +213,13 @@ namespace OpenRCT2::Ui::Windows
         {
             SetWidgets(_guestWindowWidgetsOverview);
             page = WINDOW_GUEST_OVERVIEW;
-            frame_no = 0;
+            currentFrame = 0;
             _marqueePosition = 0;
-            picked_peep_frame = 0;
+            pickedPeepFrame = 0;
 
             WindowSetResize(*this, kWindowSize, { 500, 450 });
 
-            selected_list_item = -1;
+            selectedListItem = -1;
         }
 
         void Init(EntityId id)
@@ -457,7 +457,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnPrepareDrawCommon()
         {
-            pressed_widgets |= 1uLL << (page + WIDX_TAB_1);
+            pressedWidgets |= 1uLL << (page + WIDX_TAB_1);
 
             const auto peep = GetGuest();
             if (peep == nullptr)
@@ -498,7 +498,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 newDisabledWidgets |= (1uLL << WIDX_TAB_7); // Disable debug tab when debug tools not turned on
             }
-            disabled_widgets = newDisabledWidgets;
+            disabledWidgets = newDisabledWidgets;
         }
 
         void SetPage(int32_t newPage)
@@ -518,14 +518,14 @@ namespace OpenRCT2::Ui::Windows
                 return;
 
             page = newPage;
-            frame_no = 0;
+            currentFrame = 0;
             _riddenRides.clear();
-            selected_list_item = -1;
+            selectedListItem = -1;
 
             RemoveViewport();
 
-            hold_down_widgets = 0;
-            pressed_widgets = 0;
+            holdDownWidgets = 0;
+            pressedWidgets = 0;
             SetWidgets(_guestWindowPageWidgets[page]);
             DisableWidgets();
             Invalidate();
@@ -861,10 +861,10 @@ namespace OpenRCT2::Ui::Windows
             {
                 return;
             }
-            pressed_widgets &= ~(1uLL << WIDX_TRACK);
+            pressedWidgets &= ~(1uLL << WIDX_TRACK);
             if (peep->PeepFlags & PEEP_FLAGS_TRACKING)
             {
-                pressed_widgets |= (1uLL << WIDX_TRACK);
+                pressedWidgets |= (1uLL << WIDX_TRACK);
             }
 
             widgets[WIDX_VIEWPORT].right = width - 26;
@@ -907,8 +907,8 @@ namespace OpenRCT2::Ui::Windows
             const auto pickAnimLength = pickAnim.frame_offsets.size();
 
             // Update pickup animation, can only happen in this tab.
-            picked_peep_frame++;
-            picked_peep_frame %= pickAnimLength * 4;
+            pickedPeepFrame++;
+            pickedPeepFrame %= pickAnimLength * 4;
 
             InvalidateWidget(WIDX_TAB_1);
             InvalidateWidget(WIDX_TAB_2);
@@ -1007,7 +1007,7 @@ namespace OpenRCT2::Ui::Windows
             auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(peep->AnimationObjectIndex);
 
             auto baseImageId = animObj->GetPeepAnimation(peep->AnimationGroup, PeepAnimationType::Hanging).base_image;
-            baseImageId += picked_peep_frame >> 2;
+            baseImageId += pickedPeepFrame >> 2;
             gPickupPeepImage = ImageId(baseImageId, peep->TshirtColour, peep->TrousersColour);
         }
 
@@ -1071,13 +1071,13 @@ namespace OpenRCT2::Ui::Windows
                 switch (imageId)
                 {
                     case SPR_PEEP_LARGE_FACE_VERY_VERY_SICK_0:
-                        imageId += (frame_no / 4) & 0xF;
+                        imageId += (currentFrame / 4) & 0xF;
                         break;
                     case SPR_PEEP_LARGE_FACE_VERY_SICK_0:
-                        imageId += (frame_no / 8) & 0x3;
+                        imageId += (currentFrame / 8) & 0x3;
                         break;
                     case SPR_PEEP_LARGE_FACE_ANGRY_0:
-                        imageId += (frame_no / 8) & 0x3;
+                        imageId += (currentFrame / 8) & 0x3;
                         break;
                 }
             }
@@ -1086,7 +1086,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnUpdateStats()
         {
-            frame_no++;
+            currentFrame++;
             auto peep = GetGuest();
             if (peep == nullptr)
             {
@@ -1218,7 +1218,7 @@ namespace OpenRCT2::Ui::Windows
 
             if (page == WINDOW_GUEST_RIDES)
             {
-                imageId += (frame_no / 4) & 0xF;
+                imageId += (currentFrame / 4) & 0xF;
             }
 
             GfxDrawSprite(rt, ImageId(imageId), screenCoords);
@@ -1226,7 +1226,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnUpdateRides()
         {
-            frame_no++;
+            currentFrame++;
 
             InvalidateWidget(WIDX_TAB_2);
             InvalidateWidget(WIDX_TAB_3);
@@ -1266,9 +1266,9 @@ namespace OpenRCT2::Ui::Windows
             ScreenSize newSize;
             newSize.height = static_cast<int32_t>(_riddenRides.size()) * 10;
 
-            if (selected_list_item != -1)
+            if (selectedListItem != -1)
             {
-                selected_list_item = -1;
+                selectedListItem = -1;
                 Invalidate();
             }
 
@@ -1302,9 +1302,9 @@ namespace OpenRCT2::Ui::Windows
             if (index >= static_cast<int32_t>(_riddenRides.size()))
                 return;
 
-            if (index == selected_list_item)
+            if (index == selectedListItem)
                 return;
-            selected_list_item = index;
+            selectedListItem = index;
 
             Invalidate();
         }
@@ -1361,7 +1361,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 int32_t y = listIndex * 10;
                 StringId stringId = STR_BLACK_STRING;
-                if (listIndex == selected_list_item)
+                if (listIndex == selectedListItem)
                 {
                     GfxFilterRect(rt, { 0, y, 800, y + 9 }, FilterPaletteID::PaletteDarken1);
                     stringId = STR_WINDOW_COLOUR_2_STRINGID;
@@ -1391,7 +1391,7 @@ namespace OpenRCT2::Ui::Windows
 
             if (page == WINDOW_GUEST_FINANCE)
             {
-                imageId += (frame_no / 2) & 0x7;
+                imageId += (currentFrame / 2) & 0x7;
             }
 
             GfxDrawSprite(rt, ImageId(imageId), screenCoords);
@@ -1399,7 +1399,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnUpdateFinance()
         {
-            frame_no++;
+            currentFrame++;
 
             InvalidateWidget(WIDX_TAB_2);
             InvalidateWidget(WIDX_TAB_4);
@@ -1529,7 +1529,7 @@ namespace OpenRCT2::Ui::Windows
 
             if (page == WINDOW_GUEST_THOUGHTS)
             {
-                imageId += (frame_no / 2) & 0x7;
+                imageId += (currentFrame / 2) & 0x7;
             }
 
             GfxDrawSprite(rt, ImageId(imageId), screenCoords);
@@ -1537,7 +1537,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnUpdateThoughts()
         {
-            frame_no++;
+            currentFrame++;
 
             InvalidateWidget(WIDX_TAB_2);
             InvalidateWidget(WIDX_TAB_5);
@@ -1608,7 +1608,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnUpdateInventory()
         {
-            frame_no++;
+            currentFrame++;
 
             InvalidateWidget(WIDX_TAB_2);
             InvalidateWidget(WIDX_TAB_6);
@@ -1796,7 +1796,7 @@ namespace OpenRCT2::Ui::Windows
             int32_t imageId = SPR_TAB_GEARS_0;
             if (page == WINDOW_GUEST_DEBUG)
             {
-                imageId += (frame_no / 2) & 0x3;
+                imageId += (currentFrame / 2) & 0x3;
             }
 
             GfxDrawSprite(rt, ImageId(imageId), screenCoords);
@@ -1804,7 +1804,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnUpdateDebug()
         {
-            frame_no++;
+            currentFrame++;
             Invalidate();
         }
 

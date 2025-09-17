@@ -632,7 +632,7 @@ public:
         {
             auto viewport = WindowGetViewport(mainWindow);
 
-            mainWindow->viewport_target_sprite = EntityId::GetNull();
+            mainWindow->viewportTargetSprite = EntityId::GetNull();
             mainWindow->savedViewPos = viewPos;
             viewport->zoom = zoom;
             viewport->rotation = rotation;
@@ -912,10 +912,10 @@ public:
         wp->windowPos = pos;
         wp->width = windowSize.width;
         wp->height = windowSize.height;
-        wp->min_width = windowSize.width;
-        wp->max_width = windowSize.width;
-        wp->min_height = windowSize.height;
-        wp->max_height = windowSize.height;
+        wp->minWidth = windowSize.width;
+        wp->maxWidth = windowSize.width;
+        wp->minHeight = windowSize.height;
+        wp->maxHeight = windowSize.height;
 
         wp->focus = std::nullopt;
 

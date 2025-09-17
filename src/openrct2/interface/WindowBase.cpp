@@ -123,8 +123,8 @@ namespace OpenRCT2
         closeButton.bottom += heightDifference;
 
         height += heightDifference;
-        min_height += heightDifference;
-        max_height += heightDifference;
+        minHeight += heightDifference;
+        maxHeight += heightDifference;
 
         Invalidate();
 

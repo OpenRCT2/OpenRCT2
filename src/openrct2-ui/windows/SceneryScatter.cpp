@@ -61,7 +61,7 @@ namespace OpenRCT2::Ui::Windows
         {
             SetWidgets(_sceneryScatterWidgets);
 
-            hold_down_widgets = (1uLL << WIDX_INCREMENT) | (1uLL << WIDX_DECREMENT);
+            holdDownWidgets = (1uLL << WIDX_INCREMENT) | (1uLL << WIDX_DECREMENT);
             WindowInitScrollWidgets(*this);
             WindowPushOthersBelow(*this);
 
@@ -159,21 +159,21 @@ namespace OpenRCT2::Ui::Windows
         void OnPrepareDraw() override
         {
             // Set the preview image button to be pressed down
-            pressed_widgets = (1uLL << WIDX_PREVIEW);
+            pressedWidgets = (1uLL << WIDX_PREVIEW);
 
             // Set density buttons' pressed state.
             switch (gWindowSceneryScatterDensity)
             {
                 case ScatterToolDensity::LowDensity:
-                    pressed_widgets |= (1uLL << WIDX_DENSITY_LOW);
+                    pressedWidgets |= (1uLL << WIDX_DENSITY_LOW);
                     break;
 
                 case ScatterToolDensity::MediumDensity:
-                    pressed_widgets |= (1uLL << WIDX_DENSITY_MEDIUM);
+                    pressedWidgets |= (1uLL << WIDX_DENSITY_MEDIUM);
                     break;
 
                 case ScatterToolDensity::HighDensity:
-                    pressed_widgets |= (1uLL << WIDX_DENSITY_HIGH);
+                    pressedWidgets |= (1uLL << WIDX_DENSITY_HIGH);
                     break;
             }
 

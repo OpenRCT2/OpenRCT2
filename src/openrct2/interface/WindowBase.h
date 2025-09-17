@@ -72,17 +72,17 @@ namespace OpenRCT2
     struct WindowBase
     {
         Viewport* viewport{};
-        uint64_t disabled_widgets{};
-        uint64_t pressed_widgets{};
-        uint64_t hold_down_widgets{};
+        uint64_t disabledWidgets{};
+        uint64_t pressedWidgets{};
+        uint64_t holdDownWidgets{};
         std::vector<Widget> widgets{};
         ScreenCoordsXY windowPos;
         int16_t width{};
         int16_t height{};
-        int16_t min_width{};
-        int16_t max_width{};
-        int16_t min_height{};
-        int16_t max_height{};
+        int16_t minWidth{};
+        int16_t maxWidth{};
+        int16_t minHeight{};
+        int16_t maxHeight{};
         union
         {
             WindowNumber number{};
@@ -90,24 +90,24 @@ namespace OpenRCT2
         };
         WindowFlags flags{};
         OpenRCT2::ScrollArea scrolls[3];
-        uint16_t no_list_items{};     // 0 for no items
-        int16_t selected_list_item{}; // -1 for none selected
+        uint16_t numListItems{};    // 0 for no items
+        int16_t selectedListItem{}; // -1 for none selected
         std::optional<Focus> focus;
         union
         {
             int16_t page{};
             TileInspectorPage tileInspectorPage;
         };
-        uint16_t frame_no{};              // updated every tic for motion in windows sprites
-        uint16_t list_information_type{}; // 0 for none
-        int16_t picked_peep_frame;        // Animation frame of picked peep in staff window and guest window
-        int16_t selected_tab{};
-        EntityId viewport_target_sprite{ EntityId::GetNull() };
+        uint16_t currentFrame{};        // updated every tic for motion in windows sprites
+        uint16_t listInformationType{}; // 0 for none
+        int16_t pickedPeepFrame;        // Animation frame of picked peep in staff window and guest window
+        int16_t selectedTab{};
+        EntityId viewportTargetSprite{ EntityId::GetNull() };
         ScreenCoordsXY savedViewPos{};
         WindowClass classification{};
         ColourWithFlags colours[6]{};
         bool isVisible = true;
-        EntityId viewport_smart_follow_sprite{ EntityId::GetNull() }; // Handles setting viewport target sprite etc
+        EntityId viewportSmartFollowSprite{ EntityId::GetNull() }; // Handles setting viewport target sprite etc
 
         void SetViewportLocation(const CoordsXYZ& coords);
         void Invalidate();
@@ -128,7 +128,7 @@ namespace OpenRCT2
 
         constexpr bool canBeResized() const
         {
-            return (flags & WF_RESIZABLE) && (min_width != max_width || min_height != max_height);
+            return (flags & WF_RESIZABLE) && (minWidth != maxWidth || minHeight != maxHeight);
         }
 
         // Events

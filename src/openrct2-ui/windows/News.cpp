@@ -269,7 +269,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 auto imageId = ImageId(SPR_TAB_GEARS_0);
                 if (page == optionsTab)
-                    imageId = imageId.WithIndexOffset((frame_no / 2) % 4);
+                    imageId = imageId.WithIndexOffset((currentFrame / 2) % 4);
 
                 auto& widget = widgets[WIDX_TAB_OPTIONS];
                 GfxDrawSprite(rt, imageId, windowPos + ScreenCoordsXY{ widget.left, widget.top });
@@ -345,7 +345,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnUpdate() override
         {
-            frame_no++;
+            currentFrame++;
 
             if (page != newsTab)
                 return;

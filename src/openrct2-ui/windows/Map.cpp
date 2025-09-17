@@ -236,7 +236,7 @@ namespace OpenRCT2::Ui::Windows
         {
             SetWidgets(window_map_widgets);
 
-            hold_down_widgets = (1uLL << WIDX_MAP_SIZE_SPINNER_Y_UP) | (1uLL << WIDX_MAP_SIZE_SPINNER_Y_DOWN)
+            holdDownWidgets = (1uLL << WIDX_MAP_SIZE_SPINNER_Y_UP) | (1uLL << WIDX_MAP_SIZE_SPINNER_Y_DOWN)
                 | (1uLL << WIDX_MAP_SIZE_SPINNER_X_UP) | (1uLL << WIDX_MAP_SIZE_SPINNER_X_DOWN);
 
             flags |= WF_RESIZABLE;
@@ -318,11 +318,11 @@ namespace OpenRCT2::Ui::Windows
                     if (widgetIndex >= WIDX_PEOPLE_TAB && widgetIndex <= WIDX_RIDES_TAB)
                     {
                         widgetIndex -= WIDX_PEOPLE_TAB;
-                        if (widgetIndex == selected_tab)
+                        if (widgetIndex == selectedTab)
                             break;
 
-                        selected_tab = widgetIndex;
-                        list_information_type = 0;
+                        selectedTab = widgetIndex;
+                        listInformationType = 0;
                         _recalculateScrollbars = true;
                         ResetMaxWindowDimensions();
                     }
@@ -391,19 +391,19 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Update tab animations
-            list_information_type++;
-            switch (selected_tab)
+            listInformationType++;
+            switch (selectedTab)
             {
                 case PAGE_PEEPS:
-                    if (list_information_type >= 32)
+                    if (listInformationType >= 32)
                     {
-                        list_information_type = 0;
+                        listInformationType = 0;
                     }
                     break;
                 case PAGE_RIDES:
-                    if (list_information_type >= 64)
+                    if (listInformationType >= 64)
                     {
-                        list_information_type = 0;
+                        listInformationType = 0;
                     }
                     break;
             }
@@ -583,7 +583,7 @@ namespace OpenRCT2::Ui::Windows
             DrawingEngineInvalidateImage(SPR_TEMP);
             GfxDrawSprite(rt, ImageId(SPR_TEMP), screenOffset);
 
-            if (selected_tab == PAGE_PEEPS)
+            if (selectedTab == PAGE_PEEPS)
             {
                 PaintPeepOverlay(rt, screenOffset);
             }
@@ -599,18 +599,18 @@ namespace OpenRCT2::Ui::Windows
             auto* windowMgr = GetWindowManager();
 
             // Set the pressed widgets
-            pressed_widgets = 0;
+            pressedWidgets = 0;
             SetWidgetPressed(WIDX_MAP_SIZE_LINK, _mapWidthAndHeightLinked);
-            pressed_widgets |= (1uLL << (WIDX_PEOPLE_TAB + selected_tab));
+            pressedWidgets |= (1uLL << (WIDX_PEOPLE_TAB + selectedTab));
 
             if (windowMgr->FindByClass(WindowClass::EditorParkEntrance))
-                pressed_widgets |= (1uLL << WIDX_BUILD_PARK_ENTRANCE);
+                pressedWidgets |= (1uLL << WIDX_BUILD_PARK_ENTRANCE);
 
             if (windowMgr->FindByClass(WindowClass::LandRights))
-                pressed_widgets |= (1uLL << WIDX_SET_LAND_RIGHTS);
+                pressedWidgets |= (1uLL << WIDX_SET_LAND_RIGHTS);
 
             if (windowMgr->FindByClass(WindowClass::Mapgen))
-                pressed_widgets |= (1uLL << WIDX_MAP_GENERATOR);
+                pressedWidgets |= (1uLL << WIDX_MAP_GENERATOR);
 
             // Set disabled widgets
             auto& gameState = getGameState();
@@ -668,7 +668,7 @@ namespace OpenRCT2::Ui::Windows
             if (!isEditorOrSandbox())
             {
                 // Render the map legend
-                if (selected_tab == PAGE_RIDES)
+                if (selectedTab == PAGE_RIDES)
                 {
                     auto screenCoords = windowPos + ScreenCoordsXY{ 4, widgets[WIDX_MAP].bottom + 2 };
 
@@ -819,7 +819,7 @@ namespace OpenRCT2::Ui::Windows
                 if (!MapIsEdge({ x, y }))
                 {
                     uint16_t colour = 0;
-                    switch (selected_tab)
+                    switch (selectedTab)
                     {
                         case PAGE_PEEPS:
                             colour = GetPixelColourPeep({ x, y });
@@ -1070,8 +1070,8 @@ namespace OpenRCT2::Ui::Windows
         {
             // Guest tab image (animated)
             uint32_t guestTabImage = SPR_TAB_GUESTS_0;
-            if (selected_tab == PAGE_PEEPS)
-                guestTabImage += list_information_type / 4;
+            if (selectedTab == PAGE_PEEPS)
+                guestTabImage += listInformationType / 4;
 
             GfxDrawSprite(
                 rt, ImageId(guestTabImage),
@@ -1079,8 +1079,8 @@ namespace OpenRCT2::Ui::Windows
 
             // Ride/stall tab image (animated)
             uint32_t rideTabImage = SPR_TAB_RIDE_0;
-            if (selected_tab == PAGE_RIDES)
-                rideTabImage += list_information_type / 4;
+            if (selectedTab == PAGE_RIDES)
+                rideTabImage += listInformationType / 4;
 
             GfxDrawSprite(
                 rt, ImageId(rideTabImage),
@@ -1177,7 +1177,7 @@ namespace OpenRCT2::Ui::Windows
         {
             if (isEditorOrSandbox())
                 return kEditorReservedVSpace;
-            else if (selected_tab == PAGE_RIDES)
+            else if (selectedTab == PAGE_RIDES)
                 return kRidesTabReservedVSpace;
             else
                 return kDefaultReservedVSpace;
@@ -1234,14 +1234,14 @@ namespace OpenRCT2::Ui::Windows
             }
 
             textOffset += _firstColumnWidth + 4;
-            min_width = kWindowSize.width;
+            minWidth = kWindowSize.width;
             for (uint32_t i = 4; i < std::size(MapLabels); i++)
             {
                 const auto* labelStr = LanguageGetString(MapLabels[i]);
-                min_width = std::max(
-                    static_cast<int16_t>(textOffset + GfxGetStringWidth(labelStr, FontStyle::Medium)), min_width);
+                minWidth = std::max(
+                    static_cast<int16_t>(textOffset + GfxGetStringWidth(labelStr, FontStyle::Medium)), minWidth);
             }
-            width = std::max(min_width, width);
+            width = std::max(minWidth, width);
             _recalculateScrollbars = true;
         }
     };
@@ -1252,8 +1252,8 @@ namespace OpenRCT2::Ui::Windows
         {
             auto* windowMgr = GetWindowManager();
             auto* w = windowMgr->FocusOrCreate<MapWindow>(WindowClass::Map, kWindowSize, WF_10);
-            w->selected_tab = 0;
-            w->list_information_type = 0;
+            w->selectedTab = 0;
+            w->listInformationType = 0;
             return w;
         }
         catch (const std::bad_alloc&)

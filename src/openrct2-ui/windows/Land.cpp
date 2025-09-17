@@ -91,7 +91,7 @@ namespace OpenRCT2::Ui::Windows
         {
             SetWidgets(window_land_widgets);
 
-            hold_down_widgets = (1uLL << WIDX_DECREMENT) | (1uLL << WIDX_INCREMENT);
+            holdDownWidgets = (1uLL << WIDX_DECREMENT) | (1uLL << WIDX_INCREMENT);
             WindowInitScrollWidgets(*this);
             WindowPushOthersBelow(*this);
 
@@ -236,7 +236,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnPrepareDraw() override
         {
-            pressed_widgets = 0;
+            pressedWidgets = 0;
             SetWidgetPressed(WIDX_PREVIEW, true);
             if (gLandToolTerrainSurface != kObjectEntryIndexNull)
                 SetWidgetPressed(WIDX_FLOOR, true);

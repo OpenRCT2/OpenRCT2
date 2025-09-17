@@ -91,7 +91,7 @@ namespace OpenRCT2::Ui::Windows
             SetWidgets(kProgressWindowWidgets);
             WindowSetResize(*this, kWindowSize, kWindowSize);
 
-            frame_no = 0;
+            currentFrame = 0;
 
             ApplyStyle();
             ResizeFrame();
