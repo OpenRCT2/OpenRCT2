@@ -45,7 +45,7 @@ namespace OpenRCT2::Ui::Windows
     class StaffFirePromptWindow final : public Window
     {
     public:
-        void SetWindowNumber(rct_windownumber windownumber)
+        void SetWindowNumber(WindowNumber windownumber)
         {
             number = windownumber;
         }

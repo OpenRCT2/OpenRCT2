@@ -530,7 +530,7 @@ public:
 
             case INTENT_ACTION_UPDATE_BANNER:
             {
-                rct_windownumber bannerIndex = static_cast<rct_windownumber>(intent.GetUIntExtra(INTENT_EXTRA_BANNER_INDEX));
+                WindowNumber bannerIndex = static_cast<WindowNumber>(intent.GetUIntExtra(INTENT_EXTRA_BANNER_INDEX));
 
                 WindowBase* w = FindByNumber(WindowClass::Banner, bannerIndex);
                 if (w != nullptr)
@@ -1027,7 +1027,7 @@ public:
      * Closes all windows with specified window class and number.
      *  rct2: 0x006ECCF4
      */
-    void CloseByNumber(WindowClass cls, rct_windownumber number) override
+    void CloseByNumber(WindowClass cls, WindowNumber number) override
     {
         CloseByCondition([cls, number](WindowBase* w) -> bool { return w->classification == cls && w->number == number; });
     }
@@ -1035,7 +1035,7 @@ public:
     // TODO: Refactor this to use variant once the new window class is done.
     void CloseByNumber(WindowClass cls, EntityId number) override
     {
-        CloseByNumber(cls, static_cast<rct_windownumber>(number.ToUnderlying()));
+        CloseByNumber(cls, static_cast<WindowNumber>(number.ToUnderlying()));
     }
 
     /**
@@ -1087,7 +1087,7 @@ public:
     /**
      * Closes all windows except the specified window number and class.
      */
-    void CloseAllExceptNumberAndClass(rct_windownumber number, WindowClass cls) override
+    void CloseAllExceptNumberAndClass(WindowNumber number, WindowClass cls) override
     {
         CloseByClass(WindowClass::Dropdown);
         CloseByCondition([cls, number](WindowBase* w) -> bool {
@@ -1131,7 +1131,7 @@ public:
      *  rct2: 0x006EA8A0
      * @returns the window or nullptr if no window was found.
      */
-    WindowBase* FindByNumber(WindowClass cls, rct_windownumber number) override
+    WindowBase* FindByNumber(WindowClass cls, WindowNumber number) override
     {
         for (auto& w : g_window_list)
         {
@@ -1148,7 +1148,7 @@ public:
     // TODO: Use variant for this once the window framework is done.
     WindowBase* FindByNumber(WindowClass cls, EntityId id) override
     {
-        return FindByNumber(cls, static_cast<rct_windownumber>(id.ToUnderlying()));
+        return FindByNumber(cls, static_cast<WindowNumber>(id.ToUnderlying()));
     }
 
     /**
@@ -1246,7 +1246,7 @@ public:
      * Invalidates all windows with the specified window class and number.
      *  rct2: 0x006EC3AC
      */
-    void InvalidateByNumber(WindowClass cls, rct_windownumber number) override
+    void InvalidateByNumber(WindowClass cls, WindowNumber number) override
     {
         InvalidateByCondition([cls, number](WindowBase* w) -> bool { return w->classification == cls && w->number == number; });
     }
@@ -1254,7 +1254,7 @@ public:
     // TODO: Use variant for this once the window framework is done.
     void InvalidateByNumber(WindowClass cls, EntityId id) override
     {
-        InvalidateByNumber(cls, static_cast<rct_windownumber>(id.ToUnderlying()));
+        InvalidateByNumber(cls, static_cast<WindowNumber>(id.ToUnderlying()));
     }
 
     /**
@@ -1308,7 +1308,7 @@ public:
      * Invalidates the specified widget of all windows that match the specified window class and number.
      *  rct2: 0x006EC3AC
      */
-    void InvalidateWidgetByNumber(WindowClass cls, rct_windownumber number, WidgetIndex widgetIndex) override
+    void InvalidateWidgetByNumber(WindowClass cls, WindowNumber number, WidgetIndex widgetIndex) override
     {
         WindowVisitEach([this, cls, number, widgetIndex](WindowBase* w) {
             if (w->classification == cls && w->number == number)
@@ -1387,7 +1387,7 @@ public:
      *
      *  rct2: 0x006ED78A
      */
-    WindowBase* BringToFrontByNumber(WindowClass cls, rct_windownumber number) override
+    WindowBase* BringToFrontByNumber(WindowClass cls, WindowNumber number) override
     {
         WindowBase* w = FindByNumber(cls, number);
         if (w != nullptr)

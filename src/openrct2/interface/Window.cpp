@@ -632,7 +632,7 @@ static constexpr float kWindowScrollLocations[][2] = {
         return gInputFlags.has(InputFlag::toolActive) && gCurrentToolWidget.windowClassification == cls;
     }
 
-    bool isToolActive(WindowClass cls, rct_windownumber number)
+    bool isToolActive(WindowClass cls, WindowNumber number)
     {
         return isToolActive(cls) && gCurrentToolWidget.windowNumber == number;
     }
@@ -642,7 +642,7 @@ static constexpr float kWindowScrollLocations[][2] = {
         return isToolActive(cls) && gCurrentToolWidget.widgetIndex == widgetIndex;
     }
 
-    bool isToolActive(WindowClass cls, WidgetIndex widgetIndex, rct_windownumber number)
+    bool isToolActive(WindowClass cls, WidgetIndex widgetIndex, WindowNumber number)
     {
         return isToolActive(cls, widgetIndex) && gCurrentToolWidget.windowNumber == number;
     }

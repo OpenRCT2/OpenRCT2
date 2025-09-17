@@ -27,10 +27,10 @@ namespace OpenRCT2::Scripting
     {
     private:
         WindowClass _class{};
-        rct_windownumber _number{};
+        WindowNumber _number{};
 
     public:
-        ScViewport(WindowClass c, rct_windownumber n = 0)
+        ScViewport(WindowClass c, WindowNumber n = 0)
             : _class(c)
             , _number(n)
         {

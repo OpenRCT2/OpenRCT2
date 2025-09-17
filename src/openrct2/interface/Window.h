@@ -31,7 +31,7 @@ enum class CloseWindowModifier : uint8_t;
 
 namespace OpenRCT2
 {
-    using rct_windownumber = int16_t;
+    using WindowNumber = int16_t;
 
     struct WindowBase;
     struct WindowCloseModifier;
@@ -41,7 +41,7 @@ namespace OpenRCT2
     struct WindowIdentifier
     {
         WindowClass classification;
-        rct_windownumber number;
+        WindowNumber number;
     };
 
     struct WidgetIdentifier
@@ -267,7 +267,7 @@ namespace OpenRCT2
     struct WidgetRef
     {
         WindowClass windowClassification;
-        rct_windownumber windowNumber;
+        WindowNumber windowNumber;
         WidgetIndex widgetIndex;
     };
 
@@ -313,9 +313,9 @@ namespace OpenRCT2
     void WindowDraw(RenderTarget& rt, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom);
 
     bool isToolActive(WindowClass cls);
-    bool isToolActive(WindowClass cls, rct_windownumber number);
+    bool isToolActive(WindowClass cls, WindowNumber number);
     bool isToolActive(WindowClass cls, WidgetIndex widgetIndex);
-    bool isToolActive(WindowClass cls, WidgetIndex widgetIndex, rct_windownumber number);
+    bool isToolActive(WindowClass cls, WidgetIndex widgetIndex, WindowNumber number);
     bool isToolActive(const WindowBase& w, WidgetIndex widgetIndex);
     bool ToolSet(const WindowBase& w, WidgetIndex widgetIndex, Tool tool);
     void ToolCancel();

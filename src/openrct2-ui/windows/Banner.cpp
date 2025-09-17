@@ -137,7 +137,7 @@ namespace OpenRCT2::Ui::Windows
             WindowInitScrollWidgets(*this);
         }
 
-        void Initialise(rct_windownumber _number)
+        void Initialise(WindowNumber _number)
         {
             number = _number;
             auto* banner = GetBanner(BannerIndex::FromUnderlying(number));
@@ -314,7 +314,7 @@ namespace OpenRCT2::Ui::Windows
      *
      *  rct2: 0x006BA305
      */
-    WindowBase* BannerOpen(rct_windownumber number)
+    WindowBase* BannerOpen(WindowNumber number)
     {
         auto* windowMgr = GetWindowManager();
         auto w = static_cast<BannerWindow*>(windowMgr->BringToFrontByNumber(WindowClass::Banner, number));

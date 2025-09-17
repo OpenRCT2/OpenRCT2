@@ -74,7 +74,7 @@ namespace OpenRCT2
 
     static MouseState GameGetNextInput(ScreenCoordsXY& screenCoords);
     static void InputWidgetOver(const ScreenCoordsXY& screenCoords, WindowBase* w, WidgetIndex widgetIndex);
-    static void InputWidgetOverChangeCheck(WindowClass windowClass, rct_windownumber windowNumber, WidgetIndex widgetIndex);
+    static void InputWidgetOverChangeCheck(WindowClass windowClass, WindowNumber windowNumber, WidgetIndex widgetIndex);
     static void InputWidgetOverFlatbuttonInvalidate();
     void ProcessMouseOver(const ScreenCoordsXY& screenCoords);
     void ProcessMouseTool(const ScreenCoordsXY& screenCoords);
@@ -962,7 +962,7 @@ namespace OpenRCT2
     static void InputWidgetOver(const ScreenCoordsXY& screenCoords, WindowBase* w, WidgetIndex widgetIndex)
     {
         WindowClass windowClass = WindowClass::Null;
-        rct_windownumber windowNumber = 0;
+        WindowNumber windowNumber = 0;
         Widget* widget = nullptr;
 
         if (w != nullptr)
@@ -993,7 +993,7 @@ namespace OpenRCT2
      *
      *  rct2: 0x006E9269
      */
-    static void InputWidgetOverChangeCheck(WindowClass windowClass, rct_windownumber windowNumber, WidgetIndex widgetIndex)
+    static void InputWidgetOverChangeCheck(WindowClass windowClass, WindowNumber windowNumber, WidgetIndex widgetIndex)
     {
         // Prevents invalid widgets being clicked source of bug is elsewhere
         if (widgetIndex == kWidgetIndexNull)
@@ -1043,7 +1043,7 @@ namespace OpenRCT2
     static void InputWidgetLeft(const ScreenCoordsXY& screenCoords, WindowBase* w, WidgetIndex widgetIndex)
     {
         WindowClass windowClass = WindowClass::Null;
-        rct_windownumber windowNumber = 0;
+        WindowNumber windowNumber = 0;
 
         if (w != nullptr)
         {
@@ -1246,7 +1246,7 @@ namespace OpenRCT2
         const ScreenCoordsXY& screenCoords, MouseState state, WidgetIndex widgetIndex, WindowBase* w, Widget* widget)
     {
         WindowClass cursor_w_class;
-        rct_windownumber cursor_w_number;
+        WindowNumber cursor_w_number;
         cursor_w_class = gPressedWidget.windowClassification;
         cursor_w_number = gPressedWidget.windowNumber;
         WidgetIndex cursor_widgetIndex = gPressedWidget.widgetIndex;

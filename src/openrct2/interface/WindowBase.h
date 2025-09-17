@@ -85,7 +85,7 @@ namespace OpenRCT2
         int16_t max_height{};
         union
         {
-            rct_windownumber number{};
+            WindowNumber number{};
             RideId rideId;
         };
         WindowFlags flags{};

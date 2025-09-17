@@ -395,7 +395,7 @@ namespace OpenRCT2::Ui::Windows
     class CustomWindow final : public Window
     {
     private:
-        static rct_windownumber _nextWindowNumber;
+        static WindowNumber _nextWindowNumber;
         CustomWindowInfo _info;
 
     public:
@@ -1114,7 +1114,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        static rct_windownumber GetNewWindowNumber()
+        static WindowNumber GetNewWindowNumber()
         {
             auto result = _nextWindowNumber++;
             auto* windowMgr = GetWindowManager();
@@ -1126,7 +1126,7 @@ namespace OpenRCT2::Ui::Windows
         }
     };
 
-    rct_windownumber CustomWindow::_nextWindowNumber;
+    WindowNumber CustomWindow::_nextWindowNumber;
 
     WindowBase* WindowCustomOpen(std::shared_ptr<Plugin> owner, DukValue dukDesc)
     {

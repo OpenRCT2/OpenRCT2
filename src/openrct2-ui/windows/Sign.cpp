@@ -94,7 +94,7 @@ namespace OpenRCT2::Ui::Windows
          * Initializes the window and sets it's number and if it's small
          * @return true if successfull
          */
-        bool Initialize(rct_windownumber windowNumber, const bool isSmall)
+        bool Initialize(WindowNumber windowNumber, const bool isSmall)
         {
             number = windowNumber;
             _isSmall = isSmall;
@@ -333,7 +333,7 @@ namespace OpenRCT2::Ui::Windows
      *
      *  rct2: 0x006BA305
      */
-    WindowBase* SignOpen(rct_windownumber number)
+    WindowBase* SignOpen(WindowNumber number)
     {
         auto* windowMgr = GetWindowManager();
         auto* w = static_cast<SignWindow*>(windowMgr->BringToFrontByNumber(WindowClass::Banner, number));
@@ -357,7 +357,7 @@ namespace OpenRCT2::Ui::Windows
      *
      *  rct2: 0x6E5F52
      */
-    WindowBase* SignSmallOpen(rct_windownumber number)
+    WindowBase* SignSmallOpen(WindowNumber number)
     {
         auto* windowMgr = GetWindowManager();
         auto* w = static_cast<SignWindow*>(windowMgr->BringToFrontByNumber(WindowClass::Banner, number));

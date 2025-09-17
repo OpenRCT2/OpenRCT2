@@ -25,7 +25,7 @@ namespace OpenRCT2::Scripting
     {
     private:
         WindowClass _class;
-        rct_windownumber _number;
+        WindowNumber _number;
 
     public:
         ScWindow(WindowBase* w)
@@ -33,7 +33,7 @@ namespace OpenRCT2::Scripting
         {
         }
 
-        ScWindow(WindowClass c, rct_windownumber n)
+        ScWindow(WindowClass c, WindowNumber n)
             : _class(c)
             , _number(n)
         {
