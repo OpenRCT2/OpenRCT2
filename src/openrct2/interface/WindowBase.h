@@ -128,7 +128,7 @@ namespace OpenRCT2
 
         constexpr bool canBeResized() const
         {
-            return (flags & WF_RESIZABLE) && (minWidth != maxWidth || minHeight != maxHeight);
+            return flags.has(WindowFlag::resizable) && (minWidth != maxWidth || minHeight != maxHeight);
         }
 
         // Events

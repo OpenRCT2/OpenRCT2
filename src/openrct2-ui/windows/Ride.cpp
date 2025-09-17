@@ -1585,7 +1585,7 @@ namespace OpenRCT2::Ui::Windows
 
                 ViewportCreate(*this, screenPos, viewWidth, viewHeight, focus.value());
 
-                flags |= WF_NO_SCROLLING;
+                flags |= WindowFlag::noScrolling;
                 invalidate();
             }
             if (viewport != nullptr)
@@ -1707,7 +1707,7 @@ namespace OpenRCT2::Ui::Windows
                 newMinHeight += 15;
             }
 
-            flags |= WF_RESIZABLE;
+            flags |= WindowFlag::resizable;
             WindowSetResize(*this, { kMinimumWindowWidth, newMinHeight }, { 500, 450 });
             // Unlike with other windows, the focus needs to be recentred so it’s best to just reset it.
             focus = std::nullopt;
@@ -4998,7 +4998,7 @@ namespace OpenRCT2::Ui::Windows
 
         void MusicResize()
         {
-            flags |= WF_RESIZABLE;
+            flags |= WindowFlag::resizable;
 
             auto ride = GetRide(rideId);
             if (ride == nullptr)
@@ -6760,7 +6760,7 @@ namespace OpenRCT2::Ui::Windows
 
         void CustomerResize()
         {
-            flags |= WF_RESIZABLE;
+            flags |= WindowFlag::resizable;
             WindowSetResize(*this, { kMinimumWindowWidth, 163 }, { kMinimumWindowWidth, 163 });
         }
 
@@ -6940,7 +6940,7 @@ namespace OpenRCT2::Ui::Windows
     static RideWindow* WindowRideOpen(const Ride& ride)
     {
         auto* windowMgr = GetWindowManager();
-        return windowMgr->Create<RideWindow>(WindowClass::ride, kWindowSize, WF_10 | WF_RESIZABLE, ride);
+        return windowMgr->Create<RideWindow>(WindowClass::ride, kWindowSize, { WindowFlag::_10, WindowFlag::resizable }, ride);
     }
 
     /**

@@ -403,7 +403,8 @@ namespace OpenRCT2::Ui::Windows
         if (window != nullptr)
             return window;
 
-        window = windowMgr->Create<EditorParkEntrance>(WindowClass::editorParkEntrance, kWindowSize, WF_10 | WF_RESIZABLE);
+        window = windowMgr->Create<EditorParkEntrance>(
+            WindowClass::editorParkEntrance, kWindowSize, { WindowFlag::_10, WindowFlag::resizable });
 
         return window;
     }

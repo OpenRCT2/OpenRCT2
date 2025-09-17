@@ -446,7 +446,7 @@ namespace OpenRCT2::Ui::Windows
     {
         auto* windowMgr = GetWindowManager();
         return windowMgr->FocusOrCreate<MazeConstructionWindow>(
-            WindowClass::rideConstruction, ScreenCoordsXY(0, 29), kWindowSize, WF_NO_AUTO_CLOSE);
+            WindowClass::rideConstruction, ScreenCoordsXY(0, 29), kWindowSize, WindowFlag::noAutoClose);
     }
 
     void WindowMazeConstructionUpdatePressedWidgets()

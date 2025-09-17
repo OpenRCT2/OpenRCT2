@@ -229,7 +229,7 @@ namespace OpenRCT2::Ui::Windows
             UpdateSizeAndPosition(screenPos, extraY);
 
             if (colour.hasFlag(ColourFlag::translucent))
-                flags |= WF_TRANSPARENT;
+                flags |= WindowFlag::transparent;
             colours[0] = colour;
         }
 
@@ -262,7 +262,7 @@ namespace OpenRCT2::Ui::Windows
             UpdateSizeAndPosition(screenPos, extraY);
 
             if (colour.hasFlag(ColourFlag::translucent))
-                flags |= WF_TRANSPARENT;
+                flags |= WindowFlag::transparent;
             colours[0] = colour;
         }
 
@@ -394,7 +394,7 @@ namespace OpenRCT2::Ui::Windows
         // Create the window (width/height position are set later)
         auto* windowMgr = GetWindowManager();
         auto* w = windowMgr->Create<DropdownWindow>(
-            WindowClass::dropdown, { width, customItemHeight }, WF_STICK_TO_FRONT | WF_NO_TITLE_BAR);
+            WindowClass::dropdown, { width, customItemHeight }, { WindowFlag::stickToFront, WindowFlag::noTitleBar });
         if (w != nullptr)
         {
             auto numRowsPerColumn = prefRowsPerColumn > 0 ? static_cast<int32_t>(prefRowsPerColumn) : Dropdown::kItemsMaxSize;
@@ -438,7 +438,7 @@ namespace OpenRCT2::Ui::Windows
 
         // Create the window (width/height position are set later)
         auto* windowMgr = GetWindowManager();
-        auto* w = windowMgr->Create<DropdownWindow>(WindowClass::dropdown, { itemWidth, itemHeight }, WF_STICK_TO_FRONT);
+        auto* w = windowMgr->Create<DropdownWindow>(WindowClass::dropdown, { itemWidth, itemHeight }, WindowFlag::stickToFront);
         if (w != nullptr)
         {
             w->setImageItems({ x, y }, extray, colour, numItems, itemWidth, itemHeight, numColumns);

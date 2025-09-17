@@ -980,7 +980,7 @@ private:
 
             w = it->get();
 
-            if (w->flags & WF_DEAD)
+            if (w->flags.has(WindowFlag::dead))
             {
                 continue;
             }

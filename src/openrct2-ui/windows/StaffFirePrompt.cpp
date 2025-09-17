@@ -96,7 +96,7 @@ namespace OpenRCT2::Ui::Windows
         // Check if the confirm window already exists
         auto* windowMgr = GetWindowManager();
         auto* window = windowMgr->FocusOrCreate<StaffFirePromptWindow>(
-            WindowClass::firePrompt, kWindowSize, WF_CENTRE_SCREEN | WF_TRANSPARENT);
+            WindowClass::firePrompt, kWindowSize, { WindowFlag::centreScreen, WindowFlag::transparent });
         window->setWindowNumber(peep->Id.ToUnderlying());
         return window;
     }

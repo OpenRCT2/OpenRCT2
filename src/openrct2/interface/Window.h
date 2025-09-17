@@ -60,39 +60,66 @@ namespace OpenRCT2
 
     struct Viewport;
 
-    enum WINDOW_FLAGS
+    enum class WindowFlag : uint8_t
     {
-        /*
-        WF_TIMEOUT_SHL = 0,
-        WF_TIMEOUT_MASK = 7,
-        WF_DRAGGING = 1 << 3,
-        WF_SCROLLER_UP = 1 << 4,
-        WF_SCROLLER_DOWN = 1 << 5,
-        WF_SCROLLER_MIDDLE = 1 << 6,
-        WF_DISABLE_VP_SCROLL = 1 << 9,
-        */
-
-        WF_STICK_TO_BACK = (1 << 0),
-        WF_STICK_TO_FRONT = (1 << 1),
-        WF_NO_SCROLLING = (1 << 2), // User is unable to scroll this viewport
-        WF_SCROLLING_TO_LOCATION = (1 << 3),
-        WF_TRANSPARENT = (1 << 4),
-        WF_NO_BACKGROUND = (1 << 5), // Instead of half transparency, completely remove the window background
-        WF_DEAD = (1u << 6),         // Window is closed and will be deleted in the next update.
-        WF_7 = (1 << 7),
-        WF_RESIZABLE = (1 << 8),
-        WF_NO_AUTO_CLOSE = (1 << 9), // Don't auto close this window if too many windows are open
-        WF_10 = (1 << 10),
-        WF_WHITE_BORDER_ONE = (1 << 12),
-        WF_WHITE_BORDER_MASK = (1 << 12) | (1 << 13),
-        WF_NO_TITLE_BAR = (1 << 14),
-        WF_NO_SNAPPING = (1 << 15),
+        stickToBack,
+        stickToFront,
+        /**
+         * User is unable to scroll this viewport
+         */
+        noScrolling,
+        scrollingToLocation,
+        transparent,
+        /**
+         * Instead of half transparency, completely remove the window background
+         */
+        noBackground,
+        /**
+         * Window is closed and will be deleted in the next update.
+         */
+        dead,
+        _7,
+        resizable,
+        /**
+         * Don't auto close this window if too many windows are open
+         */
+        noAutoClose,
+        _10,
+        /**
+         * set together with whiteBorderTwo as a countdown from 3 to 0.
+         */
+        whiteBorderOne,
+        whiteBorderTwo,
+        noTitleBar,
+        noSnapping,
 
         // *ONLY* create only flags below
-        WF_AUTO_POSITION = (1 << 16),
-        WF_CENTRE_SCREEN = (1 << 17),
+        autoPosition,
+        centreScreen,
     };
-    using WindowFlags = uint32_t;
+    using WindowFlags = FlagHolder<uint32_t, WindowFlag>;
+
+    constexpr void WindowFlagsSetFlashCountDown(WindowFlags& flags)
+    {
+        flags.set(WindowFlag::whiteBorderOne, WindowFlag::whiteBorderTwo);
+    }
+    constexpr void WindowFlagsDecrementFlashCountDown(WindowFlags& flags)
+    {
+        if (flags.has(WindowFlag::whiteBorderOne))
+        {
+            flags.unset(WindowFlag::whiteBorderOne);
+            return;
+        }
+        if (flags.has(WindowFlag::whiteBorderTwo))
+        {
+            flags.unset(WindowFlag::whiteBorderTwo);
+            flags.set(WindowFlag::whiteBorderOne);
+        }
+    }
+    constexpr bool WindowFlagsShouldFlash(WindowFlags flags)
+    {
+        return flags.hasAny(WindowFlag::whiteBorderOne, WindowFlag::whiteBorderTwo);
+    }
 
     enum class WindowView : uint8_t
     {

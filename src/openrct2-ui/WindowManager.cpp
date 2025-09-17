@@ -665,9 +665,9 @@ public:
     {
         for (auto& w : gWindowList)
         {
-            if (w->flags & WF_DEAD)
+            if (w->flags.has(WindowFlag::dead))
                 continue;
-            if (w->flags & WF_STICK_TO_BACK)
+            if (w->flags.has(WindowFlag::stickToBack))
                 continue;
 
             if (loc.x + windowSize.width <= w->windowPos.x)
@@ -759,9 +759,9 @@ public:
         // Place window next to another
         for (auto& w : gWindowList)
         {
-            if (w->flags & WF_DEAD)
+            if (w->flags.has(WindowFlag::dead))
                 continue;
-            if (w->flags & WF_STICK_TO_BACK)
+            if (w->flags.has(WindowFlag::stickToBack))
                 continue;
 
             const ScreenCoordsXY offsets[] = {
@@ -788,9 +788,9 @@ public:
         // Overlap
         for (auto& w : gWindowList)
         {
-            if (w->flags & WF_DEAD)
+            if (w->flags.has(WindowFlag::dead))
                 continue;
-            if (w->flags & WF_STICK_TO_BACK)
+            if (w->flags.has(WindowFlag::stickToBack))
                 continue;
 
             const ScreenCoordsXY offsets[] = {
@@ -839,9 +839,9 @@ public:
     {
         windowSize.height += wp->getTitleBarDiffTarget();
 
-        if (flags & WF_AUTO_POSITION)
+        if (flags.has(WindowFlag::autoPosition))
         {
-            if (flags & WF_CENTRE_SCREEN)
+            if (flags.has(WindowFlag::centreScreen))
             {
                 pos = GetCentrePositionForNewWindow(windowSize);
             }
@@ -860,9 +860,9 @@ public:
             // Close least recently used window
             for (auto& w : gWindowList)
             {
-                if (w->flags & WF_DEAD)
+                if (w->flags.has(WindowFlag::dead))
                     continue;
-                if (!(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT | WF_NO_AUTO_CLOSE)))
+                if (!(w->flags.hasAny(WindowFlag::stickToBack, WindowFlag::stickToFront, WindowFlag::noAutoClose)))
                 {
                     Close(*w.get());
                     break;
@@ -872,25 +872,25 @@ public:
 
         // Find right position to insert new window
         auto itDestPos = gWindowList.end();
-        if (flags & WF_STICK_TO_BACK)
+        if (flags.has(WindowFlag::stickToBack))
         {
             for (auto it = gWindowList.begin(); it != gWindowList.end(); it++)
             {
-                if ((*it)->flags & WF_DEAD)
+                if ((*it)->flags.has(WindowFlag::dead))
                     continue;
-                if (!((*it)->flags & WF_STICK_TO_BACK))
+                if (!((*it)->flags.has(WindowFlag::stickToBack)))
                 {
                     itDestPos = it;
                 }
             }
         }
-        else if (!(flags & WF_STICK_TO_FRONT))
+        else if (!(flags.has(WindowFlag::stickToFront)))
         {
             for (auto it = gWindowList.rbegin(); it != gWindowList.rend(); it++)
             {
-                if ((*it)->flags & WF_DEAD)
+                if ((*it)->flags.has(WindowFlag::dead))
                     continue;
-                if (!((*it)->flags & WF_STICK_TO_FRONT))
+                if (!((*it)->flags.has(WindowFlag::stickToFront)))
                 {
                     itDestPos = it.base();
                     break;
@@ -903,9 +903,9 @@ public:
         wp->flags = flags;
 
         // Play sounds and flash the window
-        if (!(flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)))
+        if (!(flags.hasAny(WindowFlag::stickToBack, WindowFlag::stickToFront)))
         {
-            wp->flags |= WF_WHITE_BORDER_MASK;
+            WindowFlagsSetFlashCountDown(wp->flags);
             OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::WindowOpen, 0, pos.x + (windowSize.width / 2));
         }
 
@@ -947,7 +947,7 @@ public:
         // Invalidate the window (area)
         w.invalidate();
 
-        w.flags |= WF_DEAD;
+        w.flags |= WindowFlag::dead;
     }
 
     void CloseSurplus(int32_t cap, WindowClass avoid_classification) override
@@ -962,9 +962,9 @@ public:
             WindowBase* foundW{};
             for (auto& w : gWindowList)
             {
-                if (w->flags & WF_DEAD)
+                if (w->flags.has(WindowFlag::dead))
                     continue;
-                if (!(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT | WF_NO_AUTO_CLOSE)))
+                if (!(w->flags.hasAny(WindowFlag::stickToBack, WindowFlag::stickToFront, WindowFlag::noAutoClose)))
                 {
                     foundW = w.get();
                     break;
@@ -991,7 +991,7 @@ public:
         for (auto it = gWindowList.rbegin(); it != gWindowList.rend(); ++it)
         {
             auto& wnd = *(*it);
-            if (wnd.flags & WF_DEAD)
+            if (wnd.flags.has(WindowFlag::dead))
                 continue;
 
             if (pred(&wnd))
@@ -1007,7 +1007,7 @@ public:
         // Now close the collected windows
         for (auto* wnd : windowsToClose)
         {
-            if (!(wnd->flags & WF_DEAD))
+            if (!(wnd->flags.has(WindowFlag::dead)))
             {
                 Close(*wnd);
             }
@@ -1053,7 +1053,7 @@ public:
                 return;
         }
 
-        auto pred = [](WindowBase* w) -> bool { return !(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)); };
+        auto pred = [](WindowBase* w) -> bool { return !(w->flags.hasAny(WindowFlag::stickToBack, WindowFlag::stickToFront)); };
         CloseByCondition(pred, WindowCloseFlags::CloseSingle);
     }
 
@@ -1065,14 +1065,15 @@ public:
     void CloseAll() override
     {
         CloseByClass(WindowClass::dropdown);
-        CloseByCondition([](WindowBase* w) -> bool { return !(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)); });
+        CloseByCondition(
+            [](WindowBase* w) -> bool { return !(w->flags.hasAny(WindowFlag::stickToBack, WindowFlag::stickToFront)); });
     }
 
     void CloseAllExceptClass(WindowClass cls) override
     {
         CloseByClass(WindowClass::dropdown);
         CloseByCondition([cls](WindowBase* w) -> bool {
-            return w->classification != cls && !(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT));
+            return w->classification != cls && !(w->flags.hasAny(WindowFlag::stickToBack, WindowFlag::stickToFront));
         });
     }
 
@@ -1081,7 +1082,7 @@ public:
      */
     void CloseAllExceptFlags(WindowFlags flags) override
     {
-        CloseByCondition([flags](WindowBase* w) -> bool { return !(w->flags & flags); });
+        CloseByCondition([flags](WindowBase* w) -> bool { return !(w->flags.hasAny(flags)); });
     }
 
     /**
@@ -1091,7 +1092,9 @@ public:
     {
         CloseByClass(WindowClass::dropdown);
         CloseByCondition([cls, number](WindowBase* w) -> bool {
-            return (!(w->number == number && w->classification == cls) && !(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)));
+            return (
+                !(w->number == number && w->classification == cls)
+                && !(w->flags.hasAny(WindowFlag::stickToBack, WindowFlag::stickToFront)));
         });
     }
 
@@ -1116,7 +1119,7 @@ public:
     {
         for (auto& w : gWindowList)
         {
-            if (w->flags & WF_DEAD)
+            if (w->flags.has(WindowFlag::dead))
                 continue;
             if (w->classification == cls)
             {
@@ -1135,7 +1138,7 @@ public:
     {
         for (auto& w : gWindowList)
         {
-            if (w->flags & WF_DEAD)
+            if (w->flags.has(WindowFlag::dead))
                 continue;
             if (w->classification == cls && w->number == number)
             {
@@ -1160,14 +1163,14 @@ public:
         for (auto it = gWindowList.rbegin(); it != gWindowList.rend(); it++)
         {
             auto& w = *it;
-            if (w->flags & WF_DEAD)
+            if (w->flags.has(WindowFlag::dead))
                 continue;
 
             if (screenCoords.x < w->windowPos.x || screenCoords.x >= w->windowPos.x + w->width
                 || screenCoords.y < w->windowPos.y || screenCoords.y >= w->windowPos.y + w->height)
                 continue;
 
-            if (w->flags & WF_NO_BACKGROUND)
+            if (w->flags.has(WindowFlag::noBackground))
             {
                 auto widgetIndex = FindWidgetFromPoint(*w.get(), screenCoords);
                 if (widgetIndex == kWidgetIndexNull)
@@ -1324,7 +1327,7 @@ public:
      */
     WindowBase* BringToFront(WindowBase& w) override
     {
-        if (!(w.flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)))
+        if (!(w.flags.hasAny(WindowFlag::stickToBack, WindowFlag::stickToFront)))
         {
             auto itSourcePos = WindowGetIterator(&w);
             if (itSourcePos != gWindowList.end())
@@ -1334,11 +1337,11 @@ public:
                 for (auto it = gWindowList.rbegin(); it != gWindowList.rend(); it++)
                 {
                     auto& w2 = *it;
-                    if (w2->flags & WF_DEAD)
+                    if (w2->flags.has(WindowFlag::dead))
                     {
                         continue;
                     }
-                    if (!(w2->flags & WF_STICK_TO_FRONT))
+                    if (!(w2->flags.has(WindowFlag::stickToFront)))
                     {
                         // base() returns the next element in the list, so we need to decrement it.
                         itDestPos = std::prev(it.base());
@@ -1380,7 +1383,9 @@ public:
 
     WindowBase* BringToFrontByClass(WindowClass cls) override
     {
-        return BringToFrontByClassWithFlags(cls, WF_WHITE_BORDER_MASK);
+        WindowFlags flags{};
+        WindowFlagsSetFlashCountDown(flags);
+        return BringToFrontByClassWithFlags(cls, flags);
     }
 
     /**
@@ -1392,7 +1397,7 @@ public:
         WindowBase* w = FindByNumber(cls, number);
         if (w != nullptr)
         {
-            w->flags |= WF_WHITE_BORDER_MASK;
+            WindowFlagsSetFlashCountDown(w->flags);
             w->invalidate();
             w = BringToFront(*w);
         }

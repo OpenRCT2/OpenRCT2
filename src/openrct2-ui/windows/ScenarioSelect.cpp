@@ -867,7 +867,7 @@ namespace OpenRCT2::Ui::Windows
         }
 
         window = windowMgr->Create<ScenarioSelectWindow>(
-            WindowClass::scenarioSelect, {}, kWindowSize, WF_AUTO_POSITION | WF_CENTRE_SCREEN, callback);
+            WindowClass::scenarioSelect, {}, kWindowSize, { WindowFlag::autoPosition, WindowFlag::centreScreen }, callback);
         return window;
     }
 } // namespace OpenRCT2::Ui::Windows

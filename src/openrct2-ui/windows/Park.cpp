@@ -435,7 +435,7 @@ namespace OpenRCT2::Ui::Windows
 
         void onResizeEntrance()
         {
-            flags |= WF_RESIZABLE;
+            flags |= WindowFlag::resizable;
             WindowSetResize(*this, { 230, 174 + 9 }, { 230 * 3, (274 + 9) * 3 });
             initViewport();
         }
@@ -644,7 +644,7 @@ namespace OpenRCT2::Ui::Windows
                     ViewportCreate(
                         *this, windowPos + ScreenCoordsXY{ viewportWidget->left + 1, viewportWidget->top + 1 },
                         viewportWidget->width() - 1, viewportWidget->height() - 1, focus.value());
-                    flags |= WF_NO_SCROLLING;
+                    flags |= WindowFlag::noScrolling;
                     invalidate();
                 }
             }
@@ -659,7 +659,7 @@ namespace OpenRCT2::Ui::Windows
 #pragma region Rating page
         void onResizeRating()
         {
-            flags |= WF_RESIZABLE;
+            flags |= WindowFlag::resizable;
             WindowSetResize(*this, { 268, 174 + 9 }, kMaxWindowSize);
         }
 
@@ -726,7 +726,7 @@ namespace OpenRCT2::Ui::Windows
 #pragma region Guests page
         void onResizeGuests()
         {
-            flags |= WF_RESIZABLE;
+            flags |= WindowFlag::resizable;
             WindowSetResize(*this, { 268, 174 + 9 }, kMaxWindowSize);
         }
 
@@ -1285,7 +1285,7 @@ namespace OpenRCT2::Ui::Windows
     static ParkWindow* ParkWindowOpen(uint8_t page)
     {
         auto* windowMgr = GetWindowManager();
-        auto* wnd = windowMgr->FocusOrCreate<ParkWindow>(WindowClass::parkInformation, { 230, 174 + 9 }, WF_10);
+        auto* wnd = windowMgr->FocusOrCreate<ParkWindow>(WindowClass::parkInformation, { 230, 174 + 9 }, WindowFlag::_10);
         if (wnd != nullptr && page != WINDOW_PARK_PAGE_ENTRANCE)
         {
             wnd->onMouseUp(WIDX_TAB_1 + page);

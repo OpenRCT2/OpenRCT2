@@ -951,7 +951,8 @@ namespace OpenRCT2::Ui::Windows
         auto* window = windowMgr->BringToFrontByClass(WindowClass::guestList);
         if (window == nullptr)
         {
-            window = windowMgr->Create<GuestListWindow>(WindowClass::guestList, kWindowSize, WF_10 | WF_RESIZABLE);
+            window = windowMgr->Create<GuestListWindow>(
+                WindowClass::guestList, kWindowSize, { WindowFlag::_10, WindowFlag::resizable });
         }
         return window;
     }

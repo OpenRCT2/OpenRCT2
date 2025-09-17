@@ -813,7 +813,7 @@ namespace OpenRCT2::Ui::Windows
                     if (viewport == nullptr)
                     {
                         ViewportCreate(*this, { left, top }, wwidth, wheight, Focus(CoordsXYZ(0, 0, 0)));
-                        flags |= WF_NO_SCROLLING;
+                        flags |= WindowFlag::noScrolling;
                         invalidate();
                     }
                     else
@@ -1131,7 +1131,7 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* WindowCustomOpen(std::shared_ptr<Plugin> owner, DukValue dukDesc)
     {
         auto desc = CustomWindowDesc::FromDukValue(dukDesc);
-        uint16_t windowFlags = WF_RESIZABLE | WF_TRANSPARENT;
+        WindowFlags windowFlags = { WindowFlag::resizable, WindowFlag::transparent };
         auto* windowMgr = GetWindowManager();
 
         CustomWindow* window{};

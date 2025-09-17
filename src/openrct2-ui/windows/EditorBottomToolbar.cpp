@@ -452,7 +452,8 @@ namespace OpenRCT2::Ui::Windows
         auto* windowMgr = GetWindowManager();
         auto* window = windowMgr->Create<EditorBottomToolbarWindow>(
             WindowClass::bottomToolbar, ScreenCoordsXY(0, ContextGetHeight() - kToolbarHeight),
-            { ContextGetWidth(), kToolbarHeight }, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND | WF_NO_TITLE_BAR);
+            { ContextGetWidth(), kToolbarHeight },
+            { WindowFlag::stickToFront, WindowFlag::transparent, WindowFlag::noBackground, WindowFlag::noTitleBar });
 
         return window;
     }

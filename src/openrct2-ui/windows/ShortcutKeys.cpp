@@ -79,7 +79,7 @@ namespace OpenRCT2::Ui::Windows
                 auto* windowMgr = GetWindowManager();
                 windowMgr->CloseByClass(WindowClass::changeKeyboardShortcut);
                 auto* w = windowMgr->Create<ChangeShortcutWindow>(
-                    WindowClass::changeKeyboardShortcut, kWindowSizeChange, WF_CENTRE_SCREEN);
+                    WindowClass::changeKeyboardShortcut, kWindowSizeChange, WindowFlag::centreScreen);
                 if (w != nullptr)
                 {
                     w->_shortcutId = shortcutId;
@@ -554,7 +554,7 @@ namespace OpenRCT2::Ui::Windows
         auto w = windowMgr->BringToFrontByClass(WindowClass::keyboardShortcutList);
         if (w == nullptr)
         {
-            w = windowMgr->Create<ShortcutKeysWindow>(WindowClass::keyboardShortcutList, kWindowSize, WF_RESIZABLE);
+            w = windowMgr->Create<ShortcutKeysWindow>(WindowClass::keyboardShortcutList, kWindowSize, WindowFlag::resizable);
         }
         return w;
     }
@@ -615,7 +615,7 @@ namespace OpenRCT2::Ui::Windows
     {
         auto* windowMgr = GetWindowManager();
         return windowMgr->FocusOrCreate<ResetShortcutKeysPrompt>(
-            WindowClass::resetShortcutKeysPrompt, kWindowSizeReset, WF_CENTRE_SCREEN | WF_TRANSPARENT);
+            WindowClass::resetShortcutKeysPrompt, kWindowSizeReset, { WindowFlag::centreScreen, WindowFlag::transparent });
     }
 #pragma endregion
 } // namespace OpenRCT2::Ui::Windows

@@ -532,7 +532,7 @@ namespace OpenRCT2::Ui::Windows
         for (auto it = gWindowList.rbegin(); it != gWindowList.rend(); it++)
         {
             auto& w = **it;
-            if (w.flags & WF_DEAD)
+            if (w.flags.has(WindowFlag::dead))
                 continue;
 
             auto viewport = w.viewport;
@@ -925,7 +925,7 @@ namespace OpenRCT2::Ui::Windows
             // Work out if the window requires moving
             if (w->windowPos.x + 10 < width)
             {
-                if (w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT))
+                if (w->flags.hasAny(WindowFlag::stickToBack, WindowFlag::stickToFront))
                 {
                     if (w->windowPos.y - 22 < height)
                     {
@@ -994,11 +994,6 @@ namespace OpenRCT2::Ui::Windows
         return false;
     }
 
-    bool WindowCanResize(const WindowBase& w)
-    {
-        return (w.flags & WF_RESIZABLE) && (w.minWidth != w.maxWidth || w.minHeight != w.maxHeight);
-    }
-
     /**
      *
      *  rct2: 0x006EA73F
@@ -1026,7 +1021,7 @@ namespace OpenRCT2::Ui::Windows
      */
     void WindowDrawWidgets(WindowBase& w, RenderTarget& rt)
     {
-        if ((w.flags & WF_TRANSPARENT) && !(w.flags & WF_NO_BACKGROUND))
+        if ((w.flags.has(WindowFlag::transparent)) && !(w.flags.has(WindowFlag::noBackground)))
             GfxFilterRect(
                 rt, { w.windowPos, w.windowPos + ScreenCoordsXY{ w.width - 1, w.height - 1 } }, FilterPaletteID::Palette51);
 
@@ -1051,7 +1046,7 @@ namespace OpenRCT2::Ui::Windows
 
         // todo: something missing here too? Between 006EC32B and 006EC369
 
-        if (w.flags & WF_WHITE_BORDER_MASK)
+        if (WindowFlagsShouldFlash(w.flags))
         {
             GfxFillRectInset(
                 rt, { w.windowPos, w.windowPos + ScreenCoordsXY{ w.width - 1, w.height - 1 } }, { COLOUR_WHITE },

@@ -60,7 +60,7 @@ namespace OpenRCT2::Ui::Windows
         {
             window = windowMgr->Create<TitleOptionsWindow>(
                 WindowClass::titleOptions, ScreenCoordsXY(ContextGetWidth() - 80, 0), kWindowSize,
-                WF_STICK_TO_BACK | WF_TRANSPARENT | WF_NO_TITLE_BAR);
+                { WindowFlag::stickToBack, WindowFlag::transparent, WindowFlag::noTitleBar });
         }
 
         return window;

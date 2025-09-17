@@ -2454,7 +2454,7 @@ static uint64_t PageDisabledWidgets[] = {
         WindowBase* window = windowMgr->BringToFrontByClass(WindowClass::tileInspector);
         if (window == nullptr)
             window = windowMgr->Create<TileInspector>(
-                WindowClass::tileInspector, ScreenCoordsXY(0, 29), kWindowSize, WF_RESIZABLE);
+                WindowClass::tileInspector, ScreenCoordsXY(0, 29), kWindowSize, WindowFlag::resizable);
         return window;
     }
 

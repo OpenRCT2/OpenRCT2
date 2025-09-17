@@ -1179,8 +1179,9 @@ namespace OpenRCT2::Ui::Windows
             ScreenSize windowSize = { config.FileBrowserWidth, config.FileBrowserHeight };
 
             w = windowMgr->Create<LoadSaveWindow>(
-                WindowClass::loadsave, windowSize, WF_STICK_TO_FRONT | WF_RESIZABLE | WF_AUTO_POSITION | WF_CENTRE_SCREEN,
-                action, type);
+                WindowClass::loadsave, windowSize,
+                { WindowFlag::stickToFront, WindowFlag::resizable, WindowFlag::autoPosition, WindowFlag::centreScreen }, action,
+                type);
         }
 
         bool isSave = action == LoadSaveAction::save;

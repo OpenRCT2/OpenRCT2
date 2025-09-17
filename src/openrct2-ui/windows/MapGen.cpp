@@ -1534,7 +1534,7 @@ namespace OpenRCT2::Ui::Windows
     {
         auto* windowMgr = GetWindowManager();
         return windowMgr->FocusOrCreate<MapGenWindow>(
-            WindowClass::mapgen, kWindowSize, WF_10 | WF_AUTO_POSITION | WF_CENTRE_SCREEN);
+            WindowClass::mapgen, kWindowSize, { WindowFlag::_10, WindowFlag::autoPosition, WindowFlag::centreScreen });
     }
 
     static void HeightmapLoadsaveCallback(ModalResult result, const utf8* path)

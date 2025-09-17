@@ -288,6 +288,6 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* AboutOpen()
     {
         auto* windowMgr = GetWindowManager();
-        return windowMgr->FocusOrCreate<AboutWindow>(WindowClass::about, kWindowSize, WF_CENTRE_SCREEN);
+        return windowMgr->FocusOrCreate<AboutWindow>(WindowClass::about, kWindowSize, WindowFlag::centreScreen);
     }
 } // namespace OpenRCT2::Ui::Windows

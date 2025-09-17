@@ -1156,7 +1156,7 @@ namespace OpenRCT2::Ui::Windows
                     int32_t viewportHeight = viewWidget.height() - 1;
 
                     ViewportCreate(*this, screenPos, viewportWidth, viewportHeight, focus.value());
-                    flags |= WF_NO_SCROLLING;
+                    flags |= WindowFlag::noScrolling;
                     invalidate();
                 }
             }
@@ -1230,7 +1230,7 @@ namespace OpenRCT2::Ui::Windows
         if (w != nullptr)
             return w;
 
-        w = windowMgr->Create<StaffWindow>(WindowClass::peep, kWindowSize, WF_10 | WF_RESIZABLE);
+        w = windowMgr->Create<StaffWindow>(WindowClass::peep, kWindowSize, { WindowFlag::_10, WindowFlag::resizable });
         if (w == nullptr)
             return nullptr;
 
