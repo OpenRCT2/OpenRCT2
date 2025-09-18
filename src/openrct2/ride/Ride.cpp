@@ -1133,18 +1133,9 @@ void Ride::update()
     // If ride is simulating but crashed, reset the vehicles
     if (status == RideStatus::simulating && (lifecycleFlags & RIDE_LIFECYCLE_CRASHED))
     {
-        if (mode == RideMode::continuousCircuitBlockSectioned || mode == RideMode::poweredLaunchBlockSectioned)
-        {
-            // We require this to execute right away during the simulation, always ignore network and queue.
-            auto gameAction = GameActions::RideSetStatusAction(id, RideStatus::closed);
-            GameActions::ExecuteNested(&gameAction, getGameState());
-        }
-        else
-        {
-            // We require this to execute right away during the simulation, always ignore network and queue.
-            auto gameAction = GameActions::RideSetStatusAction(id, RideStatus::simulating);
-            GameActions::ExecuteNested(&gameAction, getGameState());
-        }
+        // We require this to execute right away during the simulation, always ignore network and queue.
+        auto gameAction = GameActions::RideSetStatusAction(id, RideStatus::simulating);
+        GameActions::ExecuteNested(&gameAction, getGameState());
     }
 }
 
