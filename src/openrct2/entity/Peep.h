@@ -387,6 +387,7 @@ public: // Peep
     void Remove();
     void UpdateCurrentAnimationType();
     void UpdateSpriteBoundingBox();
+    void UpdateWaitingAtCrossing();
     void SwitchToSpecialSprite(uint8_t special_sprite_id);
     void StateReset();
     [[nodiscard]] uint8_t GetNextDirection() const;
