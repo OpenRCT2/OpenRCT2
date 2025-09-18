@@ -1830,7 +1830,10 @@ void Staff::UpdatePatrolling()
         return;
 
     if (ShouldWaitForLevelCrossing() && !IsMechanicHeadingToFixRideBlockingPath())
+    {
+        UpdateWaitingAtCrossing();
         return;
+    }
 
     const auto [pathingResult, _] = PerformNextAction();
     if (!(pathingResult & PATHING_DESTINATION_REACHED))
