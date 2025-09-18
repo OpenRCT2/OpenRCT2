@@ -92,7 +92,7 @@ namespace OpenRCT2::Platform
     RealWorldDate GetDateLocal();
 
     bool FindApp(std::string_view app, std::string* output);
-    int32_t Execute(std::string_view command, std::string* output = nullptr);
+    int32_t Execute(const char* args[], std::string* output = nullptr);
     bool ProcessIsElevated();
     float GetDefaultScale();
 

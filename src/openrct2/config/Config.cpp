@@ -807,10 +807,9 @@ namespace OpenRCT2::Config
             LOG_ERROR("Please install innoextract to extract files from GOG.");
             return false;
         }
-        int32_t exit_status = Platform::Execute(
-            String::stdFormat(
-                "%s '%s' --exclude-temp --output-dir '%s'", path.c_str(), installerPath.c_str(), targetPath.c_str()),
-            &output);
+        const char* args[] = { path.c_str(),   installerPath.c_str(), "--exclude-temp", "--silent",
+                               "--output-dir", targetPath.c_str(),    nullptr };
+        int32_t exit_status = Platform::Execute(args, &output);
         LOG_INFO("Exit status %d", exit_status);
         return exit_status == 0;
     }
