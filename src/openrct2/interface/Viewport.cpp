@@ -105,7 +105,7 @@ namespace OpenRCT2
         // ?
         gInputFlags.clearAll();
         InputSetState(InputState::Reset);
-        gPressedWidget.windowClassification = WindowClass::Null;
+        gPressedWidget.windowClassification = WindowClass::null;
         gPickupPeepImage = ImageId();
         ResetTooltipNotShown();
         gMapSelectFlags.clearAll();
@@ -340,14 +340,14 @@ namespace OpenRCT2
                 // Get next valid window after.
                 auto itNextWindow = [&]() {
                     auto itNext = std::next(itWindowPos);
-                    while (itNext != g_window_list.end() && (itNext->get()->flags & WF_DEAD))
+                    while (itNext != gWindowList.end() && (itNext->get()->flags & WF_DEAD))
                     {
                         ++itNext;
                     }
                     return itNext;
                 }();
                 ViewportRedrawAfterShift(
-                    rt, itNextWindow == g_window_list.end() ? nullptr : itNextWindow->get(), originalWindow, shift, drawRect);
+                    rt, itNextWindow == gWindowList.end() ? nullptr : itNextWindow->get(), originalWindow, shift, drawRect);
                 return;
             }
 
@@ -439,7 +439,7 @@ namespace OpenRCT2
     {
         // This loop redraws all parts covered by transparent windows.
         auto it = WindowGetIterator(window);
-        for (; it != g_window_list.end(); it++)
+        for (; it != gWindowList.end(); it++)
         {
             auto w = it->get();
             if (!(w->flags & WF_TRANSPARENT) || (w->flags & WF_DEAD))
@@ -531,8 +531,8 @@ namespace OpenRCT2
     // rct2: 0x006E7A15
     static void ViewportSetUndergroundFlag(int32_t underground, WindowBase* window, Viewport* viewport)
     {
-        if ((window->classification != WindowClass::MainWindow && window->classification != WindowClass::Viewport)
-            || (window->classification == WindowClass::MainWindow && !window->viewportSmartFollowSprite.IsNull()))
+        if ((window->classification != WindowClass::mainWindow && window->classification != WindowClass::viewport)
+            || (window->classification == WindowClass::mainWindow && !window->viewportSmartFollowSprite.IsNull()))
         {
             if (!underground)
             {

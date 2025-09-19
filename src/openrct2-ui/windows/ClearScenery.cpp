@@ -79,7 +79,7 @@ namespace OpenRCT2::Ui::Windows
 
         void onClose() override
         {
-            if (isToolActive(WindowClass::ClearScenery, WIDX_BACKGROUND))
+            if (isToolActive(WindowClass::clearScenery, WIDX_BACKGROUND))
                 ToolCancel();
         }
 
@@ -157,7 +157,7 @@ namespace OpenRCT2::Ui::Windows
         {
             currentFrame++;
             // Close window if another tool is open
-            if (!isToolActive(WindowClass::ClearScenery, WIDX_BACKGROUND))
+            if (!isToolActive(WindowClass::clearScenery, WIDX_BACKGROUND))
                 close();
         }
 
@@ -295,7 +295,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 _clearSceneryCost = cost;
                 auto* windowMgr = Ui::GetWindowManager();
-                windowMgr->InvalidateByClass(WindowClass::ClearScenery);
+                windowMgr->InvalidateByClass(WindowClass::clearScenery);
             }
         }
 
@@ -331,7 +331,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_BACKGROUND:
                 {
                     auto* windowMgr = GetWindowManager();
-                    if (windowMgr->FindByClass(WindowClass::Error) == nullptr && (gMapSelectFlags.has(MapSelectFlag::enable)))
+                    if (windowMgr->FindByClass(WindowClass::error) == nullptr && (gMapSelectFlags.has(MapSelectFlag::enable)))
                     {
                         auto action = GetClearAction();
                         GameActions::Execute(&action, getGameState());
@@ -369,7 +369,7 @@ namespace OpenRCT2::Ui::Windows
     {
         auto* windowMgr = GetWindowManager();
         return windowMgr->FocusOrCreate<CleanSceneryWindow>(
-            WindowClass::ClearScenery, ScreenCoordsXY(ContextGetWidth() - kWindowSize.width, 29), kWindowSize, 0);
+            WindowClass::clearScenery, ScreenCoordsXY(ContextGetWidth() - kWindowSize.width, 29), kWindowSize, 0);
     }
 
     /**
@@ -378,14 +378,14 @@ namespace OpenRCT2::Ui::Windows
      */
     void ToggleClearSceneryWindow()
     {
-        if (isToolActive(WindowClass::ClearScenery, WIDX_BACKGROUND))
+        if (isToolActive(WindowClass::clearScenery, WIDX_BACKGROUND))
         {
             ToolCancel();
         }
         else
         {
             ShowGridlines();
-            auto* toolWindow = ContextOpenWindow(WindowClass::ClearScenery);
+            auto* toolWindow = ContextOpenWindow(WindowClass::clearScenery);
             ToolSet(*toolWindow, WIDX_BACKGROUND, Tool::bulldozer);
             gInputFlags.set(InputFlag::unk6);
         }

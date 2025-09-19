@@ -61,7 +61,7 @@ namespace OpenRCT2::Ui::Windows
         {
             number = 1;
             WindowVisitEach([&](WindowBase* w) {
-                if (w != nullptr && w != this && w->classification == WindowClass::Viewport)
+                if (w != nullptr && w != this && w->classification == WindowClass::viewport)
                 {
                     if (w->number >= number)
                         number = w->number + 1;
@@ -207,6 +207,6 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* ViewportOpen()
     {
-        return GetWindowManager()->Create<ViewportWindow>(WindowClass::Viewport, kWindowSize, WF_RESIZABLE);
+        return GetWindowManager()->Create<ViewportWindow>(WindowClass::viewport, kWindowSize, WF_RESIZABLE);
     }
 } // namespace OpenRCT2::Ui::Windows

@@ -384,7 +384,7 @@ void RideUpdateFavouritedStat()
     }
 
     auto* windowMgr = Ui::GetWindowManager();
-    windowMgr->InvalidateByClass(WindowClass::RideList);
+    windowMgr->InvalidateByClass(WindowClass::rideList);
 }
 
 /**
@@ -766,7 +766,7 @@ bool Ride::findTrackGap(const CoordsXYE& input, CoordsXYE* output) const
         return false;
 
     auto* windowMgr = Ui::GetWindowManager();
-    WindowBase* w = windowMgr->FindByClass(WindowClass::RideConstruction);
+    WindowBase* w = windowMgr->FindByClass(WindowClass::rideConstruction);
     if (w != nullptr && _rideConstructionState != RideConstructionState::State0 && _currentRideIndex == id)
     {
         RideConstructionInvalidateCurrentTrack();
@@ -2714,7 +2714,7 @@ static ResultWithMessage RideCheckBlockBrakes(const CoordsXYE& input, CoordsXYE*
     RideId rideIndex = input.element->AsTrack()->GetRideIndex();
 
     auto* windowMgr = Ui::GetWindowManager();
-    WindowBase* w = windowMgr->FindByClass(WindowClass::RideConstruction);
+    WindowBase* w = windowMgr->FindByClass(WindowClass::rideConstruction);
     if (w != nullptr && _rideConstructionState != RideConstructionState::State0 && _currentRideIndex == rideIndex)
         RideConstructionInvalidateCurrentTrack();
 
@@ -2779,7 +2779,7 @@ static bool RideCheckTrackContainsInversions(const CoordsXYE& input, CoordsXYE* 
     }
 
     auto* windowMgr = Ui::GetWindowManager();
-    WindowBase* w = windowMgr->FindByClass(WindowClass::RideConstruction);
+    WindowBase* w = windowMgr->FindByClass(WindowClass::rideConstruction);
     if (w != nullptr && _rideConstructionState != RideConstructionState::State0 && rideIndex == _currentRideIndex)
     {
         RideConstructionInvalidateCurrentTrack();
@@ -2840,7 +2840,7 @@ static bool RideCheckTrackContainsBanked(const CoordsXYE& input, CoordsXYE* outp
         return true;
 
     auto* windowMgr = Ui::GetWindowManager();
-    WindowBase* w = windowMgr->FindByClass(WindowClass::RideConstruction);
+    WindowBase* w = windowMgr->FindByClass(WindowClass::rideConstruction);
     if (w != nullptr && _rideConstructionState != RideConstructionState::State0 && rideIndex == _currentRideIndex)
     {
         RideConstructionInvalidateCurrentTrack();
@@ -2882,7 +2882,7 @@ static bool RideCheckTrackContainsBanked(const CoordsXYE& input, CoordsXYE* outp
 static int32_t RideCheckStationLength(const CoordsXYE& input, CoordsXYE* output)
 {
     auto* windowMgr = Ui::GetWindowManager();
-    WindowBase* w = windowMgr->FindByClass(WindowClass::RideConstruction);
+    WindowBase* w = windowMgr->FindByClass(WindowClass::rideConstruction);
     if (w != nullptr && _rideConstructionState != RideConstructionState::State0
         && _currentRideIndex == input.element->AsTrack()->GetRideIndex())
     {
@@ -2945,7 +2945,7 @@ static bool RideCheckStartAndEndIsStation(const CoordsXYE& input)
         return false;
 
     auto* windowMgr = Ui::GetWindowManager();
-    auto w = windowMgr->FindByClass(WindowClass::RideConstruction);
+    auto w = windowMgr->FindByClass(WindowClass::rideConstruction);
     if (w != nullptr && _rideConstructionState != RideConstructionState::State0 && rideIndex == _currentRideIndex)
     {
         RideConstructionInvalidateCurrentTrack();
@@ -3990,7 +3990,7 @@ void Ride::constructMissingEntranceOrExit() const
         }
 
         auto* windowMgr = Ui::GetWindowManager();
-        w = windowMgr->FindByClass(WindowClass::RideConstruction);
+        w = windowMgr->FindByClass(WindowClass::rideConstruction);
         if (w != nullptr)
             w->onMouseUp(entranceOrExit);
     }
@@ -4049,7 +4049,7 @@ ResultWithMessage Ride::test(bool isApplying)
     }
 
     auto* windowMgr = Ui::GetWindowManager();
-    windowMgr->CloseByNumber(WindowClass::RideConstruction, id.ToUnderlying());
+    windowMgr->CloseByNumber(WindowClass::rideConstruction, id.ToUnderlying());
 
     StationIndex stationIndex = {};
     auto message = changeStatusDoStationChecks(stationIndex);
@@ -4128,10 +4128,10 @@ ResultWithMessage Ride::open(bool isApplying)
     // to set the track to its final state and clean up ghosts.
     // We can't just call close as it would cause a stack overflow during shop creation
     // with auto open on.
-    if (isToolActive(WindowClass::RideConstruction, static_cast<WindowNumber>(id.ToUnderlying())))
+    if (isToolActive(WindowClass::rideConstruction, static_cast<WindowNumber>(id.ToUnderlying())))
     {
         auto* windowMgr = Ui::GetWindowManager();
-        windowMgr->CloseByNumber(WindowClass::RideConstruction, id.ToUnderlying());
+        windowMgr->CloseByNumber(WindowClass::rideConstruction, id.ToUnderlying());
     }
 
     StationIndex stationIndex = {};
@@ -4666,7 +4666,7 @@ void InvalidateTestResults(Ride& ride)
     }
 
     auto* windowMgr = Ui::GetWindowManager();
-    windowMgr->InvalidateByNumber(WindowClass::Ride, ride.id.ToUnderlying());
+    windowMgr->InvalidateByNumber(WindowClass::ride, ride.id.ToUnderlying());
 }
 
 /**
@@ -5040,7 +5040,7 @@ static int32_t RideGetTrackLength(const Ride& ride)
     RideId rideIndex = tileElement->AsTrack()->GetRideIndex();
 
     auto* windowMgr = Ui::GetWindowManager();
-    WindowBase* w = windowMgr->FindByClass(WindowClass::RideConstruction);
+    WindowBase* w = windowMgr->FindByClass(WindowClass::rideConstruction);
     if (w != nullptr && _rideConstructionState != RideConstructionState::State0 && _currentRideIndex == rideIndex)
     {
         RideConstructionInvalidateCurrentTrack();
@@ -5226,7 +5226,7 @@ void Ride::updateMaxVehicles()
         numTrains = newNumTrains;
 
         auto* windowMgr = Ui::GetWindowManager();
-        windowMgr->InvalidateByNumber(WindowClass::Ride, id.ToUnderlying());
+        windowMgr->InvalidateByNumber(WindowClass::ride, id.ToUnderlying());
     }
 }
 
@@ -5289,7 +5289,7 @@ void Ride::crash(uint8_t vehicleIndex)
     if (gLegacyScene != LegacyScene::titleSequence && vehicle != nullptr)
     {
         // Open ride window for crashed vehicle
-        auto intent = Intent(WD_VEHICLE);
+        auto intent = Intent(WindowDetail::vehicle);
         intent.PutExtra(INTENT_EXTRA_VEHICLE, vehicle);
         WindowBase* w = ContextOpenIntent(&intent);
 

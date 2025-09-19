@@ -382,7 +382,7 @@ namespace OpenRCT2::Ui::Windows
                 },
                 [](const ParkPreview preview) {
                     auto* windowMgr = GetContext()->GetUiContext().GetWindowManager();
-                    auto* wnd = windowMgr->FindByClass(WindowClass::Loadsave);
+                    auto* wnd = windowMgr->FindByClass(WindowClass::loadsave);
                     if (wnd == nullptr)
                     {
                         return;
@@ -589,7 +589,7 @@ namespace OpenRCT2::Ui::Windows
             _listItems.clear();
 
             auto* windowMgr = Ui::GetWindowManager();
-            windowMgr->CloseByClass(WindowClass::LoadsaveOverwritePrompt);
+            windowMgr->CloseByClass(WindowClass::loadsaveOverwritePrompt);
 
             Config::Save();
 
@@ -1164,7 +1164,7 @@ namespace OpenRCT2::Ui::Windows
         RegisterCallback(callback);
 
         auto* windowMgr = GetWindowManager();
-        auto* w = static_cast<LoadSaveWindow*>(windowMgr->BringToFrontByClass(WindowClass::Loadsave));
+        auto* w = static_cast<LoadSaveWindow*>(windowMgr->BringToFrontByClass(WindowClass::loadsave));
         if (w == nullptr)
         {
             auto& config = Config::Get().general;
@@ -1179,7 +1179,7 @@ namespace OpenRCT2::Ui::Windows
             ScreenSize windowSize = { config.FileBrowserWidth, config.FileBrowserHeight };
 
             w = windowMgr->Create<LoadSaveWindow>(
-                WindowClass::Loadsave, windowSize, WF_STICK_TO_FRONT | WF_RESIZABLE | WF_AUTO_POSITION | WF_CENTRE_SCREEN,
+                WindowClass::loadsave, windowSize, WF_STICK_TO_FRONT | WF_RESIZABLE | WF_AUTO_POSITION | WF_CENTRE_SCREEN,
                 action, type);
         }
 
@@ -1201,7 +1201,7 @@ namespace OpenRCT2::Ui::Windows
 
     void WindowLoadSaveInputKey(WindowBase* w, uint32_t keycode)
     {
-        if (w->classification != WindowClass::Loadsave)
+        if (w->classification != WindowClass::loadsave)
         {
             return;
         }

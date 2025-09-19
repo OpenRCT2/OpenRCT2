@@ -57,7 +57,7 @@ namespace OpenRCT2::Ui::Windows
         WIDX_ROTATE_ENTRANCE_BUTTON,
     };
 
-    validate_global_widx(WC_EDITOR_PARK_ENTRANCE, WIDX_ROTATE_ENTRANCE_BUTTON);
+    VALIDATE_GLOBAL_WIDX(WC_EDITOR_PARK_ENTRANCE, WIDX_ROTATE_ENTRANCE_BUTTON);
 
     // clang-format off
     static constexpr auto _widgets = makeWidgets(
@@ -399,11 +399,11 @@ namespace OpenRCT2::Ui::Windows
     {
         // Check if window is already open
         auto* windowMgr = GetWindowManager();
-        auto* window = windowMgr->BringToFrontByClass(WindowClass::EditorParkEntrance);
+        auto* window = windowMgr->BringToFrontByClass(WindowClass::editorParkEntrance);
         if (window != nullptr)
             return window;
 
-        window = windowMgr->Create<EditorParkEntrance>(WindowClass::EditorParkEntrance, kWindowSize, WF_10 | WF_RESIZABLE);
+        window = windowMgr->Create<EditorParkEntrance>(WindowClass::editorParkEntrance, kWindowSize, WF_10 | WF_RESIZABLE);
 
         return window;
     }

@@ -106,7 +106,7 @@ namespace OpenRCT2::Ui::Windows
         void onClose() override
         {
             // If the tool wasn't changed, turn tool off
-            if (isToolActive(WindowClass::Land, WIDX_BACKGROUND))
+            if (isToolActive(WindowClass::land, WIDX_BACKGROUND))
                 ToolCancel();
         }
 
@@ -230,7 +230,7 @@ namespace OpenRCT2::Ui::Windows
 
         void onUpdate() override
         {
-            if (!isToolActive(WindowClass::Land, WIDX_BACKGROUND))
+            if (!isToolActive(WindowClass::land, WIDX_BACKGROUND))
                 close();
         }
 
@@ -623,7 +623,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     _landToolRaiseCost = raise_cost;
                     _landToolLowerCost = lower_cost;
-                    windowMgr->InvalidateByClass(WindowClass::Land);
+                    windowMgr->InvalidateByClass(WindowClass::land);
                 }
                 return;
             }
@@ -650,7 +650,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         _landToolRaiseCost = raise_cost;
                         _landToolLowerCost = lower_cost;
-                        windowMgr->InvalidateByClass(WindowClass::Land);
+                        windowMgr->InvalidateByClass(WindowClass::land);
                     }
                     return;
                 }
@@ -711,7 +711,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     _landToolRaiseCost = raise_cost;
                     _landToolLowerCost = lower_cost;
-                    windowMgr->InvalidateByClass(WindowClass::Land);
+                    windowMgr->InvalidateByClass(WindowClass::land);
                 }
                 return;
             }
@@ -728,7 +728,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     _landToolRaiseCost = raise_cost;
                     _landToolLowerCost = lower_cost;
-                    windowMgr->InvalidateByClass(WindowClass::Land);
+                    windowMgr->InvalidateByClass(WindowClass::land);
                 }
                 return;
             }
@@ -838,7 +838,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 _landToolRaiseCost = raise_cost;
                 _landToolLowerCost = lower_cost;
-                windowMgr->InvalidateByClass(WindowClass::Land);
+                windowMgr->InvalidateByClass(WindowClass::land);
             }
         }
 
@@ -876,7 +876,7 @@ namespace OpenRCT2::Ui::Windows
     {
         auto* windowMgr = GetWindowManager();
         return windowMgr->FocusOrCreate<LandWindow>(
-            WindowClass::Land, ScreenCoordsXY(ContextGetWidth() - kWindowSize.width, 29), kWindowSize, 0);
+            WindowClass::land, ScreenCoordsXY(ContextGetWidth() - kWindowSize.width, 29), kWindowSize, 0);
     }
 
     /**
@@ -885,14 +885,14 @@ namespace OpenRCT2::Ui::Windows
      */
     void ToggleLandWindow()
     {
-        if (isToolActive(WindowClass::Land, WIDX_BACKGROUND))
+        if (isToolActive(WindowClass::land, WIDX_BACKGROUND))
         {
             ToolCancel();
         }
         else
         {
             ShowGridlines();
-            auto* toolWindow = ContextOpenWindow(WindowClass::Land);
+            auto* toolWindow = ContextOpenWindow(WindowClass::land);
             ToolSet(*toolWindow, WIDX_BACKGROUND, Tool::digDown);
             gInputFlags.set(InputFlag::unk6);
         }

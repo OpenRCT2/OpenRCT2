@@ -143,7 +143,7 @@ void MarketingUpdate()
     }
 
     auto* windowMgr = Ui::GetWindowManager();
-    windowMgr->InvalidateByClass(WindowClass::Finances);
+    windowMgr->InvalidateByClass(WindowClass::finances);
 }
 
 void MarketingSetGuestCampaign(Guest* peep, int32_t campaignType)

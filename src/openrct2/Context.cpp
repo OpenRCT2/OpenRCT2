@@ -396,7 +396,7 @@ namespace OpenRCT2
         void Quit() override
         {
             gSavePromptMode = PromptMode::quit;
-            ContextOpenWindow(WindowClass::SavePrompt);
+            ContextOpenWindow(WindowClass::savePrompt);
         }
 
         bool Initialise() final override
@@ -706,7 +706,7 @@ namespace OpenRCT2
             {
                 _uiContext->ProcessMessages();
                 auto* windowMgr = Ui::GetWindowManager();
-                windowMgr->InvalidateByClass(WindowClass::ProgressWindow);
+                windowMgr->InvalidateByClass(WindowClass::progressWindow);
                 Draw();
             }
         }
@@ -914,7 +914,7 @@ namespace OpenRCT2
                 }
                 // The path needs to be duplicated as it's a const here
                 // which the window function doesn't like
-                auto intent = Intent(WindowClass::ObjectLoadError);
+                auto intent = Intent(WindowClass::objectLoadError);
                 intent.PutExtra(INTENT_EXTRA_PATH, path);
                 intent.PutExtra(INTENT_EXTRA_LIST, const_cast<ObjectEntryDescriptor*>(e.MissingObjects.data()));
                 intent.PutExtra(INTENT_EXTRA_LIST_COUNT, static_cast<uint32_t>(e.MissingObjects.size()));
@@ -1710,16 +1710,16 @@ namespace OpenRCT2
         return windowManager->OpenWindow(wc);
     }
 
-    WindowBase* ContextOpenWindowView(uint8_t wc)
+    WindowBase* ContextOpenWindowView(WindowView view)
     {
         auto windowManager = Ui::GetWindowManager();
-        return windowManager->OpenView(wc);
+        return windowManager->openView(view);
     }
 
-    WindowBase* ContextOpenDetailWindow(uint8_t type, int32_t id)
+    WindowBase* ContextOpenDetailWindow(WindowDetail type, int32_t id)
     {
         auto windowManager = Ui::GetWindowManager();
-        return windowManager->OpenDetails(type, id);
+        return windowManager->openDetails(type, id);
     }
 
     WindowBase* ContextOpenIntent(Intent* intent)

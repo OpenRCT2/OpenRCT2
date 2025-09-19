@@ -275,7 +275,7 @@ namespace OpenRCT2::Ui
             if (w != nullptr)
             {
                 // Check if main window
-                if (w->classification == WindowClass::MainWindow || w->classification == WindowClass::Viewport)
+                if (w->classification == WindowClass::mainWindow || w->classification == WindowClass::viewport)
                 {
                     WindowViewportWheelInput(*w, relative_wheel);
                     return;
@@ -525,11 +525,11 @@ namespace OpenRCT2::Ui::Windows
     static int32_t _textBoxFrameNo = 0;
     static bool _usingWidgetTextBox = false;
     static TextInputSession* _textInput;
-    static WidgetIdentifier _currentTextBox = { { WindowClass::Null, 0 }, 0 };
+    static WidgetIdentifier _currentTextBox = { { WindowClass::null, 0 }, 0 };
 
     WindowBase* WindowGetListening()
     {
-        for (auto it = g_window_list.rbegin(); it != g_window_list.rend(); it++)
+        for (auto it = gWindowList.rbegin(); it != gWindowList.rend(); it++)
         {
             auto& w = **it;
             if (w.flags & WF_DEAD)
@@ -564,7 +564,7 @@ namespace OpenRCT2::Ui::Windows
         _textBoxFrameNo = 0;
 
         auto* windowMgr = Ui::GetWindowManager();
-        windowMgr->CloseByClass(WindowClass::Textinput);
+        windowMgr->CloseByClass(WindowClass::textinput);
 
         _textBoxInput = existingText;
 
@@ -577,7 +577,7 @@ namespace OpenRCT2::Ui::Windows
         {
             auto* windowMgr = GetWindowManager();
             WindowBase* w = windowMgr->FindByNumber(_currentTextBox.window.classification, _currentTextBox.window.number);
-            _currentTextBox.window.classification = WindowClass::Null;
+            _currentTextBox.window.classification = WindowClass::null;
             _currentTextBox.window.number = 0;
             ContextStopTextInput();
             _usingWidgetTextBox = false;
@@ -964,7 +964,7 @@ namespace OpenRCT2::Ui::Windows
         {
             // Not sure why plugin windows have to be treated differently,
             // but they currently show a deviation if we don't.
-            if (w.classification == WindowClass::Custom)
+            if (w.classification == WindowClass::custom)
             {
                 w.minHeight += w.getTitleBarDiffTarget();
                 w.maxHeight += w.getTitleBarDiffTarget();

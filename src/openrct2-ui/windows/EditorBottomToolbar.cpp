@@ -88,8 +88,8 @@ namespace OpenRCT2::Ui::Windows
         {
             ColourSchemeUpdateByClass(
                 this,
-                gLegacyScene == LegacyScene::scenarioEditor ? WindowClass::EditorScenarioBottomToolbar
-                                                            : WindowClass::EditorTrackBottomToolbar);
+                gLegacyScene == LegacyScene::scenarioEditor ? WindowClass::editorScenarioBottomToolbar
+                                                            : WindowClass::editorTrackBottomToolbar);
 
             uint16_t screenWidth = ContextGetWidth();
             widgets[WIDX_NEXT_IMAGE].left = screenWidth - 200;
@@ -175,7 +175,7 @@ namespace OpenRCT2::Ui::Windows
             SetAllSceneryItemsInvented();
             WindowScenerySetDefaultPlacementConfiguration();
             getGameState().editorStep = EditorStep::LandscapeEditor;
-            ContextOpenWindow(WindowClass::Map);
+            ContextOpenWindow(WindowClass::map);
             GfxInvalidateScreen();
         }
 
@@ -184,7 +184,7 @@ namespace OpenRCT2::Ui::Windows
             auto* windowMgr = Ui::GetWindowManager();
             windowMgr->CloseAll();
 
-            ContextOpenWindow(WindowClass::EditorInventionList);
+            ContextOpenWindow(WindowClass::editorInventionList);
             getGameState().editorStep = EditorStep::InventionsListSetUp;
             GfxInvalidateScreen();
         }
@@ -194,7 +194,7 @@ namespace OpenRCT2::Ui::Windows
             auto* windowMgr = Ui::GetWindowManager();
             windowMgr->CloseAll();
 
-            ContextOpenWindow(WindowClass::EditorScenarioOptions);
+            ContextOpenWindow(WindowClass::editorScenarioOptions);
             getGameState().editorStep = EditorStep::ObjectiveSelection;
             GfxInvalidateScreen();
         }
@@ -204,7 +204,7 @@ namespace OpenRCT2::Ui::Windows
             auto* windowMgr = Ui::GetWindowManager();
             windowMgr->CloseAll();
 
-            ContextOpenWindow(WindowClass::EditorScenarioOptions);
+            ContextOpenWindow(WindowClass::editorScenarioOptions);
             getGameState().editorStep = EditorStep::OptionsSelection;
             GfxInvalidateScreen();
         }
@@ -215,17 +215,17 @@ namespace OpenRCT2::Ui::Windows
                 return;
 
             auto* windowMgr = Ui::GetWindowManager();
-            windowMgr->CloseByClass(WindowClass::EditorObjectSelection);
+            windowMgr->CloseByClass(WindowClass::editorObjectSelection);
 
             FinishObjectSelection();
             if (gLegacyScene == LegacyScene::trackDesigner)
             {
-                ContextOpenWindow(WindowClass::ConstructRide);
+                ContextOpenWindow(WindowClass::constructRide);
             }
             else
             {
-                ContextOpenWindow(WindowClass::Map);
-                ContextOpenWindow(WindowClass::Mapgen);
+                ContextOpenWindow(WindowClass::map);
+                ContextOpenWindow(WindowClass::mapgen);
             }
         }
 
@@ -236,7 +236,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 auto* windowMgr = Ui::GetWindowManager();
                 windowMgr->CloseAll();
-                ContextOpenWindow(WindowClass::EditorInventionList);
+                ContextOpenWindow(WindowClass::editorInventionList);
                 getGameState().editorStep = EditorStep::InventionsListSetUp;
             }
             else
@@ -252,7 +252,7 @@ namespace OpenRCT2::Ui::Windows
             auto* windowMgr = Ui::GetWindowManager();
             windowMgr->CloseAll();
 
-            ContextOpenWindow(WindowClass::EditorScenarioOptions);
+            ContextOpenWindow(WindowClass::editorScenarioOptions);
             getGameState().editorStep = EditorStep::ObjectiveSelection;
             GfxInvalidateScreen();
         }
@@ -262,7 +262,7 @@ namespace OpenRCT2::Ui::Windows
             auto* windowMgr = Ui::GetWindowManager();
             windowMgr->CloseAll();
 
-            ContextOpenWindow(WindowClass::EditorScenarioOptions);
+            ContextOpenWindow(WindowClass::editorScenarioOptions);
             getGameState().editorStep = EditorStep::OptionsSelection;
             GfxInvalidateScreen();
         }
@@ -272,7 +272,7 @@ namespace OpenRCT2::Ui::Windows
             auto* windowMgr = Ui::GetWindowManager();
             windowMgr->CloseAll();
 
-            ContextOpenWindow(WindowClass::EditorScenarioOptions);
+            ContextOpenWindow(WindowClass::editorScenarioOptions);
             getGameState().editorStep = EditorStep::ScenarioDetails;
             GfxInvalidateScreen();
         }
@@ -311,7 +311,7 @@ namespace OpenRCT2::Ui::Windows
             auto* windowMgr = Ui::GetWindowManager();
             windowMgr->CloseAll();
 
-            auto intent = Intent(WindowClass::Loadsave);
+            auto intent = Intent(WindowClass::loadsave);
             intent.PutEnumExtra<LoadSaveAction>(INTENT_EXTRA_LOADSAVE_ACTION, LoadSaveAction::save);
             intent.PutEnumExtra<LoadSaveType>(INTENT_EXTRA_LOADSAVE_TYPE, LoadSaveType::scenario);
             intent.PutExtra(INTENT_EXTRA_PATH, gameState.scenarioOptions.name);
@@ -352,7 +352,7 @@ namespace OpenRCT2::Ui::Windows
                 windowPos + ScreenCoordsXY{ widgets[WIDX_PREVIOUS_IMAGE].left + 6, widgets[WIDX_PREVIOUS_IMAGE].top + 6 });
 
             colour_t textColour = colours[1].colour;
-            if (gHoverWidget.windowClassification == WindowClass::BottomToolbar
+            if (gHoverWidget.windowClassification == WindowClass::bottomToolbar
                 && gHoverWidget.widgetIndex == WIDX_PREVIOUS_STEP_BUTTON)
             {
                 textColour = COLOUR_WHITE;
@@ -391,7 +391,7 @@ namespace OpenRCT2::Ui::Windows
 
             colour_t textColour = colours[1].colour;
 
-            if (gHoverWidget.windowClassification == WindowClass::BottomToolbar
+            if (gHoverWidget.windowClassification == WindowClass::bottomToolbar
                 && gHoverWidget.widgetIndex == WIDX_NEXT_STEP_BUTTON)
             {
                 textColour = COLOUR_WHITE;
@@ -451,7 +451,7 @@ namespace OpenRCT2::Ui::Windows
     {
         auto* windowMgr = GetWindowManager();
         auto* window = windowMgr->Create<EditorBottomToolbarWindow>(
-            WindowClass::BottomToolbar, ScreenCoordsXY(0, ContextGetHeight() - kToolbarHeight),
+            WindowClass::bottomToolbar, ScreenCoordsXY(0, ContextGetHeight() - kToolbarHeight),
             { ContextGetWidth(), kToolbarHeight }, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND | WF_NO_TITLE_BAR);
 
         return window;

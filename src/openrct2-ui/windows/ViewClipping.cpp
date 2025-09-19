@@ -407,17 +407,17 @@ namespace OpenRCT2::Ui::Windows
 
         bool IsActive()
         {
-            return isToolActive(WindowClass::ViewClipping);
+            return isToolActive(WindowClass::viewClipping);
         }
     };
 
     WindowBase* ViewClippingOpen()
     {
         auto* windowMgr = GetWindowManager();
-        auto* window = windowMgr->BringToFrontByClass(WindowClass::ViewClipping);
+        auto* window = windowMgr->BringToFrontByClass(WindowClass::viewClipping);
         if (window == nullptr)
         {
-            window = windowMgr->Create<ViewClippingWindow>(WindowClass::ViewClipping, ScreenCoordsXY(32, 32), kWindowSize);
+            window = windowMgr->Create<ViewClippingWindow>(WindowClass::viewClipping, ScreenCoordsXY(32, 32), kWindowSize);
         }
         return window;
     }

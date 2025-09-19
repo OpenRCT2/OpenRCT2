@@ -415,7 +415,7 @@ namespace OpenRCT2::Audio
         }
 
         auto* windowMgr = Ui::GetWindowManager();
-        windowMgr->InvalidateByClass(WindowClass::Options);
+        windowMgr->InvalidateByClass(WindowClass::options);
     }
 
     void Pause()

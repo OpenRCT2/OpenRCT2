@@ -65,19 +65,19 @@ namespace OpenRCT2::GameActions
                 if (park.flags & PARK_FLAGS_PARK_OPEN)
                 {
                     park.flags &= ~PARK_FLAGS_PARK_OPEN;
-                    windowMgr->InvalidateByClass(WindowClass::ParkInformation);
+                    windowMgr->InvalidateByClass(WindowClass::parkInformation);
                 }
                 break;
             case ParkParameter::Open:
                 if (!(park.flags & PARK_FLAGS_PARK_OPEN))
                 {
                     park.flags |= PARK_FLAGS_PARK_OPEN;
-                    windowMgr->InvalidateByClass(WindowClass::ParkInformation);
+                    windowMgr->InvalidateByClass(WindowClass::parkInformation);
                 }
                 break;
             case ParkParameter::SamePriceInPark:
                 park.samePriceThroughoutPark = _value;
-                windowMgr->InvalidateByClass(WindowClass::Ride);
+                windowMgr->InvalidateByClass(WindowClass::ride);
                 break;
             default:
                 LOG_ERROR("Invalid park parameter %d", _parameter);

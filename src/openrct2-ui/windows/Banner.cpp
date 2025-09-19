@@ -317,12 +317,12 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* BannerOpen(WindowNumber number)
     {
         auto* windowMgr = GetWindowManager();
-        auto w = static_cast<BannerWindow*>(windowMgr->BringToFrontByNumber(WindowClass::Banner, number));
+        auto w = static_cast<BannerWindow*>(windowMgr->BringToFrontByNumber(WindowClass::banner, number));
 
         if (w != nullptr)
             return w;
 
-        w = windowMgr->Create<BannerWindow>(WindowClass::Banner, kWindowSize, 0);
+        w = windowMgr->Create<BannerWindow>(WindowClass::banner, kWindowSize, 0);
 
         if (w != nullptr)
             w->initialise(number);

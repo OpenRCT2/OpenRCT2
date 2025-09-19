@@ -292,7 +292,7 @@ namespace OpenRCT2::GameActions
         RideSetVehicleColoursToRandomPreset(*ride, _colour2);
 
         auto* windowMgr = Ui::GetWindowManager();
-        windowMgr->InvalidateByClass(WindowClass::RideList);
+        windowMgr->InvalidateByClass(WindowClass::rideList);
 
         res.Expenditure = ExpenditureType::rideConstruction;
         res.SetData(RideId{ rideIndex });

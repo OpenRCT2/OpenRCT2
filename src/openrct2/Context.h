@@ -27,6 +27,9 @@ struct TTFFontDescriptor;
 
 namespace OpenRCT2
 {
+    enum class WindowDetail : uint8_t;
+    enum class WindowView : uint8_t;
+
     class AssetPackManager;
     class Formatter;
     class Intent;
@@ -169,8 +172,8 @@ namespace OpenRCT2
     bool ContextHasFocus();
     void ContextSetCursorTrap(bool value);
     OpenRCT2::WindowBase* ContextOpenWindow(WindowClass wc);
-    OpenRCT2::WindowBase* ContextOpenDetailWindow(uint8_t type, int32_t id);
-    OpenRCT2::WindowBase* ContextOpenWindowView(uint8_t view);
+    OpenRCT2::WindowBase* ContextOpenDetailWindow(WindowDetail type, int32_t id);
+    OpenRCT2::WindowBase* ContextOpenWindowView(WindowView view);
     OpenRCT2::WindowBase* ContextShowError(
         StringId title, StringId message, const class OpenRCT2::Formatter& args, bool autoClose = false);
     OpenRCT2::WindowBase* ContextOpenIntent(OpenRCT2::Intent* intent);

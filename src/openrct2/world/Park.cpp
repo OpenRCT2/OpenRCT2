@@ -345,7 +345,7 @@ namespace OpenRCT2::Park
             park.suggestedGuestMaximum = calculateSuggestedMaxGuests(park, gameState);
             park.guestGenerationProbability = calculateGuestGenerationProbability(park);
 
-            windowMgr->InvalidateByClass(WindowClass::Finances);
+            windowMgr->InvalidateByClass(WindowClass::finances);
             auto intent = Intent(INTENT_ACTION_UPDATE_PARK_RATING);
             ContextBroadcastIntent(&intent);
         }
@@ -621,8 +621,8 @@ namespace OpenRCT2::Park
         ContextBroadcastIntent(&intent);
 
         auto* windowMgr = Ui::GetWindowManager();
-        windowMgr->InvalidateByClass(WindowClass::ParkInformation);
-        windowMgr->InvalidateByClass(WindowClass::Finances);
+        windowMgr->InvalidateByClass(WindowClass::parkInformation);
+        windowMgr->InvalidateByClass(WindowClass::finances);
     }
 
     uint32_t UpdateSize(ParkData& park)
@@ -633,7 +633,7 @@ namespace OpenRCT2::Park
             park.size = tiles;
 
             auto* windowMgr = Ui::GetWindowManager();
-            windowMgr->InvalidateByClass(WindowClass::ParkInformation);
+            windowMgr->InvalidateByClass(WindowClass::parkInformation);
         }
         return tiles;
     }

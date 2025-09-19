@@ -18,11 +18,11 @@ namespace OpenRCT2::Ui
         {
             return nullptr;
         }
-        WindowBase* OpenView(uint8_t /*view*/) override
+        WindowBase* openView(WindowView /*view*/) override
         {
             return nullptr;
         }
-        WindowBase* OpenDetails(uint8_t /*type*/, int32_t /*id*/) override
+        WindowBase* openDetails(WindowDetail /*type*/, int32_t /*id*/) override
         {
             return nullptr;
         }

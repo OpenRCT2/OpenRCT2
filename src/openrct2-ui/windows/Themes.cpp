@@ -143,90 +143,90 @@ namespace OpenRCT2::Ui::Windows
     };
 
     static WindowClass window_themes_tab_1_classes[] = {
-        WindowClass::TopToolbar,
-        WindowClass::BottomToolbar,
-        WindowClass::EditorScenarioBottomToolbar,
-        WindowClass::EditorTrackBottomToolbar,
-        WindowClass::TitleMenu,
-        WindowClass::TitleExit,
-        WindowClass::TitleOptions,
-        WindowClass::ScenarioSelect,
+        WindowClass::topToolbar,
+        WindowClass::bottomToolbar,
+        WindowClass::editorScenarioBottomToolbar,
+        WindowClass::editorTrackBottomToolbar,
+        WindowClass::titleMenu,
+        WindowClass::titleExit,
+        WindowClass::titleOptions,
+        WindowClass::scenarioSelect,
     };
 
     static WindowClass window_themes_tab_2_classes[] = {
-        WindowClass::ParkInformation,
-        WindowClass::EditorParkEntrance,
-        WindowClass::Finances,
-        WindowClass::NewCampaign,
-        WindowClass::Research,
-        WindowClass::Map,
-        WindowClass::Viewport,
-        WindowClass::RecentNews,
+        WindowClass::parkInformation,
+        WindowClass::editorParkEntrance,
+        WindowClass::finances,
+        WindowClass::newCampaign,
+        WindowClass::research,
+        WindowClass::map,
+        WindowClass::viewport,
+        WindowClass::recentNews,
     };
 
     static WindowClass window_themes_tab_3_classes[] = {
-        WindowClass::Land,
-        WindowClass::Water,
-        WindowClass::ClearScenery,
-        WindowClass::LandRights,
-        WindowClass::Scenery,
-        WindowClass::SceneryScatter,
-        WindowClass::Footpath,
-        WindowClass::RideConstruction,
-        WindowClass::TrackDesignPlace,
-        WindowClass::ConstructRide,
-        WindowClass::TrackDesignList,
-        WindowClass::PatrolArea,
+        WindowClass::land,
+        WindowClass::water,
+        WindowClass::clearScenery,
+        WindowClass::landRights,
+        WindowClass::scenery,
+        WindowClass::sceneryScatter,
+        WindowClass::footpath,
+        WindowClass::rideConstruction,
+        WindowClass::trackDesignPlace,
+        WindowClass::constructRide,
+        WindowClass::trackDesignList,
+        WindowClass::patrolArea,
     };
 
     static WindowClass window_themes_tab_4_classes[] = {
-        WindowClass::Ride,
-        WindowClass::RideList,
-        WindowClass::Peep,
-        WindowClass::GuestList,
-        WindowClass::Staff,
-        WindowClass::StaffList,
-        WindowClass::Banner,
+        WindowClass::ride,
+        WindowClass::rideList,
+        WindowClass::peep,
+        WindowClass::guestList,
+        WindowClass::staff,
+        WindowClass::staffList,
+        WindowClass::banner,
     };
 
     static WindowClass window_themes_tab_5_classes[] = {
-        WindowClass::EditorObjectSelection,
-        WindowClass::EditorInventionList,
-        WindowClass::EditorScenarioOptions,
-        WindowClass::Mapgen,
-        WindowClass::ManageTrackDesign,
-        WindowClass::InstallTrack,
+        WindowClass::editorObjectSelection,
+        WindowClass::editorInventionList,
+        WindowClass::editorScenarioOptions,
+        WindowClass::mapgen,
+        WindowClass::manageTrackDesign,
+        WindowClass::installTrack,
     };
 
     static WindowClass window_themes_tab_6_classes[] = {
-        WindowClass::Cheats,
-        WindowClass::TileInspector,
-        WindowClass::ViewClipping,
-        WindowClass::Transparency,
-        WindowClass::Themes,
-        WindowClass::Options,
-        WindowClass::KeyboardShortcutList,
-        WindowClass::ChangeKeyboardShortcut,
-        WindowClass::AssetPacks,
-        WindowClass::Loadsave,
-        WindowClass::About,
-        WindowClass::Changelog,
-        WindowClass::ServerList,
-        WindowClass::Multiplayer,
-        WindowClass::Player,
-        WindowClass::Chat,
-        WindowClass::Console,
+        WindowClass::cheats,
+        WindowClass::tileInspector,
+        WindowClass::viewClipping,
+        WindowClass::transparency,
+        WindowClass::themes,
+        WindowClass::options,
+        WindowClass::keyboardShortcutList,
+        WindowClass::changeKeyboardShortcut,
+        WindowClass::assetPacks,
+        WindowClass::loadsave,
+        WindowClass::about,
+        WindowClass::changelog,
+        WindowClass::serverList,
+        WindowClass::multiplayer,
+        WindowClass::player,
+        WindowClass::chat,
+        WindowClass::console,
     };
 
     static WindowClass window_themes_tab_7_classes[] = {
-        WindowClass::Error,
-        WindowClass::SavePrompt,
-        WindowClass::DemolishRidePrompt,
-        WindowClass::FirePrompt,
-        WindowClass::TrackDeletePrompt,
-        WindowClass::LoadsaveOverwritePrompt,
-        WindowClass::ProgressWindow,
-        WindowClass::NetworkStatus,
+        WindowClass::error,
+        WindowClass::savePrompt,
+        WindowClass::demolishRidePrompt,
+        WindowClass::firePrompt,
+        WindowClass::trackDeletePrompt,
+        WindowClass::loadsaveOverwritePrompt,
+        WindowClass::progressWindow,
+        WindowClass::networkStatus,
     };
 
     static WindowClass* window_themes_tab_classes[] = {
@@ -310,7 +310,7 @@ namespace OpenRCT2::Ui::Windows
             pressedWidgets = newPressedWidgets | (1 << widgetIndex);
 
             auto* windowMgr = GetWindowManager();
-            if (windowMgr->FindByClass(WindowClass::Dropdown) == nullptr)
+            if (windowMgr->FindByClass(WindowClass::dropdown) == nullptr)
             {
                 _classIndex = -1;
                 _buttonIndex = -1;
@@ -901,11 +901,11 @@ namespace OpenRCT2::Ui::Windows
     {
         // Check if window is already open
         auto* windowMgr = GetWindowManager();
-        auto* window = windowMgr->BringToFrontByClass(WindowClass::Themes);
+        auto* window = windowMgr->BringToFrontByClass(WindowClass::themes);
         if (window != nullptr)
             return window;
 
-        window = windowMgr->Create<ThemesWindow>(WindowClass::Themes, kWindowSize, WF_10 | WF_RESIZABLE);
+        window = windowMgr->Create<ThemesWindow>(WindowClass::themes, kWindowSize, WF_10 | WF_RESIZABLE);
 
         return window;
     }

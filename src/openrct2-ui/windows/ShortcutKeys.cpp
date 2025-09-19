@@ -77,9 +77,9 @@ namespace OpenRCT2::Ui::Windows
             if (registeredShortcut != nullptr)
             {
                 auto* windowMgr = GetWindowManager();
-                windowMgr->CloseByClass(WindowClass::ChangeKeyboardShortcut);
+                windowMgr->CloseByClass(WindowClass::changeKeyboardShortcut);
                 auto* w = windowMgr->Create<ChangeShortcutWindow>(
-                    WindowClass::ChangeKeyboardShortcut, kWindowSizeChange, WF_CENTRE_SCREEN);
+                    WindowClass::changeKeyboardShortcut, kWindowSizeChange, WF_CENTRE_SCREEN);
                 if (w != nullptr)
                 {
                     w->_shortcutId = shortcutId;
@@ -190,7 +190,7 @@ namespace OpenRCT2::Ui::Windows
         void onClose() override
         {
             auto* windowMgr = Ui::GetWindowManager();
-            windowMgr->CloseByClass(WindowClass::ResetShortcutKeysPrompt);
+            windowMgr->CloseByClass(WindowClass::resetShortcutKeysPrompt);
         }
 
         void onResize() override
@@ -541,7 +541,7 @@ namespace OpenRCT2::Ui::Windows
     void ChangeShortcutWindow::NotifyShortcutKeysWindow()
     {
         auto* windowMgr = GetWindowManager();
-        auto w = windowMgr->FindByClass(WindowClass::KeyboardShortcutList);
+        auto w = windowMgr->FindByClass(WindowClass::keyboardShortcutList);
         if (w != nullptr)
         {
             static_cast<ShortcutKeysWindow*>(w)->RefreshBindings();
@@ -551,10 +551,10 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* ShortcutKeysOpen()
     {
         auto* windowMgr = GetWindowManager();
-        auto w = windowMgr->BringToFrontByClass(WindowClass::KeyboardShortcutList);
+        auto w = windowMgr->BringToFrontByClass(WindowClass::keyboardShortcutList);
         if (w == nullptr)
         {
-            w = windowMgr->Create<ShortcutKeysWindow>(WindowClass::KeyboardShortcutList, kWindowSize, WF_RESIZABLE);
+            w = windowMgr->Create<ShortcutKeysWindow>(WindowClass::keyboardShortcutList, kWindowSize, WF_RESIZABLE);
         }
         return w;
     }
@@ -595,7 +595,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_RESET_PROMPT_RESET:
                 {
                     auto* windowMgr = GetWindowManager();
-                    auto w = windowMgr->FindByClass(WindowClass::KeyboardShortcutList);
+                    auto w = windowMgr->FindByClass(WindowClass::keyboardShortcutList);
                     if (w != nullptr)
                     {
                         static_cast<ShortcutKeysWindow*>(w)->ResetAllOnActiveTab();
@@ -615,7 +615,7 @@ namespace OpenRCT2::Ui::Windows
     {
         auto* windowMgr = GetWindowManager();
         return windowMgr->FocusOrCreate<ResetShortcutKeysPrompt>(
-            WindowClass::ResetShortcutKeysPrompt, kWindowSizeReset, WF_CENTRE_SCREEN | WF_TRANSPARENT);
+            WindowClass::resetShortcutKeysPrompt, kWindowSizeReset, WF_CENTRE_SCREEN | WF_TRANSPARENT);
     }
 #pragma endregion
 } // namespace OpenRCT2::Ui::Windows

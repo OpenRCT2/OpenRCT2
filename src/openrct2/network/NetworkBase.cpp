@@ -565,7 +565,7 @@ namespace OpenRCT2::Network
                             char str_resolving[256];
                             FormatStringLegacy(str_resolving, 256, STR_MULTIPLAYER_RESOLVING, nullptr);
 
-                            auto intent = Intent(WindowClass::NetworkStatus);
+                            auto intent = Intent(WindowClass::networkStatus);
                             intent.PutExtra(INTENT_EXTRA_MESSAGE, std::string{ str_resolving });
                             intent.PutExtra(
                                 INTENT_EXTRA_CALLBACK, []() -> void { OpenRCT2::GetContext()->GetNetwork().Close(); });
@@ -581,7 +581,7 @@ namespace OpenRCT2::Network
                             char str_connecting[256];
                             FormatStringLegacy(str_connecting, 256, STR_MULTIPLAYER_CONNECTING, nullptr);
 
-                            auto intent = Intent(WindowClass::NetworkStatus);
+                            auto intent = Intent(WindowClass::networkStatus);
                             intent.PutExtra(INTENT_EXTRA_MESSAGE, std::string{ str_connecting });
                             intent.PutExtra(
                                 INTENT_EXTRA_CALLBACK, []() -> void { OpenRCT2::GetContext()->GetNetwork().Close(); });
@@ -599,7 +599,7 @@ namespace OpenRCT2::Network
                         char str_authenticating[256];
                         FormatStringLegacy(str_authenticating, 256, STR_MULTIPLAYER_AUTHENTICATING, nullptr);
 
-                        auto intent = Intent(WindowClass::NetworkStatus);
+                        auto intent = Intent(WindowClass::networkStatus);
                         intent.PutExtra(INTENT_EXTRA_MESSAGE, std::string{ str_authenticating });
                         intent.PutExtra(INTENT_EXTRA_CALLBACK, []() -> void { OpenRCT2::GetContext()->GetNetwork().Close(); });
                         ContextOpenIntent(&intent);
@@ -614,7 +614,7 @@ namespace OpenRCT2::Network
                         }
 
                         Close();
-                        ContextForceCloseWindowByClass(WindowClass::NetworkStatus);
+                        ContextForceCloseWindowByClass(WindowClass::networkStatus);
                         ContextShowError(STR_UNABLE_TO_CONNECT_TO_SERVER, kStringIdNone, {});
                         break;
                     }
@@ -628,7 +628,7 @@ namespace OpenRCT2::Network
                     // Do not show disconnect message window when password window closed/canceled
                     if (_serverConnection->AuthStatus == Auth::requirePassword)
                     {
-                        ContextForceCloseWindowByClass(WindowClass::NetworkStatus);
+                        ContextForceCloseWindowByClass(WindowClass::networkStatus);
                     }
                     else
                     {
@@ -645,13 +645,13 @@ namespace OpenRCT2::Network
                             FormatStringLegacy(str_disconnected, 256, STR_MULTIPLAYER_DISCONNECTED_NO_REASON, nullptr);
                         }
 
-                        auto intent = Intent(WindowClass::NetworkStatus);
+                        auto intent = Intent(WindowClass::networkStatus);
                         intent.PutExtra(INTENT_EXTRA_MESSAGE, std::string{ str_disconnected });
                         ContextOpenIntent(&intent);
                     }
 
                     auto* windowMgr = Ui::GetWindowManager();
-                    windowMgr->CloseByClass(WindowClass::Multiplayer);
+                    windowMgr->CloseByClass(WindowClass::multiplayer);
                     Close();
                 }
                 else
@@ -859,7 +859,7 @@ namespace OpenRCT2::Network
             char str_desync[256];
             FormatStringLegacy(str_desync, 256, STR_MULTIPLAYER_DESYNC, nullptr);
 
-            auto intent = Intent(WindowClass::NetworkStatus);
+            auto intent = Intent(WindowClass::networkStatus);
             intent.PutExtra(INTENT_EXTRA_MESSAGE, std::string{ str_desync });
             ContextOpenIntent(&intent);
 
@@ -2341,7 +2341,7 @@ namespace OpenRCT2::Network
                 connection.Disconnect();
                 break;
             case Auth::requirePassword:
-                ContextOpenWindowView(WV_NETWORK_PASSWORD);
+                ContextOpenWindowView(WindowView::networkPassword);
                 break;
             case Auth::unknownKeyDisallowed:
                 connection.SetLastDisconnectReason(STR_MULTIPLAYER_UNKNOWN_KEY_DISALLOWED);
@@ -2587,7 +2587,7 @@ namespace OpenRCT2::Network
                     char str_desync[1024];
                     FormatStringLegacy(str_desync, sizeof(str_desync), STR_DESYNC_REPORT, ft.Data());
 
-                    auto intent = Intent(WindowClass::NetworkStatus);
+                    auto intent = Intent(WindowClass::networkStatus);
                     intent.PutExtra(INTENT_EXTRA_MESSAGE, std::string{ str_desync });
                     ContextOpenIntent(&intent);
                 }
@@ -2805,7 +2805,7 @@ namespace OpenRCT2::Network
             // Allow queue processing of game actions again.
             GameActions::ResumeQueue();
 
-            ContextForceCloseWindowByClass(WindowClass::ProgressWindow);
+            ContextForceCloseWindowByClass(WindowClass::progressWindow);
             GameUnloadScripts();
             GameNotifyMapChange();
 
@@ -3157,7 +3157,7 @@ namespace OpenRCT2::Network
         {
             connection.player->Ping = ping;
             auto* windowMgr = Ui::GetWindowManager();
-            windowMgr->InvalidateByNumber(WindowClass::Player, connection.player->Id);
+            windowMgr->InvalidateByNumber(WindowClass::player, connection.player->Id);
         }
     }
 
@@ -3178,7 +3178,7 @@ namespace OpenRCT2::Network
         }
 
         auto* windowMgr = Ui::GetWindowManager();
-        windowMgr->InvalidateByClass(WindowClass::Player);
+        windowMgr->InvalidateByClass(WindowClass::player);
     }
 
     void NetworkBase::Client_Handle_SETDISCONNECTMSG(Connection& connection, Packet& packet)
@@ -3626,7 +3626,7 @@ namespace OpenRCT2::Network
             }
 
             auto* windowMgr = Ui::GetWindowManager();
-            windowMgr->InvalidateByNumber(WindowClass::Player, playerId);
+            windowMgr->InvalidateByNumber(WindowClass::player, playerId);
 
             // Log set player group event
             Player* game_command_player = network.GetPlayerByID(actionPlayerId);

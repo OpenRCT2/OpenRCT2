@@ -207,7 +207,7 @@ namespace OpenRCT2::Ui
                 {
                     case EntityType::Vehicle:
                     {
-                        auto intent = Intent(WD_VEHICLE);
+                        auto intent = Intent(WindowDetail::vehicle);
                         intent.PutExtra(INTENT_EXTRA_VEHICLE, entity);
                         ContextOpenIntent(&intent);
                         break;
@@ -215,7 +215,7 @@ namespace OpenRCT2::Ui
                     case EntityType::Guest:
                     case EntityType::Staff:
                     {
-                        auto intent = Intent(WindowClass::Peep);
+                        auto intent = Intent(WindowClass::peep);
                         intent.PutExtra(INTENT_EXTRA_PEEP, entity);
                         ContextOpenIntent(&intent);
                         break;
@@ -248,13 +248,13 @@ namespace OpenRCT2::Ui
             }
             case ViewportInteractionItem::ride:
             {
-                auto intent = Intent(WD_TRACK);
+                auto intent = Intent(WindowDetail::track);
                 intent.PutExtra(INTENT_EXTRA_TILE_ELEMENT, info.Element);
                 ContextOpenIntent(&intent);
                 return true;
             }
             case ViewportInteractionItem::parkEntrance:
-                ContextOpenWindow(WindowClass::ParkInformation);
+                ContextOpenWindow(WindowClass::parkInformation);
                 return true;
             default:
                 return false;
@@ -470,8 +470,8 @@ namespace OpenRCT2::Ui
         if (!gInputFlags.has(InputFlag::unk6) || !gInputFlags.has(InputFlag::toolActive))
         {
             auto* windowMgr = GetWindowManager();
-            if (windowMgr->FindByClass(WindowClass::RideConstruction) == nullptr
-                && windowMgr->FindByClass(WindowClass::Footpath) == nullptr)
+            if (windowMgr->FindByClass(WindowClass::rideConstruction) == nullptr
+                && windowMgr->FindByClass(WindowClass::footpath) == nullptr)
             {
                 info.interactionType = ViewportInteractionItem::none;
                 return info;
@@ -611,7 +611,7 @@ namespace OpenRCT2::Ui
                 ViewportInteractionRemoveLargeScenery(*info.Element->AsLargeScenery(), info.Loc);
                 break;
             case ViewportInteractionItem::banner:
-                ContextOpenDetailWindow(WD_BANNER, info.Element->AsBanner()->GetIndex().ToUnderlying());
+                ContextOpenDetailWindow(WindowDetail::banner, info.Element->AsBanner()->GetIndex().ToUnderlying());
                 break;
         }
 
@@ -638,7 +638,7 @@ namespace OpenRCT2::Ui
     static void ViewportInteractionRemoveFootpath(const PathElement& pathElement, const CoordsXY& mapCoords)
     {
         auto* windowMgr = GetWindowManager();
-        WindowBase* w = windowMgr->FindByClass(WindowClass::Footpath);
+        WindowBase* w = windowMgr->FindByClass(WindowClass::footpath);
         if (w != nullptr)
             FootpathUpdateProvisional();
 
@@ -699,7 +699,7 @@ namespace OpenRCT2::Ui
         auto* wallEntry = wallElement.GetEntry();
         if (wallEntry->scrolling_mode != kScrollingModeNone)
         {
-            ContextOpenDetailWindow(WD_SIGN_SMALL, wallElement.GetBannerIndex().ToUnderlying());
+            ContextOpenDetailWindow(WindowDetail::signSmall, wallElement.GetBannerIndex().ToUnderlying());
         }
         else
         {
@@ -720,7 +720,7 @@ namespace OpenRCT2::Ui
         if (sceneryEntry->scrolling_mode != kScrollingModeNone)
         {
             auto bannerIndex = largeSceneryElement.GetBannerIndex();
-            ContextOpenDetailWindow(WD_SIGN, bannerIndex.ToUnderlying());
+            ContextOpenDetailWindow(WindowDetail::sign, bannerIndex.ToUnderlying());
         }
         else
         {

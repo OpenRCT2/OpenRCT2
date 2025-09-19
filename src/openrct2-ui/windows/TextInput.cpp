@@ -71,7 +71,7 @@ namespace OpenRCT2::Ui::Windows
             // Save calling window details so that the information can be passed back to the correct window & widget
             if (parentWindow == nullptr)
             {
-                _parentWidget.window.classification = WindowClass::Null;
+                _parentWidget.window.classification = WindowClass::null;
                 _parentWidget.window.number = 0;
                 _parentWidget.widgetIndex = 0;
 
@@ -354,7 +354,7 @@ namespace OpenRCT2::Ui::Windows
 
         bool HasParentWindow() const
         {
-            return _parentWidget.window.classification != WindowClass::Null;
+            return _parentWidget.window.classification != WindowClass::null;
         }
 
         WindowBase* GetParentWindow() const
@@ -370,10 +370,10 @@ namespace OpenRCT2::Ui::Windows
         const_utf8string existing_text, int32_t maxLength)
     {
         auto* windowMgr = GetWindowManager();
-        windowMgr->CloseByClass(WindowClass::Textinput);
+        windowMgr->CloseByClass(WindowClass::textinput);
 
         auto w = windowMgr->Create<TextInputWindow>(
-            WindowClass::Textinput, { kWindowSize.width, kWindowSize.height + 10 }, WF_CENTRE_SCREEN | WF_STICK_TO_FRONT);
+            WindowClass::textinput, { kWindowSize.width, kWindowSize.height + 10 }, WF_CENTRE_SCREEN | WF_STICK_TO_FRONT);
         if (w != nullptr)
         {
             w->setParentWindow(call_w, call_widget);
@@ -388,7 +388,7 @@ namespace OpenRCT2::Ui::Windows
     {
         auto* windowMgr = GetWindowManager();
         auto w = windowMgr->Create<TextInputWindow>(
-            WindowClass::Textinput, { kWindowSize.width, kWindowSize.height + 10 }, WF_CENTRE_SCREEN | WF_STICK_TO_FRONT);
+            WindowClass::textinput, { kWindowSize.width, kWindowSize.height + 10 }, WF_CENTRE_SCREEN | WF_STICK_TO_FRONT);
         if (w != nullptr)
         {
             w->setTitle(title, description);
@@ -413,7 +413,7 @@ namespace OpenRCT2::Ui::Windows
         // If the return button is pressed stop text input
         if (keycode == SDLK_RETURN || keycode == SDLK_KP_ENTER)
         {
-            if (w->classification == WindowClass::Textinput)
+            if (w->classification == WindowClass::textinput)
             {
                 auto textInputWindow = static_cast<TextInputWindow*>(w);
                 textInputWindow->onReturnPressed();

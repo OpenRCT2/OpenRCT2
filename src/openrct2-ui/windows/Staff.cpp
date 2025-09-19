@@ -81,8 +81,8 @@ namespace OpenRCT2::Ui::Windows
         WIDX_COSTUME_BTN,
     };
 
-    validate_global_widx(WC_PEEP, WIDX_PATROL);
-    validate_global_widx(WC_STAFF, WIDX_PICKUP);
+    VALIDATE_GLOBAL_WIDX(WC_PEEP, WIDX_PATROL);
+    VALIDATE_GLOBAL_WIDX(WC_STAFF, WIDX_PICKUP);
 
     // clang-format off
     static constexpr auto kMainStaffWidgets = makeWidgets(
@@ -345,7 +345,7 @@ namespace OpenRCT2::Ui::Windows
 
         void CommonPrepareDrawBefore()
         {
-            ColourSchemeUpdateByClass(this, static_cast<WindowClass>(WindowClass::Staff));
+            ColourSchemeUpdateByClass(this, static_cast<WindowClass>(WindowClass::staff));
 
             SetPressedTab();
             DisableWidgets();
@@ -392,7 +392,7 @@ namespace OpenRCT2::Ui::Windows
                                 return;
 
                             auto* windowMgr = GetWindowManager();
-                            WindowBase* wind = windowMgr->FindByNumber(WindowClass::Peep, peepnum);
+                            WindowBase* wind = windowMgr->FindByNumber(WindowClass::peep, peepnum);
                             if (wind != nullptr)
                             {
                                 ToolSet(*wind, WC_STAFF__WIDX_PICKUP, Tool::picker);
@@ -403,7 +403,7 @@ namespace OpenRCT2::Ui::Windows
                 break;
                 case WIDX_FIRE:
                 {
-                    auto intent = Intent(WindowClass::FirePrompt);
+                    auto intent = Intent(WindowClass::firePrompt);
                     intent.PutExtra(INTENT_EXTRA_PEEP, staff);
                     ContextOpenIntent(&intent);
                     break;
@@ -483,7 +483,7 @@ namespace OpenRCT2::Ui::Windows
                         }
 
                         auto* windowMgr = Ui::GetWindowManager();
-                        windowMgr->CloseByClass(WindowClass::PatrolArea);
+                        windowMgr->CloseByClass(WindowClass::patrolArea);
 
                         auto staffSetPatrolAreaAction = GameActions::StaffSetPatrolAreaAction(
                             staff->Id, {}, GameActions::StaffSetPatrolAreaMode::ClearAll);
@@ -495,7 +495,7 @@ namespace OpenRCT2::Ui::Windows
                         if (WindowPatrolAreaGetCurrentStaffId() == staffId)
                         {
                             auto* windowMgr = Ui::GetWindowManager();
-                            windowMgr->CloseByClass(WindowClass::PatrolArea);
+                            windowMgr->CloseByClass(WindowClass::patrolArea);
                         }
                         else
                         {
@@ -1226,11 +1226,11 @@ namespace OpenRCT2::Ui::Windows
     {
         auto* windowMgr = GetWindowManager();
 
-        auto w = static_cast<StaffWindow*>(windowMgr->BringToFrontByNumber(WindowClass::Peep, peep->Id.ToUnderlying()));
+        auto w = static_cast<StaffWindow*>(windowMgr->BringToFrontByNumber(WindowClass::peep, peep->Id.ToUnderlying()));
         if (w != nullptr)
             return w;
 
-        w = windowMgr->Create<StaffWindow>(WindowClass::Peep, kWindowSize, WF_10 | WF_RESIZABLE);
+        w = windowMgr->Create<StaffWindow>(WindowClass::peep, kWindowSize, WF_10 | WF_RESIZABLE);
         if (w == nullptr)
             return nullptr;
 

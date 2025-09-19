@@ -154,7 +154,7 @@ public:
 
     void Draw(RenderTarget& rt) override
     {
-        auto bgColour = ThemeGetColour(WindowClass::Chat, 0);
+        auto bgColour = ThemeGetColour(WindowClass::chat, 0);
         ChatDraw(rt, bgColour);
         _inGameConsole.Draw(rt);
     }
@@ -320,7 +320,7 @@ public:
         int32_t top = rt.y;
         int32_t bottom = top + rt.height;
 
-        for (auto& w : g_window_list)
+        for (auto& w : gWindowList)
         {
             DrawWeatherWindow(rt, weatherDrawer, w.get(), left, right, top, bottom, drawFunc);
         }
@@ -958,7 +958,7 @@ private:
         auto itStart = WindowGetIterator(original_w);
         for (auto it = std::next(itStart);; it++)
         {
-            if (it == g_window_list.end())
+            if (it == gWindowList.end())
             {
                 // Loop ended, draw weather for original_w
                 auto vp = original_w->viewport;

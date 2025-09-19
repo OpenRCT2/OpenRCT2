@@ -40,11 +40,11 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* TitleVersionOpen()
     {
         auto* windowMgr = GetWindowManager();
-        auto* window = windowMgr->BringToFrontByClass(WindowClass::TitleVersion);
+        auto* window = windowMgr->BringToFrontByClass(WindowClass::titleVersion);
         if (window == nullptr)
         {
             window = windowMgr->Create<TitleVersionWindow>(
-                WindowClass::TitleVersion, ScreenCoordsXY(kTextOffset, ContextGetHeight() - 30), kWindowSize,
+                WindowClass::titleVersion, ScreenCoordsXY(kTextOffset, ContextGetHeight() - 30), kWindowSize,
                 WF_STICK_TO_BACK | WF_TRANSPARENT | WF_NO_TITLE_BAR);
         }
         return window;

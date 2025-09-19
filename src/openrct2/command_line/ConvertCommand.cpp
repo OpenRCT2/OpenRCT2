@@ -146,7 +146,7 @@ namespace OpenRCT2
             // HACK remove the main window so it saves the park with the
             //      correct initial view
             auto* windowMgr = Ui::GetWindowManager();
-            windowMgr->CloseByClass(WindowClass::MainWindow);
+            windowMgr->CloseByClass(WindowClass::mainWindow);
 
             exporter->Export(gameState, destinationPath, static_cast<int16_t>(_compressLevel));
         }

@@ -580,6 +580,6 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* NewsOpen()
     {
         auto* windowMgr = GetWindowManager();
-        return windowMgr->FocusOrCreate<NewsWindow>(WindowClass::RecentNews, kWindowSize, 0);
+        return windowMgr->FocusOrCreate<NewsWindow>(WindowClass::recentNews, kWindowSize, 0);
     }
 } // namespace OpenRCT2::Ui::Windows

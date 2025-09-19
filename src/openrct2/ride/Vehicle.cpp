@@ -853,7 +853,7 @@ void Vehicle::UpdateMeasurements()
         ClearFlag(VehicleFlags::Testing);
 
         auto* windowMgr = Ui::GetWindowManager();
-        windowMgr->InvalidateByNumber(WindowClass::Ride, ride.ToUnderlying());
+        windowMgr->InvalidateByNumber(WindowClass::ride, ride.ToUnderlying());
         return;
     }
 
@@ -2350,7 +2350,7 @@ static void test_finish(Ride& ride)
     ride.averageSpeed = ride.averageSpeed / totalTime;
 
     auto* windowMgr = Ui::GetWindowManager();
-    windowMgr->InvalidateByNumber(WindowClass::Ride, ride.id.ToUnderlying());
+    windowMgr->InvalidateByNumber(WindowClass::ride, ride.id.ToUnderlying());
 }
 
 void Vehicle::UpdateTestFinish()
@@ -2404,7 +2404,7 @@ static void test_reset(Ride& ride, StationIndex curStation)
     ride.currentTestStation = curStation;
 
     auto* windowMgr = Ui::GetWindowManager();
-    windowMgr->InvalidateByNumber(WindowClass::Ride, ride.id.ToUnderlying());
+    windowMgr->InvalidateByNumber(WindowClass::ride, ride.id.ToUnderlying());
 }
 
 void Vehicle::TestReset()

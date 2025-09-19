@@ -94,42 +94,44 @@ namespace OpenRCT2
     };
     using WindowFlags = uint32_t;
 
-    enum
+    enum class WindowView : uint8_t
     {
-        WV_PARK_AWARDS,
-        WV_PARK_RATING,
-        WV_PARK_OBJECTIVE,
-        WV_PARK_GUESTS,
-        WV_FINANCES_RESEARCH,
-        WV_RIDE_RESEARCH,
-        WV_MAZE_CONSTRUCTION,
-        WV_NETWORK_PASSWORD,
-        WV_EDITOR_BOTTOM_TOOLBAR,
-        WV_CHANGELOG,
-        WV_NEW_VERSION_INFO,
-        WV_FINANCE_MARKETING,
-        WV_CONTRIBUTORS,
+        parkAwards,
+        parkRating,
+        parkObjective,
+        parkGuests,
+        financesResearch,
+        rideResearch,
+        mazeConstruction,
+        networkPassword,
+        editorBottomToolbar,
+        changelog,
+        newVersionInfo,
+        financeMarketing,
+        contributors,
     };
 
-    enum WindowDetail
+    enum class WindowDetail : uint8_t
     {
-        WD_BANNER,
-        WD_NEW_CAMPAIGN,
-        WD_DEMOLISH_RIDE,
-        WD_REFURBISH_RIDE,
-        WD_SIGN,
-        WD_SIGN_SMALL,
+        banner,
+        newCampaign,
+        demolishRide,
+        refurbishRide,
+        sign,
+        signSmall,
 
-        WD_PLAYER,
+        player,
 
-        WD_VEHICLE,
-        WD_TRACK,
+        vehicle,
+        track,
 
-        WD_NULL = 255,
+        null = 255,
     };
 } // namespace OpenRCT2
 
-#define validate_global_widx(wc, widx)                                                                                         \
+// Cannot be expressed using a constexpr.
+// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+#define VALIDATE_GLOBAL_WIDX(wc, widx)                                                                                         \
     static_assert(widx == wc##__##widx, "Global WIDX of " #widx " doesn't match actual value.")
 
 constexpr int32_t WC_MAIN_WINDOW__0 = 0;

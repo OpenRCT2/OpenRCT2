@@ -126,47 +126,47 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_START_NEW_GAME:
-                    windowToOpen = windowMgr->FindByClass(WindowClass::ScenarioSelect);
+                    windowToOpen = windowMgr->FindByClass(WindowClass::scenarioSelect);
                     if (windowToOpen != nullptr)
                     {
                         windowMgr->BringToFront(*windowToOpen);
                     }
                     else
                     {
-                        windowMgr->CloseByClass(WindowClass::Loadsave);
-                        windowMgr->CloseByClass(WindowClass::ServerList);
+                        windowMgr->CloseByClass(WindowClass::loadsave);
+                        windowMgr->CloseByClass(WindowClass::serverList);
                         ScenarioselectOpen(WindowTitleMenuScenarioselectCallback);
                     }
                     break;
                 case WIDX_CONTINUE_SAVED_GAME:
-                    windowToOpen = windowMgr->FindByClass(WindowClass::Loadsave);
+                    windowToOpen = windowMgr->FindByClass(WindowClass::loadsave);
                     if (windowToOpen != nullptr)
                     {
                         windowMgr->BringToFront(*windowToOpen);
                     }
                     else
                     {
-                        windowMgr->CloseByClass(WindowClass::ScenarioSelect);
-                        windowMgr->CloseByClass(WindowClass::ServerList);
+                        windowMgr->CloseByClass(WindowClass::scenarioSelect);
+                        windowMgr->CloseByClass(WindowClass::serverList);
                         auto loadOrQuitAction = GameActions::LoadOrQuitAction(GameActions::LoadOrQuitModes::OpenSavePrompt);
                         GameActions::Execute(&loadOrQuitAction, getGameState());
                     }
                     break;
                 case WIDX_MULTIPLAYER:
-                    windowToOpen = windowMgr->FindByClass(WindowClass::ServerList);
+                    windowToOpen = windowMgr->FindByClass(WindowClass::serverList);
                     if (windowToOpen != nullptr)
                     {
                         windowMgr->BringToFront(*windowToOpen);
                     }
                     else
                     {
-                        windowMgr->CloseByClass(WindowClass::ScenarioSelect);
-                        windowMgr->CloseByClass(WindowClass::Loadsave);
-                        ContextOpenWindow(WindowClass::ServerList);
+                        windowMgr->CloseByClass(WindowClass::scenarioSelect);
+                        windowMgr->CloseByClass(WindowClass::loadsave);
+                        ContextOpenWindow(WindowClass::serverList);
                     }
                     break;
                 case WIDX_NEW_VERSION:
-                    ContextOpenWindowView(WV_NEW_VERSION_INFO);
+                    ContextOpenWindowView(WindowView::newVersionInfo);
                     break;
             }
         }
@@ -287,7 +287,7 @@ namespace OpenRCT2::Ui::Windows
 
         auto* windowMgr = GetWindowManager();
         return windowMgr->Create<TitleMenuWindow>(
-            WindowClass::TitleMenu, ScreenCoordsXY(0, ContextGetHeight() - 182), { 0, windowHeight },
+            WindowClass::titleMenu, ScreenCoordsXY(0, ContextGetHeight() - 182), { 0, windowHeight },
             WF_STICK_TO_BACK | WF_TRANSPARENT | WF_NO_BACKGROUND | WF_NO_TITLE_BAR);
     }
 } // namespace OpenRCT2::Ui::Windows

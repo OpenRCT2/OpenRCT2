@@ -270,7 +270,7 @@ namespace OpenRCT2::Scripting
                 customTool.onFinish = dukValue["onFinish"];
 
                 auto* windowMgr = GetWindowManager();
-                auto toolbarWindow = windowMgr->FindByClass(WindowClass::TopToolbar);
+                auto toolbarWindow = windowMgr->FindByClass(WindowClass::topToolbar);
                 if (toolbarWindow != nullptr)
                 {
                     // Use a widget that does not exist on top toolbar but also make sure it isn't

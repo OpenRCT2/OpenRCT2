@@ -913,14 +913,14 @@ static StringId window_cheats_page_titles[] = {
                     auto setDateAction = GameActions::ParkSetDateAction(
                         _yearSpinnerValue - 1, _monthSpinnerValue - 1, _daySpinnerValue - 1);
                     GameActions::Execute(&setDateAction, gameState);
-                    windowMgr->InvalidateByClass(WindowClass::BottomToolbar);
+                    windowMgr->InvalidateByClass(WindowClass::bottomToolbar);
                     break;
                 }
                 case WIDX_DATE_RESET:
                 {
                     auto setDateAction = GameActions::ParkSetDateAction(0, 0, 0);
                     GameActions::Execute(&setDateAction, gameState);
-                    windowMgr->InvalidateByClass(WindowClass::BottomToolbar);
+                    windowMgr->InvalidateByClass(WindowClass::bottomToolbar);
                     invalidateWidget(WIDX_YEAR_BOX);
                     invalidateWidget(WIDX_MONTH_BOX);
                     invalidateWidget(WIDX_DAY_BOX);
@@ -1340,10 +1340,10 @@ static StringId window_cheats_page_titles[] = {
     WindowBase* CheatsOpen()
     {
         auto* windowMgr = GetWindowManager();
-        auto* window = windowMgr->BringToFrontByClass(WindowClass::Cheats);
+        auto* window = windowMgr->BringToFrontByClass(WindowClass::cheats);
         if (window == nullptr)
         {
-            window = windowMgr->Create<CheatsWindow>(WindowClass::Cheats, ScreenCoordsXY(32, 32), kWindowSize);
+            window = windowMgr->Create<CheatsWindow>(WindowClass::cheats, ScreenCoordsXY(32, 32), kWindowSize);
         }
         return window;
     }

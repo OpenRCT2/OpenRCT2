@@ -1187,7 +1187,7 @@ static void ConsoleCommandOpen(InteractiveConsole& console, const arguments_t& a
                 // Only this window should be open for safety reasons
                 auto* windowMgr = Ui::GetWindowManager();
                 windowMgr->CloseAll();
-                ContextOpenWindow(WindowClass::EditorObjectSelection);
+                ContextOpenWindow(WindowClass::editorObjectSelection);
             }
         }
         else if (argv[0] == "inventions_list" && InvalidArguments(&invalidTitle, !title))
@@ -1198,20 +1198,20 @@ static void ConsoleCommandOpen(InteractiveConsole& console, const arguments_t& a
             }
             else
             {
-                ContextOpenWindow(WindowClass::EditorInventionList);
+                ContextOpenWindow(WindowClass::editorInventionList);
             }
         }
         else if (argv[0] == "scenario_options" && InvalidArguments(&invalidTitle, !title))
         {
-            ContextOpenWindow(WindowClass::EditorScenarioOptions);
+            ContextOpenWindow(WindowClass::editorScenarioOptions);
         }
         else if (argv[0] == "options")
         {
-            ContextOpenWindow(WindowClass::Options);
+            ContextOpenWindow(WindowClass::options);
         }
         else if (argv[0] == "themes")
         {
-            ContextOpenWindow(WindowClass::Themes);
+            ContextOpenWindow(WindowClass::themes);
         }
         else if (invalidTitle)
         {
@@ -1312,7 +1312,7 @@ static void ConsoleCommandForceDate([[maybe_unused]] InteractiveConsole& console
     GameActions::Execute(&setDateAction, getGameState());
 
     auto* windowMgr = Ui::GetWindowManager();
-    windowMgr->InvalidateByClass(WindowClass::BottomToolbar);
+    windowMgr->InvalidateByClass(WindowClass::bottomToolbar);
 }
 
 static void ConsoleCommandLoadPark([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)

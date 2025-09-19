@@ -161,10 +161,10 @@ namespace OpenRCT2::GameActions
 
         // Close windows related to the demolished ride
         auto* windowMgr = Ui::GetWindowManager();
-        windowMgr->CloseByNumber(WindowClass::RideConstruction, rideId.ToUnderlying());
-        windowMgr->CloseByNumber(WindowClass::Ride, rideId.ToUnderlying());
-        windowMgr->CloseByNumber(WindowClass::DemolishRidePrompt, rideId.ToUnderlying());
-        windowMgr->CloseByClass(WindowClass::NewCampaign);
+        windowMgr->CloseByNumber(WindowClass::rideConstruction, rideId.ToUnderlying());
+        windowMgr->CloseByNumber(WindowClass::ride, rideId.ToUnderlying());
+        windowMgr->CloseByNumber(WindowClass::demolishRidePrompt, rideId.ToUnderlying());
+        windowMgr->CloseByClass(WindowClass::newCampaign);
 
         // Refresh windows that display the ride name
         windowMgr->BroadcastIntent(Intent(INTENT_ACTION_REFRESH_CAMPAIGN_RIDE_LIST));
@@ -288,7 +288,7 @@ namespace OpenRCT2::GameActions
         }
 
         auto* windowMgr = Ui::GetWindowManager();
-        windowMgr->CloseByNumber(WindowClass::DemolishRidePrompt, _rideIndex.ToUnderlying());
+        windowMgr->CloseByNumber(WindowClass::demolishRidePrompt, _rideIndex.ToUnderlying());
 
         return res;
     }

@@ -56,7 +56,7 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* BannerOpen(WindowNumber number);
 
     // Changelog
-    WindowBase* ChangelogOpen(int personality);
+    WindowBase* ChangelogOpen(WindowView personality);
 
     // Cheats
     WindowBase* CheatsOpen();

@@ -409,25 +409,25 @@ namespace OpenRCT2::Title
         void CloseParkSpecificWindows()
         {
             auto* windowMgr = Ui::GetWindowManager();
-            windowMgr->CloseByClass(WindowClass::ConstructRide);
-            windowMgr->CloseByClass(WindowClass::DemolishRidePrompt);
-            windowMgr->CloseByClass(WindowClass::EditorInventionListDrag);
-            windowMgr->CloseByClass(WindowClass::EditorInventionList);
-            windowMgr->CloseByClass(WindowClass::EditorObjectSelection);
-            windowMgr->CloseByClass(WindowClass::EditorScenarioOptions);
-            windowMgr->CloseByClass(WindowClass::Finances);
-            windowMgr->CloseByClass(WindowClass::FirePrompt);
-            windowMgr->CloseByClass(WindowClass::GuestList);
-            windowMgr->CloseByClass(WindowClass::InstallTrack);
-            windowMgr->CloseByClass(WindowClass::Peep);
-            windowMgr->CloseByClass(WindowClass::Ride);
-            windowMgr->CloseByClass(WindowClass::RideConstruction);
-            windowMgr->CloseByClass(WindowClass::RideList);
-            windowMgr->CloseByClass(WindowClass::Scenery);
-            windowMgr->CloseByClass(WindowClass::Staff);
-            windowMgr->CloseByClass(WindowClass::TrackDeletePrompt);
-            windowMgr->CloseByClass(WindowClass::TrackDesignList);
-            windowMgr->CloseByClass(WindowClass::TrackDesignPlace);
+            windowMgr->CloseByClass(WindowClass::constructRide);
+            windowMgr->CloseByClass(WindowClass::demolishRidePrompt);
+            windowMgr->CloseByClass(WindowClass::editorInventionListDrag);
+            windowMgr->CloseByClass(WindowClass::editorInventionList);
+            windowMgr->CloseByClass(WindowClass::editorObjectSelection);
+            windowMgr->CloseByClass(WindowClass::editorScenarioOptions);
+            windowMgr->CloseByClass(WindowClass::finances);
+            windowMgr->CloseByClass(WindowClass::firePrompt);
+            windowMgr->CloseByClass(WindowClass::guestList);
+            windowMgr->CloseByClass(WindowClass::installTrack);
+            windowMgr->CloseByClass(WindowClass::peep);
+            windowMgr->CloseByClass(WindowClass::ride);
+            windowMgr->CloseByClass(WindowClass::rideConstruction);
+            windowMgr->CloseByClass(WindowClass::rideList);
+            windowMgr->CloseByClass(WindowClass::scenery);
+            windowMgr->CloseByClass(WindowClass::staff);
+            windowMgr->CloseByClass(WindowClass::trackDeletePrompt);
+            windowMgr->CloseByClass(WindowClass::trackDesignList);
+            windowMgr->CloseByClass(WindowClass::trackDesignPlace);
         }
 
         void PrepareParkForPlayback()

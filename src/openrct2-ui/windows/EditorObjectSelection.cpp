@@ -216,7 +216,7 @@ namespace OpenRCT2::Ui::Windows
         WIDX_TAB_1,
     };
 
-    validate_global_widx(WC_EDITOR_OBJECT_SELECTION, WIDX_TAB_1);
+    VALIDATE_GLOBAL_WIDX(WC_EDITOR_OBJECT_SELECTION, WIDX_TAB_1);
 
     // clang-format off
     static constexpr auto _window_editor_object_selection_widgets = makeWidgets(
@@ -379,7 +379,7 @@ namespace OpenRCT2::Ui::Windows
                         return;
 
                     auto* windowMgr = Ui::GetWindowManager();
-                    windowMgr->CloseByClass(WindowClass::EditorObjectSelection);
+                    windowMgr->CloseByClass(WindowClass::editorObjectSelection);
 
                     if (isInEditorMode())
                     {
@@ -431,7 +431,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     invalidate();
 
-                    auto intent = Intent(WindowClass::Loadsave);
+                    auto intent = Intent(WindowClass::loadsave);
                     intent.PutEnumExtra<LoadSaveAction>(INTENT_EXTRA_LOADSAVE_ACTION, LoadSaveAction::load);
                     intent.PutEnumExtra<LoadSaveType>(INTENT_EXTRA_LOADSAVE_TYPE, LoadSaveType::track);
                     ContextOpenIntent(&intent);
@@ -602,7 +602,7 @@ namespace OpenRCT2::Ui::Windows
             // Used for in-game object selection cheat to prevent crashing the game
             // when windows attempt to draw objects that don't exist any more
             auto* windowMgr = Ui::GetWindowManager();
-            windowMgr->CloseAllExceptClass(WindowClass::EditorObjectSelection);
+            windowMgr->CloseAllExceptClass(WindowClass::editorObjectSelection);
 
             int32_t selected_object = GetObjectFromObjectSelection(GetSelectedObjectType(), screenCoords.y);
             if (selected_object == -1)
@@ -636,7 +636,7 @@ namespace OpenRCT2::Ui::Windows
                 auto& objManager = GetContext()->GetObjectManager();
                 objManager.LoadObject(_loadedObject.get()->GetIdentifier());
 
-                windowMgr->ForceClose(WindowClass::EditorObjectSelection);
+                windowMgr->ForceClose(WindowClass::editorObjectSelection);
 
                 // This function calls window_track_list_open
                 ManageTracks();
@@ -1615,7 +1615,7 @@ namespace OpenRCT2::Ui::Windows
             const auto* rideEntry = GetRideEntryByIndex(entry_index);
             auto rideType = rideEntry->GetFirstNonNullRideType();
 
-            auto intent = Intent(WindowClass::TrackDesignList);
+            auto intent = Intent(WindowClass::trackDesignList);
             intent.PutExtra(INTENT_EXTRA_RIDE_TYPE, rideType);
             intent.PutExtra(INTENT_EXTRA_RIDE_ENTRY_INDEX, entry_index);
             ContextOpenIntent(&intent);
@@ -1630,14 +1630,14 @@ namespace OpenRCT2::Ui::Windows
     {
         auto* windowMgr = GetWindowManager();
         return windowMgr->FocusOrCreate<EditorObjectSelectionWindow>(
-            WindowClass::EditorObjectSelection, kWindowSize, WF_10 | WF_RESIZABLE | WF_CENTRE_SCREEN);
+            WindowClass::editorObjectSelection, kWindowSize, WF_10 | WF_RESIZABLE | WF_CENTRE_SCREEN);
     }
 
     // Used for forced closure
     void EditorObjectSelectionClose()
     {
         auto* windowMgr = GetWindowManager();
-        auto window = windowMgr->FindByClass(WindowClass::EditorObjectSelection);
+        auto window = windowMgr->FindByClass(WindowClass::editorObjectSelection);
         if (window == nullptr)
         {
             return;
@@ -1745,7 +1745,7 @@ namespace OpenRCT2::Ui::Windows
         ContextShowError(STR_INVALID_SELECTION_OF_OBJECTS, errorString, {});
 
         auto* windowMgr = Ui::GetWindowManager();
-        WindowBase* w = windowMgr->FindByClass(WindowClass::EditorObjectSelection);
+        WindowBase* w = windowMgr->FindByClass(WindowClass::editorObjectSelection);
         if (w != nullptr)
         {
             // Click tab with missing object
