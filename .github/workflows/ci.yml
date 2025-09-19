@@ -136,6 +136,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - run: git config --global --add safe.directory $PWD
       - name: Run clang-format
         run: scripts/check-code-formatting
   check-changelog-formatting:
