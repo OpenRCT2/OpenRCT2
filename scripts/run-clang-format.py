@@ -6,6 +6,8 @@ This is an alternative API for the clang-format command line.
 It runs over multiple files and directories in parallel.
 A diff output is produced and a sensible exit code is returned.
 
+This file is MIT licenced. See the licence at the script's original repository:
+https://github.com/Sarcasm/run-clang-format/blob/39081c9c42768ab5e8321127a7494ad1647c6a2f/LICENSE
 """
 
 from __future__ import print_function, unicode_literals
