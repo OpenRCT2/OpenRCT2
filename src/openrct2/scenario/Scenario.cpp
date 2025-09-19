@@ -620,7 +620,8 @@ bool AllowEarlyCompletion()
 
 static void ScenarioCheckObjective(GameState_t& gameState)
 {
-    auto status = gameState.scenarioOptions.objective.Check(gameState);
+    auto& park = gameState.park;
+    auto status = gameState.scenarioOptions.objective.Check(park, gameState);
     if (status == ObjectiveStatus::Success)
     {
         ScenarioSuccess(gameState);

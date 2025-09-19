@@ -18,6 +18,11 @@ namespace OpenRCT2
     struct GameState_t;
 }
 
+namespace OpenRCT2::Park
+{
+    struct ParkData;
+}
+
 namespace OpenRCT2::Scenario
 {
     enum class ObjectiveType : uint8_t
@@ -76,17 +81,17 @@ namespace OpenRCT2::Scenario
             return objectiveAllowedByMoneyUsage && objectiveAllowedByPaymentSettings;
         }
 
-        ObjectiveStatus Check(GameState_t& gameState) const;
+        ObjectiveStatus Check(Park::ParkData& park, GameState_t& gameState) const;
 
     private:
-        ObjectiveStatus CheckGuestsBy(GameState_t& gameState) const;
-        ObjectiveStatus CheckParkValueBy(GameState_t& gameState) const;
-        ObjectiveStatus Check10RollerCoasters(GameState_t& gameState) const;
-        ObjectiveStatus CheckGuestsAndRating(GameState_t& gameState) const;
-        ObjectiveStatus CheckMonthlyRideIncome(GameState_t& gameState) const;
-        ObjectiveStatus Check10RollerCoastersLength(GameState_t& gameState) const;
-        ObjectiveStatus CheckFinish5RollerCoasters(GameState_t& gameState) const;
-        ObjectiveStatus CheckRepayLoanAndParkValue(GameState_t& gameState) const;
-        ObjectiveStatus CheckMonthlyFoodIncome(GameState_t& gameState) const;
+        ObjectiveStatus CheckGuestsBy(Park::ParkData& park, GameState_t& gameState) const;
+        ObjectiveStatus CheckParkValueBy(Park::ParkData& park, GameState_t& gameState) const;
+        ObjectiveStatus Check10RollerCoasters(Park::ParkData& park, GameState_t& gameState) const;
+        ObjectiveStatus CheckGuestsAndRating(Park::ParkData& park, GameState_t& gameState) const;
+        ObjectiveStatus CheckMonthlyRideIncome(Park::ParkData& park, GameState_t& gameState) const;
+        ObjectiveStatus Check10RollerCoastersLength(Park::ParkData& park, GameState_t& gameState) const;
+        ObjectiveStatus CheckFinish5RollerCoasters(Park::ParkData& park, GameState_t& gameState) const;
+        ObjectiveStatus CheckRepayLoanAndParkValue(Park::ParkData& park, GameState_t& gameState) const;
+        ObjectiveStatus CheckMonthlyFoodIncome(Park::ParkData& park, GameState_t& gameState) const;
     };
 } // namespace OpenRCT2::Scenario
