@@ -129,7 +129,7 @@ jobs:
   check-code-formatting:
     name: Check code formatting
     runs-on: ubuntu-latest
-    container: openrct2/openrct2-build:23-format
+    container: openrct2/openrct2-build:24-format
     defaults:
       run:
         shell: sh
@@ -315,7 +315,7 @@ jobs:
     name: Windows (${{ matrix.platform_name }}) using mingw
     runs-on: ubuntu-latest
     needs: [check-code-formatting, build_variables]
-    container: openrct2/openrct2-build:23-mingw
+    container: openrct2/openrct2-build:24-mingw
     strategy:
       fail-fast: false
       matrix:
@@ -453,17 +453,17 @@ jobs:
           - platform: x86_64
             distro: Ubuntu
             release: noble
-            image: openrct2/openrct2-build:23-noble
+            image: openrct2/openrct2-build:24-noble
             build_flags: -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g1 -gz -fno-var-tracking-assignments"
           - platform: x86_64
             distro: Debian
             release: bookworm
-            image: openrct2/openrct2-build:23-bookworm
+            image: openrct2/openrct2-build:24-bookworm
             build_flags: -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g1 -gz -fno-var-tracking-assignments" -DWITH_TESTS=off
           - platform: x86_64
             distro: Debian
             release: trixie
-            image: openrct2/openrct2-build:23-trixie
+            image: openrct2/openrct2-build:24-trixie
             build_flags: -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g1 -gz -fno-var-tracking-assignments" -DWITH_TESTS=off
     steps:
       - name: Checkout
@@ -493,7 +493,7 @@ jobs:
     name: Ubuntu Linux (AppImage, x86_64)
     runs-on: ubuntu-latest
     needs: [check-code-formatting, build_variables]
-    container: openrct2/openrct2-build:23-jammy
+    container: openrct2/openrct2-build:24-jammy
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -548,7 +548,7 @@ jobs:
     name: Ubuntu Linux (noble, debug, [http, network, flac, vorbis OpenGL] disabled) using clang
     runs-on: ubuntu-latest
     needs: [check-code-formatting, build_variables]
-    container: openrct2/openrct2-build:23-noble
+    container: openrct2/openrct2-build:24-noble
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -564,7 +564,7 @@ jobs:
     name: Ubuntu Linux (debug) using clang, coverage enabled
     runs-on: ubuntu-latest
     needs: [check-code-formatting, build_variables]
-    container: openrct2/openrct2-build:23-noble
+    container: openrct2/openrct2-build:24-noble
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -605,7 +605,7 @@ jobs:
     name: Android
     runs-on: ubuntu-latest
     needs: [check-code-formatting, build_variables]
-    container: openrct2/openrct2-build:23-android
+    container: openrct2/openrct2-build:24-android
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -638,7 +638,7 @@ jobs:
     name: Emscripten
     runs-on: ubuntu-latest
     needs: [check-code-formatting, build_variables]
-    container: openrct2/openrct2-build:23-emscripten
+    container: openrct2/openrct2-build:24-emscripten
     steps:
       - name: Checkout
         uses: actions/checkout@v4
