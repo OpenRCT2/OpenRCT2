@@ -2773,8 +2773,8 @@ void Peep::Paint(PaintSession& session, int32_t imageDirection) const
     if (guest == nullptr)
         return;
 
-    // Can't display any accessories whilst drowning
-    if (Action == PeepActionType::Drowning)
+    // Can't display any accessories whilst drowning or clapping
+    if (Action == PeepActionType::Drowning || Action == PeepActionType::Clap)
         return;
 
     // There are only 6 walking frames available for each item,
