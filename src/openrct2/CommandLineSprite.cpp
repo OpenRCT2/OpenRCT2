@@ -446,7 +446,15 @@ namespace OpenRCT2
                 }
 
                 path = fs::u8path(path).generic_u8string();
-                fprintf(stdout, "{ \"path\": \"%s\", \"x\": %d, \"y\": %d },\n", path.c_str(), g1.x_offset, g1.y_offset);
+                if (spriteIndex + 1 != maxIndex)
+                {
+                    fprintf(stdout, "{ \"path\": \"%s\", \"x\": %d, \"y\": %d },\n", path.c_str(), g1.x_offset, g1.y_offset);
+                }
+                else
+                {
+                    // Do not print the trailing comma
+                    fprintf(stdout, "{ \"path\": \"%s\", \"x\": %d, \"y\": %d }\n", path.c_str(), g1.x_offset, g1.y_offset);
+                }
             }
             return 1;
         }
