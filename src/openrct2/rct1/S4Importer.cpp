@@ -293,7 +293,7 @@ namespace OpenRCT2::RCT1
         {
             assert(_s4.ParkValue != 0);
 
-            // Use the ratio between the old and new park value to calcute the ratio to
+            // Use the ratio between the old and new park value to calculate the ratio to
             // use for the park value history and the goal.
             return (Park::CalculateParkValue(park, gameState) * 10) / _s4.ParkValue;
         }
