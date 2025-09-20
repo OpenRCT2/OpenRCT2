@@ -19,6 +19,7 @@
 #include "core/String.hpp"
 #include "drawing/Drawing.h"
 #include "drawing/ImageImporter.h"
+#include "object/ObjectFactory.h"
 #include "object/ObjectLimits.h"
 #include "object/ObjectManager.h"
 #include "object/ObjectRepository.h"
@@ -35,6 +36,7 @@ namespace OpenRCT2
 {
     using namespace OpenRCT2::Drawing;
 
+    static int32_t CommandLineForSpriteExportObject(const char** argv, int32_t argc);
     static int32_t CommandLineForSpriteCombine(const char** argv, int32_t argc);
 
     class SpriteFile
@@ -390,66 +392,9 @@ namespace OpenRCT2
             return 1;
         }
 
-        if (String::iequals(argv[0], "exportalldat"))
+        if (String::iequals(argv[0], "exportobject"))
         {
-            if (argc < 3)
-            {
-                fprintf(stdout, "usage: sprite exportalldat <DAT identifier> <output directory>\n");
-                return -1;
-            }
-
-            const char* datName = argv[1];
-            const utf8* outputPath = argv[2];
-            auto context = CreateContext();
-            context->Initialise();
-
-            const ObjectRepositoryItem* ori = ObjectRepositoryFindObjectByName(datName);
-            if (ori == nullptr)
-            {
-                fprintf(stderr, "Could not find the object.\n");
-                return -1;
-            }
-
-            const RCTObjectEntry* entry = &ori->ObjectEntry;
-            const auto* loadedObject = ObjectManagerLoadObject(entry);
-            if (loadedObject == nullptr)
-            {
-                fprintf(stderr, "Unable to load object.\n");
-                return -1;
-            }
-            auto entryIndex = ObjectManagerGetLoadedObjectEntryIndex(loadedObject);
-            ObjectType objectType = entry->GetType();
-
-            auto& objManager = context->GetObjectManager();
-            const auto* const metaObject = objManager.GetLoadedObject(objectType, entryIndex);
-
-            if (!Path::CreateDirectory(outputPath))
-            {
-                fprintf(stderr, "Unable to create directory.\n");
-                return -1;
-            }
-
-            const uint32_t maxIndex = metaObject->GetNumImages();
-            const int32_t numbers = static_cast<int32_t>(std::floor(std::log10(maxIndex) + 1));
-
-            std::ostringstream oss; // TODO: Remove when C++20 is enabled and std::format can be used
-            for (uint32_t spriteIndex = 0; spriteIndex < maxIndex; spriteIndex++)
-            {
-                oss << std::setw(numbers) << std::setfill('0') << spriteIndex << ".png";
-                auto path = Path::Combine(outputPath, PopStr(oss));
-
-                const auto& g1 = metaObject->GetImageTable().GetImages()[spriteIndex];
-                if (!SpriteImageExport(g1, path))
-                {
-                    fprintf(stderr, "Could not export\n");
-                    return -1;
-                }
-
-                path = fs::u8path(path).generic_u8string();
-                fprintf(stdout, "{ \"path\": \"%s\", \"x\": %d, \"y\": %d }", path.c_str(), g1.x_offset, g1.y_offset);
-                fprintf(stdout, (spriteIndex + 1 != maxIndex) ? ",\n" : "\n");
-            }
-            return 1;
+            return CommandLineForSpriteExportObject(argv, argc);
         }
 
         if (String::iequals(argv[0], "create"))
@@ -623,6 +568,65 @@ namespace OpenRCT2
         }
 
         fprintf(stderr, "Unknown sprite command.\n");
+        return 1;
+    }
+
+    static int32_t CommandLineForSpriteExportObject(const char** argv, int32_t argc)
+    {
+        if (argc < 3)
+        {
+            fprintf(stdout, "usage: sprite exportobject <path to object> <output directory>\n");
+            return -1;
+        }
+
+        const char* objectPath = argv[1];
+        const utf8* outputPath = argv[2];
+        auto context = CreateContext();
+        context->Initialise();
+
+        auto& objectRepository = GetContext()->GetObjectRepository();
+        std::unique_ptr<Object> metaObject = OpenRCT2::ObjectFactory::CreateObjectFromFile(objectRepository, objectPath, true);
+        if (metaObject == nullptr)
+        {
+            fprintf(stderr, "Could not load the object.\n");
+            return -1;
+        }
+
+        if (!Path::CreateDirectory(outputPath))
+        {
+            fprintf(stderr, "Unable to create output directory.\n");
+            return -1;
+        }
+
+        const auto* imageTableStart = metaObject->GetImageTable().GetImages();
+        const uint32_t maxIndex = metaObject->GetNumImages();
+        const int32_t numbers = static_cast<int32_t>(std::floor(std::log10(maxIndex) + 1));
+
+        std::ostringstream oss; // TODO: Remove when C++20 is enabled and std::format can be used
+        for (uint32_t spriteIndex = 0; spriteIndex < maxIndex; spriteIndex++)
+        {
+            oss << std::setw(numbers) << std::setfill('0') << spriteIndex << ".png";
+            auto path = Path::Combine(outputPath, PopStr(oss));
+
+            const auto& g1 = imageTableStart[spriteIndex];
+            if (g1.width == 0 || g1.height == 0)
+            {
+                fprintf(stdout, "\"\"");
+            }
+            else
+            {
+                if (!SpriteImageExport(g1, path))
+                {
+                    fprintf(stderr, "Could not export\n");
+                    return -1;
+                }
+
+                path = fs::u8path(path).generic_u8string();
+                fprintf(stdout, "{ \"path\": \"%s\", \"x\": %d, \"y\": %d }", path.c_str(), g1.x_offset, g1.y_offset);
+            }
+
+            fprintf(stdout, (spriteIndex + 1 != maxIndex) ? ",\n" : "\n");
+        }
         return 1;
     }
 
