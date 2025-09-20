@@ -298,8 +298,7 @@ namespace OpenRCT2
         else
         {
             auto objectPath = FindLegacyObject(name);
-            auto tmp = ObjectFactory::CreateObjectFromLegacyFile(
-                context->GetObjectRepository(), objectPath.c_str(), !gOpenRCT2NoGraphics);
+            auto tmp = ObjectFactory::CreateObjectFromLegacyFile(objectPath.c_str(), !gOpenRCT2NoGraphics);
             auto inserted = _objDataCache.insert({ name, std::move(tmp) });
             obj = inserted.first->second.get();
         }

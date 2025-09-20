@@ -584,8 +584,7 @@ namespace OpenRCT2
         auto context = CreateContext();
         context->Initialise();
 
-        auto& objectRepository = GetContext()->GetObjectRepository();
-        std::unique_ptr<Object> metaObject = OpenRCT2::ObjectFactory::CreateObjectFromFile(objectRepository, objectPath, true);
+        std::unique_ptr<Object> metaObject = OpenRCT2::ObjectFactory::CreateObjectFromFile(objectPath, true);
         if (metaObject == nullptr)
         {
             fprintf(stderr, "Could not load the object.\n");

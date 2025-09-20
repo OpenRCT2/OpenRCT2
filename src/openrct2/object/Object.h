@@ -168,7 +168,6 @@ namespace OpenRCT2
         virtual ~IReadObjectContext() = default;
 
         virtual std::string_view GetObjectIdentifier() = 0;
-        virtual IObjectRepository& GetObjectRepository() = 0;
         virtual bool ShouldLoadImages() = 0;
         virtual std::vector<uint8_t> GetData(std::string_view path) = 0;
         virtual ObjectAsset GetAsset(std::string_view path) = 0;
