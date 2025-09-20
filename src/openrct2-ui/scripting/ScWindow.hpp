@@ -334,7 +334,7 @@ namespace OpenRCT2::Scripting
             {
                 auto* windowMgr = Ui::GetWindowManager();
                 w = windowMgr->BringToFront(*w);
-                WindowFlagsSetFlashCountDown(w->flags);
+                w->flash();
             }
         }
 

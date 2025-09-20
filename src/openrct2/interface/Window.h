@@ -84,11 +84,6 @@ namespace OpenRCT2
          */
         noAutoClose,
         _10,
-        /**
-         * set together with whiteBorderTwo as a countdown from 3 to 0.
-         */
-        whiteBorderOne,
-        whiteBorderTwo,
         noTitleBar,
         noSnapping,
 
@@ -96,29 +91,7 @@ namespace OpenRCT2
         autoPosition,
         centreScreen,
     };
-    using WindowFlags = FlagHolder<uint32_t, WindowFlag>;
-
-    constexpr void WindowFlagsSetFlashCountDown(WindowFlags& flags)
-    {
-        flags.set(WindowFlag::whiteBorderOne, WindowFlag::whiteBorderTwo);
-    }
-    constexpr void WindowFlagsDecrementFlashCountDown(WindowFlags& flags)
-    {
-        if (flags.has(WindowFlag::whiteBorderOne))
-        {
-            flags.unset(WindowFlag::whiteBorderOne);
-            return;
-        }
-        if (flags.has(WindowFlag::whiteBorderTwo))
-        {
-            flags.unset(WindowFlag::whiteBorderTwo);
-            flags.set(WindowFlag::whiteBorderOne);
-        }
-    }
-    constexpr bool WindowFlagsShouldFlash(WindowFlags flags)
-    {
-        return flags.hasAny(WindowFlag::whiteBorderOne, WindowFlag::whiteBorderTwo);
-    }
+    using WindowFlags = FlagHolder<uint16_t, WindowFlag>;
 
     enum class WindowView : uint8_t
     {

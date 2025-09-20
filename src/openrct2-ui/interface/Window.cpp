@@ -1046,7 +1046,7 @@ namespace OpenRCT2::Ui::Windows
 
         // todo: something missing here too? Between 006EC32B and 006EC369
 
-        if (WindowFlagsShouldFlash(w.flags))
+        if (w.flashTimer > 0)
         {
             GfxFillRectInset(
                 rt, { w.windowPos, w.windowPos + ScreenCoordsXY{ w.width - 1, w.height - 1 } }, { COLOUR_WHITE },

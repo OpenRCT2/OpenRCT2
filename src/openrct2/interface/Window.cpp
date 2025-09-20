@@ -183,10 +183,10 @@ static constexpr float kWindowScrollLocations[][2] = {
 
         // Border flash invalidation
         WindowVisitEach([](WindowBase* w) {
-            if (WindowFlagsShouldFlash(w->flags))
+            if (w->flashTimer > 0)
             {
-                WindowFlagsDecrementFlashCountDown(w->flags);
-                if (!WindowFlagsShouldFlash(w->flags))
+                w->flashTimer--;
+                if (w->flashTimer == 0)
                 {
                     w->invalidate();
                 }

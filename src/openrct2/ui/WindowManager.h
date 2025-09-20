@@ -114,7 +114,6 @@ namespace OpenRCT2::Ui
 
         virtual WindowBase* BringToFront(WindowBase& w) = 0;
         virtual WindowBase* BringToFrontByClass(WindowClass cls) = 0;
-        virtual WindowBase* BringToFrontByClassWithFlags(WindowClass cls, WindowFlags flags) = 0;
         virtual WindowBase* BringToFrontByNumber(WindowClass cls, WindowNumber number) = 0;
     };
 

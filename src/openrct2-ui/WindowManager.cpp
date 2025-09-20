@@ -905,7 +905,7 @@ public:
         // Play sounds and flash the window
         if (!(flags.hasAny(WindowFlag::stickToBack, WindowFlag::stickToFront)))
         {
-            WindowFlagsSetFlashCountDown(wp->flags);
+            wp->flash();
             OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::WindowOpen, 0, pos.x + (windowSize.width / 2));
         }
 
@@ -1368,24 +1368,17 @@ public:
         return &w;
     }
 
-    WindowBase* BringToFrontByClassWithFlags(WindowClass cls, WindowFlags flags) override
+    WindowBase* BringToFrontByClass(WindowClass cls) override
     {
         WindowBase* w = FindByClass(cls);
         if (w != nullptr)
         {
-            w->flags |= flags;
+            w->flash();
             w->invalidate();
             w = BringToFront(*w);
         }
 
         return w;
-    }
-
-    WindowBase* BringToFrontByClass(WindowClass cls) override
-    {
-        WindowFlags flags{};
-        WindowFlagsSetFlashCountDown(flags);
-        return BringToFrontByClassWithFlags(cls, flags);
     }
 
     /**
@@ -1397,7 +1390,7 @@ public:
         WindowBase* w = FindByNumber(cls, number);
         if (w != nullptr)
         {
-            WindowFlagsSetFlashCountDown(w->flags);
+            w->flash();
             w->invalidate();
             w = BringToFront(*w);
         }
