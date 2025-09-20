@@ -304,6 +304,7 @@ namespace OpenRCT2
         {
         }
         std::vector<ObjectSourceGame> GetSourceGames();
+        ObjectSourceGame GetFirstSourceGame() const;
         void SetSourceGames(const std::vector<ObjectSourceGame>& sourceGames);
 
         const std::vector<std::string>& GetAuthors() const;
