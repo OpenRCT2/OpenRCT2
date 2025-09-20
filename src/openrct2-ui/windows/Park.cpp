@@ -1285,7 +1285,8 @@ namespace OpenRCT2::Ui::Windows
     static ParkWindow* ParkWindowOpen(uint8_t page)
     {
         auto* windowMgr = GetWindowManager();
-        auto* wnd = windowMgr->FocusOrCreate<ParkWindow>(WindowClass::parkInformation, { 230, 174 + 9 }, WindowFlag::_10);
+        auto* wnd = windowMgr->FocusOrCreate<ParkWindow>(
+            WindowClass::parkInformation, { 230, 174 + 9 }, WindowFlag::higherContrastOnPress);
         if (wnd != nullptr && page != WINDOW_PARK_PAGE_ENTRANCE)
         {
             wnd->onMouseUp(WIDX_TAB_1 + page);

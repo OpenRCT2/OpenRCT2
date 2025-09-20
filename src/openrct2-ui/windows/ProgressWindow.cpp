@@ -247,7 +247,8 @@ namespace OpenRCT2::Ui::Windows
         {
             window = windowMgr->Create<ProgressWindow>(
                 WindowClass::progressWindow, kWindowSize,
-                { WindowFlag::_10, WindowFlag::transparent, WindowFlag::centreScreen, WindowFlag::stickToFront });
+                { WindowFlag::higherContrastOnPress, WindowFlag::transparent, WindowFlag::centreScreen,
+                  WindowFlag::stickToFront });
         }
 
         window->setCaption(text);

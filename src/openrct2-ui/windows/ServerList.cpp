@@ -540,7 +540,8 @@ namespace OpenRCT2::Ui::Windows
             return window;
 
         window = windowMgr->Create<ServerListWindow>(
-            WindowClass::serverList, kMinimumWindowSize, { WindowFlag::_10, WindowFlag::resizable, WindowFlag::centreScreen });
+            WindowClass::serverList, kMinimumWindowSize,
+            { WindowFlag::higherContrastOnPress, WindowFlag::resizable, WindowFlag::centreScreen });
 
         return window;
     }

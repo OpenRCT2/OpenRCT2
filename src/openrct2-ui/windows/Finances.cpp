@@ -879,7 +879,8 @@ namespace OpenRCT2::Ui::Windows
     static FinancesWindow* FinancesWindowOpen(uint8_t page)
     {
         auto* windowMgr = Ui::GetWindowManager();
-        auto* window = windowMgr->FocusOrCreate<FinancesWindow>(WindowClass::finances, kWindowSizeSummary, WindowFlag::_10);
+        auto* window = windowMgr->FocusOrCreate<FinancesWindow>(
+            WindowClass::finances, kWindowSizeSummary, WindowFlag::higherContrastOnPress);
 
         if (window != nullptr && page != WINDOW_FINANCES_PAGE_SUMMARY)
             window->setPage(page);
@@ -890,7 +891,8 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* FinancesOpen()
     {
         auto* windowMgr = Ui::GetWindowManager();
-        return windowMgr->FocusOrCreate<FinancesWindow>(WindowClass::finances, kWindowSizeSummary, WindowFlag::_10);
+        return windowMgr->FocusOrCreate<FinancesWindow>(
+            WindowClass::finances, kWindowSizeSummary, WindowFlag::higherContrastOnPress);
     }
 
     WindowBase* FinancesResearchOpen()

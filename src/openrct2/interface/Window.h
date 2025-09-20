@@ -83,7 +83,8 @@ namespace OpenRCT2
          * Don't auto close this window if too many windows are open
          */
         noAutoClose,
-        _10,
+        // TODO: investigate why exactly this is used.
+        higherContrastOnPress,
         noTitleBar,
         noSnapping,
 

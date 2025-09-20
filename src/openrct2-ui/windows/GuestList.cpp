@@ -952,7 +952,7 @@ namespace OpenRCT2::Ui::Windows
         if (window == nullptr)
         {
             window = windowMgr->Create<GuestListWindow>(
-                WindowClass::guestList, kWindowSize, { WindowFlag::_10, WindowFlag::resizable });
+                WindowClass::guestList, kWindowSize, { WindowFlag::higherContrastOnPress, WindowFlag::resizable });
         }
         return window;
     }

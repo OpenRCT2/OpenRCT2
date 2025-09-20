@@ -137,7 +137,8 @@ namespace OpenRCT2::Ui::Windows
         {
             window = windowMgr->Create<NetworkStatusWindow>(
                 WindowClass::networkStatus, kWindowSize,
-                { WindowFlag::_10, WindowFlag::transparent, WindowFlag::centreScreen, WindowFlag::stickToFront });
+                { WindowFlag::higherContrastOnPress, WindowFlag::transparent, WindowFlag::centreScreen,
+                  WindowFlag::stickToFront });
         }
 
         window->setCloseCallBack(onClose);
@@ -165,7 +166,8 @@ namespace OpenRCT2::Ui::Windows
 
         auto* windowMgr = GetWindowManager();
         auto* window = windowMgr->FocusOrCreate<NetworkStatusWindow>(
-            WindowClass::networkStatus, kWindowSize, { WindowFlag::_10, WindowFlag::transparent, WindowFlag::centreScreen });
+            WindowClass::networkStatus, kWindowSize,
+            { WindowFlag::higherContrastOnPress, WindowFlag::transparent, WindowFlag::centreScreen });
 
         char password[33]{};
         WindowTextInputRawOpen(window, WIDX_PASSWORD, STR_PASSWORD_REQUIRED, STR_PASSWORD_REQUIRED_DESC, {}, password, 32);

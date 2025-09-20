@@ -404,7 +404,7 @@ namespace OpenRCT2::Ui::Windows
             return window;
 
         window = windowMgr->Create<EditorParkEntrance>(
-            WindowClass::editorParkEntrance, kWindowSize, { WindowFlag::_10, WindowFlag::resizable });
+            WindowClass::editorParkEntrance, kWindowSize, { WindowFlag::higherContrastOnPress, WindowFlag::resizable });
 
         return window;
     }

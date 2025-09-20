@@ -6940,7 +6940,8 @@ namespace OpenRCT2::Ui::Windows
     static RideWindow* WindowRideOpen(const Ride& ride)
     {
         auto* windowMgr = GetWindowManager();
-        return windowMgr->Create<RideWindow>(WindowClass::ride, kWindowSize, { WindowFlag::_10, WindowFlag::resizable }, ride);
+        return windowMgr->Create<RideWindow>(
+            WindowClass::ride, kWindowSize, { WindowFlag::higherContrastOnPress, WindowFlag::resizable }, ride);
     }
 
     /**

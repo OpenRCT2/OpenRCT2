@@ -1134,7 +1134,8 @@ namespace OpenRCT2::Ui::Windows
         if (window == nullptr)
         {
             window = windowMgr->Create<RideListWindow>(
-                WindowClass::rideList, ScreenCoordsXY(32, 32), kWindowSize, { WindowFlag::_10, WindowFlag::resizable });
+                WindowClass::rideList, ScreenCoordsXY(32, 32), kWindowSize,
+                { WindowFlag::higherContrastOnPress, WindowFlag::resizable });
         }
         return window;
     }

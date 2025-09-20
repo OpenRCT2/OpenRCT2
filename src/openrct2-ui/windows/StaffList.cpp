@@ -732,7 +732,7 @@ namespace OpenRCT2::Ui::Windows
     {
         auto* windowMgr = GetWindowManager();
         return windowMgr->FocusOrCreate<StaffListWindow>(
-            WindowClass::staffList, kWindowSize, { WindowFlag::_10, WindowFlag::resizable });
+            WindowClass::staffList, kWindowSize, { WindowFlag::higherContrastOnPress, WindowFlag::resizable });
     }
 
     void WindowStaffListRefresh()

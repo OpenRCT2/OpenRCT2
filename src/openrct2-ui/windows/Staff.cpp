@@ -1230,7 +1230,8 @@ namespace OpenRCT2::Ui::Windows
         if (w != nullptr)
             return w;
 
-        w = windowMgr->Create<StaffWindow>(WindowClass::peep, kWindowSize, { WindowFlag::_10, WindowFlag::resizable });
+        w = windowMgr->Create<StaffWindow>(
+            WindowClass::peep, kWindowSize, { WindowFlag::higherContrastOnPress, WindowFlag::resizable });
         if (w == nullptr)
             return nullptr;
 
