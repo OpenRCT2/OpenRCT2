@@ -130,6 +130,9 @@ jobs:
     name: Check code formatting
     runs-on: ubuntu-latest
     container: openrct2/openrct2-build:24-format
+    permissions:
+      pull-requests: write
+      contents: read
     defaults:
       run:
         shell: sh
