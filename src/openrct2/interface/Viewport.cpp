@@ -442,7 +442,7 @@ namespace OpenRCT2
         for (; it != gWindowList.end(); it++)
         {
             auto w = it->get();
-            if (!(w->flags.hasAny(WindowFlag::transparent)) || (w->flags.has(WindowFlag::dead)))
+            if (!(w->flags.has(WindowFlag::transparent)) || (w->flags.has(WindowFlag::dead)))
                 continue;
             if (w->viewport == window->viewport)
                 continue;

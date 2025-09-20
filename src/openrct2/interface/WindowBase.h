@@ -227,12 +227,12 @@ namespace OpenRCT2
         {
         }
 
-        int16_t right()
+        constexpr int16_t right()
         {
             return windowPos.x + width;
         }
 
-        int16_t bottom()
+        constexpr int16_t bottom()
         {
             return windowPos.y + height;
         }
