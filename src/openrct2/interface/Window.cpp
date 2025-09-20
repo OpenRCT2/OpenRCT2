@@ -85,7 +85,7 @@ static constexpr float kWindowScrollLocations[][2] = {
     {
         for (auto& w : gWindowList)
         {
-            if (w->flags & WF_DEAD)
+            if (w->flags.has(WindowFlag::dead))
                 continue;
             func(w.get());
         }
@@ -146,7 +146,7 @@ static constexpr float kWindowScrollLocations[][2] = {
             for (auto itOther = std::next(it); itOther != itEnd; ++itOther)
             {
                 const auto& otherWindow = *(*itOther);
-                if (otherWindow.flags & WF_DEAD)
+                if (otherWindow.flags.has(WindowFlag::dead))
                     continue;
 
                 if (otherWindow.windowPos.x <= window.windowPos.x && otherWindow.windowPos.y <= window.windowPos.y
@@ -167,9 +167,10 @@ static constexpr float kWindowScrollLocations[][2] = {
      */
     void WindowUpdateAll()
     {
-        // Remove all windows in gWindowList that have the WF_DEAD flag
+        // Remove all windows in gWindowList that have the WindowFlag::dead flag
         gWindowList.erase(
-            std::remove_if(gWindowList.begin(), gWindowList.end(), [](auto&& w) -> bool { return w->flags & WF_DEAD; }),
+            std::remove_if(
+                gWindowList.begin(), gWindowList.end(), [](auto&& w) -> bool { return w->flags.has(WindowFlag::dead); }),
             gWindowList.end());
 
         // Periodic update happens every second so 40 ticks.
@@ -182,10 +183,10 @@ static constexpr float kWindowScrollLocations[][2] = {
 
         // Border flash invalidation
         WindowVisitEach([](WindowBase* w) {
-            if (w->flags & WF_WHITE_BORDER_MASK)
+            if (w->flashTimer > 0)
             {
-                w->flags -= WF_WHITE_BORDER_ONE;
-                if (!(w->flags & WF_WHITE_BORDER_MASK))
+                w->flashTimer--;
+                if (w->flashTimer == 0)
                 {
                     w->invalidate();
                 }
@@ -244,7 +245,7 @@ static constexpr float kWindowScrollLocations[][2] = {
         WindowVisitEach([&window](WindowBase* w) {
             if (w == &window)
                 return;
-            if (w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT))
+            if (w->flags.hasAny(WindowFlag::stickToBack, WindowFlag::stickToFront))
                 return;
             if (w->windowPos.x >= window.windowPos.x + window.width)
                 return;
@@ -277,7 +278,7 @@ static constexpr float kWindowScrollLocations[][2] = {
             if (&w1 == w2)
                 return;
             // ?
-            if (w2->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT))
+            if (w2->flags.hasAny(WindowFlag::stickToBack, WindowFlag::stickToFront))
                 return;
             // Check if w2 intersects with w1
             if (w2->windowPos.x > (w1.windowPos.x + w1.width) || w2->windowPos.x + w2->width < w1.windowPos.x)
@@ -312,7 +313,7 @@ static constexpr float kWindowScrollLocations[][2] = {
     {
         for (auto& w : gWindowList)
         {
-            if (w->flags & WF_DEAD)
+            if (w->flags.has(WindowFlag::dead))
                 continue;
             if (w->classification == WindowClass::mainWindow)
             {
@@ -371,7 +372,7 @@ static constexpr float kWindowScrollLocations[][2] = {
                 auto it = WindowGetIterator(&w);
                 for (; it != gWindowList.end(); it++)
                 {
-                    if ((*it)->flags & WF_DEAD)
+                    if ((*it)->flags.has(WindowFlag::dead))
                         continue;
 
                     auto w2 = (*it).get();
@@ -403,12 +404,12 @@ static constexpr float kWindowScrollLocations[][2] = {
         // rct2: 0x006E7C76
         if (w.viewportTargetSprite.IsNull())
         {
-            if (!(w.flags & WF_NO_SCROLLING))
+            if (!(w.flags.has(WindowFlag::noScrolling)))
             {
                 w.savedViewPos = screenCoords
                     - ScreenCoordsXY{ static_cast<int32_t>(w.viewport->ViewWidth() * kWindowScrollLocations[i][0]),
                                       static_cast<int32_t>(w.viewport->ViewHeight() * kWindowScrollLocations[i][1]) };
-                w.flags |= WF_SCROLLING_TO_LOCATION;
+                w.flags.set(WindowFlag::scrollingToLocation);
             }
         }
     }
@@ -496,9 +497,9 @@ static constexpr float kWindowScrollLocations[][2] = {
         {
             // Check if this window overlaps w
             auto topwindow = it->get();
-            if (topwindow->flags & WF_TRANSPARENT)
+            if (topwindow->flags.has(WindowFlag::transparent))
                 continue;
-            if (topwindow->flags & WF_DEAD)
+            if (topwindow->flags.has(WindowFlag::dead))
                 continue;
             if (topwindow->windowPos.x >= right || topwindow->windowPos.y >= bottom)
                 continue;
@@ -558,9 +559,9 @@ static constexpr float kWindowScrollLocations[][2] = {
         for (auto it = WindowGetIterator(&w); it != gWindowList.end(); it++)
         {
             auto* v = (*it).get();
-            if (v->flags & WF_DEAD)
+            if (v->flags.has(WindowFlag::dead))
                 continue;
-            if ((&w == v || (v->flags & WF_TRANSPARENT)) && v->isVisible)
+            if ((&w == v || (v->flags.has(WindowFlag::transparent))) && v->isVisible)
             {
                 WindowDrawSingle(rt, *v, left, top, right, bottom);
             }
@@ -857,7 +858,7 @@ static constexpr float kWindowScrollLocations[][2] = {
     {
         auto windowRT = rt.Crop({ left, top }, { right - left, bottom - top });
         WindowVisitEach([&windowRT, left, top, right, bottom](WindowBase* w) {
-            if (w->flags & WF_TRANSPARENT)
+            if (w->flags.has(WindowFlag::transparent))
                 return;
             if (right <= w->windowPos.x || bottom <= w->windowPos.y)
                 return;
@@ -870,7 +871,7 @@ static constexpr float kWindowScrollLocations[][2] = {
     void WindowInitAll()
     {
         auto* windowMgr = Ui::GetWindowManager();
-        windowMgr->CloseAllExceptFlags(0);
+        windowMgr->CloseAllExceptFlags({});
     }
 
     void WindowFollowSprite(WindowBase& w, EntityId spriteIndex)

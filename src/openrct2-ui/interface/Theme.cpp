@@ -938,6 +938,6 @@ static constexpr UIThemeWindowEntry PredefinedThemeRCT1_Entries[] =
         }
         // Some windows need to be transparent even if the colours aren't.
         // There doesn't seem to be any side-effects for all windows being transparent
-        window->flags |= WF_TRANSPARENT;
+        window->flags |= WindowFlag::transparent;
     }
 } // namespace OpenRCT2::Ui

@@ -207,6 +207,6 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* ViewportOpen()
     {
-        return GetWindowManager()->Create<ViewportWindow>(WindowClass::viewport, kWindowSize, WF_RESIZABLE);
+        return GetWindowManager()->Create<ViewportWindow>(WindowClass::viewport, kWindowSize, WindowFlag::resizable);
     }
 } // namespace OpenRCT2::Ui::Windows

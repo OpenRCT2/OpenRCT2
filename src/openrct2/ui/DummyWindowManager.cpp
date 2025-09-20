@@ -124,10 +124,6 @@ namespace OpenRCT2::Ui
         {
             return nullptr;
         }
-        WindowBase* BringToFrontByClassWithFlags(WindowClass cls, WindowFlags flags) override
-        {
-            return nullptr;
-        }
         WindowBase* BringToFrontByNumber(WindowClass cls, WindowNumber number) override
         {
             return nullptr;

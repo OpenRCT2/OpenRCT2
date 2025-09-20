@@ -756,11 +756,11 @@ namespace OpenRCT2::Ui::Windows
         auto* windowMgr = Ui::GetWindowManager();
         windowMgr->CloseConstructionWindows();
 
-        WindowFlags flags = 0;
+        WindowFlags flags = {};
         ScreenCoordsXY screenPos{};
         if (gLegacyScene == LegacyScene::trackDesignsManager)
         {
-            flags = WF_AUTO_POSITION | WF_CENTRE_SCREEN;
+            flags = { WindowFlag::autoPosition, WindowFlag::centreScreen };
         }
         else
         {

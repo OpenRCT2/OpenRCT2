@@ -492,7 +492,7 @@ namespace OpenRCT2
     {
         int32_t snapProximity;
 
-        snapProximity = (w.flags & WF_NO_SNAPPING) ? 0 : Config::Get().general.WindowSnapProximity;
+        snapProximity = (w.flags.has(WindowFlag::noSnapping)) ? 0 : Config::Get().general.WindowSnapProximity;
         WindowMoveAndSnap(w, newScreenCoords - lastScreenCoords, snapProximity);
     }
 
@@ -540,7 +540,7 @@ namespace OpenRCT2
 
     static void InputViewportDragBegin(WindowBase& w)
     {
-        w.flags &= ~WF_SCROLLING_TO_LOCATION;
+        w.flags.unset(WindowFlag::scrollingToLocation);
         _inputState = InputState::ViewportRight;
         _dragWidget.windowClassification = w.classification;
         _dragWidget.windowNumber = w.number;
@@ -591,7 +591,7 @@ namespace OpenRCT2
         }
         else if (differentialCoords.x != 0 || differentialCoords.y != 0)
         {
-            if (!(w->flags & WF_NO_SCROLLING))
+            if (!(w->flags.has(WindowFlag::noScrolling)))
             {
                 // User dragged a scrollable viewport
 
@@ -1076,7 +1076,7 @@ namespace OpenRCT2
         {
             case WidgetType::frame:
             case WidgetType::resize:
-                if (WindowCanResize(*w)
+                if (w->canBeResized()
                     && (screenCoords.x >= w->windowPos.x + w->width - 19 && screenCoords.y >= w->windowPos.y + w->height - 19))
                     InputWindowResizeBegin(*w, widgetIndex, screenCoords);
                 break;
@@ -1597,7 +1597,7 @@ namespace OpenRCT2
         mainWindow = WindowGetMain();
         if (mainWindow == nullptr)
             return;
-        if ((mainWindow->flags & WF_NO_SCROLLING)
+        if ((mainWindow->flags.has(WindowFlag::noScrolling))
             || (gLegacyScene == LegacyScene::trackDesignsManager || gLegacyScene == LegacyScene::titleSequence))
             return;
         if (mainWindow->viewport == nullptr)
@@ -1704,7 +1704,7 @@ namespace OpenRCT2
             return;
         }
 
-        if (targetWindow->flags & WF_NO_SCROLLING)
+        if (targetWindow->flags.has(WindowFlag::noScrolling))
         {
             return;
         }

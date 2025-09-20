@@ -400,7 +400,7 @@ namespace OpenRCT2::Ui::Windows
             w->close();
         }
 
-        w = windowMgr->Create<NewCampaignWindow>(WindowClass::newCampaign, kWindowSize, 0);
+        w = windowMgr->Create<NewCampaignWindow>(WindowClass::newCampaign, kWindowSize, {});
         if (w != nullptr)
         {
             w->setCampaign(campaignType);

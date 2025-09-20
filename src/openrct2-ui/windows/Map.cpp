@@ -239,7 +239,7 @@ namespace OpenRCT2::Ui::Windows
             holdDownWidgets = (1uLL << WIDX_MAP_SIZE_SPINNER_Y_UP) | (1uLL << WIDX_MAP_SIZE_SPINNER_Y_DOWN)
                 | (1uLL << WIDX_MAP_SIZE_SPINNER_X_UP) | (1uLL << WIDX_MAP_SIZE_SPINNER_X_DOWN);
 
-            flags |= WF_RESIZABLE;
+            flags |= WindowFlag::resizable;
 
             SetInitialWindowDimensions();
             ResetMaxWindowDimensions();
@@ -1251,7 +1251,7 @@ namespace OpenRCT2::Ui::Windows
         try
         {
             auto* windowMgr = GetWindowManager();
-            auto* w = windowMgr->FocusOrCreate<MapWindow>(WindowClass::map, kWindowSize, WF_10);
+            auto* w = windowMgr->FocusOrCreate<MapWindow>(WindowClass::map, kWindowSize, WindowFlag::higherContrastOnPress);
             w->selectedTab = 0;
             w->listInformationType = 0;
             return w;

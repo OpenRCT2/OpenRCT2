@@ -103,12 +103,12 @@ namespace OpenRCT2::Ui::Windows
             windowMgr->Close(*w);
 
             newWindow = windowMgr->Create<RefurbishRidePromptWindow>(
-                WindowClass::demolishRidePrompt, windowPos, kWindowSize, WF_TRANSPARENT);
+                WindowClass::demolishRidePrompt, windowPos, kWindowSize, WindowFlag::transparent);
         }
         else
         {
             newWindow = windowMgr->Create<RefurbishRidePromptWindow>(
-                WindowClass::demolishRidePrompt, kWindowSize, WF_CENTRE_SCREEN | WF_TRANSPARENT);
+                WindowClass::demolishRidePrompt, kWindowSize, { WindowFlag::centreScreen, WindowFlag::transparent });
         }
 
         newWindow->SetRide(ride);

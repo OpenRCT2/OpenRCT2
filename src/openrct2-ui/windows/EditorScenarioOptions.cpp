@@ -2385,6 +2385,6 @@ namespace OpenRCT2::Ui::Windows
     {
         auto* windowMgr = GetWindowManager();
         return windowMgr->FocusOrCreate<EditorScenarioOptionsWindow>(
-            WindowClass::editorScenarioOptions, { 280, 148 }, WF_NO_SCROLLING | WF_CENTRE_SCREEN);
+            WindowClass::editorScenarioOptions, { 280, 148 }, { WindowFlag::noScrolling, WindowFlag::centreScreen });
     }
 } // namespace OpenRCT2::Ui::Windows

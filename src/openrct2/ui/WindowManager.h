@@ -51,7 +51,8 @@ namespace OpenRCT2::Ui
             = 0;
 
         template<typename T, typename... TArgs, typename std::enable_if<std::is_base_of<WindowBase, T>::value>::type* = nullptr>
-        T* Create(WindowClass cls, const ScreenCoordsXY& pos = {}, ScreenSize size = {}, WindowFlags flags = 0, TArgs&&... args)
+        T* Create(
+            WindowClass cls, const ScreenCoordsXY& pos = {}, ScreenSize size = {}, WindowFlags flags = {}, TArgs&&... args)
         {
             return static_cast<T*>(Create(std::make_unique<T>(std::forward<TArgs>(args)...), cls, pos, size, flags));
         }
@@ -60,11 +61,11 @@ namespace OpenRCT2::Ui
         T* Create(WindowClass cls, ScreenSize size, WindowFlags flags, TArgs&&... args)
         {
             return static_cast<T*>(
-                Create(std::make_unique<T>(std::forward<TArgs>(args)...), cls, {}, size, flags | WF_AUTO_POSITION));
+                Create(std::make_unique<T>(std::forward<TArgs>(args)...), cls, {}, size, flags | WindowFlag::autoPosition));
         }
 
         template<typename T, typename std::enable_if<std::is_base_of<WindowBase, T>::value>::type* = nullptr>
-        T* FocusOrCreate(WindowClass cls, const ScreenCoordsXY& pos, ScreenSize size, WindowFlags flags = 0)
+        T* FocusOrCreate(WindowClass cls, const ScreenCoordsXY& pos, ScreenSize size, WindowFlags flags = {})
         {
             auto* w = BringToFrontByClass(cls);
             if (w == nullptr)
@@ -75,7 +76,7 @@ namespace OpenRCT2::Ui
         }
 
         template<typename T, typename std::enable_if<std::is_base_of<WindowBase, T>::value>::type* = nullptr>
-        T* FocusOrCreate(WindowClass cls, ScreenSize size, WindowFlags flags = 0)
+        T* FocusOrCreate(WindowClass cls, ScreenSize size, WindowFlags flags = {})
         {
             auto* w = BringToFrontByClass(cls);
             if (w == nullptr)
@@ -113,7 +114,6 @@ namespace OpenRCT2::Ui
 
         virtual WindowBase* BringToFront(WindowBase& w) = 0;
         virtual WindowBase* BringToFrontByClass(WindowClass cls) = 0;
-        virtual WindowBase* BringToFrontByClassWithFlags(WindowClass cls, WindowFlags flags) = 0;
         virtual WindowBase* BringToFrontByNumber(WindowClass cls, WindowNumber number) = 0;
     };
 

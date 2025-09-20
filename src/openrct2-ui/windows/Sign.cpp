@@ -337,7 +337,7 @@ namespace OpenRCT2::Ui::Windows
         if (w != nullptr)
             return w;
 
-        w = windowMgr->Create<SignWindow>(WindowClass::banner, kWindowSize, 0);
+        w = windowMgr->Create<SignWindow>(WindowClass::banner, kWindowSize, {});
 
         if (w == nullptr)
             return nullptr;
@@ -361,7 +361,7 @@ namespace OpenRCT2::Ui::Windows
         if (w != nullptr)
             return w;
 
-        w = windowMgr->Create<SignWindow>(WindowClass::banner, kWindowSize, 0);
+        w = windowMgr->Create<SignWindow>(WindowClass::banner, kWindowSize, {});
 
         if (w == nullptr)
             return nullptr;

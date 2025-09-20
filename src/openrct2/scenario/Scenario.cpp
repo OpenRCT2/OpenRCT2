@@ -169,7 +169,7 @@ static void ScenarioEnd()
 
     auto* windowMgr = Ui::GetWindowManager();
     windowMgr->CloseByClass(WindowClass::dropdown);
-    windowMgr->CloseAllExceptFlags(WF_STICK_TO_BACK | WF_STICK_TO_FRONT);
+    windowMgr->CloseAllExceptFlags({ WindowFlag::stickToBack, WindowFlag::stickToFront });
 
     ContextOpenWindowView(WindowView::parkObjective);
 }

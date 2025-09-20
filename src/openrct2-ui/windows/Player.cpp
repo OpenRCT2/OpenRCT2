@@ -235,7 +235,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     const auto viewportFocus = Focus(TileCoordsXYZ(128, 128, 0).ToCoordsXYZ());
                     ViewportCreate(*this, windowPos, width, height, viewportFocus);
-                    flags |= WF_NO_SCROLLING;
+                    flags |= WindowFlag::noScrolling;
                     onPrepareDraw();
                     UpdateViewport(false);
                 }
@@ -305,7 +305,7 @@ namespace OpenRCT2::Ui::Windows
 
                     if (!scroll || savedViewPos != centreLoc.value())
                     {
-                        flags |= WF_SCROLLING_TO_LOCATION;
+                        flags |= WindowFlag::scrollingToLocation;
                         savedViewPos = centreLoc.value();
                         if (!scroll)
                         {
@@ -633,7 +633,7 @@ namespace OpenRCT2::Ui::Windows
         auto* window = static_cast<PlayerWindow*>(windowMgr->BringToFrontByNumber(WindowClass::player, id));
         if (window == nullptr)
         {
-            window = windowMgr->Create<PlayerWindow>(WindowClass::player, { 240, 170 }, WF_RESIZABLE);
+            window = windowMgr->Create<PlayerWindow>(WindowClass::player, { 240, 170 }, WindowFlag::resizable);
         }
 
         window->init(id);

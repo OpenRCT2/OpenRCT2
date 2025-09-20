@@ -340,7 +340,7 @@ namespace OpenRCT2
                 // Get next valid window after.
                 auto itNextWindow = [&]() {
                     auto itNext = std::next(itWindowPos);
-                    while (itNext != gWindowList.end() && (itNext->get()->flags & WF_DEAD))
+                    while (itNext != gWindowList.end() && (itNext->get()->flags.has(WindowFlag::dead)))
                     {
                         ++itNext;
                     }
@@ -442,7 +442,7 @@ namespace OpenRCT2
         for (; it != gWindowList.end(); it++)
         {
             auto w = it->get();
-            if (!(w->flags & WF_TRANSPARENT) || (w->flags & WF_DEAD))
+            if (!(w->flags.has(WindowFlag::transparent)) || (w->flags.has(WindowFlag::dead)))
                 continue;
             if (w->viewport == window->viewport)
                 continue;
@@ -484,30 +484,6 @@ namespace OpenRCT2
         // If no change in viewing area
         if ((!x_diff) && (!y_diff))
             return;
-
-        if (w->flags & WF_7)
-        {
-            int32_t left = std::max<int32_t>(viewport->pos.x, 0);
-            int32_t top = std::max<int32_t>(viewport->pos.y, 0);
-            int32_t right = std::min<int32_t>(viewport->pos.x + viewport->width, ContextGetWidth());
-            int32_t bottom = std::min<int32_t>(viewport->pos.y + viewport->height, ContextGetHeight());
-
-            if (left >= right)
-                return;
-            if (top >= bottom)
-                return;
-
-            if (DrawingEngineHasDirtyOptimisations())
-            {
-                RenderTarget& rt = DrawingEngineGetDpi();
-                WindowDrawAll(rt, left, top, right, bottom);
-                return;
-            }
-            else
-            {
-                GfxInvalidateScreen();
-            }
-        }
 
         const int32_t left = std::max(viewport->pos.x, 0);
         const int32_t top = std::max(viewport->pos.y, 0);
@@ -620,7 +596,7 @@ namespace OpenRCT2
         }
 
         auto windowCoords = window->savedViewPos;
-        if (window->flags & WF_SCROLLING_TO_LOCATION)
+        if (window->flags.has(WindowFlag::scrollingToLocation))
         {
             // Moves the viewport if focusing in on an item
             uint8_t flags = 0;
@@ -642,7 +618,7 @@ namespace OpenRCT2
             // If we are at the final zoom position
             if (!windowCoords.x && !windowCoords.y)
             {
-                window->flags &= ~WF_SCROLLING_TO_LOCATION;
+                window->flags.unset(WindowFlag::scrollingToLocation);
             }
             if (flags & 1)
             {

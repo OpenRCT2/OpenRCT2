@@ -213,7 +213,7 @@ namespace OpenRCT2::Ui::Windows
 
         auto* window = windowMgr->Create(
             std::move(trackDesignManageWindow), WindowClass::manageTrackDesign, {}, kWindowSize,
-            WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_CENTRE_SCREEN | WF_AUTO_POSITION);
+            { WindowFlag::stickToFront, WindowFlag::transparent, WindowFlag::centreScreen, WindowFlag::autoPosition });
 
         return window;
     }
@@ -231,6 +231,6 @@ namespace OpenRCT2::Ui::Windows
 
         windowMgr->Create(
             std::move(trackDeletePromptWindow), WindowClass::trackDeletePrompt, {}, kWindowSizeDeletePrompt,
-            WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_AUTO_POSITION | WF_CENTRE_SCREEN);
+            { WindowFlag::stickToFront, WindowFlag::transparent, WindowFlag::autoPosition, WindowFlag::centreScreen });
     }
 } // namespace OpenRCT2::Ui::Windows

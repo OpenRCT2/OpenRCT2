@@ -144,7 +144,7 @@ namespace OpenRCT2::Ui::Windows
 
         return windowMgr->Create(
             std::move(errorWindow), WindowClass::error, windowPosition, { width, height },
-            WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_TITLE_BAR);
+            { WindowFlag::stickToFront, WindowFlag::transparent, WindowFlag::noTitleBar });
     }
 
     WindowBase* ErrorOpen(StringId title, StringId message, const Formatter& args, bool autoClose)

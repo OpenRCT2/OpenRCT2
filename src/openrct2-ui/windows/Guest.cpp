@@ -771,7 +771,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     viewport->flags = origViewportFlags;
                 }
-                flags |= WF_NO_SCROLLING;
+                flags |= WindowFlag::noScrolling;
                 invalidate();
             }
             invalidate();
@@ -1924,7 +1924,7 @@ namespace OpenRCT2::Ui::Windows
             if (Config::Get().general.DebuggingTools)
                 windowSize.width += kTabWidth;
 
-            window = windowMgr->Create<GuestWindow>(WindowClass::peep, windowSize, WF_RESIZABLE);
+            window = windowMgr->Create<GuestWindow>(WindowClass::peep, windowSize, WindowFlag::resizable);
             if (window == nullptr)
             {
                 return nullptr;

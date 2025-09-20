@@ -2901,10 +2901,10 @@ namespace OpenRCT2::Ui::Windows
                 return ContextOpenWindowView(WindowView::mazeConstruction);
             case RideConstructionWindowContext::Default:
                 return windowMgr->Create<RideConstructionWindow>(
-                    WindowClass::rideConstruction, ScreenCoordsXY(0, 29), kWindowSize, WF_NO_AUTO_CLOSE);
+                    WindowClass::rideConstruction, ScreenCoordsXY(0, 29), kWindowSize, WindowFlag::noAutoClose);
         }
         return windowMgr->Create<RideConstructionWindow>(
-            WindowClass::rideConstruction, ScreenCoordsXY(0, 29), kWindowSize, WF_NO_AUTO_CLOSE);
+            WindowClass::rideConstruction, ScreenCoordsXY(0, 29), kWindowSize, WindowFlag::noAutoClose);
     }
 
     static void CloseConstructWindowOnCompletion(const Ride& ride)

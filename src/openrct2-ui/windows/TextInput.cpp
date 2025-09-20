@@ -373,7 +373,8 @@ namespace OpenRCT2::Ui::Windows
         windowMgr->CloseByClass(WindowClass::textinput);
 
         auto w = windowMgr->Create<TextInputWindow>(
-            WindowClass::textinput, { kWindowSize.width, kWindowSize.height + 10 }, WF_CENTRE_SCREEN | WF_STICK_TO_FRONT);
+            WindowClass::textinput, { kWindowSize.width, kWindowSize.height + 10 },
+            { WindowFlag::centreScreen, WindowFlag::stickToFront });
         if (w != nullptr)
         {
             w->setParentWindow(call_w, call_widget);
@@ -388,7 +389,8 @@ namespace OpenRCT2::Ui::Windows
     {
         auto* windowMgr = GetWindowManager();
         auto w = windowMgr->Create<TextInputWindow>(
-            WindowClass::textinput, { kWindowSize.width, kWindowSize.height + 10 }, WF_CENTRE_SCREEN | WF_STICK_TO_FRONT);
+            WindowClass::textinput, { kWindowSize.width, kWindowSize.height + 10 },
+            { WindowFlag::centreScreen, WindowFlag::stickToFront });
         if (w != nullptr)
         {
             w->setTitle(title, description);

@@ -97,7 +97,7 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr)
             {
-                if (WindowCanResize(*w))
+                if (w->canBeResized())
                 {
                     WindowResizeByDelta(*w, value - w->width, 0);
                 }
@@ -122,7 +122,7 @@ namespace OpenRCT2::Scripting
             if (w != nullptr)
             {
                 value += w->getTitleBarDiffNormal();
-                if (WindowCanResize(*w))
+                if (w->canBeResized())
                 {
                     WindowResizeByDelta(*w, 0, value - w->height);
                 }
@@ -207,7 +207,7 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr)
             {
-                return (w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)) != 0;
+                return (w->flags.hasAny(WindowFlag::stickToBack, WindowFlag::stickToFront));
             }
             return false;
         }
@@ -334,7 +334,7 @@ namespace OpenRCT2::Scripting
             {
                 auto* windowMgr = Ui::GetWindowManager();
                 w = windowMgr->BringToFront(*w);
-                w->flags |= WF_WHITE_BORDER_MASK;
+                w->flash();
             }
         }
 

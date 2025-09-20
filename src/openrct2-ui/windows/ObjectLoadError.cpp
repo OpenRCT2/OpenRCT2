@@ -577,7 +577,7 @@ namespace OpenRCT2::Ui::Windows
         auto* window = windowMgr->BringToFrontByClass(WindowClass::objectLoadError);
         if (window == nullptr)
         {
-            window = windowMgr->Create<ObjectLoadErrorWindow>(WindowClass::objectLoadError, kWindowSize, 0);
+            window = windowMgr->Create<ObjectLoadErrorWindow>(WindowClass::objectLoadError, kWindowSize, {});
         }
 
         static_cast<ObjectLoadErrorWindow*>(window)->initialise(path, numMissingObjects, missingObjects);

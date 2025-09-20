@@ -905,7 +905,8 @@ namespace OpenRCT2::Ui::Windows
         if (window != nullptr)
             return window;
 
-        window = windowMgr->Create<ThemesWindow>(WindowClass::themes, kWindowSize, WF_10 | WF_RESIZABLE);
+        window = windowMgr->Create<ThemesWindow>(
+            WindowClass::themes, kWindowSize, { WindowFlag::higherContrastOnPress, WindowFlag::resizable });
 
         return window;
     }
