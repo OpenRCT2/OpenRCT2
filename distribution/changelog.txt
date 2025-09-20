@@ -15,6 +15,7 @@
 - Fix: [#25163] Some of the Junior Roller Coaster flat to steep track wooden support clearance heights are different to RCT1.
 - Fix: [#25173] Desync when placing a park entrance in multiplayer.
 - Fix: [#25179] The LIM Launched Roller Coaster inline twists have incorrect wooden support clearance heights (original bug).
+- Fix: [#25207] Building a block brake on an LIM coaster does not automatically switch it to powered launch block sectioned mode.
 
 0.4.26 (2025-09-06)
 ------------------------------------------------------------------------
