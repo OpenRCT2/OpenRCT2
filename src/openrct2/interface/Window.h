@@ -78,7 +78,6 @@ namespace OpenRCT2
          * Window is closed and will be deleted in the next update.
          */
         dead,
-        _7,
         resizable,
         /**
          * Don't auto close this window if too many windows are open

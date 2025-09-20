@@ -485,30 +485,6 @@ namespace OpenRCT2
         if ((!x_diff) && (!y_diff))
             return;
 
-        if (w->flags.has(WindowFlag::_7))
-        {
-            int32_t left = std::max<int32_t>(viewport->pos.x, 0);
-            int32_t top = std::max<int32_t>(viewport->pos.y, 0);
-            int32_t right = std::min<int32_t>(viewport->pos.x + viewport->width, ContextGetWidth());
-            int32_t bottom = std::min<int32_t>(viewport->pos.y + viewport->height, ContextGetHeight());
-
-            if (left >= right)
-                return;
-            if (top >= bottom)
-                return;
-
-            if (DrawingEngineHasDirtyOptimisations())
-            {
-                RenderTarget& rt = DrawingEngineGetDpi();
-                WindowDrawAll(rt, left, top, right, bottom);
-                return;
-            }
-            else
-            {
-                GfxInvalidateScreen();
-            }
-        }
-
         const int32_t left = std::max(viewport->pos.x, 0);
         const int32_t top = std::max(viewport->pos.y, 0);
         const int32_t right = std::min(left + viewport->width + std::min(viewport->pos.x, 0), ContextGetWidth());
