@@ -949,11 +949,14 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
 
-            auto count = GetNumTrackDesigns(item);
-            auto designCountStringId = GetDesignsAvailableStringId(count);
-            ft = Formatter();
-            ft.Add<int32_t>(count);
-            DrawTextBasic(rt, screenPos + ScreenCoordsXY{ 0, 51 }, designCountStringId, ft);
+            if (_currentTab != SHOP_TAB)
+            {
+                auto count = GetNumTrackDesigns(item);
+                auto designCountStringId = GetDesignsAvailableStringId(count);
+                ft = Formatter();
+                ft.Add<int32_t>(count);
+                DrawTextBasic(rt, screenPos + ScreenCoordsXY{ 0, 51 }, designCountStringId, ft);
+            }
 
             // Price
             if (!(getGameState().park.flags & PARK_FLAGS_NO_MONEY))
