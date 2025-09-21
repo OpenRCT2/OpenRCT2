@@ -205,13 +205,19 @@ void ClimateUpdate()
         ClimateUpdateLightning();
         ClimateUpdateThunder();
     }
-    else if (
-        gameState.weatherCurrent.weatherEffect == WeatherEffectType::Storm
-        || gameState.weatherCurrent.weatherEffect == WeatherEffectType::Blizzard)
+    else
     {
+        int thunderChance;
+        if (gameState.weatherCurrent.weatherEffect == WeatherEffectType::Storm)
+            thunderChance = 0x1B4;
+        else if (gameState.weatherCurrent.weatherEffect == WeatherEffectType::Blizzard)
+            thunderChance = 0x6D;
+        else
+            return;
         // Create new thunder and lightning. Their amount is scaled inversely proportional
         // to the game speed, otherwise they become annoying at very high speeds
-        if (uint32_t randomNumber = UtilRand(); (randomNumber & 0xFFFF) <= (0x1B4u >> (gGameSpeed - 1)))
+        if (uint32_t randomNumber = UtilRand();
+            (randomNumber & 0xFFFF) <= static_cast<uint32_t>(thunderChance >> (gGameSpeed - 1)))
         {
             randomNumber >>= 16;
             _thunderTimer = 43 + (randomNumber % 64);
