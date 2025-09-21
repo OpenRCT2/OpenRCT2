@@ -90,7 +90,7 @@ Appreciation for contributors who have provided substantial work, but are no lon
 * Brian Callahan (ibara) - OpenBSD port.
 * Jens Heuseveldt (jensj12) - Mountain tool improvements, misc.
 * Park Joon-Kyu (segfault87) - Allow filtering guests by name
-* Harrison Gentry (hgentry) - Date-changing command, misc.
+* Rachael Arbor (rarbor-old) - Date-changing command, misc.
 * Joshua Moerman (Jaxan) - Minimap cleanup, misc.
 * Nicolas Hawrysh (xp4xbox) - Various (ride) sprite improvements.
 * Albert Morgese (Fusxfaranto) - Shop auto-rotation, unicode uppercasing.
