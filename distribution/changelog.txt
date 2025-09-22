@@ -6,6 +6,7 @@
 - Fix: [#24513] Ride/track designs can now be shifted underground as well.
 - Fix: [#24682] The scenery window isn't enough to accommodate all tool buttons when there are multiple rows of groups/tabs.
 - Fix: [#24882] Guests are shown with hats and umbrellas whilst clapping.
+- Fix: [#24998] Some custom small scenery objects do not load.
 - Fix: [#25131] The Reverse Freefall Coaster On-ride photo section track has incorrectly coloured ties.
 - Fix: [#25132] Crash when trying to use simulate on incomplete ride.
 - Fix: [#25134] Vehicles visually glitch on diagonal steep slopes.
