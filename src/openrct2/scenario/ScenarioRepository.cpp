@@ -24,6 +24,7 @@
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../localisation/LocalisationService.h"
+#include "../platform/Crash.h"
 #include "../platform/Platform.h"
 #include "../rct12/CSStringConverter.h"
 #include "../rct12/RCT12.h"
@@ -203,6 +204,21 @@ private:
     static bool GetScenarioInfo(const std::string& path, uint64_t timestamp, ScenarioIndexEntry* entry)
     {
         LOG_VERBOSE("GetScenarioInfo(%s, %d, ...)", path.c_str(), timestamp);
+
+        struct CrashAdditionalFileRegistration
+        {
+            CrashAdditionalFileRegistration(const std::string& path)
+            {
+                // Register the file for crash upload if it asserts while loading.
+                CrashRegisterAdditionalFile("load_park", path);
+            }
+            ~CrashAdditionalFileRegistration()
+            {
+                // Deregister park file in case it was processed without hitting an assert.
+                CrashUnregisterAdditionalFile("load_park");
+            }
+        } crash_additional_file_registration(path);
+
         try
         {
             auto& objRepository = OpenRCT2::GetContext()->GetObjectRepository();
