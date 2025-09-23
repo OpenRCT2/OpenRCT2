@@ -500,7 +500,7 @@ extern OpenRCT2::Drawing::GamePalette gGamePalette;
 extern uint32_t gPaletteEffectFrame;
 
 extern uint8_t gTextPalette[];
-extern const TranslucentWindowPalette TranslucentWindowPalettes[COLOUR_COUNT];
+extern const TranslucentWindowPalette kTranslucentWindowPalettes[COLOUR_COUNT];
 
 extern ImageId gPickupPeepImage;
 extern int32_t gPickupPeepX;

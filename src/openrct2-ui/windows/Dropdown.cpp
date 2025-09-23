@@ -124,7 +124,7 @@ namespace OpenRCT2::Ui::Windows
 
                     if (colours[0].hasFlag(ColourFlag::translucent))
                     {
-                        TranslucentWindowPalette palette = TranslucentWindowPalettes[colours[0].colour];
+                        TranslucentWindowPalette palette = kTranslucentWindowPalettes[colours[0].colour];
                         GfxFilterRect(rt, { leftTop, rightBottom }, palette.highlight);
                         GfxFilterRect(rt, { leftTop + shadowOffset, rightBottom + shadowOffset }, palette.shadow);
                     }

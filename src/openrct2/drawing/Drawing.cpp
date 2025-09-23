@@ -545,82 +545,82 @@ static constexpr uint16_t kPaletteToG1Offset[kPaletteTotalOffsets] = {
     SPR_PALETTE_GLASS_VOID,
 };
 
-#define WINDOW_PALETTE_GREY                 {FilterPaletteID::PaletteTranslucentGrey,                  FilterPaletteID::PaletteTranslucentGreyHighlight,             FilterPaletteID::PaletteTranslucentGreyShadow}
-#define WINDOW_PALETTE_LIGHT_PURPLE         {FilterPaletteID::PaletteTranslucentLightPurple,          FilterPaletteID::PaletteTranslucentLightPurpleHighlight,     FilterPaletteID::PaletteTranslucentLightPurpleShadow}
-#define WINDOW_PALETTE_BRIGHT_PURPLE        {FilterPaletteID::PaletteTranslucentBrightPurple,     FilterPaletteID::PaletteTranslucentBrightPurpleHighlight,    FilterPaletteID::PaletteTranslucentBrightPurpleShadow}
-#define WINDOW_PALETTE_LIGHT_BLUE           {FilterPaletteID::PaletteTranslucentLightBlue,            FilterPaletteID::PaletteTranslucentLightBlueHighlight,       FilterPaletteID::PaletteTranslucentLightBlueShadow}
-#define WINDOW_PALETTE_TEAL                 {FilterPaletteID::PaletteTranslucentTeal,                  FilterPaletteID::PaletteTranslucentTealHighlight,             FilterPaletteID::PaletteTranslucentTealShadow}
-#define WINDOW_PALETTE_BRIGHT_GREEN         {FilterPaletteID::PaletteTranslucentBrightGreen,          FilterPaletteID::PaletteTranslucentBrightGreenHighlight,     FilterPaletteID::PaletteTranslucentBrightGreenShadow}
-#define WINDOW_PALETTE_DARK_GREEN           {FilterPaletteID::PaletteTranslucentDarkGreen,        FilterPaletteID::PaletteTranslucentDarkGreenHighlight,       FilterPaletteID::PaletteTranslucentDarkGreenShadow}
-#define WINDOW_PALETTE_MOSS_GREEN           {FilterPaletteID::PaletteTranslucentMossGreen,        FilterPaletteID::PaletteTranslucentMossGreenHighlight,       FilterPaletteID::PaletteTranslucentMossGreenShadow}
-#define WINDOW_PALETTE_OLIVE_GREEN          {FilterPaletteID::PaletteTranslucentOliveGreen,       FilterPaletteID::PaletteTranslucentOliveGreenHighlight,      FilterPaletteID::PaletteTranslucentOliveGreenShadow}
-#define WINDOW_PALETTE_DARK_OLIVE_GREEN     {FilterPaletteID::PaletteTranslucentDarkOliveGreen,  FilterPaletteID::PaletteTranslucentDarkOliveGreenHighlight, FilterPaletteID::PaletteTranslucentDarkOliveGreenShadow}
-#define WINDOW_PALETTE_YELLOW               {FilterPaletteID::PaletteTranslucentYellow,                FilterPaletteID::PaletteTranslucentYellowHighlight,           FilterPaletteID::PaletteTranslucentYellowShadow}
-#define WINDOW_PALETTE_LIGHT_ORANGE         {FilterPaletteID::PaletteTranslucentLightOrange,          FilterPaletteID::PaletteTranslucentLightOrangeHighlight,     FilterPaletteID::PaletteTranslucentLightOrangeShadow}
-#define WINDOW_PALETTE_LIGHT_BROWN          {FilterPaletteID::PaletteTranslucentLightBrown,           FilterPaletteID::PaletteTranslucentLightBrownHighlight,      FilterPaletteID::PaletteTranslucentLightBrownShadow}
-#define WINDOW_PALETTE_DARK_BROWN           {FilterPaletteID::PaletteTranslucentDarkBrown,        FilterPaletteID::PaletteTranslucentDarkBrownHighlight,       FilterPaletteID::PaletteTranslucentDarkBrownShadow}
-#define WINDOW_PALETTE_SALMON_PINK          {FilterPaletteID::PaletteTranslucentSalmonPink,       FilterPaletteID::PaletteTranslucentSalmonPinkHighlight,      FilterPaletteID::PaletteTranslucentSalmonPinkShadow}
-#define WINDOW_PALETTE_BORDEAUX_RED         {FilterPaletteID::PaletteTranslucentBordeauxRed,      FilterPaletteID::PaletteTranslucentBordeauxRedHighlight,     FilterPaletteID::PaletteTranslucentBordeauxRedShadow}
-#define WINDOW_PALETTE_BRIGHT_RED           {FilterPaletteID::PaletteTranslucentBrightRed,            FilterPaletteID::PaletteTranslucentBrightRedHighlight,       FilterPaletteID::PaletteTranslucentBrightRedShadow}
-#define WINDOW_PALETTE_BRIGHT_PINK          {FilterPaletteID::PaletteTranslucentBrightPink,           FilterPaletteID::PaletteTranslucentBrightPinkHighlight,      FilterPaletteID::PaletteTranslucentBrightPinkShadow}
+static constexpr TranslucentWindowPalette kWindowPaletteGrey = { FilterPaletteID::PaletteTranslucentGrey,                  FilterPaletteID::PaletteTranslucentGreyHighlight,             FilterPaletteID::PaletteTranslucentGreyShadow };
+static constexpr TranslucentWindowPalette kWindowPaletteLightPurple = { FilterPaletteID::PaletteTranslucentLightPurple,          FilterPaletteID::PaletteTranslucentLightPurpleHighlight,     FilterPaletteID::PaletteTranslucentLightPurpleShadow };
+static constexpr TranslucentWindowPalette kWindowPaletteBrightPurple = { FilterPaletteID::PaletteTranslucentBrightPurple,     FilterPaletteID::PaletteTranslucentBrightPurpleHighlight,    FilterPaletteID::PaletteTranslucentBrightPurpleShadow };
+static constexpr TranslucentWindowPalette kWindowPaletteLightBlue = { FilterPaletteID::PaletteTranslucentLightBlue,            FilterPaletteID::PaletteTranslucentLightBlueHighlight,       FilterPaletteID::PaletteTranslucentLightBlueShadow };
+static constexpr TranslucentWindowPalette kWindowPaletteTeal = { FilterPaletteID::PaletteTranslucentTeal,                  FilterPaletteID::PaletteTranslucentTealHighlight,             FilterPaletteID::PaletteTranslucentTealShadow };
+static constexpr TranslucentWindowPalette kWindowPaletteBrightGreen = { FilterPaletteID::PaletteTranslucentBrightGreen,          FilterPaletteID::PaletteTranslucentBrightGreenHighlight,     FilterPaletteID::PaletteTranslucentBrightGreenShadow };
+static constexpr TranslucentWindowPalette kWindowPaletteDarkGreen = { FilterPaletteID::PaletteTranslucentDarkGreen,        FilterPaletteID::PaletteTranslucentDarkGreenHighlight,       FilterPaletteID::PaletteTranslucentDarkGreenShadow };
+static constexpr TranslucentWindowPalette kWindowPaletteMossGreen = { FilterPaletteID::PaletteTranslucentMossGreen,        FilterPaletteID::PaletteTranslucentMossGreenHighlight,       FilterPaletteID::PaletteTranslucentMossGreenShadow };
+static constexpr TranslucentWindowPalette kWindowPaletteOliveGreen = { FilterPaletteID::PaletteTranslucentOliveGreen,       FilterPaletteID::PaletteTranslucentOliveGreenHighlight,      FilterPaletteID::PaletteTranslucentOliveGreenShadow };
+static constexpr TranslucentWindowPalette kWindowPaletteDarkOliveGreen = { FilterPaletteID::PaletteTranslucentDarkOliveGreen,  FilterPaletteID::PaletteTranslucentDarkOliveGreenHighlight, FilterPaletteID::PaletteTranslucentDarkOliveGreenShadow };
+static constexpr TranslucentWindowPalette kWindowPaletteYellow = { FilterPaletteID::PaletteTranslucentYellow,                FilterPaletteID::PaletteTranslucentYellowHighlight,           FilterPaletteID::PaletteTranslucentYellowShadow };
+static constexpr TranslucentWindowPalette kWindowPaletteLightOrange = { FilterPaletteID::PaletteTranslucentLightOrange,          FilterPaletteID::PaletteTranslucentLightOrangeHighlight,     FilterPaletteID::PaletteTranslucentLightOrangeShadow };
+static constexpr TranslucentWindowPalette kWindowPaletteLightBrown = { FilterPaletteID::PaletteTranslucentLightBrown,           FilterPaletteID::PaletteTranslucentLightBrownHighlight,      FilterPaletteID::PaletteTranslucentLightBrownShadow };
+static constexpr TranslucentWindowPalette kWindowPaletteDarkBrown = { FilterPaletteID::PaletteTranslucentDarkBrown,        FilterPaletteID::PaletteTranslucentDarkBrownHighlight,       FilterPaletteID::PaletteTranslucentDarkBrownShadow };
+static constexpr TranslucentWindowPalette kWindowPaletteSalmonPink = { FilterPaletteID::PaletteTranslucentSalmonPink,       FilterPaletteID::PaletteTranslucentSalmonPinkHighlight,      FilterPaletteID::PaletteTranslucentSalmonPinkShadow };
+static constexpr TranslucentWindowPalette kWindowPaletteBordeauxRed = { FilterPaletteID::PaletteTranslucentBordeauxRed,      FilterPaletteID::PaletteTranslucentBordeauxRedHighlight,     FilterPaletteID::PaletteTranslucentBordeauxRedShadow };
+static constexpr TranslucentWindowPalette kWindowPaletteBrightRed = { FilterPaletteID::PaletteTranslucentBrightRed,            FilterPaletteID::PaletteTranslucentBrightRedHighlight,       FilterPaletteID::PaletteTranslucentBrightRedShadow };
+static constexpr TranslucentWindowPalette kWindowPaletteBrightPink = { FilterPaletteID::PaletteTranslucentBrightPink,           FilterPaletteID::PaletteTranslucentBrightPinkHighlight,      FilterPaletteID::PaletteTranslucentBrightPinkShadow };
 
-const TranslucentWindowPalette TranslucentWindowPalettes[COLOUR_COUNT] = {
-    WINDOW_PALETTE_GREY,                    // COLOUR_BLACK
-    WINDOW_PALETTE_GREY,                    // COLOUR_GREY
-    {FilterPaletteID::PaletteTranslucentWhite,             FilterPaletteID::PaletteTranslucentWhiteHighlight,            FilterPaletteID::PaletteTranslucentWhiteShadow},
-    WINDOW_PALETTE_LIGHT_PURPLE,            // COLOUR_DARK_PURPLE
-    WINDOW_PALETTE_LIGHT_PURPLE,            // COLOUR_LIGHT_PURPLE
-    WINDOW_PALETTE_BRIGHT_PURPLE,           // COLOUR_BRIGHT_PURPLE
-    WINDOW_PALETTE_LIGHT_BLUE,              // COLOUR_DARK_BLUE
-    WINDOW_PALETTE_LIGHT_BLUE,              // COLOUR_LIGHT_BLUE
-    WINDOW_PALETTE_LIGHT_BLUE,              // COLOUR_ICY_BLUE
-    WINDOW_PALETTE_TEAL,                    // COLOUR_TEAL
-    WINDOW_PALETTE_TEAL,                    // COLOUR_AQUAMARINE
-    WINDOW_PALETTE_BRIGHT_GREEN,            // COLOUR_SATURATED_GREEN
-    WINDOW_PALETTE_DARK_GREEN,              // COLOUR_DARK_GREEN
-    WINDOW_PALETTE_MOSS_GREEN,              // COLOUR_MOSS_GREEN
-    WINDOW_PALETTE_BRIGHT_GREEN,            // COLOUR_BRIGHT_GREEN
-    WINDOW_PALETTE_OLIVE_GREEN,             // COLOUR_OLIVE_GREEN
-    WINDOW_PALETTE_DARK_OLIVE_GREEN,        // COLOUR_DARK_OLIVE_GREEN
-    WINDOW_PALETTE_YELLOW,                  // COLOUR_BRIGHT_YELLOW
-    WINDOW_PALETTE_YELLOW,                  // COLOUR_YELLOW
-    WINDOW_PALETTE_YELLOW,                  // COLOUR_DARK_YELLOW
-    WINDOW_PALETTE_LIGHT_ORANGE,            // COLOUR_LIGHT_ORANGE
-    WINDOW_PALETTE_LIGHT_ORANGE,            // COLOUR_DARK_ORANGE
-    WINDOW_PALETTE_LIGHT_BROWN,             // COLOUR_LIGHT_BROWN
-    WINDOW_PALETTE_LIGHT_BROWN,             // COLOUR_SATURATED_BROWN
-    WINDOW_PALETTE_DARK_BROWN,              // COLOUR_DARK_BROWN
-    WINDOW_PALETTE_SALMON_PINK,             // COLOUR_SALMON_PINK
-    WINDOW_PALETTE_BORDEAUX_RED,            // COLOUR_BORDEAUX_RED
-    WINDOW_PALETTE_BRIGHT_RED,              // COLOUR_SATURATED_RED
-    WINDOW_PALETTE_BRIGHT_RED,              // COLOUR_BRIGHT_RED
-    WINDOW_PALETTE_BRIGHT_PINK,             // COLOUR_DARK_PINK
-    WINDOW_PALETTE_BRIGHT_PINK,             // COLOUR_BRIGHT_PINK
-    {FilterPaletteID::PaletteTranslucentLightPink,        FilterPaletteID::PaletteTranslucentLightPinkHighlight,       FilterPaletteID::PaletteTranslucentLightPinkShadow},
-    WINDOW_PALETTE_DARK_OLIVE_GREEN,        // COLOUR_DARK_OLIVE_DARK
-    WINDOW_PALETTE_DARK_OLIVE_GREEN,        // COLOUR_DARK_OLIVE_LIGHT
-    WINDOW_PALETTE_LIGHT_BROWN,             // COLOUR_SATURATED_BROWN_LIGHT
-    WINDOW_PALETTE_BORDEAUX_RED,            // COLOUR_BORDEAUX_RED_DARK
-    WINDOW_PALETTE_BORDEAUX_RED,            // COLOUR_BORDEAUX_RED_LIGHT
-    WINDOW_PALETTE_MOSS_GREEN,              // COLOUR_GRASS_GREEN_DARK
-    WINDOW_PALETTE_MOSS_GREEN,              // COLOUR_GRASS_GREEN_LIGHT
-    WINDOW_PALETTE_OLIVE_GREEN,             // COLOUR_OLIVE_DARK
-    WINDOW_PALETTE_OLIVE_GREEN,             // COLOUR_OLIVE_LIGHT
-    WINDOW_PALETTE_BRIGHT_GREEN,            // COLOUR_SATURATED_GREEN_LIGHT
-    WINDOW_PALETTE_SALMON_PINK,             // COLOUR_TAN_DARK
-    WINDOW_PALETTE_SALMON_PINK,             // COLOUR_TAN_LIGHT
-    WINDOW_PALETTE_LIGHT_PURPLE,            // COLOUR_DULL_PURPLE_LIGHT
-    WINDOW_PALETTE_DARK_GREEN,              // COLOUR_DULL_GREEN_DARK
-    WINDOW_PALETTE_DARK_GREEN,              // COLOUR_DULL_GREEN_LIGHT
-    WINDOW_PALETTE_BRIGHT_PURPLE,           // COLOUR_SATURATED_PURPLE_DARK
-    WINDOW_PALETTE_BRIGHT_PURPLE,           // COLOUR_SATURATED_PURPLE_LIGHT
-    WINDOW_PALETTE_LIGHT_ORANGE,            // COLOUR_ORANGE_LIGHT
-    WINDOW_PALETTE_TEAL,                    // COLOUR_AQUA_DARK
-    WINDOW_PALETTE_BRIGHT_PINK,             // COLOUR_MAGENTA_LIGHT
-    WINDOW_PALETTE_DARK_BROWN,              // COLOUR_DULL_BROWN_DARK
-    WINDOW_PALETTE_DARK_BROWN,              // COLOUR_DULL_BROWN_LIGHT
-    {FilterPaletteID::PaletteDarken1,           FilterPaletteID::PaletteDarken1,      FilterPaletteID::PaletteDarken1},
-    {FilterPaletteID::PaletteDarken2,           FilterPaletteID::PaletteDarken2,      FilterPaletteID::PaletteDarken2},
+const TranslucentWindowPalette kTranslucentWindowPalettes[COLOUR_COUNT] = {
+    kWindowPaletteGrey,                    // COLOUR_BLACK
+    kWindowPaletteGrey,                    // COLOUR_GREY
+    { FilterPaletteID::PaletteTranslucentWhite, FilterPaletteID::PaletteTranslucentWhiteHighlight,FilterPaletteID::PaletteTranslucentWhiteShadow },
+    kWindowPaletteLightPurple,            // COLOUR_DARK_PURPLE
+    kWindowPaletteLightPurple,            // COLOUR_LIGHT_PURPLE
+    kWindowPaletteBrightPurple,           // COLOUR_BRIGHT_PURPLE
+    kWindowPaletteLightBlue,              // COLOUR_DARK_BLUE
+    kWindowPaletteLightBlue,              // COLOUR_LIGHT_BLUE
+    kWindowPaletteLightBlue,              // COLOUR_ICY_BLUE
+    kWindowPaletteTeal,                    // COLOUR_TEAL
+    kWindowPaletteTeal,                    // COLOUR_AQUAMARINE
+    kWindowPaletteBrightGreen,            // COLOUR_SATURATED_GREEN
+    kWindowPaletteDarkGreen,              // COLOUR_DARK_GREEN
+    kWindowPaletteMossGreen,              // COLOUR_MOSS_GREEN
+    kWindowPaletteBrightGreen,            // COLOUR_BRIGHT_GREEN
+    kWindowPaletteOliveGreen,             // COLOUR_OLIVE_GREEN
+    kWindowPaletteDarkOliveGreen,        // COLOUR_DARK_OLIVE_GREEN
+    kWindowPaletteYellow,                  // COLOUR_BRIGHT_YELLOW
+    kWindowPaletteYellow,                  // COLOUR_YELLOW
+    kWindowPaletteYellow,                  // COLOUR_DARK_YELLOW
+    kWindowPaletteLightOrange,            // COLOUR_LIGHT_ORANGE
+    kWindowPaletteLightOrange,            // COLOUR_DARK_ORANGE
+    kWindowPaletteLightBrown,             // COLOUR_LIGHT_BROWN
+    kWindowPaletteLightBrown,             // COLOUR_SATURATED_BROWN
+    kWindowPaletteDarkBrown,              // COLOUR_DARK_BROWN
+    kWindowPaletteSalmonPink,             // COLOUR_SALMON_PINK
+    kWindowPaletteBordeauxRed,            // COLOUR_BORDEAUX_RED
+    kWindowPaletteBrightRed,              // COLOUR_SATURATED_RED
+    kWindowPaletteBrightRed,              // COLOUR_BRIGHT_RED
+    kWindowPaletteBrightPink,             // COLOUR_DARK_PINK
+    kWindowPaletteBrightPink,             // COLOUR_BRIGHT_PINK
+    { FilterPaletteID::PaletteTranslucentLightPink, FilterPaletteID::PaletteTranslucentLightPinkHighlight, FilterPaletteID::PaletteTranslucentLightPinkShadow },
+    kWindowPaletteDarkOliveGreen,        // COLOUR_DARK_OLIVE_DARK
+    kWindowPaletteDarkOliveGreen,        // COLOUR_DARK_OLIVE_LIGHT
+    kWindowPaletteLightBrown,             // COLOUR_SATURATED_BROWN_LIGHT
+    kWindowPaletteBordeauxRed,            // COLOUR_BORDEAUX_RED_DARK
+    kWindowPaletteBordeauxRed,            // COLOUR_BORDEAUX_RED_LIGHT
+    kWindowPaletteMossGreen,              // COLOUR_GRASS_GREEN_DARK
+    kWindowPaletteMossGreen,              // COLOUR_GRASS_GREEN_LIGHT
+    kWindowPaletteOliveGreen,             // COLOUR_OLIVE_DARK
+    kWindowPaletteOliveGreen,             // COLOUR_OLIVE_LIGHT
+    kWindowPaletteBrightGreen,            // COLOUR_SATURATED_GREEN_LIGHT
+    kWindowPaletteSalmonPink,             // COLOUR_TAN_DARK
+    kWindowPaletteSalmonPink,             // COLOUR_TAN_LIGHT
+    kWindowPaletteLightPurple,            // COLOUR_DULL_PURPLE_LIGHT
+    kWindowPaletteDarkGreen,              // COLOUR_DULL_GREEN_DARK
+    kWindowPaletteDarkGreen,              // COLOUR_DULL_GREEN_LIGHT
+    kWindowPaletteBrightPurple,           // COLOUR_SATURATED_PURPLE_DARK
+    kWindowPaletteBrightPurple,           // COLOUR_SATURATED_PURPLE_LIGHT
+    kWindowPaletteLightOrange,            // COLOUR_ORANGE_LIGHT
+    kWindowPaletteTeal,                    // COLOUR_AQUA_DARK
+    kWindowPaletteBrightPink,             // COLOUR_MAGENTA_LIGHT
+    kWindowPaletteDarkBrown,              // COLOUR_DULL_BROWN_DARK
+    kWindowPaletteDarkBrown,              // COLOUR_DULL_BROWN_LIGHT
+    { FilterPaletteID::PaletteDarken1,           FilterPaletteID::PaletteDarken1,      FilterPaletteID::PaletteDarken1 },
+    { FilterPaletteID::PaletteDarken2,           FilterPaletteID::PaletteDarken2,      FilterPaletteID::PaletteDarken2 },
 };
 // clang-format on
 
