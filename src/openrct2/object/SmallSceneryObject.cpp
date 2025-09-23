@@ -35,6 +35,8 @@ namespace OpenRCT2
         _legacyType.animation_mask = stream->ReadValue<uint16_t>();
         _legacyType.num_frames = stream->ReadValue<uint16_t>();
         _legacyType.scenery_tab_id = kObjectEntryIndexNull;
+        // Skip past the reserved space for the scenery_tab_id and an unused byte - the string table starts at offset 0x1C.
+        stream->Seek(2, STREAM_SEEK_CURRENT);
 
         GetStringTable().Read(context, stream, ObjectStringID::NAME);
 
