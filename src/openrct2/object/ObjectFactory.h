@@ -24,6 +24,8 @@ namespace OpenRCT2
 
 namespace OpenRCT2::ObjectFactory
 {
+    [[nodiscard]] std::unique_ptr<Object> CreateObjectFromFile(
+        IObjectRepository& objectRepository, u8string_view path, bool loadImages);
     [[nodiscard]] std::unique_ptr<Object> CreateObjectFromLegacyFile(
         IObjectRepository& objectRepository, const utf8* path, bool loadImages);
     [[nodiscard]] std::unique_ptr<Object> CreateObjectFromLegacyData(

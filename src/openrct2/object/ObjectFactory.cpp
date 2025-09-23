@@ -264,6 +264,28 @@ namespace OpenRCT2::ObjectFactory
         }
     }
 
+    std::unique_ptr<Object> CreateObjectFromFile(IObjectRepository& objectRepository, u8string_view path, bool loadImages)
+    {
+        std::unique_ptr<Object> object;
+        auto extension = Path::GetExtension(path);
+        if (String::iequals(extension, ".json"))
+        {
+            auto pathStr = u8string(path);
+            object = ObjectFactory::CreateObjectFromJsonFile(objectRepository, pathStr, loadImages);
+        }
+        else if (String::iequals(extension, ".parkobj"))
+        {
+            object = ObjectFactory::CreateObjectFromZipFile(objectRepository, path, loadImages);
+        }
+        else
+        {
+            auto pathStr = u8string(path);
+            object = ObjectFactory::CreateObjectFromLegacyFile(objectRepository, pathStr.c_str(), loadImages);
+        }
+
+        return object;
+    }
+
     std::unique_ptr<Object> CreateObjectFromLegacyFile(IObjectRepository& objectRepository, const utf8* path, bool loadImages)
     {
         LOG_VERBOSE("CreateObjectFromLegacyFile(..., \"%s\")", path);

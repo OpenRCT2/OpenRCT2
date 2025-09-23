@@ -208,10 +208,6 @@ namespace OpenRCT2
         {
             return _stringTable;
         }
-        ImageTable& GetImageTable()
-        {
-            return _imageTable;
-        }
 
         /**
          * Populates the image and string tables from a JSON object
@@ -344,6 +340,11 @@ namespace OpenRCT2
 
         uint32_t LoadImages();
         void UnloadImages();
+
+        ImageTable& GetImageTable()
+        {
+            return _imageTable;
+        }
     };
 #ifdef __WARN_SUGGEST_FINAL_TYPES__
     #pragma GCC diagnostic pop

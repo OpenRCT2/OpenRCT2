@@ -43,7 +43,7 @@ namespace OpenRCT2
         DefineCommand("details",      "<spritefile> [idx]",                       kSpriteOptions, HandleSprite),
         DefineCommand("export",       "<spritefile> <idx> <output>",              kSpriteOptions, HandleSprite),
         DefineCommand("exportall",    "<spritefile> <output directory>",          kSpriteOptions, HandleSprite),
-        DefineCommand("exportalldat", "<DAT identifier> <output directory>",      kSpriteOptions, HandleSprite),
+        DefineCommand("exportobject", "<DAT identifier> <output directory>",      kSpriteOptions, HandleSprite),
 
         kCommandTableEnd
     };
