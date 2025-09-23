@@ -71,8 +71,18 @@ namespace OpenRCT2
         }
         else if (jImage.is_object())
         {
-            sourceInfo = ParseSource(jImage.at("path").get<std::string>());
-            sourceInfo.Kind = SourceKind::Png;
+            if (jImage.contains("gx"))
+            {
+                auto strImage = jImage["gx"].get<std::string>();
+                sourceInfo = ParseSource(strImage);
+            }
+            else
+            {
+                auto dump = jImage.dump();
+                LOG_ERROR(dump.c_str());
+                sourceInfo = ParseSource(jImage.at("path").get<std::string>());
+                sourceInfo.Kind = SourceKind::Png;
+            }
         }
 
         auto asset = sourceInfo.Path.empty() ? std::nullopt
