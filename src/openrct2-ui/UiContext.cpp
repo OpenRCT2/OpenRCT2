@@ -301,6 +301,12 @@ public:
         SDL_SetWindowGrab(_window, value ? SDL_TRUE : SDL_FALSE);
     }
 
+    void SetWindowTitle(std::string value) override
+    {
+        SDL_SetWindowTitle(_window, value.c_str());
+    }
+
+
     void SetKeysPressed(uint32_t keysym, uint8_t scancode) override
     {
         _lastKeyPressed = keysym;

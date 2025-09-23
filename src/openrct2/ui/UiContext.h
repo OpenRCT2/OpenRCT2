@@ -152,6 +152,7 @@ namespace OpenRCT2
             virtual const uint8_t* GetKeysState() = 0;
             virtual const uint8_t* GetKeysPressed() = 0;
             virtual void SetKeysPressed(uint32_t keysym, uint8_t scancode) = 0;
+            virtual void SetWindowTitle(std::string value) = 0;
 
             // Drawing
             [[nodiscard]] virtual std::shared_ptr<Drawing::IDrawingEngineFactory> GetDrawingEngineFactory() = 0;

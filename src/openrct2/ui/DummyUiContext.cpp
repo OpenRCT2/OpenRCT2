@@ -157,6 +157,9 @@ namespace OpenRCT2::Ui
         void SetKeysPressed(uint32_t /*keysym*/, uint8_t /*scancode*/) override
         {
         }
+        void SetWindowTitle(std::string /*value*/) override
+        {
+        }
 
         class X8DrawingEngineFactory final : public IDrawingEngineFactory
         {

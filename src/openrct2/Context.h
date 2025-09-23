@@ -178,6 +178,7 @@ namespace OpenRCT2
         StringId title, StringId message, const class OpenRCT2::Formatter& args, bool autoClose = false);
     OpenRCT2::WindowBase* ContextOpenIntent(OpenRCT2::Intent* intent);
     void ContextBroadcastIntent(OpenRCT2::Intent* intent);
+    void ContextSetWindowTitle(std::string value);
     void ContextForceCloseWindowByClass(WindowClass wc);
     void ContextHandleInput();
     void ContextInputHandleKeyboard(bool isTitle);
