@@ -450,13 +450,14 @@ namespace OpenRCT2::GameActions
                 case TrackElemType::BlockBrakes:
                 case TrackElemType::DiagBlockBrakes:
                     ride->numBlockBrakes--;
-                    if (ride->numBlockBrakes == 0)
+                    if (ride->numBlockBrakes == 0 && ride->isBlockSectioned())
                     {
                         ride->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_OPERATING;
                         RideMode newMode = RideMode::continuousCircuit;
                         if (ride->mode == RideMode::poweredLaunchBlockSectioned)
                         {
-                            newMode = RideMode::poweredLaunch;
+                            // Depending on the ride, the equivalent will be powered launch with or without passing station.
+                            newMode = ride->getRideTypeDescriptor().DefaultMode;
                         }
 
                         auto rideSetSetting = GameActions::RideSetSettingAction(
