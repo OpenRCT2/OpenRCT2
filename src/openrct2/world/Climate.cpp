@@ -211,7 +211,7 @@ void ClimateUpdate()
     {
         // Create new thunder and lightning. Their amount is scaled inversely proportional
         // to the game speed, otherwise they become annoying at very high speeds
-        if (uint32_t randomNumber = UtilRand(); (randomNumber & 0xFFFF) <= (0x1B4u >> gGameSpeed))
+        if (uint32_t randomNumber = UtilRand(); (randomNumber & 0xFFFF) <= (0x1B4u >> (gGameSpeed - 1)))
         {
             randomNumber >>= 16;
             _thunderTimer = 43 + (randomNumber % 64);
