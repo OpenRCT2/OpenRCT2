@@ -112,7 +112,10 @@ namespace OpenRCT2
         extern const CommandLineCommand kRootCommands[];
         extern const CommandLineCommand kConvertCommands[];
         extern const CommandLineCommand kScreenshotCommands[];
-        extern const CommandLineCommand kSpriteCommands[];
+        namespace Sprite
+        {
+            extern const CommandLineCommand kSpriteCommands[];
+        }
         extern const CommandLineCommand kSimulateCommands[];
         extern const CommandLineCommand kParkInfoCommands[];
 
