@@ -343,7 +343,7 @@ namespace OpenRCT2::RCT1
         void Initialise(GameState_t& gameState)
         {
             // Avoid reusing the value used for last import
-            _parkValueConversionFactor = 100;
+            _parkValueConversionFactor = kDefaultParkValueConversionFactor;
 
             uint16_t mapSize = _s4.MapSize == 0 ? Limits::kMaxMapSize : _s4.MapSize;
 
