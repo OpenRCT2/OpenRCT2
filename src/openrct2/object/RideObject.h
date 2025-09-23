@@ -57,7 +57,7 @@ namespace OpenRCT2
         static ride_type_t ParseRideType(const std::string& s);
 
     private:
-        void ReadLegacyCar(IReadObjectContext* context, OpenRCT2::IStream* stream, CarEntry* car);
+        void ReadLegacyCar(IReadObjectContext* context, OpenRCT2::IStream* stream, CarEntry& car);
 
         void ReadJsonVehicleInfo(IReadObjectContext* context, json_t& properties);
         std::vector<CarEntry> ReadJsonCars([[maybe_unused]] IReadObjectContext* context, json_t& jCars);
