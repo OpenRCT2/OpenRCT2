@@ -509,13 +509,6 @@ namespace OpenRCT2::Park
         return result;
     }
 
-    // TODO: refactor S4Importer so this hack is no longer needed
-    money64 CalculateParkValue()
-    {
-        auto& gameState = getGameState();
-        return CalculateParkValue(gameState.park, gameState);
-    }
-
     money64 CalculateCompanyValue(const ParkData& park)
     {
         auto result = park.value - park.bankLoan;
