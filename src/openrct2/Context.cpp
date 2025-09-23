@@ -1288,7 +1288,7 @@ namespace OpenRCT2
             windowMgr->CloseByClass(WindowClass::titleMenu);
             windowMgr->CloseByClass(WindowClass::titleExit);
             windowMgr->CloseByClass(WindowClass::titleVersion);
-            Config::Get().general.ShowFPS = false;
+            Config::Get().general.ShowFPS = true;
             Platform::AdvanceTicks();
             PROFILED_FUNCTION();
 
