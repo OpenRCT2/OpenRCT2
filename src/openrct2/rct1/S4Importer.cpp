@@ -93,13 +93,15 @@ static constexpr ObjectEntryIndex ObjectEntryIndexIgnore = 254;
 
 namespace OpenRCT2::RCT1
 {
+    constexpr uint8_t kDefaultParkValueConversionFactor = 100;
+
     class S4Importer final : public IParkImporter
     {
     private:
         std::string _s4Path;
         S4 _s4 = {};
         uint8_t _gameVersion = 0;
-        uint8_t _parkValueConversionFactor = 100;
+        uint8_t _parkValueConversionFactor = kDefaultParkValueConversionFactor;
         bool _isScenario = false;
 
         // Lists of dynamic object entries
@@ -289,9 +291,10 @@ namespace OpenRCT2::RCT1
         }
 
     private:
-        uint8_t calcParkValueConversionFactor(const Park::ParkData& park, const GameState_t& gameState)
+        uint8_t calculateParkValueConversionFactor(const Park::ParkData& park, const GameState_t& gameState)
         {
-            assert(_s4.ParkValue != 0);
+            if (_s4.ParkValue == 0)
+                return kDefaultParkValueConversionFactor;
 
             // Use the ratio between the old and new park value to calculate the ratio to
             // use for the park value history and the goal.
@@ -1510,7 +1513,7 @@ namespace OpenRCT2::RCT1
             park.currentProfit = ToMoney64(_s4.Profit);
 
             // With park value known, we can recalculate the conversion factor
-            _parkValueConversionFactor = calcParkValueConversionFactor(park, gameState);
+            _parkValueConversionFactor = calculateParkValueConversionFactor(park, gameState);
 
             for (size_t i = 0; i < Limits::kFinanceGraphSize; i++)
             {
