@@ -1506,10 +1506,10 @@ static void ConsoleCommandReplayStart(InteractiveConsole& console, const argumen
     std::strftime(recordingDate, sizeof(recordingDate), "%c", std::localtime(&ts));
 
     const char* logFmt = "Replay playback started: %s\n"
-                            "  Date Recorded: %s\n"
-                            "  Ticks: %u\n"
-                            "  Commands: %u\n"
-                            "  Checksums: %u";
+                         "  Date Recorded: %s\n"
+                         "  Ticks: %u\n"
+                         "  Commands: %u\n"
+                         "  Checksums: %u";
 
     console.WriteFormatLine(logFmt, info.FilePath.c_str(), recordingDate, info.Ticks, info.NumCommands, info.NumChecksums);
     Console::WriteLine(logFmt, info.FilePath.c_str(), recordingDate, info.Ticks, info.NumCommands, info.NumChecksums);
