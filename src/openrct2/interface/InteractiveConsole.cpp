@@ -1486,53 +1486,33 @@ static void ConsoleCommandReplayStart(InteractiveConsole& console, const argumen
     std::string name = argv[0];
 
     auto* replayManager = OpenRCT2::GetContext()->GetReplayManager();
-    if (replayManager->StartPlayback(name))
+
+    try
     {
-        OpenRCT2::ReplayRecordInfo info;
-        replayManager->GetCurrentReplayInfo(info);
-
-        std::time_t ts = info.TimeRecorded;
-
-        char recordingDate[128] = {};
-        std::strftime(recordingDate, sizeof(recordingDate), "%c", std::localtime(&ts));
-
-        const char* logFmt = "Replay playback started: %s\n"
-                             "  Date Recorded: %s\n"
-                             "  Ticks: %u\n"
-                             "  Commands: %u\n"
-                             "  Checksums: %u";
-
-        console.WriteFormatLine(logFmt, info.FilePath.c_str(), recordingDate, info.Ticks, info.NumCommands, info.NumChecksums);
-        Console::WriteLine(logFmt, info.FilePath.c_str(), recordingDate, info.Ticks, info.NumCommands, info.NumChecksums);
+        replayManager->StartPlayback(name);
     }
-    else
+    catch (std::invalid_argument& e)
     {
-        if (Path::IsAbsolute(name))
-        {
-            if (!File::Exists(name))
-            {
-                console.WriteLineError(FormatStringID(STR_REPLAY_WITH_PATH_NOT_FOUND, name));
-                return;
-            }
-        }
-        else if (Path::IsRelative(name))
-        {
-            std::string filePath = OpenRCT2::GetContext()->GetPlatformEnvironment().GetDirectoryPath(
-                OpenRCT2::DirBase::user, OpenRCT2::DirId::replayRecordings);
-            filePath = Path::Combine(filePath, name + ".parkrep");
-
-            if (!File::Exists(filePath))
-            {
-                console.WriteLineError(FormatStringID(STR_REPLAY_FILE_NOT_FOUND, name));
-                return;
-            }
-        }
-        else
-        {
-            console.WriteLineError(LanguageGetString(STR_REPLAY_NOT_STARTED));
-            return;
-        }
+        console.WriteLine(e.what());
+        return;
     }
+
+    OpenRCT2::ReplayRecordInfo info;
+    replayManager->GetCurrentReplayInfo(info);
+
+    std::time_t ts = info.TimeRecorded;
+
+    char recordingDate[128] = {};
+    std::strftime(recordingDate, sizeof(recordingDate), "%c", std::localtime(&ts));
+
+    const char* logFmt = "Replay playback started: %s\n"
+                            "  Date Recorded: %s\n"
+                            "  Ticks: %u\n"
+                            "  Commands: %u\n"
+                            "  Checksums: %u";
+
+    console.WriteFormatLine(logFmt, info.FilePath.c_str(), recordingDate, info.Ticks, info.NumCommands, info.NumChecksums);
+    Console::WriteLine(logFmt, info.FilePath.c_str(), recordingDate, info.Ticks, info.NumCommands, info.NumChecksums);
 }
 
 static void ConsoleCommandReplayStop(InteractiveConsole& console, const arguments_t& argv)

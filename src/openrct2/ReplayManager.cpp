@@ -33,6 +33,7 @@
 #include "entity/EntityRegistry.h"
 #include "entity/EntityTweener.h"
 #include "interface/Window.h"
+#include "localisation/Formatting.h"
 #include "management/NewsItem.h"
 #include "object/ObjectManager.h"
 #include "object/ObjectRepository.h"
@@ -415,23 +416,25 @@ namespace OpenRCT2
             }
         }
 
-        virtual bool StartPlayback(const std::string& file) override
+        virtual void StartPlayback(const std::string& file) override
         {
             if (_mode != ReplayMode::NONE && _mode != ReplayMode::NORMALISATION)
-                return false;
+                throw std::invalid_argument("Error with mode");
 
             auto replayData = std::make_unique<ReplayRecordData>();
 
-            if (!ReadReplayData(file, *replayData))
+            try
             {
-                LOG_ERROR("Unable to read replay data.");
-                return false;
+                ReadReplayData(file, *replayData);
+            }
+            catch (std::invalid_argument &e)
+            {
+                throw;
             }
 
             if (!LoadReplayDataMap(*replayData))
             {
-                LOG_ERROR("Unable to load map.");
-                return false;
+                throw std::invalid_argument("Unable to load map.");
             }
 
             getGameState().currentTicks = replayData->tickStart;
@@ -447,8 +450,6 @@ namespace OpenRCT2
 
             if (_mode != ReplayMode::NORMALISATION)
                 _mode = ReplayMode::PLAYING;
-
-            return true;
         }
 
         virtual bool IsPlaybackStateMismatching() const override
@@ -485,7 +486,11 @@ namespace OpenRCT2
         {
             _mode = ReplayMode::NORMALISATION;
 
-            if (!StartPlayback(file))
+            try
+            {
+                StartPlayback(file);
+            }
+            catch (std::invalid_argument &e)
             {
                 return false;
             }
@@ -595,23 +600,26 @@ namespace OpenRCT2
             return recFile.data;
         }
 
-        bool ReadReplayData(const std::string& file, ReplayRecordData& data)
+        void ReadReplayData(const std::string& file, ReplayRecordData& data)
         {
             fs::path filePath = file;
-            if (filePath.extension() != ".parkrep")
-                filePath += ".parkrep";
 
-            if (filePath.is_relative())
-            {
+            if (filePath.is_absolute()) {
+                if (!fs::exists(filePath)) {
+                    throw std::invalid_argument(FormatStringID(STR_REPLAY_WITH_PATH_NOT_FOUND, file));
+                }
+            } else if (filePath.is_relative()) {
+                if (filePath.extension() != ".parkrep")
+                    filePath += ".parkrep";
                 fs::path replayPath = GetContext()->GetPlatformEnvironment().GetDirectoryPath(
-                                          DirBase::user, DirId::replayRecordings)
+                                            DirBase::user, DirId::replayRecordings)
                     / filePath;
                 if (fs::is_regular_file(replayPath))
                     filePath = replayPath;
             }
 
             if (!fs::is_regular_file(filePath))
-                return false;
+                throw std::invalid_argument(FormatStringID(STR_REPLAY_FILE_NOT_FOUND, file));
 
             FileStream fileStream(filePath, FileMode::open);
             MemoryStream stream = DecompressFile(fileStream);
@@ -620,7 +628,7 @@ namespace OpenRCT2
             DataSerialiser serialiser(false, stream);
             if (!Serialise(serialiser, data))
             {
-                return false;
+                throw std::invalid_argument(LanguageGetString(STR_REPLAY_NOT_STARTED));
             }
 
             // Reset position of all streams.
@@ -628,8 +636,6 @@ namespace OpenRCT2
             data.parkParams.SetPosition(0);
             data.cheatData.SetPosition(0);
             data.gameStateSnapshots.SetPosition(0);
-
-            return true;
         }
 
         bool SerialiseCheats(DataSerialiser& serialiser)
