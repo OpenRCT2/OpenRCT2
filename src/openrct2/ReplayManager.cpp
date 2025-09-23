@@ -604,15 +604,19 @@ namespace OpenRCT2
         {
             fs::path filePath = file;
 
-            if (filePath.is_absolute()) {
-                if (!fs::exists(filePath)) {
+            if (filePath.is_absolute())
+            {
+                if (!fs::exists(filePath))
+                {
                     throw std::invalid_argument(FormatStringID(STR_REPLAY_WITH_PATH_NOT_FOUND, file));
                 }
-            } else if (filePath.is_relative()) {
+            }
+            else if (filePath.is_relative())
+            {
                 if (filePath.extension() != ".parkrep")
                     filePath += ".parkrep";
                 fs::path replayPath = GetContext()->GetPlatformEnvironment().GetDirectoryPath(
-                                            DirBase::user, DirId::replayRecordings)
+                                          DirBase::user, DirId::replayRecordings)
                     / filePath;
                 if (fs::is_regular_file(replayPath))
                     filePath = replayPath;
