@@ -694,11 +694,11 @@ private:
                     auto* windowMgr = Ui::GetWindowManager();
                     if (windowMgr != nullptr)
                     {
-                        windowMgr->CloseByClass(WindowClass::TitleLogo);
-                        windowMgr->CloseByClass(WindowClass::TitleMenu);
-                        windowMgr->CloseByClass(WindowClass::TitleVersion);
-                        windowMgr->CloseByClass(WindowClass::TitleExit);
-                        windowMgr->CloseByClass(WindowClass::TitleOptions);
+                        windowMgr->CloseByClass(WindowClass::titleLogo);
+                        windowMgr->CloseByClass(WindowClass::titleMenu);
+                        windowMgr->CloseByClass(WindowClass::titleVersion);
+                        windowMgr->CloseByClass(WindowClass::titleExit);
+                        windowMgr->CloseByClass(WindowClass::titleOptions);
                     }
                     InitializeVideoEncoding();
                 }
