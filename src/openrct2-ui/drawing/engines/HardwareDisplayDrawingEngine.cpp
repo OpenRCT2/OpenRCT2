@@ -15,6 +15,7 @@
 #include <condition_variable>
 #include <cstring>
 #include <libyuv.h>
+#include <libyuv/convert_from_argb.h>
 #include <memory>
 #include <mutex>
 #include <openrct2/Diagnostic.h>
@@ -32,6 +33,7 @@
 #include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
 #include <thread>
+#include <vpx/vpx_image.h>
 #ifdef _WIN32
     #include <direct.h>
     #define getcwd _getcwd
@@ -248,6 +250,7 @@ struct EncodeThreadData
     uint32_t width{};
     uint32_t height{};
     uint32_t scale{};
+    bool yuv444{ false };
 
     // Double buffering: A/B pixel buffers
     std::unique_ptr<uint8_t[]> pixelBufferA{};
@@ -295,8 +298,13 @@ static void EncodeThreadFunc(EncodeThreadData& etd)
                     // Scale the surface
                     if (SDL_BlitScaled(tempSurface, nullptr, scaledSurface, nullptr) == 0)
                     {
+                        auto function = libyuv::ARGBToI420;
+                        if (etd.yuv444)
+                        {
+                            function = libyuv::ARGBToI444;
+                        }
                         // Convert to YUV for encoding
-                        libyuv::ARGBToI420(
+                        function(
                             static_cast<uint8_t*>(scaledSurface->pixels), scaledSurface->pitch, etd.raw->planes[0],
                             etd.raw->stride[0], etd.raw->planes[1], etd.raw->stride[1], etd.raw->planes[2], etd.raw->stride[1],
                             scaledWidth, scaledHeight);
@@ -330,6 +338,7 @@ private:
     SDL_PixelFormat* _screenTextureFormat = nullptr;
     uint32_t _paletteHWMapped[256] = { 0 };
     uint32_t _lightPaletteHWMapped[256] = { 0 };
+    bool _yuv444 = false;
 
     bool _useVsync = true;
 
@@ -355,6 +364,17 @@ public:
         , _uiContext(uiContext)
     {
         _window = static_cast<SDL_Window*>(_uiContext.GetWindow());
+
+        const char* yuv444Env = getenv("YUV444");
+        if (yuv444Env != nullptr && strlen(yuv444Env) > 0)
+        {
+            _yuv444 = true;
+            LOG_INFO("Using YUV444 for video encoding.");
+        }
+        else
+        {
+            LOG_INFO("Using YUV420 for video encoding.");
+        }
     }
 
     ~HardwareDisplayDrawingEngine() override
@@ -400,6 +420,9 @@ public:
         etd.Ready = &Ready;
         etd.writer = &writer;
         etd.SurfaceMutex = &SurfaceMutex;
+
+        etd.yuv444 = _yuv444;
+
         EncodeThread = std::thread(EncodeThreadFunc, std::ref(etd));
     }
 
@@ -535,7 +558,12 @@ private:
                 "Invalid frame size: %dx%d (need to be larger than zero and even-sized)", info.frame_width, info.frame_height);
         }
 
-        if (!vpx_img_alloc(&raw, VPX_IMG_FMT_I420, info.frame_width, info.frame_height, 1))
+        vpx_img_fmt_t fmt = VPX_IMG_FMT_I420;
+        if (_yuv444)
+        {
+            fmt = VPX_IMG_FMT_I444;
+        }
+        if (!vpx_img_alloc(&raw, fmt, info.frame_width, info.frame_height, 1))
         {
             LOG_FATAL("Failed to allocate image.");
         }
@@ -551,7 +579,7 @@ private:
         cfg.g_timebase.num = info.time_base.numerator;
         cfg.g_timebase.den = info.time_base.denominator;
         cfg.g_threads = 8;
-        cfg.g_profile = 0;
+        cfg.g_profile = _yuv444 ? 1 : 0;
 
         using namespace std::string_literals;
         char* titleSeqName = getenv("TITLE_SEQUENCE_NAME");
