@@ -337,7 +337,7 @@ void PaintWall(PaintSession& session, uint8_t direction, int32_t height, const W
     {
         if (!TrackDesignSaveContainsTileElement(reinterpret_cast<const TileElement*>(&wallElement)))
         {
-            imageTemplate = ImageId().WithRemap(FilterPaletteID::Palette46);
+            imageTemplate = ImageId().WithRemap(FilterPaletteID::palette46);
             isGhost = true;
         }
     }
@@ -345,12 +345,12 @@ void PaintWall(PaintSession& session, uint8_t direction, int32_t height, const W
     if (wallElement.IsGhost())
     {
         session.InteractionType = ViewportInteractionItem::none;
-        imageTemplate = ImageId().WithRemap(FilterPaletteID::PaletteGhost);
+        imageTemplate = ImageId().WithRemap(FilterPaletteID::paletteGhost);
         isGhost = true;
     }
     else if (session.SelectedElement == reinterpret_cast<const TileElement*>(&wallElement))
     {
-        imageTemplate = ImageId().WithRemap(FilterPaletteID::PaletteGhost);
+        imageTemplate = ImageId().WithRemap(FilterPaletteID::paletteGhost);
         isGhost = true;
     }
 

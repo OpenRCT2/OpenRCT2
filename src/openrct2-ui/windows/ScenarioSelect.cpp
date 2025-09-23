@@ -580,7 +580,7 @@ namespace OpenRCT2::Ui::Windows
                         bool isHighlighted = _highlightedScenario == scenario;
                         if (isHighlighted)
                         {
-                            GfxFilterRect(rt, { 0, y, width, y + scenarioItemHeight - 1 }, FilterPaletteID::PaletteDarken1);
+                            GfxFilterRect(rt, { 0, y, width, y + scenarioItemHeight - 1 }, FilterPaletteID::paletteDarken1);
                         }
 
                         bool isCompleted = scenario->Highscore != nullptr;

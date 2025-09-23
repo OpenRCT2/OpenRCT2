@@ -287,62 +287,62 @@ enum
 };
 
 static constexpr FilterPaletteID kGlassPaletteIds[COLOUR_COUNT] = {
-    FilterPaletteID::PaletteGlassBlack,
-    FilterPaletteID::PaletteGlassGrey,
-    FilterPaletteID::PaletteGlassWhite,
-    FilterPaletteID::PaletteGlassDarkPurple,
-    FilterPaletteID::PaletteGlassLightPurple,
-    FilterPaletteID::PaletteGlassBrightPurple,
-    FilterPaletteID::PaletteGlassDarkBlue,
-    FilterPaletteID::PaletteGlassLightBlue,
-    FilterPaletteID::PaletteGlassIcyBlue,
-    FilterPaletteID::PaletteGlassTeal,
-    FilterPaletteID::PaletteGlassAquamarine,
-    FilterPaletteID::PaletteGlassSaturatedGreen,
-    FilterPaletteID::PaletteGlassDarkGreen,
-    FilterPaletteID::PaletteGlassMossGreen,
-    FilterPaletteID::PaletteGlassBrightGreen,
-    FilterPaletteID::PaletteGlassOliveGreen,
-    FilterPaletteID::PaletteGlassDarkOliveGreen,
-    FilterPaletteID::PaletteGlassBrightYellow,
-    FilterPaletteID::PaletteGlassYellow,
-    FilterPaletteID::PaletteGlassDarkYellow,
-    FilterPaletteID::PaletteGlassLightOrange,
-    FilterPaletteID::PaletteGlassDarkOrange,
-    FilterPaletteID::PaletteGlassLightBrown,
-    FilterPaletteID::PaletteGlassSaturatedBrown,
-    FilterPaletteID::PaletteGlassDarkBrown,
-    FilterPaletteID::PaletteGlassSalmonPink,
-    FilterPaletteID::PaletteGlassBordeauxRed,
-    FilterPaletteID::PaletteGlassSaturatedRed,
-    FilterPaletteID::PaletteGlassBrightRed,
-    FilterPaletteID::PaletteGlassDarkPink,
-    FilterPaletteID::PaletteGlassBrightPink,
-    FilterPaletteID::PaletteGlassLightPink,
-    FilterPaletteID::PaletteGlassDarkOliveDark,
-    FilterPaletteID::PaletteGlassDarkOliveLight,
-    FilterPaletteID::PaletteGlassSaturatedBrownLight,
-    FilterPaletteID::PaletteGlassBordeauxRedDark,
-    FilterPaletteID::PaletteGlassBordeauxRedLight,
-    FilterPaletteID::PaletteGlassGrassGreenDark,
-    FilterPaletteID::PaletteGlassGrassGreenLight,
-    FilterPaletteID::PaletteGlassOliveDark,
-    FilterPaletteID::PaletteGlassOliveLight,
-    FilterPaletteID::PaletteGlassSaturatedGreenLight,
-    FilterPaletteID::PaletteGlassTanDark,
-    FilterPaletteID::PaletteGlassTanLight,
-    FilterPaletteID::PaletteGlassDullPurpleLight,
-    FilterPaletteID::PaletteGlassDullGreenDark,
-    FilterPaletteID::PaletteGlassDullGreenLight,
-    FilterPaletteID::PaletteGlassSaturatedPurpleDark,
-    FilterPaletteID::PaletteGlassSaturatedPurpleLight,
-    FilterPaletteID::PaletteGlassOrangeLight,
-    FilterPaletteID::PaletteGlassAquaDark,
-    FilterPaletteID::PaletteGlassMagentaLight,
-    FilterPaletteID::PaletteGlassDullBrownDark,
-    FilterPaletteID::PaletteGlassDullBrownLight,
-    FilterPaletteID::PaletteGlassInvisible,
-    FilterPaletteID::PaletteGlassVoid,
+    FilterPaletteID::paletteGlassBlack,
+    FilterPaletteID::paletteGlassGrey,
+    FilterPaletteID::paletteGlassWhite,
+    FilterPaletteID::paletteGlassDarkPurple,
+    FilterPaletteID::paletteGlassLightPurple,
+    FilterPaletteID::paletteGlassBrightPurple,
+    FilterPaletteID::paletteGlassDarkBlue,
+    FilterPaletteID::paletteGlassLightBlue,
+    FilterPaletteID::paletteGlassIcyBlue,
+    FilterPaletteID::paletteGlassTeal,
+    FilterPaletteID::paletteGlassAquamarine,
+    FilterPaletteID::paletteGlassSaturatedGreen,
+    FilterPaletteID::paletteGlassDarkGreen,
+    FilterPaletteID::paletteGlassMossGreen,
+    FilterPaletteID::paletteGlassBrightGreen,
+    FilterPaletteID::paletteGlassOliveGreen,
+    FilterPaletteID::paletteGlassDarkOliveGreen,
+    FilterPaletteID::paletteGlassBrightYellow,
+    FilterPaletteID::paletteGlassYellow,
+    FilterPaletteID::paletteGlassDarkYellow,
+    FilterPaletteID::paletteGlassLightOrange,
+    FilterPaletteID::paletteGlassDarkOrange,
+    FilterPaletteID::paletteGlassLightBrown,
+    FilterPaletteID::paletteGlassSaturatedBrown,
+    FilterPaletteID::paletteGlassDarkBrown,
+    FilterPaletteID::paletteGlassSalmonPink,
+    FilterPaletteID::paletteGlassBordeauxRed,
+    FilterPaletteID::paletteGlassSaturatedRed,
+    FilterPaletteID::paletteGlassBrightRed,
+    FilterPaletteID::paletteGlassDarkPink,
+    FilterPaletteID::paletteGlassBrightPink,
+    FilterPaletteID::paletteGlassLightPink,
+    FilterPaletteID::paletteGlassDarkOliveDark,
+    FilterPaletteID::paletteGlassDarkOliveLight,
+    FilterPaletteID::paletteGlassSaturatedBrownLight,
+    FilterPaletteID::paletteGlassBordeauxRedDark,
+    FilterPaletteID::paletteGlassBordeauxRedLight,
+    FilterPaletteID::paletteGlassGrassGreenDark,
+    FilterPaletteID::paletteGlassGrassGreenLight,
+    FilterPaletteID::paletteGlassOliveDark,
+    FilterPaletteID::paletteGlassOliveLight,
+    FilterPaletteID::paletteGlassSaturatedGreenLight,
+    FilterPaletteID::paletteGlassTanDark,
+    FilterPaletteID::paletteGlassTanLight,
+    FilterPaletteID::paletteGlassDullPurpleLight,
+    FilterPaletteID::paletteGlassDullGreenDark,
+    FilterPaletteID::paletteGlassDullGreenLight,
+    FilterPaletteID::paletteGlassSaturatedPurpleDark,
+    FilterPaletteID::paletteGlassSaturatedPurpleLight,
+    FilterPaletteID::paletteGlassOrangeLight,
+    FilterPaletteID::paletteGlassAquaDark,
+    FilterPaletteID::paletteGlassMagentaLight,
+    FilterPaletteID::paletteGlassDullBrownDark,
+    FilterPaletteID::paletteGlassDullBrownLight,
+    FilterPaletteID::paletteGlassInvisible,
+    FilterPaletteID::paletteGlassVoid,
 };
 
 // Previously 0x97FCBC use it to get the correct palette from g1_elements
@@ -545,29 +545,29 @@ static constexpr uint16_t kPaletteToG1Offset[kPaletteTotalOffsets] = {
     SPR_PALETTE_GLASS_VOID,
 };
 
-static constexpr TranslucentWindowPalette kWindowPaletteGrey = { FilterPaletteID::PaletteTranslucentGrey,                  FilterPaletteID::PaletteTranslucentGreyHighlight,             FilterPaletteID::PaletteTranslucentGreyShadow };
-static constexpr TranslucentWindowPalette kWindowPaletteLightPurple = { FilterPaletteID::PaletteTranslucentLightPurple,          FilterPaletteID::PaletteTranslucentLightPurpleHighlight,     FilterPaletteID::PaletteTranslucentLightPurpleShadow };
-static constexpr TranslucentWindowPalette kWindowPaletteBrightPurple = { FilterPaletteID::PaletteTranslucentBrightPurple,     FilterPaletteID::PaletteTranslucentBrightPurpleHighlight,    FilterPaletteID::PaletteTranslucentBrightPurpleShadow };
-static constexpr TranslucentWindowPalette kWindowPaletteLightBlue = { FilterPaletteID::PaletteTranslucentLightBlue,            FilterPaletteID::PaletteTranslucentLightBlueHighlight,       FilterPaletteID::PaletteTranslucentLightBlueShadow };
-static constexpr TranslucentWindowPalette kWindowPaletteTeal = { FilterPaletteID::PaletteTranslucentTeal,                  FilterPaletteID::PaletteTranslucentTealHighlight,             FilterPaletteID::PaletteTranslucentTealShadow };
-static constexpr TranslucentWindowPalette kWindowPaletteBrightGreen = { FilterPaletteID::PaletteTranslucentBrightGreen,          FilterPaletteID::PaletteTranslucentBrightGreenHighlight,     FilterPaletteID::PaletteTranslucentBrightGreenShadow };
-static constexpr TranslucentWindowPalette kWindowPaletteDarkGreen = { FilterPaletteID::PaletteTranslucentDarkGreen,        FilterPaletteID::PaletteTranslucentDarkGreenHighlight,       FilterPaletteID::PaletteTranslucentDarkGreenShadow };
-static constexpr TranslucentWindowPalette kWindowPaletteMossGreen = { FilterPaletteID::PaletteTranslucentMossGreen,        FilterPaletteID::PaletteTranslucentMossGreenHighlight,       FilterPaletteID::PaletteTranslucentMossGreenShadow };
-static constexpr TranslucentWindowPalette kWindowPaletteOliveGreen = { FilterPaletteID::PaletteTranslucentOliveGreen,       FilterPaletteID::PaletteTranslucentOliveGreenHighlight,      FilterPaletteID::PaletteTranslucentOliveGreenShadow };
-static constexpr TranslucentWindowPalette kWindowPaletteDarkOliveGreen = { FilterPaletteID::PaletteTranslucentDarkOliveGreen,  FilterPaletteID::PaletteTranslucentDarkOliveGreenHighlight, FilterPaletteID::PaletteTranslucentDarkOliveGreenShadow };
-static constexpr TranslucentWindowPalette kWindowPaletteYellow = { FilterPaletteID::PaletteTranslucentYellow,                FilterPaletteID::PaletteTranslucentYellowHighlight,           FilterPaletteID::PaletteTranslucentYellowShadow };
-static constexpr TranslucentWindowPalette kWindowPaletteLightOrange = { FilterPaletteID::PaletteTranslucentLightOrange,          FilterPaletteID::PaletteTranslucentLightOrangeHighlight,     FilterPaletteID::PaletteTranslucentLightOrangeShadow };
-static constexpr TranslucentWindowPalette kWindowPaletteLightBrown = { FilterPaletteID::PaletteTranslucentLightBrown,           FilterPaletteID::PaletteTranslucentLightBrownHighlight,      FilterPaletteID::PaletteTranslucentLightBrownShadow };
-static constexpr TranslucentWindowPalette kWindowPaletteDarkBrown = { FilterPaletteID::PaletteTranslucentDarkBrown,        FilterPaletteID::PaletteTranslucentDarkBrownHighlight,       FilterPaletteID::PaletteTranslucentDarkBrownShadow };
-static constexpr TranslucentWindowPalette kWindowPaletteSalmonPink = { FilterPaletteID::PaletteTranslucentSalmonPink,       FilterPaletteID::PaletteTranslucentSalmonPinkHighlight,      FilterPaletteID::PaletteTranslucentSalmonPinkShadow };
-static constexpr TranslucentWindowPalette kWindowPaletteBordeauxRed = { FilterPaletteID::PaletteTranslucentBordeauxRed,      FilterPaletteID::PaletteTranslucentBordeauxRedHighlight,     FilterPaletteID::PaletteTranslucentBordeauxRedShadow };
-static constexpr TranslucentWindowPalette kWindowPaletteBrightRed = { FilterPaletteID::PaletteTranslucentBrightRed,            FilterPaletteID::PaletteTranslucentBrightRedHighlight,       FilterPaletteID::PaletteTranslucentBrightRedShadow };
-static constexpr TranslucentWindowPalette kWindowPaletteBrightPink = { FilterPaletteID::PaletteTranslucentBrightPink,           FilterPaletteID::PaletteTranslucentBrightPinkHighlight,      FilterPaletteID::PaletteTranslucentBrightPinkShadow };
+static constexpr TranslucentWindowPalette kWindowPaletteGrey = { FilterPaletteID::paletteTranslucentGrey,                  FilterPaletteID::paletteTranslucentGreyHighlight,             FilterPaletteID::paletteTranslucentGreyShadow };
+static constexpr TranslucentWindowPalette kWindowPaletteLightPurple = { FilterPaletteID::paletteTranslucentLightPurple,          FilterPaletteID::paletteTranslucentLightPurpleHighlight,     FilterPaletteID::paletteTranslucentLightPurpleShadow };
+static constexpr TranslucentWindowPalette kWindowPaletteBrightPurple = { FilterPaletteID::paletteTranslucentBrightPurple,     FilterPaletteID::paletteTranslucentBrightPurpleHighlight,    FilterPaletteID::paletteTranslucentBrightPurpleShadow };
+static constexpr TranslucentWindowPalette kWindowPaletteLightBlue = { FilterPaletteID::paletteTranslucentLightBlue,            FilterPaletteID::paletteTranslucentLightBlueHighlight,       FilterPaletteID::paletteTranslucentLightBlueShadow };
+static constexpr TranslucentWindowPalette kWindowPaletteTeal = { FilterPaletteID::paletteTranslucentTeal,                  FilterPaletteID::paletteTranslucentTealHighlight,             FilterPaletteID::paletteTranslucentTealShadow };
+static constexpr TranslucentWindowPalette kWindowPaletteBrightGreen = { FilterPaletteID::paletteTranslucentBrightGreen,          FilterPaletteID::paletteTranslucentBrightGreenHighlight,     FilterPaletteID::paletteTranslucentBrightGreenShadow };
+static constexpr TranslucentWindowPalette kWindowPaletteDarkGreen = { FilterPaletteID::paletteTranslucentDarkGreen,        FilterPaletteID::paletteTranslucentDarkGreenHighlight,       FilterPaletteID::paletteTranslucentDarkGreenShadow };
+static constexpr TranslucentWindowPalette kWindowPaletteMossGreen = { FilterPaletteID::paletteTranslucentMossGreen,        FilterPaletteID::paletteTranslucentMossGreenHighlight,       FilterPaletteID::paletteTranslucentMossGreenShadow };
+static constexpr TranslucentWindowPalette kWindowPaletteOliveGreen = { FilterPaletteID::paletteTranslucentOliveGreen,       FilterPaletteID::paletteTranslucentOliveGreenHighlight,      FilterPaletteID::paletteTranslucentOliveGreenShadow };
+static constexpr TranslucentWindowPalette kWindowPaletteDarkOliveGreen = { FilterPaletteID::paletteTranslucentDarkOliveGreen,  FilterPaletteID::paletteTranslucentDarkOliveGreenHighlight, FilterPaletteID::paletteTranslucentDarkOliveGreenShadow };
+static constexpr TranslucentWindowPalette kWindowPaletteYellow = { FilterPaletteID::paletteTranslucentYellow,                FilterPaletteID::paletteTranslucentYellowHighlight,           FilterPaletteID::paletteTranslucentYellowShadow };
+static constexpr TranslucentWindowPalette kWindowPaletteLightOrange = { FilterPaletteID::paletteTranslucentLightOrange,          FilterPaletteID::paletteTranslucentLightOrangeHighlight,     FilterPaletteID::paletteTranslucentLightOrangeShadow };
+static constexpr TranslucentWindowPalette kWindowPaletteLightBrown = { FilterPaletteID::paletteTranslucentLightBrown,           FilterPaletteID::paletteTranslucentLightBrownHighlight,      FilterPaletteID::paletteTranslucentLightBrownShadow };
+static constexpr TranslucentWindowPalette kWindowPaletteDarkBrown = { FilterPaletteID::paletteTranslucentDarkBrown,        FilterPaletteID::paletteTranslucentDarkBrownHighlight,       FilterPaletteID::paletteTranslucentDarkBrownShadow };
+static constexpr TranslucentWindowPalette kWindowPaletteSalmonPink = { FilterPaletteID::paletteTranslucentSalmonPink,       FilterPaletteID::paletteTranslucentSalmonPinkHighlight,      FilterPaletteID::paletteTranslucentSalmonPinkShadow };
+static constexpr TranslucentWindowPalette kWindowPaletteBordeauxRed = { FilterPaletteID::paletteTranslucentBordeauxRed,      FilterPaletteID::paletteTranslucentBordeauxRedHighlight,     FilterPaletteID::paletteTranslucentBordeauxRedShadow };
+static constexpr TranslucentWindowPalette kWindowPaletteBrightRed = { FilterPaletteID::paletteTranslucentBrightRed,            FilterPaletteID::paletteTranslucentBrightRedHighlight,       FilterPaletteID::paletteTranslucentBrightRedShadow };
+static constexpr TranslucentWindowPalette kWindowPaletteBrightPink = { FilterPaletteID::paletteTranslucentBrightPink,           FilterPaletteID::paletteTranslucentBrightPinkHighlight,      FilterPaletteID::paletteTranslucentBrightPinkShadow };
 
 const TranslucentWindowPalette kTranslucentWindowPalettes[COLOUR_COUNT] = {
     kWindowPaletteGrey,                    // COLOUR_BLACK
     kWindowPaletteGrey,                    // COLOUR_GREY
-    { FilterPaletteID::PaletteTranslucentWhite, FilterPaletteID::PaletteTranslucentWhiteHighlight,FilterPaletteID::PaletteTranslucentWhiteShadow },
+    { FilterPaletteID::paletteTranslucentWhite, FilterPaletteID::paletteTranslucentWhiteHighlight,FilterPaletteID::paletteTranslucentWhiteShadow },
     kWindowPaletteLightPurple,            // COLOUR_DARK_PURPLE
     kWindowPaletteLightPurple,            // COLOUR_LIGHT_PURPLE
     kWindowPaletteBrightPurple,           // COLOUR_BRIGHT_PURPLE
@@ -596,7 +596,7 @@ const TranslucentWindowPalette kTranslucentWindowPalettes[COLOUR_COUNT] = {
     kWindowPaletteBrightRed,              // COLOUR_BRIGHT_RED
     kWindowPaletteBrightPink,             // COLOUR_DARK_PINK
     kWindowPaletteBrightPink,             // COLOUR_BRIGHT_PINK
-    { FilterPaletteID::PaletteTranslucentLightPink, FilterPaletteID::PaletteTranslucentLightPinkHighlight, FilterPaletteID::PaletteTranslucentLightPinkShadow },
+    { FilterPaletteID::paletteTranslucentLightPink, FilterPaletteID::paletteTranslucentLightPinkHighlight, FilterPaletteID::paletteTranslucentLightPinkShadow },
     kWindowPaletteDarkOliveGreen,        // COLOUR_DARK_OLIVE_DARK
     kWindowPaletteDarkOliveGreen,        // COLOUR_DARK_OLIVE_LIGHT
     kWindowPaletteLightBrown,             // COLOUR_SATURATED_BROWN_LIGHT
@@ -619,8 +619,8 @@ const TranslucentWindowPalette kTranslucentWindowPalettes[COLOUR_COUNT] = {
     kWindowPaletteBrightPink,             // COLOUR_MAGENTA_LIGHT
     kWindowPaletteDarkBrown,              // COLOUR_DULL_BROWN_DARK
     kWindowPaletteDarkBrown,              // COLOUR_DULL_BROWN_LIGHT
-    { FilterPaletteID::PaletteDarken1,           FilterPaletteID::PaletteDarken1,      FilterPaletteID::PaletteDarken1 },
-    { FilterPaletteID::PaletteDarken2,           FilterPaletteID::PaletteDarken2,      FilterPaletteID::PaletteDarken2 },
+    { FilterPaletteID::paletteDarken1,           FilterPaletteID::paletteDarken1,      FilterPaletteID::paletteDarken1 },
+    { FilterPaletteID::paletteDarken2,           FilterPaletteID::paletteDarken2,      FilterPaletteID::paletteDarken2 },
 };
 // clang-format on
 
@@ -1012,10 +1012,10 @@ void UpdatePaletteEffects()
         if (Config::Get().general.RenderWeatherGloom)
         {
             auto paletteId = ClimateGetWeatherGloomPaletteId(getGameState().weatherCurrent);
-            if (paletteId != FilterPaletteID::PaletteNull)
+            if (paletteId != FilterPaletteID::paletteNull)
             {
                 shade = 1;
-                if (paletteId != FilterPaletteID::PaletteDarken1)
+                if (paletteId != FilterPaletteID::paletteDarken1)
                 {
                     shade = 2;
                 }

@@ -336,7 +336,7 @@ namespace OpenRCT2::Ui::Windows
             const auto& previousWidget = widgets[WIDX_PREVIOUS_IMAGE];
             auto leftTop = windowPos + ScreenCoordsXY{ previousWidget.left, previousWidget.top };
             auto rightBottom = windowPos + ScreenCoordsXY{ previousWidget.right, previousWidget.bottom };
-            GfxFilterRect(rt, { leftTop, rightBottom }, FilterPaletteID::Palette51);
+            GfxFilterRect(rt, { leftTop, rightBottom }, FilterPaletteID::palette51);
         }
 
         void DrawLeftButton(RenderTarget& rt)
@@ -374,7 +374,7 @@ namespace OpenRCT2::Ui::Windows
             auto nextWidget = widgets[WIDX_NEXT_IMAGE];
             auto leftTop = windowPos + ScreenCoordsXY{ nextWidget.left, nextWidget.top };
             auto rightBottom = windowPos + ScreenCoordsXY{ nextWidget.right, nextWidget.bottom };
-            GfxFilterRect(rt, { leftTop, rightBottom }, FilterPaletteID::Palette51);
+            GfxFilterRect(rt, { leftTop, rightBottom }, FilterPaletteID::palette51);
         }
 
         void DrawRightButton(RenderTarget& rt)

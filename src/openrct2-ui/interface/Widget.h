@@ -78,7 +78,7 @@ namespace OpenRCT2::Ui
         const ScreenCoordsXY& origin, const ScreenSize& size, WidgetType type, WindowColour colour, ImageIndex content,
         StringId tooltip = kStringIdNone)
     {
-        return makeWidget(origin, size, type, colour, ImageId(content, FilterPaletteID::PaletteNull), tooltip);
+        return makeWidget(origin, size, type, colour, ImageId(content, FilterPaletteID::paletteNull), tooltip);
     }
 
     constexpr Widget makeTab(const ScreenCoordsXY& origin, StringId tooltip = kStringIdNone)

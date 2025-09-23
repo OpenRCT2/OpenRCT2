@@ -301,7 +301,7 @@ namespace OpenRCT2::Ui::Windows
                         bottom = itemY;
                     }
 
-                    GfxFilterRect(rt, { 0, top, boxWidth, bottom }, FilterPaletteID::PaletteDarken1);
+                    GfxFilterRect(rt, { 0, top, boxWidth, bottom }, FilterPaletteID::paletteDarken1);
                 }
 
                 if (dragItem != nullptr && researchItem == *dragItem)

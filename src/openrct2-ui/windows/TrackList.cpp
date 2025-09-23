@@ -695,7 +695,7 @@ namespace OpenRCT2::Ui::Windows
                     // Highlight
                     GfxFilterRect(
                         rt, { screenCoords, { width, screenCoords.y + kScrollableRowHeight - 1 } },
-                        FilterPaletteID::PaletteDarken1);
+                        FilterPaletteID::paletteDarken1);
                     stringId = STR_WINDOW_COLOUR_2_STRINGID;
                 }
                 else
@@ -720,7 +720,7 @@ namespace OpenRCT2::Ui::Windows
                         // Highlight
                         GfxFilterRect(
                             rt, { screenCoords, { width, screenCoords.y + kScrollableRowHeight - 1 } },
-                            FilterPaletteID::PaletteDarken1);
+                            FilterPaletteID::paletteDarken1);
                         stringId = STR_WINDOW_COLOUR_2_STRINGID;
                     }
                     else

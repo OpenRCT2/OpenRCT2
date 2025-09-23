@@ -418,7 +418,7 @@ static inline bool WoodenSupportsPaintSetupCommon(
         {
             return false;
         }
-        imageTemplate = ImageId().WithTransparency(FilterPaletteID::PaletteDarken1);
+        imageTemplate = ImageId().WithTransparency(FilterPaletteID::paletteDarken1);
     }
 
     baseHeight = ceil2(session.Support.height, 16);

@@ -1260,16 +1260,16 @@ namespace OpenRCT2::Ui::Windows
                 };
 
                 uint32_t mapImageId = _imageIdByRotation[GetCurrentRotation()];
-                widgets[WIDX_MAP].image = ImageId(mapImageId, FilterPaletteID::PaletteNull);
+                widgets[WIDX_MAP].image = ImageId(mapImageId, FilterPaletteID::paletteNull);
             }
         }
 
         void ApplyAudioState()
         {
             if (!OpenRCT2::Audio::gGameSoundsOff)
-                widgets[WIDX_MUTE].image = ImageId(SPR_G2_TOOLBAR_MUTE, FilterPaletteID::PaletteNull);
+                widgets[WIDX_MUTE].image = ImageId(SPR_G2_TOOLBAR_MUTE, FilterPaletteID::paletteNull);
             else
-                widgets[WIDX_MUTE].image = ImageId(SPR_G2_TOOLBAR_UNMUTE, FilterPaletteID::PaletteNull);
+                widgets[WIDX_MUTE].image = ImageId(SPR_G2_TOOLBAR_UNMUTE, FilterPaletteID::paletteNull);
         }
 
         void ApplyFootpathPressed()

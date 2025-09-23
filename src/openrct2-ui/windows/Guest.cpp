@@ -1363,7 +1363,7 @@ namespace OpenRCT2::Ui::Windows
                 StringId stringId = STR_BLACK_STRING;
                 if (listIndex == selectedListItem)
                 {
-                    GfxFilterRect(rt, { 0, y, 800, y + 9 }, FilterPaletteID::PaletteDarken1);
+                    GfxFilterRect(rt, { 0, y, 800, y + 9 }, FilterPaletteID::paletteDarken1);
                     stringId = STR_WINDOW_COLOUR_2_STRINGID;
                 }
 

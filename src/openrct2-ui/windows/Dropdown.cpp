@@ -142,7 +142,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         // Darken the cell's background slightly when highlighted
                         const ScreenCoordsXY rightBottom = screenCoords + ScreenCoordsXY{ ItemWidth - 1, ItemHeight - 1 };
-                        GfxFilterRect(rt, { screenCoords, rightBottom }, FilterPaletteID::PaletteDarken3);
+                        GfxFilterRect(rt, { screenCoords, rightBottom }, FilterPaletteID::paletteDarken3);
                     }
 
                     const auto& item = gDropdown.items[i];

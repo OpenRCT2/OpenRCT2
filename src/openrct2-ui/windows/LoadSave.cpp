@@ -1100,7 +1100,7 @@ namespace OpenRCT2::Ui::Windows
                 if (i == selectedListItem)
                 {
                     stringId = STR_WINDOW_COLOUR_2_STRINGID;
-                    GfxFilterRect(rt, { 0, y, listWidth, y + kScrollableRowHeight }, FilterPaletteID::PaletteDarken1);
+                    GfxFilterRect(rt, { 0, y, listWidth, y + kScrollableRowHeight }, FilterPaletteID::paletteDarken1);
                 }
                 // display a marker next to the currently loaded game file
                 if (_listItems[i].loaded)

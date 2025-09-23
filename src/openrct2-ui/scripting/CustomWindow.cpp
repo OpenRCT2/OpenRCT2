@@ -906,7 +906,7 @@ namespace OpenRCT2::Ui::Windows
                 widget.right = widget.left + 30;
                 widget.top = 17;
                 widget.bottom = kTabBarHeight;
-                widget.image = ImageId(SPR_TAB, FilterPaletteID::PaletteNull);
+                widget.image = ImageId(SPR_TAB, FilterPaletteID::paletteNull);
                 widget.tooltip = kStringIdNone;
                 widgetList.push_back(widget);
                 _info.WidgetIndexMap.push_back(std::numeric_limits<size_t>::max());
