@@ -47,8 +47,8 @@ namespace OpenRCT2::CommandLine::Sprite
             return -1;
         }
 
-        const auto* imageTableStart = metaObject->GetImageTable().GetImages();
-        const uint32_t maxIndex = metaObject->GetNumImages();
+        const auto& imageTable = metaObject->GetEmbeddedImages();
+        const uint32_t maxIndex = imageTable.GetCount();
         const int32_t numbers = static_cast<int32_t>(std::floor(std::log10(maxIndex) + 1));
 
         std::ostringstream oss; // TODO: Remove when C++20 is enabled and std::format can be used
@@ -57,7 +57,7 @@ namespace OpenRCT2::CommandLine::Sprite
             oss << std::setw(numbers) << std::setfill('0') << spriteIndex << ".png";
             auto path = Path::Combine(outputPath, PopStr(oss));
 
-            const auto& g1 = imageTableStart[spriteIndex];
+            const auto& g1 = *imageTable.GetImage(spriteIndex);
             if (g1.width == 0 || g1.height == 0)
             {
                 fprintf(stdout, "\"\"");
