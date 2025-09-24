@@ -491,7 +491,7 @@ namespace OpenRCT2
             {
                 StartPlayback(file);
             }
-            catch (std::invalid_argument& e)
+            catch (std::invalid_argument&)
             {
                 return false;
             }
