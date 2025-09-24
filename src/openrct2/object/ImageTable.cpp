@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -42,11 +42,18 @@ namespace OpenRCT2
         Unload();
     }
 
-    void ImageTable::ReadFromJson(IReadObjectContext& context, const json_t& root)
+    bool ImageTable::ReadFromJson(IReadObjectContext& context, const json_t& root)
     {
+        bool usesFallbackImages = false;
         if (root.contains("images"))
         {
             json_t jImages = root["images"];
+            if (!IsCsgLoaded() && root.contains("noCsgImages"))
+            {
+                jImages = root["noCsgImages"];
+                usesFallbackImages = true;
+            }
+            
             if (jImages.is_string())
             {
                 ReadEntryFromJson(context, jImages);
@@ -59,6 +66,8 @@ namespace OpenRCT2
                 }
             }
         }
+        
+        return usesFallbackImages;
     }
 
     void ImageTable::ReadEntryFromJson(IReadObjectContext& context, const json_t& jImage)

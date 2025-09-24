@@ -194,7 +194,7 @@ namespace OpenRCT2
     void Object::PopulateTablesFromJson(IReadObjectContext* context, json_t& root)
     {
         _stringTable.ReadJson(root);
-        _imageTable->ReadFromJson(*context, root);
+        _usesFallbackImages = _imageTable->ReadFromJson(*context, root);
 
         // HACK this should not be necessary, but required for StationObject and TerrainSurfaceObject which
         //      call GetNumImages()
