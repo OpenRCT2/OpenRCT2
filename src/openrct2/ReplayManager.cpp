@@ -608,7 +608,7 @@ namespace OpenRCT2
             {
                 if (!fs::exists(filePath))
                 {
-                    throw std::invalid_argument(FormatStringID(STR_REPLAY_WITH_PATH_NOT_FOUND, file));
+                    throw std::invalid_argument(FormatStringID(STR_REPLAY_WITH_PATH_NOT_FOUND, file.c_str()));
                 }
             }
             else if (filePath.is_relative())
@@ -623,7 +623,7 @@ namespace OpenRCT2
             }
 
             if (!fs::is_regular_file(filePath))
-                throw std::invalid_argument(FormatStringID(STR_REPLAY_FILE_NOT_FOUND, file));
+                throw std::invalid_argument(FormatStringID(STR_REPLAY_FILE_NOT_FOUND, file.c_str()));
 
             FileStream fileStream(filePath, FileMode::open);
             MemoryStream stream = DecompressFile(fileStream);
