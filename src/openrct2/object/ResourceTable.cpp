@@ -50,10 +50,11 @@ namespace OpenRCT2
         SourceInfo info;
         auto base = source;
         auto rangeStart = source.find('[');
-        if (rangeStart != std::string::npos)
+        auto rangeEnd = source.find(']');
+        if (rangeStart != std::string::npos&& rangeEnd != std::string::npos)
         {
             base = source.substr(0, rangeStart);
-            info.SourceRange = ParseRange(source.substr(rangeStart));
+            info.SourceRange = ParseRange(source.substr(rangeStart, rangeEnd - rangeStart + 1));
         }
 
         auto fileName = base;
