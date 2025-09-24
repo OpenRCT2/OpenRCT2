@@ -93,7 +93,7 @@ TEST_F(CommandLineTests, command_line_for_sprite_failed_build)
     // now use bad manifest and make sure output file is not edited
     std::string badManifestFilePath = BadManifestFilePath();
     buildCmd[2] = badManifestFilePath.c_str();
-    result = build(buildCmd, 3);
+    result = build(buildCmd, 3, ImportMode::Default);
     // check the command failed
     ASSERT_EQ(result, -1);
     // validate the target file was unchanged
