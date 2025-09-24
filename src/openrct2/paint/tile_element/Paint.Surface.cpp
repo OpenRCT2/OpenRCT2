@@ -299,7 +299,7 @@ static ImageId GetTunnelImage(const TerrainEdgeObject* edgeObject, TunnelType ty
     bool hasDoors = false;
     if (edgeObject != nullptr)
     {
-        hasDoors = edgeObject->HasDoors /* && !edgeObject->UsesFallbackImages()*/;
+        hasDoors = edgeObject->HasDoors && !edgeObject->UsesFallbackImages();
     }
 
     if (!hasDoors && EnumValue(type) >= kRegularTunnelTypeCount)

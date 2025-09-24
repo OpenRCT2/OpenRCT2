@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -52,7 +52,7 @@ namespace OpenRCT2
         /**
          * Read the entries from the given JSON into the table, but do not load anything.
          */
-        void ReadFromJson(IReadObjectContext& context, const json_t& root);
+        bool ReadFromJson(IReadObjectContext& context, const json_t& root);
 
         /**
          * Load all available entries from the given table.
