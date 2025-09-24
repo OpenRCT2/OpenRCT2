@@ -748,7 +748,7 @@ namespace OpenRCT2::Ui::Windows
                     if (highlighted)
                     {
                         auto bottom = screenCoords.y + (kScrollableRowHeight - 1);
-                        GfxFilterRect(rt, { 0, screenCoords.y, width, bottom }, FilterPaletteID::PaletteDarken1);
+                        GfxFilterRect(rt, { 0, screenCoords.y, width, bottom }, FilterPaletteID::paletteDarken1);
                     }
 
                     // Draw checkmark

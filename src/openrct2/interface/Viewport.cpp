@@ -1030,7 +1030,7 @@ namespace OpenRCT2
     static void ViewportPaintWeatherGloom(RenderTarget& rt)
     {
         auto paletteId = ClimateGetWeatherGloomPaletteId(getGameState().weatherCurrent);
-        if (paletteId != FilterPaletteID::PaletteNull)
+        if (paletteId != FilterPaletteID::paletteNull)
         {
             auto x = rt.x;
             auto y = rt.y;

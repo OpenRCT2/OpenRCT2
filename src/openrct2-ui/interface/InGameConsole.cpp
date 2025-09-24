@@ -310,12 +310,12 @@ void InGameConsole::Draw(RenderTarget& rt) const
     Invalidate();
 
     // Give console area a translucent effect.
-    GfxFilterRect(rt, { _consoleTopLeft, _consoleBottomRight }, FilterPaletteID::Palette51);
+    GfxFilterRect(rt, { _consoleTopLeft, _consoleBottomRight }, FilterPaletteID::palette51);
 
     // Make input area more opaque.
     GfxFilterRect(
         rt, { { _consoleTopLeft.x, _consoleBottomRight.y - lineHeight - 10 }, _consoleBottomRight - ScreenCoordsXY{ 0, 1 } },
-        FilterPaletteID::Palette51);
+        FilterPaletteID::palette51);
 
     // Paint background colour.
     auto backgroundColour = ThemeGetColour(WindowClass::console, 0);

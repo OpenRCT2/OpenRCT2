@@ -108,20 +108,20 @@ namespace OpenRCT2::Ui::Windows
             int32_t bottom = windowPos.y + height - 1;
 
             // Background
-            GfxFilterRect(rt, { { left + 1, top + 1 }, { right - 1, bottom - 1 } }, FilterPaletteID::Palette45);
-            GfxFilterRect(rt, { { left + 1, top + 1 }, { right - 1, bottom - 1 } }, FilterPaletteID::PaletteGlassLightOrange);
+            GfxFilterRect(rt, { { left + 1, top + 1 }, { right - 1, bottom - 1 } }, FilterPaletteID::palette45);
+            GfxFilterRect(rt, { { left + 1, top + 1 }, { right - 1, bottom - 1 } }, FilterPaletteID::paletteGlassLightOrange);
 
             // Sides
-            GfxFilterRect(rt, { { left + 0, top + 2 }, { left + 0, bottom - 2 } }, FilterPaletteID::PaletteDarken3);
-            GfxFilterRect(rt, { { right + 0, top + 2 }, { right + 0, bottom - 2 } }, FilterPaletteID::PaletteDarken3);
-            GfxFilterRect(rt, { { left + 2, bottom + 0 }, { right - 2, bottom + 0 } }, FilterPaletteID::PaletteDarken3);
-            GfxFilterRect(rt, { { left + 2, top + 0 }, { right - 2, top + 0 } }, FilterPaletteID::PaletteDarken3);
+            GfxFilterRect(rt, { { left + 0, top + 2 }, { left + 0, bottom - 2 } }, FilterPaletteID::paletteDarken3);
+            GfxFilterRect(rt, { { right + 0, top + 2 }, { right + 0, bottom - 2 } }, FilterPaletteID::paletteDarken3);
+            GfxFilterRect(rt, { { left + 2, bottom + 0 }, { right - 2, bottom + 0 } }, FilterPaletteID::paletteDarken3);
+            GfxFilterRect(rt, { { left + 2, top + 0 }, { right - 2, top + 0 } }, FilterPaletteID::paletteDarken3);
 
             // Corners
-            GfxFilterPixel(rt, { left + 1, top + 1 }, FilterPaletteID::PaletteDarken3);
-            GfxFilterPixel(rt, { right - 1, top + 1 }, FilterPaletteID::PaletteDarken3);
-            GfxFilterPixel(rt, { left + 1, bottom - 1 }, FilterPaletteID::PaletteDarken3);
-            GfxFilterPixel(rt, { right - 1, bottom - 1 }, FilterPaletteID::PaletteDarken3);
+            GfxFilterPixel(rt, { left + 1, top + 1 }, FilterPaletteID::paletteDarken3);
+            GfxFilterPixel(rt, { right - 1, top + 1 }, FilterPaletteID::paletteDarken3);
+            GfxFilterPixel(rt, { left + 1, bottom - 1 }, FilterPaletteID::paletteDarken3);
+            GfxFilterPixel(rt, { right - 1, bottom - 1 }, FilterPaletteID::paletteDarken3);
 
             // Text
             left = windowPos.x + ((width + 1) / 2) - 1;
