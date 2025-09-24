@@ -118,7 +118,8 @@ uint64_t ShopItemsGetAllContainers()
 
 money64 ShopItemGetCommonPrice(Ride* forRide, const ShopItem shopItem)
 {
-    for (const auto& ride : GetRideManager())
+    auto& gameState = getGameState();
+    for (const auto& ride : RideManager(gameState))
     {
         if (&ride != forRide)
         {

@@ -11,6 +11,8 @@
 
 #include "GameAction.h"
 
+enum class MapSelectType : uint8_t;
+
 namespace OpenRCT2::GameActions
 {
     class LandRaiseAction final : public GameActionBase<GameCommand::RaiseLand>
@@ -18,21 +20,21 @@ namespace OpenRCT2::GameActions
     private:
         CoordsXY _coords;
         MapRange _range;
-        uint8_t _selectionType{};
+        MapSelectType _selectionType{};
 
     public:
         LandRaiseAction() = default;
-        LandRaiseAction(const CoordsXY& coords, MapRange range, uint8_t selectionType);
+        LandRaiseAction(const CoordsXY& coords, MapRange range, MapSelectType selectionType);
 
         void AcceptParameters(GameActionParameterVisitor&) final;
 
         uint16_t GetActionFlags() const override;
 
         void Serialise(DataSerialiser& stream) override;
-        Result Query() const override;
-        Result Execute() const override;
+        Result Query(GameState_t& gameState) const override;
+        Result Execute(GameState_t& gameState) const override;
 
     private:
-        Result QueryExecute(bool isExecuting) const;
+        Result QueryExecute(GameState_t& gameState, bool isExecuting) const;
     };
 } // namespace OpenRCT2::GameActions

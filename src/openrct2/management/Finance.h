@@ -51,9 +51,4 @@ void FinanceUpdateDailyProfit();
 void FinanceShiftExpenditureTable();
 void FinanceResetCashToInitial();
 
-money64 FinanceGetInitialCash();
-money64 FinanceGetCurrentLoan();
-money64 FinanceGetMaximumLoan();
-money64 FinanceGetCurrentCash();
-
 money64 FinanceGetLastMonthShopProfit();

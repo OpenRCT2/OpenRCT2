@@ -9,6 +9,8 @@
 
 #pragma once
 
+#include "../../world/Location.hpp"
+
 #include <cstdint>
 
 namespace OpenRCT2
@@ -39,4 +41,15 @@ namespace OpenRCT2
     constexpr uint8_t kTileSlopeAboveTrackOrScenery = 0b00100000;
     // Special value, used when raising/lowering land corners/tiles
     constexpr uint8_t kTileSlopeRaiseOrLowerBaseHeight = 0b00100000;
+
+    struct SlopeRelativeCornerHeights
+    {
+        uint8_t top;
+        uint8_t right;
+        uint8_t bottom;
+        uint8_t left;
+    };
+
+    SlopeRelativeCornerHeights GetSlopeRelativeCornerHeights(const uint8_t slope);
+    TileCornersZ GetSlopeCornerHeights(const int32_t height, const uint8_t slope);
 } // namespace OpenRCT2

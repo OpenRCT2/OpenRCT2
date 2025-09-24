@@ -47,7 +47,7 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_loc) << DS_TAG(_trackType) << DS_TAG(_newColourScheme);
     }
 
-    Result RideSetColourSchemeAction::Query() const
+    Result RideSetColourSchemeAction::Query(GameState_t& gameState) const
     {
         if (!LocationValid(_loc))
         {
@@ -70,7 +70,7 @@ namespace OpenRCT2::GameActions
         return Result();
     }
 
-    Result RideSetColourSchemeAction::Execute() const
+    Result RideSetColourSchemeAction::Execute(GameState_t& gameState) const
     {
         Result res = Result();
         res.Expenditure = ExpenditureType::rideConstruction;

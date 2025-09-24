@@ -45,7 +45,7 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_year) << DS_TAG(_month) << DS_TAG(_day);
     }
 
-    Result ParkSetDateAction::Query() const
+    Result ParkSetDateAction::Query(GameState_t& gameState) const
     {
         if (_year < 0 || _year >= kMaxYear)
         {
@@ -66,9 +66,8 @@ namespace OpenRCT2::GameActions
         return Result();
     }
 
-    Result ParkSetDateAction::Execute() const
+    Result ParkSetDateAction::Execute(GameState_t& gameState) const
     {
-        auto& gameState = getGameState();
         gameState.date = Date::FromYMD(_year, _month, _day);
         return Result();
     }

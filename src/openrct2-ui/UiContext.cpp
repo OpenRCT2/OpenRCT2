@@ -154,7 +154,7 @@ public:
 
     void Draw(RenderTarget& rt) override
     {
-        auto bgColour = ThemeGetColour(WindowClass::Chat, 0);
+        auto bgColour = ThemeGetColour(WindowClass::chat, 0);
         ChatDraw(rt, bgColour);
         _inGameConsole.Draw(rt);
     }
@@ -320,7 +320,7 @@ public:
         int32_t top = rt.y;
         int32_t bottom = top + rt.height;
 
-        for (auto& w : g_window_list)
+        for (auto& w : gWindowList)
         {
             DrawWeatherWindow(rt, weatherDrawer, w.get(), left, right, top, bottom, drawFunc);
         }
@@ -958,7 +958,7 @@ private:
         auto itStart = WindowGetIterator(original_w);
         for (auto it = std::next(itStart);; it++)
         {
-            if (it == g_window_list.end())
+            if (it == gWindowList.end())
             {
                 // Loop ended, draw weather for original_w
                 auto vp = original_w->viewport;
@@ -980,7 +980,7 @@ private:
 
             w = it->get();
 
-            if (w->flags & WF_DEAD)
+            if (w->flags.has(WindowFlag::dead))
             {
                 continue;
             }
@@ -990,7 +990,7 @@ private:
                 continue;
             }
 
-            if (RCT_WINDOW_RIGHT(w) <= left || RCT_WINDOW_BOTTOM(w) <= top)
+            if (w->right() <= left || w->bottom() <= top)
             {
                 continue;
             }
@@ -1007,12 +1007,12 @@ private:
             return;
         }
 
-        int16_t w_right = RCT_WINDOW_RIGHT(w);
-        if (right > w_right)
+        auto wRight = w->right();
+        if (right > wRight)
         {
-            DrawWeatherWindow(rt, weatherDrawer, original_w, left, w_right, top, bottom, drawFunc);
+            DrawWeatherWindow(rt, weatherDrawer, original_w, left, wRight, top, bottom, drawFunc);
 
-            left = w_right;
+            left = wRight;
             DrawWeatherWindow(rt, weatherDrawer, original_w, left, right, top, bottom, drawFunc);
             return;
         }
@@ -1026,12 +1026,12 @@ private:
             return;
         }
 
-        int16_t w_bottom = RCT_WINDOW_BOTTOM(w);
-        if (bottom > w_bottom)
+        auto wBottom = w->bottom();
+        if (bottom > wBottom)
         {
-            DrawWeatherWindow(rt, weatherDrawer, original_w, left, right, top, w_bottom, drawFunc);
+            DrawWeatherWindow(rt, weatherDrawer, original_w, left, right, top, wBottom, drawFunc);
 
-            top = w_bottom;
+            top = wBottom;
             DrawWeatherWindow(rt, weatherDrawer, original_w, left, right, top, bottom, drawFunc);
             return;
         }

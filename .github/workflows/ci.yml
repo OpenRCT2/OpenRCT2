@@ -129,13 +129,17 @@ jobs:
   check-code-formatting:
     name: Check code formatting
     runs-on: ubuntu-latest
-    container: openrct2/openrct2-build:23-format
+    container: openrct2/openrct2-build:24-format
+    permissions:
+      pull-requests: write
+      contents: read
     defaults:
       run:
         shell: sh
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - run: git config --global --add safe.directory $PWD
       - name: Run clang-format
         run: scripts/check-code-formatting
   check-changelog-formatting:
@@ -315,7 +319,7 @@ jobs:
     name: Windows (${{ matrix.platform_name }}) using mingw
     runs-on: ubuntu-latest
     needs: [check-code-formatting, build_variables]
-    container: openrct2/openrct2-build:23-mingw
+    container: openrct2/openrct2-build:24-mingw
     strategy:
       fail-fast: false
       matrix:
@@ -453,18 +457,18 @@ jobs:
           - platform: x86_64
             distro: Ubuntu
             release: noble
-            image: openrct2/openrct2-build:23-noble
-            build_flags: -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g -gz -fno-var-tracking-assignments"
+            image: openrct2/openrct2-build:24-noble
+            build_flags: -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g1 -gz -fno-var-tracking-assignments"
           - platform: x86_64
             distro: Debian
             release: bookworm
-            image: openrct2/openrct2-build:23-bookworm
-            build_flags: -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g -gz -fno-var-tracking-assignments" -DWITH_TESTS=off
+            image: openrct2/openrct2-build:24-bookworm
+            build_flags: -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g1 -gz -fno-var-tracking-assignments" -DWITH_TESTS=off
           - platform: x86_64
             distro: Debian
             release: trixie
-            image: openrct2/openrct2-build:23-trixie
-            build_flags: -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g -gz -fno-var-tracking-assignments" -DWITH_TESTS=off
+            image: openrct2/openrct2-build:24-trixie
+            build_flags: -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g1 -gz -fno-var-tracking-assignments" -DWITH_TESTS=off
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -478,8 +482,7 @@ jobs:
         uses: ammaraskar/gcc-problem-matcher@master
       - name: Build OpenRCT2
         run: |
-          . scripts/setenv -q && build -DWITH_TESTS=on -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON -DPORTABLE=ON ${{ matrix.build_flags }}
-          strip bin/install/usr/bin/libopenrct2.so
+          . scripts/setenv -q && build -DWITH_TESTS=on -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-g1 -gz -fno-var-tracking-assignments" -DBUILD_SHARED_LIBS=ON -DPORTABLE=ON ${{ matrix.build_flags }}
       - name: Build artifacts
         run: . scripts/setenv -q && build-portable artifacts/OpenRCT2-${{ needs.build_variables.outputs.name }}-${{ runner.os }}-${{ matrix.release }}-${{ matrix.platform }}.tar.gz bin/install/usr
       - name: Upload artifacts (CI)
@@ -494,7 +497,7 @@ jobs:
     name: Ubuntu Linux (AppImage, x86_64)
     runs-on: ubuntu-latest
     needs: [check-code-formatting, build_variables]
-    container: openrct2/openrct2-build:23-jammy
+    container: openrct2/openrct2-build:24-jammy
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -507,10 +510,10 @@ jobs:
       - name: Build OpenRCT2
         run: |
           . scripts/setenv -q && build -DCMAKE_CXX_COMPILER=clang++-20 -DCMAKE_BUILD_TYPE=Release -DAPPIMAGE=ON -DOPENRCT2_USE_CCACHE=on
-          strip bin/install/usr/bin/openrct2
       - name: Build AppImage
         env:
           APPIMAGE_FILE_NAME: OpenRCT2-${{ needs.build_variables.outputs.name }}-linux-x86_64.AppImage
+          NO_STRIP: true # https://github.com/linuxdeploy/linuxdeploy/blob/d2557d616749c325a61058049e41a2d35ffce924/src/core/appdir.cpp#L248
         run: . scripts/setenv -q && build-appimage
       - name: Upload artifacts (CI)
         uses: actions/upload-artifact@v4
@@ -549,7 +552,7 @@ jobs:
     name: Ubuntu Linux (noble, debug, [http, network, flac, vorbis OpenGL] disabled) using clang
     runs-on: ubuntu-latest
     needs: [check-code-formatting, build_variables]
-    container: openrct2/openrct2-build:23-noble
+    container: openrct2/openrct2-build:24-noble
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -565,7 +568,7 @@ jobs:
     name: Ubuntu Linux (debug) using clang, coverage enabled
     runs-on: ubuntu-latest
     needs: [check-code-formatting, build_variables]
-    container: openrct2/openrct2-build:23-noble
+    container: openrct2/openrct2-build:24-noble
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -606,7 +609,7 @@ jobs:
     name: Android
     runs-on: ubuntu-latest
     needs: [check-code-formatting, build_variables]
-    container: openrct2/openrct2-build:23-android
+    container: openrct2/openrct2-build:24-android
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -639,7 +642,7 @@ jobs:
     name: Emscripten
     runs-on: ubuntu-latest
     needs: [check-code-formatting, build_variables]
-    container: openrct2/openrct2-build:23-emscripten
+    container: openrct2/openrct2-build:24-emscripten
     steps:
       - name: Checkout
         uses: actions/checkout@v4

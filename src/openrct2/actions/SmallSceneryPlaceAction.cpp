@@ -78,7 +78,7 @@ namespace OpenRCT2::GameActions
                << DS_TAG(_secondaryColour) << DS_TAG(_tertiaryColour);
     }
 
-    Result SmallSceneryPlaceAction::Query() const
+    Result SmallSceneryPlaceAction::Query(GameState_t& gameState) const
     {
         bool isOnWater = false;
         bool supportsRequired = false;
@@ -170,7 +170,6 @@ namespace OpenRCT2::GameActions
             targetHeight = surfaceHeight;
         }
 
-        auto& gameState = getGameState();
         if (gLegacyScene != LegacyScene::scenarioEditor && !gameState.cheats.sandboxMode
             && !MapIsLocationOwned({ _loc.x, _loc.y, targetHeight }))
         {
@@ -268,7 +267,8 @@ namespace OpenRCT2::GameActions
         QuarterTile quarterTile = QuarterTile{ collisionQuadrants, supports }.Rotate(quadRotation);
         const auto isTree = sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_IS_TREE);
         auto canBuild = MapCanConstructWithClearAt(
-            { _loc, zLow, zHigh }, &MapPlaceSceneryClearFunc, quarterTile, GetFlags(), CreateCrossingMode::none, isTree);
+            { _loc, zLow, zHigh }, &MapPlaceSceneryClearFunc, quarterTile, GetFlags(), kTileSlopeFlat, CreateCrossingMode::none,
+            isTree);
         if (canBuild.Error != Status::Ok)
         {
             canBuild.ErrorTitle = STR_CANT_POSITION_THIS_HERE;
@@ -285,7 +285,7 @@ namespace OpenRCT2::GameActions
         return res;
     }
 
-    Result SmallSceneryPlaceAction::Execute() const
+    Result SmallSceneryPlaceAction::Execute(GameState_t& gameState) const
     {
         bool supportsRequired = false;
         if (_loc.z != 0)
@@ -406,7 +406,7 @@ namespace OpenRCT2::GameActions
         QuarterTile quarterTile = QuarterTile{ collisionQuadrants, supports }.Rotate(quadRotation);
         const auto isTree = sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_IS_TREE);
         auto canBuild = MapCanConstructWithClearAt(
-            { _loc, zLow, zHigh }, &MapPlaceSceneryClearFunc, quarterTile, GetFlags() | GAME_COMMAND_FLAG_APPLY,
+            { _loc, zLow, zHigh }, &MapPlaceSceneryClearFunc, quarterTile, GetFlags() | GAME_COMMAND_FLAG_APPLY, kTileSlopeFlat,
             CreateCrossingMode::none, isTree);
         if (canBuild.Error != Status::Ok)
         {

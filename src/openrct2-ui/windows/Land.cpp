@@ -87,11 +87,11 @@ namespace OpenRCT2::Ui::Windows
         }
 
     public:
-        void OnOpen() override
+        void onOpen() override
         {
-            SetWidgets(window_land_widgets);
+            setWidgets(window_land_widgets);
 
-            hold_down_widgets = (1uLL << WIDX_DECREMENT) | (1uLL << WIDX_INCREMENT);
+            holdDownWidgets = (1uLL << WIDX_DECREMENT) | (1uLL << WIDX_INCREMENT);
             WindowInitScrollWidgets(*this);
             WindowPushOthersBelow(*this);
 
@@ -103,29 +103,29 @@ namespace OpenRCT2::Ui::Windows
             _selectedWallTexture = LandTool::GetEdgeStyleFromDropdownIndex(0);
         }
 
-        void OnClose() override
+        void onClose() override
         {
             // If the tool wasn't changed, turn tool off
-            if (isToolActive(WindowClass::Land, WIDX_BACKGROUND))
+            if (isToolActive(WindowClass::land, WIDX_BACKGROUND))
                 ToolCancel();
         }
 
-        void OnMouseUp(WidgetIndex widgetIndex) override
+        void onMouseUp(WidgetIndex widgetIndex) override
         {
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
-                    Close();
+                    close();
                     break;
                 case WIDX_MOUNTAINMODE:
                     _landToolMountainMode ^= 1;
                     _landToolPaintMode = 0;
-                    Invalidate();
+                    invalidate();
                     break;
                 case WIDX_PAINTMODE:
                     _landToolMountainMode = 0;
                     _landToolPaintMode ^= 1;
-                    Invalidate();
+                    invalidate();
                     break;
                 case WIDX_PREVIEW:
                     InputSize();
@@ -133,7 +133,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnMouseDown(WidgetIndex widgetIndex) override
+        void onMouseDown(WidgetIndex widgetIndex) override
         {
             Widget* widget = &widgets[widgetIndex];
             switch (widgetIndex)
@@ -152,19 +152,19 @@ namespace OpenRCT2::Ui::Windows
                     gLandToolSize = std::max<uint16_t>(kLandToolMinimumSize, gLandToolSize - 1);
 
                     // Invalidate the window
-                    Invalidate();
+                    invalidate();
                     break;
                 case WIDX_INCREMENT:
                     // Increment land tool size
                     gLandToolSize = std::min<uint16_t>(kLandToolMaximumSize, gLandToolSize + 1);
 
                     // Invalidate the window
-                    Invalidate();
+                    invalidate();
                     break;
             }
         }
 
-        void OnDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex) override
+        void onDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex) override
         {
             int32_t type;
 
@@ -187,7 +187,7 @@ namespace OpenRCT2::Ui::Windows
                         gLandToolTerrainSurface = type;
                         _selectedFloorTexture = type;
                     }
-                    Invalidate();
+                    invalidate();
                     break;
                 case WIDX_WALL:
                     if (dropdownIndex == -1)
@@ -205,12 +205,12 @@ namespace OpenRCT2::Ui::Windows
                         gLandToolTerrainEdge = type;
                         _selectedWallTexture = type;
                     }
-                    Invalidate();
+                    invalidate();
                     break;
             }
         }
 
-        void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override
+        void onTextInput(WidgetIndex widgetIndex, std::string_view text) override
         {
             if (widgetIndex != WIDX_PREVIEW)
                 return;
@@ -224,41 +224,41 @@ namespace OpenRCT2::Ui::Windows
                 size = std::min<uint16_t>(kLandToolMaximumSize, size);
                 gLandToolSize = size;
 
-                Invalidate();
+                invalidate();
             }
         }
 
-        void OnUpdate() override
+        void onUpdate() override
         {
-            if (!isToolActive(WindowClass::Land, WIDX_BACKGROUND))
-                Close();
+            if (!isToolActive(WindowClass::land, WIDX_BACKGROUND))
+                close();
         }
 
-        void OnPrepareDraw() override
+        void onPrepareDraw() override
         {
-            pressed_widgets = 0;
-            SetWidgetPressed(WIDX_PREVIEW, true);
+            pressedWidgets = 0;
+            setWidgetPressed(WIDX_PREVIEW, true);
             if (gLandToolTerrainSurface != kObjectEntryIndexNull)
-                SetWidgetPressed(WIDX_FLOOR, true);
+                setWidgetPressed(WIDX_FLOOR, true);
             if (gLandToolTerrainEdge != kObjectEntryIndexNull)
-                SetWidgetPressed(WIDX_WALL, true);
+                setWidgetPressed(WIDX_WALL, true);
             if (_landToolMountainMode)
-                SetWidgetPressed(WIDX_MOUNTAINMODE, true);
+                setWidgetPressed(WIDX_MOUNTAINMODE, true);
             if (_landToolPaintMode)
-                SetWidgetPressed(WIDX_PAINTMODE, true);
+                setWidgetPressed(WIDX_PAINTMODE, true);
 
             // Update the preview image (for tool sizes up to 7)
             widgets[WIDX_PREVIEW].image = ImageId(LandTool::SizeToSpriteIndex(gLandToolSize));
         }
 
-        void OnDraw(RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
             ScreenCoordsXY screenCoords;
             int32_t numTiles;
             money64 price;
             Widget* previewWidget = &widgets[WIDX_PREVIEW];
 
-            DrawWidgets(rt);
+            drawWidgets(rt);
             DrawDropdownButtons(rt);
 
             // Draw number for tool sizes bigger than 7
@@ -338,22 +338,24 @@ namespace OpenRCT2::Ui::Windows
             centreX += 16;
             centreY += 16;
 
+            auto& gameState = getGameState();
+
             if (_landToolMountainMode)
             {
                 auto landSmoothAction = GameActions::LandSmoothAction(
                     { centreX, centreY },
                     { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
                     gMapSelectType, false);
-                auto res = (flag & GAME_COMMAND_FLAG_APPLY) ? GameActions::Execute(&landSmoothAction)
-                                                            : GameActions::Query(&landSmoothAction);
+                auto res = (flag & GAME_COMMAND_FLAG_APPLY) ? GameActions::Execute(&landSmoothAction, gameState)
+                                                            : GameActions::Query(&landSmoothAction, gameState);
                 return res.Error == GameActions::Status::Ok ? res.Cost : kMoney64Undefined;
             }
 
             auto landRaiseAction = GameActions::LandRaiseAction(
                 { centreX, centreY },
                 { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y }, gMapSelectType);
-            auto res = (flag & GAME_COMMAND_FLAG_APPLY) ? GameActions::Execute(&landRaiseAction)
-                                                        : GameActions::Query(&landRaiseAction);
+            auto res = (flag & GAME_COMMAND_FLAG_APPLY) ? GameActions::Execute(&landRaiseAction, gameState)
+                                                        : GameActions::Query(&landRaiseAction, gameState);
 
             return res.Error == GameActions::Status::Ok ? res.Cost : kMoney64Undefined;
         }
@@ -369,22 +371,24 @@ namespace OpenRCT2::Ui::Windows
             centreX += 16;
             centreY += 16;
 
+            auto& gameState = getGameState();
+
             if (_landToolMountainMode)
             {
                 auto landSmoothAction = GameActions::LandSmoothAction(
                     { centreX, centreY },
                     { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
                     gMapSelectType, true);
-                auto res = (flag & GAME_COMMAND_FLAG_APPLY) ? GameActions::Execute(&landSmoothAction)
-                                                            : GameActions::Query(&landSmoothAction);
+                auto res = (flag & GAME_COMMAND_FLAG_APPLY) ? GameActions::Execute(&landSmoothAction, gameState)
+                                                            : GameActions::Query(&landSmoothAction, gameState);
                 return res.Error == GameActions::Status::Ok ? res.Cost : kMoney64Undefined;
             }
 
             auto landLowerAction = GameActions::LandLowerAction(
                 { centreX, centreY },
                 { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y }, gMapSelectType);
-            auto res = (flag & GAME_COMMAND_FLAG_APPLY) ? GameActions::Execute(&landLowerAction)
-                                                        : GameActions::Query(&landLowerAction);
+            auto res = (flag & GAME_COMMAND_FLAG_APPLY) ? GameActions::Execute(&landLowerAction, gameState)
+                                                        : GameActions::Query(&landLowerAction, gameState);
 
             return res.Error == GameActions::Status::Ok ? res.Cost : kMoney64Undefined;
         }
@@ -441,7 +445,7 @@ namespace OpenRCT2::Ui::Windows
             uint8_t state_changed = 0;
 
             MapInvalidateSelectionRect();
-            gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
+            gMapSelectFlags.unset(MapSelectFlag::enable);
 
             auto mapTile = ScreenGetMapXY(screenPos, nullptr);
 
@@ -450,15 +454,15 @@ namespace OpenRCT2::Ui::Windows
                 return state_changed;
             }
 
-            if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
+            if (!(gMapSelectFlags.has(MapSelectFlag::enable)))
             {
-                gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
+                gMapSelectFlags.set(MapSelectFlag::enable);
                 state_changed++;
             }
 
-            if (gMapSelectType != MAP_SELECT_TYPE_FULL)
+            if (gMapSelectType != MapSelectType::full)
             {
-                gMapSelectType = MAP_SELECT_TYPE_FULL;
+                gMapSelectType = MapSelectType::full;
                 state_changed++;
             }
 
@@ -502,7 +506,7 @@ namespace OpenRCT2::Ui::Windows
         }
 
     public:
-        void OnToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
+        void onToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
             switch (widgetIndex)
             {
@@ -515,18 +519,18 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
+        void onToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
             switch (widgetIndex)
             {
                 case WIDX_BACKGROUND:
-                    if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE)
+                    if (gMapSelectFlags.has(MapSelectFlag::enable))
                     {
                         auto surfaceSetStyleAction = GameActions::SurfaceSetStyleAction(
                             { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
                             gLandToolTerrainSurface, gLandToolTerrainEdge);
 
-                        GameActions::Execute(&surfaceSetStyleAction);
+                        GameActions::Execute(&surfaceSetStyleAction, getGameState());
 
                         gCurrentToolId = Tool::upDownArrow;
                     }
@@ -538,7 +542,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnToolDrag(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
+        void onToolDrag(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
             switch (widgetIndex)
             {
@@ -547,13 +551,13 @@ namespace OpenRCT2::Ui::Windows
                     // Custom setting to only change land style instead of raising or lowering land
                     if (_landToolPaintMode)
                     {
-                        if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE)
+                        if (gMapSelectFlags.has(MapSelectFlag::enable))
                         {
                             auto surfaceSetStyleAction = GameActions::SurfaceSetStyleAction(
                                 { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
                                 gLandToolTerrainSurface, gLandToolTerrainEdge);
 
-                            GameActions::Execute(&surfaceSetStyleAction);
+                            GameActions::Execute(&surfaceSetStyleAction, getGameState());
 
                             // The tool is set to 12 here instead of 3 so that the dragging cursor is not the elevation change
                             // cursor
@@ -572,20 +576,20 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnToolUp(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
+        void onToolUp(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
             _landToolBlocked = false;
             switch (widgetIndex)
             {
                 case WIDX_BACKGROUND:
                     MapInvalidateSelectionRect();
-                    gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
+                    gMapSelectFlags.unset(MapSelectFlag::enable);
                     gCurrentToolId = Tool::digDown;
                     break;
             }
         }
 
-        void OnToolAbort(WidgetIndex widgetIndex) override
+        void onToolAbort(WidgetIndex widgetIndex) override
         {
             switch (widgetIndex)
             {
@@ -609,7 +613,7 @@ namespace OpenRCT2::Ui::Windows
 
             if (gCurrentToolId == Tool::upDownArrow)
             {
-                if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
+                if (!(gMapSelectFlags.has(MapSelectFlag::enable)))
                     return;
 
                 money64 lower_cost = SelectionLowerLand(0);
@@ -619,7 +623,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     _landToolRaiseCost = raise_cost;
                     _landToolLowerCost = lower_cost;
-                    windowMgr->InvalidateByClass(WindowClass::Land);
+                    windowMgr->InvalidateByClass(WindowClass::land);
                 }
                 return;
             }
@@ -628,12 +632,13 @@ namespace OpenRCT2::Ui::Windows
             std::optional<CoordsXY> mapTile;
             uint8_t side{};
 
-            gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
+            gMapSelectFlags.unset(MapSelectFlag::enable);
             if (tool_size == 1)
             {
-                int32_t selectionType;
+                int32_t direction;
                 // Get selection type and map coordinates from mouse x,y position
-                ScreenPosToMapPos(screenPos, &selectionType);
+                ScreenPosToMapPos(screenPos, &direction);
+                MapSelectType selectionType = static_cast<MapSelectType>(direction);
                 mapTile = ScreenGetMapXYSide(screenPos, &side);
 
                 if (!mapTile.has_value())
@@ -645,16 +650,16 @@ namespace OpenRCT2::Ui::Windows
                     {
                         _landToolRaiseCost = raise_cost;
                         _landToolLowerCost = lower_cost;
-                        windowMgr->InvalidateByClass(WindowClass::Land);
+                        windowMgr->InvalidateByClass(WindowClass::land);
                     }
                     return;
                 }
 
                 uint8_t state_changed = 0;
 
-                if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
+                if (!(gMapSelectFlags.has(MapSelectFlag::enable)))
                 {
-                    gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
+                    gMapSelectFlags.set(MapSelectFlag::enable);
                     state_changed++;
                 }
 
@@ -664,9 +669,10 @@ namespace OpenRCT2::Ui::Windows
                     state_changed++;
                 }
 
-                if ((gMapSelectType != MAP_SELECT_TYPE_EDGE_0 + (side & 0xFF)) && mapCtrlPressed)
+                MapSelectType selectedSide = getMapSelectEdge(side & 0xFF);
+                if (gMapSelectType != selectedSide && mapCtrlPressed)
                 {
-                    gMapSelectType = MAP_SELECT_TYPE_EDGE_0 + (side & 0xFF);
+                    gMapSelectType = selectedSide;
                     state_changed++;
                 }
 
@@ -705,7 +711,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     _landToolRaiseCost = raise_cost;
                     _landToolLowerCost = lower_cost;
-                    windowMgr->InvalidateByClass(WindowClass::Land);
+                    windowMgr->InvalidateByClass(WindowClass::land);
                 }
                 return;
             }
@@ -722,28 +728,29 @@ namespace OpenRCT2::Ui::Windows
                 {
                     _landToolRaiseCost = raise_cost;
                     _landToolLowerCost = lower_cost;
-                    windowMgr->InvalidateByClass(WindowClass::Land);
+                    windowMgr->InvalidateByClass(WindowClass::land);
                 }
                 return;
             }
 
             uint8_t state_changed = 0;
 
-            if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
+            if (!(gMapSelectFlags.has(MapSelectFlag::enable)))
             {
-                gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
+                gMapSelectFlags.set(MapSelectFlag::enable);
                 state_changed++;
             }
 
-            if (gMapSelectType != MAP_SELECT_TYPE_FULL)
+            if (gMapSelectType != MapSelectType::full)
             {
-                gMapSelectType = MAP_SELECT_TYPE_FULL;
+                gMapSelectType = MapSelectType::full;
                 state_changed++;
             }
 
-            if ((gMapSelectType != MAP_SELECT_TYPE_EDGE_0 + (side & 0xFF)) && mapCtrlPressed)
+            MapSelectType selectedSide = getMapSelectEdge(side & 0xFF);
+            if (gMapSelectType != selectedSide && mapCtrlPressed)
             {
-                gMapSelectType = MAP_SELECT_TYPE_EDGE_0 + (side & 0xFF);
+                gMapSelectType = selectedSide;
                 state_changed++;
             }
 
@@ -755,14 +762,14 @@ namespace OpenRCT2::Ui::Windows
             // Decide on shape of the brush for bigger selection size
             switch (gMapSelectType)
             {
-                case MAP_SELECT_TYPE_EDGE_0:
-                case MAP_SELECT_TYPE_EDGE_2:
+                case MapSelectType::edge0:
+                case MapSelectType::edge2:
                     // Line
                     mapTile->y -= (tool_size - 1) * 16;
                     mapTile->y = mapTile->ToTileStart().y;
                     break;
-                case MAP_SELECT_TYPE_EDGE_1:
-                case MAP_SELECT_TYPE_EDGE_3:
+                case MapSelectType::edge1:
+                case MapSelectType::edge3:
                     // Line
                     mapTile->x -= (tool_size - 1) * 16;
                     mapTile->x = mapTile->ToTileStart().x;
@@ -790,17 +797,17 @@ namespace OpenRCT2::Ui::Windows
             // Go to other side
             switch (gMapSelectType)
             {
-                case MAP_SELECT_TYPE_EDGE_0:
-                case MAP_SELECT_TYPE_EDGE_2:
+                case MapSelectType::edge0:
+                case MapSelectType::edge2:
                     // Line
                     mapTile->y += tool_length;
-                    gMapSelectType = MAP_SELECT_TYPE_FULL;
+                    gMapSelectType = MapSelectType::full;
                     break;
-                case MAP_SELECT_TYPE_EDGE_1:
-                case MAP_SELECT_TYPE_EDGE_3:
+                case MapSelectType::edge1:
+                case MapSelectType::edge3:
                     // Line
                     mapTile->x += tool_length;
-                    gMapSelectType = MAP_SELECT_TYPE_FULL;
+                    gMapSelectType = MapSelectType::full;
                     break;
                 default:
                     mapTile->x += tool_length;
@@ -831,7 +838,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 _landToolRaiseCost = raise_cost;
                 _landToolLowerCost = lower_cost;
-                windowMgr->InvalidateByClass(WindowClass::Land);
+                windowMgr->InvalidateByClass(WindowClass::land);
             }
         }
 
@@ -869,7 +876,7 @@ namespace OpenRCT2::Ui::Windows
     {
         auto* windowMgr = GetWindowManager();
         return windowMgr->FocusOrCreate<LandWindow>(
-            WindowClass::Land, ScreenCoordsXY(ContextGetWidth() - kWindowSize.width, 29), kWindowSize, 0);
+            WindowClass::land, ScreenCoordsXY(ContextGetWidth() - kWindowSize.width, 29), kWindowSize, {});
     }
 
     /**
@@ -878,14 +885,14 @@ namespace OpenRCT2::Ui::Windows
      */
     void ToggleLandWindow()
     {
-        if (isToolActive(WindowClass::Land, WIDX_BACKGROUND))
+        if (isToolActive(WindowClass::land, WIDX_BACKGROUND))
         {
             ToolCancel();
         }
         else
         {
             ShowGridlines();
-            auto* toolWindow = ContextOpenWindow(WindowClass::Land);
+            auto* toolWindow = ContextOpenWindow(WindowClass::land);
             ToolSet(*toolWindow, WIDX_BACKGROUND, Tool::digDown);
             gInputFlags.set(InputFlag::unk6);
         }

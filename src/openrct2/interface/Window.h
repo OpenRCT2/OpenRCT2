@@ -31,7 +31,7 @@ enum class CloseWindowModifier : uint8_t;
 
 namespace OpenRCT2
 {
-    using rct_windownumber = int16_t;
+    using WindowNumber = int16_t;
 
     struct WindowBase;
     struct WindowCloseModifier;
@@ -41,13 +41,13 @@ namespace OpenRCT2
     struct WindowIdentifier
     {
         WindowClass classification;
-        rct_windownumber number;
+        WindowNumber number;
     };
 
     struct WidgetIdentifier
     {
         WindowIdentifier window;
-        WidgetIndex widget_index;
+        WidgetIndex widgetIndex;
     };
 
     extern WindowCloseModifier gLastCloseModifier;
@@ -60,79 +60,78 @@ namespace OpenRCT2
 
     struct Viewport;
 
-#define RCT_WINDOW_RIGHT(w) ((w)->windowPos.x + (w)->width)
-#define RCT_WINDOW_BOTTOM(w) ((w)->windowPos.y + (w)->height)
-
-    enum WINDOW_FLAGS
+    enum class WindowFlag : uint8_t
     {
-        /*
-        WF_TIMEOUT_SHL = 0,
-        WF_TIMEOUT_MASK = 7,
-        WF_DRAGGING = 1 << 3,
-        WF_SCROLLER_UP = 1 << 4,
-        WF_SCROLLER_DOWN = 1 << 5,
-        WF_SCROLLER_MIDDLE = 1 << 6,
-        WF_DISABLE_VP_SCROLL = 1 << 9,
-        */
-
-        WF_STICK_TO_BACK = (1 << 0),
-        WF_STICK_TO_FRONT = (1 << 1),
-        WF_NO_SCROLLING = (1 << 2), // User is unable to scroll this viewport
-        WF_SCROLLING_TO_LOCATION = (1 << 3),
-        WF_TRANSPARENT = (1 << 4),
-        WF_NO_BACKGROUND = (1 << 5), // Instead of half transparency, completely remove the window background
-        WF_DEAD = (1u << 6),         // Window is closed and will be deleted in the next update.
-        WF_7 = (1 << 7),
-        WF_RESIZABLE = (1 << 8),
-        WF_NO_AUTO_CLOSE = (1 << 9), // Don't auto close this window if too many windows are open
-        WF_10 = (1 << 10),
-        WF_WHITE_BORDER_ONE = (1 << 12),
-        WF_WHITE_BORDER_MASK = (1 << 12) | (1 << 13),
-        WF_NO_TITLE_BAR = (1 << 14),
-        WF_NO_SNAPPING = (1 << 15),
+        stickToBack,
+        stickToFront,
+        /**
+         * User is unable to scroll this viewport
+         */
+        noScrolling,
+        scrollingToLocation,
+        transparent,
+        /**
+         * Instead of half transparency, completely remove the window background
+         */
+        noBackground,
+        /**
+         * Window is closed and will be deleted in the next update.
+         */
+        dead,
+        resizable,
+        /**
+         * Don't auto close this window if too many windows are open
+         */
+        noAutoClose,
+        // TODO: investigate why exactly this is used.
+        higherContrastOnPress,
+        noTitleBar,
+        noSnapping,
 
         // *ONLY* create only flags below
-        WF_AUTO_POSITION = (1 << 16),
-        WF_CENTRE_SCREEN = (1 << 17),
+        autoPosition,
+        centreScreen,
     };
-    using WindowFlags = uint32_t;
+    using WindowFlags = FlagHolder<uint16_t, WindowFlag>;
 
-    enum
+    enum class WindowView : uint8_t
     {
-        WV_PARK_AWARDS,
-        WV_PARK_RATING,
-        WV_PARK_OBJECTIVE,
-        WV_PARK_GUESTS,
-        WV_FINANCES_RESEARCH,
-        WV_RIDE_RESEARCH,
-        WV_MAZE_CONSTRUCTION,
-        WV_NETWORK_PASSWORD,
-        WV_EDITOR_BOTTOM_TOOLBAR,
-        WV_CHANGELOG,
-        WV_NEW_VERSION_INFO,
-        WV_FINANCE_MARKETING,
-        WV_CONTRIBUTORS,
+        parkAwards,
+        parkRating,
+        parkObjective,
+        parkGuests,
+        financesResearch,
+        rideResearch,
+        mazeConstruction,
+        networkPassword,
+        editorBottomToolbar,
+        changelog,
+        newVersionInfo,
+        financeMarketing,
+        contributors,
     };
 
-    enum WindowDetail
+    enum class WindowDetail : uint8_t
     {
-        WD_BANNER,
-        WD_NEW_CAMPAIGN,
-        WD_DEMOLISH_RIDE,
-        WD_REFURBISH_RIDE,
-        WD_SIGN,
-        WD_SIGN_SMALL,
+        banner,
+        newCampaign,
+        demolishRide,
+        refurbishRide,
+        sign,
+        signSmall,
 
-        WD_PLAYER,
+        player,
 
-        WD_VEHICLE,
-        WD_TRACK,
+        vehicle,
+        track,
 
-        WD_NULL = 255,
+        null = 255,
     };
 } // namespace OpenRCT2
 
-#define validate_global_widx(wc, widx)                                                                                         \
+// Cannot be expressed using a constexpr.
+// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+#define VALIDATE_GLOBAL_WIDX(wc, widx)                                                                                         \
     static_assert(widx == wc##__##widx, "Global WIDX of " #widx " doesn't match actual value.")
 
 constexpr int32_t WC_MAIN_WINDOW__0 = 0;
@@ -266,9 +265,9 @@ namespace OpenRCT2
 {
     struct WidgetRef
     {
-        WindowClass window_classification;
-        rct_windownumber window_number;
-        WidgetIndex widget_index;
+        WindowClass windowClassification;
+        WindowNumber windowNumber;
+        WidgetIndex widgetIndex;
     };
 
     extern Tool gCurrentToolId;
@@ -313,9 +312,9 @@ namespace OpenRCT2
     void WindowDraw(RenderTarget& rt, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom);
 
     bool isToolActive(WindowClass cls);
-    bool isToolActive(WindowClass cls, rct_windownumber number);
+    bool isToolActive(WindowClass cls, WindowNumber number);
     bool isToolActive(WindowClass cls, WidgetIndex widgetIndex);
-    bool isToolActive(WindowClass cls, WidgetIndex widgetIndex, rct_windownumber number);
+    bool isToolActive(WindowClass cls, WidgetIndex widgetIndex, WindowNumber number);
     bool isToolActive(const WindowBase& w, WidgetIndex widgetIndex);
     bool ToolSet(const WindowBase& w, WidgetIndex widgetIndex, Tool tool);
     void ToolCancel();

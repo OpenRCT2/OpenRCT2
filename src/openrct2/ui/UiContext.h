@@ -43,6 +43,12 @@ namespace OpenRCT2
             fullscreenDesktop,
         };
 
+        struct Resolution
+        {
+            int32_t Width;
+            int32_t Height;
+        };
+
         inline bool operator<(const Resolution& lhs, const Resolution& rhs)
         {
             int32_t areaA = lhs.Width * lhs.Height;

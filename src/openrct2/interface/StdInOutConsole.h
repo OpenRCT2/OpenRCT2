@@ -35,5 +35,5 @@ public:
     {
         InteractiveConsole::WriteLine(s);
     }
-    void WriteLine(const std::string& s, FormatToken colourFormat) override;
+    void WriteLine(const std::string& s, OpenRCT2::FormatToken colourFormat) override;
 };

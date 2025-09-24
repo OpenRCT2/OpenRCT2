@@ -15,7 +15,11 @@
 
 struct ScreenCoordsXY;
 struct RenderTarget;
-class Formatter;
+
+namespace OpenRCT2
+{
+    class Formatter;
+}
 
 enum class TextAlignment
 {
@@ -206,10 +210,10 @@ int32_t DrawTextWrapped(RenderTarget& rt, const ScreenCoordsXY& coords, int32_t 
 void DrawText(
     RenderTarget& rt, const ScreenCoordsXY& coords, const TextPaint& paint, const_utf8string text, bool noFormatting = false);
 void DrawTextBasic(
-    RenderTarget& rt, const ScreenCoordsXY& coords, StringId format, const Formatter& ft, TextPaint textPaint = {});
+    RenderTarget& rt, const ScreenCoordsXY& coords, StringId format, const OpenRCT2::Formatter& ft, TextPaint textPaint = {});
 void DrawTextEllipsised(
-    RenderTarget& rt, const ScreenCoordsXY& coords, int32_t width, StringId format, const Formatter& ft,
+    RenderTarget& rt, const ScreenCoordsXY& coords, int32_t width, StringId format, const OpenRCT2::Formatter& ft,
     TextPaint textPaint = {});
 int32_t DrawTextWrapped(
-    RenderTarget& rt, const ScreenCoordsXY& coords, int32_t width, StringId format, const Formatter& ft,
+    RenderTarget& rt, const ScreenCoordsXY& coords, int32_t width, StringId format, const OpenRCT2::Formatter& ft,
     TextPaint textPaint = {});

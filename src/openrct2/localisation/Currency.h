@@ -15,34 +15,37 @@
 #include "../localisation/StringIdType.h"
 #include "CurrencyTypes.h"
 
-constexpr size_t kCurrencySymbolMaxSize = 8;
-constexpr size_t kCurrencyRateMaxNumDigits = 9;
-
-// Currency format specification - inspired by OpenTTD
-struct CurrencyDescriptor
+namespace OpenRCT2
 {
-    char isoCode[4];
-    // Rate is relative to 0.10 GBP
-    int32_t rate;
-    CurrencyAffix affix_unicode;
-    utf8 symbol_unicode[kCurrencySymbolMaxSize];
-    CurrencyAffix affix_ascii;
-    char symbol_ascii[kCurrencySymbolMaxSize];
-    StringId stringId;
-};
+    constexpr size_t kCurrencySymbolMaxSize = 8;
+    constexpr size_t kCurrencyRateMaxNumDigits = 9;
 
-// List of currency formats
-// TODO: refactor into getter
-extern CurrencyDescriptor CurrencyDescriptors[EnumValue(CurrencyType::Count)];
+    // Currency format specification - inspired by OpenTTD
+    struct CurrencyDescriptor
+    {
+        char isoCode[4];
+        // Rate is relative to 0.10 GBP
+        int32_t rate;
+        CurrencyAffix affix_unicode;
+        utf8 symbol_unicode[kCurrencySymbolMaxSize];
+        CurrencyAffix affix_ascii;
+        char symbol_ascii[kCurrencySymbolMaxSize];
+        StringId stringId;
+    };
 
-/**
- * Loads custom currency saved parameters into {@link CurrencyDescriptors}'
- * custom currency entry
- */
-void CurrencyLoadCustomCurrencyConfig();
+    // List of currency formats
+    // TODO: refactor into getter
+    extern CurrencyDescriptor CurrencyDescriptors[EnumValue(CurrencyType::Count)];
 
-// The maximum number of characters allowed for string/money conversions (anything above will risk integer overflow issues)
-constexpr size_t kMoneyStringMaxlength = 14;
+    /**
+     * Loads custom currency saved parameters into {@link CurrencyDescriptors}'
+     * custom currency entry
+     */
+    void CurrencyLoadCustomCurrencyConfig();
 
-money64 StringToMoney(const char* string_to_monetise);
-void MoneyToString(money64 amount, char* buffer_to_put_value_to, size_t buffer_len, bool forceDecimals);
+    // The maximum number of characters allowed for string/money conversions (anything above will risk integer overflow issues)
+    constexpr size_t kMoneyStringMaxlength = 14;
+
+    money64 StringToMoney(const char* string_to_monetise);
+    void MoneyToString(money64 amount, char* buffer_to_put_value_to, size_t buffer_len, bool forceDecimals);
+} // namespace OpenRCT2

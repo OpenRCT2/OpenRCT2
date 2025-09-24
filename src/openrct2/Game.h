@@ -16,7 +16,19 @@
 namespace OpenRCT2
 {
     class Intent;
-}
+
+    // The number of logical update / ticks per second.
+    constexpr uint32_t kGameUpdateFPS = 40;
+    // The maximum amount of updates in case rendering is slower
+    constexpr uint32_t kGameMaxUpdates = 4;
+    // The game update interval in milliseconds, (1000 / 40fps) = 25ms
+    constexpr float kGameUpdateTimeMS = 1.0f / kGameUpdateFPS;
+    // The maximum threshold to advance.
+    constexpr float kGameUpdateMaxThreshold = kGameUpdateTimeMS * kGameMaxUpdates;
+
+    constexpr float kGameMinTimeScale = 0.1f;
+    constexpr float kGameMaxTimeScale = 5.0f;
+} // namespace OpenRCT2
 
 struct ParkLoadResult;
 

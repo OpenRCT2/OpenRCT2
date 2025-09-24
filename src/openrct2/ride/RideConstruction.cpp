@@ -121,7 +121,7 @@ static WindowBase* ride_create_or_find_construction_window(RideId rideIndex)
     auto intent = Intent(INTENT_ACTION_RIDE_CONSTRUCTION_FOCUS);
     intent.PutExtra(INTENT_EXTRA_RIDE_ID, rideIndex.ToUnderlying());
     windowManager->BroadcastIntent(intent);
-    return windowManager->FindByClass(WindowClass::RideConstruction);
+    return windowManager->FindByClass(WindowClass::rideConstruction);
 }
 
 /**
@@ -237,9 +237,9 @@ void RideClearForConstruction(Ride& ride)
     RideClearBlockedTiles(ride);
 
     auto* windowMgr = Ui::GetWindowManager();
-    auto w = windowMgr->FindByNumber(WindowClass::Ride, ride.id.ToUnderlying());
+    auto w = windowMgr->FindByNumber(WindowClass::ride, ride.id.ToUnderlying());
     if (w != nullptr)
-        w->OnResize();
+        w->onResize();
 }
 
 /**
@@ -526,7 +526,7 @@ void RideConstructionInvalidateCurrentTrack()
             if (_currentTrackSelectionFlags.has(TrackSelectionFlag::arrow))
             {
                 _currentTrackSelectionFlags.unset(TrackSelectionFlag::arrow);
-                gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
+                gMapSelectFlags.unset(MapSelectFlag::enableArrow);
                 MapInvalidateTileFull(_currentTrackBegin);
             }
             RideConstructionRemoveGhosts();
@@ -769,7 +769,7 @@ void RideSelectNextSection()
     }
     else if (_rideConstructionState == RideConstructionState::Back)
     {
-        gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
+        gMapSelectFlags.unset(MapSelectFlag::enableArrow);
 
         if (RideSelectForwardsFromBack())
         {
@@ -825,7 +825,7 @@ void RideSelectPreviousSection()
     }
     else if (_rideConstructionState == RideConstructionState::Front)
     {
-        gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
+        gMapSelectFlags.unset(MapSelectFlag::enableArrow);
 
         if (RideSelectBackwardsFromFront())
         {
@@ -860,19 +860,19 @@ static bool ride_modify_entrance_or_exit(const CoordsXYE& tileElement)
 
     // Get or create construction window for ride
     auto* windowMgr = Ui::GetWindowManager();
-    auto constructionWindow = windowMgr->FindByClass(WindowClass::RideConstruction);
+    auto constructionWindow = windowMgr->FindByClass(WindowClass::rideConstruction);
     if (constructionWindow == nullptr)
     {
         if (!RideInitialiseConstructionWindow(*ride))
             return false;
 
-        constructionWindow = windowMgr->FindByClass(WindowClass::RideConstruction);
+        constructionWindow = windowMgr->FindByClass(WindowClass::rideConstruction);
         if (constructionWindow == nullptr)
             return false;
     }
 
     RideConstructionInvalidateCurrentTrack();
-    if (_rideConstructionState != RideConstructionState::EntranceExit || !isToolActive(WindowClass::RideConstruction))
+    if (_rideConstructionState != RideConstructionState::EntranceExit || !isToolActive(WindowClass::rideConstruction))
     {
         // Replace entrance / exit
         ToolSet(
@@ -890,7 +890,7 @@ static bool ride_modify_entrance_or_exit(const CoordsXYE& tileElement)
         }
 
         WindowRideConstructionUpdateActiveElements();
-        gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
+        gMapSelectFlags.unset(MapSelectFlag::enableConstruct);
     }
     else
     {
@@ -900,7 +900,7 @@ static bool ride_modify_entrance_or_exit(const CoordsXYE& tileElement)
 
         rideEntranceExitRemove.SetCallback([=](const GameActions::GameAction* ga, const GameActions::Result* result) {
             gRideEntranceExitPlaceType = entranceType;
-            windowMgr->InvalidateByClass(WindowClass::RideConstruction);
+            windowMgr->InvalidateByClass(WindowClass::rideConstruction);
 
             auto newToolWidgetIndex = (entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE) ? WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE
                                                                                     : WC_RIDE_CONSTRUCTION__WIDX_EXIT;
@@ -909,10 +909,10 @@ static bool ride_modify_entrance_or_exit(const CoordsXYE& tileElement)
             ToolSet(*constructionWindow, newToolWidgetIndex, Tool::crosshair);
         });
 
-        GameActions::Execute(&rideEntranceExitRemove);
+        GameActions::Execute(&rideEntranceExitRemove, getGameState());
     }
 
-    windowMgr->InvalidateByClass(WindowClass::RideConstruction);
+    windowMgr->InvalidateByClass(WindowClass::rideConstruction);
     return true;
 }
 
@@ -934,7 +934,7 @@ static bool ride_modify_maze(const CoordsXYE& tileElement)
             _currentTrackBegin.z = trackElement->GetBaseZ();
             _currentTrackSelectionFlags.clearAll();
             _rideConstructionNextArrowPulse = 0;
-            gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
+            gMapSelectFlags.unset(MapSelectFlag::enableArrow);
 
             auto intent = Intent(INTENT_ACTION_UPDATE_MAZE_CONSTRUCTION);
             ContextBroadcastIntent(&intent);
@@ -978,7 +978,7 @@ bool RideModify(const CoordsXYE& input)
     if (ride->status != RideStatus::simulating)
     {
         auto gameAction = GameActions::RideSetStatusAction(ride->id, RideStatus::closed);
-        GameActions::Execute(&gameAction);
+        GameActions::Execute(&gameAction, getGameState());
     }
 
     // Check if element is a station entrance or exit
@@ -1018,7 +1018,7 @@ bool RideModify(const CoordsXYE& input)
     _currentTrackPieceType = type;
     _currentTrackSelectionFlags.clearAll();
     _rideConstructionNextArrowPulse = 0;
-    gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
+    gMapSelectFlags.unset(MapSelectFlag::enableArrow);
 
     if (!ride->getRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
     {
@@ -1128,7 +1128,7 @@ money64 RideGetRefundPrice(const Ride& ride)
             { trackElement.x, trackElement.y, trackElement.element->GetBaseZ(), direction });
         trackRemoveAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
 
-        auto res = GameActions::Query(&trackRemoveAction);
+        auto res = GameActions::Query(&trackRemoveAction, getGameState());
 
         cost += res.Cost;
 
@@ -1156,7 +1156,7 @@ money64 RideGetRefundPrice(const Ride& ride)
 money64 SetOperatingSetting(RideId rideId, GameActions::RideSetSetting setting, uint8_t value)
 {
     auto rideSetSetting = GameActions::RideSetSettingAction(rideId, setting, value);
-    auto res = GameActions::Execute(&rideSetSetting);
+    auto res = GameActions::Execute(&rideSetSetting, getGameState());
     return res.Error == GameActions::Status::Ok ? 0 : kMoney64Undefined;
 }
 
@@ -1164,8 +1164,10 @@ money64 SetOperatingSettingNested(RideId rideId, GameActions::RideSetSetting set
 {
     auto rideSetSetting = GameActions::RideSetSettingAction(rideId, setting, value);
     rideSetSetting.SetFlags(flags);
-    auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&rideSetSetting)
-                                               : GameActions::QueryNested(&rideSetSetting);
+
+    auto& gameState = getGameState();
+    auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&rideSetSetting, gameState)
+                                               : GameActions::QueryNested(&rideSetSetting, gameState);
     return res.Error == GameActions::Status::Ok ? 0 : kMoney64Undefined;
 }
 

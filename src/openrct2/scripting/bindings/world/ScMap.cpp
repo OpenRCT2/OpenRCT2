@@ -51,7 +51,8 @@ namespace OpenRCT2::Scripting
 
     int32_t ScMap::numRides_get() const
     {
-        return static_cast<int32_t>(GetRideManager().size());
+        auto& gameState = getGameState();
+        return static_cast<int32_t>(RideManager(gameState).size());
     }
 
     int32_t ScMap::numEntities_get() const
@@ -62,7 +63,9 @@ namespace OpenRCT2::Scripting
     std::vector<std::shared_ptr<ScRide>> ScMap::rides_get() const
     {
         std::vector<std::shared_ptr<ScRide>> result;
-        auto rideManager = GetRideManager();
+
+        auto& gameState = getGameState();
+        auto rideManager = RideManager(gameState);
         for (const auto& ride : rideManager)
         {
             result.push_back(std::make_shared<ScRide>(ride.id));
@@ -72,7 +75,8 @@ namespace OpenRCT2::Scripting
 
     std::shared_ptr<ScRide> ScMap::getRide(int32_t id) const
     {
-        auto rideManager = GetRideManager();
+        auto& gameState = getGameState();
+        auto rideManager = RideManager(gameState);
         auto ride = rideManager[RideId::FromUnderlying(id)];
         if (ride != nullptr)
         {

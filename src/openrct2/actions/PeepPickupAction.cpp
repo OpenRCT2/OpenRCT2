@@ -46,7 +46,7 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_type) << DS_TAG(_entityId) << DS_TAG(_loc) << DS_TAG(_owner);
     }
 
-    Result PeepPickupAction::Query() const
+    Result PeepPickupAction::Query(GameState_t& gameState) const
     {
         if (_entityId.ToUnderlying() >= kMaxEntities || _entityId.IsNull())
         {
@@ -84,7 +84,7 @@ namespace OpenRCT2::GameActions
                     PeepPickupAction existingPickupAction{
                         PeepPickupType::Cancel, existing->Id, { Network::GetPickupPeepOldX(_owner), 0, 0 }, _owner
                     };
-                    auto result = QueryNested(&existingPickupAction);
+                    auto result = QueryNested(&existingPickupAction, gameState);
 
                     if (existing == peep)
                     {
@@ -115,7 +115,7 @@ namespace OpenRCT2::GameActions
         return res;
     }
 
-    Result PeepPickupAction::Execute() const
+    Result PeepPickupAction::Execute(GameState_t& gameState) const
     {
         Peep* const peep = getGameState().entities.TryGetEntity<Peep>(_entityId);
         if (peep == nullptr)
@@ -139,7 +139,7 @@ namespace OpenRCT2::GameActions
                     PeepPickupAction existingPickupAction{
                         PeepPickupType::Cancel, existing->Id, { Network::GetPickupPeepOldX(_owner), 0, 0 }, _owner
                     };
-                    auto result = ExecuteNested(&existingPickupAction);
+                    auto result = ExecuteNested(&existingPickupAction, gameState);
 
                     if (existing == peep)
                     {

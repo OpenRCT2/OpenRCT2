@@ -77,9 +77,9 @@ namespace OpenRCT2::Ui::Windows
             if (registeredShortcut != nullptr)
             {
                 auto* windowMgr = GetWindowManager();
-                windowMgr->CloseByClass(WindowClass::ChangeKeyboardShortcut);
+                windowMgr->CloseByClass(WindowClass::changeKeyboardShortcut);
                 auto* w = windowMgr->Create<ChangeShortcutWindow>(
-                    WindowClass::ChangeKeyboardShortcut, kWindowSizeChange, WF_CENTRE_SCREEN);
+                    WindowClass::changeKeyboardShortcut, kWindowSizeChange, WindowFlag::centreScreen);
                 if (w != nullptr)
                 {
                     w->_shortcutId = shortcutId;
@@ -92,25 +92,25 @@ namespace OpenRCT2::Ui::Windows
             return nullptr;
         }
 
-        void OnOpen() override
+        void onOpen() override
         {
-            SetWidgets(window_shortcut_change_widgets);
+            setWidgets(window_shortcut_change_widgets);
             WindowInitScrollWidgets(*this);
         }
 
-        void OnClose() override
+        void onClose() override
         {
             auto& shortcutManager = GetShortcutManager();
             shortcutManager.SetPendingShortcutChange({});
             NotifyShortcutKeysWindow();
         }
 
-        void OnMouseUp(WidgetIndex widgetIndex) override
+        void onMouseUp(WidgetIndex widgetIndex) override
         {
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
-                    Close();
+                    close();
                     break;
                 case WIDX_REMOVE:
                     Remove();
@@ -118,9 +118,9 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDraw(RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
-            DrawWidgets(rt);
+            drawWidgets(rt);
 
             ScreenCoordsXY stringCoords(windowPos.x + 125, windowPos.y + widgets[WIDX_TITLE].bottom + 16);
 
@@ -149,7 +149,7 @@ namespace OpenRCT2::Ui::Windows
                 shortcut->Current.clear();
                 shortcutManager.SaveUserBindings();
             }
-            Close();
+            close();
         }
     };
 
@@ -180,43 +180,43 @@ namespace OpenRCT2::Ui::Windows
         uint32_t _tabAnimationIndex{};
 
     public:
-        void OnOpen() override
+        void onOpen() override
         {
-            InitialiseTabs();
-            InitialiseWidgets();
-            InitialiseList();
+            initialiseTabs();
+            initialiseWidgets();
+            initialiseList();
         }
 
-        void OnClose() override
+        void onClose() override
         {
             auto* windowMgr = Ui::GetWindowManager();
-            windowMgr->CloseByClass(WindowClass::ResetShortcutKeysPrompt);
+            windowMgr->CloseByClass(WindowClass::resetShortcutKeysPrompt);
         }
 
-        void OnResize() override
+        void onResize() override
         {
             WindowSetResize(*this, kWindowSize, kMaximumWindowSize);
         }
 
-        void OnUpdate() override
+        void onUpdate() override
         {
             // Remove highlight when the mouse is not hovering over the list
             if (_highlightedItem != -1 && !widgetIsHighlighted(*this, WIDX_SCROLL))
             {
                 _highlightedItem = -1;
-                InvalidateWidget(WIDX_SCROLL);
+                invalidateWidget(WIDX_SCROLL);
             }
 
             _tabAnimationIndex++;
-            InvalidateWidget(static_cast<WidgetIndex>(WIDX_TAB_0 + _currentTabIndex));
+            invalidateWidget(static_cast<WidgetIndex>(WIDX_TAB_0 + _currentTabIndex));
         }
 
-        void OnMouseUp(WidgetIndex widgetIndex) override
+        void onMouseUp(WidgetIndex widgetIndex) override
         {
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
-                    Close();
+                    close();
                     break;
                 case WIDX_RESET:
                     ResetShortcutKeysPromptOpen();
@@ -232,7 +232,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnPrepareDraw() override
+        void onPrepareDraw() override
         {
             widgets[WIDX_SCROLL].right = width - 5;
             widgets[WIDX_SCROLL].bottom = height - 19;
@@ -243,36 +243,36 @@ namespace OpenRCT2::Ui::Windows
             // Set selected tab
             for (size_t i = 0; i < _tabs.size(); i++)
             {
-                SetWidgetPressed(static_cast<WidgetIndex>(WIDX_TAB_0 + i), false);
+                setWidgetPressed(static_cast<WidgetIndex>(WIDX_TAB_0 + i), false);
             }
-            SetWidgetPressed(static_cast<WidgetIndex>(WIDX_TAB_0 + _currentTabIndex), true);
+            setWidgetPressed(static_cast<WidgetIndex>(WIDX_TAB_0 + _currentTabIndex), true);
         }
 
-        void OnDraw(RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
-            DrawWidgets(rt);
+            drawWidgets(rt);
             DrawTabImages(rt);
         }
 
-        ScreenSize OnScrollGetSize(int32_t scrollIndex) override
+        ScreenSize onScrollGetSize(int32_t scrollIndex) override
         {
             auto h = static_cast<int32_t>(_list.size() * kScrollableRowHeight);
             auto bottom = std::max(0, h - widgets[WIDX_SCROLL].bottom + widgets[WIDX_SCROLL].top + 21);
             if (bottom < scrolls[0].contentOffsetY)
             {
                 scrolls[0].contentOffsetY = bottom;
-                Invalidate();
+                invalidate();
             }
             return { 0, h };
         }
 
-        void OnScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
+        void onScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
             auto index = static_cast<int_fast16_t>((screenCoords.y - 1) / kScrollableRowHeight);
             if (static_cast<size_t>(index) < _list.size())
             {
                 _highlightedItem = index;
-                Invalidate();
+                invalidate();
             }
             else
             {
@@ -280,7 +280,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
+        void onScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
             auto selectedItem = static_cast<size_t>((screenCoords.y - 1) / kScrollableRowHeight);
             if (selectedItem < _list.size())
@@ -294,7 +294,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
+        void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
             auto rtCoords = ScreenCoordsXY{ rt.x, rt.y };
             GfxFillRect(
@@ -331,14 +331,14 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnLanguageChange() override
+        void onLanguageChange() override
         {
-            InitialiseList();
+            initialiseList();
         }
 
         void RefreshBindings()
         {
-            InitialiseList();
+            initialiseList();
         }
 
         void ResetAllOnActiveTab()
@@ -380,7 +380,7 @@ namespace OpenRCT2::Ui::Windows
             return group == groupFilter;
         }
 
-        void InitialiseList()
+        void initialiseList()
         {
             // Get shortcuts and sort by group
             auto shortcuts = GetShortcutsForCurrentTab();
@@ -416,7 +416,7 @@ namespace OpenRCT2::Ui::Windows
                 _list.push_back(std::move(ssp));
             }
 
-            Invalidate();
+            invalidate();
         }
 
         std::vector<const RegisteredShortcut*> GetShortcutsForCurrentTab()
@@ -433,7 +433,7 @@ namespace OpenRCT2::Ui::Windows
             return result;
         }
 
-        void InitialiseTabs()
+        void initialiseTabs()
         {
             _tabs.clear();
             _tabs.push_back({ "interface", SPR_TAB_GEARS_0, 2, 4 });
@@ -442,7 +442,7 @@ namespace OpenRCT2::Ui::Windows
             _tabs.push_back({ {}, SPR_TAB_WRENCH_0, 2, 16 });
         }
 
-        void InitialiseWidgets()
+        void initialiseWidgets()
         {
             widgets.clear();
             widgets.insert(widgets.begin(), std::begin(_shortcutWidgets), std::end(_shortcutWidgets));
@@ -456,7 +456,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             WindowInitScrollWidgets(*this);
-            ResizeFrame();
+            resizeFrame();
         }
 
         void SetTab(size_t index)
@@ -465,7 +465,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 _currentTabIndex = index;
                 _tabAnimationIndex = 0;
-                InitialiseList();
+                initialiseList();
             }
         }
 
@@ -481,7 +481,7 @@ namespace OpenRCT2::Ui::Windows
         {
             const auto& tabDesc = _tabs[tabIndex];
             auto widgetIndex = static_cast<WidgetIndex>(WIDX_TAB_0 + tabIndex);
-            if (!IsWidgetDisabled(widgetIndex))
+            if (!isWidgetDisabled(widgetIndex))
             {
                 auto imageId = tabDesc.ImageId;
                 if (imageId != 0)
@@ -511,7 +511,7 @@ namespace OpenRCT2::Ui::Windows
             if (isHighlighted)
             {
                 format = STR_WINDOW_COLOUR_2_STRINGID;
-                GfxFilterRect(rt, { 0, y - 1, scrollWidth, y + (kScrollableRowHeight - 2) }, FilterPaletteID::PaletteDarken1);
+                GfxFilterRect(rt, { 0, y - 1, scrollWidth, y + (kScrollableRowHeight - 2) }, FilterPaletteID::paletteDarken1);
             }
 
             auto bindingOffset = (scrollWidth * 2) / 3;
@@ -541,7 +541,7 @@ namespace OpenRCT2::Ui::Windows
     void ChangeShortcutWindow::NotifyShortcutKeysWindow()
     {
         auto* windowMgr = GetWindowManager();
-        auto w = windowMgr->FindByClass(WindowClass::KeyboardShortcutList);
+        auto w = windowMgr->FindByClass(WindowClass::keyboardShortcutList);
         if (w != nullptr)
         {
             static_cast<ShortcutKeysWindow*>(w)->RefreshBindings();
@@ -551,10 +551,10 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* ShortcutKeysOpen()
     {
         auto* windowMgr = GetWindowManager();
-        auto w = windowMgr->BringToFrontByClass(WindowClass::KeyboardShortcutList);
+        auto w = windowMgr->BringToFrontByClass(WindowClass::keyboardShortcutList);
         if (w == nullptr)
         {
-            w = windowMgr->Create<ShortcutKeysWindow>(WindowClass::KeyboardShortcutList, kWindowSize, WF_RESIZABLE);
+            w = windowMgr->Create<ShortcutKeysWindow>(WindowClass::keyboardShortcutList, kWindowSize, WindowFlag::resizable);
         }
         return w;
     }
@@ -583,29 +583,29 @@ namespace OpenRCT2::Ui::Windows
 
     class ResetShortcutKeysPrompt final : public Window
     {
-        void OnOpen() override
+        void onOpen() override
         {
-            SetWidgets(WindowResetShortcutKeysPromptWidgets);
+            setWidgets(WindowResetShortcutKeysPromptWidgets);
         }
 
-        void OnMouseUp(WidgetIndex widgetIndex) override
+        void onMouseUp(WidgetIndex widgetIndex) override
         {
             switch (widgetIndex)
             {
                 case WIDX_RESET_PROMPT_RESET:
                 {
                     auto* windowMgr = GetWindowManager();
-                    auto w = windowMgr->FindByClass(WindowClass::KeyboardShortcutList);
+                    auto w = windowMgr->FindByClass(WindowClass::keyboardShortcutList);
                     if (w != nullptr)
                     {
                         static_cast<ShortcutKeysWindow*>(w)->ResetAllOnActiveTab();
                     }
-                    Close();
+                    close();
                     break;
                 }
                 case WIDX_RESET_PROMPT_CANCEL:
                 case WIDX_RESET_PROMPT_CLOSE:
-                    Close();
+                    close();
                     break;
             }
         }
@@ -615,7 +615,7 @@ namespace OpenRCT2::Ui::Windows
     {
         auto* windowMgr = GetWindowManager();
         return windowMgr->FocusOrCreate<ResetShortcutKeysPrompt>(
-            WindowClass::ResetShortcutKeysPrompt, kWindowSizeReset, WF_CENTRE_SCREEN | WF_TRANSPARENT);
+            WindowClass::resetShortcutKeysPrompt, kWindowSizeReset, { WindowFlag::centreScreen, WindowFlag::transparent });
     }
 #pragma endregion
 } // namespace OpenRCT2::Ui::Windows

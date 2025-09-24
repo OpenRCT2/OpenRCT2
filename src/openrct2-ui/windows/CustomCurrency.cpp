@@ -51,17 +51,17 @@ namespace OpenRCT2::Ui::Windows
     class CustomCurrencyWindow final : public Window
     {
     public:
-        void OnOpen() override
+        void onOpen() override
         {
-            SetWidgets(window_custom_currency_widgets);
-            hold_down_widgets = (1uLL << WIDX_RATE_UP) | (1uLL << WIDX_RATE_DOWN);
+            setWidgets(window_custom_currency_widgets);
+            holdDownWidgets = (1uLL << WIDX_RATE_UP) | (1uLL << WIDX_RATE_DOWN);
             WindowInitScrollWidgets(*this);
             colours[0] = COLOUR_LIGHT_BROWN;
             colours[1] = COLOUR_LIGHT_BROWN;
             colours[2] = COLOUR_LIGHT_BROWN;
         }
 
-        void OnMouseDown(WidgetIndex widgetIndex) override
+        void onMouseDown(WidgetIndex widgetIndex) override
         {
             auto* widget = &widgets[widgetIndex - 1];
             auto* windowMgr = Ui::GetWindowManager();
@@ -69,7 +69,7 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
-                    Close();
+                    close();
                     break;
                 case WIDX_RATE_UP:
                     CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate += 1;
@@ -112,7 +112,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnMouseUp(WidgetIndex widgetIndex) override
+        void onMouseUp(WidgetIndex widgetIndex) override
         {
             switch (widgetIndex)
             {
@@ -125,7 +125,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex) override
+        void onDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex) override
         {
             if (dropdownIndex == -1)
                 return;
@@ -151,7 +151,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override
+        void onTextInput(WidgetIndex widgetIndex, std::string_view text) override
         {
             if (text.empty())
                 return;
@@ -187,12 +187,12 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDraw(RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
             auto ft = Formatter::Common();
             ft.Add<money64>(10.00_GBP);
 
-            DrawWidgets(rt);
+            drawWidgets(rt);
 
             auto screenCoords = windowPos + ScreenCoordsXY{ 10, 18 + widgets[WIDX_TITLE].height() };
 
@@ -223,6 +223,7 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* CustomCurrencyOpen()
     {
         auto* windowMgr = GetWindowManager();
-        return windowMgr->FocusOrCreate<CustomCurrencyWindow>(WindowClass::CustomCurrencyConfig, kWindowSize, WF_CENTRE_SCREEN);
+        return windowMgr->FocusOrCreate<CustomCurrencyWindow>(
+            WindowClass::customCurrencyConfig, kWindowSize, WindowFlag::centreScreen);
     }
 } // namespace OpenRCT2::Ui::Windows

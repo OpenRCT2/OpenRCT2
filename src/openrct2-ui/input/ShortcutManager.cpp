@@ -177,7 +177,7 @@ void ShortcutManager::ProcessEvent(const InputEvent& e)
             _pendingShortcutChange.clear();
 
             auto* windowMgr = Ui::GetWindowManager();
-            windowMgr->CloseByClass(WindowClass::ChangeKeyboardShortcut);
+            windowMgr->CloseByClass(WindowClass::changeKeyboardShortcut);
             SaveUserBindings();
         }
     }

@@ -67,7 +67,7 @@ namespace OpenRCT2
     uint8_t gShowConstructionRightsRefCount;
 
     static std::list<Viewport> _viewports;
-    Viewport* g_music_tracking_viewport;
+    Viewport* gMusicTrackingViewport;
 
     static std::unique_ptr<JobPool> _paintJobs;
     static std::vector<PaintSession*> _paintColumns;
@@ -105,10 +105,10 @@ namespace OpenRCT2
         // ?
         gInputFlags.clearAll();
         InputSetState(InputState::Reset);
-        gPressedWidget.window_classification = WindowClass::Null;
+        gPressedWidget.windowClassification = WindowClass::null;
         gPickupPeepImage = ImageId();
         ResetTooltipNotShown();
-        gMapSelectFlags = 0;
+        gMapSelectFlags.clearAll();
         ClearPatrolAreaToRender();
         TextinputCancel();
     }
@@ -123,7 +123,7 @@ namespace OpenRCT2
      * out_x : ax
      * out_y : bx
      */
-    std::optional<ScreenCoordsXY> centre_2d_coordinates(const CoordsXYZ& loc, Viewport* viewport)
+    std::optional<ScreenCoordsXY> centre2dCoordinates(const CoordsXYZ& loc, Viewport* viewport)
     {
         // If the start location was invalid
         // propagate the invalid location to the output.
@@ -180,7 +180,7 @@ namespace OpenRCT2
      *  flags:  edx top most 2 bits 0b_X1 for zoom clear see below for 2nd bit.
      *  w:      esi
      */
-    void ViewportCreate(WindowBase* w, const ScreenCoordsXY& screenCoords, int32_t width, int32_t height, const Focus& focus)
+    void ViewportCreate(WindowBase& w, const ScreenCoordsXY& screenCoords, int32_t width, int32_t height, const Focus& focus)
     {
         Viewport* viewport = nullptr;
         if (_viewports.size() >= kMaxViewportCount)
@@ -203,11 +203,11 @@ namespace OpenRCT2
 
         if (Config::Get().general.AlwaysShowGridlines)
             viewport->flags |= VIEWPORT_FLAG_GRIDLINES;
-        w->viewport = viewport;
-        viewport->isVisible = w->isVisible;
+        w.viewport = viewport;
+        viewport->isVisible = w.isVisible;
 
         CoordsXYZ centrePos = focus.GetPos();
-        w->viewport_target_sprite = std::visit(
+        w.viewportTargetSprite = std::visit(
             [](auto&& arg) {
                 using T = std::decay_t<decltype(arg)>;
                 if constexpr (std::is_same_v<T, Focus::CoordinateFocus>)
@@ -217,13 +217,13 @@ namespace OpenRCT2
             },
             focus.data);
 
-        auto centreLoc = centre_2d_coordinates(centrePos, viewport);
+        auto centreLoc = centre2dCoordinates(centrePos, viewport);
         if (!centreLoc.has_value())
         {
             LOG_ERROR("Invalid location for viewport.");
             return;
         }
-        w->savedViewPos = *centreLoc;
+        w.savedViewPos = *centreLoc;
         viewport->viewPos = *centreLoc;
     }
 
@@ -340,14 +340,14 @@ namespace OpenRCT2
                 // Get next valid window after.
                 auto itNextWindow = [&]() {
                     auto itNext = std::next(itWindowPos);
-                    while (itNext != g_window_list.end() && (itNext->get()->flags & WF_DEAD))
+                    while (itNext != gWindowList.end() && (itNext->get()->flags.has(WindowFlag::dead)))
                     {
                         ++itNext;
                     }
                     return itNext;
                 }();
                 ViewportRedrawAfterShift(
-                    rt, itNextWindow == g_window_list.end() ? nullptr : itNextWindow->get(), originalWindow, shift, drawRect);
+                    rt, itNextWindow == gWindowList.end() ? nullptr : itNextWindow->get(), originalWindow, shift, drawRect);
                 return;
             }
 
@@ -439,10 +439,10 @@ namespace OpenRCT2
     {
         // This loop redraws all parts covered by transparent windows.
         auto it = WindowGetIterator(window);
-        for (; it != g_window_list.end(); it++)
+        for (; it != gWindowList.end(); it++)
         {
             auto w = it->get();
-            if (!(w->flags & WF_TRANSPARENT) || (w->flags & WF_DEAD))
+            if (!(w->flags.has(WindowFlag::transparent)) || (w->flags.has(WindowFlag::dead)))
                 continue;
             if (w->viewport == window->viewport)
                 continue;
@@ -485,30 +485,6 @@ namespace OpenRCT2
         if ((!x_diff) && (!y_diff))
             return;
 
-        if (w->flags & WF_7)
-        {
-            int32_t left = std::max<int32_t>(viewport->pos.x, 0);
-            int32_t top = std::max<int32_t>(viewport->pos.y, 0);
-            int32_t right = std::min<int32_t>(viewport->pos.x + viewport->width, ContextGetWidth());
-            int32_t bottom = std::min<int32_t>(viewport->pos.y + viewport->height, ContextGetHeight());
-
-            if (left >= right)
-                return;
-            if (top >= bottom)
-                return;
-
-            if (DrawingEngineHasDirtyOptimisations())
-            {
-                RenderTarget& rt = DrawingEngineGetDpi();
-                WindowDrawAll(rt, left, top, right, bottom);
-                return;
-            }
-            else
-            {
-                GfxInvalidateScreen();
-            }
-        }
-
         const int32_t left = std::max(viewport->pos.x, 0);
         const int32_t top = std::max(viewport->pos.y, 0);
         const int32_t right = std::min(left + viewport->width + std::min(viewport->pos.x, 0), ContextGetWidth());
@@ -531,8 +507,8 @@ namespace OpenRCT2
     // rct2: 0x006E7A15
     static void ViewportSetUndergroundFlag(int32_t underground, WindowBase* window, Viewport* viewport)
     {
-        if ((window->classification != WindowClass::MainWindow && window->classification != WindowClass::Viewport)
-            || (window->classification == WindowClass::MainWindow && !window->viewport_smart_follow_sprite.IsNull()))
+        if ((window->classification != WindowClass::mainWindow && window->classification != WindowClass::viewport)
+            || (window->classification == WindowClass::mainWindow && !window->viewportSmartFollowSprite.IsNull()))
         {
             if (!underground)
             {
@@ -548,7 +524,7 @@ namespace OpenRCT2
                 if (bit)
                     return;
             }
-            window->Invalidate();
+            window->invalidate();
         }
     }
 
@@ -566,12 +542,12 @@ namespace OpenRCT2
         if (viewport == nullptr)
             return;
 
-        if (!window->viewport_smart_follow_sprite.IsNull())
+        if (!window->viewportSmartFollowSprite.IsNull())
         {
             ViewportUpdateSmartFollowEntity(window);
         }
 
-        if (!window->viewport_target_sprite.IsNull())
+        if (!window->viewportTargetSprite.IsNull())
         {
             ViewportUpdateFollowSprite(window);
             return;
@@ -612,7 +588,7 @@ namespace OpenRCT2
 
         if (at_map_edge)
         {
-            auto centreLoc = centre_2d_coordinates({ mapCoord, 0 }, viewport);
+            auto centreLoc = centre2dCoordinates({ mapCoord, 0 }, viewport);
             if (centreLoc.has_value())
             {
                 window->savedViewPos = centreLoc.value();
@@ -620,7 +596,7 @@ namespace OpenRCT2
         }
 
         auto windowCoords = window->savedViewPos;
-        if (window->flags & WF_SCROLLING_TO_LOCATION)
+        if (window->flags.has(WindowFlag::scrollingToLocation))
         {
             // Moves the viewport if focusing in on an item
             uint8_t flags = 0;
@@ -642,7 +618,7 @@ namespace OpenRCT2
             // If we are at the final zoom position
             if (!windowCoords.x && !windowCoords.y)
             {
-                window->flags &= ~WF_SCROLLING_TO_LOCATION;
+                window->flags.unset(WindowFlag::scrollingToLocation);
             }
             if (flags & 1)
             {
@@ -661,9 +637,9 @@ namespace OpenRCT2
 
     void ViewportUpdateFollowSprite(WindowBase* window)
     {
-        if (!window->viewport_target_sprite.IsNull() && window->viewport != nullptr)
+        if (!window->viewportTargetSprite.IsNull() && window->viewport != nullptr)
         {
-            auto* sprite = getGameState().entities.GetEntity(window->viewport_target_sprite);
+            auto* sprite = getGameState().entities.GetEntity(window->viewportTargetSprite);
             if (sprite == nullptr)
             {
                 return;
@@ -676,7 +652,7 @@ namespace OpenRCT2
                 ViewportSetUndergroundFlag(underground, window, window->viewport);
             }
 
-            auto centreLoc = centre_2d_coordinates(sprite->GetLocation(), window->viewport);
+            auto centreLoc = centre2dCoordinates(sprite->GetLocation(), window->viewport);
             if (centreLoc.has_value())
             {
                 window->savedViewPos = *centreLoc;
@@ -687,11 +663,11 @@ namespace OpenRCT2
 
     void ViewportUpdateSmartFollowEntity(WindowBase* window)
     {
-        auto entity = getGameState().entities.TryGetEntity(window->viewport_smart_follow_sprite);
+        auto entity = getGameState().entities.TryGetEntity(window->viewportSmartFollowSprite);
         if (entity == nullptr || entity->Type == EntityType::Null)
         {
-            window->viewport_smart_follow_sprite = EntityId::GetNull();
-            window->viewport_target_sprite = EntityId::GetNull();
+            window->viewportSmartFollowSprite = EntityId::GetNull();
+            window->viewportTargetSprite = EntityId::GetNull();
             return;
         }
 
@@ -722,8 +698,8 @@ namespace OpenRCT2
                 break;
             }
             default: // All other types don't need any "smart" following; steam particle, duck, money effect, etc.
-                window->focus = Focus(window->viewport_smart_follow_sprite);
-                window->viewport_target_sprite = window->viewport_smart_follow_sprite;
+                window->focus = Focus(window->viewportSmartFollowSprite);
+                window->viewportTargetSprite = window->viewportSmartFollowSprite;
                 break;
         }
     }
@@ -731,12 +707,12 @@ namespace OpenRCT2
     void ViewportUpdateSmartFollowGuest(WindowBase* window, const Guest& peep)
     {
         Focus focus = Focus(peep.Id);
-        window->viewport_target_sprite = peep.Id;
+        window->viewportTargetSprite = peep.Id;
 
         if (peep.State == PeepState::Picked)
         {
-            window->viewport_smart_follow_sprite = EntityId::GetNull();
-            window->viewport_target_sprite = EntityId::GetNull();
+            window->viewportSmartFollowSprite = EntityId::GetNull();
+            window->viewportTargetSprite = EntityId::GetNull();
             window->focus = std::nullopt; // No focus
             return;
         }
@@ -756,7 +732,7 @@ namespace OpenRCT2
                     {
                         focus = Focus(car->Id);
                         overallFocus = false;
-                        window->viewport_target_sprite = car->Id;
+                        window->viewportTargetSprite = car->Id;
                     }
                 }
             }
@@ -773,7 +749,7 @@ namespace OpenRCT2
                 coordFocus.y = xy.y;
                 coordFocus.z = TileElementHeight(xy) + (4 * kCoordsZStep);
                 focus = Focus(coordFocus);
-                window->viewport_target_sprite = EntityId::GetNull();
+                window->viewportTargetSprite = EntityId::GetNull();
             }
         }
 
@@ -784,20 +760,20 @@ namespace OpenRCT2
     {
         if (peep.State == PeepState::Picked)
         {
-            window->viewport_smart_follow_sprite = EntityId::GetNull();
-            window->viewport_target_sprite = EntityId::GetNull();
+            window->viewportSmartFollowSprite = EntityId::GetNull();
+            window->viewportTargetSprite = EntityId::GetNull();
             window->focus = std::nullopt;
             return;
         }
 
-        window->focus = Focus(window->viewport_smart_follow_sprite);
-        window->viewport_target_sprite = window->viewport_smart_follow_sprite;
+        window->focus = Focus(window->viewportSmartFollowSprite);
+        window->viewportTargetSprite = window->viewportSmartFollowSprite;
     }
 
     void ViewportUpdateSmartFollowVehicle(WindowBase* window)
     {
-        window->focus = Focus(window->viewport_smart_follow_sprite);
-        window->viewport_target_sprite = window->viewport_smart_follow_sprite;
+        window->focus = Focus(window->viewportSmartFollowSprite);
+        window->viewportTargetSprite = window->viewportSmartFollowSprite;
     }
 
     static void ViewportRotateSingleInternal(WindowBase& w, int32_t direction)
@@ -830,7 +806,7 @@ namespace OpenRCT2
 
         viewport->rotation = (viewport->rotation + direction) & 3;
 
-        auto centreLoc = centre_2d_coordinates(coords, viewport);
+        auto centreLoc = centre2dCoordinates(coords, viewport);
 
         if (centreLoc.has_value())
         {
@@ -838,8 +814,8 @@ namespace OpenRCT2
             viewport->viewPos = *centreLoc;
         }
 
-        w.Invalidate();
-        w.OnViewportRotate();
+        w.invalidate();
+        w.onViewportRotate();
     }
 
     void ViewportRotateSingle(WindowBase* window, int32_t direction)
@@ -1054,7 +1030,7 @@ namespace OpenRCT2
     static void ViewportPaintWeatherGloom(RenderTarget& rt)
     {
         auto paletteId = ClimateGetWeatherGloomPaletteId(getGameState().weatherCurrent);
-        if (paletteId != FilterPaletteID::PaletteNull)
+        if (paletteId != FilterPaletteID::paletteNull)
         {
             auto x = rt.x;
             auto y = rt.y;
@@ -1175,7 +1151,7 @@ namespace OpenRCT2
                 if (!(mainWindow->viewport->flags & VIEWPORT_FLAG_GRIDLINES))
                 {
                     mainWindow->viewport->flags |= VIEWPORT_FLAG_GRIDLINES;
-                    mainWindow->Invalidate();
+                    mainWindow->invalidate();
                 }
             }
         }
@@ -1199,7 +1175,7 @@ namespace OpenRCT2
                 if (!Config::Get().general.AlwaysShowGridlines)
                 {
                     mainWindow->viewport->flags &= ~VIEWPORT_FLAG_GRIDLINES;
-                    mainWindow->Invalidate();
+                    mainWindow->invalidate();
                 }
             }
         }
@@ -1219,7 +1195,7 @@ namespace OpenRCT2
                 if (!(mainWindow->viewport->flags & VIEWPORT_FLAG_LAND_OWNERSHIP))
                 {
                     mainWindow->viewport->flags |= VIEWPORT_FLAG_LAND_OWNERSHIP;
-                    mainWindow->Invalidate();
+                    mainWindow->invalidate();
                 }
             }
         }
@@ -1243,7 +1219,7 @@ namespace OpenRCT2
                 if (mainWindow->viewport->flags & VIEWPORT_FLAG_LAND_OWNERSHIP)
                 {
                     mainWindow->viewport->flags &= ~VIEWPORT_FLAG_LAND_OWNERSHIP;
-                    mainWindow->Invalidate();
+                    mainWindow->invalidate();
                 }
             }
         }
@@ -1263,7 +1239,7 @@ namespace OpenRCT2
                 if (!(mainWindow->viewport->flags & VIEWPORT_FLAG_CONSTRUCTION_RIGHTS))
                 {
                     mainWindow->viewport->flags |= VIEWPORT_FLAG_CONSTRUCTION_RIGHTS;
-                    mainWindow->Invalidate();
+                    mainWindow->invalidate();
                 }
             }
         }
@@ -1287,7 +1263,7 @@ namespace OpenRCT2
                 if (mainWindow->viewport->flags & VIEWPORT_FLAG_CONSTRUCTION_RIGHTS)
                 {
                     mainWindow->viewport->flags &= ~VIEWPORT_FLAG_CONSTRUCTION_RIGHTS;
-                    mainWindow->Invalidate();
+                    mainWindow->invalidate();
                 }
             }
         }
@@ -1308,7 +1284,7 @@ namespace OpenRCT2
 
             switch (mode)
             {
-                case ViewportVisibility::Default:
+                case ViewportVisibility::standard:
                 { // Set all these flags to 0, and invalidate if any were active
                     uint32_t mask = VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_HIDE_RIDES | VIEWPORT_FLAG_HIDE_SCENERY
                         | VIEWPORT_FLAG_HIDE_PATHS | VIEWPORT_FLAG_LAND_HEIGHTS | VIEWPORT_FLAG_TRACK_HEIGHTS
@@ -1320,26 +1296,26 @@ namespace OpenRCT2
                     vp->flags &= ~mask;
                     break;
                 }
-                case ViewportVisibility::UndergroundViewOn:      // 6CB79D
-                case ViewportVisibility::UndergroundViewGhostOn: // 6CB7C4
+                case ViewportVisibility::undergroundViewOn:      // 6CB79D
+                case ViewportVisibility::undergroundViewGhostOn: // 6CB7C4
                     // Set underground on, invalidate if it was off
                     invalidate += !(vp->flags & VIEWPORT_FLAG_UNDERGROUND_INSIDE);
                     vp->flags |= VIEWPORT_FLAG_UNDERGROUND_INSIDE;
                     break;
-                case ViewportVisibility::TrackHeights: // 6CB7EB
+                case ViewportVisibility::trackHeights: // 6CB7EB
                     // Set track heights on, invalidate if off
                     invalidate += !(vp->flags & VIEWPORT_FLAG_TRACK_HEIGHTS);
                     vp->flags |= VIEWPORT_FLAG_TRACK_HEIGHTS;
                     break;
-                case ViewportVisibility::UndergroundViewOff:      // 6CB7B1
-                case ViewportVisibility::UndergroundViewGhostOff: // 6CB7D8
+                case ViewportVisibility::undergroundViewOff:      // 6CB7B1
+                case ViewportVisibility::undergroundViewGhostOff: // 6CB7D8
                     // Set underground off, invalidate if it was on
                     invalidate += vp->flags & VIEWPORT_FLAG_UNDERGROUND_INSIDE;
                     vp->flags &= ~(static_cast<uint16_t>(VIEWPORT_FLAG_UNDERGROUND_INSIDE));
                     break;
             }
             if (invalidate != 0)
-                window->Invalidate();
+                window->invalidate();
         }
     }
 
@@ -1412,7 +1388,7 @@ namespace OpenRCT2
 
         switch (ps->InteractionItem)
         {
-            case ViewportInteractionItem::Entity:
+            case ViewportInteractionItem::entity:
                 if (ps->Entity != nullptr)
                 {
                     switch (ps->Entity->Type)
@@ -1421,8 +1397,8 @@ namespace OpenRCT2
                         {
                             if (viewFlags & VIEWPORT_FLAG_HIDE_VEHICLES || clipped)
                             {
-                                return (viewFlags & VIEWPORT_FLAG_INVISIBLE_VEHICLES) ? VisibilityKind::Hidden
-                                                                                      : VisibilityKind::Partial;
+                                return (viewFlags & VIEWPORT_FLAG_INVISIBLE_VEHICLES) ? VisibilityKind::hidden
+                                                                                      : VisibilityKind::partial;
                             }
                             // Rides without track can technically have a 'vehicle':
                             // these should be hidden if 'hide rides' is enabled
@@ -1435,8 +1411,8 @@ namespace OpenRCT2
                                 auto ride = vehicle->GetRide();
                                 if (ride != nullptr && !ride->getRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
                                 {
-                                    return (viewFlags & VIEWPORT_FLAG_INVISIBLE_RIDES) ? VisibilityKind::Hidden
-                                                                                       : VisibilityKind::Partial;
+                                    return (viewFlags & VIEWPORT_FLAG_INVISIBLE_RIDES) ? VisibilityKind::hidden
+                                                                                       : VisibilityKind::partial;
                                 }
                             }
                             break;
@@ -1444,82 +1420,82 @@ namespace OpenRCT2
                         case EntityType::Guest:
                             if (viewFlags & VIEWPORT_FLAG_HIDE_GUESTS)
                             {
-                                return VisibilityKind::Hidden;
+                                return VisibilityKind::hidden;
                             }
                             else if (clipped)
                             {
-                                return VisibilityKind::Partial;
+                                return VisibilityKind::partial;
                             }
                             break;
                         case EntityType::Staff:
                             if (viewFlags & VIEWPORT_FLAG_HIDE_STAFF)
                             {
-                                return VisibilityKind::Hidden;
+                                return VisibilityKind::hidden;
                             }
                             else if (clipped)
                             {
-                                return VisibilityKind::Partial;
+                                return VisibilityKind::partial;
                             }
                             break;
                         default:
                             if (clipped)
                             {
-                                return VisibilityKind::Partial;
+                                return VisibilityKind::partial;
                             }
                             break;
                     }
                 }
                 break;
-            case ViewportInteractionItem::Ride:
+            case ViewportInteractionItem::ride:
                 if (viewFlags & VIEWPORT_FLAG_HIDE_RIDES || clipped)
                 {
-                    return (viewFlags & VIEWPORT_FLAG_INVISIBLE_RIDES) ? VisibilityKind::Hidden : VisibilityKind::Partial;
+                    return (viewFlags & VIEWPORT_FLAG_INVISIBLE_RIDES) ? VisibilityKind::hidden : VisibilityKind::partial;
                 }
                 break;
-            case ViewportInteractionItem::Footpath:
-            case ViewportInteractionItem::PathAddition:
-            case ViewportInteractionItem::Banner:
+            case ViewportInteractionItem::footpath:
+            case ViewportInteractionItem::pathAddition:
+            case ViewportInteractionItem::banner:
                 if (viewFlags & VIEWPORT_FLAG_HIDE_PATHS || clipped)
                 {
-                    return (viewFlags & VIEWPORT_FLAG_INVISIBLE_PATHS) ? VisibilityKind::Hidden : VisibilityKind::Partial;
+                    return (viewFlags & VIEWPORT_FLAG_INVISIBLE_PATHS) ? VisibilityKind::hidden : VisibilityKind::partial;
                 }
                 break;
-            case ViewportInteractionItem::Scenery:
-            case ViewportInteractionItem::LargeScenery:
-            case ViewportInteractionItem::Wall:
+            case ViewportInteractionItem::scenery:
+            case ViewportInteractionItem::largeScenery:
+            case ViewportInteractionItem::wall:
                 if (ps->Element != nullptr)
                 {
                     if (IsTileElementVegetation(ps->Element))
                     {
                         if (viewFlags & VIEWPORT_FLAG_HIDE_VEGETATION || clipped)
                         {
-                            return (viewFlags & VIEWPORT_FLAG_INVISIBLE_VEGETATION) ? VisibilityKind::Hidden
-                                                                                    : VisibilityKind::Partial;
+                            return (viewFlags & VIEWPORT_FLAG_INVISIBLE_VEGETATION) ? VisibilityKind::hidden
+                                                                                    : VisibilityKind::partial;
                         }
                     }
                     else
                     {
                         if (viewFlags & VIEWPORT_FLAG_HIDE_SCENERY || clipped)
                         {
-                            return (viewFlags & VIEWPORT_FLAG_INVISIBLE_SCENERY) ? VisibilityKind::Hidden
-                                                                                 : VisibilityKind::Partial;
+                            return (viewFlags & VIEWPORT_FLAG_INVISIBLE_SCENERY) ? VisibilityKind::hidden
+                                                                                 : VisibilityKind::partial;
                         }
                     }
                 }
-                if (ps->InteractionItem == ViewportInteractionItem::Wall
+                if (ps->InteractionItem == ViewportInteractionItem::wall
                     && (viewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE || clipped))
                 {
-                    return VisibilityKind::Partial;
+                    return VisibilityKind::partial;
                 }
                 break;
             default:
                 if (clipped)
                 {
-                    return VisibilityKind::Partial;
+                    return VisibilityKind::partial;
                 }
                 break;
         }
-        return VisibilityKind::Visible;
+        return VisibilityKind::visible;
     }
 
     /**
@@ -1527,8 +1503,8 @@ namespace OpenRCT2
      */
     static bool PSInteractionTypeIsInFilter(PaintStruct* ps, uint16_t filter)
     {
-        if (ps->InteractionItem != ViewportInteractionItem::None && ps->InteractionItem != ViewportInteractionItem::Label
-            && ps->InteractionItem <= ViewportInteractionItem::Banner)
+        if (ps->InteractionItem != ViewportInteractionItem::none && ps->InteractionItem != ViewportInteractionItem::label
+            && ps->InteractionItem <= ViewportInteractionItem::banner)
         {
             auto mask = EnumToFlag(ps->InteractionItem);
             if (filter & mask)
@@ -1716,7 +1692,7 @@ namespace OpenRCT2
                 if (IsSpriteInteractedWith(session->DPI, ps->image_id, ps->ScreenPos))
                 {
                     if (PSInteractionTypeIsInFilter(ps, filter)
-                        && GetPaintStructVisibility(ps, viewFlags) == VisibilityKind::Visible)
+                        && GetPaintStructVisibility(ps, viewFlags) == VisibilityKind::visible)
                     {
                         info = { ps };
                     }
@@ -1731,7 +1707,7 @@ namespace OpenRCT2
                 if (IsSpriteInteractedWith(session->DPI, attached_ps->image_id, ps->ScreenPos + attached_ps->RelativePos))
                 {
                     if (PSInteractionTypeIsInFilter(ps, filter)
-                        && GetPaintStructVisibility(ps, viewFlags) == VisibilityKind::Visible)
+                        && GetPaintStructVisibility(ps, viewFlags) == VisibilityKind::visible)
                     {
                         info = { ps };
                     }
@@ -1872,8 +1848,8 @@ namespace OpenRCT2
             return std::nullopt;
         }
         auto myViewport = window->viewport;
-        auto info = GetMapCoordinatesFromPosWindow(window, screenCoords, EnumsToFlags(ViewportInteractionItem::Terrain));
-        if (info.interactionType == ViewportInteractionItem::None)
+        auto info = GetMapCoordinatesFromPosWindow(window, screenCoords, EnumsToFlags(ViewportInteractionItem::terrain));
+        if (info.interactionType == ViewportInteractionItem::none)
         {
             return std::nullopt;
         }

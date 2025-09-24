@@ -16,12 +16,12 @@ namespace OpenRCT2::GameActions
         return GameAction::GetActionFlags() | Flags::AllowWhilePaused | Flags::IgnoreForReplays;
     }
 
-    Result PauseToggleAction::Query() const
+    Result PauseToggleAction::Query(GameState_t& gameState) const
     {
         return Result();
     }
 
-    Result PauseToggleAction::Execute() const
+    Result PauseToggleAction::Execute(GameState_t& gameState) const
     {
         PauseToggle();
         return Result();

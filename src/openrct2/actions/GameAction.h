@@ -17,6 +17,11 @@
 #include <functional>
 #include <memory>
 
+namespace OpenRCT2
+{
+    struct GameState_t;
+}
+
 namespace OpenRCT2::GameActions
 {
     namespace Flags
@@ -229,12 +234,12 @@ namespace OpenRCT2::GameActions
         /**
          * Query the result of the game action without changing the game state.
          */
-        virtual OpenRCT2::GameActions::Result Query() const = 0;
+        virtual Result Query(GameState_t& gameState) const = 0;
 
         /**
          * Apply the game action and change the game state.
          */
-        virtual OpenRCT2::GameActions::Result Execute() const = 0;
+        virtual Result Execute(GameState_t& gameState) const = 0;
 
         bool LocationValid(const CoordsXY& coords) const;
     };
@@ -282,11 +287,11 @@ namespace OpenRCT2::GameActions
     GameAction::Ptr Clone(const GameAction* action);
 
     // This should be used if a round trip is to be expected.
-    Result Query(const GameAction* action);
-    Result Execute(const GameAction* action);
+    Result Query(const GameAction* action, GameState_t& gameState);
+    Result Execute(const GameAction* action, GameState_t& gameState);
 
     // This should be used from within game actions.
-    Result QueryNested(const GameAction* action);
-    Result ExecuteNested(const GameAction* action);
+    Result QueryNested(const GameAction* action, GameState_t& gameState);
+    Result ExecuteNested(const GameAction* action, GameState_t& gameState);
 
 } // namespace OpenRCT2::GameActions

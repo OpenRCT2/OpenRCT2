@@ -924,7 +924,8 @@ void Guest::UpdateConsumptionMotives()
 void Guest::Tick128UpdateGuest(uint32_t index)
 {
     const auto currentTicks = getGameState().currentTicks;
-    if ((index & 0x1FF) != (currentTicks & 0x1FF))
+    const bool ticksMatchIndex = (index & 0x1FF) != (currentTicks & 0x1FF);
+    if (ticksMatchIndex && !(PeepFlags & PEEP_FLAGS_POSITION_FROZEN))
     {
         UpdateConsumptionMotives();
         return;
@@ -1462,14 +1463,14 @@ void Guest::CheckCantFindRide()
     GuestHeadingToRideId = RideId::GetNull();
 
     auto* windowMgr = Ui::GetWindowManager();
-    WindowBase* w = windowMgr->FindByNumber(WindowClass::Peep, Id);
+    WindowBase* w = windowMgr->FindByNumber(WindowClass::peep, Id);
 
     if (w != nullptr)
     {
-        w->OnPrepareDraw();
+        w->onPrepareDraw();
     }
 
-    windowMgr->InvalidateByNumber(WindowClass::Peep, Id);
+    windowMgr->InvalidateByNumber(WindowClass::peep, Id);
 }
 
 /**
@@ -1884,7 +1885,8 @@ static OpenRCT2::BitSet<OpenRCT2::Limits::kMaxRidesInPark> GuestFindRidesToGoOn(
     if (guest.HasItem(ShopItem::Map))
     {
         // Consider rides that peep hasn't been on yet
-        for (auto& ride : GetRideManager())
+        auto& gameState = getGameState();
+        for (auto& ride : RideManager(gameState))
         {
             if (!guest.HasRidden(ride))
             {
@@ -1918,7 +1920,8 @@ static OpenRCT2::BitSet<OpenRCT2::Limits::kMaxRidesInPark> GuestFindRidesToGoOn(
         }
 
         // Always take the tall rides into consideration (realistic as you can usually see them from anywhere in the park)
-        for (auto& ride : GetRideManager())
+        auto& gameState = getGameState();
+        for (auto& ride : RideManager(gameState))
         {
             if (ride.highestDropHeight > 66 || ride.ratings.excitement >= RideRating::make(8, 00))
             {
@@ -1935,7 +1938,9 @@ static Ride* GuestFindBestRideToGoOn(Guest& guest)
     // Pick the most exciting ride
     auto rideConsideration = GuestFindRidesToGoOn(guest);
     Ride* mostExcitingRide = nullptr;
-    for (auto& ride : GetRideManager())
+
+    auto& gameState = getGameState();
+    for (auto& ride : RideManager(gameState))
     {
         const auto rideIndex = ride.id.ToUnderlying();
         if (rideConsideration.size() > rideIndex && rideConsideration[rideIndex])
@@ -2345,7 +2350,7 @@ void Guest::SpendMoney(money64& peep_expend_type, money64 amount, ExpenditureTyp
     peep_expend_type += amount;
 
     auto* windowMgr = Ui::GetWindowManager();
-    windowMgr->InvalidateByNumber(WindowClass::Peep, Id);
+    windowMgr->InvalidateByNumber(WindowClass::peep, Id);
 
     FinancePayment(-amount, expenditure);
 
@@ -3157,10 +3162,10 @@ static void GuestLeavePark(Guest& guest)
     guest.InsertNewThought(PeepThoughtType::GoHome);
 
     auto* windowMgr = Ui::GetWindowManager();
-    WindowBase* w = windowMgr->FindByNumber(WindowClass::Peep, guest.Id);
+    WindowBase* w = windowMgr->FindByNumber(WindowClass::peep, guest.Id);
     if (w != nullptr)
-        w->OnPrepareDraw();
-    windowMgr->InvalidateByNumber(WindowClass::Peep, guest.Id);
+        w->onPrepareDraw();
+    windowMgr->InvalidateByNumber(WindowClass::peep, guest.Id);
 }
 
 template<typename T>
@@ -3187,7 +3192,8 @@ static void PeepHeadForNearestRide(Guest& guest, bool considerOnlyCloseRides, T 
     if (!considerOnlyCloseRides && (guest.HasItem(ShopItem::Map)))
     {
         // Consider all rides in the park
-        for (const auto& ride : GetRideManager())
+        auto& gameState = getGameState();
+        for (const auto& ride : RideManager(gameState))
         {
             if (predicate(ride))
             {
@@ -3228,7 +3234,9 @@ static void PeepHeadForNearestRide(Guest& guest, bool considerOnlyCloseRides, T 
     // Filter the considered rides
     RideId potentialRides[OpenRCT2::Limits::kMaxRidesInPark];
     size_t numPotentialRides = 0;
-    for (auto& ride : GetRideManager())
+
+    auto& gameState = getGameState();
+    for (auto& ride : RideManager(gameState))
     {
         if (rideConsideration[ride.id.ToUnderlying()])
         {
@@ -3400,7 +3408,7 @@ void Guest::UpdateBuying()
                 CashInPocket += 50.00_GBP;
             }
             auto* windowMgr = Ui::GetWindowManager();
-            windowMgr->InvalidateByNumber(WindowClass::Peep, Id);
+            windowMgr->InvalidateByNumber(WindowClass::peep, Id);
         }
         Orientation ^= 0x10;
 
@@ -3915,7 +3923,7 @@ void Guest::UpdateRideFreeVehicleEnterRide(Ride& ride)
     {
         station.QueueTime = queueTime;
         auto* windowMgr = Ui::GetWindowManager();
-        windowMgr->InvalidateByNumber(WindowClass::Ride, CurrentRide.ToUnderlying());
+        windowMgr->InvalidateByNumber(WindowClass::ride, CurrentRide.ToUnderlying());
     }
 
     if (PeepFlags & PEEP_FLAGS_TRACKING)
@@ -5916,7 +5924,7 @@ void Guest::UpdateLeavingPark()
     Var37 = 1;
 
     auto* windowMgr = Ui::GetWindowManager();
-    windowMgr->InvalidateByClass(WindowClass::GuestList);
+    windowMgr->InvalidateByClass(WindowClass::guestList);
 
     const auto [pathingResult, _] = PerformNextAction();
     if (!(pathingResult & PATHING_OUTSIDE_PARK))
@@ -7812,6 +7820,31 @@ void Guest::RemoveRideFromMemory(RideId rideId)
         lastEntry.type = PeepThoughtType::None;
         lastEntry.item = kPeepThoughtItemNone;
     }
+}
+
+void Guest::ThrowUp()
+{
+    Hunger /= 2;
+    NauseaTarget /= 2;
+
+    if (Nausea < 30)
+        Nausea = 0;
+    else
+        Nausea -= 30;
+
+    WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_2;
+
+    const auto curLoc = GetLocation();
+    Litter::Create({ curLoc, Orientation }, (Id.ToUnderlying() & 1) ? Litter::Type::VomitAlt : Litter::Type::Vomit);
+
+    static constexpr OpenRCT2::Audio::SoundId coughs[4] = {
+        OpenRCT2::Audio::SoundId::Cough1,
+        OpenRCT2::Audio::SoundId::Cough2,
+        OpenRCT2::Audio::SoundId::Cough3,
+        OpenRCT2::Audio::SoundId::Cough4,
+    };
+    auto soundId = coughs[ScenarioRand() & 3];
+    OpenRCT2::Audio::Play3D(soundId, curLoc);
 }
 
 void Guest::Serialise(DataSerialiser& stream)

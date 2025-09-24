@@ -14,6 +14,7 @@
 #include "../entity/EntityBase.h"
 #include "../ride/RideTypes.h"
 #include "../world/Location.hpp"
+#include "Angles.h"
 #include "CarEntry.h"
 #include "Station.h"
 #include "VehicleColour.h"
@@ -35,22 +36,19 @@ struct GForces
     int32_t LateralG{};
 };
 
-// How many valid pitch values are currently in the game. Eventually pitch will be enumerated.
-constexpr uint8_t NumVehiclePitches = 60;
-
 // Size: 0x09
 struct VehicleInfo
 {
-    int16_t x;         // 0x00
-    int16_t y;         // 0x02
-    int16_t z;         // 0x04
-    uint8_t direction; // 0x06
-    uint8_t pitch;     // 0x07
-    uint8_t roll;      // 0x08
+    int16_t x;          // 0x00
+    int16_t y;          // 0x02
+    int16_t z;          // 0x04
+    uint8_t direction;  // 0x06
+    VehiclePitch pitch; // 0x07
+    VehicleRoll roll;   // 0x08
 
     bool IsInvalid() const
     {
-        return x == 0 && y == 0 && z == 0 && direction == 0 && pitch == 0 && roll == 0;
+        return x == 0 && y == 0 && z == 0 && direction == 0 && pitch == VehiclePitch::flat && roll == VehicleRoll::unbanked;
     }
 };
 
@@ -109,12 +107,12 @@ struct Vehicle : EntityBase
     Type SubType;
     union
     {
-        uint8_t pitch;
+        VehiclePitch pitch;
         uint8_t flatRideAnimationFrame;
     };
     union
     {
-        uint8_t roll;
+        VehicleRoll roll;
         uint8_t flatRideSecondaryAnimationFrame;
     };
     int32_t remaining_distance;

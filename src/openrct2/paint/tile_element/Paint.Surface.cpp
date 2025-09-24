@@ -78,61 +78,7 @@ static constexpr CoordsXY viewport_surface_paint_data[][4] = {
     },
 };
 
-enum
-{
-    CORNER_TOP,
-    CORNER_RIGHT,
-    CORNER_BOTTOM,
-    CORNER_LEFT
-};
-
-struct CornerHeight
-{
-    uint8_t top;
-    uint8_t right;
-    uint8_t bottom;
-    uint8_t left;
-};
-
 // clang-format off
-/**
-*  rct2: 0x0097B4A4 (R), 0x0097B4C4 (T), 0x0097B4E4 (L), 0x0097B504 (B)
-*/
-static constexpr CornerHeight corner_heights[] = {
-    // T  R  B  L
-    { 0, 0, 0, 0 },
-    { 0, 0, 1, 0 },
-    { 0, 0, 0, 1 },
-    { 0, 0, 1, 1 },
-    { 1, 0, 0, 0 },
-    { 1, 0, 1, 0 },
-    { 1, 0, 0, 1 },
-    { 1, 0, 1, 1 },
-    { 0, 1, 0, 0 },
-    { 0, 1, 1, 0 },
-    { 0, 1, 0, 1 },
-    { 0, 1, 1, 1 },
-    { 1, 1, 0, 0 },
-    { 1, 1, 1, 0 },
-    { 1, 1, 0, 1 },
-    { 1, 1, 1, 1 },
-    { 0, 0, 0, 0 },
-    { 0, 0, 1, 0 },
-    { 0, 0, 0, 1 },
-    { 0, 0, 1, 1 },
-    { 1, 0, 0, 0 },
-    { 1, 0, 1, 0 },
-    { 1, 0, 0, 1 },
-    { 1, 0, 1, 2 },
-    { 0, 1, 0, 0 },
-    { 0, 1, 1, 0 },
-    { 0, 1, 0, 1 },
-    { 0, 1, 2, 1 },
-    { 1, 1, 0, 0 },
-    { 1, 2, 1, 0 },
-    { 2, 1, 0, 1 },
-    { 1, 1, 1, 1 },
-};
 
 // bottom left tint
 static constexpr uint8_t Byte97B524[] = {
@@ -168,36 +114,32 @@ struct TunnelDescriptor
     uint8_t imageOffset;
 };
 static constexpr TunnelDescriptor kTunnels[] = {
-    { 2, 2, 0,   15, TunnelType::StandardFlat,        36 },  // TunnelType::StandardFlat
-    { 3, 3, 0,   15, TunnelType::StandardFlat,        40 },  // TunnelType::StandardSlopeStart
-    { 3, 5, -32,  4, TunnelType::StandardFlat,        44 },  // TunnelType::StandardSlopeEnd
-    { 3, 3, 0,   15, TunnelType::InvertedFlat,        48 },  // TunnelType::InvertedFlat
-    { 4, 4, 0,   15, TunnelType::InvertedFlat,        52 },  // TunnelType::InvertedSlopeStart
-    { 4, 7, -48,  4, TunnelType::InvertedFlat,        56 },  // TunnelType::InvertedSlopeEnd
-    { 2, 2, 0,   15, TunnelType::SquareFlat,          60 },  // TunnelType::SquareFlat
-    { 3, 3, 0,   15, TunnelType::SquareFlat,          64 },  // TunnelType::SquareSlopeStart
-    { 3, 5, -32,  4, TunnelType::SquareFlat,          68 },  // TunnelType::SquareSlopeEnd
-    { 3, 3, 0,   15, TunnelType::SquareFlat,          72 },  // TunnelType::InvertedSquare
-    { 2, 3, -16, 15, TunnelType::PathAndMiniGolf,     76 },  // TunnelType::PathAndMiniGolf
-    { 2, 3, -16, 15, TunnelType::Path11,              80 },  // TunnelType::Path11
-    { 2, 3, -16,  4, TunnelType::StandardFlatTo25Deg, 36 },  // TunnelType::StandardFlatTo25Deg
-    { 3, 4, -16,  4, TunnelType::InvertedFlatTo25Deg, 48 },  // TunnelType::InvertedFlatTo25Deg
-    { 2, 3, -16,  4, TunnelType::SquareFlatTo25Deg,   60 },  // TunnelType::SquareFlatTo25Deg
-    { 3, 4, -16,  4, TunnelType::SquareFlatTo25Deg,   72 },  // TunnelType::InvertedSquareFlatTo25Deg
-    { 2, 2, 0,   15, TunnelType::Doors0,              76 },  // TunnelType::Doors0
-    { 2, 2, 0,   15, TunnelType::Doors1,              80 },  // TunnelType::Doors1
-    { 2, 2, 0,   15, TunnelType::Doors2,              84 },  // TunnelType::Doors2
-    { 2, 2, 0,   15, TunnelType::Doors3,              88 },  // TunnelType::Doors3
-    { 2, 2, 0,   15, TunnelType::Doors4,              92 },  // TunnelType::Doors4
-    { 2, 2, 0,   15, TunnelType::Doors5,              96 },  // TunnelType::Doors5
-    { 2, 2, 0,   15, TunnelType::Doors6,              100 }, // TunnelType::Doors6
-    { 2, 3, -16,  4, TunnelType::Doors0,              76 },  // TunnelType::DoorsFlatTo25Deg0
-    { 2, 3, -16,  4, TunnelType::Doors1,              80 },  // TunnelType::DoorsFlatTo25Deg1
-    { 2, 3, -16,  4, TunnelType::Doors2,              84 },  // TunnelType::DoorsFlatTo25Deg2
-    { 2, 3, -16,  4, TunnelType::Doors3,              88 },  // TunnelType::DoorsFlatTo25Deg3
-    { 2, 3, -16,  4, TunnelType::Doors4,              92 },  // TunnelType::DoorsFlatTo25Deg4
-    { 2, 3, -16,  4, TunnelType::Doors5,              96 },  // TunnelType::DoorsFlatTo25Deg5
-    { 2, 3, -16,  4, TunnelType::Doors6,              100 }, // TunnelType::DoorsFlatTo25Deg6
+    { 2, 2, 0,   15, TunnelType::StandardFlat,                    36 }, // TunnelType::StandardFlat
+    { 3, 3, 0,   15, TunnelType::StandardFlat,                    40 }, // TunnelType::StandardSlopeStart
+    { 3, 5, -32,  4, TunnelType::StandardFlat,                    44 }, // TunnelType::StandardSlopeEnd
+    { 3, 3, 0,   15, TunnelType::InvertedFlat,                    48 }, // TunnelType::InvertedFlat
+    { 4, 4, 0,   15, TunnelType::InvertedFlat,                    52 }, // TunnelType::InvertedSlopeStart
+    { 4, 7, -48,  4, TunnelType::InvertedFlat,                    56 }, // TunnelType::InvertedSlopeEnd
+    { 2, 2, 0,   15, TunnelType::SquareFlat,                      60 }, // TunnelType::SquareFlat
+    { 3, 3, 0,   15, TunnelType::SquareFlat,                      64 }, // TunnelType::SquareSlopeStart
+    { 3, 5, -32,  4, TunnelType::SquareFlat,                      68 }, // TunnelType::SquareSlopeEnd
+    { 3, 3, 0,   15, TunnelType::SquareFlat,                      72 }, // TunnelType::InvertedSquare
+    { 2, 3, -16, 15, TunnelType::PathAndMiniGolf,                 76 }, // TunnelType::PathAndMiniGolf
+    { 2, 3, -16, 15, TunnelType::Path11,                          80 }, // TunnelType::Path11
+    { 2, 3, -16,  4, TunnelType::StandardFlatTo25Deg,             36 }, // TunnelType::StandardFlatTo25Deg
+    { 3, 4, -16,  4, TunnelType::InvertedFlatTo25Deg,             48 }, // TunnelType::InvertedFlatTo25Deg
+    { 2, 3, -16,  4, TunnelType::SquareFlatTo25Deg,               60 }, // TunnelType::SquareFlatTo25Deg
+    { 3, 4, -16,  4, TunnelType::SquareFlatTo25Deg,               72 }, // TunnelType::InvertedSquareFlatTo25Deg
+    { 2, 2, 0,   15, TunnelType::doorClosed,                      84 }, // TunnelType::doorClosed
+    { 2, 2, 0,   15, TunnelType::doorOpeningOutward,              88 }, // TunnelType::doorOpeningOutward
+    { 2, 2, 0,   15, TunnelType::doorOpenOutward,                 92 }, // TunnelType::doorOpenOutward
+    { 2, 2, 0,   15, TunnelType::doorOpeningInward,               96 }, // TunnelType::doorOpeningInward
+    { 2, 2, 0,   15, TunnelType::doorOpenInward,                 100 }, // TunnelType::doorOpenInward
+    { 2, 3, -16,  4, TunnelType::doorClosedFlatToDown25,          84 }, // TunnelType::doorClosedFlatToDown25
+    { 2, 3, -16,  4, TunnelType::doorOpeningOutwardFlatToDown25,  88 }, // TunnelType::doorOpeningOutwardFlatToDown25
+    { 2, 3, -16,  4, TunnelType::doorOpenOutwardFlatToDown25,     92 }, // TunnelType::doorOpenOutwardFlatToDown25
+    { 2, 3, -16,  4, TunnelType::doorOpeningInwardFlatToDown25,   96 }, // TunnelType::doorOpeningInwardFlatToDown25
+    { 2, 3, -16,  4, TunnelType::doorOpenInwardFlatToDown25,     100 }, // TunnelType::doorOpenInwardFlatToDown25
 };
 static_assert(std::size(kTunnels) == kTunnelTypeCount);
 
@@ -214,7 +156,7 @@ struct TileDescriptor
     const TileElement* tile_element;
     const TerrainSurfaceObject* surfaceObject;
     uint8_t slope;
-    CornerHeight corner_heights;
+    SlopeRelativeCornerHeights corner_heights;
 };
 
 struct TileSurfaceBoundaryData
@@ -866,7 +808,7 @@ static std::pair<int32_t, int32_t> SurfaceGetHeightAboveWater(
 
 std::optional<colour_t> GetPatrolAreaTileColour(const CoordsXY& pos)
 {
-    bool selected = gMapSelectFlags & MAP_SELECT_FLAG_ENABLE && gMapSelectType == MAP_SELECT_TYPE_FULL
+    bool selected = gMapSelectFlags.has(MapSelectFlag::enable) && gMapSelectType == MapSelectType::full
         && pos.x >= gMapSelectPositionA.x && pos.x <= gMapSelectPositionB.x && pos.y >= gMapSelectPositionA.y
         && pos.y <= gMapSelectPositionB.y;
 
@@ -989,7 +931,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
 {
     PROFILED_FUNCTION();
 
-    session.InteractionType = ViewportInteractionItem::Terrain;
+    session.InteractionType = ViewportInteractionItem::terrain;
     session.Flags |= PaintSessionFlags::PassedSurface;
     session.Surface = &tileElement;
 
@@ -997,7 +939,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
     const uint8_t rotation = session.CurrentRotation;
     const uint8_t surfaceShape = ViewportSurfacePaintSetupGetRelativeSlope(tileElement, rotation);
     const CoordsXY& base = session.SpritePosition;
-    const CornerHeight& cornerHeights = corner_heights[surfaceShape];
+    const auto cornerHeights = GetSlopeRelativeCornerHeights(surfaceShape);
     const TileElement* elementPtr = &reinterpret_cast<const TileElement&>(tileElement);
 
     const auto* surfaceObject = tileElement.GetSurfaceObject();
@@ -1039,7 +981,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
 
         const uint32_t surfaceSlope = ViewportSurfacePaintSetupGetRelativeSlope(*surfaceElement, rotation);
         const uint8_t baseHeight = surfaceElement->GetBaseZ() / 16;
-        const CornerHeight& ch = corner_heights[surfaceSlope];
+        const auto ch = GetSlopeRelativeCornerHeights(surfaceSlope);
 
         descriptor.tile_coords = TileCoordsXY{ position };
         descriptor.tile_element = reinterpret_cast<TileElement*>(surfaceElement);
@@ -1101,12 +1043,12 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
         }
         if (session.ViewFlags & (VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_HIDE_BASE))
         {
-            imageId = imageId.WithTransparency(FilterPaletteID::PaletteDarken1);
+            imageId = imageId.WithTransparency(FilterPaletteID::paletteDarken1);
         }
 
         if (session.SelectedElement == elementPtr)
         {
-            imageId = imageId.WithRemap(FilterPaletteID::PaletteGhost);
+            imageId = imageId.WithRemap(FilterPaletteID::paletteGhost);
         }
 
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, -1 });
@@ -1148,53 +1090,53 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
     // ebp[4] = ebp;
     // ebp[8] = ebx
 
-    if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE)
+    if (gMapSelectFlags.has(MapSelectFlag::enable))
     {
         // Loc660FB8:
         const CoordsXY& pos = session.MapPosition;
         if (pos.x >= gMapSelectPositionA.x && pos.x <= gMapSelectPositionB.x && pos.y >= gMapSelectPositionA.y
             && pos.y <= gMapSelectPositionB.y)
         {
-            const uint16_t mapSelectionType = gMapSelectType;
-            if (mapSelectionType >= MAP_SELECT_TYPE_EDGE_0)
+            const auto mapSelectionType = gMapSelectType;
+            if (mapSelectionType >= MapSelectType::edge0)
             {
                 // Walls
                 // Loc661089:
                 const auto fpId = static_cast<FilterPaletteID>(
-                    (((mapSelectionType - MAP_SELECT_TYPE_EDGE_0 + 1) + rotation) & 3)
-                    + static_cast<uint32_t>(FilterPaletteID::PaletteLandMarker0));
+                    (((EnumValue(mapSelectionType) - EnumValue(MapSelectType::edge0) + 1) + rotation) & 3)
+                    + static_cast<uint32_t>(FilterPaletteID::paletteLandMarker0));
                 const auto image_id = ImageId(SPR_TERRAIN_SELECTION_EDGE + Byte97B444[surfaceShape], fpId);
                 PaintAttachToPreviousPS(session, image_id, 0, 0);
             }
-            else if (mapSelectionType >= MAP_SELECT_TYPE_QUARTER_0)
+            else if (mapSelectionType >= MapSelectType::quarter0)
             {
                 // Loc661051:(no jump)
                 // Selection split into four quarter segments
                 const auto fpId = static_cast<FilterPaletteID>(
-                    (((mapSelectionType - MAP_SELECT_TYPE_QUARTER_0) + rotation) & 3)
-                    + static_cast<uint32_t>(FilterPaletteID::PaletteQuarterMarker0));
+                    (((EnumValue(mapSelectionType) - EnumValue(MapSelectType::quarter0)) + rotation) & 3)
+                    + static_cast<uint32_t>(FilterPaletteID::paletteQuarterMarker0));
                 const auto image_id = ImageId(SPR_TERRAIN_SELECTION_QUARTER + Byte97B444[surfaceShape], fpId);
                 PaintAttachToPreviousPS(session, image_id, 0, 0);
             }
-            else if (mapSelectionType <= MAP_SELECT_TYPE_FULL)
+            else if (mapSelectionType <= MapSelectType::full)
             {
                 // Corners
-                uint32_t eax = mapSelectionType;
-                if (mapSelectionType != MAP_SELECT_TYPE_FULL)
+                uint32_t eax = EnumValue(mapSelectionType);
+                if (mapSelectionType != MapSelectType::full)
                 {
-                    eax = (mapSelectionType + rotation) & 3;
+                    eax = (eax + rotation) & 3;
                 }
 
                 const auto fpId = static_cast<FilterPaletteID>(
-                    eax + static_cast<uint32_t>(FilterPaletteID::PaletteLandMarker0));
+                    eax + static_cast<uint32_t>(FilterPaletteID::paletteLandMarker0));
                 const auto image_id = ImageId(SPR_TERRAIN_SELECTION_CORNER + Byte97B444[surfaceShape], fpId);
                 PaintAttachToPreviousPS(session, image_id, 0, 0);
             }
-            else if (mapSelectionType == MAP_SELECT_TYPE_FULL_LAND_RIGHTS)
+            else if (mapSelectionType == MapSelectType::fullLandRights)
             {
                 auto [waterHeight, waterSurfaceShape] = SurfaceGetHeightAboveWater(tileElement, height, surfaceShape);
 
-                const auto fpId = FilterPaletteID::PaletteGlassLightPurple;
+                const auto fpId = FilterPaletteID::paletteGlassLightPurple;
                 const auto imageId1 = ImageId(SPR_TERRAIN_SELECTION_CORNER + Byte97B444[surfaceShape], fpId);
                 PaintAttachToPreviousPS(session, imageId1, 0, 0);
 
@@ -1212,7 +1154,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
                 // The water tool should draw its grid _on_ the water, rather than on the surface under water.
                 auto [local_height, local_surfaceShape] = SurfaceGetHeightAboveWater(tileElement, height, surfaceShape);
 
-                const auto fpId = FilterPaletteID::PaletteWaterMarker;
+                const auto fpId = FilterPaletteID::paletteWaterMarker;
                 const auto image_id = ImageId(SPR_TERRAIN_SELECTION_CORNER + Byte97B444[local_surfaceShape], fpId);
 
                 PaintStruct* backup = session.LastPS;
@@ -1222,7 +1164,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
         }
     }
 
-    if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE_CONSTRUCT)
+    if (gMapSelectFlags.has(MapSelectFlag::enableConstruct))
     {
         const CoordsXY& pos = session.MapPosition;
 
@@ -1233,10 +1175,10 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
                 continue;
             }
 
-            FilterPaletteID fpId = FilterPaletteID::PaletteSceneryGroundMarker;
-            if (gMapSelectFlags & MAP_SELECT_FLAG_GREEN)
+            FilterPaletteID fpId = FilterPaletteID::paletteSceneryGroundMarker;
+            if (gMapSelectFlags.has(MapSelectFlag::green))
             {
-                fpId = FilterPaletteID::PaletteRideGroundMarker;
+                fpId = FilterPaletteID::paletteRideGroundMarker;
             }
 
             const auto image_id = ImageId(SPR_TERRAIN_SELECTION_CORNER + Byte97B444[surfaceShape], fpId);
@@ -1293,7 +1235,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
     if (waterHeight > 0 && !gTrackDesignSaveMode && !waterGetsClipped)
     {
         // Loc6615A9: (water height)
-        session.InteractionType = ViewportInteractionItem::Water;
+        session.InteractionType = ViewportInteractionItem::water;
 
         const uint16_t localHeight = height + 16;
 
@@ -1305,7 +1247,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
             image_offset = Byte97B740[surfaceShape & 0xF];
         }
 
-        const auto image_id = ImageId(SPR_WATER_MASK + image_offset, FilterPaletteID::PaletteWater).WithBlended(true);
+        const auto image_id = ImageId(SPR_WATER_MASK + image_offset, FilterPaletteID::paletteWater).WithBlended(true);
         PaintAddImageAsParent(session, image_id, { 0, 0, waterHeight }, { 32, 32, -1 });
 
         const uint32_t overlayStart = waterIsTransparent ? EnumValue(SPR_WATER_OVERLAY)
@@ -1328,7 +1270,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
     if ((tileElement.GetParkFences()) && !gTrackDesignSaveMode)
     {
         // Owned land boundary fences
-        session.InteractionType = ViewportInteractionItem::ParkEntrance;
+        session.InteractionType = ViewportInteractionItem::parkEntrance;
 
         uint8_t rotatedFences = Numerics::rol4(tileElement.GetParkFences(), rotation);
 
@@ -1391,7 +1333,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
         }
     }
 
-    session.InteractionType = ViewportInteractionItem::Terrain;
+    session.InteractionType = ViewportInteractionItem::terrain;
 
     switch (surfaceShape)
     {

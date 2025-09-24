@@ -153,7 +153,7 @@ static void ConsoleCommandRides(InteractiveConsole& console, const arguments_t& 
     {
         if (argv[0] == "list")
         {
-            for (const auto& ride : GetRideManager())
+            for (const auto& ride : RideManager(gameState))
             {
                 auto name = ride.getName();
                 console.WriteFormatLine(
@@ -319,7 +319,7 @@ static void ConsoleCommandRides(InteractiveConsole& console, const arguments_t& 
                     {
                         auto rideAction = GameActions::RideFreezeRatingAction(
                             rideIndex, GameActions::RideRatingType::Excitement, excitement);
-                        GameActions::Execute(&rideAction);
+                        GameActions::Execute(&rideAction, gameState);
                     }
                 }
             }
@@ -353,7 +353,7 @@ static void ConsoleCommandRides(InteractiveConsole& console, const arguments_t& 
                     {
                         auto rideAction = GameActions::RideFreezeRatingAction(
                             rideIndex, GameActions::RideRatingType::Intensity, intensity);
-                        GameActions::Execute(&rideAction);
+                        GameActions::Execute(&rideAction, gameState);
                     }
                 }
             }
@@ -387,7 +387,7 @@ static void ConsoleCommandRides(InteractiveConsole& console, const arguments_t& 
                     {
                         auto rideAction = GameActions::RideFreezeRatingAction(
                             rideIndex, GameActions::RideRatingType::Nausea, nausea);
-                        GameActions::Execute(&rideAction);
+                        GameActions::Execute(&rideAction, gameState);
                     }
                 }
             }
@@ -402,10 +402,10 @@ static void ConsoleCommandRides(InteractiveConsole& console, const arguments_t& 
                         auto price = arg1;
                         if (int_valid[0])
                         {
-                            for (const auto& ride : GetRideManager())
+                            for (const auto& ride : RideManager(gameState))
                             {
                                 auto rideSetPrice = GameActions::RideSetPriceAction(ride.id, price, true);
-                                GameActions::Execute(&rideSetPrice);
+                                GameActions::Execute(&rideSetPrice, gameState);
                             }
                         }
                         else
@@ -420,12 +420,12 @@ static void ConsoleCommandRides(InteractiveConsole& console, const arguments_t& 
 
                         if (int_valid[0] && int_valid[1])
                         {
-                            for (const auto& ride : GetRideManager())
+                            for (const auto& ride : RideManager(gameState))
                             {
                                 if (ride.type == rideType)
                                 {
                                     auto rideSetPrice = GameActions::RideSetPriceAction(ride.id, price, true);
-                                    GameActions::Execute(&rideSetPrice);
+                                    GameActions::Execute(&rideSetPrice, gameState);
                                 }
                             }
                         }
@@ -447,7 +447,7 @@ static void ConsoleCommandRides(InteractiveConsole& console, const arguments_t& 
                     else
                     {
                         auto rideSetPrice = GameActions::RideSetPriceAction(RideId::FromUnderlying(rideId), price, true);
-                        GameActions::Execute(&rideSetPrice);
+                        GameActions::Execute(&rideSetPrice, gameState);
                     }
                 }
             }
@@ -526,7 +526,7 @@ static void ConsoleCommandStaff(InteractiveConsole& console, const arguments_t& 
                     console.WriteLineError("Invalid staff ID");
                     return;
                 }
-                if (staff->AssignedStaffType != StaffType::Entertainer)
+                if (!staff->isEntertainer())
                 {
                     console.WriteLineError("Specified staff is not entertainer");
                     return;
@@ -540,7 +540,7 @@ static void ConsoleCommandStaff(InteractiveConsole& console, const arguments_t& 
 
                 auto costume = static_cast<ObjectEntryIndex>(int_val[1]);
                 auto staffSetCostumeAction = GameActions::StaffSetCostumeAction(EntityId::FromUnderlying(int_val[0]), costume);
-                GameActions::Execute(&staffSetCostumeAction);
+                GameActions::Execute(&staffSetCostumeAction, gameState);
             }
         }
     }
@@ -692,7 +692,7 @@ static void ConsoleCommandGet(InteractiveConsole& console, const arguments_t& ar
             {
                 Viewport* viewport = WindowGetViewport(w);
                 auto info = GetMapCoordinatesFromPosWindow(
-                    w, { viewport->width / 2, viewport->height / 2 }, EnumsToFlags(ViewportInteractionItem::Terrain));
+                    w, { viewport->width / 2, viewport->height / 2 }, EnumsToFlags(ViewportInteractionItem::terrain));
 
                 auto tileMapCoord = TileCoordsXY(info.Loc);
                 console.WriteFormatLine("location %d %d", tileMapCoord.x, tileMapCoord.y);
@@ -762,7 +762,9 @@ static void ConsoleSetVariableAction(InteractiveConsole& console, std::string va
         console.EndAsyncExecution();
     });
     console.BeginAsyncExecution();
-    GameActions::Execute(&action);
+
+    auto& gameState = getGameState();
+    GameActions::Execute(&action, gameState);
 }
 
 static void ConsoleCommandSet(InteractiveConsole& console, const arguments_t& argv)
@@ -933,7 +935,7 @@ static void ConsoleCommandSet(InteractiveConsole& console, const arguments_t& ar
             {
                 auto location = TileCoordsXYZ(int_val[0], int_val[1], 0).ToCoordsXYZ().ToTileCentre();
                 location.z = TileElementHeight(location);
-                w->SetViewportLocation(location);
+                w->setViewportLocation(location);
                 console.Execute("get location");
             }
         }
@@ -1186,7 +1188,7 @@ static void ConsoleCommandOpen(InteractiveConsole& console, const arguments_t& a
                 // Only this window should be open for safety reasons
                 auto* windowMgr = Ui::GetWindowManager();
                 windowMgr->CloseAll();
-                ContextOpenWindow(WindowClass::EditorObjectSelection);
+                ContextOpenWindow(WindowClass::editorObjectSelection);
             }
         }
         else if (argv[0] == "inventions_list" && InvalidArguments(&invalidTitle, !title))
@@ -1197,20 +1199,20 @@ static void ConsoleCommandOpen(InteractiveConsole& console, const arguments_t& a
             }
             else
             {
-                ContextOpenWindow(WindowClass::EditorInventionList);
+                ContextOpenWindow(WindowClass::editorInventionList);
             }
         }
         else if (argv[0] == "scenario_options" && InvalidArguments(&invalidTitle, !title))
         {
-            ContextOpenWindow(WindowClass::EditorScenarioOptions);
+            ContextOpenWindow(WindowClass::editorScenarioOptions);
         }
         else if (argv[0] == "options")
         {
-            ContextOpenWindow(WindowClass::Options);
+            ContextOpenWindow(WindowClass::options);
         }
         else if (argv[0] == "themes")
         {
-            ContextOpenWindow(WindowClass::Themes);
+            ContextOpenWindow(WindowClass::themes);
         }
         else if (invalidTitle)
         {
@@ -1308,10 +1310,10 @@ static void ConsoleCommandForceDate([[maybe_unused]] InteractiveConsole& console
     }
 
     auto setDateAction = GameActions::ParkSetDateAction(year - 1, month - 1, day - 1);
-    GameActions::Execute(&setDateAction);
+    GameActions::Execute(&setDateAction, getGameState());
 
     auto* windowMgr = Ui::GetWindowManager();
-    windowMgr->InvalidateByClass(WindowClass::BottomToolbar);
+    windowMgr->InvalidateByClass(WindowClass::bottomToolbar);
 }
 
 static void ConsoleCommandLoadPark([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)

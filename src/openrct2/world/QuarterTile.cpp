@@ -10,6 +10,7 @@
 #include "QuarterTile.h"
 
 #include "../Diagnostic.h"
+#include "../world/Map.h"
 
 // Rotate both of the values amount
 const QuarterTile QuarterTile::Rotate(uint8_t amount) const
@@ -62,4 +63,14 @@ uint8_t QuarterTile::GetBaseQuarterOccupied() const
 uint8_t QuarterTile::GetZQuarterOccupied() const
 {
     return (_val >> 4) & 0xF;
+}
+
+TileCornersZ QuarterTile::GetQuarterHeights(const int32_t height) const
+{
+    const uint8_t raisedQuarters = GetZQuarterOccupied();
+    const int32_t northZ = height + (raisedQuarters & 0b0001 ? kLandHeightStep : 0);
+    const int32_t eastZ = height + (raisedQuarters & 0b0010 ? kLandHeightStep : 0);
+    const int32_t southZ = height + (raisedQuarters & 0b0100 ? kLandHeightStep : 0);
+    const int32_t westZ = height + (raisedQuarters & 0b1000 ? kLandHeightStep : 0);
+    return { northZ, eastZ, southZ, westZ };
 }

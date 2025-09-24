@@ -58,12 +58,12 @@ namespace OpenRCT2::Ui::Windows
         {
         }
 
-        void OnOpen() override
+        void onOpen() override
         {
-            SetWidgets(window_overwrite_prompt_widgets);
+            setWidgets(window_overwrite_prompt_widgets);
         }
 
-        void OnMouseUp(WidgetIndex widgetIndex) override
+        void onMouseUp(WidgetIndex widgetIndex) override
         {
             switch (widgetIndex)
             {
@@ -74,20 +74,20 @@ namespace OpenRCT2::Ui::Windows
                     // As the LoadSaveWindow::Select function can change the order of the
                     // windows we can't use WindowClose(w).
                     auto* windowMgr = Ui::GetWindowManager();
-                    windowMgr->CloseByClass(WindowClass::LoadsaveOverwritePrompt);
+                    windowMgr->CloseByClass(WindowClass::loadsaveOverwritePrompt);
                     break;
                 }
 
                 case WIDX_OVERWRITE_CANCEL:
                 case WIDX_OVERWRITE_CLOSE:
-                    Close();
+                    close();
                     break;
             }
         }
 
-        void OnDraw(RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
-            DrawWidgets(rt);
+            drawWidgets(rt);
 
             auto ft = Formatter();
             ft.Add<StringId>(STR_STRING);
@@ -103,16 +103,17 @@ namespace OpenRCT2::Ui::Windows
         TrackDesign* trackDesignPtr)
     {
         auto* windowMgr = Ui::GetWindowManager();
-        windowMgr->CloseByClass(WindowClass::LoadsaveOverwritePrompt);
+        windowMgr->CloseByClass(WindowClass::loadsaveOverwritePrompt);
 
         return windowMgr->Create<OverwritePromptWindow>(
-            WindowClass::LoadsaveOverwritePrompt, kWindowSize, WF_TRANSPARENT | WF_STICK_TO_FRONT | WF_CENTRE_SCREEN, name,
-            path, action, type, trackDesignPtr);
+            WindowClass::loadsaveOverwritePrompt, kWindowSize,
+            { WindowFlag::transparent, WindowFlag::stickToFront, WindowFlag::centreScreen }, name, path, action, type,
+            trackDesignPtr);
     }
 
     void WindowLoadSaveOverwritePromptInputKey(WindowBase* w, uint32_t keycode)
     {
-        if (w->classification != WindowClass::LoadsaveOverwritePrompt)
+        if (w->classification != WindowClass::loadsaveOverwritePrompt)
         {
             return;
         }
@@ -121,11 +122,11 @@ namespace OpenRCT2::Ui::Windows
 
         if (keycode == SDLK_RETURN || keycode == SDLK_KP_ENTER)
         {
-            promptWindow->OnMouseUp(WIDX_OVERWRITE_OVERWRITE);
+            promptWindow->onMouseUp(WIDX_OVERWRITE_OVERWRITE);
         }
         else if (keycode == SDLK_ESCAPE)
         {
-            promptWindow->OnMouseUp(WIDX_OVERWRITE_CANCEL);
+            promptWindow->onMouseUp(WIDX_OVERWRITE_CANCEL);
         }
     }
 } // namespace OpenRCT2::Ui::Windows

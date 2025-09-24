@@ -27,10 +27,10 @@ namespace OpenRCT2::Scripting
     {
     private:
         WindowClass _class{};
-        rct_windownumber _number{};
+        WindowNumber _number{};
 
     public:
-        ScViewport(WindowClass c, rct_windownumber n = 0)
+        ScViewport(WindowClass c, WindowNumber n = 0)
             : _class(c)
             , _number(n)
         {
@@ -172,7 +172,7 @@ namespace OpenRCT2::Scripting
                     if (viewport->flags != value)
                     {
                         viewport->flags = value;
-                        w->Invalidate();
+                        w->invalidate();
                     }
                 }
             }
@@ -249,7 +249,7 @@ namespace OpenRCT2::Scripting
     private:
         WindowBase* GetWindow() const
         {
-            if (_class == WindowClass::MainWindow)
+            if (_class == WindowClass::mainWindow)
                 return WindowGetMain();
 
             auto* windowMgr = Ui::GetWindowManager();
@@ -276,7 +276,7 @@ namespace OpenRCT2::Scripting
                 {
                     viewport->viewPos.x = left;
                     viewport->viewPos.y = top;
-                    w->flags &= ~WF_SCROLLING_TO_LOCATION;
+                    w->flags.unset(WindowFlag::scrollingToLocation);
                     w->savedViewPos.x = viewport->viewPos.x;
                     w->savedViewPos.y = viewport->viewPos.y;
                     viewport->Invalidate();

@@ -11,23 +11,26 @@
 
 thread_local uint8_t gCommonFormatArgs[80];
 
-Formatter& Formatter::operator=(const Formatter& other)
+namespace OpenRCT2
 {
-    // If using global or not
-    if (other.StartBuf == other.Buffer.data())
+    Formatter& Formatter::operator=(const Formatter& other)
     {
-        std::copy(std::begin(other.Buffer), std::end(other.Buffer), std::begin(Buffer));
-        StartBuf = Buffer.data();
+        // If using global or not
+        if (other.StartBuf == other.Buffer.data())
+        {
+            std::copy(std::begin(other.Buffer), std::end(other.Buffer), std::begin(Buffer));
+            StartBuf = Buffer.data();
+        }
+        else
+        {
+            StartBuf = other.StartBuf;
+        }
+        CurrentBuf = StartBuf + other.NumBytes();
+        return *this;
     }
-    else
-    {
-        StartBuf = other.StartBuf;
-    }
-    CurrentBuf = StartBuf + other.NumBytes();
-    return *this;
-}
 
-Formatter Formatter::Common()
-{
-    return Formatter{ gCommonFormatArgs };
-}
+    Formatter Formatter::Common()
+    {
+        return Formatter{ gCommonFormatArgs };
+    }
+} // namespace OpenRCT2

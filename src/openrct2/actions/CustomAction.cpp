@@ -48,13 +48,13 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_id) << DS_TAG(_json);
     }
 
-    Result CustomAction::Query() const
+    Result CustomAction::Query(GameState_t& gameState) const
     {
         auto& scriptingEngine = GetContext()->GetScriptEngine();
         return scriptingEngine.QueryOrExecuteCustomGameAction(*this, false);
     }
 
-    Result CustomAction::Execute() const
+    Result CustomAction::Execute(GameState_t& gameState) const
     {
         auto& scriptingEngine = GetContext()->GetScriptEngine();
         return scriptingEngine.QueryOrExecuteCustomGameAction(*this, true);

@@ -83,7 +83,7 @@ template<class GA, class... Args>
 static void execute(Args&&... args)
 {
     GA ga(std::forward<Args>(args)...);
-    GameActions::Execute(&ga);
+    GameActions::Execute(&ga, getGameState());
 }
 
 TEST_F(PlayTests, SecondGuestInQueueShouldNotRideIfNoFunds)
@@ -107,7 +107,7 @@ TEST_F(PlayTests, SecondGuestInQueueShouldNotRideIfNoFunds)
     gameState.park.flags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
 
     // Find ferris wheel
-    auto rideManager = GetRideManager();
+    auto rideManager = RideManager(gameState);
     auto it = std::find_if(
         rideManager.begin(), rideManager.end(), [](auto& ride) { return ride.type == RIDE_TYPE_FERRIS_WHEEL; });
     ASSERT_NE(it, rideManager.end());
@@ -167,7 +167,7 @@ TEST_F(PlayTests, CarRideWithOneCarOnlyAcceptsTwoGuests)
     gameState.park.flags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
 
     // Find car ride
-    auto rideManager = GetRideManager();
+    auto rideManager = RideManager(gameState);
     auto it = std::find_if(rideManager.begin(), rideManager.end(), [](auto& ride) { return ride.type == RIDE_TYPE_CAR_RIDE; });
     ASSERT_NE(it, rideManager.end());
     Ride& carRide = *it;

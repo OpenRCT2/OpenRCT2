@@ -65,7 +65,7 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_trackType) << DS_TAG(_sequence) << DS_TAG(_origin);
     }
 
-    Result TrackRemoveAction::Query() const
+    Result TrackRemoveAction::Query(GameState_t& gameState) const
     {
         auto res = Result();
         res.Position.x = _origin.x + 16;
@@ -249,7 +249,7 @@ namespace OpenRCT2::GameActions
         return res;
     }
 
-    Result TrackRemoveAction::Execute() const
+    Result TrackRemoveAction::Execute(GameState_t& gameState) const
     {
         auto res = Result();
         res.Position.x = _origin.x + 16;
@@ -450,18 +450,19 @@ namespace OpenRCT2::GameActions
                 case TrackElemType::BlockBrakes:
                 case TrackElemType::DiagBlockBrakes:
                     ride->numBlockBrakes--;
-                    if (ride->numBlockBrakes == 0)
+                    if (ride->numBlockBrakes == 0 && ride->isBlockSectioned())
                     {
                         ride->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_OPERATING;
                         RideMode newMode = RideMode::continuousCircuit;
                         if (ride->mode == RideMode::poweredLaunchBlockSectioned)
                         {
-                            newMode = RideMode::poweredLaunch;
+                            // Depending on the ride, the equivalent will be powered launch with or without passing station.
+                            newMode = ride->getRideTypeDescriptor().DefaultMode;
                         }
 
                         auto rideSetSetting = GameActions::RideSetSettingAction(
                             ride->id, GameActions::RideSetSetting::Mode, static_cast<uint8_t>(newMode));
-                        ExecuteNested(&rideSetSetting);
+                        ExecuteNested(&rideSetSetting, gameState);
                     }
 
                     break;

@@ -273,30 +273,30 @@ namespace OpenRCT2::Ui::Windows
         bool _heightmapLoaded = false;
         std::string _heightmapFilename{};
 
-        void SetPage(int32_t newPage)
+        void setPage(int32_t newPage)
         {
             // Skip setting page if we're already on this page, unless we're initialising the window
             if (page == newPage && !widgets.empty())
                 return;
 
             page = newPage;
-            frame_no = 0;
-            RemoveViewport();
+            currentFrame = 0;
+            removeViewport();
 
-            SetWidgets(PageWidgets[newPage]);
-            hold_down_widgets = HoldDownWidgets[newPage];
-            disabled_widgets = PageDisabledWidgets[newPage];
-            pressed_widgets = PressedWidgets[newPage];
+            setWidgets(PageWidgets[newPage]);
+            holdDownWidgets = HoldDownWidgets[newPage];
+            disabledWidgets = PageDisabledWidgets[newPage];
+            pressedWidgets = PressedWidgets[newPage];
 
-            InitScrollWidgets();
-            Invalidate();
+            initScrollWidgets();
+            invalidate();
         }
 
         void SetPressedTab()
         {
             for (auto i = 0; i < WINDOW_MAPGEN_PAGE_COUNT; i++)
-                pressed_widgets &= ~(1 << (WIDX_TAB_1 + i));
-            pressed_widgets |= 1LL << (WIDX_TAB_1 + page);
+                pressedWidgets &= ~(1 << (WIDX_TAB_1 + i));
+            pressedWidgets |= 1LL << (WIDX_TAB_1 + page);
         }
 
         void DrawTabImage(RenderTarget& rt, int32_t newPage, int32_t spriteIndex)
@@ -307,7 +307,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 if (page == newPage)
                 {
-                    int32_t frame = frame_no / TabAnimationDivisor[page];
+                    int32_t frame = currentFrame / TabAnimationDivisor[page];
                     spriteIndex += (frame % TabAnimationFrames[page]);
                 }
 
@@ -360,13 +360,13 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
-                    Close();
+                    close();
                     break;
                 case WIDX_TAB_1:
                 case WIDX_TAB_2:
                 case WIDX_TAB_3:
                 case WIDX_TAB_4:
-                    SetPage(widgetIndex - WIDX_TAB_1);
+                    setPage(widgetIndex - WIDX_TAB_1);
                     break;
                 case WIDX_MAP_GENERATE:
                     GenerateMap();
@@ -430,22 +430,22 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_MAP_SIZE_Y_UP:
                     _resizeDirection = ResizeDirection::Y;
                     ChangeMapSize(+1);
-                    Invalidate();
+                    invalidate();
                     break;
                 case WIDX_MAP_SIZE_Y_DOWN:
                     _resizeDirection = ResizeDirection::Y;
                     ChangeMapSize(-1);
-                    Invalidate();
+                    invalidate();
                     break;
                 case WIDX_MAP_SIZE_X_UP:
                     _resizeDirection = ResizeDirection::X;
                     ChangeMapSize(+1);
-                    Invalidate();
+                    invalidate();
                     break;
                 case WIDX_MAP_SIZE_X_DOWN:
                     _resizeDirection = ResizeDirection::X;
                     ChangeMapSize(-1);
-                    Invalidate();
+                    invalidate();
                     break;
                 case WIDX_HEIGHTMAP_SOURCE_DROPDOWN:
                 {
@@ -473,9 +473,9 @@ namespace OpenRCT2::Ui::Windows
         void BaseUpdate()
         {
             // Tab animation
-            if (++frame_no >= TabAnimationLoops[page])
-                frame_no = 0;
-            InvalidateWidget(WIDX_TAB_1);
+            if (++currentFrame >= TabAnimationLoops[page])
+                currentFrame = 0;
+            invalidateWidget(WIDX_TAB_1);
         }
 
         void BaseDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex)
@@ -487,7 +487,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WIDX_HEIGHTMAP_SOURCE_DROPDOWN:
                     _settings.algorithm = MapGenerator::Algorithm(dropdownIndex);
-                    Invalidate();
+                    invalidate();
                     break;
             }
         }
@@ -512,32 +512,32 @@ namespace OpenRCT2::Ui::Windows
                     break;
             }
 
-            Invalidate();
+            invalidate();
         }
 
         void BasePrepareDraw()
         {
-            // Only allow linking the map size when X and Y are the same
-            SetWidgetPressed(WIDX_MAP_SIZE_LINK, _mapWidthAndHeightLinked);
-            SetWidgetDisabled(WIDX_MAP_SIZE_LINK, _settings.mapSize.x != _settings.mapSize.y);
+            // only allow linking the map size when X and Y are the same
+            setWidgetPressed(WIDX_MAP_SIZE_LINK, _mapWidthAndHeightLinked);
+            setWidgetDisabled(WIDX_MAP_SIZE_LINK, _settings.mapSize.x != _settings.mapSize.y);
 
             bool isHeightMapImage = _settings.algorithm == MapGenerator::Algorithm::heightmapImage;
-            SetWidgetDisabled(WIDX_MAP_SIZE_Y, isHeightMapImage);
-            SetWidgetDisabled(WIDX_MAP_SIZE_Y_UP, isHeightMapImage);
-            SetWidgetDisabled(WIDX_MAP_SIZE_Y_DOWN, isHeightMapImage);
-            SetWidgetDisabled(WIDX_MAP_SIZE_LINK, isHeightMapImage);
-            SetWidgetDisabled(WIDX_MAP_SIZE_X, isHeightMapImage);
-            SetWidgetDisabled(WIDX_MAP_SIZE_X_UP, isHeightMapImage);
-            SetWidgetDisabled(WIDX_MAP_SIZE_X_DOWN, isHeightMapImage);
+            setWidgetDisabled(WIDX_MAP_SIZE_Y, isHeightMapImage);
+            setWidgetDisabled(WIDX_MAP_SIZE_Y_UP, isHeightMapImage);
+            setWidgetDisabled(WIDX_MAP_SIZE_Y_DOWN, isHeightMapImage);
+            setWidgetDisabled(WIDX_MAP_SIZE_LINK, isHeightMapImage);
+            setWidgetDisabled(WIDX_MAP_SIZE_X, isHeightMapImage);
+            setWidgetDisabled(WIDX_MAP_SIZE_X_UP, isHeightMapImage);
+            setWidgetDisabled(WIDX_MAP_SIZE_X_DOWN, isHeightMapImage);
 
             // Enable heightmap widgets if one is loaded
             if (isHeightMapImage)
             {
-                SetWidgetEnabled(WIDX_HEIGHTMAP_NORMALIZE, _heightmapLoaded);
-                SetWidgetEnabled(WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP, _heightmapLoaded);
-                SetWidgetEnabled(WIDX_HEIGHTMAP_STRENGTH, _heightmapLoaded && _settings.smooth_height_map);
-                SetWidgetEnabled(WIDX_HEIGHTMAP_STRENGTH_UP, _heightmapLoaded && _settings.smooth_height_map);
-                SetWidgetEnabled(WIDX_HEIGHTMAP_STRENGTH_DOWN, _heightmapLoaded && _settings.smooth_height_map);
+                setWidgetEnabled(WIDX_HEIGHTMAP_NORMALIZE, _heightmapLoaded);
+                setWidgetEnabled(WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP, _heightmapLoaded);
+                setWidgetEnabled(WIDX_HEIGHTMAP_STRENGTH, _heightmapLoaded && _settings.smooth_height_map);
+                setWidgetEnabled(WIDX_HEIGHTMAP_STRENGTH_UP, _heightmapLoaded && _settings.smooth_height_map);
+                setWidgetEnabled(WIDX_HEIGHTMAP_STRENGTH_DOWN, _heightmapLoaded && _settings.smooth_height_map);
             }
 
             SetPressedTab();
@@ -599,7 +599,7 @@ namespace OpenRCT2::Ui::Windows
 
         void BaseDraw(RenderTarget& rt)
         {
-            DrawWidgets(rt);
+            drawWidgets(rt);
             DrawTabImages(rt);
 
             if (_settings.algorithm == MapGenerator::Algorithm::simplexNoise)
@@ -612,7 +612,7 @@ namespace OpenRCT2::Ui::Windows
             const auto disabledColour = enabledColour.withFlag(ColourFlag::inset, true);
 
             {
-                auto textColour = IsWidgetDisabled(WIDX_MAP_SIZE_Y) ? disabledColour : enabledColour;
+                auto textColour = isWidgetDisabled(WIDX_MAP_SIZE_Y) ? disabledColour : enabledColour;
                 DrawTextBasic(
                     rt, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_MAP_SIZE_Y].top + 1 }, STR_MAP_SIZE, {}, { textColour });
             }
@@ -637,7 +637,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WIDX_FORESTS_PLACE_TREES:
                     _settings.trees ^= true;
-                    Invalidate();
+                    invalidate();
                     break;
 
                 case WIDX_TREE_LAND_RATIO:
@@ -681,29 +681,29 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WIDX_TREE_LAND_RATIO_UP:
                     _settings.treeToLandRatio = std::min(_settings.treeToLandRatio + 1, 50);
-                    InvalidateWidget(WIDX_TREE_LAND_RATIO);
+                    invalidateWidget(WIDX_TREE_LAND_RATIO);
                     break;
                 case WIDX_TREE_LAND_RATIO_DOWN:
                     _settings.treeToLandRatio = std::max(_settings.treeToLandRatio - 1, 1);
-                    InvalidateWidget(WIDX_TREE_LAND_RATIO);
+                    invalidateWidget(WIDX_TREE_LAND_RATIO);
                     break;
                 case WIDX_TREE_ALTITUDE_MIN_UP:
                     _settings.minTreeAltitude = std::min(_settings.minTreeAltitude + 2, kMaximumLandHeight / 2 - 1);
                     _settings.maxTreeAltitude = std::max(_settings.maxTreeAltitude, _settings.minTreeAltitude + 2);
-                    InvalidateWidget(WIDX_TREE_ALTITUDE_MIN);
+                    invalidateWidget(WIDX_TREE_ALTITUDE_MIN);
                     break;
                 case WIDX_TREE_ALTITUDE_MIN_DOWN:
                     _settings.minTreeAltitude = std::max<int32_t>(_settings.minTreeAltitude - 2, kMinimumLandHeight);
-                    InvalidateWidget(WIDX_TREE_ALTITUDE_MIN);
+                    invalidateWidget(WIDX_TREE_ALTITUDE_MIN);
                     break;
                 case WIDX_TREE_ALTITUDE_MAX_UP:
                     _settings.maxTreeAltitude = std::min<int32_t>(_settings.maxTreeAltitude + 2, kMaximumLandHeight - 1);
-                    InvalidateWidget(WIDX_TREE_ALTITUDE_MAX);
+                    invalidateWidget(WIDX_TREE_ALTITUDE_MAX);
                     break;
                 case WIDX_TREE_ALTITUDE_MAX_DOWN:
                     _settings.maxTreeAltitude = std::max<int32_t>(_settings.maxTreeAltitude - 2, kMinimumLandHeight - 1);
                     _settings.minTreeAltitude = std::min(_settings.minTreeAltitude, _settings.maxTreeAltitude - 2);
-                    InvalidateWidget(WIDX_TREE_ALTITUDE_MAX);
+                    invalidateWidget(WIDX_TREE_ALTITUDE_MAX);
                     break;
             }
         }
@@ -711,9 +711,9 @@ namespace OpenRCT2::Ui::Windows
         void ForestsUpdate()
         {
             // Tab animation
-            if (++frame_no >= TabAnimationLoops[page])
-                frame_no = 0;
-            InvalidateWidget(WIDX_TAB_2);
+            if (++currentFrame >= TabAnimationLoops[page])
+                currentFrame = 0;
+            invalidateWidget(WIDX_TAB_2);
         }
 
         void ForestsTextInput(WidgetIndex widgetIndex, int32_t rawValue, int32_t value)
@@ -735,33 +735,33 @@ namespace OpenRCT2::Ui::Windows
                     break;
             }
 
-            Invalidate();
+            invalidate();
         }
 
         void ForestsPrepareDraw()
         {
-            pressed_widgets = 0;
+            pressedWidgets = 0;
             if (_settings.trees)
-                pressed_widgets |= 1uLL << WIDX_FORESTS_PLACE_TREES;
+                pressedWidgets |= 1uLL << WIDX_FORESTS_PLACE_TREES;
 
             SetPressedTab();
 
             const bool isFlatland = _settings.algorithm == MapGenerator::Algorithm::blank;
 
-            SetWidgetDisabled(WIDX_TREE_LAND_RATIO, !_settings.trees);
-            SetWidgetDisabled(WIDX_TREE_LAND_RATIO_UP, !_settings.trees);
-            SetWidgetDisabled(WIDX_TREE_LAND_RATIO_DOWN, !_settings.trees);
-            SetWidgetDisabled(WIDX_TREE_ALTITUDE_MIN, !_settings.trees);
-            SetWidgetDisabled(WIDX_TREE_ALTITUDE_MIN_UP, !_settings.trees);
-            SetWidgetDisabled(WIDX_TREE_ALTITUDE_MIN_DOWN, !_settings.trees);
-            SetWidgetDisabled(WIDX_TREE_ALTITUDE_MAX, !_settings.trees || isFlatland);
-            SetWidgetDisabled(WIDX_TREE_ALTITUDE_MAX_UP, !_settings.trees || isFlatland);
-            SetWidgetDisabled(WIDX_TREE_ALTITUDE_MAX_DOWN, !_settings.trees || isFlatland);
+            setWidgetDisabled(WIDX_TREE_LAND_RATIO, !_settings.trees);
+            setWidgetDisabled(WIDX_TREE_LAND_RATIO_UP, !_settings.trees);
+            setWidgetDisabled(WIDX_TREE_LAND_RATIO_DOWN, !_settings.trees);
+            setWidgetDisabled(WIDX_TREE_ALTITUDE_MIN, !_settings.trees);
+            setWidgetDisabled(WIDX_TREE_ALTITUDE_MIN_UP, !_settings.trees);
+            setWidgetDisabled(WIDX_TREE_ALTITUDE_MIN_DOWN, !_settings.trees);
+            setWidgetDisabled(WIDX_TREE_ALTITUDE_MAX, !_settings.trees || isFlatland);
+            setWidgetDisabled(WIDX_TREE_ALTITUDE_MAX_UP, !_settings.trees || isFlatland);
+            setWidgetDisabled(WIDX_TREE_ALTITUDE_MAX_DOWN, !_settings.trees || isFlatland);
         }
 
         void ForestsDraw(RenderTarget& rt)
         {
-            DrawWidgets(rt);
+            drawWidgets(rt);
             DrawTabImages(rt);
 
             const auto enabledColour = colours[1];
@@ -846,26 +846,26 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WIDX_SIMPLEX_BASE_FREQ_UP:
                     _settings.simplex_base_freq = std::min<int32_t>(_settings.simplex_base_freq + 5, 1000);
-                    Invalidate();
+                    invalidate();
                     break;
                 case WIDX_SIMPLEX_BASE_FREQ_DOWN:
                     _settings.simplex_base_freq = std::max<int32_t>(_settings.simplex_base_freq - 5, 0);
-                    Invalidate();
+                    invalidate();
                     break;
                 case WIDX_SIMPLEX_OCTAVES_UP:
                     _settings.simplex_octaves = std::min(_settings.simplex_octaves + 1, 10);
-                    Invalidate();
+                    invalidate();
                     break;
                 case WIDX_SIMPLEX_OCTAVES_DOWN:
                     _settings.simplex_octaves = std::max(_settings.simplex_octaves - 1, 1);
-                    Invalidate();
+                    invalidate();
                     break;
             }
         }
 
         void SimplexDraw(RenderTarget& rt)
         {
-            DrawWidgets(rt);
+            drawWidgets(rt);
             DrawTabImages(rt);
 
             const auto textColour = colours[1];
@@ -915,11 +915,11 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WIDX_HEIGHTMAP_STRENGTH_UP:
                     _settings.smooth_strength = std::min<uint32_t>(_settings.smooth_strength + 1, 20);
-                    InvalidateWidget(WIDX_HEIGHTMAP_STRENGTH);
+                    invalidateWidget(WIDX_HEIGHTMAP_STRENGTH);
                     break;
                 case WIDX_HEIGHTMAP_STRENGTH_DOWN:
                     _settings.smooth_strength = std::max<uint32_t>(_settings.smooth_strength - 1, 1);
-                    InvalidateWidget(WIDX_HEIGHTMAP_STRENGTH);
+                    invalidateWidget(WIDX_HEIGHTMAP_STRENGTH);
                     break;
             }
         }
@@ -931,7 +931,7 @@ namespace OpenRCT2::Ui::Windows
                 // Page widgets
                 case WIDX_HEIGHTMAP_BROWSE:
                 {
-                    auto intent = Intent(WindowClass::Loadsave);
+                    auto intent = Intent(WindowClass::loadsave);
                     intent.PutEnumExtra<LoadSaveAction>(INTENT_EXTRA_LOADSAVE_ACTION, LoadSaveAction::load);
                     intent.PutEnumExtra<LoadSaveType>(INTENT_EXTRA_LOADSAVE_TYPE, LoadSaveType::heightmap);
                     intent.PutExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<CloseCallback>(HeightmapLoadsaveCallback));
@@ -940,18 +940,18 @@ namespace OpenRCT2::Ui::Windows
                 }
                 case WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP:
                     _settings.smooth_height_map = !_settings.smooth_height_map;
-                    SetCheckboxValue(WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP, _settings.smooth_height_map);
-                    SetWidgetEnabled(WIDX_HEIGHTMAP_STRENGTH, _settings.smooth_height_map);
-                    SetWidgetEnabled(WIDX_HEIGHTMAP_STRENGTH_UP, _settings.smooth_height_map);
-                    SetWidgetEnabled(WIDX_HEIGHTMAP_STRENGTH_DOWN, _settings.smooth_height_map);
-                    InvalidateWidget(WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP);
-                    InvalidateWidget(WIDX_HEIGHTMAP_STRENGTH);
+                    setCheckboxValue(WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP, _settings.smooth_height_map);
+                    setWidgetEnabled(WIDX_HEIGHTMAP_STRENGTH, _settings.smooth_height_map);
+                    setWidgetEnabled(WIDX_HEIGHTMAP_STRENGTH_UP, _settings.smooth_height_map);
+                    setWidgetEnabled(WIDX_HEIGHTMAP_STRENGTH_DOWN, _settings.smooth_height_map);
+                    invalidateWidget(WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP);
+                    invalidateWidget(WIDX_HEIGHTMAP_STRENGTH);
                     break;
 
                 case WIDX_HEIGHTMAP_NORMALIZE:
                     _settings.normalize_height = !_settings.normalize_height;
-                    SetCheckboxValue(WIDX_HEIGHTMAP_NORMALIZE, _settings.normalize_height);
-                    InvalidateWidget(WIDX_HEIGHTMAP_NORMALIZE);
+                    setCheckboxValue(WIDX_HEIGHTMAP_NORMALIZE, _settings.normalize_height);
+                    invalidateWidget(WIDX_HEIGHTMAP_NORMALIZE);
                     break;
 
                 case WIDX_HEIGHTMAP_STRENGTH:
@@ -969,8 +969,8 @@ namespace OpenRCT2::Ui::Windows
 
         void HeightmapPrepareDraw()
         {
-            SetCheckboxValue(WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP, _settings.smooth_height_map);
-            SetCheckboxValue(WIDX_HEIGHTMAP_NORMALIZE, _settings.normalize_height);
+            setCheckboxValue(WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP, _settings.smooth_height_map);
+            setCheckboxValue(WIDX_HEIGHTMAP_NORMALIZE, _settings.normalize_height);
         }
 
         void HeightmapDraw(RenderTarget& rt)
@@ -979,7 +979,7 @@ namespace OpenRCT2::Ui::Windows
             const auto disabledColour = enabledColour.withFlag(ColourFlag::inset, true);
 
             // Smooth strength label and value
-            const bool strengthDisabled = IsWidgetDisabled(WIDX_HEIGHTMAP_STRENGTH) || !_settings.smooth_height_map;
+            const bool strengthDisabled = isWidgetDisabled(WIDX_HEIGHTMAP_STRENGTH) || !_settings.smooth_height_map;
             const auto strengthColour = strengthDisabled ? disabledColour : enabledColour;
 
             // Smooth strength label
@@ -1049,8 +1049,8 @@ namespace OpenRCT2::Ui::Windows
 
                 case WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES:
                     _settings.smoothTileEdges = !_settings.smoothTileEdges;
-                    SetCheckboxValue(WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES, _settings.smoothTileEdges);
-                    InvalidateWidget(WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES);
+                    setCheckboxValue(WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES, _settings.smoothTileEdges);
+                    invalidateWidget(WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES);
                     break;
             }
         }
@@ -1061,7 +1061,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WIDX_RANDOM_TERRAIN:
                     _randomTerrain = !_randomTerrain;
-                    Invalidate();
+                    invalidate();
                     break;
                 case WIDX_FLOOR_TEXTURE:
                     LandTool::ShowSurfaceStyleDropdown(this, widget, _settings.landTexture);
@@ -1072,20 +1072,20 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_HEIGHTMAP_LOW_UP:
                     _settings.heightmapLow = std::min(_settings.heightmapLow + 2, kMaximumLandHeight / 2 - 1);
                     _settings.heightmapHigh = std::max(_settings.heightmapHigh, _settings.heightmapLow + 2);
-                    InvalidateWidget(WIDX_HEIGHTMAP_LOW);
+                    invalidateWidget(WIDX_HEIGHTMAP_LOW);
                     break;
                 case WIDX_HEIGHTMAP_LOW_DOWN:
                     _settings.heightmapLow = std::max<int32_t>(_settings.heightmapLow - 2, kMinimumLandHeight);
-                    InvalidateWidget(WIDX_HEIGHTMAP_LOW);
+                    invalidateWidget(WIDX_HEIGHTMAP_LOW);
                     break;
                 case WIDX_HEIGHTMAP_HIGH_UP:
                     _settings.heightmapHigh = std::min<int32_t>(_settings.heightmapHigh + 2, kMaximumLandHeight - 1);
-                    InvalidateWidget(WIDX_HEIGHTMAP_HIGH);
+                    invalidateWidget(WIDX_HEIGHTMAP_HIGH);
                     break;
                 case WIDX_HEIGHTMAP_HIGH_DOWN:
                     _settings.heightmapHigh = std::max<int32_t>(_settings.heightmapHigh - 2, kMinimumLandHeight);
                     _settings.heightmapLow = std::min(_settings.heightmapLow, _settings.heightmapHigh - 2);
-                    InvalidateWidget(WIDX_HEIGHTMAP_HIGH);
+                    invalidateWidget(WIDX_HEIGHTMAP_HIGH);
                     break;
             }
         }
@@ -1093,9 +1093,9 @@ namespace OpenRCT2::Ui::Windows
         void TerrainUpdate()
         {
             // Tab animation
-            if (++frame_no >= TabAnimationLoops[page])
-                frame_no = 0;
-            InvalidateWidget(WIDX_TAB_3);
+            if (++currentFrame >= TabAnimationLoops[page])
+                currentFrame = 0;
+            invalidateWidget(WIDX_TAB_3);
         }
 
         void TerrainTextInput(WidgetIndex widgetIndex, int32_t value)
@@ -1113,7 +1113,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
             }
 
-            Invalidate();
+            invalidate();
         }
 
         void TerrainDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex)
@@ -1137,7 +1137,7 @@ namespace OpenRCT2::Ui::Windows
                         gLandToolTerrainSurface = type;
                         _settings.landTexture = type;
                     }
-                    Invalidate();
+                    invalidate();
                     break;
                 case WIDX_WALL_TEXTURE:
                     if (dropdownIndex == -1)
@@ -1154,7 +1154,7 @@ namespace OpenRCT2::Ui::Windows
                         gLandToolTerrainEdge = type;
                         _settings.edgeTexture = type;
                     }
-                    Invalidate();
+                    invalidate();
                     break;
             }
         }
@@ -1163,7 +1163,7 @@ namespace OpenRCT2::Ui::Windows
         {
             const auto& widget = widgets[widgetIndex];
             ScreenCoordsXY pos = { windowPos.x + widget.left, windowPos.y + widget.top };
-            if (IsWidgetDisabled(widgetIndex))
+            if (isWidgetDisabled(widgetIndex))
             {
                 // Draw greyed out (light border bottom right shadow)
                 auto colour = colours[widget.colour].colour;
@@ -1208,24 +1208,24 @@ namespace OpenRCT2::Ui::Windows
 
         void TerrainPrepareDraw()
         {
-            SetCheckboxValue(WIDX_RANDOM_TERRAIN, _randomTerrain != 0);
-            SetCheckboxValue(WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES, _settings.smoothTileEdges);
+            setCheckboxValue(WIDX_RANDOM_TERRAIN, _randomTerrain != 0);
+            setCheckboxValue(WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES, _settings.smoothTileEdges);
 
-            // Only allow floor and wall texture options if random terrain is disabled
-            SetWidgetEnabled(WIDX_FLOOR_TEXTURE, !_randomTerrain);
-            SetWidgetEnabled(WIDX_WALL_TEXTURE, !_randomTerrain);
+            // only allow floor and wall texture options if random terrain is disabled
+            setWidgetEnabled(WIDX_FLOOR_TEXTURE, !_randomTerrain);
+            setWidgetEnabled(WIDX_WALL_TEXTURE, !_randomTerrain);
 
             // Max land height option is irrelevant for flatland
-            SetWidgetEnabled(WIDX_HEIGHTMAP_HIGH, _settings.algorithm != MapGenerator::Algorithm::blank);
+            setWidgetEnabled(WIDX_HEIGHTMAP_HIGH, _settings.algorithm != MapGenerator::Algorithm::blank);
 
-            // Only offer terrain edge smoothing if we don't use flatland terrain
-            SetWidgetEnabled(WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES, _settings.algorithm != MapGenerator::Algorithm::blank);
+            // only offer terrain edge smoothing if we don't use flatland terrain
+            setWidgetEnabled(WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES, _settings.algorithm != MapGenerator::Algorithm::blank);
             SetPressedTab();
         }
 
         void TerrainDraw(RenderTarget& rt)
         {
-            DrawWidgets(rt);
+            drawWidgets(rt);
             DrawTabImages(rt);
             DrawDropdownButtons(rt, WIDX_FLOOR_TEXTURE, WIDX_WALL_TEXTURE);
 
@@ -1248,7 +1248,7 @@ namespace OpenRCT2::Ui::Windows
                 rt, windowPos + ScreenCoordsXY{ widgets[WIDX_HEIGHTMAP_LOW].left + 1, widgets[WIDX_HEIGHTMAP_LOW].top + 1 },
                 STR_RIDE_LENGTH_ENTRY, ft, { enabledColour });
 
-            const auto maxLandColour = IsWidgetDisabled(WIDX_HEIGHTMAP_HIGH) ? disabledColour : enabledColour;
+            const auto maxLandColour = isWidgetDisabled(WIDX_HEIGHTMAP_HIGH) ? disabledColour : enabledColour;
 
             // Maximum land height label and value
             DrawTextBasic(
@@ -1286,7 +1286,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_ADD_BEACHES:
                 {
                     _settings.beaches ^= true;
-                    Invalidate();
+                    invalidate();
                     break;
                 }
             }
@@ -1298,11 +1298,11 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WIDX_WATER_LEVEL_UP:
                     _settings.waterLevel = std::min<int32_t>(_settings.waterLevel + 2, kMaximumWaterHeight);
-                    Invalidate();
+                    invalidate();
                     break;
                 case WIDX_WATER_LEVEL_DOWN:
                     _settings.waterLevel = std::max<int32_t>(_settings.waterLevel - 2, kMinimumWaterHeight);
-                    Invalidate();
+                    invalidate();
                     break;
             }
         }
@@ -1310,9 +1310,9 @@ namespace OpenRCT2::Ui::Windows
         void WaterUpdate()
         {
             // Tab animation
-            if (++frame_no >= TabAnimationLoops[page])
-                frame_no = 0;
-            InvalidateWidget(WIDX_TAB_4);
+            if (++currentFrame >= TabAnimationLoops[page])
+                currentFrame = 0;
+            invalidateWidget(WIDX_TAB_4);
         }
 
         void WaterTextInput(WidgetIndex widgetIndex, int32_t value)
@@ -1324,19 +1324,19 @@ namespace OpenRCT2::Ui::Windows
                     break;
             }
 
-            Invalidate();
+            invalidate();
         }
 
         void WaterPrepareDraw()
         {
-            SetCheckboxValue(WIDX_ADD_BEACHES, _settings.beaches != 0);
+            setCheckboxValue(WIDX_ADD_BEACHES, _settings.beaches != 0);
 
             SetPressedTab();
         }
 
         void WaterDraw(RenderTarget& rt)
         {
-            DrawWidgets(rt);
+            drawWidgets(rt);
             DrawTabImages(rt);
 
             const auto textColour = colours[1];
@@ -1355,26 +1355,26 @@ namespace OpenRCT2::Ui::Windows
 #pragma endregion
 
     public:
-        void OnOpen() override
+        void onOpen() override
         {
             number = 0;
 
-            SetPage(WINDOW_MAPGEN_PAGE_BASE);
-            Invalidate();
-            hold_down_widgets = HoldDownWidgets[WINDOW_MAPGEN_PAGE_BASE];
-            pressed_widgets = PressedWidgets[WINDOW_MAPGEN_PAGE_BASE];
-            disabled_widgets = PageDisabledWidgets[WINDOW_MAPGEN_PAGE_BASE];
-            InitScrollWidgets();
+            setPage(WINDOW_MAPGEN_PAGE_BASE);
+            invalidate();
+            holdDownWidgets = HoldDownWidgets[WINDOW_MAPGEN_PAGE_BASE];
+            pressedWidgets = PressedWidgets[WINDOW_MAPGEN_PAGE_BASE];
+            disabledWidgets = PageDisabledWidgets[WINDOW_MAPGEN_PAGE_BASE];
+            initScrollWidgets();
 
             _heightmapLoaded = false;
         }
 
-        void OnClose() override
+        void onClose() override
         {
             MapGenerator::UnloadHeightmapImage();
         }
 
-        void OnMouseUp(WidgetIndex widgetIndex) override
+        void onMouseUp(WidgetIndex widgetIndex) override
         {
             switch (page)
             {
@@ -1389,7 +1389,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnMouseDown(WidgetIndex widgetIndex) override
+        void onMouseDown(WidgetIndex widgetIndex) override
         {
             switch (page)
             {
@@ -1404,7 +1404,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDropdown(WidgetIndex widgetIndex, int32_t selectedIndex) override
+        void onDropdown(WidgetIndex widgetIndex, int32_t selectedIndex) override
         {
             switch (page)
             {
@@ -1415,7 +1415,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnUpdate() override
+        void onUpdate() override
         {
             switch (page)
             {
@@ -1428,10 +1428,10 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnPrepareDraw() override
+        void onPrepareDraw() override
         {
             bool isHeightMapImage = _settings.algorithm == MapGenerator::Algorithm::heightmapImage;
-            SetWidgetDisabled(WIDX_MAP_GENERATE, isHeightMapImage && !_heightmapLoaded);
+            setWidgetDisabled(WIDX_MAP_GENERATE, isHeightMapImage && !_heightmapLoaded);
 
             switch (page)
             {
@@ -1446,7 +1446,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDraw(RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
             switch (page)
             {
@@ -1461,7 +1461,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override
+        void onTextInput(WidgetIndex widgetIndex, std::string_view text) override
         {
             auto strText = std::string(text);
             char* end;
@@ -1506,7 +1506,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void AfterLoadingHeightMap(ModalResult result, const utf8* path)
+        void afterLoadingHeightMap(ModalResult result, const utf8* path)
         {
             if (result == ModalResult::ok)
             {
@@ -1520,11 +1520,11 @@ namespace OpenRCT2::Ui::Windows
                 _heightmapLoaded = true;
                 _heightmapFilename = fs::u8path(path).filename().string();
                 _settings.algorithm = MapGenerator::Algorithm::heightmapImage;
-                SetPage(WINDOW_MAPGEN_PAGE_BASE);
+                setPage(WINDOW_MAPGEN_PAGE_BASE);
             }
         }
 
-        void OnResize() override
+        void onResize() override
         {
             WindowSetResize(*this, kWindowSize, kWindowSize);
         }
@@ -1534,12 +1534,13 @@ namespace OpenRCT2::Ui::Windows
     {
         auto* windowMgr = GetWindowManager();
         return windowMgr->FocusOrCreate<MapGenWindow>(
-            WindowClass::Mapgen, kWindowSize, WF_10 | WF_AUTO_POSITION | WF_CENTRE_SCREEN);
+            WindowClass::mapgen, kWindowSize,
+            { WindowFlag::higherContrastOnPress, WindowFlag::autoPosition, WindowFlag::centreScreen });
     }
 
     static void HeightmapLoadsaveCallback(ModalResult result, const utf8* path)
     {
         auto* w = static_cast<MapGenWindow*>(MapgenOpen());
-        w->AfterLoadingHeightMap(result, path);
+        w->afterLoadingHeightMap(result, path);
     }
 } // namespace OpenRCT2::Ui::Windows

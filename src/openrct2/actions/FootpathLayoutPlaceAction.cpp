@@ -64,7 +64,7 @@ namespace OpenRCT2::GameActions
         return GameAction::GetActionFlags();
     }
 
-    Result FootpathLayoutPlaceAction::Query() const
+    Result FootpathLayoutPlaceAction::Query(GameState_t& gameState) const
     {
         auto res = Result();
         res.Cost = 0;
@@ -96,7 +96,7 @@ namespace OpenRCT2::GameActions
         return ElementInsertQuery(std::move(res));
     }
 
-    Result FootpathLayoutPlaceAction::Execute() const
+    Result FootpathLayoutPlaceAction::Execute(GameState_t& gameState) const
     {
         auto res = Result();
         res.Cost = 0;
@@ -154,7 +154,7 @@ namespace OpenRCT2::GameActions
         auto crossingMode = isQueue || (_slope != kTileSlopeFlat) ? CreateCrossingMode::none
                                                                   : CreateCrossingMode::pathOverTrack;
         auto canBuild = MapCanConstructWithClearAt(
-            { _loc, zLow, zHigh }, &MapPlaceNonSceneryClearFunc, quarterTile, GetFlags(), crossingMode);
+            { _loc, zLow, zHigh }, &MapPlaceNonSceneryClearFunc, quarterTile, GetFlags(), kTileSlopeFlat, crossingMode);
         if (!entrancePath && canBuild.Error != Status::Ok)
         {
             canBuild.ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
@@ -224,7 +224,7 @@ namespace OpenRCT2::GameActions
                                                                   : CreateCrossingMode::pathOverTrack;
         auto canBuild = MapCanConstructWithClearAt(
             { _loc, zLow, zHigh }, &MapPlaceNonSceneryClearFunc, quarterTile, GAME_COMMAND_FLAG_APPLY | GetFlags(),
-            crossingMode);
+            kTileSlopeFlat, crossingMode);
         if (!entrancePath && canBuild.Error != Status::Ok)
         {
             canBuild.ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;

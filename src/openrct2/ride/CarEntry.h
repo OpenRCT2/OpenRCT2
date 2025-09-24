@@ -62,9 +62,8 @@ enum : uint64_t
     CAR_ENTRY_FLAG_SPRITE_BOUNDS_INCLUDE_INVERTED_SET = 1
         << 13, // Used together with HAS_INVERTED_SPRITE_SET and RECALCULATE_SPRITE_BOUNDS and includes the inverted sprites
     // into the function that recalculates the sprite bounds.
-    CAR_ENTRY_FLAG_SPINNING_ADDITIONAL_FRAMES = 1
-        << 14, // 16x additional frames for vehicle. A spinning item with additional frames must always face forward to
-    // load/unload. Spinning without can load/unload at 4 rotations.
+    CAR_ENTRY_FLAG_SPINNING_COMBINED_WITH_NONSPINNING = 1
+        << 14, // If the vehicle combines the spinning carriage and non-spinning undercarriage in the same sprite.
     CAR_ENTRY_FLAG_LIFT = 1 << 15,
     CAR_ENTRY_FLAG_ENABLE_TRIM_COLOUR = 1 << 16,
     CAR_ENTRY_FLAG_SWINGING = 1 << 17,
@@ -87,27 +86,6 @@ enum : uint64_t
     CAR_ENTRY_FLAG_GO_KART = 1 << 30,
     CAR_ENTRY_FLAG_DODGEM_CAR_PLACEMENT = 1u << 31,
     CAR_ENTRY_FLAG_ENABLE_BODY_COLOUR = 1uLL << 32,
-};
-
-enum : uint32_t
-{
-    CAR_SPRITE_FLAG_FLAT = (1 << 0),
-    CAR_SPRITE_FLAG_GENTLE_SLOPES = (1 << 1),
-    CAR_SPRITE_FLAG_STEEP_SLOPES = (1 << 2),
-    CAR_SPRITE_FLAG_VERTICAL_SLOPES = (1 << 3),
-    CAR_SPRITE_FLAG_DIAGONAL_SLOPES = (1 << 4),
-    CAR_SPRITE_FLAG_FLAT_BANKED = (1 << 5),
-    CAR_SPRITE_FLAG_INLINE_TWISTS = (1 << 6),
-    CAR_SPRITE_FLAG_FLAT_TO_GENTLE_SLOPE_BANKED_TRANSITIONS = (1 << 7),
-    CAR_SPRITE_FLAG_DIAGONAL_GENTLE_SLOPE_BANKED_TRANSITIONS = (1 << 8),
-    CAR_SPRITE_FLAG_GENTLE_SLOPE_BANKED_TRANSITIONS = (1 << 9),
-    CAR_SPRITE_FLAG_GENTLE_SLOPE_BANKED_TURNS = (1 << 10),
-    CAR_SPRITE_FLAG_FLAT_TO_GENTLE_SLOPE_WHILE_BANKED_TRANSITIONS = (1 << 11),
-    CAR_SPRITE_FLAG_CORKSCREWS = (1 << 12),
-    CAR_SPRITE_FLAG_RESTRAINT_ANIMATION = (1 << 13),
-    CAR_SPRITE_FLAG_CURVED_LIFT_HILL = (1 << 14),
-    // Used only on lifts (the transport ride), to only use 4 rotation sprites instead of 32.
-    CAR_SPRITE_FLAG_USE_4_ROTATION_FRAMES = (1 << 15),
 };
 
 /*
@@ -232,6 +210,7 @@ struct CarEntry
         int8_t Longitudinal;
         int8_t Vertical;
     } SteamEffect;
+    uint8_t spinningNumFrames;
     std::vector<std::array<CoordsXY, 3>> peep_loading_waypoints = {};
     std::vector<int8_t> peep_loading_positions = {};
 

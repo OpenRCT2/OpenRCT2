@@ -51,11 +51,11 @@ namespace OpenRCT2::Ui::Windows
         int32_t ResizeLanguage = LANGUAGE_UNDEFINED;
 
     public:
-        void OnOpen() override
+        void onOpen() override
         {
-            SetWidgets(window_debug_paint_widgets);
+            setWidgets(window_debug_paint_widgets);
 
-            InitScrollWidgets();
+            initScrollWidgets();
             WindowPushOthersBelow(*this);
 
             colours[0] = ColourWithFlags{ COLOUR_BLACK }.withFlag(ColourFlag::translucent, true);
@@ -64,7 +64,7 @@ namespace OpenRCT2::Ui::Windows
             ResizeLanguage = LANGUAGE_UNDEFINED;
         }
 
-        void OnMouseUp(WidgetIndex widgetIndex) override
+        void onMouseUp(WidgetIndex widgetIndex) override
         {
             switch (widgetIndex)
             {
@@ -100,14 +100,14 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnPrepareDraw() override
+        void onPrepareDraw() override
         {
             const auto& ls = OpenRCT2::GetContext()->GetLocalisationService();
             const auto currentLanguage = ls.GetCurrentLanguage();
             if (ResizeLanguage != currentLanguage)
             {
                 ResizeLanguage = currentLanguage;
-                Invalidate();
+                invalidate();
 
                 // Find the width of the longest string
                 int16_t newWidth = 0;
@@ -125,8 +125,8 @@ namespace OpenRCT2::Ui::Windows
                 newWidth += 8 * 2 + 15;
 
                 width = newWidth;
-                max_width = newWidth;
-                min_width = newWidth;
+                maxWidth = newWidth;
+                minWidth = newWidth;
                 widgets[WIDX_BACKGROUND].right = newWidth - 1;
                 widgets[WIDX_TOGGLE_SHOW_WIDE_PATHS].right = newWidth - 8;
                 widgets[WIDX_TOGGLE_SHOW_BLOCKED_TILES].right = newWidth - 8;
@@ -134,20 +134,20 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_TOGGLE_SHOW_BOUND_BOXES].right = newWidth - 8;
                 widgets[WIDX_TOGGLE_SHOW_DIRTY_VISUALS].right = newWidth - 8;
 
-                Invalidate();
+                invalidate();
             }
 
-            widgetSetCheckboxValue(*this, WIDX_TOGGLE_SHOW_WIDE_PATHS, gPaintWidePathsAsGhost);
-            widgetSetCheckboxValue(*this, WIDX_TOGGLE_SHOW_BLOCKED_TILES, gPaintBlockedTiles);
-            widgetSetCheckboxValue(*this, WIDX_TOGGLE_SHOW_SEGMENT_HEIGHTS, gShowSupportSegmentHeights);
-            widgetSetCheckboxValue(*this, WIDX_TOGGLE_SHOW_BOUND_BOXES, gPaintBoundingBoxes);
-            widgetSetCheckboxValue(*this, WIDX_TOGGLE_SHOW_DIRTY_VISUALS, gShowDirtyVisuals);
-            widgetSetCheckboxValue(*this, WIDX_TOGGLE_STABLE_PAINT_SORT, gPaintStableSort);
+            setCheckboxValue(WIDX_TOGGLE_SHOW_WIDE_PATHS, gPaintWidePathsAsGhost);
+            setCheckboxValue(WIDX_TOGGLE_SHOW_BLOCKED_TILES, gPaintBlockedTiles);
+            setCheckboxValue(WIDX_TOGGLE_SHOW_SEGMENT_HEIGHTS, gShowSupportSegmentHeights);
+            setCheckboxValue(WIDX_TOGGLE_SHOW_BOUND_BOXES, gPaintBoundingBoxes);
+            setCheckboxValue(WIDX_TOGGLE_SHOW_DIRTY_VISUALS, gShowDirtyVisuals);
+            setCheckboxValue(WIDX_TOGGLE_STABLE_PAINT_SORT, gPaintStableSort);
         }
 
-        void OnDraw(RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
-            DrawWidgets(rt);
+            drawWidgets(rt);
         }
     };
 
@@ -155,8 +155,8 @@ namespace OpenRCT2::Ui::Windows
     {
         auto* windowMgr = GetWindowManager();
         auto* window = windowMgr->FocusOrCreate<DebugPaintWindow>(
-            WindowClass::DebugPaint, { 16, ContextGetHeight() - 16 - 33 - kWindowSize.height }, kWindowSize,
-            WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_TITLE_BAR);
+            WindowClass::debugPaint, { 16, ContextGetHeight() - 16 - 33 - kWindowSize.height }, kWindowSize,
+            { WindowFlag::stickToFront, WindowFlag::transparent, WindowFlag::noTitleBar });
 
         return window;
     }

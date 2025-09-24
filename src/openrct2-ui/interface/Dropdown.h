@@ -17,7 +17,11 @@
 #include <span>
 
 struct ImageId;
-class Formatter;
+
+namespace OpenRCT2
+{
+    class Formatter;
+}
 
 namespace OpenRCT2::Dropdown
 {

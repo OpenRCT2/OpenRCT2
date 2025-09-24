@@ -82,9 +82,9 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnOpen() override
+        void onOpen() override
         {
-            SetWidgets(_tooltipWidgets);
+            setWidgets(_tooltipWidgets);
 
             width = _textWidth + 5;
             height = _textHeight + 4;
@@ -95,12 +95,12 @@ namespace OpenRCT2::Ui::Windows
             ResetTooltipNotShown();
         }
 
-        void OnUpdate() override
+        void onUpdate() override
         {
             UpdatePosition(gTooltipCursor);
         }
 
-        void OnDraw(RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
             int32_t left = windowPos.x;
             int32_t top = windowPos.y;
@@ -108,20 +108,20 @@ namespace OpenRCT2::Ui::Windows
             int32_t bottom = windowPos.y + height - 1;
 
             // Background
-            GfxFilterRect(rt, { { left + 1, top + 1 }, { right - 1, bottom - 1 } }, FilterPaletteID::Palette45);
-            GfxFilterRect(rt, { { left + 1, top + 1 }, { right - 1, bottom - 1 } }, FilterPaletteID::PaletteGlassLightOrange);
+            GfxFilterRect(rt, { { left + 1, top + 1 }, { right - 1, bottom - 1 } }, FilterPaletteID::palette45);
+            GfxFilterRect(rt, { { left + 1, top + 1 }, { right - 1, bottom - 1 } }, FilterPaletteID::paletteGlassLightOrange);
 
             // Sides
-            GfxFilterRect(rt, { { left + 0, top + 2 }, { left + 0, bottom - 2 } }, FilterPaletteID::PaletteDarken3);
-            GfxFilterRect(rt, { { right + 0, top + 2 }, { right + 0, bottom - 2 } }, FilterPaletteID::PaletteDarken3);
-            GfxFilterRect(rt, { { left + 2, bottom + 0 }, { right - 2, bottom + 0 } }, FilterPaletteID::PaletteDarken3);
-            GfxFilterRect(rt, { { left + 2, top + 0 }, { right - 2, top + 0 } }, FilterPaletteID::PaletteDarken3);
+            GfxFilterRect(rt, { { left + 0, top + 2 }, { left + 0, bottom - 2 } }, FilterPaletteID::paletteDarken3);
+            GfxFilterRect(rt, { { right + 0, top + 2 }, { right + 0, bottom - 2 } }, FilterPaletteID::paletteDarken3);
+            GfxFilterRect(rt, { { left + 2, bottom + 0 }, { right - 2, bottom + 0 } }, FilterPaletteID::paletteDarken3);
+            GfxFilterRect(rt, { { left + 2, top + 0 }, { right - 2, top + 0 } }, FilterPaletteID::paletteDarken3);
 
             // Corners
-            GfxFilterPixel(rt, { left + 1, top + 1 }, FilterPaletteID::PaletteDarken3);
-            GfxFilterPixel(rt, { right - 1, top + 1 }, FilterPaletteID::PaletteDarken3);
-            GfxFilterPixel(rt, { left + 1, bottom - 1 }, FilterPaletteID::PaletteDarken3);
-            GfxFilterPixel(rt, { right - 1, bottom - 1 }, FilterPaletteID::PaletteDarken3);
+            GfxFilterPixel(rt, { left + 1, top + 1 }, FilterPaletteID::paletteDarken3);
+            GfxFilterPixel(rt, { right - 1, top + 1 }, FilterPaletteID::paletteDarken3);
+            GfxFilterPixel(rt, { left + 1, bottom - 1 }, FilterPaletteID::paletteDarken3);
+            GfxFilterPixel(rt, { right - 1, bottom - 1 }, FilterPaletteID::paletteDarken3);
 
             // Text
             left = windowPos.x + ((width + 1) / 2) - 1;
@@ -153,9 +153,9 @@ namespace OpenRCT2::Ui::Windows
     {
         gTooltipCursor = screenCoords;
         gTooltipCloseTimeout = 0;
-        gTooltipWidget.window_classification = WindowClass::Null;
+        gTooltipWidget.windowClassification = WindowClass::null;
         InputSetState(InputState::Normal);
-        gInputFlags.unset(InputFlag::unk4);
+        gInputFlags.unset(InputFlag::leftMousePressed);
     }
 
     void WindowTooltipShow(const OpenRCT2String& message, ScreenCoordsXY screenCoords)
@@ -167,8 +167,8 @@ namespace OpenRCT2::Ui::Windows
 
         auto* windowMgr = GetWindowManager();
         windowMgr->Create(
-            std::move(tooltipWindow), WindowClass::Tooltip, windowPos, { width, height },
-            WF_TRANSPARENT | WF_STICK_TO_FRONT | WF_NO_TITLE_BAR);
+            std::move(tooltipWindow), WindowClass::tooltip, windowPos, { width, height },
+            { WindowFlag::transparent, WindowFlag::stickToFront, WindowFlag::noTitleBar });
     }
 
     void WindowTooltipOpen(WindowBase* widgetWindow, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
@@ -177,7 +177,7 @@ namespace OpenRCT2::Ui::Windows
             return;
 
         auto widget = &widgetWindow->widgets[widgetIndex];
-        widgetWindow->OnPrepareDraw();
+        widgetWindow->onPrepareDraw();
 
         OpenRCT2String result;
         if (widget->flags.has(WidgetFlag::tooltipIsString))
@@ -190,17 +190,17 @@ namespace OpenRCT2::Ui::Windows
             result.args = Formatter();
             result.args.Add<const char*>(tooltipString);
 
-            gTooltipWidget.window_classification = widgetWindow->classification;
-            gTooltipWidget.window_number = widgetWindow->number;
-            gTooltipWidget.widget_index = widgetIndex;
+            gTooltipWidget.windowClassification = widgetWindow->classification;
+            gTooltipWidget.windowNumber = widgetWindow->number;
+            gTooltipWidget.widgetIndex = widgetIndex;
         }
         else
         {
             auto stringId = widget->tooltip;
-            gTooltipWidget.window_classification = widgetWindow->classification;
-            gTooltipWidget.window_number = widgetWindow->number;
-            gTooltipWidget.widget_index = widgetIndex;
-            result = widgetWindow->OnTooltip(widgetIndex, stringId);
+            gTooltipWidget.windowClassification = widgetWindow->classification;
+            gTooltipWidget.windowNumber = widgetWindow->number;
+            gTooltipWidget.widgetIndex = widgetIndex;
+            result = widgetWindow->onTooltip(widgetIndex, stringId);
             if (result.str == kStringIdNone)
                 return;
         }
@@ -211,9 +211,9 @@ namespace OpenRCT2::Ui::Windows
     void WindowTooltipClose()
     {
         auto* windowMgr = Ui::GetWindowManager();
-        windowMgr->CloseByClass(WindowClass::Tooltip);
+        windowMgr->CloseByClass(WindowClass::tooltip);
 
         gTooltipCloseTimeout = 0;
-        gTooltipWidget.window_classification = WindowClass::Null;
+        gTooltipWidget.windowClassification = WindowClass::null;
     }
 } // namespace OpenRCT2::Ui::Windows

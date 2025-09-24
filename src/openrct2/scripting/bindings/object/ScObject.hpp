@@ -733,7 +733,7 @@ namespace OpenRCT2::Scripting
             auto entry = GetEntry();
             if (entry != nullptr)
             {
-                return entry->max_height;
+                return entry->maxHeight;
             }
             return 0;
         }

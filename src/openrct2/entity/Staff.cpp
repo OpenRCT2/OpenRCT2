@@ -46,6 +46,7 @@
 #include "../world/Footpath.h"
 #include "../world/Map.h"
 #include "../world/Scenery.h"
+#include "../world/Wall.h"
 #include "../world/tile_element/EntranceElement.h"
 #include "../world/tile_element/PathElement.h"
 #include "../world/tile_element/Slope.h"
@@ -1725,6 +1726,11 @@ void Staff::Tick128UpdateStaff()
 bool Staff::IsMechanic() const
 {
     return AssignedStaffType == StaffType::Mechanic;
+}
+
+bool Staff::isEntertainer() const
+{
+    return AssignedStaffType == StaffType::Entertainer;
 }
 
 void Staff::Update()

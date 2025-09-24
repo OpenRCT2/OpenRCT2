@@ -80,7 +80,7 @@ namespace OpenRCT2::Ui::Windows
         colour_t GetHoverWidgetColour(WidgetIndex index)
         {
             return (
-                gHoverWidget.window_classification == WindowClass::BottomToolbar && gHoverWidget.widget_index == index
+                gHoverWidget.windowClassification == WindowClass::bottomToolbar && gHoverWidget.widgetIndex == index
                     ? static_cast<colour_t>(COLOUR_WHITE)
                     : colours[0].colour);
         }
@@ -273,7 +273,7 @@ namespace OpenRCT2::Ui::Windows
 
                     auto clipCoords = ScreenCoordsXY{ 10, 19 };
                     auto* staff = peep->As<Staff>();
-                    if (staff != nullptr && staff->AssignedStaffType == StaffType::Entertainer)
+                    if (staff != nullptr && staff->isEntertainer())
                     {
                         clipCoords.y += 3;
                     }
@@ -282,7 +282,7 @@ namespace OpenRCT2::Ui::Windows
                     auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(peep->AnimationObjectIndex);
 
                     uint32_t image_id_base = animObj->GetPeepAnimation(peep->AnimationGroup).base_image;
-                    image_id_base += frame_no & 0xFFFFFFFC;
+                    image_id_base += currentFrame & 0xFFFFFFFC;
                     image_id_base++;
 
                     auto image_id = ImageId(image_id_base, peep->TshirtColour, peep->TrousersColour);
@@ -294,7 +294,7 @@ namespace OpenRCT2::Ui::Windows
 
                     // There are only 6 walking frames available for each item,
                     // as well as 1 sprite for sitting and 1 for standing still.
-                    auto itemFrame = (frame_no / 4) % 6;
+                    auto itemFrame = (currentFrame / 4) % 6;
 
                     if (guest->AnimationGroup == PeepAnimationGroup::Hat)
                     {
@@ -383,48 +383,48 @@ namespace OpenRCT2::Ui::Windows
             if (gToolbarDirtyFlags & BTM_TB_DIRTY_FLAG_MONEY)
             {
                 gToolbarDirtyFlags &= ~BTM_TB_DIRTY_FLAG_MONEY;
-                InvalidateWidget(WIDX_LEFT_INSET);
+                invalidateWidget(WIDX_LEFT_INSET);
             }
 
             if (gToolbarDirtyFlags & BTM_TB_DIRTY_FLAG_DATE)
             {
                 gToolbarDirtyFlags &= ~BTM_TB_DIRTY_FLAG_DATE;
-                InvalidateWidget(WIDX_RIGHT_INSET);
+                invalidateWidget(WIDX_RIGHT_INSET);
             }
 
             if (gToolbarDirtyFlags & BTM_TB_DIRTY_FLAG_PEEP_COUNT)
             {
                 gToolbarDirtyFlags &= ~BTM_TB_DIRTY_FLAG_PEEP_COUNT;
-                InvalidateWidget(WIDX_LEFT_INSET);
+                invalidateWidget(WIDX_LEFT_INSET);
             }
 
             if (gToolbarDirtyFlags & BTM_TB_DIRTY_FLAG_CLIMATE)
             {
                 gToolbarDirtyFlags &= ~BTM_TB_DIRTY_FLAG_CLIMATE;
-                InvalidateWidget(WIDX_RIGHT_INSET);
+                invalidateWidget(WIDX_RIGHT_INSET);
             }
 
             if (gToolbarDirtyFlags & BTM_TB_DIRTY_FLAG_PARK_RATING)
             {
                 gToolbarDirtyFlags &= ~BTM_TB_DIRTY_FLAG_PARK_RATING;
-                InvalidateWidget(WIDX_LEFT_INSET);
+                invalidateWidget(WIDX_LEFT_INSET);
             }
         }
 
     public:
         GameBottomToolbar()
         {
-            SetWidgets(window_game_bottom_toolbar_widgets);
+            setWidgets(window_game_bottom_toolbar_widgets);
 
-            frame_no = 0;
-            InitScrollWidgets();
+            currentFrame = 0;
+            initScrollWidgets();
 
             // Reset the middle widget to not show by default.
             // If it is required to be shown news_update will reshow it.
             widgets[WIDX_MIDDLE_OUTSET].type = WidgetType::empty;
         }
 
-        void OnMouseUp(WidgetIndex widgetIndex) override
+        void onMouseUp(WidgetIndex widgetIndex) override
         {
             News::Item* newsItem;
 
@@ -433,18 +433,18 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_LEFT_OUTSET:
                 case WIDX_MONEY:
                     if (!(getGameState().park.flags & PARK_FLAGS_NO_MONEY))
-                        ContextOpenWindow(WindowClass::Finances);
+                        ContextOpenWindow(WindowClass::finances);
                     break;
                 case WIDX_GUESTS:
-                    ContextOpenWindowView(WV_PARK_GUESTS);
+                    ContextOpenWindowView(WindowView::parkGuests);
                     break;
                 case WIDX_PARK_RATING:
-                    ContextOpenWindowView(WV_PARK_RATING);
+                    ContextOpenWindowView(WindowView::parkRating);
                     break;
                 case WIDX_MIDDLE_INSET:
                     if (News::IsQueueEmpty())
                     {
-                        ContextOpenWindow(WindowClass::RecentNews);
+                        ContextOpenWindow(WindowClass::recentNews);
                     }
                     else
                     {
@@ -474,12 +474,12 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 case WIDX_RIGHT_OUTSET:
                 case WIDX_DATE:
-                    ContextOpenWindow(WindowClass::RecentNews);
+                    ContextOpenWindow(WindowClass::recentNews);
                     break;
             }
         }
 
-        OpenRCT2String OnTooltip(WidgetIndex widgetIndex, StringId fallback) override
+        OpenRCT2String onTooltip(WidgetIndex widgetIndex, StringId fallback) override
         {
             const auto& gameState = getGameState();
             auto ft = Formatter();
@@ -497,7 +497,7 @@ namespace OpenRCT2::Ui::Windows
             return { fallback, ft };
         }
 
-        void OnPrepareDraw() override
+        void onPrepareDraw() override
         {
             // Figure out how much line height we have to work with.
             uint32_t line_height = FontGetLineHeight(FontStyle::Medium);
@@ -588,30 +588,30 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_NEWS_LOCATE].type = WidgetType::flatBtn;
                 widgets[WIDX_MIDDLE_OUTSET].colour = 2;
                 widgets[WIDX_MIDDLE_INSET].colour = 2;
-                disabled_widgets &= ~(1uLL << WIDX_NEWS_SUBJECT);
-                disabled_widgets &= ~(1uLL << WIDX_NEWS_LOCATE);
+                disabledWidgets &= ~(1uLL << WIDX_NEWS_SUBJECT);
+                disabledWidgets &= ~(1uLL << WIDX_NEWS_LOCATE);
 
                 // Find out if the news item is no longer valid
                 auto subjectLoc = News::GetSubjectLocation(newsItem->type, newsItem->assoc);
 
                 if (!subjectLoc.has_value())
-                    disabled_widgets |= (1uLL << WIDX_NEWS_LOCATE);
+                    disabledWidgets |= (1uLL << WIDX_NEWS_LOCATE);
 
                 if (!(newsItem->typeHasSubject()))
                 {
-                    disabled_widgets |= (1uLL << WIDX_NEWS_SUBJECT);
+                    disabledWidgets |= (1uLL << WIDX_NEWS_SUBJECT);
                     widgets[WIDX_NEWS_SUBJECT].type = WidgetType::empty;
                 }
 
                 if (newsItem->hasButton())
                 {
-                    disabled_widgets |= (1uLL << WIDX_NEWS_SUBJECT);
-                    disabled_widgets |= (1uLL << WIDX_NEWS_LOCATE);
+                    disabledWidgets |= (1uLL << WIDX_NEWS_SUBJECT);
+                    disabledWidgets |= (1uLL << WIDX_NEWS_LOCATE);
                 }
             }
         }
 
-        void OnDraw(RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
             const auto& leftWidget = widgets[WIDX_LEFT_OUTSET];
             const auto& rightWidget = widgets[WIDX_RIGHT_OUTSET];
@@ -620,21 +620,21 @@ namespace OpenRCT2::Ui::Windows
             // Draw panel grey backgrounds
             auto leftTop = windowPos + ScreenCoordsXY{ leftWidget.left, leftWidget.top };
             auto rightBottom = windowPos + ScreenCoordsXY{ leftWidget.right, leftWidget.bottom };
-            GfxFilterRect(rt, { leftTop, rightBottom }, FilterPaletteID::Palette51);
+            GfxFilterRect(rt, { leftTop, rightBottom }, FilterPaletteID::palette51);
 
             leftTop = windowPos + ScreenCoordsXY{ rightWidget.left, rightWidget.top };
             rightBottom = windowPos + ScreenCoordsXY{ rightWidget.right, rightWidget.bottom };
-            GfxFilterRect(rt, { leftTop, rightBottom }, FilterPaletteID::Palette51);
+            GfxFilterRect(rt, { leftTop, rightBottom }, FilterPaletteID::palette51);
 
             if (ThemeGetFlags() & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR)
             {
                 // Draw grey background
                 leftTop = windowPos + ScreenCoordsXY{ middleWidget.left, middleWidget.top };
                 rightBottom = windowPos + ScreenCoordsXY{ middleWidget.right, middleWidget.bottom };
-                GfxFilterRect(rt, { leftTop, rightBottom }, FilterPaletteID::Palette51);
+                GfxFilterRect(rt, { leftTop, rightBottom }, FilterPaletteID::palette51);
             }
 
-            DrawWidgets(rt);
+            drawWidgets(rt);
 
             DrawLeftPanel(rt);
             DrawRightPanel(rt);
@@ -649,16 +649,16 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnUpdate() override
+        void onUpdate() override
         {
-            frame_no++;
-            if (frame_no >= 24)
-                frame_no = 0;
+            currentFrame++;
+            if (currentFrame >= 24)
+                currentFrame = 0;
 
             InvalidateDirtyWidgets();
         }
 
-        CursorID OnCursor(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords, CursorID cursorId) override
+        CursorID onCursor(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords, CursorID cursorId) override
         {
             switch (widgetIndex)
             {
@@ -672,7 +672,7 @@ namespace OpenRCT2::Ui::Windows
             return cursorId;
         }
 
-        void OnPeriodicUpdate() override
+        void onPeriodicUpdate() override
         {
             InvalidateDirtyWidgets();
         }
@@ -692,8 +692,8 @@ namespace OpenRCT2::Ui::Windows
 
         auto* windowMgr = GetWindowManager();
         auto* window = windowMgr->Create<GameBottomToolbar>(
-            WindowClass::BottomToolbar, ScreenCoordsXY(0, screenHeight - toolbarHeight), { screenWidth, toolbarHeight },
-            WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND | WF_NO_TITLE_BAR);
+            WindowClass::bottomToolbar, ScreenCoordsXY(0, screenHeight - toolbarHeight), { screenWidth, toolbarHeight },
+            { WindowFlag::stickToFront, WindowFlag::transparent, WindowFlag::noBackground, WindowFlag::noTitleBar });
 
         return window;
     }
@@ -703,7 +703,7 @@ namespace OpenRCT2::Ui::Windows
         if (gLegacyScene == LegacyScene::playing)
         {
             auto* windowMgr = Ui::GetWindowManager();
-            windowMgr->InvalidateWidgetByClass(WindowClass::BottomToolbar, WIDX_MIDDLE_OUTSET);
+            windowMgr->InvalidateWidgetByClass(WindowClass::bottomToolbar, WIDX_MIDDLE_OUTSET);
         }
     }
 } // namespace OpenRCT2::Ui::Windows

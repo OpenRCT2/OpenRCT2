@@ -94,7 +94,7 @@ static std::string_view LargeSceneryCalculateDisplayText(const LargeSceneryText&
     size_t totalSize = 0;
     CodepointView view(s);
     auto it = view.begin();
-    while (it != view.end() && totalSize <= text.max_width)
+    while (it != view.end() && totalSize <= text.maxWidth)
     {
         auto glyph = text.GetGlyph(*it, ' ');
         totalSize += height ? glyph.height : glyph.width;
@@ -181,7 +181,7 @@ static bool Is3DTextSingleLine(const LargeSceneryText& text, std::string_view s)
     if (text.flags & LARGE_SCENERY_TEXT_FLAG_TWO_LINE)
     {
         auto width = text.MeasureWidth(s);
-        return width <= text.max_width;
+        return width <= text.maxWidth;
     }
     return true;
 }
@@ -273,7 +273,7 @@ static void PaintLargeScenery3DText(
                         lastWhitespaceIndex = it.GetIndex();
                     }
 
-                    if (lineWidth > text->max_width)
+                    if (lineWidth > text->maxWidth)
                     {
                         break;
                     }
@@ -351,24 +351,24 @@ void PaintLargeScenery(PaintSession& session, uint8_t direction, uint16_t height
 
     auto& tile = sceneryEntry->tiles[sequenceNum];
 
-    session.InteractionType = ViewportInteractionItem::LargeScenery;
+    session.InteractionType = ViewportInteractionItem::largeScenery;
 
     auto isGhost = false;
     ImageId imageTemplate;
     if (gTrackDesignSaveMode && !TrackDesignSaveContainsTileElement(reinterpret_cast<const TileElement*>(&tileElement)))
     {
-        imageTemplate = ImageId().WithRemap(FilterPaletteID::Palette46);
+        imageTemplate = ImageId().WithRemap(FilterPaletteID::palette46);
         isGhost = true;
     }
     else if (tileElement.IsGhost())
     {
-        session.InteractionType = ViewportInteractionItem::None;
-        imageTemplate = ImageId().WithRemap(FilterPaletteID::PaletteGhost);
+        session.InteractionType = ViewportInteractionItem::none;
+        imageTemplate = ImageId().WithRemap(FilterPaletteID::paletteGhost);
         isGhost = true;
     }
     else if (session.SelectedElement == reinterpret_cast<const TileElement*>(&tileElement))
     {
-        imageTemplate = ImageId().WithRemap(FilterPaletteID::PaletteGhost);
+        imageTemplate = ImageId().WithRemap(FilterPaletteID::paletteGhost);
         isGhost = true;
     }
     else

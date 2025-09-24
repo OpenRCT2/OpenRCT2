@@ -28,12 +28,12 @@ namespace OpenRCT2::GameActions
         uint16_t GetActionFlags() const override;
 
         void Serialise(DataSerialiser& stream) override;
-        Result Query() const override;
-        Result Execute() const override;
+        Result Query(GameState_t& gameState) const override;
+        Result Execute(GameState_t& gameState) const override;
 
     private:
         TileElement* GetFootpathElement() const;
         money64 GetRefundPrice(TileElement* footpathElement) const;
-        Result RemoveBannersAtElement(const CoordsXY& loc, TileElement* tileElement) const;
+        Result RemoveBannersAtElement(GameState_t& gameState, const CoordsXY& loc, TileElement* tileElement) const;
     };
 } // namespace OpenRCT2::GameActions

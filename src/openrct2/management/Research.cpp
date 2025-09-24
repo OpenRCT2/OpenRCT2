@@ -129,8 +129,8 @@ static void ResearchCalculateExpectedDate()
 static void ResearchInvalidateRelatedWindows()
 {
     auto* windowMgr = Ui::GetWindowManager();
-    windowMgr->InvalidateByClass(WindowClass::ConstructRide);
-    windowMgr->InvalidateByClass(WindowClass::Research);
+    windowMgr->InvalidateByClass(WindowClass::constructRide);
+    windowMgr->InvalidateByClass(WindowClass::research);
 }
 
 static void ResearchMarkAsFullyCompleted()
@@ -139,9 +139,10 @@ static void ResearchMarkAsFullyCompleted()
     gameState.researchProgress = 0;
     gameState.researchProgressStage = RESEARCH_STAGE_FINISHED_ALL;
     ResearchInvalidateRelatedWindows();
+
     // Reset funding to 0 if no more rides.
     auto gameAction = GameActions::ParkSetResearchFundingAction(gameState.researchPriorities, 0);
-    GameActions::Execute(&gameAction);
+    GameActions::Execute(&gameAction, gameState);
 }
 
 /**

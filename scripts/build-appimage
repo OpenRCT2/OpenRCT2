@@ -12,7 +12,7 @@ linuxdeploy=/tmp/linuxdeploy-x86_64.AppImage
 curl -fLo $linuxdeploy https://github.com/TheAssassin/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
 chmod +x $linuxdeploy
 pushd bin
-    $linuxdeploy --appimage-extract-and-run --appdir install/ --output appimage --desktop-file install/usr/share/applications/openrct2.desktop
+    $linuxdeploy --appimage-extract-and-run --appdir install/ --output appimage --desktop-file install/usr/share/applications/io.openrct2.openrct2.desktop
 popd
 mkdir -p artifacts
 # If APPIMAGE_FILE_NAME is set, use it as the filename, otherwise use the default

@@ -65,7 +65,7 @@ namespace OpenRCT2::Ui::Windows
         WIDX_PRICE
     };
 
-    validate_global_widx(WC_TRACK_DESIGN_PLACE, WIDX_ROTATE);
+    VALIDATE_GLOBAL_WIDX(WC_TRACK_DESIGN_PLACE, WIDX_ROTATE);
 
     // clang-format off
     static constexpr auto _trackPlaceWidgets = makeWidgets(
@@ -98,11 +98,12 @@ namespace OpenRCT2::Ui::Windows
         int32_t _trackPlaceShiftZ;
 
         int32_t _trackPlaceZ;
+        bool _triggeredUndergroundView = false;
 
     public:
-        void OnOpen() override
+        void onOpen() override
         {
-            SetWidgets(_trackPlaceWidgets);
+            setWidgets(_trackPlaceWidgets);
             WindowInitScrollWidgets(*this);
             ToolSet(*this, WIDX_PRICE, Tool::crosshair);
             gInputFlags.set(InputFlag::unk6);
@@ -114,44 +115,44 @@ namespace OpenRCT2::Ui::Windows
             _currentTrackPieceDirection = (2 - GetCurrentRotation()) & 3;
         }
 
-        void OnClose() override
+        void onClose() override
         {
             ClearProvisional();
-            ViewportSetVisibility(ViewportVisibility::Default);
+            ViewportSetVisibility(ViewportVisibility::standard);
             MapInvalidateMapSelectionTiles();
-            gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
-            gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
+            gMapSelectFlags.unset(MapSelectFlag::enableConstruct);
+            gMapSelectFlags.unset(MapSelectFlag::enableArrow);
             HideGridlines();
             _miniPreview.clear();
             _miniPreview.shrink_to_fit();
             _trackDesign = nullptr;
         }
 
-        void OnMouseUp(WidgetIndex widgetIndex) override
+        void onMouseUp(WidgetIndex widgetIndex) override
         {
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
-                    Close();
+                    close();
                     break;
                 case WIDX_ROTATE:
                     ClearProvisional();
                     _currentTrackPieceDirection = (_currentTrackPieceDirection + 1) & 3;
-                    Invalidate();
+                    invalidate();
                     _placementLoc.SetNull();
                     DrawMiniPreview(*_trackDesign);
                     break;
                 case WIDX_MIRROR:
                     TrackDesignMirror(*_trackDesign);
                     _currentTrackPieceDirection = (0 - _currentTrackPieceDirection) & 3;
-                    Invalidate();
+                    invalidate();
                     _placementLoc.SetNull();
                     DrawMiniPreview(*_trackDesign);
                     break;
                 case WIDX_SELECT_DIFFERENT_DESIGN:
-                    Close();
+                    close();
 
-                    auto intent = Intent(WindowClass::TrackDesignList);
+                    auto intent = Intent(WindowClass::trackDesignList);
                     intent.PutExtra(INTENT_EXTRA_RIDE_TYPE, _window_track_list_item.Type);
                     intent.PutExtra(INTENT_EXTRA_RIDE_ENTRY_INDEX, _window_track_list_item.EntryIndex);
                     ContextOpenIntent(&intent);
@@ -159,20 +160,20 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnUpdate() override
+        void onUpdate() override
         {
-            if (!isToolActive(WindowClass::TrackDesignPlace))
-                Close();
+            if (!isToolActive(WindowClass::trackDesignPlace))
+                close();
         }
 
-        void OnToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
+        void onToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
             TrackDesignState tds{};
 
             MapInvalidateMapSelectionTiles();
-            gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
-            gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
-            gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
+            gMapSelectFlags.unset(MapSelectFlag::enable);
+            gMapSelectFlags.unset(MapSelectFlag::enableConstruct);
+            gMapSelectFlags.unset(MapSelectFlag::enableArrow);
 
             // Take shift modifier into account
             ScreenCoordsXY targetScreenCoords = screenCoords;
@@ -225,7 +226,7 @@ namespace OpenRCT2::Ui::Windows
                             _hasPlacementGhost = true;
                         }
                     });
-                    res = GameActions::Execute(&tdAction);
+                    res = GameActions::Execute(&tdAction, getGameState());
                     cost = res.Error == GameActions::Status::Ok ? res.Cost : kMoney64Undefined;
 
                     VirtualFloorSetHeight(trackLoc.z);
@@ -236,19 +237,19 @@ namespace OpenRCT2::Ui::Windows
             if (cost != _placementCost)
             {
                 _placementCost = cost;
-                InvalidateWidget(WIDX_PRICE);
+                invalidateWidget(WIDX_PRICE);
             }
 
             TrackDesignPreviewDrawOutlines(tds, *_trackDesign, RideGetTemporaryForPreview(), trackLoc);
         }
 
-        void OnToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
+        void onToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
             ClearProvisional();
             MapInvalidateMapSelectionTiles();
-            gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
-            gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
-            gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
+            gMapSelectFlags.unset(MapSelectFlag::enable);
+            gMapSelectFlags.unset(MapSelectFlag::enableConstruct);
+            gMapSelectFlags.unset(MapSelectFlag::enableArrow);
 
             // Take shift modifier into account
             ScreenCoordsXY targetScreenCoords = screenCoords;
@@ -297,46 +298,46 @@ namespace OpenRCT2::Ui::Windows
                 if (getRide != nullptr)
                 {
                     auto* windowMgr = Ui::GetWindowManager();
-                    windowMgr->CloseByClass(WindowClass::Error);
+                    windowMgr->CloseByClass(WindowClass::error);
 
                     Audio::Play3D(Audio::SoundId::PlaceItem, trackLoc);
                     _currentRideIndex = rideId;
 
                     if (TrackDesignAreEntranceAndExitPlaced())
                     {
-                        auto intent = Intent(WindowClass::Ride);
+                        auto intent = Intent(WindowClass::ride);
                         intent.PutExtra(INTENT_EXTRA_RIDE_ID, rideId.ToUnderlying());
                         ContextOpenIntent(&intent);
-                        auto* wnd = windowMgr->FindByClass(WindowClass::TrackDesignPlace);
+                        auto* wnd = windowMgr->FindByClass(WindowClass::trackDesignPlace);
                         windowMgr->Close(*wnd);
                     }
                     else
                     {
                         RideInitialiseConstructionWindow(*getRide);
-                        auto* wnd = windowMgr->FindByClass(WindowClass::RideConstruction);
-                        wnd->OnMouseUp(WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE);
+                        auto* wnd = windowMgr->FindByClass(WindowClass::rideConstruction);
+                        wnd->onMouseUp(WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE);
                     }
                 }
             });
-            GameActions::Execute(&tdAction);
+            GameActions::Execute(&tdAction, getGameState());
         }
 
-        void OnToolAbort(WidgetIndex widgetIndex) override
+        void onToolAbort(WidgetIndex widgetIndex) override
         {
             ClearProvisional();
         }
 
-        void OnViewportRotate() override
+        void onViewportRotate() override
         {
             DrawMiniPreview(*_trackDesign);
         }
 
-        void OnPrepareDraw() override
+        void onPrepareDraw() override
         {
             DrawMiniPreview(*_trackDesign);
         }
 
-        void OnDraw(RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
             auto ft = Formatter::Common();
             ft.Add<char*>(_trackDesign->gameStateData.name.c_str());
@@ -382,7 +383,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 auto tdAction = GameActions::TrackDesignAction({ _placementGhostLoc }, *_trackDesign);
                 tdAction.SetFlags(GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
-                auto res = GameActions::Execute(&tdAction);
+                auto res = GameActions::Execute(&tdAction, getGameState());
                 if (res.Error != GameActions::Status::Ok)
                 {
                     _hasPlacementGhost = false;
@@ -390,7 +391,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void Init(std::unique_ptr<TrackDesign>&& trackDesign)
+        void init(std::unique_ptr<TrackDesign>&& trackDesign)
         {
             _trackDesign = std::move(trackDesign);
         }
@@ -457,11 +458,11 @@ namespace OpenRCT2::Ui::Windows
             if (!_trackPlaceCtrlState && im.IsModifierKeyPressed(ModifierKey::ctrl))
             {
                 constexpr auto interactionFlags = EnumsToFlags(
-                    ViewportInteractionItem::Terrain, ViewportInteractionItem::Ride, ViewportInteractionItem::Scenery,
-                    ViewportInteractionItem::Footpath, ViewportInteractionItem::Wall, ViewportInteractionItem::LargeScenery);
+                    ViewportInteractionItem::terrain, ViewportInteractionItem::ride, ViewportInteractionItem::scenery,
+                    ViewportInteractionItem::footpath, ViewportInteractionItem::wall, ViewportInteractionItem::largeScenery);
 
                 auto info = GetMapCoordinatesFromPos(screenCoords, interactionFlags);
-                if (info.interactionType == ViewportInteractionItem::Terrain)
+                if (info.interactionType == ViewportInteractionItem::terrain)
                 {
                     _trackPlaceCtrlZ = floor2(surfaceElement->GetBaseZ(), kCoordsZStep);
 
@@ -490,7 +491,7 @@ namespace OpenRCT2::Ui::Windows
             }
             else if (im.IsModifierKeyPressed(ModifierKey::shift))
             {
-                uint16_t maxHeight = ZoomLevel::max().ApplyTo(
+                uint16_t newMaxHeight = ZoomLevel::max().ApplyTo(
                     std::numeric_limits<decltype(TileElement::BaseHeight)>::max() - 32);
 
                 _trackPlaceShiftZ = _trackPlaceShiftStart.y - screenCoords.y + 4;
@@ -504,7 +505,7 @@ namespace OpenRCT2::Ui::Windows
                 _trackPlaceShiftZ = floor2(_trackPlaceShiftZ, kCoordsZStep);
 
                 // Clamp to maximum possible value of BaseHeight can offer.
-                _trackPlaceShiftZ = std::min<int16_t>(_trackPlaceShiftZ, maxHeight);
+                _trackPlaceShiftZ = std::min<int16_t>(_trackPlaceShiftZ, newMaxHeight);
             }
             else if (_trackPlaceShiftState)
             {
@@ -538,6 +539,27 @@ namespace OpenRCT2::Ui::Windows
             if (mapCoords.x == kLocationNull)
                 return std::nullopt;
 
+            // Trigger underground view?
+            auto* mainWnd = WindowGetMain();
+            if (mainWnd != nullptr && mainWnd->viewport != nullptr)
+            {
+                if (_trackPlaceZ < surfaceElement->GetBaseZ() && !_triggeredUndergroundView)
+                {
+                    mainWnd->viewport->flags |= VIEWPORT_FLAG_UNDERGROUND_INSIDE;
+                    _triggeredUndergroundView = true;
+                }
+                else if (_trackPlaceZ >= surfaceElement->GetBaseZ() && _triggeredUndergroundView)
+                {
+                    mainWnd->viewport->flags &= ~VIEWPORT_FLAG_UNDERGROUND_INSIDE;
+                    _triggeredUndergroundView = false;
+                }
+            }
+
+            // Force placement at the designated position if modifiers are used
+            if (_trackPlaceShiftState || _trackPlaceCtrlState)
+                return _trackPlaceZ;
+
+            // Figure out a good position to place the design, taking other elements and surface height into account
             return _trackPlaceZ
                 + TrackDesignGetZPlacement(
                        *_trackDesign, RideGetTemporaryForPreview(), { mapCoords, _trackPlaceZ, _currentTrackPieceDirection });
@@ -708,7 +730,7 @@ namespace OpenRCT2::Ui::Windows
                 auto tdAction = GameActions::TrackDesignAction(
                     CoordsXYZD{ loc.x, loc.y, loc.z, _currentTrackPieceDirection }, *_trackDesign);
                 tdAction.SetFlags(newFlags);
-                res = GameActions::Query(&tdAction);
+                res = GameActions::Query(&tdAction, getGameState());
 
                 // If successful don't keep trying.
                 // If failure due to no money then increasing height only makes problem worse
@@ -733,10 +755,10 @@ namespace OpenRCT2::Ui::Windows
         auto* windowMgr = Ui::GetWindowManager();
         windowMgr->CloseConstructionWindows();
 
-        auto* window = windowMgr->FocusOrCreate<TrackDesignPlaceWindow>(WindowClass::TrackDesignPlace, kWindowSize, 0);
+        auto* window = windowMgr->FocusOrCreate<TrackDesignPlaceWindow>(WindowClass::trackDesignPlace, kWindowSize, {});
         if (window != nullptr)
         {
-            window->Init(std::move(openTrackDesign));
+            window->init(std::move(openTrackDesign));
         }
         return window;
     }
@@ -744,7 +766,7 @@ namespace OpenRCT2::Ui::Windows
     void TrackPlaceClearProvisionalTemporarily()
     {
         auto* windowMgr = GetWindowManager();
-        auto* trackPlaceWnd = static_cast<TrackDesignPlaceWindow*>(windowMgr->FindByClass(WindowClass::TrackDesignPlace));
+        auto* trackPlaceWnd = static_cast<TrackDesignPlaceWindow*>(windowMgr->FindByClass(WindowClass::trackDesignPlace));
         if (trackPlaceWnd != nullptr)
         {
             trackPlaceWnd->ClearProvisionalTemporarily();
@@ -754,7 +776,7 @@ namespace OpenRCT2::Ui::Windows
     void TrackPlaceRestoreProvisional()
     {
         auto* windowMgr = GetWindowManager();
-        auto* trackPlaceWnd = static_cast<TrackDesignPlaceWindow*>(windowMgr->FindByClass(WindowClass::TrackDesignPlace));
+        auto* trackPlaceWnd = static_cast<TrackDesignPlaceWindow*>(windowMgr->FindByClass(WindowClass::trackDesignPlace));
         if (trackPlaceWnd != nullptr)
         {
             trackPlaceWnd->RestoreProvisional();

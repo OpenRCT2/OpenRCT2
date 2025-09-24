@@ -19,18 +19,20 @@ namespace OpenRCT2::GameActions
         CoordsXYZD _loc;
         ObjectEntryIndex _pathType;
         ObjectEntryIndex _entranceType;
+        bool _pathTypeIsLegacy;
 
     public:
         ParkEntrancePlaceAction() = default;
-        ParkEntrancePlaceAction(const CoordsXYZD& location, ObjectEntryIndex pathType, ObjectEntryIndex entranceType);
+        ParkEntrancePlaceAction(
+            const CoordsXYZD& location, ObjectEntryIndex pathType, ObjectEntryIndex entranceType, bool pathTypeIsLegacy);
 
         void AcceptParameters(GameActionParameterVisitor&) final;
 
         uint16_t GetActionFlags() const override;
 
         void Serialise(DataSerialiser& stream) override;
-        Result Query() const override;
-        Result Execute() const override;
+        Result Query(GameState_t& gameState) const override;
+        Result Execute(GameState_t& gameState) const override;
 
     private:
         bool CheckMapCapacity(int16_t numTiles) const;

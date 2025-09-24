@@ -40,7 +40,7 @@ namespace OpenRCT2
             .day = gameState.date.GetDay(),
             .parkUsesMoney = !(gameState.park.flags & PARK_FLAGS_NO_MONEY),
             .cash = gameState.park.cash,
-            .numRides = static_cast<uint16_t>(RideManager().size()),
+            .numRides = static_cast<uint16_t>(RideManager(gameState).size()),
             .numGuests = static_cast<uint16_t>(gameState.park.numGuestsInPark),
         };
 
@@ -216,7 +216,7 @@ namespace OpenRCT2
             .rotation = mapPosXYZD.direction,
         };
 
-        auto viewPos = centre_2d_coordinates(mapPosXYZD, &saveVp);
+        auto viewPos = centre2dCoordinates(mapPosXYZD, &saveVp);
         if (viewPos == std::nullopt)
             return std::nullopt;
 

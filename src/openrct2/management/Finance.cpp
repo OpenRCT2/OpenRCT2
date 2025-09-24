@@ -170,14 +170,15 @@ void FinancePayRideUpkeep()
 {
     PROFILED_FUNCTION();
 
-    for (auto& ride : GetRideManager())
+    auto& gameState = getGameState();
+    for (auto& ride : RideManager(gameState))
     {
         if (!(ride.lifecycleFlags & RIDE_LIFECYCLE_EVER_BEEN_OPENED))
         {
             ride.renew();
         }
 
-        if (ride.status != RideStatus::closed && !(getGameState().park.flags & PARK_FLAGS_NO_MONEY))
+        if (ride.status != RideStatus::closed && !(gameState.park.flags & PARK_FLAGS_NO_MONEY))
         {
             auto upkeep = ride.upkeepCost;
             if (upkeep != kMoney64Undefined)
@@ -284,7 +285,7 @@ void FinanceUpdateDailyProfit()
         current_profit -= current_loan / 600;
 
         // Ride costs
-        for (auto& ride : GetRideManager())
+        for (auto& ride : RideManager(gameState))
         {
             if (ride.status != RideStatus::closed && ride.upkeepCost != kMoney64Undefined)
             {
@@ -303,27 +304,7 @@ void FinanceUpdateDailyProfit()
     park.weeklyProfitAverageDivisor += 1;
 
     auto* windowMgr = Ui::GetWindowManager();
-    windowMgr->InvalidateByClass(WindowClass::Finances);
-}
-
-money64 FinanceGetInitialCash()
-{
-    return getGameState().scenarioOptions.initialCash;
-}
-
-money64 FinanceGetCurrentLoan()
-{
-    return getGameState().park.bankLoan;
-}
-
-money64 FinanceGetMaximumLoan()
-{
-    return getGameState().park.maxBankLoan;
-}
-
-money64 FinanceGetCurrentCash()
-{
-    return getGameState().park.cash;
+    windowMgr->InvalidateByClass(WindowClass::finances);
 }
 
 /**
@@ -361,7 +342,7 @@ void FinanceShiftExpenditureTable()
     }
 
     auto* windowMgr = Ui::GetWindowManager();
-    windowMgr->InvalidateByClass(WindowClass::Finances);
+    windowMgr->InvalidateByClass(WindowClass::finances);
 }
 
 /**

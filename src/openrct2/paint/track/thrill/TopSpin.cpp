@@ -132,7 +132,7 @@ static void PaintTopSpinVehicle(
     auto* vehicle = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[0]);
     if (ride.lifecycleFlags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
     {
-        session.InteractionType = ViewportInteractionItem::Entity;
+        session.InteractionType = ViewportInteractionItem::entity;
         session.CurrentlyDrawnEntity = vehicle;
 
         armRotation = vehicle->flatRideAnimationFrame;
@@ -178,7 +178,7 @@ static void PaintTopSpinVehicle(
     PaintAddImageAsChild(session, supportImageTemplate.WithIndex(imageIndex), offset, bb);
 
     session.CurrentlyDrawnEntity = nullptr;
-    session.InteractionType = ViewportInteractionItem::Ride;
+    session.InteractionType = ViewportInteractionItem::ride;
 }
 
 static void PaintTopSpin(

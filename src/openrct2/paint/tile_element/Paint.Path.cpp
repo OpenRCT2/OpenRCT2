@@ -123,7 +123,7 @@ static void PathPaintQueueBanner(
 
     uint8_t direction = pathElement.GetQueueBannerDirection();
     // Draw ride sign
-    session.InteractionType = ViewportInteractionItem::Ride;
+    session.InteractionType = ViewportInteractionItem::ride;
     if (pathElement.IsSloped())
     {
         if (pathElement.GetSlopeDirection() == direction)
@@ -183,10 +183,10 @@ static void PathPaintQueueBanner(
             { 0, 0, height + 7 }, { boundBoxOffsets, { 1, 1, 21 } });
     }
 
-    session.InteractionType = ViewportInteractionItem::Footpath;
+    session.InteractionType = ViewportInteractionItem::footpath;
     if (imageTemplate.IsRemap())
     {
-        session.InteractionType = ViewportInteractionItem::None;
+        session.InteractionType = ViewportInteractionItem::none;
     }
 }
 
@@ -777,7 +777,7 @@ void PaintPath(PaintSession& session, uint16_t height, const PathElement& tileEl
 {
     PROFILED_FUNCTION();
 
-    session.InteractionType = ViewportInteractionItem::Footpath;
+    session.InteractionType = ViewportInteractionItem::footpath;
 
     ImageId imageTemplate, sceneryImageTemplate;
     if (gTrackDesignSaveMode)
@@ -790,41 +790,41 @@ void PaintPath(PaintSession& session, uint16_t height, const PathElement& tileEl
 
         if (!TrackDesignSaveContainsTileElement(reinterpret_cast<const TileElement*>(&tileElement)))
         {
-            imageTemplate = ImageId().WithRemap(FilterPaletteID::Palette46);
+            imageTemplate = ImageId().WithRemap(FilterPaletteID::palette46);
         }
     }
 
     if (session.ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES)
     {
-        imageTemplate = ImageId().WithRemap(FilterPaletteID::Palette46);
+        imageTemplate = ImageId().WithRemap(FilterPaletteID::palette46);
     }
 
     if (tileElement.AdditionIsGhost())
     {
-        sceneryImageTemplate = ImageId().WithRemap(FilterPaletteID::PaletteGhost);
+        sceneryImageTemplate = ImageId().WithRemap(FilterPaletteID::paletteGhost);
     }
 
     if (tileElement.IsGhost())
     {
-        session.InteractionType = ViewportInteractionItem::None;
-        imageTemplate = ImageId().WithRemap(FilterPaletteID::PaletteGhost);
+        session.InteractionType = ViewportInteractionItem::none;
+        imageTemplate = ImageId().WithRemap(FilterPaletteID::paletteGhost);
     }
     else if (session.SelectedElement == reinterpret_cast<const TileElement*>(&tileElement))
     {
-        imageTemplate = ImageId().WithRemap(FilterPaletteID::PaletteGhost);
-        sceneryImageTemplate = ImageId().WithRemap(FilterPaletteID::PaletteGhost);
+        imageTemplate = ImageId().WithRemap(FilterPaletteID::paletteGhost);
+        sceneryImageTemplate = ImageId().WithRemap(FilterPaletteID::paletteGhost);
     }
 
     // For debugging purpose, show blocked tiles with a colour
     if (gPaintBlockedTiles && tileElement.IsBlockedByVehicle())
     {
-        imageTemplate = ImageId().WithRemap(FilterPaletteID::Palette46);
+        imageTemplate = ImageId().WithRemap(FilterPaletteID::palette46);
     }
 
     // Draw wide flags as ghosts, leaving only the "walkable" paths to be drawn normally
     if (gPaintWidePathsAsGhost && tileElement.IsWide())
     {
-        imageTemplate = ImageId().WithRemap(FilterPaletteID::PaletteGhost);
+        imageTemplate = ImageId().WithRemap(FilterPaletteID::paletteGhost);
     }
 
     PaintPatrolAreas(session, tileElement);

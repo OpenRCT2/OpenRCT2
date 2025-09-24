@@ -32,7 +32,6 @@
 #include <string_view>
 
 struct IObjectManager;
-class Formatter;
 struct Ride;
 struct RideTypeDescriptor;
 struct Guest;
@@ -43,6 +42,7 @@ struct ResultWithMessage;
 
 namespace OpenRCT2
 {
+    class Formatter;
     class StationObject;
 
     struct TileElement;
@@ -393,8 +393,8 @@ public:
 
     void setNameToDefault();
     std::string getName() const;
-    void formatNameTo(Formatter&) const;
-    void formatStatusTo(Formatter&) const;
+    void formatNameTo(OpenRCT2::Formatter&) const;
+    void formatStatusTo(OpenRCT2::Formatter&) const;
 
     static void updateAll();
     static bool nameExists(std::string_view name, RideId excludeRideId = RideId::GetNull());
@@ -945,3 +945,5 @@ std::vector<RideId> GetTracklessRides();
 
 void CircusMusicUpdate(Ride& ride);
 void DefaultMusicUpdate(Ride& ride);
+
+RideMode RideModeGetBlockSectionedCounterpart(RideMode originalMode);

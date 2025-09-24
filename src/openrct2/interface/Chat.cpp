@@ -10,6 +10,7 @@
 #include "Chat.h"
 
 #include "../Context.h"
+#include "../Input.h"
 #include "../audio/Audio.h"
 #include "../audio/AudioMixer.h"
 #include "../core/UTF8.h"
@@ -139,7 +140,7 @@ void ChatDraw(RenderTarget& rt, ColourWithFlags chatBackgroundColor)
             { topLeft - ScreenCoordsXY{ 0, 5 }, bottomRight + ScreenCoordsXY{ 0, 5 } }); // Background area + Textbox
         GfxFilterRect(
             rt, { topLeft - ScreenCoordsXY{ 0, 5 }, bottomRight + ScreenCoordsXY{ 0, 5 } },
-            FilterPaletteID::Palette51); // Opaque grey background
+            FilterPaletteID::palette51); // Opaque grey background
         GfxFillRectInset(
             rt, { topLeft - ScreenCoordsXY{ 0, 5 }, bottomRight + ScreenCoordsXY{ 0, 5 } }, chatBackgroundColor,
             INSET_RECT_FLAG_FILL_NONE);

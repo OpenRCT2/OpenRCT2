@@ -45,7 +45,7 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_spriteIndex) << DS_TAG(_costume);
     }
 
-    Result StaffSetCostumeAction::Query() const
+    Result StaffSetCostumeAction::Query(GameState_t& gameState) const
     {
         if (_spriteIndex.ToUnderlying() >= kMaxEntities || _spriteIndex.IsNull())
         {
@@ -72,7 +72,7 @@ namespace OpenRCT2::GameActions
         return Result();
     }
 
-    Result StaffSetCostumeAction::Execute() const
+    Result StaffSetCostumeAction::Execute(GameState_t& gameState) const
     {
         auto* staff = getGameState().entities.TryGetEntity<Staff>(_spriteIndex);
         if (staff == nullptr)
@@ -96,7 +96,7 @@ namespace OpenRCT2::GameActions
         staff->Invalidate();
 
         auto* windowMgr = Ui::GetWindowManager();
-        windowMgr->InvalidateByNumber(WindowClass::Peep, _spriteIndex);
+        windowMgr->InvalidateByNumber(WindowClass::peep, _spriteIndex);
 
         auto intent = Intent(INTENT_ACTION_REFRESH_STAFF_LIST);
         ContextBroadcastIntent(&intent);

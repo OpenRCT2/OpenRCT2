@@ -36,17 +36,17 @@ namespace OpenRCT2::Ui::Windows
     class MapTooltip final : public Window
     {
     public:
-        void OnOpen() override
+        void onOpen() override
         {
-            SetWidgets(window_map_tooltip_widgets);
+            setWidgets(window_map_tooltip_widgets);
         }
 
-        void OnUpdate() override
+        void onUpdate() override
         {
-            Invalidate();
+            invalidate();
         }
 
-        void OnDraw(RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
             StringId stringId;
             std::memcpy(&stringId, _mapTooltipArgs.Data(), sizeof(StringId));
@@ -76,7 +76,7 @@ namespace OpenRCT2::Ui::Windows
         {
             // The map tooltip is drawn by the bottom toolbar
             auto* windowMgr = Ui::GetWindowManager();
-            windowMgr->InvalidateByClass(WindowClass::BottomToolbar);
+            windowMgr->InvalidateByClass(WindowClass::bottomToolbar);
             return;
         }
 
@@ -86,7 +86,7 @@ namespace OpenRCT2::Ui::Windows
 
         // Check for cursor movement
         _cursorHoldDuration++;
-        if (abs(cursorChange.x) > 5 || abs(cursorChange.y) > 5 || (gInputFlags.has(InputFlag::unk5))
+        if (abs(cursorChange.x) > 5 || abs(cursorChange.y) > 5 || (gInputFlags.has(InputFlag::rightMousePressed))
             || InputGetState() == InputState::ViewportRight)
             _cursorHoldDuration = 0;
 
@@ -99,10 +99,10 @@ namespace OpenRCT2::Ui::Windows
         auto& im = GetInputManager();
         auto* wm = GetWindowManager();
         if (_cursorHoldDuration < 25 || stringId == kStringIdNone || im.IsModifierKeyPressed(ModifierKey::ctrl)
-            || im.IsModifierKeyPressed(ModifierKey::shift) || wm->FindByClass(WindowClass::Error) != nullptr)
+            || im.IsModifierKeyPressed(ModifierKey::shift) || wm->FindByClass(WindowClass::error) != nullptr)
         {
             auto* windowMgr = Ui::GetWindowManager();
-            windowMgr->CloseByClass(WindowClass::MapTooltip);
+            windowMgr->CloseByClass(WindowClass::mapTooltip);
         }
         else
         {
@@ -118,9 +118,9 @@ namespace OpenRCT2::Ui::Windows
         auto pos = state->position + ScreenCoordsXY{ -width / 2, 15 };
 
         auto* windowMgr = GetWindowManager();
-        if (auto w = windowMgr->FindByClass(WindowClass::MapTooltip))
+        if (auto w = windowMgr->FindByClass(WindowClass::mapTooltip))
         {
-            w->Invalidate();
+            w->invalidate();
             w->windowPos = pos;
             w->width = width;
             w->height = height;
@@ -128,8 +128,8 @@ namespace OpenRCT2::Ui::Windows
         else
         {
             w = windowMgr->Create<MapTooltip>(
-                WindowClass::MapTooltip, pos, { width, height },
-                WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND | WF_NO_TITLE_BAR);
+                WindowClass::mapTooltip, pos, { width, height },
+                { WindowFlag::stickToFront, WindowFlag::transparent, WindowFlag::noBackground, WindowFlag::noTitleBar });
         }
     }
 } // namespace OpenRCT2::Ui::Windows

@@ -31,7 +31,7 @@ namespace OpenRCT2
         _3dFontLegacy.offset[0].y = stream.ReadValue<int16_t>();
         _3dFontLegacy.offset[1].x = stream.ReadValue<int16_t>();
         _3dFontLegacy.offset[1].y = stream.ReadValue<int16_t>();
-        _3dFontLegacy.max_width = stream.ReadValue<uint16_t>();
+        _3dFontLegacy.maxWidth = stream.ReadValue<uint16_t>();
         stream.ReadValue<uint16_t>();
         _3dFontLegacy.flags = stream.ReadValue<uint8_t>();
         _3dFontLegacy.num_images = stream.ReadValue<uint8_t>();
@@ -286,7 +286,7 @@ namespace OpenRCT2
             std::copy_n(offsets.data(), numOffsets, font->offset);
         }
 
-        font->max_width = Json::GetNumber<uint16_t>(j3dFont["maxWidth"]);
+        font->maxWidth = Json::GetNumber<uint16_t>(j3dFont["maxWidth"]);
         font->num_images = Json::GetNumber<uint16_t>(j3dFont["numImages"]);
 
         font->flags = Json::GetFlags<uint8_t>(

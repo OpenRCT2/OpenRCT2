@@ -43,7 +43,7 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_priorities) << DS_TAG(_fundingAmount);
     }
 
-    Result ParkSetResearchFundingAction::Query() const
+    Result ParkSetResearchFundingAction::Query(GameState_t& gameState) const
     {
         if (_fundingAmount >= RESEARCH_FUNDING_COUNT)
         {
@@ -53,9 +53,8 @@ namespace OpenRCT2::GameActions
         return Result();
     }
 
-    Result ParkSetResearchFundingAction::Execute() const
+    Result ParkSetResearchFundingAction::Execute(GameState_t& gameState) const
     {
-        auto& gameState = getGameState();
         gameState.researchPriorities = _priorities;
         gameState.researchFundingLevel = _fundingAmount;
 

@@ -45,12 +45,12 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_type) << DS_TAG(_groupId) << DS_TAG(_name) << DS_TAG(_permissionIndex) << DS_TAG(_permissionState);
     }
 
-    Result NetworkModifyGroupAction::Query() const
+    Result NetworkModifyGroupAction::Query(GameState_t& gameState) const
     {
         return Network::ModifyGroups(GetPlayer(), _type, _groupId, _name, _permissionIndex, _permissionState, false);
     }
 
-    Result NetworkModifyGroupAction::Execute() const
+    Result NetworkModifyGroupAction::Execute(GameState_t& gameState) const
     {
         return Network::ModifyGroups(GetPlayer(), _type, _groupId, _name, _permissionIndex, _permissionState, true);
     }

@@ -48,7 +48,7 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_type) << DS_TAG(_item) << DS_TAG(_numWeeks);
     }
 
-    Result ParkMarketingAction::Query() const
+    Result ParkMarketingAction::Query(GameState_t& gameState) const
     {
         if (static_cast<size_t>(_type) >= std::size(AdvertisingCampaignPricePerWeek) || _numWeeks >= 256)
         {
@@ -63,7 +63,7 @@ namespace OpenRCT2::GameActions
         return CreateResult();
     }
 
-    Result ParkMarketingAction::Execute() const
+    Result ParkMarketingAction::Execute(GameState_t& gameState) const
     {
         MarketingCampaign campaign{};
         campaign.Type = _type;

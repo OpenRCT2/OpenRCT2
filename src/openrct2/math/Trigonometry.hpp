@@ -101,8 +101,9 @@ namespace OpenRCT2::Math::Trigonometry
         { 195, -165 },  // inverting transition slopes down
         { 134, -217 },  // inverting transition slopes down
         { 252, 44 },    // spiral lift hill up
+        { 252, -44 },   // spiral lift hill down
     };
-    static_assert(std::size(PitchToDirectionVectorFromGeometry) == NumVehiclePitches);
+    static_assert(std::size(PitchToDirectionVectorFromGeometry) == EnumValue(VehiclePitch::pitchCount));
 
     constexpr int32_t ComputeHorizontalMagnitude(int32_t length, uint8_t pitch)
     {

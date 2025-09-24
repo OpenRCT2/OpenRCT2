@@ -43,7 +43,7 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_name);
     }
 
-    Result ParkSetNameAction::Query() const
+    Result ParkSetNameAction::Query(GameState_t& gameState) const
     {
         if (_name.empty())
         {
@@ -53,7 +53,7 @@ namespace OpenRCT2::GameActions
         return Result();
     }
 
-    Result ParkSetNameAction::Execute() const
+    Result ParkSetNameAction::Execute(GameState_t& gameState) const
     {
         // Do a no-op if new name is the same as the current name is the same
         auto& park = getGameState().park;

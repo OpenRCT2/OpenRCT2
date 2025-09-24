@@ -9,8 +9,6 @@
 
 #include "WindowManager.h"
 
-class Formatter;
-
 namespace OpenRCT2::Ui
 {
     class DummyWindowManager final : public IWindowManager
@@ -20,16 +18,16 @@ namespace OpenRCT2::Ui
         {
             return nullptr;
         }
-        WindowBase* OpenView(uint8_t /*view*/) override
+        WindowBase* openView(WindowView /*view*/) override
         {
             return nullptr;
         }
-        WindowBase* OpenDetails(uint8_t /*type*/, int32_t /*id*/) override
+        WindowBase* openDetails(WindowDetail /*type*/, int32_t /*id*/) override
         {
             return nullptr;
         }
         WindowBase* ShowError(
-            StringId /*title*/, StringId /*message*/, const Formatter& /*formatter*/, bool /*autoClose*/) override
+            StringId /*title*/, StringId /*message*/, const OpenRCT2::Formatter& /*formatter*/, bool /*autoClose*/) override
         {
             return nullptr;
         }
@@ -80,20 +78,20 @@ namespace OpenRCT2::Ui
         void Close(WindowBase& window) override {};
         void CloseSurplus(int32_t cap, WindowClass avoid_classification) override {};
         void CloseByClass(WindowClass cls) override {};
-        void CloseByNumber(WindowClass cls, rct_windownumber number) override {};
+        void CloseByNumber(WindowClass cls, WindowNumber number) override {};
         void CloseByNumber(WindowClass cls, EntityId number) override {};
         void CloseTop() override {};
         void CloseAll() override {};
         void CloseAllExceptClass(WindowClass cls) override {};
         void CloseAllExceptFlags(WindowFlags flags) override {};
-        void CloseAllExceptNumberAndClass(rct_windownumber number, WindowClass cls) override {};
+        void CloseAllExceptNumberAndClass(WindowNumber number, WindowClass cls) override {};
         void CloseConstructionWindows() override {};
 
         WindowBase* FindByClass(WindowClass cls) override
         {
             return nullptr;
         }
-        WindowBase* FindByNumber(WindowClass cls, rct_windownumber number) override
+        WindowBase* FindByNumber(WindowClass cls, WindowNumber number) override
         {
             return nullptr;
         }
@@ -111,12 +109,12 @@ namespace OpenRCT2::Ui
         }
 
         void InvalidateByClass(WindowClass cls) override {};
-        void InvalidateByNumber(WindowClass cls, rct_windownumber number) override {};
+        void InvalidateByNumber(WindowClass cls, WindowNumber number) override {};
         void InvalidateByNumber(WindowClass cls, EntityId id) override {};
         void InvalidateAll() override {};
         void InvalidateWidget(WindowBase& w, WidgetIndex widgetIndex) override {};
         void InvalidateWidgetByClass(WindowClass cls, WidgetIndex widgetIndex) override {};
-        void InvalidateWidgetByNumber(WindowClass cls, rct_windownumber number, WidgetIndex widgetIndex) override {};
+        void InvalidateWidgetByNumber(WindowClass cls, WindowNumber number, WidgetIndex widgetIndex) override {};
 
         WindowBase* BringToFront(WindowBase& w) override
         {
@@ -126,11 +124,7 @@ namespace OpenRCT2::Ui
         {
             return nullptr;
         }
-        WindowBase* BringToFrontByClassWithFlags(WindowClass cls, WindowFlags flags) override
-        {
-            return nullptr;
-        }
-        WindowBase* BringToFrontByNumber(WindowClass cls, rct_windownumber number) override
+        WindowBase* BringToFrontByNumber(WindowClass cls, WindowNumber number) override
         {
             return nullptr;
         }

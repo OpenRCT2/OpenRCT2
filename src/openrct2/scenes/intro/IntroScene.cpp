@@ -10,6 +10,7 @@
 #include "IntroScene.h"
 
 #include "../../Context.h"
+#include "../../Input.h"
 #include "../../SpriteIds.h"
 #include "../../audio/Audio.h"
 #include "../../audio/AudioChannel.h"

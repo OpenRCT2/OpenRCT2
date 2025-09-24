@@ -3821,7 +3821,7 @@ STR_6783    :Attracties
 STR_6784    :Bezoekers
 STR_6785    :Gamepad
 STR_6786    :Dode zone:
-STR_6787    :Dode zone voor de analogue stick (minimaal vereiste beweging voordat het spel reageert)
+STR_6787    :Dode zone voor de analoge stick (minimaal vereiste beweging voordat het spel reageert)
 STR_6788    :Gevoeligheid:
 STR_6789    :Gevoeligheidsfactor voor de analoge stick
 STR_6790    :Dode zone: {COMMA32}%

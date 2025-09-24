@@ -49,7 +49,7 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_loc) << DS_TAG(_tileIndex);
     }
 
-    Result LargeSceneryRemoveAction::Query() const
+    Result LargeSceneryRemoveAction::Query(GameState_t& gameState) const
     {
         auto res = Result();
 
@@ -129,7 +129,7 @@ namespace OpenRCT2::GameActions
         return res;
     }
 
-    Result LargeSceneryRemoveAction::Execute() const
+    Result LargeSceneryRemoveAction::Execute(GameState_t& gameState) const
     {
         auto res = Result();
 

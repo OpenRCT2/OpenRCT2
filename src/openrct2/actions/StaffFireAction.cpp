@@ -38,7 +38,7 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_spriteId);
     }
 
-    Result StaffFireAction::Query() const
+    Result StaffFireAction::Query(GameState_t& gameState) const
     {
         if (_spriteId.ToUnderlying() >= kMaxEntities || _spriteId.IsNull())
         {
@@ -65,7 +65,7 @@ namespace OpenRCT2::GameActions
         return Result();
     }
 
-    Result StaffFireAction::Execute() const
+    Result StaffFireAction::Execute(GameState_t& gameState) const
     {
         auto staff = getGameState().entities.TryGetEntity<Staff>(_spriteId);
         if (staff == nullptr)
@@ -75,7 +75,7 @@ namespace OpenRCT2::GameActions
         }
 
         auto* windowMgr = Ui::GetWindowManager();
-        windowMgr->CloseByClass(WindowClass::FirePrompt);
+        windowMgr->CloseByClass(WindowClass::firePrompt);
 
         PeepEntityRemove(staff);
         // Due to patrol areas best to invalidate the whole screen on removal of staff

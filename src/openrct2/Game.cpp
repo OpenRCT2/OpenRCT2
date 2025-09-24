@@ -110,7 +110,7 @@ using namespace OpenRCT2;
 void GameResetSpeed()
 {
     auto setSpeedAction = GameActions::GameSetSpeedAction(1);
-    GameActions::Execute(&setSpeedAction);
+    GameActions::Execute(&setSpeedAction, getGameState());
 }
 
 void GameIncreaseGameSpeed()
@@ -120,7 +120,7 @@ void GameIncreaseGameSpeed()
         newSpeed = 8;
 
     auto setSpeedAction = GameActions::GameSetSpeedAction(newSpeed);
-    GameActions::Execute(&setSpeedAction);
+    GameActions::Execute(&setSpeedAction, getGameState());
 }
 
 void GameReduceGameSpeed()
@@ -130,7 +130,7 @@ void GameReduceGameSpeed()
         newSpeed = 4;
 
     auto setSpeedAction = GameActions::GameSetSpeedAction(newSpeed);
-    GameActions::Execute(&setSpeedAction);
+    GameActions::Execute(&setSpeedAction, getGameState());
 }
 
 /**
@@ -139,9 +139,9 @@ void GameReduceGameSpeed()
  */
 void GameCreateWindows()
 {
-    ContextOpenWindow(WindowClass::MainWindow);
-    ContextOpenWindow(WindowClass::TopToolbar);
-    ContextOpenWindow(WindowClass::BottomToolbar);
+    ContextOpenWindow(WindowClass::mainWindow);
+    ContextOpenWindow(WindowClass::topToolbar);
+    ContextOpenWindow(WindowClass::bottomToolbar);
     WindowResizeGui(ContextGetWidth(), ContextGetHeight());
 }
 
@@ -150,7 +150,7 @@ void PauseToggle()
     gGamePaused ^= GAME_PAUSED_NORMAL;
 
     auto* windowMgr = Ui::GetWindowManager();
-    windowMgr->InvalidateByClass(WindowClass::TopToolbar);
+    windowMgr->InvalidateByClass(WindowClass::topToolbar);
 
     if (gGamePaused & GAME_PAUSED_NORMAL)
     {
@@ -174,7 +174,7 @@ bool GameIsNotPaused()
  */
 static void LoadLandscape()
 {
-    auto intent = Intent(WindowClass::Loadsave);
+    auto intent = Intent(WindowClass::loadsave);
     intent.PutEnumExtra<LoadSaveAction>(INTENT_EXTRA_LOADSAVE_ACTION, LoadSaveAction::load);
     intent.PutEnumExtra<LoadSaveType>(INTENT_EXTRA_LOADSAVE_TYPE, LoadSaveType::landscape);
     ContextOpenIntent(&intent);
@@ -511,7 +511,7 @@ std::unique_ptr<Intent> CreateSaveGameAsIntent()
 {
     auto name = Path::GetFileNameWithoutExtension(gScenarioSavePath);
 
-    auto intent = std::make_unique<Intent>(WindowClass::Loadsave);
+    auto intent = std::make_unique<Intent>(WindowClass::loadsave);
     intent->PutEnumExtra<LoadSaveAction>(INTENT_EXTRA_LOADSAVE_ACTION, LoadSaveAction::save);
     intent->PutEnumExtra<LoadSaveType>(INTENT_EXTRA_LOADSAVE_TYPE, LoadSaveType::park);
     intent->PutExtra(INTENT_EXTRA_PATH, name);
@@ -647,7 +647,7 @@ static void GameLoadOrQuitNoSavePromptCallback(ModalResult result, const utf8* p
         GameUnloadScripts();
 
         auto* windowMgr = Ui::GetWindowManager();
-        windowMgr->CloseByClass(WindowClass::EditorObjectSelection);
+        windowMgr->CloseByClass(WindowClass::editorObjectSelection);
 
         GameLoadScripts();
         GameNotifyMapChanged();
@@ -661,8 +661,8 @@ static void NewGameWindowCallback(const utf8* path)
     // Closing this will cause a Ride window to pop up, so we have to do this to ensure that
     // no windows are open (besides the toolbars and LoadSave window).
     auto* windowMgr = Ui::GetWindowManager();
-    windowMgr->CloseByClass(WindowClass::RideConstruction);
-    windowMgr->CloseAllExceptClass(WindowClass::Loadsave);
+    windowMgr->CloseByClass(WindowClass::rideConstruction);
+    windowMgr->CloseAllExceptClass(WindowClass::loadsave);
 
     GameNotifyMapChange();
     GetContext()->LoadParkFromFile(path, false, true);
@@ -679,12 +679,14 @@ static void NewGameWindowCallback(const utf8* path)
  */
 void GameLoadOrQuitNoSavePrompt()
 {
+    auto& gameState = getGameState();
+
     switch (gSavePromptMode)
     {
         case PromptMode::saveBeforeLoad:
         {
             auto loadOrQuitAction = GameActions::LoadOrQuitAction(GameActions::LoadOrQuitModes::CloseSavePrompt);
-            GameActions::Execute(&loadOrQuitAction);
+            GameActions::Execute(&loadOrQuitAction, gameState);
             ToolCancel();
             if (gLegacyScene == LegacyScene::scenarioEditor)
             {
@@ -692,7 +694,7 @@ void GameLoadOrQuitNoSavePrompt()
             }
             else
             {
-                auto intent = Intent(WindowClass::Loadsave);
+                auto intent = Intent(WindowClass::loadsave);
                 intent.PutEnumExtra<LoadSaveAction>(INTENT_EXTRA_LOADSAVE_ACTION, LoadSaveAction::load);
                 intent.PutEnumExtra<LoadSaveType>(INTENT_EXTRA_LOADSAVE_TYPE, LoadSaveType::park);
                 intent.PutExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<CloseCallback>(GameLoadOrQuitNoSavePromptCallback));
@@ -703,11 +705,11 @@ void GameLoadOrQuitNoSavePrompt()
         case PromptMode::saveBeforeQuit:
         {
             auto loadOrQuitAction = GameActions::LoadOrQuitAction(GameActions::LoadOrQuitModes::CloseSavePrompt);
-            GameActions::Execute(&loadOrQuitAction);
+            GameActions::Execute(&loadOrQuitAction, gameState);
             ToolCancel();
-            if (gInputFlags.has(InputFlag::unk5))
+            if (gInputFlags.has(InputFlag::rightMousePressed))
             {
-                gInputFlags.unset(InputFlag::unk5);
+                gInputFlags.unset(InputFlag::rightMousePressed);
             }
             GameResetSpeed();
             gFirstTimeSaving = true;
@@ -724,9 +726,9 @@ void GameLoadOrQuitNoSavePrompt()
         case PromptMode::saveBeforeNewGame:
         {
             auto loadOrQuitAction = GameActions::LoadOrQuitAction(GameActions::LoadOrQuitModes::CloseSavePrompt);
-            GameActions::Execute(&loadOrQuitAction);
+            GameActions::Execute(&loadOrQuitAction, gameState);
             ToolCancel();
-            auto intent = Intent(WindowClass::ScenarioSelect);
+            auto intent = Intent(WindowClass::scenarioSelect);
             intent.PutExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<CloseCallback>(NewGameWindowCallback));
             ContextOpenIntent(&intent);
             break;
@@ -734,7 +736,7 @@ void GameLoadOrQuitNoSavePrompt()
         default:
             GameUnloadScripts();
             getGameState().entities.ResetAllEntities();
-            OpenRCT2Finish();
+            GetContext()->Finish();
             break;
     }
 }

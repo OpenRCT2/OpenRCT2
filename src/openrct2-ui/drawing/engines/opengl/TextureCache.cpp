@@ -425,7 +425,7 @@ GLuint TextureCache::GetBlendPaletteTexture()
 
 GLint TextureCache::PaletteToY(FilterPaletteID palette)
 {
-    return palette > FilterPaletteID::PaletteWater ? EnumValue(palette) + 5 : EnumValue(palette) + 1;
+    return palette > FilterPaletteID::paletteWater ? EnumValue(palette) + 5 : EnumValue(palette) + 1;
 }
 
 #endif /* DISABLE_OPENGL */

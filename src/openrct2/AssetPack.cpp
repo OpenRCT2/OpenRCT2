@@ -122,11 +122,6 @@ namespace OpenRCT2
             throw std::runtime_error("Not implemented");
         }
 
-        IObjectRepository& GetObjectRepository() override
-        {
-            throw std::runtime_error("Not implemented");
-        }
-
         bool ShouldLoadImages() override
         {
             return true;
