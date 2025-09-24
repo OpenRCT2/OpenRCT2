@@ -51,7 +51,7 @@ namespace OpenRCT2
         auto base = source;
         auto rangeStart = source.find('[');
         auto rangeEnd = source.find(']');
-        if (rangeStart != std::string::npos&& rangeEnd != std::string::npos)
+        if (rangeStart != std::string::npos && rangeEnd != std::string::npos)
         {
             base = source.substr(0, rangeStart);
             info.SourceRange = ParseRange(source.substr(rangeStart, rangeEnd - rangeStart + 1));
