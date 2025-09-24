@@ -53,7 +53,7 @@ namespace OpenRCT2
                 jImages = root["noCsgImages"];
                 usesFallbackImages = true;
             }
-            
+
             if (jImages.is_string())
             {
                 ReadEntryFromJson(context, jImages);
@@ -66,7 +66,7 @@ namespace OpenRCT2
                 }
             }
         }
-        
+
         return usesFallbackImages;
     }
 
