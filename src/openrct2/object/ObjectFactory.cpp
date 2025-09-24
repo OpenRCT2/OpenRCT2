@@ -122,7 +122,6 @@ namespace OpenRCT2
     class ReadObjectContext : public IReadObjectContext
     {
     private:
-        IObjectRepository& _objectRepository;
         const IFileDataRetriever* _fileDataRetriever;
 
         std::string _identifier;
@@ -146,11 +145,8 @@ namespace OpenRCT2
             return _wasError;
         }
 
-        ReadObjectContext(
-            IObjectRepository& objectRepository, const std::string& identifier, bool loadImages,
-            const IFileDataRetriever* fileDataRetriever)
-            : _objectRepository(objectRepository)
-            , _fileDataRetriever(fileDataRetriever)
+        ReadObjectContext(const std::string& identifier, bool loadImages, const IFileDataRetriever* fileDataRetriever)
+            : _fileDataRetriever(fileDataRetriever)
             , _identifier(identifier)
             , _loadImages(loadImages)
         {
@@ -159,11 +155,6 @@ namespace OpenRCT2
         std::string_view GetObjectIdentifier() override
         {
             return _identifier;
-        }
-
-        IObjectRepository& GetObjectRepository() override
-        {
-            return _objectRepository;
         }
 
         bool ShouldLoadImages() override
@@ -228,8 +219,7 @@ namespace OpenRCT2::ObjectFactory
      * @note jRoot is deliberately left non-const: json_t behaviour changes when const
      */
     static std::unique_ptr<Object> CreateObjectFromJson(
-        IObjectRepository& objectRepository, json_t& jRoot, const IFileDataRetriever* fileRetriever, bool loadImageTable,
-        const std::string_view path);
+        json_t& jRoot, const IFileDataRetriever* fileRetriever, bool loadImageTable, const std::string_view path);
 
     static ObjectSourceGame ParseSourceGame(const std::string_view s)
     {
@@ -264,29 +254,29 @@ namespace OpenRCT2::ObjectFactory
         }
     }
 
-    std::unique_ptr<Object> CreateObjectFromFile(IObjectRepository& objectRepository, u8string_view path, bool loadImages)
+    std::unique_ptr<Object> CreateObjectFromFile(u8string_view path, bool loadImages)
     {
         std::unique_ptr<Object> object;
         auto extension = Path::GetExtension(path);
         if (String::iequals(extension, ".json"))
         {
             auto pathStr = u8string(path);
-            object = ObjectFactory::CreateObjectFromJsonFile(objectRepository, pathStr, loadImages);
+            object = ObjectFactory::CreateObjectFromJsonFile(pathStr, loadImages);
         }
         else if (String::iequals(extension, ".parkobj"))
         {
-            object = ObjectFactory::CreateObjectFromZipFile(objectRepository, path, loadImages);
+            object = ObjectFactory::CreateObjectFromZipFile(path, loadImages);
         }
         else
         {
             auto pathStr = u8string(path);
-            object = ObjectFactory::CreateObjectFromLegacyFile(objectRepository, pathStr.c_str(), loadImages);
+            object = ObjectFactory::CreateObjectFromLegacyFile(pathStr.c_str(), loadImages);
         }
 
         return object;
     }
 
-    std::unique_ptr<Object> CreateObjectFromLegacyFile(IObjectRepository& objectRepository, const utf8* path, bool loadImages)
+    std::unique_ptr<Object> CreateObjectFromLegacyFile(const utf8* path, bool loadImages)
     {
         LOG_VERBOSE("CreateObjectFromLegacyFile(..., \"%s\")", path);
 
@@ -312,7 +302,7 @@ namespace OpenRCT2::ObjectFactory
                 LOG_VERBOSE("  size: %zu", chunk->GetLength());
 
                 auto chunkStream = OpenRCT2::MemoryStream(chunk->GetData(), chunk->GetLength());
-                auto readContext = ReadObjectContext(objectRepository, objectName, loadImages, nullptr);
+                auto readContext = ReadObjectContext(objectName, loadImages, nullptr);
                 ReadObjectLegacy(*result, &readContext, &chunkStream);
                 if (readContext.WasError())
                 {
@@ -328,8 +318,7 @@ namespace OpenRCT2::ObjectFactory
         return result;
     }
 
-    std::unique_ptr<Object> CreateObjectFromLegacyData(
-        IObjectRepository& objectRepository, const RCTObjectEntry* entry, const void* data, size_t dataSize)
+    std::unique_ptr<Object> CreateObjectFromLegacyData(const RCTObjectEntry* entry, const void* data, size_t dataSize)
     {
         Guard::ArgumentNotNull(entry, GUARD_LINE);
         Guard::ArgumentNotNull(data, GUARD_LINE);
@@ -342,7 +331,7 @@ namespace OpenRCT2::ObjectFactory
             utf8 objectName[kDatNameLength + 1];
             ObjectEntryGetNameFixed(objectName, sizeof(objectName), entry);
 
-            auto readContext = ReadObjectContext(objectRepository, objectName, !gOpenRCT2NoGraphics, nullptr);
+            auto readContext = ReadObjectContext(objectName, !gOpenRCT2NoGraphics, nullptr);
             auto chunkStream = OpenRCT2::MemoryStream(data, dataSize);
             ReadObjectLegacy(*result, &readContext, &chunkStream);
 
@@ -456,7 +445,7 @@ namespace OpenRCT2::ObjectFactory
         { "climate", ObjectType::climate },
     };
 
-    std::unique_ptr<Object> CreateObjectFromZipFile(IObjectRepository& objectRepository, std::string_view path, bool loadImages)
+    std::unique_ptr<Object> CreateObjectFromZipFile(std::string_view path, bool loadImages)
     {
         try
         {
@@ -472,7 +461,7 @@ namespace OpenRCT2::ObjectFactory
             if (jRoot.is_object())
             {
                 auto fileDataRetriever = ZipDataRetriever(path, *archive);
-                return CreateObjectFromJson(objectRepository, jRoot, &fileDataRetriever, loadImages, path);
+                return CreateObjectFromJson(jRoot, &fileDataRetriever, loadImages, path);
             }
         }
         catch (const std::exception& e)
@@ -482,8 +471,7 @@ namespace OpenRCT2::ObjectFactory
         return nullptr;
     }
 
-    std::unique_ptr<Object> CreateObjectFromJsonFile(
-        IObjectRepository& objectRepository, const std::string& path, bool loadImages)
+    std::unique_ptr<Object> CreateObjectFromJsonFile(const std::string& path, bool loadImages)
     {
         LOG_VERBOSE("CreateObjectFromJsonFile(\"%s\")", path.c_str());
 
@@ -491,7 +479,7 @@ namespace OpenRCT2::ObjectFactory
         {
             json_t jRoot = Json::ReadFromFile(path.c_str());
             auto fileDataRetriever = FileSystemDataRetriever(Path::GetDirectory(path));
-            return CreateObjectFromJson(objectRepository, jRoot, &fileDataRetriever, loadImages, path);
+            return CreateObjectFromJson(jRoot, &fileDataRetriever, loadImages, path);
         }
         catch (const std::runtime_error& err)
         {
@@ -540,8 +528,7 @@ namespace OpenRCT2::ObjectFactory
     }
 
     std::unique_ptr<Object> CreateObjectFromJson(
-        IObjectRepository& objectRepository, json_t& jRoot, const IFileDataRetriever* fileRetriever, bool loadImageTable,
-        const std::string_view path)
+        json_t& jRoot, const IFileDataRetriever* fileRetriever, bool loadImageTable, const std::string_view path)
     {
         if (!jRoot.is_object())
         {
@@ -602,7 +589,7 @@ namespace OpenRCT2::ObjectFactory
             result->SetDescriptor(descriptor);
             result->SetFileName(OpenRCT2::Path::GetFileNameWithoutExtension(path));
             result->MarkAsJsonObject();
-            auto readContext = ReadObjectContext(objectRepository, id, loadImageTable, fileRetriever);
+            auto readContext = ReadObjectContext(id, loadImageTable, fileRetriever);
             result->ReadJson(&readContext, jRoot);
             if (readContext.WasError())
             {

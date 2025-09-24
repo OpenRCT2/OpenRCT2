@@ -192,6 +192,14 @@ namespace OpenRCT2
         return _sourceGames;
     }
 
+    ObjectSourceGame Object::GetFirstSourceGame() const
+    {
+        if (_sourceGames.size() == 0)
+            return ObjectSourceGame::Custom;
+
+        return _sourceGames[0];
+    }
+
     void Object::SetSourceGames(const std::vector<ObjectSourceGame>& sourceGames)
     {
         _sourceGames = sourceGames;
