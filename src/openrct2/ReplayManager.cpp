@@ -43,6 +43,7 @@
 
 #include <chrono>
 #include <memory>
+#include <stdexcept>
 #include <vector>
 
 namespace OpenRCT2
@@ -416,7 +417,7 @@ namespace OpenRCT2
             }
         }
 
-        virtual void StartPlayback(const std::string& file) override
+        void StartPlayback(const std::string& file) override
         {
             if (_mode != ReplayMode::NONE && _mode != ReplayMode::NORMALISATION)
                 throw std::invalid_argument("Error with mode");
@@ -427,7 +428,7 @@ namespace OpenRCT2
             {
                 ReadReplayData(file, *replayData);
             }
-            catch (std::invalid_argument& e)
+            catch (std::invalid_argument)
             {
                 throw;
             }
