@@ -428,7 +428,7 @@ namespace OpenRCT2
             {
                 ReadReplayData(file, *replayData);
             }
-            catch (std::invalid_argument)
+            catch (std::invalid_argument&)
             {
                 throw;
             }
