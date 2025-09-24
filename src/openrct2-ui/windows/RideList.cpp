@@ -1000,7 +1000,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 case INFORMATION_TYPE_SATISFACTION:
                     SortListByPredicate([](const Ride& thisRide, const Ride& otherRide) -> bool {
-                        return thisRide.satisfaction < otherRide.satisfaction;
+                        return static_cast<int8_t>(thisRide.satisfaction) < static_cast<int8_t>(otherRide.satisfaction);
                     });
                     break;
                 case INFORMATION_TYPE_PROFIT:
