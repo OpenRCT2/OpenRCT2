@@ -143,7 +143,7 @@ namespace OpenRCT2
         // Sub-commands
         DefineSubCommand("convert",         CommandLine::kConvertCommands          ),
         DefineSubCommand("screenshot",      CommandLine::kScreenshotCommands       ),
-        DefineSubCommand("sprite",          CommandLine::kSpriteCommands           ),
+        DefineSubCommand("sprite",          CommandLine::Sprite::kSpriteCommands   ),
         DefineSubCommand("simulate",        CommandLine::kSimulateCommands         ),
         DefineSubCommand("parkinfo",        CommandLine::kParkInfoCommands         ),
         kCommandTableEnd
