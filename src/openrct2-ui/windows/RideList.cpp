@@ -1004,9 +1004,8 @@ namespace OpenRCT2::Ui::Windows
                     });
                     break;
                 case INFORMATION_TYPE_PROFIT:
-                    SortListByPredicate([](const Ride& thisRide, const Ride& otherRide) -> bool {
-                        return thisRide.profit < otherRide.profit;
-                    });
+                    SortListByPredicate(
+                        [](const Ride& thisRide, const Ride& otherRide) -> bool { return thisRide.profit < otherRide.profit; });
                     break;
                 case INFORMATION_TYPE_TOTAL_CUSTOMERS:
                     SortListByPredicate([](const Ride& thisRide, const Ride& otherRide) -> bool {
