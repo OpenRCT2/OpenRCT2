@@ -35,7 +35,7 @@ constexpr RideTypeDescriptor MiniatureRailwayRTD =
                      RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit, RtdFlag::allowMoreVehiclesThanStationFits,
                      RtdFlag::allowMultipleCircuits, RtdFlag::isTransportRide, RtdFlag::showInTrackDesigner,
                      RtdFlag::supportsLevelCrossings),
-    .RideModes = EnumsToFlags(RideMode::continuousCircuit, RideMode::shuttle),
+    .RideModes = EnumsToFlags(RideMode::continuousCircuit, RideMode::continuousCircuitBlockSectioned, RideMode::shuttle),
     .DefaultMode = RideMode::continuousCircuit,
     .Naming = { STR_RIDE_NAME_MINIATURE_RAILWAY, STR_RIDE_DESCRIPTION_MINIATURE_RAILWAY },
     .NameConvention = { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station },
