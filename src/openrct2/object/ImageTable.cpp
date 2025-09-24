@@ -86,8 +86,6 @@ namespace OpenRCT2
             }
             else
             {
-                auto dump = jImage.dump();
-                LOG_ERROR(dump.c_str());
                 sourceInfo = ParseSource(jImage.at("path").get<std::string>());
                 sourceInfo.Kind = SourceKind::Png;
             }
@@ -102,22 +100,28 @@ namespace OpenRCT2
             entry.Asset = asset;
             if (jImage.is_object())
             {
-                ReadImageInfoFromJson(context, jImage, entry);
+                ReadXYOffsetsFromJson(jImage, entry);
             }
         }
         else
         {
+            bool isGxReference = jImage.contains("gx");
             for (auto index : *sourceInfo.SourceRange)
             {
                 auto& entry = _entries.emplace_back();
                 entry.Kind = sourceInfo.Kind;
                 entry.Asset = asset;
                 entry.PathIndex = index;
+
+                if (isGxReference)
+                {
+                    ReadXYOffsetsFromJson(jImage, entry);
+                }
             }
         }
     }
 
-    void ImageTable::ReadImageInfoFromJson(IReadObjectContext& context, const json_t& jImage, ImageTable::Entry& entry)
+    void ImageTable::ReadXYOffsetsFromJson(const json_t& jImage, ImageTable::Entry& entry)
     {
         if (jImage.contains("x"))
             entry.X = jImage.at("x").get<int32_t>();
