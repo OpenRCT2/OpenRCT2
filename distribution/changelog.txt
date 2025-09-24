@@ -2,6 +2,7 @@
 ------------------------------------------------------------------------
 - Feature: [#25218] `sprite exportobject` command, which allows extracting images from an object.
 - Improved: [#2296, #2307] The land tool now takes sloped track and paths into account when modifying land.
+- Change: [#25111] Frozen guests no longer finish consuming any food or drink they are carrying.
 - Change: [#25161] Revert to the ‘fair ride price’ calculation of vanilla RCT2.
 - Change: [#25228] [Plugin] The available staff costumes array is now ordered alphabetically by name.
 - Removed: [#25225] `sprite exportalldat`, replaced with `sprite exportobject`.
