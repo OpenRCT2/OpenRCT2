@@ -2824,7 +2824,7 @@ namespace OpenRCT2::RCT1
         dst->SwingSpeed = src->SwingSpeed;
         dst->restraints_position = src->RestraintsPosition;
         dst->spin_sprite = src->SpinSprite;
-        dst->sound_vector_factor = src->SoundVectorFactor;
+        dst->dopplerShift = src->SoundVectorFactor;
         dst->spin_speed = src->SpinSpeed;
         dst->sound2_flags = src->Sound2Flags;
         dst->sound1_id = OpenRCT2::Audio::SoundId::Null;

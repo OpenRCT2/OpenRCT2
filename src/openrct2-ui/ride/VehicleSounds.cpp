@@ -216,7 +216,7 @@ namespace OpenRCT2::Audio
         frequency >>= 14; // /16384
 
         frequency += 11025;
-        frequency += 16 * vehicle.sound_vector_factor;
+        frequency += 16 * vehicle.dopplerShift;
         param.frequency = static_cast<uint16_t>(frequency);
         param.id = vehicle.Id.ToUnderlying();
         param.volume = 0;
