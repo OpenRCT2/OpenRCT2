@@ -19,7 +19,7 @@
 
 namespace OpenRCT2
 {
-    class ImageTable2;
+    class ImageTable;
 
     class AssetPack
     {
@@ -31,7 +31,7 @@ namespace OpenRCT2
             size_t TableLength{};
         };
 
-        std::unique_ptr<ImageTable2> _imageTable;
+        std::unique_ptr<ImageTable> _imageTable;
         AudioSampleTable _sampleTable;
         std::vector<Entry> _entries;
         bool _enabled{};
@@ -53,7 +53,7 @@ namespace OpenRCT2
         void Fetch();
         void Load();
         bool ContainsObject(std::string_view id) const;
-        void LoadImagesForObject(std::string_view id, ImageTable2& objectTable);
+        void LoadImagesForObject(std::string_view id, ImageTable& objectTable);
         void LoadSamplesForObject(std::string_view id, AudioSampleTable& objectTable);
 
     private:

@@ -346,7 +346,6 @@
     <ClInclude Include="object\FootpathRailingsObject.h" />
     <ClInclude Include="object\FootpathSurfaceObject.h" />
     <ClInclude Include="object\ImageTable.h" />
-    <ClInclude Include="object\ImageTable2.h" />
     <ClInclude Include="object\LargeSceneryEntry.h" />
     <ClInclude Include="object\LargeSceneryObject.h" />
     <ClInclude Include="object\MusicObject.h" />
@@ -915,7 +914,6 @@
     <ClCompile Include="object\FootpathRailingsObject.cpp" />
     <ClCompile Include="object\FootpathSurfaceObject.cpp" />
     <ClCompile Include="object\ImageTable.cpp" />
-    <ClCompile Include="object\ImageTable2.cpp" />
     <ClCompile Include="object\LargeSceneryObject.cpp" />
     <ClCompile Include="object\MusicObject.cpp" />
     <ClCompile Include="object\Object.cpp" />

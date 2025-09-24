@@ -152,7 +152,7 @@ namespace OpenRCT2
     };
 
     struct IObjectRepository;
-    class ImageTable2;
+    class ImageTable;
     struct IStream;
     struct ObjectRepositoryItem;
 
@@ -193,8 +193,8 @@ namespace OpenRCT2
         ObjectVersion _version;
         ObjectEntryDescriptor _descriptor{};
         StringTable _stringTable;
-        std::unique_ptr<OpenRCT2::ImageTable2> _imageTable;
-        std::unique_ptr<OpenRCT2::ImageTable2> _loadedImageTable;
+        std::unique_ptr<OpenRCT2::ImageTable> _imageTable;
+        std::unique_ptr<OpenRCT2::ImageTable> _loadedImageTable;
         OpenRCT2::GxFile _embeddedImages;
         std::vector<ObjectSourceGame> _sourceGames;
         std::vector<std::string> _authors;
@@ -333,9 +333,9 @@ namespace OpenRCT2
         bool IsCompatibilityObject() const;
         void SetIsCompatibilityObject(const bool on);
 
-        OpenRCT2::ImageTable2* GetImageTable();
+        OpenRCT2::ImageTable* GetImageTable();
 
-        const OpenRCT2::ImageTable2* GetImageTable() const;
+        const OpenRCT2::ImageTable* GetImageTable() const;
 
         ObjectEntryDescriptor GetScgPathXHeader() const;
         RCTObjectEntry CreateHeader(const char name[9], uint32_t flags, uint32_t checksum);
