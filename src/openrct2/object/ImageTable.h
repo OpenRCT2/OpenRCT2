@@ -74,7 +74,7 @@ namespace OpenRCT2
         void LoadImage(std::vector<G1Element>& elements, size_t index);
 
     private:
-        void ReadImageInfoFromJson(IReadObjectContext& context, const json_t& jImage, Entry& entry);
+        void ReadXYOffsetsFromJson(const json_t& jImage, Entry& entry);
         void ReadEntryFromJson(IReadObjectContext& context, const json_t& jImage);
         ImageSource* GetOrLoadSource(Entry& entry);
         static std::string GetImageSourceKey(const Entry& entry);
