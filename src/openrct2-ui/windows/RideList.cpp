@@ -995,7 +995,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 case INFORMATION_TYPE_POPULARITY:
                     SortListByPredicate([](const Ride& thisRide, const Ride& otherRide) -> bool {
-                        return thisRide.popularity < otherRide.popularity;
+                        return static_cast<int8_t>(thisRide.popularity) < static_cast<int8_t>(otherRide.popularity);
                     });
                     break;
                 case INFORMATION_TYPE_SATISFACTION:
