@@ -21,7 +21,7 @@
 #include "../localisation/Language.h"
 #include "../localisation/StringIds.h"
 #include "../world/Scenery.h"
-#include "ImageTable2.h"
+#include "ImageTable.h"
 #include "ObjectLimits.h"
 #include "ObjectRepository.h"
 
@@ -151,8 +151,8 @@ namespace OpenRCT2
 
     Object::Object()
     {
-        _imageTable = std::make_unique<ImageTable2>();
-        _loadedImageTable = std::make_unique<ImageTable2>();
+        _imageTable = std::make_unique<ImageTable>();
+        _loadedImageTable = std::make_unique<ImageTable>();
     }
 
     Object::~Object()
@@ -169,12 +169,12 @@ namespace OpenRCT2
         throw std::runtime_error("Not supported.");
     }
 
-    ImageTable2* Object::GetImageTable()
+    ImageTable* Object::GetImageTable()
     {
         return _loadedImageTable.get();
     }
 
-    const ImageTable2* Object::GetImageTable() const
+    const ImageTable* Object::GetImageTable() const
     {
         return _loadedImageTable.get();
     }

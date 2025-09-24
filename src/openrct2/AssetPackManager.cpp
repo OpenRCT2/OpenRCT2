@@ -112,7 +112,7 @@ namespace OpenRCT2
         }
     }
 
-    void AssetPackManager::LoadImagesForObject(std::string_view id, ImageTable2& objectTable)
+    void AssetPackManager::LoadImagesForObject(std::string_view id, ImageTable& objectTable)
     {
         for (auto& assetPack : _assetPacks)
         {

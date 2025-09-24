@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,67 +9,75 @@
 
 #pragma once
 
-#ifdef OLD_IMAGE_TABLE
+#include "../core/JsonFwd.hpp"
+#include "../drawing/ImageId.hpp"
+#include "ObjectAsset.h"
+#include "ResourceTable.h"
 
-    #include "../core/JsonFwd.hpp"
-    #include "../drawing/Drawing.h"
+#include <optional>
 
-    #include <memory>
-    #include <vector>
-
-struct Image;
+struct G1Element;
 
 namespace OpenRCT2
 {
+    class ImageSource;
     struct IReadObjectContext;
-    struct IStream;
 
-    class ImageTable
+    class ImageTable : public ResourceTable
     {
-    private:
-        std::unique_ptr<uint8_t[]> _data;
-        std::vector<G1Element> _entries;
+    public:
+        struct Entry
+        {
+            SourceKind Kind{};
+            std::optional<ObjectAsset> Asset;
+            std::optional<uint32_t> PathIndex;
+            int32_t X{};
+            int32_t Y{};
+        };
 
-        /**
-         * Container for a G1 image, additional information and RAII. Used by ReadJson
-         */
-        struct RequiredImage;
-        [[nodiscard]] std::vector<std::pair<std::string, Image>> GetImageSources(
-            IReadObjectContext* context, json_t& jsonImages);
-        [[nodiscard]] static std::vector<std::unique_ptr<ImageTable::RequiredImage>> ParseImages(
-            IReadObjectContext* context, std::string s);
-        /**
-         * @note root is deliberately left non-const: json_t behaviour changes when const
-         */
-        [[nodiscard]] static std::vector<std::unique_ptr<ImageTable::RequiredImage>> ParseImages(
-            IReadObjectContext* context, std::vector<std::pair<std::string, Image>>& imageSources, json_t& el);
-        [[nodiscard]] static std::vector<std::unique_ptr<ImageTable::RequiredImage>> LoadObjectImages(
-            IReadObjectContext* context, const std::string& name, const std::vector<int32_t>& range);
-        [[nodiscard]] static std::vector<int32_t> ParseRange(std::string s);
-        [[nodiscard]] static std::string FindLegacyObject(const std::string& name);
-        [[nodiscard]] static std::vector<std::unique_ptr<ImageTable::RequiredImage>> LoadImageArchiveImages(
-            IReadObjectContext* context, const std::string& path, const std::vector<int32_t>& range = {});
+    private:
+        std::vector<Entry> _entries;
+        ImageIndex _baseIndex = kImageIndexUndefined;
+        size_t _loadedImageCount{};
+
+        std::string _lastImageSourceKey;
+        std::unique_ptr<ImageSource> _lastImageSource;
 
     public:
-        ImageTable() = default;
-        ImageTable(const ImageTable&) = delete;
-        ImageTable& operator=(const ImageTable&) = delete;
+        ImageTable();
         ~ImageTable();
 
-        void Read(IReadObjectContext* context, OpenRCT2::IStream* stream);
+        std::vector<Entry>& GetEntries();
+
         /**
-         * @note root is deliberately left non-const: json_t behaviour changes when const
+         * Read the entries from the given JSON into the table, but do not load anything.
          */
-        bool ReadJson(IReadObjectContext* context, json_t& root);
-        const G1Element* GetImages() const
-        {
-            return _entries.data();
-        }
-        uint32_t GetCount() const
-        {
-            return static_cast<uint32_t>(_entries.size());
-        }
-        void AddImage(const G1Element* g1);
+        void ReadFromJson(IReadObjectContext& context, const json_t& root);
+
+        /**
+         * Load all available entries from the given table.
+         */
+        void LoadFrom(const ImageTable& table, size_t sourceStartIndex, size_t length);
+
+        /**
+         * Load all available entries.
+         */
+        ImageIndex Load();
+
+        /**
+         * Unloads all entries that are currently loaded.
+         */
+        void Unload();
+
+        size_t GetCount() const;
+        ImageIndex GetImage(uint32_t index) const;
+        void LoadImage(std::vector<G1Element>& elements, size_t index);
+
+    private:
+        void ReadImageInfoFromJson(IReadObjectContext& context, const json_t& jImage, Entry& entry);
+        void ReadEntryFromJson(IReadObjectContext& context, const json_t& jImage);
+        ImageSource* GetOrLoadSource(Entry& entry);
+        static std::string GetImageSourceKey(const Entry& entry);
+        static std::unique_ptr<ImageSource> CreateImageSource(const Entry& entry);
     };
 } // namespace OpenRCT2
-#endif

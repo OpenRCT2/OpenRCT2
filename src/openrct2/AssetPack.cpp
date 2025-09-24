@@ -15,7 +15,7 @@
 #include "core/Zip.h"
 #include "drawing/Image.h"
 #include "localisation/LocalisationService.h"
-#include "object/ImageTable2.h"
+#include "object/ImageTable.h"
 #include "object/Object.h"
 
 namespace OpenRCT2
@@ -25,7 +25,7 @@ namespace OpenRCT2
     AssetPack::AssetPack(const fs::path& path)
         : Path(path)
     {
-        _imageTable = std::make_unique<ImageTable2>();
+        _imageTable = std::make_unique<ImageTable>();
     }
 
     AssetPack::~AssetPack()
@@ -93,7 +93,7 @@ namespace OpenRCT2
         return it != _entries.end();
     }
 
-    void AssetPack::LoadImagesForObject(std::string_view id, ImageTable2& objectTable)
+    void AssetPack::LoadImagesForObject(std::string_view id, ImageTable& objectTable)
     {
         auto it = std::find_if(_entries.begin(), _entries.end(), [id](const Entry& entry) { return entry.ObjectId == id; });
         if (it != _entries.end())
