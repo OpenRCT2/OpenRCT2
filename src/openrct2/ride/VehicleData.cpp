@@ -13,7 +13,7 @@
 
 // clang-format off
 /** rct2: 0x0099F100 */
-static constexpr uint8_t Rotation1TimeToSpriteMap_0[] = {
+static constexpr uint8_t kTwistAnimationStart[] = {
     0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,
     0,   0,   0,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,
     1,   1,   1,   1,   2,   2,   2,   2,   2,   2,   2,   2,   2,   2,   2,   2,   2,
@@ -66,7 +66,7 @@ static constexpr uint8_t Rotation1TimeToSpriteMap_0[] = {
 };
 
 /** rct2: 0x0099F422 */
-static constexpr uint8_t Rotation1TimeToSpriteMap_1[] = {
+static constexpr uint8_t kTwistAnimationLoop[] = {
     0,   0,   0,   1,   1,   1,   2,   2,   2,   3,   3,   3,   4,   4,   4,   5,   5,
     5,   6,   6,   6,   7,   7,   7,   8,   8,   8,   9,   9,   9,  10,  10,  10,  11,
     11,  11,  12,  12,  12,  13,  13,  13,  14,  14,  14,  15,  15,  15,  16,  16,  16,
@@ -110,7 +110,7 @@ static constexpr uint8_t Rotation1TimeToSpriteMap_1[] = {
 };
 
 /** rct2: 0x0099F6AB */
-static constexpr uint8_t Rotation1TimeToSpriteMap_2[] = {
+static constexpr uint8_t kTwistAnimationEnd[] = {
     0,   0,   0,   1,   1,   1,   2,   2,   2,   3,   3,   3,   4,   4,   4,   5,   5,
     5,   6,   6,   6,   7,   7,   7,   8,   8,   8,   9,   9,   9,  10,  10,  10,  11,
     11,  11,  12,  12,  12,  13,  13,  13,  14,  14,  14,  15,  15,  15,  16,  16,  16,
@@ -163,14 +163,14 @@ static constexpr uint8_t Rotation1TimeToSpriteMap_2[] = {
 };
 
 /** rct2: 0x0099F0F4 */
-const uint8_t * Rotation1TimeToSpriteMaps[] = {
-    Rotation1TimeToSpriteMap_0,
-    Rotation1TimeToSpriteMap_1,
-    Rotation1TimeToSpriteMap_2,
+const uint8_t* kTwistTimeToSpriteMaps[] = {
+    kTwistAnimationStart,
+    kTwistAnimationLoop,
+    kTwistAnimationEnd,
 };
 
 /** rct2: 0x009A2434 */
-static constexpr uint8_t Rotation2TimeToSpriteMap_0[] = {
+static constexpr uint8_t kEnterpriseAnimationStart[] = {
     0,   0,   0,   0,   0,   0,   0,   0,   1,   1,   1,   1,   1,   1,   1,   1,   2,
     2,   2,   2,   2,   2,   2,   2,   3,   3,   3,   3,   3,   3,   3,   3,   4,   4,
     4,   4,   4,   4,   4,   4,   5,   5,   5,   5,   5,   5,   5,   5,   6,   6,   6,
@@ -212,7 +212,7 @@ static constexpr uint8_t Rotation2TimeToSpriteMap_0[] = {
 };
 
 /** rct2: 0x009A26A6 */
-static constexpr uint8_t Rotation2TimeToSpriteMap_1[] = {
+static constexpr uint8_t kEnterpriseAnimationLoop[] = {
     46,  46,  47,  47,  48,  48,  46,  46,  47,  47,  48,  48,  46,  46,  47,  47,  48,
     48,  46,  46,  47,  47,  48,  48,  46,  46,  47,  47,  48,  48,  46,  46,  47,  47,
     48,  48,  46,  46,  47,  47,  48,  48,  46,  46,  47,  47,  48,  48,  46,  46,  47,
@@ -223,7 +223,7 @@ static constexpr uint8_t Rotation2TimeToSpriteMap_1[] = {
 };
 
 /** rct2: 0x009A270E */
-static constexpr uint8_t Rotation2TimeToSpriteMap_2[] = {
+static constexpr uint8_t kEnterpriseAnimationEnd[] = {
     43,  43,  44,  44,  45,  45,  43,  43,  44,  44,  45,  45,  43,  43,  44,  44,  45,
     45,  40,  40,  41,  41,  42,  42,  40,  40,  41,  41,  42,  42,  40,  40,  41,  41,
     42,  42,  37,  37,  38,  38,  39,  39,  37,  37,  38,  38,  39,  39,  37,  37,  38,
@@ -256,14 +256,14 @@ static constexpr uint8_t Rotation2TimeToSpriteMap_2[] = {
 };
 
 /** rct2: 0x009A2428 */
-const uint8_t * Rotation2TimeToSpriteMaps[] = {
-    Rotation2TimeToSpriteMap_0,
-    Rotation2TimeToSpriteMap_1,
-    Rotation2TimeToSpriteMap_2,
+const uint8_t* kEnterpriseTimeToSpriteMaps[] = {
+    kEnterpriseAnimationStart,
+    kEnterpriseAnimationLoop,
+    kEnterpriseAnimationEnd,
 };
 
 /** rct2: 0x0099EB28 */
-static constexpr uint8_t Rotation3TimeToSpriteMap_0[] = {
+static constexpr uint8_t kMerryGoRoundAnimationStart[] = {
     0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,
     0,   0,   0,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,
     1,   1,   1,   1,   2,   2,   2,   2,   2,   2,   2,   2,   2,   2,   2,   2,   2,
@@ -300,7 +300,7 @@ static constexpr uint8_t Rotation3TimeToSpriteMap_0[] = {
 };
 
 /** rct2: 0x0099ED49 */
-static constexpr uint8_t Rotation3TimeToSpriteMap_1[] = {
+static constexpr uint8_t kMerryGoRoundAnimationLoop[] = {
     0,   0,   0,   1,   1,   1,   2,   2,   2,   3,   3,   3,   4,   4,   4,   5,   5,
     5,   6,   6,   6,   7,   7,   7,   8,   8,   8,   9,   9,   9,  10,  10,  10,  11,
     11,  11,  12,  12,  12,  13,  13,  13,  14,  14,  14,  15,  15,  15,  16,  16,  16,
@@ -328,7 +328,7 @@ static constexpr uint8_t Rotation3TimeToSpriteMap_1[] = {
 };
 
 /** rct2: 0x0099EED1 */
-static constexpr uint8_t Rotation3TimeToSpriteMap_2[] = {
+static constexpr uint8_t kMerryGoRoundAnimationEnd[] = {
     0,   0,   0,   1,   1,   1,   2,   2,   2,   3,   3,   3,   4,   4,   4,   5,   5,
     5,   6,   6,   6,   7,   7,   7,   8,   8,   8,   9,   9,   9,  10,  10,  10,  11,
     11,  11,  12,  12,  12,  13,  13,  13,  14,  14,  14,  15,  15,  15,  16,  16,  16,
@@ -365,14 +365,14 @@ static constexpr uint8_t Rotation3TimeToSpriteMap_2[] = {
 };
 
 /** rct2: 0x0099EB1C */
-const uint8_t * Rotation3TimeToSpriteMaps[] = {
-    Rotation3TimeToSpriteMap_0,
-    Rotation3TimeToSpriteMap_1,
-    Rotation3TimeToSpriteMap_2,
+const uint8_t* kMerryGoRoundTimeToSpriteMaps[] = {
+    kMerryGoRoundAnimationStart,
+    kMerryGoRoundAnimationLoop,
+    kMerryGoRoundAnimationEnd,
 };
 
 /** rct2: 0x009A12EC */
-static constexpr TopSpinTimeToSpriteMap TopSpinTimeToSpriteMap_0[] = {
+static constexpr TopSpinTimeToSpriteMap kTopSpinAnimationBeginners[] = {
     {  0,  0 }, {  0,  0 }, {  0,  0 }, {  0,  0 }, {  0,  0 }, {  0,  0 }, {  0,  0 },
     {  0,  0 }, {  0,  0 }, {  1,  0 }, {  1,  0 }, {  1,  0 }, {  1,  0 }, {  1,  0 },
     {  1,  0 }, {  1,  0 }, {  1,  0 }, {  2,  0 }, {  2,  0 }, {  2,  0 }, {  2,  0 },
@@ -458,7 +458,7 @@ static constexpr TopSpinTimeToSpriteMap TopSpinTimeToSpriteMap_0[] = {
 };
 
 /** rct2: 0x009A1751 */
-static constexpr TopSpinTimeToSpriteMap TopSpinTimeToSpriteMap_1[] = {
+static constexpr TopSpinTimeToSpriteMap kTopSpinAnimationIntense[] = {
     {  0,  0 }, {  0,  0 }, {  0,  0 }, {  0,  0 }, {  0,  0 }, {  0,  0 }, {  0,  0 },
     {  0,  0 }, {  0,  0 }, {  1,  0 }, {  1,  0 }, {  1,  0 }, {  1,  0 }, {  1,  0 },
     {  1,  0 }, {  1,  0 }, {  1,  0 }, {  2,  0 }, {  2,  0 }, {  2,  0 }, {  2,  0 },
@@ -563,7 +563,7 @@ static constexpr TopSpinTimeToSpriteMap TopSpinTimeToSpriteMap_1[] = {
 };
 
 /** rct2: 0x009A1CC6 */
-static constexpr TopSpinTimeToSpriteMap TopSpinTimeToSpriteMap_2[] = {
+static constexpr TopSpinTimeToSpriteMap kTopSpinAnimationBerserk[] = {
     {  0,  0 }, {  0,  0 }, {  0,  0 }, {  0,  0 }, {  0,  0 }, {  0,  0 }, {  0,  0 },
     {  0,  0 }, {  0,  0 }, {  1,  0 }, {  1,  0 }, {  1,  0 }, {  1,  0 }, {  1,  0 },
     {  1,  0 }, {  1,  0 }, {  1,  0 }, {  2,  0 }, {  2,  0 }, {  2,  0 }, {  2,  0 },
@@ -703,10 +703,10 @@ static constexpr TopSpinTimeToSpriteMap TopSpinTimeToSpriteMap_2[] = {
 };
 
 /** rct2: 0x009A12E0 */
-const TopSpinTimeToSpriteMap * TopSpinTimeToSpriteMaps[] = {
-    TopSpinTimeToSpriteMap_0,
-    TopSpinTimeToSpriteMap_1,
-    TopSpinTimeToSpriteMap_2,
+const TopSpinTimeToSpriteMap* kTopSpinTimeToSpriteMaps[] = {
+    kTopSpinAnimationBeginners,
+    kTopSpinAnimationIntense,
+    kTopSpinAnimationBerserk,
 };
 
 /** rct2: 0x009A0434 */
