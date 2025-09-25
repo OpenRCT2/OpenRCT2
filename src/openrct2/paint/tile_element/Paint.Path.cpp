@@ -790,41 +790,41 @@ void PaintPath(PaintSession& session, uint16_t height, const PathElement& tileEl
 
         if (!TrackDesignSaveContainsTileElement(reinterpret_cast<const TileElement*>(&tileElement)))
         {
-            imageTemplate = ImageId().WithRemap(FilterPaletteID::Palette46);
+            imageTemplate = ImageId().WithRemap(FilterPaletteID::palette46);
         }
     }
 
     if (session.ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES)
     {
-        imageTemplate = ImageId().WithRemap(FilterPaletteID::Palette46);
+        imageTemplate = ImageId().WithRemap(FilterPaletteID::palette46);
     }
 
     if (tileElement.AdditionIsGhost())
     {
-        sceneryImageTemplate = ImageId().WithRemap(FilterPaletteID::PaletteGhost);
+        sceneryImageTemplate = ImageId().WithRemap(FilterPaletteID::paletteGhost);
     }
 
     if (tileElement.IsGhost())
     {
         session.InteractionType = ViewportInteractionItem::none;
-        imageTemplate = ImageId().WithRemap(FilterPaletteID::PaletteGhost);
+        imageTemplate = ImageId().WithRemap(FilterPaletteID::paletteGhost);
     }
     else if (session.SelectedElement == reinterpret_cast<const TileElement*>(&tileElement))
     {
-        imageTemplate = ImageId().WithRemap(FilterPaletteID::PaletteGhost);
-        sceneryImageTemplate = ImageId().WithRemap(FilterPaletteID::PaletteGhost);
+        imageTemplate = ImageId().WithRemap(FilterPaletteID::paletteGhost);
+        sceneryImageTemplate = ImageId().WithRemap(FilterPaletteID::paletteGhost);
     }
 
     // For debugging purpose, show blocked tiles with a colour
     if (gPaintBlockedTiles && tileElement.IsBlockedByVehicle())
     {
-        imageTemplate = ImageId().WithRemap(FilterPaletteID::Palette46);
+        imageTemplate = ImageId().WithRemap(FilterPaletteID::palette46);
     }
 
     // Draw wide flags as ghosts, leaving only the "walkable" paths to be drawn normally
     if (gPaintWidePathsAsGhost && tileElement.IsWide())
     {
-        imageTemplate = ImageId().WithRemap(FilterPaletteID::PaletteGhost);
+        imageTemplate = ImageId().WithRemap(FilterPaletteID::paletteGhost);
     }
 
     PaintPatrolAreas(session, tileElement);

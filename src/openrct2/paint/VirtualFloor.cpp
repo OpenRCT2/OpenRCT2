@@ -390,7 +390,7 @@ void VirtualFloorPaint(PaintSession& session)
 
     if (!weAreOccupied && !weAreLit && weAreAboveGround && weAreOwned)
     {
-        auto imageColourFlats = ImageId(SPR_G2_SURFACE_GLASSY_RECOLOURABLE, FilterPaletteID::PaletteWater).WithBlended(true);
+        auto imageColourFlats = ImageId(SPR_G2_SURFACE_GLASSY_RECOLOURABLE, FilterPaletteID::paletteWater).WithBlended(true);
         PaintAddImageAsParent(
             session, imageColourFlats, virtualFloorOffset, { { 2, 2, _virtualFloorHeight - 3 }, { 30, 30, 0 } });
     }

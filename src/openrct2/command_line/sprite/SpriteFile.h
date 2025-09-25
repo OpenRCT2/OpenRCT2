@@ -1,0 +1,55 @@
+/*****************************************************************************
+ * Copyright (c) 2014-2025 OpenRCT2 developers
+ *
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
+ *
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
+ *****************************************************************************/
+
+#pragma once
+
+#include "../../drawing/Drawing.h"
+#include "../../drawing/ImageImporter.h"
+
+namespace OpenRCT2::CommandLine::Sprite
+{
+    using OpenRCT2::Drawing::ImageImporter;
+
+    class SpriteFile
+    {
+    public:
+        RCTG1Header Header{};
+        std::vector<G1Element> Entries;
+        std::vector<uint8_t> Data;
+        void AddImage(ImageImporter::ImportResult& image);
+        bool Save(const utf8* path);
+        static std::optional<SpriteFile> Open(const utf8* path);
+
+    private:
+        class ScopedRelativeSpriteFile
+        {
+        private:
+            SpriteFile& _SpriteFile;
+            bool _WasAbsolute;
+
+        public:
+            ScopedRelativeSpriteFile(SpriteFile& sFile)
+                : _SpriteFile(sFile)
+                , _WasAbsolute(sFile.isAbsolute)
+            {
+                if (_WasAbsolute)
+                    _SpriteFile.MakeEntriesRelative();
+            }
+
+            ~ScopedRelativeSpriteFile()
+            {
+                if (_WasAbsolute)
+                    _SpriteFile.MakeEntriesAbsolute();
+            }
+        };
+        bool isAbsolute = false;
+        void MakeEntriesAbsolute();
+        void MakeEntriesRelative();
+    };
+} // namespace OpenRCT2::CommandLine::Sprite

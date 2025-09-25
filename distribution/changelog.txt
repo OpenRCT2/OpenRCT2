@@ -1,11 +1,15 @@
 0.4.27 (in development)
 ------------------------------------------------------------------------
+- Feature: [#25218] `sprite exportobject` command, which allows extracting images from an object.
 - Improved: [#2296, #2307] The land tool now takes sloped track and paths into account when modifying land.
+- Change: [#25111] Frozen guests no longer finish consuming any food or drink they are carrying.
 - Change: [#25161] Revert to the ‘fair ride price’ calculation of vanilla RCT2.
 - Change: [#25228] [Plugin] The available staff costumes array is now ordered alphabetically by name.
+- Removed: [#25225] `sprite exportalldat`, replaced with `sprite exportobject`.
 - Fix: [#24513] Ride/track designs can now be shifted underground as well.
-- Fix: [#24682] The scenery window isn't enough to accommodate all tool buttons when there are multiple rows of groups/tabs.
+- Fix: [#24682] The scenery window isn't high enough to accommodate all tool buttons when there are multiple rows of groups/tabs.
 - Fix: [#24882] Guests are shown with hats and umbrellas whilst clapping.
+- Fix: [#24998] Some custom small scenery objects do not load.
 - Fix: [#25131] The Reverse Freefall Coaster On-ride photo section track has incorrectly coloured ties.
 - Fix: [#25132] Crash when trying to use simulate on incomplete ride.
 - Fix: [#25134] Vehicles visually glitch on diagonal steep slopes.
@@ -16,6 +20,7 @@
 - Fix: [#25163] Some of the Junior Roller Coaster flat to steep track wooden support clearance heights are different to RCT1.
 - Fix: [#25173] Desync when placing a park entrance in multiplayer.
 - Fix: [#25179] The LIM Launched Roller Coaster inline twists have incorrect wooden support clearance heights (original bug).
+- Fix: [#25207] Building a block brake on an LIM coaster does not automatically switch it to powered launch block sectioned mode.
 - Fix: [#25238] The chance of thunder and lightning effects happening is lower than vanilla.
 
 0.4.26 (2025-09-06)

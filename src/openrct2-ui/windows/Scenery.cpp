@@ -1422,16 +1422,16 @@ namespace OpenRCT2::Ui::Windows
 
                 if (tabInfo.IsMisc())
                 {
-                    widget.image = ImageId(SPR_TAB_QUESTION, FilterPaletteID::PaletteNull);
+                    widget.image = ImageId(SPR_TAB_QUESTION, FilterPaletteID::paletteNull);
                 }
                 else if (tabInfo.IsAll())
                 {
-                    widget.image = ImageId(SPR_TAB, FilterPaletteID::PaletteNull);
+                    widget.image = ImageId(SPR_TAB, FilterPaletteID::paletteNull);
                 }
                 else if (tabInfo.IsSceneryGroup())
                 {
                     // Default tab image
-                    widget.image = ImageId(SPR_TAB_QUESTION, FilterPaletteID::PaletteNull);
+                    widget.image = ImageId(SPR_TAB_QUESTION, FilterPaletteID::paletteNull);
 
                     // Scenery Group image
                     auto scgEntry = tabInfo.GetSceneryGroupEntry();
@@ -1613,7 +1613,7 @@ namespace OpenRCT2::Ui::Windows
 
                 if (_tabEntries[tabIndex].IsAll())
                 {
-                    auto imageId = ImageId(SPR_G2_INFINITY, FilterPaletteID::PaletteNull);
+                    auto imageId = ImageId(SPR_G2_INFINITY, FilterPaletteID::paletteNull);
                     GfxDrawSprite(rt, imageId, offset + widgetCoordsXY);
                 }
             }

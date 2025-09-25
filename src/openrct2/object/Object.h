@@ -168,7 +168,6 @@ namespace OpenRCT2
         virtual ~IReadObjectContext() = default;
 
         virtual std::string_view GetObjectIdentifier() = 0;
-        virtual IObjectRepository& GetObjectRepository() = 0;
         virtual bool ShouldLoadImages() = 0;
         virtual std::vector<uint8_t> GetData(std::string_view path) = 0;
         virtual ObjectAsset GetAsset(std::string_view path) = 0;
@@ -207,10 +206,6 @@ namespace OpenRCT2
         const StringTable& GetStringTable() const
         {
             return _stringTable;
-        }
-        ImageTable& GetImageTable()
-        {
-            return _imageTable;
         }
 
         /**
@@ -308,6 +303,7 @@ namespace OpenRCT2
         {
         }
         std::vector<ObjectSourceGame> GetSourceGames();
+        ObjectSourceGame GetFirstSourceGame() const;
         void SetSourceGames(const std::vector<ObjectSourceGame>& sourceGames);
 
         const std::vector<std::string>& GetAuthors() const;
@@ -344,6 +340,11 @@ namespace OpenRCT2
 
         uint32_t LoadImages();
         void UnloadImages();
+
+        ImageTable& GetImageTable()
+        {
+            return _imageTable;
+        }
     };
 #ifdef __WARN_SUGGEST_FINAL_TYPES__
     #pragma GCC diagnostic pop

@@ -104,11 +104,11 @@ void PaintBanner(PaintSession& session, uint8_t direction, int32_t height, const
     if (bannerElement.IsGhost())
     {
         session.InteractionType = ViewportInteractionItem::none;
-        imageTemplate = ImageId().WithRemap(FilterPaletteID::PaletteGhost);
+        imageTemplate = ImageId().WithRemap(FilterPaletteID::paletteGhost);
     }
     else if (session.SelectedElement == reinterpret_cast<const TileElement*>(&bannerElement))
     {
-        imageTemplate = ImageId().WithRemap(FilterPaletteID::PaletteGhost);
+        imageTemplate = ImageId().WithRemap(FilterPaletteID::paletteGhost);
     }
     else
     {

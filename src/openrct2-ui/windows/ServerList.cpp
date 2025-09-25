@@ -346,7 +346,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     GfxFilterRect(
                         rt, { 0, screenCoords.y, listWidgetWidth, screenCoords.y + kItemHeight },
-                        FilterPaletteID::PaletteDarken1);
+                        FilterPaletteID::paletteDarken1);
                     _version = serverDetails.Version;
                 }
 

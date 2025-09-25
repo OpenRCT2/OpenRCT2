@@ -88,6 +88,48 @@
 using namespace OpenRCT2;
 using namespace OpenRCT2::TrackMetaData;
 
+static constexpr auto kRideModeBlockSectionedCounterpart = std::to_array(
+    {
+        RideMode::normal,                          // RideMode::normal,
+        RideMode::continuousCircuitBlockSectioned, // RideMode::continuousCircuit,
+        RideMode::reverseInclineLaunchedShuttle,   // RideMode::reverseInclineLaunchedShuttle,
+        RideMode::poweredLaunchBlockSectioned,     // RideMode::poweredLaunchPasstrough,
+        RideMode::shuttle,                         // RideMode::shuttle,
+        RideMode::boatHire,                        // RideMode::boatHire,
+        RideMode::upwardLaunch,                    // RideMode::upwardLaunch,
+        RideMode::rotatingLift,                    // RideMode::rotatingLift,
+        RideMode::stationToStation,                // RideMode::stationToStation,
+        RideMode::singleRidePerAdmission,          // RideMode::singleRidePerAdmission,
+        RideMode::unlimitedRidesPerAdmission,      // RideMode::unlimitedRidesPerAdmission ,
+        RideMode::maze,                            // RideMode::maze,
+        RideMode::race,                            // RideMode::race,
+        RideMode::dodgems,                         // RideMode::dodgems,
+        RideMode::swing,                           // RideMode::swing,
+        RideMode::shopStall,                       // RideMode::shopStall,
+        RideMode::rotation,                        // RideMode::rotation,
+        RideMode::forwardRotation,                 // RideMode::forwardRotation,
+        RideMode::backwardRotation,                // RideMode::backwardRotation,
+        RideMode::filmAvengingAviators,            // RideMode::filmAvengingAviators,
+        RideMode::mouseTails3DFilm,                // RideMode::mouseTails3DFilm,
+        RideMode::spaceRings,                      // RideMode::spaceRings,
+        RideMode::beginners,                       // RideMode::beginners,
+        RideMode::limPoweredLaunch,                // RideMode::limPoweredLaunch,
+        RideMode::filmThrillRiders,                // RideMode::filmThrillRiders,
+        RideMode::stormChasers3DFilm,              // RideMode::stormChasers3DFilm,
+        RideMode::spaceRaiders3DFilm,              // RideMode::spaceRaiders3DFilm,
+        RideMode::intense,                         // RideMode::intense,
+        RideMode::berserk,                         // RideMode::berserk,
+        RideMode::hauntedHouse,                    // RideMode::hauntedHouse,
+        RideMode::circus,                          // RideMode::circus,
+        RideMode::downwardLaunch,                  // RideMode::downwardLaunch,
+        RideMode::crookedHouse,                    // RideMode::crookedHouse,
+        RideMode::freefallDrop,                    // RideMode::freefallDrop,
+        RideMode::continuousCircuitBlockSectioned, // RideMode::continuousCircuitBlockSectioned,
+        RideMode::poweredLaunchBlockSectioned,     // RideMode::poweredLaunch,
+        RideMode::poweredLaunchBlockSectioned,     // RideMode::poweredLaunchBlockSectioned,
+    });
+static_assert(kRideModeBlockSectionedCounterpart.size() == EnumValue(RideMode::count));
+
 RideMode& operator++(RideMode& d, int)
 {
     return d = (d == RideMode::count) ? RideMode::normal : static_cast<RideMode>(static_cast<uint8_t>(d) + 1);
@@ -6037,4 +6079,10 @@ ResultWithMessage Ride::changeStatusCreateVehicles(bool isApplying, const Coords
     }
 
     return { true };
+}
+
+RideMode RideModeGetBlockSectionedCounterpart(RideMode originalMode)
+{
+    assert(originalMode < RideMode::count);
+    return kRideModeBlockSectionedCounterpart[EnumValue(originalMode)];
 }

@@ -1043,12 +1043,12 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
         }
         if (session.ViewFlags & (VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_HIDE_BASE))
         {
-            imageId = imageId.WithTransparency(FilterPaletteID::PaletteDarken1);
+            imageId = imageId.WithTransparency(FilterPaletteID::paletteDarken1);
         }
 
         if (session.SelectedElement == elementPtr)
         {
-            imageId = imageId.WithRemap(FilterPaletteID::PaletteGhost);
+            imageId = imageId.WithRemap(FilterPaletteID::paletteGhost);
         }
 
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, -1 });
@@ -1104,7 +1104,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
                 // Loc661089:
                 const auto fpId = static_cast<FilterPaletteID>(
                     (((EnumValue(mapSelectionType) - EnumValue(MapSelectType::edge0) + 1) + rotation) & 3)
-                    + static_cast<uint32_t>(FilterPaletteID::PaletteLandMarker0));
+                    + static_cast<uint32_t>(FilterPaletteID::paletteLandMarker0));
                 const auto image_id = ImageId(SPR_TERRAIN_SELECTION_EDGE + Byte97B444[surfaceShape], fpId);
                 PaintAttachToPreviousPS(session, image_id, 0, 0);
             }
@@ -1114,7 +1114,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
                 // Selection split into four quarter segments
                 const auto fpId = static_cast<FilterPaletteID>(
                     (((EnumValue(mapSelectionType) - EnumValue(MapSelectType::quarter0)) + rotation) & 3)
-                    + static_cast<uint32_t>(FilterPaletteID::PaletteQuarterMarker0));
+                    + static_cast<uint32_t>(FilterPaletteID::paletteQuarterMarker0));
                 const auto image_id = ImageId(SPR_TERRAIN_SELECTION_QUARTER + Byte97B444[surfaceShape], fpId);
                 PaintAttachToPreviousPS(session, image_id, 0, 0);
             }
@@ -1128,7 +1128,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
                 }
 
                 const auto fpId = static_cast<FilterPaletteID>(
-                    eax + static_cast<uint32_t>(FilterPaletteID::PaletteLandMarker0));
+                    eax + static_cast<uint32_t>(FilterPaletteID::paletteLandMarker0));
                 const auto image_id = ImageId(SPR_TERRAIN_SELECTION_CORNER + Byte97B444[surfaceShape], fpId);
                 PaintAttachToPreviousPS(session, image_id, 0, 0);
             }
@@ -1136,7 +1136,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
             {
                 auto [waterHeight, waterSurfaceShape] = SurfaceGetHeightAboveWater(tileElement, height, surfaceShape);
 
-                const auto fpId = FilterPaletteID::PaletteGlassLightPurple;
+                const auto fpId = FilterPaletteID::paletteGlassLightPurple;
                 const auto imageId1 = ImageId(SPR_TERRAIN_SELECTION_CORNER + Byte97B444[surfaceShape], fpId);
                 PaintAttachToPreviousPS(session, imageId1, 0, 0);
 
@@ -1154,7 +1154,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
                 // The water tool should draw its grid _on_ the water, rather than on the surface under water.
                 auto [local_height, local_surfaceShape] = SurfaceGetHeightAboveWater(tileElement, height, surfaceShape);
 
-                const auto fpId = FilterPaletteID::PaletteWaterMarker;
+                const auto fpId = FilterPaletteID::paletteWaterMarker;
                 const auto image_id = ImageId(SPR_TERRAIN_SELECTION_CORNER + Byte97B444[local_surfaceShape], fpId);
 
                 PaintStruct* backup = session.LastPS;
@@ -1175,10 +1175,10 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
                 continue;
             }
 
-            FilterPaletteID fpId = FilterPaletteID::PaletteSceneryGroundMarker;
+            FilterPaletteID fpId = FilterPaletteID::paletteSceneryGroundMarker;
             if (gMapSelectFlags.has(MapSelectFlag::green))
             {
-                fpId = FilterPaletteID::PaletteRideGroundMarker;
+                fpId = FilterPaletteID::paletteRideGroundMarker;
             }
 
             const auto image_id = ImageId(SPR_TERRAIN_SELECTION_CORNER + Byte97B444[surfaceShape], fpId);
@@ -1247,7 +1247,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
             image_offset = Byte97B740[surfaceShape & 0xF];
         }
 
-        const auto image_id = ImageId(SPR_WATER_MASK + image_offset, FilterPaletteID::PaletteWater).WithBlended(true);
+        const auto image_id = ImageId(SPR_WATER_MASK + image_offset, FilterPaletteID::paletteWater).WithBlended(true);
         PaintAddImageAsParent(session, image_id, { 0, 0, waterHeight }, { 32, 32, -1 });
 
         const uint32_t overlayStart = waterIsTransparent ? EnumValue(SPR_WATER_OVERLAY)

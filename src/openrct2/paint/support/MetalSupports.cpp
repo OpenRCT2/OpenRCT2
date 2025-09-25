@@ -304,7 +304,7 @@ static bool MetalSupportsPaintSetupCommon(
         {
             return false;
         }
-        imageTemplate = ImageId(0).WithTransparency(FilterPaletteID::PaletteDarken1);
+        imageTemplate = ImageId(0).WithTransparency(FilterPaletteID::paletteDarken1);
     }
 
     int32_t currentHeight = height;
@@ -529,7 +529,7 @@ bool PathPoleSupportsPaintSetup(
         {
             return false;
         }
-        imageTemplate = ImageId().WithTransparency(FilterPaletteID::PaletteDarken1);
+        imageTemplate = ImageId().WithTransparency(FilterPaletteID::paletteDarken1);
     }
 
     if (height < supportSegments[segment].height)
