@@ -621,12 +621,12 @@ namespace OpenRCT2
                 auto swingMode = Json::GetNumber<int32_t>(properties["swingMode"]);
                 if (swingMode == 1)
                 {
-                    _legacyType.flags |= RIDE_ENTRY_FLAG_ALTERNATIVE_SWING_MODE_1;
+                    _legacyType.flags |= RIDE_ENTRY_FLAG_INVERTER_SHIP_SWING_MODE;
                 }
                 else if (swingMode == 2)
                 {
-                    _legacyType.flags |= RIDE_ENTRY_FLAG_ALTERNATIVE_SWING_MODE_1;
-                    _legacyType.flags |= RIDE_ENTRY_FLAG_ALTERNATIVE_SWING_MODE_2;
+                    _legacyType.flags |= RIDE_ENTRY_FLAG_INVERTER_SHIP_SWING_MODE;
+                    _legacyType.flags |= RIDE_ENTRY_FLAG_MAGIC_CARPET_SWING_MODE;
                 }
 
                 auto rotationMode = Json::GetNumber<int32_t>(properties["rotationMode"]);

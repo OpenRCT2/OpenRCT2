@@ -4059,10 +4059,10 @@ void Vehicle::UpdateSwinging()
     // 0 == first swing
     // 3 == full swing
     uint8_t swingState = sub_state;
-    if (rideEntry->flags & RIDE_ENTRY_FLAG_ALTERNATIVE_SWING_MODE_1)
+    if (rideEntry->flags & RIDE_ENTRY_FLAG_INVERTER_SHIP_SWING_MODE)
     {
         swingState += 4;
-        if (rideEntry->flags & RIDE_ENTRY_FLAG_ALTERNATIVE_SWING_MODE_2)
+        if (rideEntry->flags & RIDE_ENTRY_FLAG_MAGIC_CARPET_SWING_MODE)
             swingState += 4;
     }
 
