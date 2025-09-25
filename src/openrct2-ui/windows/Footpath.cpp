@@ -803,29 +803,25 @@ namespace OpenRCT2::Ui::Windows
             WindowFootpathSetEnabledAndPressedWidgets();
         }
 
-        std::optional<CoordsXY> FootpathGetPlacePositionFromScreenPosition(ScreenCoordsXY screenCoords)
+        void WindowFootpathUpdateModifierKeyState(ScreenCoordsXY& screenCoords)
         {
-            CoordsXY mapCoords;
             auto& im = GetInputManager();
 
-            if (!_footpathPlaceCtrlState)
+            // First, store the initial copy/ctrl state
+            if (!_footpathPlaceCtrlState && im.IsModifierKeyPressed(ModifierKey::ctrl))
             {
-                if (im.IsModifierKeyPressed(ModifierKey::ctrl))
+                constexpr auto interactionFlags = EnumsToFlags(
+                    ViewportInteractionItem::terrain, ViewportInteractionItem::ride, ViewportInteractionItem::scenery,
+                    ViewportInteractionItem::footpath, ViewportInteractionItem::wall, ViewportInteractionItem::largeScenery);
+
+                auto info = GetMapCoordinatesFromPos(screenCoords, interactionFlags);
+                if (info.interactionType != ViewportInteractionItem::none)
                 {
-                    constexpr auto interactionFlags = EnumsToFlags(
-                        ViewportInteractionItem::terrain, ViewportInteractionItem::ride, ViewportInteractionItem::scenery,
-                        ViewportInteractionItem::footpath, ViewportInteractionItem::wall,
-                        ViewportInteractionItem::largeScenery);
+                    const bool allowInvalidHeights = getGameState().cheats.allowTrackPlaceInvalidHeights;
+                    const auto heightStep = kCoordsZStep * (!allowInvalidHeights ? 2 : 1);
 
-                    auto info = GetMapCoordinatesFromPos(screenCoords, interactionFlags);
-                    if (info.interactionType != ViewportInteractionItem::none)
-                    {
-                        const bool allowInvalidHeights = getGameState().cheats.allowTrackPlaceInvalidHeights;
-                        const auto heightStep = kCoordsZStep * (!allowInvalidHeights ? 2 : 1);
-
-                        _footpathPlaceCtrlZ = floor2(info.Element->GetBaseZ(), heightStep);
-                        _footpathPlaceCtrlState = true;
-                    }
+                    _footpathPlaceCtrlZ = floor2(info.Element->GetBaseZ(), heightStep);
+                    _footpathPlaceCtrlState = true;
                 }
             }
             else if (!im.IsModifierKeyPressed(ModifierKey::ctrl))
@@ -834,6 +830,7 @@ namespace OpenRCT2::Ui::Windows
                 _footpathPlaceCtrlZ = 0;
             }
 
+            // In addition, vertical shifting on top of the base (copy) placement?
             if (!_footpathPlaceShiftState && im.IsModifierKeyPressed(ModifierKey::shift))
             {
                 _footpathPlaceShiftState = true;
@@ -867,6 +864,13 @@ namespace OpenRCT2::Ui::Windows
                 _footpathPlaceShiftState = false;
                 _footpathPlaceShiftZ = 0;
             }
+        }
+
+        std::optional<CoordsXY> FootpathGetPlacePositionFromScreenPosition(ScreenCoordsXY screenCoords)
+        {
+            WindowFootpathUpdateModifierKeyState(screenCoords);
+
+            CoordsXY mapCoords;
 
             if (!_footpathPlaceCtrlState)
             {
