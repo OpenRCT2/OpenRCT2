@@ -436,7 +436,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(Vehicle, sound1_volume);
         COMPARE_FIELD(Vehicle, sound2_id);
         COMPARE_FIELD(Vehicle, sound2_volume);
-        COMPARE_FIELD(Vehicle, sound_vector_factor);
+        COMPARE_FIELD(Vehicle, dopplerShift);
         COMPARE_FIELD(Vehicle, cable_lift_target);
         COMPARE_FIELD(Vehicle, speed);
         COMPARE_FIELD(Vehicle, powered_acceleration);

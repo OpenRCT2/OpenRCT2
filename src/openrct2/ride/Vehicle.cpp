@@ -4966,7 +4966,7 @@ void Vehicle::UpdateSound()
     int32_t soundVector = ((velocity >> 14) * soundDirection) >> 14;
     soundVector = std::clamp(soundVector, -127, 127);
 
-    sound_vector_factor = soundVector & 0xFF;
+    dopplerShift = soundVector & 0xFF;
 }
 
 /**
@@ -9030,7 +9030,7 @@ void Vehicle::Serialise(DataSerialiser& stream)
     stream << sound1_volume;
     stream << sound2_id;
     stream << sound2_volume;
-    stream << sound_vector_factor;
+    stream << dopplerShift;
     stream << var_C0;
     stream << speed;
     stream << powered_acceleration;
