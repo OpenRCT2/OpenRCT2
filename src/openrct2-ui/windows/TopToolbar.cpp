@@ -706,13 +706,13 @@ namespace OpenRCT2::Ui::Windows
                     ContextOpenWindow(WindowClass::editorScenarioOptions);
                     break;
                 case DDIDX_ENABLE_SANDBOX_MODE:
-                    CheatsSet(CheatType::SandboxMode, !getGameState().cheats.sandboxMode);
+                    CheatsSet(CheatType::sandboxMode, !getGameState().cheats.sandboxMode);
                     break;
                 case DDIDX_DISABLE_CLEARANCE_CHECKS:
-                    CheatsSet(CheatType::DisableClearanceChecks, !getGameState().cheats.disableClearanceChecks);
+                    CheatsSet(CheatType::disableClearanceChecks, !getGameState().cheats.disableClearanceChecks);
                     break;
                 case DDIDX_DISABLE_SUPPORT_LIMITS:
-                    CheatsSet(CheatType::DisableSupportLimits, !getGameState().cheats.disableSupportLimits);
+                    CheatsSet(CheatType::disableSupportLimits, !getGameState().cheats.disableSupportLimits);
                     break;
             }
         }

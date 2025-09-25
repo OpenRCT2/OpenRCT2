@@ -612,7 +612,7 @@ static void ShortcutToggleClearanceChecks()
 {
     auto& gameState = getGameState();
     auto cheatSetAction = GameActions::CheatSetAction(
-        CheatType::DisableClearanceChecks, gameState.cheats.disableClearanceChecks ? 0 : 1);
+        CheatType::disableClearanceChecks, gameState.cheats.disableClearanceChecks ? 0 : 1);
     GameActions::Execute(&cheatSetAction, gameState);
 }
 
