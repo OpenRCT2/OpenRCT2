@@ -34,6 +34,7 @@
 #include "ScenarioCategory.h"
 #include "ScenarioSources.h"
 
+#include <cstdint>
 #include <memory>
 #include <string>
 #include <vector>
@@ -207,15 +208,20 @@ private:
 
         struct CrashAdditionalFileRegistration
         {
+            std::string _key;
+
             CrashAdditionalFileRegistration(const std::string& path)
             {
+                // Use a unique key to avoid conflicts when GetScenarioInfo is called in a JobPool and multiple files are being
+                // processed in parallel.
+                _key = "load_park_" + std::to_string(reinterpret_cast<uintptr_t>(this));
                 // Register the file for crash upload if it asserts while loading.
-                CrashRegisterAdditionalFile("load_park", path);
+                CrashRegisterAdditionalFile(_key, path);
             }
             ~CrashAdditionalFileRegistration()
             {
                 // Deregister park file in case it was processed without hitting an assert.
-                CrashUnregisterAdditionalFile("load_park");
+                CrashUnregisterAdditionalFile(_key);
             }
         } crash_additional_file_registration(path);
 
