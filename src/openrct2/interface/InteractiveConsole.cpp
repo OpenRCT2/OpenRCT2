@@ -30,7 +30,6 @@
 #include "../config/Config.h"
 #include "../core/Console.hpp"
 #include "../core/EnumUtils.hpp"
-#include "../core/File.h"
 #include "../core/Guard.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
@@ -1491,7 +1490,7 @@ static void ConsoleCommandReplayStart(InteractiveConsole& console, const argumen
     {
         replayManager->StartPlayback(name);
     }
-    catch (std::invalid_argument& e)
+    catch (const std::invalid_argument& e)
     {
         console.WriteLine(e.what());
         return;

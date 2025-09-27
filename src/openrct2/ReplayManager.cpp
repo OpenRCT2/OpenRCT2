@@ -34,6 +34,7 @@
 #include "entity/EntityTweener.h"
 #include "interface/Window.h"
 #include "localisation/Formatting.h"
+#include "localisation/StringIds.h"
 #include "management/NewsItem.h"
 #include "object/ObjectManager.h"
 #include "object/ObjectRepository.h"
@@ -420,7 +421,7 @@ namespace OpenRCT2
         void StartPlayback(const std::string& file) override
         {
             if (_mode != ReplayMode::NONE && _mode != ReplayMode::NORMALISATION)
-                throw std::invalid_argument("Error with mode");
+                throw std::invalid_argument("Unexpected mode <mode>");
 
             auto replayData = std::make_unique<ReplayRecordData>();
 
@@ -428,7 +429,7 @@ namespace OpenRCT2
             {
                 ReadReplayData(file, *replayData);
             }
-            catch (std::invalid_argument&)
+            catch (const std::invalid_argument&)
             {
                 throw;
             }
@@ -491,7 +492,7 @@ namespace OpenRCT2
             {
                 StartPlayback(file);
             }
-            catch (std::invalid_argument&)
+            catch (const std::invalid_argument&)
             {
                 return false;
             }
@@ -609,7 +610,7 @@ namespace OpenRCT2
             {
                 if (!fs::exists(filePath))
                 {
-                    throw std::invalid_argument(FormatStringID(STR_REPLAY_WITH_PATH_NOT_FOUND, file.c_str()));
+                    throw std::invalid_argument(FormatStringID(STR_REPLAY_WITH_PATH_NOT_EXIST, filePath.c_str()));
                 }
             }
             else if (filePath.is_relative())
@@ -624,7 +625,7 @@ namespace OpenRCT2
             }
 
             if (!fs::is_regular_file(filePath))
-                throw std::invalid_argument(FormatStringID(STR_REPLAY_FILE_NOT_FOUND, file.c_str()));
+                throw std::invalid_argument(FormatStringID(STR_REPLAY_FILE_NOT_FOUND, filePath.c_str()));
 
             FileStream fileStream(filePath, FileMode::open);
             MemoryStream stream = DecompressFile(fileStream);
