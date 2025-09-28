@@ -7,7 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifdef ENABLE_SCRIPTING
+#ifdef ENABLE_SCRIPTING_REFACTOR
 
     #include "CustomMenu.h"
 
@@ -16,6 +16,8 @@
     #include <openrct2-ui/UiContext.h>
     #include <openrct2-ui/input/ShortcutManager.h>
     #include <openrct2/Input.h>
+    #include <openrct2/core/EnumMap.hpp>
+    #include <openrct2/scripting/ScriptUtil.hpp>
     #include <openrct2/ui/UiContext.h>
     #include <openrct2/ui/WindowManager.h>
     #include <openrct2/world/Map.h>
@@ -31,7 +33,7 @@ namespace OpenRCT2::Scripting
 
     CustomShortcut::CustomShortcut(
         std::shared_ptr<Plugin> owner, std::string_view id, std::string_view text, const std::vector<std::string>& bindings,
-        DukValue callback)
+        JSCallback callback)
         : Owner(owner)
         , Id(id)
         , Text(text)
@@ -59,7 +61,7 @@ namespace OpenRCT2::Scripting
     void CustomShortcut::Invoke() const
     {
         auto& scriptEngine = GetContext()->GetScriptEngine();
-        scriptEngine.ExecutePluginCall(Owner, Callback, {}, false);
+        scriptEngine.ExecutePluginCall(Owner, Callback.callback, {}, false);
     }
 
     static constexpr std::array<std::string_view, EnumValue(CursorID::Count)> CursorNames = {
@@ -69,47 +71,57 @@ namespace OpenRCT2::Scripting
         "volcano_down",  "walk_down",  "paint_down",    "entrance_down", "hand_open",  "hand_closed",
     };
 
-    static const DukEnumMap<ViewportInteractionItem> ToolFilterMap(
-        {
-            { "terrain", ViewportInteractionItem::terrain },
-            { "entity", ViewportInteractionItem::entity },
-            { "ride", ViewportInteractionItem::ride },
-            { "water", ViewportInteractionItem::water },
-            { "scenery", ViewportInteractionItem::scenery },
-            { "footpath", ViewportInteractionItem::footpath },
-            { "footpath_item", ViewportInteractionItem::pathAddition },
-            { "park_entrance", ViewportInteractionItem::parkEntrance },
-            { "wall", ViewportInteractionItem::wall },
-            { "large_scenery", ViewportInteractionItem::largeScenery },
-            { "label", ViewportInteractionItem::label },
-            { "banner", ViewportInteractionItem::banner },
-        });
-
-    template<>
-    DukValue ToDuk(duk_context* ctx, const CursorID& cursorId)
+    JSValue CursorIDToJSValue(JSContext* ctx, CursorID id)
     {
-        auto value = EnumValue(cursorId);
-        if (value < std::size(CursorNames))
+        auto idVal = EnumValue(id);
+        if (idVal < CursorNames.size())
         {
-            auto str = CursorNames[value];
-            duk_push_lstring(ctx, str.data(), str.size());
-            return DukValue::take_from_stack(ctx);
+            return JSFromStdString(ctx, CursorNames[idVal]);
         }
-        return ToDuk(ctx, undefined);
+        return JS_UNDEFINED;
     }
 
-    template<>
-    CursorID FromDuk(const DukValue& s)
+    static CursorID CursorJSValToID(JSContext* ctx, JSValue value)
     {
-        if (s.type() == DukValue::Type::STRING)
+        if (JS_IsString(value))
         {
-            auto it = std::find(std::begin(CursorNames), std::end(CursorNames), s.as_c_string());
-            if (it != std::end(CursorNames))
+            std::string valueStr = JSToStdString(ctx, value);
+            for (uint8_t i = 0; i < EnumValue(CursorID::Count); i++)
             {
-                return static_cast<CursorID>(std::distance(std::begin(CursorNames), it));
+                if (CursorNames[i] == valueStr)
+                {
+                    return static_cast<CursorID>(i);
+                }
             }
         }
-        return CursorID::Undefined;
+        return CursorID::Arrow;
+    }
+
+    static const EnumMap<ViewportInteractionItem> ToolFilterMap{
+        { "terrain", ViewportInteractionItem::terrain },
+        { "entity", ViewportInteractionItem::entity },
+        { "ride", ViewportInteractionItem::ride },
+        { "water", ViewportInteractionItem::water },
+        { "scenery", ViewportInteractionItem::scenery },
+        { "footpath", ViewportInteractionItem::footpath },
+        { "footpath_item", ViewportInteractionItem::pathAddition },
+        { "park_entrance", ViewportInteractionItem::parkEntrance },
+        { "wall", ViewportInteractionItem::wall },
+        { "large_scenery", ViewportInteractionItem::largeScenery },
+        { "label", ViewportInteractionItem::label },
+        { "banner", ViewportInteractionItem::banner },
+    };
+
+    static ViewportInteractionItem FilterJSValToEnum(JSContext* ctx, JSValue value)
+    {
+        if (JS_IsString(value))
+        {
+            if (auto val = ToolFilterMap.TryGet(JSToStdString(ctx, value)); val.has_value())
+            {
+                return val.value();
+            }
+        }
+        return ViewportInteractionItem::none;
     }
 
     static void RemoveMenuItemsAndTool(std::shared_ptr<Plugin> owner)
@@ -157,13 +169,13 @@ namespace OpenRCT2::Scripting
 
     void CustomTool::OnUpdate(const ScreenCoordsXY& screenCoords)
     {
-        InvokeEventHandler(onMove, screenCoords);
+        InvokeEventHandler(onMove.callback, screenCoords);
     }
 
     void CustomTool::OnDown(const ScreenCoordsXY& screenCoords)
     {
         MouseDown = true;
-        InvokeEventHandler(onDown, screenCoords);
+        InvokeEventHandler(onDown.callback, screenCoords);
     }
 
     void CustomTool::OnDrag(const ScreenCoordsXY& screenCoords)
@@ -173,36 +185,36 @@ namespace OpenRCT2::Scripting
     void CustomTool::Start()
     {
         auto& scriptEngine = GetContext()->GetScriptEngine();
-        scriptEngine.ExecutePluginCall(Owner, onStart, {}, false);
+        scriptEngine.ExecutePluginCall(Owner, onStart.callback, {}, false);
     }
 
     void CustomTool::OnUp(const ScreenCoordsXY& screenCoords)
     {
         MouseDown = false;
-        InvokeEventHandler(onUp, screenCoords);
+        InvokeEventHandler(onUp.callback, screenCoords);
     }
 
     void CustomTool::OnAbort()
     {
         auto& scriptEngine = GetContext()->GetScriptEngine();
-        scriptEngine.ExecutePluginCall(Owner, onFinish, {}, false);
+        scriptEngine.ExecutePluginCall(Owner, onFinish.callback, {}, false);
     }
 
-    void CustomTool::InvokeEventHandler(const DukValue& dukHandler, const ScreenCoordsXY& screenCoords)
+    void CustomTool::InvokeEventHandler(JSValue handler, const ScreenCoordsXY& screenCoords)
     {
-        if (dukHandler.is_function())
+        JSContext* ctx = Owner->GetContext();
+        if (JS_IsFunction(ctx, handler))
         {
-            auto ctx = dukHandler.context();
             auto info = GetMapCoordinatesFromPos(screenCoords, Filter);
 
-            DukObject obj(dukHandler.context());
-            obj.Set("isDown", MouseDown);
-            obj.Set("screenCoords", ToDuk(ctx, screenCoords));
-            obj.Set("mapCoords", ToDuk(ctx, info.Loc));
+            JSValue obj = JS_NewObject(ctx);
+            JS_SetPropertyStr(ctx, obj, "isDown", JS_NewBool(ctx, MouseDown));
+            JS_SetPropertyStr(ctx, obj, "screenCoords", ToJSValue(ctx, screenCoords));
+            JS_SetPropertyStr(ctx, obj, "mapCoords", ToJSValue(ctx, info.Loc));
 
             if (info.interactionType == ViewportInteractionItem::entity && info.Entity != nullptr)
             {
-                obj.Set("entityId", info.Entity->Id.ToUnderlying());
+                JS_SetPropertyStr(ctx, obj, "entityId", JS_NewInt32(ctx, info.Entity->Id.ToUnderlying()));
             }
             else if (info.Element != nullptr)
             {
@@ -214,7 +226,7 @@ namespace OpenRCT2::Scripting
                     {
                         if (el == info.Element)
                         {
-                            obj.Set("tileElementIndex", index);
+                            JS_SetPropertyStr(ctx, obj, "tileElementIndex", JS_NewInt32(ctx, index));
                             break;
                         }
                         index++;
@@ -223,71 +235,75 @@ namespace OpenRCT2::Scripting
             }
 
             auto& scriptEngine = GetContext()->GetScriptEngine();
-            std::vector<DukValue> args;
-            args.emplace_back(obj.Take());
-            scriptEngine.ExecutePluginCall(Owner, dukHandler, args, false);
+            scriptEngine.ExecutePluginCall(Owner, handler, { obj }, false);
         }
     }
 
-    void InitialiseCustomTool(ScriptEngine& scriptEngine, const DukValue& dukValue)
+    [[nodiscard]] JSValue InitialiseCustomTool(ScriptEngine& scriptEngine, JSContext* ctx, JSValue value)
     {
-        try
+        std::shared_ptr<Plugin> currentPlugin = scriptEngine.GetExecInfo().GetCurrentPlugin();
+
+        if (JS_IsObject(value))
         {
-            if (dukValue.type() == DukValue::Type::OBJECT)
+            JSValue idVal = JS_GetPropertyStr(ctx, value, "id");
+            if (!JS_IsString(idVal))
             {
-                CustomTool customTool;
-                customTool.Owner = scriptEngine.GetExecInfo().GetCurrentPlugin();
-                customTool.Id = dukValue["id"].as_string();
-                customTool.Cursor = FromDuk<CursorID>(dukValue["cursor"]);
-                if (customTool.Cursor == CursorID::Undefined)
-                {
-                    customTool.Cursor = CursorID::Arrow;
-                }
+                JS_FreeValue(ctx, idVal);
+                JS_ThrowTypeError(ctx, "Invalid id. Expected string");
+                return JS_EXCEPTION;
+            }
 
-                auto dukFilter = dukValue["filter"];
-                if (dukFilter.is_array())
-                {
-                    customTool.Filter = 0;
-                    auto dukItems = dukFilter.as_array();
-                    for (const auto& dukItem : dukItems)
-                    {
-                        if (dukItem.type() == DukValue::Type::STRING)
-                        {
-                            auto value = ToolFilterMap[dukItem.as_string()];
-                            customTool.Filter |= static_cast<uint32_t>(EnumToFlag(value));
-                        }
-                    }
-                }
-                else
-                {
-                    customTool.Filter = kViewportInteractionItemAll;
-                }
+            CustomTool customTool;
+            customTool.Owner = currentPlugin;
 
-                customTool.onStart = dukValue["onStart"];
-                customTool.onDown = dukValue["onDown"];
-                customTool.onMove = dukValue["onMove"];
-                customTool.onUp = dukValue["onUp"];
-                customTool.onFinish = dukValue["onFinish"];
+            customTool.Id = JSToStdString(ctx, idVal);
+            JS_FreeValue(ctx, idVal);
 
-                auto* windowMgr = GetWindowManager();
-                auto toolbarWindow = windowMgr->FindByClass(WindowClass::topToolbar);
-                if (toolbarWindow != nullptr)
+            JSValue cursorVal = JS_GetPropertyStr(ctx, value, "cursor");
+            customTool.Cursor = CursorJSValToID(ctx, cursorVal);
+            JS_FreeValue(ctx, cursorVal);
+
+            JSValue filter = JS_GetPropertyStr(ctx, value, "filter");
+            if (JS_IsArray(filter))
+            {
+                customTool.Filter = 0;
+                int64_t len = -1;
+                JS_GetLength(ctx, filter, &len);
+                for (int64_t i = 0; i < len; i++)
                 {
-                    // Use a widget that does not exist on top toolbar but also make sure it isn't
-                    // kWidgetIndexNull, as that prevents abort from being called.
-                    // TODO: refactor this to not leech on the top toolbar.
-                    WidgetIndex widgetIndex = 0xFFFE;
-                    ToolCancel();
-                    ToolSet(*toolbarWindow, widgetIndex, static_cast<Tool>(customTool.Cursor));
-                    ActiveCustomTool = std::move(customTool);
-                    ActiveCustomTool->Start();
+                    JSValue curFilter = JS_GetPropertyInt64(ctx, filter, i);
+                    auto elem = FilterJSValToEnum(ctx, curFilter);
+                    customTool.Filter |= static_cast<uint32_t>(EnumToFlag(elem));
+                    JS_FreeValue(ctx, curFilter);
                 }
             }
+            else
+            {
+                customTool.Filter = kViewportInteractionItemAll;
+            }
+            JS_FreeValue(ctx, filter);
+
+            customTool.onStart = JSToCallback(ctx, value, "onStart");
+            customTool.onDown = JSToCallback(ctx, value, "onDown");
+            customTool.onMove = JSToCallback(ctx, value, "onMove");
+            customTool.onUp = JSToCallback(ctx, value, "onUp");
+            customTool.onFinish = JSToCallback(ctx, value, "onFinish");
+
+            auto* windowMgr = GetWindowManager();
+            auto toolbarWindow = windowMgr->FindByClass(WindowClass::topToolbar);
+            if (toolbarWindow != nullptr)
+            {
+                // Use a widget that does not exist on top toolbar but also make sure it isn't
+                // kWidgetIndexNull, as that prevents abort from being called.
+                // TODO: refactor this to not leech on the top toolbar.
+                WidgetIndex widgetIndex = 0xFFFE;
+                ToolCancel();
+                ToolSet(*toolbarWindow, widgetIndex, static_cast<Tool>(customTool.Cursor));
+                ActiveCustomTool = std::move(customTool);
+                ActiveCustomTool->Start();
+            }
         }
-        catch (const DukException&)
-        {
-            duk_error(scriptEngine.GetContext(), DUK_ERR_ERROR, "Invalid parameters.");
-        }
+        return JS_UNDEFINED;
     }
 } // namespace OpenRCT2::Scripting
 

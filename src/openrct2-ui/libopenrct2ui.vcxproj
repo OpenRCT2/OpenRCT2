@@ -93,6 +93,7 @@
     <ClInclude Include="scripting\ScUi.hpp" />
     <ClInclude Include="scripting\ScViewport.hpp" />
     <ClInclude Include="scripting\ScWidget.hpp" />
+    <ClInclude Include="scripting\ScWindow.h" />
     <ClInclude Include="scripting\ScWindow.hpp" />
     <ClInclude Include="scripting\UiExtensions.h" />
     <ClInclude Include="ProvisionalElements.h" />
@@ -151,6 +152,7 @@
     <ClCompile Include="scripting\CustomListView.cpp" />
     <ClCompile Include="scripting\CustomMenu.cpp" />
     <ClCompile Include="scripting\CustomWindow.cpp" />
+    <ClCompile Include="scripting\ScWindow.cpp" />
     <ClCompile Include="scripting\UiExtensions.cpp" />
     <ClCompile Include="ProvisionalElements.cpp" />
     <ClCompile Include="SDLException.cpp" />

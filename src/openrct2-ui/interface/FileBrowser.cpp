@@ -45,8 +45,6 @@ namespace OpenRCT2::Ui::FileBrowser
     WindowBase* OpenPreferred(
         LoadSaveAction action, LoadSaveType type, u8string defaultPath, LoadSaveCallback callback, TrackDesign* trackDesign)
     {
-        RegisterCallback(callback);
-
 #ifdef __EMSCRIPTEN__
         if (action == LoadSaveAction::save)
         {
@@ -69,11 +67,13 @@ namespace OpenRCT2::Ui::FileBrowser
             const bool isSave = (action == LoadSaveAction::save);
             const auto defaultDirectory = GetDir(type);
 
+            RegisterCallback(callback);
             const u8string path = OpenSystemFileBrowser(isSave, type, defaultDirectory, defaultPath);
             if (!path.empty())
             {
                 Select(path.c_str(), action, type, trackDesign);
             }
+            RegisterCallback({});
             return nullptr;
         }
 

@@ -53,7 +53,7 @@ project(openrct2 CXX)
 include(cmake/platform.cmake)
 include(CMakeDependentOption)
 
-# vcpkg includes its own copy of duktapeConfig.cmake; only include ours as needed.
+# vcpkg includes its own copy of *.cmake; only include ours as needed.
 if (NOT MSVC)
     include(FindPkgConfig)
     set(CMAKE_PREFIX_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake;${CMAKE_MODULE_PATH}")
@@ -115,7 +115,10 @@ option(DISABLE_VERSION_CHECKER "Disable the check for newer versions.")
 option(DISABLE_FLAC     "Disable FLAC support.")
 option(DISABLE_VORBIS   "Disable OGG/VORBIS support.")
 option(DISABLE_OPENGL   "Disable OpenGL support.")
-option(ENABLE_SCRIPTING "Enable script / plugin support." ON)
+# TODO (mber) scripting refactor for quickjs
+option(ENABLE_SCRIPTING "Enable script / plugin support." OFF)
+set(CMAKE_CXX_FLAGS -DENABLE_SCRIPTING_REFACTOR)
+option(ENABLE_SCRIPTING_REFACTOR "Enable script / plugin support." ON)
 option(ENABLE_ASAN "Enable the AddressSanitizer.")
 option(ENABLE_UBSAN "Enable the UndefinedBehaviourSanitizer.")
 option(ENABLE_HEADERS_CHECK "Check if include directives in header files are correct. Only works with clang" OFF)
@@ -396,10 +399,9 @@ if(NOT DISABLE_GUI)
     include("${ROOT_DIR}/src/openrct2-ui/CMakeLists.txt" NO_POLICY_SCOPE)
 endif()
 
-# graphics files (g2.dat and font.dat) 
+# graphics files (g2.dat and font.dat)
 if (NOT CMAKE_CROSSCOMPILING)
     set(graphics_files "g2" "fonts" "tracks")
-    
     foreach(graphics_file ${graphics_files})
         set(output_file "${graphics_file}.dat")
         set(json_file "${ROOT_DIR}/resources/${graphics_file}/sprites.json")

@@ -604,6 +604,8 @@ namespace OpenRCT2::Ui::Windows
                 gGamePaused &= ~GAME_PAUSED_MODAL;
                 Audio::Resume();
             }
+
+            RegisterCallback({});
         }
 
         void onResize() override
@@ -1167,8 +1169,6 @@ namespace OpenRCT2::Ui::Windows
         _trackDesign = trackDesign;
         _defaultPath = defaultPath;
 
-        RegisterCallback(callback);
-
         auto* windowMgr = GetWindowManager();
         auto* w = static_cast<LoadSaveWindow*>(windowMgr->BringToFrontByClass(WindowClass::loadsave));
         if (w == nullptr)
@@ -1183,6 +1183,8 @@ namespace OpenRCT2::Ui::Windows
             }
 
             ScreenSize windowSize = { config.fileBrowserWidth, config.fileBrowserHeight };
+
+            RegisterCallback(callback);
 
             w = windowMgr->Create<LoadSaveWindow>(
                 WindowClass::loadsave, windowSize,

@@ -7,7 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifdef ENABLE_SCRIPTING
+#ifdef ENABLE_SCRIPTING_REFACTOR
 
     #include "CustomImages.h"
 
@@ -18,6 +18,7 @@
     #include <openrct2/drawing/ImageImporter.h>
     #include <openrct2/drawing/X8DrawingEngine.h>
     #include <openrct2/scripting/Plugin.h>
+    #include <thirdparty/base64.hpp>
 
 using namespace OpenRCT2::Drawing;
 
@@ -47,7 +48,7 @@ namespace OpenRCT2::Scripting
         int32_t Height;
         int32_t Stride;
         PixelDataPaletteKind Palette;
-        DukValue Data;
+        JSValue Data;
     };
 
     struct AllocatedImageList
@@ -141,37 +142,37 @@ namespace OpenRCT2::Scripting
         scriptEngine.SubscribeToPluginStoppedEvent([](std::shared_ptr<Plugin> plugin) -> void { FreeCustomImages(plugin); });
     }
 
-    DukValue DukGetImageInfo(duk_context* ctx, ImageIndex id)
+    JSValue JSGetImageInfo(JSContext* ctx, ImageIndex id)
     {
         auto* g1 = GfxGetG1Element(id);
         if (g1 == nullptr)
         {
-            return ToDuk(ctx, undefined);
+            return JS_UNDEFINED;
         }
 
-        DukObject obj(ctx);
-        obj.Set("id", id);
-        obj.Set("offset", ToDuk<ScreenCoordsXY>(ctx, { g1->xOffset, g1->yOffset }));
-        obj.Set("width", g1->width);
-        obj.Set("height", g1->height);
+        JSValue obj = JS_NewObject(ctx);
+        JS_SetPropertyStr(ctx, obj, "id", JS_NewInt32(ctx, id));
+        JS_SetPropertyStr(ctx, obj, "offset", ToJSValue(ctx, ScreenCoordsXY{ g1->xOffset, g1->yOffset }));
+        JS_SetPropertyStr(ctx, obj, "width", JS_NewInt32(ctx, g1->width));
+        JS_SetPropertyStr(ctx, obj, "height", JS_NewInt32(ctx, g1->height));
 
-        obj.Set("hasTransparent", g1->flags.has(G1Flag::hasTransparency));
-        obj.Set("isRLE", g1->flags.has(G1Flag::hasRLECompression));
-        obj.Set("isPalette", g1->flags.has(G1Flag::isPalette));
-        obj.Set("noZoom", g1->flags.has(G1Flag::noZoomDraw));
+        JS_SetPropertyStr(ctx, obj, "hasTransparent", JS_NewBool(ctx, g1->flags.has(G1Flag::hasTransparency)));
+        JS_SetPropertyStr(ctx, obj, "isRLE", JS_NewBool(ctx, g1->flags.has(G1Flag::hasRLECompression)));
+        JS_SetPropertyStr(ctx, obj, "isPalette", JS_NewBool(ctx, g1->flags.has(G1Flag::isPalette)));
+        JS_SetPropertyStr(ctx, obj, "noZoom", JS_NewBool(ctx, g1->flags.has(G1Flag::noZoomDraw)));
 
         if (g1->flags.has(G1Flag::hasZoomSprite))
         {
-            obj.Set("nextZoomId", id - g1->zoomedOffset);
+            JS_SetPropertyStr(ctx, obj, "nextZoomId", JS_NewInt32(ctx, id - g1->zoomedOffset));
         }
         else
         {
-            obj.Set("nextZoomId", undefined);
+            JS_SetPropertyStr(ctx, obj, "nextZoomId", JS_UNDEFINED);
         }
-        return obj.Take();
+        return obj;
     }
 
-    static const char* GetPixelDataTypeForG1(const G1Element& g1)
+    static std::string_view GetPixelDataTypeForG1(const G1Element& g1)
     {
         if (g1.flags.has(G1Flag::hasRLECompression))
             return "rle";
@@ -180,83 +181,55 @@ namespace OpenRCT2::Scripting
         return "raw";
     }
 
-    DukValue DukGetImagePixelData(duk_context* ctx, ImageIndex id)
+    JSValue JSGetImagePixelData(JSContext* ctx, ImageIndex id)
     {
         auto* g1 = GfxGetG1Element(id);
         if (g1 == nullptr)
         {
-            return ToDuk(ctx, undefined);
+            return JS_UNDEFINED;
         }
         auto dataSize = G1CalculateDataSize(g1);
-        auto* type = GetPixelDataTypeForG1(*g1);
+        auto type = GetPixelDataTypeForG1(*g1);
 
         // Copy the G1 data to a JS buffer wrapped in a Uint8Array
-        duk_push_fixed_buffer(ctx, dataSize);
-        duk_size_t bufferSize{};
-        auto* buffer = duk_get_buffer_data(ctx, -1, &bufferSize);
-        if (buffer != nullptr && bufferSize == dataSize)
-        {
-            std::memcpy(buffer, g1->offset, dataSize);
-        }
-        duk_push_buffer_object(ctx, -1, 0, dataSize, DUK_BUFOBJ_UINT8ARRAY);
-        duk_remove(ctx, -2);
-        auto data = DukValue::take_from_stack(ctx, -1);
+        JSValue data = JS_NewUint8ArrayCopy(ctx, g1->offset, dataSize);
 
-        DukObject obj(ctx);
-        obj.Set("type", type);
-        obj.Set("width", g1->width);
-        obj.Set("height", g1->height);
-        obj.Set("data", data);
-        return obj.Take();
+        JSValue obj = JS_NewObject(ctx);
+        JS_SetPropertyStr(ctx, obj, "type", JSFromStdString(ctx, type));
+        JS_SetPropertyStr(ctx, obj, "width", JS_NewInt32(ctx, g1->width));
+        JS_SetPropertyStr(ctx, obj, "height", JS_NewInt32(ctx, g1->height));
+        JS_SetPropertyStr(ctx, obj, "data", data);
+        return obj;
     }
 
-    static std::vector<uint8_t> GetBufferFromDukStack(duk_context* ctx)
+    static std::vector<uint8_t> GetDataFromBufferLikeObject(JSContext* ctx, JSValue data)
     {
         std::vector<uint8_t> result;
-        duk_size_t bufferLen{};
-        const auto* buffer = reinterpret_cast<uint8_t*>(duk_get_buffer_data(ctx, -1, &bufferLen));
-        if (buffer != nullptr)
-        {
-            result.resize(bufferLen);
-            std::memcpy(result.data(), buffer, bufferLen);
-        }
-        return result;
-    }
-
-    static std::vector<uint8_t> DukGetDataFromBufferLikeObject(const DukValue& data)
-    {
-        std::vector<uint8_t> result;
-        auto ctx = data.context();
-        if (data.is_array())
+        if (JS_IsArray(data))
         {
             // From array of numbers
-            data.push();
-            auto len = duk_get_length(ctx, -1);
-            result.resize(len);
-            for (duk_uarridx_t i = 0; i < len; i++)
+            int64_t arrSz = 0;
+            JS_GetLength(ctx, data, &arrSz);
+            if (arrSz > 0)
             {
-                if (duk_get_prop_index(ctx, -1, i))
-                {
-                    result[i] = duk_get_int(ctx, -1) & 0xFF;
-                    duk_pop(ctx);
-                }
+                result.resize(arrSz);
+                JSIterateArray(ctx, data, [&result](JSContext* ctx, JSValue val) { result.push_back(JSToInt(ctx, val)); });
             }
-            duk_pop(ctx);
         }
-        else if (data.type() == DukValue::Type::STRING)
+        else if (JS_IsString(data))
         {
-            // From base64 string
-            data.push();
-            duk_base64_decode(ctx, -1);
-            result = GetBufferFromDukStack(ctx);
-            duk_pop(ctx);
+            std::string str = JSToStdString(ctx, data);
+            result = base64::decode_into<std::vector<uint8_t>>(str);
         }
-        else if (data.type() == DukValue::Type::OBJECT)
+        else if (JS_IsArrayBuffer(data))
         {
             // From Uint8Array
-            data.push();
-            result = GetBufferFromDukStack(ctx);
-            duk_pop(ctx);
+            size_t sz = 0;
+            uint8_t* arr = JS_GetUint8Array(ctx, &sz, data);
+            if (arr)
+            {
+                result = std::vector<uint8_t>(arr, arr + sz);
+            }
         }
         return result;
     }
@@ -290,14 +263,14 @@ namespace OpenRCT2::Scripting
         }
     }
 
-    static std::vector<uint8_t> GetBufferFromPixelData(duk_context* ctx, PixelData& pixelData)
+    static std::vector<uint8_t> GetBufferFromPixelData(JSContext* ctx, PixelData& pixelData)
     {
         std::vector<uint8_t> imageData;
         switch (pixelData.Type)
         {
             case PixelDataKind::Raw:
             {
-                auto data = DukGetDataFromBufferLikeObject(pixelData.Data);
+                auto data = GetDataFromBufferLikeObject(ctx, pixelData.Data);
                 if (pixelData.Stride != pixelData.Width)
                 {
                     // Make sure data is expected size for RemovePadding
@@ -312,7 +285,7 @@ namespace OpenRCT2::Scripting
             }
             case PixelDataKind::Rle:
             {
-                imageData = DukGetDataFromBufferLikeObject(pixelData.Data);
+                imageData = GetDataFromBufferLikeObject(ctx, pixelData.Data);
                 break;
             }
             case PixelDataKind::Png:
@@ -320,7 +293,7 @@ namespace OpenRCT2::Scripting
                 auto imageFormat = pixelData.Palette == PixelDataPaletteKind::Keep ? ImageFormat::png : ImageFormat::png32;
                 auto palette = pixelData.Palette == PixelDataPaletteKind::Keep ? Palette::KeepIndices : Palette::OpenRCT2;
                 auto importMode = getImportModeFromPalette(pixelData.Palette);
-                auto pngData = DukGetDataFromBufferLikeObject(pixelData.Data);
+                auto pngData = GetDataFromBufferLikeObject(ctx, pixelData.Data);
                 auto image = Imaging::ReadFromBuffer(pngData, imageFormat);
                 constexpr uint8_t flags = EnumToFlag(ImportFlags::RLE);
                 ImageImportMeta meta = { { 0, 0 }, palette, flags, importMode };
@@ -341,49 +314,40 @@ namespace OpenRCT2::Scripting
         return imageData;
     }
 
-    template<>
-    PixelDataKind FromDuk(const DukValue& d)
+    static PixelDataKind PixelDataKindFromJS(const std::string& s)
     {
-        if (d.type() == DukValue::Type::STRING)
-        {
-            auto& s = d.as_string();
-            if (s == "raw")
-                return PixelDataKind::Raw;
-            if (s == "rle")
-                return PixelDataKind::Rle;
-            if (s == "palette")
-                return PixelDataKind::Palette;
-            if (s == "png")
-                return PixelDataKind::Png;
-        }
+        if (s == "raw")
+            return PixelDataKind::Raw;
+        if (s == "rle")
+            return PixelDataKind::Rle;
+        if (s == "palette")
+            return PixelDataKind::Palette;
+        if (s == "png")
+            return PixelDataKind::Png;
         return PixelDataKind::Unknown;
     }
 
-    template<>
-    PixelDataPaletteKind FromDuk(const DukValue& d)
+    static PixelDataPaletteKind PixelDataPaletteKindFromJS(const std::string& s)
     {
-        if (d.type() == DukValue::Type::STRING)
-        {
-            auto& s = d.as_string();
-            if (s == "keep")
-                return PixelDataPaletteKind::Keep;
-            if (s == "closest")
-                return PixelDataPaletteKind::Closest;
-            if (s == "dither")
-                return PixelDataPaletteKind::Dither;
-        }
+        if (s == "keep")
+            return PixelDataPaletteKind::Keep;
+        if (s == "closest")
+            return PixelDataPaletteKind::Closest;
+        if (s == "dither")
+            return PixelDataPaletteKind::Dither;
         return PixelDataPaletteKind::None;
     }
 
-    static PixelData GetPixelDataFromDuk(const DukValue& dukPixelData)
+    static PixelData GetPixelDataFromJS(JSContext* ctx, JSValue jsPixelData)
     {
         PixelData pixelData;
-        pixelData.Type = FromDuk<PixelDataKind>(dukPixelData["type"]);
-        pixelData.Palette = FromDuk<PixelDataPaletteKind>(dukPixelData["palette"]);
-        pixelData.Width = AsOrDefault(dukPixelData["width"], 0);
-        pixelData.Height = AsOrDefault(dukPixelData["height"], 0);
-        pixelData.Stride = AsOrDefault(dukPixelData["stride"], pixelData.Width);
-        pixelData.Data = dukPixelData["data"];
+        pixelData.Type = PixelDataKindFromJS(JSToStdString(ctx, jsPixelData, "type"));
+        pixelData.Palette = PixelDataPaletteKindFromJS(JSToStdString(ctx, jsPixelData, "palette"));
+        pixelData.Width = AsOrDefault(ctx, jsPixelData, "width", static_cast<int32_t>(0));
+        pixelData.Height = AsOrDefault(ctx, jsPixelData, "height", static_cast<int32_t>(0));
+        pixelData.Stride = AsOrDefault(ctx, jsPixelData, "stride", static_cast<int32_t>(pixelData.Width));
+        // Note: this must be JS_FreeValued
+        pixelData.Data = JS_GetPropertyStr(ctx, jsPixelData, "data");
         return pixelData;
     }
 
@@ -414,21 +378,15 @@ namespace OpenRCT2::Scripting
         DrawingEngineInvalidateImage(id);
     }
 
-    void DukSetPixelData(duk_context* ctx, ImageIndex id, const DukValue& dukPixelData)
+    void JSSetPixelData(JSContext* ctx, ImageIndex id, JSValue jsPixelData)
     {
-        auto pixelData = GetPixelDataFromDuk(dukPixelData);
-        try
-        {
-            auto newData = GetBufferFromPixelData(ctx, pixelData);
-            ReplacePixelDataForImage(id, pixelData, std::move(newData));
-        }
-        catch (const std::runtime_error& e)
-        {
-            duk_error(ctx, DUK_ERR_ERROR, e.what());
-        }
+        auto pixelData = GetPixelDataFromJS(ctx, jsPixelData);
+        auto newData = GetBufferFromPixelData(ctx, pixelData);
+        ReplacePixelDataForImage(id, pixelData, std::move(newData));
+        JS_FreeValue(ctx, pixelData.Data);
     }
 
-    void DukDrawCustomImage(ScriptEngine& scriptEngine, ImageIndex id, ScreenSize size, const DukValue& callback)
+    void JSDrawCustomImage(ScriptEngine& scriptEngine, ImageIndex id, ScreenSize size, const JSCallback& callback)
     {
         auto* ctx = scriptEngine.GetContext();
         auto plugin = scriptEngine.GetExecInfo().GetCurrentPlugin();
@@ -464,10 +422,12 @@ namespace OpenRCT2::Scripting
             rt.bits = g1->offset;
         }
 
-        auto dukG = GetObjectAsDukValue(ctx, std::make_shared<ScGraphicsContext>(ctx, rt));
-        drawingEngine->BeginDraw();
-        scriptEngine.ExecutePluginCall(plugin, callback, { dukG }, false);
-        drawingEngine->EndDraw();
+        if (callback.IsValid())
+        {
+            drawingEngine->BeginDraw();
+            scriptEngine.ExecutePluginCall(plugin, callback.callback, { gScGraphicsContext.New(ctx, rt) }, false);
+            drawingEngine->EndDraw();
+        }
 
         if (createNewImage)
         {

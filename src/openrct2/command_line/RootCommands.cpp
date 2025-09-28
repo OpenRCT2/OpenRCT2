@@ -455,7 +455,7 @@ namespace OpenRCT2
         Console::WriteLine();
         Console::WriteFormat("Network version: %s", Network::GetVersion().c_str());
         Console::WriteLine();
-#ifdef ENABLE_SCRIPTING
+#ifdef ENABLE_SCRIPTING_REFACTOR
         Console::WriteFormat("Plugin API version: %d", Scripting::kPluginApiVersion);
         Console::WriteLine();
 #else

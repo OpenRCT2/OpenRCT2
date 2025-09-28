@@ -7,7 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifdef ENABLE_SCRIPTING
+#ifdef ENABLE_SCRIPTING_REFACTOR
 
     #include "HookEngine.h"
 
@@ -54,7 +54,7 @@ HookEngine::HookEngine(ScriptEngine& scriptEngine)
     }
 }
 
-uint32_t HookEngine::Subscribe(HookType type, std::shared_ptr<Plugin> owner, const DukValue& function)
+uint32_t HookEngine::Subscribe(HookType type, std::shared_ptr<Plugin> owner, JSValue function)
 {
     auto& hookList = GetHookList(type);
     auto cookie = _nextCookie++;
@@ -119,7 +119,7 @@ void HookEngine::Call(HookType type, bool isGameStateMutable)
     }
 }
 
-void HookEngine::Call(HookType type, const DukValue& arg, bool isGameStateMutable)
+void HookEngine::Call(HookType type, const JSValue arg, bool isGameStateMutable)
 {
     auto& hookList = GetHookList(type);
     for (auto& hook : hookList.Hooks)
@@ -131,6 +131,9 @@ void HookEngine::Call(HookType type, const DukValue& arg, bool isGameStateMutabl
 void HookEngine::Call(
     HookType type, const std::initializer_list<std::pair<std::string_view, std::any>>& args, bool isGameStateMutable)
 {
+    // TODO (mber)
+    throw std::runtime_error("HookEngine::Call() not implemented");
+    /*
     auto& hookList = GetHookList(type);
     for (auto& hook : hookList.Hooks)
     {
@@ -161,6 +164,7 @@ void HookEngine::Call(
         dukArgs.push_back(DukValue::take_from_stack(ctx));
         _scriptEngine.ExecutePluginCall(hook.Owner, hook.Function, dukArgs, isGameStateMutable);
     }
+    */
 }
 
 HookList& HookEngine::GetHookList(HookType type)
