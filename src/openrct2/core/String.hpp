@@ -11,6 +11,7 @@
 
 #include "StringTypes.h"
 
+#include <charconv>
 #include <cstdarg>
 #include <cstddef>
 #include <optional>
@@ -112,33 +113,19 @@ namespace OpenRCT2::String
     std::string toUpper(std::string_view src);
 
     template<typename T>
-    std::optional<T> Parse(std::string_view input)
+    std::optional<T> parse(std::string_view input)
     {
-        if (input.size() == 0)
-            return std::nullopt;
-
-        T result = 0;
-        for (size_t i = 0; i < input.size(); i++)
+        if (input.empty())
         {
-            auto chr = input[i];
-            if (chr >= '0' && chr <= '9')
-            {
-                auto digit = chr - '0';
-                auto last = result;
-                result = static_cast<T>((result * 10) + digit);
-                if (result <= last)
-                {
-                    // Overflow, number too large for type
-                    return std::nullopt;
-                }
-            }
-            else
-            {
-                // Bad character
-                return std::nullopt;
-            }
+            return std::nullopt;
         }
-        return result;
+        T result;
+        auto [ptr, ec] = std::from_chars(input.data(), input.data() + input.size(), result);
+        if (ec == std::errc() && ptr == input.data() + input.size())
+        {
+            return result;
+        }
+        return std::nullopt;
     }
 
     /**

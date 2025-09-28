@@ -174,7 +174,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
 
                 case WIDX_RATE:
-                    const auto res = String::Parse<int32_t>(text);
+                    const auto res = String::parse<int32_t>(text);
                     if (res.has_value())
                     {
                         int32_t rate = res.value();
