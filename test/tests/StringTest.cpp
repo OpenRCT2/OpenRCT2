@@ -287,3 +287,160 @@ TEST_F(StringTest, LogicalCompare)
 
     AssertVector<std::string>(inputs, expected);
 }
+
+///////////////////////////////////////////////////////////////////////////////
+// Tests for String::parse
+///////////////////////////////////////////////////////////////////////////////
+
+TEST_F(StringTest, Parse_Basic)
+{
+    auto actual = String::parse<std::int32_t>("123");
+    ASSERT_TRUE(actual.has_value());
+    ASSERT_EQ(*actual, 123);
+}
+
+TEST_F(StringTest, Parse_Empty)
+{
+    auto actual = String::parse<std::int32_t>("");
+    ASSERT_FALSE(actual.has_value());
+}
+
+TEST_F(StringTest, Parse_Zero)
+{
+    auto actual = String::parse<std::int32_t>("0");
+    ASSERT_TRUE(actual.has_value());
+    ASSERT_EQ(*actual, 0);
+}
+
+TEST_F(StringTest, Parse_LeadingZero)
+{
+    auto actual = String::parse<std::int32_t>("00123");
+    ASSERT_TRUE(actual.has_value());
+    ASSERT_EQ(*actual, 123);
+}
+
+TEST_F(StringTest, Parse_InvalidChar)
+{
+    auto actual = String::parse<std::int32_t>("12a3");
+    ASSERT_FALSE(actual.has_value());
+}
+
+TEST_F(StringTest, Parse_LeadingNonDigit)
+{
+    auto actual = String::parse<std::int32_t>("a123");
+    ASSERT_FALSE(actual.has_value());
+}
+
+TEST_F(StringTest, Parse_Negative)
+{
+    auto actual = String::parse<std::int32_t>("-123");
+    ASSERT_TRUE(actual.has_value());
+    ASSERT_EQ(*actual, -123);
+}
+
+TEST_F(StringTest, Parse_Overflow)
+{
+    auto actual = String::parse<std::int32_t>("2147483648");
+    ASSERT_FALSE(actual.has_value());
+}
+
+TEST_F(StringTest, Parse_LargeNumber)
+{
+    auto actual = String::parse<std::int64_t>("9223372036854775807");
+    ASSERT_TRUE(actual.has_value());
+    ASSERT_EQ(*actual, 9223372036854775807LL);
+}
+
+TEST_F(StringTest, Parse_FloatBasic)
+{
+    auto actual = String::parse<float>("123.45");
+    ASSERT_TRUE(actual.has_value());
+    ASSERT_FLOAT_EQ(*actual, 123.45f);
+}
+
+TEST_F(StringTest, Parse_FloatZero)
+{
+    auto actual = String::parse<float>("0.0");
+    ASSERT_TRUE(actual.has_value());
+    ASSERT_FLOAT_EQ(*actual, 0.0f);
+}
+
+TEST_F(StringTest, Parse_FloatScientific)
+{
+    auto actual = String::parse<float>("1.23e4");
+    ASSERT_TRUE(actual.has_value());
+    ASSERT_FLOAT_EQ(*actual, 12300.0f);
+}
+
+TEST_F(StringTest, Parse_FloatInvalid)
+{
+    auto actual = String::parse<float>("123.4a5");
+    ASSERT_FALSE(actual.has_value());
+}
+
+TEST_F(StringTest, Parse_FloatLeadingDot)
+{
+    auto actual = String::parse<float>(".123");
+    ASSERT_TRUE(actual.has_value());
+    ASSERT_FLOAT_EQ(*actual, 0.123f);
+}
+
+TEST_F(StringTest, Parse_FloatNegative)
+{
+    auto actual = String::parse<float>("-123.45");
+    ASSERT_TRUE(actual.has_value());
+    ASSERT_FLOAT_EQ(*actual, -123.45f);
+}
+
+TEST_F(StringTest, Parse_FloatOverflow)
+{
+    auto actual = String::parse<float>("3.4028235e39");
+    ASSERT_FALSE(actual.has_value());
+}
+
+TEST_F(StringTest, Parse_DoubleBasic)
+{
+    auto actual = String::parse<double>("123.456789");
+    ASSERT_TRUE(actual.has_value());
+    ASSERT_DOUBLE_EQ(*actual, 123.456789);
+}
+
+TEST_F(StringTest, Parse_DoubleZero)
+{
+    auto actual = String::parse<double>("0.0");
+    ASSERT_TRUE(actual.has_value());
+    ASSERT_DOUBLE_EQ(*actual, 0.0);
+}
+
+TEST_F(StringTest, Parse_DoubleScientific)
+{
+    auto actual = String::parse<double>("1.23e10");
+    ASSERT_TRUE(actual.has_value());
+    ASSERT_DOUBLE_EQ(*actual, 12300000000.0);
+}
+
+TEST_F(StringTest, Parse_DoubleInvalid)
+{
+    auto actual = String::parse<double>("123.4a5");
+    ASSERT_FALSE(actual.has_value());
+}
+
+TEST_F(StringTest, Parse_DoubleLeadingDot)
+{
+    auto actual = String::parse<double>(".123");
+    ASSERT_TRUE(actual.has_value());
+    ASSERT_DOUBLE_EQ(*actual, 0.123);
+}
+
+TEST_F(StringTest, Parse_DoubleNegative)
+{
+    auto actual = String::parse<double>("-123.45");
+    ASSERT_TRUE(actual.has_value());
+    ASSERT_DOUBLE_EQ(*actual, -123.45);
+}
+
+TEST_F(StringTest, Parse_DoubleOverflow)
+{
+    auto actual = String::parse<double>("1.7976931348623158e309");
+    ASSERT_FALSE(actual.has_value());
+}
