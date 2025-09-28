@@ -390,13 +390,13 @@ namespace OpenRCT2::String
         return buffer;
     }
 
-    std::vector<std::string> split(std::string_view s, std::string_view delimiter)
+    std::vector<std::string_view> split(std::string_view s, std::string_view delimiter)
     {
         if (delimiter.empty())
         {
-            throw std::invalid_argument("delimiter can notbe empty.");
+            throw std::invalid_argument("delimiter can not be empty.");
         }
-        std::vector<std::string> results;
+        std::vector<std::string_view> results;
         if (s.empty())
         {
             return results;

@@ -15,6 +15,7 @@
 #include <cstdarg>
 #include <cstddef>
 #include <optional>
+#include <stdexcept>
 #include <string_view>
 #include <vector>
 
@@ -85,7 +86,7 @@ namespace OpenRCT2::String
      * Splits the given string by a delimiter and returns the values as a new string array.
      * @returns the number of values.
      */
-    std::vector<std::string> split(std::string_view s, std::string_view delimiter);
+    std::vector<std::string_view> split(std::string_view s, std::string_view delimiter);
 
     utf8* skipBOM(utf8* buffer);
     const utf8* skipBOM(const utf8* buffer);
@@ -113,7 +114,7 @@ namespace OpenRCT2::String
     std::string toUpper(std::string_view src);
 
     template<typename T>
-    std::optional<T> parse(std::string_view input)
+    inline std::optional<T> tryParse(std::string_view input)
     {
         if (input.empty())
         {
@@ -126,6 +127,34 @@ namespace OpenRCT2::String
             return result;
         }
         return std::nullopt;
+    }
+
+    template<typename T>
+    inline T parse(std::string_view input)
+    {
+        if (input.empty())
+        {
+            throw std::invalid_argument("Input is empty");
+        }
+        T result;
+        auto [ptr, ec] = std::from_chars(input.data(), input.data() + input.size(), result);
+        if (ec == std::errc::invalid_argument)
+        {
+            throw std::invalid_argument("Invalid argument in conversion");
+        }
+        if (ec == std::errc::result_out_of_range)
+        {
+            throw std::out_of_range("Result out of range");
+        }
+        if (ec != std::errc())
+        {
+            throw std::runtime_error("Conversion error");
+        }
+        if (ptr != input.data() + input.size())
+        {
+            throw std::invalid_argument("Trailing characters after number");
+        }
+        return result;
     }
 
     /**
