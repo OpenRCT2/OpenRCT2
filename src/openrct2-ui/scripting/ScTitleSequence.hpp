@@ -9,7 +9,7 @@
 
 #pragma once
 
-#ifdef ENABLE_SCRIPTING
+#ifdef ENABLE_SCRIPTING_REFACTOR
 
     #include <memory>
     #include <openrct2/Context.h>
@@ -17,8 +17,8 @@
     #include <openrct2/GameState.h>
     #include <openrct2/OpenRCT2.h>
     #include <openrct2/ParkImporter.h>
+    #include <openrct2/core/EnumMap.hpp>
     #include <openrct2/core/String.hpp>
-    #include <openrct2/entity/EntityRegistry.h>
     #include <openrct2/object/ObjectManager.h>
     #include <openrct2/scenario/Scenario.h>
     #include <openrct2/scenes/title/TitleScene.h>
@@ -48,7 +48,7 @@ namespace OpenRCT2::Scripting
         LoadSc,
     };
 
-    static const DukEnumMap<TitleScript> TitleScriptMap(
+    static const EnumMap<TitleScript> TitleScriptMap(
         {
             { Title::LoadParkCommand::ScriptingName, TitleScript::Load },
             { Title::SetLocationCommand::ScriptingName, TitleScript::Location },
@@ -62,117 +62,146 @@ namespace OpenRCT2::Scripting
             { Title::EndCommand::ScriptingName, TitleScript::End },
         });
 
-    template<>
-    DukValue ToDuk(duk_context* ctx, const TitleScript& value)
+    inline JSValue TitleScriptToJS(JSContext* ctx, TitleScript value)
     {
-        return ToDuk(ctx, TitleScriptMap[value]);
+        return JSFromStdString(ctx, TitleScriptMap[value]);
     }
 
-    template<>
-    DukValue ToDuk(duk_context* ctx, const Title::TitleCommand& value)
+    inline JSValue TitleCommandToJS(JSContext* ctx, const Title::TitleCommand& value)
     {
         using namespace OpenRCT2::Title;
-        DukObject obj(ctx);
+        JSValue obj = JS_NewObject(ctx);
         std::visit(
-            [&obj](auto&& command) {
+            [ctx, &obj](auto&& command) {
                 using T = std::decay_t<decltype(command)>;
-                obj.Set("type", T::ScriptingName);
+                JS_SetPropertyStr(ctx, obj, "type", JSFromStdString(ctx, T::ScriptingName));
                 if constexpr (std::is_same_v<T, LoadParkCommand>)
                 {
-                    obj.Set("index", command.SaveIndex);
+                    JS_SetPropertyStr(ctx, obj, "index", JS_NewInt32(ctx, command.SaveIndex));
                 }
                 else if constexpr (std::is_same_v<T, SetLocationCommand>)
                 {
-                    obj.Set("x", command.Location.X);
-                    obj.Set("y", command.Location.Y);
+                    JS_SetPropertyStr(ctx, obj, "x", JS_NewInt32(ctx, command.Location.X));
+                    JS_SetPropertyStr(ctx, obj, "y", JS_NewInt32(ctx, command.Location.Y));
                 }
                 else if constexpr (std::is_same_v<T, RotateViewCommand>)
                 {
-                    obj.Set("rotations", command.Rotations);
+                    JS_SetPropertyStr(ctx, obj, "rotations", JS_NewInt32(ctx, command.Rotations));
                 }
                 else if constexpr (std::is_same_v<T, SetZoomCommand>)
                 {
-                    obj.Set("zoom", command.Zoom);
+                    JS_SetPropertyStr(ctx, obj, "zoom", JS_NewInt32(ctx, command.Zoom));
                 }
                 else if constexpr (std::is_same_v<T, FollowEntityCommand>)
                 {
                     if (command.Follow.SpriteIndex.IsNull())
-                        obj.Set("id", nullptr);
+                        JS_SetPropertyStr(ctx, obj, "id", JS_NULL);
                     else
-                        obj.Set("id", command.Follow.SpriteIndex.ToUnderlying());
+                        JS_SetPropertyStr(ctx, obj, "id", JS_NewInt32(ctx, command.Follow.SpriteIndex.ToUnderlying()));
                 }
                 else if constexpr (std::is_same_v<T, SetSpeedCommand>)
                 {
-                    obj.Set("speed", command.Speed);
+                    JS_SetPropertyStr(ctx, obj, "speed", JS_NewInt32(ctx, command.Speed));
                 }
                 else if constexpr (std::is_same_v<T, WaitCommand>)
                 {
-                    obj.Set("duration", command.Milliseconds);
+                    JS_SetPropertyStr(ctx, obj, "duration", JS_NewInt32(ctx, command.Milliseconds));
                 }
                 else if constexpr (std::is_same_v<T, LoadScenarioCommand>)
                 {
-                    obj.Set("scenario", String::toStringView(command.Scenario, sizeof(command.Scenario)));
+                    JS_SetPropertyStr(ctx, obj, "scenario", JSFromStdString(ctx, command.Scenario));
                 }
             },
             value);
-        return obj.Take();
+        return obj;
     }
 
-    template<>
-    TitleScript FromDuk(const DukValue& value)
-    {
-        if (value.type() == DukValue::Type::STRING)
-            return TitleScriptMap[value.as_string()];
-        throw DukException() << "Invalid title command id";
-    }
-
-    template<>
-    Title::TitleCommand FromDuk(const DukValue& value)
+    inline std::optional<Title::TitleCommand> TitleCommandFromJS(JSContext* ctx, JSValue value)
     {
         using namespace OpenRCT2::Title;
-        auto type = FromDuk<TitleScript>(value["type"]);
+        auto type = TitleScriptMap.TryGet(JSToStdString(ctx, value, "type"));
+        if (!type.has_value())
+            return std::nullopt;
+
         TitleCommand command{};
-        switch (type)
+        switch (type.value())
         {
             case TitleScript::Load:
-                command = LoadParkCommand{ static_cast<uint8_t>(value["index"].as_uint()) };
-                break;
-            case TitleScript::Location:
-                command = SetLocationCommand{
-                    static_cast<uint8_t>(value["x"].as_uint()),
-                    static_cast<uint8_t>(value["y"].as_uint()),
-                };
-                break;
-            case TitleScript::Rotate:
-                command = RotateViewCommand{ static_cast<uint8_t>(value["rotations"].as_uint()) };
-                break;
-            case TitleScript::Zoom:
-                command = SetZoomCommand{ static_cast<uint8_t>(value["zoom"].as_uint()) };
-                break;
-            case TitleScript::Follow:
             {
-                auto dukId = value["id"];
-                if (dukId.type() == DukValue::Type::NUMBER)
+                auto index = JSToOptionalInt(ctx, value, "index");
+                if (!index.has_value())
+                    return std::nullopt;
+
+                command = LoadParkCommand{ static_cast<uint8_t>(index.value()) };
+            }
+            break;
+            case TitleScript::Location:
+            {
+                auto x = JSToOptionalInt(ctx, value, "x");
+                auto y = JSToOptionalInt(ctx, value, "y");
+                if (!x.has_value() || !y.has_value())
+                    return std::nullopt;
+
+                command = SetLocationCommand{
+                    static_cast<uint8_t>(x.value()),
+                    static_cast<uint8_t>(y.value()),
+                };
+            }
+            break;
+            case TitleScript::Rotate:
+            {
+                auto rotations = JSToOptionalInt(ctx, value, "rotations");
+                if (!rotations.has_value())
+                    return std::nullopt;
+
+                command = RotateViewCommand{ static_cast<uint8_t>(rotations.value()) };
+            }
+            break;
+            case TitleScript::Zoom:
+            {
+                auto zoom = JSToOptionalInt(ctx, value, "zoom");
+                if (!zoom.has_value())
+                    return std::nullopt;
+
+                command = SetZoomCommand{ static_cast<uint8_t>(zoom.value()) };
+            }
+            break;
+            case TitleScript::Follow:
+                if (auto id = JSToOptionalInt(ctx, value, "id"); id.has_value())
                 {
-                    command = FollowEntityCommand{ EntityId::FromUnderlying(dukId.as_uint()) };
+                    command = FollowEntityCommand{ EntityId::FromUnderlying(id.value()) };
                 }
                 else
                 {
                     command = FollowEntityCommand{ EntityId::GetNull() };
                 }
                 break;
-            }
             case TitleScript::Speed:
-                command = SetSpeedCommand{ static_cast<uint8_t>(value["speed"].as_uint()) };
-                break;
+            {
+                auto speed = JSToOptionalInt(ctx, value, "speed");
+                if (!speed.has_value())
+                    return std::nullopt;
+
+                command = SetSpeedCommand{ static_cast<uint8_t>(speed.value()) };
+            }
+            break;
             case TitleScript::Wait:
-                command = WaitCommand{ static_cast<uint16_t>(value["duration"].as_uint()) };
-                break;
+            {
+                auto duration = JSToOptionalInt(ctx, value, "duration");
+                if (!duration.has_value())
+                    return std::nullopt;
+
+                command = WaitCommand{ static_cast<uint16_t>(duration.value()) };
+            }
+            break;
             case TitleScript::LoadSc:
             {
+                auto scenario = JSToOptionalStdString(ctx, value, "scenario");
+                if (!scenario.has_value())
+                    return std::nullopt;
+
                 auto loadScenarioCommand = LoadScenarioCommand{};
-                String::set(
-                    loadScenarioCommand.Scenario, sizeof(loadScenarioCommand.Scenario), value["scenario"].as_c_string());
+                String::set(loadScenarioCommand.Scenario, sizeof(loadScenarioCommand.Scenario), scenario.value().c_str());
                 command = loadScenarioCommand;
                 break;
             }
@@ -188,67 +217,81 @@ namespace OpenRCT2::Scripting
         return command;
     }
 
-    class ScTitleSequencePark
+    class ScTitleSequencePark;
+    extern ScTitleSequencePark gScTitleSequencePark;
+    class ScTitleSequencePark : public ScBase
     {
-    private:
-        std::string _titleSequencePath;
-        std::string _fileName;
-
-    public:
-        ScTitleSequencePark(std::string_view path, std::string_view fileName)
-            : _titleSequencePath(path)
-            , _fileName(fileName)
+        struct OpaqueData
         {
+            std::string _titleSequencePath{};
+            std::string _fileName{};
+        };
+
+        static JSValue fileName_get(JSContext* ctx, JSValue thisVal)
+        {
+            OpaqueData* data = gScTitleSequencePark.GetOpaque<OpaqueData*>(thisVal);
+            if (!data)
+                return JS_UNDEFINED;
+            return JSFromStdString(ctx, data->_fileName);
         }
 
-    private:
-        std::string fileName_get() const
+        static JSValue fileName_set(JSContext* ctx, JSValue thisVal, JSValue value)
         {
-            return _fileName;
-        }
+            JS_UNPACK_STR(valueStr, ctx, value);
+            OpaqueData* data = gScTitleSequencePark.GetOpaque<OpaqueData*>(thisVal);
+            if (!data)
+                return JS_UNDEFINED;
 
-        void fileName_set(const std::string& value)
-        {
-            if (value == _fileName)
-                return;
+            if (valueStr == data->_fileName)
+                return JS_UNDEFINED;
 
-            auto seq = Title::LoadTitleSequence(_titleSequencePath);
+            auto seq = Title::LoadTitleSequence(data->_titleSequencePath);
             if (seq != nullptr)
             {
                 // Check if name already in use
-                auto index = GetIndex(*seq, value);
+                auto index = GetIndex(*seq, valueStr);
                 if (!index)
                 {
-                    index = GetIndex(*seq, _fileName);
+                    index = GetIndex(*seq, data->_fileName);
                     if (index)
                     {
-                        TitleSequenceRenamePark(*seq, *index, value.c_str());
+                        TitleSequenceRenamePark(*seq, *index, valueStr.c_str());
                         TitleSequenceSave(*seq);
                     }
                 }
             }
+            return JS_UNDEFINED;
         }
 
-        void delete_()
+        static JSValue delete_(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
         {
-            auto seq = Title::LoadTitleSequence(_titleSequencePath);
+            OpaqueData* data = gScTitleSequencePark.GetOpaque<OpaqueData*>(thisVal);
+            if (!data)
+                return JS_UNDEFINED;
+
+            auto seq = Title::LoadTitleSequence(data->_titleSequencePath);
             if (seq != nullptr)
             {
-                auto index = GetIndex(*seq, _fileName);
+                auto index = GetIndex(*seq, data->_fileName);
                 if (index)
                 {
                     OpenRCT2::Title::TitleSequenceRemovePark(*seq, *index);
                     OpenRCT2::Title::TitleSequenceSave(*seq);
                 }
             }
+            return JS_UNDEFINED;
         }
 
-        void load()
+        static JSValue load(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
         {
-            auto seq = Title::LoadTitleSequence(_titleSequencePath);
+            OpaqueData* data = gScTitleSequencePark.GetOpaque<OpaqueData*>(thisVal);
+            if (!data)
+                return JS_UNDEFINED;
+
+            auto seq = Title::LoadTitleSequence(data->_titleSequencePath);
             if (seq != nullptr)
             {
-                auto index = GetIndex(*seq, _fileName);
+                auto index = GetIndex(*seq, data->_fileName);
                 if (index)
                 {
                     auto handle = OpenRCT2::Title::TitleSequenceGetParkHandle(*seq, *index);
@@ -281,22 +324,39 @@ namespace OpenRCT2::Scripting
                     }
                     catch (const std::exception&)
                     {
-                        auto ctx = GetContext()->GetScriptEngine().GetContext();
-                        duk_error(ctx, DUK_ERR_ERROR, "Unable to load park.");
+                        JS_ThrowPlainError(ctx, "Unable to load park.");
+                        return JS_EXCEPTION;
                     }
                 }
             }
+            return JS_UNDEFINED;
         }
 
     public:
-        static void Register(duk_context* ctx)
+        JSValue New(JSContext* ctx, std::string_view path, std::string_view fileName)
         {
-            dukglue_register_property(ctx, &ScTitleSequencePark::fileName_get, &ScTitleSequencePark::fileName_set, "fileName");
-            dukglue_register_method(ctx, &ScTitleSequencePark::delete_, "delete");
-            dukglue_register_method(ctx, &ScTitleSequencePark::load, "load");
+            static constexpr JSCFunctionListEntry funcs[] = {
+                JS_CGETSET_DEF("fileName", ScTitleSequencePark::fileName_get, ScTitleSequencePark::fileName_set),
+                JS_CFUNC_DEF("delete", 0, ScTitleSequencePark::delete_),
+                JS_CFUNC_DEF("load", 0, ScTitleSequencePark::load),
+            };
+
+            return MakeWithOpaque(ctx, funcs, new OpaqueData{ std::string(path), std::string(fileName) });
+        }
+
+        void Register(JSContext* ctx)
+        {
+            RegisterBaseStr(ctx, "TitleSequencePark", Finalize);
         }
 
     private:
+        static void Finalize(JSRuntime* rt, JSValue thisVal)
+        {
+            OpaqueData* data = gScTitleSequencePark.GetOpaque<OpaqueData*>(thisVal);
+            if (data)
+                delete data;
+        }
+
         static std::optional<size_t> GetIndex(const Title::TitleSequence& seq, const std::string_view needle)
         {
             for (size_t i = 0; i < seq.Saves.size(); i++)
@@ -310,189 +370,236 @@ namespace OpenRCT2::Scripting
         }
     };
 
-    class ScTitleSequence
+    class ScTitleSequence;
+    extern ScTitleSequence gScTitleSequence;
+    class ScTitleSequence : public ScBase
     {
-    private:
-        std::string _path;
-
-    public:
-        ScTitleSequence(const std::string& path)
+        struct OpaqueData
         {
-            _path = path;
-        }
+            std::string _path;
+        };
 
-    private:
-        std::string name_get() const
+        static JSValue name_get(JSContext* ctx, JSValue thisVal)
         {
-            const auto* item = GetItem();
+            const auto* item = GetItem(ctx, thisVal);
             if (item != nullptr)
             {
-                return item->Name;
+                return JSFromStdString(ctx, item->Name);
             }
-            return {};
+            return JSFromStdString(ctx, {});
         }
 
-        void name_set(const std::string& value)
+        static JSValue name_set(JSContext* ctx, JSValue thisVal, JSValue value)
         {
-            auto index = GetManagerIndex();
+            JS_UNPACK_STR(valueStr, ctx, value)
+            OpaqueData* data = gScTitleSequence.GetOpaque<OpaqueData*>(thisVal);
+            if (!data)
+                return JS_UNDEFINED;
+
+            auto index = GetManagerIndex(ctx, thisVal);
             if (index)
             {
-                auto newIndex = TitleSequenceManager::RenameItem(*index, value.c_str());
+                auto newIndex = TitleSequenceManager::RenameItem(*index, valueStr.c_str());
 
                 // Update path to new value
                 auto newItem = TitleSequenceManager::GetItem(newIndex);
-                _path = newItem != nullptr ? newItem->Path : std::string();
+                data->_path = newItem != nullptr ? newItem->Path : std::string();
             }
+            return JS_UNDEFINED;
         }
 
-        std::string path_get() const
+        static JSValue path_get(JSContext* ctx, JSValue thisVal)
         {
-            const auto* item = GetItem();
+            const auto* item = GetItem(ctx, thisVal);
             if (item != nullptr)
             {
-                return item->Path;
+                return JSFromStdString(ctx, item->Path);
             }
-            return {};
+            return JSFromStdString(ctx, {});
         }
 
-        bool isDirectory_get() const
+        static JSValue isDirectory_get(JSContext* ctx, JSValue thisVal)
         {
-            const auto* item = GetItem();
+            const auto* item = GetItem(ctx, thisVal);
             if (item != nullptr)
             {
-                return !item->IsZip;
+                return JS_NewBool(ctx, !item->IsZip);
             }
-            return {};
+            return JS_NewBool(ctx, {});
         }
 
-        bool isReadOnly_get() const
+        static JSValue isReadOnly_get(JSContext* ctx, JSValue thisVal)
         {
-            const auto* item = GetItem();
+            const auto* item = GetItem(ctx, thisVal);
             if (item != nullptr)
             {
-                return item->PredefinedIndex != TitleSequenceManager::kPredefinedIndexCustom;
+                return JS_NewBool(ctx, item->PredefinedIndex != TitleSequenceManager::kPredefinedIndexCustom);
             }
-            return {};
+            return JS_NewBool(ctx, {});
         }
 
-        std::vector<std::shared_ptr<ScTitleSequencePark>> parks_get() const
+        static JSValue parks_get(JSContext* ctx, JSValue thisVal)
         {
-            std::vector<std::shared_ptr<ScTitleSequencePark>> result;
-            auto titleSeq = Title::LoadTitleSequence(_path);
+            JSValue result = JS_NewArray(ctx);
+            OpaqueData* data = gScTitleSequence.GetOpaque<OpaqueData*>(thisVal);
+            if (!data)
+                return result;
+
+            auto titleSeq = Title::LoadTitleSequence(data->_path);
             if (titleSeq != nullptr)
             {
                 for (size_t i = 0; i < titleSeq->Saves.size(); i++)
                 {
-                    result.push_back(std::make_shared<ScTitleSequencePark>(_path, titleSeq->Saves[i]));
+                    JS_SetPropertyInt64(ctx, result, i, gScTitleSequencePark.New(ctx, data->_path, titleSeq->Saves[i]));
                 }
             }
             return result;
         }
 
-        std::vector<DukValue> commands_get() const
+        static JSValue commands_get(JSContext* ctx, JSValue thisVal)
         {
-            auto& scriptEngine = GetContext()->GetScriptEngine();
-            auto ctx = scriptEngine.GetContext();
+            JSValue result = JS_NewArray(ctx);
+            OpaqueData* data = gScTitleSequence.GetOpaque<OpaqueData*>(thisVal);
+            if (!data)
+                return result;
 
-            std::vector<DukValue> result;
-            auto titleSeq = Title::LoadTitleSequence(_path);
+            auto titleSeq = Title::LoadTitleSequence(data->_path);
             if (titleSeq != nullptr)
             {
+                int64_t idx = 0;
                 for (const auto& command : titleSeq->Commands)
                 {
-                    result.push_back(ToDuk(ctx, command));
+                    JS_SetPropertyInt64(ctx, result, idx++, TitleCommandToJS(ctx, command));
                 }
             }
             return result;
         }
 
-        void commands_set(const std::vector<DukValue>& value)
+        static JSValue commands_set(JSContext* ctx, JSValue thisVal, JSValue value)
         {
+            JS_UNPACK_ARRAY(array, ctx, value);
+            OpaqueData* data = gScTitleSequence.GetOpaque<OpaqueData*>(thisVal);
+            if (!data)
+                return JS_UNDEFINED;
+
+            int64_t length;
+            if (JS_GetLength(ctx, array, &length) != 0)
+                return JS_UNDEFINED;
             std::vector<Title::TitleCommand> commands;
-            for (const auto& v : value)
+            commands.reserve(length);
+
+            for (int64_t i = 0; i < length; i++)
             {
-                auto command = FromDuk<Title::TitleCommand>(v);
-                commands.push_back(std::move(command));
+                JSValue element = JS_GetPropertyInt64(ctx, array, i);
+                auto command = TitleCommandFromJS(ctx, element);
+                JS_FreeValue(ctx, element);
+                if (!command.has_value())
+                {
+                    JS_ThrowPlainError(ctx, "Invalid command");
+                    return JS_EXCEPTION;
+                }
+                commands.push_back(command.value());
             }
 
-            auto titleSeq = Title::LoadTitleSequence(_path);
+            auto titleSeq = Title::LoadTitleSequence(data->_path);
             titleSeq->Commands = commands;
             OpenRCT2::Title::TitleSequenceSave(*titleSeq);
+            return JS_UNDEFINED;
         }
 
-        void addPark(const std::string& path, const std::string& fileName)
+        static JSValue addPark(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
         {
-            auto titleSeq = Title::LoadTitleSequence(_path);
+            JS_UNPACK_STR(path, ctx, argv[0]);
+            JS_UNPACK_STR(fileName, ctx, argv[1]);
+            OpaqueData* data = gScTitleSequence.GetOpaque<OpaqueData*>(thisVal);
+            if (!data)
+                return JS_UNDEFINED;
+
+            auto titleSeq = Title::LoadTitleSequence(data->_path);
             OpenRCT2::Title::TitleSequenceAddPark(*titleSeq, path.c_str(), fileName.c_str());
             OpenRCT2::Title::TitleSequenceSave(*titleSeq);
+            return JS_UNDEFINED;
         }
 
-        std::shared_ptr<ScTitleSequence> clone(const std::string& name) const
+        static JSValue clone(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
         {
-            auto copyIndex = GetManagerIndex();
+            JS_UNPACK_STR(name, ctx, argv[0]);
+
+            auto copyIndex = GetManagerIndex(ctx, thisVal);
             if (copyIndex)
             {
                 auto index = TitleSequenceManager::DuplicateItem(*copyIndex, name.c_str());
                 auto* item = TitleSequenceManager::GetItem(index);
                 if (item != nullptr)
                 {
-                    return std::make_shared<ScTitleSequence>(item->Path);
+                    return gScTitleSequence.New(ctx, item->Path);
                 }
             }
-            return nullptr;
+            return JS_NULL;
         }
 
-        void delete_()
+        static JSValue delete_(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
         {
-            auto index = GetManagerIndex();
+            OpaqueData* data = gScTitleSequence.GetOpaque<OpaqueData*>(thisVal);
+            if (!data)
+                return JS_UNDEFINED;
+
+            auto index = GetManagerIndex(ctx, thisVal);
             if (index)
             {
                 TitleSequenceManager::DeleteItem(*index);
             }
-            _path = {};
+            data->_path = {};
+            return JS_UNDEFINED;
         }
 
-        bool isPlaying_get() const
+        static bool IsPlaying(JSContext* ctx, JSValue thisVal)
         {
-            auto index = GetManagerIndex();
+            auto index = GetManagerIndex(ctx, thisVal);
             return index && TitleIsPreviewingSequence() && *index == TitleGetCurrentSequence();
         }
 
-        DukValue position_get() const
+        static JSValue isPlaying_get(JSContext* ctx, JSValue thisVal)
         {
-            auto ctx = GetContext()->GetScriptEngine().GetContext();
-            if (isPlaying_get())
+            return JS_NewBool(ctx, IsPlaying(ctx, thisVal));
+        }
+
+        static JSValue position_get(JSContext* ctx, JSValue thisVal)
+        {
+            if (IsPlaying(ctx, thisVal))
             {
                 auto* player = static_cast<ITitleSequencePlayer*>(TitleGetSequencePlayer());
                 if (player != nullptr)
                 {
-                    return ToDuk(ctx, player->GetCurrentPosition());
+                    return JS_NewInt32(ctx, player->GetCurrentPosition());
                 }
             }
-            return ToDuk(ctx, nullptr);
+            return JS_NULL;
         }
 
-        void play()
+        static JSValue play(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
         {
-            auto ctx = GetContext()->GetScriptEngine().GetContext();
-            auto index = GetManagerIndex();
+            auto index = GetManagerIndex(ctx, thisVal);
             if (index && (!TitleIsPreviewingSequence() || *index != TitleGetCurrentSequence()))
             {
                 if (!TitlePreviewSequence(*index))
                 {
-                    duk_error(ctx, DUK_ERR_ERROR, "Failed to load title sequence");
+                    JS_ThrowPlainError(ctx, "Failed to load title sequence");
+                    return JS_EXCEPTION;
                 }
                 else if (gLegacyScene != LegacyScene::titleSequence)
                 {
                     gPreviewingTitleSequenceInGame = true;
                 }
             }
+            return JS_UNDEFINED;
         }
 
-        void seek(int32_t position)
+        static JSValue seek(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
         {
-            auto ctx = GetContext()->GetScriptEngine().GetContext();
-            if (isPlaying_get())
+            JS_UNPACK_INT32(position, ctx, argv[0]);
+
+            if (IsPlaying(ctx, thisVal))
             {
                 auto* player = static_cast<ITitleSequencePlayer*>(TitleGetSequencePlayer());
                 try
@@ -502,47 +609,71 @@ namespace OpenRCT2::Scripting
                 }
                 catch (...)
                 {
-                    duk_error(ctx, DUK_ERR_ERROR, "Failed to seek");
+                    JS_ThrowPlainError(ctx, "Failed to seek");
+                    return JS_EXCEPTION;
                 }
             }
+            return JS_UNDEFINED;
         }
 
-        void stop()
+        static JSValue stop(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
         {
-            if (isPlaying_get())
+            if (IsPlaying(ctx, thisVal))
             {
                 TitleStopPreviewingSequence();
             }
+            return JS_UNDEFINED;
         }
 
     public:
-        static void Register(duk_context* ctx)
+        JSValue New(JSContext* ctx, std::string_view path)
         {
-            dukglue_register_property(ctx, &ScTitleSequence::name_get, &ScTitleSequence::name_set, "name");
-            dukglue_register_property(ctx, &ScTitleSequence::path_get, nullptr, "path");
-            dukglue_register_property(ctx, &ScTitleSequence::isDirectory_get, nullptr, "isDirectory");
-            dukglue_register_property(ctx, &ScTitleSequence::isReadOnly_get, nullptr, "isReadOnly");
-            dukglue_register_property(ctx, &ScTitleSequence::parks_get, nullptr, "parks");
-            dukglue_register_property(ctx, &ScTitleSequence::commands_get, &ScTitleSequence::commands_set, "commands");
-            dukglue_register_property(ctx, &ScTitleSequence::isPlaying_get, nullptr, "isPlaying");
-            dukglue_register_property(ctx, &ScTitleSequence::position_get, nullptr, "position");
-            dukglue_register_method(ctx, &ScTitleSequence::addPark, "addPark");
-            dukglue_register_method(ctx, &ScTitleSequence::clone, "clone");
-            dukglue_register_method(ctx, &ScTitleSequence::delete_, "delete");
+            static constexpr JSCFunctionListEntry funcs[] = {
+                JS_CGETSET_DEF("name", ScTitleSequence::name_get, ScTitleSequence::name_set),
+                JS_CGETSET_DEF("path", ScTitleSequence::path_get, nullptr),
+                JS_CGETSET_DEF("isDirectory", ScTitleSequence::isDirectory_get, nullptr),
+                JS_CGETSET_DEF("isReadOnly", ScTitleSequence::isReadOnly_get, nullptr),
+                JS_CGETSET_DEF("parks", ScTitleSequence::parks_get, nullptr),
+                JS_CGETSET_DEF("commands", ScTitleSequence::commands_get, ScTitleSequence::commands_set),
+                JS_CGETSET_DEF("isPlaying", ScTitleSequence::isPlaying_get, nullptr),
+                JS_CGETSET_DEF("position", ScTitleSequence::position_get, nullptr),
 
-            dukglue_register_method(ctx, &ScTitleSequence::play, "play");
-            dukglue_register_method(ctx, &ScTitleSequence::seek, "seek");
-            dukglue_register_method(ctx, &ScTitleSequence::stop, "stop");
+                JS_CFUNC_DEF("addPark", 2, ScTitleSequence::addPark),
+                JS_CFUNC_DEF("clone", 1, ScTitleSequence::clone),
+                JS_CFUNC_DEF("delete", 0, ScTitleSequence::delete_),
+
+                JS_CFUNC_DEF("play", 0, ScTitleSequence::play),
+                JS_CFUNC_DEF("seek", 1, ScTitleSequence::seek),
+                JS_CFUNC_DEF("stop", 0, ScTitleSequence::stop),
+            };
+
+            return MakeWithOpaque(ctx, funcs, new OpaqueData{ std::string(path) });
+        }
+
+        void Register(JSContext* ctx)
+        {
+            RegisterBaseStr(ctx, "TitleSequence", Finalize);
         }
 
     private:
-        std::optional<size_t> GetManagerIndex() const
+        static void Finalize(JSRuntime* rt, JSValue thisVal)
         {
+            OpaqueData* data = gScTitleSequence.GetOpaque<OpaqueData*>(thisVal);
+            if (data)
+                delete data;
+        }
+
+        static std::optional<size_t> GetManagerIndex(JSContext* ctx, JSValue thisVal)
+        {
+            OpaqueData* data = gScTitleSequence.GetOpaque<OpaqueData*>(thisVal);
+            if (!data)
+                return std::nullopt;
+
             auto count = TitleSequenceManager::GetCount();
             for (size_t i = 0; i < count; i++)
             {
                 auto item = TitleSequenceManager::GetItem(i);
-                if (item != nullptr && item->Path == _path)
+                if (item != nullptr && item->Path == data->_path)
                 {
                     return i;
                 }
@@ -550,9 +681,9 @@ namespace OpenRCT2::Scripting
             return std::nullopt;
         }
 
-        const TitleSequenceManager::Item* GetItem() const
+        static const TitleSequenceManager::Item* GetItem(JSContext* ctx, JSValue thisVal)
         {
-            auto index = GetManagerIndex();
+            auto index = GetManagerIndex(ctx, thisVal);
             if (index)
             {
                 return TitleSequenceManager::GetItem(*index);
@@ -561,37 +692,48 @@ namespace OpenRCT2::Scripting
         }
     };
 
-    class ScTitleSequenceManager
+    class ScTitleSequenceManager;
+    extern ScTitleSequenceManager gScTitleSequenceManager;
+    class ScTitleSequenceManager : public ScBase
     {
-    private:
-        std::vector<std::shared_ptr<ScTitleSequence>> titleSequences_get() const
+        static JSValue titleSequences_get(JSContext* ctx, JSValue thisVal)
         {
-            std::vector<std::shared_ptr<ScTitleSequence>> result;
+            JSValue result = JS_NewArray(ctx);
             auto count = TitleSequenceManager::GetCount();
             for (size_t i = 0; i < count; i++)
             {
                 const auto& path = TitleSequenceManager::GetItem(i)->Path;
-                result.push_back(std::make_shared<ScTitleSequence>(path));
+                JS_SetPropertyInt64(ctx, result, i, gScTitleSequence.New(ctx, path));
             }
             return result;
         }
 
-        std::shared_ptr<ScTitleSequence> create(const std::string& name)
+        static JSValue create(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
         {
+            JS_UNPACK_STR(name, ctx, argv[0])
+
             auto index = TitleSequenceManager::CreateItem(name.c_str());
             auto* item = TitleSequenceManager::GetItem(index);
             if (item != nullptr)
             {
-                return std::make_shared<ScTitleSequence>(item->Path);
+                return gScTitleSequence.New(ctx, item->Path);
             }
-            return nullptr;
+            return JS_NULL;
         }
 
     public:
-        static void Register(duk_context* ctx)
+        JSValue New(JSContext* ctx)
         {
-            dukglue_register_property(ctx, &ScTitleSequenceManager::titleSequences_get, nullptr, "titleSequences");
-            dukglue_register_method(ctx, &ScTitleSequenceManager::create, "create");
+            static constexpr JSCFunctionListEntry funcs[] = {
+                JS_CGETSET_DEF("titleSequences", ScTitleSequenceManager::titleSequences_get, nullptr),
+                JS_CFUNC_DEF("create", 1, ScTitleSequenceManager::create),
+            };
+            return MakeWithOpaque(ctx, funcs, nullptr);
+        }
+
+        void Register(JSContext* ctx)
+        {
+            RegisterBaseStr(ctx, "TitleSequenceManager");
         }
     };
 } // namespace OpenRCT2::Scripting

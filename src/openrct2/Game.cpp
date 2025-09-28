@@ -102,7 +102,7 @@ bool gLoadKeepWindowsOpen = false;
 
 uint32_t gCurrentRealTimeTicks;
 
-#ifdef ENABLE_SCRIPTING
+#ifdef ENABLE_SCRIPTING_REFACTOR
 static bool _mapChangedExpected;
 #endif
 
@@ -402,21 +402,21 @@ void GameLoadInit()
 
 void GameLoadScripts()
 {
-#ifdef ENABLE_SCRIPTING
+#ifdef ENABLE_SCRIPTING_REFACTOR
     GetContext()->GetScriptEngine().LoadTransientPlugins();
 #endif
 }
 
 void GameUnloadScripts()
 {
-#ifdef ENABLE_SCRIPTING
+#ifdef ENABLE_SCRIPTING_REFACTOR
     GetContext()->GetScriptEngine().UnloadTransientPlugins();
 #endif
 }
 
 void GameNotifyMapChange()
 {
-#ifdef ENABLE_SCRIPTING
+#ifdef ENABLE_SCRIPTING_REFACTOR
     // Ensure we don't get a two lots of change events
     if (_mapChangedExpected)
         return;
@@ -432,7 +432,7 @@ void GameNotifyMapChange()
 
 void GameNotifyMapChanged()
 {
-#ifdef ENABLE_SCRIPTING
+#ifdef ENABLE_SCRIPTING_REFACTOR
     using namespace OpenRCT2::Scripting;
 
     auto& scriptEngine = GetContext()->GetScriptEngine();
@@ -788,7 +788,7 @@ void PrepareMapForSave()
 {
     ViewportSetSavedView();
 
-#ifdef ENABLE_SCRIPTING
+#ifdef ENABLE_SCRIPTING_REFACTOR
     auto& scriptEngine = GetContext()->GetScriptEngine();
     auto& hookEngine = scriptEngine.GetHookEngine();
     if (hookEngine.HasSubscriptions(Scripting::HookType::mapSave))

@@ -7,18 +7,6 @@ if (APPLE)
     set_source_files_properties(${OPENRCT2_CORE_MM_SOURCES} PROPERTIES COMPILE_FLAGS "-x objective-c++ -fmodules")
 endif ()
 
-if (ENABLE_SCRIPTING)
-    include_directories("${CMAKE_CURRENT_LIST_DIR}/../thirdparty/duktape")
-
-    # duktape is third party, ignore all warnings
-    set(OPENRCT2_DUKTAPE_SOURCES "${CMAKE_CURRENT_LIST_DIR}/../thirdparty/duktape/duktape.cpp")
-    if (MSVC)
-        set_source_files_properties(${OPENRCT2_DUKTAPE_SOURCES} PROPERTIES COMPILE_FLAGS "/w")
-    else ()
-        set_source_files_properties(${OPENRCT2_DUKTAPE_SOURCES} PROPERTIES COMPILE_FLAGS "-w")
-    endif ()
-endif ()
-
 # On macOS the compiler computes typeids to different values in shared library and in the executable.
 # This causes issues with RTTI and results in "bad any cast" exception getting thrown at runtime.
 # It should be possible to expose relevant types with visibility default attribute, but we can make the whole issue go away by
@@ -28,7 +16,7 @@ set(LIBOPENRCT2_LINKAGE)
 if (APPLE)
   set(LIBOPENRCT2_LINKAGE STATIC)
 endif()
-add_library(libopenrct2 ${LIBOPENRCT2_LINKAGE} ${OPENRCT2_CORE_SOURCES} ${OPENRCT2_CORE_MM_SOURCES} ${OPENRCT2_DUKTAPE_SOURCES})
+add_library(libopenrct2 ${LIBOPENRCT2_LINKAGE} ${OPENRCT2_CORE_SOURCES} ${OPENRCT2_CORE_MM_SOURCES})
 add_library(OpenRCT2::libopenrct2 ALIAS libopenrct2)
 
 if (CMAKE_COMPILER_IS_GNUCXX AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS "13")
@@ -43,6 +31,23 @@ if (APPLE)
 endif ()
 set_target_properties(libopenrct2 PROPERTIES PREFIX "")
 SET_CHECK_CXX_FLAGS(libopenrct2)
+
+if (ENABLE_SCRIPTING OR ENABLE_SCRIPTING_REFACTOR) #TODO (mber) remove refactor build option.
+    include(ExternalProject)
+    externalproject_add(quickjs
+        GIT_REPOSITORY      https://github.com/quickjs-ng/quickjs.git
+        GIT_TAG             3c9afc9943323ee9c7dbd123c0cd991448f4b6c2
+        CMAKE_ARGS          "-DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}"
+        SOURCE_DIR          "${CMAKE_CURRENT_LIST_DIR}/../thirdparty/quickjs-ng"
+        INSTALL_COMMAND     ""
+        BUILD_BYPRODUCTS    "quickjs-prefix/src/quickjs-build/libqjs.a"
+    )
+    externalproject_get_property(quickjs SOURCE_DIR)
+    target_include_directories(libopenrct2 SYSTEM PUBLIC ${SOURCE_DIR})
+    externalproject_get_property(quickjs BINARY_DIR)
+    target_link_libraries(libopenrct2 ${BINARY_DIR}/libqjs.a)
+    add_dependencies(libopenrct2 quickjs)
+endif ()
 
 if (NOT DISABLE_NETWORK OR NOT DISABLE_HTTP)
     if (WIN32)

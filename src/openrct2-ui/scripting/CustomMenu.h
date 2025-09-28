@@ -9,12 +9,11 @@
 
 #pragma once
 
-#ifdef ENABLE_SCRIPTING
+#ifdef ENABLE_SCRIPTING_REFACTOR
 
     #include <memory>
     #include <openrct2/Context.h>
     #include <openrct2/interface/Cursors.h>
-    #include <openrct2/scripting/Duktape.hpp>
     #include <openrct2/scripting/ScriptEngine.h>
     #include <string>
     #include <vector>
@@ -35,10 +34,10 @@ namespace OpenRCT2::Scripting
         std::shared_ptr<Plugin> Owner;
         CustomToolbarMenuItemKind Kind;
         std::string Text;
-        DukValue Callback;
+        JSCallback Callback;
 
         CustomToolbarMenuItem(
-            std::shared_ptr<Plugin> owner, CustomToolbarMenuItemKind kind, const std::string& text, DukValue callback)
+            std::shared_ptr<Plugin> owner, CustomToolbarMenuItemKind kind, const std::string& text, JSCallback callback)
             : Owner(owner)
             , Kind(kind)
             , Text(text)
@@ -49,7 +48,7 @@ namespace OpenRCT2::Scripting
         void Invoke() const
         {
             auto& scriptEngine = GetContext()->GetScriptEngine();
-            scriptEngine.ExecutePluginCall(Owner, Callback, {}, false);
+            scriptEngine.ExecutePluginCall(Owner, Callback.callback, {}, false);
         }
     };
 
@@ -60,11 +59,11 @@ namespace OpenRCT2::Scripting
         std::string Id;
         std::string Text;
         std::vector<std::string> Bindings;
-        DukValue Callback;
+        JSCallback Callback;
 
         CustomShortcut(
             std::shared_ptr<Plugin> owner, std::string_view id, std::string_view text, const std::vector<std::string>& bindings,
-            DukValue callback);
+            JSCallback callback);
         CustomShortcut(CustomShortcut&&) = default;
         CustomShortcut(const CustomShortcut&) = delete;
         ~CustomShortcut();
@@ -84,11 +83,11 @@ namespace OpenRCT2::Scripting
         bool MouseDown{};
 
         // Event handlers
-        DukValue onStart;
-        DukValue onDown;
-        DukValue onMove;
-        DukValue onUp;
-        DukValue onFinish;
+        JSCallback onStart;
+        JSCallback onDown;
+        JSCallback onMove;
+        JSCallback onUp;
+        JSCallback onFinish;
 
         void Start();
         void OnUpdate(const ScreenCoordsXY& screenCoords);
@@ -98,7 +97,7 @@ namespace OpenRCT2::Scripting
         void OnAbort();
 
     private:
-        void InvokeEventHandler(const DukValue& dukHandler, const ScreenCoordsXY& screenCoords);
+        void InvokeEventHandler(JSValue handler, const ScreenCoordsXY& screenCoords);
     };
 
     extern std::optional<CustomTool> ActiveCustomTool;
@@ -106,13 +105,9 @@ namespace OpenRCT2::Scripting
     extern std::vector<std::unique_ptr<CustomShortcut>> CustomShortcuts;
 
     void InitialiseCustomMenuItems(ScriptEngine& scriptEngine);
-    void InitialiseCustomTool(ScriptEngine& scriptEngine, const DukValue& dukValue);
+    JSValue InitialiseCustomTool(ScriptEngine& scriptEngine, JSContext* ctx, JSValue value);
 
-    template<>
-    DukValue ToDuk(duk_context* ctx, const CursorID& value);
-    template<>
-    CursorID FromDuk(const DukValue& s);
-
+    JSValue CursorIDToJSValue(JSContext* ctx, CursorID id);
 } // namespace OpenRCT2::Scripting
 
 #endif

@@ -1111,6 +1111,12 @@ public:
         CloseByClass(WindowClass::trackDesignPlace);
     }
 
+    void Cleanup() override
+    {
+        CloseByCondition([](WindowBase* w) { return true; });
+        WindowCullDead();
+    }
+
     /**
      * Finds the first window with the specified window class.
      *  rct2: 0x006EA8A0

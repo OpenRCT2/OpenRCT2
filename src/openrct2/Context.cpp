@@ -121,7 +121,7 @@ namespace OpenRCT2
         std::unique_ptr<Network::DiscordService> _discordService;
 #endif
         StdInOutConsole _stdInOutConsole;
-#ifdef ENABLE_SCRIPTING
+#ifdef ENABLE_SCRIPTING_REFACTOR
         Scripting::ScriptEngine _scriptEngine;
 #endif
 #ifndef DISABLE_NETWORK
@@ -177,7 +177,7 @@ namespace OpenRCT2
             , _localisationService(std::make_unique<Localisation::LocalisationService>(*_env))
             , _replayManager(CreateReplayManager())
             , _gameStateSnapshots(CreateGameStateSnapshots())
-#ifdef ENABLE_SCRIPTING
+#ifdef ENABLE_SCRIPTING_REFACTOR
             , _scriptEngine(_stdInOutConsole, *_env)
 #endif
 #ifndef DISABLE_NETWORK
@@ -197,7 +197,7 @@ namespace OpenRCT2
             // NOTE: We must shutdown all systems here before Instance is set back to null.
             //       If objects use GetContext() in their destructor things won't go well.
 
-#ifdef ENABLE_SCRIPTING
+#ifdef ENABLE_SCRIPTING_REFACTOR
             _scriptEngine.StopUnloadRegisterAllPlugins();
 #endif
 
@@ -208,7 +208,7 @@ namespace OpenRCT2
 #endif
 
             auto* windowMgr = GetWindowManager();
-            windowMgr->CloseAll();
+            windowMgr->Cleanup();
 
             // Unload objects after closing all windows, this is to overcome windows like
             // the object selection window which loads objects when closed.
@@ -236,7 +236,7 @@ namespace OpenRCT2
             return *_uiContext;
         }
 
-#ifdef ENABLE_SCRIPTING
+#ifdef ENABLE_SCRIPTING_REFACTOR
         Scripting::ScriptEngine& GetScriptEngine() override
         {
             return _scriptEngine;
@@ -620,7 +620,7 @@ namespace OpenRCT2
 
         void InitialiseScriptEngine()
         {
-#ifdef ENABLE_SCRIPTING
+#ifdef ENABLE_SCRIPTING_REFACTOR
             OpenProgress(STR_LOADING_PLUGIN_ENGINE);
             _scriptEngine.Initialise();
             _uiContext->InitialiseScriptExtensions();
@@ -1456,7 +1456,7 @@ namespace OpenRCT2
 #endif
 
             ChatUpdate();
-#ifdef ENABLE_SCRIPTING
+#ifdef ENABLE_SCRIPTING_REFACTOR
             if (GetActiveScene() != GetPreloaderScene())
             {
                 _scriptEngine.Tick();

@@ -9,9 +9,7 @@
 
 #pragma once
 
-#ifdef ENABLE_SCRIPTING
-
-    #include "../interface/Window.h"
+#ifdef ENABLE_SCRIPTING_REFACTOR
 
     #include <memory>
     #include <optional>
@@ -40,7 +38,8 @@ namespace OpenRCT2::Ui::Windows
     CustomListView* GetCustomListView(WindowBase* w, WidgetIndex widgetIndex);
     int32_t GetWidgetMaxLength(WindowBase* w, WidgetIndex widgetIndex);
     void SetWidgetMaxLength(WindowBase* w, WidgetIndex widgetIndex, int32_t value);
-    void CloseWindowsOwnedByPlugin(std::shared_ptr<Plugin> plugin);
+    void CloseWindowsOwnedByPlugin(std::shared_ptr<Scripting::Plugin> plugin);
+    WindowBase* WindowCustomOpen(JSContext* ctx, std::shared_ptr<Scripting::Plugin> owner, JSValue descVal);
 } // namespace OpenRCT2::Ui::Windows
 
 #endif
