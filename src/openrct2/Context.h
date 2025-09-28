@@ -92,7 +92,7 @@ namespace OpenRCT2
         virtual Localisation::LocalisationService& GetLocalisationService() = 0;
         virtual IObjectManager& GetObjectManager() = 0;
         virtual IObjectRepository& GetObjectRepository() = 0;
-#ifdef ENABLE_SCRIPTING
+#ifdef ENABLE_SCRIPTING_REFACTOR
         virtual Scripting::ScriptEngine& GetScriptEngine() = 0;
 #endif
         virtual ITrackDesignRepository* GetTrackDesignRepository() = 0;
