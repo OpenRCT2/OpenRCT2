@@ -968,10 +968,12 @@ namespace OpenRCT2::Ui::Windows
                     rideRef.windowInvalidateFlags &= ~RIDE_INVALIDATE_RIDE_LIST;
                 }
 
+                const auto filterApplies = IsFiltered(rideName);
+
                 RideListEntry entry{
                     .Id = rideRef.id,
                     .Name = std::move(rideName),
-                    .Visible = IsFiltered(rideName),
+                    .Visible = filterApplies,
                 };
 
                 _rideList.push_back(std::move(entry));
