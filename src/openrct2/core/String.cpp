@@ -394,27 +394,23 @@ namespace OpenRCT2::String
     {
         if (delimiter.empty())
         {
-            throw std::invalid_argument("delimiter can not be empty.");
+            throw std::invalid_argument("delimiter can notbe empty.");
         }
-
         std::vector<std::string> results;
-        if (!s.empty())
+        if (s.empty())
         {
-            size_t index = 0;
-            size_t nextIndex;
-            do
+            return results;
+        }
+        size_t start = 0;
+        while (true)
+        {
+            size_t end = s.find(delimiter, start);
+            results.emplace_back(s.substr(start, end == std::string_view::npos ? std::string_view::npos : end - start));
+            if (end == std::string_view::npos)
             {
-                nextIndex = s.find(delimiter, index);
-                if (nextIndex == std::string::npos)
-                {
-                    results.emplace_back(s.substr(index));
-                }
-                else
-                {
-                    results.emplace_back(s.substr(index, nextIndex - index));
-                }
-                index = nextIndex + delimiter.size();
-            } while (nextIndex != SIZE_MAX);
+                break;
+            }
+            start = end + delimiter.size();
         }
         return results;
     }
