@@ -29,7 +29,7 @@ JobPool::JobPool(size_t maxThreads)
 JobPool::~JobPool()
 {
     {
-        unique_lock lock(_mutex);
+        std::lock_guard lock(_mutex);
         _shouldStop = true;
     }
     _condPending.notify_all();
@@ -44,7 +44,7 @@ JobPool::~JobPool()
 void JobPool::AddTask(std::function<void()> workFn, std::function<void()> completionFn)
 {
     {
-        unique_lock lock(_mutex);
+        std::lock_guard lock(_mutex);
         _pending.emplace_back(workFn, completionFn);
     }
     _condPending.notify_one();
@@ -52,7 +52,7 @@ void JobPool::AddTask(std::function<void()> workFn, std::function<void()> comple
 
 void JobPool::Join(std::function<void()> reportFn)
 {
-    unique_lock lock(_mutex);
+    std::unique_lock lock(_mutex);
     while (true)
     {
         // Wait for the queue to become empty or having completed tasks.
@@ -93,13 +93,13 @@ void JobPool::Join(std::function<void()> reportFn)
 
 bool JobPool::IsBusy()
 {
-    unique_lock lock(_mutex);
+    std::lock_guard lock(_mutex);
     return _processing != 0 || !_pending.empty();
 }
 
 void JobPool::ProcessQueue()
 {
-    unique_lock lock(_mutex);
+    std::unique_lock lock(_mutex);
     do
     {
         // Wait for work or cancellation.
