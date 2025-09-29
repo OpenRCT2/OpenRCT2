@@ -116,6 +116,8 @@ namespace OpenRCT2::String
     template<typename T>
     inline std::optional<T> tryParse(std::string_view input)
     {
+        static_assert(!std::is_same_v<T, float> && !std::is_same_v<T, double>, "Float support is currently unsupported");
+
         if (input.empty())
         {
             return std::nullopt;
@@ -132,6 +134,8 @@ namespace OpenRCT2::String
     template<typename T>
     inline T parse(std::string_view input)
     {
+        static_assert(!std::is_same_v<T, float> && !std::is_same_v<T, double>, "Float support is currently unsupported");
+
         if (input.empty())
         {
             throw std::invalid_argument("Input is empty");
