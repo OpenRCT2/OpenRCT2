@@ -273,7 +273,7 @@ namespace OpenRCT2::Ui::Windows
 
         void onDraw(RenderTarget& rt) override
         {
-            GfxFilterRect(rt, _filterRect, FilterPaletteID::Palette51);
+            GfxFilterRect(rt, _filterRect, FilterPaletteID::palette51);
             drawWidgets(rt);
         }
     };

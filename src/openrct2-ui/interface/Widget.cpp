@@ -235,7 +235,7 @@ namespace OpenRCT2::Ui
             if (widget.image.GetIndex() == kImageIndexUndefined)
             {
                 // Set standard tab sprite to use.
-                widget.image = ImageId(SPR_TAB, FilterPaletteID::PaletteNull);
+                widget.image = ImageId(SPR_TAB, FilterPaletteID::paletteNull);
             }
         }
 
@@ -550,7 +550,7 @@ namespace OpenRCT2::Ui
         else
             GfxFilterRect(
                 rt, { { topLeft + ScreenCoordsXY{ 1, 1 } }, { bottomRight - ScreenCoordsXY{ 1, 1 } } },
-                FilterPaletteID::PaletteDarken3);
+                FilterPaletteID::paletteDarken3);
 
         // Draw text
         if (widget->text == kStringIdNone)

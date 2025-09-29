@@ -924,7 +924,8 @@ void Guest::UpdateConsumptionMotives()
 void Guest::Tick128UpdateGuest(uint32_t index)
 {
     const auto currentTicks = getGameState().currentTicks;
-    if ((index & 0x1FF) != (currentTicks & 0x1FF))
+    const bool ticksMatchIndex = (index & 0x1FF) != (currentTicks & 0x1FF);
+    if (ticksMatchIndex && !(PeepFlags & PEEP_FLAGS_POSITION_FROZEN))
     {
         UpdateConsumptionMotives();
         return;

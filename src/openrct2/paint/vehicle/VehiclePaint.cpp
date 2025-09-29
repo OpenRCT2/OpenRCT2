@@ -1091,7 +1091,7 @@ static void PaintVehicleRiders(
             auto imageId = ImageId(offsetImageId, peepColour0, peepColour1);
             if (vehicle->IsGhost())
             {
-                imageId = ImageId(offsetImageId).WithRemap(FilterPaletteID::PaletteGhost);
+                imageId = ImageId(offsetImageId).WithRemap(FilterPaletteID::paletteGhost);
             }
 
             PaintAddImageAsChild(
@@ -1125,7 +1125,7 @@ static void vehicle_sprite_paint(
     auto imageId = ImageId(baseImageId, vehicle->colours.Body, vehicle->colours.Trim, vehicle->colours.Tertiary);
     if (vehicle->IsGhost())
     {
-        imageId = ImageId(baseImageId).WithRemap(FilterPaletteID::PaletteGhost);
+        imageId = ImageId(baseImageId).WithRemap(FilterPaletteID::paletteGhost);
     }
     PaintAddImageAsParent(
         session, imageId, { 0, 0, z },

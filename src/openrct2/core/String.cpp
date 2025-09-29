@@ -722,7 +722,7 @@ namespace OpenRCT2::String
         return escaped.str();
     }
 
-    /* Case insensitive logical compare */
+    /* Case insensitive logical compare, produces the same output as Notepad++ lexicographical sort */
     // Example:
     // - Guest 10
     // - Guest 99
@@ -731,34 +731,88 @@ namespace OpenRCT2::String
     // - John v2.1
     int32_t logicalCmp(const char* s1, const char* s2)
     {
-        for (;;)
+        const auto isDigit = [](char c) { return std::isdigit(static_cast<unsigned char>(c)); };
+        const auto toUpper = [](char c) { return std::toupper(static_cast<unsigned char>(c)); };
+
+        // Prioritise strings starting with digits
+        bool s1StartsDigit = isDigit(*s1);
+        bool s2StartsDigit = isDigit(*s2);
+        if (s1StartsDigit && !s2StartsDigit)
         {
-            if (*s2 == '\0')
-                return *s1 != '\0';
-            if (*s1 == '\0')
-                return -1;
-            if (!(isdigit(static_cast<unsigned char>(*s1)) && isdigit(static_cast<unsigned char>(*s2))))
-            {
-                if (toupper(*s1) != toupper(*s2))
-                    return toupper(*s1) - toupper(*s2);
-
-                ++s1;
-                ++s2;
-            }
-            else
-            {
-                char *lim1, *lim2;
-                unsigned long n1 = strtoul(s1, &lim1, 10);
-                unsigned long n2 = strtoul(s2, &lim2, 10);
-                if (n1 > n2)
-                    return 1;
-                if (n1 < n2)
-                    return -1;
-
-                s1 = lim1;
-                s2 = lim2;
-            }
+            return -1; // s1 (starts with digit) comes before s2
         }
+        if (!s1StartsDigit && s2StartsDigit)
+        {
+            return 1; // s2 (starts with digit) comes before s1
+        }
+
+        // If both start with digits, compare lexicographically
+        if (s1StartsDigit && s2StartsDigit)
+        {
+            while (*s1 != '\0' && *s2 != '\0')
+            {
+                char c1 = toUpper(*s1);
+                char c2 = toUpper(*s2);
+                if (c1 != c2)
+                {
+                    return c1 - c2;
+                }
+                s1++;
+                s2++;
+            }
+            return *s1 == '\0' ? (*s2 == '\0' ? 0 : -1) : 1;
+        }
+
+        while (*s1 != '\0' && *s2 != '\0')
+        {
+            // Check if both characters are digits
+            if (isDigit(*s1) && isDigit(*s2))
+            {
+                // Skip leading zeros
+                while (*s1 == '0' && isDigit(*(s1 + 1)))
+                    s1++;
+                while (*s2 == '0' && isDigit(*(s2 + 1)))
+                    s2++;
+
+                unsigned long long num1 = 0, num2 = 0;
+                const char* p1 = s1;
+                const char* p2 = s2;
+
+                while (isDigit(*p1))
+                {
+                    num1 = num1 * 10 + (*p1 - '0');
+                    p1++;
+                }
+                while (isDigit(*p2))
+                {
+                    num2 = num2 * 10 + (*p2 - '0');
+                    p2++;
+                }
+
+                if (num1 != num2)
+                {
+                    return num1 < num2 ? -1 : 1;
+                }
+
+                s1 = p1;
+                s2 = p2;
+
+                continue;
+            }
+
+            // Compare non-digit characters case-insensitively
+            char c1 = toUpper(*s1);
+            char c2 = toUpper(*s2);
+            if (c1 != c2)
+            {
+                return c1 - c2;
+            }
+
+            s1++;
+            s2++;
+        }
+
+        return *s1 == '\0' ? (*s2 == '\0' ? 0 : -1) : 1;
     }
 
     char* safeUtf8Copy(char* destination, const char* source, size_t size)

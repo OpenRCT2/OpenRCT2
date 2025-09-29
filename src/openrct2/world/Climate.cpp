@@ -81,10 +81,10 @@ static int32_t _thunderStereoEcho = 0;
 static std::shared_ptr<IAudioChannel> _weatherSoundChannel;
 
 constexpr FilterPaletteID kClimateWeatherGloomColours[4] = {
-    FilterPaletteID::PaletteNull,
-    FilterPaletteID::PaletteDarken1,
-    FilterPaletteID::PaletteDarken2,
-    FilterPaletteID::PaletteDarken3,
+    FilterPaletteID::paletteNull,
+    FilterPaletteID::paletteDarken1,
+    FilterPaletteID::paletteDarken2,
+    FilterPaletteID::paletteDarken3,
 };
 
 static int8_t ClimateStepWeatherLevel(int8_t currentWeatherLevel, int8_t nextWeatherLevel);
@@ -211,7 +211,7 @@ void ClimateUpdate()
     {
         // Create new thunder and lightning. Their amount is scaled inversely proportional
         // to the game speed, otherwise they become annoying at very high speeds
-        if (uint32_t randomNumber = UtilRand(); (randomNumber & 0xFFFF) <= (0x1B4u >> gGameSpeed))
+        if (uint32_t randomNumber = UtilRand(); (randomNumber & 0xFFFF) <= (0x1B4u >> (gGameSpeed - 1)))
         {
             randomNumber >>= 16;
             _thunderTimer = 43 + (randomNumber % 64);
@@ -303,7 +303,7 @@ bool ClimateHasWeatherEffect()
 
 FilterPaletteID ClimateGetWeatherGloomPaletteId(const WeatherState& state)
 {
-    auto paletteId = FilterPaletteID::PaletteNull;
+    auto paletteId = FilterPaletteID::paletteNull;
     auto gloom = state.weatherGloom;
     if (gloom < std::size(kClimateWeatherGloomColours))
     {

@@ -2354,7 +2354,7 @@ namespace OpenRCT2::Ui::Windows
                 if (i == selectedListItem)
                 {
                     stringId = STR_WINDOW_COLOUR_2_STRINGID;
-                    GfxFilterRect(rt, { 0, y, width, y + 11 }, FilterPaletteID::PaletteDarken1);
+                    GfxFilterRect(rt, { 0, y, width, y + 11 }, FilterPaletteID::paletteDarken1);
                 }
 
                 // Checkbox mark

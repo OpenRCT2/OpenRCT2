@@ -2034,7 +2034,7 @@ namespace OpenRCT2::RCT2
         dst->sound1_volume = src->Sound1Volume;
         dst->sound2_id = static_cast<OpenRCT2::Audio::SoundId>(src->Sound2Id);
         dst->sound2_volume = src->Sound2Volume;
-        dst->sound_vector_factor = src->SoundVectorFactor;
+        dst->dopplerShift = src->SoundVectorFactor;
         dst->time_waiting = src->TimeWaiting;
         dst->speed = src->Speed;
         dst->powered_acceleration = src->PoweredAcceleration;

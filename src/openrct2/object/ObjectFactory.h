@@ -24,16 +24,12 @@ namespace OpenRCT2
 
 namespace OpenRCT2::ObjectFactory
 {
-    [[nodiscard]] std::unique_ptr<Object> CreateObjectFromFile(
-        IObjectRepository& objectRepository, u8string_view path, bool loadImages);
-    [[nodiscard]] std::unique_ptr<Object> CreateObjectFromLegacyFile(
-        IObjectRepository& objectRepository, const utf8* path, bool loadImages);
+    [[nodiscard]] std::unique_ptr<Object> CreateObjectFromFile(u8string_view path, bool loadImages);
+    [[nodiscard]] std::unique_ptr<Object> CreateObjectFromLegacyFile(const utf8* path, bool loadImages);
     [[nodiscard]] std::unique_ptr<Object> CreateObjectFromLegacyData(
-        IObjectRepository& objectRepository, const RCTObjectEntry* entry, const void* data, size_t dataSize);
-    [[nodiscard]] std::unique_ptr<Object> CreateObjectFromZipFile(
-        IObjectRepository& objectRepository, std::string_view path, bool loadImages);
+        const RCTObjectEntry* entry, const void* data, size_t dataSize);
+    [[nodiscard]] std::unique_ptr<Object> CreateObjectFromZipFile(std::string_view path, bool loadImages);
     [[nodiscard]] std::unique_ptr<Object> CreateObject(ObjectType type);
 
-    [[nodiscard]] std::unique_ptr<Object> CreateObjectFromJsonFile(
-        IObjectRepository& objectRepository, const std::string& path, bool loadImages);
+    [[nodiscard]] std::unique_ptr<Object> CreateObjectFromJsonFile(const std::string& path, bool loadImages);
 } // namespace OpenRCT2::ObjectFactory

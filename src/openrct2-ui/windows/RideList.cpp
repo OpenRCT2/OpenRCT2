@@ -636,7 +636,7 @@ namespace OpenRCT2::Ui::Windows
                 if (i == static_cast<size_t>(selectedListItem))
                 {
                     // Background highlight
-                    GfxFilterRect(rt, { 0, y, 800, y + kScrollableRowHeight - 1 }, FilterPaletteID::PaletteDarken1);
+                    GfxFilterRect(rt, { 0, y, 800, y + kScrollableRowHeight - 1 }, FilterPaletteID::paletteDarken1);
                     format = STR_WINDOW_COLOUR_2_STRINGID;
                     if (_quickDemolishMode)
                         format = STR_LIGHTPINK_STRINGID;
@@ -968,10 +968,12 @@ namespace OpenRCT2::Ui::Windows
                     rideRef.windowInvalidateFlags &= ~RIDE_INVALIDATE_RIDE_LIST;
                 }
 
+                const auto filterApplies = IsFiltered(rideName);
+
                 RideListEntry entry{
                     .Id = rideRef.id,
                     .Name = std::move(rideName),
-                    .Visible = IsFiltered(rideName),
+                    .Visible = filterApplies,
                 };
 
                 _rideList.push_back(std::move(entry));
@@ -983,6 +985,11 @@ namespace OpenRCT2::Ui::Windows
 
         void SortList()
         {
+            // Maintain stability by first sorting by ride id.
+            SortListByPredicate([](const Ride& thisRide, const Ride& otherRide) -> bool {
+                return thisRide.id.ToUnderlying() < otherRide.id.ToUnderlying();
+            });
+
             switch (listInformationType)
             {
                 case INFORMATION_TYPE_STATUS:
@@ -990,77 +997,76 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 case INFORMATION_TYPE_POPULARITY:
                     SortListByPredicate([](const Ride& thisRide, const Ride& otherRide) -> bool {
-                        return thisRide.popularity * 4 <= otherRide.popularity * 4;
+                        return static_cast<int8_t>(thisRide.popularity) < static_cast<int8_t>(otherRide.popularity);
                     });
                     break;
                 case INFORMATION_TYPE_SATISFACTION:
                     SortListByPredicate([](const Ride& thisRide, const Ride& otherRide) -> bool {
-                        return thisRide.satisfaction * 5 <= otherRide.satisfaction * 5;
+                        return static_cast<int8_t>(thisRide.satisfaction) < static_cast<int8_t>(otherRide.satisfaction);
                     });
                     break;
                 case INFORMATION_TYPE_PROFIT:
-                    SortListByPredicate([](const Ride& thisRide, const Ride& otherRide) -> bool {
-                        return thisRide.profit <= otherRide.profit;
-                    });
+                    SortListByPredicate(
+                        [](const Ride& thisRide, const Ride& otherRide) -> bool { return thisRide.profit < otherRide.profit; });
                     break;
                 case INFORMATION_TYPE_TOTAL_CUSTOMERS:
                     SortListByPredicate([](const Ride& thisRide, const Ride& otherRide) -> bool {
-                        return thisRide.totalCustomers <= otherRide.totalCustomers;
+                        return thisRide.totalCustomers < otherRide.totalCustomers;
                     });
                     break;
                 case INFORMATION_TYPE_TOTAL_PROFIT:
                     SortListByPredicate([](const Ride& thisRide, const Ride& otherRide) -> bool {
-                        return thisRide.totalProfit <= otherRide.totalProfit;
+                        return thisRide.totalProfit < otherRide.totalProfit;
                     });
                     break;
                 case INFORMATION_TYPE_CUSTOMERS:
                     SortListByPredicate([](const Ride& thisRide, const Ride& otherRide) -> bool {
-                        return RideCustomersPerHour(thisRide) <= RideCustomersPerHour(otherRide);
+                        return RideCustomersPerHour(thisRide) < RideCustomersPerHour(otherRide);
                     });
                     break;
                 case INFORMATION_TYPE_AGE:
                     SortListByPredicate([](const Ride& thisRide, const Ride& otherRide) -> bool {
-                        return thisRide.buildDate <= otherRide.buildDate;
+                        return thisRide.buildDate < otherRide.buildDate;
                     });
                     break;
                 case INFORMATION_TYPE_INCOME:
                     SortListByPredicate([](const Ride& thisRide, const Ride& otherRide) -> bool {
-                        return thisRide.incomePerHour <= otherRide.incomePerHour;
+                        return thisRide.incomePerHour < otherRide.incomePerHour;
                     });
                     break;
                 case INFORMATION_TYPE_RUNNING_COST:
                     SortListByPredicate([](const Ride& thisRide, const Ride& otherRide) -> bool {
-                        return thisRide.upkeepCost <= otherRide.upkeepCost;
+                        return thisRide.upkeepCost < otherRide.upkeepCost;
                     });
                     break;
                 case INFORMATION_TYPE_QUEUE_LENGTH:
                     SortListByPredicate([](const Ride& thisRide, const Ride& otherRide) -> bool {
-                        return thisRide.getTotalQueueLength() <= otherRide.getTotalQueueLength();
+                        return thisRide.getTotalQueueLength() < otherRide.getTotalQueueLength();
                     });
                     break;
                 case INFORMATION_TYPE_QUEUE_TIME:
                     SortListByPredicate([](const Ride& thisRide, const Ride& otherRide) -> bool {
-                        return thisRide.getMaxQueueTime() <= otherRide.getMaxQueueTime();
+                        return thisRide.getMaxQueueTime() < otherRide.getMaxQueueTime();
                     });
                     break;
                 case INFORMATION_TYPE_RELIABILITY:
                     SortListByPredicate([](const Ride& thisRide, const Ride& otherRide) -> bool {
-                        return thisRide.reliabilityPercentage <= otherRide.reliabilityPercentage;
+                        return thisRide.reliabilityPercentage < otherRide.reliabilityPercentage;
                     });
                     break;
                 case INFORMATION_TYPE_DOWN_TIME:
                     SortListByPredicate([](const Ride& thisRide, const Ride& otherRide) -> bool {
-                        return thisRide.downtime <= otherRide.downtime;
+                        return thisRide.downtime < otherRide.downtime;
                     });
                     break;
                 case INFORMATION_TYPE_LAST_INSPECTION:
                     SortListByPredicate([](const Ride& thisRide, const Ride& otherRide) -> bool {
-                        return thisRide.lastInspection <= otherRide.lastInspection;
+                        return thisRide.lastInspection < otherRide.lastInspection;
                     });
                     break;
                 case INFORMATION_TYPE_GUESTS_FAVOURITE:
                     SortListByPredicate([](const Ride& thisRide, const Ride& otherRide) -> bool {
-                        return thisRide.guestsFavourite <= otherRide.guestsFavourite;
+                        return thisRide.guestsFavourite < otherRide.guestsFavourite;
                     });
                     break;
                 case INFORMATION_TYPE_EXCITEMENT:
@@ -1068,7 +1074,7 @@ namespace OpenRCT2::Ui::Windows
                         const auto leftValue = thisRide.ratings.isNull() ? RideRating::kUndefined : thisRide.ratings.excitement;
                         const auto rightValue = otherRide.ratings.isNull() ? RideRating::kUndefined
                                                                            : otherRide.ratings.excitement;
-                        return leftValue <= rightValue;
+                        return leftValue < rightValue;
                     });
                     break;
                 case INFORMATION_TYPE_INTENSITY:
@@ -1076,14 +1082,14 @@ namespace OpenRCT2::Ui::Windows
                         const auto leftValue = thisRide.ratings.isNull() ? RideRating::kUndefined : thisRide.ratings.intensity;
                         const auto rightValue = otherRide.ratings.isNull() ? RideRating::kUndefined
                                                                            : otherRide.ratings.intensity;
-                        return leftValue <= rightValue;
+                        return leftValue < rightValue;
                     });
                     break;
                 case INFORMATION_TYPE_NAUSEA:
                     SortListByPredicate([](const Ride& thisRide, const Ride& otherRide) -> bool {
                         const auto leftValue = thisRide.ratings.isNull() ? RideRating::kUndefined : thisRide.ratings.nausea;
                         const auto rightValue = otherRide.ratings.isNull() ? RideRating::kUndefined : otherRide.ratings.nausea;
-                        return leftValue <= rightValue;
+                        return leftValue < rightValue;
                     });
                     break;
             }

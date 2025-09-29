@@ -620,18 +620,18 @@ namespace OpenRCT2::Ui::Windows
             // Draw panel grey backgrounds
             auto leftTop = windowPos + ScreenCoordsXY{ leftWidget.left, leftWidget.top };
             auto rightBottom = windowPos + ScreenCoordsXY{ leftWidget.right, leftWidget.bottom };
-            GfxFilterRect(rt, { leftTop, rightBottom }, FilterPaletteID::Palette51);
+            GfxFilterRect(rt, { leftTop, rightBottom }, FilterPaletteID::palette51);
 
             leftTop = windowPos + ScreenCoordsXY{ rightWidget.left, rightWidget.top };
             rightBottom = windowPos + ScreenCoordsXY{ rightWidget.right, rightWidget.bottom };
-            GfxFilterRect(rt, { leftTop, rightBottom }, FilterPaletteID::Palette51);
+            GfxFilterRect(rt, { leftTop, rightBottom }, FilterPaletteID::palette51);
 
             if (ThemeGetFlags() & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR)
             {
                 // Draw grey background
                 leftTop = windowPos + ScreenCoordsXY{ middleWidget.left, middleWidget.top };
                 rightBottom = windowPos + ScreenCoordsXY{ middleWidget.right, middleWidget.bottom };
-                GfxFilterRect(rt, { leftTop, rightBottom }, FilterPaletteID::Palette51);
+                GfxFilterRect(rt, { leftTop, rightBottom }, FilterPaletteID::palette51);
             }
 
             drawWidgets(rt);

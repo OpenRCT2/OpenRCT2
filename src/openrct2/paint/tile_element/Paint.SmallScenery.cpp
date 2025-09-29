@@ -345,17 +345,17 @@ void PaintSmallScenery(PaintSession& session, uint8_t direction, int32_t height,
     {
         if (!TrackDesignSaveContainsTileElement(reinterpret_cast<const TileElement*>(&sceneryElement)))
         {
-            imageTemplate = ImageId().WithRemap(FilterPaletteID::Palette46);
+            imageTemplate = ImageId().WithRemap(FilterPaletteID::palette46);
         }
     }
     if (sceneryElement.IsGhost())
     {
         session.InteractionType = ViewportInteractionItem::none;
-        imageTemplate = ImageId().WithRemap(FilterPaletteID::PaletteGhost);
+        imageTemplate = ImageId().WithRemap(FilterPaletteID::paletteGhost);
     }
     else if (session.SelectedElement == reinterpret_cast<const TileElement*>(&sceneryElement))
     {
-        imageTemplate = ImageId().WithRemap(FilterPaletteID::PaletteGhost);
+        imageTemplate = ImageId().WithRemap(FilterPaletteID::paletteGhost);
     }
 
     PaintSmallSceneryBody(session, direction, height, sceneryElement, sceneryEntry, imageTemplate);

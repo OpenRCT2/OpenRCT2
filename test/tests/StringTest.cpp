@@ -10,6 +10,7 @@
 #include "AssertHelpers.hpp"
 #include "helpers/StringHelpers.hpp"
 
+#include <algorithm>
 #include <gtest/gtest.h>
 #include <openrct2/core/CodepointView.hpp>
 #include <openrct2/core/EnumUtils.hpp>
@@ -17,6 +18,7 @@
 #include <string>
 #include <tuple>
 #include <utility>
+#include <vector>
 
 using namespace OpenRCT2;
 
@@ -249,4 +251,39 @@ TEST_F(CodepointViewTest, CodepointView_iterate)
     AssertCodepoints("test", { 't', 'e', 's', 't' });
     AssertCodepoints("ゲスト", { U'ゲ', U'ス', U'ト' });
     AssertCodepoints("<🎢>", { U'<', U'🎢', U'>' });
+}
+
+TEST_F(StringTest, LogicalCompare)
+{
+    std::vector<std::string> expected = {
+        "1001 Troubles", "3D Cinema 1", "Aerial Cycles", "Batflyer",  "bpb",
+        "bpb.sv6",       "Drive-by",    "foo",           "foobar",    "Guest 10",
+        "Guest 99",      "Guest 100",   "John v2.0",     "John v2.1", "River of the Damned",
+        "Terror-dactyl",
+    };
+
+    std::vector<std::string> inputs = {
+        "Guest 99",
+        "Batflyer",
+        "John v2.1",
+        "bpb",
+        "3D Cinema 1",
+        "Drive-by",
+        "John v2.0",
+        "Guest 10",
+        "Terror-dactyl",
+        "Aerial Cycles",
+        "foobar",
+        "1001 Troubles",
+        "River of the Damned",
+        "bpb.sv6",
+        "Guest 100",
+        "foo",
+    };
+
+    std::sort(inputs.begin(), inputs.end(), [](const auto& a, const auto& b) {
+        return String::logicalCmp(a.c_str(), b.c_str()) < 0;
+    });
+
+    AssertVector<std::string>(inputs, expected);
 }

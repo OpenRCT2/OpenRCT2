@@ -214,8 +214,8 @@ namespace OpenRCT2::Ui
 
         if (entryWidgetType == WidgetType::imgBtn)
         {
-            auto expectedContent1 = ImageId(SPR_LAND_TOOL_DECREASE, FilterPaletteID::PaletteNull);
-            auto expectedContent2 = ImageId(SPR_LAND_TOOL_INCREASE, FilterPaletteID::PaletteNull);
+            auto expectedContent1 = ImageId(SPR_LAND_TOOL_DECREASE, FilterPaletteID::paletteNull);
+            auto expectedContent2 = ImageId(SPR_LAND_TOOL_INCREASE, FilterPaletteID::paletteNull);
 
             auto button1Image = w.widgets[*spinnerGroupIndex + 1].image;
             auto button2Image = w.widgets[*spinnerGroupIndex + 2].image;
@@ -1023,7 +1023,7 @@ namespace OpenRCT2::Ui::Windows
     {
         if ((w.flags.has(WindowFlag::transparent)) && !(w.flags.has(WindowFlag::noBackground)))
             GfxFilterRect(
-                rt, { w.windowPos, w.windowPos + ScreenCoordsXY{ w.width - 1, w.height - 1 } }, FilterPaletteID::Palette51);
+                rt, { w.windowPos, w.windowPos + ScreenCoordsXY{ w.width - 1, w.height - 1 } }, FilterPaletteID::palette51);
 
         // todo: some code missing here? Between 006EB18C and 006EB260
         for (WidgetIndex widgetIndex = 0; widgetIndex < w.widgets.size(); widgetIndex++)
