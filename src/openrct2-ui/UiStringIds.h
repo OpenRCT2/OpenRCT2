@@ -474,6 +474,7 @@ namespace OpenRCT2
         STR_DEBUG_PAINT_SHOW_SEGMENT_HEIGHTS = 5901,
         STR_DEBUG_PAINT_SHOW_WIDE_PATHS = 6261,
         STR_DEBUG_PAINT_STABLE_SORT = 6710,
+        STR_DEBUG_PAINT_FORCE_REDRAW = 7004,
 
         // Window: DemolishRidePrompt
         STR_DEMOLISH = 994,
