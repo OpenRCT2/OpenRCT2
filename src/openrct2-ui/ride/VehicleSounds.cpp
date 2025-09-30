@@ -363,8 +363,8 @@ namespace OpenRCT2::Audio
             if (vehicleSound.id == kSoundIdNull)
             {
                 vehicleSound.id = sound_params->id;
-                vehicleSound.TrackSound.Id = SoundId::Null;
-                vehicleSound.OtherSound.Id = SoundId::Null;
+                vehicleSound.TrackSound.id = SoundId::Null;
+                vehicleSound.OtherSound.id = SoundId::Null;
                 vehicleSound.volume = 0x30;
                 return &vehicleSound;
             }
@@ -472,22 +472,22 @@ namespace OpenRCT2::Audio
         volume = volume / 8;
         volume = std::max(volume - 0x1FFF, -10000);
 
-        if (sound.Channel != nullptr && sound.Channel->IsDone() && IsLoopingSound(sound.Id))
+        if (sound.channel != nullptr && sound.channel->IsDone() && IsLoopingSound(sound.id))
         {
-            sound.Id = SoundId::Null;
-            sound.Channel = nullptr;
+            sound.id = SoundId::Null;
+            sound.channel = nullptr;
         }
-        if (id != sound.Id && sound.Id != SoundId::Null)
+        if (id != sound.id && sound.id != SoundId::Null)
         {
-            sound.Id = SoundId::Null;
-            sound.Channel->Stop();
+            sound.id = SoundId::Null;
+            sound.channel->Stop();
         }
         if (id == SoundId::Null)
         {
             return;
         }
 
-        if (sound.Id == SoundId::Null)
+        if (sound.id == SoundId::Null)
         {
             auto frequency = SoundFrequency<type>(id, sound_params->frequency);
             auto looping = IsLoopingSound(id);
@@ -496,35 +496,35 @@ namespace OpenRCT2::Audio
                 id, looping, DStoMixerVolume(volume), DStoMixerPan(pan), DStoMixerRate(frequency), false);
             if (channel != nullptr)
             {
-                sound.Id = id;
-                sound.Pan = sound_params->pan_x;
-                sound.Volume = volume;
-                sound.Frequency = sound_params->frequency;
-                sound.Channel = channel;
+                sound.id = id;
+                sound.pan = sound_params->pan_x;
+                sound.volume = volume;
+                sound.frequency = sound_params->frequency;
+                sound.channel = channel;
             }
             else
             {
-                sound.Id = SoundId::Null;
+                sound.id = SoundId::Null;
             }
             return;
         }
-        if (volume != sound.Volume)
+        if (volume != sound.volume)
         {
-            sound.Volume = volume;
-            sound.Channel->SetVolume(DStoMixerVolume(volume));
+            sound.volume = volume;
+            sound.channel->SetVolume(DStoMixerVolume(volume));
         }
-        if (sound_params->pan_x != sound.Pan)
+        if (sound_params->pan_x != sound.pan)
         {
-            sound.Pan = sound_params->pan_x;
-            sound.Channel->SetPan(DStoMixerPan(sound_params->pan_x));
+            sound.pan = sound_params->pan_x;
+            sound.channel->SetPan(DStoMixerPan(sound_params->pan_x));
         }
-        if (!(getGameState().currentTicks & 3) && sound_params->frequency != sound.Frequency)
+        if (!(getGameState().currentTicks & 3) && sound_params->frequency != sound.frequency)
         {
-            sound.Frequency = sound_params->frequency;
+            sound.frequency = sound_params->frequency;
             if (ShouldUpdateChannelRate<type>(id))
             {
                 uint16_t frequency = SoundFrequency<type>(id, sound_params->frequency);
-                sound.Channel->SetRate(DStoMixerRate(frequency));
+                sound.channel->SetRate(DStoMixerRate(frequency));
             }
         }
     }
@@ -567,13 +567,13 @@ namespace OpenRCT2::Audio
                 if (keepPlaying)
                     continue;
 
-                if (vehicleSound.TrackSound.Id != SoundId::Null)
+                if (vehicleSound.TrackSound.id != SoundId::Null)
                 {
-                    vehicleSound.TrackSound.Channel->Stop();
+                    vehicleSound.TrackSound.channel->Stop();
                 }
-                if (vehicleSound.OtherSound.Id != SoundId::Null)
+                if (vehicleSound.OtherSound.id != SoundId::Null)
                 {
-                    vehicleSound.OtherSound.Channel->Stop();
+                    vehicleSound.OtherSound.channel->Stop();
                 }
                 vehicleSound.id = kSoundIdNull;
             }

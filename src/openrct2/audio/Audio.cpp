@@ -440,13 +440,13 @@ namespace OpenRCT2::Audio
             if (vehicleSound.id != kSoundIdNull)
             {
                 vehicleSound.id = kSoundIdNull;
-                if (vehicleSound.TrackSound.Id != SoundId::Null)
+                if (vehicleSound.TrackSound.id != SoundId::Null)
                 {
-                    vehicleSound.TrackSound.Channel->Stop();
+                    vehicleSound.TrackSound.channel->Stop();
                 }
-                if (vehicleSound.OtherSound.Id != SoundId::Null)
+                if (vehicleSound.OtherSound.id != SoundId::Null)
                 {
-                    vehicleSound.OtherSound.Channel->Stop();
+                    vehicleSound.OtherSound.channel->Stop();
                 }
             }
         }

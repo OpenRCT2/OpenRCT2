@@ -35,11 +35,11 @@ namespace OpenRCT2::Audio
 
     struct Sound
     {
-        SoundId Id;
-        int16_t Volume;
-        int16_t Pan;
-        uint16_t Frequency;
-        std::shared_ptr<IAudioChannel> Channel;
+        SoundId id;
+        int16_t volume;
+        int16_t pan;
+        uint16_t frequency;
+        std::shared_ptr<IAudioChannel> channel;
     };
 
     struct VehicleSound
