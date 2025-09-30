@@ -38,11 +38,11 @@ namespace OpenRCT2::Ui
 
     struct InputEvent
     {
-        InputDeviceKind DeviceKind;
-        uint32_t Modifiers;
-        uint32_t Button;
-        InputEventState State;
-        int16_t AxisValue; // For analogue stick values (-32768 to 32767)
+        InputDeviceKind deviceKind;
+        uint32_t modifiers;
+        uint32_t button;
+        InputEventState state;
+        int16_t axisValue{}; // For analogue stick values (-32768 to 32767)
     };
 
     enum class ModifierKey : uint8_t

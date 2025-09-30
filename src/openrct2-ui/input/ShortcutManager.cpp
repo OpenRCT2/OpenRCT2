@@ -59,23 +59,23 @@ bool RegisteredShortcut::Matches(const InputEvent& e) const
 bool RegisteredShortcut::IsSuitableInputEvent(const InputEvent& e) const
 {
     // Do not intercept button releases
-    if (e.State == InputEventState::release)
+    if (e.state == InputEventState::release)
     {
         return false;
     }
 
-    if (e.DeviceKind == InputDeviceKind::mouse)
+    if (e.deviceKind == InputDeviceKind::mouse)
     {
         // Do not allow LMB or RMB to be shortcut
-        if (e.Button == 0 || e.Button == 1)
+        if (e.button == 0 || e.button == 1)
         {
             return false;
         }
     }
-    else if (e.DeviceKind == InputDeviceKind::keyboard)
+    else if (e.deviceKind == InputDeviceKind::keyboard)
     {
         // Do not allow modifier keys alone
-        switch (e.Button)
+        switch (e.button)
         {
             case SDLK_LCTRL:
             case SDLK_RCTRL:

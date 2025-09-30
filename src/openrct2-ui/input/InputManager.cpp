@@ -48,11 +48,11 @@ void InputManager::QueueInputEvent(const SDL_Event& e)
                 || e.caxis.axis == SDL_CONTROLLER_AXIS_RIGHTX || e.caxis.axis == SDL_CONTROLLER_AXIS_RIGHTY)
             {
                 InputEvent ie;
-                ie.DeviceKind = InputDeviceKind::joyAxis;
-                ie.Modifiers = SDL_GetModState();
-                ie.Button = e.caxis.axis;
-                ie.State = InputEventState::down;
-                ie.AxisValue = e.caxis.value;
+                ie.deviceKind = InputDeviceKind::joyAxis;
+                ie.modifiers = SDL_GetModState();
+                ie.button = e.caxis.axis;
+                ie.state = InputEventState::down;
+                ie.axisValue = e.caxis.value;
                 QueueInputEvent(std::move(ie));
             }
             break;
@@ -62,11 +62,11 @@ void InputManager::QueueInputEvent(const SDL_Event& e)
             if (e.jhat.value != SDL_HAT_CENTERED)
             {
                 InputEvent ie;
-                ie.DeviceKind = InputDeviceKind::joyHat;
-                ie.Modifiers = SDL_GetModState();
-                ie.Button = e.jhat.value;
-                ie.State = InputEventState::down;
-                ie.AxisValue = 0;
+                ie.deviceKind = InputDeviceKind::joyHat;
+                ie.modifiers = SDL_GetModState();
+                ie.button = e.jhat.value;
+                ie.state = InputEventState::down;
+                ie.axisValue = 0;
                 QueueInputEvent(std::move(ie));
             }
             break;
@@ -75,11 +75,11 @@ void InputManager::QueueInputEvent(const SDL_Event& e)
         case SDL_JOYBUTTONDOWN:
         {
             InputEvent ie;
-            ie.DeviceKind = InputDeviceKind::joyButton;
-            ie.Modifiers = SDL_GetModState();
-            ie.Button = e.cbutton.button;
-            ie.State = InputEventState::down;
-            ie.AxisValue = 0;
+            ie.deviceKind = InputDeviceKind::joyButton;
+            ie.modifiers = SDL_GetModState();
+            ie.button = e.cbutton.button;
+            ie.state = InputEventState::down;
+            ie.axisValue = 0;
             QueueInputEvent(std::move(ie));
             break;
         }
@@ -87,11 +87,11 @@ void InputManager::QueueInputEvent(const SDL_Event& e)
         case SDL_JOYBUTTONUP:
         {
             InputEvent ie;
-            ie.DeviceKind = InputDeviceKind::joyButton;
-            ie.Modifiers = SDL_GetModState();
-            ie.Button = e.cbutton.button;
-            ie.State = InputEventState::release;
-            ie.AxisValue = 0;
+            ie.deviceKind = InputDeviceKind::joyButton;
+            ie.modifiers = SDL_GetModState();
+            ie.button = e.cbutton.button;
+            ie.state = InputEventState::release;
+            ie.axisValue = 0;
             QueueInputEvent(std::move(ie));
             break;
         }
@@ -326,7 +326,7 @@ void InputManager::ProcessEvents()
 void InputManager::Process(const InputEvent& e)
 {
     auto& shortcutManager = GetShortcutManager();
-    if (e.DeviceKind == InputDeviceKind::keyboard)
+    if (e.deviceKind == InputDeviceKind::keyboard)
     {
         auto& console = GetInGameConsole();
         if (console.IsOpen())
@@ -344,7 +344,7 @@ void InputManager::Process(const InputEvent& e)
             return;
         }
 
-        if (e.DeviceKind == InputDeviceKind::keyboard)
+        if (e.deviceKind == InputDeviceKind::keyboard)
         {
             auto* windowMgr = GetWindowManager();
 
@@ -352,9 +352,9 @@ void InputManager::Process(const InputEvent& e)
             auto w = windowMgr->FindByClass(WindowClass::textinput);
             if (w != nullptr)
             {
-                if (e.State == InputEventState::release)
+                if (e.state == InputEventState::release)
                 {
-                    OpenRCT2::Ui::Windows::WindowTextInputKey(w, e.Button);
+                    OpenRCT2::Ui::Windows::WindowTextInputKey(w, e.button);
                 }
                 return;
             }
@@ -363,9 +363,9 @@ void InputManager::Process(const InputEvent& e)
             w = windowMgr->FindByClass(WindowClass::loadsaveOverwritePrompt);
             if (w != nullptr)
             {
-                if (e.State == InputEventState::release)
+                if (e.state == InputEventState::release)
                 {
-                    OpenRCT2::Ui::Windows::WindowLoadSaveOverwritePromptInputKey(w, e.Button);
+                    OpenRCT2::Ui::Windows::WindowLoadSaveOverwritePromptInputKey(w, e.button);
                 }
                 return;
             }
@@ -374,9 +374,9 @@ void InputManager::Process(const InputEvent& e)
             w = windowMgr->FindByClass(WindowClass::loadsave);
             if (w != nullptr)
             {
-                if (e.State == InputEventState::release)
+                if (e.state == InputEventState::release)
                 {
-                    OpenRCT2::Ui::Windows::WindowLoadSaveInputKey(w, e.Button);
+                    OpenRCT2::Ui::Windows::WindowLoadSaveInputKey(w, e.button);
                 }
                 return;
             }
@@ -392,10 +392,10 @@ void InputManager::Process(const InputEvent& e)
 
 void InputManager::ProcessInGameConsole(const InputEvent& e)
 {
-    if (e.DeviceKind == InputDeviceKind::keyboard && e.State == InputEventState::release)
+    if (e.deviceKind == InputDeviceKind::keyboard && e.state == InputEventState::release)
     {
         auto input = ConsoleInput::None;
-        switch (e.Button)
+        switch (e.button)
         {
             case SDLK_ESCAPE:
                 input = ConsoleInput::LineClear;
@@ -427,10 +427,10 @@ void InputManager::ProcessInGameConsole(const InputEvent& e)
 
 void InputManager::ProcessChat(const InputEvent& e)
 {
-    if (e.DeviceKind == InputDeviceKind::keyboard && e.State == InputEventState::down)
+    if (e.deviceKind == InputDeviceKind::keyboard && e.state == InputEventState::down)
     {
         auto input = ChatInput::None;
-        switch (e.Button)
+        switch (e.button)
         {
             case SDLK_ESCAPE:
                 input = ChatInput::Close;

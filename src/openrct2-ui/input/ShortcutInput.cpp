@@ -399,9 +399,9 @@ static bool CompareModifiers(uint32_t shortcut, uint32_t actual)
 
 bool ShortcutInput::Matches(const InputEvent& e) const
 {
-    if (CompareModifiers(Modifiers, e.Modifiers))
+    if (CompareModifiers(Modifiers, e.modifiers))
     {
-        if (e.DeviceKind == Kind && Button == e.Button)
+        if (e.deviceKind == Kind && Button == e.button)
         {
             return true;
         }
@@ -412,7 +412,7 @@ bool ShortcutInput::Matches(const InputEvent& e) const
 std::optional<ShortcutInput> ShortcutInput::FromInputEvent(const InputEvent& e)
 {
     // Assume any side modifier (more specific configurations can be done by manually editing config file)
-    auto modifiers = e.Modifiers & kUsefulModifiers;
+    auto modifiers = e.modifiers & kUsefulModifiers;
     for (auto mod : { KMOD_CTRL, KMOD_SHIFT, KMOD_ALT, KMOD_GUI })
     {
         if (modifiers & mod)
@@ -422,8 +422,8 @@ std::optional<ShortcutInput> ShortcutInput::FromInputEvent(const InputEvent& e)
     }
 
     ShortcutInput result;
-    result.Kind = e.DeviceKind;
+    result.Kind = e.deviceKind;
     result.Modifiers = modifiers;
-    result.Button = e.Button;
+    result.Button = e.button;
     return result;
 }

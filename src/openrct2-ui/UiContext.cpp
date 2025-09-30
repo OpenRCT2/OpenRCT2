@@ -435,10 +435,10 @@ public:
 
                     {
                         InputEvent ie;
-                        ie.DeviceKind = InputDeviceKind::mouse;
-                        ie.Modifiers = SDL_GetModState();
-                        ie.Button = e.button.button;
-                        ie.State = InputEventState::down;
+                        ie.deviceKind = InputDeviceKind::mouse;
+                        ie.modifiers = SDL_GetModState();
+                        ie.button = e.button.button;
+                        ie.state = InputEventState::down;
                         _inputManager.QueueInputEvent(std::move(ie));
                     }
                     break;
@@ -471,10 +471,10 @@ public:
 
                     {
                         InputEvent ie;
-                        ie.DeviceKind = InputDeviceKind::mouse;
-                        ie.Modifiers = SDL_GetModState();
-                        ie.Button = e.button.button;
-                        ie.State = InputEventState::release;
+                        ie.deviceKind = InputDeviceKind::mouse;
+                        ie.modifiers = SDL_GetModState();
+                        ie.button = e.button.button;
+                        ie.state = InputEventState::release;
                         _inputManager.QueueInputEvent(std::move(ie));
                     }
                     break;
@@ -544,14 +544,14 @@ public:
 #endif
                     _textComposition.HandleMessage(&e);
                     auto ie = GetInputEventFromSDLEvent(e);
-                    ie.State = InputEventState::down;
+                    ie.state = InputEventState::down;
                     _inputManager.QueueInputEvent(std::move(ie));
                     break;
                 }
                 case SDL_KEYUP:
                 {
                     auto ie = GetInputEventFromSDLEvent(e);
-                    ie.State = InputEventState::release;
+                    ie.state = InputEventState::release;
                     _inputManager.QueueInputEvent(std::move(ie));
                     break;
                 }
@@ -1040,20 +1040,20 @@ private:
     InputEvent GetInputEventFromSDLEvent(const SDL_Event& e)
     {
         InputEvent ie;
-        ie.DeviceKind = InputDeviceKind::keyboard;
-        ie.Modifiers = e.key.keysym.mod;
-        ie.Button = e.key.keysym.sym;
+        ie.deviceKind = InputDeviceKind::keyboard;
+        ie.modifiers = e.key.keysym.mod;
+        ie.button = e.key.keysym.sym;
 
         // Handle dead keys
-        if (ie.Button == (SDLK_SCANCODE_MASK | 0))
+        if (ie.button == (SDLK_SCANCODE_MASK | 0))
         {
             switch (e.key.keysym.scancode)
             {
                 case SDL_SCANCODE_APOSTROPHE:
-                    ie.Button = '\'';
+                    ie.button = '\'';
                     break;
                 case SDL_SCANCODE_GRAVE:
-                    ie.Button = '`';
+                    ie.button = '`';
                     break;
                 default:
                     break;
