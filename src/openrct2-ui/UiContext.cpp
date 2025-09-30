@@ -418,7 +418,7 @@ public:
                     switch (e.button.button)
                     {
                         case SDL_BUTTON_LEFT:
-                            StoreMouseInput(MouseState::LeftPress, mousePos);
+                            StoreMouseInput(MouseState::leftPress, mousePos);
                             _cursorState.left = CURSOR_PRESSED;
                             _cursorState.old = 1;
                             break;
@@ -426,7 +426,7 @@ public:
                             _cursorState.middle = CURSOR_PRESSED;
                             break;
                         case SDL_BUTTON_RIGHT:
-                            StoreMouseInput(MouseState::RightPress, mousePos);
+                            StoreMouseInput(MouseState::rightPress, mousePos);
                             _cursorState.right = CURSOR_PRESSED;
                             _cursorState.old = 2;
                             break;
@@ -454,7 +454,7 @@ public:
                     switch (e.button.button)
                     {
                         case SDL_BUTTON_LEFT:
-                            StoreMouseInput(MouseState::LeftRelease, mousePos);
+                            StoreMouseInput(MouseState::leftRelease, mousePos);
                             _cursorState.left = CURSOR_RELEASED;
                             _cursorState.old = 3;
                             break;
@@ -462,7 +462,7 @@ public:
                             _cursorState.middle = CURSOR_RELEASED;
                             break;
                         case SDL_BUTTON_RIGHT:
-                            StoreMouseInput(MouseState::RightRelease, mousePos);
+                            StoreMouseInput(MouseState::rightRelease, mousePos);
                             _cursorState.right = CURSOR_RELEASED;
                             _cursorState.old = 4;
                             break;
@@ -496,13 +496,13 @@ public:
 
                     if (_cursorState.touchIsDouble)
                     {
-                        StoreMouseInput(MouseState::RightPress, fingerPos);
+                        StoreMouseInput(MouseState::rightPress, fingerPos);
                         _cursorState.right = CURSOR_PRESSED;
                         _cursorState.old = 2;
                     }
                     else
                     {
-                        StoreMouseInput(MouseState::LeftPress, fingerPos);
+                        StoreMouseInput(MouseState::leftPress, fingerPos);
                         _cursorState.left = CURSOR_PRESSED;
                         _cursorState.old = 1;
                     }
@@ -517,13 +517,13 @@ public:
 
                     if (_cursorState.touchIsDouble)
                     {
-                        StoreMouseInput(MouseState::RightRelease, fingerPos);
+                        StoreMouseInput(MouseState::rightRelease, fingerPos);
                         _cursorState.right = CURSOR_RELEASED;
                         _cursorState.old = 4;
                     }
                     else
                     {
-                        StoreMouseInput(MouseState::LeftRelease, fingerPos);
+                        StoreMouseInput(MouseState::leftRelease, fingerPos);
                         _cursorState.left = CURSOR_RELEASED;
                         _cursorState.old = 3;
                     }
