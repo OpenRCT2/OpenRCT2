@@ -73,7 +73,7 @@ namespace OpenRCT2::Ui::Windows
         static ChangeShortcutWindow* Open(std::string_view shortcutId)
         {
             auto& shortcutManager = GetShortcutManager();
-            auto registeredShortcut = shortcutManager.GetShortcut(shortcutId);
+            auto registeredShortcut = shortcutManager.getShortcut(shortcutId);
             if (registeredShortcut != nullptr)
             {
                 auto* windowMgr = GetWindowManager();
@@ -85,7 +85,7 @@ namespace OpenRCT2::Ui::Windows
                     w->_shortcutId = shortcutId;
                     w->_shortcutLocalisedName = registeredShortcut->localisedName;
                     w->_shortcutCustomName = registeredShortcut->customName;
-                    shortcutManager.SetPendingShortcutChange(registeredShortcut->id);
+                    shortcutManager.setPendingShortcutChange(registeredShortcut->id);
                     return w;
                 }
             }
@@ -101,7 +101,7 @@ namespace OpenRCT2::Ui::Windows
         void onClose() override
         {
             auto& shortcutManager = GetShortcutManager();
-            shortcutManager.SetPendingShortcutChange({});
+            shortcutManager.setPendingShortcutChange({});
             NotifyShortcutKeysWindow();
         }
 
@@ -143,11 +143,11 @@ namespace OpenRCT2::Ui::Windows
         void Remove()
         {
             auto& shortcutManager = GetShortcutManager();
-            auto* shortcut = shortcutManager.GetShortcut(_shortcutId);
+            auto* shortcut = shortcutManager.getShortcut(_shortcutId);
             if (shortcut != nullptr)
             {
                 shortcut->current.clear();
-                shortcutManager.SaveUserBindings();
+                shortcutManager.saveUserBindings();
             }
             close();
         }
@@ -346,13 +346,13 @@ namespace OpenRCT2::Ui::Windows
             auto& shortcutManager = GetShortcutManager();
             for (const auto& item : _list)
             {
-                auto shortcut = shortcutManager.GetShortcut(item.ShortcutId);
+                auto shortcut = shortcutManager.getShortcut(item.ShortcutId);
                 if (shortcut != nullptr)
                 {
                     shortcut->current = shortcut->standard;
                 }
             }
-            shortcutManager.SaveUserBindings();
+            shortcutManager.saveUserBindings();
             RefreshBindings();
         }
 
@@ -423,7 +423,7 @@ namespace OpenRCT2::Ui::Windows
         {
             std::vector<const RegisteredShortcut*> result;
             auto& shortcutManager = GetShortcutManager();
-            for (const auto& shortcut : shortcutManager.Shortcuts)
+            for (const auto& shortcut : shortcutManager.shortcuts)
             {
                 if (IsInCurrentTab(shortcut.second))
                 {

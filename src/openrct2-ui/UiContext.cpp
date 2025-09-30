@@ -126,7 +126,7 @@ public:
             SDLException::Throw("SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK)");
         }
         _cursorRepository.LoadCursors();
-        _shortcutManager.LoadUserBindings();
+        _shortcutManager.loadUserBindings();
     }
 
     ~UiContext() override

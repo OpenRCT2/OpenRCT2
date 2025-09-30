@@ -621,7 +621,7 @@ public:
     std::string GetKeyboardShortcutString(std::string_view shortcutId) override
     {
         auto& shortcutManager = GetShortcutManager();
-        auto* shortcut = shortcutManager.GetShortcut(shortcutId);
+        auto* shortcut = shortcutManager.getShortcut(shortcutId);
         return shortcut != nullptr ? shortcut->getDisplayString() : std::string();
     }
 

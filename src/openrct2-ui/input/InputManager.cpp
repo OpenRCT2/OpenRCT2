@@ -331,7 +331,7 @@ void InputManager::process(const InputEvent& e)
         auto& console = GetInGameConsole();
         if (console.IsOpen())
         {
-            if (!shortcutManager.ProcessEventForSpecificShortcut(e, ShortcutId::kDebugToggleConsole))
+            if (!shortcutManager.processEventForSpecificShortcut(e, ShortcutId::kDebugToggleConsole))
             {
                 processInGameConsole(e);
             }
@@ -387,7 +387,7 @@ void InputManager::process(const InputEvent& e)
             }
         }
     }
-    shortcutManager.ProcessEvent(e);
+    shortcutManager.processEvent(e);
 }
 
 void InputManager::processInGameConsole(const InputEvent& e)
@@ -465,7 +465,7 @@ void InputManager::processHoldEvents()
     if (!hasTextInputFocus())
     {
         auto& shortcutManager = GetShortcutManager();
-        if (!shortcutManager.IsPendingShortcutChange())
+        if (!shortcutManager.isPendingShortcutChange())
         {
             processViewScrollEvent(ShortcutId::kViewScrollUp, { 0, -1 });
             processViewScrollEvent(ShortcutId::kViewScrollDown, { 0, 1 });
@@ -480,7 +480,7 @@ void InputManager::processHoldEvents()
 void InputManager::processViewScrollEvent(std::string_view shortcutId, const ScreenCoordsXY& delta)
 {
     auto& shortcutManager = GetShortcutManager();
-    auto shortcut = shortcutManager.GetShortcut(shortcutId);
+    auto shortcut = shortcutManager.getShortcut(shortcutId);
     if (shortcut != nullptr && getState(*shortcut))
     {
         _viewScroll.x += delta.x;

@@ -46,14 +46,14 @@ namespace OpenRCT2::Scripting
             registeredShortcut.standard.emplace_back(binding);
         }
         registeredShortcut.current = registeredShortcut.standard;
-        shortcutManager.RegisterShortcut(std::move(registeredShortcut));
-        shortcutManager.LoadUserBindings();
+        shortcutManager.registerShortcut(std::move(registeredShortcut));
+        shortcutManager.loadUserBindings();
     }
 
     CustomShortcut::~CustomShortcut()
     {
         auto& shortcutManager = GetShortcutManager();
-        shortcutManager.RemoveShortcut(Id);
+        shortcutManager.removeShortcut(Id);
     }
 
     void CustomShortcut::Invoke() const

@@ -115,37 +115,37 @@ namespace OpenRCT2::Ui
         IPlatformEnvironment& _env;
         std::string _pendingShortcutChange;
 
-        static std::optional<ShortcutInput> ConvertLegacyBinding(uint16_t binding);
-        void LoadLegacyBindings(const fs::path& path);
-        void LoadUserBindings(const fs::path& path);
-        void SaveUserBindings(const fs::path& path);
+        static std::optional<ShortcutInput> convertLegacyBinding(uint16_t binding);
+        void loadLegacyBindings(const fs::path& path);
+        void loadUserBindings(const fs::path& path);
+        void saveUserBindings(const fs::path& path);
 
         // We store the IDs separately so that we can safely use them for string_view in the map
         std::vector<std::unique_ptr<std::string>> _ids;
 
     public:
-        std::unordered_map<std::string_view, RegisteredShortcut> Shortcuts;
+        std::unordered_map<std::string_view, RegisteredShortcut> shortcuts;
 
         ShortcutManager(IPlatformEnvironment& env);
         ShortcutManager(const ShortcutManager&) = delete;
 
-        void LoadUserBindings();
-        void SaveUserBindings();
+        void loadUserBindings();
+        void saveUserBindings();
 
-        void RegisterShortcut(RegisteredShortcut&& shortcut);
+        void registerShortcut(RegisteredShortcut&& shortcut);
         template<typename... Args>
-        void RegisterShortcut(Args&&... args)
+        void registerShortcut(Args&&... args)
         {
-            RegisterShortcut(RegisteredShortcut(std::forward<Args>(args)...));
+            registerShortcut(RegisteredShortcut(std::forward<Args>(args)...));
         }
-        void RegisterDefaultShortcuts();
-        RegisteredShortcut* GetShortcut(std::string_view id);
-        void RemoveShortcut(std::string_view id);
-        bool IsPendingShortcutChange() const;
-        void SetPendingShortcutChange(std::string_view id);
-        void ProcessEvent(const InputEvent& e);
-        bool ProcessEventForSpecificShortcut(const InputEvent& e, std::string_view id);
+        void registerDefaultShortcuts();
+        RegisteredShortcut* getShortcut(std::string_view id);
+        void removeShortcut(std::string_view id);
+        bool isPendingShortcutChange() const;
+        void setPendingShortcutChange(std::string_view id);
+        void processEvent(const InputEvent& e);
+        bool processEventForSpecificShortcut(const InputEvent& e, std::string_view id);
 
-        static std::string_view GetLegacyShortcutId(size_t index);
+        static std::string_view getLegacyShortcutId(size_t index);
     };
 } // namespace OpenRCT2::Ui
