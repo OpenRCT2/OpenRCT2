@@ -269,7 +269,7 @@ namespace OpenRCT2::Scripting
 
         void Register(JSContext* ctx)
         {
-            RegisterBaseStr(ctx, "", Finalize);
+            RegisterBaseStr(ctx, "Viewport", Finalize);
         }
 
         static void Finalize(JSRuntime* rt, JSValue thisVal)
