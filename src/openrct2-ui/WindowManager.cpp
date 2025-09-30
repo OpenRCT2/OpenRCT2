@@ -622,7 +622,7 @@ public:
     {
         auto& shortcutManager = GetShortcutManager();
         auto* shortcut = shortcutManager.GetShortcut(shortcutId);
-        return shortcut != nullptr ? shortcut->GetDisplayString() : std::string();
+        return shortcut != nullptr ? shortcut->getDisplayString() : std::string();
     }
 
     void SetMainView(const ScreenCoordsXY& viewPos, ZoomLevel zoom, int32_t rotation) override

@@ -490,7 +490,7 @@ void InputManager::processViewScrollEvent(std::string_view shortcutId, const Scr
 
 bool InputManager::getState(const RegisteredShortcut& shortcut) const
 {
-    for (const auto& i : shortcut.Current)
+    for (const auto& i : shortcut.current)
     {
         if (getState(i))
         {

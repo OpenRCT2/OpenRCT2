@@ -83,9 +83,9 @@ namespace OpenRCT2::Ui::Windows
                 if (w != nullptr)
                 {
                     w->_shortcutId = shortcutId;
-                    w->_shortcutLocalisedName = registeredShortcut->LocalisedName;
-                    w->_shortcutCustomName = registeredShortcut->CustomName;
-                    shortcutManager.SetPendingShortcutChange(registeredShortcut->Id);
+                    w->_shortcutLocalisedName = registeredShortcut->localisedName;
+                    w->_shortcutCustomName = registeredShortcut->customName;
+                    shortcutManager.SetPendingShortcutChange(registeredShortcut->id);
                     return w;
                 }
             }
@@ -146,7 +146,7 @@ namespace OpenRCT2::Ui::Windows
             auto* shortcut = shortcutManager.GetShortcut(_shortcutId);
             if (shortcut != nullptr)
             {
-                shortcut->Current.clear();
+                shortcut->current.clear();
                 shortcutManager.SaveUserBindings();
             }
             close();
@@ -349,7 +349,7 @@ namespace OpenRCT2::Ui::Windows
                 auto shortcut = shortcutManager.GetShortcut(item.ShortcutId);
                 if (shortcut != nullptr)
                 {
-                    shortcut->Current = shortcut->Default;
+                    shortcut->current = shortcut->standard;
                 }
             }
             shortcutManager.SaveUserBindings();
@@ -360,7 +360,7 @@ namespace OpenRCT2::Ui::Windows
         bool IsInCurrentTab(const RegisteredShortcut& shortcut)
         {
             auto groupFilter = _tabs[_currentTabIndex].IdGroup;
-            auto group = shortcut.GetTopLevelGroup();
+            auto group = shortcut.getTopLevelGroup();
             if (groupFilter.empty())
             {
                 // Check it doesn't belong in any other tab
@@ -385,7 +385,7 @@ namespace OpenRCT2::Ui::Windows
             // Get shortcuts and sort by group
             auto shortcuts = GetShortcutsForCurrentTab();
             std::stable_sort(shortcuts.begin(), shortcuts.end(), [](const RegisteredShortcut* a, const RegisteredShortcut* b) {
-                return a->OrderIndex < b->OrderIndex;
+                return a->orderIndex < b->orderIndex;
             });
 
             // Create list items with a separator between each group
@@ -395,11 +395,11 @@ namespace OpenRCT2::Ui::Windows
             {
                 if (group.empty())
                 {
-                    group = shortcut->GetGroup();
+                    group = shortcut->getGroup();
                 }
                 else
                 {
-                    auto groupName = shortcut->GetGroup();
+                    auto groupName = shortcut->getGroup();
                     if (group != groupName)
                     {
                         // Add separator
@@ -409,10 +409,10 @@ namespace OpenRCT2::Ui::Windows
                 }
 
                 ShortcutStringPair ssp;
-                ssp.ShortcutId = shortcut->Id;
-                ssp.StringId = shortcut->LocalisedName;
-                ssp.CustomString = shortcut->CustomName;
-                ssp.Binding = shortcut->GetDisplayString();
+                ssp.ShortcutId = shortcut->id;
+                ssp.StringId = shortcut->localisedName;
+                ssp.CustomString = shortcut->customName;
+                ssp.Binding = shortcut->getDisplayString();
                 _list.push_back(std::move(ssp));
             }
 

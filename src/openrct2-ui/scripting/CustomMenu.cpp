@@ -43,9 +43,9 @@ namespace OpenRCT2::Scripting
         RegisteredShortcut registeredShortcut(Id, Text, [this]() { Invoke(); });
         for (const auto& binding : bindings)
         {
-            registeredShortcut.Default.emplace_back(binding);
+            registeredShortcut.standard.emplace_back(binding);
         }
-        registeredShortcut.Current = registeredShortcut.Default;
+        registeredShortcut.current = registeredShortcut.standard;
         shortcutManager.RegisterShortcut(std::move(registeredShortcut));
         shortcutManager.LoadUserBindings();
     }

@@ -56,55 +56,55 @@ namespace OpenRCT2::Ui
     class RegisteredShortcut
     {
     public:
-        std::string Id;
-        StringId LocalisedName = kStringIdNone;
-        std::string CustomName;
-        std::vector<ShortcutInput> Default;
-        std::vector<ShortcutInput> Current;
-        std::function<void()> Action;
-        size_t OrderIndex = static_cast<size_t>(-1);
+        std::string id;
+        StringId localisedName = kStringIdNone;
+        std::string customName;
+        std::vector<ShortcutInput> standard;
+        std::vector<ShortcutInput> current;
+        std::function<void()> action;
+        size_t orderIndex = static_cast<size_t>(-1);
 
         RegisteredShortcut() = default;
-        RegisteredShortcut(std::string_view id, std::string_view name, const std::function<void()>& action)
-            : Id(id)
-            , CustomName(name)
-            , Action(action)
+        RegisteredShortcut(std::string_view _id, std::string_view _name, const std::function<void()>& _action)
+            : id(_id)
+            , customName(_name)
+            , action(_action)
         {
         }
 
-        RegisteredShortcut(std::string_view id, StringId localisedName, const std::function<void()>& action)
-            : Id(id)
-            , LocalisedName(localisedName)
-            , Action(action)
-        {
-        }
-
-        RegisteredShortcut(
-            std::string_view id, StringId localisedName, std::string_view defaultChord, const std::function<void()>& action)
-            : Id(id)
-            , LocalisedName(localisedName)
-            , Default({ defaultChord })
-            , Current(Default)
-            , Action(action)
+        RegisteredShortcut(std::string_view _id, StringId _localisedName, const std::function<void()>& _action)
+            : id(_id)
+            , localisedName(_localisedName)
+            , action(_action)
         {
         }
 
         RegisteredShortcut(
-            std::string_view id, StringId localisedName, std::string_view defaultChordA, std::string_view defaultChordB,
-            const std::function<void()>& action)
-            : Id(id)
-            , LocalisedName(localisedName)
-            , Default({ defaultChordA, defaultChordB })
-            , Current(Default)
-            , Action(action)
+            std::string_view _id, StringId _localisedName, std::string_view _defaultChord, const std::function<void()>& _action)
+            : id(_id)
+            , localisedName(_localisedName)
+            , standard({ _defaultChord })
+            , current(standard)
+            , action(_action)
         {
         }
 
-        std::string_view GetTopLevelGroup() const;
-        std::string_view GetGroup() const;
-        bool Matches(const InputEvent& e) const;
-        bool IsSuitableInputEvent(const InputEvent& e) const;
-        std::string GetDisplayString() const;
+        RegisteredShortcut(
+            std::string_view _id, StringId _localisedName, std::string_view _defaultChordA, std::string_view _defaultChordB,
+            const std::function<void()>& _action)
+            : id(_id)
+            , localisedName(_localisedName)
+            , standard({ _defaultChordA, _defaultChordB })
+            , current(standard)
+            , action(_action)
+        {
+        }
+
+        std::string_view getTopLevelGroup() const;
+        std::string_view getGroup() const;
+        bool matches(const InputEvent& e) const;
+        bool isSuitableInputEvent(const InputEvent& e) const;
+        std::string getDisplayString() const;
 
     private:
     };
