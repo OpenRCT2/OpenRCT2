@@ -58,7 +58,7 @@ namespace OpenRCT2::Scripting
         static constexpr JSCFunctionListEntry funcs[] = {
             JS_CFUNC_DEF("clear", 0, clear),
             JS_CFUNC_DEF("log", 0, log),
-            JS_CFUNC_DEF("executeLegacy", 0, executeLegacy),
+            JS_CFUNC_DEF("executeLegacy", 1, executeLegacy),
         };
 
     public:
