@@ -125,25 +125,25 @@ ShortcutInput::ShortcutInput(std::string_view value)
         rem = rem.substr(4);
         if (String::equals(rem, "LEFT"))
         {
-            Kind = InputDeviceKind::JoyHat;
+            Kind = InputDeviceKind::joyHat;
             Modifiers = modifiers;
             Button = SDL_HAT_LEFT;
         }
         else if (String::equals(rem, "RIGHT"))
         {
-            Kind = InputDeviceKind::JoyHat;
+            Kind = InputDeviceKind::joyHat;
             Modifiers = modifiers;
             Button = SDL_HAT_RIGHT;
         }
         else if (String::equals(rem, "UP"))
         {
-            Kind = InputDeviceKind::JoyHat;
+            Kind = InputDeviceKind::joyHat;
             Modifiers = modifiers;
             Button = SDL_HAT_UP;
         }
         else if (String::equals(rem, "DOWN"))
         {
-            Kind = InputDeviceKind::JoyHat;
+            Kind = InputDeviceKind::joyHat;
             Modifiers = modifiers;
             Button = SDL_HAT_DOWN;
         }
@@ -152,7 +152,7 @@ ShortcutInput::ShortcutInput(std::string_view value)
             auto number = String::Parse<int32_t>(rem);
             if (number.has_value())
             {
-                Kind = InputDeviceKind::JoyButton;
+                Kind = InputDeviceKind::joyButton;
                 Modifiers = modifiers;
                 Button = number.value() - 1;
             }
@@ -164,26 +164,26 @@ ShortcutInput::ShortcutInput(std::string_view value)
         auto number = String::Parse<int32_t>(rem);
         if (number)
         {
-            Kind = InputDeviceKind::Mouse;
+            Kind = InputDeviceKind::mouse;
             Modifiers = modifiers;
             Button = *number - 1;
         }
     }
     else if (String::iequals(rem, "LMB"))
     {
-        Kind = InputDeviceKind::Mouse;
+        Kind = InputDeviceKind::mouse;
         Modifiers = modifiers;
         Button = 0;
     }
     else if (String::iequals(rem, "RMB"))
     {
-        Kind = InputDeviceKind::Mouse;
+        Kind = InputDeviceKind::mouse;
         Modifiers = modifiers;
         Button = 1;
     }
     else
     {
-        Kind = InputDeviceKind::Keyboard;
+        Kind = InputDeviceKind::keyboard;
         Modifiers = modifiers;
         Button = ParseKey(rem);
     }
@@ -288,7 +288,7 @@ std::string ShortcutInput::ToString(bool localised) const
     AppendModifier(result, KMOD_LALT, KMOD_RALT, localised);
     AppendModifier(result, KMOD_LGUI, KMOD_RGUI, localised);
 
-    if (Kind == InputDeviceKind::Keyboard)
+    if (Kind == InputDeviceKind::keyboard)
     {
         if (Button != 0)
         {
@@ -310,7 +310,7 @@ std::string ShortcutInput::ToString(bool localised) const
             }
         }
     }
-    else if (Kind == InputDeviceKind::Mouse)
+    else if (Kind == InputDeviceKind::mouse)
     {
         switch (Button)
         {
@@ -326,11 +326,11 @@ std::string ShortcutInput::ToString(bool localised) const
                 break;
         }
     }
-    else if (Kind == InputDeviceKind::JoyButton)
+    else if (Kind == InputDeviceKind::joyButton)
     {
         result += localised ? FormatStringID(STR_SHORTCUT_JOY_NUMBER, Button + 1) : "JOY " + std::to_string(Button + 1);
     }
-    else if (Kind == InputDeviceKind::JoyHat)
+    else if (Kind == InputDeviceKind::joyHat)
     {
         if (Button & SDL_HAT_LEFT)
             result += localised ? LanguageGetString(STR_SHORTCUT_JOY_LEFT) : "JOY LEFT";

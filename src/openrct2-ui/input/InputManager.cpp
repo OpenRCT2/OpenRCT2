@@ -48,7 +48,7 @@ void InputManager::QueueInputEvent(const SDL_Event& e)
                 || e.caxis.axis == SDL_CONTROLLER_AXIS_RIGHTX || e.caxis.axis == SDL_CONTROLLER_AXIS_RIGHTY)
             {
                 InputEvent ie;
-                ie.DeviceKind = InputDeviceKind::JoyAxis;
+                ie.DeviceKind = InputDeviceKind::joyAxis;
                 ie.Modifiers = SDL_GetModState();
                 ie.Button = e.caxis.axis;
                 ie.State = InputEventState::Down;
@@ -62,7 +62,7 @@ void InputManager::QueueInputEvent(const SDL_Event& e)
             if (e.jhat.value != SDL_HAT_CENTERED)
             {
                 InputEvent ie;
-                ie.DeviceKind = InputDeviceKind::JoyHat;
+                ie.DeviceKind = InputDeviceKind::joyHat;
                 ie.Modifiers = SDL_GetModState();
                 ie.Button = e.jhat.value;
                 ie.State = InputEventState::Down;
@@ -75,7 +75,7 @@ void InputManager::QueueInputEvent(const SDL_Event& e)
         case SDL_JOYBUTTONDOWN:
         {
             InputEvent ie;
-            ie.DeviceKind = InputDeviceKind::JoyButton;
+            ie.DeviceKind = InputDeviceKind::joyButton;
             ie.Modifiers = SDL_GetModState();
             ie.Button = e.cbutton.button;
             ie.State = InputEventState::Down;
@@ -87,7 +87,7 @@ void InputManager::QueueInputEvent(const SDL_Event& e)
         case SDL_JOYBUTTONUP:
         {
             InputEvent ie;
-            ie.DeviceKind = InputDeviceKind::JoyButton;
+            ie.DeviceKind = InputDeviceKind::joyButton;
             ie.Modifiers = SDL_GetModState();
             ie.Button = e.cbutton.button;
             ie.State = InputEventState::Release;
@@ -326,7 +326,7 @@ void InputManager::ProcessEvents()
 void InputManager::Process(const InputEvent& e)
 {
     auto& shortcutManager = GetShortcutManager();
-    if (e.DeviceKind == InputDeviceKind::Keyboard)
+    if (e.DeviceKind == InputDeviceKind::keyboard)
     {
         auto& console = GetInGameConsole();
         if (console.IsOpen())
@@ -344,7 +344,7 @@ void InputManager::Process(const InputEvent& e)
             return;
         }
 
-        if (e.DeviceKind == InputDeviceKind::Keyboard)
+        if (e.DeviceKind == InputDeviceKind::keyboard)
         {
             auto* windowMgr = GetWindowManager();
 
@@ -392,7 +392,7 @@ void InputManager::Process(const InputEvent& e)
 
 void InputManager::ProcessInGameConsole(const InputEvent& e)
 {
-    if (e.DeviceKind == InputDeviceKind::Keyboard && e.State == InputEventState::Release)
+    if (e.DeviceKind == InputDeviceKind::keyboard && e.State == InputEventState::Release)
     {
         auto input = ConsoleInput::None;
         switch (e.Button)
@@ -427,7 +427,7 @@ void InputManager::ProcessInGameConsole(const InputEvent& e)
 
 void InputManager::ProcessChat(const InputEvent& e)
 {
-    if (e.DeviceKind == InputDeviceKind::Keyboard && e.State == InputEventState::Down)
+    if (e.DeviceKind == InputDeviceKind::keyboard && e.State == InputEventState::Down)
     {
         auto input = ChatInput::None;
         switch (e.Button)
@@ -508,7 +508,7 @@ bool InputManager::GetState(const ShortcutInput& shortcut) const
     {
         switch (shortcut.Kind)
         {
-            case InputDeviceKind::Mouse:
+            case InputDeviceKind::mouse:
             {
                 if (_mouseState & (1 << shortcut.Button))
                 {
@@ -516,7 +516,7 @@ bool InputManager::GetState(const ShortcutInput& shortcut) const
                 }
                 break;
             }
-            case InputDeviceKind::Keyboard:
+            case InputDeviceKind::keyboard:
             {
                 auto scanCode = static_cast<size_t>(SDL_GetScancodeFromKey(shortcut.Button));
                 if (scanCode < _keyboardState.size() && _keyboardState[scanCode])
@@ -525,7 +525,7 @@ bool InputManager::GetState(const ShortcutInput& shortcut) const
                 }
                 break;
             }
-            case InputDeviceKind::JoyButton:
+            case InputDeviceKind::joyButton:
             {
                 for (auto* gameController : _gameControllers)
                 {
@@ -538,7 +538,7 @@ bool InputManager::GetState(const ShortcutInput& shortcut) const
                 }
                 break;
             }
-            case InputDeviceKind::JoyHat:
+            case InputDeviceKind::joyHat:
             {
                 for (auto* gameController : _gameControllers)
                 {
@@ -559,7 +559,7 @@ bool InputManager::GetState(const ShortcutInput& shortcut) const
                 }
                 break;
             }
-            case InputDeviceKind::JoyAxis:
+            case InputDeviceKind::joyAxis:
             {
                 // analogue axes don't have a simple "pressed" state like buttons
                 // Return false for shortcuts on analogue axes as they're handled differently

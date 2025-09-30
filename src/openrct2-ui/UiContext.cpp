@@ -435,7 +435,7 @@ public:
 
                     {
                         InputEvent ie;
-                        ie.DeviceKind = InputDeviceKind::Mouse;
+                        ie.DeviceKind = InputDeviceKind::mouse;
                         ie.Modifiers = SDL_GetModState();
                         ie.Button = e.button.button;
                         ie.State = InputEventState::Down;
@@ -471,7 +471,7 @@ public:
 
                     {
                         InputEvent ie;
-                        ie.DeviceKind = InputDeviceKind::Mouse;
+                        ie.DeviceKind = InputDeviceKind::mouse;
                         ie.Modifiers = SDL_GetModState();
                         ie.Button = e.button.button;
                         ie.State = InputEventState::Release;
@@ -1040,7 +1040,7 @@ private:
     InputEvent GetInputEventFromSDLEvent(const SDL_Event& e)
     {
         InputEvent ie;
-        ie.DeviceKind = InputDeviceKind::Keyboard;
+        ie.DeviceKind = InputDeviceKind::keyboard;
         ie.Modifiers = e.key.keysym.mod;
         ie.Button = e.key.keysym.sym;
 

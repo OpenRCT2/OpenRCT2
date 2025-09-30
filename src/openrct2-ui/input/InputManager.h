@@ -23,11 +23,11 @@ namespace OpenRCT2::Ui
 
     enum class InputDeviceKind
     {
-        Mouse,
-        Keyboard,
-        JoyButton,
-        JoyHat,
-        JoyAxis,
+        mouse,
+        keyboard,
+        joyButton,
+        joyHat,
+        joyAxis,
     };
 
     enum class InputEventState

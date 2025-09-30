@@ -64,7 +64,7 @@ bool RegisteredShortcut::IsSuitableInputEvent(const InputEvent& e) const
         return false;
     }
 
-    if (e.DeviceKind == InputDeviceKind::Mouse)
+    if (e.DeviceKind == InputDeviceKind::mouse)
     {
         // Do not allow LMB or RMB to be shortcut
         if (e.Button == 0 || e.Button == 1)
@@ -72,7 +72,7 @@ bool RegisteredShortcut::IsSuitableInputEvent(const InputEvent& e) const
             return false;
         }
     }
-    else if (e.DeviceKind == InputDeviceKind::Keyboard)
+    else if (e.DeviceKind == InputDeviceKind::keyboard)
     {
         // Do not allow modifier keys alone
         switch (e.Button)
@@ -242,7 +242,7 @@ std::optional<ShortcutInput> ShortcutManager::ConvertLegacyBinding(uint16_t bind
     }
 
     ShortcutInput result;
-    result.Kind = InputDeviceKind::Keyboard;
+    result.Kind = InputDeviceKind::keyboard;
     if (binding & kShift)
         result.Modifiers |= KMOD_SHIFT;
     if (binding & kCtrl)
