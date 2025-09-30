@@ -59,7 +59,7 @@ bool RegisteredShortcut::Matches(const InputEvent& e) const
 bool RegisteredShortcut::IsSuitableInputEvent(const InputEvent& e) const
 {
     // Do not intercept button releases
-    if (e.State == InputEventState::Release)
+    if (e.State == InputEventState::release)
     {
         return false;
     }

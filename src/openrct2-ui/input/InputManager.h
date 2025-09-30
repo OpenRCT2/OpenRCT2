@@ -32,8 +32,8 @@ namespace OpenRCT2::Ui
 
     enum class InputEventState
     {
-        Down,
-        Release,
+        down,
+        release,
     };
 
     struct InputEvent

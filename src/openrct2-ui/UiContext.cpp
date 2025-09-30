@@ -438,7 +438,7 @@ public:
                         ie.DeviceKind = InputDeviceKind::mouse;
                         ie.Modifiers = SDL_GetModState();
                         ie.Button = e.button.button;
-                        ie.State = InputEventState::Down;
+                        ie.State = InputEventState::down;
                         _inputManager.QueueInputEvent(std::move(ie));
                     }
                     break;
@@ -474,7 +474,7 @@ public:
                         ie.DeviceKind = InputDeviceKind::mouse;
                         ie.Modifiers = SDL_GetModState();
                         ie.Button = e.button.button;
-                        ie.State = InputEventState::Release;
+                        ie.State = InputEventState::release;
                         _inputManager.QueueInputEvent(std::move(ie));
                     }
                     break;
@@ -544,14 +544,14 @@ public:
 #endif
                     _textComposition.HandleMessage(&e);
                     auto ie = GetInputEventFromSDLEvent(e);
-                    ie.State = InputEventState::Down;
+                    ie.State = InputEventState::down;
                     _inputManager.QueueInputEvent(std::move(ie));
                     break;
                 }
                 case SDL_KEYUP:
                 {
                     auto ie = GetInputEventFromSDLEvent(e);
-                    ie.State = InputEventState::Release;
+                    ie.State = InputEventState::release;
                     _inputManager.QueueInputEvent(std::move(ie));
                     break;
                 }
