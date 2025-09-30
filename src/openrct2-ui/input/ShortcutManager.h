@@ -33,24 +33,24 @@ namespace OpenRCT2::Ui
     struct ShortcutInput
     {
     public:
-        InputDeviceKind Kind{};
-        uint32_t Modifiers{};
-        uint32_t Button{};
+        InputDeviceKind kind{};
+        uint32_t modifiers{};
+        uint32_t button{};
 
         ShortcutInput() = default;
         ShortcutInput(std::string_view value);
-        std::string ToString() const;
-        std::string ToLocalisedString() const;
+        std::string toString() const;
+        std::string toLocalisedString() const;
 
-        bool Matches(const InputEvent& e) const;
+        bool matches(const InputEvent& e) const;
 
-        static std::optional<ShortcutInput> FromInputEvent(const InputEvent& e);
+        static std::optional<ShortcutInput> fromInputEvent(const InputEvent& e);
 
     private:
-        bool AppendModifier(std::string& s, uint32_t left, uint32_t right, bool localised) const;
-        static std::string_view GetModifierName(uint32_t key, bool localised);
-        static std::string_view GetLocalisedKeyName(uint32_t key);
-        std::string ToString(bool localised) const;
+        bool appendModifier(std::string& s, uint32_t left, uint32_t right, bool localised) const;
+        static std::string_view getModifierName(uint32_t key, bool localised);
+        static std::string_view getLocalisedKeyName(uint32_t key);
+        std::string toString(bool localised) const;
     };
 
     class RegisteredShortcut

@@ -107,14 +107,14 @@ static size_t FindPlus(std::string_view s, size_t index)
 
 ShortcutInput::ShortcutInput(std::string_view value)
 {
-    uint32_t modifiers = 0;
+    uint32_t newModifiers = 0;
     size_t index = 0;
     auto sepIndex = FindPlus(value, index);
     while (sepIndex != std::string::npos)
     {
         auto text = value.substr(index, sepIndex - index);
         auto mod = ParseModifier(text);
-        modifiers |= mod;
+        newModifiers |= mod;
         index = sepIndex + 1;
         sepIndex = FindPlus(value, index);
     }
@@ -125,36 +125,36 @@ ShortcutInput::ShortcutInput(std::string_view value)
         rem = rem.substr(4);
         if (String::equals(rem, "LEFT"))
         {
-            Kind = InputDeviceKind::joyHat;
-            Modifiers = modifiers;
-            Button = SDL_HAT_LEFT;
+            kind = InputDeviceKind::joyHat;
+            modifiers = newModifiers;
+            button = SDL_HAT_LEFT;
         }
         else if (String::equals(rem, "RIGHT"))
         {
-            Kind = InputDeviceKind::joyHat;
-            Modifiers = modifiers;
-            Button = SDL_HAT_RIGHT;
+            kind = InputDeviceKind::joyHat;
+            modifiers = newModifiers;
+            button = SDL_HAT_RIGHT;
         }
         else if (String::equals(rem, "UP"))
         {
-            Kind = InputDeviceKind::joyHat;
-            Modifiers = modifiers;
-            Button = SDL_HAT_UP;
+            kind = InputDeviceKind::joyHat;
+            modifiers = newModifiers;
+            button = SDL_HAT_UP;
         }
         else if (String::equals(rem, "DOWN"))
         {
-            Kind = InputDeviceKind::joyHat;
-            Modifiers = modifiers;
-            Button = SDL_HAT_DOWN;
+            kind = InputDeviceKind::joyHat;
+            modifiers = newModifiers;
+            button = SDL_HAT_DOWN;
         }
         else
         {
             auto number = String::Parse<int32_t>(rem);
             if (number.has_value())
             {
-                Kind = InputDeviceKind::joyButton;
-                Modifiers = modifiers;
-                Button = number.value() - 1;
+                kind = InputDeviceKind::joyButton;
+                modifiers = newModifiers;
+                button = number.value() - 1;
             }
         }
     }
@@ -164,32 +164,32 @@ ShortcutInput::ShortcutInput(std::string_view value)
         auto number = String::Parse<int32_t>(rem);
         if (number)
         {
-            Kind = InputDeviceKind::mouse;
-            Modifiers = modifiers;
-            Button = *number - 1;
+            kind = InputDeviceKind::mouse;
+            modifiers = newModifiers;
+            button = *number - 1;
         }
     }
     else if (String::iequals(rem, "LMB"))
     {
-        Kind = InputDeviceKind::mouse;
-        Modifiers = modifiers;
-        Button = 0;
+        kind = InputDeviceKind::mouse;
+        modifiers = newModifiers;
+        button = 0;
     }
     else if (String::iequals(rem, "RMB"))
     {
-        Kind = InputDeviceKind::mouse;
-        Modifiers = modifiers;
-        Button = 1;
+        kind = InputDeviceKind::mouse;
+        modifiers = newModifiers;
+        button = 1;
     }
     else
     {
-        Kind = InputDeviceKind::keyboard;
-        Modifiers = modifiers;
-        Button = ParseKey(rem);
+        kind = InputDeviceKind::keyboard;
+        modifiers = newModifiers;
+        button = ParseKey(rem);
     }
 }
 
-std::string_view ShortcutInput::GetModifierName(uint32_t key, bool localised)
+std::string_view ShortcutInput::getModifierName(uint32_t key, bool localised)
 {
     static std::unordered_map<uint32_t, std::pair<const char*, StringId>> _keys{
         { KMOD_SHIFT, { "SHIFT", STR_SHORTCUT_MOD_SHIFT } },    { KMOD_LSHIFT, { "LSHIFT", STR_SHORTCUT_MOD_LSHIFT } },
@@ -214,7 +214,7 @@ std::string_view ShortcutInput::GetModifierName(uint32_t key, bool localised)
     return {};
 }
 
-std::string_view ShortcutInput::GetLocalisedKeyName(uint32_t key)
+std::string_view ShortcutInput::getLocalisedKeyName(uint32_t key)
 {
     static std::unordered_map<uint32_t, StringId> _keys{
         { SDLK_LEFT, STR_SHORTCUT_LEFT },
@@ -270,75 +270,75 @@ std::string_view ShortcutInput::GetLocalisedKeyName(uint32_t key)
     return {};
 }
 
-std::string ShortcutInput::ToString() const
+std::string ShortcutInput::toString() const
 {
-    return ToString(false);
+    return toString(false);
 }
 
-std::string ShortcutInput::ToLocalisedString() const
+std::string ShortcutInput::toLocalisedString() const
 {
-    return ToString(true);
+    return toString(true);
 }
 
-std::string ShortcutInput::ToString(bool localised) const
+std::string ShortcutInput::toString(bool localised) const
 {
     std::string result;
-    AppendModifier(result, KMOD_LSHIFT, KMOD_RSHIFT, localised);
-    AppendModifier(result, KMOD_LCTRL, KMOD_RCTRL, localised);
-    AppendModifier(result, KMOD_LALT, KMOD_RALT, localised);
-    AppendModifier(result, KMOD_LGUI, KMOD_RGUI, localised);
+    appendModifier(result, KMOD_LSHIFT, KMOD_RSHIFT, localised);
+    appendModifier(result, KMOD_LCTRL, KMOD_RCTRL, localised);
+    appendModifier(result, KMOD_LALT, KMOD_RALT, localised);
+    appendModifier(result, KMOD_LGUI, KMOD_RGUI, localised);
 
-    if (Kind == InputDeviceKind::keyboard)
+    if (kind == InputDeviceKind::keyboard)
     {
-        if (Button != 0)
+        if (button != 0)
         {
             if (localised)
             {
-                auto name = GetLocalisedKeyName(Button);
+                auto name = getLocalisedKeyName(button);
                 if (!name.empty())
                 {
                     result += name;
                 }
                 else
                 {
-                    result += SDL_GetKeyName(Button);
+                    result += SDL_GetKeyName(button);
                 }
             }
             else
             {
-                result += SDL_GetKeyName(Button);
+                result += SDL_GetKeyName(button);
             }
         }
     }
-    else if (Kind == InputDeviceKind::mouse)
+    else if (kind == InputDeviceKind::mouse)
     {
-        switch (Button)
+        switch (button)
         {
             case 0:
-                result += localised ? FormatStringID(STR_SHORTCUT_MOUSE_LEFT, Button + 1) : "LMB";
+                result += localised ? FormatStringID(STR_SHORTCUT_MOUSE_LEFT, button + 1) : "LMB";
                 break;
             case 1:
-                result += localised ? FormatStringID(STR_SHORTCUT_MOUSE_RIGHT, Button + 1) : "RMB";
+                result += localised ? FormatStringID(STR_SHORTCUT_MOUSE_RIGHT, button + 1) : "RMB";
                 break;
             default:
-                result += localised ? FormatStringID(STR_SHORTCUT_MOUSE_NUMBER, Button + 1)
-                                    : "MOUSE " + std::to_string(Button + 1);
+                result += localised ? FormatStringID(STR_SHORTCUT_MOUSE_NUMBER, button + 1)
+                                    : "MOUSE " + std::to_string(button + 1);
                 break;
         }
     }
-    else if (Kind == InputDeviceKind::joyButton)
+    else if (kind == InputDeviceKind::joyButton)
     {
-        result += localised ? FormatStringID(STR_SHORTCUT_JOY_NUMBER, Button + 1) : "JOY " + std::to_string(Button + 1);
+        result += localised ? FormatStringID(STR_SHORTCUT_JOY_NUMBER, button + 1) : "JOY " + std::to_string(button + 1);
     }
-    else if (Kind == InputDeviceKind::joyHat)
+    else if (kind == InputDeviceKind::joyHat)
     {
-        if (Button & SDL_HAT_LEFT)
+        if (button & SDL_HAT_LEFT)
             result += localised ? LanguageGetString(STR_SHORTCUT_JOY_LEFT) : "JOY LEFT";
-        else if (Button & SDL_HAT_RIGHT)
+        else if (button & SDL_HAT_RIGHT)
             result += localised ? LanguageGetString(STR_SHORTCUT_JOY_RIGHT) : "JOY RIGHT";
-        else if (Button & SDL_HAT_UP)
+        else if (button & SDL_HAT_UP)
             result += localised ? LanguageGetString(STR_SHORTCUT_JOY_UP) : "JOY UP";
-        else if (Button & SDL_HAT_DOWN)
+        else if (button & SDL_HAT_DOWN)
             result += localised ? LanguageGetString(STR_SHORTCUT_JOY_DOWN) : "JOY DOWN";
         else
             result += "JOY ?";
@@ -346,23 +346,23 @@ std::string ShortcutInput::ToString(bool localised) const
     return result;
 }
 
-bool ShortcutInput::AppendModifier(std::string& s, uint32_t left, uint32_t right, bool localised) const
+bool ShortcutInput::appendModifier(std::string& s, uint32_t left, uint32_t right, bool localised) const
 {
-    if ((Modifiers & (left | right)) == (left | right))
+    if ((modifiers & (left | right)) == (left | right))
     {
-        s += GetModifierName(left | right, localised);
+        s += getModifierName(left | right, localised);
         s += "+";
         return true;
     }
-    if (Modifiers & left)
+    if (modifiers & left)
     {
-        s += GetModifierName(left, localised);
+        s += getModifierName(left, localised);
         s += "+";
         return true;
     }
-    if (Modifiers & right)
+    if (modifiers & right)
     {
-        s += GetModifierName(right, localised);
+        s += getModifierName(right, localised);
         s += "+";
         return true;
     }
@@ -397,11 +397,11 @@ static bool CompareModifiers(uint32_t shortcut, uint32_t actual)
         && HasModifier(shortcut, actual, KMOD_LALT, KMOD_RALT) && HasModifier(shortcut, actual, KMOD_LGUI, KMOD_RGUI);
 }
 
-bool ShortcutInput::Matches(const InputEvent& e) const
+bool ShortcutInput::matches(const InputEvent& e) const
 {
-    if (CompareModifiers(Modifiers, e.modifiers))
+    if (CompareModifiers(modifiers, e.modifiers))
     {
-        if (e.deviceKind == Kind && Button == e.button)
+        if (e.deviceKind == kind && button == e.button)
         {
             return true;
         }
@@ -409,7 +409,7 @@ bool ShortcutInput::Matches(const InputEvent& e) const
     return false;
 }
 
-std::optional<ShortcutInput> ShortcutInput::FromInputEvent(const InputEvent& e)
+std::optional<ShortcutInput> ShortcutInput::fromInputEvent(const InputEvent& e)
 {
     // Assume any side modifier (more specific configurations can be done by manually editing config file)
     auto modifiers = e.modifiers & kUsefulModifiers;
@@ -422,8 +422,8 @@ std::optional<ShortcutInput> ShortcutInput::FromInputEvent(const InputEvent& e)
     }
 
     ShortcutInput result;
-    result.Kind = e.deviceKind;
-    result.Modifiers = modifiers;
-    result.Button = e.button;
+    result.kind = e.deviceKind;
+    result.modifiers = modifiers;
+    result.button = e.button;
     return result;
 }

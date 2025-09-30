@@ -504,13 +504,13 @@ bool InputManager::getState(const ShortcutInput& shortcut) const
 {
     constexpr uint32_t kUsefulModifiers = KMOD_SHIFT | KMOD_CTRL | KMOD_ALT | KMOD_GUI;
     auto modifiers = SDL_GetModState() & kUsefulModifiers;
-    if ((shortcut.Modifiers & kUsefulModifiers) == modifiers)
+    if ((shortcut.modifiers & kUsefulModifiers) == modifiers)
     {
-        switch (shortcut.Kind)
+        switch (shortcut.kind)
         {
             case InputDeviceKind::mouse:
             {
-                if (_mouseState & (1 << shortcut.Button))
+                if (_mouseState & (1 << shortcut.button))
                 {
                     return true;
                 }
@@ -518,7 +518,7 @@ bool InputManager::getState(const ShortcutInput& shortcut) const
             }
             case InputDeviceKind::keyboard:
             {
-                auto scanCode = static_cast<size_t>(SDL_GetScancodeFromKey(shortcut.Button));
+                auto scanCode = static_cast<size_t>(SDL_GetScancodeFromKey(shortcut.button));
                 if (scanCode < _keyboardState.size() && _keyboardState[scanCode])
                 {
                     return true;
@@ -531,7 +531,7 @@ bool InputManager::getState(const ShortcutInput& shortcut) const
                 {
                     // Get the underlying joystick to maintain compatibility with raw button numbers
                     auto* joystick = SDL_GameControllerGetJoystick(gameController);
-                    if (joystick && SDL_JoystickGetButton(joystick, shortcut.Button))
+                    if (joystick && SDL_JoystickGetButton(joystick, shortcut.button))
                     {
                         return true;
                     }
@@ -550,7 +550,7 @@ bool InputManager::getState(const ShortcutInput& shortcut) const
                         for (int i = 0; i < numHats; i++)
                         {
                             auto hat = SDL_JoystickGetHat(joystick, i);
-                            if (hat & shortcut.Button)
+                            if (hat & shortcut.button)
                             {
                                 return true;
                             }

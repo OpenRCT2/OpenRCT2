@@ -50,7 +50,7 @@ bool RegisteredShortcut::Matches(const InputEvent& e) const
     if (IsSuitableInputEvent(e))
     {
         auto result = std::find_if(
-            Current.begin(), Current.end(), [e](const ShortcutInput& action) { return action.Matches(e); });
+            Current.begin(), Current.end(), [e](const ShortcutInput& action) { return action.matches(e); });
         return result != Current.end();
     }
     return false;
@@ -99,7 +99,7 @@ std::string RegisteredShortcut::GetDisplayString() const
     for (size_t i = 0; i < numChords; i++)
     {
         const auto& kc = Current[i];
-        result += kc.ToLocalisedString();
+        result += kc.toLocalisedString();
         if (i < numChords - 1)
         {
             result += " ";
@@ -168,7 +168,7 @@ void ShortcutManager::ProcessEvent(const InputEvent& e)
         auto shortcut = GetShortcut(_pendingShortcutChange);
         if (shortcut != nullptr && shortcut->IsSuitableInputEvent(e))
         {
-            auto shortcutInput = ShortcutInput::FromInputEvent(e);
+            auto shortcutInput = ShortcutInput::fromInputEvent(e);
             if (shortcutInput.has_value())
             {
                 shortcut->Current.clear();
@@ -242,16 +242,16 @@ std::optional<ShortcutInput> ShortcutManager::ConvertLegacyBinding(uint16_t bind
     }
 
     ShortcutInput result;
-    result.Kind = InputDeviceKind::keyboard;
+    result.kind = InputDeviceKind::keyboard;
     if (binding & kShift)
-        result.Modifiers |= KMOD_SHIFT;
+        result.modifiers |= KMOD_SHIFT;
     if (binding & kCtrl)
-        result.Modifiers |= KMOD_CTRL;
+        result.modifiers |= KMOD_CTRL;
     if (binding & kAlt)
-        result.Modifiers |= KMOD_ALT;
+        result.modifiers |= KMOD_ALT;
     if (binding & kCmd)
-        result.Modifiers |= KMOD_GUI;
-    result.Button = SDL_GetKeyFromScancode(static_cast<SDL_Scancode>(binding & 0xFF));
+        result.modifiers |= KMOD_GUI;
+    result.button = SDL_GetKeyFromScancode(static_cast<SDL_Scancode>(binding & 0xFF));
     return result;
 }
 
@@ -341,14 +341,14 @@ void ShortcutManager::SaveUserBindings(const fs::path& path)
         auto& jShortcut = root[shortcut.second.Id];
         if (shortcut.second.Current.size() == 1)
         {
-            jShortcut = shortcut.second.Current[0].ToString();
+            jShortcut = shortcut.second.Current[0].toString();
         }
         else
         {
             jShortcut = nlohmann::json::array();
             for (const auto& binding : shortcut.second.Current)
             {
-                jShortcut.push_back(binding.ToString());
+                jShortcut.push_back(binding.toString());
             }
         }
     }
