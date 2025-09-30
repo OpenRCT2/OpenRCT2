@@ -132,7 +132,7 @@ static void TickCurrent()
     if (ticks == 1 && (gLegacyScene == LegacyScene::playing))
     {
         // Play sound
-        OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::NewsItem, 0, ContextGetWidth() / 2);
+        OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::newsItem, 0, ContextGetWidth() / 2);
     }
 }
 

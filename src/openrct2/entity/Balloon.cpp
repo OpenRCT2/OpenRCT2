@@ -95,7 +95,7 @@ void Balloon::Pop(bool playSound)
     frame = 0;
     if (playSound)
     {
-        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::BalloonPop, { x, y, z });
+        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::balloonPop, { x, y, z });
     }
 }
 

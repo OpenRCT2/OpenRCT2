@@ -188,10 +188,10 @@ namespace OpenRCT2::Audio
         auto& objManager = GetContext()->GetObjectManager();
         AudioObject* audioObject{};
         uint32_t sampleIndex = EnumValue(id);
-        if (id >= SoundId::LiftRMC)
+        if (id >= SoundId::liftRMC)
         {
             audioObject = objManager.GetLoadedObject<AudioObject>(_soundsAdditionalAudioObjectEntryIndex);
-            sampleIndex -= EnumValue(SoundId::LiftRMC);
+            sampleIndex -= EnumValue(SoundId::liftRMC);
         }
         else
         {
@@ -440,11 +440,11 @@ namespace OpenRCT2::Audio
             if (vehicleSound.id != kSoundIdNull)
             {
                 vehicleSound.id = kSoundIdNull;
-                if (vehicleSound.trackSound.id != SoundId::Null)
+                if (vehicleSound.trackSound.id != SoundId::null)
                 {
                     vehicleSound.trackSound.channel->Stop();
                 }
-                if (vehicleSound.otherSound.id != SoundId::Null)
+                if (vehicleSound.otherSound.id != SoundId::null)
                 {
                     vehicleSound.otherSound.channel->Stop();
                 }

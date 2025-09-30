@@ -368,7 +368,7 @@ static void ClimateUpdateWeatherSound()
         // Start playing the weather sound
         if (_weatherSoundChannel == nullptr || _weatherSoundChannel->IsDone())
         {
-            _weatherSoundChannel = CreateAudioChannel(SoundId::Rain, true, DStoMixerVolume(-4000));
+            _weatherSoundChannel = CreateAudioChannel(SoundId::rain, true, DStoMixerVolume(-4000));
         }
         if (_weatherVolume == 1)
         {
@@ -466,8 +466,8 @@ static void ClimateUpdateThunder()
             if (_thunderStatus[0] == ThunderStatus::none && _thunderStatus[1] == ThunderStatus::none)
             {
                 // Play thunder on left side
-                _thunderSoundId = (randomNumber & 0x20000) ? OpenRCT2::Audio::SoundId::Thunder1
-                                                           : OpenRCT2::Audio::SoundId::Thunder2;
+                _thunderSoundId = (randomNumber & 0x20000) ? OpenRCT2::Audio::SoundId::thunder1
+                                                           : OpenRCT2::Audio::SoundId::thunder2;
                 _thunderVolume = (-(static_cast<int32_t>((randomNumber >> 18) & 0xFF))) * 8;
                 ClimatePlayThunder(0, _thunderSoundId, _thunderVolume, -10000);
 
@@ -479,8 +479,8 @@ static void ClimateUpdateThunder()
         {
             if (_thunderStatus[0] == ThunderStatus::none)
             {
-                _thunderSoundId = (randomNumber & 0x20000) ? OpenRCT2::Audio::SoundId::Thunder1
-                                                           : OpenRCT2::Audio::SoundId::Thunder2;
+                _thunderSoundId = (randomNumber & 0x20000) ? OpenRCT2::Audio::SoundId::thunder1
+                                                           : OpenRCT2::Audio::SoundId::thunder2;
                 int32_t pan = (((randomNumber >> 18) & 0xFF) - 128) * 16;
                 ClimatePlayThunder(0, _thunderSoundId, 0, pan);
             }

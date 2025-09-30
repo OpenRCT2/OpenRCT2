@@ -1088,7 +1088,7 @@ namespace OpenRCT2::Ui::Windows
                     // Don't play sound if it is no cost to prevent multiple sounds. TODO: make this work in no money scenarios
                     if (result->Cost != 0)
                     {
-                        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, result->Position);
+                        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::placeItem, result->Position);
                     }
                 }
                 else
@@ -1179,7 +1179,7 @@ namespace OpenRCT2::Ui::Windows
                 [footpathLoc](const GameActions::GameAction* ga, const GameActions::Result* result) {
                     if (result->Error == GameActions::Status::Ok)
                     {
-                        Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, result->Position);
+                        Audio::Play3D(OpenRCT2::Audio::SoundId::placeItem, result->Position);
                     }
 
                     auto* windowMgr = GetWindowManager();

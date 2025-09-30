@@ -91,7 +91,7 @@ void ScreenshotCheck()
 
             if (!screenshotPath.empty())
             {
-                OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::WindowOpen, 100, ContextGetWidth() / 2);
+                OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::windowOpen, 100, ContextGetWidth() / 2);
 
                 // Show user that screenshot saved successfully
                 const auto filename = Path::GetFileName(screenshotPath);

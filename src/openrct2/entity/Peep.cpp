@@ -1201,7 +1201,7 @@ void PeepUpdateCrowdNoise()
         // Load and play crowd noise if needed and set volume
         if (_crowdSoundChannel == nullptr || _crowdSoundChannel->IsDone())
         {
-            _crowdSoundChannel = CreateAudioChannel(SoundId::CrowdAmbience, true, 0);
+            _crowdSoundChannel = CreateAudioChannel(SoundId::crowdAmbience, true, 0);
             if (_crowdSoundChannel != nullptr)
             {
                 _crowdSoundChannel->SetGroup(OpenRCT2::Audio::MixerGroup::Sound);
@@ -1239,7 +1239,7 @@ void PeepApplause()
     }
 
     // Play applause noise
-    OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Applause, 0, ContextGetWidth() / 2);
+    OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::applause, 0, ContextGetWidth() / 2);
 }
 
 /**

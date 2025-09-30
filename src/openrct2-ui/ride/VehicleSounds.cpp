@@ -112,7 +112,7 @@ namespace OpenRCT2::Audio
         if (gLegacyScene == LegacyScene::trackDesigner && getGameState().editorStep != EditorStep::RollercoasterDesigner)
             return false;
 
-        if (vehicle.sound1_id == SoundId::Null && vehicle.sound2_id == SoundId::Null)
+        if (vehicle.sound1_id == SoundId::null && vehicle.sound2_id == SoundId::null)
             return false;
 
         if (vehicle.x == kLocationNull)
@@ -363,8 +363,8 @@ namespace OpenRCT2::Audio
             if (vehicleSound.id == kSoundIdNull)
             {
                 vehicleSound.id = sound_params->id;
-                vehicleSound.trackSound.id = SoundId::Null;
-                vehicleSound.otherSound.id = SoundId::Null;
+                vehicleSound.trackSound.id = SoundId::null;
+                vehicleSound.otherSound.id = SoundId::null;
                 vehicleSound.volume = 0x30;
                 return &vehicleSound;
             }
@@ -377,22 +377,22 @@ namespace OpenRCT2::Audio
     {
         switch (id)
         {
-            case SoundId::LiftClassic:
-            case SoundId::TrackFrictionClassicWood:
-            case SoundId::FrictionClassic:
-            case SoundId::LiftFrictionWheels:
-            case SoundId::GoKartEngine:
-            case SoundId::TrackFrictionTrain:
-            case SoundId::TrackFrictionWater:
-            case SoundId::LiftArrow:
-            case SoundId::LiftWood:
-            case SoundId::TrackFrictionWood:
-            case SoundId::LiftWildMouse:
-            case SoundId::LiftBM:
-            case SoundId::TrackFrictionBM:
-            case SoundId::LiftRMC:
-            case SoundId::TrackFrictionRMC:
-            case SoundId::LiftFlume:
+            case SoundId::liftClassic:
+            case SoundId::trackFrictionClassicWood:
+            case SoundId::frictionClassic:
+            case SoundId::liftFrictionWheels:
+            case SoundId::goKartEngine:
+            case SoundId::trackFrictionTrain:
+            case SoundId::trackFrictionWater:
+            case SoundId::liftArrow:
+            case SoundId::liftWood:
+            case SoundId::trackFrictionWood:
+            case SoundId::liftWildMouse:
+            case SoundId::liftBM:
+            case SoundId::trackFrictionBM:
+            case SoundId::liftRMC:
+            case SoundId::trackFrictionRMC:
+            case SoundId::liftFlume:
                 return true;
             default:
                 return false;
@@ -403,17 +403,17 @@ namespace OpenRCT2::Audio
     {
         switch (id)
         {
-            case SoundId::Scream1:
-            case SoundId::Scream2:
-            case SoundId::Scream3:
-            case SoundId::Scream4:
-            case SoundId::Scream5:
-            case SoundId::Scream6:
-            case SoundId::Scream7:
-            case SoundId::Scream8:
-            case SoundId::TrainWhistle:
-            case SoundId::TrainDeparting:
-            case SoundId::Tram:
+            case SoundId::scream1:
+            case SoundId::scream2:
+            case SoundId::scream3:
+            case SoundId::scream4:
+            case SoundId::scream5:
+            case SoundId::scream6:
+            case SoundId::scream7:
+            case SoundId::scream8:
+            case SoundId::trainWhistle:
+            case SoundId::trainDeparting:
+            case SoundId::tram:
                 return true;
             default:
                 return false;
@@ -424,8 +424,8 @@ namespace OpenRCT2::Audio
     {
         switch (id)
         {
-            case SoundId::TrackFrictionBM:
-            case SoundId::TrackFrictionRMC:
+            case SoundId::trackFrictionBM:
+            case SoundId::trackFrictionRMC:
                 return true;
             default:
                 return false;
@@ -474,20 +474,20 @@ namespace OpenRCT2::Audio
 
         if (sound.channel != nullptr && sound.channel->IsDone() && IsLoopingSound(sound.id))
         {
-            sound.id = SoundId::Null;
+            sound.id = SoundId::null;
             sound.channel = nullptr;
         }
-        if (id != sound.id && sound.id != SoundId::Null)
+        if (id != sound.id && sound.id != SoundId::null)
         {
-            sound.id = SoundId::Null;
+            sound.id = SoundId::null;
             sound.channel->Stop();
         }
-        if (id == SoundId::Null)
+        if (id == SoundId::null)
         {
             return;
         }
 
-        if (sound.id == SoundId::Null)
+        if (sound.id == SoundId::null)
         {
             auto frequency = SoundFrequency<type>(id, sound_params->frequency);
             auto looping = IsLoopingSound(id);
@@ -504,7 +504,7 @@ namespace OpenRCT2::Audio
             }
             else
             {
-                sound.id = SoundId::Null;
+                sound.id = SoundId::null;
             }
             return;
         }
@@ -567,11 +567,11 @@ namespace OpenRCT2::Audio
                 if (keepPlaying)
                     continue;
 
-                if (vehicleSound.trackSound.id != SoundId::Null)
+                if (vehicleSound.trackSound.id != SoundId::null)
                 {
                     vehicleSound.trackSound.channel->Stop();
                 }
-                if (vehicleSound.otherSound.id != SoundId::Null)
+                if (vehicleSound.otherSound.id != SoundId::null)
                 {
                     vehicleSound.otherSound.channel->Stop();
                 }

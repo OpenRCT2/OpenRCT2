@@ -906,7 +906,7 @@ public:
         if (!(flags.hasAny(WindowFlag::stickToBack, WindowFlag::stickToFront)))
         {
             wp->flash();
-            OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::WindowOpen, 0, pos.x + (windowSize.width / 2));
+            OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::windowOpen, 0, pos.x + (windowSize.width / 2));
         }
 
         wp->windowPos = pos;

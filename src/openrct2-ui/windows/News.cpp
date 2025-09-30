@@ -356,7 +356,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             invalidate();
-            Audio::Play(Audio::SoundId::Click2, 0, windowPos.x + (width / 2));
+            Audio::Play(Audio::SoundId::click2, 0, windowPos.x + (width / 2));
 
             size_t j = _pressedNewsItemIndex;
             _pressedNewsItemIndex = -1;
@@ -432,7 +432,7 @@ namespace OpenRCT2::Ui::Windows
                 _pressedButtonIndex = buttonIndex;
                 _suspendUpdateTicks = 4;
                 invalidate();
-                Audio::Play(Audio::SoundId::Click1, 0, windowPos.x + (width / 2));
+                Audio::Play(Audio::SoundId::click1, 0, windowPos.x + (width / 2));
             }
         }
 

@@ -2354,7 +2354,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, trackPos);
+            Audio::Play3D(OpenRCT2::Audio::SoundId::placeItem, trackPos);
 
             if (Network::GetMode() != Network::Mode::none)
             {
@@ -2670,7 +2670,7 @@ namespace OpenRCT2::Ui::Windows
                     if (result->Error != GameActions::Status::Ok)
                         return;
 
-                    OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, result->Position);
+                    OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::placeItem, result->Position);
 
                     auto* windowMgr = GetWindowManager();
 
@@ -3737,7 +3737,7 @@ namespace OpenRCT2::Ui::Windows
                         || errorText == STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND || errorText == STR_TOO_HIGH_FOR_SUPPORTS
                         || zAttempts == (numAttempts - 1) || z < 0)
                     {
-                        Audio::Play(OpenRCT2::Audio::SoundId::Error, 0, state->position.x);
+                        Audio::Play(OpenRCT2::Audio::SoundId::error, 0, state->position.x);
                         w = windowMgr->FindByClass(WindowClass::rideConstruction);
                         if (w != nullptr)
                         {
@@ -3755,7 +3755,7 @@ namespace OpenRCT2::Ui::Windows
                 else
                 {
                     windowMgr->CloseByClass(WindowClass::error);
-                    OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, _currentTrackBegin);
+                    OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::placeItem, _currentTrackBegin);
                     break;
                 }
             }
@@ -3810,7 +3810,7 @@ namespace OpenRCT2::Ui::Windows
                     _currentTrackAlternative = savedCurrentTrackAlternative;
                     _currentTrackHasLiftHill = savedCurrentTrackLiftHill;
 
-                    OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Error, 0, state->position.x);
+                    OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::error, 0, state->position.x);
                     break;
                 }
 

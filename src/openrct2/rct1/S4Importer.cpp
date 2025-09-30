@@ -2827,15 +2827,15 @@ namespace OpenRCT2::RCT1
         dst->dopplerShift = src->SoundVectorFactor;
         dst->spin_speed = src->SpinSpeed;
         dst->sound2_flags = src->Sound2Flags;
-        dst->sound1_id = OpenRCT2::Audio::SoundId::Null;
-        dst->sound2_id = OpenRCT2::Audio::SoundId::Null;
+        dst->sound1_id = OpenRCT2::Audio::SoundId::null;
+        dst->sound2_id = OpenRCT2::Audio::SoundId::null;
         dst->var_C0 = src->VarC0;
         dst->CollisionDetectionTimer = src->CollisionDetectionTimer;
         dst->animation_frame = src->AnimationFrame;
         dst->animationState = src->AnimationState;
         dst->NumLaps = src->NumLaps;
         dst->var_D3 = src->VarD3;
-        dst->scream_sound_id = OpenRCT2::Audio::SoundId::Null;
+        dst->scream_sound_id = OpenRCT2::Audio::SoundId::null;
         dst->pitch = src->pitch;
         dst->roll = src->roll;
 

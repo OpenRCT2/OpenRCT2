@@ -470,7 +470,7 @@ namespace OpenRCT2::Ui::Windows
 
             _newRideVars.SelectedRide = item;
 
-            OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Click1, 0, windowPos.x + (width / 2));
+            OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::click1, 0, windowPos.x + (width / 2));
             _newRideVars.SelectedRideCountdown = 8;
             invalidate();
         }

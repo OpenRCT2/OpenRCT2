@@ -278,7 +278,7 @@ namespace OpenRCT2::Ui::Windows
             if (res.Error != GameActions::Status::Ok)
             {
                 // Unable to build track
-                Audio::Play3D(Audio::SoundId::Error, trackLoc);
+                Audio::Play3D(Audio::SoundId::error, trackLoc);
 
                 auto windowManager = GetWindowManager();
                 windowManager->ShowError(res.GetErrorTitle(), res.GetErrorMessage());
@@ -289,7 +289,7 @@ namespace OpenRCT2::Ui::Windows
             tdAction.SetCallback([&](const GameActions::GameAction*, const GameActions::Result* result) {
                 if (result->Error != GameActions::Status::Ok)
                 {
-                    Audio::Play3D(Audio::SoundId::Error, result->Position);
+                    Audio::Play3D(Audio::SoundId::error, result->Position);
                     return;
                 }
 
@@ -300,7 +300,7 @@ namespace OpenRCT2::Ui::Windows
                     auto* windowMgr = Ui::GetWindowManager();
                     windowMgr->CloseByClass(WindowClass::error);
 
-                    Audio::Play3D(Audio::SoundId::PlaceItem, trackLoc);
+                    Audio::Play3D(Audio::SoundId::placeItem, trackLoc);
                     _currentRideIndex = rideId;
 
                     if (TrackDesignAreEntranceAndExitPlaced())
