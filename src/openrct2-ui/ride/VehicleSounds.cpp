@@ -185,7 +185,7 @@ namespace OpenRCT2::Audio
         {
             screenWidth = 64;
         }
-        param.pan_x = ((((panX * 65536) / screenWidth) - 0x8000) >> 4);
+        param.panX = ((((panX * 65536) / screenWidth) - 0x8000) >> 4);
 
         int32_t panY = (vehicle.SpriteData.SpriteRect.GetTop() / 2) + (vehicle.SpriteData.SpriteRect.GetBottom() / 2)
             - gMusicTrackingViewport->viewPos.y;
@@ -197,7 +197,7 @@ namespace OpenRCT2::Audio
         {
             screenHeight = 64;
         }
-        param.pan_y = ((((panY * 65536) / screenHeight) - 0x8000) >> 4);
+        param.panY = ((((panY * 65536) / screenHeight) - 0x8000) >> 4);
 
         int32_t frequency = std::abs(vehicle.velocity);
 
@@ -302,35 +302,35 @@ namespace OpenRCT2::Audio
         uint8_t vol1 = 0xFF;
         uint8_t vol2 = 0xFF;
 
-        int16_t pan_y = std::abs(sound_params->pan_y);
-        pan_y = std::min(static_cast<int16_t>(0xFFF), pan_y);
-        pan_y -= 0x800;
-        if (pan_y > 0)
+        int16_t panY = std::abs(sound_params->panY);
+        panY = std::min(static_cast<int16_t>(0xFFF), panY);
+        panY -= 0x800;
+        if (panY > 0)
         {
-            pan_y = (0x400 - pan_y) / 4;
-            vol1 = LoByte(pan_y);
-            if (static_cast<int8_t>(HiByte(pan_y)) != 0)
+            panY = (0x400 - panY) / 4;
+            vol1 = LoByte(panY);
+            if (static_cast<int8_t>(HiByte(panY)) != 0)
             {
                 vol1 = 0xFF;
-                if (static_cast<int8_t>(HiByte(pan_y)) < 0)
+                if (static_cast<int8_t>(HiByte(panY)) < 0)
                 {
                     vol1 = 0;
                 }
             }
         }
 
-        int16_t pan_x = std::abs(sound_params->pan_x);
-        pan_x = std::min(static_cast<int16_t>(0xFFF), pan_x);
-        pan_x -= 0x800;
+        int16_t panX = std::abs(sound_params->panX);
+        panX = std::min(static_cast<int16_t>(0xFFF), panX);
+        panX -= 0x800;
 
-        if (pan_x > 0)
+        if (panX > 0)
         {
-            pan_x = (0x400 - pan_x) / 4;
-            vol2 = LoByte(pan_x);
-            if (static_cast<int8_t>(HiByte(pan_x)) != 0)
+            panX = (0x400 - panX) / 4;
+            vol2 = LoByte(panX);
+            if (static_cast<int8_t>(HiByte(panX)) != 0)
             {
                 vol2 = 0xFF;
-                if (static_cast<int8_t>(HiByte(pan_x)) < 0)
+                if (static_cast<int8_t>(HiByte(panX)) < 0)
                 {
                     vol2 = 0;
                 }
@@ -491,13 +491,13 @@ namespace OpenRCT2::Audio
         {
             auto frequency = SoundFrequency<type>(id, sound_params->frequency);
             auto looping = IsLoopingSound(id);
-            auto pan = sound_params->pan_x;
+            auto pan = sound_params->panX;
             auto channel = CreateAudioChannel(
                 id, looping, DStoMixerVolume(volume), DStoMixerPan(pan), DStoMixerRate(frequency), false);
             if (channel != nullptr)
             {
                 sound.id = id;
-                sound.pan = sound_params->pan_x;
+                sound.pan = sound_params->panX;
                 sound.volume = volume;
                 sound.frequency = sound_params->frequency;
                 sound.channel = channel;
@@ -513,10 +513,10 @@ namespace OpenRCT2::Audio
             sound.volume = volume;
             sound.channel->SetVolume(DStoMixerVolume(volume));
         }
-        if (sound_params->pan_x != sound.pan)
+        if (sound_params->panX != sound.pan)
         {
-            sound.pan = sound_params->pan_x;
-            sound.channel->SetPan(DStoMixerPan(sound_params->pan_x));
+            sound.pan = sound_params->panX;
+            sound.channel->SetPan(DStoMixerPan(sound_params->panX));
         }
         if (!(getGameState().currentTicks & 3) && sound_params->frequency != sound.frequency)
         {

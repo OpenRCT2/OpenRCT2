@@ -53,8 +53,8 @@ namespace OpenRCT2::Audio
     struct VehicleSoundParams
     {
         uint16_t id;
-        int16_t pan_x;
-        int16_t pan_y;
+        int16_t panX;
+        int16_t panY;
         uint16_t frequency;
         int16_t volume;
         uint16_t priority;
