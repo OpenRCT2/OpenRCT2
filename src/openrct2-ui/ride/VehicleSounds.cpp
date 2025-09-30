@@ -363,8 +363,8 @@ namespace OpenRCT2::Audio
             if (vehicleSound.id == kSoundIdNull)
             {
                 vehicleSound.id = sound_params->id;
-                vehicleSound.TrackSound.id = SoundId::Null;
-                vehicleSound.OtherSound.id = SoundId::Null;
+                vehicleSound.trackSound.id = SoundId::Null;
+                vehicleSound.otherSound.id = SoundId::Null;
                 vehicleSound.volume = 0x30;
                 return &vehicleSound;
             }
@@ -567,13 +567,13 @@ namespace OpenRCT2::Audio
                 if (keepPlaying)
                     continue;
 
-                if (vehicleSound.TrackSound.id != SoundId::Null)
+                if (vehicleSound.trackSound.id != SoundId::Null)
                 {
-                    vehicleSound.TrackSound.channel->Stop();
+                    vehicleSound.trackSound.channel->Stop();
                 }
-                if (vehicleSound.OtherSound.id != SoundId::Null)
+                if (vehicleSound.otherSound.id != SoundId::Null)
                 {
-                    vehicleSound.OtherSound.channel->Stop();
+                    vehicleSound.otherSound.channel->Stop();
                 }
                 vehicleSound.id = kSoundIdNull;
             }
@@ -608,9 +608,9 @@ namespace OpenRCT2::Audio
             if (vehicle != nullptr)
             {
                 UpdateSound<SoundType::TrackNoises>(
-                    vehicle->sound1_id, vehicle->sound1_volume, &vehicleSoundParams, vehicleSound->TrackSound, panVol);
+                    vehicle->sound1_id, vehicle->sound1_volume, &vehicleSoundParams, vehicleSound->trackSound, panVol);
                 UpdateSound<SoundType::OtherNoises>(
-                    vehicle->sound2_id, vehicle->sound2_volume, &vehicleSoundParams, vehicleSound->OtherSound, panVol);
+                    vehicle->sound2_id, vehicle->sound2_volume, &vehicleSoundParams, vehicleSound->otherSound, panVol);
             }
         }
     }

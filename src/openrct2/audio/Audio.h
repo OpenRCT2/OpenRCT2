@@ -46,8 +46,8 @@ namespace OpenRCT2::Audio
     {
         uint16_t id;
         int16_t volume;
-        Sound TrackSound;
-        Sound OtherSound;
+        Sound trackSound;
+        Sound otherSound;
     };
 
     struct VehicleSoundParams
