@@ -22,9 +22,7 @@ struct CoordsXYZ;
 
 namespace OpenRCT2::Audio
 {
-    constexpr size_t kMaxDeviceNameSize = 256;
     constexpr size_t kMaxVehicleSounds = 14;
-    constexpr size_t kMaxDefaultMusic = 46;
     constexpr uint16_t kSoundIdNull = 0xFFFF;
     constexpr int32_t kAudioPlayAtCentre = 0x8000;
 
