@@ -439,7 +439,7 @@ public:
                         ie.modifiers = SDL_GetModState();
                         ie.button = e.button.button;
                         ie.state = InputEventState::down;
-                        _inputManager.QueueInputEvent(std::move(ie));
+                        _inputManager.queueInputEvent(std::move(ie));
                     }
                     break;
                 }
@@ -475,7 +475,7 @@ public:
                         ie.modifiers = SDL_GetModState();
                         ie.button = e.button.button;
                         ie.state = InputEventState::release;
-                        _inputManager.QueueInputEvent(std::move(ie));
+                        _inputManager.queueInputEvent(std::move(ie));
                     }
                     break;
                 }
@@ -545,14 +545,14 @@ public:
                     _textComposition.HandleMessage(&e);
                     auto ie = GetInputEventFromSDLEvent(e);
                     ie.state = InputEventState::down;
-                    _inputManager.QueueInputEvent(std::move(ie));
+                    _inputManager.queueInputEvent(std::move(ie));
                     break;
                 }
                 case SDL_KEYUP:
                 {
                     auto ie = GetInputEventFromSDLEvent(e);
                     ie.state = InputEventState::release;
-                    _inputManager.QueueInputEvent(std::move(ie));
+                    _inputManager.queueInputEvent(std::move(ie));
                     break;
                 }
                 case SDL_MULTIGESTURE:
@@ -583,7 +583,7 @@ public:
                     break;
                 default:
                 {
-                    _inputManager.QueueInputEvent(e);
+                    _inputManager.queueInputEvent(e);
                     break;
                 }
             }

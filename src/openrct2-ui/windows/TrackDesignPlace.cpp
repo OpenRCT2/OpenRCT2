@@ -455,7 +455,7 @@ namespace OpenRCT2::Ui::Windows
 
             auto& im = GetInputManager();
 
-            if (!_trackPlaceCtrlState && im.IsModifierKeyPressed(ModifierKey::ctrl))
+            if (!_trackPlaceCtrlState && im.isModifierKeyPressed(ModifierKey::ctrl))
             {
                 constexpr auto interactionFlags = EnumsToFlags(
                     ViewportInteractionItem::terrain, ViewportInteractionItem::ride, ViewportInteractionItem::scenery,
@@ -477,19 +477,19 @@ namespace OpenRCT2::Ui::Windows
 
                 _trackPlaceCtrlState = true;
             }
-            else if (!im.IsModifierKeyPressed(ModifierKey::ctrl))
+            else if (!im.isModifierKeyPressed(ModifierKey::ctrl))
             {
                 _trackPlaceCtrlState = false;
                 _trackPlaceCtrlZ = 0;
             }
 
-            if (!_trackPlaceShiftState && im.IsModifierKeyPressed(ModifierKey::shift))
+            if (!_trackPlaceShiftState && im.isModifierKeyPressed(ModifierKey::shift))
             {
                 _trackPlaceShiftState = true;
                 _trackPlaceShiftStart = screenCoords;
                 _trackPlaceShiftZ = 0;
             }
-            else if (im.IsModifierKeyPressed(ModifierKey::shift))
+            else if (im.isModifierKeyPressed(ModifierKey::shift))
             {
                 uint16_t newMaxHeight = ZoomLevel::max().ApplyTo(
                     std::numeric_limits<decltype(TileElement::BaseHeight)>::max() - 32);

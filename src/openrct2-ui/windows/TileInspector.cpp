@@ -972,7 +972,7 @@ static uint64_t PageDisabledWidgets[] = {
             CoordsXY mapCoords;
             TileElement* clickedElement = nullptr;
             bool mouseOnViewport = false;
-            if (GetInputManager().IsModifierKeyPressed(ModifierKey::ctrl))
+            if (GetInputManager().isModifierKeyPressed(ModifierKey::ctrl))
             {
                 auto info = GetMapCoordinatesFromPos(screenCoords, ViewportInteractionFlags);
                 clickedElement = info.Element;
@@ -1787,7 +1787,7 @@ static uint64_t PageDisabledWidgets[] = {
 
         void UpdateSelectedTile(const ScreenCoordsXY& screenCoords)
         {
-            const bool ctrlIsHeldDown = GetInputManager().IsModifierKeyPressed(ModifierKey::ctrl);
+            const bool ctrlIsHeldDown = GetInputManager().isModifierKeyPressed(ModifierKey::ctrl);
             // Mouse hasn't moved
             if (screenCoords.x == _toolMouseX && screenCoords.y == _toolMouseY && _toolCtrlDown == ctrlIsHeldDown)
                 return;

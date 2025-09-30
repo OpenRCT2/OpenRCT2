@@ -68,30 +68,30 @@ namespace OpenRCT2::Ui
         std::vector<uint8_t> _keyboardState;
         uint8_t _modifierKeyState;
 
-        void CheckJoysticks();
+        void checkJoysticks();
         void processAnalogueInput();
         void updateAnalogueScroll();
 
-        void HandleViewScrolling();
-        void HandleModifiers();
-        void ProcessEvents();
-        void Process(const InputEvent& e);
-        void ProcessInGameConsole(const InputEvent& e);
-        void ProcessChat(const InputEvent& e);
-        void ProcessHoldEvents();
-        void ProcessViewScrollEvent(std::string_view shortcutId, const ScreenCoordsXY& delta);
+        void handleViewScrolling();
+        void handleModifiers();
+        void processEvents();
+        void process(const InputEvent& e);
+        void processInGameConsole(const InputEvent& e);
+        void processChat(const InputEvent& e);
+        void processHoldEvents();
+        void processViewScrollEvent(std::string_view shortcutId, const ScreenCoordsXY& delta);
 
-        bool GetState(const RegisteredShortcut& shortcut) const;
-        bool GetState(const ShortcutInput& shortcut) const;
+        bool getState(const RegisteredShortcut& shortcut) const;
+        bool getState(const ShortcutInput& shortcut) const;
 
-        bool HasTextInputFocus() const;
+        bool hasTextInputFocus() const;
 
     public:
         InputManager();
 
-        bool IsModifierKeyPressed(ModifierKey modifier) const;
-        void QueueInputEvent(const SDL_Event& e);
-        void QueueInputEvent(InputEvent&& e);
-        void Process();
+        bool isModifierKeyPressed(ModifierKey modifier) const;
+        void queueInputEvent(const SDL_Event& e);
+        void queueInputEvent(InputEvent&& e);
+        void process();
     };
 } // namespace OpenRCT2::Ui

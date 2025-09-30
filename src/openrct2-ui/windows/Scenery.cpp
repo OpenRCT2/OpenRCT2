@@ -2405,7 +2405,7 @@ namespace OpenRCT2::Ui::Windows
                 auto& im = GetInputManager();
                 if (!gSceneryCtrlPressed)
                 {
-                    if (im.IsModifierKeyPressed(ModifierKey::ctrl))
+                    if (im.isModifierKeyPressed(ModifierKey::ctrl))
                     {
                         // CTRL pressed
                         constexpr auto flag = EnumsToFlags(
@@ -2423,7 +2423,7 @@ namespace OpenRCT2::Ui::Windows
                 }
                 else
                 {
-                    if (!(im.IsModifierKeyPressed(ModifierKey::ctrl)))
+                    if (!(im.isModifierKeyPressed(ModifierKey::ctrl)))
                     {
                         // CTRL not pressed
                         gSceneryCtrlPressed = false;
@@ -2432,7 +2432,7 @@ namespace OpenRCT2::Ui::Windows
 
                 if (!gSceneryShiftPressed)
                 {
-                    if (im.IsModifierKeyPressed(ModifierKey::shift))
+                    if (im.isModifierKeyPressed(ModifierKey::shift))
                     {
                         // SHIFT pressed
                         gSceneryShiftPressed = true;
@@ -2443,7 +2443,7 @@ namespace OpenRCT2::Ui::Windows
                 }
                 else
                 {
-                    if (im.IsModifierKeyPressed(ModifierKey::shift))
+                    if (im.isModifierKeyPressed(ModifierKey::shift))
                     {
                         // SHIFT pressed
                         gSceneryShiftPressZOffset = (gSceneryShiftPressY - screenPos.y + 4);

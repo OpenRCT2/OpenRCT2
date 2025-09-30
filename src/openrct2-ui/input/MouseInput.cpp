@@ -1265,13 +1265,13 @@ namespace OpenRCT2
                 && cursor_w_number == w->number && widgetIndex == cursor_widgetIndex)
             {
                 auto& im = GetInputManager();
-                if (im.IsModifierKeyPressed(ModifierKey::shift))
+                if (im.isModifierKeyPressed(ModifierKey::shift))
                 {
                     gLastCloseModifier.window.number = w->number;
                     gLastCloseModifier.window.classification = w->classification;
                     gLastCloseModifier.modifier = CloseWindowModifier::shift;
                 }
-                else if (im.IsModifierKeyPressed(ModifierKey::ctrl))
+                else if (im.isModifierKeyPressed(ModifierKey::ctrl))
                 {
                     gLastCloseModifier.window.number = w->number;
                     gLastCloseModifier.window.classification = w->classification;

@@ -37,7 +37,7 @@ InputManager::InputManager()
     _modifierKeyState = EnumValue(ModifierKey::none);
 }
 
-void InputManager::QueueInputEvent(const SDL_Event& e)
+void InputManager::queueInputEvent(const SDL_Event& e)
 {
     switch (e.type)
     {
@@ -53,7 +53,7 @@ void InputManager::QueueInputEvent(const SDL_Event& e)
                 ie.button = e.caxis.axis;
                 ie.state = InputEventState::down;
                 ie.axisValue = e.caxis.value;
-                QueueInputEvent(std::move(ie));
+                queueInputEvent(std::move(ie));
             }
             break;
         }
@@ -67,7 +67,7 @@ void InputManager::QueueInputEvent(const SDL_Event& e)
                 ie.button = e.jhat.value;
                 ie.state = InputEventState::down;
                 ie.axisValue = 0;
-                QueueInputEvent(std::move(ie));
+                queueInputEvent(std::move(ie));
             }
             break;
         }
@@ -80,7 +80,7 @@ void InputManager::QueueInputEvent(const SDL_Event& e)
             ie.button = e.cbutton.button;
             ie.state = InputEventState::down;
             ie.axisValue = 0;
-            QueueInputEvent(std::move(ie));
+            queueInputEvent(std::move(ie));
             break;
         }
         case SDL_CONTROLLERBUTTONUP:
@@ -92,7 +92,7 @@ void InputManager::QueueInputEvent(const SDL_Event& e)
             ie.button = e.cbutton.button;
             ie.state = InputEventState::release;
             ie.axisValue = 0;
-            QueueInputEvent(std::move(ie));
+            queueInputEvent(std::move(ie));
             break;
         }
         case SDL_CONTROLLERDEVICEADDED:
@@ -107,12 +107,12 @@ void InputManager::QueueInputEvent(const SDL_Event& e)
     }
 }
 
-void InputManager::QueueInputEvent(InputEvent&& e)
+void InputManager::queueInputEvent(InputEvent&& e)
 {
     _events.push(e);
 }
 
-void InputManager::CheckJoysticks()
+void InputManager::checkJoysticks()
 {
     constexpr uint32_t kCheckInternalMs = 5000;
 
@@ -197,17 +197,17 @@ void InputManager::updateAnalogueScroll()
     _viewScroll.y += _analogueScroll.y;
 }
 
-void InputManager::Process()
+void InputManager::process()
 {
-    CheckJoysticks();
+    checkJoysticks();
     processAnalogueInput();
-    HandleModifiers();
-    ProcessEvents();
-    ProcessHoldEvents();
-    HandleViewScrolling();
+    handleModifiers();
+    processEvents();
+    processHoldEvents();
+    handleViewScrolling();
 }
 
-void InputManager::HandleViewScrolling()
+void InputManager::handleViewScrolling()
 {
     if (gLegacyScene == LegacyScene::titleSequence)
         return;
@@ -268,14 +268,14 @@ void InputManager::HandleViewScrolling()
         if (InputGetState() != InputState::Normal)
             return;
 
-        if (IsModifierKeyPressed(ModifierKey::shift) || IsModifierKeyPressed(ModifierKey::ctrl))
+        if (isModifierKeyPressed(ModifierKey::shift) || isModifierKeyPressed(ModifierKey::ctrl))
             return;
 
         GameHandleEdgeScroll();
     }
 }
 
-void InputManager::HandleModifiers()
+void InputManager::handleModifiers()
 {
     _modifierKeyState = EnumValue(ModifierKey::none);
 
@@ -301,29 +301,29 @@ void InputManager::HandleModifiers()
 
     if (Config::Get().general.VirtualFloorStyle != VirtualFloorStyles::Off)
     {
-        if (IsModifierKeyPressed(ModifierKey::ctrl) || IsModifierKeyPressed(ModifierKey::shift))
+        if (isModifierKeyPressed(ModifierKey::ctrl) || isModifierKeyPressed(ModifierKey::shift))
             VirtualFloorEnable();
         else
             VirtualFloorDisable();
     }
 }
 
-bool InputManager::IsModifierKeyPressed(ModifierKey modifier) const
+bool InputManager::isModifierKeyPressed(ModifierKey modifier) const
 {
     return _modifierKeyState & EnumValue(modifier);
 }
 
-void InputManager::ProcessEvents()
+void InputManager::processEvents()
 {
     while (!_events.empty())
     {
         const auto& e = _events.front();
-        Process(e);
+        process(e);
         _events.pop();
     }
 }
 
-void InputManager::Process(const InputEvent& e)
+void InputManager::process(const InputEvent& e)
 {
     auto& shortcutManager = GetShortcutManager();
     if (e.deviceKind == InputDeviceKind::keyboard)
@@ -333,14 +333,14 @@ void InputManager::Process(const InputEvent& e)
         {
             if (!shortcutManager.ProcessEventForSpecificShortcut(e, ShortcutId::kDebugToggleConsole))
             {
-                ProcessInGameConsole(e);
+                processInGameConsole(e);
             }
             return;
         }
 
         if (gChatOpen)
         {
-            ProcessChat(e);
+            processChat(e);
             return;
         }
 
@@ -390,7 +390,7 @@ void InputManager::Process(const InputEvent& e)
     shortcutManager.ProcessEvent(e);
 }
 
-void InputManager::ProcessInGameConsole(const InputEvent& e)
+void InputManager::processInGameConsole(const InputEvent& e)
 {
     if (e.deviceKind == InputDeviceKind::keyboard && e.state == InputEventState::release)
     {
@@ -425,7 +425,7 @@ void InputManager::ProcessInGameConsole(const InputEvent& e)
     }
 }
 
-void InputManager::ProcessChat(const InputEvent& e)
+void InputManager::processChat(const InputEvent& e)
 {
     if (e.deviceKind == InputDeviceKind::keyboard && e.state == InputEventState::down)
     {
@@ -447,7 +447,7 @@ void InputManager::ProcessChat(const InputEvent& e)
     }
 }
 
-void InputManager::ProcessHoldEvents()
+void InputManager::processHoldEvents()
 {
     // Get mouse state
     _mouseState = SDL_GetMouseState(nullptr, nullptr);
@@ -462,37 +462,37 @@ void InputManager::ProcessHoldEvents()
     _viewScroll.x = 0;
     _viewScroll.y = 0;
 
-    if (!HasTextInputFocus())
+    if (!hasTextInputFocus())
     {
         auto& shortcutManager = GetShortcutManager();
         if (!shortcutManager.IsPendingShortcutChange())
         {
-            ProcessViewScrollEvent(ShortcutId::kViewScrollUp, { 0, -1 });
-            ProcessViewScrollEvent(ShortcutId::kViewScrollDown, { 0, 1 });
-            ProcessViewScrollEvent(ShortcutId::kViewScrollLeft, { -1, 0 });
-            ProcessViewScrollEvent(ShortcutId::kViewScrollRight, { 1, 0 });
+            processViewScrollEvent(ShortcutId::kViewScrollUp, { 0, -1 });
+            processViewScrollEvent(ShortcutId::kViewScrollDown, { 0, 1 });
+            processViewScrollEvent(ShortcutId::kViewScrollLeft, { -1, 0 });
+            processViewScrollEvent(ShortcutId::kViewScrollRight, { 1, 0 });
         }
 
         updateAnalogueScroll();
     }
 }
 
-void InputManager::ProcessViewScrollEvent(std::string_view shortcutId, const ScreenCoordsXY& delta)
+void InputManager::processViewScrollEvent(std::string_view shortcutId, const ScreenCoordsXY& delta)
 {
     auto& shortcutManager = GetShortcutManager();
     auto shortcut = shortcutManager.GetShortcut(shortcutId);
-    if (shortcut != nullptr && GetState(*shortcut))
+    if (shortcut != nullptr && getState(*shortcut))
     {
         _viewScroll.x += delta.x;
         _viewScroll.y += delta.y;
     }
 }
 
-bool InputManager::GetState(const RegisteredShortcut& shortcut) const
+bool InputManager::getState(const RegisteredShortcut& shortcut) const
 {
     for (const auto& i : shortcut.Current)
     {
-        if (GetState(i))
+        if (getState(i))
         {
             return true;
         }
@@ -500,7 +500,7 @@ bool InputManager::GetState(const RegisteredShortcut& shortcut) const
     return false;
 }
 
-bool InputManager::GetState(const ShortcutInput& shortcut) const
+bool InputManager::getState(const ShortcutInput& shortcut) const
 {
     constexpr uint32_t kUsefulModifiers = KMOD_SHIFT | KMOD_CTRL | KMOD_ALT | KMOD_GUI;
     auto modifiers = SDL_GetModState() & kUsefulModifiers;
@@ -570,7 +570,7 @@ bool InputManager::GetState(const ShortcutInput& shortcut) const
     return false;
 }
 
-bool InputManager::HasTextInputFocus() const
+bool InputManager::hasTextInputFocus() const
 {
     if (OpenRCT2::Ui::Windows::IsUsingWidgetTextBox() || gChatOpen)
         return true;

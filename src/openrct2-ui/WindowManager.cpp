@@ -615,7 +615,7 @@ public:
     void HandleKeyboard(bool isTitle) override
     {
         auto& inputManager = GetInputManager();
-        inputManager.Process();
+        inputManager.process();
     }
 
     std::string GetKeyboardShortcutString(std::string_view shortcutId) override
