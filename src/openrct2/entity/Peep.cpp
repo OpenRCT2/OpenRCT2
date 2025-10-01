@@ -1534,7 +1534,8 @@ bool Peep::IsActionInterruptable() const
 }
 
 /**
- * Used to avoid peep action and animation triggers that might put them at risk of getting run over at level crossings.
+ * Used to avoid peep action and animation triggers that cause them to stop moving and might put them at risk
+ * of getting run over at level crossings, such as guests reading the map and entertainers performing.
  */
 bool Peep::IsActionInterruptableSafely() const
 {
