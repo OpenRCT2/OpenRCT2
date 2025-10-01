@@ -63,7 +63,7 @@ namespace OpenRCT2::Ui::Windows
 
             if (!gDisableErrorWindowSound)
             {
-                Audio::Play(Audio::SoundId::Error, 0, windowPos.x + (width / 2));
+                Audio::Play(Audio::SoundId::error, 0, windowPos.x + (width / 2));
             }
         }
 

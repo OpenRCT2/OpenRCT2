@@ -948,7 +948,7 @@ void Guest::Tick128UpdateGuest(uint32_t index)
     {
         if (State == PeepState::Walking || State == PeepState::Sitting)
         {
-            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::Crash, GetLocation());
+            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::crash, GetLocation());
 
             ExplosionCloud::Create({ x, y, z + 16 });
             ExplosionFlare::Create({ x, y, z + 16 });
@@ -1826,9 +1826,9 @@ void Guest::OnExitRide(Ride& ride)
         InsertNewThought(PeepThoughtType::WasGreat, ride.id);
 
         static constexpr OpenRCT2::Audio::SoundId laughs[3] = {
-            OpenRCT2::Audio::SoundId::Laugh1,
-            OpenRCT2::Audio::SoundId::Laugh2,
-            OpenRCT2::Audio::SoundId::Laugh3,
+            OpenRCT2::Audio::SoundId::laugh1,
+            OpenRCT2::Audio::SoundId::laugh2,
+            OpenRCT2::Audio::SoundId::laugh3,
         };
         int32_t laughType = ScenarioRand() & 7;
         if (laughType < 3)
@@ -2356,7 +2356,7 @@ void Guest::SpendMoney(money64& peep_expend_type, money64 amount, ExpenditureTyp
 
     MoneyEffect::CreateAt(amount, GetLocation(), true);
 
-    OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::Purchase, GetLocation());
+    OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::purchase, GetLocation());
 }
 
 void Guest::SetHasRidden(const Ride& ride)
@@ -5180,7 +5180,7 @@ void Guest::UpdateRideShopInteract()
     // Do not play toilet flush sound on title screen as it's considered loud and annoying
     if (gLegacyScene != LegacyScene::titleSequence)
     {
-        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::ToiletFlush, GetLocation());
+        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::toiletFlush, GetLocation());
     }
 
     RideSubState = PeepRideSubState::LeaveShop;
@@ -6987,7 +6987,7 @@ void Guest::UpdateAnimationGroup()
             if ((ScenarioRand() & 0xFFFF) <= 13107)
             {
                 isBalloonPopped = true;
-                OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::BalloonPop, { x, y, z });
+                OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::balloonPop, { x, y, z });
             }
             Balloon::Create({ x, y, z + 9 }, BalloonColour, isBalloonPopped);
         }
@@ -7838,10 +7838,10 @@ void Guest::ThrowUp()
     Litter::Create({ curLoc, Orientation }, (Id.ToUnderlying() & 1) ? Litter::Type::VomitAlt : Litter::Type::Vomit);
 
     static constexpr OpenRCT2::Audio::SoundId coughs[4] = {
-        OpenRCT2::Audio::SoundId::Cough1,
-        OpenRCT2::Audio::SoundId::Cough2,
-        OpenRCT2::Audio::SoundId::Cough3,
-        OpenRCT2::Audio::SoundId::Cough4,
+        OpenRCT2::Audio::SoundId::cough1,
+        OpenRCT2::Audio::SoundId::cough2,
+        OpenRCT2::Audio::SoundId::cough3,
+        OpenRCT2::Audio::SoundId::cough4,
     };
     auto soundId = coughs[ScenarioRand() & 3];
     OpenRCT2::Audio::Play3D(soundId, curLoc);

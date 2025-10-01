@@ -808,7 +808,7 @@ namespace OpenRCT2::Ui::Windows
             auto& im = GetInputManager();
 
             // First, store the initial copy/ctrl state
-            if (!_footpathPlaceCtrlState && im.IsModifierKeyPressed(ModifierKey::ctrl))
+            if (!_footpathPlaceCtrlState && im.isModifierKeyPressed(ModifierKey::ctrl))
             {
                 constexpr auto interactionFlags = EnumsToFlags(
                     ViewportInteractionItem::terrain, ViewportInteractionItem::ride, ViewportInteractionItem::scenery,
@@ -824,20 +824,20 @@ namespace OpenRCT2::Ui::Windows
                     _footpathPlaceCtrlState = true;
                 }
             }
-            else if (!im.IsModifierKeyPressed(ModifierKey::ctrl))
+            else if (!im.isModifierKeyPressed(ModifierKey::ctrl))
             {
                 _footpathPlaceCtrlState = false;
                 _footpathPlaceCtrlZ = 0;
             }
 
             // In addition, vertical shifting on top of the base (copy) placement?
-            if (!_footpathPlaceShiftState && im.IsModifierKeyPressed(ModifierKey::shift))
+            if (!_footpathPlaceShiftState && im.isModifierKeyPressed(ModifierKey::shift))
             {
                 _footpathPlaceShiftState = true;
                 _footpathPlaceShiftStart = screenCoords;
                 _footpathPlaceShiftZ = 0;
             }
-            else if (im.IsModifierKeyPressed(ModifierKey::shift))
+            else if (im.isModifierKeyPressed(ModifierKey::shift))
             {
                 uint16_t maxPathHeight = ZoomLevel::max().ApplyTo(
                     std::numeric_limits<decltype(TileElement::BaseHeight)>::max() - 32);
@@ -1088,7 +1088,7 @@ namespace OpenRCT2::Ui::Windows
                     // Don't play sound if it is no cost to prevent multiple sounds. TODO: make this work in no money scenarios
                     if (result->Cost != 0)
                     {
-                        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, result->Position);
+                        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::placeItem, result->Position);
                     }
                 }
                 else
@@ -1179,7 +1179,7 @@ namespace OpenRCT2::Ui::Windows
                 [footpathLoc](const GameActions::GameAction* ga, const GameActions::Result* result) {
                     if (result->Error == GameActions::Status::Ok)
                     {
-                        Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, result->Position);
+                        Audio::Play3D(OpenRCT2::Audio::SoundId::placeItem, result->Position);
                     }
 
                     auto* windowMgr = GetWindowManager();

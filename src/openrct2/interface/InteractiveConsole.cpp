@@ -800,7 +800,7 @@ static void ConsoleCommandSet(InteractiveConsole& console, const arguments_t& ar
             money64 money = ToMoney64FromGBP(double_val[0]);
             if (gameState.park.cash != money)
             {
-                ConsoleSetVariableAction<GameActions::CheatSetAction>(console, varName, CheatType::SetMoney, money);
+                ConsoleSetVariableAction<GameActions::CheatSetAction>(console, varName, CheatType::setMoney, money);
             }
             else
             {
@@ -888,7 +888,7 @@ static void ConsoleCommandSet(InteractiveConsole& console, const arguments_t& ar
         }
         else if (varName == "no_money" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
-            ConsoleSetVariableAction<GameActions::CheatSetAction>(console, varName, CheatType::NoMoney, int_val[0] != 0);
+            ConsoleSetVariableAction<GameActions::CheatSetAction>(console, varName, CheatType::noMoney, int_val[0] != 0);
         }
         else if (varName == "difficult_park_rating" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
@@ -970,7 +970,7 @@ static void ConsoleCommandSet(InteractiveConsole& console, const arguments_t& ar
             if (gameState.cheats.sandboxMode != (int_val[0] != 0))
             {
                 ConsoleSetVariableAction<GameActions::CheatSetAction>(
-                    console, varName, CheatType::SandboxMode, int_val[0] != 0);
+                    console, varName, CheatType::sandboxMode, int_val[0] != 0);
             }
             else
             {
@@ -982,7 +982,7 @@ static void ConsoleCommandSet(InteractiveConsole& console, const arguments_t& ar
             if (gameState.cheats.disableClearanceChecks != (int_val[0] != 0))
             {
                 ConsoleSetVariableAction<GameActions::CheatSetAction>(
-                    console, varName, CheatType::DisableClearanceChecks, int_val[0] != 0);
+                    console, varName, CheatType::disableClearanceChecks, int_val[0] != 0);
             }
             else
             {
@@ -994,7 +994,7 @@ static void ConsoleCommandSet(InteractiveConsole& console, const arguments_t& ar
             if (gameState.cheats.disableSupportLimits != (int_val[0] != 0))
             {
                 ConsoleSetVariableAction<GameActions::CheatSetAction>(
-                    console, varName, CheatType::DisableSupportLimits, int_val[0] != 0);
+                    console, varName, CheatType::disableSupportLimits, int_val[0] != 0);
             }
             else
             {

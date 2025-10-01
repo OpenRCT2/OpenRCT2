@@ -82,7 +82,7 @@ namespace OpenRCT2::GameActions
 
         if (isExecuting)
         {
-            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, { _coords.x, _coords.y, TileElementHeight(_coords) });
+            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::placeItem, { _coords.x, _coords.y, TileElementHeight(_coords) });
         }
 
         uint8_t minHeight = MapGetLowestLandHeight(validRange);

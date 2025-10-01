@@ -136,7 +136,7 @@ void VehicleCrashParticle::Update()
     if (waterZ != 0 && z >= waterZ && newLoc.z <= waterZ)
     {
         // Splash
-        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::Water2, { x, y, waterZ });
+        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::water2, { x, y, waterZ });
         CrashSplashParticle::Create({ x, y, waterZ });
         getGameState().entities.EntityRemove(this);
         return;

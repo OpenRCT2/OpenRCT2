@@ -3314,13 +3314,13 @@ static Vehicle* VehicleCreateCar(
     vehicle->spin_sprite = 0;
     vehicle->spin_speed = 0;
     vehicle->sound2_flags = 0;
-    vehicle->sound1_id = OpenRCT2::Audio::SoundId::Null;
-    vehicle->sound2_id = OpenRCT2::Audio::SoundId::Null;
+    vehicle->sound1_id = OpenRCT2::Audio::SoundId::null;
+    vehicle->sound2_id = OpenRCT2::Audio::SoundId::null;
     vehicle->next_vehicle_on_train = EntityId::GetNull();
     vehicle->CollisionDetectionTimer = 0;
     vehicle->animation_frame = 0;
     vehicle->animationState = 0;
-    vehicle->scream_sound_id = OpenRCT2::Audio::SoundId::Null;
+    vehicle->scream_sound_id = OpenRCT2::Audio::SoundId::null;
     vehicle->pitch = VehiclePitch::flat;
     vehicle->roll = VehicleRoll::unbanked;
     vehicle->target_seat_rotation = 4;

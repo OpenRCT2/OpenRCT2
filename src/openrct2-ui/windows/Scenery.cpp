@@ -977,7 +977,7 @@ namespace OpenRCT2::Ui::Windows
                 gWindowSceneryRotation = rotation.value();
             }
             gWindowSceneryEyedropperEnabled = false;
-            Audio::Play(Audio::SoundId::Click1, 0, ContextGetWidth() / 2);
+            Audio::Play(Audio::SoundId::click1, 0, ContextGetWidth() / 2);
             _hoverCounter = -16;
             gSceneryPlaceCost = kMoney64Undefined;
             invalidate();
@@ -1521,7 +1521,7 @@ namespace OpenRCT2::Ui::Windows
             _sceneryPaintEnabled = false;
             gWindowSceneryEyedropperEnabled = false;
 
-            Audio::Play(Audio::SoundId::Click1, 0, windowPos.x + (width / 2));
+            Audio::Play(Audio::SoundId::click1, 0, windowPos.x + (width / 2));
             _hoverCounter = -16;
             gSceneryPlaceCost = kMoney64Undefined;
             invalidate();
@@ -2405,7 +2405,7 @@ namespace OpenRCT2::Ui::Windows
                 auto& im = GetInputManager();
                 if (!gSceneryCtrlPressed)
                 {
-                    if (im.IsModifierKeyPressed(ModifierKey::ctrl))
+                    if (im.isModifierKeyPressed(ModifierKey::ctrl))
                     {
                         // CTRL pressed
                         constexpr auto flag = EnumsToFlags(
@@ -2423,7 +2423,7 @@ namespace OpenRCT2::Ui::Windows
                 }
                 else
                 {
-                    if (!(im.IsModifierKeyPressed(ModifierKey::ctrl)))
+                    if (!(im.isModifierKeyPressed(ModifierKey::ctrl)))
                     {
                         // CTRL not pressed
                         gSceneryCtrlPressed = false;
@@ -2432,7 +2432,7 @@ namespace OpenRCT2::Ui::Windows
 
                 if (!gSceneryShiftPressed)
                 {
-                    if (im.IsModifierKeyPressed(ModifierKey::shift))
+                    if (im.isModifierKeyPressed(ModifierKey::shift))
                     {
                         // SHIFT pressed
                         gSceneryShiftPressed = true;
@@ -2443,7 +2443,7 @@ namespace OpenRCT2::Ui::Windows
                 }
                 else
                 {
-                    if (im.IsModifierKeyPressed(ModifierKey::shift))
+                    if (im.isModifierKeyPressed(ModifierKey::shift))
                     {
                         // SHIFT pressed
                         gSceneryShiftPressZOffset = (gSceneryShiftPressY - screenPos.y + 4);
@@ -3075,7 +3075,7 @@ namespace OpenRCT2::Ui::Windows
                                 [=](const GameActions::GameAction* ga, const GameActions::Result* result) {
                                     if (result->Error == GameActions::Status::Ok)
                                     {
-                                        Audio::Play3D(Audio::SoundId::PlaceItem, result->Position);
+                                        Audio::Play3D(Audio::SoundId::placeItem, result->Position);
                                     }
                                 });
                             auto res = GameActions::Execute(&smallSceneryPlaceAction, gameState);
@@ -3109,7 +3109,7 @@ namespace OpenRCT2::Ui::Windows
                             {
                                 return;
                             }
-                            Audio::Play3D(Audio::SoundId::PlaceItem, result->Position);
+                            Audio::Play3D(Audio::SoundId::placeItem, result->Position);
                         });
                     auto res = GameActions::Execute(&footpathAdditionPlaceAction, gameState);
                     break;
@@ -3160,7 +3160,7 @@ namespace OpenRCT2::Ui::Windows
                     wallPlaceAction.SetCallback([](const GameActions::GameAction* ga, const GameActions::Result* result) {
                         if (result->Error == GameActions::Status::Ok)
                         {
-                            Audio::Play3D(Audio::SoundId::PlaceItem, result->Position);
+                            Audio::Play3D(Audio::SoundId::placeItem, result->Position);
                         }
                     });
                     auto res = GameActions::Execute(&wallPlaceAction, gameState);
@@ -3213,11 +3213,11 @@ namespace OpenRCT2::Ui::Windows
                     sceneryPlaceAction.SetCallback([=](const GameActions::GameAction* ga, const GameActions::Result* result) {
                         if (result->Error == GameActions::Status::Ok)
                         {
-                            Audio::Play3D(Audio::SoundId::PlaceItem, result->Position);
+                            Audio::Play3D(Audio::SoundId::placeItem, result->Position);
                         }
                         else
                         {
-                            Audio::Play3D(Audio::SoundId::Error, { loc.x, loc.y, gSceneryPlaceZ });
+                            Audio::Play3D(Audio::SoundId::error, { loc.x, loc.y, gSceneryPlaceZ });
                         }
                     });
                     auto res = GameActions::Execute(&sceneryPlaceAction, gameState);
@@ -3238,7 +3238,7 @@ namespace OpenRCT2::Ui::Windows
                         if (result->Error == GameActions::Status::Ok)
                         {
                             auto data = result->GetData<GameActions::BannerPlaceActionResult>();
-                            Audio::Play3D(Audio::SoundId::PlaceItem, result->Position);
+                            Audio::Play3D(Audio::SoundId::placeItem, result->Position);
                             ContextOpenDetailWindow(WindowDetail::banner, data.bannerId.ToUnderlying());
                         }
                     });

@@ -109,7 +109,7 @@ namespace OpenRCT2::GameActions
         if (isExecuting)
         {
             MapCountRemainingLandRights();
-            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, centre);
+            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::placeItem, centre);
         }
         return res;
     }

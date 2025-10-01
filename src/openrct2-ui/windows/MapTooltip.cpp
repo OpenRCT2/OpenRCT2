@@ -98,8 +98,8 @@ namespace OpenRCT2::Ui::Windows
 
         auto& im = GetInputManager();
         auto* wm = GetWindowManager();
-        if (_cursorHoldDuration < 25 || stringId == kStringIdNone || im.IsModifierKeyPressed(ModifierKey::ctrl)
-            || im.IsModifierKeyPressed(ModifierKey::shift) || wm->FindByClass(WindowClass::error) != nullptr)
+        if (_cursorHoldDuration < 25 || stringId == kStringIdNone || im.isModifierKeyPressed(ModifierKey::ctrl)
+            || im.isModifierKeyPressed(ModifierKey::shift) || wm->FindByClass(WindowClass::error) != nullptr)
         {
             auto* windowMgr = Ui::GetWindowManager();
             windowMgr->CloseByClass(WindowClass::mapTooltip);

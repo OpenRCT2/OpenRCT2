@@ -353,7 +353,7 @@ void Duck::Update()
 
 void Duck::Press()
 {
-    OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::Quack, { x, y, z });
+    OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::quack, { x, y, z });
 }
 
 void Duck::RemoveAll()

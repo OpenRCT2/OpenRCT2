@@ -616,7 +616,7 @@ namespace OpenRCT2::Ui::Windows
             invalidate();
 
             const CursorState* state = ContextGetCursorState();
-            Audio::Play(Audio::SoundId::Click1, 0, state->position.x);
+            Audio::Play(Audio::SoundId::click1, 0, state->position.x);
 
             if (gLegacyScene == LegacyScene::trackDesignsManager)
             {

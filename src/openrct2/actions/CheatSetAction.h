@@ -18,7 +18,7 @@ namespace OpenRCT2::GameActions
         using ParametersRange = std::pair<std::pair<int64_t, int64_t>, std::pair<int64_t, int64_t>>;
 
     private:
-        Network::CheatType_t _cheatType{ EnumValue(CheatType::Count) };
+        Network::CheatType_t _cheatType{ EnumValue(CheatType::count) };
         int64_t _param1{};
         int64_t _param2{};
 

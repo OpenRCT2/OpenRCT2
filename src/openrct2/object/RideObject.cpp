@@ -595,7 +595,7 @@ namespace OpenRCT2
                 car.sprite_height_positive = 1;
                 car.flags = CAR_ENTRY_FLAG_SPINNING;
                 car.PaintStyle = VEHICLE_VISUAL_FLAT_RIDE_OR_CAR_RIDE;
-                car.friction_sound_id = OpenRCT2::Audio::SoundId::Null;
+                car.friction_sound_id = OpenRCT2::Audio::SoundId::null;
                 car.soundRange = SoundRange::none;
                 car.draw_order = 6;
 
@@ -754,7 +754,7 @@ namespace OpenRCT2
         car.spinning_inertia = Json::GetNumber<uint8_t>(jCar["spinningInertia"]);
         car.spinning_friction = Json::GetNumber<uint8_t>(jCar["spinningFriction"]);
         car.friction_sound_id = Json::GetEnum<OpenRCT2::Audio::SoundId>(
-            jCar["frictionSoundId"], OpenRCT2::Audio::SoundId::Null);
+            jCar["frictionSoundId"], OpenRCT2::Audio::SoundId::null);
         car.ReversedCarIndex = Json::GetNumber<uint8_t>(jCar["logFlumeReverserVehicleType"]);
         car.soundRange = Json::GetEnum<SoundRange>(jCar["soundRange"], SoundRange::none);
         car.double_sound_frequency = Json::GetNumber<uint8_t>(jCar["doubleSoundFrequency"]);

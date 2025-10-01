@@ -519,7 +519,7 @@ namespace OpenRCT2::Ui::Windows
                         mutableScreenCoords.y -= scenarioItemHeight;
                         if (mutableScreenCoords.y < 0 && !listItem.scenario.is_locked)
                         {
-                            OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Click1, 0, windowPos.x + (width / 2));
+                            OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::click1, 0, windowPos.x + (width / 2));
                             gFirstTimeSaving = true;
                             // Callback will likely close this window! So should always return after it.
                             _callback(listItem.scenario.scenario->Path);

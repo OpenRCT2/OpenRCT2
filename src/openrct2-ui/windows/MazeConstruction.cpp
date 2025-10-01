@@ -367,7 +367,7 @@ namespace OpenRCT2::Ui::Windows
                 if (result->Error != GameActions::Status::Ok)
                     return;
 
-                OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, result->Position);
+                OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::placeItem, result->Position);
 
                 auto* windowMgr = Ui::GetWindowManager();
 
@@ -437,7 +437,7 @@ namespace OpenRCT2::Ui::Windows
             _currentTrackBegin.y = y;
             if (_rideConstructionState != RideConstructionState::MazeMove)
             {
-                Audio::Play3D(Audio::SoundId::PlaceItem, { x, y, z });
+                Audio::Play3D(Audio::SoundId::placeItem, { x, y, z });
             }
         }
     };
