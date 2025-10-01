@@ -207,7 +207,7 @@ void ClimateUpdate()
     }
     else
     {
-        int thunderChance;
+        uint64_t thunderChance;
         if (gameState.weatherCurrent.weatherEffect == WeatherEffectType::Storm)
             thunderChance = 0x1B4;
         else if (gameState.weatherCurrent.weatherEffect == WeatherEffectType::Blizzard)
