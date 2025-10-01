@@ -149,7 +149,7 @@ ShortcutInput::ShortcutInput(std::string_view value)
         }
         else
         {
-            auto number = String::Parse<int32_t>(rem);
+            auto number = String::tryParse<int32_t>(rem);
             if (number.has_value())
             {
                 kind = InputDeviceKind::joyButton;
@@ -161,7 +161,7 @@ ShortcutInput::ShortcutInput(std::string_view value)
     else if (String::startsWith(rem, "MOUSE ", true))
     {
         rem = rem.substr(6);
-        auto number = String::Parse<int32_t>(rem);
+        auto number = String::tryParse<int32_t>(rem);
         if (number)
         {
             kind = InputDeviceKind::mouse;

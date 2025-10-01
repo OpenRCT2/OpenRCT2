@@ -433,7 +433,7 @@ namespace OpenRCT2
             size_t highestIndex = std::min(nums.size(), VersionNumFields);
             for (size_t i = 0; i < highestIndex; i++)
             {
-                auto value = stoll(nums.at(i));
+                auto value = String::parse<int64_t>(nums.at(i));
                 constexpr auto maxValue = std::numeric_limits<uint16_t>().max();
                 if (value > maxValue)
                 {
