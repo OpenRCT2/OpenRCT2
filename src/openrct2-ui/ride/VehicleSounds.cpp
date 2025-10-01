@@ -392,6 +392,7 @@ namespace OpenRCT2::Audio
             case SoundId::TrackFrictionBM:
             case SoundId::LiftRMC:
             case SoundId::TrackFrictionRMC:
+            case SoundId::LiftFlume:
                 return true;
             default:
                 return false;
