@@ -26,6 +26,7 @@
 - Fix: [#25201] Ride list sort order can be unstable when sorted in descending order.
 - Fix: [#25207] Building a block brake on an LIM coaster does not automatically switch it to powered launch block sectioned mode.
 - Fix: [#25238] The chance of thunder and lightning effects happening is lower than vanilla.
+- Fix: [#25288] Water ride “chain” sound does not loop.
 
 0.4.26 (2025-09-06)
 ------------------------------------------------------------------------
