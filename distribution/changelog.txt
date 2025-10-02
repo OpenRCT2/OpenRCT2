@@ -9,7 +9,7 @@
 - Change: [#25228] [Plugin] The available staff costumes array is now ordered alphabetically by name.
 - Change: [#25240] The LIM Launched Coaster now defaults to powered launch without passing station again (as it did in vanilla RCT2).
 - Change: [#25248] Revert Crooked House & Circus default prices to vanilla values.
-- Change: [#25266] Lightning and thunder has less chance of occurring during blizzards.
+- Change: [#25266] Lightning and thunder have less chance of occurring during blizzards.
 - Removed: [#25225] `sprite exportalldat`, replaced with `sprite exportobject`.
 - Fix: [#24513] Ride/track designs can now be shifted underground as well.
 - Fix: [#24682] The scenery window isn't high enough to accommodate all tool buttons when there are multiple rows of groups/tabs.
