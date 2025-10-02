@@ -184,11 +184,19 @@ void X8DrawingEngine::EndDraw()
 
 void X8DrawingEngine::PaintWindows()
 {
-    // Redraw dirty regions before updating the viewports, otherwise
-    // when viewports get panned, they copy dirty pixels
-    DrawAllDirtyBlocks();
-    WindowUpdateAllViewports();
-    DrawAllDirtyBlocks();
+    if (gPaintForceRedraw)
+    {
+        WindowUpdateAllViewports();
+        WindowDrawAll(_mainRT, 0, 0, _width, _height);
+    }
+    else
+    {
+        // Redraw dirty regions before updating the viewports, otherwise
+        // when viewports get panned, they copy dirty pixels
+        DrawAllDirtyBlocks();
+        WindowUpdateAllViewports();
+        DrawAllDirtyBlocks();
+    }
 }
 
 void X8DrawingEngine::PaintWeather()

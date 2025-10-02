@@ -87,6 +87,8 @@ uint8_t gTextPalette[0x8] = {
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
 };
 
+bool gPaintForceRedraw{ false };
+
 enum
 {
     SPR_PALETTE_3100 = 3100,
