@@ -37,6 +37,11 @@ static constexpr uint32_t kLimLauncherBlockBrakeImages[kNumOrthogonalDirections]
     { LIM_LAUNCHED_RC_BLOCK_BRAKE_NW_SE_OPEN, LIM_LAUNCHED_RC_BLOCK_BRAKE_NW_SE_CLOSED },
 };
 
+static constexpr std::array<int8_t, 8> kLeftQuarterHelixSupportHeights = { 4, 4, 2, 0, 4, 8, 8, 4 };
+static constexpr std::array<int8_t, 8> kRightQuarterHelixSupportHeights = { 2, 0, 4, 4, 6, 8, 8, 4 };
+static constexpr std::array<int8_t, 8> kLeftQuarterBankedHelixSupportHeights = { 2, 2, 5, 4, 7, 8, 6, 6 };
+static constexpr std::array<int8_t, 8> kRightQuarterBankedHelixSupportHeights = { 4, 4, 4, 2, 6, 6, 6, 8 };
+
 /** rct2: 0x008A6D50, 0x008A6D60, 0x008A6D70 */
 static void LimLaunchedRCTrackStation(
     PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
@@ -6045,6 +6050,46 @@ TrackPaintFunction GetTrackPaintFunctionLimLaunchedRC(OpenRCT2::TrackElemType tr
             return LimLaunchedRCTrackRightLargeZeroGRollDown;
         case TrackElemType::Booster:
             return LimLaunchedRCTrackBooster;
+        case TrackElemType::LeftQuarterHelixLargeUp:
+            return TrackPaintLeftQuarterHelixLargeUp<
+                SPR_TRACKS_LIM_LAUNCHED_TRACK_QUARTER_HELIX_LEFT, kLeftQuarterHelixLargeUpSpriteMap, false,
+                kLeftQuarterHelixSupportHeights, OpenRCT2::BlockedSegments::kLeftQuarterHelixLargeUp, kTunnelGroup, false,
+                false>;
+        case TrackElemType::RightQuarterHelixLargeUp:
+            return TrackPaintRightQuarterHelixLargeUp<
+                SPR_TRACKS_LIM_LAUNCHED_TRACK_QUARTER_HELIX_RIGHT, kRightQuarterHelixLargeUpSpriteMap, false,
+                kRightQuarterHelixSupportHeights, OpenRCT2::BlockedSegments::kRightQuarterHelixLargeUp, kTunnelGroup, false,
+                false>;
+        case TrackElemType::LeftQuarterHelixLargeDown:
+            return TrackPaintRightQuarterHelixLargeUp<
+                SPR_TRACKS_LIM_LAUNCHED_TRACK_QUARTER_HELIX_RIGHT, kRightQuarterHelixLargeUpSpriteMap, false,
+                kRightQuarterHelixSupportHeights, OpenRCT2::BlockedSegments::kRightQuarterHelixLargeUp, kTunnelGroup, true,
+                false>;
+        case TrackElemType::RightQuarterHelixLargeDown:
+            return TrackPaintLeftQuarterHelixLargeUp<
+                SPR_TRACKS_LIM_LAUNCHED_TRACK_QUARTER_HELIX_LEFT, kLeftQuarterHelixLargeUpSpriteMap, false,
+                kLeftQuarterHelixSupportHeights, OpenRCT2::BlockedSegments::kLeftQuarterHelixLargeUp, kTunnelGroup, true,
+                false>;
+        case TrackElemType::LeftQuarterBankedHelixLargeUp:
+            return TrackPaintLeftQuarterHelixLargeUp<
+                SPR_TRACKS_LIM_LAUNCHED_TRACK_QUARTER_HELIX_LEFT_BANKED, kLeftQuarterBankedHelixLargeUpSpriteMap, false,
+                kLeftQuarterBankedHelixSupportHeights, OpenRCT2::BlockedSegments::kLeftQuarterHelixLargeUp, kTunnelGroup, false,
+                false>;
+        case TrackElemType::RightQuarterBankedHelixLargeUp:
+            return TrackPaintRightQuarterHelixLargeUp<
+                SPR_TRACKS_LIM_LAUNCHED_TRACK_QUARTER_HELIX_RIGHT_BANKED, kRightQuarterBankedHelixLargeUpSpriteMap, false,
+                kRightQuarterBankedHelixSupportHeights, OpenRCT2::BlockedSegments::kRightQuarterHelixLargeUp, kTunnelGroup,
+                false, false>;
+        case TrackElemType::LeftQuarterBankedHelixLargeDown:
+            return TrackPaintRightQuarterHelixLargeUp<
+                SPR_TRACKS_LIM_LAUNCHED_TRACK_QUARTER_HELIX_RIGHT_BANKED, kRightQuarterBankedHelixLargeUpSpriteMap, false,
+                kRightQuarterBankedHelixSupportHeights, OpenRCT2::BlockedSegments::kRightQuarterHelixLargeUp, kTunnelGroup,
+                true, false>;
+        case TrackElemType::RightQuarterBankedHelixLargeDown:
+            return TrackPaintLeftQuarterHelixLargeUp<
+                SPR_TRACKS_LIM_LAUNCHED_TRACK_QUARTER_HELIX_LEFT_BANKED, kLeftQuarterBankedHelixLargeUpSpriteMap, false,
+                kLeftQuarterBankedHelixSupportHeights, OpenRCT2::BlockedSegments::kLeftQuarterHelixLargeUp, kTunnelGroup, true,
+                false>;
         default:
             return TrackPaintFunctionDummy;
     }
