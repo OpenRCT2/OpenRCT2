@@ -32,7 +32,7 @@ constexpr RideTypeDescriptor LIMLaunchedRollerCoasterRTD =
         EnumsToFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation, RtdFlag::checkGForces,
                      RtdFlag::allowMultipleCircuits, RtdFlag::allowReversedTrains),
     .RideModes = EnumsToFlags(RideMode::poweredLaunchPasstrough, RideMode::poweredLaunch, RideMode::poweredLaunchBlockSectioned),
-    .DefaultMode = RideMode::poweredLaunchPasstrough,
+    .DefaultMode = RideMode::poweredLaunch,
     .OperatingSettings = { 10, 31 },
     .BoosterSettings = { 18, 52 },
     .LegacyBoosterSettings = { 18, 52 },
