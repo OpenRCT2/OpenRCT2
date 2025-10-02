@@ -23,8 +23,8 @@ constexpr RideTypeDescriptor AlpineCoasterRTD =
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::alpineCoaster,
         .supportType = MetalSupportType::fork,
-        .enabledTrackGroups = { TrackGroup::flat, TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::flatRollBanking, TrackGroup::slope, TrackGroup::flatToSteepSlope, TrackGroup::slopeCurve, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::helixDownBankedHalf, TrackGroup::diagSlope },
-        .extraTrackGroups =  {TrackGroup::helixUpBankedHalf},
+        .enabledTrackGroups = { TrackGroup::flat, TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::flatRollBanking, TrackGroup::slope, TrackGroup::flatToSteepSlope, TrackGroup::slopeCurve, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::helixDownBankedHalf, TrackGroup::diagSlope, TrackGroup::helixDownUnbankedQuarter, TrackGroup::helixDownBankedQuarter },
+        .extraTrackGroups =  { TrackGroup::helixUpBankedHalf, TrackGroup::helixUpUnbankedQuarter, TrackGroup::helixUpBankedQuarter },
     }),
     .InvertedTrackPaintFunctions = {},
     .Flags = EnumsToFlags(RtdFlag::hasTrackColourMain, RtdFlag::hasTrackColourSupports,
