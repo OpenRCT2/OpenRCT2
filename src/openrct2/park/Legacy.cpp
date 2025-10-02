@@ -2985,7 +2985,9 @@ bool TrackTypeMustBeMadeInvisible(ride_type_t rideType, OpenRCT2::TrackElemType 
     else if (
         (rideType == RIDE_TYPE_STAND_UP_ROLLER_COASTER || rideType == RIDE_TYPE_CLASSIC_STAND_UP_ROLLER_COASTER
          || rideType == RIDE_TYPE_CORKSCREW_ROLLER_COASTER || rideType == RIDE_TYPE_HYPERCOASTER
-         || rideType == RIDE_TYPE_LAY_DOWN_ROLLER_COASTER)
+         || rideType == RIDE_TYPE_LAY_DOWN_ROLLER_COASTER || rideType == RIDE_TYPE_TWISTER_ROLLER_COASTER
+         || rideType == RIDE_TYPE_HYPER_TWISTER || rideType == RIDE_TYPE_VERTICAL_DROP_ROLLER_COASTER
+         || rideType == RIDE_TYPE_FLYING_ROLLER_COASTER)
         && parkFileVersion < kUninvertedQuarterHelicesVersion)
     {
         switch (trackType)
