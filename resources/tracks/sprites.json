@@ -40193,6 +40193,522 @@
         "palette": "keep"
     },
     {
+        "path": "track/raptor/medium_quarter_helix_left_1_1.png",
+        "x": -18,
+        "y": -5,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_left_1_2.png",
+        "x": -26,
+        "y": -3,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_left_1_3.png",
+        "x": 13,
+        "y": -5,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_left_1_4.png",
+        "x": -22,
+        "y": 2,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_left_1_5.png",
+        "x": -18,
+        "y": -14,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_left_2_1.png",
+        "x": -18,
+        "y": 1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_left_2_2.png",
+        "x": -2,
+        "y": -6,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_left_2_3.png",
+        "x": -14,
+        "y": 8,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_left_2_4.png",
+        "x": -17,
+        "y": -14,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_left_2_5.png",
+        "x": -25,
+        "y": -14,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_left_3_1.png",
+        "x": -11,
+        "y": 2,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_left_3_2.png",
+        "x": 13,
+        "y": 1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_left_3_3.png",
+        "x": -20,
+        "y": -2,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_left_3_4.png",
+        "x": 14,
+        "y": -2,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_left_3_5.png",
+        "x": -13,
+        "y": -13,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_left_4_1.png",
+        "x": -28,
+        "y": 1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_left_4_2.png",
+        "x": -30,
+        "y": 8,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_left_4_3.png",
+        "x": -14,
+        "y": -8,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_left_4_4.png",
+        "x": -25,
+        "y": 7,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_left_4_5.png",
+        "x": -18,
+        "y": -5,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_right_1_1.png",
+        "x": -18,
+        "y": 1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_right_1_2.png",
+        "x": -12,
+        "y": 8,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_right_1_3.png",
+        "x": -22,
+        "y": -8,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_right_1_4.png",
+        "x": -30,
+        "y": 7,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_right_1_5.png",
+        "x": -16,
+        "y": -5,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_right_2_1.png",
+        "x": -18,
+        "y": 2,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_right_2_2.png",
+        "x": -27,
+        "y": 1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_right_2_3.png",
+        "x": 11,
+        "y": -2,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_right_2_4.png",
+        "x": -25,
+        "y": -2,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_right_2_5.png",
+        "x": -18,
+        "y": -13,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_right_3_1.png",
+        "x": -32,
+        "y": 1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_right_3_2.png",
+        "x": -18,
+        "y": -6,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_right_3_3.png",
+        "x": -18,
+        "y": 8,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_right_3_4.png",
+        "x": -10,
+        "y": -14,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_right_3_5.png",
+        "x": -18,
+        "y": -14,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_right_4_1.png",
+        "x": -13,
+        "y": -5,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_right_4_2.png",
+        "x": 13,
+        "y": -3,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_right_4_3.png",
+        "x": -20,
+        "y": -5,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_right_4_4.png",
+        "x": 13,
+        "y": 2,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_right_4_5.png",
+        "x": -16,
+        "y": -14,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_left_bank_1_1.png",
+        "x": -3,
+        "y": -5,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_left_bank_1_2.png",
+        "x": -17,
+        "y": -5,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_left_bank_1_3.png",
+        "x": -24,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_left_bank_1_4.png",
+        "x": 13,
+        "y": -2,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_left_bank_1_5.png",
+        "x": -19,
+        "y": 4,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_left_bank_1_6.png",
+        "x": -17,
+        "y": -16,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_left_bank_2_1.png",
+        "x": -19,
+        "y": 1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_left_bank_2_2.png",
+        "x": -14,
+        "y": -7,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_left_bank_2_3.png",
+        "x": -20,
+        "y": 7,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_left_bank_2_4.png",
+        "x": -12,
+        "y": -15,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_left_bank_2_5.png",
+        "x": -18,
+        "y": -14,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_left_bank_3_1.png",
+        "x": -15,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_left_bank_3_2.png",
+        "x": 11,
+        "y": 3,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_left_bank_3_3.png",
+        "x": -23,
+        "y": -4,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_left_bank_3_4.png",
+        "x": 14,
+        "y": -4,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_left_bank_3_5.png",
+        "x": 11,
+        "y": -6,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_left_bank_3_6.png",
+        "x": 0,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_left_bank_3_7.png",
+        "x": -6,
+        "y": -7,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_left_bank_4_1.png",
+        "x": -22,
+        "y": 2,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_left_bank_4_2.png",
+        "x": -32,
+        "y": 7,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_left_bank_4_3.png",
+        "x": -6,
+        "y": -5,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_left_bank_4_4.png",
+        "x": -31,
+        "y": 6,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_left_bank_4_5.png",
+        "x": -20,
+        "y": -5,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_right_bank_1_1.png",
+        "x": -19,
+        "y": 2,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_right_bank_1_2.png",
+        "x": -18,
+        "y": 7,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_right_bank_1_3.png",
+        "x": -8,
+        "y": -5,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_right_bank_1_4.png",
+        "x": -32,
+        "y": 6,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_right_bank_1_5.png",
+        "x": -10,
+        "y": -5,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_right_bank_2_1.png",
+        "x": -17,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_right_bank_2_2.png",
+        "x": -22,
+        "y": 3,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_right_bank_2_3.png",
+        "x": 13,
+        "y": -4,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_right_bank_2_4.png",
+        "x": -23,
+        "y": -4,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_right_bank_2_5.png",
+        "x": -30,
+        "y": -6,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_right_bank_2_6.png",
+        "x": 0,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_right_bank_2_7.png",
+        "x": -17,
+        "y": -7,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_right_bank_3_1.png",
+        "x": -18,
+        "y": 1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_right_bank_3_2.png",
+        "x": -12,
+        "y": -7,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_right_bank_3_3.png",
+        "x": -20,
+        "y": 7,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_right_bank_3_4.png",
+        "x": -14,
+        "y": -15,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_right_bank_3_5.png",
+        "x": -20,
+        "y": -14,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_right_bank_4_1.png",
+        "x": -12,
+        "y": -5,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_right_bank_4_2.png",
+        "x": -16,
+        "y": -5,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_right_bank_4_3.png",
+        "x": 11,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_right_bank_4_4.png",
+        "x": -23,
+        "y": -2,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_right_bank_4_5.png",
+        "x": 10,
+        "y": 4,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/medium_quarter_helix_right_bank_4_6.png",
+        "x": -19,
+        "y": -16,
+        "palette": "keep"
+    },
+    {
         "path": "track/raptor/flat_lift_1.png",
         "x": -18,
         "y": 2

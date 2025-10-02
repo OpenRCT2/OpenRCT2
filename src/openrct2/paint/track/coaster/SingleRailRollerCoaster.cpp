@@ -26,6 +26,11 @@ static constexpr TunnelGroup kTunnelGroup = TunnelGroup::Standard;
 
 namespace OpenRCT2::SingleRailRC
 {
+    static constexpr std::array<int8_t, 8> kLeftQuarterHelixSupportHeights = { 4, 4, 3, 3, 6, 6, 7, 6 };
+    static constexpr std::array<int8_t, 8> kRightQuarterHelixSupportHeights = { 3, 3, 4, 4, 6, 6, 7, 6 };
+    static constexpr std::array<int8_t, 8> kLeftQuarterBankedHelixSupportHeights = { 4, 4, 4, 4, 6, 6, 7, 6 };
+    static constexpr std::array<int8_t, 8> kRightQuarterBankedHelixSupportHeights = { 4, 4, 4, 4, 6, 6, 7, 6 };
+
     static void TrackFlat(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement, SupportType supportType)
@@ -20384,6 +20389,46 @@ namespace OpenRCT2::SingleRailRC
                 return Track25DegDownBrakes;
             case TrackElemType::DiagDown25Brakes:
                 return TrackDiag25DegDownBrakes;
+            case TrackElemType::LeftQuarterHelixLargeUp:
+                return TrackPaintLeftQuarterHelixLargeUp<
+                    SPR_TRACKS_SINGLE_RAIL_TRACK_QUARTER_HELIX_LEFT, kLeftQuarterHelixLargeUpSpriteMap, false,
+                    kLeftQuarterHelixSupportHeights, OpenRCT2::BlockedSegments::kLeftQuarterHelixLargeUp, kTunnelGroup, false,
+                    false>;
+            case TrackElemType::RightQuarterHelixLargeUp:
+                return TrackPaintRightQuarterHelixLargeUp<
+                    SPR_TRACKS_SINGLE_RAIL_TRACK_QUARTER_HELIX_RIGHT, kRightQuarterHelixLargeUpSpriteMap, false,
+                    kRightQuarterHelixSupportHeights, OpenRCT2::BlockedSegments::kRightQuarterHelixLargeUp, kTunnelGroup, false,
+                    false>;
+            case TrackElemType::LeftQuarterHelixLargeDown:
+                return TrackPaintRightQuarterHelixLargeUp<
+                    SPR_TRACKS_SINGLE_RAIL_TRACK_QUARTER_HELIX_RIGHT, kRightQuarterHelixLargeUpSpriteMap, false,
+                    kRightQuarterHelixSupportHeights, OpenRCT2::BlockedSegments::kRightQuarterHelixLargeUp, kTunnelGroup, true,
+                    false>;
+            case TrackElemType::RightQuarterHelixLargeDown:
+                return TrackPaintLeftQuarterHelixLargeUp<
+                    SPR_TRACKS_SINGLE_RAIL_TRACK_QUARTER_HELIX_LEFT, kLeftQuarterHelixLargeUpSpriteMap, false,
+                    kLeftQuarterHelixSupportHeights, OpenRCT2::BlockedSegments::kLeftQuarterHelixLargeUp, kTunnelGroup, true,
+                    false>;
+            case TrackElemType::LeftQuarterBankedHelixLargeUp:
+                return TrackPaintLeftQuarterHelixLargeUp<
+                    SPR_TRACKS_SINGLE_RAIL_TRACK_QUARTER_HELIX_LEFT_BANKED, kLeftQuarterBankedHelixLargeUpSpriteMap, false,
+                    kLeftQuarterBankedHelixSupportHeights, OpenRCT2::BlockedSegments::kLeftQuarterHelixLargeUp, kTunnelGroup,
+                    false, false>;
+            case TrackElemType::RightQuarterBankedHelixLargeUp:
+                return TrackPaintRightQuarterHelixLargeUp<
+                    SPR_TRACKS_SINGLE_RAIL_TRACK_QUARTER_HELIX_RIGHT_BANKED, kRightQuarterBankedHelixLargeUpSpriteMap, false,
+                    kRightQuarterBankedHelixSupportHeights, OpenRCT2::BlockedSegments::kRightQuarterHelixLargeUp, kTunnelGroup,
+                    false, false>;
+            case TrackElemType::LeftQuarterBankedHelixLargeDown:
+                return TrackPaintRightQuarterHelixLargeUp<
+                    SPR_TRACKS_SINGLE_RAIL_TRACK_QUARTER_HELIX_RIGHT_BANKED, kRightQuarterBankedHelixLargeUpSpriteMap, false,
+                    kRightQuarterBankedHelixSupportHeights, OpenRCT2::BlockedSegments::kRightQuarterHelixLargeUp, kTunnelGroup,
+                    true, false>;
+            case TrackElemType::RightQuarterBankedHelixLargeDown:
+                return TrackPaintLeftQuarterHelixLargeUp<
+                    SPR_TRACKS_SINGLE_RAIL_TRACK_QUARTER_HELIX_LEFT_BANKED, kLeftQuarterBankedHelixLargeUpSpriteMap, false,
+                    kLeftQuarterBankedHelixSupportHeights, OpenRCT2::BlockedSegments::kLeftQuarterHelixLargeUp, kTunnelGroup,
+                    true, false>;
             default:
                 return TrackPaintFunctionDummy;
         }
