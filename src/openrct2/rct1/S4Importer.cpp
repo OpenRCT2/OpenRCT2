@@ -74,6 +74,7 @@
 #include "../world/tile_element/EntranceElement.h"
 #include "../world/tile_element/LargeSceneryElement.h"
 #include "../world/tile_element/PathElement.h"
+#include "../world/tile_element/Slope.h"
 #include "../world/tile_element/SmallSceneryElement.h"
 #include "../world/tile_element/SurfaceElement.h"
 #include "../world/tile_element/TileElement.h"
@@ -1630,6 +1631,7 @@ namespace OpenRCT2::RCT1
 
             SetTileElements(gameState, std::move(tileElements));
             FixEntrancePositions(gameState);
+            FixSupportsOnGroundPath(gameState);
         }
 
         size_t ImportTileElement(TileElement* dst, const RCT12TileElement* src)
@@ -2546,6 +2548,39 @@ namespace OpenRCT2::RCT1
 
                 CoordsXYZD entrance = { TileCoordsXY(it.x, it.y).ToCoordsXY(), element->GetBaseZ(), element->GetDirection() };
                 park.entrances.push_back(entrance);
+            }
+        }
+
+        void FixSupportsOnGroundPath(GameState_t& gameState)
+        {
+            TileElementIterator it;
+            TileElementIteratorBegin(&it);
+            while (TileElementIteratorNext(&it))
+            {
+                if (it.element->GetType() != TileElementType::Path)
+                    continue;
+
+                auto* pathElement = it.element->AsPath();
+                if (pathElement->IsSloped())
+                    continue;
+
+                if (pathElement->IsQueue())
+                    continue;
+
+                auto* surface = MapGetSurfaceElementAt(TileCoordsXY(it.x, it.y));
+                if (surface == nullptr)
+                    continue;
+
+                if (surface->GetSlope() != kTileSlopeFlat)
+                    continue;
+
+                if (surface->GetBaseZ() != pathElement->GetBaseZ())
+                    continue;
+
+                // RCT1 would always draw supports around a path if it was flat on the ground.
+                // In RCT2, this depends on the support type of the path, even though that isn’t even visible in this case.
+                // As such, always import footpath that is on the ground with box supports.
+                pathElement->SetRailingsEntryIndex(RCT1_PATH_SUPPORT_TYPE_TRUSS);
             }
         }
 
