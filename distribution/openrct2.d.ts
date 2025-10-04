@@ -4752,6 +4752,17 @@ declare global {
         registerToolboxMenuItem(text: string, callback: () => void): void;
 
         registerShortcut(desc: ShortcutDesc): void;
+
+        /**
+         * Show gridlines on the landscape for this plugin.
+         */
+        showGridlines(): void;
+
+        /**
+         * Hide gridlines on the landscape for this plugin. Gridlines may stay shown if the
+         * game or other plugins have also requested gridlines.
+         */
+        hideGridlines(): void;
     }
 
     /**

@@ -58,8 +58,10 @@ void UiScriptExtensions::Extend(ScriptEngine& scriptEngine)
 
     InitialiseCustomImages(scriptEngine);
     InitialiseCustomMenuItems(scriptEngine);
-    scriptEngine.SubscribeToPluginStoppedEvent(
-        [](std::shared_ptr<Plugin> plugin) -> void { CloseWindowsOwnedByPlugin(plugin); });
+    scriptEngine.SubscribeToPluginStoppedEvent([](std::shared_ptr<Plugin> plugin) -> void {
+        ScUi::hidePluginGridlines(plugin);
+        CloseWindowsOwnedByPlugin(plugin);
+    });
 }
 
 std::shared_ptr<ScWindow> ScWidget::window_get() const
