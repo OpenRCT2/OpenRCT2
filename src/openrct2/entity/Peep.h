@@ -103,8 +103,8 @@ enum class PeepRideSubState : uint8_t
 
 enum class PeepUsingBinSubState : uint8_t
 {
-    WalkingToBin = 0,
-    GoingBack,
+    walkingToBin = 0,
+    goingBack,
 };
 
 enum class PeepActionType : uint8_t
