@@ -88,43 +88,43 @@ static std::shared_ptr<IAudioChannel> _crowdSoundChannel = nullptr;
 static void GuestReleaseBalloon(Guest* peep, int16_t spawn_height);
 
 static PeepAnimationType PeepSpecialSpriteToAnimationGroupMap[] = {
-    PeepAnimationType::Walking,
-    PeepAnimationType::HoldMat,
-    PeepAnimationType::StaffMower,
+    PeepAnimationType::walking,
+    PeepAnimationType::holdMat,
+    PeepAnimationType::staffMower,
 };
 
 static PeepAnimationType PeepActionToAnimationGroupMap[] = {
-    PeepAnimationType::CheckTime,
-    PeepAnimationType::EatFood,
-    PeepAnimationType::ShakeHead,
-    PeepAnimationType::EmptyPockets,
-    PeepAnimationType::SittingEatFood,
-    PeepAnimationType::SittingLookAroundLeft,
-    PeepAnimationType::SittingLookAroundRight,
-    PeepAnimationType::Wow,
-    PeepAnimationType::ThrowUp,
-    PeepAnimationType::Jump,
-    PeepAnimationType::StaffSweep,
-    PeepAnimationType::Drowning,
-    PeepAnimationType::StaffAnswerCall,
-    PeepAnimationType::StaffAnswerCall2,
-    PeepAnimationType::StaffCheckBoard,
-    PeepAnimationType::StaffFix,
-    PeepAnimationType::StaffFix2,
-    PeepAnimationType::StaffFixGround,
-    PeepAnimationType::StaffFix3,
-    PeepAnimationType::StaffWatering,
-    PeepAnimationType::Joy,
-    PeepAnimationType::ReadMap,
-    PeepAnimationType::Wave,
-    PeepAnimationType::StaffEmptyBin,
-    PeepAnimationType::Wave2,
-    PeepAnimationType::TakePhoto,
-    PeepAnimationType::Clap,
-    PeepAnimationType::Disgust,
-    PeepAnimationType::DrawPicture,
-    PeepAnimationType::BeingWatched,
-    PeepAnimationType::WithdrawMoney,
+    PeepAnimationType::checkTime,
+    PeepAnimationType::eatFood,
+    PeepAnimationType::shakeHead,
+    PeepAnimationType::emptyPockets,
+    PeepAnimationType::sittingEatFood,
+    PeepAnimationType::sittingLookAroundLeft,
+    PeepAnimationType::sittingLookAroundRight,
+    PeepAnimationType::wow,
+    PeepAnimationType::throwUp,
+    PeepAnimationType::jump,
+    PeepAnimationType::staffSweep,
+    PeepAnimationType::drowning,
+    PeepAnimationType::staffAnswerCall,
+    PeepAnimationType::staffAnswerCall2,
+    PeepAnimationType::staffCheckBoard,
+    PeepAnimationType::staffFix,
+    PeepAnimationType::staffFix2,
+    PeepAnimationType::staffFixGround,
+    PeepAnimationType::staffFix3,
+    PeepAnimationType::staffWatering,
+    PeepAnimationType::joy,
+    PeepAnimationType::readMap,
+    PeepAnimationType::wave,
+    PeepAnimationType::staffEmptyBin,
+    PeepAnimationType::wave2,
+    PeepAnimationType::takePhoto,
+    PeepAnimationType::clap,
+    PeepAnimationType::disgust,
+    PeepAnimationType::drawPicture,
+    PeepAnimationType::beingWatched,
+    PeepAnimationType::withdrawMoney,
 };
 
 template<>
@@ -352,7 +352,7 @@ PeepAnimationType Peep::GetAnimationType()
     Guard::Assert(
         EnumValue(Action) >= std::size(PeepActionToAnimationGroupMap) && Action < PeepActionType::idle,
         "Invalid peep action %u", EnumValue(Action));
-    return PeepAnimationType::Walking;
+    return PeepAnimationType::walking;
 }
 
 /*
@@ -621,7 +621,7 @@ void Peep::PickupAbort(int32_t old_x)
         Action = PeepActionType::walking;
         SpecialSprite = 0;
         AnimationImageIdOffset = 0;
-        AnimationType = PeepAnimationType::Walking;
+        AnimationType = PeepAnimationType::walking;
         PathCheckOptimisation = 0;
     }
 
@@ -670,12 +670,12 @@ GameActions::Result Peep::Place(const TileCoordsXYZ& location, bool apply)
         Action = PeepActionType::walking;
         SpecialSprite = 0;
         AnimationImageIdOffset = 0;
-        AnimationType = PeepAnimationType::Walking;
+        AnimationType = PeepAnimationType::walking;
         PathCheckOptimisation = 0;
         EntityTweener::Get().Reset();
         if (auto* guest = As<Guest>(); guest != nullptr)
         {
-            AnimationType = PeepAnimationType::Invalid;
+            AnimationType = PeepAnimationType::invalid;
             guest->HappinessTarget = std::max(guest->HappinessTarget - 10, 0);
             UpdateCurrentAnimationType();
         }
@@ -2765,7 +2765,7 @@ void Peep::Paint(PaintSession& session, int32_t imageDirection) const
     uint32_t baseImageId = animObj->GetPeepAnimation(AnimationGroup, actionAnimationGroup).baseImage;
 
     // Offset frame onto the base image, using rotation except for the 'picked up' state
-    if (actionAnimationGroup != PeepAnimationType::Hanging)
+    if (actionAnimationGroup != PeepAnimationType::hanging)
         baseImageId += (imageDirection >> 3) + imageOffset * 4;
     else
         baseImageId += imageOffset;
@@ -2789,9 +2789,9 @@ void Peep::Paint(PaintSession& session, int32_t imageDirection) const
     // There are only 6 walking frames available for each item,
     // as well as 1 sprite for sitting and 1 for standing still.
     auto itemFrame = imageOffset % 6;
-    if (actionAnimationGroup == PeepAnimationType::WatchRide)
+    if (actionAnimationGroup == PeepAnimationType::watchRide)
         itemFrame = 6;
-    else if (actionAnimationGroup == PeepAnimationType::SittingIdle)
+    else if (actionAnimationGroup == PeepAnimationType::sittingIdle)
         itemFrame = 7;
 
     if (AnimationGroup == PeepAnimationGroup::Hat)

@@ -1719,7 +1719,7 @@ void Staff::Tick128UpdateStaff()
         PeepFlags |= PEEP_FLAGS_SLOW_WALK;
     }
 
-    AnimationType = PeepAnimationType::Invalid;
+    AnimationType = PeepAnimationType::invalid;
     UpdateCurrentAnimationType();
 }
 

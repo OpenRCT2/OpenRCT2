@@ -2342,12 +2342,12 @@ static bool ConvertPeepAnimationType(TPeepType* peep, AnimObjectConversionTable&
     // Assigned sprites were found to be identical to those of 'Wave2', hence the mapping.
     // However, it appears to have been used by JavaScript plugins, still, hence the
     // need to convert any existing sprites.
-    if (peep->AnimationType == PeepAnimationType::EatFood)
-        peep->AnimationType = PeepAnimationType::Wave2;
+    if (peep->AnimationType == PeepAnimationType::eatFood)
+        peep->AnimationType = PeepAnimationType::wave2;
 
     // NB: this is likely unnecessary, but a precautionary measure considering the above.
-    if (peep->NextAnimationType == PeepAnimationType::EatFood)
-        peep->NextAnimationType = PeepAnimationType::Wave2;
+    if (peep->NextAnimationType == PeepAnimationType::eatFood)
+        peep->NextAnimationType = PeepAnimationType::wave2;
 
     return true;
 }

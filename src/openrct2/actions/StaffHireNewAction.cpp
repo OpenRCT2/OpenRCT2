@@ -119,7 +119,7 @@ namespace OpenRCT2::GameActions
             newPeep->SpecialSprite = 0;
             newPeep->AnimationImageIdOffset = 0;
             newPeep->WalkingAnimationFrameNum = 0;
-            newPeep->AnimationType = PeepAnimationType::Walking;
+            newPeep->AnimationType = PeepAnimationType::walking;
             newPeep->PathCheckOptimisation = 0;
             newPeep->PeepFlags = 0;
             newPeep->StaffLawnsMown = 0;

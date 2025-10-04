@@ -102,7 +102,7 @@ namespace OpenRCT2::Scripting
 
             // Reset state to walking to prevent invalid actions from carrying over
             peep->Action = PeepActionType::walking;
-            peep->AnimationType = peep->NextAnimationType = PeepAnimationType::Walking;
+            peep->AnimationType = peep->NextAnimationType = PeepAnimationType::walking;
             peep->Invalidate();
         }
     }
@@ -298,7 +298,7 @@ namespace OpenRCT2::Scripting
         for (auto frameOffset : animationGroup.frameOffsets)
         {
             auto imageId = animationGroup.baseImage;
-            if (animationType != PeepAnimationType::Hanging)
+            if (animationType != PeepAnimationType::hanging)
                 imageId += rotation + frameOffset * 4;
             else
                 imageId += frameOffset;

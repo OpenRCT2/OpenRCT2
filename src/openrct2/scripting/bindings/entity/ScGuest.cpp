@@ -876,7 +876,7 @@ namespace OpenRCT2::Scripting
             for (auto frameOffset : animationGroup.frameOffsets)
             {
                 auto imageId = animationGroup.baseImage;
-                if (animationType != PeepAnimationType::Hanging)
+                if (animationType != PeepAnimationType::hanging)
                     imageId += rotation + frameOffset * 4;
                 else
                     imageId += frameOffset;
@@ -900,8 +900,8 @@ namespace OpenRCT2::Scripting
 
         // Special consideration for sitting peeps
         // TODO: something funky going on in the state machine
-        if (peep->AnimationType == PeepAnimationType::Walking && peep->State == PeepState::sitting)
-            action = availableGuestAnimations[PeepAnimationType::SittingIdle];
+        if (peep->AnimationType == PeepAnimationType::walking && peep->State == PeepState::sitting)
+            action = availableGuestAnimations[PeepAnimationType::sittingIdle];
 
         return std::string(action);
     }
