@@ -3435,7 +3435,7 @@ void Vehicle::UpdateUnloadingPassengers()
 
             if (firstGuest != nullptr)
             {
-                firstGuest->SetState(PeepState::LeavingRide);
+                firstGuest->SetState(PeepState::leavingRide);
                 firstGuest->RideSubState = PeepRideSubState::LeaveVehicle;
             }
 
@@ -3444,7 +3444,7 @@ void Vehicle::UpdateUnloadingPassengers()
 
             if (secondGuest != nullptr)
             {
-                secondGuest->SetState(PeepState::LeavingRide);
+                secondGuest->SetState(PeepState::leavingRide);
                 secondGuest->RideSubState = PeepRideSubState::LeaveVehicle;
             }
         }
@@ -3480,7 +3480,7 @@ void Vehicle::UpdateUnloadingPassengers()
                 Peep* curPeep = getGameState().entities.GetEntity<Guest>(train->peep[peepIndex]);
                 if (curPeep != nullptr)
                 {
-                    curPeep->SetState(PeepState::LeavingRide);
+                    curPeep->SetState(PeepState::leavingRide);
                     curPeep->RideSubState = PeepRideSubState::LeaveVehicle;
                 }
             }

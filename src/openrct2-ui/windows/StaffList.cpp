@@ -552,7 +552,7 @@ namespace OpenRCT2::Ui::Windows
                     return;
 
                 // If autoposition of staff is disabled, pickup peep and then open the staff window
-                if (staff->State == PeepState::Picked)
+                if (staff->State == PeepState::picked)
                 {
                     CoordsXYZ nullLoc{};
                     nullLoc.SetNull();

@@ -742,8 +742,8 @@ namespace OpenRCT2::GameActions
                         auto peep = getGameState().entities.TryGetEntity<Guest>(peepInTrainIndex);
                         if (peep != nullptr && peep->CurrentRide == ride.id)
                         {
-                            if ((peep->State == PeepState::OnRide && peep->RideSubState == PeepRideSubState::OnRide)
-                                || (peep->State == PeepState::LeavingRide
+                            if ((peep->State == PeepState::onRide && peep->RideSubState == PeepRideSubState::OnRide)
+                                || (peep->State == PeepState::leavingRide
                                     && peep->RideSubState == PeepRideSubState::LeaveVehicle))
                             {
                                 vehicle->ApplyMass(-peep->Mass);

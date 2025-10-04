@@ -649,7 +649,7 @@ namespace OpenRCT2::Ui::Windows
 
             invalidateWidget(WIDX_TAB_1);
 
-            const std::optional<Focus> tempFocus = staff->State != PeepState::Picked ? std::optional(Focus(staff->Id))
+            const std::optional<Focus> tempFocus = staff->State != PeepState::picked ? std::optional(Focus(staff->Id))
                                                                                      : std::nullopt;
             if (focus != tempFocus)
             {
@@ -1043,7 +1043,7 @@ namespace OpenRCT2::Ui::Windows
                     setWidgetDisabled(WIDX_PICKUP, true);
                 }
 
-                setWidgetDisabled(WIDX_FIRE, staff->State == PeepState::Fixing || staff->State == PeepState::Inspecting);
+                setWidgetDisabled(WIDX_FIRE, staff->State == PeepState::fixing || staff->State == PeepState::inspecting);
             }
         }
 
@@ -1119,7 +1119,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             std::optional<Focus> tempFocus;
-            if (staff->State != PeepState::Picked)
+            if (staff->State != PeepState::picked)
             {
                 tempFocus = Focus(staff->Id);
             }
@@ -1145,7 +1145,7 @@ namespace OpenRCT2::Ui::Windows
 
             focus = tempFocus;
 
-            if (staff->State != PeepState::Picked)
+            if (staff->State != PeepState::picked)
             {
                 if (viewport == nullptr)
                 {

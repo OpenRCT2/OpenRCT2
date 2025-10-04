@@ -43,30 +43,30 @@ namespace OpenRCT2::GameActions
 
 enum class PeepState : uint8_t
 {
-    Falling = 0, // Drowning is part of falling
-    One = 1,     // was PEEP_STATE_1
-    QueuingFront = 2,
-    OnRide = 3,
-    LeavingRide = 4,
-    Walking = 5,
-    Queuing = 6,
-    EnteringRide = 7,
-    Sitting = 8,
-    Picked = 9,
-    Patrolling = 10, // Not sure
-    Mowing = 11,
-    Sweeping = 12,
-    EnteringPark = 13,
-    LeavingPark = 14,
-    Answering = 15,
-    Fixing = 16,
-    Buying = 17,
-    Watching = 18,
-    EmptyingBin = 19,
-    UsingBin = 20,
-    Watering = 21,
-    HeadingToInspection = 22,
-    Inspecting = 23
+    falling = 0, // Drowning is part of falling
+    one = 1,     // was PEEP_STATE_1
+    queuingFront = 2,
+    onRide = 3,
+    leavingRide = 4,
+    walking = 5,
+    queuing = 6,
+    enteringRide = 7,
+    sitting = 8,
+    picked = 9,
+    patrolling = 10, // Not sure
+    mowing = 11,
+    sweeping = 12,
+    enteringPark = 13,
+    leavingPark = 14,
+    answering = 15,
+    fixing = 16,
+    buying = 17,
+    watching = 18,
+    emptyingBin = 19,
+    usingBin = 20,
+    watering = 21,
+    headingToInspection = 22,
+    inspecting = 23,
 };
 
 enum class PeepSittingSubState : uint8_t

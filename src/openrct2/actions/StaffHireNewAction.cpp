@@ -176,7 +176,7 @@ namespace OpenRCT2::GameActions
             else
             {
                 // NOTE: This state is required for the window to act.
-                newPeep->State = PeepState::Picked;
+                newPeep->State = PeepState::picked;
 
                 // INVESTIGATE: x and y are LOCATION_NULL at this point.
                 newPeep->MoveTo(newPeep->GetLocation());
@@ -224,7 +224,7 @@ namespace OpenRCT2::GameActions
     void StaffHireNewAction::AutoPositionNewStaff(Peep* newPeep) const
     {
         // Find a location to place new staff member
-        newPeep->State = PeepState::Falling;
+        newPeep->State = PeepState::falling;
 
         uint32_t count = 0;
         PathElement* guest_tile = nullptr;
@@ -233,7 +233,7 @@ namespace OpenRCT2::GameActions
         {
             for (auto guest : EntityList<Guest>())
             {
-                if (guest->State == PeepState::Walking)
+                if (guest->State == PeepState::walking)
                 {
                     // Check the walking guest's tile. Only count them if they're on a path tile.
                     guest_tile = MapGetPathElementAt(TileCoordsXYZ{ guest->NextLoc });
@@ -252,7 +252,7 @@ namespace OpenRCT2::GameActions
 
             for (auto guest : EntityList<Guest>())
             {
-                if (guest->State == PeepState::Walking)
+                if (guest->State == PeepState::walking)
                 {
                     guest_tile = MapGetPathElementAt(TileCoordsXYZ{ guest->NextLoc });
                     if (guest_tile != nullptr)
@@ -274,7 +274,7 @@ namespace OpenRCT2::GameActions
             else
             {
                 // User must pick a location
-                newPeep->State = PeepState::Picked;
+                newPeep->State = PeepState::picked;
                 newLocation = newPeep->GetLocation();
             }
         }
@@ -295,7 +295,7 @@ namespace OpenRCT2::GameActions
             else
             {
                 // User must pick a location
-                newPeep->State = PeepState::Picked;
+                newPeep->State = PeepState::picked;
                 newLocation = newPeep->GetLocation();
             }
         }

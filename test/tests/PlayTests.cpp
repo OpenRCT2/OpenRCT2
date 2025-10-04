@@ -125,7 +125,7 @@ TEST_F(PlayTests, SecondGuestInQueueShouldNotRideIfNoFunds)
     richGuest->CashInPocket = 3000;
 
     // Wait for rich guest to get in queue
-    bool matched = updateUntil(1000, [&]() { return richGuest->State == PeepState::Queuing; });
+    bool matched = updateUntil(1000, [&]() { return richGuest->State == PeepState::queuing; });
     ASSERT_TRUE(matched);
 
     // Insert poor guest
@@ -133,7 +133,7 @@ TEST_F(PlayTests, SecondGuestInQueueShouldNotRideIfNoFunds)
     poorGuest->CashInPocket = 5;
 
     // Wait for poor guest to get in queue
-    matched = updateUntil(1000, [&]() { return poorGuest->State == PeepState::Queuing; });
+    matched = updateUntil(1000, [&]() { return poorGuest->State == PeepState::queuing; });
     ASSERT_TRUE(matched);
 
     // Raise the price of the ride to a value poor guest can't pay
@@ -143,8 +143,8 @@ TEST_F(PlayTests, SecondGuestInQueueShouldNotRideIfNoFunds)
     // since it doesn't have enough money to pay for it
     bool enteredTheRide = false;
     matched = updateUntil(10000, [&]() {
-        enteredTheRide |= poorGuest->State == PeepState::OnRide;
-        return poorGuest->State == PeepState::Walking || enteredTheRide;
+        enteredTheRide |= poorGuest->State == PeepState::onRide;
+        return poorGuest->State == PeepState::walking || enteredTheRide;
     });
 
     ASSERT_TRUE(matched);
@@ -187,7 +187,7 @@ TEST_F(PlayTests, CarRideWithOneCarOnlyAcceptsTwoGuests)
     }
 
     // Wait until one of them is riding
-    auto guestIsOnRide = [](auto* g) { return g->State == PeepState::OnRide; };
+    auto guestIsOnRide = [](auto* g) { return g->State == PeepState::onRide; };
     bool matched = updateUntil(10000, [&]() { return std::any_of(guests.begin(), guests.end(), guestIsOnRide); });
     ASSERT_TRUE(matched);
 

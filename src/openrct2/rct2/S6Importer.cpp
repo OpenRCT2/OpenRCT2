@@ -1215,8 +1215,8 @@ namespace OpenRCT2::RCT2
                 if (entity.Unknown.EntityIdentifier == RCT12EntityIdentifier::Peep)
                 {
                     if (entity.Peep.CurrentRide == static_cast<RCT12RideId>(rideIndex.ToUnderlying())
-                        && (static_cast<PeepState>(entity.Peep.State) == PeepState::OnRide
-                            || static_cast<PeepState>(entity.Peep.State) == PeepState::EnteringRide))
+                        && (static_cast<PeepState>(entity.Peep.State) == PeepState::onRide
+                            || static_cast<PeepState>(entity.Peep.State) == PeepState::enteringRide))
                     {
                         numRiders++;
                     }

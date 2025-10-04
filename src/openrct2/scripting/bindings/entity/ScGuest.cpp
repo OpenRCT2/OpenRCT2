@@ -900,7 +900,7 @@ namespace OpenRCT2::Scripting
 
         // Special consideration for sitting peeps
         // TODO: something funky going on in the state machine
-        if (peep->AnimationType == PeepAnimationType::Walking && peep->State == PeepState::Sitting)
+        if (peep->AnimationType == PeepAnimationType::Walking && peep->State == PeepState::sitting)
             action = availableGuestAnimations[PeepAnimationType::SittingIdle];
 
         return std::string(action);

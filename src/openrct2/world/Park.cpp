@@ -557,7 +557,7 @@ namespace OpenRCT2::Park
                 peep->SetDestination(destination, 5);
                 peep->PeepDirection = direction;
                 peep->Var37 = 0;
-                peep->State = PeepState::EnteringPark;
+                peep->State = PeepState::enteringPark;
             }
         }
         return peep;

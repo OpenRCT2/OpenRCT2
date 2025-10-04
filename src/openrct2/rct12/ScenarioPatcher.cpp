@@ -505,10 +505,10 @@ static void SwapRideEntranceAndExit(RideId rideId)
     // First, make the queuing peep exit
     for (auto peep : EntityList<Guest>())
     {
-        if (peep->State == PeepState::QueuingFront && peep->CurrentRide == rideId)
+        if (peep->State == PeepState::queuingFront && peep->CurrentRide == rideId)
         {
             peep->RemoveFromQueue();
-            peep->SetState(PeepState::Falling);
+            peep->SetState(PeepState::falling);
             break;
         }
     }

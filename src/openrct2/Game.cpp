@@ -195,7 +195,7 @@ static void FixGuestsHeadingToParkCount()
 
     for (auto* peep : EntityList<Guest>())
     {
-        if (peep->OutsideOfPark && peep->State != PeepState::LeavingPark)
+        if (peep->OutsideOfPark && peep->State != PeepState::leavingPark)
         {
             guestsHeadingToPark++;
         }

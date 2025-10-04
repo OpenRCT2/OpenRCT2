@@ -709,7 +709,7 @@ namespace OpenRCT2
         Focus focus = Focus(peep.Id);
         window->viewportTargetSprite = peep.Id;
 
-        if (peep.State == PeepState::Picked)
+        if (peep.State == PeepState::picked)
         {
             window->viewportSmartFollowSprite = EntityId::GetNull();
             window->viewportTargetSprite = EntityId::GetNull();
@@ -718,8 +718,8 @@ namespace OpenRCT2
         }
 
         bool overallFocus = true;
-        if (peep.State == PeepState::OnRide || peep.State == PeepState::EnteringRide
-            || (peep.State == PeepState::LeavingRide && peep.x == kLocationNull))
+        if (peep.State == PeepState::onRide || peep.State == PeepState::enteringRide
+            || (peep.State == PeepState::leavingRide && peep.x == kLocationNull))
         {
             auto ride = GetRide(peep.CurrentRide);
             if (ride != nullptr && (ride->lifecycleFlags & RIDE_LIFECYCLE_ON_TRACK))
@@ -758,7 +758,7 @@ namespace OpenRCT2
 
     void ViewportUpdateSmartFollowStaff(WindowBase* window, const Staff& peep)
     {
-        if (peep.State == PeepState::Picked)
+        if (peep.State == PeepState::picked)
         {
             window->viewportSmartFollowSprite = EntityId::GetNull();
             window->viewportTargetSprite = EntityId::GetNull();

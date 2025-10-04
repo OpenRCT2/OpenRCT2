@@ -274,14 +274,14 @@ void Ride::removePeeps()
     // Place all the guests at exit
     for (auto peep : EntityList<Guest>())
     {
-        if (peep->State == PeepState::QueuingFront || peep->State == PeepState::EnteringRide
-            || peep->State == PeepState::LeavingRide || peep->State == PeepState::OnRide)
+        if (peep->State == PeepState::queuingFront || peep->State == PeepState::enteringRide
+            || peep->State == PeepState::leavingRide || peep->State == PeepState::onRide)
         {
             if (peep->CurrentRide != id)
                 continue;
 
             PeepDecrementNumRiders(peep);
-            if (peep->State == PeepState::QueuingFront && peep->RideSubState == PeepRideSubState::AtEntrance)
+            if (peep->State == PeepState::queuingFront && peep->RideSubState == PeepRideSubState::AtEntrance)
                 peep->RemoveFromQueue();
 
             if (exitPosition.direction == kInvalidDirection)
@@ -298,7 +298,7 @@ void Ride::removePeeps()
                 peep->Orientation = exitPosition.direction;
             }
 
-            peep->State = PeepState::Falling;
+            peep->State = PeepState::falling;
             peep->SwitchToSpecialSprite(0);
 
             peep->Happiness = std::min(peep->Happiness, peep->HappinessTarget) / 2;
@@ -309,7 +309,7 @@ void Ride::removePeeps()
     // Place all the staff at exit
     for (auto peep : EntityList<Staff>())
     {
-        if (peep->State == PeepState::Fixing || peep->State == PeepState::Inspecting)
+        if (peep->State == PeepState::fixing || peep->State == PeepState::inspecting)
         {
             if (peep->CurrentRide != id)
                 continue;
@@ -328,7 +328,7 @@ void Ride::removePeeps()
                 peep->Orientation = exitPosition.direction;
             }
 
-            peep->State = PeepState::Falling;
+            peep->State = PeepState::falling;
             peep->SwitchToSpecialSprite(0);
 
             peep->WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_STATS;

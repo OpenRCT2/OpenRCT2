@@ -161,7 +161,7 @@ namespace OpenRCT2::Scripting
                         auto peep = entity->As<Peep>();
                         // We can't remove a single peep from a ride at the moment as this can cause complications with the
                         // vehicle car having an unsupported peep capacity.
-                        if (peep == nullptr || peep->State == PeepState::OnRide || peep->State == PeepState::EnteringRide)
+                        if (peep == nullptr || peep->State == PeepState::onRide || peep->State == PeepState::enteringRide)
                         {
                             duk_error(ctx, DUK_ERR_ERROR, "Removing a peep that is on a ride is currently unsupported.");
                         }
