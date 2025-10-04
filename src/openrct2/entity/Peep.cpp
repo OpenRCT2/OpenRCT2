@@ -1658,7 +1658,7 @@ static bool PeepInteractWithEntrance(Peep* peep, const CoordsXYE& coords, uint8_
         if (guest->State == PeepState::queuing)
         {
             // Guest is in the ride queue.
-            guest->RideSubState = PeepRideSubState::AtQueueFront;
+            guest->RideSubState = PeepRideSubState::atQueueFront;
             guest->AnimationImageIdOffset = _backupAnimationImageIdOffset;
             return true;
         }
@@ -1702,7 +1702,7 @@ static bool PeepInteractWithEntrance(Peep* peep, const CoordsXYE& coords, uint8_
         guest->CurrentRideStation = stationNum;
         guest->DaysInQueue = 0;
         guest->SetState(PeepState::queuing);
-        guest->RideSubState = PeepRideSubState::AtQueueFront;
+        guest->RideSubState = PeepRideSubState::atQueueFront;
         guest->TimeInQueue = 0;
         if (guest->PeepFlags & PEEP_FLAGS_TRACKING)
         {
@@ -2153,7 +2153,7 @@ static void PeepInteractWithPath(Peep* peep, const CoordsXYE& coords)
                     guest->DaysInQueue = 0;
                     PeepWindowStateUpdate(guest);
 
-                    guest->RideSubState = PeepRideSubState::InQueue;
+                    guest->RideSubState = PeepRideSubState::inQueue;
                     guest->DestinationTolerance = 2;
                     guest->TimeInQueue = 0;
                     if (guest->PeepFlags & PEEP_FLAGS_TRACKING)
@@ -2267,7 +2267,7 @@ static bool PeepInteractWithShop(Peep* peep, const CoordsXYE& coords)
         guest->SetDestination(coordsCentre, 3);
         guest->CurrentRide = rideIndex;
         guest->SetState(PeepState::enteringRide);
-        guest->RideSubState = PeepRideSubState::ApproachShop;
+        guest->RideSubState = PeepRideSubState::approachShop;
 
         guest->GuestTimeOnRide = 0;
         ride->curNumCustomers++;

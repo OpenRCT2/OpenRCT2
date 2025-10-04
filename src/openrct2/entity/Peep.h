@@ -77,28 +77,28 @@ enum class PeepSittingSubState : uint8_t
 
 enum class PeepRideSubState : uint8_t
 {
-    AtEntrance = 0,
-    InEntrance = 1,
-    FreeVehicleCheck = 2, // Spend money on ride
-    LeaveEntrance = 3,    // Calculate what direction and where to go after committing to entering vehicle
-    ApproachVehicle = 4,
-    EnterVehicle = 5,
-    OnRide = 6,
-    LeaveVehicle = 7,
-    ApproachExit = 8,
-    InExit = 9,
-    InQueue = 10,
-    AtQueueFront = 11,
-    ApproachVehicleWaypoints = 12,
-    ApproachExitWaypoints = 13,
-    ApproachSpiralSlide = 14,
-    OnSpiralSlide = 15,
-    LeaveSpiralSlide = 16,
-    MazePathfinding = 17,
-    LeaveExit = 18,
-    ApproachShop = 19,
-    InteractShop = 20,
-    LeaveShop = 21
+    atEntrance = 0,
+    inEntrance = 1,
+    freeVehicleCheck = 2, // Spend money on ride
+    leaveEntrance = 3,    // Calculate what direction and where to go after committing to entering vehicle
+    approachVehicle = 4,
+    enterVehicle = 5,
+    onRide = 6,
+    leaveVehicle = 7,
+    approachExit = 8,
+    inExit = 9,
+    inQueue = 10,
+    atQueueFront = 11,
+    approachVehicleWaypoints = 12,
+    approachExitWaypoints = 13,
+    approachSpiralSlide = 14,
+    onSpiralSlide = 15,
+    leaveSpiralSlide = 16,
+    mazePathfinding = 17,
+    leaveExit = 18,
+    approachShop = 19,
+    interactShop = 20,
+    leaveShop = 21,
 };
 
 enum class PeepUsingBinSubState : uint8_t

@@ -531,7 +531,7 @@ namespace OpenRCT2::GameActions
                 {
                     if (ride.mechanicStatus == RIDE_MECHANIC_STATUS_FIXING)
                     {
-                        mechanic->RideSubState = PeepRideSubState::ApproachExit;
+                        mechanic->RideSubState = PeepRideSubState::approachExit;
                     }
                     else if (
                         ride.mechanicStatus == RIDE_MECHANIC_STATUS_CALLING
@@ -742,9 +742,9 @@ namespace OpenRCT2::GameActions
                         auto peep = getGameState().entities.TryGetEntity<Guest>(peepInTrainIndex);
                         if (peep != nullptr && peep->CurrentRide == ride.id)
                         {
-                            if ((peep->State == PeepState::onRide && peep->RideSubState == PeepRideSubState::OnRide)
+                            if ((peep->State == PeepState::onRide && peep->RideSubState == PeepRideSubState::onRide)
                                 || (peep->State == PeepState::leavingRide
-                                    && peep->RideSubState == PeepRideSubState::LeaveVehicle))
+                                    && peep->RideSubState == PeepRideSubState::leaveVehicle))
                             {
                                 vehicle->ApplyMass(-peep->Mass);
                             }

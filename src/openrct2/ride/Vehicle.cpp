@@ -3436,7 +3436,7 @@ void Vehicle::UpdateUnloadingPassengers()
             if (firstGuest != nullptr)
             {
                 firstGuest->SetState(PeepState::leavingRide);
-                firstGuest->RideSubState = PeepRideSubState::LeaveVehicle;
+                firstGuest->RideSubState = PeepRideSubState::leaveVehicle;
             }
 
             auto secondGuest = getGameState().entities.GetEntity<Guest>(peep[seat * 2 + 1]);
@@ -3445,7 +3445,7 @@ void Vehicle::UpdateUnloadingPassengers()
             if (secondGuest != nullptr)
             {
                 secondGuest->SetState(PeepState::leavingRide);
-                secondGuest->RideSubState = PeepRideSubState::LeaveVehicle;
+                secondGuest->RideSubState = PeepRideSubState::leaveVehicle;
             }
         }
     }
@@ -3481,7 +3481,7 @@ void Vehicle::UpdateUnloadingPassengers()
                 if (curPeep != nullptr)
                 {
                     curPeep->SetState(PeepState::leavingRide);
-                    curPeep->RideSubState = PeepRideSubState::LeaveVehicle;
+                    curPeep->RideSubState = PeepRideSubState::leaveVehicle;
                 }
             }
         }
