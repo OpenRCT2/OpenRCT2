@@ -532,7 +532,7 @@ void Guest::GivePassingGuestPizza(Guest& passingPeep)
     int32_t otherPeepOppositeDirection = passingPeep.Orientation >> 3;
     if (peepDirection == otherPeepOppositeDirection)
     {
-        if (passingPeep.IsActionInterruptable())
+        if (passingPeep.IsActionInterruptableSafely())
         {
             passingPeep.Action = PeepActionType::Wave2;
             passingPeep.AnimationFrameNum = 0;
@@ -547,7 +547,7 @@ void Guest::MakePassingGuestSick(Guest& passingPeep)
     if (passingPeep.State != PeepState::Walking)
         return;
 
-    if (passingPeep.IsActionInterruptable())
+    if (passingPeep.IsActionInterruptableSafely())
     {
         passingPeep.Action = PeepActionType::ThrowUp;
         passingPeep.AnimationFrameNum = 0;
@@ -595,7 +595,7 @@ void Guest::UpdateEasterEggInteractions()
     {
         if ((ScenarioRand() & 0xFFFF) <= 1456)
         {
-            if (IsActionInterruptable())
+            if (IsActionInterruptableSafely())
             {
                 Action = PeepActionType::Joy;
                 AnimationFrameNum = 0;
@@ -800,7 +800,7 @@ void Guest::UpdateMotivesIdle()
     {
         if ((ScenarioRand() & 0xFF) <= static_cast<uint8_t>((Nausea - 128) / 2))
         {
-            if (IsActionInterruptable())
+            if (IsActionInterruptableSafely())
             {
                 Action = PeepActionType::ThrowUp;
                 AnimationFrameNum = 0;
@@ -2426,7 +2426,7 @@ void Guest::ChoseNotToGoOnRide(const Ride& ride, bool peepAtRide, bool updateLas
 
 void Guest::ReadMap()
 {
-    if (IsActionInterruptable() && !IsOnLevelCrossing())
+    if (IsActionInterruptableSafely())
     {
         Action = PeepActionType::ReadMap;
         AnimationFrameNum = 0;
@@ -5473,32 +5473,22 @@ void Guest::UpdateWalking()
 
     const auto currentTicks = getGameState().currentTicks;
 
-    if (!IsOnLevelCrossing())
+    if (IsActionInterruptableSafely())
     {
-        if (PeepFlags & PEEP_FLAGS_WAVING && IsActionInterruptable() && (0xFFFF & ScenarioRand()) < 936)
+        PeepActionType NewAction = Action;
+
+        if (PeepFlags & PEEP_FLAGS_WAVING && (0xFFFF & ScenarioRand()) < 936)
+            NewAction = PeepActionType::Wave2;
+        else if (PeepFlags & PEEP_FLAGS_PHOTO && (0xFFFF & ScenarioRand()) < 936)
+            NewAction = PeepActionType::TakePhoto;
+        else if (PeepFlags & PEEP_FLAGS_PAINTING && (0xFFFF & ScenarioRand()) < 936)
+            NewAction = PeepActionType::DrawPicture;
+
+        if (NewAction != Action)
         {
-            Action = PeepActionType::Wave2;
+            Action = NewAction;
             AnimationFrameNum = 0;
             AnimationImageIdOffset = 0;
-
-            UpdateCurrentAnimationType();
-        }
-
-        if (PeepFlags & PEEP_FLAGS_PHOTO && IsActionInterruptable() && (0xFFFF & ScenarioRand()) < 936)
-        {
-            Action = PeepActionType::TakePhoto;
-            AnimationFrameNum = 0;
-            AnimationImageIdOffset = 0;
-
-            UpdateCurrentAnimationType();
-        }
-
-        if (PeepFlags & PEEP_FLAGS_PAINTING && IsActionInterruptable() && (0xFFFF & ScenarioRand()) < 936)
-        {
-            Action = PeepActionType::DrawPicture;
-            AnimationFrameNum = 0;
-            AnimationImageIdOffset = 0;
-
             UpdateCurrentAnimationType();
         }
     }
@@ -7129,7 +7119,7 @@ void Guest::InsertNewThought(PeepThoughtType thought_type, RideId rideId)
 void Guest::InsertNewThought(PeepThoughtType thoughtType, uint16_t thoughtArguments)
 {
     PeepActionType newAction = PeepThoughtToActionMap[EnumValue(thoughtType)].action;
-    if (newAction != PeepActionType::Walking && IsActionInterruptable())
+    if (newAction != PeepActionType::Walking && IsActionInterruptableSafely())
     {
         Action = newAction;
         AnimationFrameNum = 0;
