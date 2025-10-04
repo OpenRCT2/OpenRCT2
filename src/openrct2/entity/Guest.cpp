@@ -1283,7 +1283,7 @@ static void GuestTryGetUpFromSitting(Guest& guest)
  */
 void Guest::UpdateSitting()
 {
-    if (SittingSubState == PeepSittingSubState::TryingToSit)
+    if (SittingSubState == PeepSittingSubState::tryingToSit)
     {
         if (!CheckForPath())
             return;
@@ -1302,12 +1302,12 @@ void Guest::UpdateSitting()
         NextAnimationType = PeepAnimationType::SittingIdle;
         SwitchNextAnimationType();
 
-        SittingSubState = PeepSittingSubState::SatDown;
+        SittingSubState = PeepSittingSubState::satDown;
 
         // Sets time to sit on seat
         TimeToSitdown = (129 - Energy) * 16 + 50;
     }
-    else if (SittingSubState == PeepSittingSubState::SatDown)
+    else if (SittingSubState == PeepSittingSubState::satDown)
     {
         if (!IsActionInterruptable())
         {
@@ -6235,7 +6235,7 @@ bool Guest::UpdateWalkingFindBench()
 
     SetState(PeepState::sitting);
 
-    SittingSubState = PeepSittingSubState::TryingToSit;
+    SittingSubState = PeepSittingSubState::tryingToSit;
 
     int32_t benchX = (x & 0xFFE0) + BenchUseOffsets[Var37 & 0x7].x;
     int32_t benchY = (y & 0xFFE0) + BenchUseOffsets[Var37 & 0x7].y;
