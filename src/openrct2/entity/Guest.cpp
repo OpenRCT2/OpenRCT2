@@ -1331,7 +1331,7 @@ void Guest::UpdateSitting()
             return;
         }
 
-        if (AnimationGroup == PeepAnimationGroup::Umbrella)
+        if (AnimationGroup == PeepAnimationGroup::umbrella)
         {
             GuestTryGetUpFromSitting(*this);
             return;
@@ -1357,7 +1357,7 @@ void Guest::UpdateSitting()
             GuestTryGetUpFromSitting(*this);
             return;
         }
-        if (AnimationGroup == PeepAnimationGroup::Balloon || AnimationGroup == PeepAnimationGroup::Hat)
+        if (AnimationGroup == PeepAnimationGroup::balloon || AnimationGroup == PeepAnimationGroup::hat)
         {
             GuestTryGetUpFromSitting(*this);
             return;
@@ -5787,7 +5787,7 @@ void Guest::UpdateQueuing()
     PerformNextAction();
     if (!IsActionInterruptable())
         return;
-    if (AnimationGroup == PeepAnimationGroup::Normal)
+    if (AnimationGroup == PeepAnimationGroup::normal)
     {
         if (TimeInQueue >= 2000 && (0xFFFF & ScenarioRand()) <= 119)
         {
@@ -5809,28 +5809,28 @@ void Guest::UpdateQueuing()
         {
             switch (AnimationGroup)
             {
-                case PeepAnimationGroup::IceCream:
-                case PeepAnimationGroup::Chips:
-                case PeepAnimationGroup::Burger:
-                case PeepAnimationGroup::Drink:
-                case PeepAnimationGroup::Candyfloss:
-                case PeepAnimationGroup::Pizza:
-                case PeepAnimationGroup::Popcorn:
-                case PeepAnimationGroup::HotDog:
-                case PeepAnimationGroup::Tentacle:
-                case PeepAnimationGroup::ToffeeApple:
-                case PeepAnimationGroup::Doughnut:
-                case PeepAnimationGroup::Coffee:
-                case PeepAnimationGroup::Chicken:
-                case PeepAnimationGroup::Lemonade:
-                case PeepAnimationGroup::Pretzel:
-                case PeepAnimationGroup::Sujeonggwa:
-                case PeepAnimationGroup::Juice:
-                case PeepAnimationGroup::FunnelCake:
-                case PeepAnimationGroup::Noodles:
-                case PeepAnimationGroup::Sausage:
-                case PeepAnimationGroup::Soup:
-                case PeepAnimationGroup::Sandwich:
+                case PeepAnimationGroup::iceCream:
+                case PeepAnimationGroup::chips:
+                case PeepAnimationGroup::burger:
+                case PeepAnimationGroup::drink:
+                case PeepAnimationGroup::candyfloss:
+                case PeepAnimationGroup::pizza:
+                case PeepAnimationGroup::popcorn:
+                case PeepAnimationGroup::hotDog:
+                case PeepAnimationGroup::tentacle:
+                case PeepAnimationGroup::toffeeApple:
+                case PeepAnimationGroup::doughnut:
+                case PeepAnimationGroup::coffee:
+                case PeepAnimationGroup::chicken:
+                case PeepAnimationGroup::lemonade:
+                case PeepAnimationGroup::pretzel:
+                case PeepAnimationGroup::sujeonggwa:
+                case PeepAnimationGroup::juice:
+                case PeepAnimationGroup::funnelCake:
+                case PeepAnimationGroup::noodles:
+                case PeepAnimationGroup::sausage:
+                case PeepAnimationGroup::soup:
+                case PeepAnimationGroup::sandwich:
                     // Eat food
                     Action = PeepActionType::eatFood;
                     AnimationFrameNum = 0;
@@ -6929,37 +6929,37 @@ struct ItemPref
 
 // clang-format off
 static ItemPref item_order_preference[] = {
-    { ShopItem::IceCream,         PeepAnimationGroup::IceCream    },
-    { ShopItem::Chips,            PeepAnimationGroup::Chips       },
-    { ShopItem::Pizza,            PeepAnimationGroup::Pizza       },
-    { ShopItem::Burger,           PeepAnimationGroup::Burger      },
-    { ShopItem::Drink,            PeepAnimationGroup::Drink       },
-    { ShopItem::Coffee,           PeepAnimationGroup::Coffee      },
-    { ShopItem::Chicken,          PeepAnimationGroup::Chicken     },
-    { ShopItem::Lemonade,         PeepAnimationGroup::Lemonade    },
-    { ShopItem::Candyfloss,       PeepAnimationGroup::Candyfloss  },
-    { ShopItem::Popcorn,          PeepAnimationGroup::Popcorn     },
-    { ShopItem::HotDog,           PeepAnimationGroup::HotDog      },
-    { ShopItem::Tentacle,         PeepAnimationGroup::Tentacle    },
-    { ShopItem::ToffeeApple,      PeepAnimationGroup::ToffeeApple },
-    { ShopItem::Doughnut,         PeepAnimationGroup::Doughnut    },
-    { ShopItem::Pretzel,          PeepAnimationGroup::Pretzel     },
-    { ShopItem::Cookie,           PeepAnimationGroup::Pretzel     },
-    { ShopItem::Chocolate,        PeepAnimationGroup::Coffee      },
-    { ShopItem::IcedTea,          PeepAnimationGroup::Coffee      },
-    { ShopItem::FunnelCake,       PeepAnimationGroup::FunnelCake  },
-    { ShopItem::BeefNoodles,      PeepAnimationGroup::Noodles     },
-    { ShopItem::FriedRiceNoodles, PeepAnimationGroup::Noodles     },
-    { ShopItem::WontonSoup,       PeepAnimationGroup::Soup        },
-    { ShopItem::MeatballSoup,     PeepAnimationGroup::Soup        },
-    { ShopItem::FruitJuice,       PeepAnimationGroup::Juice       },
-    { ShopItem::SoybeanMilk,      PeepAnimationGroup::Sujeonggwa   },
-    { ShopItem::Sujeonggwa,       PeepAnimationGroup::Sujeonggwa   },
-    { ShopItem::SubSandwich,      PeepAnimationGroup::Sandwich    },
-    { ShopItem::RoastSausage,     PeepAnimationGroup::Sausage     },
-    { ShopItem::Balloon,          PeepAnimationGroup::Balloon     },
-    { ShopItem::Hat,              PeepAnimationGroup::Hat         },
-    { ShopItem::Sunglasses,       PeepAnimationGroup::Sunglasses  },
+    { ShopItem::IceCream,         PeepAnimationGroup::iceCream    },
+    { ShopItem::Chips,            PeepAnimationGroup::chips       },
+    { ShopItem::Pizza,            PeepAnimationGroup::pizza       },
+    { ShopItem::Burger,           PeepAnimationGroup::burger      },
+    { ShopItem::Drink,            PeepAnimationGroup::drink       },
+    { ShopItem::Coffee,           PeepAnimationGroup::coffee      },
+    { ShopItem::Chicken,          PeepAnimationGroup::chicken     },
+    { ShopItem::Lemonade,         PeepAnimationGroup::lemonade    },
+    { ShopItem::Candyfloss,       PeepAnimationGroup::candyfloss  },
+    { ShopItem::Popcorn,          PeepAnimationGroup::popcorn     },
+    { ShopItem::HotDog,           PeepAnimationGroup::hotDog      },
+    { ShopItem::Tentacle,         PeepAnimationGroup::tentacle    },
+    { ShopItem::ToffeeApple,      PeepAnimationGroup::toffeeApple },
+    { ShopItem::Doughnut,         PeepAnimationGroup::doughnut    },
+    { ShopItem::Pretzel,          PeepAnimationGroup::pretzel     },
+    { ShopItem::Cookie,           PeepAnimationGroup::pretzel     },
+    { ShopItem::Chocolate,        PeepAnimationGroup::coffee      },
+    { ShopItem::IcedTea,          PeepAnimationGroup::coffee      },
+    { ShopItem::FunnelCake,       PeepAnimationGroup::funnelCake  },
+    { ShopItem::BeefNoodles,      PeepAnimationGroup::noodles     },
+    { ShopItem::FriedRiceNoodles, PeepAnimationGroup::noodles     },
+    { ShopItem::WontonSoup,       PeepAnimationGroup::soup        },
+    { ShopItem::MeatballSoup,     PeepAnimationGroup::soup        },
+    { ShopItem::FruitJuice,       PeepAnimationGroup::juice       },
+    { ShopItem::SoybeanMilk,      PeepAnimationGroup::sujeonggwa   },
+    { ShopItem::Sujeonggwa,       PeepAnimationGroup::sujeonggwa   },
+    { ShopItem::SubSandwich,      PeepAnimationGroup::sandwich    },
+    { ShopItem::RoastSausage,     PeepAnimationGroup::sausage     },
+    { ShopItem::Balloon,          PeepAnimationGroup::balloon     },
+    { ShopItem::Hat,              PeepAnimationGroup::hat         },
+    { ShopItem::Sunglasses,       PeepAnimationGroup::sunglasses  },
 };
 // clang-format on
 
@@ -6969,7 +6969,7 @@ static ItemPref item_order_preference[] = {
  */
 void Guest::UpdateAnimationGroup()
 {
-    if (AnimationGroup == PeepAnimationGroup::Balloon && (ScenarioRand() & 0xFFFF) <= 327)
+    if (AnimationGroup == PeepAnimationGroup::balloon && (ScenarioRand() & 0xFFFF) <= 327)
     {
         bool isBalloonPopped = false;
         if (x != kLocationNull)
@@ -7000,7 +7000,7 @@ void Guest::UpdateAnimationGroup()
 
                 if (tileElement->IsLastForTile())
                 {
-                    SetAnimationGroup(PeepAnimationGroup::Umbrella);
+                    SetAnimationGroup(PeepAnimationGroup::umbrella);
                     return;
                 }
                 tileElement++;
@@ -7019,41 +7019,41 @@ void Guest::UpdateAnimationGroup()
 
     if (State == PeepState::watching && StandingFlags & (1 << 1))
     {
-        SetAnimationGroup(PeepAnimationGroup::Watching);
+        SetAnimationGroup(PeepAnimationGroup::watching);
         return;
     }
 
     if (Nausea > 170)
     {
-        SetAnimationGroup(PeepAnimationGroup::VeryNauseous);
+        SetAnimationGroup(PeepAnimationGroup::veryNauseous);
         return;
     }
 
     if (Nausea > 140)
     {
-        SetAnimationGroup(PeepAnimationGroup::Nauseous);
+        SetAnimationGroup(PeepAnimationGroup::nauseous);
         return;
     }
 
     if (Energy <= 64 && Happiness < 128)
     {
-        SetAnimationGroup(PeepAnimationGroup::HeadDown);
+        SetAnimationGroup(PeepAnimationGroup::headDown);
         return;
     }
 
     if (Energy <= 80 && Happiness < 128)
     {
-        SetAnimationGroup(PeepAnimationGroup::ArmsCrossed);
+        SetAnimationGroup(PeepAnimationGroup::armsCrossed);
         return;
     }
 
     if (Toilet > 220)
     {
-        SetAnimationGroup(PeepAnimationGroup::RequireToilet);
+        SetAnimationGroup(PeepAnimationGroup::requireToilet);
         return;
     }
 
-    SetAnimationGroup(PeepAnimationGroup::Normal);
+    SetAnimationGroup(PeepAnimationGroup::normal);
 }
 
 bool Guest::HeadingForRideOrParkExit() const
@@ -7273,7 +7273,7 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
     Guest* peep = gameState.entities.CreateEntity<Guest>();
 
     peep->AnimationObjectIndex = findPeepAnimationsIndexForType(AnimationPeepType::guest);
-    peep->AnimationGroup = PeepAnimationGroup::Normal;
+    peep->AnimationGroup = PeepAnimationGroup::normal;
     peep->OutsideOfPark = true;
     peep->State = PeepState::falling;
     peep->Action = PeepActionType::walking;

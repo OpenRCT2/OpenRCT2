@@ -296,7 +296,7 @@ namespace OpenRCT2::Ui::Windows
                     // as well as 1 sprite for sitting and 1 for standing still.
                     auto itemFrame = (currentFrame / 4) % 6;
 
-                    if (guest->AnimationGroup == PeepAnimationGroup::Hat)
+                    if (guest->AnimationGroup == PeepAnimationGroup::hat)
                     {
                         auto itemOffset = kPeepSpriteHatItemStart + 1;
                         auto imageId = ImageId(itemOffset + itemFrame * 4, guest->HatColour);
@@ -304,7 +304,7 @@ namespace OpenRCT2::Ui::Windows
                         return;
                     }
 
-                    if (guest->AnimationGroup == PeepAnimationGroup::Balloon)
+                    if (guest->AnimationGroup == PeepAnimationGroup::balloon)
                     {
                         auto itemOffset = kPeepSpriteBalloonItemStart + 1;
                         auto imageId = ImageId(itemOffset + itemFrame * 4, guest->BalloonColour);
@@ -312,7 +312,7 @@ namespace OpenRCT2::Ui::Windows
                         return;
                     }
 
-                    if (guest->AnimationGroup == PeepAnimationGroup::Umbrella)
+                    if (guest->AnimationGroup == PeepAnimationGroup::umbrella)
                     {
                         auto itemOffset = kPeepSpriteUmbrellaItemStart + 1;
                         auto imageId = ImageId(itemOffset + itemFrame * 4, guest->UmbrellaColour);

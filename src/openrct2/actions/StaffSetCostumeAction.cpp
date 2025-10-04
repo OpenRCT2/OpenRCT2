@@ -82,13 +82,13 @@ namespace OpenRCT2::GameActions
         }
 
         staff->AnimationObjectIndex = _costume;
-        staff->AnimationGroup = PeepAnimationGroup::Normal;
+        staff->AnimationGroup = PeepAnimationGroup::normal;
 
         auto& objManager = GetContext()->GetObjectManager();
         auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(_costume);
 
         staff->PeepFlags &= ~PEEP_FLAGS_SLOW_WALK;
-        if (animObj->IsSlowWalking(PeepAnimationGroup::Normal))
+        if (animObj->IsSlowWalking(PeepAnimationGroup::normal))
             staff->PeepFlags |= PEEP_FLAGS_SLOW_WALK;
 
         staff->AnimationFrameNum = 0;

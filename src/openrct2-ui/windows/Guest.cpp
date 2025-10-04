@@ -589,21 +589,21 @@ namespace OpenRCT2::Ui::Windows
             // There are only 6 walking frames available for each item.
             auto itemFrame = (_guestAnimationFrame / 4) % 6;
 
-            if (guest->AnimationGroup == PeepAnimationGroup::Hat)
+            if (guest->AnimationGroup == PeepAnimationGroup::hat)
             {
                 auto itemOffset = kPeepSpriteHatItemStart + 1;
                 auto imageId = ImageId(itemOffset + itemFrame * 4, guest->HatColour);
                 GfxDrawSprite(clipDpi, imageId, screenCoords);
             }
 
-            if (guest->AnimationGroup == PeepAnimationGroup::Balloon)
+            if (guest->AnimationGroup == PeepAnimationGroup::balloon)
             {
                 auto itemOffset = kPeepSpriteBalloonItemStart + 1;
                 auto imageId = ImageId(itemOffset + itemFrame * 4, guest->BalloonColour);
                 GfxDrawSprite(clipDpi, imageId, screenCoords);
             }
 
-            if (guest->AnimationGroup == PeepAnimationGroup::Umbrella)
+            if (guest->AnimationGroup == PeepAnimationGroup::umbrella)
             {
                 auto itemOffset = kPeepSpriteUmbrellaItemStart + 1;
                 auto imageId = ImageId(itemOffset + itemFrame * 4, guest->UmbrellaColour);

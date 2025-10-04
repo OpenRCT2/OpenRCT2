@@ -1696,9 +1696,9 @@ void Staff::Tick128UpdateStaff()
         return;
 
     // Alternate between walking animations based on crowd size
-    auto newAnimationGroup = PeepAnimationGroup::Normal;
+    auto newAnimationGroup = PeepAnimationGroup::normal;
     if (State == PeepState::patrolling && SecurityGuardPathIsCrowded())
-        newAnimationGroup = PeepAnimationGroup::Alternate;
+        newAnimationGroup = PeepAnimationGroup::alternate;
 
     if (AnimationGroup == newAnimationGroup)
         return;

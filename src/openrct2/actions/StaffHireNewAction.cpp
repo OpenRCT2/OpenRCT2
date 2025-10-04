@@ -155,13 +155,13 @@ namespace OpenRCT2::GameActions
 
             newPeep->Name = nullptr;
             newPeep->AnimationObjectIndex = animObjectIndex;
-            newPeep->AnimationGroup = PeepAnimationGroup::Normal;
+            newPeep->AnimationGroup = PeepAnimationGroup::normal;
 
             auto& objManager = GetContext()->GetObjectManager();
             auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(animObjectIndex);
 
             newPeep->PeepFlags &= ~PEEP_FLAGS_SLOW_WALK;
-            if (animObj->IsSlowWalking(PeepAnimationGroup::Normal))
+            if (animObj->IsSlowWalking(PeepAnimationGroup::normal))
                 newPeep->PeepFlags |= PEEP_FLAGS_SLOW_WALK;
 
             const auto& spriteBounds = animObj->GetSpriteBounds(newPeep->AnimationGroup);

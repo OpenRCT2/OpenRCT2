@@ -1236,7 +1236,7 @@ namespace OpenRCT2::Ui::Windows
 
                 auto* animObj = findPeepAnimationsObjectForType(AnimationPeepType::guest);
                 ImageId peepImage(
-                    animObj->GetPeepAnimation(PeepAnimationGroup::Normal).baseImage + 1, COLOUR_BRIGHT_RED, COLOUR_TEAL);
+                    animObj->GetPeepAnimation(PeepAnimationGroup::normal).baseImage + 1, COLOUR_BRIGHT_RED, COLOUR_TEAL);
                 if (page == WINDOW_PARK_PAGE_GUESTS)
                     peepImage = peepImage.WithIndexOffset(_peepAnimationFrame & 0xFFFFFFFC);
 

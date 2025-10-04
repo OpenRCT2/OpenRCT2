@@ -79,25 +79,25 @@ namespace OpenRCT2::Scripting
             {
                 peep->AssignedStaffType = StaffType::Handyman;
                 peep->AnimationObjectIndex = findPeepAnimationsIndexForType(AnimationPeepType::handyman);
-                peep->AnimationGroup = PeepAnimationGroup::Normal;
+                peep->AnimationGroup = PeepAnimationGroup::normal;
             }
             else if (value == "mechanic" && !peep->IsMechanic())
             {
                 peep->AssignedStaffType = StaffType::Mechanic;
                 peep->AnimationObjectIndex = findPeepAnimationsIndexForType(AnimationPeepType::mechanic);
-                peep->AnimationGroup = PeepAnimationGroup::Normal;
+                peep->AnimationGroup = PeepAnimationGroup::normal;
             }
             else if (value == "security" && peep->AssignedStaffType != StaffType::Security)
             {
                 peep->AssignedStaffType = StaffType::Security;
                 peep->AnimationObjectIndex = findPeepAnimationsIndexForType(AnimationPeepType::security);
-                peep->AnimationGroup = PeepAnimationGroup::Normal;
+                peep->AnimationGroup = PeepAnimationGroup::normal;
             }
             else if (value == "entertainer" && !peep->isEntertainer())
             {
                 peep->AssignedStaffType = StaffType::Entertainer;
                 peep->AnimationObjectIndex = findPeepAnimationsIndexForType(AnimationPeepType::entertainer);
-                peep->AnimationGroup = PeepAnimationGroup::Normal;
+                peep->AnimationGroup = PeepAnimationGroup::normal;
             }
 
             // Reset state to walking to prevent invalid actions from carrying over

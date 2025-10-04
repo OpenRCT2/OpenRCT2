@@ -2630,7 +2630,7 @@ static void GuestReleaseBalloon(Guest* peep, int16_t spawn_height)
     {
         peep->RemoveItem(ShopItem::Balloon);
 
-        if (peep->AnimationGroup == PeepAnimationGroup::Balloon && peep->x != kLocationNull)
+        if (peep->AnimationGroup == PeepAnimationGroup::balloon && peep->x != kLocationNull)
         {
             Balloon::Create({ peep->x, peep->y, spawn_height }, peep->BalloonColour, false);
             peep->WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
@@ -2794,7 +2794,7 @@ void Peep::Paint(PaintSession& session, int32_t imageDirection) const
     else if (actionAnimationGroup == PeepAnimationType::sittingIdle)
         itemFrame = 7;
 
-    if (AnimationGroup == PeepAnimationGroup::Hat)
+    if (AnimationGroup == PeepAnimationGroup::hat)
     {
         auto itemOffset = kPeepSpriteHatItemStart;
         imageId = ImageId(itemOffset + (imageDirection >> 3) + itemFrame * 4, guest->HatColour);
@@ -2802,7 +2802,7 @@ void Peep::Paint(PaintSession& session, int32_t imageDirection) const
         return;
     }
 
-    if (AnimationGroup == PeepAnimationGroup::Balloon)
+    if (AnimationGroup == PeepAnimationGroup::balloon)
     {
         auto itemOffset = kPeepSpriteBalloonItemStart;
         imageId = ImageId(itemOffset + (imageDirection >> 3) + itemFrame * 4, guest->BalloonColour);
@@ -2810,7 +2810,7 @@ void Peep::Paint(PaintSession& session, int32_t imageDirection) const
         return;
     }
 
-    if (AnimationGroup == PeepAnimationGroup::Umbrella)
+    if (AnimationGroup == PeepAnimationGroup::umbrella)
     {
         auto itemOffset = kPeepSpriteUmbrellaItemStart;
         imageId = ImageId(itemOffset + (imageDirection >> 3) + itemFrame * 4, guest->UmbrellaColour);

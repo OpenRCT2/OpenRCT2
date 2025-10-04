@@ -170,7 +170,7 @@ namespace OpenRCT2::Ui::Windows
             auto* animObj = findPeepAnimationsObjectForType(animPeepType);
             if (animObj != nullptr)
             {
-                auto& anim = animObj->GetPeepAnimation(PeepAnimationGroup::Normal);
+                auto& anim = animObj->GetPeepAnimation(PeepAnimationGroup::normal);
                 _tabAnimationIndex++;
 
                 if (_tabAnimationIndex >= anim.frameOffsets.size() * 4)
@@ -611,7 +611,7 @@ namespace OpenRCT2::Ui::Windows
             const auto& widget = widgets[widgetIndex];
 
             auto frame = _selectedTab == tabIndex ? _tabAnimationIndex / 4 : 0;
-            auto& anim = animObj->GetPeepAnimation(PeepAnimationGroup::Normal);
+            auto& anim = animObj->GetPeepAnimation(PeepAnimationGroup::normal);
             auto imageId = anim.baseImage + 1 + anim.frameOffsets[frame] * 4;
 
             GfxDrawSprite(
@@ -634,7 +634,7 @@ namespace OpenRCT2::Ui::Windows
                     widget.right - widget.left - 1, widget.bottom - widget.top - 1))
             {
                 auto frame = _selectedTab == tabIndex ? _tabAnimationIndex / 4 : 0;
-                auto& anim = animObj->GetPeepAnimation(PeepAnimationGroup::Normal);
+                auto& anim = animObj->GetPeepAnimation(PeepAnimationGroup::normal);
                 auto imageId = anim.baseImage + 1 + anim.frameOffsets[frame] * 4;
 
                 GfxDrawSprite(clippedDpi, ImageId(imageId), { 15, 23 });

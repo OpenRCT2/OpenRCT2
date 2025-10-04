@@ -51,7 +51,7 @@ namespace OpenRCT2
                 // algorithm doesn't account for those. We manually compensate for these here.
                 // Between 8-12 pixels are needed, depending on rotation, so we're generalising.
                 auto pag = PeepAnimationGroup(groupKey);
-                if (pag == PeepAnimationGroup::Balloon || pag == PeepAnimationGroup::Hat || pag == PeepAnimationGroup::Umbrella)
+                if (pag == PeepAnimationGroup::balloon || pag == PeepAnimationGroup::hat || pag == PeepAnimationGroup::umbrella)
                 {
                     group[typeEnum].bounds.spriteHeightNegative += 12;
                 }
