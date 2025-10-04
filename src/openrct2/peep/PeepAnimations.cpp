@@ -369,9 +369,9 @@ namespace OpenRCT2
         spriteHeightPositive++;
 
         return {
-            .sprite_width = static_cast<uint8_t>(spriteWidth),
-            .sprite_height_negative = static_cast<uint8_t>(spriteHeightNegative),
-            .sprite_height_positive = static_cast<uint8_t>(spriteHeightPositive),
+            .spriteWidth = static_cast<uint8_t>(spriteWidth),
+            .spriteHeightNegative = static_cast<uint8_t>(spriteHeightNegative),
+            .spriteHeightPositive = static_cast<uint8_t>(spriteHeightPositive),
         };
     }
 } // namespace OpenRCT2

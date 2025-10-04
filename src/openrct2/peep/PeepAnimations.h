@@ -38,9 +38,9 @@ namespace OpenRCT2
 
     struct SpriteBounds
     {
-        uint8_t sprite_width;           // 0x00
-        uint8_t sprite_height_negative; // 0x01
-        uint8_t sprite_height_positive; // 0x02
+        uint8_t spriteWidth;          // 0x00
+        uint8_t spriteHeightNegative; // 0x01
+        uint8_t spriteHeightPositive; // 0x02
     };
 
     struct PeepAnimation

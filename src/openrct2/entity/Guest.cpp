@@ -7289,9 +7289,9 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
     auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(peep->AnimationObjectIndex);
 
     const auto& spriteBounds = animObj->GetSpriteBounds(peep->AnimationGroup, peep->AnimationType);
-    peep->SpriteData.Width = spriteBounds.sprite_width;
-    peep->SpriteData.HeightMin = spriteBounds.sprite_height_negative;
-    peep->SpriteData.HeightMax = spriteBounds.sprite_height_positive;
+    peep->SpriteData.Width = spriteBounds.spriteWidth;
+    peep->SpriteData.HeightMin = spriteBounds.spriteHeightNegative;
+    peep->SpriteData.HeightMax = spriteBounds.spriteHeightPositive;
     peep->Orientation = 0;
 
     peep->MoveTo(coords);

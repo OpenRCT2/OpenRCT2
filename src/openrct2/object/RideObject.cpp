@@ -430,9 +430,9 @@ namespace OpenRCT2
         car.num_seats = stream->ReadValue<uint8_t>();
         CarSpriteFlags carSpriteFlags;
         carSpriteFlags.holder = stream->ReadValue<uint16_t>();
-        car.sprite_width = stream->ReadValue<uint8_t>();
-        car.sprite_height_negative = stream->ReadValue<uint8_t>();
-        car.sprite_height_positive = stream->ReadValue<uint8_t>();
+        car.spriteWidth = stream->ReadValue<uint8_t>();
+        car.spriteHeightNegative = stream->ReadValue<uint8_t>();
+        car.spriteHeightPositive = stream->ReadValue<uint8_t>();
         auto legacyAnimation = stream->ReadValue<uint8_t>();
         car.flags = stream->ReadValue<uint32_t>();
         // Implied in vanilla, but can be turned off in OpenRCT2.
@@ -590,9 +590,9 @@ namespace OpenRCT2
                 auto& car = _legacyType.Cars[0];
                 car.spacing = 544;
                 car.SpriteGroups[EnumValue(SpriteGroupType::SlopeFlat)].spritePrecision = SpritePrecision::Sprites4;
-                car.sprite_width = 1;
-                car.sprite_height_negative = 1;
-                car.sprite_height_positive = 1;
+                car.spriteWidth = 1;
+                car.spriteHeightNegative = 1;
+                car.spriteHeightPositive = 1;
                 car.flags = CAR_ENTRY_FLAG_SPINNING;
                 car.PaintStyle = VEHICLE_VISUAL_FLAT_RIDE_OR_CAR_RIDE;
                 car.friction_sound_id = OpenRCT2::Audio::SoundId::null;
@@ -745,9 +745,9 @@ namespace OpenRCT2
             car.num_seats |= kVehicleSeatPairFlag;
         }
 
-        car.sprite_width = Json::GetNumber<uint8_t>(jCar["spriteWidth"]);
-        car.sprite_height_negative = Json::GetNumber<uint8_t>(jCar["spriteHeightNegative"]);
-        car.sprite_height_positive = Json::GetNumber<uint8_t>(jCar["spriteHeightPositive"]);
+        car.spriteWidth = Json::GetNumber<uint8_t>(jCar["spriteWidth"]);
+        car.spriteHeightNegative = Json::GetNumber<uint8_t>(jCar["spriteHeightNegative"]);
+        car.spriteHeightPositive = Json::GetNumber<uint8_t>(jCar["spriteHeightPositive"]);
         car.base_num_frames = Json::GetNumber<uint16_t>(jCar["baseNumFrames"]);
         car.NumCarImages = Json::GetNumber<uint32_t>(jCar["numImages"]);
         car.no_seating_rows = Json::GetNumber<uint8_t>(jCar["numSeatRows"]);

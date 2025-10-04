@@ -1278,9 +1278,9 @@ namespace OpenRCT2::RCT1
             for (auto* peep : EntityList<Guest>())
             {
                 const auto& spriteBounds = animObj->GetSpriteBounds(peep->AnimationGroup, peep->AnimationType);
-                peep->SpriteData.Width = spriteBounds.sprite_width;
-                peep->SpriteData.HeightMin = spriteBounds.sprite_height_negative;
-                peep->SpriteData.HeightMax = spriteBounds.sprite_height_positive;
+                peep->SpriteData.Width = spriteBounds.spriteWidth;
+                peep->SpriteData.HeightMin = spriteBounds.spriteHeightNegative;
+                peep->SpriteData.HeightMax = spriteBounds.spriteHeightPositive;
             }
 
             auto& objManager = GetContext()->GetObjectManager();
@@ -1288,9 +1288,9 @@ namespace OpenRCT2::RCT1
             {
                 animObj = objManager.GetLoadedObject<PeepAnimationsObject>(peep->AnimationObjectIndex);
                 const auto& spriteBounds = animObj->GetSpriteBounds(peep->AnimationGroup, peep->AnimationType);
-                peep->SpriteData.Width = spriteBounds.sprite_width;
-                peep->SpriteData.HeightMin = spriteBounds.sprite_height_negative;
-                peep->SpriteData.HeightMax = spriteBounds.sprite_height_positive;
+                peep->SpriteData.Width = spriteBounds.spriteWidth;
+                peep->SpriteData.HeightMin = spriteBounds.spriteHeightNegative;
+                peep->SpriteData.HeightMax = spriteBounds.spriteHeightPositive;
             }
         }
 

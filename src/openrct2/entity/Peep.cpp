@@ -379,9 +379,9 @@ void Peep::UpdateSpriteBoundingBox()
     auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(AnimationObjectIndex);
 
     const auto& spriteBounds = animObj->GetSpriteBounds(AnimationGroup, AnimationType);
-    SpriteData.Width = spriteBounds.sprite_width;
-    SpriteData.HeightMin = spriteBounds.sprite_height_negative;
-    SpriteData.HeightMax = spriteBounds.sprite_height_positive;
+    SpriteData.Width = spriteBounds.spriteWidth;
+    SpriteData.HeightMin = spriteBounds.spriteHeightNegative;
+    SpriteData.HeightMax = spriteBounds.spriteHeightPositive;
 }
 
 /* rct2: 0x00693BE5 */
@@ -1579,9 +1579,9 @@ void Peep::SwitchNextAnimationType()
         auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(AnimationObjectIndex);
 
         const auto& spriteBounds = animObj->GetSpriteBounds(AnimationGroup, NextAnimationType);
-        SpriteData.Width = spriteBounds.sprite_width;
-        SpriteData.HeightMin = spriteBounds.sprite_height_negative;
-        SpriteData.HeightMax = spriteBounds.sprite_height_positive;
+        SpriteData.Width = spriteBounds.spriteWidth;
+        SpriteData.HeightMin = spriteBounds.spriteHeightNegative;
+        SpriteData.HeightMax = spriteBounds.spriteHeightPositive;
         Invalidate();
     }
 }

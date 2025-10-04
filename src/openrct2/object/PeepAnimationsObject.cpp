@@ -53,7 +53,7 @@ namespace OpenRCT2
                 auto pag = PeepAnimationGroup(groupKey);
                 if (pag == PeepAnimationGroup::Balloon || pag == PeepAnimationGroup::Hat || pag == PeepAnimationGroup::Umbrella)
                 {
-                    group[typeEnum].bounds.sprite_height_negative += 12;
+                    group[typeEnum].bounds.spriteHeightNegative += 12;
                 }
             }
         }

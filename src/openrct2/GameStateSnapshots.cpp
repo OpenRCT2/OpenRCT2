@@ -251,9 +251,9 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(EntityBase, y);
         COMPARE_FIELD(EntityBase, z);
         /* Only relevant for rendering, does not affect game state.
-        COMPARE_FIELD(SpriteBase, sprite_width);
-        COMPARE_FIELD(SpriteBase, sprite_height_negative);
-        COMPARE_FIELD(SpriteBase, sprite_height_positive);
+        COMPARE_FIELD(SpriteBase, spriteWidth);
+        COMPARE_FIELD(SpriteBase, spriteHeightNegative);
+        COMPARE_FIELD(SpriteBase, spriteHeightPositive);
         COMPARE_FIELD(SpriteBase, sprite_left);
         COMPARE_FIELD(SpriteBase, sprite_top);
         COMPARE_FIELD(SpriteBase, sprite_right);

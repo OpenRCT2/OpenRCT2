@@ -3298,9 +3298,9 @@ static Vehicle* VehicleCreateCar(
     }
 
     // Loc6DD9A5:
-    vehicle->SpriteData.Width = carEntry.sprite_width;
-    vehicle->SpriteData.HeightMin = carEntry.sprite_height_negative;
-    vehicle->SpriteData.HeightMax = carEntry.sprite_height_positive;
+    vehicle->SpriteData.Width = carEntry.spriteWidth;
+    vehicle->SpriteData.HeightMin = carEntry.spriteHeightNegative;
+    vehicle->SpriteData.HeightMax = carEntry.spriteHeightPositive;
     vehicle->mass = carEntry.car_mass;
     vehicle->num_seats = carEntry.num_seats;
     vehicle->speed = carEntry.powered_max_speed;
@@ -5554,15 +5554,15 @@ void FixInvalidVehicleSpriteSizes()
 
                 if (vehicle->SpriteData.Width == 0)
                 {
-                    vehicle->SpriteData.Width = carEntry->sprite_width;
+                    vehicle->SpriteData.Width = carEntry->spriteWidth;
                 }
                 if (vehicle->SpriteData.HeightMin == 0)
                 {
-                    vehicle->SpriteData.HeightMin = carEntry->sprite_height_negative;
+                    vehicle->SpriteData.HeightMin = carEntry->spriteHeightNegative;
                 }
                 if (vehicle->SpriteData.HeightMax == 0)
                 {
-                    vehicle->SpriteData.HeightMax = carEntry->sprite_height_positive;
+                    vehicle->SpriteData.HeightMax = carEntry->spriteHeightPositive;
                 }
             }
         }
