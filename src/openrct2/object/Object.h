@@ -342,7 +342,7 @@ namespace OpenRCT2
 
         uint32_t GetNumImages() const;
 
-        const OpenRCT2::Gx& GetEmbeddedImages() const
+        const OpenRCT2::GxSource& GetEmbeddedImages() const
         {
             return _embeddedImages;
         }

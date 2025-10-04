@@ -17,10 +17,10 @@
 
 namespace OpenRCT2
 {
-    class Gx
+    class GxSource
     {
     public:
-        virtual ~Gx() = default;
+        virtual ~GxSource() = default;
 
         virtual size_t GetCount() const = 0;
         virtual const G1Element* GetImage(size_t i) const = 0;
@@ -28,7 +28,7 @@ namespace OpenRCT2
         virtual std::optional<size_t> GetNextZoomImage(size_t i) const = 0;
     };
 
-    class GxFile final : public Gx
+    class GxFile final : public GxSource
     {
     private:
         std::vector<G1Element> _elements;
@@ -44,7 +44,7 @@ namespace OpenRCT2
         std::optional<size_t> GetNextZoomImage(size_t i) const override;
     };
 
-    class GxStream final : public Gx
+    class GxStream final : public GxSource
     {
     private:
         std::unique_ptr<IStream> _stream;
