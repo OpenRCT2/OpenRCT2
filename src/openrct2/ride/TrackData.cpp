@@ -4594,10 +4594,10 @@ namespace OpenRCT2::TrackMetaData
         STR_BRAKES,                        // 99
         STR_BOOSTER,                       // 100
         kStringIdEmpty,                    // 101
-        STR_HELIX_UP_LARGE,                // 102
-        STR_HELIX_UP_LARGE,                // 103
-        STR_HELIX_DOWN_LARGE,              // 104
-        STR_HELIX_DOWN_LARGE,              // 105
+        STR_QUARTER_HELIX_UP_LARGE,        // 102
+        STR_QUARTER_HELIX_UP_LARGE,        // 103
+        STR_QUARTER_HELIX_DOWN_LARGE,      // 104
+        STR_QUARTER_HELIX_DOWN_LARGE,      // 105
         STR_HELIX_UP_LEFT,                 // 106
         STR_HELIX_UP_RIGHT,                // 107
         STR_HELIX_DOWN_LEFT,               // 108
