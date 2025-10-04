@@ -10,6 +10,7 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Game.h>
+#include <openrct2/GameState.h>
 #include <openrct2/actions/StaffFireAction.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/entity/EntityRegistry.h>
@@ -44,39 +45,39 @@ namespace OpenRCT2::Ui::Windows
     class StaffFirePromptWindow final : public Window
     {
     public:
-        void SetWindowNumber(rct_windownumber windownumber)
+        void setWindowNumber(WindowNumber windownumber)
         {
             number = windownumber;
         }
 
-        void OnOpen() override
+        void onOpen() override
         {
-            SetWidgets(_staffFireWidgets);
+            setWidgets(_staffFireWidgets);
             WindowInitScrollWidgets(*this);
         }
 
-        void OnMouseUp(WidgetIndex widgetIndex) override
+        void onMouseUp(WidgetIndex widgetIndex) override
         {
             switch (widgetIndex)
             {
                 case WIDX_YES:
                 {
                     auto staffFireAction = GameActions::StaffFireAction(EntityId::FromUnderlying(number));
-                    GameActions::Execute(&staffFireAction);
+                    GameActions::Execute(&staffFireAction, getGameState());
                     break;
                 }
                 case WIDX_CLOSE:
                 case WIDX_CANCEL:
-                    Close();
+                    close();
                     break;
             }
         }
 
-        void OnDraw(RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
-            DrawWidgets(rt);
+            drawWidgets(rt);
 
-            Peep* peep = GetEntity<Staff>(EntityId::FromUnderlying(number));
+            Peep* peep = getGameState().entities.GetEntity<Staff>(EntityId::FromUnderlying(number));
             // The staff member may have been fired in the meantime.
             if (peep == nullptr)
             {
@@ -95,8 +96,8 @@ namespace OpenRCT2::Ui::Windows
         // Check if the confirm window already exists
         auto* windowMgr = GetWindowManager();
         auto* window = windowMgr->FocusOrCreate<StaffFirePromptWindow>(
-            WindowClass::FirePrompt, kWindowSize, WF_CENTRE_SCREEN | WF_TRANSPARENT);
-        window->SetWindowNumber(peep->Id.ToUnderlying());
+            WindowClass::firePrompt, kWindowSize, { WindowFlag::centreScreen, WindowFlag::transparent });
+        window->setWindowNumber(peep->Id.ToUnderlying());
         return window;
     }
 } // namespace OpenRCT2::Ui::Windows

@@ -18,6 +18,8 @@
 #include "../openrct2/Cheats.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
+#include "../ride/TrackData.h"
+#include "Map.h"
 #include "Park.h"
 #include "QuarterTile.h"
 #include "Scenery.h"
@@ -87,8 +89,8 @@ int32_t MapPlaceNonSceneryClearFunc(TileElement** tile_element, const CoordsXY& 
 }
 
 static bool MapLoc68BABCShouldContinue(
-    TileElement** tileElementPtr, const CoordsXYRangedZ& pos, CLEAR_FUNC clearFunc, uint8_t flags, money64& price,
-    CreateCrossingMode crossingMode, bool canBuildCrossing)
+    TileElement** tileElementPtr, const CoordsXYRangedZ& pos, CLEAR_FUNC clearFunc, const uint8_t flags, money64& price,
+    const CreateCrossingMode crossingMode, const bool canBuildCrossing, const uint8_t slope)
 {
     if (clearFunc != nullptr)
     {
@@ -98,7 +100,42 @@ static bool MapLoc68BABCShouldContinue(
         }
     }
 
-    auto tileElement = *tileElementPtr;
+    const TileElement* const tileElement = *tileElementPtr;
+
+    if (slope != kTileSlopeFlat && tileElement->GetType() == TileElementType::Track)
+    {
+        const auto [slopeNorthZ, slopeEastZ, slopeSouthZ, slopeWestZ] = GetSlopeCornerHeights(pos.baseZ, slope);
+
+        const TrackElement* const trackElement = tileElement->AsTrack();
+        const auto& ted = OpenRCT2::TrackMetaData::GetTrackElementDescriptor(trackElement->GetTrackType());
+        const auto& trackClearances = ted.sequences[trackElement->GetSequenceIndex()].clearance;
+        const auto trackQuarters = trackClearances.quarterTile.Rotate(trackElement->GetDirection());
+        const auto trackQuarterHeights = trackQuarters.GetQuarterHeights(trackElement->GetBaseZ());
+        const uint8_t trackOccupiedQuarters = trackQuarters.GetBaseQuarterOccupied();
+
+        if ((!(trackOccupiedQuarters & 0b0001) || slopeNorthZ <= trackQuarterHeights.north)
+            && (!(trackOccupiedQuarters & 0b0010) || slopeEastZ <= trackQuarterHeights.east)
+            && (!(trackOccupiedQuarters & 0b0100) || slopeSouthZ <= trackQuarterHeights.south)
+            && (!(trackOccupiedQuarters & 0b1000) || slopeWestZ <= trackQuarterHeights.west))
+        {
+            return true;
+        }
+    }
+
+    if (slope != kTileSlopeFlat && tileElement->GetType() == TileElementType::Path && tileElement->AsPath()->IsSloped())
+    {
+        const auto slopeCornerHeights = GetSlopeCornerHeights(pos.baseZ, slope);
+
+        const PathElement& pathElement = *tileElement->AsPath();
+        const uint8_t pathSlope = Numerics::rol4(kTileSlopeSWSideUp, pathElement.GetSlopeDirection());
+        const auto pathCornerHeights = GetSlopeCornerHeights(pathElement.GetBaseZ(), pathSlope);
+
+        if (slopeCornerHeights <= pathCornerHeights)
+        {
+            return true;
+        }
+    }
+
     if (crossingMode == CreateCrossingMode::trackOverPath && canBuildCrossing && tileElement->GetType() == TileElementType::Path
         && tileElement->GetBaseZ() == pos.baseZ && !tileElement->AsPath()->IsQueue() && !tileElement->AsPath()->IsSloped())
     {
@@ -130,8 +167,8 @@ static bool MapLoc68BABCShouldContinue(
  *  bl = bl
  */
 GameActions::Result MapCanConstructWithClearAt(
-    const CoordsXYRangedZ& pos, CLEAR_FUNC clearFunc, QuarterTile quarterTile, uint8_t flags, CreateCrossingMode crossingMode,
-    bool isTree)
+    const CoordsXYRangedZ& pos, CLEAR_FUNC clearFunc, const QuarterTile quarterTile, const uint8_t flags, const uint8_t slope,
+    const CreateCrossingMode crossingMode, const bool isTree)
 {
     auto res = GameActions::Result();
 
@@ -170,7 +207,7 @@ GameActions::Result MapCanConstructWithClearAt(
                 if (tileElement->GetOccupiedQuadrants() & (quarterTile.GetBaseQuarterOccupied()))
                 {
                     if (MapLoc68BABCShouldContinue(
-                            &tileElement, pos, clearFunc, flags, res.Cost, crossingMode, canBuildCrossing))
+                            &tileElement, pos, clearFunc, flags, res.Cost, crossingMode, canBuildCrossing, slope))
                     {
                         continue;
                     }
@@ -227,35 +264,8 @@ GameActions::Result MapCanConstructWithClearAt(
             }
             else
             {
-                auto northZ = tileElement->GetBaseZ();
-                auto eastZ = northZ;
-                auto southZ = northZ;
-                auto westZ = northZ;
-                const auto slope = tileElement->AsSurface()->GetSlope();
-                if (slope & kTileSlopeNCornerUp)
-                {
-                    northZ += kLandHeightStep;
-                    if (slope == (kTileSlopeSCornerDown | kTileSlopeDiagonalFlag))
-                        northZ += kLandHeightStep;
-                }
-                if (slope & kTileSlopeECornerUp)
-                {
-                    eastZ += kLandHeightStep;
-                    if (slope == (kTileSlopeWCornerDown | kTileSlopeDiagonalFlag))
-                        eastZ += kLandHeightStep;
-                }
-                if (slope & kTileSlopeSCornerUp)
-                {
-                    southZ += kLandHeightStep;
-                    if (slope == (kTileSlopeNCornerDown | kTileSlopeDiagonalFlag))
-                        southZ += kLandHeightStep;
-                }
-                if (slope & kTileSlopeWCornerUp)
-                {
-                    westZ += kLandHeightStep;
-                    if (slope == (kTileSlopeECornerDown | kTileSlopeDiagonalFlag))
-                        westZ += kLandHeightStep;
-                }
+                const auto [northZ, eastZ, southZ, westZ] = GetSlopeCornerHeights(
+                    tileElement->GetBaseZ(), tileElement->AsSurface()->GetSlope());
                 const auto baseHeight = pos.baseZ + (4 * kCoordsZStep);
                 const auto baseQuarter = quarterTile.GetBaseQuarterOccupied();
                 const auto zQuarter = quarterTile.GetZQuarterOccupied();
@@ -267,7 +277,8 @@ GameActions::Result MapCanConstructWithClearAt(
                     continue;
                 }
 
-                if (MapLoc68BABCShouldContinue(&tileElement, pos, clearFunc, flags, res.Cost, crossingMode, canBuildCrossing))
+                if (MapLoc68BABCShouldContinue(
+                        &tileElement, pos, clearFunc, flags, res.Cost, crossingMode, canBuildCrossing, slope))
                 {
                     continue;
                 }
@@ -286,7 +297,7 @@ GameActions::Result MapCanConstructWithClearAt(
 
 GameActions::Result MapCanConstructAt(const CoordsXYRangedZ& pos, QuarterTile bl)
 {
-    return MapCanConstructWithClearAt(pos, nullptr, bl, 0);
+    return MapCanConstructWithClearAt(pos, nullptr, bl, 0, kTileSlopeFlat);
 }
 
 /**

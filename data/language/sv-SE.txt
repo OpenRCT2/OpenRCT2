@@ -550,8 +550,8 @@ STR_1152    :Minst en person
 STR_1153    :Höjdmarkeringar på åkturer
 STR_1154    :Höjdmarkeringar på land
 STR_1155    :Höjdmarkeringar på gångvägar
-STR_1156    :{MOVE_X}{10}{STRINGID}
-STR_1157    :✓{MOVE_X}{10}{STRINGID}
+STR_1156    :{MOVE_X}{10}{STRING}
+STR_1157    :✓{MOVE_X}{10}{STRING}
 STR_1158    :Kan inte ta bort detta…
 STR_1159    :Placera dekorationer, planteringar och andra tillbehör
 STR_1160    :Skapa eller justera sjöar och vatten

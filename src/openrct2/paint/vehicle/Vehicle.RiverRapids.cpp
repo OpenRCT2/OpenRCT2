@@ -39,15 +39,15 @@ namespace OpenRCT2
         uint32_t rotation = session.CurrentRotation;
         int32_t ecx = ((vehicle->spin_sprite / 8) + (rotation * 8)) & 31;
         int32_t j = 0;
-        if (vehicle->Pitch == 0)
+        if (vehicle->pitch == VehiclePitch::flat)
         {
             baseImage_id = ecx & 7;
         }
         else
         {
-            if (vehicle->Pitch == 1 || vehicle->Pitch == 5)
+            if (vehicle->pitch == VehiclePitch::up12 || vehicle->pitch == VehiclePitch::down12)
             {
-                if (vehicle->Pitch == 5)
+                if (vehicle->pitch == VehiclePitch::down12)
                 {
                     baseImage_id = imageDirection ^ 16;
                 }
@@ -56,9 +56,9 @@ namespace OpenRCT2
                 baseImage_id += (ecx & 7);
                 baseImage_id += 8;
             }
-            else if (vehicle->Pitch == 2 || vehicle->Pitch == 6)
+            else if (vehicle->pitch == VehiclePitch::up25 || vehicle->pitch == VehiclePitch::down25)
             {
-                if (vehicle->Pitch == 6)
+                if (vehicle->pitch == VehiclePitch::down25)
                 {
                     baseImage_id = imageDirection ^ 16;
                 }

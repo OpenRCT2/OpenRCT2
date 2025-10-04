@@ -18,6 +18,7 @@
 #include "../world/ConstructionClearance.h"
 #include "../world/Entrance.h"
 #include "../world/Footpath.h"
+#include "../world/Map.h"
 #include "../world/MapAnimation.h"
 #include "../world/Park.h"
 #include "../world/tile_element/EntranceElement.h"
@@ -26,7 +27,7 @@
 namespace OpenRCT2::GameActions
 {
     ParkEntrancePlaceAction::ParkEntrancePlaceAction(
-        const CoordsXYZD& location, ObjectEntryIndex pathType, ObjectEntryIndex entranceType)
+        const CoordsXYZD& location, ObjectEntryIndex pathType, ObjectEntryIndex entranceType, bool pathTypeIsLegacy)
         : _loc(location)
         , _pathType(pathType)
         , _entranceType(entranceType)
@@ -38,6 +39,7 @@ namespace OpenRCT2::GameActions
         visitor.Visit(_loc);
         visitor.Visit("footpathSurfaceObject", _pathType);
         visitor.Visit("entranceObject", _entranceType);
+        visitor.Visit("footpathTypeIsLegacy", _pathTypeIsLegacy);
     }
 
     uint16_t ParkEntrancePlaceAction::GetActionFlags() const
@@ -52,9 +54,10 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_loc);
         stream << DS_TAG(_pathType);
         stream << DS_TAG(_entranceType);
+        stream << DS_TAG(_pathTypeIsLegacy);
     }
 
-    Result ParkEntrancePlaceAction::Query() const
+    Result ParkEntrancePlaceAction::Query(GameState_t& gameState) const
     {
         if (!isInEditorMode() && !getGameState().cheats.sandboxMode)
         {
@@ -63,7 +66,7 @@ namespace OpenRCT2::GameActions
 
         auto res = Result();
         res.Expenditure = ExpenditureType::landPurchase;
-        res.Position = { _loc.x, _loc.y, _loc.z };
+        res.Position = _loc;
 
         auto mapSizeUnits = GetMapSizeUnits() - CoordsXY{ kCoordsXYStep, kCoordsXYStep };
         if (!LocationValid(_loc) || _loc.x <= kCoordsXYStep || _loc.y <= kCoordsXYStep || _loc.x >= mapSizeUnits.x
@@ -77,7 +80,6 @@ namespace OpenRCT2::GameActions
             return Result(Status::NoFreeElements, STR_CANT_BUILD_THIS_HERE, STR_ERR_LANDSCAPE_DATA_AREA_FULL);
         }
 
-        const auto& gameState = getGameState();
         if (gameState.park.entrances.size() >= OpenRCT2::Limits::kMaxParkEntrances)
         {
             return Result(Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_ERR_TOO_MANY_PARK_ENTRANCES);
@@ -115,7 +117,7 @@ namespace OpenRCT2::GameActions
         return res;
     }
 
-    Result ParkEntrancePlaceAction::Execute() const
+    Result ParkEntrancePlaceAction::Execute(GameState_t& gameState) const
     {
         auto res = Result();
         res.Expenditure = ExpenditureType::landPurchase;
@@ -159,13 +161,13 @@ namespace OpenRCT2::GameActions
             entranceElement->SetSequenceIndex(index);
             entranceElement->SetEntranceType(ENTRANCE_TYPE_PARK_ENTRANCE);
             entranceElement->setEntryIndex(_entranceType);
-            if (gFootpathSelection.LegacyPath == kObjectEntryIndexNull)
+            if (!_pathTypeIsLegacy)
             {
-                entranceElement->SetSurfaceEntryIndex(gFootpathSelection.NormalSurface);
+                entranceElement->SetSurfaceEntryIndex(_pathType);
             }
             else
             {
-                entranceElement->SetLegacyPathEntryIndex(gFootpathSelection.LegacyPath);
+                entranceElement->SetLegacyPathEntryIndex(_pathType);
             }
 
             if (!entranceElement->IsGhost())

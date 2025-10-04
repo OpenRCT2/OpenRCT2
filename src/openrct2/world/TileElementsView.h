@@ -16,6 +16,8 @@
 
 namespace OpenRCT2
 {
+    struct TileElement;
+
     namespace Detail
     {
         template<typename T, typename T2>

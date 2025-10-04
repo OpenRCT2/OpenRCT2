@@ -550,8 +550,8 @@ STR_1152    :任意載客量
 STR_1153    :在設施軌道上標記高度
 STR_1154    :在土地上標記高度
 STR_1155    :在道路上標記高度
-STR_1156    :{MOVE_X}{10}{STRINGID}
-STR_1157    :✓{MOVE_X}{10}{STRINGID}
+STR_1156    :{MOVE_X}{10}{STRING}
+STR_1157    :✓{MOVE_X}{10}{STRING}
 STR_1158    :不能移除…
 STR_1159    :放置景物, 花圃及其他裝飾物
 STR_1160    :創造或調整湖泊及水塘

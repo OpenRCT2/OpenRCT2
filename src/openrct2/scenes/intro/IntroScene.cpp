@@ -10,6 +10,7 @@
 #include "IntroScene.h"
 
 #include "../../Context.h"
+#include "../../Input.h"
 #include "../../SpriteIds.h"
 #include "../../audio/Audio.h"
 #include "../../audio/AudioChannel.h"
@@ -78,7 +79,7 @@ namespace OpenRCT2
                 _introStateCounter = -580;
 
                 // Play the chain lift sound
-                _soundChannel = Audio::CreateAudioChannel(SoundId::LiftBM, true);
+                _soundChannel = Audio::CreateAudioChannel(SoundId::liftBM, true);
                 _chainLiftFinished = false;
                 _introState = IntroState::PublisherScroll;
                 break;
@@ -117,7 +118,7 @@ namespace OpenRCT2
 
                     // Play the track friction sound
                     _soundChannel = Audio::CreateAudioChannel(
-                        SoundId::TrackFrictionBM, true, Audio::kMixerVolumeMax, 0.25f, 0.75);
+                        SoundId::trackFrictionBM, true, Audio::kMixerVolumeMax, 0.25f, 0.75);
                 }
 
                 // Check if logo is off the screen...ish
@@ -131,7 +132,7 @@ namespace OpenRCT2
                     }
 
                     // Play long peep scream sound
-                    _soundChannel = Audio::CreateAudioChannel(SoundId::Scream1);
+                    _soundChannel = Audio::CreateAudioChannel(SoundId::scream1);
 
                     _introState = IntroState::LogoFadeIn;
                     _introStateCounter = 0;

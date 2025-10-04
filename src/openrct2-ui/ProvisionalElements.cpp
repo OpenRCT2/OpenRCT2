@@ -30,14 +30,14 @@ namespace OpenRCT2::Ui
         FootpathRemoveProvisionalTemporarily();
 
         auto* windowMgr = GetWindowManager();
-        if (windowMgr->FindByClass(WindowClass::RideConstruction) != nullptr)
+        if (windowMgr->FindByClass(WindowClass::rideConstruction) != nullptr)
         {
             RideRemoveProvisionalTrackPiece();
             RideEntranceExitRemoveGhost();
         }
         // This is in non performant so only make network games suffer for it
         // non networked games do not need this as its to prevent desyncs.
-        if ((NetworkGetMode() != NETWORK_MODE_NONE) && windowMgr->FindByClass(WindowClass::TrackDesignPlace) != nullptr)
+        if ((Network::GetMode() != Network::Mode::none) && windowMgr->FindByClass(WindowClass::trackDesignPlace) != nullptr)
         {
             TrackPlaceClearProvisionalTemporarily();
         }
@@ -50,14 +50,14 @@ namespace OpenRCT2::Ui
         FootpathRestoreProvisional();
 
         auto* windowMgr = GetWindowManager();
-        if (windowMgr->FindByClass(WindowClass::RideConstruction) != nullptr)
+        if (windowMgr->FindByClass(WindowClass::rideConstruction) != nullptr)
         {
             RideRestoreProvisionalTrackPiece();
             RideEntranceExitPlaceProvisionalGhost();
         }
         // This is in non performant so only make network games suffer for it
         // non networked games do not need this as its to prevent desyncs.
-        if ((NetworkGetMode() != NETWORK_MODE_NONE) && windowMgr->FindByClass(WindowClass::TrackDesignPlace) != nullptr)
+        if ((Network::GetMode() != Network::Mode::none) && windowMgr->FindByClass(WindowClass::trackDesignPlace) != nullptr)
         {
             TrackPlaceRestoreProvisional();
         }

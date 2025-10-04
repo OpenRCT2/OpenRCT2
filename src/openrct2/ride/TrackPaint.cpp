@@ -26,7 +26,6 @@
 #include "../paint/tile_element/Segment.h"
 #include "../paint/track/Segment.h"
 #include "../paint/track/Support.h"
-#include "../world/Map.h"
 #include "../world/tile_element/TrackElement.h"
 #include "RideData.h"
 #include "Station.h"
@@ -1977,7 +1976,7 @@ void PaintTrack(PaintSession& session, Direction direction, int32_t height, cons
 
         if (PaintShouldShowHeightMarkers(session, VIEWPORT_FLAG_TRACK_HEIGHTS))
         {
-            session.InteractionType = ViewportInteractionItem::None;
+            session.InteractionType = ViewportInteractionItem::none;
             const auto& ted = GetTrackElementDescriptor(trackType);
             if (ted.heightMarkerPositions & (1 << trackSequence))
             {
@@ -2006,7 +2005,7 @@ void PaintTrack(PaintSession& session, Direction direction, int32_t height, cons
                 LightFx::AddShopLights(session.MapPosition, trackElement.GetDirection(), height, zOffset);
         }
 
-        session.InteractionType = ViewportInteractionItem::Ride;
+        session.InteractionType = ViewportInteractionItem::ride;
         session.TrackColours = ImageId(
             0, ride->trackColours[trackColourScheme].main, ride->trackColours[trackColourScheme].additional);
         session.SupportColours = ImageId(
@@ -2018,7 +2017,7 @@ void PaintTrack(PaintSession& session, Direction direction, int32_t height, cons
         }
         if (trackElement.IsGhost())
         {
-            session.InteractionType = ViewportInteractionItem::None;
+            session.InteractionType = ViewportInteractionItem::none;
             session.TrackColours = ConstructionMarker;
             session.SupportColours = ConstructionMarker;
         }

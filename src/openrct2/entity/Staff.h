@@ -11,13 +11,20 @@
 
 #include "../core/EnumUtils.hpp"
 #include "../core/Money.hpp"
-#include "../world/Map.h"
 #include "Peep.h"
 
 #include <cstdint>
+#include <vector>
+
+namespace OpenRCT2
+{
+    struct TileElement;
+    struct PathElement;
+} // namespace OpenRCT2
 
 class DataSerialiser;
 class PatrolArea;
+struct Ride;
 
 using colour_t = uint8_t;
 
@@ -62,6 +69,7 @@ public:
     void Update();
     void Tick128UpdateStaff();
     bool IsMechanic() const;
+    bool isEntertainer() const;
     bool IsPatrolAreaSet(const CoordsXY& coords) const;
     bool IsLocationInPatrol(const CoordsXY& loc) const;
     bool IsLocationOnPatrolEdge(const CoordsXY& loc) const;
@@ -78,7 +86,6 @@ public:
     void SetPatrolArea(const CoordsXY& coords, bool value);
     void SetPatrolArea(const MapRange& range, bool value);
     bool HasPatrolArea() const;
-    void SetPatrolArea(const std::vector<TileCoordsXY>& area);
 
 private:
     void UpdatePatrolling();
@@ -160,6 +167,5 @@ colour_t StaffGetColour(StaffType staffType);
 OpenRCT2::GameActions::Result StaffSetColour(StaffType staffType, colour_t value);
 
 money64 GetStaffWage(StaffType type);
-PeepAnimationGroup EntertainerCostumeToSprite(EntertainerCostume entertainerType);
 
 const PatrolArea& GetMergedPatrolArea(const StaffType type);

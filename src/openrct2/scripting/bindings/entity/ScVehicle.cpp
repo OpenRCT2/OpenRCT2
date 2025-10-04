@@ -10,6 +10,7 @@
 #include "ScVehicle.hpp"
 
 #include "../../../ride/TrackData.h"
+#include "../../../world/Map.h"
 #include "../../../world/tile_element/TrackElement.h"
 #include "../ride/ScRide.hpp"
 
@@ -101,7 +102,7 @@ namespace OpenRCT2::Scripting
 
     Vehicle* ScVehicle::GetVehicle() const
     {
-        return ::GetEntity<Vehicle>(_id);
+        return ::getGameState().entities.GetEntity<Vehicle>(_id);
     }
 
     ObjectEntryIndex ScVehicle::rideObject_get() const
@@ -139,7 +140,7 @@ namespace OpenRCT2::Scripting
     uint8_t ScVehicle::spriteType_get() const
     {
         auto vehicle = GetVehicle();
-        return vehicle != nullptr ? vehicle->Pitch : 0;
+        return vehicle != nullptr ? EnumValue(vehicle->pitch) : 0;
     }
     void ScVehicle::spriteType_set(uint8_t value)
     {
@@ -147,7 +148,7 @@ namespace OpenRCT2::Scripting
         auto vehicle = GetVehicle();
         if (vehicle != nullptr)
         {
-            vehicle->Pitch = value;
+            vehicle->pitch = static_cast<VehiclePitch>(value);
             vehicle->Invalidate();
         }
     }
@@ -336,7 +337,7 @@ namespace OpenRCT2::Scripting
     uint8_t ScVehicle::bankRotation_get() const
     {
         auto vehicle = GetVehicle();
-        return vehicle != nullptr ? vehicle->bank_rotation : 0;
+        return vehicle != nullptr ? EnumValue(vehicle->roll) : 0;
     }
     void ScVehicle::bankRotation_set(uint8_t value)
     {
@@ -344,7 +345,7 @@ namespace OpenRCT2::Scripting
         auto vehicle = GetVehicle();
         if (vehicle != nullptr)
         {
-            vehicle->bank_rotation = value;
+            vehicle->roll = static_cast<VehicleRoll>(value);
             vehicle->Invalidate();
         }
     }

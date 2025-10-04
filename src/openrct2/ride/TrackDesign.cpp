@@ -55,6 +55,8 @@
 #include "../ride/RideConstruction.h"
 #include "../sawyer_coding/SawyerCoding.h"
 #include "../world/Footpath.h"
+#include "../world/Map.h"
+#include "../world/MapSelection.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"
 #include "../world/tile_element/EntranceElement.h"
@@ -343,9 +345,9 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
     // Resave global vars for scenery reasons.
     tds.origin = startPos;
 
-    gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
-    gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
-    gMapSelectFlags &= ~MAP_SELECT_FLAG_GREEN;
+    gMapSelectFlags.unset(MapSelectFlag::enableConstruct);
+    gMapSelectFlags.unset(MapSelectFlag::enableArrow);
+    gMapSelectFlags.unset(MapSelectFlag::green);
 
     statistics.spaceRequired = TileCoordsXY(tds.previewMax - tds.previewMin) + TileCoordsXY{ 1, 1 };
     return { true, warningMessage };
@@ -455,9 +457,9 @@ ResultWithMessage TrackDesign::CreateTrackDesignMaze(TrackDesignState& tds, cons
     TrackDesignPreviewDrawOutlines(tds, *this, RideGetTemporaryForPreview(), { 4096, 4096, 0, _currentTrackPieceDirection });
     tds.origin = { startLoc.x, startLoc.y, startZ };
 
-    gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
-    gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
-    gMapSelectFlags &= ~MAP_SELECT_FLAG_GREEN;
+    gMapSelectFlags.unset(MapSelectFlag::enableConstruct);
+    gMapSelectFlags.unset(MapSelectFlag::enableArrow);
+    gMapSelectFlags.unset(MapSelectFlag::green);
 
     statistics.spaceRequired = TileCoordsXY(tds.previewMax - tds.previewMin) + TileCoordsXY{ 1, 1 };
 
@@ -989,7 +991,7 @@ static GameActions::Result TrackDesignPlaceSceneryElementRemoveGhost(
     }
 
     ga->SetFlags(flags);
-    return GameActions::ExecuteNested(ga.get());
+    return GameActions::ExecuteNested(ga.get(), getGameState());
 }
 
 static bool TrackDesignPlaceSceneryElementGetPlaceZ(TrackDesignState& tds, const TrackDesignSceneryElement& scenery)
@@ -1043,6 +1045,8 @@ static GameActions::Result TrackDesignPlaceSceneryElement(
     int16_t z;
     uint8_t flags;
 
+    auto& gameState = getGameState();
+
     switch (entryInfo->Type)
     {
         case ObjectType::smallScenery:
@@ -1082,8 +1086,8 @@ static GameActions::Result TrackDesignPlaceSceneryElement(
                 scenery.secondaryColour, scenery.tertiaryColour);
 
             smallSceneryPlace.SetFlags(flags);
-            auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&smallSceneryPlace)
-                                                       : GameActions::QueryNested(&smallSceneryPlace);
+            auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&smallSceneryPlace, gameState)
+                                                       : GameActions::QueryNested(&smallSceneryPlace, gameState);
 
             cost = res.Error == GameActions::Status::Ok ? res.Cost : 0;
             break;
@@ -1123,8 +1127,8 @@ static GameActions::Result TrackDesignPlaceSceneryElement(
                 { mapCoord.x, mapCoord.y, z, rotation }, entryInfo->Index, scenery.primaryColour, scenery.secondaryColour,
                 scenery.tertiaryColour);
             sceneryPlaceAction.SetFlags(flags);
-            auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&sceneryPlaceAction)
-                                                       : GameActions::QueryNested(&sceneryPlaceAction);
+            auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&sceneryPlaceAction, gameState)
+                                                       : GameActions::QueryNested(&sceneryPlaceAction, gameState);
 
             cost = res.Cost;
             break;
@@ -1163,8 +1167,8 @@ static GameActions::Result TrackDesignPlaceSceneryElement(
                 entryInfo->Index, { mapCoord.x, mapCoord.y, z }, rotation, scenery.primaryColour, scenery.secondaryColour,
                 scenery.tertiaryColour);
             wallPlaceAction.SetFlags(flags);
-            auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&wallPlaceAction)
-                                                       : GameActions::QueryNested(&wallPlaceAction);
+            auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&wallPlaceAction, gameState)
+                                                       : GameActions::QueryNested(&wallPlaceAction, gameState);
 
             cost = res.Cost;
             break;
@@ -1204,8 +1208,8 @@ static GameActions::Result TrackDesignPlaceSceneryElement(
                 auto footpathPlaceAction = GameActions::FootpathLayoutPlaceAction(
                     { mapCoord.x, mapCoord.y, z }, slope, entryInfo->Index, entryInfo->SecondaryIndex, edges, constructFlags);
                 footpathPlaceAction.SetFlags(flags);
-                auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&footpathPlaceAction)
-                                                           : GameActions::QueryNested(&footpathPlaceAction);
+                auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&footpathPlaceAction, gameState)
+                                                           : GameActions::QueryNested(&footpathPlaceAction, gameState);
                 // Ignore failures
                 cost = res.Error == GameActions::Status::Ok ? res.Cost : 0;
             }
@@ -1322,6 +1326,8 @@ static std::optional<GameActions::Result> TrackDesignPlaceEntrances(
 
         TrackDesignUpdatePreviewBounds(tds, newCoords);
 
+        auto& gameState = getGameState();
+
         switch (tds.placeOperation)
         {
             case TrackPlaceOperation::drawOutlines:
@@ -1381,8 +1387,9 @@ static std::optional<GameActions::Result> TrackDesignPlaceEntrances(
                         auto rideEntranceExitPlaceAction = GameActions::RideEntranceExitPlaceAction(
                             newCoords, rotation, rideId, stationIndex, entrance.isExit);
                         rideEntranceExitPlaceAction.SetFlags(flags);
-                        auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&rideEntranceExitPlaceAction)
-                                                                   : GameActions::QueryNested(&rideEntranceExitPlaceAction);
+                        auto res = flags & GAME_COMMAND_FLAG_APPLY
+                            ? GameActions::ExecuteNested(&rideEntranceExitPlaceAction, gameState)
+                            : GameActions::QueryNested(&rideEntranceExitPlaceAction, gameState);
 
                         if (res.Error != GameActions::Status::Ok)
                         {
@@ -1429,6 +1436,8 @@ static GameActions::Result TrackDesignPlaceMaze(
 
     tds.placeZ = 0;
     money64 totalCost = 0;
+
+    auto& gameState = getGameState();
 
     for (const auto& maze_element : td.mazeElements)
     {
@@ -1477,8 +1486,8 @@ static GameActions::Result TrackDesignPlaceMaze(
 
             auto mazePlace = GameActions::MazePlaceTrackAction({ mapCoord, origin.z }, ride.id, mazeEntry);
             mazePlace.SetFlags(flags);
-            auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&mazePlace)
-                                                       : GameActions::QueryNested(&mazePlace);
+            auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&mazePlace, gameState)
+                                                       : GameActions::QueryNested(&mazePlace, gameState);
             if (res.Error != GameActions::Status::Ok)
             {
                 return res;
@@ -1534,7 +1543,7 @@ static GameActions::Result TrackDesignPlaceMaze(
     {
         auto gameAction = GameActions::RideDemolishAction(ride.id, GameActions::RideModifyType::demolish);
         gameAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
-        GameActions::Execute(&gameAction);
+        GameActions::Execute(&gameAction, getGameState());
     }
 
     auto res = GameActions::Result();
@@ -1557,6 +1566,8 @@ static GameActions::Result TrackDesignPlaceRide(
     tds.placeZ = 0;
     money64 totalCost = 0;
     uint8_t rotation = _currentTrackPieceDirection;
+
+    auto& gameState = getGameState();
 
     // Track elements
     auto newCoords = origin;
@@ -1587,7 +1598,7 @@ static GameActions::Result TrackDesignPlaceRide(
                 trackRemoveAction.SetFlags(
                     GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST
                     | GAME_COMMAND_FLAG_TRACK_DESIGN);
-                GameActions::ExecuteNested(&trackRemoveAction);
+                GameActions::ExecuteNested(&trackRemoveAction, gameState);
                 break;
             }
             case TrackPlaceOperation::placeQuery:
@@ -1636,8 +1647,8 @@ static GameActions::Result TrackDesignPlaceRide(
                     track.brakeBoosterSpeed, track.colourScheme, track.seatRotation, liftHillAndAlternativeState, true);
                 trackPlaceAction.SetFlags(flags);
 
-                auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&trackPlaceAction)
-                                                           : GameActions::QueryNested(&trackPlaceAction);
+                auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&trackPlaceAction, gameState)
+                                                           : GameActions::QueryNested(&trackPlaceAction, gameState);
                 if (res.Error != GameActions::Status::Ok)
                 {
                     return res;
@@ -1795,9 +1806,9 @@ static GameActions::Result TrackDesignPlaceVirtual(
     // 0x6D0FE6
     if (tds.placeOperation == TrackPlaceOperation::drawOutlines)
     {
-        gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
-        gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_ARROW;
-        gMapSelectFlags &= ~MAP_SELECT_FLAG_GREEN;
+        gMapSelectFlags.set(MapSelectFlag::enableConstruct);
+        gMapSelectFlags.set(MapSelectFlag::enableArrow);
+        gMapSelectFlags.unset(MapSelectFlag::green);
         MapInvalidateMapSelectionTiles();
     }
 
@@ -1854,7 +1865,9 @@ static money64 TrackDesignCreateRide(int32_t type, int32_t subType, int32_t flag
     auto gameAction = GameActions::RideCreateAction(type, subType, 0, 0, getGameState().lastEntranceStyle);
     gameAction.SetFlags(flags);
 
-    auto res = GameActions::ExecuteNested(&gameAction);
+    auto& gameState = getGameState();
+
+    auto res = GameActions::ExecuteNested(&gameAction, gameState);
 
     // Callee's of this function expect kMoney64Undefined in case of failure.
     if (res.Error != GameActions::Status::Ok)

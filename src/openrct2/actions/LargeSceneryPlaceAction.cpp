@@ -21,6 +21,7 @@
 #include "../world/Banner.h"
 #include "../world/ConstructionClearance.h"
 #include "../world/Footpath.h"
+#include "../world/Map.h"
 #include "../world/MapAnimation.h"
 #include "../world/QuarterTile.h"
 #include "../world/Wall.h"
@@ -63,7 +64,7 @@ namespace OpenRCT2::GameActions
                << DS_TAG(_tertiaryColour);
     }
 
-    Result LargeSceneryPlaceAction::Query() const
+    Result LargeSceneryPlaceAction::Query(GameState_t& gameState) const
     {
         auto res = Result();
         res.ErrorTitle = STR_CANT_POSITION_THIS_HERE;
@@ -74,8 +75,6 @@ namespace OpenRCT2::GameActions
         res.Position.z = surfaceHeight;
 
         auto resultData = LargeSceneryPlaceActionResult{};
-
-        auto& gameState = getGameState();
 
         money64 supportsCost = 0;
 
@@ -139,7 +138,8 @@ namespace OpenRCT2::GameActions
             QuarterTile quarterTile = QuarterTile{ tile.corners, 0 }.Rotate(_loc.direction);
             const auto isTree = (sceneryEntry->flags & LARGE_SCENERY_FLAG_IS_TREE) != 0;
             auto canBuild = MapCanConstructWithClearAt(
-                { curTile, zLow, zHigh }, &MapPlaceSceneryClearFunc, quarterTile, GetFlags(), CreateCrossingMode::none, isTree);
+                { curTile, zLow, zHigh }, &MapPlaceSceneryClearFunc, quarterTile, GetFlags(), kTileSlopeFlat,
+                CreateCrossingMode::none, isTree);
             if (canBuild.Error != Status::Ok)
             {
                 canBuild.ErrorTitle = STR_CANT_POSITION_THIS_HERE;
@@ -192,7 +192,7 @@ namespace OpenRCT2::GameActions
         return res;
     }
 
-    Result LargeSceneryPlaceAction::Execute() const
+    Result LargeSceneryPlaceAction::Execute(GameState_t& gameState) const
     {
         auto res = Result();
         res.ErrorTitle = STR_CANT_POSITION_THIS_HERE;
@@ -270,7 +270,8 @@ namespace OpenRCT2::GameActions
             QuarterTile quarterTile = QuarterTile{ tile.corners, 0 }.Rotate(_loc.direction);
             const auto isTree = (sceneryEntry->flags & LARGE_SCENERY_FLAG_IS_TREE) != 0;
             auto canBuild = MapCanConstructWithClearAt(
-                { curTile, zLow, zHigh }, &MapPlaceSceneryClearFunc, quarterTile, GetFlags(), CreateCrossingMode::none, isTree);
+                { curTile, zLow, zHigh }, &MapPlaceSceneryClearFunc, quarterTile, GetFlags(), kTileSlopeFlat,
+                CreateCrossingMode::none, isTree);
             if (canBuild.Error != Status::Ok)
             {
                 if (banner != nullptr)

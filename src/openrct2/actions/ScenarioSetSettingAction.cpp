@@ -33,7 +33,7 @@ namespace OpenRCT2::GameActions
         visitor.Visit("value", _value);
     }
 
-    Result ScenarioSetSettingAction::Query() const
+    Result ScenarioSetSettingAction::Query(GameState_t& gameState) const
     {
         if (_setting >= ScenarioSetSetting::Count)
         {
@@ -44,9 +44,8 @@ namespace OpenRCT2::GameActions
         return Result();
     }
 
-    Result ScenarioSetSettingAction::Execute() const
+    Result ScenarioSetSettingAction::Execute(GameState_t& gameState) const
     {
-        auto& gameState = getGameState();
         auto* windowMgr = Ui::GetWindowManager();
 
         switch (_setting)
@@ -74,33 +73,33 @@ namespace OpenRCT2::GameActions
                         gameState.park.flags &= ~PARK_FLAGS_NO_MONEY;
                     }
                     // Invalidate all windows that have anything to do with finance
-                    windowMgr->InvalidateByClass(WindowClass::Ride);
-                    windowMgr->InvalidateByClass(WindowClass::Peep);
-                    windowMgr->InvalidateByClass(WindowClass::ParkInformation);
-                    windowMgr->InvalidateByClass(WindowClass::Finances);
-                    windowMgr->InvalidateByClass(WindowClass::BottomToolbar);
-                    windowMgr->InvalidateByClass(WindowClass::TopToolbar);
+                    windowMgr->InvalidateByClass(WindowClass::ride);
+                    windowMgr->InvalidateByClass(WindowClass::peep);
+                    windowMgr->InvalidateByClass(WindowClass::parkInformation);
+                    windowMgr->InvalidateByClass(WindowClass::finances);
+                    windowMgr->InvalidateByClass(WindowClass::bottomToolbar);
+                    windowMgr->InvalidateByClass(WindowClass::topToolbar);
                 }
                 break;
             case ScenarioSetSetting::InitialCash:
                 gameState.scenarioOptions.initialCash = std::clamp<money64>(_value, 0.00_GBP, 1000000.00_GBP);
                 gameState.park.cash = gameState.scenarioOptions.initialCash;
-                windowMgr->InvalidateByClass(WindowClass::Finances);
-                windowMgr->InvalidateByClass(WindowClass::BottomToolbar);
+                windowMgr->InvalidateByClass(WindowClass::finances);
+                windowMgr->InvalidateByClass(WindowClass::bottomToolbar);
                 break;
             case ScenarioSetSetting::InitialLoan:
                 gameState.park.bankLoan = std::clamp<money64>(_value, 0.00_GBP, 5000000.00_GBP);
                 gameState.park.maxBankLoan = std::max(gameState.park.bankLoan, gameState.park.maxBankLoan);
-                windowMgr->InvalidateByClass(WindowClass::Finances);
+                windowMgr->InvalidateByClass(WindowClass::finances);
                 break;
             case ScenarioSetSetting::MaximumLoanSize:
                 gameState.park.maxBankLoan = std::clamp<money64>(_value, 0.00_GBP, 5000000.00_GBP);
                 gameState.park.bankLoan = std::min(gameState.park.bankLoan, gameState.park.maxBankLoan);
-                windowMgr->InvalidateByClass(WindowClass::Finances);
+                windowMgr->InvalidateByClass(WindowClass::finances);
                 break;
             case ScenarioSetSetting::AnnualInterestRate:
                 gameState.park.bankLoanInterestRate = std::clamp<uint8_t>(_value, 0, kMaxBankLoanInterestRate);
-                windowMgr->InvalidateByClass(WindowClass::Finances);
+                windowMgr->InvalidateByClass(WindowClass::finances);
                 break;
             case ScenarioSetSetting::ForbidMarketingCampaigns:
                 if (_value != 0)
@@ -189,13 +188,13 @@ namespace OpenRCT2::GameActions
                         gameState.park.flags |= PARK_FLAGS_PARK_FREE_ENTRY;
                         gameState.park.flags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
                     }
-                    windowMgr->InvalidateByClass(WindowClass::ParkInformation);
-                    windowMgr->InvalidateByClass(WindowClass::Ride);
+                    windowMgr->InvalidateByClass(WindowClass::parkInformation);
+                    windowMgr->InvalidateByClass(WindowClass::ride);
                 }
                 break;
             case ScenarioSetSetting::ParkChargeEntryFee:
                 gameState.park.entranceFee = std::clamp<money64>(_value, 0.00_GBP, kMaxEntranceFee);
-                windowMgr->InvalidateByClass(WindowClass::ParkInformation);
+                windowMgr->InvalidateByClass(WindowClass::parkInformation);
                 break;
             case ScenarioSetSetting::ForbidTreeRemoval:
                 if (_value != 0)
@@ -266,7 +265,7 @@ namespace OpenRCT2::GameActions
                 LOG_ERROR("Invalid scenario setting %u", _setting);
                 return Result(Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
         }
-        windowMgr->InvalidateByClass(WindowClass::EditorScenarioOptions);
+        windowMgr->InvalidateByClass(WindowClass::editorScenarioOptions);
         return Result();
     }
 } // namespace OpenRCT2::GameActions

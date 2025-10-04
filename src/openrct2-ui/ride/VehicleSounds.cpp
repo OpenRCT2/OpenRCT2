@@ -17,6 +17,7 @@
 #include <openrct2/ride/TrainManager.h>
 #include <openrct2/ride/Vehicle.h>
 #include <openrct2/util/Util.h>
+#include <openrct2/world/Map.h>
 #include <openrct2/world/tile_element/SurfaceElement.h>
 #include <sfl/static_vector.hpp>
 
@@ -72,7 +73,7 @@ namespace OpenRCT2::Audio
             }
             iterator& operator++()
             {
-                Current = GetEntity<Vehicle>(NextVehicleId);
+                Current = getGameState().entities.GetEntity<Vehicle>(NextVehicleId);
                 if (Current != nullptr)
                 {
                     NextVehicleId = Current->next_vehicle_on_train;
@@ -111,22 +112,22 @@ namespace OpenRCT2::Audio
         if (gLegacyScene == LegacyScene::trackDesigner && getGameState().editorStep != EditorStep::RollercoasterDesigner)
             return false;
 
-        if (vehicle.sound1_id == SoundId::Null && vehicle.sound2_id == SoundId::Null)
+        if (vehicle.sound1_id == SoundId::null && vehicle.sound2_id == SoundId::null)
             return false;
 
         if (vehicle.x == kLocationNull)
             return false;
 
-        if (g_music_tracking_viewport == nullptr)
+        if (gMusicTrackingViewport == nullptr)
             return false;
 
-        const auto quarter_w = g_music_tracking_viewport->ViewWidth() / 4;
-        const auto quarter_h = g_music_tracking_viewport->ViewHeight() / 4;
+        const auto quarter_w = gMusicTrackingViewport->ViewWidth() / 4;
+        const auto quarter_h = gMusicTrackingViewport->ViewHeight() / 4;
 
-        auto left = g_music_tracking_viewport->viewPos.x;
-        auto bottom = g_music_tracking_viewport->viewPos.y;
+        auto left = gMusicTrackingViewport->viewPos.x;
+        auto bottom = gMusicTrackingViewport->viewPos.y;
 
-        if (Ui::Windows::WindowGetClassification(*gWindowAudioExclusive) == WindowClass::MainWindow)
+        if (Ui::Windows::WindowGetClassification(*gWindowAudioExclusive) == WindowClass::mainWindow)
         {
             left -= quarter_w;
             bottom -= quarter_h;
@@ -135,10 +136,10 @@ namespace OpenRCT2::Audio
         if (left >= vehicle.SpriteData.SpriteRect.GetRight() || bottom >= vehicle.SpriteData.SpriteRect.GetBottom())
             return false;
 
-        auto right = g_music_tracking_viewport->ViewWidth() + left;
-        auto top = g_music_tracking_viewport->ViewHeight() + bottom;
+        auto right = gMusicTrackingViewport->ViewWidth() + left;
+        auto top = gMusicTrackingViewport->ViewHeight() + bottom;
 
-        if (Ui::Windows::WindowGetClassification(*gWindowAudioExclusive) == WindowClass::MainWindow)
+        if (Ui::Windows::WindowGetClassification(*gWindowAudioExclusive) == WindowClass::mainWindow)
         {
             right += quarter_w + quarter_w;
             top += quarter_h + quarter_h;
@@ -175,28 +176,28 @@ namespace OpenRCT2::Audio
         VehicleSoundParams param;
         param.priority = priority;
         int32_t panX = (vehicle.SpriteData.SpriteRect.GetLeft() / 2) + (vehicle.SpriteData.SpriteRect.GetRight() / 2)
-            - g_music_tracking_viewport->viewPos.x;
-        panX = g_music_tracking_viewport->zoom.ApplyInversedTo(panX);
-        panX += g_music_tracking_viewport->pos.x;
+            - gMusicTrackingViewport->viewPos.x;
+        panX = gMusicTrackingViewport->zoom.ApplyInversedTo(panX);
+        panX += gMusicTrackingViewport->pos.x;
 
         uint16_t screenWidth = ContextGetWidth();
         if (screenWidth < 64)
         {
             screenWidth = 64;
         }
-        param.pan_x = ((((panX * 65536) / screenWidth) - 0x8000) >> 4);
+        param.panX = ((((panX * 65536) / screenWidth) - 0x8000) >> 4);
 
         int32_t panY = (vehicle.SpriteData.SpriteRect.GetTop() / 2) + (vehicle.SpriteData.SpriteRect.GetBottom() / 2)
-            - g_music_tracking_viewport->viewPos.y;
-        panY = g_music_tracking_viewport->zoom.ApplyInversedTo(panY);
-        panY += g_music_tracking_viewport->pos.y;
+            - gMusicTrackingViewport->viewPos.y;
+        panY = gMusicTrackingViewport->zoom.ApplyInversedTo(panY);
+        panY += gMusicTrackingViewport->pos.y;
 
         uint16_t screenHeight = ContextGetHeight();
         if (screenHeight < 64)
         {
             screenHeight = 64;
         }
-        param.pan_y = ((((panY * 65536) / screenHeight) - 0x8000) >> 4);
+        param.panY = ((((panY * 65536) / screenHeight) - 0x8000) >> 4);
 
         int32_t frequency = std::abs(vehicle.velocity);
 
@@ -215,7 +216,7 @@ namespace OpenRCT2::Audio
         frequency >>= 14; // /16384
 
         frequency += 11025;
-        frequency += 16 * vehicle.sound_vector_factor;
+        frequency += 16 * vehicle.dopplerShift;
         param.frequency = static_cast<uint16_t>(frequency);
         param.id = vehicle.Id.ToUnderlying();
         param.volume = 0;
@@ -272,7 +273,7 @@ namespace OpenRCT2::Audio
 
     static void VehicleSoundsUpdateWindowSetup()
     {
-        g_music_tracking_viewport = nullptr;
+        gMusicTrackingViewport = nullptr;
 
         WindowBase* window = Ui::Windows::WindowGetListening();
         if (window == nullptr)
@@ -286,7 +287,7 @@ namespace OpenRCT2::Audio
             return;
         }
 
-        g_music_tracking_viewport = viewport;
+        gMusicTrackingViewport = viewport;
         gWindowAudioExclusive = window;
         if (viewport->zoom <= ZoomLevel{ 0 })
             gVolumeAdjustZoom = 0;
@@ -301,35 +302,35 @@ namespace OpenRCT2::Audio
         uint8_t vol1 = 0xFF;
         uint8_t vol2 = 0xFF;
 
-        int16_t pan_y = std::abs(sound_params->pan_y);
-        pan_y = std::min(static_cast<int16_t>(0xFFF), pan_y);
-        pan_y -= 0x800;
-        if (pan_y > 0)
+        int16_t panY = std::abs(sound_params->panY);
+        panY = std::min(static_cast<int16_t>(0xFFF), panY);
+        panY -= 0x800;
+        if (panY > 0)
         {
-            pan_y = (0x400 - pan_y) / 4;
-            vol1 = LoByte(pan_y);
-            if (static_cast<int8_t>(HiByte(pan_y)) != 0)
+            panY = (0x400 - panY) / 4;
+            vol1 = LoByte(panY);
+            if (static_cast<int8_t>(HiByte(panY)) != 0)
             {
                 vol1 = 0xFF;
-                if (static_cast<int8_t>(HiByte(pan_y)) < 0)
+                if (static_cast<int8_t>(HiByte(panY)) < 0)
                 {
                     vol1 = 0;
                 }
             }
         }
 
-        int16_t pan_x = std::abs(sound_params->pan_x);
-        pan_x = std::min(static_cast<int16_t>(0xFFF), pan_x);
-        pan_x -= 0x800;
+        int16_t panX = std::abs(sound_params->panX);
+        panX = std::min(static_cast<int16_t>(0xFFF), panX);
+        panX -= 0x800;
 
-        if (pan_x > 0)
+        if (panX > 0)
         {
-            pan_x = (0x400 - pan_x) / 4;
-            vol2 = LoByte(pan_x);
-            if (static_cast<int8_t>(HiByte(pan_x)) != 0)
+            panX = (0x400 - panX) / 4;
+            vol2 = LoByte(panX);
+            if (static_cast<int8_t>(HiByte(panX)) != 0)
             {
                 vol2 = 0xFF;
-                if (static_cast<int8_t>(HiByte(pan_x)) < 0)
+                if (static_cast<int8_t>(HiByte(panX)) < 0)
                 {
                     vol2 = 0;
                 }
@@ -362,8 +363,8 @@ namespace OpenRCT2::Audio
             if (vehicleSound.id == kSoundIdNull)
             {
                 vehicleSound.id = sound_params->id;
-                vehicleSound.TrackSound.Id = SoundId::Null;
-                vehicleSound.OtherSound.Id = SoundId::Null;
+                vehicleSound.trackSound.id = SoundId::null;
+                vehicleSound.otherSound.id = SoundId::null;
                 vehicleSound.volume = 0x30;
                 return &vehicleSound;
             }
@@ -376,21 +377,22 @@ namespace OpenRCT2::Audio
     {
         switch (id)
         {
-            case SoundId::LiftClassic:
-            case SoundId::TrackFrictionClassicWood:
-            case SoundId::FrictionClassic:
-            case SoundId::LiftFrictionWheels:
-            case SoundId::GoKartEngine:
-            case SoundId::TrackFrictionTrain:
-            case SoundId::TrackFrictionWater:
-            case SoundId::LiftArrow:
-            case SoundId::LiftWood:
-            case SoundId::TrackFrictionWood:
-            case SoundId::LiftWildMouse:
-            case SoundId::LiftBM:
-            case SoundId::TrackFrictionBM:
-            case SoundId::LiftRMC:
-            case SoundId::TrackFrictionRMC:
+            case SoundId::liftClassic:
+            case SoundId::trackFrictionClassicWood:
+            case SoundId::frictionClassic:
+            case SoundId::liftFrictionWheels:
+            case SoundId::goKartEngine:
+            case SoundId::trackFrictionTrain:
+            case SoundId::trackFrictionWater:
+            case SoundId::liftArrow:
+            case SoundId::liftWood:
+            case SoundId::trackFrictionWood:
+            case SoundId::liftWildMouse:
+            case SoundId::liftBM:
+            case SoundId::trackFrictionBM:
+            case SoundId::liftRMC:
+            case SoundId::trackFrictionRMC:
+            case SoundId::liftFlume:
                 return true;
             default:
                 return false;
@@ -401,17 +403,17 @@ namespace OpenRCT2::Audio
     {
         switch (id)
         {
-            case SoundId::Scream1:
-            case SoundId::Scream2:
-            case SoundId::Scream3:
-            case SoundId::Scream4:
-            case SoundId::Scream5:
-            case SoundId::Scream6:
-            case SoundId::Scream7:
-            case SoundId::Scream8:
-            case SoundId::TrainWhistle:
-            case SoundId::TrainDeparting:
-            case SoundId::Tram:
+            case SoundId::scream1:
+            case SoundId::scream2:
+            case SoundId::scream3:
+            case SoundId::scream4:
+            case SoundId::scream5:
+            case SoundId::scream6:
+            case SoundId::scream7:
+            case SoundId::scream8:
+            case SoundId::trainWhistle:
+            case SoundId::trainDeparting:
+            case SoundId::tram:
                 return true;
             default:
                 return false;
@@ -422,8 +424,8 @@ namespace OpenRCT2::Audio
     {
         switch (id)
         {
-            case SoundId::TrackFrictionBM:
-            case SoundId::TrackFrictionRMC:
+            case SoundId::trackFrictionBM:
+            case SoundId::trackFrictionRMC:
                 return true;
             default:
                 return false;
@@ -470,59 +472,59 @@ namespace OpenRCT2::Audio
         volume = volume / 8;
         volume = std::max(volume - 0x1FFF, -10000);
 
-        if (sound.Channel != nullptr && sound.Channel->IsDone() && IsLoopingSound(sound.Id))
+        if (sound.channel != nullptr && sound.channel->IsDone() && IsLoopingSound(sound.id))
         {
-            sound.Id = SoundId::Null;
-            sound.Channel = nullptr;
+            sound.id = SoundId::null;
+            sound.channel = nullptr;
         }
-        if (id != sound.Id && sound.Id != SoundId::Null)
+        if (id != sound.id && sound.id != SoundId::null)
         {
-            sound.Id = SoundId::Null;
-            sound.Channel->Stop();
+            sound.id = SoundId::null;
+            sound.channel->Stop();
         }
-        if (id == SoundId::Null)
+        if (id == SoundId::null)
         {
             return;
         }
 
-        if (sound.Id == SoundId::Null)
+        if (sound.id == SoundId::null)
         {
             auto frequency = SoundFrequency<type>(id, sound_params->frequency);
             auto looping = IsLoopingSound(id);
-            auto pan = sound_params->pan_x;
+            auto pan = sound_params->panX;
             auto channel = CreateAudioChannel(
                 id, looping, DStoMixerVolume(volume), DStoMixerPan(pan), DStoMixerRate(frequency), false);
             if (channel != nullptr)
             {
-                sound.Id = id;
-                sound.Pan = sound_params->pan_x;
-                sound.Volume = volume;
-                sound.Frequency = sound_params->frequency;
-                sound.Channel = channel;
+                sound.id = id;
+                sound.pan = sound_params->panX;
+                sound.volume = volume;
+                sound.frequency = sound_params->frequency;
+                sound.channel = channel;
             }
             else
             {
-                sound.Id = SoundId::Null;
+                sound.id = SoundId::null;
             }
             return;
         }
-        if (volume != sound.Volume)
+        if (volume != sound.volume)
         {
-            sound.Volume = volume;
-            sound.Channel->SetVolume(DStoMixerVolume(volume));
+            sound.volume = volume;
+            sound.channel->SetVolume(DStoMixerVolume(volume));
         }
-        if (sound_params->pan_x != sound.Pan)
+        if (sound_params->panX != sound.pan)
         {
-            sound.Pan = sound_params->pan_x;
-            sound.Channel->SetPan(DStoMixerPan(sound_params->pan_x));
+            sound.pan = sound_params->panX;
+            sound.channel->SetPan(DStoMixerPan(sound_params->panX));
         }
-        if (!(getGameState().currentTicks & 3) && sound_params->frequency != sound.Frequency)
+        if (!(getGameState().currentTicks & 3) && sound_params->frequency != sound.frequency)
         {
-            sound.Frequency = sound_params->frequency;
+            sound.frequency = sound_params->frequency;
             if (ShouldUpdateChannelRate<type>(id))
             {
                 uint16_t frequency = SoundFrequency<type>(id, sound_params->frequency);
-                sound.Channel->SetRate(DStoMixerRate(frequency));
+                sound.channel->SetRate(DStoMixerRate(frequency));
             }
         }
     }
@@ -565,13 +567,13 @@ namespace OpenRCT2::Audio
                 if (keepPlaying)
                     continue;
 
-                if (vehicleSound.TrackSound.Id != SoundId::Null)
+                if (vehicleSound.trackSound.id != SoundId::null)
                 {
-                    vehicleSound.TrackSound.Channel->Stop();
+                    vehicleSound.trackSound.channel->Stop();
                 }
-                if (vehicleSound.OtherSound.Id != SoundId::Null)
+                if (vehicleSound.otherSound.id != SoundId::null)
                 {
-                    vehicleSound.OtherSound.Channel->Stop();
+                    vehicleSound.otherSound.channel->Stop();
                 }
                 vehicleSound.id = kSoundIdNull;
             }
@@ -602,13 +604,13 @@ namespace OpenRCT2::Audio
             vehicleSound->volume = tempvolume;
             panVol = std::max(0, panVol - tempvolume);
 
-            Vehicle* vehicle = GetEntity<Vehicle>(EntityId::FromUnderlying(vehicleSoundParams.id));
+            Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(EntityId::FromUnderlying(vehicleSoundParams.id));
             if (vehicle != nullptr)
             {
                 UpdateSound<SoundType::TrackNoises>(
-                    vehicle->sound1_id, vehicle->sound1_volume, &vehicleSoundParams, vehicleSound->TrackSound, panVol);
+                    vehicle->sound1_id, vehicle->sound1_volume, &vehicleSoundParams, vehicleSound->trackSound, panVol);
                 UpdateSound<SoundType::OtherNoises>(
-                    vehicle->sound2_id, vehicle->sound2_volume, &vehicleSoundParams, vehicleSound->OtherSound, panVol);
+                    vehicle->sound2_id, vehicle->sound2_volume, &vehicleSoundParams, vehicleSound->otherSound, panVol);
             }
         }
     }

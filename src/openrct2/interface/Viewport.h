@@ -124,36 +124,36 @@ namespace OpenRCT2
 
 enum class VisibilityKind
 {
-    Visible,
-    Partial,
-    Hidden
+    visible,
+    partial,
+    hidden
 };
 
 enum class ViewportInteractionItem : uint8_t
 {
-    None,
-    Terrain,
-    Entity,
-    Ride,
-    Water,
-    Scenery,
-    Footpath,
-    PathAddition,
-    ParkEntrance,
-    Wall,
-    LargeScenery,
-    Label,
-    Banner
+    none,
+    terrain,
+    entity,
+    ride,
+    water,
+    scenery,
+    footpath,
+    pathAddition,
+    parkEntrance,
+    wall,
+    largeScenery,
+    label,
+    banner
 };
 
 enum class ViewportVisibility : uint8_t
 {
-    Default = 0,
-    UndergroundViewOn = 1,
-    TrackHeights = 2,
-    UndergroundViewOff = 3,
-    UndergroundViewGhostOn = 4,
-    UndergroundViewGhostOff = 5,
+    standard = 0,
+    undergroundViewOn = 1,
+    trackHeights = 2,
+    undergroundViewOff = 3,
+    undergroundViewGhostOn = 4,
+    undergroundViewGhostOff = 5,
 };
 
 namespace OpenRCT2
@@ -167,7 +167,7 @@ namespace OpenRCT2
         CoordsXY Loc;
         TileElement* Element{};
         EntityBase* Entity{};
-        ViewportInteractionItem interactionType = ViewportInteractionItem::None;
+        ViewportInteractionItem interactionType = ViewportInteractionItem::none;
     };
 
     constexpr int32_t kMaxViewportCount = kWindowLimitMax;
@@ -181,11 +181,11 @@ namespace OpenRCT2
     extern uint8_t gShowConstructionRightsRefCount;
 
     // rct2: 0x014234BC
-    extern Viewport* g_music_tracking_viewport;
+    extern Viewport* gMusicTrackingViewport;
 
     void ViewportInitAll();
-    std::optional<ScreenCoordsXY> centre_2d_coordinates(const CoordsXYZ& loc, Viewport* viewport);
-    void ViewportCreate(WindowBase* w, const ScreenCoordsXY& screenCoords, int32_t width, int32_t height, const Focus& focus);
+    std::optional<ScreenCoordsXY> centre2dCoordinates(const CoordsXYZ& loc, Viewport* viewport);
+    void ViewportCreate(WindowBase& w, const ScreenCoordsXY& screenCoords, int32_t width, int32_t height, const Focus& focus);
     void ViewportRemove(Viewport* viewport);
 
     const std::list<Viewport>& GetAllViewports();

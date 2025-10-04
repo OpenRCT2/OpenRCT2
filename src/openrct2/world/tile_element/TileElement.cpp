@@ -13,7 +13,6 @@
 #include "../../core/Guard.hpp"
 #include "../../interface/WindowClasses.h"
 #include "../../ui/WindowManager.h"
-#include "../Map.h"
 #include "BannerElement.h"
 #include "EntranceElement.h"
 #include "LargeSceneryElement.h"
@@ -76,7 +75,7 @@ namespace OpenRCT2
         if (banner != nullptr)
         {
             auto* windowMgr = Ui::GetWindowManager();
-            windowMgr->CloseByNumber(WindowClass::Banner, bannerIndex.ToUnderlying());
+            windowMgr->CloseByNumber(WindowClass::banner, bannerIndex.ToUnderlying());
             DeleteBanner(banner->id);
         }
     }

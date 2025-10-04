@@ -13,7 +13,7 @@
 
 namespace OpenRCT2::GameActions
 {
-    PlayerSetGroupAction::PlayerSetGroupAction(NetworkPlayerId_t playerId, uint8_t groupId)
+    PlayerSetGroupAction::PlayerSetGroupAction(Network::PlayerId_t playerId, uint8_t groupId)
         : _playerId(playerId)
         , _groupId(groupId)
     {
@@ -36,13 +36,13 @@ namespace OpenRCT2::GameActions
 
         stream << DS_TAG(_playerId) << DS_TAG(_groupId);
     }
-    Result PlayerSetGroupAction::Query() const
+    Result PlayerSetGroupAction::Query(GameState_t& gameState) const
     {
-        return NetworkSetPlayerGroup(GetPlayer(), _playerId, _groupId, false);
+        return Network::SetPlayerGroup(GetPlayer(), _playerId, _groupId, false);
     }
 
-    Result PlayerSetGroupAction::Execute() const
+    Result PlayerSetGroupAction::Execute(GameState_t& gameState) const
     {
-        return NetworkSetPlayerGroup(GetPlayer(), _playerId, _groupId, true);
+        return Network::SetPlayerGroup(GetPlayer(), _playerId, _groupId, true);
     }
 } // namespace OpenRCT2::GameActions

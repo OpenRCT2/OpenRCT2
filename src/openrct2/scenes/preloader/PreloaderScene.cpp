@@ -19,6 +19,7 @@
 #include "../../localisation/StringIds.h"
 #include "../../ui/WindowManager.h"
 #include "../../windows/Intent.h"
+#include "../../world/Map.h"
 
 #include <sstream>
 
@@ -37,7 +38,7 @@ void PreloaderScene::Load()
     gLegacyScene = LegacyScene::playing;
     gameStateInitAll(getGameState(), kDefaultMapSize);
     ViewportInitAll();
-    ContextOpenWindow(WindowClass::MainWindow);
+    ContextOpenWindow(WindowClass::mainWindow);
     WindowSetFlagForAllViewports(VIEWPORT_FLAG_RENDERING_INHIBITED, true);
     WindowResizeGui(ContextGetWidth(), ContextGetHeight());
 

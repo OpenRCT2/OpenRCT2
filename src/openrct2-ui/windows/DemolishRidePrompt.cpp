@@ -50,30 +50,30 @@ namespace OpenRCT2::Ui::Windows
             _demolishRideCost = -RideGetRefundPrice(currentRide);
         }
 
-        void OnOpen() override
+        void onOpen() override
         {
-            SetWidgets(window_ride_demolish_widgets);
+            setWidgets(window_ride_demolish_widgets);
             WindowInitScrollWidgets(*this);
         }
 
-        void OnMouseUp(WidgetIndex widgetIndex) override
+        void onMouseUp(WidgetIndex widgetIndex) override
         {
             switch (widgetIndex)
             {
                 case WIDX_DEMOLISH:
                 {
                     auto gameAction = GameActions::RideDemolishAction(rideId, GameActions::RideModifyType::demolish);
-                    GameActions::Execute(&gameAction);
+                    GameActions::Execute(&gameAction, getGameState());
                     break;
                 }
                 case WIDX_CANCEL:
                 case WIDX_CLOSE:
-                    Close();
+                    close();
                     break;
             }
         }
 
-        void OnDraw(RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
             WindowDrawWidgets(*this, rt);
 
@@ -95,7 +95,7 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* RideDemolishPromptOpen(const Ride& ride)
     {
         auto* windowMgr = GetWindowManager();
-        auto* w = windowMgr->FindByClass(WindowClass::DemolishRidePrompt);
+        auto* w = windowMgr->FindByClass(WindowClass::demolishRidePrompt);
 
         DemolishRidePromptWindow* newWindow;
         if (w != nullptr)
@@ -104,12 +104,12 @@ namespace OpenRCT2::Ui::Windows
             windowMgr->Close(*w);
 
             newWindow = windowMgr->Create<DemolishRidePromptWindow>(
-                WindowClass::DemolishRidePrompt, windowPos, kWindowSize, WF_TRANSPARENT);
+                WindowClass::demolishRidePrompt, windowPos, kWindowSize, WindowFlag::transparent);
         }
         else
         {
             newWindow = windowMgr->Create<DemolishRidePromptWindow>(
-                WindowClass::DemolishRidePrompt, kWindowSize, WF_CENTRE_SCREEN | WF_TRANSPARENT);
+                WindowClass::demolishRidePrompt, kWindowSize, { WindowFlag::centreScreen, WindowFlag::transparent });
         }
 
         newWindow->SetRide(ride);

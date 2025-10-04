@@ -12,7 +12,6 @@
 #include "../../SpriteIds.h"
 #include "../../interface/Viewport.h"
 #include "../../ride/TrackData.h"
-#include "../../world/Map.h"
 #include "../../world/tile_element/Slope.h"
 #include "../Boundbox.h"
 #include "../Paint.SessionFlags.h"
@@ -419,7 +418,7 @@ static inline bool WoodenSupportsPaintSetupCommon(
         {
             return false;
         }
-        imageTemplate = ImageId().WithTransparency(FilterPaletteID::PaletteDarken1);
+        imageTemplate = ImageId().WithTransparency(FilterPaletteID::paletteDarken1);
     }
 
     baseHeight = ceil2(session.Support.height, 16);

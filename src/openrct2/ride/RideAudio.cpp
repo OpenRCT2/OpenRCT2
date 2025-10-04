@@ -381,10 +381,10 @@ namespace OpenRCT2::RideAudio
      */
     void UpdateMusicInstance(Ride& ride, const CoordsXYZ& rideCoords, uint16_t sampleRate)
     {
-        if (gLegacyScene != LegacyScene::scenarioEditor && !gGameSoundsOff && g_music_tracking_viewport != nullptr)
+        if (gLegacyScene != LegacyScene::scenarioEditor && !gGameSoundsOff && gMusicTrackingViewport != nullptr)
         {
             auto rotatedCoords = Translate3DTo2DWithZ(GetCurrentRotation(), rideCoords);
-            auto viewport = g_music_tracking_viewport;
+            auto viewport = gMusicTrackingViewport;
             auto viewWidth = viewport->ViewWidth();
             auto viewWidth2 = viewWidth * 2;
             auto viewX = viewport->viewPos.x - viewWidth2;

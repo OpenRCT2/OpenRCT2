@@ -81,10 +81,10 @@ static int32_t _thunderStereoEcho = 0;
 static std::shared_ptr<IAudioChannel> _weatherSoundChannel;
 
 constexpr FilterPaletteID kClimateWeatherGloomColours[4] = {
-    FilterPaletteID::PaletteNull,
-    FilterPaletteID::PaletteDarken1,
-    FilterPaletteID::PaletteDarken2,
-    FilterPaletteID::PaletteDarken3,
+    FilterPaletteID::paletteNull,
+    FilterPaletteID::paletteDarken1,
+    FilterPaletteID::paletteDarken2,
+    FilterPaletteID::paletteDarken3,
 };
 
 static int8_t ClimateStepWeatherLevel(int8_t currentWeatherLevel, int8_t nextWeatherLevel);
@@ -205,13 +205,18 @@ void ClimateUpdate()
         ClimateUpdateLightning();
         ClimateUpdateThunder();
     }
-    else if (
-        gameState.weatherCurrent.weatherEffect == WeatherEffectType::Storm
-        || gameState.weatherCurrent.weatherEffect == WeatherEffectType::Blizzard)
+    else
     {
+        uint32_t thunderChance;
+        if (gameState.weatherCurrent.weatherEffect == WeatherEffectType::Storm)
+            thunderChance = 0x1B4;
+        else if (gameState.weatherCurrent.weatherEffect == WeatherEffectType::Blizzard)
+            thunderChance = 0x6D;
+        else
+            return;
         // Create new thunder and lightning. Their amount is scaled inversely proportional
         // to the game speed, otherwise they become annoying at very high speeds
-        if (uint32_t randomNumber = UtilRand(); (randomNumber & 0xFFFF) <= (0x1B4u >> gGameSpeed))
+        if (uint32_t randomNumber = UtilRand(); (randomNumber & 0xFFFF) <= (thunderChance >> (gGameSpeed - 1)))
         {
             randomNumber >>= 16;
             _thunderTimer = 43 + (randomNumber % 64);
@@ -303,7 +308,7 @@ bool ClimateHasWeatherEffect()
 
 FilterPaletteID ClimateGetWeatherGloomPaletteId(const WeatherState& state)
 {
-    auto paletteId = FilterPaletteID::PaletteNull;
+    auto paletteId = FilterPaletteID::paletteNull;
     auto gloom = state.weatherGloom;
     if (gloom < std::size(kClimateWeatherGloomColours))
     {
@@ -368,7 +373,7 @@ static void ClimateUpdateWeatherSound()
         // Start playing the weather sound
         if (_weatherSoundChannel == nullptr || _weatherSoundChannel->IsDone())
         {
-            _weatherSoundChannel = CreateAudioChannel(SoundId::Rain, true, DStoMixerVolume(-4000));
+            _weatherSoundChannel = CreateAudioChannel(SoundId::rain, true, DStoMixerVolume(-4000));
         }
         if (_weatherVolume == 1)
         {
@@ -466,8 +471,8 @@ static void ClimateUpdateThunder()
             if (_thunderStatus[0] == ThunderStatus::none && _thunderStatus[1] == ThunderStatus::none)
             {
                 // Play thunder on left side
-                _thunderSoundId = (randomNumber & 0x20000) ? OpenRCT2::Audio::SoundId::Thunder1
-                                                           : OpenRCT2::Audio::SoundId::Thunder2;
+                _thunderSoundId = (randomNumber & 0x20000) ? OpenRCT2::Audio::SoundId::thunder1
+                                                           : OpenRCT2::Audio::SoundId::thunder2;
                 _thunderVolume = (-(static_cast<int32_t>((randomNumber >> 18) & 0xFF))) * 8;
                 ClimatePlayThunder(0, _thunderSoundId, _thunderVolume, -10000);
 
@@ -479,8 +484,8 @@ static void ClimateUpdateThunder()
         {
             if (_thunderStatus[0] == ThunderStatus::none)
             {
-                _thunderSoundId = (randomNumber & 0x20000) ? OpenRCT2::Audio::SoundId::Thunder1
-                                                           : OpenRCT2::Audio::SoundId::Thunder2;
+                _thunderSoundId = (randomNumber & 0x20000) ? OpenRCT2::Audio::SoundId::thunder1
+                                                           : OpenRCT2::Audio::SoundId::thunder2;
                 int32_t pan = (((randomNumber >> 18) & 0xFF) - 128) * 16;
                 ClimatePlayThunder(0, _thunderSoundId, 0, pan);
             }

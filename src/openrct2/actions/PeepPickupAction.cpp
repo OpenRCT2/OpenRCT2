@@ -10,6 +10,7 @@
 #include "PeepPickupAction.h"
 
 #include "../Diagnostic.h"
+#include "../GameState.h"
 #include "../Input.h"
 #include "../entity/EntityRegistry.h"
 #include "../entity/Peep.h"
@@ -17,7 +18,7 @@
 
 namespace OpenRCT2::GameActions
 {
-    PeepPickupAction::PeepPickupAction(PeepPickupType type, EntityId entityId, const CoordsXYZ& loc, NetworkPlayerId_t owner)
+    PeepPickupAction::PeepPickupAction(PeepPickupType type, EntityId entityId, const CoordsXYZ& loc, Network::PlayerId_t owner)
         : _type(type)
         , _entityId(entityId)
         , _loc(loc)
@@ -45,7 +46,7 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_type) << DS_TAG(_entityId) << DS_TAG(_loc) << DS_TAG(_owner);
     }
 
-    Result PeepPickupAction::Query() const
+    Result PeepPickupAction::Query(GameState_t& gameState) const
     {
         if (_entityId.ToUnderlying() >= kMaxEntities || _entityId.IsNull())
         {
@@ -58,7 +59,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::InvalidParameters, STR_ERR_CANT_PLACE_PERSON_HERE, kStringIdNone);
         }
 
-        auto* const peep = TryGetEntity<Peep>(_entityId);
+        auto* const peep = getGameState().entities.TryGetEntity<Peep>(_entityId);
         if (peep == nullptr)
         {
             LOG_ERROR("Failed to pick up peep for sprite %d", _entityId);
@@ -76,14 +77,14 @@ namespace OpenRCT2::GameActions
                 {
                     return Result(Status::Disallowed, STR_ERR_CANT_PLACE_PERSON_HERE, kStringIdNone);
                 }
-                Peep* existing = NetworkGetPickupPeep(_owner);
+                Peep* existing = Network::GetPickupPeep(_owner);
                 if (existing != nullptr)
                 {
                     // already picking up a peep
                     PeepPickupAction existingPickupAction{
-                        PeepPickupType::Cancel, existing->Id, { NetworkGetPickupPeepOldX(_owner), 0, 0 }, _owner
+                        PeepPickupType::Cancel, existing->Id, { Network::GetPickupPeepOldX(_owner), 0, 0 }, _owner
                     };
-                    auto result = QueryNested(&existingPickupAction);
+                    auto result = QueryNested(&existingPickupAction, gameState);
 
                     if (existing == peep)
                     {
@@ -97,7 +98,7 @@ namespace OpenRCT2::GameActions
                 break;
             case PeepPickupType::Place:
                 res.Position = _loc;
-                if (NetworkGetPickupPeep(_owner) != peep)
+                if (Network::GetPickupPeep(_owner) != peep)
                 {
                     return Result(Status::Unknown, STR_ERR_CANT_PLACE_PERSON_HERE, kStringIdNone);
                 }
@@ -114,9 +115,9 @@ namespace OpenRCT2::GameActions
         return res;
     }
 
-    Result PeepPickupAction::Execute() const
+    Result PeepPickupAction::Execute(GameState_t& gameState) const
     {
-        Peep* const peep = TryGetEntity<Peep>(_entityId);
+        Peep* const peep = getGameState().entities.TryGetEntity<Peep>(_entityId);
         if (peep == nullptr)
         {
             LOG_ERROR("Failed to pick up peep for sprite %d", _entityId);
@@ -131,28 +132,28 @@ namespace OpenRCT2::GameActions
             {
                 res.Position = peep->GetLocation();
 
-                Peep* existing = NetworkGetPickupPeep(_owner);
+                Peep* existing = Network::GetPickupPeep(_owner);
                 if (existing != nullptr)
                 {
                     // already picking up a peep
                     PeepPickupAction existingPickupAction{
-                        PeepPickupType::Cancel, existing->Id, { NetworkGetPickupPeepOldX(_owner), 0, 0 }, _owner
+                        PeepPickupType::Cancel, existing->Id, { Network::GetPickupPeepOldX(_owner), 0, 0 }, _owner
                     };
-                    auto result = ExecuteNested(&existingPickupAction);
+                    auto result = ExecuteNested(&existingPickupAction, gameState);
 
                     if (existing == peep)
                     {
                         return result;
                     }
-                    if (_owner == NetworkGetCurrentPlayerId())
+                    if (_owner == Network::GetCurrentPlayerId())
                     {
                         // prevent tool_cancel()
                         gInputFlags.unset(InputFlag::toolActive);
                     }
                 }
 
-                NetworkSetPickupPeep(_owner, peep);
-                NetworkSetPickupPeepOldX(_owner, peep->x);
+                Network::SetPickupPeep(_owner, peep);
+                Network::SetPickupPeepOldX(_owner, peep->x);
                 peep->Pickup();
             }
             break;
@@ -160,12 +161,12 @@ namespace OpenRCT2::GameActions
             {
                 res.Position = peep->GetLocation();
 
-                Peep* const pickedUpPeep = NetworkGetPickupPeep(_owner);
+                Peep* const pickedUpPeep = Network::GetPickupPeep(_owner);
                 if (pickedUpPeep != nullptr)
                 {
                     pickedUpPeep->PickupAbort(_loc.x);
                 }
-                NetworkSetPickupPeep(_owner, nullptr);
+                Network::SetPickupPeep(_owner, nullptr);
             }
             break;
             case PeepPickupType::Place:
@@ -186,21 +187,21 @@ namespace OpenRCT2::GameActions
     void PeepPickupAction::CancelConcurrentPickups(Peep* pickedPeep) const
     {
         // This part is only relevant in multiplayer games.
-        if (NetworkGetMode() == NETWORK_MODE_NONE)
+        if (Network::GetMode() == Network::Mode::none)
             return;
 
         // Not relevant for owner, owner gets to place it normally.
-        NetworkPlayerId_t currentPlayerId = NetworkGetCurrentPlayerId();
+        Network::PlayerId_t currentPlayerId = Network::GetCurrentPlayerId();
         if (currentPlayerId == _owner)
             return;
 
-        Peep* peep = NetworkGetPickupPeep(NetworkGetCurrentPlayerId());
+        Peep* peep = Network::GetPickupPeep(Network::GetCurrentPlayerId());
         if (peep != pickedPeep)
             return;
 
         // By assigning the peep to null before calling tool_cancel we can avoid
         // resetting the peep to the initial position.
-        NetworkSetPickupPeep(currentPlayerId, nullptr);
+        Network::SetPickupPeep(currentPlayerId, nullptr);
         ToolCancel();
     }
 } // namespace OpenRCT2::GameActions

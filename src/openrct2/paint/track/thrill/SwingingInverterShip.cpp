@@ -7,6 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../../../GameState.h"
 #include "../../../entity/EntityRegistry.h"
 #include "../../../interface/Viewport.h"
 #include "../../../object/StationObject.h"
@@ -76,10 +77,10 @@ static void PaintSwingingInverterShipStructure(
     Vehicle* vehicle = nullptr;
     if (ride.lifecycleFlags & RIDE_LIFECYCLE_ON_TRACK)
     {
-        vehicle = GetEntity<Vehicle>(ride.vehicles[0]);
+        vehicle = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[0]);
         if (vehicle != nullptr)
         {
-            session.InteractionType = ViewportInteractionItem::Entity;
+            session.InteractionType = ViewportInteractionItem::entity;
             session.CurrentlyDrawnEntity = vehicle;
         }
     }
@@ -87,7 +88,7 @@ static void PaintSwingingInverterShipStructure(
     ImageIndex vehicleImageIndex = rideEntry->Cars[0].base_image_id + kSwingingInverterShipBaseSpriteOffset[direction];
     if (vehicle != nullptr)
     {
-        int32_t rotation = static_cast<int8_t>(vehicle->Pitch);
+        int32_t rotation = static_cast<int8_t>(vehicle->flatRideAnimationFrame);
         if (rotation != 0)
         {
             vehicleImageIndex = rideEntry->Cars[0].base_image_id + kSwingingInverterShipAnimatingBaseSpriteOffset[direction];
@@ -124,7 +125,7 @@ static void PaintSwingingInverterShipStructure(
     }
 
     session.CurrentlyDrawnEntity = nullptr;
-    session.InteractionType = ViewportInteractionItem::Ride;
+    session.InteractionType = ViewportInteractionItem::ride;
 }
 
 static void PaintSwingingInverterShip(

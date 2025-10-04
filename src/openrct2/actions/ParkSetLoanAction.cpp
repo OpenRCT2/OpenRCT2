@@ -40,7 +40,7 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_value);
     }
 
-    Result ParkSetLoanAction::Query() const
+    Result ParkSetLoanAction::Query(GameState_t& gameState) const
     {
         auto& park = getGameState().park;
         if (_value > park.bankLoan && _value > park.maxBankLoan)
@@ -61,7 +61,7 @@ namespace OpenRCT2::GameActions
         return Result();
     }
 
-    Result ParkSetLoanAction::Execute() const
+    Result ParkSetLoanAction::Execute(GameState_t& gameState) const
     {
         auto& park = getGameState().park;
 

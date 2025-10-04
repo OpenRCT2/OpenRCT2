@@ -188,7 +188,7 @@ const CarEntry kCableLiftVehicle = {
     .no_seating_rows = 0,
     .spinning_inertia = 0,
     .spinning_friction = 255,
-    .friction_sound_id = Audio::SoundId::LiftClassic,
+    .friction_sound_id = Audio::SoundId::liftClassic,
     .ReversedCarIndex = 0,
     .soundRange = SoundRange::screamsMisc,
     .double_sound_frequency = 0,
@@ -205,6 +205,7 @@ const CarEntry kCableLiftVehicle = {
         .Longitudinal = 0,
         .Vertical = 0,
     },
+    .spinningNumFrames = 0,
 };
 
 /* rct2: 0x009A0AA0 */

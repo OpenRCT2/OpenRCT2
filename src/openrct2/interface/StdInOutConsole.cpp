@@ -19,6 +19,8 @@
 #include <cstdlib>
 #include <linenoise.hpp>
 
+using namespace OpenRCT2;
+
 // Ignore isatty warning on WIN32
 #ifdef _MSC_VER
     #pragma warning(disable : 4996)
@@ -55,7 +57,7 @@ void StdInOutConsole::Start()
             {
                 if (lastPromptQuit)
                 {
-                    OpenRCT2Finish();
+                    GetContext()->Finish();
                     break;
                 }
 
@@ -76,7 +78,7 @@ void StdInOutConsole::Start()
 std::future<void> StdInOutConsole::Eval(const std::string& s)
 {
 #ifdef ENABLE_SCRIPTING
-    auto& scriptEngine = OpenRCT2::GetContext()->GetScriptEngine();
+    auto& scriptEngine = GetContext()->GetScriptEngine();
     return scriptEngine.Eval(s);
 #else
     // Push on-demand evaluations onto a queue so that it can be processed deterministically
@@ -113,7 +115,7 @@ void StdInOutConsole::Clear()
 
 void StdInOutConsole::Close()
 {
-    OpenRCT2Finish();
+    GetContext()->Finish();
 }
 
 void StdInOutConsole::WriteLine(const std::string& s, FormatToken colourFormat)
@@ -131,7 +133,7 @@ void StdInOutConsole::WriteLine(const std::string& s, FormatToken colourFormat)
             break;
     }
 
-    if (!OpenRCT2::Platform::IsColourTerminalSupported())
+    if (!Platform::IsColourTerminalSupported())
     {
         std::printf("%s\n", s.c_str());
         std::fflush(stdout);

@@ -549,8 +549,8 @@ STR_1152    :Beliebig
 STR_1153    :Höhenmarkierungen an Fahrstrecken
 STR_1154    :Höhenmarkierungen auf dem Gelände
 STR_1155    :Höhenmarkierungen an Fußwegen
-STR_1156    :{MOVE_X}{10}{STRINGID}
-STR_1157    :✓{MOVE_X}{10}{STRINGID}
+STR_1156    :{MOVE_X}{10}{STRING}
+STR_1157    :✓{MOVE_X}{10}{STRING}
 STR_1158    :Kann nicht entfernt werden …
 STR_1159    :Platzieren Sie Szenerien, Beete{NEWLINE}und andere Objekte
 STR_1160    :Seen & Wasseranlagen erstellen/anpassen

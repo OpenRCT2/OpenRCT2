@@ -15,8 +15,6 @@
 #include <optional>
 #include <string_view>
 
-class Formatter;
-
 struct OpenRCT2String;
 struct Peep;
 struct Ride;
@@ -32,6 +30,7 @@ using ScenarioSelectCallback = void (*)(const utf8* path);
 
 namespace OpenRCT2
 {
+    class Formatter;
     struct ObjectEntryDescriptor;
     struct TileElement;
 } // namespace OpenRCT2
@@ -54,10 +53,10 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* AssetPacksOpen();
 
     // Banner
-    WindowBase* BannerOpen(rct_windownumber number);
+    WindowBase* BannerOpen(WindowNumber number);
 
     // Changelog
-    WindowBase* ChangelogOpen(int personality);
+    WindowBase* ChangelogOpen(WindowView personality);
 
     // Cheats
     WindowBase* CheatsOpen();
@@ -111,6 +110,7 @@ namespace OpenRCT2::Ui::Windows
     void WindowFootpathKeyboardShortcutSlopeUp();
     void WindowFootpathKeyboardShortcutBuildCurrent();
     void WindowFootpathKeyboardShortcutDemolishCurrent();
+    bool WindowFootpathSelectDefault();
 
     // GameBottomToolbar
     extern uint8_t gToolbarDirtyFlags;
@@ -295,8 +295,8 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* ShortcutKeysOpen();
 
     // Sign
-    WindowBase* SignOpen(rct_windownumber number);
-    WindowBase* SignSmallOpen(rct_windownumber number);
+    WindowBase* SignOpen(WindowNumber number);
+    WindowBase* SignSmallOpen(WindowNumber number);
 
     // Staff
     WindowBase* StaffOpen(Peep* peep);

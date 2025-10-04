@@ -173,7 +173,8 @@
     <ClInclude Include="audio\AudioMixer.h" />
     <ClInclude Include="audio\AudioSource.h" />
     <ClInclude Include="Cheats.h" />
-    <ClInclude Include="CommandLineSprite.h" />
+    <ClInclude Include="command_line\sprite\SpriteCommands.h" />
+    <ClInclude Include="command_line\sprite\SpriteFile.h" />
     <ClInclude Include="command_line\CommandLine.hpp" />
     <ClInclude Include="config\Config.h" />
     <ClInclude Include="config\ConfigEnum.hpp" />
@@ -425,6 +426,7 @@
     <ClInclude Include="rct2\RCT2.h" />
     <ClInclude Include="rct2\T6Exporter.h" />
     <ClInclude Include="ReplayManager.h" />
+    <ClInclude Include="ride\Angles.h" />
     <ClInclude Include="ride\CableLift.h" />
     <ClInclude Include="ride\CarEntry.h" />
     <ClInclude Include="ride\MazeCost.h" />
@@ -632,6 +634,8 @@
     <ClInclude Include="world\Location.hpp" />
     <ClInclude Include="world\Map.h" />
     <ClInclude Include="world\MapAnimation.h" />
+    <ClInclude Include="world\MapLimits.h" />
+    <ClInclude Include="world\MapSelection.h" />
     <ClInclude Include="world\Park.h" />
     <ClInclude Include="world\ParkData.h" />
     <ClInclude Include="world\QuarterTile.h" />
@@ -760,14 +764,22 @@
     <ClCompile Include="audio\Audio.cpp" />
     <ClCompile Include="audio\DummyAudioContext.cpp" />
     <ClCompile Include="Cheats.cpp" />
-    <ClCompile Include="CommandLineSprite.cpp" />
+    <ClCompile Include="command_line\sprite\SpriteAppend.cpp" />
+    <ClCompile Include="command_line\sprite\SpriteBuild.cpp" />
+    <ClCompile Include="command_line\sprite\SpriteCombine.cpp" />
+    <ClCompile Include="command_line\sprite\SpriteCommands.cpp" />
+    <ClCompile Include="command_line\sprite\SpriteCreate.cpp" />
+    <ClCompile Include="command_line\sprite\SpriteDetails.cpp" />
+    <ClCompile Include="command_line\sprite\SpriteExport.cpp" />
+    <ClCompile Include="command_line\sprite\SpriteExportAll.cpp" />
+    <ClCompile Include="command_line\sprite\SpriteExportObject.cpp" />
+    <ClCompile Include="command_line\sprite\SpriteFile.cpp" />
     <ClCompile Include="command_line\CommandLine.cpp" />
     <ClCompile Include="command_line\ConvertCommand.cpp" />
     <ClCompile Include="command_line\ParkInfoCommands.cpp" />
     <ClCompile Include="command_line\RootCommands.cpp" />
     <ClCompile Include="command_line\ScreenshotCommands.cpp" />
     <ClCompile Include="command_line\SimulateCommands.cpp" />
-    <ClCompile Include="command_line\SpriteCommands.cpp" />
     <ClCompile Include="command_line\UriHandler.cpp" />
     <ClCompile Include="config\Config.cpp" />
     <ClCompile Include="config\IniReader.cpp" />
@@ -1147,6 +1159,7 @@
     <ClCompile Include="world\Footpath.cpp" />
     <ClCompile Include="world\Map.cpp" />
     <ClCompile Include="world\MapAnimation.cpp" />
+    <ClCompile Include="world\MapSelection.cpp" />
     <ClCompile Include="world\Park.cpp" />
     <ClCompile Include="world\QuarterTile.cpp" />
     <ClCompile Include="world\Scenery.cpp" />
@@ -1162,6 +1175,7 @@
     <ClCompile Include="world\tile_element\EntranceElement.cpp" />
     <ClCompile Include="world\tile_element\LargeSceneryElement.cpp" />
     <ClCompile Include="world\tile_element\PathElement.cpp" />
+    <ClCompile Include="world\tile_element\Slope.cpp" />
     <ClCompile Include="world\tile_element\SmallSceneryElement.cpp" />
     <ClCompile Include="world\tile_element\SurfaceElement.cpp" />
     <ClCompile Include="world\tile_element\TileElement.cpp" />

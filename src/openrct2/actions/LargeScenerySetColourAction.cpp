@@ -14,6 +14,7 @@
 #include "../OpenRCT2.h"
 #include "../management/Finance.h"
 #include "../object/LargeSceneryEntry.h"
+#include "../world/Map.h"
 #include "../world/Scenery.h"
 #include "../world/tile_element/LargeSceneryElement.h"
 
@@ -51,12 +52,12 @@ namespace OpenRCT2::GameActions
                << DS_TAG(_tertiaryColour);
     }
 
-    Result LargeScenerySetColourAction::Query() const
+    Result LargeScenerySetColourAction::Query(GameState_t& gameState) const
     {
         return QueryExecute(false);
     }
 
-    Result LargeScenerySetColourAction::Execute() const
+    Result LargeScenerySetColourAction::Execute(GameState_t& gameState) const
     {
         return QueryExecute(true);
     }

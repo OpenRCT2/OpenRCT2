@@ -29,6 +29,13 @@
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 
+#ifdef __EMSCRIPTEN__
+extern "C" {
+extern void EmscriptenLoadGame(LoadSaveType type);
+extern void EmscriptenSaveGame(bool isTrackDesign, bool isAutosave, LoadSaveType type);
+}
+#endif
+
 namespace OpenRCT2::Ui::FileBrowser
 {
     static LoadSaveCallback _loadSaveCallback;
@@ -37,6 +44,19 @@ namespace OpenRCT2::Ui::FileBrowser
         LoadSaveAction action, LoadSaveType type, u8string defaultPath, LoadSaveCallback callback, TrackDesign* trackDesign)
     {
         RegisterCallback(callback);
+
+#ifdef __EMSCRIPTEN__
+        if (action == LoadSaveAction::save)
+        {
+            Select("/save.park", action, type, trackDesign);
+            EmscriptenSaveGame(type == LoadSaveType::track, false, type);
+        }
+        else
+        {
+            EmscriptenLoadGame(type);
+        }
+        return nullptr;
+#endif
 
         auto hasFilePicker = OpenRCT2::GetContext()->GetUiContext().HasFilePicker();
         auto& config = Config::Get().general;
@@ -224,8 +244,8 @@ namespace OpenRCT2::Ui::FileBrowser
         // Closing this will cause a Ride window to pop up, so we have to do this to ensure that
         // no windows are open (besides the toolbars and LoadSave window).
         auto* windowMgr = Ui::GetWindowManager();
-        windowMgr->CloseByClass(WindowClass::RideConstruction);
-        windowMgr->CloseAllExceptClass(WindowClass::Loadsave);
+        windowMgr->CloseByClass(WindowClass::rideConstruction);
+        windowMgr->CloseAllExceptClass(WindowClass::loadsave);
 
         auto& gameState = getGameState();
 
@@ -241,13 +261,13 @@ namespace OpenRCT2::Ui::FileBrowser
                         if (GetContext()->LoadParkFromFile(pathBuffer))
                         {
                             InvokeCallback(ModalResult::ok, pathBuffer);
-                            windowMgr->CloseByClass(WindowClass::Loadsave);
+                            windowMgr->CloseByClass(WindowClass::loadsave);
                             GfxInvalidateScreen();
                         }
                         else
                         {
                             auto windowManager = GetWindowManager();
-                            if (!windowManager->FindByClass(WindowClass::Error))
+                            if (!windowManager->FindByClass(WindowClass::error))
                             {
                                 // Not the best message...
                                 ContextShowError(STR_LOAD_GAME, STR_FAILED_TO_LOAD_FILE_CONTAINS_INVALID_DATA, {});
@@ -285,7 +305,7 @@ namespace OpenRCT2::Ui::FileBrowser
 
                         if (success)
                         {
-                            windowMgr->CloseByClass(WindowClass::Loadsave);
+                            windowMgr->CloseByClass(WindowClass::loadsave);
                             InvokeCallback(ModalResult::ok, pathBuffer);
 
                             auto* context = GetContext();
@@ -302,16 +322,16 @@ namespace OpenRCT2::Ui::FileBrowser
                     case (LoadSaveType::track):
                     {
                         SetAndSaveConfigPath(Config::Get().general.LastSaveTrackDirectory, pathBuffer);
-                        auto intent = Intent(WindowClass::InstallTrack);
+                        auto intent = Intent(WindowClass::installTrack);
                         intent.PutExtra(INTENT_EXTRA_PATH, std::string{ pathBuffer });
                         ContextOpenIntent(&intent);
-                        windowMgr->CloseByClass(WindowClass::Loadsave);
+                        windowMgr->CloseByClass(WindowClass::loadsave);
                         InvokeCallback(ModalResult::ok, pathBuffer);
                         break;
                     }
                     case (LoadSaveType::heightmap):
                     {
-                        windowMgr->CloseByClass(WindowClass::Loadsave);
+                        windowMgr->CloseByClass(WindowClass::loadsave);
                         InvokeCallback(ModalResult::ok, pathBuffer);
                         break;
                     }
@@ -332,7 +352,7 @@ namespace OpenRCT2::Ui::FileBrowser
                             gIsAutosaveLoaded = false;
                             gFirstTimeSaving = false;
 
-                            windowMgr->CloseByClass(WindowClass::Loadsave);
+                            windowMgr->CloseByClass(WindowClass::loadsave);
                             GfxInvalidateScreen();
 
                             InvokeCallback(ModalResult::ok, pathBuffer);
@@ -351,7 +371,7 @@ namespace OpenRCT2::Ui::FileBrowser
                         if (ScenarioSave(gameState, pathBuffer, Config::Get().general.SavePluginData ? 3 : 2))
                         {
                             gCurrentLoadedPath = pathBuffer;
-                            windowMgr->CloseByClass(WindowClass::Loadsave);
+                            windowMgr->CloseByClass(WindowClass::loadsave);
                             GfxInvalidateScreen();
                             InvokeCallback(ModalResult::ok, pathBuffer);
                         }
@@ -374,7 +394,7 @@ namespace OpenRCT2::Ui::FileBrowser
 
                         if (success)
                         {
-                            windowMgr->CloseByClass(WindowClass::Loadsave);
+                            windowMgr->CloseByClass(WindowClass::loadsave);
                             InvokeCallback(ModalResult::ok, pathBuffer);
 
                             auto* context = GetContext();
@@ -401,7 +421,7 @@ namespace OpenRCT2::Ui::FileBrowser
 
                         if (success)
                         {
-                            windowMgr->CloseByClass(WindowClass::Loadsave);
+                            windowMgr->CloseByClass(WindowClass::loadsave);
                             Windows::WindowRideMeasurementsDesignCancel();
                             InvokeCallback(ModalResult::ok, path);
                         }
@@ -527,3 +547,10 @@ namespace OpenRCT2::Ui::FileBrowser
         return ContextOpenCommonFileDialog(desc);
     }
 } // namespace OpenRCT2::Ui::FileBrowser
+
+#ifdef __EMSCRIPTEN__
+extern "C" void LoadGameCallback(const char* path, LoadSaveType action)
+{
+    OpenRCT2::Ui::FileBrowser::Select(path, LoadSaveAction::load, action, nullptr);
+}
+#endif

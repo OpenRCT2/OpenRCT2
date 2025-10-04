@@ -4,9 +4,12 @@
 
 #ifndef DISABLE_NETWORK
 
-class NetworkClient final : public NetworkBase
+namespace OpenRCT2::Network
 {
-public:
-};
+    class NetworkClient final : public NetworkBase
+    {
+    public:
+    };
+} // namespace OpenRCT2::Network
 
 #endif // DISABLE_NETWORK

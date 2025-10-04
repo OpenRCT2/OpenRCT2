@@ -34,17 +34,17 @@ namespace OpenRCT2::Ui::Windows
     class NetworkStatusWindow final : public Window
     {
     public:
-        void OnOpen() override
+        void onOpen() override
         {
             WindowSetResize(*this, kWindowSize, kWindowSize);
-            SetWidgets(window_network_status_widgets);
+            setWidgets(window_network_status_widgets);
 
-            frame_no = 0;
+            currentFrame = 0;
             page = 0;
-            list_information_type = 0;
+            listInformationType = 0;
         }
 
-        void OnClose() override
+        void onClose() override
         {
             if (_onClose != nullptr)
             {
@@ -52,22 +52,22 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnMouseUp(WidgetIndex widgetIndex) override
+        void onMouseUp(WidgetIndex widgetIndex) override
         {
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
-                    Close();
+                    close();
                     break;
             }
         }
 
-        void OnUpdate() override
+        void onUpdate() override
         {
-            InvalidateWidget(WIDX_BACKGROUND);
+            invalidateWidget(WIDX_BACKGROUND);
         }
 
-        void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override
+        void onTextInput(WidgetIndex widgetIndex, std::string_view text) override
         {
             _password.clear();
             switch (widgetIndex)
@@ -78,15 +78,15 @@ namespace OpenRCT2::Ui::Windows
             }
             if (text.empty())
             {
-                NetworkShutdownClient();
+                Network::ShutdownClient();
             }
             else
             {
-                NetworkSendPassword(_password);
+                Network::SendPassword(_password);
             }
         }
 
-        void OnDraw(RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
             WindowDrawWidgets(*this, rt);
             thread_local std::string _buffer;
@@ -100,18 +100,18 @@ namespace OpenRCT2::Ui::Windows
             DrawText(rt, screenCoords, { COLOUR_BLACK }, _buffer.c_str());
         }
 
-        void SetCloseCallBack(CloseCallback onClose)
+        void setCloseCallBack(CloseCallback callback)
         {
-            _onClose = onClose;
+            _onClose = callback;
         }
 
-        void SetWindowNetworkStatusText(const std::string& text)
+        void setWindowNetworkStatusText(const std::string& text)
         {
             _windowNetworkStatusText = text;
-            Invalidate();
+            invalidate();
         }
 
-        void SetPassword(char* password)
+        void setPassword(char* password)
         {
             _password = password;
         }
@@ -124,23 +124,25 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* NetworkStatusOpen(const std::string& text, CloseCallback onClose)
     {
-        ContextForceCloseWindowByClass(WindowClass::ProgressWindow);
+        ContextForceCloseWindowByClass(WindowClass::progressWindow);
 
         auto* windowMgr = GetWindowManager();
 
         NetworkStatusWindow* window;
-        if ((window = static_cast<NetworkStatusWindow*>(windowMgr->FindByClass(WindowClass::NetworkStatus))) != nullptr)
+        if ((window = static_cast<NetworkStatusWindow*>(windowMgr->FindByClass(WindowClass::networkStatus))) != nullptr)
         {
             windowMgr->BringToFront(*window);
         }
         else
         {
             window = windowMgr->Create<NetworkStatusWindow>(
-                WindowClass::NetworkStatus, kWindowSize, WF_10 | WF_TRANSPARENT | WF_CENTRE_SCREEN | WF_STICK_TO_FRONT);
+                WindowClass::networkStatus, kWindowSize,
+                { WindowFlag::higherContrastOnPress, WindowFlag::transparent, WindowFlag::centreScreen,
+                  WindowFlag::stickToFront });
         }
 
-        window->SetCloseCallBack(onClose);
-        window->SetWindowNetworkStatusText(text);
+        window->setCloseCallBack(onClose);
+        window->setWindowNetworkStatusText(text);
         return window;
     }
 
@@ -148,27 +150,28 @@ namespace OpenRCT2::Ui::Windows
     void WindowNetworkStatusClose()
     {
         auto* windowMgr = GetWindowManager();
-        auto window = windowMgr->FindByClass(WindowClass::NetworkStatus);
+        auto window = windowMgr->FindByClass(WindowClass::networkStatus);
         if (window == nullptr)
         {
             return;
         }
         auto networkWindow = static_cast<NetworkStatusWindow*>(window);
-        networkWindow->SetCloseCallBack(nullptr);
-        networkWindow->Close();
+        networkWindow->setCloseCallBack(nullptr);
+        networkWindow->close();
     }
 
     WindowBase* NetworkStatusOpenPassword()
     {
-        ContextForceCloseWindowByClass(WindowClass::ProgressWindow);
+        ContextForceCloseWindowByClass(WindowClass::progressWindow);
 
         auto* windowMgr = GetWindowManager();
         auto* window = windowMgr->FocusOrCreate<NetworkStatusWindow>(
-            WindowClass::NetworkStatus, kWindowSize, WF_10 | WF_TRANSPARENT | WF_CENTRE_SCREEN);
+            WindowClass::networkStatus, kWindowSize,
+            { WindowFlag::higherContrastOnPress, WindowFlag::transparent, WindowFlag::centreScreen });
 
         char password[33]{};
         WindowTextInputRawOpen(window, WIDX_PASSWORD, STR_PASSWORD_REQUIRED, STR_PASSWORD_REQUIRED_DESC, {}, password, 32);
-        window->SetPassword(password);
+        window->setPassword(password);
         return window;
     }
 } // namespace OpenRCT2::Ui::Windows

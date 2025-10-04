@@ -12,6 +12,7 @@
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/Diagnostic.h>
+#include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/audio/Audio.h>
 #include <openrct2/drawing/Drawing.h>
@@ -51,9 +52,9 @@ namespace OpenRCT2::Ui::Windows
         {
         }
 
-        void OnOpen() override
+        void onOpen() override
         {
-            SetWidgets(window_error_widgets);
+            setWidgets(window_error_widgets);
 
             widgets[WIDX_BACKGROUND].right = width - 1;
             widgets[WIDX_BACKGROUND].bottom = height - 1;
@@ -62,11 +63,11 @@ namespace OpenRCT2::Ui::Windows
 
             if (!gDisableErrorWindowSound)
             {
-                Audio::Play(Audio::SoundId::Error, 0, windowPos.x + (width / 2));
+                Audio::Play(Audio::SoundId::error, 0, windowPos.x + (width / 2));
             }
         }
 
-        void OnDraw(RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
             WindowDrawWidgets(*this, rt);
 
@@ -74,22 +75,22 @@ namespace OpenRCT2::Ui::Windows
             DrawStringCentredRaw(rt, screenCoords, _numLines, _text.data(), FontStyle::Medium);
         }
 
-        void OnPeriodicUpdate() override
+        void onPeriodicUpdate() override
         {
             // Close the window after 8 seconds of showing
             _staleCount++;
             if (_staleCount >= 8)
             {
-                Close();
+                close();
             }
         }
 
-        void OnUpdate() override
+        void onUpdate() override
         {
             // Automatically close previous screenshot messages before new screenshot is taken
             if (_autoClose && gScreenshotCountdown > 0)
             {
-                Close();
+                close();
             }
         }
     };
@@ -122,7 +123,7 @@ namespace OpenRCT2::Ui::Windows
 
         // Close any existing error windows if they exist.
         auto* windowMgr = Ui::GetWindowManager();
-        windowMgr->CloseByClass(WindowClass::Error);
+        windowMgr->CloseByClass(WindowClass::error);
 
         // How wide is the error string?
         int32_t width = GfxGetStringWidthNewLined(buffer.data(), FontStyle::Medium);
@@ -142,8 +143,8 @@ namespace OpenRCT2::Ui::Windows
         auto errorWindow = std::make_unique<ErrorWindow>(std::move(buffer), numLines, autoClose);
 
         return windowMgr->Create(
-            std::move(errorWindow), WindowClass::Error, windowPosition, { width, height },
-            WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_TITLE_BAR);
+            std::move(errorWindow), WindowClass::error, windowPosition, { width, height },
+            { WindowFlag::stickToFront, WindowFlag::transparent, WindowFlag::noTitleBar });
     }
 
     WindowBase* ErrorOpen(StringId title, StringId message, const Formatter& args, bool autoClose)

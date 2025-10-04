@@ -10,6 +10,7 @@
 #include "MoneyEffect.h"
 
 #include "../Diagnostic.h"
+#include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../config/Config.h"
 #include "../core/DataSerialiser.h"
@@ -47,7 +48,7 @@ void MoneyEffect::CreateAt(money64 value, const CoordsXYZ& effectPos, bool guest
     if (value == 0.00_GBP)
         return;
 
-    MoneyEffect* moneyEffect = CreateEntity<MoneyEffect>();
+    MoneyEffect* moneyEffect = getGameState().entities.CreateEntity<MoneyEffect>();
     if (moneyEffect == nullptr)
         return;
 
@@ -67,7 +68,7 @@ void MoneyEffect::Create(money64 value, const CoordsXYZ& loc)
     {
         // If game actions return no valid location of the action we can not use the screen
         // coordinates as every client will have different ones.
-        if (NetworkGetMode() != NETWORK_MODE_NONE)
+        if (Network::GetMode() != Network::Mode::none)
         {
             LOG_WARNING("Attempted to create money effect without a valid location in multiplayer");
             return;
@@ -151,7 +152,7 @@ void MoneyEffect::Update()
         return;
     }
 
-    EntityRemove(this);
+    getGameState().entities.EntityRemove(this);
 }
 
 std::pair<StringId, money64> MoneyEffect::GetStringId() const

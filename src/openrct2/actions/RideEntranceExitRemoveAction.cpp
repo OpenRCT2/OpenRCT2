@@ -13,6 +13,7 @@
 #include "../ride/Ride.h"
 #include "../ride/Station.h"
 #include "../world/Entrance.h"
+#include "../world/Map.h"
 #include "../world/TileElementsView.h"
 #include "../world/tile_element/EntranceElement.h"
 
@@ -66,7 +67,7 @@ namespace OpenRCT2::GameActions
         return nullptr;
     }
 
-    Result RideEntranceExitRemoveAction::Query() const
+    Result RideEntranceExitRemoveAction::Query(GameState_t& gameState) const
     {
         auto ride = GetRide(_rideIndex);
         if (ride == nullptr)
@@ -109,7 +110,7 @@ namespace OpenRCT2::GameActions
         return Result();
     }
 
-    Result RideEntranceExitRemoveAction::Execute() const
+    Result RideEntranceExitRemoveAction::Execute(GameState_t& gameState) const
     {
         auto ride = GetRide(_rideIndex);
         if (ride == nullptr)

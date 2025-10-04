@@ -17,6 +17,7 @@
 #include "../ride/Track.h"
 #include "../ride/TrackData.h"
 #include "../world/Banner.h"
+#include "../world/Map.h"
 #include "../world/Scenery.h"
 #include "../world/tile_element/WallElement.h"
 
@@ -51,7 +52,7 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_loc) << DS_TAG(_primaryColour) << DS_TAG(_secondaryColour) << DS_TAG(_tertiaryColour);
     }
 
-    Result WallSetColourAction::Query() const
+    Result WallSetColourAction::Query(GameState_t& gameState) const
     {
         auto res = Result();
         res.ErrorTitle = STR_CANT_REPAINT_THIS;
@@ -115,7 +116,7 @@ namespace OpenRCT2::GameActions
         return res;
     }
 
-    Result WallSetColourAction::Execute() const
+    Result WallSetColourAction::Execute(GameState_t& gameState) const
     {
         auto res = Result();
         res.ErrorTitle = STR_CANT_REPAINT_THIS;

@@ -1,5 +1,4 @@
-#!/usr/bin/env python3
-
+#!/usr/bin/env python
 """A wrapper script around clang-format, suitable for linting multiple files
 and to use for continuous integration.
 
@@ -7,6 +6,8 @@ This is an alternative API for the clang-format command line.
 It runs over multiple files and directories in parallel.
 A diff output is produced and a sensible exit code is returned.
 
+This file is MIT licenced. See the licence at the script's original repository:
+https://github.com/Sarcasm/run-clang-format/blob/39081c9c42768ab5e8321127a7494ad1647c6a2f/LICENSE
 """
 
 from __future__ import print_function, unicode_literals
@@ -16,6 +17,7 @@ import codecs
 import difflib
 import fnmatch
 import io
+import errno
 import multiprocessing
 import os
 import signal
@@ -25,7 +27,14 @@ import traceback
 
 from functools import partial
 
+try:
+    from subprocess import DEVNULL  # py3k
+except ImportError:
+    DEVNULL = open(os.devnull, "wb")
+
+
 DEFAULT_EXTENSIONS = 'c,h,C,H,cpp,hpp,cc,hh,c++,h++,cxx,hxx,vert,frag'
+DEFAULT_CLANG_FORMAT_IGNORE = '.clang-format-ignore'
 
 
 class ExitStatus:
@@ -33,6 +42,23 @@ class ExitStatus:
     DIFF = 1
     TROUBLE = 2
 
+def excludes_from_file(ignore_file):
+    excludes = []
+    try:
+        with io.open(ignore_file, 'r', encoding='utf-8') as f:
+            for line in f:
+                if line.startswith('#'):
+                    # ignore comments
+                    continue
+                pattern = line.rstrip()
+                if not pattern:
+                    # allow empty lines
+                    continue
+                excludes.append(pattern)
+    except EnvironmentError as e:
+        if e.errno != errno.ENOENT:
+            raise
+    return excludes;
 
 def list_files(files, recursive=False, extensions=None, exclude=None):
     if extensions is None:
@@ -88,39 +114,6 @@ class UnexpectedError(Exception):
         self.formatted_traceback = traceback.format_exc()
         self.exc = exc
 
-def run_clang_format_version(args):
-    invocation = [args.clang_format_executable, "--version"]
-	
-    encoding_py3 = {}
-    if sys.version_info[0] >= 3:
-        encoding_py3['encoding'] = 'utf-8'
-		
-    try:
-	    proc = subprocess.Popen(
-            invocation,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            universal_newlines=True,
-            **encoding_py3)
-    except OSError as exc:
-        raise DiffError(str(exc))
-    proc_stdout = proc.stdout
-    proc_stderr = proc.stderr
-    if sys.version_info[0] < 3:
-        # make the pipes compatible with Python 3,
-        # reading lines should output unicode
-        encoding = 'utf-8'
-        proc_stdout = codecs.getreader(encoding)(proc_stdout)
-        proc_stderr = codecs.getreader(encoding)(proc_stderr)
-    # hopefully the stderr pipe won't get full and block the process
-    outs = list(proc_stdout.readlines())
-    errs = list(proc_stderr.readlines())
-    proc.wait()
-    if proc.returncode:
-        raise DiffError("clang-format exited with status {}: '{}'".format(
-            proc.returncode, file), errs)
-    print(outs[0])
-    return
 
 def run_clang_format_diff_wrapper(args, file):
     try:
@@ -139,7 +132,18 @@ def run_clang_format_diff(args, file):
             original = f.readlines()
     except IOError as exc:
         raise DiffError(str(exc))
-    invocation = [args.clang_format_executable, file]
+
+    if args.in_place:
+        invocation = [args.clang_format_executable, '-i', file]
+    else:
+        invocation = [args.clang_format_executable, file]
+
+    if args.style:
+        invocation.extend(['--style', args.style])
+
+    if args.dry_run:
+        print(" ".join(invocation))
+        return [], []
 
     # Use of utf-8 to decode the process output.
     #
@@ -171,7 +175,11 @@ def run_clang_format_diff(args, file):
             universal_newlines=True,
             **encoding_py3)
     except OSError as exc:
-        raise DiffError(str(exc))
+        raise DiffError(
+            "Command '{}' failed to start: {}".format(
+                subprocess.list2cmdline(invocation), exc
+            )
+        )
     proc_stdout = proc.stdout
     proc_stderr = proc.stderr
     if sys.version_info[0] < 3:
@@ -185,8 +193,14 @@ def run_clang_format_diff(args, file):
     errs = list(proc_stderr.readlines())
     proc.wait()
     if proc.returncode:
-        raise DiffError("clang-format exited with status {}: '{}'".format(
-            proc.returncode, file), errs)
+        raise DiffError(
+            "Command '{}' returned non-zero exit status {}".format(
+                subprocess.list2cmdline(invocation), proc.returncode
+            ),
+            errs,
+        )
+    if args.in_place:
+        return [], errs
     return make_diff(file, original, outs), errs
 
 
@@ -253,11 +267,22 @@ def main():
         '--recursive',
         action='store_true',
         help='run recursively over directories')
+    parser.add_argument(
+        '-d',
+        '--dry-run',
+        action='store_true',
+        help='just print the list of files')
+    parser.add_argument(
+        '-i',
+        '--in-place',
+        action='store_true',
+        help='format file instead of printing differences')
     parser.add_argument('files', metavar='file', nargs='+')
     parser.add_argument(
         '-q',
         '--quiet',
-        action='store_true')
+        action='store_true',
+        help="disable output, useful for the exit code")
     parser.add_argument(
         '-j',
         metavar='N',
@@ -278,11 +303,12 @@ def main():
         default=[],
         help='exclude paths matching the given glob-like pattern(s)'
         ' from recursive search')
+    parser.add_argument(
+        '--style',
+        help='formatting style to apply (LLVM, Google, Chromium, Mozilla, WebKit)')
 
     args = parser.parse_args()
 
-    run_clang_format_version(args)
-		
     # use default signal handling, like diff return SIGINT value on ^C
     # https://bugs.python.org/issue14229#msg156446
     signal.signal(signal.SIGINT, signal.SIG_DFL)
@@ -303,11 +329,31 @@ def main():
         colored_stdout = sys.stdout.isatty()
         colored_stderr = sys.stderr.isatty()
 
+    version_invocation = [args.clang_format_executable, str("--version")]
+    try:
+        subprocess.check_call(version_invocation, stdout=DEVNULL)
+    except subprocess.CalledProcessError as e:
+        print_trouble(parser.prog, str(e), use_colors=colored_stderr)
+        return ExitStatus.TROUBLE
+    except OSError as e:
+        print_trouble(
+            parser.prog,
+            "Command '{}' failed to start: {}".format(
+                subprocess.list2cmdline(version_invocation), e
+            ),
+            use_colors=colored_stderr,
+        )
+        return ExitStatus.TROUBLE
+
     retcode = ExitStatus.SUCCESS
+
+    excludes = excludes_from_file(DEFAULT_CLANG_FORMAT_IGNORE)
+    excludes.extend(args.exclude)
+
     files = list_files(
         args.files,
         recursive=args.recursive,
-        exclude=args.exclude,
+        exclude=excludes,
         extensions=args.extensions.split(','))
 
     if not files:
@@ -327,6 +373,7 @@ def main():
         pool = multiprocessing.Pool(njobs)
         it = pool.imap_unordered(
             partial(run_clang_format_diff_wrapper, args), files)
+        pool.close()
     while True:
         try:
             outs, errs = next(it)
@@ -354,6 +401,8 @@ def main():
                 print_diff(outs, use_color=colored_stdout)
             if retcode == ExitStatus.SUCCESS:
                 retcode = ExitStatus.DIFF
+    if pool:
+        pool.join()
     return retcode
 
 

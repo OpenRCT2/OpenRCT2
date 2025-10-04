@@ -26,8 +26,8 @@ namespace OpenRCT2::Scripting
         dukSubposition.Set("y", value.y);
         dukSubposition.Set("z", value.z);
         dukSubposition.Set("yaw", value.direction);
-        dukSubposition.Set("pitch", value.Pitch);
-        dukSubposition.Set("roll", value.bank_rotation);
+        dukSubposition.Set("pitch", EnumValue(value.pitch));
+        dukSubposition.Set("roll", EnumValue(value.roll));
         return dukSubposition.Take();
     }
 

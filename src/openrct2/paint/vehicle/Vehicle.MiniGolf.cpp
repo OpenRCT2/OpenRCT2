@@ -9,6 +9,7 @@
 
 #include "Vehicle.MiniGolf.h"
 
+#include "../../GameState.h"
 #include "../../entity/EntityRegistry.h"
 #include "../../entity/Guest.h"
 #include "../../ride/Ride.h"
@@ -117,7 +118,7 @@ namespace OpenRCT2
         if (rideEntry == nullptr)
             return;
 
-        auto* peep = GetEntity<Guest>(vehicle->peep[0]);
+        auto* peep = getGameState().entities.GetEntity<Guest>(vehicle->peep[0]);
         if (peep == nullptr)
             return;
 

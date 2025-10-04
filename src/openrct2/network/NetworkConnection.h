@@ -20,51 +20,54 @@
     #include <string_view>
     #include <vector>
 
-class NetworkPlayer;
-
 namespace OpenRCT2
 {
     struct ObjectRepositoryItem;
 }
 
-class NetworkConnection final
+namespace OpenRCT2::Network
 {
-public:
-    std::unique_ptr<ITcpSocket> Socket = nullptr;
-    NetworkPacket InboundPacket;
-    NetworkAuth AuthStatus = NetworkAuth::None;
-    NetworkStats Stats = {};
-    NetworkPlayer* Player = nullptr;
-    uint32_t PingTime = 0;
-    NetworkKey Key;
-    std::vector<uint8_t> Challenge;
-    std::vector<const OpenRCT2::ObjectRepositoryItem*> RequestedObjects;
-    bool ShouldDisconnect = false;
+    class Player;
 
-    NetworkConnection() noexcept;
+    class Connection final
+    {
+    public:
+        std::unique_ptr<ITcpSocket> Socket = nullptr;
+        Packet InboundPacket;
+        Auth AuthStatus = Auth::none;
+        Stats stats = {};
+        Player* player = nullptr;
+        uint32_t PingTime = 0;
+        Key key;
+        std::vector<uint8_t> Challenge;
+        std::vector<const ObjectRepositoryItem*> RequestedObjects;
+        bool ShouldDisconnect = false;
 
-    NetworkReadPacket ReadPacket();
-    void QueuePacket(const NetworkPacket& packet, bool front = false);
+        Connection() noexcept;
 
-    // This will not immediately disconnect the client. The disconnect
-    // will happen post-tick.
-    void Disconnect() noexcept;
+        ReadPacket readPacket();
+        void QueuePacket(const Packet& packet, bool front = false);
 
-    bool IsValid() const;
-    void SendQueuedData();
-    void ResetLastPacketTime() noexcept;
-    bool ReceivedPacketRecently() const noexcept;
+        // This will not immediately disconnect the client. The disconnect
+        // will happen post-tick.
+        void Disconnect() noexcept;
 
-    const utf8* GetLastDisconnectReason() const noexcept;
-    void SetLastDisconnectReason(std::string_view src);
-    void SetLastDisconnectReason(const StringId string_id, void* args = nullptr);
+        bool IsValid() const;
+        void SendQueuedData();
+        void ResetLastPacketTime() noexcept;
+        bool ReceivedPacketRecently() const noexcept;
 
-private:
-    std::vector<uint8_t> _outboundBuffer;
-    uint32_t _lastPacketTime = 0;
-    std::string _lastDisconnectReason;
+        const utf8* GetLastDisconnectReason() const noexcept;
+        void SetLastDisconnectReason(std::string_view src);
+        void SetLastDisconnectReason(const StringId string_id, void* args = nullptr);
 
-    void RecordPacketStats(const NetworkPacket& packet, bool sending);
-};
+    private:
+        std::vector<uint8_t> _outboundBuffer;
+        uint32_t _lastPacketTime = 0;
+        std::string _lastDisconnectReason;
+
+        void RecordPacketStats(const Packet& packet, bool sending);
+    };
+} // namespace OpenRCT2::Network
 
 #endif // DISABLE_NETWORK

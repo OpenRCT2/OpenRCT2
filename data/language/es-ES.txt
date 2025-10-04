@@ -550,8 +550,8 @@ STR_1152    :Cualquier carga
 STR_1153    :Marcas de altura en atracciones
 STR_1154    :Marcas de altura en el suelo
 STR_1155    :Marcas de altura en senderos
-STR_1156    :{MOVE_X}{10}{STRINGID}
-STR_1157    :✓{MOVE_X}{10}{STRINGID}
+STR_1156    :{MOVE_X}{10}{STRING}
+STR_1157    :✓{MOVE_X}{10}{STRING}
 STR_1158    :No se puede quitar esto…
 STR_1159    :Crear decorado, jardines y otros accesorios
 STR_1160    :Crear lagos y ajustar agua

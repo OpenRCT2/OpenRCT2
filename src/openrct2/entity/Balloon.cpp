@@ -10,12 +10,14 @@
 #include "Balloon.h"
 
 #include "../Game.h"
+#include "../GameState.h"
 #include "../audio/Audio.h"
 #include "../core/DataSerialiser.h"
 #include "../network/Network.h"
 #include "../paint/Paint.h"
 #include "../profiling/Profiling.h"
 #include "../scenario/Scenario.h"
+#include "../world/Map.h"
 #include "../world/tile_element/TrackElement.h"
 #include "EntityRegistry.h"
 
@@ -35,7 +37,7 @@ void Balloon::Update()
         frame++;
         if (frame >= 5)
         {
-            EntityRemove(this);
+            getGameState().entities.EntityRemove(this);
         }
     }
     else
@@ -93,13 +95,13 @@ void Balloon::Pop(bool playSound)
     frame = 0;
     if (playSound)
     {
-        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::BalloonPop, { x, y, z });
+        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::balloonPop, { x, y, z });
     }
 }
 
 void Balloon::Create(const CoordsXYZ& balloonPos, int32_t colour, bool isPopped)
 {
-    auto* balloon = CreateEntity<Balloon>();
+    auto* balloon = getGameState().entities.CreateEntity<Balloon>();
     if (balloon == nullptr)
         return;
 

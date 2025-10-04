@@ -22,6 +22,7 @@
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
 #include "../ui/WindowManager.h"
+#include "../world/Map.h"
 #include "../world/Park.h"
 
 namespace OpenRCT2::GameActions
@@ -60,7 +61,7 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_rideIndex) << DS_TAG(_type) << DS_TAG(_value) << DS_TAG(_colour);
     }
 
-    Result RideSetVehicleAction::Query() const
+    Result RideSetVehicleAction::Query(GameState_t& gameState) const
     {
         if (_type >= RideSetVehicleType::Count)
         {
@@ -123,7 +124,7 @@ namespace OpenRCT2::GameActions
         return Result();
     }
 
-    Result RideSetVehicleAction::Execute() const
+    Result RideSetVehicleAction::Execute(GameState_t& gameState) const
     {
         auto errTitle = kSetVehicleTypeErrorTitle[EnumValue(_type)];
         auto ride = GetRide(_rideIndex);

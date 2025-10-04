@@ -104,7 +104,7 @@ static bool ShouldShowFPS()
         return true;
 
     auto* windowMgr = Ui::GetWindowManager();
-    return windowMgr->FindByClass(WindowClass::TopToolbar);
+    return windowMgr->FindByClass(WindowClass::topToolbar);
 }
 
 void Painter::PaintFPS(RenderTarget& rt)
@@ -186,7 +186,7 @@ PaintSession* Painter::CreateSession(RenderTarget& rt, uint32_t viewFlags, uint8
     session->CurrentlyDrawnTileElement = nullptr;
     session->Surface = nullptr;
     session->SelectedElement = OpenRCT2::TileInspector::GetSelectedElement();
-    session->InteractionType = ViewportInteractionItem::None;
+    session->InteractionType = ViewportInteractionItem::none;
     session->PathElementOnSameHeight = nullptr;
     session->TrackElementOnSameHeight = nullptr;
 

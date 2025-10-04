@@ -28,6 +28,7 @@
 #include "../../ui/WindowManager.h"
 #include "../../util/Util.h"
 #include "../../windows/Intent.h"
+#include "../../world/Map.h"
 #include "TitleSequence.h"
 #include "TitleSequenceManager.h"
 #include "TitleSequencePlayer.h"
@@ -107,7 +108,7 @@ void TitleScene::Load()
 #endif
     gameStateInitAll(getGameState(), kDefaultMapSize);
     ViewportInitAll();
-    ContextOpenWindow(WindowClass::MainWindow);
+    ContextOpenWindow(WindowClass::mainWindow);
 
     TitleInitialise();
 
@@ -127,7 +128,7 @@ void TitleScene::Load()
     if (gOpenRCT2ShowChangelog)
     {
         gOpenRCT2ShowChangelog = false;
-        ContextOpenWindow(WindowClass::Changelog);
+        ContextOpenWindow(WindowClass::changelog);
     }
 
     LOG_VERBOSE("TitleScene::Load() finished");
@@ -194,11 +195,11 @@ void TitleScene::ChangePresetSequence(size_t preset)
  */
 void TitleScene::CreateWindows()
 {
-    ContextOpenWindow(WindowClass::TitleMenu);
-    ContextOpenWindow(WindowClass::TitleExit);
-    ContextOpenWindow(WindowClass::TitleOptions);
-    ContextOpenWindow(WindowClass::TitleLogo);
-    ContextOpenWindow(WindowClass::TitleVersion);
+    ContextOpenWindow(WindowClass::titleMenu);
+    ContextOpenWindow(WindowClass::titleExit);
+    ContextOpenWindow(WindowClass::titleOptions);
+    ContextOpenWindow(WindowClass::titleLogo);
+    ContextOpenWindow(WindowClass::titleVersion);
     WindowResizeGui(ContextGetWidth(), ContextGetHeight());
 }
 

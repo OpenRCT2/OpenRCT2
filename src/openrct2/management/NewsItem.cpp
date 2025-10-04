@@ -26,6 +26,7 @@
 #include "../ui/WindowManager.h"
 #include "../windows/Intent.h"
 #include "../world/Location.hpp"
+#include "../world/Map.h"
 
 #include <cassert>
 
@@ -131,7 +132,7 @@ static void TickCurrent()
     if (ticks == 1 && (gLegacyScene == LegacyScene::playing))
     {
         // Play sound
-        OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::NewsItem, 0, ContextGetWidth() / 2);
+        OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::newsItem, 0, ContextGetWidth() / 2);
     }
 }
 
@@ -192,7 +193,7 @@ void News::ItemQueues::ArchiveCurrent()
 
     // Invalidate the news window
     auto* windowMgr = Ui::GetWindowManager();
-    windowMgr->InvalidateByClass(WindowClass::RecentNews);
+    windowMgr->InvalidateByClass(WindowClass::recentNews);
 
     // Dequeue the current news item, shift news up
     Recent.pop_front();
@@ -212,6 +213,8 @@ std::optional<CoordsXYZ> News::GetSubjectLocation(News::ItemType type, int32_t s
 {
     std::optional<CoordsXYZ> subjectLoc{ std::nullopt };
 
+    auto& gameState = getGameState();
+
     switch (type)
     {
         case News::ItemType::ride:
@@ -227,7 +230,7 @@ std::optional<CoordsXYZ> News::GetSubjectLocation(News::ItemType type, int32_t s
         }
         case News::ItemType::peepOnRide:
         {
-            auto peep = TryGetEntity<Peep>(EntityId::FromUnderlying(subject));
+            auto peep = gameState.entities.TryGetEntity<Peep>(EntityId::FromUnderlying(subject));
             if (peep == nullptr)
                 break;
 
@@ -250,11 +253,11 @@ std::optional<CoordsXYZ> News::GetSubjectLocation(News::ItemType type, int32_t s
             }
 
             // Find the first car of the train peep is on
-            auto sprite = TryGetEntity<Vehicle>(ride->vehicles[peep->CurrentTrain]);
+            auto sprite = gameState.entities.TryGetEntity<Vehicle>(ride->vehicles[peep->CurrentTrain]);
             // Find the actual car peep is on
             for (int32_t i = 0; i < peep->CurrentCar && sprite != nullptr; i++)
             {
-                sprite = TryGetEntity<Vehicle>(sprite->next_vehicle_on_train);
+                sprite = gameState.entities.TryGetEntity<Vehicle>(sprite->next_vehicle_on_train);
             }
             if (sprite != nullptr)
             {
@@ -264,7 +267,7 @@ std::optional<CoordsXYZ> News::GetSubjectLocation(News::ItemType type, int32_t s
         }
         case News::ItemType::peep:
         {
-            auto peep = TryGetEntity<Peep>(EntityId::FromUnderlying(subject));
+            auto peep = gameState.entities.TryGetEntity<Peep>(EntityId::FromUnderlying(subject));
             if (peep != nullptr)
             {
                 subjectLoc = peep->GetLocation();
@@ -369,7 +372,7 @@ void News::OpenSubject(News::ItemType type, int32_t subject)
     {
         case News::ItemType::ride:
         {
-            auto intent = Intent(WindowClass::Ride);
+            auto intent = Intent(WindowClass::ride);
             intent.PutExtra(INTENT_EXTRA_RIDE_ID, subject);
             ContextOpenIntent(&intent);
             break;
@@ -377,20 +380,20 @@ void News::OpenSubject(News::ItemType type, int32_t subject)
         case News::ItemType::peepOnRide:
         case News::ItemType::peep:
         {
-            auto peep = TryGetEntity<Peep>(EntityId::FromUnderlying(subject));
+            auto peep = getGameState().entities.TryGetEntity<Peep>(EntityId::FromUnderlying(subject));
             if (peep != nullptr)
             {
-                auto intent = Intent(WindowClass::Peep);
+                auto intent = Intent(WindowClass::peep);
                 intent.PutExtra(INTENT_EXTRA_PEEP, peep);
                 ContextOpenIntent(&intent);
             }
             break;
         }
         case News::ItemType::money:
-            ContextOpenWindow(WindowClass::Finances);
+            ContextOpenWindow(WindowClass::finances);
             break;
         case News::ItemType::campaign:
-            ContextOpenWindowView(WV_FINANCE_MARKETING);
+            ContextOpenWindowView(WindowView::financeMarketing);
             break;
         case News::ItemType::research:
         {
@@ -411,17 +414,17 @@ void News::OpenSubject(News::ItemType type, int32_t subject)
         }
         case News::ItemType::peeps:
         {
-            auto intent = Intent(WindowClass::GuestList);
+            auto intent = Intent(WindowClass::guestList);
             intent.PutExtra(INTENT_EXTRA_GUEST_LIST_FILTER, static_cast<int32_t>(GuestListFilterType::guestsThinkingX));
             intent.PutExtra(INTENT_EXTRA_RIDE_ID, subject);
             ContextOpenIntent(&intent);
             break;
         }
         case News::ItemType::award:
-            ContextOpenWindowView(WV_PARK_AWARDS);
+            ContextOpenWindowView(WindowView::parkAwards);
             break;
         case News::ItemType::graph:
-            ContextOpenWindowView(WV_PARK_RATING);
+            ContextOpenWindowView(WindowView::parkRating);
             break;
         case News::ItemType::null:
         case News::ItemType::blank:
@@ -455,7 +458,7 @@ void News::DisableNewsItems(News::ItemType type, uint32_t assoc)
         {
             newsItem.setFlags(News::ItemFlags::hasButton);
             auto* windowMgr = Ui::GetWindowManager();
-            windowMgr->InvalidateByClass(WindowClass::RecentNews);
+            windowMgr->InvalidateByClass(WindowClass::recentNews);
         }
     });
 }

@@ -924,7 +924,8 @@ void Guest::UpdateConsumptionMotives()
 void Guest::Tick128UpdateGuest(uint32_t index)
 {
     const auto currentTicks = getGameState().currentTicks;
-    if ((index & 0x1FF) != (currentTicks & 0x1FF))
+    const bool ticksMatchIndex = (index & 0x1FF) != (currentTicks & 0x1FF);
+    if (ticksMatchIndex && !(PeepFlags & PEEP_FLAGS_POSITION_FROZEN))
     {
         UpdateConsumptionMotives();
         return;
@@ -947,7 +948,7 @@ void Guest::Tick128UpdateGuest(uint32_t index)
     {
         if (State == PeepState::Walking || State == PeepState::Sitting)
         {
-            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::Crash, GetLocation());
+            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::crash, GetLocation());
 
             ExplosionCloud::Create({ x, y, z + 16 });
             ExplosionFlare::Create({ x, y, z + 16 });
@@ -1462,14 +1463,14 @@ void Guest::CheckCantFindRide()
     GuestHeadingToRideId = RideId::GetNull();
 
     auto* windowMgr = Ui::GetWindowManager();
-    WindowBase* w = windowMgr->FindByNumber(WindowClass::Peep, Id);
+    WindowBase* w = windowMgr->FindByNumber(WindowClass::peep, Id);
 
     if (w != nullptr)
     {
-        w->OnPrepareDraw();
+        w->onPrepareDraw();
     }
 
-    windowMgr->InvalidateByNumber(WindowClass::Peep, Id);
+    windowMgr->InvalidateByNumber(WindowClass::peep, Id);
 }
 
 /**
@@ -1617,7 +1618,7 @@ static bool GuestDecideAndBuyItem(Guest& guest, Ride& ride, const ShopItem shopI
                     if (guest.Happiness >= 180)
                         itemValue /= 2;
                 }
-                if (itemValue > (static_cast<money64>(ScenarioRand() & 0x07)) && !(getGameState().cheats.ignorePrice))
+                if (itemValue > (static_cast<money64>(ScenarioRand() & 0x07)) && !(gameState.cheats.ignorePrice))
                 {
                     // "I'm not paying that much for x"
                     guest.InsertNewThought(shopItemDescriptor.TooMuchThought, ride.id);
@@ -1825,9 +1826,9 @@ void Guest::OnExitRide(Ride& ride)
         InsertNewThought(PeepThoughtType::WasGreat, ride.id);
 
         static constexpr OpenRCT2::Audio::SoundId laughs[3] = {
-            OpenRCT2::Audio::SoundId::Laugh1,
-            OpenRCT2::Audio::SoundId::Laugh2,
-            OpenRCT2::Audio::SoundId::Laugh3,
+            OpenRCT2::Audio::SoundId::laugh1,
+            OpenRCT2::Audio::SoundId::laugh2,
+            OpenRCT2::Audio::SoundId::laugh3,
         };
         int32_t laughType = ScenarioRand() & 7;
         if (laughType < 3)
@@ -1884,7 +1885,8 @@ static OpenRCT2::BitSet<OpenRCT2::Limits::kMaxRidesInPark> GuestFindRidesToGoOn(
     if (guest.HasItem(ShopItem::Map))
     {
         // Consider rides that peep hasn't been on yet
-        for (auto& ride : GetRideManager())
+        auto& gameState = getGameState();
+        for (auto& ride : RideManager(gameState))
         {
             if (!guest.HasRidden(ride))
             {
@@ -1918,7 +1920,8 @@ static OpenRCT2::BitSet<OpenRCT2::Limits::kMaxRidesInPark> GuestFindRidesToGoOn(
         }
 
         // Always take the tall rides into consideration (realistic as you can usually see them from anywhere in the park)
-        for (auto& ride : GetRideManager())
+        auto& gameState = getGameState();
+        for (auto& ride : RideManager(gameState))
         {
             if (ride.highestDropHeight > 66 || ride.ratings.excitement >= RideRating::make(8, 00))
             {
@@ -1935,7 +1938,9 @@ static Ride* GuestFindBestRideToGoOn(Guest& guest)
     // Pick the most exciting ride
     auto rideConsideration = GuestFindRidesToGoOn(guest);
     Ride* mostExcitingRide = nullptr;
-    for (auto& ride : GetRideManager())
+
+    auto& gameState = getGameState();
+    for (auto& ride : RideManager(gameState))
     {
         const auto rideIndex = ride.id.ToUnderlying();
         if (rideConsideration.size() > rideIndex && rideConsideration[rideIndex])
@@ -2003,7 +2008,7 @@ bool Guest::ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, b
             else
             {
                 // Check if there's room in the queue for the peep to enter.
-                Guest* lastPeepInQueue = GetEntity<Guest>(station.LastPeepInQueue);
+                Guest* lastPeepInQueue = getGameState().entities.GetEntity<Guest>(station.LastPeepInQueue);
                 if (lastPeepInQueue != nullptr && (abs(lastPeepInQueue->z - z) <= 6))
                 {
                     int32_t dx = abs(lastPeepInQueue->x - x);
@@ -2084,7 +2089,7 @@ bool Guest::ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, b
                 // excitement check and will only do a basic intensity check when they arrive at the ride itself.
                 if (ride.id == GuestHeadingToRideId)
                 {
-                    if (ride.ratings.intensity > RideRating::make(10, 00) && !getGameState().cheats.ignoreRideIntensity)
+                    if (ride.ratings.intensity > RideRating::make(10, 00) && !gameState.cheats.ignoreRideIntensity)
                     {
                         GuestRideIsTooIntense(*this, ride, peepAtRide);
                         return false;
@@ -2111,7 +2116,7 @@ bool Guest::ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, b
                     // ride intensity check and get me on a sheltered ride!
                     if (!isPrecipitating || !GuestShouldRideWhileRaining(*this, ride))
                     {
-                        if (!getGameState().cheats.ignoreRideIntensity)
+                        if (!gameState.cheats.ignoreRideIntensity)
                         {
                             // Intensity calculations. Even though the max intensity can go up to 15, it's capped
                             // at 10.0 (before happiness calculations). A full happiness bar will increase the max
@@ -2177,7 +2182,7 @@ bool Guest::ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, b
                     return false;
                 }
 
-                if (!getGameState().cheats.ignoreRideIntensity)
+                if (!gameState.cheats.ignoreRideIntensity)
                 {
                     if (ride.maxPositiveVerticalG > MakeFixed16_2dp(5, 00)
                         || ride.maxNegativeVerticalG < MakeFixed16_2dp(-4, 00) || ride.maxLateralG > MakeFixed16_2dp(4, 00))
@@ -2345,13 +2350,13 @@ void Guest::SpendMoney(money64& peep_expend_type, money64 amount, ExpenditureTyp
     peep_expend_type += amount;
 
     auto* windowMgr = Ui::GetWindowManager();
-    windowMgr->InvalidateByNumber(WindowClass::Peep, Id);
+    windowMgr->InvalidateByNumber(WindowClass::peep, Id);
 
     FinancePayment(-amount, expenditure);
 
     MoneyEffect::CreateAt(amount, GetLocation(), true);
 
-    OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::Purchase, GetLocation());
+    OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::purchase, GetLocation());
 }
 
 void Guest::SetHasRidden(const Ride& ride)
@@ -2490,7 +2495,7 @@ static Vehicle* PeepChooseCarFromRide(Guest& guest, const Ride& ride, std::span<
 
     guest.CurrentCar = carArray[chosen_car];
 
-    Vehicle* vehicle = GetEntity<Vehicle>(ride.vehicles[guest.CurrentTrain]);
+    Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[guest.CurrentTrain]);
     if (vehicle == nullptr)
     {
         return nullptr;
@@ -2512,7 +2517,7 @@ static void PeepChooseSeatFromCar(Guest* guest, const Ride& ride, Vehicle* vehic
 
     if (ride.mode == RideMode::forwardRotation || ride.mode == RideMode::backwardRotation)
     {
-        chosen_seat = (((~vehicle->Pitch + 1) >> 3) & 0xF) * 2;
+        chosen_seat = (((~vehicle->flatRideAnimationFrame + 1) >> 3) & 0xF) * 2;
         if (vehicle->next_free_seat & 1)
         {
             chosen_seat++;
@@ -2581,7 +2586,7 @@ static bool FindVehicleToEnter(
 
         for (int32_t i = 0; i < ride.numTrains; ++i)
         {
-            Vehicle* vehicle = GetEntity<Vehicle>(ride.vehicles[i]);
+            Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[i]);
             if (vehicle == nullptr)
                 continue;
 
@@ -2608,8 +2613,8 @@ static bool FindVehicleToEnter(
     int32_t i = 0;
 
     auto vehicle_id = ride.vehicles[chosen_train];
-    for (Vehicle* vehicle = GetEntity<Vehicle>(vehicle_id); vehicle != nullptr;
-         vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train), ++i)
+    for (Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(vehicle_id); vehicle != nullptr;
+         vehicle = getGameState().entities.GetEntity<Vehicle>(vehicle->next_vehicle_on_train), ++i)
     {
         uint8_t num_seats = vehicle->num_seats;
         if (vehicle->IsUsedInPairs())
@@ -2627,7 +2632,7 @@ static bool FindVehicleToEnter(
 
         if (ride.mode == RideMode::forwardRotation || ride.mode == RideMode::backwardRotation)
         {
-            uint8_t position = (((~vehicle->Pitch + 1) >> 3) & 0xF) * 2;
+            uint8_t position = (((~vehicle->flatRideAnimationFrame + 1) >> 3) & 0xF) * 2;
             if (!vehicle->peep[position].IsNull())
                 continue;
         }
@@ -3157,10 +3162,10 @@ static void GuestLeavePark(Guest& guest)
     guest.InsertNewThought(PeepThoughtType::GoHome);
 
     auto* windowMgr = Ui::GetWindowManager();
-    WindowBase* w = windowMgr->FindByNumber(WindowClass::Peep, guest.Id);
+    WindowBase* w = windowMgr->FindByNumber(WindowClass::peep, guest.Id);
     if (w != nullptr)
-        w->OnPrepareDraw();
-    windowMgr->InvalidateByNumber(WindowClass::Peep, guest.Id);
+        w->onPrepareDraw();
+    windowMgr->InvalidateByNumber(WindowClass::peep, guest.Id);
 }
 
 template<typename T>
@@ -3187,7 +3192,8 @@ static void PeepHeadForNearestRide(Guest& guest, bool considerOnlyCloseRides, T 
     if (!considerOnlyCloseRides && (guest.HasItem(ShopItem::Map)))
     {
         // Consider all rides in the park
-        for (const auto& ride : GetRideManager())
+        auto& gameState = getGameState();
+        for (const auto& ride : RideManager(gameState))
         {
             if (predicate(ride))
             {
@@ -3228,7 +3234,9 @@ static void PeepHeadForNearestRide(Guest& guest, bool considerOnlyCloseRides, T 
     // Filter the considered rides
     RideId potentialRides[OpenRCT2::Limits::kMaxRidesInPark];
     size_t numPotentialRides = 0;
-    for (auto& ride : GetRideManager())
+
+    auto& gameState = getGameState();
+    for (auto& ride : RideManager(gameState))
     {
         if (rideConsideration[ride.id.ToUnderlying()])
         {
@@ -3400,7 +3408,7 @@ void Guest::UpdateBuying()
                 CashInPocket += 50.00_GBP;
             }
             auto* windowMgr = Ui::GetWindowManager();
-            windowMgr->InvalidateByNumber(WindowClass::Peep, Id);
+            windowMgr->InvalidateByNumber(WindowClass::peep, Id);
         }
         Orientation ^= 0x10;
 
@@ -3605,7 +3613,7 @@ void PeepUpdateRideLeaveEntranceSpiralSlide(Guest& guest, Ride& ride, CoordsXYZD
     entrance_loc += kSpiralSlideWalkingPath[guest.Var37];
 
     guest.SetDestination(entrance_loc);
-    guest.CurrentCar = 0;
+    guest.timesSlidDown = 0;
 
     ride.curNumCustomers++;
     guest.OnEnterRide(ride);
@@ -3670,7 +3678,7 @@ void Guest::UpdateRideLeaveEntranceWaypoints(const Ride& ride)
 
     uint8_t direction_track = (tile_element == nullptr ? 0 : tile_element->GetDirection());
 
-    auto vehicle = GetEntity<Vehicle>(ride.vehicles[CurrentTrain]);
+    auto vehicle = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[CurrentTrain]);
     if (vehicle == nullptr)
     {
         // TODO: Goto ride exit on failure.
@@ -3760,7 +3768,7 @@ void Guest::UpdateRideAdvanceThroughEntrance()
         return;
     }
 
-    Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[CurrentTrain]);
+    Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(ride->vehicles[CurrentTrain]);
     if (vehicle == nullptr)
     {
         return;
@@ -3915,7 +3923,7 @@ void Guest::UpdateRideFreeVehicleEnterRide(Ride& ride)
     {
         station.QueueTime = queueTime;
         auto* windowMgr = Ui::GetWindowManager();
-        windowMgr->InvalidateByNumber(WindowClass::Ride, CurrentRide.ToUnderlying());
+        windowMgr->InvalidateByNumber(WindowClass::ride, CurrentRide.ToUnderlying());
     }
 
     if (PeepFlags & PEEP_FLAGS_TRACKING)
@@ -3995,7 +4003,8 @@ void Guest::UpdateRideFreeVehicleCheck()
         return;
     }
 
-    Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[CurrentTrain]);
+    auto& gameState = getGameState();
+    Vehicle* vehicle = gameState.entities.GetEntity<Vehicle>(ride->vehicles[CurrentTrain]);
     if (vehicle == nullptr)
     {
         // TODO: Leave ride on failure goes for all returns on nullptr in this function
@@ -4017,11 +4026,11 @@ void Guest::UpdateRideFreeVehicleCheck()
 
         for (size_t i = 0; i < ride->numTrains; ++i)
         {
-            Vehicle* train = GetEntity<Vehicle>(ride->vehicles[i]);
+            Vehicle* train = gameState.entities.GetEntity<Vehicle>(ride->vehicles[i]);
             if (train == nullptr)
                 continue;
 
-            Vehicle* second_vehicle = GetEntity<Vehicle>(train->next_vehicle_on_train);
+            Vehicle* second_vehicle = gameState.entities.GetEntity<Vehicle>(train->next_vehicle_on_train);
             if (second_vehicle == nullptr)
                 continue;
 
@@ -4059,7 +4068,7 @@ void Guest::UpdateRideFreeVehicleCheck()
         }
     }
 
-    Vehicle* currentTrain = GetEntity<Vehicle>(ride->vehicles[CurrentTrain]);
+    Vehicle* currentTrain = gameState.entities.GetEntity<Vehicle>(ride->vehicles[CurrentTrain]);
     if (currentTrain == nullptr)
     {
         return;
@@ -4093,10 +4102,11 @@ void Guest::UpdateRideApproachVehicle()
 
 void Guest::UpdateRideEnterVehicle()
 {
+    auto& gameState = getGameState();
     auto* ride = GetRide(CurrentRide);
     if (ride != nullptr)
     {
-        auto* vehicle = GetEntity<Vehicle>(ride->vehicles[CurrentTrain]);
+        auto* vehicle = gameState.entities.GetEntity<Vehicle>(ride->vehicles[CurrentTrain]);
         if (vehicle != nullptr)
         {
             vehicle = vehicle->GetCar(CurrentCar);
@@ -4113,7 +4123,7 @@ void Guest::UpdateRideEnterVehicle()
 
             if (vehicle->IsUsedInPairs())
             {
-                auto* seatedGuest = GetEntity<Guest>(vehicle->peep[CurrentSeat ^ 1]);
+                auto* seatedGuest = gameState.entities.GetEntity<Guest>(vehicle->peep[CurrentSeat ^ 1]);
                 if (seatedGuest != nullptr)
                 {
                     if (seatedGuest->RideSubState != PeepRideSubState::EnterVehicle)
@@ -4154,11 +4164,12 @@ void Guest::UpdateRideEnterVehicle()
  */
 void Guest::UpdateRideLeaveVehicle()
 {
+    auto& gameState = getGameState();
     auto ride = GetRide(CurrentRide);
     if (ride == nullptr)
         return;
 
-    Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[CurrentTrain]);
+    Vehicle* vehicle = gameState.entities.GetEntity<Vehicle>(ride->vehicles[CurrentTrain]);
     if (vehicle == nullptr)
         return;
 
@@ -4218,7 +4229,8 @@ void Guest::UpdateRideLeaveVehicle()
 
         if (!ride->getRideTypeDescriptor().HasFlag(RtdFlag::vehicleIsIntegral))
         {
-            for (; vehicle != nullptr && !vehicle->IsHead(); vehicle = GetEntity<Vehicle>(vehicle->prev_vehicle_on_ride))
+            for (; vehicle != nullptr && !vehicle->IsHead();
+                 vehicle = gameState.entities.GetEntity<Vehicle>(vehicle->prev_vehicle_on_ride))
             {
                 auto trackType = vehicle->GetTrackType();
                 if (trackType == TrackElemType::Flat || trackType > TrackElemType::MiddleStation)
@@ -4335,7 +4347,7 @@ void Guest::UpdateRideLeaveVehicle()
 
     Direction station_direction = (trackElement == nullptr ? 0 : trackElement->GetDirection());
 
-    vehicle = GetEntity<Vehicle>(ride->vehicles[CurrentTrain]);
+    vehicle = gameState.entities.GetEntity<Vehicle>(ride->vehicles[CurrentTrain]);
     if (vehicle == nullptr)
     {
         return;
@@ -4517,7 +4529,7 @@ void Guest::UpdateRideApproachVehicleWaypoints()
     // This is incrementing the actual peep waypoint
     Var37++;
 
-    Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[CurrentTrain]);
+    Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(ride->vehicles[CurrentTrain]);
     if (vehicle == nullptr)
     {
         return;
@@ -4615,7 +4627,7 @@ void Guest::UpdateRideApproachExitWaypoints()
         }
 
         Var37--;
-        Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[CurrentTrain]);
+        Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(ride->vehicles[CurrentTrain]);
         if (vehicle == nullptr)
         {
             return;
@@ -4707,11 +4719,11 @@ void Guest::UpdateRideApproachSpiralSlide()
         bool lastRide = false;
         if (ride->status != RideStatus::open)
             lastRide = true;
-        else if (CurrentCar++ != 0)
+        else if (timesSlidDown++ != 0)
         {
             if (ride->mode == RideMode::singleRidePerAdmission)
                 lastRide = true;
-            if (static_cast<uint8_t>(CurrentCar - 1) > (ScenarioRand() & 0xF))
+            if (static_cast<uint8_t>(timesSlidDown - 1) > (ScenarioRand() & 0xF))
                 lastRide = true;
         }
 
@@ -4791,10 +4803,10 @@ void Guest::UpdateRideOnSpiralSlide()
                 SetDestination(destination);
                 return;
             case 1:
-                if (ride->slideInUse != 0)
+                if (ride->slideInUse)
                     return;
 
-                ride->slideInUse++;
+                ride->slideInUse = 1;
                 ride->slidePeep = Id;
                 ride->slidePeepTShirtColour = TshirtColour;
                 ride->spiralSlideProgress = 0;
@@ -5168,7 +5180,7 @@ void Guest::UpdateRideShopInteract()
     // Do not play toilet flush sound on title screen as it's considered loud and annoying
     if (gLegacyScene != LegacyScene::titleSequence)
     {
-        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::ToiletFlush, GetLocation());
+        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::toiletFlush, GetLocation());
     }
 
     RideSubState = PeepRideSubState::LeaveShop;
@@ -5762,7 +5774,7 @@ void Guest::UpdateQueuing()
         // first check if the next in queue is actually nearby
         // if they are not then it's safe to assume that this is
         // the front of the queue.
-        Peep* nextGuest = GetEntity<Guest>(GuestNextInQueue);
+        Peep* nextGuest = getGameState().entities.GetEntity<Guest>(GuestNextInQueue);
         if (nextGuest != nullptr)
         {
             if (abs(nextGuest->x - x) < 32 && abs(nextGuest->y - y) < 32)
@@ -5912,7 +5924,7 @@ void Guest::UpdateLeavingPark()
     Var37 = 1;
 
     auto* windowMgr = Ui::GetWindowManager();
-    windowMgr->InvalidateByClass(WindowClass::GuestList);
+    windowMgr->InvalidateByClass(WindowClass::guestList);
 
     const auto [pathingResult, _] = PerformNextAction();
     if (!(pathingResult & PATHING_OUTSIDE_PARK))
@@ -6426,7 +6438,7 @@ static bool PeepShouldWatchRide(TileElement* tileElement)
 {
     // Ghosts are purely this-client-side and should not cause any interaction,
     // as that may lead to a desync.
-    if (NetworkGetMode() != NETWORK_MODE_NONE)
+    if (Network::GetMode() != Network::Mode::none)
     {
         if (tileElement->IsGhost())
             return false;
@@ -6539,7 +6551,7 @@ static bool GuestFindRideToLookAt(Guest& guest, uint8_t edge, RideId* rideToView
     {
         // Ghosts are purely this-client-side and should not cause any interaction,
         // as that may lead to a desync.
-        if (NetworkGetMode() != NETWORK_MODE_NONE)
+        if (Network::GetMode() != Network::Mode::none)
         {
             if (tileElement->IsGhost())
                 continue;
@@ -6578,7 +6590,7 @@ static bool GuestFindRideToLookAt(Guest& guest, uint8_t edge, RideId* rideToView
     {
         // Ghosts are purely this-client-side and should not cause any interaction,
         // as that may lead to a desync.
-        if (NetworkGetMode() != NETWORK_MODE_NONE)
+        if (Network::GetMode() != Network::Mode::none)
         {
             if (tileElement->IsGhost())
                 continue;
@@ -6605,7 +6617,7 @@ static bool GuestFindRideToLookAt(Guest& guest, uint8_t edge, RideId* rideToView
     {
         // Ghosts are purely this-client-side and should not cause any interaction,
         // as that may lead to a desync.
-        if (NetworkGetMode() != NETWORK_MODE_NONE)
+        if (Network::GetMode() != Network::Mode::none)
         {
             if (tileElement->IsGhost())
                 continue;
@@ -6650,7 +6662,7 @@ static bool GuestFindRideToLookAt(Guest& guest, uint8_t edge, RideId* rideToView
     {
         // Ghosts are purely this-client-side and should not cause any interaction,
         // as that may lead to a desync.
-        if (NetworkGetMode() != NETWORK_MODE_NONE)
+        if (Network::GetMode() != Network::Mode::none)
         {
             if (tileElement->IsGhost())
                 continue;
@@ -6697,7 +6709,7 @@ static bool GuestFindRideToLookAt(Guest& guest, uint8_t edge, RideId* rideToView
     {
         // Ghosts are purely this-client-side and should not cause any interaction,
         // as that may lead to a desync.
-        if (NetworkGetMode() != NETWORK_MODE_NONE)
+        if (Network::GetMode() != Network::Mode::none)
         {
             if (tileElement->IsGhost())
                 continue;
@@ -6723,7 +6735,7 @@ static bool GuestFindRideToLookAt(Guest& guest, uint8_t edge, RideId* rideToView
     {
         // Ghosts are purely this-client-side and should not cause any interaction,
         // as that may lead to a desync.
-        if (NetworkGetMode() != NETWORK_MODE_NONE)
+        if (Network::GetMode() != Network::Mode::none)
         {
             if (tileElement->IsGhost())
                 continue;
@@ -6767,7 +6779,7 @@ static bool GuestFindRideToLookAt(Guest& guest, uint8_t edge, RideId* rideToView
     {
         // Ghosts are purely this-client-side and should not cause any interaction,
         // as that may lead to a desync.
-        if (NetworkGetMode() != NETWORK_MODE_NONE)
+        if (Network::GetMode() != Network::Mode::none)
         {
             if (tileElement->IsGhost())
                 continue;
@@ -6813,7 +6825,7 @@ static bool GuestFindRideToLookAt(Guest& guest, uint8_t edge, RideId* rideToView
     {
         // Ghosts are purely this-client-side and should not cause any interaction,
         // as that may lead to a desync.
-        if (NetworkGetMode() != NETWORK_MODE_NONE)
+        if (Network::GetMode() != Network::Mode::none)
         {
             if (tileElement->IsGhost())
                 continue;
@@ -6839,7 +6851,7 @@ static bool GuestFindRideToLookAt(Guest& guest, uint8_t edge, RideId* rideToView
     {
         // Ghosts are purely this-client-side and should not cause any interaction,
         // as that may lead to a desync.
-        if (NetworkGetMode() != NETWORK_MODE_NONE)
+        if (Network::GetMode() != Network::Mode::none)
         {
             if (tileElement->IsGhost())
                 continue;
@@ -6975,7 +6987,7 @@ void Guest::UpdateAnimationGroup()
             if ((ScenarioRand() & 0xFFFF) <= 13107)
             {
                 isBalloonPopped = true;
-                OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::BalloonPop, { x, y, z });
+                OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::balloonPop, { x, y, z });
             }
             Balloon::Create({ x, y, z + 9 }, BalloonColour, isBalloonPopped);
         }
@@ -7264,11 +7276,11 @@ static constexpr uint8_t kTshirtColours[] = {
  */
 Guest* Guest::Generate(const CoordsXYZ& coords)
 {
-    if (GetNumFreeEntities() < 400)
+    auto& gameState = getGameState();
+    if (gameState.entities.GetNumFreeEntities() < 400)
         return nullptr;
 
-    auto& gameState = getGameState();
-    Guest* peep = CreateEntity<Guest>();
+    Guest* peep = gameState.entities.CreateEntity<Guest>();
 
     peep->AnimationObjectIndex = findPeepAnimationsIndexForType(AnimationPeepType::Guest);
     peep->AnimationGroup = PeepAnimationGroup::Normal;
@@ -7563,7 +7575,7 @@ bool Guest::UpdateQueuePosition(PeepActionType previous_action)
 {
     TimeInQueue++;
 
-    auto* guestNext = GetEntity<Guest>(GuestNextInQueue);
+    auto* guestNext = getGameState().entities.GetEntity<Guest>(GuestNextInQueue);
     if (guestNext == nullptr)
     {
         return false;
@@ -7653,13 +7665,14 @@ void Guest::RemoveFromQueue()
         return;
     }
 
-    auto* otherGuest = GetEntity<Guest>(station.LastPeepInQueue);
+    auto& gameState = getGameState();
+    auto* otherGuest = gameState.entities.GetEntity<Guest>(station.LastPeepInQueue);
     if (otherGuest == nullptr)
     {
         LOG_ERROR("Invalid Guest Queue list!");
         return;
     }
-    for (; otherGuest != nullptr; otherGuest = GetEntity<Guest>(otherGuest->GuestNextInQueue))
+    for (; otherGuest != nullptr; otherGuest = gameState.entities.GetEntity<Guest>(otherGuest->GuestNextInQueue))
     {
         if (Id == otherGuest->GuestNextInQueue)
         {
@@ -7807,6 +7820,31 @@ void Guest::RemoveRideFromMemory(RideId rideId)
         lastEntry.type = PeepThoughtType::None;
         lastEntry.item = kPeepThoughtItemNone;
     }
+}
+
+void Guest::ThrowUp()
+{
+    Hunger /= 2;
+    NauseaTarget /= 2;
+
+    if (Nausea < 30)
+        Nausea = 0;
+    else
+        Nausea -= 30;
+
+    WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_2;
+
+    const auto curLoc = GetLocation();
+    Litter::Create({ curLoc, Orientation }, (Id.ToUnderlying() & 1) ? Litter::Type::VomitAlt : Litter::Type::Vomit);
+
+    static constexpr OpenRCT2::Audio::SoundId coughs[4] = {
+        OpenRCT2::Audio::SoundId::cough1,
+        OpenRCT2::Audio::SoundId::cough2,
+        OpenRCT2::Audio::SoundId::cough3,
+        OpenRCT2::Audio::SoundId::cough4,
+    };
+    auto soundId = coughs[ScenarioRand() & 3];
+    OpenRCT2::Audio::Play3D(soundId, curLoc);
 }
 
 void Guest::Serialise(DataSerialiser& stream)

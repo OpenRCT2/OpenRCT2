@@ -37,24 +37,19 @@ enum class TunnelType : uint8_t
     InvertedSquareFlatTo25Deg = 15,
 
     // Ghost train doors
-    Doors0 = 16,
-    Doors1 = 17,
-    Doors2 = 18,
-    Doors3 = 19,
-    Doors4 = 20,
-    Doors5 = 21,
-    Doors6 = 22,
-
-    DoorsFlatTo25Deg0 = 23,
-    DoorsFlatTo25Deg1 = 24,
-    DoorsFlatTo25Deg2 = 25,
-    DoorsFlatTo25Deg3 = 26,
-    DoorsFlatTo25Deg4 = 27,
-    DoorsFlatTo25Deg5 = 28,
-    DoorsFlatTo25Deg6 = 29,
+    doorClosed = 16,
+    doorOpeningOutward = 17,
+    doorOpenOutward = 18,
+    doorOpeningInward = 19,
+    doorOpenInward = 20,
+    doorClosedFlatToDown25 = 21,
+    doorOpeningOutwardFlatToDown25 = 22,
+    doorOpenOutwardFlatToDown25 = 23,
+    doorOpeningInwardFlatToDown25 = 24,
+    doorOpenInwardFlatToDown25 = 25,
 };
 constexpr uint8_t kRegularTunnelTypeCount = 16;
-constexpr uint8_t kTunnelTypeCount = 30;
+constexpr uint8_t kTunnelTypeCount = 26;
 
 enum class TunnelGroup : uint8_t
 {

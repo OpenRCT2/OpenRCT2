@@ -7,6 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../../../GameState.h"
 #include "../../../SpriteIds.h"
 #include "../../../entity/EntityRegistry.h"
 #include "../../../interface/Viewport.h"
@@ -14,7 +15,6 @@
 #include "../../../ride/TrackData.h"
 #include "../../../ride/TrackPaint.h"
 #include "../../../ride/Vehicle.h"
-#include "../../../world/Map.h"
 #include "../../Boundbox.h"
 #include "../../Paint.h"
 #include "../../support/WoodenSupports.h"
@@ -129,14 +129,14 @@ static void PaintTopSpinVehicle(
     height += 3;
     uint8_t seatRotation = 0;
     uint8_t armRotation = 0;
-    auto* vehicle = GetEntity<Vehicle>(ride.vehicles[0]);
+    auto* vehicle = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[0]);
     if (ride.lifecycleFlags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
     {
-        session.InteractionType = ViewportInteractionItem::Entity;
+        session.InteractionType = ViewportInteractionItem::entity;
         session.CurrentlyDrawnEntity = vehicle;
 
-        armRotation = vehicle->Pitch;
-        seatRotation = vehicle->bank_rotation;
+        armRotation = vehicle->flatRideAnimationFrame;
+        seatRotation = vehicle->flatRideSecondaryAnimationFrame;
     }
 
     int32_t armImageOffset = armRotation;
@@ -178,7 +178,7 @@ static void PaintTopSpinVehicle(
     PaintAddImageAsChild(session, supportImageTemplate.WithIndex(imageIndex), offset, bb);
 
     session.CurrentlyDrawnEntity = nullptr;
-    session.InteractionType = ViewportInteractionItem::Ride;
+    session.InteractionType = ViewportInteractionItem::ride;
 }
 
 static void PaintTopSpin(

@@ -90,26 +90,26 @@ namespace OpenRCT2::Ui::Windows
         {
         }
 
-        void OnOpen() override
+        void onOpen() override
         {
             bool canSave = !(isInTrackDesignerOrManager());
 
             if (canSave)
-                SetWidgets(_savePromptWidgets);
+                setWidgets(_savePromptWidgets);
             else
-                SetWidgets(_quitPromptWidgets);
+                setWidgets(_quitPromptWidgets);
 
-            InitScrollWidgets();
+            initScrollWidgets();
 
             // Pause the game if not network play.
-            if (NetworkGetMode() == NETWORK_MODE_NONE)
+            if (Network::GetMode() == Network::Mode::none)
             {
                 gGamePaused |= GAME_PAUSED_MODAL;
                 Audio::StopAll();
             }
 
             auto* windowMgr = Ui::GetWindowManager();
-            windowMgr->InvalidateByClass(WindowClass::TopToolbar);
+            windowMgr->InvalidateByClass(WindowClass::topToolbar);
 
             if (canSave)
             {
@@ -127,20 +127,20 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnClose() override
+        void onClose() override
         {
             // Unpause the game
-            if (NetworkGetMode() == NETWORK_MODE_NONE)
+            if (Network::GetMode() == Network::Mode::none)
             {
                 gGamePaused &= ~GAME_PAUSED_MODAL;
                 Audio::Resume();
             }
 
             auto* windowMgr = Ui::GetWindowManager();
-            windowMgr->InvalidateByClass(WindowClass::TopToolbar);
+            windowMgr->InvalidateByClass(WindowClass::topToolbar);
         }
 
-        void OnMouseUp(WidgetIndex widgetIndex) override
+        void onMouseUp(WidgetIndex widgetIndex) override
         {
             if (gLegacyScene == LegacyScene::titleSequence || gLegacyScene == LegacyScene::trackDesigner
                 || gLegacyScene == LegacyScene::trackDesignsManager)
@@ -152,7 +152,7 @@ namespace OpenRCT2::Ui::Windows
                         break;
                     case WQIDX_CLOSE:
                     case WQIDX_CANCEL:
-                        Close();
+                        close();
                         break;
                 }
                 return;
@@ -166,7 +166,7 @@ namespace OpenRCT2::Ui::Windows
 
                     if (isInEditorMode())
                     {
-                        intent = std::make_unique<Intent>(WindowClass::Loadsave);
+                        intent = std::make_unique<Intent>(WindowClass::loadsave);
                         intent->PutEnumExtra<LoadSaveAction>(INTENT_EXTRA_LOADSAVE_ACTION, LoadSaveAction::save);
                         intent->PutEnumExtra<LoadSaveType>(INTENT_EXTRA_LOADSAVE_TYPE, LoadSaveType::landscape);
                         intent->PutExtra(INTENT_EXTRA_PATH, getGameState().scenarioOptions.name);
@@ -175,7 +175,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         intent = CreateSaveGameAsIntent();
                     }
-                    Close();
+                    close();
                     intent->PutExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<CloseCallback>(WindowSavePromptCallback));
                     ContextOpenIntent(intent.get());
                     break;
@@ -185,14 +185,14 @@ namespace OpenRCT2::Ui::Windows
                     return;
                 case WIDX_CLOSE:
                 case WIDX_CANCEL:
-                    Close();
+                    close();
                     return;
             }
         }
 
-        void OnDraw(RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
-            DrawWidgets(rt);
+            drawWidgets(rt);
         }
     };
 
@@ -219,7 +219,7 @@ namespace OpenRCT2::Ui::Windows
              * and game_load_or_quit() are not called by the original binary anymore.
              */
 
-            if (gScreenAge < 3840 && NetworkGetMode() == NETWORK_MODE_NONE)
+            if (gScreenAge < 3840 && Network::GetMode() == Network::Mode::none)
             {
                 GameLoadOrQuitNoSavePrompt();
                 return nullptr;
@@ -229,7 +229,7 @@ namespace OpenRCT2::Ui::Windows
         auto* windowMgr = GetWindowManager();
 
         // Check if window is already open
-        auto* window = windowMgr->BringToFrontByClass(WindowClass::SavePrompt);
+        auto* window = windowMgr->BringToFrontByClass(WindowClass::savePrompt);
         if (window != nullptr)
         {
             windowMgr->Close(*window);
@@ -249,7 +249,7 @@ namespace OpenRCT2::Ui::Windows
 
         auto savePromptWindow = std::make_unique<SavePromptWindow>(prompt_mode);
         return windowMgr->Create(
-            std::move(savePromptWindow), WindowClass::SavePrompt, {}, windowSize,
-            WF_TRANSPARENT | WF_STICK_TO_FRONT | WF_CENTRE_SCREEN | WF_AUTO_POSITION);
+            std::move(savePromptWindow), WindowClass::savePrompt, {}, windowSize,
+            { WindowFlag::transparent, WindowFlag::stickToFront, WindowFlag::centreScreen, WindowFlag::autoPosition });
     }
 } // namespace OpenRCT2::Ui::Windows

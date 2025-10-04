@@ -32,6 +32,7 @@
 #include "ride/TrainManager.h"
 #include "ride/Vehicle.h"
 #include "windows/Intent.h"
+#include "world/Map.h"
 #include "world/tile_element/BannerElement.h"
 #include "world/tile_element/EntranceElement.h"
 #include "world/tile_element/LargeSceneryElement.h"
@@ -244,7 +245,8 @@ void SetupInUseSelectionFlags()
         }
     } while (TileElementIteratorNext(&iter));
 
-    for (auto& ride : GetRideManager())
+    auto& gameState = getGameState();
+    for (auto& ride : RideManager(gameState))
     {
         Editor::SetSelectedObject(ObjectType::ride, ride.subtype, ObjectSelectionFlags::InUse);
         Editor::SetSelectedObject(ObjectType::station, ride.entranceStyle, ObjectSelectionFlags::InUse);

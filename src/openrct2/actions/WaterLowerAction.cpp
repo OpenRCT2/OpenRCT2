@@ -13,6 +13,7 @@
 #include "../OpenRCT2.h"
 #include "../audio/Audio.h"
 #include "../ride/RideConstruction.h"
+#include "../world/Map.h"
 #include "../world/tile_element/SurfaceElement.h"
 #include "WaterSetHeightAction.h"
 
@@ -40,17 +41,17 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_range);
     }
 
-    Result WaterLowerAction::Query() const
+    Result WaterLowerAction::Query(GameState_t& gameState) const
     {
-        return QueryExecute(false);
+        return QueryExecute(gameState, false);
     }
 
-    Result WaterLowerAction::Execute() const
+    Result WaterLowerAction::Execute(GameState_t& gameState) const
     {
-        return QueryExecute(true);
+        return QueryExecute(gameState, true);
     }
 
-    Result WaterLowerAction::QueryExecute(bool isExecuting) const
+    Result WaterLowerAction::QueryExecute(GameState_t& gameState, bool isExecuting) const
     {
         auto res = Result();
 
@@ -66,7 +67,7 @@ namespace OpenRCT2::GameActions
         res.Position.z = z;
         res.Expenditure = ExpenditureType::landscaping;
 
-        uint8_t minHeight = GetLowestHeight(validRange);
+        uint8_t minHeight = GetLowestHeight(gameState, validRange);
         bool hasChanged = false;
         bool withinOwnership = false;
         for (int32_t y = validRange.GetTop(); y <= validRange.GetBottom(); y += kCoordsXYStep)
@@ -99,7 +100,8 @@ namespace OpenRCT2::GameActions
                 height -= 2;
                 auto waterSetHeightAction = WaterSetHeightAction({ x, y }, height);
                 waterSetHeightAction.SetFlags(GetFlags());
-                auto result = isExecuting ? ExecuteNested(&waterSetHeightAction) : QueryNested(&waterSetHeightAction);
+                auto result = isExecuting ? ExecuteNested(&waterSetHeightAction, gameState)
+                                          : QueryNested(&waterSetHeightAction, gameState);
                 if (result.Error == Status::Ok)
                 {
                     res.Cost += result.Cost;
@@ -121,7 +123,7 @@ namespace OpenRCT2::GameActions
 
         if (isExecuting && hasChanged)
         {
-            Audio::Play3D(Audio::SoundId::LayingOutWater, res.Position);
+            Audio::Play3D(Audio::SoundId::layingOutWater, res.Position);
         }
         // Force ride construction to recheck area
         _currentTrackSelectionFlags.set(TrackSelectionFlag::recheck);
@@ -129,7 +131,7 @@ namespace OpenRCT2::GameActions
         return res;
     }
 
-    uint8_t WaterLowerAction::GetLowestHeight(const MapRange& validRange) const
+    uint8_t WaterLowerAction::GetLowestHeight(const GameState_t& gameState, const MapRange& validRange) const
     {
         // The lowest height to lower the water to is the highest water level in the selection
         uint8_t minHeight{ 0 };

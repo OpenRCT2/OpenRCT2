@@ -7,6 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../../../GameState.h"
 #include "../../../entity/EntityRegistry.h"
 #include "../../../entity/Guest.h"
 #include "../../../interface/Viewport.h"
@@ -51,11 +52,11 @@ static void PaintFerrisWheelRiders(
 {
     for (int32_t i = 0; i < 32; i += 2)
     {
-        auto* peep = GetEntity<Guest>(vehicle.peep[i]);
+        auto* peep = getGameState().entities.GetEntity<Guest>(vehicle.peep[i]);
         if (peep == nullptr || peep->State != PeepState::OnRide)
             continue;
 
-        auto frameNum = (vehicle.Pitch + i * 4) % 128;
+        auto frameNum = (vehicle.flatRideAnimationFrame + i * 4) % 128;
         auto imageIndex = rideEntry.Cars[0].base_image_id + 32 + direction * 128 + frameNum;
         auto imageId = ImageId(imageIndex, vehicle.peep_tshirt_colours[i], vehicle.peep_tshirt_colours[i + 1]);
         PaintAddImageAsChild(session, imageId, offset, bb);
@@ -69,10 +70,10 @@ static void PaintFerrisWheelStructure(
     if (rideEntry == nullptr)
         return;
 
-    auto vehicle = GetEntity<Vehicle>(ride.vehicles[0]);
+    auto vehicle = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[0]);
     if (ride.lifecycleFlags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
     {
-        session.InteractionType = ViewportInteractionItem::Entity;
+        session.InteractionType = ViewportInteractionItem::entity;
         session.CurrentlyDrawnEntity = vehicle;
     }
 
@@ -87,7 +88,7 @@ static void PaintFerrisWheelStructure(
         wheelImageTemplate = stationColour;
     }
 
-    auto imageOffset = vehicle != nullptr ? vehicle->Pitch % 8 : 0;
+    auto imageOffset = vehicle != nullptr ? vehicle->flatRideAnimationFrame % 8 : 0;
     auto leftSupportImageId = supportsImageTemplate.WithIndex(22150 + (direction & 1) * 2);
     auto wheelImageId = wheelImageTemplate.WithIndex(rideEntry->Cars[0].base_image_id + direction * 8 + imageOffset);
     auto rightSupportImageId = leftSupportImageId.WithIndexOffset(1);
@@ -101,7 +102,7 @@ static void PaintFerrisWheelStructure(
     PaintAddImageAsChild(session, rightSupportImageId, offset, bb);
 
     session.CurrentlyDrawnEntity = nullptr;
-    session.InteractionType = ViewportInteractionItem::Ride;
+    session.InteractionType = ViewportInteractionItem::ride;
 }
 
 static void PaintFerrisWheel(

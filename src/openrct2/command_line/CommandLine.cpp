@@ -17,79 +17,80 @@
 
 #include <cstring>
 
-using namespace OpenRCT2;
-
 #pragma region CommandLineArgEnumerator
 
-CommandLineArgEnumerator::CommandLineArgEnumerator(const char* const* arguments, int32_t count)
+namespace OpenRCT2
 {
-    _arguments = arguments;
-    _count = count;
-    _index = 0;
-}
-
-void CommandLineArgEnumerator::Reset()
-{
-    _index = 0;
-}
-
-bool CommandLineArgEnumerator::Backtrack()
-{
-    if (_index > 0)
+    CommandLineArgEnumerator::CommandLineArgEnumerator(const char* const* arguments, int32_t count)
     {
-        _index--;
-        return true;
+        _arguments = arguments;
+        _count = count;
+        _index = 0;
     }
 
-    return false;
-}
-
-bool CommandLineArgEnumerator::TryPop()
-{
-    if (_index < _count)
+    void CommandLineArgEnumerator::Reset()
     {
-        _index++;
-        return true;
+        _index = 0;
     }
 
-    return false;
-}
-
-bool CommandLineArgEnumerator::TryPopInteger(int32_t* result)
-{
-    char const* arg;
-    if (TryPopString(&arg))
+    bool CommandLineArgEnumerator::Backtrack()
     {
-        *result = static_cast<int32_t>(atol(arg));
-        return true;
+        if (_index > 0)
+        {
+            _index--;
+            return true;
+        }
+
+        return false;
     }
 
-    return false;
-}
-
-bool CommandLineArgEnumerator::TryPopReal(float* result)
-{
-    char const* arg;
-    if (TryPopString(&arg))
+    bool CommandLineArgEnumerator::TryPop()
     {
-        *result = static_cast<float>(atof(arg));
-        return true;
+        if (_index < _count)
+        {
+            _index++;
+            return true;
+        }
+
+        return false;
     }
 
-    return false;
-}
-
-bool CommandLineArgEnumerator::TryPopString(const char** result)
-{
-    if (_index < _count)
+    bool CommandLineArgEnumerator::TryPopInteger(int32_t* result)
     {
-        *result = _arguments[_index];
-        _index++;
-        return true;
+        char const* arg;
+        if (TryPopString(&arg))
+        {
+            *result = static_cast<int32_t>(atol(arg));
+            return true;
+        }
+
+        return false;
     }
 
-    return false;
-}
+    bool CommandLineArgEnumerator::TryPopReal(float* result)
+    {
+        char const* arg;
+        if (TryPopString(&arg))
+        {
+            *result = static_cast<float>(atof(arg));
+            return true;
+        }
+
+        return false;
+    }
+
+    bool CommandLineArgEnumerator::TryPopString(const char** result)
+    {
+        if (_index < _count)
+        {
+            *result = _arguments[_index];
+            _index++;
+            return true;
+        }
+
+        return false;
+    }
+} // namespace OpenRCT2
 
 #pragma endregion
 
@@ -526,33 +527,36 @@ namespace OpenRCT2::CommandLine
     }
 } // namespace OpenRCT2::CommandLine
 
-int32_t CommandLineRun(const char** argv, int32_t argc)
+namespace OpenRCT2
 {
-    auto argEnumerator = CommandLineArgEnumerator(argv, argc);
-
-    // Pop process path
-    argEnumerator.TryPop();
-
-    const CommandLineCommand* command = CommandLine::FindCommandFor(CommandLine::kRootCommands, &argEnumerator);
-
-    if (command == nullptr)
+    int32_t CommandLineRun(const char** argv, int32_t argc)
     {
-        return EXITCODE_FAIL;
-    }
+        auto argEnumerator = CommandLineArgEnumerator(argv, argc);
 
-    if (command->Options != nullptr)
-    {
-        auto argEnumeratorForOptions = CommandLineArgEnumerator(argEnumerator);
-        if (!CommandLine::ParseOptions(command->Options, &argEnumeratorForOptions))
+        // Pop process path
+        argEnumerator.TryPop();
+
+        const CommandLineCommand* command = CommandLine::FindCommandFor(CommandLine::kRootCommands, &argEnumerator);
+
+        if (command == nullptr)
         {
             return EXITCODE_FAIL;
         }
-    }
 
-    if (command == CommandLine::kRootCommands && command->Func == nullptr)
-    {
-        return CommandLine::HandleCommandDefault();
-    }
+        if (command->Options != nullptr)
+        {
+            auto argEnumeratorForOptions = CommandLineArgEnumerator(argEnumerator);
+            if (!CommandLine::ParseOptions(command->Options, &argEnumeratorForOptions))
+            {
+                return EXITCODE_FAIL;
+            }
+        }
 
-    return command->Func(&argEnumerator);
-}
+        if (command == CommandLine::kRootCommands && command->Func == nullptr)
+        {
+            return CommandLine::HandleCommandDefault();
+        }
+
+        return command->Func(&argEnumerator);
+    }
+} // namespace OpenRCT2

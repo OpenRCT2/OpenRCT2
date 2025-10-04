@@ -50,6 +50,11 @@ struct FlagHolder
         return (holder & EnumsToFlags(types...)) != 0;
     }
 
+    constexpr bool hasAny(const FlagHolder& other) const
+    {
+        return (holder & other.holder) != 0;
+    }
+
     template<typename... TTypes>
     [[nodiscard]] constexpr bool hasAll(TTypes... types) const
     {
@@ -96,5 +101,11 @@ struct FlagHolder
         FlagHolder res = *this;
         res.holder |= other.holder;
         return res;
+    }
+
+    constexpr FlagHolder& operator|=(const FlagHolder& other) noexcept
+    {
+        holder |= other.holder;
+        return *this;
     }
 };

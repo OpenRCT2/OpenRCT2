@@ -13,10 +13,10 @@
 #include "../../../ride/RideData.h"
 #include "../../../ride/TrackData.h"
 #include "../../../ride/TrackPaint.h"
-#include "../../../world/Map.h"
 #include "../../../world/tile_element/TrackElement.h"
 #include "../../Paint.h"
 #include "../../support/WoodenSupports.h"
+#include "../../support/WoodenSupports.hpp"
 #include "../../tile_element/Segment.h"
 #include "../../track/Segment.h"
 #include "../../track/Support.h"
@@ -1380,39 +1380,11 @@ namespace OpenRCT2::HybridRC
             session, 3, height, direction, trackSequence, images[trackElement.HasChain()], defaultDiagTileOffsets,
             defaultDiagBoundLengths, nullptr, 0, GetTrackColour(session));
 
-        switch (trackSequence)
-        {
-            case 0:
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
-                        direction),
-                    0xFFFF, 0);
-                break;
-            case 1:
-                WoodenASupportsPaintSetupRotated(
-                    session, supportType.wooden, WoodenSupportSubType::corner0, direction, height, session.SupportColours);
+        DrawSupportForSequenceA<TrackElemType::DiagFlat>(
+            session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
-                PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
-
-                break;
-            case 2:
-                WoodenASupportsPaintSetupRotated(
-                    session, supportType.wooden, WoodenSupportSubType::corner2, direction, height, session.SupportColours);
-
-                PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
-
-                break;
-            case 3:
-                PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
-
-                break;
-        }
+        PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+        PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
     }
 
     static void TrackDiagBrakes(

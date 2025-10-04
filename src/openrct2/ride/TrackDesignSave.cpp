@@ -23,6 +23,7 @@
 #include "../sawyer_coding/SawyerCoding.h"
 #include "../windows/Intent.h"
 #include "../world/Footpath.h"
+#include "../world/Map.h"
 #include "../world/Scenery.h"
 #include "../world/tile_element/BannerElement.h"
 #include "../world/tile_element/EntranceElement.h"
@@ -615,29 +616,29 @@ static void TrackDesignSaveShouldSelectNearbySceneryForTile(RideId rideIndex, in
                 continue;
             do
             {
-                ViewportInteractionItem interactionType = ViewportInteractionItem::None;
+                ViewportInteractionItem interactionType = ViewportInteractionItem::none;
                 switch (tileElement->GetType())
                 {
                     case TileElementType::Path:
                         if (!tileElement->AsPath()->IsQueue())
-                            interactionType = ViewportInteractionItem::Footpath;
+                            interactionType = ViewportInteractionItem::footpath;
                         else if (tileElement->AsPath()->GetRideIndex() == rideIndex)
-                            interactionType = ViewportInteractionItem::Footpath;
+                            interactionType = ViewportInteractionItem::footpath;
                         break;
                     case TileElementType::SmallScenery:
-                        interactionType = ViewportInteractionItem::Scenery;
+                        interactionType = ViewportInteractionItem::scenery;
                         break;
                     case TileElementType::Wall:
-                        interactionType = ViewportInteractionItem::Wall;
+                        interactionType = ViewportInteractionItem::wall;
                         break;
                     case TileElementType::LargeScenery:
-                        interactionType = ViewportInteractionItem::LargeScenery;
+                        interactionType = ViewportInteractionItem::largeScenery;
                         break;
                     default:
                         break;
                 }
 
-                if (interactionType != ViewportInteractionItem::None)
+                if (interactionType != ViewportInteractionItem::none)
                 {
                     if (!TrackDesignSaveContainsTileElement(tileElement))
                     {

@@ -12,7 +12,6 @@
 #include "../../../ride/Ride.h"
 #include "../../../ride/Track.h"
 #include "../../../ride/TrackPaint.h"
-#include "../../../world/Map.h"
 #include "../../../world/tile_element/TrackElement.h"
 #include "../../Paint.h"
 #include "../../support/WoodenSupports.h"
@@ -1896,7 +1895,7 @@ static void TrackUp60ToFlatLongBase(
         PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::Flat);
     }
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    static constexpr std::array generalSupportHeights = { 80, 64, 48, 48 };
+    static constexpr std::array generalSupportHeights = { 80, 80, 56, 40 };
     PaintUtilSetGeneralSupportHeight(session, height + generalSupportHeights[trackSequence]);
 }
 

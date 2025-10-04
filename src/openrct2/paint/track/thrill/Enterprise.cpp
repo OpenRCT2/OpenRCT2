@@ -7,6 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../../../GameState.h"
 #include "../../../entity/EntityRegistry.h"
 #include "../../../interface/Viewport.h"
 #include "../../../ride/Ride.h"
@@ -57,10 +58,10 @@ static void PaintEnterpriseStructure(
     Vehicle* vehicle = nullptr;
     if (ride.lifecycleFlags & RIDE_LIFECYCLE_ON_TRACK)
     {
-        vehicle = GetEntity<Vehicle>(ride.vehicles[0]);
+        vehicle = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[0]);
         if (vehicle != nullptr)
         {
-            session.InteractionType = ViewportInteractionItem::Entity;
+            session.InteractionType = ViewportInteractionItem::entity;
             session.CurrentlyDrawnEntity = vehicle;
         }
     }
@@ -71,7 +72,7 @@ static void PaintEnterpriseStructure(
     uint32_t imageOffset = trackElement.GetDirectionWithOffset(session.CurrentRotation);
     if (vehicle != nullptr)
     {
-        imageOffset = (vehicle->Pitch << 2) + (((vehicle->Orientation >> 3) + session.CurrentRotation) % 4);
+        imageOffset = (vehicle->flatRideAnimationFrame << 2) + (((vehicle->Orientation >> 3) + session.CurrentRotation) % 4);
     }
 
     auto imageTemplate = ImageId(0, ride.vehicleColours[0].Body, ride.vehicleColours[0].Trim);
@@ -89,7 +90,7 @@ static void PaintEnterpriseStructure(
     }
 
     session.CurrentlyDrawnEntity = nullptr;
-    session.InteractionType = ViewportInteractionItem::Ride;
+    session.InteractionType = ViewportInteractionItem::ride;
 }
 
 static void PaintEnterprise(

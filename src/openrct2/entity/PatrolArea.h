@@ -9,10 +9,11 @@
 
 #pragma once
 
-#include "../world/Map.h"
+#include "../world/MapLimits.h"
 #include "Staff.h"
 
 #include <variant>
+#include <vector>
 
 // The number of elements in the GameState_t.StaffPatrolAreas array per staff member. Every bit in the array represents a 4x4
 // square. Right now, it's a 32-bit array like in RCT2. 32 * 128 = 4096 bits, which is also the number of 4x4 squares on a

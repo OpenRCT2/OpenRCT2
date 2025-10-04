@@ -18,6 +18,7 @@
     #include <openrct2/Input.h>
     #include <openrct2/ui/UiContext.h>
     #include <openrct2/ui/WindowManager.h>
+    #include <openrct2/world/Map.h>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Ui;
@@ -42,17 +43,17 @@ namespace OpenRCT2::Scripting
         RegisteredShortcut registeredShortcut(Id, Text, [this]() { Invoke(); });
         for (const auto& binding : bindings)
         {
-            registeredShortcut.Default.emplace_back(binding);
+            registeredShortcut.standard.emplace_back(binding);
         }
-        registeredShortcut.Current = registeredShortcut.Default;
-        shortcutManager.RegisterShortcut(std::move(registeredShortcut));
-        shortcutManager.LoadUserBindings();
+        registeredShortcut.current = registeredShortcut.standard;
+        shortcutManager.registerShortcut(std::move(registeredShortcut));
+        shortcutManager.loadUserBindings();
     }
 
     CustomShortcut::~CustomShortcut()
     {
         auto& shortcutManager = GetShortcutManager();
-        shortcutManager.RemoveShortcut(Id);
+        shortcutManager.removeShortcut(Id);
     }
 
     void CustomShortcut::Invoke() const
@@ -70,18 +71,18 @@ namespace OpenRCT2::Scripting
 
     static const DukEnumMap<ViewportInteractionItem> ToolFilterMap(
         {
-            { "terrain", ViewportInteractionItem::Terrain },
-            { "entity", ViewportInteractionItem::Entity },
-            { "ride", ViewportInteractionItem::Ride },
-            { "water", ViewportInteractionItem::Water },
-            { "scenery", ViewportInteractionItem::Scenery },
-            { "footpath", ViewportInteractionItem::Footpath },
-            { "footpath_item", ViewportInteractionItem::PathAddition },
-            { "park_entrance", ViewportInteractionItem::ParkEntrance },
-            { "wall", ViewportInteractionItem::Wall },
-            { "large_scenery", ViewportInteractionItem::LargeScenery },
-            { "label", ViewportInteractionItem::Label },
-            { "banner", ViewportInteractionItem::Banner },
+            { "terrain", ViewportInteractionItem::terrain },
+            { "entity", ViewportInteractionItem::entity },
+            { "ride", ViewportInteractionItem::ride },
+            { "water", ViewportInteractionItem::water },
+            { "scenery", ViewportInteractionItem::scenery },
+            { "footpath", ViewportInteractionItem::footpath },
+            { "footpath_item", ViewportInteractionItem::pathAddition },
+            { "park_entrance", ViewportInteractionItem::parkEntrance },
+            { "wall", ViewportInteractionItem::wall },
+            { "large_scenery", ViewportInteractionItem::largeScenery },
+            { "label", ViewportInteractionItem::label },
+            { "banner", ViewportInteractionItem::banner },
         });
 
     template<>
@@ -199,7 +200,7 @@ namespace OpenRCT2::Scripting
             obj.Set("screenCoords", ToDuk(ctx, screenCoords));
             obj.Set("mapCoords", ToDuk(ctx, info.Loc));
 
-            if (info.interactionType == ViewportInteractionItem::Entity && info.Entity != nullptr)
+            if (info.interactionType == ViewportInteractionItem::entity && info.Entity != nullptr)
             {
                 obj.Set("entityId", info.Entity->Id.ToUnderlying());
             }
@@ -269,7 +270,7 @@ namespace OpenRCT2::Scripting
                 customTool.onFinish = dukValue["onFinish"];
 
                 auto* windowMgr = GetWindowManager();
-                auto toolbarWindow = windowMgr->FindByClass(WindowClass::TopToolbar);
+                auto toolbarWindow = windowMgr->FindByClass(WindowClass::topToolbar);
                 if (toolbarWindow != nullptr)
                 {
                     // Use a widget that does not exist on top toolbar but also make sure it isn't

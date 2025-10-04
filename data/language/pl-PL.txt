@@ -549,8 +549,8 @@ STR_1152    :Dowolne zapełnienie
 STR_1153    :Znaczniki wysokości torów
 STR_1154    :Znaczniki wysokości terenu
 STR_1155    :Znaczniki wysokości chodników
-STR_1156    :{MOVE_X}{10}{STRINGID}
-STR_1157    :✓{MOVE_X}{10}{STRINGID}
+STR_1156    :{MOVE_X}{10}{STRING}
+STR_1157    :✓{MOVE_X}{10}{STRING}
 STR_1158    :Nie można tego usunąć…
 STR_1159    :Rozmieszczaj scenerię, roślinność i inne ozdoby
 STR_1160    :Twórz i zmieniaj zbiorniki wodne

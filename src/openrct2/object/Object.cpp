@@ -192,6 +192,14 @@ namespace OpenRCT2
         return _sourceGames;
     }
 
+    ObjectSourceGame Object::GetFirstSourceGame() const
+    {
+        if (_sourceGames.size() == 0)
+            return ObjectSourceGame::Custom;
+
+        return _sourceGames[0];
+    }
+
     void Object::SetSourceGames(const std::vector<ObjectSourceGame>& sourceGames)
     {
         _sourceGames = sourceGames;
@@ -425,7 +433,7 @@ namespace OpenRCT2
             size_t highestIndex = std::min(nums.size(), VersionNumFields);
             for (size_t i = 0; i < highestIndex; i++)
             {
-                auto value = stoll(nums.at(i));
+                auto value = String::parse<int64_t>(nums.at(i));
                 constexpr auto maxValue = std::numeric_limits<uint16_t>().max();
                 if (value > maxValue)
                 {

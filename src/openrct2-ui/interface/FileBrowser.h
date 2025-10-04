@@ -66,3 +66,7 @@ namespace OpenRCT2::Ui::FileBrowser
     WindowBase* OpenPreferred(
         LoadSaveAction action, LoadSaveType type, u8string defaultPath, LoadSaveCallback callback, TrackDesign* trackDesign);
 } // namespace OpenRCT2::Ui::FileBrowser
+
+#ifdef __EMSCRIPTEN__
+extern "C" void LoadGameCallback(const char* path, LoadSaveType action);
+#endif

@@ -44,7 +44,9 @@
 #include "../windows/Intent.h"
 #include "../world/Entrance.h"
 #include "../world/Footpath.h"
+#include "../world/Map.h"
 #include "../world/Scenery.h"
+#include "../world/Wall.h"
 #include "../world/tile_element/EntranceElement.h"
 #include "../world/tile_element/PathElement.h"
 #include "../world/tile_element/Slope.h"
@@ -1726,6 +1728,11 @@ bool Staff::IsMechanic() const
     return AssignedStaffType == StaffType::Mechanic;
 }
 
+bool Staff::isEntertainer() const
+{
+    return AssignedStaffType == StaffType::Entertainer;
+}
+
 void Staff::Update()
 {
     if (PeepFlags & PEEP_FLAGS_POSITION_FROZEN)
@@ -2110,7 +2117,7 @@ bool Staff::UpdateFixingMoveToBrokenDownVehicle(bool firstRun, const Ride& ride)
                 break;
             }
 
-            vehicle = GetEntity<Vehicle>(vehicle->prev_vehicle_on_ride);
+            vehicle = getGameState().entities.GetEntity<Vehicle>(vehicle->prev_vehicle_on_ride);
             if (vehicle == nullptr)
             {
                 return true;
@@ -2460,7 +2467,7 @@ bool Staff::UpdateFixingFixStationBrakes(bool firstRun, Ride& ride)
     if (AnimationFrameNum == 0x13 || AnimationFrameNum == 0x19 || AnimationFrameNum == 0x1F || AnimationFrameNum == 0x25
         || AnimationFrameNum == 0x2B)
     {
-        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::MechanicFix, GetLocation());
+        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::mechanicFix, GetLocation());
     }
 
     return false;

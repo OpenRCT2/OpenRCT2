@@ -62,33 +62,33 @@ namespace OpenRCT2::Ui::Windows
     class ServerStartWindow final : public Window
     {
     public:
-        void OnOpen() override
+        void onOpen() override
         {
-            SetWidgets(_windowServerStartWidgets);
+            setWidgets(_windowServerStartWidgets);
             widgets[WIDX_PORT_INPUT].string = _port;
             widgets[WIDX_NAME_INPUT].string = _name;
             widgets[WIDX_DESCRIPTION_INPUT].string = _description;
             widgets[WIDX_GREETING_INPUT].string = _greeting;
             widgets[WIDX_PASSWORD_INPUT].string = _password;
 
-            InitScrollWidgets();
+            initScrollWidgets();
             WindowSetResize(*this, { width, height }, { width, height });
 
-            frame_no = 0;
+            currentFrame = 0;
             page = 0;
-            list_information_type = 0;
+            listInformationType = 0;
 
             snprintf(_port, 7, "%u", Config::Get().network.DefaultPort);
             String::safeUtf8Copy(_name, Config::Get().network.ServerName.c_str(), sizeof(_name));
             String::safeUtf8Copy(_description, Config::Get().network.ServerDescription.c_str(), sizeof(_description));
             String::safeUtf8Copy(_greeting, Config::Get().network.ServerGreeting.c_str(), sizeof(_greeting));
         }
-        void OnMouseUp(WidgetIndex widgetIndex) override
+        void onMouseUp(WidgetIndex widgetIndex) override
         {
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
-                    Close();
+                    close();
                     break;
                 case WIDX_PORT_INPUT:
                     WindowStartTextbox(*this, widgetIndex, _port, 6);
@@ -97,7 +97,7 @@ namespace OpenRCT2::Ui::Windows
                     WindowStartTextbox(*this, widgetIndex, _name, 64);
                     break;
                 case WIDX_DESCRIPTION_INPUT:
-                    WindowStartTextbox(*this, widgetIndex, _description, kMaxServerDescriptionLength);
+                    WindowStartTextbox(*this, widgetIndex, _description, Network::kMaxServerDescriptionLength);
                     break;
                 case WIDX_GREETING_INPUT:
                     WindowStartTextbox(*this, widgetIndex, _greeting, kChatInputSize);
@@ -111,7 +111,7 @@ namespace OpenRCT2::Ui::Windows
                         Config::Get().network.Maxplayers++;
                     }
                     Config::Save();
-                    Invalidate();
+                    invalidate();
                     break;
                 case WIDX_MAXPLAYERS_DECREASE:
                     if (Config::Get().network.Maxplayers > 1)
@@ -119,20 +119,20 @@ namespace OpenRCT2::Ui::Windows
                         Config::Get().network.Maxplayers--;
                     }
                     Config::Save();
-                    Invalidate();
+                    invalidate();
                     break;
                 case WIDX_ADVERTISE_CHECKBOX:
                     Config::Get().network.Advertise = !Config::Get().network.Advertise;
                     Config::Save();
-                    Invalidate();
+                    invalidate();
                     break;
                 case WIDX_START_SERVER:
-                    NetworkSetPassword(_password);
+                    Network::SetPassword(_password);
                     ScenarioselectOpen(ScenarioSelectCallback);
                     break;
                 case WIDX_LOAD_SERVER:
-                    NetworkSetPassword(_password);
-                    auto intent = Intent(WindowClass::Loadsave);
+                    Network::SetPassword(_password);
+                    auto intent = Intent(WindowClass::loadsave);
                     intent.PutEnumExtra<LoadSaveAction>(INTENT_EXTRA_LOADSAVE_ACTION, LoadSaveAction::load);
                     intent.PutEnumExtra<LoadSaveType>(INTENT_EXTRA_LOADSAVE_TYPE, LoadSaveType::park);
                     intent.PutExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<CloseCallback>(LoadSaveCallback));
@@ -140,27 +140,27 @@ namespace OpenRCT2::Ui::Windows
                     break;
             }
         }
-        void OnPrepareDraw() override
+        void onPrepareDraw() override
         {
-            ColourSchemeUpdateByClass(this, WindowClass::ServerList);
+            ColourSchemeUpdateByClass(this, WindowClass::serverList);
 
-            widgetSetCheckboxValue(*this, WIDX_ADVERTISE_CHECKBOX, Config::Get().network.Advertise);
+            setCheckboxValue(WIDX_ADVERTISE_CHECKBOX, Config::Get().network.Advertise);
             auto ft = Formatter::Common();
             ft.Increment(18);
             ft.Add<uint16_t>(Config::Get().network.Maxplayers);
         }
-        void OnUpdate() override
+        void onUpdate() override
         {
             if (GetCurrentTextBox().window.classification == classification && GetCurrentTextBox().window.number == number)
             {
                 WindowUpdateTextboxCaret();
-                InvalidateWidget(WIDX_NAME_INPUT);
-                InvalidateWidget(WIDX_DESCRIPTION_INPUT);
-                InvalidateWidget(WIDX_GREETING_INPUT);
-                InvalidateWidget(WIDX_PASSWORD_INPUT);
+                invalidateWidget(WIDX_NAME_INPUT);
+                invalidateWidget(WIDX_DESCRIPTION_INPUT);
+                invalidateWidget(WIDX_GREETING_INPUT);
+                invalidateWidget(WIDX_PASSWORD_INPUT);
             }
         }
-        void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override
+        void onTextInput(WidgetIndex widgetIndex, std::string_view text) override
         {
             std::string temp = static_cast<std::string>(text);
             int tempPort = 0;
@@ -181,7 +181,7 @@ namespace OpenRCT2::Ui::Windows
                         Config::Save();
                     }
 
-                    InvalidateWidget(WIDX_PORT_INPUT);
+                    invalidateWidget(WIDX_PORT_INPUT);
                     break;
                 case WIDX_NAME_INPUT:
                     if (strcmp(_name, temp.c_str()) == 0)
@@ -196,7 +196,7 @@ namespace OpenRCT2::Ui::Windows
                         Config::Save();
                     }
 
-                    InvalidateWidget(WIDX_NAME_INPUT);
+                    invalidateWidget(WIDX_NAME_INPUT);
                     break;
                 case WIDX_DESCRIPTION_INPUT:
                     if (strcmp(_description, temp.c_str()) == 0)
@@ -206,7 +206,7 @@ namespace OpenRCT2::Ui::Windows
                     Config::Get().network.ServerDescription = _description;
                     Config::Save();
 
-                    InvalidateWidget(WIDX_DESCRIPTION_INPUT);
+                    invalidateWidget(WIDX_DESCRIPTION_INPUT);
                     break;
                 case WIDX_GREETING_INPUT:
                     if (strcmp(_greeting, temp.c_str()) == 0)
@@ -216,7 +216,7 @@ namespace OpenRCT2::Ui::Windows
                     Config::Get().network.ServerGreeting = _greeting;
                     Config::Save();
 
-                    InvalidateWidget(WIDX_GREETING_INPUT);
+                    invalidateWidget(WIDX_GREETING_INPUT);
                     break;
                 case WIDX_PASSWORD_INPUT:
                     if (strcmp(_password, temp.c_str()) == 0)
@@ -224,14 +224,14 @@ namespace OpenRCT2::Ui::Windows
 
                     String::safeUtf8Copy(_password, temp.c_str(), sizeof(_password));
 
-                    InvalidateWidget(WIDX_PASSWORD_INPUT);
+                    invalidateWidget(WIDX_PASSWORD_INPUT);
                     break;
             }
         }
 
-        void OnDraw(RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
-            DrawWidgets(rt);
+            drawWidgets(rt);
             DrawTextBasic(rt, windowPos + ScreenCoordsXY{ 6, widgets[WIDX_PORT_INPUT].top }, STR_PORT, {}, { colours[1] });
             DrawTextBasic(
                 rt, windowPos + ScreenCoordsXY{ 6, widgets[WIDX_NAME_INPUT].top }, STR_SERVER_NAME, {}, { colours[1] });
@@ -249,7 +249,7 @@ namespace OpenRCT2::Ui::Windows
     private:
         char _port[7];
         char _name[65];
-        char _description[kMaxServerDescriptionLength];
+        char _description[Network::kMaxServerDescriptionLength];
         char _greeting[kChatInputSize];
         char _password[33];
         static void ScenarioSelectCallback(const utf8* path)
@@ -257,7 +257,7 @@ namespace OpenRCT2::Ui::Windows
             GameNotifyMapChange();
             if (GetContext()->LoadParkFromFile(path, false, true))
             {
-                NetworkBeginServer(Config::Get().network.DefaultPort, Config::Get().network.ListenAddress);
+                Network::BeginServer(Config::Get().network.DefaultPort, Config::Get().network.ListenAddress);
             }
         }
 
@@ -267,7 +267,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 GameNotifyMapChange();
                 GetContext()->LoadParkFromFile(path);
-                NetworkBeginServer(Config::Get().network.DefaultPort, Config::Get().network.ListenAddress);
+                Network::BeginServer(Config::Get().network.DefaultPort, Config::Get().network.ListenAddress);
             }
         }
     };
@@ -275,7 +275,7 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* ServerStartOpen()
     {
         auto* windowMgr = GetWindowManager();
-        return windowMgr->FocusOrCreate<ServerStartWindow>(WindowClass::ServerStart, kWindowSize, WF_CENTRE_SCREEN);
+        return windowMgr->FocusOrCreate<ServerStartWindow>(WindowClass::serverStart, kWindowSize, WindowFlag::centreScreen);
     }
 } // namespace OpenRCT2::Ui::Windows
 

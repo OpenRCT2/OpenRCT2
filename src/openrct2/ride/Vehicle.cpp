@@ -96,17 +96,17 @@ Vehicle* _vehicleFrontVehicle;
 CoordsXYZ _vehicleCurPosition;
 
 static constexpr OpenRCT2::Audio::SoundId _screamSetMisc[] = {
-    OpenRCT2::Audio::SoundId::Scream8,
-    OpenRCT2::Audio::SoundId::Scream1,
+    OpenRCT2::Audio::SoundId::scream8,
+    OpenRCT2::Audio::SoundId::scream1,
 };
 static constexpr OpenRCT2::Audio::SoundId _screamSetWooden[] = {
-    OpenRCT2::Audio::SoundId::Scream3, OpenRCT2::Audio::SoundId::Scream1, OpenRCT2::Audio::SoundId::Scream5,
-    OpenRCT2::Audio::SoundId::Scream6, OpenRCT2::Audio::SoundId::Scream7, OpenRCT2::Audio::SoundId::Scream2,
-    OpenRCT2::Audio::SoundId::Scream4,
+    OpenRCT2::Audio::SoundId::scream3, OpenRCT2::Audio::SoundId::scream1, OpenRCT2::Audio::SoundId::scream5,
+    OpenRCT2::Audio::SoundId::scream6, OpenRCT2::Audio::SoundId::scream7, OpenRCT2::Audio::SoundId::scream2,
+    OpenRCT2::Audio::SoundId::scream4,
 };
 static constexpr OpenRCT2::Audio::SoundId _screamSetSteel[] = {
-    OpenRCT2::Audio::SoundId::Scream1,
-    OpenRCT2::Audio::SoundId::Scream6,
+    OpenRCT2::Audio::SoundId::scream1,
+    OpenRCT2::Audio::SoundId::scream6,
 };
 
 // clang-format off
@@ -416,7 +416,7 @@ static constexpr int32_t kUnk9A37E4[] = {
     -1073741824, -1859775393, 1859775393,  1073741824,  0,           -1073741824, -1859775393, 1859775393,  1073741824,
     0,           -1073741824, -1859775393, 1859775393,  1073741824,  0,           -1073741824, -1859775393, 2144540595,
     2139311823,  2144540595,  2139311823,  2135719507,  2135719507,  2125953864,  2061796213,  1411702590,  2125953864,
-    2061796213,  1411702590,  1985590284,  1636362342,  1127484953,  2115506168,
+    2061796213,  1411702590,  1985590284,  1636362342,  1127484953,  2115506168,  2115506168,
 };
 
 /** rct2: 0x009A38D4 */
@@ -427,7 +427,7 @@ static constexpr int32_t kUnk9A38D4[] = {
     1859775393,  1073741824,  -1073741824, -1859775393, -2147483647, -1859775393, -1073741824, 1073741824,  1859775393,
     2147483647,  1859775393,  1073741824,  -1073741824, -1859775393, -2147483647, -1859775393, -1073741824, 112390610,
     187165532,   -112390610,  -187165532,  224473165,   -224473165,  303325208,   600568389,   1618265062,  -303325208,
-    -600568389,  -1618265062, -817995863,  -1390684831, -1827693544, 369214930,
+    -600568389,  -1618265062, -817995863,  -1390684831, -1827693544, 369214930,   -369214930,
 };
 
 /** rct2: 0x009A39C4 */
@@ -437,16 +437,16 @@ static constexpr int32_t kUnk9A39C4[] = {
 };
 
 static constexpr OpenRCT2::Audio::SoundId kDoorOpenSoundIds[] = {
-    OpenRCT2::Audio::SoundId::Null,       // DoorSoundType::none
-    OpenRCT2::Audio::SoundId::DoorOpen,   // DoorSoundType::door
-    OpenRCT2::Audio::SoundId::Portcullis, // DoorSoundType::portcullis
+    OpenRCT2::Audio::SoundId::null,       // DoorSoundType::none
+    OpenRCT2::Audio::SoundId::doorOpen,   // DoorSoundType::door
+    OpenRCT2::Audio::SoundId::portcullis, // DoorSoundType::portcullis
 };
 static_assert(std::size(kDoorOpenSoundIds) == OpenRCT2::Audio::kDoorSoundTypeCount);
 
 static constexpr OpenRCT2::Audio::SoundId kDoorCloseSoundIds[] = {
-    OpenRCT2::Audio::SoundId::Null,       // DoorSoundType::none
-    OpenRCT2::Audio::SoundId::DoorClose,  // DoorSoundType::door
-    OpenRCT2::Audio::SoundId::Portcullis, // DoorSoundType::portcullis
+    OpenRCT2::Audio::SoundId::null,       // DoorSoundType::none
+    OpenRCT2::Audio::SoundId::doorClose,  // DoorSoundType::door
+    OpenRCT2::Audio::SoundId::portcullis, // DoorSoundType::portcullis
 };
 static_assert(std::size(kDoorCloseSoundIds) == OpenRCT2::Audio::kDoorSoundTypeCount);
 
@@ -599,14 +599,14 @@ void Vehicle::UpdateTrackChange()
     _vehicleCurPosition = TrackLocation
         + CoordsXYZ{ moveInfo->x, moveInfo->y, moveInfo->z + GetRideTypeDescriptor((*curRide).type).Heights.VehicleZOffset };
     Orientation = moveInfo->direction;
-    bank_rotation = moveInfo->bank_rotation;
-    Pitch = moveInfo->Pitch;
+    roll = moveInfo->roll;
+    pitch = moveInfo->pitch;
     MoveTo(_vehicleCurPosition);
 }
 
 Vehicle* TryGetVehicle(EntityId spriteIndex)
 {
-    return TryGetEntity<Vehicle>(spriteIndex);
+    return getGameState().entities.TryGetEntity<Vehicle>(spriteIndex);
 }
 
 void VehicleSoundsUpdate()
@@ -647,8 +647,8 @@ bool Vehicle::CloseRestraints()
         return true;
 
     bool restraintsClosed = true;
-    for (Vehicle* vehicle = GetEntity<Vehicle>(Id); vehicle != nullptr;
-         vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
+    for (Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(Id); vehicle != nullptr;
+         vehicle = getGameState().entities.GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
     {
         if (vehicle->HasFlag(VehicleFlags::CarIsBroken) && vehicle->restraints_position != 0
             && (curRide->breakdownReasonPending == BREAKDOWN_RESTRAINTS_STUCK_OPEN
@@ -665,7 +665,7 @@ bool Vehicle::CloseRestraints()
 
                 curRide->mechanicStatus = RIDE_MECHANIC_STATUS_CALLING;
 
-                Vehicle* broken_vehicle = GetEntity<Vehicle>(curRide->vehicles[curRide->brokenTrain]);
+                Vehicle* broken_vehicle = getGameState().entities.GetEntity<Vehicle>(curRide->vehicles[curRide->brokenTrain]);
                 if (broken_vehicle != nullptr)
                 {
                     curRide->inspectionStation = broken_vehicle->current_station;
@@ -696,8 +696,8 @@ bool Vehicle::CloseRestraints()
 bool Vehicle::OpenRestraints()
 {
     int32_t restraintsOpen = true;
-    for (Vehicle* vehicle = GetEntity<Vehicle>(Id); vehicle != nullptr;
-         vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
+    for (Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(Id); vehicle != nullptr;
+         vehicle = getGameState().entities.GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
     {
         vehicle->SwingPosition = 0;
         vehicle->SwingSpeed = 0;
@@ -721,7 +721,7 @@ bool Vehicle::OpenRestraints()
             // For vehicles without additional frames there are 4 rotations it can unload from
             // For vehicles with additional frames it must be facing forward
             if (abs(vehicle->spin_speed) <= kVehicleMaxSpinSpeedForStopping && !(vehicle->spin_sprite & 0x30)
-                && (!(carEntry.flags & CAR_ENTRY_FLAG_SPINNING_ADDITIONAL_FRAMES) || !(vehicle->spin_sprite & 0xF8)))
+                && (!(carEntry.flags & CAR_ENTRY_FLAG_SPINNING_COMBINED_WITH_NONSPINNING) || !(vehicle->spin_sprite & 0xF8)))
             {
                 vehicle->spin_speed = 0;
             }
@@ -781,7 +781,7 @@ bool Vehicle::OpenRestraints()
 
                 curRide->mechanicStatus = RIDE_MECHANIC_STATUS_CALLING;
 
-                Vehicle* broken_vehicle = GetEntity<Vehicle>(curRide->vehicles[curRide->brokenTrain]);
+                Vehicle* broken_vehicle = getGameState().entities.GetEntity<Vehicle>(curRide->vehicles[curRide->brokenTrain]);
                 if (broken_vehicle != nullptr)
                 {
                     curRide->inspectionStation = broken_vehicle->current_station;
@@ -853,7 +853,7 @@ void Vehicle::UpdateMeasurements()
         ClearFlag(VehicleFlags::Testing);
 
         auto* windowMgr = Ui::GetWindowManager();
-        windowMgr->InvalidateByNumber(WindowClass::Ride, ride.ToUnderlying());
+        windowMgr->InvalidateByNumber(WindowClass::ride, ride.ToUnderlying());
         return;
     }
 
@@ -1176,12 +1176,12 @@ void Vehicle::UpdateMeasurements()
 
         curRide->increaseNumShelteredSections();
 
-        if (Pitch != 0)
+        if (pitch != VehiclePitch::flat)
         {
             curRide->numShelteredSections |= ShelteredSectionsBits::kRotatingWhileSheltered;
         }
 
-        if (bank_rotation != 0)
+        if (roll != VehicleRoll::unbanked)
         {
             curRide->numShelteredSections |= ShelteredSectionsBits::kBankingWhileSheltered;
         }
@@ -1208,7 +1208,7 @@ static SoundIdVolume VehicleSoundFadeInOut(
     OpenRCT2::Audio::SoundId currentSoundId, uint8_t currentVolume, OpenRCT2::Audio::SoundId targetSoundId,
     uint8_t targetVolume)
 {
-    if (currentSoundId != OpenRCT2::Audio::SoundId::Null)
+    if (currentSoundId != OpenRCT2::Audio::SoundId::null)
     {
         if (currentSoundId == targetSoundId)
         {
@@ -1230,14 +1230,14 @@ static SoundIdVolume VehicleSoundFadeInOut(
 
 void Vehicle::GetLiftHillSound(const Ride& curRide, SoundIdVolume& curSound)
 {
-    scream_sound_id = OpenRCT2::Audio::SoundId::Null;
+    scream_sound_id = OpenRCT2::Audio::SoundId::null;
     if (curRide.type < std::size(kRideTypeDescriptors))
     {
         // Get lift hill sound
         curSound.id = GetRideTypeDescriptor(curRide.type).LiftData.sound_id;
         curSound.volume = 243;
         if (!(sound2_flags & VEHICLE_SOUND2_FLAGS_LIFT_HILL))
-            curSound.id = OpenRCT2::Audio::SoundId::Null;
+            curSound.id = OpenRCT2::Audio::SoundId::null;
     }
 }
 
@@ -1274,7 +1274,7 @@ void Vehicle::Update()
         auto carEntry = &rideEntry->Cars[vehicle_type];
         if ((carEntry->flags & CAR_ENTRY_FLAG_POWERED) && curRide->breakdownReasonPending == BREAKDOWN_SAFETY_CUT_OUT)
         {
-            if (!(carEntry->flags & CAR_ENTRY_FLAG_WATER_RIDE) || (Pitch == 2 && velocity <= 2.0_mph))
+            if (!(carEntry->flags & CAR_ENTRY_FLAG_WATER_RIDE) || (pitch == VehiclePitch::up25 && velocity <= 2.0_mph))
             {
                 SetFlag(VehicleFlags::StoppedOnLift);
             }
@@ -1501,7 +1501,7 @@ void Vehicle::TrainReadyToDepart(uint8_t num_peeps_on_train, uint8_t num_used_se
 
     if (curRide->mode == RideMode::forwardRotation || curRide->mode == RideMode::backwardRotation)
     {
-        uint8_t seat = ((-Pitch) / 8) & 0xF;
+        uint8_t seat = ((-flatRideAnimationFrame) / 8) & 0xF;
         if (!peep[seat].IsNull())
         {
             curRide->getStation(current_station).TrainAtStation = RideStation::kNoTrain;
@@ -1596,8 +1596,8 @@ void Vehicle::UpdateWaitingForPassengers()
         // 0xF64E31, 0xF64E32, 0xF64E33
         uint8_t num_peeps_on_train = 0, num_used_seats_on_train = 0, num_seats_on_train = 0;
 
-        for (const Vehicle* trainCar = GetEntity<Vehicle>(Id); trainCar != nullptr;
-             trainCar = GetEntity<Vehicle>(trainCar->next_vehicle_on_train))
+        for (const Vehicle* trainCar = getGameState().entities.GetEntity<Vehicle>(Id); trainCar != nullptr;
+             trainCar = getGameState().entities.GetEntity<Vehicle>(trainCar->next_vehicle_on_train))
         {
             num_peeps_on_train += trainCar->num_peeps;
             num_used_seats_on_train += trainCar->next_free_seat;
@@ -1651,7 +1651,7 @@ void Vehicle::UpdateWaitingForPassengers()
                 if (train_id == Id)
                     continue;
 
-                Vehicle* train = GetEntity<Vehicle>(train_id);
+                Vehicle* train = getGameState().entities.GetEntity<Vehicle>(train_id);
                 if (train == nullptr)
                     continue;
 
@@ -1791,7 +1791,7 @@ void Vehicle::UpdateWaitingToDepart()
     {
         if (curRide->mode == RideMode::forwardRotation || curRide->mode == RideMode::backwardRotation)
         {
-            uint8_t seat = ((-Pitch) >> 3) & 0xF;
+            uint8_t seat = ((-flatRideAnimationFrame) >> 3) & 0xF;
             if (peep[seat * 2].IsNull())
             {
                 if (num_peeps == 0)
@@ -1810,8 +1810,8 @@ void Vehicle::UpdateWaitingToDepart()
         }
         else
         {
-            for (const Vehicle* trainCar = GetEntity<Vehicle>(Id); trainCar != nullptr;
-                 trainCar = GetEntity<Vehicle>(trainCar->next_vehicle_on_train))
+            for (const Vehicle* trainCar = getGameState().entities.GetEntity<Vehicle>(Id); trainCar != nullptr;
+                 trainCar = getGameState().entities.GetEntity<Vehicle>(trainCar->next_vehicle_on_train))
             {
                 if (trainCar->num_peeps != 0)
                 {
@@ -1917,13 +1917,13 @@ void Vehicle::UpdateWaitingToDepart()
                 }
             }
             current_time = -1;
-            Pitch = 0;
-            bank_rotation = 0;
+            flatRideAnimationFrame = 0;
+            flatRideSecondaryAnimationFrame = 0;
             UpdateTopSpinOperating();
             break;
         case RideMode::forwardRotation:
         case RideMode::backwardRotation:
-            SetState(Vehicle::Status::FerrisWheelRotating, Pitch);
+            SetState(Vehicle::Status::FerrisWheelRotating, flatRideAnimationFrame);
             NumRotations = 0;
             ferris_wheel_var_0 = 8;
             ferris_wheel_var_1 = 8;
@@ -1960,19 +1960,19 @@ void Vehicle::UpdateWaitingToDepart()
             break;
         case RideMode::spaceRings:
             SetState(Vehicle::Status::SpaceRingsOperating);
-            Pitch = 0;
+            flatRideAnimationFrame = 0;
             current_time = -1;
             UpdateSpaceRingsOperating();
             break;
         case RideMode::hauntedHouse:
             SetState(Vehicle::Status::HauntedHouseOperating);
-            Pitch = 0;
+            flatRideAnimationFrame = 0;
             current_time = -1;
             UpdateHauntedHouseOperating();
             break;
         case RideMode::crookedHouse:
             SetState(Vehicle::Status::CrookedHouseOperating);
-            Pitch = 0;
+            flatRideAnimationFrame = 0;
             current_time = -1;
             UpdateCrookedHouseOperating();
             break;
@@ -2056,7 +2056,7 @@ static bool try_add_synchronised_station(const CoordsXYZ& coords)
     // Look for a vehicle on this station waiting to depart.
     for (int32_t i = 0; i < ride->numTrains; i++)
     {
-        auto* vehicle = GetEntity<Vehicle>(ride->vehicles[i]);
+        auto* vehicle = getGameState().entities.GetEntity<Vehicle>(ride->vehicles[i]);
         if (vehicle == nullptr)
         {
             continue;
@@ -2194,7 +2194,7 @@ static bool ride_station_can_depart_synchronised(const Ride& ride, StationIndex 
                         {
                             for (int32_t i = 0; i < curRide->numTrains; i++)
                             {
-                                Vehicle* v = GetEntity<Vehicle>(curRide->vehicles[i]);
+                                Vehicle* v = getGameState().entities.GetEntity<Vehicle>(curRide->vehicles[i]);
                                 if (v == nullptr)
                                 {
                                     continue;
@@ -2232,7 +2232,7 @@ static bool ride_station_can_depart_synchronised(const Ride& ride, StationIndex 
                     auto currentStation = sv->stationIndex;
                     for (int32_t i = 0; i < sv_ride->numTrains; i++)
                     {
-                        auto* otherVehicle = GetEntity<Vehicle>(sv_ride->vehicles[i]);
+                        auto* otherVehicle = getGameState().entities.GetEntity<Vehicle>(sv_ride->vehicles[i]);
                         if (otherVehicle == nullptr)
                         {
                             continue;
@@ -2277,7 +2277,7 @@ static bool ride_station_can_depart_synchronised(const Ride& ride, StationIndex 
     // At this point all vehicles in _snychronisedVehicles can depart.
     for (SynchronisedVehicle* sv = _synchronisedVehicles; sv < _lastSynchronisedVehicle; sv++)
     {
-        auto v = GetEntity<Vehicle>(sv->vehicle_id);
+        auto v = getGameState().entities.GetEntity<Vehicle>(sv->vehicle_id);
         if (v != nullptr)
         {
             v->ClearFlag(VehicleFlags::WaitingOnAdjacentStation);
@@ -2301,12 +2301,12 @@ bool Vehicle::CanDepartSynchronised() const
  */
 void Vehicle::PeepEasterEggHereWeAre() const
 {
-    for (Vehicle* vehicle = GetEntity<Vehicle>(Id); vehicle != nullptr;
-         vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
+    for (Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(Id); vehicle != nullptr;
+         vehicle = getGameState().entities.GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
     {
         for (int32_t i = 0; i < vehicle->num_peeps; ++i)
         {
-            auto* curPeep = GetEntity<Guest>(vehicle->peep[i]);
+            auto* curPeep = getGameState().entities.GetEntity<Guest>(vehicle->peep[i]);
             if (curPeep != nullptr && curPeep->PeepFlags & PEEP_FLAGS_HERE_WE_ARE)
             {
                 curPeep->InsertNewThought(PeepThoughtType::HereWeAre, curPeep->CurrentRide);
@@ -2350,7 +2350,7 @@ static void test_finish(Ride& ride)
     ride.averageSpeed = ride.averageSpeed / totalTime;
 
     auto* windowMgr = Ui::GetWindowManager();
-    windowMgr->InvalidateByNumber(WindowClass::Ride, ride.id.ToUnderlying());
+    windowMgr->InvalidateByNumber(WindowClass::ride, ride.id.ToUnderlying());
 }
 
 void Vehicle::UpdateTestFinish()
@@ -2404,7 +2404,7 @@ static void test_reset(Ride& ride, StationIndex curStation)
     ride.currentTestStation = curStation;
 
     auto* windowMgr = Ui::GetWindowManager();
-    windowMgr->InvalidateByNumber(WindowClass::Ride, ride.id.ToUnderlying());
+    windowMgr->InvalidateByNumber(WindowClass::ride, ride.id.ToUnderlying());
 }
 
 void Vehicle::TestReset()
@@ -2529,15 +2529,15 @@ void Vehicle::UpdateDeparting()
 
         if (rideEntry->flags & RIDE_ENTRY_FLAG_PLAY_DEPART_SOUND)
         {
-            auto soundId = (rideEntry->Cars[0].soundRange == SoundRange::tramBell) ? OpenRCT2::Audio::SoundId::Tram
-                                                                                   : OpenRCT2::Audio::SoundId::TrainDeparting;
+            auto soundId = (rideEntry->Cars[0].soundRange == SoundRange::tramBell) ? OpenRCT2::Audio::SoundId::tram
+                                                                                   : OpenRCT2::Audio::SoundId::trainDeparting;
 
             OpenRCT2::Audio::Play3D(soundId, GetLocation());
         }
 
         if (curRide->mode == RideMode::upwardLaunch || (curRide->mode == RideMode::downwardLaunch && NumLaunches > 1))
         {
-            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::RideLaunch2, GetLocation());
+            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::rideLaunch2, GetLocation());
         }
 
         if (!(curRide->lifecycleFlags & RIDE_LIFECYCLE_TESTED))
@@ -2743,7 +2743,7 @@ void Vehicle::FinishDeparting()
         if (NumLaunches >= 1 && (14 << 16) > velocity)
             return;
 
-        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::RideLaunch1, GetLocation());
+        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::rideLaunch1, GetLocation());
     }
 
     if (curRide->mode == RideMode::upwardLaunch)
@@ -2751,7 +2751,7 @@ void Vehicle::FinishDeparting()
         if ((curRide->launchSpeed << 16) > velocity)
             return;
 
-        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::RideLaunch1, GetLocation());
+        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::rideLaunch1, GetLocation());
     }
 
     if (curRide->mode != RideMode::race && !curRide->isBlockSectioned())
@@ -2866,7 +2866,7 @@ void Vehicle::UpdateCollisionSetup()
         {
             // We require this to execute right away during the simulation, always ignore network and queue.
             auto gameAction = GameActions::RideSetStatusAction(curRide->id, RideStatus::closed);
-            GameActions::ExecuteNested(&gameAction);
+            GameActions::ExecuteNested(&gameAction, getGameState());
         }
     }
 
@@ -2875,7 +2875,8 @@ void Vehicle::UpdateCollisionSetup()
     KillAllPassengersInTrain();
 
     Vehicle* lastVehicle = this;
-    for (Vehicle* train = GetEntity<Vehicle>(Id); train != nullptr; train = GetEntity<Vehicle>(train->next_vehicle_on_train))
+    for (Vehicle* train = getGameState().entities.GetEntity<Vehicle>(Id); train != nullptr;
+         train = getGameState().entities.GetEntity<Vehicle>(train->next_vehicle_on_train))
     {
         lastVehicle = train;
 
@@ -2886,7 +2887,7 @@ void Vehicle::UpdateCollisionSetup()
 #endif
         const auto trainLoc = train->GetLocation();
 
-        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::Crash, trainLoc);
+        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::crash, trainLoc);
 
         ExplosionCloud::Create(trainLoc);
 
@@ -2909,8 +2910,8 @@ void Vehicle::UpdateCollisionSetup()
     }
 
     // Remove the current train from the ride linked list of trains
-    auto prevTrain = GetEntity<Vehicle>(prev_vehicle_on_ride);
-    auto nextTrain = GetEntity<Vehicle>(lastVehicle->next_vehicle_on_ride);
+    auto prevTrain = getGameState().entities.GetEntity<Vehicle>(prev_vehicle_on_ride);
+    auto nextTrain = getGameState().entities.GetEntity<Vehicle>(lastVehicle->next_vehicle_on_ride);
     if (prevTrain == nullptr || nextTrain == nullptr)
     {
         LOG_ERROR("Corrupted vehicle list for ride!");
@@ -2946,7 +2947,7 @@ void Vehicle::UpdateCrashSetup()
 
     if (NumPeepsUntilTrainTail() != 0)
     {
-        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::HauntedHouseScream2, GetLocation());
+        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::hauntedHouseScream2, GetLocation());
     }
 
     int32_t edx = velocity >> 10;
@@ -2955,7 +2956,7 @@ void Vehicle::UpdateCrashSetup()
     auto spriteId = Id;
     for (Vehicle* trainVehicle; !spriteId.IsNull(); spriteId = trainVehicle->next_vehicle_on_train)
     {
-        trainVehicle = GetEntity<Vehicle>(spriteId);
+        trainVehicle = getGameState().entities.GetEntity<Vehicle>(spriteId);
         if (trainVehicle == nullptr)
         {
             break;
@@ -2965,9 +2966,9 @@ void Vehicle::UpdateCrashSetup()
         trainVehicle->sub_state = 0;
         int32_t trainX = stru_9A3AC4[trainVehicle->Orientation / 2].x;
         int32_t trainY = stru_9A3AC4[trainVehicle->Orientation / 2].y;
-        auto trainZ = kUnk9A38D4[trainVehicle->Pitch] >> 23;
+        auto trainZ = kUnk9A38D4[EnumValue(trainVehicle->pitch)] >> 23;
 
-        int32_t ecx = kUnk9A37E4[trainVehicle->Pitch] >> 15;
+        int32_t ecx = kUnk9A37E4[EnumValue(trainVehicle->pitch)] >> 15;
         trainX *= ecx;
         trainY *= ecx;
         trainX >>= 16;
@@ -2990,8 +2991,8 @@ void Vehicle::UpdateCrashSetup()
     }
 
     // Remove the current train from the ride linked list of trains
-    auto prevTrain = GetEntity<Vehicle>(prev_vehicle_on_ride);
-    auto nextTrain = GetEntity<Vehicle>(lastVehicle->next_vehicle_on_ride);
+    auto prevTrain = getGameState().entities.GetEntity<Vehicle>(prev_vehicle_on_ride);
+    auto nextTrain = getGameState().entities.GetEntity<Vehicle>(lastVehicle->next_vehicle_on_ride);
     if (prevTrain == nullptr || nextTrain == nullptr)
     {
         LOG_ERROR("Corrupted vehicle list for ride!");
@@ -3383,7 +3384,7 @@ void Vehicle::UpdateArriving()
 
     if ((curRide->mode == RideMode::upwardLaunch || curRide->mode == RideMode::downwardLaunch) && NumLaunches < 2)
     {
-        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::RideLaunch2, GetLocation());
+        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::rideLaunch2, GetLocation());
         velocity = 0;
         acceleration = 0;
         SetState(Vehicle::Status::Departing, 1);
@@ -3424,12 +3425,12 @@ void Vehicle::UpdateUnloadingPassengers()
 
     if (curRide->mode == RideMode::forwardRotation || curRide->mode == RideMode::backwardRotation)
     {
-        uint8_t seat = ((-Pitch) >> 3) & 0xF;
+        uint8_t seat = ((-flatRideAnimationFrame) >> 3) & 0xF;
         if (restraints_position == 255 && !peep[seat * 2].IsNull())
         {
             next_free_seat -= 2;
 
-            auto firstGuest = GetEntity<Guest>(peep[seat * 2]);
+            auto firstGuest = getGameState().entities.GetEntity<Guest>(peep[seat * 2]);
             peep[seat * 2] = EntityId::GetNull();
 
             if (firstGuest != nullptr)
@@ -3438,7 +3439,7 @@ void Vehicle::UpdateUnloadingPassengers()
                 firstGuest->RideSubState = PeepRideSubState::LeaveVehicle;
             }
 
-            auto secondGuest = GetEntity<Guest>(peep[seat * 2 + 1]);
+            auto secondGuest = getGameState().entities.GetEntity<Guest>(peep[seat * 2 + 1]);
             peep[seat * 2 + 1] = EntityId::GetNull();
 
             if (secondGuest != nullptr)
@@ -3464,8 +3465,8 @@ void Vehicle::UpdateUnloadingPassengers()
             return;
         }
 
-        for (Vehicle* train = GetEntity<Vehicle>(Id); train != nullptr;
-             train = GetEntity<Vehicle>(train->next_vehicle_on_train))
+        for (Vehicle* train = getGameState().entities.GetEntity<Vehicle>(Id); train != nullptr;
+             train = getGameState().entities.GetEntity<Vehicle>(train->next_vehicle_on_train))
         {
             if (train->restraints_position != 255)
                 continue;
@@ -3476,7 +3477,7 @@ void Vehicle::UpdateUnloadingPassengers()
             train->next_free_seat = 0;
             for (uint8_t peepIndex = 0; peepIndex < train->num_peeps; peepIndex++)
             {
-                Peep* curPeep = GetEntity<Guest>(train->peep[peepIndex]);
+                Peep* curPeep = getGameState().entities.GetEntity<Guest>(train->peep[peepIndex]);
                 if (curPeep != nullptr)
                 {
                     curPeep->SetState(PeepState::LeavingRide);
@@ -3489,7 +3490,8 @@ void Vehicle::UpdateUnloadingPassengers()
     if (sub_state != 1)
         return;
 
-    for (Vehicle* train = GetEntity<Vehicle>(Id); train != nullptr; train = GetEntity<Vehicle>(train->next_vehicle_on_train))
+    for (Vehicle* train = getGameState().entities.GetEntity<Vehicle>(Id); train != nullptr;
+         train = getGameState().entities.GetEntity<Vehicle>(train->next_vehicle_on_train))
     {
         if (train->num_peeps != train->next_free_seat)
             return;
@@ -3513,7 +3515,7 @@ void Vehicle::UpdateWaitingForCableLift()
     if (curRide == nullptr)
         return;
 
-    Vehicle* cableLift = GetEntity<Vehicle>(curRide->cableLift);
+    Vehicle* cableLift = getGameState().entities.GetEntity<Vehicle>(curRide->cableLift);
     if (cableLift == nullptr)
         return;
 
@@ -4072,10 +4074,10 @@ void Vehicle::UpdateSwinging()
     if (spriteType != -128)
     {
         current_time++;
-        if (static_cast<uint8_t>(spriteType) != Pitch)
+        if (static_cast<uint8_t>(spriteType) != flatRideAnimationFrame)
         {
             // Used to know which sprite to draw
-            Pitch = static_cast<uint8_t>(spriteType);
+            flatRideAnimationFrame = static_cast<uint8_t>(spriteType);
             Invalidate();
         }
         return;
@@ -4150,14 +4152,14 @@ void Vehicle::UpdateFerrisWheelRotating()
         ferris_wheel_var_1 = curFerrisWheelVar0;
     }
 
-    uint8_t rotation = Pitch;
+    uint8_t rotation = flatRideAnimationFrame;
     if (curRide->mode == RideMode::forwardRotation)
         rotation++;
     else
         rotation--;
 
     rotation &= 0x7F;
-    Pitch = rotation;
+    flatRideAnimationFrame = rotation;
 
     if (rotation == sub_state)
         NumRotations++;
@@ -4171,7 +4173,7 @@ void Vehicle::UpdateFerrisWheelRotating()
         subState--;
     subState &= 0x7F;
 
-    if (subState == Pitch)
+    if (subState == flatRideAnimationFrame)
     {
         bool shouldStop = true;
         if (curRide->status != RideStatus::closed)
@@ -4198,7 +4200,7 @@ void Vehicle::UpdateFerrisWheelRotating()
         subState -= 8;
     subState &= 0x7F;
 
-    if (subState != Pitch)
+    if (subState != flatRideAnimationFrame)
         return;
 
     SetState(Vehicle::Status::Arriving);
@@ -4220,9 +4222,9 @@ void Vehicle::UpdateSimulatorOperating()
     if (al != 0xFF)
     {
         current_time++;
-        if (al == Pitch)
+        if (al == flatRideAnimationFrame)
             return;
-        Pitch = al;
+        flatRideAnimationFrame = al;
         Invalidate();
         return;
     }
@@ -4293,9 +4295,9 @@ void Vehicle::UpdateRotating()
     if (sprite != 0xFF)
     {
         current_time = time;
-        if (sprite == Pitch)
+        if (sprite == flatRideAnimationFrame)
             return;
-        Pitch = sprite;
+        flatRideAnimationFrame = sprite;
         Invalidate();
         return;
     }
@@ -4346,9 +4348,9 @@ void Vehicle::UpdateSpaceRingsOperating()
     if (spriteType != 255)
     {
         current_time++;
-        if (spriteType != Pitch)
+        if (spriteType != flatRideAnimationFrame)
         {
-            Pitch = spriteType;
+            flatRideAnimationFrame = spriteType;
             Invalidate();
         }
     }
@@ -4368,15 +4370,15 @@ void Vehicle::UpdateHauntedHouseOperating()
     if (_vehicleBreakdown == 0)
         return;
 
-    if (Pitch != 0)
+    if (flatRideAnimationFrame != 0)
     {
         if (getGameState().currentTicks & 1)
         {
-            Pitch++;
+            flatRideAnimationFrame++;
             Invalidate();
 
-            if (Pitch == 19)
-                Pitch = 0;
+            if (flatRideAnimationFrame == 19)
+                flatRideAnimationFrame = 0;
         }
     }
 
@@ -4391,24 +4393,24 @@ void Vehicle::UpdateHauntedHouseOperating()
     switch (current_time)
     {
         case 45:
-            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::HauntedHouseScare, GetLocation());
+            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::hauntedHouseScare, GetLocation());
             break;
         case 75:
-            Pitch = 1;
+            flatRideAnimationFrame = 1;
             Invalidate();
             break;
         case 400:
-            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::HauntedHouseScream1, GetLocation());
+            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::hauntedHouseScream1, GetLocation());
             break;
         case 745:
-            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::HauntedHouseScare, GetLocation());
+            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::hauntedHouseScare, GetLocation());
             break;
         case 775:
-            Pitch = 1;
+            flatRideAnimationFrame = 1;
             Invalidate();
             break;
         case 1100:
-            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::HauntedHouseScream2, GetLocation());
+            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::hauntedHouseScream2, GetLocation());
             break;
     }
 }
@@ -4447,15 +4449,15 @@ void Vehicle::UpdateTopSpinOperating()
     if (rotation != 0xFF)
     {
         current_time = current_time + 1;
-        if (rotation != Pitch)
+        if (rotation != flatRideAnimationFrame)
         {
-            Pitch = rotation;
+            flatRideAnimationFrame = rotation;
             Invalidate();
         }
         rotation = sprite_map[current_time].bank_rotation;
-        if (rotation != bank_rotation)
+        if (rotation != flatRideSecondaryAnimationFrame)
         {
-            bank_rotation = rotation;
+            flatRideSecondaryAnimationFrame = rotation;
             Invalidate();
         }
         return;
@@ -4592,8 +4594,8 @@ void Vehicle::KillAllPassengersInTrain()
 
     ride_train_crash(*curRide, NumPeepsUntilTrainTail());
 
-    for (Vehicle* trainCar = GetEntity<Vehicle>(Id); trainCar != nullptr;
-         trainCar = GetEntity<Vehicle>(trainCar->next_vehicle_on_train))
+    for (Vehicle* trainCar = getGameState().entities.GetEntity<Vehicle>(Id); trainCar != nullptr;
+         trainCar = getGameState().entities.GetEntity<Vehicle>(trainCar->next_vehicle_on_train))
     {
         trainCar->KillPassengers(*curRide);
     }
@@ -4609,7 +4611,7 @@ void Vehicle::KillPassengers(const Ride& curRide)
 
     for (auto i = 0; i < num_peeps; i++)
     {
-        auto* curPeep = GetEntity<Guest>(peep[i]);
+        auto* curPeep = getGameState().entities.GetEntity<Guest>(peep[i]);
         if (curPeep == nullptr)
             continue;
 
@@ -4658,7 +4660,7 @@ void Vehicle::CrashOnLand()
         {
             // We require this to execute right away during the simulation, always ignore network and queue.
             auto gameAction = GameActions::RideSetStatusAction(curRide->id, RideStatus::closed);
-            GameActions::ExecuteNested(&gameAction);
+            GameActions::ExecuteNested(&gameAction, getGameState());
         }
     }
     curRide->lifecycleFlags |= RIDE_LIFECYCLE_CRASHED;
@@ -4672,7 +4674,7 @@ void Vehicle::CrashOnLand()
     sub_state = 2;
 
     const auto curLoc = GetLocation();
-    OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::Crash, curLoc);
+    OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::crash, curLoc);
 
     ExplosionCloud::Create(curLoc);
     ExplosionFlare::Create(curLoc);
@@ -4726,7 +4728,7 @@ void Vehicle::CrashOnWater()
         {
             // We require this to execute right away during the simulation, always ignore network and queue.
             auto gameAction = GameActions::RideSetStatusAction(curRide->id, RideStatus::closed);
-            GameActions::ExecuteNested(&gameAction);
+            GameActions::ExecuteNested(&gameAction, getGameState());
         }
     }
     curRide->lifecycleFlags |= RIDE_LIFECYCLE_CRASHED;
@@ -4740,7 +4742,7 @@ void Vehicle::CrashOnWater()
     sub_state = 2;
 
     const auto curLoc = GetLocation();
-    OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::Water1, curLoc);
+    OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::water1, curLoc);
 
     CrashSplashParticle::Create(curLoc);
     CrashSplashParticle::Create(curLoc + CoordsXYZ{ -8, -9, 0 });
@@ -4769,8 +4771,8 @@ void Vehicle::CrashOnWater()
  */
 void Vehicle::UpdateCrash()
 {
-    for (Vehicle* curVehicle = GetEntity<Vehicle>(Id); curVehicle != nullptr;
-         curVehicle = GetEntity<Vehicle>(curVehicle->next_vehicle_on_train))
+    for (Vehicle* curVehicle = getGameState().entities.GetEntity<Vehicle>(Id); curVehicle != nullptr;
+         curVehicle = getGameState().entities.GetEntity<Vehicle>(curVehicle->next_vehicle_on_train))
     {
         CoordsXYZ curPos = curVehicle->GetLocation();
 
@@ -4861,9 +4863,9 @@ void Vehicle::UpdateCrash()
 void Vehicle::UpdateSound()
 {
     // frictionVolume (bl) should be set before hand
-    SoundIdVolume frictionSound = { OpenRCT2::Audio::SoundId::Null, 255 };
+    SoundIdVolume frictionSound = { OpenRCT2::Audio::SoundId::null, 255 };
     // bh screamVolume should be set before hand
-    SoundIdVolume screamSound = { OpenRCT2::Audio::SoundId::Null, 255 };
+    SoundIdVolume screamSound = { OpenRCT2::Audio::SoundId::null, 255 };
 
     auto curRide = GetRide();
     if (curRide == nullptr)
@@ -4892,7 +4894,7 @@ void Vehicle::UpdateSound()
             screamSound.id = scream_sound_id;
             if (!(currentTicks & 0x7F))
             {
-                if (velocity < 4.0_mph || scream_sound_id != OpenRCT2::Audio::SoundId::Null)
+                if (velocity < 4.0_mph || scream_sound_id != OpenRCT2::Audio::SoundId::null)
                 {
                     GetLiftHillSound(*curRide, screamSound);
                     break;
@@ -4900,13 +4902,13 @@ void Vehicle::UpdateSound()
 
                 if ((ScenarioRand() & 0xFFFF) <= 0x5555)
                 {
-                    scream_sound_id = OpenRCT2::Audio::SoundId::TrainWhistle;
+                    scream_sound_id = OpenRCT2::Audio::SoundId::trainWhistle;
                     screamSound.volume = 255;
                     break;
                 }
             }
-            if (screamSound.id == OpenRCT2::Audio::SoundId::NoScream)
-                screamSound.id = OpenRCT2::Audio::SoundId::Null;
+            if (screamSound.id == OpenRCT2::Audio::SoundId::noScream)
+                screamSound.id = OpenRCT2::Audio::SoundId::null;
             screamSound.volume = 255;
             break;
 
@@ -4914,7 +4916,7 @@ void Vehicle::UpdateSound()
             screamSound.id = scream_sound_id;
             if (!(currentTicks & 0x7F))
             {
-                if (velocity < 4.0_mph || scream_sound_id != OpenRCT2::Audio::SoundId::Null)
+                if (velocity < 4.0_mph || scream_sound_id != OpenRCT2::Audio::SoundId::null)
                 {
                     GetLiftHillSound(*curRide, screamSound);
                     break;
@@ -4922,13 +4924,13 @@ void Vehicle::UpdateSound()
 
                 if ((ScenarioRand() & 0xFFFF) <= 0x5555)
                 {
-                    scream_sound_id = OpenRCT2::Audio::SoundId::Tram;
+                    scream_sound_id = OpenRCT2::Audio::SoundId::tram;
                     screamSound.volume = 255;
                     break;
                 }
             }
-            if (screamSound.id == OpenRCT2::Audio::SoundId::NoScream)
-                screamSound.id = OpenRCT2::Audio::SoundId::Null;
+            if (screamSound.id == OpenRCT2::Audio::SoundId::noScream)
+                screamSound.id = OpenRCT2::Audio::SoundId::null;
             screamSound.volume = 255;
             break;
 
@@ -4936,12 +4938,12 @@ void Vehicle::UpdateSound()
             if ((carEntry.flags & CAR_ENTRY_FLAG_RIDERS_SCREAM))
             {
                 screamSound.id = UpdateScreamSound();
-                if (screamSound.id == OpenRCT2::Audio::SoundId::NoScream)
+                if (screamSound.id == OpenRCT2::Audio::SoundId::noScream)
                 {
-                    screamSound.id = OpenRCT2::Audio::SoundId::Null;
+                    screamSound.id = OpenRCT2::Audio::SoundId::null;
                     break;
                 }
-                if (screamSound.id != OpenRCT2::Audio::SoundId::Null)
+                if (screamSound.id != OpenRCT2::Audio::SoundId::null)
                 {
                     break;
                 }
@@ -4964,7 +4966,7 @@ void Vehicle::UpdateSound()
     int32_t soundVector = ((velocity >> 14) * soundDirection) >> 14;
     soundVector = std::clamp(soundVector, -127, 127);
 
-    sound_vector_factor = soundVector & 0xFF;
+    dopplerShift = soundVector & 0xFF;
 }
 
 /**
@@ -4975,52 +4977,52 @@ OpenRCT2::Audio::SoundId Vehicle::UpdateScreamSound()
 {
     int32_t totalNumPeeps = NumPeepsUntilTrainTail();
     if (totalNumPeeps == 0)
-        return OpenRCT2::Audio::SoundId::Null;
+        return OpenRCT2::Audio::SoundId::null;
 
     if (velocity < 0)
     {
         if (velocity > -2.75_mph)
-            return OpenRCT2::Audio::SoundId::Null;
+            return OpenRCT2::Audio::SoundId::null;
 
-        for (Vehicle* vehicle2 = GetEntity<Vehicle>(Id); vehicle2 != nullptr;
-             vehicle2 = GetEntity<Vehicle>(vehicle2->next_vehicle_on_train))
+        for (Vehicle* vehicle2 = getGameState().entities.GetEntity<Vehicle>(Id); vehicle2 != nullptr;
+             vehicle2 = getGameState().entities.GetEntity<Vehicle>(vehicle2->next_vehicle_on_train))
         {
-            if (vehicle2->Pitch < 1)
+            if (vehicle2->pitch < VehiclePitch::up12)
                 continue;
-            if (vehicle2->Pitch <= 4)
+            if (vehicle2->pitch <= VehiclePitch::up60)
                 return ProduceScreamSound(totalNumPeeps);
-            if (vehicle2->Pitch < 9)
+            if (vehicle2->pitch < VehiclePitch::up75)
                 continue;
-            if (vehicle2->Pitch <= 15)
+            if (vehicle2->pitch <= VehiclePitch::up165)
                 return ProduceScreamSound(totalNumPeeps);
-            // Pitch 52 occurs on steep diagonal backward drops.
-            // (50 and 51 occur on gentle ones.)
-            if (vehicle2->Pitch == 52)
+            // up50 occurs on diagonal steep hills
+            // up8 and up16 occur on diagonal gentle hills
+            if (vehicle2->pitch == VehiclePitch::up50)
                 return ProduceScreamSound(totalNumPeeps);
         }
-        return OpenRCT2::Audio::SoundId::Null;
+        return OpenRCT2::Audio::SoundId::null;
     }
 
     if (velocity < 2.75_mph)
-        return OpenRCT2::Audio::SoundId::Null;
+        return OpenRCT2::Audio::SoundId::null;
 
-    for (Vehicle* vehicle2 = GetEntity<Vehicle>(Id); vehicle2 != nullptr;
-         vehicle2 = GetEntity<Vehicle>(vehicle2->next_vehicle_on_train))
+    for (Vehicle* vehicle2 = getGameState().entities.GetEntity<Vehicle>(Id); vehicle2 != nullptr;
+         vehicle2 = getGameState().entities.GetEntity<Vehicle>(vehicle2->next_vehicle_on_train))
     {
-        if (vehicle2->Pitch < 5)
+        if (vehicle2->pitch < VehiclePitch::down12)
             continue;
-        if (vehicle2->Pitch <= 8)
+        if (vehicle2->pitch <= VehiclePitch::down60)
             return ProduceScreamSound(totalNumPeeps);
-        if (vehicle2->Pitch < 17)
+        if (vehicle2->pitch <= VehiclePitch::inverted)
             continue;
-        if (vehicle2->Pitch <= 23)
+        if (vehicle2->pitch <= VehiclePitch::down165)
             return ProduceScreamSound(totalNumPeeps);
-        // Pitch 55 occurs on steep diagonal drops.
-        // (53 and 54 occur on gentle ones.)
-        if (vehicle2->Pitch == 55)
+        // down50 occurs on diagonal steep drops
+        // down8 and down16 occur on diagonal gentle drops
+        if (vehicle2->pitch == VehiclePitch::down50)
             return ProduceScreamSound(totalNumPeeps);
     }
-    return OpenRCT2::Audio::SoundId::Null;
+    return OpenRCT2::Audio::SoundId::null;
 }
 
 OpenRCT2::Audio::SoundId Vehicle::ProduceScreamSound(const int32_t totalNumPeeps)
@@ -5029,7 +5031,7 @@ OpenRCT2::Audio::SoundId Vehicle::ProduceScreamSound(const int32_t totalNumPeeps
 
     const auto& carEntry = rideEntry->Cars[vehicle_type];
 
-    if (scream_sound_id == OpenRCT2::Audio::SoundId::Null)
+    if (scream_sound_id == OpenRCT2::Audio::SoundId::null)
     {
         auto r = ScenarioRand();
         if (totalNumPeeps >= static_cast<int32_t>(r % 16))
@@ -5046,13 +5048,13 @@ OpenRCT2::Audio::SoundId Vehicle::ProduceScreamSound(const int32_t totalNumPeeps
                     scream_sound_id = _screamSetSteel[r % std::size(_screamSetSteel)];
                     break;
                 default:
-                    scream_sound_id = OpenRCT2::Audio::SoundId::NoScream;
+                    scream_sound_id = OpenRCT2::Audio::SoundId::noScream;
                     break;
             }
         }
         else
         {
-            scream_sound_id = OpenRCT2::Audio::SoundId::NoScream;
+            scream_sound_id = OpenRCT2::Audio::SoundId::noScream;
         }
     }
     return scream_sound_id;
@@ -5067,8 +5069,8 @@ OpenRCT2::Audio::SoundId Vehicle::ProduceScreamSound(const int32_t totalNumPeeps
  */
 GForces Vehicle::GetGForces() const
 {
-    int32_t gForceVert = ((static_cast<int64_t>(0x280000)) * kUnk9A37E4[Pitch]) >> 32;
-    gForceVert = ((static_cast<int64_t>(gForceVert)) * kUnk9A39C4[bank_rotation]) >> 32;
+    int32_t gForceVert = ((static_cast<int64_t>(0x280000)) * kUnk9A37E4[EnumValue(pitch)]) >> 32;
+    gForceVert = ((static_cast<int64_t>(gForceVert)) * kUnk9A39C4[EnumValue(roll)]) >> 32;
 
     const auto& ted = GetTrackElementDescriptor(GetTrackType());
     const int32_t vertFactor = ted.verticalFactor(track_progress);
@@ -5127,7 +5129,7 @@ Vehicle* Vehicle::TrainHead() const
 
     for (;;)
     {
-        prevVehicle = GetEntity<Vehicle>(vehicle->prev_vehicle_on_ride);
+        prevVehicle = getGameState().entities.GetEntity<Vehicle>(vehicle->prev_vehicle_on_ride);
         if (prevVehicle == nullptr)
             return nullptr;
         if (prevVehicle->next_vehicle_on_train.IsNull())
@@ -5146,7 +5148,7 @@ Vehicle* Vehicle::TrainTail() const
     EntityId spriteIndex = vehicle->next_vehicle_on_train;
     while (!spriteIndex.IsNull())
     {
-        vehicle = GetEntity<Vehicle>(spriteIndex);
+        vehicle = getGameState().entities.GetEntity<Vehicle>(spriteIndex);
         if (vehicle == nullptr)
         {
             return const_cast<Vehicle*>(this);
@@ -5276,7 +5278,7 @@ int32_t Vehicle::UpdateMotionDodgems()
             velocity = 0;
             uint8_t direction = Orientation | 1;
 
-            Vehicle* collideVehicle = GetEntity<Vehicle>(collideSprite.value());
+            Vehicle* collideVehicle = getGameState().entities.GetEntity<Vehicle>(collideSprite.value());
             if (collideVehicle != nullptr)
             {
                 var_34 = (ScenarioRand() & 1) ? 1 : -1;
@@ -5417,7 +5419,7 @@ void Vehicle::UpdateTrackMotionUpStopCheck() const
             gForces.LateralG = std::abs(gForces.LateralG);
             if (gForces.LateralG <= 150)
             {
-                if (AccelerationFromPitch[Pitch] < 0)
+                if (AccelerationFromPitch[EnumValue(pitch)] < 0)
                 {
                     if (gForces.VerticalG > -40)
                     {
@@ -5430,7 +5432,7 @@ void Vehicle::UpdateTrackMotionUpStopCheck() const
                 }
             }
 
-            if (Pitch != 8)
+            if (pitch != VehiclePitch::down60)
             {
                 _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_DERAILED;
             }
@@ -5443,7 +5445,7 @@ void Vehicle::UpdateTrackMotionUpStopCheck() const
         {
             auto gForces = GetGForces();
 
-            if (AccelerationFromPitch[Pitch] < 0)
+            if (AccelerationFromPitch[EnumValue(pitch)] < 0)
             {
                 if (gForces.VerticalG > -45)
                 {
@@ -5458,7 +5460,7 @@ void Vehicle::UpdateTrackMotionUpStopCheck() const
                 }
             }
 
-            if (Pitch != 8 && Pitch != 55)
+            if (pitch != VehiclePitch::down60 && pitch != VehiclePitch::down50)
             {
                 _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_DERAILED;
             }
@@ -5661,11 +5663,11 @@ static void BlockBrakesOpenPreviousSection(const Ride& ride, const CoordsXYZ& ve
     auto trackType = trackElement->GetTrackType();
     if (trackType == TrackElemType::EndStation)
     {
-        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::BlockBrakeClose, location);
+        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::blockBrakeClose, location);
     }
     else if (TrackTypeIsBlockBrakes(trackType))
     {
-        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::BlockBrakeClose, location);
+        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::blockBrakeClose, location);
         BlockBrakeSetLinkedBrakesClosed(location, *trackElement, false);
     }
 }
@@ -5786,19 +5788,19 @@ int32_t Vehicle::GetSwingAmount() const
 
 static uint8_t GetSwingSprite(int16_t swingPosition)
 {
-    if (swingPosition < -10012)
+    if (swingPosition < -10010)
         return 11;
-    if (swingPosition > 10012)
+    if (swingPosition > 10010)
         return 12;
 
-    if (swingPosition < -8191)
+    if (swingPosition < -8190)
         return 9;
-    if (swingPosition > 8191)
+    if (swingPosition > 8190)
         return 10;
 
-    if (swingPosition < -6371)
+    if (swingPosition < -6370)
         return 7;
-    if (swingPosition > 6371)
+    if (swingPosition > 6370)
         return 8;
 
     if (swingPosition < -4550)
@@ -6083,10 +6085,10 @@ static uint8_t GetTargetFrame(const CarEntry& carEntry, uint32_t animationState)
 /**
  * Compute the position that steam should be spawned
  */
-static constexpr CoordsXYZ ComputeSteamOffset(int32_t height, int32_t length, uint8_t pitch, uint8_t yaw)
+static constexpr CoordsXYZ ComputeSteamOffset(int32_t height, int32_t length, VehiclePitch pitch, uint8_t yaw)
 {
     uint8_t trueYaw = OpenRCT2::Entity::Yaw::YawTo64(yaw);
-    auto offsets = PitchToDirectionVectorFromGeometry[pitch];
+    auto offsets = PitchToDirectionVectorFromGeometry[EnumValue(pitch)];
     int32_t projectedRun = (offsets.x * length - offsets.y * height) / 256;
     int32_t projectedHeight = (offsets.x * height + offsets.y * length) / 256;
     return { ComputeXYVector(projectedRun, trueYaw), projectedHeight };
@@ -6144,7 +6146,7 @@ static void AnimateSteamLocomotive(Vehicle& vehicle, const CarEntry& carEntry)
                     || (vehicle.status != Vehicle::Status::MovingToEndOfStation && vehicle.status != Vehicle::Status::Arriving))
                 {
                     CoordsXYZ steamOffset = ComputeSteamOffset(
-                        carEntry.SteamEffect.Vertical, carEntry.SteamEffect.Longitudinal, vehicle.Pitch, vehicle.Orientation);
+                        carEntry.SteamEffect.Vertical, carEntry.SteamEffect.Longitudinal, vehicle.pitch, vehicle.Orientation);
                     SteamParticle::Create(CoordsXYZ(vehicle.x, vehicle.y, vehicle.z) + steamOffset);
                 }
             }
@@ -6487,7 +6489,7 @@ static void vehicle_update_play_water_splash_sound()
     }
 
     OpenRCT2::Audio::Play3D(
-        OpenRCT2::Audio::SoundId::WaterSplash, { _vehicleCurPosition.x, _vehicleCurPosition.y, _vehicleCurPosition.z });
+        OpenRCT2::Audio::SoundId::waterSplash, { _vehicleCurPosition.x, _vehicleCurPosition.y, _vehicleCurPosition.z });
 }
 
 /**
@@ -6507,11 +6509,11 @@ void Vehicle::UpdateHandleWaterSplash() const
             {
                 if (IsOnCoveredTrack())
                 {
-                    Vehicle* nextVehicle = GetEntity<Vehicle>(next_vehicle_on_ride);
+                    Vehicle* nextVehicle = getGameState().entities.GetEntity<Vehicle>(next_vehicle_on_ride);
                     if (nextVehicle == nullptr)
                         return;
 
-                    Vehicle* nextNextVehicle = GetEntity<Vehicle>(nextVehicle->next_vehicle_on_ride);
+                    Vehicle* nextNextVehicle = getGameState().entities.GetEntity<Vehicle>(nextVehicle->next_vehicle_on_ride);
                     if (nextNextVehicle == nullptr)
                         return;
                     if (!nextNextVehicle->IsOnCoveredTrack())
@@ -6590,7 +6592,7 @@ bool Vehicle::UpdateMotionCollisionDetection(const CoordsXYZ& loc, EntityId* oth
         if (otherVehicleIndex == nullptr)
             return false;
 
-        Vehicle* collideVehicle = GetEntity<Vehicle>(*otherVehicleIndex);
+        Vehicle* collideVehicle = getGameState().entities.GetEntity<Vehicle>(*otherVehicleIndex);
         if (collideVehicle == nullptr)
             return false;
 
@@ -6781,8 +6783,8 @@ bool Vehicle::UpdateMotionCollisionDetection(const CoordsXYZ& loc, EntityId* oth
  */
 void Vehicle::ReverseReverserCar()
 {
-    Vehicle* previousVehicle = GetEntity<Vehicle>(prev_vehicle_on_ride);
-    Vehicle* nextVehicle = GetEntity<Vehicle>(next_vehicle_on_ride);
+    Vehicle* previousVehicle = getGameState().entities.GetEntity<Vehicle>(prev_vehicle_on_ride);
+    Vehicle* nextVehicle = getGameState().entities.GetEntity<Vehicle>(next_vehicle_on_ride);
     if (previousVehicle == nullptr || nextVehicle == nullptr)
     {
         return;
@@ -6977,7 +6979,7 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(
             {
                 if (!(rideEntry.Cars[0].flags & CAR_ENTRY_FLAG_POWERED))
                 {
-                    OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::BlockBrakeRelease, TrackLocation);
+                    OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::blockBrakeRelease, TrackLocation);
                 }
             }
             MapInvalidateElement(TrackLocation, tileElement);
@@ -7189,7 +7191,7 @@ bool Vehicle::UpdateTrackMotionForwards(const CarEntry* carEntry, const Ride& cu
                     if (_vehicleF64E2C == 0)
                     {
                         _vehicleF64E2C++;
-                        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::BrakeRelease, { x, y, z });
+                        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::brakeRelease, { x, y, z });
                     }
                 }
             }
@@ -7314,12 +7316,12 @@ bool Vehicle::UpdateTrackMotionForwards(const CarEntry* carEntry, const Ride& cu
             remaining_distance -= SubpositionTranslationDistances[remainingDistanceFlags];
             _vehicleCurPosition = nextVehiclePosition;
             Orientation = moveInfo->direction;
-            bank_rotation = moveInfo->bank_rotation;
-            Pitch = moveInfo->Pitch;
+            roll = moveInfo->roll;
+            pitch = moveInfo->pitch;
 
-            moveInfovehicleAnimationGroup = moveInfo->Pitch;
+            moveInfovehicleAnimationGroup = EnumValue(moveInfo->pitch);
 
-            if ((carEntry->flags & CAR_ENTRY_FLAG_WOODEN_WILD_MOUSE_SWING) && moveInfo->Pitch != 0)
+            if ((carEntry->flags & CAR_ENTRY_FLAG_WOODEN_WILD_MOUSE_SWING) && moveInfo->pitch != VehiclePitch::flat)
             {
                 SwingSprite = 0;
                 SwingPosition = 0;
@@ -7338,7 +7340,7 @@ bool Vehicle::UpdateTrackMotionForwards(const CarEntry* carEntry, const Ride& cu
                         remaining_distance = -1;
 
                         // Might need to be bp rather than this, but hopefully not
-                        auto otherVeh = GetEntity<Vehicle>(otherVehicleIndex);
+                        auto otherVeh = getGameState().entities.GetEntity<Vehicle>(otherVehicleIndex);
                         if (otherVeh == nullptr)
                         {
                             // This can never happen as prev_vehicle_on_ride will always be set to a vehicle
@@ -7604,7 +7606,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
 
         // Loc6DBD42
         track_progress = newTrackProgress;
-        uint8_t moveInfoVehicleAnimationGroup;
+        VehiclePitch moveInfoVehicleAnimationGroup;
         {
             const VehicleInfo* moveInfo = GetMoveInfo();
             auto nextVehiclePosition = TrackLocation
@@ -7628,11 +7630,11 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
 
             _vehicleCurPosition = nextVehiclePosition;
             Orientation = moveInfo->direction;
-            bank_rotation = moveInfo->bank_rotation;
-            Pitch = moveInfo->Pitch;
-            moveInfoVehicleAnimationGroup = moveInfo->Pitch;
+            roll = moveInfo->roll;
+            pitch = moveInfo->pitch;
+            moveInfoVehicleAnimationGroup = moveInfo->pitch;
 
-            if ((carEntry->flags & CAR_ENTRY_FLAG_WOODEN_WILD_MOUSE_SWING) && Pitch != 0)
+            if ((carEntry->flags & CAR_ENTRY_FLAG_WOODEN_WILD_MOUSE_SWING) && pitch != VehiclePitch::flat)
             {
                 SwingSprite = 0;
                 SwingPosition = 0;
@@ -7649,7 +7651,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
                         _vehicleVelocityF64E0C -= remaining_distance - 0x368A;
                         remaining_distance = 0x368A;
 
-                        Vehicle* v3 = GetEntity<Vehicle>(otherVehicleIndex);
+                        Vehicle* v3 = getGameState().entities.GetEntity<Vehicle>(otherVehicleIndex);
                         Vehicle* v4 = gCurrentVehicle;
                         if (v3 == nullptr)
                         {
@@ -7691,7 +7693,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
         {
             return true;
         }
-        acceleration += AccelerationFromPitch[moveInfoVehicleAnimationGroup];
+        acceleration += AccelerationFromPitch[EnumValue(moveInfoVehicleAnimationGroup)];
         _vehicleUnkF64E10++;
     }
 }
@@ -7712,7 +7714,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
             Loc6DCDE4(curRide);
             return Vehicle::UpdateMiniGolfSubroutineStatus::stop;
         }
-        acceleration = AccelerationFromPitch[Pitch];
+        acceleration = AccelerationFromPitch[EnumValue(pitch)];
         _vehicleUnkF64E10++;
         return Vehicle::UpdateMiniGolfSubroutineStatus::restart;
     }
@@ -7734,7 +7736,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
                 Loc6DCDE4(curRide);
                 return Vehicle::UpdateMiniGolfSubroutineStatus::stop;
             }
-            acceleration = AccelerationFromPitch[Pitch];
+            acceleration = AccelerationFromPitch[EnumValue(pitch)];
             _vehicleUnkF64E10++;
             return Vehicle::UpdateMiniGolfSubroutineStatus::restart;
         }
@@ -7744,7 +7746,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
     if (mini_golf_flags & MiniGolfFlag::Flag0)
     {
         auto vehicleIdx = IsHead() ? next_vehicle_on_ride : prev_vehicle_on_ride;
-        Vehicle* vEDI = GetEntity<Vehicle>(vehicleIdx);
+        Vehicle* vEDI = getGameState().entities.GetEntity<Vehicle>(vehicleIdx);
         if (vEDI == nullptr)
         {
             return Vehicle::UpdateMiniGolfSubroutineStatus::stop;
@@ -7762,7 +7764,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
                 Loc6DCDE4(curRide);
                 return Vehicle::UpdateMiniGolfSubroutineStatus::stop;
             }
-            acceleration = AccelerationFromPitch[Pitch];
+            acceleration = AccelerationFromPitch[EnumValue(pitch)];
             _vehicleUnkF64E10++;
             return Vehicle::UpdateMiniGolfSubroutineStatus::restart;
         }
@@ -7779,7 +7781,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
                 Loc6DCDE4(curRide);
                 return Vehicle::UpdateMiniGolfSubroutineStatus::stop;
             }
-            acceleration = AccelerationFromPitch[Pitch];
+            acceleration = AccelerationFromPitch[EnumValue(pitch)];
             _vehicleUnkF64E10++;
             return Vehicle::UpdateMiniGolfSubroutineStatus::restart;
         }
@@ -7790,7 +7792,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
     if (mini_golf_flags & MiniGolfFlag::Flag1)
     {
         auto vehicleIdx = IsHead() ? next_vehicle_on_ride : prev_vehicle_on_ride;
-        Vehicle* vEDI = GetEntity<Vehicle>(vehicleIdx);
+        Vehicle* vEDI = getGameState().entities.GetEntity<Vehicle>(vehicleIdx);
         if (vEDI == nullptr)
         {
             return Vehicle::UpdateMiniGolfSubroutineStatus::stop;
@@ -7808,7 +7810,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
                 Loc6DCDE4(curRide);
                 return Vehicle::UpdateMiniGolfSubroutineStatus::stop;
             }
-            acceleration = AccelerationFromPitch[Pitch];
+            acceleration = AccelerationFromPitch[EnumValue(pitch)];
             _vehicleUnkF64E10++;
             return Vehicle::UpdateMiniGolfSubroutineStatus::restart;
         }
@@ -7825,7 +7827,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
                 Loc6DCDE4(curRide);
                 return Vehicle::UpdateMiniGolfSubroutineStatus::stop;
             }
-            acceleration = AccelerationFromPitch[Pitch];
+            acceleration = AccelerationFromPitch[EnumValue(pitch)];
             _vehicleUnkF64E10++;
             return Vehicle::UpdateMiniGolfSubroutineStatus::restart;
         }
@@ -7839,7 +7841,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
 
         for (;;)
         {
-            vEDI = GetEntity<Vehicle>(vEDI->prev_vehicle_on_ride);
+            vEDI = getGameState().entities.GetEntity<Vehicle>(vEDI->prev_vehicle_on_ride);
             if (vEDI == this || vEDI == nullptr)
             {
                 break;
@@ -7861,7 +7863,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
                 Loc6DCDE4(curRide);
                 return Vehicle::UpdateMiniGolfSubroutineStatus::stop;
             }
-            acceleration = AccelerationFromPitch[Pitch];
+            acceleration = AccelerationFromPitch[EnumValue(pitch)];
             _vehicleUnkF64E10++;
             return Vehicle::UpdateMiniGolfSubroutineStatus::restart;
         }
@@ -7900,7 +7902,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
                 _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
                 _vehicleVelocityF64E0C -= remaining_distance + 1;
                 remaining_distance = -1;
-                acceleration += AccelerationFromPitch[Pitch];
+                acceleration += AccelerationFromPitch[EnumValue(pitch)];
                 _vehicleUnkF64E10++;
                 return UpdateMiniGolfSubroutineStatus::carryOn;
             }
@@ -7917,7 +7919,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
                 {
                     Loc6DCDE4(curRide);
                 }
-                acceleration += AccelerationFromPitch[Pitch];
+                acceleration += AccelerationFromPitch[EnumValue(pitch)];
                 _vehicleUnkF64E10++;
                 return UpdateMiniGolfSubroutineStatus::carryOn;
             }
@@ -7926,7 +7928,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
 
             if (!IsHead())
             {
-                Vehicle* prevVehicle = GetEntity<Vehicle>(prev_vehicle_on_ride);
+                Vehicle* prevVehicle = getGameState().entities.GetEntity<Vehicle>(prev_vehicle_on_ride);
                 if (prevVehicle != nullptr)
                 {
                     TrackSubposition = prevVehicle->TrackSubposition;
@@ -8008,7 +8010,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
                     // When the ride is closed occasionally the peep is removed
                     // but the vehicle is still on the track. This will prevent
                     // it from crashing in that situation.
-                    auto* curPeep = TryGetEntity<Guest>(peep[0]);
+                    auto* curPeep = getGameState().entities.TryGetEntity<Guest>(peep[0]);
                     if (curPeep != nullptr)
                     {
                         if (animation == MiniGolfAnimation::SwingLeft)
@@ -8059,8 +8061,8 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
 
         _vehicleCurPosition = trackPos;
         Orientation = moveInfo->direction;
-        bank_rotation = moveInfo->bank_rotation;
-        Pitch = moveInfo->Pitch;
+        roll = moveInfo->roll;
+        pitch = moveInfo->pitch;
 
         if (this == _vehicleFrontVehicle)
         {
@@ -8075,7 +8077,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
             Loc6DCDE4(curRide);
             return UpdateMiniGolfSubroutineStatus::stop;
         }
-        acceleration = AccelerationFromPitch[Pitch];
+        acceleration = AccelerationFromPitch[EnumValue(pitch)];
         _vehicleUnkF64E10++;
     }
 }
@@ -8093,7 +8095,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
                 _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
                 _vehicleVelocityF64E0C -= remaining_distance + 1;
                 remaining_distance = -1;
-                acceleration += AccelerationFromPitch[Pitch];
+                acceleration += AccelerationFromPitch[EnumValue(pitch)];
                 _vehicleUnkF64E10++;
                 continue;
             }
@@ -8106,7 +8108,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
                 _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
                 _vehicleVelocityF64E0C -= remaining_distance - 0x368A;
                 remaining_distance = 0x368A;
-                acceleration = AccelerationFromPitch[Pitch];
+                acceleration = AccelerationFromPitch[EnumValue(pitch)];
                 _vehicleUnkF64E10++;
                 return Vehicle::UpdateMiniGolfSubroutineStatus::restart;
             }
@@ -8149,8 +8151,8 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
 
         _vehicleCurPosition = trackPos;
         Orientation = moveInfo->direction;
-        bank_rotation = moveInfo->bank_rotation;
-        Pitch = moveInfo->Pitch;
+        roll = moveInfo->roll;
+        pitch = moveInfo->pitch;
 
         if (this == _vehicleFrontVehicle)
         {
@@ -8162,7 +8164,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
                     _vehicleVelocityF64E0C -= remaining_distance - 0x368A;
                     remaining_distance = 0x368A;
                     {
-                        Vehicle* vEBP = GetEntity<Vehicle>(otherVehicleIndex);
+                        Vehicle* vEBP = getGameState().entities.GetEntity<Vehicle>(otherVehicleIndex);
                         if (vEBP == nullptr)
                         {
                             return UpdateMiniGolfSubroutineStatus::stop;
@@ -8176,7 +8178,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
                         vEBP->velocity = vEDI->velocity >> 1;
                     }
                     _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_2;
-                    acceleration = AccelerationFromPitch[Pitch];
+                    acceleration = AccelerationFromPitch[EnumValue(pitch)];
                     _vehicleUnkF64E10++;
                     return UpdateMiniGolfSubroutineStatus::restart;
                 }
@@ -8188,7 +8190,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
             Loc6DCDE4(curRide);
             return UpdateMiniGolfSubroutineStatus::stop;
         }
-        acceleration += AccelerationFromPitch[Pitch];
+        acceleration += AccelerationFromPitch[EnumValue(pitch)];
         _vehicleUnkF64E10++;
     }
 }
@@ -8202,7 +8204,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
 void Vehicle::UpdateTrackMotionMiniGolfVehicle(const Ride& curRide, const RideObjectEntry& rideEntry, const CarEntry* carEntry)
 {
     _vehicleUnkF64E10 = 1;
-    acceleration = AccelerationFromPitch[Pitch];
+    acceleration = AccelerationFromPitch[EnumValue(pitch)];
     if (!HasFlag(VehicleFlags::MoveSingleCar))
     {
         remaining_distance = _vehicleVelocityF64E0C + remaining_distance;
@@ -8316,7 +8318,8 @@ int32_t Vehicle::UpdateTrackMotionMiniGolfCalculateAcceleration(const CarEntry& 
     int32_t numVehicles = 0;
     uint16_t totalMass = 0;
 
-    for (Vehicle* vehicle = this; vehicle != nullptr; vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
+    for (Vehicle* vehicle = this; vehicle != nullptr;
+         vehicle = getGameState().entities.GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
     {
         numVehicles++;
         totalMass += vehicle->mass;
@@ -8383,7 +8386,7 @@ int32_t Vehicle::UpdateTrackMotionMiniGolf(int32_t* outStation)
         }
         if (_vehicleVelocityF64E08 >= 0)
         {
-            vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train);
+            vehicle = getGameState().entities.GetEntity<Vehicle>(vehicle->next_vehicle_on_train);
         }
         else
         {
@@ -8391,7 +8394,7 @@ int32_t Vehicle::UpdateTrackMotionMiniGolf(int32_t* outStation)
             {
                 break;
             }
-            vehicle = GetEntity<Vehicle>(vehicle->prev_vehicle_on_ride);
+            vehicle = getGameState().entities.GetEntity<Vehicle>(vehicle->prev_vehicle_on_ride);
         }
     }
 
@@ -8482,7 +8485,7 @@ int32_t Vehicle::UpdateTrackMotionPoweredRideAcceleration(
             spin_speed = std::clamp(spin_speed, kVehicleMinSpinSpeedWaterRide, kVehicleMaxSpinSpeedWaterRide);
         }
 
-        if (Pitch != 0)
+        if (pitch != VehiclePitch::flat)
         {
             if (poweredAcceleration < 0)
             {
@@ -8492,7 +8495,7 @@ int32_t Vehicle::UpdateTrackMotionPoweredRideAcceleration(
             if (carEntry->flags & CAR_ENTRY_FLAG_SPINNING)
             {
                 // If the vehicle is on the up slope kill the spin speedModifier
-                if (Pitch == 2)
+                if (pitch == VehiclePitch::up25)
                 {
                     spin_speed = 0;
                 }
@@ -8527,7 +8530,7 @@ void Vehicle::UpdateTrackMotionPreUpdate(
     {
         car.UpdateAdditionalAnimation();
     }
-    car.acceleration = AccelerationFromPitch[car.Pitch];
+    car.acceleration = AccelerationFromPitch[EnumValue(car.pitch)];
     _vehicleUnkF64E10 = 1;
 
     if (!car.HasFlag(VehicleFlags::MoveSingleCar))
@@ -8555,7 +8558,7 @@ void Vehicle::UpdateTrackMotionPreUpdate(
             {
                 break;
             }
-            car.acceleration += AccelerationFromPitch[car.Pitch];
+            car.acceleration += AccelerationFromPitch[EnumValue(car.pitch)];
             _vehicleUnkF64E10++;
             continue;
         }
@@ -8573,7 +8576,7 @@ void Vehicle::UpdateTrackMotionPreUpdate(
         {
             break;
         }
-        car.acceleration = AccelerationFromPitch[car.Pitch];
+        car.acceleration = AccelerationFromPitch[EnumValue(car.pitch)];
         _vehicleUnkF64E10++;
         continue;
     }
@@ -8625,7 +8628,7 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
     auto spriteId = vehicle->Id;
     while (!spriteId.IsNull())
     {
-        Vehicle* car = GetEntity<Vehicle>(spriteId);
+        Vehicle* car = getGameState().entities.GetEntity<Vehicle>(spriteId);
         if (car == nullptr)
         {
             break;
@@ -8673,7 +8676,7 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
     // ebx
     int32_t numVehicles = 0;
 
-    for (; vehicle != nullptr; vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
+    for (; vehicle != nullptr; vehicle = getGameState().entities.GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
     {
         numVehicles++;
         totalMass += vehicle->mass;
@@ -8760,8 +8763,8 @@ Ride* Vehicle::GetRide() const
 int32_t Vehicle::NumPeepsUntilTrainTail() const
 {
     int32_t numPeeps = 0;
-    for (const Vehicle* vehicle = GetEntity<Vehicle>(Id); vehicle != nullptr;
-         vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
+    for (const Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(Id); vehicle != nullptr;
+         vehicle = getGameState().entities.GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
     {
         numPeeps += vehicle->num_peeps;
     }
@@ -8924,10 +8927,10 @@ void Vehicle::Claxon() const
     switch (rideEntry->Cars[vehicle_type].soundRange)
     {
         case SoundRange::steamWhistle:
-            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::TrainWhistle, { x, y, z });
+            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::trainWhistle, { x, y, z });
             break;
         case SoundRange::tramBell:
-            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::Tram, { x, y, z });
+            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::tram, { x, y, z });
             break;
         default:
             break;
@@ -8939,7 +8942,7 @@ Vehicle* Vehicle::GetHead()
     auto v = this;
     while (v != nullptr && !v->IsHead())
     {
-        v = GetEntity<Vehicle>(v->prev_vehicle_on_ride);
+        v = getGameState().entities.GetEntity<Vehicle>(v->prev_vehicle_on_ride);
     }
     return v;
 }
@@ -8954,7 +8957,7 @@ Vehicle* Vehicle::GetCar(size_t carIndex) const
     auto car = const_cast<Vehicle*>(this);
     for (; carIndex != 0; carIndex--)
     {
-        car = GetEntity<Vehicle>(car->next_vehicle_on_train);
+        car = getGameState().entities.GetEntity<Vehicle>(car->next_vehicle_on_train);
         if (car == nullptr)
         {
             LOG_ERROR("Tried to get non-existent car from index!");
@@ -8980,7 +8983,8 @@ bool Vehicle::IsGhost() const
 void Vehicle::EnableCollisionsForTrain()
 {
     assert(this->IsHead());
-    for (auto vehicle = this; vehicle != nullptr; vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
+    for (auto vehicle = this; vehicle != nullptr;
+         vehicle = getGameState().entities.GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
     {
         vehicle->ClearFlag(VehicleFlags::CollisionDisabled);
     }
@@ -8990,8 +8994,8 @@ void Vehicle::Serialise(DataSerialiser& stream)
 {
     EntityBase::Serialise(stream);
     stream << SubType;
-    stream << Pitch;
-    stream << bank_rotation;
+    stream << pitch;
+    stream << roll;
     stream << remaining_distance;
     stream << velocity;
     stream << acceleration;
@@ -9026,7 +9030,7 @@ void Vehicle::Serialise(DataSerialiser& stream)
     stream << sound1_volume;
     stream << sound2_id;
     stream << sound2_volume;
-    stream << sound_vector_factor;
+    stream << dopplerShift;
     stream << var_C0;
     stream << speed;
     stream << powered_acceleration;

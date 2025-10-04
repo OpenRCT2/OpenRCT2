@@ -20,6 +20,7 @@
     #include "../../../ride/RideData.h"
     #include "../../../ride/Track.h"
     #include "../../../world/Footpath.h"
+    #include "../../../world/Map.h"
     #include "../../../world/Scenery.h"
     #include "../../../world/tile_element/BannerElement.h"
     #include "../../../world/tile_element/EntranceElement.h"

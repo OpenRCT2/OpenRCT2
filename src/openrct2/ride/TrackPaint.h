@@ -13,7 +13,6 @@
 #include "../paint/support/MetalSupports.h"
 #include "../paint/tile_element/Paint.TileElement.h"
 #include "../paint/track/Support.h"
-#include "../world/Map.h"
 
 namespace OpenRCT2
 {

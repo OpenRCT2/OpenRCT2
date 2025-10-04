@@ -12,7 +12,6 @@
 #include "../../../ride/RideData.h"
 #include "../../../ride/Track.h"
 #include "../../../ride/TrackPaint.h"
-#include "../../../world/Map.h"
 #include "../../../world/tile_element/PathElement.h"
 #include "../../../world/tile_element/TileElement.h"
 #include "../../../world/tile_element/TrackElement.h"
@@ -665,7 +664,7 @@ static void PaintMiniatureRailwayTrackFlat(
             imageIdAlt = MiniatureRailwayTrackToGroovedIndent(
                 session.PathElementOnSameHeight, direction, session.CurrentRotation);
             PaintAddImageAsChildRotated(
-                session, direction, imageIdAlt.WithTransparency(FilterPaletteID::PaletteDarken2), { 0, 6, height },
+                session, direction, imageIdAlt.WithTransparency(FilterPaletteID::paletteDarken2), { 0, 6, height },
                 { { 0, 6, height + 2 }, { 32, 20, 2 } });
         }
     }
@@ -689,7 +688,7 @@ static void PaintMiniatureRailwayTrackFlat(
             imageIdAlt = MiniatureRailwayTrackToGroovedIndent(
                 session.PathElementOnSameHeight, direction, session.CurrentRotation);
             PaintAddImageAsParentRotated(
-                session, direction, imageIdAlt.WithTransparency(FilterPaletteID::PaletteDarken2), { 0, 6, height },
+                session, direction, imageIdAlt.WithTransparency(FilterPaletteID::paletteDarken2), { 0, 6, height },
                 { { 0, 6, height + 2 }, { 32, 20, 2 } });
         }
     }

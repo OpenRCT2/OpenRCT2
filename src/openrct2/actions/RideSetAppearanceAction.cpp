@@ -17,6 +17,7 @@
 #include "../localisation/StringIds.h"
 #include "../ride/Ride.h"
 #include "../ui/WindowManager.h"
+#include "../world/Map.h"
 #include "../world/Park.h"
 
 namespace OpenRCT2::GameActions
@@ -49,7 +50,7 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_rideIndex) << DS_TAG(_type) << DS_TAG(_value) << DS_TAG(_index);
     }
 
-    GameActions::Result RideSetAppearanceAction::Query() const
+    GameActions::Result RideSetAppearanceAction::Query(GameState_t& gameState) const
     {
         auto ride = GetRide(_rideIndex);
         if (ride == nullptr)
@@ -94,7 +95,7 @@ namespace OpenRCT2::GameActions
         return GameActions::Result();
     }
 
-    GameActions::Result RideSetAppearanceAction::Execute() const
+    GameActions::Result RideSetAppearanceAction::Execute(GameState_t& gameState) const
     {
         auto ride = GetRide(_rideIndex);
         if (ride == nullptr)
@@ -148,7 +149,7 @@ namespace OpenRCT2::GameActions
         }
 
         auto* windowMgr = Ui::GetWindowManager();
-        windowMgr->InvalidateByNumber(WindowClass::Ride, _rideIndex.ToUnderlying());
+        windowMgr->InvalidateByNumber(WindowClass::ride, _rideIndex.ToUnderlying());
 
         auto res = GameActions::Result();
         if (!ride->overallView.IsNull())

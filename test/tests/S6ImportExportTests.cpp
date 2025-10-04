@@ -61,8 +61,9 @@ static bool LoadFileToBuffer(MemoryStream& stream, const std::string& filePath)
 
 static void GameInit(bool retainSpatialIndices)
 {
+    auto& gameState = getGameState();
     if (!retainSpatialIndices)
-        ResetEntitySpatialIndices();
+        gameState.entities.ResetEntitySpatialIndices();
 
     ResetAllSpriteQuadrantPlacements();
     LoadPalette();

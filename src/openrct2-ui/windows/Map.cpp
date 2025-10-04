@@ -33,6 +33,8 @@
 #include <openrct2/ride/Vehicle.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Footpath.h>
+#include <openrct2/world/Map.h>
+#include <openrct2/world/MapSelection.h>
 #include <openrct2/world/Scenery.h>
 #include <openrct2/world/tile_element/EntranceElement.h>
 #include <openrct2/world/tile_element/Slope.h>
@@ -230,27 +232,27 @@ namespace OpenRCT2::Ui::Windows
         uint16_t _flashingFlags = 0;
 
     public:
-        void OnOpen() override
+        void onOpen() override
         {
-            SetWidgets(window_map_widgets);
+            setWidgets(window_map_widgets);
 
-            hold_down_widgets = (1uLL << WIDX_MAP_SIZE_SPINNER_Y_UP) | (1uLL << WIDX_MAP_SIZE_SPINNER_Y_DOWN)
+            holdDownWidgets = (1uLL << WIDX_MAP_SIZE_SPINNER_Y_UP) | (1uLL << WIDX_MAP_SIZE_SPINNER_Y_DOWN)
                 | (1uLL << WIDX_MAP_SIZE_SPINNER_X_UP) | (1uLL << WIDX_MAP_SIZE_SPINNER_X_DOWN);
 
-            flags |= WF_RESIZABLE;
+            flags |= WindowFlag::resizable;
 
             SetInitialWindowDimensions();
             ResetMaxWindowDimensions();
             ResizeMiniMap();
-            InitScrollWidgets();
+            initScrollWidgets();
             CalculateTextLayout();
 
             _rotation = GetCurrentRotation();
 
-            InitMap();
+            initMap();
             gWindowSceneryRotation = 0;
             CentreMapOnViewPoint();
-            FootpathSelectDefault();
+            WindowFootpathSelectDefault();
 
             auto& gameState = getGameState();
             _mapWidthAndHeightLinked = gameState.mapSize.x == gameState.mapSize.y;
@@ -259,7 +261,7 @@ namespace OpenRCT2::Ui::Windows
             _landRightsToolSize = 1;
         }
 
-        void OnClose() override
+        void onClose() override
         {
             _mapImageData.clear();
             _mapImageData.shrink_to_fit();
@@ -270,28 +272,28 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnMouseUp(WidgetIndex widgetIndex) override
+        void onMouseUp(WidgetIndex widgetIndex) override
         {
             auto* windowMgr = GetWindowManager();
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
-                    Close();
+                    close();
                     break;
                 case WIDX_SET_LAND_RIGHTS:
                 {
-                    if (!windowMgr->FindByClass(WindowClass::LandRights))
-                        ContextOpenWindow(WindowClass::LandRights);
+                    if (!windowMgr->FindByClass(WindowClass::landRights))
+                        ContextOpenWindow(WindowClass::landRights);
                     else
-                        windowMgr->CloseByClass(WindowClass::LandRights);
+                        windowMgr->CloseByClass(WindowClass::landRights);
                     break;
                 }
                 case WIDX_BUILD_PARK_ENTRANCE:
                 {
-                    if (!windowMgr->FindByClass(WindowClass::EditorParkEntrance))
-                        ContextOpenWindow(WindowClass::EditorParkEntrance);
+                    if (!windowMgr->FindByClass(WindowClass::editorParkEntrance))
+                        ContextOpenWindow(WindowClass::editorParkEntrance);
                     else
-                        windowMgr->CloseByClass(WindowClass::EditorParkEntrance);
+                        windowMgr->CloseByClass(WindowClass::editorParkEntrance);
                     break;
                 }
                 case WIDX_PEOPLE_STARTING_POSITION:
@@ -310,24 +312,24 @@ namespace OpenRCT2::Ui::Windows
                     _mapWidthAndHeightLinked = !_mapWidthAndHeightLinked;
                     break;
                 case WIDX_MAP_GENERATOR:
-                    ContextOpenWindow(WindowClass::Mapgen);
+                    ContextOpenWindow(WindowClass::mapgen);
                     break;
                 default:
                     if (widgetIndex >= WIDX_PEOPLE_TAB && widgetIndex <= WIDX_RIDES_TAB)
                     {
                         widgetIndex -= WIDX_PEOPLE_TAB;
-                        if (widgetIndex == selected_tab)
+                        if (widgetIndex == selectedTab)
                             break;
 
-                        selected_tab = widgetIndex;
-                        list_information_type = 0;
+                        selectedTab = widgetIndex;
+                        listInformationType = 0;
                         _recalculateScrollbars = true;
                         ResetMaxWindowDimensions();
                     }
             }
         }
 
-        void OnMouseDown(WidgetIndex widgetIndex) override
+        void onMouseDown(WidgetIndex widgetIndex) override
         {
             switch (widgetIndex)
             {
@@ -350,7 +352,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnUpdate() override
+        void onUpdate() override
         {
             auto* windowMgr = GetWindowManager();
 
@@ -362,25 +364,25 @@ namespace OpenRCT2::Ui::Windows
 
             // Handle guest map flashing
             _flashingFlags &= ~MapFlashingFlags::FlashGuests;
-            if (windowMgr->FindByClass(WindowClass::GuestList) != nullptr)
+            if (windowMgr->FindByClass(WindowClass::guestList) != nullptr)
                 _flashingFlags |= MapFlashingFlags::FlashGuests;
 
             // Handle staff map flashing
             _flashingFlags &= ~MapFlashingFlags::FlashStaff;
-            if (windowMgr->FindByClass(WindowClass::StaffList) != nullptr)
+            if (windowMgr->FindByClass(WindowClass::staffList) != nullptr)
                 _flashingFlags |= MapFlashingFlags::FlashStaff;
 
             if (GetCurrentRotation() != _rotation)
             {
                 _rotation = GetCurrentRotation();
-                InitMap();
+                initMap();
                 CentreMapOnViewPoint();
             }
 
             for (int32_t i = 0; i < 16; i++)
                 SetMapPixels();
 
-            Invalidate();
+            invalidate();
 
             if (_adjustedForSandboxMode != isEditorOrSandbox())
             {
@@ -389,25 +391,25 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Update tab animations
-            list_information_type++;
-            switch (selected_tab)
+            listInformationType++;
+            switch (selectedTab)
             {
                 case PAGE_PEEPS:
-                    if (list_information_type >= 32)
+                    if (listInformationType >= 32)
                     {
-                        list_information_type = 0;
+                        listInformationType = 0;
                     }
                     break;
                 case PAGE_RIDES:
-                    if (list_information_type >= 64)
+                    if (listInformationType >= 64)
                     {
-                        list_information_type = 0;
+                        listInformationType = 0;
                     }
                     break;
             }
         }
 
-        void OnToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
+        void onToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
             switch (widgetIndex)
             {
@@ -417,7 +419,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
+        void onToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
             switch (widgetIndex)
             {
@@ -427,12 +429,12 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnToolAbort(WidgetIndex widgetIndex) override
+        void onToolAbort(WidgetIndex widgetIndex) override
         {
             switch (widgetIndex)
             {
                 case WIDX_PEOPLE_STARTING_POSITION:
-                    Invalidate();
+                    invalidate();
                     HideGridlines();
                     HideLandRights();
                     HideConstructionRights();
@@ -445,8 +447,7 @@ namespace OpenRCT2::Ui::Windows
             int32_t direction;
             TileElement* tileElement;
             MapInvalidateSelectionRect();
-            gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
-            gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
+            gMapSelectFlags.unset(MapSelectFlag::enable, MapSelectFlag::enableArrow);
             auto mapCoords = FootpathBridgeGetInfoFromPos(screenCoords, &direction, &tileElement);
             if (mapCoords.IsNull())
                 return;
@@ -460,9 +461,8 @@ namespace OpenRCT2::Ui::Windows
                     mapZ += 16;
             }
 
-            gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
-            gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_ARROW;
-            gMapSelectType = MAP_SELECT_TYPE_FULL;
+            gMapSelectFlags.set(MapSelectFlag::enable, MapSelectFlag::enableArrow);
+            gMapSelectType = MapSelectType::full;
             gMapSelectPositionA = mapCoords;
             gMapSelectPositionB = mapCoords;
             gMapSelectArrowPosition = CoordsXYZ{ mapCoords, mapZ };
@@ -482,14 +482,14 @@ namespace OpenRCT2::Ui::Windows
             int32_t mapZ = tileElement->GetBaseZ();
 
             auto gameAction = GameActions::PeepSpawnPlaceAction({ mapCoords, mapZ, static_cast<Direction>(direction) });
-            auto result = GameActions::Execute(&gameAction);
+            auto result = GameActions::Execute(&gameAction, getGameState());
             if (result.Error == GameActions::Status::Ok)
             {
-                Audio::Play3D(Audio::SoundId::PlaceItem, result.Position);
+                Audio::Play3D(Audio::SoundId::placeItem, result.Position);
             }
         }
 
-        void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override
+        void onTextInput(WidgetIndex widgetIndex, std::string_view text) override
         {
             if (text.empty())
                 return;
@@ -516,15 +516,15 @@ namespace OpenRCT2::Ui::Windows
                             newMapSize.x = size;
 
                         auto mapChangeSizeAction = GameActions::MapChangeSizeAction(newMapSize);
-                        GameActions::Execute(&mapChangeSizeAction);
-                        Invalidate();
+                        GameActions::Execute(&mapChangeSizeAction, getGameState());
+                        invalidate();
                     }
                     break;
                 }
             }
         }
 
-        ScreenSize OnScrollGetSize(int32_t scrollIndex) override
+        ScreenSize onScrollGetSize(int32_t scrollIndex) override
         {
             auto size = ScreenSize(getMiniMapWidth(), getMiniMapWidth());
 
@@ -538,7 +538,7 @@ namespace OpenRCT2::Ui::Windows
             return size;
         }
 
-        void OnScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
+        void onScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
             // Adjust coordinates for any map offset to centre
             auto adjCoords = screenCoords;
@@ -560,12 +560,12 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnScrollMouseDrag(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
+        void onScrollMouseDrag(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
-            OnScrollMouseDown(scrollIndex, screenCoords);
+            onScrollMouseDown(scrollIndex, screenCoords);
         }
 
-        void OnScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
+        void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
             GfxClear(rt, PaletteIndex::pi10);
 
@@ -583,7 +583,7 @@ namespace OpenRCT2::Ui::Windows
             DrawingEngineInvalidateImage(SPR_TEMP);
             GfxDrawSprite(rt, ImageId(SPR_TEMP), screenOffset);
 
-            if (selected_tab == PAGE_PEEPS)
+            if (selectedTab == PAGE_PEEPS)
             {
                 PaintPeepOverlay(rt, screenOffset);
             }
@@ -594,27 +594,27 @@ namespace OpenRCT2::Ui::Windows
             PaintHudRectangle(rt, screenOffset);
         }
 
-        void OnPrepareDraw() override
+        void onPrepareDraw() override
         {
             auto* windowMgr = GetWindowManager();
 
             // Set the pressed widgets
-            pressed_widgets = 0;
-            SetWidgetPressed(WIDX_MAP_SIZE_LINK, _mapWidthAndHeightLinked);
-            pressed_widgets |= (1uLL << (WIDX_PEOPLE_TAB + selected_tab));
+            pressedWidgets = 0;
+            setWidgetPressed(WIDX_MAP_SIZE_LINK, _mapWidthAndHeightLinked);
+            pressedWidgets |= (1uLL << (WIDX_PEOPLE_TAB + selectedTab));
 
-            if (windowMgr->FindByClass(WindowClass::EditorParkEntrance))
-                pressed_widgets |= (1uLL << WIDX_BUILD_PARK_ENTRANCE);
+            if (windowMgr->FindByClass(WindowClass::editorParkEntrance))
+                pressedWidgets |= (1uLL << WIDX_BUILD_PARK_ENTRANCE);
 
-            if (windowMgr->FindByClass(WindowClass::LandRights))
-                pressed_widgets |= (1uLL << WIDX_SET_LAND_RIGHTS);
+            if (windowMgr->FindByClass(WindowClass::landRights))
+                pressedWidgets |= (1uLL << WIDX_SET_LAND_RIGHTS);
 
-            if (windowMgr->FindByClass(WindowClass::Mapgen))
-                pressed_widgets |= (1uLL << WIDX_MAP_GENERATOR);
+            if (windowMgr->FindByClass(WindowClass::mapgen))
+                pressedWidgets |= (1uLL << WIDX_MAP_GENERATOR);
 
             // Set disabled widgets
             auto& gameState = getGameState();
-            SetWidgetDisabled(WIDX_MAP_SIZE_LINK, gameState.mapSize.x != gameState.mapSize.y);
+            setWidgetDisabled(WIDX_MAP_SIZE_LINK, gameState.mapSize.x != gameState.mapSize.y);
 
             // Resize widgets to window size
             ResizeMiniMap();
@@ -660,15 +660,15 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDraw(RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
-            DrawWidgets(rt);
+            drawWidgets(rt);
             DrawTabImages(rt);
 
             if (!isEditorOrSandbox())
             {
                 // Render the map legend
-                if (selected_tab == PAGE_RIDES)
+                if (selectedTab == PAGE_RIDES)
                 {
                     auto screenCoords = windowPos + ScreenCoordsXY{ 4, widgets[WIDX_MAP].bottom + 2 };
 
@@ -696,19 +696,19 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnLanguageChange() override
+        void onLanguageChange() override
         {
             CalculateTextLayout();
         }
 
         void ResetMap()
         {
-            InitMap();
+            initMap();
             CentreMapOnViewPoint();
         }
 
     private:
-        void InitMap()
+        void initMap()
         {
             _mapImageData.resize(getMiniMapWidth() * getMiniMapWidth());
             std::fill(_mapImageData.begin(), _mapImageData.end(), PaletteIndex::pi10);
@@ -758,25 +758,25 @@ namespace OpenRCT2::Ui::Windows
         void IncreaseMapSize()
         {
             auto newMapSize = getGameState().mapSize;
-            if (IsWidgetPressed(WIDX_MAP_SIZE_LINK) || _resizeDirection == ResizeDirection::Y)
+            if (isWidgetPressed(WIDX_MAP_SIZE_LINK) || _resizeDirection == ResizeDirection::Y)
                 newMapSize.y++;
-            if (IsWidgetPressed(WIDX_MAP_SIZE_LINK) || _resizeDirection == ResizeDirection::X)
+            if (isWidgetPressed(WIDX_MAP_SIZE_LINK) || _resizeDirection == ResizeDirection::X)
                 newMapSize.x++;
 
             auto increaseMapSizeAction = GameActions::MapChangeSizeAction(newMapSize);
-            GameActions::Execute(&increaseMapSizeAction);
+            GameActions::Execute(&increaseMapSizeAction, getGameState());
         }
 
         void DecreaseMapSize()
         {
             auto newMapSize = getGameState().mapSize;
-            if (IsWidgetPressed(WIDX_MAP_SIZE_LINK) || _resizeDirection == ResizeDirection::Y)
+            if (isWidgetPressed(WIDX_MAP_SIZE_LINK) || _resizeDirection == ResizeDirection::Y)
                 newMapSize.y--;
-            if (IsWidgetPressed(WIDX_MAP_SIZE_LINK) || _resizeDirection == ResizeDirection::X)
+            if (isWidgetPressed(WIDX_MAP_SIZE_LINK) || _resizeDirection == ResizeDirection::X)
                 newMapSize.x--;
 
             auto decreaseMapSizeAction = GameActions::MapChangeSizeAction(newMapSize);
-            GameActions::Execute(&decreaseMapSizeAction);
+            GameActions::Execute(&decreaseMapSizeAction, getGameState());
         }
 
         void SetMapPixels()
@@ -819,7 +819,7 @@ namespace OpenRCT2::Ui::Windows
                 if (!MapIsEdge({ x, y }))
                 {
                     uint16_t colour = 0;
-                    switch (selected_tab)
+                    switch (selectedTab)
                     {
                         case PAGE_PEEPS:
                             colour = GetPixelColourPeep({ x, y });
@@ -969,7 +969,7 @@ namespace OpenRCT2::Ui::Windows
             auto leftTop = ScreenCoordsXY{ c.x, c.y } + offset;
             auto rightBottom = leftTop;
             uint8_t colour = DefaultPeepMapColour;
-            if (EntityGetFlashing(peep))
+            if (getGameState().entities.EntityGetFlashing(peep))
             {
                 colour = flashColour;
                 // If flashing then map peep pixel size is increased (by moving left top downwards)
@@ -1010,7 +1010,8 @@ namespace OpenRCT2::Ui::Windows
         {
             for (auto train : TrainManager::View())
             {
-                for (Vehicle* vehicle = train; vehicle != nullptr; vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
+                for (Vehicle* vehicle = train; vehicle != nullptr;
+                     vehicle = getGameState().entities.GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
                 {
                     if (vehicle->x == kLocationNull)
                         continue;
@@ -1069,8 +1070,8 @@ namespace OpenRCT2::Ui::Windows
         {
             // Guest tab image (animated)
             uint32_t guestTabImage = SPR_TAB_GUESTS_0;
-            if (selected_tab == PAGE_PEEPS)
-                guestTabImage += list_information_type / 4;
+            if (selectedTab == PAGE_PEEPS)
+                guestTabImage += listInformationType / 4;
 
             GfxDrawSprite(
                 rt, ImageId(guestTabImage),
@@ -1078,8 +1079,8 @@ namespace OpenRCT2::Ui::Windows
 
             // Ride/stall tab image (animated)
             uint32_t rideTabImage = SPR_TAB_RIDE_0;
-            if (selected_tab == PAGE_RIDES)
-                rideTabImage += list_information_type / 4;
+            if (selectedTab == PAGE_RIDES)
+                rideTabImage += listInformationType / 4;
 
             GfxDrawSprite(
                 rt, ImageId(rideTabImage),
@@ -1092,7 +1093,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_BUILD_PARK_ENTRANCE].type = WidgetType::flatBtn;
             widgets[WIDX_PEOPLE_STARTING_POSITION].type = WidgetType::flatBtn;
 
-            // Only show this in the scenario editor, even when in sandbox mode.
+            // only show this in the scenario editor, even when in sandbox mode.
             if (gLegacyScene == LegacyScene::scenarioEditor)
                 widgets[WIDX_MAP_GENERATOR].type = WidgetType::flatBtn;
 
@@ -1113,7 +1114,7 @@ namespace OpenRCT2::Ui::Windows
 
         void InputMapSize(WidgetIndex callingWidget)
         {
-            if (IsWidgetPressed(WIDX_MAP_SIZE_LINK))
+            if (isWidgetPressed(WIDX_MAP_SIZE_LINK))
                 _resizeDirection = ResizeDirection::Both;
             else
                 _resizeDirection = (callingWidget == WIDX_MAP_SIZE_SPINNER_Y) ? ResizeDirection::Y : ResizeDirection::X;
@@ -1121,7 +1122,7 @@ namespace OpenRCT2::Ui::Windows
             Formatter ft;
             ft.Add<int16_t>(kMinimumMapSizePractical);
             ft.Add<int16_t>(kMaximumMapSizePractical);
-            TextInputOpen(callingWidget, STR_MAP_SIZE_2, STR_ENTER_MAP_SIZE, ft, kStringIdNone, kStringIdNone, 4);
+            textInputOpen(callingWidget, STR_MAP_SIZE_2, STR_ENTER_MAP_SIZE, ft, kStringIdNone, kStringIdNone, 4);
         }
 
         CoordsXY ScreenToMap(ScreenCoordsXY screenCoords)
@@ -1176,7 +1177,7 @@ namespace OpenRCT2::Ui::Windows
         {
             if (isEditorOrSandbox())
                 return kEditorReservedVSpace;
-            else if (selected_tab == PAGE_RIDES)
+            else if (selectedTab == PAGE_RIDES)
                 return kRidesTabReservedVSpace;
             else
                 return kDefaultReservedVSpace;
@@ -1200,7 +1201,7 @@ namespace OpenRCT2::Ui::Windows
 
             _adjustedForSandboxMode = isEditorOrSandbox();
 
-            ResizeFrame();
+            resizeFrame();
         }
 
         void ResetMaxWindowDimensions()
@@ -1233,14 +1234,14 @@ namespace OpenRCT2::Ui::Windows
             }
 
             textOffset += _firstColumnWidth + 4;
-            min_width = kWindowSize.width;
+            minWidth = kWindowSize.width;
             for (uint32_t i = 4; i < std::size(MapLabels); i++)
             {
                 const auto* labelStr = LanguageGetString(MapLabels[i]);
-                min_width = std::max(
-                    static_cast<int16_t>(textOffset + GfxGetStringWidth(labelStr, FontStyle::Medium)), min_width);
+                minWidth = std::max(
+                    static_cast<int16_t>(textOffset + GfxGetStringWidth(labelStr, FontStyle::Medium)), minWidth);
             }
-            width = std::max(min_width, width);
+            width = std::max(minWidth, width);
             _recalculateScrollbars = true;
         }
     };
@@ -1250,9 +1251,9 @@ namespace OpenRCT2::Ui::Windows
         try
         {
             auto* windowMgr = GetWindowManager();
-            auto* w = windowMgr->FocusOrCreate<MapWindow>(WindowClass::Map, kWindowSize, WF_10);
-            w->selected_tab = 0;
-            w->list_information_type = 0;
+            auto* w = windowMgr->FocusOrCreate<MapWindow>(WindowClass::map, kWindowSize, WindowFlag::higherContrastOnPress);
+            w->selectedTab = 0;
+            w->listInformationType = 0;
             return w;
         }
         catch (const std::bad_alloc&)
@@ -1265,7 +1266,7 @@ namespace OpenRCT2::Ui::Windows
     {
         // Check if window is even opened
         auto* windowMgr = GetWindowManager();
-        auto* w = windowMgr->BringToFrontByClass(WindowClass::Map);
+        auto* w = windowMgr->BringToFrontByClass(WindowClass::map);
         if (w == nullptr)
         {
             return;

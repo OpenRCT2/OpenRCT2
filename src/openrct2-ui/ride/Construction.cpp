@@ -18,6 +18,7 @@
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/RideTypes.h>
 #include <openrct2/ride/TrackData.h>
+#include <openrct2/world/Map.h>
 #include <openrct2/world/tile_element/TrackElement.h>
 
 using namespace OpenRCT2::TrackMetaData;
@@ -240,7 +241,7 @@ namespace OpenRCT2
             RideConstructionStart(*ride);
         });
 
-        GameActions::Execute(&gameAction);
+        GameActions::Execute(&gameAction, getGameState());
     }
 
     SpecialElementsDropdownState BuildSpecialElementsList(
@@ -367,8 +368,8 @@ namespace OpenRCT2
         CoordsXYZD entranceExitCoords{};
         gRideEntranceExitPlaceDirection = kInvalidDirection;
         // determine if the mouse is hovering over a station - that's the station to add the entrance to
-        auto info = GetMapCoordinatesFromPos(screenCoords, EnumsToFlags(ViewportInteractionItem::Ride));
-        if (info.interactionType != ViewportInteractionItem::None)
+        auto info = GetMapCoordinatesFromPos(screenCoords, EnumsToFlags(ViewportInteractionItem::ride));
+        if (info.interactionType != ViewportInteractionItem::none)
         {
             if (info.Element->GetType() == TileElementType::Track)
             {

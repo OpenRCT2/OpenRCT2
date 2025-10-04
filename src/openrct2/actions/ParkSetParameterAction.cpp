@@ -41,7 +41,7 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_parameter) << DS_TAG(_value);
     }
 
-    Result ParkSetParameterAction::Query() const
+    Result ParkSetParameterAction::Query(GameState_t& gameState) const
     {
         if (_parameter >= ParkParameter::Count)
         {
@@ -54,7 +54,7 @@ namespace OpenRCT2::GameActions
         return res;
     }
 
-    Result ParkSetParameterAction::Execute() const
+    Result ParkSetParameterAction::Execute(GameState_t& gameState) const
     {
         auto& park = getGameState().park;
         auto* windowMgr = Ui::GetWindowManager();
@@ -65,19 +65,19 @@ namespace OpenRCT2::GameActions
                 if (park.flags & PARK_FLAGS_PARK_OPEN)
                 {
                     park.flags &= ~PARK_FLAGS_PARK_OPEN;
-                    windowMgr->InvalidateByClass(WindowClass::ParkInformation);
+                    windowMgr->InvalidateByClass(WindowClass::parkInformation);
                 }
                 break;
             case ParkParameter::Open:
                 if (!(park.flags & PARK_FLAGS_PARK_OPEN))
                 {
                     park.flags |= PARK_FLAGS_PARK_OPEN;
-                    windowMgr->InvalidateByClass(WindowClass::ParkInformation);
+                    windowMgr->InvalidateByClass(WindowClass::parkInformation);
                 }
                 break;
             case ParkParameter::SamePriceInPark:
                 park.samePriceThroughoutPark = _value;
-                windowMgr->InvalidateByClass(WindowClass::Ride);
+                windowMgr->InvalidateByClass(WindowClass::ride);
                 break;
             default:
                 LOG_ERROR("Invalid park parameter %d", _parameter);

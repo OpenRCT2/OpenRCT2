@@ -16,7 +16,9 @@
 #include "../ride/TrackData.h"
 #include "../world/ConstructionClearance.h"
 #include "../world/Footpath.h"
+#include "../world/Map.h"
 #include "../world/Wall.h"
+#include "../world/tile_element/Slope.h"
 #include "../world/tile_element/SurfaceElement.h"
 #include "../world/tile_element/TrackElement.h"
 
@@ -44,7 +46,7 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_loc) << DS_TAG(_rideIndex) << DS_TAG(_mazeEntry);
     }
 
-    Result MazePlaceTrackAction::Query() const
+    Result MazePlaceTrackAction::Query(GameState_t& gameState) const
     {
         auto res = Result();
 
@@ -64,7 +66,7 @@ namespace OpenRCT2::GameActions
             res.ErrorMessage = STR_OFF_EDGE_OF_MAP;
             return res;
         }
-        auto& gameState = getGameState();
+
         if (!MapIsLocationOwned(_loc) && !gameState.cheats.sandboxMode)
         {
             res.Error = Status::NotOwned;
@@ -105,7 +107,8 @@ namespace OpenRCT2::GameActions
         }
 
         auto canBuild = MapCanConstructWithClearAt(
-            { _loc.ToTileStart(), baseHeight, clearanceHeight }, &MapPlaceNonSceneryClearFunc, { 0b1111, 0 }, GetFlags());
+            { _loc.ToTileStart(), baseHeight, clearanceHeight }, &MapPlaceNonSceneryClearFunc, { 0b1111, 0 }, GetFlags(),
+            kTileSlopeFlat);
         if (canBuild.Error != Status::Ok)
         {
             canBuild.ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
@@ -141,7 +144,7 @@ namespace OpenRCT2::GameActions
         return res;
     }
 
-    Result MazePlaceTrackAction::Execute() const
+    Result MazePlaceTrackAction::Execute(GameState_t& gameState) const
     {
         auto res = Result();
 
@@ -170,7 +173,7 @@ namespace OpenRCT2::GameActions
 
         auto canBuild = MapCanConstructWithClearAt(
             { _loc.ToTileStart(), baseHeight, clearanceHeight }, &MapPlaceNonSceneryClearFunc, { 0b1111, 0 },
-            GetFlags() | GAME_COMMAND_FLAG_APPLY);
+            GetFlags() | GAME_COMMAND_FLAG_APPLY, kTileSlopeFlat);
         if (canBuild.Error != Status::Ok)
         {
             canBuild.ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;

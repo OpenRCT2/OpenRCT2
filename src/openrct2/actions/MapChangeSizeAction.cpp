@@ -15,6 +15,7 @@
 #include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
 #include "../windows/Intent.h"
+#include "../world/Map.h"
 #include "../world/Park.h"
 
 namespace OpenRCT2::GameActions
@@ -42,7 +43,7 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_shift);
     }
 
-    Result MapChangeSizeAction::Query() const
+    Result MapChangeSizeAction::Query(GameState_t& gameState) const
     {
         if (_targetSize.x > kMaximumMapSizeTechnical || _targetSize.y > kMaximumMapSizeTechnical)
         {
@@ -55,9 +56,8 @@ namespace OpenRCT2::GameActions
         return Result();
     }
 
-    Result MapChangeSizeAction::Execute() const
+    Result MapChangeSizeAction::Execute(GameState_t& gameState) const
     {
-        auto& gameState = getGameState();
         // Expand map
         while (_targetSize.x > gameState.mapSize.x)
         {
@@ -83,7 +83,9 @@ namespace OpenRCT2::GameActions
         auto* ctx = OpenRCT2::GetContext();
         auto& uiContext = ctx->GetUiContext();
         auto* windowManager = uiContext.GetWindowManager();
-        Park::UpdateSize(gameState);
+
+        auto& park = gameState.park;
+        Park::UpdateSize(park);
 
         windowManager->BroadcastIntent(Intent(INTENT_ACTION_MAP));
         GfxInvalidateScreen();

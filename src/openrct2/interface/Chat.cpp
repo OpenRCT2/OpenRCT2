@@ -10,6 +10,7 @@
 #include "Chat.h"
 
 #include "../Context.h"
+#include "../Input.h"
 #include "../audio/Audio.h"
 #include "../audio/AudioMixer.h"
 #include "../core/UTF8.h"
@@ -44,8 +45,8 @@ static int32_t ChatHistoryDrawString(RenderTarget& rt, const char* text, const S
 
 bool ChatAvailable()
 {
-    return NetworkGetMode() != NETWORK_MODE_NONE && NetworkGetStatus() == NETWORK_STATUS_CONNECTED
-        && NetworkGetAuthstatus() == NetworkAuth::Ok;
+    return Network::GetMode() != Network::Mode::none && Network::GetStatus() == Network::Status::connected
+        && Network::GetAuthstatus() == Network::Auth::ok;
 }
 
 void ChatOpen()
@@ -139,7 +140,7 @@ void ChatDraw(RenderTarget& rt, ColourWithFlags chatBackgroundColor)
             { topLeft - ScreenCoordsXY{ 0, 5 }, bottomRight + ScreenCoordsXY{ 0, 5 } }); // Background area + Textbox
         GfxFilterRect(
             rt, { topLeft - ScreenCoordsXY{ 0, 5 }, bottomRight + ScreenCoordsXY{ 0, 5 } },
-            FilterPaletteID::Palette51); // Opaque grey background
+            FilterPaletteID::palette51); // Opaque grey background
         GfxFillRectInset(
             rt, { topLeft - ScreenCoordsXY{ 0, 5 }, bottomRight + ScreenCoordsXY{ 0, 5 } }, chatBackgroundColor,
             INSET_RECT_FLAG_FILL_NONE);
@@ -243,9 +244,9 @@ void ChatAddHistory(std::string_view s)
     _chatHistoryTime.push_front(Platform::GetTicks());
 
     // Log to file (src only as logging does its own timestamp)
-    NetworkAppendChatLog(s);
+    Network::AppendChatLog(s);
 
-    CreateAudioChannel(SoundId::NewsItem, 0, kMixerVolumeMax, 0.5f, 1.5f, true);
+    CreateAudioChannel(SoundId::newsItem, 0, kMixerVolumeMax, 0.5f, 1.5f, true);
 }
 
 void ChatInput(enum ChatInput input)
@@ -255,7 +256,7 @@ void ChatInput(enum ChatInput input)
         case ChatInput::Send:
             if (!_chatCurrentLine.empty())
             {
-                NetworkSendChat(_chatCurrentLine.c_str());
+                Network::SendChat(_chatCurrentLine.c_str());
             }
             ChatClearInput();
             ChatClose();

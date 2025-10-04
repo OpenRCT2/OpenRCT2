@@ -34,7 +34,7 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_rideIndex) << DS_TAG(_type) << DS_TAG(_value);
     }
 
-    Result RideFreezeRatingAction::Query() const
+    Result RideFreezeRatingAction::Query(GameState_t& gameState) const
     {
         auto ride = GetRide(_rideIndex);
         if (ride == nullptr)
@@ -52,7 +52,7 @@ namespace OpenRCT2::GameActions
         return Result();
     }
 
-    Result RideFreezeRatingAction::Execute() const
+    Result RideFreezeRatingAction::Execute(GameState_t& gameState) const
     {
         auto ride = GetRide(_rideIndex);
 
@@ -72,7 +72,7 @@ namespace OpenRCT2::GameActions
         ride->lifecycleFlags |= RIDE_LIFECYCLE_FIXED_RATINGS;
 
         auto* windowMgr = Ui::GetWindowManager();
-        windowMgr->InvalidateByNumber(WindowClass::Ride, _rideIndex.ToUnderlying());
+        windowMgr->InvalidateByNumber(WindowClass::ride, _rideIndex.ToUnderlying());
 
         auto res = Result();
         return res;

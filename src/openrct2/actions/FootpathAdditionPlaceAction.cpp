@@ -20,6 +20,7 @@
 #include "../object/PathAdditionEntry.h"
 #include "../world/Footpath.h"
 #include "../world/Location.hpp"
+#include "../world/Map.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"
 #include "../world/tile_element/PathElement.h"
@@ -50,7 +51,7 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_loc) << DS_TAG(_entryIndex);
     }
 
-    Result FootpathAdditionPlaceAction::Query() const
+    Result FootpathAdditionPlaceAction::Query(GameState_t& gameState) const
     {
         auto res = Result();
         res.Expenditure = ExpenditureType::landscaping;
@@ -139,7 +140,7 @@ namespace OpenRCT2::GameActions
         return res;
     }
 
-    Result FootpathAdditionPlaceAction::Execute() const
+    Result FootpathAdditionPlaceAction::Execute(GameState_t& gameState) const
     {
         auto res = Result();
         res.Position = _loc;

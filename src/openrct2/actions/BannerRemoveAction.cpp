@@ -14,6 +14,7 @@
 #include "../object/BannerSceneryEntry.h"
 #include "../object/ObjectEntryManager.h"
 #include "../world/Banner.h"
+#include "../world/Map.h"
 #include "../world/Scenery.h"
 #include "../world/TileElementsView.h"
 #include "../world/tile_element/BannerElement.h"
@@ -43,7 +44,7 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_loc);
     }
 
-    Result BannerRemoveAction::Query() const
+    Result BannerRemoveAction::Query(GameState_t& gameState) const
     {
         auto res = Result();
         res.Expenditure = ExpenditureType::landscaping;
@@ -92,7 +93,7 @@ namespace OpenRCT2::GameActions
         return res;
     }
 
-    Result BannerRemoveAction::Execute() const
+    Result BannerRemoveAction::Execute(GameState_t& gameState) const
     {
         auto res = Result();
         res.Expenditure = ExpenditureType::landscaping;

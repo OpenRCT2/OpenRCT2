@@ -9,7 +9,7 @@
 
 #include "Wait.h"
 
-#include "../../../Context.h"
+#include "../../../Game.h"
 
 namespace OpenRCT2::Title
 {

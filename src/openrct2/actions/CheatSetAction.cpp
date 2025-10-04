@@ -74,9 +74,9 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_cheatType) << DS_TAG(_param1) << DS_TAG(_param2);
     }
 
-    Result CheatSetAction::Query() const
+    Result CheatSetAction::Query(GameState_t& gameState) const
     {
-        if (static_cast<uint32_t>(_cheatType) >= static_cast<uint32_t>(CheatType::Count))
+        if (static_cast<uint32_t>(_cheatType) >= static_cast<uint32_t>(CheatType::count))
         {
             LOG_ERROR("Invalid cheat type %u", _cheatType);
             return Result(Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
@@ -102,174 +102,173 @@ namespace OpenRCT2::GameActions
         return Result();
     }
 
-    Result CheatSetAction::Execute() const
+    Result CheatSetAction::Execute(GameState_t& gameState) const
     {
-        auto& gameState = getGameState();
         auto* windowMgr = Ui::GetWindowManager();
 
         switch (static_cast<CheatType>(_cheatType.id))
         {
-            case CheatType::SandboxMode:
+            case CheatType::sandboxMode:
                 gameState.cheats.sandboxMode = _param1 != 0;
-                windowMgr->InvalidateByClass(WindowClass::Map);
-                windowMgr->InvalidateByClass(WindowClass::Footpath);
+                windowMgr->InvalidateByClass(WindowClass::map);
+                windowMgr->InvalidateByClass(WindowClass::footpath);
                 break;
-            case CheatType::DisableClearanceChecks:
+            case CheatType::disableClearanceChecks:
                 gameState.cheats.disableClearanceChecks = _param1 != 0;
                 // Required to update the clearance checks overlay on the Cheats button.
-                windowMgr->InvalidateByClass(WindowClass::TopToolbar);
+                windowMgr->InvalidateByClass(WindowClass::topToolbar);
                 break;
-            case CheatType::DisableSupportLimits:
+            case CheatType::disableSupportLimits:
                 gameState.cheats.disableSupportLimits = _param1 != 0;
                 break;
-            case CheatType::ShowAllOperatingModes:
+            case CheatType::showAllOperatingModes:
                 gameState.cheats.showAllOperatingModes = _param1 != 0;
                 break;
-            case CheatType::ShowVehiclesFromOtherTrackTypes:
+            case CheatType::showVehiclesFromOtherTrackTypes:
                 gameState.cheats.showVehiclesFromOtherTrackTypes = _param1 != 0;
                 break;
-            case CheatType::FastLiftHill:
+            case CheatType::fastLiftHill:
                 gameState.cheats.unlockOperatingLimits = _param1 != 0;
                 break;
-            case CheatType::DisableBrakesFailure:
+            case CheatType::disableBrakesFailure:
                 gameState.cheats.disableBrakesFailure = _param1 != 0;
                 break;
-            case CheatType::DisableAllBreakdowns:
+            case CheatType::disableAllBreakdowns:
                 gameState.cheats.disableAllBreakdowns = _param1 != 0;
                 break;
-            case CheatType::DisableTrainLengthLimit:
+            case CheatType::disableTrainLengthLimit:
                 gameState.cheats.disableTrainLengthLimit = _param1 != 0;
                 break;
-            case CheatType::EnableChainLiftOnAllTrack:
+            case CheatType::enableChainLiftOnAllTrack:
                 gameState.cheats.enableChainLiftOnAllTrack = _param1 != 0;
                 break;
-            case CheatType::BuildInPauseMode:
+            case CheatType::buildInPauseMode:
                 gameState.cheats.buildInPauseMode = _param1 != 0;
                 break;
-            case CheatType::IgnoreRideIntensity:
+            case CheatType::ignoreRideIntensity:
                 gameState.cheats.ignoreRideIntensity = _param1 != 0;
                 break;
-            case CheatType::IgnorePrice:
+            case CheatType::ignorePrice:
                 gameState.cheats.ignorePrice = _param1 != 0;
                 break;
-            case CheatType::DisableVandalism:
+            case CheatType::disableVandalism:
                 gameState.cheats.disableVandalism = _param1 != 0;
                 break;
-            case CheatType::DisableLittering:
+            case CheatType::disableLittering:
                 gameState.cheats.disableLittering = _param1 != 0;
                 break;
-            case CheatType::NoMoney:
-                SetScenarioNoMoney(_param1 != 0);
+            case CheatType::noMoney:
+                SetScenarioNoMoney(gameState, _param1 != 0);
                 break;
-            case CheatType::AddMoney:
+            case CheatType::addMoney:
                 AddMoney(_param1);
                 break;
-            case CheatType::SetMoney:
+            case CheatType::setMoney:
                 SetMoney(_param1);
                 break;
-            case CheatType::ClearLoan:
-                ClearLoan();
+            case CheatType::clearLoan:
+                ClearLoan(gameState);
                 break;
-            case CheatType::SetGuestParameter:
+            case CheatType::setGuestParameter:
                 SetGuestParameter(_param1, _param2);
                 break;
-            case CheatType::GenerateGuests:
+            case CheatType::generateGuests:
                 GenerateGuests(_param1);
                 break;
-            case CheatType::RemoveAllGuests:
-                RemoveAllGuests();
+            case CheatType::removeAllGuests:
+                RemoveAllGuests(gameState);
                 break;
-            case CheatType::GiveAllGuests:
+            case CheatType::giveAllGuests:
                 GiveObjectToGuests(_param1);
                 break;
-            case CheatType::SetGrassLength:
-                SetGrassLength(_param1);
+            case CheatType::setGrassLength:
+                SetGrassLength(gameState, _param1);
                 break;
-            case CheatType::WaterPlants:
+            case CheatType::waterPlants:
                 WaterPlants();
                 break;
-            case CheatType::FixVandalism:
+            case CheatType::fixVandalism:
                 FixVandalism();
                 break;
-            case CheatType::RemoveLitter:
-                RemoveLitter();
+            case CheatType::removeLitter:
+                RemoveLitter(gameState);
                 break;
-            case CheatType::DisablePlantAging:
+            case CheatType::disablePlantAging:
                 gameState.cheats.disablePlantAging = _param1 != 0;
                 break;
-            case CheatType::SetStaffSpeed:
+            case CheatType::setStaffSpeed:
                 SetStaffSpeed(_param1);
                 break;
-            case CheatType::RenewRides:
-                RenewRides();
+            case CheatType::renewRides:
+                RenewRides(gameState);
                 break;
-            case CheatType::MakeDestructible:
+            case CheatType::makeDestructible:
                 gameState.cheats.makeAllDestructible = _param1 != 0;
-                windowMgr->InvalidateByClass(WindowClass::Ride);
+                windowMgr->InvalidateByClass(WindowClass::ride);
                 break;
-            case CheatType::FixRides:
-                FixBrokenRides();
+            case CheatType::fixRides:
+                FixBrokenRides(gameState);
                 break;
-            case CheatType::ResetCrashStatus:
-                ResetRideCrashStatus();
+            case CheatType::resetCrashStatus:
+                ResetRideCrashStatus(gameState);
                 break;
-            case CheatType::TenMinuteInspections:
-                Set10MinuteInspection();
+            case CheatType::tenMinuteInspections:
+                Set10MinuteInspection(gameState);
                 break;
-            case CheatType::WinScenario:
+            case CheatType::winScenario:
                 ScenarioSuccess(gameState);
                 break;
-            case CheatType::ForceWeather:
+            case CheatType::forceWeather:
                 // Todo - make sure this is safe
                 ClimateForceWeather(WeatherType{ static_cast<uint8_t>(_param1) });
                 break;
-            case CheatType::FreezeWeather:
+            case CheatType::freezeWeather:
                 gameState.cheats.freezeWeather = _param1 != 0;
                 break;
-            case CheatType::NeverendingMarketing:
+            case CheatType::neverendingMarketing:
                 gameState.cheats.neverendingMarketing = _param1 != 0;
                 break;
-            case CheatType::OpenClosePark:
-                ParkSetOpen(!Park::IsOpen(gameState.park));
+            case CheatType::openClosePark:
+                ParkSetOpen(!Park::IsOpen(gameState.park), gameState);
                 break;
-            case CheatType::HaveFun:
+            case CheatType::haveFun:
                 gameState.scenarioOptions.objective.Type = Scenario::ObjectiveType::haveFun;
                 break;
-            case CheatType::SetForcedParkRating:
+            case CheatType::setForcedParkRating:
                 Park::SetForcedRating(_param1);
                 break;
-            case CheatType::AllowArbitraryRideTypeChanges:
+            case CheatType::allowArbitraryRideTypeChanges:
                 gameState.cheats.allowArbitraryRideTypeChanges = _param1 != 0;
-                windowMgr->InvalidateByClass(WindowClass::Ride);
+                windowMgr->InvalidateByClass(WindowClass::ride);
                 break;
-            case CheatType::OwnAllLand:
+            case CheatType::ownAllLand:
                 OwnAllLand();
                 break;
-            case CheatType::DisableRideValueAging:
+            case CheatType::disableRideValueAging:
                 gameState.cheats.disableRideValueAging = _param1 != 0;
                 break;
-            case CheatType::IgnoreResearchStatus:
+            case CheatType::ignoreResearchStatus:
                 gameState.cheats.ignoreResearchStatus = _param1 != 0;
                 break;
-            case CheatType::EnableAllDrawableTrackPieces:
+            case CheatType::enableAllDrawableTrackPieces:
                 gameState.cheats.enableAllDrawableTrackPieces = _param1 != 0;
                 break;
-            case CheatType::CreateDucks:
+            case CheatType::createDucks:
                 CreateDucks(_param1);
                 break;
-            case CheatType::RemoveDucks:
+            case CheatType::removeDucks:
                 Duck::RemoveAll();
                 break;
-            case CheatType::AllowTrackPlaceInvalidHeights:
+            case CheatType::allowTrackPlaceInvalidHeights:
                 gameState.cheats.allowTrackPlaceInvalidHeights = _param1 != 0;
                 break;
-            case CheatType::AllowRegularPathAsQueue:
+            case CheatType::allowRegularPathAsQueue:
                 gameState.cheats.allowRegularPathAsQueue = _param1 != 0;
                 break;
-            case CheatType::AllowSpecialColourSchemes:
+            case CheatType::allowSpecialColourSchemes:
                 gameState.cheats.allowSpecialColourSchemes = static_cast<bool>(_param1);
                 break;
-            case CheatType::RemoveParkFences:
+            case CheatType::removeParkFences:
                 RemoveParkFences();
                 break;
             default:
@@ -279,12 +278,12 @@ namespace OpenRCT2::GameActions
             }
         }
 
-        if (NetworkGetMode() == NETWORK_MODE_NONE)
+        if (Network::GetMode() == Network::Mode::none)
         {
             Config::Save();
         }
 
-        windowMgr->InvalidateByClass(WindowClass::Cheats);
+        windowMgr->InvalidateByClass(WindowClass::cheats);
         return Result();
     }
 
@@ -292,69 +291,69 @@ namespace OpenRCT2::GameActions
     {
         switch (static_cast<CheatType>(_cheatType.id))
         {
-            case CheatType::SandboxMode:
+            case CheatType::sandboxMode:
                 [[fallthrough]];
-            case CheatType::DisableClearanceChecks:
+            case CheatType::disableClearanceChecks:
                 [[fallthrough]];
-            case CheatType::DisableSupportLimits:
+            case CheatType::disableSupportLimits:
                 [[fallthrough]];
-            case CheatType::ShowAllOperatingModes:
+            case CheatType::showAllOperatingModes:
                 [[fallthrough]];
-            case CheatType::ShowVehiclesFromOtherTrackTypes:
+            case CheatType::showVehiclesFromOtherTrackTypes:
                 [[fallthrough]];
-            case CheatType::FastLiftHill:
+            case CheatType::fastLiftHill:
                 [[fallthrough]];
-            case CheatType::DisableBrakesFailure:
+            case CheatType::disableBrakesFailure:
                 [[fallthrough]];
-            case CheatType::DisableAllBreakdowns:
+            case CheatType::disableAllBreakdowns:
                 [[fallthrough]];
-            case CheatType::DisableTrainLengthLimit:
+            case CheatType::disableTrainLengthLimit:
                 [[fallthrough]];
-            case CheatType::EnableChainLiftOnAllTrack:
+            case CheatType::enableChainLiftOnAllTrack:
                 [[fallthrough]];
-            case CheatType::BuildInPauseMode:
+            case CheatType::buildInPauseMode:
                 [[fallthrough]];
-            case CheatType::IgnoreRideIntensity:
+            case CheatType::ignoreRideIntensity:
                 [[fallthrough]];
-            case CheatType::IgnorePrice:
+            case CheatType::ignorePrice:
                 [[fallthrough]];
-            case CheatType::DisableVandalism:
+            case CheatType::disableVandalism:
                 [[fallthrough]];
-            case CheatType::DisableLittering:
+            case CheatType::disableLittering:
                 [[fallthrough]];
-            case CheatType::NoMoney:
+            case CheatType::noMoney:
                 [[fallthrough]];
-            case CheatType::DisablePlantAging:
+            case CheatType::disablePlantAging:
                 [[fallthrough]];
-            case CheatType::FreezeWeather:
+            case CheatType::freezeWeather:
                 [[fallthrough]];
-            case CheatType::NeverendingMarketing:
+            case CheatType::neverendingMarketing:
                 [[fallthrough]];
-            case CheatType::AllowArbitraryRideTypeChanges:
+            case CheatType::allowArbitraryRideTypeChanges:
                 [[fallthrough]];
-            case CheatType::DisableRideValueAging:
+            case CheatType::disableRideValueAging:
                 [[fallthrough]];
-            case CheatType::IgnoreResearchStatus:
+            case CheatType::ignoreResearchStatus:
                 [[fallthrough]];
-            case CheatType::EnableAllDrawableTrackPieces:
+            case CheatType::enableAllDrawableTrackPieces:
                 [[fallthrough]];
-            case CheatType::AllowRegularPathAsQueue:
+            case CheatType::allowRegularPathAsQueue:
                 [[fallthrough]];
-            case CheatType::UnlockAllPrices:
+            case CheatType::unlockAllPrices:
                 [[fallthrough]];
-            case CheatType::MakeDestructible:
+            case CheatType::makeDestructible:
                 [[fallthrough]];
-            case CheatType::AllowSpecialColourSchemes:
+            case CheatType::allowSpecialColourSchemes:
                 [[fallthrough]];
-            case CheatType::AllowTrackPlaceInvalidHeights:
+            case CheatType::allowTrackPlaceInvalidHeights:
                 [[fallthrough]];
-            case CheatType::OpenClosePark:
+            case CheatType::openClosePark:
                 return { { 0, 1 }, { 0, 0 } };
-            case CheatType::AddMoney:
+            case CheatType::addMoney:
                 [[fallthrough]];
-            case CheatType::SetMoney:
+            case CheatType::setMoney:
                 return { { std::numeric_limits<money64>::min(), std::numeric_limits<money64>::max() }, { 0, 0 } };
-            case CheatType::SetGuestParameter:
+            case CheatType::setGuestParameter:
                 switch (_param1)
                 {
                     case GUEST_PARAMETER_HAPPINESS:
@@ -383,51 +382,51 @@ namespace OpenRCT2::GameActions
                     default:
                         return { { 0, 0 }, { 0, 0 } };
                 }
-            case CheatType::GenerateGuests:
+            case CheatType::generateGuests:
                 return { { 1, 10000 }, { 0, 0 } };
-            case CheatType::GiveAllGuests:
+            case CheatType::giveAllGuests:
                 return { { OBJECT_MONEY, OBJECT_UMBRELLA }, { 0, 0 } };
-            case CheatType::SetGrassLength:
+            case CheatType::setGrassLength:
                 return { { 0, 7 }, { 0, 0 } };
-            case CheatType::SetStaffSpeed:
+            case CheatType::setStaffSpeed:
                 return { { 0, 255 }, { 0, 0 } };
-            case CheatType::ForceWeather:
+            case CheatType::forceWeather:
                 return { { 0, EnumValue(WeatherType::Count) - 1 }, { 0, 0 } };
-            case CheatType::SetForcedParkRating:
+            case CheatType::setForcedParkRating:
                 return { { -1, 999 }, { 0, 0 } };
-            case CheatType::CreateDucks:
+            case CheatType::createDucks:
                 return { { 0, 100 }, { 0, 0 } };
-            case CheatType::RemoveDucks:
+            case CheatType::removeDucks:
                 [[fallthrough]];
-            case CheatType::ClearLoan:
+            case CheatType::clearLoan:
                 [[fallthrough]];
-            case CheatType::RemoveAllGuests:
+            case CheatType::removeAllGuests:
                 [[fallthrough]];
-            case CheatType::OwnAllLand:
+            case CheatType::ownAllLand:
                 [[fallthrough]];
-            case CheatType::WinScenario:
+            case CheatType::winScenario:
                 [[fallthrough]];
-            case CheatType::HaveFun:
+            case CheatType::haveFun:
                 [[fallthrough]];
-            case CheatType::FixVandalism:
+            case CheatType::fixVandalism:
                 [[fallthrough]];
-            case CheatType::WaterPlants:
+            case CheatType::waterPlants:
                 [[fallthrough]];
-            case CheatType::FixRides:
+            case CheatType::fixRides:
                 [[fallthrough]];
-            case CheatType::RenewRides:
+            case CheatType::renewRides:
                 [[fallthrough]];
-            case CheatType::TenMinuteInspections:
+            case CheatType::tenMinuteInspections:
                 [[fallthrough]];
-            case CheatType::ResetCrashStatus:
+            case CheatType::resetCrashStatus:
                 [[fallthrough]];
-            case CheatType::NoCapOnQueueLengthDummy:
+            case CheatType::noCapOnQueueLengthDummy:
                 [[fallthrough]];
-            case CheatType::RemoveLitter:
+            case CheatType::removeLitter:
                 [[fallthrough]];
-            case CheatType::RemoveParkFences:
+            case CheatType::removeParkFences:
                 return { { 0, 0 }, { 0, 0 } };
-            case CheatType::Count:
+            case CheatType::count:
                 break;
         }
 
@@ -437,9 +436,8 @@ namespace OpenRCT2::GameActions
         return { { 0, 0 }, { 0, 0 } };
     }
 
-    void CheatSetAction::SetGrassLength(int32_t length) const
+    void CheatSetAction::SetGrassLength(GameState_t& gameState, int32_t length) const
     {
-        auto& gameState = getGameState();
         for (int32_t y = 0; y < gameState.mapSize.y; y++)
         {
             for (int32_t x = 0; x < gameState.mapSize.x; x++)
@@ -494,11 +492,11 @@ namespace OpenRCT2::GameActions
         GfxInvalidateScreen();
     }
 
-    void CheatSetAction::RemoveLitter() const
+    void CheatSetAction::RemoveLitter(GameState_t& gameState) const
     {
         for (auto litter : EntityList<Litter>())
         {
-            EntityRemove(litter);
+            gameState.entities.EntityRemove(litter);
         }
 
         TileElementIterator it{};
@@ -521,9 +519,9 @@ namespace OpenRCT2::GameActions
         GfxInvalidateScreen();
     }
 
-    void CheatSetAction::FixBrokenRides() const
+    void CheatSetAction::FixBrokenRides(GameState_t& gameState) const
     {
-        for (auto& ride : GetRideManager())
+        for (auto& ride : RideManager(gameState))
         {
             if (ride.lifecycleFlags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN))
             {
@@ -549,42 +547,42 @@ namespace OpenRCT2::GameActions
         }
     }
 
-    void CheatSetAction::RenewRides() const
+    void CheatSetAction::RenewRides(GameState_t& gameState) const
     {
-        for (auto& ride : GetRideManager())
+        for (auto& ride : RideManager(gameState))
         {
             ride.renew();
         }
         auto* windowMgr = Ui::GetWindowManager();
-        windowMgr->InvalidateByClass(WindowClass::Ride);
+        windowMgr->InvalidateByClass(WindowClass::ride);
     }
 
-    void CheatSetAction::ResetRideCrashStatus() const
+    void CheatSetAction::ResetRideCrashStatus(GameState_t& gameState) const
     {
-        for (auto& ride : GetRideManager())
+        for (auto& ride : RideManager(gameState))
         {
             // Reset crash status and history
             ride.lifecycleFlags &= ~RIDE_LIFECYCLE_CRASHED;
             ride.lastCrashType = RIDE_CRASH_TYPE_NONE;
         }
         auto* windowMgr = Ui::GetWindowManager();
-        windowMgr->InvalidateByClass(WindowClass::Ride);
+        windowMgr->InvalidateByClass(WindowClass::ride);
     }
 
-    void CheatSetAction::Set10MinuteInspection() const
+    void CheatSetAction::Set10MinuteInspection(GameState_t& gameState) const
     {
-        for (auto& ride : GetRideManager())
+        for (auto& ride : RideManager(gameState))
         {
             // Set inspection interval to 10 minutes
             ride.inspectionInterval = RIDE_INSPECTION_EVERY_10_MINUTES;
         }
         auto* windowMgr = Ui::GetWindowManager();
-        windowMgr->InvalidateByClass(WindowClass::Ride);
+        windowMgr->InvalidateByClass(WindowClass::ride);
     }
 
-    void CheatSetAction::SetScenarioNoMoney(bool enabled) const
+    void CheatSetAction::SetScenarioNoMoney(GameState_t& gameState, bool enabled) const
     {
-        auto& park = getGameState().park;
+        auto& park = gameState.park;
         if (enabled)
         {
             park.flags |= PARK_FLAGS_NO_MONEY;
@@ -596,13 +594,13 @@ namespace OpenRCT2::GameActions
 
         // Invalidate all windows that have anything to do with finance
         auto* windowMgr = Ui::GetWindowManager();
-        windowMgr->InvalidateByClass(WindowClass::Ride);
-        windowMgr->InvalidateByClass(WindowClass::Peep);
-        windowMgr->InvalidateByClass(WindowClass::ParkInformation);
-        windowMgr->InvalidateByClass(WindowClass::Finances);
-        windowMgr->InvalidateByClass(WindowClass::BottomToolbar);
-        windowMgr->InvalidateByClass(WindowClass::TopToolbar);
-        windowMgr->InvalidateByClass(WindowClass::Cheats);
+        windowMgr->InvalidateByClass(WindowClass::ride);
+        windowMgr->InvalidateByClass(WindowClass::peep);
+        windowMgr->InvalidateByClass(WindowClass::parkInformation);
+        windowMgr->InvalidateByClass(WindowClass::finances);
+        windowMgr->InvalidateByClass(WindowClass::bottomToolbar);
+        windowMgr->InvalidateByClass(WindowClass::topToolbar);
+        windowMgr->InvalidateByClass(WindowClass::cheats);
     }
 
     void CheatSetAction::SetMoney(money64 amount) const
@@ -610,8 +608,8 @@ namespace OpenRCT2::GameActions
         getGameState().park.cash = amount;
 
         auto* windowMgr = Ui::GetWindowManager();
-        windowMgr->InvalidateByClass(WindowClass::Finances);
-        windowMgr->InvalidateByClass(WindowClass::BottomToolbar);
+        windowMgr->InvalidateByClass(WindowClass::finances);
+        windowMgr->InvalidateByClass(WindowClass::bottomToolbar);
     }
 
     void CheatSetAction::AddMoney(money64 amount) const
@@ -620,18 +618,18 @@ namespace OpenRCT2::GameActions
         park.cash = AddClamp<money64>(park.cash, amount);
 
         auto* windowMgr = Ui::GetWindowManager();
-        windowMgr->InvalidateByClass(WindowClass::Finances);
-        windowMgr->InvalidateByClass(WindowClass::BottomToolbar);
+        windowMgr->InvalidateByClass(WindowClass::finances);
+        windowMgr->InvalidateByClass(WindowClass::bottomToolbar);
     }
 
-    void CheatSetAction::ClearLoan() const
+    void CheatSetAction::ClearLoan(GameState_t& gameState) const
     {
         // First give money
         AddMoney(getGameState().park.bankLoan);
 
         // Then pay the loan
         auto gameAction = ParkSetLoanAction(0.00_GBP);
-        ExecuteNested(&gameAction);
+        ExecuteNested(&gameAction, gameState);
     }
 
     void CheatSetAction::GenerateGuests(int32_t count) const
@@ -642,7 +640,7 @@ namespace OpenRCT2::GameActions
         }
 
         auto* windowMgr = Ui::GetWindowManager();
-        windowMgr->InvalidateByClass(WindowClass::BottomToolbar);
+        windowMgr->InvalidateByClass(WindowClass::bottomToolbar);
     }
 
     void CheatSetAction::SetGuestParameter(int32_t parameter, int32_t value) const
@@ -715,12 +713,12 @@ namespace OpenRCT2::GameActions
         }
 
         auto* windowMgr = Ui::GetWindowManager();
-        windowMgr->InvalidateByClass(WindowClass::Peep);
+        windowMgr->InvalidateByClass(WindowClass::peep);
     }
 
-    void CheatSetAction::RemoveAllGuests() const
+    void CheatSetAction::RemoveAllGuests(GameState_t& gameState) const
     {
-        for (auto& ride : GetRideManager())
+        for (auto& ride : RideManager(gameState))
         {
             ride.numRiders = 0;
 
@@ -732,8 +730,8 @@ namespace OpenRCT2::GameActions
 
             for (auto trainIndex : ride.vehicles)
             {
-                for (Vehicle* vehicle = TryGetEntity<Vehicle>(trainIndex); vehicle != nullptr;
-                     vehicle = TryGetEntity<Vehicle>(vehicle->next_vehicle_on_train))
+                for (Vehicle* vehicle = getGameState().entities.TryGetEntity<Vehicle>(trainIndex); vehicle != nullptr;
+                     vehicle = getGameState().entities.TryGetEntity<Vehicle>(vehicle->next_vehicle_on_train))
                 {
                     auto i = 0;
                     for (auto& peepInTrainIndex : vehicle->peep)
@@ -741,7 +739,7 @@ namespace OpenRCT2::GameActions
                         if (i >= vehicle->num_peeps)
                             break;
 
-                        auto peep = TryGetEntity<Guest>(peepInTrainIndex);
+                        auto peep = getGameState().entities.TryGetEntity<Guest>(peepInTrainIndex);
                         if (peep != nullptr && peep->CurrentRide == ride.id)
                         {
                             if ((peep->State == PeepState::OnRide && peep->RideSubState == PeepRideSubState::OnRide)
@@ -774,7 +772,7 @@ namespace OpenRCT2::GameActions
         }
 
         auto* windowMgr = Ui::GetWindowManager();
-        windowMgr->InvalidateByClass(WindowClass::Ride);
+        windowMgr->InvalidateByClass(WindowClass::ride);
         GfxInvalidateScreen();
     }
 
@@ -833,10 +831,10 @@ namespace OpenRCT2::GameActions
         MapCountRemainingLandRights();
     }
 
-    void CheatSetAction::ParkSetOpen(bool isOpen) const
+    void CheatSetAction::ParkSetOpen(bool isOpen, GameState_t& gameState) const
     {
         auto parkSetParameter = ParkSetParameterAction(isOpen ? ParkParameter::Open : ParkParameter::Close);
-        ExecuteNested(&parkSetParameter);
+        ExecuteNested(&parkSetParameter, gameState);
     }
 
     void CheatSetAction::CreateDucks(int count) const

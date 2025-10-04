@@ -13,6 +13,7 @@
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Editor.h>
 #include <openrct2/Game.h>
+#include <openrct2/GameState.h>
 #include <openrct2/Input.h>
 #include <openrct2/ParkImporter.h>
 #include <openrct2/PlatformEnvironment.h>
@@ -89,9 +90,9 @@ namespace OpenRCT2::Ui::Windows
         ScreenRect _filterRect;
 
     public:
-        void OnOpen() override
+        void onOpen() override
         {
-            SetWidgets(_titleMenuWidgets);
+            setWidgets(_titleMenuWidgets);
 
 #ifdef DISABLE_NETWORK
             widgets[WIDX_MULTIPLAYER].type = WidgetType::empty;
@@ -113,10 +114,10 @@ namespace OpenRCT2::Ui::Windows
             windowPos.x = (ContextGetWidth() - width) / 2;
             colours[1] = ColourWithFlags{ COLOUR_LIGHT_ORANGE }.withFlag(ColourFlag::translucent, true);
 
-            InitScrollWidgets();
+            initScrollWidgets();
         }
 
-        void OnMouseUp(WidgetIndex widgetIndex) override
+        void onMouseUp(WidgetIndex widgetIndex) override
         {
             WindowBase* windowToOpen = nullptr;
 
@@ -125,52 +126,52 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_START_NEW_GAME:
-                    windowToOpen = windowMgr->FindByClass(WindowClass::ScenarioSelect);
+                    windowToOpen = windowMgr->FindByClass(WindowClass::scenarioSelect);
                     if (windowToOpen != nullptr)
                     {
                         windowMgr->BringToFront(*windowToOpen);
                     }
                     else
                     {
-                        windowMgr->CloseByClass(WindowClass::Loadsave);
-                        windowMgr->CloseByClass(WindowClass::ServerList);
+                        windowMgr->CloseByClass(WindowClass::loadsave);
+                        windowMgr->CloseByClass(WindowClass::serverList);
                         ScenarioselectOpen(WindowTitleMenuScenarioselectCallback);
                     }
                     break;
                 case WIDX_CONTINUE_SAVED_GAME:
-                    windowToOpen = windowMgr->FindByClass(WindowClass::Loadsave);
+                    windowToOpen = windowMgr->FindByClass(WindowClass::loadsave);
                     if (windowToOpen != nullptr)
                     {
                         windowMgr->BringToFront(*windowToOpen);
                     }
                     else
                     {
-                        windowMgr->CloseByClass(WindowClass::ScenarioSelect);
-                        windowMgr->CloseByClass(WindowClass::ServerList);
+                        windowMgr->CloseByClass(WindowClass::scenarioSelect);
+                        windowMgr->CloseByClass(WindowClass::serverList);
                         auto loadOrQuitAction = GameActions::LoadOrQuitAction(GameActions::LoadOrQuitModes::OpenSavePrompt);
-                        GameActions::Execute(&loadOrQuitAction);
+                        GameActions::Execute(&loadOrQuitAction, getGameState());
                     }
                     break;
                 case WIDX_MULTIPLAYER:
-                    windowToOpen = windowMgr->FindByClass(WindowClass::ServerList);
+                    windowToOpen = windowMgr->FindByClass(WindowClass::serverList);
                     if (windowToOpen != nullptr)
                     {
                         windowMgr->BringToFront(*windowToOpen);
                     }
                     else
                     {
-                        windowMgr->CloseByClass(WindowClass::ScenarioSelect);
-                        windowMgr->CloseByClass(WindowClass::Loadsave);
-                        ContextOpenWindow(WindowClass::ServerList);
+                        windowMgr->CloseByClass(WindowClass::scenarioSelect);
+                        windowMgr->CloseByClass(WindowClass::loadsave);
+                        ContextOpenWindow(WindowClass::serverList);
                     }
                     break;
                 case WIDX_NEW_VERSION:
-                    ContextOpenWindowView(WV_NEW_VERSION_INFO);
+                    ContextOpenWindowView(WindowView::newVersionInfo);
                     break;
             }
         }
 
-        void OnMouseDown(WidgetIndex widgetIndex) override
+        void onMouseDown(WidgetIndex widgetIndex) override
         {
             if (widgetIndex == WIDX_GAME_TOOLS)
             {
@@ -216,7 +217,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDropdown(WidgetIndex widgetIndex, int32_t selectedIndex) override
+        void onDropdown(WidgetIndex widgetIndex, int32_t selectedIndex) override
         {
             if (selectedIndex == -1)
             {
@@ -253,13 +254,13 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        CursorID OnCursor(WidgetIndex, const ScreenCoordsXY&, CursorID cursorId) override
+        CursorID onCursor(WidgetIndex, const ScreenCoordsXY&, CursorID cursorId) override
         {
             gTooltipCloseTimeout = gCurrentRealTimeTicks + 2000;
             return cursorId;
         }
 
-        void OnPrepareDraw() override
+        void onPrepareDraw() override
         {
             _filterRect = { windowPos + ScreenCoordsXY{ 0, UpdateButtonDims.height },
                             windowPos + ScreenCoordsXY{ width - 1, MenuButtonDims.height + UpdateButtonDims.height - 1 } };
@@ -270,10 +271,10 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDraw(RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
-            GfxFilterRect(rt, _filterRect, FilterPaletteID::Palette51);
-            DrawWidgets(rt);
+            GfxFilterRect(rt, _filterRect, FilterPaletteID::palette51);
+            drawWidgets(rt);
         }
     };
 
@@ -286,7 +287,7 @@ namespace OpenRCT2::Ui::Windows
 
         auto* windowMgr = GetWindowManager();
         return windowMgr->Create<TitleMenuWindow>(
-            WindowClass::TitleMenu, ScreenCoordsXY(0, ContextGetHeight() - 182), { 0, windowHeight },
-            WF_STICK_TO_BACK | WF_TRANSPARENT | WF_NO_BACKGROUND | WF_NO_TITLE_BAR);
+            WindowClass::titleMenu, ScreenCoordsXY(0, ContextGetHeight() - 182), { 0, windowHeight },
+            { WindowFlag::stickToBack, WindowFlag::transparent, WindowFlag::noBackground, WindowFlag::noTitleBar });
     }
 } // namespace OpenRCT2::Ui::Windows

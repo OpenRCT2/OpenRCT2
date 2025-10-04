@@ -14,6 +14,7 @@
 #include "../entity/Guest.h"
 #include "../scenario/Scenario.h"
 #include "../world/Location.hpp"
+#include "../world/Map.h"
 #include "../world/tile_element/TileElement.h"
 #include "../world/tile_element/TrackElement.h"
 #include "RideEntry.h"
@@ -109,7 +110,7 @@ static void RideUpdateStationDodgems(Ride& ride, StationIndex stationIndex)
         int32_t dh = (dx >> 8) & 0xFF;
         for (size_t i = 0; i < ride.numTrains; i++)
         {
-            Vehicle* vehicle = GetEntity<Vehicle>(ride.vehicles[i]);
+            Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[i]);
             if (vehicle == nullptr)
                 continue;
 
@@ -130,7 +131,7 @@ static void RideUpdateStationDodgems(Ride& ride, StationIndex stationIndex)
         // Check if all vehicles are ready to go
         for (size_t i = 0; i < ride.numTrains; i++)
         {
-            Vehicle* vehicle = GetEntity<Vehicle>(ride.vehicles[i]);
+            Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[i]);
             if (vehicle == nullptr)
                 continue;
 
@@ -207,7 +208,7 @@ static void RideUpdateStationRace(Ride& ride, StationIndex stationIndex)
 
         for (size_t i = 0; i < ride.numTrains; i++)
         {
-            Vehicle* vehicle = GetEntity<Vehicle>(ride.vehicles[i]);
+            Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[i]);
             if (vehicle == nullptr)
                 continue;
 
@@ -216,7 +217,7 @@ static void RideUpdateStationRace(Ride& ride, StationIndex stationIndex)
                 // Found a winner
                 if (vehicle->num_peeps != 0)
                 {
-                    auto* peep = GetEntity<Guest>(vehicle->peep[0]);
+                    auto* peep = getGameState().entities.GetEntity<Guest>(vehicle->peep[0]);
                     if (peep != nullptr)
                     {
                         ride.raceWinner = peep->Id;
@@ -243,7 +244,7 @@ static void RideUpdateStationRace(Ride& ride, StationIndex stationIndex)
         // Check if all vehicles are ready to go
         for (size_t i = 0; i < ride.numTrains; i++)
         {
-            Vehicle* vehicle = GetEntity<Vehicle>(ride.vehicles[i]);
+            Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[i]);
             if (vehicle == nullptr)
                 continue;
 
@@ -280,7 +281,7 @@ static void RideRaceInitVehicleSpeeds(const Ride& ride)
 {
     for (size_t i = 0; i < ride.numTrains; i++)
     {
-        Vehicle* vehicle = GetEntity<Vehicle>(ride.vehicles[i]);
+        Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[i]);
         if (vehicle == nullptr)
             continue;
 
@@ -292,7 +293,7 @@ static void RideRaceInitVehicleSpeeds(const Ride& ride)
 
         if (vehicle->num_peeps != 0)
         {
-            auto* guest = GetEntity<Guest>(vehicle->peep[0]);
+            auto* guest = getGameState().entities.GetEntity<Guest>(vehicle->peep[0]);
 
             // Easter egg names should only work on guests
             if (guest != nullptr)

@@ -91,7 +91,7 @@ void ScreenshotCheck()
 
             if (!screenshotPath.empty())
             {
-                OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::WindowOpen, 100, ContextGetWidth() / 2);
+                OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::windowOpen, 100, ContextGetWidth() / 2);
 
                 // Show user that screenshot saved successfully
                 const auto filename = Path::GetFileName(screenshotPath);
@@ -395,27 +395,27 @@ static void ApplyOptions(const ScreenshotOptions* options, Viewport& viewport)
 
     if (options->mowed_grass)
     {
-        CheatsSet(CheatType::SetGrassLength, GRASS_LENGTH_MOWED);
+        CheatsSet(CheatType::setGrassLength, GRASS_LENGTH_MOWED);
     }
 
     if (options->clear_grass || options->tidy_up_park)
     {
-        CheatsSet(CheatType::SetGrassLength, GRASS_LENGTH_CLEAR_0);
+        CheatsSet(CheatType::setGrassLength, GRASS_LENGTH_CLEAR_0);
     }
 
     if (options->water_plants || options->tidy_up_park)
     {
-        CheatsSet(CheatType::WaterPlants);
+        CheatsSet(CheatType::waterPlants);
     }
 
     if (options->fix_vandalism || options->tidy_up_park)
     {
-        CheatsSet(CheatType::FixVandalism);
+        CheatsSet(CheatType::fixVandalism);
     }
 
     if (options->remove_litter || options->tidy_up_park)
     {
-        CheatsSet(CheatType::RemoveLitter);
+        CheatsSet(CheatType::removeLitter);
     }
 
     if (options->transparent || Config::Get().general.TransparentScreenshot)

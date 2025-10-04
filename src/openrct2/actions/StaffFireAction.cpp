@@ -10,6 +10,7 @@
 #include "StaffFireAction.h"
 
 #include "../Diagnostic.h"
+#include "../GameState.h"
 #include "../entity/EntityRegistry.h"
 #include "../entity/Staff.h"
 #include "../ui/WindowManager.h"
@@ -37,7 +38,7 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_spriteId);
     }
 
-    Result StaffFireAction::Query() const
+    Result StaffFireAction::Query(GameState_t& gameState) const
     {
         if (_spriteId.ToUnderlying() >= kMaxEntities || _spriteId.IsNull())
         {
@@ -45,7 +46,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
         }
 
-        auto staff = TryGetEntity<Staff>(_spriteId);
+        auto staff = getGameState().entities.TryGetEntity<Staff>(_spriteId);
         if (staff == nullptr)
         {
             LOG_ERROR("Staff entity not found for spriteId %u", _spriteId);
@@ -64,9 +65,9 @@ namespace OpenRCT2::GameActions
         return Result();
     }
 
-    Result StaffFireAction::Execute() const
+    Result StaffFireAction::Execute(GameState_t& gameState) const
     {
-        auto staff = TryGetEntity<Staff>(_spriteId);
+        auto staff = getGameState().entities.TryGetEntity<Staff>(_spriteId);
         if (staff == nullptr)
         {
             LOG_ERROR("Staff entity not found for spriteId %u", _spriteId);
@@ -74,7 +75,7 @@ namespace OpenRCT2::GameActions
         }
 
         auto* windowMgr = Ui::GetWindowManager();
-        windowMgr->CloseByClass(WindowClass::FirePrompt);
+        windowMgr->CloseByClass(WindowClass::firePrompt);
 
         PeepEntityRemove(staff);
         // Due to patrol areas best to invalidate the whole screen on removal of staff

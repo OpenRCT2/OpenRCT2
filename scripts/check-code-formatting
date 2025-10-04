@@ -16,4 +16,5 @@ fi
 basedir="$($readlink_bin -f `dirname $0`/..)"
 cd $basedir
 
-scripts/run-clang-format.py --clang-format-executable /usr/lib/llvm20/bin/clang-format -r src test data/shaders --exclude src/thirdparty --extensions "c,h,C,H,cpp,hpp,cc,hh,c++,h++,cxx,hxx,vert,frag,mm"
+scripts/run-clang-format.py -i --clang-format-executable /usr/lib/llvm20/bin/clang-format -r src test data/shaders --exclude src/thirdparty --extensions "c,h,C,H,cpp,hpp,cc,hh,c++,h++,cxx,hxx,vert,frag,mm"
+git diff --exit-code

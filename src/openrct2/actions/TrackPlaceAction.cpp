@@ -20,6 +20,7 @@
 #include "../ride/TrackDesign.h"
 #include "../world/ConstructionClearance.h"
 #include "../world/Footpath.h"
+#include "../world/Map.h"
 #include "../world/MapAnimation.h"
 #include "../world/QuarterTile.h"
 #include "../world/Wall.h"
@@ -76,7 +77,7 @@ namespace OpenRCT2::GameActions
                << DS_TAG(_colour) << DS_TAG(_seatRotation) << DS_TAG(_trackPlaceFlags.holder);
     }
 
-    Result TrackPlaceAction::Query() const
+    Result TrackPlaceAction::Query(GameState_t& gameState) const
     {
         auto ride = GetRide(_rideIndex);
         if (ride == nullptr)
@@ -98,7 +99,6 @@ namespace OpenRCT2::GameActions
                 Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_ERR_VALUE_OUT_OF_RANGE);
         }
 
-        auto& gameState = getGameState();
         if (_rideType != ride->type && !gameState.cheats.allowArbitraryRideTypeChanges)
         {
             return Result(Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, kStringIdNone);
@@ -263,7 +263,8 @@ namespace OpenRCT2::GameActions
                 ? CreateCrossingMode::trackOverPath
                 : CreateCrossingMode::none;
             auto canBuild = MapCanConstructWithClearAt(
-                { mapLoc, baseZ, clearanceZ }, &MapPlaceNonSceneryClearFunc, quarterTile, GetFlags(), crossingMode);
+                { mapLoc, baseZ, clearanceZ }, &MapPlaceNonSceneryClearFunc, quarterTile, GetFlags(), kTileSlopeFlat,
+                crossingMode);
             if (canBuild.Error != Status::Ok)
             {
                 canBuild.ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
@@ -370,9 +371,9 @@ namespace OpenRCT2::GameActions
                 {
                     uint16_t maxHeight;
 
-                    if (rtd.HasFlag(RtdFlag::listVehiclesSeparately) && rideEntry->max_height != 0)
+                    if (rtd.HasFlag(RtdFlag::listVehiclesSeparately) && rideEntry->maxHeight != 0)
                     {
-                        maxHeight = rideEntry->max_height;
+                        maxHeight = rideEntry->maxHeight;
                     }
                     else
                     {
@@ -407,7 +408,7 @@ namespace OpenRCT2::GameActions
         return res;
     }
 
-    Result TrackPlaceAction::Execute() const
+    Result TrackPlaceAction::Execute(GameState_t& gameState) const
     {
         auto ride = GetRide(_rideIndex);
         if (ride == nullptr)
@@ -468,7 +469,7 @@ namespace OpenRCT2::GameActions
                 : CreateCrossingMode::none;
             auto canBuild = MapCanConstructWithClearAt(
                 mapLocWithClearance, &MapPlaceNonSceneryClearFunc, quarterTile, GetFlags() | GAME_COMMAND_FLAG_APPLY,
-                crossingMode);
+                kTileSlopeFlat, crossingMode);
             if (canBuild.Error != Status::Ok)
             {
                 canBuild.ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
@@ -486,7 +487,6 @@ namespace OpenRCT2::GameActions
                 }
             }
 
-            auto& gameState = getGameState();
             if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST) && !gameState.cheats.disableClearanceChecks)
             {
                 FootpathRemoveLitter(mapLoc);
@@ -683,20 +683,18 @@ namespace OpenRCT2::GameActions
                     ride->numBlockBrakes++;
                     ride->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_OPERATING;
 
-                    // change the current mode to its circuit blocked equivalent
-                    RideMode newMode = RideMode::continuousCircuitBlockSectioned;
-                    if (ride->mode == RideMode::poweredLaunch)
+                    auto newMode = RideModeGetBlockSectionedCounterpart(ride->mode);
+                    if (ride->mode != newMode)
                     {
-                        if (rtd.SupportsRideMode(RideMode::poweredLaunchBlockSectioned)
-                            || getGameState().cheats.showAllOperatingModes)
-                            newMode = RideMode::poweredLaunchBlockSectioned;
-                        else
-                            newMode = RideMode::poweredLaunch;
+                        bool canSwitch = rtd.SupportsRideMode(newMode) || getGameState().cheats.showAllOperatingModes;
+                        if (canSwitch)
+                        {
+                            auto rideSetSetting = GameActions::RideSetSettingAction(
+                                ride->id, GameActions::RideSetSetting::Mode, static_cast<uint8_t>(newMode));
+                            ExecuteNested(&rideSetSetting, gameState);
+                        }
                     }
 
-                    auto rideSetSetting = GameActions::RideSetSettingAction(
-                        ride->id, GameActions::RideSetSetting::Mode, static_cast<uint8_t>(newMode));
-                    ExecuteNested(&rideSetSetting);
                     break;
                 }
                 default:

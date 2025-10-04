@@ -85,6 +85,7 @@ namespace OpenRCT2
         ObjectEntryIndex objectId;
         PeepAnimationGroup group;
         RCT12PeepAnimationGroup legacyPosition;
+        std::string rawName;
         std::string_view scriptName;
     };
 

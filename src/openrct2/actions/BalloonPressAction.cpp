@@ -10,6 +10,7 @@
 #include "BalloonPressAction.h"
 
 #include "../Diagnostic.h"
+#include "../GameState.h"
 #include "../entity/Balloon.h"
 #include "../entity/EntityRegistry.h"
 #include "GameAction.h"
@@ -37,9 +38,9 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_spriteIndex);
     }
 
-    Result BalloonPressAction::Query() const
+    Result BalloonPressAction::Query(GameState_t& gameState) const
     {
-        auto balloon = TryGetEntity<Balloon>(_spriteIndex);
+        auto balloon = gameState.entities.TryGetEntity<Balloon>(_spriteIndex);
         if (balloon == nullptr)
         {
             LOG_ERROR("Balloon not found for spriteIndex %u", _spriteIndex);
@@ -48,9 +49,9 @@ namespace OpenRCT2::GameActions
         return Result();
     }
 
-    Result BalloonPressAction::Execute() const
+    Result BalloonPressAction::Execute(GameState_t& gameState) const
     {
-        auto balloon = TryGetEntity<Balloon>(_spriteIndex);
+        auto balloon = gameState.entities.TryGetEntity<Balloon>(_spriteIndex);
         if (balloon == nullptr)
         {
             LOG_ERROR("Balloon not found for spriteIndex %u", _spriteIndex);

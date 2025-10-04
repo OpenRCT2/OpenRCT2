@@ -25,57 +25,57 @@
 
 using namespace OpenRCT2::Ui;
 
-std::string_view RegisteredShortcut::GetTopLevelGroup() const
+std::string_view RegisteredShortcut::getTopLevelGroup() const
 {
-    auto fullstopIndex = Id.find('.');
+    auto fullstopIndex = id.find('.');
     if (fullstopIndex != std::string::npos)
     {
-        return std::string_view(Id.c_str(), fullstopIndex);
+        return std::string_view(id.c_str(), fullstopIndex);
     }
     return {};
 }
 
-std::string_view RegisteredShortcut::GetGroup() const
+std::string_view RegisteredShortcut::getGroup() const
 {
-    auto fullstopIndex = Id.find_last_of('.');
+    auto fullstopIndex = id.find_last_of('.');
     if (fullstopIndex != std::string::npos)
     {
-        return std::string_view(Id.c_str(), fullstopIndex);
+        return std::string_view(id.c_str(), fullstopIndex);
     }
     return {};
 }
 
-bool RegisteredShortcut::Matches(const InputEvent& e) const
+bool RegisteredShortcut::matches(const InputEvent& e) const
 {
-    if (IsSuitableInputEvent(e))
+    if (isSuitableInputEvent(e))
     {
         auto result = std::find_if(
-            Current.begin(), Current.end(), [e](const ShortcutInput& action) { return action.Matches(e); });
-        return result != Current.end();
+            current.begin(), current.end(), [e](const ShortcutInput& _action) { return _action.matches(e); });
+        return result != current.end();
     }
     return false;
 }
 
-bool RegisteredShortcut::IsSuitableInputEvent(const InputEvent& e) const
+bool RegisteredShortcut::isSuitableInputEvent(const InputEvent& e) const
 {
     // Do not intercept button releases
-    if (e.State == InputEventState::Release)
+    if (e.state == InputEventState::release)
     {
         return false;
     }
 
-    if (e.DeviceKind == InputDeviceKind::Mouse)
+    if (e.deviceKind == InputDeviceKind::mouse)
     {
         // Do not allow LMB or RMB to be shortcut
-        if (e.Button == 0 || e.Button == 1)
+        if (e.button == 0 || e.button == 1)
         {
             return false;
         }
     }
-    else if (e.DeviceKind == InputDeviceKind::Keyboard)
+    else if (e.deviceKind == InputDeviceKind::keyboard)
     {
         // Do not allow modifier keys alone
-        switch (e.Button)
+        switch (e.button)
         {
             case SDLK_LCTRL:
             case SDLK_RCTRL:
@@ -92,14 +92,14 @@ bool RegisteredShortcut::IsSuitableInputEvent(const InputEvent& e) const
     return true;
 }
 
-std::string RegisteredShortcut::GetDisplayString() const
+std::string RegisteredShortcut::getDisplayString() const
 {
     std::string result;
-    auto numChords = Current.size();
+    auto numChords = current.size();
     for (size_t i = 0; i < numChords; i++)
     {
-        const auto& kc = Current[i];
-        result += kc.ToLocalisedString();
+        const auto& kc = current[i];
+        result += kc.toLocalisedString();
         if (i < numChords - 1)
         {
             result += " ";
@@ -113,95 +113,95 @@ std::string RegisteredShortcut::GetDisplayString() const
 ShortcutManager::ShortcutManager(IPlatformEnvironment& env)
     : _env(env)
 {
-    RegisterDefaultShortcuts();
+    registerDefaultShortcuts();
 }
 
-void ShortcutManager::RegisterShortcut(RegisteredShortcut&& shortcut)
+void ShortcutManager::registerShortcut(RegisteredShortcut&& shortcut)
 {
-    if (!shortcut.Id.empty() && GetShortcut(shortcut.Id) == nullptr)
+    if (!shortcut.id.empty() && getShortcut(shortcut.id) == nullptr)
     {
-        auto id = std::make_unique<std::string>(shortcut.Id);
+        auto id = std::make_unique<std::string>(shortcut.id);
         auto idView = std::string_view(*id);
         _ids.push_back(std::move(id));
-        shortcut.OrderIndex = Shortcuts.size();
-        Shortcuts[idView] = shortcut;
+        shortcut.orderIndex = shortcuts.size();
+        shortcuts[idView] = shortcut;
     }
 }
 
-RegisteredShortcut* ShortcutManager::GetShortcut(std::string_view id)
+RegisteredShortcut* ShortcutManager::getShortcut(std::string_view id)
 {
-    auto result = Shortcuts.find(id);
-    return result == Shortcuts.end() ? nullptr : &result->second;
+    auto result = shortcuts.find(id);
+    return result == shortcuts.end() ? nullptr : &result->second;
 }
 
-void ShortcutManager::RemoveShortcut(std::string_view id)
+void ShortcutManager::removeShortcut(std::string_view id)
 {
-    Shortcuts.erase(id);
+    shortcuts.erase(id);
     _ids.erase(
         std::remove_if(_ids.begin(), _ids.end(), [id](const std::unique_ptr<std::string>& x) { return *x == id; }), _ids.end());
 }
 
-bool ShortcutManager::IsPendingShortcutChange() const
+bool ShortcutManager::isPendingShortcutChange() const
 {
     return !_pendingShortcutChange.empty();
 }
 
-void ShortcutManager::SetPendingShortcutChange(std::string_view id)
+void ShortcutManager::setPendingShortcutChange(std::string_view id)
 {
     _pendingShortcutChange = id;
 }
 
-void ShortcutManager::ProcessEvent(const InputEvent& e)
+void ShortcutManager::processEvent(const InputEvent& e)
 {
-    if (!IsPendingShortcutChange())
+    if (!isPendingShortcutChange())
     {
-        for (const auto& shortcut : Shortcuts)
+        for (const auto& shortcut : shortcuts)
         {
-            if (shortcut.second.Matches(e))
+            if (shortcut.second.matches(e))
             {
-                shortcut.second.Action();
+                shortcut.second.action();
             }
         }
     }
     else
     {
-        auto shortcut = GetShortcut(_pendingShortcutChange);
-        if (shortcut != nullptr && shortcut->IsSuitableInputEvent(e))
+        auto shortcut = getShortcut(_pendingShortcutChange);
+        if (shortcut != nullptr && shortcut->isSuitableInputEvent(e))
         {
-            auto shortcutInput = ShortcutInput::FromInputEvent(e);
+            auto shortcutInput = ShortcutInput::fromInputEvent(e);
             if (shortcutInput.has_value())
             {
-                shortcut->Current.clear();
-                shortcut->Current.push_back(std::move(shortcutInput.value()));
+                shortcut->current.clear();
+                shortcut->current.push_back(std::move(shortcutInput.value()));
             }
             _pendingShortcutChange.clear();
 
             auto* windowMgr = Ui::GetWindowManager();
-            windowMgr->CloseByClass(WindowClass::ChangeKeyboardShortcut);
-            SaveUserBindings();
+            windowMgr->CloseByClass(WindowClass::changeKeyboardShortcut);
+            saveUserBindings();
         }
     }
 }
 
-bool ShortcutManager::ProcessEventForSpecificShortcut(const InputEvent& e, std::string_view id)
+bool ShortcutManager::processEventForSpecificShortcut(const InputEvent& e, std::string_view id)
 {
-    auto shortcut = GetShortcut(id);
-    if (shortcut != nullptr && shortcut->Matches(e))
+    auto shortcut = getShortcut(id);
+    if (shortcut != nullptr && shortcut->matches(e))
     {
-        shortcut->Action();
+        shortcut->action();
         return true;
     }
     return false;
 }
 
-void ShortcutManager::LoadUserBindings()
+void ShortcutManager::loadUserBindings()
 {
     try
     {
         auto path = fs::u8path(_env.GetFilePath(PathId::configShortcuts));
         if (fs::exists(path))
         {
-            LoadUserBindings(path);
+            loadUserBindings(path);
         }
         else
         {
@@ -211,8 +211,8 @@ void ShortcutManager::LoadUserBindings()
                 auto legacyPath = fs::u8path(_env.GetFilePath(PathId::configShortcutsLegacy));
                 if (fs::exists(legacyPath))
                 {
-                    LoadLegacyBindings(legacyPath);
-                    SaveUserBindings();
+                    loadLegacyBindings(legacyPath);
+                    saveUserBindings();
                     Console::WriteLine("Legacy shortcuts imported");
                 }
             }
@@ -228,7 +228,7 @@ void ShortcutManager::LoadUserBindings()
     }
 }
 
-std::optional<ShortcutInput> ShortcutManager::ConvertLegacyBinding(uint16_t binding)
+std::optional<ShortcutInput> ShortcutManager::convertLegacyBinding(uint16_t binding)
 {
     constexpr uint16_t kNullBinding = 0xFFFF;
     constexpr uint16_t kShift = 0x100;
@@ -242,20 +242,20 @@ std::optional<ShortcutInput> ShortcutManager::ConvertLegacyBinding(uint16_t bind
     }
 
     ShortcutInput result;
-    result.Kind = InputDeviceKind::Keyboard;
+    result.kind = InputDeviceKind::keyboard;
     if (binding & kShift)
-        result.Modifiers |= KMOD_SHIFT;
+        result.modifiers |= KMOD_SHIFT;
     if (binding & kCtrl)
-        result.Modifiers |= KMOD_CTRL;
+        result.modifiers |= KMOD_CTRL;
     if (binding & kAlt)
-        result.Modifiers |= KMOD_ALT;
+        result.modifiers |= KMOD_ALT;
     if (binding & kCmd)
-        result.Modifiers |= KMOD_GUI;
-    result.Button = SDL_GetKeyFromScancode(static_cast<SDL_Scancode>(binding & 0xFF));
+        result.modifiers |= KMOD_GUI;
+    result.button = SDL_GetKeyFromScancode(static_cast<SDL_Scancode>(binding & 0xFF));
     return result;
 }
 
-void ShortcutManager::LoadLegacyBindings(const fs::path& path)
+void ShortcutManager::loadLegacyBindings(const fs::path& path)
 {
     constexpr int32_t kSupportedFileVersion = 1;
     constexpr int32_t kMaxLegacyShortcuts = 85;
@@ -267,17 +267,17 @@ void ShortcutManager::LoadLegacyBindings(const fs::path& path)
         for (size_t i = 0; i < kMaxLegacyShortcuts; i++)
         {
             auto value = fs.ReadValue<uint16_t>();
-            auto shortcutId = GetLegacyShortcutId(i);
+            auto shortcutId = getLegacyShortcutId(i);
             if (!shortcutId.empty())
             {
-                auto shortcut = GetShortcut(shortcutId);
+                auto shortcut = getShortcut(shortcutId);
                 if (shortcut != nullptr)
                 {
-                    shortcut->Current.clear();
-                    auto input = ConvertLegacyBinding(value);
+                    shortcut->current.clear();
+                    auto input = convertLegacyBinding(value);
                     if (input.has_value())
                     {
-                        shortcut->Current.push_back(std::move(input.value()));
+                        shortcut->current.push_back(std::move(input.value()));
                     }
                 }
             }
@@ -285,7 +285,7 @@ void ShortcutManager::LoadLegacyBindings(const fs::path& path)
     }
 }
 
-void ShortcutManager::LoadUserBindings(const fs::path& path)
+void ShortcutManager::loadUserBindings(const fs::path& path)
 {
     auto root = Json::ReadFromFile(path.u8string());
     if (root.is_object())
@@ -295,19 +295,19 @@ void ShortcutManager::LoadUserBindings(const fs::path& path)
             const auto& key = it.key();
             const auto& value = it.value();
 
-            const auto& shortcut = GetShortcut(key);
+            const auto& shortcut = getShortcut(key);
             if (shortcut != nullptr)
             {
-                shortcut->Current.clear();
+                shortcut->current.clear();
                 if (value.is_string())
                 {
-                    shortcut->Current.emplace_back(value.get<std::string>());
+                    shortcut->current.emplace_back(value.get<std::string>());
                 }
                 else if (value.is_array())
                 {
                     for (auto& subValue : value)
                     {
-                        shortcut->Current.emplace_back(subValue.get<std::string>());
+                        shortcut->current.emplace_back(subValue.get<std::string>());
                     }
                 }
             }
@@ -315,12 +315,12 @@ void ShortcutManager::LoadUserBindings(const fs::path& path)
     }
 }
 
-void ShortcutManager::SaveUserBindings()
+void ShortcutManager::saveUserBindings()
 {
     try
     {
         auto path = fs::u8path(_env.GetFilePath(PathId::configShortcuts));
-        SaveUserBindings(path);
+        saveUserBindings(path);
     }
     catch (const std::exception& e)
     {
@@ -328,7 +328,7 @@ void ShortcutManager::SaveUserBindings()
     }
 }
 
-void ShortcutManager::SaveUserBindings(const fs::path& path)
+void ShortcutManager::saveUserBindings(const fs::path& path)
 {
     json_t root;
     if (fs::exists(path))
@@ -336,19 +336,19 @@ void ShortcutManager::SaveUserBindings(const fs::path& path)
         root = Json::ReadFromFile(path.u8string());
     }
 
-    for (const auto& shortcut : Shortcuts)
+    for (const auto& shortcut : shortcuts)
     {
-        auto& jShortcut = root[shortcut.second.Id];
-        if (shortcut.second.Current.size() == 1)
+        auto& jShortcut = root[shortcut.second.id];
+        if (shortcut.second.current.size() == 1)
         {
-            jShortcut = shortcut.second.Current[0].ToString();
+            jShortcut = shortcut.second.current[0].toString();
         }
         else
         {
             jShortcut = nlohmann::json::array();
-            for (const auto& binding : shortcut.second.Current)
+            for (const auto& binding : shortcut.second.current)
             {
-                jShortcut.push_back(binding.ToString());
+                jShortcut.push_back(binding.toString());
             }
         }
     }
@@ -356,7 +356,7 @@ void ShortcutManager::SaveUserBindings(const fs::path& path)
     Json::WriteToFile(path.u8string(), root);
 }
 
-std::string_view ShortcutManager::GetLegacyShortcutId(size_t index)
+std::string_view ShortcutManager::getLegacyShortcutId(size_t index)
 {
     static constexpr std::string_view _legacyMap[] = {
         ShortcutId::kInterfaceCloseTop,

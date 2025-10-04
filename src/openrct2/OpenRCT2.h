@@ -51,17 +51,26 @@ extern u8string gSilentRecordingName;
 extern bool gSilentReplays;
 
 #ifndef DISABLE_NETWORK
-extern int32_t gNetworkStart;
-extern std::string gNetworkStartHost;
-extern int32_t gNetworkStartPort;
-extern std::string gNetworkStartAddress;
+namespace OpenRCT2::Network
+{
+    enum class Mode : int32_t;
+}
+
+namespace OpenRCT2
+{
+    extern OpenRCT2::Network::Mode gNetworkStart;
+    extern std::string gNetworkStartHost;
+    extern int32_t gNetworkStartPort;
+    extern std::string gNetworkStartAddress;
+} // namespace OpenRCT2
 #endif
+
+namespace OpenRCT2
+{
+    int32_t CommandLineRun(const char** argv, int32_t argc);
+} // namespace OpenRCT2
 
 extern uint32_t gCurrentDrawCount;
 extern LegacyScene gLegacyScene;
 extern uint32_t gScreenAge;
 extern PromptMode gSavePromptMode;
-
-void OpenRCT2Finish();
-
-int32_t CommandLineRun(const char** argv, int32_t argc);

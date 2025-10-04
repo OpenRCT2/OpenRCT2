@@ -17,6 +17,7 @@
     #include "../../../object/LargeSceneryEntry.h"
     #include "../../../ride/Track.h"
     #include "../../../world/Footpath.h"
+    #include "../../../world/Map.h"
     #include "../../../world/Scenery.h"
     #include "../../../world/tile_element/LargeSceneryElement.h"
     #include "../../Duktape.hpp"

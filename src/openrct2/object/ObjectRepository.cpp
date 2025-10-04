@@ -81,8 +81,6 @@ namespace OpenRCT2
         static constexpr uint16_t kVersion = 31;
         static constexpr auto kPattern = "*.dat;*.pob;*.json;*.parkobj";
 
-        IObjectRepository& _objectRepository;
-
     public:
         explicit ObjectFileIndex(IObjectRepository& objectRepository, const IPlatformEnvironment& env)
             : FileIndex(
@@ -91,27 +89,13 @@ namespace OpenRCT2
                       env.GetDirectoryPath(DirBase::openrct2, DirId::objects),
                       env.GetDirectoryPath(DirBase::user, DirId::objects),
                   })
-            , _objectRepository(objectRepository)
         {
         }
 
     public:
         std::optional<ObjectRepositoryItem> Create([[maybe_unused]] int32_t language, const std::string& path) const override
         {
-            std::unique_ptr<Object> object;
-            auto extension = Path::GetExtension(path);
-            if (String::iequals(extension, ".json"))
-            {
-                object = ObjectFactory::CreateObjectFromJsonFile(_objectRepository, path, false);
-            }
-            else if (String::iequals(extension, ".parkobj"))
-            {
-                object = ObjectFactory::CreateObjectFromZipFile(_objectRepository, path, false);
-            }
-            else
-            {
-                object = ObjectFactory::CreateObjectFromLegacyFile(_objectRepository, path.c_str(), false);
-            }
+            std::unique_ptr<Object> object = ObjectFactory::CreateObjectFromFile(path, false);
 
             // All official DAT files have a JSON object counterpart. Avoid loading the obsolete .DAT versions,
             // which can happen if the user copies the official DAT objects to their custom content folder.
@@ -272,17 +256,7 @@ namespace OpenRCT2
         {
             Guard::ArgumentNotNull(ori, GUARD_LINE);
 
-            auto extension = Path::GetExtension(ori->Path);
-            if (String::iequals(extension, ".json"))
-            {
-                return ObjectFactory::CreateObjectFromJsonFile(*this, ori->Path, !gOpenRCT2NoGraphics);
-            }
-            if (String::iequals(extension, ".parkobj"))
-            {
-                return ObjectFactory::CreateObjectFromZipFile(*this, ori->Path, !gOpenRCT2NoGraphics);
-            }
-
-            return ObjectFactory::CreateObjectFromLegacyFile(*this, ori->Path.c_str(), !gOpenRCT2NoGraphics);
+            return ObjectFactory::CreateObjectFromFile(ori->Path, !gOpenRCT2NoGraphics);
         }
 
         void RegisterLoadedObject(const ObjectRepositoryItem* ori, std::unique_ptr<Object>&& object) override
@@ -308,7 +282,7 @@ namespace OpenRCT2
             ObjectEntryGetNameFixed(objectName, sizeof(objectName), objectEntry);
 
             // Check that the object is loadable before writing it
-            auto object = ObjectFactory::CreateObjectFromLegacyData(*this, objectEntry, data, dataSize);
+            auto object = ObjectFactory::CreateObjectFromLegacyData(objectEntry, data, dataSize);
             if (object == nullptr)
             {
                 Console::Error::WriteLine("[%s] Unable to export object.", objectName);

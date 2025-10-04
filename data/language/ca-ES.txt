@@ -550,8 +550,8 @@ STR_1152    :Qualsevol
 STR_1153    :Marques d’alçada a les vies de les atraccions
 STR_1154    :Marques d’alçada al terreny
 STR_1155    :Marques d’alçada als camins
-STR_1156    :{MOVE_X}{10}{STRINGID}
-STR_1157    :✓{MOVE_X}{10}{STRINGID}
+STR_1156    :{MOVE_X}{10}{STRING}
+STR_1157    :✓{MOVE_X}{10}{STRING}
 STR_1158    :Això no es pot treure…
 STR_1159    :Afegeix decoracions, jardins i altres accessoris.
 STR_1160    :Crea i ajusta llacs i zones d’aigua.

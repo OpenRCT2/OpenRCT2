@@ -31,7 +31,7 @@ void GfxFillRectInset(RenderTarget& rt, const ScreenRect& rect, ColourWithFlags 
     const auto rightBottom = ScreenCoordsXY{ rect.GetRight(), rect.GetBottom() };
     if (colour.hasFlag(ColourFlag::translucent))
     {
-        auto palette = TranslucentWindowPalettes[colour.colour];
+        auto palette = kTranslucentWindowPalettes[colour.colour];
 
         if (flags & INSET_RECT_FLAG_BORDER_NONE)
         {

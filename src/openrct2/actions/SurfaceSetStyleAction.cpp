@@ -18,6 +18,7 @@
 #include "../object/TerrainEdgeObject.h"
 #include "../object/TerrainSurfaceObject.h"
 #include "../world/Footpath.h"
+#include "../world/Map.h"
 #include "../world/Park.h"
 #include "../world/tile_element/SurfaceElement.h"
 
@@ -44,7 +45,7 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_range) << DS_TAG(_surfaceStyle) << DS_TAG(_edgeStyle);
     }
 
-    Result SurfaceSetStyleAction::Query() const
+    Result SurfaceSetStyleAction::Query(GameState_t& gameState) const
     {
         auto res = Result();
         res.ErrorTitle = STR_CANT_CHANGE_LAND_TYPE;
@@ -82,8 +83,6 @@ namespace OpenRCT2::GameActions
         res.Position.x = xMid;
         res.Position.y = yMid;
         res.Position.z = heightMid;
-
-        auto& gameState = getGameState();
 
         // Do nothing if not in editor, sandbox mode or landscaping is forbidden
         if (gLegacyScene != LegacyScene::scenarioEditor && !gameState.cheats.sandboxMode
@@ -144,7 +143,7 @@ namespace OpenRCT2::GameActions
         return res;
     }
 
-    Result SurfaceSetStyleAction::Execute() const
+    Result SurfaceSetStyleAction::Execute(GameState_t& gameState) const
     {
         auto res = Result();
         res.ErrorTitle = STR_CANT_CHANGE_LAND_TYPE;

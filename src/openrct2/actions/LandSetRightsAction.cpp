@@ -20,6 +20,7 @@
 #include "../management/Finance.h"
 #include "../ride/RideData.h"
 #include "../windows/Intent.h"
+#include "../world/Map.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"
 #include "../world/TileElementsView.h"
@@ -63,12 +64,12 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_range) << DS_TAG(_setting) << DS_TAG(_ownership);
     }
 
-    Result LandSetRightsAction::Query() const
+    Result LandSetRightsAction::Query(GameState_t& gameState) const
     {
         return QueryExecute(false);
     }
 
-    Result LandSetRightsAction::Execute() const
+    Result LandSetRightsAction::Execute(GameState_t& gameState) const
     {
         return QueryExecute(true);
     }
@@ -108,7 +109,7 @@ namespace OpenRCT2::GameActions
         if (isExecuting)
         {
             MapCountRemainingLandRights();
-            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, centre);
+            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::placeItem, centre);
         }
         return res;
     }

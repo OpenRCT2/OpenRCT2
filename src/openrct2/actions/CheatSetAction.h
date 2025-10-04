@@ -18,7 +18,7 @@ namespace OpenRCT2::GameActions
         using ParametersRange = std::pair<std::pair<int64_t, int64_t>, std::pair<int64_t, int64_t>>;
 
     private:
-        NetworkCheatType_t _cheatType{ EnumValue(CheatType::Count) };
+        Network::CheatType_t _cheatType{ EnumValue(CheatType::count) };
         int64_t _param1{};
         int64_t _param2{};
 
@@ -31,30 +31,30 @@ namespace OpenRCT2::GameActions
         uint16_t GetActionFlags() const override;
 
         void Serialise(DataSerialiser& stream) override;
-        Result Query() const override;
-        Result Execute() const override;
+        Result Query(GameState_t& gameState) const override;
+        Result Execute(GameState_t& gameState) const override;
 
     private:
         ParametersRange GetParameterRange(CheatType cheatType) const;
-        void SetGrassLength(int32_t length) const;
+        void SetGrassLength(GameState_t& gameState, int32_t length) const;
         void WaterPlants() const;
         void FixVandalism() const;
-        void RemoveLitter() const;
-        void FixBrokenRides() const;
-        void RenewRides() const;
-        void ResetRideCrashStatus() const;
-        void Set10MinuteInspection() const;
-        void SetScenarioNoMoney(bool enabled) const;
+        void RemoveLitter(GameState_t& gameState) const;
+        void FixBrokenRides(GameState_t& gameState) const;
+        void RenewRides(GameState_t& gameState) const;
+        void ResetRideCrashStatus(GameState_t& gameState) const;
+        void Set10MinuteInspection(GameState_t& gameState) const;
+        void SetScenarioNoMoney(GameState_t& gameState, bool enabled) const;
         void SetMoney(money64 amount) const;
         void AddMoney(money64 amount) const;
-        void ClearLoan() const;
+        void ClearLoan(GameState_t& gameState) const;
         void GenerateGuests(int32_t count) const;
         void SetGuestParameter(int32_t parameter, int32_t value) const;
         void GiveObjectToGuests(int32_t object) const;
-        void RemoveAllGuests() const;
+        void RemoveAllGuests(GameState_t& gameState) const;
         void SetStaffSpeed(uint8_t value) const;
         void OwnAllLand() const;
-        void ParkSetOpen(bool isOpen) const;
+        void ParkSetOpen(bool isOpen, GameState_t& gameState) const;
         void CreateDucks(int count) const;
         void RemoveParkFences() const;
     };

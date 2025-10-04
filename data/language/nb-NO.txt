@@ -543,8 +543,8 @@ STR_1152    :Minst én person
 STR_1153    :Høydemerker på attraksjonsspor
 STR_1154    :Høydemerker på bakken
 STR_1155    :Høydemerker på gangstier
-STR_1156    :{MOVE_X}{10}{STRINGID}
-STR_1157    :✓{MOVE_X}{10}{STRINGID}
+STR_1156    :{MOVE_X}{10}{STRING}
+STR_1157    :✓{MOVE_X}{10}{STRING}
 STR_1158    :Kan ikke fjerne denne…
 STR_1159    :Plasser kulisser, hager og annet tilbehør
 STR_1160    :Lag/juster innsjøer og vann

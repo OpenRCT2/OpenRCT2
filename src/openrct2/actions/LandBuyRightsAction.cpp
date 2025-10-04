@@ -20,6 +20,7 @@
 #include "../management/Finance.h"
 #include "../ride/RideData.h"
 #include "../windows/Intent.h"
+#include "../world/Map.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"
 #include "../world/tile_element/SurfaceElement.h"
@@ -56,12 +57,12 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_range) << DS_TAG(_setting);
     }
 
-    Result LandBuyRightsAction::Query() const
+    Result LandBuyRightsAction::Query(GameState_t& gameState) const
     {
         return QueryExecute(false);
     }
 
-    Result LandBuyRightsAction::Execute() const
+    Result LandBuyRightsAction::Execute(GameState_t& gameState) const
     {
         return QueryExecute(true);
     }

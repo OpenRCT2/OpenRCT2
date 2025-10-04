@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop">
-  <id>openrct2.desktop</id>
+  <id>io.openrct2.openrct2</id>
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-3.0</project_license>
   <name>OpenRCT2</name>
@@ -17,22 +17,24 @@
   <summary xml:lang="nl">Pretparksimulatie</summary>
   <summary xml:lang="pl">Symulator parku rozrywki</summary>
   <summary xml:lang="pt">Simulador de parque de diversões</summary>
-  <developer_name>The OpenRCT2 Team</developer_name>
-  <developer_name xml:lang="ca">Equip de l’OpenRCT2</developer_name>
-  <developer_name xml:lang="cs">Tým OpenRCT2</developer_name>
-  <developer_name xml:lang="de">Das OpenRCT2-Team</developer_name>
-  <developer_name xml:lang="eo">La OpenRCT2-Teamo</developer_name>
-  <developer_name xml:lang="es">El equipo de OpenRCT2</developer_name>
-  <developer_name xml:lang="fr">L’équipe d’OpenRCT2</developer_name>
-  <developer_name xml:lang="gl">O equipo OpenRCT2</developer_name>  
-  <developer_name xml:lang="it">Il team di OpenRCT2</developer_name>  
-  <developer_name xml:lang="ko">OpenRCT2 팀</developer_name>
-  <developer_name xml:lang="nl">Het OpenRCT2-team</developer_name>
-  <developer_name xml:lang="pl">Zespół OpenRCT2</developer_name>
-  <developer_name xml:lang="pt">Equipe do OpenRCT2</developer_name>
-  <developer_name xml:lang="zh-CN">OpenRCT2团队</developer_name>
-  <developer_name xml:lang="zh-TW">OpenRCT2團隊</developer_name>
-  <launchable type="desktop-id">openrct2.desktop</launchable>
+  <developer id="io.openrct2">
+    <name>The OpenRCT2 Team</name>
+    <name xml:lang="ca">Equip de l’OpenRCT2</name>
+    <name xml:lang="cs">Tým OpenRCT2</name>
+    <name xml:lang="de">Das OpenRCT2-Team</name>
+    <name xml:lang="eo">La OpenRCT2-Teamo</name>
+    <name xml:lang="es">El equipo de OpenRCT2</name>
+    <name xml:lang="fr">L’équipe d’OpenRCT2</name>
+    <name xml:lang="gl">O equipo OpenRCT2</name>  
+    <name xml:lang="it">Il team di OpenRCT2</name>  
+    <name xml:lang="ko">OpenRCT2 팀</name>
+    <name xml:lang="nl">Het OpenRCT2-team</name>
+    <name xml:lang="pl">Zespół OpenRCT2</name>
+    <name xml:lang="pt">Equipe do OpenRCT2</name>
+    <name xml:lang="zh-CN">OpenRCT2团队</name>
+    <name xml:lang="zh-TW">OpenRCT2團隊</name>
+  </developer>
+  <launchable type="desktop-id">io.openrct2.openrct2.desktop</launchable>
   <description>
     <p>
       OpenRCT2 is an open-source re-implementation of RollerCoaster Tycoon 2 (RCT2).

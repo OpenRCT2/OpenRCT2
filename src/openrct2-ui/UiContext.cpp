@@ -126,7 +126,7 @@ public:
             SDLException::Throw("SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK)");
         }
         _cursorRepository.LoadCursors();
-        _shortcutManager.LoadUserBindings();
+        _shortcutManager.loadUserBindings();
     }
 
     ~UiContext() override
@@ -154,7 +154,7 @@ public:
 
     void Draw(RenderTarget& rt) override
     {
-        auto bgColour = ThemeGetColour(WindowClass::Chat, 0);
+        auto bgColour = ThemeGetColour(WindowClass::chat, 0);
         ChatDraw(rt, bgColour);
         _inGameConsole.Draw(rt);
     }
@@ -320,7 +320,7 @@ public:
         int32_t top = rt.y;
         int32_t bottom = top + rt.height;
 
-        for (auto& w : g_window_list)
+        for (auto& w : gWindowList)
         {
             DrawWeatherWindow(rt, weatherDrawer, w.get(), left, right, top, bottom, drawFunc);
         }
@@ -418,7 +418,7 @@ public:
                     switch (e.button.button)
                     {
                         case SDL_BUTTON_LEFT:
-                            StoreMouseInput(MouseState::LeftPress, mousePos);
+                            StoreMouseInput(MouseState::leftPress, mousePos);
                             _cursorState.left = CURSOR_PRESSED;
                             _cursorState.old = 1;
                             break;
@@ -426,7 +426,7 @@ public:
                             _cursorState.middle = CURSOR_PRESSED;
                             break;
                         case SDL_BUTTON_RIGHT:
-                            StoreMouseInput(MouseState::RightPress, mousePos);
+                            StoreMouseInput(MouseState::rightPress, mousePos);
                             _cursorState.right = CURSOR_PRESSED;
                             _cursorState.old = 2;
                             break;
@@ -435,11 +435,11 @@ public:
 
                     {
                         InputEvent ie;
-                        ie.DeviceKind = InputDeviceKind::Mouse;
-                        ie.Modifiers = SDL_GetModState();
-                        ie.Button = e.button.button;
-                        ie.State = InputEventState::Down;
-                        _inputManager.QueueInputEvent(std::move(ie));
+                        ie.deviceKind = InputDeviceKind::mouse;
+                        ie.modifiers = SDL_GetModState();
+                        ie.button = e.button.button;
+                        ie.state = InputEventState::down;
+                        _inputManager.queueInputEvent(std::move(ie));
                     }
                     break;
                 }
@@ -454,7 +454,7 @@ public:
                     switch (e.button.button)
                     {
                         case SDL_BUTTON_LEFT:
-                            StoreMouseInput(MouseState::LeftRelease, mousePos);
+                            StoreMouseInput(MouseState::leftRelease, mousePos);
                             _cursorState.left = CURSOR_RELEASED;
                             _cursorState.old = 3;
                             break;
@@ -462,7 +462,7 @@ public:
                             _cursorState.middle = CURSOR_RELEASED;
                             break;
                         case SDL_BUTTON_RIGHT:
-                            StoreMouseInput(MouseState::RightRelease, mousePos);
+                            StoreMouseInput(MouseState::rightRelease, mousePos);
                             _cursorState.right = CURSOR_RELEASED;
                             _cursorState.old = 4;
                             break;
@@ -471,11 +471,11 @@ public:
 
                     {
                         InputEvent ie;
-                        ie.DeviceKind = InputDeviceKind::Mouse;
-                        ie.Modifiers = SDL_GetModState();
-                        ie.Button = e.button.button;
-                        ie.State = InputEventState::Release;
-                        _inputManager.QueueInputEvent(std::move(ie));
+                        ie.deviceKind = InputDeviceKind::mouse;
+                        ie.modifiers = SDL_GetModState();
+                        ie.button = e.button.button;
+                        ie.state = InputEventState::release;
+                        _inputManager.queueInputEvent(std::move(ie));
                     }
                     break;
                 }
@@ -496,13 +496,13 @@ public:
 
                     if (_cursorState.touchIsDouble)
                     {
-                        StoreMouseInput(MouseState::RightPress, fingerPos);
+                        StoreMouseInput(MouseState::rightPress, fingerPos);
                         _cursorState.right = CURSOR_PRESSED;
                         _cursorState.old = 2;
                     }
                     else
                     {
-                        StoreMouseInput(MouseState::LeftPress, fingerPos);
+                        StoreMouseInput(MouseState::leftPress, fingerPos);
                         _cursorState.left = CURSOR_PRESSED;
                         _cursorState.old = 1;
                     }
@@ -517,13 +517,13 @@ public:
 
                     if (_cursorState.touchIsDouble)
                     {
-                        StoreMouseInput(MouseState::RightRelease, fingerPos);
+                        StoreMouseInput(MouseState::rightRelease, fingerPos);
                         _cursorState.right = CURSOR_RELEASED;
                         _cursorState.old = 4;
                     }
                     else
                     {
-                        StoreMouseInput(MouseState::LeftRelease, fingerPos);
+                        StoreMouseInput(MouseState::leftRelease, fingerPos);
                         _cursorState.left = CURSOR_RELEASED;
                         _cursorState.old = 3;
                     }
@@ -544,15 +544,15 @@ public:
 #endif
                     _textComposition.HandleMessage(&e);
                     auto ie = GetInputEventFromSDLEvent(e);
-                    ie.State = InputEventState::Down;
-                    _inputManager.QueueInputEvent(std::move(ie));
+                    ie.state = InputEventState::down;
+                    _inputManager.queueInputEvent(std::move(ie));
                     break;
                 }
                 case SDL_KEYUP:
                 {
                     auto ie = GetInputEventFromSDLEvent(e);
-                    ie.State = InputEventState::Release;
-                    _inputManager.QueueInputEvent(std::move(ie));
+                    ie.state = InputEventState::release;
+                    _inputManager.queueInputEvent(std::move(ie));
                     break;
                 }
                 case SDL_MULTIGESTURE:
@@ -583,7 +583,7 @@ public:
                     break;
                 default:
                 {
-                    _inputManager.QueueInputEvent(e);
+                    _inputManager.queueInputEvent(e);
                     break;
                 }
             }
@@ -958,7 +958,7 @@ private:
         auto itStart = WindowGetIterator(original_w);
         for (auto it = std::next(itStart);; it++)
         {
-            if (it == g_window_list.end())
+            if (it == gWindowList.end())
             {
                 // Loop ended, draw weather for original_w
                 auto vp = original_w->viewport;
@@ -980,7 +980,7 @@ private:
 
             w = it->get();
 
-            if (w->flags & WF_DEAD)
+            if (w->flags.has(WindowFlag::dead))
             {
                 continue;
             }
@@ -990,7 +990,7 @@ private:
                 continue;
             }
 
-            if (RCT_WINDOW_RIGHT(w) <= left || RCT_WINDOW_BOTTOM(w) <= top)
+            if (w->right() <= left || w->bottom() <= top)
             {
                 continue;
             }
@@ -1007,12 +1007,12 @@ private:
             return;
         }
 
-        int16_t w_right = RCT_WINDOW_RIGHT(w);
-        if (right > w_right)
+        auto wRight = w->right();
+        if (right > wRight)
         {
-            DrawWeatherWindow(rt, weatherDrawer, original_w, left, w_right, top, bottom, drawFunc);
+            DrawWeatherWindow(rt, weatherDrawer, original_w, left, wRight, top, bottom, drawFunc);
 
-            left = w_right;
+            left = wRight;
             DrawWeatherWindow(rt, weatherDrawer, original_w, left, right, top, bottom, drawFunc);
             return;
         }
@@ -1026,12 +1026,12 @@ private:
             return;
         }
 
-        int16_t w_bottom = RCT_WINDOW_BOTTOM(w);
-        if (bottom > w_bottom)
+        auto wBottom = w->bottom();
+        if (bottom > wBottom)
         {
-            DrawWeatherWindow(rt, weatherDrawer, original_w, left, right, top, w_bottom, drawFunc);
+            DrawWeatherWindow(rt, weatherDrawer, original_w, left, right, top, wBottom, drawFunc);
 
-            top = w_bottom;
+            top = wBottom;
             DrawWeatherWindow(rt, weatherDrawer, original_w, left, right, top, bottom, drawFunc);
             return;
         }
@@ -1040,20 +1040,20 @@ private:
     InputEvent GetInputEventFromSDLEvent(const SDL_Event& e)
     {
         InputEvent ie;
-        ie.DeviceKind = InputDeviceKind::Keyboard;
-        ie.Modifiers = e.key.keysym.mod;
-        ie.Button = e.key.keysym.sym;
+        ie.deviceKind = InputDeviceKind::keyboard;
+        ie.modifiers = e.key.keysym.mod;
+        ie.button = e.key.keysym.sym;
 
         // Handle dead keys
-        if (ie.Button == (SDLK_SCANCODE_MASK | 0))
+        if (ie.button == (SDLK_SCANCODE_MASK | 0))
         {
             switch (e.key.keysym.scancode)
             {
                 case SDL_SCANCODE_APOSTROPHE:
-                    ie.Button = '\'';
+                    ie.button = '\'';
                     break;
                 case SDL_SCANCODE_GRAVE:
-                    ie.Button = '`';
+                    ie.button = '`';
                     break;
                 default:
                     break;

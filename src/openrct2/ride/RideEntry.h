@@ -68,7 +68,7 @@ struct RideObjectEntry
     int8_t excitement_multiplier;
     int8_t intensity_multiplier;
     int8_t nausea_multiplier;
-    uint8_t max_height;
+    uint8_t maxHeight;
     ShopItem shop_item[OpenRCT2::RCT2::ObjectLimits::kMaxShopItemsPerRideEntry];
     StringId capacity;
     uint8_t Clearance;

@@ -64,6 +64,7 @@
 #include "../world/Climate.h"
 #include "../world/Entrance.h"
 #include "../world/Footpath.h"
+#include "../world/Map.h"
 #include "../world/MapAnimation.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"
@@ -92,13 +93,15 @@ static constexpr ObjectEntryIndex ObjectEntryIndexIgnore = 254;
 
 namespace OpenRCT2::RCT1
 {
+    constexpr uint8_t kDefaultParkValueConversionFactor = 100;
+
     class S4Importer final : public IParkImporter
     {
     private:
         std::string _s4Path;
         S4 _s4 = {};
         uint8_t _gameVersion = 0;
-        uint8_t _parkValueConversionFactor = 0;
+        uint8_t _parkValueConversionFactor = kDefaultParkValueConversionFactor;
         bool _isScenario = false;
 
         // Lists of dynamic object entries
@@ -188,7 +191,7 @@ namespace OpenRCT2::RCT1
 
             ImportRides();
             ImportRideMeasurements();
-            ImportEntities();
+            ImportEntities(gameState);
             ImportTileElements(gameState);
             ImportMapAnimations();
             ImportPeepSpawns(gameState);
@@ -210,7 +213,7 @@ namespace OpenRCT2::RCT1
             }
             FixNextGuestNumber(gameState);
             CountBlockSections();
-            SetDefaultNames();
+            SetDefaultNames(gameState);
             DetermineRideEntranceAndExitLocations();
 
             ResearchDetermineFirstOfType();
@@ -287,6 +290,17 @@ namespace OpenRCT2::RCT1
             return {};
         }
 
+    private:
+        uint8_t calculateParkValueConversionFactor(const Park::ParkData& park, const GameState_t& gameState)
+        {
+            if (_s4.ParkValue == 0)
+                return kDefaultParkValueConversionFactor;
+
+            // Use the ratio between the old and new park value to calculate the ratio to
+            // use for the park value history and the goal.
+            return (Park::CalculateParkValue(park, gameState) * 10) / _s4.ParkValue;
+        }
+
         money64 CorrectRCT1ParkValue(money32 oldParkValue)
         {
             if (oldParkValue == kMoney32Undefined)
@@ -294,25 +308,11 @@ namespace OpenRCT2::RCT1
                 return kMoney64Undefined;
             }
 
-            if (_parkValueConversionFactor == 0)
-            {
-                if (_s4.ParkValue != 0)
-                {
-                    // Use the ratio between the old and new park value to calcute the ratio to
-                    // use for the park value history and the goal.
-                    _parkValueConversionFactor = (Park::CalculateParkValue() * 10) / _s4.ParkValue;
-                }
-                else
-                {
-                    // In new games, the park value isn't set.
-                    _parkValueConversionFactor = 100;
-                }
-            }
+            assert(_parkValueConversionFactor != 0);
 
             return (oldParkValue * _parkValueConversionFactor) / 10;
         }
 
-    private:
         std::unique_ptr<S4> ReadAndDecodeS4(IStream* stream, bool isScenario)
         {
             auto s4 = std::make_unique<S4>();
@@ -343,7 +343,7 @@ namespace OpenRCT2::RCT1
         void Initialise(GameState_t& gameState)
         {
             // Avoid reusing the value used for last import
-            _parkValueConversionFactor = 0;
+            _parkValueConversionFactor = kDefaultParkValueConversionFactor;
 
             uint16_t mapSize = _s4.MapSize == 0 ? Limits::kMaxMapSize : _s4.MapSize;
 
@@ -1258,15 +1258,15 @@ namespace OpenRCT2::RCT1
             }
         }
 
-        void ImportEntity(const RCT12EntityBase& src);
+        void ImportEntity(GameState_t& gameState, const RCT12EntityBase& src);
         template<typename T>
-        void ImportEntity(const RCT12EntityBase& src);
+        void ImportEntity(GameState_t& gameState, const RCT12EntityBase& src);
 
-        void ImportEntities()
+        void ImportEntities(GameState_t& gameState)
         {
             for (int i = 0; i < Limits::kMaxEntities; i++)
             {
-                ImportEntity(_s4.Entities[i].Unknown);
+                ImportEntity(gameState, _s4.Entities[i].Unknown);
             }
         }
 
@@ -1511,6 +1511,9 @@ namespace OpenRCT2::RCT1
             park.companyValue = ToMoney64(_s4.CompanyValue);
             park.value = CorrectRCT1ParkValue(_s4.ParkValue);
             park.currentProfit = ToMoney64(_s4.Profit);
+
+            // With park value known, we can recalculate the conversion factor
+            _parkValueConversionFactor = calculateParkValueConversionFactor(park, gameState);
 
             for (size_t i = 0; i < Limits::kFinanceGraphSize; i++)
             {
@@ -2681,9 +2684,9 @@ namespace OpenRCT2::RCT1
          * This has to be done after importing tile elements, because it needs those to detect if a pre-existing ride
          * name should be considered reserved.
          */
-        void SetDefaultNames()
+        void SetDefaultNames(GameState_t& gameState)
         {
-            for (auto& ride : GetRideManager())
+            for (auto& ride : RideManager(gameState))
             {
                 if (ride.customName.empty())
                 {
@@ -2781,9 +2784,9 @@ namespace OpenRCT2::RCT1
     }
 
     template<>
-    void S4Importer::ImportEntity<::Vehicle>(const RCT12EntityBase& srcBase)
+    void S4Importer::ImportEntity<::Vehicle>(GameState_t& gameState, const RCT12EntityBase& srcBase)
     {
-        auto* dst = CreateEntityAt<::Vehicle>(EntityId::FromUnderlying(srcBase.EntityIndex));
+        auto* dst = getGameState().entities.CreateEntityAt<::Vehicle>(EntityId::FromUnderlying(srcBase.EntityIndex));
         auto* src = static_cast<const RCT1::Vehicle*>(&srcBase);
         const auto* ride = GetRide(RideId::FromUnderlying(src->Ride));
         if (ride == nullptr)
@@ -2821,20 +2824,20 @@ namespace OpenRCT2::RCT1
         dst->SwingSpeed = src->SwingSpeed;
         dst->restraints_position = src->RestraintsPosition;
         dst->spin_sprite = src->SpinSprite;
-        dst->sound_vector_factor = src->SoundVectorFactor;
+        dst->dopplerShift = src->SoundVectorFactor;
         dst->spin_speed = src->SpinSpeed;
         dst->sound2_flags = src->Sound2Flags;
-        dst->sound1_id = OpenRCT2::Audio::SoundId::Null;
-        dst->sound2_id = OpenRCT2::Audio::SoundId::Null;
+        dst->sound1_id = OpenRCT2::Audio::SoundId::null;
+        dst->sound2_id = OpenRCT2::Audio::SoundId::null;
         dst->var_C0 = src->VarC0;
         dst->CollisionDetectionTimer = src->CollisionDetectionTimer;
         dst->animation_frame = src->AnimationFrame;
         dst->animationState = src->AnimationState;
         dst->NumLaps = src->NumLaps;
         dst->var_D3 = src->VarD3;
-        dst->scream_sound_id = OpenRCT2::Audio::SoundId::Null;
-        dst->Pitch = src->Pitch;
-        dst->bank_rotation = src->BankRotation;
+        dst->scream_sound_id = OpenRCT2::Audio::SoundId::null;
+        dst->pitch = src->pitch;
+        dst->roll = src->roll;
 
         // Seat rotation was not in RCT1
         dst->target_seat_rotation = DEFAULT_SEAT_ROTATION;
@@ -2904,9 +2907,9 @@ namespace OpenRCT2::RCT1
     }
 
     template<>
-    void S4Importer::ImportEntity<Guest>(const RCT12EntityBase& srcBase)
+    void S4Importer::ImportEntity<Guest>(GameState_t& gameState, const RCT12EntityBase& srcBase)
     {
-        auto* dst = CreateEntityAt<Guest>(EntityId::FromUnderlying(srcBase.EntityIndex));
+        auto* dst = getGameState().entities.CreateEntityAt<Guest>(EntityId::FromUnderlying(srcBase.EntityIndex));
         auto* src = static_cast<const RCT1::Peep*>(&srcBase);
         ImportPeep(dst, src);
 
@@ -2996,9 +2999,9 @@ namespace OpenRCT2::RCT1
     }
 
     template<>
-    void S4Importer::ImportEntity<Staff>(const RCT12EntityBase& srcBase)
+    void S4Importer::ImportEntity<Staff>(GameState_t& gameState, const RCT12EntityBase& srcBase)
     {
-        auto* dst = CreateEntityAt<Staff>(EntityId::FromUnderlying(srcBase.EntityIndex));
+        auto* dst = getGameState().entities.CreateEntityAt<Staff>(EntityId::FromUnderlying(srcBase.EntityIndex));
         auto* src = static_cast<const RCT1::Peep*>(&srcBase);
         ImportPeep(dst, src);
         dst->AssignedStaffType = StaffType(src->StaffType);
@@ -3015,9 +3018,9 @@ namespace OpenRCT2::RCT1
     }
 
     template<>
-    void S4Importer::ImportEntity<Litter>(const RCT12EntityBase& srcBase)
+    void S4Importer::ImportEntity<Litter>(GameState_t& gameState, const RCT12EntityBase& srcBase)
     {
-        auto* dst = CreateEntityAt<Litter>(EntityId::FromUnderlying(srcBase.EntityIndex));
+        auto* dst = getGameState().entities.CreateEntityAt<Litter>(EntityId::FromUnderlying(srcBase.EntityIndex));
         auto* src = static_cast<const RCT12EntityLitter*>(&srcBase);
         ImportEntityCommonProperties(dst, src);
 
@@ -3026,9 +3029,9 @@ namespace OpenRCT2::RCT1
     }
 
     template<>
-    void S4Importer::ImportEntity<SteamParticle>(const RCT12EntityBase& srcBase)
+    void S4Importer::ImportEntity<SteamParticle>(GameState_t& gameState, const RCT12EntityBase& srcBase)
     {
-        auto* dst = CreateEntityAt<SteamParticle>(EntityId::FromUnderlying(srcBase.EntityIndex));
+        auto* dst = getGameState().entities.CreateEntityAt<SteamParticle>(EntityId::FromUnderlying(srcBase.EntityIndex));
         auto* src = static_cast<const RCT12EntitySteamParticle*>(&srcBase);
 
         ImportEntityCommonProperties(dst, src);
@@ -3037,9 +3040,9 @@ namespace OpenRCT2::RCT1
     }
 
     template<>
-    void S4Importer::ImportEntity<MoneyEffect>(const RCT12EntityBase& srcBase)
+    void S4Importer::ImportEntity<MoneyEffect>(GameState_t& gameState, const RCT12EntityBase& srcBase)
     {
-        auto* dst = CreateEntityAt<MoneyEffect>(EntityId::FromUnderlying(srcBase.EntityIndex));
+        auto* dst = getGameState().entities.CreateEntityAt<MoneyEffect>(EntityId::FromUnderlying(srcBase.EntityIndex));
         auto* src = static_cast<const RCT12EntityMoneyEffect*>(&srcBase);
 
         ImportEntityCommonProperties(dst, src);
@@ -3052,9 +3055,9 @@ namespace OpenRCT2::RCT1
     }
 
     template<>
-    void S4Importer::ImportEntity<VehicleCrashParticle>(const RCT12EntityBase& srcBase)
+    void S4Importer::ImportEntity<VehicleCrashParticle>(GameState_t& gameState, const RCT12EntityBase& srcBase)
     {
-        auto* dst = CreateEntityAt<VehicleCrashParticle>(EntityId::FromUnderlying(srcBase.EntityIndex));
+        auto* dst = getGameState().entities.CreateEntityAt<VehicleCrashParticle>(EntityId::FromUnderlying(srcBase.EntityIndex));
         auto* src = static_cast<const RCT12EntityCrashedVehicleParticle*>(&srcBase);
         ImportEntityCommonProperties(dst, src);
         dst->frame = src->Frame;
@@ -3071,36 +3074,36 @@ namespace OpenRCT2::RCT1
     }
 
     template<>
-    void S4Importer::ImportEntity<ExplosionCloud>(const RCT12EntityBase& srcBase)
+    void S4Importer::ImportEntity<ExplosionCloud>(GameState_t& gameState, const RCT12EntityBase& srcBase)
     {
-        auto* dst = CreateEntityAt<ExplosionCloud>(EntityId::FromUnderlying(srcBase.EntityIndex));
+        auto* dst = getGameState().entities.CreateEntityAt<ExplosionCloud>(EntityId::FromUnderlying(srcBase.EntityIndex));
         auto* src = static_cast<const RCT12EntityParticle*>(&srcBase);
         ImportEntityCommonProperties(dst, src);
         dst->frame = src->Frame;
     }
 
     template<>
-    void S4Importer::ImportEntity<ExplosionFlare>(const RCT12EntityBase& srcBase)
+    void S4Importer::ImportEntity<ExplosionFlare>(GameState_t& gameState, const RCT12EntityBase& srcBase)
     {
-        auto* dst = CreateEntityAt<ExplosionFlare>(EntityId::FromUnderlying(srcBase.EntityIndex));
+        auto* dst = getGameState().entities.CreateEntityAt<ExplosionFlare>(EntityId::FromUnderlying(srcBase.EntityIndex));
         auto* src = static_cast<const RCT12EntityParticle*>(&srcBase);
         ImportEntityCommonProperties(dst, src);
         dst->frame = src->Frame;
     }
 
     template<>
-    void S4Importer::ImportEntity<CrashSplashParticle>(const RCT12EntityBase& srcBase)
+    void S4Importer::ImportEntity<CrashSplashParticle>(GameState_t& gameState, const RCT12EntityBase& srcBase)
     {
-        auto* dst = CreateEntityAt<CrashSplashParticle>(EntityId::FromUnderlying(srcBase.EntityIndex));
+        auto* dst = getGameState().entities.CreateEntityAt<CrashSplashParticle>(EntityId::FromUnderlying(srcBase.EntityIndex));
         auto* src = static_cast<const RCT12EntityParticle*>(&srcBase);
         ImportEntityCommonProperties(dst, src);
         dst->frame = src->Frame;
     }
 
     template<>
-    void S4Importer::ImportEntity<JumpingFountain>(const RCT12EntityBase& srcBase)
+    void S4Importer::ImportEntity<JumpingFountain>(GameState_t& gameState, const RCT12EntityBase& srcBase)
     {
-        auto* dst = CreateEntityAt<JumpingFountain>(EntityId::FromUnderlying(srcBase.EntityIndex));
+        auto* dst = getGameState().entities.CreateEntityAt<JumpingFountain>(EntityId::FromUnderlying(srcBase.EntityIndex));
         auto* src = static_cast<const RCT12EntityJumpingFountain*>(&srcBase);
 
         auto fountainType = JumpingFountainType::Water;
@@ -3118,9 +3121,9 @@ namespace OpenRCT2::RCT1
     }
 
     template<>
-    void S4Importer::ImportEntity<Balloon>(const RCT12EntityBase& srcBase)
+    void S4Importer::ImportEntity<Balloon>(GameState_t& gameState, const RCT12EntityBase& srcBase)
     {
-        auto* dst = CreateEntityAt<Balloon>(EntityId::FromUnderlying(srcBase.EntityIndex));
+        auto* dst = getGameState().entities.CreateEntityAt<Balloon>(EntityId::FromUnderlying(srcBase.EntityIndex));
         auto* src = static_cast<const RCT12EntityBalloon*>(&srcBase);
 
         ImportEntityCommonProperties(dst, src);
@@ -3139,9 +3142,9 @@ namespace OpenRCT2::RCT1
     }
 
     template<>
-    void S4Importer::ImportEntity<Duck>(const RCT12EntityBase& srcBase)
+    void S4Importer::ImportEntity<Duck>(GameState_t& gameState, const RCT12EntityBase& srcBase)
     {
-        auto* dst = CreateEntityAt<Duck>(EntityId::FromUnderlying(srcBase.EntityIndex));
+        auto* dst = getGameState().entities.CreateEntityAt<Duck>(EntityId::FromUnderlying(srcBase.EntityIndex));
         auto* src = static_cast<const RCT12EntityDuck*>(&srcBase);
 
         ImportEntityCommonProperties(dst, src);
@@ -3151,48 +3154,48 @@ namespace OpenRCT2::RCT1
         dst->state = static_cast<Duck::DuckState>(src->State);
     }
 
-    void S4Importer::ImportEntity(const RCT12EntityBase& src)
+    void S4Importer::ImportEntity(GameState_t& gameState, const RCT12EntityBase& src)
     {
         switch (GetEntityTypeFromRCT1Sprite(src))
         {
             case EntityType::Vehicle:
-                ImportEntity<::Vehicle>(src);
+                ImportEntity<::Vehicle>(gameState, src);
                 break;
             case EntityType::Guest:
-                ImportEntity<Guest>(src);
+                ImportEntity<Guest>(gameState, src);
                 break;
             case EntityType::Staff:
-                ImportEntity<Staff>(src);
+                ImportEntity<Staff>(gameState, src);
                 break;
             case EntityType::SteamParticle:
-                ImportEntity<SteamParticle>(src);
+                ImportEntity<SteamParticle>(gameState, src);
                 break;
             case EntityType::MoneyEffect:
-                ImportEntity<MoneyEffect>(src);
+                ImportEntity<MoneyEffect>(gameState, src);
                 break;
             case EntityType::CrashedVehicleParticle:
-                ImportEntity<VehicleCrashParticle>(src);
+                ImportEntity<VehicleCrashParticle>(gameState, src);
                 break;
             case EntityType::ExplosionCloud:
-                ImportEntity<ExplosionCloud>(src);
+                ImportEntity<ExplosionCloud>(gameState, src);
                 break;
             case EntityType::ExplosionFlare:
-                ImportEntity<ExplosionFlare>(src);
+                ImportEntity<ExplosionFlare>(gameState, src);
                 break;
             case EntityType::CrashSplash:
-                ImportEntity<CrashSplashParticle>(src);
+                ImportEntity<CrashSplashParticle>(gameState, src);
                 break;
             case EntityType::JumpingFountain:
-                ImportEntity<JumpingFountain>(src);
+                ImportEntity<JumpingFountain>(gameState, src);
                 break;
             case EntityType::Balloon:
-                ImportEntity<Balloon>(src);
+                ImportEntity<Balloon>(gameState, src);
                 break;
             case EntityType::Duck:
-                ImportEntity<Duck>(src);
+                ImportEntity<Duck>(gameState, src);
                 break;
             case EntityType::Litter:
-                ImportEntity<Litter>(src);
+                ImportEntity<Litter>(gameState, src);
                 break;
             default:
                 // Null elements do not need imported

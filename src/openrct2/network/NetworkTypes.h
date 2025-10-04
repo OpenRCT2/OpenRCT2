@@ -13,136 +13,139 @@
 #include "../core/EnumUtils.hpp"
 #include "../ride/RideTypes.h"
 
-enum
+namespace OpenRCT2::Network
 {
-    SERVER_EVENT_PLAYER_JOINED,
-    SERVER_EVENT_PLAYER_DISCONNECTED,
-};
+    enum class ServerEvent : uint16_t
+    {
+        playerJoined,
+        playerDisconnected,
+    };
 
-enum
-{
-    NETWORK_TICK_FLAG_CHECKSUMS = 1 << 0,
-};
+    namespace TickFlags
+    {
+        constexpr uint16_t kChecksums = 1 << 0;
+    };
 
-enum
-{
-    NETWORK_MODE_NONE,
-    NETWORK_MODE_CLIENT,
-    NETWORK_MODE_SERVER
-};
+    enum class Mode : int32_t
+    {
+        none,
+        client,
+        server
+    };
 
-enum
-{
-    NETWORK_PLAYER_FLAG_ISSERVER = 1 << 0,
-};
+    namespace PlayerFlags
+    {
+        constexpr uint16_t kIsServer = 1 << 0;
+    };
 
-enum
-{
-    NETWORK_STATUS_NONE,
-    NETWORK_STATUS_READY,
-    NETWORK_STATUS_CONNECTING,
-    NETWORK_STATUS_CONNECTED
-};
+    enum class Status : int32_t
+    {
+        none,
+        ready,
+        connecting,
+        connected
+    };
 
-enum class NetworkAuth : int32_t
-{
-    None,
-    Requested,
-    Ok,
-    BadVersion,
-    BadName,
-    BadPassword,
-    VerificationFailure,
-    Full,
-    RequirePassword,
-    Verified,
-    UnknownKeyDisallowed
-};
+    enum class Auth : int32_t
+    {
+        none,
+        requested,
+        ok,
+        badVersion,
+        badName,
+        badPassword,
+        verificationFailure,
+        full,
+        requirePassword,
+        verified,
+        unknownKeyDisallowed
+    };
 
-enum class NetworkCommand : uint32_t
-{
-    Auth,
-    Map,
-    Chat,
-    Tick = 4,
-    PlayerList,
-    Ping,
-    PingList,
-    DisconnectMessage,
-    GameInfo,
-    ShowError,
-    GroupList,
-    Event,
-    Token,
-    ObjectsList,
-    MapRequest,
-    GameAction,
-    PlayerInfo,
-    RequestGameState,
-    GameState,
-    ScriptsHeader,
-    ScriptsData,
-    Heartbeat,
-    Max,
-    Invalid = static_cast<uint32_t>(-1),
-};
+    enum class Command : uint32_t
+    {
+        auth,
+        map,
+        chat,
+        tick = 4,
+        playerList,
+        ping,
+        pingList,
+        disconnectMessage,
+        gameInfo,
+        showError,
+        groupList,
+        event,
+        token,
+        objectsList,
+        mapRequest,
+        gameAction,
+        playerInfo,
+        requestGameState,
+        gameState,
+        scriptsHeader,
+        scriptsData,
+        heartbeat,
+        max,
+        invalid = static_cast<uint32_t>(-1),
+    };
 
-static_assert(NetworkCommand::GameInfo == static_cast<NetworkCommand>(9), "Master server expects this to be 9");
+    static_assert(Command::gameInfo == static_cast<Command>(9), "Master server expects this to be 9");
 
-enum class NetworkServerStatus
-{
-    Ok,
-    Desynced
-};
+    enum class ServerStatus
+    {
+        ok,
+        desynced
+    };
 
-struct NetworkServerState
-{
-    NetworkServerStatus state = NetworkServerStatus::Ok;
-    uint32_t desyncTick = 0;
-    uint32_t tick = 0;
-    uint32_t srand0 = 0;
-    bool gamestateSnapshotsEnabled = false;
-};
+    struct ServerState
+    {
+        ServerStatus state = ServerStatus::ok;
+        uint32_t desyncTick = 0;
+        uint32_t tick = 0;
+        uint32_t srand0 = 0;
+        bool gamestateSnapshotsEnabled = false;
+    };
 
 // Structure is used for networking specific fields with meaning,
 // this structure can be used in combination with DataSerialiser
 // to provide extra details with template specialization.
 #pragma pack(push, 1)
-template<typename T, size_t _TypeID>
-struct NetworkObjectId
-{
-    NetworkObjectId(T v)
-        : id(v)
+    template<typename T, size_t _TypeID>
+    struct NetworkObjectId
     {
-    }
-    NetworkObjectId()
-        : id(T(-1))
-    {
-    }
-    operator T() const
-    {
-        return id;
-    }
-    T id;
-};
+        NetworkObjectId(T v)
+            : id(v)
+        {
+        }
+        NetworkObjectId()
+            : id(T(-1))
+        {
+        }
+        operator T() const
+        {
+            return id;
+        }
+        T id;
+    };
 #pragma pack(pop)
 
-// NOTE: When adding new types make sure to have no duplicate _TypeID's otherwise
-// there is no way to specialize templates if they have the exact symbol.
-using NetworkPlayerId_t = NetworkObjectId<int32_t, 0>;
-using NetworkCheatType_t = NetworkObjectId<int32_t, 2>;
+    // NOTE: When adding new types make sure to have no duplicate _TypeID's otherwise
+    // there is no way to specialize templates if they have the exact symbol.
+    using PlayerId_t = NetworkObjectId<int32_t, 0>;
+    using CheatType_t = NetworkObjectId<int32_t, 2>;
 
-enum class NetworkStatisticsGroup : uint32_t
-{
-    Total = 0, // Entire network traffic.
-    Base,      // Messages such as Tick, Ping
-    Commands,  // Command / Game actions
-    MapData,
-    Max,
-};
+    enum class StatisticsGroup : uint32_t
+    {
+        Total = 0, // Entire network traffic.
+        Base,      // Messages such as Tick, Ping
+        Commands,  // Command / Game actions
+        MapData,
+        Max,
+    };
 
-struct NetworkStats
-{
-    uint64_t bytesReceived[EnumValue(NetworkStatisticsGroup::Max)];
-    uint64_t bytesSent[EnumValue(NetworkStatisticsGroup::Max)];
-};
+    struct Stats
+    {
+        uint64_t bytesReceived[EnumValue(StatisticsGroup::Max)];
+        uint64_t bytesSent[EnumValue(StatisticsGroup::Max)];
+    };
+} // namespace OpenRCT2::Network

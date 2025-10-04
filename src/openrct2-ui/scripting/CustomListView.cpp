@@ -596,12 +596,12 @@ void CustomListView::Paint(WindowBase* w, RenderTarget& rt, const ScrollArea* sc
                 if (isSelected)
                 {
                     GfxFilterRect(
-                        rt, { { rt.x, y }, { rt.x + rt.width, y + (kListRowHeight - 1) } }, FilterPaletteID::PaletteDarken2);
+                        rt, { { rt.x, y }, { rt.x + rt.width, y + (kListRowHeight - 1) } }, FilterPaletteID::paletteDarken2);
                 }
                 else if (isHighlighted)
                 {
                     GfxFilterRect(
-                        rt, { { rt.x, y }, { rt.x + rt.width, y + (kListRowHeight - 1) } }, FilterPaletteID::PaletteDarken2);
+                        rt, { { rt.x, y }, { rt.x + rt.width, y + (kListRowHeight - 1) } }, FilterPaletteID::paletteDarken2);
                 }
                 else if (isStriped)
                 {
@@ -848,7 +848,7 @@ OpenRCT2::Widget* CustomListView::GetWidget() const
 
 void CustomListView::Invalidate()
 {
-    ParentWindow->Invalidate();
+    ParentWindow->invalidate();
 }
 
 #endif

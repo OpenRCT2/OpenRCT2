@@ -91,15 +91,6 @@ const TileCoordsXY TileDirectionDelta[] = {
 
 constexpr size_t MIN_TILE_ELEMENTS = 1024;
 
-uint16_t gMapSelectFlags;
-uint16_t gMapSelectType;
-CoordsXY gMapSelectPositionA;
-CoordsXY gMapSelectPositionB;
-CoordsXYZ gMapSelectArrowPosition;
-uint8_t gMapSelectArrowDirection;
-
-std::vector<CoordsXY> gMapSelectionTiles;
-
 uint32_t gLandRemainingOwnershipSales;
 uint32_t gLandRemainingConstructionSales;
 
@@ -956,14 +947,14 @@ uint8_t MapGetLowestLandHeight(const MapRange& range)
     MapRange validRange = { std::max(range.GetLeft(), 32), std::max(range.GetTop(), 32),
                             std::min(range.GetRight(), mapSizeMax.x), std::min(range.GetBottom(), mapSizeMax.y) };
 
-    uint8_t min_height = 0xFF;
+    uint8_t minHeight = 0xFF;
     for (int32_t yi = validRange.GetTop(); yi <= validRange.GetBottom(); yi += kCoordsXYStep)
     {
         for (int32_t xi = validRange.GetLeft(); xi <= validRange.GetRight(); xi += kCoordsXYStep)
         {
             auto* surfaceElement = MapGetSurfaceElementAt(CoordsXY{ xi, yi });
 
-            if (surfaceElement != nullptr && min_height > surfaceElement->BaseHeight)
+            if (surfaceElement != nullptr && minHeight > surfaceElement->BaseHeight)
             {
                 if (gLegacyScene != LegacyScene::scenarioEditor && !getGameState().cheats.sandboxMode)
                 {
@@ -973,11 +964,11 @@ uint8_t MapGetLowestLandHeight(const MapRange& range)
                     }
                 }
 
-                min_height = surfaceElement->BaseHeight;
+                minHeight = surfaceElement->BaseHeight;
             }
         }
     }
-    return min_height;
+    return minHeight;
 }
 
 uint8_t MapGetHighestLandHeight(const MapRange& range)
@@ -986,7 +977,7 @@ uint8_t MapGetHighestLandHeight(const MapRange& range)
     MapRange validRange = { std::max(range.GetLeft(), 32), std::max(range.GetTop(), 32),
                             std::min(range.GetRight(), mapSizeMax.x), std::min(range.GetBottom(), mapSizeMax.y) };
 
-    uint8_t max_height = 0;
+    uint8_t maxHeight = 0;
     for (int32_t yi = validRange.GetTop(); yi <= validRange.GetBottom(); yi += kCoordsXYStep)
     {
         for (int32_t xi = validRange.GetLeft(); xi <= validRange.GetRight(); xi += kCoordsXYStep)
@@ -1007,17 +998,12 @@ uint8_t MapGetHighestLandHeight(const MapRange& range)
                     BaseHeight += 2;
                 if (surfaceElement->GetSlope() & kTileSlopeDiagonalFlag)
                     BaseHeight += 2;
-                if (max_height < BaseHeight)
-                    max_height = BaseHeight;
+                if (maxHeight < BaseHeight)
+                    maxHeight = BaseHeight;
             }
         }
     }
-    return max_height;
-}
-
-bool MapIsLocationAtEdge(const CoordsXY& loc)
-{
-    return loc.x < 32 || loc.y < 32 || loc.x >= (kMaximumTileStartXY) || loc.y >= (kMaximumTileStartXY);
+    return maxHeight;
 }
 
 /**
@@ -1084,20 +1070,7 @@ void MapRemoveAllRides()
     } while (TileElementIteratorNext(&it));
 }
 
-/**
- *
- *  rct2: 0x0068AB1B
- */
-void MapInvalidateMapSelectionTiles()
-{
-    if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE_CONSTRUCT))
-        return;
-
-    for (const auto& position : gMapSelectionTiles)
-        MapInvalidateTileFull(position);
-}
-
-static void MapGetBoundingBox(const MapRange& _range, int32_t* left, int32_t* top, int32_t* right, int32_t* bottom)
+void MapGetBoundingBox(const MapRange& _range, int32_t* left, int32_t* top, int32_t* right, int32_t* bottom)
 {
     uint32_t rotation = GetCurrentRotation();
     const std::array corners{
@@ -1124,30 +1097,6 @@ static void MapGetBoundingBox(const MapRange& _range, int32_t* left, int32_t* to
         if (screenCoord.y < *top)
             *top = screenCoord.y;
     }
-}
-
-/**
- *
- *  rct2: 0x0068AAE1
- */
-void MapInvalidateSelectionRect()
-{
-    int32_t x0, y0, x1, y1, left, right, top, bottom;
-
-    if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
-        return;
-
-    x0 = gMapSelectPositionA.x + 16;
-    y0 = gMapSelectPositionA.y + 16;
-    x1 = gMapSelectPositionB.x + 16;
-    y1 = gMapSelectPositionB.y + 16;
-    MapGetBoundingBox({ x0, y0, x1, y1 }, &left, &top, &right, &bottom);
-    left -= 32;
-    right += 32;
-    bottom += 32;
-    top -= 32 + 2080;
-
-    ViewportsInvalidate({ { left, top }, { right, bottom } });
 }
 
 static size_t CountElementsOnTile(const CoordsXY& loc)
@@ -1459,6 +1408,8 @@ static void MapExtendBoundarySurfaceShiftY(const int32_t amount, const int32_t m
  */
 void ClearElementAt(const CoordsXY& loc, TileElement** elementPtr)
 {
+    auto& gameState = getGameState();
+
     TileElement* element = *elementPtr;
     switch (element->GetType())
     {
@@ -1491,7 +1442,7 @@ void ClearElementAt(const CoordsXY& loc, TileElement** elementPtr)
                     break;
             }
             auto parkEntranceRemoveAction = GameActions::ParkEntranceRemoveAction(CoordsXYZ{ seqLoc, element->GetBaseZ() });
-            auto result = GameActions::ExecuteNested(&parkEntranceRemoveAction);
+            auto result = GameActions::ExecuteNested(&parkEntranceRemoveAction, gameState);
             // If asking nicely did not work, forcibly remove this to avoid an infinite loop.
             if (result.Error != GameActions::Status::Ok)
             {
@@ -1503,7 +1454,7 @@ void ClearElementAt(const CoordsXY& loc, TileElement** elementPtr)
         {
             CoordsXYZD wallLocation = { loc.x, loc.y, element->GetBaseZ(), element->GetDirection() };
             auto wallRemoveAction = GameActions::WallRemoveAction(wallLocation);
-            auto result = GameActions::ExecuteNested(&wallRemoveAction);
+            auto result = GameActions::ExecuteNested(&wallRemoveAction, gameState);
             // If asking nicely did not work, forcibly remove this to avoid an infinite loop.
             if (result.Error != GameActions::Status::Ok)
             {
@@ -1515,7 +1466,7 @@ void ClearElementAt(const CoordsXY& loc, TileElement** elementPtr)
         {
             auto removeSceneryAction = GameActions::LargeSceneryRemoveAction(
                 { loc.x, loc.y, element->GetBaseZ(), element->GetDirection() }, element->AsLargeScenery()->GetSequenceIndex());
-            auto result = GameActions::ExecuteNested(&removeSceneryAction);
+            auto result = GameActions::ExecuteNested(&removeSceneryAction, gameState);
             // If asking nicely did not work, forcibly remove this to avoid an infinite loop.
             if (result.Error != GameActions::Status::Ok)
             {
@@ -1527,7 +1478,7 @@ void ClearElementAt(const CoordsXY& loc, TileElement** elementPtr)
         {
             auto bannerRemoveAction = GameActions::BannerRemoveAction(
                 { loc.x, loc.y, element->GetBaseZ(), element->AsBanner()->GetPosition() });
-            auto result = GameActions::ExecuteNested(&bannerRemoveAction);
+            auto result = GameActions::ExecuteNested(&bannerRemoveAction, gameState);
             // If asking nicely did not work, forcibly remove this to avoid an infinite loop.
             if (result.Error != GameActions::Status::Ok)
             {
@@ -2314,10 +2265,10 @@ void ShiftMap(const TileCoordsXY& amount)
     for (auto i = 0; i < EnumValue(EntityType::Count); i++)
     {
         auto entityType = static_cast<EntityType>(i);
-        auto& list = GetEntityList(entityType);
+        auto& list = getGameState().entities.GetEntityList(entityType);
         for (const auto& entityId : list)
         {
-            auto entity = GetEntity(entityId);
+            auto entity = getGameState().entities.GetEntity(entityId);
 
             // Do not tween the entity
             entityTweener.RemoveEntity(entity);
@@ -2397,7 +2348,7 @@ void ShiftMap(const TileCoordsXY& amount)
     UpdateConsolidatedPatrolAreas();
 
     // Rides
-    for (auto& ride : GetRideManager())
+    for (auto& ride : RideManager(gameState))
     {
         auto stations = ride.getStations();
         for (auto& station : stations)

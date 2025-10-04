@@ -13,7 +13,6 @@
 #include "../../../ride/RideData.h"
 #include "../../../ride/TrackData.h"
 #include "../../../ride/TrackPaint.h"
-#include "../../../world/Map.h"
 #include "../../../world/tile_element/TrackElement.h"
 #include "../../Paint.h"
 #include "../../support/WoodenSupports.h"
@@ -392,27 +391,12 @@ static void PaintReverseFreefallRCOnridePhoto(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    static constexpr uint32_t imageIds[4] = {
-        SPR_AIR_POWERED_VERTICAL_RC_FLAT_SW_NE,
-        SPR_AIR_POWERED_VERTICAL_RC_FLAT_NW_SE,
-        SPR_AIR_POWERED_VERTICAL_RC_FLAT_SW_NE,
-        SPR_AIR_POWERED_VERTICAL_RC_FLAT_NW_SE,
-    };
-
-    // The straight track without booster is borrowed from the APVC.
-    // It has one track colour, instead of the two that the Reverse Freefall Colour has.
-    auto colour = session.TrackColours;
-    if (!trackElement.IsGhost() && !trackElement.IsHighlighted())
-    {
-        colour = colour.WithPrimary(colour.GetSecondary());
-    }
-
     PaintAddImageAsParentRotated(
-        session, direction, colour.WithIndex(imageIds[direction]), { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
+        session, direction, session.TrackColours.WithIndex(kPiecesStation[direction]), { 0, 0, height },
+        { { 0, 6, height }, { 32, 20, 1 } });
 
     DrawSupportForSequenceA<TrackElemType::OnRidePhoto>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-    ;
 
     TrackPaintUtilOnridePhotoPaint2(session, direction, trackElement, height);
 }

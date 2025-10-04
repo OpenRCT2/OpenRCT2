@@ -24,7 +24,6 @@
     #include "../../../ride/Ride.h"
     #include "../../../ride/RideManager.hpp"
     #include "../../../ride/TrainManager.h"
-    #include "../../../world/Map.h"
     #include "../../Duktape.hpp"
     #include "../entity/ScBalloon.hpp"
     #include "../entity/ScEntity.hpp"
@@ -52,7 +51,8 @@ namespace OpenRCT2::Scripting
 
     int32_t ScMap::numRides_get() const
     {
-        return static_cast<int32_t>(GetRideManager().size());
+        auto& gameState = getGameState();
+        return static_cast<int32_t>(RideManager(gameState).size());
     }
 
     int32_t ScMap::numEntities_get() const
@@ -63,7 +63,9 @@ namespace OpenRCT2::Scripting
     std::vector<std::shared_ptr<ScRide>> ScMap::rides_get() const
     {
         std::vector<std::shared_ptr<ScRide>> result;
-        auto rideManager = GetRideManager();
+
+        auto& gameState = getGameState();
+        auto rideManager = RideManager(gameState);
         for (const auto& ride : rideManager)
         {
             result.push_back(std::make_shared<ScRide>(ride.id));
@@ -73,7 +75,8 @@ namespace OpenRCT2::Scripting
 
     std::shared_ptr<ScRide> ScMap::getRide(int32_t id) const
     {
-        auto rideManager = GetRideManager();
+        auto& gameState = getGameState();
+        auto rideManager = RideManager(gameState);
         auto ride = rideManager[RideId::FromUnderlying(id)];
         if (ride != nullptr)
         {
@@ -93,7 +96,7 @@ namespace OpenRCT2::Scripting
         if (id >= 0 && id < kMaxEntities)
         {
             auto spriteId = EntityId::FromUnderlying(id);
-            auto sprite = GetEntity(spriteId);
+            auto sprite = getGameState().entities.GetEntity(spriteId);
             if (sprite != nullptr && sprite->Type != EntityType::Null)
             {
                 return GetEntityAsDukValue(sprite);
@@ -119,7 +122,7 @@ namespace OpenRCT2::Scripting
             {
                 for (auto carId = trainHead->Id; !carId.IsNull();)
                 {
-                    auto car = GetEntity<Vehicle>(carId);
+                    auto car = getGameState().entities.GetEntity<Vehicle>(carId);
 
                     if (car == nullptr)
                     {
@@ -182,7 +185,7 @@ namespace OpenRCT2::Scripting
         {
             for (auto sprite : EntityList<Staff>())
             {
-                auto staff = GetEntity<Staff>(sprite->Id);
+                auto staff = getGameState().entities.GetEntity<Staff>(sprite->Id);
                 if (staff != nullptr)
                 {
                     switch (staff->AssignedStaffType)
@@ -278,7 +281,7 @@ namespace OpenRCT2::Scripting
         {
             for (auto sprite : EntityTileList<Staff>(pos))
             {
-                auto staff = GetEntity<Staff>(sprite->Id);
+                auto staff = getGameState().entities.GetEntity<Staff>(sprite->Id);
                 if (staff != nullptr)
                 {
                     switch (staff->AssignedStaffType)
@@ -322,7 +325,7 @@ namespace OpenRCT2::Scripting
     template<typename TEntityType, typename TScriptType>
     DukValue createEntityType(duk_context* ctx, const DukValue& initializer)
     {
-        TEntityType* entity = CreateEntity<TEntityType>();
+        TEntityType* entity = getGameState().entities.CreateEntity<TEntityType>();
         if (entity == nullptr)
         {
             // Probably no more space for entities for this specified entity type.
@@ -341,7 +344,7 @@ namespace OpenRCT2::Scripting
         DukValue res;
         if (type == "car")
         {
-            Vehicle* entity = CreateEntity<Vehicle>();
+            Vehicle* entity = getGameState().entities.CreateEntity<Vehicle>();
             if (entity == nullptr)
             {
                 // Probably no more space for entities for this specified entity type.
@@ -354,10 +357,10 @@ namespace OpenRCT2::Scripting
                 entity->MoveTo(entityPos);
 
                 // Reset some important vehicle vars to their null values
-                entity->sound1_id = OpenRCT2::Audio::SoundId::Null;
-                entity->sound2_id = OpenRCT2::Audio::SoundId::Null;
+                entity->sound1_id = OpenRCT2::Audio::SoundId::null;
+                entity->sound2_id = OpenRCT2::Audio::SoundId::null;
                 entity->next_vehicle_on_train = EntityId::GetNull();
-                entity->scream_sound_id = OpenRCT2::Audio::SoundId::Null;
+                entity->scream_sound_id = OpenRCT2::Audio::SoundId::null;
                 for (size_t i = 0; i < std::size(entity->peep); i++)
                 {
                     entity->peep[i] = EntityId::GetNull();
@@ -457,7 +460,7 @@ namespace OpenRCT2::Scripting
                 return GetObjectAsDukValue(_context, std::make_shared<ScVehicle>(spriteId));
             case EntityType::Staff:
             {
-                auto staff = GetEntity<Staff>(spriteId);
+                auto staff = getGameState().entities.GetEntity<Staff>(spriteId);
                 if (staff != nullptr)
                 {
                     switch (staff->AssignedStaffType)

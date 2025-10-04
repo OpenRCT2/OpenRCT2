@@ -18,6 +18,7 @@
 #include "../paint/Paint.h"
 #include "../profiling/Profiling.h"
 #include "../scenario/Scenario.h"
+#include "../world/Map.h"
 #include "../world/tile_element/SurfaceElement.h"
 #include "EntityRegistry.h"
 
@@ -86,7 +87,7 @@ bool Duck::IsFlying()
 void Duck::Remove()
 {
     Invalidate();
-    EntityRemove(this);
+    getGameState().entities.EntityRemove(this);
 }
 
 void Duck::UpdateFlyToWater()
@@ -291,7 +292,7 @@ uint32_t Duck::GetFrameImage(int32_t direction) const
 
 void Duck::Create(const CoordsXY& pos)
 {
-    auto* duck = CreateEntity<Duck>();
+    auto* duck = getGameState().entities.CreateEntity<Duck>();
     if (duck == nullptr)
         return;
 
@@ -352,7 +353,7 @@ void Duck::Update()
 
 void Duck::Press()
 {
-    OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::Quack, { x, y, z });
+    OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::quack, { x, y, z });
 }
 
 void Duck::RemoveAll()

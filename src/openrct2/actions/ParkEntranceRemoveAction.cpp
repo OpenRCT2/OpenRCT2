@@ -14,6 +14,7 @@
 #include "../OpenRCT2.h"
 #include "../management/Finance.h"
 #include "../world/Entrance.h"
+#include "../world/Map.h"
 #include "../world/Park.h"
 #include "../world/tile_element/EntranceElement.h"
 
@@ -41,7 +42,7 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_loc);
     }
 
-    Result ParkEntranceRemoveAction::Query() const
+    Result ParkEntranceRemoveAction::Query(GameState_t& gameState) const
     {
         if (!isInEditorMode() && !getGameState().cheats.sandboxMode)
         {
@@ -65,7 +66,7 @@ namespace OpenRCT2::GameActions
         return res;
     }
 
-    Result ParkEntranceRemoveAction::Execute() const
+    Result ParkEntranceRemoveAction::Execute(GameState_t& gameState) const
     {
         auto res = Result();
         res.Expenditure = ExpenditureType::landPurchase;

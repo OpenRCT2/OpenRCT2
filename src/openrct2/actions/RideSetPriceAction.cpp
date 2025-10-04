@@ -19,6 +19,7 @@
 #include "../ride/RideManager.hpp"
 #include "../ride/ShopItem.h"
 #include "../ui/WindowManager.h"
+#include "../world/Map.h"
 #include "../world/Park.h"
 
 namespace OpenRCT2::GameActions
@@ -49,7 +50,7 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_rideIndex) << DS_TAG(_price) << DS_TAG(_primaryPrice);
     }
 
-    Result RideSetPriceAction::Query() const
+    Result RideSetPriceAction::Query(GameState_t& gameState) const
     {
         auto ride = GetRide(_rideIndex);
         if (ride == nullptr)
@@ -74,7 +75,7 @@ namespace OpenRCT2::GameActions
         return Result();
     }
 
-    Result RideSetPriceAction::Execute() const
+    Result RideSetPriceAction::Execute(GameState_t& gameState) const
     {
         Result res = Result();
         res.Expenditure = ExpenditureType::parkRideTickets;
@@ -119,7 +120,7 @@ namespace OpenRCT2::GameActions
                 if (shopItem == ShopItem::None)
                 {
                     ride->price[0] = _price;
-                    windowMgr->InvalidateByClass(WindowClass::Ride);
+                    windowMgr->InvalidateByClass(WindowClass::ride);
                     return res;
                 }
             }
@@ -127,7 +128,7 @@ namespace OpenRCT2::GameActions
             if (!ShopItemHasCommonPrice(shopItem))
             {
                 ride->price[0] = _price;
-                windowMgr->InvalidateByClass(WindowClass::Ride);
+                windowMgr->InvalidateByClass(WindowClass::ride);
                 return res;
             }
         }
@@ -140,7 +141,7 @@ namespace OpenRCT2::GameActions
                 if ((ride->lifecycleFlags & RIDE_LIFECYCLE_ON_RIDE_PHOTO) == 0)
                 {
                     ride->price[1] = _price;
-                    windowMgr->InvalidateByClass(WindowClass::Ride);
+                    windowMgr->InvalidateByClass(WindowClass::ride);
                     return res;
                 }
             }
@@ -148,20 +149,20 @@ namespace OpenRCT2::GameActions
             if (!ShopItemHasCommonPrice(shopItem))
             {
                 ride->price[1] = _price;
-                windowMgr->InvalidateByClass(WindowClass::Ride);
+                windowMgr->InvalidateByClass(WindowClass::ride);
                 return res;
             }
         }
 
         // Synchronize prices if enabled.
-        RideSetCommonPrice(shopItem);
+        RideSetCommonPrice(gameState, shopItem);
 
         return res;
     }
 
-    void RideSetPriceAction::RideSetCommonPrice(ShopItem shopItem) const
+    void RideSetPriceAction::RideSetCommonPrice(GameState_t& gameState, ShopItem shopItem) const
     {
-        for (auto& ride : GetRideManager())
+        for (auto& ride : RideManager(gameState))
         {
             auto invalidate = false;
             auto rideEntry = GetRideEntryByIndex(ride.subtype);
@@ -198,7 +199,7 @@ namespace OpenRCT2::GameActions
             if (invalidate)
             {
                 auto* windowMgr = Ui::GetWindowManager();
-                windowMgr->InvalidateByNumber(WindowClass::Ride, ride.id.ToUnderlying());
+                windowMgr->InvalidateByNumber(WindowClass::ride, ride.id.ToUnderlying());
             }
         }
     }

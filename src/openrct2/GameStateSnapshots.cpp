@@ -189,7 +189,8 @@ struct GameStateSnapshots final : public IGameStateSnapshots
     virtual void Capture(GameStateSnapshot_t& snapshot) override final
     {
         snapshot.SerialiseSprites(
-            [](const EntityId index) { return reinterpret_cast<EntitySnapshot*>(GetEntity(index)); }, kMaxEntities, true);
+            [](const EntityId index) { return reinterpret_cast<EntitySnapshot*>(getGameState().entities.GetEntity(index)); },
+            kMaxEntities, true);
 
         // LOG_INFO("Snapshot size: %u bytes", static_cast<uint32_t>(snapshot.storedSprites.GetLength()));
     }
@@ -391,8 +392,8 @@ struct GameStateSnapshots final : public IGameStateSnapshots
     void CompareSpriteDataVehicle(const Vehicle& spriteBase, const Vehicle& spriteCmp, GameStateSpriteChange& changeData) const
     {
         COMPARE_FIELD(Vehicle, SubType);
-        COMPARE_FIELD(Vehicle, Pitch);
-        COMPARE_FIELD(Vehicle, bank_rotation);
+        COMPARE_FIELD(Vehicle, pitch);
+        COMPARE_FIELD(Vehicle, roll);
         COMPARE_FIELD(Vehicle, remaining_distance);
         COMPARE_FIELD(Vehicle, velocity);
         COMPARE_FIELD(Vehicle, acceleration);
@@ -435,7 +436,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(Vehicle, sound1_volume);
         COMPARE_FIELD(Vehicle, sound2_id);
         COMPARE_FIELD(Vehicle, sound2_volume);
-        COMPARE_FIELD(Vehicle, sound_vector_factor);
+        COMPARE_FIELD(Vehicle, dopplerShift);
         COMPARE_FIELD(Vehicle, cable_lift_target);
         COMPARE_FIELD(Vehicle, speed);
         COMPARE_FIELD(Vehicle, powered_acceleration);

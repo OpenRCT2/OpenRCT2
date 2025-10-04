@@ -28,13 +28,13 @@ constexpr uint8_t kPeepMaxEnergyTarget = 255; // Oddly, this differs from max en
 
 constexpr auto kPeepClearanceHeight = 4 * kCoordsZStep;
 
-class Formatter;
 struct PaintSession;
 
 namespace OpenRCT2
 {
+    class Formatter;
     struct TileElement;
-}
+} // namespace OpenRCT2
 
 namespace OpenRCT2::GameActions
 {
@@ -335,6 +335,7 @@ struct Peep : EntityBase
             uint8_t TimeToStand;
             uint8_t StandingFlags;
         };
+        uint8_t timesSlidDown;
     };
     // Normally 0, 1 for carrying sliding board on spiral slide ride, 2 for carrying lawn mower
     uint8_t SpecialSprite;
@@ -365,7 +366,6 @@ public: // Peep
     bool UpdateActionAnimation();
     std::optional<CoordsXY> UpdateWalkingAction(const CoordsXY& differenceLoc, int16_t& xy_distance);
     void UpdateWalkingAnimation();
-    void ThrowUp();
     void SetState(PeepState new_state);
     void Remove();
     void UpdateCurrentAnimationType();
@@ -381,8 +381,8 @@ public: // Peep
     void PickupAbort(int32_t old_x);
     [[nodiscard]] OpenRCT2::GameActions::Result Place(const TileCoordsXYZ& location, bool apply);
     void RemoveFromRide();
-    void FormatActionTo(Formatter&) const;
-    void FormatNameTo(Formatter&) const;
+    void FormatActionTo(OpenRCT2::Formatter&) const;
+    void FormatNameTo(OpenRCT2::Formatter&) const;
     [[nodiscard]] std::string GetName() const;
     bool SetName(std::string_view value);
     bool IsActionWalking() const;

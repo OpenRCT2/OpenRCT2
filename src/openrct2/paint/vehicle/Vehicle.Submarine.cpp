@@ -51,8 +51,8 @@ namespace OpenRCT2
         auto imageId1 = ImageId(baseImageId + 1, vehicle->colours.Body, vehicle->colours.Trim, vehicle->colours.Tertiary);
         if (vehicle->IsGhost())
         {
-            imageId0 = ImageId(baseImageId + 0).WithRemap(FilterPaletteID::PaletteGhost);
-            imageId1 = ImageId(baseImageId + 1).WithRemap(FilterPaletteID::PaletteGhost);
+            imageId0 = ImageId(baseImageId + 0).WithRemap(FilterPaletteID::paletteGhost);
+            imageId1 = ImageId(baseImageId + 1).WithRemap(FilterPaletteID::paletteGhost);
         }
 
         const auto& bb = VehicleBoundboxes[carEntry->draw_order][OpenRCT2::Entity::Yaw::YawTo16(imageDirection)];

@@ -133,51 +133,51 @@ namespace OpenRCT2::Ui::Windows
         {
         }
 
-        void OnOpen() override
+        void onOpen() override
         {
-            SetWidgets(_scenarioSelectWidgets);
+            setWidgets(_scenarioSelectWidgets);
 
             // Load scenario list
             ScenarioRepositoryScan();
 
             _highlightedScenario = nullptr;
-            InitTabs();
-            InitialiseListItems();
-            InitScrollWidgets();
+            initTabs();
+            initialiseListItems();
+            initScrollWidgets();
         }
 
-        void OnLanguageChange() override
+        void onLanguageChange() override
         {
             _listItems.clear();
             ScenarioRepositoryScan();
-            InitialiseListItems();
+            initialiseListItems();
         }
 
-        void OnMouseUp(WidgetIndex widgetIndex) override
+        void onMouseUp(WidgetIndex widgetIndex) override
         {
             if (widgetIndex == WIDX_CLOSE)
             {
-                Close();
+                close();
             }
         }
 
-        void OnMouseDown(WidgetIndex widgetIndex) override
+        void onMouseDown(WidgetIndex widgetIndex) override
         {
             if (widgetIndex >= WIDX_TAB1 && widgetIndex <= WIDX_TAB10)
             {
-                selected_tab = widgetIndex - 4;
-                Config::Get().interface.scenarioSelectLastTab = selected_tab;
+                selectedTab = widgetIndex - 4;
+                Config::Get().interface.scenarioSelectLastTab = selectedTab;
                 Config::Save();
 
                 _highlightedScenario = nullptr;
                 _preview = {};
 
-                InitialiseListItems();
-                Invalidate();
-                OnResize();
-                OnPrepareDraw();
-                InitScrollWidgets();
-                Invalidate();
+                initialiseListItems();
+                invalidate();
+                onResize();
+                onPrepareDraw();
+                initScrollWidgets();
+                invalidate();
             }
         }
 
@@ -226,7 +226,7 @@ namespace OpenRCT2::Ui::Windows
                     },
                     [](const ParkPreview preview) {
                         auto* windowMgr = GetWindowManager();
-                        auto* wnd = windowMgr->FindByClass(WindowClass::ScenarioSelect);
+                        auto* wnd = windowMgr->FindByClass(WindowClass::scenarioSelect);
                         if (wnd == nullptr)
                         {
                             return;
@@ -260,7 +260,7 @@ namespace OpenRCT2::Ui::Windows
         void UpdateParkPreview(const ParkPreview& preview)
         {
             _preview = preview;
-            Invalidate();
+            invalidate();
         }
 
         ScreenCoordsXY DrawPreview(RenderTarget& rt, ScreenCoordsXY screenPos)
@@ -296,9 +296,9 @@ namespace OpenRCT2::Ui::Windows
             return frameEndPos;
         }
 
-        void OnDraw(RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
-            DrawWidgets(rt);
+            drawWidgets(rt);
 
             StringId format = STR_WINDOW_COLOUR_2_STRINGID;
             FontStyle fontStyle = FontStyle::Medium;
@@ -420,21 +420,21 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnPrepareDraw() override
+        void onPrepareDraw() override
         {
-            pressed_widgets &= ~(
+            pressedWidgets &= ~(
                 (1uLL << WIDX_CLOSE) | (1uLL << WIDX_TAB1) | (1uLL << WIDX_TAB2) | (1uLL << WIDX_TAB3) | (1uLL << WIDX_TAB4)
                 | (1uLL << WIDX_TAB5) | (1uLL << WIDX_TAB6) | (1uLL << WIDX_TAB7) | (1uLL << WIDX_TAB8) | (1uLL << WIDX_TAB9)
                 | (1uLL << WIDX_TAB10));
 
-            pressed_widgets |= 1LL << (selected_tab + WIDX_TAB1);
+            pressedWidgets |= 1LL << (selectedTab + WIDX_TAB1);
 
             const int32_t bottomMargin = Config::Get().general.DebuggingTools ? 17 : 5;
             widgets[WIDX_SCENARIOLIST].right = width - GetPreviewPaneWidth() - 2 * kPadding;
             widgets[WIDX_SCENARIOLIST].bottom = height - bottomMargin;
         }
 
-        ScreenSize OnScrollGetSize(int32_t scrollIndex) override
+        ScreenSize onScrollGetSize(int32_t scrollIndex) override
         {
             const int32_t scenarioItemHeight = GetScenarioListItemSize();
 
@@ -455,7 +455,7 @@ namespace OpenRCT2::Ui::Windows
             return { kWindowSize.width, y };
         }
 
-        void OnScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
+        void onScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
             const int32_t scenarioItemHeight = GetScenarioListItemSize();
 
@@ -495,15 +495,15 @@ namespace OpenRCT2::Ui::Windows
             {
                 _highlightedScenario = selected;
                 LoadPreview();
-                Invalidate();
+                invalidate();
             }
             else if (_showLockedInformation != originalShowLockedInformation)
             {
-                Invalidate();
+                invalidate();
             }
         }
 
-        void OnScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
+        void onScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
             const int32_t scenarioItemHeight = GetScenarioListItemSize();
 
@@ -519,7 +519,7 @@ namespace OpenRCT2::Ui::Windows
                         mutableScreenCoords.y -= scenarioItemHeight;
                         if (mutableScreenCoords.y < 0 && !listItem.scenario.is_locked)
                         {
-                            OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Click1, 0, windowPos.x + (width / 2));
+                            OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::click1, 0, windowPos.x + (width / 2));
                             gFirstTimeSaving = true;
                             // Callback will likely close this window! So should always return after it.
                             _callback(listItem.scenario.scenario->Path);
@@ -534,7 +534,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
+        void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
             uint8_t paletteIndex = ColourMapA[colours[1].colour].mid_light;
             GfxClear(rt, paletteIndex);
@@ -580,7 +580,7 @@ namespace OpenRCT2::Ui::Windows
                         bool isHighlighted = _highlightedScenario == scenario;
                         if (isHighlighted)
                         {
-                            GfxFilterRect(rt, { 0, y, width, y + scenarioItemHeight - 1 }, FilterPaletteID::PaletteDarken1);
+                            GfxFilterRect(rt, { 0, y, width, y + scenarioItemHeight - 1 }, FilterPaletteID::paletteDarken1);
                         }
 
                         bool isCompleted = scenario->Highscore != nullptr;
@@ -669,7 +669,7 @@ namespace OpenRCT2::Ui::Windows
             GfxDrawLine(rt, { darkLineLeftTop2, darkLineRightBottom2 }, darkColour);
         }
 
-        void InitialiseListItems()
+        void initialiseListItems()
         {
             size_t numScenarios = ScenarioRepositoryGetCount();
             _listItems.clear();
@@ -695,7 +695,7 @@ namespace OpenRCT2::Ui::Windows
 
                 // Category heading
                 StringId headingStringId = kStringIdNone;
-                if (selected_tab != EnumValue(ScenarioSource::Real) && currentHeading.category != scenario->Category)
+                if (selectedTab != EnumValue(ScenarioSource::Real) && currentHeading.category != scenario->Category)
                 {
                     currentHeading.category = scenario->Category;
                     headingStringId = Scenario::kScenarioCategoryStringIds[currentHeading.raw];
@@ -774,7 +774,7 @@ namespace OpenRCT2::Ui::Windows
 
         bool IsScenarioVisible(const ScenarioIndexEntry& scenario) const
         {
-            if (static_cast<uint8_t>(scenario.SourceGame) != selected_tab)
+            if (static_cast<uint8_t>(scenario.SourceGame) != selectedTab)
             {
                 return false;
             }
@@ -786,13 +786,13 @@ namespace OpenRCT2::Ui::Windows
         {
             if (!Config::Get().general.ScenarioUnlockingEnabled)
                 return false;
-            if (selected_tab >= 6)
+            if (selectedTab >= 6)
                 return false;
 
             return true;
         }
 
-        void InitTabs()
+        void initTabs()
         {
             uint32_t showPages = 0;
             size_t numScenarios = ScenarioRepositoryGetCount();
@@ -804,14 +804,14 @@ namespace OpenRCT2::Ui::Windows
 
             if (showPages & (1 << Config::Get().interface.scenarioSelectLastTab))
             {
-                selected_tab = Config::Get().interface.scenarioSelectLastTab;
+                selectedTab = Config::Get().interface.scenarioSelectLastTab;
             }
             else
             {
                 int32_t firstPage = Numerics::bitScanForward(showPages);
                 if (firstPage != -1)
                 {
-                    selected_tab = firstPage;
+                    selectedTab = firstPage;
                 }
             }
 
@@ -860,14 +860,14 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* ScenarioselectOpen(std::function<void(std::string_view)> callback)
     {
         auto* windowMgr = GetWindowManager();
-        auto* window = static_cast<ScenarioSelectWindow*>(windowMgr->BringToFrontByClass(WindowClass::ScenarioSelect));
+        auto* window = static_cast<ScenarioSelectWindow*>(windowMgr->BringToFrontByClass(WindowClass::scenarioSelect));
         if (window != nullptr)
         {
             return window;
         }
 
         window = windowMgr->Create<ScenarioSelectWindow>(
-            WindowClass::ScenarioSelect, {}, kWindowSize, WF_AUTO_POSITION | WF_CENTRE_SCREEN, callback);
+            WindowClass::scenarioSelect, {}, kWindowSize, { WindowFlag::autoPosition, WindowFlag::centreScreen }, callback);
         return window;
     }
 } // namespace OpenRCT2::Ui::Windows

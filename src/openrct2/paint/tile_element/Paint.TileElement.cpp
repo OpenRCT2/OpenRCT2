@@ -24,6 +24,7 @@
 #include "../../world/Entrance.h"
 #include "../../world/Footpath.h"
 #include "../../world/Map.h"
+#include "../../world/MapSelection.h"
 #include "../../world/Scenery.h"
 #include "../../world/tile_element/Slope.h"
 #include "../../world/tile_element/SurfaceElement.h"
@@ -101,7 +102,7 @@ static void BlankTilesPaint(PaintSession& session, int32_t x, int32_t y)
 
     session.SpritePosition.x = x;
     session.SpritePosition.y = y;
-    session.InteractionType = ViewportInteractionItem::None;
+    session.InteractionType = ViewportInteractionItem::none;
     PaintAddImageAsParent(session, ImageId(SPR_BLANK_TILE), { 0, 0, 16 }, { 32, 32, -1 });
 }
 
@@ -162,7 +163,7 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
     int32_t screenMinY = Translate3DTo2DWithZ(rotation, { coords, 0 }).y;
 
     // Display little yellow arrow when building footpaths?
-    if ((gMapSelectFlags & MAP_SELECT_FLAG_ENABLE_ARROW) && session.MapPosition.x == gMapSelectArrowPosition.x
+    if ((gMapSelectFlags.has(MapSelectFlag::enableArrow)) && session.MapPosition.x == gMapSelectArrowPosition.x
         && session.MapPosition.y == gMapSelectArrowPosition.y)
     {
         uint8_t arrowRotation = (rotation + (gMapSelectArrowDirection & 3)) & 3;
@@ -173,7 +174,7 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
 
         session.SpritePosition.x = coords.x;
         session.SpritePosition.y = coords.y;
-        session.InteractionType = ViewportInteractionItem::None;
+        session.InteractionType = ViewportInteractionItem::none;
 
         PaintAddImageAsParent(session, imageId, { 0, 0, arrowZ }, { { 0, 0, arrowZ + 18 }, { 32, 32, -1 } });
     }
@@ -183,26 +184,26 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
 
     const TileElement* element = tile_element; // push tile_element
 
-    uint16_t max_height = 0;
+    uint16_t maxHeight = 0;
     do
     {
-        max_height = std::max(max_height, static_cast<uint16_t>(element->GetClearanceZ()));
+        maxHeight = std::max(maxHeight, static_cast<uint16_t>(element->GetClearanceZ()));
     } while (!(element++)->IsLastForTile());
 
     element--;
 
     if (element->GetType() == TileElementType::Surface && (element->AsSurface()->GetWaterHeight() > 0))
     {
-        max_height = std::max(max_height, static_cast<uint16_t>(element->AsSurface()->GetWaterHeight()));
+        maxHeight = std::max(maxHeight, static_cast<uint16_t>(element->AsSurface()->GetWaterHeight()));
     }
 
     if (partOfVirtualFloor)
     {
         // We must pretend this tile is at least as tall as the virtual floor
-        max_height = std::max(max_height, VirtualFloorGetHeight());
+        maxHeight = std::max(maxHeight, VirtualFloorGetHeight());
     }
 
-    if (screenMinY - (max_height + 32) >= session.DPI.WorldY() + session.DPI.WorldHeight())
+    if (screenMinY - (maxHeight + 32) >= session.DPI.WorldY() + session.DPI.WorldHeight())
         return;
 
     session.SpritePosition.x = coords.x;
@@ -319,13 +320,13 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
         for (std::size_t sx = 0; sx < std::size(segmentPositions[sy]); sx++)
         {
             uint16_t segmentHeight = session.SupportSegments[segmentPositions[sy][sx]].height;
-            auto imageColourFlats = ImageId(SPR_LAND_TOOL_SIZE_1).WithTransparency(FilterPaletteID::PaletteGlassBlack);
+            auto imageColourFlats = ImageId(SPR_LAND_TOOL_SIZE_1).WithTransparency(FilterPaletteID::paletteGlassBlack);
             if (segmentHeight == 0xFFFF)
             {
                 segmentHeight = session.Support.height;
                 // white: 0b101101
                 imageColourFlats = ImageId(SPR_LAND_TOOL_SIZE_1)
-                                       .WithTransparency(FilterPaletteID::PaletteTranslucentBordeauxRedHighlight);
+                                       .WithTransparency(FilterPaletteID::paletteTranslucentBordeauxRedHighlight);
             }
 
             // Only draw supports below the clipping height.

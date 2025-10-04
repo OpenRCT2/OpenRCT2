@@ -15,6 +15,7 @@
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
+#include <openrct2/GameState.h>
 #include <openrct2/Input.h>
 #include <openrct2/SpriteIds.h>
 #include <openrct2/actions/StaffSetPatrolAreaAction.h>
@@ -25,6 +26,7 @@
 #include <openrct2/entity/Staff.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/ui/WindowManager.h>
+#include <openrct2/world/MapSelection.h>
 #include <openrct2/world/Park.h>
 
 namespace OpenRCT2::Ui::Windows
@@ -54,29 +56,29 @@ namespace OpenRCT2::Ui::Windows
     class PatrolAreaWindow final : public Window
     {
     public:
-        void OnOpen() override
+        void onOpen() override
         {
-            SetWidgets(PatrolAreaWidgets);
+            setWidgets(PatrolAreaWidgets);
 
-            hold_down_widgets = (1uLL << WIDX_INCREMENT) | (1uLL << WIDX_DECREMENT);
+            holdDownWidgets = (1uLL << WIDX_INCREMENT) | (1uLL << WIDX_DECREMENT);
             WindowInitScrollWidgets(*this);
             WindowPushOthersBelow(*this);
             gLandToolSize = 4;
         }
 
-        void OnClose() override
+        void onClose() override
         {
             // If the tool wasn't changed, turn tool off
             if (PatrolAreaToolIsActive())
                 ToolCancel();
         }
 
-        void OnMouseUp(WidgetIndex widgetIndex) override
+        void onMouseUp(WidgetIndex widgetIndex) override
         {
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
-                    Close();
+                    close();
                     break;
                 case WIDX_PREVIEW:
                     InputSize();
@@ -84,22 +86,22 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnMouseDown(WidgetIndex widgetIndex) override
+        void onMouseDown(WidgetIndex widgetIndex) override
         {
             switch (widgetIndex)
             {
                 case WIDX_DECREMENT:
                     gLandToolSize = std::max<uint16_t>(kLandToolMinimumSize, gLandToolSize - 1);
-                    Invalidate();
+                    invalidate();
                     break;
                 case WIDX_INCREMENT:
                     gLandToolSize = std::min<uint16_t>(kLandToolMaximumSize, gLandToolSize + 1);
-                    Invalidate();
+                    invalidate();
                     break;
             }
         }
 
-        void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override
+        void onTextInput(WidgetIndex widgetIndex, std::string_view text) override
         {
             if (text.empty())
                 return;
@@ -107,7 +109,7 @@ namespace OpenRCT2::Ui::Windows
             if (widgetIndex != WIDX_PREVIEW)
                 return;
 
-            const auto res = String::Parse<int32_t>(text);
+            const auto res = String::tryParse<int32_t>(text);
             if (res.has_value())
             {
                 int32_t size;
@@ -115,28 +117,28 @@ namespace OpenRCT2::Ui::Windows
                 size = std::max<uint16_t>(kLandToolMinimumSize, size);
                 size = std::min<uint16_t>(kLandToolMaximumSize, size);
                 gLandToolSize = size;
-                Invalidate();
+                invalidate();
             }
         }
 
-        void OnUpdate() override
+        void onUpdate() override
         {
             // Close window if another tool is open or staff window gets closed
             if (!PatrolAreaToolIsActive() || !IsStaffWindowOpen())
             {
-                Close();
+                close();
             }
         }
 
-        void OnPrepareDraw() override
+        void onPrepareDraw() override
         {
-            SetWidgetPressed(WIDX_PREVIEW, true);
+            setWidgetPressed(WIDX_PREVIEW, true);
             widgets[WIDX_PREVIEW].image = ImageId(LandTool::SizeToSpriteIndex(gLandToolSize));
         }
 
-        void OnDraw(RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
-            DrawWidgets(rt);
+            drawWidgets(rt);
 
             // Draw number for tool sizes bigger than 7
             if (gLandToolSize > kLandToolMaximumSizeWithSprite)
@@ -150,17 +152,17 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
+        void onToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
             auto mapTile = GetBestCoordsFromPos(screenCoords);
             if (!mapTile)
                 return;
 
             auto stateChanged = false;
-            if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
+            if (!(gMapSelectFlags.has(MapSelectFlag::enable)))
                 stateChanged = true;
 
-            if (gMapSelectType != MAP_SELECT_TYPE_FULL)
+            if (gMapSelectType != MapSelectType::full)
                 stateChanged = true;
 
             auto toolSize = std::max<uint16_t>(1, gLandToolSize);
@@ -183,27 +185,27 @@ namespace OpenRCT2::Ui::Windows
                 MapInvalidateSelectionRect();
 
                 // Update and invalidate new area
-                gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
-                gMapSelectType = MAP_SELECT_TYPE_FULL;
+                gMapSelectFlags.set(MapSelectFlag::enable);
+                gMapSelectType = MapSelectType::full;
                 gMapSelectPositionA = posA;
                 gMapSelectPositionB = posB;
                 MapInvalidateSelectionRect();
             }
         }
 
-        void OnToolAbort(WidgetIndex widgetIndex) override
+        void onToolAbort(WidgetIndex widgetIndex) override
         {
             HideGridlines();
             ClearPatrolAreaToRender();
             GfxInvalidateScreen();
         }
 
-        void OnToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
+        void onToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
             auto mapTile = GetBestCoordsFromPos(screenCoords);
             if (mapTile)
             {
-                auto staff = GetEntity<Staff>(_staffId);
+                auto staff = getGameState().entities.GetEntity<Staff>(_staffId);
                 if (staff != nullptr)
                 {
                     _mode = staff->IsPatrolAreaSet(*mapTile) ? GameActions::StaffSetPatrolAreaMode::Unset
@@ -211,17 +213,17 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
 
-            OnToolDrag(widgetIndex, screenCoords);
+            onToolDrag(widgetIndex, screenCoords);
         }
 
-        void OnToolDrag(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
+        void onToolDrag(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
-            auto staff = GetEntity<Staff>(_staffId);
+            auto staff = getGameState().entities.GetEntity<Staff>(_staffId);
             if (staff != nullptr)
             {
                 MapRange range(gMapSelectPositionA, gMapSelectPositionB);
                 auto staffSetPatrolAreaAction = GameActions::StaffSetPatrolAreaAction(_staffId, range, _mode);
-                GameActions::Execute(&staffSetPatrolAreaAction);
+                GameActions::Execute(&staffSetPatrolAreaAction, getGameState());
             }
         }
 
@@ -230,7 +232,7 @@ namespace OpenRCT2::Ui::Windows
             return _staffId;
         }
 
-        void SetStaffId(EntityId staffId)
+        void setStaffId(EntityId staffId)
         {
             _staffId = staffId;
             EnableTool();
@@ -270,14 +272,14 @@ namespace OpenRCT2::Ui::Windows
 
         bool PatrolAreaToolIsActive()
         {
-            return isToolActive(WindowClass::PatrolArea);
+            return isToolActive(WindowClass::patrolArea);
         }
 
         bool IsStaffWindowOpen()
         {
             // If staff window for this patrol area was closed, tool is no longer active
             auto* windowMgr = GetWindowManager();
-            auto staffWindow = windowMgr->FindByNumber(WindowClass::Peep, _staffId);
+            auto staffWindow = windowMgr->FindByNumber(WindowClass::peep, _staffId);
             return staffWindow != nullptr;
         }
 
@@ -292,10 +294,10 @@ namespace OpenRCT2::Ui::Windows
     {
         auto* windowMgr = GetWindowManager();
         auto* w = windowMgr->FocusOrCreate<PatrolAreaWindow>(
-            WindowClass::PatrolArea, ScreenCoordsXY(ContextGetWidth() - kWindowSize.width, 29), kWindowSize, 0);
+            WindowClass::patrolArea, ScreenCoordsXY(ContextGetWidth() - kWindowSize.width, 29), kWindowSize, {});
         if (w != nullptr)
         {
-            w->SetStaffId(staffId);
+            w->setStaffId(staffId);
         }
         return w;
     }
@@ -303,7 +305,7 @@ namespace OpenRCT2::Ui::Windows
     EntityId WindowPatrolAreaGetCurrentStaffId()
     {
         auto* windowMgr = GetWindowManager();
-        auto current = reinterpret_cast<PatrolAreaWindow*>(windowMgr->FindByClass(WindowClass::PatrolArea));
+        auto current = reinterpret_cast<PatrolAreaWindow*>(windowMgr->FindByClass(WindowClass::patrolArea));
         return current != nullptr ? current->GetStaffId() : EntityId::GetNull();
     }
 } // namespace OpenRCT2::Ui::Windows

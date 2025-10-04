@@ -549,8 +549,8 @@ STR_1152    :Iom ajn ŝarĝon
 STR_1153    :Notoj de alteco sur Atrakcio-Trakoj
 STR_1154    :Notoj de alteco sur Tero
 STR_1155    :Notoj de alteco sur Trotuaroj
-STR_1156    :{MOVE_X}{10}{STRINGID}
-STR_1157    :✓{MOVE_X}{10}{STRINGID}
+STR_1156    :{MOVE_X}{10}{STRING}
+STR_1157    :✓{MOVE_X}{10}{STRING}
 STR_1158    :Ne eblas forigi ĉi tion…
 STR_1159    :Meti pejzaĝon, ĝardenojn, kaj aliajn akcesoraĵojn
 STR_1160    :Krei/redakti lagojn k akvon

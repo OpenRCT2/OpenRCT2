@@ -57,11 +57,11 @@ namespace OpenRCT2::Ui::Windows
     class SceneryScatterWindow final : public Window
     {
     public:
-        void OnOpen() override
+        void onOpen() override
         {
-            SetWidgets(_sceneryScatterWidgets);
+            setWidgets(_sceneryScatterWidgets);
 
-            hold_down_widgets = (1uLL << WIDX_INCREMENT) | (1uLL << WIDX_DECREMENT);
+            holdDownWidgets = (1uLL << WIDX_INCREMENT) | (1uLL << WIDX_DECREMENT);
             WindowInitScrollWidgets(*this);
             WindowPushOthersBelow(*this);
 
@@ -70,7 +70,7 @@ namespace OpenRCT2::Ui::Windows
             gWindowSceneryScatterDensity = ScatterToolDensity::MediumDensity;
         }
 
-        void OnClose() override
+        void onClose() override
         {
             gWindowSceneryScatterEnabled = false;
         }
@@ -92,12 +92,12 @@ namespace OpenRCT2::Ui::Windows
                 this, widgetIndex, STR_SELECTION_SIZE, STR_ENTER_SELECTION_SIZE, ft, kStringIdNone, kStringIdNone, maxLength);
         }
 
-        void OnMouseUp(WidgetIndex widgetIndex) override
+        void onMouseUp(WidgetIndex widgetIndex) override
         {
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
-                    Close();
+                    close();
                     break;
 
                 case WIDX_PREVIEW:
@@ -118,30 +118,30 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnMouseDown(const WidgetIndex widgetIndex) override
+        void onMouseDown(const WidgetIndex widgetIndex) override
         {
             switch (widgetIndex)
             {
                 case WIDX_DECREMENT:
                     // Decrement land tool size, if it stays within the limit
                     gWindowSceneryScatterSize = std::max<uint16_t>(kLandToolMinimumSize, gWindowSceneryScatterSize - 1);
-                    Invalidate();
+                    invalidate();
                     break;
 
                 case WIDX_INCREMENT:
                     // Increment land tool size, if it stays within the limit
                     gWindowSceneryScatterSize = std::min<uint16_t>(kLandToolMaximumSize, gWindowSceneryScatterSize + 1);
-                    Invalidate();
+                    invalidate();
                     break;
             }
         }
 
-        void OnTextInput(const WidgetIndex widgetIndex, const std::string_view text) override
+        void onTextInput(const WidgetIndex widgetIndex, const std::string_view text) override
         {
             if (widgetIndex != WIDX_PREVIEW || text.empty())
                 return;
 
-            const auto res = String::Parse<int32_t>(text);
+            const auto res = String::tryParse<int32_t>(text);
 
             if (res.has_value())
             {
@@ -152,28 +152,28 @@ namespace OpenRCT2::Ui::Windows
                             res.value(), kLandToolMinimumSize, kLandToolMaximumSize);
                         break;
                 }
-                Invalidate();
+                invalidate();
             }
         }
 
-        void OnPrepareDraw() override
+        void onPrepareDraw() override
         {
             // Set the preview image button to be pressed down
-            pressed_widgets = (1uLL << WIDX_PREVIEW);
+            pressedWidgets = (1uLL << WIDX_PREVIEW);
 
             // Set density buttons' pressed state.
             switch (gWindowSceneryScatterDensity)
             {
                 case ScatterToolDensity::LowDensity:
-                    pressed_widgets |= (1uLL << WIDX_DENSITY_LOW);
+                    pressedWidgets |= (1uLL << WIDX_DENSITY_LOW);
                     break;
 
                 case ScatterToolDensity::MediumDensity:
-                    pressed_widgets |= (1uLL << WIDX_DENSITY_MEDIUM);
+                    pressedWidgets |= (1uLL << WIDX_DENSITY_MEDIUM);
                     break;
 
                 case ScatterToolDensity::HighDensity:
-                    pressed_widgets |= (1uLL << WIDX_DENSITY_HIGH);
+                    pressedWidgets |= (1uLL << WIDX_DENSITY_HIGH);
                     break;
             }
 
@@ -181,7 +181,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_PREVIEW].image = ImageId(LandTool::SizeToSpriteIndex(gWindowSceneryScatterSize));
         }
 
-        void OnDraw(RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
             WindowDrawWidgets(*this, rt);
 
@@ -202,10 +202,10 @@ namespace OpenRCT2::Ui::Windows
     {
         // Check if window is already open
         auto* windowMgr = GetWindowManager();
-        auto* window = windowMgr->FindByClass(WindowClass::SceneryScatter);
+        auto* window = windowMgr->FindByClass(WindowClass::sceneryScatter);
         if (window == nullptr)
         {
-            window = windowMgr->Create<SceneryScatterWindow>(WindowClass::SceneryScatter, kWindowSize, 0);
+            window = windowMgr->Create<SceneryScatterWindow>(WindowClass::sceneryScatter, kWindowSize, {});
         }
 
         return window;

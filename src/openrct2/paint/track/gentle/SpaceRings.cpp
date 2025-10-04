@@ -7,6 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../../../GameState.h"
 #include "../../../entity/EntityRegistry.h"
 #include "../../../entity/Guest.h"
 #include "../../../interface/Viewport.h"
@@ -46,18 +47,18 @@ static void PaintSpaceRingsStructure(
     if (rideEntry == nullptr || (ride.numStations != 0 && vehicleIndex >= ride.numTrains))
     {
         session.CurrentlyDrawnEntity = nullptr;
-        session.InteractionType = ViewportInteractionItem::Ride;
+        session.InteractionType = ViewportInteractionItem::ride;
         return;
     }
 
     int32_t frameNum = direction;
     uint32_t baseImageId = rideEntry->Cars[0].base_image_id;
-    auto vehicle = GetEntity<Vehicle>(ride.vehicles[vehicleIndex]);
+    auto vehicle = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[vehicleIndex]);
     if (ride.lifecycleFlags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
     {
-        session.InteractionType = ViewportInteractionItem::Entity;
+        session.InteractionType = ViewportInteractionItem::entity;
         session.CurrentlyDrawnEntity = vehicle;
-        frameNum += static_cast<int8_t>(vehicle->Pitch) * 4;
+        frameNum += static_cast<int8_t>(vehicle->flatRideAnimationFrame) * 4;
     }
 
     if (ride.vehicleColourSettings != VehicleColourSettings::perTrain)
@@ -75,7 +76,7 @@ static void PaintSpaceRingsStructure(
 
     if (vehicle != nullptr && vehicle->num_peeps > 0)
     {
-        auto* rider = GetEntity<Guest>(vehicle->peep[0]);
+        auto* rider = getGameState().entities.GetEntity<Guest>(vehicle->peep[0]);
         if (rider != nullptr)
         {
             stationColour = ImageId(0, rider->TshirtColour, rider->TrousersColour);
@@ -85,7 +86,7 @@ static void PaintSpaceRingsStructure(
     }
 
     session.CurrentlyDrawnEntity = nullptr;
-    session.InteractionType = ViewportInteractionItem::Ride;
+    session.InteractionType = ViewportInteractionItem::ride;
 }
 
 /** rct2: 0x00767C40 */

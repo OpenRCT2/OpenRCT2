@@ -18,6 +18,7 @@
 #include "../management/Finance.h"
 #include "../ride/Ride.h"
 #include "../ride/TrackDesign.h"
+#include "../world/Map.h"
 #include "../world/Park.h"
 #include "../world/tile_element/SmallSceneryElement.h"
 
@@ -58,12 +59,12 @@ namespace OpenRCT2::GameActions
                << DS_TAG(_secondaryColour) << DS_TAG(_tertiaryColour);
     }
 
-    Result SmallScenerySetColourAction::Query() const
+    Result SmallScenerySetColourAction::Query(GameState_t& gameState) const
     {
         return QueryExecute(false);
     }
 
-    Result SmallScenerySetColourAction::Execute() const
+    Result SmallScenerySetColourAction::Execute(GameState_t& gameState) const
     {
         return QueryExecute(true);
     }

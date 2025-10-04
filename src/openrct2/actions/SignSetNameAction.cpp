@@ -15,6 +15,7 @@
 #include "../localisation/StringIds.h"
 #include "../ride/Ride.h"
 #include "../world/Banner.h"
+#include "../world/Map.h"
 
 #include <string>
 
@@ -43,7 +44,7 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_bannerIndex) << DS_TAG(_name);
     }
 
-    Result SignSetNameAction::Query() const
+    Result SignSetNameAction::Query(GameState_t& gameState) const
     {
         auto banner = GetBanner(_bannerIndex);
         if (banner == nullptr)
@@ -74,7 +75,7 @@ namespace OpenRCT2::GameActions
         return Result();
     }
 
-    Result SignSetNameAction::Execute() const
+    Result SignSetNameAction::Execute(GameState_t& gameState) const
     {
         auto banner = GetBanner(_bannerIndex);
         if (banner == nullptr)

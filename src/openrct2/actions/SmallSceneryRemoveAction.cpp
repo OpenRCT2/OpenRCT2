@@ -19,6 +19,7 @@
 #include "../object/ObjectEntryManager.h"
 #include "../object/SmallSceneryEntry.h"
 #include "../ride/Ride.h"
+#include "../world/Map.h"
 #include "../world/Park.h"
 #include "../world/TileElementsView.h"
 #include "../world/tile_element/SmallSceneryElement.h"
@@ -54,7 +55,7 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_loc) << DS_TAG(_quadrant) << DS_TAG(_sceneryType);
     }
 
-    Result SmallSceneryRemoveAction::Query() const
+    Result SmallSceneryRemoveAction::Query(GameState_t& gameState) const
     {
         Result res = Result();
 
@@ -109,7 +110,7 @@ namespace OpenRCT2::GameActions
         return res;
     }
 
-    Result SmallSceneryRemoveAction::Execute() const
+    Result SmallSceneryRemoveAction::Execute(GameState_t& gameState) const
     {
         Result res = Result();
 

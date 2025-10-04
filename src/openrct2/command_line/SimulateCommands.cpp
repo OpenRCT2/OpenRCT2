@@ -21,65 +21,66 @@
 #include <cstdlib>
 #include <memory>
 
-using namespace OpenRCT2;
-
-// clang-format off
-static constexpr CommandLineOptionDefinition kNoOptions[]
+namespace OpenRCT2
 {
-    kOptionTableEnd
-};
-
-static exitcode_t HandleSimulate(CommandLineArgEnumerator* argEnumerator);
-
-const CommandLineCommand CommandLine::kSimulateCommands[]{
-    // Main commands
-    DefineCommand("", "<park file> <ticks>", kNoOptions, HandleSimulate),
-    kCommandTableEnd
-};
-// clang-format on
-
-static exitcode_t HandleSimulate(CommandLineArgEnumerator* argEnumerator)
-{
-    const utf8* inputPath;
-    if (!argEnumerator->TryPopString(&inputPath))
+    // clang-format off
+    static constexpr CommandLineOptionDefinition kNoOptions[]
     {
-        Console::Error::WriteLine("Expected a save file path");
-        return EXITCODE_FAIL;
-    }
+        kOptionTableEnd
+    };
 
-    int32_t ticks;
-    if (!argEnumerator->TryPopInteger(&ticks))
+    static exitcode_t HandleSimulate(CommandLineArgEnumerator* argEnumerator);
+
+    const CommandLineCommand CommandLine::kSimulateCommands[]{
+        // Main commands
+        DefineCommand("", "<park file> <ticks>", kNoOptions, HandleSimulate),
+        kCommandTableEnd
+    };
+    // clang-format on
+
+    static exitcode_t HandleSimulate(CommandLineArgEnumerator* argEnumerator)
     {
-        Console::Error::WriteLine("Expected a number of ticks to simulate");
-        return EXITCODE_FAIL;
-    }
-
-    gOpenRCT2Headless = true;
-
-#ifndef DISABLE_NETWORK
-    gNetworkStart = NETWORK_MODE_SERVER;
-#endif
-
-    std::unique_ptr<IContext> context(CreateContext());
-    if (context->Initialise())
-    {
-        if (!context->LoadParkFromFile(inputPath))
+        const utf8* inputPath;
+        if (!argEnumerator->TryPopString(&inputPath))
         {
+            Console::Error::WriteLine("Expected a save file path");
             return EXITCODE_FAIL;
         }
 
-        Console::WriteLine("Running %d ticks...", ticks);
-        for (int32_t i = 0; i < ticks; i++)
+        int32_t ticks;
+        if (!argEnumerator->TryPopInteger(&ticks))
         {
-            gameStateUpdateLogic();
+            Console::Error::WriteLine("Expected a number of ticks to simulate");
+            return EXITCODE_FAIL;
         }
-        Console::WriteLine("Completed: %s", GetAllEntitiesChecksum().ToString().c_str());
-    }
-    else
-    {
-        Console::Error::WriteLine("Context initialization failed.");
-        return EXITCODE_FAIL;
-    }
 
-    return EXITCODE_OK;
-}
+        gOpenRCT2Headless = true;
+
+#ifndef DISABLE_NETWORK
+        gNetworkStart = Network::Mode::server;
+#endif
+
+        std::unique_ptr<IContext> context(CreateContext());
+        if (context->Initialise())
+        {
+            if (!context->LoadParkFromFile(inputPath))
+            {
+                return EXITCODE_FAIL;
+            }
+
+            Console::WriteLine("Running %d ticks...", ticks);
+            for (int32_t i = 0; i < ticks; i++)
+            {
+                gameStateUpdateLogic();
+            }
+            Console::WriteLine("Completed: %s", getGameState().entities.GetAllEntitiesChecksum().ToString().c_str());
+        }
+        else
+        {
+            Console::Error::WriteLine("Context initialization failed.");
+            return EXITCODE_FAIL;
+        }
+
+        return EXITCODE_OK;
+    }
+} // namespace OpenRCT2

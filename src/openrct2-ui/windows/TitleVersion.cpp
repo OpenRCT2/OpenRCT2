@@ -23,7 +23,7 @@ namespace OpenRCT2::Ui::Windows
 
     class TitleVersionWindow final : public Window
     {
-        void OnDraw(RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
             // Write name and version information
             const auto whiteOutline = ColourWithFlags{ COLOUR_WHITE }.withFlag(ColourFlag::withOutline, true);
@@ -40,12 +40,12 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* TitleVersionOpen()
     {
         auto* windowMgr = GetWindowManager();
-        auto* window = windowMgr->BringToFrontByClass(WindowClass::TitleVersion);
+        auto* window = windowMgr->BringToFrontByClass(WindowClass::titleVersion);
         if (window == nullptr)
         {
             window = windowMgr->Create<TitleVersionWindow>(
-                WindowClass::TitleVersion, ScreenCoordsXY(kTextOffset, ContextGetHeight() - 30), kWindowSize,
-                WF_STICK_TO_BACK | WF_TRANSPARENT | WF_NO_TITLE_BAR);
+                WindowClass::titleVersion, ScreenCoordsXY(kTextOffset, ContextGetHeight() - 30), kWindowSize,
+                { WindowFlag::stickToBack, WindowFlag::transparent, WindowFlag::noTitleBar });
         }
         return window;
     }

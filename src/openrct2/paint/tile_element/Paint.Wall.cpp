@@ -22,7 +22,6 @@
 #include "../../ride/Track.h"
 #include "../../ride/TrackDesign.h"
 #include "../../world/Banner.h"
-#include "../../world/Map.h"
 #include "../../world/Scenery.h"
 #include "../../world/TileInspector.h"
 #include "../../world/tile_element/WallElement.h"
@@ -315,7 +314,7 @@ void PaintWall(PaintSession& session, uint8_t direction, int32_t height, const W
         return;
     }
 
-    session.InteractionType = ViewportInteractionItem::Wall;
+    session.InteractionType = ViewportInteractionItem::wall;
 
     ImageId imageTemplate;
     if (wallEntry->flags & WALL_SCENERY_HAS_PRIMARY_COLOUR)
@@ -338,20 +337,20 @@ void PaintWall(PaintSession& session, uint8_t direction, int32_t height, const W
     {
         if (!TrackDesignSaveContainsTileElement(reinterpret_cast<const TileElement*>(&wallElement)))
         {
-            imageTemplate = ImageId().WithRemap(FilterPaletteID::Palette46);
+            imageTemplate = ImageId().WithRemap(FilterPaletteID::palette46);
             isGhost = true;
         }
     }
 
     if (wallElement.IsGhost())
     {
-        session.InteractionType = ViewportInteractionItem::None;
-        imageTemplate = ImageId().WithRemap(FilterPaletteID::PaletteGhost);
+        session.InteractionType = ViewportInteractionItem::none;
+        imageTemplate = ImageId().WithRemap(FilterPaletteID::paletteGhost);
         isGhost = true;
     }
     else if (session.SelectedElement == reinterpret_cast<const TileElement*>(&wallElement))
     {
-        imageTemplate = ImageId().WithRemap(FilterPaletteID::PaletteGhost);
+        imageTemplate = ImageId().WithRemap(FilterPaletteID::paletteGhost);
         isGhost = true;
     }
 

@@ -133,7 +133,7 @@ namespace OpenRCT2::Scripting
         {
             gameState.park.entranceFee = value;
             auto* windowMgr = Ui::GetWindowManager();
-            windowMgr->InvalidateByClass(WindowClass::ParkInformation);
+            windowMgr->InvalidateByClass(WindowClass::parkInformation);
         }
     }
 
@@ -231,7 +231,7 @@ namespace OpenRCT2::Scripting
         {
             gameState.park.totalAdmissions = value;
             auto* windowMgr = Ui::GetWindowManager();
-            windowMgr->InvalidateByClass(WindowClass::ParkInformation);
+            windowMgr->InvalidateByClass(WindowClass::parkInformation);
         }
     }
 
@@ -248,7 +248,7 @@ namespace OpenRCT2::Scripting
         {
             gameState.park.totalIncomeFromAdmissions = value;
             auto* windowMgr = Ui::GetWindowManager();
-            windowMgr->InvalidateByClass(WindowClass::ParkInformation);
+            windowMgr->InvalidateByClass(WindowClass::parkInformation);
         }
     }
 

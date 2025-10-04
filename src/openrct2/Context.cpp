@@ -117,14 +117,14 @@ namespace OpenRCT2
         std::unique_ptr<IGameStateSnapshots> _gameStateSnapshots;
         std::unique_ptr<AssetPackManager> _assetPackManager;
 #ifdef __ENABLE_DISCORD__
-        std::unique_ptr<DiscordService> _discordService;
+        std::unique_ptr<Network::DiscordService> _discordService;
 #endif
         StdInOutConsole _stdInOutConsole;
 #ifdef ENABLE_SCRIPTING
         ScriptEngine _scriptEngine;
 #endif
 #ifndef DISABLE_NETWORK
-        NetworkBase _network;
+        Network::NetworkBase _network;
 #endif
 
         // Scenes
@@ -303,7 +303,7 @@ namespace OpenRCT2
         }
 
 #ifndef DISABLE_NETWORK
-        NetworkBase& GetNetwork() override
+        Network::NetworkBase& GetNetwork() override
         {
             return _network;
         }
@@ -396,7 +396,7 @@ namespace OpenRCT2
         void Quit() override
         {
             gSavePromptMode = PromptMode::quit;
-            ContextOpenWindow(WindowClass::SavePrompt);
+            ContextOpenWindow(WindowClass::savePrompt);
         }
 
         bool Initialise() final override
@@ -476,7 +476,7 @@ namespace OpenRCT2
 #ifdef __ENABLE_DISCORD__
             if (!gOpenRCT2Headless)
             {
-                _discordService = std::make_unique<DiscordService>();
+                _discordService = std::make_unique<Network::DiscordService>();
             }
 #endif
 
@@ -706,7 +706,7 @@ namespace OpenRCT2
             {
                 _uiContext->ProcessMessages();
                 auto* windowMgr = Ui::GetWindowManager();
-                windowMgr->InvalidateByClass(WindowClass::ProgressWindow);
+                windowMgr->InvalidateByClass(WindowClass::progressWindow);
                 Draw();
             }
         }
@@ -842,14 +842,14 @@ namespace OpenRCT2
                 if (!asScenario && (info.Type == FileType::park || info.Type == FileType::savedGame))
                 {
 #ifndef DISABLE_NETWORK
-                    if (_network.GetMode() == NETWORK_MODE_CLIENT)
+                    if (_network.GetMode() == Network::Mode::client)
                     {
                         _network.Close();
                     }
 #endif
                     GameLoadInit();
 #ifndef DISABLE_NETWORK
-                    if (_network.GetMode() == NETWORK_MODE_SERVER)
+                    if (_network.GetMode() == Network::Mode::server)
                     {
                         sendMap = true;
                     }
@@ -859,11 +859,11 @@ namespace OpenRCT2
                 {
                     ScenarioBegin(gameState);
 #ifndef DISABLE_NETWORK
-                    if (_network.GetMode() == NETWORK_MODE_SERVER)
+                    if (_network.GetMode() == Network::Mode::server)
                     {
                         sendMap = true;
                     }
-                    if (_network.GetMode() == NETWORK_MODE_CLIENT)
+                    if (_network.GetMode() == Network::Mode::client)
                     {
                         _network.Close();
                     }
@@ -880,7 +880,7 @@ namespace OpenRCT2
 #endif
 
 #ifdef USE_BREAKPAD
-                if (_network.GetMode() == NETWORK_MODE_NONE)
+                if (_network.GetMode() == Network::Mode::none)
                 {
                     StartSilentRecord();
                 }
@@ -890,7 +890,7 @@ namespace OpenRCT2
                     auto windowManager = _uiContext->GetWindowManager();
                     auto ft = Formatter();
                     ft.Add<uint32_t>(result.TargetVersion);
-                    ft.Add<uint32_t>(OpenRCT2::kParkFileCurrentVersion);
+                    ft.Add<uint32_t>(kParkFileCurrentVersion);
                     windowManager->ShowError(STR_WARNING_PARK_VERSION_TITLE, STR_WARNING_PARK_VERSION_MESSAGE, ft);
                 }
                 else if (HasObjectsThatUseFallbackImages())
@@ -914,7 +914,7 @@ namespace OpenRCT2
                 }
                 // The path needs to be duplicated as it's a const here
                 // which the window function doesn't like
-                auto intent = Intent(WindowClass::ObjectLoadError);
+                auto intent = Intent(WindowClass::objectLoadError);
                 intent.PutExtra(INTENT_EXTRA_PATH, path);
                 intent.PutExtra(INTENT_EXTRA_LIST, const_cast<ObjectEntryDescriptor*>(e.MissingObjects.data()));
                 intent.PutExtra(INTENT_EXTRA_LIST_COUNT, static_cast<uint32_t>(e.MissingObjects.size()));
@@ -954,14 +954,14 @@ namespace OpenRCT2
                     if (e.MinVersion == e.TargetVersion)
                     {
                         ft.Add<uint32_t>(e.TargetVersion);
-                        ft.Add<uint32_t>(OpenRCT2::kParkFileCurrentVersion);
+                        ft.Add<uint32_t>(kParkFileCurrentVersion);
                         windowManager->ShowError(STR_ERROR_PARK_VERSION_TITLE, STR_ERROR_PARK_VERSION_TOO_NEW_MESSAGE_2, ft);
                     }
                     else
                     {
                         ft.Add<uint32_t>(e.TargetVersion);
                         ft.Add<uint32_t>(e.MinVersion);
-                        ft.Add<uint32_t>(OpenRCT2::kParkFileCurrentVersion);
+                        ft.Add<uint32_t>(kParkFileCurrentVersion);
                         windowManager->ShowError(STR_ERROR_PARK_VERSION_TITLE, STR_ERROR_PARK_VERSION_TOO_NEW_MESSAGE, ft);
                     }
                 }
@@ -1155,7 +1155,7 @@ namespace OpenRCT2
             if (isGameScene)
             {
 #ifndef DISABLE_NETWORK
-                if (gNetworkStart == NETWORK_MODE_SERVER)
+                if (gNetworkStart == Network::Mode::server)
                 {
                     if (gNetworkStartPort == 0)
                     {
@@ -1186,7 +1186,7 @@ namespace OpenRCT2
             }
 
 #ifndef DISABLE_NETWORK
-            else if (gNetworkStart == NETWORK_MODE_CLIENT)
+            else if (gNetworkStart == Network::Mode::client)
             {
                 if (gNetworkStartPort == 0)
                 {
@@ -1591,194 +1591,188 @@ namespace OpenRCT2
         return Context::Instance;
     }
 
+    void ContextInit()
+    {
+        GetWindowManager()->Init();
+    }
+
+    bool ContextLoadParkFromStream(void* stream)
+    {
+        return GetContext()->LoadParkFromStream(static_cast<IStream*>(stream), "");
+    }
+
+    void ContextSetCurrentCursor(CursorID cursor)
+    {
+        GetContext()->GetUiContext().SetCursor(cursor);
+    }
+
+    void ContextUpdateCursorScale()
+    {
+        GetContext()->GetUiContext().SetCursorScale(static_cast<uint8_t>(std::round(Config::Get().general.WindowScale)));
+    }
+
+    void ContextHideCursor()
+    {
+        GetContext()->GetUiContext().SetCursorVisible(false);
+    }
+
+    void ContextShowCursor()
+    {
+        GetContext()->GetUiContext().SetCursorVisible(true);
+    }
+
+    ScreenCoordsXY ContextGetCursorPosition()
+    {
+        return GetContext()->GetUiContext().GetCursorPosition();
+    }
+
+    ScreenCoordsXY ContextGetCursorPositionScaled()
+    {
+        auto cursorCoords = ContextGetCursorPosition();
+        // Compensate for window scaling.
+        return { static_cast<int32_t>(std::ceil(cursorCoords.x / Config::Get().general.WindowScale)),
+                 static_cast<int32_t>(std::ceil(cursorCoords.y / Config::Get().general.WindowScale)) };
+    }
+
+    void ContextSetCursorPosition(const ScreenCoordsXY& cursorPosition)
+    {
+        GetContext()->GetUiContext().SetCursorPosition(cursorPosition);
+    }
+
+    const CursorState* ContextGetCursorState()
+    {
+        return GetContext()->GetUiContext().GetCursorState();
+    }
+
+    const uint8_t* ContextGetKeysState()
+    {
+        return GetContext()->GetUiContext().GetKeysState();
+    }
+
+    const uint8_t* ContextGetKeysPressed()
+    {
+        return GetContext()->GetUiContext().GetKeysPressed();
+    }
+
+    TextInputSession* ContextStartTextInput(u8string& buffer, size_t maxLength)
+    {
+        return GetContext()->GetUiContext().StartTextInput(buffer, maxLength);
+    }
+
+    void ContextStopTextInput()
+    {
+        GetContext()->GetUiContext().StopTextInput();
+    }
+
+    bool ContextIsInputActive()
+    {
+        return GetContext()->GetUiContext().IsTextInputActive();
+    }
+
+    void ContextTriggerResize()
+    {
+        return GetContext()->GetUiContext().TriggerResize();
+    }
+
+    void ContextSetFullscreenMode(int32_t mode)
+    {
+        return GetContext()->GetUiContext().SetFullscreenMode(static_cast<FullscreenMode>(mode));
+    }
+
+    void ContextRecreateWindow()
+    {
+        GetContext()->GetUiContext().RecreateWindow();
+    }
+
+    int32_t ContextGetWidth()
+    {
+        return GetContext()->GetUiContext().GetWidth();
+    }
+
+    int32_t ContextGetHeight()
+    {
+        return GetContext()->GetUiContext().GetHeight();
+    }
+
+    bool ContextHasFocus()
+    {
+        return GetContext()->GetUiContext().HasFocus();
+    }
+
+    void ContextSetCursorTrap(bool value)
+    {
+        GetContext()->GetUiContext().SetCursorTrap(value);
+    }
+
+    WindowBase* ContextOpenWindow(WindowClass wc)
+    {
+        auto windowManager = Ui::GetWindowManager();
+        return windowManager->OpenWindow(wc);
+    }
+
+    WindowBase* ContextOpenWindowView(WindowView view)
+    {
+        auto windowManager = Ui::GetWindowManager();
+        return windowManager->openView(view);
+    }
+
+    WindowBase* ContextOpenDetailWindow(WindowDetail type, int32_t id)
+    {
+        auto windowManager = Ui::GetWindowManager();
+        return windowManager->openDetails(type, id);
+    }
+
+    WindowBase* ContextOpenIntent(Intent* intent)
+    {
+        auto windowManager = Ui::GetWindowManager();
+        return windowManager->OpenIntent(intent);
+    }
+
+    void ContextBroadcastIntent(Intent* intent)
+    {
+        auto windowManager = Ui::GetWindowManager();
+        windowManager->BroadcastIntent(*intent);
+    }
+
+    void ContextForceCloseWindowByClass(WindowClass windowClass)
+    {
+        auto windowManager = Ui::GetWindowManager();
+        windowManager->ForceClose(windowClass);
+    }
+
+    WindowBase* ContextShowError(StringId title, StringId message, const Formatter& args, const bool autoClose /* = false */)
+    {
+        auto windowManager = Ui::GetWindowManager();
+        return windowManager->ShowError(title, message, args, autoClose);
+    }
+
+    void ContextHandleInput()
+    {
+        auto windowManager = Ui::GetWindowManager();
+        windowManager->HandleInput();
+    }
+
+    void ContextInputHandleKeyboard(bool isTitle)
+    {
+        auto windowManager = Ui::GetWindowManager();
+        windowManager->HandleKeyboard(isTitle);
+    }
+
+    void ContextQuit()
+    {
+        GetContext()->Quit();
+    }
+
+    u8string ContextOpenCommonFileDialog(Ui::FileDialogDesc& desc)
+    {
+        try
+        {
+            return GetContext()->GetUiContext().ShowFileDialog(desc);
+        }
+        catch (const std::exception& ex)
+        {
+            LOG_ERROR(ex.what());
+            return u8string{};
+        }
+    }
 } // namespace OpenRCT2
-
-void ContextInit()
-{
-    GetWindowManager()->Init();
-}
-
-bool ContextLoadParkFromStream(void* stream)
-{
-    return GetContext()->LoadParkFromStream(static_cast<IStream*>(stream), "");
-}
-
-void OpenRCT2Finish()
-{
-    GetContext()->Finish();
-}
-
-void ContextSetCurrentCursor(CursorID cursor)
-{
-    GetContext()->GetUiContext().SetCursor(cursor);
-}
-
-void ContextUpdateCursorScale()
-{
-    GetContext()->GetUiContext().SetCursorScale(static_cast<uint8_t>(std::round(Config::Get().general.WindowScale)));
-}
-
-void ContextHideCursor()
-{
-    GetContext()->GetUiContext().SetCursorVisible(false);
-}
-
-void ContextShowCursor()
-{
-    GetContext()->GetUiContext().SetCursorVisible(true);
-}
-
-ScreenCoordsXY ContextGetCursorPosition()
-{
-    return GetContext()->GetUiContext().GetCursorPosition();
-}
-
-ScreenCoordsXY ContextGetCursorPositionScaled()
-{
-    auto cursorCoords = ContextGetCursorPosition();
-    // Compensate for window scaling.
-    return { static_cast<int32_t>(std::ceil(cursorCoords.x / Config::Get().general.WindowScale)),
-             static_cast<int32_t>(std::ceil(cursorCoords.y / Config::Get().general.WindowScale)) };
-}
-
-void ContextSetCursorPosition(const ScreenCoordsXY& cursorPosition)
-{
-    GetContext()->GetUiContext().SetCursorPosition(cursorPosition);
-}
-
-const CursorState* ContextGetCursorState()
-{
-    return GetContext()->GetUiContext().GetCursorState();
-}
-
-const uint8_t* ContextGetKeysState()
-{
-    return GetContext()->GetUiContext().GetKeysState();
-}
-
-const uint8_t* ContextGetKeysPressed()
-{
-    return GetContext()->GetUiContext().GetKeysPressed();
-}
-
-TextInputSession* ContextStartTextInput(u8string& buffer, size_t maxLength)
-{
-    return GetContext()->GetUiContext().StartTextInput(buffer, maxLength);
-}
-
-void ContextStopTextInput()
-{
-    GetContext()->GetUiContext().StopTextInput();
-}
-
-bool ContextIsInputActive()
-{
-    return GetContext()->GetUiContext().IsTextInputActive();
-}
-
-void ContextTriggerResize()
-{
-    return GetContext()->GetUiContext().TriggerResize();
-}
-
-void ContextSetFullscreenMode(int32_t mode)
-{
-    return GetContext()->GetUiContext().SetFullscreenMode(static_cast<FullscreenMode>(mode));
-}
-
-void ContextRecreateWindow()
-{
-    GetContext()->GetUiContext().RecreateWindow();
-}
-
-int32_t ContextGetWidth()
-{
-    return GetContext()->GetUiContext().GetWidth();
-}
-
-int32_t ContextGetHeight()
-{
-    return GetContext()->GetUiContext().GetHeight();
-}
-
-bool ContextHasFocus()
-{
-    return GetContext()->GetUiContext().HasFocus();
-}
-
-void ContextSetCursorTrap(bool value)
-{
-    GetContext()->GetUiContext().SetCursorTrap(value);
-}
-
-WindowBase* ContextOpenWindow(WindowClass wc)
-{
-    auto windowManager = Ui::GetWindowManager();
-    return windowManager->OpenWindow(wc);
-}
-
-WindowBase* ContextOpenWindowView(uint8_t wc)
-{
-    auto windowManager = Ui::GetWindowManager();
-    return windowManager->OpenView(wc);
-}
-
-WindowBase* ContextOpenDetailWindow(uint8_t type, int32_t id)
-{
-    auto windowManager = Ui::GetWindowManager();
-    return windowManager->OpenDetails(type, id);
-}
-
-WindowBase* ContextOpenIntent(Intent* intent)
-{
-    auto windowManager = Ui::GetWindowManager();
-    return windowManager->OpenIntent(intent);
-}
-
-void ContextBroadcastIntent(Intent* intent)
-{
-    auto windowManager = Ui::GetWindowManager();
-    windowManager->BroadcastIntent(*intent);
-}
-
-void ContextForceCloseWindowByClass(WindowClass windowClass)
-{
-    auto windowManager = Ui::GetWindowManager();
-    windowManager->ForceClose(windowClass);
-}
-
-WindowBase* ContextShowError(StringId title, StringId message, const Formatter& args, const bool autoClose /* = false */)
-{
-    auto windowManager = Ui::GetWindowManager();
-    return windowManager->ShowError(title, message, args, autoClose);
-}
-
-void ContextHandleInput()
-{
-    auto windowManager = Ui::GetWindowManager();
-    windowManager->HandleInput();
-}
-
-void ContextInputHandleKeyboard(bool isTitle)
-{
-    auto windowManager = Ui::GetWindowManager();
-    windowManager->HandleKeyboard(isTitle);
-}
-
-void ContextQuit()
-{
-    GetContext()->Quit();
-}
-
-u8string ContextOpenCommonFileDialog(OpenRCT2::Ui::FileDialogDesc& desc)
-{
-    try
-    {
-        return GetContext()->GetUiContext().ShowFileDialog(desc);
-    }
-    catch (const std::exception& ex)
-    {
-        LOG_ERROR(ex.what());
-        return u8string{};
-    }
-}

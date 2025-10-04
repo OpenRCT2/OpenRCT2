@@ -13,7 +13,7 @@
 
 namespace OpenRCT2::GameActions
 {
-    PlayerKickAction::PlayerKickAction(NetworkPlayerId_t playerId)
+    PlayerKickAction::PlayerKickAction(Network::PlayerId_t playerId)
         : _playerId(playerId)
     {
     }
@@ -34,13 +34,13 @@ namespace OpenRCT2::GameActions
 
         stream << DS_TAG(_playerId);
     }
-    Result PlayerKickAction::Query() const
+    Result PlayerKickAction::Query(GameState_t& gameState) const
     {
-        return NetworkKickPlayer(_playerId, false);
+        return Network::KickPlayer(_playerId, false);
     }
 
-    Result PlayerKickAction::Execute() const
+    Result PlayerKickAction::Execute(GameState_t& gameState) const
     {
-        return NetworkKickPlayer(_playerId, true);
+        return Network::KickPlayer(_playerId, true);
     }
 } // namespace OpenRCT2::GameActions

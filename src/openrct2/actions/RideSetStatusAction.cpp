@@ -17,6 +17,7 @@
 #include "../management/Finance.h"
 #include "../ride/Ride.h"
 #include "../ui/WindowManager.h"
+#include "../world/Map.h"
 #include "../world/Park.h"
 
 namespace OpenRCT2::GameActions
@@ -52,7 +53,7 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_rideIndex) << DS_TAG(_status);
     }
 
-    Result RideSetStatusAction::Query() const
+    Result RideSetStatusAction::Query(GameState_t& gameState) const
     {
         Result res = Result();
 
@@ -115,7 +116,7 @@ namespace OpenRCT2::GameActions
         return Result();
     }
 
-    Result RideSetStatusAction::Execute() const
+    Result RideSetStatusAction::Execute(GameState_t& gameState) const
     {
         Result res = Result();
         res.Expenditure = ExpenditureType::rideRunningCosts;
@@ -160,7 +161,7 @@ namespace OpenRCT2::GameActions
                 ride->lifecycleFlags &= ~RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING;
                 ride->raceWinner = EntityId::GetNull();
                 ride->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
-                windowMgr->InvalidateByNumber(WindowClass::Ride, _rideIndex.ToUnderlying());
+                windowMgr->InvalidateByNumber(WindowClass::ride, _rideIndex.ToUnderlying());
                 break;
             case RideStatus::simulating:
             {
@@ -183,7 +184,7 @@ namespace OpenRCT2::GameActions
                 ride->lastIssueTime = 0;
                 ride->getMeasurement();
                 ride->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
-                windowMgr->InvalidateByNumber(WindowClass::Ride, _rideIndex.ToUnderlying());
+                windowMgr->InvalidateByNumber(WindowClass::ride, _rideIndex.ToUnderlying());
                 break;
             }
             case RideStatus::testing:
@@ -203,7 +204,7 @@ namespace OpenRCT2::GameActions
                 // Fix #3183: Make sure we close the construction window so the ride finishes any editing code before opening
                 //            otherwise vehicles get added to the ride incorrectly (such as to a ghost station)
                 WindowBase* constructionWindow = windowMgr->FindByNumber(
-                    WindowClass::RideConstruction, _rideIndex.ToUnderlying());
+                    WindowClass::rideConstruction, _rideIndex.ToUnderlying());
                 if (constructionWindow != nullptr)
                 {
                     windowMgr->Close(*constructionWindow);
@@ -236,7 +237,7 @@ namespace OpenRCT2::GameActions
                 ride->lastIssueTime = 0;
                 ride->getMeasurement();
                 ride->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
-                windowMgr->InvalidateByNumber(WindowClass::Ride, _rideIndex.ToUnderlying());
+                windowMgr->InvalidateByNumber(WindowClass::ride, _rideIndex.ToUnderlying());
                 break;
             }
             default:

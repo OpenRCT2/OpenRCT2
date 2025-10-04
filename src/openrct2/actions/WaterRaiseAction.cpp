@@ -13,6 +13,7 @@
 #include "../OpenRCT2.h"
 #include "../audio/Audio.h"
 #include "../ride/RideConstruction.h"
+#include "../world/Map.h"
 #include "../world/tile_element/SurfaceElement.h"
 #include "WaterSetHeightAction.h"
 
@@ -40,17 +41,17 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_range);
     }
 
-    Result WaterRaiseAction::Query() const
+    Result WaterRaiseAction::Query(GameState_t& gameState) const
     {
-        return QueryExecute(false);
+        return QueryExecute(gameState, false);
     }
 
-    Result WaterRaiseAction::Execute() const
+    Result WaterRaiseAction::Execute(GameState_t& gameState) const
     {
-        return QueryExecute(true);
+        return QueryExecute(gameState, true);
     }
 
-    Result WaterRaiseAction::QueryExecute(bool isExecuting) const
+    Result WaterRaiseAction::QueryExecute(GameState_t& gameState, bool isExecuting) const
     {
         auto res = Result();
 
@@ -66,7 +67,7 @@ namespace OpenRCT2::GameActions
         res.Position.z = z;
         res.Expenditure = ExpenditureType::landscaping;
 
-        auto maxHeight = GetHighestHeight(validRange) / kCoordsZStep;
+        auto maxHeight = GetHighestHeight(gameState, validRange) / kCoordsZStep;
         bool hasChanged = false;
         bool withinOwnership = false;
         for (int32_t y = validRange.GetTop(); y <= validRange.GetBottom(); y += kCoordsXYStep)
@@ -113,7 +114,8 @@ namespace OpenRCT2::GameActions
                 }
                 auto waterSetHeightAction = WaterSetHeightAction({ x, y }, height);
                 waterSetHeightAction.SetFlags(GetFlags());
-                auto result = isExecuting ? ExecuteNested(&waterSetHeightAction) : QueryNested(&waterSetHeightAction);
+                auto result = isExecuting ? ExecuteNested(&waterSetHeightAction, gameState)
+                                          : QueryNested(&waterSetHeightAction, gameState);
                 if (result.Error == Status::Ok)
                 {
                     res.Cost += result.Cost;
@@ -134,7 +136,7 @@ namespace OpenRCT2::GameActions
 
         if (isExecuting && hasChanged)
         {
-            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::LayingOutWater, res.Position);
+            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::layingOutWater, res.Position);
         }
         // Force ride construction to recheck area
         _currentTrackSelectionFlags.set(TrackSelectionFlag::recheck);
@@ -142,7 +144,7 @@ namespace OpenRCT2::GameActions
         return res;
     }
 
-    uint16_t WaterRaiseAction::GetHighestHeight(const MapRange& validRange) const
+    uint16_t WaterRaiseAction::GetHighestHeight(const GameState_t& gameState, const MapRange& validRange) const
     {
         // The highest height to raise the water to is the lowest water level in the selection
         uint16_t maxHeight = 255 * kCoordsZStep;

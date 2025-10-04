@@ -70,8 +70,8 @@ namespace OpenRCT2
 
     class Intent
     {
-        WindowClass _Class{ WindowClass::Null };
-        WindowDetail _WindowDetail{ WD_NULL };
+        WindowClass _Class{ WindowClass::null };
+        WindowDetail _WindowDetail{ WindowDetail::null };
         IntentAction _Action{ INTENT_ACTION_NULL };
         IntentDataStorage _Data;
 

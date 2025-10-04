@@ -19,6 +19,7 @@
 #include "../windows/Intent.h"
 #include "../world/ConstructionClearance.h"
 #include "../world/Footpath.h"
+#include "../world/Map.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"
 #include "../world/TileElementsView.h"
@@ -57,9 +58,8 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_coords) << DS_TAG(_height) << DS_TAG(_style);
     }
 
-    Result LandSetHeightAction::Query() const
+    Result LandSetHeightAction::Query(GameState_t& gameState) const
     {
-        auto& gameState = getGameState();
         if (gameState.park.flags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES)
         {
             return Result(Status::Disallowed, STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY, kStringIdNone);
@@ -141,7 +141,7 @@ namespace OpenRCT2::GameActions
 
             auto clearResult = MapCanConstructWithClearAt(
                 { _coords, _height * kCoordsZStep, zCorner * kCoordsZStep }, &MapSetLandHeightClearFunc, { 0b1111, 0 }, 0,
-                CreateCrossingMode::none);
+                _style, CreateCrossingMode::none);
             if (clearResult.Error != Status::Ok)
             {
                 clearResult.Error = Status::Disallowed;
@@ -154,7 +154,7 @@ namespace OpenRCT2::GameActions
         return res;
     }
 
-    Result LandSetHeightAction::Execute() const
+    Result LandSetHeightAction::Execute(GameState_t& gameState) const
     {
         money64 cost = 0.00_GBP;
         auto surfaceHeight = TileElementHeight(_coords);
@@ -282,7 +282,7 @@ namespace OpenRCT2::GameActions
             if (rideEntry == nullptr)
                 continue;
 
-            int32_t maxHeight = rideEntry->max_height;
+            int32_t maxHeight = rideEntry->maxHeight;
             if (maxHeight == 0)
             {
                 maxHeight = ride->getRideTypeDescriptor().Heights.MaxHeight;

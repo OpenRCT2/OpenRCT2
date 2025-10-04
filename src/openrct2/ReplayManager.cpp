@@ -171,7 +171,7 @@ namespace OpenRCT2
 
             if ((_mode == ReplayMode::RECORDING || _mode == ReplayMode::NORMALISATION) && currentTicks == _nextChecksumTick)
             {
-                EntitiesChecksum checksum = GetAllEntitiesChecksum();
+                EntitiesChecksum checksum = getGameState().entities.GetAllEntitiesChecksum();
                 AddChecksum(currentTicks, std::move(checksum));
 
                 _nextChecksumTick = currentTicks + ChecksumTicksDelta();
@@ -249,7 +249,7 @@ namespace OpenRCT2
             auto replayData = std::make_unique<ReplayRecordData>();
             replayData->magic = kReplayMagic;
             replayData->version = kReplayVersion;
-            replayData->networkId = NetworkGetVersion();
+            replayData->networkId = Network::GetVersion();
             replayData->name = name;
             replayData->tickStart = currentTicks;
             if (maxTicks != k_MaxReplayTicks)
@@ -304,7 +304,7 @@ namespace OpenRCT2
             _currentRecording->tickEnd = currentTicks;
 
             {
-                EntitiesChecksum checksum = GetAllEntitiesChecksum();
+                EntitiesChecksum checksum = getGameState().entities.GetAllEntitiesChecksum();
                 AddChecksum(currentTicks, std::move(checksum));
             }
 
@@ -715,11 +715,11 @@ namespace OpenRCT2
             serialiser << data.networkId;
 #ifndef DISABLE_NETWORK
             // NOTE: This does not mean the replay will not function, only a warning.
-            if (data.networkId != NetworkGetVersion())
+            if (data.networkId != Network::GetVersion())
             {
                 LOG_WARNING(
                     "Replay network version mismatch: '%s', expected: '%s'", data.networkId.c_str(),
-                    NetworkGetVersion().c_str());
+                    Network::GetVersion().c_str());
             }
 #endif
 
@@ -785,7 +785,7 @@ namespace OpenRCT2
             {
                 _currentReplay->checksumIndex++;
 
-                EntitiesChecksum checksum = GetAllEntitiesChecksum();
+                EntitiesChecksum checksum = getGameState().entities.GetAllEntitiesChecksum();
                 if (savedChecksum.second.raw != checksum.raw)
                 {
                     uint32_t replayTick = currentTicks - _currentReplay->tickStart;
@@ -812,7 +812,8 @@ namespace OpenRCT2
         {
             auto& replayQueue = _currentReplay->commands;
 
-            const auto currentTicks = getGameState().currentTicks;
+            auto& gameState = getGameState();
+            const auto currentTicks = gameState.currentTicks;
 
             while (replayQueue.begin() != replayQueue.end())
             {
@@ -838,7 +839,7 @@ namespace OpenRCT2
                 GameAction* action = command.action.get();
                 action->SetFlags(action->GetFlags() | GAME_COMMAND_FLAG_REPLAY);
 
-                GameActions::Result result = GameActions::Execute(action);
+                GameActions::Result result = GameActions::Execute(action, gameState);
                 if (result.Error == GameActions::Status::Ok)
                 {
                     isPositionValid = true;

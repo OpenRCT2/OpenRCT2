@@ -41,7 +41,7 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_fee);
     }
 
-    Result ParkSetEntranceFeeAction::Query() const
+    Result ParkSetEntranceFeeAction::Query(GameState_t& gameState) const
     {
         if ((getGameState().park.flags & PARK_FLAGS_NO_MONEY) != 0)
         {
@@ -62,12 +62,12 @@ namespace OpenRCT2::GameActions
         return Result();
     }
 
-    Result ParkSetEntranceFeeAction::Execute() const
+    Result ParkSetEntranceFeeAction::Execute(GameState_t& gameState) const
     {
         getGameState().park.entranceFee = _fee;
 
         auto* windowMgr = Ui::GetWindowManager();
-        windowMgr->InvalidateByClass(WindowClass::ParkInformation);
+        windowMgr->InvalidateByClass(WindowClass::parkInformation);
 
         return Result();
     }

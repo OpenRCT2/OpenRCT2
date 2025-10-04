@@ -60,23 +60,23 @@ namespace OpenRCT2::Ui::Windows
         std::optional<size_t> _selectedIndex;
 
     public:
-        void OnOpen() override
+        void onOpen() override
         {
-            SetWidgets(WindowAssetPacksWidgets);
+            setWidgets(WindowAssetPacksWidgets);
             WindowInitScrollWidgets(*this);
         }
 
-        void OnClose() override
+        void onClose() override
         {
             Apply();
         }
 
-        void OnMouseUp(WidgetIndex widgetIndex) override
+        void onMouseUp(WidgetIndex widgetIndex) override
         {
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
-                    Close();
+                    close();
                     break;
                 case WIDX_MOVE_UP:
                     ReorderSelectedAssetPack(-1);
@@ -90,7 +90,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        ScreenSize OnScrollGetSize(int32_t scrollIndex) override
+        ScreenSize onScrollGetSize(int32_t scrollIndex) override
         {
             ScreenSize result;
             auto assetPackManager = GetContext()->GetAssetPackManager();
@@ -103,13 +103,13 @@ namespace OpenRCT2::Ui::Windows
             if (_highlightedIndex)
             {
                 _highlightedIndex = {};
-                Invalidate();
+                invalidate();
             }
 
             return result;
         }
 
-        void OnScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
+        void onScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
             auto isCheckBox = false;
             auto index = GetAssetPackIndexFromPosition(screenCoords, isCheckBox);
@@ -124,7 +124,7 @@ namespace OpenRCT2::Ui::Windows
                     if (assetPack != nullptr)
                     {
                         assetPack->SetEnabled(!assetPack->IsEnabled());
-                        Invalidate();
+                        invalidate();
                     }
                 }
             }
@@ -133,22 +133,22 @@ namespace OpenRCT2::Ui::Windows
             if (_selectedIndex != index)
             {
                 _selectedIndex = index;
-                Invalidate();
+                invalidate();
             }
         }
 
-        void OnScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
+        void onScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
             auto isCheckBox = false;
             auto index = GetAssetPackIndexFromPosition(screenCoords, isCheckBox);
             if (_highlightedIndex != index)
             {
                 _highlightedIndex = index;
-                Invalidate();
+                invalidate();
             }
         }
 
-        void OnPrepareDraw() override
+        void onPrepareDraw() override
         {
             auto& list = widgets[WIDX_LIST];
             list.left = 6;
@@ -177,19 +177,19 @@ namespace OpenRCT2::Ui::Windows
                 toolstripY += 24;
             }
 
-            SetWidgetDisabled(WIDX_MOVE_UP, !_selectedIndex || _selectedIndex == 0u);
-            SetWidgetDisabled(WIDX_MOVE_DOWN, !_selectedIndex || _selectedIndex >= GetNumAssetPacks() - 1);
+            setWidgetDisabled(WIDX_MOVE_UP, !_selectedIndex || _selectedIndex == 0u);
+            setWidgetDisabled(WIDX_MOVE_DOWN, !_selectedIndex || _selectedIndex >= GetNumAssetPacks() - 1);
 
             widgets[WIDX_APPLY].bottom = widgets[WIDX_LIST].bottom;
             widgets[WIDX_APPLY].top = widgets[WIDX_APPLY].bottom - 24;
         }
 
-        void OnDraw(RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
-            DrawWidgets(rt);
+            drawWidgets(rt);
         }
 
-        void OnScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
+        void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
             auto rtCoords = ScreenCoordsXY{ rt.x, rt.y };
             GfxFillRect(
@@ -315,13 +315,13 @@ namespace OpenRCT2::Ui::Windows
             {
                 assetPackManager->Swap(*_selectedIndex, *_selectedIndex - 1);
                 (*_selectedIndex)--;
-                Invalidate();
+                invalidate();
             }
             else if (direction > 0 && *_selectedIndex < assetPackManager->GetCount() - 1)
             {
                 assetPackManager->Swap(*_selectedIndex, *_selectedIndex + 1);
                 (*_selectedIndex)++;
-                Invalidate();
+                invalidate();
             }
         }
 
@@ -341,8 +341,8 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* AssetPacksOpen()
     {
         auto* windowMgr = GetWindowManager();
-        auto flags = WF_AUTO_POSITION | WF_CENTRE_SCREEN;
+        WindowFlags flags = { WindowFlag::autoPosition, WindowFlag::centreScreen };
 
-        return windowMgr->FocusOrCreate<AssetPacksWindow>(WindowClass::AssetPacks, kWindowSize, flags);
+        return windowMgr->FocusOrCreate<AssetPacksWindow>(WindowClass::assetPacks, kWindowSize, flags);
     }
 } // namespace OpenRCT2::Ui::Windows

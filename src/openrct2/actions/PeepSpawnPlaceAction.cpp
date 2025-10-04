@@ -16,6 +16,7 @@
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
 #include "../world/Footpath.h"
+#include "../world/Map.h"
 #include "../world/Park.h"
 #include "../world/tile_element/SurfaceElement.h"
 
@@ -43,7 +44,7 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_location.x) << DS_TAG(_location.y) << DS_TAG(_location.z) << DS_TAG(_location.direction);
     }
 
-    Result PeepSpawnPlaceAction::Query() const
+    Result PeepSpawnPlaceAction::Query(GameState_t& gameState) const
     {
         if (!isInEditorMode() && !getGameState().cheats.sandboxMode)
         {
@@ -83,7 +84,7 @@ namespace OpenRCT2::GameActions
         return res;
     }
 
-    Result PeepSpawnPlaceAction::Execute() const
+    Result PeepSpawnPlaceAction::Execute(GameState_t& gameState) const
     {
         auto res = Result();
         res.Expenditure = ExpenditureType::landPurchase;
@@ -99,7 +100,6 @@ namespace OpenRCT2::GameActions
         spawn.z = _location.z;
         spawn.direction = _location.direction;
 
-        auto& gameState = getGameState();
         // When attempting to place a peep spawn on a tile that already contains it,
         // remove that peep spawn instead.
         if (!gameState.peepSpawns.empty())

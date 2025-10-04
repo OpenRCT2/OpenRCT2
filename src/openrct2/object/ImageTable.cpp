@@ -298,8 +298,7 @@ namespace OpenRCT2
         else
         {
             auto objectPath = FindLegacyObject(name);
-            auto tmp = ObjectFactory::CreateObjectFromLegacyFile(
-                context->GetObjectRepository(), objectPath.c_str(), !gOpenRCT2NoGraphics);
+            auto tmp = ObjectFactory::CreateObjectFromLegacyFile(objectPath.c_str(), !gOpenRCT2NoGraphics);
             auto inserted = _objDataCache.insert({ name, std::move(tmp) });
             obj = inserted.first->second.get();
         }
@@ -354,12 +353,12 @@ namespace OpenRCT2
             auto parts = String::split(s, "..");
             if (parts.size() == 1)
             {
-                result.push_back(std::stoi(parts[0]));
+                result.push_back(String::parse<int32_t>(parts[0]));
             }
             else
             {
-                auto left = std::stoi(parts[0]);
-                auto right = std::stoi(parts[1]);
+                auto left = String::parse<int32_t>(parts[0]);
+                auto right = String::parse<int32_t>(parts[1]);
                 if (left <= right)
                 {
                     for (auto i = left; i <= right; i++)

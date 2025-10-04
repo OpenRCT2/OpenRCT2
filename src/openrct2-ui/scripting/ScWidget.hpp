@@ -30,11 +30,11 @@ namespace OpenRCT2::Scripting
     {
     protected:
         WindowClass _class{};
-        rct_windownumber _number{};
+        WindowNumber _number{};
         WidgetIndex _widgetIndex{};
 
     public:
-        ScWidget(WindowClass c, rct_windownumber n, WidgetIndex widgetIndex)
+        ScWidget(WindowClass c, WindowNumber n, WidgetIndex widgetIndex)
             : _class(c)
             , _number(n)
             , _widgetIndex(widgetIndex)
@@ -393,7 +393,7 @@ namespace OpenRCT2::Scripting
     protected:
         WindowBase* GetWindow() const
         {
-            if (_class == WindowClass::MainWindow)
+            if (_class == WindowClass::mainWindow)
                 return WindowGetMain();
 
             auto* windowMgr = Ui::GetWindowManager();
@@ -415,7 +415,7 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr)
             {
-                return w->classification == WindowClass::Custom;
+                return w->classification == WindowClass::custom;
             }
             return false;
         }
@@ -448,7 +448,7 @@ namespace OpenRCT2::Scripting
     class ScButtonWidget : public ScWidget
     {
     public:
-        ScButtonWidget(WindowClass c, rct_windownumber n, WidgetIndex widgetIndex)
+        ScButtonWidget(WindowClass c, WindowNumber n, WidgetIndex widgetIndex)
             : ScWidget(c, n, widgetIndex)
         {
         }
@@ -534,7 +534,7 @@ namespace OpenRCT2::Scripting
     class ScCheckBoxWidget : public ScWidget
     {
     public:
-        ScCheckBoxWidget(WindowClass c, rct_windownumber n, WidgetIndex widgetIndex)
+        ScCheckBoxWidget(WindowClass c, WindowNumber n, WidgetIndex widgetIndex)
             : ScWidget(c, n, widgetIndex)
         {
         }
@@ -572,7 +572,7 @@ namespace OpenRCT2::Scripting
     class ScColourPickerWidget : public ScWidget
     {
     public:
-        ScColourPickerWidget(WindowClass c, rct_windownumber n, WidgetIndex widgetIndex)
+        ScColourPickerWidget(WindowClass c, WindowNumber n, WidgetIndex widgetIndex)
             : ScWidget(c, n, widgetIndex)
         {
         }
@@ -607,7 +607,7 @@ namespace OpenRCT2::Scripting
     class ScDropdownWidget : public ScWidget
     {
     public:
-        ScDropdownWidget(WindowClass c, rct_windownumber n, WidgetIndex widgetIndex)
+        ScDropdownWidget(WindowClass c, WindowNumber n, WidgetIndex widgetIndex)
             : ScWidget(c, n, widgetIndex)
         {
         }
@@ -665,7 +665,7 @@ namespace OpenRCT2::Scripting
     class ScGroupBoxWidget : public ScWidget
     {
     public:
-        ScGroupBoxWidget(WindowClass c, rct_windownumber n, WidgetIndex widgetIndex)
+        ScGroupBoxWidget(WindowClass c, WindowNumber n, WidgetIndex widgetIndex)
             : ScWidget(c, n, widgetIndex)
         {
         }
@@ -682,7 +682,7 @@ namespace OpenRCT2::Scripting
     class ScLabelWidget : public ScWidget
     {
     public:
-        ScLabelWidget(WindowClass c, rct_windownumber n, WidgetIndex widgetIndex)
+        ScLabelWidget(WindowClass c, WindowNumber n, WidgetIndex widgetIndex)
             : ScWidget(c, n, widgetIndex)
         {
         }
@@ -726,7 +726,7 @@ namespace OpenRCT2::Scripting
     class ScListViewWidget : public ScWidget
     {
     public:
-        ScListViewWidget(WindowClass c, rct_windownumber n, WidgetIndex widgetIndex)
+        ScListViewWidget(WindowClass c, WindowNumber n, WidgetIndex widgetIndex)
             : ScWidget(c, n, widgetIndex)
         {
         }
@@ -917,7 +917,7 @@ namespace OpenRCT2::Scripting
     class ScSpinnerWidget : public ScWidget
     {
     public:
-        ScSpinnerWidget(WindowClass c, rct_windownumber n, WidgetIndex widgetIndex)
+        ScSpinnerWidget(WindowClass c, WindowNumber n, WidgetIndex widgetIndex)
             : ScWidget(c, n, widgetIndex)
         {
         }
@@ -934,7 +934,7 @@ namespace OpenRCT2::Scripting
     class ScTextBoxWidget : public ScWidget
     {
     public:
-        ScTextBoxWidget(WindowClass c, rct_windownumber n, WidgetIndex widgetIndex)
+        ScTextBoxWidget(WindowClass c, WindowNumber n, WidgetIndex widgetIndex)
             : ScWidget(c, n, widgetIndex)
         {
         }
@@ -982,7 +982,7 @@ namespace OpenRCT2::Scripting
     class ScViewportWidget : public ScWidget
     {
     public:
-        ScViewportWidget(WindowClass c, rct_windownumber n, WidgetIndex widgetIndex)
+        ScViewportWidget(WindowClass c, WindowNumber n, WidgetIndex widgetIndex)
             : ScWidget(c, n, widgetIndex)
         {
         }

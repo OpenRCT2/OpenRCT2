@@ -17,6 +17,7 @@
 #include "../management/Finance.h"
 #include "../world/Footpath.h"
 #include "../world/Location.hpp"
+#include "../world/Map.h"
 #include "../world/Park.h"
 #include "../world/tile_element/BannerElement.h"
 #include "../world/tile_element/PathElement.h"
@@ -46,7 +47,7 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_loc);
     }
 
-    Result FootpathRemoveAction::Query() const
+    Result FootpathRemoveAction::Query(GameState_t& gameState) const
     {
         auto res = Result();
         res.Cost = 0;
@@ -74,7 +75,7 @@ namespace OpenRCT2::GameActions
         return res;
     }
 
-    Result FootpathRemoveAction::Execute() const
+    Result FootpathRemoveAction::Execute(GameState_t& gameState) const
     {
         auto res = Result();
         res.Cost = 0;
@@ -91,7 +92,7 @@ namespace OpenRCT2::GameActions
         if (footpathElement != nullptr)
         {
             FootpathQueueChainReset();
-            auto bannerRes = RemoveBannersAtElement(_loc, footpathElement);
+            auto bannerRes = RemoveBannersAtElement(gameState, _loc, footpathElement);
             if (bannerRes.Error == Status::Ok)
             {
                 res.Cost += bannerRes.Cost;
@@ -101,7 +102,6 @@ namespace OpenRCT2::GameActions
             TileElementRemove(footpathElement);
             FootpathUpdateQueueChains();
 
-            auto& gameState = getGameState();
             // Remove the spawn point (if there is one in the current tile)
             gameState.peepSpawns.erase(
                 std::remove_if(
@@ -163,7 +163,8 @@ namespace OpenRCT2::GameActions
      *
      *  rct2: 0x006BA23E
      */
-    Result FootpathRemoveAction::RemoveBannersAtElement(const CoordsXY& loc, TileElement* tileElement) const
+    Result FootpathRemoveAction::RemoveBannersAtElement(
+        GameState_t& gameState, const CoordsXY& loc, TileElement* tileElement) const
     {
         auto result = Result();
         while (!(tileElement++)->IsLastForTile())
@@ -179,7 +180,8 @@ namespace OpenRCT2::GameActions
             bool isGhost = tileElement->IsGhost();
             auto bannerFlags = GetFlags() | (isGhost ? static_cast<uint32_t>(GAME_COMMAND_FLAG_GHOST) : 0);
             bannerRemoveAction.SetFlags(bannerFlags);
-            auto res = ExecuteNested(&bannerRemoveAction);
+
+            auto res = ExecuteNested(&bannerRemoveAction, gameState);
             // Ghost removal is free
             if (res.Error == Status::Ok && !isGhost)
             {

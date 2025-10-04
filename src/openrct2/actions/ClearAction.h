@@ -39,20 +39,20 @@ namespace OpenRCT2::GameActions
         uint16_t GetActionFlags() const override;
 
         void Serialise(DataSerialiser& stream) override;
-        Result Query() const override;
-        Result Execute() const override;
+        Result Query(GameState_t& gameState) const override;
+        Result Execute(GameState_t& gameState) const override;
 
     private:
         Result CreateResult() const;
-        Result QueryExecute(bool executing) const;
-        money64 ClearSceneryFromTile(const CoordsXY& tilePos, bool executing) const;
+        Result QueryExecute(GameState_t& gameState, bool executing) const;
+        money64 ClearSceneryFromTile(const CoordsXY& tilePos, bool executing, GameState_t& gameState) const;
 
         /**
          * Function to clear the flag that is set to prevent cost duplication
          * when using the clear scenery tool with large scenery.
          */
-        static void ResetClearLargeSceneryFlag();
+        static void ResetClearLargeSceneryFlag(GameState_t& gameState);
 
-        static bool MapCanClearAt(const CoordsXY& location);
+        static bool MapCanClearAt(const GameState_t& gameState, const CoordsXY& location);
     };
 } // namespace OpenRCT2::GameActions

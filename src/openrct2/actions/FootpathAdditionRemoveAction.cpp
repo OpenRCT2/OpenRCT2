@@ -18,6 +18,7 @@
 #include "../management/Finance.h"
 #include "../world/Footpath.h"
 #include "../world/Location.hpp"
+#include "../world/Map.h"
 #include "../world/Park.h"
 #include "../world/tile_element/PathElement.h"
 
@@ -45,7 +46,7 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_loc);
     }
 
-    Result FootpathAdditionRemoveAction::Query() const
+    Result FootpathAdditionRemoveAction::Query(GameState_t& gameState) const
     {
         if (!LocationValid(_loc))
         {
@@ -92,7 +93,7 @@ namespace OpenRCT2::GameActions
         return res;
     }
 
-    Result FootpathAdditionRemoveAction::Execute() const
+    Result FootpathAdditionRemoveAction::Execute(GameState_t& gameState) const
     {
         auto* pathElement = MapGetFootpathElement(_loc);
         if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))

@@ -7,6 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../../../GameState.h"
 #include "../../../entity/EntityRegistry.h"
 #include "../../../interface/Viewport.h"
 #include "../../../ride/Ride.h"
@@ -47,10 +48,10 @@ static void PaintMotionSimulatorVehicle(
     Vehicle* vehicle = nullptr;
     if (ride.lifecycleFlags & RIDE_LIFECYCLE_ON_TRACK)
     {
-        vehicle = GetEntity<Vehicle>(ride.vehicles[0]);
+        vehicle = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[0]);
         if (vehicle != nullptr)
         {
-            session.InteractionType = ViewportInteractionItem::Entity;
+            session.InteractionType = ViewportInteractionItem::entity;
             session.CurrentlyDrawnEntity = vehicle;
         }
     }
@@ -64,7 +65,7 @@ static void PaintMotionSimulatorVehicle(
         }
         else
         {
-            imageIndex += vehicle->Pitch * 4;
+            imageIndex += vehicle->flatRideAnimationFrame * 4;
         }
     }
 
@@ -101,7 +102,7 @@ static void PaintMotionSimulatorVehicle(
     }
 
     session.CurrentlyDrawnEntity = nullptr;
-    session.InteractionType = ViewportInteractionItem::Ride;
+    session.InteractionType = ViewportInteractionItem::ride;
 }
 
 static void PaintMotionSimulator(

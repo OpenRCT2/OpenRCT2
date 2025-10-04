@@ -19,6 +19,8 @@
 #include "../ride/RideConstruction.h"
 #include "../ride/RideData.h"
 #include "../windows/Intent.h"
+#include "../world/Map.h"
+#include "../world/MapSelection.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"
 #include "../world/SurfaceData.h"
@@ -27,7 +29,7 @@
 
 namespace OpenRCT2::GameActions
 {
-    LandLowerAction::LandLowerAction(const CoordsXY& coords, MapRange range, uint8_t selectionType)
+    LandLowerAction::LandLowerAction(const CoordsXY& coords, MapRange range, MapSelectType selectionType)
         : _coords(coords)
         , _range(range)
         , _selectionType(selectionType)
@@ -53,24 +55,24 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_coords) << DS_TAG(_range) << DS_TAG(_selectionType);
     }
 
-    Result LandLowerAction::Query() const
+    Result LandLowerAction::Query(GameState_t& gameState) const
     {
-        return QueryExecute(false);
+        return QueryExecute(gameState, false);
     }
 
-    Result LandLowerAction::Execute() const
+    Result LandLowerAction::Execute(GameState_t& gameState) const
     {
-        return QueryExecute(true);
+        return QueryExecute(gameState, true);
     }
 
-    Result LandLowerAction::QueryExecute(bool isExecuting) const
+    Result LandLowerAction::QueryExecute(GameState_t& gameState, bool isExecuting) const
     {
         auto res = Result();
-        size_t tableRow = _selectionType;
+        size_t tableRow = EnumValue(_selectionType);
 
-        // The selections between MAP_SELECT_TYPE_FULL and MAP_SELECT_TYPE_EDGE_0 are not included in the tables
-        if (_selectionType >= MAP_SELECT_TYPE_EDGE_0 && _selectionType <= MAP_SELECT_TYPE_EDGE_3)
-            tableRow -= MAP_SELECT_TYPE_EDGE_0 - MAP_SELECT_TYPE_FULL - 1;
+        // The selections between MapSelectType::full and MapSelectType::edge0 are not included in the tables
+        if (_selectionType >= MapSelectType::edge0 && _selectionType <= MapSelectType::edge3)
+            tableRow -= EnumValue(MapSelectType::edge0) - EnumValue(MapSelectType::full) - 1;
 
         auto validRange = ClampRangeWithinMap(_range);
 
@@ -79,7 +81,7 @@ namespace OpenRCT2::GameActions
 
         if (isExecuting)
         {
-            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, { _coords.x, _coords.y, TileElementHeight(_coords) });
+            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::placeItem, { _coords.x, _coords.y, TileElementHeight(_coords) });
         }
 
         uint8_t maxHeight = MapGetHighestLandHeight(validRange);
@@ -123,7 +125,8 @@ namespace OpenRCT2::GameActions
 
                 auto landSetHeightAction = LandSetHeightAction({ x, y }, height, newSlope);
                 landSetHeightAction.SetFlags(GetFlags());
-                auto result = isExecuting ? ExecuteNested(&landSetHeightAction) : QueryNested(&landSetHeightAction);
+                auto result = isExecuting ? ExecuteNested(&landSetHeightAction, gameState)
+                                          : QueryNested(&landSetHeightAction, gameState);
                 if (result.Error == Status::Ok)
                 {
                     res.Cost += result.Cost;

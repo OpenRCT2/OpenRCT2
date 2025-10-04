@@ -17,6 +17,11 @@
 #include <functional>
 #include <memory>
 
+namespace OpenRCT2
+{
+    struct GameState_t;
+}
+
 namespace OpenRCT2::GameActions
 {
     namespace Flags
@@ -98,7 +103,7 @@ namespace OpenRCT2::GameActions
         }
 
         template<typename T, size_t _TypeID>
-        void Visit(std::string_view name, NetworkObjectId<T, _TypeID>& param)
+        void Visit(std::string_view name, Network::NetworkObjectId<T, _TypeID>& param)
         {
             Visit(name, param.id);
         }
@@ -113,8 +118,8 @@ namespace OpenRCT2::GameActions
     private:
         GameCommand const _type;
 
-        NetworkPlayerId_t _playerId = { -1 }; // Callee
-        uint32_t _flags = 0;                  // GAME_COMMAND_FLAGS
+        Network::PlayerId_t _playerId = { -1 }; // Callee
+        uint32_t _flags = 0;                    // GAME_COMMAND_FLAGS
         uint32_t _networkId = 0;
         Callback_t _callback;
 
@@ -137,12 +142,12 @@ namespace OpenRCT2::GameActions
             visitor.Visit("flags", _flags);
         }
 
-        NetworkPlayerId_t GetPlayer() const
+        Network::PlayerId_t GetPlayer() const
         {
             return _playerId;
         }
 
-        void SetPlayer(NetworkPlayerId_t playerId)
+        void SetPlayer(Network::PlayerId_t playerId)
         {
             _playerId = playerId;
         }
@@ -229,12 +234,12 @@ namespace OpenRCT2::GameActions
         /**
          * Query the result of the game action without changing the game state.
          */
-        virtual OpenRCT2::GameActions::Result Query() const = 0;
+        virtual Result Query(GameState_t& gameState) const = 0;
 
         /**
          * Apply the game action and change the game state.
          */
-        virtual OpenRCT2::GameActions::Result Execute() const = 0;
+        virtual Result Execute(GameState_t& gameState) const = 0;
 
         bool LocationValid(const CoordsXY& coords) const;
     };
@@ -282,11 +287,11 @@ namespace OpenRCT2::GameActions
     GameAction::Ptr Clone(const GameAction* action);
 
     // This should be used if a round trip is to be expected.
-    Result Query(const GameAction* action);
-    Result Execute(const GameAction* action);
+    Result Query(const GameAction* action, GameState_t& gameState);
+    Result Execute(const GameAction* action, GameState_t& gameState);
 
     // This should be used from within game actions.
-    Result QueryNested(const GameAction* action);
-    Result ExecuteNested(const GameAction* action);
+    Result QueryNested(const GameAction* action, GameState_t& gameState);
+    Result ExecuteNested(const GameAction* action, GameState_t& gameState);
 
 } // namespace OpenRCT2::GameActions

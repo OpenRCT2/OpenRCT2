@@ -13,7 +13,7 @@
 #include "../drawing/Drawing.h"
 #include "../interface/Colour.h"
 #include "../world/Location.hpp"
-#include "../world/Map.h"
+#include "../world/MapLimits.h"
 #include "Boundbox.h"
 #include "tile_element/Paint.Tunnel.h"
 
@@ -249,8 +249,8 @@ extern CoordsXY gClipSelectionA;
 extern CoordsXY gClipSelectionB;
 
 /** rct2: 0x00993CC4. The white ghost that indicates not-yet-built elements. */
-constexpr ImageId ConstructionMarker = ImageId(0).WithRemap(FilterPaletteID::PaletteGhost);
-constexpr ImageId HighlightMarker = ImageId(0).WithRemap(FilterPaletteID::PaletteGhost);
+constexpr ImageId ConstructionMarker = ImageId(0).WithRemap(FilterPaletteID::paletteGhost);
+constexpr ImageId HighlightMarker = ImageId(0).WithRemap(FilterPaletteID::paletteGhost);
 constexpr ImageId TrackStationColour = ImageId(0, COLOUR_BLACK);
 constexpr ImageId ShopSupportColour = ImageId(0, COLOUR_DARK_BROWN);
 

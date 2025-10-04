@@ -112,25 +112,25 @@ namespace OpenRCT2::Ui::Windows
             return 4 * FontGetLineHeight(FontStyle::Small) + 2;
         }
 
-        void InitNewsWidgets()
+        void initNewsWidgets()
         {
-            Invalidate();
+            invalidate();
             page = newsTab;
             height = kWindowSize.height;
-            SetWidgets(kNewsTabWidgets);
+            setWidgets(kNewsTabWidgets);
 
             WindowInitScrollWidgets(*this);
             _pressedNewsItemIndex = -1;
 
             auto& widget = widgets[WIDX_SCROLL];
-            ScreenSize scrollSize = OnScrollGetSize(0);
+            ScreenSize scrollSize = onScrollGetSize(0);
             scrolls[0].contentOffsetY = std::max(0, scrollSize.height - (widget.height() - 1));
             widgetScrollUpdateThumbs(*this, WIDX_SCROLL);
         }
 
-        void InitOptionsWidgets()
+        void initOptionsWidgets()
         {
-            Invalidate();
+            invalidate();
             page = optionsTab;
 
             widgets.clear();
@@ -218,15 +218,15 @@ namespace OpenRCT2::Ui::Windows
 
             if (height != y)
             {
-                Invalidate();
+                invalidate();
                 height = y;
                 widgets[WIDX_BACKGROUND].bottom = y - 1;
                 widgets[WIDX_TAB_BACKGROUND].bottom = y - 1;
-                Invalidate();
+                invalidate();
             }
 
             // We're not using SetWidgets, so invoke ResizeFrame manually
-            ResizeFrame();
+            resizeFrame();
         }
 
         bool& GetNotificationValueRef(const NewsOption& def)
@@ -236,7 +236,7 @@ namespace OpenRCT2::Ui::Windows
             return configValue;
         }
 
-        void SetPage(NewsWindowTab newPage)
+        void setPage(NewsWindowTab newPage)
         {
             if (page == newPage && !widgets.empty())
                 return;
@@ -244,32 +244,32 @@ namespace OpenRCT2::Ui::Windows
             switch (newPage)
             {
                 case newsTab:
-                    InitNewsWidgets();
+                    initNewsWidgets();
                     break;
 
                 case optionsTab:
-                    InitOptionsWidgets();
+                    initOptionsWidgets();
                     break;
             }
 
-            SetWidgetPressed(WIDX_TAB_NEWS, page == newsTab);
-            SetWidgetPressed(WIDX_TAB_OPTIONS, page == optionsTab);
+            setWidgetPressed(WIDX_TAB_NEWS, page == newsTab);
+            setWidgetPressed(WIDX_TAB_OPTIONS, page == optionsTab);
         }
 
         void DrawTabImages(RenderTarget& rt)
         {
-            if (!IsWidgetDisabled(WIDX_TAB_NEWS))
+            if (!isWidgetDisabled(WIDX_TAB_NEWS))
             {
                 auto imageId = ImageId(SPR_G2_TAB_NEWS);
                 auto& widget = widgets[WIDX_TAB_NEWS];
                 GfxDrawSprite(rt, imageId, windowPos + ScreenCoordsXY{ widget.left + 3, widget.top });
             }
 
-            if (!IsWidgetDisabled(WIDX_TAB_OPTIONS))
+            if (!isWidgetDisabled(WIDX_TAB_OPTIONS))
             {
                 auto imageId = ImageId(SPR_TAB_GEARS_0);
                 if (page == optionsTab)
-                    imageId = imageId.WithIndexOffset((frame_no / 2) % 4);
+                    imageId = imageId.WithIndexOffset((currentFrame / 2) % 4);
 
                 auto& widget = widgets[WIDX_TAB_OPTIONS];
                 GfxDrawSprite(rt, imageId, windowPos + ScreenCoordsXY{ widget.left, widget.top });
@@ -277,12 +277,12 @@ namespace OpenRCT2::Ui::Windows
         }
 
     public:
-        void OnOpen() override
+        void onOpen() override
         {
-            SetPage(newsTab);
+            setPage(newsTab);
         }
 
-        void OnPrepareDraw() override
+        void onPrepareDraw() override
         {
             if (page != optionsTab)
                 return;
@@ -299,29 +299,29 @@ namespace OpenRCT2::Ui::Windows
                 }
 
                 const bool& configValue = GetNotificationValueRef(def);
-                SetCheckboxValue(checkboxWidgetIndex, configValue);
+                setCheckboxValue(checkboxWidgetIndex, configValue);
                 checkboxWidgetIndex++;
             }
         }
 
-        void OnDraw(RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
-            DrawWidgets(rt);
+            drawWidgets(rt);
             DrawTabImages(rt);
         }
 
-        void OnMouseUp(WidgetIndex widgetIndex) override
+        void onMouseUp(WidgetIndex widgetIndex) override
         {
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
-                    Close();
+                    close();
                     break;
                 case WIDX_TAB_NEWS:
-                    SetPage(newsTab);
+                    setPage(newsTab);
                     break;
                 case WIDX_TAB_OPTIONS:
-                    SetPage(optionsTab);
+                    setPage(optionsTab);
                     break;
                 default:
                 {
@@ -337,15 +337,15 @@ namespace OpenRCT2::Ui::Windows
                     configValue = !configValue;
                     Config::Save();
 
-                    InvalidateWidget(widgetIndex);
+                    invalidateWidget(widgetIndex);
                     break;
                 }
             }
         }
 
-        void OnUpdate() override
+        void onUpdate() override
         {
-            frame_no++;
+            currentFrame++;
 
             if (page != newsTab)
                 return;
@@ -355,8 +355,8 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            Invalidate();
-            Audio::Play(Audio::SoundId::Click2, 0, windowPos.x + (width / 2));
+            invalidate();
+            Audio::Play(Audio::SoundId::click2, 0, windowPos.x + (width / 2));
 
             size_t j = _pressedNewsItemIndex;
             _pressedNewsItemIndex = -1;
@@ -388,14 +388,14 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        ScreenSize OnScrollGetSize(int32_t scrollIndex) override
+        ScreenSize onScrollGetSize(int32_t scrollIndex) override
         {
             int32_t scrollHeight = static_cast<int32_t>(getGameState().newsItems.GetArchived().size())
                 * CalculateNewsItemHeight();
             return { kWindowSize.width, scrollHeight };
         }
 
-        void OnScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
+        void onScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
             int32_t itemHeight = CalculateNewsItemHeight();
             int32_t i = 0;
@@ -431,12 +431,12 @@ namespace OpenRCT2::Ui::Windows
                 _pressedNewsItemIndex = i;
                 _pressedButtonIndex = buttonIndex;
                 _suspendUpdateTicks = 4;
-                Invalidate();
-                Audio::Play(Audio::SoundId::Click1, 0, windowPos.x + (width / 2));
+                invalidate();
+                Audio::Play(Audio::SoundId::click1, 0, windowPos.x + (width / 2));
             }
         }
 
-        void OnScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
+        void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
             int32_t lineHeight = FontGetLineHeight(FontStyle::Small);
             int32_t itemHeight = CalculateNewsItemHeight();
@@ -504,7 +504,7 @@ namespace OpenRCT2::Ui::Windows
                                 break;
                             }
 
-                            auto peep = TryGetEntity<Peep>(EntityId::FromUnderlying(newsItem.assoc));
+                            auto peep = getGameState().entities.TryGetEntity<Peep>(EntityId::FromUnderlying(newsItem.assoc));
                             if (peep == nullptr)
                             {
                                 break;
@@ -515,11 +515,10 @@ namespace OpenRCT2::Ui::Windows
                             // If normal peep set sprite to normal (no food)
                             // If staff set sprite to staff sprite
                             auto spriteType = PeepAnimationGroup::Normal;
-                            auto* staff = peep->As<Staff>();
-                            if (staff != nullptr)
+                            if (auto* staff = peep->As<Staff>(); staff != nullptr)
                             {
                                 spriteType = staff->AnimationGroup;
-                                if (staff->AssignedStaffType == StaffType::Entertainer)
+                                if (staff->isEntertainer())
                                 {
                                     clipCoords.y += 3;
                                 }
@@ -581,6 +580,6 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* NewsOpen()
     {
         auto* windowMgr = GetWindowManager();
-        return windowMgr->FocusOrCreate<NewsWindow>(WindowClass::RecentNews, kWindowSize, 0);
+        return windowMgr->FocusOrCreate<NewsWindow>(WindowClass::recentNews, kWindowSize, {});
     }
 } // namespace OpenRCT2::Ui::Windows

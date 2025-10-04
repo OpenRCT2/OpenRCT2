@@ -24,130 +24,128 @@
     #include <chrono>
     #include <discord_rpc.h>
 
-using namespace OpenRCT2;
-
-namespace
+namespace OpenRCT2::Network
 {
     using namespace std::chrono_literals;
 
     constexpr const char* kApplicationID = "378612438200877056";
     constexpr const char* kSteamAppID = nullptr;
     constexpr auto kRefreshInterval = 5.0s;
-} // namespace
 
-static void OnReady([[maybe_unused]] const DiscordUser* request)
-{
-    LOG_VERBOSE("DiscordService::OnReady()");
-}
-
-static void OnDisconnected(int errorCode, const char* message)
-{
-    Console::Error::WriteLine("DiscordService::OnDisconnected(%d, %s)", errorCode, message);
-}
-
-static void OnErrored(int errorCode, const char* message)
-{
-    Console::Error::WriteLine("DiscordService::OnErrored(%d, %s)", errorCode, message);
-}
-
-DiscordService::DiscordService()
-{
-    DiscordEventHandlers handlers = {};
-    handlers.ready = OnReady;
-    handlers.disconnected = OnDisconnected;
-    handlers.errored = OnErrored;
-    Discord_Initialize(kApplicationID, &handlers, 1, kSteamAppID);
-}
-
-DiscordService::~DiscordService()
-{
-    Discord_Shutdown();
-}
-
-static std::string GetParkName()
-{
-    auto& gameState = getGameState();
-    return gameState.park.name;
-}
-
-void DiscordService::Tick()
-{
-    Discord_RunCallbacks();
-
-    if (_updateTimer.GetElapsedTime() < kRefreshInterval)
-        return;
-
-    RefreshPresence();
-    _updateTimer.Restart();
-}
-
-void DiscordService::RefreshPresence() const
-{
-    DiscordRichPresence discordPresence = {};
-    discordPresence.largeImageKey = "logo";
-
-    std::string state;
-    std::string details;
-    std::string partyId;
-
-    switch (gLegacyScene)
+    static void OnReady([[maybe_unused]] const DiscordUser* request)
     {
-        default:
-            details = GetParkName();
-            if (NetworkGetMode() == NETWORK_MODE_NONE)
-            {
-                state = "Playing Solo";
-            }
-            else
-            {
-                OpenRCT2::FmtString fmtServerName(NetworkGetServerName());
-                std::string serverName;
-                for (const auto& token : fmtServerName)
-                {
-                    if (token.IsLiteral())
-                    {
-                        serverName += token.text;
-                    }
-                    else if (token.IsCodepoint())
-                    {
-                        auto codepoint = token.GetCodepoint();
-                        char buffer[8]{};
-                        UTF8WriteCodepoint(buffer, codepoint);
-                        serverName += buffer;
-                    }
-                }
-                state = serverName;
-
-                partyId = NetworkGetServerName();
-                // NOTE: the party size is displayed next to state
-                discordPresence.partyId = partyId.c_str();
-                discordPresence.partySize = NetworkGetNumPlayers();
-                discordPresence.partyMax = 256;
-
-                // TODO generate secrets for the server
-                discordPresence.matchSecret = nullptr;
-                discordPresence.spectateSecret = nullptr;
-                discordPresence.instance = 1;
-            }
-            break;
-        case LegacyScene::titleSequence:
-            details = "In Menus";
-            break;
-        case LegacyScene::scenarioEditor:
-            details = "In Scenario Editor";
-            break;
-        case LegacyScene::trackDesigner:
-            details = "In Track Designer";
-            break;
-        case LegacyScene::trackDesignsManager:
-            details = "In Track Designs Manager";
-            break;
+        LOG_VERBOSE("DiscordService::OnReady()");
     }
 
-    discordPresence.state = state.c_str();
-    discordPresence.details = details.c_str();
+    static void OnDisconnected(int errorCode, const char* message)
+    {
+        Console::Error::WriteLine("DiscordService::OnDisconnected(%d, %s)", errorCode, message);
+    }
 
-    Discord_UpdatePresence(&discordPresence);
-}
+    static void OnErrored(int errorCode, const char* message)
+    {
+        Console::Error::WriteLine("DiscordService::OnErrored(%d, %s)", errorCode, message);
+    }
+
+    DiscordService::DiscordService()
+    {
+        DiscordEventHandlers handlers = {};
+        handlers.ready = OnReady;
+        handlers.disconnected = OnDisconnected;
+        handlers.errored = OnErrored;
+        Discord_Initialize(kApplicationID, &handlers, 1, kSteamAppID);
+    }
+
+    DiscordService::~DiscordService()
+    {
+        Discord_Shutdown();
+    }
+
+    static std::string GetParkName()
+    {
+        auto& gameState = getGameState();
+        return gameState.park.name;
+    }
+
+    void DiscordService::Tick()
+    {
+        Discord_RunCallbacks();
+
+        if (_updateTimer.GetElapsedTime() < kRefreshInterval)
+            return;
+
+        RefreshPresence();
+        _updateTimer.Restart();
+    }
+
+    void DiscordService::RefreshPresence() const
+    {
+        DiscordRichPresence discordPresence = {};
+        discordPresence.largeImageKey = "logo";
+
+        std::string state;
+        std::string details;
+        std::string partyId;
+
+        switch (gLegacyScene)
+        {
+            default:
+                details = GetParkName();
+                if (Network::GetMode() == Network::Mode::none)
+                {
+                    state = "Playing Solo";
+                }
+                else
+                {
+                    FmtString fmtServerName(Network::GetServerName());
+                    std::string serverName;
+                    for (const auto& token : fmtServerName)
+                    {
+                        if (token.IsLiteral())
+                        {
+                            serverName += token.text;
+                        }
+                        else if (token.IsCodepoint())
+                        {
+                            auto codepoint = token.GetCodepoint();
+                            char buffer[8]{};
+                            UTF8WriteCodepoint(buffer, codepoint);
+                            serverName += buffer;
+                        }
+                    }
+                    state = serverName;
+
+                    partyId = Network::GetServerName();
+                    // NOTE: the party size is displayed next to state
+                    discordPresence.partyId = partyId.c_str();
+                    discordPresence.partySize = Network::GetNumPlayers();
+                    discordPresence.partyMax = 256;
+
+                    // TODO generate secrets for the server
+                    discordPresence.matchSecret = nullptr;
+                    discordPresence.spectateSecret = nullptr;
+                    discordPresence.instance = 1;
+                }
+                break;
+            case LegacyScene::titleSequence:
+                details = "In Menus";
+                break;
+            case LegacyScene::scenarioEditor:
+                details = "In Scenario Editor";
+                break;
+            case LegacyScene::trackDesigner:
+                details = "In Track Designer";
+                break;
+            case LegacyScene::trackDesignsManager:
+                details = "In Track Designs Manager";
+                break;
+        }
+
+        discordPresence.state = state.c_str();
+        discordPresence.details = details.c_str();
+
+        Discord_UpdatePresence(&discordPresence);
+    }
+} // namespace OpenRCT2::Network
 
 #endif

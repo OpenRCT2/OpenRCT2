@@ -17,36 +17,7 @@
 #include <optional>
 #include <vector>
 
-constexpr uint8_t kMinimumLandHeight = 2;
-constexpr uint8_t kMaximumLandHeight = 254;
-constexpr uint8_t kMinimumWaterHeight = 2;
-constexpr uint8_t kMaximumWaterHeight = 254;
-/**
- * The land height that counts as 0 metres/feet for the land height labels and altitude graphs.
- */
-constexpr uint8_t kMapBaseZ = 7;
-
-constexpr uint8_t kMinimumMapSizeTechnical = 5;
-constexpr uint16_t kMaximumMapSizeTechnical = 1001;
-constexpr int16_t kMinimumMapSizePractical = (kMinimumMapSizeTechnical - 2);
-constexpr int16_t kMaximumMapSizePractical = (kMaximumMapSizeTechnical - 2);
-constexpr const int32_t kMaximumMapSizeBig = kCoordsXYStep * kMaximumMapSizeTechnical;
-constexpr int32_t kMaximumTileStartXY = kMaximumMapSizeBig - kCoordsXYStep;
-constexpr const int32_t kLandHeightStep = 2 * kCoordsZStep;
-constexpr const int32_t kWaterHeightStep = 2 * kCoordsZStep;
-constexpr const int32_t kMinimumLandZ = kMinimumLandHeight * kCoordsZStep;
 constexpr TileCoordsXY kDefaultMapSize = { 150, 150 };
-// How high construction has to be off the ground when the player owns construction rights, in tile coords.
-constexpr uint8_t kConstructionRightsClearanceSmall = 3;
-// Same as previous, but in big coords.
-constexpr const uint8_t kConstructionRightsClearanceBig = 3 * kCoordsZStep;
-
-constexpr int16_t kMapMinimumXY = (-kMaximumMapSizeTechnical);
-
-constexpr uint32_t kMaxTileElementsWithSpaceRoom = 0x1000000;
-constexpr uint32_t kMaxTileElements = kMaxTileElementsWithSpaceRoom - 512;
-
-using PeepSpawn = CoordsXYZD;
 
 namespace OpenRCT2
 {
@@ -64,65 +35,12 @@ namespace OpenRCT2
     enum class TrackElemType : uint16_t;
 } // namespace OpenRCT2
 
-struct CoordsXYE : public CoordsXY
-{
-    CoordsXYE() = default;
-    constexpr CoordsXYE(int32_t _x, int32_t _y, OpenRCT2::TileElement* _e)
-        : CoordsXY(_x, _y)
-        , element(_e)
-    {
-    }
-
-    constexpr CoordsXYE(const CoordsXY& c, OpenRCT2::TileElement* _e)
-        : CoordsXY(c)
-        , element(_e)
-    {
-    }
-    OpenRCT2::TileElement* element = nullptr;
-};
-
-enum
-{
-    MAP_SELECT_FLAG_ENABLE = 1 << 0,
-    MAP_SELECT_FLAG_ENABLE_CONSTRUCT = 1 << 1,
-    MAP_SELECT_FLAG_ENABLE_ARROW = 1 << 2,
-    MAP_SELECT_FLAG_GREEN = 1 << 3,
-};
-
-enum
-{
-    MAP_SELECT_TYPE_CORNER_0,
-    MAP_SELECT_TYPE_CORNER_1,
-    MAP_SELECT_TYPE_CORNER_2,
-    MAP_SELECT_TYPE_CORNER_3,
-    MAP_SELECT_TYPE_FULL,
-    MAP_SELECT_TYPE_FULL_WATER,
-    MAP_SELECT_TYPE_FULL_LAND_RIGHTS,
-    MAP_SELECT_TYPE_QUARTER_0,
-    MAP_SELECT_TYPE_QUARTER_1,
-    MAP_SELECT_TYPE_QUARTER_2,
-    MAP_SELECT_TYPE_QUARTER_3,
-    MAP_SELECT_TYPE_EDGE_0,
-    MAP_SELECT_TYPE_EDGE_1,
-    MAP_SELECT_TYPE_EDGE_2,
-    MAP_SELECT_TYPE_EDGE_3,
-};
-
 extern const std::array<CoordsXY, 8> CoordsDirectionDelta;
 extern const TileCoordsXY TileDirectionDelta[];
 
 CoordsXY GetMapSizeUnits();
 CoordsXY GetMapSizeMinus2();
 CoordsXY GetMapSizeMaxXY();
-
-extern uint16_t gMapSelectFlags;
-extern uint16_t gMapSelectType;
-extern CoordsXY gMapSelectPositionA;
-extern CoordsXY gMapSelectPositionB;
-extern CoordsXYZ gMapSelectArrowPosition;
-extern uint8_t gMapSelectArrowDirection;
-
-extern std::vector<CoordsXY> gMapSelectionTiles;
 
 extern uint32_t gLandRemainingOwnershipSales;
 extern uint32_t gLandRemainingConstructionSales;
@@ -174,8 +92,7 @@ bool MapIsLocationInPark(const CoordsXY& coords);
 bool MapIsLocationOwnedOrHasRights(const CoordsXY& loc);
 bool MapSurfaceIsBlocked(const CoordsXY& mapCoords);
 void MapRemoveAllRides();
-void MapInvalidateMapSelectionTiles();
-void MapInvalidateSelectionRect();
+void MapGetBoundingBox(const MapRange& _range, int32_t* left, int32_t* top, int32_t* right, int32_t* bottom);
 bool MapCheckCapacityAndReorganise(const CoordsXY& loc, size_t numElements = 1);
 int16_t TileElementHeight(const CoordsXY& loc);
 int16_t TileElementHeight(const CoordsXYZ& loc, uint8_t slope);
@@ -253,8 +170,6 @@ OpenRCT2::TileElement* MapGetTrackElementAtOfTypeFromRide(
 OpenRCT2::TileElement* MapGetTrackElementAtFromRide(const CoordsXYZ& trackPos, RideId rideIndex);
 OpenRCT2::TileElement* MapGetTrackElementAtWithDirectionFromRide(const CoordsXYZD& trackPos, RideId rideIndex);
 OpenRCT2::TileElement* MapGetTrackElementAtBeforeSurfaceFromRide(const CoordsXYZ& trackPos, RideId rideIndex);
-
-bool MapIsLocationAtEdge(const CoordsXY& loc);
 
 uint16_t CheckMaxAllowableLandRightsForTile(const CoordsXYZ& tileMapPos);
 

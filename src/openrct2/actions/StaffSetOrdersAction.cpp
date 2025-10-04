@@ -11,6 +11,7 @@
 
 #include "../Context.h"
 #include "../Diagnostic.h"
+#include "../GameState.h"
 #include "../entity/EntityRegistry.h"
 #include "../entity/Staff.h"
 #include "../localisation/StringIds.h"
@@ -43,7 +44,7 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_spriteIndex) << DS_TAG(_ordersId);
     }
 
-    Result StaffSetOrdersAction::Query() const
+    Result StaffSetOrdersAction::Query(GameState_t& gameState) const
     {
         if (_spriteIndex.ToUnderlying() >= kMaxEntities || _spriteIndex.IsNull())
         {
@@ -51,7 +52,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
         }
 
-        auto* staff = TryGetEntity<Staff>(_spriteIndex);
+        auto* staff = getGameState().entities.TryGetEntity<Staff>(_spriteIndex);
         if (staff == nullptr
             || (staff->AssignedStaffType != StaffType::Handyman && staff->AssignedStaffType != StaffType::Mechanic))
         {
@@ -62,9 +63,9 @@ namespace OpenRCT2::GameActions
         return Result();
     }
 
-    Result StaffSetOrdersAction::Execute() const
+    Result StaffSetOrdersAction::Execute(GameState_t& gameState) const
     {
-        auto* staff = TryGetEntity<Staff>(_spriteIndex);
+        auto* staff = getGameState().entities.TryGetEntity<Staff>(_spriteIndex);
         if (staff == nullptr)
         {
             LOG_ERROR("Staff entity not found for spriteIndex %u", _spriteIndex);
@@ -73,7 +74,7 @@ namespace OpenRCT2::GameActions
         staff->StaffOrders = _ordersId;
 
         auto* windowMgr = Ui::GetWindowManager();
-        windowMgr->InvalidateByNumber(WindowClass::Peep, _spriteIndex);
+        windowMgr->InvalidateByNumber(WindowClass::peep, _spriteIndex);
         auto intent = Intent(INTENT_ACTION_REFRESH_STAFF_LIST);
         ContextBroadcastIntent(&intent);
 

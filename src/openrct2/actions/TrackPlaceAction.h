@@ -43,8 +43,8 @@ namespace OpenRCT2::GameActions
         uint16_t GetActionFlags() const final;
 
         void Serialise(DataSerialiser& stream) override;
-        GameActions::Result Query() const override;
-        GameActions::Result Execute() const override;
+        GameActions::Result Query(GameState_t& gameState) const override;
+        GameActions::Result Execute(GameState_t& gameState) const override;
 
     private:
         bool CheckMapCapacity(int16_t numTiles) const;

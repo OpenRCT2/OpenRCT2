@@ -12,6 +12,7 @@
     #include "ScPlayerGroup.hpp"
 
     #include "../../../Context.h"
+    #include "../../../GameState.h"
     #include "../../../actions/NetworkModifyGroupAction.h"
     #include "../../../actions/PlayerSetGroupAction.h"
     #include "../../../core/String.hpp"
@@ -34,10 +35,10 @@ namespace OpenRCT2::Scripting
     std::string ScPlayerGroup::name_get() const
     {
     #ifndef DISABLE_NETWORK
-        auto index = NetworkGetGroupIndex(_id);
+        auto index = Network::GetGroupIndex(_id);
         if (index == -1)
             return {};
-        return NetworkGetGroupName(index);
+        return Network::GetGroupName(index);
     #else
         return {};
     #endif
@@ -47,7 +48,7 @@ namespace OpenRCT2::Scripting
     {
     #ifndef DISABLE_NETWORK
         auto action = GameActions::NetworkModifyGroupAction(GameActions::ModifyGroupType::SetName, _id, value);
-        GameActions::Execute(&action);
+        GameActions::Execute(&action, getGameState());
     #endif
     }
 
@@ -71,16 +72,16 @@ namespace OpenRCT2::Scripting
     std::vector<std::string> ScPlayerGroup::permissions_get() const
     {
     #ifndef DISABLE_NETWORK
-        auto index = NetworkGetGroupIndex(_id);
+        auto index = Network::GetGroupIndex(_id);
         if (index == -1)
             return {};
 
         // Create array of permissions
         std::vector<std::string> result;
         auto permissionIndex = 0;
-        for (const auto& action : NetworkActions::Actions)
+        for (const auto& action : Network::NetworkActions::Actions)
         {
-            if (NetworkCanPerformAction(index, static_cast<NetworkPermission>(permissionIndex)))
+            if (Network::CanPerformAction(index, static_cast<Network::Permission>(permissionIndex)))
             {
                 result.push_back(TransformPermissionKeyToJS(action.PermissionName));
             }
@@ -95,23 +96,23 @@ namespace OpenRCT2::Scripting
     void ScPlayerGroup::permissions_set(std::vector<std::string> value)
     {
     #ifndef DISABLE_NETWORK
-        auto groupIndex = NetworkGetGroupIndex(_id);
+        auto groupIndex = Network::GetGroupIndex(_id);
         if (groupIndex == -1)
             return;
 
         // First clear all permissions
         auto networkAction = GameActions::NetworkModifyGroupAction(
             GameActions::ModifyGroupType::SetPermissions, _id, "", 0, GameActions::PermissionState::ClearAll);
-        GameActions::Execute(&networkAction);
+        GameActions::Execute(&networkAction, getGameState());
 
         std::vector<bool> enabledPermissions;
-        enabledPermissions.resize(NetworkActions::Actions.size());
+        enabledPermissions.resize(Network::NetworkActions::Actions.size());
         for (const auto& p : value)
         {
             auto permissionName = TransformPermissionKeyToInternal(p);
 
             auto permissionIndex = 0;
-            for (const auto& action : NetworkActions::Actions)
+            for (const auto& action : Network::NetworkActions::Actions)
             {
                 if (action.PermissionName == permissionName)
                 {
@@ -124,13 +125,13 @@ namespace OpenRCT2::Scripting
         for (size_t i = 0; i < enabledPermissions.size(); i++)
         {
             auto toggle
-                = (enabledPermissions[i] != (NetworkCanPerformAction(groupIndex, static_cast<NetworkPermission>(i)) != 0));
+                = (enabledPermissions[i] != (Network::CanPerformAction(groupIndex, static_cast<Network::Permission>(i)) != 0));
             if (toggle)
             {
                 auto networkAction2 = GameActions::NetworkModifyGroupAction(
                     GameActions::ModifyGroupType::SetPermissions, _id, "", static_cast<uint32_t>(i),
                     GameActions::PermissionState::Toggle);
-                GameActions::Execute(&networkAction2);
+                GameActions::Execute(&networkAction2, getGameState());
             }
         }
     #endif

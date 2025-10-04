@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "../world/Map.h"
+#include "../world/Location.hpp"
 #include "GameAction.h"
 
 namespace OpenRCT2::GameActions
@@ -25,8 +25,8 @@ namespace OpenRCT2::GameActions
         uint16_t GetActionFlags() const override;
 
         void Serialise(DataSerialiser& stream) override;
-        Result Query() const override;
-        Result Execute() const override;
+        Result Query(GameState_t& gameState) const override;
+        Result Execute(GameState_t& gameState) const override;
 
     private:
         TileCoordsXY _targetSize;

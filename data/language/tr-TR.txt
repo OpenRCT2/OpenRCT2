@@ -537,8 +537,8 @@ STR_1152    :Herhangi dolulukta başlat
 STR_1153    :Alet yüksekliğini görüntüle
 STR_1154    :Arazı yüksekliğini görüntüle
 STR_1155    :Yol yüksekliğini görüntüle
-STR_1156    :{MOVE_X}{10}{STRINGID}
-STR_1157    :✓{MOVE_X}{10}{STRINGID}
+STR_1156    :{MOVE_X}{10}{STRING}
+STR_1157    :✓{MOVE_X}{10}{STRING}
 STR_1158    :Silinemedi…
 STR_1159    :Dekorasyonlar, çiçekler veya diğer cisimler
 STR_1160    :Su ayarları

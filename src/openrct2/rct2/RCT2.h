@@ -12,6 +12,7 @@
 #include "../core/FileSystem.hpp"
 #include "../core/FixedPoint.hpp"
 #include "../rct12/RCT12.h"
+#include "../ride/Angles.h"
 #include "../ride/RideRatings.h"
 #include "../world/ParkData.h"
 #include "Limits.h"
@@ -422,8 +423,8 @@ namespace OpenRCT2::RCT2
 
     struct Vehicle : RCT12EntityBase
     {
-        uint8_t Pitch;        // 0x1F
-        uint8_t BankRotation; // 0x20
+        VehiclePitch pitch; // 0x1F
+        VehicleRoll roll;   // 0x20
         uint8_t Pad21[3];
         int32_t RemainingDistance;  // 0x24
         int32_t Velocity;           // 0x28

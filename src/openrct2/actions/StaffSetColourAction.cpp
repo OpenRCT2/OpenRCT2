@@ -44,7 +44,7 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_staffType) << DS_TAG(_colour);
     }
 
-    Result StaffSetColourAction::Query() const
+    Result StaffSetColourAction::Query(GameState_t& gameState) const
     {
         auto staffType = static_cast<StaffType>(_staffType);
         if (staffType != StaffType::Handyman && staffType != StaffType::Mechanic && staffType != StaffType::Security)
@@ -55,7 +55,7 @@ namespace OpenRCT2::GameActions
         return Result();
     }
 
-    Result StaffSetColourAction::Execute() const
+    Result StaffSetColourAction::Execute(GameState_t& gameState) const
     {
         // Update global uniform colour property
         auto res = StaffSetColour(static_cast<StaffType>(_staffType), _colour);
