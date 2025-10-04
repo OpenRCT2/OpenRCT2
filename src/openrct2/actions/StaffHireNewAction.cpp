@@ -90,7 +90,7 @@ namespace OpenRCT2::GameActions
 
         if (_staffType == static_cast<uint8_t>(StaffType::Entertainer))
         {
-            auto costumes = findAllPeepAnimationsIndexesForType(AnimationPeepType::Entertainer);
+            auto costumes = findAllPeepAnimationsIndexesForType(AnimationPeepType::entertainer);
             if (std::find(costumes.begin(), costumes.end(), _costumeIndex) == costumes.end())
             {
                 LOG_ERROR("Unavailable entertainer costume %u", static_cast<uint32_t>(_costumeIndex));
@@ -150,7 +150,7 @@ namespace OpenRCT2::GameActions
 
             auto animPeepType = AnimationPeepType(static_cast<uint8_t>(_staffType) + 1);
             ObjectEntryIndex animObjectIndex = _costumeIndex;
-            if (animPeepType != AnimationPeepType::Entertainer)
+            if (animPeepType != AnimationPeepType::entertainer)
                 animObjectIndex = findPeepAnimationsIndexForType(animPeepType);
 
             newPeep->Name = nullptr;

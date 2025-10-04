@@ -1274,7 +1274,7 @@ namespace OpenRCT2::RCT1
         {
             // TODO: Entities are currently read from the global state, change this once entities are stored
             // in the passed gameState.
-            auto* animObj = findPeepAnimationsObjectForType(AnimationPeepType::Guest);
+            auto* animObj = findPeepAnimationsObjectForType(AnimationPeepType::guest);
             for (auto* peep : EntityList<Guest>())
             {
                 const auto& spriteBounds = animObj->GetSpriteBounds(peep->AnimationGroup, peep->AnimationType);

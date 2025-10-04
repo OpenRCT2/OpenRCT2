@@ -1337,15 +1337,15 @@ namespace OpenRCT2::Ui::Windows
         {
             switch (type)
             {
-                case AnimationPeepType::Handyman:
+                case AnimationPeepType::handyman:
                     return STR_HANDYMAN_PLURAL;
-                case AnimationPeepType::Mechanic:
+                case AnimationPeepType::mechanic:
                     return STR_MECHANIC_PLURAL;
-                case AnimationPeepType::Security:
+                case AnimationPeepType::security:
                     return STR_SECURITY_GUARD_PLURAL;
-                case AnimationPeepType::Entertainer:
+                case AnimationPeepType::entertainer:
                     return STR_ENTERTAINER_PLURAL;
-                case AnimationPeepType::Guest:
+                case AnimationPeepType::guest:
                 default:
                     return STR_GUESTS;
             }

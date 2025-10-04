@@ -7272,7 +7272,7 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
 
     Guest* peep = gameState.entities.CreateEntity<Guest>();
 
-    peep->AnimationObjectIndex = findPeepAnimationsIndexForType(AnimationPeepType::Guest);
+    peep->AnimationObjectIndex = findPeepAnimationsIndexForType(AnimationPeepType::guest);
     peep->AnimationGroup = PeepAnimationGroup::Normal;
     peep->OutsideOfPark = true;
     peep->State = PeepState::Falling;

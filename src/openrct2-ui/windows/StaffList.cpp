@@ -595,10 +595,10 @@ namespace OpenRCT2::Ui::Windows
         void DrawTabImages(RenderTarget& rt) const
         {
             const auto& gameState = getGameState();
-            DrawTabImage(rt, WINDOW_STAFF_LIST_TAB_HANDYMEN, AnimationPeepType::Handyman, gameState.park.staffHandymanColour);
-            DrawTabImage(rt, WINDOW_STAFF_LIST_TAB_MECHANICS, AnimationPeepType::Mechanic, gameState.park.staffMechanicColour);
-            DrawTabImage(rt, WINDOW_STAFF_LIST_TAB_SECURITY, AnimationPeepType::Security, gameState.park.staffSecurityColour);
-            DrawTabImage(rt, WINDOW_STAFF_LIST_TAB_ENTERTAINERS, AnimationPeepType::Entertainer);
+            DrawTabImage(rt, WINDOW_STAFF_LIST_TAB_HANDYMEN, AnimationPeepType::handyman, gameState.park.staffHandymanColour);
+            DrawTabImage(rt, WINDOW_STAFF_LIST_TAB_MECHANICS, AnimationPeepType::mechanic, gameState.park.staffMechanicColour);
+            DrawTabImage(rt, WINDOW_STAFF_LIST_TAB_SECURITY, AnimationPeepType::security, gameState.park.staffSecurityColour);
+            DrawTabImage(rt, WINDOW_STAFF_LIST_TAB_ENTERTAINERS, AnimationPeepType::entertainer);
         }
 
         void DrawTabImage(RenderTarget& rt, int32_t tabIndex, AnimationPeepType type, colour_t colour) const

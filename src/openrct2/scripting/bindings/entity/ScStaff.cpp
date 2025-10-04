@@ -78,25 +78,25 @@ namespace OpenRCT2::Scripting
             if (value == "handyman" && peep->AssignedStaffType != StaffType::Handyman)
             {
                 peep->AssignedStaffType = StaffType::Handyman;
-                peep->AnimationObjectIndex = findPeepAnimationsIndexForType(AnimationPeepType::Handyman);
+                peep->AnimationObjectIndex = findPeepAnimationsIndexForType(AnimationPeepType::handyman);
                 peep->AnimationGroup = PeepAnimationGroup::Normal;
             }
             else if (value == "mechanic" && !peep->IsMechanic())
             {
                 peep->AssignedStaffType = StaffType::Mechanic;
-                peep->AnimationObjectIndex = findPeepAnimationsIndexForType(AnimationPeepType::Mechanic);
+                peep->AnimationObjectIndex = findPeepAnimationsIndexForType(AnimationPeepType::mechanic);
                 peep->AnimationGroup = PeepAnimationGroup::Normal;
             }
             else if (value == "security" && peep->AssignedStaffType != StaffType::Security)
             {
                 peep->AssignedStaffType = StaffType::Security;
-                peep->AnimationObjectIndex = findPeepAnimationsIndexForType(AnimationPeepType::Security);
+                peep->AnimationObjectIndex = findPeepAnimationsIndexForType(AnimationPeepType::security);
                 peep->AnimationGroup = PeepAnimationGroup::Normal;
             }
             else if (value == "entertainer" && !peep->isEntertainer())
             {
                 peep->AssignedStaffType = StaffType::Entertainer;
-                peep->AnimationObjectIndex = findPeepAnimationsIndexForType(AnimationPeepType::Entertainer);
+                peep->AnimationObjectIndex = findPeepAnimationsIndexForType(AnimationPeepType::entertainer);
                 peep->AnimationGroup = PeepAnimationGroup::Normal;
             }
 
@@ -243,17 +243,17 @@ namespace OpenRCT2::Scripting
         switch (staffType)
         {
             case StaffType::Handyman:
-                animPeepType = AnimationPeepType::Handyman;
+                animPeepType = AnimationPeepType::handyman;
                 break;
             case StaffType::Mechanic:
-                animPeepType = AnimationPeepType::Mechanic;
+                animPeepType = AnimationPeepType::mechanic;
                 break;
             case StaffType::Security:
-                animPeepType = AnimationPeepType::Security;
+                animPeepType = AnimationPeepType::security;
                 break;
             case StaffType::Entertainer:
             default:
-                animPeepType = AnimationPeepType::Entertainer;
+                animPeepType = AnimationPeepType::entertainer;
         }
         return getAnimationsByPeepType(animPeepType);
     }

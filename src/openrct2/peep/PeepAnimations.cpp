@@ -102,15 +102,15 @@ namespace OpenRCT2
     {
         switch (peepType)
         {
-            case AnimationPeepType::Guest:
+            case AnimationPeepType::guest:
                 return availableGuestAnimations;
-            case AnimationPeepType::Handyman:
+            case AnimationPeepType::handyman:
                 return availableHandymanAnimations;
-            case AnimationPeepType::Mechanic:
+            case AnimationPeepType::mechanic:
                 return availableMechanicAnimations;
-            case AnimationPeepType::Security:
+            case AnimationPeepType::security:
                 return availableSecurityAnimations;
-            case AnimationPeepType::Entertainer:
+            case AnimationPeepType::entertainer:
             default:
                 return availableEntertainerAnimations;
         }
@@ -121,14 +121,14 @@ namespace OpenRCT2
         switch (staffType)
         {
             case StaffType::Handyman:
-                return AnimationPeepType::Handyman;
+                return AnimationPeepType::handyman;
             case StaffType::Mechanic:
-                return AnimationPeepType::Mechanic;
+                return AnimationPeepType::mechanic;
             case StaffType::Security:
-                return AnimationPeepType::Security;
+                return AnimationPeepType::security;
             case StaffType::Entertainer:
             default:
-                return AnimationPeepType::Entertainer;
+                return AnimationPeepType::entertainer;
         }
     }
 

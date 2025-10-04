@@ -848,7 +848,7 @@ namespace OpenRCT2::Scripting
     std::vector<std::string> ScGuest::availableAnimations_get() const
     {
         std::vector<std::string> availableAnimations{};
-        for (auto& animation : getAnimationsByPeepType(AnimationPeepType::Guest))
+        for (auto& animation : getAnimationsByPeepType(AnimationPeepType::guest))
         {
             availableAnimations.push_back(std::string(animation.first));
         }
@@ -859,7 +859,7 @@ namespace OpenRCT2::Scripting
     {
         std::vector<uint32_t> spriteIds{};
 
-        auto& availableGuestAnimations = getAnimationsByPeepType(AnimationPeepType::Guest);
+        auto& availableGuestAnimations = getAnimationsByPeepType(AnimationPeepType::guest);
         auto animationType = availableGuestAnimations.TryGet(groupKey);
         if (animationType == std::nullopt)
         {
@@ -895,7 +895,7 @@ namespace OpenRCT2::Scripting
             return nullptr;
         }
 
-        auto& availableGuestAnimations = getAnimationsByPeepType(AnimationPeepType::Guest);
+        auto& availableGuestAnimations = getAnimationsByPeepType(AnimationPeepType::guest);
         std::string_view action = availableGuestAnimations[peep->AnimationType];
 
         // Special consideration for sitting peeps
@@ -910,7 +910,7 @@ namespace OpenRCT2::Scripting
     {
         ThrowIfGameStateNotMutable();
 
-        auto& availableGuestAnimations = getAnimationsByPeepType(AnimationPeepType::Guest);
+        auto& availableGuestAnimations = getAnimationsByPeepType(AnimationPeepType::guest);
         auto newType = availableGuestAnimations.TryGet(groupKey);
         if (newType == std::nullopt)
         {

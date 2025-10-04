@@ -22,11 +22,11 @@ namespace OpenRCT2
 {
     static const EnumMap<AnimationPeepType> animationPeepTypeMap(
         {
-            { "guest", AnimationPeepType::Guest },
-            { "handyman", AnimationPeepType::Handyman },
-            { "mechanic", AnimationPeepType::Mechanic },
-            { "security", AnimationPeepType::Security },
-            { "entertainer", AnimationPeepType::Entertainer },
+            { "guest", AnimationPeepType::guest },
+            { "handyman", AnimationPeepType::handyman },
+            { "mechanic", AnimationPeepType::mechanic },
+            { "security", AnimationPeepType::security },
+            { "entertainer", AnimationPeepType::entertainer },
         });
 
     void PeepAnimationsObject::Load()

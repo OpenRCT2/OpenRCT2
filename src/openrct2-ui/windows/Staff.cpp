@@ -143,7 +143,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
 
             if (staff->isEntertainer())
-                _availableCostumes = getAvailableCostumeStrings(AnimationPeepType::Entertainer);
+                _availableCostumes = getAvailableCostumeStrings(AnimationPeepType::entertainer);
 
             ViewportInit();
         }
@@ -165,7 +165,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
 
             if (staff->isEntertainer())
-                _availableCostumes = getAvailableCostumeStrings(AnimationPeepType::Entertainer);
+                _availableCostumes = getAvailableCostumeStrings(AnimationPeepType::entertainer);
         }
 
         void onMouseUp(WidgetIndex widgetIndex) override

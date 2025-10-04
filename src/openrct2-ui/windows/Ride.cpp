@@ -1326,7 +1326,7 @@ namespace OpenRCT2::Ui::Windows
                 if (page == WINDOW_RIDE_PAGE_CUSTOMER)
                     spriteIndex = pickedPeepFrame & ~3;
 
-                auto* animObj = findPeepAnimationsObjectForType(AnimationPeepType::Guest);
+                auto* animObj = findPeepAnimationsObjectForType(AnimationPeepType::guest);
                 spriteIndex += animObj->GetPeepAnimation(PeepAnimationGroup::Normal).base_image + 1;
 
                 GfxDrawSprite(

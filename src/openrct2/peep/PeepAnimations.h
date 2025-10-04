@@ -26,11 +26,11 @@ namespace OpenRCT2
 
     enum class AnimationPeepType : uint8_t
     {
-        Guest,
-        Handyman,
-        Mechanic,
-        Security,
-        Entertainer,
+        guest,
+        handyman,
+        mechanic,
+        security,
+        entertainer,
     };
 
     const EnumMap<PeepAnimationType>& getAnimationsByPeepType(AnimationPeepType peepType);

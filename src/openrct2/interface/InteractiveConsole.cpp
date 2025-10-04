@@ -480,8 +480,8 @@ static void ConsoleCommandStaff(InteractiveConsole& console, const arguments_t& 
                 console.WriteFormatLine("staff set energy <staff id> <value 0-255>");
                 console.WriteFormatLine("staff set costume <staff id> <costume id>");
 
-                auto _availableCostumeIndexes = findAllPeepAnimationsIndexesForType(AnimationPeepType::Entertainer);
-                auto _availableCostumeObjects = findAllPeepAnimationsObjectForType(AnimationPeepType::Entertainer);
+                auto _availableCostumeIndexes = findAllPeepAnimationsIndexesForType(AnimationPeepType::entertainer);
+                auto _availableCostumeObjects = findAllPeepAnimationsObjectForType(AnimationPeepType::entertainer);
 
                 for (auto i = 0u; i < _availableCostumeIndexes.size(); i++)
                 {
