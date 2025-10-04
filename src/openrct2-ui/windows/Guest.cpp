@@ -569,7 +569,7 @@ namespace OpenRCT2::Ui::Windows
             auto& objManager = GetContext()->GetObjectManager();
             auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(peep->AnimationObjectIndex);
 
-            int32_t animationFrame = animObj->GetPeepAnimation(peep->AnimationGroup).base_image + 1;
+            int32_t animationFrame = animObj->GetPeepAnimation(peep->AnimationGroup).baseImage + 1;
             int32_t animationFrameOffset = 0;
 
             if (page == WINDOW_GUEST_OVERVIEW)
@@ -904,7 +904,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Get pickup animation length
             const auto& pickAnim = animObj->GetPeepAnimation(peep->AnimationGroup, PeepAnimationType::Hanging);
-            const auto pickAnimLength = pickAnim.frame_offsets.size();
+            const auto pickAnimLength = pickAnim.frameOffsets.size();
 
             // Update pickup animation, can only happen in this tab.
             pickedPeepFrame++;
@@ -1006,7 +1006,7 @@ namespace OpenRCT2::Ui::Windows
             auto& objManager = GetContext()->GetObjectManager();
             auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(peep->AnimationObjectIndex);
 
-            auto baseImageId = animObj->GetPeepAnimation(peep->AnimationGroup, PeepAnimationType::Hanging).base_image;
+            auto baseImageId = animObj->GetPeepAnimation(peep->AnimationGroup, PeepAnimationType::Hanging).baseImage;
             baseImageId += pickedPeepFrame >> 2;
             gPickupPeepImage = ImageId(baseImageId, peep->TshirtColour, peep->TrousersColour);
         }

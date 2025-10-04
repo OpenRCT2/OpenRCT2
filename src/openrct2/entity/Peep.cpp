@@ -480,12 +480,12 @@ bool Peep::UpdateActionAnimation()
     AnimationFrameNum++;
 
     // If last frame of action
-    if (AnimationFrameNum >= peepAnimation.frame_offsets.size())
+    if (AnimationFrameNum >= peepAnimation.frameOffsets.size())
     {
         return false;
     }
 
-    AnimationImageIdOffset = peepAnimation.frame_offsets[AnimationFrameNum];
+    AnimationImageIdOffset = peepAnimation.frameOffsets[AnimationFrameNum];
     return true;
 }
 
@@ -539,11 +539,11 @@ void Peep::UpdateWalkingAnimation()
 
     WalkingAnimationFrameNum++;
     const PeepAnimation& peepAnimation = animObj->GetPeepAnimation(AnimationGroup, AnimationType);
-    if (WalkingAnimationFrameNum >= peepAnimation.frame_offsets.size())
+    if (WalkingAnimationFrameNum >= peepAnimation.frameOffsets.size())
     {
         WalkingAnimationFrameNum = 0;
     }
-    AnimationImageIdOffset = peepAnimation.frame_offsets[WalkingAnimationFrameNum];
+    AnimationImageIdOffset = peepAnimation.frameOffsets[WalkingAnimationFrameNum];
 }
 
 /**
@@ -2762,7 +2762,7 @@ void Peep::Paint(PaintSession& session, int32_t imageDirection) const
     auto& objManager = GetContext()->GetObjectManager();
     auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(AnimationObjectIndex);
 
-    uint32_t baseImageId = animObj->GetPeepAnimation(AnimationGroup, actionAnimationGroup).base_image;
+    uint32_t baseImageId = animObj->GetPeepAnimation(AnimationGroup, actionAnimationGroup).baseImage;
 
     // Offset frame onto the base image, using rotation except for the 'picked up' state
     if (actionAnimationGroup != PeepAnimationType::Hanging)

@@ -873,9 +873,9 @@ namespace OpenRCT2::Scripting
             auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(peep->AnimationObjectIndex);
 
             const auto& animationGroup = animObj->GetPeepAnimation(peep->AnimationGroup, *animationType);
-            for (auto frameOffset : animationGroup.frame_offsets)
+            for (auto frameOffset : animationGroup.frameOffsets)
             {
-                auto imageId = animationGroup.base_image;
+                auto imageId = animationGroup.baseImage;
                 if (animationType != PeepAnimationType::Hanging)
                     imageId += rotation + frameOffset * 4;
                 else
@@ -930,7 +930,7 @@ namespace OpenRCT2::Scripting
         auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(peep->AnimationObjectIndex);
 
         const auto& animationGroup = animObj->GetPeepAnimation(peep->AnimationGroup, peep->AnimationType);
-        peep->AnimationImageIdOffset = animationGroup.frame_offsets[offset];
+        peep->AnimationImageIdOffset = animationGroup.frameOffsets[offset];
         peep->Invalidate();
         peep->UpdateSpriteBoundingBox();
         peep->Invalidate();
@@ -960,7 +960,7 @@ namespace OpenRCT2::Scripting
         auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(peep->AnimationObjectIndex);
 
         const auto& animationGroup = animObj->GetPeepAnimation(peep->AnimationGroup, peep->AnimationType);
-        auto length = animationGroup.frame_offsets.size();
+        auto length = animationGroup.frameOffsets.size();
         offset %= length;
 
         if (peep->IsActionWalking())
@@ -968,7 +968,7 @@ namespace OpenRCT2::Scripting
         else
             peep->AnimationFrameNum = offset;
 
-        peep->AnimationImageIdOffset = animationGroup.frame_offsets[offset];
+        peep->AnimationImageIdOffset = animationGroup.frameOffsets[offset];
         peep->UpdateSpriteBoundingBox();
     }
 
@@ -984,7 +984,7 @@ namespace OpenRCT2::Scripting
         auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(peep->AnimationObjectIndex);
 
         const auto& animationGroup = animObj->GetPeepAnimation(peep->AnimationGroup, peep->AnimationType);
-        return static_cast<uint8_t>(animationGroup.frame_offsets.size());
+        return static_cast<uint8_t>(animationGroup.frameOffsets.size());
     }
 
     ScThought::ScThought(PeepThought backing)

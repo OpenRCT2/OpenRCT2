@@ -281,7 +281,7 @@ namespace OpenRCT2::Ui::Windows
                     auto& objManager = GetContext()->GetObjectManager();
                     auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(peep->AnimationObjectIndex);
 
-                    uint32_t image_id_base = animObj->GetPeepAnimation(peep->AnimationGroup).base_image;
+                    uint32_t image_id_base = animObj->GetPeepAnimation(peep->AnimationGroup).baseImage;
                     image_id_base += currentFrame & 0xFFFFFFFC;
                     image_id_base++;
 

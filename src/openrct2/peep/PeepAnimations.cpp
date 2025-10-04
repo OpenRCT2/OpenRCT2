@@ -299,10 +299,10 @@ namespace OpenRCT2
             .zoom_level = ZoomLevel{ 0 },
         };
 
-        const auto numImages = *(std::max_element(anim.frame_offsets.begin(), anim.frame_offsets.end())) + 1;
+        const auto numImages = *(std::max_element(anim.frameOffsets.begin(), anim.frameOffsets.end())) + 1;
         for (int32_t i = 0; i < numImages; ++i)
         {
-            GfxDrawSpriteSoftware(rt, ImageId(anim.base_image + i), { 0, 0 });
+            GfxDrawSpriteSoftware(rt, ImageId(anim.baseImage + i), { 0, 0 });
         }
 
         int32_t spriteWidth = -1;

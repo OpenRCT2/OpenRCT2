@@ -173,7 +173,7 @@ namespace OpenRCT2::Ui::Windows
                 auto& anim = animObj->GetPeepAnimation(PeepAnimationGroup::Normal);
                 _tabAnimationIndex++;
 
-                if (_tabAnimationIndex >= anim.frame_offsets.size() * 4)
+                if (_tabAnimationIndex >= anim.frameOffsets.size() * 4)
                     _tabAnimationIndex = 0;
 
                 invalidateWidget(WIDX_STAFF_LIST_HANDYMEN_TAB + _selectedTab);
@@ -612,7 +612,7 @@ namespace OpenRCT2::Ui::Windows
 
             auto frame = _selectedTab == tabIndex ? _tabAnimationIndex / 4 : 0;
             auto& anim = animObj->GetPeepAnimation(PeepAnimationGroup::Normal);
-            auto imageId = anim.base_image + 1 + anim.frame_offsets[frame] * 4;
+            auto imageId = anim.baseImage + 1 + anim.frameOffsets[frame] * 4;
 
             GfxDrawSprite(
                 rt, ImageId(imageId, colour),
@@ -635,7 +635,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 auto frame = _selectedTab == tabIndex ? _tabAnimationIndex / 4 : 0;
                 auto& anim = animObj->GetPeepAnimation(PeepAnimationGroup::Normal);
-                auto imageId = anim.base_image + 1 + anim.frame_offsets[frame] * 4;
+                auto imageId = anim.baseImage + 1 + anim.frameOffsets[frame] * 4;
 
                 GfxDrawSprite(clippedDpi, ImageId(imageId), { 15, 23 });
             }

@@ -44,7 +44,7 @@ namespace OpenRCT2
             auto& requiredAnimationMap = getAnimationsByPeepType(_peepType);
             for (auto& [typeStr, typeEnum] : requiredAnimationMap)
             {
-                group[typeEnum].base_image = _imageOffsetId + group[typeEnum].imageTableOffset;
+                group[typeEnum].baseImage = _imageOffsetId + group[typeEnum].imageTableOffset;
                 group[typeEnum].bounds = inferMaxAnimationDimensions(group[typeEnum]);
 
                 // Balloons, hats and umbrellas are painted separately, so the inference
@@ -119,10 +119,10 @@ namespace OpenRCT2
                     if (referenceAnim.imageTableOffset != 0)
                     {
                         LOG_VERBOSE("Copying animation '%s' from primary group", std::string(typeStr).c_str());
-                        std::vector<uint8_t> sequence = referenceAnim.frame_offsets;
+                        std::vector<uint8_t> sequence = referenceAnim.frameOffsets;
                         group[typeEnum] = {
                             .imageTableOffset = referenceAnim.imageTableOffset,
-                            .frame_offsets = sequence,
+                            .frameOffsets = sequence,
                         };
                         continue;
                     }
@@ -142,7 +142,7 @@ namespace OpenRCT2
 
             group[typeEnum] = {
                 .imageTableOffset = Json::GetNumber<uint16_t>(animJson["offset"]),
-                .frame_offsets = sequence,
+                .frameOffsets = sequence,
             };
         }
 

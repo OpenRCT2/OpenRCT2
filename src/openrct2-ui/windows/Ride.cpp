@@ -1327,7 +1327,7 @@ namespace OpenRCT2::Ui::Windows
                     spriteIndex = pickedPeepFrame & ~3;
 
                 auto* animObj = findPeepAnimationsObjectForType(AnimationPeepType::guest);
-                spriteIndex += animObj->GetPeepAnimation(PeepAnimationGroup::Normal).base_image + 1;
+                spriteIndex += animObj->GetPeepAnimation(PeepAnimationGroup::Normal).baseImage + 1;
 
                 GfxDrawSprite(
                     rt, ImageId(spriteIndex, COLOUR_BRIGHT_RED, COLOUR_TEAL),

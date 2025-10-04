@@ -612,7 +612,7 @@ namespace OpenRCT2::Ui::Windows
             if (page == WINDOW_STAFF_OVERVIEW)
                 animFrame = _tabAnimationOffset / 4;
 
-            auto imageIndex = anim.base_image + 1 + anim.frame_offsets[animFrame] * 4;
+            auto imageIndex = anim.baseImage + 1 + anim.frameOffsets[animFrame] * 4;
             GfxDrawSprite(clippedRT, ImageId(imageIndex, staff->TshirtColour, staff->TrousersColour), screenCoords);
         }
 
@@ -633,7 +633,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Get walking animation length
             const auto& walkingAnim = animObj->GetPeepAnimation(staff->AnimationGroup, PeepAnimationType::Walking);
-            const auto walkingAnimLength = walkingAnim.frame_offsets.size();
+            const auto walkingAnimLength = walkingAnim.frameOffsets.size();
 
             // Overview tab animation offset
             _tabAnimationOffset++;
@@ -641,7 +641,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Get pickup animation length
             const auto& pickAnim = animObj->GetPeepAnimation(staff->AnimationGroup, PeepAnimationType::Hanging);
-            const auto pickAnimLength = pickAnim.frame_offsets.size();
+            const auto pickAnimLength = pickAnim.frameOffsets.size();
 
             // Update pickup animation frame
             pickedPeepFrame++;
@@ -695,7 +695,7 @@ namespace OpenRCT2::Ui::Windows
             auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(staff->AnimationObjectIndex);
 
             auto& pickupAnim = animObj->GetPeepAnimation(staff->AnimationGroup, PeepAnimationType::Hanging);
-            auto baseImageId = pickupAnim.base_image + pickupAnim.frame_offsets[pickedPeepFrame >> 2];
+            auto baseImageId = pickupAnim.baseImage + pickupAnim.frameOffsets[pickedPeepFrame >> 2];
             gPickupPeepImage = ImageId(baseImageId, staff->TshirtColour, staff->TrousersColour);
         }
 
