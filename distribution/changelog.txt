@@ -1,5 +1,6 @@
 0.4.28 (in development)
 ------------------------------------------------------------------------
+- Fix: [#25299] The Mine Train Coaster left large helix draws incorrect sprites at certain angles (original bug).
 
 0.4.27 (2025-10-04)
 ------------------------------------------------------------------------
