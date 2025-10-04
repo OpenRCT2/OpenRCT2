@@ -363,7 +363,7 @@ namespace OpenRCT2::Ui::Windows
                     WindowResearchDevelopmentMouseUp(widgetIndex, WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP);
                     break;
                 case WIDX_RESEARCH_FUNDING_BUTTON:
-                    ContextOpenWindowView(WV_FINANCES_RESEARCH);
+                    ContextOpenWindowView(WindowView::financesResearch);
                     break;
                 case WIDX_GROUP_BY_TRACK_TYPE:
                     Config::Get().interface.ListRideVehiclesSeparately = !Config::Get().interface.ListRideVehiclesSeparately;
@@ -470,7 +470,7 @@ namespace OpenRCT2::Ui::Windows
 
             _newRideVars.SelectedRide = item;
 
-            OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Click1, 0, windowPos.x + (width / 2));
+            OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::click1, 0, windowPos.x + (width / 2));
             _newRideVars.SelectedRideCountdown = 8;
             invalidate();
         }
@@ -575,7 +575,7 @@ namespace OpenRCT2::Ui::Windows
             auto count = GetNumTrackDesigns(item);
             if (count > 0)
             {
-                auto intent = Intent(WindowClass::TrackDesignList);
+                auto intent = Intent(WindowClass::trackDesignList);
                 intent.PutExtra(INTENT_EXTRA_RIDE_TYPE, item.Type);
                 intent.PutExtra(INTENT_EXTRA_RIDE_ENTRY_INDEX, item.EntryIndex);
                 ContextOpenIntent(&intent);
@@ -949,11 +949,14 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
 
-            auto count = GetNumTrackDesigns(item);
-            auto designCountStringId = GetDesignsAvailableStringId(count);
-            ft = Formatter();
-            ft.Add<int32_t>(count);
-            DrawTextBasic(rt, screenPos + ScreenCoordsXY{ 0, 51 }, designCountStringId, ft);
+            if (_currentTab != SHOP_TAB)
+            {
+                auto count = GetNumTrackDesigns(item);
+                auto designCountStringId = GetDesignsAvailableStringId(count);
+                ft = Formatter();
+                ft.Add<int32_t>(count);
+                DrawTextBasic(rt, screenPos + ScreenCoordsXY{ 0, 51 }, designCountStringId, ft);
+            }
 
             // Price
             if (!(getGameState().park.flags & PARK_FLAGS_NO_MONEY))
@@ -1070,16 +1073,17 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* NewRideOpen()
     {
         auto* windowMgr = Ui::GetWindowManager();
-        auto* window = windowMgr->BringToFrontByClass(WindowClass::ConstructRide);
+        auto* window = windowMgr->BringToFrontByClass(WindowClass::constructRide);
         if (window)
         {
             return window;
         }
 
-        windowMgr->CloseByClass(WindowClass::TrackDesignList);
-        windowMgr->CloseByClass(WindowClass::TrackDesignPlace);
+        windowMgr->CloseByClass(WindowClass::trackDesignList);
+        windowMgr->CloseByClass(WindowClass::trackDesignPlace);
 
-        window = windowMgr->Create<NewRideWindow>(WindowClass::ConstructRide, kWindowSize, WF_10 | WF_AUTO_POSITION);
+        window = windowMgr->Create<NewRideWindow>(
+            WindowClass::constructRide, kWindowSize, { WindowFlag::higherContrastOnPress, WindowFlag::autoPosition });
         return window;
     }
 
@@ -1097,7 +1101,7 @@ namespace OpenRCT2::Ui::Windows
     void WindowNewRideFocus(RideSelection rideItem)
     {
         auto* windowMgr = GetWindowManager();
-        auto w = static_cast<NewRideWindow*>(windowMgr->FindByClass(WindowClass::ConstructRide));
+        auto w = static_cast<NewRideWindow*>(windowMgr->FindByClass(WindowClass::constructRide));
         if (!w)
         {
             return;

@@ -272,7 +272,7 @@ namespace OpenRCT2::Ui::Windows
                         if (result->Error == GameActions::Status::Ok)
                         {
                             auto* windowMgr = Ui::GetWindowManager();
-                            windowMgr->CloseByClass(WindowClass::NewCampaign);
+                            windowMgr->CloseByClass(WindowClass::newCampaign);
                         }
                     });
                     GameActions::Execute(&gameAction, getGameState());
@@ -391,7 +391,7 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* NewCampaignOpen(int16_t campaignType)
     {
         auto* windowMgr = GetWindowManager();
-        auto* w = static_cast<NewCampaignWindow*>(windowMgr->BringToFrontByClass(WindowClass::NewCampaign));
+        auto* w = static_cast<NewCampaignWindow*>(windowMgr->BringToFrontByClass(WindowClass::newCampaign));
         if (w != nullptr)
         {
             if (w->getCampaignType() == campaignType)
@@ -400,7 +400,7 @@ namespace OpenRCT2::Ui::Windows
             w->close();
         }
 
-        w = windowMgr->Create<NewCampaignWindow>(WindowClass::NewCampaign, kWindowSize, 0);
+        w = windowMgr->Create<NewCampaignWindow>(WindowClass::newCampaign, kWindowSize, {});
         if (w != nullptr)
         {
             w->setCampaign(campaignType);
@@ -411,7 +411,7 @@ namespace OpenRCT2::Ui::Windows
     void WindowCampaignRefreshRides()
     {
         auto* windowMgr = GetWindowManager();
-        auto w = static_cast<NewCampaignWindow*>(windowMgr->FindByClass(WindowClass::NewCampaign));
+        auto w = static_cast<NewCampaignWindow*>(windowMgr->FindByClass(WindowClass::newCampaign));
         if (w != nullptr)
         {
             w->refreshRides();

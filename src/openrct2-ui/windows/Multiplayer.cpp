@@ -269,7 +269,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         GfxFilterRect(
                             rt, { 0, screenCoords.y, 800, screenCoords.y + kScrollableRowHeight - 1 },
-                            FilterPaletteID::PaletteDarken1);
+                            FilterPaletteID::paletteDarken1);
                         _buffer += Network::GetPlayerName(player);
                         colour = colours[2];
                     }
@@ -400,7 +400,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     GfxFilterRect(
                         rt, { 0, screenCoords.y, 800, screenCoords.y + kScrollableRowHeight - 1 },
-                        FilterPaletteID::PaletteDarken1);
+                        FilterPaletteID::paletteDarken1);
                 }
                 if (screenCoords.y > rt.y + rt.height)
                 {
@@ -915,11 +915,12 @@ namespace OpenRCT2::Ui::Windows
     {
         // Check if window is already open
         auto* windowMgr = GetWindowManager();
-        auto* window = windowMgr->BringToFrontByClass(WindowClass::Multiplayer);
+        auto* window = windowMgr->BringToFrontByClass(WindowClass::multiplayer);
         if (window == nullptr)
         {
             window = windowMgr->Create<MultiplayerWindow>(
-                WindowClass::Multiplayer, { 320, 144 }, WF_10 | WF_RESIZABLE | WF_AUTO_POSITION);
+                WindowClass::multiplayer, { 320, 144 },
+                { WindowFlag::higherContrastOnPress, WindowFlag::resizable, WindowFlag::autoPosition });
         }
 
         return window;

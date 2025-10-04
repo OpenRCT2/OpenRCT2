@@ -241,7 +241,7 @@ namespace OpenRCT2::Ui::Windows
 
                 // List all files with the wanted extensions
                 bool showExtension = false;
-                for (const u8string& extToken : String::split(extensionPattern, ";"))
+                for (const u8string_view extToken : String::split(extensionPattern, ";"))
                 {
                     const u8string filter = Path::Combine(directory, extToken);
                     auto scanner = Path::ScanDirectory(filter, false);
@@ -382,7 +382,7 @@ namespace OpenRCT2::Ui::Windows
                 },
                 [](const ParkPreview preview) {
                     auto* windowMgr = GetContext()->GetUiContext().GetWindowManager();
-                    auto* wnd = windowMgr->FindByClass(WindowClass::Loadsave);
+                    auto* wnd = windowMgr->FindByClass(WindowClass::loadsave);
                     if (wnd == nullptr)
                     {
                         return;
@@ -589,7 +589,7 @@ namespace OpenRCT2::Ui::Windows
             _listItems.clear();
 
             auto* windowMgr = Ui::GetWindowManager();
-            windowMgr->CloseByClass(WindowClass::LoadsaveOverwritePrompt);
+            windowMgr->CloseByClass(WindowClass::loadsaveOverwritePrompt);
 
             Config::Save();
 
@@ -1100,7 +1100,7 @@ namespace OpenRCT2::Ui::Windows
                 if (i == selectedListItem)
                 {
                     stringId = STR_WINDOW_COLOUR_2_STRINGID;
-                    GfxFilterRect(rt, { 0, y, listWidth, y + kScrollableRowHeight }, FilterPaletteID::PaletteDarken1);
+                    GfxFilterRect(rt, { 0, y, listWidth, y + kScrollableRowHeight }, FilterPaletteID::paletteDarken1);
                 }
                 // display a marker next to the currently loaded game file
                 if (_listItems[i].loaded)
@@ -1164,7 +1164,7 @@ namespace OpenRCT2::Ui::Windows
         RegisterCallback(callback);
 
         auto* windowMgr = GetWindowManager();
-        auto* w = static_cast<LoadSaveWindow*>(windowMgr->BringToFrontByClass(WindowClass::Loadsave));
+        auto* w = static_cast<LoadSaveWindow*>(windowMgr->BringToFrontByClass(WindowClass::loadsave));
         if (w == nullptr)
         {
             auto& config = Config::Get().general;
@@ -1179,8 +1179,9 @@ namespace OpenRCT2::Ui::Windows
             ScreenSize windowSize = { config.FileBrowserWidth, config.FileBrowserHeight };
 
             w = windowMgr->Create<LoadSaveWindow>(
-                WindowClass::Loadsave, windowSize, WF_STICK_TO_FRONT | WF_RESIZABLE | WF_AUTO_POSITION | WF_CENTRE_SCREEN,
-                action, type);
+                WindowClass::loadsave, windowSize,
+                { WindowFlag::stickToFront, WindowFlag::resizable, WindowFlag::autoPosition, WindowFlag::centreScreen }, action,
+                type);
         }
 
         bool isSave = action == LoadSaveAction::save;
@@ -1201,7 +1202,7 @@ namespace OpenRCT2::Ui::Windows
 
     void WindowLoadSaveInputKey(WindowBase* w, uint32_t keycode)
     {
-        if (w->classification != WindowClass::Loadsave)
+        if (w->classification != WindowClass::loadsave)
         {
             return;
         }

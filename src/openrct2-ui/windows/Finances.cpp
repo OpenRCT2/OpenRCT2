@@ -487,19 +487,19 @@ namespace OpenRCT2::Ui::Windows
             {
                 width = kWindowSizeResearch.width;
                 height = kWindowSizeResearch.height;
-                flags &= ~WF_RESIZABLE;
+                flags.unset(WindowFlag::resizable);
             }
             else if (p == WINDOW_FINANCES_PAGE_SUMMARY)
             {
                 width = kWindowSizeSummary.width;
                 height = kWindowSizeSummary.height;
-                flags &= ~WF_RESIZABLE;
+                flags.unset(WindowFlag::resizable);
             }
             else if (
                 p == WINDOW_FINANCES_PAGE_VALUE_GRAPH || p == WINDOW_FINANCES_PAGE_PROFIT_GRAPH
                 || p == WINDOW_FINANCES_PAGE_FINANCIAL_GRAPH)
             {
-                flags |= WF_RESIZABLE;
+                flags |= WindowFlag::resizable;
 
                 // We need to compensate for the enlarged title bar for windows that do not
                 // constrain the window height between tabs (e.g. chart tabs)
@@ -511,7 +511,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 width = kWindowSizeGraphsMarketing.width;
                 height = kWindowSizeGraphsMarketing.height;
-                flags &= ~WF_RESIZABLE;
+                flags.unset(WindowFlag::resizable);
             }
 
             setWidgets(_windowFinancesPageWidgets[p]);
@@ -669,7 +669,7 @@ namespace OpenRCT2::Ui::Windows
         {
             if (widgetIndex >= WIDX_CAMPAIGN_1 && widgetIndex <= WIDX_CAMPAIGN_6)
             {
-                ContextOpenDetailWindow(WD_NEW_CAMPAIGN, widgetIndex - WIDX_CAMPAIGN_1);
+                ContextOpenDetailWindow(WindowDetail::newCampaign, widgetIndex - WIDX_CAMPAIGN_1);
             }
         }
 
@@ -879,7 +879,8 @@ namespace OpenRCT2::Ui::Windows
     static FinancesWindow* FinancesWindowOpen(uint8_t page)
     {
         auto* windowMgr = Ui::GetWindowManager();
-        auto* window = windowMgr->FocusOrCreate<FinancesWindow>(WindowClass::Finances, kWindowSizeSummary, WF_10);
+        auto* window = windowMgr->FocusOrCreate<FinancesWindow>(
+            WindowClass::finances, kWindowSizeSummary, WindowFlag::higherContrastOnPress);
 
         if (window != nullptr && page != WINDOW_FINANCES_PAGE_SUMMARY)
             window->setPage(page);
@@ -890,7 +891,8 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* FinancesOpen()
     {
         auto* windowMgr = Ui::GetWindowManager();
-        return windowMgr->FocusOrCreate<FinancesWindow>(WindowClass::Finances, kWindowSizeSummary, WF_10);
+        return windowMgr->FocusOrCreate<FinancesWindow>(
+            WindowClass::finances, kWindowSizeSummary, WindowFlag::higherContrastOnPress);
     }
 
     WindowBase* FinancesResearchOpen()

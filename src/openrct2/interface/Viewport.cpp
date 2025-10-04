@@ -105,7 +105,7 @@ namespace OpenRCT2
         // ?
         gInputFlags.clearAll();
         InputSetState(InputState::Reset);
-        gPressedWidget.windowClassification = WindowClass::Null;
+        gPressedWidget.windowClassification = WindowClass::null;
         gPickupPeepImage = ImageId();
         ResetTooltipNotShown();
         gMapSelectFlags.clearAll();
@@ -340,14 +340,14 @@ namespace OpenRCT2
                 // Get next valid window after.
                 auto itNextWindow = [&]() {
                     auto itNext = std::next(itWindowPos);
-                    while (itNext != g_window_list.end() && (itNext->get()->flags & WF_DEAD))
+                    while (itNext != gWindowList.end() && (itNext->get()->flags.has(WindowFlag::dead)))
                     {
                         ++itNext;
                     }
                     return itNext;
                 }();
                 ViewportRedrawAfterShift(
-                    rt, itNextWindow == g_window_list.end() ? nullptr : itNextWindow->get(), originalWindow, shift, drawRect);
+                    rt, itNextWindow == gWindowList.end() ? nullptr : itNextWindow->get(), originalWindow, shift, drawRect);
                 return;
             }
 
@@ -439,10 +439,10 @@ namespace OpenRCT2
     {
         // This loop redraws all parts covered by transparent windows.
         auto it = WindowGetIterator(window);
-        for (; it != g_window_list.end(); it++)
+        for (; it != gWindowList.end(); it++)
         {
             auto w = it->get();
-            if (!(w->flags & WF_TRANSPARENT) || (w->flags & WF_DEAD))
+            if (!(w->flags.has(WindowFlag::transparent)) || (w->flags.has(WindowFlag::dead)))
                 continue;
             if (w->viewport == window->viewport)
                 continue;
@@ -485,30 +485,6 @@ namespace OpenRCT2
         if ((!x_diff) && (!y_diff))
             return;
 
-        if (w->flags & WF_7)
-        {
-            int32_t left = std::max<int32_t>(viewport->pos.x, 0);
-            int32_t top = std::max<int32_t>(viewport->pos.y, 0);
-            int32_t right = std::min<int32_t>(viewport->pos.x + viewport->width, ContextGetWidth());
-            int32_t bottom = std::min<int32_t>(viewport->pos.y + viewport->height, ContextGetHeight());
-
-            if (left >= right)
-                return;
-            if (top >= bottom)
-                return;
-
-            if (DrawingEngineHasDirtyOptimisations())
-            {
-                RenderTarget& rt = DrawingEngineGetDpi();
-                WindowDrawAll(rt, left, top, right, bottom);
-                return;
-            }
-            else
-            {
-                GfxInvalidateScreen();
-            }
-        }
-
         const int32_t left = std::max(viewport->pos.x, 0);
         const int32_t top = std::max(viewport->pos.y, 0);
         const int32_t right = std::min(left + viewport->width + std::min(viewport->pos.x, 0), ContextGetWidth());
@@ -531,8 +507,8 @@ namespace OpenRCT2
     // rct2: 0x006E7A15
     static void ViewportSetUndergroundFlag(int32_t underground, WindowBase* window, Viewport* viewport)
     {
-        if ((window->classification != WindowClass::MainWindow && window->classification != WindowClass::Viewport)
-            || (window->classification == WindowClass::MainWindow && !window->viewportSmartFollowSprite.IsNull()))
+        if ((window->classification != WindowClass::mainWindow && window->classification != WindowClass::viewport)
+            || (window->classification == WindowClass::mainWindow && !window->viewportSmartFollowSprite.IsNull()))
         {
             if (!underground)
             {
@@ -620,7 +596,7 @@ namespace OpenRCT2
         }
 
         auto windowCoords = window->savedViewPos;
-        if (window->flags & WF_SCROLLING_TO_LOCATION)
+        if (window->flags.has(WindowFlag::scrollingToLocation))
         {
             // Moves the viewport if focusing in on an item
             uint8_t flags = 0;
@@ -642,7 +618,7 @@ namespace OpenRCT2
             // If we are at the final zoom position
             if (!windowCoords.x && !windowCoords.y)
             {
-                window->flags &= ~WF_SCROLLING_TO_LOCATION;
+                window->flags.unset(WindowFlag::scrollingToLocation);
             }
             if (flags & 1)
             {
@@ -1054,7 +1030,7 @@ namespace OpenRCT2
     static void ViewportPaintWeatherGloom(RenderTarget& rt)
     {
         auto paletteId = ClimateGetWeatherGloomPaletteId(getGameState().weatherCurrent);
-        if (paletteId != FilterPaletteID::PaletteNull)
+        if (paletteId != FilterPaletteID::paletteNull)
         {
             auto x = rt.x;
             auto y = rt.y;

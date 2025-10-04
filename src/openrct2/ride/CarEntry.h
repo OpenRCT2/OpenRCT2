@@ -88,27 +88,6 @@ enum : uint64_t
     CAR_ENTRY_FLAG_ENABLE_BODY_COLOUR = 1uLL << 32,
 };
 
-enum : uint32_t
-{
-    CAR_SPRITE_FLAG_FLAT = (1 << 0),
-    CAR_SPRITE_FLAG_GENTLE_SLOPES = (1 << 1),
-    CAR_SPRITE_FLAG_STEEP_SLOPES = (1 << 2),
-    CAR_SPRITE_FLAG_VERTICAL_SLOPES = (1 << 3),
-    CAR_SPRITE_FLAG_DIAGONAL_SLOPES = (1 << 4),
-    CAR_SPRITE_FLAG_FLAT_BANKED = (1 << 5),
-    CAR_SPRITE_FLAG_INLINE_TWISTS = (1 << 6),
-    CAR_SPRITE_FLAG_FLAT_TO_GENTLE_SLOPE_BANKED_TRANSITIONS = (1 << 7),
-    CAR_SPRITE_FLAG_DIAGONAL_GENTLE_SLOPE_BANKED_TRANSITIONS = (1 << 8),
-    CAR_SPRITE_FLAG_GENTLE_SLOPE_BANKED_TRANSITIONS = (1 << 9),
-    CAR_SPRITE_FLAG_GENTLE_SLOPE_BANKED_TURNS = (1 << 10),
-    CAR_SPRITE_FLAG_FLAT_TO_GENTLE_SLOPE_WHILE_BANKED_TRANSITIONS = (1 << 11),
-    CAR_SPRITE_FLAG_CORKSCREWS = (1 << 12),
-    CAR_SPRITE_FLAG_RESTRAINT_ANIMATION = (1 << 13),
-    CAR_SPRITE_FLAG_CURVED_LIFT_HILL = (1 << 14),
-    // Used only on lifts (the transport ride), to only use 4 rotation sprites instead of 32.
-    CAR_SPRITE_FLAG_USE_4_ROTATION_FRAMES = (1 << 15),
-};
-
 /*
  * When adding a sprite group, add multiplier to SpriteGroupMultiplier in RideObject.cpp and add sprite group data to cable
  * lifthill vehicle in RideData.cpp and update the SpriteGroups interface in distribution/openrct2.d.ts

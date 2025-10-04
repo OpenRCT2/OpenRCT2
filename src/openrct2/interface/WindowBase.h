@@ -33,6 +33,8 @@ struct RCTObjectEntry;
 
 namespace OpenRCT2
 {
+    constexpr uint8_t kDefaultWindowFlashCountdown = 3;
+
     // TODO: move to Viewport.h?
     struct Focus
     {
@@ -89,6 +91,10 @@ namespace OpenRCT2
             RideId rideId;
         };
         WindowFlags flags{};
+        /**
+         * Set to 3 when the window should flash and decremented per tick.
+         */
+        uint8_t flashTimer{};
         OpenRCT2::ScrollArea scrolls[3];
         uint16_t numListItems{};    // 0 for no items
         int16_t selectedListItem{}; // -1 for none selected
@@ -128,7 +134,7 @@ namespace OpenRCT2
 
         constexpr bool canBeResized() const
         {
-            return (flags & WF_RESIZABLE) && (minWidth != maxWidth || minHeight != maxHeight);
+            return flags.has(WindowFlag::resizable) && (minWidth != maxWidth || minHeight != maxHeight);
         }
 
         // Events
@@ -221,14 +227,19 @@ namespace OpenRCT2
         {
         }
 
-        int16_t right()
+        constexpr int16_t right()
         {
             return windowPos.x + width;
         }
 
-        int16_t bottom()
+        constexpr int16_t bottom()
         {
             return windowPos.y + height;
+        }
+
+        constexpr void flash()
+        {
+            flashTimer = kDefaultWindowFlashCountdown;
         }
     };
 
@@ -237,5 +248,5 @@ namespace OpenRCT2
 #endif
 
     // rct2: 0x01420078
-    extern std::vector<std::unique_ptr<WindowBase>> g_window_list;
+    extern std::vector<std::unique_ptr<WindowBase>> gWindowList;
 } // namespace OpenRCT2

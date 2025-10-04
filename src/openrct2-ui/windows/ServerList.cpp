@@ -152,7 +152,7 @@ namespace OpenRCT2::Ui::Windows
                     textInputOpen(widgetIndex, STR_ADD_SERVER, STR_ENTER_HOSTNAME_OR_IP_ADDRESS, {}, kStringIdNone, 0, 128);
                     break;
                 case WIDX_START_SERVER:
-                    ContextOpenWindow(WindowClass::ServerStart);
+                    ContextOpenWindow(WindowClass::serverStart);
                     break;
             }
         }
@@ -346,7 +346,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     GfxFilterRect(
                         rt, { 0, screenCoords.y, listWidgetWidth, screenCoords.y + kItemHeight },
-                        FilterPaletteID::PaletteDarken1);
+                        FilterPaletteID::paletteDarken1);
                     _version = serverDetails.Version;
                 }
 
@@ -535,12 +535,13 @@ namespace OpenRCT2::Ui::Windows
     {
         // Check if window is already open
         auto* windowMgr = GetWindowManager();
-        auto* window = windowMgr->BringToFrontByClass(WindowClass::ServerList);
+        auto* window = windowMgr->BringToFrontByClass(WindowClass::serverList);
         if (window != nullptr)
             return window;
 
         window = windowMgr->Create<ServerListWindow>(
-            WindowClass::ServerList, kMinimumWindowSize, WF_10 | WF_RESIZABLE | WF_CENTRE_SCREEN);
+            WindowClass::serverList, kMinimumWindowSize,
+            { WindowFlag::higherContrastOnPress, WindowFlag::resizable, WindowFlag::centreScreen });
 
         return window;
     }

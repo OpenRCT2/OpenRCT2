@@ -931,7 +931,7 @@ namespace OpenRCT2::Ui::Windows
                 // Page widgets
                 case WIDX_HEIGHTMAP_BROWSE:
                 {
-                    auto intent = Intent(WindowClass::Loadsave);
+                    auto intent = Intent(WindowClass::loadsave);
                     intent.PutEnumExtra<LoadSaveAction>(INTENT_EXTRA_LOADSAVE_ACTION, LoadSaveAction::load);
                     intent.PutEnumExtra<LoadSaveType>(INTENT_EXTRA_LOADSAVE_TYPE, LoadSaveType::heightmap);
                     intent.PutExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<CloseCallback>(HeightmapLoadsaveCallback));
@@ -1534,7 +1534,8 @@ namespace OpenRCT2::Ui::Windows
     {
         auto* windowMgr = GetWindowManager();
         return windowMgr->FocusOrCreate<MapGenWindow>(
-            WindowClass::Mapgen, kWindowSize, WF_10 | WF_AUTO_POSITION | WF_CENTRE_SCREEN);
+            WindowClass::mapgen, kWindowSize,
+            { WindowFlag::higherContrastOnPress, WindowFlag::autoPosition, WindowFlag::centreScreen });
     }
 
     static void HeightmapLoadsaveCallback(ModalResult result, const utf8* path)

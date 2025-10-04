@@ -104,7 +104,7 @@ static bool ShouldShowFPS()
         return true;
 
     auto* windowMgr = Ui::GetWindowManager();
-    return windowMgr->FindByClass(WindowClass::TopToolbar);
+    return windowMgr->FindByClass(WindowClass::topToolbar);
 }
 
 void Painter::PaintFPS(RenderTarget& rt)

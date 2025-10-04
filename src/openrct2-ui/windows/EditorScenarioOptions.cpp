@@ -1575,8 +1575,8 @@ namespace OpenRCT2::Ui::Windows
             if (gLegacyScene == LegacyScene::playing)
             {
                 auto* windowMgr = Ui::GetWindowManager();
-                windowMgr->InvalidateByClass(WindowClass::Finances);
-                windowMgr->InvalidateByClass(WindowClass::BottomToolbar);
+                windowMgr->InvalidateByClass(WindowClass::finances);
+                windowMgr->InvalidateByClass(WindowClass::bottomToolbar);
             }
         }
 
@@ -2354,7 +2354,7 @@ namespace OpenRCT2::Ui::Windows
                 if (i == selectedListItem)
                 {
                     stringId = STR_WINDOW_COLOUR_2_STRINGID;
-                    GfxFilterRect(rt, { 0, y, width, y + 11 }, FilterPaletteID::PaletteDarken1);
+                    GfxFilterRect(rt, { 0, y, width, y + 11 }, FilterPaletteID::paletteDarken1);
                 }
 
                 // Checkbox mark
@@ -2385,6 +2385,6 @@ namespace OpenRCT2::Ui::Windows
     {
         auto* windowMgr = GetWindowManager();
         return windowMgr->FocusOrCreate<EditorScenarioOptionsWindow>(
-            WindowClass::EditorScenarioOptions, { 280, 148 }, WF_NO_SCROLLING | WF_CENTRE_SCREEN);
+            WindowClass::editorScenarioOptions, { 280, 148 }, { WindowFlag::noScrolling, WindowFlag::centreScreen });
     }
 } // namespace OpenRCT2::Ui::Windows

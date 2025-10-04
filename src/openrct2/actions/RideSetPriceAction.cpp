@@ -120,7 +120,7 @@ namespace OpenRCT2::GameActions
                 if (shopItem == ShopItem::None)
                 {
                     ride->price[0] = _price;
-                    windowMgr->InvalidateByClass(WindowClass::Ride);
+                    windowMgr->InvalidateByClass(WindowClass::ride);
                     return res;
                 }
             }
@@ -128,7 +128,7 @@ namespace OpenRCT2::GameActions
             if (!ShopItemHasCommonPrice(shopItem))
             {
                 ride->price[0] = _price;
-                windowMgr->InvalidateByClass(WindowClass::Ride);
+                windowMgr->InvalidateByClass(WindowClass::ride);
                 return res;
             }
         }
@@ -141,7 +141,7 @@ namespace OpenRCT2::GameActions
                 if ((ride->lifecycleFlags & RIDE_LIFECYCLE_ON_RIDE_PHOTO) == 0)
                 {
                     ride->price[1] = _price;
-                    windowMgr->InvalidateByClass(WindowClass::Ride);
+                    windowMgr->InvalidateByClass(WindowClass::ride);
                     return res;
                 }
             }
@@ -149,7 +149,7 @@ namespace OpenRCT2::GameActions
             if (!ShopItemHasCommonPrice(shopItem))
             {
                 ride->price[1] = _price;
-                windowMgr->InvalidateByClass(WindowClass::Ride);
+                windowMgr->InvalidateByClass(WindowClass::ride);
                 return res;
             }
         }
@@ -199,7 +199,7 @@ namespace OpenRCT2::GameActions
             if (invalidate)
             {
                 auto* windowMgr = Ui::GetWindowManager();
-                windowMgr->InvalidateByNumber(WindowClass::Ride, ride.id.ToUnderlying());
+                windowMgr->InvalidateByNumber(WindowClass::ride, ride.id.ToUnderlying());
             }
         }
     }

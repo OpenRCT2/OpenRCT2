@@ -124,19 +124,21 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* NetworkStatusOpen(const std::string& text, CloseCallback onClose)
     {
-        ContextForceCloseWindowByClass(WindowClass::ProgressWindow);
+        ContextForceCloseWindowByClass(WindowClass::progressWindow);
 
         auto* windowMgr = GetWindowManager();
 
         NetworkStatusWindow* window;
-        if ((window = static_cast<NetworkStatusWindow*>(windowMgr->FindByClass(WindowClass::NetworkStatus))) != nullptr)
+        if ((window = static_cast<NetworkStatusWindow*>(windowMgr->FindByClass(WindowClass::networkStatus))) != nullptr)
         {
             windowMgr->BringToFront(*window);
         }
         else
         {
             window = windowMgr->Create<NetworkStatusWindow>(
-                WindowClass::NetworkStatus, kWindowSize, WF_10 | WF_TRANSPARENT | WF_CENTRE_SCREEN | WF_STICK_TO_FRONT);
+                WindowClass::networkStatus, kWindowSize,
+                { WindowFlag::higherContrastOnPress, WindowFlag::transparent, WindowFlag::centreScreen,
+                  WindowFlag::stickToFront });
         }
 
         window->setCloseCallBack(onClose);
@@ -148,7 +150,7 @@ namespace OpenRCT2::Ui::Windows
     void WindowNetworkStatusClose()
     {
         auto* windowMgr = GetWindowManager();
-        auto window = windowMgr->FindByClass(WindowClass::NetworkStatus);
+        auto window = windowMgr->FindByClass(WindowClass::networkStatus);
         if (window == nullptr)
         {
             return;
@@ -160,11 +162,12 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* NetworkStatusOpenPassword()
     {
-        ContextForceCloseWindowByClass(WindowClass::ProgressWindow);
+        ContextForceCloseWindowByClass(WindowClass::progressWindow);
 
         auto* windowMgr = GetWindowManager();
         auto* window = windowMgr->FocusOrCreate<NetworkStatusWindow>(
-            WindowClass::NetworkStatus, kWindowSize, WF_10 | WF_TRANSPARENT | WF_CENTRE_SCREEN);
+            WindowClass::networkStatus, kWindowSize,
+            { WindowFlag::higherContrastOnPress, WindowFlag::transparent, WindowFlag::centreScreen });
 
         char password[33]{};
         WindowTextInputRawOpen(window, WIDX_PASSWORD, STR_PASSWORD_REQUIRED, STR_PASSWORD_REQUIRED_DESC, {}, password, 32);

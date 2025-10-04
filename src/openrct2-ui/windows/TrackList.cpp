@@ -50,7 +50,7 @@ namespace OpenRCT2::Ui::Windows
         WIDX_TOGGLE_SCENERY,
     };
 
-    validate_global_widx(WC_TRACK_DESIGN_LIST, WIDX_ROTATE);
+    VALIDATE_GLOBAL_WIDX(WC_TRACK_DESIGN_LIST, WIDX_ROTATE);
 
     // clang-format off
     static constexpr auto kFlatBtnSize = ScreenSize{kRotateAndSceneryButtonSize, kRotateAndSceneryButtonSize};
@@ -117,7 +117,7 @@ namespace OpenRCT2::Ui::Windows
 
         void SelectFromList(int32_t listIndex)
         {
-            OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Click1, 0, this->windowPos.x + (this->width / 2));
+            OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::click1, 0, this->windowPos.x + (this->width / 2));
             if (!(gLegacyScene == LegacyScene::trackDesignsManager))
             {
                 if (listIndex == 0)
@@ -145,7 +145,7 @@ namespace OpenRCT2::Ui::Windows
             TrackDesignFileRef* tdRef = &_trackDesigns[trackDesignIndex];
             if (gLegacyScene == LegacyScene::trackDesignsManager)
             {
-                auto intent = Intent(WindowClass::ManageTrackDesign);
+                auto intent = Intent(WindowClass::manageTrackDesign);
                 intent.PutExtra(INTENT_EXTRA_TRACK_DESIGN, tdRef);
                 ContextOpenIntent(&intent);
             }
@@ -157,7 +157,7 @@ namespace OpenRCT2::Ui::Windows
                     ContextShowError(STR_THIS_DESIGN_WILL_BE_BUILT_WITH_AN_ALTERNATIVE_VEHICLE_TYPE, kStringIdNone, {});
                 }
 
-                auto intent = Intent(WindowClass::TrackDesignPlace);
+                auto intent = Intent(WindowClass::trackDesignPlace);
                 intent.PutExtra(INTENT_EXTRA_TRACK_DESIGN, tdRef);
                 ContextOpenIntent(&intent);
             }
@@ -242,8 +242,8 @@ namespace OpenRCT2::Ui::Windows
         void ReopenTrackManager()
         {
             auto* windowMgr = Ui::GetWindowManager();
-            windowMgr->CloseByNumber(WindowClass::ManageTrackDesign, number);
-            windowMgr->CloseByNumber(WindowClass::TrackDeletePrompt, number);
+            windowMgr->CloseByNumber(WindowClass::manageTrackDesign, number);
+            windowMgr->CloseByNumber(WindowClass::trackDeletePrompt, number);
             Editor::LoadTrackManager();
         }
 
@@ -289,7 +289,7 @@ namespace OpenRCT2::Ui::Windows
                     close();
                     if (!(gLegacyScene == LegacyScene::trackDesignsManager))
                     {
-                        ContextOpenWindow(WindowClass::ConstructRide);
+                        ContextOpenWindow(WindowClass::constructRide);
                     }
                     else
                     {
@@ -695,7 +695,7 @@ namespace OpenRCT2::Ui::Windows
                     // Highlight
                     GfxFilterRect(
                         rt, { screenCoords, { width, screenCoords.y + kScrollableRowHeight - 1 } },
-                        FilterPaletteID::PaletteDarken1);
+                        FilterPaletteID::paletteDarken1);
                     stringId = STR_WINDOW_COLOUR_2_STRINGID;
                 }
                 else
@@ -720,7 +720,7 @@ namespace OpenRCT2::Ui::Windows
                         // Highlight
                         GfxFilterRect(
                             rt, { screenCoords, { width, screenCoords.y + kScrollableRowHeight - 1 } },
-                            FilterPaletteID::PaletteDarken1);
+                            FilterPaletteID::paletteDarken1);
                         stringId = STR_WINDOW_COLOUR_2_STRINGID;
                     }
                     else
@@ -756,24 +756,24 @@ namespace OpenRCT2::Ui::Windows
         auto* windowMgr = Ui::GetWindowManager();
         windowMgr->CloseConstructionWindows();
 
-        WindowFlags flags = 0;
+        WindowFlags flags = {};
         ScreenCoordsXY screenPos{};
         if (gLegacyScene == LegacyScene::trackDesignsManager)
         {
-            flags = WF_AUTO_POSITION | WF_CENTRE_SCREEN;
+            flags = { WindowFlag::autoPosition, WindowFlag::centreScreen };
         }
         else
         {
             screenPos = { 0, kTopToolbarHeight + 2 };
         }
 
-        return windowMgr->Create<TrackListWindow>(WindowClass::TrackDesignList, screenPos, kWindowSize, flags, item);
+        return windowMgr->Create<TrackListWindow>(WindowClass::trackDesignList, screenPos, kWindowSize, flags, item);
     }
 
     void WindowTrackDesignListReloadTracks()
     {
         auto* windowMgr = GetWindowManager();
-        auto* trackListWindow = static_cast<TrackListWindow*>(windowMgr->FindByClass(WindowClass::TrackDesignList));
+        auto* trackListWindow = static_cast<TrackListWindow*>(windowMgr->FindByClass(WindowClass::trackDesignList));
         if (trackListWindow != nullptr)
         {
             trackListWindow->ReloadTrackDesigns();
@@ -783,7 +783,7 @@ namespace OpenRCT2::Ui::Windows
     void WindowTrackDesignListSetBeingUpdated(const bool beingUpdated)
     {
         auto* windowMgr = GetWindowManager();
-        auto* trackListWindow = static_cast<TrackListWindow*>(windowMgr->FindByClass(WindowClass::TrackDesignList));
+        auto* trackListWindow = static_cast<TrackListWindow*>(windowMgr->FindByClass(WindowClass::trackDesignList));
         if (trackListWindow != nullptr)
         {
             trackListWindow->SetIsBeingUpdated(beingUpdated);

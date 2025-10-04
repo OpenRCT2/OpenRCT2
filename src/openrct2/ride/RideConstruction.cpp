@@ -121,7 +121,7 @@ static WindowBase* ride_create_or_find_construction_window(RideId rideIndex)
     auto intent = Intent(INTENT_ACTION_RIDE_CONSTRUCTION_FOCUS);
     intent.PutExtra(INTENT_EXTRA_RIDE_ID, rideIndex.ToUnderlying());
     windowManager->BroadcastIntent(intent);
-    return windowManager->FindByClass(WindowClass::RideConstruction);
+    return windowManager->FindByClass(WindowClass::rideConstruction);
 }
 
 /**
@@ -237,7 +237,7 @@ void RideClearForConstruction(Ride& ride)
     RideClearBlockedTiles(ride);
 
     auto* windowMgr = Ui::GetWindowManager();
-    auto w = windowMgr->FindByNumber(WindowClass::Ride, ride.id.ToUnderlying());
+    auto w = windowMgr->FindByNumber(WindowClass::ride, ride.id.ToUnderlying());
     if (w != nullptr)
         w->onResize();
 }
@@ -860,19 +860,19 @@ static bool ride_modify_entrance_or_exit(const CoordsXYE& tileElement)
 
     // Get or create construction window for ride
     auto* windowMgr = Ui::GetWindowManager();
-    auto constructionWindow = windowMgr->FindByClass(WindowClass::RideConstruction);
+    auto constructionWindow = windowMgr->FindByClass(WindowClass::rideConstruction);
     if (constructionWindow == nullptr)
     {
         if (!RideInitialiseConstructionWindow(*ride))
             return false;
 
-        constructionWindow = windowMgr->FindByClass(WindowClass::RideConstruction);
+        constructionWindow = windowMgr->FindByClass(WindowClass::rideConstruction);
         if (constructionWindow == nullptr)
             return false;
     }
 
     RideConstructionInvalidateCurrentTrack();
-    if (_rideConstructionState != RideConstructionState::EntranceExit || !isToolActive(WindowClass::RideConstruction))
+    if (_rideConstructionState != RideConstructionState::EntranceExit || !isToolActive(WindowClass::rideConstruction))
     {
         // Replace entrance / exit
         ToolSet(
@@ -900,7 +900,7 @@ static bool ride_modify_entrance_or_exit(const CoordsXYE& tileElement)
 
         rideEntranceExitRemove.SetCallback([=](const GameActions::GameAction* ga, const GameActions::Result* result) {
             gRideEntranceExitPlaceType = entranceType;
-            windowMgr->InvalidateByClass(WindowClass::RideConstruction);
+            windowMgr->InvalidateByClass(WindowClass::rideConstruction);
 
             auto newToolWidgetIndex = (entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE) ? WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE
                                                                                     : WC_RIDE_CONSTRUCTION__WIDX_EXIT;
@@ -912,7 +912,7 @@ static bool ride_modify_entrance_or_exit(const CoordsXYE& tileElement)
         GameActions::Execute(&rideEntranceExitRemove, getGameState());
     }
 
-    windowMgr->InvalidateByClass(WindowClass::RideConstruction);
+    windowMgr->InvalidateByClass(WindowClass::rideConstruction);
     return true;
 }
 

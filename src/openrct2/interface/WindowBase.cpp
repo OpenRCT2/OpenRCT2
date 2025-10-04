@@ -11,7 +11,7 @@ namespace OpenRCT2
     void WindowBase::setViewportLocation(const CoordsXYZ& coords)
     {
         WindowScrollToLocation(*this, coords);
-        flags &= ~WF_SCROLLING_TO_LOCATION;
+        flags.unset(WindowFlag::scrollingToLocation);
 
         // Immediately update the viewport position since we are not scrolling.
         if (viewport != nullptr)
@@ -151,7 +151,7 @@ namespace OpenRCT2
 
     int16_t WindowBase::getTitleBarCurrentHeight() const
     {
-        if (!(flags & WF_NO_TITLE_BAR) && widgets.size() > 2)
+        if (!(flags.has(WindowFlag::noTitleBar)) && widgets.size() > 2)
             return widgets[1].height();
         else
             return 0;

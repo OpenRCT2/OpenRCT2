@@ -229,7 +229,7 @@ namespace OpenRCT2::Ui::Windows
             gMapSelectFlags.unset(MapSelectFlag::enableConstruct);
 
             auto* windowMgr = Ui::GetWindowManager();
-            windowMgr->InvalidateByClass(WindowClass::TopToolbar);
+            windowMgr->InvalidateByClass(WindowClass::topToolbar);
             HideGridlines();
         }
 
@@ -248,12 +248,12 @@ namespace OpenRCT2::Ui::Windows
             // Check tool
             if (_footpathConstructionMode == PathConstructionMode::land)
             {
-                if (!isToolActive(WindowClass::Footpath, WIDX_CONSTRUCT_ON_LAND))
+                if (!isToolActive(WindowClass::footpath, WIDX_CONSTRUCT_ON_LAND))
                     close();
             }
             else if (_footpathConstructionMode == PathConstructionMode::bridgeOrTunnelPick)
             {
-                if (!isToolActive(WindowClass::Footpath, WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL))
+                if (!isToolActive(WindowClass::footpath, WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL))
                     close();
             }
         }
@@ -803,44 +803,41 @@ namespace OpenRCT2::Ui::Windows
             WindowFootpathSetEnabledAndPressedWidgets();
         }
 
-        std::optional<CoordsXY> FootpathGetPlacePositionFromScreenPosition(ScreenCoordsXY screenCoords)
+        void WindowFootpathUpdateModifierKeyState(ScreenCoordsXY& screenCoords)
         {
-            CoordsXY mapCoords;
             auto& im = GetInputManager();
 
-            if (!_footpathPlaceCtrlState)
+            // First, store the initial copy/ctrl state
+            if (!_footpathPlaceCtrlState && im.isModifierKeyPressed(ModifierKey::ctrl))
             {
-                if (im.IsModifierKeyPressed(ModifierKey::ctrl))
+                constexpr auto interactionFlags = EnumsToFlags(
+                    ViewportInteractionItem::terrain, ViewportInteractionItem::ride, ViewportInteractionItem::scenery,
+                    ViewportInteractionItem::footpath, ViewportInteractionItem::wall, ViewportInteractionItem::largeScenery);
+
+                auto info = GetMapCoordinatesFromPos(screenCoords, interactionFlags);
+                if (info.interactionType != ViewportInteractionItem::none)
                 {
-                    constexpr auto interactionFlags = EnumsToFlags(
-                        ViewportInteractionItem::terrain, ViewportInteractionItem::ride, ViewportInteractionItem::scenery,
-                        ViewportInteractionItem::footpath, ViewportInteractionItem::wall,
-                        ViewportInteractionItem::largeScenery);
+                    const bool allowInvalidHeights = getGameState().cheats.allowTrackPlaceInvalidHeights;
+                    const auto heightStep = kCoordsZStep * (!allowInvalidHeights ? 2 : 1);
 
-                    auto info = GetMapCoordinatesFromPos(screenCoords, interactionFlags);
-                    if (info.interactionType != ViewportInteractionItem::none)
-                    {
-                        const bool allowInvalidHeights = getGameState().cheats.allowTrackPlaceInvalidHeights;
-                        const auto heightStep = kCoordsZStep * (!allowInvalidHeights ? 2 : 1);
-
-                        _footpathPlaceCtrlZ = floor2(info.Element->GetBaseZ(), heightStep);
-                        _footpathPlaceCtrlState = true;
-                    }
+                    _footpathPlaceCtrlZ = floor2(info.Element->GetBaseZ(), heightStep);
+                    _footpathPlaceCtrlState = true;
                 }
             }
-            else if (!im.IsModifierKeyPressed(ModifierKey::ctrl))
+            else if (!im.isModifierKeyPressed(ModifierKey::ctrl))
             {
                 _footpathPlaceCtrlState = false;
                 _footpathPlaceCtrlZ = 0;
             }
 
-            if (!_footpathPlaceShiftState && im.IsModifierKeyPressed(ModifierKey::shift))
+            // In addition, vertical shifting on top of the base (copy) placement?
+            if (!_footpathPlaceShiftState && im.isModifierKeyPressed(ModifierKey::shift))
             {
                 _footpathPlaceShiftState = true;
                 _footpathPlaceShiftStart = screenCoords;
                 _footpathPlaceShiftZ = 0;
             }
-            else if (im.IsModifierKeyPressed(ModifierKey::shift))
+            else if (im.isModifierKeyPressed(ModifierKey::shift))
             {
                 uint16_t maxPathHeight = ZoomLevel::max().ApplyTo(
                     std::numeric_limits<decltype(TileElement::BaseHeight)>::max() - 32);
@@ -867,6 +864,13 @@ namespace OpenRCT2::Ui::Windows
                 _footpathPlaceShiftState = false;
                 _footpathPlaceShiftZ = 0;
             }
+        }
+
+        std::optional<CoordsXY> FootpathGetPlacePositionFromScreenPosition(ScreenCoordsXY screenCoords)
+        {
+            WindowFootpathUpdateModifierKeyState(screenCoords);
+
+            CoordsXY mapCoords;
 
             if (!_footpathPlaceCtrlState)
             {
@@ -1084,7 +1088,7 @@ namespace OpenRCT2::Ui::Windows
                     // Don't play sound if it is no cost to prevent multiple sounds. TODO: make this work in no money scenarios
                     if (result->Cost != 0)
                     {
-                        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, result->Position);
+                        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::placeItem, result->Position);
                     }
                 }
                 else
@@ -1175,11 +1179,11 @@ namespace OpenRCT2::Ui::Windows
                 [footpathLoc](const GameActions::GameAction* ga, const GameActions::Result* result) {
                     if (result->Error == GameActions::Status::Ok)
                     {
-                        Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, result->Position);
+                        Audio::Play3D(OpenRCT2::Audio::SoundId::placeItem, result->Position);
                     }
 
                     auto* windowMgr = GetWindowManager();
-                    auto* self = static_cast<FootpathWindow*>(windowMgr->FindByClass(WindowClass::Footpath));
+                    auto* self = static_cast<FootpathWindow*>(windowMgr->FindByClass(WindowClass::footpath));
                     if (self == nullptr)
                     {
                         return;
@@ -1567,7 +1571,7 @@ namespace OpenRCT2::Ui::Windows
         }
 
         auto* windowMgr = GetWindowManager();
-        return windowMgr->FocusOrCreate<FootpathWindow>(WindowClass::Footpath, kWindowSize, 0);
+        return windowMgr->FocusOrCreate<FootpathWindow>(WindowClass::footpath, kWindowSize, {});
     }
 
     void WindowFootpathResetSelectedPath()
@@ -1578,7 +1582,7 @@ namespace OpenRCT2::Ui::Windows
     void WindowFootpathKeyboardShortcutTurnLeft()
     {
         auto* windowMgr = GetWindowManager();
-        WindowBase* w = windowMgr->FindByClass(WindowClass::Footpath);
+        WindowBase* w = windowMgr->FindByClass(WindowClass::footpath);
         if (w != nullptr)
         {
             auto* footpathWindow = static_cast<FootpathWindow*>(w);
@@ -1592,7 +1596,7 @@ namespace OpenRCT2::Ui::Windows
     void WindowFootpathKeyboardShortcutTurnRight()
     {
         auto* windowMgr = GetWindowManager();
-        WindowBase* w = windowMgr->FindByClass(WindowClass::Footpath);
+        WindowBase* w = windowMgr->FindByClass(WindowClass::footpath);
         if (w != nullptr)
         {
             auto* footpathWindow = static_cast<FootpathWindow*>(w);
@@ -1606,7 +1610,7 @@ namespace OpenRCT2::Ui::Windows
     void WindowFootpathKeyboardShortcutSlopeDown()
     {
         auto* windowMgr = GetWindowManager();
-        WindowBase* w = windowMgr->FindByClass(WindowClass::Footpath);
+        WindowBase* w = windowMgr->FindByClass(WindowClass::footpath);
         if (w != nullptr)
         {
             auto* footpathWindow = static_cast<FootpathWindow*>(w);
@@ -1620,7 +1624,7 @@ namespace OpenRCT2::Ui::Windows
     void WindowFootpathKeyboardShortcutSlopeUp()
     {
         auto* windowMgr = GetWindowManager();
-        WindowBase* w = windowMgr->FindByClass(WindowClass::Footpath);
+        WindowBase* w = windowMgr->FindByClass(WindowClass::footpath);
         if (w != nullptr)
         {
             auto* footpathWindow = static_cast<FootpathWindow*>(w);
@@ -1634,7 +1638,7 @@ namespace OpenRCT2::Ui::Windows
     void WindowFootpathKeyboardShortcutDemolishCurrent()
     {
         auto* windowMgr = GetWindowManager();
-        WindowBase* w = windowMgr->FindByClass(WindowClass::Footpath);
+        WindowBase* w = windowMgr->FindByClass(WindowClass::footpath);
         if (w != nullptr)
         {
             auto* footpathWindow = static_cast<FootpathWindow*>(w);
@@ -1648,7 +1652,7 @@ namespace OpenRCT2::Ui::Windows
     void WindowFootpathKeyboardShortcutBuildCurrent()
     {
         auto* windowMgr = GetWindowManager();
-        WindowBase* w = windowMgr->FindByClass(WindowClass::Footpath);
+        WindowBase* w = windowMgr->FindByClass(WindowClass::footpath);
         if (w != nullptr)
         {
             auto* footpathWindow = static_cast<FootpathWindow*>(w);
@@ -1666,14 +1670,14 @@ namespace OpenRCT2::Ui::Windows
     void ToggleFootpathWindow()
     {
         auto* windowMgr = GetWindowManager();
-        if (windowMgr->FindByClass(WindowClass::Footpath) == nullptr)
+        if (windowMgr->FindByClass(WindowClass::footpath) == nullptr)
         {
-            ContextOpenWindow(WindowClass::Footpath);
+            ContextOpenWindow(WindowClass::footpath);
         }
         else
         {
             ToolCancel();
-            windowMgr->CloseByClass(WindowClass::Footpath);
+            windowMgr->CloseByClass(WindowClass::footpath);
         }
     }
 
@@ -1713,7 +1717,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        if (!isToolActive(WindowClass::Scenery))
+        if (!isToolActive(WindowClass::scenery))
         {
             if (res.Error != GameActions::Status::Ok)
             {

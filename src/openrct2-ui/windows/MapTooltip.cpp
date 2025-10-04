@@ -76,7 +76,7 @@ namespace OpenRCT2::Ui::Windows
         {
             // The map tooltip is drawn by the bottom toolbar
             auto* windowMgr = Ui::GetWindowManager();
-            windowMgr->InvalidateByClass(WindowClass::BottomToolbar);
+            windowMgr->InvalidateByClass(WindowClass::bottomToolbar);
             return;
         }
 
@@ -98,11 +98,11 @@ namespace OpenRCT2::Ui::Windows
 
         auto& im = GetInputManager();
         auto* wm = GetWindowManager();
-        if (_cursorHoldDuration < 25 || stringId == kStringIdNone || im.IsModifierKeyPressed(ModifierKey::ctrl)
-            || im.IsModifierKeyPressed(ModifierKey::shift) || wm->FindByClass(WindowClass::Error) != nullptr)
+        if (_cursorHoldDuration < 25 || stringId == kStringIdNone || im.isModifierKeyPressed(ModifierKey::ctrl)
+            || im.isModifierKeyPressed(ModifierKey::shift) || wm->FindByClass(WindowClass::error) != nullptr)
         {
             auto* windowMgr = Ui::GetWindowManager();
-            windowMgr->CloseByClass(WindowClass::MapTooltip);
+            windowMgr->CloseByClass(WindowClass::mapTooltip);
         }
         else
         {
@@ -118,7 +118,7 @@ namespace OpenRCT2::Ui::Windows
         auto pos = state->position + ScreenCoordsXY{ -width / 2, 15 };
 
         auto* windowMgr = GetWindowManager();
-        if (auto w = windowMgr->FindByClass(WindowClass::MapTooltip))
+        if (auto w = windowMgr->FindByClass(WindowClass::mapTooltip))
         {
             w->invalidate();
             w->windowPos = pos;
@@ -128,8 +128,8 @@ namespace OpenRCT2::Ui::Windows
         else
         {
             w = windowMgr->Create<MapTooltip>(
-                WindowClass::MapTooltip, pos, { width, height },
-                WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND | WF_NO_TITLE_BAR);
+                WindowClass::mapTooltip, pos, { width, height },
+                { WindowFlag::stickToFront, WindowFlag::transparent, WindowFlag::noBackground, WindowFlag::noTitleBar });
         }
     }
 } // namespace OpenRCT2::Ui::Windows

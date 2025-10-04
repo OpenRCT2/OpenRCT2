@@ -2467,7 +2467,7 @@ bool Staff::UpdateFixingFixStationBrakes(bool firstRun, Ride& ride)
     if (AnimationFrameNum == 0x13 || AnimationFrameNum == 0x19 || AnimationFrameNum == 0x1F || AnimationFrameNum == 0x25
         || AnimationFrameNum == 0x2B)
     {
-        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::MechanicFix, GetLocation());
+        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::mechanicFix, GetLocation());
     }
 
     return false;

@@ -18,9 +18,9 @@ namespace OpenRCT2
     static exitcode_t HandleUri(const std::string& uri);
 
 #ifndef DISABLE_NETWORK
-    static exitcode_t HandleUriJoin(const std::vector<std::string>& args);
+    static exitcode_t HandleUriJoin(const std::vector<std::string_view>& args);
     static bool TryParseHostnamePort(
-        const std::string& hostnamePort, std::string* outHostname, int32_t* outPort, int32_t defaultPort);
+        const std::string_view hostnamePort, std::string* outHostname, int32_t* outPort, int32_t defaultPort);
 #endif
 
     exitcode_t CommandLine::HandleCommandUri(CommandLineArgEnumerator* enumerator)
@@ -46,7 +46,7 @@ namespace OpenRCT2
         if (!args.empty())
         {
 #ifndef DISABLE_NETWORK
-            std::string arg = args[0];
+            const auto arg = args[0];
             if (arg == "join")
             {
                 result = HandleUriJoin(args);
@@ -58,7 +58,7 @@ namespace OpenRCT2
 
 #ifndef DISABLE_NETWORK
 
-    static exitcode_t HandleUriJoin(const std::vector<std::string>& args)
+    static exitcode_t HandleUriJoin(const std::vector<std::string_view>& args)
     {
         std::string hostname;
         int32_t port;
@@ -76,18 +76,18 @@ namespace OpenRCT2
     }
 
     static bool TryParseHostnamePort(
-        const std::string& hostnamePort, std::string* outHostname, int32_t* outPort, int32_t defaultPort)
+        const std::string_view hostnamePort, std::string* outHostname, int32_t* outPort, int32_t defaultPort)
     {
         try
         {
             // Argument is in hostname:port format, so we need to split
-            std::string hostname = hostnamePort;
+            std::string hostname{ hostnamePort };
             int32_t port = defaultPort;
             size_t colonIndex = hostnamePort.find_first_of(':');
             if (colonIndex != std::string::npos)
             {
                 hostname = hostnamePort.substr(0, colonIndex);
-                port = std::stoi(hostnamePort.substr(colonIndex + 1));
+                port = String::parse<int32_t>(hostnamePort.substr(colonIndex + 1));
             }
             *outPort = port;
             *outHostname = std::move(hostname);

@@ -304,7 +304,7 @@ void FinanceUpdateDailyProfit()
     park.weeklyProfitAverageDivisor += 1;
 
     auto* windowMgr = Ui::GetWindowManager();
-    windowMgr->InvalidateByClass(WindowClass::Finances);
+    windowMgr->InvalidateByClass(WindowClass::finances);
 }
 
 /**
@@ -342,7 +342,7 @@ void FinanceShiftExpenditureTable()
     }
 
     auto* windowMgr = Ui::GetWindowManager();
-    windowMgr->InvalidateByClass(WindowClass::Finances);
+    windowMgr->InvalidateByClass(WindowClass::finances);
 }
 
 /**

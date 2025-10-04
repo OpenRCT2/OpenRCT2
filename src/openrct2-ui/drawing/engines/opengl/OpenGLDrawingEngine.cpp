@@ -366,7 +366,7 @@ public:
 
     void PaintWindows() override
     {
-        if (ClimateHasWeatherEffect())
+        if (ClimateHasWeatherEffect() || gPaintForceRedraw)
         {
             WindowUpdateAllViewports();
             // OpenGL doesn't support restoring pixels, always redraw.
@@ -955,7 +955,7 @@ void OpenGLDrawingContext::DrawSprite(RenderTarget& rt, const ImageId imageId, c
         paletteCount = 1;
         FilterPaletteID palette = static_cast<FilterPaletteID>(imageId.GetRemap());
         palettes.x = TextureCache::PaletteToY(palette);
-        if (palette == FilterPaletteID::PaletteWater)
+        if (palette == FilterPaletteID::paletteWater)
         {
             special = true;
         }

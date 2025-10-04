@@ -666,7 +666,7 @@ namespace OpenRCT2::GameActions
 
         if (isExecuting)
         {
-            Audio::Play3D(Audio::SoundId::PlaceItem, { _coords.x, _coords.y, centreZ });
+            Audio::Play3D(Audio::SoundId::placeItem, { _coords.x, _coords.y, centreZ });
         }
         res.Cost += result.Cost;
         return res;

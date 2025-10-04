@@ -571,7 +571,7 @@ void PeepDecrementNumRiders(Peep* peep)
 void PeepWindowStateUpdate(Peep* peep)
 {
     auto* windowMgr = Ui::GetWindowManager();
-    WindowBase* w = windowMgr->FindByNumber(WindowClass::Peep, peep->Id.ToUnderlying());
+    WindowBase* w = windowMgr->FindByNumber(WindowClass::peep, peep->Id.ToUnderlying());
     if (w != nullptr)
         w->onPrepareDraw();
 
@@ -587,13 +587,13 @@ void PeepWindowStateUpdate(Peep* peep)
             }
         }
 
-        windowMgr->InvalidateByNumber(WindowClass::Peep, peep->Id);
-        windowMgr->InvalidateByClass(WindowClass::GuestList);
+        windowMgr->InvalidateByNumber(WindowClass::peep, peep->Id);
+        windowMgr->InvalidateByClass(WindowClass::guestList);
     }
     else
     {
-        windowMgr->InvalidateByNumber(WindowClass::Peep, peep->Id);
-        windowMgr->InvalidateByClass(WindowClass::StaffList);
+        windowMgr->InvalidateByNumber(WindowClass::peep, peep->Id);
+        windowMgr->InvalidateByClass(WindowClass::staffList);
     }
 }
 
@@ -698,8 +698,8 @@ void PeepEntityRemove(Peep* peep)
     peep->Invalidate();
 
     auto* windowMgr = Ui::GetWindowManager();
-    windowMgr->CloseByNumber(WindowClass::Peep, peep->Id);
-    windowMgr->CloseByNumber(WindowClass::FirePrompt, EnumValue(peep->Type));
+    windowMgr->CloseByNumber(WindowClass::peep, peep->Id);
+    windowMgr->CloseByNumber(WindowClass::firePrompt, EnumValue(peep->Type));
 
     auto* staff = peep->As<Staff>();
     // Needed for invalidations after sprite removal
@@ -1201,7 +1201,7 @@ void PeepUpdateCrowdNoise()
         // Load and play crowd noise if needed and set volume
         if (_crowdSoundChannel == nullptr || _crowdSoundChannel->IsDone())
         {
-            _crowdSoundChannel = CreateAudioChannel(SoundId::CrowdAmbience, true, 0);
+            _crowdSoundChannel = CreateAudioChannel(SoundId::crowdAmbience, true, 0);
             if (_crowdSoundChannel != nullptr)
             {
                 _crowdSoundChannel->SetGroup(OpenRCT2::Audio::MixerGroup::Sound);
@@ -1239,7 +1239,7 @@ void PeepApplause()
     }
 
     // Play applause noise
-    OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Applause, 0, ContextGetWidth() / 2);
+    OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::applause, 0, ContextGetWidth() / 2);
 }
 
 /**
@@ -1886,7 +1886,7 @@ static bool PeepInteractWithEntrance(Peep* peep, const CoordsXYE& coords, uint8_
         getGameState().park.totalAdmissions++;
 
         auto* windowMgr = Ui::GetWindowManager();
-        windowMgr->InvalidateByNumber(WindowClass::ParkInformation, 0);
+        windowMgr->InvalidateByNumber(WindowClass::parkInformation, 0);
 
         guest->Var37 = 1;
         auto destination = guest->GetDestination();
@@ -2773,8 +2773,8 @@ void Peep::Paint(PaintSession& session, int32_t imageDirection) const
     if (guest == nullptr)
         return;
 
-    // Can't display any accessories whilst drowning
-    if (Action == PeepActionType::Drowning)
+    // Can't display any accessories whilst drowning or clapping
+    if (Action == PeepActionType::Drowning || Action == PeepActionType::Clap)
         return;
 
     // There are only 6 walking frames available for each item,

@@ -1286,7 +1286,7 @@ namespace OpenRCT2::Ui::Windows
                     if (dropdownIndex == EnumValue(CurrencyType::Custom) + 1)
                     { // Add 1 because the separator occupies a position
                         Config::Get().general.CurrencyFormat = static_cast<CurrencyType>(dropdownIndex - 1);
-                        ContextOpenWindow(WindowClass::CustomCurrencyConfig);
+                        ContextOpenWindow(WindowClass::customCurrencyConfig);
                     }
                     else
                     {
@@ -1406,7 +1406,7 @@ namespace OpenRCT2::Ui::Windows
                         OpenRCT2::Audio::Resume();
 
                     auto* windowMgr = Ui::GetWindowManager();
-                    windowMgr->InvalidateByClass(WindowClass::TopToolbar);
+                    windowMgr->InvalidateByClass(WindowClass::topToolbar);
                     Config::Save();
                     invalidate();
                     break;
@@ -1662,7 +1662,7 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_HOTKEY_DROPDOWN:
-                    ContextOpenWindow(WindowClass::KeyboardShortcutList);
+                    ContextOpenWindow(WindowClass::keyboardShortcutList);
                     break;
                 case WIDX_SCREEN_EDGE_SCROLLING:
                     Config::Get().general.EdgeScrolling ^= 1;
@@ -1746,7 +1746,7 @@ namespace OpenRCT2::Ui::Windows
             invalidate();
 
             auto* windowMgr = Ui::GetWindowManager();
-            windowMgr->InvalidateByClass(WindowClass::TopToolbar);
+            windowMgr->InvalidateByClass(WindowClass::topToolbar);
         }
 
         void InterfaceMouseUp(WidgetIndex widgetIndex)
@@ -1781,7 +1781,7 @@ namespace OpenRCT2::Ui::Windows
                     ToggleToolbarSetting(Config::Get().interface.ToolbarShowRotateAnticlockwise);
                     break;
                 case WIDX_THEMES_BUTTON:
-                    ContextOpenWindow(WindowClass::Themes);
+                    ContextOpenWindow(WindowClass::themes);
                     invalidate();
                     break;
             }
@@ -1872,7 +1872,7 @@ namespace OpenRCT2::Ui::Windows
                     Config::Get().general.ScenarioUnlockingEnabled ^= 1;
                     Config::Save();
                     auto* windowMgr = Ui::GetWindowManager();
-                    windowMgr->InvalidateByClass(WindowClass::ScenarioSelect);
+                    windowMgr->InvalidateByClass(WindowClass::scenarioSelect);
                     break;
                 }
                 case WIDX_AUTO_OPEN_SHOPS:
@@ -1988,7 +1988,7 @@ namespace OpenRCT2::Ui::Windows
                         Config::Save();
                         invalidate();
                         auto* windowMgr = Ui::GetWindowManager();
-                        windowMgr->InvalidateByClass(WindowClass::ScenarioSelect);
+                        windowMgr->InvalidateByClass(WindowClass::scenarioSelect);
                     }
                     break;
             }
@@ -2115,7 +2115,7 @@ namespace OpenRCT2::Ui::Windows
                     invalidate();
                     break;
                 case WIDX_ASSET_PACKS:
-                    ContextOpenWindow(WindowClass::AssetPacks);
+                    ContextOpenWindow(WindowClass::assetPacks);
                     break;
 #ifdef __EMSCRIPTEN__
                 case WIDX_EXPORT_EMSCRIPTEN_DATA:
@@ -2427,6 +2427,6 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* OptionsOpen()
     {
         auto* windowMgr = GetWindowManager();
-        return windowMgr->FocusOrCreate<OptionsWindow>(WindowClass::Options, kWindowSize, WF_CENTRE_SCREEN);
+        return windowMgr->FocusOrCreate<OptionsWindow>(WindowClass::options, kWindowSize, WindowFlag::centreScreen);
     }
 } // namespace OpenRCT2::Ui::Windows

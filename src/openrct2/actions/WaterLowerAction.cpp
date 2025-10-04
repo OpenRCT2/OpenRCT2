@@ -123,7 +123,7 @@ namespace OpenRCT2::GameActions
 
         if (isExecuting && hasChanged)
         {
-            Audio::Play3D(Audio::SoundId::LayingOutWater, res.Position);
+            Audio::Play3D(Audio::SoundId::layingOutWater, res.Position);
         }
         // Force ride construction to recheck area
         _currentTrackSelectionFlags.set(TrackSelectionFlag::recheck);

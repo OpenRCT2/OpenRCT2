@@ -332,12 +332,12 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* SignOpen(WindowNumber number)
     {
         auto* windowMgr = GetWindowManager();
-        auto* w = static_cast<SignWindow*>(windowMgr->BringToFrontByNumber(WindowClass::Banner, number));
+        auto* w = static_cast<SignWindow*>(windowMgr->BringToFrontByNumber(WindowClass::banner, number));
 
         if (w != nullptr)
             return w;
 
-        w = windowMgr->Create<SignWindow>(WindowClass::Banner, kWindowSize, 0);
+        w = windowMgr->Create<SignWindow>(WindowClass::banner, kWindowSize, {});
 
         if (w == nullptr)
             return nullptr;
@@ -356,12 +356,12 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* SignSmallOpen(WindowNumber number)
     {
         auto* windowMgr = GetWindowManager();
-        auto* w = static_cast<SignWindow*>(windowMgr->BringToFrontByNumber(WindowClass::Banner, number));
+        auto* w = static_cast<SignWindow*>(windowMgr->BringToFrontByNumber(WindowClass::banner, number));
 
         if (w != nullptr)
             return w;
 
-        w = windowMgr->Create<SignWindow>(WindowClass::Banner, kWindowSize, 0);
+        w = windowMgr->Create<SignWindow>(WindowClass::banner, kWindowSize, {});
 
         if (w == nullptr)
             return nullptr;

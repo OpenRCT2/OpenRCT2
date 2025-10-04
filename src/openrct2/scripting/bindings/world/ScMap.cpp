@@ -357,10 +357,10 @@ namespace OpenRCT2::Scripting
                 entity->MoveTo(entityPos);
 
                 // Reset some important vehicle vars to their null values
-                entity->sound1_id = OpenRCT2::Audio::SoundId::Null;
-                entity->sound2_id = OpenRCT2::Audio::SoundId::Null;
+                entity->sound1_id = OpenRCT2::Audio::SoundId::null;
+                entity->sound2_id = OpenRCT2::Audio::SoundId::null;
                 entity->next_vehicle_on_train = EntityId::GetNull();
-                entity->scream_sound_id = OpenRCT2::Audio::SoundId::Null;
+                entity->scream_sound_id = OpenRCT2::Audio::SoundId::null;
                 for (size_t i = 0; i < std::size(entity->peep); i++)
                 {
                     entity->peep[i] = EntityId::GetNull();

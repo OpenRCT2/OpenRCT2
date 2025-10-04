@@ -53,12 +53,12 @@ Vehicle* CableLiftSegmentCreate(
     current->spin_sprite = 0;
     current->spin_speed = 0;
     current->sound2_flags = 0;
-    current->sound1_id = OpenRCT2::Audio::SoundId::Null;
-    current->sound2_id = OpenRCT2::Audio::SoundId::Null;
+    current->sound1_id = OpenRCT2::Audio::SoundId::null;
+    current->sound2_id = OpenRCT2::Audio::SoundId::null;
     current->CollisionDetectionTimer = 0;
     current->animation_frame = 0;
     current->animationState = 0;
-    current->scream_sound_id = OpenRCT2::Audio::SoundId::Null;
+    current->scream_sound_id = OpenRCT2::Audio::SoundId::null;
     current->pitch = VehiclePitch::flat;
     current->roll = VehicleRoll::unbanked;
     for (auto& peep : current->peep)

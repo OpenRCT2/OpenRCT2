@@ -249,7 +249,7 @@ namespace OpenRCT2::Scripting
     private:
         WindowBase* GetWindow() const
         {
-            if (_class == WindowClass::MainWindow)
+            if (_class == WindowClass::mainWindow)
                 return WindowGetMain();
 
             auto* windowMgr = Ui::GetWindowManager();
@@ -276,7 +276,7 @@ namespace OpenRCT2::Scripting
                 {
                     viewport->viewPos.x = left;
                     viewport->viewPos.y = top;
-                    w->flags &= ~WF_SCROLLING_TO_LOCATION;
+                    w->flags.unset(WindowFlag::scrollingToLocation);
                     w->savedViewPos.x = viewport->viewPos.x;
                     w->savedViewPos.y = viewport->viewPos.y;
                     viewport->Invalidate();

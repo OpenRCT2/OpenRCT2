@@ -96,7 +96,7 @@ namespace OpenRCT2::GameActions
         staff->Invalidate();
 
         auto* windowMgr = Ui::GetWindowManager();
-        windowMgr->InvalidateByNumber(WindowClass::Peep, _spriteIndex);
+        windowMgr->InvalidateByNumber(WindowClass::peep, _spriteIndex);
 
         auto intent = Intent(INTENT_ACTION_REFRESH_STAFF_LIST);
         ContextBroadcastIntent(&intent);

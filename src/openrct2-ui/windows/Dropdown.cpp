@@ -124,7 +124,7 @@ namespace OpenRCT2::Ui::Windows
 
                     if (colours[0].hasFlag(ColourFlag::translucent))
                     {
-                        TranslucentWindowPalette palette = TranslucentWindowPalettes[colours[0].colour];
+                        TranslucentWindowPalette palette = kTranslucentWindowPalettes[colours[0].colour];
                         GfxFilterRect(rt, { leftTop, rightBottom }, palette.highlight);
                         GfxFilterRect(rt, { leftTop + shadowOffset, rightBottom + shadowOffset }, palette.shadow);
                     }
@@ -142,7 +142,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         // Darken the cell's background slightly when highlighted
                         const ScreenCoordsXY rightBottom = screenCoords + ScreenCoordsXY{ ItemWidth - 1, ItemHeight - 1 };
-                        GfxFilterRect(rt, { screenCoords, rightBottom }, FilterPaletteID::PaletteDarken3);
+                        GfxFilterRect(rt, { screenCoords, rightBottom }, FilterPaletteID::paletteDarken3);
                     }
 
                     const auto& item = gDropdown.items[i];
@@ -229,7 +229,7 @@ namespace OpenRCT2::Ui::Windows
             UpdateSizeAndPosition(screenPos, extraY);
 
             if (colour.hasFlag(ColourFlag::translucent))
-                flags |= WF_TRANSPARENT;
+                flags |= WindowFlag::transparent;
             colours[0] = colour;
         }
 
@@ -262,7 +262,7 @@ namespace OpenRCT2::Ui::Windows
             UpdateSizeAndPosition(screenPos, extraY);
 
             if (colour.hasFlag(ColourFlag::translucent))
-                flags |= WF_TRANSPARENT;
+                flags |= WindowFlag::transparent;
             colours[0] = colour;
         }
 
@@ -394,7 +394,7 @@ namespace OpenRCT2::Ui::Windows
         // Create the window (width/height position are set later)
         auto* windowMgr = GetWindowManager();
         auto* w = windowMgr->Create<DropdownWindow>(
-            WindowClass::Dropdown, { width, customItemHeight }, WF_STICK_TO_FRONT | WF_NO_TITLE_BAR);
+            WindowClass::dropdown, { width, customItemHeight }, { WindowFlag::stickToFront, WindowFlag::noTitleBar });
         if (w != nullptr)
         {
             auto numRowsPerColumn = prefRowsPerColumn > 0 ? static_cast<int32_t>(prefRowsPerColumn) : Dropdown::kItemsMaxSize;
@@ -438,7 +438,7 @@ namespace OpenRCT2::Ui::Windows
 
         // Create the window (width/height position are set later)
         auto* windowMgr = GetWindowManager();
-        auto* w = windowMgr->Create<DropdownWindow>(WindowClass::Dropdown, { itemWidth, itemHeight }, WF_STICK_TO_FRONT);
+        auto* w = windowMgr->Create<DropdownWindow>(WindowClass::dropdown, { itemWidth, itemHeight }, WindowFlag::stickToFront);
         if (w != nullptr)
         {
             w->setImageItems({ x, y }, extray, colour, numItems, itemWidth, itemHeight, numColumns);
@@ -448,7 +448,7 @@ namespace OpenRCT2::Ui::Windows
     void WindowDropdownClose()
     {
         auto* windowMgr = Ui::GetWindowManager();
-        windowMgr->CloseByClass(WindowClass::Dropdown);
+        windowMgr->CloseByClass(WindowClass::dropdown);
     }
 
     /**
@@ -457,7 +457,7 @@ namespace OpenRCT2::Ui::Windows
      */
     int32_t DropdownIndexFromPoint(const ScreenCoordsXY& loc, WindowBase* w)
     {
-        if (w->classification == WindowClass::Dropdown)
+        if (w->classification == WindowClass::dropdown)
         {
             auto* ddWnd = static_cast<DropdownWindow*>(w);
             return ddWnd->GetIndexFromPoint(loc);

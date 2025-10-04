@@ -393,7 +393,7 @@ namespace OpenRCT2::Scripting
     protected:
         WindowBase* GetWindow() const
         {
-            if (_class == WindowClass::MainWindow)
+            if (_class == WindowClass::mainWindow)
                 return WindowGetMain();
 
             auto* windowMgr = Ui::GetWindowManager();
@@ -415,7 +415,7 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr)
             {
-                return w->classification == WindowClass::Custom;
+                return w->classification == WindowClass::custom;
             }
             return false;
         }

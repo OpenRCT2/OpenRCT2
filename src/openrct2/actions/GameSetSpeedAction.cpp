@@ -63,7 +63,7 @@ namespace OpenRCT2::GameActions
         gGameSpeed = _speed;
 
         auto* windowMgr = Ui::GetWindowManager();
-        windowMgr->InvalidateByClass(WindowClass::TopToolbar);
+        windowMgr->InvalidateByClass(WindowClass::topToolbar);
 
         return res;
     }

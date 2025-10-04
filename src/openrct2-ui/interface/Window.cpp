@@ -214,8 +214,8 @@ namespace OpenRCT2::Ui
 
         if (entryWidgetType == WidgetType::imgBtn)
         {
-            auto expectedContent1 = ImageId(SPR_LAND_TOOL_DECREASE, FilterPaletteID::PaletteNull);
-            auto expectedContent2 = ImageId(SPR_LAND_TOOL_INCREASE, FilterPaletteID::PaletteNull);
+            auto expectedContent1 = ImageId(SPR_LAND_TOOL_DECREASE, FilterPaletteID::paletteNull);
+            auto expectedContent2 = ImageId(SPR_LAND_TOOL_INCREASE, FilterPaletteID::paletteNull);
 
             auto button1Image = w.widgets[*spinnerGroupIndex + 1].image;
             auto button2Image = w.widgets[*spinnerGroupIndex + 2].image;
@@ -275,7 +275,7 @@ namespace OpenRCT2::Ui
             if (w != nullptr)
             {
                 // Check if main window
-                if (w->classification == WindowClass::MainWindow || w->classification == WindowClass::Viewport)
+                if (w->classification == WindowClass::mainWindow || w->classification == WindowClass::viewport)
                 {
                     WindowViewportWheelInput(*w, relative_wheel);
                     return;
@@ -525,14 +525,14 @@ namespace OpenRCT2::Ui::Windows
     static int32_t _textBoxFrameNo = 0;
     static bool _usingWidgetTextBox = false;
     static TextInputSession* _textInput;
-    static WidgetIdentifier _currentTextBox = { { WindowClass::Null, 0 }, 0 };
+    static WidgetIdentifier _currentTextBox = { { WindowClass::null, 0 }, 0 };
 
     WindowBase* WindowGetListening()
     {
-        for (auto it = g_window_list.rbegin(); it != g_window_list.rend(); it++)
+        for (auto it = gWindowList.rbegin(); it != gWindowList.rend(); it++)
         {
             auto& w = **it;
-            if (w.flags & WF_DEAD)
+            if (w.flags.has(WindowFlag::dead))
                 continue;
 
             auto viewport = w.viewport;
@@ -564,7 +564,7 @@ namespace OpenRCT2::Ui::Windows
         _textBoxFrameNo = 0;
 
         auto* windowMgr = Ui::GetWindowManager();
-        windowMgr->CloseByClass(WindowClass::Textinput);
+        windowMgr->CloseByClass(WindowClass::textinput);
 
         _textBoxInput = existingText;
 
@@ -577,7 +577,7 @@ namespace OpenRCT2::Ui::Windows
         {
             auto* windowMgr = GetWindowManager();
             WindowBase* w = windowMgr->FindByNumber(_currentTextBox.window.classification, _currentTextBox.window.number);
-            _currentTextBox.window.classification = WindowClass::Null;
+            _currentTextBox.window.classification = WindowClass::null;
             _currentTextBox.window.number = 0;
             ContextStopTextInput();
             _usingWidgetTextBox = false;
@@ -925,7 +925,7 @@ namespace OpenRCT2::Ui::Windows
             // Work out if the window requires moving
             if (w->windowPos.x + 10 < width)
             {
-                if (w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT))
+                if (w->flags.hasAny(WindowFlag::stickToBack, WindowFlag::stickToFront))
                 {
                     if (w->windowPos.y - 22 < height)
                     {
@@ -964,7 +964,7 @@ namespace OpenRCT2::Ui::Windows
         {
             // Not sure why plugin windows have to be treated differently,
             // but they currently show a deviation if we don't.
-            if (w.classification == WindowClass::Custom)
+            if (w.classification == WindowClass::custom)
             {
                 w.minHeight += w.getTitleBarDiffTarget();
                 w.maxHeight += w.getTitleBarDiffTarget();
@@ -994,11 +994,6 @@ namespace OpenRCT2::Ui::Windows
         return false;
     }
 
-    bool WindowCanResize(const WindowBase& w)
-    {
-        return (w.flags & WF_RESIZABLE) && (w.minWidth != w.maxWidth || w.minHeight != w.maxHeight);
-    }
-
     /**
      *
      *  rct2: 0x006EA73F
@@ -1026,9 +1021,9 @@ namespace OpenRCT2::Ui::Windows
      */
     void WindowDrawWidgets(WindowBase& w, RenderTarget& rt)
     {
-        if ((w.flags & WF_TRANSPARENT) && !(w.flags & WF_NO_BACKGROUND))
+        if ((w.flags.has(WindowFlag::transparent)) && !(w.flags.has(WindowFlag::noBackground)))
             GfxFilterRect(
-                rt, { w.windowPos, w.windowPos + ScreenCoordsXY{ w.width - 1, w.height - 1 } }, FilterPaletteID::Palette51);
+                rt, { w.windowPos, w.windowPos + ScreenCoordsXY{ w.width - 1, w.height - 1 } }, FilterPaletteID::palette51);
 
         // todo: some code missing here? Between 006EB18C and 006EB260
         for (WidgetIndex widgetIndex = 0; widgetIndex < w.widgets.size(); widgetIndex++)
@@ -1051,7 +1046,7 @@ namespace OpenRCT2::Ui::Windows
 
         // todo: something missing here too? Between 006EC32B and 006EC369
 
-        if (w.flags & WF_WHITE_BORDER_MASK)
+        if (w.flashTimer > 0)
         {
             GfxFillRectInset(
                 rt, { w.windowPos, w.windowPos + ScreenCoordsXY{ w.width - 1, w.height - 1 } }, { COLOUR_WHITE },

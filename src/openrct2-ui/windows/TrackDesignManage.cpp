@@ -87,7 +87,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_CLOSE:
                 {
                     auto* windowMgr = Ui::GetWindowManager();
-                    windowMgr->CloseByClass(WindowClass::TrackDeletePrompt);
+                    windowMgr->CloseByClass(WindowClass::trackDeletePrompt);
                     close();
                     break;
                 }
@@ -122,7 +122,7 @@ namespace OpenRCT2::Ui::Windows
             if (TrackRepositoryRename(_trackDesignFileReference->path, std::string(text)))
             {
                 auto* windowMgr = Ui::GetWindowManager();
-                windowMgr->CloseByClass(WindowClass::TrackDeletePrompt);
+                windowMgr->CloseByClass(WindowClass::trackDeletePrompt);
                 close();
                 WindowTrackDesignListReloadTracks();
             }
@@ -172,7 +172,7 @@ namespace OpenRCT2::Ui::Windows
                     if (TrackRepositoryDelete(tdPath))
                     {
                         auto* windowMgr = Ui::GetWindowManager();
-                        windowMgr->CloseByClass(WindowClass::ManageTrackDesign);
+                        windowMgr->CloseByClass(WindowClass::manageTrackDesign);
                         WindowTrackDesignListReloadTracks();
                     }
                     else
@@ -208,12 +208,12 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* TrackManageOpen(TrackDesignFileRef* tdFileRef)
     {
         auto* windowMgr = Ui::GetWindowManager();
-        windowMgr->CloseByClass(WindowClass::ManageTrackDesign);
+        windowMgr->CloseByClass(WindowClass::manageTrackDesign);
         auto trackDesignManageWindow = std::make_unique<TrackDesignManageWindow>(tdFileRef);
 
         auto* window = windowMgr->Create(
-            std::move(trackDesignManageWindow), WindowClass::ManageTrackDesign, {}, kWindowSize,
-            WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_CENTRE_SCREEN | WF_AUTO_POSITION);
+            std::move(trackDesignManageWindow), WindowClass::manageTrackDesign, {}, kWindowSize,
+            { WindowFlag::stickToFront, WindowFlag::transparent, WindowFlag::centreScreen, WindowFlag::autoPosition });
 
         return window;
     }
@@ -225,12 +225,12 @@ namespace OpenRCT2::Ui::Windows
     static void WindowTrackDeletePromptOpen(TrackDesignFileRef* tdFileRef)
     {
         auto* windowMgr = Ui::GetWindowManager();
-        windowMgr->CloseByClass(WindowClass::TrackDeletePrompt);
+        windowMgr->CloseByClass(WindowClass::trackDeletePrompt);
 
         auto trackDeletePromptWindow = std::make_unique<TrackDeletePromptWindow>(tdFileRef);
 
         windowMgr->Create(
-            std::move(trackDeletePromptWindow), WindowClass::TrackDeletePrompt, {}, kWindowSizeDeletePrompt,
-            WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_AUTO_POSITION | WF_CENTRE_SCREEN);
+            std::move(trackDeletePromptWindow), WindowClass::trackDeletePrompt, {}, kWindowSizeDeletePrompt,
+            { WindowFlag::stickToFront, WindowFlag::transparent, WindowFlag::autoPosition, WindowFlag::centreScreen });
     }
 } // namespace OpenRCT2::Ui::Windows

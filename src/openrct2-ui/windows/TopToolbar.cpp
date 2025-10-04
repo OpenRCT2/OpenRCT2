@@ -393,9 +393,9 @@ namespace OpenRCT2::Ui::Windows
                     case DDIDX_VIEW_CLIPPING:
                     {
                         auto* windowMgr = GetWindowManager();
-                        if (windowMgr->FindByClass(WindowClass::ViewClipping) == nullptr)
+                        if (windowMgr->FindByClass(WindowClass::viewClipping) == nullptr)
                         {
-                            ContextOpenWindow(WindowClass::ViewClipping);
+                            ContextOpenWindow(WindowClass::viewClipping);
                         }
                         else
                         {
@@ -408,7 +408,7 @@ namespace OpenRCT2::Ui::Windows
                         w->viewport->flags ^= VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES;
                         break;
                     case DDIDX_TRANSPARENCY:
-                        ContextOpenWindow(WindowClass::Transparency);
+                        ContextOpenWindow(WindowClass::transparency);
                         break;
                     default:
                         return;
@@ -462,13 +462,13 @@ namespace OpenRCT2::Ui::Windows
                 switch (dropdownIndex)
                 {
                     case 0:
-                        ContextOpenWindow(WindowClass::Map);
+                        ContextOpenWindow(WindowClass::map);
                         break;
                     case 1:
-                        ContextOpenWindow(WindowClass::Viewport);
+                        ContextOpenWindow(WindowClass::viewport);
                         break;
                     case 2:
-                        ContextOpenWindow(WindowClass::Mapgen);
+                        ContextOpenWindow(WindowClass::mapgen);
                         break;
                 }
             }
@@ -687,32 +687,32 @@ namespace OpenRCT2::Ui::Windows
             switch (dropdownIndex)
             {
                 case DDIDX_CHEATS:
-                    ContextOpenWindow(WindowClass::Cheats);
+                    ContextOpenWindow(WindowClass::cheats);
                     break;
                 case DDIDX_TILE_INSPECTOR:
-                    ContextOpenWindow(WindowClass::TileInspector);
+                    ContextOpenWindow(WindowClass::tileInspector);
                     break;
                 case DDIDX_OBJECT_SELECTION:
                 {
                     auto* windowMgr = Ui::GetWindowManager();
                     windowMgr->CloseAll();
-                    ContextOpenWindow(WindowClass::EditorObjectSelection);
+                    ContextOpenWindow(WindowClass::editorObjectSelection);
                     break;
                 }
                 case DDIDX_INVENTIONS_LIST:
-                    ContextOpenWindow(WindowClass::EditorInventionList);
+                    ContextOpenWindow(WindowClass::editorInventionList);
                     break;
                 case DDIDX_SCENARIO_OPTIONS:
-                    ContextOpenWindow(WindowClass::EditorScenarioOptions);
+                    ContextOpenWindow(WindowClass::editorScenarioOptions);
                     break;
                 case DDIDX_ENABLE_SANDBOX_MODE:
-                    CheatsSet(CheatType::SandboxMode, !getGameState().cheats.sandboxMode);
+                    CheatsSet(CheatType::sandboxMode, !getGameState().cheats.sandboxMode);
                     break;
                 case DDIDX_DISABLE_CLEARANCE_CHECKS:
-                    CheatsSet(CheatType::DisableClearanceChecks, !getGameState().cheats.disableClearanceChecks);
+                    CheatsSet(CheatType::disableClearanceChecks, !getGameState().cheats.disableClearanceChecks);
                     break;
                 case DDIDX_DISABLE_SUPPORT_LIMITS:
-                    CheatsSet(CheatType::DisableSupportLimits, !getGameState().cheats.disableSupportLimits);
+                    CheatsSet(CheatType::disableSupportLimits, !getGameState().cheats.disableSupportLimits);
                     break;
             }
         }
@@ -727,8 +727,8 @@ namespace OpenRCT2::Ui::Windows
                 colours[0].withFlag(ColourFlag::translucent, true), Dropdown::Flag::StayOpen, TOP_TOOLBAR_DEBUG_COUNT);
 
             auto* windowMgr = GetWindowManager();
-            gDropdown.items[DDIDX_CONSOLE].setChecked(windowMgr->FindByClass(WindowClass::Console) != nullptr);
-            gDropdown.items[DDIDX_DEBUG_PAINT].setChecked(windowMgr->FindByClass(WindowClass::DebugPaint) != nullptr);
+            gDropdown.items[DDIDX_CONSOLE].setChecked(windowMgr->FindByClass(WindowClass::console) != nullptr);
+            gDropdown.items[DDIDX_DEBUG_PAINT].setChecked(windowMgr->FindByClass(WindowClass::debugPaint) != nullptr);
         }
 
         void debugMenuDropdown(int16_t dropdownIndex)
@@ -747,13 +747,13 @@ namespace OpenRCT2::Ui::Windows
                     case DDIDX_DEBUG_PAINT:
                     {
                         auto* windowMgr = GetWindowManager();
-                        if (windowMgr->FindByClass(WindowClass::DebugPaint) == nullptr)
+                        if (windowMgr->FindByClass(WindowClass::debugPaint) == nullptr)
                         {
-                            ContextOpenWindow(WindowClass::DebugPaint);
+                            ContextOpenWindow(WindowClass::debugPaint);
                         }
                         else
                         {
-                            windowMgr->CloseByClass(WindowClass::DebugPaint);
+                            windowMgr->CloseByClass(WindowClass::debugPaint);
                         }
                         break;
                     }
@@ -783,7 +783,7 @@ namespace OpenRCT2::Ui::Windows
                 switch (dropdownIndex)
                 {
                     case DDIDX_MULTIPLAYER:
-                        ContextOpenWindow(WindowClass::Multiplayer);
+                        ContextOpenWindow(WindowClass::multiplayer);
                         break;
                     case DDIDX_MULTIPLAYER_RECONNECT:
                         Network::Reconnect();
@@ -837,28 +837,28 @@ namespace OpenRCT2::Ui::Windows
                     ToggleFootpathWindow();
                     break;
                 case WIDX_CONSTRUCT_RIDE:
-                    ContextOpenWindow(WindowClass::ConstructRide);
+                    ContextOpenWindow(WindowClass::constructRide);
                     break;
                 case WIDX_RIDES:
-                    ContextOpenWindow(WindowClass::RideList);
+                    ContextOpenWindow(WindowClass::rideList);
                     break;
                 case WIDX_PARK:
-                    ContextOpenWindow(WindowClass::ParkInformation);
+                    ContextOpenWindow(WindowClass::parkInformation);
                     break;
                 case WIDX_STAFF:
-                    ContextOpenWindow(WindowClass::StaffList);
+                    ContextOpenWindow(WindowClass::staffList);
                     break;
                 case WIDX_GUESTS:
-                    ContextOpenWindow(WindowClass::GuestList);
+                    ContextOpenWindow(WindowClass::guestList);
                     break;
                 case WIDX_FINANCES:
-                    ContextOpenWindow(WindowClass::Finances);
+                    ContextOpenWindow(WindowClass::finances);
                     break;
                 case WIDX_RESEARCH:
-                    ContextOpenWindow(WindowClass::Research);
+                    ContextOpenWindow(WindowClass::research);
                     break;
                 case WIDX_NEWS:
-                    ContextOpenWindow(WindowClass::RecentNews);
+                    ContextOpenWindow(WindowClass::recentNews);
                     break;
                 case WIDX_MUTE:
                     OpenRCT2::Audio::ToggleAllSounds();
@@ -958,7 +958,7 @@ namespace OpenRCT2::Ui::Windows
                         case DDIDX_SAVE_GAME_AS:
                             if (gLegacyScene == LegacyScene::scenarioEditor)
                             {
-                                auto intent = Intent(WindowClass::Loadsave);
+                                auto intent = Intent(WindowClass::loadsave);
                                 intent.PutEnumExtra<LoadSaveAction>(INTENT_EXTRA_LOADSAVE_ACTION, LoadSaveAction::save);
                                 intent.PutEnumExtra<LoadSaveType>(INTENT_EXTRA_LOADSAVE_TYPE, LoadSaveType::landscape);
                                 intent.PutExtra(INTENT_EXTRA_PATH, getGameState().scenarioOptions.name);
@@ -971,10 +971,10 @@ namespace OpenRCT2::Ui::Windows
                             }
                             break;
                         case DDIDX_ABOUT:
-                            ContextOpenWindow(WindowClass::About);
+                            ContextOpenWindow(WindowClass::about);
                             break;
                         case DDIDX_OPTIONS:
-                            ContextOpenWindow(WindowClass::Options);
+                            ContextOpenWindow(WindowClass::options);
                             break;
                         case DDIDX_SCREENSHOT:
                             gScreenshotCountdown = 10;
@@ -993,13 +993,13 @@ namespace OpenRCT2::Ui::Windows
                         }
                         break;
                         case DDIDX_UPDATE_AVAILABLE:
-                            ContextOpenWindowView(WV_NEW_VERSION_INFO);
+                            ContextOpenWindowView(WindowView::newVersionInfo);
                             break;
                         case DDIDX_QUIT_TO_MENU:
                         {
                             auto* windowMgr = Ui::GetWindowManager();
-                            windowMgr->CloseByClass(WindowClass::ManageTrackDesign);
-                            windowMgr->CloseByClass(WindowClass::TrackDeletePrompt);
+                            windowMgr->CloseByClass(WindowClass::manageTrackDesign);
+                            windowMgr->CloseByClass(WindowClass::trackDeletePrompt);
                             auto loadOrQuitAction = GameActions::LoadOrQuitAction(
                                 GameActions::LoadOrQuitModes::OpenSavePrompt, PromptMode::saveBeforeQuit);
                             GameActions::Execute(&loadOrQuitAction, gameState);
@@ -1260,23 +1260,23 @@ namespace OpenRCT2::Ui::Windows
                 };
 
                 uint32_t mapImageId = _imageIdByRotation[GetCurrentRotation()];
-                widgets[WIDX_MAP].image = ImageId(mapImageId, FilterPaletteID::PaletteNull);
+                widgets[WIDX_MAP].image = ImageId(mapImageId, FilterPaletteID::paletteNull);
             }
         }
 
         void ApplyAudioState()
         {
             if (!OpenRCT2::Audio::gGameSoundsOff)
-                widgets[WIDX_MUTE].image = ImageId(SPR_G2_TOOLBAR_MUTE, FilterPaletteID::PaletteNull);
+                widgets[WIDX_MUTE].image = ImageId(SPR_G2_TOOLBAR_MUTE, FilterPaletteID::paletteNull);
             else
-                widgets[WIDX_MUTE].image = ImageId(SPR_G2_TOOLBAR_UNMUTE, FilterPaletteID::PaletteNull);
+                widgets[WIDX_MUTE].image = ImageId(SPR_G2_TOOLBAR_UNMUTE, FilterPaletteID::paletteNull);
         }
 
         void ApplyFootpathPressed()
         {
             // Footpath button pressed down
             auto* windowMgr = GetWindowManager();
-            if (windowMgr->FindByClass(WindowClass::Footpath) == nullptr)
+            if (windowMgr->FindByClass(WindowClass::footpath) == nullptr)
                 pressedWidgets &= ~(1uLL << WIDX_PATH);
             else
                 pressedWidgets |= (1uLL << WIDX_PATH);
@@ -1509,8 +1509,8 @@ namespace OpenRCT2::Ui::Windows
     {
         auto* windowMgr = GetWindowManager();
         auto* window = windowMgr->Create<TopToolbar>(
-            WindowClass::TopToolbar, ScreenCoordsXY(0, 0), { ContextGetWidth(), kTopToolbarHeight + 1 },
-            WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND | WF_NO_TITLE_BAR);
+            WindowClass::topToolbar, ScreenCoordsXY(0, 0), { ContextGetWidth(), kTopToolbarHeight + 1 },
+            { WindowFlag::stickToFront, WindowFlag::transparent, WindowFlag::noBackground, WindowFlag::noTitleBar });
 
         window->setWidgets(_topToolbarWidgets);
 

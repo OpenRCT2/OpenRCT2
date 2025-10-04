@@ -611,7 +611,7 @@ static void AwardAdd(AwardType type)
     {
         News::AddItemToQueue(News::ItemType::award, AwardGetNews(type), 0, {});
     }
-    Ui::GetWindowManager()->InvalidateByClass(WindowClass::ParkInformation);
+    Ui::GetWindowManager()->InvalidateByClass(WindowClass::parkInformation);
 }
 
 /**
@@ -637,7 +637,7 @@ void AwardUpdateAll()
     if (res != std::end(currentAwards))
     {
         currentAwards.erase(res, std::end(currentAwards));
-        windowMgr->InvalidateByClass(WindowClass::ParkInformation);
+        windowMgr->InvalidateByClass(WindowClass::parkInformation);
     }
 
     // Only add new awards if park is open

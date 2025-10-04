@@ -67,11 +67,12 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* TitleLogoOpen()
     {
         auto* windowMgr = GetWindowManager();
-        auto* window = windowMgr->BringToFrontByClass(WindowClass::TitleLogo);
+        auto* window = windowMgr->BringToFrontByClass(WindowClass::titleLogo);
         if (window == nullptr)
         {
             window = windowMgr->Create<TitleLogoWindow>(
-                WindowClass::TitleLogo, ScreenCoordsXY(0, 0), kWindowSize, WF_STICK_TO_BACK | WF_TRANSPARENT | WF_NO_TITLE_BAR);
+                WindowClass::titleLogo, ScreenCoordsXY(0, 0), kWindowSize,
+                { WindowFlag::stickToBack, WindowFlag::transparent, WindowFlag::noTitleBar });
         }
         return window;
     }

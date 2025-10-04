@@ -226,7 +226,7 @@ namespace OpenRCT2::Ui::Windows
                     },
                     [](const ParkPreview preview) {
                         auto* windowMgr = GetWindowManager();
-                        auto* wnd = windowMgr->FindByClass(WindowClass::ScenarioSelect);
+                        auto* wnd = windowMgr->FindByClass(WindowClass::scenarioSelect);
                         if (wnd == nullptr)
                         {
                             return;
@@ -519,7 +519,7 @@ namespace OpenRCT2::Ui::Windows
                         mutableScreenCoords.y -= scenarioItemHeight;
                         if (mutableScreenCoords.y < 0 && !listItem.scenario.is_locked)
                         {
-                            OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Click1, 0, windowPos.x + (width / 2));
+                            OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::click1, 0, windowPos.x + (width / 2));
                             gFirstTimeSaving = true;
                             // Callback will likely close this window! So should always return after it.
                             _callback(listItem.scenario.scenario->Path);
@@ -580,7 +580,7 @@ namespace OpenRCT2::Ui::Windows
                         bool isHighlighted = _highlightedScenario == scenario;
                         if (isHighlighted)
                         {
-                            GfxFilterRect(rt, { 0, y, width, y + scenarioItemHeight - 1 }, FilterPaletteID::PaletteDarken1);
+                            GfxFilterRect(rt, { 0, y, width, y + scenarioItemHeight - 1 }, FilterPaletteID::paletteDarken1);
                         }
 
                         bool isCompleted = scenario->Highscore != nullptr;
@@ -860,14 +860,14 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* ScenarioselectOpen(std::function<void(std::string_view)> callback)
     {
         auto* windowMgr = GetWindowManager();
-        auto* window = static_cast<ScenarioSelectWindow*>(windowMgr->BringToFrontByClass(WindowClass::ScenarioSelect));
+        auto* window = static_cast<ScenarioSelectWindow*>(windowMgr->BringToFrontByClass(WindowClass::scenarioSelect));
         if (window != nullptr)
         {
             return window;
         }
 
         window = windowMgr->Create<ScenarioSelectWindow>(
-            WindowClass::ScenarioSelect, {}, kWindowSize, WF_AUTO_POSITION | WF_CENTRE_SCREEN, callback);
+            WindowClass::scenarioSelect, {}, kWindowSize, { WindowFlag::autoPosition, WindowFlag::centreScreen }, callback);
         return window;
     }
 } // namespace OpenRCT2::Ui::Windows

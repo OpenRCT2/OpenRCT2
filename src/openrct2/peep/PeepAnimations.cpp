@@ -233,10 +233,13 @@ namespace OpenRCT2
                         .objectId = ObjectEntryIndex(i),
                         .group = group,
                         .legacyPosition = animObj->GetLegacyPosition(group),
+                        .rawName = animObj->GetCostumeName(),
                         .scriptName = scriptName,
                     });
             }
         }
+
+        std::sort(groups.begin(), groups.end(), [](const auto& a, const auto& b) { return a.rawName < b.rawName; });
 
         return groups;
     }

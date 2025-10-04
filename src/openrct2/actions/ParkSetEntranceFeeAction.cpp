@@ -67,7 +67,7 @@ namespace OpenRCT2::GameActions
         getGameState().park.entranceFee = _fee;
 
         auto* windowMgr = Ui::GetWindowManager();
-        windowMgr->InvalidateByClass(WindowClass::ParkInformation);
+        windowMgr->InvalidateByClass(WindowClass::parkInformation);
 
         return Result();
     }

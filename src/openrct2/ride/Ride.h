@@ -945,3 +945,5 @@ std::vector<RideId> GetTracklessRides();
 
 void CircusMusicUpdate(Ride& ride);
 void DefaultMusicUpdate(Ride& ride);
+
+RideMode RideModeGetBlockSectionedCounterpart(RideMode originalMode);

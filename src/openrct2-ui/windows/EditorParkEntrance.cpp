@@ -57,7 +57,7 @@ namespace OpenRCT2::Ui::Windows
         WIDX_ROTATE_ENTRANCE_BUTTON,
     };
 
-    validate_global_widx(WC_EDITOR_PARK_ENTRANCE, WIDX_ROTATE_ENTRANCE_BUTTON);
+    VALIDATE_GLOBAL_WIDX(WC_EDITOR_PARK_ENTRANCE, WIDX_ROTATE_ENTRANCE_BUTTON);
 
     // clang-format off
     static constexpr auto _widgets = makeWidgets(
@@ -223,7 +223,7 @@ namespace OpenRCT2::Ui::Windows
                 auto result = GameActions::Execute(&gameAction, getGameState());
                 if (result.Error == GameActions::Status::Ok)
                 {
-                    Audio::Play3D(Audio::SoundId::PlaceItem, result.Position);
+                    Audio::Play3D(Audio::SoundId::placeItem, result.Position);
                 }
             }
         }
@@ -390,7 +390,7 @@ namespace OpenRCT2::Ui::Windows
 
             _selectedEntranceType = selected;
 
-            Audio::Play(Audio::SoundId::Click1, 0, windowPos.x + (width / 2));
+            Audio::Play(Audio::SoundId::click1, 0, windowPos.x + (width / 2));
             invalidate();
         }
     };
@@ -399,11 +399,12 @@ namespace OpenRCT2::Ui::Windows
     {
         // Check if window is already open
         auto* windowMgr = GetWindowManager();
-        auto* window = windowMgr->BringToFrontByClass(WindowClass::EditorParkEntrance);
+        auto* window = windowMgr->BringToFrontByClass(WindowClass::editorParkEntrance);
         if (window != nullptr)
             return window;
 
-        window = windowMgr->Create<EditorParkEntrance>(WindowClass::EditorParkEntrance, kWindowSize, WF_10 | WF_RESIZABLE);
+        window = windowMgr->Create<EditorParkEntrance>(
+            WindowClass::editorParkEntrance, kWindowSize, { WindowFlag::higherContrastOnPress, WindowFlag::resizable });
 
         return window;
     }

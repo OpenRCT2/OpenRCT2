@@ -132,7 +132,7 @@ static void TickCurrent()
     if (ticks == 1 && (gLegacyScene == LegacyScene::playing))
     {
         // Play sound
-        OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::NewsItem, 0, ContextGetWidth() / 2);
+        OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::newsItem, 0, ContextGetWidth() / 2);
     }
 }
 
@@ -193,7 +193,7 @@ void News::ItemQueues::ArchiveCurrent()
 
     // Invalidate the news window
     auto* windowMgr = Ui::GetWindowManager();
-    windowMgr->InvalidateByClass(WindowClass::RecentNews);
+    windowMgr->InvalidateByClass(WindowClass::recentNews);
 
     // Dequeue the current news item, shift news up
     Recent.pop_front();
@@ -372,7 +372,7 @@ void News::OpenSubject(News::ItemType type, int32_t subject)
     {
         case News::ItemType::ride:
         {
-            auto intent = Intent(WindowClass::Ride);
+            auto intent = Intent(WindowClass::ride);
             intent.PutExtra(INTENT_EXTRA_RIDE_ID, subject);
             ContextOpenIntent(&intent);
             break;
@@ -383,17 +383,17 @@ void News::OpenSubject(News::ItemType type, int32_t subject)
             auto peep = getGameState().entities.TryGetEntity<Peep>(EntityId::FromUnderlying(subject));
             if (peep != nullptr)
             {
-                auto intent = Intent(WindowClass::Peep);
+                auto intent = Intent(WindowClass::peep);
                 intent.PutExtra(INTENT_EXTRA_PEEP, peep);
                 ContextOpenIntent(&intent);
             }
             break;
         }
         case News::ItemType::money:
-            ContextOpenWindow(WindowClass::Finances);
+            ContextOpenWindow(WindowClass::finances);
             break;
         case News::ItemType::campaign:
-            ContextOpenWindowView(WV_FINANCE_MARKETING);
+            ContextOpenWindowView(WindowView::financeMarketing);
             break;
         case News::ItemType::research:
         {
@@ -414,17 +414,17 @@ void News::OpenSubject(News::ItemType type, int32_t subject)
         }
         case News::ItemType::peeps:
         {
-            auto intent = Intent(WindowClass::GuestList);
+            auto intent = Intent(WindowClass::guestList);
             intent.PutExtra(INTENT_EXTRA_GUEST_LIST_FILTER, static_cast<int32_t>(GuestListFilterType::guestsThinkingX));
             intent.PutExtra(INTENT_EXTRA_RIDE_ID, subject);
             ContextOpenIntent(&intent);
             break;
         }
         case News::ItemType::award:
-            ContextOpenWindowView(WV_PARK_AWARDS);
+            ContextOpenWindowView(WindowView::parkAwards);
             break;
         case News::ItemType::graph:
-            ContextOpenWindowView(WV_PARK_RATING);
+            ContextOpenWindowView(WindowView::parkRating);
             break;
         case News::ItemType::null:
         case News::ItemType::blank:
@@ -458,7 +458,7 @@ void News::DisableNewsItems(News::ItemType type, uint32_t assoc)
         {
             newsItem.setFlags(News::ItemFlags::hasButton);
             auto* windowMgr = Ui::GetWindowManager();
-            windowMgr->InvalidateByClass(WindowClass::RecentNews);
+            windowMgr->InvalidateByClass(WindowClass::recentNews);
         }
     });
 }

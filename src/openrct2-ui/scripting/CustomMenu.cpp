@@ -43,17 +43,17 @@ namespace OpenRCT2::Scripting
         RegisteredShortcut registeredShortcut(Id, Text, [this]() { Invoke(); });
         for (const auto& binding : bindings)
         {
-            registeredShortcut.Default.emplace_back(binding);
+            registeredShortcut.standard.emplace_back(binding);
         }
-        registeredShortcut.Current = registeredShortcut.Default;
-        shortcutManager.RegisterShortcut(std::move(registeredShortcut));
-        shortcutManager.LoadUserBindings();
+        registeredShortcut.current = registeredShortcut.standard;
+        shortcutManager.registerShortcut(std::move(registeredShortcut));
+        shortcutManager.loadUserBindings();
     }
 
     CustomShortcut::~CustomShortcut()
     {
         auto& shortcutManager = GetShortcutManager();
-        shortcutManager.RemoveShortcut(Id);
+        shortcutManager.removeShortcut(Id);
     }
 
     void CustomShortcut::Invoke() const
@@ -270,7 +270,7 @@ namespace OpenRCT2::Scripting
                 customTool.onFinish = dukValue["onFinish"];
 
                 auto* windowMgr = GetWindowManager();
-                auto toolbarWindow = windowMgr->FindByClass(WindowClass::TopToolbar);
+                auto toolbarWindow = windowMgr->FindByClass(WindowClass::topToolbar);
                 if (toolbarWindow != nullptr)
                 {
                     // Use a widget that does not exist on top toolbar but also make sure it isn't

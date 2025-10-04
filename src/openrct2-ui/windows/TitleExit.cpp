@@ -58,7 +58,7 @@ namespace OpenRCT2::Ui::Windows
     {
         auto* windowMgr = GetWindowManager();
         return windowMgr->Create<TitleExitWindow>(
-            WindowClass::TitleExit, ScreenCoordsXY(ContextGetWidth() - 40, ContextGetHeight() - 64), kWindowSize,
-            WF_STICK_TO_BACK | WF_TRANSPARENT | WF_NO_TITLE_BAR);
+            WindowClass::titleExit, ScreenCoordsXY(ContextGetWidth() - 40, ContextGetHeight() - 64), kWindowSize,
+            { WindowFlag::stickToBack, WindowFlag::transparent, WindowFlag::noTitleBar });
     }
 } // namespace OpenRCT2::Ui::Windows

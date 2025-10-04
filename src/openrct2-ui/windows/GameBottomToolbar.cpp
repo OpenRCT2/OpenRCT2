@@ -80,7 +80,7 @@ namespace OpenRCT2::Ui::Windows
         colour_t GetHoverWidgetColour(WidgetIndex index)
         {
             return (
-                gHoverWidget.windowClassification == WindowClass::BottomToolbar && gHoverWidget.widgetIndex == index
+                gHoverWidget.windowClassification == WindowClass::bottomToolbar && gHoverWidget.widgetIndex == index
                     ? static_cast<colour_t>(COLOUR_WHITE)
                     : colours[0].colour);
         }
@@ -433,18 +433,18 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_LEFT_OUTSET:
                 case WIDX_MONEY:
                     if (!(getGameState().park.flags & PARK_FLAGS_NO_MONEY))
-                        ContextOpenWindow(WindowClass::Finances);
+                        ContextOpenWindow(WindowClass::finances);
                     break;
                 case WIDX_GUESTS:
-                    ContextOpenWindowView(WV_PARK_GUESTS);
+                    ContextOpenWindowView(WindowView::parkGuests);
                     break;
                 case WIDX_PARK_RATING:
-                    ContextOpenWindowView(WV_PARK_RATING);
+                    ContextOpenWindowView(WindowView::parkRating);
                     break;
                 case WIDX_MIDDLE_INSET:
                     if (News::IsQueueEmpty())
                     {
-                        ContextOpenWindow(WindowClass::RecentNews);
+                        ContextOpenWindow(WindowClass::recentNews);
                     }
                     else
                     {
@@ -474,7 +474,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 case WIDX_RIGHT_OUTSET:
                 case WIDX_DATE:
-                    ContextOpenWindow(WindowClass::RecentNews);
+                    ContextOpenWindow(WindowClass::recentNews);
                     break;
             }
         }
@@ -620,18 +620,18 @@ namespace OpenRCT2::Ui::Windows
             // Draw panel grey backgrounds
             auto leftTop = windowPos + ScreenCoordsXY{ leftWidget.left, leftWidget.top };
             auto rightBottom = windowPos + ScreenCoordsXY{ leftWidget.right, leftWidget.bottom };
-            GfxFilterRect(rt, { leftTop, rightBottom }, FilterPaletteID::Palette51);
+            GfxFilterRect(rt, { leftTop, rightBottom }, FilterPaletteID::palette51);
 
             leftTop = windowPos + ScreenCoordsXY{ rightWidget.left, rightWidget.top };
             rightBottom = windowPos + ScreenCoordsXY{ rightWidget.right, rightWidget.bottom };
-            GfxFilterRect(rt, { leftTop, rightBottom }, FilterPaletteID::Palette51);
+            GfxFilterRect(rt, { leftTop, rightBottom }, FilterPaletteID::palette51);
 
             if (ThemeGetFlags() & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR)
             {
                 // Draw grey background
                 leftTop = windowPos + ScreenCoordsXY{ middleWidget.left, middleWidget.top };
                 rightBottom = windowPos + ScreenCoordsXY{ middleWidget.right, middleWidget.bottom };
-                GfxFilterRect(rt, { leftTop, rightBottom }, FilterPaletteID::Palette51);
+                GfxFilterRect(rt, { leftTop, rightBottom }, FilterPaletteID::palette51);
             }
 
             drawWidgets(rt);
@@ -692,8 +692,8 @@ namespace OpenRCT2::Ui::Windows
 
         auto* windowMgr = GetWindowManager();
         auto* window = windowMgr->Create<GameBottomToolbar>(
-            WindowClass::BottomToolbar, ScreenCoordsXY(0, screenHeight - toolbarHeight), { screenWidth, toolbarHeight },
-            WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND | WF_NO_TITLE_BAR);
+            WindowClass::bottomToolbar, ScreenCoordsXY(0, screenHeight - toolbarHeight), { screenWidth, toolbarHeight },
+            { WindowFlag::stickToFront, WindowFlag::transparent, WindowFlag::noBackground, WindowFlag::noTitleBar });
 
         return window;
     }
@@ -703,7 +703,7 @@ namespace OpenRCT2::Ui::Windows
         if (gLegacyScene == LegacyScene::playing)
         {
             auto* windowMgr = Ui::GetWindowManager();
-            windowMgr->InvalidateWidgetByClass(WindowClass::BottomToolbar, WIDX_MIDDLE_OUTSET);
+            windowMgr->InvalidateWidgetByClass(WindowClass::bottomToolbar, WIDX_MIDDLE_OUTSET);
         }
     }
 } // namespace OpenRCT2::Ui::Windows

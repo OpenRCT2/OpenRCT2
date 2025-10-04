@@ -174,7 +174,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
 
                 case WIDX_RATE:
-                    const auto res = String::Parse<int32_t>(text);
+                    const auto res = String::tryParse<int32_t>(text);
                     if (res.has_value())
                     {
                         int32_t rate = res.value();
@@ -223,6 +223,7 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* CustomCurrencyOpen()
     {
         auto* windowMgr = GetWindowManager();
-        return windowMgr->FocusOrCreate<CustomCurrencyWindow>(WindowClass::CustomCurrencyConfig, kWindowSize, WF_CENTRE_SCREEN);
+        return windowMgr->FocusOrCreate<CustomCurrencyWindow>(
+            WindowClass::customCurrencyConfig, kWindowSize, WindowFlag::centreScreen);
     }
 } // namespace OpenRCT2::Ui::Windows

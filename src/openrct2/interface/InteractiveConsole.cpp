@@ -800,7 +800,7 @@ static void ConsoleCommandSet(InteractiveConsole& console, const arguments_t& ar
             money64 money = ToMoney64FromGBP(double_val[0]);
             if (gameState.park.cash != money)
             {
-                ConsoleSetVariableAction<GameActions::CheatSetAction>(console, varName, CheatType::SetMoney, money);
+                ConsoleSetVariableAction<GameActions::CheatSetAction>(console, varName, CheatType::setMoney, money);
             }
             else
             {
@@ -888,7 +888,7 @@ static void ConsoleCommandSet(InteractiveConsole& console, const arguments_t& ar
         }
         else if (varName == "no_money" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
-            ConsoleSetVariableAction<GameActions::CheatSetAction>(console, varName, CheatType::NoMoney, int_val[0] != 0);
+            ConsoleSetVariableAction<GameActions::CheatSetAction>(console, varName, CheatType::noMoney, int_val[0] != 0);
         }
         else if (varName == "difficult_park_rating" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
@@ -970,7 +970,7 @@ static void ConsoleCommandSet(InteractiveConsole& console, const arguments_t& ar
             if (gameState.cheats.sandboxMode != (int_val[0] != 0))
             {
                 ConsoleSetVariableAction<GameActions::CheatSetAction>(
-                    console, varName, CheatType::SandboxMode, int_val[0] != 0);
+                    console, varName, CheatType::sandboxMode, int_val[0] != 0);
             }
             else
             {
@@ -982,7 +982,7 @@ static void ConsoleCommandSet(InteractiveConsole& console, const arguments_t& ar
             if (gameState.cheats.disableClearanceChecks != (int_val[0] != 0))
             {
                 ConsoleSetVariableAction<GameActions::CheatSetAction>(
-                    console, varName, CheatType::DisableClearanceChecks, int_val[0] != 0);
+                    console, varName, CheatType::disableClearanceChecks, int_val[0] != 0);
             }
             else
             {
@@ -994,7 +994,7 @@ static void ConsoleCommandSet(InteractiveConsole& console, const arguments_t& ar
             if (gameState.cheats.disableSupportLimits != (int_val[0] != 0))
             {
                 ConsoleSetVariableAction<GameActions::CheatSetAction>(
-                    console, varName, CheatType::DisableSupportLimits, int_val[0] != 0);
+                    console, varName, CheatType::disableSupportLimits, int_val[0] != 0);
             }
             else
             {
@@ -1187,7 +1187,7 @@ static void ConsoleCommandOpen(InteractiveConsole& console, const arguments_t& a
                 // Only this window should be open for safety reasons
                 auto* windowMgr = Ui::GetWindowManager();
                 windowMgr->CloseAll();
-                ContextOpenWindow(WindowClass::EditorObjectSelection);
+                ContextOpenWindow(WindowClass::editorObjectSelection);
             }
         }
         else if (argv[0] == "inventions_list" && InvalidArguments(&invalidTitle, !title))
@@ -1198,20 +1198,20 @@ static void ConsoleCommandOpen(InteractiveConsole& console, const arguments_t& a
             }
             else
             {
-                ContextOpenWindow(WindowClass::EditorInventionList);
+                ContextOpenWindow(WindowClass::editorInventionList);
             }
         }
         else if (argv[0] == "scenario_options" && InvalidArguments(&invalidTitle, !title))
         {
-            ContextOpenWindow(WindowClass::EditorScenarioOptions);
+            ContextOpenWindow(WindowClass::editorScenarioOptions);
         }
         else if (argv[0] == "options")
         {
-            ContextOpenWindow(WindowClass::Options);
+            ContextOpenWindow(WindowClass::options);
         }
         else if (argv[0] == "themes")
         {
-            ContextOpenWindow(WindowClass::Themes);
+            ContextOpenWindow(WindowClass::themes);
         }
         else if (invalidTitle)
         {
@@ -1312,7 +1312,7 @@ static void ConsoleCommandForceDate([[maybe_unused]] InteractiveConsole& console
     GameActions::Execute(&setDateAction, getGameState());
 
     auto* windowMgr = Ui::GetWindowManager();
-    windowMgr->InvalidateByClass(WindowClass::BottomToolbar);
+    windowMgr->InvalidateByClass(WindowClass::bottomToolbar);
 }
 
 static void ConsoleCommandLoadPark([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)

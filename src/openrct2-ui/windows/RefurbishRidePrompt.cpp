@@ -96,19 +96,19 @@ namespace OpenRCT2::Ui::Windows
         RefurbishRidePromptWindow* newWindow;
 
         auto* windowMgr = GetWindowManager();
-        WindowBase* w = windowMgr->FindByClass(WindowClass::DemolishRidePrompt);
+        WindowBase* w = windowMgr->FindByClass(WindowClass::demolishRidePrompt);
         if (w != nullptr)
         {
             auto windowPos = w->windowPos;
             windowMgr->Close(*w);
 
             newWindow = windowMgr->Create<RefurbishRidePromptWindow>(
-                WindowClass::DemolishRidePrompt, windowPos, kWindowSize, WF_TRANSPARENT);
+                WindowClass::demolishRidePrompt, windowPos, kWindowSize, WindowFlag::transparent);
         }
         else
         {
             newWindow = windowMgr->Create<RefurbishRidePromptWindow>(
-                WindowClass::DemolishRidePrompt, kWindowSize, WF_CENTRE_SCREEN | WF_TRANSPARENT);
+                WindowClass::demolishRidePrompt, kWindowSize, { WindowFlag::centreScreen, WindowFlag::transparent });
         }
 
         newWindow->SetRide(ride);

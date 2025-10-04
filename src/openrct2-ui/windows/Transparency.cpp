@@ -243,9 +243,9 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* TransparencyOpen()
     {
         auto* windowMgr = GetWindowManager();
-        auto* window = windowMgr->BringToFrontByClass(WindowClass::Transparency);
+        auto* window = windowMgr->BringToFrontByClass(WindowClass::transparency);
         if (window == nullptr)
-            window = windowMgr->Create<TransparencyWindow>(WindowClass::Transparency, ScreenCoordsXY(32, 32), kWindowSize);
+            window = windowMgr->Create<TransparencyWindow>(WindowClass::transparency, ScreenCoordsXY(32, 32), kWindowSize);
 
         return window;
     }

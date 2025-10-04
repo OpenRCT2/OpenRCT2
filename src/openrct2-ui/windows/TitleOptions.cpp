@@ -38,7 +38,7 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_OPTIONS:
-                    ContextOpenWindow(WindowClass::Options);
+                    ContextOpenWindow(WindowClass::options);
                     break;
             }
         }
@@ -55,12 +55,12 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* TitleOptionsOpen()
     {
         auto* windowMgr = GetWindowManager();
-        auto* window = windowMgr->BringToFrontByClass(WindowClass::TitleOptions);
+        auto* window = windowMgr->BringToFrontByClass(WindowClass::titleOptions);
         if (window == nullptr)
         {
             window = windowMgr->Create<TitleOptionsWindow>(
-                WindowClass::TitleOptions, ScreenCoordsXY(ContextGetWidth() - 80, 0), kWindowSize,
-                WF_STICK_TO_BACK | WF_TRANSPARENT | WF_NO_TITLE_BAR);
+                WindowClass::titleOptions, ScreenCoordsXY(ContextGetWidth() - 80, 0), kWindowSize,
+                { WindowFlag::stickToBack, WindowFlag::transparent, WindowFlag::noTitleBar });
         }
 
         return window;

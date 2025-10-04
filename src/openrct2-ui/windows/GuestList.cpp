@@ -268,7 +268,7 @@ namespace OpenRCT2::Ui::Windows
                     close();
                     break;
                 case WIDX_MAP:
-                    ContextOpenWindow(WindowClass::Map);
+                    ContextOpenWindow(WindowClass::map);
                     break;
                 case WIDX_TRACKING:
                     _trackingOnly = !_trackingOnly;
@@ -655,7 +655,7 @@ namespace OpenRCT2::Ui::Windows
                     StringId format = STR_BLACK_STRING;
                     if (index == _highlightedIndex)
                     {
-                        GfxFilterRect(rt, { 0, y, 800, y + kScrollableRowHeight - 1 }, FilterPaletteID::PaletteDarken1);
+                        GfxFilterRect(rt, { 0, y, 800, y + kScrollableRowHeight - 1 }, FilterPaletteID::paletteDarken1);
                         format = STR_WINDOW_COLOUR_2_STRINGID;
                     }
 
@@ -725,7 +725,7 @@ namespace OpenRCT2::Ui::Windows
                     StringId format = STR_BLACK_STRING;
                     if (index == _highlightedIndex)
                     {
-                        GfxFilterRect(rt, { 0, y, 800, y + kSummarisedGuestsRowHeight }, FilterPaletteID::PaletteDarken1);
+                        GfxFilterRect(rt, { 0, y, 800, y + kSummarisedGuestsRowHeight }, FilterPaletteID::paletteDarken1);
                         format = STR_WINDOW_COLOUR_2_STRINGID;
                     }
 
@@ -948,10 +948,11 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* GuestListOpen()
     {
         auto* windowMgr = GetWindowManager();
-        auto* window = windowMgr->BringToFrontByClass(WindowClass::GuestList);
+        auto* window = windowMgr->BringToFrontByClass(WindowClass::guestList);
         if (window == nullptr)
         {
-            window = windowMgr->Create<GuestListWindow>(WindowClass::GuestList, kWindowSize, WF_10 | WF_RESIZABLE);
+            window = windowMgr->Create<GuestListWindow>(
+                WindowClass::guestList, kWindowSize, { WindowFlag::higherContrastOnPress, WindowFlag::resizable });
         }
         return window;
     }
@@ -972,7 +973,7 @@ namespace OpenRCT2::Ui::Windows
     void WindowGuestListRefreshList()
     {
         auto* windowMgr = GetWindowManager();
-        auto* w = windowMgr->FindByClass(WindowClass::GuestList);
+        auto* w = windowMgr->FindByClass(WindowClass::guestList);
         if (w != nullptr)
         {
             static_cast<GuestListWindow*>(w)->RefreshList();

@@ -97,7 +97,7 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr)
             {
-                if (WindowCanResize(*w))
+                if (w->canBeResized())
                 {
                     WindowResizeByDelta(*w, value - w->width, 0);
                 }
@@ -122,7 +122,7 @@ namespace OpenRCT2::Scripting
             if (w != nullptr)
             {
                 value += w->getTitleBarDiffNormal();
-                if (WindowCanResize(*w))
+                if (w->canBeResized())
                 {
                     WindowResizeByDelta(*w, 0, value - w->height);
                 }
@@ -207,7 +207,7 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr)
             {
-                return (w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)) != 0;
+                return (w->flags.hasAny(WindowFlag::stickToBack, WindowFlag::stickToFront));
             }
             return false;
         }
@@ -269,7 +269,7 @@ namespace OpenRCT2::Scripting
         std::string title_get() const
         {
             auto w = GetWindow();
-            if (w != nullptr && w->classification == WindowClass::Custom)
+            if (w != nullptr && w->classification == WindowClass::custom)
             {
                 return GetWindowTitle(w);
             }
@@ -278,7 +278,7 @@ namespace OpenRCT2::Scripting
         void title_set(std::string value)
         {
             auto w = GetWindow();
-            if (w != nullptr && w->classification == WindowClass::Custom)
+            if (w != nullptr && w->classification == WindowClass::custom)
             {
                 UpdateWindowTitle(w, value);
             }
@@ -287,7 +287,7 @@ namespace OpenRCT2::Scripting
         int32_t tabIndex_get() const
         {
             auto w = GetWindow();
-            if (w != nullptr && w->classification == WindowClass::Custom)
+            if (w != nullptr && w->classification == WindowClass::custom)
             {
                 return w->page;
             }
@@ -296,7 +296,7 @@ namespace OpenRCT2::Scripting
         void tabIndex_set(int32_t tab)
         {
             auto w = GetWindow();
-            if (w != nullptr && w->classification == WindowClass::Custom)
+            if (w != nullptr && w->classification == WindowClass::custom)
             {
                 UpdateWindowTab(w, tab);
             }
@@ -334,7 +334,7 @@ namespace OpenRCT2::Scripting
             {
                 auto* windowMgr = Ui::GetWindowManager();
                 w = windowMgr->BringToFront(*w);
-                w->flags |= WF_WHITE_BORDER_MASK;
+                w->flash();
             }
         }
 

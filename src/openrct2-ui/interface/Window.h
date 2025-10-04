@@ -83,7 +83,6 @@ namespace OpenRCT2::Ui::Windows
     void WindowRelocateWindows(int32_t width, int32_t height);
 
     bool WindowSetResize(WindowBase& w, ScreenSize minSize, ScreenSize maxSize);
-    bool WindowCanResize(const WindowBase& w);
 
     void InvalidateAllWindowsAfterInput();
 

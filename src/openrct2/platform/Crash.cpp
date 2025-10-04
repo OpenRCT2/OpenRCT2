@@ -13,6 +13,7 @@
     #include <iterator>
     #include <map>
     #include <memory>
+    #include <mutex>
     #include <stdio.h>
 
     #if defined(_WIN32)
@@ -55,8 +56,9 @@ static const wchar_t* _wszCommitSha1Short = WSZ("");
 // OPENRCT2_ARCHITECTURE is required to be defined in version.h
 static const wchar_t* _wszArchitecture = WSZ(OPENRCT2_ARCHITECTURE);
 static std::map<std::wstring, std::wstring> _uploadFiles;
+static std::mutex _uploadFilesMutex;
 
-    #define BACKTRACE_TOKEN "03ef82f2423418e09421e7758ee960d699f02146056e27c4e7eab5d08eb7d675"
+    #define BACKTRACE_TOKEN "b5ede38e89aaf5db19dd58afe0aeae1dba849d27b22f19734d6b60bf8c9d6351"
 
 using namespace OpenRCT2;
 
@@ -345,6 +347,7 @@ CExceptionHandler CrashInit()
 void CrashRegisterAdditionalFile(const std::string& key, const std::string& path)
 {
 #ifdef USE_BREAKPAD
+    std::lock_guard<std::mutex> lock(_uploadFilesMutex);
     _uploadFiles[String::toWideChar(key.c_str())] = String::toWideChar(path.c_str());
 #endif // USE_BREAKPAD
 }
@@ -352,6 +355,7 @@ void CrashRegisterAdditionalFile(const std::string& key, const std::string& path
 void CrashUnregisterAdditionalFile(const std::string& key)
 {
 #ifdef USE_BREAKPAD
+    std::lock_guard<std::mutex> lock(_uploadFilesMutex);
     auto it = _uploadFiles.find(String::toWideChar(key.c_str()));
     if (it != _uploadFiles.end())
     {

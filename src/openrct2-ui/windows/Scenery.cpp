@@ -104,10 +104,10 @@ namespace OpenRCT2::Ui::Windows
         WIDX_SCENERY_TAB_1,
     };
 
-    validate_global_widx(WC_SCENERY, WIDX_SCENERY_BACKGROUND);
-    validate_global_widx(WC_SCENERY, WIDX_SCENERY_TAB_1);
-    validate_global_widx(WC_SCENERY, WIDX_SCENERY_ROTATE_OBJECTS_BUTTON);
-    validate_global_widx(WC_SCENERY, WIDX_SCENERY_EYEDROPPER_BUTTON);
+    VALIDATE_GLOBAL_WIDX(WC_SCENERY, WIDX_SCENERY_BACKGROUND);
+    VALIDATE_GLOBAL_WIDX(WC_SCENERY, WIDX_SCENERY_TAB_1);
+    VALIDATE_GLOBAL_WIDX(WC_SCENERY, WIDX_SCENERY_ROTATE_OBJECTS_BUTTON);
+    VALIDATE_GLOBAL_WIDX(WC_SCENERY, WIDX_SCENERY_EYEDROPPER_BUTTON);
 
     // clang-format off
     static constexpr auto WindowSceneryBaseWidgets = makeWidgets(
@@ -260,10 +260,10 @@ namespace OpenRCT2::Ui::Windows
             if (gWindowSceneryScatterEnabled)
             {
                 auto* windowMgr = Ui::GetWindowManager();
-                windowMgr->CloseByClass(WindowClass::SceneryScatter);
+                windowMgr->CloseByClass(WindowClass::sceneryScatter);
             }
 
-            if (isToolActive(WindowClass::Scenery))
+            if (isToolActive(WindowClass::scenery))
                 ToolCancel();
         }
 
@@ -286,14 +286,14 @@ namespace OpenRCT2::Ui::Windows
                     _sceneryPaintEnabled ^= true;
                     gWindowSceneryEyedropperEnabled = false;
                     if (gWindowSceneryScatterEnabled)
-                        windowMgr->CloseByClass(WindowClass::SceneryScatter);
+                        windowMgr->CloseByClass(WindowClass::sceneryScatter);
                     invalidate();
                     break;
                 case WIDX_SCENERY_EYEDROPPER_BUTTON:
                     _sceneryPaintEnabled = false;
                     gWindowSceneryEyedropperEnabled = !gWindowSceneryEyedropperEnabled;
                     if (gWindowSceneryScatterEnabled)
-                        windowMgr->CloseByClass(WindowClass::SceneryScatter);
+                        windowMgr->CloseByClass(WindowClass::sceneryScatter);
                     SceneryRemoveGhostToolPlacement();
                     invalidate();
                     break;
@@ -301,7 +301,7 @@ namespace OpenRCT2::Ui::Windows
                     _sceneryPaintEnabled = false;
                     gWindowSceneryEyedropperEnabled = false;
                     if (gWindowSceneryScatterEnabled)
-                        windowMgr->CloseByClass(WindowClass::SceneryScatter);
+                        windowMgr->CloseByClass(WindowClass::sceneryScatter);
                     else if (
                         Network::GetMode() != Network::Mode::client
                         || Network::CanPerformCommand(Network::GetCurrentPlayerGroupIndex(), -2))
@@ -530,7 +530,7 @@ namespace OpenRCT2::Ui::Windows
                 invalidateWidget(WIDX_FILTER_TEXT_BOX);
             }
 
-            if (!isToolActive(WindowClass::Scenery))
+            if (!isToolActive(WindowClass::scenery))
             {
                 close();
                 return;
@@ -977,7 +977,7 @@ namespace OpenRCT2::Ui::Windows
                 gWindowSceneryRotation = rotation.value();
             }
             gWindowSceneryEyedropperEnabled = false;
-            Audio::Play(Audio::SoundId::Click1, 0, ContextGetWidth() / 2);
+            Audio::Play(Audio::SoundId::click1, 0, ContextGetWidth() / 2);
             _hoverCounter = -16;
             gSceneryPlaceCost = kMoney64Undefined;
             invalidate();
@@ -1094,7 +1094,7 @@ namespace OpenRCT2::Ui::Windows
             PrepareWidgets();
 
             auto* windowMgr = Ui::GetWindowManager();
-            windowMgr->InvalidateByClass(WindowClass::Scenery);
+            windowMgr->InvalidateByClass(WindowClass::scenery);
         }
 
         int32_t GetRequiredWidth() const
@@ -1422,16 +1422,16 @@ namespace OpenRCT2::Ui::Windows
 
                 if (tabInfo.IsMisc())
                 {
-                    widget.image = ImageId(SPR_TAB_QUESTION, FilterPaletteID::PaletteNull);
+                    widget.image = ImageId(SPR_TAB_QUESTION, FilterPaletteID::paletteNull);
                 }
                 else if (tabInfo.IsAll())
                 {
-                    widget.image = ImageId(SPR_TAB, FilterPaletteID::PaletteNull);
+                    widget.image = ImageId(SPR_TAB, FilterPaletteID::paletteNull);
                 }
                 else if (tabInfo.IsSceneryGroup())
                 {
                     // Default tab image
-                    widget.image = ImageId(SPR_TAB_QUESTION, FilterPaletteID::PaletteNull);
+                    widget.image = ImageId(SPR_TAB_QUESTION, FilterPaletteID::paletteNull);
 
                     // Scenery Group image
                     auto scgEntry = tabInfo.GetSceneryGroupEntry();
@@ -1521,7 +1521,7 @@ namespace OpenRCT2::Ui::Windows
             _sceneryPaintEnabled = false;
             gWindowSceneryEyedropperEnabled = false;
 
-            Audio::Play(Audio::SoundId::Click1, 0, windowPos.x + (width / 2));
+            Audio::Play(Audio::SoundId::click1, 0, windowPos.x + (width / 2));
             _hoverCounter = -16;
             gSceneryPlaceCost = kMoney64Undefined;
             invalidate();
@@ -1613,7 +1613,7 @@ namespace OpenRCT2::Ui::Windows
 
                 if (_tabEntries[tabIndex].IsAll())
                 {
-                    auto imageId = ImageId(SPR_G2_INFINITY, FilterPaletteID::PaletteNull);
+                    auto imageId = ImageId(SPR_G2_INFINITY, FilterPaletteID::paletteNull);
                     GfxDrawSprite(rt, imageId, offset + widgetCoordsXY);
                 }
             }
@@ -2405,7 +2405,7 @@ namespace OpenRCT2::Ui::Windows
                 auto& im = GetInputManager();
                 if (!gSceneryCtrlPressed)
                 {
-                    if (im.IsModifierKeyPressed(ModifierKey::ctrl))
+                    if (im.isModifierKeyPressed(ModifierKey::ctrl))
                     {
                         // CTRL pressed
                         constexpr auto flag = EnumsToFlags(
@@ -2423,7 +2423,7 @@ namespace OpenRCT2::Ui::Windows
                 }
                 else
                 {
-                    if (!(im.IsModifierKeyPressed(ModifierKey::ctrl)))
+                    if (!(im.isModifierKeyPressed(ModifierKey::ctrl)))
                     {
                         // CTRL not pressed
                         gSceneryCtrlPressed = false;
@@ -2432,7 +2432,7 @@ namespace OpenRCT2::Ui::Windows
 
                 if (!gSceneryShiftPressed)
                 {
-                    if (im.IsModifierKeyPressed(ModifierKey::shift))
+                    if (im.isModifierKeyPressed(ModifierKey::shift))
                     {
                         // SHIFT pressed
                         gSceneryShiftPressed = true;
@@ -2443,7 +2443,7 @@ namespace OpenRCT2::Ui::Windows
                 }
                 else
                 {
-                    if (im.IsModifierKeyPressed(ModifierKey::shift))
+                    if (im.isModifierKeyPressed(ModifierKey::shift))
                     {
                         // SHIFT pressed
                         gSceneryShiftPressZOffset = (gSceneryShiftPressY - screenPos.y + 4);
@@ -2472,7 +2472,7 @@ namespace OpenRCT2::Ui::Windows
             Direction* outRotation)
         {
             auto* windowMgr = GetWindowManager();
-            auto* w = windowMgr->FindByClass(WindowClass::Scenery);
+            auto* w = windowMgr->FindByClass(WindowClass::scenery);
 
             if (w == nullptr)
             {
@@ -2670,7 +2670,7 @@ namespace OpenRCT2::Ui::Windows
             const ScreenCoordsXY& sourceScreenPos, ObjectEntryIndex sceneryIndex, CoordsXY& gridPos, int32_t* outZ)
         {
             auto* windowMgr = GetWindowManager();
-            auto* w = windowMgr->FindByClass(WindowClass::Scenery);
+            auto* w = windowMgr->FindByClass(WindowClass::scenery);
 
             if (w == nullptr)
             {
@@ -2704,7 +2704,7 @@ namespace OpenRCT2::Ui::Windows
             const ScreenCoordsXY& sourceScreenPos, ObjectEntryIndex sceneryIndex, CoordsXY& gridPos, uint8_t* outEdges)
         {
             auto* windowMgr = GetWindowManager();
-            auto* w = windowMgr->FindByClass(WindowClass::Scenery);
+            auto* w = windowMgr->FindByClass(WindowClass::scenery);
 
             if (w == nullptr)
             {
@@ -2795,7 +2795,7 @@ namespace OpenRCT2::Ui::Windows
             const ScreenCoordsXY& sourceScreenPos, ObjectEntryIndex sceneryIndex, CoordsXY& gridPos, Direction* outDirection)
         {
             auto* windowMgr = GetWindowManager();
-            auto* w = windowMgr->FindByClass(WindowClass::Scenery);
+            auto* w = windowMgr->FindByClass(WindowClass::scenery);
 
             if (w == nullptr)
             {
@@ -2897,7 +2897,7 @@ namespace OpenRCT2::Ui::Windows
             Direction* outDirection)
         {
             auto* windowMgr = GetWindowManager();
-            auto* w = windowMgr->FindByClass(WindowClass::Scenery);
+            auto* w = windowMgr->FindByClass(WindowClass::scenery);
 
             if (w == nullptr)
             {
@@ -3075,7 +3075,7 @@ namespace OpenRCT2::Ui::Windows
                                 [=](const GameActions::GameAction* ga, const GameActions::Result* result) {
                                     if (result->Error == GameActions::Status::Ok)
                                     {
-                                        Audio::Play3D(Audio::SoundId::PlaceItem, result->Position);
+                                        Audio::Play3D(Audio::SoundId::placeItem, result->Position);
                                     }
                                 });
                             auto res = GameActions::Execute(&smallSceneryPlaceAction, gameState);
@@ -3109,7 +3109,7 @@ namespace OpenRCT2::Ui::Windows
                             {
                                 return;
                             }
-                            Audio::Play3D(Audio::SoundId::PlaceItem, result->Position);
+                            Audio::Play3D(Audio::SoundId::placeItem, result->Position);
                         });
                     auto res = GameActions::Execute(&footpathAdditionPlaceAction, gameState);
                     break;
@@ -3160,7 +3160,7 @@ namespace OpenRCT2::Ui::Windows
                     wallPlaceAction.SetCallback([](const GameActions::GameAction* ga, const GameActions::Result* result) {
                         if (result->Error == GameActions::Status::Ok)
                         {
-                            Audio::Play3D(Audio::SoundId::PlaceItem, result->Position);
+                            Audio::Play3D(Audio::SoundId::placeItem, result->Position);
                         }
                     });
                     auto res = GameActions::Execute(&wallPlaceAction, gameState);
@@ -3213,11 +3213,11 @@ namespace OpenRCT2::Ui::Windows
                     sceneryPlaceAction.SetCallback([=](const GameActions::GameAction* ga, const GameActions::Result* result) {
                         if (result->Error == GameActions::Status::Ok)
                         {
-                            Audio::Play3D(Audio::SoundId::PlaceItem, result->Position);
+                            Audio::Play3D(Audio::SoundId::placeItem, result->Position);
                         }
                         else
                         {
-                            Audio::Play3D(Audio::SoundId::Error, { loc.x, loc.y, gSceneryPlaceZ });
+                            Audio::Play3D(Audio::SoundId::error, { loc.x, loc.y, gSceneryPlaceZ });
                         }
                     });
                     auto res = GameActions::Execute(&sceneryPlaceAction, gameState);
@@ -3238,8 +3238,8 @@ namespace OpenRCT2::Ui::Windows
                         if (result->Error == GameActions::Status::Ok)
                         {
                             auto data = result->GetData<GameActions::BannerPlaceActionResult>();
-                            Audio::Play3D(Audio::SoundId::PlaceItem, result->Position);
-                            ContextOpenDetailWindow(WD_BANNER, data.bannerId.ToUnderlying());
+                            Audio::Play3D(Audio::SoundId::placeItem, result->Position);
+                            ContextOpenDetailWindow(WindowDetail::banner, data.bannerId.ToUnderlying());
                         }
                     });
                     GameActions::Execute(&bannerPlaceAction, gameState);
@@ -3252,10 +3252,10 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* SceneryOpen()
     {
         auto* windowMgr = GetWindowManager();
-        auto* w = static_cast<SceneryWindow*>(windowMgr->BringToFrontByClass(WindowClass::Scenery));
+        auto* w = static_cast<SceneryWindow*>(windowMgr->BringToFrontByClass(WindowClass::scenery));
         if (w == nullptr)
         {
-            w = windowMgr->Create<SceneryWindow>(WindowClass::Scenery);
+            w = windowMgr->Create<SceneryWindow>(WindowClass::scenery);
         }
         return w;
     }
@@ -3265,7 +3265,7 @@ namespace OpenRCT2::Ui::Windows
         const std::optional<colour_t> tertiary, const std::optional<colour_t> rotation)
     {
         auto* windowMgr = GetWindowManager();
-        auto* w = static_cast<SceneryWindow*>(windowMgr->BringToFrontByClass(WindowClass::Scenery));
+        auto* w = static_cast<SceneryWindow*>(windowMgr->BringToFrontByClass(WindowClass::scenery));
         if (w != nullptr)
         {
             w->setSelectedItem(scenery, primary, secondary, tertiary, rotation);
@@ -3276,7 +3276,7 @@ namespace OpenRCT2::Ui::Windows
     {
         // Should this bring to front?
         auto* windowMgr = GetWindowManager();
-        auto* w = static_cast<SceneryWindow*>(windowMgr->FindByClass(WindowClass::Scenery));
+        auto* w = static_cast<SceneryWindow*>(windowMgr->FindByClass(WindowClass::scenery));
         if (w != nullptr)
         {
             return w->setSelectedTab(sceneryGroupIndex);
@@ -3303,7 +3303,7 @@ namespace OpenRCT2::Ui::Windows
     const ScenerySelection WindowSceneryGetTabSelection()
     {
         auto* windowMgr = GetWindowManager();
-        auto* w = static_cast<SceneryWindow*>(windowMgr->FindByClass(WindowClass::Scenery));
+        auto* w = static_cast<SceneryWindow*>(windowMgr->FindByClass(WindowClass::scenery));
         if (w != nullptr)
         {
             return w->getTabSelection();
@@ -3317,7 +3317,7 @@ namespace OpenRCT2::Ui::Windows
     void WindowSceneryInit()
     {
         auto* windowMgr = GetWindowManager();
-        auto* w = static_cast<SceneryWindow*>(windowMgr->FindByClass(WindowClass::Scenery));
+        auto* w = static_cast<SceneryWindow*>(windowMgr->FindByClass(WindowClass::scenery));
         if (w != nullptr)
         {
             w->init();
@@ -3326,13 +3326,13 @@ namespace OpenRCT2::Ui::Windows
 
     void ToggleSceneryWindow()
     {
-        if (isToolActive(WindowClass::Scenery, WIDX_SCENERY_BACKGROUND))
+        if (isToolActive(WindowClass::scenery, WIDX_SCENERY_BACKGROUND))
         {
             ToolCancel();
         }
         else
         {
-            auto* toolWindow = ContextOpenWindow(WindowClass::Scenery);
+            auto* toolWindow = ContextOpenWindow(WindowClass::scenery);
             ToolSet(*toolWindow, WIDX_SCENERY_BACKGROUND, Tool::arrow);
             gInputFlags.set(InputFlag::unk6);
         }

@@ -85,7 +85,7 @@ namespace OpenRCT2::TileInspector
     {
         // Return true for everyone who has the window open and tile selected
         auto* windowMgr = Ui::GetWindowManager();
-        auto* window = windowMgr->FindByClass(WindowClass::TileInspector);
+        auto* window = windowMgr->FindByClass(WindowClass::tileInspector);
         return window != nullptr && loc == windowTileInspectorTile.ToCoordsXY();
     }
 

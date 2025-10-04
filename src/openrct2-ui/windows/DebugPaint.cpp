@@ -29,9 +29,10 @@ namespace OpenRCT2::Ui::Windows
         WIDX_TOGGLE_SHOW_BOUND_BOXES,
         WIDX_TOGGLE_SHOW_DIRTY_VISUALS,
         WIDX_TOGGLE_STABLE_PAINT_SORT,
+        WIDX_TOGGLE_FORCE_REDRAW,
     };
 
-    static constexpr ScreenSize kWindowSize = { 200, 8 + (15 * 6) + 8 };
+    static constexpr ScreenSize kWindowSize = { 200, 8 + (15 * 7) + 8 };
 
     // clang-format off
     static constexpr Widget window_debug_paint_widgets[] = {
@@ -42,6 +43,7 @@ namespace OpenRCT2::Ui::Windows
         makeWidget({8, 8 + 15 * 3}, {         185,            12}, WidgetType::checkbox, WindowColour::secondary, STR_DEBUG_PAINT_SHOW_BOUND_BOXES    ),
         makeWidget({8, 8 + 15 * 4}, {         185,            12}, WidgetType::checkbox, WindowColour::secondary, STR_DEBUG_PAINT_SHOW_DIRTY_VISUALS  ),
         makeWidget({8, 8 + 15 * 5}, {         185,            12}, WidgetType::checkbox, WindowColour::secondary, STR_DEBUG_PAINT_STABLE_SORT  ),
+        makeWidget({8, 8 + 15 * 6}, {         185,            12}, WidgetType::checkbox, WindowColour::secondary, STR_DEBUG_PAINT_FORCE_REDRAW  ),
     };
     // clang-format on
 
@@ -97,6 +99,11 @@ namespace OpenRCT2::Ui::Windows
                     gPaintStableSort = !gPaintStableSort;
                     GfxInvalidateScreen();
                     break;
+
+                case WIDX_TOGGLE_FORCE_REDRAW:
+                    gPaintForceRedraw = !gPaintForceRedraw;
+                    GfxInvalidateScreen();
+                    break;
             }
         }
 
@@ -143,6 +150,7 @@ namespace OpenRCT2::Ui::Windows
             setCheckboxValue(WIDX_TOGGLE_SHOW_BOUND_BOXES, gPaintBoundingBoxes);
             setCheckboxValue(WIDX_TOGGLE_SHOW_DIRTY_VISUALS, gShowDirtyVisuals);
             setCheckboxValue(WIDX_TOGGLE_STABLE_PAINT_SORT, gPaintStableSort);
+            setCheckboxValue(WIDX_TOGGLE_FORCE_REDRAW, gPaintForceRedraw);
         }
 
         void onDraw(RenderTarget& rt) override
@@ -155,8 +163,8 @@ namespace OpenRCT2::Ui::Windows
     {
         auto* windowMgr = GetWindowManager();
         auto* window = windowMgr->FocusOrCreate<DebugPaintWindow>(
-            WindowClass::DebugPaint, { 16, ContextGetHeight() - 16 - 33 - kWindowSize.height }, kWindowSize,
-            WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_TITLE_BAR);
+            WindowClass::debugPaint, { 16, ContextGetHeight() - 16 - 33 - kWindowSize.height }, kWindowSize,
+            { WindowFlag::stickToFront, WindowFlag::transparent, WindowFlag::noTitleBar });
 
         return window;
     }

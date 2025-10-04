@@ -107,7 +107,7 @@ namespace OpenRCT2::Ui::Windows
         WIDX_CARRYING_LABEL = WIDX_TAB_CONTENT_START,
     };
 
-    validate_global_widx(WC_PEEP, WIDX_PICKUP);
+    VALIDATE_GLOBAL_WIDX(WC_PEEP, WIDX_PICKUP);
 
     static constexpr int32_t kTabWidth = 30;
 
@@ -661,7 +661,7 @@ namespace OpenRCT2::Ui::Windows
                             if (result->Error != GameActions::Status::Ok)
                                 return;
                             auto* windowMgr = GetWindowManager();
-                            WindowBase* wind = windowMgr->FindByNumber(WindowClass::Peep, peepnum);
+                            WindowBase* wind = windowMgr->FindByNumber(WindowClass::peep, peepnum);
                             if (wind != nullptr)
                             {
                                 ToolSet(*wind, WC_PEEP__WIDX_PICKUP, Tool::picker);
@@ -771,7 +771,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     viewport->flags = origViewportFlags;
                 }
-                flags |= WF_NO_SCROLLING;
+                flags |= WindowFlag::noScrolling;
                 invalidate();
             }
             invalidate();
@@ -1291,7 +1291,7 @@ namespace OpenRCT2::Ui::Windows
             if (index >= static_cast<int32_t>(_riddenRides.size()))
                 return;
 
-            auto intent = Intent(WindowClass::Ride);
+            auto intent = Intent(WindowClass::ride);
             intent.PutExtra(INTENT_EXTRA_RIDE_ID, _riddenRides[index]);
             ContextOpenIntent(&intent);
         }
@@ -1363,7 +1363,7 @@ namespace OpenRCT2::Ui::Windows
                 StringId stringId = STR_BLACK_STRING;
                 if (listIndex == selectedListItem)
                 {
-                    GfxFilterRect(rt, { 0, y, 800, y + 9 }, FilterPaletteID::PaletteDarken1);
+                    GfxFilterRect(rt, { 0, y, 800, y + 9 }, FilterPaletteID::paletteDarken1);
                     stringId = STR_WINDOW_COLOUR_2_STRINGID;
                 }
 
@@ -1917,14 +1917,14 @@ namespace OpenRCT2::Ui::Windows
         }
 
         auto* windowMgr = GetWindowManager();
-        auto* window = static_cast<GuestWindow*>(windowMgr->BringToFrontByNumber(WindowClass::Peep, peep->Id.ToUnderlying()));
+        auto* window = static_cast<GuestWindow*>(windowMgr->BringToFrontByNumber(WindowClass::peep, peep->Id.ToUnderlying()));
         if (window == nullptr)
         {
             auto windowSize = kWindowSize;
             if (Config::Get().general.DebuggingTools)
                 windowSize.width += kTabWidth;
 
-            window = windowMgr->Create<GuestWindow>(WindowClass::Peep, windowSize, WF_RESIZABLE);
+            window = windowMgr->Create<GuestWindow>(WindowClass::peep, windowSize, WindowFlag::resizable);
             if (window == nullptr)
             {
                 return nullptr;

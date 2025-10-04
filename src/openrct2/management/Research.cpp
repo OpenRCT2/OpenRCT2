@@ -129,8 +129,8 @@ static void ResearchCalculateExpectedDate()
 static void ResearchInvalidateRelatedWindows()
 {
     auto* windowMgr = Ui::GetWindowManager();
-    windowMgr->InvalidateByClass(WindowClass::ConstructRide);
-    windowMgr->InvalidateByClass(WindowClass::Research);
+    windowMgr->InvalidateByClass(WindowClass::constructRide);
+    windowMgr->InvalidateByClass(WindowClass::research);
 }
 
 static void ResearchMarkAsFullyCompleted()

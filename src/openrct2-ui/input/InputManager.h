@@ -23,26 +23,26 @@ namespace OpenRCT2::Ui
 
     enum class InputDeviceKind
     {
-        Mouse,
-        Keyboard,
-        JoyButton,
-        JoyHat,
-        JoyAxis,
+        mouse,
+        keyboard,
+        joyButton,
+        joyHat,
+        joyAxis,
     };
 
     enum class InputEventState
     {
-        Down,
-        Release,
+        down,
+        release,
     };
 
     struct InputEvent
     {
-        InputDeviceKind DeviceKind;
-        uint32_t Modifiers;
-        uint32_t Button;
-        InputEventState State;
-        int16_t AxisValue; // For analogue stick values (-32768 to 32767)
+        InputDeviceKind deviceKind;
+        uint32_t modifiers;
+        uint32_t button;
+        InputEventState state;
+        int16_t axisValue{}; // For analogue stick values (-32768 to 32767)
     };
 
     enum class ModifierKey : uint8_t
@@ -68,30 +68,30 @@ namespace OpenRCT2::Ui
         std::vector<uint8_t> _keyboardState;
         uint8_t _modifierKeyState;
 
-        void CheckJoysticks();
+        void checkJoysticks();
         void processAnalogueInput();
         void updateAnalogueScroll();
 
-        void HandleViewScrolling();
-        void HandleModifiers();
-        void ProcessEvents();
-        void Process(const InputEvent& e);
-        void ProcessInGameConsole(const InputEvent& e);
-        void ProcessChat(const InputEvent& e);
-        void ProcessHoldEvents();
-        void ProcessViewScrollEvent(std::string_view shortcutId, const ScreenCoordsXY& delta);
+        void handleViewScrolling();
+        void handleModifiers();
+        void processEvents();
+        void process(const InputEvent& e);
+        void processInGameConsole(const InputEvent& e);
+        void processChat(const InputEvent& e);
+        void processHoldEvents();
+        void processViewScrollEvent(std::string_view shortcutId, const ScreenCoordsXY& delta);
 
-        bool GetState(const RegisteredShortcut& shortcut) const;
-        bool GetState(const ShortcutInput& shortcut) const;
+        bool getState(const RegisteredShortcut& shortcut) const;
+        bool getState(const ShortcutInput& shortcut) const;
 
-        bool HasTextInputFocus() const;
+        bool hasTextInputFocus() const;
 
     public:
         InputManager();
 
-        bool IsModifierKeyPressed(ModifierKey modifier) const;
-        void QueueInputEvent(const SDL_Event& e);
-        void QueueInputEvent(InputEvent&& e);
-        void Process();
+        bool isModifierKeyPressed(ModifierKey modifier) const;
+        void queueInputEvent(const SDL_Event& e);
+        void queueInputEvent(InputEvent&& e);
+        void process();
     };
 } // namespace OpenRCT2::Ui

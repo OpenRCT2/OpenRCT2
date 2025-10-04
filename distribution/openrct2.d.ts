@@ -3710,6 +3710,11 @@ declare global {
         readonly availableCostumes: StaffCostume[];
 
         /**
+         * Returns an array of costume strings with inline sprites.
+         */
+        getCostumeStrings(): string[];
+
+        /**
          * The staff member's costume.
          */
         costume: StaffCostume | string | number;

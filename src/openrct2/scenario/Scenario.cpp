@@ -83,7 +83,7 @@ void ScenarioBegin(GameState_t& gameState)
     ScenarioReset(gameState);
 
     if (gameState.scenarioOptions.objective.Type != ObjectiveType::none && !gLoadKeepWindowsOpen)
-        ContextOpenWindowView(WV_PARK_OBJECTIVE);
+        ContextOpenWindowView(WindowView::parkObjective);
 
     gScreenAge = 0;
 }
@@ -168,10 +168,10 @@ static void ScenarioEnd()
     GameResetSpeed();
 
     auto* windowMgr = Ui::GetWindowManager();
-    windowMgr->CloseByClass(WindowClass::Dropdown);
-    windowMgr->CloseAllExceptFlags(WF_STICK_TO_BACK | WF_STICK_TO_FRONT);
+    windowMgr->CloseByClass(WindowClass::dropdown);
+    windowMgr->CloseAllExceptFlags({ WindowFlag::stickToBack, WindowFlag::stickToFront });
 
-    ContextOpenWindowView(WV_PARK_OBJECTIVE);
+    ContextOpenWindowView(WindowView::parkObjective);
 }
 
 /**
@@ -620,7 +620,8 @@ bool AllowEarlyCompletion()
 
 static void ScenarioCheckObjective(GameState_t& gameState)
 {
-    auto status = gameState.scenarioOptions.objective.Check(gameState);
+    auto& park = gameState.park;
+    auto status = gameState.scenarioOptions.objective.Check(park, gameState);
     if (status == ObjectiveStatus::Success)
     {
         ScenarioSuccess(gameState);

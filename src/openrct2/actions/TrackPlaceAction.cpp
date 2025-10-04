@@ -683,27 +683,19 @@ namespace OpenRCT2::GameActions
                 {
                     ride->numBlockBrakes++;
 
-                    // change the current mode to its circuit blocked equivalent
-                    RideMode newMode = RideMode::continuousCircuitBlockSectioned;
-                    if (ride->mode == RideMode::poweredLaunch)
+                    auto newMode = RideModeGetBlockSectionedCounterpart(ride->mode);
+                    if (ride->mode != newMode)
                     {
-                        if (rtd.SupportsRideMode(RideMode::poweredLaunchBlockSectioned)
-                            || getGameState().cheats.showAllOperatingModes)
-                            newMode = RideMode::poweredLaunchBlockSectioned;
-                        else
-                            newMode = RideMode::poweredLaunch;
+                        bool canSwitch = rtd.SupportsRideMode(newMode) || getGameState().cheats.showAllOperatingModes;
+                        if (canSwitch)
+                        {
+                            auto rideSetSetting = GameActions::RideSetSettingAction(
+                                ride->id, GameActions::RideSetSetting::Mode, static_cast<uint8_t>(newMode));
+                            ExecuteNested(&rideSetSetting, gameState);
+                        }
                     }
 
-                    if (newMode != ride->mode)
-                    {
-                        // InvalidateTestResults() is called by RideSetSettingAction, so no need to call it here
-
-                        ride->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_OPERATING;
-                        auto rideSetSetting = GameActions::RideSetSettingAction(
-                            ride->id, GameActions::RideSetSetting::Mode, static_cast<uint8_t>(newMode));
-                        ExecuteNested(&rideSetSetting, gameState);
-                        break;
-                    }
+                    break;
                 }
                 default:
                     break;

@@ -140,7 +140,7 @@ void ChatDraw(RenderTarget& rt, ColourWithFlags chatBackgroundColor)
             { topLeft - ScreenCoordsXY{ 0, 5 }, bottomRight + ScreenCoordsXY{ 0, 5 } }); // Background area + Textbox
         GfxFilterRect(
             rt, { topLeft - ScreenCoordsXY{ 0, 5 }, bottomRight + ScreenCoordsXY{ 0, 5 } },
-            FilterPaletteID::Palette51); // Opaque grey background
+            FilterPaletteID::palette51); // Opaque grey background
         GfxFillRectInset(
             rt, { topLeft - ScreenCoordsXY{ 0, 5 }, bottomRight + ScreenCoordsXY{ 0, 5 } }, chatBackgroundColor,
             INSET_RECT_FLAG_FILL_NONE);
@@ -246,7 +246,7 @@ void ChatAddHistory(std::string_view s)
     // Log to file (src only as logging does its own timestamp)
     Network::AppendChatLog(s);
 
-    CreateAudioChannel(SoundId::NewsItem, 0, kMixerVolumeMax, 0.5f, 1.5f, true);
+    CreateAudioChannel(SoundId::newsItem, 0, kMixerVolumeMax, 0.5f, 1.5f, true);
 }
 
 void ChatInput(enum ChatInput input)

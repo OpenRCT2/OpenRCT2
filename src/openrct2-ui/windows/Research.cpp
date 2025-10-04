@@ -296,7 +296,8 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* ResearchOpen()
     {
         auto* windowMgr = GetWindowManager();
-        auto* window = windowMgr->FocusOrCreate<ResearchWindow>(WindowClass::Research, kWindowSizeDevelopment, WF_10);
+        auto* window = windowMgr->FocusOrCreate<ResearchWindow>(
+            WindowClass::research, kWindowSizeDevelopment, WindowFlag::higherContrastOnPress);
         window->setPage(WINDOW_RESEARCH_PAGE_DEVELOPMENT);
         return window;
     }

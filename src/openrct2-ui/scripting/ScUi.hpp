@@ -140,12 +140,12 @@ namespace OpenRCT2::Scripting
         }
         int32_t windows_get() const
         {
-            return static_cast<int32_t>(g_window_list.size());
+            return static_cast<int32_t>(gWindowList.size());
         }
 
         std::shared_ptr<ScViewport> mainViewport_get() const
         {
-            return std::make_shared<ScViewport>(WindowClass::MainWindow);
+            return std::make_shared<ScViewport>(WindowClass::mainWindow);
         }
 
         std::shared_ptr<ScTileSelection> tileSelection_get() const
@@ -189,7 +189,7 @@ namespace OpenRCT2::Scripting
         {
             auto* windowMgr = Ui::GetWindowManager();
             auto cls = GetClassification(classification);
-            if (cls != WindowClass::Null)
+            if (cls != WindowClass::null)
             {
                 if (id.type() == DukValue::Type::NUMBER)
                 {
@@ -214,7 +214,7 @@ namespace OpenRCT2::Scripting
             {
                 auto index = a.as_uint();
                 size_t i = 0;
-                for (const auto& w : g_window_list)
+                for (const auto& w : gWindowList)
                 {
                     if (i == index)
                     {
@@ -400,7 +400,7 @@ namespace OpenRCT2::Scripting
     private:
         WindowClass GetClassification(const std::string& key) const
         {
-            return WindowClass::Null;
+            return WindowClass::null;
         }
 
         DukValue GetScenarioFile(std::string_view path)

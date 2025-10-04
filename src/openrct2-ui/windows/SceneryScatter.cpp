@@ -141,7 +141,7 @@ namespace OpenRCT2::Ui::Windows
             if (widgetIndex != WIDX_PREVIEW || text.empty())
                 return;
 
-            const auto res = String::Parse<int32_t>(text);
+            const auto res = String::tryParse<int32_t>(text);
 
             if (res.has_value())
             {
@@ -202,10 +202,10 @@ namespace OpenRCT2::Ui::Windows
     {
         // Check if window is already open
         auto* windowMgr = GetWindowManager();
-        auto* window = windowMgr->FindByClass(WindowClass::SceneryScatter);
+        auto* window = windowMgr->FindByClass(WindowClass::sceneryScatter);
         if (window == nullptr)
         {
-            window = windowMgr->Create<SceneryScatterWindow>(WindowClass::SceneryScatter, kWindowSize, 0);
+            window = windowMgr->Create<SceneryScatterWindow>(WindowClass::sceneryScatter, kWindowSize, {});
         }
 
         return window;

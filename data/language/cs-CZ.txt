@@ -585,7 +585,7 @@ STR_1186    :Klesání
 STR_1187    :Rovně
 STR_1188    :Stoupání
 STR_1189    :Postavit cestu
-STR_1190    :Odstranit naposledy položenou cestu
+STR_1190    :Odstranit naposledy postavenou cestu
 STR_1191    :{BLACK}{STRINGID}
 STR_1192    :{OUTLINE}{RED}{STRINGID}
 STR_1193    :{WINDOW_COLOUR_2}{STRINGID}
@@ -752,7 +752,7 @@ STR_1353    :{WINDOW_COLOUR_2}Max. laterální zrychlení (ze strany na stranu):
 STR_1354    :{WINDOW_COLOUR_2}Nejvyšší pád: {BLACK}{LENGTH}
 STR_1355    :{WINDOW_COLOUR_2}Pádů: {BLACK}{COMMA16}
 STR_1356    :{WINDOW_COLOUR_2}Obratů: {BLACK}{COMMA16}
-STR_1357    :{WINDOW_COLOUR_2}Děr: {BLACK}{COMMA16}
+STR_1357    :{WINDOW_COLOUR_2}Jamek: {BLACK}{COMMA16}
 STR_1358    :{WINDOW_COLOUR_2}Celkem ve stav beztíže: {BLACK}{COMMA2DP32}sekund
 STR_1359    :{WINDOW_COLOUR_2}Doba čekání: {BLACK}{COMMA16} minuta
 STR_1360    :{WINDOW_COLOUR_2}Doba čekání: {BLACK}{COMMA16} minut
@@ -857,7 +857,7 @@ STR_1458    :{WINDOW_COLOUR_2}Čas strávený v parku: {BLACK}{REALTIME}
 STR_1459    :Typ trati
 STR_1460    :otevřená trať ve tvaru „U“
 STR_1461    :uzavřená trať ve tvaru „O“
-STR_1462    :Svah je pro vlečení příliš strmí
+STR_1462    :Svah je pro vlečení příliš strmý
 STR_1463    :Návštěvníků
 STR_1464    :Šroubovice vzhůru (malá)
 STR_1465    :Šroubovice vzhůru (velká)
@@ -1727,7 +1727,7 @@ STR_2373    :střední
 STR_2374    :vysoké
 STR_2375    :velmi vysoké
 STR_2376    :extrém
-STR_2377    :ultra-Extrém
+STR_2377    :ultra-extrém
 STR_2378    :Upravit menší oblast krajiny
 STR_2379    :Upravit větší oblast krajiny
 STR_2380    :Upravit menší vodní plochu
@@ -2458,7 +2458,7 @@ STR_5207    :Personál
 STR_5208    :Seznam personálu
 STR_5209    :Banner
 STR_5210    :Výběr objektu
-STR_5211    :Seznam vynálezů
+STR_5211    :Seznam výzkumu
 STR_5212    :Nastavení scénáře
 STR_5213    :Nastavení cílů
 STR_5214    :Vytváření mapy
@@ -2526,9 +2526,9 @@ STR_5278    :Sandbox mód
 STR_5279    :Sandbox mód vypnutý
 STR_5280    :Povolit pomocí okna s mapou úpravy nastavení práv pozemků dalších možností, která jsou jinak možná jen v editoru scénáře
 STR_5281    :Funkce
-STR_5282    :RCT1 světla atrakcí otevřeno/zavřeno
-STR_5283    :RCT1 světla parku otevřeno/zavřeno
-STR_5284    :RCT1 výběr fontu scénáře
+STR_5282    :RCT1 semafor pro otevření/zavření atrakce
+STR_5283    :RCT1 semafor pro otevření/zavření parku
+STR_5284    :RCT1 font pro výběr scénáře
 STR_5287    :Atrakce už má poruchu
 STR_5288    :Atrakce je zavřená
 STR_5289    :Tato atrakce nemůže mít poruchy
@@ -2561,8 +2561,8 @@ STR_5335    :Vstup na atrakci
 STR_5336    :Východ z atrakce
 STR_5337    :Vstup do zábavního parku
 STR_5338    :Typ prvku
-STR_5339    :Výška povrchu
-STR_5340    :Výška objektu
+STR_5339    :Základní výška (Base height)
+STR_5340    :Výška objektu (Clearance height)
 STR_5343    :Automaticky umisťovat personál
 STR_5344    :Seznam změn
 STR_5345    :Cheaty - finance
@@ -2693,7 +2693,7 @@ STR_5543    :Sytě červená
 STR_5544    :Jasně červená
 STR_5545    :Temně růžová
 STR_5546    :Jasně růžová
-STR_5547    :Světle
+STR_5547    :Světle růžová
 STR_5548    :Zobrazit všechny módy provozu
 STR_5549    :Rok/Měsíc/Den
 STR_5550    :{POP16}{POP16}Rok {COMMA16}, {PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
@@ -2754,11 +2754,11 @@ STR_5608    :BH
 STR_5609    :CH
 STR_5610    :Odebere vybraný prvek mapy. Odebrání je vynucené, nestojí/nevrací tedy hotovost. Používejte opatrně.
 STR_5611    :G
-STR_5612    :Vlajka pro ghost-element
+STR_5612    :Příznak „ghost“ pro prvek
 STR_5613    :B
-STR_5614    :Vlajka pro rozbitý prvek
+STR_5614    :Příznak pro rozbitý prvek
 STR_5615    :L
-STR_5616    :Vlajka pro poslední element dlaždice
+STR_5616    :Příznak pro poslední prvek dlaždice
 STR_5617    :Posunout vybraný prvek nahoru
 STR_5618    :Posunout vybraný prvek dolů
 STR_5619    :RollerCoaster Tycoon
@@ -3054,11 +3054,11 @@ STR_5959    :Jihovýchod
 STR_5960    :Kvadrant umístění:
 STR_5961    :Index vstupu: {BLACK}{COMMA16}
 STR_5962    :Detekce kolizí:
-STR_5963    :Zdvihnuté rohy:
+STR_5963    :Zvednuté rohy:
 STR_5964    :Diagonální
 STR_5965    :Typ vstupu: {BLACK}{STRINGID}
 STR_5966    :Část vstupu do parku: {BLACK}{STRINGID}
-STR_5967    :Prostředek
+STR_5967    :Střed
 STR_5968    :Levý
 STR_5969    :Pravý
 STR_5970    :ID vstupu: {BLACK}{COMMA16}
@@ -3072,7 +3072,7 @@ STR_5977    :Pravá strana
 STR_5978    :Levá strana
 STR_5979    :Typ plotu: {BLACK}{COMMA16}
 STR_5980    :Text banneru: {BLACK}{STRINGID}
-STR_5981    :To není banner
+STR_5981    :Není banner
 STR_5982    :Typ velké kulisy: {BLACK}{COMMA16}
 STR_5983    :ID velké kulisy: {BLACK}{COMMA16}
 STR_5984    :Zablokované cesty:
@@ -3106,7 +3106,7 @@ STR_6011    :{COMMA1DP16}ft
 STR_6012    :{COMMA1DP16}
 STR_6013    :Návštěvníci platí pouze za vstup do parku a služby. Atrakce jsou zdarma.
 STR_6014    :Návštěvníci platí pouze za služby a atrakce. Vstup do parku je zdarma.
-STR_6015    :Nakloněný
+STR_6015    :Nakloněná
 STR_6016    :Upravit dlaždici
 STR_6017    :Zpomalte prosím
 STR_6018    :Stavba - zatáčka vlevo
@@ -3349,7 +3349,7 @@ STR_6304    :Otevřít výběr kulis
 STR_6305    :Multithreading
 STR_6306    :Experimentální podpora více vláken pro vykreslování obrazu, může způsobit nestabilitu.
 STR_6307    :Barevné schéma: {BLACK}{STRINGID}
-STR_6308    :{TOPAZ}“{STRINGID}{OUTLINE}{TOPAZ}”{NEWLINE}{STRINGID}
+STR_6308    :{TOPAZ}„{STRINGID}{OUTLINE}{TOPAZ}“{NEWLINE}{STRINGID}
 STR_6309    :Znovu připojit
 STR_6310    :{WINDOW_COLOUR_2}Pozice: {BLACK}{INT32} {INT32} {INT32}
 STR_6311    :{WINDOW_COLOUR_2}Další: {BLACK}{INT32} {INT32} {INT32}
@@ -3362,7 +3362,7 @@ STR_6317    :{BLACK}{INT32}, {INT32}, {INT32} směr {INT32}
 STR_6318    :Detekována síťová desynchronizace.{NEWLINE}Log: {STRING}
 STR_6319    :Bloková brzda zavřena
 STR_6320    :Nezničitelné
-STR_6321    :Rozbitá část
+STR_6321    :Věci na cestě jsou zničené
 STR_6322    :{WINDOW_COLOUR_2}Entity ID: {BLACK}{INT32}
 STR_6323    :Probíhá simulace
 STR_6324    :Simulovat
@@ -3480,7 +3480,7 @@ STR_6437    :Viditelný
 STR_6438    :{MOVE_X}{2}👁
 STR_6439    :Průzkumník dlaždic: Přepnout neviditelnost
 STR_6440    :Průhledná voda
-STR_6441    :Alespoň jeden chodník který není fronta musí být vybrán.
+STR_6441    :Alespoň jeden chodník, který není fronta, musí být vybrán.
 STR_6442    :Alespoň jeden chodník fronty musí být vybrán.
 STR_6443    :Alespoň jedno zábradlí chodníku musí být vybráno.
 STR_6444    :Povrchy chodníků
@@ -3489,8 +3489,8 @@ STR_6446    :{WINDOW_COLOUR_2}Jméno povrchu: {BLACK}{STRINGID}
 STR_6447    :{WINDOW_COLOUR_2}Jméno zábradlí: {BLACK}{STRINGID}
 STR_6448    :Nepodporovaný formát objektu
 STR_6449    :{WINDOW_COLOUR_2}Skladby:
-STR_6450    :{BLACK}“{STRING}”
-STR_6451    :{BLACK}“{STRING}” - {STRING}
+STR_6450    :{BLACK}„{STRING}“
+STR_6451    :{BLACK}„{STRING}“ - {STRING}
 STR_6452    :{WINDOW_COLOUR_2}Prodává: {BLACK}{STRING}
 STR_6453    :Kopírovat informace o verzi
 STR_6454    :Nemožno přejmenovat transparent…
@@ -3498,8 +3498,8 @@ STR_6455    :Nemožno přejmenovat nápis…
 STR_6456    :Gigantický snímek obrazovky
 STR_6457    :Nahlásit chybu na GitHub
 STR_6458    :Sledovat v Hlavním Pohledu
-STR_6460    :S
-STR_6461    :Směr
+STR_6460    :D
+STR_6461    :Směr (Direction)
 STR_6462    :Nadšení
 STR_6463    :Nadšení: {COMMA2DP32}
 STR_6464    :Intenzita
@@ -3535,10 +3535,10 @@ STR_6493    :Tenhle park byl uložen v novější verzi OpenRCT2, některá data
 STR_6494    :Seskupit podle typu atrakce
 STR_6495    :Seskupit atrakce podle druhu místo zobrazení každé odděleně.
 STR_6496    :{WINDOW_COLOUR_2}{STRINGID}
-STR_6497    :Kliknutím na dlaždici zobrazíte její části.{NEWLINE}Ctrl + kliknutí a části dlaždice pro její příme zvolení.
+STR_6497    :Kliknutím na dlaždici zobrazíte její části.{NEWLINE}Ctrl + kliknutí na části dlaždice pro její přímé zvolení.
 STR_6498    :Zapnout pro udržování čtvercové mapy
 STR_6499    :Druh vozidla není podporován formátem návrhu tratě
-STR_6500    :Prvky trate nejsou podporovány formátem návrhu tratě
+STR_6500    :Prvky tratě nejsou podporovány formátem návrhu tratě
 STR_6501    :Náhodná barva
 STR_6502    :Vlož hodnotu mezi {COMMA16} a {COMMA16}
 STR_6503    :Alespoň jedna stanice musí být vybrána

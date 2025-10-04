@@ -24,6 +24,7 @@
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../localisation/LocalisationService.h"
+#include "../platform/Crash.h"
 #include "../platform/Platform.h"
 #include "../rct12/CSStringConverter.h"
 #include "../rct12/RCT12.h"
@@ -33,6 +34,7 @@
 #include "ScenarioCategory.h"
 #include "ScenarioSources.h"
 
+#include <cstdint>
 #include <memory>
 #include <string>
 #include <vector>
@@ -203,6 +205,26 @@ private:
     static bool GetScenarioInfo(const std::string& path, uint64_t timestamp, ScenarioIndexEntry* entry)
     {
         LOG_VERBOSE("GetScenarioInfo(%s, %d, ...)", path.c_str(), timestamp);
+
+        struct CrashAdditionalFileRegistration
+        {
+            std::string _key;
+
+            CrashAdditionalFileRegistration(const std::string& path)
+            {
+                // Use a unique key to avoid conflicts when GetScenarioInfo is called in a JobPool and multiple files are being
+                // processed in parallel.
+                _key = "load_park_" + std::to_string(reinterpret_cast<uintptr_t>(this));
+                // Register the file for crash upload if it asserts while loading.
+                CrashRegisterAdditionalFile(_key, path);
+            }
+            ~CrashAdditionalFileRegistration()
+            {
+                // Deregister park file in case it was processed without hitting an assert.
+                CrashUnregisterAdditionalFile(_key);
+            }
+        } crash_additional_file_registration(path);
+
         try
         {
             auto& objRepository = OpenRCT2::GetContext()->GetObjectRepository();
