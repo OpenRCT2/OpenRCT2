@@ -58,7 +58,7 @@ static const wchar_t* _wszArchitecture = WSZ(OPENRCT2_ARCHITECTURE);
 static std::map<std::wstring, std::wstring> _uploadFiles;
 static std::mutex _uploadFilesMutex;
 
-    #define BACKTRACE_TOKEN "03ef82f2423418e09421e7758ee960d699f02146056e27c4e7eab5d08eb7d675"
+    #define BACKTRACE_TOKEN "b5ede38e89aaf5db19dd58afe0aeae1dba849d27b22f19734d6b60bf8c9d6351"
 
 using namespace OpenRCT2;
 
