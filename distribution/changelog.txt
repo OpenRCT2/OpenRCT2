@@ -1,4 +1,4 @@
-0.4.27 (in development)
+0.4.27 (2025-10-04)
 ------------------------------------------------------------------------
 - Feature: [#25218] `sprite exportobject` command, which allows extracting images from an object.
 - Feature: [#25274] New title sequence (see https://github.com/OpenRCT2/title-sequences/releases/tag/v0.4.26 for credits).
