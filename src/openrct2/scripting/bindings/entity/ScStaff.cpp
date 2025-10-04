@@ -101,7 +101,7 @@ namespace OpenRCT2::Scripting
             }
 
             // Reset state to walking to prevent invalid actions from carrying over
-            peep->Action = PeepActionType::Walking;
+            peep->Action = PeepActionType::walking;
             peep->AnimationType = peep->NextAnimationType = PeepAnimationType::Walking;
             peep->Invalidate();
         }

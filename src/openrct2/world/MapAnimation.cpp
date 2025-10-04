@@ -178,7 +178,7 @@ static std::optional<UpdateType> UpdateSmallSceneryAnimation(
                 {
                     if (peep->State != PeepState::walking || peep->z != baseZ || !peep->IsActionInterruptableSafely())
                         continue;
-                    peep->Action = PeepActionType::CheckTime;
+                    peep->Action = PeepActionType::checkTime;
                     peep->AnimationFrameNum = 0;
                     peep->AnimationImageIdOffset = 0;
                     peep->UpdateCurrentAnimationType();

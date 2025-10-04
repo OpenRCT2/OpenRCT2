@@ -115,7 +115,7 @@ namespace OpenRCT2::GameActions
         else
         {
             newPeep->WindowInvalidateFlags = 0;
-            newPeep->Action = PeepActionType::Walking;
+            newPeep->Action = PeepActionType::walking;
             newPeep->SpecialSprite = 0;
             newPeep->AnimationImageIdOffset = 0;
             newPeep->WalkingAnimationFrameNum = 0;

@@ -926,7 +926,7 @@ bool Staff::DoEntertainerPathFinding()
 {
     if (((ScenarioRand() & 0xFFFF) <= 0x4000) && IsActionInterruptableSafely())
     {
-        Action = (ScenarioRand() & 1) ? PeepActionType::Wave2 : PeepActionType::Joy;
+        Action = (ScenarioRand() & 1) ? PeepActionType::wave2 : PeepActionType::joy;
         AnimationFrameNum = 0;
         AnimationImageIdOffset = 0;
 
@@ -1080,7 +1080,7 @@ void Staff::UpdateWatering()
             return;
 
         Orientation = (Var37 & 3) << 3;
-        Action = PeepActionType::StaffWatering;
+        Action = PeepActionType::staffWatering;
         AnimationFrameNum = 0;
         AnimationImageIdOffset = 0;
         UpdateCurrentAnimationType();
@@ -1143,7 +1143,7 @@ void Staff::UpdateEmptyingBin()
             return;
 
         Orientation = (Var37 & 3) << 3;
-        Action = PeepActionType::StaffEmptyBin;
+        Action = PeepActionType::staffEmptyBin;
         AnimationFrameNum = 0;
         AnimationImageIdOffset = 0;
         UpdateCurrentAnimationType();
@@ -1215,7 +1215,7 @@ void Staff::UpdateSweeping()
     if (!CheckForPath())
         return;
 
-    if (Action == PeepActionType::StaffSweep && AnimationFrameNum == 8)
+    if (Action == PeepActionType::staffSweep && AnimationFrameNum == 8)
     {
         // Remove sick at this location
         Litter::RemoveAt(GetLocation());
@@ -1232,7 +1232,7 @@ void Staff::UpdateSweeping()
     Var37++;
     if (Var37 != 2)
     {
-        Action = PeepActionType::StaffSweep;
+        Action = PeepActionType::staffSweep;
         AnimationFrameNum = 0;
         AnimationImageIdOffset = 0;
         UpdateCurrentAnimationType();
@@ -1357,7 +1357,7 @@ void Staff::UpdateAnswering()
 
     if (SubState == 0)
     {
-        Action = PeepActionType::StaffAnswerCall;
+        Action = PeepActionType::staffAnswerCall;
         AnimationFrameNum = 0;
         AnimationImageIdOffset = 0;
 
@@ -1706,8 +1706,8 @@ void Staff::Tick128UpdateStaff()
     AnimationGroup = newAnimationGroup;
     AnimationImageIdOffset = 0;
     WalkingAnimationFrameNum = 0;
-    if (Action < PeepActionType::Idle)
-        Action = PeepActionType::Walking;
+    if (Action < PeepActionType::idle)
+        Action = PeepActionType::walking;
 
     auto& objManager = GetContext()->GetObjectManager();
     auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(AnimationObjectIndex);
@@ -2153,7 +2153,7 @@ bool Staff::UpdateFixingFixVehicle(bool firstRun, const Ride& ride)
     {
         Orientation = PeepDirection << 3;
 
-        Action = (ScenarioRand() & 1) ? PeepActionType::StaffFix2 : PeepActionType::StaffFix;
+        Action = (ScenarioRand() & 1) ? PeepActionType::staffFix2 : PeepActionType::staffFix;
         AnimationImageIdOffset = 0;
         AnimationFrameNum = 0;
         UpdateCurrentAnimationType();
@@ -2167,7 +2167,7 @@ bool Staff::UpdateFixingFixVehicle(bool firstRun, const Ride& ride)
     UpdateAction();
     Invalidate();
 
-    uint8_t actionFrame = (Action == PeepActionType::StaffFix) ? 0x25 : 0x50;
+    uint8_t actionFrame = (Action == PeepActionType::staffFix) ? 0x25 : 0x50;
     if (AnimationFrameNum != actionFrame)
     {
         return false;
@@ -2194,7 +2194,7 @@ bool Staff::UpdateFixingFixVehicleMalfunction(bool firstRun, const Ride& ride)
     if (!firstRun)
     {
         Orientation = PeepDirection << 3;
-        Action = PeepActionType::StaffFix3;
+        Action = PeepActionType::staffFix3;
         AnimationImageIdOffset = 0;
         AnimationFrameNum = 0;
 
@@ -2300,7 +2300,7 @@ bool Staff::UpdateFixingFixStationEnd(bool firstRun)
     if (!firstRun)
     {
         Orientation = PeepDirection << 3;
-        Action = PeepActionType::StaffCheckBoard;
+        Action = PeepActionType::staffCheckBoard;
         AnimationFrameNum = 0;
         AnimationImageIdOffset = 0;
 
@@ -2415,7 +2415,7 @@ bool Staff::UpdateFixingFixStationStart(bool firstRun, const Ride& ride)
 
         Orientation = PeepDirection << 3;
 
-        Action = PeepActionType::StaffFix;
+        Action = PeepActionType::staffFix;
         AnimationFrameNum = 0;
         AnimationImageIdOffset = 0;
 
@@ -2443,7 +2443,7 @@ bool Staff::UpdateFixingFixStationBrakes(bool firstRun, Ride& ride)
     {
         Orientation = PeepDirection << 3;
 
-        Action = PeepActionType::StaffFixGround;
+        Action = PeepActionType::staffFixGround;
         AnimationFrameNum = 0;
         AnimationImageIdOffset = 0;
 
@@ -2534,7 +2534,7 @@ bool Staff::UpdateFixingFinishFixOrInspect(bool firstRun, int32_t steps, Ride& r
         WindowInvalidateFlags |= RIDE_INVALIDATE_RIDE_INCOME | RIDE_INVALIDATE_RIDE_LIST;
 
         Orientation = PeepDirection << 3;
-        Action = PeepActionType::StaffAnswerCall2;
+        Action = PeepActionType::staffAnswerCall2;
         AnimationFrameNum = 0;
         AnimationImageIdOffset = 0;
 

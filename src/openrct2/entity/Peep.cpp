@@ -340,7 +340,7 @@ bool Peep::IsOnPathBlockedByVehicle() const
 PeepAnimationType Peep::GetAnimationType()
 {
     if (IsActionInterruptable())
-    { // PeepActionType::None1 or PeepActionType::None2
+    { // PeepActionType::none1 or PeepActionType::none2
         return PeepSpecialSpriteToAnimationGroupMap[SpecialSprite];
     }
 
@@ -350,7 +350,7 @@ PeepAnimationType Peep::GetAnimationType()
     }
 
     Guard::Assert(
-        EnumValue(Action) >= std::size(PeepActionToAnimationGroupMap) && Action < PeepActionType::Idle,
+        EnumValue(Action) >= std::size(PeepActionToAnimationGroupMap) && Action < PeepActionType::idle,
         "Invalid peep action %u", EnumValue(Action));
     return PeepAnimationType::Walking;
 }
@@ -432,9 +432,9 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
     PROFILED_FUNCTION();
 
     _backupAnimationImageIdOffset = AnimationImageIdOffset;
-    if (Action == PeepActionType::Idle)
+    if (Action == PeepActionType::idle)
     {
-        Action = PeepActionType::Walking;
+        Action = PeepActionType::walking;
     }
 
     CoordsXY differenceLoc = GetLocation();
@@ -454,7 +454,7 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
     if (!UpdateActionAnimation())
     {
         AnimationImageIdOffset = 0;
-        Action = PeepActionType::Walking;
+        Action = PeepActionType::walking;
         UpdateCurrentAnimationType();
         return { { x, y } };
     }
@@ -462,7 +462,7 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
     // Should we throw up, and are we at the frame where sick appears?
     if (auto* guest = As<Guest>(); guest != nullptr)
     {
-        if (Action == PeepActionType::ThrowUp && AnimationFrameNum == 15)
+        if (Action == PeepActionType::throwUp && AnimationFrameNum == 15)
         {
             guest->ThrowUp();
         }
@@ -618,7 +618,7 @@ void Peep::PickupAbort(int32_t old_x)
     if (x != kLocationNull)
     {
         SetState(PeepState::falling);
-        Action = PeepActionType::Walking;
+        Action = PeepActionType::walking;
         SpecialSprite = 0;
         AnimationImageIdOffset = 0;
         AnimationType = PeepAnimationType::Walking;
@@ -667,7 +667,7 @@ GameActions::Result Peep::Place(const TileCoordsXYZ& location, bool apply)
     {
         MoveTo(destination);
         SetState(PeepState::falling);
-        Action = PeepActionType::Walking;
+        Action = PeepActionType::walking;
         SpecialSprite = 0;
         AnimationImageIdOffset = 0;
         AnimationType = PeepAnimationType::Walking;
@@ -749,12 +749,12 @@ void Peep::Remove()
  */
 void Peep::UpdateFalling()
 {
-    if (Action == PeepActionType::Drowning)
+    if (Action == PeepActionType::drowning)
     {
         // Check to see if we are ready to drown.
         UpdateAction();
         Invalidate();
-        if (Action == PeepActionType::Drowning)
+        if (Action == PeepActionType::drowning)
             return;
 
         if (Config::Get().notifications.GuestDied)
@@ -812,7 +812,7 @@ void Peep::UpdateFalling()
                             guest->InsertNewThought(PeepThoughtType::Drowning);
                         }
 
-                        Action = PeepActionType::Drowning;
+                        Action = PeepActionType::drowning;
                         AnimationFrameNum = 0;
                         AnimationImageIdOffset = 0;
 
@@ -1231,7 +1231,7 @@ void PeepApplause()
         // Clap
         if ((peep->State == PeepState::walking || peep->State == PeepState::queuing) && peep->IsActionInterruptableSafely())
         {
-            peep->Action = PeepActionType::Clap;
+            peep->Action = PeepActionType::clap;
             peep->AnimationFrameNum = 0;
             peep->AnimationImageIdOffset = 0;
             peep->UpdateCurrentAnimationType();
@@ -1265,7 +1265,7 @@ void Peep::FormatActionTo(Formatter& ft) const
     switch (State)
     {
         case PeepState::falling:
-            ft.Add<StringId>(Action == PeepActionType::Drowning ? STR_DROWNING : STR_WALKING);
+            ft.Add<StringId>(Action == PeepActionType::drowning ? STR_DROWNING : STR_WALKING);
             break;
         case PeepState::one:
             ft.Add<StringId>(STR_WALKING);
@@ -1520,12 +1520,12 @@ bool Peep::SetName(std::string_view value)
 
 bool Peep::IsActionWalking() const
 {
-    return Action == PeepActionType::Walking;
+    return Action == PeepActionType::walking;
 }
 
 bool Peep::IsActionIdle() const
 {
-    return Action == PeepActionType::Idle;
+    return Action == PeepActionType::idle;
 }
 
 bool Peep::IsActionInterruptable() const
@@ -2309,8 +2309,8 @@ std::pair<uint8_t, TileElement*> Peep::PerformNextAction()
 
     PeepActionType previousAction = Action;
 
-    if (Action == PeepActionType::Idle)
-        Action = PeepActionType::Walking;
+    if (Action == PeepActionType::idle)
+        Action = PeepActionType::walking;
 
     auto* guest = As<Guest>();
     if (State == PeepState::queuing && guest != nullptr)
@@ -2753,7 +2753,7 @@ void Peep::Paint(PaintSession& session, int32_t imageDirection) const
     PeepAnimationType actionAnimationGroup = AnimationType;
     uint8_t imageOffset = AnimationImageIdOffset;
 
-    if (Action == PeepActionType::Idle)
+    if (Action == PeepActionType::idle)
     {
         actionAnimationGroup = NextAnimationType;
         imageOffset = 0;
@@ -2783,7 +2783,7 @@ void Peep::Paint(PaintSession& session, int32_t imageDirection) const
         return;
 
     // Can't display any accessories whilst drowning or clapping
-    if (Action == PeepActionType::Drowning || Action == PeepActionType::Clap)
+    if (Action == PeepActionType::drowning || Action == PeepActionType::clap)
         return;
 
     // There are only 6 walking frames available for each item,
