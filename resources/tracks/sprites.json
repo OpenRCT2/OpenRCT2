@@ -4868,6 +4868,522 @@
         "y": -4
     },
     {
+        "path": "track/mini/medium_quarter_helix_left_1_1.png",
+        "x": -22,
+        "y": -8,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_left_1_2.png",
+        "x": -31,
+        "y": -3,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_left_1_3.png",
+        "x": 7,
+        "y": -5,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_left_1_4.png",
+        "x": -24,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_left_1_5.png",
+        "x": -22,
+        "y": -19,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_left_2_1.png",
+        "x": -22,
+        "y": -4,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_left_2_2.png",
+        "x": 0,
+        "y": -12,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_left_2_3.png",
+        "x": -14,
+        "y": 2,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_left_2_4.png",
+        "x": -20,
+        "y": -19,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_left_2_5.png",
+        "x": -28,
+        "y": -20,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_left_3_1.png",
+        "x": -17,
+        "y": -4,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_left_3_2.png",
+        "x": 7,
+        "y": -2,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_left_3_3.png",
+        "x": -25,
+        "y": -2,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_left_3_4.png",
+        "x": 12,
+        "y": -2,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_left_3_5.png",
+        "x": -13,
+        "y": -16,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_left_4_1.png",
+        "x": -24,
+        "y": -3,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_left_4_2.png",
+        "x": -32,
+        "y": 3,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_left_4_3.png",
+        "x": -8,
+        "y": -8,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_left_4_4.png",
+        "x": -32,
+        "y": 2,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_left_4_5.png",
+        "x": -22,
+        "y": -10,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_right_1_1.png",
+        "x": -22,
+        "y": -3,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_right_1_2.png",
+        "x": -20,
+        "y": 2,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_right_1_3.png",
+        "x": -10,
+        "y": -8,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_right_1_4.png",
+        "x": -32,
+        "y": 2,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_right_1_5.png",
+        "x": -12,
+        "y": -10,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_right_2_1.png",
+        "x": -22,
+        "y": -4,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_right_2_2.png",
+        "x": -27,
+        "y": -2,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_right_2_3.png",
+        "x": 3,
+        "y": -2,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_right_2_4.png",
+        "x": -31,
+        "y": -2,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_right_2_5.png",
+        "x": -22,
+        "y": -16,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_right_3_1.png",
+        "x": -32,
+        "y": -4,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_right_3_2.png",
+        "x": -19,
+        "y": -12,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_right_3_3.png",
+        "x": -16,
+        "y": 2,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_right_3_4.png",
+        "x": -8,
+        "y": -19,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_right_3_5.png",
+        "x": -22,
+        "y": -19,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_right_4_1.png",
+        "x": -13,
+        "y": -8,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_right_4_2.png",
+        "x": 9,
+        "y": -3,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_right_4_3.png",
+        "x": -25,
+        "y": -5,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_right_4_4.png",
+        "x": 7,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_right_4_5.png",
+        "x": -22,
+        "y": -20,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_left_bank_1_1.png",
+        "x": -15,
+        "y": -9,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_left_bank_1_2.png",
+        "x": -19,
+        "y": -9,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_left_bank_1_3.png",
+        "x": -25,
+        "y": -4,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_left_bank_1_4.png",
+        "x": 10,
+        "y": -6,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_left_bank_1_5.png",
+        "x": -23,
+        "y": -1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_left_bank_1_6.png",
+        "x": -21,
+        "y": -24,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_left_bank_2_1.png",
+        "x": -22,
+        "y": -5,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_left_bank_2_2.png",
+        "x": -14,
+        "y": -12,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_left_bank_2_3.png",
+        "x": -20,
+        "y": 2,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_left_bank_2_4.png",
+        "x": -12,
+        "y": -20,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_left_bank_2_5.png",
+        "x": -18,
+        "y": -20,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_left_bank_3_1.png",
+        "x": -18,
+        "y": -8,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_left_bank_3_2.png",
+        "x": 9,
+        "y": -4,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_left_bank_3_3.png",
+        "x": -24,
+        "y": -10,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_left_bank_3_4.png",
+        "x": 12,
+        "y": -9,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_left_bank_3_5.png",
+        "x": 11,
+        "y": -10,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_left_bank_3_6.png",
+        "x": 2,
+        "y": -9,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_left_bank_3_7.png",
+        "x": -4,
+        "y": -11,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_left_bank_4_1.png",
+        "x": -28,
+        "y": -5,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_left_bank_4_2.png",
+        "x": -32,
+        "y": -1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_left_bank_4_3.png",
+        "x": -12,
+        "y": -9,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_left_bank_4_4.png",
+        "x": -32,
+        "y": -2,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_left_bank_4_5.png",
+        "x": -20,
+        "y": -14,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_right_bank_1_1.png",
+        "x": -21,
+        "y": -5,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_right_bank_1_2.png",
+        "x": -24,
+        "y": -1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_right_bank_1_3.png",
+        "x": -20,
+        "y": -9,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_right_bank_1_4.png",
+        "x": -32,
+        "y": -2,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_right_bank_1_5.png",
+        "x": -16,
+        "y": -14,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_right_bank_2_1.png",
+        "x": -20,
+        "y": -8,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_right_bank_2_2.png",
+        "x": -25,
+        "y": -4,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_right_bank_2_3.png",
+        "x": 10,
+        "y": -10,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_right_bank_2_4.png",
+        "x": -30,
+        "y": -9,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_right_bank_2_5.png",
+        "x": -30,
+        "y": -10,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_right_bank_2_6.png",
+        "x": -3,
+        "y": -9,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_right_bank_2_7.png",
+        "x": -20,
+        "y": -11,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_right_bank_3_1.png",
+        "x": -18,
+        "y": -4,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_right_bank_3_2.png",
+        "x": -12,
+        "y": -12,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_right_bank_3_3.png",
+        "x": -20,
+        "y": 2,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_right_bank_3_4.png",
+        "x": -14,
+        "y": -20,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_right_bank_3_5.png",
+        "x": -21,
+        "y": -20,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_right_bank_4_1.png",
+        "x": -13,
+        "y": -9,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_right_bank_4_2.png",
+        "x": -15,
+        "y": -9,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_right_bank_4_3.png",
+        "x": 11,
+        "y": -4,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_right_bank_4_4.png",
+        "x": -24,
+        "y": -6,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_right_bank_4_5.png",
+        "x": 8,
+        "y": -1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/mini/medium_quarter_helix_right_bank_4_6.png",
+        "x": -22,
+        "y": -24,
+        "palette": "keep"
+    },
+    {
         "path": "track/bm/brake_horizontal.png",
         "x": -32,
         "y": 1,
