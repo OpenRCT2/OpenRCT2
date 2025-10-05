@@ -1989,7 +1989,7 @@ static void PeepFootpathMoveForward(Peep* peep, const CoordsXYE& coords, bool va
 
         if (const auto* litter = otherEnt->As<Litter>(); litter != nullptr)
         {
-            if (litter->SubType != Litter::Type::Vomit && litter->SubType != Litter::Type::VomitAlt)
+            if (litter->SubType != Litter::Type::vomit && litter->SubType != Litter::Type::vomitAlt)
             {
                 litterCount++;
             }

@@ -5500,10 +5500,10 @@ void Guest::UpdateWalking()
             if ((0xFFFF & ScenarioRand()) <= 4096)
             {
                 static constexpr Litter::Type litter_types[] = {
-                    Litter::Type::EmptyCan,
-                    Litter::Type::Rubbish,
-                    Litter::Type::BurgerBox,
-                    Litter::Type::EmptyCup,
+                    Litter::Type::emptyCan,
+                    Litter::Type::rubbish,
+                    Litter::Type::burgerBox,
+                    Litter::Type::emptyCup,
                 };
                 auto litterType = litter_types[ScenarioRand() & 0x3];
                 const auto loc = GetLocation();
@@ -5521,7 +5521,7 @@ void Guest::UpdateWalking()
             && ((0xFFFF & ScenarioRand()) <= 4096))
         {
             int32_t container = Numerics::bitScanForward(GetEmptyContainerFlags());
-            auto litterType = Litter::Type::Vomit;
+            auto litterType = Litter::Type::vomit;
 
             if (container != -1)
             {
@@ -7825,7 +7825,7 @@ void Guest::ThrowUp()
     WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_2;
 
     const auto curLoc = GetLocation();
-    Litter::Create({ curLoc, Orientation }, (Id.ToUnderlying() & 1) ? Litter::Type::VomitAlt : Litter::Type::Vomit);
+    Litter::Create({ curLoc, Orientation }, (Id.ToUnderlying() & 1) ? Litter::Type::vomitAlt : Litter::Type::vomit);
 
     static constexpr OpenRCT2::Audio::SoundId coughs[4] = {
         OpenRCT2::Audio::SoundId::cough1,
