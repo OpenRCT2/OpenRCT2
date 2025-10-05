@@ -830,7 +830,7 @@ namespace OpenRCT2::Ui::Windows
 
             switch (staff->AssignedStaffType)
             {
-                case StaffType::Entertainer:
+                case StaffType::entertainer:
                 {
                     widgets[WIDX_CHECKBOX_1].type = WidgetType::empty;
                     widgets[WIDX_CHECKBOX_2].type = WidgetType::empty;
@@ -858,7 +858,7 @@ namespace OpenRCT2::Ui::Windows
 
                     break;
                 }
-                case StaffType::Handyman:
+                case StaffType::handyman:
                     widgets[WIDX_CHECKBOX_1].type = WidgetType::checkbox;
                     widgets[WIDX_CHECKBOX_1].text = STR_STAFF_OPTION_SWEEP_FOOTPATHS;
                     widgets[WIDX_CHECKBOX_2].type = WidgetType::checkbox;
@@ -871,7 +871,7 @@ namespace OpenRCT2::Ui::Windows
                     widgets[WIDX_COSTUME_BTN].type = WidgetType::empty;
                     OptionsSetCheckboxValues();
                     break;
-                case StaffType::Mechanic:
+                case StaffType::mechanic:
                     widgets[WIDX_CHECKBOX_1].type = WidgetType::checkbox;
                     widgets[WIDX_CHECKBOX_1].text = STR_INSPECT_RIDES;
                     widgets[WIDX_CHECKBOX_2].type = WidgetType::checkbox;
@@ -883,10 +883,10 @@ namespace OpenRCT2::Ui::Windows
                     widgets[WIDX_COSTUME_BTN].type = WidgetType::empty;
                     OptionsSetCheckboxValues();
                     break;
-                case StaffType::Security:
+                case StaffType::security:
                     // Security guards don't have an options screen.
                     break;
-                case StaffType::Count:
+                case StaffType::count:
                     break;
             }
         }
@@ -950,7 +950,7 @@ namespace OpenRCT2::Ui::Windows
 
             switch (staff->AssignedStaffType)
             {
-                case StaffType::Handyman:
+                case StaffType::handyman:
                     ft = Formatter();
                     ft.Add<uint32_t>(staff->StaffLawnsMown);
                     DrawTextBasic(rt, screenCoords, STR_STAFF_STAT_LAWNS_MOWN, ft);
@@ -970,7 +970,7 @@ namespace OpenRCT2::Ui::Windows
                     ft.Add<uint32_t>(staff->StaffBinsEmptied);
                     DrawTextBasic(rt, screenCoords, STR_STAFF_STAT_BINS_EMPTIED, ft);
                     break;
-                case StaffType::Mechanic:
+                case StaffType::mechanic:
                     ft = Formatter();
                     ft.Add<uint32_t>(staff->StaffRidesInspected);
                     DrawTextBasic(rt, screenCoords, STR_STAFF_STAT_RIDES_INSPECTED, ft);
@@ -980,13 +980,13 @@ namespace OpenRCT2::Ui::Windows
                     ft.Add<uint32_t>(staff->StaffRidesFixed);
                     DrawTextBasic(rt, screenCoords, STR_STAFF_STAT_RIDES_FIXED, ft);
                     break;
-                case StaffType::Security:
+                case StaffType::security:
                     ft = Formatter();
                     ft.Add<uint32_t>(staff->StaffVandalsStopped);
                     DrawTextBasic(rt, screenCoords, STR_STAFF_STAT_VANDALS_STOPPED, ft);
                     break;
-                case StaffType::Entertainer:
-                case StaffType::Count:
+                case StaffType::entertainer:
+                case StaffType::count:
                     break;
             }
         }
@@ -1027,7 +1027,7 @@ namespace OpenRCT2::Ui::Windows
                 setWidgetDisabled(widgetIndex, false);
             }
 
-            if (staff->AssignedStaffType == StaffType::Security)
+            if (staff->AssignedStaffType == StaffType::security)
             {
                 setWidgetDisabled(WIDX_TAB_2, true);
             }

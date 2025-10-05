@@ -66,7 +66,7 @@ void EntityPaintSetup(PaintSession& session, const CoordsXY& pos)
             const auto staff = entity->As<Staff>();
             if (staff != nullptr)
             {
-                if (staff->AssignedStaffType != StaffType::Handyman)
+                if (staff->AssignedStaffType != StaffType::handyman)
                 {
                     continue;
                 }

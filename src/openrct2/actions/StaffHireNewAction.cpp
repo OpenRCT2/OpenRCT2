@@ -77,7 +77,7 @@ namespace OpenRCT2::GameActions
         auto res = Result();
         res.Expenditure = ExpenditureType::wages;
 
-        if (_staffType >= static_cast<uint8_t>(StaffType::Count))
+        if (_staffType >= static_cast<uint8_t>(StaffType::count))
         {
             LOG_ERROR("Invalid staff type %u", static_cast<uint32_t>(_staffType));
             return Result(Status::InvalidParameters, STR_CANT_HIRE_NEW_STAFF, STR_ERR_VALUE_OUT_OF_RANGE);
@@ -88,7 +88,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::NoFreeElements, STR_CANT_HIRE_NEW_STAFF, STR_TOO_MANY_PEOPLE_IN_GAME);
         }
 
-        if (_staffType == static_cast<uint8_t>(StaffType::Entertainer))
+        if (_staffType == static_cast<uint8_t>(StaffType::entertainer))
         {
             auto costumes = findAllPeepAnimationsIndexesForType(AnimationPeepType::entertainer);
             if (std::find(costumes.begin(), costumes.end(), _costumeIndex) == costumes.end())

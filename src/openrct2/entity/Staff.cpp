@@ -945,13 +945,13 @@ bool Staff::DoPathFinding()
 {
     switch (AssignedStaffType)
     {
-        case StaffType::Handyman:
+        case StaffType::handyman:
             return DoHandymanPathFinding();
-        case StaffType::Mechanic:
+        case StaffType::mechanic:
             return DoMechanicPathFinding();
-        case StaffType::Security:
+        case StaffType::security:
             return DoMiscPathFinding();
-        case StaffType::Entertainer:
+        case StaffType::entertainer:
             return DoEntertainerPathFinding();
 
         default:
@@ -975,13 +975,13 @@ colour_t StaffGetColour(StaffType staffType)
     const auto& park = getGameState().park;
     switch (staffType)
     {
-        case StaffType::Handyman:
+        case StaffType::handyman:
             return park.staffHandymanColour;
-        case StaffType::Mechanic:
+        case StaffType::mechanic:
             return park.staffMechanicColour;
-        case StaffType::Security:
+        case StaffType::security:
             return park.staffSecurityColour;
-        case StaffType::Entertainer:
+        case StaffType::entertainer:
             return 0;
         default:
             assert(false);
@@ -994,13 +994,13 @@ GameActions::Result StaffSetColour(StaffType staffType, colour_t value)
     auto& park = getGameState().park;
     switch (staffType)
     {
-        case StaffType::Handyman:
+        case StaffType::handyman:
             park.staffHandymanColour = value;
             break;
-        case StaffType::Mechanic:
+        case StaffType::mechanic:
             park.staffMechanicColour = value;
             break;
-        case StaffType::Security:
+        case StaffType::security:
             park.staffSecurityColour = value;
             break;
         default:
@@ -1692,7 +1692,7 @@ bool Staff::SecurityGuardPathIsCrowded() const
 
 void Staff::Tick128UpdateStaff()
 {
-    if (AssignedStaffType != StaffType::Security)
+    if (AssignedStaffType != StaffType::security)
         return;
 
     // Alternate between walking animations based on crowd size
@@ -1725,12 +1725,12 @@ void Staff::Tick128UpdateStaff()
 
 bool Staff::IsMechanic() const
 {
-    return AssignedStaffType == StaffType::Mechanic;
+    return AssignedStaffType == StaffType::mechanic;
 }
 
 bool Staff::isEntertainer() const
 {
-    return AssignedStaffType == StaffType::Entertainer;
+    return AssignedStaffType == StaffType::entertainer;
 }
 
 void Staff::Update()
@@ -1852,7 +1852,7 @@ void Staff::UpdatePatrolling()
         }
     }
 
-    if (AssignedStaffType != StaffType::Handyman)
+    if (AssignedStaffType != StaffType::handyman)
         return;
 
     if (UpdatePatrollingFindSweeping())
@@ -2619,13 +2619,13 @@ money64 GetStaffWage(StaffType type)
     switch (type)
     {
         default:
-        case StaffType::Handyman:
+        case StaffType::handyman:
             return 50.00_GBP;
-        case StaffType::Mechanic:
+        case StaffType::mechanic:
             return 80.00_GBP;
-        case StaffType::Security:
+        case StaffType::security:
             return 60.00_GBP;
-        case StaffType::Entertainer:
+        case StaffType::entertainer:
             return 55.00_GBP;
     }
 }

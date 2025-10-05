@@ -54,15 +54,15 @@ namespace OpenRCT2::Scripting
         {
             switch (peep->AssignedStaffType)
             {
-                case StaffType::Handyman:
+                case StaffType::handyman:
                     return "handyman";
-                case StaffType::Mechanic:
+                case StaffType::mechanic:
                     return "mechanic";
-                case StaffType::Security:
+                case StaffType::security:
                     return "security";
-                case StaffType::Entertainer:
+                case StaffType::entertainer:
                     return "entertainer";
-                case StaffType::Count:
+                case StaffType::count:
                     break;
             }
         }
@@ -75,27 +75,27 @@ namespace OpenRCT2::Scripting
         auto peep = GetStaff();
         if (peep != nullptr)
         {
-            if (value == "handyman" && peep->AssignedStaffType != StaffType::Handyman)
+            if (value == "handyman" && peep->AssignedStaffType != StaffType::handyman)
             {
-                peep->AssignedStaffType = StaffType::Handyman;
+                peep->AssignedStaffType = StaffType::handyman;
                 peep->AnimationObjectIndex = findPeepAnimationsIndexForType(AnimationPeepType::handyman);
                 peep->AnimationGroup = PeepAnimationGroup::normal;
             }
             else if (value == "mechanic" && !peep->IsMechanic())
             {
-                peep->AssignedStaffType = StaffType::Mechanic;
+                peep->AssignedStaffType = StaffType::mechanic;
                 peep->AnimationObjectIndex = findPeepAnimationsIndexForType(AnimationPeepType::mechanic);
                 peep->AnimationGroup = PeepAnimationGroup::normal;
             }
-            else if (value == "security" && peep->AssignedStaffType != StaffType::Security)
+            else if (value == "security" && peep->AssignedStaffType != StaffType::security)
             {
-                peep->AssignedStaffType = StaffType::Security;
+                peep->AssignedStaffType = StaffType::security;
                 peep->AnimationObjectIndex = findPeepAnimationsIndexForType(AnimationPeepType::security);
                 peep->AnimationGroup = PeepAnimationGroup::normal;
             }
             else if (value == "entertainer" && !peep->isEntertainer())
             {
-                peep->AssignedStaffType = StaffType::Entertainer;
+                peep->AssignedStaffType = StaffType::entertainer;
                 peep->AnimationObjectIndex = findPeepAnimationsIndexForType(AnimationPeepType::entertainer);
                 peep->AnimationGroup = PeepAnimationGroup::normal;
             }
@@ -242,16 +242,16 @@ namespace OpenRCT2::Scripting
         AnimationPeepType animPeepType{};
         switch (staffType)
         {
-            case StaffType::Handyman:
+            case StaffType::handyman:
                 animPeepType = AnimationPeepType::handyman;
                 break;
-            case StaffType::Mechanic:
+            case StaffType::mechanic:
                 animPeepType = AnimationPeepType::mechanic;
                 break;
-            case StaffType::Security:
+            case StaffType::security:
                 animPeepType = AnimationPeepType::security;
                 break;
-            case StaffType::Entertainer:
+            case StaffType::entertainer:
             default:
                 animPeepType = AnimationPeepType::entertainer;
         }
@@ -429,7 +429,7 @@ namespace OpenRCT2::Scripting
         auto& scriptEngine = GetContext()->GetScriptEngine();
         auto* ctx = scriptEngine.GetContext();
         auto peep = GetHandyman();
-        if (peep != nullptr && peep->AssignedStaffType == StaffType::Handyman)
+        if (peep != nullptr && peep->AssignedStaffType == StaffType::handyman)
         {
             duk_push_uint(ctx, peep->StaffLawnsMown);
         }
@@ -445,7 +445,7 @@ namespace OpenRCT2::Scripting
         auto& scriptEngine = GetContext()->GetScriptEngine();
         auto* ctx = scriptEngine.GetContext();
         auto peep = GetHandyman();
-        if (peep != nullptr && peep->AssignedStaffType == StaffType::Handyman)
+        if (peep != nullptr && peep->AssignedStaffType == StaffType::handyman)
         {
             duk_push_uint(ctx, peep->StaffGardensWatered);
         }
@@ -461,7 +461,7 @@ namespace OpenRCT2::Scripting
         auto& scriptEngine = GetContext()->GetScriptEngine();
         auto* ctx = scriptEngine.GetContext();
         auto peep = GetHandyman();
-        if (peep != nullptr && peep->AssignedStaffType == StaffType::Handyman)
+        if (peep != nullptr && peep->AssignedStaffType == StaffType::handyman)
         {
             duk_push_uint(ctx, peep->StaffLitterSwept);
         }
@@ -477,7 +477,7 @@ namespace OpenRCT2::Scripting
         auto& scriptEngine = GetContext()->GetScriptEngine();
         auto* ctx = scriptEngine.GetContext();
         auto peep = GetHandyman();
-        if (peep != nullptr && peep->AssignedStaffType == StaffType::Handyman)
+        if (peep != nullptr && peep->AssignedStaffType == StaffType::handyman)
         {
             duk_push_uint(ctx, peep->StaffBinsEmptied);
         }
@@ -558,7 +558,7 @@ namespace OpenRCT2::Scripting
         auto& scriptEngine = GetContext()->GetScriptEngine();
         auto* ctx = scriptEngine.GetContext();
         auto peep = GetSecurity();
-        if (peep != nullptr && peep->AssignedStaffType == StaffType::Security)
+        if (peep != nullptr && peep->AssignedStaffType == StaffType::security)
         {
             duk_push_uint(ctx, peep->StaffVandalsStopped);
         }

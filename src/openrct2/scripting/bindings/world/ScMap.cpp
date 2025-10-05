@@ -190,13 +190,13 @@ namespace OpenRCT2::Scripting
                 {
                     switch (staff->AssignedStaffType)
                     {
-                        case StaffType::Handyman:
+                        case StaffType::handyman:
                             result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScHandyman>(sprite->Id)));
                             break;
-                        case StaffType::Mechanic:
+                        case StaffType::mechanic:
                             result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScMechanic>(sprite->Id)));
                             break;
-                        case StaffType::Security:
+                        case StaffType::security:
                             result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScSecurity>(sprite->Id)));
                             break;
                         default:
@@ -286,13 +286,13 @@ namespace OpenRCT2::Scripting
                 {
                     switch (staff->AssignedStaffType)
                     {
-                        case StaffType::Handyman:
+                        case StaffType::handyman:
                             result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScHandyman>(sprite->Id)));
                             break;
-                        case StaffType::Mechanic:
+                        case StaffType::mechanic:
                             result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScMechanic>(sprite->Id)));
                             break;
-                        case StaffType::Security:
+                        case StaffType::security:
                             result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScSecurity>(sprite->Id)));
                             break;
                         default:
@@ -465,11 +465,11 @@ namespace OpenRCT2::Scripting
                 {
                     switch (staff->AssignedStaffType)
                     {
-                        case StaffType::Handyman:
+                        case StaffType::handyman:
                             return GetObjectAsDukValue(_context, std::make_shared<ScHandyman>(spriteId));
-                        case StaffType::Mechanic:
+                        case StaffType::mechanic:
                             return GetObjectAsDukValue(_context, std::make_shared<ScMechanic>(spriteId));
-                        case StaffType::Security:
+                        case StaffType::security:
                             return GetObjectAsDukValue(_context, std::make_shared<ScSecurity>(spriteId));
                         default:
                             return GetObjectAsDukValue(_context, std::make_shared<ScStaff>(spriteId));

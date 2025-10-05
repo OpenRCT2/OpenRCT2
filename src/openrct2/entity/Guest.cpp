@@ -6398,7 +6398,7 @@ static void GuestUpdateWalkingBreakScenery(Guest& guest)
 
     for (auto innerPeep : EntityList<Staff>())
     {
-        if (innerPeep->AssignedStaffType != StaffType::Security || innerPeep->x == kLocationNull)
+        if (innerPeep->AssignedStaffType != StaffType::security || innerPeep->x == kLocationNull)
             continue;
 
         int32_t xDist = abs(innerPeep->x - guest.x);

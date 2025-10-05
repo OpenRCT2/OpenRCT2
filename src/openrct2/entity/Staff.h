@@ -30,12 +30,12 @@ using colour_t = uint8_t;
 
 enum class StaffType : uint8_t
 {
-    Handyman,
-    Mechanic,
-    Security,
-    Entertainer,
+    handyman,
+    mechanic,
+    security,
+    entertainer,
 
-    Count
+    count
 };
 
 struct Staff : Peep

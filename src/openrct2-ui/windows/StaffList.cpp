@@ -250,7 +250,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_STAFF_LIST_HIRE_BUTTON].text = GetStaffNamingConvention(GetSelectedStaffType()).ActionHire;
             widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].type = WidgetType::empty;
 
-            if (GetSelectedStaffType() != StaffType::Entertainer)
+            if (GetSelectedStaffType() != StaffType::entertainer)
             {
                 widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].type = WidgetType::colourBtn;
                 widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].image = getColourButtonImage(
@@ -283,7 +283,7 @@ namespace OpenRCT2::Ui::Windows
                 DrawTextBasic(rt, windowPos + ScreenCoordsXY{ width - 155, y }, STR_COST_PER_MONTH, ft);
             }
 
-            if (GetSelectedStaffType() != StaffType::Entertainer)
+            if (GetSelectedStaffType() != StaffType::entertainer)
             {
                 DrawTextBasic(
                     rt, windowPos + ScreenCoordsXY{ 6, widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].top + 1 },
@@ -519,7 +519,7 @@ namespace OpenRCT2::Ui::Windows
 
             uint32_t staffOrders = 0;
 
-            if (staffType == StaffType::Handyman)
+            if (staffType == StaffType::handyman)
             {
                 staffOrders = STAFF_ORDERS_SWEEPING | STAFF_ORDERS_WATER_FLOWERS | STAFF_ORDERS_EMPTY_BINS;
                 if (Config::Get().general.HandymenMowByDefault)
@@ -527,14 +527,14 @@ namespace OpenRCT2::Ui::Windows
                     staffOrders |= STAFF_ORDERS_MOWING;
                 }
             }
-            else if (staffType == StaffType::Mechanic)
+            else if (staffType == StaffType::mechanic)
             {
                 staffOrders = STAFF_ORDERS_INSPECT_RIDES | STAFF_ORDERS_FIX_RIDES;
             }
 
             auto animPeepType = AnimationPeepType(static_cast<uint8_t>(staffType) + 1);
             ObjectEntryIndex costume;
-            if (staffType == StaffType::Entertainer)
+            if (staffType == StaffType::entertainer)
                 costume = findRandomPeepAnimationsIndexForType(animPeepType);
             else
                 costume = findPeepAnimationsIndexForType(animPeepType);
@@ -696,13 +696,13 @@ namespace OpenRCT2::Ui::Windows
             switch (type)
             {
                 default:
-                case StaffType::Handyman:
+                case StaffType::handyman:
                     return { STR_HANDYMAN_PLURAL, STR_HANDYMAN_SINGULAR, STR_HIRE_HANDYMAN };
-                case StaffType::Mechanic:
+                case StaffType::mechanic:
                     return { STR_MECHANIC_PLURAL, STR_MECHANIC_SINGULAR, STR_HIRE_MECHANIC };
-                case StaffType::Security:
+                case StaffType::security:
                     return { STR_SECURITY_GUARD_PLURAL, STR_SECURITY_GUARD_SINGULAR, STR_HIRE_SECURITY_GUARD };
-                case StaffType::Entertainer:
+                case StaffType::entertainer:
                     return { STR_ENTERTAINER_PLURAL, STR_ENTERTAINER_SINGULAR, STR_HIRE_ENTERTAINER };
             }
         }
@@ -711,9 +711,9 @@ namespace OpenRCT2::Ui::Windows
         {
             switch (type)
             {
-                case StaffType::Handyman:
+                case StaffType::handyman:
                     return SPR_STAFF_ORDERS_SWEEPING;
-                case StaffType::Mechanic:
+                case StaffType::mechanic:
                     return SPR_STAFF_ORDERS_INSPECT_RIDES;
                 default:
                     return 0;

@@ -120,13 +120,13 @@ namespace OpenRCT2
     {
         switch (staffType)
         {
-            case StaffType::Handyman:
+            case StaffType::handyman:
                 return AnimationPeepType::handyman;
-            case StaffType::Mechanic:
+            case StaffType::mechanic:
                 return AnimationPeepType::mechanic;
-            case StaffType::Security:
+            case StaffType::security:
                 return AnimationPeepType::security;
-            case StaffType::Entertainer:
+            case StaffType::entertainer:
             default:
                 return AnimationPeepType::entertainer;
         }
