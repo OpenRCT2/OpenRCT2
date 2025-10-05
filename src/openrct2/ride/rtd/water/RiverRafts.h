@@ -47,7 +47,7 @@ constexpr RideTypeDescriptor RiverRaftsRTD =
     .BuildCosts = { 20.00_GBP, 2.50_GBP, 30, },
     .DefaultPrices = { 10, 20 },
     .DefaultMusic = kMusicObjectGentle,
-    .PhotoItem = ShopItem::Photo4,
+    .PhotoItem = ShopItem::photo4,
     .BonusValue = 65,
     .ColourPresets = TRACK_COLOUR_PRESETS(
         { COLOUR_BLACK, COLOUR_BLACK, COLOUR_SATURATED_BROWN },

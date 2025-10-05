@@ -45,7 +45,7 @@ constexpr RideTypeDescriptor MineTrainCoasterRTD =
     .BuildCosts = { 41.00_GBP, 3.00_GBP, 50, },
     .DefaultPrices = { 20, 20 },
     .DefaultMusic = kMusicObjectWildWest,
-    .PhotoItem = ShopItem::Photo,
+    .PhotoItem = ShopItem::photo,
     .BonusValue = 85,
     .ColourPresets = TRACK_COLOUR_PRESETS(
         { COLOUR_DARK_BROWN, COLOUR_GREY, COLOUR_DARK_BROWN },

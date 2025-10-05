@@ -578,7 +578,7 @@ namespace OpenRCT2
             // This needs to be set for both shops/facilities _and_ regular rides.
             for (auto& item : _legacyType.shop_item)
             {
-                item = ShopItem::None;
+                item = ShopItem::none;
             }
 
             auto carColours = Json::AsArray(properties["carColours"]);
@@ -606,7 +606,7 @@ namespace OpenRCT2
                 for (size_t i = 0; i < numShopItems; i++)
                 {
                     auto shopItem = ParseShopItem(Json::GetString(rideSells[i]));
-                    if (shopItem == ShopItem::None)
+                    if (shopItem == ShopItem::none)
                     {
                         context->LogWarning(ObjectError::InvalidProperty, "Unknown shop item");
                     }
@@ -1036,49 +1036,49 @@ namespace OpenRCT2
     }
 
     static const EnumMap<ShopItem> ShopItemLookupTable{
-        { "burger", ShopItem::Burger },
-        { "chips", ShopItem::Chips },
-        { "ice_cream", ShopItem::IceCream },
-        { "candyfloss", ShopItem::Candyfloss },
-        { "pizza", ShopItem::Pizza },
-        { "popcorn", ShopItem::Popcorn },
-        { "hot_dog", ShopItem::HotDog },
-        { "tentacle", ShopItem::Tentacle },
-        { "toffee_apple", ShopItem::ToffeeApple },
-        { "doughnut", ShopItem::Doughnut },
-        { "chicken", ShopItem::Chicken },
-        { "pretzel", ShopItem::Pretzel },
-        { "funnel_cake", ShopItem::FunnelCake },
-        { "beef_noodles", ShopItem::BeefNoodles },
-        { "fried_rice_noodles", ShopItem::FriedRiceNoodles },
-        { "wonton_soup", ShopItem::WontonSoup },
-        { "meatball_soup", ShopItem::MeatballSoup },
-        { "sub_sandwich", ShopItem::SubSandwich },
-        { "cookie", ShopItem::Cookie },
-        { "roast_sausage", ShopItem::RoastSausage },
-        { "drink", ShopItem::Drink },
-        { "coffee", ShopItem::Coffee },
-        { "lemonade", ShopItem::Lemonade },
-        { "chocolate", ShopItem::Chocolate },
-        { "iced_tea", ShopItem::IcedTea },
-        { "fruit_juice", ShopItem::FruitJuice },
-        { "soybean_milk", ShopItem::SoybeanMilk },
-        { "sujeonggwa", ShopItem::Sujeonggwa },
-        { "balloon", ShopItem::Balloon },
-        { "toy", ShopItem::Toy },
-        { "map", ShopItem::Map },
-        { "photo", ShopItem::Photo },
-        { "umbrella", ShopItem::Umbrella },
-        { "voucher", ShopItem::Voucher },
-        { "hat", ShopItem::Hat },
-        { "tshirt", ShopItem::TShirt },
-        { "sunglasses", ShopItem::Sunglasses },
+        { "burger", ShopItem::burger },
+        { "chips", ShopItem::chips },
+        { "ice_cream", ShopItem::iceCream },
+        { "candyfloss", ShopItem::candyfloss },
+        { "pizza", ShopItem::pizza },
+        { "popcorn", ShopItem::popcorn },
+        { "hot_dog", ShopItem::hotDog },
+        { "tentacle", ShopItem::tentacle },
+        { "toffee_apple", ShopItem::toffeeApple },
+        { "doughnut", ShopItem::doughnut },
+        { "chicken", ShopItem::chicken },
+        { "pretzel", ShopItem::pretzel },
+        { "funnel_cake", ShopItem::funnelCake },
+        { "beef_noodles", ShopItem::beefNoodles },
+        { "fried_rice_noodles", ShopItem::friedRiceNoodles },
+        { "wonton_soup", ShopItem::wontonSoup },
+        { "meatball_soup", ShopItem::meatballSoup },
+        { "sub_sandwich", ShopItem::subSandwich },
+        { "cookie", ShopItem::cookie },
+        { "roast_sausage", ShopItem::roastSausage },
+        { "drink", ShopItem::drink },
+        { "coffee", ShopItem::coffee },
+        { "lemonade", ShopItem::lemonade },
+        { "chocolate", ShopItem::chocolate },
+        { "iced_tea", ShopItem::icedTea },
+        { "fruit_juice", ShopItem::fruitJuice },
+        { "soybean_milk", ShopItem::soybeanMilk },
+        { "sujeonggwa", ShopItem::sujeonggwa },
+        { "balloon", ShopItem::balloon },
+        { "toy", ShopItem::toy },
+        { "map", ShopItem::map },
+        { "photo", ShopItem::photo },
+        { "umbrella", ShopItem::umbrella },
+        { "voucher", ShopItem::voucher },
+        { "hat", ShopItem::hat },
+        { "tshirt", ShopItem::tShirt },
+        { "sunglasses", ShopItem::sunglasses },
     };
 
     ShopItem RideObject::ParseShopItem(const std::string& s)
     {
         auto result = ShopItemLookupTable.find(s);
-        return (result != ShopItemLookupTable.end()) ? result->second : ShopItem::None;
+        return (result != ShopItemLookupTable.end()) ? result->second : ShopItem::none;
     }
 
     // Converts legacy sprite groups into OpenRCT2 sprite groups

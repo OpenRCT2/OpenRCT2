@@ -697,15 +697,15 @@ namespace OpenRCT2::GameActions
                     peep->CashInPocket = 1000.00_GBP;
                     break;
                 case OBJECT_PARK_MAP:
-                    peep->GiveItem(ShopItem::Map);
+                    peep->GiveItem(ShopItem::map);
                     break;
                 case OBJECT_BALLOON:
-                    peep->GiveItem(ShopItem::Balloon);
+                    peep->GiveItem(ShopItem::balloon);
                     peep->BalloonColour = ScenarioRandMax(kColourNumNormal);
                     peep->UpdateAnimationGroup();
                     break;
                 case OBJECT_UMBRELLA:
-                    peep->GiveItem(ShopItem::Umbrella);
+                    peep->GiveItem(ShopItem::umbrella);
                     peep->UmbrellaColour = ScenarioRandMax(kColourNumOriginal);
                     peep->UpdateAnimationGroup();
                     break;

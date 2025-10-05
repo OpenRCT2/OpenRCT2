@@ -44,7 +44,7 @@ constexpr RideTypeDescriptor BobsleighCoasterRTD =
     .BuildCosts = { 40.00_GBP, 2.50_GBP, 45, },
     .DefaultPrices = { 20, 20 },
     .DefaultMusic = kMusicObjectRock1,
-    .PhotoItem = ShopItem::Photo,
+    .PhotoItem = ShopItem::photo,
     .BonusValue = 75,
     .ColourPresets = TRACK_COLOUR_PRESETS(
         { COLOUR_WHITE, COLOUR_BRIGHT_RED, COLOUR_WHITE },

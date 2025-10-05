@@ -47,7 +47,7 @@ constexpr RideTypeDescriptor VerticalDropCoasterRTD =
     .BuildCosts = { 60.00_GBP, 2.50_GBP, 42, },
     .DefaultPrices = { 20, 20 },
     .DefaultMusic = kMusicObjectRock1,
-    .PhotoItem = ShopItem::Photo,
+    .PhotoItem = ShopItem::photo,
     .BonusValue = 95,
     .ColourPresets = TRACK_COLOUR_PRESETS(
         { COLOUR_BLACK, COLOUR_GREY, COLOUR_BLACK },

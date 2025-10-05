@@ -575,7 +575,7 @@ namespace OpenRCT2::Scripting
                 auto obj = OpenRCT2::Scripting::DukObject(ctx);
                 obj.Set("type", itemEnumPair.first);
 
-                if (shopItem == ShopItem::Voucher)
+                if (shopItem == ShopItem::voucher)
                 {
                     // Voucher
                     obj.Set("voucherType", VoucherTypeMap[peep->VoucherType]);
@@ -595,16 +595,16 @@ namespace OpenRCT2::Scripting
                     // GuestPhoto
                     switch (shopItem)
                     {
-                        case ShopItem::Photo:
+                        case ShopItem::photo:
                             obj.Set("rideId", peep->Photo1RideRef.ToUnderlying());
                             break;
-                        case ShopItem::Photo2:
+                        case ShopItem::photo2:
                             obj.Set("rideId", peep->Photo2RideRef.ToUnderlying());
                             break;
-                        case ShopItem::Photo3:
+                        case ShopItem::photo3:
                             obj.Set("rideId", peep->Photo3RideRef.ToUnderlying());
                             break;
-                        case ShopItem::Photo4:
+                        case ShopItem::photo4:
                             obj.Set("rideId", peep->Photo4RideRef.ToUnderlying());
                             break;
                         default:
@@ -643,7 +643,7 @@ namespace OpenRCT2::Scripting
             return false;
         }
 
-        if (*shopItem == ShopItem::Voucher)
+        if (*shopItem == ShopItem::voucher)
         {
             if (item["voucherType"].type() == DukValue::Type::STRING)
             {
@@ -686,25 +686,25 @@ namespace OpenRCT2::Scripting
             {
                 switch (*shopItem)
                 {
-                    case ShopItem::Photo:
+                    case ShopItem::photo:
                         if (item["rideId"].as_uint() != peep->Photo1RideRef.ToUnderlying())
                         {
                             return false;
                         }
                         break;
-                    case ShopItem::Photo2:
+                    case ShopItem::photo2:
                         if (item["rideId"].as_uint() != peep->Photo2RideRef.ToUnderlying())
                         {
                             return false;
                         }
                         break;
-                    case ShopItem::Photo3:
+                    case ShopItem::photo3:
                         if (item["rideId"].as_uint() != peep->Photo3RideRef.ToUnderlying())
                         {
                             return false;
                         }
                         break;
-                    case ShopItem::Photo4:
+                    case ShopItem::photo4:
                         if (item["rideId"].as_uint() != peep->Photo4RideRef.ToUnderlying())
                         {
                             return false;
@@ -742,7 +742,7 @@ namespace OpenRCT2::Scripting
             duk_error(ctx, DUK_ERR_ERROR, "Invalid 'type'.");
         }
 
-        if (*shopItem == ShopItem::Voucher)
+        if (*shopItem == ShopItem::voucher)
         {
             // Voucher
             if (item["voucherType"].type() != DukValue::Type::STRING)
@@ -801,16 +801,16 @@ namespace OpenRCT2::Scripting
 
             switch (*shopItem)
             {
-                case ShopItem::Photo:
+                case ShopItem::photo:
                     peep->Photo1RideRef = RideId::FromUnderlying(item["rideId"].as_uint());
                     break;
-                case ShopItem::Photo2:
+                case ShopItem::photo2:
                     peep->Photo2RideRef = RideId::FromUnderlying(item["rideId"].as_uint());
                     break;
-                case ShopItem::Photo3:
+                case ShopItem::photo3:
                     peep->Photo3RideRef = RideId::FromUnderlying(item["rideId"].as_uint());
                     break;
-                case ShopItem::Photo4:
+                case ShopItem::photo4:
                     peep->Photo4RideRef = RideId::FromUnderlying(item["rideId"].as_uint());
                     break;
                 default:

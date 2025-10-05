@@ -45,7 +45,7 @@ constexpr RideTypeDescriptor CrookedHouseRTD =
     .BuildCosts = { 32.50_GBP, 1.00_GBP, 1, },
     .DefaultPrices = { 10, 0 },
     .DefaultMusic = kMusicObjectGentle,
-    .PhotoItem = ShopItem::Photo,
+    .PhotoItem = ShopItem::photo,
     .BonusValue = 22,
     .ColourPresets = TRACK_COLOUR_PRESETS(
         { COLOUR_BRIGHT_RED, COLOUR_BLACK, COLOUR_GREY },

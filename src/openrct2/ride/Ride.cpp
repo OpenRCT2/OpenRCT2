@@ -325,7 +325,7 @@ size_t Ride::getNumPrices() const
             {
                 result++;
             }
-            else if (rideEntry->shop_item[1] != ShopItem::None)
+            else if (rideEntry->shop_item[1] != ShopItem::none)
             {
                 result++;
             }
@@ -445,14 +445,14 @@ money64 Ride::calculateIncomePerHour() const
     money64 priceMinusCost = RideGetPrice(*this);
 
     ShopItem currentShopItem = entry->shop_item[0];
-    if (currentShopItem != ShopItem::None)
+    if (currentShopItem != ShopItem::none)
     {
         priceMinusCost -= GetShopItemDescriptor(currentShopItem).Cost;
     }
 
     currentShopItem = (lifecycleFlags & RIDE_LIFECYCLE_ON_RIDE_PHOTO) ? getRideTypeDescriptor().PhotoItem : entry->shop_item[1];
 
-    if (currentShopItem != ShopItem::None)
+    if (currentShopItem != ShopItem::none)
     {
         const money64 shopItemProfit = price[1] - GetShopItemDescriptor(currentShopItem).Cost;
 
@@ -473,7 +473,7 @@ money64 Ride::calculateIncomePerHour() const
             priceMinusCost += shopItemProfit;
         }
 
-        if (entry->shop_item[0] != ShopItem::None)
+        if (entry->shop_item[0] != ShopItem::none)
             priceMinusCost /= 2;
     }
 
@@ -5898,7 +5898,7 @@ bool Ride::hasRecolourableShopItems() const
     for (size_t itemIndex = 0; itemIndex < std::size(rideEntry->shop_item); itemIndex++)
     {
         const ShopItem currentItem = rideEntry->shop_item[itemIndex];
-        if (currentItem != ShopItem::None && GetShopItemDescriptor(currentItem).IsRecolourable())
+        if (currentItem != ShopItem::none && GetShopItemDescriptor(currentItem).IsRecolourable())
         {
             return true;
         }

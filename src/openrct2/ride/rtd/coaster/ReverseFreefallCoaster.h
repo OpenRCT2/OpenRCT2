@@ -47,7 +47,7 @@ constexpr RideTypeDescriptor ReverseFreefallCoasterRTD =
     .BuildCosts = { 100.00_GBP, 0.00_GBP, 45, },
     .DefaultPrices = { 20, 20 },
     .DefaultMusic = kMusicObjectRock1,
-    .PhotoItem = ShopItem::Photo,
+    .PhotoItem = ShopItem::photo,
     .BonusValue = 70,
     .ColourPresets = TRACK_COLOUR_PRESETS(
         { COLOUR_DARK_GREEN, COLOUR_YELLOW, COLOUR_DARK_GREEN },

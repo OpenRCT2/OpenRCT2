@@ -46,7 +46,7 @@ constexpr RideTypeDescriptor FerrisWheelRTD =
     .BuildCosts = { 112.50_GBP, 1.00_GBP, 1, },
     .DefaultPrices = { 10, 0 },
     .DefaultMusic = kMusicObjectSummer,
-    .PhotoItem = ShopItem::Photo,
+    .PhotoItem = ShopItem::photo,
     .BonusValue = 45,
     .ColourPresets = TRACK_COLOUR_PRESETS(
         { COLOUR_BLACK, COLOUR_BLACK, COLOUR_BLACK },

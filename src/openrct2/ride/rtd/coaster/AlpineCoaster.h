@@ -47,7 +47,7 @@ constexpr RideTypeDescriptor AlpineCoasterRTD =
     .BuildCosts = { 22.50_GBP, 2.50_GBP, 50},
     .DefaultPrices = { 20, 20 },
     .DefaultMusic = kMusicObjectGentle,
-    .PhotoItem = ShopItem::Photo,
+    .PhotoItem = ShopItem::photo,
     .BonusValue = 65,
     .ColourPresets = TRACK_COLOUR_PRESETS(
         { COLOUR_GREY, COLOUR_GREY, COLOUR_BLACK },

@@ -61,7 +61,7 @@ constexpr RideTypeDescriptor DinghySlideRTD =
     .BuildCosts = { 20.00_GBP, 2.00_GBP, 40, },
     .DefaultPrices = { 20, 20 },
     .DefaultMusic = kMusicObjectWater,
-    .PhotoItem = ShopItem::Photo4,
+    .PhotoItem = ShopItem::photo4,
     .BonusValue = 55,
     .ColourPresets = TRACK_COLOUR_PRESETS(
         { COLOUR_DARK_GREEN, COLOUR_SATURATED_BROWN, COLOUR_DARK_GREEN },

@@ -1862,18 +1862,18 @@ static bool PeepInteractWithEntrance(Peep* peep, const CoordsXYE& coords, uint8_
         auto entranceFee = Park::GetEntranceFee();
         if (entranceFee != 0)
         {
-            if (guest->HasItem(ShopItem::Voucher))
+            if (guest->HasItem(ShopItem::voucher))
             {
                 if (guest->VoucherType == VOUCHER_TYPE_PARK_ENTRY_HALF_PRICE)
                 {
                     entranceFee /= 2;
-                    guest->RemoveItem(ShopItem::Voucher);
+                    guest->RemoveItem(ShopItem::voucher);
                     guest->WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
                 }
                 else if (guest->VoucherType == VOUCHER_TYPE_PARK_ENTRY_FREE)
                 {
                     entranceFee = 0;
-                    guest->RemoveItem(ShopItem::Voucher);
+                    guest->RemoveItem(ShopItem::voucher);
                     guest->WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
                 }
             }
@@ -2626,9 +2626,9 @@ void DecrementGuestsHeadingForPark()
 
 static void GuestReleaseBalloon(Guest* peep, int16_t spawn_height)
 {
-    if (peep->HasItem(ShopItem::Balloon))
+    if (peep->HasItem(ShopItem::balloon))
     {
-        peep->RemoveItem(ShopItem::Balloon);
+        peep->RemoveItem(ShopItem::balloon);
 
         if (peep->AnimationGroup == PeepAnimationGroup::balloon && peep->x != kLocationNull)
         {

@@ -48,7 +48,7 @@ constexpr RideTypeDescriptor SuspendedMonorailRTD =
     .BuildCosts = { 32.50_GBP, 2.50_GBP, 50, },
     .DefaultPrices = { 10, 0 },
     .DefaultMusic = kMusicObjectSummer,
-    .PhotoItem = ShopItem::Photo,
+    .PhotoItem = ShopItem::photo,
     .BonusValue = 60,
     .ColourPresets = TRACK_COLOUR_PRESETS(
         { COLOUR_BORDEAUX_RED, COLOUR_BLACK, COLOUR_BLACK },

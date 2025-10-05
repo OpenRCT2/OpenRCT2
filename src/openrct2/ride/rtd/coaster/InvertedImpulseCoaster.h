@@ -47,7 +47,7 @@ constexpr RideTypeDescriptor InvertedImpulseCoasterRTD =
     .BuildCosts = { 62.50_GBP, 2.50_GBP, 25, },
     .DefaultPrices = { 20, 20 },
     .DefaultMusic = kMusicObjectRock1,
-    .PhotoItem = ShopItem::Photo2,
+    .PhotoItem = ShopItem::photo2,
     .BonusValue = 75,
     .ColourPresets = TRACK_COLOUR_PRESETS(
         { COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED, COLOUR_GREY },

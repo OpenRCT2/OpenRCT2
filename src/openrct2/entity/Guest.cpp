@@ -523,10 +523,10 @@ void Guest::GivePassingGuestPurpleClothes(Guest& passingPeep)
 
 void Guest::GivePassingGuestPizza(Guest& passingPeep)
 {
-    if (passingPeep.HasItem(ShopItem::Pizza))
+    if (passingPeep.HasItem(ShopItem::pizza))
         return;
 
-    passingPeep.GiveItem(ShopItem::Pizza);
+    passingPeep.GiveItem(ShopItem::pizza);
 
     int32_t peepDirection = (Orientation >> 3) ^ 2;
     int32_t otherPeepOppositeDirection = passingPeep.Orientation >> 3;
@@ -558,10 +558,10 @@ void Guest::MakePassingGuestSick(Guest& passingPeep)
 
 void Guest::GivePassingPeepsIceCream(Guest& passingPeep)
 {
-    if (passingPeep.HasItem(ShopItem::IceCream))
+    if (passingPeep.HasItem(ShopItem::iceCream))
         return;
 
-    passingPeep.GiveItem(ShopItem::IceCream);
+    passingPeep.GiveItem(ShopItem::iceCream);
     passingPeep.UpdateAnimationGroup();
 }
 
@@ -843,7 +843,7 @@ void Guest::UpdateConsumptionMotives()
                 RemoveItem(food);
 
                 auto discardContainer = GetShopItemDescriptor(food).DiscardContainer;
-                if (discardContainer != ShopItem::None)
+                if (discardContainer != ShopItem::none)
                 {
                     GiveItem(discardContainer);
                 }
@@ -1066,7 +1066,7 @@ void Guest::Tick128UpdateGuest(uint32_t index)
         }
     }
 
-    if ((ScenarioRand() & 0xFFFF) <= ((HasItem(ShopItem::Map)) ? 8192u : 2184u))
+    if ((ScenarioRand() & 0xFFFF) <= ((HasItem(ShopItem::map)) ? 8192u : 2184u))
     {
         GuestPickRideToGoOn(*this);
     }
@@ -1528,10 +1528,10 @@ static money64 getItemValue(const ShopItemDescriptor& shopItemDescriptor)
 static bool GuestDecideAndBuyItem(Guest& guest, Ride& ride, const ShopItem shopItem, money64 price)
 {
     const bool isPrecipitating = ClimateIsPrecipitating();
-    const bool isPrecipitatingAndUmbrella = isPrecipitating && (shopItem == ShopItem::Umbrella);
+    const bool isPrecipitatingAndUmbrella = isPrecipitating && (shopItem == ShopItem::umbrella);
 
     bool hasVoucher = false;
-    if ((guest.HasItem(ShopItem::Voucher)) && (guest.VoucherType == VOUCHER_TYPE_FOOD_OR_DRINK_FREE)
+    if ((guest.HasItem(ShopItem::voucher)) && (guest.VoucherType == VOUCHER_TYPE_FOOD_OR_DRINK_FREE)
         && (guest.VoucherShopItem == shopItem))
     {
         hasVoucher = true;
@@ -1557,15 +1557,15 @@ static bool GuestDecideAndBuyItem(Guest& guest, Ride& ride, const ShopItem shopI
             return false;
     }
 
-    if ((shopItem == ShopItem::Balloon || shopItem == ShopItem::IceCream || shopItem == ShopItem::Candyfloss
-         || shopItem == ShopItem::Sunglasses)
+    if ((shopItem == ShopItem::balloon || shopItem == ShopItem::iceCream || shopItem == ShopItem::candyfloss
+         || shopItem == ShopItem::sunglasses)
         && isPrecipitating)
     {
         return false;
     }
 
     auto& gameState = getGameState();
-    if ((shopItem == ShopItem::Sunglasses || shopItem == ShopItem::IceCream) && gameState.weatherCurrent.temperature < 12)
+    if ((shopItem == ShopItem::sunglasses || shopItem == ShopItem::iceCream) && gameState.weatherCurrent.temperature < 12)
     {
         return false;
     }
@@ -1582,7 +1582,7 @@ static bool GuestDecideAndBuyItem(Guest& guest, Ride& ride, const ShopItem shopI
         return false;
     }
 
-    if (!isPrecipitatingAndUmbrella && (shopItem != ShopItem::Map) && shopItemDescriptor.IsSouvenir() && !hasVoucher)
+    if (!isPrecipitatingAndUmbrella && (shopItem != ShopItem::map) && shopItemDescriptor.IsSouvenir() && !hasVoucher)
     {
         if (((ScenarioRand() & 0x7F) + 0x73) > guest.Happiness || guest.GuestNumRides < 3)
             return false;
@@ -1667,31 +1667,31 @@ static bool GuestDecideAndBuyItem(Guest& guest, Ride& ride, const ShopItem shopI
     guest.GiveItem(shopItem);
     const auto hasRandomShopColour = ride.hasLifecycleFlag(RIDE_LIFECYCLE_RANDOM_SHOP_COLOURS);
 
-    if (shopItem == ShopItem::TShirt)
+    if (shopItem == ShopItem::tShirt)
         guest.TshirtColour = hasRandomShopColour ? ScenarioRandMax(kColourNumNormal) : ride.trackColours[0].main;
 
-    if (shopItem == ShopItem::Hat)
+    if (shopItem == ShopItem::hat)
         guest.HatColour = hasRandomShopColour ? ScenarioRandMax(kColourNumNormal) : ride.trackColours[0].main;
 
-    if (shopItem == ShopItem::Balloon)
+    if (shopItem == ShopItem::balloon)
         guest.BalloonColour = hasRandomShopColour ? ScenarioRandMax(kColourNumNormal) : ride.trackColours[0].main;
 
-    if (shopItem == ShopItem::Umbrella)
+    if (shopItem == ShopItem::umbrella)
         guest.UmbrellaColour = hasRandomShopColour ? ScenarioRandMax(kColourNumNormal) : ride.trackColours[0].main;
 
-    if (shopItem == ShopItem::Map)
+    if (shopItem == ShopItem::map)
         guest.ResetPathfindGoal();
 
-    if (shopItem == ShopItem::Photo)
+    if (shopItem == ShopItem::photo)
         guest.Photo1RideRef = ride.id;
 
-    if (shopItem == ShopItem::Photo2)
+    if (shopItem == ShopItem::photo2)
         guest.Photo2RideRef = ride.id;
 
-    if (shopItem == ShopItem::Photo3)
+    if (shopItem == ShopItem::photo3)
         guest.Photo3RideRef = ride.id;
 
-    if (shopItem == ShopItem::Photo4)
+    if (shopItem == ShopItem::photo4)
         guest.Photo4RideRef = ride.id;
 
     guest.WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
@@ -1738,7 +1738,7 @@ static bool GuestDecideAndBuyItem(Guest& guest, Ride& ride, const ShopItem shopI
     expenditure = static_cast<ExpenditureType>(static_cast<int32_t>(expenditure) - 1);
     if (hasVoucher)
     {
-        guest.RemoveItem(ShopItem::Voucher);
+        guest.RemoveItem(ShopItem::voucher);
         guest.WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
     }
     else if (!(gameState.park.flags & PARK_FLAGS_NO_MONEY))
@@ -1868,7 +1868,7 @@ static void GuestPickRideToGoOn(Guest& guest)
         guest.WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_ACTION;
 
         // Make peep look at their map if they have one
-        if (guest.HasItem(ShopItem::Map))
+        if (guest.HasItem(ShopItem::map))
         {
             guest.ReadMap();
         }
@@ -1882,7 +1882,7 @@ static OpenRCT2::BitSet<OpenRCT2::Limits::kMaxRidesInPark> GuestFindRidesToGoOn(
     // FIX  Originally checked for a toy, likely a mistake and should be a map,
     //      but then again this seems to only allow the peep to go on
     //      rides they haven't been on before.
-    if (guest.HasItem(ShopItem::Map))
+    if (guest.HasItem(ShopItem::map))
     {
         // Consider rides that peep hasn't been on yet
         auto& gameState = getGameState();
@@ -2401,7 +2401,7 @@ static bool GuestShouldRideWhileRaining(Guest& guest, const Ride& ride)
     }
 
     // Peeps with umbrellas will go on rides where they can use their umbrella on it (like the Maze) 50% of the time
-    if (guest.HasItem(ShopItem::Umbrella) && ride.getRideTypeDescriptor().HasFlag(RtdFlag::guestsCanUseUmbrella)
+    if (guest.HasItem(ShopItem::umbrella) && ride.getRideTypeDescriptor().HasFlag(RtdFlag::guestsCanUseUmbrella)
         && (ScenarioRand() & 2) == 0)
     {
         return true;
@@ -2437,7 +2437,7 @@ void Guest::ReadMap()
 
 static bool GuestHasVoucherForFreeRide(Guest& guest, const Ride& ride)
 {
-    return guest.HasItem(ShopItem::Voucher) && guest.VoucherType == VOUCHER_TYPE_RIDE_FREE && guest.VoucherRideId == ride.id;
+    return guest.HasItem(ShopItem::voucher) && guest.VoucherType == VOUCHER_TYPE_RIDE_FREE && guest.VoucherRideId == ride.id;
 }
 
 /**
@@ -2655,7 +2655,7 @@ static void PeepUpdateRideAtEntranceTryLeave(Guest& guest)
 
 static bool PeepCheckRidePriceAtEntrance(Guest& guest, const Ride& ride, money64 ridePrice)
 {
-    if ((guest.HasItem(ShopItem::Voucher)) && guest.VoucherType == VOUCHER_TYPE_RIDE_FREE
+    if ((guest.HasItem(ShopItem::voucher)) && guest.VoucherType == VOUCHER_TYPE_RIDE_FREE
         && guest.VoucherRideId == guest.CurrentRide)
         return true;
 
@@ -3189,7 +3189,7 @@ static void PeepHeadForNearestRide(Guest& guest, bool considerOnlyCloseRides, T 
     }
 
     OpenRCT2::BitSet<OpenRCT2::Limits::kMaxRidesInPark> rideConsideration;
-    if (!considerOnlyCloseRides && (guest.HasItem(ShopItem::Map)))
+    if (!considerOnlyCloseRides && (guest.HasItem(ShopItem::map)))
     {
         // Consider all rides in the park
         auto& gameState = getGameState();
@@ -3451,7 +3451,7 @@ void Guest::UpdateBuying()
             {
                 return;
             }
-            if (ride_type->shop_item[1] != ShopItem::None)
+            if (ride_type->shop_item[1] != ShopItem::none)
             {
                 auto price = ride->price[1];
 
@@ -3462,7 +3462,7 @@ void Guest::UpdateBuying()
                 }
             }
 
-            if (!item_bought && ride_type->shop_item[0] != ShopItem::None)
+            if (!item_bought && ride_type->shop_item[0] != ShopItem::none)
             {
                 auto price = ride->price[0];
 
@@ -3899,9 +3899,9 @@ void Guest::UpdateRideFreeVehicleEnterRide(Ride& ride)
     auto ridePrice = RideGetPrice(ride);
     if (ridePrice != 0)
     {
-        if ((HasItem(ShopItem::Voucher)) && (VoucherType == VOUCHER_TYPE_RIDE_FREE) && (VoucherRideId == CurrentRide))
+        if ((HasItem(ShopItem::voucher)) && (VoucherType == VOUCHER_TYPE_RIDE_FREE) && (VoucherRideId == CurrentRide))
         {
-            RemoveItem(ShopItem::Voucher);
+            RemoveItem(ShopItem::voucher);
             WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
         }
         else
@@ -6929,37 +6929,37 @@ struct ItemPref
 
 // clang-format off
 static ItemPref item_order_preference[] = {
-    { ShopItem::IceCream,         PeepAnimationGroup::iceCream    },
-    { ShopItem::Chips,            PeepAnimationGroup::chips       },
-    { ShopItem::Pizza,            PeepAnimationGroup::pizza       },
-    { ShopItem::Burger,           PeepAnimationGroup::burger      },
-    { ShopItem::Drink,            PeepAnimationGroup::drink       },
-    { ShopItem::Coffee,           PeepAnimationGroup::coffee      },
-    { ShopItem::Chicken,          PeepAnimationGroup::chicken     },
-    { ShopItem::Lemonade,         PeepAnimationGroup::lemonade    },
-    { ShopItem::Candyfloss,       PeepAnimationGroup::candyfloss  },
-    { ShopItem::Popcorn,          PeepAnimationGroup::popcorn     },
-    { ShopItem::HotDog,           PeepAnimationGroup::hotDog      },
-    { ShopItem::Tentacle,         PeepAnimationGroup::tentacle    },
-    { ShopItem::ToffeeApple,      PeepAnimationGroup::toffeeApple },
-    { ShopItem::Doughnut,         PeepAnimationGroup::doughnut    },
-    { ShopItem::Pretzel,          PeepAnimationGroup::pretzel     },
-    { ShopItem::Cookie,           PeepAnimationGroup::pretzel     },
-    { ShopItem::Chocolate,        PeepAnimationGroup::coffee      },
-    { ShopItem::IcedTea,          PeepAnimationGroup::coffee      },
-    { ShopItem::FunnelCake,       PeepAnimationGroup::funnelCake  },
-    { ShopItem::BeefNoodles,      PeepAnimationGroup::noodles     },
-    { ShopItem::FriedRiceNoodles, PeepAnimationGroup::noodles     },
-    { ShopItem::WontonSoup,       PeepAnimationGroup::soup        },
-    { ShopItem::MeatballSoup,     PeepAnimationGroup::soup        },
-    { ShopItem::FruitJuice,       PeepAnimationGroup::juice       },
-    { ShopItem::SoybeanMilk,      PeepAnimationGroup::sujeonggwa   },
-    { ShopItem::Sujeonggwa,       PeepAnimationGroup::sujeonggwa   },
-    { ShopItem::SubSandwich,      PeepAnimationGroup::sandwich    },
-    { ShopItem::RoastSausage,     PeepAnimationGroup::sausage     },
-    { ShopItem::Balloon,          PeepAnimationGroup::balloon     },
-    { ShopItem::Hat,              PeepAnimationGroup::hat         },
-    { ShopItem::Sunglasses,       PeepAnimationGroup::sunglasses  },
+    { ShopItem::iceCream,         PeepAnimationGroup::iceCream    },
+    { ShopItem::chips,            PeepAnimationGroup::chips       },
+    { ShopItem::pizza,            PeepAnimationGroup::pizza       },
+    { ShopItem::burger,           PeepAnimationGroup::burger      },
+    { ShopItem::drink,            PeepAnimationGroup::drink       },
+    { ShopItem::coffee,           PeepAnimationGroup::coffee      },
+    { ShopItem::chicken,          PeepAnimationGroup::chicken     },
+    { ShopItem::lemonade,         PeepAnimationGroup::lemonade    },
+    { ShopItem::candyfloss,       PeepAnimationGroup::candyfloss  },
+    { ShopItem::popcorn,          PeepAnimationGroup::popcorn     },
+    { ShopItem::hotDog,           PeepAnimationGroup::hotDog      },
+    { ShopItem::tentacle,         PeepAnimationGroup::tentacle    },
+    { ShopItem::toffeeApple,      PeepAnimationGroup::toffeeApple },
+    { ShopItem::doughnut,         PeepAnimationGroup::doughnut    },
+    { ShopItem::pretzel,          PeepAnimationGroup::pretzel     },
+    { ShopItem::cookie,           PeepAnimationGroup::pretzel     },
+    { ShopItem::chocolate,        PeepAnimationGroup::coffee      },
+    { ShopItem::icedTea,          PeepAnimationGroup::coffee      },
+    { ShopItem::funnelCake,       PeepAnimationGroup::funnelCake  },
+    { ShopItem::beefNoodles,      PeepAnimationGroup::noodles     },
+    { ShopItem::friedRiceNoodles, PeepAnimationGroup::noodles     },
+    { ShopItem::wontonSoup,       PeepAnimationGroup::soup        },
+    { ShopItem::meatballSoup,     PeepAnimationGroup::soup        },
+    { ShopItem::fruitJuice,       PeepAnimationGroup::juice       },
+    { ShopItem::soybeanMilk,      PeepAnimationGroup::sujeonggwa   },
+    { ShopItem::sujeonggwa,       PeepAnimationGroup::sujeonggwa   },
+    { ShopItem::subSandwich,      PeepAnimationGroup::sandwich    },
+    { ShopItem::roastSausage,     PeepAnimationGroup::sausage     },
+    { ShopItem::balloon,          PeepAnimationGroup::balloon     },
+    { ShopItem::hat,              PeepAnimationGroup::hat         },
+    { ShopItem::sunglasses,       PeepAnimationGroup::sunglasses  },
 };
 // clang-format on
 
@@ -6981,11 +6981,11 @@ void Guest::UpdateAnimationGroup()
             }
             Balloon::Create({ x, y, z + 9 }, BalloonColour, isBalloonPopped);
         }
-        RemoveItem(ShopItem::Balloon);
+        RemoveItem(ShopItem::balloon);
         WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
     }
 
-    if (ClimateIsPrecipitating() && (HasItem(ShopItem::Umbrella)) && x != kLocationNull)
+    if (ClimateIsPrecipitating() && (HasItem(ShopItem::umbrella)) && x != kLocationNull)
     {
         CoordsXY loc = { x, y };
         if (MapIsLocationValid(loc.ToTileStart()))
@@ -7738,41 +7738,41 @@ void Guest::RemoveRideFromMemory(RideId rideId)
     }
 
     // remove any free voucher for this ride from peep
-    if (HasItem(ShopItem::Voucher))
+    if (HasItem(ShopItem::voucher))
     {
         if (VoucherType == VOUCHER_TYPE_RIDE_FREE && VoucherRideId == rideId)
         {
-            RemoveItem(ShopItem::Voucher);
+            RemoveItem(ShopItem::voucher);
         }
     }
 
     // remove any photos of this ride from peep
-    if (HasItem(ShopItem::Photo))
+    if (HasItem(ShopItem::photo))
     {
         if (Photo1RideRef == rideId)
         {
-            RemoveItem(ShopItem::Photo);
+            RemoveItem(ShopItem::photo);
         }
     }
-    if (HasItem(ShopItem::Photo2))
+    if (HasItem(ShopItem::photo2))
     {
         if (Photo2RideRef == rideId)
         {
-            RemoveItem(ShopItem::Photo2);
+            RemoveItem(ShopItem::photo2);
         }
     }
-    if (HasItem(ShopItem::Photo3))
+    if (HasItem(ShopItem::photo3))
     {
         if (Photo3RideRef == rideId)
         {
-            RemoveItem(ShopItem::Photo3);
+            RemoveItem(ShopItem::photo3);
         }
     }
-    if (HasItem(ShopItem::Photo4))
+    if (HasItem(ShopItem::photo4))
     {
         if (Photo4RideRef == rideId)
         {
-            RemoveItem(ShopItem::Photo4);
+            RemoveItem(ShopItem::photo4);
         }
     }
 

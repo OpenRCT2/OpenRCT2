@@ -1288,12 +1288,12 @@ namespace OpenRCT2::Ui::Windows
             {
                 auto* rideObject = reinterpret_cast<RideObject*>(_loadedObject.get());
                 const auto& rideEntry = rideObject->GetEntry();
-                if (rideEntry.shop_item[0] != ShopItem::None)
+                if (rideEntry.shop_item[0] != ShopItem::none)
                 {
                     std::string sells = "";
                     for (size_t i = 0; i < std::size(rideEntry.shop_item); i++)
                     {
-                        if (rideEntry.shop_item[i] == ShopItem::None)
+                        if (rideEntry.shop_item[i] == ShopItem::none)
                             continue;
 
                         if (!sells.empty())

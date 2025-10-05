@@ -584,7 +584,7 @@ namespace OpenRCT2::PathFinding
         if (isLeavingPark)
             return kMaxJunctionsGuestLeavingPark;
 
-        if (guest->HasItem(ShopItem::Map))
+        if (guest->HasItem(ShopItem::map))
             return kMaxJunctionsGuestWithMap;
 
         return kMaxJunctionsGuest;
@@ -2010,7 +2010,7 @@ namespace OpenRCT2::PathFinding
         /* If there are still multiple directions to choose from,
          * peeps with maps will randomly read the map: probability of doing so
          * is much higher when heading for a ride or the park exit. */
-        if (peep.HasItem(ShopItem::Map))
+        if (peep.HasItem(ShopItem::map))
         {
             // If at least 2 directions consult map
             if (std::popcount(edges) >= 2)

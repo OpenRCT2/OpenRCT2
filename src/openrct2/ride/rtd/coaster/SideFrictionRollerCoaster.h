@@ -44,7 +44,7 @@ constexpr RideTypeDescriptor SideFrictionRollerCoasterRTD =
     .BuildCosts = { 27.50_GBP, 3.00_GBP, 37, },
     .DefaultPrices = { 20, 20 },
     .DefaultMusic = kMusicObjectGentle,
-    .PhotoItem = ShopItem::Photo3,
+    .PhotoItem = ShopItem::photo3,
     .BonusValue = 65,
     .ColourPresets = TRACK_COLOUR_PRESETS(
         { COLOUR_WHITE, COLOUR_DARK_BROWN, COLOUR_WHITE },
