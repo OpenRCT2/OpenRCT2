@@ -3553,9 +3553,6 @@ static void MineTrainRCTrackLeftHalfBankedHelixUpLarge(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(20348), { 0, 0, height },
                         { { 16, 16, height + 27 }, { 16, 16, 1 } });
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20178), { 0, 0, height },
-                        { { 16, 16, height + 27 }, { 16, 16, 1 } });
                     WoodenASupportsPaintSetup(
                         session, supportType.wooden, WoodenSupportSubType::corner2, height, session.SupportColours);
                     break;
@@ -3609,9 +3606,6 @@ static void MineTrainRCTrackLeftHalfBankedHelixUpLarge(
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(20347), { 0, 0, height },
-                        { { 0, 0, height + 27 }, { 16, 32, 1 } });
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20177), { 0, 0, height },
                         { { 0, 0, height + 27 }, { 16, 32, 1 } });
                     WoodenASupportsPaintSetup(
                         session, supportType.wooden, WoodenSupportSubType::corner0, height, session.SupportColours);
@@ -3832,9 +3826,6 @@ static void MineTrainRCTrackLeftHalfBankedHelixUpLarge(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(20348), { 0, 0, height },
                         { { 16, 16, height + 27 }, { 16, 16, 1 } });
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20178), { 0, 0, height },
-                        { { 16, 16, height + 27 }, { 16, 16, 1 } });
                     WoodenASupportsPaintSetup(
                         session, supportType.wooden, WoodenSupportSubType::corner2, height, session.SupportColours);
                     break;
@@ -3888,9 +3879,6 @@ static void MineTrainRCTrackLeftHalfBankedHelixUpLarge(
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(20347), { 0, 0, height },
-                        { { 0, 0, height + 27 }, { 32, 16, 1 } });
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20177), { 0, 0, height },
                         { { 0, 0, height + 27 }, { 32, 16, 1 } });
                     WoodenASupportsPaintSetup(
                         session, supportType.wooden, WoodenSupportSubType::corner0, height, session.SupportColours);

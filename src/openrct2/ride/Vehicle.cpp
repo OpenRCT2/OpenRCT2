@@ -96,17 +96,17 @@ Vehicle* _vehicleFrontVehicle;
 CoordsXYZ _vehicleCurPosition;
 
 static constexpr OpenRCT2::Audio::SoundId _screamSetMisc[] = {
-    OpenRCT2::Audio::SoundId::Scream8,
-    OpenRCT2::Audio::SoundId::Scream1,
+    OpenRCT2::Audio::SoundId::scream8,
+    OpenRCT2::Audio::SoundId::scream1,
 };
 static constexpr OpenRCT2::Audio::SoundId _screamSetWooden[] = {
-    OpenRCT2::Audio::SoundId::Scream3, OpenRCT2::Audio::SoundId::Scream1, OpenRCT2::Audio::SoundId::Scream5,
-    OpenRCT2::Audio::SoundId::Scream6, OpenRCT2::Audio::SoundId::Scream7, OpenRCT2::Audio::SoundId::Scream2,
-    OpenRCT2::Audio::SoundId::Scream4,
+    OpenRCT2::Audio::SoundId::scream3, OpenRCT2::Audio::SoundId::scream1, OpenRCT2::Audio::SoundId::scream5,
+    OpenRCT2::Audio::SoundId::scream6, OpenRCT2::Audio::SoundId::scream7, OpenRCT2::Audio::SoundId::scream2,
+    OpenRCT2::Audio::SoundId::scream4,
 };
 static constexpr OpenRCT2::Audio::SoundId _screamSetSteel[] = {
-    OpenRCT2::Audio::SoundId::Scream1,
-    OpenRCT2::Audio::SoundId::Scream6,
+    OpenRCT2::Audio::SoundId::scream1,
+    OpenRCT2::Audio::SoundId::scream6,
 };
 
 // clang-format off
@@ -437,23 +437,23 @@ static constexpr int32_t kUnk9A39C4[] = {
 };
 
 static constexpr OpenRCT2::Audio::SoundId kDoorOpenSoundIds[] = {
-    OpenRCT2::Audio::SoundId::Null,       // DoorSoundType::none
-    OpenRCT2::Audio::SoundId::DoorOpen,   // DoorSoundType::door
-    OpenRCT2::Audio::SoundId::Portcullis, // DoorSoundType::portcullis
+    OpenRCT2::Audio::SoundId::null,       // DoorSoundType::none
+    OpenRCT2::Audio::SoundId::doorOpen,   // DoorSoundType::door
+    OpenRCT2::Audio::SoundId::portcullis, // DoorSoundType::portcullis
 };
 static_assert(std::size(kDoorOpenSoundIds) == OpenRCT2::Audio::kDoorSoundTypeCount);
 
 static constexpr OpenRCT2::Audio::SoundId kDoorCloseSoundIds[] = {
-    OpenRCT2::Audio::SoundId::Null,       // DoorSoundType::none
-    OpenRCT2::Audio::SoundId::DoorClose,  // DoorSoundType::door
-    OpenRCT2::Audio::SoundId::Portcullis, // DoorSoundType::portcullis
+    OpenRCT2::Audio::SoundId::null,       // DoorSoundType::none
+    OpenRCT2::Audio::SoundId::doorClose,  // DoorSoundType::door
+    OpenRCT2::Audio::SoundId::portcullis, // DoorSoundType::portcullis
 };
 static_assert(std::size(kDoorCloseSoundIds) == OpenRCT2::Audio::kDoorSoundTypeCount);
 
 template<>
 bool EntityBase::Is<Vehicle>() const
 {
-    return Type == EntityType::Vehicle;
+    return Type == EntityType::vehicle;
 }
 
 #ifdef ENABLE_SCRIPTING
@@ -1208,7 +1208,7 @@ static SoundIdVolume VehicleSoundFadeInOut(
     OpenRCT2::Audio::SoundId currentSoundId, uint8_t currentVolume, OpenRCT2::Audio::SoundId targetSoundId,
     uint8_t targetVolume)
 {
-    if (currentSoundId != OpenRCT2::Audio::SoundId::Null)
+    if (currentSoundId != OpenRCT2::Audio::SoundId::null)
     {
         if (currentSoundId == targetSoundId)
         {
@@ -1230,14 +1230,14 @@ static SoundIdVolume VehicleSoundFadeInOut(
 
 void Vehicle::GetLiftHillSound(const Ride& curRide, SoundIdVolume& curSound)
 {
-    scream_sound_id = OpenRCT2::Audio::SoundId::Null;
+    scream_sound_id = OpenRCT2::Audio::SoundId::null;
     if (curRide.type < std::size(kRideTypeDescriptors))
     {
         // Get lift hill sound
         curSound.id = GetRideTypeDescriptor(curRide.type).LiftData.sound_id;
         curSound.volume = 243;
         if (!(sound2_flags & VEHICLE_SOUND2_FLAGS_LIFT_HILL))
-            curSound.id = OpenRCT2::Audio::SoundId::Null;
+            curSound.id = OpenRCT2::Audio::SoundId::null;
     }
 }
 
@@ -2529,15 +2529,15 @@ void Vehicle::UpdateDeparting()
 
         if (rideEntry->flags & RIDE_ENTRY_FLAG_PLAY_DEPART_SOUND)
         {
-            auto soundId = (rideEntry->Cars[0].soundRange == SoundRange::tramBell) ? OpenRCT2::Audio::SoundId::Tram
-                                                                                   : OpenRCT2::Audio::SoundId::TrainDeparting;
+            auto soundId = (rideEntry->Cars[0].soundRange == SoundRange::tramBell) ? OpenRCT2::Audio::SoundId::tram
+                                                                                   : OpenRCT2::Audio::SoundId::trainDeparting;
 
             OpenRCT2::Audio::Play3D(soundId, GetLocation());
         }
 
         if (curRide->mode == RideMode::upwardLaunch || (curRide->mode == RideMode::downwardLaunch && NumLaunches > 1))
         {
-            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::RideLaunch2, GetLocation());
+            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::rideLaunch2, GetLocation());
         }
 
         if (!(curRide->lifecycleFlags & RIDE_LIFECYCLE_TESTED))
@@ -2743,7 +2743,7 @@ void Vehicle::FinishDeparting()
         if (NumLaunches >= 1 && (14 << 16) > velocity)
             return;
 
-        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::RideLaunch1, GetLocation());
+        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::rideLaunch1, GetLocation());
     }
 
     if (curRide->mode == RideMode::upwardLaunch)
@@ -2751,7 +2751,7 @@ void Vehicle::FinishDeparting()
         if ((curRide->launchSpeed << 16) > velocity)
             return;
 
-        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::RideLaunch1, GetLocation());
+        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::rideLaunch1, GetLocation());
     }
 
     if (curRide->mode != RideMode::race && !curRide->isBlockSectioned())
@@ -2887,7 +2887,7 @@ void Vehicle::UpdateCollisionSetup()
 #endif
         const auto trainLoc = train->GetLocation();
 
-        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::Crash, trainLoc);
+        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::crash, trainLoc);
 
         ExplosionCloud::Create(trainLoc);
 
@@ -2947,7 +2947,7 @@ void Vehicle::UpdateCrashSetup()
 
     if (NumPeepsUntilTrainTail() != 0)
     {
-        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::HauntedHouseScream2, GetLocation());
+        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::hauntedHouseScream2, GetLocation());
     }
 
     int32_t edx = velocity >> 10;
@@ -3384,7 +3384,7 @@ void Vehicle::UpdateArriving()
 
     if ((curRide->mode == RideMode::upwardLaunch || curRide->mode == RideMode::downwardLaunch) && NumLaunches < 2)
     {
-        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::RideLaunch2, GetLocation());
+        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::rideLaunch2, GetLocation());
         velocity = 0;
         acceleration = 0;
         SetState(Vehicle::Status::Departing, 1);
@@ -3435,8 +3435,8 @@ void Vehicle::UpdateUnloadingPassengers()
 
             if (firstGuest != nullptr)
             {
-                firstGuest->SetState(PeepState::LeavingRide);
-                firstGuest->RideSubState = PeepRideSubState::LeaveVehicle;
+                firstGuest->SetState(PeepState::leavingRide);
+                firstGuest->RideSubState = PeepRideSubState::leaveVehicle;
             }
 
             auto secondGuest = getGameState().entities.GetEntity<Guest>(peep[seat * 2 + 1]);
@@ -3444,8 +3444,8 @@ void Vehicle::UpdateUnloadingPassengers()
 
             if (secondGuest != nullptr)
             {
-                secondGuest->SetState(PeepState::LeavingRide);
-                secondGuest->RideSubState = PeepRideSubState::LeaveVehicle;
+                secondGuest->SetState(PeepState::leavingRide);
+                secondGuest->RideSubState = PeepRideSubState::leaveVehicle;
             }
         }
     }
@@ -3480,8 +3480,8 @@ void Vehicle::UpdateUnloadingPassengers()
                 Peep* curPeep = getGameState().entities.GetEntity<Guest>(train->peep[peepIndex]);
                 if (curPeep != nullptr)
                 {
-                    curPeep->SetState(PeepState::LeavingRide);
-                    curPeep->RideSubState = PeepRideSubState::LeaveVehicle;
+                    curPeep->SetState(PeepState::leavingRide);
+                    curPeep->RideSubState = PeepRideSubState::leaveVehicle;
                 }
             }
         }
@@ -4393,24 +4393,24 @@ void Vehicle::UpdateHauntedHouseOperating()
     switch (current_time)
     {
         case 45:
-            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::HauntedHouseScare, GetLocation());
+            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::hauntedHouseScare, GetLocation());
             break;
         case 75:
             flatRideAnimationFrame = 1;
             Invalidate();
             break;
         case 400:
-            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::HauntedHouseScream1, GetLocation());
+            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::hauntedHouseScream1, GetLocation());
             break;
         case 745:
-            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::HauntedHouseScare, GetLocation());
+            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::hauntedHouseScare, GetLocation());
             break;
         case 775:
             flatRideAnimationFrame = 1;
             Invalidate();
             break;
         case 1100:
-            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::HauntedHouseScream2, GetLocation());
+            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::hauntedHouseScream2, GetLocation());
             break;
     }
 }
@@ -4674,7 +4674,7 @@ void Vehicle::CrashOnLand()
     sub_state = 2;
 
     const auto curLoc = GetLocation();
-    OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::Crash, curLoc);
+    OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::crash, curLoc);
 
     ExplosionCloud::Create(curLoc);
     ExplosionFlare::Create(curLoc);
@@ -4742,7 +4742,7 @@ void Vehicle::CrashOnWater()
     sub_state = 2;
 
     const auto curLoc = GetLocation();
-    OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::Water1, curLoc);
+    OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::water1, curLoc);
 
     CrashSplashParticle::Create(curLoc);
     CrashSplashParticle::Create(curLoc + CoordsXYZ{ -8, -9, 0 });
@@ -4863,9 +4863,9 @@ void Vehicle::UpdateCrash()
 void Vehicle::UpdateSound()
 {
     // frictionVolume (bl) should be set before hand
-    SoundIdVolume frictionSound = { OpenRCT2::Audio::SoundId::Null, 255 };
+    SoundIdVolume frictionSound = { OpenRCT2::Audio::SoundId::null, 255 };
     // bh screamVolume should be set before hand
-    SoundIdVolume screamSound = { OpenRCT2::Audio::SoundId::Null, 255 };
+    SoundIdVolume screamSound = { OpenRCT2::Audio::SoundId::null, 255 };
 
     auto curRide = GetRide();
     if (curRide == nullptr)
@@ -4894,7 +4894,7 @@ void Vehicle::UpdateSound()
             screamSound.id = scream_sound_id;
             if (!(currentTicks & 0x7F))
             {
-                if (velocity < 4.0_mph || scream_sound_id != OpenRCT2::Audio::SoundId::Null)
+                if (velocity < 4.0_mph || scream_sound_id != OpenRCT2::Audio::SoundId::null)
                 {
                     GetLiftHillSound(*curRide, screamSound);
                     break;
@@ -4902,13 +4902,13 @@ void Vehicle::UpdateSound()
 
                 if ((ScenarioRand() & 0xFFFF) <= 0x5555)
                 {
-                    scream_sound_id = OpenRCT2::Audio::SoundId::TrainWhistle;
+                    scream_sound_id = OpenRCT2::Audio::SoundId::trainWhistle;
                     screamSound.volume = 255;
                     break;
                 }
             }
-            if (screamSound.id == OpenRCT2::Audio::SoundId::NoScream)
-                screamSound.id = OpenRCT2::Audio::SoundId::Null;
+            if (screamSound.id == OpenRCT2::Audio::SoundId::noScream)
+                screamSound.id = OpenRCT2::Audio::SoundId::null;
             screamSound.volume = 255;
             break;
 
@@ -4916,7 +4916,7 @@ void Vehicle::UpdateSound()
             screamSound.id = scream_sound_id;
             if (!(currentTicks & 0x7F))
             {
-                if (velocity < 4.0_mph || scream_sound_id != OpenRCT2::Audio::SoundId::Null)
+                if (velocity < 4.0_mph || scream_sound_id != OpenRCT2::Audio::SoundId::null)
                 {
                     GetLiftHillSound(*curRide, screamSound);
                     break;
@@ -4924,13 +4924,13 @@ void Vehicle::UpdateSound()
 
                 if ((ScenarioRand() & 0xFFFF) <= 0x5555)
                 {
-                    scream_sound_id = OpenRCT2::Audio::SoundId::Tram;
+                    scream_sound_id = OpenRCT2::Audio::SoundId::tram;
                     screamSound.volume = 255;
                     break;
                 }
             }
-            if (screamSound.id == OpenRCT2::Audio::SoundId::NoScream)
-                screamSound.id = OpenRCT2::Audio::SoundId::Null;
+            if (screamSound.id == OpenRCT2::Audio::SoundId::noScream)
+                screamSound.id = OpenRCT2::Audio::SoundId::null;
             screamSound.volume = 255;
             break;
 
@@ -4938,12 +4938,12 @@ void Vehicle::UpdateSound()
             if ((carEntry.flags & CAR_ENTRY_FLAG_RIDERS_SCREAM))
             {
                 screamSound.id = UpdateScreamSound();
-                if (screamSound.id == OpenRCT2::Audio::SoundId::NoScream)
+                if (screamSound.id == OpenRCT2::Audio::SoundId::noScream)
                 {
-                    screamSound.id = OpenRCT2::Audio::SoundId::Null;
+                    screamSound.id = OpenRCT2::Audio::SoundId::null;
                     break;
                 }
-                if (screamSound.id != OpenRCT2::Audio::SoundId::Null)
+                if (screamSound.id != OpenRCT2::Audio::SoundId::null)
                 {
                     break;
                 }
@@ -4966,7 +4966,7 @@ void Vehicle::UpdateSound()
     int32_t soundVector = ((velocity >> 14) * soundDirection) >> 14;
     soundVector = std::clamp(soundVector, -127, 127);
 
-    sound_vector_factor = soundVector & 0xFF;
+    dopplerShift = soundVector & 0xFF;
 }
 
 /**
@@ -4977,12 +4977,12 @@ OpenRCT2::Audio::SoundId Vehicle::UpdateScreamSound()
 {
     int32_t totalNumPeeps = NumPeepsUntilTrainTail();
     if (totalNumPeeps == 0)
-        return OpenRCT2::Audio::SoundId::Null;
+        return OpenRCT2::Audio::SoundId::null;
 
     if (velocity < 0)
     {
         if (velocity > -2.75_mph)
-            return OpenRCT2::Audio::SoundId::Null;
+            return OpenRCT2::Audio::SoundId::null;
 
         for (Vehicle* vehicle2 = getGameState().entities.GetEntity<Vehicle>(Id); vehicle2 != nullptr;
              vehicle2 = getGameState().entities.GetEntity<Vehicle>(vehicle2->next_vehicle_on_train))
@@ -5000,11 +5000,11 @@ OpenRCT2::Audio::SoundId Vehicle::UpdateScreamSound()
             if (vehicle2->pitch == VehiclePitch::up50)
                 return ProduceScreamSound(totalNumPeeps);
         }
-        return OpenRCT2::Audio::SoundId::Null;
+        return OpenRCT2::Audio::SoundId::null;
     }
 
     if (velocity < 2.75_mph)
-        return OpenRCT2::Audio::SoundId::Null;
+        return OpenRCT2::Audio::SoundId::null;
 
     for (Vehicle* vehicle2 = getGameState().entities.GetEntity<Vehicle>(Id); vehicle2 != nullptr;
          vehicle2 = getGameState().entities.GetEntity<Vehicle>(vehicle2->next_vehicle_on_train))
@@ -5022,7 +5022,7 @@ OpenRCT2::Audio::SoundId Vehicle::UpdateScreamSound()
         if (vehicle2->pitch == VehiclePitch::down50)
             return ProduceScreamSound(totalNumPeeps);
     }
-    return OpenRCT2::Audio::SoundId::Null;
+    return OpenRCT2::Audio::SoundId::null;
 }
 
 OpenRCT2::Audio::SoundId Vehicle::ProduceScreamSound(const int32_t totalNumPeeps)
@@ -5031,7 +5031,7 @@ OpenRCT2::Audio::SoundId Vehicle::ProduceScreamSound(const int32_t totalNumPeeps
 
     const auto& carEntry = rideEntry->Cars[vehicle_type];
 
-    if (scream_sound_id == OpenRCT2::Audio::SoundId::Null)
+    if (scream_sound_id == OpenRCT2::Audio::SoundId::null)
     {
         auto r = ScenarioRand();
         if (totalNumPeeps >= static_cast<int32_t>(r % 16))
@@ -5048,13 +5048,13 @@ OpenRCT2::Audio::SoundId Vehicle::ProduceScreamSound(const int32_t totalNumPeeps
                     scream_sound_id = _screamSetSteel[r % std::size(_screamSetSteel)];
                     break;
                 default:
-                    scream_sound_id = OpenRCT2::Audio::SoundId::NoScream;
+                    scream_sound_id = OpenRCT2::Audio::SoundId::noScream;
                     break;
             }
         }
         else
         {
-            scream_sound_id = OpenRCT2::Audio::SoundId::NoScream;
+            scream_sound_id = OpenRCT2::Audio::SoundId::noScream;
         }
     }
     return scream_sound_id;
@@ -5663,11 +5663,11 @@ static void BlockBrakesOpenPreviousSection(const Ride& ride, const CoordsXYZ& ve
     auto trackType = trackElement->GetTrackType();
     if (trackType == TrackElemType::EndStation)
     {
-        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::BlockBrakeClose, location);
+        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::blockBrakeClose, location);
     }
     else if (TrackTypeIsBlockBrakes(trackType))
     {
-        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::BlockBrakeClose, location);
+        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::blockBrakeClose, location);
         BlockBrakeSetLinkedBrakesClosed(location, *trackElement, false);
     }
 }
@@ -6489,7 +6489,7 @@ static void vehicle_update_play_water_splash_sound()
     }
 
     OpenRCT2::Audio::Play3D(
-        OpenRCT2::Audio::SoundId::WaterSplash, { _vehicleCurPosition.x, _vehicleCurPosition.y, _vehicleCurPosition.z });
+        OpenRCT2::Audio::SoundId::waterSplash, { _vehicleCurPosition.x, _vehicleCurPosition.y, _vehicleCurPosition.z });
 }
 
 /**
@@ -6979,7 +6979,7 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(
             {
                 if (!(rideEntry.Cars[0].flags & CAR_ENTRY_FLAG_POWERED))
                 {
-                    OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::BlockBrakeRelease, TrackLocation);
+                    OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::blockBrakeRelease, TrackLocation);
                 }
             }
             MapInvalidateElement(TrackLocation, tileElement);
@@ -7191,7 +7191,7 @@ bool Vehicle::UpdateTrackMotionForwards(const CarEntry* carEntry, const Ride& cu
                     if (_vehicleF64E2C == 0)
                     {
                         _vehicleF64E2C++;
-                        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::BrakeRelease, { x, y, z });
+                        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::brakeRelease, { x, y, z });
                     }
                 }
             }
@@ -8927,10 +8927,10 @@ void Vehicle::Claxon() const
     switch (rideEntry->Cars[vehicle_type].soundRange)
     {
         case SoundRange::steamWhistle:
-            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::TrainWhistle, { x, y, z });
+            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::trainWhistle, { x, y, z });
             break;
         case SoundRange::tramBell:
-            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::Tram, { x, y, z });
+            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::tram, { x, y, z });
             break;
         default:
             break;
@@ -9030,7 +9030,7 @@ void Vehicle::Serialise(DataSerialiser& stream)
     stream << sound1_volume;
     stream << sound2_id;
     stream << sound2_volume;
-    stream << sound_vector_factor;
+    stream << dopplerShift;
     stream << var_C0;
     stream << speed;
     stream << powered_acceleration;

@@ -111,13 +111,13 @@ namespace OpenRCT2::GameActions
         ShopItem shopItem;
         if (_primaryPrice)
         {
-            shopItem = ShopItem::Admission;
+            shopItem = ShopItem::admission;
 
             const auto& rtd = ride->getRideTypeDescriptor();
             if (rtd.specialType != RtdSpecialType::toilet)
             {
                 shopItem = rideEntry->shop_item[0];
-                if (shopItem == ShopItem::None)
+                if (shopItem == ShopItem::none)
                 {
                     ride->price[0] = _price;
                     windowMgr->InvalidateByClass(WindowClass::ride);
@@ -135,7 +135,7 @@ namespace OpenRCT2::GameActions
         else
         {
             shopItem = rideEntry->shop_item[1];
-            if (shopItem == ShopItem::None)
+            if (shopItem == ShopItem::none)
             {
                 shopItem = ride->getRideTypeDescriptor().PhotoItem;
                 if ((ride->lifecycleFlags & RIDE_LIFECYCLE_ON_RIDE_PHOTO) == 0)
@@ -167,7 +167,7 @@ namespace OpenRCT2::GameActions
             auto invalidate = false;
             auto rideEntry = GetRideEntryByIndex(ride.subtype);
             const auto& rtd = ride.getRideTypeDescriptor();
-            if (rtd.specialType == RtdSpecialType::toilet && shopItem == ShopItem::Admission)
+            if (rtd.specialType == RtdSpecialType::toilet && shopItem == ShopItem::admission)
             {
                 if (ride.price[0] != _price)
                 {
@@ -187,7 +187,7 @@ namespace OpenRCT2::GameActions
             {
                 // If the shop item is the same or an on-ride photo
                 if (rideEntry->shop_item[1] == shopItem
-                    || (rideEntry->shop_item[1] == ShopItem::None && GetShopItemDescriptor(shopItem).IsPhoto()))
+                    || (rideEntry->shop_item[1] == ShopItem::none && GetShopItemDescriptor(shopItem).IsPhoto()))
                 {
                     if (ride.price[1] != _price)
                     {

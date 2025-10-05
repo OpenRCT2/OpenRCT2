@@ -26,12 +26,12 @@ namespace OpenRCT2
             auto parts = String::split(s, "..");
             if (parts.size() == 1)
             {
-                result = Range<int32_t>(std::stoi(parts[0]));
+                result = Range<int32_t>(String::parse<int32_t>(parts[0]));
             }
             else
             {
-                auto left = std::stoi(parts[0]);
-                auto right = std::stoi(parts[1]);
+                auto left = String::parse<int32_t>(parts[0]);
+                auto right = String::parse<int32_t>(parts[1]);
                 if (left <= right)
                 {
                     result = Range<int32_t>(left, right);

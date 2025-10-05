@@ -138,9 +138,9 @@ void CarEntrySetImageMaxSizes(CarEntry& carEntry, int32_t numImages)
         spriteHeightNegative += 16;
     }
 
-    carEntry.sprite_width = spriteWidth;
-    carEntry.sprite_height_negative = spriteHeightNegative;
-    carEntry.sprite_height_positive = spriteHeightPositive;
+    carEntry.spriteWidth = spriteWidth;
+    carEntry.spriteHeightNegative = spriteHeightNegative;
+    carEntry.spriteHeightPositive = spriteHeightPositive;
 }
 
 bool CarEntry::isVisible() const

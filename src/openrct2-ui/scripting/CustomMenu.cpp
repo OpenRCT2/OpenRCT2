@@ -43,17 +43,17 @@ namespace OpenRCT2::Scripting
         RegisteredShortcut registeredShortcut(Id, Text, [this]() { Invoke(); });
         for (const auto& binding : bindings)
         {
-            registeredShortcut.Default.emplace_back(binding);
+            registeredShortcut.standard.emplace_back(binding);
         }
-        registeredShortcut.Current = registeredShortcut.Default;
-        shortcutManager.RegisterShortcut(std::move(registeredShortcut));
-        shortcutManager.LoadUserBindings();
+        registeredShortcut.current = registeredShortcut.standard;
+        shortcutManager.registerShortcut(std::move(registeredShortcut));
+        shortcutManager.loadUserBindings();
     }
 
     CustomShortcut::~CustomShortcut()
     {
         auto& shortcutManager = GetShortcutManager();
-        shortcutManager.RemoveShortcut(Id);
+        shortcutManager.removeShortcut(Id);
     }
 
     void CustomShortcut::Invoke() const

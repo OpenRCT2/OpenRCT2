@@ -15,11 +15,11 @@ namespace OpenRCT2
 {
     enum class MouseState : uint32_t
     {
-        Released,
-        LeftPress,
-        LeftRelease,
-        RightPress,
-        RightRelease
+        released,
+        leftPress,
+        leftRelease,
+        rightPress,
+        rightRelease,
     };
 
     extern ScreenCoordsXY gInputDragLast;

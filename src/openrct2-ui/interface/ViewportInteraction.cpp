@@ -114,7 +114,7 @@ namespace OpenRCT2::Ui
             case ViewportInteractionItem::entity:
                 switch (sprite->Type)
                 {
-                    case EntityType::Vehicle:
+                    case EntityType::vehicle:
                     {
                         auto vehicle = sprite->As<Vehicle>();
                         if (vehicle != nullptr && !vehicle->IsCableLift())
@@ -123,8 +123,8 @@ namespace OpenRCT2::Ui
                             info.interactionType = ViewportInteractionItem::none;
                     }
                     break;
-                    case EntityType::Guest:
-                    case EntityType::Staff:
+                    case EntityType::guest:
+                    case EntityType::staff:
                     {
                         auto peep = sprite->As<Peep>();
                         if (peep != nullptr)
@@ -205,22 +205,22 @@ namespace OpenRCT2::Ui
                 auto entity = info.Entity;
                 switch (entity->Type)
                 {
-                    case EntityType::Vehicle:
+                    case EntityType::vehicle:
                     {
                         auto intent = Intent(WindowDetail::vehicle);
                         intent.PutExtra(INTENT_EXTRA_VEHICLE, entity);
                         ContextOpenIntent(&intent);
                         break;
                     }
-                    case EntityType::Guest:
-                    case EntityType::Staff:
+                    case EntityType::guest:
+                    case EntityType::staff:
                     {
                         auto intent = Intent(WindowClass::peep);
                         intent.PutExtra(INTENT_EXTRA_PEEP, entity);
                         ContextOpenIntent(&intent);
                         break;
                     }
-                    case EntityType::Balloon:
+                    case EntityType::balloon:
                     {
                         if (GameIsNotPaused())
                         {
@@ -229,7 +229,7 @@ namespace OpenRCT2::Ui
                         }
                     }
                     break;
-                    case EntityType::Duck:
+                    case EntityType::duck:
                     {
                         if (GameIsNotPaused())
                         {
@@ -288,7 +288,7 @@ namespace OpenRCT2::Ui
             case ViewportInteractionItem::entity:
             {
                 auto sprite = info.Entity;
-                if (gLegacyScene == LegacyScene::scenarioEditor || sprite->Type != EntityType::Vehicle)
+                if (gLegacyScene == LegacyScene::scenarioEditor || sprite->Type != EntityType::vehicle)
                 {
                     info.interactionType = ViewportInteractionItem::none;
                     return info;
@@ -573,7 +573,7 @@ namespace OpenRCT2::Ui
             case ViewportInteractionItem::entity:
             {
                 auto entity = info.Entity;
-                if (entity->Type == EntityType::Vehicle)
+                if (entity->Type == EntityType::vehicle)
                 {
                     auto vehicle = entity->As<Vehicle>();
                     if (vehicle == nullptr)

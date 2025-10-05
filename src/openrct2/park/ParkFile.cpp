@@ -2256,7 +2256,7 @@ namespace OpenRCT2
         cs.readWrite(entity.sound1_volume);
         cs.readWrite(entity.sound2_id);
         cs.readWrite(entity.sound2_volume);
-        cs.readWrite(entity.sound_vector_factor);
+        cs.readWrite(entity.dopplerShift);
         cs.readWrite(entity.time_waiting);
         cs.readWrite(entity.speed);
         cs.readWrite(entity.powered_acceleration);

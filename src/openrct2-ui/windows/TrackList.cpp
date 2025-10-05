@@ -117,7 +117,7 @@ namespace OpenRCT2::Ui::Windows
 
         void SelectFromList(int32_t listIndex)
         {
-            OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Click1, 0, this->windowPos.x + (this->width / 2));
+            OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::click1, 0, this->windowPos.x + (this->width / 2));
             if (!(gLegacyScene == LegacyScene::trackDesignsManager))
             {
                 if (listIndex == 0)

@@ -36,7 +36,7 @@ static constexpr CoordsXY kMoneyEffectMoveOffset[] = {
 template<>
 bool EntityBase::Is<MoneyEffect>() const
 {
-    return Type == EntityType::MoneyEffect;
+    return Type == EntityType::moneyEffect;
 }
 
 /**

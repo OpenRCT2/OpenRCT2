@@ -29,27 +29,27 @@ void EntityBase::Invalidate()
     ZoomLevel maxZoom{ 0 };
     switch (Type)
     {
-        case EntityType::Vehicle:
-        case EntityType::Guest:
-        case EntityType::Staff:
+        case EntityType::vehicle:
+        case EntityType::guest:
+        case EntityType::staff:
             maxZoom = ZoomLevel{ 2 };
             break;
-        case EntityType::CrashedVehicleParticle:
-        case EntityType::JumpingFountain:
+        case EntityType::crashedVehicleParticle:
+        case EntityType::jumpingFountain:
             maxZoom = ZoomLevel{ 0 };
             break;
-        case EntityType::Duck:
+        case EntityType::duck:
             maxZoom = ZoomLevel{ 1 };
             break;
-        case EntityType::SteamParticle:
-        case EntityType::MoneyEffect:
-        case EntityType::ExplosionCloud:
-        case EntityType::CrashSplash:
-        case EntityType::ExplosionFlare:
-        case EntityType::Balloon:
+        case EntityType::steamParticle:
+        case EntityType::moneyEffect:
+        case EntityType::explosionCloud:
+        case EntityType::crashSplash:
+        case EntityType::explosionFlare:
+        case EntityType::balloon:
             maxZoom = ZoomLevel{ 2 };
             break;
-        case EntityType::Litter:
+        case EntityType::litter:
             maxZoom = ZoomLevel{ 0 };
             break;
         default:

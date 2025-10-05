@@ -42,13 +42,13 @@ constexpr RideTypeDescriptor LSMLaunchedRollerCoasterRTD =
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION),
     .Heights = { 33, 24, 9, 11, },
     .MaxMass = 31,
-    .LiftData = { Audio::SoundId::LiftClassic, 5, 5 },
+    .LiftData = { Audio::SoundId::liftClassic, 5, 5 },
     .RatingsMultipliers = { 51, 32, 10 },
     .UpkeepCosts = { 10, 20, 80, 12, 3, 40 },
     .BuildCosts = { 57.00_GBP, 2.50_GBP, 55, },
     .DefaultPrices = { 20, 20 },
     .DefaultMusic = kMusicObjectModern,
-    .PhotoItem = ShopItem::Photo,
+    .PhotoItem = ShopItem::photo,
     .BonusValue = 120,
     .ColourPresets = TRACK_COLOUR_PRESETS(
         { COLOUR_LIGHT_BLUE, COLOUR_LIGHT_BLUE, COLOUR_BLACK}, // Taiga

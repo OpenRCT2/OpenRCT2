@@ -505,6 +505,7 @@ extern const TranslucentWindowPalette kTranslucentWindowPalettes[COLOUR_COUNT];
 extern ImageId gPickupPeepImage;
 extern int32_t gPickupPeepX;
 extern int32_t gPickupPeepY;
+extern bool gPaintForceRedraw;
 
 bool ClipDrawPixelInfo(RenderTarget& dst, RenderTarget& src, const ScreenCoordsXY& coords, int32_t width, int32_t height);
 void GfxSetDirtyBlocks(const ScreenRect& rect);

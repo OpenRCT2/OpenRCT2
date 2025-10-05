@@ -575,7 +575,7 @@ namespace OpenRCT2::Scripting
                 auto obj = OpenRCT2::Scripting::DukObject(ctx);
                 obj.Set("type", itemEnumPair.first);
 
-                if (shopItem == ShopItem::Voucher)
+                if (shopItem == ShopItem::voucher)
                 {
                     // Voucher
                     obj.Set("voucherType", VoucherTypeMap[peep->VoucherType]);
@@ -595,16 +595,16 @@ namespace OpenRCT2::Scripting
                     // GuestPhoto
                     switch (shopItem)
                     {
-                        case ShopItem::Photo:
+                        case ShopItem::photo:
                             obj.Set("rideId", peep->Photo1RideRef.ToUnderlying());
                             break;
-                        case ShopItem::Photo2:
+                        case ShopItem::photo2:
                             obj.Set("rideId", peep->Photo2RideRef.ToUnderlying());
                             break;
-                        case ShopItem::Photo3:
+                        case ShopItem::photo3:
                             obj.Set("rideId", peep->Photo3RideRef.ToUnderlying());
                             break;
-                        case ShopItem::Photo4:
+                        case ShopItem::photo4:
                             obj.Set("rideId", peep->Photo4RideRef.ToUnderlying());
                             break;
                         default:
@@ -643,7 +643,7 @@ namespace OpenRCT2::Scripting
             return false;
         }
 
-        if (*shopItem == ShopItem::Voucher)
+        if (*shopItem == ShopItem::voucher)
         {
             if (item["voucherType"].type() == DukValue::Type::STRING)
             {
@@ -686,25 +686,25 @@ namespace OpenRCT2::Scripting
             {
                 switch (*shopItem)
                 {
-                    case ShopItem::Photo:
+                    case ShopItem::photo:
                         if (item["rideId"].as_uint() != peep->Photo1RideRef.ToUnderlying())
                         {
                             return false;
                         }
                         break;
-                    case ShopItem::Photo2:
+                    case ShopItem::photo2:
                         if (item["rideId"].as_uint() != peep->Photo2RideRef.ToUnderlying())
                         {
                             return false;
                         }
                         break;
-                    case ShopItem::Photo3:
+                    case ShopItem::photo3:
                         if (item["rideId"].as_uint() != peep->Photo3RideRef.ToUnderlying())
                         {
                             return false;
                         }
                         break;
-                    case ShopItem::Photo4:
+                    case ShopItem::photo4:
                         if (item["rideId"].as_uint() != peep->Photo4RideRef.ToUnderlying())
                         {
                             return false;
@@ -742,7 +742,7 @@ namespace OpenRCT2::Scripting
             duk_error(ctx, DUK_ERR_ERROR, "Invalid 'type'.");
         }
 
-        if (*shopItem == ShopItem::Voucher)
+        if (*shopItem == ShopItem::voucher)
         {
             // Voucher
             if (item["voucherType"].type() != DukValue::Type::STRING)
@@ -801,16 +801,16 @@ namespace OpenRCT2::Scripting
 
             switch (*shopItem)
             {
-                case ShopItem::Photo:
+                case ShopItem::photo:
                     peep->Photo1RideRef = RideId::FromUnderlying(item["rideId"].as_uint());
                     break;
-                case ShopItem::Photo2:
+                case ShopItem::photo2:
                     peep->Photo2RideRef = RideId::FromUnderlying(item["rideId"].as_uint());
                     break;
-                case ShopItem::Photo3:
+                case ShopItem::photo3:
                     peep->Photo3RideRef = RideId::FromUnderlying(item["rideId"].as_uint());
                     break;
-                case ShopItem::Photo4:
+                case ShopItem::photo4:
                     peep->Photo4RideRef = RideId::FromUnderlying(item["rideId"].as_uint());
                     break;
                 default:
@@ -848,7 +848,7 @@ namespace OpenRCT2::Scripting
     std::vector<std::string> ScGuest::availableAnimations_get() const
     {
         std::vector<std::string> availableAnimations{};
-        for (auto& animation : getAnimationsByPeepType(AnimationPeepType::Guest))
+        for (auto& animation : getAnimationsByPeepType(AnimationPeepType::guest))
         {
             availableAnimations.push_back(std::string(animation.first));
         }
@@ -859,7 +859,7 @@ namespace OpenRCT2::Scripting
     {
         std::vector<uint32_t> spriteIds{};
 
-        auto& availableGuestAnimations = getAnimationsByPeepType(AnimationPeepType::Guest);
+        auto& availableGuestAnimations = getAnimationsByPeepType(AnimationPeepType::guest);
         auto animationType = availableGuestAnimations.TryGet(groupKey);
         if (animationType == std::nullopt)
         {
@@ -873,10 +873,10 @@ namespace OpenRCT2::Scripting
             auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(peep->AnimationObjectIndex);
 
             const auto& animationGroup = animObj->GetPeepAnimation(peep->AnimationGroup, *animationType);
-            for (auto frameOffset : animationGroup.frame_offsets)
+            for (auto frameOffset : animationGroup.frameOffsets)
             {
-                auto imageId = animationGroup.base_image;
-                if (animationType != PeepAnimationType::Hanging)
+                auto imageId = animationGroup.baseImage;
+                if (animationType != PeepAnimationType::hanging)
                     imageId += rotation + frameOffset * 4;
                 else
                     imageId += frameOffset;
@@ -895,13 +895,13 @@ namespace OpenRCT2::Scripting
             return nullptr;
         }
 
-        auto& availableGuestAnimations = getAnimationsByPeepType(AnimationPeepType::Guest);
+        auto& availableGuestAnimations = getAnimationsByPeepType(AnimationPeepType::guest);
         std::string_view action = availableGuestAnimations[peep->AnimationType];
 
         // Special consideration for sitting peeps
         // TODO: something funky going on in the state machine
-        if (peep->AnimationType == PeepAnimationType::Walking && peep->State == PeepState::Sitting)
-            action = availableGuestAnimations[PeepAnimationType::SittingIdle];
+        if (peep->AnimationType == PeepAnimationType::walking && peep->State == PeepState::sitting)
+            action = availableGuestAnimations[PeepAnimationType::sittingIdle];
 
         return std::string(action);
     }
@@ -910,7 +910,7 @@ namespace OpenRCT2::Scripting
     {
         ThrowIfGameStateNotMutable();
 
-        auto& availableGuestAnimations = getAnimationsByPeepType(AnimationPeepType::Guest);
+        auto& availableGuestAnimations = getAnimationsByPeepType(AnimationPeepType::guest);
         auto newType = availableGuestAnimations.TryGet(groupKey);
         if (newType == std::nullopt)
         {
@@ -930,7 +930,7 @@ namespace OpenRCT2::Scripting
         auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(peep->AnimationObjectIndex);
 
         const auto& animationGroup = animObj->GetPeepAnimation(peep->AnimationGroup, peep->AnimationType);
-        peep->AnimationImageIdOffset = animationGroup.frame_offsets[offset];
+        peep->AnimationImageIdOffset = animationGroup.frameOffsets[offset];
         peep->Invalidate();
         peep->UpdateSpriteBoundingBox();
         peep->Invalidate();
@@ -960,7 +960,7 @@ namespace OpenRCT2::Scripting
         auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(peep->AnimationObjectIndex);
 
         const auto& animationGroup = animObj->GetPeepAnimation(peep->AnimationGroup, peep->AnimationType);
-        auto length = animationGroup.frame_offsets.size();
+        auto length = animationGroup.frameOffsets.size();
         offset %= length;
 
         if (peep->IsActionWalking())
@@ -968,7 +968,7 @@ namespace OpenRCT2::Scripting
         else
             peep->AnimationFrameNum = offset;
 
-        peep->AnimationImageIdOffset = animationGroup.frame_offsets[offset];
+        peep->AnimationImageIdOffset = animationGroup.frameOffsets[offset];
         peep->UpdateSpriteBoundingBox();
     }
 
@@ -984,7 +984,7 @@ namespace OpenRCT2::Scripting
         auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(peep->AnimationObjectIndex);
 
         const auto& animationGroup = animObj->GetPeepAnimation(peep->AnimationGroup, peep->AnimationType);
-        return static_cast<uint8_t>(animationGroup.frame_offsets.size());
+        return static_cast<uint8_t>(animationGroup.frameOffsets.size());
     }
 
     ScThought::ScThought(PeepThought backing)

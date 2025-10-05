@@ -223,7 +223,7 @@ namespace OpenRCT2::Ui::Windows
                 auto result = GameActions::Execute(&gameAction, getGameState());
                 if (result.Error == GameActions::Status::Ok)
                 {
-                    Audio::Play3D(Audio::SoundId::PlaceItem, result.Position);
+                    Audio::Play3D(Audio::SoundId::placeItem, result.Position);
                 }
             }
         }
@@ -390,7 +390,7 @@ namespace OpenRCT2::Ui::Windows
 
             _selectedEntranceType = selected;
 
-            Audio::Play(Audio::SoundId::Click1, 0, windowPos.x + (width / 2));
+            Audio::Play(Audio::SoundId::click1, 0, windowPos.x + (width / 2));
             invalidate();
         }
     };

@@ -172,13 +172,13 @@ void FootpathInterruptPeeps(const CoordsXYZ& footpathPos)
     auto quad = EntityTileList<Peep>(footpathPos);
     for (auto peep : quad)
     {
-        if (peep->State == PeepState::Sitting || peep->State == PeepState::Watching)
+        if (peep->State == PeepState::sitting || peep->State == PeepState::watching)
         {
             auto location = peep->GetLocation();
             if (location.z == footpathPos.z)
             {
                 auto destination = location.ToTileCentre();
-                peep->SetState(PeepState::Walking);
+                peep->SetState(PeepState::walking);
                 peep->SetDestination(destination, 5);
                 peep->UpdateCurrentAnimationType();
             }

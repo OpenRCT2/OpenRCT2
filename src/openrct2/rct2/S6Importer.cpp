@@ -1215,8 +1215,8 @@ namespace OpenRCT2::RCT2
                 if (entity.Unknown.EntityIdentifier == RCT12EntityIdentifier::Peep)
                 {
                     if (entity.Peep.CurrentRide == static_cast<RCT12RideId>(rideIndex.ToUnderlying())
-                        && (static_cast<PeepState>(entity.Peep.State) == PeepState::OnRide
-                            || static_cast<PeepState>(entity.Peep.State) == PeepState::EnteringRide))
+                        && (static_cast<PeepState>(entity.Peep.State) == PeepState::onRide
+                            || static_cast<PeepState>(entity.Peep.State) == PeepState::enteringRide))
                     {
                         numRiders++;
                     }
@@ -1735,22 +1735,22 @@ namespace OpenRCT2::RCT2
 
         constexpr EntityType GetEntityTypeFromRCT2Sprite(const RCT12EntityBase* src)
         {
-            EntityType output = EntityType::Null;
+            EntityType output = EntityType::null;
             switch (src->EntityIdentifier)
             {
                 case RCT12EntityIdentifier::Vehicle:
-                    output = EntityType::Vehicle;
+                    output = EntityType::vehicle;
                     break;
                 case RCT12EntityIdentifier::Peep:
                 {
                     const auto& peep = static_cast<const Peep&>(*src);
                     if (RCT12PeepType(peep.PeepType) == RCT12PeepType::Guest)
                     {
-                        output = EntityType::Guest;
+                        output = EntityType::guest;
                     }
                     else
                     {
-                        output = EntityType::Staff;
+                        output = EntityType::staff;
                     }
                     break;
                 }
@@ -1759,39 +1759,39 @@ namespace OpenRCT2::RCT2
                     switch (RCT12MiscEntityType(src->Type))
                     {
                         case RCT12MiscEntityType::SteamParticle:
-                            output = EntityType::SteamParticle;
+                            output = EntityType::steamParticle;
                             break;
                         case RCT12MiscEntityType::MoneyEffect:
-                            output = EntityType::MoneyEffect;
+                            output = EntityType::moneyEffect;
                             break;
                         case RCT12MiscEntityType::CrashedVehicleParticle:
-                            output = EntityType::CrashedVehicleParticle;
+                            output = EntityType::crashedVehicleParticle;
                             break;
                         case RCT12MiscEntityType::ExplosionCloud:
-                            output = EntityType::ExplosionCloud;
+                            output = EntityType::explosionCloud;
                             break;
                         case RCT12MiscEntityType::CrashSplash:
-                            output = EntityType::CrashSplash;
+                            output = EntityType::crashSplash;
                             break;
                         case RCT12MiscEntityType::ExplosionFlare:
-                            output = EntityType::ExplosionFlare;
+                            output = EntityType::explosionFlare;
                             break;
                         case RCT12MiscEntityType::JumpingFountainWater:
                         case RCT12MiscEntityType::JumpingFountainSnow:
-                            output = EntityType::JumpingFountain;
+                            output = EntityType::jumpingFountain;
                             break;
                         case RCT12MiscEntityType::Balloon:
-                            output = EntityType::Balloon;
+                            output = EntityType::balloon;
                             break;
                         case RCT12MiscEntityType::Duck:
-                            output = EntityType::Duck;
+                            output = EntityType::duck;
                             break;
                         default:
                             break;
                     }
                     break;
                 case RCT12EntityIdentifier::Litter:
-                    output = EntityType::Litter;
+                    output = EntityType::litter;
                     break;
                 default:
                     break;
@@ -2034,7 +2034,7 @@ namespace OpenRCT2::RCT2
         dst->sound1_volume = src->Sound1Volume;
         dst->sound2_id = static_cast<OpenRCT2::Audio::SoundId>(src->Sound2Id);
         dst->sound2_volume = src->Sound2Volume;
-        dst->sound_vector_factor = src->SoundVectorFactor;
+        dst->dopplerShift = src->SoundVectorFactor;
         dst->time_waiting = src->TimeWaiting;
         dst->speed = src->Speed;
         dst->powered_acceleration = src->PoweredAcceleration;
@@ -2292,43 +2292,43 @@ namespace OpenRCT2::RCT2
     {
         switch (GetEntityTypeFromRCT2Sprite(&src))
         {
-            case EntityType::Vehicle:
+            case EntityType::vehicle:
                 ImportEntity<::Vehicle>(gameState, src);
                 break;
-            case EntityType::Guest:
+            case EntityType::guest:
                 ImportEntity<::Guest>(gameState, src);
                 break;
-            case EntityType::Staff:
+            case EntityType::staff:
                 ImportEntity<::Staff>(gameState, src);
                 break;
-            case EntityType::SteamParticle:
+            case EntityType::steamParticle:
                 ImportEntity<::SteamParticle>(gameState, src);
                 break;
-            case EntityType::MoneyEffect:
+            case EntityType::moneyEffect:
                 ImportEntity<::MoneyEffect>(gameState, src);
                 break;
-            case EntityType::CrashedVehicleParticle:
+            case EntityType::crashedVehicleParticle:
                 ImportEntity<::VehicleCrashParticle>(gameState, src);
                 break;
-            case EntityType::ExplosionCloud:
+            case EntityType::explosionCloud:
                 ImportEntity<::ExplosionCloud>(gameState, src);
                 break;
-            case EntityType::ExplosionFlare:
+            case EntityType::explosionFlare:
                 ImportEntity<::ExplosionFlare>(gameState, src);
                 break;
-            case EntityType::CrashSplash:
+            case EntityType::crashSplash:
                 ImportEntity<::CrashSplashParticle>(gameState, src);
                 break;
-            case EntityType::JumpingFountain:
+            case EntityType::jumpingFountain:
                 ImportEntity<::JumpingFountain>(gameState, src);
                 break;
-            case EntityType::Balloon:
+            case EntityType::balloon:
                 ImportEntity<::Balloon>(gameState, src);
                 break;
-            case EntityType::Duck:
+            case EntityType::duck:
                 ImportEntity<::Duck>(gameState, src);
                 break;
-            case EntityType::Litter:
+            case EntityType::litter:
                 ImportEntity<::Litter>(gameState, src);
                 break;
             default:

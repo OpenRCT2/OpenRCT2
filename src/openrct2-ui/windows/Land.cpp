@@ -606,7 +606,7 @@ namespace OpenRCT2::Ui::Windows
          */
         void ToolUpdateLand(const ScreenCoordsXY& screenPos)
         {
-            const bool mapCtrlPressed = GetInputManager().IsModifierKeyPressed(ModifierKey::ctrl);
+            const bool mapCtrlPressed = GetInputManager().isModifierKeyPressed(ModifierKey::ctrl);
             auto* windowMgr = Ui::GetWindowManager();
 
             MapInvalidateSelectionRect();

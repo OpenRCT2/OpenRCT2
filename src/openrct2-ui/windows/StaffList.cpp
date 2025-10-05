@@ -170,10 +170,10 @@ namespace OpenRCT2::Ui::Windows
             auto* animObj = findPeepAnimationsObjectForType(animPeepType);
             if (animObj != nullptr)
             {
-                auto& anim = animObj->GetPeepAnimation(PeepAnimationGroup::Normal);
+                auto& anim = animObj->GetPeepAnimation(PeepAnimationGroup::normal);
                 _tabAnimationIndex++;
 
-                if (_tabAnimationIndex >= anim.frame_offsets.size() * 4)
+                if (_tabAnimationIndex >= anim.frameOffsets.size() * 4)
                     _tabAnimationIndex = 0;
 
                 invalidateWidget(WIDX_STAFF_LIST_HANDYMEN_TAB + _selectedTab);
@@ -250,7 +250,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_STAFF_LIST_HIRE_BUTTON].text = GetStaffNamingConvention(GetSelectedStaffType()).ActionHire;
             widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].type = WidgetType::empty;
 
-            if (GetSelectedStaffType() != StaffType::Entertainer)
+            if (GetSelectedStaffType() != StaffType::entertainer)
             {
                 widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].type = WidgetType::colourBtn;
                 widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].image = getColourButtonImage(
@@ -283,7 +283,7 @@ namespace OpenRCT2::Ui::Windows
                 DrawTextBasic(rt, windowPos + ScreenCoordsXY{ width - 155, y }, STR_COST_PER_MONTH, ft);
             }
 
-            if (GetSelectedStaffType() != StaffType::Entertainer)
+            if (GetSelectedStaffType() != StaffType::entertainer)
             {
                 DrawTextBasic(
                     rt, windowPos + ScreenCoordsXY{ 6, widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].top + 1 },
@@ -512,14 +512,14 @@ namespace OpenRCT2::Ui::Windows
         void HireNewMember(StaffType staffType)
         {
             bool autoPosition = Config::Get().general.AutoStaffPlacement;
-            if (GetInputManager().IsModifierKeyPressed(ModifierKey::shift))
+            if (GetInputManager().isModifierKeyPressed(ModifierKey::shift))
             {
                 autoPosition = autoPosition ^ 1;
             }
 
             uint32_t staffOrders = 0;
 
-            if (staffType == StaffType::Handyman)
+            if (staffType == StaffType::handyman)
             {
                 staffOrders = STAFF_ORDERS_SWEEPING | STAFF_ORDERS_WATER_FLOWERS | STAFF_ORDERS_EMPTY_BINS;
                 if (Config::Get().general.HandymenMowByDefault)
@@ -527,14 +527,14 @@ namespace OpenRCT2::Ui::Windows
                     staffOrders |= STAFF_ORDERS_MOWING;
                 }
             }
-            else if (staffType == StaffType::Mechanic)
+            else if (staffType == StaffType::mechanic)
             {
                 staffOrders = STAFF_ORDERS_INSPECT_RIDES | STAFF_ORDERS_FIX_RIDES;
             }
 
             auto animPeepType = AnimationPeepType(static_cast<uint8_t>(staffType) + 1);
             ObjectEntryIndex costume;
-            if (staffType == StaffType::Entertainer)
+            if (staffType == StaffType::entertainer)
                 costume = findRandomPeepAnimationsIndexForType(animPeepType);
             else
                 costume = findPeepAnimationsIndexForType(animPeepType);
@@ -552,7 +552,7 @@ namespace OpenRCT2::Ui::Windows
                     return;
 
                 // If autoposition of staff is disabled, pickup peep and then open the staff window
-                if (staff->State == PeepState::Picked)
+                if (staff->State == PeepState::picked)
                 {
                     CoordsXYZ nullLoc{};
                     nullLoc.SetNull();
@@ -595,10 +595,10 @@ namespace OpenRCT2::Ui::Windows
         void DrawTabImages(RenderTarget& rt) const
         {
             const auto& gameState = getGameState();
-            DrawTabImage(rt, WINDOW_STAFF_LIST_TAB_HANDYMEN, AnimationPeepType::Handyman, gameState.park.staffHandymanColour);
-            DrawTabImage(rt, WINDOW_STAFF_LIST_TAB_MECHANICS, AnimationPeepType::Mechanic, gameState.park.staffMechanicColour);
-            DrawTabImage(rt, WINDOW_STAFF_LIST_TAB_SECURITY, AnimationPeepType::Security, gameState.park.staffSecurityColour);
-            DrawTabImage(rt, WINDOW_STAFF_LIST_TAB_ENTERTAINERS, AnimationPeepType::Entertainer);
+            DrawTabImage(rt, WINDOW_STAFF_LIST_TAB_HANDYMEN, AnimationPeepType::handyman, gameState.park.staffHandymanColour);
+            DrawTabImage(rt, WINDOW_STAFF_LIST_TAB_MECHANICS, AnimationPeepType::mechanic, gameState.park.staffMechanicColour);
+            DrawTabImage(rt, WINDOW_STAFF_LIST_TAB_SECURITY, AnimationPeepType::security, gameState.park.staffSecurityColour);
+            DrawTabImage(rt, WINDOW_STAFF_LIST_TAB_ENTERTAINERS, AnimationPeepType::entertainer);
         }
 
         void DrawTabImage(RenderTarget& rt, int32_t tabIndex, AnimationPeepType type, colour_t colour) const
@@ -611,8 +611,8 @@ namespace OpenRCT2::Ui::Windows
             const auto& widget = widgets[widgetIndex];
 
             auto frame = _selectedTab == tabIndex ? _tabAnimationIndex / 4 : 0;
-            auto& anim = animObj->GetPeepAnimation(PeepAnimationGroup::Normal);
-            auto imageId = anim.base_image + 1 + anim.frame_offsets[frame] * 4;
+            auto& anim = animObj->GetPeepAnimation(PeepAnimationGroup::normal);
+            auto imageId = anim.baseImage + 1 + anim.frameOffsets[frame] * 4;
 
             GfxDrawSprite(
                 rt, ImageId(imageId, colour),
@@ -634,8 +634,8 @@ namespace OpenRCT2::Ui::Windows
                     widget.right - widget.left - 1, widget.bottom - widget.top - 1))
             {
                 auto frame = _selectedTab == tabIndex ? _tabAnimationIndex / 4 : 0;
-                auto& anim = animObj->GetPeepAnimation(PeepAnimationGroup::Normal);
-                auto imageId = anim.base_image + 1 + anim.frame_offsets[frame] * 4;
+                auto& anim = animObj->GetPeepAnimation(PeepAnimationGroup::normal);
+                auto imageId = anim.baseImage + 1 + anim.frameOffsets[frame] * 4;
 
                 GfxDrawSprite(clippedDpi, ImageId(imageId), { 15, 23 });
             }
@@ -696,13 +696,13 @@ namespace OpenRCT2::Ui::Windows
             switch (type)
             {
                 default:
-                case StaffType::Handyman:
+                case StaffType::handyman:
                     return { STR_HANDYMAN_PLURAL, STR_HANDYMAN_SINGULAR, STR_HIRE_HANDYMAN };
-                case StaffType::Mechanic:
+                case StaffType::mechanic:
                     return { STR_MECHANIC_PLURAL, STR_MECHANIC_SINGULAR, STR_HIRE_MECHANIC };
-                case StaffType::Security:
+                case StaffType::security:
                     return { STR_SECURITY_GUARD_PLURAL, STR_SECURITY_GUARD_SINGULAR, STR_HIRE_SECURITY_GUARD };
-                case StaffType::Entertainer:
+                case StaffType::entertainer:
                     return { STR_ENTERTAINER_PLURAL, STR_ENTERTAINER_SINGULAR, STR_HIRE_ENTERTAINER };
             }
         }
@@ -711,9 +711,9 @@ namespace OpenRCT2::Ui::Windows
         {
             switch (type)
             {
-                case StaffType::Handyman:
+                case StaffType::handyman:
                     return SPR_STAFF_ORDERS_SWEEPING;
-                case StaffType::Mechanic:
+                case StaffType::mechanic:
                     return SPR_STAFF_ORDERS_INSPECT_RIDES;
                 default:
                     return 0;

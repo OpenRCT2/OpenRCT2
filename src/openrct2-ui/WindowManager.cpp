@@ -615,14 +615,14 @@ public:
     void HandleKeyboard(bool isTitle) override
     {
         auto& inputManager = GetInputManager();
-        inputManager.Process();
+        inputManager.process();
     }
 
     std::string GetKeyboardShortcutString(std::string_view shortcutId) override
     {
         auto& shortcutManager = GetShortcutManager();
-        auto* shortcut = shortcutManager.GetShortcut(shortcutId);
-        return shortcut != nullptr ? shortcut->GetDisplayString() : std::string();
+        auto* shortcut = shortcutManager.getShortcut(shortcutId);
+        return shortcut != nullptr ? shortcut->getDisplayString() : std::string();
     }
 
     void SetMainView(const ScreenCoordsXY& viewPos, ZoomLevel zoom, int32_t rotation) override
@@ -906,7 +906,7 @@ public:
         if (!(flags.hasAny(WindowFlag::stickToBack, WindowFlag::stickToFront)))
         {
             wp->flash();
-            OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::WindowOpen, 0, pos.x + (windowSize.width / 2));
+            OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::windowOpen, 0, pos.x + (windowSize.width / 2));
         }
 
         wp->windowPos = pos;

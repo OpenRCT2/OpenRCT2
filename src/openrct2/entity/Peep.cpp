@@ -88,49 +88,49 @@ static std::shared_ptr<IAudioChannel> _crowdSoundChannel = nullptr;
 static void GuestReleaseBalloon(Guest* peep, int16_t spawn_height);
 
 static PeepAnimationType PeepSpecialSpriteToAnimationGroupMap[] = {
-    PeepAnimationType::Walking,
-    PeepAnimationType::HoldMat,
-    PeepAnimationType::StaffMower,
+    PeepAnimationType::walking,
+    PeepAnimationType::holdMat,
+    PeepAnimationType::staffMower,
 };
 
 static PeepAnimationType PeepActionToAnimationGroupMap[] = {
-    PeepAnimationType::CheckTime,
-    PeepAnimationType::EatFood,
-    PeepAnimationType::ShakeHead,
-    PeepAnimationType::EmptyPockets,
-    PeepAnimationType::SittingEatFood,
-    PeepAnimationType::SittingLookAroundLeft,
-    PeepAnimationType::SittingLookAroundRight,
-    PeepAnimationType::Wow,
-    PeepAnimationType::ThrowUp,
-    PeepAnimationType::Jump,
-    PeepAnimationType::StaffSweep,
-    PeepAnimationType::Drowning,
-    PeepAnimationType::StaffAnswerCall,
-    PeepAnimationType::StaffAnswerCall2,
-    PeepAnimationType::StaffCheckBoard,
-    PeepAnimationType::StaffFix,
-    PeepAnimationType::StaffFix2,
-    PeepAnimationType::StaffFixGround,
-    PeepAnimationType::StaffFix3,
-    PeepAnimationType::StaffWatering,
-    PeepAnimationType::Joy,
-    PeepAnimationType::ReadMap,
-    PeepAnimationType::Wave,
-    PeepAnimationType::StaffEmptyBin,
-    PeepAnimationType::Wave2,
-    PeepAnimationType::TakePhoto,
-    PeepAnimationType::Clap,
-    PeepAnimationType::Disgust,
-    PeepAnimationType::DrawPicture,
-    PeepAnimationType::BeingWatched,
-    PeepAnimationType::WithdrawMoney,
+    PeepAnimationType::checkTime,
+    PeepAnimationType::eatFood,
+    PeepAnimationType::shakeHead,
+    PeepAnimationType::emptyPockets,
+    PeepAnimationType::sittingEatFood,
+    PeepAnimationType::sittingLookAroundLeft,
+    PeepAnimationType::sittingLookAroundRight,
+    PeepAnimationType::wow,
+    PeepAnimationType::throwUp,
+    PeepAnimationType::jump,
+    PeepAnimationType::staffSweep,
+    PeepAnimationType::drowning,
+    PeepAnimationType::staffAnswerCall,
+    PeepAnimationType::staffAnswerCall2,
+    PeepAnimationType::staffCheckBoard,
+    PeepAnimationType::staffFix,
+    PeepAnimationType::staffFix2,
+    PeepAnimationType::staffFixGround,
+    PeepAnimationType::staffFix3,
+    PeepAnimationType::staffWatering,
+    PeepAnimationType::joy,
+    PeepAnimationType::readMap,
+    PeepAnimationType::wave,
+    PeepAnimationType::staffEmptyBin,
+    PeepAnimationType::wave2,
+    PeepAnimationType::takePhoto,
+    PeepAnimationType::clap,
+    PeepAnimationType::disgust,
+    PeepAnimationType::drawPicture,
+    PeepAnimationType::beingWatched,
+    PeepAnimationType::withdrawMoney,
 };
 
 template<>
 bool EntityBase::Is<Peep>() const
 {
-    return Type == EntityType::Guest || Type == EntityType::Staff;
+    return Type == EntityType::guest || Type == EntityType::staff;
 }
 
 uint8_t Peep::GetNextDirection() const
@@ -159,31 +159,31 @@ bool Peep::CanBePickedUp() const
 {
     switch (State)
     {
-        case PeepState::One:
-        case PeepState::QueuingFront:
-        case PeepState::OnRide:
-        case PeepState::EnteringRide:
-        case PeepState::LeavingRide:
-        case PeepState::EnteringPark:
-        case PeepState::LeavingPark:
-        case PeepState::Fixing:
-        case PeepState::Buying:
-        case PeepState::Inspecting:
+        case PeepState::one:
+        case PeepState::queuingFront:
+        case PeepState::onRide:
+        case PeepState::enteringRide:
+        case PeepState::leavingRide:
+        case PeepState::enteringPark:
+        case PeepState::leavingPark:
+        case PeepState::fixing:
+        case PeepState::buying:
+        case PeepState::inspecting:
             return false;
-        case PeepState::Falling:
-        case PeepState::Walking:
-        case PeepState::Queuing:
-        case PeepState::Sitting:
-        case PeepState::Picked:
-        case PeepState::Patrolling:
-        case PeepState::Mowing:
-        case PeepState::Sweeping:
-        case PeepState::Answering:
-        case PeepState::Watching:
-        case PeepState::EmptyingBin:
-        case PeepState::UsingBin:
-        case PeepState::Watering:
-        case PeepState::HeadingToInspection:
+        case PeepState::falling:
+        case PeepState::walking:
+        case PeepState::queuing:
+        case PeepState::sitting:
+        case PeepState::picked:
+        case PeepState::patrolling:
+        case PeepState::mowing:
+        case PeepState::sweeping:
+        case PeepState::answering:
+        case PeepState::watching:
+        case PeepState::emptyingBin:
+        case PeepState::usingBin:
+        case PeepState::watering:
+        case PeepState::headingToInspection:
             return true;
     }
     return false;
@@ -191,7 +191,7 @@ bool Peep::CanBePickedUp() const
 
 int32_t PeepGetStaffCount()
 {
-    return getGameState().entities.GetEntityListCount(EntityType::Staff);
+    return getGameState().entities.GetEntityListCount(EntityType::staff);
 }
 
 /**
@@ -220,7 +220,7 @@ void PeepUpdateAll()
         }
 
         // 128 tick can delete so double check its not deleted
-        if (peep->Type == EntityType::Guest)
+        if (peep->Type == EntityType::guest)
         {
             peep->Update();
         }
@@ -236,7 +236,7 @@ void PeepUpdateAll()
         }
 
         // 128 tick can delete so double check its not deleted
-        if (staff->Type == EntityType::Staff)
+        if (staff->Type == EntityType::staff)
         {
             staff->Update();
         }
@@ -298,7 +298,7 @@ bool Peep::CheckForPath()
     } while (!(tile_element++)->IsLastForTile());
 
     // Found no suitable path
-    SetState(PeepState::Falling);
+    SetState(PeepState::falling);
     return false;
 }
 
@@ -340,7 +340,7 @@ bool Peep::IsOnPathBlockedByVehicle() const
 PeepAnimationType Peep::GetAnimationType()
 {
     if (IsActionInterruptable())
-    { // PeepActionType::None1 or PeepActionType::None2
+    { // PeepActionType::none1 or PeepActionType::none2
         return PeepSpecialSpriteToAnimationGroupMap[SpecialSprite];
     }
 
@@ -350,9 +350,9 @@ PeepAnimationType Peep::GetAnimationType()
     }
 
     Guard::Assert(
-        EnumValue(Action) >= std::size(PeepActionToAnimationGroupMap) && Action < PeepActionType::Idle,
+        EnumValue(Action) >= std::size(PeepActionToAnimationGroupMap) && Action < PeepActionType::idle,
         "Invalid peep action %u", EnumValue(Action));
-    return PeepAnimationType::Walking;
+    return PeepAnimationType::walking;
 }
 
 /*
@@ -379,9 +379,9 @@ void Peep::UpdateSpriteBoundingBox()
     auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(AnimationObjectIndex);
 
     const auto& spriteBounds = animObj->GetSpriteBounds(AnimationGroup, AnimationType);
-    SpriteData.Width = spriteBounds.sprite_width;
-    SpriteData.HeightMin = spriteBounds.sprite_height_negative;
-    SpriteData.HeightMax = spriteBounds.sprite_height_positive;
+    SpriteData.Width = spriteBounds.spriteWidth;
+    SpriteData.HeightMin = spriteBounds.spriteHeightNegative;
+    SpriteData.HeightMax = spriteBounds.spriteHeightPositive;
 }
 
 /* rct2: 0x00693BE5 */
@@ -401,7 +401,7 @@ void Peep::SwitchToSpecialSprite(uint8_t special_sprite_id)
 
 void Peep::StateReset()
 {
-    SetState(PeepState::One);
+    SetState(PeepState::one);
     SwitchToSpecialSprite(0);
 }
 
@@ -432,9 +432,9 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
     PROFILED_FUNCTION();
 
     _backupAnimationImageIdOffset = AnimationImageIdOffset;
-    if (Action == PeepActionType::Idle)
+    if (Action == PeepActionType::idle)
     {
-        Action = PeepActionType::Walking;
+        Action = PeepActionType::walking;
     }
 
     CoordsXY differenceLoc = GetLocation();
@@ -454,7 +454,7 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
     if (!UpdateActionAnimation())
     {
         AnimationImageIdOffset = 0;
-        Action = PeepActionType::Walking;
+        Action = PeepActionType::walking;
         UpdateCurrentAnimationType();
         return { { x, y } };
     }
@@ -462,7 +462,7 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
     // Should we throw up, and are we at the frame where sick appears?
     if (auto* guest = As<Guest>(); guest != nullptr)
     {
-        if (Action == PeepActionType::ThrowUp && AnimationFrameNum == 15)
+        if (Action == PeepActionType::throwUp && AnimationFrameNum == 15)
         {
             guest->ThrowUp();
         }
@@ -480,12 +480,12 @@ bool Peep::UpdateActionAnimation()
     AnimationFrameNum++;
 
     // If last frame of action
-    if (AnimationFrameNum >= peepAnimation.frame_offsets.size())
+    if (AnimationFrameNum >= peepAnimation.frameOffsets.size())
     {
         return false;
     }
 
-    AnimationImageIdOffset = peepAnimation.frame_offsets[AnimationFrameNum];
+    AnimationImageIdOffset = peepAnimation.frameOffsets[AnimationFrameNum];
     return true;
 }
 
@@ -539,11 +539,11 @@ void Peep::UpdateWalkingAnimation()
 
     WalkingAnimationFrameNum++;
     const PeepAnimation& peepAnimation = animObj->GetPeepAnimation(AnimationGroup, AnimationType);
-    if (WalkingAnimationFrameNum >= peepAnimation.frame_offsets.size())
+    if (WalkingAnimationFrameNum >= peepAnimation.frameOffsets.size())
     {
         WalkingAnimationFrameNum = 0;
     }
-    AnimationImageIdOffset = peepAnimation.frame_offsets[WalkingAnimationFrameNum];
+    AnimationImageIdOffset = peepAnimation.frameOffsets[WalkingAnimationFrameNum];
 }
 
 /**
@@ -552,7 +552,7 @@ void Peep::UpdateWalkingAnimation()
  */
 void PeepDecrementNumRiders(Peep* peep)
 {
-    if (peep->State == PeepState::OnRide || peep->State == PeepState::EnteringRide)
+    if (peep->State == PeepState::onRide || peep->State == PeepState::enteringRide)
     {
         auto ride = GetRide(peep->CurrentRide);
         if (ride != nullptr)
@@ -577,7 +577,7 @@ void PeepWindowStateUpdate(Peep* peep)
 
     if (peep->Is<Guest>())
     {
-        if (peep->State == PeepState::OnRide || peep->State == PeepState::EnteringRide)
+        if (peep->State == PeepState::onRide || peep->State == PeepState::enteringRide)
         {
             auto ride = GetRide(peep->CurrentRide);
             if (ride != nullptr)
@@ -604,24 +604,24 @@ void Peep::Pickup()
         guest->RemoveFromRide();
     }
     MoveTo({ kLocationNull, y, z });
-    SetState(PeepState::Picked);
+    SetState(PeepState::picked);
     SubState = 0;
 }
 
 void Peep::PickupAbort(int32_t old_x)
 {
-    if (State != PeepState::Picked)
+    if (State != PeepState::picked)
         return;
 
     MoveTo({ old_x, y, z + 8 });
 
     if (x != kLocationNull)
     {
-        SetState(PeepState::Falling);
-        Action = PeepActionType::Walking;
+        SetState(PeepState::falling);
+        Action = PeepActionType::walking;
         SpecialSprite = 0;
         AnimationImageIdOffset = 0;
-        AnimationType = PeepAnimationType::Walking;
+        AnimationType = PeepAnimationType::walking;
         PathCheckOptimisation = 0;
     }
 
@@ -666,16 +666,16 @@ GameActions::Result Peep::Place(const TileCoordsXYZ& location, bool apply)
     if (apply)
     {
         MoveTo(destination);
-        SetState(PeepState::Falling);
-        Action = PeepActionType::Walking;
+        SetState(PeepState::falling);
+        Action = PeepActionType::walking;
         SpecialSprite = 0;
         AnimationImageIdOffset = 0;
-        AnimationType = PeepAnimationType::Walking;
+        AnimationType = PeepAnimationType::walking;
         PathCheckOptimisation = 0;
         EntityTweener::Get().Reset();
         if (auto* guest = As<Guest>(); guest != nullptr)
         {
-            AnimationType = PeepAnimationType::Invalid;
+            AnimationType = PeepAnimationType::invalid;
             guest->HappinessTarget = std::max(guest->HappinessTarget - 10, 0);
             UpdateCurrentAnimationType();
         }
@@ -735,7 +735,7 @@ void Peep::Remove()
             auto intent = Intent(INTENT_ACTION_UPDATE_GUEST_COUNT);
             ContextBroadcastIntent(&intent);
         }
-        if (State == PeepState::EnteringPark)
+        if (State == PeepState::enteringPark)
         {
             DecrementGuestsHeadingForPark();
         }
@@ -749,12 +749,12 @@ void Peep::Remove()
  */
 void Peep::UpdateFalling()
 {
-    if (Action == PeepActionType::Drowning)
+    if (Action == PeepActionType::drowning)
     {
         // Check to see if we are ready to drown.
         UpdateAction();
         Invalidate();
-        if (Action == PeepActionType::Drowning)
+        if (Action == PeepActionType::drowning)
             return;
 
         if (Config::Get().notifications.GuestDied)
@@ -812,7 +812,7 @@ void Peep::UpdateFalling()
                             guest->InsertNewThought(PeepThoughtType::Drowning);
                         }
 
-                        Action = PeepActionType::Drowning;
+                        Action = PeepActionType::drowning;
                         AnimationFrameNum = 0;
                         AnimationImageIdOffset = 0;
 
@@ -857,7 +857,7 @@ void Peep::UpdateFalling()
     {
         SetNextFlags(saved_map->AsPath()->GetSlopeDirection(), saved_map->AsPath()->IsSloped(), false);
     }
-    SetState(PeepState::One);
+    SetState(PeepState::one);
 }
 
 /**
@@ -871,11 +871,11 @@ void Peep::Update1()
 
     if (Is<Guest>())
     {
-        SetState(PeepState::Walking);
+        SetState(PeepState::walking);
     }
     else
     {
-        SetState(PeepState::Patrolling);
+        SetState(PeepState::patrolling);
     }
 
     SetDestination(GetLocation(), 10);
@@ -908,14 +908,14 @@ void Peep::UpdatePicked()
 uint32_t Peep::GetStepsToTake() const
 {
     uint32_t stepsToTake = Energy;
-    if (stepsToTake < 95 && State == PeepState::Queuing)
+    if (stepsToTake < 95 && State == PeepState::queuing)
         stepsToTake = 95;
-    if ((PeepFlags & PEEP_FLAGS_SLOW_WALK) && State != PeepState::Queuing)
+    if ((PeepFlags & PEEP_FLAGS_SLOW_WALK) && State != PeepState::queuing)
         stepsToTake /= 2;
     if (IsActionWalking() && GetNextIsSloped())
     {
         stepsToTake /= 2;
-        if (State == PeepState::Queuing)
+        if (State == PeepState::queuing)
             stepsToTake += stepsToTake / 2;
     }
     // Ensure guests make it across a level crossing in time
@@ -948,7 +948,7 @@ void PeepProblemWarningsUpdate()
         if (peep->OutsideOfPark)
             continue;
 
-        if (peep->State == PeepState::Queuing || peep->State == PeepState::QueuingFront)
+        if (peep->State == PeepState::queuing || peep->State == PeepState::queuingFront)
             inQueueCounter++;
 
         if (peep->Thoughts[0].freshness > 5)
@@ -1171,7 +1171,7 @@ void PeepUpdateCrowdNoise()
         if (viewport->viewPos.y + viewport->ViewHeight() < peep->SpriteData.SpriteRect.GetTop())
             continue;
 
-        visiblePeeps += peep->State == PeepState::Queuing ? 1 : 2;
+        visiblePeeps += peep->State == PeepState::queuing ? 1 : 2;
     }
 
     // This function doesn't account for the fact that the screen might be so big that 100 peeps could potentially be very
@@ -1201,7 +1201,7 @@ void PeepUpdateCrowdNoise()
         // Load and play crowd noise if needed and set volume
         if (_crowdSoundChannel == nullptr || _crowdSoundChannel->IsDone())
         {
-            _crowdSoundChannel = CreateAudioChannel(SoundId::CrowdAmbience, true, 0);
+            _crowdSoundChannel = CreateAudioChannel(SoundId::crowdAmbience, true, 0);
             if (_crowdSoundChannel != nullptr)
             {
                 _crowdSoundChannel->SetGroup(OpenRCT2::Audio::MixerGroup::Sound);
@@ -1229,9 +1229,9 @@ void PeepApplause()
         GuestReleaseBalloon(peep, peep->z + 9);
 
         // Clap
-        if ((peep->State == PeepState::Walking || peep->State == PeepState::Queuing) && peep->IsActionInterruptable())
+        if ((peep->State == PeepState::walking || peep->State == PeepState::queuing) && peep->IsActionInterruptableSafely())
         {
-            peep->Action = PeepActionType::Clap;
+            peep->Action = PeepActionType::clap;
             peep->AnimationFrameNum = 0;
             peep->AnimationImageIdOffset = 0;
             peep->UpdateCurrentAnimationType();
@@ -1239,7 +1239,7 @@ void PeepApplause()
     }
 
     // Play applause noise
-    OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Applause, 0, ContextGetWidth() / 2);
+    OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::applause, 0, ContextGetWidth() / 2);
 }
 
 /**
@@ -1250,7 +1250,7 @@ void PeepUpdateDaysInQueue()
 {
     for (auto peep : EntityList<Guest>())
     {
-        if (!peep->OutsideOfPark && peep->State == PeepState::Queuing)
+        if (!peep->OutsideOfPark && peep->State == PeepState::queuing)
         {
             if (peep->DaysInQueue < 255)
             {
@@ -1264,15 +1264,15 @@ void Peep::FormatActionTo(Formatter& ft) const
 {
     switch (State)
     {
-        case PeepState::Falling:
-            ft.Add<StringId>(Action == PeepActionType::Drowning ? STR_DROWNING : STR_WALKING);
+        case PeepState::falling:
+            ft.Add<StringId>(Action == PeepActionType::drowning ? STR_DROWNING : STR_WALKING);
             break;
-        case PeepState::One:
+        case PeepState::one:
             ft.Add<StringId>(STR_WALKING);
             break;
-        case PeepState::OnRide:
-        case PeepState::LeavingRide:
-        case PeepState::EnteringRide:
+        case PeepState::onRide:
+        case PeepState::leavingRide:
+        case PeepState::enteringRide:
         {
             auto ride = GetRide(CurrentRide);
             if (ride != nullptr)
@@ -1286,7 +1286,7 @@ void Peep::FormatActionTo(Formatter& ft) const
             }
             break;
         }
-        case PeepState::Buying:
+        case PeepState::buying:
         {
             ft.Add<StringId>(STR_AT_RIDE);
             auto ride = GetRide(CurrentRide);
@@ -1300,8 +1300,8 @@ void Peep::FormatActionTo(Formatter& ft) const
             }
             break;
         }
-        case PeepState::Walking:
-        case PeepState::UsingBin:
+        case PeepState::walking:
+        case PeepState::usingBin:
         {
             if (auto* guest = As<Guest>(); guest != nullptr)
             {
@@ -1321,8 +1321,8 @@ void Peep::FormatActionTo(Formatter& ft) const
             }
             break;
         }
-        case PeepState::QueuingFront:
-        case PeepState::Queuing:
+        case PeepState::queuingFront:
+        case PeepState::queuing:
         {
             auto ride = GetRide(CurrentRide);
             if (ride != nullptr)
@@ -1332,10 +1332,10 @@ void Peep::FormatActionTo(Formatter& ft) const
             }
             break;
         }
-        case PeepState::Sitting:
+        case PeepState::sitting:
             ft.Add<StringId>(STR_SITTING);
             break;
-        case PeepState::Watching:
+        case PeepState::watching:
             if (!CurrentRide.IsNull())
             {
                 auto ride = GetRide(CurrentRide);
@@ -1350,27 +1350,27 @@ void Peep::FormatActionTo(Formatter& ft) const
                 ft.Add<StringId>((StandingFlags & 0x1) ? STR_WATCHING_NEW_RIDE_BEING_CONSTRUCTED : STR_LOOKING_AT_SCENERY);
             }
             break;
-        case PeepState::Picked:
+        case PeepState::picked:
             ft.Add<StringId>(STR_SELECT_LOCATION);
             break;
-        case PeepState::Patrolling:
-        case PeepState::EnteringPark:
-        case PeepState::LeavingPark:
+        case PeepState::patrolling:
+        case PeepState::enteringPark:
+        case PeepState::leavingPark:
             ft.Add<StringId>(STR_WALKING);
             break;
-        case PeepState::Mowing:
+        case PeepState::mowing:
             ft.Add<StringId>(STR_MOWING_GRASS);
             break;
-        case PeepState::Sweeping:
+        case PeepState::sweeping:
             ft.Add<StringId>(STR_SWEEPING_FOOTPATH);
             break;
-        case PeepState::Watering:
+        case PeepState::watering:
             ft.Add<StringId>(STR_WATERING_GARDENS);
             break;
-        case PeepState::EmptyingBin:
+        case PeepState::emptyingBin:
             ft.Add<StringId>(STR_EMPTYING_LITTER_BIN);
             break;
-        case PeepState::Answering:
+        case PeepState::answering:
             if (SubState == 0)
             {
                 ft.Add<StringId>(STR_WALKING);
@@ -1393,7 +1393,7 @@ void Peep::FormatActionTo(Formatter& ft) const
                 }
             }
             break;
-        case PeepState::Fixing:
+        case PeepState::fixing:
         {
             ft.Add<StringId>(STR_FIXING_RIDE);
             auto ride = GetRide(CurrentRide);
@@ -1407,7 +1407,7 @@ void Peep::FormatActionTo(Formatter& ft) const
             }
             break;
         }
-        case PeepState::HeadingToInspection:
+        case PeepState::headingToInspection:
         {
             ft.Add<StringId>(STR_HEADING_TO_RIDE_FOR_INSPECTION);
             auto ride = GetRide(CurrentRide);
@@ -1421,7 +1421,7 @@ void Peep::FormatActionTo(Formatter& ft) const
             }
             break;
         }
-        case PeepState::Inspecting:
+        case PeepState::inspecting:
         {
             ft.Add<StringId>(STR_INSPECTING_RIDE);
             auto ride = GetRide(CurrentRide);
@@ -1520,17 +1520,26 @@ bool Peep::SetName(std::string_view value)
 
 bool Peep::IsActionWalking() const
 {
-    return Action == PeepActionType::Walking;
+    return Action == PeepActionType::walking;
 }
 
 bool Peep::IsActionIdle() const
 {
-    return Action == PeepActionType::Idle;
+    return Action == PeepActionType::idle;
 }
 
 bool Peep::IsActionInterruptable() const
 {
     return IsActionIdle() || IsActionWalking();
+}
+
+/**
+ * Used to avoid peep action and animation triggers that cause them to stop moving and might put them at risk
+ * of getting run over at level crossings, such as guests reading the map and entertainers performing.
+ */
+bool Peep::IsActionInterruptableSafely() const
+{
+    return IsActionInterruptable() && !IsOnLevelCrossing();
 }
 
 void PeepSetMapTooltip(Peep* peep)
@@ -1570,9 +1579,9 @@ void Peep::SwitchNextAnimationType()
         auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(AnimationObjectIndex);
 
         const auto& spriteBounds = animObj->GetSpriteBounds(AnimationGroup, NextAnimationType);
-        SpriteData.Width = spriteBounds.sprite_width;
-        SpriteData.HeightMin = spriteBounds.sprite_height_negative;
-        SpriteData.HeightMax = spriteBounds.sprite_height_positive;
+        SpriteData.Width = spriteBounds.spriteWidth;
+        SpriteData.HeightMin = spriteBounds.spriteHeightNegative;
+        SpriteData.HeightMax = spriteBounds.spriteHeightPositive;
         Invalidate();
     }
 }
@@ -1602,7 +1611,7 @@ static bool PeepInteractWithEntrance(Peep* peep, const CoordsXYE& coords, uint8_
     {
         // If an entrance or exit that doesn't belong to the ride we are queuing for ignore the entrance/exit
         // This can happen when paths clip through entrance/exits
-        if (peep->State == PeepState::Queuing && peep->CurrentRide != rideIndex)
+        if (peep->State == PeepState::queuing && peep->CurrentRide != rideIndex)
         {
             return false;
         }
@@ -1646,10 +1655,10 @@ static bool PeepInteractWithEntrance(Peep* peep, const CoordsXYE& coords, uint8_
             return true;
         }
 
-        if (guest->State == PeepState::Queuing)
+        if (guest->State == PeepState::queuing)
         {
             // Guest is in the ride queue.
-            guest->RideSubState = PeepRideSubState::AtQueueFront;
+            guest->RideSubState = PeepRideSubState::atQueueFront;
             guest->AnimationImageIdOffset = _backupAnimationImageIdOffset;
             return true;
         }
@@ -1692,8 +1701,8 @@ static bool PeepInteractWithEntrance(Peep* peep, const CoordsXYE& coords, uint8_
         guest->CurrentRide = rideIndex;
         guest->CurrentRideStation = stationNum;
         guest->DaysInQueue = 0;
-        guest->SetState(PeepState::Queuing);
-        guest->RideSubState = PeepRideSubState::AtQueueFront;
+        guest->SetState(PeepState::queuing);
+        guest->RideSubState = PeepRideSubState::atQueueFront;
         guest->TimeInQueue = 0;
         if (guest->PeepFlags & PEEP_FLAGS_TRACKING)
         {
@@ -1735,7 +1744,7 @@ static bool PeepInteractWithEntrance(Peep* peep, const CoordsXYE& coords, uint8_
             }
 
             // Peep is leaving the park.
-            if (guest->State != PeepState::Walking)
+            if (guest->State != PeepState::walking)
             {
                 PeepReturnToCentreOfTile(guest);
                 return true;
@@ -1754,7 +1763,7 @@ static bool PeepInteractWithEntrance(Peep* peep, const CoordsXYE& coords, uint8_
             auto destination = guest->GetDestination() + CoordsDirectionDelta[guest->PeepDirection];
             guest->SetDestination(destination, 9);
             guest->MoveTo({ coords, guest->z });
-            guest->SetState(PeepState::LeavingPark);
+            guest->SetState(PeepState::leavingPark);
 
             guest->Var37 = 0;
             if (guest->PeepFlags & PEEP_FLAGS_TRACKING)
@@ -1771,7 +1780,7 @@ static bool PeepInteractWithEntrance(Peep* peep, const CoordsXYE& coords, uint8_
 
         // Peep is entering the park.
 
-        if (guest->State != PeepState::EnteringPark)
+        if (guest->State != PeepState::enteringPark)
         {
             PeepReturnToCentreOfTile(guest);
             return true;
@@ -1779,7 +1788,7 @@ static bool PeepInteractWithEntrance(Peep* peep, const CoordsXYE& coords, uint8_
 
         if (!(gameState.park.flags & PARK_FLAGS_PARK_OPEN))
         {
-            guest->State = PeepState::LeavingPark;
+            guest->State = PeepState::leavingPark;
             guest->Var37 = 1;
             DecrementGuestsHeadingForPark();
             PeepWindowStateUpdate(guest);
@@ -1842,7 +1851,7 @@ static bool PeepInteractWithEntrance(Peep* peep, const CoordsXYE& coords, uint8_
 
         if (!found)
         {
-            guest->State = PeepState::LeavingPark;
+            guest->State = PeepState::leavingPark;
             guest->Var37 = 1;
             DecrementGuestsHeadingForPark();
             PeepWindowStateUpdate(guest);
@@ -1853,24 +1862,24 @@ static bool PeepInteractWithEntrance(Peep* peep, const CoordsXYE& coords, uint8_
         auto entranceFee = Park::GetEntranceFee();
         if (entranceFee != 0)
         {
-            if (guest->HasItem(ShopItem::Voucher))
+            if (guest->HasItem(ShopItem::voucher))
             {
                 if (guest->VoucherType == VOUCHER_TYPE_PARK_ENTRY_HALF_PRICE)
                 {
                     entranceFee /= 2;
-                    guest->RemoveItem(ShopItem::Voucher);
+                    guest->RemoveItem(ShopItem::voucher);
                     guest->WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
                 }
                 else if (guest->VoucherType == VOUCHER_TYPE_PARK_ENTRY_FREE)
                 {
                     entranceFee = 0;
-                    guest->RemoveItem(ShopItem::Voucher);
+                    guest->RemoveItem(ShopItem::voucher);
                     guest->WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
                 }
             }
             if (entranceFee > guest->CashInPocket)
             {
-                guest->State = PeepState::LeavingPark;
+                guest->State = PeepState::leavingPark;
                 guest->Var37 = 1;
                 DecrementGuestsHeadingForPark();
                 PeepWindowStateUpdate(guest);
@@ -1971,7 +1980,7 @@ static void PeepFootpathMoveForward(Peep* peep, const CoordsXYE& coords, bool va
 
         if (const auto* otherPeep = otherEnt->As<Peep>(); otherPeep != nullptr)
         {
-            if (otherPeep->State != PeepState::Walking)
+            if (otherPeep->State != PeepState::walking)
                 continue;
 
             crowdCount++;
@@ -1980,7 +1989,7 @@ static void PeepFootpathMoveForward(Peep* peep, const CoordsXYE& coords, bool va
 
         if (const auto* litter = otherEnt->As<Litter>(); litter != nullptr)
         {
-            if (litter->SubType != Litter::Type::Vomit && litter->SubType != Litter::Type::VomitAlt)
+            if (litter->SubType != Litter::Type::vomit && litter->SubType != Litter::Type::vomitAlt)
             {
                 litterCount++;
             }
@@ -1991,7 +2000,7 @@ static void PeepFootpathMoveForward(Peep* peep, const CoordsXYE& coords, bool va
         }
     }
 
-    if (crowdCount >= kThresholdCrowdCount && guest->State == PeepState::Walking && (ScenarioRand() & 0xFFFF) <= 21845)
+    if (crowdCount >= kThresholdCrowdCount && guest->State == PeepState::walking && (ScenarioRand() & 0xFFFF) <= 21845)
     {
         guest->InsertNewThought(PeepThoughtType::Crowded);
         guest->HappinessTarget = std::max(0, guest->HappinessTarget - 14);
@@ -2093,7 +2102,7 @@ static void PeepInteractWithPath(Peep* peep, const CoordsXYE& coords)
     if (guest != nullptr && pathElement->IsQueue())
     {
         auto rideIndex = pathElement->GetRideIndex();
-        if (guest->State == PeepState::Queuing)
+        if (guest->State == PeepState::queuing)
         {
             // Check if this queue is connected to the ride the
             // peep is queuing for, i.e. the player hasn't edited
@@ -2107,7 +2116,7 @@ static void PeepInteractWithPath(Peep* peep, const CoordsXYE& coords)
                 // Queue got disconnected from the original ride.
                 guest->InteractionRideIndex = RideId::GetNull();
                 guest->RemoveFromQueue();
-                guest->SetState(PeepState::One);
+                guest->SetState(PeepState::one);
                 PeepFootpathMoveForward(guest, coords, vandalismPresent);
             }
         }
@@ -2140,11 +2149,11 @@ static void PeepInteractWithPath(Peep* peep, const CoordsXYE& coords)
                     PeepDecrementNumRiders(guest);
                     guest->CurrentRide = rideIndex;
                     guest->CurrentRideStation = stationNum;
-                    guest->State = PeepState::Queuing;
+                    guest->State = PeepState::queuing;
                     guest->DaysInQueue = 0;
                     PeepWindowStateUpdate(guest);
 
-                    guest->RideSubState = PeepRideSubState::InQueue;
+                    guest->RideSubState = PeepRideSubState::inQueue;
                     guest->DestinationTolerance = 2;
                     guest->TimeInQueue = 0;
                     if (guest->PeepFlags & PEEP_FLAGS_TRACKING)
@@ -2183,10 +2192,10 @@ static void PeepInteractWithPath(Peep* peep, const CoordsXYE& coords)
     else
     {
         peep->InteractionRideIndex = RideId::GetNull();
-        if (guest != nullptr && peep->State == PeepState::Queuing)
+        if (guest != nullptr && peep->State == PeepState::queuing)
         {
             guest->RemoveFromQueue();
-            guest->SetState(PeepState::One);
+            guest->SetState(PeepState::one);
         }
         PeepFootpathMoveForward(peep, coords, vandalismPresent);
     }
@@ -2212,7 +2221,7 @@ static bool PeepInteractWithShop(Peep* peep, const CoordsXYE& coords)
 
     // If we are queuing ignore the 'shop'
     // This can happen when paths clip through track
-    if (guest->State == PeepState::Queuing)
+    if (guest->State == PeepState::queuing)
     {
         return false;
     }
@@ -2257,8 +2266,8 @@ static bool PeepInteractWithShop(Peep* peep, const CoordsXYE& coords)
         auto coordsCentre = coords.ToTileCentre();
         guest->SetDestination(coordsCentre, 3);
         guest->CurrentRide = rideIndex;
-        guest->SetState(PeepState::EnteringRide);
-        guest->RideSubState = PeepRideSubState::ApproachShop;
+        guest->SetState(PeepState::enteringRide);
+        guest->RideSubState = PeepRideSubState::approachShop;
 
         guest->GuestTimeOnRide = 0;
         ride->curNumCustomers++;
@@ -2281,7 +2290,7 @@ static bool PeepInteractWithShop(Peep* peep, const CoordsXYE& coords)
         if (guest->GuestHeadingToRideId == rideIndex)
             guest->GuestHeadingToRideId = RideId::GetNull();
         guest->AnimationImageIdOffset = _backupAnimationImageIdOffset;
-        guest->SetState(PeepState::Buying);
+        guest->SetState(PeepState::buying);
         guest->CurrentRide = rideIndex;
         guest->SubState = 0;
     }
@@ -2300,11 +2309,11 @@ std::pair<uint8_t, TileElement*> Peep::PerformNextAction()
 
     PeepActionType previousAction = Action;
 
-    if (Action == PeepActionType::Idle)
-        Action = PeepActionType::Walking;
+    if (Action == PeepActionType::idle)
+        Action = PeepActionType::walking;
 
     auto* guest = As<Guest>();
-    if (State == PeepState::Queuing && guest != nullptr)
+    if (State == PeepState::queuing && guest != nullptr)
     {
         if (guest->UpdateQueuePosition(previousAction))
         {
@@ -2402,10 +2411,10 @@ std::pair<uint8_t, TileElement*> Peep::PerformNextAction()
         if (height <= 3 || (Is<Staff>() && height <= 32))
         {
             InteractionRideIndex = RideId::GetNull();
-            if (guest != nullptr && State == PeepState::Queuing)
+            if (guest != nullptr && State == PeepState::queuing)
             {
                 guest->RemoveFromQueue();
-                SetState(PeepState::One);
+                SetState(PeepState::one);
             }
 
             if (!MapIsLocationInPark(newLoc))
@@ -2617,11 +2626,11 @@ void DecrementGuestsHeadingForPark()
 
 static void GuestReleaseBalloon(Guest* peep, int16_t spawn_height)
 {
-    if (peep->HasItem(ShopItem::Balloon))
+    if (peep->HasItem(ShopItem::balloon))
     {
-        peep->RemoveItem(ShopItem::Balloon);
+        peep->RemoveItem(ShopItem::balloon);
 
-        if (peep->AnimationGroup == PeepAnimationGroup::Balloon && peep->x != kLocationNull)
+        if (peep->AnimationGroup == PeepAnimationGroup::balloon && peep->x != kLocationNull)
         {
             Balloon::Create({ peep->x, peep->y, spawn_height }, peep->BalloonColour, false);
             peep->WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
@@ -2637,7 +2646,7 @@ static void GuestReleaseBalloon(Guest* peep, int16_t spawn_height)
 void Peep::RemoveFromRide()
 {
     auto* guest = As<Guest>();
-    if (guest != nullptr && State == PeepState::Queuing)
+    if (guest != nullptr && State == PeepState::queuing)
     {
         guest->RemoveFromQueue();
     }
@@ -2744,7 +2753,7 @@ void Peep::Paint(PaintSession& session, int32_t imageDirection) const
     PeepAnimationType actionAnimationGroup = AnimationType;
     uint8_t imageOffset = AnimationImageIdOffset;
 
-    if (Action == PeepActionType::Idle)
+    if (Action == PeepActionType::idle)
     {
         actionAnimationGroup = NextAnimationType;
         imageOffset = 0;
@@ -2753,10 +2762,10 @@ void Peep::Paint(PaintSession& session, int32_t imageDirection) const
     auto& objManager = GetContext()->GetObjectManager();
     auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(AnimationObjectIndex);
 
-    uint32_t baseImageId = animObj->GetPeepAnimation(AnimationGroup, actionAnimationGroup).base_image;
+    uint32_t baseImageId = animObj->GetPeepAnimation(AnimationGroup, actionAnimationGroup).baseImage;
 
     // Offset frame onto the base image, using rotation except for the 'picked up' state
-    if (actionAnimationGroup != PeepAnimationType::Hanging)
+    if (actionAnimationGroup != PeepAnimationType::hanging)
         baseImageId += (imageDirection >> 3) + imageOffset * 4;
     else
         baseImageId += imageOffset;
@@ -2774,18 +2783,18 @@ void Peep::Paint(PaintSession& session, int32_t imageDirection) const
         return;
 
     // Can't display any accessories whilst drowning or clapping
-    if (Action == PeepActionType::Drowning || Action == PeepActionType::Clap)
+    if (Action == PeepActionType::drowning || Action == PeepActionType::clap)
         return;
 
     // There are only 6 walking frames available for each item,
     // as well as 1 sprite for sitting and 1 for standing still.
     auto itemFrame = imageOffset % 6;
-    if (actionAnimationGroup == PeepAnimationType::WatchRide)
+    if (actionAnimationGroup == PeepAnimationType::watchRide)
         itemFrame = 6;
-    else if (actionAnimationGroup == PeepAnimationType::SittingIdle)
+    else if (actionAnimationGroup == PeepAnimationType::sittingIdle)
         itemFrame = 7;
 
-    if (AnimationGroup == PeepAnimationGroup::Hat)
+    if (AnimationGroup == PeepAnimationGroup::hat)
     {
         auto itemOffset = kPeepSpriteHatItemStart;
         imageId = ImageId(itemOffset + (imageDirection >> 3) + itemFrame * 4, guest->HatColour);
@@ -2793,7 +2802,7 @@ void Peep::Paint(PaintSession& session, int32_t imageDirection) const
         return;
     }
 
-    if (AnimationGroup == PeepAnimationGroup::Balloon)
+    if (AnimationGroup == PeepAnimationGroup::balloon)
     {
         auto itemOffset = kPeepSpriteBalloonItemStart;
         imageId = ImageId(itemOffset + (imageDirection >> 3) + itemFrame * 4, guest->BalloonColour);
@@ -2801,7 +2810,7 @@ void Peep::Paint(PaintSession& session, int32_t imageDirection) const
         return;
     }
 
-    if (AnimationGroup == PeepAnimationGroup::Umbrella)
+    if (AnimationGroup == PeepAnimationGroup::umbrella)
     {
         auto itemOffset = kPeepSpriteUmbrellaItemStart;
         imageId = ImageId(itemOffset + (imageDirection >> 3) + itemFrame * 4, guest->UmbrellaColour);

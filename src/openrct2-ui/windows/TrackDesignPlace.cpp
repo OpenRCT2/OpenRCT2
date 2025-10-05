@@ -278,7 +278,7 @@ namespace OpenRCT2::Ui::Windows
             if (res.Error != GameActions::Status::Ok)
             {
                 // Unable to build track
-                Audio::Play3D(Audio::SoundId::Error, trackLoc);
+                Audio::Play3D(Audio::SoundId::error, trackLoc);
 
                 auto windowManager = GetWindowManager();
                 windowManager->ShowError(res.GetErrorTitle(), res.GetErrorMessage());
@@ -289,7 +289,7 @@ namespace OpenRCT2::Ui::Windows
             tdAction.SetCallback([&](const GameActions::GameAction*, const GameActions::Result* result) {
                 if (result->Error != GameActions::Status::Ok)
                 {
-                    Audio::Play3D(Audio::SoundId::Error, result->Position);
+                    Audio::Play3D(Audio::SoundId::error, result->Position);
                     return;
                 }
 
@@ -300,7 +300,7 @@ namespace OpenRCT2::Ui::Windows
                     auto* windowMgr = Ui::GetWindowManager();
                     windowMgr->CloseByClass(WindowClass::error);
 
-                    Audio::Play3D(Audio::SoundId::PlaceItem, trackLoc);
+                    Audio::Play3D(Audio::SoundId::placeItem, trackLoc);
                     _currentRideIndex = rideId;
 
                     if (TrackDesignAreEntranceAndExitPlaced())
@@ -455,7 +455,7 @@ namespace OpenRCT2::Ui::Windows
 
             auto& im = GetInputManager();
 
-            if (!_trackPlaceCtrlState && im.IsModifierKeyPressed(ModifierKey::ctrl))
+            if (!_trackPlaceCtrlState && im.isModifierKeyPressed(ModifierKey::ctrl))
             {
                 constexpr auto interactionFlags = EnumsToFlags(
                     ViewportInteractionItem::terrain, ViewportInteractionItem::ride, ViewportInteractionItem::scenery,
@@ -477,19 +477,19 @@ namespace OpenRCT2::Ui::Windows
 
                 _trackPlaceCtrlState = true;
             }
-            else if (!im.IsModifierKeyPressed(ModifierKey::ctrl))
+            else if (!im.isModifierKeyPressed(ModifierKey::ctrl))
             {
                 _trackPlaceCtrlState = false;
                 _trackPlaceCtrlZ = 0;
             }
 
-            if (!_trackPlaceShiftState && im.IsModifierKeyPressed(ModifierKey::shift))
+            if (!_trackPlaceShiftState && im.isModifierKeyPressed(ModifierKey::shift))
             {
                 _trackPlaceShiftState = true;
                 _trackPlaceShiftStart = screenCoords;
                 _trackPlaceShiftZ = 0;
             }
-            else if (im.IsModifierKeyPressed(ModifierKey::shift))
+            else if (im.isModifierKeyPressed(ModifierKey::shift))
             {
                 uint16_t newMaxHeight = ZoomLevel::max().ApplyTo(
                     std::numeric_limits<decltype(TileElement::BaseHeight)>::max() - 32);

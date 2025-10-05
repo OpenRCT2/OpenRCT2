@@ -485,7 +485,7 @@ namespace OpenRCT2::Ui::Windows
             auto result = GameActions::Execute(&gameAction, getGameState());
             if (result.Error == GameActions::Status::Ok)
             {
-                Audio::Play3D(Audio::SoundId::PlaceItem, result.Position);
+                Audio::Play3D(Audio::SoundId::placeItem, result.Position);
             }
         }
 

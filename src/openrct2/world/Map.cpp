@@ -2262,7 +2262,7 @@ void ShiftMap(const TileCoordsXY& amount)
 
     // Entities
     auto& entityTweener = EntityTweener::Get();
-    for (auto i = 0; i < EnumValue(EntityType::Count); i++)
+    for (auto i = 0; i < EnumValue(EntityType::count); i++)
     {
         auto entityType = static_cast<EntityType>(i);
         auto& list = getGameState().entities.GetEntityList(entityType);
@@ -2279,8 +2279,8 @@ void ShiftMap(const TileCoordsXY& amount)
 
             switch (entityType)
             {
-                case EntityType::Guest:
-                case EntityType::Staff:
+                case EntityType::guest:
+                case EntityType::staff:
                 {
                     auto peep = entity->As<Peep>();
                     if (peep != nullptr)
@@ -2294,7 +2294,7 @@ void ShiftMap(const TileCoordsXY& amount)
                     }
                     break;
                 }
-                case EntityType::Vehicle:
+                case EntityType::vehicle:
                 {
                     auto vehicle = entity->As<Vehicle>();
                     if (vehicle != nullptr)
@@ -2304,7 +2304,7 @@ void ShiftMap(const TileCoordsXY& amount)
                     }
                     break;
                 }
-                case EntityType::Duck:
+                case EntityType::duck:
                 {
                     auto duck = entity->As<Duck>();
                     if (duck != nullptr)
@@ -2314,7 +2314,7 @@ void ShiftMap(const TileCoordsXY& amount)
                     }
                     break;
                 }
-                case EntityType::JumpingFountain:
+                case EntityType::jumpingFountain:
                 {
                     auto fountain = entity->As<JumpingFountain>();
                     if (fountain != nullptr)
@@ -2327,7 +2327,7 @@ void ShiftMap(const TileCoordsXY& amount)
                 default:
                     break;
             }
-            if (entityType == EntityType::Staff)
+            if (entityType == EntityType::staff)
             {
                 auto staff = entity->As<Staff>();
                 if (staff != nullptr)

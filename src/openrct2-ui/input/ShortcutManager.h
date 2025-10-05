@@ -33,78 +33,78 @@ namespace OpenRCT2::Ui
     struct ShortcutInput
     {
     public:
-        InputDeviceKind Kind{};
-        uint32_t Modifiers{};
-        uint32_t Button{};
+        InputDeviceKind kind{};
+        uint32_t modifiers{};
+        uint32_t button{};
 
         ShortcutInput() = default;
         ShortcutInput(std::string_view value);
-        std::string ToString() const;
-        std::string ToLocalisedString() const;
+        std::string toString() const;
+        std::string toLocalisedString() const;
 
-        bool Matches(const InputEvent& e) const;
+        bool matches(const InputEvent& e) const;
 
-        static std::optional<ShortcutInput> FromInputEvent(const InputEvent& e);
+        static std::optional<ShortcutInput> fromInputEvent(const InputEvent& e);
 
     private:
-        bool AppendModifier(std::string& s, uint32_t left, uint32_t right, bool localised) const;
-        static std::string_view GetModifierName(uint32_t key, bool localised);
-        static std::string_view GetLocalisedKeyName(uint32_t key);
-        std::string ToString(bool localised) const;
+        bool appendModifier(std::string& s, uint32_t left, uint32_t right, bool localised) const;
+        static std::string_view getModifierName(uint32_t key, bool localised);
+        static std::string_view getLocalisedKeyName(uint32_t key);
+        std::string toString(bool localised) const;
     };
 
     class RegisteredShortcut
     {
     public:
-        std::string Id;
-        StringId LocalisedName = kStringIdNone;
-        std::string CustomName;
-        std::vector<ShortcutInput> Default;
-        std::vector<ShortcutInput> Current;
-        std::function<void()> Action;
-        size_t OrderIndex = static_cast<size_t>(-1);
+        std::string id;
+        StringId localisedName = kStringIdNone;
+        std::string customName;
+        std::vector<ShortcutInput> standard;
+        std::vector<ShortcutInput> current;
+        std::function<void()> action;
+        size_t orderIndex = static_cast<size_t>(-1);
 
         RegisteredShortcut() = default;
-        RegisteredShortcut(std::string_view id, std::string_view name, const std::function<void()>& action)
-            : Id(id)
-            , CustomName(name)
-            , Action(action)
+        RegisteredShortcut(std::string_view _id, std::string_view _name, const std::function<void()>& _action)
+            : id(_id)
+            , customName(_name)
+            , action(_action)
         {
         }
 
-        RegisteredShortcut(std::string_view id, StringId localisedName, const std::function<void()>& action)
-            : Id(id)
-            , LocalisedName(localisedName)
-            , Action(action)
-        {
-        }
-
-        RegisteredShortcut(
-            std::string_view id, StringId localisedName, std::string_view defaultChord, const std::function<void()>& action)
-            : Id(id)
-            , LocalisedName(localisedName)
-            , Default({ defaultChord })
-            , Current(Default)
-            , Action(action)
+        RegisteredShortcut(std::string_view _id, StringId _localisedName, const std::function<void()>& _action)
+            : id(_id)
+            , localisedName(_localisedName)
+            , action(_action)
         {
         }
 
         RegisteredShortcut(
-            std::string_view id, StringId localisedName, std::string_view defaultChordA, std::string_view defaultChordB,
-            const std::function<void()>& action)
-            : Id(id)
-            , LocalisedName(localisedName)
-            , Default({ defaultChordA, defaultChordB })
-            , Current(Default)
-            , Action(action)
+            std::string_view _id, StringId _localisedName, std::string_view _defaultChord, const std::function<void()>& _action)
+            : id(_id)
+            , localisedName(_localisedName)
+            , standard({ _defaultChord })
+            , current(standard)
+            , action(_action)
         {
         }
 
-        std::string_view GetTopLevelGroup() const;
-        std::string_view GetGroup() const;
-        bool Matches(const InputEvent& e) const;
-        bool IsSuitableInputEvent(const InputEvent& e) const;
-        std::string GetDisplayString() const;
+        RegisteredShortcut(
+            std::string_view _id, StringId _localisedName, std::string_view _defaultChordA, std::string_view _defaultChordB,
+            const std::function<void()>& _action)
+            : id(_id)
+            , localisedName(_localisedName)
+            , standard({ _defaultChordA, _defaultChordB })
+            , current(standard)
+            , action(_action)
+        {
+        }
+
+        std::string_view getTopLevelGroup() const;
+        std::string_view getGroup() const;
+        bool matches(const InputEvent& e) const;
+        bool isSuitableInputEvent(const InputEvent& e) const;
+        std::string getDisplayString() const;
 
     private:
     };
@@ -115,37 +115,37 @@ namespace OpenRCT2::Ui
         IPlatformEnvironment& _env;
         std::string _pendingShortcutChange;
 
-        static std::optional<ShortcutInput> ConvertLegacyBinding(uint16_t binding);
-        void LoadLegacyBindings(const fs::path& path);
-        void LoadUserBindings(const fs::path& path);
-        void SaveUserBindings(const fs::path& path);
+        static std::optional<ShortcutInput> convertLegacyBinding(uint16_t binding);
+        void loadLegacyBindings(const fs::path& path);
+        void loadUserBindings(const fs::path& path);
+        void saveUserBindings(const fs::path& path);
 
         // We store the IDs separately so that we can safely use them for string_view in the map
         std::vector<std::unique_ptr<std::string>> _ids;
 
     public:
-        std::unordered_map<std::string_view, RegisteredShortcut> Shortcuts;
+        std::unordered_map<std::string_view, RegisteredShortcut> shortcuts;
 
         ShortcutManager(IPlatformEnvironment& env);
         ShortcutManager(const ShortcutManager&) = delete;
 
-        void LoadUserBindings();
-        void SaveUserBindings();
+        void loadUserBindings();
+        void saveUserBindings();
 
-        void RegisterShortcut(RegisteredShortcut&& shortcut);
+        void registerShortcut(RegisteredShortcut&& shortcut);
         template<typename... Args>
-        void RegisterShortcut(Args&&... args)
+        void registerShortcut(Args&&... args)
         {
-            RegisterShortcut(RegisteredShortcut(std::forward<Args>(args)...));
+            registerShortcut(RegisteredShortcut(std::forward<Args>(args)...));
         }
-        void RegisterDefaultShortcuts();
-        RegisteredShortcut* GetShortcut(std::string_view id);
-        void RemoveShortcut(std::string_view id);
-        bool IsPendingShortcutChange() const;
-        void SetPendingShortcutChange(std::string_view id);
-        void ProcessEvent(const InputEvent& e);
-        bool ProcessEventForSpecificShortcut(const InputEvent& e, std::string_view id);
+        void registerDefaultShortcuts();
+        RegisteredShortcut* getShortcut(std::string_view id);
+        void removeShortcut(std::string_view id);
+        bool isPendingShortcutChange() const;
+        void setPendingShortcutChange(std::string_view id);
+        void processEvent(const InputEvent& e);
+        bool processEventForSpecificShortcut(const InputEvent& e, std::string_view id);
 
-        static std::string_view GetLegacyShortcutId(size_t index);
+        static std::string_view getLegacyShortcutId(size_t index);
     };
 } // namespace OpenRCT2::Ui

@@ -616,7 +616,7 @@ namespace OpenRCT2::Ui::Windows
             invalidate();
 
             const CursorState* state = ContextGetCursorState();
-            Audio::Play(Audio::SoundId::Click1, 0, state->position.x);
+            Audio::Play(Audio::SoundId::click1, 0, state->position.x);
 
             if (gLegacyScene == LegacyScene::trackDesignsManager)
             {
@@ -1288,12 +1288,12 @@ namespace OpenRCT2::Ui::Windows
             {
                 auto* rideObject = reinterpret_cast<RideObject*>(_loadedObject.get());
                 const auto& rideEntry = rideObject->GetEntry();
-                if (rideEntry.shop_item[0] != ShopItem::None)
+                if (rideEntry.shop_item[0] != ShopItem::none)
                 {
                     std::string sells = "";
                     for (size_t i = 0; i < std::size(rideEntry.shop_item); i++)
                     {
-                        if (rideEntry.shop_item[i] == ShopItem::None)
+                        if (rideEntry.shop_item[i] == ShopItem::none)
                             continue;
 
                         if (!sells.empty())
@@ -1337,15 +1337,15 @@ namespace OpenRCT2::Ui::Windows
         {
             switch (type)
             {
-                case AnimationPeepType::Handyman:
+                case AnimationPeepType::handyman:
                     return STR_HANDYMAN_PLURAL;
-                case AnimationPeepType::Mechanic:
+                case AnimationPeepType::mechanic:
                     return STR_MECHANIC_PLURAL;
-                case AnimationPeepType::Security:
+                case AnimationPeepType::security:
                     return STR_SECURITY_GUARD_PLURAL;
-                case AnimationPeepType::Entertainer:
+                case AnimationPeepType::entertainer:
                     return STR_ENTERTAINER_PLURAL;
-                case AnimationPeepType::Guest:
+                case AnimationPeepType::guest:
                 default:
                     return STR_GUESTS;
             }

@@ -61,7 +61,7 @@ enum class MiniGolfAnimation : uint8_t;
 
 struct Vehicle : EntityBase
 {
-    static constexpr auto cEntityType = EntityType::Vehicle;
+    static constexpr auto cEntityType = EntityType::vehicle;
 
     enum class Type : uint8_t
     {
@@ -180,7 +180,7 @@ struct Vehicle : EntityBase
     uint8_t sound1_volume;
     OpenRCT2::Audio::SoundId sound2_id;
     uint8_t sound2_volume;
-    int8_t sound_vector_factor;
+    int8_t dopplerShift;
     union
     {
         uint16_t var_C0;

@@ -68,15 +68,15 @@ namespace OpenRCT2
     {
         switch (type)
         {
-            case EntityType::SteamParticle:
-            case EntityType::MoneyEffect:
-            case EntityType::CrashedVehicleParticle:
-            case EntityType::ExplosionCloud:
-            case EntityType::CrashSplash:
-            case EntityType::ExplosionFlare:
-            case EntityType::JumpingFountain:
-            case EntityType::Balloon:
-            case EntityType::Duck:
+            case EntityType::steamParticle:
+            case EntityType::moneyEffect:
+            case EntityType::crashedVehicleParticle:
+            case EntityType::explosionCloud:
+            case EntityType::crashSplash:
+            case EntityType::explosionFlare:
+            case EntityType::jumpingFountain:
+            case EntityType::balloon:
+            case EntityType::duck:
                 return true;
             default:
                 return false;
@@ -174,7 +174,7 @@ namespace OpenRCT2
             {
                 continue;
             }
-            spr->Type = EntityType::Null;
+            spr->Type = EntityType::null;
             spr->Id = EntityId::FromUnderlying(i);
 
             _entityFlashingList[i] = false;
@@ -199,7 +199,7 @@ namespace OpenRCT2
         for (EntityId::UnderlyingType i = 0; i < kMaxEntities; i++)
         {
             auto* entity = GetEntity(EntityId::FromUnderlying(i));
-            if (entity != nullptr && entity->Type != EntityType::Null)
+            if (entity != nullptr && entity->Type != EntityType::null)
             {
                 EntitySpatialInsert(*entity, { entity->x, entity->y });
             }
@@ -234,7 +234,7 @@ namespace OpenRCT2
         *tempEntity = Entity_t();
 
         entity.Id = entityIndex;
-        entity.Type = EntityType::Null;
+        entity.Type = EntityType::null;
     }
 
     void EntityRegistry::AddToEntityList(EntityBase& entity)
@@ -264,9 +264,9 @@ namespace OpenRCT2
     uint16_t EntityRegistry::GetMiscEntityCount()
     {
         uint16_t count = 0;
-        for (auto id : { EntityType::SteamParticle, EntityType::MoneyEffect, EntityType::CrashedVehicleParticle,
-                         EntityType::ExplosionCloud, EntityType::CrashSplash, EntityType::ExplosionFlare,
-                         EntityType::JumpingFountain, EntityType::Balloon, EntityType::Duck })
+        for (auto id : { EntityType::steamParticle, EntityType::moneyEffect, EntityType::crashedVehicleParticle,
+                         EntityType::explosionCloud, EntityType::crashSplash, EntityType::explosionFlare,
+                         EntityType::jumpingFountain, EntityType::balloon, EntityType::duck })
         {
             count += GetEntityListCount(id);
         }
@@ -417,7 +417,7 @@ namespace OpenRCT2
             for (auto& entityId : entityList)
             {
                 auto* entity = TryGetEntity(entityId);
-                if (entity != nullptr && entity->Type != EntityType::Null)
+                if (entity != nullptr && entity->Type != EntityType::null)
                 {
                     UpdateEntitySpatialIndex(*entity);
                 }

@@ -241,7 +241,7 @@ namespace OpenRCT2::Ui::Windows
 
                 // List all files with the wanted extensions
                 bool showExtension = false;
-                for (const u8string& extToken : String::split(extensionPattern, ";"))
+                for (const u8string_view extToken : String::split(extensionPattern, ";"))
                 {
                     const u8string filter = Path::Combine(directory, extToken);
                     auto scanner = Path::ScanDirectory(filter, false);

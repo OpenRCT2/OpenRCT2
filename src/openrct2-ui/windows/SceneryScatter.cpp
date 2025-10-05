@@ -141,7 +141,7 @@ namespace OpenRCT2::Ui::Windows
             if (widgetIndex != WIDX_PREVIEW || text.empty())
                 return;
 
-            const auto res = String::Parse<int32_t>(text);
+            const auto res = String::tryParse<int32_t>(text);
 
             if (res.has_value())
             {

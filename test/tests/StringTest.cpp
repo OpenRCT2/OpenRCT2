@@ -10,6 +10,7 @@
 #include "AssertHelpers.hpp"
 #include "helpers/StringHelpers.hpp"
 
+#include <algorithm>
 #include <gtest/gtest.h>
 #include <openrct2/core/CodepointView.hpp>
 #include <openrct2/core/EnumUtils.hpp>
@@ -17,6 +18,7 @@
 #include <string>
 #include <tuple>
 #include <utility>
+#include <vector>
 
 using namespace OpenRCT2;
 
@@ -64,17 +66,17 @@ TEST_P(StringTest, TrimStart)
 TEST_F(StringTest, Split_ByComma)
 {
     auto actual = String::split("a,bb,ccc,dd", ",");
-    AssertVector<std::string>(actual, { "a", "bb", "ccc", "dd" });
+    AssertVector<std::string_view>(actual, { "a", "bb", "ccc", "dd" });
 }
 TEST_F(StringTest, Split_ByColonColon)
 {
     auto actual = String::split("a::bb:ccc:::::dd", "::");
-    AssertVector<std::string>(actual, { "a", "bb:ccc", "", ":dd" });
+    AssertVector<std::string_view>(actual, { "a", "bb:ccc", "", ":dd" });
 }
 TEST_F(StringTest, Split_Empty)
 {
     auto actual = String::split("", ".");
-    AssertVector<std::string>(actual, {});
+    AssertVector<std::string_view>(actual, {});
 }
 TEST_F(StringTest, Split_ByEmpty)
 {
@@ -249,4 +251,102 @@ TEST_F(CodepointViewTest, CodepointView_iterate)
     AssertCodepoints("test", { 't', 'e', 's', 't' });
     AssertCodepoints("ゲスト", { U'ゲ', U'ス', U'ト' });
     AssertCodepoints("<🎢>", { U'<', U'🎢', U'>' });
+}
+
+TEST_F(StringTest, LogicalCompare)
+{
+    std::vector<std::string> expected = {
+        "1001 Troubles", "3D Cinema 1", "Aerial Cycles", "Batflyer",  "bpb",
+        "bpb.sv6",       "Drive-by",    "foo",           "foobar",    "Guest 10",
+        "Guest 99",      "Guest 100",   "John v2.0",     "John v2.1", "River of the Damned",
+        "Terror-dactyl",
+    };
+
+    std::vector<std::string> inputs = {
+        "Guest 99",
+        "Batflyer",
+        "John v2.1",
+        "bpb",
+        "3D Cinema 1",
+        "Drive-by",
+        "John v2.0",
+        "Guest 10",
+        "Terror-dactyl",
+        "Aerial Cycles",
+        "foobar",
+        "1001 Troubles",
+        "River of the Damned",
+        "bpb.sv6",
+        "Guest 100",
+        "foo",
+    };
+
+    std::sort(inputs.begin(), inputs.end(), [](const auto& a, const auto& b) {
+        return String::logicalCmp(a.c_str(), b.c_str()) < 0;
+    });
+
+    AssertVector<std::string>(inputs, expected);
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Tests for String::parse
+///////////////////////////////////////////////////////////////////////////////
+
+TEST_F(StringTest, Parse_Basic)
+{
+    auto actual = String::tryParse<std::int32_t>("123");
+    ASSERT_TRUE(actual.has_value());
+    ASSERT_EQ(*actual, 123);
+}
+
+TEST_F(StringTest, Parse_Empty)
+{
+    auto actual = String::tryParse<std::int32_t>("");
+    ASSERT_FALSE(actual.has_value());
+}
+
+TEST_F(StringTest, Parse_Zero)
+{
+    auto actual = String::tryParse<std::int32_t>("0");
+    ASSERT_TRUE(actual.has_value());
+    ASSERT_EQ(*actual, 0);
+}
+
+TEST_F(StringTest, Parse_LeadingZero)
+{
+    auto actual = String::tryParse<std::int32_t>("00123");
+    ASSERT_TRUE(actual.has_value());
+    ASSERT_EQ(*actual, 123);
+}
+
+TEST_F(StringTest, Parse_InvalidChar)
+{
+    auto actual = String::tryParse<std::int32_t>("12a3");
+    ASSERT_FALSE(actual.has_value());
+}
+
+TEST_F(StringTest, Parse_LeadingNonDigit)
+{
+    auto actual = String::tryParse<std::int32_t>("a123");
+    ASSERT_FALSE(actual.has_value());
+}
+
+TEST_F(StringTest, Parse_Negative)
+{
+    auto actual = String::tryParse<std::int32_t>("-123");
+    ASSERT_TRUE(actual.has_value());
+    ASSERT_EQ(*actual, -123);
+}
+
+TEST_F(StringTest, Parse_Overflow)
+{
+    auto actual = String::tryParse<std::int32_t>("2147483648");
+    ASSERT_FALSE(actual.has_value());
+}
+
+TEST_F(StringTest, Parse_LargeNumber)
+{
+    auto actual = String::tryParse<std::int64_t>("9223372036854775807");
+    ASSERT_TRUE(actual.has_value());
+    ASSERT_EQ(*actual, 9223372036854775807LL);
 }

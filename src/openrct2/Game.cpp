@@ -195,7 +195,7 @@ static void FixGuestsHeadingToParkCount()
 
     for (auto* peep : EntityList<Guest>())
     {
-        if (peep->OutsideOfPark && peep->State != PeepState::LeavingPark)
+        if (peep->OutsideOfPark && peep->State != PeepState::leavingPark)
         {
             guestsHeadingToPark++;
         }
@@ -451,7 +451,7 @@ void ResetAllSpriteQuadrantPlacements()
     for (EntityId::UnderlyingType i = 0; i < kMaxEntities; i++)
     {
         auto* spr = getGameState().entities.GetEntity(EntityId::FromUnderlying(i));
-        if (spr != nullptr && spr->Type != EntityType::Null)
+        if (spr != nullptr && spr->Type != EntityType::null)
         {
             spr->MoveTo(spr->GetLocation());
         }

@@ -480,8 +480,8 @@ static void ConsoleCommandStaff(InteractiveConsole& console, const arguments_t& 
                 console.WriteFormatLine("staff set energy <staff id> <value 0-255>");
                 console.WriteFormatLine("staff set costume <staff id> <costume id>");
 
-                auto _availableCostumeIndexes = findAllPeepAnimationsIndexesForType(AnimationPeepType::Entertainer);
-                auto _availableCostumeObjects = findAllPeepAnimationsObjectForType(AnimationPeepType::Entertainer);
+                auto _availableCostumeIndexes = findAllPeepAnimationsIndexesForType(AnimationPeepType::entertainer);
+                auto _availableCostumeObjects = findAllPeepAnimationsObjectForType(AnimationPeepType::entertainer);
 
                 for (auto i = 0u; i < _availableCostumeIndexes.size(); i++)
                 {
@@ -800,7 +800,7 @@ static void ConsoleCommandSet(InteractiveConsole& console, const arguments_t& ar
             money64 money = ToMoney64FromGBP(double_val[0]);
             if (gameState.park.cash != money)
             {
-                ConsoleSetVariableAction<GameActions::CheatSetAction>(console, varName, CheatType::SetMoney, money);
+                ConsoleSetVariableAction<GameActions::CheatSetAction>(console, varName, CheatType::setMoney, money);
             }
             else
             {
@@ -888,7 +888,7 @@ static void ConsoleCommandSet(InteractiveConsole& console, const arguments_t& ar
         }
         else if (varName == "no_money" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
-            ConsoleSetVariableAction<GameActions::CheatSetAction>(console, varName, CheatType::NoMoney, int_val[0] != 0);
+            ConsoleSetVariableAction<GameActions::CheatSetAction>(console, varName, CheatType::noMoney, int_val[0] != 0);
         }
         else if (varName == "difficult_park_rating" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
@@ -970,7 +970,7 @@ static void ConsoleCommandSet(InteractiveConsole& console, const arguments_t& ar
             if (gameState.cheats.sandboxMode != (int_val[0] != 0))
             {
                 ConsoleSetVariableAction<GameActions::CheatSetAction>(
-                    console, varName, CheatType::SandboxMode, int_val[0] != 0);
+                    console, varName, CheatType::sandboxMode, int_val[0] != 0);
             }
             else
             {
@@ -982,7 +982,7 @@ static void ConsoleCommandSet(InteractiveConsole& console, const arguments_t& ar
             if (gameState.cheats.disableClearanceChecks != (int_val[0] != 0))
             {
                 ConsoleSetVariableAction<GameActions::CheatSetAction>(
-                    console, varName, CheatType::DisableClearanceChecks, int_val[0] != 0);
+                    console, varName, CheatType::disableClearanceChecks, int_val[0] != 0);
             }
             else
             {
@@ -994,7 +994,7 @@ static void ConsoleCommandSet(InteractiveConsole& console, const arguments_t& ar
             if (gameState.cheats.disableSupportLimits != (int_val[0] != 0))
             {
                 ConsoleSetVariableAction<GameActions::CheatSetAction>(
-                    console, varName, CheatType::DisableSupportLimits, int_val[0] != 0);
+                    console, varName, CheatType::disableSupportLimits, int_val[0] != 0);
             }
             else
             {
@@ -1243,7 +1243,7 @@ static void ConsoleCommandShowLimits(InteractiveConsole& console, [[maybe_unused
 
     int32_t rideCount = RideGetCount();
     int32_t spriteCount = 0;
-    for (int32_t i = 0; i < static_cast<uint8_t>(EntityType::Count); ++i)
+    for (int32_t i = 0; i < static_cast<uint8_t>(EntityType::count); ++i)
     {
         auto& gameState = getGameState();
         spriteCount += gameState.entities.GetEntityListCount(EntityType(i));

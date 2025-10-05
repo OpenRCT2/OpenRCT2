@@ -40,13 +40,13 @@ constexpr RideTypeDescriptor HybridCoasterRTD =
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE),
     .Heights = { 43, 24, 13, 13},
     .MaxMass = 18,
-    .LiftData = { Audio::SoundId::LiftRMC, 5, 11 },
+    .LiftData = { Audio::SoundId::liftRMC, 5, 11 },
     .RatingsMultipliers = { 52, 36, 10 },
     .UpkeepCosts = { 40, 20, 80, 10, 3, 10 },
     .BuildCosts = { 65.00_GBP, 3.50_GBP, 55},
     .DefaultPrices = { 20, 20 },
     .DefaultMusic = kMusicObjectRock2,
-    .PhotoItem = ShopItem::Photo,
+    .PhotoItem = ShopItem::photo,
     .BonusValue = 120,
     .ColourPresets = TRACK_COLOUR_PRESETS(
         { COLOUR_LIGHT_ORANGE, COLOUR_LIGHT_ORANGE, COLOUR_DARK_BROWN }, // Medusa

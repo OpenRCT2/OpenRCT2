@@ -76,7 +76,7 @@ static constexpr const uint8_t* kDuckAnimations[] = {
 template<>
 bool EntityBase::Is<Duck>() const
 {
-    return Type == EntityType::Duck;
+    return Type == EntityType::duck;
 }
 
 bool Duck::IsFlying()
@@ -353,7 +353,7 @@ void Duck::Update()
 
 void Duck::Press()
 {
-    OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::Quack, { x, y, z });
+    OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::quack, { x, y, z });
 }
 
 void Duck::RemoveAll()

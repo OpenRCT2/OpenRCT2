@@ -18,7 +18,7 @@
 using namespace OpenRCT2;
 using namespace OpenRCT2::Core;
 
-static PatrolArea _consolidatedPatrolArea[EnumValue(StaffType::Count)];
+static PatrolArea _consolidatedPatrolArea[EnumValue(StaffType::count)];
 static std::variant<StaffType, EntityId> _patrolAreaToRender;
 
 static bool CompareTileCoordsXY(const TileCoordsXY& lhs, const TileCoordsXY& rhs)
@@ -138,7 +138,7 @@ const PatrolArea& GetMergedPatrolArea(const StaffType type)
 
 void UpdateConsolidatedPatrolAreas()
 {
-    for (int32_t staffType = 0; staffType < EnumValue(StaffType::Count); ++staffType)
+    for (int32_t staffType = 0; staffType < EnumValue(StaffType::count); ++staffType)
     {
         // Reset all of the merged data for the type.
         auto& mergedArea = _consolidatedPatrolArea[staffType];

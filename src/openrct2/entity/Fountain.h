@@ -40,7 +40,7 @@ enum class JumpingFountainType : uint8_t
 
 struct JumpingFountain : EntityBase
 {
-    static constexpr auto cEntityType = EntityType::JumpingFountain;
+    static constexpr auto cEntityType = EntityType::jumpingFountain;
 
     uint16_t frame;
     JumpingFountainType FountainType;
