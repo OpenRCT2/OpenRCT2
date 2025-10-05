@@ -514,7 +514,7 @@ namespace OpenRCT2::Ui::Windows
 
                             // If normal peep set sprite to normal (no food)
                             // If staff set sprite to staff sprite
-                            auto spriteType = PeepAnimationGroup::Normal;
+                            auto spriteType = PeepAnimationGroup::normal;
                             if (auto* staff = peep->As<Staff>(); staff != nullptr)
                             {
                                 spriteType = staff->AnimationGroup;
@@ -527,7 +527,7 @@ namespace OpenRCT2::Ui::Windows
                             auto& objManager = GetContext()->GetObjectManager();
                             auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(peep->AnimationObjectIndex);
 
-                            ImageIndex imageId = animObj->GetPeepAnimation(spriteType).base_image + 1;
+                            ImageIndex imageId = animObj->GetPeepAnimation(spriteType).baseImage + 1;
                             auto image = ImageId(imageId, peep->TshirtColour, peep->TrousersColour);
                             GfxDrawSprite(clippedRT, image, clipCoords);
                             break;

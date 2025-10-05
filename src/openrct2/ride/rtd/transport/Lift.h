@@ -44,7 +44,7 @@ constexpr RideTypeDescriptor LiftRTD =
     .BuildCosts = { 19.50_GBP, 0.00_GBP, 4, },
     .DefaultPrices = { 10, 0 },
     .DefaultMusic = kMusicObjectSummer,
-    .PhotoItem = ShopItem::Photo,
+    .PhotoItem = ShopItem::photo,
     .BonusValue = 45,
     .ColourPresets = TRACK_COLOUR_PRESETS(
         { COLOUR_BORDEAUX_RED, COLOUR_BORDEAUX_RED, COLOUR_GREY },

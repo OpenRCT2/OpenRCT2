@@ -628,8 +628,8 @@ namespace OpenRCT2::Ui::Windows
         {
             // Tab 1 image
             auto i = (_selectedTab == TabId::Individual ? _tabAnimationIndex & ~3 : 0);
-            auto* animObj = findPeepAnimationsObjectForType(AnimationPeepType::Guest);
-            i += animObj->GetPeepAnimation(PeepAnimationGroup::Normal).base_image + 1;
+            auto* animObj = findPeepAnimationsObjectForType(AnimationPeepType::guest);
+            i += animObj->GetPeepAnimation(PeepAnimationGroup::normal).baseImage + 1;
             GfxDrawSprite(
                 rt, ImageId(i, COLOUR_GREY, COLOUR_DARK_OLIVE_GREEN),
                 windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_1].midX(), widgets[WIDX_TAB_1].bottom - 6 });

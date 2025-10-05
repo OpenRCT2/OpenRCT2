@@ -46,7 +46,7 @@ constexpr RideTypeDescriptor MagicCarpetRTD =
     .BuildCosts = { 99.00_GBP, 1.00_GBP, 1, },
     .DefaultPrices = { 15, 0 },
     .DefaultMusic = kMusicObjectEgyptian,
-    .PhotoItem = ShopItem::Photo,
+    .PhotoItem = ShopItem::photo,
     .BonusValue = 35,
     .ColourPresets = TRACK_COLOUR_PRESETS(
         { COLOUR_DARK_PURPLE, COLOUR_WHITE, COLOUR_BLACK },

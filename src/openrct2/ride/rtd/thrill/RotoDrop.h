@@ -45,7 +45,7 @@ constexpr RideTypeDescriptor RotoDropRTD =
     .BuildCosts = { 22.50_GBP, 0.00_GBP, 4, },
     .DefaultPrices = { 20, 0 },
     .DefaultMusic = kMusicObjectRock1,
-    .PhotoItem = ShopItem::Photo,
+    .PhotoItem = ShopItem::photo,
     .BonusValue = 45,
     .ColourPresets = TRACK_COLOUR_PRESETS(
         { COLOUR_BORDEAUX_RED, COLOUR_YELLOW, COLOUR_GREY },

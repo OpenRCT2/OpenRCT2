@@ -45,7 +45,7 @@ constexpr RideTypeDescriptor TopSpinRTD =
     .BuildCosts = { 72.50_GBP, 1.00_GBP, 1, },
     .DefaultPrices = { 20, 0 },
     .DefaultMusic = kMusicObjectTechno,
-    .PhotoItem = ShopItem::Photo,
+    .PhotoItem = ShopItem::photo,
     .BonusValue = 55,
     .ColourPresets = TRACK_COLOUR_PRESETS(
         { COLOUR_BRIGHT_RED, COLOUR_YELLOW, COLOUR_YELLOW },

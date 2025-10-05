@@ -46,7 +46,7 @@ constexpr RideTypeDescriptor WoodenRollerCoasterRTD =
     .BuildCosts = { 37.50_GBP, 3.50_GBP, 50, },
     .DefaultPrices = { 20, 20 },
     .DefaultMusic = kMusicObjectWildWest,
-    .PhotoItem = ShopItem::Photo3,
+    .PhotoItem = ShopItem::photo3,
     .BonusValue = 105,
     .ColourPresets = TRACK_COLOUR_PRESETS(
         { COLOUR_BORDEAUX_RED, COLOUR_BLACK, COLOUR_WHITE },

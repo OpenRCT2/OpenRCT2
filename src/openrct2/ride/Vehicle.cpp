@@ -453,7 +453,7 @@ static_assert(std::size(kDoorCloseSoundIds) == OpenRCT2::Audio::kDoorSoundTypeCo
 template<>
 bool EntityBase::Is<Vehicle>() const
 {
-    return Type == EntityType::Vehicle;
+    return Type == EntityType::vehicle;
 }
 
 #ifdef ENABLE_SCRIPTING
@@ -3435,8 +3435,8 @@ void Vehicle::UpdateUnloadingPassengers()
 
             if (firstGuest != nullptr)
             {
-                firstGuest->SetState(PeepState::LeavingRide);
-                firstGuest->RideSubState = PeepRideSubState::LeaveVehicle;
+                firstGuest->SetState(PeepState::leavingRide);
+                firstGuest->RideSubState = PeepRideSubState::leaveVehicle;
             }
 
             auto secondGuest = getGameState().entities.GetEntity<Guest>(peep[seat * 2 + 1]);
@@ -3444,8 +3444,8 @@ void Vehicle::UpdateUnloadingPassengers()
 
             if (secondGuest != nullptr)
             {
-                secondGuest->SetState(PeepState::LeavingRide);
-                secondGuest->RideSubState = PeepRideSubState::LeaveVehicle;
+                secondGuest->SetState(PeepState::leavingRide);
+                secondGuest->RideSubState = PeepRideSubState::leaveVehicle;
             }
         }
     }
@@ -3480,8 +3480,8 @@ void Vehicle::UpdateUnloadingPassengers()
                 Peep* curPeep = getGameState().entities.GetEntity<Guest>(train->peep[peepIndex]);
                 if (curPeep != nullptr)
                 {
-                    curPeep->SetState(PeepState::LeavingRide);
-                    curPeep->RideSubState = PeepRideSubState::LeaveVehicle;
+                    curPeep->SetState(PeepState::leavingRide);
+                    curPeep->RideSubState = PeepRideSubState::leaveVehicle;
                 }
             }
         }

@@ -5,21 +5,21 @@
 
 enum class EntityType : uint8_t
 {
-    Vehicle,
-    Guest,
-    Staff,
-    Litter,
-    SteamParticle,
-    MoneyEffect,
-    CrashedVehicleParticle,
-    ExplosionCloud,
-    CrashSplash,
-    ExplosionFlare,
-    JumpingFountain,
-    Balloon,
-    Duck,
-    Count,
-    Null = 255
+    vehicle,
+    guest,
+    staff,
+    litter,
+    steamParticle,
+    moneyEffect,
+    crashedVehicleParticle,
+    explosionCloud,
+    crashSplash,
+    explosionFlare,
+    jumpingFountain,
+    balloon,
+    duck,
+    count,
+    null = 255
 };
 
 struct EntitySpriteData

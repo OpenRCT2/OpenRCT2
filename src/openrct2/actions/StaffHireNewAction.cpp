@@ -77,7 +77,7 @@ namespace OpenRCT2::GameActions
         auto res = Result();
         res.Expenditure = ExpenditureType::wages;
 
-        if (_staffType >= static_cast<uint8_t>(StaffType::Count))
+        if (_staffType >= static_cast<uint8_t>(StaffType::count))
         {
             LOG_ERROR("Invalid staff type %u", static_cast<uint32_t>(_staffType));
             return Result(Status::InvalidParameters, STR_CANT_HIRE_NEW_STAFF, STR_ERR_VALUE_OUT_OF_RANGE);
@@ -88,9 +88,9 @@ namespace OpenRCT2::GameActions
             return Result(Status::NoFreeElements, STR_CANT_HIRE_NEW_STAFF, STR_TOO_MANY_PEOPLE_IN_GAME);
         }
 
-        if (_staffType == static_cast<uint8_t>(StaffType::Entertainer))
+        if (_staffType == static_cast<uint8_t>(StaffType::entertainer))
         {
-            auto costumes = findAllPeepAnimationsIndexesForType(AnimationPeepType::Entertainer);
+            auto costumes = findAllPeepAnimationsIndexesForType(AnimationPeepType::entertainer);
             if (std::find(costumes.begin(), costumes.end(), _costumeIndex) == costumes.end())
             {
                 LOG_ERROR("Unavailable entertainer costume %u", static_cast<uint32_t>(_costumeIndex));
@@ -115,11 +115,11 @@ namespace OpenRCT2::GameActions
         else
         {
             newPeep->WindowInvalidateFlags = 0;
-            newPeep->Action = PeepActionType::Walking;
+            newPeep->Action = PeepActionType::walking;
             newPeep->SpecialSprite = 0;
             newPeep->AnimationImageIdOffset = 0;
             newPeep->WalkingAnimationFrameNum = 0;
-            newPeep->AnimationType = PeepAnimationType::Walking;
+            newPeep->AnimationType = PeepAnimationType::walking;
             newPeep->PathCheckOptimisation = 0;
             newPeep->PeepFlags = 0;
             newPeep->StaffLawnsMown = 0;
@@ -150,24 +150,24 @@ namespace OpenRCT2::GameActions
 
             auto animPeepType = AnimationPeepType(static_cast<uint8_t>(_staffType) + 1);
             ObjectEntryIndex animObjectIndex = _costumeIndex;
-            if (animPeepType != AnimationPeepType::Entertainer)
+            if (animPeepType != AnimationPeepType::entertainer)
                 animObjectIndex = findPeepAnimationsIndexForType(animPeepType);
 
             newPeep->Name = nullptr;
             newPeep->AnimationObjectIndex = animObjectIndex;
-            newPeep->AnimationGroup = PeepAnimationGroup::Normal;
+            newPeep->AnimationGroup = PeepAnimationGroup::normal;
 
             auto& objManager = GetContext()->GetObjectManager();
             auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(animObjectIndex);
 
             newPeep->PeepFlags &= ~PEEP_FLAGS_SLOW_WALK;
-            if (animObj->IsSlowWalking(PeepAnimationGroup::Normal))
+            if (animObj->IsSlowWalking(PeepAnimationGroup::normal))
                 newPeep->PeepFlags |= PEEP_FLAGS_SLOW_WALK;
 
             const auto& spriteBounds = animObj->GetSpriteBounds(newPeep->AnimationGroup);
-            newPeep->SpriteData.Width = spriteBounds.sprite_width;
-            newPeep->SpriteData.HeightMin = spriteBounds.sprite_height_negative;
-            newPeep->SpriteData.HeightMax = spriteBounds.sprite_height_positive;
+            newPeep->SpriteData.Width = spriteBounds.spriteWidth;
+            newPeep->SpriteData.HeightMin = spriteBounds.spriteHeightNegative;
+            newPeep->SpriteData.HeightMax = spriteBounds.spriteHeightPositive;
 
             if (_autoPosition)
             {
@@ -176,7 +176,7 @@ namespace OpenRCT2::GameActions
             else
             {
                 // NOTE: This state is required for the window to act.
-                newPeep->State = PeepState::Picked;
+                newPeep->State = PeepState::picked;
 
                 // INVESTIGATE: x and y are LOCATION_NULL at this point.
                 newPeep->MoveTo(newPeep->GetLocation());
@@ -224,7 +224,7 @@ namespace OpenRCT2::GameActions
     void StaffHireNewAction::AutoPositionNewStaff(Peep* newPeep) const
     {
         // Find a location to place new staff member
-        newPeep->State = PeepState::Falling;
+        newPeep->State = PeepState::falling;
 
         uint32_t count = 0;
         PathElement* guest_tile = nullptr;
@@ -233,7 +233,7 @@ namespace OpenRCT2::GameActions
         {
             for (auto guest : EntityList<Guest>())
             {
-                if (guest->State == PeepState::Walking)
+                if (guest->State == PeepState::walking)
                 {
                     // Check the walking guest's tile. Only count them if they're on a path tile.
                     guest_tile = MapGetPathElementAt(TileCoordsXYZ{ guest->NextLoc });
@@ -252,7 +252,7 @@ namespace OpenRCT2::GameActions
 
             for (auto guest : EntityList<Guest>())
             {
-                if (guest->State == PeepState::Walking)
+                if (guest->State == PeepState::walking)
                 {
                     guest_tile = MapGetPathElementAt(TileCoordsXYZ{ guest->NextLoc });
                     if (guest_tile != nullptr)
@@ -274,7 +274,7 @@ namespace OpenRCT2::GameActions
             else
             {
                 // User must pick a location
-                newPeep->State = PeepState::Picked;
+                newPeep->State = PeepState::picked;
                 newLocation = newPeep->GetLocation();
             }
         }
@@ -295,7 +295,7 @@ namespace OpenRCT2::GameActions
             else
             {
                 // User must pick a location
-                newPeep->State = PeepState::Picked;
+                newPeep->State = PeepState::picked;
                 newLocation = newPeep->GetLocation();
             }
         }

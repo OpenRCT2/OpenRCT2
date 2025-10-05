@@ -54,7 +54,7 @@ namespace OpenRCT2::GameActions
 
         auto* staff = getGameState().entities.TryGetEntity<Staff>(_spriteIndex);
         if (staff == nullptr
-            || (staff->AssignedStaffType != StaffType::Handyman && staff->AssignedStaffType != StaffType::Mechanic))
+            || (staff->AssignedStaffType != StaffType::handyman && staff->AssignedStaffType != StaffType::mechanic))
         {
             LOG_ERROR("Staff orders can't be changed for staff of type %u", _spriteIndex);
             return Result(Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_ACTION_INVALID_FOR_THAT_STAFF_TYPE);

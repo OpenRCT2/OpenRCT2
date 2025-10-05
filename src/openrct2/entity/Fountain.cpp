@@ -86,7 +86,7 @@ const FountainFlags _fountainPatternFlags[] = {
 template<>
 bool EntityBase::Is<JumpingFountain>() const
 {
-    return Type == EntityType::JumpingFountain;
+    return Type == EntityType::jumpingFountain;
 }
 
 void JumpingFountain::StartAnimation(const JumpingFountainType newType, const CoordsXY& newLoc, const TileElement* tileElement)

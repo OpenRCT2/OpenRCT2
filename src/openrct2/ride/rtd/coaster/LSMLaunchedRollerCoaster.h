@@ -48,7 +48,7 @@ constexpr RideTypeDescriptor LSMLaunchedRollerCoasterRTD =
     .BuildCosts = { 57.00_GBP, 2.50_GBP, 55, },
     .DefaultPrices = { 20, 20 },
     .DefaultMusic = kMusicObjectModern,
-    .PhotoItem = ShopItem::Photo,
+    .PhotoItem = ShopItem::photo,
     .BonusValue = 120,
     .ColourPresets = TRACK_COLOUR_PRESETS(
         { COLOUR_LIGHT_BLUE, COLOUR_LIGHT_BLUE, COLOUR_BLACK}, // Taiga

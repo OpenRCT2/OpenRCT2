@@ -26,11 +26,11 @@ namespace OpenRCT2
 
     enum class AnimationPeepType : uint8_t
     {
-        Guest,
-        Handyman,
-        Mechanic,
-        Security,
-        Entertainer,
+        guest,
+        handyman,
+        mechanic,
+        security,
+        entertainer,
     };
 
     const EnumMap<PeepAnimationType>& getAnimationsByPeepType(AnimationPeepType peepType);
@@ -38,16 +38,16 @@ namespace OpenRCT2
 
     struct SpriteBounds
     {
-        uint8_t sprite_width;           // 0x00
-        uint8_t sprite_height_negative; // 0x01
-        uint8_t sprite_height_positive; // 0x02
+        uint8_t spriteWidth;          // 0x00
+        uint8_t spriteHeightNegative; // 0x01
+        uint8_t spriteHeightPositive; // 0x02
     };
 
     struct PeepAnimation
     {
         ImageIndex imageTableOffset;
-        std::vector<uint8_t> frame_offsets;
-        uint32_t base_image{};
+        std::vector<uint8_t> frameOffsets;
+        uint32_t baseImage{};
         SpriteBounds bounds{};
     };
 

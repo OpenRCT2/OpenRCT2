@@ -23,7 +23,7 @@ constexpr int32_t kCrashedVehicleParticleFrameIncrement = 85; // 1/3 of 256, rou
 
 struct VehicleCrashParticle : EntityBase
 {
-    static constexpr auto cEntityType = EntityType::CrashedVehicleParticle;
+    static constexpr auto cEntityType = EntityType::crashedVehicleParticle;
     uint16_t frame;
     uint16_t time_to_live;
     uint8_t colour[2];
@@ -44,7 +44,7 @@ struct VehicleCrashParticle : EntityBase
 
 struct CrashSplashParticle : EntityBase
 {
-    static constexpr auto cEntityType = EntityType::CrashSplash;
+    static constexpr auto cEntityType = EntityType::crashSplash;
     uint16_t frame;
     static void Create(const CoordsXYZ& splashPos);
     void Update();
@@ -54,7 +54,7 @@ struct CrashSplashParticle : EntityBase
 
 struct ExplosionFlare : EntityBase
 {
-    static constexpr auto cEntityType = EntityType::ExplosionFlare;
+    static constexpr auto cEntityType = EntityType::explosionFlare;
     uint16_t frame;
     static void Create(const CoordsXYZ& flarePos);
     void Update();
@@ -64,7 +64,7 @@ struct ExplosionFlare : EntityBase
 
 struct ExplosionCloud : EntityBase
 {
-    static constexpr auto cEntityType = EntityType::ExplosionCloud;
+    static constexpr auto cEntityType = EntityType::explosionCloud;
     uint16_t frame;
     static void Create(const CoordsXYZ& cloudPos);
     void Update();
@@ -74,7 +74,7 @@ struct ExplosionCloud : EntityBase
 
 struct SteamParticle : EntityBase
 {
-    static constexpr auto cEntityType = EntityType::SteamParticle;
+    static constexpr auto cEntityType = EntityType::steamParticle;
     uint16_t frame;
     uint16_t time_to_move;
 

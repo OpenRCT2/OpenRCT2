@@ -44,7 +44,7 @@ constexpr RideTypeDescriptor BoatHireRTD =
     .BuildCosts = { 27.50_GBP, 0.00_GBP, 5, },
     .DefaultPrices = { 10, 0 },
     .DefaultMusic = kMusicObjectWater,
-    .PhotoItem = ShopItem::Photo,
+    .PhotoItem = ShopItem::photo,
     .BonusValue = 40,
     .ColourPresets = TRACK_COLOUR_PRESETS(
         { COLOUR_MOSS_GREEN, COLOUR_MOSS_GREEN, COLOUR_WHITE },

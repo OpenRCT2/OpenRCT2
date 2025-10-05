@@ -1274,13 +1274,13 @@ namespace OpenRCT2::RCT1
         {
             // TODO: Entities are currently read from the global state, change this once entities are stored
             // in the passed gameState.
-            auto* animObj = findPeepAnimationsObjectForType(AnimationPeepType::Guest);
+            auto* animObj = findPeepAnimationsObjectForType(AnimationPeepType::guest);
             for (auto* peep : EntityList<Guest>())
             {
                 const auto& spriteBounds = animObj->GetSpriteBounds(peep->AnimationGroup, peep->AnimationType);
-                peep->SpriteData.Width = spriteBounds.sprite_width;
-                peep->SpriteData.HeightMin = spriteBounds.sprite_height_negative;
-                peep->SpriteData.HeightMax = spriteBounds.sprite_height_positive;
+                peep->SpriteData.Width = spriteBounds.spriteWidth;
+                peep->SpriteData.HeightMin = spriteBounds.spriteHeightNegative;
+                peep->SpriteData.HeightMax = spriteBounds.spriteHeightPositive;
             }
 
             auto& objManager = GetContext()->GetObjectManager();
@@ -1288,9 +1288,9 @@ namespace OpenRCT2::RCT1
             {
                 animObj = objManager.GetLoadedObject<PeepAnimationsObject>(peep->AnimationObjectIndex);
                 const auto& spriteBounds = animObj->GetSpriteBounds(peep->AnimationGroup, peep->AnimationType);
-                peep->SpriteData.Width = spriteBounds.sprite_width;
-                peep->SpriteData.HeightMin = spriteBounds.sprite_height_negative;
-                peep->SpriteData.HeightMax = spriteBounds.sprite_height_positive;
+                peep->SpriteData.Width = spriteBounds.spriteWidth;
+                peep->SpriteData.HeightMin = spriteBounds.spriteHeightNegative;
+                peep->SpriteData.HeightMax = spriteBounds.spriteHeightPositive;
             }
         }
 
@@ -2719,22 +2719,22 @@ namespace OpenRCT2::RCT1
     // Very similar but not the same as S6Importer version (due to peeps)
     constexpr EntityType GetEntityTypeFromRCT1Sprite(const RCT12EntityBase& src)
     {
-        EntityType output = EntityType::Null;
+        EntityType output = EntityType::null;
         switch (src.EntityIdentifier)
         {
             case RCT12EntityIdentifier::Vehicle:
-                output = EntityType::Vehicle;
+                output = EntityType::vehicle;
                 break;
             case RCT12EntityIdentifier::Peep:
             {
                 const auto& peep = static_cast<const RCT1::Peep&>(src);
                 if (peep.PeepType == RCT12PeepType::Guest)
                 {
-                    output = EntityType::Guest;
+                    output = EntityType::guest;
                 }
                 else
                 {
-                    output = EntityType::Staff;
+                    output = EntityType::staff;
                 }
                 break;
             }
@@ -2743,39 +2743,39 @@ namespace OpenRCT2::RCT1
                 switch (RCT12MiscEntityType(src.Type))
                 {
                     case RCT12MiscEntityType::SteamParticle:
-                        output = EntityType::SteamParticle;
+                        output = EntityType::steamParticle;
                         break;
                     case RCT12MiscEntityType::MoneyEffect:
-                        output = EntityType::MoneyEffect;
+                        output = EntityType::moneyEffect;
                         break;
                     case RCT12MiscEntityType::CrashedVehicleParticle:
-                        output = EntityType::CrashedVehicleParticle;
+                        output = EntityType::crashedVehicleParticle;
                         break;
                     case RCT12MiscEntityType::ExplosionCloud:
-                        output = EntityType::ExplosionCloud;
+                        output = EntityType::explosionCloud;
                         break;
                     case RCT12MiscEntityType::CrashSplash:
-                        output = EntityType::CrashSplash;
+                        output = EntityType::crashSplash;
                         break;
                     case RCT12MiscEntityType::ExplosionFlare:
-                        output = EntityType::ExplosionFlare;
+                        output = EntityType::explosionFlare;
                         break;
                     case RCT12MiscEntityType::JumpingFountainWater:
                     case RCT12MiscEntityType::JumpingFountainSnow:
-                        output = EntityType::JumpingFountain;
+                        output = EntityType::jumpingFountain;
                         break;
                     case RCT12MiscEntityType::Balloon:
-                        output = EntityType::Balloon;
+                        output = EntityType::balloon;
                         break;
                     case RCT12MiscEntityType::Duck:
-                        output = EntityType::Duck;
+                        output = EntityType::duck;
                         break;
                     default:
                         break;
                 }
                 break;
             case RCT12EntityIdentifier::Litter:
-                output = EntityType::Litter;
+                output = EntityType::litter;
                 break;
             default:
                 break;
@@ -3158,43 +3158,43 @@ namespace OpenRCT2::RCT1
     {
         switch (GetEntityTypeFromRCT1Sprite(src))
         {
-            case EntityType::Vehicle:
+            case EntityType::vehicle:
                 ImportEntity<::Vehicle>(gameState, src);
                 break;
-            case EntityType::Guest:
+            case EntityType::guest:
                 ImportEntity<Guest>(gameState, src);
                 break;
-            case EntityType::Staff:
+            case EntityType::staff:
                 ImportEntity<Staff>(gameState, src);
                 break;
-            case EntityType::SteamParticle:
+            case EntityType::steamParticle:
                 ImportEntity<SteamParticle>(gameState, src);
                 break;
-            case EntityType::MoneyEffect:
+            case EntityType::moneyEffect:
                 ImportEntity<MoneyEffect>(gameState, src);
                 break;
-            case EntityType::CrashedVehicleParticle:
+            case EntityType::crashedVehicleParticle:
                 ImportEntity<VehicleCrashParticle>(gameState, src);
                 break;
-            case EntityType::ExplosionCloud:
+            case EntityType::explosionCloud:
                 ImportEntity<ExplosionCloud>(gameState, src);
                 break;
-            case EntityType::ExplosionFlare:
+            case EntityType::explosionFlare:
                 ImportEntity<ExplosionFlare>(gameState, src);
                 break;
-            case EntityType::CrashSplash:
+            case EntityType::crashSplash:
                 ImportEntity<CrashSplashParticle>(gameState, src);
                 break;
-            case EntityType::JumpingFountain:
+            case EntityType::jumpingFountain:
                 ImportEntity<JumpingFountain>(gameState, src);
                 break;
-            case EntityType::Balloon:
+            case EntityType::balloon:
                 ImportEntity<Balloon>(gameState, src);
                 break;
-            case EntityType::Duck:
+            case EntityType::duck:
                 ImportEntity<Duck>(gameState, src);
                 break;
-            case EntityType::Litter:
+            case EntityType::litter:
                 ImportEntity<Litter>(gameState, src);
                 break;
             default:

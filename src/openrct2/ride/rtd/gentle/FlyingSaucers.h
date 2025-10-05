@@ -46,7 +46,7 @@ constexpr RideTypeDescriptor FlyingSaucersRTD =
     .BuildCosts = { 35.00_GBP, 2.00_GBP, 1, },
     .DefaultPrices = { 15, 0 },
     .DefaultMusic = kMusicObjectRock1,
-    .PhotoItem = ShopItem::Photo,
+    .PhotoItem = ShopItem::photo,
     .BonusValue = 35,
     .ColourPresets = TRACK_COLOUR_PRESETS(
         { COLOUR_DARK_PURPLE, COLOUR_GREY, COLOUR_BLACK },

@@ -48,7 +48,7 @@ constexpr RideTypeDescriptor MiniHelicoptersRTD =
     .BuildCosts = { 12.50_GBP, 2.50_GBP, 30, },
     .DefaultPrices = { 15, 0 },
     .DefaultMusic = kMusicObjectSummer,
-    .PhotoItem = ShopItem::Photo,
+    .PhotoItem = ShopItem::photo,
     .BonusValue = 45,
     .ColourPresets = TRACK_COLOUR_PRESETS(
         { COLOUR_DARK_PURPLE, COLOUR_YELLOW, COLOUR_DARK_PURPLE },

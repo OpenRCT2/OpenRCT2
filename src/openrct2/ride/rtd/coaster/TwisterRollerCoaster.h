@@ -48,7 +48,7 @@ constexpr RideTypeDescriptor TwisterRollerCoasterRTD =
     .BuildCosts = { 60.00_GBP, 2.50_GBP, 55, },
     .DefaultPrices = { 20, 20 },
     .DefaultMusic = kMusicObjectRock1,
-    .PhotoItem = ShopItem::Photo,
+    .PhotoItem = ShopItem::photo,
     .BonusValue = 120,
     .ColourPresets = TRACK_COLOUR_PRESETS(
         { COLOUR_YELLOW, COLOUR_YELLOW, COLOUR_BORDEAUX_RED },

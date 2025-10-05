@@ -20,7 +20,7 @@ using namespace OpenRCT2;
 template<>
 bool EntityBase::Is<Litter>() const
 {
-    return Type == EntityType::Litter;
+    return Type == EntityType::litter;
 }
 
 static bool IsLocationLitterable(const CoordsXYZ& mapPos)
@@ -64,7 +64,7 @@ void Litter::Create(const CoordsXYZD& litterPos, Type type)
     if (!IsLocationLitterable(offsetLitterPos))
         return;
 
-    if (gameState.entities.GetEntityListCount(EntityType::Litter) >= 500)
+    if (gameState.entities.GetEntityListCount(EntityType::litter) >= 500)
     {
         Litter* newestLitter = nullptr;
         uint32_t newestLitterCreationTick = 0;

@@ -47,7 +47,7 @@ constexpr RideTypeDescriptor LogFlumeRTD =
     .BuildCosts = { 22.50_GBP, 2.50_GBP, 40, },
     .DefaultPrices = { 20, 20 },
     .DefaultMusic = kMusicObjectWater,
-    .PhotoItem = ShopItem::Photo4,
+    .PhotoItem = ShopItem::photo4,
     .BonusValue = 65,
     .ColourPresets = TRACK_COLOUR_PRESETS(
         { COLOUR_DARK_BROWN, COLOUR_DARK_BROWN, COLOUR_GREY },

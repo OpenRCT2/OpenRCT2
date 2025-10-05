@@ -44,7 +44,7 @@ constexpr RideTypeDescriptor WoodenWildMouseRTD =
     .BuildCosts = { 25.00_GBP, 3.00_GBP, 40, },
     .DefaultPrices = { 20, 20 },
     .DefaultMusic = kMusicObjectWildWest,
-    .PhotoItem = ShopItem::Photo3,
+    .PhotoItem = ShopItem::photo3,
     .BonusValue = 55,
     .ColourPresets = TRACK_COLOUR_PRESETS(
         { COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED, COLOUR_WHITE },

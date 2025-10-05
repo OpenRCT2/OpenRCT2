@@ -48,7 +48,7 @@ constexpr RideTypeDescriptor ChairliftRTD =
     .BuildCosts = { 32.50_GBP, 0.50_GBP, 30, },
     .DefaultPrices = { 10, 0 },
     .DefaultMusic = kMusicObjectSummer,
-    .PhotoItem = ShopItem::Photo,
+    .PhotoItem = ShopItem::photo,
     .BonusValue = 55,
     .ColourPresets = TRACK_COLOUR_PRESETS(
         { COLOUR_BORDEAUX_RED, COLOUR_BORDEAUX_RED, COLOUR_GREY },

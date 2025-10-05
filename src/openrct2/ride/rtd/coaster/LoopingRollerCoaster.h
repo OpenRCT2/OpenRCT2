@@ -47,7 +47,7 @@ constexpr RideTypeDescriptor LoopingRollerCoasterRTD =
     .BuildCosts = { 45.00_GBP, 2.50_GBP, 50, },
     .DefaultPrices = { 20, 20 },
     .DefaultMusic = kMusicObjectRock1,
-    .PhotoItem = ShopItem::Photo,
+    .PhotoItem = ShopItem::photo,
     .BonusValue = 95,
     .ColourPresets = TRACK_COLOUR_PRESETS(
         { COLOUR_LIGHT_BROWN, COLOUR_LIGHT_BROWN, COLOUR_BLACK },
