@@ -90,7 +90,7 @@ TEST_P(ReplayTests, RunReplay)
     {
         replayManager->StartPlayback(replayFile);
     }
-    catch (std::invalid_argument& e)
+    catch (const std::invalid_argument& e)
     {
         LOG_WARNING("Can't start replay!. %s", e.what());
         FAIL();

@@ -25,11 +25,13 @@
 #include "actions/TileModifyAction.h"
 #include "actions/TrackPlaceAction.h"
 #include "config/Config.h"
+#include "config/ConfigEnum.hpp"
 #include "core/Compression.h"
 #include "core/DataSerialiser.h"
 #include "core/FileStream.h"
 #include "core/FileSystem.hpp"
 #include "core/Path.hpp"
+#include "core/String.hpp"
 #include "entity/EntityRegistry.h"
 #include "entity/EntityTweener.h"
 #include "interface/Window.h"
@@ -45,6 +47,7 @@
 #include <chrono>
 #include <memory>
 #include <stdexcept>
+#include <string>
 #include <vector>
 
 namespace OpenRCT2
@@ -123,6 +126,13 @@ namespace OpenRCT2
             PLAYING,
             NORMALISATION,
         };
+
+        inline static const ConfigEnum<ReplayMode> Enum_ReplayMode = ConfigEnum<ReplayMode>({
+            ConfigEnumEntry<ReplayMode>("NONE", ReplayMode::NONE),
+            ConfigEnumEntry<ReplayMode>("RECORDING", ReplayMode::RECORDING),
+            ConfigEnumEntry<ReplayMode>("PLAYING", ReplayMode::PLAYING),
+            ConfigEnumEntry<ReplayMode>("NORMALISATION", ReplayMode::NORMALISATION),
+        });
 
     public:
         virtual ~ReplayManager()
@@ -421,7 +431,7 @@ namespace OpenRCT2
         void StartPlayback(const std::string& file) override
         {
             if (_mode != ReplayMode::NONE && _mode != ReplayMode::NORMALISATION)
-                throw std::invalid_argument("Unexpected mode <mode>");
+                throw std::invalid_argument("Unexpected mode " + Enum_ReplayMode.GetName(_mode));
 
             auto replayData = std::make_unique<ReplayRecordData>();
 
@@ -610,7 +620,15 @@ namespace OpenRCT2
             {
                 if (!fs::exists(filePath))
                 {
-                    throw std::invalid_argument(FormatStringID(STR_REPLAY_WITH_PATH_NOT_EXIST, filePath.c_str()));
+                    if constexpr (std::is_same_v<decltype(filePath), std::wstring>)
+                    {
+                        auto utf8Path = OpenRCT2::String::toUtf8(filePath.wstring());
+                        throw std::invalid_argument(FormatStringID(STR_REPLAY_FILE_NOT_FOUND, utf8Path.c_str()));
+                    }
+                    else
+                    {
+                        throw std::invalid_argument(FormatStringID(STR_REPLAY_FILE_NOT_FOUND, filePath.c_str()));
+                    }
                 }
             }
             else if (filePath.is_relative())
