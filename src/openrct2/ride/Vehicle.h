@@ -61,7 +61,7 @@ enum class MiniGolfAnimation : uint8_t;
 
 struct Vehicle : EntityBase
 {
-    static constexpr auto cEntityType = EntityType::Vehicle;
+    static constexpr auto cEntityType = EntityType::vehicle;
 
     enum class Type : uint8_t
     {

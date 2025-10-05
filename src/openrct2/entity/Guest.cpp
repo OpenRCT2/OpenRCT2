@@ -473,7 +473,7 @@ static Ride* GuestFindBestRideToGoOn(Guest& guest);
 template<>
 bool EntityBase::Is<Guest>() const
 {
-    return Type == EntityType::Guest;
+    return Type == EntityType::guest;
 }
 
 static bool IsValidLocation(const CoordsXYZ& coords)

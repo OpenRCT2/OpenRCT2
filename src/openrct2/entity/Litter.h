@@ -35,7 +35,7 @@ struct Litter : EntityBase
         EmptyBowlBlue,
     };
 
-    static constexpr auto cEntityType = EntityType::Litter;
+    static constexpr auto cEntityType = EntityType::litter;
     Type SubType;
     uint32_t creationTick;
     static void Create(const CoordsXYZD& litterPos, Type type);

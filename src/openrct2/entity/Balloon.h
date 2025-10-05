@@ -17,7 +17,7 @@ struct PaintSession;
 
 struct Balloon : EntityBase
 {
-    static constexpr auto cEntityType = EntityType::Balloon;
+    static constexpr auto cEntityType = EntityType::balloon;
     uint16_t frame;
     uint16_t popped;
     uint8_t time_to_move;

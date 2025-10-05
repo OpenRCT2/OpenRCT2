@@ -130,7 +130,7 @@ static PeepAnimationType PeepActionToAnimationGroupMap[] = {
 template<>
 bool EntityBase::Is<Peep>() const
 {
-    return Type == EntityType::Guest || Type == EntityType::Staff;
+    return Type == EntityType::guest || Type == EntityType::staff;
 }
 
 uint8_t Peep::GetNextDirection() const
@@ -191,7 +191,7 @@ bool Peep::CanBePickedUp() const
 
 int32_t PeepGetStaffCount()
 {
-    return getGameState().entities.GetEntityListCount(EntityType::Staff);
+    return getGameState().entities.GetEntityListCount(EntityType::staff);
 }
 
 /**
@@ -220,7 +220,7 @@ void PeepUpdateAll()
         }
 
         // 128 tick can delete so double check its not deleted
-        if (peep->Type == EntityType::Guest)
+        if (peep->Type == EntityType::guest)
         {
             peep->Update();
         }
@@ -236,7 +236,7 @@ void PeepUpdateAll()
         }
 
         // 128 tick can delete so double check its not deleted
-        if (staff->Type == EntityType::Staff)
+        if (staff->Type == EntityType::staff)
         {
             staff->Update();
         }

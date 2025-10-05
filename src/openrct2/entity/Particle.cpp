@@ -32,31 +32,31 @@ static constexpr uint32_t kVehicleCrashParticleSprites[kCrashedVehicleParticleNu
 template<>
 bool EntityBase::Is<SteamParticle>() const
 {
-    return Type == EntityType::SteamParticle;
+    return Type == EntityType::steamParticle;
 }
 
 template<>
 bool EntityBase::Is<ExplosionFlare>() const
 {
-    return Type == EntityType::ExplosionFlare;
+    return Type == EntityType::explosionFlare;
 }
 
 template<>
 bool EntityBase::Is<ExplosionCloud>() const
 {
-    return Type == EntityType::ExplosionCloud;
+    return Type == EntityType::explosionCloud;
 }
 
 template<>
 bool EntityBase::Is<VehicleCrashParticle>() const
 {
-    return Type == EntityType::CrashedVehicleParticle;
+    return Type == EntityType::crashedVehicleParticle;
 }
 
 template<>
 bool EntityBase::Is<CrashSplashParticle>() const
 {
-    return Type == EntityType::CrashSplash;
+    return Type == EntityType::crashSplash;
 }
 
 void VehicleCrashParticle::SetSpriteData()

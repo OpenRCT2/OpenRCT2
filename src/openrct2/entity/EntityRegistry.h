@@ -55,7 +55,7 @@ namespace OpenRCT2
     {
     private:
         Entity_t entities[kMaxEntities]{};
-        std::array<std::list<EntityId>, EnumValue(EntityType::Count)> gEntityLists;
+        std::array<std::list<EntityId>, EnumValue(EntityType::count)> gEntityLists;
         std::vector<EntityId> _freeIdList;
 
         bool _entityFlashingList[kMaxEntities];

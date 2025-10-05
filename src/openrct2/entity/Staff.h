@@ -40,7 +40,7 @@ enum class StaffType : uint8_t
 
 struct Staff : Peep
 {
-    static constexpr auto cEntityType = EntityType::Staff;
+    static constexpr auto cEntityType = EntityType::staff;
 
 public:
     PatrolArea* PatrolInfo;

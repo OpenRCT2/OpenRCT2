@@ -64,7 +64,7 @@ using namespace OpenRCT2;
 template<>
 bool EntityBase::Is<Staff>() const
 {
-    return Type == EntityType::Staff;
+    return Type == EntityType::staff;
 }
 
 /**

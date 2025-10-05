@@ -1243,7 +1243,7 @@ static void ConsoleCommandShowLimits(InteractiveConsole& console, [[maybe_unused
 
     int32_t rideCount = RideGetCount();
     int32_t spriteCount = 0;
-    for (int32_t i = 0; i < static_cast<uint8_t>(EntityType::Count); ++i)
+    for (int32_t i = 0; i < static_cast<uint8_t>(EntityType::count); ++i)
     {
         auto& gameState = getGameState();
         spriteCount += gameState.entities.GetEntityListCount(EntityType(i));

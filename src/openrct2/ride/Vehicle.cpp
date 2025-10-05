@@ -453,7 +453,7 @@ static_assert(std::size(kDoorCloseSoundIds) == OpenRCT2::Audio::kDoorSoundTypeCo
 template<>
 bool EntityBase::Is<Vehicle>() const
 {
-    return Type == EntityType::Vehicle;
+    return Type == EntityType::vehicle;
 }
 
 #ifdef ENABLE_SCRIPTING

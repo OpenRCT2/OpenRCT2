@@ -91,7 +91,7 @@ struct GameStateSnapshot_t
             for (EntityId::UnderlyingType i = 0; i < numSprites; i++)
             {
                 auto entity = getEntity(EntityId::FromUnderlying(i));
-                if (entity == nullptr || entity->base.Type == EntityType::Null)
+                if (entity == nullptr || entity->base.Type == EntityType::null)
                     continue;
                 indexTable.push_back(static_cast<uint32_t>(i));
             }
@@ -129,34 +129,34 @@ struct GameStateSnapshot_t
 
             switch (sprite.base.Type)
             {
-                case EntityType::Vehicle:
+                case EntityType::vehicle:
                     reinterpret_cast<Vehicle&>(sprite).Serialise(ds);
                     break;
-                case EntityType::Guest:
+                case EntityType::guest:
                     reinterpret_cast<Guest&>(sprite).Serialise(ds);
                     break;
-                case EntityType::Staff:
+                case EntityType::staff:
                     reinterpret_cast<Staff&>(sprite).Serialise(ds);
                     break;
-                case EntityType::Litter:
+                case EntityType::litter:
                     reinterpret_cast<Litter&>(sprite).Serialise(ds);
                     break;
-                case EntityType::MoneyEffect:
+                case EntityType::moneyEffect:
                     reinterpret_cast<MoneyEffect&>(sprite).Serialise(ds);
                     break;
-                case EntityType::Balloon:
+                case EntityType::balloon:
                     reinterpret_cast<Balloon&>(sprite).Serialise(ds);
                     break;
-                case EntityType::Duck:
+                case EntityType::duck:
                     reinterpret_cast<Duck&>(sprite).Serialise(ds);
                     break;
-                case EntityType::JumpingFountain:
+                case EntityType::jumpingFountain:
                     reinterpret_cast<JumpingFountain&>(sprite).Serialise(ds);
                     break;
-                case EntityType::SteamParticle:
+                case EntityType::steamParticle:
                     reinterpret_cast<SteamParticle&>(sprite).Serialise(ds);
                     break;
-                case EntityType::Null:
+                case EntityType::null:
                     break;
                 default:
                     break;
@@ -221,7 +221,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         for (auto& sprite : spriteList)
         {
             // By default they don't exist.
-            sprite.base.Type = EntityType::Null;
+            sprite.base.Type = EntityType::null;
         }
 
         snapshot.SerialiseSprites(
@@ -560,66 +560,66 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         {
             switch (spriteBase.base.Type)
             {
-                case EntityType::Guest:
+                case EntityType::guest:
                     CompareSpriteDataGuest(
                         static_cast<const Guest&>(spriteBase.base), static_cast<const Guest&>(spriteCmp.base), changeData);
                     break;
-                case EntityType::Staff:
+                case EntityType::staff:
                     CompareSpriteDataStaff(
                         static_cast<const Staff&>(spriteBase.base), static_cast<const Staff&>(spriteCmp.base), changeData);
                     break;
-                case EntityType::Vehicle:
+                case EntityType::vehicle:
                     CompareSpriteDataVehicle(
                         static_cast<const Vehicle&>(spriteBase.base), static_cast<const Vehicle&>(spriteCmp.base), changeData);
                     break;
-                case EntityType::Litter:
+                case EntityType::litter:
                     CompareSpriteDataLitter(
                         static_cast<const Litter&>(spriteBase.base), static_cast<const Litter&>(spriteCmp.base), changeData);
                     break;
-                case EntityType::SteamParticle:
+                case EntityType::steamParticle:
                     CompareSpriteDataSteamParticle(
                         static_cast<const SteamParticle&>(spriteBase.base), static_cast<const SteamParticle&>(spriteCmp.base),
                         changeData);
                     break;
-                case EntityType::MoneyEffect:
+                case EntityType::moneyEffect:
                     CompareSpriteDataMoneyEffect(
                         static_cast<const MoneyEffect&>(spriteBase.base), static_cast<const MoneyEffect&>(spriteCmp.base),
                         changeData);
                     break;
-                case EntityType::CrashedVehicleParticle:
+                case EntityType::crashedVehicleParticle:
                     CompareSpriteDataVehicleCrashParticle(
                         static_cast<const VehicleCrashParticle&>(spriteBase.base),
                         static_cast<const VehicleCrashParticle&>(spriteCmp.base), changeData);
                     break;
-                case EntityType::ExplosionCloud:
+                case EntityType::explosionCloud:
                     CompareSpriteDataExplosionCloud(
                         static_cast<const ExplosionCloud&>(spriteBase.base), static_cast<const ExplosionCloud&>(spriteCmp.base),
                         changeData);
                     break;
-                case EntityType::CrashSplash:
+                case EntityType::crashSplash:
                     CompareSpriteDataCrashSplash(
                         static_cast<const CrashSplashParticle&>(spriteBase.base),
                         static_cast<const CrashSplashParticle&>(spriteCmp.base), changeData);
                     break;
-                case EntityType::ExplosionFlare:
+                case EntityType::explosionFlare:
                     CompareSpriteDataExplosionFlare(
                         static_cast<const ExplosionFlare&>(spriteBase.base), static_cast<const ExplosionFlare&>(spriteCmp.base),
                         changeData);
                     break;
-                case EntityType::JumpingFountain:
+                case EntityType::jumpingFountain:
                     CompareSpriteDataJumpingFountain(
                         static_cast<const JumpingFountain&>(spriteBase.base),
                         static_cast<const JumpingFountain&>(spriteCmp.base), changeData);
                     break;
-                case EntityType::Balloon:
+                case EntityType::balloon:
                     CompareSpriteDataBalloon(
                         static_cast<const Balloon&>(spriteBase.base), static_cast<const Balloon&>(spriteCmp.base), changeData);
                     break;
-                case EntityType::Duck:
+                case EntityType::duck:
                     CompareSpriteDataDuck(
                         static_cast<const Duck&>(spriteBase.base), static_cast<const Duck&>(spriteCmp.base), changeData);
                     break;
-                case EntityType::Null:
+                case EntityType::null:
                     break;
                 default:
                     break;
@@ -648,19 +648,19 @@ struct GameStateSnapshots final : public IGameStateSnapshots
 
             changeData.entityType = spriteBase.base.Type;
 
-            if (spriteBase.base.Type == EntityType::Null && spriteCmp.base.Type != EntityType::Null)
+            if (spriteBase.base.Type == EntityType::null && spriteCmp.base.Type != EntityType::null)
             {
                 // Sprite was added.
                 changeData.changeType = GameStateSpriteChange::ADDED;
                 changeData.entityType = spriteCmp.base.Type;
             }
-            else if (spriteBase.base.Type != EntityType::Null && spriteCmp.base.Type == EntityType::Null)
+            else if (spriteBase.base.Type != EntityType::null && spriteCmp.base.Type == EntityType::null)
             {
                 // Sprite was removed.
                 changeData.changeType = GameStateSpriteChange::REMOVED;
                 changeData.entityType = spriteBase.base.Type;
             }
-            else if (spriteBase.base.Type == EntityType::Null && spriteCmp.base.Type == EntityType::Null)
+            else if (spriteBase.base.Type == EntityType::null && spriteCmp.base.Type == EntityType::null)
             {
                 // Do nothing.
                 changeData.changeType = GameStateSpriteChange::EQUAL;
@@ -688,33 +688,33 @@ struct GameStateSnapshots final : public IGameStateSnapshots
     {
         switch (type)
         {
-            case EntityType::Null:
+            case EntityType::null:
                 return "Null";
-            case EntityType::Guest:
+            case EntityType::guest:
                 return "Guest";
-            case EntityType::Staff:
+            case EntityType::staff:
                 return "Staff";
-            case EntityType::Vehicle:
+            case EntityType::vehicle:
                 return "Vehicle";
-            case EntityType::Litter:
+            case EntityType::litter:
                 return "Litter";
-            case EntityType::SteamParticle:
+            case EntityType::steamParticle:
                 return "Misc: Steam Particle";
-            case EntityType::MoneyEffect:
+            case EntityType::moneyEffect:
                 return "Misc: Money effect";
-            case EntityType::CrashedVehicleParticle:
+            case EntityType::crashedVehicleParticle:
                 return "Misc: Crash Vehicle Particle";
-            case EntityType::ExplosionCloud:
+            case EntityType::explosionCloud:
                 return "Misc: Explosion Cloud";
-            case EntityType::CrashSplash:
+            case EntityType::crashSplash:
                 return "Misc: Crash Splash";
-            case EntityType::ExplosionFlare:
+            case EntityType::explosionFlare:
                 return "Misc: Explosion Flare";
-            case EntityType::JumpingFountain:
+            case EntityType::jumpingFountain:
                 return "Misc: Jumping fountain";
-            case EntityType::Balloon:
+            case EntityType::balloon:
                 return "Misc: Balloon";
-            case EntityType::Duck:
+            case EntityType::duck:
                 return "Misc: Duck";
             default:
                 break;

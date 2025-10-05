@@ -664,7 +664,7 @@ namespace OpenRCT2
     void ViewportUpdateSmartFollowEntity(WindowBase* window)
     {
         auto entity = getGameState().entities.TryGetEntity(window->viewportSmartFollowSprite);
-        if (entity == nullptr || entity->Type == EntityType::Null)
+        if (entity == nullptr || entity->Type == EntityType::null)
         {
             window->viewportSmartFollowSprite = EntityId::GetNull();
             window->viewportTargetSprite = EntityId::GetNull();
@@ -673,11 +673,11 @@ namespace OpenRCT2
 
         switch (entity->Type)
         {
-            case EntityType::Vehicle:
+            case EntityType::vehicle:
                 ViewportUpdateSmartFollowVehicle(window);
                 break;
 
-            case EntityType::Guest:
+            case EntityType::guest:
             {
                 auto* guest = entity->As<Guest>();
                 if (guest == nullptr)
@@ -687,7 +687,7 @@ namespace OpenRCT2
                 ViewportUpdateSmartFollowGuest(window, *guest);
                 break;
             }
-            case EntityType::Staff:
+            case EntityType::staff:
             {
                 auto* staff = entity->As<Staff>();
                 if (staff == nullptr)
@@ -1393,7 +1393,7 @@ namespace OpenRCT2
                 {
                     switch (ps->Entity->Type)
                     {
-                        case EntityType::Vehicle:
+                        case EntityType::vehicle:
                         {
                             if (viewFlags & VIEWPORT_FLAG_HIDE_VEHICLES || clipped)
                             {
@@ -1417,7 +1417,7 @@ namespace OpenRCT2
                             }
                             break;
                         }
-                        case EntityType::Guest:
+                        case EntityType::guest:
                             if (viewFlags & VIEWPORT_FLAG_HIDE_GUESTS)
                             {
                                 return VisibilityKind::hidden;
@@ -1427,7 +1427,7 @@ namespace OpenRCT2
                                 return VisibilityKind::partial;
                             }
                             break;
-                        case EntityType::Staff:
+                        case EntityType::staff:
                             if (viewFlags & VIEWPORT_FLAG_HIDE_STAFF)
                             {
                                 return VisibilityKind::hidden;

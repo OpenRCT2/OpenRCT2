@@ -97,7 +97,7 @@ namespace OpenRCT2::Scripting
         {
             auto spriteId = EntityId::FromUnderlying(id);
             auto sprite = getGameState().entities.GetEntity(spriteId);
-            if (sprite != nullptr && sprite->Type != EntityType::Null)
+            if (sprite != nullptr && sprite->Type != EntityType::null)
             {
                 return GetEntityAsDukValue(sprite);
             }
@@ -456,9 +456,9 @@ namespace OpenRCT2::Scripting
         auto spriteId = sprite->Id;
         switch (sprite->Type)
         {
-            case EntityType::Vehicle:
+            case EntityType::vehicle:
                 return GetObjectAsDukValue(_context, std::make_shared<ScVehicle>(spriteId));
-            case EntityType::Staff:
+            case EntityType::staff:
             {
                 auto staff = getGameState().entities.GetEntity<Staff>(spriteId);
                 if (staff != nullptr)
@@ -480,15 +480,15 @@ namespace OpenRCT2::Scripting
                     return GetObjectAsDukValue(_context, std::make_shared<ScStaff>(spriteId));
                 }
             }
-            case EntityType::Guest:
+            case EntityType::guest:
                 return GetObjectAsDukValue(_context, std::make_shared<ScGuest>(spriteId));
-            case EntityType::Litter:
+            case EntityType::litter:
                 return GetObjectAsDukValue(_context, std::make_shared<ScLitter>(spriteId));
-            case EntityType::Balloon:
+            case EntityType::balloon:
                 return GetObjectAsDukValue(_context, std::make_shared<ScBalloon>(spriteId));
-            case EntityType::MoneyEffect:
+            case EntityType::moneyEffect:
                 return GetObjectAsDukValue(_context, std::make_shared<ScMoneyEffect>(spriteId));
-            case EntityType::CrashedVehicleParticle:
+            case EntityType::crashedVehicleParticle:
                 return GetObjectAsDukValue(_context, std::make_shared<ScCrashedVehicleParticle>(spriteId));
             default:
                 return GetObjectAsDukValue(_context, std::make_shared<ScEntity>(spriteId));
