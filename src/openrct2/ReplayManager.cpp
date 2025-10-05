@@ -623,7 +623,7 @@ namespace OpenRCT2
                     if constexpr (std::is_same_v<decltype(filePath), std::wstring>)
                     {
                         auto utf8Path = OpenRCT2::String::toUtf8(filePath.wstring());
-                        throw std::invalid_argument(FormatStringID(STR_REPLAY_FILE_NOT_FOUND, utf8Path.c_str()));
+                        throw std::invalid_argument(FormatStringID(STR_REPLAY_FILE_NOT_FOUND, utf8Path));
                     }
                     else
                     {
