@@ -118,7 +118,7 @@ namespace OpenRCT2::RCT2
                 return RCT12FlatTrackTypeToOpenRCT2(origTrackType);
             case OriginalRideClass::WildMouse:
                 // Boosters share their ID with the Spinning Control track.
-                if (origTrackType == OpenRCT2::RCT12::TrackElemType::RotationControlToggleAlias)
+                if (origTrackType == OpenRCT2::RCT12::TrackElemType::rotationControlToggleAlias)
                     return OpenRCT2::TrackElemType::RotationControlToggle;
                 return static_cast<OpenRCT2::TrackElemType>(origTrackType);
             case OriginalRideClass::Regular:
@@ -130,7 +130,7 @@ namespace OpenRCT2::RCT2
     OpenRCT2::RCT12::TrackElemType OpenRCT2TrackTypeToRCT2(OpenRCT2::TrackElemType origTrackType)
     {
         if (origTrackType == TrackElemType::RotationControlToggle)
-            return OpenRCT2::RCT12::TrackElemType::RotationControlToggleAlias;
+            return OpenRCT2::RCT12::TrackElemType::rotationControlToggleAlias;
 
         // This function is safe to run this way round.
         return OpenRCT2FlatTrackTypeToRCT12(origTrackType);

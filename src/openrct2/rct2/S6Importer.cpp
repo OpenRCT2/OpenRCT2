@@ -1975,7 +1975,7 @@ namespace OpenRCT2::RCT2
             dst->SetTrackType(convertedType);
             // RotationControlToggle and Booster are saved as the same track piece ID
             // Which one the vehicle is using must be determined
-            if (src->GetTrackType() == OpenRCT2::RCT12::TrackElemType::RotationControlToggleAlias)
+            if (src->GetTrackType() == OpenRCT2::RCT12::TrackElemType::rotationControlToggleAlias)
             {
                 // Merging hacks mean the track type that's appropriate for the ride type is not necessarily the track type the
                 // ride is on. It's possible to create unwanted behavior if a user layers spinning control track on top of
@@ -1987,7 +1987,7 @@ namespace OpenRCT2::RCT2
                 if (tileElement2 != nullptr)
                     dst->SetTrackType(TrackElemType::RotationControlToggle);
             }
-            else if (src->GetTrackType() == OpenRCT2::RCT12::TrackElemType::BlockBrakes)
+            else if (src->GetTrackType() == OpenRCT2::RCT12::TrackElemType::blockBrakes)
             {
                 dst->brake_speed = kRCT2DefaultBlockBrakeSpeed;
             }
