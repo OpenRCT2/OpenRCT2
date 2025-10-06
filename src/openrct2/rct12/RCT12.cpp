@@ -35,21 +35,21 @@ RCT12TileElementType RCT12TileElementBase::GetType() const
     auto elem_type = static_cast<RCT12TileElementType>((this->Type & kTileElementTypeMask) >> 2);
     switch (elem_type)
     {
-        case RCT12TileElementType::Surface:
-        case RCT12TileElementType::Path:
-        case RCT12TileElementType::Track:
-        case RCT12TileElementType::SmallScenery:
-        case RCT12TileElementType::Entrance:
-        case RCT12TileElementType::Wall:
-        case RCT12TileElementType::LargeScenery:
-        case RCT12TileElementType::Banner:
-        case RCT12TileElementType::Corrupt:
-        case RCT12TileElementType::EightCarsCorrupt14:
-        case RCT12TileElementType::EightCarsCorrupt15:
+        case RCT12TileElementType::surface:
+        case RCT12TileElementType::path:
+        case RCT12TileElementType::track:
+        case RCT12TileElementType::smallScenery:
+        case RCT12TileElementType::entrance:
+        case RCT12TileElementType::wall:
+        case RCT12TileElementType::largeScenery:
+        case RCT12TileElementType::banner:
+        case RCT12TileElementType::corrupt:
+        case RCT12TileElementType::eightCarsCorrupt14:
+        case RCT12TileElementType::eightCarsCorrupt15:
             return elem_type;
         default:
             // Most corrupt elements were set to 0x255, but not all. Fallback to corrupt element if encountered unknown type.
-            return RCT12TileElementType::EightCarsCorrupt15;
+            return RCT12TileElementType::eightCarsCorrupt15;
     }
 }
 

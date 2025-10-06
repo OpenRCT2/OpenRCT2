@@ -1256,7 +1256,7 @@ namespace OpenRCT2::RCT2
                                 }
 
                                 auto tileElementType = srcElement->GetType();
-                                if (tileElementType == RCT12TileElementType::Corrupt)
+                                if (tileElementType == RCT12TileElementType::corrupt)
                                 {
                                     // One property of corrupt elements was to hide tops of tower tracks, and to avoid the next
                                     // element from being hidden, multiple consecutive corrupt elements were sometimes used.
@@ -1265,8 +1265,8 @@ namespace OpenRCT2::RCT2
                                     nextElementInvisible = !nextElementInvisible;
                                     continue;
                                 }
-                                if (tileElementType == RCT12TileElementType::EightCarsCorrupt14
-                                    || tileElementType == RCT12TileElementType::EightCarsCorrupt15)
+                                if (tileElementType == RCT12TileElementType::eightCarsCorrupt14
+                                    || tileElementType == RCT12TileElementType::eightCarsCorrupt15)
                                 {
                                     restOfTileInvisible = true;
                                     continue;
@@ -1314,7 +1314,7 @@ namespace OpenRCT2::RCT2
 
             switch (rct12Type)
             {
-                case RCT12TileElementType::Surface:
+                case RCT12TileElementType::surface:
                 {
                     auto dst2 = dst->AsSurface();
                     auto src2 = src->AsSurface();
@@ -1332,7 +1332,7 @@ namespace OpenRCT2::RCT2
 
                     break;
                 }
-                case RCT12TileElementType::Path:
+                case RCT12TileElementType::path:
                 {
                     auto dst2 = dst->AsPath();
                     auto src2 = src->AsPath();
@@ -1370,7 +1370,7 @@ namespace OpenRCT2::RCT2
 
                     break;
                 }
-                case RCT12TileElementType::Track:
+                case RCT12TileElementType::track:
                 {
                     auto dst2 = dst->AsTrack();
                     auto src2 = src->AsTrack();
@@ -1432,7 +1432,7 @@ namespace OpenRCT2::RCT2
 
                     break;
                 }
-                case RCT12TileElementType::SmallScenery:
+                case RCT12TileElementType::smallScenery:
                 {
                     auto dst2 = dst->AsSmallScenery();
                     auto src2 = src->AsSmallScenery();
@@ -1447,7 +1447,7 @@ namespace OpenRCT2::RCT2
 
                     break;
                 }
-                case RCT12TileElementType::Entrance:
+                case RCT12TileElementType::entrance:
                 {
                     auto dst2 = dst->AsEntrance();
                     auto src2 = src->AsEntrance();
@@ -1478,7 +1478,7 @@ namespace OpenRCT2::RCT2
                     }
                     break;
                 }
-                case RCT12TileElementType::Wall:
+                case RCT12TileElementType::wall:
                 {
                     auto dst2 = dst->AsWall();
                     auto src2 = src->AsWall();
@@ -1515,7 +1515,7 @@ namespace OpenRCT2::RCT2
                     }
                     break;
                 }
-                case RCT12TileElementType::LargeScenery:
+                case RCT12TileElementType::largeScenery:
                 {
                     auto dst2 = dst->AsLargeScenery();
                     auto src2 = src->AsLargeScenery();
@@ -1548,7 +1548,7 @@ namespace OpenRCT2::RCT2
                     }
                     break;
                 }
-                case RCT12TileElementType::Banner:
+                case RCT12TileElementType::banner:
                 {
                     auto dst2 = dst->AsBanner();
                     auto src2 = src->AsBanner();

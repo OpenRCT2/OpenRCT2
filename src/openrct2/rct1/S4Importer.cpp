@@ -499,7 +499,7 @@ namespace OpenRCT2::RCT1
             {
                 switch (tileElement->GetType())
                 {
-                    case RCT12TileElementType::Surface:
+                    case RCT12TileElementType::surface:
                     {
                         auto surfaceEl = tileElement->AsSurface();
                         auto surfaceStyle = surfaceEl->GetSurfaceStyle();
@@ -508,7 +508,7 @@ namespace OpenRCT2::RCT1
                         AddEntryForTerrainEdge(edgeStyle);
                         break;
                     }
-                    case RCT12TileElementType::Path:
+                    case RCT12TileElementType::path:
                     {
                         uint8_t pathType = tileElement->AsPath()->GetRCT1PathType();
                         uint8_t pathAdditionsType = tileElement->AsPath()->GetAddition();
@@ -523,13 +523,13 @@ namespace OpenRCT2::RCT1
                         AddEntryForFootpathRailings(footpathRailingsType);
                         break;
                     }
-                    case RCT12TileElementType::SmallScenery:
+                    case RCT12TileElementType::smallScenery:
                         AddEntryForSmallScenery(tileElement->AsSmallScenery()->GetEntryIndex());
                         break;
-                    case RCT12TileElementType::LargeScenery:
+                    case RCT12TileElementType::largeScenery:
                         AddEntryForLargeScenery(tileElement->AsLargeScenery()->GetEntryIndex());
                         break;
-                    case RCT12TileElementType::Wall:
+                    case RCT12TileElementType::wall:
                     {
                         for (int32_t edge = 0; edge < 4; edge++)
                         {
