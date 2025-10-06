@@ -169,13 +169,6 @@ namespace OpenRCT2::GameActions
                 RideClearForConstruction(*ride);
                 ride->removePeeps();
 
-                if (ride->status == RideStatus::simulating)
-                {
-                    // Also close the ride
-                    auto gameAction = GameActions::RideSetStatusAction(ride->id, RideStatus::closed);
-                    ExecuteNested(&gameAction, gameState);
-                }
-
                 ride->mode = static_cast<RideMode>(_value);
                 ride->updateMaxVehicles();
                 ride->updateNumberOfCircuits();

@@ -236,6 +236,12 @@ void RideClearForConstruction(Ride& ride)
     ride.removeVehicles();
     RideClearBlockedTiles(ride);
 
+    // Force close simulating rides, to reset flag widget in Construction UI
+    if (ride.status == RideStatus::simulating)
+    {
+        ride.status = RideStatus::closed;
+    }
+
     auto* windowMgr = Ui::GetWindowManager();
     auto w = windowMgr->FindByNumber(WindowClass::ride, ride.id.ToUnderlying());
     if (w != nullptr)
