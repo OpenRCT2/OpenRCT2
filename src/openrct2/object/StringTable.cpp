@@ -55,9 +55,9 @@ namespace OpenRCT2
         try
         {
             RCT2LanguageId rct2LanguageId;
-            while ((rct2LanguageId = static_cast<RCT2LanguageId>(stream->ReadValue<uint8_t>())) != RCT2LanguageId::End)
+            while ((rct2LanguageId = static_cast<RCT2LanguageId>(stream->ReadValue<uint8_t>())) != RCT2LanguageId::end)
             {
-                uint8_t languageId = (EnumValue(rct2LanguageId) <= EnumValue(RCT2LanguageId::Portuguese))
+                uint8_t languageId = (EnumValue(rct2LanguageId) <= EnumValue(RCT2LanguageId::portuguese))
                     ? RCT2ToOpenRCT2LanguageId[EnumValue(rct2LanguageId)]
                     : static_cast<uint8_t>(LANGUAGE_UNDEFINED);
                 std::string stringAsWin1252 = stream->ReadString();

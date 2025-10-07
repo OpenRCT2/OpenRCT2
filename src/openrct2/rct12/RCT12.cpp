@@ -642,7 +642,7 @@ std::string ConvertFormattedStringToOpenRCT2(std::string_view buffer)
     {
         buffer = buffer.substr(0, nullTerminator);
     }
-    auto asUtf8 = RCT2StringToUTF8(buffer, RCT2LanguageId::EnglishUK);
+    auto asUtf8 = RCT2StringToUTF8(buffer, RCT2LanguageId::englishUK);
 
     std::string result;
     CodepointView codepoints(asUtf8);

@@ -329,7 +329,7 @@ namespace OpenRCT2::RCT2
 
             // Some scenarios have their scenario details in UTF-8, due to earlier bugs in OpenRCT2.
             auto loadMaybeUTF8 = [](std::string_view str) -> std::string {
-                return !IsLikelyUTF8(str) ? RCT2StringToUTF8(str, RCT2LanguageId::EnglishUK) : std::string(str);
+                return !IsLikelyUTF8(str) ? RCT2StringToUTF8(str, RCT2LanguageId::englishUK) : std::string(str);
             };
 
             if (_s6.Header.Type == S6_TYPE_SCENARIO)
@@ -617,9 +617,9 @@ namespace OpenRCT2::RCT2
         void ConvertScenarioStringsToUTF8(GameState_t& gameState)
         {
             // Scenario details
-            gameState.scenarioCompletedBy = RCT2StringToUTF8(gameState.scenarioCompletedBy, RCT2LanguageId::EnglishUK);
-            gameState.scenarioOptions.name = RCT2StringToUTF8(gameState.scenarioOptions.name, RCT2LanguageId::EnglishUK);
-            gameState.scenarioOptions.details = RCT2StringToUTF8(gameState.scenarioOptions.details, RCT2LanguageId::EnglishUK);
+            gameState.scenarioCompletedBy = RCT2StringToUTF8(gameState.scenarioCompletedBy, RCT2LanguageId::englishUK);
+            gameState.scenarioOptions.name = RCT2StringToUTF8(gameState.scenarioOptions.name, RCT2LanguageId::englishUK);
+            gameState.scenarioOptions.details = RCT2StringToUTF8(gameState.scenarioOptions.details, RCT2LanguageId::englishUK);
         }
 
         void ImportRides()
@@ -1820,7 +1820,7 @@ namespace OpenRCT2::RCT2
             const auto originalString = _s6.CustomStrings[stringId % 1024];
             auto originalStringView = std::string_view(
                 originalString, RCT12::GetRCTStringBufferLen(originalString, kUserStringMaxLength));
-            auto asUtf8 = RCT2StringToUTF8(originalStringView, RCT2LanguageId::EnglishUK);
+            auto asUtf8 = RCT2StringToUTF8(originalStringView, RCT2LanguageId::englishUK);
             auto justText = RCT12RemoveFormattingUTF8(asUtf8);
             return justText.data();
         }

@@ -184,7 +184,7 @@ void RCT2StringToUTF8Self(char* buffer, size_t length)
 {
     if (length > 0)
     {
-        auto temp = RCT2StringToUTF8(buffer, RCT2LanguageId::EnglishUK);
+        auto temp = RCT2StringToUTF8(buffer, RCT2LanguageId::englishUK);
         String::safeUtf8Copy(buffer, temp.data(), length);
     }
 }
