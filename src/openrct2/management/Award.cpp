@@ -85,11 +85,11 @@ StringId AwardGetNews(AwardType type)
 /** More than 1/16 of the total guests must be thinking untidy thoughts. */
 static bool AwardIsDeservedMostUntidy(GameState_t& gameState, int32_t activeAwardTypes)
 {
-    if (activeAwardTypes & EnumToFlag(AwardType::MostBeautiful))
+    if (activeAwardTypes & EnumToFlag(AwardType::mostBeautiful))
         return false;
-    if (activeAwardTypes & EnumToFlag(AwardType::BestStaff))
+    if (activeAwardTypes & EnumToFlag(AwardType::bestStaff))
         return false;
-    if (activeAwardTypes & EnumToFlag(AwardType::MostTidy))
+    if (activeAwardTypes & EnumToFlag(AwardType::mostTidy))
         return false;
 
     uint32_t negativeCount = 0;
@@ -115,9 +115,9 @@ static bool AwardIsDeservedMostUntidy(GameState_t& gameState, int32_t activeAwar
 /** More than 1/64 of the total guests must be thinking tidy thoughts and less than 6 guests thinking untidy thoughts. */
 static bool AwardIsDeservedMostTidy(GameState_t& gameState, int32_t activeAwardTypes)
 {
-    if (activeAwardTypes & EnumToFlag(AwardType::MostUntidy))
+    if (activeAwardTypes & EnumToFlag(AwardType::mostUntidy))
         return false;
-    if (activeAwardTypes & EnumToFlag(AwardType::MostDisappointing))
+    if (activeAwardTypes & EnumToFlag(AwardType::mostDisappointing))
         return false;
 
     uint32_t positiveCount = 0;
@@ -176,10 +176,10 @@ static bool AwardIsDeservedBestValue(GameState_t& gameState, int32_t activeAward
 {
     auto& park = gameState.park;
 
-    if (activeAwardTypes & EnumToFlag(AwardType::WorstValue))
+    if (activeAwardTypes & EnumToFlag(AwardType::worstValue))
         return false;
 
-    if (activeAwardTypes & EnumToFlag(AwardType::MostDisappointing))
+    if (activeAwardTypes & EnumToFlag(AwardType::mostDisappointing))
         return false;
 
     if ((park.flags & PARK_FLAGS_NO_MONEY) || !Park::EntranceFeeUnlocked())
@@ -197,9 +197,9 @@ static bool AwardIsDeservedBestValue(GameState_t& gameState, int32_t activeAward
 /** More than 1/128 of the total guests must be thinking scenic thoughts and fewer than 16 untidy thoughts. */
 static bool AwardIsDeservedMostBeautiful(GameState_t& gameState, int32_t activeAwardTypes)
 {
-    if (activeAwardTypes & EnumToFlag(AwardType::MostUntidy))
+    if (activeAwardTypes & EnumToFlag(AwardType::mostUntidy))
         return false;
-    if (activeAwardTypes & EnumToFlag(AwardType::MostDisappointing))
+    if (activeAwardTypes & EnumToFlag(AwardType::mostDisappointing))
         return false;
 
     uint32_t positiveCount = 0;
@@ -232,7 +232,7 @@ static bool AwardIsDeservedWorstValue(GameState_t& gameState, int32_t activeAwar
 {
     auto& park = gameState.park;
 
-    if (activeAwardTypes & EnumToFlag(AwardType::BestValue))
+    if (activeAwardTypes & EnumToFlag(AwardType::bestValue))
         return false;
     if (park.flags & PARK_FLAGS_NO_MONEY)
         return false;
@@ -277,7 +277,7 @@ static bool AwardIsDeservedSafest(GameState_t& gameState, [[maybe_unused]] int32
 /** All staff types, at least 20 staff, one staff per 32 peeps. */
 static bool AwardIsDeservedBestStaff(GameState_t& gameState, int32_t activeAwardTypes)
 {
-    if (activeAwardTypes & EnumToFlag(AwardType::MostUntidy))
+    if (activeAwardTypes & EnumToFlag(AwardType::mostUntidy))
         return false;
 
     auto staffCount = gameState.entities.GetEntityListCount(EntityType::staff);
@@ -289,7 +289,7 @@ static bool AwardIsDeservedBestStaff(GameState_t& gameState, int32_t activeAward
 /** At least 7 shops, 4 unique, one shop per 128 guests and no more than 12 hungry guests. */
 static bool AwardIsDeservedBestFood(GameState_t& gameState, int32_t activeAwardTypes)
 {
-    if (activeAwardTypes & EnumToFlag(AwardType::WorstFood))
+    if (activeAwardTypes & EnumToFlag(AwardType::worstFood))
         return false;
 
     uint32_t shops = 0;
@@ -334,7 +334,7 @@ static bool AwardIsDeservedBestFood(GameState_t& gameState, int32_t activeAwardT
 /** No more than 2 unique shops, less than one shop per 256 guests and more than 15 hungry guests. */
 static bool AwardIsDeservedWorstFood(GameState_t& gameState, int32_t activeAwardTypes)
 {
-    if (activeAwardTypes & EnumToFlag(AwardType::BestFood))
+    if (activeAwardTypes & EnumToFlag(AwardType::bestFood))
         return false;
 
     uint32_t shops = 0;
@@ -411,7 +411,7 @@ static bool AwardIsDeservedBestToilets(GameState_t& gameState, [[maybe_unused]] 
 /** More than half of the rides have satisfaction <= 6 and park rating <= 650. */
 static bool AwardIsDeservedMostDisappointing(GameState_t& gameState, int32_t activeAwardTypes)
 {
-    if (activeAwardTypes & EnumToFlag(AwardType::BestValue))
+    if (activeAwardTypes & EnumToFlag(AwardType::bestValue))
         return false;
     if (gameState.park.rating > 650)
         return false;
@@ -466,7 +466,7 @@ static bool AwardIsDeservedBestWaterRides(GameState_t& gameState, [[maybe_unused
 /** At least 6 custom designed rides. */
 static bool AwardIsDeservedBestCustomDesignedRides(GameState_t& gameState, int32_t activeAwardTypes)
 {
-    if (activeAwardTypes & EnumToFlag(AwardType::MostDisappointing))
+    if (activeAwardTypes & EnumToFlag(AwardType::mostDisappointing))
         return false;
 
     auto customDesignedRides = 0;
@@ -497,7 +497,7 @@ static bool AwardIsDeservedMostDazzlingRideColours(GameState_t& gameState, int32
         COLOUR_BRIGHT_PINK,
     };
 
-    if (activeAwardTypes & EnumToFlag(AwardType::MostDisappointing))
+    if (activeAwardTypes & EnumToFlag(AwardType::mostDisappointing))
         return false;
 
     auto countedRides = 0;
@@ -658,7 +658,7 @@ void AwardUpdateAll()
             AwardType awardType;
             do
             {
-                awardType = static_cast<AwardType>((((ScenarioRand() & 0xFF) * EnumValue(AwardType::Count)) >> 8) & 0xFF);
+                awardType = static_cast<AwardType>((((ScenarioRand() & 0xFF) * EnumValue(AwardType::count)) >> 8) & 0xFF);
             } while (activeAwardTypes & (1 << EnumValue(awardType)));
 
             // Check if award is deserved
