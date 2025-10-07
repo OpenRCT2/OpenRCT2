@@ -2722,10 +2722,10 @@ namespace OpenRCT2::RCT1
         EntityType output = EntityType::null;
         switch (src.EntityIdentifier)
         {
-            case RCT12EntityIdentifier::Vehicle:
+            case RCT12EntityIdentifier::vehicle:
                 output = EntityType::vehicle;
                 break;
-            case RCT12EntityIdentifier::Peep:
+            case RCT12EntityIdentifier::peep:
             {
                 const auto& peep = static_cast<const RCT1::Peep&>(src);
                 if (peep.PeepType == RCT12PeepType::Guest)
@@ -2738,7 +2738,7 @@ namespace OpenRCT2::RCT1
                 }
                 break;
             }
-            case RCT12EntityIdentifier::Misc:
+            case RCT12EntityIdentifier::misc:
 
                 switch (RCT12MiscEntityType(src.Type))
                 {
@@ -2774,7 +2774,7 @@ namespace OpenRCT2::RCT1
                         break;
                 }
                 break;
-            case RCT12EntityIdentifier::Litter:
+            case RCT12EntityIdentifier::litter:
                 output = EntityType::litter;
                 break;
             default:

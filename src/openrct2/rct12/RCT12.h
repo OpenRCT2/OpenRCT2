@@ -910,11 +910,11 @@ enum class RCT12EntityLinkListOffset : uint8_t
 
 enum class RCT12EntityIdentifier : uint8_t
 {
-    Vehicle = 0,
-    Peep = 1,
-    Misc = 2,
-    Litter = 3,
-    Null = 255
+    vehicle = 0,
+    peep = 1,
+    misc = 2,
+    litter = 3,
+    null = 255
 };
 
 enum class RCT12MiscEntityType : uint8_t

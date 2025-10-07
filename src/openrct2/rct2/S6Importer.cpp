@@ -1212,7 +1212,7 @@ namespace OpenRCT2::RCT2
             for (int32_t i = 0; i < GetMaxEntities(); i++)
             {
                 const auto& entity = _s6.Entities[i];
-                if (entity.Unknown.EntityIdentifier == RCT12EntityIdentifier::Peep)
+                if (entity.Unknown.EntityIdentifier == RCT12EntityIdentifier::peep)
                 {
                     if (entity.Peep.CurrentRide == static_cast<RCT12RideId>(rideIndex.ToUnderlying())
                         && (static_cast<PeepState>(entity.Peep.State) == PeepState::onRide
@@ -1738,10 +1738,10 @@ namespace OpenRCT2::RCT2
             EntityType output = EntityType::null;
             switch (src->EntityIdentifier)
             {
-                case RCT12EntityIdentifier::Vehicle:
+                case RCT12EntityIdentifier::vehicle:
                     output = EntityType::vehicle;
                     break;
-                case RCT12EntityIdentifier::Peep:
+                case RCT12EntityIdentifier::peep:
                 {
                     const auto& peep = static_cast<const Peep&>(*src);
                     if (RCT12PeepType(peep.PeepType) == RCT12PeepType::Guest)
@@ -1754,7 +1754,7 @@ namespace OpenRCT2::RCT2
                     }
                     break;
                 }
-                case RCT12EntityIdentifier::Misc:
+                case RCT12EntityIdentifier::misc:
 
                     switch (RCT12MiscEntityType(src->Type))
                     {
@@ -1790,7 +1790,7 @@ namespace OpenRCT2::RCT2
                             break;
                     }
                     break;
-                case RCT12EntityIdentifier::Litter:
+                case RCT12EntityIdentifier::litter:
                     output = EntityType::litter;
                     break;
                 default:
