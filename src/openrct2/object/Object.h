@@ -154,13 +154,13 @@ namespace OpenRCT2
 
     enum class ObjectError : uint32_t
     {
-        Ok,
-        Unknown,
-        BadEncoding,
-        InvalidProperty,
-        BadStringTable,
-        BadImageTable,
-        UnexpectedEOF,
+        ok,
+        unknown,
+        badEncoding,
+        invalidProperty,
+        badStringTable,
+        badImageTable,
+        unexpectedEOF,
     };
 
     struct IReadObjectContext

@@ -277,15 +277,15 @@ namespace OpenRCT2
         // Validate properties
         if (_legacyType.excitement_multiplier > 75)
         {
-            context->LogError(ObjectError::InvalidProperty, "Excitement multiplier too high.");
+            context->LogError(ObjectError::invalidProperty, "Excitement multiplier too high.");
         }
         if (_legacyType.intensity_multiplier > 75)
         {
-            context->LogError(ObjectError::InvalidProperty, "Intensity multiplier too high.");
+            context->LogError(ObjectError::invalidProperty, "Intensity multiplier too high.");
         }
         if (_legacyType.nausea_multiplier > 75)
         {
-            context->LogError(ObjectError::InvalidProperty, "Nausea multiplier too high.");
+            context->LogError(ObjectError::invalidProperty, "Nausea multiplier too high.");
         }
         RideObjectUpdateRideType(_legacyType);
         _legacyType.Clearance = GetDefaultClearance();
@@ -565,7 +565,7 @@ namespace OpenRCT2
 
                     if (rideType == kRideTypeNull)
                     {
-                        context->LogError(ObjectError::InvalidProperty, "Unknown ride type");
+                        context->LogError(ObjectError::invalidProperty, "Unknown ride type");
                     }
                 }
 
@@ -608,7 +608,7 @@ namespace OpenRCT2
                     auto shopItem = ParseShopItem(Json::GetString(rideSells[i]));
                     if (shopItem == ShopItem::none)
                     {
-                        context->LogWarning(ObjectError::InvalidProperty, "Unknown shop item");
+                        context->LogWarning(ObjectError::invalidProperty, "Unknown shop item");
                     }
 
                     _legacyType.shop_item[i] = shopItem;
@@ -924,7 +924,7 @@ namespace OpenRCT2
                 {
                     if (!std::has_single_bit(numRotationFrames))
                     {
-                        context->LogError(ObjectError::InvalidProperty, "spriteGroups values must be powers of 2");
+                        context->LogError(ObjectError::invalidProperty, "spriteGroups values must be powers of 2");
                         continue;
                     }
                     car.SpriteGroups[i].spritePrecision = PrecisionFromNumFrames(numRotationFrames);

@@ -246,11 +246,11 @@ namespace OpenRCT2::ObjectFactory
         catch (const IOException&)
         {
             // TODO check that ex is really EOF and not some other error
-            context->LogError(ObjectError::UnexpectedEOF, "Unexpectedly reached end of file.");
+            context->LogError(ObjectError::unexpectedEOF, "Unexpectedly reached end of file.");
         }
         catch (const std::exception&)
         {
-            context->LogError(ObjectError::Unknown, nullptr);
+            context->LogError(ObjectError::unknown, nullptr);
         }
     }
 

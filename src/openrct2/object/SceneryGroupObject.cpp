@@ -174,7 +174,7 @@ namespace OpenRCT2
                 if (entryName.length() != kDatEntryLength)
                 {
                     std::string errorMessage = "Malformed DAT entry in scenery group: " + entryName;
-                    context->LogError(ObjectError::InvalidProperty, errorMessage.c_str());
+                    context->LogError(ObjectError::invalidProperty, errorMessage.c_str());
                     continue;
                 }
 
@@ -189,7 +189,7 @@ namespace OpenRCT2
                 catch (std::invalid_argument&)
                 {
                     std::string errorMessage = "Malformed flags in DAT entry in scenery group: " + entryName;
-                    context->LogError(ObjectError::InvalidProperty, errorMessage.c_str());
+                    context->LogError(ObjectError::invalidProperty, errorMessage.c_str());
                 }
             }
             else

@@ -31,7 +31,7 @@ namespace OpenRCT2
         // Validate properties
         if (_legacyType.support_type >= RailingEntrySupportType::Count)
         {
-            context->LogError(ObjectError::InvalidProperty, "RailingEntrySupportType not supported.");
+            context->LogError(ObjectError::invalidProperty, "RailingEntrySupportType not supported.");
         }
     }
 

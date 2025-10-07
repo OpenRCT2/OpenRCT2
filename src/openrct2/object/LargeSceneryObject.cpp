@@ -83,7 +83,7 @@ namespace OpenRCT2
         // Validate properties
         if (_legacyType.price <= 0.00_GBP)
         {
-            context->LogError(ObjectError::InvalidProperty, "Price can not be free or negative.");
+            context->LogError(ObjectError::invalidProperty, "Price can not be free or negative.");
         }
         if (_legacyType.removal_price <= 0.00_GBP)
         {
@@ -91,7 +91,7 @@ namespace OpenRCT2
             const auto reimbursement = _legacyType.removal_price;
             if (reimbursement > _legacyType.price)
             {
-                context->LogError(ObjectError::InvalidProperty, "Sell price can not be more than buy price.");
+                context->LogError(ObjectError::invalidProperty, "Sell price can not be more than buy price.");
             }
         }
 

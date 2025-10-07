@@ -42,7 +42,7 @@ namespace OpenRCT2
         // Validate properties
         if (_legacyType.price <= 0.00_GBP)
         {
-            context->LogError(ObjectError::InvalidProperty, "Price can not be free or negative.");
+            context->LogError(ObjectError::invalidProperty, "Price can not be free or negative.");
         }
 
         // Add path additions to 'Signs and items for footpaths' group, rather than lumping them in the Miscellaneous tab.

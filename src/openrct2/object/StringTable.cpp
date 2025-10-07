@@ -76,7 +76,7 @@ namespace OpenRCT2
         }
         catch (const std::exception&)
         {
-            context->LogError(ObjectError::BadStringTable, "Bad string table.");
+            context->LogError(ObjectError::badStringTable, "Bad string table.");
             throw;
         }
         Sort();
