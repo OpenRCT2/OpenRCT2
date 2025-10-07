@@ -164,9 +164,9 @@ namespace OpenRCT2::RCT1
 
     uint8_t GetRideType(RideType rideType, VehicleType vehicleType)
     {
-        if (rideType == RideType::steelTwisterRollerCoaster && vehicleType == VehicleType::NonLoopingSteelTwisterRollerCoasterTrain)
+        if (rideType == RideType::steelTwisterRollerCoaster && vehicleType == VehicleType::nonLoopingSteelTwisterRollerCoasterTrain)
             return RIDE_TYPE_HYPER_TWISTER;
-        if (rideType == RideType::steelCorkscrewRollerCoaster && vehicleType == VehicleType::HypercoasterTrain)
+        if (rideType == RideType::steelCorkscrewRollerCoaster && vehicleType == VehicleType::hypercoasterTrain)
             return RIDE_TYPE_HYPERCOASTER;
 
         static uint8_t map[] =
@@ -683,11 +683,11 @@ namespace OpenRCT2::RCT1
             0,
         };
 
-        if (rct1VehicleType == VehicleType::HeartlineTwisterCars)
+        if (rct1VehicleType == VehicleType::heartlineTwisterCars)
         {
             return vehicleSubEntry == HEARTLINE_TWISTER_FORWARDS ? 0 : 1;
         }
-        if (rct1VehicleType == VehicleType::HeartlineTwisterCarsReversed)
+        if (rct1VehicleType == VehicleType::heartlineTwisterCarsReversed)
         {
             return vehicleSubEntry == HEARTLINE_TWISTER_BACKWARDS ? 0 : 1;
         }
@@ -800,95 +800,95 @@ namespace OpenRCT2::RCT1
     {
         static constexpr const char * map[] =
         {
-            "rct1.ride.steel_rc_trains",                   //  VehicleType::SteelRollerCoasterTrain
-            "rct1.ride.steel_rc_trains",                   //  VehicleType::SteelRollerCoasterTrainBackwards
-            "rct1.ride.wooden_rc_trains",                  //  VehicleType::WoodenRollerCoasterTrain
-            "rct1.ride.inverted_trains",                   //  VehicleType::InvertedCoasterTrain//NotinRCT2
-            "rct1.ride.suspended_swinging_cars",           //  VehicleType::SuspendedSwingingCars
-            "rct1.ride.ladybird_trains",                   //  VehicleType::LadybirdCars
-            "rct1.ride.stand_up_trains",                   //  VehicleType::StandupRollerCoasterCars
-            "rct2.ride.wmspin",                            //  VehicleType::SpinningCars
-            "rct1.ride.single_person_swinging_cars",       //  VehicleType::SinglePersonSwingingChairs
-            "rct2.ride.swans",                             //  VehicleType::SwansPedalBoats
-            "rct1.ride.streamlined_monorail_trains",       //  VehicleType::LargeMonorailTrain
-            "rct2.ride.cboat",                             //  VehicleType::Canoes
-            "rct2.ride.rboat",                             //  VehicleType::RowingBoats
-            "rct1.ride.steam_trains",                      //  VehicleType::SteamTrain
-            "rct1.ride.mouse_cars",                        //  VehicleType::WoodenMouseCars
-            "rct1.ride.bumper_boats",                      //  VehicleType::BumperBoats
-            "rct1.ride.wooden_rc_trains",                  //  VehicleType::WoodenRollerCoasterTrainBackwards
-            "rct1.ride.rocket_cars",                       //  VehicleType::RocketCars
-            "rct1.ride.horses",                            //  VehicleType::Horses//Steeplechase
-            "rct1.ride.sports_cars",                       //  VehicleType::Sportscars
-            "rct1.ride.swinging_lay_down_cars",            //  VehicleType::LyingDownSwingingCars//Invertedsingle-rail
-            "rct1.ride.mine_cars",                         //  VehicleType::WoodenMineCars
-            "rct1.ride.suspended_swinging_aeroplane_cars", //  VehicleType::SuspendedSwingingAirplaneCars
-            "rct1.ride.small_monorail_cars",               //  VehicleType::SmallMonorailCars
-            "rct2.ride.trike",                             //  VehicleType::WaterTricycles
-            "rct2.ride.ssc1",                              //  VehicleType::LaunchedFreefallCar
-            "rct1.ride.bobsleigh_trains",                  //  VehicleType::BobsleighCars
-            "rct1.ride.dinghies",                          //  VehicleType::Dinghies
-            "rct2.ride.obs1",                              //  VehicleType::RotatingCabin
-            "rct1.ride.mine_trains",                       //  VehicleType::MineTrain
-            "rct1.ride.chairlift_cars",                    //  VehicleType::ChairliftCars
-            "rct1.ride.corkscrew_trains",                  //  VehicleType::CorkscrewRollerCoasterTrain
-            "rct1.ride.motorbikes",                        //  VehicleType::Motorbikes
-            "rct1.ride.racing_cars",                       //  VehicleType::RacingCars
-            "rct1.ride.pickup_trucks",                     //  VehicleType::Trucks
-            "rct1.ride.go_karts",                          //  VehicleType::GoKarts
-            "rct1.ride.river_rapids_boats",                //  VehicleType::RapidsBoats
-            "rct1.ride.logs",                              //  VehicleType::LogFlumeBoats
-            "rct1.ride.dodgems",                           //  VehicleType::Dodgems
-            "rct2.ride.swsh1",                             //  VehicleType::SwingingShip
-            "rct2.ride.swsh2",                             //  VehicleType::SwingingInverterShip
-            "rct2.ride.mgr1",                              //  VehicleType::MerryGoRound
-            "rct2.ride.fwh1",                              //  VehicleType::FerrisWheel
-            "rct2.ride.simpod",                            //  VehicleType::SimulatorPod
-            "rct2.ride.c3d",                               //  VehicleType::CinemaBuilding
-            "rct2.ride.topsp1",                            //  VehicleType::TopspinCar
-            "rct2.ride.srings",                            //  VehicleType::SpaceRings
-            "rct1.ride.reverse_freefall_car",              //  VehicleType::ReverseFreefallRollerCoasterCar
-            "rct1.ride.vertical_drop_trains",              //  VehicleType::VerticalRollerCoasterCars
-            "rct1.ride.cat_cars",                          //  VehicleType::CatCars
-            "rct2.ride.twist1",                            //  VehicleType::TwistArmsAndCars
-            "rct2.ride.hhbuild",                           //  VehicleType::HauntedHouseBuilding
-            "rct1.ride.log_trains",                        //  VehicleType::LogCars
-            "rct2.ride.circus1",                           //  VehicleType::CircusTent
-            "rct1aa.ride.ghost_train_cars",                //  VehicleType::GhostTrainCars
-            "rct1aa.ride.twister_trains",                  //  VehicleType::SteelTwisterRollerCoasterTrain
-            "rct1aa.ride.wooden_articulated_trains",       //  VehicleType::WoodenTwisterRollerCoasterTrain
-            "rct1aa.ride.side_friction_cars",              //  VehicleType::WoodenSideFrictionCars
-            "rct1aa.ride.vintage_cars",                    //  VehicleType::VintageCars
-            "rct1aa.ride.steam_trains_covered",            //  VehicleType::SteamTrainCoveredCars
-            "rct1aa.ride.stand_up_twister_trains",         //  VehicleType::StandUpSteelTwisterRollerCoasterTrain
-            "rct1aa.ride.floorless_twister_trains",        //  VehicleType::FloorlessSteelTwisterRollerCoasterTrain
-            "rct1aa.ride.steel_wild_mouse_cars",           //  VehicleType::SteelMouseCars
-            "rct1aa.ride.ski_lift_cars",                   //  VehicleType::ChairliftCarsAlternative
-            "rct1aa.ride.suspended_monorail_trains",       //  VehicleType::SuspendedMonorailTrain
-            "rct1aa.ride.mini_helicopters",                //  VehicleType::HelicopterCars
-            "rct1aa.ride.virginia_reel_tubs",              //  VehicleType::VirginiaReelTubs
-            "rct1aa.ride.reverser_cars",                   //  VehicleType::ReverserCars
-            "rct2.ride.golf1",                             //  VehicleType::Golfers
-            "rct1aa.ride.splash_boats",                    //  VehicleType::RiverRideBoats
-            "rct1aa.ride.lay_down_trains",                 //  VehicleType::FlyingRollerCoasterTrain
-            "rct1aa.ride.hyper_twister_trains",            //  VehicleType::NonLoopingSteelTwisterRollerCoasterTrain
-            "rct1aa.ride.heartline_twister_cars",          //  VehicleType::HeartlineTwisterCars
-            "rct1aa.ride.heartline_twister_cars",          //  VehicleType::HeartlineTwisterCarsReversed
-            "",                                            //  VehicleType::Reserved
-            "rct2.ride.gdrop1",                            //  VehicleType::RotodropCar
-            "rct1aa.ride.flying_saucers",                  //  VehicleType::FlyingSaucers
-            "rct2.ride.chbuild",                           //  VehicleType::CrookedHouseBuilding
-            "rct1aa.ride.bicycles",                        //  VehicleType::Bicycles
-            "rct1ll.ride.hypercoaster_trains",             //  VehicleType::HypercoasterTrain
+            "rct1.ride.steel_rc_trains",                   //  VehicleType::steelRollerCoasterTrain
+            "rct1.ride.steel_rc_trains",                   //  VehicleType::steelRollerCoasterTrainBackwards
+            "rct1.ride.wooden_rc_trains",                  //  VehicleType::woodenRollerCoasterTrain
+            "rct1.ride.inverted_trains",                   //  VehicleType::invertedCoasterTrain//NotinRCT2
+            "rct1.ride.suspended_swinging_cars",           //  VehicleType::suspendedSwingingCars
+            "rct1.ride.ladybird_trains",                   //  VehicleType::ladybirdCars
+            "rct1.ride.stand_up_trains",                   //  VehicleType::standupRollerCoasterCars
+            "rct2.ride.wmspin",                            //  VehicleType::spinningCars
+            "rct1.ride.single_person_swinging_cars",       //  VehicleType::singlePersonSwingingChairs
+            "rct2.ride.swans",                             //  VehicleType::swansPedalBoats
+            "rct1.ride.streamlined_monorail_trains",       //  VehicleType::largeMonorailTrain
+            "rct2.ride.cboat",                             //  VehicleType::canoes
+            "rct2.ride.rboat",                             //  VehicleType::rowingBoats
+            "rct1.ride.steam_trains",                      //  VehicleType::steamTrain
+            "rct1.ride.mouse_cars",                        //  VehicleType::woodenMouseCars
+            "rct1.ride.bumper_boats",                      //  VehicleType::bumperBoats
+            "rct1.ride.wooden_rc_trains",                  //  VehicleType::woodenRollerCoasterTrainBackwards
+            "rct1.ride.rocket_cars",                       //  VehicleType::rocketCars
+            "rct1.ride.horses",                            //  VehicleType::horses//Steeplechase
+            "rct1.ride.sports_cars",                       //  VehicleType::sportscars
+            "rct1.ride.swinging_lay_down_cars",            //  VehicleType::lyingDownSwingingCars//Invertedsingle-rail
+            "rct1.ride.mine_cars",                         //  VehicleType::woodenMineCars
+            "rct1.ride.suspended_swinging_aeroplane_cars", //  VehicleType::suspendedSwingingAirplaneCars
+            "rct1.ride.small_monorail_cars",               //  VehicleType::smallMonorailCars
+            "rct2.ride.trike",                             //  VehicleType::waterTricycles
+            "rct2.ride.ssc1",                              //  VehicleType::launchedFreefallCar
+            "rct1.ride.bobsleigh_trains",                  //  VehicleType::bobsleighCars
+            "rct1.ride.dinghies",                          //  VehicleType::dinghies
+            "rct2.ride.obs1",                              //  VehicleType::rotatingCabin
+            "rct1.ride.mine_trains",                       //  VehicleType::mineTrain
+            "rct1.ride.chairlift_cars",                    //  VehicleType::chairliftCars
+            "rct1.ride.corkscrew_trains",                  //  VehicleType::corkscrewRollerCoasterTrain
+            "rct1.ride.motorbikes",                        //  VehicleType::motorbikes
+            "rct1.ride.racing_cars",                       //  VehicleType::racingCars
+            "rct1.ride.pickup_trucks",                     //  VehicleType::trucks
+            "rct1.ride.go_karts",                          //  VehicleType::goKarts
+            "rct1.ride.river_rapids_boats",                //  VehicleType::rapidsBoats
+            "rct1.ride.logs",                              //  VehicleType::logFlumeBoats
+            "rct1.ride.dodgems",                           //  VehicleType::dodgems
+            "rct2.ride.swsh1",                             //  VehicleType::swingingShip
+            "rct2.ride.swsh2",                             //  VehicleType::swingingInverterShip
+            "rct2.ride.mgr1",                              //  VehicleType::merryGoRound
+            "rct2.ride.fwh1",                              //  VehicleType::ferrisWheel
+            "rct2.ride.simpod",                            //  VehicleType::simulatorPod
+            "rct2.ride.c3d",                               //  VehicleType::cinemaBuilding
+            "rct2.ride.topsp1",                            //  VehicleType::topspinCar
+            "rct2.ride.srings",                            //  VehicleType::spaceRings
+            "rct1.ride.reverse_freefall_car",              //  VehicleType::reverseFreefallRollerCoasterCar
+            "rct1.ride.vertical_drop_trains",              //  VehicleType::verticalRollerCoasterCars
+            "rct1.ride.cat_cars",                          //  VehicleType::catCars
+            "rct2.ride.twist1",                            //  VehicleType::twistArmsAndCars
+            "rct2.ride.hhbuild",                           //  VehicleType::hauntedHouseBuilding
+            "rct1.ride.log_trains",                        //  VehicleType::logCars
+            "rct2.ride.circus1",                           //  VehicleType::circusTent
+            "rct1aa.ride.ghost_train_cars",                //  VehicleType::ghostTrainCars
+            "rct1aa.ride.twister_trains",                  //  VehicleType::steelTwisterRollerCoasterTrain
+            "rct1aa.ride.wooden_articulated_trains",       //  VehicleType::woodenTwisterRollerCoasterTrain
+            "rct1aa.ride.side_friction_cars",              //  VehicleType::woodenSideFrictionCars
+            "rct1aa.ride.vintage_cars",                    //  VehicleType::vintageCars
+            "rct1aa.ride.steam_trains_covered",            //  VehicleType::steamTrainCoveredCars
+            "rct1aa.ride.stand_up_twister_trains",         //  VehicleType::standUpSteelTwisterRollerCoasterTrain
+            "rct1aa.ride.floorless_twister_trains",        //  VehicleType::floorlessSteelTwisterRollerCoasterTrain
+            "rct1aa.ride.steel_wild_mouse_cars",           //  VehicleType::steelMouseCars
+            "rct1aa.ride.ski_lift_cars",                   //  VehicleType::chairliftCarsAlternative
+            "rct1aa.ride.suspended_monorail_trains",       //  VehicleType::suspendedMonorailTrain
+            "rct1aa.ride.mini_helicopters",                //  VehicleType::helicopterCars
+            "rct1aa.ride.virginia_reel_tubs",              //  VehicleType::virginiaReelTubs
+            "rct1aa.ride.reverser_cars",                   //  VehicleType::reverserCars
+            "rct2.ride.golf1",                             //  VehicleType::golfers
+            "rct1aa.ride.splash_boats",                    //  VehicleType::riverRideBoats
+            "rct1aa.ride.lay_down_trains",                 //  VehicleType::flyingRollerCoasterTrain
+            "rct1aa.ride.hyper_twister_trains",            //  VehicleType::nonLoopingSteelTwisterRollerCoasterTrain
+            "rct1aa.ride.heartline_twister_cars",          //  VehicleType::heartlineTwisterCars
+            "rct1aa.ride.heartline_twister_cars",          //  VehicleType::heartlineTwisterCarsReversed
+            "",                                            //  VehicleType::reserved
+            "rct2.ride.gdrop1",                            //  VehicleType::rotodropCar
+            "rct1aa.ride.flying_saucers",                  //  VehicleType::flyingSaucers
+            "rct2.ride.chbuild",                           //  VehicleType::crookedHouseBuilding
+            "rct1aa.ride.bicycles",                        //  VehicleType::bicycles
+            "rct1ll.ride.hypercoaster_trains",             //  VehicleType::hypercoasterTrain
             "rct1ll.ride.4_across_inverted_trains",        //  VehicleType::_4_Across_Inverted_Coaster_Train
-            "rct1ll.ride.coaster_boats",                   //  VehicleType::WaterCoasterBoats
-            "rct1ll.ride.face_off_cars",                   //  VehicleType::FaceoffCars
-            "rct1ll.ride.jet_skis",                        //  VehicleType::JetSkis
-            "rct1ll.ride.rafts",                           //  VehicleType::RaftBoats
-            "rct1ll.ride.steam_trains_american",           //  VehicleType::AmericanStyleSteamTrain
-            "rct1ll.ride.air_powered_trains",              //  VehicleType::AirPoweredCoasterTrain
-            "rct1ll.ride.inverted_hairpin_cars",           //  VehicleType::SuspendedWildMouseCars
-            "rct2.ride.enterp",                            //  VehicleType::EnterpriseWheel
+            "rct1ll.ride.coaster_boats",                   //  VehicleType::waterCoasterBoats
+            "rct1ll.ride.face_off_cars",                   //  VehicleType::faceoffCars
+            "rct1ll.ride.jet_skis",                        //  VehicleType::jetSkis
+            "rct1ll.ride.rafts",                           //  VehicleType::raftBoats
+            "rct1ll.ride.steam_trains_american",           //  VehicleType::americanStyleSteamTrain
+            "rct1ll.ride.air_powered_trains",              //  VehicleType::airPoweredCoasterTrain
+            "rct1ll.ride.inverted_hairpin_cars",           //  VehicleType::suspendedWildMouseCars
+            "rct2.ride.enterp",                            //  VehicleType::enterpriseWheel
         };
 
         Guard::ArgumentInRange<size_t>(EnumValue(vehicleType), 0, std::size(map) - 1, "Unsupported RCT1 vehicle type.");
@@ -1508,9 +1508,9 @@ namespace OpenRCT2::RCT1
     {
         switch (vehicleType)
         {
-            case VehicleType::SteelRollerCoasterTrainBackwards:
-            case VehicleType::WoodenRollerCoasterTrainBackwards:
-            case VehicleType::HeartlineTwisterCarsReversed:
+            case VehicleType::steelRollerCoasterTrainBackwards:
+            case VehicleType::woodenRollerCoasterTrainBackwards:
+            case VehicleType::heartlineTwisterCarsReversed:
                 return true;
             default:
                 return false;

@@ -121,7 +121,7 @@ namespace OpenRCT2::RCT1
 
         // Lookup tables for converting from RCT1 hard coded types to the new dynamic object entries
         ObjectEntryIndex _rideTypeToRideEntryMap[EnumValue(RideType::count)]{};
-        ObjectEntryIndex _vehicleTypeToRideEntryMap[EnumValue(VehicleType::Count)]{};
+        ObjectEntryIndex _vehicleTypeToRideEntryMap[EnumValue(VehicleType::count)]{};
         ObjectEntryIndex _smallSceneryTypeToEntryMap[256]{};
         ObjectEntryIndex _largeSceneryTypeToEntryMap[256]{};
         ObjectEntryIndex _wallTypeToEntryMap[256]{};
