@@ -72,16 +72,16 @@ namespace OpenRCT2::Ui::Windows
                     close();
                     break;
                 case WIDX_RATE_UP:
-                    CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate += 1;
-                    Config::Get().general.customCurrencyRate = CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate;
+                    CurrencyDescriptors[EnumValue(CurrencyType::custom)].rate += 1;
+                    Config::Get().general.customCurrencyRate = CurrencyDescriptors[EnumValue(CurrencyType::custom)].rate;
                     Config::Save();
                     windowMgr->InvalidateAll();
                     break;
                 case WIDX_RATE_DOWN:
-                    if (CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate > 1)
+                    if (CurrencyDescriptors[EnumValue(CurrencyType::custom)].rate > 1)
                     {
-                        CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate -= 1;
-                        Config::Get().general.customCurrencyRate = CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate;
+                        CurrencyDescriptors[EnumValue(CurrencyType::custom)].rate -= 1;
+                        Config::Get().general.customCurrencyRate = CurrencyDescriptors[EnumValue(CurrencyType::custom)].rate;
                         Config::Save();
                         windowMgr->InvalidateAll();
                     }
@@ -94,7 +94,7 @@ namespace OpenRCT2::Ui::Windows
                         { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height() + 1, colours[1], 0,
                         Dropdown::Flag::StayOpen, 2, widget->width() - 3);
 
-                    if (CurrencyDescriptors[EnumValue(CurrencyType::Custom)].affix_unicode == CurrencyAffix::Prefix)
+                    if (CurrencyDescriptors[EnumValue(CurrencyType::custom)].affix_unicode == CurrencyAffix::Prefix)
                     {
                         gDropdown.items[0].setChecked(true);
                     }
@@ -107,7 +107,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_SYMBOL_TEXT:
                     WindowTextInputRawOpen(
                         this, WIDX_SYMBOL_TEXT, STR_CUSTOM_CURRENCY_SYMBOL_INPUT_TITLE, STR_CUSTOM_CURRENCY_SYMBOL_INPUT_DESC,
-                        {}, CurrencyDescriptors[EnumValue(CurrencyType::Custom)].symbol_unicode, kCurrencySymbolMaxSize);
+                        {}, CurrencyDescriptors[EnumValue(CurrencyType::custom)].symbol_unicode, kCurrencySymbolMaxSize);
                     break;
             }
         }
@@ -119,7 +119,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_RATE:
                     WindowTextInputOpen(
                         this, WIDX_RATE, STR_RATE_INPUT_TITLE, STR_RATE_INPUT_DESC, {}, STR_FORMAT_INTEGER,
-                        static_cast<uint32_t>(CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate),
+                        static_cast<uint32_t>(CurrencyDescriptors[EnumValue(CurrencyType::custom)].rate),
                         kCurrencyRateMaxNumDigits);
                     break;
             }
@@ -134,16 +134,16 @@ namespace OpenRCT2::Ui::Windows
             {
                 if (dropdownIndex == 0)
                 {
-                    CurrencyDescriptors[EnumValue(CurrencyType::Custom)].affix_ascii = CurrencyAffix::Prefix;
-                    CurrencyDescriptors[EnumValue(CurrencyType::Custom)].affix_unicode = CurrencyAffix::Prefix;
+                    CurrencyDescriptors[EnumValue(CurrencyType::custom)].affix_ascii = CurrencyAffix::Prefix;
+                    CurrencyDescriptors[EnumValue(CurrencyType::custom)].affix_unicode = CurrencyAffix::Prefix;
                 }
                 else if (dropdownIndex == 1)
                 {
-                    CurrencyDescriptors[EnumValue(CurrencyType::Custom)].affix_ascii = CurrencyAffix::Suffix;
-                    CurrencyDescriptors[EnumValue(CurrencyType::Custom)].affix_unicode = CurrencyAffix::Suffix;
+                    CurrencyDescriptors[EnumValue(CurrencyType::custom)].affix_ascii = CurrencyAffix::Suffix;
+                    CurrencyDescriptors[EnumValue(CurrencyType::custom)].affix_unicode = CurrencyAffix::Suffix;
                 }
 
-                Config::Get().general.customCurrencyAffix = CurrencyDescriptors[EnumValue(CurrencyType::Custom)].affix_unicode;
+                Config::Get().general.customCurrencyAffix = CurrencyDescriptors[EnumValue(CurrencyType::custom)].affix_unicode;
                 Config::Save();
 
                 auto* windowMgr = Ui::GetWindowManager();
@@ -162,10 +162,10 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WIDX_SYMBOL_TEXT:
                     String::safeUtf8Copy(
-                        CurrencyDescriptors[EnumValue(CurrencyType::Custom)].symbol_unicode, std::string(text).c_str(),
+                        CurrencyDescriptors[EnumValue(CurrencyType::custom)].symbol_unicode, std::string(text).c_str(),
                         kCurrencySymbolMaxSize);
 
-                    Config::Get().general.customCurrencySymbol = CurrencyDescriptors[EnumValue(CurrencyType::Custom)]
+                    Config::Get().general.customCurrencySymbol = CurrencyDescriptors[EnumValue(CurrencyType::custom)]
                                                                      .symbol_unicode;
 
                     Config::Save();
@@ -178,8 +178,8 @@ namespace OpenRCT2::Ui::Windows
                     if (res.has_value())
                     {
                         int32_t rate = res.value();
-                        CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate = rate;
-                        Config::Get().general.customCurrencyRate = CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate;
+                        CurrencyDescriptors[EnumValue(CurrencyType::custom)].rate = rate;
+                        Config::Get().general.customCurrencyRate = CurrencyDescriptors[EnumValue(CurrencyType::custom)].rate;
                         Config::Save();
                         windowMgr->InvalidateAll();
                     }
@@ -198,7 +198,7 @@ namespace OpenRCT2::Ui::Windows
 
             DrawTextBasic(rt, screenCoords, STR_RATE, {}, { colours[1] });
 
-            int32_t baseExchange = CurrencyDescriptors[EnumValue(CurrencyType::Pounds)].rate;
+            int32_t baseExchange = CurrencyDescriptors[EnumValue(CurrencyType::pounds)].rate;
             ft = Formatter();
             ft.Add<int32_t>(baseExchange);
             DrawTextBasic(rt, screenCoords + ScreenCoordsXY{ 200, 0 }, STR_CUSTOM_CURRENCY_EQUIVALENCY, ft, { colours[1] });
@@ -209,11 +209,11 @@ namespace OpenRCT2::Ui::Windows
 
             screenCoords = windowPos + ScreenCoordsXY{ widgets[WIDX_SYMBOL_TEXT].left + 1, widgets[WIDX_SYMBOL_TEXT].top };
 
-            DrawText(rt, screenCoords, { colours[1] }, CurrencyDescriptors[EnumValue(CurrencyType::Custom)].symbol_unicode);
+            DrawText(rt, screenCoords, { colours[1] }, CurrencyDescriptors[EnumValue(CurrencyType::custom)].symbol_unicode);
 
             auto drawPos = windowPos
                 + ScreenCoordsXY{ widgets[WIDX_AFFIX_DROPDOWN].left + 1, widgets[WIDX_AFFIX_DROPDOWN].top };
-            StringId stringId = (CurrencyDescriptors[EnumValue(CurrencyType::Custom)].affix_unicode == CurrencyAffix::Prefix)
+            StringId stringId = (CurrencyDescriptors[EnumValue(CurrencyType::custom)].affix_unicode == CurrencyAffix::Prefix)
                 ? STR_PREFIX
                 : STR_SUFFIX;
             DrawTextBasic(rt, drawPos, stringId, {}, { colours[1] });

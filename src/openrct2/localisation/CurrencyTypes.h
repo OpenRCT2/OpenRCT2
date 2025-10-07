@@ -16,27 +16,27 @@ namespace OpenRCT2
     // List of currencies
     enum class CurrencyType : uint8_t
     {
-        Pounds,       // British Pound
-        Dollars,      // US Dollar
-        Franc,        // French Franc
-        DeutscheMark, // Deutsche Mark
-        Yen,          // Japanese Yen
-        Peseta,       // Spanish Peseta
-        Lira,         // Italian Lira
-        Guilders,     // Dutch Gilder
-        Krona,        // Swedish Krona
-        Euros,        // Euro
-        Won,          // South Korean Won
-        Rouble,       // Russian Rouble
-        CzechKoruna,  // Czech koruna
-        HKD,          // Hong Kong Dollar
-        TWD,          // New Taiwan Dollar
-        Yuan,         // Chinese Yuan
-        Forint,       // Hungarian Forint
+        pounds,          // British Pound
+        dollars,         // US Dollar
+        franc,           // French Franc
+        deutscheMark,    // Deutsche Mark
+        yen,             // Japanese Yen
+        peseta,          // Spanish Peseta
+        lira,            // Italian Lira
+        guilders,        // Dutch Gilder
+        krona,           // Swedish Krona
+        euros,           // Euro
+        won,             // South Korean Won
+        rouble,          // Russian Rouble
+        czechKoruna,     // Czech koruna
+        hongKongDollar,  // Hong Kong Dollar
+        newTaiwanDollar, // New Taiwan Dollar
+        yuan,            // Chinese Yuan
+        forint,          // Hungarian Forint
 
-        Custom, // Custom currency
+        custom, // Custom currency
 
-        Count // Last item
+        count, // Last item
     };
 
     enum class CurrencyAffix : uint8_t

@@ -35,7 +35,7 @@ namespace OpenRCT2
 
     // List of currency formats
     // TODO: refactor into getter
-    extern CurrencyDescriptor CurrencyDescriptors[EnumValue(CurrencyType::Count)];
+    extern CurrencyDescriptor CurrencyDescriptors[EnumValue(CurrencyType::count)];
 
     /**
      * Loads custom currency saved parameters into {@link CurrencyDescriptors}'

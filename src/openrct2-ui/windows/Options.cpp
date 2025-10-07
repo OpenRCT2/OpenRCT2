@@ -1204,10 +1204,10 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_CURRENCY_DROPDOWN:
                 {
                     // All the currencies plus the separator
-                    constexpr auto numItems = EnumValue(CurrencyType::Count) + 1;
+                    constexpr auto numItems = EnumValue(CurrencyType::count) + 1;
 
                     // All the currencies except custom currency
-                    constexpr size_t numOrdinaryCurrencies = EnumValue(CurrencyType::Count) - 1;
+                    constexpr size_t numOrdinaryCurrencies = EnumValue(CurrencyType::count) - 1;
 
                     for (size_t i = 0; i < numOrdinaryCurrencies; i++)
                     {
@@ -1217,11 +1217,11 @@ namespace OpenRCT2::Ui::Windows
                     gDropdown.items[numOrdinaryCurrencies] = Dropdown::Separator();
 
                     gDropdown.items[numOrdinaryCurrencies + 1] = Dropdown::MenuLabel(
-                        CurrencyDescriptors[EnumValue(CurrencyType::Custom)].stringId);
+                        CurrencyDescriptors[EnumValue(CurrencyType::custom)].stringId);
 
                     ShowDropdown(widget, numItems);
 
-                    if (Config::Get().general.currencyFormat == CurrencyType::Custom)
+                    if (Config::Get().general.currencyFormat == CurrencyType::custom)
                     {
                         gDropdown.items[EnumValue(Config::Get().general.currencyFormat) + 1].setChecked(true);
                     }
@@ -1283,7 +1283,7 @@ namespace OpenRCT2::Ui::Windows
                     UpdateHeightMarkers();
                     break;
                 case WIDX_CURRENCY_DROPDOWN:
-                    if (dropdownIndex == EnumValue(CurrencyType::Custom) + 1)
+                    if (dropdownIndex == EnumValue(CurrencyType::custom) + 1)
                     { // Add 1 because the separator occupies a position
                         Config::Get().general.currencyFormat = static_cast<CurrencyType>(dropdownIndex - 1);
                         ContextOpenWindow(WindowClass::customCurrencyConfig);

@@ -21,7 +21,7 @@
 namespace OpenRCT2
 {
     // clang-format off
-    CurrencyDescriptor CurrencyDescriptors[EnumValue(CurrencyType::Count)] = {
+    CurrencyDescriptor CurrencyDescriptors[EnumValue(CurrencyType::count)] = {
         {   "GBP",  10,     CurrencyAffix::Prefix,    u8"£",      CurrencyAffix::Suffix,    "GBP",  STR_POUNDS          },  // British Pound
         {   "USD",  10,     CurrencyAffix::Prefix,    u8"$",      CurrencyAffix::Prefix,    "$",    STR_DOLLARS         },  // US Dollar
         {   "FRF",  10,     CurrencyAffix::Suffix,    u8"F",      CurrencyAffix::Suffix,    "F",    STR_FRANC           },  // French Franc
@@ -45,12 +45,12 @@ namespace OpenRCT2
 
     void CurrencyLoadCustomCurrencyConfig()
     {
-        CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate = Config::Get().general.customCurrencyRate;
-        CurrencyDescriptors[EnumValue(CurrencyType::Custom)].affix_unicode = Config::Get().general.customCurrencyAffix;
+        CurrencyDescriptors[EnumValue(CurrencyType::custom)].rate = Config::Get().general.customCurrencyRate;
+        CurrencyDescriptors[EnumValue(CurrencyType::custom)].affix_unicode = Config::Get().general.customCurrencyAffix;
         if (!Config::Get().general.customCurrencySymbol.empty())
         {
             String::safeUtf8Copy(
-                CurrencyDescriptors[EnumValue(CurrencyType::Custom)].symbol_unicode,
+                CurrencyDescriptors[EnumValue(CurrencyType::custom)].symbol_unicode,
                 Config::Get().general.customCurrencySymbol.c_str(), kCurrencySymbolMaxSize);
         }
     }
