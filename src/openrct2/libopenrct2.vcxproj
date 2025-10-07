@@ -1139,6 +1139,7 @@
     <ClCompile Include="scenes\title\TitleSequence.cpp" />
     <ClCompile Include="scenes\title\TitleSequenceManager.cpp" />
     <ClCompile Include="scripting\bindings\entity\ScBalloon.cpp" />
+    <ClCompile Include="scripting\bindings\entity\ScEntity.cpp" />
     <ClCompile Include="scripting\bindings\entity\ScGuest.cpp" />
     <ClCompile Include="scripting\bindings\entity\ScLitter.cpp" />
     <ClCompile Include="scripting\bindings\entity\ScMoneyEffect.cpp" />

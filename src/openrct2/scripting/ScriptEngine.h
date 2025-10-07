@@ -335,6 +335,7 @@ namespace OpenRCT2::Scripting
             JSRuntime* rt = JS_GetRuntime(ctx);
             JS_NewClassID(rt, &classId);
             JS_NewClass(rt, classId, &classDef);
+            JS_SetClassProto(ctx, classId, JS_NewObject(ctx));
         }
 
         void RegisterBaseStr(JSContext* ctx, const char* className)
