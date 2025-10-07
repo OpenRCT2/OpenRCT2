@@ -1036,9 +1036,9 @@ namespace OpenRCT2::RCT2
 
     enum class OriginalRideClass
     {
-        Regular,
-        WildMouse,
-        FlatRide,
+        regular,
+        wildMouse,
+        flatRide,
     };
 
     OpenRCT2::TrackElemType RCT2TrackTypeToOpenRCT2(

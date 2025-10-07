@@ -1969,8 +1969,8 @@ namespace OpenRCT2::RCT2
         {
             dst->BoatLocation.SetNull();
             dst->SetTrackDirection(src->GetTrackDirection());
-            // Skipping OriginalRideClass::WildMouse - this is handled specifically.
-            auto originalClass = IsFlatRide(src->Ride) ? OriginalRideClass::FlatRide : OriginalRideClass::Regular;
+            // Skipping OriginalRideClass::wildMouse - this is handled specifically.
+            auto originalClass = IsFlatRide(src->Ride) ? OriginalRideClass::flatRide : OriginalRideClass::regular;
             auto convertedType = RCT2TrackTypeToOpenRCT2(src->GetTrackType(), originalClass);
             dst->SetTrackType(convertedType);
             // RotationControlToggle and Booster are saved as the same track piece ID
