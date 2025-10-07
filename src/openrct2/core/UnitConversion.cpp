@@ -9,6 +9,8 @@
 
 #include "UnitConversion.h"
 
+#include "../config/Config.h"
+
 namespace OpenRCT2
 {
     int32_t SquaredMetresToSquaredFeet(int32_t squaredMetres)
@@ -51,6 +53,22 @@ namespace OpenRCT2
     uint8_t MetresToBaseZ(int16_t metres)
     {
         return ((metres / 1.5) + 7) * 2;
+    }
+
+    fixed32_2dp HeightUnitsToComma32(int32_t heightUnits)
+    {
+        if (Config::Get().general.ShowHeightAsUnits)
+        {
+            return MakeFixed2dp<fixed32_2dp>(heightUnits, 0) / 2 - MakeFixed2dp<fixed32_2dp>(7, 0);
+        }
+        else if (Config::Get().general.MeasurementFormat == MeasurementFormat::Imperial)
+        {
+            return MakeFixed2dp<fixed32_2dp>(heightUnits, 0) / 2.0f * 5 - MakeFixed2dp<fixed32_2dp>(35, 0);
+        }
+        else
+        {
+            return MakeFixed2dp<fixed32_2dp>(heightUnits, 0) / 2 * 1.5f - MakeFixed2dp<fixed32_2dp>(10, 50);
+        }
     }
 
     int32_t HeightUnitsToMetres(int32_t heightUnit)

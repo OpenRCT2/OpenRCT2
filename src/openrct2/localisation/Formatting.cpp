@@ -613,6 +613,23 @@ namespace OpenRCT2
                     }
                 }
                 break;
+            case FormatToken::Height2dp:
+                if constexpr (std::is_integral<T>())
+                {
+                    auto comma32 = HeightUnitsToComma32(arg);
+                    switch (Config::Get().general.MeasurementFormat)
+                    {
+                        default:
+                        case MeasurementFormat::Imperial:
+                            FormatStringID(ss, STR_UNIT2DP_SUFFIX_FEET, comma32);
+                            break;
+                        case MeasurementFormat::Metric:
+                        case MeasurementFormat::SI:
+                            FormatStringID(ss, STR_UNIT2DP_SUFFIX_METRES, comma32);
+                            break;
+                    }
+                }
+                break;
             case FormatToken::MonthYear:
             case FormatToken::MonthYearSentence:
                 if constexpr (std::is_integral<T>())
@@ -802,6 +819,7 @@ namespace OpenRCT2
                 case FormatToken::Int32:
                 case FormatToken::Comma2dp32:
                 case FormatToken::Sprite:
+                case FormatToken::Height2dp:
                     anyArgs.emplace_back(ReadFromArgs<int32_t>(args));
                     break;
                 case FormatToken::Currency2dp:
