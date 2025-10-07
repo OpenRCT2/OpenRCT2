@@ -350,7 +350,7 @@ void ScreenshotGiant()
         {
             viewport.flags = vp->flags;
         }
-        if (Config::Get().general.TransparentScreenshot)
+        if (Config::Get().general.transparentScreenshot)
         {
             viewport.flags |= VIEWPORT_FLAG_TRANSPARENT_BACKGROUND;
         }
@@ -418,7 +418,7 @@ static void ApplyOptions(const ScreenshotOptions* options, Viewport& viewport)
         CheatsSet(CheatType::removeLitter);
     }
 
-    if (options->transparent || Config::Get().general.TransparentScreenshot)
+    if (options->transparent || Config::Get().general.transparentScreenshot)
     {
         viewport.flags |= VIEWPORT_FLAG_TRANSPARENT_BACKGROUND;
     }

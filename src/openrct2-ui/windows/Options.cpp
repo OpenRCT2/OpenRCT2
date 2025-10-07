@@ -785,22 +785,22 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_SHOW_FPS_CHECKBOX:
-                    Config::Get().general.ShowFPS ^= 1;
+                    Config::Get().general.showFPS ^= 1;
                     Config::Save();
                     invalidate();
                     break;
                 case WIDX_MULTITHREADING_CHECKBOX:
-                    Config::Get().general.MultiThreading ^= 1;
+                    Config::Get().general.multiThreading ^= 1;
                     Config::Save();
                     invalidate();
                     break;
                 case WIDX_MINIMIZE_FOCUS_LOSS:
-                    Config::Get().general.MinimizeFullscreenFocusLoss ^= 1;
+                    Config::Get().general.minimizeFullscreenFocusLoss ^= 1;
                     Config::Save();
                     invalidate();
                     break;
                 case WIDX_DISABLE_SCREENSAVER_LOCK:
-                    Config::Get().general.DisableScreensaver ^= 1;
+                    Config::Get().general.disableScreensaver ^= 1;
                     ApplyScreenSaverLockSetting();
                     Config::Save();
                     invalidate();
@@ -828,8 +828,8 @@ namespace OpenRCT2::Ui::Windows
                         ft.Add<uint16_t>(resolution.Height);
                         gDropdown.items[i] = Dropdown::MenuLabel(STR_RESOLUTION_X_BY_Y, ft);
 
-                        if (resolution.Width == Config::Get().general.FullscreenWidth
-                            && resolution.Height == Config::Get().general.FullscreenHeight)
+                        if (resolution.Width == Config::Get().general.fullscreenWidth
+                            && resolution.Height == Config::Get().general.fullscreenHeight)
                         {
                             selectedResolution = static_cast<int32_t>(i);
                         }
@@ -851,7 +851,7 @@ namespace OpenRCT2::Ui::Windows
 
                     ShowDropdown(widget, 3);
 
-                    gDropdown.items[Config::Get().general.FullscreenMode].setChecked(true);
+                    gDropdown.items[Config::Get().general.fullscreenMode].setChecked(true);
                     break;
                 case WIDX_DRAWING_ENGINE_DROPDOWN:
                 {
@@ -861,19 +861,19 @@ namespace OpenRCT2::Ui::Windows
                         gDropdown.items[i] = Dropdown::MenuLabel(kDrawingEngineStringIds[i]);
                     }
                     ShowDropdown(widget, numItems);
-                    gDropdown.items[EnumValue(Config::Get().general.DrawingEngine)].setChecked(true);
+                    gDropdown.items[EnumValue(Config::Get().general.drawingEngine)].setChecked(true);
                     break;
                 }
                 case WIDX_SCALE_UP:
-                    Config::Get().general.WindowScale += 0.25f;
+                    Config::Get().general.windowScale += 0.25f;
                     Config::Save();
                     GfxInvalidateScreen();
                     ContextTriggerResize();
                     ContextUpdateCursorScale();
                     break;
                 case WIDX_SCALE_DOWN:
-                    Config::Get().general.WindowScale -= 0.25f;
-                    Config::Get().general.WindowScale = std::max(0.5f, Config::Get().general.WindowScale);
+                    Config::Get().general.windowScale -= 0.25f;
+                    Config::Get().general.windowScale = std::max(0.5f, Config::Get().general.windowScale);
                     Config::Save();
                     GfxInvalidateScreen();
                     ContextTriggerResize();
@@ -889,9 +889,9 @@ namespace OpenRCT2::Ui::Windows
 
                     auto& config = Config::Get().general;
                     auto activeItem = 0;
-                    if (config.UncapFPS)
+                    if (config.uncapFPS)
                     {
-                        activeItem = config.UseVSync ? 1 : 2;
+                        activeItem = config.useVSync ? 1 : 2;
                     }
 
                     gDropdown.items[activeItem].setChecked(true);
@@ -909,13 +909,13 @@ namespace OpenRCT2::Ui::Windows
                     const auto& resolutions = OpenRCT2::GetContext()->GetUiContext().GetFullscreenResolutions();
 
                     const Resolution& resolution = resolutions[dropdownIndex];
-                    if (resolution.Width != Config::Get().general.FullscreenWidth
-                        || resolution.Height != Config::Get().general.FullscreenHeight)
+                    if (resolution.Width != Config::Get().general.fullscreenWidth
+                        || resolution.Height != Config::Get().general.fullscreenHeight)
                     {
-                        Config::Get().general.FullscreenWidth = resolution.Width;
-                        Config::Get().general.FullscreenHeight = resolution.Height;
+                        Config::Get().general.fullscreenWidth = resolution.Width;
+                        Config::Get().general.fullscreenHeight = resolution.Height;
 
-                        if (Config::Get().general.FullscreenMode
+                        if (Config::Get().general.fullscreenMode
                             == static_cast<int32_t>(OpenRCT2::Ui::FullscreenMode::fullscreen))
                             ContextSetFullscreenMode(static_cast<int32_t>(OpenRCT2::Ui::FullscreenMode::fullscreen));
 
@@ -925,21 +925,21 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 }
                 case WIDX_FULLSCREEN_DROPDOWN:
-                    if (dropdownIndex != Config::Get().general.FullscreenMode)
+                    if (dropdownIndex != Config::Get().general.fullscreenMode)
                     {
                         ContextSetFullscreenMode(dropdownIndex);
 
-                        Config::Get().general.FullscreenMode = static_cast<uint8_t>(dropdownIndex);
+                        Config::Get().general.fullscreenMode = static_cast<uint8_t>(dropdownIndex);
                         Config::Save();
                         GfxInvalidateScreen();
                     }
                     break;
                 case WIDX_DRAWING_ENGINE_DROPDOWN:
-                    if (dropdownIndex != EnumValue(Config::Get().general.DrawingEngine))
+                    if (dropdownIndex != EnumValue(Config::Get().general.drawingEngine))
                     {
                         DrawingEngine dstEngine = static_cast<DrawingEngine>(dropdownIndex);
 
-                        Config::Get().general.DrawingEngine = dstEngine;
+                        Config::Get().general.drawingEngine = dstEngine;
                         RefreshVideo();
                         Config::Save();
                         invalidate();
@@ -951,20 +951,20 @@ namespace OpenRCT2::Ui::Windows
                     switch (dropdownIndex)
                     {
                         case 0: // vanilla
-                            config.UncapFPS = 0;
-                            config.UseVSync = 0;
+                            config.uncapFPS = 0;
+                            config.useVSync = 0;
                             break;
                         case 1: // vsync
-                            config.UncapFPS = 1;
-                            config.UseVSync = 1;
+                            config.uncapFPS = 1;
+                            config.useVSync = 1;
                             break;
                         case 2: // uncapped
-                            config.UncapFPS = 1;
-                            config.UseVSync = 0;
+                            config.uncapFPS = 1;
+                            config.useVSync = 0;
                             break;
                     }
 
-                    DrawingEngineSetVSync(config.UseVSync);
+                    DrawingEngineSetVSync(config.useVSync);
                     Config::Save();
                     invalidate();
                     break;
@@ -977,11 +977,11 @@ namespace OpenRCT2::Ui::Windows
             // Resolution dropdown caption.
             auto ft = Formatter::Common();
             ft.Increment(16);
-            ft.Add<uint16_t>(static_cast<uint16_t>(Config::Get().general.FullscreenWidth));
-            ft.Add<uint16_t>(static_cast<uint16_t>(Config::Get().general.FullscreenHeight));
+            ft.Add<uint16_t>(static_cast<uint16_t>(Config::Get().general.fullscreenWidth));
+            ft.Add<uint16_t>(static_cast<uint16_t>(Config::Get().general.fullscreenHeight));
 
             // Disable resolution dropdown on "Windowed" and "Fullscreen (desktop)"
-            if (Config::Get().general.FullscreenMode != static_cast<int32_t>(OpenRCT2::Ui::FullscreenMode::fullscreen))
+            if (Config::Get().general.fullscreenMode != static_cast<int32_t>(OpenRCT2::Ui::FullscreenMode::fullscreen))
             {
                 disabledWidgets |= (1uLL << WIDX_RESOLUTION_DROPDOWN);
                 disabledWidgets |= (1uLL << WIDX_RESOLUTION);
@@ -994,14 +994,14 @@ namespace OpenRCT2::Ui::Windows
                 disabledWidgets &= ~(1uLL << WIDX_RESOLUTION_LABEL);
             }
 
-            setCheckboxValue(WIDX_SHOW_FPS_CHECKBOX, Config::Get().general.ShowFPS);
-            setCheckboxValue(WIDX_MULTITHREADING_CHECKBOX, Config::Get().general.MultiThreading);
-            setCheckboxValue(WIDX_MINIMIZE_FOCUS_LOSS, Config::Get().general.MinimizeFullscreenFocusLoss);
-            setCheckboxValue(WIDX_DISABLE_SCREENSAVER_LOCK, Config::Get().general.DisableScreensaver);
+            setCheckboxValue(WIDX_SHOW_FPS_CHECKBOX, Config::Get().general.showFPS);
+            setCheckboxValue(WIDX_MULTITHREADING_CHECKBOX, Config::Get().general.multiThreading);
+            setCheckboxValue(WIDX_MINIMIZE_FOCUS_LOSS, Config::Get().general.minimizeFullscreenFocusLoss);
+            setCheckboxValue(WIDX_DISABLE_SCREENSAVER_LOCK, Config::Get().general.disableScreensaver);
 
             // Dropdown captions for straightforward strings.
-            widgets[WIDX_FULLSCREEN].text = FullscreenModeNames[Config::Get().general.FullscreenMode];
-            widgets[WIDX_DRAWING_ENGINE].text = kDrawingEngineStringIds[EnumValue(Config::Get().general.DrawingEngine)];
+            widgets[WIDX_FULLSCREEN].text = FullscreenModeNames[Config::Get().general.fullscreenMode];
+            widgets[WIDX_DRAWING_ENGINE].text = kDrawingEngineStringIds[EnumValue(Config::Get().general.drawingEngine)];
 
             static constexpr StringId kFrameRateLimitStringIds[] = {
                 STR_FRAME_RATE_LIMIT_DEFAULT,
@@ -1011,9 +1011,9 @@ namespace OpenRCT2::Ui::Windows
 
             auto& config = Config::Get().general;
             auto activeItem = 0;
-            if (config.UncapFPS)
+            if (config.uncapFPS)
             {
-                activeItem = config.UseVSync ? 1 : 2;
+                activeItem = config.useVSync ? 1 : 2;
             }
             widgets[WIDX_FRAME_RATE_LIMIT].text = kFrameRateLimitStringIds[activeItem];
         }
@@ -1021,7 +1021,7 @@ namespace OpenRCT2::Ui::Windows
         void DisplayDraw(RenderTarget& rt)
         {
             auto ft = Formatter();
-            ft.Add<int32_t>(static_cast<int32_t>(Config::Get().general.WindowScale * 100));
+            ft.Add<int32_t>(static_cast<int32_t>(Config::Get().general.windowScale * 100));
             DrawTextBasic(
                 rt, windowPos + ScreenCoordsXY{ widgets[WIDX_SCALE].left + 1, widgets[WIDX_SCALE].top + 1 },
                 STR_WINDOW_COLOUR_2_COMMA2DP32, ft, { colours[1] });
@@ -1034,19 +1034,19 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_TILE_SMOOTHING_CHECKBOX:
-                    Config::Get().general.LandscapeSmoothing ^= 1;
+                    Config::Get().general.landscapeSmoothing ^= 1;
                     Config::Save();
                     GfxInvalidateScreen();
                     break;
                 case WIDX_GRIDLINES_CHECKBOX:
                 {
-                    Config::Get().general.AlwaysShowGridlines ^= 1;
+                    Config::Get().general.alwaysShowGridlines ^= 1;
                     Config::Save();
                     GfxInvalidateScreen();
                     WindowBase* mainWindow = WindowGetMain();
                     if (mainWindow != nullptr)
                     {
-                        if (Config::Get().general.AlwaysShowGridlines)
+                        if (Config::Get().general.alwaysShowGridlines)
                             mainWindow->viewport->flags |= VIEWPORT_FLAG_GRIDLINES;
                         else
                             mainWindow->viewport->flags &= ~VIEWPORT_FLAG_GRIDLINES;
@@ -1054,45 +1054,45 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 }
                 case WIDX_DAY_NIGHT_CHECKBOX:
-                    Config::Get().general.DayNightCycle ^= 1;
+                    Config::Get().general.dayNightCycle ^= 1;
                     Config::Save();
                     invalidate();
                     break;
                 case WIDX_ENABLE_LIGHT_FX_CHECKBOX:
-                    Config::Get().general.EnableLightFx ^= 1;
+                    Config::Get().general.enableLightFx ^= 1;
                     Config::Save();
                     invalidate();
                     break;
                 case WIDX_ENABLE_LIGHT_FX_FOR_VEHICLES_CHECKBOX:
-                    Config::Get().general.EnableLightFxForVehicles ^= 1;
+                    Config::Get().general.enableLightFxForVehicles ^= 1;
                     Config::Save();
                     invalidate();
                     break;
                 case WIDX_UPPER_CASE_BANNERS_CHECKBOX:
-                    Config::Get().general.UpperCaseBanners ^= 1;
+                    Config::Get().general.upperCaseBanners ^= 1;
                     Config::Save();
                     invalidate();
                     ScrollingTextInvalidate();
                     break;
                 case WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX:
-                    Config::Get().general.DisableLightningEffect ^= 1;
+                    Config::Get().general.disableLightningEffect ^= 1;
                     Config::Save();
                     invalidate();
                     break;
                 case WIDX_RENDER_WEATHER_EFFECTS_CHECKBOX:
-                    Config::Get().general.RenderWeatherEffects ^= 1;
-                    Config::Get().general.RenderWeatherGloom = Config::Get().general.RenderWeatherEffects;
+                    Config::Get().general.renderWeatherEffects ^= 1;
+                    Config::Get().general.renderWeatherGloom = Config::Get().general.renderWeatherEffects;
                     Config::Save();
                     invalidate();
                     GfxInvalidateScreen();
                     break;
                 case WIDX_SHOW_GUEST_PURCHASES_CHECKBOX:
-                    Config::Get().general.ShowGuestPurchases ^= 1;
+                    Config::Get().general.showGuestPurchases ^= 1;
                     Config::Save();
                     invalidate();
                     break;
                 case WIDX_TRANSPARENT_SCREENSHOTS_CHECKBOX:
-                    Config::Get().general.TransparentScreenshot ^= 1;
+                    Config::Get().general.transparentScreenshot ^= 1;
                     Config::Save();
                     invalidate();
                     break;
@@ -1111,7 +1111,7 @@ namespace OpenRCT2::Ui::Windows
                     Widget* widget = &widgets[widgetIndex - 1];
                     ShowDropdown(widget, 3);
 
-                    gDropdown.items[static_cast<int32_t>(Config::Get().general.VirtualFloorStyle)].setChecked(true);
+                    gDropdown.items[static_cast<int32_t>(Config::Get().general.virtualFloorStyle)].setChecked(true);
                     break;
             }
         }
@@ -1121,7 +1121,7 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_VIRTUAL_FLOOR_DROPDOWN:
-                    Config::Get().general.VirtualFloorStyle = static_cast<VirtualFloorStyles>(dropdownIndex);
+                    Config::Get().general.virtualFloorStyle = static_cast<VirtualFloorStyles>(dropdownIndex);
                     Config::Save();
                     break;
             }
@@ -1129,12 +1129,12 @@ namespace OpenRCT2::Ui::Windows
 
         void RenderingPrepareDraw()
         {
-            setCheckboxValue(WIDX_TILE_SMOOTHING_CHECKBOX, Config::Get().general.LandscapeSmoothing);
-            setCheckboxValue(WIDX_GRIDLINES_CHECKBOX, Config::Get().general.AlwaysShowGridlines);
-            setCheckboxValue(WIDX_DAY_NIGHT_CHECKBOX, Config::Get().general.DayNightCycle);
-            setCheckboxValue(WIDX_SHOW_GUEST_PURCHASES_CHECKBOX, Config::Get().general.ShowGuestPurchases);
-            setCheckboxValue(WIDX_TRANSPARENT_SCREENSHOTS_CHECKBOX, Config::Get().general.TransparentScreenshot);
-            setCheckboxValue(WIDX_UPPER_CASE_BANNERS_CHECKBOX, Config::Get().general.UpperCaseBanners);
+            setCheckboxValue(WIDX_TILE_SMOOTHING_CHECKBOX, Config::Get().general.landscapeSmoothing);
+            setCheckboxValue(WIDX_GRIDLINES_CHECKBOX, Config::Get().general.alwaysShowGridlines);
+            setCheckboxValue(WIDX_DAY_NIGHT_CHECKBOX, Config::Get().general.dayNightCycle);
+            setCheckboxValue(WIDX_SHOW_GUEST_PURCHASES_CHECKBOX, Config::Get().general.showGuestPurchases);
+            setCheckboxValue(WIDX_TRANSPARENT_SCREENSHOTS_CHECKBOX, Config::Get().general.transparentScreenshot);
+            setCheckboxValue(WIDX_UPPER_CASE_BANNERS_CHECKBOX, Config::Get().general.upperCaseBanners);
 
             static constexpr StringId _virtualFloorStyleStrings[] = {
                 STR_VIRTUAL_FLOOR_STYLE_DISABLED,
@@ -1142,38 +1142,38 @@ namespace OpenRCT2::Ui::Windows
                 STR_VIRTUAL_FLOOR_STYLE_GLASSY,
             };
 
-            widgets[WIDX_VIRTUAL_FLOOR].text = _virtualFloorStyleStrings[EnumValue(Config::Get().general.VirtualFloorStyle)];
+            widgets[WIDX_VIRTUAL_FLOOR].text = _virtualFloorStyleStrings[EnumValue(Config::Get().general.virtualFloorStyle)];
 
-            setCheckboxValue(WIDX_ENABLE_LIGHT_FX_CHECKBOX, Config::Get().general.EnableLightFx);
-            if (Config::Get().general.DayNightCycle
-                && Config::Get().general.DrawingEngine == DrawingEngine::SoftwareWithHardwareDisplay)
+            setCheckboxValue(WIDX_ENABLE_LIGHT_FX_CHECKBOX, Config::Get().general.enableLightFx);
+            if (Config::Get().general.dayNightCycle
+                && Config::Get().general.drawingEngine == DrawingEngine::SoftwareWithHardwareDisplay)
             {
                 disabledWidgets &= ~(1uLL << WIDX_ENABLE_LIGHT_FX_CHECKBOX);
             }
             else
             {
                 disabledWidgets |= (1uLL << WIDX_ENABLE_LIGHT_FX_CHECKBOX);
-                Config::Get().general.EnableLightFx = false;
+                Config::Get().general.enableLightFx = false;
             }
 
-            setCheckboxValue(WIDX_ENABLE_LIGHT_FX_FOR_VEHICLES_CHECKBOX, Config::Get().general.EnableLightFxForVehicles);
-            if (Config::Get().general.DayNightCycle
-                && Config::Get().general.DrawingEngine == DrawingEngine::SoftwareWithHardwareDisplay
-                && Config::Get().general.EnableLightFx)
+            setCheckboxValue(WIDX_ENABLE_LIGHT_FX_FOR_VEHICLES_CHECKBOX, Config::Get().general.enableLightFxForVehicles);
+            if (Config::Get().general.dayNightCycle
+                && Config::Get().general.drawingEngine == DrawingEngine::SoftwareWithHardwareDisplay
+                && Config::Get().general.enableLightFx)
             {
                 disabledWidgets &= ~(1uLL << WIDX_ENABLE_LIGHT_FX_FOR_VEHICLES_CHECKBOX);
             }
             else
             {
                 disabledWidgets |= (1uLL << WIDX_ENABLE_LIGHT_FX_FOR_VEHICLES_CHECKBOX);
-                Config::Get().general.EnableLightFxForVehicles = false;
+                Config::Get().general.enableLightFxForVehicles = false;
             }
 
             setCheckboxValue(
                 WIDX_RENDER_WEATHER_EFFECTS_CHECKBOX,
-                Config::Get().general.RenderWeatherEffects || Config::Get().general.RenderWeatherGloom);
-            setCheckboxValue(WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX, Config::Get().general.DisableLightningEffect);
-            if (!Config::Get().general.RenderWeatherEffects && !Config::Get().general.RenderWeatherGloom)
+                Config::Get().general.renderWeatherEffects || Config::Get().general.renderWeatherGloom);
+            setCheckboxValue(WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX, Config::Get().general.disableLightningEffect);
+            if (!Config::Get().general.renderWeatherEffects && !Config::Get().general.renderWeatherGloom)
             {
                 setCheckboxValue(WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX, true);
                 disabledWidgets |= (1uLL << WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX);
@@ -1199,7 +1199,7 @@ namespace OpenRCT2::Ui::Windows
 
                     ShowDropdown(widget, 2);
 
-                    gDropdown.items[Config::Get().general.ShowHeightAsUnits ? 0 : 1].setChecked(true);
+                    gDropdown.items[Config::Get().general.showHeightAsUnits ? 0 : 1].setChecked(true);
                     break;
                 case WIDX_CURRENCY_DROPDOWN:
                 {
@@ -1221,13 +1221,13 @@ namespace OpenRCT2::Ui::Windows
 
                     ShowDropdown(widget, numItems);
 
-                    if (Config::Get().general.CurrencyFormat == CurrencyType::Custom)
+                    if (Config::Get().general.currencyFormat == CurrencyType::Custom)
                     {
-                        gDropdown.items[EnumValue(Config::Get().general.CurrencyFormat) + 1].setChecked(true);
+                        gDropdown.items[EnumValue(Config::Get().general.currencyFormat) + 1].setChecked(true);
                     }
                     else
                     {
-                        gDropdown.items[EnumValue(Config::Get().general.CurrencyFormat)].setChecked(true);
+                        gDropdown.items[EnumValue(Config::Get().general.currencyFormat)].setChecked(true);
                     }
                     break;
                 }
@@ -1238,7 +1238,7 @@ namespace OpenRCT2::Ui::Windows
 
                     ShowDropdown(widget, 3);
 
-                    gDropdown.items[static_cast<int32_t>(Config::Get().general.MeasurementFormat)].setChecked(true);
+                    gDropdown.items[static_cast<int32_t>(Config::Get().general.measurementFormat)].setChecked(true);
                     break;
                 case WIDX_TEMPERATURE_DROPDOWN:
                     gDropdown.items[0] = Dropdown::MenuLabel(STR_CELSIUS);
@@ -1246,7 +1246,7 @@ namespace OpenRCT2::Ui::Windows
 
                     ShowDropdown(widget, 2);
 
-                    gDropdown.items[static_cast<int32_t>(Config::Get().general.TemperatureFormat)].setChecked(true);
+                    gDropdown.items[static_cast<int32_t>(Config::Get().general.temperatureFormat)].setChecked(true);
                     break;
                 case WIDX_LANGUAGE_DROPDOWN:
                     for (size_t i = 1; i < LANGUAGE_COUNT; i++)
@@ -1262,7 +1262,7 @@ namespace OpenRCT2::Ui::Windows
                         gDropdown.items[i] = Dropdown::MenuLabel(DateFormatStringIDs[i]);
                     }
                     ShowDropdown(widget, 4);
-                    gDropdown.items[Config::Get().general.DateFormat].setChecked(true);
+                    gDropdown.items[Config::Get().general.dateFormat].setChecked(true);
                     break;
             }
         }
@@ -1273,11 +1273,11 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WIDX_HEIGHT_LABELS_DROPDOWN:
                     // reset flag and set it to 1 if height as units is selected
-                    Config::Get().general.ShowHeightAsUnits = 0;
+                    Config::Get().general.showHeightAsUnits = 0;
 
                     if (dropdownIndex == 0)
                     {
-                        Config::Get().general.ShowHeightAsUnits = 1;
+                        Config::Get().general.showHeightAsUnits = 1;
                     }
                     Config::Save();
                     UpdateHeightMarkers();
@@ -1285,25 +1285,25 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_CURRENCY_DROPDOWN:
                     if (dropdownIndex == EnumValue(CurrencyType::Custom) + 1)
                     { // Add 1 because the separator occupies a position
-                        Config::Get().general.CurrencyFormat = static_cast<CurrencyType>(dropdownIndex - 1);
+                        Config::Get().general.currencyFormat = static_cast<CurrencyType>(dropdownIndex - 1);
                         ContextOpenWindow(WindowClass::customCurrencyConfig);
                     }
                     else
                     {
-                        Config::Get().general.CurrencyFormat = static_cast<CurrencyType>(dropdownIndex);
+                        Config::Get().general.currencyFormat = static_cast<CurrencyType>(dropdownIndex);
                     }
                     Config::Save();
                     GfxInvalidateScreen();
                     break;
                 case WIDX_DISTANCE_DROPDOWN:
-                    Config::Get().general.MeasurementFormat = static_cast<MeasurementFormat>(dropdownIndex);
+                    Config::Get().general.measurementFormat = static_cast<MeasurementFormat>(dropdownIndex);
                     Config::Save();
                     UpdateHeightMarkers();
                     break;
                 case WIDX_TEMPERATURE_DROPDOWN:
-                    if (dropdownIndex != static_cast<int32_t>(Config::Get().general.TemperatureFormat))
+                    if (dropdownIndex != static_cast<int32_t>(Config::Get().general.temperatureFormat))
                     {
-                        Config::Get().general.TemperatureFormat = static_cast<TemperatureUnit>(dropdownIndex);
+                        Config::Get().general.temperatureFormat = static_cast<TemperatureUnit>(dropdownIndex);
                         Config::Save();
                         GfxInvalidateScreen();
                     }
@@ -1327,7 +1327,7 @@ namespace OpenRCT2::Ui::Windows
                         }
                         else
                         {
-                            Config::Get().general.Language = dropdownIndex + 1;
+                            Config::Get().general.language = dropdownIndex + 1;
                             Config::Save();
                             GfxInvalidateScreen();
                         }
@@ -1335,9 +1335,9 @@ namespace OpenRCT2::Ui::Windows
                 }
                 break;
                 case WIDX_DATE_FORMAT_DROPDOWN:
-                    if (dropdownIndex != Config::Get().general.DateFormat)
+                    if (dropdownIndex != Config::Get().general.dateFormat)
                     {
-                        Config::Get().general.DateFormat = static_cast<uint8_t>(dropdownIndex);
+                        Config::Get().general.dateFormat = static_cast<uint8_t>(dropdownIndex);
                         Config::Save();
                         GfxInvalidateScreen();
                     }
@@ -1352,12 +1352,12 @@ namespace OpenRCT2::Ui::Windows
             ft.Add<char*>(LanguagesDescriptors[LocalisationService_GetCurrentLanguage()].native_name);
 
             // Currency: pounds, dollars, etc. (10 total)
-            widgets[WIDX_CURRENCY].text = CurrencyDescriptors[EnumValue(Config::Get().general.CurrencyFormat)].stringId;
+            widgets[WIDX_CURRENCY].text = CurrencyDescriptors[EnumValue(Config::Get().general.currencyFormat)].stringId;
 
             // Distance: metric / imperial / si
             {
                 StringId stringId = kStringIdNone;
-                switch (Config::Get().general.MeasurementFormat)
+                switch (Config::Get().general.measurementFormat)
                 {
                     case MeasurementFormat::Imperial:
                         stringId = STR_IMPERIAL;
@@ -1373,15 +1373,15 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Date format
-            widgets[WIDX_DATE_FORMAT].text = DateFormatStringIDs[Config::Get().general.DateFormat];
+            widgets[WIDX_DATE_FORMAT].text = DateFormatStringIDs[Config::Get().general.dateFormat];
 
             // Temperature: celsius/fahrenheit
-            widgets[WIDX_TEMPERATURE].text = Config::Get().general.TemperatureFormat == TemperatureUnit::Fahrenheit
+            widgets[WIDX_TEMPERATURE].text = Config::Get().general.temperatureFormat == TemperatureUnit::Fahrenheit
                 ? STR_FAHRENHEIT
                 : STR_CELSIUS;
 
             // Height: units/real values
-            widgets[WIDX_HEIGHT_LABELS].text = Config::Get().general.ShowHeightAsUnits ? STR_HEIGHT_IN_UNITS : STR_REAL_VALUES;
+            widgets[WIDX_HEIGHT_LABELS].text = Config::Get().general.showHeightAsUnits ? STR_HEIGHT_IN_UNITS : STR_REAL_VALUES;
         }
 
 #pragma endregion
@@ -1392,15 +1392,15 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_SOUND_CHECKBOX:
-                    Config::Get().sound.SoundEnabled = !Config::Get().sound.SoundEnabled;
+                    Config::Get().sound.soundEnabled = !Config::Get().sound.soundEnabled;
                     Config::Save();
                     invalidate();
                     break;
 
                 case WIDX_MASTER_SOUND_CHECKBOX:
                 {
-                    Config::Get().sound.MasterSoundEnabled = !Config::Get().sound.MasterSoundEnabled;
-                    if (!Config::Get().sound.MasterSoundEnabled)
+                    Config::Get().sound.masterSoundEnabled = !Config::Get().sound.masterSoundEnabled;
+                    if (!Config::Get().sound.masterSoundEnabled)
                         OpenRCT2::Audio::Pause();
                     else
                         OpenRCT2::Audio::Resume();
@@ -1413,8 +1413,8 @@ namespace OpenRCT2::Ui::Windows
                 }
 
                 case WIDX_MUSIC_CHECKBOX:
-                    Config::Get().sound.RideMusicEnabled = !Config::Get().sound.RideMusicEnabled;
-                    if (!Config::Get().sound.RideMusicEnabled)
+                    Config::Get().sound.rideMusicEnabled = !Config::Get().sound.rideMusicEnabled;
+                    if (!Config::Get().sound.rideMusicEnabled)
                     {
                         OpenRCT2::RideAudio::StopAllChannels();
                     }
@@ -1423,7 +1423,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
 
                 case WIDX_AUDIO_FOCUS_CHECKBOX:
-                    Config::Get().sound.audio_focus = !Config::Get().sound.audio_focus;
+                    Config::Get().sound.audioFocus = !Config::Get().sound.audioFocus;
                     Config::Save();
                     invalidate();
                     break;
@@ -1459,7 +1459,7 @@ namespace OpenRCT2::Ui::Windows
                         if (theme.Kind == TitleMusicKind::RCT1 && !rct1MusicThemeIsAvailable)
                             continue;
 
-                        if (Config::Get().sound.TitleMusic == theme.Kind)
+                        if (Config::Get().sound.titleMusic == theme.Kind)
                             checkedIndex = numItems;
 
                         gDropdown.items[numItems++] = Dropdown::MenuLabel(theme.Name);
@@ -1483,13 +1483,13 @@ namespace OpenRCT2::Ui::Windows
                         if (dropdownIndex == 0)
                         {
                             audioContext.SetOutputDevice("");
-                            Config::Get().sound.Device = "";
+                            Config::Get().sound.device = "";
                         }
                         else
                         {
                             const auto& deviceName = GetDeviceName(dropdownIndex);
                             audioContext.SetOutputDevice(deviceName);
-                            Config::Get().sound.Device = deviceName;
+                            Config::Get().sound.device = deviceName;
                         }
                         Config::Save();
                         OpenRCT2::Audio::PlayTitleMusic();
@@ -1507,12 +1507,12 @@ namespace OpenRCT2::Ui::Windows
                             dropdownIndex++;
                     }
 
-                    Config::Get().sound.TitleMusic = TitleThemeOptions[dropdownIndex].Kind;
+                    Config::Get().sound.titleMusic = TitleThemeOptions[dropdownIndex].Kind;
                     Config::Save();
                     invalidate();
 
                     OpenRCT2::Audio::StopTitleMusic();
-                    if (Config::Get().sound.TitleMusic != TitleMusicKind::None)
+                    if (Config::Get().sound.titleMusic != TitleMusicKind::None)
                     {
                         OpenRCT2::Audio::PlayTitleMusic();
                     }
@@ -1526,9 +1526,9 @@ namespace OpenRCT2::Ui::Windows
             const auto& masterVolumeWidget = widgets[WIDX_MASTER_VOLUME];
             const auto& masterVolumeScroll = scrolls[0];
             uint8_t masterVolume = GetScrollPercentage(masterVolumeWidget, masterVolumeScroll);
-            if (masterVolume != Config::Get().sound.MasterVolume)
+            if (masterVolume != Config::Get().sound.masterVolume)
             {
-                Config::Get().sound.MasterVolume = masterVolume;
+                Config::Get().sound.masterVolume = masterVolume;
                 Config::Save();
                 invalidateWidget(WIDX_MASTER_VOLUME);
             }
@@ -1536,9 +1536,9 @@ namespace OpenRCT2::Ui::Windows
             const auto& soundVolumeWidget = widgets[WIDX_MASTER_VOLUME];
             const auto& soundVolumeScroll = scrolls[1];
             uint8_t soundVolume = GetScrollPercentage(soundVolumeWidget, soundVolumeScroll);
-            if (soundVolume != Config::Get().sound.SoundVolume)
+            if (soundVolume != Config::Get().sound.soundVolume)
             {
-                Config::Get().sound.SoundVolume = soundVolume;
+                Config::Get().sound.soundVolume = soundVolume;
                 Config::Save();
                 invalidateWidget(WIDX_SOUND_VOLUME);
             }
@@ -1546,9 +1546,9 @@ namespace OpenRCT2::Ui::Windows
             const auto& musicVolumeWidget = widgets[WIDX_MASTER_VOLUME];
             const auto& musicVolumeScroll = scrolls[2];
             uint8_t rideMusicVolume = GetScrollPercentage(musicVolumeWidget, musicVolumeScroll);
-            if (rideMusicVolume != Config::Get().sound.AudioFocus)
+            if (rideMusicVolume != Config::Get().sound.rideMusicVolume)
             {
-                Config::Get().sound.AudioFocus = rideMusicVolume;
+                Config::Get().sound.rideMusicVolume = rideMusicVolume;
                 Config::Save();
                 invalidateWidget(WIDX_MUSIC_VOLUME);
             }
@@ -1598,7 +1598,7 @@ namespace OpenRCT2::Ui::Windows
         StringId GetTitleMusicName() const
         {
             auto theme = std::find_if(std::begin(TitleThemeOptions), std::end(TitleThemeOptions), [](auto&& option) {
-                return Config::Get().sound.TitleMusic == option.Kind;
+                return Config::Get().sound.titleMusic == option.Kind;
             });
             if (theme != std::end(TitleThemeOptions))
                 return theme->Name;
@@ -1636,19 +1636,19 @@ namespace OpenRCT2::Ui::Windows
 
             widgets[WIDX_TITLE_MUSIC].text = GetTitleMusicName();
 
-            setCheckboxValue(WIDX_SOUND_CHECKBOX, Config::Get().sound.SoundEnabled);
-            setCheckboxValue(WIDX_MASTER_SOUND_CHECKBOX, Config::Get().sound.MasterSoundEnabled);
-            setCheckboxValue(WIDX_MUSIC_CHECKBOX, Config::Get().sound.RideMusicEnabled);
-            setCheckboxValue(WIDX_AUDIO_FOCUS_CHECKBOX, Config::Get().sound.audio_focus);
-            widgetSetEnabled(*this, WIDX_SOUND_CHECKBOX, Config::Get().sound.MasterSoundEnabled);
-            widgetSetEnabled(*this, WIDX_MUSIC_CHECKBOX, Config::Get().sound.MasterSoundEnabled);
+            setCheckboxValue(WIDX_SOUND_CHECKBOX, Config::Get().sound.soundEnabled);
+            setCheckboxValue(WIDX_MASTER_SOUND_CHECKBOX, Config::Get().sound.masterSoundEnabled);
+            setCheckboxValue(WIDX_MUSIC_CHECKBOX, Config::Get().sound.rideMusicEnabled);
+            setCheckboxValue(WIDX_AUDIO_FOCUS_CHECKBOX, Config::Get().sound.audioFocus);
+            widgetSetEnabled(*this, WIDX_SOUND_CHECKBOX, Config::Get().sound.masterSoundEnabled);
+            widgetSetEnabled(*this, WIDX_MUSIC_CHECKBOX, Config::Get().sound.masterSoundEnabled);
 
             // Initialize only on first frame, otherwise the scrollbars won't be able to be modified
             if (currentFrame == 0)
             {
-                initialiseScrollPosition(WIDX_MASTER_VOLUME, 0, Config::Get().sound.MasterVolume);
-                initialiseScrollPosition(WIDX_SOUND_VOLUME, 1, Config::Get().sound.SoundVolume);
-                initialiseScrollPosition(WIDX_MUSIC_VOLUME, 2, Config::Get().sound.AudioFocus);
+                initialiseScrollPosition(WIDX_MASTER_VOLUME, 0, Config::Get().sound.masterVolume);
+                initialiseScrollPosition(WIDX_SOUND_VOLUME, 1, Config::Get().sound.soundVolume);
+                initialiseScrollPosition(WIDX_MUSIC_VOLUME, 2, Config::Get().sound.rideMusicVolume);
             }
         }
 
@@ -1665,45 +1665,45 @@ namespace OpenRCT2::Ui::Windows
                     ContextOpenWindow(WindowClass::keyboardShortcutList);
                     break;
                 case WIDX_SCREEN_EDGE_SCROLLING:
-                    Config::Get().general.EdgeScrolling ^= 1;
+                    Config::Get().general.edgeScrolling ^= 1;
                     Config::Save();
                     invalidate();
                     break;
                 case WIDX_TRAP_CURSOR:
-                    Config::Get().general.TrapCursor ^= 1;
+                    Config::Get().general.trapCursor ^= 1;
                     Config::Save();
-                    ContextSetCursorTrap(Config::Get().general.TrapCursor);
+                    ContextSetCursorTrap(Config::Get().general.trapCursor);
                     invalidate();
                     break;
                 case WIDX_ZOOM_TO_CURSOR:
-                    Config::Get().general.ZoomToCursor ^= 1;
+                    Config::Get().general.zoomToCursor ^= 1;
                     Config::Save();
                     invalidate();
                     break;
                 case WIDX_WINDOW_BUTTONS_ON_THE_LEFT:
-                    Config::Get().interface.WindowButtonsOnTheLeft ^= 1;
+                    Config::Get().interface.windowButtonsOnTheLeft ^= 1;
                     Config::Save();
                     invalidate();
                     windowMgr->InvalidateAll();
                     WindowVisitEach([](WindowBase* w) { w->resizeFrame(); });
                     break;
                 case WIDX_ENLARGED_UI:
-                    Config::Get().interface.EnlargedUi ^= 1;
-                    if (Config::Get().interface.EnlargedUi == false)
-                        Config::Get().interface.TouchEnhancements = false;
+                    Config::Get().interface.enlargedUi ^= 1;
+                    if (Config::Get().interface.enlargedUi == false)
+                        Config::Get().interface.touchEnhancements = false;
                     Config::Save();
                     invalidate();
                     windowMgr->InvalidateAll();
                     WindowVisitEach([](WindowBase* w) { w->resizeFrame(); });
                     break;
                 case WIDX_TOUCH_ENHANCEMENTS:
-                    Config::Get().interface.TouchEnhancements ^= 1;
+                    Config::Get().interface.touchEnhancements ^= 1;
                     Config::Save();
                     invalidate();
                     windowMgr->InvalidateAll();
                     break;
                 case WIDX_INVERT_DRAG:
-                    Config::Get().general.InvertViewportDrag ^= 1;
+                    Config::Get().general.invertViewportDrag ^= 1;
                     Config::Save();
                     invalidate();
                     break;
@@ -1712,15 +1712,15 @@ namespace OpenRCT2::Ui::Windows
 
         void ControlsPrepareDraw()
         {
-            setCheckboxValue(WIDX_SCREEN_EDGE_SCROLLING, Config::Get().general.EdgeScrolling);
-            setCheckboxValue(WIDX_TRAP_CURSOR, Config::Get().general.TrapCursor);
-            setCheckboxValue(WIDX_INVERT_DRAG, Config::Get().general.InvertViewportDrag);
-            setCheckboxValue(WIDX_ZOOM_TO_CURSOR, Config::Get().general.ZoomToCursor);
-            setCheckboxValue(WIDX_WINDOW_BUTTONS_ON_THE_LEFT, Config::Get().interface.WindowButtonsOnTheLeft);
-            setCheckboxValue(WIDX_ENLARGED_UI, Config::Get().interface.EnlargedUi);
-            setCheckboxValue(WIDX_TOUCH_ENHANCEMENTS, Config::Get().interface.TouchEnhancements);
+            setCheckboxValue(WIDX_SCREEN_EDGE_SCROLLING, Config::Get().general.edgeScrolling);
+            setCheckboxValue(WIDX_TRAP_CURSOR, Config::Get().general.trapCursor);
+            setCheckboxValue(WIDX_INVERT_DRAG, Config::Get().general.invertViewportDrag);
+            setCheckboxValue(WIDX_ZOOM_TO_CURSOR, Config::Get().general.zoomToCursor);
+            setCheckboxValue(WIDX_WINDOW_BUTTONS_ON_THE_LEFT, Config::Get().interface.windowButtonsOnTheLeft);
+            setCheckboxValue(WIDX_ENLARGED_UI, Config::Get().interface.enlargedUi);
+            setCheckboxValue(WIDX_TOUCH_ENHANCEMENTS, Config::Get().interface.touchEnhancements);
 
-            widgetSetEnabled(*this, WIDX_TOUCH_ENHANCEMENTS, Config::Get().interface.EnlargedUi);
+            widgetSetEnabled(*this, WIDX_TOUCH_ENHANCEMENTS, Config::Get().interface.enlargedUi);
 
             // Initialize scroll positions for sliders only on first frame
             if (currentFrame == 0)
@@ -1754,31 +1754,31 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_TOOLBAR_BUTTONS_CENTRED:
-                    ToggleToolbarSetting(Config::Get().interface.ToolbarButtonsCentred);
+                    ToggleToolbarSetting(Config::Get().interface.toolbarButtonsCentred);
                     break;
                 case WIDX_TOOLBAR_SHOW_FINANCES:
-                    ToggleToolbarSetting(Config::Get().interface.ToolbarShowFinances);
+                    ToggleToolbarSetting(Config::Get().interface.toolbarShowFinances);
                     break;
                 case WIDX_TOOLBAR_SHOW_RESEARCH:
-                    ToggleToolbarSetting(Config::Get().interface.ToolbarShowResearch);
+                    ToggleToolbarSetting(Config::Get().interface.toolbarShowResearch);
                     break;
                 case WIDX_TOOLBAR_SHOW_CHEATS:
-                    ToggleToolbarSetting(Config::Get().interface.ToolbarShowCheats);
+                    ToggleToolbarSetting(Config::Get().interface.toolbarShowCheats);
                     break;
                 case WIDX_TOOLBAR_SHOW_NEWS:
-                    ToggleToolbarSetting(Config::Get().interface.ToolbarShowNews);
+                    ToggleToolbarSetting(Config::Get().interface.toolbarShowNews);
                     break;
                 case WIDX_TOOLBAR_SHOW_MUTE:
-                    ToggleToolbarSetting(Config::Get().interface.ToolbarShowMute);
+                    ToggleToolbarSetting(Config::Get().interface.toolbarShowMute);
                     break;
                 case WIDX_TOOLBAR_SHOW_CHAT:
-                    ToggleToolbarSetting(Config::Get().interface.ToolbarShowChat);
+                    ToggleToolbarSetting(Config::Get().interface.toolbarShowChat);
                     break;
                 case WIDX_TOOLBAR_SHOW_ZOOM:
-                    ToggleToolbarSetting(Config::Get().interface.ToolbarShowZoom);
+                    ToggleToolbarSetting(Config::Get().interface.toolbarShowZoom);
                     break;
                 case WIDX_TOOLBAR_SHOW_ROTATE_ANTI_CLOCKWISE:
-                    ToggleToolbarSetting(Config::Get().interface.ToolbarShowRotateAnticlockwise);
+                    ToggleToolbarSetting(Config::Get().interface.toolbarShowRotateAnticlockwise);
                     break;
                 case WIDX_THEMES_BUTTON:
                     ContextOpenWindow(WindowClass::themes);
@@ -1827,15 +1827,15 @@ namespace OpenRCT2::Ui::Windows
 
         void InterfacePrepareDraw()
         {
-            setCheckboxValue(WIDX_TOOLBAR_BUTTONS_CENTRED, Config::Get().interface.ToolbarButtonsCentred);
-            setCheckboxValue(WIDX_TOOLBAR_SHOW_FINANCES, Config::Get().interface.ToolbarShowFinances);
-            setCheckboxValue(WIDX_TOOLBAR_SHOW_RESEARCH, Config::Get().interface.ToolbarShowResearch);
-            setCheckboxValue(WIDX_TOOLBAR_SHOW_CHEATS, Config::Get().interface.ToolbarShowCheats);
-            setCheckboxValue(WIDX_TOOLBAR_SHOW_NEWS, Config::Get().interface.ToolbarShowNews);
-            setCheckboxValue(WIDX_TOOLBAR_SHOW_MUTE, Config::Get().interface.ToolbarShowMute);
-            setCheckboxValue(WIDX_TOOLBAR_SHOW_CHAT, Config::Get().interface.ToolbarShowChat);
-            setCheckboxValue(WIDX_TOOLBAR_SHOW_ZOOM, Config::Get().interface.ToolbarShowZoom);
-            setCheckboxValue(WIDX_TOOLBAR_SHOW_ROTATE_ANTI_CLOCKWISE, Config::Get().interface.ToolbarShowRotateAnticlockwise);
+            setCheckboxValue(WIDX_TOOLBAR_BUTTONS_CENTRED, Config::Get().interface.toolbarButtonsCentred);
+            setCheckboxValue(WIDX_TOOLBAR_SHOW_FINANCES, Config::Get().interface.toolbarShowFinances);
+            setCheckboxValue(WIDX_TOOLBAR_SHOW_RESEARCH, Config::Get().interface.toolbarShowResearch);
+            setCheckboxValue(WIDX_TOOLBAR_SHOW_CHEATS, Config::Get().interface.toolbarShowCheats);
+            setCheckboxValue(WIDX_TOOLBAR_SHOW_NEWS, Config::Get().interface.toolbarShowNews);
+            setCheckboxValue(WIDX_TOOLBAR_SHOW_MUTE, Config::Get().interface.toolbarShowMute);
+            setCheckboxValue(WIDX_TOOLBAR_SHOW_CHAT, Config::Get().interface.toolbarShowChat);
+            setCheckboxValue(WIDX_TOOLBAR_SHOW_ZOOM, Config::Get().interface.toolbarShowZoom);
+            setCheckboxValue(WIDX_TOOLBAR_SHOW_ROTATE_ANTI_CLOCKWISE, Config::Get().interface.toolbarShowRotateAnticlockwise);
 
             size_t activeAvailableThemeIndex = ThemeManagerGetAvailableThemeIndex();
             const utf8* activeThemeName = ThemeManagerGetAvailableThemeName(activeAvailableThemeIndex);
@@ -1851,43 +1851,43 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_REAL_NAMES_GUESTS_CHECKBOX:
-                    Config::Get().general.ShowRealNamesOfGuests ^= 1;
+                    Config::Get().general.showRealNamesOfGuests ^= 1;
                     Config::Save();
                     invalidate();
                     PeepUpdateNames();
                     break;
                 case WIDX_REAL_NAMES_STAFF_CHECKBOX:
-                    Config::Get().general.ShowRealNamesOfStaff ^= 1;
+                    Config::Get().general.showRealNamesOfStaff ^= 1;
                     Config::Save();
                     invalidate();
                     PeepUpdateNames();
                     break;
                 case WIDX_AUTO_STAFF_PLACEMENT:
-                    Config::Get().general.AutoStaffPlacement ^= 1;
+                    Config::Get().general.autoStaffPlacement ^= 1;
                     Config::Save();
                     invalidate();
                     break;
                 case WIDX_SCENARIO_UNLOCKING:
                 {
-                    Config::Get().general.ScenarioUnlockingEnabled ^= 1;
+                    Config::Get().general.scenarioUnlockingEnabled ^= 1;
                     Config::Save();
                     auto* windowMgr = Ui::GetWindowManager();
                     windowMgr->InvalidateByClass(WindowClass::scenarioSelect);
                     break;
                 }
                 case WIDX_AUTO_OPEN_SHOPS:
-                    Config::Get().general.AutoOpenShops = !Config::Get().general.AutoOpenShops;
+                    Config::Get().general.autoOpenShops = !Config::Get().general.autoOpenShops;
                     Config::Save();
                     invalidate();
                     break;
                 case WIDX_ALLOW_EARLY_COMPLETION:
-                    Config::Get().general.AllowEarlyCompletion ^= 1;
+                    Config::Get().general.allowEarlyCompletion ^= 1;
                     // only the server can control this setting and needs to send the
                     // current value of allow_early_completion to all clients
                     if (Network::GetMode() == Network::Mode::server)
                     {
                         auto setAllowEarlyCompletionAction = GameActions::ScenarioSetSettingAction(
-                            GameActions::ScenarioSetSetting::AllowEarlyCompletion, Config::Get().general.AllowEarlyCompletion);
+                            GameActions::ScenarioSetSetting::AllowEarlyCompletion, Config::Get().general.allowEarlyCompletion);
                         GameActions::Execute(&setAllowEarlyCompletionAction, getGameState());
                     }
                     Config::Save();
@@ -1919,7 +1919,7 @@ namespace OpenRCT2::Ui::Windows
                         { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height() + 1, colours[1],
                         Dropdown::Flag::StayOpen, numItems);
 
-                    auto selectedIndex = Config::Get().interface.RandomTitleSequence
+                    auto selectedIndex = Config::Get().interface.randomTitleSequence
                         ? numItems - 1
                         : static_cast<int32_t>(TitleGetCurrentSequence());
                     gDropdown.items[selectedIndex].setChecked(true);
@@ -1946,7 +1946,7 @@ namespace OpenRCT2::Ui::Windows
                     }
 
                     ShowDropdown(widget, 7);
-                    gDropdown.items[Config::Get().general.DefaultInspectionInterval].setChecked(true);
+                    gDropdown.items[Config::Get().general.defaultInspectionInterval].setChecked(true);
                     break;
             }
         }
@@ -1960,23 +1960,23 @@ namespace OpenRCT2::Ui::Windows
                     auto numItems = static_cast<int32_t>(TitleSequenceManager::GetCount());
                     if (dropdownIndex < numItems && dropdownIndex != static_cast<int32_t>(TitleGetCurrentSequence()))
                     {
-                        Config::Get().interface.RandomTitleSequence = false;
+                        Config::Get().interface.randomTitleSequence = false;
                         TitleSequenceChangePreset(static_cast<size_t>(dropdownIndex));
                         Config::Save();
                         invalidate();
                     }
                     else if (dropdownIndex == numItems + 1)
                     {
-                        Config::Get().interface.RandomTitleSequence = true;
+                        Config::Get().interface.randomTitleSequence = true;
                         Config::Save();
                         invalidate();
                     }
                     break;
                 }
                 case WIDX_DEFAULT_INSPECTION_INTERVAL_DROPDOWN:
-                    if (dropdownIndex != Config::Get().general.DefaultInspectionInterval)
+                    if (dropdownIndex != Config::Get().general.defaultInspectionInterval)
                     {
-                        Config::Get().general.DefaultInspectionInterval = static_cast<uint8_t>(dropdownIndex);
+                        Config::Get().general.defaultInspectionInterval = static_cast<uint8_t>(dropdownIndex);
                         Config::Save();
                         invalidate();
                     }
@@ -1997,7 +1997,7 @@ namespace OpenRCT2::Ui::Windows
         void MiscPrepareDraw()
         {
             auto ft = Formatter::Common();
-            if (Config::Get().interface.RandomTitleSequence)
+            if (Config::Get().interface.randomTitleSequence)
             {
                 ft.Add<StringId>(STR_TITLE_SEQUENCE_RANDOM);
             }
@@ -2026,21 +2026,21 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
 
-            setCheckboxValue(WIDX_REAL_NAMES_GUESTS_CHECKBOX, Config::Get().general.ShowRealNamesOfGuests);
-            setCheckboxValue(WIDX_REAL_NAMES_STAFF_CHECKBOX, Config::Get().general.ShowRealNamesOfStaff);
-            setCheckboxValue(WIDX_AUTO_STAFF_PLACEMENT, Config::Get().general.AutoStaffPlacement);
-            setCheckboxValue(WIDX_AUTO_OPEN_SHOPS, Config::Get().general.AutoOpenShops);
-            setCheckboxValue(WIDX_ALLOW_EARLY_COMPLETION, Config::Get().general.AllowEarlyCompletion);
+            setCheckboxValue(WIDX_REAL_NAMES_GUESTS_CHECKBOX, Config::Get().general.showRealNamesOfGuests);
+            setCheckboxValue(WIDX_REAL_NAMES_STAFF_CHECKBOX, Config::Get().general.showRealNamesOfStaff);
+            setCheckboxValue(WIDX_AUTO_STAFF_PLACEMENT, Config::Get().general.autoStaffPlacement);
+            setCheckboxValue(WIDX_AUTO_OPEN_SHOPS, Config::Get().general.autoOpenShops);
+            setCheckboxValue(WIDX_ALLOW_EARLY_COMPLETION, Config::Get().general.allowEarlyCompletion);
 
             if (Config::Get().interface.scenarioPreviewScreenshots)
                 widgets[WIDX_SCENARIO_PREVIEWS].text = STR_SCENARIO_PREVIEWS_SCREENSHOTS;
             else
                 widgets[WIDX_SCENARIO_PREVIEWS].text = STR_SCENARIO_PREVIEWS_MINIMAPS;
 
-            setCheckboxValue(WIDX_SCENARIO_UNLOCKING, Config::Get().general.ScenarioUnlockingEnabled);
+            setCheckboxValue(WIDX_SCENARIO_UNLOCKING, Config::Get().general.scenarioUnlockingEnabled);
 
             widgets[WIDX_DEFAULT_INSPECTION_INTERVAL].text = kRideInspectionIntervalNames
-                [Config::Get().general.DefaultInspectionInterval];
+                [Config::Get().general.defaultInspectionInterval];
         }
 
 #pragma endregion
@@ -2051,22 +2051,22 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_DEBUGGING_TOOLS:
-                    Config::Get().general.DebuggingTools ^= 1;
+                    Config::Get().general.debuggingTools ^= 1;
                     Config::Save();
                     GfxInvalidateScreen();
                     break;
                 case WIDX_EXPORT_CUSTOM_OBJECTS_CHECKBOX:
-                    Config::Get().general.SavePluginData ^= 1;
+                    Config::Get().general.savePluginData ^= 1;
                     Config::Save();
                     invalidate();
                     break;
                 case WIDX_STAY_CONNECTED_AFTER_DESYNC:
-                    Config::Get().network.StayConnected = !Config::Get().network.StayConnected;
+                    Config::Get().network.stayConnected = !Config::Get().network.stayConnected;
                     Config::Save();
                     invalidate();
                     break;
                 case WIDX_ALWAYS_NATIVE_LOADSAVE:
-                    Config::Get().general.UseNativeBrowseDialog = !Config::Get().general.UseNativeBrowseDialog;
+                    Config::Get().general.useNativeBrowseDialog = !Config::Get().general.useNativeBrowseDialog;
                     Config::Save();
                     invalidate();
                     break;
@@ -2083,7 +2083,7 @@ namespace OpenRCT2::Ui::Windows
                             {
                                 if (CsgAtLocationIsUsable(rct1path))
                                 {
-                                    Config::Get().general.RCT1Path = std::move(rct1path);
+                                    Config::Get().general.rct1Path = std::move(rct1path);
                                     Config::Get().interface.scenarioSelectLastTab = 0;
                                     Config::Save();
                                     ContextShowError(STR_RESTART_REQUIRED, kStringIdNone, {});
@@ -2107,9 +2107,9 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 }
                 case WIDX_PATH_TO_RCT1_CLEAR:
-                    if (!Config::Get().general.RCT1Path.empty())
+                    if (!Config::Get().general.rct1Path.empty())
                     {
-                        Config::Get().general.RCT1Path.clear();
+                        Config::Get().general.rct1Path.clear();
                         Config::Save();
                     }
                     invalidate();
@@ -2141,19 +2141,19 @@ namespace OpenRCT2::Ui::Windows
                     }
 
                     ShowDropdown(widget, AUTOSAVE_NEVER + 1);
-                    gDropdown.items[Config::Get().general.AutosaveFrequency].setChecked(true);
+                    gDropdown.items[Config::Get().general.autosaveFrequency].setChecked(true);
                     break;
                 case WIDX_AUTOSAVE_AMOUNT_UP:
-                    Config::Get().general.AutosaveAmount += 1;
+                    Config::Get().general.autosaveAmount += 1;
                     Config::Save();
                     invalidateWidget(WIDX_AUTOSAVE_FREQUENCY);
                     invalidateWidget(WIDX_AUTOSAVE_FREQUENCY_DROPDOWN);
                     invalidateWidget(WIDX_AUTOSAVE_AMOUNT);
                     break;
                 case WIDX_AUTOSAVE_AMOUNT_DOWN:
-                    if (Config::Get().general.AutosaveAmount > 1)
+                    if (Config::Get().general.autosaveAmount > 1)
                     {
-                        Config::Get().general.AutosaveAmount -= 1;
+                        Config::Get().general.autosaveAmount -= 1;
                         Config::Save();
                         invalidateWidget(WIDX_AUTOSAVE_FREQUENCY);
                         invalidateWidget(WIDX_AUTOSAVE_FREQUENCY_DROPDOWN);
@@ -2167,9 +2167,9 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_AUTOSAVE_FREQUENCY_DROPDOWN:
-                    if (dropdownIndex != Config::Get().general.AutosaveFrequency)
+                    if (dropdownIndex != Config::Get().general.autosaveFrequency)
                     {
-                        Config::Get().general.AutosaveFrequency = static_cast<uint8_t>(dropdownIndex);
+                        Config::Get().general.autosaveFrequency = static_cast<uint8_t>(dropdownIndex);
                         Config::Save();
                         invalidate();
                     }
@@ -2179,7 +2179,7 @@ namespace OpenRCT2::Ui::Windows
 
         void AdvancedPrepareDraw()
         {
-            if (!Config::Get().general.RCT1Path.empty())
+            if (!Config::Get().general.rct1Path.empty())
             {
                 widgets[WIDX_PATH_TO_RCT1_PATH].type = WidgetType::label;
                 widgets[WIDX_PATH_TO_RCT1_BROWSE].type = WidgetType::empty;
@@ -2206,12 +2206,12 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_PATH_TO_RCT1_BROWSE].left = widgets[WIDX_PATH_TO_RCT1_BROWSE].right - browseLabelWidth;
             }
 
-            setCheckboxValue(WIDX_EXPORT_CUSTOM_OBJECTS_CHECKBOX, Config::Get().general.SavePluginData);
-            setCheckboxValue(WIDX_ALWAYS_NATIVE_LOADSAVE, Config::Get().general.UseNativeBrowseDialog);
-            widgets[WIDX_AUTOSAVE_FREQUENCY].text = AutosaveNames[Config::Get().general.AutosaveFrequency];
+            setCheckboxValue(WIDX_EXPORT_CUSTOM_OBJECTS_CHECKBOX, Config::Get().general.savePluginData);
+            setCheckboxValue(WIDX_ALWAYS_NATIVE_LOADSAVE, Config::Get().general.useNativeBrowseDialog);
+            widgets[WIDX_AUTOSAVE_FREQUENCY].text = AutosaveNames[Config::Get().general.autosaveFrequency];
 
-            setCheckboxValue(WIDX_DEBUGGING_TOOLS, Config::Get().general.DebuggingTools);
-            setCheckboxValue(WIDX_STAY_CONNECTED_AFTER_DESYNC, Config::Get().network.StayConnected);
+            setCheckboxValue(WIDX_DEBUGGING_TOOLS, Config::Get().general.debuggingTools);
+            setCheckboxValue(WIDX_STAY_CONNECTED_AFTER_DESYNC, Config::Get().network.stayConnected);
 
 #ifdef __EMSCRIPTEN__
             widgets[WIDX_GROUP_ADVANCED].bottom = kAdvancedStart + 84 + getTitleBarDiffNormal();
@@ -2226,13 +2226,13 @@ namespace OpenRCT2::Ui::Windows
         void AdvancedDraw(RenderTarget& rt)
         {
             auto ft = Formatter();
-            ft.Add<int32_t>(static_cast<int32_t>(Config::Get().general.AutosaveAmount));
+            ft.Add<int32_t>(static_cast<int32_t>(Config::Get().general.autosaveAmount));
             DrawTextBasic(
                 rt, windowPos + ScreenCoordsXY{ widgets[WIDX_AUTOSAVE_AMOUNT].left + 1, widgets[WIDX_AUTOSAVE_AMOUNT].top + 1 },
                 STR_WINDOW_COLOUR_2_COMMA32, ft, { colours[1] });
 
             // Format RCT1 path
-            const auto normalisedPath = Platform::StrDecompToPrecomp(Config::Get().general.RCT1Path);
+            const auto normalisedPath = Platform::StrDecompToPrecomp(Config::Get().general.rct1Path);
             ft = Formatter();
             ft.Add<StringId>(STR_STRING);
             ft.Add<const utf8*>(normalisedPath.c_str());
@@ -2252,14 +2252,14 @@ namespace OpenRCT2::Ui::Windows
         {
             if (widgetIndex == WIDX_PATH_TO_RCT1_PATH)
             {
-                if (Config::Get().general.RCT1Path.empty())
+                if (Config::Get().general.rct1Path.empty())
                 {
                     // No tooltip if the path is empty
                     return { kStringIdNone, {} };
                 }
 
                 auto ft = Formatter();
-                ft.Add<utf8*>(Config::Get().general.RCT1Path.c_str());
+                ft.Add<utf8*>(Config::Get().general.rct1Path.c_str());
                 return { fallback, ft };
             }
             return { fallback, {} };

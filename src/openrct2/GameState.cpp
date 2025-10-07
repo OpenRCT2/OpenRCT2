@@ -139,7 +139,7 @@ namespace OpenRCT2
         }
 
         bool isPaused = GameIsPaused();
-        if (Network::GetMode() == Network::Mode::server && Config::Get().network.PauseServerIfNoClients)
+        if (Network::GetMode() == Network::Mode::server && Config::Get().network.pauseServerIfNoClients)
         {
             // If we are headless we always have 1 player (host), pause if no one else is around.
             if (gOpenRCT2Headless && Network::GetNumPlayers() == 1)

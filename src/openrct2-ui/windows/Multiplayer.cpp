@@ -137,7 +137,7 @@ namespace OpenRCT2::Ui::Windows
 
     static bool IsServerPlayerInvisible()
     {
-        return Network::IsServerPlayerInvisible() && !Config::Get().general.DebuggingTools;
+        return Network::IsServerPlayerInvisible() && !Config::Get().general.debuggingTools;
     }
 
     class MultiplayerWindow final : public Window
@@ -589,15 +589,15 @@ namespace OpenRCT2::Ui::Windows
                     switch (widgetIndex)
                     {
                         case WIDX_LOG_CHAT_CHECKBOX:
-                            Config::Get().network.LogChat = !Config::Get().network.LogChat;
+                            Config::Get().network.logChat = !Config::Get().network.logChat;
                             Config::Save();
                             break;
                         case WIDX_LOG_SERVER_ACTIONS_CHECKBOX:
-                            Config::Get().network.LogServerActions = !Config::Get().network.LogServerActions;
+                            Config::Get().network.logServerActions = !Config::Get().network.logServerActions;
                             Config::Save();
                             break;
                         case WIDX_KNOWN_KEYS_ONLY_CHECKBOX:
-                            Config::Get().network.KnownKeysOnly = !Config::Get().network.KnownKeysOnly;
+                            Config::Get().network.knownKeysOnly = !Config::Get().network.knownKeysOnly;
                             Config::Save();
                             break;
                     }
@@ -692,9 +692,9 @@ namespace OpenRCT2::Ui::Windows
                         widgets[WIDX_KNOWN_KEYS_ONLY_CHECKBOX].type = WidgetType::empty;
                     }
 
-                    setCheckboxValue(WIDX_LOG_CHAT_CHECKBOX, Config::Get().network.LogChat);
-                    setCheckboxValue(WIDX_LOG_SERVER_ACTIONS_CHECKBOX, Config::Get().network.LogServerActions);
-                    setCheckboxValue(WIDX_KNOWN_KEYS_ONLY_CHECKBOX, Config::Get().network.KnownKeysOnly);
+                    setCheckboxValue(WIDX_LOG_CHAT_CHECKBOX, Config::Get().network.logChat);
+                    setCheckboxValue(WIDX_LOG_SERVER_ACTIONS_CHECKBOX, Config::Get().network.logServerActions);
+                    setCheckboxValue(WIDX_KNOWN_KEYS_ONLY_CHECKBOX, Config::Get().network.knownKeysOnly);
                     break;
                 }
             }

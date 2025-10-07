@@ -649,9 +649,9 @@ static constexpr UIThemeWindowEntry PredefinedThemeRCT1_Entries[] =
             ActiveAvailableThemeIndex = 1;
 
             bool configValid = false;
-            if (!Config::Get().interface.CurrentThemePreset.empty())
+            if (!Config::Get().interface.currentThemePreset.empty())
             {
-                if (LoadThemeByConfigName(Config::Get().interface.CurrentThemePreset.c_str()))
+                if (LoadThemeByConfigName(Config::Get().interface.currentThemePreset.c_str()))
                 {
                     configValid = true;
                 }
@@ -659,7 +659,7 @@ static constexpr UIThemeWindowEntry PredefinedThemeRCT1_Entries[] =
 
             if (!configValid)
             {
-                Config::Get().interface.CurrentThemePreset = ThemeManagerGetAvailableThemeConfigName(1);
+                Config::Get().interface.currentThemePreset = ThemeManagerGetAvailableThemeConfigName(1);
             }
         }
 
@@ -741,7 +741,7 @@ static constexpr UIThemeWindowEntry PredefinedThemeRCT1_Entries[] =
             }
         }
         ThemeManager::ActiveAvailableThemeIndex = index;
-        Config::Get().interface.CurrentThemePreset = ThemeManagerGetAvailableThemeConfigName(index);
+        Config::Get().interface.currentThemePreset = ThemeManagerGetAvailableThemeConfigName(index);
 
         ColourSchemeUpdateAll();
     }
@@ -837,7 +837,7 @@ static constexpr UIThemeWindowEntry PredefinedThemeRCT1_Entries[] =
             if (Path::Equals(newPath, ThemeManager::AvailableThemes[i].Path))
             {
                 ThemeManager::ActiveAvailableThemeIndex = i;
-                Config::Get().interface.CurrentThemePreset = ThemeManagerGetAvailableThemeConfigName(1);
+                Config::Get().interface.currentThemePreset = ThemeManagerGetAvailableThemeConfigName(1);
                 break;
             }
         }
@@ -862,7 +862,7 @@ static constexpr UIThemeWindowEntry PredefinedThemeRCT1_Entries[] =
             if (Path::Equals(newPath, ThemeManager::AvailableThemes[i].Path))
             {
                 ThemeManager::ActiveAvailableThemeIndex = i;
-                Config::Get().interface.CurrentThemePreset = ThemeManagerGetAvailableThemeConfigName(i);
+                Config::Get().interface.currentThemePreset = ThemeManagerGetAvailableThemeConfigName(i);
                 break;
             }
         }
@@ -873,7 +873,7 @@ static constexpr UIThemeWindowEntry PredefinedThemeRCT1_Entries[] =
         File::Delete(ThemeManager::CurrentThemePath);
         ThemeManager::LoadTheme(const_cast<UITheme*>(&PredefinedThemeRCT2));
         ThemeManager::ActiveAvailableThemeIndex = 1;
-        Config::Get().interface.CurrentThemePreset = ThemeManagerGetAvailableThemeConfigName(1);
+        Config::Get().interface.currentThemePreset = ThemeManagerGetAvailableThemeConfigName(1);
     }
 
     void ThemeManagerInitialise()

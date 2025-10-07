@@ -881,7 +881,7 @@ namespace OpenRCT2::Ui::Windows
             DrawTextEllipsised(rt, { windowPos.x + 3, windowPos.y + height - 23 }, width - 19, STR_BLACK_STRING, ft);
 
             // Draw object author(s) if debugging tools are active
-            if (Config::Get().general.DebuggingTools)
+            if (Config::Get().general.debuggingTools)
             {
                 auto sceneryObjectType = GetObjectTypeFromSceneryType(selectedSceneryEntry.SceneryType);
                 auto& objManager = GetContext()->GetObjectManager();
@@ -2573,7 +2573,7 @@ namespace OpenRCT2::Ui::Windows
                 rotation -= GetCurrentRotation();
                 rotation &= 0x3;
 
-                if (Config::Get().general.VirtualFloorStyle != VirtualFloorStyles::Off)
+                if (Config::Get().general.virtualFloorStyle != VirtualFloorStyles::Off)
                 {
                     VirtualFloorSetHeight(gSceneryPlaceZ);
                 }
@@ -2657,7 +2657,7 @@ namespace OpenRCT2::Ui::Windows
             rotation -= GetCurrentRotation();
             rotation &= 0x3;
 
-            if (Config::Get().general.VirtualFloorStyle != VirtualFloorStyles::Off)
+            if (Config::Get().general.virtualFloorStyle != VirtualFloorStyles::Off)
             {
                 VirtualFloorSetHeight(gSceneryPlaceZ);
             }
@@ -2692,7 +2692,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            if (Config::Get().general.VirtualFloorStyle != VirtualFloorStyles::Off)
+            if (Config::Get().general.virtualFloorStyle != VirtualFloorStyles::Off)
             {
                 VirtualFloorSetHeight(gSceneryPlaceZ);
             }
@@ -2783,7 +2783,7 @@ namespace OpenRCT2::Ui::Windows
             if (gridPos.IsNull())
                 return;
 
-            if (Config::Get().general.VirtualFloorStyle != VirtualFloorStyles::Off)
+            if (Config::Get().general.virtualFloorStyle != VirtualFloorStyles::Off)
             {
                 VirtualFloorSetHeight(gSceneryPlaceZ);
             }
@@ -2884,7 +2884,7 @@ namespace OpenRCT2::Ui::Windows
             rotation -= GetCurrentRotation();
             rotation &= 0x3;
 
-            if (Config::Get().general.VirtualFloorStyle != VirtualFloorStyles::Off)
+            if (Config::Get().general.virtualFloorStyle != VirtualFloorStyles::Off)
             {
                 VirtualFloorSetHeight(gSceneryPlaceZ);
             }
@@ -2933,7 +2933,7 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
 
-            if (Config::Get().general.VirtualFloorStyle != VirtualFloorStyles::Off)
+            if (Config::Get().general.virtualFloorStyle != VirtualFloorStyles::Off)
             {
                 VirtualFloorSetHeight(gSceneryPlaceZ);
             }

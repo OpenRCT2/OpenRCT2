@@ -123,7 +123,7 @@ X8DrawingEngine::X8DrawingEngine([[maybe_unused]] Ui::IUiContext& uiContext)
     _drawingContext = new X8DrawingContext(this);
     _mainRT.DrawingEngine = this;
     LightFx::SetAvailable(true);
-    _lastLightFXenabled = Config::Get().general.EnableLightFx;
+    _lastLightFXenabled = Config::Get().general.enableLightFx;
 }
 
 X8DrawingEngine::~X8DrawingEngine()
@@ -165,11 +165,11 @@ void X8DrawingEngine::BeginDraw()
     if (!IntroIsPlaying())
     {
         // HACK we need to re-configure the bits if light fx has been enabled / disabled
-        if (_lastLightFXenabled != Config::Get().general.EnableLightFx)
+        if (_lastLightFXenabled != Config::Get().general.enableLightFx)
         {
             Resize(_width, _height);
             GfxInvalidateScreen();
-            _lastLightFXenabled = Config::Get().general.EnableLightFx;
+            _lastLightFXenabled = Config::Get().general.enableLightFx;
         }
         _weatherDrawer.Restore(_mainRT);
     }

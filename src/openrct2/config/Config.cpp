@@ -164,110 +164,110 @@ namespace OpenRCT2::Config
         if (reader->ReadSection("general"))
         {
             auto model = &_config.general;
-            model->AlwaysShowGridlines = reader->GetBoolean("always_show_gridlines", false);
-            model->AutosaveFrequency = reader->GetInt32("autosave", AUTOSAVE_EVERY_5MINUTES);
-            model->AutosaveAmount = reader->GetInt32("autosave_amount", kDefaultNumAutosavesToKeep);
-            model->ConfirmationPrompt = reader->GetBoolean("confirmation_prompt", false);
-            model->CurrencyFormat = reader->GetEnum<CurrencyType>(
+            model->alwaysShowGridlines = reader->GetBoolean("always_show_gridlines", false);
+            model->autosaveFrequency = reader->GetInt32("autosave", AUTOSAVE_EVERY_5MINUTES);
+            model->autosaveAmount = reader->GetInt32("autosave_amount", kDefaultNumAutosavesToKeep);
+            model->confirmationPrompt = reader->GetBoolean("confirmation_prompt", false);
+            model->currencyFormat = reader->GetEnum<CurrencyType>(
                 "currency_format", Platform::GetLocaleCurrency(), Enum_Currency);
-            model->CustomCurrencyRate = reader->GetInt32("custom_currency_rate", 10);
-            model->CustomCurrencyAffix = reader->GetEnum<CurrencyAffix>(
+            model->customCurrencyRate = reader->GetInt32("custom_currency_rate", 10);
+            model->customCurrencyAffix = reader->GetEnum<CurrencyAffix>(
                 "custom_currency_affix", CurrencyAffix::Suffix, Enum_CurrencySymbolAffix);
-            model->CustomCurrencySymbol = reader->GetString("custom_currency_symbol", "Ctm");
-            model->EdgeScrolling = reader->GetBoolean("edge_scrolling", true);
-            model->EdgeScrollingSpeed = reader->GetInt32("edge_scrolling_speed", 12);
-            model->FullscreenMode = reader->GetInt32("fullscreen_mode", 0);
-            model->FullscreenHeight = reader->GetInt32("fullscreen_height", -1);
-            model->FullscreenWidth = reader->GetInt32("fullscreen_width", -1);
-            model->RCT1Path = reader->GetString("rct1_path", "");
-            model->RCT2Path = reader->GetString("game_path", "");
-            model->LandscapeSmoothing = reader->GetBoolean("landscape_smoothing", true);
-            model->Language = reader->GetEnum<int32_t>("language", Platform::GetLocaleLanguage(), Enum_LanguageEnum);
-            model->MeasurementFormat = reader->GetEnum<MeasurementFormat>(
+            model->customCurrencySymbol = reader->GetString("custom_currency_symbol", "Ctm");
+            model->edgeScrolling = reader->GetBoolean("edge_scrolling", true);
+            model->edgeScrollingSpeed = reader->GetInt32("edge_scrolling_speed", 12);
+            model->fullscreenMode = reader->GetInt32("fullscreen_mode", 0);
+            model->fullscreenHeight = reader->GetInt32("fullscreen_height", -1);
+            model->fullscreenWidth = reader->GetInt32("fullscreen_width", -1);
+            model->rct1Path = reader->GetString("rct1_path", "");
+            model->rct2Path = reader->GetString("game_path", "");
+            model->landscapeSmoothing = reader->GetBoolean("landscape_smoothing", true);
+            model->language = reader->GetEnum<int32_t>("language", Platform::GetLocaleLanguage(), Enum_LanguageEnum);
+            model->measurementFormat = reader->GetEnum<MeasurementFormat>(
                 "measurement_format", Platform::GetLocaleMeasurementFormat(), Enum_MeasurementFormat);
-            model->PlayIntro = reader->GetBoolean("play_intro", false);
-            model->SavePluginData = reader->GetBoolean("save_plugin_data", true);
-            model->DebuggingTools = reader->GetBoolean("debugging_tools", false);
-            model->ShowHeightAsUnits = reader->GetBoolean("show_height_as_units", false);
-            model->TemperatureFormat = reader->GetEnum<TemperatureUnit>(
+            model->playIntro = reader->GetBoolean("play_intro", false);
+            model->savePluginData = reader->GetBoolean("save_plugin_data", true);
+            model->debuggingTools = reader->GetBoolean("debugging_tools", false);
+            model->showHeightAsUnits = reader->GetBoolean("show_height_as_units", false);
+            model->temperatureFormat = reader->GetEnum<TemperatureUnit>(
                 "temperature_format", Platform::GetLocaleTemperatureFormat(), Enum_Temperature);
-            model->WindowHeight = reader->GetInt32("window_height", -1);
-            model->WindowSnapProximity = reader->GetInt32("window_snap_proximity", 5);
-            model->WindowWidth = reader->GetInt32("window_width", -1);
-            model->DefaultDisplay = reader->GetInt32("default_display", 0);
-            model->DrawingEngine = reader->GetEnum<DrawingEngine>(
+            model->windowHeight = reader->GetInt32("window_height", -1);
+            model->windowSnapProximity = reader->GetInt32("window_snap_proximity", 5);
+            model->windowWidth = reader->GetInt32("window_width", -1);
+            model->defaultDisplay = reader->GetInt32("default_display", 0);
+            model->drawingEngine = reader->GetEnum<DrawingEngine>(
                 "drawing_engine", DrawingEngine::SoftwareWithHardwareDisplay, Enum_DrawingEngine);
-            model->UncapFPS = reader->GetBoolean("uncap_fps", false);
-            model->UseVSync = reader->GetBoolean("use_vsync", true);
-            model->VirtualFloorStyle = reader->GetEnum<VirtualFloorStyles>(
+            model->uncapFPS = reader->GetBoolean("uncap_fps", false);
+            model->useVSync = reader->GetBoolean("use_vsync", true);
+            model->virtualFloorStyle = reader->GetEnum<VirtualFloorStyles>(
                 "virtual_floor_style", VirtualFloorStyles::Glassy, Enum_VirtualFloorStyle);
-            model->DateFormat = reader->GetEnum<int32_t>("date_format", Platform::GetLocaleDateFormat(), Enum_DateFormat);
-            model->AutoStaffPlacement = reader->GetBoolean("auto_staff", true);
-            model->HandymenMowByDefault = reader->GetBoolean("handymen_mow_default", false);
-            model->DefaultInspectionInterval = reader->GetInt32("default_inspection_interval", 2);
-            model->LastRunVersion = reader->GetString("last_run_version", "");
-            model->InvertViewportDrag = reader->GetBoolean("invert_viewport_drag", false);
-            model->LoadSaveSort = reader->GetEnum<FileBrowserSort>(
+            model->dateFormat = reader->GetEnum<int32_t>("date_format", Platform::GetLocaleDateFormat(), Enum_DateFormat);
+            model->autoStaffPlacement = reader->GetBoolean("auto_staff", true);
+            model->handymenMowByDefault = reader->GetBoolean("handymen_mow_default", false);
+            model->defaultInspectionInterval = reader->GetInt32("default_inspection_interval", 2);
+            model->lastRunVersion = reader->GetString("last_run_version", "");
+            model->invertViewportDrag = reader->GetBoolean("invert_viewport_drag", false);
+            model->loadSaveSort = reader->GetEnum<FileBrowserSort>(
                 "load_save_sort", FileBrowserSort::NameAscending, Enum_FileBrowserSort);
-            model->MinimizeFullscreenFocusLoss = reader->GetBoolean("minimize_fullscreen_focus_loss", true);
-            model->DisableScreensaver = reader->GetBoolean("disable_screensaver", true);
+            model->minimizeFullscreenFocusLoss = reader->GetBoolean("minimize_fullscreen_focus_loss", true);
+            model->disableScreensaver = reader->GetBoolean("disable_screensaver", true);
 
             // Default config setting is false until the games canvas can be separated from the effect
-            model->DayNightCycle = reader->GetBoolean("day_night_cycle", false);
-            const bool supportsLightFx = model->DrawingEngine == DrawingEngine::SoftwareWithHardwareDisplay;
-            model->EnableLightFx = supportsLightFx && reader->GetBoolean("enable_light_fx", false);
-            model->EnableLightFxForVehicles = supportsLightFx && reader->GetBoolean("enable_light_fx_for_vehicles", false);
-            model->UpperCaseBanners = reader->GetBoolean("upper_case_banners", false);
-            model->DisableLightningEffect = reader->GetBoolean("disable_lightning_effect", false);
-            model->WindowScale = reader->GetFloat("window_scale", Platform::GetDefaultScale());
-            model->InferDisplayDPI = reader->GetBoolean("infer_display_dpi", true);
-            model->ShowFPS = reader->GetBoolean("show_fps", false);
+            model->dayNightCycle = reader->GetBoolean("day_night_cycle", false);
+            const bool supportsLightFx = model->drawingEngine == DrawingEngine::SoftwareWithHardwareDisplay;
+            model->enableLightFx = supportsLightFx && reader->GetBoolean("enable_light_fx", false);
+            model->enableLightFxForVehicles = supportsLightFx && reader->GetBoolean("enable_light_fx_for_vehicles", false);
+            model->upperCaseBanners = reader->GetBoolean("upper_case_banners", false);
+            model->disableLightningEffect = reader->GetBoolean("disable_lightning_effect", false);
+            model->windowScale = reader->GetFloat("window_scale", Platform::GetDefaultScale());
+            model->inferDisplayDPI = reader->GetBoolean("infer_display_dpi", true);
+            model->showFPS = reader->GetBoolean("show_fps", false);
 #ifdef _DEBUG
             // Always have multi-threading disabled in debug builds, this makes things slower.
-            model->MultiThreading = false;
+            model->multiThreading = false;
 #else
-            model->MultiThreading = reader->GetBoolean("multithreading", true);
+            model->multiThreading = reader->GetBoolean("multithreading", true);
 #endif // _DEBUG
-            model->TrapCursor = reader->GetBoolean("trap_cursor", false);
-            model->AutoOpenShops = reader->GetBoolean("auto_open_shops", false);
+            model->trapCursor = reader->GetBoolean("trap_cursor", false);
+            model->autoOpenShops = reader->GetBoolean("auto_open_shops", false);
 
             // Gamepad settings
             model->gamepadDeadzone = reader->GetInt32("gamepad_deadzone", 3600);
             model->gamepadSensitivity = reader->GetFloat("gamepad_sensitivity", 1.5f);
-            model->ScenarioUnlockingEnabled = reader->GetBoolean("scenario_unlocking_enabled", true);
-            model->ScenarioHideMegaPark = reader->GetBoolean("scenario_hide_mega_park", true);
-            model->LastSaveGameDirectory = reader->GetString("last_game_directory", "");
-            model->LastSaveLandscapeDirectory = reader->GetString("last_landscape_directory", "");
-            model->LastSaveScenarioDirectory = reader->GetString("last_scenario_directory", "");
-            model->LastSaveTrackDirectory = reader->GetString("last_track_directory", "");
-            model->UseNativeBrowseDialog = reader->GetBoolean("use_native_browse_dialog", false);
-            model->WindowLimit = reader->GetInt32("window_limit", kWindowLimitMax);
-            model->ZoomToCursor = reader->GetBoolean("zoom_to_cursor", true);
-            model->RenderWeatherEffects = reader->GetBoolean("render_weather_effects", true);
-            model->RenderWeatherGloom = reader->GetBoolean("render_weather_gloom", true);
-            model->ShowGuestPurchases = reader->GetBoolean("show_guest_purchases", false);
-            model->ShowRealNamesOfGuests = reader->GetBoolean("show_real_names_of_guests", true);
-            model->ShowRealNamesOfStaff = reader->GetBoolean("show_real_names_of_staff", false);
-            model->AllowEarlyCompletion = reader->GetBoolean("allow_early_completion", false);
-            model->AssetPackOrder = reader->GetString("asset_pack_order", "");
-            model->EnabledAssetPacks = reader->GetString("enabled_asset_packs", "");
-            model->TransparentScreenshot = reader->GetBoolean("transparent_screenshot", true);
-            model->TransparentWater = reader->GetBoolean("transparent_water", true);
+            model->scenarioUnlockingEnabled = reader->GetBoolean("scenario_unlocking_enabled", true);
+            model->scenarioHideMegaPark = reader->GetBoolean("scenario_hide_mega_park", true);
+            model->lastSaveGameDirectory = reader->GetString("last_game_directory", "");
+            model->lastSaveLandscapeDirectory = reader->GetString("last_landscape_directory", "");
+            model->lastSaveScenarioDirectory = reader->GetString("last_scenario_directory", "");
+            model->lastSaveTrackDirectory = reader->GetString("last_track_directory", "");
+            model->useNativeBrowseDialog = reader->GetBoolean("use_native_browse_dialog", false);
+            model->windowLimit = reader->GetInt32("window_limit", kWindowLimitMax);
+            model->zoomToCursor = reader->GetBoolean("zoom_to_cursor", true);
+            model->renderWeatherEffects = reader->GetBoolean("render_weather_effects", true);
+            model->renderWeatherGloom = reader->GetBoolean("render_weather_gloom", true);
+            model->showGuestPurchases = reader->GetBoolean("show_guest_purchases", false);
+            model->showRealNamesOfGuests = reader->GetBoolean("show_real_names_of_guests", true);
+            model->showRealNamesOfStaff = reader->GetBoolean("show_real_names_of_staff", false);
+            model->allowEarlyCompletion = reader->GetBoolean("allow_early_completion", false);
+            model->assetPackOrder = reader->GetString("asset_pack_order", "");
+            model->enabledAssetPacks = reader->GetString("enabled_asset_packs", "");
+            model->transparentScreenshot = reader->GetBoolean("transparent_screenshot", true);
+            model->transparentWater = reader->GetBoolean("transparent_water", true);
 
-            model->InvisibleRides = reader->GetBoolean("invisible_rides", false);
-            model->InvisibleVehicles = reader->GetBoolean("invisible_vehicles", false);
-            model->InvisibleTrees = reader->GetBoolean("invisible_trees", false);
-            model->InvisibleScenery = reader->GetBoolean("invisible_scenery", false);
-            model->InvisiblePaths = reader->GetBoolean("invisible_paths", false);
-            model->InvisibleSupports = reader->GetBoolean("invisible_supports", true);
+            model->invisibleRides = reader->GetBoolean("invisible_rides", false);
+            model->invisibleVehicles = reader->GetBoolean("invisible_vehicles", false);
+            model->invisibleTrees = reader->GetBoolean("invisible_trees", false);
+            model->invisibleScenery = reader->GetBoolean("invisible_scenery", false);
+            model->invisiblePaths = reader->GetBoolean("invisible_paths", false);
+            model->invisibleSupports = reader->GetBoolean("invisible_supports", true);
 
-            model->LastVersionCheckTime = reader->GetInt64("last_version_check_time", 0);
+            model->lastVersionCheckTime = reader->GetInt64("last_version_check_time", 0);
 
-            model->FileBrowserWidth = reader->GetInt32("file_browser_width", 0);
-            model->FileBrowserHeight = reader->GetInt32("file_browser_height", 0);
-            model->FileBrowserShowSizeColumn = reader->GetBoolean("file_browser_show_size_column", true);
-            model->FileBrowserShowDateColumn = reader->GetBoolean("file_browser_show_date_column", true);
-            model->FileBrowserPreviewType = reader->GetEnum<ParkPreviewPref>(
+            model->fileBrowserWidth = reader->GetInt32("file_browser_width", 0);
+            model->fileBrowserHeight = reader->GetInt32("file_browser_height", 0);
+            model->fileBrowserShowSizeColumn = reader->GetBoolean("file_browser_show_size_column", true);
+            model->fileBrowserShowDateColumn = reader->GetBoolean("file_browser_show_date_column", true);
+            model->fileBrowserPreviewType = reader->GetEnum<ParkPreviewPref>(
                 "file_browser_preview_type", ParkPreviewPref::screenshot, Enum_ParkPreviewPref);
         }
     }
@@ -276,92 +276,92 @@ namespace OpenRCT2::Config
     {
         auto model = &_config.general;
         writer->WriteSection("general");
-        writer->WriteBoolean("always_show_gridlines", model->AlwaysShowGridlines);
-        writer->WriteInt32("autosave", model->AutosaveFrequency);
-        writer->WriteInt32("autosave_amount", model->AutosaveAmount);
-        writer->WriteBoolean("confirmation_prompt", model->ConfirmationPrompt);
-        writer->WriteEnum<CurrencyType>("currency_format", model->CurrencyFormat, Enum_Currency);
-        writer->WriteInt32("custom_currency_rate", model->CustomCurrencyRate);
-        writer->WriteEnum<CurrencyAffix>("custom_currency_affix", model->CustomCurrencyAffix, Enum_CurrencySymbolAffix);
-        writer->WriteString("custom_currency_symbol", model->CustomCurrencySymbol);
-        writer->WriteBoolean("edge_scrolling", model->EdgeScrolling);
-        writer->WriteInt32("edge_scrolling_speed", model->EdgeScrollingSpeed);
-        writer->WriteInt32("fullscreen_mode", model->FullscreenMode);
-        writer->WriteInt32("fullscreen_height", model->FullscreenHeight);
-        writer->WriteInt32("fullscreen_width", model->FullscreenWidth);
-        writer->WriteString("rct1_path", model->RCT1Path);
-        writer->WriteString("game_path", model->RCT2Path);
-        writer->WriteBoolean("landscape_smoothing", model->LandscapeSmoothing);
-        writer->WriteEnum<int32_t>("language", model->Language, Enum_LanguageEnum);
-        writer->WriteEnum<MeasurementFormat>("measurement_format", model->MeasurementFormat, Enum_MeasurementFormat);
-        writer->WriteBoolean("play_intro", model->PlayIntro);
-        writer->WriteBoolean("save_plugin_data", model->SavePluginData);
-        writer->WriteBoolean("debugging_tools", model->DebuggingTools);
-        writer->WriteBoolean("show_height_as_units", model->ShowHeightAsUnits);
-        writer->WriteEnum<TemperatureUnit>("temperature_format", model->TemperatureFormat, Enum_Temperature);
-        writer->WriteInt32("window_height", model->WindowHeight);
-        writer->WriteInt32("window_snap_proximity", model->WindowSnapProximity);
-        writer->WriteInt32("window_width", model->WindowWidth);
-        writer->WriteInt32("default_display", model->DefaultDisplay);
-        writer->WriteEnum<DrawingEngine>("drawing_engine", model->DrawingEngine, Enum_DrawingEngine);
-        writer->WriteBoolean("uncap_fps", model->UncapFPS);
-        writer->WriteBoolean("use_vsync", model->UseVSync);
-        writer->WriteEnum<int32_t>("date_format", model->DateFormat, Enum_DateFormat);
-        writer->WriteBoolean("auto_staff", model->AutoStaffPlacement);
-        writer->WriteBoolean("handymen_mow_default", model->HandymenMowByDefault);
-        writer->WriteInt32("default_inspection_interval", model->DefaultInspectionInterval);
-        writer->WriteString("last_run_version", model->LastRunVersion);
-        writer->WriteBoolean("invert_viewport_drag", model->InvertViewportDrag);
-        writer->WriteEnum<FileBrowserSort>("load_save_sort", model->LoadSaveSort, Enum_FileBrowserSort);
-        writer->WriteBoolean("minimize_fullscreen_focus_loss", model->MinimizeFullscreenFocusLoss);
-        writer->WriteBoolean("disable_screensaver", model->DisableScreensaver);
-        writer->WriteBoolean("day_night_cycle", model->DayNightCycle);
-        writer->WriteBoolean("enable_light_fx", model->EnableLightFx);
-        writer->WriteBoolean("enable_light_fx_for_vehicles", model->EnableLightFxForVehicles);
-        writer->WriteBoolean("upper_case_banners", model->UpperCaseBanners);
-        writer->WriteBoolean("disable_lightning_effect", model->DisableLightningEffect);
-        writer->WriteFloat("window_scale", model->WindowScale);
-        writer->WriteBoolean("infer_display_dpi", model->InferDisplayDPI);
-        writer->WriteBoolean("show_fps", model->ShowFPS);
-        writer->WriteBoolean("multithreading", model->MultiThreading);
-        writer->WriteBoolean("trap_cursor", model->TrapCursor);
-        writer->WriteBoolean("auto_open_shops", model->AutoOpenShops);
+        writer->WriteBoolean("always_show_gridlines", model->alwaysShowGridlines);
+        writer->WriteInt32("autosave", model->autosaveFrequency);
+        writer->WriteInt32("autosave_amount", model->autosaveAmount);
+        writer->WriteBoolean("confirmation_prompt", model->confirmationPrompt);
+        writer->WriteEnum<CurrencyType>("currency_format", model->currencyFormat, Enum_Currency);
+        writer->WriteInt32("custom_currency_rate", model->customCurrencyRate);
+        writer->WriteEnum<CurrencyAffix>("custom_currency_affix", model->customCurrencyAffix, Enum_CurrencySymbolAffix);
+        writer->WriteString("custom_currency_symbol", model->customCurrencySymbol);
+        writer->WriteBoolean("edge_scrolling", model->edgeScrolling);
+        writer->WriteInt32("edge_scrolling_speed", model->edgeScrollingSpeed);
+        writer->WriteInt32("fullscreen_mode", model->fullscreenMode);
+        writer->WriteInt32("fullscreen_height", model->fullscreenHeight);
+        writer->WriteInt32("fullscreen_width", model->fullscreenWidth);
+        writer->WriteString("rct1_path", model->rct1Path);
+        writer->WriteString("game_path", model->rct2Path);
+        writer->WriteBoolean("landscape_smoothing", model->landscapeSmoothing);
+        writer->WriteEnum<int32_t>("language", model->language, Enum_LanguageEnum);
+        writer->WriteEnum<MeasurementFormat>("measurement_format", model->measurementFormat, Enum_MeasurementFormat);
+        writer->WriteBoolean("play_intro", model->playIntro);
+        writer->WriteBoolean("save_plugin_data", model->savePluginData);
+        writer->WriteBoolean("debugging_tools", model->debuggingTools);
+        writer->WriteBoolean("show_height_as_units", model->showHeightAsUnits);
+        writer->WriteEnum<TemperatureUnit>("temperature_format", model->temperatureFormat, Enum_Temperature);
+        writer->WriteInt32("window_height", model->windowHeight);
+        writer->WriteInt32("window_snap_proximity", model->windowSnapProximity);
+        writer->WriteInt32("window_width", model->windowWidth);
+        writer->WriteInt32("default_display", model->defaultDisplay);
+        writer->WriteEnum<DrawingEngine>("drawing_engine", model->drawingEngine, Enum_DrawingEngine);
+        writer->WriteBoolean("uncap_fps", model->uncapFPS);
+        writer->WriteBoolean("use_vsync", model->useVSync);
+        writer->WriteEnum<int32_t>("date_format", model->dateFormat, Enum_DateFormat);
+        writer->WriteBoolean("auto_staff", model->autoStaffPlacement);
+        writer->WriteBoolean("handymen_mow_default", model->handymenMowByDefault);
+        writer->WriteInt32("default_inspection_interval", model->defaultInspectionInterval);
+        writer->WriteString("last_run_version", model->lastRunVersion);
+        writer->WriteBoolean("invert_viewport_drag", model->invertViewportDrag);
+        writer->WriteEnum<FileBrowserSort>("load_save_sort", model->loadSaveSort, Enum_FileBrowserSort);
+        writer->WriteBoolean("minimize_fullscreen_focus_loss", model->minimizeFullscreenFocusLoss);
+        writer->WriteBoolean("disable_screensaver", model->disableScreensaver);
+        writer->WriteBoolean("day_night_cycle", model->dayNightCycle);
+        writer->WriteBoolean("enable_light_fx", model->enableLightFx);
+        writer->WriteBoolean("enable_light_fx_for_vehicles", model->enableLightFxForVehicles);
+        writer->WriteBoolean("upper_case_banners", model->upperCaseBanners);
+        writer->WriteBoolean("disable_lightning_effect", model->disableLightningEffect);
+        writer->WriteFloat("window_scale", model->windowScale);
+        writer->WriteBoolean("infer_display_dpi", model->inferDisplayDPI);
+        writer->WriteBoolean("show_fps", model->showFPS);
+        writer->WriteBoolean("multithreading", model->multiThreading);
+        writer->WriteBoolean("trap_cursor", model->trapCursor);
+        writer->WriteBoolean("auto_open_shops", model->autoOpenShops);
 
         // Gamepad settings
         writer->WriteInt32("gamepad_deadzone", model->gamepadDeadzone);
         writer->WriteFloat("gamepad_sensitivity", model->gamepadSensitivity);
-        writer->WriteBoolean("scenario_unlocking_enabled", model->ScenarioUnlockingEnabled);
-        writer->WriteBoolean("scenario_hide_mega_park", model->ScenarioHideMegaPark);
-        writer->WriteString("last_game_directory", model->LastSaveGameDirectory);
-        writer->WriteString("last_landscape_directory", model->LastSaveLandscapeDirectory);
-        writer->WriteString("last_scenario_directory", model->LastSaveScenarioDirectory);
-        writer->WriteString("last_track_directory", model->LastSaveTrackDirectory);
-        writer->WriteBoolean("use_native_browse_dialog", model->UseNativeBrowseDialog);
-        writer->WriteInt32("window_limit", model->WindowLimit);
-        writer->WriteBoolean("zoom_to_cursor", model->ZoomToCursor);
-        writer->WriteBoolean("render_weather_effects", model->RenderWeatherEffects);
-        writer->WriteBoolean("render_weather_gloom", model->RenderWeatherGloom);
-        writer->WriteBoolean("show_guest_purchases", model->ShowGuestPurchases);
-        writer->WriteBoolean("show_real_names_of_guests", model->ShowRealNamesOfGuests);
-        writer->WriteBoolean("show_real_names_of_staff", model->ShowRealNamesOfStaff);
-        writer->WriteBoolean("allow_early_completion", model->AllowEarlyCompletion);
-        writer->WriteString("asset_pack_order", model->AssetPackOrder);
-        writer->WriteString("enabled_asset_packs", model->EnabledAssetPacks);
-        writer->WriteEnum<VirtualFloorStyles>("virtual_floor_style", model->VirtualFloorStyle, Enum_VirtualFloorStyle);
-        writer->WriteBoolean("transparent_screenshot", model->TransparentScreenshot);
-        writer->WriteBoolean("transparent_water", model->TransparentWater);
-        writer->WriteBoolean("invisible_rides", model->InvisibleRides);
-        writer->WriteBoolean("invisible_vehicles", model->InvisibleVehicles);
-        writer->WriteBoolean("invisible_trees", model->InvisibleTrees);
-        writer->WriteBoolean("invisible_scenery", model->InvisibleScenery);
-        writer->WriteBoolean("invisible_paths", model->InvisiblePaths);
-        writer->WriteBoolean("invisible_supports", model->InvisibleSupports);
-        writer->WriteInt64("last_version_check_time", model->LastVersionCheckTime);
-        writer->WriteInt32("file_browser_width", model->FileBrowserWidth);
-        writer->WriteInt32("file_browser_height", model->FileBrowserHeight);
-        writer->WriteBoolean("file_browser_show_size_column", model->FileBrowserShowSizeColumn);
-        writer->WriteBoolean("file_browser_show_date_column", model->FileBrowserShowDateColumn);
-        writer->WriteEnum<ParkPreviewPref>("file_browser_preview_type", model->FileBrowserPreviewType, Enum_ParkPreviewPref);
+        writer->WriteBoolean("scenario_unlocking_enabled", model->scenarioUnlockingEnabled);
+        writer->WriteBoolean("scenario_hide_mega_park", model->scenarioHideMegaPark);
+        writer->WriteString("last_game_directory", model->lastSaveGameDirectory);
+        writer->WriteString("last_landscape_directory", model->lastSaveLandscapeDirectory);
+        writer->WriteString("last_scenario_directory", model->lastSaveScenarioDirectory);
+        writer->WriteString("last_track_directory", model->lastSaveTrackDirectory);
+        writer->WriteBoolean("use_native_browse_dialog", model->useNativeBrowseDialog);
+        writer->WriteInt32("window_limit", model->windowLimit);
+        writer->WriteBoolean("zoom_to_cursor", model->zoomToCursor);
+        writer->WriteBoolean("render_weather_effects", model->renderWeatherEffects);
+        writer->WriteBoolean("render_weather_gloom", model->renderWeatherGloom);
+        writer->WriteBoolean("show_guest_purchases", model->showGuestPurchases);
+        writer->WriteBoolean("show_real_names_of_guests", model->showRealNamesOfGuests);
+        writer->WriteBoolean("show_real_names_of_staff", model->showRealNamesOfStaff);
+        writer->WriteBoolean("allow_early_completion", model->allowEarlyCompletion);
+        writer->WriteString("asset_pack_order", model->assetPackOrder);
+        writer->WriteString("enabled_asset_packs", model->enabledAssetPacks);
+        writer->WriteEnum<VirtualFloorStyles>("virtual_floor_style", model->virtualFloorStyle, Enum_VirtualFloorStyle);
+        writer->WriteBoolean("transparent_screenshot", model->transparentScreenshot);
+        writer->WriteBoolean("transparent_water", model->transparentWater);
+        writer->WriteBoolean("invisible_rides", model->invisibleRides);
+        writer->WriteBoolean("invisible_vehicles", model->invisibleVehicles);
+        writer->WriteBoolean("invisible_trees", model->invisibleTrees);
+        writer->WriteBoolean("invisible_scenery", model->invisibleScenery);
+        writer->WriteBoolean("invisible_paths", model->invisiblePaths);
+        writer->WriteBoolean("invisible_supports", model->invisibleSupports);
+        writer->WriteInt64("last_version_check_time", model->lastVersionCheckTime);
+        writer->WriteInt32("file_browser_width", model->fileBrowserWidth);
+        writer->WriteInt32("file_browser_height", model->fileBrowserHeight);
+        writer->WriteBoolean("file_browser_show_size_column", model->fileBrowserShowSizeColumn);
+        writer->WriteBoolean("file_browser_show_date_column", model->fileBrowserShowDateColumn);
+        writer->WriteEnum<ParkPreviewPref>("file_browser_preview_type", model->fileBrowserPreviewType, Enum_ParkPreviewPref);
     }
 
     static void ReadInterface(IIniReader* reader)
@@ -369,26 +369,26 @@ namespace OpenRCT2::Config
         if (reader->ReadSection("interface"))
         {
             auto model = &_config.interface;
-            model->ToolbarButtonsCentred = reader->GetBoolean("toolbar_buttons_centred", false);
-            model->ToolbarShowFinances = reader->GetBoolean("toolbar_show_finances", true);
-            model->ToolbarShowResearch = reader->GetBoolean("toolbar_show_research", true);
-            model->ToolbarShowCheats = reader->GetBoolean("toolbar_show_cheats", false);
-            model->ToolbarShowNews = reader->GetBoolean("toolbar_show_news", false);
-            model->ToolbarShowMute = reader->GetBoolean("toolbar_show_mute", false);
-            model->ToolbarShowChat = reader->GetBoolean("toolbar_show_chat", false);
-            model->ToolbarShowZoom = reader->GetBoolean("toolbar_show_zoom", true);
-            model->ToolbarShowRotateAnticlockwise = reader->GetBoolean("toolbar_show_rotate_anti_clockwise", false);
-            model->ConsoleSmallFont = reader->GetBoolean("console_small_font", false);
-            model->CurrentThemePreset = reader->GetString("current_theme", "*RCT2");
-            model->CurrentTitleSequencePreset = reader->GetString("current_title_sequence", "*OPENRCT2");
-            model->RandomTitleSequence = reader->GetBoolean("random_title_sequence", false);
-            model->ObjectSelectionFilterFlags = reader->GetInt32("object_selection_filter_flags", 0x3FFF);
+            model->toolbarButtonsCentred = reader->GetBoolean("toolbar_buttons_centred", false);
+            model->toolbarShowFinances = reader->GetBoolean("toolbar_show_finances", true);
+            model->toolbarShowResearch = reader->GetBoolean("toolbar_show_research", true);
+            model->toolbarShowCheats = reader->GetBoolean("toolbar_show_cheats", false);
+            model->toolbarShowNews = reader->GetBoolean("toolbar_show_news", false);
+            model->toolbarShowMute = reader->GetBoolean("toolbar_show_mute", false);
+            model->toolbarShowChat = reader->GetBoolean("toolbar_show_chat", false);
+            model->toolbarShowZoom = reader->GetBoolean("toolbar_show_zoom", true);
+            model->toolbarShowRotateAnticlockwise = reader->GetBoolean("toolbar_show_rotate_anti_clockwise", false);
+            model->consoleSmallFont = reader->GetBoolean("console_small_font", false);
+            model->currentThemePreset = reader->GetString("current_theme", "*RCT2");
+            model->currentTitleSequencePreset = reader->GetString("current_title_sequence", "*OPENRCT2");
+            model->randomTitleSequence = reader->GetBoolean("random_title_sequence", false);
+            model->objectSelectionFilterFlags = reader->GetInt32("object_selection_filter_flags", 0x3FFF);
             model->scenarioSelectLastTab = reader->GetInt32("scenarioselect_last_tab", 0);
             model->scenarioPreviewScreenshots = reader->GetBoolean("scenario_preview_screenshots", true);
-            model->ListRideVehiclesSeparately = reader->GetBoolean("list_ride_vehicles_separately", false);
-            model->WindowButtonsOnTheLeft = reader->GetBoolean("window_buttons_on_the_left", kWindowButtonsOnTheLeftDefault);
-            model->EnlargedUi = reader->GetBoolean("enlarged_ui", kEnlargedUiDefault);
-            model->TouchEnhancements = reader->GetBoolean("touch_enhancements", kEnlargedUiDefault);
+            model->listRideVehiclesSeparately = reader->GetBoolean("list_ride_vehicles_separately", false);
+            model->windowButtonsOnTheLeft = reader->GetBoolean("window_buttons_on_the_left", kWindowButtonsOnTheLeftDefault);
+            model->enlargedUi = reader->GetBoolean("enlarged_ui", kEnlargedUiDefault);
+            model->touchEnhancements = reader->GetBoolean("touch_enhancements", kEnlargedUiDefault);
         }
     }
 
@@ -396,26 +396,26 @@ namespace OpenRCT2::Config
     {
         auto model = &_config.interface;
         writer->WriteSection("interface");
-        writer->WriteBoolean("toolbar_buttons_centred", model->ToolbarButtonsCentred);
-        writer->WriteBoolean("toolbar_show_finances", model->ToolbarShowFinances);
-        writer->WriteBoolean("toolbar_show_research", model->ToolbarShowResearch);
-        writer->WriteBoolean("toolbar_show_cheats", model->ToolbarShowCheats);
-        writer->WriteBoolean("toolbar_show_news", model->ToolbarShowNews);
-        writer->WriteBoolean("toolbar_show_mute", model->ToolbarShowMute);
-        writer->WriteBoolean("toolbar_show_chat", model->ToolbarShowChat);
-        writer->WriteBoolean("toolbar_show_zoom", model->ToolbarShowZoom);
-        writer->WriteBoolean("toolbar_show_rotate_anti_clockwise", model->ToolbarShowRotateAnticlockwise);
-        writer->WriteBoolean("console_small_font", model->ConsoleSmallFont);
-        writer->WriteString("current_theme", model->CurrentThemePreset);
-        writer->WriteString("current_title_sequence", model->CurrentTitleSequencePreset);
-        writer->WriteBoolean("random_title_sequence", model->RandomTitleSequence);
-        writer->WriteInt32("object_selection_filter_flags", model->ObjectSelectionFilterFlags);
+        writer->WriteBoolean("toolbar_buttons_centred", model->toolbarButtonsCentred);
+        writer->WriteBoolean("toolbar_show_finances", model->toolbarShowFinances);
+        writer->WriteBoolean("toolbar_show_research", model->toolbarShowResearch);
+        writer->WriteBoolean("toolbar_show_cheats", model->toolbarShowCheats);
+        writer->WriteBoolean("toolbar_show_news", model->toolbarShowNews);
+        writer->WriteBoolean("toolbar_show_mute", model->toolbarShowMute);
+        writer->WriteBoolean("toolbar_show_chat", model->toolbarShowChat);
+        writer->WriteBoolean("toolbar_show_zoom", model->toolbarShowZoom);
+        writer->WriteBoolean("toolbar_show_rotate_anti_clockwise", model->toolbarShowRotateAnticlockwise);
+        writer->WriteBoolean("console_small_font", model->consoleSmallFont);
+        writer->WriteString("current_theme", model->currentThemePreset);
+        writer->WriteString("current_title_sequence", model->currentTitleSequencePreset);
+        writer->WriteBoolean("random_title_sequence", model->randomTitleSequence);
+        writer->WriteInt32("object_selection_filter_flags", model->objectSelectionFilterFlags);
         writer->WriteInt32("scenarioselect_last_tab", model->scenarioSelectLastTab);
         writer->WriteBoolean("scenario_preview_screenshots", model->scenarioPreviewScreenshots);
-        writer->WriteBoolean("list_ride_vehicles_separately", model->ListRideVehiclesSeparately);
-        writer->WriteBoolean("window_buttons_on_the_left", model->WindowButtonsOnTheLeft);
-        writer->WriteBoolean("enlarged_ui", model->EnlargedUi);
-        writer->WriteBoolean("touch_enhancements", model->TouchEnhancements);
+        writer->WriteBoolean("list_ride_vehicles_separately", model->listRideVehiclesSeparately);
+        writer->WriteBoolean("window_buttons_on_the_left", model->windowButtonsOnTheLeft);
+        writer->WriteBoolean("enlarged_ui", model->enlargedUi);
+        writer->WriteBoolean("touch_enhancements", model->touchEnhancements);
     }
 
     static void ReadSound(IIniReader* reader)
@@ -423,16 +423,16 @@ namespace OpenRCT2::Config
         if (reader->ReadSection("sound"))
         {
             auto model = &_config.sound;
-            model->Device = reader->GetString("audio_device", "");
-            model->MasterSoundEnabled = reader->GetBoolean("master_sound", true);
-            model->MasterVolume = reader->GetInt32("master_volume", 100);
-            model->TitleMusic = static_cast<TitleMusicKind>(
+            model->device = reader->GetString("audio_device", "");
+            model->masterSoundEnabled = reader->GetBoolean("master_sound", true);
+            model->masterVolume = reader->GetInt32("master_volume", 100);
+            model->titleMusic = static_cast<TitleMusicKind>(
                 reader->GetInt32("title_theme", EnumValue(TitleMusicKind::OpenRCT2)));
-            model->SoundEnabled = reader->GetBoolean("sound", true);
-            model->SoundVolume = reader->GetInt32("sound_volume", 100);
-            model->RideMusicEnabled = reader->GetBoolean("ride_music", true);
-            model->AudioFocus = reader->GetInt32("ride_music_volume", 100);
-            model->audio_focus = reader->GetBoolean("audio_focus", false);
+            model->soundEnabled = reader->GetBoolean("sound", true);
+            model->soundVolume = reader->GetInt32("sound_volume", 100);
+            model->rideMusicEnabled = reader->GetBoolean("ride_music", true);
+            model->rideMusicVolume = reader->GetInt32("ride_music_volume", 100);
+            model->audioFocus = reader->GetBoolean("audio_focus", false);
         }
     }
 
@@ -440,15 +440,15 @@ namespace OpenRCT2::Config
     {
         auto model = &_config.sound;
         writer->WriteSection("sound");
-        writer->WriteString("audio_device", model->Device);
-        writer->WriteBoolean("master_sound", model->MasterSoundEnabled);
-        writer->WriteInt32("master_volume", model->MasterVolume);
-        writer->WriteInt32("title_theme", EnumValue(model->TitleMusic));
-        writer->WriteBoolean("sound", model->SoundEnabled);
-        writer->WriteInt32("sound_volume", model->SoundVolume);
-        writer->WriteBoolean("ride_music", model->RideMusicEnabled);
-        writer->WriteInt32("ride_music_volume", model->AudioFocus);
-        writer->WriteBoolean("audio_focus", model->audio_focus);
+        writer->WriteString("audio_device", model->device);
+        writer->WriteBoolean("master_sound", model->masterSoundEnabled);
+        writer->WriteInt32("master_volume", model->masterVolume);
+        writer->WriteInt32("title_theme", EnumValue(model->titleMusic));
+        writer->WriteBoolean("sound", model->soundEnabled);
+        writer->WriteInt32("sound_volume", model->soundVolume);
+        writer->WriteBoolean("ride_music", model->rideMusicEnabled);
+        writer->WriteInt32("ride_music_volume", model->rideMusicVolume);
+        writer->WriteBoolean("audio_focus", model->audioFocus);
     }
 
     static void ReadNetwork(IIniReader* reader)
@@ -472,26 +472,26 @@ namespace OpenRCT2::Config
             playerName = String::trim(playerName);
 
             auto model = &_config.network;
-            model->PlayerName = std::move(playerName);
-            model->DefaultPort = reader->GetInt32("default_port", ::Network::kDefaultPort);
-            model->ListenAddress = reader->GetString("listen_address", "");
-            model->DefaultPassword = reader->GetString("default_password", "");
-            model->StayConnected = reader->GetBoolean("stay_connected", true);
-            model->Advertise = reader->GetBoolean("advertise", true);
-            model->AdvertiseAddress = reader->GetString("advertise_address", "");
-            model->Maxplayers = reader->GetInt32("maxplayers", 16);
-            model->ServerName = reader->GetString("server_name", "Server");
-            model->ServerDescription = reader->GetString("server_description", "");
-            model->ServerGreeting = reader->GetString("server_greeting", "");
-            model->MasterServerUrl = reader->GetString("master_server_url", "");
-            model->ProviderName = reader->GetString("provider_name", "");
-            model->ProviderEmail = reader->GetString("provider_email", "");
-            model->ProviderWebsite = reader->GetString("provider_website", "");
-            model->KnownKeysOnly = reader->GetBoolean("known_keys_only", false);
-            model->LogChat = reader->GetBoolean("log_chat", false);
-            model->LogServerActions = reader->GetBoolean("log_server_actions", false);
-            model->PauseServerIfNoClients = reader->GetBoolean("pause_server_if_no_clients", false);
-            model->DesyncDebugging = reader->GetBoolean("desync_debugging", false);
+            model->playerName = std::move(playerName);
+            model->defaultPort = reader->GetInt32("default_port", ::Network::kDefaultPort);
+            model->listenAddress = reader->GetString("listen_address", "");
+            model->defaultPassword = reader->GetString("default_password", "");
+            model->stayConnected = reader->GetBoolean("stay_connected", true);
+            model->advertise = reader->GetBoolean("advertise", true);
+            model->advertiseAddress = reader->GetString("advertise_address", "");
+            model->maxplayers = reader->GetInt32("maxplayers", 16);
+            model->serverName = reader->GetString("server_name", "Server");
+            model->serverDescription = reader->GetString("server_description", "");
+            model->serverGreeting = reader->GetString("server_greeting", "");
+            model->masterServerUrl = reader->GetString("master_server_url", "");
+            model->providerName = reader->GetString("provider_name", "");
+            model->providerEmail = reader->GetString("provider_email", "");
+            model->providerWebsite = reader->GetString("provider_website", "");
+            model->knownKeysOnly = reader->GetBoolean("known_keys_only", false);
+            model->logChat = reader->GetBoolean("log_chat", false);
+            model->logServerActions = reader->GetBoolean("log_server_actions", false);
+            model->pauseServerIfNoClients = reader->GetBoolean("pause_server_if_no_clients", false);
+            model->desyncDebugging = reader->GetBoolean("desync_debugging", false);
         }
     }
 
@@ -499,26 +499,26 @@ namespace OpenRCT2::Config
     {
         auto model = &_config.network;
         writer->WriteSection("network");
-        writer->WriteString("player_name", model->PlayerName);
-        writer->WriteInt32("default_port", model->DefaultPort);
-        writer->WriteString("listen_address", model->ListenAddress);
-        writer->WriteString("default_password", model->DefaultPassword);
-        writer->WriteBoolean("stay_connected", model->StayConnected);
-        writer->WriteBoolean("advertise", model->Advertise);
-        writer->WriteString("advertise_address", model->AdvertiseAddress);
-        writer->WriteInt32("maxplayers", model->Maxplayers);
-        writer->WriteString("server_name", model->ServerName);
-        writer->WriteString("server_description", model->ServerDescription);
-        writer->WriteString("server_greeting", model->ServerGreeting);
-        writer->WriteString("master_server_url", model->MasterServerUrl);
-        writer->WriteString("provider_name", model->ProviderName);
-        writer->WriteString("provider_email", model->ProviderEmail);
-        writer->WriteString("provider_website", model->ProviderWebsite);
-        writer->WriteBoolean("known_keys_only", model->KnownKeysOnly);
-        writer->WriteBoolean("log_chat", model->LogChat);
-        writer->WriteBoolean("log_server_actions", model->LogServerActions);
-        writer->WriteBoolean("pause_server_if_no_clients", model->PauseServerIfNoClients);
-        writer->WriteBoolean("desync_debugging", model->DesyncDebugging);
+        writer->WriteString("player_name", model->playerName);
+        writer->WriteInt32("default_port", model->defaultPort);
+        writer->WriteString("listen_address", model->listenAddress);
+        writer->WriteString("default_password", model->defaultPassword);
+        writer->WriteBoolean("stay_connected", model->stayConnected);
+        writer->WriteBoolean("advertise", model->advertise);
+        writer->WriteString("advertise_address", model->advertiseAddress);
+        writer->WriteInt32("maxplayers", model->maxplayers);
+        writer->WriteString("server_name", model->serverName);
+        writer->WriteString("server_description", model->serverDescription);
+        writer->WriteString("server_greeting", model->serverGreeting);
+        writer->WriteString("master_server_url", model->masterServerUrl);
+        writer->WriteString("provider_name", model->providerName);
+        writer->WriteString("provider_email", model->providerEmail);
+        writer->WriteString("provider_website", model->providerWebsite);
+        writer->WriteBoolean("known_keys_only", model->knownKeysOnly);
+        writer->WriteBoolean("log_chat", model->logChat);
+        writer->WriteBoolean("log_server_actions", model->logServerActions);
+        writer->WriteBoolean("pause_server_if_no_clients", model->pauseServerIfNoClients);
+        writer->WriteBoolean("desync_debugging", model->desyncDebugging);
     }
 
     static void ReadNotifications(IIniReader* reader)
@@ -526,24 +526,24 @@ namespace OpenRCT2::Config
         if (reader->ReadSection("notifications"))
         {
             auto model = &_config.notifications;
-            model->ParkAward = reader->GetBoolean("park_award", true);
-            model->ParkMarketingCampaignFinished = reader->GetBoolean("park_marketing_campaign_finished", true);
-            model->ParkWarnings = reader->GetBoolean("park_warnings", true);
-            model->ParkRatingWarnings = reader->GetBoolean("park_rating_warnings", true);
-            model->RideBrokenDown = reader->GetBoolean("ride_broken_down", true);
-            model->RideCrashed = reader->GetBoolean("ride_crashed", true);
-            model->RideCasualties = reader->GetBoolean("ride_casualties", true);
-            model->RideWarnings = reader->GetBoolean("ride_warnings", true);
-            model->RideResearched = reader->GetBoolean("ride_researched", true);
-            model->RideStalledVehicles = reader->GetBoolean("ride_stalled_vehicles", true);
-            model->GuestWarnings = reader->GetBoolean("guest_warnings", true);
-            model->GuestLeftPark = reader->GetBoolean("guest_left_park", true);
-            model->GuestQueuingForRide = reader->GetBoolean("guest_queuing_for_ride", true);
-            model->GuestOnRide = reader->GetBoolean("guest_on_ride", true);
-            model->GuestLeftRide = reader->GetBoolean("guest_left_ride", true);
-            model->GuestBoughtItem = reader->GetBoolean("guest_bought_item", true);
-            model->GuestUsedFacility = reader->GetBoolean("guest_used_facility", true);
-            model->GuestDied = reader->GetBoolean("guest_died", true);
+            model->parkAward = reader->GetBoolean("park_award", true);
+            model->parkMarketingCampaignFinished = reader->GetBoolean("park_marketing_campaign_finished", true);
+            model->parkWarnings = reader->GetBoolean("park_warnings", true);
+            model->parkRatingWarnings = reader->GetBoolean("park_rating_warnings", true);
+            model->rideBrokenDown = reader->GetBoolean("ride_broken_down", true);
+            model->rideCrashed = reader->GetBoolean("ride_crashed", true);
+            model->rideCasualties = reader->GetBoolean("ride_casualties", true);
+            model->rideWarnings = reader->GetBoolean("ride_warnings", true);
+            model->rideResearched = reader->GetBoolean("ride_researched", true);
+            model->rideStalledVehicles = reader->GetBoolean("ride_stalled_vehicles", true);
+            model->guestWarnings = reader->GetBoolean("guest_warnings", true);
+            model->guestLeftPark = reader->GetBoolean("guest_left_park", true);
+            model->guestQueuingForRide = reader->GetBoolean("guest_queuing_for_ride", true);
+            model->guestOnRide = reader->GetBoolean("guest_on_ride", true);
+            model->guestLeftRide = reader->GetBoolean("guest_left_ride", true);
+            model->guestBoughtItem = reader->GetBoolean("guest_bought_item", true);
+            model->guestUsedFacility = reader->GetBoolean("guest_used_facility", true);
+            model->guestDied = reader->GetBoolean("guest_died", true);
         }
     }
 
@@ -551,24 +551,24 @@ namespace OpenRCT2::Config
     {
         auto model = &_config.notifications;
         writer->WriteSection("notifications");
-        writer->WriteBoolean("park_award", model->ParkAward);
-        writer->WriteBoolean("park_marketing_campaign_finished", model->ParkMarketingCampaignFinished);
-        writer->WriteBoolean("park_warnings", model->ParkWarnings);
-        writer->WriteBoolean("park_rating_warnings", model->ParkRatingWarnings);
-        writer->WriteBoolean("ride_broken_down", model->RideBrokenDown);
-        writer->WriteBoolean("ride_crashed", model->RideCrashed);
-        writer->WriteBoolean("ride_casualties", model->RideCasualties);
-        writer->WriteBoolean("ride_warnings", model->RideWarnings);
-        writer->WriteBoolean("ride_researched", model->RideResearched);
-        writer->WriteBoolean("ride_stalled_vehicles", model->RideStalledVehicles);
-        writer->WriteBoolean("guest_warnings", model->GuestWarnings);
-        writer->WriteBoolean("guest_left_park", model->GuestLeftPark);
-        writer->WriteBoolean("guest_queuing_for_ride", model->GuestQueuingForRide);
-        writer->WriteBoolean("guest_on_ride", model->GuestOnRide);
-        writer->WriteBoolean("guest_left_ride", model->GuestLeftRide);
-        writer->WriteBoolean("guest_bought_item", model->GuestBoughtItem);
-        writer->WriteBoolean("guest_used_facility", model->GuestUsedFacility);
-        writer->WriteBoolean("guest_died", model->GuestDied);
+        writer->WriteBoolean("park_award", model->parkAward);
+        writer->WriteBoolean("park_marketing_campaign_finished", model->parkMarketingCampaignFinished);
+        writer->WriteBoolean("park_warnings", model->parkWarnings);
+        writer->WriteBoolean("park_rating_warnings", model->parkRatingWarnings);
+        writer->WriteBoolean("ride_broken_down", model->rideBrokenDown);
+        writer->WriteBoolean("ride_crashed", model->rideCrashed);
+        writer->WriteBoolean("ride_casualties", model->rideCasualties);
+        writer->WriteBoolean("ride_warnings", model->rideWarnings);
+        writer->WriteBoolean("ride_researched", model->rideResearched);
+        writer->WriteBoolean("ride_stalled_vehicles", model->rideStalledVehicles);
+        writer->WriteBoolean("guest_warnings", model->guestWarnings);
+        writer->WriteBoolean("guest_left_park", model->guestLeftPark);
+        writer->WriteBoolean("guest_queuing_for_ride", model->guestQueuingForRide);
+        writer->WriteBoolean("guest_on_ride", model->guestOnRide);
+        writer->WriteBoolean("guest_left_ride", model->guestLeftRide);
+        writer->WriteBoolean("guest_bought_item", model->guestBoughtItem);
+        writer->WriteBoolean("guest_used_facility", model->guestUsedFacility);
+        writer->WriteBoolean("guest_died", model->guestDied);
     }
 
     static void ReadFont(IIniReader* reader)
@@ -576,20 +576,20 @@ namespace OpenRCT2::Config
         if (reader->ReadSection("font"))
         {
             auto model = &_config.fonts;
-            model->FileName = reader->GetString("file_name", "");
-            model->FontName = reader->GetString("font_name", "");
-            model->OffsetX = reader->GetInt32("x_offset", false);
-            model->OffsetY = reader->GetInt32("y_offset", true);
-            model->SizeTiny = reader->GetInt32("size_tiny", true);
-            model->SizeSmall = reader->GetInt32("size_small", false);
-            model->SizeMedium = reader->GetInt32("size_medium", false);
-            model->SizeBig = reader->GetInt32("size_big", false);
-            model->HeightTiny = reader->GetInt32("height_tiny", false);
-            model->HeightSmall = reader->GetInt32("height_small", false);
-            model->HeightMedium = reader->GetInt32("height_medium", false);
-            model->HeightBig = reader->GetInt32("height_big", false);
-            model->EnableHinting = reader->GetBoolean("enable_hinting", true);
-            model->HintingThreshold = reader->GetInt32("hinting_threshold", false);
+            model->fileName = reader->GetString("file_name", "");
+            model->fontName = reader->GetString("font_name", "");
+            model->offsetX = reader->GetInt32("x_offset", false);
+            model->offsetY = reader->GetInt32("y_offset", true);
+            model->sizeTiny = reader->GetInt32("size_tiny", true);
+            model->sizeSmall = reader->GetInt32("size_small", false);
+            model->sizeMedium = reader->GetInt32("size_medium", false);
+            model->sizeBig = reader->GetInt32("size_big", false);
+            model->heightTiny = reader->GetInt32("height_tiny", false);
+            model->heightSmall = reader->GetInt32("height_small", false);
+            model->heightMedium = reader->GetInt32("height_medium", false);
+            model->heightBig = reader->GetInt32("height_big", false);
+            model->enableHinting = reader->GetBoolean("enable_hinting", true);
+            model->hintingThreshold = reader->GetInt32("hinting_threshold", false);
         }
     }
 
@@ -597,20 +597,20 @@ namespace OpenRCT2::Config
     {
         auto model = &_config.fonts;
         writer->WriteSection("font");
-        writer->WriteString("file_name", model->FileName);
-        writer->WriteString("font_name", model->FontName);
-        writer->WriteInt32("x_offset", model->OffsetX);
-        writer->WriteInt32("y_offset", model->OffsetY);
-        writer->WriteInt32("size_tiny", model->SizeTiny);
-        writer->WriteInt32("size_small", model->SizeSmall);
-        writer->WriteInt32("size_medium", model->SizeMedium);
-        writer->WriteInt32("size_big", model->SizeBig);
-        writer->WriteInt32("height_tiny", model->HeightTiny);
-        writer->WriteInt32("height_small", model->HeightSmall);
-        writer->WriteInt32("height_medium", model->HeightMedium);
-        writer->WriteInt32("height_big", model->HeightBig);
-        writer->WriteBoolean("enable_hinting", model->EnableHinting);
-        writer->WriteInt32("hinting_threshold", model->HintingThreshold);
+        writer->WriteString("file_name", model->fileName);
+        writer->WriteString("font_name", model->fontName);
+        writer->WriteInt32("x_offset", model->offsetX);
+        writer->WriteInt32("y_offset", model->offsetY);
+        writer->WriteInt32("size_tiny", model->sizeTiny);
+        writer->WriteInt32("size_small", model->sizeSmall);
+        writer->WriteInt32("size_medium", model->sizeMedium);
+        writer->WriteInt32("size_big", model->sizeBig);
+        writer->WriteInt32("height_tiny", model->heightTiny);
+        writer->WriteInt32("height_small", model->heightSmall);
+        writer->WriteInt32("height_medium", model->heightMedium);
+        writer->WriteInt32("height_big", model->heightBig);
+        writer->WriteBoolean("enable_hinting", model->enableHinting);
+        writer->WriteInt32("hinting_threshold", model->hintingThreshold);
     }
 
     static void ReadPlugin(IIniReader* reader)
@@ -618,8 +618,8 @@ namespace OpenRCT2::Config
         if (reader->ReadSection("plugin"))
         {
             auto model = &_config.plugin;
-            model->EnableHotReloading = reader->GetBoolean("enable_hot_reloading", false);
-            model->AllowedHosts = reader->GetString("allowed_hosts", "");
+            model->enableHotReloading = reader->GetBoolean("enable_hot_reloading", false);
+            model->allowedHosts = reader->GetString("allowed_hosts", "");
         }
     }
 
@@ -627,8 +627,8 @@ namespace OpenRCT2::Config
     {
         auto model = &_config.plugin;
         writer->WriteSection("plugin");
-        writer->WriteBoolean("enable_hot_reloading", model->EnableHotReloading);
-        writer->WriteString("allowed_hosts", model->AllowedHosts);
+        writer->WriteBoolean("enable_hot_reloading", model->enableHotReloading);
+        writer->WriteString("allowed_hosts", model->allowedHosts);
     }
 
     bool SetDefaults()
@@ -852,7 +852,7 @@ namespace OpenRCT2::Config
         std::string path = FindRCT2Path();
         if (!path.empty())
         {
-            Get().general.RCT2Path = path;
+            Get().general.rct2Path = path;
         }
         else
         {
@@ -950,7 +950,7 @@ namespace OpenRCT2::Config
                     {
                         if (Platform::OriginalGameDataExists(possiblePath))
                         {
-                            Get().general.RCT2Path = possiblePath;
+                            Get().general.rct2Path = possiblePath;
                             return true;
                         }
                     }
@@ -968,7 +968,7 @@ namespace OpenRCT2::Config
         std::string rct1Path = FindRCT1Path();
         if (!rct1Path.empty())
         {
-            Get().general.RCT1Path = std::move(rct1Path);
+            Get().general.rct2Path = std::move(rct1Path);
         }
 
         return true;

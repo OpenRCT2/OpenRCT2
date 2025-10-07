@@ -24,212 +24,212 @@ namespace OpenRCT2::Config
     struct General
     {
         // Paths
-        u8string RCT1Path;
-        u8string RCT2Path;
+        u8string rct1Path;
+        u8string rct2Path;
 
         // Display
-        int32_t DefaultDisplay;
-        int32_t WindowWidth;
-        int32_t WindowHeight;
-        int32_t FullscreenMode;
-        int32_t FullscreenWidth;
-        int32_t FullscreenHeight;
-        float WindowScale;
-        bool InferDisplayDPI;
-        ::DrawingEngine DrawingEngine;
-        bool UncapFPS;
-        bool UseVSync;
-        bool ShowFPS;
-        std::atomic_uint8_t MultiThreading;
-        bool MinimizeFullscreenFocusLoss;
-        bool DisableScreensaver;
+        int32_t defaultDisplay;
+        int32_t windowWidth;
+        int32_t windowHeight;
+        int32_t fullscreenMode;
+        int32_t fullscreenWidth;
+        int32_t fullscreenHeight;
+        float windowScale;
+        bool inferDisplayDPI;
+        ::DrawingEngine drawingEngine;
+        bool uncapFPS;
+        bool useVSync;
+        bool showFPS;
+        std::atomic_uint8_t multiThreading;
+        bool minimizeFullscreenFocusLoss;
+        bool disableScreensaver;
 
         // Map rendering
-        bool LandscapeSmoothing;
-        bool AlwaysShowGridlines;
-        VirtualFloorStyles VirtualFloorStyle;
-        bool DayNightCycle;
-        bool EnableLightFx;
-        bool EnableLightFxForVehicles;
-        bool UpperCaseBanners;
-        bool RenderWeatherEffects;
-        bool RenderWeatherGloom;
-        bool DisableLightningEffect;
-        bool ShowGuestPurchases;
-        bool TransparentScreenshot;
-        bool TransparentWater;
+        bool landscapeSmoothing;
+        bool alwaysShowGridlines;
+        VirtualFloorStyles virtualFloorStyle;
+        bool dayNightCycle;
+        bool enableLightFx;
+        bool enableLightFxForVehicles;
+        bool upperCaseBanners;
+        bool renderWeatherEffects;
+        bool renderWeatherGloom;
+        bool disableLightningEffect;
+        bool showGuestPurchases;
+        bool transparentScreenshot;
+        bool transparentWater;
 
-        bool InvisibleRides;
-        bool InvisibleVehicles;
-        bool InvisibleTrees;
-        bool InvisibleScenery;
-        bool InvisiblePaths;
-        bool InvisibleSupports;
+        bool invisibleRides;
+        bool invisibleVehicles;
+        bool invisibleTrees;
+        bool invisibleScenery;
+        bool invisiblePaths;
+        bool invisibleSupports;
 
         // Localisation
-        int32_t Language;
-        OpenRCT2::MeasurementFormat MeasurementFormat;
-        TemperatureUnit TemperatureFormat;
-        bool ShowHeightAsUnits;
-        int32_t DateFormat;
-        CurrencyType CurrencyFormat;
-        int32_t CustomCurrencyRate;
-        CurrencyAffix CustomCurrencyAffix;
-        u8string CustomCurrencySymbol;
+        int32_t language;
+        OpenRCT2::MeasurementFormat measurementFormat;
+        TemperatureUnit temperatureFormat;
+        bool showHeightAsUnits;
+        int32_t dateFormat;
+        CurrencyType currencyFormat;
+        int32_t customCurrencyRate;
+        CurrencyAffix customCurrencyAffix;
+        u8string customCurrencySymbol;
 
         // Controls
-        bool EdgeScrolling;
-        int32_t EdgeScrollingSpeed;
-        bool TrapCursor;
-        bool InvertViewportDrag;
-        bool ZoomToCursor;
+        bool edgeScrolling;
+        int32_t edgeScrollingSpeed;
+        bool trapCursor;
+        bool invertViewportDrag;
+        bool zoomToCursor;
 
         // Gamepad
         int32_t gamepadDeadzone;
         float gamepadSensitivity;
 
         // Miscellaneous
-        bool PlayIntro;
-        int32_t WindowSnapProximity;
-        bool SavePluginData;
-        bool DebuggingTools;
-        int32_t AutosaveFrequency;
-        int32_t AutosaveAmount;
-        bool AutoStaffPlacement;
-        bool HandymenMowByDefault;
-        bool AutoOpenShops;
-        int32_t DefaultInspectionInterval;
-        int32_t WindowLimit;
-        bool ScenarioUnlockingEnabled;
-        bool ScenarioHideMegaPark;
-        bool ShowRealNamesOfGuests;
-        bool ShowRealNamesOfStaff;
-        bool AllowEarlyCompletion;
-        u8string AssetPackOrder;
-        u8string EnabledAssetPacks;
+        bool playIntro;
+        int32_t windowSnapProximity;
+        bool savePluginData;
+        bool debuggingTools;
+        int32_t autosaveFrequency;
+        int32_t autosaveAmount;
+        bool autoStaffPlacement;
+        bool handymenMowByDefault;
+        bool autoOpenShops;
+        int32_t defaultInspectionInterval;
+        int32_t windowLimit;
+        bool scenarioUnlockingEnabled;
+        bool scenarioHideMegaPark;
+        bool showRealNamesOfGuests;
+        bool showRealNamesOfStaff;
+        bool allowEarlyCompletion;
+        u8string assetPackOrder;
+        u8string enabledAssetPacks;
 
         // Loading and saving
-        bool ConfirmationPrompt;
-        FileBrowserSort LoadSaveSort;
-        u8string LastSaveGameDirectory;
-        u8string LastSaveLandscapeDirectory;
-        u8string LastSaveScenarioDirectory;
-        u8string LastSaveTrackDirectory;
-        u8string LastRunVersion;
-        bool UseNativeBrowseDialog;
-        int64_t LastVersionCheckTime;
-        int16_t FileBrowserWidth;
-        int16_t FileBrowserHeight;
-        bool FileBrowserShowSizeColumn;
-        bool FileBrowserShowDateColumn;
-        ParkPreviewPref FileBrowserPreviewType;
+        bool confirmationPrompt;
+        FileBrowserSort loadSaveSort;
+        u8string lastSaveGameDirectory;
+        u8string lastSaveLandscapeDirectory;
+        u8string lastSaveScenarioDirectory;
+        u8string lastSaveTrackDirectory;
+        u8string lastRunVersion;
+        bool useNativeBrowseDialog;
+        int64_t lastVersionCheckTime;
+        int16_t fileBrowserWidth;
+        int16_t fileBrowserHeight;
+        bool fileBrowserShowSizeColumn;
+        bool fileBrowserShowDateColumn;
+        ParkPreviewPref fileBrowserPreviewType;
     };
 
     struct Interface
     {
-        bool ToolbarButtonsCentred;
-        bool ToolbarShowFinances;
-        bool ToolbarShowResearch;
-        bool ToolbarShowCheats;
-        bool ToolbarShowNews;
-        bool ToolbarShowMute;
-        bool ToolbarShowChat;
-        bool ToolbarShowZoom;
-        bool ToolbarShowRotateAnticlockwise;
-        bool ConsoleSmallFont;
-        bool RandomTitleSequence;
-        u8string CurrentThemePreset;
-        u8string CurrentTitleSequencePreset;
-        int32_t ObjectSelectionFilterFlags;
+        bool toolbarButtonsCentred;
+        bool toolbarShowFinances;
+        bool toolbarShowResearch;
+        bool toolbarShowCheats;
+        bool toolbarShowNews;
+        bool toolbarShowMute;
+        bool toolbarShowChat;
+        bool toolbarShowZoom;
+        bool toolbarShowRotateAnticlockwise;
+        bool consoleSmallFont;
+        bool randomTitleSequence;
+        u8string currentThemePreset;
+        u8string currentTitleSequencePreset;
+        int32_t objectSelectionFilterFlags;
         int32_t scenarioSelectLastTab;
         bool scenarioPreviewScreenshots;
-        bool ListRideVehiclesSeparately;
-        bool WindowButtonsOnTheLeft;
-        bool EnlargedUi;
-        bool TouchEnhancements;
+        bool listRideVehiclesSeparately;
+        bool windowButtonsOnTheLeft;
+        bool enlargedUi;
+        bool touchEnhancements;
     };
 
     struct Sound
     {
-        u8string Device;
-        bool MasterSoundEnabled;
-        uint8_t MasterVolume;
-        TitleMusicKind TitleMusic;
-        bool SoundEnabled;
-        uint8_t SoundVolume;
-        bool RideMusicEnabled;
-        uint8_t AudioFocus;
-        bool audio_focus;
+        u8string device;
+        bool masterSoundEnabled;
+        uint8_t masterVolume;
+        TitleMusicKind titleMusic;
+        bool soundEnabled;
+        uint8_t soundVolume;
+        bool rideMusicEnabled;
+        uint8_t rideMusicVolume;
+        bool audioFocus;
     };
 
     struct Network
     {
-        u8string PlayerName;
-        int32_t DefaultPort;
-        u8string ListenAddress;
-        u8string DefaultPassword;
-        bool StayConnected;
-        bool Advertise;
-        u8string AdvertiseAddress;
-        int32_t Maxplayers;
-        u8string ServerName;
-        u8string ServerDescription;
-        u8string ServerGreeting;
-        u8string MasterServerUrl;
-        u8string ProviderName;
-        u8string ProviderEmail;
-        u8string ProviderWebsite;
-        bool KnownKeysOnly;
-        bool LogChat;
-        bool LogServerActions;
-        bool PauseServerIfNoClients;
-        bool DesyncDebugging;
+        u8string playerName;
+        int32_t defaultPort;
+        u8string listenAddress;
+        u8string defaultPassword;
+        bool stayConnected;
+        bool advertise;
+        u8string advertiseAddress;
+        int32_t maxplayers;
+        u8string serverName;
+        u8string serverDescription;
+        u8string serverGreeting;
+        u8string masterServerUrl;
+        u8string providerName;
+        u8string providerEmail;
+        u8string providerWebsite;
+        bool knownKeysOnly;
+        bool logChat;
+        bool logServerActions;
+        bool pauseServerIfNoClients;
+        bool desyncDebugging;
     };
 
     struct Notification
     {
-        bool ParkAward;
-        bool ParkMarketingCampaignFinished;
-        bool ParkWarnings;
-        bool ParkRatingWarnings;
-        bool RideBrokenDown;
-        bool RideCrashed;
-        bool RideCasualties;
-        bool RideWarnings;
-        bool RideResearched;
-        bool RideStalledVehicles;
-        bool GuestWarnings;
-        bool GuestLeftPark;
-        bool GuestQueuingForRide;
-        bool GuestOnRide;
-        bool GuestLeftRide;
-        bool GuestBoughtItem;
-        bool GuestUsedFacility;
-        bool GuestDied;
+        bool parkAward;
+        bool parkMarketingCampaignFinished;
+        bool parkWarnings;
+        bool parkRatingWarnings;
+        bool rideBrokenDown;
+        bool rideCrashed;
+        bool rideCasualties;
+        bool rideWarnings;
+        bool rideResearched;
+        bool rideStalledVehicles;
+        bool guestWarnings;
+        bool guestLeftPark;
+        bool guestQueuingForRide;
+        bool guestOnRide;
+        bool guestLeftRide;
+        bool guestBoughtItem;
+        bool guestUsedFacility;
+        bool guestDied;
     };
 
     struct Font
     {
-        u8string FileName;
-        u8string FontName;
-        int32_t OffsetX;
-        int32_t OffsetY;
-        int32_t SizeTiny;
-        int32_t SizeSmall;
-        int32_t SizeMedium;
-        int32_t SizeBig;
-        int32_t HeightTiny;
-        int32_t HeightSmall;
-        int32_t HeightMedium;
-        int32_t HeightBig;
-        bool EnableHinting;
-        int32_t HintingThreshold;
+        u8string fileName;
+        u8string fontName;
+        int32_t offsetX;
+        int32_t offsetY;
+        int32_t sizeTiny;
+        int32_t sizeSmall;
+        int32_t sizeMedium;
+        int32_t sizeBig;
+        int32_t heightTiny;
+        int32_t heightSmall;
+        int32_t heightMedium;
+        int32_t heightBig;
+        bool enableHinting;
+        int32_t hintingThreshold;
     };
 
     struct Plugin
     {
-        bool EnableHotReloading;
-        u8string AllowedHosts;
+        bool enableHotReloading;
+        u8string allowedHosts;
     };
 
     struct Config

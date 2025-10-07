@@ -93,7 +93,7 @@ namespace OpenRCT2::Network
         {
             UpdateLAN();
     #ifndef DISABLE_HTTP
-            if (Config::Get().network.Advertise)
+            if (Config::Get().network.advertise)
             {
                 UpdateWAN();
             }
@@ -183,9 +183,9 @@ namespace OpenRCT2::Network
                 { "port", _port },
             };
 
-            if (!Config::Get().network.AdvertiseAddress.empty())
+            if (!Config::Get().network.advertiseAddress.empty())
             {
-                body["address"] = Config::Get().network.AdvertiseAddress;
+                body["address"] = Config::Get().network.advertiseAddress;
             }
 
             request.body = body.dump();
@@ -346,9 +346,9 @@ namespace OpenRCT2::Network
         static std::string GetMasterServerUrl()
         {
             std::string result = kMasterServerURL;
-            if (!Config::Get().network.MasterServerUrl.empty())
+            if (!Config::Get().network.masterServerUrl.empty())
             {
-                result = Config::Get().network.MasterServerUrl;
+                result = Config::Get().network.masterServerUrl;
             }
             return result;
         }

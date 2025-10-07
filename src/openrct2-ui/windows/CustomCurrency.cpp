@@ -73,7 +73,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 case WIDX_RATE_UP:
                     CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate += 1;
-                    Config::Get().general.CustomCurrencyRate = CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate;
+                    Config::Get().general.customCurrencyRate = CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate;
                     Config::Save();
                     windowMgr->InvalidateAll();
                     break;
@@ -81,7 +81,7 @@ namespace OpenRCT2::Ui::Windows
                     if (CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate > 1)
                     {
                         CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate -= 1;
-                        Config::Get().general.CustomCurrencyRate = CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate;
+                        Config::Get().general.customCurrencyRate = CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate;
                         Config::Save();
                         windowMgr->InvalidateAll();
                     }
@@ -143,7 +143,7 @@ namespace OpenRCT2::Ui::Windows
                     CurrencyDescriptors[EnumValue(CurrencyType::Custom)].affix_unicode = CurrencyAffix::Suffix;
                 }
 
-                Config::Get().general.CustomCurrencyAffix = CurrencyDescriptors[EnumValue(CurrencyType::Custom)].affix_unicode;
+                Config::Get().general.customCurrencyAffix = CurrencyDescriptors[EnumValue(CurrencyType::Custom)].affix_unicode;
                 Config::Save();
 
                 auto* windowMgr = Ui::GetWindowManager();
@@ -165,7 +165,7 @@ namespace OpenRCT2::Ui::Windows
                         CurrencyDescriptors[EnumValue(CurrencyType::Custom)].symbol_unicode, std::string(text).c_str(),
                         kCurrencySymbolMaxSize);
 
-                    Config::Get().general.CustomCurrencySymbol = CurrencyDescriptors[EnumValue(CurrencyType::Custom)]
+                    Config::Get().general.customCurrencySymbol = CurrencyDescriptors[EnumValue(CurrencyType::Custom)]
                                                                      .symbol_unicode;
 
                     Config::Save();
@@ -179,7 +179,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         int32_t rate = res.value();
                         CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate = rate;
-                        Config::Get().general.CustomCurrencyRate = CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate;
+                        Config::Get().general.customCurrencyRate = CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate;
                         Config::Save();
                         windowMgr->InvalidateAll();
                     }

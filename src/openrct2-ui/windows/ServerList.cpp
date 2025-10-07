@@ -91,7 +91,7 @@ namespace OpenRCT2::Ui::Windows
 
         void onOpen() override
         {
-            _playerName = Config::Get().network.PlayerName;
+            _playerName = Config::Get().network.playerName;
             setWidgets(_serverListWidgets);
             widgets[WIDX_PLAYER_NAME_INPUT].string = const_cast<utf8*>(_playerName.c_str());
             initScrollWidgets();
@@ -275,7 +275,7 @@ namespace OpenRCT2::Ui::Windows
                         return;
 
                     _playerName = temp;
-                    Config::Get().network.PlayerName = _playerName;
+                    Config::Get().network.playerName = _playerName;
                     widgets[WIDX_PLAYER_NAME_INPUT].string = const_cast<utf8*>(_playerName.c_str());
 
                     invalidateWidget(WIDX_PLAYER_NAME_INPUT);

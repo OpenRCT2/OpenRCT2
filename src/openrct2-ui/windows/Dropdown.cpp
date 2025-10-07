@@ -75,12 +75,12 @@ namespace OpenRCT2::Ui::Windows
 
         static int32_t GetDefaultRowHeight()
         {
-            return Config::Get().interface.EnlargedUi ? kDropdownItemHeightTouch : kDropdownItemHeight;
+            return Config::Get().interface.enlargedUi ? kDropdownItemHeightTouch : kDropdownItemHeight;
         }
 
         static int32_t GetAdditionalRowPadding()
         {
-            return Config::Get().interface.EnlargedUi ? 6 : 0;
+            return Config::Get().interface.enlargedUi ? 6 : 0;
         }
 
         static void drawTextItem(
@@ -386,7 +386,7 @@ namespace OpenRCT2::Ui::Windows
         size_t num_items, int32_t width, size_t prefRowsPerColumn)
     {
         gInputFlags.unset(InputFlag::dropdownStayOpen, InputFlag::dropdownMouseUp);
-        if (flags & Dropdown::Flag::StayOpen || Config::Get().interface.TouchEnhancements)
+        if (flags & Dropdown::Flag::StayOpen || Config::Get().interface.touchEnhancements)
             gInputFlags.set(InputFlag::dropdownStayOpen);
 
         WindowDropdownClose();
@@ -430,7 +430,7 @@ namespace OpenRCT2::Ui::Windows
         int32_t itemHeight, int32_t numColumns)
     {
         gInputFlags.unset(InputFlag::dropdownStayOpen, InputFlag::dropdownMouseUp);
-        if (flags & Dropdown::Flag::StayOpen || Config::Get().interface.TouchEnhancements)
+        if (flags & Dropdown::Flag::StayOpen || Config::Get().interface.touchEnhancements)
             gInputFlags.set(InputFlag::dropdownStayOpen);
 
         // Close existing dropdown

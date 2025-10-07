@@ -400,7 +400,7 @@ namespace OpenRCT2
     template<size_t TDecimalPlace, bool TDigitSep, typename T>
     void FormatCurrency(FormatBuffer& ss, T rawValue)
     {
-        auto currencyDesc = &CurrencyDescriptors[EnumValue(Config::Get().general.CurrencyFormat)];
+        auto currencyDesc = &CurrencyDescriptors[EnumValue(Config::Get().general.currencyFormat)];
         auto value = static_cast<int64_t>(rawValue) * currencyDesc->rate;
 
         // Negative sign
@@ -553,7 +553,7 @@ namespace OpenRCT2
             case FormatToken::Velocity:
                 if constexpr (std::is_integral<T>())
                 {
-                    switch (Config::Get().general.MeasurementFormat)
+                    switch (Config::Get().general.measurementFormat)
                     {
                         default:
                         case MeasurementFormat::Imperial:
@@ -583,7 +583,7 @@ namespace OpenRCT2
             case FormatToken::Length:
                 if constexpr (std::is_integral<T>())
                 {
-                    switch (Config::Get().general.MeasurementFormat)
+                    switch (Config::Get().general.measurementFormat)
                     {
                         default:
                         case MeasurementFormat::Imperial:
@@ -600,7 +600,7 @@ namespace OpenRCT2
                 if constexpr (std::is_integral<T>())
                 {
                     auto metres = HeightUnitsToMetres(arg);
-                    switch (Config::Get().general.MeasurementFormat)
+                    switch (Config::Get().general.measurementFormat)
                     {
                         default:
                         case MeasurementFormat::Imperial:

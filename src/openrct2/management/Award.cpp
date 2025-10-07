@@ -607,7 +607,7 @@ void AwardReset()
 static void AwardAdd(AwardType type)
 {
     getGameState().park.currentAwards.push_back(Award{ 5u, type });
-    if (Config::Get().notifications.ParkAward)
+    if (Config::Get().notifications.parkAward)
     {
         News::AddItemToQueue(News::ItemType::award, AwardGetNews(type), 0, {});
     }

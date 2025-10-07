@@ -622,7 +622,7 @@ namespace OpenRCT2::Ui::Windows
             int32_t viewportFlags{};
             if (viewport == nullptr)
             {
-                viewportFlags = Config::Get().general.AlwaysShowGridlines ? VIEWPORT_FLAG_GRIDLINES : VIEWPORT_FLAG_NONE;
+                viewportFlags = Config::Get().general.alwaysShowGridlines ? VIEWPORT_FLAG_GRIDLINES : VIEWPORT_FLAG_NONE;
             }
             else
             {
@@ -947,7 +947,7 @@ namespace OpenRCT2::Ui::Windows
             // Draw park size
             auto parkSize = gameState.park.size * 10;
             auto stringIndex = STR_PARK_SIZE_METRIC_LABEL;
-            if (Config::Get().general.MeasurementFormat == MeasurementFormat::Imperial)
+            if (Config::Get().general.measurementFormat == MeasurementFormat::Imperial)
             {
                 stringIndex = STR_PARK_SIZE_IMPERIAL_LABEL;
                 parkSize = SquaredMetresToSquaredFeet(parkSize);

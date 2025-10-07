@@ -316,7 +316,7 @@ namespace OpenRCT2::Ui::Windows
                 case DisplayType::DisplayUnits:
                 {
                     // Print the value in the configured height label type:
-                    if (Config::Get().general.ShowHeightAsUnits)
+                    if (Config::Get().general.showHeightAsUnits)
                     {
                         // Height label is Units.
                         auto ft = Formatter();
@@ -329,7 +329,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         // Height label is Real Values.
                         // Print the value in the configured measurement units.
-                        switch (Config::Get().general.MeasurementFormat)
+                        switch (Config::Get().general.measurementFormat)
                         {
                             case MeasurementFormat::Metric:
                             case MeasurementFormat::SI:

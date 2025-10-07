@@ -142,12 +142,12 @@ namespace OpenRCT2::Drawing::LightFx
 
     bool IsAvailable()
     {
-        return _lightfxAvailable && Config::Get().general.EnableLightFx;
+        return _lightfxAvailable && Config::Get().general.enableLightFx;
     }
 
     bool ForVehiclesIsAvailable()
     {
-        return IsAvailable() && Config::Get().general.EnableLightFxForVehicles;
+        return IsAvailable() && Config::Get().general.enableLightFxForVehicles;
     }
 
     void Init()

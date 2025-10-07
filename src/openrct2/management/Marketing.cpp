@@ -83,7 +83,7 @@ uint16_t MarketingGetCampaignGuestGenerationProbability(int32_t campaignType)
 
 static void MarketingRaiseFinishedNotification(const MarketingCampaign& campaign)
 {
-    if (Config::Get().notifications.ParkMarketingCampaignFinished)
+    if (Config::Get().notifications.parkMarketingCampaignFinished)
     {
         Formatter ft;
         // This sets the string parameters for the marketing types that have an argument.

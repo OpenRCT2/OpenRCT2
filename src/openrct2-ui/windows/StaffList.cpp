@@ -511,7 +511,7 @@ namespace OpenRCT2::Ui::Windows
          */
         void HireNewMember(StaffType staffType)
         {
-            bool autoPosition = Config::Get().general.AutoStaffPlacement;
+            bool autoPosition = Config::Get().general.autoStaffPlacement;
             if (GetInputManager().isModifierKeyPressed(ModifierKey::shift))
             {
                 autoPosition = autoPosition ^ 1;
@@ -522,7 +522,7 @@ namespace OpenRCT2::Ui::Windows
             if (staffType == StaffType::handyman)
             {
                 staffOrders = STAFF_ORDERS_SWEEPING | STAFF_ORDERS_WATER_FLOWERS | STAFF_ORDERS_EMPTY_BINS;
-                if (Config::Get().general.HandymenMowByDefault)
+                if (Config::Get().general.handymenMowByDefault)
                 {
                     staffOrders |= STAFF_ORDERS_MOWING;
                 }

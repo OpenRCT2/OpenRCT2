@@ -314,7 +314,7 @@ namespace OpenRCT2::Ui
 
     void ApplyScreenSaverLockSetting()
     {
-        Config::Get().general.DisableScreensaver ? SDL_DisableScreenSaver() : SDL_EnableScreenSaver();
+        Config::Get().general.disableScreensaver ? SDL_DisableScreenSaver() : SDL_EnableScreenSaver();
     }
 
     void Window::scrollToViewport()
@@ -514,7 +514,7 @@ namespace OpenRCT2::Ui
 
     ScreenCoordsXY WindowGetViewportSoundIconPos(WindowBase& w)
     {
-        const uint8_t buttonOffset = (Config::Get().interface.WindowButtonsOnTheLeft) ? kCloseButtonSize + 2 : 0;
+        const uint8_t buttonOffset = (Config::Get().interface.windowButtonsOnTheLeft) ? kCloseButtonSize + 2 : 0;
         return w.windowPos + ScreenCoordsXY{ 2 + buttonOffset, 2 };
     }
 } // namespace OpenRCT2::Ui
@@ -960,7 +960,7 @@ namespace OpenRCT2::Ui::Windows
         w.maxWidth = std::max(minSize.width, maxSize.width);
         w.maxHeight = std::max(minSize.height, maxSize.height);
 
-        if (Config::Get().interface.EnlargedUi)
+        if (Config::Get().interface.enlargedUi)
         {
             // Not sure why plugin windows have to be treated differently,
             // but they currently show a deviation if we don't.

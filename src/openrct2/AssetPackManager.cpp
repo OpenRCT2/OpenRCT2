@@ -164,7 +164,7 @@ namespace OpenRCT2
     {
         // Re-order asset packs
         std::vector<std::unique_ptr<AssetPack>> newAssetPacks;
-        EnumerateCommaSeparatedList(Config::Get().general.AssetPackOrder, [&](std::string_view id) {
+        EnumerateCommaSeparatedList(Config::Get().general.assetPackOrder, [&](std::string_view id) {
             auto index = GetAssetPackIndex(id);
             if (index != std::numeric_limits<size_t>::max())
             {
@@ -181,7 +181,7 @@ namespace OpenRCT2
         _assetPacks = std::move(newAssetPacks);
 
         // Set which asset packs are enabled
-        EnumerateCommaSeparatedList(Config::Get().general.EnabledAssetPacks, [&](std::string_view id) {
+        EnumerateCommaSeparatedList(Config::Get().general.enabledAssetPacks, [&](std::string_view id) {
             auto assetPack = GetAssetPack(id);
             if (assetPack != nullptr)
             {
@@ -208,8 +208,8 @@ namespace OpenRCT2
             orderList.pop_back();
         if (enabledList.size() > 0)
             enabledList.pop_back();
-        Config::Get().general.AssetPackOrder = orderList;
-        Config::Get().general.EnabledAssetPacks = enabledList;
+        Config::Get().general.assetPackOrder = orderList;
+        Config::Get().general.enabledAssetPacks = enabledList;
         Config::Save();
     }
 } // namespace OpenRCT2

@@ -277,7 +277,7 @@ namespace OpenRCT2::Ui::Windows
             Sub6AB211();
             ResetSelectedObjectCountAndSize();
 
-            _filterFlags = FILTER_RIDES_ALL | Config::Get().interface.ObjectSelectionFilterFlags;
+            _filterFlags = FILTER_RIDES_ALL | Config::Get().interface.objectSelectionFilterFlags;
             _filter.clear();
 
             WindowInitScrollWidgets(*this);
@@ -411,7 +411,7 @@ namespace OpenRCT2::Ui::Windows
                     _filterFlags &= ~FILTER_RIDES_ALL;
                     _filterFlags |= subTabDef.flagFilter;
 
-                    Config::Get().interface.ObjectSelectionFilterFlags = _filterFlags;
+                    Config::Get().interface.objectSelectionFilterFlags = _filterFlags;
                     Config::Save();
 
                     VisibleListRefresh();
@@ -572,7 +572,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         _filterFlags ^= (1 << dropdownIndex);
                     }
-                    Config::Get().interface.ObjectSelectionFilterFlags = _filterFlags;
+                    Config::Get().interface.objectSelectionFilterFlags = _filterFlags;
                     Config::Save();
 
                     scrolls->contentOffsetY = 0;
@@ -923,7 +923,7 @@ namespace OpenRCT2::Ui::Windows
                     widget.type = WidgetType::empty;
             }
 
-            if (Config::Get().general.DebuggingTools)
+            if (Config::Get().general.debuggingTools)
                 widgets[WIDX_RELOAD_OBJECT].type = WidgetType::imgBtn;
             else
                 widgets[WIDX_RELOAD_OBJECT].type = WidgetType::empty;

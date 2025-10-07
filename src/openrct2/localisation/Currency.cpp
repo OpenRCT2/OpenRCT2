@@ -45,20 +45,20 @@ namespace OpenRCT2
 
     void CurrencyLoadCustomCurrencyConfig()
     {
-        CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate = Config::Get().general.CustomCurrencyRate;
-        CurrencyDescriptors[EnumValue(CurrencyType::Custom)].affix_unicode = Config::Get().general.CustomCurrencyAffix;
-        if (!Config::Get().general.CustomCurrencySymbol.empty())
+        CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate = Config::Get().general.customCurrencyRate;
+        CurrencyDescriptors[EnumValue(CurrencyType::Custom)].affix_unicode = Config::Get().general.customCurrencyAffix;
+        if (!Config::Get().general.customCurrencySymbol.empty())
         {
             String::safeUtf8Copy(
                 CurrencyDescriptors[EnumValue(CurrencyType::Custom)].symbol_unicode,
-                Config::Get().general.CustomCurrencySymbol.c_str(), kCurrencySymbolMaxSize);
+                Config::Get().general.customCurrencySymbol.c_str(), kCurrencySymbolMaxSize);
         }
     }
 
     money64 StringToMoney(const char* string_to_monetise)
     {
         const char* decimal_char = LanguageGetString(STR_LOCALE_DECIMAL_POINT);
-        const CurrencyDescriptor* currencyDesc = &CurrencyDescriptors[EnumValue(Config::Get().general.CurrencyFormat)];
+        const CurrencyDescriptor* currencyDesc = &CurrencyDescriptors[EnumValue(Config::Get().general.currencyFormat)];
         char processedString[128] = {};
 
         Guard::Assert(strlen(string_to_monetise) < sizeof(processedString));
@@ -148,7 +148,7 @@ namespace OpenRCT2
             return;
         }
 
-        const CurrencyDescriptor& currencyDesc = CurrencyDescriptors[EnumValue(Config::Get().general.CurrencyFormat)];
+        const CurrencyDescriptor& currencyDesc = CurrencyDescriptors[EnumValue(Config::Get().general.currencyFormat)];
 
         const char* sign = amount >= 0 ? "" : "-";
         const uint64_t a = std::abs(amount) * currencyDesc.rate;

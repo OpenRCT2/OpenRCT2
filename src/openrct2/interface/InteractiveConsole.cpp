@@ -682,7 +682,7 @@ static void ConsoleCommandGet(InteractiveConsole& console, const arguments_t& ar
         }
         else if (argv[0] == "console_small_font")
         {
-            console.WriteFormatLine("console_small_font %d", Config::Get().interface.ConsoleSmallFont);
+            console.WriteFormatLine("console_small_font %d", Config::Get().interface.consoleSmallFont);
         }
         else if (argv[0] == "location")
         {
@@ -699,19 +699,19 @@ static void ConsoleCommandGet(InteractiveConsole& console, const arguments_t& ar
         }
         else if (argv[0] == "window_scale")
         {
-            console.WriteFormatLine("window_scale %.3f", Config::Get().general.WindowScale);
+            console.WriteFormatLine("window_scale %.3f", Config::Get().general.windowScale);
         }
         else if (argv[0] == "window_limit")
         {
-            console.WriteFormatLine("window_limit %d", Config::Get().general.WindowLimit);
+            console.WriteFormatLine("window_limit %d", Config::Get().general.windowLimit);
         }
         else if (argv[0] == "render_weather_effects")
         {
-            console.WriteFormatLine("render_weather_effects %d", Config::Get().general.RenderWeatherEffects);
+            console.WriteFormatLine("render_weather_effects %d", Config::Get().general.renderWeatherEffects);
         }
         else if (argv[0] == "render_weather_gloom")
         {
-            console.WriteFormatLine("render_weather_gloom %d", Config::Get().general.RenderWeatherGloom);
+            console.WriteFormatLine("render_weather_gloom %d", Config::Get().general.renderWeatherGloom);
         }
         else if (argv[0] == "cheat_sandbox_mode")
         {
@@ -736,7 +736,7 @@ static void ConsoleCommandGet(InteractiveConsole& console, const arguments_t& ar
 #ifndef DISABLE_TTF
         else if (argv[0] == "enable_hinting")
         {
-            console.WriteFormatLine("enable_hinting %d", Config::Get().fonts.EnableHinting);
+            console.WriteFormatLine("enable_hinting %d", Config::Get().fonts.enableHinting);
         }
 #endif
         else
@@ -923,7 +923,7 @@ static void ConsoleCommandSet(InteractiveConsole& console, const arguments_t& ar
         }
         else if (varName == "console_small_font" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
-            Config::Get().interface.ConsoleSmallFont = (int_val[0] != 0);
+            Config::Get().interface.consoleSmallFont = (int_val[0] != 0);
             Config::Save();
             console.Execute("get console_small_font");
         }
@@ -941,7 +941,7 @@ static void ConsoleCommandSet(InteractiveConsole& console, const arguments_t& ar
         else if (varName == "window_scale" && InvalidArguments(&invalidArgs, double_valid[0]))
         {
             float newScale = static_cast<float>(0.001 * std::trunc(1000 * double_val[0]));
-            Config::Get().general.WindowScale = std::clamp(newScale, 0.5f, 5.0f);
+            Config::Get().general.windowScale = std::clamp(newScale, 0.5f, 5.0f);
             Config::Save();
             GfxInvalidateScreen();
             ContextTriggerResize();
@@ -955,13 +955,13 @@ static void ConsoleCommandSet(InteractiveConsole& console, const arguments_t& ar
         }
         else if (varName == "render_weather_effects" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
-            Config::Get().general.RenderWeatherEffects = (int_val[0] != 0);
+            Config::Get().general.renderWeatherEffects = (int_val[0] != 0);
             Config::Save();
             console.Execute("get render_weather_effects");
         }
         else if (varName == "render_weather_gloom" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
-            Config::Get().general.RenderWeatherGloom = (int_val[0] != 0);
+            Config::Get().general.renderWeatherGloom = (int_val[0] != 0);
             Config::Save();
             console.Execute("get render_weather_gloom");
         }
@@ -1026,7 +1026,7 @@ static void ConsoleCommandSet(InteractiveConsole& console, const arguments_t& ar
 #ifndef DISABLE_TTF
         else if (varName == "enable_hinting" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
-            Config::Get().fonts.EnableHinting = (int_val[0] != 0);
+            Config::Get().fonts.enableHinting = (int_val[0] != 0);
             Config::Save();
             console.Execute("get enable_hinting");
             TTFToggleHinting();

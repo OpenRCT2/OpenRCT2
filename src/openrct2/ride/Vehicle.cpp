@@ -2803,7 +2803,7 @@ void Vehicle::CheckIfMissing()
 
     curRide->lifecycleFlags |= RIDE_LIFECYCLE_HAS_STALLED_VEHICLE;
 
-    if (Config::Get().notifications.RideStalledVehicles)
+    if (Config::Get().notifications.rideStalledVehicles)
     {
         Formatter ft;
         ft.Add<StringId>(GetRideComponentName(GetRideTypeDescriptor(curRide->type).NameConvention.vehicle).number);
@@ -4566,7 +4566,7 @@ static void ride_train_crash(Ride& ride, uint16_t numFatalities)
 
     if (numFatalities != 0)
     {
-        if (Config::Get().notifications.RideCasualties)
+        if (Config::Get().notifications.rideCasualties)
         {
             ride.formatNameTo(ft);
             News::AddItemToQueue(
