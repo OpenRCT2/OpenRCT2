@@ -9,17 +9,15 @@
 
 #pragma once
 
-#ifdef ENABLE_SCRIPTING
-
-    #include "../../../Context.h"
-    #include "../../../ride/Ride.h"
-    #include "../../Duktape.hpp"
-    #include "../../ScriptEngine.h"
-    #include "../object/ScObject.hpp"
-    #include "ScRideStation.hpp"
+#include "../../../Context.h"
+#include "../../../ride/Ride.h"
+#include "../../ScriptEngine.h"
+#include "../object/ScObject.hpp"
+#include "ScRideStation.hpp"
 
 namespace OpenRCT2::Scripting
 {
+#ifdef ENABLE_SCRIPTING
     template<>
     inline DukValue ToDuk(duk_context* ctx, const TrackColour& value)
     {
@@ -39,29 +37,31 @@ namespace OpenRCT2::Scripting
         result.supports = AsOrDefault(s["supports"], 0);
         return result;
     }
+#endif
 
-    template<>
-    inline DukValue ToDuk(duk_context* ctx, const VehicleColour& value)
+#ifdef ENABLE_SCRIPTING_REFACTOR
+    inline JSValue ToJSValue(JSContext* ctx, const VehicleColour& value)
     {
-        DukObject obj(ctx);
-        obj.Set("body", value.Body);
-        obj.Set("trim", value.Trim);
-        obj.Set("ternary", value.Tertiary);
-        obj.Set("tertiary", value.Tertiary);
-        return obj.Take();
+        JSValue obj = JS_NewObject(ctx);
+        JS_SetPropertyStr(ctx, obj, "body", JS_NewInt32(ctx, value.Body));
+        JS_SetPropertyStr(ctx, obj, "trim", JS_NewInt32(ctx, value.Trim));
+        JS_SetPropertyStr(ctx, obj, "ternary", JS_NewInt32(ctx, value.Tertiary)); // backwards compatible typo
+        JS_SetPropertyStr(ctx, obj, "tertiary", JS_NewInt32(ctx, value.Tertiary));
+        return obj;
     }
 
-    template<>
-    inline VehicleColour FromDuk(const DukValue& s)
+    inline VehicleColour JSToVehicleColours(JSContext* ctx, JSValue val)
     {
         VehicleColour result{};
-        result.Body = AsOrDefault(s["body"], 0);
-        result.Trim = AsOrDefault(s["trim"], 0);
-        result.Tertiary = AsOrDefault(s["ternary"], 0);
-        result.Tertiary = AsOrDefault<int32_t>(s["tertiary"], result.Tertiary);
+        result.Body = AsOrDefault(ctx, val, "body", 0);
+        result.Trim = AsOrDefault(ctx, val, "trim", 0);
+        result.Tertiary = AsOrDefault(ctx, val, "ternary", 0); // backwards compatible typo
+        result.Tertiary = AsOrDefault(ctx, val, "tertiary", static_cast<uint32_t>(result.Tertiary));
         return result;
     }
+#endif
 
+#ifdef ENABLE_SCRIPTING
     class ScRide
     {
     private:
@@ -201,6 +201,5 @@ namespace OpenRCT2::Scripting
     public:
         static void Register(duk_context* ctx);
     };
-} // namespace OpenRCT2::Scripting
-
 #endif
+} // namespace OpenRCT2::Scripting
