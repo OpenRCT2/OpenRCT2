@@ -1907,8 +1907,10 @@ namespace OpenRCT2::Ui::Windows
                 && _currentTrackPitchEnd == TrackPitch::none && _currentTrackRollEnd == TrackRoll::none
                 && (_currentlySelectedTrack == TrackCurve::left || _currentlySelectedTrack == TrackCurve::right))
             {
+                widgets[WIDX_SLOPE_DOWN_STEEP].type = WidgetType::flatBtn;
                 widgets[WIDX_SLOPE_DOWN_STEEP].image = ImageId(SPR_RIDE_CONSTRUCTION_HELIX_DOWN);
                 widgets[WIDX_SLOPE_DOWN_STEEP].tooltip = STR_RIDE_CONSTRUCTION_HELIX_DOWN_TIP;
+                widgets[WIDX_SLOPE_UP_STEEP].type = WidgetType::flatBtn;
                 widgets[WIDX_SLOPE_UP_STEEP].image = ImageId(SPR_RIDE_CONSTRUCTION_HELIX_UP);
                 widgets[WIDX_SLOPE_UP_STEEP].tooltip = STR_RIDE_CONSTRUCTION_HELIX_UP_TIP;
 
