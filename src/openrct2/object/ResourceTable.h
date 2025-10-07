@@ -23,13 +23,13 @@ namespace OpenRCT2
     protected:
         enum class SourceKind
         {
-            None,
-            Data,
-            ObjData,
-            Gx,
-            G1,
-            Csg,
-            Png,
+            none,
+            data,
+            objData,
+            gx,
+            g1,
+            csg,
+            png,
         };
 
         struct SourceInfo
