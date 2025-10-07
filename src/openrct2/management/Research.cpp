@@ -531,7 +531,7 @@ bool ResearchInsertSceneryGroupEntry(ObjectEntryIndex entryIndex, bool researche
 {
     if (entryIndex != kObjectEntryIndexNull)
     {
-        auto tmpItem = ResearchItem(Research::EntryType::scenery, entryIndex, 0, ResearchCategory::SceneryGroup, 0);
+        auto tmpItem = ResearchItem(Research::EntryType::scenery, entryIndex, 0, ResearchCategory::sceneryGroup, 0);
         ResearchInsert(std::move(tmpItem), researched);
         return true;
     }

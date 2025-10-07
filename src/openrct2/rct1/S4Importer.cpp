@@ -2100,25 +2100,25 @@ namespace OpenRCT2::RCT1
             uint8_t activeResearchTypes = 0;
             if (_s4.ResearchPriority & RCT1_RESEARCH_CATEGORY_ROLLERCOASTERS)
             {
-                activeResearchTypes |= EnumToFlag(ResearchCategory::Rollercoaster);
+                activeResearchTypes |= EnumToFlag(ResearchCategory::rollercoaster);
             }
             if (_s4.ResearchPriority & RCT1_RESEARCH_CATEGORY_THRILL_RIDES)
             {
-                activeResearchTypes |= EnumToFlag(ResearchCategory::Thrill);
-                activeResearchTypes |= EnumToFlag(ResearchCategory::Water);
+                activeResearchTypes |= EnumToFlag(ResearchCategory::thrill);
+                activeResearchTypes |= EnumToFlag(ResearchCategory::water);
             }
             if (_s4.ResearchPriority & RCT1_RESEARCH_CATEGORY_GENTLE_TRANSPORT_RIDES)
             {
-                activeResearchTypes |= EnumToFlag(ResearchCategory::Gentle);
-                activeResearchTypes |= EnumToFlag(ResearchCategory::Transport);
+                activeResearchTypes |= EnumToFlag(ResearchCategory::gentle);
+                activeResearchTypes |= EnumToFlag(ResearchCategory::transport);
             }
             if (_s4.ResearchPriority & RCT1_RESEARCH_CATEGORY_SHOPS)
             {
-                activeResearchTypes |= EnumToFlag(ResearchCategory::Shop);
+                activeResearchTypes |= EnumToFlag(ResearchCategory::shop);
             }
             if (_s4.ResearchPriority & RCT1_RESEARCH_CATEGORY_SCENERY_THEMING)
             {
-                activeResearchTypes |= EnumToFlag(ResearchCategory::SceneryGroup);
+                activeResearchTypes |= EnumToFlag(ResearchCategory::sceneryGroup);
             }
             gameState.researchPriorities = activeResearchTypes;
             gameState.researchFundingLevel = _s4.ResearchLevel;
@@ -2391,7 +2391,7 @@ namespace OpenRCT2::RCT1
                 {
                     dst->entryIndex = entryIndex;
                     dst->type = Research::EntryType::scenery;
-                    dst->category = ResearchCategory::SceneryGroup;
+                    dst->category = ResearchCategory::sceneryGroup;
                     dst->baseRideType = 0;
                     dst->flags = 0;
                 }

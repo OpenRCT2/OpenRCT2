@@ -423,7 +423,7 @@ namespace OpenRCT2::RCT2
             gameState.researchProgressStage = _s6.ResearchProgressStage;
             if (_s6.LastResearchedItemSubject != kRCT12ResearchedItemsSeparator)
                 gameState.researchLastItem = RCT12ResearchItem{ _s6.LastResearchedItemSubject,
-                                                                EnumValue(ResearchCategory::Transport) }
+                                                                EnumValue(ResearchCategory::transport) }
                                                  .ToResearchItem();
             else
                 gameState.researchLastItem = std::nullopt;
