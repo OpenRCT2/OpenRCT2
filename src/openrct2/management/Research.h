@@ -27,8 +27,8 @@ namespace OpenRCT2::Research
 {
     enum class EntryType : uint8_t
     {
-        Scenery = 0,
-        Ride = 1,
+        scenery = 0,
+        ride = 1,
     };
 }
 

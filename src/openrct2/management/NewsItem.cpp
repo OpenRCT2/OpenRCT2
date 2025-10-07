@@ -398,7 +398,7 @@ void News::OpenSubject(News::ItemType type, int32_t subject)
         case News::ItemType::research:
         {
             auto item = ResearchItem(subject, ResearchCategory::Transport, 0);
-            if (item.type == Research::EntryType::Ride)
+            if (item.type == Research::EntryType::ride)
             {
                 auto intent = Intent(INTENT_ACTION_NEW_RIDE_OF_TYPE);
                 intent.PutExtra(INTENT_EXTRA_RIDE_TYPE, item.baseRideType);

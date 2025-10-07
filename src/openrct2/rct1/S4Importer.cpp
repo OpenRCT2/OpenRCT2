@@ -2358,7 +2358,7 @@ namespace OpenRCT2::RCT1
                         auto rideType = rideEntry->GetFirstNonNullRideType();
                         dst->entryIndex = entryIndex;
                         dst->baseRideType = rideType;
-                        dst->type = Research::EntryType::Ride;
+                        dst->type = Research::EntryType::ride;
                         dst->flags = 0;
                         dst->category = GetRideTypeDescriptor(rideType).GetResearchCategory();
                     }
@@ -2377,7 +2377,7 @@ namespace OpenRCT2::RCT1
                         auto rideType = rideEntry->GetFirstNonNullRideType();
                         dst->entryIndex = entryIndex;
                         dst->baseRideType = rideType;
-                        dst->type = Research::EntryType::Ride;
+                        dst->type = Research::EntryType::ride;
                         dst->flags = 0;
                         dst->category = GetRideTypeDescriptor(rideType).GetResearchCategory();
                     }
@@ -2390,7 +2390,7 @@ namespace OpenRCT2::RCT1
                 if (entryIndex != ObjectEntryIndexIgnore && entryIndex != kObjectEntryIndexNull)
                 {
                     dst->entryIndex = entryIndex;
-                    dst->type = Research::EntryType::Scenery;
+                    dst->type = Research::EntryType::scenery;
                     dst->category = ResearchCategory::SceneryGroup;
                     dst->baseRideType = 0;
                     dst->flags = 0;

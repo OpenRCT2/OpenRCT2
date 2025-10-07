@@ -198,7 +198,7 @@ void ResearchFinishItem(const ResearchItem& researchItem)
     gameState.researchLastItem = researchItem;
     ResearchInvalidateRelatedWindows();
 
-    if (researchItem.type == Research::EntryType::Ride)
+    if (researchItem.type == Research::EntryType::ride)
     {
         // Ride
         auto base_ride_type = researchItem.baseRideType;
@@ -503,7 +503,7 @@ bool ResearchInsertRideEntry(ride_type_t rideType, ObjectEntryIndex entryIndex, 
 {
     if (rideType != kRideTypeNull && entryIndex != kObjectEntryIndexNull)
     {
-        auto tmpItem = ResearchItem(Research::EntryType::Ride, entryIndex, rideType, category, 0);
+        auto tmpItem = ResearchItem(Research::EntryType::ride, entryIndex, rideType, category, 0);
         ResearchInsert(std::move(tmpItem), researched);
         return true;
     }
@@ -531,7 +531,7 @@ bool ResearchInsertSceneryGroupEntry(ObjectEntryIndex entryIndex, bool researche
 {
     if (entryIndex != kObjectEntryIndexNull)
     {
-        auto tmpItem = ResearchItem(Research::EntryType::Scenery, entryIndex, 0, ResearchCategory::SceneryGroup, 0);
+        auto tmpItem = ResearchItem(Research::EntryType::scenery, entryIndex, 0, ResearchCategory::SceneryGroup, 0);
         ResearchInsert(std::move(tmpItem), researched);
         return true;
     }
@@ -648,7 +648,7 @@ bool SceneryGroupIsInvented(int32_t sgIndex)
     return std::none_of(
         std::begin(gameState.researchItemsUninvented), std::end(gameState.researchItemsUninvented),
         [sgIndex](const ResearchItem& item) {
-            return item.type == Research::EntryType::Scenery && item.entryIndex == sgIndex;
+            return item.type == Research::EntryType::scenery && item.entryIndex == sgIndex;
         });
 }
 
@@ -723,7 +723,7 @@ void SetEveryRideEntryNotInvented()
  */
 StringId ResearchItem::GetName() const
 {
-    if (type == Research::EntryType::Ride)
+    if (type == Research::EntryType::ride)
     {
         const auto* rideEntry = GetRideEntryByIndex(entryIndex);
         if (rideEntry == nullptr)
@@ -765,7 +765,7 @@ void ResearchRemoveFlags()
 static void ResearchRemoveNullItems(std::vector<ResearchItem>& items)
 {
     const auto it = std::remove_if(std::begin(items), std::end(items), [](const ResearchItem& researchItem) {
-        if (researchItem.type == Research::EntryType::Ride)
+        if (researchItem.type == Research::EntryType::ride)
         {
             return GetRideEntryByIndex(researchItem.entryIndex) == nullptr;
         }
@@ -779,7 +779,7 @@ static void ResearchRemoveNullItems(std::vector<ResearchItem>& items)
 
 static void ResearchMarkItemAsResearched(const ResearchItem& item)
 {
-    if (item.type == Research::EntryType::Ride)
+    if (item.type == Research::EntryType::ride)
     {
         const auto* rideEntry = GetRideEntryByIndex(item.entryIndex);
         if (rideEntry != nullptr)
@@ -794,7 +794,7 @@ static void ResearchMarkItemAsResearched(const ResearchItem& item)
             }
         }
     }
-    else if (item.type == Research::EntryType::Scenery)
+    else if (item.type == Research::EntryType::scenery)
     {
         const auto sgEntry = OpenRCT2::ObjectManager::GetObjectEntry<SceneryGroupEntry>(item.entryIndex);
         if (sgEntry != nullptr)
@@ -1031,7 +1031,7 @@ static void ResearchUpdateFirstOfType(ResearchItem* researchItem)
     if (researchItem->IsNull())
         return;
 
-    if (researchItem->type != Research::EntryType::Ride)
+    if (researchItem->type != Research::EntryType::ride)
         return;
 
     auto rideType = researchItem->baseRideType;
@@ -1069,7 +1069,7 @@ void ResearchDetermineFirstOfType()
 
     for (const auto& researchItem : gameState.researchItemsInvented)
     {
-        if (researchItem.type != Research::EntryType::Ride)
+        if (researchItem.type != Research::EntryType::ride)
             continue;
 
         auto rideType = researchItem.baseRideType;

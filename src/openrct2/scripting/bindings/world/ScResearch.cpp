@@ -46,8 +46,8 @@ namespace OpenRCT2::Scripting
 
     static const DukEnumMap<Research::EntryType> ResearchEntryTypeMap(
         {
-            { "ride", Research::EntryType::Ride },
-            { "scenery", Research::EntryType::Scenery },
+            { "ride", Research::EntryType::ride },
+            { "scenery", Research::EntryType::scenery },
         });
 
     template<>
@@ -56,7 +56,7 @@ namespace OpenRCT2::Scripting
         DukObject obj(ctx);
         obj.Set("category", ResearchCategoryMap[value.category]);
         obj.Set("type", ResearchEntryTypeMap[value.type]);
-        if (value.type == Research::EntryType::Ride)
+        if (value.type == Research::EntryType::ride)
         {
             obj.Set("rideType", value.baseRideType);
         }
@@ -75,7 +75,7 @@ namespace OpenRCT2::Scripting
                 return it->second;
             }
         }
-        return Research::EntryType::Scenery;
+        return Research::EntryType::scenery;
     }
 
     template<>
@@ -271,7 +271,7 @@ namespace OpenRCT2::Scripting
         {
             auto researchItem = FromDuk<ResearchItem>(item);
             researchItem.flags = 0;
-            if (researchItem.type == Research::EntryType::Ride)
+            if (researchItem.type == Research::EntryType::ride)
             {
                 auto rideEntry = GetRideEntryByIndex(researchItem.entryIndex);
                 if (rideEntry != nullptr)
