@@ -194,9 +194,9 @@ namespace OpenRCT2
         _legacyType.shop_item[0] = static_cast<ShopItem>(stream->ReadValue<uint8_t>());
         _legacyType.shop_item[1] = static_cast<ShopItem>(stream->ReadValue<uint8_t>());
 
-        GetStringTable().Read(context, stream, ObjectStringID::NAME);
-        GetStringTable().Read(context, stream, ObjectStringID::DESCRIPTION);
-        GetStringTable().Read(context, stream, ObjectStringID::CAPACITY);
+        GetStringTable().Read(context, stream, ObjectStringID::name);
+        GetStringTable().Read(context, stream, ObjectStringID::description);
+        GetStringTable().Read(context, stream, ObjectStringID::capacity);
 
         // Read preset colours, by default there are 32
         _presetColours.count = stream->ReadValue<uint8_t>();
@@ -391,12 +391,12 @@ namespace OpenRCT2
 
     std::string RideObject::GetDescription() const
     {
-        return GetString(ObjectStringID::DESCRIPTION);
+        return GetString(ObjectStringID::description);
     }
 
     std::string RideObject::GetCapacity() const
     {
-        return GetString(ObjectStringID::CAPACITY);
+        return GetString(ObjectStringID::capacity);
     }
 
     ImageIndex RideObject::GetPreviewImage(ride_type_t type)

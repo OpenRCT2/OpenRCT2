@@ -162,7 +162,7 @@ namespace OpenRCT2
 
     std::string PeepAnimationsObject::GetCostumeName() const
     {
-        return GetStringTable().GetString(ObjectStringID::NAME);
+        return GetStringTable().GetString(ObjectStringID::name);
     }
 
     ImageIndex PeepAnimationsObject::GetInlineImageId() const

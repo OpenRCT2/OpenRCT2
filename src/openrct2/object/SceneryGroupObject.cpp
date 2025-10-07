@@ -48,7 +48,7 @@ namespace OpenRCT2
         stream->Seek(1, STREAM_SEEK_CURRENT); // Pad109;
         _legacyType.entertainer_costumes = stream->ReadValue<uint32_t>();
 
-        GetStringTable().Read(context, stream, ObjectStringID::NAME);
+        GetStringTable().Read(context, stream, ObjectStringID::name);
         _items = ReadItems(stream);
         GetImageTable().Read(context, stream);
     }

@@ -32,7 +32,7 @@ namespace OpenRCT2
         _legacyType.scenery_tab_id = kObjectEntryIndexNull;
         stream->Seek(2, STREAM_SEEK_CURRENT);
 
-        GetStringTable().Read(context, stream, ObjectStringID::NAME);
+        GetStringTable().Read(context, stream, ObjectStringID::name);
 
         RCTObjectEntry sgEntry = stream->ReadValue<RCTObjectEntry>();
         SetPrimarySceneryGroup(ObjectEntryDescriptor(sgEntry));

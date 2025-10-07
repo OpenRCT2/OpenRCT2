@@ -25,7 +25,7 @@ namespace OpenRCT2
         _legacyType.scrolling_mode = stream->ReadValue<uint8_t>();
         stream->Seek(1, STREAM_SEEK_CURRENT);
 
-        GetStringTable().Read(context, stream, ObjectStringID::NAME);
+        GetStringTable().Read(context, stream, ObjectStringID::name);
         GetImageTable().Read(context, stream);
 
         // Validate properties
