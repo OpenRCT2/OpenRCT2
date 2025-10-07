@@ -62,6 +62,7 @@
 #include "TrackData.h"
 #include "TrainManager.h"
 #include "VehicleData.h"
+#include "VehicleGeometry.h"
 #include "VehicleSubpositionData.h"
 
 #include <cassert>
@@ -71,6 +72,7 @@ using namespace OpenRCT2;
 using namespace OpenRCT2::Audio;
 using namespace OpenRCT2::TrackMetaData;
 using namespace OpenRCT2::Math::Trigonometry;
+using namespace OpenRCT2::RideVehicle;
 static bool vehicle_boat_is_location_accessible(const CoordsXYZ& location);
 
 constexpr int16_t kVehicleMaxSpinSpeed = 1536;
