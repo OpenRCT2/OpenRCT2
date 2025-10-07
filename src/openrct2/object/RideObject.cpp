@@ -272,7 +272,7 @@ namespace OpenRCT2
             }
         }
 
-        GetImageTable().Read(context, stream);
+        ReadEmbeddedImages(*context, *stream);
 
         // Validate properties
         if (_legacyType.excitement_multiplier > 75)
@@ -371,7 +371,7 @@ namespace OpenRCT2
         _legacyType.naming.Name = 0;
         _legacyType.naming.Description = 0;
         _legacyType.capacity = 0;
-        _legacyType.images_offset = 0;
+        _legacyType.images_offset = kImageIndexUndefined;
     }
 
     void RideObject::DrawPreview(RenderTarget& rt, [[maybe_unused]] int32_t width, [[maybe_unused]] int32_t height) const
