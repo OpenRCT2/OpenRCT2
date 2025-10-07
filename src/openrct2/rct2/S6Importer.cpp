@@ -1758,32 +1758,32 @@ namespace OpenRCT2::RCT2
 
                     switch (RCT12MiscEntityType(src->Type))
                     {
-                        case RCT12MiscEntityType::SteamParticle:
+                        case RCT12MiscEntityType::steamParticle:
                             output = EntityType::steamParticle;
                             break;
-                        case RCT12MiscEntityType::MoneyEffect:
+                        case RCT12MiscEntityType::moneyEffect:
                             output = EntityType::moneyEffect;
                             break;
-                        case RCT12MiscEntityType::CrashedVehicleParticle:
+                        case RCT12MiscEntityType::crashedVehicleParticle:
                             output = EntityType::crashedVehicleParticle;
                             break;
-                        case RCT12MiscEntityType::ExplosionCloud:
+                        case RCT12MiscEntityType::explosionCloud:
                             output = EntityType::explosionCloud;
                             break;
-                        case RCT12MiscEntityType::CrashSplash:
+                        case RCT12MiscEntityType::crashSplash:
                             output = EntityType::crashSplash;
                             break;
-                        case RCT12MiscEntityType::ExplosionFlare:
+                        case RCT12MiscEntityType::explosionFlare:
                             output = EntityType::explosionFlare;
                             break;
-                        case RCT12MiscEntityType::JumpingFountainWater:
-                        case RCT12MiscEntityType::JumpingFountainSnow:
+                        case RCT12MiscEntityType::jumpingFountainWater:
+                        case RCT12MiscEntityType::jumpingFountainSnow:
                             output = EntityType::jumpingFountain;
                             break;
-                        case RCT12MiscEntityType::Balloon:
+                        case RCT12MiscEntityType::balloon:
                             output = EntityType::balloon;
                             break;
-                        case RCT12MiscEntityType::Duck:
+                        case RCT12MiscEntityType::duck:
                             output = EntityType::duck;
                             break;
                         default:
@@ -2249,7 +2249,7 @@ namespace OpenRCT2::RCT2
         dst->TargetX = src->TargetX;
         dst->TargetY = src->TargetY;
         dst->Iteration = src->Iteration;
-        dst->FountainType = RCT12MiscEntityType(src->Type) == RCT12MiscEntityType::JumpingFountainSnow
+        dst->FountainType = RCT12MiscEntityType(src->Type) == RCT12MiscEntityType::jumpingFountainSnow
             ? ::JumpingFountainType::Snow
             : ::JumpingFountainType::Water;
     }

@@ -919,16 +919,16 @@ enum class RCT12EntityIdentifier : uint8_t
 
 enum class RCT12MiscEntityType : uint8_t
 {
-    SteamParticle,
-    MoneyEffect,
-    CrashedVehicleParticle,
-    ExplosionCloud,
-    CrashSplash,
-    ExplosionFlare,
-    JumpingFountainWater,
-    Balloon,
-    Duck,
-    JumpingFountainSnow
+    steamParticle,
+    moneyEffect,
+    crashedVehicleParticle,
+    explosionCloud,
+    crashSplash,
+    explosionFlare,
+    jumpingFountainWater,
+    balloon,
+    duck,
+    jumpingFountainSnow
 };
 
 enum class RCT12PeepType : uint8_t
