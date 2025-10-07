@@ -900,12 +900,12 @@ static_assert(sizeof(RCT12EightCarsCorruptElement15) == 8);
 // Offset into EntityListHead and EntityListCount
 enum class RCT12EntityLinkListOffset : uint8_t
 {
-    Free = 0,
-    TrainHead = 1 * sizeof(uint16_t),
-    Peep = 2 * sizeof(uint16_t),
-    Misc = 3 * sizeof(uint16_t),
-    Litter = 4 * sizeof(uint16_t),
-    Vehicle = 5 * sizeof(uint16_t),
+    free = 0,
+    trainHead = 1 * sizeof(uint16_t),
+    peep = 2 * sizeof(uint16_t),
+    misc = 3 * sizeof(uint16_t),
+    litter = 4 * sizeof(uint16_t),
+    vehicle = 5 * sizeof(uint16_t),
 };
 
 enum class RCT12EntityIdentifier : uint8_t
