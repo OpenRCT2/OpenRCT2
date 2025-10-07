@@ -266,20 +266,23 @@ void Peep::UpdateWaitingAtCrossing()
 
     if (auto* guest = As<Guest>(); guest != nullptr)
     {
-        if (guest->HasFoodOrDrink())
+        if (guest->IsActionInterruptable())
         {
-            if ((ScenarioRand() & 0xFFFF) <= 1310)
+            if (guest->HasFoodOrDrink())
             {
-                Action = PeepActionType::eatFood;
+                if ((ScenarioRand() & 0xFFFF) <= 1310)
+                {
+                    Action = PeepActionType::eatFood;
+                    AnimationFrameNum = 0;
+                    AnimationImageIdOffset = 0;
+                }
+            }
+            else if ((ScenarioRand() & 0xFFFF) <= 64)
+            {
+                Action = PeepActionType::wave2;
                 AnimationFrameNum = 0;
                 AnimationImageIdOffset = 0;
             }
-        }
-        else if ((ScenarioRand() & 0xFFFF) <= 64)
-        {
-            Action = PeepActionType::wave2;
-            AnimationFrameNum = 0;
-            AnimationImageIdOffset = 0;
         }
     }
 
