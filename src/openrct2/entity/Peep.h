@@ -387,7 +387,6 @@ public: // Peep
     void Remove();
     void UpdateCurrentAnimationType();
     void UpdateSpriteBoundingBox();
-    void UpdateWaitingAtCrossing();
     void SwitchToSpecialSprite(uint8_t special_sprite_id);
     void StateReset();
     [[nodiscard]] uint8_t GetNextDirection() const;
@@ -422,15 +421,16 @@ public: // Peep
     // TODO: Make these private again when done refactoring
 public: // Peep
     [[nodiscard]] bool CheckForPath();
-    bool ShouldWaitForLevelCrossing() const;
-    bool IsOnLevelCrossing() const;
-    bool IsOnPathBlockedByVehicle() const;
     std::pair<uint8_t, OpenRCT2::TileElement*> PerformNextAction();
     [[nodiscard]] int32_t GetZOnSlope(int32_t tile_x, int32_t tile_y);
     void SwitchNextAnimationType();
     [[nodiscard]] PeepAnimationType GetAnimationType();
 
 protected:
+    bool ShouldWaitForLevelCrossing() const;
+    bool IsOnLevelCrossing() const;
+    bool IsOnPathBlockedByVehicle() const;
+    void UpdateWaitingAtCrossing();
     void UpdateFalling();
     void Update1();
     void UpdatePicked();
