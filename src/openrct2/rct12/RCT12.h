@@ -933,10 +933,10 @@ enum class RCT12MiscEntityType : uint8_t
 
 enum class RCT12PeepType : uint8_t
 {
-    Guest,
-    Staff,
+    guest,
+    staff,
 
-    Invalid = 0xFF
+    invalid = 0xFF
 };
 
 enum class RCT12PeepAnimationGroup : uint8_t

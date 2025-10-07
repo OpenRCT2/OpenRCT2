@@ -1744,7 +1744,7 @@ namespace OpenRCT2::RCT2
                 case RCT12EntityIdentifier::peep:
                 {
                     const auto& peep = static_cast<const Peep&>(*src);
-                    if (RCT12PeepType(peep.PeepType) == RCT12PeepType::Guest)
+                    if (RCT12PeepType(peep.PeepType) == RCT12PeepType::guest)
                     {
                         output = EntityType::guest;
                     }
