@@ -224,17 +224,17 @@ namespace OpenRCT2::ObjectFactory
     static ObjectSourceGame ParseSourceGame(const std::string_view s)
     {
         static const std::unordered_map<std::string_view, ObjectSourceGame> LookupTable{
-            { "rct1", ObjectSourceGame::RCT1 },
-            { "rct1aa", ObjectSourceGame::AddedAttractions },
-            { "rct1ll", ObjectSourceGame::LoopyLandscapes },
-            { "rct2", ObjectSourceGame::RCT2 },
-            { "rct2ww", ObjectSourceGame::WackyWorlds },
-            { "rct2tt", ObjectSourceGame::TimeTwister },
-            { "official", ObjectSourceGame::OpenRCT2Official },
-            { "custom", ObjectSourceGame::Custom },
+            { "rct1", ObjectSourceGame::rct1 },
+            { "rct1aa", ObjectSourceGame::addedAttractions },
+            { "rct1ll", ObjectSourceGame::loopyLandscapes },
+            { "rct2", ObjectSourceGame::rct2 },
+            { "rct2ww", ObjectSourceGame::wackyWorlds },
+            { "rct2tt", ObjectSourceGame::timeTwister },
+            { "official", ObjectSourceGame::openRCT2Official },
+            { "custom", ObjectSourceGame::custom },
         };
         auto result = LookupTable.find(s);
-        return (result != LookupTable.end()) ? result->second : ObjectSourceGame::Custom;
+        return (result != LookupTable.end()) ? result->second : ObjectSourceGame::custom;
     }
 
     static void ReadObjectLegacy(Object& object, IReadObjectContext* context, OpenRCT2::IStream* stream)
@@ -506,18 +506,18 @@ namespace OpenRCT2::ObjectFactory
             else
             {
                 LOG_ERROR("Object %s has an incorrect sourceGame parameter.", id.c_str());
-                result.SetSourceGames({ ObjectSourceGame::Custom });
+                result.SetSourceGames({ ObjectSourceGame::custom });
             }
         }
         // >90% of objects are custom, so allow omitting the parameter without displaying an error.
         else if (sourceGames.is_null())
         {
-            result.SetSourceGames({ ObjectSourceGame::Custom });
+            result.SetSourceGames({ ObjectSourceGame::custom });
         }
         else
         {
             LOG_ERROR("Object %s has an incorrect sourceGame parameter.", id.c_str());
-            result.SetSourceGames({ ObjectSourceGame::Custom });
+            result.SetSourceGames({ ObjectSourceGame::custom });
         }
     }
 

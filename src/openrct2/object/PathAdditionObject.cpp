@@ -48,7 +48,7 @@ namespace OpenRCT2
         // Add path additions to 'Signs and items for footpaths' group, rather than lumping them in the Miscellaneous tab.
         // Since this is already done the other way round for original items, avoid adding those to prevent duplicates.
         auto firstSourceGame = GetFirstSourceGame();
-        if (firstSourceGame == ObjectSourceGame::Custom)
+        if (firstSourceGame == ObjectSourceGame::custom)
         {
             auto scgPathX = Object::GetScgPathXHeader();
             SetPrimarySceneryGroup(scgPathX);

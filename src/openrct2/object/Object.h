@@ -45,14 +45,14 @@ namespace OpenRCT2
 
     enum class ObjectSourceGame : uint8_t
     {
-        Custom,
-        WackyWorlds,
-        TimeTwister,
-        OpenRCT2Official,
-        RCT1,
-        AddedAttractions,
-        LoopyLandscapes,
-        RCT2 = 8
+        custom,
+        wackyWorlds,
+        timeTwister,
+        openRCT2Official,
+        rct1,
+        addedAttractions,
+        loopyLandscapes,
+        rct2 = 8,
     };
 
 #pragma pack(push, 1)

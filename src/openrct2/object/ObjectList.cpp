@@ -195,7 +195,7 @@ namespace OpenRCT2
         for (size_t i = 0; i < subList.size(); i++)
         {
             if (subList[i].Generation == ObjectGeneration::DAT && subList[i].Entry.GetName() == identifier
-                && subList[i].Entry.GetSourceGame() != ObjectSourceGame::Custom)
+                && subList[i].Entry.GetSourceGame() != ObjectSourceGame::custom)
             {
                 return static_cast<ObjectEntryIndex>(i);
             }

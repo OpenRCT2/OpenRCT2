@@ -195,7 +195,7 @@ namespace OpenRCT2
     ObjectSourceGame Object::GetFirstSourceGame() const
     {
         if (_sourceGames.size() == 0)
-            return ObjectSourceGame::Custom;
+            return ObjectSourceGame::custom;
 
         return _sourceGames[0];
     }
