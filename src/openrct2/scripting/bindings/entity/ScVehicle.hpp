@@ -9,7 +9,7 @@
 
 #pragma once
 
-#ifdef ENABLE_SCRIPTING
+#ifdef ENABLE_SCRIPTING_REFACTOR
 
     #include "../../../entity/EntityTweener.h"
     #include "../../../ride/Ride.h"
@@ -19,91 +19,89 @@
 
 namespace OpenRCT2::Scripting
 {
-    class ScVehicle : public ScEntity
+    class ScVehicle final : public ScEntity
     {
     public:
-        ScVehicle(EntityId id);
-
-        static void Register(duk_context* ctx);
+        static JSValue New(JSContext* ctx, EntityId entityId);
 
     private:
-        Vehicle* GetVehicle() const;
+        static void AddFuncs(JSContext* ctx, JSValue obj);
+        static Vehicle* GetVehicle(JSValue thisVal);
 
-        ObjectEntryIndex rideObject_get() const;
-        void rideObject_set(ObjectEntryIndex value);
+        static JSValue rideObject_get(JSContext* ctx, JSValue thisVal);
+        static JSValue rideObject_set(JSContext* ctx, JSValue thisVal, JSValue jsValue);
 
-        uint8_t vehicleObject_get() const;
-        void vehicleObject_set(uint8_t value);
+        static JSValue vehicleObject_get(JSContext* ctx, JSValue thisVal);
+        static JSValue vehicleObject_set(JSContext* ctx, JSValue thisVal, JSValue jsValue);
 
-        uint8_t spriteType_get() const;
-        void spriteType_set(uint8_t value);
+        static JSValue spriteType_get(JSContext* ctx, JSValue thisVal);
+        static JSValue spriteType_set(JSContext* ctx, JSValue thisVal, JSValue jsValue);
 
-        int32_t ride_get() const;
-        void ride_set(int32_t value);
+        static JSValue ride_get(JSContext* ctx, JSValue thisVal);
+        static JSValue ride_set(JSContext* ctx, JSValue thisVal, JSValue jsValue);
 
-        uint8_t numSeats_get() const;
-        void numSeats_set(uint8_t value);
+        static JSValue numSeats_get(JSContext* ctx, JSValue thisVal);
+        static JSValue numSeats_set(JSContext* ctx, JSValue thisVal, JSValue jsValue);
 
-        DukValue nextCarOnTrain_get() const;
-        void nextCarOnTrain_set(DukValue value);
+        static JSValue nextCarOnTrain_get(JSContext* ctx, JSValue thisVal);
+        static JSValue nextCarOnTrain_set(JSContext* ctx, JSValue thisVal, JSValue jsValue);
 
-        DukValue previousCarOnRide_get() const;
-        void previousCarOnRide_set(DukValue value);
+        static JSValue previousCarOnRide_get(JSContext* ctx, JSValue thisVal);
+        static JSValue previousCarOnRide_set(JSContext* ctx, JSValue thisVal, JSValue jsValue);
 
-        DukValue nextCarOnRide_get() const;
-        void nextCarOnRide_set(DukValue value);
+        static JSValue nextCarOnRide_get(JSContext* ctx, JSValue thisVal);
+        static JSValue nextCarOnRide_set(JSContext* ctx, JSValue thisVal, JSValue jsValue);
 
-        StationIndex::UnderlyingType currentStation_get() const;
-        void currentStation_set(StationIndex::UnderlyingType value);
+        static JSValue currentStation_get(JSContext* ctx, JSValue thisVal);
+        static JSValue currentStation_set(JSContext* ctx, JSValue thisVal, JSValue jsValue);
 
-        uint16_t mass_get() const;
-        void mass_set(uint16_t value);
+        static JSValue mass_get(JSContext* ctx, JSValue thisVal);
+        static JSValue mass_set(JSContext* ctx, JSValue thisVal, JSValue jsValue);
 
-        int32_t acceleration_get() const;
-        void acceleration_set(int32_t value);
+        static JSValue acceleration_get(JSContext* ctx, JSValue thisVal);
+        static JSValue acceleration_set(JSContext* ctx, JSValue thisVal, JSValue jsValue);
 
-        int32_t velocity_get() const;
-        void velocity_set(int32_t value);
+        static JSValue velocity_get(JSContext* ctx, JSValue thisVal);
+        static JSValue velocity_set(JSContext* ctx, JSValue thisVal, JSValue jsValue);
 
-        uint8_t bankRotation_get() const;
-        void bankRotation_set(uint8_t value);
+        static JSValue bankRotation_get(JSContext* ctx, JSValue thisVal);
+        static JSValue bankRotation_set(JSContext* ctx, JSValue thisVal, JSValue jsValue);
 
         template<uint32_t flag>
-        bool flag_get() const;
+        static JSValue flag_get(JSContext* ctx, JSValue thisVal);
         template<uint32_t flag>
-        void flag_set(bool value);
+        static JSValue flag_set(JSContext* ctx, JSValue thisVal, JSValue jsValue);
 
-        DukValue colours_get() const;
-        void colours_set(const DukValue& value);
+        static JSValue colours_get(JSContext* ctx, JSValue thisVal);
+        static JSValue colours_set(JSContext* ctx, JSValue thisVal, JSValue jsValue);
 
-        DukValue trackLocation_get() const;
-        void trackLocation_set(const DukValue& value);
+        static JSValue trackLocation_get(JSContext* ctx, JSValue thisVal);
 
-        uint16_t trackProgress_get() const;
+        static JSValue trackProgress_get(JSContext* ctx, JSValue thisVal);
 
-        int32_t remainingDistance_get() const;
+        static JSValue remainingDistance_get(JSContext* ctx, JSValue thisVal);
 
-        uint8_t subposition_get() const;
+        static JSValue subposition_get(JSContext* ctx, JSValue thisVal);
 
-        uint8_t poweredAcceleration_get() const;
-        void poweredAcceleration_set(uint8_t value);
+        static JSValue poweredAcceleration_get(JSContext* ctx, JSValue thisVal);
+        static JSValue poweredAcceleration_set(JSContext* ctx, JSValue thisVal, JSValue jsValue);
 
-        uint8_t poweredMaxSpeed_get() const;
-        void poweredMaxSpeed_set(uint8_t value);
+        static JSValue poweredMaxSpeed_get(JSContext* ctx, JSValue thisVal);
+        static JSValue poweredMaxSpeed_set(JSContext* ctx, JSValue thisVal, JSValue jsValue);
 
-        std::string status_get() const;
-        void status_set(const std::string& value);
+        static JSValue status_get(JSContext* ctx, JSValue thisVal);
+        static JSValue status_set(JSContext* ctx, JSValue thisVal, JSValue jsValue);
 
-        uint8_t spin_get() const;
-        void spin_set(uint8_t value);
+        static JSValue spin_get(JSContext* ctx, JSValue thisVal);
+        static JSValue spin_set(JSContext* ctx, JSValue thisVal, JSValue jsValue);
 
-        std::vector<DukValue> guests_get() const;
+        static JSValue guests_get(JSContext* ctx, JSValue thisVal);
 
-        DukValue gForces_get() const;
+        static JSValue gForces_get(JSContext* ctx, JSValue thisVal);
 
-        void travelBy(int32_t value);
+        static JSValue travelBy(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv);
 
-        void moveToTrack(int32_t x, int32_t y, int32_t elementIndex);
+        static JSValue moveToTrack(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv);
     };
 
 } // namespace OpenRCT2::Scripting

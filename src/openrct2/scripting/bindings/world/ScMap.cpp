@@ -7,7 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifdef ENABLE_SCRIPTING
+#ifdef ENABLE_SCRIPTING_REFACTOR
 
     #include "ScMap.hpp"
 
@@ -24,7 +24,7 @@
     #include "../../../ride/Ride.h"
     #include "../../../ride/RideManager.hpp"
     #include "../../../ride/TrainManager.h"
-    #include "../../Duktape.hpp"
+    #include "../../../ride/Vehicle.h"
     #include "../entity/ScBalloon.hpp"
     #include "../entity/ScEntity.hpp"
     #include "../entity/ScGuest.hpp"
@@ -39,29 +39,29 @@
 
 namespace OpenRCT2::Scripting
 {
-    ScMap::ScMap(duk_context* ctx)
-        : _context(ctx)
+
+    JSValue ScMap::size_get(JSContext* ctx, JSValue thisVal)
     {
+        return ToJSValue(ctx, getGameState().mapSize);
     }
 
-    DukValue ScMap::size_get() const
-    {
-        return ToDuk(_context, getGameState().mapSize);
-    }
-
-    int32_t ScMap::numRides_get() const
+    JSValue ScMap::numRides_get(JSContext* ctx, JSValue thisVal)
     {
         auto& gameState = getGameState();
-        return static_cast<int32_t>(RideManager(gameState).size());
+        return JS_NewInt64(ctx, RideManager(gameState).size());
     }
 
-    int32_t ScMap::numEntities_get() const
+    JSValue ScMap::numEntities_get(JSContext* ctx, JSValue thisVal)
     {
-        return kMaxEntities;
+        return JS_NewInt32(ctx, kMaxEntities);
     }
 
-    std::vector<std::shared_ptr<ScRide>> ScMap::rides_get() const
+    JSValue ScMap::rides_get(JSContext* ctx, JSValue thisVal)
     {
+        // TODO (mber) pending ScRide conversion
+        JS_ThrowInternalError(ctx, "not implemented yet");
+        return JS_EXCEPTION;
+        /*
         std::vector<std::shared_ptr<ScRide>> result;
 
         auto& gameState = getGameState();
@@ -71,10 +71,15 @@ namespace OpenRCT2::Scripting
             result.push_back(std::make_shared<ScRide>(ride.id));
         }
         return result;
+        */
     }
 
-    std::shared_ptr<ScRide> ScMap::getRide(int32_t id) const
+    JSValue ScMap::getRide(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
     {
+        // TODO (mber) pending ScRide conversion
+        JS_ThrowInternalError(ctx, "not implemented yet");
+        return JS_EXCEPTION;
+        /*
         auto& gameState = getGameState();
         auto rideManager = RideManager(gameState);
         auto ride = rideManager[RideId::FromUnderlying(id)];
@@ -83,37 +88,47 @@ namespace OpenRCT2::Scripting
             return std::make_shared<ScRide>(ride->id);
         }
         return {};
+        */
     }
 
-    std::shared_ptr<ScTile> ScMap::getTile(int32_t x, int32_t y) const
+    JSValue ScMap::getTile(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
     {
+        // TODO (mber) pending ScTile conversion
+        JS_ThrowInternalError(ctx, "not implemented yet");
+        return JS_EXCEPTION;
+        /*
         auto coords = TileCoordsXY(x, y).ToCoordsXY();
         return std::make_shared<ScTile>(coords);
+        */
     }
 
-    DukValue ScMap::getEntity(int32_t id) const
+    JSValue ScMap::getEntity(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
     {
+        JS_UNPACK_INT32(id, ctx, argv[0]);
+
         if (id >= 0 && id < kMaxEntities)
         {
             auto spriteId = EntityId::FromUnderlying(id);
             auto sprite = getGameState().entities.GetEntity(spriteId);
             if (sprite != nullptr && sprite->Type != EntityType::null)
             {
-                return GetEntityAsDukValue(sprite);
+                return GetEntityAsDukValue(ctx, sprite);
             }
         }
-        duk_push_null(_context);
-        return DukValue::take_from_stack(_context);
+        return JS_NULL;
     }
 
-    std::vector<DukValue> ScMap::getAllEntities(const std::string& type) const
+    JSValue ScMap::getAllEntities(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
     {
-        std::vector<DukValue> result;
+        JS_UNPACK_STR(type, ctx, argv[0]);
+
+        JSValue result = JS_NewArray(ctx);
+        uint64_t idx = 0;
         if (type == "balloon")
         {
             for (auto sprite : EntityList<Balloon>())
             {
-                result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScBalloon>(sprite->Id)));
+                JS_SetPropertyInt64(ctx, result, idx++, ScBalloon::New(ctx, sprite->Id));
             }
         }
         else if (type == "car")
@@ -129,7 +144,7 @@ namespace OpenRCT2::Scripting
                         break;
                     }
 
-                    result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScVehicle>(carId)));
+                    JS_SetPropertyInt64(ctx, result, idx++, ScVehicle::New(ctx, carId));
 
                     // Prevent infinite loops: Ensure next_vehicle_on_train is valid and not self-referencing
                     auto nextCarId = car->next_vehicle_on_train;
@@ -146,39 +161,39 @@ namespace OpenRCT2::Scripting
         {
             for (auto sprite : EntityList<Litter>())
             {
-                result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScLitter>(sprite->Id)));
+                JS_SetPropertyInt64(ctx, result, idx++, ScLitter::New(ctx, sprite->Id));
             }
         }
         else if (type == "money_effect")
         {
             for (auto sprite : EntityList<MoneyEffect>())
             {
-                result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScMoneyEffect>(sprite->Id)));
+                JS_SetPropertyInt64(ctx, result, idx++, ScMoneyEffect::New(ctx, sprite->Id));
             }
         }
         else if (type == "duck")
         {
             for (auto sprite : EntityList<Duck>())
             {
-                result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScEntity>(sprite->Id)));
+                JS_SetPropertyInt64(ctx, result, idx++, gScEntity.New(ctx, sprite->Id));
             }
         }
         else if (type == "peep")
         {
             for (auto sprite : EntityList<Guest>())
             {
-                result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScGuest>(sprite->Id)));
+                JS_SetPropertyInt64(ctx, result, idx++, ScGuest::New(ctx, sprite->Id));
             }
             for (auto sprite : EntityList<Staff>())
             {
-                result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScStaff>(sprite->Id)));
+                JS_SetPropertyInt64(ctx, result, idx++, ScStaff::New(ctx, sprite->Id));
             }
         }
         else if (type == "guest")
         {
             for (auto sprite : EntityList<Guest>())
             {
-                result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScGuest>(sprite->Id)));
+                JS_SetPropertyInt64(ctx, result, idx++, ScGuest::New(ctx, sprite->Id));
             }
         }
         else if (type == "staff")
@@ -191,22 +206,22 @@ namespace OpenRCT2::Scripting
                     switch (staff->AssignedStaffType)
                     {
                         case StaffType::handyman:
-                            result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScHandyman>(sprite->Id)));
+                            JS_SetPropertyInt64(ctx, result, idx++, ScHandyman::New(ctx, sprite->Id));
                             break;
                         case StaffType::mechanic:
-                            result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScMechanic>(sprite->Id)));
+                            JS_SetPropertyInt64(ctx, result, idx++, ScMechanic::New(ctx, sprite->Id));
                             break;
                         case StaffType::security:
-                            result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScSecurity>(sprite->Id)));
+                            JS_SetPropertyInt64(ctx, result, idx++, ScSecurity::New(ctx, sprite->Id));
                             break;
                         default:
-                            result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScStaff>(sprite->Id)));
+                            JS_SetPropertyInt64(ctx, result, idx++, ScStaff::New(ctx, sprite->Id));
                             break;
                     }
                 }
                 else
                 {
-                    result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScStaff>(sprite->Id)));
+                    JS_SetPropertyInt64(ctx, result, idx++, ScStaff::New(ctx, sprite->Id));
                 }
             }
         }
@@ -214,66 +229,71 @@ namespace OpenRCT2::Scripting
         {
             for (auto sprite : EntityList<VehicleCrashParticle>())
             {
-                result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScCrashedVehicleParticle>(sprite->Id)));
+                JS_SetPropertyInt64(ctx, result, idx++, ScCrashedVehicleParticle::New(ctx, sprite->Id));
             }
         }
         else
         {
-            duk_error(_context, DUK_ERR_ERROR, "Invalid entity type.");
+            JS_FreeValue(ctx, result);
+            JS_ThrowPlainError(ctx, "Invalid entity type.");
+            return JS_EXCEPTION;
         }
 
         return result;
     }
 
-    std::vector<DukValue> ScMap::getAllEntitiesOnTile(const std::string& type, const DukValue& tilePos) const
+    JSValue ScMap::getAllEntitiesOnTile(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
     {
-        // Get the tile position
-        const auto pos = FromDuk<CoordsXY>(tilePos);
+        JS_UNPACK_STR(type, ctx, argv[0]);
 
-        // Declare a vector that will hold the result to return
-        std::vector<DukValue> result;
+        // Get the tile position
+        const auto pos = JSToCoordsXY(ctx, argv[1]);
+
+        // Declare an array that will hold the result to return
+        JSValue result = JS_NewArray(ctx);
+        uint64_t idx = 0;
 
         // Use EntityTileList to iterate all entities of the given type on the tile, and push them to result
         if (type == "balloon")
         {
             for (auto sprite : EntityTileList<Balloon>(pos))
             {
-                result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScBalloon>(sprite->Id)));
+                JS_SetPropertyInt64(ctx, result, idx++, ScBalloon::New(ctx, sprite->Id));
             }
         }
         else if (type == "car")
         {
             for (auto sprite : EntityTileList<Vehicle>(pos))
             {
-                result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScVehicle>(sprite->Id)));
+                JS_SetPropertyInt64(ctx, result, idx++, ScVehicle::New(ctx, sprite->Id));
             }
         }
         else if (type == "litter")
         {
             for (auto sprite : EntityTileList<Litter>(pos))
             {
-                result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScLitter>(sprite->Id)));
+                JS_SetPropertyInt64(ctx, result, idx++, ScLitter::New(ctx, sprite->Id));
             }
         }
         else if (type == "duck")
         {
             for (auto sprite : EntityTileList<Duck>(pos))
             {
-                result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScEntity>(sprite->Id)));
+                JS_SetPropertyInt64(ctx, result, idx++, ScEntity::New(ctx, sprite->Id));
             }
         }
         else if (type == "guest")
         {
             for (auto sprite : EntityTileList<Guest>(pos))
             {
-                result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScGuest>(sprite->Id)));
+                JS_SetPropertyInt64(ctx, result, idx++, ScGuest::New(ctx, sprite->Id));
             }
         }
         else if (type == "money_effect")
         {
             for (auto sprite : EntityTileList<MoneyEffect>(pos))
             {
-                result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScMoneyEffect>(sprite->Id)));
+                JS_SetPropertyInt64(ctx, result, idx++, ScMoneyEffect::New(ctx, sprite->Id));
             }
         }
         else if (type == "staff")
@@ -286,22 +306,22 @@ namespace OpenRCT2::Scripting
                     switch (staff->AssignedStaffType)
                     {
                         case StaffType::handyman:
-                            result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScHandyman>(sprite->Id)));
+                            JS_SetPropertyInt64(ctx, result, idx++, ScHandyman::New(ctx, sprite->Id));
                             break;
                         case StaffType::mechanic:
-                            result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScMechanic>(sprite->Id)));
+                            JS_SetPropertyInt64(ctx, result, idx++, ScMechanic::New(ctx, sprite->Id));
                             break;
                         case StaffType::security:
-                            result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScSecurity>(sprite->Id)));
+                            JS_SetPropertyInt64(ctx, result, idx++, ScSecurity::New(ctx, sprite->Id));
                             break;
                         default:
-                            result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScStaff>(sprite->Id)));
+                            JS_SetPropertyInt64(ctx, result, idx++, ScStaff::New(ctx, sprite->Id));
                             break;
                     }
                 }
                 else
                 {
-                    result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScStaff>(sprite->Id)));
+                    JS_SetPropertyInt64(ctx, result, idx++, ScStaff::New(ctx, sprite->Id));
                 }
             }
         }
@@ -309,50 +329,55 @@ namespace OpenRCT2::Scripting
         {
             for (auto sprite : EntityTileList<VehicleCrashParticle>(pos))
             {
-                result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScCrashedVehicleParticle>(sprite->Id)));
+                JS_SetPropertyInt64(ctx, result, idx++, ScCrashedVehicleParticle::New(ctx, sprite->Id));
             }
         }
         else
         {
             // If the given type isn't valid, throw an error
-            duk_error(_context, DUK_ERR_ERROR, "Invalid entity type: %s", type.c_str());
+            JS_FreeValue(ctx, result);
+            JS_ThrowPlainError(ctx, "Invalid entity type: %s", type.c_str());
+            return JS_EXCEPTION;
         }
 
         return result;
     }
 
     template<typename TEntityType, typename TScriptType>
-    DukValue createEntityType(duk_context* ctx, const DukValue& initializer)
+    JSValue createEntityType(JSContext* ctx, JSValue initializer)
     {
         TEntityType* entity = getGameState().entities.CreateEntity<TEntityType>();
         if (entity == nullptr)
         {
             // Probably no more space for entities for this specified entity type.
-            return ToDuk(ctx, undefined);
+            return JS_UNDEFINED;
         }
 
-        auto entityPos = CoordsXYZ{ AsOrDefault(initializer["x"], 0), AsOrDefault(initializer["y"], 0),
-                                    AsOrDefault(initializer["z"], 0) };
+        auto entityPos = CoordsXYZ{ AsOrDefault(ctx, initializer, "x", 0), AsOrDefault(ctx, initializer, "y", 0),
+                                    AsOrDefault(ctx, initializer, "z", 0) };
         entity->MoveTo(entityPos);
 
-        return GetObjectAsDukValue(ctx, std::make_shared<TScriptType>(entity->Id));
+        return TScriptType::New(ctx, entity->Id);
     }
 
-    DukValue ScMap::createEntity(const std::string& type, const DukValue& initializer)
+    JSValue ScMap::createEntity(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
     {
-        DukValue res;
+        JS_UNPACK_STR(type, ctx, argv[0]);
+        JSValue initializer = argv[1];
+
+        JSValue res;
         if (type == "car")
         {
             Vehicle* entity = getGameState().entities.CreateEntity<Vehicle>();
             if (entity == nullptr)
             {
                 // Probably no more space for entities for this specified entity type.
-                res = ToDuk(_context, undefined);
+                res = JS_UNDEFINED;
             }
             else
             {
-                auto entityPos = CoordsXYZ{ AsOrDefault(initializer["x"], 0), AsOrDefault(initializer["y"], 0),
-                                            AsOrDefault(initializer["z"], 0) };
+                auto entityPos = CoordsXYZ{ AsOrDefault(ctx, initializer, "x", 0), AsOrDefault(ctx, initializer, "y", 0),
+                                            AsOrDefault(ctx, initializer, "z", 0) };
                 entity->MoveTo(entityPos);
 
                 // Reset some important vehicle vars to their null values
@@ -366,97 +391,111 @@ namespace OpenRCT2::Scripting
                 }
                 entity->BoatLocation.SetNull();
 
-                res = GetObjectAsDukValue(_context, std::make_shared<ScVehicle>(entity->Id));
+                res = ScVehicle::New(ctx, entity->Id);
             }
         }
         else if (type == "staff")
         {
-            res = createEntityType<Staff, ScStaff>(_context, initializer);
+            res = createEntityType<Staff, ScStaff>(ctx, initializer);
         }
         else if (type == "guest")
         {
-            res = createEntityType<Guest, ScGuest>(_context, initializer);
+            res = createEntityType<Guest, ScGuest>(ctx, initializer);
         }
         else if (type == "steam_particle")
         {
-            res = createEntityType<SteamParticle, ScEntity>(_context, initializer);
+            res = createEntityType<SteamParticle, ScEntity>(ctx, initializer);
         }
         else if (type == "money_effect")
         {
-            res = createEntityType<MoneyEffect, ScMoneyEffect>(_context, initializer);
+            res = createEntityType<MoneyEffect, ScMoneyEffect>(ctx, initializer);
         }
         else if (type == "crashed_vehicle_particle")
         {
-            res = createEntityType<VehicleCrashParticle, ScCrashedVehicleParticle>(_context, initializer);
+            res = createEntityType<VehicleCrashParticle, ScCrashedVehicleParticle>(ctx, initializer);
         }
         else if (type == "explosion_cloud")
         {
-            res = createEntityType<ExplosionCloud, ScEntity>(_context, initializer);
+            res = createEntityType<ExplosionCloud, ScEntity>(ctx, initializer);
         }
         else if (type == "crash_splash")
         {
-            res = createEntityType<CrashSplashParticle, ScEntity>(_context, initializer);
+            res = createEntityType<CrashSplashParticle, ScEntity>(ctx, initializer);
         }
         else if (type == "explosion_flare")
         {
-            res = createEntityType<ExplosionFlare, ScEntity>(_context, initializer);
+            res = createEntityType<ExplosionFlare, ScEntity>(ctx, initializer);
         }
         else if (type == "balloon")
         {
-            res = createEntityType<Balloon, ScBalloon>(_context, initializer);
+            res = createEntityType<Balloon, ScBalloon>(ctx, initializer);
         }
         else if (type == "duck")
         {
-            res = createEntityType<Duck, ScEntity>(_context, initializer);
+            res = createEntityType<Duck, ScEntity>(ctx, initializer);
         }
         else if (type == "jumping_fountain")
         {
-            res = createEntityType<JumpingFountain, ScEntity>(_context, initializer);
+            res = createEntityType<JumpingFountain, ScEntity>(ctx, initializer);
         }
         else if (type == "litter")
         {
-            res = createEntityType<Litter, ScLitter>(_context, initializer);
+            res = createEntityType<Litter, ScLitter>(ctx, initializer);
         }
         else
         {
-            duk_error(_context, DUK_ERR_ERROR, "Invalid entity type.");
+            JS_ThrowPlainError(ctx, "Invalid entity type.");
+            res = JS_EXCEPTION;
         }
 
         return res;
     }
 
-    DukValue ScMap::getTrackIterator(const DukValue& dukPosition, int32_t elementIndex) const
+    JSValue ScMap::getTrackIterator(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
     {
+        // TODO (mber) pending ScTrackIterator conversion
+        JS_ThrowInternalError(ctx, "not implemented yet");
+        return JS_EXCEPTION;
+        /*
         auto position = FromDuk<CoordsXY>(dukPosition);
         auto trackIterator = ScTrackIterator::FromElement(position, elementIndex);
         if (trackIterator == nullptr)
             return ToDuk(_context, undefined);
 
         return GetObjectAsDukValue(_context, trackIterator);
+        */
     }
 
-    void ScMap::Register(duk_context* ctx)
+    void ScMap::Register(JSContext* ctx)
     {
-        dukglue_register_property(ctx, &ScMap::size_get, nullptr, "size");
-        dukglue_register_property(ctx, &ScMap::numRides_get, nullptr, "numRides");
-        dukglue_register_property(ctx, &ScMap::numEntities_get, nullptr, "numEntities");
-        dukglue_register_property(ctx, &ScMap::rides_get, nullptr, "rides");
-        dukglue_register_method(ctx, &ScMap::getRide, "getRide");
-        dukglue_register_method(ctx, &ScMap::getTile, "getTile");
-        dukglue_register_method(ctx, &ScMap::getEntity, "getEntity");
-        dukglue_register_method(ctx, &ScMap::getAllEntities, "getAllEntities");
-        dukglue_register_method(ctx, &ScMap::getAllEntitiesOnTile, "getAllEntitiesOnTile");
-        dukglue_register_method(ctx, &ScMap::createEntity, "createEntity");
-        dukglue_register_method(ctx, &ScMap::getTrackIterator, "getTrackIterator");
+        RegisterBaseStr(ctx, "Map");
     }
 
-    DukValue ScMap::GetEntityAsDukValue(const EntityBase* sprite) const
+    JSValue ScMap::New(JSContext* ctx)
+    {
+        static constexpr JSCFunctionListEntry funcs[] = {
+            JS_CGETSET_DEF("size", ScMap::size_get, nullptr),
+            JS_CGETSET_DEF("numRides", ScMap::numRides_get, nullptr),
+            JS_CGETSET_DEF("numEntities", ScMap::numEntities_get, nullptr),
+            JS_CGETSET_DEF("rides", ScMap::rides_get, nullptr),
+            JS_CFUNC_DEF("getRide", 1, ScMap::getRide),
+            JS_CFUNC_DEF("getTile", 2, ScMap::getTile),
+            JS_CFUNC_DEF("getEntity", 1, ScMap::getEntity),
+            JS_CFUNC_DEF("getAllEntities", 1, ScMap::getAllEntities),
+            JS_CFUNC_DEF("getAllEntitiesOnTile", 2, ScMap::getAllEntitiesOnTile),
+            JS_CFUNC_DEF("createEntity", 2, ScMap::createEntity),
+            JS_CFUNC_DEF("getTrackIterator", 2, ScMap::getTrackIterator),
+        };
+        return MakeWithOpaque(ctx, funcs, nullptr);
+    }
+
+    JSValue ScMap::GetEntityAsDukValue(JSContext* ctx, const EntityBase* sprite)
     {
         auto spriteId = sprite->Id;
         switch (sprite->Type)
         {
             case EntityType::vehicle:
-                return GetObjectAsDukValue(_context, std::make_shared<ScVehicle>(spriteId));
+                return ScVehicle::New(ctx, spriteId);
             case EntityType::staff:
             {
                 auto staff = getGameState().entities.GetEntity<Staff>(spriteId);
@@ -465,32 +504,32 @@ namespace OpenRCT2::Scripting
                     switch (staff->AssignedStaffType)
                     {
                         case StaffType::handyman:
-                            return GetObjectAsDukValue(_context, std::make_shared<ScHandyman>(spriteId));
+                            return ScHandyman::New(ctx, spriteId);
                         case StaffType::mechanic:
-                            return GetObjectAsDukValue(_context, std::make_shared<ScMechanic>(spriteId));
+                            return ScMechanic::New(ctx, spriteId);
                         case StaffType::security:
-                            return GetObjectAsDukValue(_context, std::make_shared<ScSecurity>(spriteId));
+                            return ScSecurity::New(ctx, spriteId);
                         default:
-                            return GetObjectAsDukValue(_context, std::make_shared<ScStaff>(spriteId));
+                            return ScStaff::New(ctx, spriteId);
                     }
                 }
                 else
                 {
-                    return GetObjectAsDukValue(_context, std::make_shared<ScStaff>(spriteId));
+                    return ScStaff::New(ctx, spriteId);
                 }
             }
             case EntityType::guest:
-                return GetObjectAsDukValue(_context, std::make_shared<ScGuest>(spriteId));
+                return ScGuest::New(ctx, spriteId);
             case EntityType::litter:
-                return GetObjectAsDukValue(_context, std::make_shared<ScLitter>(spriteId));
+                return ScLitter::New(ctx, spriteId);
             case EntityType::balloon:
-                return GetObjectAsDukValue(_context, std::make_shared<ScBalloon>(spriteId));
+                return ScBalloon::New(ctx, spriteId);
             case EntityType::moneyEffect:
-                return GetObjectAsDukValue(_context, std::make_shared<ScMoneyEffect>(spriteId));
+                return ScMoneyEffect::New(ctx, spriteId);
             case EntityType::crashedVehicleParticle:
-                return GetObjectAsDukValue(_context, std::make_shared<ScCrashedVehicleParticle>(spriteId));
+                return ScCrashedVehicleParticle::New(ctx, spriteId);
             default:
-                return GetObjectAsDukValue(_context, std::make_shared<ScEntity>(spriteId));
+                return ScEntity::New(ctx, spriteId);
         }
     }
 
