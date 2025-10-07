@@ -203,7 +203,7 @@ namespace OpenRCT2::Scripting
         }
         else if (value.type() == DukValue::Type::NUMBER)
         {
-            auto target = RCT12PeepAnimationGroup(value.as_uint() + EnumValue(RCT12PeepAnimationGroup::EntertainerPanda));
+            auto target = RCT12PeepAnimationGroup(value.as_uint() + EnumValue(RCT12PeepAnimationGroup::entertainerPanda));
             costume = std::find_if(
                 costumes.begin(), costumes.end(), [target](auto& candidate) { return candidate.legacyPosition == target; });
         }

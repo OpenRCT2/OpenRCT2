@@ -2313,7 +2313,7 @@ static AnimObjectConversionTable BuildPeepAnimObjectConversionTable()
         {
             auto pag = PeepAnimationGroup(j);
             auto legacyPosition = object->GetLegacyPosition(pag);
-            if (legacyPosition == RCT12PeepAnimationGroup::Invalid)
+            if (legacyPosition == RCT12PeepAnimationGroup::invalid)
                 continue;
 
             table[legacyPosition] = { i, pag };

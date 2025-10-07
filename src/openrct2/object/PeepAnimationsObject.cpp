@@ -87,14 +87,14 @@ namespace OpenRCT2
             if (groupJson.contains("legacyPosition"))
             {
                 auto position = Json::GetNumber<uint8_t>(groupJson["legacyPosition"]);
-                if (position <= EnumValue(RCT12PeepAnimationGroup::Count))
+                if (position <= EnumValue(RCT12PeepAnimationGroup::count))
                 {
                     group.legacyPosition = static_cast<RCT12PeepAnimationGroup>(position);
                 }
             }
             else
             {
-                group.legacyPosition = RCT12PeepAnimationGroup::Invalid;
+                group.legacyPosition = RCT12PeepAnimationGroup::invalid;
             }
 
             group.isSlowWalking = Json::GetBoolean(groupJson["isSlowWalking"], false);

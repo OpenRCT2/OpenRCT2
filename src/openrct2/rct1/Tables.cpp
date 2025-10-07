@@ -71,46 +71,46 @@ namespace OpenRCT2::RCT1
     {
         static constexpr RCT12PeepAnimationGroup map[] =
         {
-            RCT12PeepAnimationGroup::Normal,               // 0x00
-            RCT12PeepAnimationGroup::Handyman,             // 0x01
-            RCT12PeepAnimationGroup::Mechanic,             // 0x02
-            RCT12PeepAnimationGroup::Security,             // 0x03
-            RCT12PeepAnimationGroup::EntertainerPanda,     // 0x04
-            RCT12PeepAnimationGroup::EntertainerTiger,     // 0x05
-            RCT12PeepAnimationGroup::EntertainerElephant,  // 0x06
-            RCT12PeepAnimationGroup::EntertainerRoman,     // 0x07
-            RCT12PeepAnimationGroup::EntertainerGorilla,   // 0x08
-            RCT12PeepAnimationGroup::EntertainerSnowman,   // 0x09
-            RCT12PeepAnimationGroup::EntertainerKnight,    // 0x0A
-            RCT12PeepAnimationGroup::EntertainerAstronaut, // 0x0B
-            RCT12PeepAnimationGroup::IceCream,             // 0x0C
-            RCT12PeepAnimationGroup::Chips,                // 0x0D
-            RCT12PeepAnimationGroup::Burger,               // 0x0E
-            RCT12PeepAnimationGroup::Drink,                // 0x0F
-            RCT12PeepAnimationGroup::Balloon,              // 0x10
-            RCT12PeepAnimationGroup::Candyfloss,           // 0x11
-            RCT12PeepAnimationGroup::Umbrella,             // 0x12
-            RCT12PeepAnimationGroup::Pizza,                // 0x13
-            RCT12PeepAnimationGroup::SecurityAlt,          // 0x14
-            RCT12PeepAnimationGroup::Popcorn,              // 0x15
-            RCT12PeepAnimationGroup::ArmsCrossed,          // 0x16
-            RCT12PeepAnimationGroup::HeadDown,             // 0x17
-            RCT12PeepAnimationGroup::Nauseous,             // 0x18
-            RCT12PeepAnimationGroup::VeryNauseous,         // 0x19
-            RCT12PeepAnimationGroup::RequireToilet,        // 0x1A
-            RCT12PeepAnimationGroup::Hat,                  // 0x1B
-            RCT12PeepAnimationGroup::HotDog,               // 0x1C
-            RCT12PeepAnimationGroup::Tentacle,             // 0x1D
-            RCT12PeepAnimationGroup::ToffeeApple,          // 0x1E
-            RCT12PeepAnimationGroup::Doughnut,             // 0x1F
-            RCT12PeepAnimationGroup::Coffee,               // 0x20
-            RCT12PeepAnimationGroup::Chicken,              // 0x21
-            RCT12PeepAnimationGroup::Lemonade,             // 0x22
+            RCT12PeepAnimationGroup::normal,               // 0x00
+            RCT12PeepAnimationGroup::handyman,             // 0x01
+            RCT12PeepAnimationGroup::mechanic,             // 0x02
+            RCT12PeepAnimationGroup::security,             // 0x03
+            RCT12PeepAnimationGroup::entertainerPanda,     // 0x04
+            RCT12PeepAnimationGroup::entertainerTiger,     // 0x05
+            RCT12PeepAnimationGroup::entertainerElephant,  // 0x06
+            RCT12PeepAnimationGroup::entertainerRoman,     // 0x07
+            RCT12PeepAnimationGroup::entertainerGorilla,   // 0x08
+            RCT12PeepAnimationGroup::entertainerSnowman,   // 0x09
+            RCT12PeepAnimationGroup::entertainerKnight,    // 0x0A
+            RCT12PeepAnimationGroup::entertainerAstronaut, // 0x0B
+            RCT12PeepAnimationGroup::iceCream,             // 0x0C
+            RCT12PeepAnimationGroup::chips,                // 0x0D
+            RCT12PeepAnimationGroup::burger,               // 0x0E
+            RCT12PeepAnimationGroup::drink,                // 0x0F
+            RCT12PeepAnimationGroup::balloon,              // 0x10
+            RCT12PeepAnimationGroup::candyfloss,           // 0x11
+            RCT12PeepAnimationGroup::umbrella,             // 0x12
+            RCT12PeepAnimationGroup::pizza,                // 0x13
+            RCT12PeepAnimationGroup::securityAlt,          // 0x14
+            RCT12PeepAnimationGroup::popcorn,              // 0x15
+            RCT12PeepAnimationGroup::armsCrossed,          // 0x16
+            RCT12PeepAnimationGroup::headDown,             // 0x17
+            RCT12PeepAnimationGroup::nauseous,             // 0x18
+            RCT12PeepAnimationGroup::veryNauseous,         // 0x19
+            RCT12PeepAnimationGroup::requireToilet,        // 0x1A
+            RCT12PeepAnimationGroup::hat,                  // 0x1B
+            RCT12PeepAnimationGroup::hotDog,               // 0x1C
+            RCT12PeepAnimationGroup::tentacle,             // 0x1D
+            RCT12PeepAnimationGroup::toffeeApple,          // 0x1E
+            RCT12PeepAnimationGroup::doughnut,             // 0x1F
+            RCT12PeepAnimationGroup::coffee,               // 0x20
+            RCT12PeepAnimationGroup::chicken,              // 0x21
+            RCT12PeepAnimationGroup::lemonade,             // 0x22
         };
         if (EnumValue(rct1AnimationGroup) >= std::size(map))
         {
             LOG_WARNING("Unsupported RCT1 peep sprite type: %d.", EnumValue(rct1AnimationGroup));
-            return RCT12PeepAnimationGroup::Normal;
+            return RCT12PeepAnimationGroup::normal;
         }
         return map[EnumValue(rct1AnimationGroup)];
     }
