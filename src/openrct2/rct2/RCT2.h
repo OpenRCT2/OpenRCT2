@@ -709,9 +709,9 @@ namespace OpenRCT2::RCT2
 
     enum class StaffMode : uint8_t
     {
-        None,
-        Walk,
-        Patrol = 3
+        none,
+        walk,
+        patrol = 3
     };
 
     union Entity

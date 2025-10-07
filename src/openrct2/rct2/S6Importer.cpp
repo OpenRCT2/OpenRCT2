@@ -1612,7 +1612,7 @@ namespace OpenRCT2::RCT2
         {
             // First check staff mode as vanilla did not clean up patrol areas when switching from patrol to walk
             // without doing this we could accidentally add a patrol when it didn't exist.
-            if (_s6.StaffModes[staffId] != StaffMode::Patrol)
+            if (_s6.StaffModes[staffId] != StaffMode::patrol)
             {
                 return;
             }
