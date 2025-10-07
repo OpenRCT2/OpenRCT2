@@ -218,7 +218,7 @@ inline bool PathAdditionIsVisible(uint32_t viewFlags, const PathAdditionEntry& p
     if (isBroken)
         return true;
 
-    if (pathAdditionEntry.draw_type == PathAdditionDrawType::Bin)
+    if (pathAdditionEntry.draw_type == PathAdditionDrawType::bin)
         return true;
 
     return false;
@@ -245,16 +245,16 @@ void Sub6A3F61PathAddition(PaintSession& session, const PathElement& pathElement
 
     switch (pathAddEntry->draw_type)
     {
-        case PathAdditionDrawType::Light:
+        case PathAdditionDrawType::light:
             PathAdditionLightsPaint(session, *pathAddEntry, pathElement, height, rotatedEdges, sceneryImageTemplate);
             break;
-        case PathAdditionDrawType::Bin:
+        case PathAdditionDrawType::bin:
             PathAdditionBinsPaint(session, *pathAddEntry, pathElement, height, rotatedEdges, sceneryImageTemplate);
             break;
-        case PathAdditionDrawType::Bench:
+        case PathAdditionDrawType::bench:
             PathAdditionBenchesPaint(session, *pathAddEntry, pathElement, height, rotatedEdges, sceneryImageTemplate);
             break;
-        case PathAdditionDrawType::JumpingFountain:
+        case PathAdditionDrawType::jumpingFountain:
             PathAdditionJumpingFountainsPaint(session, *pathAddEntry, height, sceneryImageTemplate, session.DPI);
             break;
     }

@@ -82,14 +82,14 @@ namespace OpenRCT2
     static PathAdditionDrawType ParseDrawType(const std::string& s)
     {
         if (s == "lamp")
-            return PathAdditionDrawType::Light;
+            return PathAdditionDrawType::light;
         if (s == "bin")
-            return PathAdditionDrawType::Bin;
+            return PathAdditionDrawType::bin;
         if (s == "bench")
-            return PathAdditionDrawType::Bench;
+            return PathAdditionDrawType::bench;
         if (s == "fountain")
-            return PathAdditionDrawType::JumpingFountain;
-        return PathAdditionDrawType::Light;
+            return PathAdditionDrawType::jumpingFountain;
+        return PathAdditionDrawType::light;
     }
 
     void PathAdditionObject::ReadJson(IReadObjectContext* context, json_t& root)
