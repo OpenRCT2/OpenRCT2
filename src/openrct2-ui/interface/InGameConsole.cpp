@@ -331,7 +331,7 @@ void InGameConsole::Draw(RenderTarget& rt) const
     for (std::size_t i = 0; i < _consoleLines.size() && i < static_cast<size_t>(maxLines); i++)
     {
         const size_t index = i + _consoleScrollPos;
-        if (_consoleLines[index].second == FormatToken::ColourWindow2)
+        if (_consoleLines[index].second == FormatToken::colourWindow2)
         {
             // This is something of a hack to ensure the text is actually black
             // as opposed to a desaturated grey

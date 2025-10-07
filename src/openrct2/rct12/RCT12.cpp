@@ -599,39 +599,39 @@ static FormatToken GetFormatTokenFromRCT12Code(codepoint_t codepoint)
     switch (codepoint)
     {
         case RCT12FormatCode::Newline:
-            return FormatToken::Newline;
+            return FormatToken::newline;
         case RCT12FormatCode::NewlineSmall:
-            return FormatToken::NewlineSmall;
+            return FormatToken::newlineSmall;
         case RCT12FormatCode::ColourBlack:
-            return FormatToken::ColourBlack;
+            return FormatToken::colourBlack;
         case RCT12FormatCode::ColourGrey:
-            return FormatToken::ColourGrey;
+            return FormatToken::colourGrey;
         case RCT12FormatCode::ColourWhite:
-            return FormatToken::ColourWhite;
+            return FormatToken::colourWhite;
         case RCT12FormatCode::ColourRed:
-            return FormatToken::ColourRed;
+            return FormatToken::colourRed;
         case RCT12FormatCode::ColourGreen:
-            return FormatToken::ColourGreen;
+            return FormatToken::colourGreen;
         case RCT12FormatCode::ColourYellow:
-            return FormatToken::ColourYellow;
+            return FormatToken::colourYellow;
         case RCT12FormatCode::ColourTopaz:
-            return FormatToken::ColourTopaz;
+            return FormatToken::colourTopaz;
         case RCT12FormatCode::ColourCeladon:
-            return FormatToken::ColourCeladon;
+            return FormatToken::colourCeladon;
         case RCT12FormatCode::ColourBabyBlue:
-            return FormatToken::ColourBabyBlue;
+            return FormatToken::colourBabyBlue;
         case RCT12FormatCode::ColourPaleLavender:
-            return FormatToken::ColourPaleLavender;
+            return FormatToken::colourPaleLavender;
         case RCT12FormatCode::ColourPaleGold:
-            return FormatToken::ColourPaleGold;
+            return FormatToken::colourPaleGold;
         case RCT12FormatCode::ColourLightPink:
-            return FormatToken::ColourLightPink;
+            return FormatToken::colourLightPink;
         case RCT12FormatCode::ColourPearlAqua:
-            return FormatToken::ColourPearlAqua;
+            return FormatToken::colourPearlAqua;
         case RCT12FormatCode::ColourPaleSilver:
-            return FormatToken::ColourPaleSilver;
+            return FormatToken::colourPaleSilver;
         default:
-            return FormatToken::Unknown;
+            return FormatToken::unknown;
     }
 }
 
@@ -649,7 +649,7 @@ std::string ConvertFormattedStringToOpenRCT2(std::string_view buffer)
     for (auto codepoint : codepoints)
     {
         auto token = GetFormatTokenFromRCT12Code(codepoint);
-        if (token != FormatToken::Unknown)
+        if (token != FormatToken::unknown)
         {
             result += FormatTokenToStringWithBraces(token);
         }

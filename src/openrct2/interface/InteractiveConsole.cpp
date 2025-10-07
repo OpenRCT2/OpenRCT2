@@ -1955,17 +1955,17 @@ void InteractiveConsole::Execute(const std::string& s)
 
 void InteractiveConsole::WriteLine(const std::string& s)
 {
-    WriteLine(s, FormatToken::ColourWindow2);
+    WriteLine(s, FormatToken::colourWindow2);
 }
 
 void InteractiveConsole::WriteLineError(const std::string& s)
 {
-    WriteLine(s, FormatToken::ColourRed);
+    WriteLine(s, FormatToken::colourRed);
 }
 
 void InteractiveConsole::WriteLineWarning(const std::string& s)
 {
-    WriteLine(s, FormatToken::ColourYellow);
+    WriteLine(s, FormatToken::colourYellow);
 }
 
 void InteractiveConsole::WriteFormatLine(const char* format, ...)
