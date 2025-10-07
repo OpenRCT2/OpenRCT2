@@ -43,7 +43,7 @@ void Plugin::Load()
 {
     if (_context)
     {
-        throw std::runtime_error("Plugin is already loaded");
+        JS_FreeContext(_context);
     }
 
     if (!_path.empty())
