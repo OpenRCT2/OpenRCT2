@@ -1059,7 +1059,7 @@ namespace OpenRCT2::Network
         // Spectator group
         auto spectator = std::make_unique<NetworkGroup>();
         spectator->SetName("Spectator");
-        spectator->ToggleActionPermission(Permission::Chat);
+        spectator->ToggleActionPermission(Permission::chat);
         spectator->Id = 1;
         group_list.push_back(std::move(spectator));
 
@@ -1067,13 +1067,13 @@ namespace OpenRCT2::Network
         auto user = std::make_unique<NetworkGroup>();
         user->SetName("User");
         user->ActionsAllowed.fill(0xFF);
-        user->ToggleActionPermission(Permission::KickPlayer);
-        user->ToggleActionPermission(Permission::ModifyGroups);
-        user->ToggleActionPermission(Permission::SetPlayerGroup);
-        user->ToggleActionPermission(Permission::Cheat);
-        user->ToggleActionPermission(Permission::PasswordlessLogin);
-        user->ToggleActionPermission(Permission::ModifyTile);
-        user->ToggleActionPermission(Permission::EditScenarioOptions);
+        user->ToggleActionPermission(Permission::kickPlayer);
+        user->ToggleActionPermission(Permission::modifyGroups);
+        user->ToggleActionPermission(Permission::setPlayerGroup);
+        user->ToggleActionPermission(Permission::cheat);
+        user->ToggleActionPermission(Permission::passwordlessLogin);
+        user->ToggleActionPermission(Permission::modifyTile);
+        user->ToggleActionPermission(Permission::editScenarioOptions);
         user->Id = 2;
         group_list.push_back(std::move(user));
 
@@ -2717,7 +2717,7 @@ namespace OpenRCT2::Network
                 const NetworkGroup* group = GetGroupByID(GetGroupIDByHash(connection.key.PublicKeyHash()));
                 if (group != nullptr)
                 {
-                    passwordless = group->CanPerformAction(Permission::PasswordlessLogin);
+                    passwordless = group->CanPerformAction(Permission::passwordlessLogin);
                 }
             }
             if (gameversion != GetVersion())
@@ -2952,7 +2952,7 @@ namespace OpenRCT2::Network
         if (connection.player != nullptr)
         {
             NetworkGroup* group = GetGroupByID(connection.player->Group);
-            if (group == nullptr || !group->CanPerformAction(Permission::Chat))
+            if (group == nullptr || !group->CanPerformAction(Permission::chat))
             {
                 return;
             }

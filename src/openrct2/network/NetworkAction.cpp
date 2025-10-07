@@ -34,7 +34,7 @@ namespace OpenRCT2::Network
         {
             return static_cast<Permission>(it - Actions.begin());
         }
-        return Permission::Count;
+        return Permission::count;
     }
 
     Permission NetworkActions::FindCommandByPermissionName(const std::string& permission_name)
@@ -46,10 +46,10 @@ namespace OpenRCT2::Network
         {
             return static_cast<Permission>(it - Actions.begin());
         }
-        return Permission::Count;
+        return Permission::count;
     }
 
-    const std::array<NetworkAction, static_cast<size_t>(Permission::Count)> NetworkActions::Actions = {
+    const std::array<NetworkAction, static_cast<size_t>(Permission::count)> NetworkActions::Actions = {
         NetworkAction{
             STR_ACTION_CHAT,
             "PERMISSION_CHAT",

@@ -20,31 +20,31 @@ namespace OpenRCT2::Network
 {
     enum class Permission : uint32_t
     {
-        Chat,
-        Terraform,
-        SetWaterLevel,
-        TogglePause,
-        CreateRide,
-        RemoveRide,
-        BuildRide,
-        RideProperties,
-        Scenery,
-        Path,
-        ClearLandscape,
-        Guest,
-        Staff,
-        ParkProperties,
-        ParkFunding,
-        KickPlayer,
-        ModifyGroups,
-        SetPlayerGroup,
-        Cheat,
-        ToggleSceneryCluster,
-        PasswordlessLogin,
-        ModifyTile,
-        EditScenarioOptions,
+        chat,
+        terraform,
+        setWaterLevel,
+        togglePause,
+        createRide,
+        removeRide,
+        buildRide,
+        rideProperties,
+        scenery,
+        path,
+        clearLandscape,
+        guest,
+        staff,
+        parkProperties,
+        parkFunding,
+        kickPlayer,
+        modifyGroups,
+        setPlayerGroup,
+        cheat,
+        toggleSceneryCluster,
+        passwordlessLogin,
+        modifyTile,
+        editScenarioOptions,
 
-        Count
+        count,
     };
 
     class NetworkAction final
@@ -58,7 +58,7 @@ namespace OpenRCT2::Network
     class NetworkActions final
     {
     public:
-        static const std::array<NetworkAction, static_cast<size_t>(Permission::Count)> Actions;
+        static const std::array<NetworkAction, static_cast<size_t>(Permission::count)> Actions;
 
         static Permission FindCommand(GameCommand command);
         static Permission FindCommandByPermissionName(const std::string& permission_name);
