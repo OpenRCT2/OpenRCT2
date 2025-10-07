@@ -217,17 +217,17 @@ namespace OpenRCT2::RCT1
 
     enum class BannerType : uint8_t
     {
-        Plain = 0,
-        Jungle,
-        Roman,
-        Egyptian,
-        Mine,
-        Jurassic,
-        Oriental,
-        Snow,
-        Space,
+        plain = 0,
+        jungle,
+        roman,
+        egyptian,
+        mine,
+        jurassic,
+        oriental,
+        snow,
+        space,
 
-        Null = 255,
+        null = 255,
     };
 
 #pragma pack(push, 1)

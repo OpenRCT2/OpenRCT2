@@ -620,7 +620,7 @@ namespace OpenRCT2::RCT1
             {
                 auto& banner = _s4.Banners[i];
                 auto type = static_cast<BannerType>(banner.Type);
-                if (type == BannerType::Null)
+                if (type == BannerType::null)
                     continue;
 
                 AddEntryForBanner(type);
