@@ -426,7 +426,7 @@ namespace OpenRCT2
         }
 
         // Currency symbol prefix
-        if (affix == CurrencyAffix::Prefix)
+        if (affix == CurrencyAffix::prefix)
         {
             ss << symbol;
         }
@@ -447,7 +447,7 @@ namespace OpenRCT2
         }
 
         // Currency symbol suffix
-        if (affix == CurrencyAffix::Suffix)
+        if (affix == CurrencyAffix::suffix)
         {
             ss << symbol;
         }

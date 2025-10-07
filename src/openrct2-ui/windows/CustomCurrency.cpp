@@ -94,7 +94,7 @@ namespace OpenRCT2::Ui::Windows
                         { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height() + 1, colours[1], 0,
                         Dropdown::Flag::StayOpen, 2, widget->width() - 3);
 
-                    if (CurrencyDescriptors[EnumValue(CurrencyType::custom)].affix_unicode == CurrencyAffix::Prefix)
+                    if (CurrencyDescriptors[EnumValue(CurrencyType::custom)].affix_unicode == CurrencyAffix::prefix)
                     {
                         gDropdown.items[0].setChecked(true);
                     }
@@ -134,13 +134,13 @@ namespace OpenRCT2::Ui::Windows
             {
                 if (dropdownIndex == 0)
                 {
-                    CurrencyDescriptors[EnumValue(CurrencyType::custom)].affix_ascii = CurrencyAffix::Prefix;
-                    CurrencyDescriptors[EnumValue(CurrencyType::custom)].affix_unicode = CurrencyAffix::Prefix;
+                    CurrencyDescriptors[EnumValue(CurrencyType::custom)].affix_ascii = CurrencyAffix::prefix;
+                    CurrencyDescriptors[EnumValue(CurrencyType::custom)].affix_unicode = CurrencyAffix::prefix;
                 }
                 else if (dropdownIndex == 1)
                 {
-                    CurrencyDescriptors[EnumValue(CurrencyType::custom)].affix_ascii = CurrencyAffix::Suffix;
-                    CurrencyDescriptors[EnumValue(CurrencyType::custom)].affix_unicode = CurrencyAffix::Suffix;
+                    CurrencyDescriptors[EnumValue(CurrencyType::custom)].affix_ascii = CurrencyAffix::suffix;
+                    CurrencyDescriptors[EnumValue(CurrencyType::custom)].affix_unicode = CurrencyAffix::suffix;
                 }
 
                 Config::Get().general.customCurrencyAffix = CurrencyDescriptors[EnumValue(CurrencyType::custom)].affix_unicode;
@@ -213,7 +213,7 @@ namespace OpenRCT2::Ui::Windows
 
             auto drawPos = windowPos
                 + ScreenCoordsXY{ widgets[WIDX_AFFIX_DROPDOWN].left + 1, widgets[WIDX_AFFIX_DROPDOWN].top };
-            StringId stringId = (CurrencyDescriptors[EnumValue(CurrencyType::custom)].affix_unicode == CurrencyAffix::Prefix)
+            StringId stringId = (CurrencyDescriptors[EnumValue(CurrencyType::custom)].affix_unicode == CurrencyAffix::prefix)
                 ? STR_PREFIX
                 : STR_SUFFIX;
             DrawTextBasic(rt, drawPos, stringId, {}, { colours[1] });

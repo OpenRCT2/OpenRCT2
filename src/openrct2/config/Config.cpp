@@ -89,8 +89,8 @@ namespace OpenRCT2::Config
     });
 
     static const auto Enum_CurrencySymbolAffix = ConfigEnum<CurrencyAffix>({
-        ConfigEnumEntry<CurrencyAffix>("PREFIX", CurrencyAffix::Prefix),
-        ConfigEnumEntry<CurrencyAffix>("SUFFIX", CurrencyAffix::Suffix),
+        ConfigEnumEntry<CurrencyAffix>("PREFIX", CurrencyAffix::prefix),
+        ConfigEnumEntry<CurrencyAffix>("SUFFIX", CurrencyAffix::suffix),
     });
 
     static const auto Enum_DateFormat = ConfigEnum<int32_t>({
@@ -172,7 +172,7 @@ namespace OpenRCT2::Config
                 "currency_format", Platform::GetLocaleCurrency(), Enum_Currency);
             model->customCurrencyRate = reader->GetInt32("custom_currency_rate", 10);
             model->customCurrencyAffix = reader->GetEnum<CurrencyAffix>(
-                "custom_currency_affix", CurrencyAffix::Suffix, Enum_CurrencySymbolAffix);
+                "custom_currency_affix", CurrencyAffix::suffix, Enum_CurrencySymbolAffix);
             model->customCurrencySymbol = reader->GetString("custom_currency_symbol", "Ctm");
             model->edgeScrolling = reader->GetBoolean("edge_scrolling", true);
             model->edgeScrollingSpeed = reader->GetInt32("edge_scrolling_speed", 12);

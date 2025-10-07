@@ -41,7 +41,7 @@ namespace OpenRCT2
 
     enum class CurrencyAffix : uint8_t
     {
-        Prefix,
-        Suffix
+        prefix,
+        suffix
     };
 } // namespace OpenRCT2
