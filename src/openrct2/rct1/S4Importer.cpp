@@ -120,7 +120,7 @@ namespace OpenRCT2::RCT1
         RCT12::EntryList _footpathRailingsEntries;
 
         // Lookup tables for converting from RCT1 hard coded types to the new dynamic object entries
-        ObjectEntryIndex _rideTypeToRideEntryMap[EnumValue(RideType::Count)]{};
+        ObjectEntryIndex _rideTypeToRideEntryMap[EnumValue(RideType::count)]{};
         ObjectEntryIndex _vehicleTypeToRideEntryMap[EnumValue(VehicleType::Count)]{};
         ObjectEntryIndex _smallSceneryTypeToEntryMap[256]{};
         ObjectEntryIndex _largeSceneryTypeToEntryMap[256]{};
@@ -136,7 +136,7 @@ namespace OpenRCT2::RCT1
 
         // Research
         BitSet<kMaxRideObjects> _researchRideEntryUsed{};
-        BitSet<EnumValue(RideType::Count)> _researchRideTypeUsed{};
+        BitSet<EnumValue(RideType::count)> _researchRideTypeUsed{};
 
         // Scenario repository - used for determining scenario name
         IScenarioRepository* _scenarioRepository = GetScenarioRepository();
@@ -450,7 +450,7 @@ namespace OpenRCT2::RCT1
         {
             size_t researchListCount;
             const ResearchItem* researchList = GetResearchList(&researchListCount);
-            BitSet<EnumValue(RideType::Count)> rideTypeInResearch = GetRideTypesPresentInResearchList(
+            BitSet<EnumValue(RideType::count)> rideTypeInResearch = GetRideTypesPresentInResearchList(
                 researchList, researchListCount);
             for (size_t i = 0; i < researchListCount; i++)
             {
@@ -558,7 +558,7 @@ namespace OpenRCT2::RCT1
             for (size_t i = 0; i < std::size(_s4.Rides); i++)
             {
                 auto ride = &_s4.Rides[i];
-                if (ride->type != RideType::Null)
+                if (ride->type != RideType::null)
                 {
                     if (RCT1::RideTypeUsesVehicles(ride->type))
                         AddEntryForVehicleType(ride->type, ride->vehicleType);
@@ -668,7 +668,7 @@ namespace OpenRCT2::RCT1
                     auto entryIndex = _rideEntries.GetOrAddEntry(entryName);
                     _vehicleTypeToRideEntryMap[EnumValue(vehicleType)] = entryIndex;
 
-                    if (rideType != RideType::Null)
+                    if (rideType != RideType::null)
                         AddEntryForRideType(rideType);
                 }
             }
@@ -826,7 +826,7 @@ namespace OpenRCT2::RCT1
         {
             for (int32_t i = 0; i < Limits::kMaxRidesInPark; i++)
             {
-                if (_s4.Rides[i].type != RideType::Null)
+                if (_s4.Rides[i].type != RideType::null)
                 {
                     const auto rideId = RideId::FromUnderlying(i);
                     ImportRide(RideAllocateAtIndex(rideId), &_s4.Rides[i], rideId);
@@ -840,7 +840,7 @@ namespace OpenRCT2::RCT1
             dst->id = rideIndex;
 
             // This is a peculiarity of this exact version number, which only Heide-Park seems to use.
-            if (_s4.GameVersion == 110018 && src->type == RideType::InvertedRollerCoaster)
+            if (_s4.GameVersion == 110018 && src->type == RideType::invertedRollerCoaster)
             {
                 dst->type = RIDE_TYPE_COMPACT_INVERTED_COASTER;
             }
@@ -995,7 +995,7 @@ namespace OpenRCT2::RCT1
 
                     // Only merry-go-round and dodgems had music and used
                     // the same flag as synchronise stations for the option to enable it
-                    if (src->type == RideType::MerryGoRound || src->type == RideType::Dodgems)
+                    if (src->type == RideType::merryGoRound || src->type == RideType::dodgems)
                     {
                         if (src->departFlags & RCT1_RIDE_DEPART_PLAY_MUSIC)
                         {
@@ -1058,7 +1058,7 @@ namespace OpenRCT2::RCT1
 
             dst->startDropHeight = src->startDropHeight / 2;
             dst->highestDropHeight = src->highestDropHeight / 2;
-            if (src->type == RideType::MiniatureGolf)
+            if (src->type == RideType::miniatureGolf)
                 dst->numHoles = src->numInversions & kRCT12InversionAndHoleMask;
             else
                 dst->numInversions = src->numInversions & kRCT12InversionAndHoleMask;
@@ -1128,11 +1128,11 @@ namespace OpenRCT2::RCT1
                 dst->trackColours[0].supports = RCT1::GetColour(src->trackSupportColour);
 
                 // Balloons were always blue in the original RCT.
-                if (src->type == RideType::BalloonStall)
+                if (src->type == RideType::balloonStall)
                 {
                     dst->trackColours[0].main = COLOUR_LIGHT_BLUE;
                 }
-                else if (src->type == RideType::RiverRapids)
+                else if (src->type == RideType::riverRapids)
                 {
                     dst->trackColours[0].main = COLOUR_WHITE;
                 }
@@ -1161,7 +1161,7 @@ namespace OpenRCT2::RCT1
                 }
             }
 
-            if (_gameVersion < FILE_VERSION_RCT1_LL && src->type == RideType::MerryGoRound)
+            if (_gameVersion < FILE_VERSION_RCT1_LL && src->type == RideType::merryGoRound)
             {
                 // The merry-go-round in pre-LL versions was always yellow with red
                 dst->vehicleColours[0].Body = COLOUR_YELLOW;
@@ -1216,7 +1216,7 @@ namespace OpenRCT2::RCT1
 
             // In RCT1 and AA, the maze was always hedges.
             // LL has 4 types, like RCT2. For LL, only guard against invalid values.
-            if (src->type == RideType::HedgeMaze)
+            if (src->type == RideType::hedgeMaze)
             {
                 if (_gameVersion < FILE_VERSION_RCT1_LL || src->trackColourSupports[0] > 3)
                     dst->trackColours[0].supports = MazeWallType::hedges;
@@ -1761,7 +1761,7 @@ namespace OpenRCT2::RCT1
                     dst2->SetStationIndex(StationIndex::FromUnderlying(src2->GetStationIndex()));
                     dst2->SetHasGreenLight(src2->HasGreenLight());
                     dst2->SetIsIndestructible(src2->IsIndestructible());
-                    if (rct1RideType == RideType::GhostTrain)
+                    if (rct1RideType == RideType::ghostTrain)
                     {
                         dst2->SetDoorAState(src2->GetDoorAState());
                         dst2->SetDoorBState(src2->GetDoorBState());
@@ -1785,7 +1785,7 @@ namespace OpenRCT2::RCT1
                     }
 
                     // This has to be done last, since the maze entry shares fields with the colour and sequence fields.
-                    if (rct1RideType == RideType::HedgeMaze)
+                    if (rct1RideType == RideType::hedgeMaze)
                     {
                         dst2->SetMazeEntry(src2->GetMazeEntry());
                     }
@@ -2158,10 +2158,10 @@ namespace OpenRCT2::RCT1
             }
         }
 
-        static BitSet<EnumValue(RideType::Count)> GetRideTypesPresentInResearchList(
+        static BitSet<EnumValue(RideType::count)> GetRideTypesPresentInResearchList(
             const RCT1::ResearchItem* researchList, size_t researchListCount)
         {
-            BitSet<EnumValue(RideType::Count)> ret = {};
+            BitSet<EnumValue(RideType::count)> ret = {};
 
             for (size_t i = 0; i < researchListCount; i++)
             {

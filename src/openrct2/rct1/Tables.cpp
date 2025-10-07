@@ -164,9 +164,9 @@ namespace OpenRCT2::RCT1
 
     uint8_t GetRideType(RideType rideType, VehicleType vehicleType)
     {
-        if (rideType == RideType::SteelTwisterRollerCoaster && vehicleType == VehicleType::NonLoopingSteelTwisterRollerCoasterTrain)
+        if (rideType == RideType::steelTwisterRollerCoaster && vehicleType == VehicleType::NonLoopingSteelTwisterRollerCoasterTrain)
             return RIDE_TYPE_HYPER_TWISTER;
-        if (rideType == RideType::SteelCorkscrewRollerCoaster && vehicleType == VehicleType::HypercoasterTrain)
+        if (rideType == RideType::steelCorkscrewRollerCoaster && vehicleType == VehicleType::HypercoasterTrain)
             return RIDE_TYPE_HYPERCOASTER;
 
         static uint8_t map[] =
@@ -366,30 +366,30 @@ namespace OpenRCT2::RCT1
     bool RideTypeUsesVehicles(RideType rideType)
     {
         switch (rideType) {
-        case RideType::HedgeMaze:
-        case RideType::SpiralSlide:
-        case RideType::IceCreamStall:
-        case RideType::ChipsStall:
-        case RideType::DrinkStall:
-        case RideType::CandyflossStall:
-        case RideType::BurgerBar:
-        case RideType::BalloonStall:
-        case RideType::InformationKiosk:
-        case RideType::Toilets:
-        case RideType::SouvenirStall:
-        case RideType::PizzaStall:
-        case RideType::PopcornStall:
-        case RideType::HotDogStall:
-        case RideType::ExoticSeaFoodStall:
-        case RideType::HatStall:
-        case RideType::ToffeeAppleStall:
+        case RideType::hedgeMaze:
+        case RideType::spiralSlide:
+        case RideType::iceCreamStall:
+        case RideType::chipsStall:
+        case RideType::drinkStall:
+        case RideType::candyflossStall:
+        case RideType::burgerBar:
+        case RideType::balloonStall:
+        case RideType::informationKiosk:
+        case RideType::toilets:
+        case RideType::souvenirStall:
+        case RideType::pizzaStall:
+        case RideType::popcornStall:
+        case RideType::hotDogStall:
+        case RideType::exoticSeaFoodStall:
+        case RideType::hatStall:
+        case RideType::toffeeAppleStall:
         case RideType::_40:
         case RideType::_44:
-        case RideType::TShirtStall:
-        case RideType::DoughnutShop:
-        case RideType::CoffeeShop:
-        case RideType::FriedChickenStall:
-        case RideType::LemonadeStall:
+        case RideType::tShirtStall:
+        case RideType::doughnutShop:
+        case RideType::coffeeShop:
+        case RideType::friedChickenStall:
+        case RideType::lemonadeStall:
             return false;
         default:
             return true;
@@ -697,7 +697,7 @@ namespace OpenRCT2::RCT1
 
     std::string_view GetRideTypeObject(RideType rideType, bool isLL)
     {
-        if (rideType == RideType::InvertedRollerCoaster && !isLL) {
+        if (rideType == RideType::invertedRollerCoaster && !isLL) {
             return "rct1.ride.inverted_trains";
         }
 
