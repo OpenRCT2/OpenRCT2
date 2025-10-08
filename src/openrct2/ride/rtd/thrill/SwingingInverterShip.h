@@ -46,7 +46,7 @@ constexpr RideTypeDescriptor SwingingInverterShipRTD =
     .BuildCosts = { 106.00_GBP, 1.00_GBP, 1, },
     .DefaultPrices = { 15, 0 },
     .DefaultMusic = kMusicObjectTechno,
-    .PhotoItem = ShopItem::Photo,
+    .PhotoItem = ShopItem::photo,
     .BonusValue = 35,
     .ColourPresets = TRACK_COLOUR_PRESETS(
         { COLOUR_BORDEAUX_RED, COLOUR_YELLOW, COLOUR_BLACK },

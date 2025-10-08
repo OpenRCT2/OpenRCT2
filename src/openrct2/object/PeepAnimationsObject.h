@@ -41,9 +41,9 @@ namespace OpenRCT2
         ImageIndex GetInlineImageId() const;
 
         const PeepAnimation& GetPeepAnimation(
-            PeepAnimationGroup animGroup, PeepAnimationType animType = PeepAnimationType::Walking) const;
+            PeepAnimationGroup animGroup, PeepAnimationType animType = PeepAnimationType::walking) const;
         const SpriteBounds& GetSpriteBounds(
-            PeepAnimationGroup spriteType, PeepAnimationType actionAnimationGroup = PeepAnimationType::Walking) const;
+            PeepAnimationGroup spriteType, PeepAnimationType actionAnimationGroup = PeepAnimationType::walking) const;
 
         AnimationPeepType GetPeepType() const;
         size_t GetNumAnimationGroups() const;

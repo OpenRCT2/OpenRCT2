@@ -46,7 +46,7 @@ constexpr RideTypeDescriptor HybridCoasterRTD =
     .BuildCosts = { 65.00_GBP, 3.50_GBP, 55},
     .DefaultPrices = { 20, 20 },
     .DefaultMusic = kMusicObjectRock2,
-    .PhotoItem = ShopItem::Photo,
+    .PhotoItem = ShopItem::photo,
     .BonusValue = 120,
     .ColourPresets = TRACK_COLOUR_PRESETS(
         { COLOUR_LIGHT_ORANGE, COLOUR_LIGHT_ORANGE, COLOUR_DARK_BROWN }, // Medusa

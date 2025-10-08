@@ -21,21 +21,21 @@ struct Litter : EntityBase
 {
     enum class Type : uint8_t
     {
-        Vomit,
-        VomitAlt,
-        EmptyCan,
-        Rubbish,
-        BurgerBox,
-        EmptyCup,
-        EmptyBox,
-        EmptyBottle,
-        EmptyBowlRed,
-        EmptyDrinkCarton,
-        EmptyJuiceCup,
-        EmptyBowlBlue,
+        vomit,
+        vomitAlt,
+        emptyCan,
+        rubbish,
+        burgerBox,
+        emptyCup,
+        emptyBox,
+        emptyBottle,
+        emptyBowlRed,
+        emptyDrinkCarton,
+        emptyJuiceCup,
+        emptyBowlBlue,
     };
 
-    static constexpr auto cEntityType = EntityType::Litter;
+    static constexpr auto cEntityType = EntityType::litter;
     Type SubType;
     uint32_t creationTick;
     static void Create(const CoordsXYZD& litterPos, Type type);

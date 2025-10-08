@@ -1,6 +1,8 @@
 0.4.28 (in development)
 ------------------------------------------------------------------------
+- Change: [#25089] Peep actions and animations that cause them to stop moving no longer trigger when they are on a level crossing.
 - Fix: [#25190] Inserting a block brake while a coaster is simulating will cause the simulation to behave strangely.
+- Fix: [#25299] The Mine Train Coaster left large helix draws incorrect sprites at certain angles (original bug).
 
 0.4.27 (2025-10-04)
 ------------------------------------------------------------------------

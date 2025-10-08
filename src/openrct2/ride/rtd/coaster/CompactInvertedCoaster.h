@@ -45,7 +45,7 @@ constexpr RideTypeDescriptor CompactInvertedCoasterRTD =
     .BuildCosts = { 50.00_GBP, 2.50_GBP, 50, },
     .DefaultPrices = { 20, 20 },
     .DefaultMusic = kMusicObjectTechno,
-    .PhotoItem = ShopItem::Photo2,
+    .PhotoItem = ShopItem::photo2,
     .BonusValue = 80,
     .ColourPresets = TRACK_COLOUR_PRESETS(
         { COLOUR_BRIGHT_YELLOW, COLOUR_BRIGHT_YELLOW, COLOUR_BRIGHT_RED },

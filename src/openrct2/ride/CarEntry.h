@@ -179,9 +179,9 @@ struct CarEntry
     uint16_t car_mass;
     int8_t tab_height;
     uint8_t num_seats;
-    uint8_t sprite_width;
-    uint8_t sprite_height_negative;
-    uint8_t sprite_height_positive;
+    uint8_t spriteWidth;
+    uint8_t spriteHeightNegative;
+    uint8_t spriteHeightPositive;
     CarEntryAnimation animation;
     uint64_t flags;
     uint16_t base_num_frames; // The number of sprites of animation or swinging per rotation frame

@@ -531,7 +531,7 @@ namespace OpenRCT2::GameActions
                 {
                     if (ride.mechanicStatus == RIDE_MECHANIC_STATUS_FIXING)
                     {
-                        mechanic->RideSubState = PeepRideSubState::ApproachExit;
+                        mechanic->RideSubState = PeepRideSubState::approachExit;
                     }
                     else if (
                         ride.mechanicStatus == RIDE_MECHANIC_STATUS_CALLING
@@ -697,15 +697,15 @@ namespace OpenRCT2::GameActions
                     peep->CashInPocket = 1000.00_GBP;
                     break;
                 case OBJECT_PARK_MAP:
-                    peep->GiveItem(ShopItem::Map);
+                    peep->GiveItem(ShopItem::map);
                     break;
                 case OBJECT_BALLOON:
-                    peep->GiveItem(ShopItem::Balloon);
+                    peep->GiveItem(ShopItem::balloon);
                     peep->BalloonColour = ScenarioRandMax(kColourNumNormal);
                     peep->UpdateAnimationGroup();
                     break;
                 case OBJECT_UMBRELLA:
-                    peep->GiveItem(ShopItem::Umbrella);
+                    peep->GiveItem(ShopItem::umbrella);
                     peep->UmbrellaColour = ScenarioRandMax(kColourNumOriginal);
                     peep->UpdateAnimationGroup();
                     break;
@@ -742,9 +742,9 @@ namespace OpenRCT2::GameActions
                         auto peep = getGameState().entities.TryGetEntity<Guest>(peepInTrainIndex);
                         if (peep != nullptr && peep->CurrentRide == ride.id)
                         {
-                            if ((peep->State == PeepState::OnRide && peep->RideSubState == PeepRideSubState::OnRide)
-                                || (peep->State == PeepState::LeavingRide
-                                    && peep->RideSubState == PeepRideSubState::LeaveVehicle))
+                            if ((peep->State == PeepState::onRide && peep->RideSubState == PeepRideSubState::onRide)
+                                || (peep->State == PeepState::leavingRide
+                                    && peep->RideSubState == PeepRideSubState::leaveVehicle))
                             {
                                 vehicle->ApplyMass(-peep->Mass);
                             }

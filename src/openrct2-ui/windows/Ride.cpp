@@ -1326,8 +1326,8 @@ namespace OpenRCT2::Ui::Windows
                 if (page == WINDOW_RIDE_PAGE_CUSTOMER)
                     spriteIndex = pickedPeepFrame & ~3;
 
-                auto* animObj = findPeepAnimationsObjectForType(AnimationPeepType::Guest);
-                spriteIndex += animObj->GetPeepAnimation(PeepAnimationGroup::Normal).base_image + 1;
+                auto* animObj = findPeepAnimationsObjectForType(AnimationPeepType::guest);
+                spriteIndex += animObj->GetPeepAnimation(PeepAnimationGroup::normal).baseImage + 1;
 
                 GfxDrawSprite(
                     rt, ImageId(spriteIndex, COLOUR_BRIGHT_RED, COLOUR_TEAL),
@@ -4833,7 +4833,7 @@ namespace OpenRCT2::Ui::Windows
 
             //
             auto rideEntry = ride->getRideEntry();
-            if (rideEntry == nullptr || rideEntry->shop_item[0] == ShopItem::None)
+            if (rideEntry == nullptr || rideEntry->shop_item[0] == ShopItem::none)
             {
                 auto screenCoords = windowPos + ScreenCoordsXY{ trackPreviewWidget.left, trackPreviewWidget.top };
 
@@ -4866,7 +4866,7 @@ namespace OpenRCT2::Ui::Windows
                     + ScreenCoordsXY{ (trackPreviewWidget.left + trackPreviewWidget.right) / 2 - 8,
                                       (trackPreviewWidget.bottom + trackPreviewWidget.top) / 2 - 6 };
 
-                ShopItem shopItem = rideEntry->shop_item[1] == ShopItem::None ? rideEntry->shop_item[0]
+                ShopItem shopItem = rideEntry->shop_item[1] == ShopItem::none ? rideEntry->shop_item[0]
                                                                               : rideEntry->shop_item[1];
                 if (ride->hasLifecycleFlag(RIDE_LIFECYCLE_RANDOM_SHOP_COLOURS))
                 {
@@ -6237,9 +6237,9 @@ namespace OpenRCT2::Ui::Windows
             if (GetShopItemDescriptor(shop_item).IsPhoto())
             {
                 if (existingFlags & EnumToFlag(shop_item))
-                    newFlags &= ~EnumsToFlags(ShopItem::Photo, ShopItem::Photo2, ShopItem::Photo3, ShopItem::Photo4);
+                    newFlags &= ~EnumsToFlags(ShopItem::photo, ShopItem::photo2, ShopItem::photo3, ShopItem::photo4);
                 else
-                    newFlags |= EnumsToFlags(ShopItem::Photo, ShopItem::Photo2, ShopItem::Photo3, ShopItem::Photo4);
+                    newFlags |= EnumsToFlags(ShopItem::photo, ShopItem::photo2, ShopItem::photo3, ShopItem::photo4);
             }
             else
             {
@@ -6260,7 +6260,7 @@ namespace OpenRCT2::Ui::Windows
             const auto& rtd = ride->getRideTypeDescriptor();
             if (rtd.specialType == RtdSpecialType::toilet)
             {
-                shopItem = ShopItem::Admission;
+                shopItem = ShopItem::admission;
             }
             else
             {
@@ -6268,7 +6268,7 @@ namespace OpenRCT2::Ui::Windows
                 if (rideEntry != nullptr)
                 {
                     shopItem = rideEntry->shop_item[0];
-                    if (shopItem == ShopItem::None)
+                    if (shopItem == ShopItem::none)
                         return;
                 }
                 else
@@ -6294,7 +6294,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
 
             auto shop_item = rideEntry->shop_item[1];
-            if (shop_item == ShopItem::None)
+            if (shop_item == ShopItem::none)
                 shop_item = ride->getRideTypeDescriptor().PhotoItem;
 
             UpdateSamePriceThroughoutFlags(shop_item);
@@ -6365,7 +6365,7 @@ namespace OpenRCT2::Ui::Windows
             auto rideEntry = ride->getRideEntry();
             const auto& rtd = ride->getRideTypeDescriptor();
             return Park::RidePricesUnlocked() || rtd.specialType == RtdSpecialType::toilet
-                || (rideEntry != nullptr && rideEntry->shop_item[0] != ShopItem::None);
+                || (rideEntry != nullptr && rideEntry->shop_item[0] != ShopItem::none);
         }
 
         void IncomeIncreaseSecondaryPrice()
@@ -6533,7 +6533,7 @@ namespace OpenRCT2::Ui::Windows
 
             // If ride prices are locked, do not allow setting the price, unless we're dealing with a shop or toilet.
             const auto& rtd = ride->getRideTypeDescriptor();
-            if (!Park::RidePricesUnlocked() && rideEntry->shop_item[0] == ShopItem::None
+            if (!Park::RidePricesUnlocked() && rideEntry->shop_item[0] == ShopItem::none
                 && rtd.specialType != RtdSpecialType::toilet)
             {
                 disabledWidgets |= (1uLL << WIDX_PRIMARY_PRICE);
@@ -6552,8 +6552,8 @@ namespace OpenRCT2::Ui::Windows
             if (ridePrimaryPrice == 0)
                 widgets[WIDX_PRIMARY_PRICE].text = STR_FREE;
 
-            ShopItem primaryItem = ShopItem::Admission;
-            if (rtd.specialType == RtdSpecialType::toilet || ((primaryItem = rideEntry->shop_item[0]) != ShopItem::None))
+            ShopItem primaryItem = ShopItem::admission;
+            if (rtd.specialType == RtdSpecialType::toilet || ((primaryItem = rideEntry->shop_item[0]) != ShopItem::none))
             {
                 widgets[WIDX_PRIMARY_PRICE_SAME_THROUGHOUT_PARK].type = WidgetType::checkbox;
 
@@ -6567,13 +6567,13 @@ namespace OpenRCT2::Ui::Windows
             auto secondaryItem = ride->getRideTypeDescriptor().PhotoItem;
             if (!(ride->lifecycleFlags & RIDE_LIFECYCLE_ON_RIDE_PHOTO))
             {
-                if ((secondaryItem = rideEntry->shop_item[1]) != ShopItem::None)
+                if ((secondaryItem = rideEntry->shop_item[1]) != ShopItem::none)
                 {
                     widgets[WIDX_SECONDARY_PRICE_LABEL].text = GetShopItemDescriptor(secondaryItem).Naming.PriceLabel;
                 }
             }
 
-            if (secondaryItem == ShopItem::None)
+            if (secondaryItem == ShopItem::none)
             {
                 // Hide secondary item widgets
                 widgets[WIDX_SECONDARY_PRICE_LABEL].type = WidgetType::empty;
@@ -6630,7 +6630,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Primary item profit / loss per item sold
             primaryItem = rideEntry->shop_item[0];
-            if (primaryItem != ShopItem::None)
+            if (primaryItem != ShopItem::none)
             {
                 profit = ride->price[0];
 
@@ -6654,7 +6654,7 @@ namespace OpenRCT2::Ui::Windows
             if (!(ride->lifecycleFlags & RIDE_LIFECYCLE_ON_RIDE_PHOTO))
                 secondaryItem = rideEntry->shop_item[1];
 
-            if (secondaryItem != ShopItem::None)
+            if (secondaryItem != ShopItem::none)
             {
                 profit = ride->price[1];
 
@@ -6883,7 +6883,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Primary shop items sold
             shopItem = ride->getRideEntry()->shop_item[0];
-            if (shopItem != ShopItem::None)
+            if (shopItem != ShopItem::none)
             {
                 ft = Formatter();
                 ft.Add<StringId>(GetShopItemDescriptor(shopItem).Naming.Plural);
@@ -6895,7 +6895,7 @@ namespace OpenRCT2::Ui::Windows
             // Secondary shop items sold / on-ride photos sold
             shopItem = (ride->lifecycleFlags & RIDE_LIFECYCLE_ON_RIDE_PHOTO) ? ride->getRideTypeDescriptor().PhotoItem
                                                                              : ride->getRideEntry()->shop_item[1];
-            if (shopItem != ShopItem::None)
+            if (shopItem != ShopItem::none)
             {
                 ft = Formatter();
                 ft.Add<StringId>(GetShopItemDescriptor(shopItem).Naming.Plural);

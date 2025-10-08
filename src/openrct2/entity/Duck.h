@@ -17,7 +17,7 @@ struct PaintSession;
 
 struct Duck : EntityBase
 {
-    static constexpr auto cEntityType = EntityType::Duck;
+    static constexpr auto cEntityType = EntityType::duck;
     enum class DuckState : uint8_t
     {
         FlyToWater,

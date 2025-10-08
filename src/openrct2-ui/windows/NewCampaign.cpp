@@ -111,7 +111,7 @@ namespace OpenRCT2::Ui::Windows
          */
         void GetShopItems()
         {
-            BitSet<EnumValue(ShopItem::Count)> items = {};
+            BitSet<EnumValue(ShopItem::count)> items = {};
             const auto& gameState = getGameState();
             for (auto& curRide : RideManager(gameState))
             {
@@ -120,7 +120,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     for (const auto itemType : rideEntry->shop_item)
                     {
-                        if (itemType != ShopItem::None && GetShopItemDescriptor(itemType).IsFoodOrDrink())
+                        if (itemType != ShopItem::none && GetShopItemDescriptor(itemType).IsFoodOrDrink())
                         {
                             items[EnumValue(itemType)] = true;
                         }
@@ -129,7 +129,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             ShopItems.clear();
-            for (auto i = 0; i < EnumValue(ShopItem::Count); i++)
+            for (auto i = 0; i < EnumValue(ShopItem::count); i++)
             {
                 if (items[i])
                 {

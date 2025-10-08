@@ -26,7 +26,7 @@ using namespace OpenRCT2;
 template<>
 bool EntityBase::Is<Balloon>() const
 {
-    return Type == EntityType::Balloon;
+    return Type == EntityType::balloon;
 }
 
 void Balloon::Update()

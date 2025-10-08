@@ -3838,3 +3838,4 @@ STR_7000    :of
 STR_7001    :Attractienaam
 STR_7002    :{STRINGID} {STRINGID}
 STR_7003    :Audiobestand ‘{STRING}’ is beschadigd. Sample nr. {INT32} kon niet worden geladen, aangezien er maar {INT32} beschikbaar zijn. Installeer RollerCoaster Tycoon 2 opnieuw.
+STR_7004    :Volledig beeld hertekenen

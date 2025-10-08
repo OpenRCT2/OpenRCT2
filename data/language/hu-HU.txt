@@ -3839,3 +3839,4 @@ STR_7000    :vagy
 STR_7001    :Játéknév
 STR_7002    :{STRINGID} {STRINGID}
 STR_7003    :A(z) „{STRING}” hangfájl csonka. Minta {INT32} lenne az elvárt, de csak {INT32} érhető el. Fontold meg az RCT2 újratelepítését.
+STR_7004    :Újrarajzolás kényszerítése

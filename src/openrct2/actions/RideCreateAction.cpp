@@ -205,7 +205,7 @@ namespace OpenRCT2::GameActions
                 ride->price[i] = rtd.DefaultPrices[i];
             }
 
-            if (rideEntry->shop_item[0] == ShopItem::None)
+            if (rideEntry->shop_item[0] == ShopItem::none)
             {
                 if (!Park::RidePricesUnlocked() || gameState.park.entranceFee > 0)
                 {
@@ -216,7 +216,7 @@ namespace OpenRCT2::GameActions
             {
                 ride->price[0] = GetShopItemDescriptor(rideEntry->shop_item[0]).DefaultPrice;
             }
-            if (rideEntry->shop_item[1] != ShopItem::None)
+            if (rideEntry->shop_item[1] != ShopItem::none)
             {
                 ride->price[1] = GetShopItemDescriptor(rideEntry->shop_item[1]).DefaultPrice;
             }
@@ -228,7 +228,7 @@ namespace OpenRCT2::GameActions
 
             if (rtd.specialType == RtdSpecialType::toilet)
             {
-                if (ShopItemHasCommonPrice(ShopItem::Admission))
+                if (ShopItemHasCommonPrice(ShopItem::admission))
                 {
                     auto price = RideGetCommonPrice(*ride);
                     if (price != kMoney64Undefined)
@@ -240,7 +240,7 @@ namespace OpenRCT2::GameActions
 
             for (auto i = 0; i < RCT2::ObjectLimits::kMaxShopItemsPerRideEntry; i++)
             {
-                if (rideEntry->shop_item[i] != ShopItem::None)
+                if (rideEntry->shop_item[i] != ShopItem::none)
                 {
                     if (ShopItemHasCommonPrice(rideEntry->shop_item[i]))
                     {
@@ -254,9 +254,9 @@ namespace OpenRCT2::GameActions
             }
 
             // Set the on-ride photo price, whether the ride has one or not (except shops).
-            if (!rtd.HasFlag(RtdFlag::isShopOrFacility) && ShopItemHasCommonPrice(ShopItem::Photo))
+            if (!rtd.HasFlag(RtdFlag::isShopOrFacility) && ShopItemHasCommonPrice(ShopItem::photo))
             {
-                auto price = ShopItemGetCommonPrice(ride, ShopItem::Photo);
+                auto price = ShopItemGetCommonPrice(ride, ShopItem::photo);
                 if (price != kMoney64Undefined)
                 {
                     ride->price[1] = price;

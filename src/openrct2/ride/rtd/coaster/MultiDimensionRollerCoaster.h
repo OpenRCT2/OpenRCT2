@@ -53,7 +53,7 @@ constexpr RideTypeDescriptor MultiDimensionRollerCoasterRTD =
     .BuildCosts = { 90.00_GBP, 2.50_GBP, 50, },
     .DefaultPrices = { 20, 20 },
     .DefaultMusic = kMusicObjectRock3,
-    .PhotoItem = ShopItem::Photo2,
+    .PhotoItem = ShopItem::photo2,
     .BonusValue = 100,
     .ColourPresets = TRACK_COLOUR_PRESETS(
         { COLOUR_BRIGHT_PINK, COLOUR_YELLOW, COLOUR_YELLOW }, // X
@@ -127,7 +127,7 @@ constexpr RideTypeDescriptor MultiDimensionRollerCoasterAltRTD =
     .BuildCosts = { 90.00_GBP, 2.50_GBP, 50, },
     .DefaultPrices = { 20, 20 },
     .DefaultMusic = kMusicObjectRock3,
-    .PhotoItem = ShopItem::Photo2,
+    .PhotoItem = ShopItem::photo2,
     .BonusValue = 100,
     .ColourPresets = TRACK_COLOUR_PRESETS(
         { COLOUR_BRIGHT_PINK, COLOUR_YELLOW, COLOUR_YELLOW },

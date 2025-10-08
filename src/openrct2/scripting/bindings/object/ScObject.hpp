@@ -250,7 +250,7 @@ namespace OpenRCT2::Scripting
             auto entry = GetEntry();
             if (entry != nullptr)
             {
-                return entry->sprite_width;
+                return entry->spriteWidth;
             }
             return 0;
         }
@@ -260,7 +260,7 @@ namespace OpenRCT2::Scripting
             auto entry = GetEntry();
             if (entry != nullptr)
             {
-                return entry->sprite_height_negative;
+                return entry->spriteHeightNegative;
             }
             return 0;
         }
@@ -270,7 +270,7 @@ namespace OpenRCT2::Scripting
             auto entry = GetEntry();
             if (entry != nullptr)
             {
-                return entry->sprite_height_positive;
+                return entry->spriteHeightPositive;
             }
             return 0;
         }

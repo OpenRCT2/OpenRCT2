@@ -47,7 +47,7 @@ constexpr RideTypeDescriptor SubmarineRideRTD =
     .BuildCosts = { 35.00_GBP, 2.50_GBP, 5, },
     .DefaultPrices = { 10, 0 },
     .DefaultMusic = kMusicObjectWater,
-    .PhotoItem = ShopItem::Photo,
+    .PhotoItem = ShopItem::photo,
     .BonusValue = 40,
     .ColourPresets = TRACK_COLOUR_PRESETS(
         { COLOUR_GREY, COLOUR_GREY, COLOUR_BLACK },

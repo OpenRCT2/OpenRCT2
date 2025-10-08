@@ -45,7 +45,7 @@ constexpr RideTypeDescriptor LaunchedFreefallRTD =
     .BuildCosts = { 25.00_GBP, 0.00_GBP, 4, },
     .DefaultPrices = { 20, 0 },
     .DefaultMusic = kMusicObjectTechno,
-    .PhotoItem = ShopItem::Photo,
+    .PhotoItem = ShopItem::photo,
     .BonusValue = 65,
     .ColourPresets = TRACK_COLOUR_PRESETS(
         { COLOUR_WHITE, COLOUR_BRIGHT_RED, COLOUR_LIGHT_PURPLE },

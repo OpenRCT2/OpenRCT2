@@ -48,7 +48,7 @@ constexpr RideTypeDescriptor MiniatureRailwayRTD =
     .BuildCosts = { 17.50_GBP, 3.00_GBP, 50, },
     .DefaultPrices = { 10, 0 },
     .DefaultMusic = kMusicObjectSummer,
-    .PhotoItem = ShopItem::Photo,
+    .PhotoItem = ShopItem::photo,
     .BonusValue = 50,
     .ColourPresets = TRACK_COLOUR_PRESETS(
         { COLOUR_LIGHT_BLUE, COLOUR_WHITE, COLOUR_DARK_BROWN },

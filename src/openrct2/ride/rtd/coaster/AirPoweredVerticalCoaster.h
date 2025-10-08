@@ -46,7 +46,7 @@ constexpr RideTypeDescriptor AirPoweredVerticalCoasterRTD =
     .BuildCosts = { 100.00_GBP, 0.00_GBP, 45, },
     .DefaultPrices = { 20, 20 },
     .DefaultMusic = kMusicObjectRock2,
-    .PhotoItem = ShopItem::Photo,
+    .PhotoItem = ShopItem::photo,
     .BonusValue = 70,
     .ColourPresets = TRACK_COLOUR_PRESETS(
         { COLOUR_WHITE, COLOUR_BRIGHT_RED, COLOUR_DARK_BROWN },

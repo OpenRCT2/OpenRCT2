@@ -258,7 +258,7 @@ public:
 
 struct Guest : Peep
 {
-    static constexpr auto cEntityType = EntityType::Guest;
+    static constexpr auto cEntityType = EntityType::guest;
 
 public:
     uint8_t GuestNumRides;

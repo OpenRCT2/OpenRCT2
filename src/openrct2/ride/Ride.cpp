@@ -325,7 +325,7 @@ size_t Ride::getNumPrices() const
             {
                 result++;
             }
-            else if (rideEntry->shop_item[1] != ShopItem::None)
+            else if (rideEntry->shop_item[1] != ShopItem::none)
             {
                 result++;
             }
@@ -445,14 +445,14 @@ money64 Ride::calculateIncomePerHour() const
     money64 priceMinusCost = RideGetPrice(*this);
 
     ShopItem currentShopItem = entry->shop_item[0];
-    if (currentShopItem != ShopItem::None)
+    if (currentShopItem != ShopItem::none)
     {
         priceMinusCost -= GetShopItemDescriptor(currentShopItem).Cost;
     }
 
     currentShopItem = (lifecycleFlags & RIDE_LIFECYCLE_ON_RIDE_PHOTO) ? getRideTypeDescriptor().PhotoItem : entry->shop_item[1];
 
-    if (currentShopItem != ShopItem::None)
+    if (currentShopItem != ShopItem::none)
     {
         const money64 shopItemProfit = price[1] - GetShopItemDescriptor(currentShopItem).Cost;
 
@@ -473,7 +473,7 @@ money64 Ride::calculateIncomePerHour() const
             priceMinusCost += shopItemProfit;
         }
 
-        if (entry->shop_item[0] != ShopItem::None)
+        if (entry->shop_item[0] != ShopItem::none)
             priceMinusCost /= 2;
     }
 
@@ -1721,7 +1721,7 @@ static void RideMechanicStatusUpdate(Ride& ride, int32_t mechanicStatus)
             auto mechanic = RideGetMechanic(ride);
             bool rideNeedsRepair = (ride.lifecycleFlags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN));
             if (mechanic == nullptr
-                || (mechanic->State != PeepState::HeadingToInspection && mechanic->State != PeepState::Answering)
+                || (mechanic->State != PeepState::headingToInspection && mechanic->State != PeepState::answering)
                 || mechanic->CurrentRide != ride.id)
             {
                 ride.mechanicStatus = RIDE_MECHANIC_STATUS_CALLING;
@@ -1729,10 +1729,10 @@ static void RideMechanicStatusUpdate(Ride& ride, int32_t mechanicStatus)
                 RideMechanicStatusUpdate(ride, RIDE_MECHANIC_STATUS_CALLING);
             }
             // if the ride is broken down, but a mechanic was heading for an inspection, update orders to fix
-            else if (rideNeedsRepair && mechanic->State == PeepState::HeadingToInspection)
+            else if (rideNeedsRepair && mechanic->State == PeepState::headingToInspection)
             {
                 // updates orders for mechanic already heading to inspect ride
-                // forInspection == false means start repair (goes to PeepState::Answering)
+                // forInspection == false means start repair (goes to PeepState::answering)
                 RideCallMechanic(ride, mechanic, false);
             }
             break;
@@ -1741,8 +1741,8 @@ static void RideMechanicStatusUpdate(Ride& ride, int32_t mechanicStatus)
         {
             auto mechanic = RideGetMechanic(ride);
             if (mechanic == nullptr
-                || (mechanic->State != PeepState::HeadingToInspection && mechanic->State != PeepState::Fixing
-                    && mechanic->State != PeepState::Inspecting && mechanic->State != PeepState::Answering))
+                || (mechanic->State != PeepState::headingToInspection && mechanic->State != PeepState::fixing
+                    && mechanic->State != PeepState::inspecting && mechanic->State != PeepState::answering))
             {
                 ride.mechanicStatus = RIDE_MECHANIC_STATUS_CALLING;
                 ride.windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAINTENANCE;
@@ -1759,7 +1759,7 @@ static void RideMechanicStatusUpdate(Ride& ride, int32_t mechanicStatus)
  */
 static void RideCallMechanic(Ride& ride, Peep* mechanic, int32_t forInspection)
 {
-    mechanic->SetState(forInspection ? PeepState::HeadingToInspection : PeepState::Answering);
+    mechanic->SetState(forInspection ? PeepState::headingToInspection : PeepState::answering);
     mechanic->SubState = 0;
     ride.mechanicStatus = RIDE_MECHANIC_STATUS_HEADING;
     ride.windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAINTENANCE;
@@ -1821,12 +1821,12 @@ Staff* FindClosestMechanic(const CoordsXY& entrancePosition, int32_t forInspecti
 
         if (!forInspection)
         {
-            if (peep->State == PeepState::HeadingToInspection)
+            if (peep->State == PeepState::headingToInspection)
             {
                 if (peep->SubState >= 4)
                     continue;
             }
-            else if (peep->State != PeepState::Patrolling)
+            else if (peep->State != PeepState::patrolling)
                 continue;
 
             if (!(peep->StaffOrders & STAFF_ORDERS_FIX_RIDES))
@@ -1834,7 +1834,7 @@ Staff* FindClosestMechanic(const CoordsXY& entrancePosition, int32_t forInspecti
         }
         else
         {
-            if (peep->State != PeepState::Patrolling || !(peep->StaffOrders & STAFF_ORDERS_INSPECT_RIDES))
+            if (peep->State != PeepState::patrolling || !(peep->StaffOrders & STAFF_ORDERS_INSPECT_RIDES))
                 continue;
         }
 
@@ -3289,9 +3289,9 @@ static Vehicle* VehicleCreateCar(
     }
 
     // Loc6DD9A5:
-    vehicle->SpriteData.Width = carEntry.sprite_width;
-    vehicle->SpriteData.HeightMin = carEntry.sprite_height_negative;
-    vehicle->SpriteData.HeightMax = carEntry.sprite_height_positive;
+    vehicle->SpriteData.Width = carEntry.spriteWidth;
+    vehicle->SpriteData.HeightMin = carEntry.spriteHeightNegative;
+    vehicle->SpriteData.HeightMax = carEntry.spriteHeightPositive;
     vehicle->mass = carEntry.car_mass;
     vehicle->num_seats = carEntry.num_seats;
     vehicle->speed = carEntry.powered_max_speed;
@@ -4262,13 +4262,13 @@ void Ride::stopGuestsQueuing()
 {
     for (auto peep : EntityList<Guest>())
     {
-        if (peep->State != PeepState::Queuing)
+        if (peep->State != PeepState::queuing)
             continue;
         if (peep->CurrentRide != id)
             continue;
 
         peep->RemoveFromQueue();
-        peep->SetState(PeepState::Falling);
+        peep->SetState(PeepState::falling);
     }
 }
 
@@ -5545,15 +5545,15 @@ void FixInvalidVehicleSpriteSizes()
 
                 if (vehicle->SpriteData.Width == 0)
                 {
-                    vehicle->SpriteData.Width = carEntry->sprite_width;
+                    vehicle->SpriteData.Width = carEntry->spriteWidth;
                 }
                 if (vehicle->SpriteData.HeightMin == 0)
                 {
-                    vehicle->SpriteData.HeightMin = carEntry->sprite_height_negative;
+                    vehicle->SpriteData.HeightMin = carEntry->spriteHeightNegative;
                 }
                 if (vehicle->SpriteData.HeightMax == 0)
                 {
-                    vehicle->SpriteData.HeightMax = carEntry->sprite_height_positive;
+                    vehicle->SpriteData.HeightMax = carEntry->spriteHeightPositive;
                 }
             }
         }
@@ -5889,7 +5889,7 @@ bool Ride::hasRecolourableShopItems() const
     for (size_t itemIndex = 0; itemIndex < std::size(rideEntry->shop_item); itemIndex++)
     {
         const ShopItem currentItem = rideEntry->shop_item[itemIndex];
-        if (currentItem != ShopItem::None && GetShopItemDescriptor(currentItem).IsRecolourable())
+        if (currentItem != ShopItem::none && GetShopItemDescriptor(currentItem).IsRecolourable())
         {
             return true;
         }
