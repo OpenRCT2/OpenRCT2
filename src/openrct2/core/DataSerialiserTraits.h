@@ -422,10 +422,10 @@ struct DataSerializerTraitsT<MapRange>
 {
     static void encode(OpenRCT2::IStream* stream, const MapRange& v)
     {
-        stream->WriteValue(ByteSwapBE(v.GetLeft()));
-        stream->WriteValue(ByteSwapBE(v.GetTop()));
-        stream->WriteValue(ByteSwapBE(v.GetRight()));
-        stream->WriteValue(ByteSwapBE(v.GetBottom()));
+        stream->WriteValue(ByteSwapBE(v.GetX1()));
+        stream->WriteValue(ByteSwapBE(v.GetY1()));
+        stream->WriteValue(ByteSwapBE(v.GetX2()));
+        stream->WriteValue(ByteSwapBE(v.GetY2()));
     }
     static void decode(OpenRCT2::IStream* stream, MapRange& v)
     {
@@ -439,8 +439,7 @@ struct DataSerializerTraitsT<MapRange>
     {
         char coords[128] = {};
         snprintf(
-            coords, sizeof(coords), "MapRange(l = %d, t = %d, r = %d, b = %d)", v.GetLeft(), v.GetTop(), v.GetRight(),
-            v.GetBottom());
+            coords, sizeof(coords), "MapRange(x1 = %d, y1 = %d, x2 = %d, y2 = %d)", v.GetX1(), v.GetY1(), v.GetX2(), v.GetY2());
 
         stream->Write(coords, strlen(coords));
     }
