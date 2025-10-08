@@ -4923,43 +4923,49 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDown25Seq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1111, 0b0011 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::down25Deg },
+        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25Deg },
         .metalSupports = { MetalSupportPlace::centre, true },
+        .extraSupportRotation = 2,
     };
 
     static constexpr SequenceDescriptor kDown60Seq0 = {
         .clearance = { 0, 0, 0, 64, { 0b1111, 0b0011 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::down60Deg },
+        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up60Deg },
         .metalSupports = { MetalSupportPlace::centre, true },
+        .extraSupportRotation = 2,
     };
 
     static constexpr SequenceDescriptor kFlatToDown25Seq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1111, 0b0011 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::flatToDown25Deg },
+        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25DegToFlat },
         .metalSupports = { MetalSupportPlace::centre, true },
+        .extraSupportRotation = 2,
     };
 
     static constexpr SequenceDescriptor kDown25ToDown60Seq0 = {
         .clearance = { 0, 0, 0, 32, { 0b1111, 0b0011 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::down25DegToDown60Deg },
+        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up60DegToUp25Deg },
         .metalSupports = { MetalSupportPlace::centre, true },
+        .extraSupportRotation = 2,
     };
 
     static constexpr SequenceDescriptor kDown60ToDown25Seq0 = {
         .clearance = { 0, 0, 0, 32, { 0b1111, 0b0011 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::down60DegToDown25Deg },
+        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25DegToUp60Deg },
         .metalSupports = { MetalSupportPlace::centre, true },
+        .extraSupportRotation = 2,
     };
 
     static constexpr SequenceDescriptor kDown25ToFlatSeq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::down25DegToFlat },
+        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::flatToUp25Deg },
         .metalSupports = { MetalSupportPlace::centre, true },
+        .extraSupportRotation = 2,
     };
 
     static constexpr SequenceDescriptor kLeftQuarterTurn5TilesSeq0 = {
@@ -4990,18 +4996,20 @@ namespace OpenRCT2::TrackMetaData
         .clearance = { -32, -64, 0, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1100,
         .woodenSupports = { WoodenSupportSubType::null },
+        .extraSupportRotation = -1,
     };
 
     static constexpr SequenceDescriptor kLeftQuarterTurn5TilesSeq5 = {
         .clearance = { -64, -32, 0, 0, { 0b0111, 0 }, 0 },
         .allowedWallEdges = 0b0011,
-        .woodenSupports = { WoodenSupportSubType::corner3 },
+        .woodenSupports = { WoodenSupportSubType::corner0 },
+        .extraSupportRotation = -1,
     };
 
     static constexpr SequenceDescriptor kLeftQuarterTurn5TilesSeq6 = {
         .clearance = { -64, -64, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0001,
-        .woodenSupports = { WoodenSupportSubType::nwSe },
+        .woodenSupports = { WoodenSupportSubType::neSw },
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = -1,
     };
@@ -5034,18 +5042,20 @@ namespace OpenRCT2::TrackMetaData
         .clearance = { -32, 64, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
         .woodenSupports = { WoodenSupportSubType::null },
+        .extraSupportRotation = 1,
     };
 
     static constexpr SequenceDescriptor kRightQuarterTurn5TilesSeq5 = {
         .clearance = { -64, 32, 0, 0, { 0b1011, 0 }, 0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::corner2 },
+        .woodenSupports = { WoodenSupportSubType::corner1 },
+        .extraSupportRotation = 1,
     };
 
     static constexpr SequenceDescriptor kRightQuarterTurn5TilesSeq6 = {
         .clearance = { -64, 64, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0001,
-        .woodenSupports = { WoodenSupportSubType::nwSe },
+        .woodenSupports = { WoodenSupportSubType::neSw },
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = 1,
     };
@@ -5106,18 +5116,20 @@ namespace OpenRCT2::TrackMetaData
         .clearance = { -32, -64, 0, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1100,
         .woodenSupports = { WoodenSupportSubType::null },
+        .extraSupportRotation = -1,
     };
 
     static constexpr SequenceDescriptor kBankedLeftQuarterTurn5TilesSeq5 = {
         .clearance = { -64, -32, 0, 0, { 0b0111, 0 }, 0 },
         .allowedWallEdges = 0b0011,
-        .woodenSupports = { WoodenSupportSubType::corner3 },
+        .woodenSupports = { WoodenSupportSubType::corner0 },
+        .extraSupportRotation = -1,
     };
 
     static constexpr SequenceDescriptor kBankedLeftQuarterTurn5TilesSeq6 = {
         .clearance = { -64, -64, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0001,
-        .woodenSupports = { WoodenSupportSubType::nwSe },
+        .woodenSupports = { WoodenSupportSubType::neSw },
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = -1,
     };
@@ -5150,18 +5162,20 @@ namespace OpenRCT2::TrackMetaData
         .clearance = { -32, 64, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
         .woodenSupports = { WoodenSupportSubType::null },
+        .extraSupportRotation = 1,
     };
 
     static constexpr SequenceDescriptor kBankedRightQuarterTurn5TilesSeq5 = {
         .clearance = { -64, 32, 0, 0, { 0b1011, 0 }, 0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::corner2 },
+        .woodenSupports = { WoodenSupportSubType::corner1 },
+        .extraSupportRotation = 1,
     };
 
     static constexpr SequenceDescriptor kBankedRightQuarterTurn5TilesSeq6 = {
         .clearance = { -64, 64, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0001,
-        .woodenSupports = { WoodenSupportSubType::nwSe },
+        .woodenSupports = { WoodenSupportSubType::neSw },
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = 1,
     };
@@ -5197,29 +5211,33 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftBankToDown25Seq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1111, 0b0011 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::flatToDown25Deg },
+        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25DegToFlat },
         .metalSupports = { MetalSupportPlace::centre, true },
+        .extraSupportRotation = 2,
     };
 
     static constexpr SequenceDescriptor kRightBankToDown25Seq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1111, 0b0011 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::flatToDown25Deg },
+        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25DegToFlat },
         .metalSupports = { MetalSupportPlace::centre, true },
+        .extraSupportRotation = 2,
     };
 
     static constexpr SequenceDescriptor kDown25ToLeftBankSeq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::down25DegToFlat },
+        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::flatToUp25Deg },
         .metalSupports = { MetalSupportPlace::centre, true },
+        .extraSupportRotation = 2,
     };
 
     static constexpr SequenceDescriptor kDown25ToRightBankSeq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::down25DegToFlat },
+        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::flatToUp25Deg },
         .metalSupports = { MetalSupportPlace::centre, true },
+        .extraSupportRotation = 2,
     };
 
     static constexpr SequenceDescriptor kLeftBankSeq0 = {
@@ -5262,12 +5280,14 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftQuarterTurn5TilesUp25Seq4 = {
         .clearance = { -32, -64, 48, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1100,
+        .extraSupportRotation = -1,
     };
 
     static constexpr SequenceDescriptor kLeftQuarterTurn5TilesUp25Seq5 = {
         .clearance = { -64, -32, 32, 16, { 0b0111, 0b0100 }, 0 },
         .allowedWallEdges = 0b0011,
-        .woodenSupports = { WoodenSupportSubType::corner3 },
+        .woodenSupports = { WoodenSupportSubType::corner0 },
+        .extraSupportRotation = -1,
     };
 
     static constexpr SequenceDescriptor kLeftQuarterTurn5TilesUp25Seq6 = {
@@ -5304,12 +5324,14 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightQuarterTurn5TilesUp25Seq4 = {
         .clearance = { -32, 64, 48, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
+        .extraSupportRotation = 1,
     };
 
     static constexpr SequenceDescriptor kRightQuarterTurn5TilesUp25Seq5 = {
         .clearance = { -64, 32, 32, 16, { 0b1011, 0b1000 }, 0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::corner2 },
+        .woodenSupports = { WoodenSupportSubType::corner1 },
+        .extraSupportRotation = 1,
     };
 
     static constexpr SequenceDescriptor kRightQuarterTurn5TilesUp25Seq6 = {
@@ -5323,8 +5345,9 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftQuarterTurn5TilesDown25Seq0 = {
         .clearance = { 0, 0, 48, 16, { 0b1111, 0b0011 }, 0 },
         .allowedWallEdges = 0b0010,
-        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::down25Deg },
+        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25Deg },
         .metalSupports = { MetalSupportPlace::centre },
+        .extraSupportRotation = 2,
     };
 
     static constexpr SequenceDescriptor kLeftQuarterTurn5TilesDown25Seq1 = {
@@ -5346,12 +5369,14 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftQuarterTurn5TilesDown25Seq4 = {
         .clearance = { -32, -64, 16, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1100,
+        .extraSupportRotation = -1,
     };
 
     static constexpr SequenceDescriptor kLeftQuarterTurn5TilesDown25Seq5 = {
         .clearance = { -64, -32, 16, 16, { 0b0111, 0b0001 }, 0 },
         .allowedWallEdges = 0b0011,
         .woodenSupports = { WoodenSupportSubType::corner3 },
+        .extraSupportRotation = -1,
     };
 
     static constexpr SequenceDescriptor kLeftQuarterTurn5TilesDown25Seq6 = {
@@ -5365,8 +5390,9 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightQuarterTurn5TilesDown25Seq0 = {
         .clearance = { 0, 0, 48, 16, { 0b1111, 0b0011 }, 0 },
         .allowedWallEdges = 0b1000,
-        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::down25Deg },
+        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25Deg },
         .metalSupports = { MetalSupportPlace::centre },
+        .extraSupportRotation = 2,
     };
 
     static constexpr SequenceDescriptor kRightQuarterTurn5TilesDown25Seq1 = {
@@ -5388,12 +5414,14 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightQuarterTurn5TilesDown25Seq4 = {
         .clearance = { -32, 64, 16, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
+        .extraSupportRotation = 1,
     };
 
     static constexpr SequenceDescriptor kRightQuarterTurn5TilesDown25Seq5 = {
         .clearance = { -64, 32, 16, 16, { 0b1011, 0b0010 }, 0 },
         .allowedWallEdges = 0b1001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
+        .extraSupportRotation = 1,
     };
 
     static constexpr SequenceDescriptor kRightQuarterTurn5TilesDown25Seq6 = {
@@ -5568,7 +5596,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftQuarterTurn3TilesSeq3 = {
         .clearance = { -32, -32, 0, 0, { 0b0111, 0 }, 0 },
         .allowedWallEdges = 0b0001,
-        .woodenSupports = { WoodenSupportSubType::corner3 },
+        .woodenSupports = { WoodenSupportSubType::corner0 },
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = -1,
     };
@@ -5593,7 +5621,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightQuarterTurn3TilesSeq3 = {
         .clearance = { -32, 32, 0, 0, { 0b1011, 0 }, 0 },
         .allowedWallEdges = 0b0001,
-        .woodenSupports = { WoodenSupportSubType::corner2 },
+        .woodenSupports = { WoodenSupportSubType::corner1 },
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = 1,
     };
@@ -5618,7 +5646,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftBankedQuarterTurn3TilesSeq3 = {
         .clearance = { -32, -32, 0, 0, { 0b0111, 0 }, 0 },
         .allowedWallEdges = 0b0001,
-        .woodenSupports = { WoodenSupportSubType::corner3 },
+        .woodenSupports = { WoodenSupportSubType::corner0 },
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = -1,
     };
@@ -5643,7 +5671,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightBankedQuarterTurn3TilesSeq3 = {
         .clearance = { -32, 32, 0, 0, { 0b1011, 0 }, 0 },
         .allowedWallEdges = 0b0001,
-        .woodenSupports = { WoodenSupportSubType::corner2 },
+        .woodenSupports = { WoodenSupportSubType::corner1 },
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = 1,
     };
@@ -5668,7 +5696,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftQuarterTurn3TilesUp25Seq3 = {
         .clearance = { -32, -32, 16, 16, { 0b0111, 0b0110 }, 0 },
         .allowedWallEdges = 0b0001,
-        .woodenSupports = { WoodenSupportSubType::corner3 },
+        .woodenSupports = { WoodenSupportSubType::corner0 },
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = -1,
     };
@@ -5693,7 +5721,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightQuarterTurn3TilesUp25Seq3 = {
         .clearance = { -32, 32, 16, 16, { 0b1011, 0b1001 }, 0 },
         .allowedWallEdges = 0b0001,
-        .woodenSupports = { WoodenSupportSubType::corner3 },
+        .woodenSupports = { WoodenSupportSubType::corner2 },
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = 1,
     };
@@ -5718,7 +5746,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftQuarterTurn3TilesDown25Seq3 = {
         .clearance = { -32, -32, 0, 16, { 0b0111, 0b0001 }, 0 },
         .allowedWallEdges = 0b0001,
-        .woodenSupports = { WoodenSupportSubType::corner3 },
+        .woodenSupports = { WoodenSupportSubType::corner0 },
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = -1,
     };
@@ -5743,7 +5771,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightQuarterTurn3TilesDown25Seq3 = {
         .clearance = { -32, 32, 0, 16, { 0b1011, 0b0010 }, 0 },
         .allowedWallEdges = 0b0001,
-        .woodenSupports = { WoodenSupportSubType::corner3 },
+        .woodenSupports = { WoodenSupportSubType::corner2 },
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = 1,
     };
@@ -5953,15 +5981,17 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kFlatToDown60Seq0 = {
         .clearance = { 0, 0, 0, 24, { 0b1111, 0b0011 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::flatToDown60Deg },
+        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up60DegToFlat },
         .metalSupports = { MetalSupportPlace::centre, true },
+        .extraSupportRotation = -2,
     };
 
     static constexpr SequenceDescriptor kDown60ToFlatSeq0 = {
         .clearance = { 0, 0, 0, 24, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::down60DegToFlat },
+        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::flatToUp60Deg },
         .metalSupports = { MetalSupportPlace::centre, true },
+        .extraSupportRotation = 2,
     };
 
     static constexpr SequenceDescriptor kTowerBaseSeq0 = {
@@ -7271,15 +7301,17 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDown25LeftBankedSeq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1111, 0b0011 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::down25Deg },
+        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25Deg },
         .metalSupports = { MetalSupportPlace::centre, true },
+        .extraSupportRotation = 2,
     };
 
     static constexpr SequenceDescriptor kDown25RightBankedSeq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1111, 0b0011 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::down25Deg },
+        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25Deg },
         .metalSupports = { MetalSupportPlace::centre, true },
+        .extraSupportRotation = 2,
     };
 
     static constexpr SequenceDescriptor kWatersplashSeq0 = {
@@ -7377,57 +7409,65 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDown60ToFlatLongBaseSeq0 = {
         .clearance = { 0, 0, 40, 48, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::down60DegToFlatLongBaseSeq0 },
+        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::flatToUp60DegLongBaseSeq3 },
         .metalSupports = { MetalSupportPlace::centre, true },
+        .extraSupportRotation = 2,
     };
 
     static constexpr SequenceDescriptor kDown60ToFlatLongBaseSeq1 = {
         .clearance = { -32, 0, 16, 24, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::down60DegToFlatLongBaseSeq1 },
+        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::flatToUp60DegLongBaseSeq2 },
         .metalSupports = { MetalSupportPlace::centre, true },
+        .extraSupportRotation = 2,
     };
 
     static constexpr SequenceDescriptor kDown60ToFlatLongBaseSeq2 = {
         .clearance = { -64, 0, 0, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::down60DegToFlatLongBaseSeq2 },
+        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::flatToUp60DegLongBaseSeq1 },
         .metalSupports = { MetalSupportPlace::centre, true },
+        .extraSupportRotation = 2,
     };
 
     static constexpr SequenceDescriptor kDown60ToFlatLongBaseSeq3 = {
         .clearance = { -96, 0, 0, 8, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::down60DegToFlatLongBaseSeq3 },
+        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::flatToUp60DegLongBaseSeq0 },
         .metalSupports = { MetalSupportPlace::centre, true },
+        .extraSupportRotation = 2,
     };
 
     static constexpr SequenceDescriptor kFlatToDown60LongBaseSeq0 = {
         .clearance = { 0, 0, 80, 8, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::flatToDown60DegLongBaseSeq0 },
+        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up60DegToFlatLongBaseSeq3 },
         .metalSupports = { MetalSupportPlace::centre, true },
+        .extraSupportRotation = 2,
     };
 
     static constexpr SequenceDescriptor kFlatToDown60LongBaseSeq1 = {
         .clearance = { -32, 0, 64, 24, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::flatToDown60DegLongBaseSeq1 },
+        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up60DegToFlatLongBaseSeq2 },
         .metalSupports = { MetalSupportPlace::centre, true },
+        .extraSupportRotation = 2,
     };
 
     static constexpr SequenceDescriptor kFlatToDown60LongBaseSeq2 = {
         .clearance = { -64, 0, 40, 48, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::flatToDown60DegLongBaseSeq2 },
+        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up60DegToFlatLongBaseSeq1 },
         .metalSupports = { MetalSupportPlace::centre, true },
+        .extraSupportRotation = 2,
     };
 
     static constexpr SequenceDescriptor kFlatToDown60LongBaseSeq3 = {
         .clearance = { -96, 0, 0, 48, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::flatToDown60DegLongBaseSeq3 },
+        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up60DegToFlatLongBaseSeq0 },
         .metalSupports = { MetalSupportPlace::centre, true },
+        .extraSupportRotation = 2,
     };
 
     static constexpr SequenceDescriptor kCableLiftHillSeq0 = {
@@ -9577,25 +9617,29 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDown25ToLeftBankedDown25Seq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1111, 0b0011 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::down25Deg },
+        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25Deg },
+        .extraSupportRotation = 2,
     };
 
     static constexpr SequenceDescriptor kDown25ToRightBankedDown25Seq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1111, 0b0011 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::down25Deg },
+        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25Deg },
+        .extraSupportRotation = 2,
     };
 
     static constexpr SequenceDescriptor kLeftBankedDown25ToDown25Seq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1111, 0b0011 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::down25Deg },
+        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25Deg },
+        .extraSupportRotation = 2,
     };
 
     static constexpr SequenceDescriptor kRightBankedDown25ToDown25Seq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1111, 0b0011 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::down25Deg },
+        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25Deg },
+        .extraSupportRotation = 2,
     };
 
     static constexpr SequenceDescriptor kLeftBankedFlatToLeftBankedUp25Seq0 = {
@@ -9625,25 +9669,29 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftBankedFlatToLeftBankedDown25Seq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1111, 0b0011 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::flatToDown25Deg },
+        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25DegToFlat },
+        .extraSupportRotation = 2,
     };
 
     static constexpr SequenceDescriptor kRightBankedFlatToRightBankedDown25Seq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1111, 0b0011 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::flatToDown25Deg },
+        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25DegToFlat },
+        .extraSupportRotation = 2,
     };
 
     static constexpr SequenceDescriptor kLeftBankedDown25ToLeftBankedFlatSeq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::down25DegToFlat },
+        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::flatToUp25Deg },
+        .extraSupportRotation = 2,
     };
 
     static constexpr SequenceDescriptor kRightBankedDown25ToRightBankedFlatSeq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::down25DegToFlat },
+        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::flatToUp25Deg },
+        .extraSupportRotation = 2,
     };
 
     static constexpr SequenceDescriptor kFlatToLeftBankedUp25Seq0 = {
@@ -9673,25 +9721,29 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kFlatToLeftBankedDown25Seq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1111, 0b0011 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::flatToDown25Deg },
+        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25DegToFlat },
+        .extraSupportRotation = 2,
     };
 
     static constexpr SequenceDescriptor kFlatToRightBankedDown25Seq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1111, 0b0011 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::flatToDown25Deg },
+        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25DegToFlat },
+        .extraSupportRotation = 2,
     };
 
     static constexpr SequenceDescriptor kLeftBankedDown25ToFlatSeq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::down25DegToFlat },
+        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::flatToUp25Deg },
+        .extraSupportRotation = 2,
     };
 
     static constexpr SequenceDescriptor kRightBankedDown25ToFlatSeq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::down25DegToFlat },
+        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::flatToUp25Deg },
+        .extraSupportRotation = 2,
     };
 
     static constexpr SequenceDescriptor kLeftQuarterTurn1TileUp90Seq0 = {
@@ -10877,7 +10929,8 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftEighthToDiagDown25Seq0 = {
         .clearance = { 0, 0, -16, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
-        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::down25Deg },
+        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25Deg },
+        .extraSupportRotation = 2,
     };
 
     static constexpr SequenceDescriptor kLeftEighthToDiagDown25Seq1 = {
@@ -10905,7 +10958,8 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightEighthToDiagDown25Seq0 = {
         .clearance = { 0, 0, -16, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1000,
-        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::down25Deg },
+        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25Deg },
+        .extraSupportRotation = 2,
     };
 
     static constexpr SequenceDescriptor kRightEighthToDiagDown25Seq1 = {
@@ -10988,7 +11042,8 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kLeftEighthToOrthogonalDown25Seq0 = {
         .clearance = { 0, 0, -16, 24, { 0b1101, 0 }, 0 },
-        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::down25Deg },
+        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25Deg },
+        .extraSupportRotation = 2,
     };
 
     static constexpr SequenceDescriptor kLeftEighthToOrthogonalDown25Seq1 = {
@@ -11016,7 +11071,8 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kRightEighthToOrthogonalDown25Seq0 = {
         .clearance = { 0, 0, -16, 24, { 0b1101, 0 }, 0 },
-        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::down25Deg },
+        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25Deg },
+        .extraSupportRotation = 2,
     };
 
     static constexpr SequenceDescriptor kRightEighthToOrthogonalDown25Seq1 = {
@@ -11661,7 +11717,8 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftEighthBankToDiagDown25Seq0 = {
         .clearance = { 0, 0, -16, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
-        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::down25Deg },
+        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25Deg },
+        .extraSupportRotation = 2,
     };
 
     static constexpr SequenceDescriptor kLeftEighthBankToDiagDown25Seq1 = {
@@ -11689,7 +11746,8 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightEighthBankToDiagDown25Seq0 = {
         .clearance = { 0, 0, -16, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1000,
-        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::down25Deg },
+        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25Deg },
+        .extraSupportRotation = 2,
     };
 
     static constexpr SequenceDescriptor kRightEighthBankToDiagDown25Seq1 = {
@@ -11772,7 +11830,8 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kLeftEighthBankToOrthogonalDown25Seq0 = {
         .clearance = { 0, 0, -16, 24, { 0b1101, 0 }, 0 },
-        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::down25Deg },
+        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25Deg },
+        .extraSupportRotation = 2,
     };
 
     static constexpr SequenceDescriptor kLeftEighthBankToOrthogonalDown25Seq1 = {
@@ -11800,7 +11859,8 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kRightEighthBankToOrthogonalDown25Seq0 = {
         .clearance = { 0, 0, -16, 24, { 0b1101, 0 }, 0 },
-        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::down25Deg },
+        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25Deg },
+        .extraSupportRotation = 2,
     };
 
     static constexpr SequenceDescriptor kRightEighthBankToOrthogonalDown25Seq1 = {

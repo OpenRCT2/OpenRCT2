@@ -384,12 +384,6 @@ static bool WoodenABPaintSlopeTransitions(
     PaintSession& session, WoodenSupportType supportType, WoodenSupportSubType subType,
     WoodenSupportTransitionType transitionType, Direction direction, const ImageId& imageTemplate, uint16_t baseHeight)
 {
-    if (EnumValue(transitionType) >= 21)
-    {
-        transitionType = static_cast<WoodenSupportTransitionType>(EnumValue(transitionType) - 21);
-        direction = DirectionReverse(direction);
-    }
-
     const uint16_t supportsDescriptorIndex = (EnumValue(transitionType) * kNumOrthogonalDirections) + direction;
     const SlopedSupportsDescriptor& supportsDesc = SupportsDescriptors[supportsDescriptorIndex];
     const auto* imageIds = WoodenCurveSupportImageIds[EnumValue(supportType)][EnumValue(subType)];
@@ -640,29 +634,35 @@ bool PathBoxSupportsPaintSetup(
 }
 
 bool DrawSupportForSequenceA(
-    PaintSession& session, WoodenSupportType supportType, OpenRCT2::TrackElemType trackType, uint8_t sequence,
-    Direction direction, int32_t height, ImageId imageTemplate)
+    PaintSession& session, const WoodenSupportType supportType, const OpenRCT2::TrackElemType trackType, const uint8_t sequence,
+    const Direction direction, const int32_t height, const ImageId imageTemplate)
 {
     const auto& ted = OpenRCT2::TrackMetaData::GetTrackElementDescriptor(trackType);
-    const auto& desc = ted.sequences[sequence].woodenSupports;
+    const auto& sequenceDesc = ted.sequences[sequence];
+    const auto& desc = sequenceDesc.woodenSupports;
 
     if (desc.subType == WoodenSupportSubType::null)
         return false;
 
+    const Direction supportRotation = (direction + sequenceDesc.extraSupportRotation) & 3;
+
     return WoodenASupportsPaintSetupRotated(
-        session, supportType, desc.subType, direction, height, imageTemplate, desc.transitionType);
+        session, supportType, desc.subType, supportRotation, height, imageTemplate, desc.transitionType);
 }
 
 bool DrawSupportForSequenceB(
-    PaintSession& session, WoodenSupportType supportType, OpenRCT2::TrackElemType trackType, uint8_t sequence,
-    Direction direction, int32_t height, ImageId imageTemplate)
+    PaintSession& session, const WoodenSupportType supportType, const OpenRCT2::TrackElemType trackType, const uint8_t sequence,
+    const Direction direction, const int32_t height, const ImageId imageTemplate)
 {
     const auto& ted = OpenRCT2::TrackMetaData::GetTrackElementDescriptor(trackType);
-    const auto& desc = ted.sequences[sequence].woodenSupports;
+    const auto& sequenceDesc = ted.sequences[sequence];
+    const auto& desc = sequenceDesc.woodenSupports;
 
     if (desc.subType == WoodenSupportSubType::null)
         return false;
 
+    const Direction supportRotation = (direction + sequenceDesc.extraSupportRotation) & 3;
+
     return WoodenBSupportsPaintSetupRotated(
-        session, supportType, desc.subType, direction, height, imageTemplate, desc.transitionType);
+        session, supportType, desc.subType, supportRotation, height, imageTemplate, desc.transitionType);
 }
