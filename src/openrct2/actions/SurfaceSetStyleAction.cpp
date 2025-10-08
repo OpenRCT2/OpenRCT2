@@ -76,8 +76,8 @@ namespace OpenRCT2::GameActions
             }
         }
 
-        auto xMid = (validRange.GetLeft() + validRange.GetRight()) / 2 + 16;
-        auto yMid = (validRange.GetTop() + validRange.GetBottom()) / 2 + 16;
+        auto xMid = (validRange.GetX1() + validRange.GetX2()) / 2 + 16;
+        auto yMid = (validRange.GetY1() + validRange.GetY2()) / 2 + 16;
         auto heightMid = TileElementHeight({ xMid, yMid });
 
         res.Position.x = xMid;
@@ -93,10 +93,10 @@ namespace OpenRCT2::GameActions
 
         money64 surfaceCost = 0;
         money64 edgeCost = 0;
-        for (CoordsXY coords = { validRange.GetLeft(), validRange.GetTop() }; coords.x <= validRange.GetRight();
+        for (CoordsXY coords = { validRange.GetX1(), validRange.GetY1() }; coords.x <= validRange.GetX2();
              coords.x += kCoordsXYStep)
         {
-            for (coords.y = validRange.GetTop(); coords.y <= validRange.GetBottom(); coords.y += kCoordsXYStep)
+            for (coords.y = validRange.GetY1(); coords.y <= validRange.GetY2(); coords.y += kCoordsXYStep)
             {
                 if (!LocationValid(coords))
                     continue;
@@ -150,8 +150,8 @@ namespace OpenRCT2::GameActions
         res.Expenditure = ExpenditureType::landscaping;
 
         auto validRange = ClampRangeWithinMap(_range.Normalise());
-        auto xMid = (validRange.GetLeft() + validRange.GetRight()) / 2 + 16;
-        auto yMid = (validRange.GetTop() + validRange.GetBottom()) / 2 + 16;
+        auto xMid = (validRange.GetX1() + validRange.GetX2()) / 2 + 16;
+        auto yMid = (validRange.GetY1() + validRange.GetY2()) / 2 + 16;
         auto heightMid = TileElementHeight({ xMid, yMid });
 
         res.Position.x = xMid;
@@ -160,10 +160,10 @@ namespace OpenRCT2::GameActions
 
         money64 surfaceCost = 0;
         money64 edgeCost = 0;
-        for (CoordsXY coords = { validRange.GetLeft(), validRange.GetTop() }; coords.x <= validRange.GetRight();
+        for (CoordsXY coords = { validRange.GetX1(), validRange.GetY1() }; coords.x <= validRange.GetX2();
              coords.x += kCoordsXYStep)
         {
-            for (coords.y = validRange.GetTop(); coords.y <= validRange.GetBottom(); coords.y += kCoordsXYStep)
+            for (coords.y = validRange.GetY1(); coords.y <= validRange.GetY2(); coords.y += kCoordsXYStep)
             {
                 if (!LocationValid(coords))
                     continue;

@@ -295,9 +295,9 @@ void Staff::SetPatrolArea(const CoordsXY& coords, bool value)
 
 void Staff::SetPatrolArea(const MapRange& range, bool value)
 {
-    for (int32_t yy = range.GetTop(); yy <= range.GetBottom(); yy += kCoordsXYStep)
+    for (int32_t yy = range.GetY1(); yy <= range.GetY2(); yy += kCoordsXYStep)
     {
-        for (int32_t xx = range.GetLeft(); xx <= range.GetRight(); xx += kCoordsXYStep)
+        for (int32_t xx = range.GetX1(); xx <= range.GetX2(); xx += kCoordsXYStep)
         {
             SetPatrolArea({ xx, yy }, value);
         }

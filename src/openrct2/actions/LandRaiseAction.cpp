@@ -88,9 +88,9 @@ namespace OpenRCT2::GameActions
         uint8_t minHeight = MapGetLowestLandHeight(validRange);
         bool withinOwnership = false;
 
-        for (int32_t y = validRange.GetTop(); y <= validRange.GetBottom(); y += kCoordsXYStep)
+        for (int32_t y = validRange.GetY1(); y <= validRange.GetY2(); y += kCoordsXYStep)
         {
-            for (int32_t x = validRange.GetLeft(); x <= validRange.GetRight(); x += kCoordsXYStep)
+            for (int32_t x = validRange.GetX1(); x <= validRange.GetX2(); x += kCoordsXYStep)
             {
                 if (!LocationValid({ x, y }))
                     continue;
