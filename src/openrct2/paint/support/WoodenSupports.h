@@ -61,6 +61,7 @@ enum class WoodenSupportTransitionType : uint8_t
     up60DegToFlatLongBaseSeq2 = 19,
     up60DegToFlatLongBaseSeq3 = 20,
 };
+constexpr int32_t kWoodenSupportTransitionTypeCount = 21;
 
 struct FootpathPaintInfo;
 struct PaintSession;

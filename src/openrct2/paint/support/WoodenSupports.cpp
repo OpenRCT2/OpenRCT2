@@ -60,7 +60,8 @@ constexpr SupportsIdDescriptor GetWoodenSupportIds(WoodenSupportType supportType
     return WoodenSupportImageIds[EnumValue(supportType)][EnumValue(subType)];
 }
 
-using ImagesByTransitionTypeArray = std::array<std::array<ImageIndex, kNumOrthogonalDirections>, 21>;
+using ImagesByTransitionTypeArray = std::array<
+    std::array<ImageIndex, kNumOrthogonalDirections>, kWoodenSupportTransitionTypeCount>;
 
 static constexpr ImagesByTransitionTypeArray WoodenCurveSupportImageIds0 = { {
     { 3465, 3466, 3467, 3468 }, // Flat to gentle
@@ -155,7 +156,7 @@ struct SlopedSupportsDescriptor {
 };
 
 /* 0x0097B23C */
-static constexpr SlopedSupportsDescriptor SupportsDescriptors[] = {
+static constexpr auto kSupportsDescriptors = std::to_array<SlopedSupportsDescriptor>({
     {{{0,  0,  0}, {1,  1,  8}},  false}, // Flat to gentle
     {{{0,  0,  0}, {1,  1,  8}},  false},
     {{{0,  0,  0}, {1,  1,  8}},  false},
@@ -240,7 +241,8 @@ static constexpr SlopedSupportsDescriptor SupportsDescriptors[] = {
     {{{0,  0,  0}, {1,  1,  8}},  false},
     {{{0,  0,  0}, {1,  1,  8}},  false},
     {{{0,  0,  0}, {1,  1,  8}},  false},
-};
+});
+static_assert(std::size(kSupportsDescriptors) == kWoodenSupportTransitionTypeCount * kNumOrthogonalDirections);
 
 /* 0x0098D8D4 */
 static constexpr SlopedSupportsDescriptor kSlopedPathSupportsDescriptor = {{{0, 0, 0}, {1, 1, 4}}, false};
@@ -385,7 +387,7 @@ static bool WoodenABPaintSlopeTransitions(
     WoodenSupportTransitionType transitionType, Direction direction, const ImageId& imageTemplate, uint16_t baseHeight)
 {
     const uint16_t supportsDescriptorIndex = (EnumValue(transitionType) * kNumOrthogonalDirections) + direction;
-    const SlopedSupportsDescriptor& supportsDesc = SupportsDescriptors[supportsDescriptorIndex];
+    const SlopedSupportsDescriptor& supportsDesc = kSupportsDescriptors[supportsDescriptorIndex];
     const auto* imageIds = WoodenCurveSupportImageIds[EnumValue(supportType)][EnumValue(subType)];
 
     if (imageIds == nullptr || imageIds[EnumValue(transitionType)][direction] == 0)
