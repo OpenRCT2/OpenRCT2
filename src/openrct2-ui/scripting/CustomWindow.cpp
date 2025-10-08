@@ -489,7 +489,7 @@ namespace OpenRCT2::Ui::Windows
         {
             auto& closeButton = widgets[WIDX_CLOSE];
             bool translucent = colours[closeButton.colour].hasFlag(ColourFlag::translucent);
-            if (Config::Get().interface.EnlargedUi)
+            if (Config::Get().interface.enlargedUi)
                 closeButton.string = !translucent ? kCloseBoxStringBlackLarge : kCloseBoxStringWhiteLarge;
             else
                 closeButton.string = !translucent ? kCloseBoxStringBlackNormal : kCloseBoxStringWhiteNormal;

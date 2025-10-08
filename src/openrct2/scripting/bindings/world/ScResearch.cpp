@@ -35,19 +35,19 @@ namespace OpenRCT2::Scripting
 
     static const DukEnumMap<ResearchCategory> ResearchCategoryMap(
         {
-            { "transport", ResearchCategory::Transport },
-            { "gentle", ResearchCategory::Gentle },
-            { "rollercoaster", ResearchCategory::Rollercoaster },
-            { "thrill", ResearchCategory::Thrill },
-            { "water", ResearchCategory::Water },
-            { "shop", ResearchCategory::Shop },
-            { "scenery", ResearchCategory::SceneryGroup },
+            { "transport", ResearchCategory::transport },
+            { "gentle", ResearchCategory::gentle },
+            { "rollercoaster", ResearchCategory::rollercoaster },
+            { "thrill", ResearchCategory::thrill },
+            { "water", ResearchCategory::water },
+            { "shop", ResearchCategory::shop },
+            { "scenery", ResearchCategory::sceneryGroup },
         });
 
     static const DukEnumMap<Research::EntryType> ResearchEntryTypeMap(
         {
-            { "ride", Research::EntryType::Ride },
-            { "scenery", Research::EntryType::Scenery },
+            { "ride", Research::EntryType::ride },
+            { "scenery", Research::EntryType::scenery },
         });
 
     template<>
@@ -56,7 +56,7 @@ namespace OpenRCT2::Scripting
         DukObject obj(ctx);
         obj.Set("category", ResearchCategoryMap[value.category]);
         obj.Set("type", ResearchEntryTypeMap[value.type]);
-        if (value.type == Research::EntryType::Ride)
+        if (value.type == Research::EntryType::ride)
         {
             obj.Set("rideType", value.baseRideType);
         }
@@ -75,7 +75,7 @@ namespace OpenRCT2::Scripting
                 return it->second;
             }
         }
-        return Research::EntryType::Scenery;
+        return Research::EntryType::scenery;
     }
 
     template<>
@@ -112,7 +112,7 @@ namespace OpenRCT2::Scripting
     std::vector<std::string> ScResearch::priorities_get() const
     {
         std::vector<std::string> result;
-        for (auto i = EnumValue(ResearchCategory::Transport); i <= EnumValue(ResearchCategory::SceneryGroup); i++)
+        for (auto i = EnumValue(ResearchCategory::transport); i <= EnumValue(ResearchCategory::sceneryGroup); i++)
         {
             auto category = static_cast<ResearchCategory>(i);
             if (getGameState().researchPriorities & EnumToFlag(category))
@@ -271,7 +271,7 @@ namespace OpenRCT2::Scripting
         {
             auto researchItem = FromDuk<ResearchItem>(item);
             researchItem.flags = 0;
-            if (researchItem.type == Research::EntryType::Ride)
+            if (researchItem.type == Research::EntryType::ride)
             {
                 auto rideEntry = GetRideEntryByIndex(researchItem.entryIndex);
                 if (rideEntry != nullptr)
@@ -286,7 +286,7 @@ namespace OpenRCT2::Scripting
                 if (sceneryGroup != nullptr)
                 {
                     researchItem.baseRideType = 0;
-                    researchItem.category = ResearchCategory::SceneryGroup;
+                    researchItem.category = ResearchCategory::sceneryGroup;
                     result.push_back(researchItem);
                 }
             }

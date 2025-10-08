@@ -204,13 +204,13 @@ namespace OpenRCT2
     {
         switch (languageId)
         {
-            case RCT2LanguageId::Japanese:
+            case RCT2LanguageId::japanese:
                 return CodePage::CP_932;
-            case RCT2LanguageId::ChineseSimplified:
+            case RCT2LanguageId::chineseSimplified:
                 return CodePage::CP_936;
-            case RCT2LanguageId::Korean:
+            case RCT2LanguageId::korean:
                 return CodePage::CP_949;
-            case RCT2LanguageId::ChineseTraditional:
+            case RCT2LanguageId::chineseTraditional:
                 return CodePage::CP_950;
             default:
                 return CodePage::CP_1252;

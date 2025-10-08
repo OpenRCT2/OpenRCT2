@@ -27,8 +27,8 @@ namespace OpenRCT2::Research
 {
     enum class EntryType : uint8_t
     {
-        Scenery = 0,
-        Ride = 1,
+        scenery = 0,
+        ride = 1,
     };
 }
 
@@ -41,13 +41,13 @@ enum
 
 enum class ResearchCategory : uint8_t
 {
-    Transport = 0,
-    Gentle = 1,
-    Rollercoaster = 2,
-    Thrill = 3,
-    Water = 4,
-    Shop = 5,
-    SceneryGroup = 6,
+    transport = 0,
+    gentle = 1,
+    rollercoaster = 2,
+    thrill = 3,
+    water = 4,
+    shop = 5,
+    sceneryGroup = 6,
 };
 
 struct ResearchItem

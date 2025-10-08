@@ -568,9 +568,9 @@ namespace OpenRCT2::Ui
                 width -= kCloseButtonSize;
         }
         topLeft.x += width / 2;
-        if (Config::Get().interface.WindowButtonsOnTheLeft)
+        if (Config::Get().interface.windowButtonsOnTheLeft)
             topLeft.x += kCloseButtonSize;
-        if (Config::Get().interface.EnlargedUi)
+        if (Config::Get().interface.enlargedUi)
             topLeft.y += kTitleHeightLarge / 4;
 
         DrawTextEllipsised(

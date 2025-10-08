@@ -53,7 +53,7 @@ const DrawWeatherFunc DrawSnowFunctions[] = {
  */
 void DrawWeather(RenderTarget& rt, IWeatherDrawer* weatherDrawer)
 {
-    if (!Config::Get().general.RenderWeatherEffects)
+    if (!Config::Get().general.renderWeatherEffects)
         return;
 
     uint32_t viewFlags = 0;

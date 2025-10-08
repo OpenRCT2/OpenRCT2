@@ -236,7 +236,7 @@ namespace OpenRCT2::GameActions
         auto numCircuits = std::max<uint8_t>(1, _td.operation.numCircuits);
         SetOperatingSettingNested(ride->id, RideSetSetting::NumCircuits, numCircuits, flags);
 
-        uint8_t defaultInspectionInterval = Config::Get().general.DefaultInspectionInterval;
+        uint8_t defaultInspectionInterval = Config::Get().general.defaultInspectionInterval;
         if (defaultInspectionInterval <= RIDE_INSPECTION_NEVER)
             SetOperatingSettingNested(ride->id, RideSetSetting::InspectionInterval, defaultInspectionInterval, flags);
 

@@ -180,7 +180,7 @@ void TitleScene::ChangePresetSequence(size_t preset)
     }
 
     const utf8* configId = TitleSequenceManager::GetConfigID(preset);
-    Config::Get().interface.CurrentTitleSequencePreset = configId;
+    Config::Get().interface.currentTitleSequencePreset = configId;
 
     if (!_previewingSequence)
         _currentSequence = preset;
@@ -209,7 +209,7 @@ void TitleScene::TitleInitialise()
     {
         _sequencePlayer = GetContext().GetUiContext().GetTitleSequencePlayer();
     }
-    if (Config::Get().interface.RandomTitleSequence)
+    if (Config::Get().interface.randomTitleSequence)
     {
         const size_t total = TitleSequenceManager::GetCount();
         if (total > 0)
@@ -305,7 +305,7 @@ bool TitleScene::TryLoadSequence(bool loadPreview)
                     {
                         // Forcefully change the preset to a preset that works.
                         const utf8* configId = TitleSequenceManager::GetConfigID(targetSequence);
-                        Config::Get().interface.CurrentTitleSequencePreset = configId;
+                        Config::Get().interface.currentTitleSequencePreset = configId;
                     }
                     _currentSequence = targetSequence;
                     GfxInvalidateScreen();
@@ -361,7 +361,7 @@ void TitleSequenceChangePreset(size_t preset)
 
 size_t TitleGetConfigSequence()
 {
-    return TitleSequenceManager::GetIndexForConfigID(Config::Get().interface.CurrentTitleSequencePreset.c_str());
+    return TitleSequenceManager::GetIndexForConfigID(Config::Get().interface.currentTitleSequencePreset.c_str());
 }
 
 size_t TitleGetCurrentSequence()

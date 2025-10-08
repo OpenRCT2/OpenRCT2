@@ -35,21 +35,21 @@ RCT12TileElementType RCT12TileElementBase::GetType() const
     auto elem_type = static_cast<RCT12TileElementType>((this->Type & kTileElementTypeMask) >> 2);
     switch (elem_type)
     {
-        case RCT12TileElementType::Surface:
-        case RCT12TileElementType::Path:
-        case RCT12TileElementType::Track:
-        case RCT12TileElementType::SmallScenery:
-        case RCT12TileElementType::Entrance:
-        case RCT12TileElementType::Wall:
-        case RCT12TileElementType::LargeScenery:
-        case RCT12TileElementType::Banner:
-        case RCT12TileElementType::Corrupt:
-        case RCT12TileElementType::EightCarsCorrupt14:
-        case RCT12TileElementType::EightCarsCorrupt15:
+        case RCT12TileElementType::surface:
+        case RCT12TileElementType::path:
+        case RCT12TileElementType::track:
+        case RCT12TileElementType::smallScenery:
+        case RCT12TileElementType::entrance:
+        case RCT12TileElementType::wall:
+        case RCT12TileElementType::largeScenery:
+        case RCT12TileElementType::banner:
+        case RCT12TileElementType::corrupt:
+        case RCT12TileElementType::eightCarsCorrupt14:
+        case RCT12TileElementType::eightCarsCorrupt15:
             return elem_type;
         default:
             // Most corrupt elements were set to 0x255, but not all. Fallback to corrupt element if encountered unknown type.
-            return RCT12TileElementType::EightCarsCorrupt15;
+            return RCT12TileElementType::eightCarsCorrupt15;
     }
 }
 
@@ -223,7 +223,7 @@ RideColourScheme RCT12TrackElement::GetColourScheme() const
 
 uint8_t RCT12TrackElement::GetStationIndex() const
 {
-    if (TrackTypeIsStation(TrackType) || TrackType == OpenRCT2::RCT12::TrackElemType::TowerBase)
+    if (TrackTypeIsStation(TrackType) || TrackType == OpenRCT2::RCT12::TrackElemType::towerBase)
     {
         return (Sequence & RCT12_TRACK_ELEMENT_SEQUENCE_STATION_INDEX_MASK) >> 4;
     }
@@ -275,7 +275,7 @@ uint16_t RCT12TrackElement::GetMazeEntry() const
 
 uint8_t RCT12TrackElement::GetPhotoTimeout() const
 {
-    if (TrackType == OpenRCT2::RCT12::TrackElemType::OnRidePhoto)
+    if (TrackType == OpenRCT2::RCT12::TrackElemType::onRidePhoto)
     {
         return Sequence >> 4;
     }
@@ -599,39 +599,39 @@ static FormatToken GetFormatTokenFromRCT12Code(codepoint_t codepoint)
     switch (codepoint)
     {
         case RCT12FormatCode::Newline:
-            return FormatToken::Newline;
+            return FormatToken::newline;
         case RCT12FormatCode::NewlineSmall:
-            return FormatToken::NewlineSmall;
+            return FormatToken::newlineSmall;
         case RCT12FormatCode::ColourBlack:
-            return FormatToken::ColourBlack;
+            return FormatToken::colourBlack;
         case RCT12FormatCode::ColourGrey:
-            return FormatToken::ColourGrey;
+            return FormatToken::colourGrey;
         case RCT12FormatCode::ColourWhite:
-            return FormatToken::ColourWhite;
+            return FormatToken::colourWhite;
         case RCT12FormatCode::ColourRed:
-            return FormatToken::ColourRed;
+            return FormatToken::colourRed;
         case RCT12FormatCode::ColourGreen:
-            return FormatToken::ColourGreen;
+            return FormatToken::colourGreen;
         case RCT12FormatCode::ColourYellow:
-            return FormatToken::ColourYellow;
+            return FormatToken::colourYellow;
         case RCT12FormatCode::ColourTopaz:
-            return FormatToken::ColourTopaz;
+            return FormatToken::colourTopaz;
         case RCT12FormatCode::ColourCeladon:
-            return FormatToken::ColourCeladon;
+            return FormatToken::colourCeladon;
         case RCT12FormatCode::ColourBabyBlue:
-            return FormatToken::ColourBabyBlue;
+            return FormatToken::colourBabyBlue;
         case RCT12FormatCode::ColourPaleLavender:
-            return FormatToken::ColourPaleLavender;
+            return FormatToken::colourPaleLavender;
         case RCT12FormatCode::ColourPaleGold:
-            return FormatToken::ColourPaleGold;
+            return FormatToken::colourPaleGold;
         case RCT12FormatCode::ColourLightPink:
-            return FormatToken::ColourLightPink;
+            return FormatToken::colourLightPink;
         case RCT12FormatCode::ColourPearlAqua:
-            return FormatToken::ColourPearlAqua;
+            return FormatToken::colourPearlAqua;
         case RCT12FormatCode::ColourPaleSilver:
-            return FormatToken::ColourPaleSilver;
+            return FormatToken::colourPaleSilver;
         default:
-            return FormatToken::Unknown;
+            return FormatToken::unknown;
     }
 }
 
@@ -642,14 +642,14 @@ std::string ConvertFormattedStringToOpenRCT2(std::string_view buffer)
     {
         buffer = buffer.substr(0, nullTerminator);
     }
-    auto asUtf8 = RCT2StringToUTF8(buffer, RCT2LanguageId::EnglishUK);
+    auto asUtf8 = RCT2StringToUTF8(buffer, RCT2LanguageId::englishUK);
 
     std::string result;
     CodepointView codepoints(asUtf8);
     for (auto codepoint : codepoints)
     {
         auto token = GetFormatTokenFromRCT12Code(codepoint);
-        if (token != FormatToken::Unknown)
+        if (token != FormatToken::unknown)
         {
             result += FormatTokenToStringWithBraces(token);
         }
@@ -665,25 +665,25 @@ OpenRCT2::TrackElemType RCT12FlatTrackTypeToOpenRCT2(OpenRCT2::RCT12::TrackElemT
 {
     switch (origTrackType)
     {
-        case OpenRCT2::RCT12::TrackElemType::FlatTrack1x4A_Alias:
+        case OpenRCT2::RCT12::TrackElemType::flatTrack1x4A_Alias:
             return TrackElemType::FlatTrack1x4A;
-        case OpenRCT2::RCT12::TrackElemType::FlatTrack2x2_Alias:
+        case OpenRCT2::RCT12::TrackElemType::flatTrack2x2_Alias:
             return TrackElemType::FlatTrack2x2;
-        case OpenRCT2::RCT12::TrackElemType::FlatTrack4x4_Alias:
+        case OpenRCT2::RCT12::TrackElemType::flatTrack4x4_Alias:
             return TrackElemType::FlatTrack4x4;
-        case OpenRCT2::RCT12::TrackElemType::FlatTrack2x4_Alias:
+        case OpenRCT2::RCT12::TrackElemType::flatTrack2x4_Alias:
             return TrackElemType::FlatTrack2x4;
-        case OpenRCT2::RCT12::TrackElemType::FlatTrack1x5_Alias:
+        case OpenRCT2::RCT12::TrackElemType::flatTrack1x5_Alias:
             return TrackElemType::FlatTrack1x5;
-        case OpenRCT2::RCT12::TrackElemType::FlatTrack1x1A_Alias:
+        case OpenRCT2::RCT12::TrackElemType::flatTrack1x1A_Alias:
             return TrackElemType::FlatTrack1x1A;
-        case OpenRCT2::RCT12::TrackElemType::FlatTrack1x4B_Alias:
+        case OpenRCT2::RCT12::TrackElemType::flatTrack1x4B_Alias:
             return TrackElemType::FlatTrack1x4B;
-        case OpenRCT2::RCT12::TrackElemType::FlatTrack1x1B_Alias:
+        case OpenRCT2::RCT12::TrackElemType::flatTrack1x1B_Alias:
             return TrackElemType::FlatTrack1x1B;
-        case OpenRCT2::RCT12::TrackElemType::FlatTrack1x4C_Alias:
+        case OpenRCT2::RCT12::TrackElemType::flatTrack1x4C_Alias:
             return TrackElemType::FlatTrack1x4C;
-        case OpenRCT2::RCT12::TrackElemType::FlatTrack3x3_Alias:
+        case OpenRCT2::RCT12::TrackElemType::flatTrack3x3_Alias:
             return TrackElemType::FlatTrack3x3;
         default:
             return static_cast<OpenRCT2::TrackElemType>(origTrackType);
@@ -695,25 +695,25 @@ OpenRCT2::RCT12::TrackElemType OpenRCT2FlatTrackTypeToRCT12(OpenRCT2::TrackElemT
     switch (origTrackType)
     {
         case TrackElemType::FlatTrack1x4A:
-            return OpenRCT2::RCT12::TrackElemType::FlatTrack1x4A_Alias;
+            return OpenRCT2::RCT12::TrackElemType::flatTrack1x4A_Alias;
         case TrackElemType::FlatTrack2x2:
-            return OpenRCT2::RCT12::TrackElemType::FlatTrack2x2_Alias;
+            return OpenRCT2::RCT12::TrackElemType::flatTrack2x2_Alias;
         case TrackElemType::FlatTrack4x4:
-            return OpenRCT2::RCT12::TrackElemType::FlatTrack4x4_Alias;
+            return OpenRCT2::RCT12::TrackElemType::flatTrack4x4_Alias;
         case TrackElemType::FlatTrack2x4:
-            return OpenRCT2::RCT12::TrackElemType::FlatTrack2x4_Alias;
+            return OpenRCT2::RCT12::TrackElemType::flatTrack2x4_Alias;
         case TrackElemType::FlatTrack1x5:
-            return OpenRCT2::RCT12::TrackElemType::FlatTrack1x5_Alias;
+            return OpenRCT2::RCT12::TrackElemType::flatTrack1x5_Alias;
         case TrackElemType::FlatTrack1x1A:
-            return OpenRCT2::RCT12::TrackElemType::FlatTrack1x1A_Alias;
+            return OpenRCT2::RCT12::TrackElemType::flatTrack1x1A_Alias;
         case TrackElemType::FlatTrack1x4B:
-            return OpenRCT2::RCT12::TrackElemType::FlatTrack1x4B_Alias;
+            return OpenRCT2::RCT12::TrackElemType::flatTrack1x4B_Alias;
         case TrackElemType::FlatTrack1x1B:
-            return OpenRCT2::RCT12::TrackElemType::FlatTrack1x1B_Alias;
+            return OpenRCT2::RCT12::TrackElemType::flatTrack1x1B_Alias;
         case TrackElemType::FlatTrack1x4C:
-            return OpenRCT2::RCT12::TrackElemType::FlatTrack1x4C_Alias;
+            return OpenRCT2::RCT12::TrackElemType::flatTrack1x4C_Alias;
         case TrackElemType::FlatTrack3x3:
-            return OpenRCT2::RCT12::TrackElemType::FlatTrack3x3_Alias;
+            return OpenRCT2::RCT12::TrackElemType::flatTrack3x3_Alias;
         default:
             return static_cast<OpenRCT2::RCT12::TrackElemType>(origTrackType);
     }
@@ -846,7 +846,7 @@ ResearchItem RCT12ResearchItem::ToResearchItem() const
     {
         newResearchItem.rawValue = 0;
         newResearchItem.flags = 0;
-        newResearchItem.category = ResearchCategory::Transport;
+        newResearchItem.category = ResearchCategory::transport;
         newResearchItem.SetNull();
     }
     else
@@ -855,7 +855,7 @@ ResearchItem RCT12ResearchItem::ToResearchItem() const
         newResearchItem.entryIndex = RCTEntryIndexToOpenRCT2EntryIndex(EntryIndex);
         newResearchItem.flags = Flags;
         newResearchItem.category = static_cast<ResearchCategory>(Category);
-        if (newResearchItem.type == Research::EntryType::Ride)
+        if (newResearchItem.type == Research::EntryType::ride)
         {
             auto* rideEntry = GetRideEntryByIndex(newResearchItem.entryIndex);
             newResearchItem.baseRideType = rideEntry != nullptr ? RCT2::RCT2RideTypeToOpenRCT2RideType(BaseRideType, *rideEntry)
@@ -903,16 +903,16 @@ namespace OpenRCT2::RCT12
 
     bool TrackTypeHasSpeedSetting(TrackElemType trackType)
     {
-        return trackType == TrackElemType::Booster || trackType == TrackElemType::Brakes;
+        return trackType == TrackElemType::booster || trackType == TrackElemType::brakes;
     }
 
     bool TrackTypeIsStation(TrackElemType trackType)
     {
         switch (trackType)
         {
-            case TrackElemType::EndStation:
-            case TrackElemType::BeginStation:
-            case TrackElemType::MiddleStation:
+            case TrackElemType::endStation:
+            case TrackElemType::beginStation:
+            case TrackElemType::middleStation:
                 return true;
             default:
                 return false;

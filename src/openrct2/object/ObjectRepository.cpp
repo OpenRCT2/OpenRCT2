@@ -101,7 +101,7 @@ namespace OpenRCT2
             // which can happen if the user copies the official DAT objects to their custom content folder.
             if (object == nullptr
                 || (object->GetGeneration() == ObjectGeneration::DAT
-                    && object->GetObjectEntry().GetSourceGame() != ObjectSourceGame::Custom))
+                    && object->GetObjectEntry().GetSourceGame() != ObjectSourceGame::custom))
             {
                 return std::nullopt;
             }
@@ -649,13 +649,13 @@ namespace OpenRCT2
         Guard::ArgumentNotNull(object);
         switch (object->GetFirstSourceGame())
         {
-            case ObjectSourceGame::RCT1:
-            case ObjectSourceGame::AddedAttractions:
-            case ObjectSourceGame::LoopyLandscapes:
-            case ObjectSourceGame::RCT2:
-            case ObjectSourceGame::WackyWorlds:
-            case ObjectSourceGame::TimeTwister:
-            case ObjectSourceGame::OpenRCT2Official:
+            case ObjectSourceGame::rct1:
+            case ObjectSourceGame::addedAttractions:
+            case ObjectSourceGame::loopyLandscapes:
+            case ObjectSourceGame::rct2:
+            case ObjectSourceGame::wackyWorlds:
+            case ObjectSourceGame::timeTwister:
+            case ObjectSourceGame::openRCT2Official:
                 return false;
             default:
                 return true;

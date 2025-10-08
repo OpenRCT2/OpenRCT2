@@ -263,7 +263,7 @@ void InputManager::handleViewScrolling()
     }
 
     // Mouse edge scrolling
-    if (Config::Get().general.EdgeScrolling)
+    if (Config::Get().general.edgeScrolling)
     {
         if (InputGetState() != InputState::Normal)
             return;
@@ -299,7 +299,7 @@ void InputManager::handleModifiers()
     }
 #endif
 
-    if (Config::Get().general.VirtualFloorStyle != VirtualFloorStyles::Off)
+    if (Config::Get().general.virtualFloorStyle != VirtualFloorStyles::Off)
     {
         if (isModifierKeyPressed(ModifierKey::ctrl) || isModifierKeyPressed(ModifierKey::shift))
             VirtualFloorEnable();

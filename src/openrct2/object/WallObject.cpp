@@ -32,7 +32,7 @@ namespace OpenRCT2
         stream->Seek(1, STREAM_SEEK_CURRENT);
         _legacyType.scrolling_mode = stream->ReadValue<uint8_t>();
 
-        GetStringTable().Read(context, stream, ObjectStringID::NAME);
+        GetStringTable().Read(context, stream, ObjectStringID::name);
 
         RCTObjectEntry sgEntry = stream->ReadValue<RCTObjectEntry>();
         SetPrimarySceneryGroup(ObjectEntryDescriptor(sgEntry));
@@ -42,7 +42,7 @@ namespace OpenRCT2
         // Validate properties
         if (_legacyType.price <= 0.00_GBP)
         {
-            context->LogError(ObjectError::InvalidProperty, "Price can not be free or negative.");
+            context->LogError(ObjectError::invalidProperty, "Price can not be free or negative.");
         }
 
         // Autofix this object (will be turned into an official object later).

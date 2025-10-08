@@ -51,8 +51,8 @@ namespace OpenRCT2
 
     static inline void repositionCloseButton(Widget& closeButton, int32_t windowWidth, bool translucent)
     {
-        auto closeButtonSize = Config::Get().interface.EnlargedUi ? kCloseButtonSizeTouch : kCloseButtonSize;
-        if (Config::Get().interface.WindowButtonsOnTheLeft)
+        auto closeButtonSize = Config::Get().interface.enlargedUi ? kCloseButtonSizeTouch : kCloseButtonSize;
+        if (Config::Get().interface.windowButtonsOnTheLeft)
         {
             closeButton.left = 2;
             closeButton.right = 2 + closeButtonSize;
@@ -146,7 +146,7 @@ namespace OpenRCT2
 
     int16_t WindowBase::getTitleBarTargetHeight() const
     {
-        return Config::Get().interface.EnlargedUi ? kTitleHeightLarge : kTitleHeightNormal;
+        return Config::Get().interface.enlargedUi ? kTitleHeightLarge : kTitleHeightNormal;
     }
 
     int16_t WindowBase::getTitleBarCurrentHeight() const

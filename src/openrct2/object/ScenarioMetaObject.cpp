@@ -38,17 +38,17 @@ namespace OpenRCT2
 
     std::string ScenarioMetaObject::GetScenarioName()
     {
-        return GetStringTable().GetString(ObjectStringID::NAME); // SCENARIO_NAME
+        return GetStringTable().GetString(ObjectStringID::name); // scenarioName
     }
 
     std::string ScenarioMetaObject::GetParkName()
     {
-        return GetStringTable().GetString(ObjectStringID::PARK_NAME);
+        return GetStringTable().GetString(ObjectStringID::parkName);
     }
 
     std::string ScenarioMetaObject::GetScenarioDetails()
     {
-        return GetStringTable().GetString(ObjectStringID::SCENARIO_DETAILS);
+        return GetStringTable().GetString(ObjectStringID::scenarioDetails);
     }
 
     PreviewImage ScenarioMetaObject::GetMiniMapImage() const

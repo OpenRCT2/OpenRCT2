@@ -352,7 +352,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Scenario path
-            if (Config::Get().general.DebuggingTools)
+            if (Config::Get().general.debuggingTools)
             {
                 const auto shortPath = ShortenPath(scenario->Path, width - 6 - kTabWidth, FontStyle::Medium);
 
@@ -429,7 +429,7 @@ namespace OpenRCT2::Ui::Windows
 
             pressedWidgets |= 1LL << (selectedTab + WIDX_TAB1);
 
-            const int32_t bottomMargin = Config::Get().general.DebuggingTools ? 17 : 5;
+            const int32_t bottomMargin = Config::Get().general.debuggingTools ? 17 : 5;
             widgets[WIDX_SCENARIOLIST].right = width - GetPreviewPaneWidth() - 2 * kPadding;
             widgets[WIDX_SCENARIOLIST].bottom = height - bottomMargin;
         }
@@ -748,7 +748,7 @@ namespace OpenRCT2::Ui::Windows
                 bool megaParkLocked = (rct1CompletedScenarios & rct1RequiredCompletedScenarios)
                     != rct1RequiredCompletedScenarios;
                 _listItems[megaParkListItemIndex.value()].scenario.is_locked = megaParkLocked;
-                if (megaParkLocked && Config::Get().general.ScenarioHideMegaPark)
+                if (megaParkLocked && Config::Get().general.scenarioHideMegaPark)
                 {
                     // Remove mega park
                     _listItems.pop_back();
@@ -784,7 +784,7 @@ namespace OpenRCT2::Ui::Windows
 
         bool IsLockingEnabled() const
         {
-            if (!Config::Get().general.ScenarioUnlockingEnabled)
+            if (!Config::Get().general.scenarioUnlockingEnabled)
                 return false;
             if (selectedTab >= 6)
                 return false;

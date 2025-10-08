@@ -69,7 +69,7 @@ namespace OpenRCT2
         [[nodiscard]] ObjectSourceGame GetFirstSourceGame() const
         {
             if (Sources.empty())
-                return ObjectSourceGame::Custom;
+                return ObjectSourceGame::custom;
 
             return static_cast<ObjectSourceGame>(Sources[0]);
         }

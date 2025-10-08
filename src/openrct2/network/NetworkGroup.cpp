@@ -40,7 +40,7 @@ namespace OpenRCT2::Network
             const std::string permission = Json::GetString(jsonValue);
 
             Permission action_id = NetworkActions::FindCommandByPermissionName(permission);
-            if (action_id != Permission::Count)
+            if (action_id != Permission::count)
             {
                 group.ToggleActionPermission(action_id);
             }
@@ -123,7 +123,7 @@ namespace OpenRCT2::Network
     bool NetworkGroup::CanPerformCommand(GameCommand command) const
     {
         Permission action = NetworkActions::FindCommand(command);
-        if (action != Permission::Count)
+        if (action != Permission::count)
         {
             return CanPerformAction(action);
         }

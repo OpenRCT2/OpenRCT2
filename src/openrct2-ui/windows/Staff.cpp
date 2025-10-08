@@ -1137,7 +1137,7 @@ namespace OpenRCT2::Ui::Windows
             else
             {
                 viewport_flags = 0;
-                if (Config::Get().general.AlwaysShowGridlines)
+                if (Config::Get().general.alwaysShowGridlines)
                     viewport_flags |= VIEWPORT_FLAG_GRIDLINES;
             }
 

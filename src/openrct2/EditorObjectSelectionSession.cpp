@@ -382,7 +382,7 @@ static void RemoveSelectedObjectsFromResearch(const ObjectEntryDescriptor& descr
                 for (auto rideType : rideEntry->ride_type)
                 {
                     ResearchItem tmp = {};
-                    tmp.type = Research::EntryType::Ride;
+                    tmp.type = Research::EntryType::ride;
                     tmp.entryIndex = entryIndex;
                     tmp.baseRideType = rideType;
                     ResearchRemove(tmp);
@@ -392,7 +392,7 @@ static void RemoveSelectedObjectsFromResearch(const ObjectEntryDescriptor& descr
             case ObjectType::sceneryGroup:
             {
                 ResearchItem tmp = {};
-                tmp.type = Research::EntryType::Scenery;
+                tmp.type = Research::EntryType::scenery;
                 tmp.entryIndex = entryIndex;
                 tmp.baseRideType = 0;
                 ResearchRemove(tmp);

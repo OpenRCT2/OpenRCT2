@@ -17,26 +17,26 @@
 
 enum class AwardType : uint16_t
 {
-    MostUntidy,
-    MostTidy,
-    BestRollerCoasters,
-    BestValue,
-    MostBeautiful,
-    WorstValue,
-    Safest,
-    BestStaff,
-    BestFood,
-    WorstFood,
-    BestToilets,
-    MostDisappointing,
-    BestWaterRides,
-    BestCustomDesignedRides,
-    MostDazzlingRideColours,
-    MostConfusingLayout,
-    BestGentleRides,
-    Count
+    mostUntidy,
+    mostTidy,
+    bestRollerCoasters,
+    bestValue,
+    mostBeautiful,
+    worstValue,
+    safest,
+    bestStaff,
+    bestFood,
+    worstFood,
+    bestToilets,
+    mostDisappointing,
+    bestWaterRides,
+    bestCustomDesignedRides,
+    mostDazzlingRideColours,
+    mostConfusingLayout,
+    bestGentleRides,
+    count,
 };
-static_assert(static_cast<uint32_t>(AwardType::Count) < 32); // Awards are used in a 32bit bitset
+static_assert(static_cast<uint32_t>(AwardType::count) < 32); // Awards are used in a 32bit bitset
 
 struct Award
 {

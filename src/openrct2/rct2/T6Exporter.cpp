@@ -155,7 +155,7 @@ namespace OpenRCT2::RCT2
                 auto trackType = OpenRCT2TrackTypeToRCT2(trackElement.type);
                 if (trackElement.type == TrackElemType::MultiDimInvertedUp90ToFlatQuarterLoop)
                 {
-                    trackType = OpenRCT2::RCT12::TrackElemType::InvertedUp90ToFlatQuarterLoopAlias;
+                    trackType = OpenRCT2::RCT12::TrackElemType::invertedUp90ToFlatQuarterLoopAlias;
                 }
                 tempStream.WriteValue<uint8_t>(static_cast<uint8_t>(trackType));
                 auto flags = RCT12::convertToTD46Flags(trackElement);

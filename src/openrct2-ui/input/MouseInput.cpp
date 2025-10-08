@@ -233,8 +233,8 @@ namespace OpenRCT2
         windowMgr->InvalidateByNumber(w->classification, w->number);
 
         ScreenCoordsXY fixedCursorPosition = {
-            static_cast<int32_t>(std::ceil(gInputDragLast.x * Config::Get().general.WindowScale)),
-            static_cast<int32_t>(std::ceil(gInputDragLast.y * Config::Get().general.WindowScale))
+            static_cast<int32_t>(std::ceil(gInputDragLast.x * Config::Get().general.windowScale)),
+            static_cast<int32_t>(std::ceil(gInputDragLast.y * Config::Get().general.windowScale))
         };
 
         ContextSetCursorPosition(fixedCursorPosition);
@@ -492,7 +492,7 @@ namespace OpenRCT2
     {
         int32_t snapProximity;
 
-        snapProximity = (w.flags.has(WindowFlag::noSnapping)) ? 0 : Config::Get().general.WindowSnapProximity;
+        snapProximity = (w.flags.has(WindowFlag::noSnapping)) ? 0 : Config::Get().general.windowSnapProximity;
         WindowMoveAndSnap(w, newScreenCoords - lastScreenCoords, snapProximity);
     }
 
@@ -547,7 +547,7 @@ namespace OpenRCT2
         _ticksSinceDragStart = gCurrentRealTimeTicks;
         auto cursorPosition = ContextGetCursorPosition();
         gInputDragLast = cursorPosition;
-        if (!Config::Get().general.InvertViewportDrag)
+        if (!Config::Get().general.invertViewportDrag)
         {
             ContextHideCursor();
         }
@@ -608,7 +608,7 @@ namespace OpenRCT2
                 differentialCoords.x = posX ? -differentialCoords.x : differentialCoords.x;
                 differentialCoords.y = posY ? -differentialCoords.y : differentialCoords.y;
 
-                if (Config::Get().general.InvertViewportDrag)
+                if (Config::Get().general.invertViewportDrag)
                 {
                     w->savedViewPos -= differentialCoords;
                 }
@@ -621,7 +621,7 @@ namespace OpenRCT2
 
 #ifndef __EMSCRIPTEN__
         const CursorState* cursorState = ContextGetCursorState();
-        if (cursorState->touch || Config::Get().general.InvertViewportDrag)
+        if (cursorState->touch || Config::Get().general.invertViewportDrag)
         {
             gInputDragLast = newDragCoords;
         }
@@ -1634,7 +1634,7 @@ namespace OpenRCT2
         if (viewport == nullptr)
             return;
 
-        const int32_t speed = Config::Get().general.EdgeScrollingSpeed;
+        const int32_t speed = Config::Get().general.edgeScrollingSpeed;
 
         int32_t multiplier = viewport->zoom.ApplyTo(speed);
         int32_t dx = scrollScreenCoords.x * multiplier;

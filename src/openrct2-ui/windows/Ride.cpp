@@ -1565,7 +1565,7 @@ namespace OpenRCT2::Ui::Windows
                 newViewportFlags = viewport->flags;
                 removeViewport();
             }
-            else if (Config::Get().general.AlwaysShowGridlines)
+            else if (Config::Get().general.alwaysShowGridlines)
             {
                 newViewportFlags |= VIEWPORT_FLAG_GRIDLINES;
             }
@@ -3997,7 +3997,7 @@ namespace OpenRCT2::Ui::Windows
 
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_10);
 
-            if (Config::Get().general.DebuggingTools && Network::GetMode() == Network::Mode::none)
+            if (Config::Get().general.debuggingTools && Network::GetMode() == Network::Mode::none)
             {
                 widgets[WIDX_FORCE_BREAKDOWN].type = WidgetType::flatBtn;
             }

@@ -1090,7 +1090,7 @@ void PaintDrawMoneyStructs(RenderTarget& rt, PaintStringStruct* ps)
 
         // Use sprite font unless the currency contains characters unsupported by the sprite font
         auto forceSpriteFont = false;
-        const auto& currencyDesc = CurrencyDescriptors[EnumValue(Config::Get().general.CurrencyFormat)];
+        const auto& currencyDesc = CurrencyDescriptors[EnumValue(Config::Get().general.currencyFormat)];
         if (LocalisationService_UseTrueTypeFont() && FontSupportsStringSprite(currencyDesc.symbol_unicode))
         {
             forceSpriteFont = true;

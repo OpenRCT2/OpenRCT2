@@ -82,7 +82,7 @@ namespace OpenRCT2::RCT2
 
     enum class EntityListId : uint8_t
     {
-        Count = 6,
+        count = 6,
     };
 #pragma pack(push, 1)
     /**
@@ -709,9 +709,9 @@ namespace OpenRCT2::RCT2
 
     enum class StaffMode : uint8_t
     {
-        None,
-        Walk,
-        Patrol = 3
+        none,
+        walk,
+        patrol = 3
     };
 
     union Entity
@@ -833,8 +833,8 @@ namespace OpenRCT2::RCT2
         // SC6[6]
         uint32_t NextFreeTileElementPointerIndex;
         Entity Entities[Limits::kMaxEntitiesRCTCExtended];
-        uint16_t EntityListsHead[EnumValue(EntityListId::Count)];
-        uint16_t EntityListsCount[EnumValue(EntityListId::Count)];
+        uint16_t EntityListsHead[EnumValue(EntityListId::count)];
+        uint16_t EntityListsCount[EnumValue(EntityListId::count)];
         StringId ParkName;
         uint8_t Pad013573D6[2];
         uint32_t ParkNameArgs;
@@ -1036,9 +1036,9 @@ namespace OpenRCT2::RCT2
 
     enum class OriginalRideClass
     {
-        Regular,
-        WildMouse,
-        FlatRide,
+        regular,
+        wildMouse,
+        flatRide,
     };
 
     OpenRCT2::TrackElemType RCT2TrackTypeToOpenRCT2(

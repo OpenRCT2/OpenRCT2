@@ -79,7 +79,7 @@ NewVersionInfo GetLatestVersion()
     NewVersionInfo verinfo{ tag, "", "" };
 #if !defined(DISABLE_HTTP) && !defined(DISABLE_VERSION_CHECKER)
     auto now = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count();
-    auto then = Config::Get().general.LastVersionCheckTime;
+    auto then = Config::Get().general.lastVersionCheckTime;
     using namespace std::chrono_literals;
 
     if (then < now - std::chrono::seconds(24h).count())
@@ -107,7 +107,7 @@ NewVersionInfo GetLatestVersion()
         verinfo.name = Json::GetString(root["name"]);
         verinfo.changelog = Json::GetString(root["body"]);
 
-        Config::Get().general.LastVersionCheckTime = now;
+        Config::Get().general.lastVersionCheckTime = now;
         Config::Save();
     }
 #endif

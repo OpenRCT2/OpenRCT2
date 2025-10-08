@@ -107,7 +107,7 @@ namespace OpenRCT2::Ui::Windows
         const StringId itemNameId = researchItem.GetName();
         int16_t columnSplitOffset = width / 2;
 
-        if (researchItem.type == Research::EntryType::Ride
+        if (researchItem.type == Research::EntryType::ride
             && !GetRideTypeDescriptor(researchItem.baseRideType).HasFlag(RtdFlag::listVehiclesSeparately))
         {
             const StringId rideTypeName = GetRideNaming(
@@ -386,7 +386,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Preview image
             ObjectType objectEntryType = ObjectType::sceneryGroup;
-            if (researchItem->type == Research::EntryType::Ride)
+            if (researchItem->type == Research::EntryType::ride)
                 objectEntryType = ObjectType::ride;
 
             auto chunk = ObjectEntryGetChunk(objectEntryType, researchItem->entryIndex);
@@ -415,7 +415,7 @@ namespace OpenRCT2::Ui::Windows
             StringId stringId = researchItem->GetName();
             auto ft = Formatter();
 
-            if (researchItem->type == Research::EntryType::Ride
+            if (researchItem->type == Research::EntryType::ride
                 && !GetRideTypeDescriptor(researchItem->baseRideType).HasFlag(RtdFlag::listVehiclesSeparately))
             {
                 drawString = STR_WINDOW_COLOUR_2_STRINGID_STRINGID;

@@ -146,8 +146,8 @@ void AudioMixer::GetNextAudioChunk(uint8_t* dst, size_t length)
         else
         {
             auto group = channel->GetGroup();
-            if ((group != MixerGroup::Sound || Config::Get().sound.SoundEnabled) && Config::Get().sound.MasterSoundEnabled
-                && Config::Get().sound.MasterVolume != 0)
+            if ((group != MixerGroup::Sound || Config::Get().sound.soundEnabled) && Config::Get().sound.masterSoundEnabled
+                && Config::Get().sound.masterVolume != 0)
             {
                 MixChannel(channel.get(), dst, length);
             }
@@ -159,14 +159,14 @@ void AudioMixer::GetNextAudioChunk(uint8_t* dst, size_t length)
 void AudioMixer::UpdateAdjustedSound()
 {
     // Did the volume level get changed? Recalculate level in this case.
-    if (_settingSoundVolume != Config::Get().sound.SoundVolume)
+    if (_settingSoundVolume != Config::Get().sound.soundVolume)
     {
-        _settingSoundVolume = Config::Get().sound.SoundVolume;
+        _settingSoundVolume = Config::Get().sound.soundVolume;
         _adjustSoundVolume = powf(static_cast<float>(_settingSoundVolume) / 100.f, 10.f / 6.f);
     }
-    if (_settingMusicVolume != Config::Get().sound.AudioFocus)
+    if (_settingMusicVolume != Config::Get().sound.rideMusicVolume)
     {
-        _settingMusicVolume = Config::Get().sound.AudioFocus;
+        _settingMusicVolume = Config::Get().sound.rideMusicVolume;
         _adjustMusicVolume = powf(static_cast<float>(_settingMusicVolume) / 100.f, 10.f / 6.f);
     }
 }
@@ -297,7 +297,7 @@ void AudioMixer::ApplyPan(const IAudioChannel* channel, void* buffer, size_t len
 int32_t AudioMixer::ApplyVolume(const IAudioChannel* channel, void* buffer, size_t len)
 {
     float volumeAdjust = _volume;
-    volumeAdjust *= Config::Get().sound.MasterSoundEnabled ? (static_cast<float>(Config::Get().sound.MasterVolume) / 100.0f)
+    volumeAdjust *= Config::Get().sound.masterSoundEnabled ? (static_cast<float>(Config::Get().sound.masterVolume) / 100.0f)
                                                            : 0.0f;
 
     switch (channel->GetGroup())
