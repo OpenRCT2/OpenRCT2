@@ -2,6 +2,7 @@
 ------------------------------------------------------------------------
 - Change: [#25089] Peep actions and animations that cause them to stop moving no longer trigger when they are on a level crossing.
 - Fix: [#25299] The Mine Train Coaster left large helix draws incorrect sprites at certain angles (original bug).
+- Fix: [#25328] Fix mismatched entrance/exit huts on spiral slide in Blackpool Pleasure Beach (bug in the original scenario).
 
 0.4.27 (2025-10-04)
 ------------------------------------------------------------------------
