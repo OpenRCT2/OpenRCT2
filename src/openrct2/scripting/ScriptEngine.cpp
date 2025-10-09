@@ -455,13 +455,14 @@ ScContext Scripting::gScContext;
 ScDisposable Scripting::gScDisposable;
 ScMap Scripting::gScMap;
 ScNetwork Scripting::gScNetwork;
+ScPark Scripting::gScPark;
 ScEntity Scripting::gScEntity;
 ScThought Scripting::gScThought;
 ScPatrolArea Scripting::gScPatrolArea;
 
 void ScriptEngine::RegisterClasses(JSContext* ctx)
 {
-    // TODO (mber) register C functions
+    // TODO (mber) register JS Classes
     // ScAward::Register(ctx);
     gScCheats.Register(ctx);
     // ScClimate::Register(ctx);
@@ -484,7 +485,7 @@ void ScriptEngine::RegisterClasses(JSContext* ctx)
     // ScFootpathAdditionObject::Register(ctx);
     // ScBannerObject::Register(ctx);
     // ScSceneryGroupObject::Register(ctx);
-    // gScPark.Register(ctx);
+    gScPark.Register(ctx);
     // ScParkMessage::Register(ctx);
     // ScPlayer::Register(ctx);
     // ScPlayerGroup::Register(ctx);
@@ -541,7 +542,7 @@ void ScriptEngine::InitialiseContext(JSContext* ctx) const
     // dukglue_register_global(ctx, std::make_shared<ScDate>(), "date");
     JS_SetPropertyStr(ctx, glb, "map", gScMap.New(ctx));
     JS_SetPropertyStr(ctx, glb, "network", gScNetwork.New(ctx));
-    // dukglue_register_global(ctx, std::make_shared<ScPark>(ctx), "park");
+    JS_SetPropertyStr(ctx, glb, "park", gScPark.New(ctx));
     // dukglue_register_global(ctx, std::make_shared<ScPlugin>(), "pluginManager");
     // dukglue_register_global(ctx, std::make_shared<ScProfiler>(ctx), "profiler");
     // dukglue_register_global(ctx, std::make_shared<ScScenario>(), "scenario");
