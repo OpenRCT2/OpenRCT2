@@ -4706,7 +4706,7 @@ void Guest::UpdateRideApproachSpiralSlide()
 
     uint8_t waypoint = Var37 & 3;
 
-    if (waypoint == 3)
+    if (waypoint == 3) // Guest has entered the slide tower
     {
         SubState = 15;
         spiralSlideSubstate = PeepSpiralSlideSubState::goingUp;
@@ -4717,17 +4717,23 @@ void Guest::UpdateRideApproachSpiralSlide()
     }
 
     [[maybe_unused]] const auto& rtd = ride->getRideTypeDescriptor();
-    if (waypoint == 2)
+    if (waypoint == 2) // Guest is in front of the slide tower entrance
     {
         bool lastRide = false;
+        // If the player has closed the ride, leave ASAP
         if (ride->status != RideStatus::open)
             lastRide = true;
-        else if (timesSlidDown++ != 0)
+        // Otherwise, I'm only leaving after having slid down at least once (what did I wait in line for?!)
+        else
         {
-            if (ride->mode == RideMode::singleRidePerAdmission)
-                lastRide = true;
-            if (static_cast<uint8_t>(timesSlidDown - 1) > (ScenarioRand() & 0xF))
-                lastRide = true;
+            if (timesSlidDown != 0)
+            {
+                if (ride->mode == RideMode::singleRidePerAdmission)
+                    lastRide = true;
+                if (timesSlidDown > static_cast<uint8_t>(ScenarioRand() & 0xF))
+                    lastRide = true;
+            }
+            timesSlidDown++;
         }
 
         if (lastRide)
@@ -4750,6 +4756,7 @@ void Guest::UpdateRideApproachSpiralSlide()
             return;
         }
     }
+
     waypoint++;
     // Actually increment the real peep waypoint
     Var37++;
