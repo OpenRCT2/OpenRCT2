@@ -4728,13 +4728,9 @@ void Guest::UpdateRideApproachSpiralSlide()
         {
             if (timesSlidDown != 0)
             {
-                if (ride->mode == RideMode::singleRidePerAdmission)
-                    lastRide = true;
-                if (ClimateIsPrecipitating())
-                    lastRide = true;
-                if (ride->numRiders > ride->operationOption)
-                    lastRide = true;
-                if ((timesSlidDown + GuestTimeOnRide) > static_cast<uint8_t>(ScenarioRand() & 0xF))
+                if (ride->mode == RideMode::singleRidePerAdmission || ClimateIsPrecipitating()
+                    || (ride->numRiders > ride->operationOption)
+                    || ((timesSlidDown + GuestTimeOnRide) > static_cast<uint8_t>(ScenarioRand() & 0xF)))
                     lastRide = true;
             }
             timesSlidDown++;
