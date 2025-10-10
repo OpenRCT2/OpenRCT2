@@ -329,7 +329,7 @@ namespace OpenRCT2::RCT2
 
             // Some scenarios have their scenario details in UTF-8, due to earlier bugs in OpenRCT2.
             auto loadMaybeUTF8 = [](std::string_view str) -> std::string {
-                return !IsLikelyUTF8(str) ? RCT2StringToUTF8(str, RCT2LanguageId::EnglishUK) : std::string(str);
+                return !IsLikelyUTF8(str) ? RCT2StringToUTF8(str, RCT2LanguageId::englishUK) : std::string(str);
             };
 
             if (_s6.Header.Type == S6_TYPE_SCENARIO)
@@ -423,7 +423,7 @@ namespace OpenRCT2::RCT2
             gameState.researchProgressStage = _s6.ResearchProgressStage;
             if (_s6.LastResearchedItemSubject != kRCT12ResearchedItemsSeparator)
                 gameState.researchLastItem = RCT12ResearchItem{ _s6.LastResearchedItemSubject,
-                                                                EnumValue(ResearchCategory::Transport) }
+                                                                EnumValue(ResearchCategory::transport) }
                                                  .ToResearchItem();
             else
                 gameState.researchLastItem = std::nullopt;
@@ -617,9 +617,9 @@ namespace OpenRCT2::RCT2
         void ConvertScenarioStringsToUTF8(GameState_t& gameState)
         {
             // Scenario details
-            gameState.scenarioCompletedBy = RCT2StringToUTF8(gameState.scenarioCompletedBy, RCT2LanguageId::EnglishUK);
-            gameState.scenarioOptions.name = RCT2StringToUTF8(gameState.scenarioOptions.name, RCT2LanguageId::EnglishUK);
-            gameState.scenarioOptions.details = RCT2StringToUTF8(gameState.scenarioOptions.details, RCT2LanguageId::EnglishUK);
+            gameState.scenarioCompletedBy = RCT2StringToUTF8(gameState.scenarioCompletedBy, RCT2LanguageId::englishUK);
+            gameState.scenarioOptions.name = RCT2StringToUTF8(gameState.scenarioOptions.name, RCT2LanguageId::englishUK);
+            gameState.scenarioOptions.details = RCT2StringToUTF8(gameState.scenarioOptions.details, RCT2LanguageId::englishUK);
         }
 
         void ImportRides()
@@ -1212,7 +1212,7 @@ namespace OpenRCT2::RCT2
             for (int32_t i = 0; i < GetMaxEntities(); i++)
             {
                 const auto& entity = _s6.Entities[i];
-                if (entity.Unknown.EntityIdentifier == RCT12EntityIdentifier::Peep)
+                if (entity.Unknown.EntityIdentifier == RCT12EntityIdentifier::peep)
                 {
                     if (entity.Peep.CurrentRide == static_cast<RCT12RideId>(rideIndex.ToUnderlying())
                         && (static_cast<PeepState>(entity.Peep.State) == PeepState::onRide
@@ -1256,7 +1256,7 @@ namespace OpenRCT2::RCT2
                                 }
 
                                 auto tileElementType = srcElement->GetType();
-                                if (tileElementType == RCT12TileElementType::Corrupt)
+                                if (tileElementType == RCT12TileElementType::corrupt)
                                 {
                                     // One property of corrupt elements was to hide tops of tower tracks, and to avoid the next
                                     // element from being hidden, multiple consecutive corrupt elements were sometimes used.
@@ -1265,8 +1265,8 @@ namespace OpenRCT2::RCT2
                                     nextElementInvisible = !nextElementInvisible;
                                     continue;
                                 }
-                                if (tileElementType == RCT12TileElementType::EightCarsCorrupt14
-                                    || tileElementType == RCT12TileElementType::EightCarsCorrupt15)
+                                if (tileElementType == RCT12TileElementType::eightCarsCorrupt14
+                                    || tileElementType == RCT12TileElementType::eightCarsCorrupt15)
                                 {
                                     restOfTileInvisible = true;
                                     continue;
@@ -1314,7 +1314,7 @@ namespace OpenRCT2::RCT2
 
             switch (rct12Type)
             {
-                case RCT12TileElementType::Surface:
+                case RCT12TileElementType::surface:
                 {
                     auto dst2 = dst->AsSurface();
                     auto src2 = src->AsSurface();
@@ -1332,7 +1332,7 @@ namespace OpenRCT2::RCT2
 
                     break;
                 }
-                case RCT12TileElementType::Path:
+                case RCT12TileElementType::path:
                 {
                     auto dst2 = dst->AsPath();
                     auto src2 = src->AsPath();
@@ -1370,7 +1370,7 @@ namespace OpenRCT2::RCT2
 
                     break;
                 }
-                case RCT12TileElementType::Track:
+                case RCT12TileElementType::track:
                 {
                     auto dst2 = dst->AsTrack();
                     auto src2 = src->AsTrack();
@@ -1432,7 +1432,7 @@ namespace OpenRCT2::RCT2
 
                     break;
                 }
-                case RCT12TileElementType::SmallScenery:
+                case RCT12TileElementType::smallScenery:
                 {
                     auto dst2 = dst->AsSmallScenery();
                     auto src2 = src->AsSmallScenery();
@@ -1447,7 +1447,7 @@ namespace OpenRCT2::RCT2
 
                     break;
                 }
-                case RCT12TileElementType::Entrance:
+                case RCT12TileElementType::entrance:
                 {
                     auto dst2 = dst->AsEntrance();
                     auto src2 = src->AsEntrance();
@@ -1478,7 +1478,7 @@ namespace OpenRCT2::RCT2
                     }
                     break;
                 }
-                case RCT12TileElementType::Wall:
+                case RCT12TileElementType::wall:
                 {
                     auto dst2 = dst->AsWall();
                     auto src2 = src->AsWall();
@@ -1515,7 +1515,7 @@ namespace OpenRCT2::RCT2
                     }
                     break;
                 }
-                case RCT12TileElementType::LargeScenery:
+                case RCT12TileElementType::largeScenery:
                 {
                     auto dst2 = dst->AsLargeScenery();
                     auto src2 = src->AsLargeScenery();
@@ -1548,7 +1548,7 @@ namespace OpenRCT2::RCT2
                     }
                     break;
                 }
-                case RCT12TileElementType::Banner:
+                case RCT12TileElementType::banner:
                 {
                     auto dst2 = dst->AsBanner();
                     auto src2 = src->AsBanner();
@@ -1612,7 +1612,7 @@ namespace OpenRCT2::RCT2
         {
             // First check staff mode as vanilla did not clean up patrol areas when switching from patrol to walk
             // without doing this we could accidentally add a patrol when it didn't exist.
-            if (_s6.StaffModes[staffId] != StaffMode::Patrol)
+            if (_s6.StaffModes[staffId] != StaffMode::patrol)
             {
                 return;
             }
@@ -1738,13 +1738,13 @@ namespace OpenRCT2::RCT2
             EntityType output = EntityType::null;
             switch (src->EntityIdentifier)
             {
-                case RCT12EntityIdentifier::Vehicle:
+                case RCT12EntityIdentifier::vehicle:
                     output = EntityType::vehicle;
                     break;
-                case RCT12EntityIdentifier::Peep:
+                case RCT12EntityIdentifier::peep:
                 {
                     const auto& peep = static_cast<const Peep&>(*src);
-                    if (RCT12PeepType(peep.PeepType) == RCT12PeepType::Guest)
+                    if (RCT12PeepType(peep.PeepType) == RCT12PeepType::guest)
                     {
                         output = EntityType::guest;
                     }
@@ -1754,43 +1754,43 @@ namespace OpenRCT2::RCT2
                     }
                     break;
                 }
-                case RCT12EntityIdentifier::Misc:
+                case RCT12EntityIdentifier::misc:
 
                     switch (RCT12MiscEntityType(src->Type))
                     {
-                        case RCT12MiscEntityType::SteamParticle:
+                        case RCT12MiscEntityType::steamParticle:
                             output = EntityType::steamParticle;
                             break;
-                        case RCT12MiscEntityType::MoneyEffect:
+                        case RCT12MiscEntityType::moneyEffect:
                             output = EntityType::moneyEffect;
                             break;
-                        case RCT12MiscEntityType::CrashedVehicleParticle:
+                        case RCT12MiscEntityType::crashedVehicleParticle:
                             output = EntityType::crashedVehicleParticle;
                             break;
-                        case RCT12MiscEntityType::ExplosionCloud:
+                        case RCT12MiscEntityType::explosionCloud:
                             output = EntityType::explosionCloud;
                             break;
-                        case RCT12MiscEntityType::CrashSplash:
+                        case RCT12MiscEntityType::crashSplash:
                             output = EntityType::crashSplash;
                             break;
-                        case RCT12MiscEntityType::ExplosionFlare:
+                        case RCT12MiscEntityType::explosionFlare:
                             output = EntityType::explosionFlare;
                             break;
-                        case RCT12MiscEntityType::JumpingFountainWater:
-                        case RCT12MiscEntityType::JumpingFountainSnow:
+                        case RCT12MiscEntityType::jumpingFountainWater:
+                        case RCT12MiscEntityType::jumpingFountainSnow:
                             output = EntityType::jumpingFountain;
                             break;
-                        case RCT12MiscEntityType::Balloon:
+                        case RCT12MiscEntityType::balloon:
                             output = EntityType::balloon;
                             break;
-                        case RCT12MiscEntityType::Duck:
+                        case RCT12MiscEntityType::duck:
                             output = EntityType::duck;
                             break;
                         default:
                             break;
                     }
                     break;
-                case RCT12EntityIdentifier::Litter:
+                case RCT12EntityIdentifier::litter:
                     output = EntityType::litter;
                     break;
                 default:
@@ -1820,7 +1820,7 @@ namespace OpenRCT2::RCT2
             const auto originalString = _s6.CustomStrings[stringId % 1024];
             auto originalStringView = std::string_view(
                 originalString, RCT12::GetRCTStringBufferLen(originalString, kUserStringMaxLength));
-            auto asUtf8 = RCT2StringToUTF8(originalStringView, RCT2LanguageId::EnglishUK);
+            auto asUtf8 = RCT2StringToUTF8(originalStringView, RCT2LanguageId::englishUK);
             auto justText = RCT12RemoveFormattingUTF8(asUtf8);
             return justText.data();
         }
@@ -1969,13 +1969,13 @@ namespace OpenRCT2::RCT2
         {
             dst->BoatLocation.SetNull();
             dst->SetTrackDirection(src->GetTrackDirection());
-            // Skipping OriginalRideClass::WildMouse - this is handled specifically.
-            auto originalClass = IsFlatRide(src->Ride) ? OriginalRideClass::FlatRide : OriginalRideClass::Regular;
+            // Skipping OriginalRideClass::wildMouse - this is handled specifically.
+            auto originalClass = IsFlatRide(src->Ride) ? OriginalRideClass::flatRide : OriginalRideClass::regular;
             auto convertedType = RCT2TrackTypeToOpenRCT2(src->GetTrackType(), originalClass);
             dst->SetTrackType(convertedType);
             // RotationControlToggle and Booster are saved as the same track piece ID
             // Which one the vehicle is using must be determined
-            if (src->GetTrackType() == OpenRCT2::RCT12::TrackElemType::RotationControlToggleAlias)
+            if (src->GetTrackType() == OpenRCT2::RCT12::TrackElemType::rotationControlToggleAlias)
             {
                 // Merging hacks mean the track type that's appropriate for the ride type is not necessarily the track type the
                 // ride is on. It's possible to create unwanted behavior if a user layers spinning control track on top of
@@ -1987,7 +1987,7 @@ namespace OpenRCT2::RCT2
                 if (tileElement2 != nullptr)
                     dst->SetTrackType(TrackElemType::RotationControlToggle);
             }
-            else if (src->GetTrackType() == OpenRCT2::RCT12::TrackElemType::BlockBrakes)
+            else if (src->GetTrackType() == OpenRCT2::RCT12::TrackElemType::blockBrakes)
             {
                 dst->brake_speed = kRCT2DefaultBlockBrakeSpeed;
             }
@@ -2249,7 +2249,7 @@ namespace OpenRCT2::RCT2
         dst->TargetX = src->TargetX;
         dst->TargetY = src->TargetY;
         dst->Iteration = src->Iteration;
-        dst->FountainType = RCT12MiscEntityType(src->Type) == RCT12MiscEntityType::JumpingFountainSnow
+        dst->FountainType = RCT12MiscEntityType(src->Type) == RCT12MiscEntityType::jumpingFountainSnow
             ? ::JumpingFountainType::Snow
             : ::JumpingFountainType::Water;
     }

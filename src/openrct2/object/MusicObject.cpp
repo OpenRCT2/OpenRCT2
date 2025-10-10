@@ -169,7 +169,7 @@ namespace OpenRCT2
                 auto source = Json::GetString(jTrack["source"]);
                 if (source.empty())
                 {
-                    context.LogError(ObjectError::InvalidProperty, "Invalid audio track definition.");
+                    context.LogError(ObjectError::invalidProperty, "Invalid audio track definition.");
                 }
                 else
                 {

@@ -317,7 +317,7 @@ static void PaintLargeSceneryScrollingText(
     banner->formatTextTo(ft);
 
     char text[256];
-    if (Config::Get().general.UpperCaseBanners)
+    if (Config::Get().general.upperCaseBanners)
     {
         FormatStringToUpper(text, sizeof(text), STR_SCROLLING_SIGN_TEXT, ft.Data());
     }

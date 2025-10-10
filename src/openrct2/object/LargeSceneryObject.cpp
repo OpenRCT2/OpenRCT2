@@ -64,7 +64,7 @@ namespace OpenRCT2
         _legacyType.scrolling_mode = stream->ReadValue<uint8_t>();
         stream->Seek(4, OpenRCT2::STREAM_SEEK_CURRENT);
 
-        GetStringTable().Read(context, stream, ObjectStringID::NAME);
+        GetStringTable().Read(context, stream, ObjectStringID::name);
 
         RCTObjectEntry sgEntry = stream->ReadValue<RCTObjectEntry>();
         SetPrimarySceneryGroup(ObjectEntryDescriptor(sgEntry));
@@ -83,7 +83,7 @@ namespace OpenRCT2
         // Validate properties
         if (_legacyType.price <= 0.00_GBP)
         {
-            context->LogError(ObjectError::InvalidProperty, "Price can not be free or negative.");
+            context->LogError(ObjectError::invalidProperty, "Price can not be free or negative.");
         }
         if (_legacyType.removal_price <= 0.00_GBP)
         {
@@ -91,7 +91,7 @@ namespace OpenRCT2
             const auto reimbursement = _legacyType.removal_price;
             if (reimbursement > _legacyType.price)
             {
-                context->LogError(ObjectError::InvalidProperty, "Sell price can not be more than buy price.");
+                context->LogError(ObjectError::invalidProperty, "Sell price can not be more than buy price.");
             }
         }
 

@@ -377,22 +377,22 @@ ResearchCategory RideTypeDescriptor::GetResearchCategory() const
     switch (Category)
     {
         case RideCategory::transport:
-            return ResearchCategory::Transport;
+            return ResearchCategory::transport;
         case RideCategory::gentle:
-            return ResearchCategory::Gentle;
+            return ResearchCategory::gentle;
         case RideCategory::rollerCoaster:
-            return ResearchCategory::Rollercoaster;
+            return ResearchCategory::rollercoaster;
         case RideCategory::thrill:
-            return ResearchCategory::Thrill;
+            return ResearchCategory::thrill;
         case RideCategory::water:
-            return ResearchCategory::Water;
+            return ResearchCategory::water;
         case RideCategory::shop:
-            return ResearchCategory::Shop;
+            return ResearchCategory::shop;
         case RideCategory::none:
             break;
     }
     LOG_ERROR("Cannot get Research Category of invalid RideCategory");
-    return ResearchCategory::Transport;
+    return ResearchCategory::transport;
 }
 
 bool RideTypeDescriptor::SupportsRideMode(RideMode rideMode) const

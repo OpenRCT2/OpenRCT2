@@ -1011,7 +1011,7 @@ void UpdatePaletteEffects()
 
         // Animate the water/lava/chain movement palette
         uint32_t shade = 0;
-        if (Config::Get().general.RenderWeatherGloom)
+        if (Config::Get().general.renderWeatherGloom)
         {
             auto paletteId = ClimateGetWeatherGloomPaletteId(getGameState().weatherCurrent);
             if (paletteId != FilterPaletteID::paletteNull)
@@ -1113,9 +1113,9 @@ void RefreshVideo()
 
 void ToggleWindowedMode()
 {
-    int32_t rt = Config::Get().general.FullscreenMode == 0 ? 2 : 0;
+    int32_t rt = Config::Get().general.fullscreenMode == 0 ? 2 : 0;
     ContextSetFullscreenMode(rt);
-    Config::Get().general.FullscreenMode = rt;
+    Config::Get().general.fullscreenMode = rt;
     Config::Save();
 }
 

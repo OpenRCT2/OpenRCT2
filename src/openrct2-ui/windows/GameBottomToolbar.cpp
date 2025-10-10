@@ -187,7 +187,7 @@ namespace OpenRCT2::Ui::Windows
             int32_t day = date.GetDay();
 
             auto colour = GetHoverWidgetColour(WIDX_DATE);
-            StringId stringId = DateFormatStringFormatIds[Config::Get().general.DateFormat];
+            StringId stringId = DateFormatStringFormatIds[Config::Get().general.dateFormat];
             auto ft = Formatter();
             ft.Add<StringId>(DateDayNames[day]);
             ft.Add<int16_t>(month);
@@ -202,7 +202,7 @@ namespace OpenRCT2::Ui::Windows
 
             int32_t temperature = getGameState().weatherCurrent.temperature;
             StringId format = STR_CELSIUS_VALUE;
-            if (Config::Get().general.TemperatureFormat == TemperatureUnit::Fahrenheit)
+            if (Config::Get().general.temperatureFormat == TemperatureUnit::Fahrenheit)
             {
                 temperature = ClimateCelsiusToFahrenheit(temperature);
                 format = STR_FAHRENHEIT_VALUE;

@@ -621,7 +621,7 @@ private:
                             // Check if legacy highscore is better
                             if (scBasic.CompanyValue > highscore->company_value)
                             {
-                                std::string name = RCT2StringToUTF8(scBasic.CompletedBy, RCT2LanguageId::EnglishUK);
+                                std::string name = RCT2StringToUTF8(scBasic.CompletedBy, RCT2LanguageId::englishUK);
                                 highscore->name = name;
                                 highscore->company_value = scBasic.CompanyValue;
                                 highscore->timestamp = kDatetime64Min;
@@ -633,7 +633,7 @@ private:
                     {
                         ScenarioHighscoreEntry* highscore = InsertHighscore();
                         highscore->fileName = scBasic.Path;
-                        std::string name = RCT2StringToUTF8(scBasic.CompletedBy, RCT2LanguageId::EnglishUK);
+                        std::string name = RCT2StringToUTF8(scBasic.CompletedBy, RCT2LanguageId::englishUK);
                         highscore->name = name;
                         highscore->company_value = scBasic.CompanyValue;
                         highscore->timestamp = kDatetime64Min;

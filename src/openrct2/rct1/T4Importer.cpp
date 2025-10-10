@@ -103,7 +103,7 @@ namespace OpenRCT2::RCT1
             }
             // The maze style is saved in the support colour, but taking it through the conversion function
             // will mess up style 3 (wooden fences).
-            if (td4aa.Type == RideType::HedgeMaze)
+            if (td4aa.Type == RideType::hedgeMaze)
             {
                 td->appearance.trackColours[0].supports = td4aa.TrackSupportColour[0];
             }
@@ -123,11 +123,11 @@ namespace OpenRCT2::RCT1
                 td->appearance.trackColours[i].supports = RCT1::GetColour(td4.TrackSupportColourV0);
 
                 // Mazes were only hedges
-                if (td4.Type == RideType::HedgeMaze)
+                if (td4.Type == RideType::hedgeMaze)
                 {
                     td->appearance.trackColours[i].supports = MazeWallType::hedges;
                 }
-                else if (td4.Type == RideType::RiverRapids)
+                else if (td4.Type == RideType::riverRapids)
                 {
                     td->appearance.trackColours[i].main = COLOUR_WHITE;
                     td->appearance.trackColours[i].additional = COLOUR_WHITE;
@@ -149,7 +149,7 @@ namespace OpenRCT2::RCT1
             }
 
             std::string_view vehicleObject;
-            if (td4Base.Type == RideType::HedgeMaze)
+            if (td4Base.Type == RideType::hedgeMaze)
             {
                 vehicleObject = RCT1::GetRideTypeObject(td4Base.Type, false);
             }
@@ -227,7 +227,7 @@ namespace OpenRCT2::RCT1
             td->statistics.maxNegativeVerticalG = td4Base.MaxNegativeVerticalG * kTD46GForcesMultiplier;
             td->statistics.maxLateralG = td4Base.MaxLateralG * kTD46GForcesMultiplier;
 
-            if (td4Base.Type == RideType::MiniatureGolf)
+            if (td4Base.Type == RideType::miniatureGolf)
                 td->statistics.holes = td4Base.NumHoles & kRCT12InversionAndHoleMask;
             else
                 td->statistics.inversions = td4Base.NumInversions & kRCT12InversionAndHoleMask;

@@ -230,12 +230,12 @@ namespace OpenRCT2::Ui::Windows
 
         void SaveInConfig(uint32_t wflags)
         {
-            Config::Get().general.InvisibleRides = wflags & VIEWPORT_FLAG_INVISIBLE_RIDES;
-            Config::Get().general.InvisibleVehicles = wflags & VIEWPORT_FLAG_INVISIBLE_VEHICLES;
-            Config::Get().general.InvisibleScenery = wflags & VIEWPORT_FLAG_INVISIBLE_SCENERY;
-            Config::Get().general.InvisibleTrees = wflags & VIEWPORT_FLAG_INVISIBLE_VEGETATION;
-            Config::Get().general.InvisiblePaths = wflags & VIEWPORT_FLAG_INVISIBLE_PATHS;
-            Config::Get().general.InvisibleSupports = wflags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS;
+            Config::Get().general.invisibleRides = wflags & VIEWPORT_FLAG_INVISIBLE_RIDES;
+            Config::Get().general.invisibleVehicles = wflags & VIEWPORT_FLAG_INVISIBLE_VEHICLES;
+            Config::Get().general.invisibleScenery = wflags & VIEWPORT_FLAG_INVISIBLE_SCENERY;
+            Config::Get().general.invisibleTrees = wflags & VIEWPORT_FLAG_INVISIBLE_VEGETATION;
+            Config::Get().general.invisiblePaths = wflags & VIEWPORT_FLAG_INVISIBLE_PATHS;
+            Config::Get().general.invisibleSupports = wflags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS;
             Config::Save();
         }
     };

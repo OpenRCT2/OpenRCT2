@@ -317,7 +317,7 @@ namespace OpenRCT2::Ui::Windows
 
             auto mvpFlags = WindowGetMain()->viewport->flags;
             gDropdown.items[DDIDX_UNDERGROUND_INSIDE].setChecked(mvpFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE);
-            gDropdown.items[DDIDX_TRANSPARENT_WATER].setChecked(Config::Get().general.TransparentWater);
+            gDropdown.items[DDIDX_TRANSPARENT_WATER].setChecked(Config::Get().general.transparentWater);
             gDropdown.items[DDIDX_HIDE_BASE].setChecked(mvpFlags & VIEWPORT_FLAG_HIDE_BASE);
             gDropdown.items[DDIDX_HIDE_VERTICAL].setChecked(mvpFlags & VIEWPORT_FLAG_HIDE_VERTICAL);
             gDropdown.items[DDIDX_HIDE_RIDES].setChecked(mvpFlags & VIEWPORT_FLAG_HIDE_RIDES);
@@ -348,7 +348,7 @@ namespace OpenRCT2::Ui::Windows
                         w->viewport->flags ^= VIEWPORT_FLAG_UNDERGROUND_INSIDE;
                         break;
                     case DDIDX_TRANSPARENT_WATER:
-                        Config::Get().general.TransparentWater ^= 1;
+                        Config::Get().general.transparentWater ^= 1;
                         Config::Save();
                         break;
                     case DDIDX_HIDE_BASE:
@@ -502,7 +502,7 @@ namespace OpenRCT2::Ui::Windows
             gDropdown.items[2] = Dropdown::MenuLabel(STR_SPEED_FAST);
             gDropdown.items[3] = Dropdown::MenuLabel(STR_SPEED_TURBO);
 
-            if (Config::Get().general.DebuggingTools)
+            if (Config::Get().general.debuggingTools)
             {
                 num_items = 6;
 
@@ -524,7 +524,7 @@ namespace OpenRCT2::Ui::Windows
                 gDropdown.items[5].setChecked(true);
             }
 
-            if (Config::Get().general.DebuggingTools)
+            if (Config::Get().general.debuggingTools)
             {
                 gDropdown.defaultIndex = (gGameSpeed == 8 ? 0 : gGameSpeed);
             }
@@ -1108,35 +1108,35 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_RESEARCH].type = WidgetType::trnBtn;
             widgets[WIDX_FASTFORWARD].type = WidgetType::trnBtn;
             widgets[WIDX_CHEATS].type = WidgetType::trnBtn;
-            widgets[WIDX_DEBUG].type = Config::Get().general.DebuggingTools ? WidgetType::trnBtn : WidgetType::empty;
+            widgets[WIDX_DEBUG].type = Config::Get().general.debuggingTools ? WidgetType::trnBtn : WidgetType::empty;
             widgets[WIDX_NEWS].type = WidgetType::trnBtn;
             widgets[WIDX_NETWORK].type = WidgetType::trnBtn;
         }
 
         void HideDisabledButtons()
         {
-            if (!Config::Get().interface.ToolbarShowMute)
+            if (!Config::Get().interface.toolbarShowMute)
                 widgets[WIDX_MUTE].type = WidgetType::empty;
 
-            if (!Config::Get().interface.ToolbarShowChat)
+            if (!Config::Get().interface.toolbarShowChat)
                 widgets[WIDX_CHAT].type = WidgetType::empty;
 
-            if (!Config::Get().interface.ToolbarShowResearch)
+            if (!Config::Get().interface.toolbarShowResearch)
                 widgets[WIDX_RESEARCH].type = WidgetType::empty;
 
-            if (!Config::Get().interface.ToolbarShowCheats)
+            if (!Config::Get().interface.toolbarShowCheats)
                 widgets[WIDX_CHEATS].type = WidgetType::empty;
 
-            if (!Config::Get().interface.ToolbarShowNews)
+            if (!Config::Get().interface.toolbarShowNews)
                 widgets[WIDX_NEWS].type = WidgetType::empty;
 
-            if (!Config::Get().interface.ToolbarShowZoom)
+            if (!Config::Get().interface.toolbarShowZoom)
             {
                 widgets[WIDX_ZOOM_IN].type = WidgetType::empty;
                 widgets[WIDX_ZOOM_OUT].type = WidgetType::empty;
             }
 
-            if (!Config::Get().interface.ToolbarShowRotateAnticlockwise)
+            if (!Config::Get().interface.toolbarShowRotateAnticlockwise)
                 widgets[WIDX_ROTATE_ANTI_CLOCKWISE].type = WidgetType::empty;
 
             if (gLegacyScene == LegacyScene::scenarioEditor || gLegacyScene == LegacyScene::trackDesignsManager)
@@ -1144,7 +1144,7 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_PAUSE].type = WidgetType::empty;
             }
 
-            if ((getGameState().park.flags & PARK_FLAGS_NO_MONEY) || !Config::Get().interface.ToolbarShowFinances)
+            if ((getGameState().park.flags & PARK_FLAGS_NO_MONEY) || !Config::Get().interface.toolbarShowFinances)
                 widgets[WIDX_FINANCES].type = WidgetType::empty;
         }
 
@@ -1364,7 +1364,7 @@ namespace OpenRCT2::Ui::Windows
             ApplyMapRotation();
             ApplyFootpathPressed();
 
-            if (!Config::Get().interface.ToolbarButtonsCentred)
+            if (!Config::Get().interface.toolbarButtonsCentred)
                 AlignButtonsLeftRight();
             else
                 AlignButtonsCentre();

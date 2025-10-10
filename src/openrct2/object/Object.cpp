@@ -195,7 +195,7 @@ namespace OpenRCT2
     ObjectSourceGame Object::GetFirstSourceGame() const
     {
         if (_sourceGames.size() == 0)
-            return ObjectSourceGame::Custom;
+            return ObjectSourceGame::custom;
 
         return _sourceGames[0];
     }
@@ -207,12 +207,12 @@ namespace OpenRCT2
 
     std::string Object::GetName() const
     {
-        return GetString(ObjectStringID::NAME);
+        return GetString(ObjectStringID::name);
     }
 
     std::string Object::GetName(int32_t language) const
     {
-        return GetString(language, ObjectStringID::NAME);
+        return GetString(language, ObjectStringID::name);
     }
 
     ImageIndex Object::LoadImages()

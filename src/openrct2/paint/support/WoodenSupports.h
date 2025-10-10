@@ -60,29 +60,8 @@ enum class WoodenSupportTransitionType : uint8_t
     up60DegToFlatLongBaseSeq1 = 18,
     up60DegToFlatLongBaseSeq2 = 19,
     up60DegToFlatLongBaseSeq3 = 20,
-
-    // Inverted versions
-    down25DegToFlat = 21,
-    flatToDown25Deg = 22,
-    down25Deg = 23,
-    down60DegToDown25Deg = 24,
-    down25DegToDown60Deg = 25,
-    down60Deg = 26,
-    down60DegToFlat = 28,
-    flatToDown60Deg = 29,
-    down25DegToFlatRailway = 30,
-    flatToDown25DegRailway = 31,
-    down25DegRailway = 32,
-
-    down60DegToFlatLongBaseSeq3 = 34,
-    down60DegToFlatLongBaseSeq2 = 35,
-    down60DegToFlatLongBaseSeq1 = 36,
-    down60DegToFlatLongBaseSeq0 = 37,
-    flatToDown60DegLongBaseSeq3 = 38,
-    flatToDown60DegLongBaseSeq2 = 39,
-    flatToDown60DegLongBaseSeq1 = 40,
-    flatToDown60DegLongBaseSeq0 = 41,
 };
+constexpr int32_t kWoodenSupportTransitionTypeCount = 21;
 
 struct FootpathPaintInfo;
 struct PaintSession;

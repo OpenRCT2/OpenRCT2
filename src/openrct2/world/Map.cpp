@@ -944,13 +944,13 @@ int32_t TileElementGetCornerHeight(const SurfaceElement* surfaceElement, int32_t
 uint8_t MapGetLowestLandHeight(const MapRange& range)
 {
     auto mapSizeMax = GetMapSizeMaxXY();
-    MapRange validRange = { std::max(range.GetLeft(), 32), std::max(range.GetTop(), 32),
-                            std::min(range.GetRight(), mapSizeMax.x), std::min(range.GetBottom(), mapSizeMax.y) };
+    MapRange validRange = { std::max(range.GetX1(), 32), std::max(range.GetY1(), 32), std::min(range.GetX2(), mapSizeMax.x),
+                            std::min(range.GetY2(), mapSizeMax.y) };
 
     uint8_t minHeight = 0xFF;
-    for (int32_t yi = validRange.GetTop(); yi <= validRange.GetBottom(); yi += kCoordsXYStep)
+    for (int32_t yi = validRange.GetY1(); yi <= validRange.GetY2(); yi += kCoordsXYStep)
     {
-        for (int32_t xi = validRange.GetLeft(); xi <= validRange.GetRight(); xi += kCoordsXYStep)
+        for (int32_t xi = validRange.GetX1(); xi <= validRange.GetX2(); xi += kCoordsXYStep)
         {
             auto* surfaceElement = MapGetSurfaceElementAt(CoordsXY{ xi, yi });
 
@@ -974,13 +974,13 @@ uint8_t MapGetLowestLandHeight(const MapRange& range)
 uint8_t MapGetHighestLandHeight(const MapRange& range)
 {
     auto mapSizeMax = GetMapSizeMaxXY();
-    MapRange validRange = { std::max(range.GetLeft(), 32), std::max(range.GetTop(), 32),
-                            std::min(range.GetRight(), mapSizeMax.x), std::min(range.GetBottom(), mapSizeMax.y) };
+    MapRange validRange = { std::max(range.GetX1(), 32), std::max(range.GetY1(), 32), std::min(range.GetX2(), mapSizeMax.x),
+                            std::min(range.GetY2(), mapSizeMax.y) };
 
     uint8_t maxHeight = 0;
-    for (int32_t yi = validRange.GetTop(); yi <= validRange.GetBottom(); yi += kCoordsXYStep)
+    for (int32_t yi = validRange.GetY1(); yi <= validRange.GetY2(); yi += kCoordsXYStep)
     {
-        for (int32_t xi = validRange.GetLeft(); xi <= validRange.GetRight(); xi += kCoordsXYStep)
+        for (int32_t xi = validRange.GetX1(); xi <= validRange.GetX2(); xi += kCoordsXYStep)
         {
             auto* surfaceElement = MapGetSurfaceElementAt(CoordsXY{ xi, yi });
             if (surfaceElement != nullptr)
@@ -1074,10 +1074,10 @@ void MapGetBoundingBox(const MapRange& _range, int32_t* left, int32_t* top, int3
 {
     uint32_t rotation = GetCurrentRotation();
     const std::array corners{
-        CoordsXY{ _range.GetLeft(), _range.GetTop() },
-        CoordsXY{ _range.GetRight(), _range.GetTop() },
-        CoordsXY{ _range.GetRight(), _range.GetBottom() },
-        CoordsXY{ _range.GetLeft(), _range.GetBottom() },
+        CoordsXY{ _range.GetX1(), _range.GetY1() },
+        CoordsXY{ _range.GetX2(), _range.GetY1() },
+        CoordsXY{ _range.GetX2(), _range.GetY2() },
+        CoordsXY{ _range.GetX1(), _range.GetY2() },
     };
 
     *left = std::numeric_limits<int32_t>::max();
@@ -2187,10 +2187,10 @@ void FixLandOwnershipTilesWithOwnership(std::vector<TileCoordsXY> tiles, uint8_t
 MapRange ClampRangeWithinMap(const MapRange& range)
 {
     auto mapSizeMax = GetMapSizeMaxXY();
-    auto aX = std::max<decltype(range.GetLeft())>(kCoordsXYStep, range.GetLeft());
-    auto bX = std::min<decltype(range.GetRight())>(mapSizeMax.x, range.GetRight());
-    auto aY = std::max<decltype(range.GetTop())>(kCoordsXYStep, range.GetTop());
-    auto bY = std::min<decltype(range.GetBottom())>(mapSizeMax.y, range.GetBottom());
+    auto aX = std::max<decltype(range.GetX1())>(kCoordsXYStep, range.GetX1());
+    auto bX = std::min<decltype(range.GetX2())>(mapSizeMax.x, range.GetX2());
+    auto aY = std::max<decltype(range.GetY1())>(kCoordsXYStep, range.GetY1());
+    auto bY = std::min<decltype(range.GetY2())>(mapSizeMax.y, range.GetY2());
     MapRange validRange = MapRange{ aX, aY, bX, bY };
     return validRange;
 }

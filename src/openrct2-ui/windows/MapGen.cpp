@@ -1480,7 +1480,7 @@ namespace OpenRCT2::Ui::Windows
             int32_t rawValue = value;
             if (page != WINDOW_MAPGEN_PAGE_BASE)
             {
-                switch (Config::Get().general.MeasurementFormat)
+                switch (Config::Get().general.measurementFormat)
                 {
                     case MeasurementFormat::Imperial:
                         value = FeetToMetres(value);

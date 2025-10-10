@@ -182,7 +182,7 @@ public:
             case WindowView::financesResearch:
                 return FinancesResearchOpen();
             case WindowView::rideResearch:
-                if (Config::Get().interface.ToolbarShowResearch)
+                if (Config::Get().interface.toolbarShowResearch)
                 {
                     return this->OpenWindow(WindowClass::research);
                 }
@@ -855,7 +855,7 @@ public:
 
         // Check if there are any window slots left
         // include kWindowLimitReserved for items such as the main viewport and toolbars to not appear to be counted.
-        if (gWindowList.size() >= static_cast<size_t>(Config::Get().general.WindowLimit + kWindowLimitReserved))
+        if (gWindowList.size() >= static_cast<size_t>(Config::Get().general.windowLimit + kWindowLimitReserved))
         {
             // Close least recently used window
             for (auto& w : gWindowList)

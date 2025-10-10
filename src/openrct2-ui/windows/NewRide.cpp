@@ -366,7 +366,7 @@ namespace OpenRCT2::Ui::Windows
                     ContextOpenWindowView(WindowView::financesResearch);
                     break;
                 case WIDX_GROUP_BY_TRACK_TYPE:
-                    Config::Get().interface.ListRideVehiclesSeparately = !Config::Get().interface.ListRideVehiclesSeparately;
+                    Config::Get().interface.listRideVehiclesSeparately = !Config::Get().interface.listRideVehiclesSeparately;
                     Config::Save();
                     PopulateRideList();
                     invalidate();
@@ -394,7 +394,7 @@ namespace OpenRCT2::Ui::Windows
         {
             SetPressedTab();
 
-            if (!Config::Get().interface.ListRideVehiclesSeparately)
+            if (!Config::Get().interface.listRideVehiclesSeparately)
                 pressedWidgets |= (1LL << WIDX_GROUP_BY_TRACK_TYPE);
             else
                 pressedWidgets &= ~(1LL << WIDX_GROUP_BY_TRACK_TYPE);
@@ -695,7 +695,7 @@ namespace OpenRCT2::Ui::Windows
                 auto* rideObj = objMgr.GetLoadedObject<RideObject>(rideEntryIndex);
 
                 // Skip if the vehicle isn't the preferred vehicle for this generic track type
-                if (!Config::Get().interface.ListRideVehiclesSeparately
+                if (!Config::Get().interface.listRideVehiclesSeparately
                     && !GetRideTypeDescriptor(rideType).HasFlag(RtdFlag::listVehiclesSeparately)
                     && highestVehiclePriority > rideObj->GetEntry().BuildMenuPriority)
                 {
@@ -710,7 +710,7 @@ namespace OpenRCT2::Ui::Windows
                 highestVehiclePriority = rideObj->GetEntry().BuildMenuPriority;
 
                 // Determines how and where to draw a button for this ride type/vehicle.
-                if (Config::Get().interface.ListRideVehiclesSeparately
+                if (Config::Get().interface.listRideVehiclesSeparately
                     || GetRideTypeDescriptor(rideType).HasFlag(RtdFlag::listVehiclesSeparately))
                 {
                     // Separate, draw apart
@@ -933,7 +933,7 @@ namespace OpenRCT2::Ui::Windows
 
             if (!_vehicleAvailability.empty())
             {
-                if (Config::Get().interface.ListRideVehiclesSeparately)
+                if (Config::Get().interface.listRideVehiclesSeparately)
                 {
                     ft = Formatter();
                     ft.Add<StringId>(rideEntry.naming.Name);
@@ -979,7 +979,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Draw object author(s) if debugging tools are active
-            if (Config::Get().general.DebuggingTools && !rideObj->GetAuthors().empty())
+            if (Config::Get().general.debuggingTools && !rideObj->GetAuthors().empty())
             {
                 const auto& authors = rideObj->GetAuthors();
 

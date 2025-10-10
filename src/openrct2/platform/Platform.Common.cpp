@@ -52,10 +52,10 @@ namespace OpenRCT2::Platform
     {
         if (currCode == nullptr || strlen(currCode) < 3)
         {
-            return CurrencyType::Pounds;
+            return CurrencyType::pounds;
         }
 
-        for (int32_t currency = 0; currency < EnumValue(CurrencyType::Count); ++currency)
+        for (int32_t currency = 0; currency < EnumValue(CurrencyType::count); ++currency)
         {
             if (strncmp(currCode, CurrencyDescriptors[currency].isoCode, 3) == 0)
             {
@@ -63,7 +63,7 @@ namespace OpenRCT2::Platform
             }
         }
 
-        return CurrencyType::Pounds;
+        return CurrencyType::pounds;
     }
 
     RealWorldDate GetDateLocal()

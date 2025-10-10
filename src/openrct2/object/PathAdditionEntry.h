@@ -19,10 +19,10 @@ namespace OpenRCT2
 {
     enum class PathAdditionDrawType : uint8_t
     {
-        Light,
-        Bin,
-        Bench,
-        JumpingFountain,
+        light,
+        bin,
+        bench,
+        jumpingFountain,
     };
 
     enum

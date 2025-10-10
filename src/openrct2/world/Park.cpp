@@ -299,8 +299,8 @@ namespace OpenRCT2::Park
         ParkEntranceReset();
 
         gameState.researchPriorities = EnumsToFlags(
-            ResearchCategory::Transport, ResearchCategory::Gentle, ResearchCategory::Rollercoaster, ResearchCategory::Thrill,
-            ResearchCategory::Water, ResearchCategory::Shop, ResearchCategory::SceneryGroup);
+            ResearchCategory::transport, ResearchCategory::gentle, ResearchCategory::rollercoaster, ResearchCategory::thrill,
+            ResearchCategory::water, ResearchCategory::shop, ResearchCategory::sceneryGroup);
         gameState.researchFundingLevel = RESEARCH_FUNDING_NORMAL;
 
         gameState.scenarioOptions.guestInitialCash = 50.00_GBP;

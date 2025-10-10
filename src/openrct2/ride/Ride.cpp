@@ -1637,7 +1637,7 @@ void RidePrepareBreakdown(Ride& ride, int32_t breakdownReason)
  */
 void RideBreakdownAddNewsItem(const Ride& ride)
 {
-    if (Config::Get().notifications.RideBrokenDown)
+    if (Config::Get().notifications.rideBrokenDown)
     {
         Formatter ft;
         ride.formatNameTo(ft);
@@ -1664,7 +1664,7 @@ static void RideBreakdownStatusUpdate(Ride& ride)
         if (!(ride.notFixedTimeout & 15) && ride.mechanicStatus != RIDE_MECHANIC_STATUS_FIXING
             && ride.mechanicStatus != RIDE_MECHANIC_STATUS_HAS_FIXED_STATION_BRAKES)
         {
-            if (Config::Get().notifications.RideWarnings)
+            if (Config::Get().notifications.rideWarnings)
             {
                 Formatter ft;
                 ride.formatNameTo(ft);
@@ -2351,7 +2351,7 @@ static void RideEntranceExitConnected(Ride& ride)
             // name of ride is parameter of the format string
             Formatter ft;
             ride.formatNameTo(ft);
-            if (Config::Get().notifications.RideWarnings)
+            if (Config::Get().notifications.rideWarnings)
             {
                 News::AddItemToQueue(News::ItemType::ride, STR_ENTRANCE_NOT_CONNECTED, ride.id.ToUnderlying(), ft);
             }
@@ -2363,7 +2363,7 @@ static void RideEntranceExitConnected(Ride& ride)
             // name of ride is parameter of the format string
             Formatter ft;
             ride.formatNameTo(ft);
-            if (Config::Get().notifications.RideWarnings)
+            if (Config::Get().notifications.rideWarnings)
             {
                 News::AddItemToQueue(News::ItemType::ride, STR_EXIT_NOT_CONNECTED, ride.id.ToUnderlying(), ft);
             }
@@ -2428,7 +2428,7 @@ static void RideShopConnected(const Ride& ride)
     }
 
     // Name of ride is parameter of the format string
-    if (Config::Get().notifications.RideWarnings)
+    if (Config::Get().notifications.rideWarnings)
     {
         Formatter ft;
         ride2->formatNameTo(ft);
@@ -5301,7 +5301,7 @@ void Ride::setReversedTrains(bool reverseTrains)
 
 void Ride::setToDefaultInspectionInterval()
 {
-    uint8_t defaultInspectionInterval = Config::Get().general.DefaultInspectionInterval;
+    uint8_t defaultInspectionInterval = Config::Get().general.defaultInspectionInterval;
     if (inspectionInterval != defaultInspectionInterval)
     {
         if (defaultInspectionInterval <= RIDE_INSPECTION_NEVER)
@@ -5333,7 +5333,7 @@ void Ride::crash(uint8_t vehicleIndex)
         }
     }
 
-    if (Config::Get().notifications.RideCrashed)
+    if (Config::Get().notifications.rideCrashed)
     {
         Formatter ft;
         formatNameTo(ft);

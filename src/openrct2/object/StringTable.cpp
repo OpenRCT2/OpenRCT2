@@ -55,9 +55,9 @@ namespace OpenRCT2
         try
         {
             RCT2LanguageId rct2LanguageId;
-            while ((rct2LanguageId = static_cast<RCT2LanguageId>(stream->ReadValue<uint8_t>())) != RCT2LanguageId::End)
+            while ((rct2LanguageId = static_cast<RCT2LanguageId>(stream->ReadValue<uint8_t>())) != RCT2LanguageId::end)
             {
-                uint8_t languageId = (EnumValue(rct2LanguageId) <= EnumValue(RCT2LanguageId::Portuguese))
+                uint8_t languageId = (EnumValue(rct2LanguageId) <= EnumValue(RCT2LanguageId::portuguese))
                     ? RCT2ToOpenRCT2LanguageId[EnumValue(rct2LanguageId)]
                     : static_cast<uint8_t>(LANGUAGE_UNDEFINED);
                 std::string stringAsWin1252 = stream->ReadString();
@@ -76,7 +76,7 @@ namespace OpenRCT2
         }
         catch (const std::exception&)
         {
-            context->LogError(ObjectError::BadStringTable, "Bad string table.");
+            context->LogError(ObjectError::badStringTable, "Bad string table.");
             throw;
         }
         Sort();
@@ -85,18 +85,18 @@ namespace OpenRCT2
     ObjectStringID StringTable::ParseStringId(const std::string& s)
     {
         if (s == "name")
-            return ObjectStringID::NAME;
+            return ObjectStringID::name;
         if (s == "description")
-            return ObjectStringID::DESCRIPTION;
+            return ObjectStringID::description;
         if (s == "park_name")
-            return ObjectStringID::PARK_NAME;
+            return ObjectStringID::parkName;
         if (s == "details")
-            return ObjectStringID::SCENARIO_DETAILS;
+            return ObjectStringID::scenarioDetails;
         if (s == "capacity")
-            return ObjectStringID::CAPACITY;
+            return ObjectStringID::capacity;
         if (s == "vehicleName")
-            return ObjectStringID::VEHICLE_NAME;
-        return ObjectStringID::UNKNOWN;
+            return ObjectStringID::vehicleName;
+        return ObjectStringID::unknown;
     }
 
     void StringTable::ReadJson(json_t& root)
@@ -109,7 +109,7 @@ namespace OpenRCT2
         for (auto& [key, jsonLanguages] : jsonStrings.items())
         {
             auto stringId = ParseStringId(key);
-            if (stringId != ObjectStringID::UNKNOWN)
+            if (stringId != ObjectStringID::unknown)
             {
                 for (auto& [locale, jsonString] : jsonLanguages.items())
                 {

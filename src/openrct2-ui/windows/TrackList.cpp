@@ -423,7 +423,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // When debugging tools are on, shift everything up a bit to make room for displaying the path.
-            const int32_t bottomMargin = Config::Get().general.DebuggingTools ? (kWindowPadding + kDebugPathHeight)
+            const int32_t bottomMargin = Config::Get().general.debuggingTools ? (kWindowPadding + kDebugPathHeight)
                                                                               : kWindowPadding;
             widgets[WIDX_TRACK_LIST].bottom = height - bottomMargin;
             widgets[WIDX_ROTATE].bottom = height - bottomMargin;
@@ -471,7 +471,7 @@ namespace OpenRCT2::Ui::Windows
             u8string path = _trackDesigns[trackIndex].path;
 
             // Show track file path (in debug mode)
-            if (Config::Get().general.DebuggingTools)
+            if (Config::Get().general.debuggingTools)
             {
                 const auto shortPath = ShortenPath(path, width, FontStyle::Medium);
                 auto ft = Formatter();

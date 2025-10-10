@@ -166,7 +166,7 @@ static void PathPaintQueueBanner(
         }
 
         utf8 bannerBuffer[512]{};
-        if (Config::Get().general.UpperCaseBanners)
+        if (Config::Get().general.upperCaseBanners)
         {
             FormatStringToUpper(bannerBuffer, sizeof(bannerBuffer), STR_BANNER_TEXT_FORMAT, ft.Data());
         }

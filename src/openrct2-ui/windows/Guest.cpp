@@ -494,7 +494,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 newDisabledWidgets |= (1uLL << WIDX_TAB_4); // Disable finance tab if no money
             }
-            if (!Config::Get().general.DebuggingTools)
+            if (!Config::Get().general.debuggingTools)
             {
                 newDisabledWidgets |= (1uLL << WIDX_TAB_7); // Disable debug tab when debug tools not turned on
             }
@@ -1921,7 +1921,7 @@ namespace OpenRCT2::Ui::Windows
         if (window == nullptr)
         {
             auto windowSize = kWindowSize;
-            if (Config::Get().general.DebuggingTools)
+            if (Config::Get().general.debuggingTools)
                 windowSize.width += kTabWidth;
 
             window = windowMgr->Create<GuestWindow>(WindowClass::peep, windowSize, WindowFlag::resizable);

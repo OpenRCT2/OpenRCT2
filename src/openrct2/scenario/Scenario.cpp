@@ -235,7 +235,7 @@ static void ScenarioCheckEntranceFeeTooHigh()
             auto y = entrance.y + 16;
 
             uint32_t packed_xy = (y << 16) | x;
-            if (Config::Get().notifications.ParkWarnings)
+            if (Config::Get().notifications.parkWarnings)
             {
                 News::AddItemToQueue(News::ItemType::blank, STR_ENTRANCE_FEE_TOO_HI, packed_xy, {});
             }
@@ -254,7 +254,7 @@ void ScenarioAutosaveCheck()
     bool shouldSave = false;
     using namespace std::chrono_literals;
 
-    switch (Config::Get().general.AutosaveFrequency)
+    switch (Config::Get().general.autosaveFrequency)
     {
         case AUTOSAVE_EVERY_MINUTE:
             shouldSave = timeSinceSave >= std::chrono::milliseconds(1min).count();
@@ -352,7 +352,7 @@ static void ScenarioUpdateDayNightCycle()
     float currentDayNightCycle = gDayNightCycle;
     gDayNightCycle = 0;
 
-    if (gLegacyScene == LegacyScene::playing && Config::Get().general.DayNightCycle)
+    if (gLegacyScene == LegacyScene::playing && Config::Get().general.dayNightCycle)
     {
         float monthFraction = GetDate().GetMonthTicks() / static_cast<float>(kTicksPerMonth);
         if (monthFraction < (1 / 8.0f))
@@ -614,7 +614,7 @@ bool AllowEarlyCompletion()
         case Network::Mode::none:
         case Network::Mode::server:
         default:
-            return Config::Get().general.AllowEarlyCompletion;
+            return Config::Get().general.allowEarlyCompletion;
     }
 }
 

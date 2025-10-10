@@ -115,7 +115,7 @@ void GameResetSpeed()
 
 void GameIncreaseGameSpeed()
 {
-    auto newSpeed = std::min(Config::Get().general.DebuggingTools ? 5 : 4, gGameSpeed + 1);
+    auto newSpeed = std::min(Config::Get().general.debuggingTools ? 5 : 4, gGameSpeed + 1);
     if (newSpeed == 5)
         newSpeed = 8;
 
@@ -184,7 +184,7 @@ void RCT2StringToUTF8Self(char* buffer, size_t length)
 {
     if (length > 0)
     {
-        auto temp = RCT2StringToUTF8(buffer, RCT2LanguageId::EnglishUK);
+        auto temp = RCT2StringToUTF8(buffer, RCT2LanguageId::englishUK);
         String::safeUtf8Copy(buffer, temp.data(), length);
     }
 }
@@ -498,7 +498,7 @@ void SaveGameWithName(u8string_view name)
     LOG_VERBOSE("Saving to %s", u8string(name).c_str());
 
     auto& gameState = getGameState();
-    if (ScenarioSave(gameState, name, Config::Get().general.SavePluginData ? 1 : 0))
+    if (ScenarioSave(gameState, name, Config::Get().general.savePluginData ? 1 : 0))
     {
         LOG_VERBOSE("Saved to %s", u8string(name).c_str());
         gCurrentLoadedPath = name;
@@ -609,7 +609,7 @@ void GameAutosave()
         timeName, sizeof(timeName), "autosave_%04u-%02u-%02u_%02u-%02u-%02u%s", currentDate.year, currentDate.month,
         currentDate.day, currentTime.hour, currentTime.minute, currentTime.second, fileExtension);
 
-    int32_t autosavesToKeep = Config::Get().general.AutosaveAmount;
+    int32_t autosavesToKeep = Config::Get().general.autosaveAmount;
     LimitAutosaveCount(autosavesToKeep - 1, isInEditorMode());
 
     auto& env = GetContext()->GetPlatformEnvironment();

@@ -445,9 +445,9 @@ static void ClimateUpdateLightning()
 {
     if (_lightningTimer == 0)
         return;
-    if (Config::Get().general.DisableLightningEffect)
+    if (Config::Get().general.disableLightningEffect)
         return;
-    if (!Config::Get().general.RenderWeatherEffects && !Config::Get().general.RenderWeatherGloom)
+    if (!Config::Get().general.renderWeatherEffects && !Config::Get().general.renderWeatherGloom)
         return;
 
     _lightningTimer--;
