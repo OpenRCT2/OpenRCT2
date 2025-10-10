@@ -55,6 +55,7 @@
 - Improved: [#25349] ‘Recent Messages’ window can now be fully themed.
 - Improved: [#25433] Colour dropdown now uses bigger images in Enlarged UI mode.
 - Change: [#25089] Peep actions and animations that cause them to stop moving no longer trigger when they are on a level crossing.
+- Change: [#25331] Placeholder.
 - Change: [#25337] Placing track designs with scenery that is obstructed no longer disables all of the scenery.
 - Fix: [#20198] Guest inventory from RCT1 base game saves is not imported.
 - Fix: [#20486] Multiplayer desync when placing track designs without any scenery.
