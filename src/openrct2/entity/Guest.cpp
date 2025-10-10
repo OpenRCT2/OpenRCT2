@@ -4737,6 +4737,8 @@ void Guest::UpdateRideApproachSpiralSlide()
                     lastRide = true;
                 if (ClimateIsPrecipitating())
                     lastRide = true;
+                if (ride->numRiders > ride->operationOption)
+                    lastRide = true;
                 if ((timesSlidDown + GuestTimeOnRide) > static_cast<uint8_t>(ScenarioRand() & 0xF))
                     lastRide = true;
             }
