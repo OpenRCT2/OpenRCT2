@@ -1,5 +1,6 @@
 0.4.33 (in development)
 ------------------------------------------------------------------------
+- Change: [#25331] When set to unlimited rides per admission mode, the time a guest has spent on the Spiral Slide is now factored when deciding whether to slide again, and if it's precipitating or there are already more riders that the maximum allowed the guest will not ride again.
 - Fix: [#10616] Quarter-tile trees cannot be placed on dry portions of half-water tiles.
 - Fix: [#25993] Toggling “allow arbitrary ride type changes” does not resize open ride windows.
 - Fix: [#26111] Vehicle colours tab can go out of bounds in certain edge cases.
