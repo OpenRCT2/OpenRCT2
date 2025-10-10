@@ -13,30 +13,36 @@
 
 template<OpenRCT2::TrackElemType trackType>
 bool DrawSupportForSequenceA(
-    PaintSession& session, WoodenSupportType supportType, uint8_t sequence, Direction direction, int32_t height,
-    ImageId imageTemplate)
+    PaintSession& session, const WoodenSupportType supportType, const uint8_t sequence, const Direction direction,
+    const int32_t height, const ImageId imageTemplate)
 {
     const auto& ted = OpenRCT2::TrackMetaData::GetTrackElementDescriptor(trackType);
-    const auto& desc = ted.sequences[sequence].woodenSupports;
+    const auto& sequenceDesc = ted.sequences[sequence];
+    const auto& desc = sequenceDesc.woodenSupports;
 
     if (desc.subType == WoodenSupportSubType::null)
         return false;
 
+    const Direction supportRotation = (direction + sequenceDesc.extraSupportRotation) & 3;
+
     return WoodenASupportsPaintSetupRotated(
-        session, supportType, desc.subType, direction, height, imageTemplate, desc.transitionType);
+        session, supportType, desc.subType, supportRotation, height, imageTemplate, desc.transitionType);
 }
 
 template<OpenRCT2::TrackElemType trackType>
 bool DrawSupportForSequenceB(
-    PaintSession& session, WoodenSupportType supportType, uint8_t sequence, Direction direction, int32_t height,
-    ImageId imageTemplate)
+    PaintSession& session, const WoodenSupportType supportType, const uint8_t sequence, const Direction direction,
+    const int32_t height, const ImageId imageTemplate)
 {
     const auto& ted = OpenRCT2::TrackMetaData::GetTrackElementDescriptor(trackType);
-    const auto& desc = ted.sequences[sequence].woodenSupports;
+    const auto& sequenceDesc = ted.sequences[sequence];
+    const auto& desc = sequenceDesc.woodenSupports;
 
     if (desc.subType == WoodenSupportSubType::null)
         return false;
 
+    const Direction supportRotation = (direction + sequenceDesc.extraSupportRotation) & 3;
+
     return WoodenBSupportsPaintSetupRotated(
-        session, supportType, desc.subType, direction, height, imageTemplate, desc.transitionType);
+        session, supportType, desc.subType, supportRotation, height, imageTemplate, desc.transitionType);
 }
