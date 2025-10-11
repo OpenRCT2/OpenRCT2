@@ -194,7 +194,7 @@ static void PathPaintSlopedFences(
     PaintSession& session, const PathElement& pathElement, uint16_t height, ImageId imageId, bool isQueue)
 {
     auto queueOffset = isQueue ? 14 : 0;
-    switch ((pathElement.GetSlopeDirection() + session.CurrentRotation) & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK)
+    switch ((pathElement.GetSlopeDirection() + session.CurrentRotation) % kNumOrthogonalDirections)
     {
         case 0:
             PaintAddImageAsParent(
@@ -630,7 +630,7 @@ static void PathPaintFencesAdditionsTunnels(
     }
 
     // This is about tunnel drawing
-    uint8_t direction = (pathElement.GetSlopeDirection() + session.CurrentRotation) & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK;
+    uint8_t direction = (pathElement.GetSlopeDirection() + session.CurrentRotation) % kNumOrthogonalDirections;
     bool sloped = pathElement.IsSloped();
 
     if (connectedEdges & EDGE_SE)
@@ -864,8 +864,7 @@ static ImageIndex PathPaintGetBaseImage(
     ImageIndex surfaceBaseImageIndex = pathPaintInfo.SurfaceImageId;
     if (pathElement.IsSloped())
     {
-        auto directionOffset = (pathElement.GetSlopeDirection() + session.CurrentRotation)
-            & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK;
+        auto directionOffset = (pathElement.GetSlopeDirection() + session.CurrentRotation) % kNumOrthogonalDirections;
         surfaceBaseImageIndex += 16 + directionOffset;
     }
     else
@@ -973,8 +972,7 @@ void PathPaintBoxSupport(
         ImageIndex bridgeBaseImageIndex;
         if (pathElement.IsSloped())
         {
-            auto directionOffset = (pathElement.GetSlopeDirection() + session.CurrentRotation)
-                & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK;
+            auto directionOffset = (pathElement.GetSlopeDirection() + session.CurrentRotation) % kNumOrthogonalDirections;
             bridgeBaseImageIndex = pathPaintInfo.BridgeImageId + 51 + directionOffset;
         }
         else
@@ -1028,8 +1026,7 @@ void PathPaintPoleSupport(
         ImageIndex bridgeBaseImageIndex;
         if (pathElement.IsSloped())
         {
-            bridgeBaseImageIndex = ((pathElement.GetSlopeDirection() + session.CurrentRotation)
-                                    & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK)
+            bridgeBaseImageIndex = ((pathElement.GetSlopeDirection() + session.CurrentRotation) % kNumOrthogonalDirections)
                 + pathPaintInfo.BridgeImageId + 16;
         }
         else

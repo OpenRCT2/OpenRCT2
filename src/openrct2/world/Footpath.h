@@ -76,10 +76,31 @@ struct FootpathSelection
     }
 };
 
+enum class FootpathSlopeType : uint8_t
+{
+    flat,
+    sloped,
+    /**
+     * Land has one corner down, raise the Z coordinate and place a flat piece.
+     */
+    raise,
+    /**
+     * Terrain has a shape that allows for two different path slopes, and as such it cannot autoplace a piece
+     * without further context of the surrounding paths.
+     */
+    irregular,
+};
+
+struct FootpathSlope
+{
+    FootpathSlopeType type{};
+    Direction direction{};
+};
+
 struct FootpathPlacementResult
 {
     int32_t baseZ{};
-    uint8_t slope{};
+    FootpathSlope slope{};
 
     bool isValid()
     {

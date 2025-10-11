@@ -102,23 +102,13 @@ static constexpr uint8_t connected_path_count[] = {
 };
 
 /** rct2: 0x0098D8B4 */
-static constexpr uint8_t kDefaultPathSlope[] = {
-    0,
-    SLOPE_IS_IRREGULAR_FLAG,
-    SLOPE_IS_IRREGULAR_FLAG,
-    FOOTPATH_PROPERTIES_FLAG_IS_SLOPED | 2,
-    SLOPE_IS_IRREGULAR_FLAG,
-    SLOPE_IS_IRREGULAR_FLAG,
-    FOOTPATH_PROPERTIES_FLAG_IS_SLOPED | 3,
-    RAISE_FOOTPATH_FLAG,
-    SLOPE_IS_IRREGULAR_FLAG,
-    FOOTPATH_PROPERTIES_FLAG_IS_SLOPED | 1,
-    SLOPE_IS_IRREGULAR_FLAG,
-    RAISE_FOOTPATH_FLAG,
-    FOOTPATH_PROPERTIES_FLAG_IS_SLOPED | 0,
-    RAISE_FOOTPATH_FLAG,
-    RAISE_FOOTPATH_FLAG,
-    SLOPE_IS_IRREGULAR_FLAG,
+static constexpr FootpathSlope kDefaultPathSlope[] = {
+    { FootpathSlopeType::flat },      { FootpathSlopeType::irregular }, { FootpathSlopeType::irregular },
+    { FootpathSlopeType::sloped, 2 }, { FootpathSlopeType::irregular }, { FootpathSlopeType::irregular },
+    { FootpathSlopeType::sloped, 3 }, { FootpathSlopeType::raise },     { FootpathSlopeType::irregular },
+    { FootpathSlopeType::sloped, 1 }, { FootpathSlopeType::irregular }, { FootpathSlopeType::raise },
+    { FootpathSlopeType::sloped, 0 }, { FootpathSlopeType::raise },     { FootpathSlopeType::raise },
+    { FootpathSlopeType::irregular },
 };
 
 static bool entrance_has_direction(const EntranceElement& entranceElement, int32_t direction)
@@ -1923,10 +1913,10 @@ FootpathPlacementResult FootpathGetOnTerrainPlacement(const TileCoordsXY& locati
 FootpathPlacementResult FootpathGetOnTerrainPlacement(const SurfaceElement& surfaceElement)
 {
     int32_t baseZ = surfaceElement.GetBaseZ();
-    uint8_t slope = kDefaultPathSlope[surfaceElement.GetSlope() & kTileSlopeRaisedCornersMask];
-    if (slope & RAISE_FOOTPATH_FLAG)
+    auto slope = kDefaultPathSlope[surfaceElement.GetSlope() & kTileSlopeRaisedCornersMask];
+    if (slope.type == FootpathSlopeType::raise)
     {
-        slope &= ~RAISE_FOOTPATH_FLAG;
+        slope.type = FootpathSlopeType::flat;
         baseZ += kPathHeightStep;
     }
 
