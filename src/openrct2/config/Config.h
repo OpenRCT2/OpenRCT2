@@ -106,7 +106,7 @@ namespace OpenRCT2::Config
         RideInspection defaultInspectionInterval;
         int32_t windowLimit;
         bool scenarioUnlockingEnabled;
-        bool scenarioHideMegaPark;
+        bool scenarioHideBonusParks;
         bool showRealNamesOfGuests;
         bool showRealNamesOfStaff;
         bool allowEarlyCompletion;
