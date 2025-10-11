@@ -24635,162 +24635,162 @@
         "palette": "keep"
     },
     {
-        "path": "support/flat_to_steep_1_1.png",
+        "path": "support/wooden/truss/flat_to_steep_1_1.png",
         "x": -32,
         "y": -5
     },
     {
-        "path": "support/flat_to_steep_1_2.png",
+        "path": "support/wooden/truss/flat_to_steep_1_2.png",
         "x": -32,
         "y": -1
     },
     {
-        "path": "support/flat_to_steep_1_3.png",
+        "path": "support/wooden/truss/flat_to_steep_1_3.png",
         "x": -32,
         "y": -1
     },
     {
-        "path": "support/flat_to_steep_1_4.png",
+        "path": "support/wooden/truss/flat_to_steep_1_4.png",
         "x": -32,
         "y": -5
     },
     {
-        "path": "support/flat_to_steep_2_1.png",
+        "path": "support/wooden/truss/flat_to_steep_2_1.png",
         "x": -32,
         "y": -18
     },
     {
-        "path": "support/flat_to_steep_2_2.png",
+        "path": "support/wooden/truss/flat_to_steep_2_2.png",
         "x": -32,
         "y": -5
     },
     {
-        "path": "support/flat_to_steep_2_3.png",
+        "path": "support/wooden/truss/flat_to_steep_2_3.png",
         "x": -32,
         "y": -5
     },
     {
-        "path": "support/flat_to_steep_2_4.png",
+        "path": "support/wooden/truss/flat_to_steep_2_4.png",
         "x": -32,
         "y": -18
     },
     {
-        "path": "support/flat_to_steep_3_1.png",
+        "path": "support/wooden/truss/flat_to_steep_3_1.png",
         "x": -32,
         "y": -27
     },
     {
-        "path": "support/flat_to_steep_3_2.png",
+        "path": "support/wooden/truss/flat_to_steep_3_2.png",
         "x": -32,
         "y": -11
     },
     {
-        "path": "support/flat_to_steep_3_3.png",
+        "path": "support/wooden/truss/flat_to_steep_3_3.png",
         "x": -32,
         "y": -11
     },
     {
-        "path": "support/flat_to_steep_3_4.png",
+        "path": "support/wooden/truss/flat_to_steep_3_4.png",
         "x": -32,
         "y": -27
     },
     {
-        "path": "support/flat_to_steep_4_1.png",
+        "path": "support/wooden/truss/flat_to_steep_4_1.png",
         "x": -32,
         "y": -57
     },
     {
-        "path": "support/flat_to_steep_4_2.png",
+        "path": "support/wooden/truss/flat_to_steep_4_2.png",
         "x": -32,
         "y": -41
     },
     {
-        "path": "support/flat_to_steep_4_3.png",
+        "path": "support/wooden/truss/flat_to_steep_4_3.png",
         "x": -32,
         "y": -41
     },
     {
-        "path": "support/flat_to_steep_4_4.png",
+        "path": "support/wooden/truss/flat_to_steep_4_4.png",
         "x": -32,
         "y": -57
     },
     {
-        "path": "support/steep_to_flat_1_1.png",
+        "path": "support/wooden/truss/steep_to_flat_1_1.png",
         "x": -32,
         "y": -54
     },
     {
-        "path": "support/steep_to_flat_1_2.png",
+        "path": "support/wooden/truss/steep_to_flat_1_2.png",
         "x": -32,
         "y": -38
     },
     {
-        "path": "support/steep_to_flat_1_3.png",
+        "path": "support/wooden/truss/steep_to_flat_1_3.png",
         "x": -32,
         "y": -38
     },
     {
-        "path": "support/steep_to_flat_1_4.png",
+        "path": "support/wooden/truss/steep_to_flat_1_4.png",
         "x": -32,
         "y": -54
     },
     {
-        "path": "support/steep_to_flat_2_1.png",
+        "path": "support/wooden/truss/steep_to_flat_2_1.png",
         "x": -32,
         "y": -31
     },
     {
-        "path": "support/steep_to_flat_2_2.png",
+        "path": "support/wooden/truss/steep_to_flat_2_2.png",
         "x": -32,
         "y": -15
     },
     {
-        "path": "support/steep_to_flat_2_3.png",
+        "path": "support/wooden/truss/steep_to_flat_2_3.png",
         "x": -32,
         "y": -15
     },
     {
-        "path": "support/steep_to_flat_2_4.png",
+        "path": "support/wooden/truss/steep_to_flat_2_4.png",
         "x": -32,
         "y": -31
     },
     {
-        "path": "support/steep_to_flat_3_1.png",
+        "path": "support/wooden/truss/steep_to_flat_3_1.png",
         "x": -32,
         "y": -28
     },
     {
-        "path": "support/steep_to_flat_3_2.png",
+        "path": "support/wooden/truss/steep_to_flat_3_2.png",
         "x": -32,
         "y": -16
     },
     {
-        "path": "support/steep_to_flat_3_3.png",
+        "path": "support/wooden/truss/steep_to_flat_3_3.png",
         "x": -32,
         "y": -16
     },
     {
-        "path": "support/steep_to_flat_3_4.png",
+        "path": "support/wooden/truss/steep_to_flat_3_4.png",
         "x": -32,
         "y": -28
     },
     {
-        "path": "support/steep_to_flat_4_1.png",
+        "path": "support/wooden/truss/steep_to_flat_4_1.png",
         "x": -32,
         "y": -17
     },
     {
-        "path": "support/steep_to_flat_4_2.png",
+        "path": "support/wooden/truss/steep_to_flat_4_2.png",
         "x": -32,
         "y": -12
     },
     {
-        "path": "support/steep_to_flat_4_3.png",
+        "path": "support/wooden/truss/steep_to_flat_4_3.png",
         "x": -32,
         "y": -12
     },
     {
-        "path": "support/steep_to_flat_4_4.png",
+        "path": "support/wooden/truss/steep_to_flat_4_4.png",
         "x": -32,
         "y": -17
     },
