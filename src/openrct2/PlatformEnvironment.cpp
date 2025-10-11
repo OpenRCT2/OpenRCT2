@@ -60,6 +60,7 @@ static constexpr u8string_view kDirectoryNamesOpenRCT2[] = {
     u8"crash",            // CRASH
     u8"assetpack",        // ASSET_PACK
     u8"scenario_patches", // SCENARIO_PATCHES
+    u8"campaign",         // CAMPAIGNS
 };
 
 static constexpr u8string_view kFileNames[] = {

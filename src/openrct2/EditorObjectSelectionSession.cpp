@@ -420,7 +420,7 @@ void UnloadUnselectedObjects()
         if (!(_objectSelectionFlags[i] & ObjectSelectionFlags::Selected))
         {
             auto descriptor = ObjectEntryDescriptor(items[i]);
-            if (!IsIntransientObjectType(items[i].Type))
+            if (!ObjectTypeIsIntransient(items[i].Type))
             {
                 RemoveSelectedObjectsFromResearch(descriptor);
                 objectsToUnload.push_back(descriptor);

@@ -27,6 +27,7 @@
 #include "../sawyer_coding/SawyerChunkReader.h"
 #include "AudioObject.h"
 #include "BannerObject.h"
+#include "CampaignObject.h"
 #include "ClimateObject.h"
 #include "EntranceObject.h"
 #include "FootpathObject.h"
@@ -415,12 +416,16 @@ namespace OpenRCT2::ObjectFactory
             case ObjectType::climate:
                 result = std::make_unique<ClimateObject>();
                 break;
+            case ObjectType::campaign:
+                result = std::make_unique<CampaignObject>();
+                break;
             default:
                 throw std::runtime_error("Invalid object type");
         }
         return result;
     }
 
+    // clang-format off
     static const EnumMap<ObjectType> kObjectTypeMap = {
         { "ride", ObjectType::ride },
         { "scenery_small", ObjectType::smallScenery },
@@ -443,7 +448,9 @@ namespace OpenRCT2::ObjectFactory
         { "peep_names", ObjectType::peepNames },
         { "peep_animations", ObjectType::peepAnimations },
         { "climate", ObjectType::climate },
+        { "campaign", ObjectType::campaign }
     };
+    // clang-format on
 
     std::unique_ptr<Object> CreateObjectFromZipFile(std::string_view path, bool loadImages)
     {

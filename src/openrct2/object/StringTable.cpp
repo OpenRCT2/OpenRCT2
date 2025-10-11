@@ -104,21 +104,23 @@ namespace OpenRCT2
         Guard::Assert(root.is_object(), "StringTable::ReadJson expects parameter root to be object");
 
         // We trust the JSON type of root is object
-        auto jsonStrings = root["strings"];
+        auto& jsonStrings = root["strings"];
 
         for (auto& [key, jsonLanguages] : jsonStrings.items())
         {
             auto stringId = ParseStringId(key);
-            if (stringId != ObjectStringID::unknown)
+            std::string* customKey = nullptr;
+            if (stringId == ObjectStringID::unknown)
             {
-                for (auto& [locale, jsonString] : jsonLanguages.items())
+                customKey = new std::string(key);
+            }
+            for (auto& [locale, jsonString] : jsonLanguages.items())
+            {
+                auto langId = LanguageGetIDFromLocale(locale.c_str());
+                if (langId != LANGUAGE_UNDEFINED)
                 {
-                    auto langId = LanguageGetIDFromLocale(locale.c_str());
-                    if (langId != LANGUAGE_UNDEFINED)
-                    {
-                        auto string = Json::GetString(jsonString);
-                        SetString(stringId, langId, string);
-                    }
+                    auto string = Json::GetString(jsonString);
+                    SetString(stringId, langId, string, customKey);
                 }
             }
         }
@@ -149,12 +151,25 @@ namespace OpenRCT2
         return std::string();
     }
 
-    void StringTable::SetString(ObjectStringID id, uint8_t language, const std::string& text)
+    const std::string StringTable::GetCustomString(const std::string* customKey) const
+    {
+        for (auto& string : _strings)
+        {
+            if (string.Id == ObjectStringID::unknown && *string.CustomKey == *customKey)
+            {
+                return string.Text;
+            }
+        }
+        return std::string();
+    }
+
+    void StringTable::SetString(ObjectStringID id, uint8_t language, const std::string& text, const std::string* customKey)
     {
         StringTableEntry entry;
         entry.Id = id;
         entry.LanguageId = language;
         entry.Text = text;
+        entry.CustomKey = customKey;
         _strings.push_back(std::move(entry));
     }
 
