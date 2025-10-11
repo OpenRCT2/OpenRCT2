@@ -172,7 +172,7 @@ namespace OpenRCT2::Ui::Windows
 #pragma endregion
 
     /** rct2: 0x0098D7E0 */
-    static constexpr uint8_t ConstructionPreviewImages[][4] = {
+    static constexpr uint8_t kConstructionPreviewImages[][4] = {
         { 5, 10, 5, 10 },   // SlopePitch::flat
         { 16, 17, 18, 19 }, // SlopePitch::upwards
         { 18, 19, 16, 17 }, // SlopePitch::downwards
@@ -469,7 +469,7 @@ namespace OpenRCT2::Ui::Windows
             if (!isWidgetDisabled(WIDX_CONSTRUCT))
             {
                 // Get construction image
-                uint8_t direction = (_footpathConstructDirection + GetCurrentRotation()) % 4;
+                uint8_t direction = (_footpathConstructDirection + GetCurrentRotation()) % kNumOrthogonalDirections;
                 auto slopeOffset = EnumValue(_footpathConstructSlope);
 
                 std::optional<uint32_t> baseImage;
@@ -498,7 +498,7 @@ namespace OpenRCT2::Ui::Windows
 
                 if (baseImage)
                 {
-                    auto image = *baseImage + ConstructionPreviewImages[slopeOffset][direction];
+                    auto image = *baseImage + kConstructionPreviewImages[slopeOffset][direction];
 
                     // Draw construction image
                     screenCoords = this->windowPos
