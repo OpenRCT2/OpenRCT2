@@ -38,6 +38,7 @@ namespace OpenRCT2
         ObjectType::peepNames,
         ObjectType::peepAnimations,
         ObjectType::climate,
+        ObjectType::campaign,
     };
 
     static_assert(kAllObjectTypes.size() == EnumValue(ObjectType::count));
@@ -55,6 +56,7 @@ namespace OpenRCT2
     static constexpr std::array<const ObjectType, kNumIntransientObjectTypes> kIntransientObjectTypes = {
         ObjectType::scenarioMeta,
         ObjectType::audio,
+        ObjectType::campaign,
     };
 
     static_assert(kNumTransientObjectTypes + kNumIntransientObjectTypes == static_cast<size_t>(ObjectType::count));

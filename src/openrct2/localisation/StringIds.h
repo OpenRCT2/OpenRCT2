@@ -13,6 +13,7 @@
 
 enum : StringId
 {
+    STR_EMPTY = 0,
     STR_RIDE_NAME_DEFAULT = 1,
 
     STR_GUEST_X = 767,
@@ -1756,6 +1757,18 @@ enum : StringId
 
     // Window: Error
     STR_AUDIO_FILE_TRUNCATED = 7003,
+
+    STR_BONUS_PARKS = 7008,
+    STR_RCT_CLASSIC_GRAPHITE_GROUP = 7009,
+    STR_RCT_CLASSIC_EMERALD_GROUP = 7010,
+    STR_RCT_CLASSIC_RUBY_GROUP = 7011,
+    STR_RCT_CLASSIC_SAPPHIRE_GROUP = 7012,
+    STR_RCT_CLASSIC_AMETHYST_GROUP = 7013,
+    STR_RCT_CLASSIC_CORAL_GROUP = 7014,
+    STR_RCT_CLASSIC_IVORY_GROUP = 7015,
+    STR_RCT_CLASSIC_BRONZE_GROUP = 7016,
+    STR_RCT_CLASSIC_SILVER_GROUP = 7017,
+    STR_RCT_CLASSIC_GOLD_GROUP = 7018,
 
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings
