@@ -77,6 +77,13 @@ namespace OpenRCT2::Ui::Windows
         forceRecheck = 2,
     };
 
+    enum class SlopePitch : uint8_t
+    {
+        flat,
+        upwards,
+        downwards,
+    };
+
     using ProvisionalPathFlags = FlagHolder<uint8_t, ProvisionalPathFlag>;
     struct ProvisionalFootpath
     {
@@ -166,9 +173,9 @@ namespace OpenRCT2::Ui::Windows
 
     /** rct2: 0x0098D7E0 */
     static constexpr uint8_t ConstructionPreviewImages[][4] = {
-        { 5, 10, 5, 10 },   // Flat
-        { 16, 17, 18, 19 }, // Upwards
-        { 18, 19, 16, 17 }, // Downwards
+        { 5, 10, 5, 10 },   // SlopePitch::flat
+        { 16, 17, 18, 19 }, // SlopePitch::upwards
+        { 18, 19, 16, 17 }, // SlopePitch::downwards
     };
     // clang-format on
 
@@ -463,14 +470,14 @@ namespace OpenRCT2::Ui::Windows
             {
                 // Get construction image
                 uint8_t direction = (_footpathConstructDirection + GetCurrentRotation()) % 4;
-                uint8_t slope = 0;
+                SlopePitch slope = SlopePitch::flat;
                 if (_footpathConstructSlope == 2)
                 {
-                    slope = kTileSlopeNCornerUp;
+                    slope = SlopePitch::upwards;
                 }
                 else if (_footpathConstructSlope == 6)
                 {
-                    slope = kTileSlopeECornerUp;
+                    slope = SlopePitch::downwards;
                 }
 
                 std::optional<uint32_t> baseImage;
@@ -499,7 +506,7 @@ namespace OpenRCT2::Ui::Windows
 
                 if (baseImage)
                 {
-                    auto image = *baseImage + ConstructionPreviewImages[slope][direction];
+                    auto image = *baseImage + ConstructionPreviewImages[EnumValue(slope)][direction];
 
                     // Draw construction image
                     screenCoords = this->windowPos
