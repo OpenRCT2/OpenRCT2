@@ -473,14 +473,14 @@ STR_1076    :Shop stall mode
 STR_1077    :Rotation mode
 STR_1078    :Forward rotation
 STR_1079    :Backward rotation
-STR_1080    :Film: “Avenging aviators”
-STR_1081    :3D film: “Mouse tails”
+STR_1080    :Film: “Avenging Aviators”
+STR_1081    :3D film: “Mouse Tails”
 STR_1082    :Space rings mode
 STR_1083    :Beginners mode
 STR_1084    :LIM-powered launch
-STR_1085    :Film: “Thrill riders”
-STR_1086    :3D film: “Storm chasers”
-STR_1087    :3D film: “Space raiders”
+STR_1085    :Film: “Thrill Riders”
+STR_1086    :3D film: “Storm Chasers”
+STR_1087    :3D film: “Space Raiders”
 STR_1088    :Intense mode
 STR_1089    :Berserk mode
 STR_1090    :Haunted house mode
