@@ -448,6 +448,7 @@ void ScriptEngine::Initialise()
 }
 
 JSRuntime* ScriptEngine::_runtime = nullptr;
+ScAward Scripting::gScAward;
 ScCheats Scripting::gScCheats;
 ScConfiguration Scripting::gScConfiguration;
 ScConsole Scripting::gScConsole;
@@ -463,7 +464,7 @@ ScPatrolArea Scripting::gScPatrolArea;
 void ScriptEngine::RegisterClasses(JSContext* ctx)
 {
     // TODO (mber) register JS Classes
-    // ScAward::Register(ctx);
+    gScAward.Register(ctx);
     gScCheats.Register(ctx);
     // ScClimate::Register(ctx);
     // ScClimateState::Register(ctx);

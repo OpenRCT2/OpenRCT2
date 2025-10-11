@@ -482,20 +482,15 @@ namespace OpenRCT2::Scripting
 
     JSValue ScPark::awards_get(JSContext* ctx, JSValue thisVal)
     {
-        // TODO (mber) pending ScAward conversion
-        JS_ThrowInternalError(ctx, "not implemented yet");
-        return JS_EXCEPTION;
-        /*
         JSValue result = JS_NewArray(ctx);
 
         auto& gameState = getGameState();
         for (size_t i = 0; i < gameState.park.currentAwards.size(); i++)
         {
-            JS_SetPropertyInt64(ctx, result, i, ScAward::New(i));
+            JS_SetPropertyInt64(ctx, result, i, gScAward.New(ctx, i));
         }
 
         return result;
-        */
     }
 
     JSValue ScPark::clearAwards(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
@@ -507,10 +502,6 @@ namespace OpenRCT2::Scripting
 
     JSValue ScPark::grantAward(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
     {
-        // TODO (mber) pending ScAward conversion
-        JS_ThrowInternalError(ctx, "not implemented yet");
-        return JS_EXCEPTION;
-        /*
         JS_UNPACK_STR(awardType, ctx, argv[0]);
         JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
 
@@ -520,7 +511,6 @@ namespace OpenRCT2::Scripting
             AwardGrant(optType.value());
         }
         return JS_UNDEFINED;
-        */
     }
 
     JSValue ScPark::New(JSContext* ctx)

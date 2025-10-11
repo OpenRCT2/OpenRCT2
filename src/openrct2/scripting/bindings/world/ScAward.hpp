@@ -9,13 +9,13 @@
 
 #pragma once
 
-#ifdef ENABLE_SCRIPTING
+#ifdef ENABLE_SCRIPTING_REFACTOR
 
     #include "../../../Context.h"
     #include "../../../management/Award.h"
-    #include "../../Duktape.hpp"
     #include "../../ScriptEngine.h"
 
+    #include <quickjs.h>
     #include <string>
 
 namespace OpenRCT2::Scripting
@@ -60,24 +60,31 @@ namespace OpenRCT2::Scripting
         return std::nullopt;
     }
 
-    class ScAward
+    class ScAward;
+    extern ScAward gScAward;
+
+    class ScAward final : public ScBase
     {
-    private:
-        size_t _index{};
-
     public:
-        ScAward(size_t index);
-
-        static void Register(duk_context* ctx);
+        JSValue New(JSContext* ctx, size_t index);
+        void Register(JSContext* ctx);
 
     private:
-        Award* GetAward() const;
+        static void Finalize(JSRuntime* rt, JSValue thisVal);
+        static Award* GetAward(JSValue thisVal);
 
-        std::string type_get() const;
-        std::string text_get() const;
-        uint16_t monthsRemaining_get() const;
-        bool positive_get() const;
-        uint32_t imageId_get() const;
+        static JSValue type_get(JSContext* ctx, JSValue thisVal);
+        static JSValue text_get(JSContext* ctx, JSValue thisVal);
+        static JSValue monthsRemaining_get(JSContext* ctx, JSValue thisVal);
+        static JSValue positive_get(JSContext* ctx, JSValue thisVal);
+        static JSValue imageId_get(JSContext* ctx, JSValue thisVal);
+
+        static constexpr JSCFunctionListEntry funcs[] = {
+            JS_CGETSET_DEF("type", &ScAward::type_get, nullptr), JS_CGETSET_DEF("text", &ScAward::text_get, nullptr),
+            JS_CGETSET_DEF("positive", &ScAward::positive_get, nullptr),
+            JS_CGETSET_DEF("imageId", &ScAward::imageId_get, nullptr),
+            JS_CGETSET_DEF("monthsRemaining", &ScAward::monthsRemaining_get, nullptr)
+        };
     };
 
 } // namespace OpenRCT2::Scripting
