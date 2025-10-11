@@ -23,12 +23,30 @@ namespace OpenRCT2::Scenario
         real,
         other,
 
+        // RCT Classic groups
+        rctClassicGraphite,
+        rctClassicEmerald,
+        rctClassicRuby,
+        rctClassicSapphire,
+        rctClassicAmethyst,
+        rctClassicCoral,
+        rctClassicIvory,
+        rctClassicBronze,
+        rctClassicSilver,
+        rctClassicGold,
+
         // OpenRCT2 categories
         dlc,
         buildYourOwn,
         competitions,
         timeMachine,
         katysDreamworld,
+
+        // Special category for unlockable bonus scenarios (e.g. Mega Park, Tycoon Park)
+        bonus,
+
+        // No category
+        none,
 
         count,
     };
