@@ -7,7 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifdef ENABLE_SCRIPTING
+#ifdef ENABLE_SCRIPTING_REFACTOR
 
     #include "ScAward.hpp"
 
@@ -16,74 +16,84 @@
     #include "../../../localisation/Formatting.h"
     #include "../../../management/Award.h"
     #include "../../../windows/Intent.h"
-    #include "../../Duktape.hpp"
 
 namespace OpenRCT2::Scripting
 {
-    ScAward::ScAward(size_t index)
-        : _index(index)
+    extern ScAward gScAward;
+
+    using OpaqueAwardData = struct
     {
+        size_t index;
+    };
+
+    JSValue ScAward::New(JSContext* ctx, size_t index)
+    {
+        return MakeWithOpaque(ctx, funcs, new OpaqueAwardData{ index });
     }
 
-    void ScAward::Register(duk_context* ctx)
+    void ScAward::Register(JSContext* ctx)
     {
-        dukglue_register_property(ctx, &ScAward::type_get, nullptr, "type");
-        dukglue_register_property(ctx, &ScAward::text_get, nullptr, "text");
-        dukglue_register_property(ctx, &ScAward::positive_get, nullptr, "positive");
-        dukglue_register_property(ctx, &ScAward::imageId_get, nullptr, "imageId");
-        dukglue_register_property(ctx, &ScAward::monthsRemaining_get, nullptr, "monthsRemaining");
+        RegisterBaseStr(ctx, "Award", Finalize);
     }
 
-    Award* ScAward::GetAward() const
+    void ScAward::Finalize(JSRuntime* rt, JSValue thisVal)
     {
-        return &getGameState().park.currentAwards[_index];
+        OpaqueAwardData* data = gScAward.GetOpaque<OpaqueAwardData*>(thisVal);
+        if (data)
+            delete data;
     }
 
-    std::string ScAward::type_get() const
+    Award* ScAward::GetAward(JSValue thisVal)
     {
-        auto award = GetAward();
+        OpaqueAwardData* data = gScAward.GetOpaque<OpaqueAwardData*>(thisVal);
+        return &getGameState().park.currentAwards[data->index];
+    }
+
+    JSValue ScAward::type_get(JSContext* ctx, JSValue thisVal)
+    {
+        auto award = GetAward(thisVal);
         if (award == nullptr)
-            return {};
+            return JSFromStdString(ctx, {});
 
-        return AwardTypeToString(award->Type).value_or(std::string());
+        return JSFromStdString(ctx, AwardTypeToString(award->Type).value_or(std::string()));
     }
 
-    std::string ScAward::text_get() const
+    JSValue ScAward::text_get(JSContext* ctx, JSValue thisVal)
     {
-        auto award = GetAward();
+        auto award = GetAward(thisVal);
         if (award == nullptr)
-            return {};
+            return JSFromStdString(ctx, {});
 
         Formatter ft{};
         ft.Add<StringId>(AwardGetText(award->Type));
-        return FormatStringIDLegacy(STR_STRINGID, ft.Data());
+        return JSFromStdString(ctx, FormatStringIDLegacy(STR_STRINGID, ft.Data()));
     }
 
-    uint16_t ScAward::monthsRemaining_get() const
+    JSValue ScAward::monthsRemaining_get(JSContext* ctx, JSValue thisVal)
     {
-        auto award = GetAward();
+        auto award = GetAward(thisVal);
         if (award == nullptr)
-            return {};
+            return JS_NewInt32(ctx, {});
 
-        return award->Time;
+        return JS_NewInt32(ctx, award->Time);
     }
 
-    bool ScAward::positive_get() const
+    JSValue ScAward::positive_get(JSContext* ctx, JSValue thisVal)
     {
-        auto award = GetAward();
+        auto award = GetAward(thisVal);
         if (award == nullptr)
-            return {};
+            return JS_NewBool(ctx, {});
 
-        return AwardIsPositive(award->Type);
+        return JS_NewBool(ctx, AwardIsPositive(award->Type));
     }
 
-    uint32_t ScAward::imageId_get() const
+    JSValue ScAward::imageId_get(JSContext* ctx, JSValue thisVal)
     {
-        auto award = GetAward();
+        auto award = GetAward(thisVal);
         if (award == nullptr)
-            return {};
+            return JS_NewUint32(ctx, {});
 
-        return AwardGetSprite(award->Type);
+        return JS_NewUint32(ctx, AwardGetSprite(award->Type));
     }
 
 } // namespace OpenRCT2::Scripting
