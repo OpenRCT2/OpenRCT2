@@ -24635,6 +24635,26 @@
         "palette": "keep"
     },
     {
+        "path": "support/wooden/truss/up_25_even_1.png",
+        "x": -32,
+        "y": -16
+    },
+    {
+        "path": "support/wooden/truss/up_25_even_2.png",
+        "x": -32,
+        "y": -1
+    },
+    {
+        "path": "support/wooden/truss/up_25_even_3.png",
+        "x": -32,
+        "y": -1
+    },
+    {
+        "path": "support/wooden/truss/up_25_even_4.png",
+        "x": -32,
+        "y": -16
+    },
+    {
         "path": "support/wooden/truss/flat_to_steep_1_1.png",
         "x": -32,
         "y": -5
@@ -24793,6 +24813,26 @@
         "path": "support/wooden/truss/steep_to_flat_4_4.png",
         "x": -32,
         "y": -17
+    },
+    {
+        "path": "support/wooden/mine/up_25_even_1.png",
+        "x": -24,
+        "y": -12
+    },
+    {
+        "path": "support/wooden/mine/up_25_even_2.png",
+        "x": -24,
+        "y": 4
+    },
+    {
+        "path": "support/wooden/mine/up_25_even_3.png",
+        "x": -24,
+        "y": 3
+    },
+    {
+        "path": "support/wooden/mine/up_25_even_4.png",
+        "x": -24,
+        "y": -12
     },
     {
         "path": "support/wooden/mine/flat_to_steep_1_1.png",

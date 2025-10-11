@@ -70,13 +70,14 @@ static constexpr ImagesByTransitionTypeArray WoodenCurveSupportImageIds0 = { {
     { 3477, 3478, 3479, 3480 }, // up25DegToUp60Deg
     { 3481, 3482, 3483, 3484 }, // up60DegToUp25Deg
     { 3485, 3486, 3487, 3488 }, // up60Deg
-    { 3489, 3490, 3491, 3492 }, // path
-    { 3493, 3494, 3495, 3496 }, // flatToUp60Deg
-    { 3497, 3498, 3499, 3500 }, // up60DegToFlat
-    { 3501, 3502, 3503, 3504 }, // flatToUp25DegRailway
-    { 3505, 3506, 3507, 3508 }, // up25DegToFlatRailway
-    { 3509, 3510, 3511, 3512 }, // up25DegRailway
-    { 3513, 3513, 3513, 3513 }, // scenery
+    { SPR_TRACKS_SUPPORT_WOODEN_TRUSS_UP_25_EVEN, SPR_TRACKS_SUPPORT_WOODEN_TRUSS_UP_25_EVEN + 1,
+      SPR_TRACKS_SUPPORT_WOODEN_TRUSS_UP_25_EVEN + 2, SPR_TRACKS_SUPPORT_WOODEN_TRUSS_UP_25_EVEN + 3 }, // up25even
+    { 3493, 3494, 3495, 3496 },                                                                         // flatToUp60Deg
+    { 3497, 3498, 3499, 3500 },                                                                         // up60DegToFlat
+    { 3501, 3502, 3503, 3504 },                                                                         // flatToUp25DegRailway
+    { 3505, 3506, 3507, 3508 },                                                                         // up25DegToFlatRailway
+    { 3509, 3510, 3511, 3512 },                                                                         // up25DegRailway
+    { 3513, 3513, 3513, 3513 },                                                                         // scenery
     { SPR_TRACKS_SUPPORT_WOODEN_TRUSS_LONG_FLAT_TO_STEEP, SPR_TRACKS_SUPPORT_WOODEN_TRUSS_LONG_FLAT_TO_STEEP + 1,
       SPR_TRACKS_SUPPORT_WOODEN_TRUSS_LONG_FLAT_TO_STEEP + 2,
       SPR_TRACKS_SUPPORT_WOODEN_TRUSS_LONG_FLAT_TO_STEEP + 3 }, // flatToUp60DegLongBaseSeq0
@@ -110,13 +111,14 @@ static constexpr ImagesByTransitionTypeArray WoodenCurveSupportImageIds1 = { {
     { 3693, 3694, 3695, 3696 }, // up25DegToUp60Deg
     { 3697, 3698, 3699, 3700 }, // up60DegToUp25Deg
     { 3701, 3702, 3703, 3704 }, // up60Deg
-    { 3705, 3706, 3707, 3708 }, // path
-    { 3709, 3710, 3711, 3712 }, // flatToUp60Deg
-    { 3713, 3714, 3715, 3716 }, // up60DegToFlat
-    { 3717, 3718, 3719, 3720 }, // flatToUp25DegRailway
-    { 3721, 3722, 3723, 3724 }, // up25DegToFlatRailway
-    { 3725, 3726, 3727, 3728 }, // up25DegRailway
-    { 3729, 3729, 3729, 3729 }, // scenery
+    { SPR_TRACKS_SUPPORT_WOODEN_MINE_UP_25_EVEN, SPR_TRACKS_SUPPORT_WOODEN_MINE_UP_25_EVEN + 1,
+      SPR_TRACKS_SUPPORT_WOODEN_MINE_UP_25_EVEN + 2, SPR_TRACKS_SUPPORT_WOODEN_MINE_UP_25_EVEN + 3 }, // up25even
+    { 3709, 3710, 3711, 3712 },                                                                       // flatToUp60Deg
+    { 3713, 3714, 3715, 3716 },                                                                       // up60DegToFlat
+    { 3717, 3718, 3719, 3720 },                                                                       // flatToUp25DegRailway
+    { 3721, 3722, 3723, 3724 },                                                                       // up25DegToFlatRailway
+    { 3725, 3726, 3727, 3728 },                                                                       // up25DegRailway
+    { 3729, 3729, 3729, 3729 },                                                                       // scenery
     { SPR_TRACKS_SUPPORT_WOODEN_MINE_LONG_FLAT_TO_STEEP, SPR_TRACKS_SUPPORT_WOODEN_MINE_LONG_FLAT_TO_STEEP + 1,
       SPR_TRACKS_SUPPORT_WOODEN_MINE_LONG_FLAT_TO_STEEP + 2,
       SPR_TRACKS_SUPPORT_WOODEN_MINE_LONG_FLAT_TO_STEEP + 3 }, // flatToUp60DegLongBaseSeq0
