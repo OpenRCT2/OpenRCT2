@@ -340,7 +340,8 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
         }
     }
 
-    TrackDesignPreviewDrawOutlines(tds, *this, RideGetTemporaryForPreview(), { 4096, 4096, 0, _currentTrackPieceDirection }, false);
+    TrackDesignPreviewDrawOutlines(
+        tds, *this, RideGetTemporaryForPreview(), { 4096, 4096, 0, _currentTrackPieceDirection }, false);
 
     // Resave global vars for scenery reasons.
     tds.origin = startPos;
@@ -454,7 +455,8 @@ ResultWithMessage TrackDesign::CreateTrackDesignMaze(TrackDesignState& tds, cons
 
     // Save global vars as they are still used by scenery????
     int32_t startZ = tds.origin.z;
-    TrackDesignPreviewDrawOutlines(tds, *this, RideGetTemporaryForPreview(), { 4096, 4096, 0, _currentTrackPieceDirection }, false);
+    TrackDesignPreviewDrawOutlines(
+        tds, *this, RideGetTemporaryForPreview(), { 4096, 4096, 0, _currentTrackPieceDirection }, false);
     tds.origin = { startLoc.x, startLoc.y, startZ };
 
     gMapSelectFlags.unset(MapSelectFlag::enableConstruct);
@@ -1840,7 +1842,8 @@ void TrackDesignPreviewRemoveGhosts(const TrackDesign& td, Ride& ride, const Coo
     TrackDesignPlaceVirtual(tds, td, TrackPlaceOperation::removeGhost, true, ride, coords);
 }
 
-void TrackDesignPreviewDrawOutlines(TrackDesignState& tds, const TrackDesign& td, Ride& ride, const CoordsXYZD& coords, bool placeScenery)
+void TrackDesignPreviewDrawOutlines(
+    TrackDesignState& tds, const TrackDesign& td, Ride& ride, const CoordsXYZD& coords, bool placeScenery)
 {
     TrackDesignPlaceVirtual(tds, td, TrackPlaceOperation::drawOutlines, placeScenery, ride, coords);
 }
