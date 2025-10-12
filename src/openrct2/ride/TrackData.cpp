@@ -1603,8 +1603,13 @@ namespace OpenRCT2::TrackMetadata
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, {} },
         .allowedWallEdges = 0b0010,
         .flags = { SequenceFlag::hasHeightMarker },
+        .woodenSupports = { WoodenSupportSubType::neSw },
         .metalSupports = { MetalSupportPlace::centre },
-        .blockedSegments = kBankedLeftQuarterTurn5TilesSeq0.blockedSegments,
+        .blockedSegments = { {
+            EnumsToFlags(PS::top, PS::centre, PS::topRight, PS::bottomLeft, PS::topLeft, PS::left), // narrow
+            EnumsToFlags(PS::top, PS::centre, PS::topRight, PS::bottomLeft, PS::bottomRight),       // inverted
+            kSegmentsAll,                                                                           // wide
+        } },
     };
 
     static constexpr SequenceDescriptor kLeftQuarterBankedHelixLargeUpSeq1 = {
@@ -1616,355 +1621,438 @@ namespace OpenRCT2::TrackMetadata
     static constexpr SequenceDescriptor kLeftQuarterBankedHelixLargeUpSeq2 = {
         .clearance = { -32, 0, 0, 0, { 0b0111, 0 }, {} },
         .allowedWallEdges = 0b0011,
-        .blockedSegments = kBankedLeftQuarterTurn5TilesSeq2.blockedSegments,
+        .woodenSupports = { WoodenSupportSubType::corner3 },
+        .blockedSegments = { {
+            EnumsToFlags(PS::top, PS::left, PS::centre, PS::topLeft, PS::topRight, PS::bottomLeft), // narrow
+            EnumsToFlags(PS::top, PS::left, PS::centre, PS::topLeft, PS::topRight, PS::bottomLeft), // inverted
+            EnumsToFlags(
+                PS::top, PS::left, PS::centre, PS::topLeft, PS::topRight, PS::bottomLeft, PS::bottom, PS::bottomRight), // wide
+        } },
     };
 
     static constexpr SequenceDescriptor kLeftQuarterBankedHelixLargeUpSeq3 = {
         .clearance = { -32, -32, 0, 0, { 0b1101, 0 }, {} },
-        .blockedSegments = kBankedLeftQuarterTurn5TilesSeq3.blockedSegments,
+        .woodenSupports = { WoodenSupportSubType::corner1 },
+        .blockedSegments = { {
+            EnumsToFlags(PS::right, PS::centre, PS::topRight, PS::bottomRight, PS::bottom, PS::top), // narrow
+            EnumsToFlags(PS::right, PS::centre, PS::topRight, PS::bottomRight),                      // inverted
+            EnumsToFlags(
+                PS::top, PS::right, PS::bottom, PS::centre, PS::topLeft, PS::topRight, PS::bottomLeft,
+                PS::bottomRight), // wide
+        } },
     };
 
     static constexpr SequenceDescriptor kLeftQuarterBankedHelixLargeUpSeq4 = {
         .clearance = { -32, -64, 0, 12, { 0b1000, 0 }, { ClearanceFlag::flag0 } },
         .allowedWallEdges = 0b1100,
+        .extraSupportRotation = -1,
         .blockedSegments = kBankedLeftQuarterTurn5TilesSeq4.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kLeftQuarterBankedHelixLargeUpSeq5 = {
         .clearance = { -64, -32, 0, 12, { 0b0111, 0 }, {} },
         .allowedWallEdges = 0b0011,
-        .blockedSegments = kBankedLeftQuarterTurn5TilesSeq5.blockedSegments,
+        .woodenSupports = { WoodenSupportSubType::corner0 },
+        .extraSupportRotation = -1,
+        .blockedSegments = { {
+            EnumsToFlags(PS::left, PS::bottom, PS::centre, PS::topLeft, PS::bottomLeft, PS::bottomRight), // narrow
+            EnumsToFlags(PS::left, PS::bottom, PS::centre, PS::topLeft, PS::bottomLeft, PS::bottomRight), // inverted
+            EnumsToFlags(
+                PS::left, PS::bottom, PS::centre, PS::topLeft, PS::bottomLeft, PS::bottomRight, PS::top, PS::topRight), // wide
+        } },
     };
 
     static constexpr SequenceDescriptor kLeftQuarterBankedHelixLargeUpSeq6 = {
         .clearance = { -64, -64, 0, 12, { 0b1111, 0 }, {} },
         .allowedWallEdges = 0b0001,
         .flags = { SequenceFlag::hasHeightMarker },
+        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25even },
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = -1,
-        .blockedSegments = kBankedLeftQuarterTurn5TilesSeq6.blockedSegments,
+        .blockedSegments = { {
+            EnumsToFlags(PS::bottom, PS::centre, PS::topLeft, PS::bottomRight, PS::bottomLeft, PS::left), // narrow
+            EnumsToFlags(PS::bottom, PS::centre, PS::topLeft, PS::topRight, PS::bottomRight),             // inverted
+            kSegmentsAll,                                                                                 // wide
+        } },
     };
 
     static constexpr SequenceDescriptor kRightQuarterBankedHelixLargeUpSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, {} },
         .allowedWallEdges = 0b1000,
         .flags = { SequenceFlag::hasHeightMarker },
+        .woodenSupports = { WoodenSupportSubType::neSw },
         .metalSupports = { MetalSupportPlace::centre },
-        .blockedSegments = kBankedRightQuarterTurn5TilesSeq0.blockedSegments,
+        .blockedSegments = blockedSegmentsFlipXAxis(kLeftQuarterBankedHelixLargeUpSeq0.blockedSegments),
     };
 
     static constexpr SequenceDescriptor kRightQuarterBankedHelixLargeUpSeq1 = {
         .clearance = { 0, 32, 0, 0, { 0b0100, 0 }, { ClearanceFlag::flag0 } },
         .allowedWallEdges = 0b0110,
-        .blockedSegments = kBankedRightQuarterTurn5TilesSeq1.blockedSegments,
+        .blockedSegments = blockedSegmentsFlipXAxis(kLeftQuarterBankedHelixLargeUpSeq1.blockedSegments),
     };
 
     static constexpr SequenceDescriptor kRightQuarterBankedHelixLargeUpSeq2 = {
         .clearance = { -32, 0, 0, 0, { 0b1011, 0 }, {} },
         .allowedWallEdges = 0b1001,
-        .blockedSegments = kBankedRightQuarterTurn5TilesSeq2.blockedSegments,
+        .woodenSupports = { WoodenSupportSubType::corner2 },
+        .blockedSegments = blockedSegmentsFlipXAxis(kLeftQuarterBankedHelixLargeUpSeq2.blockedSegments),
     };
 
     static constexpr SequenceDescriptor kRightQuarterBankedHelixLargeUpSeq3 = {
         .clearance = { -32, 32, 0, 0, { 0b1110, 0 }, {} },
-        .blockedSegments = kBankedRightQuarterTurn5TilesSeq3.blockedSegments,
+        .woodenSupports = { WoodenSupportSubType::corner0 },
+        .blockedSegments = blockedSegmentsFlipXAxis(kLeftQuarterBankedHelixLargeUpSeq3.blockedSegments),
     };
 
     static constexpr SequenceDescriptor kRightQuarterBankedHelixLargeUpSeq4 = {
         .clearance = { -32, 64, 0, 12, { 0b0100, 0 }, { ClearanceFlag::flag0 } },
         .allowedWallEdges = 0b0110,
-        .blockedSegments = kBankedRightQuarterTurn5TilesSeq4.blockedSegments,
+        .extraSupportRotation = 1,
+        .blockedSegments = blockedSegmentsFlipXAxis(kLeftQuarterBankedHelixLargeUpSeq4.blockedSegments),
     };
 
     static constexpr SequenceDescriptor kRightQuarterBankedHelixLargeUpSeq5 = {
         .clearance = { -64, 32, 0, 12, { 0b1011, 0 }, {} },
         .allowedWallEdges = 0b1001,
-        .blockedSegments = kBankedRightQuarterTurn5TilesSeq5.blockedSegments,
+        .woodenSupports = { WoodenSupportSubType::corner1 },
+        .extraSupportRotation = 1,
+        .blockedSegments = blockedSegmentsFlipXAxis(kLeftQuarterBankedHelixLargeUpSeq5.blockedSegments),
     };
 
     static constexpr SequenceDescriptor kRightQuarterBankedHelixLargeUpSeq6 = {
         .clearance = { -64, 64, 0, 12, { 0b1111, 0 }, {} },
         .allowedWallEdges = 0b0001,
         .flags = { SequenceFlag::hasHeightMarker },
+        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25even },
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = 1,
-        .blockedSegments = kBankedRightQuarterTurn5TilesSeq6.blockedSegments,
+        .blockedSegments = blockedSegmentsFlipXAxis(kLeftQuarterBankedHelixLargeUpSeq6.blockedSegments),
     };
 
     static constexpr SequenceDescriptor kLeftQuarterBankedHelixLargeDownSeq0 = {
         .clearance = { 0, 0, 0, 12, { 0b1111, 0 }, {} },
         .allowedWallEdges = 0b0010,
         .flags = { SequenceFlag::hasHeightMarker },
+        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25even },
         .metalSupports = { MetalSupportPlace::centre },
-        .blockedSegments = kBankedLeftQuarterTurn5TilesSeq0.blockedSegments,
+        .extraSupportRotation = 2,
+        .blockedSegments = kLeftQuarterBankedHelixLargeUpSeq0.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kLeftQuarterBankedHelixLargeDownSeq1 = {
         .clearance = { 0, -32, 0, 12, { 0b1000, 0 }, { ClearanceFlag::flag0 } },
         .allowedWallEdges = 0b1100,
-        .blockedSegments = kBankedLeftQuarterTurn5TilesSeq1.blockedSegments,
+        .blockedSegments = kLeftQuarterBankedHelixLargeUpSeq1.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kLeftQuarterBankedHelixLargeDownSeq2 = {
         .clearance = { -32, 0, 0, 12, { 0b0111, 0 }, {} },
         .allowedWallEdges = 0b0011,
-        .blockedSegments = kBankedLeftQuarterTurn5TilesSeq2.blockedSegments,
+        .woodenSupports = { WoodenSupportSubType::corner3 },
+        .blockedSegments = kLeftQuarterBankedHelixLargeUpSeq2.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kLeftQuarterBankedHelixLargeDownSeq3 = {
         .clearance = { -32, -32, 0, 0, { 0b1101, 0 }, {} },
-        .blockedSegments = kBankedLeftQuarterTurn5TilesSeq3.blockedSegments,
+        .woodenSupports = { WoodenSupportSubType::corner1 },
+        .blockedSegments = kLeftQuarterBankedHelixLargeUpSeq3.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kLeftQuarterBankedHelixLargeDownSeq4 = {
         .clearance = { -32, -64, 0, 0, { 0b1000, 0 }, { ClearanceFlag::flag0 } },
         .allowedWallEdges = 0b1100,
-        .blockedSegments = kBankedLeftQuarterTurn5TilesSeq4.blockedSegments,
+        .blockedSegments = kLeftQuarterBankedHelixLargeUpSeq4.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kLeftQuarterBankedHelixLargeDownSeq5 = {
         .clearance = { -64, -32, 0, 0, { 0b0111, 0 }, {} },
         .allowedWallEdges = 0b0011,
-        .blockedSegments = kBankedLeftQuarterTurn5TilesSeq5.blockedSegments,
+        .woodenSupports = { WoodenSupportSubType::corner0 },
+        .extraSupportRotation = -1,
+        .blockedSegments = kLeftQuarterBankedHelixLargeUpSeq5.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kLeftQuarterBankedHelixLargeDownSeq6 = {
         .clearance = { -64, -64, 0, 0, { 0b1111, 0 }, {} },
         .allowedWallEdges = 0b0001,
         .flags = { SequenceFlag::hasHeightMarker },
+        .woodenSupports = { WoodenSupportSubType::neSw },
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = -1,
-        .blockedSegments = kBankedLeftQuarterTurn5TilesSeq6.blockedSegments,
+        .blockedSegments = kLeftQuarterBankedHelixLargeUpSeq6.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kRightQuarterBankedHelixLargeDownSeq0 = {
         .clearance = { 0, 0, 0, 12, { 0b1111, 0 }, {} },
         .allowedWallEdges = 0b1000,
         .flags = { SequenceFlag::hasHeightMarker },
+        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25even },
         .metalSupports = { MetalSupportPlace::centre },
-        .blockedSegments = kBankedRightQuarterTurn5TilesSeq0.blockedSegments,
+        .extraSupportRotation = 2,
+        .blockedSegments = kRightQuarterBankedHelixLargeUpSeq0.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kRightQuarterBankedHelixLargeDownSeq1 = {
         .clearance = { 0, 32, 0, 12, { 0b0100, 0 }, { ClearanceFlag::flag0 } },
         .allowedWallEdges = 0b0110,
-        .blockedSegments = kBankedRightQuarterTurn5TilesSeq1.blockedSegments,
+        .blockedSegments = kRightQuarterBankedHelixLargeUpSeq1.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kRightQuarterBankedHelixLargeDownSeq2 = {
         .clearance = { -32, 0, 0, 12, { 0b1011, 0 }, {} },
         .allowedWallEdges = 0b1001,
-        .blockedSegments = kBankedRightQuarterTurn5TilesSeq2.blockedSegments,
+        .woodenSupports = { WoodenSupportSubType::corner2 },
+        .blockedSegments = kRightQuarterBankedHelixLargeUpSeq2.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kRightQuarterBankedHelixLargeDownSeq3 = {
         .clearance = { -32, 32, 0, 0, { 0b1110, 0 }, {} },
-        .blockedSegments = kBankedRightQuarterTurn5TilesSeq3.blockedSegments,
+        .woodenSupports = { WoodenSupportSubType::corner0 },
+        .blockedSegments = kRightQuarterBankedHelixLargeUpSeq3.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kRightQuarterBankedHelixLargeDownSeq4 = {
         .clearance = { -32, 64, 0, 0, { 0b0100, 0 }, { ClearanceFlag::flag0 } },
         .allowedWallEdges = 0b0110,
-        .blockedSegments = kBankedRightQuarterTurn5TilesSeq4.blockedSegments,
+        .blockedSegments = kRightQuarterBankedHelixLargeUpSeq4.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kRightQuarterBankedHelixLargeDownSeq5 = {
         .clearance = { -64, 32, 0, 0, { 0b1011, 0 }, {} },
         .allowedWallEdges = 0b1001,
-        .blockedSegments = kBankedRightQuarterTurn5TilesSeq5.blockedSegments,
+        .woodenSupports = { WoodenSupportSubType::corner1 },
+        .extraSupportRotation = 1,
+        .blockedSegments = kRightQuarterBankedHelixLargeUpSeq5.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kRightQuarterBankedHelixLargeDownSeq6 = {
         .clearance = { -64, 64, 0, 0, { 0b1111, 0 }, {} },
         .allowedWallEdges = 0b0001,
         .flags = { SequenceFlag::hasHeightMarker },
+        .woodenSupports = { WoodenSupportSubType::neSw },
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = 1,
-        .blockedSegments = kBankedRightQuarterTurn5TilesSeq6.blockedSegments,
+        .blockedSegments = kRightQuarterBankedHelixLargeUpSeq6.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kLeftQuarterHelixLargeUpSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, {} },
         .allowedWallEdges = 0b0010,
         .flags = { SequenceFlag::hasHeightMarker },
+        .woodenSupports = { WoodenSupportSubType::neSw },
         .metalSupports = { MetalSupportPlace::centre },
-        .blockedSegments = kLeftQuarterTurn5TilesSeq0.blockedSegments,
+        .blockedSegments = { {
+            EnumsToFlags(PS::top, PS::centre, PS::topRight, PS::bottomLeft, PS::topLeft),     // narrow
+            EnumsToFlags(PS::top, PS::centre, PS::topRight, PS::bottomLeft, PS::bottomRight), // inverted
+            kSegmentsAll,                                                                     // wide
+        } },
     };
 
     static constexpr SequenceDescriptor kLeftQuarterHelixLargeUpSeq1 = {
         .clearance = { 0, -32, 0, 0, { 0b1000, 0 }, { ClearanceFlag::flag0 } },
         .allowedWallEdges = 0b1100,
-        .blockedSegments = kLeftQuarterTurn5TilesSeq1.blockedSegments,
+        .blockedSegments = kLeftQuarterBankedHelixLargeUpSeq1.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kLeftQuarterHelixLargeUpSeq2 = {
         .clearance = { -32, 0, 0, 0, { 0b0111, 0 }, {} },
         .allowedWallEdges = 0b0011,
-        .blockedSegments = kLeftQuarterTurn5TilesSeq2.blockedSegments,
+        .woodenSupports = { WoodenSupportSubType::corner3 },
+        .blockedSegments = kLeftQuarterBankedHelixLargeUpSeq2.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kLeftQuarterHelixLargeUpSeq3 = {
         .clearance = { -32, -32, 0, 0, { 0b1101, 0 }, {} },
-        .blockedSegments = kLeftQuarterTurn5TilesSeq3.blockedSegments,
+        .woodenSupports = { WoodenSupportSubType::corner1 },
+        .blockedSegments = kLeftQuarterBankedHelixLargeUpSeq3.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kLeftQuarterHelixLargeUpSeq4 = {
         .clearance = { -32, -64, 0, 12, { 0b1000, 0 }, { ClearanceFlag::flag0 } },
         .allowedWallEdges = 0b1100,
-        .blockedSegments = kLeftQuarterTurn5TilesSeq4.blockedSegments,
+        .extraSupportRotation = -1,
+        .blockedSegments = kLeftQuarterBankedHelixLargeUpSeq4.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kLeftQuarterHelixLargeUpSeq5 = {
         .clearance = { -64, -32, 0, 12, { 0b0111, 0 }, {} },
         .allowedWallEdges = 0b0011,
-        .blockedSegments = kLeftQuarterTurn5TilesSeq5.blockedSegments,
+        .woodenSupports = { WoodenSupportSubType::corner0 },
+        .extraSupportRotation = -1,
+        .blockedSegments = kLeftQuarterBankedHelixLargeUpSeq5.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kLeftQuarterHelixLargeUpSeq6 = {
         .clearance = { -64, -64, 0, 12, { 0b1111, 0 }, {} },
         .allowedWallEdges = 0b0001,
         .flags = { SequenceFlag::hasHeightMarker },
+        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25even },
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = -1,
-        .blockedSegments = kLeftQuarterTurn5TilesSeq6.blockedSegments,
+        .blockedSegments = { {
+            EnumsToFlags(PS::bottom, PS::centre, PS::topLeft, PS::bottomRight, PS::bottomLeft), // narrow
+            EnumsToFlags(PS::bottom, PS::centre, PS::topLeft, PS::topRight, PS::bottomRight),   // inverted
+            kSegmentsAll,                                                                       // wide
+        } },
     };
 
     static constexpr SequenceDescriptor kRightQuarterHelixLargeUpSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, {} },
         .allowedWallEdges = 0b1000,
         .flags = { SequenceFlag::hasHeightMarker },
+        .woodenSupports = { WoodenSupportSubType::neSw },
         .metalSupports = { MetalSupportPlace::centre },
-        .blockedSegments = kRightQuarterTurn5TilesSeq0.blockedSegments,
+        .blockedSegments = blockedSegmentsFlipXAxis(kLeftQuarterHelixLargeUpSeq0.blockedSegments),
     };
 
     static constexpr SequenceDescriptor kRightQuarterHelixLargeUpSeq1 = {
         .clearance = { 0, 32, 0, 0, { 0b0100, 0 }, { ClearanceFlag::flag0 } },
         .allowedWallEdges = 0b0110,
-        .blockedSegments = kRightQuarterTurn5TilesSeq1.blockedSegments,
+        .blockedSegments = blockedSegmentsFlipXAxis(kLeftQuarterHelixLargeUpSeq1.blockedSegments),
     };
 
     static constexpr SequenceDescriptor kRightQuarterHelixLargeUpSeq2 = {
         .clearance = { -32, 0, 0, 0, { 0b1011, 0 }, {} },
         .allowedWallEdges = 0b1001,
-        .blockedSegments = kRightQuarterTurn5TilesSeq2.blockedSegments,
+        .woodenSupports = { WoodenSupportSubType::corner2 },
+        .blockedSegments = blockedSegmentsFlipXAxis(kLeftQuarterHelixLargeUpSeq2.blockedSegments),
     };
 
     static constexpr SequenceDescriptor kRightQuarterHelixLargeUpSeq3 = {
         .clearance = { -32, 32, 0, 0, { 0b1110, 0 }, {} },
-        .blockedSegments = kRightQuarterTurn5TilesSeq3.blockedSegments,
+        .woodenSupports = { WoodenSupportSubType::corner0 },
+        .blockedSegments = blockedSegmentsFlipXAxis(kLeftQuarterHelixLargeUpSeq3.blockedSegments),
     };
 
     static constexpr SequenceDescriptor kRightQuarterHelixLargeUpSeq4 = {
         .clearance = { -32, 64, 0, 12, { 0b0100, 0 }, { ClearanceFlag::flag0 } },
         .allowedWallEdges = 0b0110,
-        .blockedSegments = kRightQuarterTurn5TilesSeq4.blockedSegments,
+        .extraSupportRotation = 1,
+        .blockedSegments = blockedSegmentsFlipXAxis(kLeftQuarterHelixLargeUpSeq4.blockedSegments),
     };
 
     static constexpr SequenceDescriptor kRightQuarterHelixLargeUpSeq5 = {
         .clearance = { -64, 32, 0, 12, { 0b1011, 0 }, {} },
         .allowedWallEdges = 0b1001,
-        .blockedSegments = kRightQuarterTurn5TilesSeq5.blockedSegments,
+        .woodenSupports = { WoodenSupportSubType::corner1 },
+        .extraSupportRotation = 1,
+        .blockedSegments = blockedSegmentsFlipXAxis(kLeftQuarterHelixLargeUpSeq5.blockedSegments),
     };
 
     static constexpr SequenceDescriptor kRightQuarterHelixLargeUpSeq6 = {
         .clearance = { -64, 64, 0, 12, { 0b1111, 0 }, {} },
         .allowedWallEdges = 0b0001,
         .flags = { SequenceFlag::hasHeightMarker },
+        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25even },
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = 1,
-        .blockedSegments = kRightQuarterTurn5TilesSeq6.blockedSegments,
+        .blockedSegments = blockedSegmentsFlipXAxis(kLeftQuarterHelixLargeUpSeq6.blockedSegments),
     };
 
     static constexpr SequenceDescriptor kLeftQuarterHelixLargeDownSeq0 = {
         .clearance = { 0, 0, 0, 12, { 0b1111, 0 }, {} },
         .allowedWallEdges = 0b0010,
         .flags = { SequenceFlag::hasHeightMarker },
+        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25even },
         .metalSupports = { MetalSupportPlace::centre },
-        .blockedSegments = kLeftQuarterTurn5TilesSeq0.blockedSegments,
+        .extraSupportRotation = 2,
+        .blockedSegments = kLeftQuarterHelixLargeUpSeq0.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kLeftQuarterHelixLargeDownSeq1 = {
         .clearance = { 0, -32, 0, 12, { 0b1000, 0 }, { ClearanceFlag::flag0 } },
         .allowedWallEdges = 0b1100,
-        .blockedSegments = kLeftQuarterTurn5TilesSeq1.blockedSegments,
+        .blockedSegments = kLeftQuarterHelixLargeUpSeq1.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kLeftQuarterHelixLargeDownSeq2 = {
         .clearance = { -32, 0, 0, 12, { 0b0111, 0 }, {} },
         .allowedWallEdges = 0b0011,
-        .blockedSegments = kLeftQuarterTurn5TilesSeq2.blockedSegments,
+        .woodenSupports = { WoodenSupportSubType::corner3 },
+        .blockedSegments = kLeftQuarterHelixLargeUpSeq2.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kLeftQuarterHelixLargeDownSeq3 = {
         .clearance = { -32, -32, 0, 0, { 0b1101, 0 }, {} },
-        .blockedSegments = kLeftQuarterTurn5TilesSeq3.blockedSegments,
+        .woodenSupports = { WoodenSupportSubType::corner1 },
+        .blockedSegments = kLeftQuarterBankedHelixLargeUpSeq3.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kLeftQuarterHelixLargeDownSeq4 = {
         .clearance = { -32, -64, 0, 0, { 0b1000, 0 }, { ClearanceFlag::flag0 } },
         .allowedWallEdges = 0b1100,
-        .blockedSegments = kLeftQuarterTurn5TilesSeq4.blockedSegments,
+        .blockedSegments = kLeftQuarterHelixLargeUpSeq4.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kLeftQuarterHelixLargeDownSeq5 = {
         .clearance = { -64, -32, 0, 0, { 0b0111, 0 }, {} },
         .allowedWallEdges = 0b0011,
-        .blockedSegments = kLeftQuarterTurn5TilesSeq5.blockedSegments,
+        .woodenSupports = { WoodenSupportSubType::corner0 },
+        .extraSupportRotation = -1,
+        .blockedSegments = kLeftQuarterHelixLargeUpSeq5.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kLeftQuarterHelixLargeDownSeq6 = {
         .clearance = { -64, -64, 0, 0, { 0b1111, 0 }, {} },
         .allowedWallEdges = 0b0001,
         .flags = { SequenceFlag::hasHeightMarker },
+        .woodenSupports = { WoodenSupportSubType::neSw },
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = -1,
-        .blockedSegments = kLeftQuarterTurn5TilesSeq6.blockedSegments,
+        .blockedSegments = kLeftQuarterHelixLargeUpSeq6.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kRightQuarterHelixLargeDownSeq0 = {
         .clearance = { 0, 0, 0, 12, { 0b1111, 0 }, {} },
         .allowedWallEdges = 0b1000,
         .flags = { SequenceFlag::hasHeightMarker },
+        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25even },
         .metalSupports = { MetalSupportPlace::centre },
-        .blockedSegments = kRightQuarterTurn5TilesSeq0.blockedSegments,
+        .extraSupportRotation = 2,
+        .blockedSegments = kRightQuarterHelixLargeUpSeq0.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kRightQuarterHelixLargeDownSeq1 = {
         .clearance = { 0, 32, 0, 12, { 0b0100, 0 }, { ClearanceFlag::flag0 } },
         .allowedWallEdges = 0b0110,
-        .blockedSegments = kRightQuarterTurn5TilesSeq1.blockedSegments,
+        .blockedSegments = kRightQuarterHelixLargeUpSeq1.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kRightQuarterHelixLargeDownSeq2 = {
         .clearance = { -32, 0, 0, 12, { 0b1011, 0 }, {} },
         .allowedWallEdges = 0b1001,
-        .blockedSegments = kRightQuarterTurn5TilesSeq2.blockedSegments,
+        .woodenSupports = { WoodenSupportSubType::corner2 },
+        .blockedSegments = kRightQuarterHelixLargeUpSeq2.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kRightQuarterHelixLargeDownSeq3 = {
         .clearance = { -32, 32, 0, 0, { 0b1110, 0 }, {} },
-        .blockedSegments = kRightQuarterTurn5TilesSeq3.blockedSegments,
+        .woodenSupports = { WoodenSupportSubType::corner0 },
+        .blockedSegments = kRightQuarterBankedHelixLargeUpSeq3.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kRightQuarterHelixLargeDownSeq4 = {
         .clearance = { -32, 64, 0, 0, { 0b0100, 0 }, { ClearanceFlag::flag0 } },
         .allowedWallEdges = 0b0110,
-        .blockedSegments = kRightQuarterTurn5TilesSeq4.blockedSegments,
+        .blockedSegments = kRightQuarterHelixLargeUpSeq4.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kRightQuarterHelixLargeDownSeq5 = {
         .clearance = { -64, 32, 0, 0, { 0b1011, 0 }, {} },
         .allowedWallEdges = 0b1001,
-        .blockedSegments = kRightQuarterTurn5TilesSeq5.blockedSegments,
+        .woodenSupports = { WoodenSupportSubType::corner1 },
+        .extraSupportRotation = 1,
+        .blockedSegments = kRightQuarterHelixLargeUpSeq5.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kRightQuarterHelixLargeDownSeq6 = {
         .clearance = { -64, 64, 0, 0, { 0b1111, 0 }, {} },
         .allowedWallEdges = 0b0001,
         .flags = { SequenceFlag::hasHeightMarker },
+        .woodenSupports = { WoodenSupportSubType::neSw },
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = 1,
-        .blockedSegments = kRightQuarterTurn5TilesSeq6.blockedSegments,
+        .blockedSegments = kRightQuarterHelixLargeUpSeq6.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kUp25LeftBankedSeq0 = {

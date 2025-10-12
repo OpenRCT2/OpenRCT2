@@ -412,12 +412,13 @@
     <ClInclude Include="paint\tile_element\Paint.Surface.h" />
     <ClInclude Include="paint\tile_element\Paint.TileElement.h" />
     <ClInclude Include="paint\tile_element\Paint.Track.h" />
+    <ClInclude Include="paint\tile_element\Paint.Tunnel.h" />
     <ClInclude Include="paint\tile_element\Paint.Wall.h" />
     <ClInclude Include="paint\tile_element\Segment.h" />
-    <ClInclude Include="paint\tile_element\Paint.Tunnel.h" />
     <ClInclude Include="paint\track\coaster\WoodenRollerCoaster.hpp" />
     <ClInclude Include="paint\track\Segment.h" />
     <ClInclude Include="paint\track\Support.h" />
+    <ClInclude Include="paint\track_pieces\QuarterHelix.h" />
     <ClInclude Include="paint\vehicle\Vehicle.MiniGolf.h" />
     <ClInclude Include="paint\vehicle\VehiclePaint.h" />
     <ClInclude Include="paint\VirtualFloor.h" />
@@ -1085,6 +1086,7 @@
     <ClCompile Include="paint\track\water\RiverRapids.cpp" />
     <ClCompile Include="paint\track\water\SplashBoats.cpp" />
     <ClCompile Include="paint\track\water\SubmarineRide.cpp" />
+    <ClCompile Include="paint\track_pieces\QuarterHelix.cpp" />
     <ClCompile Include="paint\vehicle\VehiclePaint.cpp" />
     <ClCompile Include="paint\vehicle\Vehicle.LaunchedFreefall.cpp" />
     <ClCompile Include="paint\vehicle\Vehicle.MiniGolf.cpp" />
