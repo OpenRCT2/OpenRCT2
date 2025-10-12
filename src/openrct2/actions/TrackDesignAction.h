@@ -19,10 +19,11 @@ namespace OpenRCT2::GameActions
     private:
         CoordsXYZD _loc;
         TrackDesign _td;
+        bool _placeScenery{ false };
 
     public:
         TrackDesignAction() = default;
-        TrackDesignAction(const CoordsXYZD& location, const TrackDesign& td);
+        TrackDesignAction(const CoordsXYZD& location, const TrackDesign& td, bool placeScenery);
 
         void AcceptParameters(GameActionParameterVisitor&) final;
 

@@ -27,9 +27,10 @@
 
 namespace OpenRCT2::GameActions
 {
-    TrackDesignAction::TrackDesignAction(const CoordsXYZD& location, const TrackDesign& td)
+    TrackDesignAction::TrackDesignAction(const CoordsXYZD& location, const TrackDesign& td, bool placeScenery)
         : _loc(location)
         , _td(td)
+        , _placeScenery(placeScenery)
     {
     }
 
@@ -50,6 +51,7 @@ namespace OpenRCT2::GameActions
 
         stream << DS_TAG(_loc);
         _td.Serialise(stream);
+        stream << DS_TAG(_placeScenery);
     }
 
     Result TrackDesignAction::Query(GameState_t& gameState) const
@@ -94,7 +96,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_ERR_RIDE_NOT_FOUND);
         }
 
-        bool placeScenery = true;
+        bool placeScenery = _placeScenery;
 
         uint32_t flags = 0;
         if (GetFlags() & GAME_COMMAND_FLAG_GHOST)
@@ -169,7 +171,7 @@ namespace OpenRCT2::GameActions
         // Query first, this is required again to determine if scenery is available.
         uint32_t flags = GetFlags() & ~GAME_COMMAND_FLAG_APPLY;
 
-        bool placeScenery = true;
+        bool placeScenery = _placeScenery;
 
         auto queryRes = TrackDesignPlace(_td, flags, placeScenery, *ride, _loc);
         if (_trackDesignPlaceStateSceneryUnavailable)

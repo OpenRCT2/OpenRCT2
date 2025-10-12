@@ -201,7 +201,7 @@ namespace OpenRCT2::Ui::Windows
             _loadedTrackDesign = TrackDesignImport(path.c_str());
             if (_loadedTrackDesign != nullptr)
             {
-                TrackDesignDrawPreview(*_loadedTrackDesign, _trackDesignPreviewPixels.data());
+                TrackDesignDrawPreview(*_loadedTrackDesign, _trackDesignPreviewPixels.data(), !gTrackDesignSceneryToggle);
                 return true;
             }
             return false;
