@@ -2982,6 +2982,25 @@ bool TrackTypeMustBeMadeInvisible(ride_type_t rideType, TrackElemType trackType,
                 break;
         }
     }
+    else if (
+        (rideType == RIDE_TYPE_STAND_UP_ROLLER_COASTER || rideType == RIDE_TYPE_CLASSIC_STAND_UP_ROLLER_COASTER)
+        && parkFileVersion < kParkFileVersionUprightQuarterHelices)
+    {
+        switch (trackType)
+        {
+            case TrackElemType::leftQuarterHelixLargeUp:
+            case TrackElemType::rightQuarterHelixLargeUp:
+            case TrackElemType::leftQuarterHelixLargeDown:
+            case TrackElemType::rightQuarterHelixLargeDown:
+            case TrackElemType::leftQuarterBankedHelixLargeUp:
+            case TrackElemType::rightQuarterBankedHelixLargeUp:
+            case TrackElemType::leftQuarterBankedHelixLargeDown:
+            case TrackElemType::rightQuarterBankedHelixLargeDown:
+                return true;
+            default:
+                break;
+        }
+    }
 
     return false;
 }
