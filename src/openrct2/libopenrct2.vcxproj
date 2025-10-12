@@ -468,6 +468,7 @@
     <ClInclude Include="ride\rtd\coaster\MiniRollerCoaster.h" />
     <ClInclude Include="ride\rtd\coaster\MiniSuspendedCoaster.h" />
     <ClInclude Include="ride\rtd\coaster\MultiDimensionRollerCoaster.h" />
+    <ClInclude Include="ride\rtd\coaster\PipelineCoaster.h" />
     <ClInclude Include="ride\rtd\coaster\ReverseFreefallCoaster.h" />
     <ClInclude Include="ride\rtd\coaster\ReverserRollerCoaster.h" />
     <ClInclude Include="ride\rtd\coaster\SideFrictionRollerCoaster.h" />
@@ -977,6 +978,7 @@
     <ClCompile Include="paint\track\coaster\MiniRollerCoaster.cpp" />
     <ClCompile Include="paint\track\coaster\MiniSuspendedCoaster.cpp" />
     <ClCompile Include="paint\track\coaster\MultiDimensionRollerCoaster.cpp" />
+    <ClCompile Include="paint\track\coaster\PipelineCoaster.cpp" />
     <ClCompile Include="paint\track\coaster\ReverseFreefallCoaster.cpp" />
     <ClCompile Include="paint\track\coaster\ReverserRollerCoaster.cpp" />
     <ClCompile Include="paint\track\coaster\SideFrictionRollerCoaster.cpp" />

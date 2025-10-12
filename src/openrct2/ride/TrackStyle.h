@@ -71,6 +71,7 @@ enum class TrackStyle : uint8_t
     multiDimensionRollerCoaster,
     multiDimensionRollerCoasterInverted,
     observationTower,
+    pipelineCoaster,
     reverseFreefallCoaster,
     reverserRollerCoaster,
     riverRapids,
