@@ -1,6 +1,8 @@
 0.4.28 (in development)
 ------------------------------------------------------------------------
 - Change: [#25089] Peep actions and animations that cause them to stop moving no longer trigger when they are on a level crossing.
+- Change: [#25337] Placing track designs with scenery that is obstructed no longer disables all of the scenery.
+- Fix: [#20486] Multiplayer desync when placing track designs without any scenery.
 - Fix: [#22779, #25330] Incorrect queue paths in Nevermore Park and Six Flags Holland scenarios (bug in the original scenarios).
 - Fix: [#25299] The Mine Train Coaster left large helix draws incorrect sprites at certain angles (original bug).
 - Fix: [#25328] Spiral Slide in Blackpool Pleasure Beach has its entrance and exit the wrong way round (bug in the original scenario).
