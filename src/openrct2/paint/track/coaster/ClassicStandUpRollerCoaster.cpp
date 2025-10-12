@@ -1523,6 +1523,10 @@ TrackPaintFunction GetTrackPaintFunctionClassicStandUpRC(OpenRCT2::TrackElemType
         case TrackElemType::RightBankToRightQuarterTurn3TilesUp25:
         case TrackElemType::LeftQuarterTurn3TilesDown25ToLeftBank:
         case TrackElemType::RightQuarterTurn3TilesDown25ToRightBank:
+        case TrackElemType::LeftQuarterBankedHelixLargeUp:
+        case TrackElemType::RightQuarterBankedHelixLargeUp:
+        case TrackElemType::LeftQuarterBankedHelixLargeDown:
+        case TrackElemType::RightQuarterBankedHelixLargeDown:
             return TrackPaintFunctionDummy;
 
         default:
