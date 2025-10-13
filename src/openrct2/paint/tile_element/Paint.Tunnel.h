@@ -69,6 +69,16 @@ enum class TunnelSubType : uint8_t
 };
 constexpr uint8_t kTunnelSubTypeCount = 5;
 
+enum class TunnelSlope : uint8_t
+{
+    flat,
+    up25,
+    down25,
+    flatToDown25,
+    tall,
+};
+constexpr uint8_t kTunnelSlopeCount = 5;
+
 struct TunnelEntry
 {
     uint8_t height;
