@@ -3191,12 +3191,12 @@ namespace OpenRCT2::TrackMetaData
         { TrackGroup::liftHillCable,                     TrackPitch::Down60,           TrackPitch::Up25,           TrackRoll::None,        TrackRoll::None,        0   }, // TrackElemType::CableLiftHill
         { TrackGroup::reverseFreefall,                   TrackPitch::ReverseFreefall,  TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        0   }, // TrackElemType::ReverseFreefallSlope
         { TrackGroup::reverseFreefall,                   TrackPitch::ReverseFreefall,  TrackPitch::ReverseFreefall,TrackRoll::None,        TrackRoll::None,        0   }, // TrackElemType::ReverseFreefallVertical
-        { TrackGroup::flat,                              TrackPitch::Up90,             TrackPitch::Up90,           TrackRoll::None,        TrackRoll::None,        0   }, // TrackElemType::Up90
-        { TrackGroup::flat,                              TrackPitch::Down90,           TrackPitch::Down90,         TrackRoll::None,        TrackRoll::None,        0   }, // TrackElemType::Down90
-        { TrackGroup::flat,                              TrackPitch::Up90,             TrackPitch::Up60,           TrackRoll::None,        TrackRoll::None,        0   }, // TrackElemType::Up60ToUp90
-        { TrackGroup::flat,                              TrackPitch::Down60,           TrackPitch::Down90,         TrackRoll::None,        TrackRoll::None,        0   }, // TrackElemType::Down90ToDown60
-        { TrackGroup::flat,                              TrackPitch::Up60,             TrackPitch::Up90,           TrackRoll::None,        TrackRoll::None,        0   }, // TrackElemType::Up90ToUp60
-        { TrackGroup::flat,                              TrackPitch::Down90,           TrackPitch::Down60,         TrackRoll::None,        TrackRoll::None,        0   }, // TrackElemType::Down60ToDown90
+        { TrackGroup::slopeVertical,                     TrackPitch::Up90,             TrackPitch::Up90,           TrackRoll::None,        TrackRoll::None,        0   }, // TrackElemType::Up90
+        { TrackGroup::slopeVertical,                     TrackPitch::Down90,           TrackPitch::Down90,         TrackRoll::None,        TrackRoll::None,        0   }, // TrackElemType::Down90
+        { TrackGroup::slopeVertical,                     TrackPitch::Up90,             TrackPitch::Up60,           TrackRoll::None,        TrackRoll::None,        0   }, // TrackElemType::Up60ToUp90
+        { TrackGroup::slopeVertical,                     TrackPitch::Down60,           TrackPitch::Down90,         TrackRoll::None,        TrackRoll::None,        0   }, // TrackElemType::Down90ToDown60
+        { TrackGroup::slopeVertical,                     TrackPitch::Up60,             TrackPitch::Up90,           TrackRoll::None,        TrackRoll::None,        0   }, // TrackElemType::Up90ToUp60
+        { TrackGroup::slopeVertical,                     TrackPitch::Down90,           TrackPitch::Down60,         TrackRoll::None,        TrackRoll::None,        0   }, // TrackElemType::Down60ToDown90
         { TrackGroup::brakeForDrop,                      TrackPitch::Down60,           TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        0   }, // TrackElemType::BrakeForDrop
         { TrackGroup::flat,                              TrackPitch::None,             TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        0   }, // TrackElemType::LeftEighthToDiag
         { TrackGroup::flat,                              TrackPitch::None,             TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        0   }, // TrackElemType::RightEighthToDiag
