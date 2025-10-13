@@ -62,10 +62,12 @@ constexpr uint8_t kTunnelGroupCount = 3;
 enum class TunnelStyle : uint8_t
 {
     standard,
-    square,
     inverted,
+    square,
+    invertedSquare,
+    standardWithPath,
 };
-constexpr uint8_t kTunnelStyleCount = 3;
+constexpr uint8_t kTunnelStyleCount = 5;
 
 enum class TunnelSlope : uint8_t
 {
