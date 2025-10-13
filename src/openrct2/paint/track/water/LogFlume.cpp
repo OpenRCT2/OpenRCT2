@@ -210,8 +210,6 @@ static void PaintLogFlumeTrackStation(
         }
     }
 
-    TrackPaintUtilDrawStationTunnel(session, direction, height);
-
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }

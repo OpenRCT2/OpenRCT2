@@ -84,7 +84,6 @@ namespace OpenRCT2::HybridRC
 
         TrackPaintUtilDrawNarrowStationPlatform(session, ride, direction, height, 10, trackElement, StationBaseType::none, 0);
 
-        TrackPaintUtilDrawStationTunnel(session, direction, height);
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
     }
@@ -5898,8 +5897,6 @@ namespace OpenRCT2::HybridRC
                     session, supportType.wooden, WoodenSupportSubType::corner2, height, session.SupportColours);
                 break;
         }
-        TrackPaintUtilLeftQuarterTurn1TileTunnel(
-            session, kTunnelGroup, direction, height, -8, TunnelSubType::SlopeStart, +56, TunnelSubType::SlopeEnd);
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 104);
     }
@@ -5951,8 +5948,6 @@ namespace OpenRCT2::HybridRC
                     session, supportType.wooden, WoodenSupportSubType::corner1, height, session.SupportColours);
                 break;
         }
-        TrackPaintUtilRightQuarterTurn1TileTunnel(
-            session, kTunnelGroup, direction, height, -8, TunnelSubType::SlopeStart, +56, TunnelSubType::SlopeEnd);
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 104);
     }

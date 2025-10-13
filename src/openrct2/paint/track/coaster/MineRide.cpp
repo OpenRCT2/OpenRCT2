@@ -68,7 +68,6 @@ static void MineRideTrackStation(
         MetalASupportsPaintSetupRotated(
             session, supportType.metal, MetalSupportPlace::centre, direction, 6, height, session.SupportColours);
     }
-    TrackPaintUtilDrawStationTunnel(session, direction, height);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }

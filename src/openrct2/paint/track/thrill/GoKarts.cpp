@@ -1826,7 +1826,6 @@ static void TrackLeftQuarterTurn3Tiles(
             session, supportType.wooden, woodenSupportSubType, direction, height, session.SupportColours,
             WoodenSupportTransitionType::none);
     }
-    TrackPaintUtilLeftQuarterTurn3TilesTunnel(session, kTunnelGroup, TunnelSubType::Flat, height, direction, trackSequence);
     static constexpr std::array<int32_t, 4> blockedSegments = {
         kSegmentsAll,
         EnumsToFlags(PaintSegment::right, PaintSegment::topRight, PaintSegment::bottomRight),

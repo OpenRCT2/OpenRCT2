@@ -698,8 +698,6 @@ static void PaintSplashBoatsStation(
         PaintAddImageAsParentRotated(session, direction, frontId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 26 } });
     }
 
-    TrackPaintUtilDrawStationTunnel(session, direction, height);
-
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
