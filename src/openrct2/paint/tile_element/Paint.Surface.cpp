@@ -117,19 +117,19 @@ static constexpr TunnelDescriptor kTunnels[] = {
     { 2, 2, 0,   15, TunnelType::standardFlat,                    36 }, // TunnelType::standardFlat
     { 3, 3, 0,   15, TunnelType::standardFlat,                    40 }, // TunnelType::standardUp25
     { 3, 5, -32,  4, TunnelType::standardFlat,                    44 }, // TunnelType::standardDown25
+    { 2, 3, -16,  4, TunnelType::standardFlatToDown25,            36 }, // TunnelType::standardFlatToDown25
     { 3, 3, 0,   15, TunnelType::invertedFlat,                    48 }, // TunnelType::invertedFlat
     { 4, 4, 0,   15, TunnelType::invertedFlat,                    52 }, // TunnelType::invertedUp25
     { 4, 7, -48,  4, TunnelType::invertedFlat,                    56 }, // TunnelType::invertedDown25
+    { 3, 4, -16,  4, TunnelType::invertedFlatToDown25,            48 }, // TunnelType::invertedFlatToDown25
     { 2, 2, 0,   15, TunnelType::squareFlat,                      60 }, // TunnelType::squareFlat
     { 3, 3, 0,   15, TunnelType::squareFlat,                      64 }, // TunnelType::squareUp25
     { 3, 5, -32,  4, TunnelType::squareFlat,                      68 }, // TunnelType::squareDown25
+    { 2, 3, -16,  4, TunnelType::squareFlatToDown25,              60 }, // TunnelType::squareFlatToDown25
     { 3, 3, 0,   15, TunnelType::squareFlat,                      72 }, // TunnelType::invertedSquareFlat
+    { 3, 4, -16,  4, TunnelType::squareFlatToDown25,              72 }, // TunnelType::invertedSquareFlatToDown25
     { 2, 3, -16, 15, TunnelType::path,                            76 }, // TunnelType::path
     { 2, 3, -16, 15, TunnelType::pathOpenBack,                    80 }, // TunnelType::pathOpenBack
-    { 2, 3, -16,  4, TunnelType::standardFlatToDown25,            36 }, // TunnelType::standardFlatToDown25
-    { 3, 4, -16,  4, TunnelType::invertedFlatToDown25,            48 }, // TunnelType::invertedFlatToDown25
-    { 2, 3, -16,  4, TunnelType::squareFlatToDown25,              60 }, // TunnelType::squareFlatToDown25
-    { 3, 4, -16,  4, TunnelType::squareFlatToDown25,              72 }, // TunnelType::invertedSquareFlatToDown25
     { 2, 2, 0,   15, TunnelType::doorClosed,                      84 }, // TunnelType::doorClosed
     { 2, 2, 0,   15, TunnelType::doorOpeningOutward,              88 }, // TunnelType::doorOpeningOutward
     { 2, 2, 0,   15, TunnelType::doorOpenOutward,                 92 }, // TunnelType::doorOpenOutward
