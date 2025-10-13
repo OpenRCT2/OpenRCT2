@@ -1353,8 +1353,6 @@ static void PaintGoKartsTrackFlat(
 
         imageId = session.TrackColours.WithIndex(SPR_GO_KARTS_FLAT_FRONT_SW_NE);
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 29, height + 2 }, { 32, 1, 3 } });
-
-        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
     }
     else
     {
@@ -1363,8 +1361,6 @@ static void PaintGoKartsTrackFlat(
 
         imageId = session.TrackColours.WithIndex(SPR_GO_KARTS_FLAT_FRONT_NW_SE);
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 29, 0, height + 2 }, { 1, 32, 3 } });
-
-        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
     }
 
     DrawSupportForSequenceA<TrackElemType::Flat>(
@@ -1407,22 +1403,6 @@ static void PaintGoKartsTrack25DegUp(
     DrawSupportForSequenceA<TrackElemType::Up25>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
-    switch (direction)
-    {
-        case 0:
-            PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
-            break;
-        case 1:
-            PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
-            break;
-        case 2:
-            PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
-            break;
-        case 3:
-            PaintUtilPushTunnelRight(session, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
-            break;
-    }
-
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
@@ -1460,22 +1440,6 @@ static void PaintGoKartsTrackFlatTo25DegUp(
     DrawSupportForSequenceA<TrackElemType::FlatToUp25>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
-    switch (direction)
-    {
-        case 0:
-            PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
-            break;
-        case 1:
-            PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::SlopeEnd);
-            break;
-        case 2:
-            PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::SlopeEnd);
-            break;
-        case 3:
-            PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
-            break;
-    }
-
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
@@ -1512,23 +1476,6 @@ static void PaintGoKartsTrack25DegUpToFlat(
 
     DrawSupportForSequenceA<TrackElemType::Up25ToFlat>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-
-    switch (direction)
-    {
-        case 0:
-
-            PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroup, TunnelSubType::Flat);
-            break;
-        case 1:
-            PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
-            break;
-        case 2:
-            PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
-            break;
-        case 3:
-            PaintUtilPushTunnelRight(session, height - 8, kTunnelGroup, TunnelSubType::Flat);
-            break;
-    }
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 40);
@@ -1600,14 +1547,10 @@ static void PaintGoKartsStation(
     if (direction == 0 || direction == 2)
     {
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 29, height + 2 }, { 32, 1, 3 } });
-
-        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
     }
     else
     {
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 29, 0, height + 2 }, { 1, 32, 3 } });
-
-        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
     }
 
     if (direction == 0 || direction == 2)
@@ -1719,20 +1662,6 @@ static void PaintGoKartsTrackLeftQuarterTurn1Tile(
             break;
     }
 
-    switch (direction)
-    {
-        case 0:
-            PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
-            break;
-        case 2:
-            PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
-            break;
-        case 3:
-            PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
-            PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
-            break;
-    }
-
     WoodenASupportsPaintSetupRotated(
         session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours);
 
@@ -1762,14 +1691,6 @@ static void TrackUp60(
     WoodenASupportsPaintSetupRotated(
         session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
         WoodenSupportTransitionType::up60Deg);
-    if (direction == 0 || direction == 3)
-    {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
-    }
-    else
-    {
-        PaintUtilPushTunnelRotated(session, direction, height + 56, kTunnelGroup, TunnelSubType::SlopeEnd);
-    }
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 104);
 }
@@ -1788,14 +1709,6 @@ static void TrackUp25ToUp60(
     WoodenASupportsPaintSetupRotated(
         session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
         WoodenSupportTransitionType::up25DegToUp60Deg);
-    if (direction == 0 || direction == 3)
-    {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
-    }
-    else
-    {
-        PaintUtilPushTunnelRotated(session, direction, height + 24, kTunnelGroup, TunnelSubType::SlopeEnd);
-    }
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 72);
 }
@@ -1814,14 +1727,6 @@ static void TrackUp60ToUp25(
     WoodenASupportsPaintSetupRotated(
         session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
         WoodenSupportTransitionType::up60DegToUp25Deg);
-    if (direction == 0 || direction == 3)
-    {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
-    }
-    else
-    {
-        PaintUtilPushTunnelRotated(session, direction, height + 24, kTunnelGroup, TunnelSubType::SlopeEnd);
-    }
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 72);
 }
@@ -1860,14 +1765,6 @@ static void TrackFlatToUp60LongBase(
 
     DrawSupportForSequenceA<TrackElemType::FlatToUp60LongBase>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-    if (trackSequence == 0 && (direction == 0 || direction == 3))
-    {
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-    }
-    else if (trackSequence == 3 && (direction == 1 || direction == 2))
-    {
-        PaintUtilPushTunnelRotated(session, direction, height + 24, kTunnelGroup, TunnelSubType::SlopeEnd);
-    }
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     static constexpr std::array generalSupportHeights = { 48, 48, 64, 80 };
     PaintUtilSetGeneralSupportHeight(session, height + generalSupportHeights[trackSequence]);
@@ -1886,14 +1783,6 @@ static void TrackUp60ToFlatLongBase(
 
     DrawSupportForSequenceA<TrackElemType::Up60ToFlatLongBase>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-    if (trackSequence == 0 && (direction == 0 || direction == 3))
-    {
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeStart);
-    }
-    else if (trackSequence == 3 && (direction == 1 || direction == 2))
-    {
-        PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
-    }
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     static constexpr std::array generalSupportHeights = { 80, 80, 56, 40 };
     PaintUtilSetGeneralSupportHeight(session, height + generalSupportHeights[trackSequence]);
@@ -1973,14 +1862,6 @@ static void TrackLeftQuarterTurn5Tiles(
 
     DrawSupportForSequenceA<OpenRCT2::TrackElemType::LeftQuarterTurn5Tiles>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-    if (trackSequence == 0 && (direction == 0 || direction == 3))
-    {
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-    }
-    else if (trackSequence == 6 && (direction == 2 || direction == 3))
-    {
-        PaintUtilPushTunnelRotated(session, DirectionPrev(direction), height, kTunnelGroup, TunnelSubType::Flat);
-    }
     static constexpr std::array<int32_t, 7> blockedSegments = {
         kSegmentsAll,
         EnumsToFlags(PaintSegment::right, PaintSegment::topRight, PaintSegment::bottomRight),
@@ -2025,10 +1906,6 @@ static void TrackLeftEighthToDiag(
 
     DrawSupportForSequenceA<OpenRCT2::TrackElemType::LeftEighthToDiag>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-    if (trackSequence == 0 && (direction == 0 || direction == 3))
-    {
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-    }
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
@@ -2049,10 +1926,6 @@ static void TrackRightEighthToDiag(
 
     DrawSupportForSequenceA<OpenRCT2::TrackElemType::RightEighthToDiag>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-    if (trackSequence == 0 && (direction == 0 || direction == 3))
-    {
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-    }
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
@@ -2285,15 +2158,6 @@ static void TrackLeftQuarterTurn3TilesUp25(
             height, session.SupportColours, woodenSupportTransitionTypes[trackSequence]);
     }
 
-    if (trackSequence == 0 && (direction == 0 || direction == 3))
-    {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
-    }
-    else if (trackSequence == 3 && (direction == 2 || direction == 3))
-    {
-        PaintUtilPushTunnelRotated(session, DirectionPrev(direction), height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
-    }
-
     static constexpr std::array<int32_t, 4> blockedSegments = {
         kSegmentsAll,
         EnumsToFlags(PaintSegment::right, PaintSegment::topRight, PaintSegment::bottomRight),
@@ -2341,15 +2205,6 @@ static void TrackRightQuarterTurn3TilesUp25(
         WoodenASupportsPaintSetupRotated(
             session, supportType.wooden, woodenSupportSubType, (direction + woodenSupportExtraRotation[trackSequence]) & 3,
             height, session.SupportColours, woodenSupportTransitionTypes[trackSequence]);
-    }
-
-    if (trackSequence == 0 && (direction == 0 || direction == 3))
-    {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
-    }
-    else if (trackSequence == 3 && (direction == 0 || direction == 1))
-    {
-        PaintUtilPushTunnelRotated(session, DirectionNext(direction), height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
 
     static constexpr std::array<int32_t, 4> blockedSegments = {
@@ -2412,15 +2267,6 @@ static void TrackLeftQuarterTurn5TilesUp25(
             height + woodenSupportHeight[trackSequence], session.SupportColours, woodenSupportTransitionTypes[trackSequence]);
     }
 
-    if (trackSequence == 0 && (direction == 0 || direction == 3))
-    {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
-    }
-    else if (trackSequence == 6 && (direction == 2 || direction == 3))
-    {
-        PaintUtilPushTunnelRotated(session, DirectionPrev(direction), height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
-    }
-
     static constexpr std::array<int32_t, 7> blockedSegments = {
         kSegmentsAll,
         EnumsToFlags(PaintSegment::right, PaintSegment::topRight, PaintSegment::bottomRight),
@@ -2470,15 +2316,6 @@ static void TrackRightQuarterTurn5TilesUp25(
         WoodenASupportsPaintSetupRotated(
             session, supportType.wooden, woodenSupportSubType, (direction + woodenSupportExtraRotation[trackSequence]) & 3,
             height + woodenSupportHeight[trackSequence], session.SupportColours, woodenSupportTransitionTypes[trackSequence]);
-    }
-
-    if (trackSequence == 0 && (direction == 0 || direction == 3))
-    {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
-    }
-    else if (trackSequence == 6 && (direction == 0 || direction == 1))
-    {
-        PaintUtilPushTunnelRotated(session, DirectionNext(direction), height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
 
     static constexpr std::array<int32_t, 7> blockedSegments = {
@@ -2548,11 +2385,6 @@ static void TrackLeftEighthToDiagUp25(
             session.SupportColours, woodenSupportTransitionTypes[trackSequence]);
     }
 
-    if (trackSequence == 0 && (direction == 0 || direction == 3))
-    {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
-    }
-
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 72);
 }
@@ -2585,11 +2417,6 @@ static void TrackRightEighthToDiagUp25(
             session.SupportColours, woodenSupportTransitionTypes[trackSequence]);
     }
 
-    if (trackSequence == 0 && (direction == 0 || direction == 3))
-    {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
-    }
-
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 72);
 }
@@ -2617,11 +2444,6 @@ static void TrackLeftEighthToOrthogonalUp25(
             WoodenSupportTransitionType::none);
     }
 
-    if (trackSequence == 4 && (direction == 1 || direction == 2))
-    {
-        PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
-    }
-
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 72);
 }
@@ -2647,11 +2469,6 @@ static void TrackRightEighthToOrthogonalUp25(
         WoodenASupportsPaintSetupRotated(
             session, supportType.wooden, woodenSupportSubType, direction, height, session.SupportColours,
             WoodenSupportTransitionType::none);
-    }
-
-    if (trackSequence == 4 && (direction == 0 || direction == 1))
-    {
-        PaintUtilPushTunnelRotated(session, DirectionNext(direction), height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -2710,11 +2527,6 @@ static void TrackSBendLeft(
 
     DrawSupportForSequenceA<OpenRCT2::TrackElemType::SBendLeft>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-    if ((trackSequence == 0 && (direction == 0 || direction == 3))
-        || (trackSequence == 3 && (direction == 1 || direction == 2)))
-    {
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-    }
     static constexpr std::array<int32_t, 4> blockedSegments = {
         kSegmentsAll,
         EnumsToFlags(
@@ -2745,11 +2557,6 @@ static void TrackSBendRight(
 
     DrawSupportForSequenceA<OpenRCT2::TrackElemType::SBendRight>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-    if ((trackSequence == 0 && (direction == 0 || direction == 3))
-        || (trackSequence == 3 && (direction == 1 || direction == 2)))
-    {
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-    }
     static constexpr std::array<int32_t, 4> blockedSegments = {
         kSegmentsAll,
         EnumsToFlags(

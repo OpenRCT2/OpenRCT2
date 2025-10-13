@@ -211,13 +211,11 @@ static void PaintReverseFreefallRCFlat(
     {
         auto imageId = session.TrackColours.WithIndex(SPR_REVERSE_FREEFALL_RC_FLAT_NW_SE);
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 6, 0, height }, { 20, 32, 1 } });
-        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
     }
     else
     {
         auto imageId = session.TrackColours.WithIndex(SPR_REVERSE_FREEFALL_RC_FLAT_SW_NE);
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
-        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
     }
 
     DrawSupportForSequenceA<TrackElemType::Flat>(
@@ -259,7 +257,6 @@ static void PaintReverseFreefallRCSlope(
     static constexpr int8_t bbHeights03[] = { 1, 6, 14, 37, 64 };
     static constexpr int8_t bbHeights12[] = { 1, 6, 14, 27, 59 };
     static constexpr int32_t supportHeights[] = { 48, 64, 128, 176, 208, 240, 240 };
-    static constexpr int32_t tunnelOffsets03[] = { 0, 0, 0, 16, 64 };
 
     auto supportsImageId = session.SupportColours.WithIndex(kPiecesSlopeSupports[trackSequence][direction]);
     auto trackImageId = session.TrackColours.WithIndex(kPiecesSlope[trackSequence][direction]);
@@ -279,16 +276,6 @@ static void PaintReverseFreefallRCSlope(
                     session, direction, supportsImageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, bbHeight } });
                 PaintAddImageAsChildRotated(
                     session, direction, trackImageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, bbHeight } });
-
-                int32_t tunnelOffset = tunnelOffsets03[trackSequence];
-                if (direction & 1)
-                {
-                    PaintUtilPushTunnelRight(session, height + tunnelOffset, kTunnelGroup, TunnelSubType::Flat);
-                }
-                else
-                {
-                    PaintUtilPushTunnelLeft(session, height + tunnelOffset, kTunnelGroup, TunnelSubType::Flat);
-                }
             }
             else
             {
