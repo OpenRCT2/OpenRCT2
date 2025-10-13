@@ -102,7 +102,6 @@ static void LayDownRCTrackFlat(
             session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.SupportColours);
     }
 
-    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
@@ -216,14 +215,6 @@ static void LayDownRCTrack25DegUp(
         }
     }
 
-    if (direction == 0 || direction == 3)
-    {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
-    }
-    else
-    {
-        PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
-    }
     PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
@@ -254,14 +245,6 @@ static void LayDownRCTrack60DegUp(
                 session, direction, session.TrackColours.WithIndex(26588), { 0, 0, height + 24 },
                 { { 0, 6, height + 88 }, { 32, 20, 3 } });
             break;
-    }
-    if (direction == 0 || direction == 3)
-    {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
-    }
-    else
-    {
-        PaintUtilPushTunnelRotated(session, direction, height + 56, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 104);
@@ -349,14 +332,6 @@ static void LayDownRCTrackFlatTo25DegUp(
         }
     }
 
-    if (direction == 0 || direction == 3)
-    {
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-    }
-    else
-    {
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeEnd);
-    }
     PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
@@ -393,14 +368,6 @@ static void LayDownRCTrack25DegUpTo60DegUp(
                 session, direction, session.TrackColours.WithIndex(26576), { 0, 0, height + 24 },
                 { { 0, 6, height + 56 }, { 32, 20, 3 } });
             break;
-    }
-    if (direction == 0 || direction == 3)
-    {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
-    }
-    else
-    {
-        PaintUtilPushTunnelRotated(session, direction, height + 24, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 72);
@@ -465,14 +432,6 @@ static void LayDownRCTrack60DegUpTo25DegUp(
         }
     }
 
-    if (direction == 0 || direction == 3)
-    {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
-    }
-    else
-    {
-        PaintUtilPushTunnelRotated(session, direction, height + 24, kTunnelGroup, TunnelSubType::SlopeEnd);
-    }
     PaintUtilSetGeneralSupportHeight(session, height + 72);
 }
 
@@ -558,14 +517,6 @@ static void LayDownRCTrack25DegUpToFlat(
         }
     }
 
-    if (direction == 0 || direction == 3)
-    {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::Flat);
-    }
-    else
-    {
-        PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
-    }
     PaintUtilSetGeneralSupportHeight(session, height + 40);
 }
 
@@ -660,10 +611,6 @@ static void LayDownRCTrackLeftQuarterTurn5(
             MetalASupportsPaintSetup(
                 session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.SupportColours);
 
-            if (direction == 0 || direction == 3)
-            {
-                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-            }
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
@@ -808,15 +755,6 @@ static void LayDownRCTrackLeftQuarterTurn5(
             MetalASupportsPaintSetup(
                 session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.SupportColours);
 
-            switch (direction)
-            {
-                case 2:
-                    PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
-                    break;
-                case 3:
-                    PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
-                    break;
-            }
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
@@ -874,7 +812,6 @@ static void LayDownRCTrackFlatToLeftBank(
             session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.SupportColours);
     }
 
-    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
@@ -921,7 +858,6 @@ static void LayDownRCTrackFlatToRightBank(
             session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.SupportColours);
     }
 
-    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
@@ -968,7 +904,6 @@ static void LayDownRCTrackLeftBankToFlat(
             session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.SupportColours);
     }
 
-    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
@@ -1015,7 +950,6 @@ static void LayDownRCTrackRightBankToFlat(
             session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.SupportColours);
     }
 
-    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
@@ -1062,10 +996,6 @@ static void LayDownRCTrackBankedLeftQuarterTurn5(
             MetalASupportsPaintSetup(
                 session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.SupportColours);
 
-            if (direction == 0 || direction == 3)
-            {
-                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-            }
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
@@ -1205,15 +1135,6 @@ static void LayDownRCTrackBankedLeftQuarterTurn5(
             MetalASupportsPaintSetup(
                 session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.SupportColours);
 
-            switch (direction)
-            {
-                case 2:
-                    PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
-                    break;
-                case 3:
-                    PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
-                    break;
-            }
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
@@ -1288,14 +1209,6 @@ static void LayDownRCTrackLeftBankTo25DegUp(
         }
     }
 
-    if (direction == 0 || direction == 3)
-    {
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-    }
-    else
-    {
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeEnd);
-    }
     PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
@@ -1359,14 +1272,6 @@ static void LayDownRCTrackRightBankTo25DegUp(
         }
     }
 
-    if (direction == 0 || direction == 3)
-    {
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-    }
-    else
-    {
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeEnd);
-    }
     PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
@@ -1430,14 +1335,6 @@ static void LayDownRCTrack25DegUpToLeftBank(
         }
     }
 
-    if (direction == 0 || direction == 3)
-    {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::Flat);
-    }
-    else
-    {
-        PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
-    }
     PaintUtilSetGeneralSupportHeight(session, height + 40);
 }
 
@@ -1501,14 +1398,6 @@ static void LayDownRCTrack25DegUpToRightBank(
         }
     }
 
-    if (direction == 0 || direction == 3)
-    {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::Flat);
-    }
-    else
-    {
-        PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
-    }
     PaintUtilSetGeneralSupportHeight(session, height + 40);
 }
 
@@ -1587,7 +1476,6 @@ static void LayDownRCTrackLeftBank(
             session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.SupportColours);
     }
 
-    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
@@ -1638,10 +1526,6 @@ static void LayDownRCTrackLeftQuarterTurn525DegUp(
             MetalASupportsPaintSetup(
                 session, supportType.metal, MetalSupportPlace::centre, 0, height + 43, session.SupportColours);
 
-            if (direction == 0 || direction == 3)
-            {
-                PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
-            }
             PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
@@ -1770,15 +1654,6 @@ static void LayDownRCTrackLeftQuarterTurn525DegUp(
             MetalASupportsPaintSetup(
                 session, supportType.metal, MetalSupportPlace::centre, 0, height + 43, session.SupportColours);
 
-            switch (direction)
-            {
-                case 2:
-                    PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
-                    break;
-                case 3:
-                    PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
-                    break;
-            }
             PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
     }
@@ -1823,10 +1698,6 @@ static void LayDownRCTrackRightQuarterTurn525DegUp(
             MetalASupportsPaintSetup(
                 session, supportType.metal, MetalSupportPlace::centre, 0, height + 43, session.SupportColours);
 
-            if (direction == 0 || direction == 3)
-            {
-                PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
-            }
             PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
@@ -1955,15 +1826,6 @@ static void LayDownRCTrackRightQuarterTurn525DegUp(
             MetalASupportsPaintSetup(
                 session, supportType.metal, MetalSupportPlace::centre, 0, height + 43, session.SupportColours);
 
-            switch (direction)
-            {
-                case 0:
-                    PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
-                    break;
-                case 1:
-                    PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
-                    break;
-            }
             PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
     }
@@ -2028,10 +1890,6 @@ static void LayDownRCTrackSBendLeft(
                 0xFFFF, 0);
             DrawSBendLeftSupports(session, supportType.metal, trackSequence, direction, height + kSupportHeight, 0, 0);
 
-            if (direction == 0 || direction == 3)
-            {
-                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-            }
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
@@ -2141,15 +1999,6 @@ static void LayDownRCTrackSBendLeft(
                 0xFFFF, 0);
             DrawSBendLeftSupports(session, supportType.metal, trackSequence, direction, height + kSupportHeight, 0, 0);
 
-            switch (direction)
-            {
-                case 1:
-                    PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
-                    break;
-                case 2:
-                    PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
-                    break;
-            }
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
@@ -2195,10 +2044,6 @@ static void LayDownRCTrackSBendRight(
                 0xFFFF, 0);
             DrawSBendRightSupports(session, supportType.metal, trackSequence, direction, height + kSupportHeight, 0, 0);
 
-            if (direction == 0 || direction == 3)
-            {
-                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-            }
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
@@ -2308,15 +2153,6 @@ static void LayDownRCTrackSBendRight(
                 0xFFFF, 0);
             DrawSBendRightSupports(session, supportType.metal, trackSequence, direction, height + kSupportHeight, 0, 0);
 
-            switch (direction)
-            {
-                case 1:
-                    PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
-                    break;
-                case 2:
-                    PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
-                    break;
-            }
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
@@ -2365,10 +2201,6 @@ static void LayDownRCTrackLeftQuarterTurn3(
             MetalASupportsPaintSetup(
                 session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.SupportColours);
 
-            if (direction == 0 || direction == 3)
-            {
-                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-            }
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
@@ -2442,15 +2274,6 @@ static void LayDownRCTrackLeftQuarterTurn3(
             MetalASupportsPaintSetup(
                 session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.SupportColours);
 
-            switch (direction)
-            {
-                case 2:
-                    PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
-                    break;
-                case 3:
-                    PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
-                    break;
-            }
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
@@ -2508,10 +2331,6 @@ static void LayDownRCTrackLeftQuarterTurn3Bank(
             MetalASupportsPaintSetup(
                 session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.SupportColours);
 
-            if (direction == 0 || direction == 3)
-            {
-                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-            }
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
@@ -2585,15 +2404,6 @@ static void LayDownRCTrackLeftQuarterTurn3Bank(
             MetalASupportsPaintSetup(
                 session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.SupportColours);
 
-            switch (direction)
-            {
-                case 2:
-                    PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
-                    break;
-                case 3:
-                    PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
-                    break;
-            }
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
@@ -2647,10 +2457,6 @@ static void LayDownRCTrackLeftQuarterTurn325DegUp(
             MetalASupportsPaintSetup(
                 session, supportType.metal, MetalSupportPlace::centre, 0, height + 41, session.SupportColours);
 
-            if (direction == 0 || direction == 3)
-            {
-                PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
-            }
             PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
@@ -2691,15 +2497,6 @@ static void LayDownRCTrackLeftQuarterTurn325DegUp(
             MetalASupportsPaintSetup(
                 session, supportType.metal, MetalSupportPlace::centre, 0, height + 41, session.SupportColours);
 
-            switch (direction)
-            {
-                case 2:
-                    PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
-                    break;
-                case 3:
-                    PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
-                    break;
-            }
             PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
     }
@@ -2744,10 +2541,6 @@ static void LayDownRCTrackRightQuarterTurn325DegUp(
             MetalASupportsPaintSetup(
                 session, supportType.metal, MetalSupportPlace::centre, 0, height + 41, session.SupportColours);
 
-            if (direction == 0 || direction == 3)
-            {
-                PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
-            }
             PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
@@ -2788,15 +2581,6 @@ static void LayDownRCTrackRightQuarterTurn325DegUp(
             MetalASupportsPaintSetup(
                 session, supportType.metal, MetalSupportPlace::centre, 0, height + 41, session.SupportColours);
 
-            switch (direction)
-            {
-                case 0:
-                    PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
-                    break;
-                case 1:
-                    PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
-                    break;
-            }
             PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
     }
@@ -2960,7 +2744,6 @@ static void LayDownRCTrackBrakes(
             session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.SupportColours);
     }
 
-    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
@@ -3034,10 +2817,6 @@ static void LayDownRCTrackLeftEighthToDiag(
             MetalASupportsPaintSetup(
                 session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.SupportColours);
 
-            if (direction == 0 || direction == 3)
-            {
-                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-            }
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
@@ -3216,10 +2995,6 @@ static void LayDownRCTrackRightEighthToDiag(
             MetalASupportsPaintSetup(
                 session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.SupportColours);
 
-            if (direction == 0 || direction == 3)
-            {
-                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-            }
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
@@ -3422,10 +3197,6 @@ static void LayDownRCTrackLeftEighthBankToDiag(
             MetalASupportsPaintSetup(
                 session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.SupportColours);
 
-            if (direction == 0 || direction == 3)
-            {
-                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-            }
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
@@ -3608,10 +3379,6 @@ static void LayDownRCTrackRightEighthBankToDiag(
             MetalASupportsPaintSetup(
                 session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.SupportColours);
 
-            if (direction == 0 || direction == 3)
-            {
-                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-            }
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
@@ -6698,10 +6465,6 @@ static void LayDownRCTrackLeftFlyerTwistDown(
             MetalASupportsPaintSetup(
                 session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.SupportColours);
 
-            if (direction == 0 || direction == 3)
-            {
-                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-            }
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
@@ -6756,15 +6519,6 @@ static void LayDownRCTrackLeftFlyerTwistDown(
                     break;
             }
             MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 0, height, session.SupportColours);
-            switch (direction)
-            {
-                case 1:
-                    PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
-                    break;
-                case 2:
-                    PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
-                    break;
-            }
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
@@ -6817,10 +6571,6 @@ static void LayDownRCTrackRightFlyerTwistDown(
             MetalASupportsPaintSetup(
                 session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.SupportColours);
 
-            if (direction == 0 || direction == 3)
-            {
-                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-            }
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
@@ -6874,15 +6624,6 @@ static void LayDownRCTrackRightFlyerTwistDown(
                     break;
             }
             MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 0, height, session.SupportColours);
-            switch (direction)
-            {
-                case 1:
-                    PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
-                    break;
-                case 2:
-                    PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
-                    break;
-            }
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
@@ -6922,10 +6663,6 @@ static void LayDownRCTrackFlyerHalfLoopDown(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(16606), { 0, 16, height + 32 }, { 32, 12, 3 });
                     break;
-            }
-            if (direction == 0 || direction == 3)
-            {
-                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -7018,10 +6755,6 @@ static void LayDownRCTrackFlyerHalfLoopDown(
                     break;
             }
             MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 8, height, session.SupportColours);
-            if (direction == 0 || direction == 3)
-            {
-                PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
-            }
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 56);
@@ -7072,10 +6805,6 @@ static void LayDownRCTrackLeftFlyerCorkscrewDown(
             MetalASupportsPaintSetup(
                 session, supportType.metal, MetalSupportPlace::centre, 0, height + 35, session.SupportColours);
 
-            if (direction == 0 || direction == 3)
-            {
-                PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::Flat);
-            }
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
@@ -7130,15 +6859,6 @@ static void LayDownRCTrackLeftFlyerCorkscrewDown(
                     break;
             }
             MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 0, height, session.SupportColours);
-            switch (direction)
-            {
-                case 2:
-                    PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
-                    break;
-                case 3:
-                    PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
-                    break;
-            }
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
@@ -7190,7 +6910,6 @@ static void LayDownRCTrackBlockBrakes(
             session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.SupportColours);
     }
 
-    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
@@ -7236,10 +6955,6 @@ static void LayDownRCTrackLeftQuarterBankedHelixLargeUp(
             MetalASupportsPaintSetup(
                 session, supportType.metal, MetalSupportPlace::centre, 0, height + 39, session.SupportColours);
 
-            if (direction == 0 || direction == 3)
-            {
-                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Tall);
-            }
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
@@ -7384,15 +7099,6 @@ static void LayDownRCTrackLeftQuarterBankedHelixLargeUp(
             MetalASupportsPaintSetup(
                 session, supportType.metal, MetalSupportPlace::centre, 0, height + 51, session.SupportColours);
 
-            switch (direction)
-            {
-                case 2:
-                    PaintUtilPushTunnelRight(session, height + 16, kTunnelGroup, TunnelSubType::Tall);
-                    break;
-                case 3:
-                    PaintUtilPushTunnelLeft(session, height + 16, kTunnelGroup, TunnelSubType::Tall);
-                    break;
-            }
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
@@ -7440,10 +7146,6 @@ static void LayDownRCTrackRightQuarterBankedHelixLargeUp(
             MetalASupportsPaintSetup(
                 session, supportType.metal, MetalSupportPlace::centre, 0, height + 39, session.SupportColours);
 
-            if (direction == 0 || direction == 3)
-            {
-                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Tall);
-            }
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
@@ -7588,15 +7290,6 @@ static void LayDownRCTrackRightQuarterBankedHelixLargeUp(
             MetalASupportsPaintSetup(
                 session, supportType.metal, MetalSupportPlace::centre, 0, height + 51, session.SupportColours);
 
-            switch (direction)
-            {
-                case 0:
-                    PaintUtilPushTunnelRight(session, height + 16, kTunnelGroup, TunnelSubType::Tall);
-                    break;
-                case 1:
-                    PaintUtilPushTunnelLeft(session, height + 16, kTunnelGroup, TunnelSubType::Tall);
-                    break;
-            }
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
@@ -7644,10 +7337,6 @@ static void LayDownRCTrackLeftQuarterBankedHelixLargeDown(
             MetalASupportsPaintSetup(
                 session, supportType.metal, MetalSupportPlace::centre, 0, height + 51, session.SupportColours);
 
-            if (direction == 0 || direction == 3)
-            {
-                PaintUtilPushTunnelRotated(session, direction, height + 16, kTunnelGroup, TunnelSubType::Tall);
-            }
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
@@ -7792,15 +7481,6 @@ static void LayDownRCTrackLeftQuarterBankedHelixLargeDown(
             MetalASupportsPaintSetup(
                 session, supportType.metal, MetalSupportPlace::centre, 0, height + 39, session.SupportColours);
 
-            switch (direction)
-            {
-                case 2:
-                    PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Tall);
-                    break;
-                case 3:
-                    PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Tall);
-                    break;
-            }
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
@@ -7848,10 +7528,6 @@ static void LayDownRCTrackRightQuarterBankedHelixLargeDown(
             MetalASupportsPaintSetup(
                 session, supportType.metal, MetalSupportPlace::centre, 0, height + 51, session.SupportColours);
 
-            if (direction == 0 || direction == 3)
-            {
-                PaintUtilPushTunnelRotated(session, direction, height + 16, kTunnelGroup, TunnelSubType::Tall);
-            }
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
@@ -7996,15 +7672,6 @@ static void LayDownRCTrackRightQuarterBankedHelixLargeDown(
             MetalASupportsPaintSetup(
                 session, supportType.metal, MetalSupportPlace::centre, 0, height + 39, session.SupportColours);
 
-            switch (direction)
-            {
-                case 0:
-                    PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Tall);
-                    break;
-                case 1:
-                    PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Tall);
-                    break;
-            }
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
@@ -8063,10 +7730,6 @@ static void LayDownRCTrackHalfLoopInvertedUp(
                     break;
             }
 
-            if (direction == 0 || direction == 3)
-            {
-                PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
-            }
             PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
@@ -8153,10 +7816,6 @@ static void LayDownRCTrackHalfLoopInvertedUp(
                         session, direction, session.TrackColours.WithIndex(27085), { 0, 16, height + 29 },
                         { { 0, 6, height + 34 }, { 32, 20, 3 } });
                     break;
-            }
-            if (direction == 0 || direction == 3)
-            {
-                PaintUtilPushTunnelRotated(session, direction, height + 32, kTunnelGroup, TunnelSubType::Flat);
             }
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);

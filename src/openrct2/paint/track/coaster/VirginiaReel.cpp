@@ -176,12 +176,10 @@ static void PaintVirginiaReelTrackFlat(
     if (direction & 1)
     {
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 2, 0, height }, { 27, 32, 2 } });
-        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
     }
     else
     {
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 2, height }, { 32, 27, 2 } });
-        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
     }
 
     DrawSupportForSequenceA<TrackElemType::Flat>(
@@ -221,21 +219,6 @@ static void PaintVirginiaReelTrack25DegUp(
 
     DrawSupportForSequenceA<TrackElemType::Up25>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-    switch (direction)
-    {
-        case 0:
-            PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
-            break;
-        case 1:
-            PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
-            break;
-        case 2:
-            PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
-            break;
-        case 3:
-            PaintUtilPushTunnelRight(session, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
-            break;
-    }
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56);
@@ -275,7 +258,6 @@ static void PaintVirginiaReelTrackFlatTo25DegUp(
 
     DrawSupportForSequenceA<TrackElemType::FlatToUp25>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48);
@@ -311,21 +293,6 @@ static void PaintVirginiaReelTrack25DegUpToFlat(
 
     DrawSupportForSequenceA<TrackElemType::Up25ToFlat>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-    switch (direction)
-    {
-        case 0:
-            PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroup, TunnelSubType::Flat);
-            break;
-        case 1:
-            PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
-            break;
-        case 2:
-            PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
-            break;
-        case 3:
-            PaintUtilPushTunnelRight(session, height - 8, kTunnelGroup, TunnelSubType::Flat);
-            break;
-    }
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 40);
@@ -366,15 +333,11 @@ static void PaintVirginiaReelStation(
     {
         imageId = session.TrackColours.WithIndex(SPR_VIRGINIA_REEL_FLAT_SW_NE);
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 6, height + 1 }, { 32, 20, 2 } });
-
-        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
     }
     else if (direction == 1 || direction == 3)
     {
         imageId = session.TrackColours.WithIndex(SPR_VIRGINIA_REEL_FLAT_NW_SE);
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 6, 0, height + 1 }, { 20, 32, 2 } });
-
-        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
     }
 
     DrawSupportForSequenceA<TrackElemType::EndStation>(
@@ -442,19 +405,6 @@ static void PaintVirginiaReelTrackLeftQuarterTurn1Tile(
 
     DrawSupportForSequenceA<TrackElemType::LeftQuarterTurn1Tile>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-    switch (direction)
-    {
-        case 0:
-            PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
-            break;
-        case 2:
-            PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
-            break;
-        case 3:
-            PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
-            PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
-            break;
-    }
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);

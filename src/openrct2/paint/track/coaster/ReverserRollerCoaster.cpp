@@ -70,7 +70,6 @@ static void ReverserRCTrackFlat(
     }
     DrawSupportForSequenceA<TrackElemType::Flat>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
@@ -155,14 +154,6 @@ static void ReverserRCTrack25DegUp(
     }
     DrawSupportForSequenceA<TrackElemType::Up25>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-    if (direction == 0 || direction == 3)
-    {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
-    }
-    else
-    {
-        PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
-    }
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
@@ -226,14 +217,6 @@ static void ReverserRCTrackFlatTo25DegUp(
     }
     DrawSupportForSequenceA<TrackElemType::FlatToUp25>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-    if (direction == 0 || direction == 3)
-    {
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-    }
-    else
-    {
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeEnd);
-    }
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
@@ -297,14 +280,6 @@ static void ReverserRCTrack25DegUpToFlat(
     }
     DrawSupportForSequenceA<TrackElemType::Up25ToFlat>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-    if (direction == 0 || direction == 3)
-    {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::Flat);
-    }
-    else
-    {
-        PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
-    }
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 40);
 }
@@ -362,10 +337,6 @@ static void ReverserRCTrackLeftQuarterTurn5(
             }
             DrawSupportForSequenceA<TrackElemType::LeftQuarterTurn5Tiles>(
                 session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-            if (direction == 0 || direction == 3)
-            {
-                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-            }
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
@@ -503,15 +474,6 @@ static void ReverserRCTrackLeftQuarterTurn5(
             }
             DrawSupportForSequenceA<TrackElemType::LeftQuarterTurn5Tiles>(
                 session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-            switch (direction)
-            {
-                case 2:
-                    PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
-                    break;
-                case 3:
-                    PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
-                    break;
-            }
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
@@ -560,10 +522,6 @@ static void ReverserRCTrackSBendLeft(
             }
             DrawSupportForSequenceA<TrackElemType::SBendLeft>(
                 session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-            if (direction == 0 || direction == 3)
-            {
-                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-            }
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
@@ -665,15 +623,6 @@ static void ReverserRCTrackSBendLeft(
             }
             DrawSupportForSequenceA<TrackElemType::SBendLeft>(
                 session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-            switch (direction)
-            {
-                case 1:
-                    PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
-                    break;
-                case 2:
-                    PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
-                    break;
-            }
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
@@ -713,10 +662,6 @@ static void ReverserRCTrackSBendRight(
             }
             DrawSupportForSequenceA<TrackElemType::SBendRight>(
                 session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-            if (direction == 0 || direction == 3)
-            {
-                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-            }
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
@@ -818,15 +763,6 @@ static void ReverserRCTrackSBendRight(
             }
             DrawSupportForSequenceA<TrackElemType::SBendRight>(
                 session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-            switch (direction)
-            {
-                case 1:
-                    PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
-                    break;
-                case 2:
-                    PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
-                    break;
-            }
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
@@ -866,10 +802,6 @@ static void ReverserRCTrackLeftQuarterTurn3(
             }
             DrawSupportForSequenceA<TrackElemType::LeftQuarterTurn3Tiles>(
                 session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-            if (direction == 0 || direction == 3)
-            {
-                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-            }
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
@@ -934,15 +866,6 @@ static void ReverserRCTrackLeftQuarterTurn3(
             }
             DrawSupportForSequenceA<TrackElemType::LeftQuarterTurn3Tiles>(
                 session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-            switch (direction)
-            {
-                case 2:
-                    PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
-                    break;
-                case 3:
-                    PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
-                    break;
-            }
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
@@ -980,7 +903,6 @@ static void ReverserRCTrackBrakes(
     }
     DrawSupportForSequenceA<TrackElemType::Brakes>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
@@ -1018,10 +940,6 @@ static void ReverserRCTrackLeftReverser(
             }
             DrawSupportForSequenceA<TrackElemType::LeftReverser>(
                 session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-            if (direction == 0 || direction == 3)
-            {
-                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-            }
             break;
         case 1:
             switch (direction)
@@ -1157,15 +1075,6 @@ static void ReverserRCTrackLeftReverser(
             }
             DrawSupportForSequenceA<TrackElemType::LeftReverser>(
                 session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-            switch (direction)
-            {
-                case 1:
-                    PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
-                    break;
-                case 2:
-                    PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
-                    break;
-            }
             break;
     }
 
@@ -1206,10 +1115,6 @@ static void ReverserRCTrackRightReverser(
             }
             DrawSupportForSequenceA<TrackElemType::RightReverser>(
                 session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-            if (direction == 0 || direction == 3)
-            {
-                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-            }
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
@@ -1355,15 +1260,6 @@ static void ReverserRCTrackRightReverser(
             }
             DrawSupportForSequenceA<TrackElemType::RightReverser>(
                 session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-            switch (direction)
-            {
-                case 1:
-                    PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
-                    break;
-                case 2:
-                    PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
-                    break;
-            }
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;

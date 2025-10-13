@@ -10,7 +10,6 @@
 #include "../../../SpriteIds.h"
 #include "../../../ride/Track.h"
 #include "../../../ride/TrackPaint.h"
-#include "../../tile_element/Paint.Tunnel.h"
 #include "../../tile_element/Segment.h"
 #include "WoodenRollerCoaster.hpp"
 

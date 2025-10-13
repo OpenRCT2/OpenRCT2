@@ -499,14 +499,6 @@ static void PaintSplashBoatsTrack25DegUp(
     DrawSupportForSequenceA<TrackElemType::Up25>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
-    if (direction == 0 || direction == 3)
-    {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
-    }
-    else
-    {
-        PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
-    }
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
@@ -525,14 +517,6 @@ static void PaintSplashBoatsTrack60DegUp(
     DrawSupportForSequenceA<TrackElemType::Up60>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
-    if (direction == 0 || direction == 3)
-    {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
-    }
-    else
-    {
-        PaintUtilPushTunnelRotated(session, direction, height + 56, kTunnelGroup, TunnelSubType::SlopeEnd);
-    }
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 104);
 }
@@ -550,14 +534,6 @@ static void PaintSplashBoatsTrackFlatTo25DegUp(
     DrawSupportForSequenceA<TrackElemType::FlatToUp25>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
-    if (direction == 0 || direction == 3)
-    {
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-    }
-    else
-    {
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeEnd);
-    }
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
@@ -575,14 +551,6 @@ static void PaintSplashBoatsTrack25DegUpToFlat(
     DrawSupportForSequenceA<TrackElemType::Up25ToFlat>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
-    if (direction == 0 || direction == 3)
-    {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::Flat);
-    }
-    else
-    {
-        PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
-    }
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 40);
 }
@@ -601,14 +569,6 @@ static void PaintSplashBoatsTrack25DegUpTo60DegUp(
     DrawSupportForSequenceA<TrackElemType::Up25ToUp60>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
-    if (direction == 0 || direction == 3)
-    {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
-    }
-    else
-    {
-        PaintUtilPushTunnelRotated(session, direction, height + 24, kTunnelGroup, TunnelSubType::SlopeEnd);
-    }
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 72);
 }
@@ -627,14 +587,6 @@ static void PaintSplashBoatsTrack60DegUpTo25DegUp(
     DrawSupportForSequenceA<TrackElemType::Up60ToUp25>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
-    if (direction == 0 || direction == 3)
-    {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
-    }
-    else
-    {
-        PaintUtilPushTunnelRotated(session, direction, height + 24, kTunnelGroup, TunnelSubType::SlopeEnd);
-    }
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 72);
 }
@@ -652,14 +604,6 @@ static void PaintSplashBoatsTrack25DegDown(
     DrawSupportForSequenceA<TrackElemType::Down25>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
-    if (direction == 0 || direction == 3)
-    {
-        PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
-    }
-    else
-    {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
-    }
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
@@ -684,14 +628,6 @@ static void PaintSplashBoatsTrackFlatTo25DegDown(
     DrawSupportForSequenceA<TrackElemType::FlatToDown25>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
-    if (direction == 0 || direction == 3)
-    {
-        PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
-    }
-    else
-    {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::Flat);
-    }
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 40);
 }
@@ -723,14 +659,6 @@ static void PaintSplashBoatsTrack25DegDownToFlat(
     DrawSupportForSequenceA<TrackElemType::Down25ToFlat>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
-    if (direction == 0 || direction == 3)
-    {
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeEnd);
-    }
-    else
-    {
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-    }
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
@@ -748,15 +676,6 @@ static void PaintSplashBoatsTrackFlat(
 
     DrawSupportForSequenceA<TrackElemType::Flat>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-
-    if (direction & 1)
-    {
-        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
-    }
-    else
-    {
-        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
-    }
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -852,22 +771,6 @@ static void PaintSplashBoatsTrackLeftQuarterTurn5Tiles(
             break;
     }
 
-    switch (trackSequence)
-    {
-        case 0:
-            if (direction == 0 || direction == 3)
-            {
-                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-            }
-            break;
-        case 6:
-            if (direction == 2 || direction == 3)
-            {
-                PaintUtilPushTunnelRotated(session, direction ^ 1, height, kTunnelGroup, TunnelSubType::Flat);
-            }
-            break;
-    }
-
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
@@ -935,22 +838,6 @@ static void PaintSplashBoatsTrackRightQuarterTurn5Tiles(
             break;
         case 6:
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            break;
-    }
-
-    switch (trackSequence)
-    {
-        case 0:
-            if (direction == 0 || direction == 3)
-            {
-                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-            }
-            break;
-        case 6:
-            if (direction == 0 || direction == 1)
-            {
-                PaintUtilPushTunnelRotated(session, direction ^ 1, height, kTunnelGroup, TunnelSubType::Flat);
-            }
             break;
     }
 
@@ -1049,21 +936,6 @@ static void PaintSplashBoatsTrackSBendLeft(
             break;
     }
 
-    if (trackSequence == 0)
-    {
-        if (direction == 0 || direction == 3)
-        {
-            PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-        }
-    }
-    else if (trackSequence == 3)
-    {
-        if (direction == 1 || direction == 2)
-        {
-            PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-        }
-    }
-
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
@@ -1157,21 +1029,6 @@ static void PaintSplashBoatsTrackSBendRight(
                 session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             break;
-    }
-
-    if (trackSequence == 0)
-    {
-        if (direction == 0 || direction == 3)
-        {
-            PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-        }
-    }
-    else if (trackSequence == 3)
-    {
-        if (direction == 1 || direction == 2)
-        {
-            PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-        }
     }
 
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);

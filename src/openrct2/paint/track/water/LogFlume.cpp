@@ -183,7 +183,6 @@ static void PaintLogFlumeTrackFlat(
         MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 0, height, session.SupportColours);
     }
 
-    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
@@ -239,14 +238,6 @@ static void PaintLogFlumeTrack25DegUp(
         MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 8, height, session.SupportColours);
     }
 
-    if (direction == 0 || direction == 3)
-    {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
-    }
-    else
-    {
-        PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
-    }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
@@ -273,14 +264,6 @@ static void PaintLogFlumeTrackFlatTo25DegUp(
         MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 3, height, session.SupportColours);
     }
 
-    if (direction == 0 || direction == 3)
-    {
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-    }
-    else
-    {
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeEnd);
-    }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
@@ -307,14 +290,6 @@ static void PaintLogFlumeTrack25DegUpToFlat(
         MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 6, height, session.SupportColours);
     }
 
-    if (direction == 0 || direction == 3)
-    {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::Flat);
-    }
-    else
-    {
-        PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
-    }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 40);
 }
@@ -341,14 +316,6 @@ static void PaintLogFlumeTrack25DegDown(
         MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 8, height, session.SupportColours);
     }
 
-    if (direction == 0 || direction == 3)
-    {
-        PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
-    }
-    else
-    {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
-    }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
@@ -375,14 +342,6 @@ static void PaintLogFlumeTrackFlatTo25DegDown(
         MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 6, height, session.SupportColours);
     }
 
-    if (direction == 0 || direction == 3)
-    {
-        PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
-    }
-    else
-    {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::Flat);
-    }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 40);
 }
@@ -409,14 +368,6 @@ static void PaintLogFlumeTrack25DegDownToFlat(
         MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 3, height, session.SupportColours);
     }
 
-    if (direction == 0 || direction == 3)
-    {
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeEnd);
-    }
-    else
-    {
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-    }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
@@ -512,21 +463,6 @@ static void PaintLogFlumeTrackSBendLeft(
                     direction),
                 0xFFFF, 0);
             break;
-    }
-
-    if (trackSequence == 0)
-    {
-        if (direction == 0 || direction == 3)
-        {
-            PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-        }
-    }
-    else if (trackSequence == 3)
-    {
-        if (direction == 1 || direction == 2)
-        {
-            PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-        }
     }
 
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -625,21 +561,6 @@ static void PaintLogFlumeTrackSBendRight(
             break;
     }
 
-    if (trackSequence == 0)
-    {
-        if (direction == 0 || direction == 3)
-        {
-            PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-        }
-    }
-    else if (trackSequence == 3)
-    {
-        if (direction == 1 || direction == 2)
-        {
-            PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-        }
-    }
-
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
@@ -684,22 +605,6 @@ static void PaintLogFlumeTrackLeftQuarterTurn3Tiles(
     if (trackSequence != 1 && trackSequence != 2)
     {
         MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 0, height, session.SupportColours);
-    }
-
-    switch (trackSequence)
-    {
-        case 0:
-            if (direction == 0 || direction == 3)
-            {
-                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-            }
-            break;
-        case 3:
-            if (direction == 2 || direction == 3)
-            {
-                PaintUtilPushTunnelRotated(session, direction ^ 1, height, kTunnelGroup, TunnelSubType::Flat);
-            }
-            break;
     }
 
     switch (trackSequence)
@@ -779,22 +684,6 @@ static void PaintLogFlumeTrackRightQuarterTurn3Tiles(
     switch (trackSequence)
     {
         case 0:
-            if (direction == 0 || direction == 3)
-            {
-                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-            }
-            break;
-        case 3:
-            if (direction == 0 || direction == 1)
-            {
-                PaintUtilPushTunnelRotated(session, direction ^ 1, height, kTunnelGroup, TunnelSubType::Flat);
-            }
-            break;
-    }
-
-    switch (trackSequence)
-    {
-        case 0:
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
@@ -858,7 +747,6 @@ static void PaintLogFlumeTrackReverser(
 
     MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 0, height, session.SupportColours);
 
-    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
@@ -888,8 +776,6 @@ static void LogFlumeTrack25Down60(
         {
             MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 8, height, session.SupportColours);
         }
-
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::FlatTo25Deg);
     }
     else
     {
@@ -898,8 +784,6 @@ static void LogFlumeTrack25Down60(
             MetalASupportsPaintSetup(
                 session, supportType.metal, MetalSupportPlace::centre, 8, height + 12, session.SupportColours);
         }
-
-        PaintUtilPushTunnelRotated(session, direction, height + 24, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 72);
@@ -928,8 +812,6 @@ static void LogFlumeTrack60Down(
         {
             MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 8, height, session.SupportColours);
         }
-
-        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
     }
     else
     {
@@ -938,8 +820,6 @@ static void LogFlumeTrack60Down(
             MetalASupportsPaintSetup(
                 session, supportType.metal, MetalSupportPlace::centre, 8, height + 12, session.SupportColours);
         }
-
-        PaintUtilPushTunnelRotated(session, direction, height + 56, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 104);
@@ -964,8 +844,6 @@ static void LogFlumeTrack60Down25(
 
     if (direction == 1 || direction == 2)
     {
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeStart);
-
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 8, height, session.SupportColours);
@@ -973,8 +851,6 @@ static void LogFlumeTrack60Down25(
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height + 24, kTunnelGroup, TunnelSubType::Flat);
-
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(

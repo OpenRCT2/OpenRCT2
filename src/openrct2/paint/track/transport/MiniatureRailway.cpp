@@ -693,8 +693,6 @@ static void PaintMiniatureRailwayTrackFlat(
         }
     }
 
-    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
@@ -731,22 +729,6 @@ static void PaintMiniatureRailwayTrack25DegUp(
 
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 2, height }, { { 0, 3, height }, { 32, 25, 2 } });
 
-    switch (direction)
-    {
-        case 0:
-            PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
-            break;
-        case 1:
-            PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
-            break;
-        case 2:
-            PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
-            break;
-        case 3:
-            PaintUtilPushTunnelRight(session, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
-            break;
-    }
-
     WoodenASupportsPaintSetupRotated(
         session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
         WoodenSupportTransitionType::up25DegRailway);
@@ -764,22 +746,6 @@ static void PaintMiniatureRailwayTrackFlatTo25DegUp(
 
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 2, height }, { { 0, 3, height }, { 32, 25, 2 } });
 
-    switch (direction)
-    {
-        case 0:
-            PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
-            break;
-        case 1:
-            PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::SlopeEnd);
-            break;
-        case 2:
-            PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::SlopeEnd);
-            break;
-        case 3:
-            PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
-            break;
-    }
-
     WoodenASupportsPaintSetupRotated(
         session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
         WoodenSupportTransitionType::flatToUp25DegRailway);
@@ -796,22 +762,6 @@ static void PaintMiniatureRailwayTrack25DegUpToFlat(
     auto imageId = session.TrackColours.WithIndex(miniature_railway_track_pieces_25_deg_up_to_flat[direction]);
 
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 2, height }, { { 0, 3, height }, { 32, 25, 2 } });
-
-    switch (direction)
-    {
-        case 0:
-            PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroup, TunnelSubType::Flat);
-            break;
-        case 1:
-            PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
-            break;
-        case 2:
-            PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
-            break;
-        case 3:
-            PaintUtilPushTunnelRight(session, height - 8, kTunnelGroup, TunnelSubType::Flat);
-            break;
-    }
 
     WoodenASupportsPaintSetupRotated(
         session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
@@ -1024,25 +974,6 @@ static void PaintMiniatureRailwayTrackRightQuarterTurn5Tiles(
                 session, imageId, { offset, height }, { boundsOffset + CoordsXYZ{ 0, 0, height }, { boundsLength, 2 } });
         }
     }
-    if (direction == 0 && trackSequence == 0)
-    {
-        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
-    }
-
-    if (direction == 0 && trackSequence == 6)
-    {
-        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
-    }
-
-    if (direction == 1 && trackSequence == 6)
-    {
-        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
-    }
-
-    if (direction == 3 && trackSequence == 0)
-    {
-        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
-    }
 
     int32_t blockedSegments = 0;
     switch (trackSequence)
@@ -1162,20 +1093,6 @@ static void PaintMiniatureRailwayTrackSBendLeft(
             session, direction, imageId, { offset.x, offset.y, height },
             { { offset.x, offset.y, height }, { bounds.x, bounds.y, 2 } });
     }
-    if (direction == 0 || direction == 2)
-    {
-        if (trackSequence == 0)
-        {
-            PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
-        }
-    }
-    else
-    {
-        if (trackSequence == 3)
-        {
-            PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
-        }
-    }
 
     int32_t blockedSegments = 0;
     switch (trackSequence)
@@ -1271,21 +1188,6 @@ static void PaintMiniatureRailwayTrackSBendRight(
         PaintAddImageAsChildRotated(
             session, direction, imageId, { offset.x, offset.y, height },
             { { offset.x, offset.y, height }, { bounds.x, bounds.y, 2 } });
-    }
-
-    if (direction == 0 || direction == 2)
-    {
-        if (trackSequence == 0)
-        {
-            PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
-        }
-    }
-    else
-    {
-        if (trackSequence == 3)
-        {
-            PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
-        }
     }
 
     int32_t blockedSegments = 0;
@@ -1590,15 +1492,6 @@ static void PaintMiniatureRailwayTrackLeftEighthToDiag(
         }
     }
 
-    if (direction == 0 && trackSequence == 0)
-    {
-        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
-    }
-    if (direction == 3 && trackSequence == 0)
-    {
-        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
-    }
-
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
 
     if (trackSequence != 4 || !isRightEighthToOrthog)
@@ -1756,15 +1649,6 @@ static void PaintMiniatureRailwayTrackRightEighthToDiag(
             bounds = miniature_railway_track_pieces_right_eight_to_diag_bounds[direction][index];
             PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { offset, height }, bounds });
         }
-    }
-
-    if (direction == 0 && trackSequence == 0)
-    {
-        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
-    }
-    if (direction == 3 && trackSequence == 0)
-    {
-        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
     }
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
