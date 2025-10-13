@@ -478,7 +478,6 @@ namespace OpenRCT2::HybridRC
                     session, direction, GetTrackColour(session).WithIndex(imageIds[direction]), { 0, 0, height },
                     { { boundBoxOffsets[direction].x, boundBoxOffsets[direction].y, boundBoxOffsets[direction].z },
                       { boundBoxLengths[direction].x, boundBoxLengths[direction].y, boundBoxLengths[direction].z } });
-                PaintUtilSetVerticalTunnel(session, height + 32);
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
@@ -530,7 +529,6 @@ namespace OpenRCT2::HybridRC
                 {
                     PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
                 }
-                PaintUtilSetVerticalTunnel(session, height + 56);
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
@@ -6230,7 +6228,6 @@ namespace OpenRCT2::HybridRC
                             { 0, 0, height }, { { 24, 6, height + 8 }, { 2, 20, 63 } });
                         break;
                 }
-                PaintUtilSetVerticalTunnel(session, height + 96);
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 96);
                 break;
@@ -6275,7 +6272,6 @@ namespace OpenRCT2::HybridRC
                             { 0, 0, height }, { { 4, 6, height + 8 }, { 2, 20, 63 } });
                         break;
                 }
-                PaintUtilSetVerticalTunnel(session, height + 96);
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 96);
                 break;
