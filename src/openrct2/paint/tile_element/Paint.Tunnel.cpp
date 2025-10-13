@@ -12,10 +12,14 @@ using TunnelSlopeMap = std::array<TunnelType, kTunnelSlopeCount>;
 static constexpr const std::array<TunnelSlopeMap, kTunnelStyleCount> kTunnelStyleSlopeMap = { {
     { TunnelType::standardFlat, TunnelType::standardUp25, TunnelType::standardDown25, TunnelType::standardFlatToDown25,
       TunnelType::invertedFlat }, // standard
-    { TunnelType::squareFlat, TunnelType::squareUp25, TunnelType::squareDown25, TunnelType::squareFlatToDown25,
-      TunnelType::invertedSquareFlat }, // square
     { TunnelType::invertedFlat, TunnelType::invertedUp25, TunnelType::invertedDown25, TunnelType::invertedFlatToDown25,
       TunnelType::invertedFlat }, // inverted
+    { TunnelType::squareFlat, TunnelType::squareUp25, TunnelType::squareDown25, TunnelType::squareFlatToDown25,
+      TunnelType::invertedSquareFlat }, // square
+    { TunnelType::invertedSquareFlat, TunnelType::squareUp25, TunnelType::squareDown25, TunnelType::invertedSquareFlatToDown25,
+      TunnelType::invertedSquareFlat }, // invertedSquare
+    { TunnelType::path, TunnelType::standardUp25, TunnelType::standardDown25, TunnelType::path,
+      TunnelType::invertedFlat }, // standardWithPath
 } };
 
 void PaintUtilPushTunnelLeft(PaintSession& session, uint16_t height, TunnelType type)
