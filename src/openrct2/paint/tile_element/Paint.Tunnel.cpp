@@ -8,15 +8,15 @@
 
 using namespace OpenRCT2;
 
-using TunnelGroupMap = std::array<TunnelType, kTunnelSubTypeCount>;
-static std::array<TunnelGroupMap, kTunnelGroupCount> tunnelMap = {
-    TunnelGroupMap{ TunnelType::StandardFlat, TunnelType::StandardSlopeStart, TunnelType::StandardSlopeEnd,
-                    TunnelType::StandardFlatTo25Deg, TunnelType::InvertedFlat },
-    TunnelGroupMap{ TunnelType::SquareFlat, TunnelType::SquareSlopeStart, TunnelType::SquareSlopeEnd,
-                    TunnelType::SquareFlatTo25Deg, TunnelType::InvertedSquare },
-    TunnelGroupMap{ TunnelType::InvertedFlat, TunnelType::InvertedSlopeStart, TunnelType::InvertedSlopeEnd,
-                    TunnelType::InvertedFlatTo25Deg, TunnelType::InvertedFlat },
-};
+using TunnelSlopeMap = std::array<TunnelType, kTunnelSlopeCount>;
+static constexpr const std::array<TunnelSlopeMap, kTunnelGroupCount> kTunnelGroupSlopeMap = { {
+    { TunnelType::StandardFlat, TunnelType::StandardSlopeStart, TunnelType::StandardSlopeEnd, TunnelType::StandardFlatTo25Deg,
+      TunnelType::InvertedFlat }, // standard
+    { TunnelType::SquareFlat, TunnelType::SquareSlopeStart, TunnelType::SquareSlopeEnd, TunnelType::SquareFlatTo25Deg,
+      TunnelType::InvertedSquare }, // square
+    { TunnelType::InvertedFlat, TunnelType::InvertedSlopeStart, TunnelType::InvertedSlopeEnd, TunnelType::InvertedFlatTo25Deg,
+      TunnelType::InvertedFlat }, // inverted
+} };
 
 void PaintUtilPushTunnelLeft(PaintSession& session, uint16_t height, TunnelType type)
 {
@@ -51,7 +51,7 @@ void PaintUtilPushTunnelRotated(PaintSession& session, uint8_t direction, uint16
     }
 }
 
-TunnelType GetTunnelType(TunnelGroup tunnelGroup, TunnelSubType tunnelSubType)
+TunnelType GetTunnelType(const TunnelGroup tunnelGroup, const TunnelSlope slope)
 {
-    return tunnelMap[EnumValue(tunnelGroup)][EnumValue(tunnelSubType)];
+    return kTunnelGroupSlopeMap[EnumValue(tunnelGroup)][EnumValue(slope)];
 }
