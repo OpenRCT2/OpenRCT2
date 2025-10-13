@@ -53,11 +53,19 @@ constexpr uint8_t kTunnelTypeCount = 26;
 
 enum class TunnelGroup : uint8_t
 {
-    Standard = 0,
-    Square = 1,
-    Inverted = 2,
+    uninverted,
+    inverted,
+    invertedFlying,
 };
 constexpr uint8_t kTunnelGroupCount = 3;
+
+enum class TunnelStyle : uint8_t
+{
+    standard,
+    square,
+    inverted,
+};
+constexpr uint8_t kTunnelStyleCount = 3;
 
 enum class TunnelSlope : uint8_t
 {
@@ -79,7 +87,7 @@ struct TunnelEntry
         , type(_type) {};
 };
 
-TunnelType GetTunnelType(TunnelGroup tunnelGroup, TunnelSlope slope);
+TunnelType GetTunnelType(TunnelStyle style, TunnelSlope slope);
 
 void PaintUtilPushTunnelLeft(PaintSession& session, uint16_t height, TunnelType type);
 void PaintUtilPushTunnelRight(PaintSession& session, uint16_t height, TunnelType type);
@@ -87,20 +95,19 @@ void PaintUtilSetVerticalTunnel(PaintSession& session, uint16_t height);
 void PaintUtilPushTunnelRotated(PaintSession& session, uint8_t direction, uint16_t height, TunnelType type);
 
 inline void PaintUtilPushTunnelLeft(
-    PaintSession& session, const uint16_t height, const TunnelGroup tunnelGroup, const TunnelSlope slope)
+    PaintSession& session, const uint16_t height, const TunnelStyle style, const TunnelSlope slope)
 {
-    PaintUtilPushTunnelLeft(session, height, GetTunnelType(tunnelGroup, slope));
+    PaintUtilPushTunnelLeft(session, height, GetTunnelType(style, slope));
 }
 
 inline void PaintUtilPushTunnelRight(
-    PaintSession& session, const uint16_t height, const TunnelGroup tunnelGroup, const TunnelSlope slope)
+    PaintSession& session, const uint16_t height, const TunnelStyle style, const TunnelSlope slope)
 {
-    PaintUtilPushTunnelRight(session, height, GetTunnelType(tunnelGroup, slope));
+    PaintUtilPushTunnelRight(session, height, GetTunnelType(style, slope));
 }
 
 inline void PaintUtilPushTunnelRotated(
-    PaintSession& session, const uint8_t direction, const uint16_t height, const TunnelGroup tunnelGroup,
-    const TunnelSlope slope)
+    PaintSession& session, const uint8_t direction, const uint16_t height, const TunnelStyle style, const TunnelSlope slope)
 {
-    PaintUtilPushTunnelRotated(session, direction, height, GetTunnelType(tunnelGroup, slope));
+    PaintUtilPushTunnelRotated(session, direction, height, GetTunnelType(style, slope));
 }

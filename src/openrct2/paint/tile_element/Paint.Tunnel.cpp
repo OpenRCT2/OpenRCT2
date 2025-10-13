@@ -9,7 +9,7 @@
 using namespace OpenRCT2;
 
 using TunnelSlopeMap = std::array<TunnelType, kTunnelSlopeCount>;
-static constexpr const std::array<TunnelSlopeMap, kTunnelGroupCount> kTunnelGroupSlopeMap = { {
+static constexpr const std::array<TunnelSlopeMap, kTunnelStyleCount> kTunnelStyleSlopeMap = { {
     { TunnelType::StandardFlat, TunnelType::StandardSlopeStart, TunnelType::StandardSlopeEnd, TunnelType::StandardFlatTo25Deg,
       TunnelType::InvertedFlat }, // standard
     { TunnelType::SquareFlat, TunnelType::SquareSlopeStart, TunnelType::SquareSlopeEnd, TunnelType::SquareFlatTo25Deg,
@@ -51,7 +51,7 @@ void PaintUtilPushTunnelRotated(PaintSession& session, uint8_t direction, uint16
     }
 }
 
-TunnelType GetTunnelType(const TunnelGroup tunnelGroup, const TunnelSlope slope)
+TunnelType GetTunnelType(const TunnelStyle style, const TunnelSlope slope)
 {
-    return kTunnelGroupSlopeMap[EnumValue(tunnelGroup)][EnumValue(slope)];
+    return kTunnelStyleSlopeMap[EnumValue(style)][EnumValue(slope)];
 }
