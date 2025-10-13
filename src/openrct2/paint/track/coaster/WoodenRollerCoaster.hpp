@@ -21,8 +21,6 @@
 
 #include <cstdint>
 
-static constexpr TunnelGroup kTunnelGroup = TunnelGroup::Square;
-
 struct WoodenTrackSection
 {
     ImageIndex track;

@@ -21,8 +21,6 @@
 
 using namespace OpenRCT2;
 
-static constexpr TunnelGroup kTunnelGroupIncline = TunnelGroup::Standard;
-
 enum
 {
     SprGhostTrainTrackFlatSwNe = 28821,

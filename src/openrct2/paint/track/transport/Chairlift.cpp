@@ -26,8 +26,6 @@
 
 using namespace OpenRCT2;
 
-static constexpr TunnelGroup kTunnelGroup = TunnelGroup::Square;
-
 enum
 {
     SPR_CHAIRLIFT_CABLE_FLAT_SW_NE = 20500,

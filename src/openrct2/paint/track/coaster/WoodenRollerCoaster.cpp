@@ -28,8 +28,6 @@
 
 using namespace OpenRCT2;
 
-// static constexpr TunnelGroup kTunnelGroup = TunnelGroup::Square;
-
 enum
 {
     SPR_WOODEN_RC_FLAT_TO_LEFT_BANK_SW_NE = 23497,

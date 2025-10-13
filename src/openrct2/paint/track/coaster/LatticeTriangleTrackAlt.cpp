@@ -23,8 +23,6 @@
 
 using namespace OpenRCT2;
 
-static constexpr TunnelGroup kTunnelGroup = TunnelGroup::Square;
-
 static constexpr uint32_t kLatticeTriangleAltBrakeImages[kNumOrthogonalDirections][2] = {
     { SPR_TRACKS_LATTICE_TRIANGLE_TRACK_BRAKE_ALT_OPEN_NE_SW, SPR_TRACKS_LATTICE_TRIANGLE_TRACK_BRAKE_ALT_CLOSED_NE_SW },
     { SPR_TRACKS_LATTICE_TRIANGLE_TRACK_BRAKE_ALT_OPEN_NW_SE, SPR_TRACKS_LATTICE_TRIANGLE_TRACK_BRAKE_ALT_CLOSED_NW_SE },

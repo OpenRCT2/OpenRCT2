@@ -27,8 +27,6 @@
 
 using namespace OpenRCT2;
 
-static constexpr TunnelGroup kTunnelGroup = TunnelGroup::Standard;
-
 enum
 {
     SprMiniGolfFlatSwNe = 14404,

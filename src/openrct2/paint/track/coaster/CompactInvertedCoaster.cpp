@@ -23,7 +23,6 @@
 
 using namespace OpenRCT2;
 
-static constexpr TunnelGroup kTunnelGroup = TunnelGroup::Inverted;
 static constexpr uint8_t kSupportHeight = 38;
 
 static constexpr ImageIndex kCompactInvertedDiagFlatImages[2][kNumOrthogonalDirections] = {
