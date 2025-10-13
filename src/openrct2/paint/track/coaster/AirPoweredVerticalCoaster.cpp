@@ -791,8 +791,6 @@ static void AirPoweredVerticalRCTrackVerticalSlopeUp(
             DrawSupportForSequenceA<TrackElemType::ReverseFreefallSlope>(
                 session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
-            PaintUtilSetVerticalTunnel(session, height + 240);
-
             break;
     }
 
@@ -830,8 +828,6 @@ static void AirPoweredVerticalRCTrackVerticalUp(
                 PaintAddImageAsParentRotated(
                     session, direction, imageId, { 0, 0, height }, { { 30, 6, height }, { 2, 20, 79 } });
             }
-
-            PaintUtilSetVerticalTunnel(session, height + 80);
             break;
     }
 
