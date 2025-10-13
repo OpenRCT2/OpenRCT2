@@ -20,8 +20,6 @@
 
 using namespace OpenRCT2;
 
-static constexpr TunnelGroup kTunnelGroup = TunnelGroup::Square;
-
 enum
 {
     SPR_SPLASH_BOATS_FLAT_TOP_SW_NE = 20820,

@@ -24,8 +24,6 @@
 
 using namespace OpenRCT2;
 
-static constexpr TunnelGroup kTunnelGroup = TunnelGroup::Square;
-
 enum
 {
     SPR_REVERSE_FREEFALL_RC_STATION_SW_NE = 22162,

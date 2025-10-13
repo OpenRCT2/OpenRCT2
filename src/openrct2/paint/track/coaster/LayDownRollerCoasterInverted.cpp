@@ -23,7 +23,6 @@
 
 using namespace OpenRCT2;
 
-static constexpr TunnelGroup kTunnelGroup = TunnelGroup::Standard;
 static constexpr uint8_t kSupportHeight = 33;
 
 static constexpr ImageIndex kLaydownDiagFlatImages[2][kNumOrthogonalDirections] = {

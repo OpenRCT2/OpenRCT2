@@ -23,8 +23,6 @@
 
 using namespace OpenRCT2;
 
-static constexpr TunnelGroup kTunnelGroup = TunnelGroup::Standard;
-
 static constexpr auto SPR_LOOPING_RC_BOOSTER_NE_SW = 15010;
 static constexpr auto SPR_LOOPING_RC_BOOSTER_NW_SE = 15011;
 

@@ -23,8 +23,6 @@
 
 using namespace OpenRCT2;
 
-static constexpr TunnelGroup kTunnelGroup = TunnelGroup::Square;
-
 // Closed block brakes and regular brakes use the same images
 static constexpr uint32_t LATTICE_TRIANGLE_BRAKE_SW_NE_OPEN_1 = 18076;
 static constexpr uint32_t LATTICE_TRIANGLE_BRAKE_NW_SE_OPEN_1 = 18077;

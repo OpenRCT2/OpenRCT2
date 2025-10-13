@@ -24,8 +24,6 @@
 
 using namespace OpenRCT2;
 
-static constexpr TunnelGroup kTunnelGroup = TunnelGroup::Square;
-
 static constexpr uint32_t MULTI_DIM_STATION_BLOCK_BRAKE_SW_NE_OPEN = 15812;
 static constexpr uint32_t MULTI_DIM_STATION_BLOCK_BRAKE_NW_SE_OPEN = 15813;
 static constexpr uint32_t MULTI_DIM_STATION_BLOCK_BRAKE_SW_NE_CLOSED = 15814;

@@ -23,8 +23,6 @@
 
 using namespace OpenRCT2;
 
-static constexpr TunnelGroup kTunnelGroup = TunnelGroup::Standard;
-
 static constexpr uint32_t STAND_UP_BLOCK_BRAKE_SW_NE_OPEN = 25571;
 static constexpr uint32_t STAND_UP_BLOCK_BRAKE_NW_SE_OPEN = 25572;
 static constexpr uint32_t STAND_UP_BLOCK_BRAKE_SW_NE_CLOSED = 25573;

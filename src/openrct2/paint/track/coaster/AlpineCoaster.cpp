@@ -22,8 +22,6 @@
 
 using namespace OpenRCT2;
 
-static constexpr TunnelGroup kTunnelGroup = TunnelGroup::Standard;
-
 namespace OpenRCT2::AlpineRC
 {
     static void TrackFlat(

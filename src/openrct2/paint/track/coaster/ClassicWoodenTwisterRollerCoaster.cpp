@@ -15,8 +15,6 @@
 
 using namespace OpenRCT2;
 
-// static constexpr TunnelGroup kTunnelGroup = TunnelGroup::Square;
-
 enum
 {
     SPR_CLASSIC_WOODEN_TWISTER_RC_FLAT_TO_LEFT_BANK_0 = SPR_CSG_BEGIN + 65447,

@@ -19,8 +19,6 @@
 
 using namespace OpenRCT2;
 
-static constexpr TunnelGroup kTunnelGroup = TunnelGroup::Standard;
-
 enum
 {
     SPR_DINGHY_SLIDE_FLAT_SW_NE = 19720,

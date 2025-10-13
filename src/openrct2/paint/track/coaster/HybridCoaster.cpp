@@ -23,8 +23,6 @@
 
 namespace OpenRCT2::HybridRC
 {
-    static constexpr TunnelGroup kTunnelGroup = TunnelGroup::Square;
-
     static ImageId GetTrackColour(PaintSession& session)
     {
         if (session.TrackColours == ConstructionMarker)

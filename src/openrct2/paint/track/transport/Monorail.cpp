@@ -21,8 +21,6 @@
 
 using namespace OpenRCT2;
 
-static constexpr TunnelGroup kTunnelGroup = TunnelGroup::Square;
-
 enum
 {
     SPR_MONORAIL_FLAT_SW_NE = 23231,
