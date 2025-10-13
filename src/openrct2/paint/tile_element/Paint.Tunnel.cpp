@@ -10,12 +10,12 @@ using namespace OpenRCT2;
 
 using TunnelSlopeMap = std::array<TunnelType, kTunnelSlopeCount>;
 static constexpr const std::array<TunnelSlopeMap, kTunnelStyleCount> kTunnelStyleSlopeMap = { {
-    { TunnelType::StandardFlat, TunnelType::StandardSlopeStart, TunnelType::StandardSlopeEnd, TunnelType::StandardFlatTo25Deg,
-      TunnelType::InvertedFlat }, // standard
-    { TunnelType::SquareFlat, TunnelType::SquareSlopeStart, TunnelType::SquareSlopeEnd, TunnelType::SquareFlatTo25Deg,
-      TunnelType::InvertedSquare }, // square
-    { TunnelType::InvertedFlat, TunnelType::InvertedSlopeStart, TunnelType::InvertedSlopeEnd, TunnelType::InvertedFlatTo25Deg,
-      TunnelType::InvertedFlat }, // inverted
+    { TunnelType::standardFlat, TunnelType::standardUp25, TunnelType::standardDown25, TunnelType::standardFlatToDown25,
+      TunnelType::invertedFlat }, // standard
+    { TunnelType::squareFlat, TunnelType::squareUp25, TunnelType::squareDown25, TunnelType::squareFlatToDown25,
+      TunnelType::invertedSquareFlat }, // square
+    { TunnelType::invertedFlat, TunnelType::invertedUp25, TunnelType::invertedDown25, TunnelType::invertedFlatToDown25,
+      TunnelType::invertedFlat }, // inverted
 } };
 
 void PaintUtilPushTunnelLeft(PaintSession& session, uint16_t height, TunnelType type)
