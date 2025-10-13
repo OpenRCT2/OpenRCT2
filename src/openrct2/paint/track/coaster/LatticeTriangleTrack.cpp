@@ -203,7 +203,6 @@ static void LatticeTriangleTrackStation(
         MetalASupportsPaintSetupRotated(
             session, supportType.metal, MetalSupportPlace::centre, direction, 0, height, session.SupportColours);
     }
-    TrackPaintUtilDrawStationTunnel(session, direction, height);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
@@ -3995,8 +3994,6 @@ static void LatticeTriangleTrackLeftQuarterTurn160DegUp(
                 { { 2, 2, height + 99 }, { 28, 28, 1 } });
             break;
     }
-    TrackPaintUtilLeftQuarterTurn1TileTunnel(
-        session, kTunnelGroup, direction, height, -8, TunnelSubType::SlopeStart, +56, TunnelSubType::SlopeEnd);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 104);
 }
@@ -4041,8 +4038,6 @@ static void LatticeTriangleTrackRightQuarterTurn160DegUp(
                 { { 2, 2, height + 99 }, { 28, 28, 1 } });
             break;
     }
-    TrackPaintUtilRightQuarterTurn1TileTunnel(
-        session, kTunnelGroup, direction, height, -8, TunnelSubType::SlopeStart, +56, TunnelSubType::SlopeEnd);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 104);
 }

@@ -128,7 +128,6 @@ static void LayDownRCTrackStation(
             { { 0, 6, height + 24 }, { 32, 20, 3 } });
         DrawSupportsSideBySide(session, direction, height, session.SupportColours, supportType.metal);
     }
-    TrackPaintUtilDrawStationTunnelTall(session, direction, height);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
@@ -2646,8 +2645,6 @@ static void LayDownRCTrackLeftQuarterTurn160DegUp(
             break;
     }
 
-    TrackPaintUtilLeftQuarterTurn1TileTunnel(
-        session, kTunnelGroup, direction, height, -8, TunnelSubType::SlopeStart, +56, TunnelSubType::SlopeEnd);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 104);
 }
@@ -2693,8 +2690,6 @@ static void LayDownRCTrackRightQuarterTurn160DegUp(
             break;
     }
 
-    TrackPaintUtilRightQuarterTurn1TileTunnel(
-        session, kTunnelGroup, direction, height, -8, TunnelSubType::SlopeStart, +56, TunnelSubType::SlopeEnd);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 104);
 }

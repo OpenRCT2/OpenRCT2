@@ -23,12 +23,6 @@ using namespace OpenRCT2;
 
 static constexpr TunnelGroup kTunnelGroupIncline = TunnelGroup::Standard;
 
-void TrackPaintUtilLeftQuarterTurn1TileTunnel(
-    PaintSession& session, Direction direction, uint16_t baseHeight, int8_t startOffset, TunnelType startTunnel,
-    int8_t endOffset, TunnelType endTunnel);
-void TrackPaintUtilRightQuarterTurn3TilesTunnel(
-    PaintSession& session, int16_t height, Direction direction, uint8_t trackSequence, TunnelType tunnelType);
-
 enum
 {
     SprGhostTrainTrackFlatSwNe = 28821,
@@ -285,8 +279,6 @@ static void PaintGhostTrainStation(
 {
     const ImageId imageId = session.TrackColours.WithIndex(kGhostTrainTrackPiecesFlat[direction]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height + 1 }, { 32, 20, 3 } });
-
-    TrackPaintUtilDrawStationTunnel(session, direction, height);
 
     if (TrackPaintUtilDrawStation(session, ride, direction, height, trackElement, StationBaseType::b, -2))
     {

@@ -169,7 +169,6 @@ static void SideFrictionRCTrackStation(
             session, direction, session.TrackColours.WithIndex(imageIds[direction][1]), { 0, 0, height },
             { { 0, 2, height + 27 }, { 32, 27, 0 } });
     }
-    TrackPaintUtilDrawStationTunnel(session, direction, height);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }

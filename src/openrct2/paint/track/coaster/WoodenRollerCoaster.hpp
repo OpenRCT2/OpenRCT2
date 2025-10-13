@@ -277,8 +277,6 @@ static void WoodenRCTrackLeftQuarterTurn3Bank(
             }
     }
 
-    TrackPaintUtilLeftQuarterTurn3TilesTunnel(session, kTunnelGroup, TunnelSubType::Flat, height, direction, trackSequence);
-
     static constexpr int blockedSegments[4] = {
         kSegmentsAll,
         kSegmentsNone,
@@ -485,8 +483,6 @@ static void WoodenRCTrackBankedRightQuarterTurn5(
             }
             break;
     }
-
-    TrackPaintUtilRightQuarterTurn5TilesTunnel(session, kTunnelGroup, TunnelSubType::Flat, height, direction, trackSequence);
 
     static constexpr int blockedSegments[7] = {
         kSegmentsAll,

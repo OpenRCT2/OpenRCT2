@@ -712,8 +712,6 @@ static void PaintMiniatureRailwayStation(
     const ImageId imageId = session.TrackColours.WithIndex(miniature_railway_track_pieces_flat_station[direction]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 6, height }, { { 0, 6, height + 1 }, { 32, 20, 1 } });
 
-    TrackPaintUtilDrawStationTunnel(session, direction, height);
-
     TrackPaintUtilDrawStation2(session, ride, direction, height, trackElement, StationBaseType::a, -2, 7, 9);
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -1304,7 +1302,6 @@ static void PaintMiniatureRailwayTrackRightQuarterTurn3Tiles(
         PaintAddImageAsChild(
             session, imageId, { offset, height }, { boundsOffset + CoordsXYZ{ 0, 0, height }, { boundsLength, 3 } });
     }
-    TrackPaintUtilRightQuarterTurn3TilesTunnel(session, kTunnelGroup, TunnelSubType::Flat, height, direction, trackSequence);
 
     int32_t blockedSegments = 0;
     switch (trackSequence)

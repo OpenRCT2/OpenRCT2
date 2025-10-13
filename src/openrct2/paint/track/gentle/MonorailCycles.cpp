@@ -200,8 +200,6 @@ static void PaintMonorailCyclesStation(
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 6, 0, height + 1 }, { 20, 32, 1 } });
     }
 
-    TrackPaintUtilDrawStationTunnel(session, direction, height);
-
     if (TrackPaintUtilDrawStation(session, ride, direction, height, trackElement, StationBaseType::b, -2))
     {
         DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::boxed);
@@ -223,7 +221,6 @@ static void PaintMonorailCyclesTrackLeftQuarterTurn3Tiles(
 {
     TrackPaintUtilLeftQuarterTurn3TilesPaint(
         session, 3, height, direction, trackSequence, session.TrackColours, kMonorailCyclesTrackPiecesFlatQuarterTurn3Tiles);
-    TrackPaintUtilLeftQuarterTurn3TilesTunnel(session, kTunnelGroup, TunnelSubType::Flat, height, direction, trackSequence);
 
     switch (trackSequence)
     {

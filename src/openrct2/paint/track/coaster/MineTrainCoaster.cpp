@@ -158,7 +158,6 @@ static void MineTrainRCTrackStation(
         DrawSupportForSequenceA<TrackElemType::Flat>(
             session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
     }
-    TrackPaintUtilDrawStationTunnel(session, direction, height);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }

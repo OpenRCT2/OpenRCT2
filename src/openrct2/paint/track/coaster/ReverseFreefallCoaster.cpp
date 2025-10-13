@@ -242,7 +242,6 @@ static void PaintReverseFreefallRCStation(
     }
     DrawSupportForSequenceA<TrackElemType::EndStation>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-    TrackPaintUtilDrawStationTunnel(session, direction, height);
 
     TrackPaintUtilDrawNarrowStationPlatform(session, ride, direction, height, 5, trackElement, StationBaseType::b, -2);
 

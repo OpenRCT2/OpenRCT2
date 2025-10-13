@@ -693,7 +693,6 @@ static void PaintMiniGolfStation(
         TrackPaintUtilDrawStationCovers(session, EDGE_NW, hasFence, stationObj, height, stationColour);
         TrackPaintUtilDrawStationCovers(session, EDGE_SE, hasSEFence, stationObj, height, stationColour);
     }
-    TrackPaintUtilDrawStationTunnel(session, direction, height);
 
     WoodenASupportsPaintSetupRotated(
         session, WoodenSupportType::truss, WoodenSupportSubType::neSw, direction, height, session.SupportColours);

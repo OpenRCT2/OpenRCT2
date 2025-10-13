@@ -220,7 +220,6 @@ static void WildMouseTrackStation(
         MetalASupportsPaintSetupRotated(
             session, supportType.metal, MetalSupportPlace::centre, direction, -1, height, session.SupportColours);
     }
-    TrackPaintUtilDrawStationTunnel(session, direction, height);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
@@ -484,7 +483,6 @@ static void WildMouseTrackRightQuarterTurn3(
     };
 
     TrackPaintUtilRightQuarterTurn3TilesPaint3(session, height, direction, trackSequence, session.TrackColours, imageIds);
-    TrackPaintUtilRightQuarterTurn3TilesTunnel(session, kTunnelGroup, TunnelSubType::Flat, height, direction, trackSequence);
 
     switch (trackSequence)
     {
@@ -546,9 +544,6 @@ static void WildMouseTrackRightQuarterTurn325DegDown(
         PaintAddImageAsParent(
             session, session.TrackColours.WithIndex(sbb->sprite_id), { offset.x, offset.y, height + offset.z }, sbb->bb_size);
     }
-
-    TrackPaintUtilRightQuarterTurn3Tiles25DegDownTunnel(
-        session, kTunnelGroup, height, direction, trackSequence, TunnelSubType::SlopeEnd, TunnelSubType::SlopeStart);
 
     switch (trackSequence)
     {
@@ -616,9 +611,6 @@ static void WildMouseTrackRightQuarterTurn325DegUp(
             session, session.TrackColours.WithIndex(sbb->sprite_id), { sbb->offset.x, sbb->offset.y, height + sbb->offset.z },
             sbb->bb_size);
     }
-
-    TrackPaintUtilRightQuarterTurn3Tiles25DegUpTunnel(
-        session, kTunnelGroup, height, direction, trackSequence, TunnelSubType::SlopeStart, TunnelSubType::SlopeEnd);
 
     switch (trackSequence)
     {
@@ -702,8 +694,6 @@ static void WildMouseTrackLeftQuarterTurn1(
             break;
     }
     MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, -1, height, session.SupportColours);
-    TrackPaintUtilLeftQuarterTurn1TileTunnel(
-        session, kTunnelGroup, direction, height, 0, TunnelSubType::Flat, 0, TunnelSubType::Flat);
     PaintUtilSetSegmentSupportHeight(
         session,
         PaintUtilRotateSegments(
