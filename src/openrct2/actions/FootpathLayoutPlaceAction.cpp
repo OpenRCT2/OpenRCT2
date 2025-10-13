@@ -30,7 +30,7 @@
 namespace OpenRCT2::GameActions
 {
     FootpathLayoutPlaceAction::FootpathLayoutPlaceAction(
-        const CoordsXYZ& loc, uint8_t slope, ObjectEntryIndex type, ObjectEntryIndex railingsType, uint8_t edges,
+        const CoordsXYZ& loc, FootpathSlope slope, ObjectEntryIndex type, ObjectEntryIndex railingsType, uint8_t edges,
         PathConstructFlags constructFlags)
         : _loc(loc)
         , _slope(slope)
@@ -52,7 +52,8 @@ namespace OpenRCT2::GameActions
     void FootpathLayoutPlaceAction::AcceptParameters(GameActionParameterVisitor& visitor)
     {
         visitor.Visit(_loc);
-        visitor.Visit("slope", _slope);
+        visitor.Visit("slopeType", _slope.type);
+        visitor.Visit("slopeDirection", _slope.direction);
         visitor.Visit("object", _type);
         visitor.Visit("railingsObject", _railingsType);
         visitor.Visit("edges", _edges);
@@ -131,9 +132,9 @@ namespace OpenRCT2::GameActions
         QuarterTile quarterTile{ 0b1111, 0 };
         auto zLow = _loc.z;
         auto zHigh = zLow + kPathClearance;
-        if (_slope & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED)
+        if (_slope.type == FootpathSlopeType::sloped)
         {
-            quarterTile = QuarterTile{ 0b1111, 0b1100 }.Rotate(_slope & kTileElementDirectionMask);
+            quarterTile = QuarterTile{ 0b1111, 0b1100 }.Rotate(_slope.direction);
             zHigh += kPathHeightStep;
         }
 
@@ -151,8 +152,8 @@ namespace OpenRCT2::GameActions
 
         // Do not attempt to build a crossing with a queue or a sloped path.
         auto isQueue = _constructFlags & PathConstructFlag::IsQueue;
-        auto crossingMode = isQueue || (_slope != kTileSlopeFlat) ? CreateCrossingMode::none
-                                                                  : CreateCrossingMode::pathOverTrack;
+        auto crossingMode = isQueue || (_slope.type != FootpathSlopeType::flat) ? CreateCrossingMode::none
+                                                                                : CreateCrossingMode::pathOverTrack;
         auto canBuild = MapCanConstructWithClearAt(
             { _loc, zLow, zHigh }, &MapPlaceNonSceneryClearFunc, quarterTile, GetFlags(), kTileSlopeFlat, crossingMode);
         if (!entrancePath && canBuild.Error != Status::Ok)
@@ -200,9 +201,9 @@ namespace OpenRCT2::GameActions
         QuarterTile quarterTile{ 0b1111, 0 };
         auto zLow = _loc.z;
         auto zHigh = zLow + kPathClearance;
-        if (_slope & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED)
+        if (_slope.type == FootpathSlopeType::sloped)
         {
-            quarterTile = QuarterTile{ 0b1111, 0b1100 }.Rotate(_slope & kTileElementDirectionMask);
+            quarterTile = QuarterTile{ 0b1111, 0b1100 }.Rotate(_slope.direction);
             zHigh += kPathHeightStep;
         }
 
@@ -220,8 +221,8 @@ namespace OpenRCT2::GameActions
 
         // Do not attempt to build a crossing with a queue or a sloped path.
         auto isQueue = _constructFlags & PathConstructFlag::IsQueue;
-        auto crossingMode = isQueue || (_slope != kTileSlopeFlat) ? CreateCrossingMode::none
-                                                                  : CreateCrossingMode::pathOverTrack;
+        auto crossingMode = isQueue || (_slope.type != FootpathSlopeType::flat) ? CreateCrossingMode::none
+                                                                                : CreateCrossingMode::pathOverTrack;
         auto canBuild = MapCanConstructWithClearAt(
             { _loc, zLow, zHigh }, &MapPlaceNonSceneryClearFunc, quarterTile, GAME_COMMAND_FLAG_APPLY | GetFlags(),
             kTileSlopeFlat, crossingMode);
@@ -274,8 +275,8 @@ namespace OpenRCT2::GameActions
                 pathElement->SetSurfaceEntryIndex(_type);
                 pathElement->SetRailingsEntryIndex(_railingsType);
             }
-            pathElement->SetSlopeDirection(_slope & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK);
-            pathElement->SetSloped(_slope & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED);
+            pathElement->SetSlopeDirection(_slope.direction);
+            pathElement->SetSloped(_slope.type == FootpathSlopeType::sloped);
             pathElement->SetIsQueue(isQueue);
             pathElement->SetAddition(0);
             pathElement->SetRideIndex(RideId::GetNull());
