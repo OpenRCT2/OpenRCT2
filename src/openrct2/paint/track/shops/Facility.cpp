@@ -76,7 +76,7 @@ static void PaintFacility(
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 
     if (direction == 1 || direction == 2)
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSlope::flat);
 }
 
 /* 0x00762D44 */
