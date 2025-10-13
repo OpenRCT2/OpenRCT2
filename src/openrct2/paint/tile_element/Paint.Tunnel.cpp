@@ -59,3 +59,39 @@ TunnelType GetTunnelType(const TunnelStyle style, const TunnelSlope slope)
 {
     return kTunnelStyleSlopeMap[EnumValue(style)][EnumValue(slope)];
 }
+
+static constexpr std::array<TunnelType, kLandEdgeDoorFrameCount> kTunnelDoorOpeningInwardsToImage = {
+    TunnelType::doorClosed,        TunnelType::doorOpeningInward, TunnelType::doorOpeningInward, TunnelType::doorOpenInward,
+    TunnelType::doorOpeningInward, TunnelType::doorOpeningInward, TunnelType::doorClosed,        TunnelType::doorClosed,
+};
+
+static constexpr std::array<TunnelType, kLandEdgeDoorFrameCount> kTunnelDoorOpeningOutwardsToImage = {
+    TunnelType::doorClosed,         TunnelType::doorOpeningOutward, TunnelType::doorOpeningOutward, TunnelType::doorOpenOutward,
+    TunnelType::doorOpeningOutward, TunnelType::doorOpeningOutward, TunnelType::doorClosed,         TunnelType::doorClosed,
+};
+
+static constexpr std::array<TunnelType, kLandEdgeDoorFrameCount> kTunnelDoorFlatTo25DegOpeningInwardsToImage = {
+    TunnelType::doorClosedFlatToDown25,        TunnelType::doorOpeningInwardFlatToDown25,
+    TunnelType::doorOpeningInwardFlatToDown25, TunnelType::doorOpenInwardFlatToDown25,
+    TunnelType::doorOpeningInwardFlatToDown25, TunnelType::doorOpeningInwardFlatToDown25,
+    TunnelType::doorClosedFlatToDown25,        TunnelType::doorClosedFlatToDown25,
+};
+
+static constexpr std::array<TunnelType, kLandEdgeDoorFrameCount> kTunnelDoorFlatTo25DegOpeningOutwardsToImage = {
+    TunnelType::doorClosedFlatToDown25,         TunnelType::doorOpeningOutwardFlatToDown25,
+    TunnelType::doorOpeningOutwardFlatToDown25, TunnelType::doorOpenOutwardFlatToDown25,
+    TunnelType::doorOpeningOutwardFlatToDown25, TunnelType::doorOpeningOutwardFlatToDown25,
+    TunnelType::doorClosedFlatToDown25,         TunnelType::doorClosedFlatToDown25,
+};
+
+static constexpr const std::array<std::array<std::array<TunnelType, kLandEdgeDoorFrameCount>, 2>, 2> kTunnelDoorDirections = {
+    { { kTunnelDoorOpeningInwardsToImage, kTunnelDoorOpeningOutwardsToImage },
+      { kTunnelDoorFlatTo25DegOpeningInwardsToImage, kTunnelDoorFlatTo25DegOpeningOutwardsToImage } }
+};
+
+TunnelType GetTunnelTypeDoors(const OpenRCT2::TrackElement& trackElement, const Direction direction, const bool flatToDown25)
+{
+    const bool index = direction != 0;
+    const std::array<uint8_t, 2> doorStates = { trackElement.GetDoorAState(), trackElement.GetDoorBState() };
+    return kTunnelDoorDirections[flatToDown25][index][doorStates[index]];
+}

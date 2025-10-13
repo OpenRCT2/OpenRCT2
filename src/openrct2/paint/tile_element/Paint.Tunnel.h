@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../../world/Location.hpp"
+#include "../../world/tile_element/TrackElement.h"
 
 #include <cstdint>
 
@@ -90,6 +91,7 @@ struct TunnelEntry
 };
 
 TunnelType GetTunnelType(TunnelStyle style, TunnelSlope slope);
+TunnelType GetTunnelTypeDoors(const OpenRCT2::TrackElement& trackElement, const Direction direction, const bool flatToDown25);
 
 void PaintUtilPushTunnelLeft(PaintSession& session, uint16_t height, TunnelType type);
 void PaintUtilPushTunnelRight(PaintSession& session, uint16_t height, TunnelType type);
