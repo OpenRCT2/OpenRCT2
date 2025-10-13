@@ -19,22 +19,22 @@ constexpr uint8_t kTunnelMaxCount = 65;
 
 enum class TunnelType : uint8_t
 {
-    StandardFlat = 0,       // Used on flat track (or the flat part of flat-to-sloped track)
-    StandardSlopeStart = 1, // Used on the lower end of sloped track
-    StandardSlopeEnd = 2,   // Used on the upper end of sloped track
-    InvertedFlat = 3,       // Used on flat track (or the flat part of flat-to-sloped track)
-    InvertedSlopeStart = 4, // Used on the lower end of sloped track
-    InvertedSlopeEnd = 5,   // Used on the upper end of sloped track
-    SquareFlat = 6,         // Used on flat track (or the flat part of flat-to-sloped track)
-    SquareSlopeStart = 7,   // Used on the lower end of sloped track
-    SquareSlopeEnd = 8,     // Used on the upper end of sloped track
-    InvertedSquare = 9,
-    PathAndMiniGolf = 10,
-    Path11 = 11,
-    StandardFlatTo25Deg = 12,
-    InvertedFlatTo25Deg = 13,
-    SquareFlatTo25Deg = 14,
-    InvertedSquareFlatTo25Deg = 15,
+    standardFlat = 0,
+    standardUp25 = 1,
+    standardDown25 = 2,
+    invertedFlat = 3,
+    invertedUp25 = 4,
+    invertedDown25 = 5,
+    squareFlat = 6,
+    squareUp25 = 7,
+    squareDown25 = 8,
+    invertedSquareFlat = 9,
+    path = 10,
+    pathOpenBack = 11,
+    standardFlatToDown25 = 12,
+    invertedFlatToDown25 = 13,
+    squareFlatToDown25 = 14,
+    invertedSquareFlatToDown25 = 15,
 
     // Ghost train doors
     doorClosed = 16,
