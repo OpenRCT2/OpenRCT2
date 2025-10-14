@@ -452,6 +452,7 @@ enum class RtdSpecialType
     firstAid,
     enterprise,
     motionSimulator,
+    spaceRings,
 };
 
 // Set on ride types that have a main colour, additional colour and support colour.

@@ -3408,7 +3408,7 @@ static Vehicle* VehicleCreateCar(
         int32_t direction = trackElement->GetDirection();
         vehicle->Orientation = direction << 3;
 
-        if (ride.type == RIDE_TYPE_SPACE_RINGS)
+        if (ride.getRideTypeDescriptor().specialType == RtdSpecialType::spaceRings)
         {
             direction = 4;
         }
@@ -3688,8 +3688,8 @@ ResultWithMessage Ride::createVehicles(const CoordsXYE& element, bool isApplying
         stations[i].Depart = (stations[i].Depart & kStationDepartFlag) | 1;
     }
 
-    //
-    if (type != RIDE_TYPE_SPACE_RINGS && !getRideTypeDescriptor().HasFlag(RtdFlag::vehicleIsIntegral))
+    const auto& rtd = getRideTypeDescriptor();
+    if (rtd.specialType != RtdSpecialType::spaceRings && !rtd.HasFlag(RtdFlag::vehicleIsIntegral))
     {
         if (isBlockSectioned() && !isSimulating)
         {
@@ -4749,7 +4749,8 @@ void RideFixBreakdown(Ride& ride, int32_t reliabilityIncreaseFactor)
  */
 void RideUpdateVehicleColours(const Ride& ride)
 {
-    if (ride.type == RIDE_TYPE_SPACE_RINGS || ride.getRideTypeDescriptor().HasFlag(RtdFlag::vehicleIsIntegral))
+    const auto& rtd = ride.getRideTypeDescriptor();
+    if (rtd.specialType == RtdSpecialType::spaceRings || rtd.HasFlag(RtdFlag::vehicleIsIntegral))
     {
         GfxInvalidateScreen();
     }
