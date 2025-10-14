@@ -2474,7 +2474,7 @@ static void TrackRightQuarterTurn5TilesUp25(
     {
         PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
     }
-    else if (trackSequence == 6 && (direction == 2 || direction == 3))
+    else if (trackSequence == 6 && (direction == 0 || direction == 1))
     {
         PaintUtilPushTunnelRotated(session, DirectionNext(direction), height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
