@@ -433,6 +433,8 @@ enum class RtdFlag : uint8_t
     allowReversedTrains,
 
     requireExplicitListingInMusicObjects,
+
+    hasRoofOverWholeRide,
 };
 
 /**

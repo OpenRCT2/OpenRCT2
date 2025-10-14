@@ -32,7 +32,7 @@ constexpr RideTypeDescriptor DodgemsRTD =
                      RtdFlag::cannotHaveGaps, RtdFlag::noTestMode, RtdFlag::noWallsAroundTrack,
                      RtdFlag::isFlatRide, RtdFlag::hasVehicleColours, RtdFlag::hasMusicByDefault,
                      RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit,
-                     RtdFlag::slightlyInterestingToLookAt),
+                     RtdFlag::slightlyInterestingToLookAt, RtdFlag::hasRoofOverWholeRide),
     .RideModes = EnumsToFlags(RideMode::dodgems),
     .DefaultMode = RideMode::dodgems,
     .OperatingSettings = { 20, 180 },
