@@ -3420,7 +3420,7 @@ static Vehicle* VehicleCreateCar(
                 {
                     if (rtd.StartTrackPiece != TrackElemType::FlatTrack1x4A)
                     {
-                        if (ride.type == RIDE_TYPE_ENTERPRISE)
+                        if (ride.getRideTypeDescriptor().specialType == RtdSpecialType::enterprise)
                         {
                             direction += 5;
                         }

@@ -4310,7 +4310,7 @@ void Vehicle::UpdateRotating()
         if (curRide->status != RideStatus::closed)
         {
             sprite = NumRotations + 1;
-            if (curRide->type == RIDE_TYPE_ENTERPRISE)
+            if (curRide->getRideTypeDescriptor().specialType == RtdSpecialType::enterprise)
                 sprite += 9;
 
             if (sprite < curRide->rotations)

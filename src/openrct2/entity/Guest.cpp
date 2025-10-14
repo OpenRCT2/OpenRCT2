@@ -3649,7 +3649,7 @@ uint8_t Guest::GetWaypointedSeatLocation(const Ride& ride, const CarEntry* vehic
     uint8_t seatLocationFixed = CurrentSeat & 0xF8;
 
     // Enterprise has more segments (8) compared to the normal (4)
-    if (ride.type != RIDE_TYPE_ENTERPRISE)
+    if (ride.getRideTypeDescriptor().specialType != RtdSpecialType::enterprise)
         track_direction *= 2;
 
     // Type 1 loading doesn't do segments and all peeps go to the same

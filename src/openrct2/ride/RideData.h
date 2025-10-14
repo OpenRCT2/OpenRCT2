@@ -450,6 +450,7 @@ enum class RtdSpecialType
     toilet,
     cashMachine,
     firstAid,
+    enterprise,
 };
 
 // Set on ride types that have a main colour, additional colour and support colour.
