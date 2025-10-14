@@ -1335,6 +1335,7 @@ static void RideRatingsApplyIntensityPenalty(RideRating::Tuple& ratings)
  */
 static void SetUnreliabilityFactor(Ride& ride)
 {
+    const auto& rtd = ride.getRideTypeDescriptor();
     // Special unreliability for a few ride types
     if (ride.type == RIDE_TYPE_COMPACT_INVERTED_COASTER && ride.mode == RideMode::reverseInclineLaunchedShuttle)
     {
@@ -1344,7 +1345,7 @@ static void SetUnreliabilityFactor(Ride& ride)
     {
         ride.unreliabilityFactor += 5;
     }
-    else if (ride.type == RIDE_TYPE_CHAIRLIFT)
+    else if (rtd.HasFlag(RtdFlag::runningSpeedAffectsReliability))
     {
         ride.unreliabilityFactor += (ride.speed * 2);
     }

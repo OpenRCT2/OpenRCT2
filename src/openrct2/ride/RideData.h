@@ -435,6 +435,8 @@ enum class RtdFlag : uint8_t
     requireExplicitListingInMusicObjects,
 
     hasRoofOverWholeRide,
+
+    runningSpeedAffectsReliability,
 };
 
 /**
