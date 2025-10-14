@@ -195,9 +195,9 @@ bool TrackPaintUtilShouldPaintSupports(const CoordsXY& position)
 
 static constexpr ImageIndex kStationBaseTypeSpriteIndexes[][2] = {
     { kImageIndexUndefined, kImageIndexUndefined },
-    { SPR_STATION_BASE_A_SW_NE, SPR_STATION_BASE_A_NW_SE },
-    { SPR_STATION_BASE_B_SW_NE, SPR_STATION_BASE_B_NW_SE },
-    { SPR_STATION_BASE_C_SW_NE, SPR_STATION_BASE_C_NW_SE },
+    { SPR_STATION_BASE_TALL_SW_NE, SPR_STATION_BASE_TALL_NW_SE },
+    { SPR_STATION_BASE_MEDIUM_SW_NE, SPR_STATION_BASE_MEDIUM_NW_SE },
+    { SPR_STATION_BASE_SHORT_SW_NE, SPR_STATION_BASE_SHORT_NW_SE },
 };
 static_assert(std::size(kStationBaseTypeSpriteIndexes) == kStationBaseTypeCount);
 
@@ -1796,7 +1796,7 @@ void TrackPaintUtilSpinningTunnelPaint(PaintSession& session, int8_t thickness, 
 void TrackPaintUtilOnridePhotoPlatformPaint(
     PaintSession& session, Direction direction, int32_t height, MetalSupportType supportType)
 {
-    PaintAddImageAsParent(session, ImageId(SPR_STATION_BASE_D, COLOUR_BLACK), { 0, 0, height }, { 32, 32, 1 });
+    PaintAddImageAsParent(session, ImageId(SPR_STATION_BASE_BORDERLESS, COLOUR_BLACK), { 0, 0, height }, { 32, 32, 1 });
     DrawSupportsSideBySide(session, direction, height, session.SupportColours, supportType);
 }
 

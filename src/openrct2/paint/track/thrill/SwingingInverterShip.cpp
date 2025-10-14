@@ -50,17 +50,17 @@ static constexpr BoundBoxXY kSwingingInverterShipBounds[] = {
 
 enum
 {
-    SPR_SWINGING_INVERTER_SHIP_FRAME_0 = 21998,
-    SPR_SWINGING_INVERTER_SHIP_FRAME_1 = 21999,
-    SPR_SWINGING_INVERTER_SHIP_FRAME_2 = 22000,
-    SPR_SWINGING_INVERTER_SHIP_FRAME_3 = 22001,
+    SPR_SWINGING_INVERTER_SHIP_MAIN_SUPPORT_NW = 21998,
+    SPR_SWINGING_INVERTER_SHIP_MAIN_SUPPORT_NE = 21999,
+    SPR_SWINGING_INVERTER_SHIP_MAIN_SUPPORT_SE = 22000,
+    SPR_SWINGING_INVERTER_SHIP_MAIN_SUPPORT_SW = 22001,
 };
 
-static constexpr uint32_t kSwingingInverterShipFrameSprites[] = {
-    SPR_SWINGING_INVERTER_SHIP_FRAME_0,
-    SPR_SWINGING_INVERTER_SHIP_FRAME_1,
-    SPR_SWINGING_INVERTER_SHIP_FRAME_2,
-    SPR_SWINGING_INVERTER_SHIP_FRAME_3,
+static constexpr uint32_t kSwingingInverterShipMainSupportSprites[] = {
+    SPR_SWINGING_INVERTER_SHIP_MAIN_SUPPORT_NW,
+    SPR_SWINGING_INVERTER_SHIP_MAIN_SUPPORT_NE,
+    SPR_SWINGING_INVERTER_SHIP_MAIN_SUPPORT_SE,
+    SPR_SWINGING_INVERTER_SHIP_MAIN_SUPPORT_SW,
 };
 
 static void PaintSwingingInverterShipStructure(
@@ -111,16 +111,16 @@ static void PaintSwingingInverterShipStructure(
     }
     auto frameImageTemplate = session.TrackColours;
     auto vehicleImageId = vehicleImageTemplate.WithIndex(vehicleImageIndex);
-    auto frameImageId = frameImageTemplate.WithIndex(kSwingingInverterShipFrameSprites[direction]);
+    auto mainSupportImageId = frameImageTemplate.WithIndex(kSwingingInverterShipMainSupportSprites[direction]);
 
     if (direction & 2)
     {
         PaintAddImageAsParent(session, vehicleImageId, offset, bb);
-        PaintAddImageAsChild(session, frameImageId, offset, bb);
+        PaintAddImageAsChild(session, mainSupportImageId, offset, bb);
     }
     else
     {
-        PaintAddImageAsParent(session, frameImageId, offset, bb);
+        PaintAddImageAsParent(session, mainSupportImageId, offset, bb);
         PaintAddImageAsChild(session, vehicleImageId, offset, bb);
     }
 
@@ -143,7 +143,7 @@ static void PaintSwingingInverterShip(
 
         if (stationObject != nullptr && !(stationObject->Flags & StationObjectFlags::noPlatforms))
         {
-            imageId = session.SupportColours.WithIndex(SPR_STATION_BASE_D);
+            imageId = session.SupportColours.WithIndex(SPR_STATION_BASE_BORDERLESS);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 1 });
 
             switch (direction)
