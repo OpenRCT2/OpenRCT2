@@ -3218,7 +3218,7 @@ static void RideSetStartFinishPoints(RideId rideIndex, const CoordsXYE& startEle
     const auto& rtd = ride->getRideTypeDescriptor();
     if (rtd.specialType == RtdSpecialType::maze)
         RideSetMazeEntranceExitPoints(*ride);
-    else if (ride->type == RIDE_TYPE_BOAT_HIRE)
+    else if (rtd.specialType == RtdSpecialType::boatHire)
         RideSetBoatHireReturnPoint(*ride, startElement);
 
     if (ride->isBlockSectioned() && !(ride->lifecycleFlags & RIDE_LIFECYCLE_ON_TRACK))

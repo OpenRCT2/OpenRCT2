@@ -453,6 +453,7 @@ enum class RtdSpecialType
     enterprise,
     motionSimulator,
     spaceRings,
+    boatHire,
 };
 
 // Set on ride types that have a main colour, additional colour and support colour.
