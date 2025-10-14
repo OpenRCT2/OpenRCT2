@@ -438,6 +438,7 @@ enum class RtdFlag : uint8_t
 
     runningSpeedAffectsReliability,
     poweredLaunchAffectsReliability,
+    reverseInclineLaunchAffectsReliability,
 };
 
 /**

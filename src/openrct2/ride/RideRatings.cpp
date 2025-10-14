@@ -1337,7 +1337,7 @@ static void SetUnreliabilityFactor(Ride& ride)
 {
     const auto& rtd = ride.getRideTypeDescriptor();
     // Special unreliability for a few ride types
-    if (ride.type == RIDE_TYPE_COMPACT_INVERTED_COASTER && ride.mode == RideMode::reverseInclineLaunchedShuttle)
+    if (rtd.HasFlag(RtdFlag::reverseInclineLaunchAffectsReliability) && ride.mode == RideMode::reverseInclineLaunchedShuttle)
     {
         ride.unreliabilityFactor += 10;
     }
