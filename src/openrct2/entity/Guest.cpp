@@ -4374,7 +4374,7 @@ void Guest::UpdateRideLeaveVehicle()
         exitWaypointLoc.y += carEntry->peep_loading_waypoints[waypointIndex][2].y;
     }
 
-    if (ride->type == RIDE_TYPE_MOTION_SIMULATOR)
+    if (ride->getRideTypeDescriptor().specialType == RtdSpecialType::motionSimulator)
         exitWaypointLoc.z += 15;
 
     MoveTo(exitWaypointLoc);
@@ -4598,7 +4598,7 @@ void Guest::UpdateRideApproachExitWaypoints()
     {
         int16_t actionZ;
 
-        if (ride->type == RIDE_TYPE_MOTION_SIMULATOR)
+        if (ride->getRideTypeDescriptor().specialType == RtdSpecialType::motionSimulator)
         {
             actionZ = ride->getStation(CurrentRideStation).GetBaseZ() + 2;
 

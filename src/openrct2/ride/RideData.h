@@ -451,6 +451,7 @@ enum class RtdSpecialType
     cashMachine,
     firstAid,
     enterprise,
+    motionSimulator,
 };
 
 // Set on ride types that have a main colour, additional colour and support colour.
