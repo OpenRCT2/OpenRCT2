@@ -16,6 +16,8 @@
 #include "../../Track.h"
 
 // clang-format off
+namespace OpenRCT2
+{
 constexpr RideTypeDescriptor SpinningRollerCoasterRTD =
 {
     .Category = RideCategory::rollerCoaster,
@@ -41,13 +43,13 @@ constexpr RideTypeDescriptor SpinningRollerCoasterRTD =
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE),
     .Heights = { 17, 24, 9, 11,},
     .MaxMass = 18,
-    .LiftData = { OpenRCT2::Audio::SoundId::LiftWildMouse, 4, 6 },
+    .LiftData = { OpenRCT2::Audio::SoundId::liftWildMouse, 4, 6 },
     .RatingsMultipliers = { 56, 33, 10 },
     .UpkeepCosts = { 35, 20, 80, 8, 3, 10 },
     .BuildCosts = { 32.50_GBP, 2.00_GBP, 40, },
     .DefaultPrices = { 20, 20 },
     .DefaultMusic = kMusicObjectRock3,
-    .PhotoItem = ShopItem::Photo,
+    .PhotoItem = ShopItem::photo,
     .BonusValue = 60,
     .ColourPresets = TRACK_COLOUR_PRESETS(
         { COLOUR_LIGHT_ORANGE, COLOUR_LIGHT_ORANGE, COLOUR_WHITE },
@@ -60,13 +62,13 @@ constexpr RideTypeDescriptor SpinningRollerCoasterRTD =
     .RatingsData =
     {
         RatingsCalculationType::Normal,
-        { MakeRideRating(2, 55), MakeRideRating(2, 40), MakeRideRating(1, 85) },
+        { RideRating::make(2, 55), RideRating::make(2, 40), RideRating::make(1, 85) },
         13,
         -1,
         false,
         {
             { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },
-            { RatingsModifierType::BonusSynchronisation,  0,                MakeRideRating(0, 40), MakeRideRating(0, 05), 0 },
+            { RatingsModifierType::BonusSynchronisation,  0,                RideRating::make(0, 40), RideRating::make(0, 05), 0 },
             { RatingsModifierType::BonusTrainLength,      0,                187245, 0, 0 },
             { RatingsModifierType::BonusMaxSpeed,         0,                44281, 88562, 35424 },
             { RatingsModifierType::BonusAverageSpeed,     0,                291271, 436906, 0 },
@@ -86,4 +88,5 @@ constexpr RideTypeDescriptor SpinningRollerCoasterRTD =
         },
      },
 };
+}
 // clang-format on
