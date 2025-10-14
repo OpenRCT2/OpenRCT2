@@ -8,7 +8,6 @@
  *****************************************************************************/
 
 #include "RideSetSettingAction.h"
-#include "RideSetStatusAction.h"
 #include "../Context.h"
 #include "../Diagnostic.h"
 #include "../GameState.h"
