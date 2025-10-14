@@ -1341,7 +1341,7 @@ static void SetUnreliabilityFactor(Ride& ride)
     {
         ride.unreliabilityFactor += 10;
     }
-    else if (ride.type == RIDE_TYPE_LOOPING_ROLLER_COASTER && ride.isPoweredLaunched())
+    else if (rtd.HasFlag(RtdFlag::poweredLaunchAffectsReliability) && ride.isPoweredLaunched())
     {
         ride.unreliabilityFactor += 5;
     }

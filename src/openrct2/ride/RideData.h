@@ -437,6 +437,7 @@ enum class RtdFlag : uint8_t
     hasRoofOverWholeRide,
 
     runningSpeedAffectsReliability,
+    poweredLaunchAffectsReliability,
 };
 
 /**
