@@ -46,6 +46,7 @@ enum class WoodenSupportTransitionType : uint8_t
     up25DegToUp60Deg = 3,
     up60DegToUp25Deg = 4,
     up60Deg = 5,
+    up25even = 6,
     flatToUp60Deg = 7,
     up60DegToFlat = 8,
     flatToUp25DegRailway = 9,
