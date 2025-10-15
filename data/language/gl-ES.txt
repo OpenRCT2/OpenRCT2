@@ -473,13 +473,13 @@ STR_1076    :Modo de posto de venda
 STR_1077    :Modo de rotación
 STR_1078    :Rotación cara adiante
 STR_1079    :Rotación cara atrás
-STR_1080    :Filme: "Avións vingadores"
-STR_1081    :Filme 3D: "Rabos de rato"
+STR_1080    :Filme: "Aviadores vingadores"
+STR_1081    :Filme 3D: "Contos do rato"
 STR_1082    :Modo aneis espaciais
 STR_1083    :Modo principiante
 STR_1084    :Lanzamento impulsado por LIM (motores indución lineal)
 STR_1085    :Filme: "Pilotos da emoción"
-STR_1086    :Filme 3D: "Perseguidores de tormentas"
+STR_1086    :Filme 3D: "Cazadores de tempestades"
 STR_1087    :Filme 3D: "Asaltantes do espazo"
 STR_1088    :Modo intenso
 STR_1089    :Modo frenético
