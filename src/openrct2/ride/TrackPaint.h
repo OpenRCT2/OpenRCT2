@@ -305,8 +305,8 @@ constexpr uint32_t kFloorSpritesMulch[] = {
     SPR_FLOOR_MULCH_SE,
     SPR_FLOOR_MULCH,
 };
-// Tiles forming a checkerboard pattern (not to be confused with the one for the Spiral Slide)
-constexpr uint32_t kFloorSpritesTileCheckerboard[] = {
+// Tiles forming a chequerboard pattern (not to be confused with the one for the Spiral Slide)
+constexpr uint32_t kFloorSpritesTileChequerboard[] = {
     SPR_FLOOR_TILE_CHEQUERBOARD,
     SPR_FLOOR_TILE_CHEQUERBOARD,
     SPR_FLOOR_TILE_CHEQUERBOARD,
