@@ -75,6 +75,7 @@ constexpr RideTypeDescriptor MotionSimulatorRTD =
     .UpdateMeasurementsSpecialElements = RideUpdateMeasurementsSpecialElements_Default,
     .MusicTrackOffsetLength = RideAudio::RideMusicGetTrackOffsetLength_Default,
     .UpdateRideApproachVehicleWaypoints = UpdateRideApproachVehicleWaypointsMotionSimulator,
+    .specialType = RtdSpecialType::motionSimulator,
 };
 } // namespace OpenRCT2
 // clang-format on

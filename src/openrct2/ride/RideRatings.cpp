@@ -1335,16 +1335,17 @@ static void RideRatingsApplyIntensityPenalty(RideRating::Tuple& ratings)
  */
 static void SetUnreliabilityFactor(Ride& ride)
 {
+    const auto& rtd = ride.getRideTypeDescriptor();
     // Special unreliability for a few ride types
-    if (ride.type == RIDE_TYPE_COMPACT_INVERTED_COASTER && ride.mode == RideMode::reverseInclineLaunchedShuttle)
+    if (rtd.HasFlag(RtdFlag::reverseInclineLaunchAffectsReliability) && ride.mode == RideMode::reverseInclineLaunchedShuttle)
     {
         ride.unreliabilityFactor += 10;
     }
-    else if (ride.type == RIDE_TYPE_LOOPING_ROLLER_COASTER && ride.isPoweredLaunched())
+    else if (rtd.HasFlag(RtdFlag::poweredLaunchAffectsReliability) && ride.isPoweredLaunched())
     {
         ride.unreliabilityFactor += 5;
     }
-    else if (ride.type == RIDE_TYPE_CHAIRLIFT)
+    else if (rtd.HasFlag(RtdFlag::runningSpeedAffectsReliability))
     {
         ride.unreliabilityFactor += (ride.speed * 2);
     }

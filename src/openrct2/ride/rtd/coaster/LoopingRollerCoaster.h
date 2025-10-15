@@ -30,7 +30,7 @@ constexpr RideTypeDescriptor LoopingRollerCoasterRTD =
     .InvertedTrackPaintFunctions = {},
     .Flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt | 
         EnumsToFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation, RtdFlag::checkGForces, 
-                     RtdFlag::allowMultipleCircuits, RtdFlag::allowReversedTrains),
+                     RtdFlag::allowMultipleCircuits, RtdFlag::allowReversedTrains, RtdFlag::poweredLaunchAffectsReliability),
     .RideModes = EnumsToFlags(RideMode::continuousCircuit, RideMode::continuousCircuitBlockSectioned, RideMode::reverseInclineLaunchedShuttle, RideMode::poweredLaunchPasstrough, RideMode::poweredLaunch),
     .DefaultMode = RideMode::continuousCircuit,
     .OperatingSettings = { 10, 27 },
