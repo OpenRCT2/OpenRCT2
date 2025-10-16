@@ -51,7 +51,7 @@ using namespace OpenRCT2::Numerics;
 namespace OpenRCT2::Ui::Windows
 {
     static money64 FootpathProvisionalSet(
-        ObjectEntryIndex type, ObjectEntryIndex railingsType, const CoordsXYZ& footpathLoc, int32_t slope,
+        ObjectEntryIndex type, ObjectEntryIndex railingsType, const CoordsXYZ& footpathLoc, FootpathSlope slope,
         PathConstructFlags constructFlags);
 
     enum class PathConstructionMode : uint8_t
@@ -77,12 +77,19 @@ namespace OpenRCT2::Ui::Windows
         forceRecheck = 2,
     };
 
+    enum class SlopePitch : uint8_t
+    {
+        flat,
+        upwards,
+        downwards,
+    };
+
     using ProvisionalPathFlags = FlagHolder<uint8_t, ProvisionalPathFlag>;
     struct ProvisionalFootpath
     {
         ObjectEntryIndex type;
         CoordsXYZ position;
-        uint8_t slope;
+        FootpathSlope slope;
         ProvisionalPathFlags flags;
         ObjectEntryIndex surfaceIndex;
         ObjectEntryIndex railingsIndex;
@@ -91,7 +98,7 @@ namespace OpenRCT2::Ui::Windows
 
     static ProvisionalFootpath _provisionalFootpath;
     static CoordsXYZ _footpathConstructFromPosition;
-    static uint8_t _footpathConstructSlope;
+    static SlopePitch _footpathConstructSlope;
 
 #pragma region Measurements
 
@@ -165,10 +172,10 @@ namespace OpenRCT2::Ui::Windows
 #pragma endregion
 
     /** rct2: 0x0098D7E0 */
-    static constexpr uint8_t ConstructionPreviewImages[][4] = {
-        { 5, 10, 5, 10 },   // Flat
-        { 16, 17, 18, 19 }, // Upwards
-        { 18, 19, 16, 17 }, // Downwards
+    static constexpr uint8_t kConstructionPreviewImages[][4] = {
+        { 5, 10, 5, 10 },   // SlopePitch::flat
+        { 16, 17, 18, 19 }, // SlopePitch::upwards
+        { 18, 19, 16, 17 }, // SlopePitch::downwards
     };
     // clang-format on
 
@@ -284,13 +291,13 @@ namespace OpenRCT2::Ui::Windows
                     WindowFootpathMousedownDirection(3);
                     break;
                 case WIDX_SLOPEDOWN:
-                    WindowFootpathMousedownSlope(6);
+                    WindowFootpathMousedownSlope(SlopePitch::downwards);
                     break;
                 case WIDX_LEVEL:
-                    WindowFootpathMousedownSlope(0);
+                    WindowFootpathMousedownSlope(SlopePitch::flat);
                     break;
                 case WIDX_SLOPEUP:
-                    WindowFootpathMousedownSlope(2);
+                    WindowFootpathMousedownSlope(SlopePitch::upwards);
                     break;
                 case WIDX_CONSTRUCT:
                     WindowFootpathConstruct();
@@ -462,16 +469,8 @@ namespace OpenRCT2::Ui::Windows
             if (!isWidgetDisabled(WIDX_CONSTRUCT))
             {
                 // Get construction image
-                uint8_t direction = (_footpathConstructDirection + GetCurrentRotation()) % 4;
-                uint8_t slope = 0;
-                if (_footpathConstructSlope == 2)
-                {
-                    slope = kTileSlopeNCornerUp;
-                }
-                else if (_footpathConstructSlope == 6)
-                {
-                    slope = kTileSlopeECornerUp;
-                }
+                uint8_t direction = (_footpathConstructDirection + GetCurrentRotation()) % kNumOrthogonalDirections;
+                auto slopeOffset = EnumValue(_footpathConstructSlope);
 
                 std::optional<uint32_t> baseImage;
                 if (gFootpathSelection.LegacyPath == kObjectEntryIndexNull)
@@ -499,7 +498,7 @@ namespace OpenRCT2::Ui::Windows
 
                 if (baseImage)
                 {
-                    auto image = *baseImage + ConstructionPreviewImages[slope][direction];
+                    auto image = *baseImage + kConstructionPreviewImages[slopeOffset][direction];
 
                     // Draw construction image
                     screenCoords = this->windowPos
@@ -533,7 +532,7 @@ namespace OpenRCT2::Ui::Windows
         FootpathPlacementResult FootpathGetPlacementFromScreenCoords(const ScreenCoordsXY& screenCoords)
         {
             if (_footpathPlaceZ > 0)
-                return { _footpathPlaceZ, kTileSlopeFlat };
+                return { _footpathPlaceZ, {} };
 
             auto info = GetMapCoordinatesFromPos(
                 screenCoords, EnumsToFlags(ViewportInteractionItem::terrain, ViewportInteractionItem::footpath));
@@ -566,7 +565,7 @@ namespace OpenRCT2::Ui::Windows
                 ObjectEntryIndex railings = gFootpathSelection.Railings;
 
                 CoordsXYZ footpathLoc;
-                int32_t slope;
+                FootpathSlope slope;
                 FootpathGetNextPathInfo(&type, footpathLoc, &slope);
                 auto pathConstructFlags = FootpathCreateConstructFlags(type);
 
@@ -583,7 +582,7 @@ namespace OpenRCT2::Ui::Windows
 
                 _provisionalFootpath.flags.flip(ProvisionalPathFlag::showArrow);
                 CoordsXYZ footpathLoc;
-                int32_t slope;
+                FootpathSlope slope;
                 FootpathGetNextPathInfo(nullptr, footpathLoc, &slope);
                 gMapSelectArrowPosition = footpathLoc;
                 gMapSelectArrowDirection = _footpathConstructDirection;
@@ -795,10 +794,10 @@ namespace OpenRCT2::Ui::Windows
          *
          *  rct2: 0x006A81AA 0x006A81C5 0x006A81E0
          */
-        void WindowFootpathMousedownSlope(int32_t slope)
+        void WindowFootpathMousedownSlope(SlopePitch pitch)
         {
             FootpathUpdateProvisional();
-            _footpathConstructSlope = slope;
+            _footpathConstructSlope = pitch;
             _windowFootpathCost = kMoney64Undefined;
             WindowFootpathSetEnabledAndPressedWidgets();
         }
@@ -946,10 +945,11 @@ namespace OpenRCT2::Ui::Windows
                     auto pathElement = info.Element->AsPath();
                     if (pathElement != nullptr)
                     {
-                        auto slope = pathElement->GetSlopeDirection();
+                        auto slopeDirection = pathElement->GetSlopeDirection();
+                        FootpathSlope slope = { FootpathSlopeType::flat, slopeDirection };
                         if (pathElement->IsSloped())
                         {
-                            slope |= FOOTPATH_PROPERTIES_FLAG_IS_SLOPED;
+                            slope.type = FootpathSlopeType::sloped;
                         }
                         return { pathElement->GetBaseZ(), slope };
                     }
@@ -1150,7 +1150,7 @@ namespace OpenRCT2::Ui::Windows
             _footpathConstructFromPosition = { mapCoords, z };
             _footpathConstructDirection = direction;
             _provisionalFootpath.flags.clearAll();
-            _footpathConstructSlope = 0;
+            _footpathConstructSlope = SlopePitch::flat;
             _footpathConstructionMode = PathConstructionMode::bridgeOrTunnel;
             _footpathConstructValidDirections = kInvalidDirection;
             WindowFootpathSetEnabledAndPressedWidgets();
@@ -1166,7 +1166,7 @@ namespace OpenRCT2::Ui::Windows
             FootpathUpdateProvisional();
 
             ObjectEntryIndex type;
-            int32_t slope;
+            FootpathSlope slope;
             CoordsXYZ footpathLoc;
             FootpathGetNextPathInfo(&type, footpathLoc, &slope);
 
@@ -1191,7 +1191,7 @@ namespace OpenRCT2::Ui::Windows
 
                     if (result->Error == GameActions::Status::Ok)
                     {
-                        if (_footpathConstructSlope == 0)
+                        if (_footpathConstructSlope == SlopePitch::flat)
                         {
                             self->_footpathConstructValidDirections = kInvalidDirection;
                         }
@@ -1209,7 +1209,7 @@ namespace OpenRCT2::Ui::Windows
                         // If we have just built an upwards slope, the next path to construct is
                         // a bit higher. Note that the z returned by footpath_get_next_path_info
                         // already is lowered if we are building a downwards slope.
-                        if (_footpathConstructSlope == 2)
+                        if (_footpathConstructSlope == SlopePitch::upwards)
                         {
                             _footpathConstructFromPosition.z += kPathHeightStep;
                         }
@@ -1373,18 +1373,17 @@ namespace OpenRCT2::Ui::Windows
                 newPressedWidgets |= (1LL << (WIDX_DIRECTION_NW + direction));
 
                 // Set pressed slope widget
-                int32_t slope = _footpathConstructSlope;
-                if (slope == kTileSlopeSESideUp)
+                switch (_footpathConstructSlope)
                 {
-                    newPressedWidgets |= (1uLL << WIDX_SLOPEDOWN);
-                }
-                else if (slope == kTileSlopeFlat)
-                {
-                    newPressedWidgets |= (1uLL << WIDX_LEVEL);
-                }
-                else
-                {
-                    newPressedWidgets |= (1uLL << WIDX_SLOPEUP);
+                    case SlopePitch::flat:
+                        newPressedWidgets |= (1uLL << WIDX_LEVEL);
+                        break;
+                    case SlopePitch::upwards:
+                        newPressedWidgets |= (1uLL << WIDX_SLOPEUP);
+                        break;
+                    case SlopePitch::downwards:
+                        newPressedWidgets |= (1uLL << WIDX_SLOPEDOWN);
+                        break;
                 }
 
                 // Enable / disable directional widgets
@@ -1416,7 +1415,7 @@ namespace OpenRCT2::Ui::Windows
          *
          *  rct2: 0x006A7B20
          */
-        void FootpathGetNextPathInfo(ObjectEntryIndex* type, CoordsXYZ& footpathLoc, int32_t* slope)
+        void FootpathGetNextPathInfo(ObjectEntryIndex* type, CoordsXYZ& footpathLoc, FootpathSlope* slope)
         {
             auto direction = _footpathConstructDirection;
             footpathLoc.x = _footpathConstructFromPosition.x + CoordsDirectionDelta[direction].x;
@@ -1426,14 +1425,14 @@ namespace OpenRCT2::Ui::Windows
             {
                 *type = gFootpathSelection.GetSelectedSurface();
             }
-            *slope = kTileSlopeFlat;
-            if (_footpathConstructSlope != 0)
+            *slope = {};
+            if (_footpathConstructSlope != SlopePitch::flat)
             {
-                *slope = _footpathConstructDirection | kTileSlopeSCornerUp;
-                if (_footpathConstructSlope != 2)
+                *slope = { FootpathSlopeType::sloped, _footpathConstructDirection };
+                if (_footpathConstructSlope == SlopePitch::downwards)
                 {
                     footpathLoc.z -= kPathHeightStep;
-                    *slope ^= kTileSlopeECornerUp;
+                    slope->direction = DirectionReverse(slope->direction);
                 }
             }
         }
@@ -1489,14 +1488,14 @@ namespace OpenRCT2::Ui::Windows
 
             switch (_footpathConstructSlope)
             {
-                case 0:
+                case SlopePitch::flat:
                     onMouseDown(WIDX_SLOPEDOWN);
                     break;
-                case 2:
+                case SlopePitch::upwards:
                     onMouseDown(WIDX_LEVEL);
                     break;
                 default:
-                case 6:
+                case SlopePitch::downwards:
                     return;
             }
         }
@@ -1511,14 +1510,14 @@ namespace OpenRCT2::Ui::Windows
 
             switch (_footpathConstructSlope)
             {
-                case 6:
+                case SlopePitch::downwards:
                     onMouseDown(WIDX_LEVEL);
                     break;
-                case 0:
+                case SlopePitch::flat:
                     onMouseDown(WIDX_SLOPEUP);
                     break;
                 default:
-                case 2:
+                case SlopePitch::upwards:
                     return;
             }
         }
@@ -1526,7 +1525,7 @@ namespace OpenRCT2::Ui::Windows
         void KeyboardShortcutSlopeLevel()
         {
             if (isWidgetDisabled(WIDX_SLOPEDOWN) || isWidgetDisabled(WIDX_LEVEL) || isWidgetDisabled(WIDX_SLOPEUP)
-                || widgets[WIDX_LEVEL].type == WidgetType::empty || _footpathConstructSlope == 0)
+                || widgets[WIDX_LEVEL].type == WidgetType::empty || _footpathConstructSlope == SlopePitch::flat)
             {
                 return;
             }
@@ -1686,7 +1685,7 @@ namespace OpenRCT2::Ui::Windows
      *  rct2: 0x006A76FF
      */
     static money64 FootpathProvisionalSet(
-        ObjectEntryIndex type, ObjectEntryIndex railingsType, const CoordsXYZ& footpathLoc, int32_t slope,
+        ObjectEntryIndex type, ObjectEntryIndex railingsType, const CoordsXYZ& footpathLoc, FootpathSlope slope,
         PathConstructFlags constructFlags)
     {
         FootpathRemoveProvisional();
@@ -1725,7 +1724,7 @@ namespace OpenRCT2::Ui::Windows
                 VirtualFloorSetHeight(0);
             }
             else if (
-                _provisionalFootpath.slope == kTileSlopeFlat
+                _provisionalFootpath.slope.type == FootpathSlopeType::flat
                 || _provisionalFootpath.position.z < _footpathConstructFromPosition.z)
             {
                 // Going either straight on, or down.

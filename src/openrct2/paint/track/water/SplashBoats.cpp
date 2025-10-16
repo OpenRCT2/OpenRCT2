@@ -1185,19 +1185,19 @@ static void PaintSplashBoatsTrackOnRidePhoto(
     {
         case 0:
             PaintAddImageAsParentRotated(
-                session, direction, ImageId(SPR_STATION_BASE_D, COLOUR_BLACK), { 0, 0, height }, { 32, 0, 1 });
+                session, direction, ImageId(SPR_STATION_BASE_BORDERLESS, COLOUR_BLACK), { 0, 0, height }, { 32, 0, 1 });
             break;
         case 1:
             PaintAddImageAsParentRotated(
-                session, direction, ImageId(SPR_STATION_BASE_D, COLOUR_BLACK), { 0, 0, height }, { 32, 0, 1 });
+                session, direction, ImageId(SPR_STATION_BASE_BORDERLESS, COLOUR_BLACK), { 0, 0, height }, { 32, 0, 1 });
             break;
         case 2:
             PaintAddImageAsParentRotated(
-                session, direction, ImageId(SPR_STATION_BASE_D, COLOUR_BLACK), { 0, 0, height }, { 32, 0, 1 });
+                session, direction, ImageId(SPR_STATION_BASE_BORDERLESS, COLOUR_BLACK), { 0, 0, height }, { 32, 0, 1 });
             break;
         case 3:
             PaintAddImageAsParentRotated(
-                session, direction, ImageId(SPR_STATION_BASE_D, COLOUR_BLACK), { 0, 0, height }, { 32, 0, 1 });
+                session, direction, ImageId(SPR_STATION_BASE_BORDERLESS, COLOUR_BLACK), { 0, 0, height }, { 32, 0, 1 });
             break;
     }
 

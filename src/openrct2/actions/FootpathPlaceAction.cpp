@@ -39,7 +39,7 @@
 namespace OpenRCT2::GameActions
 {
     FootpathPlaceAction::FootpathPlaceAction(
-        const CoordsXYZ& loc, uint8_t slope, ObjectEntryIndex type, ObjectEntryIndex railingsType, Direction direction,
+        const CoordsXYZ& loc, FootpathSlope slope, ObjectEntryIndex type, ObjectEntryIndex railingsType, Direction direction,
         PathConstructFlags constructFlags)
         : _loc(loc)
         , _slope(slope)
@@ -56,7 +56,8 @@ namespace OpenRCT2::GameActions
         visitor.Visit("object", _type);
         visitor.Visit("railingsObject", _railingsType);
         visitor.Visit("direction", _direction);
-        visitor.Visit("slope", _slope);
+        visitor.Visit("slopeType", _slope.type);
+        visitor.Visit("slopeDirection", _slope.direction);
         visitor.Visit("constructFlags", _constructFlags);
     }
 
@@ -92,7 +93,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::Disallowed, STR_CANT_BUILD_FOOTPATH_HERE, STR_LAND_NOT_OWNED_BY_PARK);
         }
 
-        if (_slope & SLOPE_IS_IRREGULAR_FLAG)
+        if (_slope.type == FootpathSlopeType::irregular || _slope.type == FootpathSlopeType::raise)
         {
             return Result(Status::Disallowed, STR_CANT_BUILD_FOOTPATH_HERE, STR_LAND_SLOPE_UNSUITABLE);
         }
@@ -116,7 +117,7 @@ namespace OpenRCT2::GameActions
         auto intent = Intent(INTENT_ACTION_REMOVE_PROVISIONAL_FOOTPATH);
         ContextBroadcastIntent(&intent);
 
-        auto tileElement = MapGetFootpathElementSlope(_loc, _slope);
+        auto tileElement = MapGetFootpathElementWithSlope(_loc, _slope);
         if (tileElement == nullptr)
         {
             return ElementInsertQuery(std::move(res));
@@ -149,14 +150,15 @@ namespace OpenRCT2::GameActions
                 auto zLow = _loc.z;
                 auto zHigh = zLow + kPathClearance;
                 WallRemoveIntersectingWalls(
-                    { _loc, zLow, zHigh + ((_slope & kTileSlopeRaisedCornersMask) ? 16 : 0) }, DirectionReverse(_direction));
+                    { _loc, zLow, zHigh + ((_slope.type == FootpathSlopeType::sloped) ? 16 : 0) },
+                    DirectionReverse(_direction));
                 WallRemoveIntersectingWalls(
                     { _loc.x - CoordsDirectionDelta[_direction].x, _loc.y - CoordsDirectionDelta[_direction].y, zLow, zHigh },
                     _direction);
             }
         }
 
-        auto tileElement = MapGetFootpathElementSlope(_loc, _slope);
+        auto tileElement = MapGetFootpathElementWithSlope(_loc, _slope);
         if (tileElement == nullptr)
         {
             return ElementInsertExecute(std::move(res));
@@ -295,9 +297,9 @@ namespace OpenRCT2::GameActions
         QuarterTile quarterTile{ 0b1111, 0 };
         auto zLow = _loc.z;
         auto zHigh = zLow + kPathClearance;
-        if (_slope & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED)
+        if (_slope.type == FootpathSlopeType::sloped)
         {
-            quarterTile = QuarterTile{ 0b1111, 0b1100 }.Rotate(_slope & kTileElementDirectionMask);
+            quarterTile = QuarterTile{ 0b1111, 0b1100 }.Rotate(_slope.direction);
             zHigh += kPathHeightStep;
         }
 
@@ -315,8 +317,8 @@ namespace OpenRCT2::GameActions
 
         // Do not attempt to build a crossing with a queue or a sloped path.
         auto isQueue = _constructFlags & PathConstructFlag::IsQueue;
-        auto crossingMode = isQueue || (_slope != kTileSlopeFlat) ? CreateCrossingMode::none
-                                                                  : CreateCrossingMode::pathOverTrack;
+        auto crossingMode = isQueue || (_slope.type != FootpathSlopeType::flat) ? CreateCrossingMode::none
+                                                                                : CreateCrossingMode::pathOverTrack;
         auto canBuild = MapCanConstructWithClearAt(
             { _loc, zLow, zHigh }, &MapPlaceNonSceneryClearFunc, quarterTile, GetFlags(), kTileSlopeFlat, crossingMode);
         if (!entrancePath && canBuild.Error != Status::Ok)
@@ -363,9 +365,9 @@ namespace OpenRCT2::GameActions
         QuarterTile quarterTile{ 0b1111, 0 };
         auto zLow = _loc.z;
         auto zHigh = zLow + kPathClearance;
-        if (_slope & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED)
+        if (_slope.type == FootpathSlopeType::sloped)
         {
-            quarterTile = QuarterTile{ 0b1111, 0b1100 }.Rotate(_slope & kTileElementDirectionMask);
+            quarterTile = QuarterTile{ 0b1111, 0b1100 }.Rotate(_slope.direction);
             zHigh += kPathHeightStep;
         }
 
@@ -383,8 +385,8 @@ namespace OpenRCT2::GameActions
 
         // Do not attempt to build a crossing with a queue or a sloped.
         auto isQueue = _constructFlags & PathConstructFlag::IsQueue;
-        auto crossingMode = isQueue || (_slope != kTileSlopeFlat) ? CreateCrossingMode::none
-                                                                  : CreateCrossingMode::pathOverTrack;
+        auto crossingMode = isQueue || (_slope.type != FootpathSlopeType::flat) ? CreateCrossingMode::none
+                                                                                : CreateCrossingMode::pathOverTrack;
         auto canBuild = MapCanConstructWithClearAt(
             { _loc, zLow, zHigh }, &MapPlaceNonSceneryClearFunc, quarterTile, GAME_COMMAND_FLAG_APPLY | GetFlags(),
             kTileSlopeFlat, crossingMode);
@@ -436,8 +438,8 @@ namespace OpenRCT2::GameActions
                 pathElement->SetSurfaceEntryIndex(_type);
                 pathElement->SetRailingsEntryIndex(_railingsType);
             }
-            pathElement->SetSlopeDirection(_slope & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK);
-            pathElement->SetSloped(_slope & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED);
+            pathElement->SetSlopeDirection(_slope.direction);
+            pathElement->SetSloped(_slope.type == FootpathSlopeType::sloped);
             pathElement->SetIsQueue(isQueue);
             pathElement->SetAddition(0);
             pathElement->SetRideIndex(RideId::GetNull());
@@ -525,10 +527,9 @@ namespace OpenRCT2::GameActions
         MapInvalidateTileFull(_loc);
     }
 
-    PathElement* FootpathPlaceAction::MapGetFootpathElementSlope(const CoordsXYZ& footpathPos, int32_t slope) const
+    PathElement* FootpathPlaceAction::MapGetFootpathElementWithSlope(const CoordsXYZ& footpathPos, FootpathSlope slope) const
     {
-        const bool isSloped = slope & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED;
-        const auto slopeDirection = slope & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK;
+        const bool isSloped = slope.type == FootpathSlopeType::sloped;
 
         for (auto* pathElement : TileElementsView<PathElement>(footpathPos))
         {
@@ -536,7 +537,7 @@ namespace OpenRCT2::GameActions
                 continue;
             if (pathElement->IsSloped() != isSloped)
                 continue;
-            if (pathElement->GetSlopeDirection() != slopeDirection)
+            if (pathElement->GetSlopeDirection() != slope.direction)
                 continue;
             return pathElement;
         }

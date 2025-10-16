@@ -230,7 +230,7 @@ static void PaintMagicCarpet(
 
             if (stationObject != nullptr && !(stationObject->Flags & StationObjectFlags::noPlatforms))
             {
-                auto imageId = session.SupportColours.WithIndex(SPR_STATION_BASE_D);
+                auto imageId = session.SupportColours.WithIndex(SPR_STATION_BASE_BORDERLESS);
                 PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 1 });
             }
             break;

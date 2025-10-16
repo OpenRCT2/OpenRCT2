@@ -107,17 +107,17 @@ enum
     SPR_FLOOR_PLANKS_E_SEGMENT = 3402,
     SPR_FLOOR_PLANKS_S_SEGMENT = 3403,
     SPR_FLOOR_PLANKS_W_SEGMENT = 3404,
-    SPR_FLOOR_METAL = 14567,
-    SPR_FENCE_METAL_NE = 14568,
-    SPR_FENCE_METAL_SE = 14569,
-    SPR_FENCE_METAL_SW = 14570,
-    SPR_FENCE_METAL_NW = 14571,
+    SPR_FLOOR_TILE_CHEQUERBOARD = 14567,
+    SPR_FENCE_PICKET_NE = 14568,
+    SPR_FENCE_PICKET_SE = 14569,
+    SPR_FENCE_PICKET_SW = 14570,
+    SPR_FENCE_PICKET_NW = 14571,
 
-    SPR_FLOOR_METAL_B = 14989,
-    SPR_FENCE_METAL_B_NE = 14990,
-    SPR_FENCE_METAL_B_SE = 14991,
-    SPR_FENCE_METAL_B_SW = 14992,
-    SPR_FENCE_METAL_B_NW = 14993,
+    SPR_FLOOR_TILE_DIAMOND = 14989,
+    SPR_FENCE_PICKET_DUPLICATE_NE = 14990,
+    SPR_FENCE_PICKET_DUPLICATE_SE = 14991,
+    SPR_FENCE_PICKET_DUPLICATE_SW = 14992,
+    SPR_FENCE_PICKET_DUPLICATE_NW = 14993,
 
     SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_NE_SW = 16870,
     SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_SE_NW = 16871,
@@ -150,10 +150,10 @@ enum
     SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_1_TILE_NE_SE = 16898,
     SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_1_TILE_SE_SW = 16899,
 
-    SPR_FLOOR_CORK_SE_SW = 22134,
-    SPR_FLOOR_CORK_SW = 22135,
-    SPR_FLOOR_CORK_SE = 22136,
-    SPR_FLOOR_CORK = 22137,
+    SPR_FLOOR_MULCH_SE_SW = 22134,
+    SPR_FLOOR_MULCH_SW = 22135,
+    SPR_FLOOR_MULCH_SE = 22136,
+    SPR_FLOOR_MULCH = 22137,
     SPR_FENCE_ROPE_NE = 22138,
     SPR_FENCE_ROPE_SE = 22139,
     SPR_FENCE_ROPE_SW = 22140,
@@ -220,13 +220,13 @@ enum
     SPR_STATION_INVERTED_BAR_A_NW_SE = 22423,
     SPR_STATION_INVERTED_BAR_B_SW_NE = 22424,
     SPR_STATION_INVERTED_BAR_B_NW_SE = 22425,
-    SPR_STATION_BASE_A_SW_NE = 22426,
-    SPR_STATION_BASE_A_NW_SE = 22427,
-    SPR_STATION_BASE_B_SW_NE = 22428,
-    SPR_STATION_BASE_B_NW_SE = 22429,
-    SPR_STATION_BASE_C_SW_NE = 22430,
-    SPR_STATION_BASE_C_NW_SE = 22431,
-    SPR_STATION_BASE_D = 22432, // Metal plate without borders, used for some stations and for the on-ride photo segment.
+    SPR_STATION_BASE_TALL_SW_NE = 22426,
+    SPR_STATION_BASE_TALL_NW_SE = 22427,
+    SPR_STATION_BASE_MEDIUM_SW_NE = 22428,
+    SPR_STATION_BASE_MEDIUM_NW_SE = 22429,
+    SPR_STATION_BASE_SHORT_SW_NE = 22430,
+    SPR_STATION_BASE_SHORT_NW_SE = 22431,
+    SPR_STATION_BASE_BORDERLESS = 22432, // Metal plate without borders, used for some stations and on-ride photo segments
 
     SPR_ON_RIDE_PHOTO_CAMERA_SMALL_N = 23485,
     SPR_ON_RIDE_PHOTO_CAMERA_SMALL_E = 23486,
@@ -299,23 +299,25 @@ enum
     MAZE_ENTRY_FLAG_15 = (1 << 15),
 };
 
-constexpr uint32_t kFloorSpritesCork[] = {
-    SPR_FLOOR_CORK_SE_SW,
-    SPR_FLOOR_CORK_SW,
-    SPR_FLOOR_CORK_SE,
-    SPR_FLOOR_CORK,
+constexpr uint32_t kFloorSpritesMulch[] = {
+    SPR_FLOOR_MULCH_SE_SW,
+    SPR_FLOOR_MULCH_SW,
+    SPR_FLOOR_MULCH_SE,
+    SPR_FLOOR_MULCH,
 };
-constexpr uint32_t kFloorSpritesMetal[] = {
-    SPR_FLOOR_METAL,
-    SPR_FLOOR_METAL,
-    SPR_FLOOR_METAL,
-    SPR_FLOOR_METAL,
+// Tiles forming a chequerboard pattern (not to be confused with the one for the Spiral Slide)
+constexpr uint32_t kFloorSpritesTileChequerboard[] = {
+    SPR_FLOOR_TILE_CHEQUERBOARD,
+    SPR_FLOOR_TILE_CHEQUERBOARD,
+    SPR_FLOOR_TILE_CHEQUERBOARD,
+    SPR_FLOOR_TILE_CHEQUERBOARD,
 };
-constexpr uint32_t kFloorSpritesMetalB[] = {
-    SPR_FLOOR_METAL_B,
-    SPR_FLOOR_METAL_B,
-    SPR_FLOOR_METAL_B,
-    SPR_FLOOR_METAL_B,
+// Tiles forming a diamond motif
+constexpr uint32_t kFloorSpritesTileDiamond[] = {
+    SPR_FLOOR_TILE_DIAMOND,
+    SPR_FLOOR_TILE_DIAMOND,
+    SPR_FLOOR_TILE_DIAMOND,
+    SPR_FLOOR_TILE_DIAMOND,
 };
 
 constexpr uint32_t kFenceSpritesRope[] = {
@@ -324,17 +326,19 @@ constexpr uint32_t kFenceSpritesRope[] = {
     SPR_FENCE_ROPE_SW,
     SPR_FENCE_ROPE_NW,
 };
-constexpr uint32_t kFenceSpritesMetal[] = {
-    SPR_FENCE_METAL_NE,
-    SPR_FENCE_METAL_SE,
-    SPR_FENCE_METAL_SW,
-    SPR_FENCE_METAL_NW,
+// Used only by the Launched Freefall
+constexpr uint32_t kFenceSpritesPicket[] = {
+    SPR_FENCE_PICKET_NE,
+    SPR_FENCE_PICKET_SE,
+    SPR_FENCE_PICKET_SW,
+    SPR_FENCE_PICKET_NW,
 };
-constexpr uint32_t kFenceSpritesMetalB[] = {
-    SPR_FENCE_METAL_B_NE,
-    SPR_FENCE_METAL_B_SE,
-    SPR_FENCE_METAL_B_SW,
-    SPR_FENCE_METAL_B_NW,
+// Duplicate of the picket fence sprites for the other tracked vertical rides, possibly a development leftover
+constexpr uint32_t kFenceSpritesPicketDuplicate[] = {
+    SPR_FENCE_PICKET_DUPLICATE_NE,
+    SPR_FENCE_PICKET_DUPLICATE_SE,
+    SPR_FENCE_PICKET_DUPLICATE_SW,
+    SPR_FENCE_PICKET_DUPLICATE_NW,
 };
 
 constexpr uint32_t kTrackSpritesSubmarineRideMiniHelicoptersQuarterTurn3Tiles[4][3] = {

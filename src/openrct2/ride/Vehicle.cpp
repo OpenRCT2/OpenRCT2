@@ -1489,9 +1489,10 @@ void Vehicle::TrainReadyToDepart(uint8_t num_peeps_on_train, uint8_t num_used_se
 
     if (!(curRide->lifecycleFlags & RIDE_LIFECYCLE_BROKEN_DOWN))
     {
+        const auto& rtd = curRide->getRideTypeDescriptor();
         // Original code did not check if the ride was a boat hire, causing empty boats to leave the platform when closing a
         // Boat Hire with passengers on it.
-        if (curRide->status != RideStatus::closed || (curRide->numRiders != 0 && curRide->type != RIDE_TYPE_BOAT_HIRE))
+        if (curRide->status != RideStatus::closed || (curRide->numRiders != 0 && rtd.specialType != RtdSpecialType::boatHire))
         {
             curRide->getStation(current_station).TrainAtStation = RideStation::kNoTrain;
             sub_state = 2;
@@ -4310,7 +4311,7 @@ void Vehicle::UpdateRotating()
         if (curRide->status != RideStatus::closed)
         {
             sprite = NumRotations + 1;
-            if (curRide->type == RIDE_TYPE_ENTERPRISE)
+            if (curRide->getRideTypeDescriptor().specialType == RtdSpecialType::enterprise)
                 sprite += 9;
 
             if (sprite < curRide->rotations)

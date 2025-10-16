@@ -76,6 +76,7 @@ constexpr RideTypeDescriptor BoatHireRTD =
     },
     .UpdateRotating = UpdateRotatingDefault,
     .LightFXAddLightsMagicVehicle = Drawing::LightFx::AddLightsMagicVehicle_BoatHire,
+    .specialType = RtdSpecialType::boatHire,
 };
 } // namespace OpenRCT2
 // clang-format on

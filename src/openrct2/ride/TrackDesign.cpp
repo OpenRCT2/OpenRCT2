@@ -1196,9 +1196,10 @@ static GameActions::Result TrackDesignPlaceSceneryElement(
                 {
                     flags |= GAME_COMMAND_FLAG_REPLAY;
                 }
-                uint8_t slope = (scenery.getSlopeDirection() + rotation) & 0x3;
+                uint8_t slopeDirection = (scenery.getSlopeDirection() + rotation) & 0x3;
+                FootpathSlope slope = { FootpathSlopeType::flat, slopeDirection };
                 if (scenery.hasSlope())
-                    slope |= FOOTPATH_PROPERTIES_FLAG_IS_SLOPED;
+                    slope.type = FootpathSlopeType::sloped;
                 uint8_t edges = Numerics::rol4(scenery.getEdges(), rotation);
                 PathConstructFlags constructFlags = 0;
                 if (scenery.isQueue())

@@ -50,10 +50,10 @@ static void PaintRotoDropBase(
 
     const StationObject* stationObject = ride.getStationObject();
 
-    TrackPaintUtilPaintFloor(session, edges, session.SupportColours, height, kFloorSpritesMetalB, stationObject);
+    TrackPaintUtilPaintFloor(session, edges, session.SupportColours, height, kFloorSpritesTileDiamond, stationObject);
 
     TrackPaintUtilPaintFences(
-        session, edges, session.MapPosition, trackElement, ride, session.TrackColours, height, kFenceSpritesMetalB,
+        session, edges, session.MapPosition, trackElement, ride, session.TrackColours, height, kFenceSpritesPicketDuplicate,
         session.CurrentRotation);
 
     if (trackSequence == 0)
