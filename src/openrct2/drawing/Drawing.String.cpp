@@ -477,15 +477,15 @@ void DrawNewsTicker(
 
 static void TTFDrawCharacterSprite(RenderTarget& rt, int32_t codepoint, TextDrawInfo* info)
 {
-    int32_t characterWidth = FontSpriteGetCodepointWidth(info->FontStyle, codepoint);
-    auto sprite = FontSpriteGetCodepointSprite(info->FontStyle, codepoint);
+    int32_t characterWidth = FontSpriteGetCodepointWidth(info->fontStyle, codepoint);
+    auto sprite = FontSpriteGetCodepointSprite(info->fontStyle, codepoint);
 
     if (!(info->flags & TEXT_DRAW_FLAG_NO_DRAW))
     {
         auto screenCoords = ScreenCoordsXY{ info->x, info->y };
         if (info->flags & TEXT_DRAW_FLAG_Y_OFFSET_EFFECT)
         {
-            screenCoords.y += *info->y_offset++;
+            screenCoords.y += *info->yOffset++;
         }
 
         PaletteMap paletteMap(info->palette);
@@ -511,7 +511,7 @@ static void TTFDrawStringRawTTF(RenderTarget& rt, std::string_view text, TextDra
     if (!TTFInitialise())
         return;
 
-    TTFFontDescriptor* fontDesc = TTFGetFontFromSpriteBase(info->FontStyle);
+    TTFFontDescriptor* fontDesc = TTFGetFontFromSpriteBase(info->fontStyle);
     if (fontDesc->font == nullptr)
     {
         TTFDrawStringRawSprite(rt, text, info);
@@ -551,20 +551,20 @@ static void TTFProcessFormatCode(RenderTarget& rt, const FmtString::Token& token
             break;
         case FormatToken::newline:
             info->x = info->startX;
-            info->y += FontGetLineHeight(info->FontStyle);
+            info->y += FontGetLineHeight(info->fontStyle);
             break;
         case FormatToken::newlineSmall:
             info->x = info->startX;
-            info->y += FontGetLineHeightSmall(info->FontStyle);
+            info->y += FontGetLineHeightSmall(info->fontStyle);
             break;
         case FormatToken::fontTiny:
-            info->FontStyle = FontStyle::Tiny;
+            info->fontStyle = FontStyle::Tiny;
             break;
         case FormatToken::fontSmall:
-            info->FontStyle = FontStyle::Small;
+            info->fontStyle = FontStyle::Small;
             break;
         case FormatToken::fontMedium:
-            info->FontStyle = FontStyle::Medium;
+            info->fontStyle = FontStyle::Medium;
             break;
         case FormatToken::outlineEnable:
             info->flags |= TEXT_DRAW_FLAG_OUTLINE;
@@ -808,7 +808,7 @@ void TTFDrawString(
         return;
 
     TextDrawInfo info;
-    info.FontStyle = fontStyle;
+    info.fontStyle = fontStyle;
     info.flags = 0;
     info.startX = coords.x;
     info.startY = coords.y;
@@ -845,7 +845,7 @@ void TTFDrawString(
 static int32_t TTFGetStringWidth(std::string_view text, FontStyle fontStyle, bool noFormatting)
 {
     TextDrawInfo info;
-    info.FontStyle = fontStyle;
+    info.fontStyle = fontStyle;
     info.flags = 0;
     info.startX = 0;
     info.startY = 0;
@@ -880,13 +880,13 @@ void GfxDrawStringWithYOffsets(
     bool forceSpriteFont, FontStyle fontStyle)
 {
     TextDrawInfo info;
-    info.FontStyle = fontStyle;
+    info.fontStyle = fontStyle;
     info.flags = 0;
     info.startX = coords.x;
     info.startY = coords.y;
     info.x = coords.x;
     info.y = coords.y;
-    info.y_offset = yOffsets;
+    info.yOffset = yOffsets;
 
     info.flags |= TEXT_DRAW_FLAG_Y_OFFSET_EFFECT;
 

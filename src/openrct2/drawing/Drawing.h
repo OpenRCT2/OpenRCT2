@@ -123,8 +123,8 @@ struct TextDrawInfo
     int32_t maxY;
     int32_t flags;
     uint8_t palette[8];
-    ::FontStyle FontStyle;
-    const int8_t* y_offset;
+    ::FontStyle fontStyle;
+    const int8_t* yOffset;
 };
 
 enum : uint32_t
