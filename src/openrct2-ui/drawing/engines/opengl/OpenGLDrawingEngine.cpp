@@ -29,6 +29,7 @@
     #include <openrct2-ui/interface/Window.h>
     #include <openrct2/config/Config.h>
     #include <openrct2/core/Console.hpp>
+    #include <openrct2/drawing/Drawing.String.h>
     #include <openrct2/drawing/Drawing.h>
     #include <openrct2/drawing/IDrawingContext.h>
     #include <openrct2/drawing/IDrawingEngine.h>

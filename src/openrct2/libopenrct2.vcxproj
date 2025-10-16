@@ -244,6 +244,7 @@
     <ClInclude Include="Diagnostic.h" />
     <ClInclude Include="drawing\ColourPalette.h" />
     <ClInclude Include="drawing\Drawing.h" />
+    <ClInclude Include="drawing\Drawing.String.h" />
     <ClInclude Include="drawing\Font.h" />
     <ClInclude Include="drawing\IDrawingContext.h" />
     <ClInclude Include="drawing\IDrawingEngine.h" />

@@ -113,20 +113,6 @@ struct RenderTarget
     }
 };
 
-struct TextDrawInfo
-{
-    int32_t startX;
-    int32_t startY;
-    int32_t x;
-    int32_t y;
-    int32_t maxX;
-    int32_t maxY;
-    int32_t flags;
-    uint8_t palette[8];
-    ::FontStyle fontStyle;
-    const int8_t* yOffset;
-};
-
 enum : uint32_t
 {
     TEXT_DRAW_FLAG_INSET = 1 << 0,

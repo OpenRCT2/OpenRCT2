@@ -15,6 +15,8 @@
 
 #include <memory>
 
+struct TextDrawInfo;
+
 namespace OpenRCT2
 {
     namespace Ui
