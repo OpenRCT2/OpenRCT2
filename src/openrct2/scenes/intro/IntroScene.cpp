@@ -27,8 +27,8 @@ namespace OpenRCT2
     static constexpr PaletteIndex kBackgroundColourLogo = PaletteIndex::pi245;
     static constexpr PaletteIndex kBorderColourPublisher = PaletteIndex::pi129;
 
-    constexpr int32_t PALETTE_G1_IDX_DEVELOPER = 23217;
-    constexpr int32_t PALETTE_G1_IDX_LOGO = 23224;
+    static constexpr ImageIndex kPaletteChrisSawyerLogo = 23217;
+    static constexpr ImageIndex kPaletteRCT2Logo = 23224;
 
     static IntroState _introState;
 
@@ -220,7 +220,7 @@ namespace OpenRCT2
                 break;
             case IntroState::DeveloperBegin:
                 GfxClear(rt, kBackgroundColourDark);
-                GfxTransposePalette(PALETTE_G1_IDX_DEVELOPER, 255);
+                GfxTransposePalette(kPaletteChrisSawyerLogo, 255);
                 break;
             case IntroState::DeveloperScroll:
                 GfxClear(rt, kBackgroundColourDark);
@@ -232,11 +232,11 @@ namespace OpenRCT2
             case IntroState::LogoFadeIn:
                 if (_introStateCounter <= 0xFF00)
                 {
-                    GfxTransposePalette(PALETTE_G1_IDX_LOGO, (_introStateCounter >> 8) & 0xFF);
+                    GfxTransposePalette(kPaletteRCT2Logo, (_introStateCounter >> 8) & 0xFF);
                 }
                 else
                 {
-                    GfxTransposePalette(PALETTE_G1_IDX_LOGO, 255);
+                    GfxTransposePalette(kPaletteRCT2Logo, 255);
                 }
                 ScreenIntroDrawLogo(rt);
                 break;
@@ -246,11 +246,11 @@ namespace OpenRCT2
             case IntroState::LogoFadeOut:
                 if (_introStateCounter >= 0)
                 {
-                    GfxTransposePalette(PALETTE_G1_IDX_LOGO, (_introStateCounter >> 8) & 0xFF);
+                    GfxTransposePalette(kPaletteRCT2Logo, (_introStateCounter >> 8) & 0xFF);
                 }
                 else
                 {
-                    GfxTransposePalette(PALETTE_G1_IDX_LOGO, 0);
+                    GfxTransposePalette(kPaletteRCT2Logo, 0);
                 }
                 ScreenIntroDrawLogo(rt);
                 break;
