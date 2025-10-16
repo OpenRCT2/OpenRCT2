@@ -760,11 +760,8 @@ static void TTFProcessInitialColour(ColourWithFlags colour, TextDrawInfo* info)
         }
         if (!colour.hasFlag(ColourFlag::inset))
         {
-            if (!(info->flags & TEXT_DRAW_FLAG_INSET))
-            {
-                uint16_t flags = info->flags;
-                ColourCharacterWindow(colour.colour, &flags, reinterpret_cast<uint8_t*>(&info->palette));
-            }
+            uint16_t flags = info->flags;
+            ColourCharacterWindow(colour.colour, &flags, reinterpret_cast<uint8_t*>(&info->palette));
         }
         else
         {
