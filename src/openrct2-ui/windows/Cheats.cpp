@@ -630,20 +630,20 @@ static StringId window_cheats_page_titles[] = {
                 ft.Add<int32_t>(_yearSpinnerValue);
                 DrawTextBasic(
                     rt, windowPos + ScreenCoordsXY{ _xRcol, yearBox.top + 2 }, STR_FORMAT_INTEGER, ft,
-                    { colours[1], TextAlignment::RIGHT });
+                    { colours[1], TextAlignment::right });
 
                 ft = Formatter();
                 int32_t actual_month = _monthSpinnerValue - 1;
                 ft.Add<int32_t>(actual_month);
                 DrawTextBasic(
                     rt, windowPos + ScreenCoordsXY{ _xRcol, monthBox.top + 2 }, STR_FORMAT_MONTH, ft,
-                    { colours[1], TextAlignment::RIGHT });
+                    { colours[1], TextAlignment::right });
 
                 ft = Formatter();
                 ft.Add<int32_t>(_daySpinnerValue);
                 DrawTextBasic(
                     rt, windowPos + ScreenCoordsXY{ _xRcol, dayBox.top + 2 }, STR_FORMAT_INTEGER, ft,
-                    { colours[1], TextAlignment::RIGHT });
+                    { colours[1], TextAlignment::right });
             }
             else if (page == WINDOW_CHEATS_PAGE_PARK)
             {

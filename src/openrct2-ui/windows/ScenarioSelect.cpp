@@ -325,7 +325,7 @@ namespace OpenRCT2::Ui::Windows
                 ft.Add<StringId>(kScenarioOriginStringIds[i]);
 
                 auto stringCoords = windowPos + ScreenCoordsXY{ widget.midX(), widget.midY() - 3 };
-                DrawTextWrapped(rt, stringCoords, 87, format, ft, { COLOUR_AQUAMARINE, fontStyle, TextAlignment::CENTRE });
+                DrawTextWrapped(rt, stringCoords, 87, format, ft, { COLOUR_AQUAMARINE, fontStyle, TextAlignment::centre });
             }
 
             auto previewPaneWidth = GetPreviewPaneWidth();
@@ -341,7 +341,7 @@ namespace OpenRCT2::Ui::Windows
                         + ScreenCoordsXY{ widgets[WIDX_SCENARIOLIST].right + 4, widgets[WIDX_TABCONTENT].top + 5 };
                     DrawTextEllipsised(
                         rt, screenPos + ScreenCoordsXY{ previewPaneWidth / 2, 0 }, previewPaneWidth, STR_SCENARIO_LOCKED, {},
-                        { TextAlignment::CENTRE });
+                        { TextAlignment::centre });
 
                     DrawTextWrapped(rt, screenPos + ScreenCoordsXY{ 0, 15 }, previewPaneWidth, STR_SCENARIO_LOCKED_DESC);
                 }
@@ -374,7 +374,7 @@ namespace OpenRCT2::Ui::Windows
             ft.Add<const char*>(scenario->Name.c_str());
             DrawTextEllipsised(
                 rt, screenPos + ScreenCoordsXY{ previewPaneWidth / 2, 0 }, previewPaneWidth, STR_WINDOW_COLOUR_2_STRINGID, ft,
-                { TextAlignment::CENTRE });
+                { TextAlignment::centre });
 
             // Still loading the preview?
             if (_previewLoadJob.isValid())
@@ -383,7 +383,7 @@ namespace OpenRCT2::Ui::Windows
                 ft.Add<StringId>(STR_LOADING_GENERIC);
                 DrawTextBasic(
                     rt, screenPos + ScreenCoordsXY{ previewPaneWidth / 2, 15 }, STR_BLACK_STRING, ft,
-                    { TextAlignment::CENTRE });
+                    { TextAlignment::centre });
                 return;
             }
 
@@ -604,7 +604,7 @@ namespace OpenRCT2::Ui::Windows
 
                         DrawTextBasic(
                             rt, { scrollCentre, y + 1 }, format, ft,
-                            { colour, FontStyle::Medium, TextAlignment::CENTRE, darkness });
+                            { colour, FontStyle::Medium, TextAlignment::centre, darkness });
 
                         // Check if scenario is completed
                         if (isCompleted)
@@ -624,7 +624,7 @@ namespace OpenRCT2::Ui::Windows
                             ft.Add<const char*>(completedByName.c_str());
                             DrawTextBasic(
                                 rt, { scrollCentre, y + scenarioTitleHeight + 1 }, format, ft,
-                                { FontStyle::Small, TextAlignment::CENTRE });
+                                { FontStyle::Small, TextAlignment::centre });
                         }
 
                         y += scenarioItemHeight;
@@ -643,7 +643,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Draw string
             int32_t centreX = (left + right) / 2;
-            DrawTextBasic(rt, { centreX, y }, stringId, {}, { baseColour, TextAlignment::CENTRE });
+            DrawTextBasic(rt, { centreX, y }, stringId, {}, { baseColour, TextAlignment::centre });
 
             // Get string dimensions
             utf8 buffer[512];

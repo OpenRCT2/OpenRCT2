@@ -157,7 +157,7 @@ namespace OpenRCT2::Ui::Windows
                 result.Text = ProcessString(desc["text"]);
                 if (ProcessString(desc["textAlign"]) == "centred")
                 {
-                    result.TextAlign = TextAlignment::CENTRE;
+                    result.TextAlign = TextAlignment::centre;
                 }
             }
             else if (result.Type == "listview")
@@ -1053,7 +1053,7 @@ namespace OpenRCT2::Ui::Windows
                 widget.type = WidgetType::label;
                 widget.string = const_cast<utf8*>(desc.Text.c_str());
                 widget.flags.set(WidgetFlag::textIsString);
-                if (desc.TextAlign == TextAlignment::CENTRE)
+                if (desc.TextAlign == TextAlignment::centre)
                 {
                     widget.type = WidgetType::labelCentred;
                 }

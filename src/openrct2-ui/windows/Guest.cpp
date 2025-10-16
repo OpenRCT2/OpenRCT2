@@ -815,7 +815,7 @@ namespace OpenRCT2::Ui::Windows
                 auto ft = Formatter();
                 peep->FormatActionTo(ft);
                 int32_t textWidth = actionLabelWidget.width();
-                DrawTextEllipsised(rt, screenPos, textWidth, STR_BLACK_STRING, ft, { TextAlignment::CENTRE });
+                DrawTextEllipsised(rt, screenPos, textWidth, STR_BLACK_STRING, ft, { TextAlignment::centre });
             }
 
             // Draw the marquee thought

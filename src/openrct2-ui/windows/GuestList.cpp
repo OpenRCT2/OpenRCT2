@@ -755,7 +755,7 @@ namespace OpenRCT2::Ui::Windows
                     ft = Formatter();
                     ft.Add<StringId>(STR_GUESTS_COUNT_COMMA_SEP);
                     ft.Add<uint32_t>(group.NumGuests);
-                    DrawTextBasic(rt, { 326, y }, format, ft, { TextAlignment::RIGHT });
+                    DrawTextBasic(rt, { 326, y }, format, ft, { TextAlignment::right });
                 }
                 y += kSummarisedGuestsRowHeight;
                 index++;

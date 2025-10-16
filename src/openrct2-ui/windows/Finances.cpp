@@ -435,7 +435,7 @@ namespace OpenRCT2::Ui::Windows
                 DrawTextBasic(
                     rt, screenCoords + ScreenCoordsXY{ kExpenditureColumnWidth, 0 },
                     monthyear == currentMonthYear ? STR_WINDOW_COLOUR_2_STRINGID : STR_BLACK_STRING, ft,
-                    { TextUnderline::on, TextAlignment::RIGHT });
+                    { TextUnderline::on, TextAlignment::right });
                 screenCoords.y += 14;
 
                 // Month expenditures
@@ -452,7 +452,7 @@ namespace OpenRCT2::Ui::Windows
                         ft.Add<money64>(expenditure);
                         DrawTextBasic(
                             rt, screenCoords + ScreenCoordsXY{ kExpenditureColumnWidth, 0 }, format, ft,
-                            { TextAlignment::RIGHT });
+                            { TextAlignment::right });
                     }
                     screenCoords.y += kTableCellHeight;
                 }
@@ -463,7 +463,7 @@ namespace OpenRCT2::Ui::Windows
                 ft = Formatter();
                 ft.Add<money64>(profit);
                 DrawTextBasic(
-                    rt, screenCoords + ScreenCoordsXY{ kExpenditureColumnWidth, 0 }, format, ft, { TextAlignment::RIGHT });
+                    rt, screenCoords + ScreenCoordsXY{ kExpenditureColumnWidth, 0 }, format, ft, { TextAlignment::right });
 
                 Rectangle::fill(
                     rt,
@@ -597,7 +597,7 @@ namespace OpenRCT2::Ui::Windows
             // Expenditure / Income heading
             DrawTextBasic(
                 rt, screenCoords, STR_FINANCES_SUMMARY_EXPENDITURE_INCOME, {},
-                { COLOUR_BLACK, TextUnderline::on, TextAlignment::LEFT });
+                { COLOUR_BLACK, TextUnderline::on, TextAlignment::left });
             screenCoords.y += 14;
 
             // Expenditure / Income row labels

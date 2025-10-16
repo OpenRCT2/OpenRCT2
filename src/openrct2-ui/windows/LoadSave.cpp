@@ -431,7 +431,7 @@ namespace OpenRCT2::Ui::Windows
                 ft.Add<const char*>(_preview.parkName.c_str());
                 DrawTextEllipsised(
                     rt, namePos, previewPaneSize.width - kPadding * 2, STR_WINDOW_COLOUR_2_STRINGID, ft,
-                    { TextAlignment::CENTRE });
+                    { TextAlignment::centre });
             }
 
             const bool drawFrame = image != nullptr || targetType == PreviewImageType::screenshot;
@@ -476,7 +476,7 @@ namespace OpenRCT2::Ui::Windows
 
                 DrawTextBasic(
                     rt, textPos, previewText, {},
-                    { ColourWithFlags{ COLOUR_WHITE }.withFlag(ColourFlag::withOutline, true), TextAlignment::CENTRE });
+                    { ColourWithFlags{ COLOUR_WHITE }.withFlag(ColourFlag::withOutline, true), TextAlignment::centre });
                 return;
             }
 
@@ -1145,7 +1145,7 @@ namespace OpenRCT2::Ui::Windows
                     ft.Add<StringId>(STR_STRING);
                     ft.Add<char*>(_listItems[i].dateFormatted.c_str());
                     DrawTextEllipsised(
-                        rt, { dateAnchor - kDateTimeGap, y }, maxDateWidth, stringId, ft, { TextAlignment::RIGHT });
+                        rt, { dateAnchor - kDateTimeGap, y }, maxDateWidth, stringId, ft, { TextAlignment::right });
 
                     ft = Formatter();
                     ft.Add<StringId>(STR_STRING);

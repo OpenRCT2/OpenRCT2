@@ -564,7 +564,7 @@ namespace OpenRCT2::Ui::Windows
             const auto& widget = widgets[WIDX_BTM_LABEL];
             auto screenPos = windowPos + ScreenCoordsXY{ widget.midX(), widget.top };
             int32_t widgetWidth = widget.width();
-            DrawTextEllipsised(rt, screenPos, widgetWidth, STR_BLACK_STRING, ft, { TextAlignment::CENTRE });
+            DrawTextEllipsised(rt, screenPos, widgetWidth, STR_BLACK_STRING, ft, { TextAlignment::centre });
         }
 
         void DrawOverviewTabImage(RenderTarget& rt)

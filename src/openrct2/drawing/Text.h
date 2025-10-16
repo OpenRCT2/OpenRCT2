@@ -23,9 +23,9 @@ namespace OpenRCT2
 
 enum class TextAlignment
 {
-    LEFT,
-    CENTRE,
-    RIGHT
+    left,
+    centre,
+    right,
 };
 
 enum class TextUnderline
@@ -46,7 +46,7 @@ struct TextPaint
     ColourWithFlags Colour = { COLOUR_BLACK };
     ::FontStyle FontStyle = FontStyle::Medium;
     TextUnderline UnderlineText = TextUnderline::off;
-    TextAlignment Alignment = TextAlignment::LEFT;
+    TextAlignment Alignment = TextAlignment::left;
     TextDarkness Darkness = TextDarkness::regular;
 
     TextPaint() = default;

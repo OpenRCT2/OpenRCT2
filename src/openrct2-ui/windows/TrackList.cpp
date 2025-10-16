@@ -523,7 +523,7 @@ namespace OpenRCT2::Ui::Windows
                 && !(gLegacyScene == LegacyScene::trackDesignsManager))
             {
                 // Vehicle design not available
-                DrawTextEllipsised(rt, screenPos, 368, STR_VEHICLE_DESIGN_UNAVAILABLE, {}, { TextAlignment::CENTRE });
+                DrawTextEllipsised(rt, screenPos, 368, STR_VEHICLE_DESIGN_UNAVAILABLE, {}, { TextAlignment::centre });
                 screenPos.y -= kScrollableRowHeight;
             }
 
@@ -533,7 +533,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     // Scenery not available
                     DrawTextEllipsised(
-                        rt, screenPos, 368, STR_DESIGN_INCLUDES_SCENERY_WHICH_IS_UNAVAILABLE, {}, { TextAlignment::CENTRE });
+                        rt, screenPos, 368, STR_DESIGN_INCLUDES_SCENERY_WHICH_IS_UNAVAILABLE, {}, { TextAlignment::centre });
                     screenPos.y -= kScrollableRowHeight;
                 }
             }
@@ -541,7 +541,7 @@ namespace OpenRCT2::Ui::Windows
             // Track design name
             auto ft = Formatter();
             ft.Add<const utf8*>(_trackDesigns[trackIndex].name.c_str());
-            DrawTextEllipsised(rt, screenPos, 368, STR_TRACK_PREVIEW_NAME_FORMAT, ft, { TextAlignment::CENTRE });
+            DrawTextEllipsised(rt, screenPos, 368, STR_TRACK_PREVIEW_NAME_FORMAT, ft, { TextAlignment::centre });
 
             // Information
             screenPos = windowPos + ScreenCoordsXY{ tdWidget.left + 1, tdWidget.bottom + 2 };

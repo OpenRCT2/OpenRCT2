@@ -605,7 +605,7 @@ namespace OpenRCT2::Ui::Windows
             auto* labelWidget = &widgets[WIDX_STATUS];
             DrawTextEllipsised(
                 rt, windowPos + ScreenCoordsXY{ labelWidget->midX(), labelWidget->top }, labelWidget->width(), STR_BLACK_STRING,
-                ft, { TextAlignment::CENTRE });
+                ft, { TextAlignment::centre });
         }
 
         void initViewport()

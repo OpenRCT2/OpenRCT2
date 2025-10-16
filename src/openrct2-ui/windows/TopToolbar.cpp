@@ -1422,7 +1422,7 @@ namespace OpenRCT2::Ui::Windows
                     auto colour = ColourWithFlags{ COLOUR_DARK_ORANGE }.withFlag(ColourFlag::withOutline, true);
                     DrawTextBasic(
                         rt, screenPos + ScreenCoordsXY{ 26, 2 }, STR_OVERLAY_CLEARANCE_CHECKS_DISABLED, {},
-                        { colour, TextAlignment::RIGHT });
+                        { colour, TextAlignment::right });
                 }
             }
 
@@ -1486,7 +1486,7 @@ namespace OpenRCT2::Ui::Windows
                 auto ft = Formatter();
                 ft.Add<int32_t>(Network::GetNumVisiblePlayers());
                 auto colour = ColourWithFlags{ COLOUR_WHITE }.withFlag(ColourFlag::withOutline, true);
-                DrawTextBasic(rt, screenPos + ScreenCoordsXY{ 23, 1 }, STR_COMMA16, ft, { colour, TextAlignment::RIGHT });
+                DrawTextBasic(rt, screenPos + ScreenCoordsXY{ 23, 1 }, STR_COMMA16, ft, { colour, TextAlignment::right });
             }
 
             if (widgets[WIDX_ROTATE_ANTI_CLOCKWISE].type != WidgetType::empty)

@@ -360,7 +360,7 @@ namespace OpenRCT2::Ui::Windows
                 ft.Add<const char*>(_buffer.c_str());
                 DrawTextEllipsised(
                     rt, windowPos + ScreenCoordsXY{ widget->midX() - 5, widget->top }, widget->width() - 8, STR_STRING, ft,
-                    { TextAlignment::CENTRE });
+                    { TextAlignment::centre });
             }
 
             auto screenPos = windowPos
@@ -384,7 +384,7 @@ namespace OpenRCT2::Ui::Windows
                 ft.Add<const char*>(_buffer.c_str());
                 DrawTextEllipsised(
                     rt, windowPos + ScreenCoordsXY{ widget->midX() - 5, widget->top }, widget->width() - 8, STR_STRING, ft,
-                    { TextAlignment::CENTRE });
+                    { TextAlignment::centre });
             }
         }
 

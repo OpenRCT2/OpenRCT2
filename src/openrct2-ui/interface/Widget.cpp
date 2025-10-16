@@ -381,11 +381,11 @@ namespace OpenRCT2::Ui
         ScreenCoordsXY coords = { (topLeft.x + r + 1) / 2 - 1, topLeft.y };
         if (widget.type == WidgetType::labelCentred)
         {
-            DrawTextWrapped(rt, coords, widget.width() - 2, stringId, ft, { colour, TextAlignment::CENTRE });
+            DrawTextWrapped(rt, coords, widget.width() - 2, stringId, ft, { colour, TextAlignment::centre });
         }
         else
         {
-            DrawTextEllipsised(rt, coords, widget.width() - 2, stringId, ft, { colour, TextAlignment::CENTRE });
+            DrawTextEllipsised(rt, coords, widget.width() - 2, stringId, ft, { colour, TextAlignment::centre });
         }
     }
 
@@ -429,7 +429,7 @@ namespace OpenRCT2::Ui
         ScreenCoordsXY coords = { l + 1, t };
         if (widget.type == WidgetType::labelCentred)
         {
-            DrawTextWrapped(rt, coords, r - l, stringId, ft, { colour, TextAlignment::CENTRE });
+            DrawTextWrapped(rt, coords, r - l, stringId, ft, { colour, TextAlignment::centre });
         }
         else
         {
@@ -589,7 +589,7 @@ namespace OpenRCT2::Ui
 
         DrawTextEllipsised(
             rt, topLeft, width, widget->text, Formatter::Common(),
-            { ColourWithFlags{ COLOUR_WHITE }.withFlag(ColourFlag::withOutline, true), TextAlignment::CENTRE });
+            { ColourWithFlags{ COLOUR_WHITE }.withFlag(ColourFlag::withOutline, true), TextAlignment::centre });
     }
 
     /**
@@ -626,7 +626,7 @@ namespace OpenRCT2::Ui
         if (widgetIsDisabled(w, widgetIndex))
             colour.setFlag(ColourFlag::inset, true);
 
-        DrawText(rt, topLeft, { colour, TextAlignment::CENTRE }, widget.string);
+        DrawText(rt, topLeft, { colour, TextAlignment::centre }, widget.string);
     }
 
     /**

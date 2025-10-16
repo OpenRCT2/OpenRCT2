@@ -431,7 +431,7 @@ namespace OpenRCT2::Ui::Windows
                 ft.Add<StringId>(stringId);
             }
 
-            DrawTextEllipsised(rt, screenPos, itemWidth, drawString, ft, { TextAlignment::CENTRE });
+            DrawTextEllipsised(rt, screenPos, itemWidth, drawString, ft, { TextAlignment::centre });
             screenPos.y += 15;
 
             // Item category

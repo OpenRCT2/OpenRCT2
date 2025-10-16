@@ -115,7 +115,7 @@ namespace OpenRCT2::Ui::Windows
                 StringId stringId = gameState.park.cash < 0 ? STR_BOTTOM_TOOLBAR_CASH_NEGATIVE : STR_BOTTOM_TOOLBAR_CASH;
                 auto ft = Formatter();
                 ft.Add<money64>(gameState.park.cash);
-                DrawTextBasic(rt, screenCoords, stringId, ft, { colour, TextAlignment::CENTRE });
+                DrawTextBasic(rt, screenCoords, stringId, ft, { colour, TextAlignment::centre });
             }
 
             static constexpr StringId _guestCountFormats[] = {
@@ -141,7 +141,7 @@ namespace OpenRCT2::Ui::Windows
                 auto colour = GetHoverWidgetColour(WIDX_GUESTS);
                 auto ft = Formatter();
                 ft.Add<uint32_t>(gameState.park.numGuestsInPark);
-                DrawTextBasic(rt, screenCoords, stringId, ft, { colour, TextAlignment::CENTRE });
+                DrawTextBasic(rt, screenCoords, stringId, ft, { colour, TextAlignment::centre });
             }
 
             // Draw park rating
@@ -200,7 +200,7 @@ namespace OpenRCT2::Ui::Windows
             ft.Add<StringId>(DateDayNames[day]);
             ft.Add<int16_t>(month);
             ft.Add<int16_t>(year);
-            DrawTextBasic(rt, screenCoords, stringId, ft, { colour, TextAlignment::CENTRE });
+            DrawTextBasic(rt, screenCoords, stringId, ft, { colour, TextAlignment::centre });
 
             // Figure out how much line height we have to work with.
             uint32_t line_height = FontGetLineHeight(FontStyle::Medium);
@@ -377,12 +377,12 @@ namespace OpenRCT2::Ui::Windows
             {
                 // TODO: this string probably shouldn't be reused for this
                 DrawTextWrapped(
-                    rt, middleWidgetCoords, panelWidth, STR_TITLE_SEQUENCE_OPENRCT2, ft, { colours[0], TextAlignment::CENTRE });
+                    rt, middleWidgetCoords, panelWidth, STR_TITLE_SEQUENCE_OPENRCT2, ft, { colours[0], TextAlignment::centre });
             }
             else
             {
                 // Show tooltip in bottom toolbar
-                DrawTextWrapped(rt, middleWidgetCoords, panelWidth, STR_STRINGID, ft, { colours[0], TextAlignment::CENTRE });
+                DrawTextWrapped(rt, middleWidgetCoords, panelWidth, STR_STRINGID, ft, { colours[0], TextAlignment::centre });
             }
         }
 

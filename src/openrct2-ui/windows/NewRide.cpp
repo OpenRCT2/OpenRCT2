@@ -978,7 +978,7 @@ namespace OpenRCT2::Ui::Windows
 
                 ft = Formatter();
                 ft.Add<money64>(price);
-                DrawTextBasic(rt, screenPos + ScreenCoordsXY{ textWidth, 51 }, stringId, ft, { TextAlignment::RIGHT });
+                DrawTextBasic(rt, screenPos + ScreenCoordsXY{ textWidth, 51 }, stringId, ft, { TextAlignment::right });
             }
 
             // Draw object author(s) if debugging tools are active
@@ -1001,7 +1001,7 @@ namespace OpenRCT2::Ui::Windows
 
                 DrawTextEllipsised(
                     rt, screenPos + ScreenCoordsXY{ textWidth, 0 }, kWindowSize.width - 2, STR_WINDOW_COLOUR_2_STRINGID, ft,
-                    { TextAlignment::RIGHT });
+                    { TextAlignment::right });
             }
         }
 

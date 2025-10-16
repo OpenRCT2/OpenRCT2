@@ -370,8 +370,8 @@ namespace OpenRCT2::Ui::Windows
             if (gLegacyScene == LegacyScene::trackDesigner)
                 stringId = STR_EDITOR_STEP_OBJECT_SELECTION;
 
-            DrawTextBasic(rt, { textX, textY }, STR_BACK_TO_PREVIOUS_STEP, {}, { textColour, TextAlignment::CENTRE });
-            DrawTextBasic(rt, { textX, textY + 10 }, stringId, {}, { textColour, TextAlignment::CENTRE });
+            DrawTextBasic(rt, { textX, textY }, STR_BACK_TO_PREVIOUS_STEP, {}, { textColour, TextAlignment::centre });
+            DrawTextBasic(rt, { textX, textY + 10 }, stringId, {}, { textColour, TextAlignment::centre });
         }
 
         void DrawRightButtonBack(RenderTarget& rt)
@@ -411,8 +411,8 @@ namespace OpenRCT2::Ui::Windows
             if (gLegacyScene == LegacyScene::trackDesigner)
                 stringId = STR_EDITOR_STEP_ROLLERCOASTER_DESIGNER;
 
-            DrawTextBasic(rt, { textX, textY }, STR_FORWARD_TO_NEXT_STEP, {}, { textColour, TextAlignment::CENTRE });
-            DrawTextBasic(rt, { textX, textY + 10 }, stringId, {}, { textColour, TextAlignment::CENTRE });
+            DrawTextBasic(rt, { textX, textY }, STR_FORWARD_TO_NEXT_STEP, {}, { textColour, TextAlignment::centre });
+            DrawTextBasic(rt, { textX, textY + 10 }, stringId, {}, { textColour, TextAlignment::centre });
         }
 
         void DrawStepText(RenderTarget& rt)
@@ -422,7 +422,7 @@ namespace OpenRCT2::Ui::Windows
             auto colour = colours[2].withFlag(ColourFlag::translucent, false).withFlag(ColourFlag::withOutline, true);
             DrawTextBasic(
                 rt, { stateX, stateY }, kEditorStepNames[EnumValue(getGameState().editorStep)], {},
-                { colour, TextAlignment::CENTRE });
+                { colour, TextAlignment::centre });
         }
 
         static constexpr FuncPtr kPreviousButtonMouseUp[] = {
