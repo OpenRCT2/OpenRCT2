@@ -115,8 +115,6 @@ struct RenderTarget
 
 enum : uint32_t
 {
-    TEXT_DRAW_FLAG_INSET = 1 << 0,
-    TEXT_DRAW_FLAG_OUTLINE = 1 << 1,
     TEXT_DRAW_FLAG_NO_FORMATTING = 1 << 28,
     TEXT_DRAW_FLAG_Y_OFFSET_EFFECT = 1 << 29,
     TEXT_DRAW_FLAG_TTF = 1 << 30,

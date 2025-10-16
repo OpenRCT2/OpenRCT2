@@ -1211,7 +1211,7 @@ void OpenGLDrawingContext::DrawTTFBitmap(
     right += clip.GetLeft() - rt.x;
     bottom += clip.GetTop() - rt.y;
 
-    if (info->flags & TEXT_DRAW_FLAG_OUTLINE)
+    if (info->colourFlags.has(ColourFlag::withOutline))
     {
         std::array<ivec4, 4> boundsArr = { {
             { left + 1, top, right + 1, bottom },
@@ -1235,7 +1235,7 @@ void OpenGLDrawingContext::DrawTTFBitmap(
             command.zoom = 1.0f;
         }
     }
-    if (info->flags & TEXT_DRAW_FLAG_INSET)
+    if (info->colourFlags.has(ColourFlag::inset))
     {
         DrawRectCommand& command = _commandBuffers.rects.allocate();
         command.clip = { clip.GetLeft(), clip.GetTop(), clip.GetRight(), clip.GetBottom() };

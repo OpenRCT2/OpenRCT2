@@ -273,7 +273,7 @@ void GfxDrawStringLeftCentred(
 /**
  * Changes the palette so that the next character changes colour
  */
-static void ColourCharacter(TextColour colour, const uint16_t* current_font_flags, uint8_t* palette_pointer)
+static void ColourCharacter(TextColour colour, bool withOutline, uint8_t* palette_pointer)
 {
     int32_t colour32 = 0;
     const G1Element* g1 = GfxGetG1Element(SPR_TEXT_PALETTE);
@@ -283,7 +283,7 @@ static void ColourCharacter(TextColour colour, const uint16_t* current_font_flag
         std::memcpy(&colour32, &g1->offset[idx], sizeof(colour32));
     }
 
-    if (!(*current_font_flags & TEXT_DRAW_FLAG_OUTLINE))
+    if (!withOutline)
     {
         colour32 = colour32 & 0x0FF0000FF;
     }
@@ -298,12 +298,12 @@ static void ColourCharacter(TextColour colour, const uint16_t* current_font_flag
  * Changes the palette so that the next character changes colour
  * This is specific to changing to a predefined window related colour
  */
-static void ColourCharacterWindow(colour_t colour, const uint16_t* current_font_flags, uint8_t* palette_pointer)
+static void ColourCharacterWindow(colour_t colour, bool withOutline, uint8_t* palette_pointer)
 {
     int32_t eax;
 
     eax = ColourMapA[colour].colour_11;
-    if (*current_font_flags & TEXT_DRAW_FLAG_OUTLINE)
+    if (withOutline)
     {
         eax |= 0x0A0A00;
     }
@@ -569,27 +569,24 @@ static void TTFProcessFormatCode(RenderTarget& rt, const FmtString::Token& token
             info->fontStyle = FontStyle::medium;
             break;
         case FormatToken::outlineEnable:
-            info->flags |= TEXT_DRAW_FLAG_OUTLINE;
+            info->colourFlags.set(ColourFlag::withOutline);
             break;
         case FormatToken::outlineDisable:
-            info->flags &= ~TEXT_DRAW_FLAG_OUTLINE;
+            info->colourFlags.unset(ColourFlag::withOutline);
             break;
         case FormatToken::colourWindow1:
         {
-            uint16_t flags = info->flags;
-            ColourCharacterWindow(gCurrentWindowColours[0], &flags, info->palette);
+            ColourCharacterWindow(gCurrentWindowColours[0], info->colourFlags.has(ColourFlag::withOutline), info->palette);
             break;
         }
         case FormatToken::colourWindow2:
         {
-            uint16_t flags = info->flags;
-            ColourCharacterWindow(gCurrentWindowColours[1], &flags, info->palette);
+            ColourCharacterWindow(gCurrentWindowColours[1], info->colourFlags.has(ColourFlag::withOutline), info->palette);
             break;
         }
         case FormatToken::colourWindow3:
         {
-            uint16_t flags = info->flags;
-            ColourCharacterWindow(gCurrentWindowColours[2], &flags, info->palette);
+            ColourCharacterWindow(gCurrentWindowColours[2], info->colourFlags.has(ColourFlag::withOutline), info->palette);
             break;
         }
         case FormatToken::inlineSprite:
@@ -609,9 +606,8 @@ static void TTFProcessFormatCode(RenderTarget& rt, const FmtString::Token& token
         default:
             if (FormatTokenIsColour(token.kind))
             {
-                uint16_t flags = info->flags;
                 auto colourIndex = FormatTokenToTextColour(token.kind);
-                ColourCharacter(colourIndex, &flags, info->palette);
+                ColourCharacter(colourIndex, info->colourFlags.has(ColourFlag::withOutline), info->palette);
             }
             break;
     }
@@ -753,20 +749,14 @@ static void TTFProcessInitialColour(ColourWithFlags colour, TextDrawInfo* info)
 {
     if (colour.colour != kTextColour254 && colour.colour != kTextColour255)
     {
-        info->flags &= ~(TEXT_DRAW_FLAG_INSET | TEXT_DRAW_FLAG_OUTLINE);
-        if (colour.flags.has(ColourFlag::withOutline))
-        {
-            info->flags |= TEXT_DRAW_FLAG_OUTLINE;
-        }
+        info->colourFlags = colour.flags;
         if (!colour.flags.has(ColourFlag::inset))
         {
-            uint16_t flags = info->flags;
-            ColourCharacterWindow(colour.colour, &flags, reinterpret_cast<uint8_t*>(&info->palette));
+            ColourCharacterWindow(
+                colour.colour, info->colourFlags.has(ColourFlag::withOutline), reinterpret_cast<uint8_t*>(&info->palette));
         }
         else
         {
-            info->flags |= TEXT_DRAW_FLAG_INSET;
-
             uint32_t eax = 0;
             switch (info->darkness)
             {

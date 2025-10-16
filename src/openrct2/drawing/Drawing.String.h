@@ -9,6 +9,8 @@
 
 #pragma once
 
+#include "../interface/Colour.h"
+
 #include <cstdint>
 
 enum class FontStyle : uint8_t;
@@ -23,6 +25,7 @@ struct TextDrawInfo
     int32_t maxX;
     int32_t maxY;
     int32_t flags;
+    ColourFlags colourFlags;
     TextDarkness darkness;
     uint8_t palette[8];
     FontStyle fontStyle;
