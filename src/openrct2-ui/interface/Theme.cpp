@@ -126,7 +126,7 @@ namespace OpenRCT2::Ui
         return ColourWithFlags{ colour, EnumToFlag(ColourFlag::translucent) };
     }
 
-    static constexpr WindowThemeDesc WindowThemeDescriptors[] =
+    static constexpr WindowThemeDesc kWindowThemeDescriptors[] =
     {
         // WindowClass                              WindowClassSZ                        WindowName                                        NumColours, DefaultTheme
         { WindowClass::topToolbar,                  "WC_TOP_TOOLBAR",                    STR_THEMES_WINDOW_TOP_TOOLBAR,                    COLOURS_4(opaque(COLOUR_LIGHT_BLUE),               opaque(COLOUR_DARK_GREEN),               opaque(COLOUR_DARK_BROWN),             opaque(COLOUR_GREY)         ) },
@@ -204,7 +204,7 @@ namespace OpenRCT2::Ui
 
     #define COLOURS_RCT1(c0, c1, c2, c3, c4, c5) { { (c0), (c1), (c2), (c3), (c4), (c5) } }
 
-    static constexpr UIThemeWindowEntry PredefinedThemeRCT1_Entries[] =
+    static constexpr UIThemeWindowEntry kPredefinedThemeRCT1Entries[] =
     {
         { WindowClass::topToolbar,             COLOURS_RCT1(opaque(COLOUR_GREY),             opaque(COLOUR_GREY),             opaque(COLOUR_GREY),                opaque(COLOUR_GREY),     opaque(COLOUR_BLACK),    opaque(COLOUR_BLACK))    },
         { WindowClass::bottomToolbar,          COLOURS_RCT1(translucent(COLOUR_GREY),        translucent(COLOUR_GREY),        opaque(COLOUR_VOID),                opaque(COLOUR_YELLOW),   opaque(COLOUR_BLACK),    opaque(COLOUR_BLACK))    },
@@ -233,16 +233,16 @@ namespace OpenRCT2::Ui
     };
     // clang-format on
 
-    static constexpr UIThemeWindowEntry PredefinedThemeRCT2_Entries[] = {
+    static constexpr UIThemeWindowEntry kPredefinedThemeRCT2Entries[] = {
         THEME_DEF_END,
     };
 
-    const UITheme PredefinedThemeRCT1 = UITheme::CreatePredefined(
-        "*RCT1", PredefinedThemeRCT1_Entries,
+    const UITheme kPredefinedThemeRCT1 = UITheme::CreatePredefined(
+        "*RCT1", kPredefinedThemeRCT1Entries,
         UITHEME_FLAG_USE_LIGHTS_RIDE | UITHEME_FLAG_USE_LIGHTS_PARK | UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT
             | UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR);
 
-    const UITheme PredefinedThemeRCT2 = UITheme::CreatePredefined("*RCT2", PredefinedThemeRCT2_Entries, 0);
+    const UITheme kPredefinedThemeRCT2 = UITheme::CreatePredefined("*RCT2", kPredefinedThemeRCT2Entries, 0);
 
     struct PredefinedTheme
     {
@@ -250,16 +250,16 @@ namespace OpenRCT2::Ui
         StringId Name;
     };
 
-    static constexpr PredefinedTheme PredefinedThemes[] = {
-        { &PredefinedThemeRCT1, STR_TITLE_SEQUENCE_RCT1 },
-        { &PredefinedThemeRCT2, STR_TITLE_SEQUENCE_RCT2 },
+    static constexpr PredefinedTheme kPredefinedThemes[] = {
+        { &kPredefinedThemeRCT1, STR_TITLE_SEQUENCE_RCT1 },
+        { &kPredefinedThemeRCT2, STR_TITLE_SEQUENCE_RCT2 },
     };
 
 #pragma endregion
 
     static const WindowThemeDesc* GetWindowThemeDescriptor(WindowClass windowClass)
     {
-        for (const auto& desc : WindowThemeDescriptors)
+        for (const auto& desc : kWindowThemeDescriptors)
         {
             if (desc.WindowClass == windowClass)
             {
@@ -271,7 +271,7 @@ namespace OpenRCT2::Ui
 
     static const WindowThemeDesc* GetWindowThemeDescriptor(const utf8* windowClassSZ)
     {
-        for (const auto& desc : WindowThemeDescriptors)
+        for (const auto& desc : kWindowThemeDescriptors)
         {
             if (String::equals(desc.WindowClassSZ, windowClassSZ))
             {
@@ -555,7 +555,7 @@ namespace OpenRCT2::Ui
             outThemes->clear();
 
             NumPredefinedThemes = 0;
-            for (auto predefinedTheme : PredefinedThemes)
+            for (auto predefinedTheme : kPredefinedThemes)
             {
                 AvailableTheme theme{};
                 theme.Name = predefinedTheme.Theme->Name;
@@ -610,7 +610,7 @@ namespace OpenRCT2::Ui
             if (theme == nullptr)
             {
                 // Fall-back to default
-                theme = const_cast<UITheme*>(&PredefinedThemeRCT2);
+                theme = const_cast<UITheme*>(&kPredefinedThemeRCT2);
                 LoadTheme(theme);
             }
             else
@@ -629,7 +629,7 @@ namespace OpenRCT2::Ui
                 {
                     if (theme.Path.empty())
                     {
-                        LoadTheme(const_cast<UITheme*>(PredefinedThemes[i].Theme));
+                        LoadTheme(const_cast<UITheme*>(kPredefinedThemes[i].Theme));
                     }
                     else
                     {
@@ -645,7 +645,7 @@ namespace OpenRCT2::Ui
         static void Initialise()
         {
             ThemeManager::GetAvailableThemes(&ThemeManager::AvailableThemes);
-            LoadTheme(const_cast<UITheme*>(&PredefinedThemeRCT2));
+            LoadTheme(const_cast<UITheme*>(&kPredefinedThemeRCT2));
             ActiveAvailableThemeIndex = 1;
 
             bool configValid = false;
@@ -714,7 +714,7 @@ namespace OpenRCT2::Ui
     const utf8* ThemeManagerGetAvailableThemeName(size_t index)
     {
         if (index < ThemeManager::NumPredefinedThemes)
-            return LanguageGetString(PredefinedThemes[index].Name);
+            return LanguageGetString(kPredefinedThemes[index].Name);
         return ThemeManager::AvailableThemes[index].Name.c_str();
     }
 
@@ -727,7 +727,7 @@ namespace OpenRCT2::Ui
     {
         if (index < ThemeManager::NumPredefinedThemes)
         {
-            ThemeManager::LoadTheme(const_cast<UITheme*>(PredefinedThemes[index].Theme));
+            ThemeManager::LoadTheme(const_cast<UITheme*>(kPredefinedThemes[index].Theme));
         }
         else
         {
@@ -871,7 +871,7 @@ namespace OpenRCT2::Ui
     void ThemeDelete()
     {
         File::Delete(ThemeManager::CurrentThemePath);
-        ThemeManager::LoadTheme(const_cast<UITheme*>(&PredefinedThemeRCT2));
+        ThemeManager::LoadTheme(const_cast<UITheme*>(&kPredefinedThemeRCT2));
         ThemeManager::ActiveAvailableThemeIndex = 1;
         Config::Get().interface.currentThemePreset = ThemeManagerGetAvailableThemeConfigName(1);
     }
