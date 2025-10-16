@@ -761,7 +761,7 @@ namespace OpenRCT2::Ui::Windows
                         && (*listItem.flags & ObjectSelectionFlags::Selected))
                     {
                         screenCoords.x = 2;
-                        auto darkness = highlighted ? TextDarkness::ExtraDark : TextDarkness::Dark;
+                        auto darkness = highlighted ? TextDarkness::extraDark : TextDarkness::dark;
                         auto colour2 = colours[1].withFlag(ColourFlag::translucent, false);
                         if (*listItem.flags & (ObjectSelectionFlags::InUse | ObjectSelectionFlags::AlwaysRequired))
                             colour2.setFlag(ColourFlag::inset, true);
@@ -776,11 +776,11 @@ namespace OpenRCT2::Ui::Windows
                     auto buffer = strchr(bufferWithColour, '\0');
 
                     colour_t colour = COLOUR_BLACK;
-                    auto darkness = TextDarkness::Regular;
+                    auto darkness = TextDarkness::regular;
                     if (*listItem.flags & ObjectSelectionFlags::Flag6)
                     {
                         colour = colours[1].colour;
-                        darkness = TextDarkness::Dark;
+                        darkness = TextDarkness::dark;
                     }
 
                     int32_t width_limit = widgets[WIDX_LIST].width() - screenCoords.x;

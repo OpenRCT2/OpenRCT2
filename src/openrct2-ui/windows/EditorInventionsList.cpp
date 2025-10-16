@@ -313,14 +313,14 @@ namespace OpenRCT2::Ui::Windows
                 // It needs a {BLACK} token in the string to work properly.
                 ColourWithFlags colour = { COLOUR_BLACK };
                 FontStyle fontStyle = FontStyle::Medium;
-                auto darkness = TextDarkness::Regular;
+                auto darkness = TextDarkness::regular;
 
                 if (researchItem.IsAlwaysResearched())
                 {
                     if (_selectedResearchItem == &researchItem && dragItem == nullptr)
-                        darkness = TextDarkness::ExtraDark;
+                        darkness = TextDarkness::extraDark;
                     else
-                        darkness = TextDarkness::Dark;
+                        darkness = TextDarkness::dark;
                     colour = colours[1].withFlag(ColourFlag::inset, true);
                 }
 

@@ -825,11 +825,11 @@ void TTFDrawString(
         info.flags |= TEXT_DRAW_FLAG_NO_FORMATTING;
     }
 
-    if (darkness == TextDarkness::Dark)
+    if (darkness == TextDarkness::dark)
     {
         info.flags |= TEXT_DRAW_FLAG_DARK;
     }
-    else if (darkness == TextDarkness::ExtraDark)
+    else if (darkness == TextDarkness::extraDark)
     {
         info.flags |= (TEXT_DRAW_FLAG_DARK | TEXT_DRAW_FLAG_EXTRA_DARK);
     }

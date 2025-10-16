@@ -36,9 +36,9 @@ enum class TextUnderline
 
 enum class TextDarkness
 {
-    Regular = 0,
-    Dark = 1,
-    ExtraDark = 2,
+    regular = 0,
+    dark = 1,
+    extraDark = 2,
 };
 
 struct TextPaint
@@ -47,7 +47,7 @@ struct TextPaint
     ::FontStyle FontStyle = FontStyle::Medium;
     TextUnderline UnderlineText = TextUnderline::Off;
     TextAlignment Alignment = TextAlignment::LEFT;
-    TextDarkness Darkness = TextDarkness::Regular;
+    TextDarkness Darkness = TextDarkness::regular;
 
     TextPaint() = default;
     TextPaint(ColourWithFlags colour)

@@ -599,7 +599,7 @@ namespace OpenRCT2::Ui::Windows
                         ft.Add<const char*>(scenario->Name.c_str());
                         auto colour = isDisabled ? colours[1].withFlag(ColourFlag::inset, true)
                                                  : ColourWithFlags{ COLOUR_BLACK };
-                        auto darkness = isDisabled ? TextDarkness::Dark : TextDarkness::Regular;
+                        auto darkness = isDisabled ? TextDarkness::dark : TextDarkness::regular;
                         const auto scrollCentre = widgets[WIDX_SCENARIOLIST].width() / 2;
 
                         DrawTextBasic(

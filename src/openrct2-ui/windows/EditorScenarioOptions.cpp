@@ -2368,7 +2368,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     if (currentRide->lifecycleFlags & RIDE_LIFECYCLE_INDESTRUCTIBLE)
                     {
-                        auto darkness = stringId == STR_WINDOW_COLOUR_2_STRINGID ? TextDarkness::ExtraDark : TextDarkness::Dark;
+                        auto darkness = stringId == STR_WINDOW_COLOUR_2_STRINGID ? TextDarkness::extraDark : TextDarkness::dark;
                         DrawText(
                             rt, { 2, y }, { colours[1].withFlag(ColourFlag::translucent, false), FontStyle::Medium, darkness },
                             kCheckMarkString);

@@ -802,7 +802,7 @@ namespace OpenRCT2::Ui::Windows
                         if (colour.hasFlag(ColourFlag::translucent))
                         {
                             DrawText(
-                                rt, topLeft, { colours[1].colour, FontStyle::Medium, TextDarkness::Dark }, kCheckMarkString);
+                                rt, topLeft, { colours[1].colour, FontStyle::Medium, TextDarkness::dark }, kCheckMarkString);
                         }
                     }
                 }
