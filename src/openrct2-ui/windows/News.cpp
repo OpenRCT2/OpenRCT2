@@ -28,6 +28,7 @@
 namespace OpenRCT2::Ui::Windows
 {
     static constexpr ScreenSize kWindowSize = { 400, 300 };
+    static constexpr uint8_t kItemSeparatorHeight = 2;
 
     enum WindowNewsWidgetIdx
     {
@@ -391,7 +392,8 @@ namespace OpenRCT2::Ui::Windows
         ScreenSize onScrollGetSize(int32_t scrollIndex) override
         {
             int32_t scrollHeight = static_cast<int32_t>(getGameState().newsItems.GetArchived().size())
-                * CalculateNewsItemHeight();
+                    * CalculateNewsItemHeight()
+                - kItemSeparatorHeight;
             return { kWindowSize.width, scrollHeight };
         }
 
@@ -443,6 +445,7 @@ namespace OpenRCT2::Ui::Windows
             int32_t y = 0;
             int32_t i = 0;
 
+            const auto backgroundPaletteIndex = ColourMapA[colours[3].colour].light;
             for (const auto& newsItem : getGameState().newsItems.GetArchived())
             {
                 if (y >= rt.y + rt.height)
@@ -454,10 +457,10 @@ namespace OpenRCT2::Ui::Windows
                     continue;
                 }
 
+                // Outer frame
+                GfxFillRectInset(rt, { -1, y, 383, y + itemHeight - 1 }, colours[1], INSET_RECT_F_30);
                 // Background
-                GfxFillRectInset(
-                    rt, { -1, y, 383, y + itemHeight - 1 }, colours[1],
-                    (INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_GREY));
+                GfxFillRect(rt, { 0, y + 1, 381, y + itemHeight - 2 }, backgroundPaletteIndex);
 
                 // Date text
                 {
