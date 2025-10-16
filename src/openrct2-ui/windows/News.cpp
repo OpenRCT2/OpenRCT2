@@ -572,7 +572,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         News::IsValidIndex(_pressedNewsItemIndex + News::ItemHistoryStart);
                         if (i == _pressedNewsItemIndex && _pressedButtonIndex == 2)
-                            press = 0x20;
+                            press = INSET_RECT_FLAG_BORDER_INSET;
                     }
                     GfxFillRectInset(rt, { screenCoords, screenCoords + ScreenCoordsXY{ 23, 23 } }, colours[2], press);
                     GfxDrawSprite(rt, ImageId(SPR_LOCATE), screenCoords);
