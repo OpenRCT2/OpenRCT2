@@ -88,7 +88,7 @@ namespace OpenRCT2::Ui
          */
         static UITheme* FromJson(json_t& json);
         static UITheme* FromFile(const std::string& path);
-        static UITheme CreatePredefined(const std::string& name, const UIThemeWindowEntry* entries, uint8_t flags);
+        static UITheme CreatePredefined(const std::string& name, std::span<const UIThemeWindowEntry> entries, uint8_t flags);
     };
 
     /**
@@ -110,8 +110,6 @@ namespace OpenRCT2::Ui
     #define COLOURS_2(c0, c1) 2, { { (c0), (c1), 0, 0, 0, 0 } }
     #define COLOURS_3(c0, c1, c2) 3, { { (c0), (c1), (c2), 0, 0, 0 } }
     #define COLOURS_4(c0, c1, c2, c3) 4, { { (c0), (c1), (c2), (c3), 0, 0 } }
-
-    #define THEME_DEF_END { WindowClass::null, { 0, 0, 0, 0, 0, 0 } }
 
     static constexpr ColourWithFlags opaque(colour_t colour)
     {
@@ -200,8 +198,7 @@ namespace OpenRCT2::Ui
 
     #define COLOURS_RCT1(c0, c1, c2, c3, c4, c5) { { (c0), (c1), (c2), (c3), (c4), (c5) } }
 
-    static constexpr UIThemeWindowEntry kPredefinedThemeRCT1Entries[] =
-    {
+    static constexpr std::array kPredefinedThemeRCT1Entries = std::to_array<UIThemeWindowEntry>({
         { WindowClass::topToolbar,             COLOURS_RCT1(opaque(COLOUR_GREY),             opaque(COLOUR_GREY),             opaque(COLOUR_GREY),                opaque(COLOUR_GREY),     opaque(COLOUR_BLACK),    opaque(COLOUR_BLACK))    },
         { WindowClass::bottomToolbar,          COLOURS_RCT1(translucent(COLOUR_GREY),        translucent(COLOUR_GREY),        opaque(COLOUR_VOID),                opaque(COLOUR_YELLOW),   opaque(COLOUR_BLACK),    opaque(COLOUR_BLACK))    },
         { WindowClass::ride,                   COLOURS_RCT1(opaque(COLOUR_BORDEAUX_RED),     opaque(COLOUR_GREY),             opaque(COLOUR_SATURATED_GREEN),     opaque(COLOUR_BLACK),    opaque(COLOUR_BLACK),    opaque(COLOUR_BLACK))    },
@@ -225,13 +222,10 @@ namespace OpenRCT2::Ui
         { WindowClass::map,                    COLOURS_RCT1(opaque(COLOUR_DARK_BROWN),       opaque(COLOUR_GREY),             opaque(COLOUR_GREY),                opaque(COLOUR_BLACK),    opaque(COLOUR_BLACK),    opaque(COLOUR_BLACK))    },
         { WindowClass::about,                  COLOURS_RCT1(opaque(COLOUR_GREY),             opaque(COLOUR_DARK_BROWN),       opaque(COLOUR_WHITE),               opaque(COLOUR_BLACK),    opaque(COLOUR_BLACK),    opaque(COLOUR_BLACK))    },
         { WindowClass::changelog,              COLOURS_RCT1(opaque(COLOUR_DARK_BROWN),       opaque(COLOUR_DARK_BROWN),       opaque(COLOUR_WHITE),               opaque(COLOUR_BLACK),    opaque(COLOUR_BLACK),    opaque(COLOUR_BLACK))    },
-        THEME_DEF_END,
-    };
+    });
     // clang-format on
 
-    static constexpr UIThemeWindowEntry kPredefinedThemeRCT2Entries[] = {
-        THEME_DEF_END,
-    };
+    static constexpr std::array<UIThemeWindowEntry, 0> kPredefinedThemeRCT2Entries = {};
 
     const UITheme kPredefinedThemeRCT1 = UITheme::CreatePredefined(
         "*RCT1", kPredefinedThemeRCT1Entries,
@@ -509,18 +503,11 @@ namespace OpenRCT2::Ui
         return result;
     }
 
-    UITheme UITheme::CreatePredefined(const std::string& name, const UIThemeWindowEntry* entries, uint8_t flags)
+    UITheme UITheme::CreatePredefined(const std::string& name, std::span<const UIThemeWindowEntry> entries, uint8_t flags)
     {
         auto theme = UITheme(name);
         theme.Flags = flags | UITHEME_FLAG_PREDEFINED;
-
-        size_t numEntries = 0;
-        for (const UIThemeWindowEntry* entry = entries; entry->Class != WindowClass::null; entry++)
-        {
-            numEntries++;
-        }
-
-        theme.Entries = std::vector<UIThemeWindowEntry>(entries, entries + numEntries);
+        theme.Entries.assign(entries.begin(), entries.end());
         return theme;
     }
 
