@@ -754,11 +754,11 @@ static void TTFProcessInitialColour(ColourWithFlags colour, TextDrawInfo* info)
     if (colour.colour != kTextColour254 && colour.colour != kTextColour255)
     {
         info->flags &= ~(TEXT_DRAW_FLAG_INSET | TEXT_DRAW_FLAG_OUTLINE);
-        if (colour.hasFlag(ColourFlag::withOutline))
+        if (colour.flags.has(ColourFlag::withOutline))
         {
             info->flags |= TEXT_DRAW_FLAG_OUTLINE;
         }
-        if (!colour.hasFlag(ColourFlag::inset))
+        if (!colour.flags.has(ColourFlag::inset))
         {
             uint16_t flags = info->flags;
             ColourCharacterWindow(colour.colour, &flags, reinterpret_cast<uint8_t*>(&info->palette));

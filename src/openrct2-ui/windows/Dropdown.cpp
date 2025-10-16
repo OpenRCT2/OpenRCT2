@@ -94,7 +94,7 @@ namespace OpenRCT2::Ui::Windows
             if (highlighted)
                 colour.colour = COLOUR_WHITE;
             if (item.isDisabled())
-                colour = { background, EnumToFlag(ColourFlag::inset) };
+                colour = { background, { ColourFlag::inset } };
 
             auto yOffset = GetAdditionalRowPadding();
             Formatter ft;
@@ -125,7 +125,7 @@ namespace OpenRCT2::Ui::Windows
                     const auto rightBottom = leftTop + ScreenCoordsXY{ ItemWidth - 4, 0 };
                     const auto shadowOffset = ScreenCoordsXY{ 0, 1 };
 
-                    if (colours[0].hasFlag(ColourFlag::translucent))
+                    if (colours[0].flags.has(ColourFlag::translucent))
                     {
                         TranslucentWindowPalette palette = kTranslucentWindowPalettes[colours[0].colour];
                         Rectangle::filter(rt, { leftTop, rightBottom }, palette.highlight);
@@ -231,7 +231,7 @@ namespace OpenRCT2::Ui::Windows
 
             UpdateSizeAndPosition(screenPos, extraY);
 
-            if (colour.hasFlag(ColourFlag::translucent))
+            if (colour.flags.has(ColourFlag::translucent))
                 flags |= WindowFlag::transparent;
             colours[0] = colour;
         }
@@ -264,7 +264,7 @@ namespace OpenRCT2::Ui::Windows
 
             UpdateSizeAndPosition(screenPos, extraY);
 
-            if (colour.hasFlag(ColourFlag::translucent))
+            if (colour.flags.has(ColourFlag::translucent))
                 flags |= WindowFlag::transparent;
             colours[0] = colour;
         }

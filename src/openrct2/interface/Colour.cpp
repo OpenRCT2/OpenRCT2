@@ -211,23 +211,10 @@ BlendColourMapType* GetBlendColourMap()
 }
 #endif
 
-bool ColourWithFlags::hasFlag(ColourFlag flag) const
-{
-    return flags & EnumToFlag(flag);
-}
-
-void ColourWithFlags::setFlag(ColourFlag flag, bool on)
-{
-    if (on)
-        flags |= EnumToFlag(flag);
-    else
-        flags &= ~EnumToFlag(flag);
-}
-
 ColourWithFlags ColourWithFlags::withFlag(ColourFlag flag, bool on) const
 {
     struct ColourWithFlags result = *this;
-    result.setFlag(flag, on);
+    result.flags.set(flag, on);
     return result;
 }
 
@@ -236,11 +223,11 @@ ColourWithFlags ColourWithFlags::fromLegacy(uint8_t legacy)
     ColourWithFlags result{};
     result.colour = legacy & kLegacyColourMaskBase;
     if (legacy & kLegacyColourFlagTranslucent)
-        result.flags |= EnumToFlag(ColourFlag::translucent);
+        result.flags.set(ColourFlag::translucent);
     if (legacy & kLegacyColourFlagInset)
-        result.flags |= EnumToFlag(ColourFlag::inset);
+        result.flags.set(ColourFlag::inset);
     if (legacy & kLegacyColourFlagOutline)
-        result.flags |= EnumToFlag(ColourFlag::withOutline);
+        result.flags.set(ColourFlag::withOutline);
 
     return result;
 }
@@ -248,6 +235,6 @@ ColourWithFlags ColourWithFlags::fromLegacy(uint8_t legacy)
 ColourWithFlags& ColourWithFlags::operator=(colour_t rhs)
 {
     colour = rhs;
-    flags = 0;
+    flags = {};
     return *this;
 }

@@ -702,7 +702,7 @@ namespace OpenRCT2::Ui::Windows
                         else
                         {
                             auto colour = ThemeGetColour(wc, _buttonIndex);
-                            colour.setFlag(ColourFlag::translucent, !colour.hasFlag(ColourFlag::translucent));
+                            colour.flags.flip(ColourFlag::translucent);
                             ThemeSetColour(wc, _buttonIndex, colour);
                             ColourSchemeUpdateAll();
 
@@ -721,7 +721,7 @@ namespace OpenRCT2::Ui::Windows
             if (_selectedTab == WINDOW_THEMES_TAB_SETTINGS || _selectedTab == WINDOW_THEMES_TAB_FEATURES)
                 return;
 
-            if (!colours[1].hasFlag(ColourFlag::translucent))
+            if (!colours[1].flags.has(ColourFlag::translucent))
                 // Rectangle::fill(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1,
                 // ColourMapA[colours[1].colour].mid_light);
                 GfxClear(rt, ColourMapA[colours[1].colour].mid_light);
@@ -759,7 +759,7 @@ namespace OpenRCT2::Ui::Windows
                                                            screenCoords.y + _max_row_height - colorOffset + 1 };
                         auto yPixelOffset = ScreenCoordsXY{ 0, 1 };
 
-                        if (colour.hasFlag(ColourFlag::translucent))
+                        if (colour.flags.has(ColourFlag::translucent))
                         {
                             TranslucentWindowPalette windowPalette = kTranslucentWindowPalettes[colour.colour];
 
@@ -799,7 +799,7 @@ namespace OpenRCT2::Ui::Windows
                         Rectangle::fillInset(
                             rt, { topLeft, bottomRight }, colours[1], Rectangle::BorderStyle::inset,
                             Rectangle::FillBrightness::dark, Rectangle::FillMode::dontLightenWhenInset);
-                        if (colour.hasFlag(ColourFlag::translucent))
+                        if (colour.flags.has(ColourFlag::translucent))
                         {
                             DrawText(
                                 rt, topLeft, { colours[1].colour, FontStyle::medium, TextDarkness::dark }, kCheckMarkString);

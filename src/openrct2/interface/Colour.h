@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../core/FlagHolder.hpp"
 #include "../core/StringTypes.h"
 
 #include <cstdint>
@@ -221,15 +222,12 @@ enum class ColourFlag : uint8_t
     inset,
     withOutline,
 };
+using ColourFlags = FlagHolder<uint8_t, ColourFlag>;
 
 struct ColourWithFlags
 {
     colour_t colour{};
-    uint8_t flags{};
-
-    bool hasFlag(ColourFlag flag) const;
-
-    void setFlag(ColourFlag flag, bool on);
+    ColourFlags flags{};
 
     ColourWithFlags withFlag(ColourFlag flag, bool on) const;
 

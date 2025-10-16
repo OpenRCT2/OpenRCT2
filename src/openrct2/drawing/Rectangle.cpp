@@ -49,7 +49,7 @@ namespace OpenRCT2::Drawing::Rectangle
         const auto leftBottom = ScreenCoordsXY{ rect.GetLeft(), rect.GetBottom() };
         const auto rightTop = ScreenCoordsXY{ rect.GetRight(), rect.GetTop() };
         const auto rightBottom = ScreenCoordsXY{ rect.GetRight(), rect.GetBottom() };
-        if (colour.hasFlag(ColourFlag::translucent))
+        if (colour.flags.has(ColourFlag::translucent))
         {
             auto palette = kTranslucentWindowPalettes[colour.colour];
 

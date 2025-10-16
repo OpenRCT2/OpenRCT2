@@ -764,7 +764,7 @@ namespace OpenRCT2::Ui::Windows
                         auto darkness = highlighted ? TextDarkness::extraDark : TextDarkness::dark;
                         auto colour2 = colours[1].withFlag(ColourFlag::translucent, false);
                         if (*listItem.flags & (ObjectSelectionFlags::InUse | ObjectSelectionFlags::AlwaysRequired))
-                            colour2.setFlag(ColourFlag::inset, true);
+                            colour2.flags.set(ColourFlag::inset, true);
 
                         DrawText(rt, screenCoords, { colour2, FontStyle::medium, darkness }, kCheckMarkString);
                     }

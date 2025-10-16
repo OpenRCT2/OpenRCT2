@@ -608,7 +608,7 @@ static StringId window_cheats_page_titles[] = {
                 ft.Add<money64>(_moneySpinnerValue);
                 if (isWidgetDisabled(WIDX_MONEY_SPINNER))
                 {
-                    colour.setFlag(ColourFlag::inset, true);
+                    colour.flags.set(ColourFlag::inset, true);
                 }
 
                 auto& widget = widgets[WIDX_MONEY_SPINNER];

@@ -298,7 +298,7 @@ void InGameConsole::Draw(RenderTarget& rt) const
         return;
 
     // Set font
-    ColourWithFlags textColour = { ThemeGetColour(WindowClass::console, 1).colour, 0 };
+    ColourWithFlags textColour = { ThemeGetColour(WindowClass::console, 1).colour, {} };
     const FontStyle style = InGameConsoleGetFontStyle();
     const int32_t lineHeight = InGameConsoleGetLineHeight();
     const int32_t maxLines = GetNumVisibleLines();
@@ -306,7 +306,7 @@ void InGameConsole::Draw(RenderTarget& rt) const
     // TTF looks far better without the outlines
     if (!LocalisationService_UseTrueTypeFont())
     {
-        textColour.setFlag(ColourFlag::withOutline, true);
+        textColour.flags.set(ColourFlag::withOutline, true);
     }
 
     Invalidate();

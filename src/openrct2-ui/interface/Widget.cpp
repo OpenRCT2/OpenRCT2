@@ -357,9 +357,9 @@ namespace OpenRCT2::Ui
             return;
 
         auto colour = w.colours[widget.colour];
-        colour.setFlag(ColourFlag::translucent, false);
+        colour.flags.set(ColourFlag::translucent, false);
         if (widgetIsDisabled(w, widgetIndex))
-            colour.setFlag(ColourFlag::inset, true);
+            colour.flags.set(ColourFlag::inset, true);
 
         // Resolve the absolute ltrb
         auto topLeft = w.windowPos + ScreenCoordsXY{ widget.left, 0 };
@@ -403,7 +403,7 @@ namespace OpenRCT2::Ui
 
         auto colour = w.colours[widget.colour];
         if (widgetIsDisabled(w, widgetIndex))
-            colour.setFlag(ColourFlag::inset, true);
+            colour.flags.set(ColourFlag::inset, true);
 
         // Resolve the absolute ltrb
         int32_t l = w.windowPos.x + widget.left;
@@ -492,7 +492,7 @@ namespace OpenRCT2::Ui
         {
             auto colour = w.colours[widget.colour].withFlag(ColourFlag::translucent, false);
             if (widgetIsDisabled(w, widgetIndex))
-                colour.setFlag(ColourFlag::inset, true);
+                colour.flags.set(ColourFlag::inset, true);
 
             utf8 buffer[512] = { 0 };
             OpenRCT2::FormatStringLegacy(buffer, sizeof(buffer), stringId, rawFt.Data());
@@ -624,7 +624,7 @@ namespace OpenRCT2::Ui
         topLeft = w.windowPos + ScreenCoordsXY{ widget.midX() - 1, std::max<int32_t>(widget.top, widget.midY() - 5) };
 
         if (widgetIsDisabled(w, widgetIndex))
-            colour.setFlag(ColourFlag::inset, true);
+            colour.flags.set(ColourFlag::inset, true);
 
         DrawText(rt, topLeft, { colour, TextAlignment::centre }, widget.string);
     }
@@ -652,7 +652,7 @@ namespace OpenRCT2::Ui
 
         if (widgetIsDisabled(w, widgetIndex))
         {
-            colour.setFlag(ColourFlag::inset, true);
+            colour.flags.set(ColourFlag::inset, true);
         }
 
         // fill it when checkbox is pressed
@@ -762,7 +762,7 @@ namespace OpenRCT2::Ui
     static void WidgetHScrollbarDraw(
         RenderTarget& rt, const ScrollArea& scroll, int32_t l, int32_t t, int32_t r, int32_t b, ColourWithFlags colour)
     {
-        colour.setFlag(ColourFlag::translucent, false);
+        colour.flags.set(ColourFlag::translucent, false);
 
         // Trough
         Rectangle::fill(rt, { { l + kScrollBarWidth, t }, { r - kScrollBarWidth, b } }, ColourMapA[colour.colour].lighter);
@@ -809,7 +809,7 @@ namespace OpenRCT2::Ui
     static void WidgetVScrollbarDraw(
         RenderTarget& rt, const ScrollArea& scroll, int32_t l, int32_t t, int32_t r, int32_t b, ColourWithFlags colour)
     {
-        colour.setFlag(ColourFlag::translucent, false);
+        colour.flags.set(ColourFlag::translucent, false);
 
         // Trough
         Rectangle::fill(rt, { { l, t + kScrollBarWidth }, { r, b - kScrollBarWidth } }, ColourMapA[colour.colour].lighter);
