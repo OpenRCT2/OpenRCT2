@@ -143,14 +143,14 @@ void ChatDraw(RenderTarget& rt, ColourWithFlags chatBackgroundColor)
             FilterPaletteID::palette51); // Opaque grey background
         GfxFillRectInset(
             rt, { topLeft - ScreenCoordsXY{ 0, 5 }, bottomRight + ScreenCoordsXY{ 0, 5 } }, chatBackgroundColor,
-            INSET_RECT_FLAG_FILL_NONE);
+            RectBorderStyle::outset, INSET_RECT_FLAG_FILL_NONE);
         GfxFillRectInset(
             rt, { topLeft + ScreenCoordsXY{ 1, -4 }, bottomRight - ScreenCoordsXY{ 1, inputLineHeight + 6 } },
-            chatBackgroundColor, INSET_RECT_FLAG_BORDER_INSET);
+            chatBackgroundColor, RectBorderStyle::inset);
         GfxFillRectInset(
             rt, { bottomLeft + ScreenCoordsXY{ 1, -inputLineHeight - 5 }, bottomRight + ScreenCoordsXY{ -1, 4 } },
             chatBackgroundColor,
-            INSET_RECT_FLAG_BORDER_INSET); // Textbox
+            RectBorderStyle::inset); // Textbox
     }
 
     auto screenCoords = ScreenCoordsXY{ _chatLeft + 5, _chatBottom - inputLineHeight - 20 };

@@ -443,7 +443,8 @@ namespace OpenRCT2::Ui::Windows
             if (drawFrame)
             {
                 GfxFillRectInset(
-                    rt, { frameStartPos, frameEndPos }, colours[1], INSET_RECT_F_60 | INSET_RECT_FLAG_FILL_MID_LIGHT);
+                    rt, { frameStartPos, frameEndPos }, colours[1], RectBorderStyle::inset,
+                    INSET_RECT_FLAG_FILL_DONT_LIGHTEN | INSET_RECT_FLAG_FILL_MID_LIGHT);
             }
 
             // Draw image, or placeholder if no preview was found

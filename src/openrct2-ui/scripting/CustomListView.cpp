@@ -679,12 +679,12 @@ void CustomListView::PaintHeading(
     WindowBase* w, RenderTarget& rt, const ScreenCoordsXY& pos, const ScreenSize& size, const std::string& text,
     ColumnSortOrder sortOrder, bool isPressed) const
 {
-    auto boxFlags = 0;
+    auto borderStyle = RectBorderStyle::outset;
     if (isPressed)
     {
-        boxFlags = INSET_RECT_FLAG_BORDER_INSET;
+        borderStyle = RectBorderStyle::inset;
     }
-    GfxFillRectInset(rt, { pos, pos + ScreenCoordsXY{ size.width - 1, size.height - 1 } }, w->colours[1], boxFlags);
+    GfxFillRectInset(rt, { pos, pos + ScreenCoordsXY{ size.width - 1, size.height - 1 } }, w->colours[1], borderStyle);
     if (!text.empty())
     {
         PaintCell(rt, pos, size, text.c_str(), false);

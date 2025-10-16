@@ -185,15 +185,9 @@ constexpr DrawBlendOp kBlendDst = 2 << 2;
 
 enum
 {
-    INSET_RECT_FLAG_BORDER_NONE = (1 << 3),       // 0x08
     INSET_RECT_FLAG_FILL_NONE = (1 << 4),         // 0x10
-    INSET_RECT_FLAG_BORDER_INSET = (1 << 5),      // 0x20
     INSET_RECT_FLAG_FILL_DONT_LIGHTEN = (1 << 6), // 0x40
     INSET_RECT_FLAG_FILL_MID_LIGHT = (1 << 7),    // 0x80
-
-    INSET_RECT_F_30 = (INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_NONE),
-    INSET_RECT_F_60 = (INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_DONT_LIGHTEN),
-    INSET_RECT_F_E0 = (INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_DONT_LIGHTEN | INSET_RECT_FLAG_FILL_MID_LIGHT),
 };
 
 enum class FilterPaletteID : int32_t
@@ -528,7 +522,17 @@ void GfxDrawDashedLine(
 
 // rect
 void GfxFillRect(RenderTarget& rt, const ScreenRect& rect, int32_t colour);
-void GfxFillRectInset(RenderTarget& rt, const ScreenRect& rect, ColourWithFlags colour, uint8_t flags);
+
+enum class RectBorderStyle : uint8_t
+{
+    outset,
+    inset,
+    none,
+};
+
+void GfxFillRectInset(
+    RenderTarget& rt, const ScreenRect& rect, ColourWithFlags colour, RectBorderStyle borderStyle = RectBorderStyle::outset,
+    uint8_t flags = 0);
 void GfxFilterRect(RenderTarget& rt, const ScreenRect& rect, FilterPaletteID palette);
 
 // sprite

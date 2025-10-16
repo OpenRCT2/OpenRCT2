@@ -163,14 +163,14 @@ namespace OpenRCT2::Scripting
 
         void box(int32_t x, int32_t y, int32_t width, int32_t height)
         {
-            GfxFillRectInset(_rt, { x, y, x + width - 1, y + height - 1 }, { _colour.value_or(0) }, 0);
+            GfxFillRectInset(_rt, { x, y, x + width - 1, y + height - 1 }, { _colour.value_or(0) });
         }
 
         void well(int32_t x, int32_t y, int32_t width, int32_t height)
         {
             GfxFillRectInset(
-                _rt, { x, y, x + width - 1, y + height - 1 }, { _colour.value_or(0) },
-                INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_DONT_LIGHTEN);
+                _rt, { x, y, x + width - 1, y + height - 1 }, { _colour.value_or(0) }, RectBorderStyle::inset,
+                INSET_RECT_FLAG_FILL_DONT_LIGHTEN);
         }
 
         void clear()

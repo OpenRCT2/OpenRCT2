@@ -369,7 +369,7 @@ namespace OpenRCT2::Ui::Windows
 
             GfxFillRectInset(
                 rt, { screenPos - ScreenCoordsXY{ 0, 6 }, screenPos + ScreenCoordsXY{ 310, -5 } }, colours[1],
-                INSET_RECT_FLAG_BORDER_INSET);
+                RectBorderStyle::inset);
 
             widget = &widgets[WIDX_SELECTED_GROUP];
             group = Network::GetGroupIndex(_selectedGroup);

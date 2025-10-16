@@ -92,7 +92,7 @@ namespace OpenRCT2::Ui::Windows
             const auto topLeft = windowPos + ScreenCoordsXY{ leftPanelWidget.left + 1, leftPanelWidget.top + 1 };
             const auto bottomRight = windowPos + ScreenCoordsXY{ leftPanelWidget.right - 1, leftPanelWidget.bottom - 1 };
             // Draw green inset rectangle on panel
-            GfxFillRectInset(rt, { topLeft, bottomRight }, colours[0], INSET_RECT_F_30);
+            GfxFillRectInset(rt, { topLeft, bottomRight }, colours[0], RectBorderStyle::inset, INSET_RECT_FLAG_FILL_NONE);
 
             // Figure out how much line height we have to work with.
             uint32_t line_height = FontGetLineHeight(FontStyle::Medium);
@@ -152,14 +152,15 @@ namespace OpenRCT2::Ui::Windows
         {
             int16_t bar_width = (factor * 114) / 255;
             GfxFillRectInset(
-                rt, { coords + ScreenCoordsXY{ 1, 1 }, coords + ScreenCoordsXY{ 114, 9 } }, colours[0], INSET_RECT_F_30);
+                rt, { coords + ScreenCoordsXY{ 1, 1 }, coords + ScreenCoordsXY{ 114, 9 } }, colours[0], RectBorderStyle::inset,
+                INSET_RECT_FLAG_FILL_NONE);
             if (!(colour & kBarBlink) || GameIsPaused() || (gCurrentRealTimeTicks & 8))
             {
                 if (bar_width > 2)
                 {
                     GfxFillRectInset(
                         rt, { coords + ScreenCoordsXY{ 2, 2 }, coords + ScreenCoordsXY{ bar_width - 1, 8 } },
-                        ColourWithFlags{ static_cast<uint8_t>(colour) }, 0);
+                        ColourWithFlags{ static_cast<uint8_t>(colour) });
                 }
             }
 
@@ -175,7 +176,7 @@ namespace OpenRCT2::Ui::Windows
             const auto topLeft = windowPos + ScreenCoordsXY{ rightPanelWidget.left + 1, rightPanelWidget.top + 1 };
             const auto bottomRight = windowPos + ScreenCoordsXY{ rightPanelWidget.right - 1, rightPanelWidget.bottom - 1 };
             // Draw green inset rectangle on panel
-            GfxFillRectInset(rt, { topLeft, bottomRight }, colours[0], INSET_RECT_F_30);
+            GfxFillRectInset(rt, { topLeft, bottomRight }, colours[0], RectBorderStyle::inset, INSET_RECT_FLAG_FILL_NONE);
 
             auto screenCoords = ScreenCoordsXY{ (rightPanelWidget.left + rightPanelWidget.right) / 2 + windowPos.x,
                                                 rightPanelWidget.top + windowPos.y + 2 };
@@ -239,7 +240,7 @@ namespace OpenRCT2::Ui::Windows
 
                 { windowPos + ScreenCoordsXY{ middleOutsetWidget.left + 1, middleOutsetWidget.top + 1 },
                   windowPos + ScreenCoordsXY{ middleOutsetWidget.right - 1, middleOutsetWidget.bottom - 1 } },
-                colours[2], INSET_RECT_F_30);
+                colours[2], RectBorderStyle::inset, INSET_RECT_FLAG_FILL_NONE);
 
             // Text
             auto screenCoords = windowPos + ScreenCoordsXY{ middleOutsetWidget.midX(), middleOutsetWidget.top + 11 };
@@ -352,7 +353,7 @@ namespace OpenRCT2::Ui::Windows
                 rt,
                 { windowPos + ScreenCoordsXY{ middleOutsetWidget->left + 1, middleOutsetWidget->top + 1 },
                   windowPos + ScreenCoordsXY{ middleOutsetWidget->right - 1, middleOutsetWidget->bottom - 1 } },
-                colours[0], INSET_RECT_F_30);
+                colours[0], RectBorderStyle::inset, INSET_RECT_FLAG_FILL_NONE);
 
             // Figure out how much line height we have to work with.
             uint32_t line_height = FontGetLineHeight(FontStyle::Medium);

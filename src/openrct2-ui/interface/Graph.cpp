@@ -43,7 +43,7 @@ namespace OpenRCT2::Graph
             // Draw horizontal gridline
             GfxFillRectInset(
                 rt, { { internalBounds.GetLeft(), curScreenPos + 5 }, { internalBounds.GetRight(), curScreenPos + 5 } },
-                lineCol, INSET_RECT_FLAG_BORDER_INSET);
+                lineCol, RectBorderStyle::inset);
             curScreenPos += yLabelStepPx;
             curLabel -= yLabelStep;
         }

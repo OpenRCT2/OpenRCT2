@@ -616,7 +616,7 @@ namespace OpenRCT2::Ui::Windows
                 rt,
                 { windowPos + ScreenCoordsXY{ 8, titleBarBottom + 258 },
                   windowPos + ScreenCoordsXY{ 8 + 513, titleBarBottom + 258 + 1 } },
-                colours[1], INSET_RECT_FLAG_BORDER_INSET);
+                colours[1], RectBorderStyle::inset);
 
             // Loan and interest rate
             DrawTextBasic(rt, windowPos + ScreenCoordsXY{ 8, titleBarBottom + 265 }, STR_FINANCES_SUMMARY_LOAN);
@@ -789,13 +789,13 @@ namespace OpenRCT2::Ui::Windows
             DrawTextBasic(rt, _graphBounds.Point1 - ScreenCoordsXY{ 0, 11 }, fmt, ft);
 
             // Graph
-            GfxFillRectInset(rt, _graphBounds, colours[1], INSET_RECT_F_30);
+            GfxFillRectInset(rt, _graphBounds, colours[1], RectBorderStyle::inset, INSET_RECT_FLAG_FILL_NONE);
             // hide resize widget on graph area
             constexpr ScreenCoordsXY offset{ 1, 1 };
             constexpr ScreenCoordsXY bigOffset{ 5, 5 };
             GfxFillRectInset(
-                rt, { _graphBounds.Point2 - bigOffset, _graphBounds.Point2 - offset }, colours[1],
-                INSET_RECT_FLAG_FILL_DONT_LIGHTEN | INSET_RECT_FLAG_BORDER_NONE);
+                rt, { _graphBounds.Point2 - bigOffset, _graphBounds.Point2 - offset }, colours[1], RectBorderStyle::none,
+                INSET_RECT_FLAG_FILL_DONT_LIGHTEN);
 
             Graph::DrawFinanceGraph(rt, _graphProps);
         }

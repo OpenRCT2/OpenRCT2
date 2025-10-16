@@ -740,7 +740,8 @@ namespace OpenRCT2::Ui::Windows
                     // Draw checkbox
                     if (!(gLegacyScene == LegacyScene::trackDesignsManager) && !(*listItem.flags & 0x20))
                         GfxFillRectInset(
-                            rt, { { 2, screenCoords.y }, { 11, screenCoords.y + 10 } }, colours[1], INSET_RECT_F_E0);
+                            rt, { { 2, screenCoords.y }, { 11, screenCoords.y + 10 } }, colours[1], RectBorderStyle::inset,
+                            INSET_RECT_FLAG_FILL_DONT_LIGHTEN | INSET_RECT_FLAG_FILL_MID_LIGHT);
 
                     // Highlight background
                     auto highlighted = i == static_cast<size_t>(selectedListItem)

@@ -489,13 +489,14 @@ namespace OpenRCT2::Ui::Windows
             while (listItem->Type != kRideTypeNull || listItem->EntryIndex != kObjectEntryIndexNull)
             {
                 // Draw flat button rectangle
-                int32_t buttonFlags = 0;
+                auto borderStyle = RectBorderStyle::none;
                 if (_newRideVars.SelectedRide == *listItem)
-                    buttonFlags |= INSET_RECT_FLAG_BORDER_INSET;
-                if (_newRideVars.HighlightedRide == *listItem || buttonFlags != 0)
+                    borderStyle = RectBorderStyle::inset;
+
+                if (_newRideVars.HighlightedRide == *listItem || borderStyle != RectBorderStyle::none)
                     GfxFillRectInset(
-                        rt, { coords, coords + ScreenCoordsXY{ 115, 115 } }, colours[1],
-                        INSET_RECT_FLAG_FILL_MID_LIGHT | buttonFlags);
+                        rt, { coords, coords + ScreenCoordsXY{ 115, 115 } }, colours[1], borderStyle,
+                        INSET_RECT_FLAG_FILL_MID_LIGHT);
 
                 // Draw ride image with feathered border
                 auto mask = ImageId(SPR_NEW_RIDE_MASK);

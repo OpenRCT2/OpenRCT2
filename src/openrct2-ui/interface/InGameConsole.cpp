@@ -319,10 +319,11 @@ void InGameConsole::Draw(RenderTarget& rt) const
 
     // Paint background colour.
     auto backgroundColour = ThemeGetColour(WindowClass::console, 0);
-    GfxFillRectInset(rt, { _consoleTopLeft, _consoleBottomRight }, backgroundColour, INSET_RECT_FLAG_FILL_NONE);
+    GfxFillRectInset(
+        rt, { _consoleTopLeft, _consoleBottomRight }, backgroundColour, RectBorderStyle::outset, INSET_RECT_FLAG_FILL_NONE);
     GfxFillRectInset(
         rt, { _consoleTopLeft + ScreenCoordsXY{ 1, 1 }, _consoleBottomRight - ScreenCoordsXY{ 1, 1 } }, backgroundColour,
-        INSET_RECT_FLAG_BORDER_INSET);
+        RectBorderStyle::inset);
 
     std::string lineBuffer;
     auto screenCoords = _consoleTopLeft + ScreenCoordsXY{ kConsoleEdgePadding, kConsoleEdgePadding };

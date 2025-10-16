@@ -313,16 +313,22 @@ namespace OpenRCT2::Ui::Windows
             for (auto& entranceType : _entranceTypes)
             {
                 // Draw flat button rectangle
+                auto borderStyle = RectBorderStyle::outset;
                 int32_t buttonFlags = 0;
                 if (_selectedEntranceType == entranceType.entryIndex)
-                    buttonFlags |= INSET_RECT_FLAG_BORDER_INSET;
-                else if (_highlightedEntranceType == entranceType.entryIndex)
+                {
+                    borderStyle = RectBorderStyle::inset;
                     buttonFlags |= INSET_RECT_FLAG_FILL_MID_LIGHT;
+                }
+                else if (_highlightedEntranceType == entranceType.entryIndex)
+                {
+                    buttonFlags |= INSET_RECT_FLAG_FILL_MID_LIGHT;
+                }
 
                 if (buttonFlags != 0)
                     GfxFillRectInset(
-                        rt, { coords, coords + ScreenCoordsXY{ kImageSize - 1, kImageSize - 1 } }, colours[1],
-                        INSET_RECT_FLAG_FILL_MID_LIGHT | buttonFlags);
+                        rt, { coords, coords + ScreenCoordsXY{ kImageSize - 1, kImageSize - 1 } }, colours[1], borderStyle,
+                        buttonFlags);
 
                 RenderTarget clipDPI;
                 auto screenPos = coords + ScreenCoordsXY{ kScrollPadding, kScrollPadding };

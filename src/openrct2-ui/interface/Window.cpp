@@ -1050,7 +1050,7 @@ namespace OpenRCT2::Ui::Windows
         {
             GfxFillRectInset(
                 rt, { w.windowPos, w.windowPos + ScreenCoordsXY{ w.width - 1, w.height - 1 } }, { COLOUR_WHITE },
-                INSET_RECT_FLAG_FILL_NONE);
+                RectBorderStyle::outset, INSET_RECT_FLAG_FILL_NONE);
         }
     }
 

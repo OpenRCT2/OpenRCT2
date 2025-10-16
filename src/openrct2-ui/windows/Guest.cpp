@@ -1444,7 +1444,7 @@ namespace OpenRCT2::Ui::Windows
 
             GfxFillRectInset(
                 rt, { screenCoords - ScreenCoordsXY{ 0, 6 }, screenCoords + ScreenCoordsXY{ 179, -5 } }, colours[1],
-                INSET_RECT_FLAG_BORDER_INSET);
+                RectBorderStyle::inset);
 
             // Paid to enter
             {

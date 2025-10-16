@@ -710,13 +710,13 @@ namespace OpenRCT2::Ui::Windows
             DrawTextBasic(rt, windowPos + ScreenCoordsXY{ widget->left + 3, widget->top + 2 }, STR_PARK_RATING_LABEL, ft);
 
             // Graph border
-            GfxFillRectInset(rt, _ratingGraphBounds, colours[1], INSET_RECT_F_30);
+            GfxFillRectInset(rt, _ratingGraphBounds, colours[1], RectBorderStyle::inset, INSET_RECT_FLAG_FILL_NONE);
             // hide resize widget on graph area
             constexpr ScreenCoordsXY offset{ 1, 1 };
             constexpr ScreenCoordsXY bigOffset{ 5, 5 };
             GfxFillRectInset(
                 rt, { _ratingGraphBounds.Point2 - bigOffset, _ratingGraphBounds.Point2 - offset }, colours[1],
-                INSET_RECT_FLAG_FILL_DONT_LIGHTEN | INSET_RECT_FLAG_BORDER_NONE);
+                RectBorderStyle::none, INSET_RECT_FLAG_FILL_DONT_LIGHTEN);
 
             Graph::DrawRatingGraph(rt, _ratingProps);
         }
@@ -789,13 +789,13 @@ namespace OpenRCT2::Ui::Windows
             DrawTextBasic(rt, windowPos + ScreenCoordsXY{ widget->left + 3, widget->top + 2 }, STR_GUESTS_IN_PARK_LABEL, ft);
 
             // Graph border
-            GfxFillRectInset(rt, _guestGraphBounds, colours[1], INSET_RECT_F_30);
+            GfxFillRectInset(rt, _guestGraphBounds, colours[1], RectBorderStyle::inset, INSET_RECT_FLAG_FILL_NONE);
             // hide resize widget on graph area
             constexpr ScreenCoordsXY offset{ 1, 1 };
             constexpr ScreenCoordsXY bigOffset{ 5, 5 };
             GfxFillRectInset(
                 rt, { _guestGraphBounds.Point2 - bigOffset, _guestGraphBounds.Point2 - offset }, colours[1],
-                INSET_RECT_FLAG_FILL_DONT_LIGHTEN | INSET_RECT_FLAG_BORDER_NONE);
+                RectBorderStyle::none, INSET_RECT_FLAG_FILL_DONT_LIGHTEN);
 
             Graph::DrawGuestGraph(rt, _guestProps);
         }

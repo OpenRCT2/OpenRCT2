@@ -1659,7 +1659,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         GfxFillRectInset(
                             rt, { topLeft, topLeft + ScreenCoordsXY{ kSceneryButtonWidth - 1, kSceneryButtonHeight - 1 } },
-                            colours[1], INSET_RECT_FLAG_FILL_MID_LIGHT);
+                            colours[1], RectBorderStyle::outset, INSET_RECT_FLAG_FILL_MID_LIGHT);
                     }
                 }
                 else
@@ -1668,13 +1668,13 @@ namespace OpenRCT2::Ui::Windows
                     {
                         GfxFillRectInset(
                             rt, { topLeft, topLeft + ScreenCoordsXY{ kSceneryButtonWidth - 1, kSceneryButtonHeight - 1 } },
-                            colours[1], (INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_MID_LIGHT));
+                            colours[1], RectBorderStyle::inset, INSET_RECT_FLAG_FILL_MID_LIGHT);
                     }
                     else if (_selectedScenery == currentSceneryGlobal)
                     {
                         GfxFillRectInset(
                             rt, { topLeft, topLeft + ScreenCoordsXY{ kSceneryButtonWidth - 1, kSceneryButtonHeight - 1 } },
-                            colours[1], INSET_RECT_FLAG_FILL_MID_LIGHT);
+                            colours[1], RectBorderStyle::outset, INSET_RECT_FLAG_FILL_MID_LIGHT);
                     }
                 }
 

@@ -257,7 +257,9 @@ namespace OpenRCT2::Ui::Windows
 
         void PaintCheckbox(RenderTarget& rt, const ScreenRect& rect, bool checked)
         {
-            GfxFillRectInset(rt, rect, colours[1], INSET_RECT_F_E0);
+            GfxFillRectInset(
+                rt, rect, colours[1], RectBorderStyle::inset,
+                INSET_RECT_FLAG_FILL_DONT_LIGHTEN | INSET_RECT_FLAG_FILL_MID_LIGHT);
             if (checked)
             {
                 auto checkmark = Formatter();

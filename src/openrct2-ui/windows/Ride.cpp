@@ -3694,7 +3694,7 @@ namespace OpenRCT2::Ui::Windows
                 rt,
                 { windowPos + ScreenCoordsXY{ widgets[WIDX_PAGE_BACKGROUND].left + 4, ruleStart },
                   windowPos + ScreenCoordsXY{ widgets[WIDX_PAGE_BACKGROUND].right - 5, ruleStart + 1 } },
-                colours[1], INSET_RECT_FLAG_BORDER_INSET);
+                colours[1], RectBorderStyle::inset);
 
             // Number of block sections
             if (ride->isBlockSectioned())
@@ -5619,7 +5619,7 @@ namespace OpenRCT2::Ui::Windows
                 widgetCoords.x = windowPos.x + 4;
                 widgetCoords.y = windowPos.y + widgets[WIDX_SELECT_NEARBY_SCENERY].bottom + 17;
                 GfxFillRectInset(
-                    rt, { widgetCoords, { windowPos.x + 312, widgetCoords.y + 1 } }, colours[1], INSET_RECT_FLAG_BORDER_INSET);
+                    rt, { widgetCoords, { windowPos.x + 312, widgetCoords.y + 1 } }, colours[1], RectBorderStyle::inset);
             }
             else
             {
@@ -5669,7 +5669,7 @@ namespace OpenRCT2::Ui::Windows
                     // Horizontal rule
                     GfxFillRectInset(
                         rt, { screenCoords - ScreenCoordsXY{ 0, 6 }, screenCoords + ScreenCoordsXY{ 303, -5 } }, colours[1],
-                        INSET_RECT_FLAG_BORDER_INSET);
+                        RectBorderStyle::inset);
 
                     if (!(ride->lifecycleFlags & RIDE_LIFECYCLE_NO_RAW_STATS))
                     {

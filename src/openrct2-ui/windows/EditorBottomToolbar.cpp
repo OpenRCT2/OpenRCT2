@@ -345,7 +345,7 @@ namespace OpenRCT2::Ui::Windows
                 + ScreenCoordsXY{ widgets[WIDX_PREVIOUS_IMAGE].left + 1, widgets[WIDX_PREVIOUS_IMAGE].top + 1 };
             const auto bottomRight = windowPos
                 + ScreenCoordsXY{ widgets[WIDX_PREVIOUS_IMAGE].right - 1, widgets[WIDX_PREVIOUS_IMAGE].bottom - 1 };
-            GfxFillRectInset(rt, { topLeft, bottomRight }, colours[1], INSET_RECT_F_30);
+            GfxFillRectInset(rt, { topLeft, bottomRight }, colours[1], RectBorderStyle::inset, INSET_RECT_FLAG_FILL_NONE);
 
             GfxDrawSprite(
                 rt, ImageId(SPR_PREVIOUS),
@@ -383,7 +383,7 @@ namespace OpenRCT2::Ui::Windows
                 + ScreenCoordsXY{ widgets[WIDX_NEXT_IMAGE].left + 1, widgets[WIDX_NEXT_IMAGE].top + 1 };
             const auto bottomRight = windowPos
                 + ScreenCoordsXY{ widgets[WIDX_NEXT_IMAGE].right - 1, widgets[WIDX_NEXT_IMAGE].bottom - 1 };
-            GfxFillRectInset(rt, { topLeft, bottomRight }, colours[1], INSET_RECT_F_30);
+            GfxFillRectInset(rt, { topLeft, bottomRight }, colours[1], RectBorderStyle::inset, INSET_RECT_FLAG_FILL_NONE);
 
             GfxDrawSprite(
                 rt, ImageId(SPR_NEXT),

@@ -1635,7 +1635,9 @@ static uint64_t PageDisabledWidgets[] = {
                 checkboxFormatter.Add<char*>(kCheckMarkString);
 
                 // Draw checkbox and check if visible
-                GfxFillRectInset(rt, { { 2, screenCoords.y }, { 15, screenCoords.y + 11 } }, colours[1], INSET_RECT_F_E0);
+                GfxFillRectInset(
+                    rt, { { 2, screenCoords.y }, { 15, screenCoords.y + 11 } }, colours[1], RectBorderStyle::inset,
+                    INSET_RECT_FLAG_FILL_DONT_LIGHTEN | INSET_RECT_FLAG_FILL_MID_LIGHT);
                 if (!tileElement->IsInvisible())
                 {
                     auto eyeFormatter = Formatter();

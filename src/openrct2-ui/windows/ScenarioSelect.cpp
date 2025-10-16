@@ -287,7 +287,9 @@ namespace OpenRCT2::Ui::Windows
             auto startFrameX = width - (GetPreviewPaneWidth() / 2) - (image->width / 2) - kPadding;
             auto frameStartPos = ScreenCoordsXY(windowPos.x + startFrameX, screenPos.y + 15);
             auto frameEndPos = frameStartPos + ScreenCoordsXY(image->width + 1, image->height + 1);
-            GfxFillRectInset(rt, { frameStartPos, frameEndPos }, colours[1], INSET_RECT_F_60 | INSET_RECT_FLAG_FILL_MID_LIGHT);
+            GfxFillRectInset(
+                rt, { frameStartPos, frameEndPos }, colours[1], RectBorderStyle::inset,
+                INSET_RECT_FLAG_FILL_DONT_LIGHTEN | INSET_RECT_FLAG_FILL_MID_LIGHT);
 
             // Draw image, if available
             auto imagePos = frameStartPos + ScreenCoordsXY(1, 1);
