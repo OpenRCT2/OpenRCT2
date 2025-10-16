@@ -34,7 +34,7 @@ enum class TextUnderline
     on,
 };
 
-enum class TextDarkness
+enum class TextDarkness : uint8_t
 {
     regular = 0,
     dark = 1,

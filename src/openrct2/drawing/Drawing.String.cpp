@@ -770,27 +770,26 @@ static void TTFProcessInitialColour(ColourWithFlags colour, TextDrawInfo* info)
         {
             info->flags |= TEXT_DRAW_FLAG_INSET;
 
-            uint32_t eax;
-            if (info->flags & TEXT_DRAW_FLAG_DARK)
+            uint32_t eax = 0;
+            switch (info->darkness)
             {
-                if (info->flags & TEXT_DRAW_FLAG_EXTRA_DARK)
-                {
+                case TextDarkness::extraDark:
                     eax = ColourMapA[colour.colour].mid_light;
                     eax = eax << 16;
                     eax = eax | ColourMapA[colour.colour].dark;
-                }
-                else
-                {
+                    break;
+
+                case TextDarkness::dark:
                     eax = ColourMapA[colour.colour].light;
                     eax = eax << 16;
                     eax = eax | ColourMapA[colour.colour].mid_dark;
-                }
-            }
-            else
-            {
-                eax = ColourMapA[colour.colour].lighter;
-                eax = eax << 16;
-                eax = eax | ColourMapA[colour.colour].mid_light;
+                    break;
+
+                case TextDarkness::regular:
+                    eax = ColourMapA[colour.colour].lighter;
+                    eax = eax << 16;
+                    eax = eax | ColourMapA[colour.colour].mid_light;
+                    break;
             }
 
             // Adjust text palette. Store current colour? ;
@@ -816,6 +815,7 @@ void TTFDrawString(
     info.startY = coords.y;
     info.x = coords.x;
     info.y = coords.y;
+    info.darkness = darkness;
 
     if (LocalisationService_UseTrueTypeFont())
     {
@@ -825,15 +825,6 @@ void TTFDrawString(
     if (noFormatting)
     {
         info.flags |= TEXT_DRAW_FLAG_NO_FORMATTING;
-    }
-
-    if (darkness == TextDarkness::dark)
-    {
-        info.flags |= TEXT_DRAW_FLAG_DARK;
-    }
-    else if (darkness == TextDarkness::extraDark)
-    {
-        info.flags |= (TEXT_DRAW_FLAG_DARK | TEXT_DRAW_FLAG_EXTRA_DARK);
     }
 
     std::memcpy(info.palette, gTextPalette, sizeof(info.palette));
