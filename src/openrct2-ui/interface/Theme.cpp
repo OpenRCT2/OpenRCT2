@@ -110,12 +110,8 @@ namespace OpenRCT2::Ui
     #define COLOURS_2(c0, c1) 2, { { (c0), (c1), 0, 0, 0, 0 } }
     #define COLOURS_3(c0, c1, c2) 3, { { (c0), (c1), (c2), 0, 0, 0 } }
     #define COLOURS_4(c0, c1, c2, c3) 4, { { (c0), (c1), (c2), (c3), 0, 0 } }
-    #define COLOURS_5(c0, c1, c2, c3, c4) 5, { { (c0), (c1), (c2), (c3), (c4), 0 } }
-    #define COLOURS_6(c0, c1, c2, c3, c4, c5) 6, { { (c0), (c1), (c2), (c3), (c4), (c5) } }
 
     #define THEME_DEF_END { WindowClass::null, { 0, 0, 0, 0, 0, 0 } }
-
-    #define TWINDOW(window_class, window_name, window_string_id, theme) { window_class, window_name, window_string_id, theme }
 
     static constexpr ColourWithFlags opaque(colour_t colour)
     {
