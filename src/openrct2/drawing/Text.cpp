@@ -98,7 +98,7 @@ void DrawText(RenderTarget& rt, const ScreenCoordsXY& coords, const TextPaint& p
 
     TTFDrawString(rt, text, paint.Colour, alignedCoords, noFormatting, paint.FontStyle, paint.Darkness);
 
-    if (paint.UnderlineText == TextUnderline::On)
+    if (paint.UnderlineText == TextUnderline::on)
     {
         Rectangle::fill(
             rt, { { alignedCoords + ScreenCoordsXY{ 0, 11 } }, { alignedCoords + ScreenCoordsXY{ width, 11 } } },

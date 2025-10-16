@@ -435,7 +435,7 @@ namespace OpenRCT2::Ui::Windows
                 DrawTextBasic(
                     rt, screenCoords + ScreenCoordsXY{ kExpenditureColumnWidth, 0 },
                     monthyear == currentMonthYear ? STR_WINDOW_COLOUR_2_STRINGID : STR_BLACK_STRING, ft,
-                    { TextUnderline::On, TextAlignment::RIGHT });
+                    { TextUnderline::on, TextAlignment::RIGHT });
                 screenCoords.y += 14;
 
                 // Month expenditures
@@ -597,7 +597,7 @@ namespace OpenRCT2::Ui::Windows
             // Expenditure / Income heading
             DrawTextBasic(
                 rt, screenCoords, STR_FINANCES_SUMMARY_EXPENDITURE_INCOME, {},
-                { COLOUR_BLACK, TextUnderline::On, TextAlignment::LEFT });
+                { COLOUR_BLACK, TextUnderline::on, TextAlignment::LEFT });
             screenCoords.y += 14;
 
             // Expenditure / Income row labels
