@@ -446,6 +446,10 @@ namespace OpenRCT2::Ui::Windows
             int32_t i = 0;
 
             const auto backgroundPaletteIndex = ColourMapA[colours[3].colour].light;
+            // Fill the scrollbar gap if no scrollbar is visible
+            const bool scrollbarVisible = scrolls[0].contentHeight > widgets[WIDX_SCROLL].height();
+            const auto scrollbarFill = scrollbarVisible ? 0 : kScrollBarWidth;
+
             for (const auto& newsItem : getGameState().newsItems.GetArchived())
             {
                 if (y >= rt.y + rt.height)
@@ -458,9 +462,9 @@ namespace OpenRCT2::Ui::Windows
                 }
 
                 // Outer frame
-                GfxFillRectInset(rt, { -1, y, 383, y + itemHeight - 1 }, colours[1], INSET_RECT_F_30);
+                GfxFillRectInset(rt, { -1, y, 383 + scrollbarFill, y + itemHeight - 1 }, colours[1], INSET_RECT_F_30);
                 // Background
-                GfxFillRect(rt, { 0, y + 1, 381, y + itemHeight - 2 }, backgroundPaletteIndex);
+                GfxFillRect(rt, { 0, y + 1, 381 + scrollbarFill, y + itemHeight - 2 }, backgroundPaletteIndex);
 
                 // Date text
                 {
@@ -480,7 +484,7 @@ namespace OpenRCT2::Ui::Windows
                 // Subject button
                 if ((newsItem.typeHasSubject()) && !(newsItem.hasButton()))
                 {
-                    auto screenCoords = ScreenCoordsXY{ 328, y + lineHeight + 4 };
+                    auto screenCoords = ScreenCoordsXY{ 328 + scrollbarFill, y + lineHeight + 4 };
 
                     int32_t press = 0;
                     if (_pressedNewsItemIndex != -1)
@@ -561,7 +565,7 @@ namespace OpenRCT2::Ui::Windows
                 // Location button
                 if ((newsItem.typeHasLocation()) && !(newsItem.hasButton()))
                 {
-                    auto screenCoords = ScreenCoordsXY{ 352, y + lineHeight + 4 };
+                    auto screenCoords = ScreenCoordsXY{ 352 + scrollbarFill, y + lineHeight + 4 };
 
                     int32_t press = 0;
                     if (_pressedNewsItemIndex != -1)
