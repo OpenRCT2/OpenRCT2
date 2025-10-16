@@ -452,7 +452,6 @@ namespace OpenRCT2::GameActions
                     ride->numBlockBrakes--;
                     if (ride->numBlockBrakes == 0 && ride->isBlockSectioned())
                     {
-                        ride->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_OPERATING;
                         RideMode newMode = RideMode::continuousCircuit;
                         if (ride->mode == RideMode::poweredLaunchBlockSectioned)
                         {
@@ -460,9 +459,18 @@ namespace OpenRCT2::GameActions
                             newMode = ride->getRideTypeDescriptor().DefaultMode;
                         }
 
-                        auto rideSetSetting = GameActions::RideSetSettingAction(
-                            ride->id, GameActions::RideSetSetting::Mode, static_cast<uint8_t>(newMode));
-                        ExecuteNested(&rideSetSetting, gameState);
+                        if (ride->mode != newMode)
+                        {
+                            bool canSwitch = ride->getRideTypeDescriptor().SupportsRideMode(newMode)
+                                || getGameState().cheats.showAllOperatingModes;
+                            if (canSwitch)
+                            {
+                                ride->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_OPERATING;
+                                auto rideSetSetting = GameActions::RideSetSettingAction(
+                                    ride->id, GameActions::RideSetSetting::Mode, static_cast<uint8_t>(newMode));
+                                ExecuteNested(&rideSetSetting, gameState);
+                            }
+                        }
                     }
 
                     break;
