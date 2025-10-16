@@ -482,10 +482,10 @@ static void TTFDrawCharacterSprite(RenderTarget& rt, int32_t codepoint, TextDraw
     int32_t characterWidth = FontSpriteGetCodepointWidth(info->fontStyle, codepoint);
     auto sprite = FontSpriteGetCodepointSprite(info->fontStyle, codepoint);
 
-    if (!(info->flags & TEXT_DRAW_FLAG_NO_DRAW))
+    if (!info->textDrawFlags.has(TextDrawFlag::noDraw))
     {
         auto screenCoords = ScreenCoordsXY{ info->x, info->y };
-        if (info->flags & TEXT_DRAW_FLAG_Y_OFFSET_EFFECT)
+        if (info->textDrawFlags.has(TextDrawFlag::yOffsetEffect))
         {
             screenCoords.y += *info->yOffset++;
         }
@@ -520,7 +520,7 @@ static void TTFDrawStringRawTTF(RenderTarget& rt, std::string_view text, TextDra
         return;
     }
 
-    if (info->flags & TEXT_DRAW_FLAG_NO_DRAW)
+    if (info->textDrawFlags.has(TextDrawFlag::noDraw))
     {
         info->x += TTFGetWidthCacheGetOrAdd(fontDesc->font, text);
         return;
@@ -595,7 +595,7 @@ static void TTFProcessFormatCode(RenderTarget& rt, const FmtString::Token& token
             auto g1 = GfxGetG1Element(imageId);
             if (g1 != nullptr && g1->width <= 32 && g1->height <= 32)
             {
-                if (!(info->flags & TEXT_DRAW_FLAG_NO_DRAW))
+                if (!info->textDrawFlags.has(TextDrawFlag::noDraw))
                 {
                     GfxDrawSprite(rt, imageId, { info->x, info->y });
                 }
@@ -647,7 +647,7 @@ static bool ShouldUseSpriteForCodepoint(char32_t codepoint)
 static void TTFProcessStringLiteral(RenderTarget& rt, std::string_view text, TextDrawInfo* info)
 {
 #ifndef DISABLE_TTF
-    bool isTTF = info->flags & TEXT_DRAW_FLAG_TTF;
+    bool isTTF = info->textDrawFlags.has(TextDrawFlag::ttf);
 #else
     bool isTTF = false;
 #endif // DISABLE_TTF
@@ -715,7 +715,7 @@ static void TTFProcessStringCodepoint(RenderTarget& rt, codepoint_t codepoint, T
 
 static void TTFProcessString(RenderTarget& rt, std::string_view text, TextDrawInfo* info)
 {
-    if (info->flags & TEXT_DRAW_FLAG_NO_FORMATTING)
+    if (info->textDrawFlags.has(TextDrawFlag::noFormatting))
     {
         TTFProcessStringLiteral(rt, text, info);
         info->maxX = std::max(info->maxX, info->x);
@@ -795,9 +795,8 @@ void TTFDrawString(
     if (text == nullptr)
         return;
 
-    TextDrawInfo info;
+    TextDrawInfo info{};
     info.fontStyle = fontStyle;
-    info.flags = 0;
     info.startX = coords.x;
     info.startY = coords.y;
     info.x = coords.x;
@@ -806,12 +805,12 @@ void TTFDrawString(
 
     if (LocalisationService_UseTrueTypeFont())
     {
-        info.flags |= TEXT_DRAW_FLAG_TTF;
+        info.textDrawFlags.set(TextDrawFlag::ttf);
     }
 
     if (noFormatting)
     {
-        info.flags |= TEXT_DRAW_FLAG_NO_FORMATTING;
+        info.textDrawFlags.set(TextDrawFlag::noFormatting);
     }
 
     std::memcpy(info.palette, gTextPalette, sizeof(info.palette));
@@ -824,9 +823,8 @@ void TTFDrawString(
 
 static int32_t TTFGetStringWidth(std::string_view text, FontStyle fontStyle, bool noFormatting)
 {
-    TextDrawInfo info;
+    TextDrawInfo info{};
     info.fontStyle = fontStyle;
-    info.flags = 0;
     info.startX = 0;
     info.startY = 0;
     info.x = 0;
@@ -834,15 +832,15 @@ static int32_t TTFGetStringWidth(std::string_view text, FontStyle fontStyle, boo
     info.maxX = 0;
     info.maxY = 0;
 
-    info.flags |= TEXT_DRAW_FLAG_NO_DRAW;
+    info.textDrawFlags.set(TextDrawFlag::noDraw);
     if (LocalisationService_UseTrueTypeFont())
     {
-        info.flags |= TEXT_DRAW_FLAG_TTF;
+        info.textDrawFlags.set(TextDrawFlag::ttf);
     }
 
     if (noFormatting)
     {
-        info.flags |= TEXT_DRAW_FLAG_NO_FORMATTING;
+        info.textDrawFlags.set(TextDrawFlag::noFormatting);
     }
 
     RenderTarget dummy{};
@@ -859,20 +857,19 @@ void GfxDrawStringWithYOffsets(
     RenderTarget& rt, const utf8* text, ColourWithFlags colour, const ScreenCoordsXY& coords, const int8_t* yOffsets,
     bool forceSpriteFont, FontStyle fontStyle)
 {
-    TextDrawInfo info;
+    TextDrawInfo info{};
     info.fontStyle = fontStyle;
-    info.flags = 0;
     info.startX = coords.x;
     info.startY = coords.y;
     info.x = coords.x;
     info.y = coords.y;
     info.yOffset = yOffsets;
 
-    info.flags |= TEXT_DRAW_FLAG_Y_OFFSET_EFFECT;
+    info.textDrawFlags.set(TextDrawFlag::yOffsetEffect);
 
     if (!forceSpriteFont && LocalisationService_UseTrueTypeFont())
     {
-        info.flags |= TEXT_DRAW_FLAG_TTF;
+        info.textDrawFlags.set(TextDrawFlag::ttf);
     }
 
     std::memcpy(info.palette, gTextPalette, sizeof(info.palette));

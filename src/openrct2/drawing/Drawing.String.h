@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../core/FlagHolder.hpp"
 #include "../interface/Colour.h"
 
 #include <cstdint>
@@ -16,18 +17,27 @@
 enum class FontStyle : uint8_t;
 enum class TextDarkness : uint8_t;
 
+enum class TextDrawFlag : uint8_t
+{
+    noFormatting,
+    yOffsetEffect,
+    ttf,
+    noDraw,
+};
+using TextDrawFlags = FlagHolder<uint8_t, TextDrawFlag>;
+
 struct TextDrawInfo
 {
-    int32_t startX;
-    int32_t startY;
-    int32_t x;
-    int32_t y;
-    int32_t maxX;
-    int32_t maxY;
-    int32_t flags;
-    ColourFlags colourFlags;
-    TextDarkness darkness;
-    uint8_t palette[8];
-    FontStyle fontStyle;
-    const int8_t* yOffset;
+    int32_t startX{};
+    int32_t startY{};
+    int32_t x{};
+    int32_t y{};
+    int32_t maxX{};
+    int32_t maxY{};
+    TextDrawFlags textDrawFlags{};
+    ColourFlags colourFlags{};
+    TextDarkness darkness{};
+    uint8_t palette[8]{};
+    FontStyle fontStyle{};
+    const int8_t* yOffset{};
 };

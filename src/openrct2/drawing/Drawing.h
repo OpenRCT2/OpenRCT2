@@ -113,14 +113,6 @@ struct RenderTarget
     }
 };
 
-enum : uint32_t
-{
-    TEXT_DRAW_FLAG_NO_FORMATTING = 1 << 28,
-    TEXT_DRAW_FLAG_Y_OFFSET_EFFECT = 1 << 29,
-    TEXT_DRAW_FLAG_TTF = 1 << 30,
-    TEXT_DRAW_FLAG_NO_DRAW = 1u << 31
-};
-
 struct RCTG1Element
 {
     uint32_t offset;        // 0x00 note: uint32_t always!
