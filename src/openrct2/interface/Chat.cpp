@@ -15,6 +15,7 @@
 #include "../audio/AudioMixer.h"
 #include "../core/UTF8.h"
 #include "../drawing/Drawing.h"
+#include "../drawing/Rect.h"
 #include "../drawing/Text.h"
 #include "../localisation/Formatter.h"
 #include "../localisation/Formatting.h"

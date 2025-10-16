@@ -10,6 +10,7 @@
 #include "Text.h"
 
 #include "../core/UTF8.h"
+#include "../drawing/Rect.h"
 #include "../localisation/Formatter.h"
 #include "../localisation/Formatting.h"
 #include "Drawing.h"

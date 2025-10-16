@@ -16,6 +16,7 @@
 #include <openrct2/Context.h>
 #include <openrct2/SpriteIds.h>
 #include <openrct2/drawing/Drawing.h>
+#include <openrct2/drawing/Rect.h>
 #include <openrct2/drawing/Text.h>
 #include <openrct2/localisation/StringIds.h>
 #include <openrct2/object/ObjectManager.h>

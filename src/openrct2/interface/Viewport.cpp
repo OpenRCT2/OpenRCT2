@@ -21,6 +21,7 @@
 #include "../core/Numerics.hpp"
 #include "../drawing/Drawing.h"
 #include "../drawing/IDrawingEngine.h"
+#include "../drawing/Rect.h"
 #include "../entity/EntityList.h"
 #include "../entity/Guest.h"
 #include "../entity/PatrolArea.h"

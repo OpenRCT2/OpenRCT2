@@ -17,6 +17,7 @@
 #include "../../audio/AudioChannel.h"
 #include "../../audio/AudioMixer.h"
 #include "../../drawing/Drawing.h"
+#include "../../drawing/Rect.h"
 
 #include <memory>
 

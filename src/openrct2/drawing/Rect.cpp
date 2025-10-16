@@ -7,9 +7,25 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "Rect.h"
+
 #include "../interface/Colour.h"
 #include "../world/Location.hpp"
 #include "Drawing.h"
+#include "IDrawingContext.h"
+#include "IDrawingEngine.h"
+
+using OpenRCT2::Drawing::IDrawingContext;
+
+void GfxFillRect(RenderTarget& rt, const ScreenRect& rect, int32_t colour)
+{
+    auto drawingEngine = rt.DrawingEngine;
+    if (drawingEngine != nullptr)
+    {
+        IDrawingContext* dc = drawingEngine->GetDrawingContext();
+        dc->FillRect(rt, colour, rect.GetLeft(), rect.GetTop(), rect.GetRight(), rect.GetBottom());
+    }
+}
 
 /**
  * Draw a rectangle, with optional border or fill
@@ -120,5 +136,15 @@ void GfxFillRectInset(
                 }
                 break;
         }
+    }
+}
+
+void GfxFilterRect(RenderTarget& rt, const ScreenRect& rect, FilterPaletteID palette)
+{
+    auto drawingEngine = rt.DrawingEngine;
+    if (drawingEngine != nullptr)
+    {
+        IDrawingContext* dc = drawingEngine->GetDrawingContext();
+        dc->FilterRect(rt, palette, rect.GetLeft(), rect.GetTop(), rect.GetRight(), rect.GetBottom());
     }
 }

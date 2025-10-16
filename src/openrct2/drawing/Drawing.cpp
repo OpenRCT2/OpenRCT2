@@ -25,6 +25,7 @@
 #include "../world/Climate.h"
 #include "../world/Location.hpp"
 #include "LightFX.h"
+#include "Rect.h"
 
 #include <array>
 #include <cassert>

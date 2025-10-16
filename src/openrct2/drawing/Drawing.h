@@ -520,21 +520,6 @@ void GfxDrawLineSoftware(RenderTarget& rt, const ScreenLine& line, int32_t colou
 void GfxDrawDashedLine(
     RenderTarget& rt, const ScreenLine& screenLine, const int32_t dashedLineSegmentLength, const int32_t color);
 
-// rect
-void GfxFillRect(RenderTarget& rt, const ScreenRect& rect, int32_t colour);
-
-enum class RectBorderStyle : uint8_t
-{
-    outset,
-    inset,
-    none,
-};
-
-void GfxFillRectInset(
-    RenderTarget& rt, const ScreenRect& rect, ColourWithFlags colour, RectBorderStyle borderStyle = RectBorderStyle::outset,
-    uint8_t flags = 0);
-void GfxFilterRect(RenderTarget& rt, const ScreenRect& rect, FilterPaletteID palette);
-
 // sprite
 bool GfxLoadG1(const OpenRCT2::IPlatformEnvironment& env);
 void GfxLoadG2FontsAndTracks();
