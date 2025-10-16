@@ -356,7 +356,7 @@ namespace OpenRCT2::Ui::Windows
     private:
         void UpdatePreview()
         {
-            TrackDesignDrawPreview(*_trackDesign, _trackDesignPreviewPixels.data());
+            TrackDesignDrawPreview(*_trackDesign, _trackDesignPreviewPixels.data(), !gTrackDesignSceneryToggle);
         }
 
         void InstallTrackDesign()
