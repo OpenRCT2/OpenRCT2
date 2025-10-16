@@ -198,10 +198,10 @@ void ChatDraw(RenderTarget& rt, ColourWithFlags chatBackgroundColor)
         GfxSetDirtyBlocks({ screenCoords, { screenCoords + ScreenCoordsXY{ _chatWidth, inputLineHeight + 15 } } });
 
         // TODO: Show caret if the input text has multiple lines
-        if (_chatCaretTicks < 15 && GfxGetStringWidth(lineBuffer, FontStyle::Medium) < (_chatWidth - 10))
+        if (_chatCaretTicks < 15 && GfxGetStringWidth(lineBuffer, FontStyle::medium) < (_chatWidth - 10))
         {
             lineBuffer.assign(_chatCurrentLine.c_str(), _chatTextInputSession->SelectionStart);
-            int32_t caretX = screenCoords.x + GfxGetStringWidth(lineBuffer, FontStyle::Medium);
+            int32_t caretX = screenCoords.x + GfxGetStringWidth(lineBuffer, FontStyle::medium);
             int32_t caretY = screenCoords.y + 14;
 
             Rectangle::fill(rt, { { caretX, caretY }, { caretX + 6, caretY + 1 } }, PaletteIndex::pi56);
@@ -292,8 +292,8 @@ static int32_t ChatHistoryDrawString(RenderTarget& rt, const char* text, const S
 {
     int32_t numLines;
     u8string wrappedString;
-    GfxWrapString(FormatString("{OUTLINE}{WHITE}{STRING}", text), width, FontStyle::Medium, &wrappedString, &numLines);
-    auto lineHeight = FontGetLineHeight(FontStyle::Medium);
+    GfxWrapString(FormatString("{OUTLINE}{WHITE}{STRING}", text), width, FontStyle::medium, &wrappedString, &numLines);
+    auto lineHeight = FontGetLineHeight(FontStyle::medium);
 
     int32_t expectedY = screenCoords.y - (numLines * lineHeight);
     if (expectedY < 50)
@@ -317,7 +317,7 @@ static int32_t ChatHistoryDrawString(RenderTarget& rt, const char* text, const S
 int32_t ChatStringWrappedGetHeight(u8string_view args, int32_t width)
 {
     int32_t numLines;
-    GfxWrapString(FormatStringID(STR_STRING, args), width, FontStyle::Medium, nullptr, &numLines);
-    const int32_t lineHeight = FontGetLineHeight(FontStyle::Medium);
+    GfxWrapString(FormatStringID(STR_STRING, args), width, FontStyle::medium, nullptr, &numLines);
+    const int32_t lineHeight = FontGetLineHeight(FontStyle::medium);
     return lineHeight * (numLines + 1);
 }

@@ -306,12 +306,12 @@ namespace OpenRCT2::Ui::Windows
             drawWidgets(rt);
 
             StringId format = STR_WINDOW_COLOUR_2_STRINGID;
-            FontStyle fontStyle = FontStyle::Medium;
+            FontStyle fontStyle = FontStyle::medium;
 
             if (ScenarioSelectUseSmallFont())
             {
                 format = STR_SMALL_WINDOW_COLOUR_2_STRINGID;
-                fontStyle = FontStyle::Small;
+                fontStyle = FontStyle::small;
             }
 
             // Text for each tab
@@ -359,7 +359,7 @@ namespace OpenRCT2::Ui::Windows
             // Scenario path
             if (Config::Get().general.debuggingTools)
             {
-                const auto shortPath = ShortenPath(scenario->Path, width - 6 - kTabWidth, FontStyle::Medium);
+                const auto shortPath = ShortenPath(scenario->Path, width - 6 - kTabWidth, FontStyle::medium);
 
                 auto ft = Formatter();
                 ft.Add<utf8*>(shortPath.c_str());
@@ -558,7 +558,7 @@ namespace OpenRCT2::Ui::Windows
             const int32_t scenarioItemHeight = GetScenarioListItemSize();
 
             // Scenario title
-            int32_t scenarioTitleHeight = FontGetLineHeight(FontStyle::Medium);
+            int32_t scenarioTitleHeight = FontGetLineHeight(FontStyle::medium);
 
             int32_t y = 0;
             for (const auto& listItem : _listItems)
@@ -604,7 +604,7 @@ namespace OpenRCT2::Ui::Windows
 
                         DrawTextBasic(
                             rt, { scrollCentre, y + 1 }, format, ft,
-                            { colour, FontStyle::Medium, TextAlignment::centre, darkness });
+                            { colour, FontStyle::medium, TextAlignment::centre, darkness });
 
                         // Check if scenario is completed
                         if (isCompleted)
@@ -624,7 +624,7 @@ namespace OpenRCT2::Ui::Windows
                             ft.Add<const char*>(completedByName.c_str());
                             DrawTextBasic(
                                 rt, { scrollCentre, y + scenarioTitleHeight + 1 }, format, ft,
-                                { FontStyle::Small, TextAlignment::centre });
+                                { FontStyle::small, TextAlignment::centre });
                         }
 
                         y += scenarioItemHeight;
@@ -649,7 +649,7 @@ namespace OpenRCT2::Ui::Windows
             utf8 buffer[512];
             auto bufferPtr = buffer;
             OpenRCT2::FormatStringLegacy(bufferPtr, sizeof(buffer), stringId, nullptr);
-            int32_t categoryStringHalfWidth = (GfxGetStringWidth(bufferPtr, FontStyle::Medium) / 2) + 4;
+            int32_t categoryStringHalfWidth = (GfxGetStringWidth(bufferPtr, FontStyle::medium) / 2) + 4;
             int32_t strLeft = centreX - categoryStringHalfWidth;
             int32_t strRight = centreX + categoryStringHalfWidth;
 
@@ -848,10 +848,10 @@ namespace OpenRCT2::Ui::Windows
                 return kTrueFontSize;
 
             // Scenario title
-            int32_t lineHeight = FontGetLineHeight(FontStyle::Medium);
+            int32_t lineHeight = FontGetLineHeight(FontStyle::medium);
 
             // 'Completed by' line
-            lineHeight += FontGetLineHeight(FontStyle::Small);
+            lineHeight += FontGetLineHeight(FontStyle::small);
 
             return lineHeight;
         }

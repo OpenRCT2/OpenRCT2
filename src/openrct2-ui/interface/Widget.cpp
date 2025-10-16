@@ -500,7 +500,7 @@ namespace OpenRCT2::Ui
             auto ft = Formatter();
             ft.Add<utf8*>(buffer);
             DrawTextBasic(rt, { l, t }, STR_STRING, ft, { colour });
-            textRight = l + GfxGetStringWidth(buffer, FontStyle::Medium) + 1;
+            textRight = l + GfxGetStringWidth(buffer, FontStyle::medium) + 1;
         }
 
         // Border
@@ -1173,7 +1173,7 @@ namespace OpenRCT2::Ui
             if (widget.text != 0)
             {
                 u8string wrappedString;
-                GfxWrapString(widget.string, bottomRight.x - topLeft.x - 5, FontStyle::Medium, &wrappedString, nullptr);
+                GfxWrapString(widget.string, bottomRight.x - topLeft.x - 5, FontStyle::medium, &wrappedString, nullptr);
                 DrawText(rt, { topLeft.x + 2, topLeft.y }, { w.colours[1] }, wrappedString.c_str(), true);
             }
             return;
@@ -1182,7 +1182,7 @@ namespace OpenRCT2::Ui
         // String length needs to add 12 either side of box
         // +13 for cursor when max length.
         u8string wrappedString;
-        GfxWrapString(*textInput->Buffer, bottomRight.x - topLeft.x - 5 - 6, FontStyle::Medium, &wrappedString, nullptr);
+        GfxWrapString(*textInput->Buffer, bottomRight.x - topLeft.x - 5 - 6, FontStyle::medium, &wrappedString, nullptr);
 
         DrawText(rt, { topLeft.x + 2, topLeft.y }, { w.colours[1] }, wrappedString.c_str(), true);
 
@@ -1190,7 +1190,7 @@ namespace OpenRCT2::Ui
         int32_t curX = topLeft.x
             + GfxGetStringWidthNoFormatting(
                            u8string_view{ wrappedString.c_str(), std::min(wrappedString.length(), textInput->SelectionStart) },
-                           FontStyle::Medium)
+                           FontStyle::medium)
             + 3;
 
         int32_t width = 6;
@@ -1199,7 +1199,7 @@ namespace OpenRCT2::Ui
             // Make a new 1 character wide string for measuring the width
             // of the character that the cursor is under. (NOTE: this is broken for multi byte utf8 codepoints)
             width = std::max(
-                GfxGetStringWidthNoFormatting(u8string{ (*textInput->Buffer)[textInput->SelectionStart] }, FontStyle::Medium)
+                GfxGetStringWidthNoFormatting(u8string{ (*textInput->Buffer)[textInput->SelectionStart] }, FontStyle::medium)
                     - 2,
                 4);
         }

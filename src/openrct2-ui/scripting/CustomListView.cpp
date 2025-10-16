@@ -729,7 +729,7 @@ void CustomListView::PaintSeparator(RenderTarget& rt, const ScreenCoordsXY& pos,
         // Get string dimensions
         utf8 stringBuffer[512]{};
         FormatStringLegacy(stringBuffer, sizeof(stringBuffer), STR_STRING, ft.Data());
-        int32_t categoryStringHalfWidth = (GfxGetStringWidth(stringBuffer, FontStyle::Medium) / 2) + 4;
+        int32_t categoryStringHalfWidth = (GfxGetStringWidth(stringBuffer, FontStyle::medium) / 2) + 4;
         int32_t strLeft = centreX - categoryStringHalfWidth;
         int32_t strRight = centreX + categoryStringHalfWidth;
 

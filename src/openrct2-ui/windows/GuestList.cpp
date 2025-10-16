@@ -699,7 +699,7 @@ namespace OpenRCT2::Ui::Windows
 
                                 ft = Formatter();
                                 PeepThoughtSetFormatArgs(&thought, ft);
-                                DrawTextEllipsised(rt, { 118, y }, 329, format, ft, { FontStyle::Small });
+                                DrawTextEllipsised(rt, { 118, y }, 329, format, ft, { FontStyle::small });
                                 break;
                             }
                             break;
@@ -744,7 +744,7 @@ namespace OpenRCT2::Ui::Windows
                     // Draw small font if displaying guests
                     if (_selectedView == GuestViewType::Thoughts)
                     {
-                        DrawTextEllipsised(rt, { 0, y }, 414, format, ft, { FontStyle::Small });
+                        DrawTextEllipsised(rt, { 0, y }, 414, format, ft, { FontStyle::small });
                     }
                     else
                     {

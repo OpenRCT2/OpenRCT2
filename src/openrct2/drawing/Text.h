@@ -44,7 +44,7 @@ enum class TextDarkness
 struct TextPaint
 {
     ColourWithFlags Colour = { COLOUR_BLACK };
-    ::FontStyle FontStyle = FontStyle::Medium;
+    ::FontStyle FontStyle = FontStyle::medium;
     TextUnderline UnderlineText = TextUnderline::off;
     TextAlignment Alignment = TextAlignment::left;
     TextDarkness Darkness = TextDarkness::regular;

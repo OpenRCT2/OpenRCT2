@@ -766,7 +766,7 @@ namespace OpenRCT2::Ui::Windows
                         if (*listItem.flags & (ObjectSelectionFlags::InUse | ObjectSelectionFlags::AlwaysRequired))
                             colour2.setFlag(ColourFlag::inset, true);
 
-                        DrawText(rt, screenCoords, { colour2, FontStyle::Medium, darkness }, kCheckMarkString);
+                        DrawText(rt, screenCoords, { colour2, FontStyle::medium, darkness }, kCheckMarkString);
                     }
 
                     screenCoords.x = gLegacyScene == LegacyScene::trackDesignsManager ? 0 : 15;
@@ -794,7 +794,7 @@ namespace OpenRCT2::Ui::Windows
                         auto ft = Formatter();
                         ft.Add<const char*>(itemBuffer);
                         DrawTextEllipsised(
-                            rt, screenCoords, width_limit - 15, STR_STRING, ft, { colour, FontStyle::Medium, darkness });
+                            rt, screenCoords, width_limit - 15, STR_STRING, ft, { colour, FontStyle::medium, darkness });
                         screenCoords.x = widgets[WIDX_LIST_SORT_RIDE].left - widgets[WIDX_LIST].left;
                     }
 
@@ -809,7 +809,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     auto ft = Formatter();
                     ft.Add<const char*>(itemBuffer);
-                    DrawTextEllipsised(rt, screenCoords, width_limit, STR_STRING, ft, { colour, FontStyle::Medium, darkness });
+                    DrawTextEllipsised(rt, screenCoords, width_limit, STR_STRING, ft, { colour, FontStyle::medium, darkness });
                 }
                 screenCoords.y += kScrollableRowHeight;
             }

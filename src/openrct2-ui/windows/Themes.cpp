@@ -802,7 +802,7 @@ namespace OpenRCT2::Ui::Windows
                         if (colour.hasFlag(ColourFlag::translucent))
                         {
                             DrawText(
-                                rt, topLeft, { colours[1].colour, FontStyle::Medium, TextDarkness::dark }, kCheckMarkString);
+                                rt, topLeft, { colours[1].colour, FontStyle::medium, TextDarkness::dark }, kCheckMarkString);
                         }
                     }
                 }
@@ -863,7 +863,7 @@ namespace OpenRCT2::Ui::Windows
 
             std::string str = FormatStringIDLegacy(format, args);
 
-            return GfxGetStringWidth(str, FontStyle::Medium);
+            return GfxGetStringWidth(str, FontStyle::medium);
         }
 
         int8_t GetTotalColoursUpTo(int8_t index)

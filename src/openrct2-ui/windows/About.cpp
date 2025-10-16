@@ -232,7 +232,7 @@ namespace OpenRCT2::Ui::Windows
 
             const auto& versionWidget = widgets[WIDX_VERSION];
             auto centreX = versionWidget.midX();
-            auto centreY = versionWidget.midY() - FontGetLineHeight(FontStyle::Medium) / 2;
+            auto centreY = versionWidget.midY() - FontGetLineHeight(FontStyle::medium) / 2;
             auto centrePos = windowPos + ScreenCoordsXY(centreX, centreY);
             DrawTextWrapped(rt, centrePos, versionWidget.width(), STR_STRING, ft, { colours[1], TextAlignment::centre });
 

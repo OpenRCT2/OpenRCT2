@@ -289,7 +289,7 @@ namespace OpenRCT2::Ui::Windows
                         _buffer += Network::GetPlayerName(player);
                     }
                     screenCoords.x = 0;
-                    GfxClipString(_buffer.data(), 230, FontStyle::Medium);
+                    GfxClipString(_buffer.data(), 230, FontStyle::medium);
                     DrawText(rt, screenCoords, { colour }, _buffer.c_str());
 
                     // Draw group name
@@ -300,7 +300,7 @@ namespace OpenRCT2::Ui::Windows
                         _buffer += "{BLACK}";
                         screenCoords.x = 173;
                         _buffer += Network::GetGroupName(group);
-                        GfxClipString(_buffer.data(), 80, FontStyle::Medium);
+                        GfxClipString(_buffer.data(), 80, FontStyle::medium);
                         DrawText(rt, screenCoords, { colour }, _buffer.c_str());
                     }
 
@@ -465,7 +465,7 @@ namespace OpenRCT2::Ui::Windows
         {
             assert(!_windowInformationSize.has_value());
 
-            int32_t lineHeight = FontGetLineHeight(FontStyle::Medium);
+            int32_t lineHeight = FontGetLineHeight(FontStyle::medium);
 
             // Base dimensions.
             const int32_t baseWidth = 450;
@@ -474,7 +474,7 @@ namespace OpenRCT2::Ui::Windows
             // Server name is displayed word-wrapped, so figure out how high it will be.
             {
                 int32_t numLines;
-                GfxWrapString(Network::GetServerName(), baseWidth, FontStyle::Medium, nullptr, &numLines);
+                GfxWrapString(Network::GetServerName(), baseWidth, FontStyle::medium, nullptr, &numLines);
                 baseHeight += (numLines + 1) * lineHeight + (kListRowHeight / 2);
             }
 
@@ -483,7 +483,7 @@ namespace OpenRCT2::Ui::Windows
             if (!descString.empty())
             {
                 int32_t numLines;
-                GfxWrapString(descString, baseWidth, FontStyle::Medium, nullptr, &numLines);
+                GfxWrapString(descString, baseWidth, FontStyle::medium, nullptr, &numLines);
                 baseHeight += (numLines + 1) * lineHeight + (kListRowHeight / 2);
             }
 

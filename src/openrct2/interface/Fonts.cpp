@@ -193,7 +193,7 @@ void TryLoadFonts(LocalisationService& localisationService)
                 return;
             }
 
-            TTFFontDescriptor smallFont = font->size[EnumValue(FontStyle::Small)];
+            TTFFontDescriptor smallFont = font->size[EnumValue(FontStyle::small)];
             LOG_VERBOSE("Unable to load TrueType font '%s' -- trying the next font in the family.", smallFont.font_name);
         }
 
@@ -208,7 +208,7 @@ void TryLoadFonts(LocalisationService& localisationService)
                     return;
                 }
 
-                TTFFontDescriptor smallFont = font->size[EnumValue(FontStyle::Small)];
+                TTFFontDescriptor smallFont = font->size[EnumValue(FontStyle::small)];
                 LOG_VERBOSE("Unable to load TrueType font '%s' -- trying the next font in the family.", smallFont.font_name);
             }
 

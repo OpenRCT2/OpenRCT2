@@ -371,7 +371,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     snprintf(players, sizeof(players), "%d/%d", serverDetails.Players, serverDetails.MaxPlayers);
                 }
-                const int16_t numPlayersStringWidth = GfxGetStringWidth(players, FontStyle::Medium);
+                const int16_t numPlayersStringWidth = GfxGetStringWidth(players, FontStyle::medium);
 
                 // How much space we have for the server info depends on the size of everything rendered after.
                 const int16_t spaceAvailableForInfo = listWidgetWidth - numPlayersStringWidth - kScrollBarWidth - 35;

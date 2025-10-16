@@ -223,7 +223,7 @@ namespace OpenRCT2::Ui::Windows
             // +13 for cursor when max length.
             u8string wrappedString;
             GfxWrapString(
-                u8string_view{ _buffer.data(), _buffer.size() }, kWindowSize.width - (24 + 13), FontStyle::Medium,
+                u8string_view{ _buffer.data(), _buffer.size() }, kWindowSize.width - (24 + 13), FontStyle::medium,
                 &wrappedString, &no_lines);
 
             Rectangle::fillInset(
@@ -245,7 +245,7 @@ namespace OpenRCT2::Ui::Windows
             for (int32_t line = 0; line <= no_lines; line++)
             {
                 screenCoords.x = windowPos.x + 12;
-                DrawText(rt, screenCoords, { colours[1], FontStyle::Medium, TextAlignment::left }, wrapPointer, true);
+                DrawText(rt, screenCoords, { colours[1], FontStyle::medium, TextAlignment::left }, wrapPointer, true);
 
                 size_t string_length = GetStringSize(wrapPointer) - 1;
                 if (!cur_drawn && (textInput->SelectionStart <= char_count + string_length))
@@ -253,7 +253,7 @@ namespace OpenRCT2::Ui::Windows
                     // Make a view of the string for measuring the width.
                     cursorX = windowPos.x + 13
                         + GfxGetStringWidthNoFormatting(
-                                  u8string_view{ wrapPointer, textInput->SelectionStart - char_count }, FontStyle::Medium);
+                                  u8string_view{ wrapPointer, textInput->SelectionStart - char_count }, FontStyle::medium);
                     cursorY = screenCoords.y;
 
                     int32_t textWidth = 6;
@@ -264,7 +264,7 @@ namespace OpenRCT2::Ui::Windows
                         utf8 tmp[5] = {}; // This is easier than setting temp_string[0..5]
                         uint32_t codepoint = UTF8GetNext(_buffer.data() + textInput->SelectionStart, nullptr);
                         UTF8WriteCodepoint(tmp, codepoint);
-                        textWidth = std::max(GfxGetStringWidthNoFormatting(tmp, FontStyle::Medium) - 2, 4);
+                        textWidth = std::max(GfxGetStringWidthNoFormatting(tmp, FontStyle::medium) - 2, 4);
                     }
 
                     if (_cursorBlink > 15)
@@ -311,7 +311,7 @@ namespace OpenRCT2::Ui::Windows
         {
             // String length needs to add 12 either side of box +13 for cursor when max length.
             int32_t numLines{};
-            GfxWrapString(text, kWindowSize.width - (24 + 13), FontStyle::Medium, nullptr, &numLines);
+            GfxWrapString(text, kWindowSize.width - (24 + 13), FontStyle::medium, nullptr, &numLines);
 
             const auto textHeight = numLines * 10;
             return kWindowSize.height + textHeight + getTitleBarDiffNormal();

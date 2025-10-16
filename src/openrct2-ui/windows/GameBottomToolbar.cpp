@@ -100,7 +100,7 @@ namespace OpenRCT2::Ui::Windows
                 Rectangle::FillMode::none);
 
             // Figure out how much line height we have to work with.
-            uint32_t line_height = FontGetLineHeight(FontStyle::Medium);
+            uint32_t line_height = FontGetLineHeight(FontStyle::medium);
 
             auto& gameState = getGameState();
 
@@ -203,7 +203,7 @@ namespace OpenRCT2::Ui::Windows
             DrawTextBasic(rt, screenCoords, stringId, ft, { colour, TextAlignment::centre });
 
             // Figure out how much line height we have to work with.
-            uint32_t line_height = FontGetLineHeight(FontStyle::Medium);
+            uint32_t line_height = FontGetLineHeight(FontStyle::medium);
 
             // Temperature
             screenCoords = { windowPos.x + rightPanelWidget.left + 15, static_cast<int32_t>(screenCoords.y + line_height + 1) };
@@ -363,7 +363,7 @@ namespace OpenRCT2::Ui::Windows
                 colours[0], Rectangle::BorderStyle::inset, Rectangle::FillBrightness::light, Rectangle::FillMode::none);
 
             // Figure out how much line height we have to work with.
-            uint32_t line_height = FontGetLineHeight(FontStyle::Medium);
+            uint32_t line_height = FontGetLineHeight(FontStyle::medium);
 
             ScreenCoordsXY middleWidgetCoords(
                 windowPos.x + middleOutsetWidget->midX(), windowPos.y + middleOutsetWidget->top + line_height + 1);
@@ -508,7 +508,7 @@ namespace OpenRCT2::Ui::Windows
         void onPrepareDraw() override
         {
             // Figure out how much line height we have to work with.
-            uint32_t line_height = FontGetLineHeight(FontStyle::Medium);
+            uint32_t line_height = FontGetLineHeight(FontStyle::medium);
 
             // Reset dimensions as appropriate -- in case we're switching languages.
             height = line_height * 2 + 12;
@@ -695,7 +695,7 @@ namespace OpenRCT2::Ui::Windows
         int32_t screenHeight = ContextGetHeight();
 
         // Figure out how much line height we have to work with.
-        uint32_t lineHeight = FontGetLineHeight(FontStyle::Medium);
+        uint32_t lineHeight = FontGetLineHeight(FontStyle::medium);
         int32_t toolbarHeight = lineHeight * 2 + 12;
 
         auto* windowMgr = GetWindowManager();

@@ -35,7 +35,7 @@ static InGameConsole _inGameConsole;
 
 static FontStyle InGameConsoleGetFontStyle()
 {
-    return (Config::Get().interface.consoleSmallFont ? FontStyle::Small : FontStyle::Medium);
+    return (Config::Get().interface.consoleSmallFont ? FontStyle::small : FontStyle::medium);
 }
 
 static int32_t InGameConsoleGetLineHeight()

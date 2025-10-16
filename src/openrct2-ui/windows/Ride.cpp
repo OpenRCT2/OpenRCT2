@@ -2898,7 +2898,7 @@ namespace OpenRCT2::Ui::Windows
             // Intensity Factor
             if (rideEntry->intensity_multiplier != 0)
             {
-                int32_t lineHeight = FontGetLineHeight(FontStyle::Medium);
+                int32_t lineHeight = FontGetLineHeight(FontStyle::medium);
                 if (lineHeight != 10)
                     screenCoords.x += 150;
                 else
@@ -5155,8 +5155,8 @@ namespace OpenRCT2::Ui::Windows
                 if (track->Name.empty())
                     continue;
 
-                auto nameWidth = GfxGetStringWidth(track->Name.c_str(), FontStyle::Small);
-                auto composerWidth = GfxGetStringWidth(track->Composer.c_str(), FontStyle::Small);
+                auto nameWidth = GfxGetStringWidth(track->Name.c_str(), FontStyle::small);
+                auto composerWidth = GfxGetStringWidth(track->Composer.c_str(), FontStyle::small);
                 newWidth = std::max(newWidth, nameWidth + composerWidth + 24);
             }
 
@@ -5307,7 +5307,7 @@ namespace OpenRCT2::Ui::Windows
                                                         : STR_MUSIC_OBJECT_TRACK_LIST_ITEM_WITH_COMPOSER;
 
                 // Draw the track
-                DrawTextBasic(rt, { 0, y }, stringId, ft, { FontStyle::Small });
+                DrawTextBasic(rt, { 0, y }, stringId, ft, { FontStyle::small });
                 y += kScrollableRowHeight;
             }
         }
@@ -6124,7 +6124,7 @@ namespace OpenRCT2::Ui::Windows
                 auto ft = Formatter();
                 ft.Add<int16_t>(scaled_yUnit);
 
-                DrawTextBasic(rt, { scrolls[0].contentOffsetX + 1, y - 4 }, stringID, ft, { FontStyle::Small });
+                DrawTextBasic(rt, { scrolls[0].contentOffsetX + 1, y - 4 }, stringID, ft, { FontStyle::small });
             }
 
             // Time marks
@@ -6134,7 +6134,7 @@ namespace OpenRCT2::Ui::Windows
                 auto ft = Formatter();
                 ft.Add<int32_t>(time);
                 if (x + 80 >= rt.x)
-                    DrawTextBasic(rt, { x + 2, 1 }, STR_RIDE_STATS_TIME, ft, { FontStyle::Small });
+                    DrawTextBasic(rt, { x + 2, 1 }, STR_RIDE_STATS_TIME, ft, { FontStyle::small });
                 time += 5;
             }
 

@@ -312,7 +312,7 @@ namespace OpenRCT2::Ui::Windows
                 // TODO: this parameter by itself produces very light text.
                 // It needs a {BLACK} token in the string to work properly.
                 ColourWithFlags colour = { COLOUR_BLACK };
-                FontStyle fontStyle = FontStyle::Medium;
+                FontStyle fontStyle = FontStyle::medium;
                 auto darkness = TextDarkness::regular;
 
                 if (researchItem.IsAlwaysResearched())

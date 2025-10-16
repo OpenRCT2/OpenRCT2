@@ -264,7 +264,7 @@ void GfxDrawStringLeftCentred(
     char buffer[512];
     auto bufferPtr = buffer;
     FormatStringLegacy(bufferPtr, sizeof(buffer), format, args);
-    int32_t height = StringGetHeightRaw(bufferPtr, FontStyle::Medium);
+    int32_t height = StringGetHeightRaw(bufferPtr, FontStyle::medium);
     DrawText(rt, coords - ScreenCoordsXY{ 0, (height / 2) }, { colour }, bufferPtr);
 }
 
@@ -350,9 +350,9 @@ void DrawStringCentredRaw(
 int32_t StringGetHeightRaw(std::string_view text, FontStyle fontStyle)
 {
     int32_t height = 0;
-    if (fontStyle <= FontStyle::Medium)
+    if (fontStyle <= FontStyle::medium)
         height += 10;
-    else if (fontStyle == FontStyle::Tiny)
+    else if (fontStyle == FontStyle::tiny)
         height += 6;
 
     FmtString fmt(text);
@@ -361,13 +361,13 @@ int32_t StringGetHeightRaw(std::string_view text, FontStyle fontStyle)
         switch (token.kind)
         {
             case FormatToken::newline:
-                if (fontStyle == FontStyle::Small || fontStyle == FontStyle::Medium)
+                if (fontStyle == FontStyle::small || fontStyle == FontStyle::medium)
                 {
                     height += 10;
                     break;
                 }
 
-                if (fontStyle == FontStyle::Tiny)
+                if (fontStyle == FontStyle::tiny)
                 {
                     height += 6;
                     break;
@@ -375,13 +375,13 @@ int32_t StringGetHeightRaw(std::string_view text, FontStyle fontStyle)
                 height += 18;
                 break;
             case FormatToken::newlineSmall:
-                if (fontStyle == FontStyle::Small || fontStyle == FontStyle::Medium)
+                if (fontStyle == FontStyle::small || fontStyle == FontStyle::medium)
                 {
                     height += 5;
                     break;
                 }
 
-                if (fontStyle == FontStyle::Tiny)
+                if (fontStyle == FontStyle::tiny)
                 {
                     height += 3;
                     break;
@@ -389,13 +389,13 @@ int32_t StringGetHeightRaw(std::string_view text, FontStyle fontStyle)
                 height += 9;
                 break;
             case FormatToken::fontTiny:
-                fontStyle = FontStyle::Tiny;
+                fontStyle = FontStyle::tiny;
                 break;
             case FormatToken::fontMedium:
-                fontStyle = FontStyle::Medium;
+                fontStyle = FontStyle::medium;
                 break;
             case FormatToken::fontSmall:
-                fontStyle = FontStyle::Small;
+                fontStyle = FontStyle::small;
                 break;
             default:
                 break;
@@ -427,8 +427,8 @@ void DrawNewsTicker(
     DrawText(rt, screenCoords, { colour }, "");
 
     u8string wrappedString;
-    GfxWrapString(FormatStringID(format, args), width, FontStyle::Small, &wrappedString, &numLines);
-    lineHeight = FontGetLineHeight(FontStyle::Small);
+    GfxWrapString(FormatStringID(format, args), width, FontStyle::small, &wrappedString, &numLines);
+    lineHeight = FontGetLineHeight(FontStyle::small);
 
     int32_t numCharactersDrawn = 0;
     int32_t numCharactersToDraw = ticks;
@@ -437,7 +437,7 @@ void DrawNewsTicker(
     lineY = coords.y - ((numLines * lineHeight) / 2);
     for (int32_t line = 0; line <= numLines; line++)
     {
-        int32_t halfWidth = GfxGetStringWidth(buffer, FontStyle::Small) / 2;
+        int32_t halfWidth = GfxGetStringWidth(buffer, FontStyle::small) / 2;
 
         FmtString fmt(buffer);
         for (const auto& token : fmt)
@@ -463,7 +463,7 @@ void DrawNewsTicker(
         }
 
         screenCoords = { coords.x - halfWidth, lineY };
-        DrawText(rt, screenCoords, { kTextColour254, FontStyle::Small }, buffer);
+        DrawText(rt, screenCoords, { kTextColour254, FontStyle::small }, buffer);
 
         if (numCharactersDrawn > numCharactersToDraw)
         {
@@ -558,13 +558,13 @@ static void TTFProcessFormatCode(RenderTarget& rt, const FmtString::Token& token
             info->y += FontGetLineHeightSmall(info->fontStyle);
             break;
         case FormatToken::fontTiny:
-            info->fontStyle = FontStyle::Tiny;
+            info->fontStyle = FontStyle::tiny;
             break;
         case FormatToken::fontSmall:
-            info->fontStyle = FontStyle::Small;
+            info->fontStyle = FontStyle::small;
             break;
         case FormatToken::fontMedium:
-            info->fontStyle = FontStyle::Medium;
+            info->fontStyle = FontStyle::medium;
             break;
         case FormatToken::outlineEnable:
             info->flags |= TEXT_DRAW_FLAG_OUTLINE;

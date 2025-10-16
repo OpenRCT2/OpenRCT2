@@ -853,7 +853,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 auto ft = Formatter();
                 PeepThoughtSetFormatArgs(&peep->Thoughts[i], ft);
-                DrawTextBasic(rtMarquee, { screenPos.x, 0 }, STR_WINDOW_COLOUR_2_STRINGID, ft, { FontStyle::Small });
+                DrawTextBasic(rtMarquee, { screenPos.x, 0 }, STR_WINDOW_COLOUR_2_STRINGID, ft, { FontStyle::small });
             }
         }
 
@@ -1588,7 +1588,7 @@ namespace OpenRCT2::Ui::Windows
 
                 auto ft = Formatter();
                 PeepThoughtSetFormatArgs(&thought, ft);
-                screenCoords.y += DrawTextWrapped(rt, screenCoords, widgWidth, STR_BLACK_STRING, ft, { FontStyle::Small });
+                screenCoords.y += DrawTextWrapped(rt, screenCoords, widgWidth, STR_BLACK_STRING, ft, { FontStyle::small });
 
                 // If this is the last visible line end drawing.
                 if (screenCoords.y > windowPos.y + widgets[WIDX_PAGE_BACKGROUND].bottom - 32)

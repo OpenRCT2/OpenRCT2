@@ -831,7 +831,7 @@ namespace OpenRCT2::Ui::Windows
             // dynamic padding for long axis labels:
             char buffer[64]{};
             FormatStringToBuffer(buffer, sizeof(buffer), "{BLACK}{CURRENCY2DP}", centredGraph ? -max : max);
-            int32_t maxGraphWidth = GfxGetStringWidth(buffer, FontStyle::Small) + Graph::kYTickMarkPadding + 1;
+            int32_t maxGraphWidth = GfxGetStringWidth(buffer, FontStyle::small) + Graph::kYTickMarkPadding + 1;
             const ScreenCoordsXY dynamicPadding{ std::max(maxGraphWidth, kGraphTopLeftPadding.x), kGraphTopLeftPadding.y };
 
             _graphBounds = { windowPos + ScreenCoordsXY{ graphPageWidget->left + 4, graphPageWidget->top + 15 },

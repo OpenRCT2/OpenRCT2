@@ -37,7 +37,7 @@ namespace OpenRCT2::Graph
             char buffer[64]{};
             FormatStringToBuffer(buffer, sizeof(buffer), fmt, curLabel);
             DrawText(
-                rt, { internalBounds.GetLeft() - kYTickMarkPadding, curScreenPos }, { FontStyle::Small, TextAlignment::right },
+                rt, { internalBounds.GetLeft() - kYTickMarkPadding, curScreenPos }, { FontStyle::small, TextAlignment::right },
                 buffer);
             // Draw Y label tick mark
             Rectangle::fill(
@@ -69,7 +69,7 @@ namespace OpenRCT2::Graph
                 ft.Add<StringId>(DateGameShortMonthNames[DateGetMonth((yearOver32 / 4) + MONTH_COUNT)]);
                 DrawTextBasic(
                     rt, screenCoords - ScreenCoordsXY{ 0, 14 }, STR_GRAPH_LABEL, ft,
-                    { FontStyle::Small, TextAlignment::centre });
+                    { FontStyle::small, TextAlignment::centre });
                 // Draw month tick mark
                 Rectangle::fill(
                     rt, { screenCoords - ScreenCoordsXY{ 0, 4 }, screenCoords - ScreenCoordsXY{ 0, 1 } }, PaletteIndex::pi10);

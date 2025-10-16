@@ -1595,7 +1595,7 @@ static uint64_t PageDisabledWidgets[] = {
             {
                 auto& listWidget = widgets[WIDX_LIST];
                 auto centrePos = ScreenCoordsXY{ listWidget.width() / 2,
-                                                 (listWidget.height() - FontGetLineHeight(FontStyle::Medium)) / 2 };
+                                                 (listWidget.height() - FontGetLineHeight(FontStyle::medium)) / 2 };
                 auto ft = Formatter{};
                 auto textPaint = TextPaint{ colours[1], TextAlignment::centre };
                 DrawTextWrapped(rt, centrePos, listWidth, STR_TILE_INSPECTOR_SELECT_TILE_HINT, ft, textPaint);

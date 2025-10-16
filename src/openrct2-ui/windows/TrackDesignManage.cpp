@@ -189,7 +189,7 @@ namespace OpenRCT2::Ui::Windows
 
             const auto titleBarBottom = widgets[WIDX_TITLE].bottom;
             const auto buttonTop = widgets[WIDX_PROMPT_DELETE].top;
-            const auto fontHeight = FontGetLineHeight(FontStyle::Medium);
+            const auto fontHeight = FontGetLineHeight(FontStyle::medium);
 
             const auto maxMessageHeight = buttonTop - titleBarBottom;
             const auto messageTop = titleBarBottom + (maxMessageHeight - fontHeight) / 2;
