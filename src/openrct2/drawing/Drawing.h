@@ -185,7 +185,6 @@ constexpr DrawBlendOp kBlendDst = 2 << 2;
 
 enum
 {
-    INSET_RECT_FLAG_FILL_GREY = (1 << 2),         // 0x04
     INSET_RECT_FLAG_BORDER_NONE = (1 << 3),       // 0x08
     INSET_RECT_FLAG_FILL_NONE = (1 << 4),         // 0x10
     INSET_RECT_FLAG_BORDER_INSET = (1 << 5),      // 0x20
