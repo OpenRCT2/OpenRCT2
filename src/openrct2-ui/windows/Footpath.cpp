@@ -1256,24 +1256,7 @@ namespace OpenRCT2::Ui::Windows
             if (isLeftMousePressed)
                 return;
 
-            MapInvalidateSelectionRect();
-            gMapSelectFlags.unset(MapSelectFlag::enableArrow);
-
-            auto mapPos = FootpathGetPlacePositionFromScreenPosition(screenCoords);
-            if (!mapPos)
-            {
-                gMapSelectFlags.unset(MapSelectFlag::enable);
-                return;
-            }
-
-            auto placement = WindowFootpathGetPlacementFromScreenCoords(screenCoords);
-
-            // Set map selection
-            gMapSelectFlags.set(MapSelectFlag::enable);
-            gMapSelectType = MapSelectType::full;
-
-            setMapSelectRange(*mapPos);
-            WindowFootpathSetProvisionalPathDragArea(getMapSelectRange(), placement.baseZ);
+            WindowFootpathSetProvisionalPathAtPoint(screenCoords);
         }
 
         void WindowFootpathPlacePath()
