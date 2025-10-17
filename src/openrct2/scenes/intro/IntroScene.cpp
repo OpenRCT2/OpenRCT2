@@ -11,6 +11,7 @@
 
 #include "../../Context.h"
 #include "../../Input.h"
+#include "../../OpenRCT2.h"
 #include "../../SpriteIds.h"
 #include "../../audio/Audio.h"
 #include "../../audio/AudioChannel.h"
@@ -174,9 +175,12 @@ namespace OpenRCT2
                     _soundChannel = nullptr;
                 }
 
-                // Move to next part
-                _introState = IntroState::Finish;
-                _introStateCounter = 0;
+                if (gOpenRCT2Headless)
+                {
+                    // Move to next part
+                    _introState = IntroState::Finish;
+                    _introStateCounter = 0;
+                }
                 break;
             case IntroState::Finish:
             {
@@ -256,6 +260,10 @@ namespace OpenRCT2
                 break;
             case IntroState::Clear:
                 GfxClear(rt, kBackgroundColourDark);
+
+                // Move to next part. Has to be done here to ensure the screen is cleared.
+                _introState = IntroState::Finish;
+                _introStateCounter = 0;
                 break;
             default:
                 break;
