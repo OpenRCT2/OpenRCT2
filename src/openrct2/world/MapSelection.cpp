@@ -57,3 +57,20 @@ void MapInvalidateSelectionRect()
 
     OpenRCT2::ViewportsInvalidate({ { left, top }, { right, bottom } });
 }
+
+MapRange getMapSelectRange()
+{
+    return MapRange(gMapSelectPositionA, gMapSelectPositionB);
+}
+
+void setMapSelectRange(const MapRange& range)
+{
+    const auto normalised = range.Normalise();
+    gMapSelectPositionA = normalised.Point1;
+    gMapSelectPositionB = normalised.Point2;
+}
+
+void setMapSelectRange(const CoordsXY coords)
+{
+    setMapSelectRange({ coords, coords });
+}
