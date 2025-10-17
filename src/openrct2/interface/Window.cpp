@@ -83,8 +83,9 @@ static constexpr float kWindowScrollLocations[][2] = {
 
     void WindowVisitEach(std::function<void(WindowBase*)> func)
     {
-        for (auto& w : gWindowList)
+        for (size_t i = 0; i < gWindowList.size(); i++)
         {
+            auto& w = gWindowList[i];
             if (w->flags.has(WindowFlag::dead))
                 continue;
             func(w.get());
