@@ -68,11 +68,6 @@ namespace OpenRCT2
 
         switch (_introState)
         {
-            case IntroState::Disclaimer1:
-            case IntroState::Disclaimer2:
-                // Originally used for the disclaimer text
-                _introState = IntroState::PublisherBegin;
-                [[fallthrough]];
             case IntroState::PublisherBegin:
                 LoadPalette();
 
@@ -199,9 +194,6 @@ namespace OpenRCT2
 
         switch (_introState)
         {
-            case IntroState::Disclaimer1:
-            case IntroState::Disclaimer2:
-                break;
             case IntroState::PublisherBegin:
                 GfxClear(rt, kBackgroundColourDark);
                 break;
@@ -300,9 +292,6 @@ namespace OpenRCT2
         switch (_introState)
         {
             case IntroState::None:
-                break;
-            case IntroState::Disclaimer2:
-                _introState = IntroState::PublisherBegin;
                 break;
             default:
                 _introState = IntroState::Clear;
