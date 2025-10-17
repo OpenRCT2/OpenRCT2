@@ -1070,7 +1070,7 @@ static void ClassicWoodenRCTrackRightQuarterTurn3Bank(
 
     static constexpr int blockedSegments[4] = {
         kSegmentsAll,
-        kSegmentsAll,
+        kSegmentsNone,
         EnumsToFlags(PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
         kSegmentsAll,
     };
