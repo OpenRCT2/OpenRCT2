@@ -9,6 +9,7 @@
 - Fix: [#25299] The Mine Train Coaster left large helix draws incorrect sprites at certain angles (original bug).
 - Fix: [#25328] Spiral Slide in Blackpool Pleasure Beach has its entrance and exit the wrong way round (bug in the original scenario).
 - Fix: [#25342] The Go-Karts medium right gentle sloped turn does not have a tunnel at the end.
+- Fix: [#25358] The Stand Up Roller Coaster left corkscrew does not block supports correctly.
 
 0.4.27 (2025-10-04)
 ------------------------------------------------------------------------
