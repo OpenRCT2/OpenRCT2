@@ -1970,7 +1970,9 @@ namespace OpenRCT2::Ui::Windows
                 tile.position, tile.slope, type, railingsType, kInvalidDirection, constructFlags);
             footpathPlaceAction.SetFlags(GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
             res = GameActions::Execute(&footpathPlaceAction, getGameState());
-            if (res.Error == GameActions::Status::Ok)
+            // The latter status will be returned if there is already path at the tile in question, to prevent a ghost
+            // from glitching through the existing path.
+            if (res.Error == GameActions::Status::Ok || res.Error == GameActions::Status::ItemAlreadyPlaced)
             {
                 succesfulTiles.emplace_back(tile);
                 cost += res.Cost;
