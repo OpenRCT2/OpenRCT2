@@ -272,7 +272,7 @@ namespace OpenRCT2
 
     static void ScreenIntroProcessMouseInput()
     {
-        if (ContextGetCursorState()->any == CURSOR_PRESSED)
+        if (ContextGetCursorState()->any & CURSOR_DOWN)
         {
             ScreenIntroSkipPart();
         }
