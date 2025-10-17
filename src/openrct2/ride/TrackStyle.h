@@ -10,7 +10,9 @@
 #pragma once
 
 #include "../core/EnumUtils.hpp"
+#include "../paint/tile_element/Segment.h"
 #include "Track.h"
+#include "TrackData.h"
 #include "TrackPaint.h"
 
 #include <cstdint>
@@ -103,9 +105,35 @@ enum class TrackStyle : uint8_t
 };
 constexpr const size_t kTrackStyleCount = 82;
 
+struct TrackSequencePaintInfo
+{
+private:
+    uint16_t blockedSegments = OpenRCT2::kSegmentsNone;
+
+public:
+    TrackSequencePaintInfo()
+    {
+    }
+    explicit TrackSequencePaintInfo(const bool beforeSupports, const uint16_t _blockedSegments)
+        : blockedSegments((beforeSupports << 9) | _blockedSegments)
+    {
+    }
+
+    bool blockSegmentsBeforeSupports() const
+    {
+        return (blockedSegments & 0b1000000000) != 0;
+    }
+
+    uint16_t getBlockedSegments() const
+    {
+        return blockedSegments & 0b111111111;
+    }
+};
+
 struct TrackElemTypePaintInfo
 {
     TrackPaintFunction paintFunction;
+    std::array<TrackSequencePaintInfo, OpenRCT2::TrackMetaData::kMaxSequencesPerPiece> sequenceInfo;
 };
 
 struct TrackStylePaintInfo

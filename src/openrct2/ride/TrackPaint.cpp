@@ -1979,7 +1979,23 @@ void PaintTrack(PaintSession& session, Direction direction, int32_t height, cons
 
         const auto& trackStylePaintInfo = GetTrackStylePaintInfo(trackDrawerEntry.trackStyle);
         const auto& paintInfo = trackStylePaintInfo.trackElemTypePaintInfos[EnumValue(UncoverTrackElement(trackType))];
-        paintInfo.paintFunction(session, *ride, trackSequence, direction, height, trackElement, trackDrawerEntry.supportType);
+
+        const uint8_t clampedTrackSequence = trackType == TrackElemType::Maze ? 0 : trackSequence;
+        const auto& sequenceInfo = paintInfo.sequenceInfo[clampedTrackSequence];
+        const uint16_t blockedSegments = paintSegmentsRotate(sequenceInfo.getBlockedSegments(), direction);
+
+        if (sequenceInfo.blockSegmentsBeforeSupports())
+        {
+            PaintUtilSetSegmentSupportHeight(session, blockedSegments, 0xFFFF, 0);
+            paintInfo.paintFunction(
+                session, *ride, trackSequence, direction, height, trackElement, trackDrawerEntry.supportType);
+        }
+        else
+        {
+            paintInfo.paintFunction(
+                session, *ride, trackSequence, direction, height, trackElement, trackDrawerEntry.supportType);
+            PaintUtilSetSegmentSupportHeight(session, blockedSegments, 0xFFFF, 0);
+        }
     }
 }
 
