@@ -2090,7 +2090,7 @@ void TrackDesignDrawPreview(TrackDesign& td, uint8_t* pixels, bool placeScenery)
 
     Ride* ride;
     TrackDesignGameStateData updatedGameStateData = td.gameStateData;
-    if (!TrackDesignPlacePreview(tds, td, &ride, updatedGameStateData, !gTrackDesignSceneryToggle))
+    if (!TrackDesignPlacePreview(tds, td, &ride, updatedGameStateData, placeScenery))
     {
         std::fill_n(pixels, kTrackPreviewImageSize * 4, 0x00);
         UnstashMap();
