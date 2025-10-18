@@ -1715,6 +1715,278 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
+        void onToolUpdateSmallScenery(WidgetIndex widgetIndex, const ScreenCoordsXY& screenPos, ScenerySelection selection)
+        {
+            CoordsXY mapTile = {};
+            uint8_t quadrant;
+            Direction rotation;
+
+            Sub6E1F34SmallScenery(screenPos, selection.EntryIndex, mapTile, &quadrant, &rotation);
+
+            if (mapTile.IsNull())
+            {
+                SceneryRemoveGhostToolPlacement();
+                return;
+            }
+
+            gMapSelectFlags.set(MapSelectFlag::enable);
+            if (gWindowSceneryScatterEnabled)
+            {
+                uint16_t cluster_size = (gWindowSceneryScatterSize - 1) * kCoordsXYStep;
+                gMapSelectPositionA.x = mapTile.x - cluster_size / 2;
+                gMapSelectPositionA.y = mapTile.y - cluster_size / 2;
+                gMapSelectPositionB.x = mapTile.x + cluster_size / 2;
+                gMapSelectPositionB.y = mapTile.y + cluster_size / 2;
+                if (gWindowSceneryScatterSize % 2 == 0)
+                {
+                    gMapSelectPositionB.x += kCoordsXYStep;
+                    gMapSelectPositionB.y += kCoordsXYStep;
+                }
+            }
+            else
+            {
+                gMapSelectPositionA.x = mapTile.x;
+                gMapSelectPositionA.y = mapTile.y;
+                gMapSelectPositionB.x = mapTile.x;
+                gMapSelectPositionB.y = mapTile.y;
+            }
+
+            auto* sceneryEntry = ObjectManager::GetObjectEntry<SmallSceneryEntry>(selection.EntryIndex);
+
+            gMapSelectType = MapSelectType::full;
+            if (!sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_FULL_TILE) && !gWindowSceneryScatterEnabled)
+            {
+                gMapSelectType = getMapSelectQuarter((quadrant ^ 2));
+            }
+
+            MapInvalidateSelectionRect();
+
+            // If no change in ghost placement
+            if ((gSceneryGhostType & SCENERY_GHOST_FLAG_0) && mapTile == gSceneryGhostPosition && quadrant == _unkF64F0E
+                && gSceneryPlaceZ == _unkF64F0A && gSceneryPlaceObject.SceneryType == SCENERY_TYPE_SMALL
+                && gSceneryPlaceObject.EntryIndex == selection.EntryIndex)
+            {
+                return;
+            }
+
+            SceneryRemoveGhostToolPlacement();
+
+            _unkF64F0E = quadrant;
+            _unkF64F0A = gSceneryPlaceZ;
+
+            uint8_t attemptsLeft = 1;
+            if (gSceneryPlaceZ != 0 && gSceneryShiftPressed)
+            {
+                attemptsLeft = 20;
+            }
+
+            money64 cost = 0;
+            for (; attemptsLeft != 0; attemptsLeft--)
+            {
+                cost = TryPlaceGhostSmallScenery(
+                    { mapTile, gSceneryPlaceZ, rotation }, quadrant, selection.EntryIndex, _sceneryPrimaryColour,
+                    _scenerySecondaryColour, _sceneryTertiaryColour);
+
+                if (cost != kMoney64Undefined)
+                    break;
+                gSceneryPlaceZ += 8;
+            }
+
+            gSceneryPlaceCost = cost;
+        }
+
+        void onToolUpdatePathItem(WidgetIndex widgetIndex, const ScreenCoordsXY& screenPos, ScenerySelection selection)
+        {
+            CoordsXY mapTile = {};
+            int32_t z;
+
+            Sub6E1F34PathItem(screenPos, selection.EntryIndex, mapTile, &z);
+
+            if (mapTile.IsNull())
+            {
+                SceneryRemoveGhostToolPlacement();
+                return;
+            }
+
+            gMapSelectFlags.set(MapSelectFlag::enable);
+            gMapSelectPositionA.x = mapTile.x;
+            gMapSelectPositionA.y = mapTile.y;
+            gMapSelectPositionB.x = mapTile.x;
+            gMapSelectPositionB.y = mapTile.y;
+            gMapSelectType = MapSelectType::full;
+
+            MapInvalidateSelectionRect();
+
+            // If no change in ghost placement
+            if ((gSceneryGhostType & SCENERY_GHOST_FLAG_1) && mapTile == gSceneryGhostPosition && z == gSceneryGhostPosition.z)
+            {
+                return;
+            }
+
+            SceneryRemoveGhostToolPlacement();
+
+            money64 cost = TryPlaceGhostPathAddition({ mapTile, z }, selection.EntryIndex);
+
+            gSceneryPlaceCost = cost;
+        }
+
+        void onToolUpdateWall(WidgetIndex widgetIndex, const ScreenCoordsXY& screenPos, ScenerySelection selection)
+        {
+            CoordsXY mapTile = {};
+            uint8_t edge;
+
+            Sub6E1F34Wall(screenPos, selection.EntryIndex, mapTile, &edge);
+
+            if (mapTile.IsNull())
+            {
+                SceneryRemoveGhostToolPlacement();
+                return;
+            }
+
+            gMapSelectFlags.set(MapSelectFlag::enable);
+            gMapSelectPositionA.x = mapTile.x;
+            gMapSelectPositionA.y = mapTile.y;
+            gMapSelectPositionB.x = mapTile.x;
+            gMapSelectPositionB.y = mapTile.y;
+            gMapSelectType = getMapSelectEdge(edge);
+
+            MapInvalidateSelectionRect();
+
+            // If no change in ghost placement
+            if ((gSceneryGhostType & SCENERY_GHOST_FLAG_2) && mapTile == gSceneryGhostPosition
+                && edge == gSceneryGhostWallRotation && gSceneryPlaceZ == _unkF64F0A)
+            {
+                return;
+            }
+
+            SceneryRemoveGhostToolPlacement();
+
+            gSceneryGhostWallRotation = edge;
+            _unkF64F0A = gSceneryPlaceZ;
+
+            uint8_t attemptsLeft = 1;
+            if (gSceneryPlaceZ != 0 && gSceneryShiftPressed)
+            {
+                attemptsLeft = 20;
+            }
+
+            money64 cost = 0;
+            for (; attemptsLeft != 0; attemptsLeft--)
+            {
+                cost = TryPlaceGhostWall(
+                    { mapTile, gSceneryPlaceZ }, edge, selection.EntryIndex, _sceneryPrimaryColour, _scenerySecondaryColour,
+                    _sceneryTertiaryColour);
+
+                if (cost != kMoney64Undefined)
+                    break;
+                gSceneryPlaceZ += 8;
+            }
+
+            gSceneryPlaceCost = cost;
+        }
+
+        void onToolUpdateLargeScenery(WidgetIndex widgetIndex, const ScreenCoordsXY& screenPos, ScenerySelection selection)
+        {
+            CoordsXY mapTile = {};
+            Direction direction;
+
+            Sub6E1F34LargeScenery(screenPos, selection.EntryIndex, mapTile, &direction);
+
+            if (mapTile.IsNull())
+            {
+                SceneryRemoveGhostToolPlacement();
+                return;
+            }
+
+            auto* sceneryEntry = ObjectManager::GetObjectEntry<LargeSceneryEntry>(selection.EntryIndex);
+            gMapSelectionTiles.clear();
+
+            for (auto& tile : sceneryEntry->tiles)
+            {
+                CoordsXY tileLocation = { tile.offset };
+                auto rotatedTileCoords = tileLocation.Rotate(direction);
+
+                rotatedTileCoords.x += mapTile.x;
+                rotatedTileCoords.y += mapTile.y;
+
+                gMapSelectionTiles.push_back(rotatedTileCoords);
+            }
+
+            gMapSelectFlags.set(MapSelectFlag::enableConstruct);
+            MapInvalidateMapSelectionTiles();
+
+            // If no change in ghost placement
+            if ((gSceneryGhostType & SCENERY_GHOST_FLAG_3) && mapTile == gSceneryGhostPosition && gSceneryPlaceZ == _unkF64F0A
+                && gSceneryPlaceObject.SceneryType == SCENERY_TYPE_LARGE
+                && gSceneryPlaceObject.EntryIndex == selection.EntryIndex)
+            {
+                return;
+            }
+
+            SceneryRemoveGhostToolPlacement();
+
+            gSceneryPlaceObject.SceneryType = SCENERY_TYPE_LARGE;
+            gSceneryPlaceObject.EntryIndex = selection.EntryIndex;
+            _unkF64F0A = gSceneryPlaceZ;
+
+            uint8_t attemptsLeft = 1;
+            if (gSceneryPlaceZ != 0 && gSceneryShiftPressed)
+            {
+                attemptsLeft = 20;
+            }
+
+            money64 cost = 0;
+            for (; attemptsLeft != 0; attemptsLeft--)
+            {
+                cost = TryPlaceGhostLargeScenery(
+                    { mapTile, gSceneryPlaceZ, direction }, selection.EntryIndex, _sceneryPrimaryColour,
+                    _scenerySecondaryColour, _sceneryTertiaryColour);
+
+                if (cost != kMoney64Undefined)
+                    break;
+                gSceneryPlaceZ += kCoordsZStep;
+            }
+
+            gSceneryPlaceCost = cost;
+        }
+
+        void onToolUpdateBanner(WidgetIndex widgetIndex, const ScreenCoordsXY& screenPos, ScenerySelection selection)
+        {
+            CoordsXY mapTile = {};
+            Direction direction;
+            int32_t z;
+
+            Sub6E1F34Banner(screenPos, selection.EntryIndex, mapTile, &z, &direction);
+
+            if (mapTile.IsNull())
+            {
+                SceneryRemoveGhostToolPlacement();
+                return;
+            }
+
+            gMapSelectFlags.set(MapSelectFlag::enable);
+            gMapSelectPositionA.x = mapTile.x;
+            gMapSelectPositionA.y = mapTile.y;
+            gMapSelectPositionB.x = mapTile.x;
+            gMapSelectPositionB.y = mapTile.y;
+            gMapSelectType = MapSelectType::full;
+
+            MapInvalidateSelectionRect();
+
+            // If no change in ghost placement
+            if ((gSceneryGhostType & SCENERY_GHOST_FLAG_4) && mapTile == gSceneryGhostPosition && z == gSceneryGhostPosition.z
+                && direction == gSceneryPlaceRotation)
+            {
+                return;
+            }
+
+            SceneryRemoveGhostToolPlacement();
+
+            money64 cost = TryPlaceGhostBanner({ mapTile, z, direction }, selection.EntryIndex);
+
+            gSceneryPlaceCost = cost;
+        }
+
         /**
          *
          *  rct2: 0x006E287B
@@ -1739,281 +2011,27 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            money64 cost = 0;
-
             switch (selection.SceneryType)
             {
                 case SCENERY_TYPE_SMALL:
                 {
-                    CoordsXY mapTile = {};
-                    uint8_t quadrant;
-                    Direction rotation;
-
-                    Sub6E1F34SmallScenery(screenPos, selection.EntryIndex, mapTile, &quadrant, &rotation);
-
-                    if (mapTile.IsNull())
-                    {
-                        SceneryRemoveGhostToolPlacement();
-                        return;
-                    }
-
-                    gMapSelectFlags.set(MapSelectFlag::enable);
-                    if (gWindowSceneryScatterEnabled)
-                    {
-                        uint16_t cluster_size = (gWindowSceneryScatterSize - 1) * kCoordsXYStep;
-                        gMapSelectPositionA.x = mapTile.x - cluster_size / 2;
-                        gMapSelectPositionA.y = mapTile.y - cluster_size / 2;
-                        gMapSelectPositionB.x = mapTile.x + cluster_size / 2;
-                        gMapSelectPositionB.y = mapTile.y + cluster_size / 2;
-                        if (gWindowSceneryScatterSize % 2 == 0)
-                        {
-                            gMapSelectPositionB.x += kCoordsXYStep;
-                            gMapSelectPositionB.y += kCoordsXYStep;
-                        }
-                    }
-                    else
-                    {
-                        gMapSelectPositionA.x = mapTile.x;
-                        gMapSelectPositionA.y = mapTile.y;
-                        gMapSelectPositionB.x = mapTile.x;
-                        gMapSelectPositionB.y = mapTile.y;
-                    }
-
-                    auto* sceneryEntry = ObjectManager::GetObjectEntry<SmallSceneryEntry>(selection.EntryIndex);
-
-                    gMapSelectType = MapSelectType::full;
-                    if (!sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_FULL_TILE) && !gWindowSceneryScatterEnabled)
-                    {
-                        gMapSelectType = getMapSelectQuarter((quadrant ^ 2));
-                    }
-
-                    MapInvalidateSelectionRect();
-
-                    // If no change in ghost placement
-                    if ((gSceneryGhostType & SCENERY_GHOST_FLAG_0) && mapTile == gSceneryGhostPosition && quadrant == _unkF64F0E
-                        && gSceneryPlaceZ == _unkF64F0A && gSceneryPlaceObject.SceneryType == SCENERY_TYPE_SMALL
-                        && gSceneryPlaceObject.EntryIndex == selection.EntryIndex)
-                    {
-                        return;
-                    }
-
-                    SceneryRemoveGhostToolPlacement();
-
-                    _unkF64F0E = quadrant;
-                    _unkF64F0A = gSceneryPlaceZ;
-
-                    uint8_t attemptsLeft = 1;
-                    if (gSceneryPlaceZ != 0 && gSceneryShiftPressed)
-                    {
-                        attemptsLeft = 20;
-                    }
-
-                    for (; attemptsLeft != 0; attemptsLeft--)
-                    {
-                        cost = TryPlaceGhostSmallScenery(
-                            { mapTile, gSceneryPlaceZ, rotation }, quadrant, selection.EntryIndex, _sceneryPrimaryColour,
-                            _scenerySecondaryColour, _sceneryTertiaryColour);
-
-                        if (cost != kMoney64Undefined)
-                            break;
-                        gSceneryPlaceZ += 8;
-                    }
-
-                    gSceneryPlaceCost = cost;
-                    break;
+                    return onToolUpdateSmallScenery(widgetIndex, screenPos, selection);
                 }
                 case SCENERY_TYPE_PATH_ITEM:
                 {
-                    CoordsXY mapTile = {};
-                    int32_t z;
-
-                    Sub6E1F34PathItem(screenPos, selection.EntryIndex, mapTile, &z);
-
-                    if (mapTile.IsNull())
-                    {
-                        SceneryRemoveGhostToolPlacement();
-                        return;
-                    }
-
-                    gMapSelectFlags.set(MapSelectFlag::enable);
-                    gMapSelectPositionA.x = mapTile.x;
-                    gMapSelectPositionA.y = mapTile.y;
-                    gMapSelectPositionB.x = mapTile.x;
-                    gMapSelectPositionB.y = mapTile.y;
-                    gMapSelectType = MapSelectType::full;
-
-                    MapInvalidateSelectionRect();
-
-                    // If no change in ghost placement
-                    if ((gSceneryGhostType & SCENERY_GHOST_FLAG_1) && mapTile == gSceneryGhostPosition
-                        && z == gSceneryGhostPosition.z)
-                    {
-                        return;
-                    }
-
-                    SceneryRemoveGhostToolPlacement();
-
-                    cost = TryPlaceGhostPathAddition({ mapTile, z }, selection.EntryIndex);
-
-                    gSceneryPlaceCost = cost;
-                    break;
+                    return onToolUpdatePathItem(widgetIndex, screenPos, selection);
                 }
                 case SCENERY_TYPE_WALL:
                 {
-                    CoordsXY mapTile = {};
-                    uint8_t edge;
-
-                    Sub6E1F34Wall(screenPos, selection.EntryIndex, mapTile, &edge);
-
-                    if (mapTile.IsNull())
-                    {
-                        SceneryRemoveGhostToolPlacement();
-                        return;
-                    }
-
-                    gMapSelectFlags.set(MapSelectFlag::enable);
-                    gMapSelectPositionA.x = mapTile.x;
-                    gMapSelectPositionA.y = mapTile.y;
-                    gMapSelectPositionB.x = mapTile.x;
-                    gMapSelectPositionB.y = mapTile.y;
-                    gMapSelectType = getMapSelectEdge(edge);
-
-                    MapInvalidateSelectionRect();
-
-                    // If no change in ghost placement
-                    if ((gSceneryGhostType & SCENERY_GHOST_FLAG_2) && mapTile == gSceneryGhostPosition
-                        && edge == gSceneryGhostWallRotation && gSceneryPlaceZ == _unkF64F0A)
-                    {
-                        return;
-                    }
-
-                    SceneryRemoveGhostToolPlacement();
-
-                    gSceneryGhostWallRotation = edge;
-                    _unkF64F0A = gSceneryPlaceZ;
-
-                    uint8_t attemptsLeft = 1;
-                    if (gSceneryPlaceZ != 0 && gSceneryShiftPressed)
-                    {
-                        attemptsLeft = 20;
-                    }
-
-                    cost = 0;
-                    for (; attemptsLeft != 0; attemptsLeft--)
-                    {
-                        cost = TryPlaceGhostWall(
-                            { mapTile, gSceneryPlaceZ }, edge, selection.EntryIndex, _sceneryPrimaryColour,
-                            _scenerySecondaryColour, _sceneryTertiaryColour);
-
-                        if (cost != kMoney64Undefined)
-                            break;
-                        gSceneryPlaceZ += 8;
-                    }
-
-                    gSceneryPlaceCost = cost;
-                    break;
+                    return onToolUpdateWall(widgetIndex, screenPos, selection);
                 }
                 case SCENERY_TYPE_LARGE:
                 {
-                    CoordsXY mapTile = {};
-                    Direction direction;
-
-                    Sub6E1F34LargeScenery(screenPos, selection.EntryIndex, mapTile, &direction);
-
-                    if (mapTile.IsNull())
-                    {
-                        SceneryRemoveGhostToolPlacement();
-                        return;
-                    }
-
-                    auto* sceneryEntry = ObjectManager::GetObjectEntry<LargeSceneryEntry>(selection.EntryIndex);
-                    gMapSelectionTiles.clear();
-
-                    for (auto& tile : sceneryEntry->tiles)
-                    {
-                        CoordsXY tileLocation = { tile.offset };
-                        auto rotatedTileCoords = tileLocation.Rotate(direction);
-
-                        rotatedTileCoords.x += mapTile.x;
-                        rotatedTileCoords.y += mapTile.y;
-
-                        gMapSelectionTiles.push_back(rotatedTileCoords);
-                    }
-
-                    gMapSelectFlags.set(MapSelectFlag::enableConstruct);
-                    MapInvalidateMapSelectionTiles();
-
-                    // If no change in ghost placement
-                    if ((gSceneryGhostType & SCENERY_GHOST_FLAG_3) && mapTile == gSceneryGhostPosition
-                        && gSceneryPlaceZ == _unkF64F0A && gSceneryPlaceObject.SceneryType == SCENERY_TYPE_LARGE
-                        && gSceneryPlaceObject.EntryIndex == selection.EntryIndex)
-                    {
-                        return;
-                    }
-
-                    SceneryRemoveGhostToolPlacement();
-
-                    gSceneryPlaceObject.SceneryType = SCENERY_TYPE_LARGE;
-                    gSceneryPlaceObject.EntryIndex = selection.EntryIndex;
-                    _unkF64F0A = gSceneryPlaceZ;
-
-                    uint8_t attemptsLeft = 1;
-                    if (gSceneryPlaceZ != 0 && gSceneryShiftPressed)
-                    {
-                        attemptsLeft = 20;
-                    }
-
-                    cost = 0;
-                    for (; attemptsLeft != 0; attemptsLeft--)
-                    {
-                        cost = TryPlaceGhostLargeScenery(
-                            { mapTile, gSceneryPlaceZ, direction }, selection.EntryIndex, _sceneryPrimaryColour,
-                            _scenerySecondaryColour, _sceneryTertiaryColour);
-
-                        if (cost != kMoney64Undefined)
-                            break;
-                        gSceneryPlaceZ += kCoordsZStep;
-                    }
-
-                    gSceneryPlaceCost = cost;
-                    break;
+                    return onToolUpdateLargeScenery(widgetIndex, screenPos, selection);
                 }
                 case SCENERY_TYPE_BANNER:
                 {
-                    CoordsXY mapTile = {};
-                    Direction direction;
-                    int32_t z;
-
-                    Sub6E1F34Banner(screenPos, selection.EntryIndex, mapTile, &z, &direction);
-
-                    if (mapTile.IsNull())
-                    {
-                        SceneryRemoveGhostToolPlacement();
-                        return;
-                    }
-
-                    gMapSelectFlags.set(MapSelectFlag::enable);
-                    gMapSelectPositionA.x = mapTile.x;
-                    gMapSelectPositionA.y = mapTile.y;
-                    gMapSelectPositionB.x = mapTile.x;
-                    gMapSelectPositionB.y = mapTile.y;
-                    gMapSelectType = MapSelectType::full;
-
-                    MapInvalidateSelectionRect();
-
-                    // If no change in ghost placement
-                    if ((gSceneryGhostType & SCENERY_GHOST_FLAG_4) && mapTile == gSceneryGhostPosition
-                        && z == gSceneryGhostPosition.z && direction == gSceneryPlaceRotation)
-                    {
-                        return;
-                    }
-
-                    SceneryRemoveGhostToolPlacement();
-
-                    cost = TryPlaceGhostBanner({ mapTile, z, direction }, selection.EntryIndex);
-
-                    gSceneryPlaceCost = cost;
-                    break;
+                    return onToolUpdateBanner(widgetIndex, screenPos, selection);
                 }
             }
         }
