@@ -597,31 +597,6 @@ namespace OpenRCT2::Ui::Windows
             invalidate();
         }
 
-        ScreenSize onScrollGetSize(int32_t scrollIndex) override
-        {
-            if (scrollIndex == kSceneryContentScrollIndex)
-            {
-                return ContentScrollGetSize();
-            }
-            return {};
-        }
-
-        void onScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
-        {
-            if (scrollIndex == kSceneryContentScrollIndex)
-            {
-                ContentScrollMouseDown(screenCoords);
-            }
-        }
-
-        void onScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
-        {
-            if (scrollIndex == kSceneryContentScrollIndex)
-            {
-                ContentScrollMouseOver(screenCoords);
-            }
-        }
-
         OpenRCT2String onTooltip(const WidgetIndex widgetIndex, const StringId fallback) override
         {
             if (widgetIndex >= WIDX_SCENERY_TAB_1)
@@ -904,47 +879,6 @@ namespace OpenRCT2::Ui::Windows
                         rt, windowPos + ScreenCoordsXY{ 3, height - 13 }, width - 19,
                         (sceneryObject->GetAuthors().size() == 1 ? STR_SCENERY_AUTHOR : STR_SCENERY_AUTHOR_PLURAL), ft);
                 }
-            }
-        }
-
-        void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
-        {
-            if (scrollIndex == kSceneryContentScrollIndex)
-            {
-                ContentScrollDraw(rt);
-            }
-        }
-
-        void onToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
-        {
-            switch (widgetIndex)
-            {
-                case WIDX_SCENERY_BACKGROUND:
-                    ToolUpdateScenery(screenCoords);
-                    break;
-            }
-        }
-
-        void onToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
-        {
-            switch (widgetIndex)
-            {
-                case WIDX_SCENERY_BACKGROUND:
-                    SceneryToolDown(screenCoords, widgetIndex);
-                    break;
-            }
-        }
-
-        void onToolDrag(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
-        {
-            switch (widgetIndex)
-            {
-                case WIDX_SCENERY_BACKGROUND:
-                    if (_sceneryPaintEnabled)
-                        SceneryToolDown(screenCoords, widgetIndex);
-                    if (gWindowSceneryEyedropperEnabled)
-                        SceneryToolDown(screenCoords, widgetIndex);
-                    break;
             }
         }
 
@@ -1499,13 +1433,13 @@ namespace OpenRCT2::Ui::Windows
             return scenery;
         }
 
-        ScreenSize ContentScrollGetSize() const
+        ScreenSize onScrollGetSize(int32_t scrollIndex) override
         {
             auto rows = CountRows();
             return { 0, ContentRowsHeight(rows) };
         }
 
-        void ContentScrollMouseDown(const ScreenCoordsXY& screenCoords)
+        void onScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
             const auto scenery = GetSceneryIdByCursorPos(screenCoords);
             if (scenery.IsUndefined())
@@ -1527,7 +1461,7 @@ namespace OpenRCT2::Ui::Windows
             invalidate();
         }
 
-        void ContentScrollMouseOver(const ScreenCoordsXY& screenCoords)
+        void onScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
             ScenerySelection scenery = GetSceneryIdByCursorPos(screenCoords);
             if (!scenery.IsUndefined() && _selectedScenery != scenery)
@@ -1722,7 +1656,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void ContentScrollDraw(RenderTarget& rt)
+        void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
             GfxClear(rt, ColourMapA[colours[1].colour].mid_light);
 
@@ -1785,7 +1719,7 @@ namespace OpenRCT2::Ui::Windows
          *
          *  rct2: 0x006E287B
          */
-        void ToolUpdateScenery(const ScreenCoordsXY& screenPos)
+        void onToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenPos) override
         {
             MapInvalidateSelectionRect();
             MapInvalidateMapSelectionTiles();
@@ -2946,7 +2880,7 @@ namespace OpenRCT2::Ui::Windows
          *
          *  rct2: 0x006E2CC6
          */
-        void SceneryToolDown(const ScreenCoordsXY& screenCoords, WidgetIndex widgetIndex)
+        void onToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
             SceneryRemoveGhostToolPlacement();
 
@@ -3246,6 +3180,12 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 }
             }
+        }
+
+        void onToolDrag(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
+        {
+            if (_sceneryPaintEnabled || gWindowSceneryEyedropperEnabled)
+                onToolDown(widgetIndex, screenCoords);
         }
     };
 
