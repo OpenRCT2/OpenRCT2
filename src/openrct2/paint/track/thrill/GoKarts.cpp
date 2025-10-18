@@ -1940,7 +1940,7 @@ static void TrackLeftQuarterTurn3Tiles(
     TrackPaintUtilLeftQuarterTurn3TilesTunnel(session, kTunnelGroup, TunnelSubType::Flat, height, direction, trackSequence);
     static constexpr std::array<int32_t, 4> blockedSegments = {
         kSegmentsAll,
-        kSegmentsAll,
+        EnumsToFlags(PaintSegment::right, PaintSegment::topRight, PaintSegment::bottomRight),
         EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
         kSegmentsAll,
     };
