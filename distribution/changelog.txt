@@ -1,6 +1,7 @@
 0.4.28 (in development)
 ------------------------------------------------------------------------
 - Feature: [#25286] Footpath area dragging tool.
+- Feature: [#25379] Add an option to the command line screenshot function to draw debug segment heights.
 - Improved: [#25349] ‘Recent Messages’ window can now be fully themed.
 - Change: [#25089] Peep actions and animations that cause them to stop moving no longer trigger when they are on a level crossing.
 - Change: [#25337] Placing track designs with scenery that is obstructed no longer disables all of the scenery.

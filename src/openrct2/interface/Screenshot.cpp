@@ -28,6 +28,7 @@
 #include "../drawing/X8DrawingEngine.h"
 #include "../localisation/Formatter.h"
 #include "../paint/Painter.h"
+#include "../paint/tile_element/Paint.TileElement.h"
 #include "../platform/Platform.h"
 #include "../world/Climate.h"
 #include "../world/Map.h"
@@ -426,6 +427,11 @@ static void ApplyOptions(const ScreenshotOptions* options, Viewport& viewport)
     if (options->draw_bounding_boxes)
     {
         gPaintBoundingBoxes = true;
+    }
+
+    if (options->draw_segment_heights)
+    {
+        gShowSupportSegmentHeights = true;
     }
 }
 
