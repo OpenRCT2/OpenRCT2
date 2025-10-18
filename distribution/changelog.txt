@@ -13,6 +13,7 @@
 - Fix: [#25358] The Stand Up Roller Coaster left corkscrew does not block supports correctly.
 - Fix: [#25363] The Mine Train Coaster flat-to-steep track pieces do not block all metal supports.
 - Fix: [#25369] The Go-Karts medium turns and small flat and sloped turns do not block metal supports correctly.
+- Fix: [#25370] The Hybrid Coaster diagonal brakes and block brakes do not block metal supports consistently.
 
 0.4.27 (2025-10-04)
 ------------------------------------------------------------------------
