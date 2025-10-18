@@ -132,7 +132,6 @@ namespace OpenRCT2::RCT1
         ObjectEntryIndex _terrainSurfaceTypeToEntryMap[16]{};
         ObjectEntryIndex _terrainEdgeTypeToEntryMap[16]{};
         ObjectEntryIndex _footpathSurfaceTypeToEntryMap[32]{};
-        ObjectEntryIndex _footpathRailingsTypeToEntryMap[4]{};
 
         // Research
         BitSet<kMaxRideObjects> _researchRideEntryUsed{};
@@ -383,8 +382,6 @@ namespace OpenRCT2::RCT1
             std::fill(std::begin(_terrainEdgeTypeToEntryMap), std::end(_terrainEdgeTypeToEntryMap), kObjectEntryIndexNull);
             std::fill(
                 std::begin(_footpathSurfaceTypeToEntryMap), std::end(_footpathSurfaceTypeToEntryMap), kObjectEntryIndexNull);
-            std::fill(
-                std::begin(_footpathRailingsTypeToEntryMap), std::end(_footpathRailingsTypeToEntryMap), kObjectEntryIndexNull);
         }
 
         /**
@@ -424,9 +421,14 @@ namespace OpenRCT2::RCT1
                   "rct1ll.footpath_surface.tiles_red", "rct1.footpath_surface.queue_blue", "rct1aa.footpath_surface.queue_red",
                   "rct1aa.footpath_surface.queue_yellow", "rct1aa.footpath_surface.queue_green" });
 
+            // All four are always available. By using the same order as RCT1, we don’t need to map the indices later on.
             _footpathRailingsEntries.AddRange(
-                { "rct2.footpath_railings.wood", "rct1ll.footpath_railings.space", "rct1ll.footpath_railings.bamboo",
-                  "rct2.footpath_railings.concrete" });
+                {
+                    "rct2.footpath_railings.wood",     // RCT1_PATH_SUPPORT_TYPE_TRUSS
+                    "rct2.footpath_railings.concrete", // RCT1_PATH_SUPPORT_TYPE_COATED_WOOD
+                    "rct1ll.footpath_railings.space",  // RCT1_PATH_SUPPORT_TYPE_SPACE
+                    "rct1ll.footpath_railings.bamboo", // RCT1_PATH_SUPPORT_TYPE_BAMBOO
+                });
 
             // Add default surfaces
             _terrainSurfaceEntries.AddRange(
@@ -512,15 +514,9 @@ namespace OpenRCT2::RCT1
                     {
                         uint8_t pathType = tileElement->AsPath()->GetRCT1PathType();
                         uint8_t pathAdditionsType = tileElement->AsPath()->GetAddition();
-                        uint8_t footpathRailingsType = RCT1_PATH_SUPPORT_TYPE_TRUSS;
-                        if (_gameVersion == FILE_VERSION_RCT1_LL)
-                        {
-                            footpathRailingsType = tileElement->AsPath()->GetRCT1SupportType();
-                        }
 
                         AddEntryForPathAddition(pathAdditionsType);
                         AddEntryForPathSurface(pathType);
-                        AddEntryForFootpathRailings(footpathRailingsType);
                         break;
                     }
                     case RCT12TileElementType::smallScenery:
@@ -804,20 +800,6 @@ namespace OpenRCT2::RCT1
                 {
                     auto entryIndex = _terrainEdgeEntries.GetOrAddEntry(identifier);
                     _terrainEdgeTypeToEntryMap[terrainEdgeType] = entryIndex;
-                }
-            }
-        }
-
-        void AddEntryForFootpathRailings(ObjectEntryIndex railingsType)
-        {
-            assert(railingsType < std::size(_footpathRailingsTypeToEntryMap));
-            if (_footpathRailingsTypeToEntryMap[railingsType] == kObjectEntryIndexNull)
-            {
-                auto identifier = RCT1::GetFootpathRailingsObject(railingsType);
-                if (!identifier.empty())
-                {
-                    auto entryIndex = _footpathRailingsEntries.GetOrAddEntry(identifier);
-                    _footpathRailingsTypeToEntryMap[railingsType] = entryIndex;
                 }
             }
         }
@@ -1725,8 +1707,8 @@ namespace OpenRCT2::RCT1
                     {
                         railingsType = src2->GetRCT1SupportType();
                     }
-                    auto railingsEntryIndex = _footpathRailingsTypeToEntryMap[railingsType];
-                    dst2->SetRailingsEntryIndex(railingsEntryIndex);
+                    // All types are already loaded, in the same order as RCT1.
+                    dst2->SetRailingsEntryIndex(railingsType);
 
                     // Additions
                     ObjectEntryIndex additionType = src2->GetAddition();
