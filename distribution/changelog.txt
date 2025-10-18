@@ -21,6 +21,7 @@
 - Fix: [#25369] The Go-Karts medium turns and small flat and sloped turns do not block metal supports correctly.
 - Fix: [#25370] The Hybrid Coaster diagonal brakes and block brakes do not block metal supports consistently.
 - Fix: [#25371] The Wooden Roller Coaster small banked turns block too many metal supports.
+- Fix: [#25378] The land tool sometimes allows land to be raised through a maze.
 
 0.4.27 (2025-10-04)
 ------------------------------------------------------------------------
