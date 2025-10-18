@@ -225,7 +225,7 @@ namespace OpenRCT2::GameActions
 
         if (GetFlags() & GAME_COMMAND_FLAG_GHOST && !pathElement->IsGhost())
         {
-            return Result(Status::Unknown, STR_CANT_BUILD_FOOTPATH_HERE, kStringIdNone);
+            return Result(Status::ItemAlreadyPlaced, STR_CANT_BUILD_FOOTPATH_HERE, kStringIdNone);
         }
         return res;
     }
