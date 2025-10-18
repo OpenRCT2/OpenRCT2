@@ -12,6 +12,7 @@
 - Fix: [#25342] The Go-Karts medium right gentle sloped turn does not have a tunnel at the end.
 - Fix: [#25358] The Stand Up Roller Coaster left corkscrew does not block supports correctly.
 - Fix: [#25363] The Mine Train Coaster flat-to-steep track pieces do not block all metal supports.
+- Fix: [#25369] The Go-Karts medium turns and small flat and sloped turns do not block metal supports correctly.
 
 0.4.27 (2025-10-04)
 ------------------------------------------------------------------------
