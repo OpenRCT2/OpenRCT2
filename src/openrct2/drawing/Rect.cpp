@@ -96,14 +96,7 @@ void GfxFillRectInset(RenderTarget& rt, const ScreenRect& rect, ColourWithFlags 
             {
                 if (!(flags & INSET_RECT_FLAG_FILL_DONT_LIGHTEN))
                 {
-                    if (flags & INSET_RECT_FLAG_FILL_GREY)
-                    {
-                        fill = ColourMapA[COLOUR_BLACK].light;
-                    }
-                    else
-                    {
-                        fill = ColourMapA[colour.colour].lighter;
-                    }
+                    fill = ColourMapA[colour.colour].lighter;
                 }
                 GfxFillRect(rt, { leftTop + ScreenCoordsXY{ 1, 1 }, rightBottom - ScreenCoordsXY{ 1, 1 } }, fill);
             }
@@ -118,10 +111,6 @@ void GfxFillRectInset(RenderTarget& rt, const ScreenRect& rect, ColourWithFlags 
 
             if (!(flags & INSET_RECT_FLAG_FILL_NONE))
             {
-                if (flags & INSET_RECT_FLAG_FILL_GREY)
-                {
-                    fill = ColourMapA[COLOUR_BLACK].light;
-                }
                 GfxFillRect(rt, { leftTop + ScreenCoordsXY{ 1, 1 }, rightBottom - ScreenCoordsXY{ 1, 1 } }, fill);
             }
         }

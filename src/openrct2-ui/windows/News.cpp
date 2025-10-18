@@ -28,6 +28,7 @@
 namespace OpenRCT2::Ui::Windows
 {
     static constexpr ScreenSize kWindowSize = { 400, 300 };
+    static constexpr uint8_t kItemSeparatorHeight = 2;
 
     enum WindowNewsWidgetIdx
     {
@@ -391,7 +392,8 @@ namespace OpenRCT2::Ui::Windows
         ScreenSize onScrollGetSize(int32_t scrollIndex) override
         {
             int32_t scrollHeight = static_cast<int32_t>(getGameState().newsItems.GetArchived().size())
-                * CalculateNewsItemHeight();
+                    * CalculateNewsItemHeight()
+                - kItemSeparatorHeight;
             return { kWindowSize.width, scrollHeight };
         }
 
@@ -443,6 +445,11 @@ namespace OpenRCT2::Ui::Windows
             int32_t y = 0;
             int32_t i = 0;
 
+            const auto backgroundPaletteIndex = ColourMapA[colours[3].colour].light;
+            // Fill the scrollbar gap if no scrollbar is visible
+            const bool scrollbarVisible = scrolls[0].contentHeight > widgets[WIDX_SCROLL].height();
+            const auto scrollbarFill = scrollbarVisible ? 0 : kScrollBarWidth;
+
             for (const auto& newsItem : getGameState().newsItems.GetArchived())
             {
                 if (y >= rt.y + rt.height)
@@ -454,10 +461,10 @@ namespace OpenRCT2::Ui::Windows
                     continue;
                 }
 
+                // Outer frame
+                GfxFillRectInset(rt, { -1, y, 383 + scrollbarFill, y + itemHeight - 1 }, colours[1], INSET_RECT_F_30);
                 // Background
-                GfxFillRectInset(
-                    rt, { -1, y, 383, y + itemHeight - 1 }, colours[1],
-                    (INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_GREY));
+                GfxFillRect(rt, { 0, y + 1, 381 + scrollbarFill, y + itemHeight - 2 }, backgroundPaletteIndex);
 
                 // Date text
                 {
@@ -477,7 +484,7 @@ namespace OpenRCT2::Ui::Windows
                 // Subject button
                 if ((newsItem.typeHasSubject()) && !(newsItem.hasButton()))
                 {
-                    auto screenCoords = ScreenCoordsXY{ 328, y + lineHeight + 4 };
+                    auto screenCoords = ScreenCoordsXY{ 328 + scrollbarFill, y + lineHeight + 4 };
 
                     int32_t press = 0;
                     if (_pressedNewsItemIndex != -1)
@@ -558,14 +565,14 @@ namespace OpenRCT2::Ui::Windows
                 // Location button
                 if ((newsItem.typeHasLocation()) && !(newsItem.hasButton()))
                 {
-                    auto screenCoords = ScreenCoordsXY{ 352, y + lineHeight + 4 };
+                    auto screenCoords = ScreenCoordsXY{ 352 + scrollbarFill, y + lineHeight + 4 };
 
                     int32_t press = 0;
                     if (_pressedNewsItemIndex != -1)
                     {
                         News::IsValidIndex(_pressedNewsItemIndex + News::ItemHistoryStart);
                         if (i == _pressedNewsItemIndex && _pressedButtonIndex == 2)
-                            press = 0x20;
+                            press = INSET_RECT_FLAG_BORDER_INSET;
                     }
                     GfxFillRectInset(rt, { screenCoords, screenCoords + ScreenCoordsXY{ 23, 23 } }, colours[2], press);
                     GfxDrawSprite(rt, ImageId(SPR_LOCATE), screenCoords);
