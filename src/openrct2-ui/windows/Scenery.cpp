@@ -1469,70 +1469,51 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        std::pair<StringId, money64> GetNameAndPrice(ScenerySelection selectedScenery)
+        template<typename TObjectType>
+        std::pair<StringId, money64> GetNameAndPriceByType(const ScenerySelection& selectedScenery)
         {
-            StringId name = STR_UNKNOWN_OBJECT_TYPE;
-            money64 price = kMoney64Undefined;
-            if (selectedScenery.IsUndefined() && gSceneryPlaceCost != kMoney64Undefined)
+            auto* sceneryEntry = ObjectManager::GetObjectEntry<TObjectType>(selectedScenery.EntryIndex);
+            if (sceneryEntry != nullptr)
             {
-                price = gSceneryPlaceCost;
+                return { sceneryEntry->name, sceneryEntry->price };
             }
             else
+            {
+                return { STR_UNKNOWN_OBJECT_TYPE, kMoney64Undefined };
+            }
+        }
+
+        std::pair<StringId, money64> GetNameAndPrice(const ScenerySelection& selectedScenery)
+        {
+            if (!selectedScenery.IsUndefined())
             {
                 switch (selectedScenery.SceneryType)
                 {
                     case SCENERY_TYPE_SMALL:
                     {
-                        auto* sceneryEntry = ObjectManager::GetObjectEntry<SmallSceneryEntry>(selectedScenery.EntryIndex);
-                        if (sceneryEntry != nullptr)
-                        {
-                            price = sceneryEntry->price;
-                            name = sceneryEntry->name;
-                        }
-                        break;
+                        return GetNameAndPriceByType<SmallSceneryEntry>(selectedScenery);
                     }
                     case SCENERY_TYPE_PATH_ITEM:
                     {
-                        auto* sceneryEntry = ObjectManager::GetObjectEntry<PathAdditionEntry>(selectedScenery.EntryIndex);
-                        if (sceneryEntry != nullptr)
-                        {
-                            price = sceneryEntry->price;
-                            name = sceneryEntry->name;
-                        }
-                        break;
+                        return GetNameAndPriceByType<PathAdditionEntry>(selectedScenery);
                     }
                     case SCENERY_TYPE_WALL:
                     {
-                        auto* sceneryEntry = ObjectManager::GetObjectEntry<WallSceneryEntry>(selectedScenery.EntryIndex);
-                        if (sceneryEntry != nullptr)
-                        {
-                            price = sceneryEntry->price;
-                            name = sceneryEntry->name;
-                        }
-                        break;
+                        return GetNameAndPriceByType<WallSceneryEntry>(selectedScenery);
                     }
                     case SCENERY_TYPE_LARGE:
                     {
-                        auto* sceneryEntry = ObjectManager::GetObjectEntry<LargeSceneryEntry>(selectedScenery.EntryIndex);
-                        if (sceneryEntry != nullptr)
-                        {
-                            price = sceneryEntry->price;
-                            name = sceneryEntry->name;
-                        }
-                        break;
+                        return GetNameAndPriceByType<LargeSceneryEntry>(selectedScenery);
                     }
                     case SCENERY_TYPE_BANNER:
                     {
-                        auto* sceneryEntry = ObjectManager::GetObjectEntry<BannerSceneryEntry>(selectedScenery.EntryIndex);
-                        if (sceneryEntry != nullptr)
-                        {
-                            price = sceneryEntry->price;
-                            name = sceneryEntry->name;
-                        }
-                        break;
+                        return GetNameAndPriceByType<BannerSceneryEntry>(selectedScenery);
                     }
                 }
             }
+
+            StringId name = STR_UNKNOWN_OBJECT_TYPE;
+            money64 price = gSceneryPlaceCost != kMoney64Undefined ? gSceneryPlaceCost : kMoney64Undefined;
             return { name, price };
         }
 
