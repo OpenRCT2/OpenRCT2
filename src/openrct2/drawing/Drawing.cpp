@@ -703,9 +703,11 @@ void GfxTransposePalette(int32_t pal, uint8_t product)
         for (; width > 0; width--)
         {
             auto& dest_pointer = gGamePalette[x];
-            dest_pointer.Blue = (source_pointer[0] * product) >> 8;
-            dest_pointer.Green = (source_pointer[1] * product) >> 8;
-            dest_pointer.Red = (source_pointer[2] * product) >> 8;
+            // Make sure the image never gets darker than the void colour (not-quite-block), to the background colour jumping
+            // between void and 100% black.
+            dest_pointer.Blue = std::max<uint8_t>(35, ((source_pointer[0] * product) >> 8));
+            dest_pointer.Green = std::max<uint8_t>(35, ((source_pointer[1] * product) >> 8));
+            dest_pointer.Red = std::max<uint8_t>(23, ((source_pointer[2] * product) >> 8));
             source_pointer += 3;
 
             x++;
