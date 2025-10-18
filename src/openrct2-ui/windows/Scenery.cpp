@@ -2876,6 +2876,299 @@ namespace OpenRCT2::Ui::Windows
             *outZ = z;
         }
 
+        void onToolDownSmallScenery(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords, uint16_t selectedScenery)
+        {
+            CoordsXY gridPos;
+            uint8_t quadrant;
+            Direction rotation;
+
+            Sub6E1F34SmallScenery(screenCoords, selectedScenery, gridPos, &quadrant, &rotation);
+            if (gridPos.IsNull())
+                return;
+
+            int32_t quantity = 1;
+            bool isCluster = gWindowSceneryScatterEnabled
+                && (Network::GetMode() != Network::Mode::client
+                    || Network::CanPerformCommand(Network::GetCurrentPlayerGroupIndex(), -2));
+
+            if (isCluster)
+            {
+                switch (gWindowSceneryScatterDensity)
+                {
+                    case ScatterToolDensity::LowDensity:
+                        quantity = gWindowSceneryScatterSize;
+                        break;
+
+                    case ScatterToolDensity::MediumDensity:
+                        quantity = gWindowSceneryScatterSize * 2;
+                        break;
+
+                    case ScatterToolDensity::HighDensity:
+                        quantity = gWindowSceneryScatterSize * 3;
+                        break;
+                }
+            }
+
+            bool forceError = true;
+            for (int32_t q = 0; q < quantity; q++)
+            {
+                int32_t zCoordinate = gSceneryPlaceZ;
+                auto* sceneryEntry = ObjectManager::GetObjectEntry<SmallSceneryEntry>(selectedScenery);
+
+                int16_t cur_grid_x = gridPos.x;
+                int16_t cur_grid_y = gridPos.y;
+
+                if (isCluster)
+                {
+                    if (!sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_FULL_TILE))
+                    {
+                        quadrant = UtilRand() & 3;
+                    }
+
+                    int16_t grid_x_offset = (UtilRand() % gWindowSceneryScatterSize) - (gWindowSceneryScatterSize / 2);
+                    int16_t grid_y_offset = (UtilRand() % gWindowSceneryScatterSize) - (gWindowSceneryScatterSize / 2);
+                    if (gWindowSceneryScatterSize % 2 == 0)
+                    {
+                        grid_x_offset += 1;
+                        grid_y_offset += 1;
+                    }
+                    cur_grid_x += grid_x_offset * kCoordsXYStep;
+                    cur_grid_y += grid_y_offset * kCoordsXYStep;
+
+                    if (!sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_ROTATABLE))
+                    {
+                        gSceneryPlaceRotation = (gSceneryPlaceRotation + 1) & 3;
+                    }
+                }
+
+                uint8_t zAttemptRange = 1;
+                if (gSceneryPlaceZ != 0 && gSceneryShiftPressed)
+                {
+                    zAttemptRange = 20;
+                }
+
+                auto success = GameActions::Status::Unknown;
+                // Try find a valid z coordinate
+                for (; zAttemptRange != 0; zAttemptRange--)
+                {
+                    auto smallSceneryPlaceAction = GameActions::SmallSceneryPlaceAction(
+                        { cur_grid_x, cur_grid_y, gSceneryPlaceZ, gSceneryPlaceRotation }, quadrant, selectedScenery,
+                        _sceneryPrimaryColour, _scenerySecondaryColour, _sceneryTertiaryColour);
+
+                    auto& gameState = getGameState();
+                    auto res = GameActions::Query(&smallSceneryPlaceAction, gameState);
+                    success = res.Error;
+                    if (res.Error == GameActions::Status::Ok)
+                    {
+                        break;
+                    }
+
+                    if (res.Error == GameActions::Status::InsufficientFunds)
+                    {
+                        break;
+                    }
+                    if (zAttemptRange != 1)
+                    {
+                        gSceneryPlaceZ += 8;
+                    }
+                }
+
+                // Actually place
+                if (success == GameActions::Status::Ok || ((q + 1 == quantity) && forceError))
+                {
+                    auto smallSceneryPlaceAction = GameActions::SmallSceneryPlaceAction(
+                        { cur_grid_x, cur_grid_y, gSceneryPlaceZ, gSceneryPlaceRotation }, quadrant, selectedScenery,
+                        _sceneryPrimaryColour, _scenerySecondaryColour, _sceneryTertiaryColour);
+
+                    smallSceneryPlaceAction.SetCallback(
+                        [=](const GameActions::GameAction* ga, const GameActions::Result* result) {
+                            if (result->Error == GameActions::Status::Ok)
+                            {
+                                Audio::Play3D(Audio::SoundId::placeItem, result->Position);
+                            }
+                        });
+
+                    auto& gameState = getGameState();
+                    auto res = GameActions::Execute(&smallSceneryPlaceAction, gameState);
+                    if (res.Error == GameActions::Status::Ok)
+                    {
+                        forceError = false;
+                    }
+
+                    if (res.Error == GameActions::Status::InsufficientFunds)
+                    {
+                        break;
+                    }
+                }
+                gSceneryPlaceZ = zCoordinate;
+            }
+        }
+
+        void onToolDownPathItem(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords, uint16_t selectedScenery)
+        {
+            CoordsXY gridPos;
+            int32_t z;
+
+            Sub6E1F34PathItem(screenCoords, selectedScenery, gridPos, &z);
+            if (gridPos.IsNull())
+                return;
+
+            auto footpathAdditionPlaceAction = GameActions::FootpathAdditionPlaceAction({ gridPos, z }, selectedScenery);
+
+            footpathAdditionPlaceAction.SetCallback([](const GameActions::GameAction* ga, const GameActions::Result* result) {
+                if (result->Error != GameActions::Status::Ok)
+                {
+                    return;
+                }
+                Audio::Play3D(Audio::SoundId::placeItem, result->Position);
+            });
+
+            auto& gameState = getGameState();
+            auto res = GameActions::Execute(&footpathAdditionPlaceAction, gameState);
+        }
+
+        void onToolDownWall(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords, uint16_t selectedScenery)
+        {
+            CoordsXY gridPos;
+            uint8_t edges;
+            Sub6E1F34Wall(screenCoords, selectedScenery, gridPos, &edges);
+            if (gridPos.IsNull())
+                return;
+
+            uint8_t zAttemptRange = 1;
+            if (gSceneryPlaceZ != 0 && gSceneryShiftPressed)
+            {
+                zAttemptRange = 20;
+            }
+
+            for (; zAttemptRange != 0; zAttemptRange--)
+            {
+                auto wallPlaceAction = GameActions::WallPlaceAction(
+                    selectedScenery, { gridPos, gSceneryPlaceZ }, edges, _sceneryPrimaryColour, _scenerySecondaryColour,
+                    _sceneryTertiaryColour);
+
+                auto& gameState = getGameState();
+                auto res = GameActions::Query(&wallPlaceAction, gameState);
+                if (res.Error == GameActions::Status::Ok)
+                {
+                    break;
+                }
+
+                if (const auto* message = std::get_if<StringId>(&res.ErrorMessage))
+                {
+                    if (*message == STR_NOT_ENOUGH_CASH_REQUIRES || *message == STR_CAN_ONLY_BUILD_THIS_ON_WATER)
+                    {
+                        break;
+                    }
+                }
+
+                if (zAttemptRange != 1)
+                {
+                    gSceneryPlaceZ += 8;
+                }
+            }
+
+            auto wallPlaceAction = GameActions::WallPlaceAction(
+                selectedScenery, { gridPos, gSceneryPlaceZ }, edges, _sceneryPrimaryColour, _scenerySecondaryColour,
+                _sceneryTertiaryColour);
+
+            wallPlaceAction.SetCallback([](const GameActions::GameAction* ga, const GameActions::Result* result) {
+                if (result->Error == GameActions::Status::Ok)
+                {
+                    Audio::Play3D(Audio::SoundId::placeItem, result->Position);
+                }
+            });
+
+            auto& gameState = getGameState();
+            auto res = GameActions::Execute(&wallPlaceAction, gameState);
+        }
+
+        void onToolDownLargeScenery(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords, uint16_t selectedScenery)
+        {
+            CoordsXY gridPos;
+            Direction direction;
+            Sub6E1F34LargeScenery(screenCoords, selectedScenery, gridPos, &direction);
+            if (gridPos.IsNull())
+                return;
+
+            uint8_t zAttemptRange = 1;
+            if (gSceneryPlaceZ != 0 && gSceneryShiftPressed)
+            {
+                zAttemptRange = 20;
+            }
+
+            for (; zAttemptRange != 0; zAttemptRange--)
+            {
+                CoordsXYZD loc = { gridPos, gSceneryPlaceZ, direction };
+
+                auto sceneryPlaceAction = GameActions::LargeSceneryPlaceAction(
+                    loc, selectedScenery, _sceneryPrimaryColour, _scenerySecondaryColour, _sceneryTertiaryColour);
+
+                auto& gameState = getGameState();
+                auto res = GameActions::Query(&sceneryPlaceAction, gameState);
+                if (res.Error == GameActions::Status::Ok)
+                {
+                    break;
+                }
+
+                if (const auto* message = std::get_if<StringId>(&res.ErrorMessage))
+                {
+                    if (*message == STR_NOT_ENOUGH_CASH_REQUIRES || *message == STR_CAN_ONLY_BUILD_THIS_ON_WATER)
+                    {
+                        break;
+                    }
+                }
+
+                if (zAttemptRange != 1)
+                {
+                    gSceneryPlaceZ += 8;
+                }
+            }
+
+            CoordsXYZD loc = { gridPos, gSceneryPlaceZ, direction };
+
+            auto sceneryPlaceAction = GameActions::LargeSceneryPlaceAction(
+                loc, selectedScenery, _sceneryPrimaryColour, _scenerySecondaryColour, _sceneryTertiaryColour);
+            sceneryPlaceAction.SetCallback([=](const GameActions::GameAction* ga, const GameActions::Result* result) {
+                if (result->Error == GameActions::Status::Ok)
+                {
+                    Audio::Play3D(Audio::SoundId::placeItem, result->Position);
+                }
+                else
+                {
+                    Audio::Play3D(Audio::SoundId::error, { loc.x, loc.y, gSceneryPlaceZ });
+                }
+            });
+
+            auto& gameState = getGameState();
+            auto res = GameActions::Execute(&sceneryPlaceAction, gameState);
+        }
+
+        void onToolDownBanner(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords, uint16_t selectedScenery)
+        {
+            CoordsXY gridPos;
+            int32_t z;
+            Direction direction;
+            Sub6E1F34Banner(screenCoords, selectedScenery, gridPos, &z, &direction);
+            if (gridPos.IsNull())
+                return;
+
+            CoordsXYZD loc{ gridPos, z, direction };
+            auto primaryColour = _sceneryPrimaryColour;
+            auto bannerPlaceAction = GameActions::BannerPlaceAction(loc, selectedScenery, primaryColour);
+            bannerPlaceAction.SetCallback([=](const GameActions::GameAction* ga, const GameActions::Result* result) {
+                if (result->Error == GameActions::Status::Ok)
+                {
+                    auto data = result->GetData<GameActions::BannerPlaceActionResult>();
+                    Audio::Play3D(Audio::SoundId::placeItem, result->Position);
+                    ContextOpenDetailWindow(WindowDetail::banner, data.bannerId.ToUnderlying());
+                }
+            });
+
+            auto& gameState = getGameState();
+            GameActions::Execute(&bannerPlaceAction, gameState);
+        }
+
         /**
          *
          *  rct2: 0x006E2CC6
@@ -2899,285 +3192,29 @@ namespace OpenRCT2::Ui::Windows
             auto tabSelection = WindowSceneryGetTabSelection();
             uint8_t sceneryType = tabSelection.SceneryType;
             uint16_t selectedScenery = tabSelection.EntryIndex;
-            CoordsXY gridPos;
-
-            auto& gameState = getGameState();
 
             switch (sceneryType)
             {
                 case SCENERY_TYPE_SMALL:
                 {
-                    uint8_t quadrant;
-                    Direction rotation;
-                    Sub6E1F34SmallScenery(screenCoords, selectedScenery, gridPos, &quadrant, &rotation);
-                    if (gridPos.IsNull())
-                        return;
-
-                    int32_t quantity = 1;
-                    bool isCluster = gWindowSceneryScatterEnabled
-                        && (Network::GetMode() != Network::Mode::client
-                            || Network::CanPerformCommand(Network::GetCurrentPlayerGroupIndex(), -2));
-
-                    if (isCluster)
-                    {
-                        switch (gWindowSceneryScatterDensity)
-                        {
-                            case ScatterToolDensity::LowDensity:
-                                quantity = gWindowSceneryScatterSize;
-                                break;
-
-                            case ScatterToolDensity::MediumDensity:
-                                quantity = gWindowSceneryScatterSize * 2;
-                                break;
-
-                            case ScatterToolDensity::HighDensity:
-                                quantity = gWindowSceneryScatterSize * 3;
-                                break;
-                        }
-                    }
-
-                    bool forceError = true;
-                    for (int32_t q = 0; q < quantity; q++)
-                    {
-                        int32_t zCoordinate = gSceneryPlaceZ;
-                        auto* sceneryEntry = ObjectManager::GetObjectEntry<SmallSceneryEntry>(selectedScenery);
-
-                        int16_t cur_grid_x = gridPos.x;
-                        int16_t cur_grid_y = gridPos.y;
-
-                        if (isCluster)
-                        {
-                            if (!sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_FULL_TILE))
-                            {
-                                quadrant = UtilRand() & 3;
-                            }
-
-                            int16_t grid_x_offset = (UtilRand() % gWindowSceneryScatterSize) - (gWindowSceneryScatterSize / 2);
-                            int16_t grid_y_offset = (UtilRand() % gWindowSceneryScatterSize) - (gWindowSceneryScatterSize / 2);
-                            if (gWindowSceneryScatterSize % 2 == 0)
-                            {
-                                grid_x_offset += 1;
-                                grid_y_offset += 1;
-                            }
-                            cur_grid_x += grid_x_offset * kCoordsXYStep;
-                            cur_grid_y += grid_y_offset * kCoordsXYStep;
-
-                            if (!sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_ROTATABLE))
-                            {
-                                gSceneryPlaceRotation = (gSceneryPlaceRotation + 1) & 3;
-                            }
-                        }
-
-                        uint8_t zAttemptRange = 1;
-                        if (gSceneryPlaceZ != 0 && gSceneryShiftPressed)
-                        {
-                            zAttemptRange = 20;
-                        }
-
-                        auto success = GameActions::Status::Unknown;
-                        // Try find a valid z coordinate
-                        for (; zAttemptRange != 0; zAttemptRange--)
-                        {
-                            auto smallSceneryPlaceAction = GameActions::SmallSceneryPlaceAction(
-                                { cur_grid_x, cur_grid_y, gSceneryPlaceZ, gSceneryPlaceRotation }, quadrant, selectedScenery,
-                                _sceneryPrimaryColour, _scenerySecondaryColour, _sceneryTertiaryColour);
-                            auto res = GameActions::Query(&smallSceneryPlaceAction, gameState);
-                            success = res.Error;
-                            if (res.Error == GameActions::Status::Ok)
-                            {
-                                break;
-                            }
-
-                            if (res.Error == GameActions::Status::InsufficientFunds)
-                            {
-                                break;
-                            }
-                            if (zAttemptRange != 1)
-                            {
-                                gSceneryPlaceZ += 8;
-                            }
-                        }
-
-                        // Actually place
-                        if (success == GameActions::Status::Ok || ((q + 1 == quantity) && forceError))
-                        {
-                            auto smallSceneryPlaceAction = GameActions::SmallSceneryPlaceAction(
-                                { cur_grid_x, cur_grid_y, gSceneryPlaceZ, gSceneryPlaceRotation }, quadrant, selectedScenery,
-                                _sceneryPrimaryColour, _scenerySecondaryColour, _sceneryTertiaryColour);
-
-                            smallSceneryPlaceAction.SetCallback(
-                                [=](const GameActions::GameAction* ga, const GameActions::Result* result) {
-                                    if (result->Error == GameActions::Status::Ok)
-                                    {
-                                        Audio::Play3D(Audio::SoundId::placeItem, result->Position);
-                                    }
-                                });
-                            auto res = GameActions::Execute(&smallSceneryPlaceAction, gameState);
-                            if (res.Error == GameActions::Status::Ok)
-                            {
-                                forceError = false;
-                            }
-
-                            if (res.Error == GameActions::Status::InsufficientFunds)
-                            {
-                                break;
-                            }
-                        }
-                        gSceneryPlaceZ = zCoordinate;
-                    }
-                    break;
+                    return onToolDownSmallScenery(widgetIndex, screenCoords, selectedScenery);
                 }
+
                 case SCENERY_TYPE_PATH_ITEM:
                 {
-                    int32_t z;
-                    Sub6E1F34PathItem(screenCoords, selectedScenery, gridPos, &z);
-                    if (gridPos.IsNull())
-                        return;
-
-                    auto footpathAdditionPlaceAction = GameActions::FootpathAdditionPlaceAction(
-                        { gridPos, z }, selectedScenery);
-
-                    footpathAdditionPlaceAction.SetCallback(
-                        [](const GameActions::GameAction* ga, const GameActions::Result* result) {
-                            if (result->Error != GameActions::Status::Ok)
-                            {
-                                return;
-                            }
-                            Audio::Play3D(Audio::SoundId::placeItem, result->Position);
-                        });
-                    auto res = GameActions::Execute(&footpathAdditionPlaceAction, gameState);
-                    break;
+                    return onToolDownPathItem(widgetIndex, screenCoords, selectedScenery);
                 }
                 case SCENERY_TYPE_WALL:
                 {
-                    uint8_t edges;
-                    Sub6E1F34Wall(screenCoords, selectedScenery, gridPos, &edges);
-                    if (gridPos.IsNull())
-                        return;
-
-                    uint8_t zAttemptRange = 1;
-                    if (gSceneryPlaceZ != 0 && gSceneryShiftPressed)
-                    {
-                        zAttemptRange = 20;
-                    }
-
-                    for (; zAttemptRange != 0; zAttemptRange--)
-                    {
-                        auto wallPlaceAction = GameActions::WallPlaceAction(
-                            selectedScenery, { gridPos, gSceneryPlaceZ }, edges, _sceneryPrimaryColour, _scenerySecondaryColour,
-                            _sceneryTertiaryColour);
-
-                        auto res = GameActions::Query(&wallPlaceAction, gameState);
-                        if (res.Error == GameActions::Status::Ok)
-                        {
-                            break;
-                        }
-
-                        if (const auto* message = std::get_if<StringId>(&res.ErrorMessage))
-                        {
-                            if (*message == STR_NOT_ENOUGH_CASH_REQUIRES || *message == STR_CAN_ONLY_BUILD_THIS_ON_WATER)
-                            {
-                                break;
-                            }
-                        }
-
-                        if (zAttemptRange != 1)
-                        {
-                            gSceneryPlaceZ += 8;
-                        }
-                    }
-
-                    auto wallPlaceAction = GameActions::WallPlaceAction(
-                        selectedScenery, { gridPos, gSceneryPlaceZ }, edges, _sceneryPrimaryColour, _scenerySecondaryColour,
-                        _sceneryTertiaryColour);
-
-                    wallPlaceAction.SetCallback([](const GameActions::GameAction* ga, const GameActions::Result* result) {
-                        if (result->Error == GameActions::Status::Ok)
-                        {
-                            Audio::Play3D(Audio::SoundId::placeItem, result->Position);
-                        }
-                    });
-                    auto res = GameActions::Execute(&wallPlaceAction, gameState);
-                    break;
+                    return onToolDownWall(widgetIndex, screenCoords, selectedScenery);
                 }
                 case SCENERY_TYPE_LARGE:
                 {
-                    Direction direction;
-                    Sub6E1F34LargeScenery(screenCoords, selectedScenery, gridPos, &direction);
-                    if (gridPos.IsNull())
-                        return;
-
-                    uint8_t zAttemptRange = 1;
-                    if (gSceneryPlaceZ != 0 && gSceneryShiftPressed)
-                    {
-                        zAttemptRange = 20;
-                    }
-
-                    for (; zAttemptRange != 0; zAttemptRange--)
-                    {
-                        CoordsXYZD loc = { gridPos, gSceneryPlaceZ, direction };
-
-                        auto sceneryPlaceAction = GameActions::LargeSceneryPlaceAction(
-                            loc, selectedScenery, _sceneryPrimaryColour, _scenerySecondaryColour, _sceneryTertiaryColour);
-
-                        auto res = GameActions::Query(&sceneryPlaceAction, gameState);
-                        if (res.Error == GameActions::Status::Ok)
-                        {
-                            break;
-                        }
-
-                        if (const auto* message = std::get_if<StringId>(&res.ErrorMessage))
-                        {
-                            if (*message == STR_NOT_ENOUGH_CASH_REQUIRES || *message == STR_CAN_ONLY_BUILD_THIS_ON_WATER)
-                            {
-                                break;
-                            }
-                        }
-
-                        if (zAttemptRange != 1)
-                        {
-                            gSceneryPlaceZ += 8;
-                        }
-                    }
-
-                    CoordsXYZD loc = { gridPos, gSceneryPlaceZ, direction };
-
-                    auto sceneryPlaceAction = GameActions::LargeSceneryPlaceAction(
-                        loc, selectedScenery, _sceneryPrimaryColour, _scenerySecondaryColour, _sceneryTertiaryColour);
-                    sceneryPlaceAction.SetCallback([=](const GameActions::GameAction* ga, const GameActions::Result* result) {
-                        if (result->Error == GameActions::Status::Ok)
-                        {
-                            Audio::Play3D(Audio::SoundId::placeItem, result->Position);
-                        }
-                        else
-                        {
-                            Audio::Play3D(Audio::SoundId::error, { loc.x, loc.y, gSceneryPlaceZ });
-                        }
-                    });
-                    auto res = GameActions::Execute(&sceneryPlaceAction, gameState);
-                    break;
+                    return onToolDownLargeScenery(widgetIndex, screenCoords, selectedScenery);
                 }
                 case SCENERY_TYPE_BANNER:
                 {
-                    int32_t z;
-                    Direction direction;
-                    Sub6E1F34Banner(screenCoords, selectedScenery, gridPos, &z, &direction);
-                    if (gridPos.IsNull())
-                        return;
-
-                    CoordsXYZD loc{ gridPos, z, direction };
-                    auto primaryColour = _sceneryPrimaryColour;
-                    auto bannerPlaceAction = GameActions::BannerPlaceAction(loc, selectedScenery, primaryColour);
-                    bannerPlaceAction.SetCallback([=](const GameActions::GameAction* ga, const GameActions::Result* result) {
-                        if (result->Error == GameActions::Status::Ok)
-                        {
-                            auto data = result->GetData<GameActions::BannerPlaceActionResult>();
-                            Audio::Play3D(Audio::SoundId::placeItem, result->Position);
-                            ContextOpenDetailWindow(WindowDetail::banner, data.bannerId.ToUnderlying());
-                        }
-                    });
-                    GameActions::Execute(&bannerPlaceAction, gameState);
-                    break;
+                    return onToolDownBanner(widgetIndex, screenCoords, selectedScenery);
                 }
             }
         }
