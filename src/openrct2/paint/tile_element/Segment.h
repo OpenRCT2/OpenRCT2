@@ -27,6 +27,7 @@ enum class PaintSegment : uint16_t
     topLeft = 7,
     centre = 8,
 };
+constexpr uint16_t kSegmentsNone = 0;
 constexpr int32_t kSegmentsAll = EnumsToFlags(
     PaintSegment::top, PaintSegment::left, PaintSegment::right, PaintSegment::bottom, PaintSegment::centre,
     PaintSegment::topLeft, PaintSegment::topRight, PaintSegment::bottomLeft, PaintSegment::bottomRight);
