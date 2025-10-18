@@ -1982,17 +1982,19 @@ static void TrackLeftQuarterTurn5Tiles(
         PaintUtilPushTunnelRotated(session, DirectionPrev(direction), height, kTunnelGroup, TunnelSubType::Flat);
     }
     static constexpr std::array<int32_t, 7> blockedSegments = {
-        EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft),
         kSegmentsAll,
+        EnumsToFlags(PaintSegment::right, PaintSegment::topRight, PaintSegment::bottomRight),
         EnumsToFlags(
             PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
             PaintSegment::bottomLeft),
-        EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
-        kSegmentsAll,
+        EnumsToFlags(
+            PaintSegment::top, PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft,
+            PaintSegment::topRight, PaintSegment::bottomLeft, PaintSegment::bottomRight),
+        EnumsToFlags(PaintSegment::right, PaintSegment::topRight, PaintSegment::bottomRight),
         EnumsToFlags(
             PaintSegment::left, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft,
             PaintSegment::bottomRight),
-        EnumsToFlags(PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomRight),
+        kSegmentsAll,
     };
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments[trackSequence], direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
