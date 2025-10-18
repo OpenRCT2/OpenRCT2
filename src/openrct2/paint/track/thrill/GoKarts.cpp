@@ -2296,7 +2296,7 @@ static void TrackLeftQuarterTurn3TilesUp25(
 
     static constexpr std::array<int32_t, 4> blockedSegments = {
         kSegmentsAll,
-        kSegmentsAll,
+        EnumsToFlags(PaintSegment::right, PaintSegment::topRight, PaintSegment::bottomRight),
         EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
         kSegmentsAll,
     };
@@ -2354,8 +2354,8 @@ static void TrackRightQuarterTurn3TilesUp25(
 
     static constexpr std::array<int32_t, 4> blockedSegments = {
         kSegmentsAll,
-        kSegmentsAll,
-        EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
+        EnumsToFlags(PaintSegment::topLeft, PaintSegment::top, PaintSegment::topRight),
+        EnumsToFlags(PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
         kSegmentsAll,
     };
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments[trackSequence], direction), 0xFFFF, 0);
