@@ -457,6 +457,7 @@ ScDisposable Scripting::gScDisposable;
 ScMap Scripting::gScMap;
 ScNetwork Scripting::gScNetwork;
 ScPark Scripting::gScPark;
+ScProfiler Scripting::gScProfiler;
 ScEntity Scripting::gScEntity;
 ScThought Scripting::gScThought;
 ScPatrolArea Scripting::gScPatrolArea;
@@ -490,7 +491,7 @@ void ScriptEngine::RegisterClasses(JSContext* ctx)
     // ScParkMessage::Register(ctx);
     // ScPlayer::Register(ctx);
     // ScPlayerGroup::Register(ctx);
-    // ScProfiler::Register(ctx);
+    gScProfiler.Register(ctx);
     // ScResearch::Register(ctx);
     // ScRide::Register(ctx);
     // ScRideStation::Register(ctx);
@@ -545,7 +546,7 @@ void ScriptEngine::InitialiseContext(JSContext* ctx) const
     JS_SetPropertyStr(ctx, glb, "network", gScNetwork.New(ctx));
     JS_SetPropertyStr(ctx, glb, "park", gScPark.New(ctx));
     // dukglue_register_global(ctx, std::make_shared<ScPlugin>(), "pluginManager");
-    // dukglue_register_global(ctx, std::make_shared<ScProfiler>(ctx), "profiler");
+    JS_SetPropertyStr(ctx, glb, "profiler", gScProfiler.New(ctx));
     // dukglue_register_global(ctx, std::make_shared<ScScenario>(), "scenario");
     // dukglue_register_global(ctx, std::make_shared<ScObjectManager>(), "objectManager");
     JS_FreeValue(ctx, glb);
