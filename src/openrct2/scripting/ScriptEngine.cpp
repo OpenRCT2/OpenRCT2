@@ -124,7 +124,7 @@ private:
         {
             _ss << (JS_VALUE_GET_BOOL(val) ? "true" : "false");
         }
-        else if (JS_IsNumber(val))
+        else if (JS_IsNumber(val) || JS_IsBigInt(_context, val))
         {
             StringifyNumber(val);
         }
@@ -350,6 +350,23 @@ private:
                 _ss << std::to_string(d);
             }
         }
+        else if (val.tag == JS_TAG_SHORT_BIG_INT)
+        {
+            _ss << std::to_string(JS_VALUE_GET_SHORT_BIG_INT(val));
+        }
+        else if (val.tag == JS_TAG_BIG_INT)
+        {
+            const char* str = JS_ToCString(_context, val);
+            if (str)
+            {
+                _ss << str;
+                JS_FreeCString(_context, str);
+            }
+            else
+            {
+                _ss << "[BitInt error]";
+            }
+        }
     }
 
     void StringifyError(const JSValue val)
@@ -457,8 +474,13 @@ ScDate Scripting::gScDate;
 ScDisposable Scripting::gScDisposable;
 ScMap Scripting::gScMap;
 ScNetwork Scripting::gScNetwork;
+ScObjectManager Scripting::gScObjectManager;
+ScInstalledObject Scripting::gScInstalledObject;
+ScLargeSceneryObjectTile Scripting::gScLargeSceneryObjectTile;
+ScObject Scripting::gScObject;
 ScPark Scripting::gScPark;
 ScProfiler Scripting::gScProfiler;
+ScRideObjectVehicle Scripting::gScRideObjectVehicle;
 ScTile Scripting::gScTile;
 ScTileElement Scripting::gScTileElement;
 ScEntity Scripting::gScEntity;
@@ -479,17 +501,10 @@ void ScriptEngine::RegisterClasses(JSContext* ctx)
     gScDisposable.Register(ctx);
     gScMap.Register(ctx);
     gScNetwork.Register(ctx);
-    // ScObjectManager::Register(ctx);
-    // ScInstalledObject::Register(ctx);
-    // ScObject::Register(ctx);
-    // ScSceneryObject::Register(ctx);
-    // ScSmallSceneryObject::Register(ctx);
-    // ScLargeSceneryObject::Register(ctx);
-    // ScLargeSceneryObjectTile::Register(ctx);
-    // ScWallObject::Register(ctx);
-    // ScFootpathAdditionObject::Register(ctx);
-    // ScBannerObject::Register(ctx);
-    // ScSceneryGroupObject::Register(ctx);
+    gScObjectManager.Register(ctx);
+    gScInstalledObject.Register(ctx);
+    gScObject.Register(ctx);
+    gScLargeSceneryObjectTile.Register(ctx);
     gScPark.Register(ctx);
     // ScParkMessage::Register(ctx);
     // ScPlayer::Register(ctx);
@@ -498,8 +513,7 @@ void ScriptEngine::RegisterClasses(JSContext* ctx)
     // ScResearch::Register(ctx);
     // ScRide::Register(ctx);
     // ScRideStation::Register(ctx);
-    // ScRideObject::Register(ctx);
-    // ScRideObjectVehicle::Register(ctx);
+    gScRideObjectVehicle.Register(ctx);
     gScTile.Register(ctx);
     gScTileElement.Register(ctx);
     // ScTrackIterator::Register(ctx);
@@ -551,7 +565,7 @@ void ScriptEngine::InitialiseContext(JSContext* ctx) const
     // dukglue_register_global(ctx, std::make_shared<ScPlugin>(), "pluginManager");
     JS_SetPropertyStr(ctx, glb, "profiler", gScProfiler.New(ctx));
     // dukglue_register_global(ctx, std::make_shared<ScScenario>(), "scenario");
-    // dukglue_register_global(ctx, std::make_shared<ScObjectManager>(), "objectManager");
+    JS_SetPropertyStr(ctx, glb, "objectManager", gScObjectManager.New(ctx));
     JS_FreeValue(ctx, glb);
 
     RegisterConstants(ctx);
