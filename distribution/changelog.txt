@@ -26,6 +26,7 @@
 - Fix: [#25378] The land tool sometimes allows land to be raised through a maze.
 - Fix: [#25380] The Lay-down Roller Coaster left corkscrew supports are incorrect at one angle (original bug).
 - Fix: [#25388] The Shortcut Keys window uses the wrong colours for separators, scrollbars and buttons.
+- Fix: [#25401] Mazes can be built 2 units higher than their support limits.
 
 0.4.27 (2025-10-04)
 ------------------------------------------------------------------------
