@@ -198,24 +198,14 @@ namespace OpenRCT2::Scripting
 
         static JSValue getObject(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
         {
-            return JS_NULL;
-
-            /* TODO (mber) // forward to objectManager
             // deprecated function, moved to ObjectManager.getObject.
-            ScObjectManager objectManager;
-            return objectManager.getObject(typez, index);
-            */
+            return gScObjectManager.getObject(ctx, thisVal, argc, argv);
         }
 
         static JSValue getAllObjects(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
         {
-            return JS_NULL;
-
-            /* TODO (mber) // forward to objectManager
             // deprecated function, moved to ObjectManager.getAllObjects.
-            ScObjectManager objectManager;
-            return objectManager.getAllObjects(typez);
-            */
+            return gScObjectManager.getAllObjects(ctx, thisVal, argc, argv);
         }
 
         static JSValue getTrackSegment(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
