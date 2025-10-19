@@ -93,13 +93,10 @@ namespace OpenRCT2::Scripting
 
     JSValue ScMap::getTile(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
     {
-        // TODO (mber) pending ScTile conversion
-        JS_ThrowInternalError(ctx, "not implemented yet");
-        return JS_EXCEPTION;
-        /*
+        JS_UNPACK_INT32(x, ctx, argv[0]);
+        JS_UNPACK_INT32(y, ctx, argv[1]);
         auto coords = TileCoordsXY(x, y).ToCoordsXY();
-        return std::make_shared<ScTile>(coords);
-        */
+        return gScTile.New(ctx, coords);
     }
 
     JSValue ScMap::getEntity(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
