@@ -84,28 +84,24 @@ namespace OpenRCT2::GameActions
 
         if (_rideType >= RIDE_TYPE_COUNT)
         {
-            LOG_ERROR("Invalid ride type %d", _rideType);
             return Result(Status::InvalidParameters, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_INVALID_RIDE_TYPE);
         }
 
         int32_t rideEntryIndex = RideGetEntryIndex(_rideType, _subType);
         if (rideEntryIndex >= kMaxRideObjects)
         {
-            LOG_ERROR("Ride entry not found for rideType %d, subType %d", _rideType, _subType);
             return Result(Status::InvalidParameters, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_INVALID_RIDE_TYPE);
         }
 
         const auto& colourPresets = GetRideTypeDescriptor(_rideType).ColourPresets;
         if (_colour1 >= colourPresets.count)
         {
-            LOG_ERROR("Can't create ride, invalid colour preset %d", _colour1);
             return Result(Status::InvalidParameters, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_ERR_INVALID_COLOUR);
         }
 
         const auto* rideEntry = GetRideEntryByIndex(rideEntryIndex);
         if (rideEntry == nullptr)
         {
-            LOG_ERROR("Ride entry not found for rideEntryIndex %d", rideEntryIndex);
             return Result(Status::InvalidParameters, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_UNKNOWN_OBJECT_TYPE);
         }
 

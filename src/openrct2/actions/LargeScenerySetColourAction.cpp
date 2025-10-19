@@ -74,23 +74,19 @@ namespace OpenRCT2::GameActions
         auto mapSizeMax = GetMapSizeMaxXY();
         if (_loc.x < 0 || _loc.y < 0 || _loc.x > mapSizeMax.x || _loc.y > mapSizeMax.y)
         {
-            LOG_ERROR("Invalid x / y coordinates: x = %d, y = %d", _loc.x, _loc.y);
             return Result(Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_ERR_VALUE_OUT_OF_RANGE);
         }
 
         if (_primaryColour >= COLOUR_COUNT)
         {
-            LOG_ERROR("Invalid primary colour %u", _primaryColour);
             return Result(Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_ERR_INVALID_COLOUR);
         }
         else if (_secondaryColour >= COLOUR_COUNT)
         {
-            LOG_ERROR("Invalid secondary colour %u", _secondaryColour);
             return Result(Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_ERR_INVALID_COLOUR);
         }
         else if (_tertiaryColour >= COLOUR_COUNT)
         {
-            LOG_ERROR("Invalid tertiary colour %u", _tertiaryColour);
             return Result(Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_ERR_INVALID_COLOUR);
         }
 
@@ -98,9 +94,6 @@ namespace OpenRCT2::GameActions
 
         if (largeElement == nullptr)
         {
-            LOG_ERROR(
-                "Could not find large scenery at: x = %d, y = %d, z = %d, direction = %d, tileIndex = %u", _loc.x, _loc.y,
-                _loc.z, _loc.direction, _tileIndex);
             return Result(Status::InvalidParameters, STR_CANT_REPAINT_THIS, kStringIdNone);
         }
 
@@ -113,7 +106,6 @@ namespace OpenRCT2::GameActions
 
         if (sceneryEntry == nullptr)
         {
-            LOG_ERROR("Scenery element doesn't have scenery entry");
             return Result(Status::Unknown, STR_CANT_REPAINT_THIS, kStringIdNone);
         }
         // Work out the base tile coordinates (Tile with index 0)
@@ -145,9 +137,6 @@ namespace OpenRCT2::GameActions
 
             if (tileElement == nullptr)
             {
-                LOG_ERROR(
-                    "Large scenery element not found at: x = %d, y = %d, z = %d, direction = %d", _loc.x, _loc.y, _loc.z,
-                    _loc.direction);
                 return Result(Status::Unknown, STR_CANT_REPAINT_THIS, kStringIdNone);
             }
             if (isExecuting)

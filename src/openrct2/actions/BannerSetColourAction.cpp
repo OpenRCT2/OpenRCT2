@@ -65,13 +65,11 @@ namespace OpenRCT2::GameActions
 
         if (!LocationValid(_loc))
         {
-            LOG_ERROR("Invalid x / y coordinates: x = %d, y = %d", _loc.x, _loc.y);
             return Result(Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_OFF_EDGE_OF_MAP);
         }
 
         if (_primaryColour > 31)
         {
-            LOG_ERROR("Invalid primary colour %u", _primaryColour);
             return Result(Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_ERR_INVALID_COLOUR);
         }
 
@@ -84,7 +82,6 @@ namespace OpenRCT2::GameActions
 
         if (bannerElement == nullptr)
         {
-            LOG_ERROR("No banner at x = %d, y = %d, z = %d, direction = %u", _loc.x, _loc.y, _loc.z, _loc.direction);
             return Result(Status::Unknown, STR_CANT_REPAINT_THIS, STR_ERR_BANNER_ELEMENT_NOT_FOUND);
         }
 
@@ -92,7 +89,6 @@ namespace OpenRCT2::GameActions
         auto banner = GetBanner(index);
         if (banner == nullptr)
         {
-            LOG_ERROR("Invalid banner index %u", index);
             return Result(Status::InvalidParameters, STR_CANT_REPAINT_THIS, kStringIdNone);
         }
 

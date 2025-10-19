@@ -60,7 +60,6 @@ namespace OpenRCT2::GameActions
         auto banner = GetBanner(_bannerIndex);
         if (banner == nullptr)
         {
-            LOG_ERROR("Banner not found for bannerIndex %d", _bannerIndex);
             return Result(Status::InvalidParameters, errorTitle, STR_ERR_BANNER_ELEMENT_NOT_FOUND);
         }
 
@@ -72,7 +71,6 @@ namespace OpenRCT2::GameActions
 
         if (tileElement == nullptr)
         {
-            LOG_ERROR("Banner tile element not found for bannerIndex %d", _bannerIndex);
             return Result(Status::InvalidParameters, errorTitle, STR_ERR_BANNER_ELEMENT_NOT_FOUND);
         }
 
@@ -93,7 +91,6 @@ namespace OpenRCT2::GameActions
             case BannerSetStyleType::PrimaryColour:
                 if (_parameter > COLOUR_COUNT)
                 {
-                    LOG_ERROR("Invalid primary colour %u", _parameter);
                     return Result(Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_ERR_INVALID_COLOUR);
                 }
                 break;
@@ -101,19 +98,16 @@ namespace OpenRCT2::GameActions
             case BannerSetStyleType::TextColour:
                 if (_parameter > 13)
                 {
-                    LOG_ERROR("Invalid text colour %u", _parameter);
                     return Result(Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_ERR_INVALID_COLOUR);
                 }
                 break;
             case BannerSetStyleType::NoEntry:
                 if (tileElement->AsBanner() == nullptr)
                 {
-                    LOG_ERROR("Tile element was not a banner.");
                     return Result(Status::Unknown, STR_CANT_RENAME_BANNER, kStringIdNone);
                 }
                 break;
             default:
-                LOG_ERROR("Invalid banner style type %u", _type);
                 return Result(Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_ERR_VALUE_OUT_OF_RANGE);
         }
         return res;

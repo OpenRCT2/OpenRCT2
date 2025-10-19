@@ -109,7 +109,6 @@ namespace OpenRCT2::GameActions
         }
         else if (!_trackDesignDrawingPreview && (_loc.x > mapSizeMax.x || _loc.y > mapSizeMax.y))
         {
-            LOG_ERROR("Invalid x/y coordinates. x = %d y = %d", _loc.x, _loc.y);
             return Result(Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_OFF_EDGE_OF_MAP);
         }
 
@@ -125,7 +124,6 @@ namespace OpenRCT2::GameActions
             auto* surfaceElement = MapGetSurfaceElementAt(_loc);
             if (surfaceElement == nullptr)
             {
-                LOG_ERROR("Surface element not found at %d, %d.", _loc.x, _loc.y);
                 return Result(Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
             }
             targetHeight = surfaceElement->GetBaseZ();
@@ -142,7 +140,6 @@ namespace OpenRCT2::GameActions
         auto* surfaceElement = MapGetSurfaceElementAt(_loc);
         if (surfaceElement == nullptr)
         {
-            LOG_ERROR("Surface element not found at %d, %d.", _loc.x, _loc.y);
             return Result(Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
         }
 
@@ -227,7 +224,6 @@ namespace OpenRCT2::GameActions
 
         if (wallEntry == nullptr)
         {
-            LOG_ERROR("Wall Type not found %d", _wallType);
             return Result(Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_UNKNOWN_OBJECT_TYPE);
         }
 
@@ -235,7 +231,6 @@ namespace OpenRCT2::GameActions
         {
             if (HasReachedBannerLimit())
             {
-                LOG_ERROR("No free banners available");
                 return Result(Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_TOO_MANY_BANNERS_IN_GAME);
             }
         }

@@ -64,7 +64,6 @@ namespace OpenRCT2::GameActions
         TileElement* tileElement = FindLargeSceneryElement(_loc, _tileIndex);
         if (tileElement == nullptr)
         {
-            LOG_ERROR("No large scenery element to remove at x = %d, y = %d", _loc.x, _loc.y);
             return Result(Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
         }
 
@@ -72,7 +71,6 @@ namespace OpenRCT2::GameActions
         // If we have a bugged scenery entry, do not touch the tile element.
         if (sceneryEntry == nullptr)
         {
-            LOG_WARNING("Scenery entry at x = %d, y = %d not removed because it is an unknown object type", _loc.x, _loc.y);
             return Result(Status::Unknown, STR_CANT_REMOVE_THIS, STR_UNKNOWN_OBJECT_TYPE);
         }
 

@@ -71,20 +71,17 @@ namespace OpenRCT2::GameActions
         auto tileElement = MapGetFootpathElement(_loc);
         if (tileElement == nullptr)
         {
-            LOG_ERROR("No path element at x = %d, y = %d, z = %d", _loc.x, _loc.y, _loc.z);
             return Result(Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_ERR_PATH_ELEMENT_NOT_FOUND);
         }
 
         auto pathElement = tileElement->AsPath();
         if (pathElement == nullptr)
         {
-            LOG_ERROR("No path element at x = %d, y = %d, z = %d", _loc.x, _loc.y, _loc.z);
             return Result(Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_ERR_PATH_ELEMENT_NOT_FOUND);
         }
 
         if (!pathElement->AdditionIsGhost() && (GetFlags() & GAME_COMMAND_FLAG_GHOST))
         {
-            LOG_WARNING("Tried to remove non ghost during ghost removal.");
             return Result(Status::Disallowed, STR_CANT_REMOVE_THIS, kStringIdNone);
         }
         auto res = Result();

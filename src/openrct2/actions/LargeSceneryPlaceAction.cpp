@@ -80,29 +80,24 @@ namespace OpenRCT2::GameActions
 
         if (_primaryColour >= COLOUR_COUNT)
         {
-            LOG_ERROR("Invalid primary colour %u", _primaryColour);
             return Result(Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_ERR_INVALID_COLOUR);
         }
         else if (_secondaryColour >= COLOUR_COUNT)
         {
-            LOG_ERROR("Invalid secondary colour %u", _secondaryColour);
             return Result(Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_ERR_INVALID_COLOUR);
         }
         else if (_tertiaryColour >= COLOUR_COUNT)
         {
-            LOG_ERROR("Invalid tertiary colour %u", _tertiaryColour);
             return Result(Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_ERR_INVALID_COLOUR);
         }
         else if (_sceneryType >= kMaxLargeSceneryObjects)
         {
-            LOG_ERROR("Invalid sceneryType %u", _sceneryType);
             return Result(Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_ERR_VALUE_OUT_OF_RANGE);
         }
 
         auto* sceneryEntry = ObjectManager::GetObjectEntry<LargeSceneryEntry>(_sceneryType);
         if (sceneryEntry == nullptr)
         {
-            LOG_ERROR("Large scenery entry not found for sceneryType %u", _sceneryType);
             return Result(Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_UNKNOWN_OBJECT_TYPE);
         }
 
@@ -120,7 +115,6 @@ namespace OpenRCT2::GameActions
         {
             if (HasReachedBannerLimit())
             {
-                LOG_ERROR("No free banners available");
                 return Result(Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_TOO_MANY_BANNERS_IN_GAME);
             }
         }
@@ -179,7 +173,6 @@ namespace OpenRCT2::GameActions
 
         if (!CheckMapCapacity(sceneryEntry->tiles, totalNumTiles))
         {
-            LOG_ERROR("No free map elements available");
             return Result(Status::NoFreeElements, STR_CANT_POSITION_THIS_HERE, STR_TILE_ELEMENT_LIMIT_REACHED);
         }
 

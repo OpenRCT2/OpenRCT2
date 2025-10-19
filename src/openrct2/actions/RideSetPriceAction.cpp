@@ -55,20 +55,17 @@ namespace OpenRCT2::GameActions
         auto ride = GetRide(_rideIndex);
         if (ride == nullptr)
         {
-            LOG_ERROR("Ride not found for rideIndex %u", _rideIndex.ToUnderlying());
             return Result(Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_RIDE_NOT_FOUND);
         }
 
         const auto* rideEntry = GetRideEntryByIndex(ride->subtype);
         if (rideEntry == nullptr)
         {
-            LOG_ERROR("Ride entry not found for ride subtype %u", ride->subtype);
             return Result(Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_RIDE_OBJECT_ENTRY_NOT_FOUND);
         }
 
         if (_price < kRideMinPrice || _price > kRideMaxPrice)
         {
-            LOG_ERROR("Attempting to set an invalid price for rideIndex %u", _rideIndex.ToUnderlying());
             return Result(Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, kStringIdEmpty);
         }
 

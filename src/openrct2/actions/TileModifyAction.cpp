@@ -239,7 +239,6 @@ namespace OpenRCT2::GameActions
                 break;
             }
             default:
-                LOG_ERROR("Invalid tile modification type %u", _setting);
                 return Result(Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
         }
 

@@ -50,7 +50,6 @@ namespace OpenRCT2::GameActions
     {
         if (_entityId.ToUnderlying() >= kMaxEntities || _entityId.IsNull())
         {
-            LOG_ERROR("Failed to pick up peep for sprite %d", _entityId);
             return Result(Status::InvalidParameters, STR_ERR_CANT_PLACE_PERSON_HERE, kStringIdNone);
         }
 
@@ -62,7 +61,6 @@ namespace OpenRCT2::GameActions
         auto* const peep = getGameState().entities.TryGetEntity<Peep>(_entityId);
         if (peep == nullptr)
         {
-            LOG_ERROR("Failed to pick up peep for sprite %d", _entityId);
             return Result(Status::InvalidParameters, STR_ERR_CANT_PLACE_PERSON_HERE, kStringIdNone);
         }
 
@@ -109,7 +107,6 @@ namespace OpenRCT2::GameActions
                 }
                 break;
             default:
-                LOG_ERROR("Invalid peep pickup type %u", _type);
                 return Result(Status::InvalidParameters, STR_ERR_CANT_PLACE_PERSON_HERE, kStringIdNone);
         }
         return res;

@@ -174,7 +174,6 @@ namespace OpenRCT2::GameActions
             auto ride = GetRide(_rideIndex);
             if (ride == nullptr || !RideTypeIsValid(ride->type))
             {
-                LOG_ERROR("Ride not found for rideIndex %u", _rideIndex);
                 res.Error = Status::NoClearance;
                 res.ErrorMessage = STR_ERR_RIDE_NOT_FOUND;
                 return res;

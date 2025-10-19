@@ -1967,10 +1967,14 @@ namespace OpenRCT2
      */
     uint8_t GetCurrentRotation()
     {
+        if (gOpenRCT2Headless)
+        {
+            return 0;
+        }
+
         auto* viewport = ViewportGetMain();
         if (viewport == nullptr)
         {
-            LOG_VERBOSE("No viewport found! Will return 0.");
             return 0;
         }
         uint8_t rotation = viewport->rotation;

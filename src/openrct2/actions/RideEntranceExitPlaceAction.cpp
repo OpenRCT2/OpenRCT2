@@ -63,13 +63,11 @@ namespace OpenRCT2::GameActions
         auto ride = GetRide(_rideIndex);
         if (ride == nullptr)
         {
-            LOG_ERROR("Ride not found for rideIndex %u", _rideIndex.ToUnderlying());
             return Result(Status::InvalidParameters, errorTitle, STR_ERR_RIDE_NOT_FOUND);
         }
 
         if (_stationNum.ToUnderlying() >= Limits::kMaxStationsPerRide)
         {
-            LOG_ERROR("Invalid station number for ride. stationNum: %u", _stationNum.ToUnderlying());
             return Result(Status::InvalidParameters, errorTitle, STR_ERR_VALUE_OUT_OF_RANGE);
         }
 

@@ -50,7 +50,6 @@ namespace OpenRCT2::GameActions
         auto banner = GetBanner(_bannerIndex);
         if (banner == nullptr)
         {
-            LOG_ERROR("Banner not found for bannerIndex %d", _bannerIndex);
             return Result(Status::InvalidParameters, STR_CANT_RENAME_BANNER, STR_ERR_BANNER_ELEMENT_NOT_FOUND);
         }
 
@@ -58,7 +57,6 @@ namespace OpenRCT2::GameActions
 
         if (tileElement == nullptr)
         {
-            LOG_ERROR("Banner tile element not found for bannerIndex %d", _bannerIndex);
             return Result(Status::InvalidParameters, STR_CANT_RENAME_BANNER, STR_ERR_BANNER_ELEMENT_NOT_FOUND);
         }
 

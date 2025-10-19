@@ -80,7 +80,6 @@ namespace OpenRCT2::GameActions
         SurfaceElement* surfaceElement = MapGetSurfaceElementAt(_coords);
         if (surfaceElement == nullptr)
         {
-            LOG_ERROR("No surface element at: x %u, y %u", _coords.x, _coords.y);
             return Result(Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
         }
 

@@ -75,9 +75,6 @@ namespace OpenRCT2::GameActions
         auto wallElement = MapGetWallElementAt(_loc);
         if (wallElement == nullptr)
         {
-            LOG_ERROR(
-                "Could not find wall element at: x = %d, y = %d, z = %d, direction = %u", _loc.x, _loc.y, _loc.z,
-                _loc.direction);
             return Result(Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_ERR_WALL_ELEMENT_NOT_FOUND);
         }
 
@@ -89,27 +86,21 @@ namespace OpenRCT2::GameActions
         auto* wallEntry = wallElement->GetEntry();
         if (wallEntry == nullptr)
         {
-            LOG_ERROR(
-                "Wall element does not have wall entry at x = %d, y = %d, z = %d, direction = %u", _loc.x, _loc.y, _loc.z,
-                _loc.direction);
             return Result(Status::Unknown, STR_CANT_REPAINT_THIS, kStringIdNone);
         }
 
         if (_primaryColour >= COLOUR_COUNT)
         {
-            LOG_ERROR("Primary colour invalid: colour = %d", _primaryColour);
             return Result(Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_ERR_INVALID_COLOUR);
         }
         else if (_secondaryColour >= COLOUR_COUNT)
         {
-            LOG_ERROR("Secondary colour invalid: colour = %d", _secondaryColour);
             return Result(Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_ERR_INVALID_COLOUR);
         }
         else if (wallEntry->flags & WALL_SCENERY_HAS_TERTIARY_COLOUR)
         {
             if (_tertiaryColour >= COLOUR_COUNT)
             {
-                LOG_ERROR("Tertiary colour invalid: colour = %d", _tertiaryColour);
                 return Result(Status::InvalidParameters, STR_CANT_REPAINT_THIS, kStringIdNone);
             }
         }
