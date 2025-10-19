@@ -243,7 +243,7 @@ JSValue ScObjectManager::getAllObjects(JSContext* ctx, JSValue thisVal, int argc
             auto obj = objManager.GetLoadedObject(type, i);
             if (obj != nullptr)
             {
-                JSValue scObj = CreateScObject(ctx, type, i);
+                JSValue scObj = CreateScObject(ctx, type, static_cast<int32_t>(i));
                 JS_SetPropertyInt64(ctx, result, resultIndex++, scObj);
             }
         }
