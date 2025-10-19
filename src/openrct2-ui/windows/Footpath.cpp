@@ -1300,15 +1300,12 @@ namespace OpenRCT2::Ui::Windows
             {
                 auto footpathPlaceAction = GameActions::FootpathPlaceAction(
                     tile.position, tile.slope, selectedType, gFootpathSelection.Railings, kInvalidDirection, constructFlags);
-                footpathPlaceAction.SetCallback(
-                    [&anySuccess, &cost](const GameActions::GameAction* ga, const GameActions::Result* result) {
-                        if (result->Error == GameActions::Status::Ok)
-                        {
-                            anySuccess = true;
-                            cost += result->Cost;
-                        }
-                    });
-                GameActions::Execute(&footpathPlaceAction, getGameState());
+                auto result = GameActions::Execute(&footpathPlaceAction, getGameState());
+                if (result.Error == GameActions::Status::Ok)
+                {
+                    anySuccess = true;
+                    cost += result.Cost;
+                }
                 lastLocation = tile.position;
             }
 
