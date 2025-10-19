@@ -453,6 +453,7 @@ ScCheats Scripting::gScCheats;
 ScConfiguration Scripting::gScConfiguration;
 ScConsole Scripting::gScConsole;
 ScContext Scripting::gScContext;
+ScDate Scripting::gScDate;
 ScDisposable Scripting::gScDisposable;
 ScMap Scripting::gScMap;
 ScNetwork Scripting::gScNetwork;
@@ -472,7 +473,7 @@ void ScriptEngine::RegisterClasses(JSContext* ctx)
     gScConfiguration.Register(ctx);
     gScConsole.Register(ctx);
     gScContext.Register(ctx);
-    // ScDate::Register(ctx);
+    gScDate.Register(ctx);
     gScDisposable.Register(ctx);
     gScMap.Register(ctx);
     gScNetwork.Register(ctx);
@@ -541,7 +542,7 @@ void ScriptEngine::InitialiseContext(JSContext* ctx) const
     // dukglue_register_global(ctx, std::make_shared<ScClimate>(), "climate");
     JS_SetPropertyStr(ctx, glb, "console", gScConsole.New(ctx, _console));
     JS_SetPropertyStr(ctx, glb, "context", gScContext.New(ctx));
-    // dukglue_register_global(ctx, std::make_shared<ScDate>(), "date");
+    JS_SetPropertyStr(ctx, glb, "date", gScDate.New(ctx));
     JS_SetPropertyStr(ctx, glb, "map", gScMap.New(ctx));
     JS_SetPropertyStr(ctx, glb, "network", gScNetwork.New(ctx));
     JS_SetPropertyStr(ctx, glb, "park", gScPark.New(ctx));
