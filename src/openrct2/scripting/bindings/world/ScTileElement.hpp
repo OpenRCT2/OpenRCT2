@@ -9,7 +9,7 @@
 
 #pragma once
 
-#ifdef ENABLE_SCRIPTING
+#ifdef ENABLE_SCRIPTING_REFACTOR
 
     #include "../../../Context.h"
     #include "../../../core/Guard.hpp"
@@ -17,7 +17,6 @@
     #include "../../../ride/Track.h"
     #include "../../../world/Footpath.h"
     #include "../../../world/Scenery.h"
-    #include "../../Duktape.hpp"
     #include "../../ScriptEngine.h"
 
     #include <cstdio>
@@ -26,195 +25,194 @@
 
 namespace OpenRCT2::Scripting
 {
-    class ScTileElement
+    class ScTileElement;
+    extern ScTileElement gScTileElement;
+
+    class ScTileElement : public ScBase
     {
-    protected:
-        CoordsXY _coords;
-        TileElement* _element;
-
-    public:
-        ScTileElement(const CoordsXY& coords, TileElement* element);
-
     private:
-        std::string type_get() const;
-        void type_set(std::string value);
+        static JSValue type_get(JSContext* ctx, JSValue thisValue);
+        static JSValue type_set(JSContext* ctx, JSValue thisValue, JSValue jsValue);
 
-        uint8_t baseHeight_get() const;
-        void baseHeight_set(uint8_t newBaseHeight);
+        static JSValue baseHeight_get(JSContext* ctx, JSValue thisValue);
+        static JSValue baseHeight_set(JSContext* ctx, JSValue thisValue, JSValue jsValue);
 
-        uint16_t baseZ_get() const;
-        void baseZ_set(uint16_t value);
+        static JSValue baseZ_get(JSContext* ctx, JSValue thisValue);
+        static JSValue baseZ_set(JSContext* ctx, JSValue thisValue, JSValue jsValue);
 
-        uint8_t clearanceHeight_get() const;
-        void clearanceHeight_set(uint8_t newClearanceHeight);
+        static JSValue clearanceHeight_get(JSContext* ctx, JSValue thisValue);
+        static JSValue clearanceHeight_set(JSContext* ctx, JSValue thisValue, JSValue jsValue);
 
-        uint16_t clearanceZ_get() const;
-        void clearanceZ_set(uint16_t value);
+        static JSValue clearanceZ_get(JSContext* ctx, JSValue thisValue);
+        static JSValue clearanceZ_set(JSContext* ctx, JSValue thisValue, JSValue jsValue);
 
-        DukValue slope_get() const;
-        void slope_set(uint8_t value);
+        static JSValue slope_get(JSContext* ctx, JSValue thisValue);
+        static JSValue slope_set(JSContext* ctx, JSValue thisValue, JSValue jsValue);
 
-        DukValue waterHeight_get() const;
-        void waterHeight_set(int32_t value);
+        static JSValue waterHeight_get(JSContext* ctx, JSValue thisValue);
+        static JSValue waterHeight_set(JSContext* ctx, JSValue thisValue, JSValue jsValue);
 
-        DukValue surfaceStyle_get() const;
-        void surfaceStyle_set(uint32_t value);
+        static JSValue surfaceStyle_get(JSContext* ctx, JSValue thisValue);
+        static JSValue surfaceStyle_set(JSContext* ctx, JSValue thisValue, JSValue jsValue);
 
-        DukValue edgeStyle_get() const;
-        void edgeStyle_set(uint32_t value);
+        static JSValue edgeStyle_get(JSContext* ctx, JSValue thisValue);
+        static JSValue edgeStyle_set(JSContext* ctx, JSValue thisValue, JSValue jsValue);
 
-        DukValue grassLength_get() const;
-        void grassLength_set(uint8_t value);
+        static JSValue grassLength_get(JSContext* ctx, JSValue thisValue);
+        static JSValue grassLength_set(JSContext* ctx, JSValue thisValue, JSValue jsValue);
 
-        DukValue hasOwnership_get() const;
+        static JSValue hasOwnership_get(JSContext* ctx, JSValue thisValue);
 
-        DukValue hasConstructionRights_get();
+        static JSValue hasConstructionRights_get(JSContext* ctx, JSValue thisValue);
 
-        DukValue ownership_get() const;
-        void ownership_set(uint8_t value);
+        static JSValue ownership_get(JSContext* ctx, JSValue thisValue);
+        static JSValue ownership_set(JSContext* ctx, JSValue thisValue, JSValue jsValue);
 
-        DukValue parkFences_get() const;
-        void parkFences_set(uint8_t value);
+        static JSValue parkFences_get(JSContext* ctx, JSValue thisValue);
+        static JSValue parkFences_set(JSContext* ctx, JSValue thisValue, JSValue jsValue);
 
-        DukValue trackType_get() const;
-        void trackType_set(uint16_t value);
+        static JSValue trackType_get(JSContext* ctx, JSValue thisValue);
+        static JSValue trackType_set(JSContext* ctx, JSValue thisValue, JSValue jsValue);
 
-        DukValue rideType_get() const;
-        void rideType_set(uint16_t value);
+        static JSValue rideType_get(JSContext* ctx, JSValue thisValue);
+        static JSValue rideType_set(JSContext* ctx, JSValue thisValue, JSValue jsValue);
 
-        DukValue sequence_get() const;
-        void sequence_set(const DukValue& value);
+        static JSValue sequence_get(JSContext* ctx, JSValue thisValue);
+        static JSValue sequence_set(JSContext* ctx, JSValue thisValue, JSValue jsValue);
 
-        DukValue ride_get() const;
-        void ride_set(const DukValue& value);
+        static JSValue ride_get(JSContext* ctx, JSValue thisValue);
+        static JSValue ride_set(JSContext* ctx, JSValue thisValue, JSValue jsValue);
 
-        DukValue station_get() const;
-        void station_set(const DukValue& value);
+        static JSValue station_get(JSContext* ctx, JSValue thisValue);
+        static JSValue station_set(JSContext* ctx, JSValue thisValue, JSValue jsValue);
 
-        DukValue hasChainLift_get() const;
-        void hasChainLift_set(bool value);
+        static JSValue hasChainLift_get(JSContext* ctx, JSValue thisValue);
+        static JSValue hasChainLift_set(JSContext* ctx, JSValue thisValue, JSValue jsValue);
 
-        DukValue mazeEntry_get() const;
-        void mazeEntry_set(const DukValue& value);
+        static JSValue mazeEntry_get(JSContext* ctx, JSValue thisValue);
+        static JSValue mazeEntry_set(JSContext* ctx, JSValue thisValue, JSValue jsValue);
 
-        DukValue colourScheme_get() const;
-        void colourScheme_set(const DukValue& value);
+        static JSValue colourScheme_get(JSContext* ctx, JSValue thisValue);
+        static JSValue colourScheme_set(JSContext* ctx, JSValue thisValue, JSValue jsValue);
 
-        DukValue seatRotation_get() const;
-        void seatRotation_set(const DukValue& value);
+        static JSValue seatRotation_get(JSContext* ctx, JSValue thisValue);
+        static JSValue seatRotation_set(JSContext* ctx, JSValue thisValue, JSValue jsValue);
 
-        DukValue brakeBoosterSpeed_get() const;
-        void brakeBoosterSpeed_set(const DukValue& value);
+        static JSValue brakeBoosterSpeed_get(JSContext* ctx, JSValue thisValue);
+        static JSValue brakeBoosterSpeed_set(JSContext* ctx, JSValue thisValue, JSValue jsValue);
 
-        DukValue isInverted_get() const;
-        void isInverted_set(bool value);
+        static JSValue isInverted_get(JSContext* ctx, JSValue thisValue);
+        static JSValue isInverted_set(JSContext* ctx, JSValue thisValue, JSValue jsValue);
 
-        DukValue hasCableLift_get() const;
-        void hasCableLift_set(bool value);
+        static JSValue hasCableLift_get(JSContext* ctx, JSValue thisValue);
+        static JSValue hasCableLift_set(JSContext* ctx, JSValue thisValue, JSValue jsValue);
 
-        DukValue isHighlighted_get() const;
-        void isHighlighted_set(bool value);
+        static JSValue isHighlighted_get(JSContext* ctx, JSValue thisValue);
+        static JSValue isHighlighted_set(JSContext* ctx, JSValue thisValue, JSValue jsValue);
 
-        DukValue object_get() const;
-        void object_set(const DukValue& value);
+        static JSValue object_get(JSContext* ctx, JSValue thisValue);
+        static JSValue object_set(JSContext* ctx, JSValue thisValue, JSValue jsValue);
 
-        bool isHidden_get() const;
-        void isHidden_set(bool hide);
+        static JSValue isHidden_get(JSContext* ctx, JSValue thisValue);
+        static JSValue isHidden_set(JSContext* ctx, JSValue thisValue, JSValue jsValue);
 
-        DukValue age_get() const;
-        void age_set(uint8_t value);
+        static JSValue age_get(JSContext* ctx, JSValue thisValue);
+        static JSValue age_set(JSContext* ctx, JSValue thisValue, JSValue jsValue);
 
-        DukValue quadrant_get() const;
-        void quadrant_set(uint8_t value);
+        static JSValue quadrant_get(JSContext* ctx, JSValue thisValue);
+        static JSValue quadrant_set(JSContext* ctx, JSValue thisValue, JSValue jsValue);
 
-        uint8_t occupiedQuadrants_get() const;
-        void occupiedQuadrants_set(uint8_t value);
+        static JSValue occupiedQuadrants_get(JSContext* ctx, JSValue thisValue);
+        static JSValue occupiedQuadrants_set(JSContext* ctx, JSValue thisValue, JSValue jsValue);
 
-        bool isGhost_get() const;
-        void isGhost_set(bool value);
+        static JSValue isGhost_get(JSContext* ctx, JSValue thisValue);
+        static JSValue isGhost_set(JSContext* ctx, JSValue thisValue, JSValue jsValue);
 
-        DukValue primaryColour_get() const;
-        void primaryColour_set(uint8_t value);
+        static JSValue primaryColour_get(JSContext* ctx, JSValue thisValue);
+        static JSValue primaryColour_set(JSContext* ctx, JSValue thisValue, JSValue jsValue);
 
-        DukValue secondaryColour_get() const;
-        void secondaryColour_set(uint8_t value);
+        static JSValue secondaryColour_get(JSContext* ctx, JSValue thisValue);
+        static JSValue secondaryColour_set(JSContext* ctx, JSValue thisValue, JSValue jsValue);
 
-        DukValue tertiaryColour_get() const;
-        void tertiaryColour_set(uint8_t value);
+        static JSValue tertiaryColour_get(JSContext* ctx, JSValue thisValue);
+        static JSValue tertiaryColour_set(JSContext* ctx, JSValue thisValue, JSValue jsValue);
 
-        DukValue bannerIndex_get() const;
-        void bannerIndex_set(const DukValue& value);
+        static JSValue bannerIndex_get(JSContext* ctx, JSValue thisValue);
+        static JSValue bannerIndex_set(JSContext* ctx, JSValue thisValue, JSValue jsValue);
 
         // Deprecated in favor of separate 'edges' and 'corners' properties,
         // left here to maintain compatibility with older plugins.
-        /** @deprecated */
-        uint8_t edgesAndCorners_get() const;
-        /** @deprecated */
-        void edgesAndCorners_set(uint8_t value);
+        static JSValue edgesAndCorners_get(JSContext* ctx, JSValue thisValue);
+        static JSValue edgesAndCorners_set(JSContext* ctx, JSValue thisValue, JSValue jsValue);
 
-        DukValue edges_get() const;
-        void edges_set(uint8_t value);
+        static JSValue edges_get(JSContext* ctx, JSValue thisValue);
+        static JSValue edges_set(JSContext* ctx, JSValue thisValue, JSValue jsValue);
 
-        DukValue corners_get() const;
-        void corners_set(uint8_t value);
+        static JSValue corners_get(JSContext* ctx, JSValue thisValue);
+        static JSValue corners_set(JSContext* ctx, JSValue thisValue, JSValue jsValue);
 
-        DukValue slopeDirection_get() const;
-        void slopeDirection_set(const DukValue& value);
+        static JSValue slopeDirection_get(JSContext* ctx, JSValue thisValue);
+        static JSValue slopeDirection_set(JSContext* ctx, JSValue thisValue, JSValue jsValue);
 
-        DukValue isQueue_get() const;
-        void isQueue_set(bool value);
+        static JSValue isQueue_get(JSContext* ctx, JSValue thisValue);
+        static JSValue isQueue_set(JSContext* ctx, JSValue thisValue, JSValue jsValue);
 
-        DukValue queueBannerDirection_get() const;
-        void queueBannerDirection_set(const DukValue& value);
+        static JSValue queueBannerDirection_get(JSContext* ctx, JSValue thisValue);
+        static JSValue queueBannerDirection_set(JSContext* ctx, JSValue thisValue, JSValue jsValue);
 
-        DukValue isBlockedByVehicle_get() const;
-        void isBlockedByVehicle_set(bool value);
+        static JSValue isBlockedByVehicle_get(JSContext* ctx, JSValue thisValue);
+        static JSValue isBlockedByVehicle_set(JSContext* ctx, JSValue thisValue, JSValue jsValue);
 
-        DukValue isWide_get() const;
-        void isWide_set(bool value);
+        static JSValue isWide_get(JSContext* ctx, JSValue thisValue);
+        static JSValue isWide_set(JSContext* ctx, JSValue thisValue, JSValue jsValue);
 
-        DukValue addition_get() const;
-        void addition_set(const DukValue& value);
+        static JSValue addition_get(JSContext* ctx, JSValue thisValue);
+        static JSValue addition_set(JSContext* ctx, JSValue thisValue, JSValue jsValue);
 
-        DukValue surfaceObject_get() const;
-        void surfaceObject_set(const DukValue& value);
+        static JSValue surfaceObject_get(JSContext* ctx, JSValue thisValue);
+        static JSValue surfaceObject_set(JSContext* ctx, JSValue thisValue, JSValue jsValue);
 
-        DukValue railingsObject_get() const;
-        void railingsObject_set(const DukValue& value);
+        static JSValue railingsObject_get(JSContext* ctx, JSValue thisValue);
+        static JSValue railingsObject_set(JSContext* ctx, JSValue thisValue, JSValue jsValue);
 
-        DukValue additionStatus_get() const;
-        void additionStatus_set(const DukValue& value);
+        static JSValue additionStatus_get(JSContext* ctx, JSValue thisValue);
+        static JSValue additionStatus_set(JSContext* ctx, JSValue thisValue, JSValue jsValue);
 
-        DukValue isAdditionBroken_get() const;
-        void isAdditionBroken_set(const DukValue& value);
+        static JSValue isAdditionBroken_get(JSContext* ctx, JSValue thisValue);
+        static JSValue isAdditionBroken_set(JSContext* ctx, JSValue thisValue, JSValue jsValue);
 
-        DukValue isAdditionGhost_get() const;
-        void isAdditionGhost_set(const DukValue& value);
+        static JSValue isAdditionGhost_get(JSContext* ctx, JSValue thisValue);
+        static JSValue isAdditionGhost_set(JSContext* ctx, JSValue thisValue, JSValue jsValue);
 
-        DukValue footpathObject_get() const;
-        void footpathObject_set(const DukValue& value);
+        static JSValue footpathObject_get(JSContext* ctx, JSValue thisValue);
+        static JSValue footpathObject_set(JSContext* ctx, JSValue thisValue, JSValue jsValue);
 
-        DukValue footpathSurfaceObject_get() const;
-        void footpathSurfaceObject_set(const DukValue& value);
+        static JSValue footpathSurfaceObject_get(JSContext* ctx, JSValue thisValue);
+        static JSValue footpathSurfaceObject_set(JSContext* ctx, JSValue thisValue, JSValue jsValue);
 
-        DukValue direction_get() const;
-        void direction_set(uint8_t value);
+        static JSValue direction_get(JSContext* ctx, JSValue thisValue);
+        static JSValue direction_set(JSContext* ctx, JSValue thisValue, JSValue jsValue);
 
-        DukValue bannerText_get() const;
-        void bannerText_set(std::string value);
+        static JSValue bannerText_get(JSContext* ctx, JSValue thisValue);
+        static JSValue bannerText_set(JSContext* ctx, JSValue thisValue, JSValue jsValue);
 
-        DukValue isNoEntry_get() const;
-        void isNoEntry_set(bool value);
+        static JSValue isNoEntry_get(JSContext* ctx, JSValue thisValue);
+        static JSValue isNoEntry_set(JSContext* ctx, JSValue thisValue, JSValue jsValue);
 
-        void Invalidate();
+        static void RemoveBannerEntryIfNeeded(TileElement* element, CoordsXY& coords);
+        static void CreateBannerEntryIfNeeded(TileElement* element, CoordsXY& coords);
 
-        void RemoveBannerEntryIfNeeded();
-        void CreateBannerEntryIfNeeded();
+        static TileElement* GetTileElement(JSValue thisValue);
 
     public:
         static const LargeSceneryElement* GetOtherLargeSceneryElement(
             const CoordsXY& loc, const LargeSceneryElement* largeScenery);
-        static void Register(duk_context* ctx);
+
+        JSValue New(JSContext* ctx, TileElement* element, CoordsXY& coords);
+        void Register(JSContext* ctx);
+
+    private:
+        static void Finalize(JSRuntime* rt, JSValue thisValue);
     };
 
 } // namespace OpenRCT2::Scripting
