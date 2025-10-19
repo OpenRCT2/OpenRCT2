@@ -35268,8 +35268,8 @@
     },
     {
         "path": "track/rmc/medium_quarter_helix_left_bank_2_3.png",
-        "x": -12,
-        "y": -19,
+        "x": -8,
+        "y": -16,
         "palette": "keep"
     },
     {
@@ -35293,7 +35293,7 @@
     {
         "path": "track/rmc/medium_quarter_helix_left_bank_2_7.png",
         "x": -11,
-        "y": -29,
+        "y": -24,
         "palette": "keep"
     },
     {
@@ -35304,7 +35304,7 @@
     },
     {
         "path": "track/rmc/medium_quarter_helix_left_bank_2_9.png",
-        "x": -14,
+        "x": -25,
         "y": -25,
         "palette": "keep"
     },
@@ -35472,7 +35472,7 @@
     },
     {
         "path": "track/rmc/medium_quarter_helix_right_bank_3_1.png",
-        "x": -16,
+        "x": -24,
         "y": -9,
         "palette": "keep"
     },
@@ -35485,7 +35485,7 @@
     {
         "path": "track/rmc/medium_quarter_helix_right_bank_3_3.png",
         "x": 4,
-        "y": -19,
+        "y": -16,
         "palette": "keep"
     },
     {
@@ -35509,7 +35509,7 @@
     {
         "path": "track/rmc/medium_quarter_helix_right_bank_3_7.png",
         "x": -12,
-        "y": -29,
+        "y": -24,
         "palette": "keep"
     },
     {
