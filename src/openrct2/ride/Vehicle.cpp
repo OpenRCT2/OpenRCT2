@@ -7316,7 +7316,7 @@ bool Vehicle::UpdateTrackMotionForwards(const CarEntry* carEntry, const Ride& cu
             }
 
             // Loc6DB8A5
-            remaining_distance -= SubpositionTranslationDistances[remainingDistanceFlags];
+            remaining_distance -= Geometry::SubpositionTranslationDistances[remainingDistanceFlags];
             _vehicleCurPosition = nextVehiclePosition;
             Orientation = moveInfo->direction;
             roll = moveInfo->roll;
@@ -7629,7 +7629,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
             {
                 remainingDistanceFlags |= 4;
             }
-            remaining_distance += SubpositionTranslationDistances[remainingDistanceFlags];
+            remaining_distance += Geometry::SubpositionTranslationDistances[remainingDistanceFlags];
 
             _vehicleCurPosition = nextVehiclePosition;
             Orientation = moveInfo->direction;

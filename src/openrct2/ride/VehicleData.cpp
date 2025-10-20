@@ -795,31 +795,6 @@ const uint8_t MotionSimulatorTimeToSpriteMap[] = {
 
 const int32_t MotionSimulatorTimeToSpriteMapCount = static_cast<int32_t>(std::size(MotionSimulatorTimeToSpriteMap));
 
-/** rct2: 0x009A2930
-The distance between subposition points in a movement direction (but not distance).
-*/
-const int32_t SubpositionTranslationDistances[] = {
-    // For a base length of 8716 (0x220C) on the horizontal and 6554 (0x199A) on the vertical,
-    // use the Pythagoras theorem and round up.
-    0,      // no movement
-    8716,   // X translation
-    8716,   // Y translation
-    12327,  // XY translation
-    6554,   // Z translation
-    10905,  // XZ translation
-    10905,  // YZ translation
-    13961,  // XYZ translation
-    // For the reverser car, multiply the horizontal distance by 2.5 and the vertical distance by 4.072.
-    0,      // no movement
-    21790,  // X translation
-    21790,  // Y translation
-    30817,  // Z translation
-    16385,  // XY translation
-    27262,  // XZ translation
-    27262,  // YZ translation
-    34902,  // XYZ translation
-};
-
 /** rct2: 0x009A2970 */
 const int32_t AccelerationFromPitch[] = {
           0,    // Flat

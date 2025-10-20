@@ -17,4 +17,6 @@
 namespace OpenRCT2::RideVehicle::Geometry
 {
 
+    extern const int32_t SubpositionTranslationDistances[];
+
 } // namespace OpenRCT2::RideVehicle::Geometry

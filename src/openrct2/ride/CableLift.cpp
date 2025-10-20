@@ -21,6 +21,7 @@
 #include "Track.h"
 #include "Vehicle.h"
 #include "VehicleData.h"
+#include "VehicleGeometry.h"
 
 using namespace OpenRCT2;
 
@@ -283,7 +284,7 @@ bool Vehicle::CableLiftUpdateTrackMotionForwards()
         if (nextVehiclePosition.z != _vehicleCurPosition.z)
             remainingDistanceFlags |= (1 << 2);
 
-        remaining_distance -= SubpositionTranslationDistances[remainingDistanceFlags];
+        remaining_distance -= OpenRCT2::RideVehicle::Geometry::SubpositionTranslationDistances[remainingDistanceFlags];
         _vehicleCurPosition.x = nextVehiclePosition.x;
         _vehicleCurPosition.y = nextVehiclePosition.y;
         _vehicleCurPosition.z = nextVehiclePosition.z;
@@ -352,7 +353,7 @@ bool Vehicle::CableLiftUpdateTrackMotionBackwards()
         if (unk.z != _vehicleCurPosition.z)
             remainingDistanceFlags |= (1 << 2);
 
-        remaining_distance += SubpositionTranslationDistances[remainingDistanceFlags];
+        remaining_distance += OpenRCT2::RideVehicle::Geometry::SubpositionTranslationDistances[remainingDistanceFlags];
         _vehicleCurPosition.x = unk.x;
         _vehicleCurPosition.y = unk.y;
         _vehicleCurPosition.z = unk.z;
