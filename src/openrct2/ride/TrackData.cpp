@@ -4860,6 +4860,7 @@ namespace OpenRCT2::TrackMetaData
             | TRACK_SEQUENCE_FLAG_DISALLOW_DOORS,
         .woodenSupports = { WoodenSupportSubType::neSw },
         .metalSupports = { MetalSupportPlace::centre, true },
+        .generalSupportHeight = { 0, 32 },
     };
 
     static constexpr SequenceDescriptor kBeginStationSeq0 = {
@@ -4868,6 +4869,7 @@ namespace OpenRCT2::TrackMetaData
             | TRACK_SEQUENCE_FLAG_DISALLOW_DOORS,
         .woodenSupports = { WoodenSupportSubType::neSw },
         .metalSupports = { MetalSupportPlace::centre, true },
+        .generalSupportHeight = { 0, 32 },
     };
 
     static constexpr SequenceDescriptor kMiddleStationSeq0 = {
@@ -4876,6 +4878,7 @@ namespace OpenRCT2::TrackMetaData
             | TRACK_SEQUENCE_FLAG_DISALLOW_DOORS,
         .woodenSupports = { WoodenSupportSubType::neSw },
         .metalSupports = { MetalSupportPlace::centre, true },
+        .generalSupportHeight = { 0, 32 },
     };
 
     static constexpr SequenceDescriptor kUp25Seq0 = {
@@ -4883,6 +4886,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25Deg },
         .metalSupports = { MetalSupportPlace::centre, true },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kUp60Seq0 = {
@@ -4890,6 +4894,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up60Deg },
         .metalSupports = { MetalSupportPlace::centre, true },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kFlatToUp25Seq0 = {
@@ -4897,6 +4902,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::flatToUp25Deg },
         .metalSupports = { MetalSupportPlace::centre, true },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kUp25ToUp60Seq0 = {
@@ -4904,6 +4910,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25DegToUp60Deg },
         .metalSupports = { MetalSupportPlace::centre, true },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kUp60ToUp25Seq0 = {
@@ -4911,6 +4918,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up60DegToUp25Deg },
         .metalSupports = { MetalSupportPlace::centre, true },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kUp25ToFlatSeq0 = {
@@ -4926,6 +4934,7 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25Deg },
         .metalSupports = { MetalSupportPlace::centre, true },
         .extraSupportRotation = 2,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDown60Seq0 = {
@@ -4934,6 +4943,7 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up60Deg },
         .metalSupports = { MetalSupportPlace::centre, true },
         .extraSupportRotation = 2,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kFlatToDown25Seq0 = {
@@ -4950,6 +4960,7 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up60DegToUp25Deg },
         .metalSupports = { MetalSupportPlace::centre, true },
         .extraSupportRotation = 2,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDown60ToDown25Seq0 = {
@@ -4958,6 +4969,7 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25DegToUp60Deg },
         .metalSupports = { MetalSupportPlace::centre, true },
         .extraSupportRotation = 2,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDown25ToFlatSeq0 = {
@@ -4966,6 +4978,7 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::flatToUp25Deg },
         .metalSupports = { MetalSupportPlace::centre, true },
         .extraSupportRotation = 2,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kLeftQuarterTurn5TilesSeq0 = {
@@ -5185,6 +5198,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::flatToUp25Deg },
         .metalSupports = { MetalSupportPlace::centre, true },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kRightBankToUp25Seq0 = {
@@ -5192,6 +5206,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::flatToUp25Deg },
         .metalSupports = { MetalSupportPlace::centre, true },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kUp25ToLeftBankSeq0 = {
@@ -5230,6 +5245,7 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::flatToUp25Deg },
         .metalSupports = { MetalSupportPlace::centre, true },
         .extraSupportRotation = 2,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDown25ToRightBankSeq0 = {
@@ -5238,6 +5254,7 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::flatToUp25Deg },
         .metalSupports = { MetalSupportPlace::centre, true },
         .extraSupportRotation = 2,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kLeftBankSeq0 = {
@@ -5259,28 +5276,33 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b0010,
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25Deg },
         .metalSupports = { MetalSupportPlace::centre },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kLeftQuarterTurn5TilesUp25Seq1 = {
         .clearance = { 0, -32, 16, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1100,
+        .generalSupportHeight = { 40 },
     };
 
     static constexpr SequenceDescriptor kLeftQuarterTurn5TilesUp25Seq2 = {
         .clearance = { -32, 0, 16, 16, { 0b0111, 0b0100 }, 0 },
         .allowedWallEdges = 0b0011,
         .woodenSupports = { WoodenSupportSubType::corner3 },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kLeftQuarterTurn5TilesUp25Seq3 = {
         .clearance = { -32, -32, 24, 16, { 0b1101, 0 }, 0 },
         .woodenSupports = { WoodenSupportSubType::corner1 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kLeftQuarterTurn5TilesUp25Seq4 = {
         .clearance = { -32, -64, 48, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1100,
         .extraSupportRotation = -1,
+        .generalSupportHeight = { 40 },
     };
 
     static constexpr SequenceDescriptor kLeftQuarterTurn5TilesUp25Seq5 = {
@@ -5288,6 +5310,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b0011,
         .woodenSupports = { WoodenSupportSubType::corner0 },
         .extraSupportRotation = -1,
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kLeftQuarterTurn5TilesUp25Seq6 = {
@@ -5296,6 +5319,7 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25Deg },
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = -1,
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kRightQuarterTurn5TilesUp25Seq0 = {
@@ -5303,28 +5327,33 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1000,
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25Deg },
         .metalSupports = { MetalSupportPlace::centre },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kRightQuarterTurn5TilesUp25Seq1 = {
         .clearance = { 0, 32, 16, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
+        .generalSupportHeight = { 40 },
     };
 
     static constexpr SequenceDescriptor kRightQuarterTurn5TilesUp25Seq2 = {
         .clearance = { -32, 0, 16, 16, { 0b1011, 0b1000 }, 0 },
         .allowedWallEdges = 0b1001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kRightQuarterTurn5TilesUp25Seq3 = {
         .clearance = { -32, 32, 24, 16, { 0b1110, 0 }, 0 },
         .woodenSupports = { WoodenSupportSubType::corner0 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kRightQuarterTurn5TilesUp25Seq4 = {
         .clearance = { -32, 64, 48, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
         .extraSupportRotation = 1,
+        .generalSupportHeight = { 40 },
     };
 
     static constexpr SequenceDescriptor kRightQuarterTurn5TilesUp25Seq5 = {
@@ -5332,6 +5361,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1001,
         .woodenSupports = { WoodenSupportSubType::corner1 },
         .extraSupportRotation = 1,
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kRightQuarterTurn5TilesUp25Seq6 = {
@@ -5340,6 +5370,7 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25Deg },
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = 1,
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kLeftQuarterTurn5TilesDown25Seq0 = {
@@ -5348,28 +5379,33 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25Deg },
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = 2,
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kLeftQuarterTurn5TilesDown25Seq1 = {
         .clearance = { 0, -32, 48, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1100,
+        .generalSupportHeight = { 40 },
     };
 
     static constexpr SequenceDescriptor kLeftQuarterTurn5TilesDown25Seq2 = {
         .clearance = { -32, 0, 32, 16, { 0b0111, 0b0001 }, 0 },
         .allowedWallEdges = 0b0011,
         .woodenSupports = { WoodenSupportSubType::corner3 },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kLeftQuarterTurn5TilesDown25Seq3 = {
         .clearance = { -32, -32, 24, 16, { 0b1101, 0 }, 0 },
         .woodenSupports = { WoodenSupportSubType::corner1 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kLeftQuarterTurn5TilesDown25Seq4 = {
         .clearance = { -32, -64, 16, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1100,
         .extraSupportRotation = -1,
+        .generalSupportHeight = { 40 },
     };
 
     static constexpr SequenceDescriptor kLeftQuarterTurn5TilesDown25Seq5 = {
@@ -5377,6 +5413,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b0011,
         .woodenSupports = { WoodenSupportSubType::corner3 },
         .extraSupportRotation = -1,
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kLeftQuarterTurn5TilesDown25Seq6 = {
@@ -5385,6 +5422,7 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25Deg },
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = -1,
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kRightQuarterTurn5TilesDown25Seq0 = {
@@ -5393,28 +5431,33 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25Deg },
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = 2,
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kRightQuarterTurn5TilesDown25Seq1 = {
         .clearance = { 0, 32, 48, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
+        .generalSupportHeight = { 40 },
     };
 
     static constexpr SequenceDescriptor kRightQuarterTurn5TilesDown25Seq2 = {
         .clearance = { -32, 0, 32, 16, { 0b1011, 0b0010 }, 0 },
         .allowedWallEdges = 0b1001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kRightQuarterTurn5TilesDown25Seq3 = {
         .clearance = { -32, 32, 24, 16, { 0b1110, 0 }, 0 },
         .woodenSupports = { WoodenSupportSubType::corner0 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kRightQuarterTurn5TilesDown25Seq4 = {
         .clearance = { -32, 64, 16, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
         .extraSupportRotation = 1,
+        .generalSupportHeight = { 40 },
     };
 
     static constexpr SequenceDescriptor kRightQuarterTurn5TilesDown25Seq5 = {
@@ -5422,6 +5465,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
         .extraSupportRotation = 1,
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kRightQuarterTurn5TilesDown25Seq6 = {
@@ -5430,6 +5474,7 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25Deg },
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = 1,
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kSBendLeftSeq0 = {
@@ -5484,16 +5529,19 @@ namespace OpenRCT2::TrackMetaData
         .clearance = { 0, 0, 0, 16, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b0010,
         .metalSupports = { MetalSupportPlace::centre },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kLeftVerticalLoopSeq1 = {
         .clearance = { -32, 0, 16, 16, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b0010,
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kLeftVerticalLoopSeq2 = {
         .clearance = { -64, 0, 32, 96, { 0b0010, 0 }, 0 },
         .allowedWallEdges = 0b0011,
+        .generalSupportHeight = { 48 },
     };
 
     static constexpr SequenceDescriptor kLeftVerticalLoopSeq3 = {
@@ -5502,10 +5550,12 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kLeftVerticalLoopSeq4 = {
         .clearance = { -32, -32, 120, 0, { 0b0000, 0 }, 0 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kLeftVerticalLoopSeq5 = {
         .clearance = { 0, 0, 120, 0, { 0b0000, 0 }, 0 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kLeftVerticalLoopSeq6 = {
@@ -5515,33 +5565,39 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftVerticalLoopSeq7 = {
         .clearance = { 32, -32, 32, 96, { 0b1000, 0 }, 0 },
         .allowedWallEdges = 0b1100,
+        .generalSupportHeight = { 48 },
     };
 
     static constexpr SequenceDescriptor kLeftVerticalLoopSeq8 = {
         .clearance = { 0, -32, 16, 16, { 0b1111, 0b0011 }, 0 },
         .allowedWallEdges = 0b1000,
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kLeftVerticalLoopSeq9 = {
         .clearance = { -32, -32, 0, 16, { 0b1111, 0b0011 }, 0 },
         .allowedWallEdges = 0b1000,
         .metalSupports = { MetalSupportPlace::centre },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kRightVerticalLoopSeq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b1000,
         .metalSupports = { MetalSupportPlace::centre },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kRightVerticalLoopSeq1 = {
         .clearance = { -32, 0, 16, 16, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b1000,
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kRightVerticalLoopSeq2 = {
         .clearance = { -64, 0, 32, 96, { 0b0001, 0 }, 0 },
         .allowedWallEdges = 0b1001,
+        .generalSupportHeight = { 48 },
     };
 
     static constexpr SequenceDescriptor kRightVerticalLoopSeq3 = {
@@ -5550,10 +5606,12 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kRightVerticalLoopSeq4 = {
         .clearance = { -32, 32, 120, 0, { 0b0000, 0 }, 0 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kRightVerticalLoopSeq5 = {
         .clearance = { 0, 0, 120, 0, { 0b0000, 0 }, 0 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kRightVerticalLoopSeq6 = {
@@ -5563,17 +5621,20 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightVerticalLoopSeq7 = {
         .clearance = { 32, 32, 32, 96, { 0b0100, 0 }, 0 },
         .allowedWallEdges = 0b0110,
+        .generalSupportHeight = { 48 },
     };
 
     static constexpr SequenceDescriptor kRightVerticalLoopSeq8 = {
         .clearance = { 0, 32, 16, 16, { 0b1111, 0b0011 }, 0 },
         .allowedWallEdges = 0b0010,
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kRightVerticalLoopSeq9 = {
         .clearance = { -32, 32, 0, 16, { 0b1111, 0b0011 }, 0 },
         .allowedWallEdges = 0b0010,
         .metalSupports = { MetalSupportPlace::centre },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kLeftQuarterTurn3TilesSeq0 = {
@@ -5681,16 +5742,19 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b0010,
         .woodenSupports = { WoodenSupportSubType::corner3 },
         .metalSupports = { MetalSupportPlace::centre },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kLeftQuarterTurn3TilesUp25Seq1 = {
         .clearance = { 0, -32, 16, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1100,
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kLeftQuarterTurn3TilesUp25Seq2 = {
         .clearance = { -32, 0, 16, 0, { 0b0010, 0 }, 0 },
         .allowedWallEdges = 0b0011,
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kLeftQuarterTurn3TilesUp25Seq3 = {
@@ -5699,6 +5763,7 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::corner0 },
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = -1,
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kRightQuarterTurn3TilesUp25Seq0 = {
@@ -5706,16 +5771,19 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1000,
         .woodenSupports = { WoodenSupportSubType::corner3 },
         .metalSupports = { MetalSupportPlace::centre },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kRightQuarterTurn3TilesUp25Seq1 = {
         .clearance = { 0, 32, 16, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kRightQuarterTurn3TilesUp25Seq2 = {
         .clearance = { -32, 0, 16, 0, { 0b0001, 0 }, 0 },
         .allowedWallEdges = 0b1001,
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kRightQuarterTurn3TilesUp25Seq3 = {
@@ -5724,6 +5792,7 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::corner2 },
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = 1,
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kLeftQuarterTurn3TilesDown25Seq0 = {
@@ -5731,16 +5800,19 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b0010,
         .woodenSupports = { WoodenSupportSubType::corner3 },
         .metalSupports = { MetalSupportPlace::centre },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kLeftQuarterTurn3TilesDown25Seq1 = {
         .clearance = { 0, -32, 16, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1100,
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kLeftQuarterTurn3TilesDown25Seq2 = {
         .clearance = { -32, 0, 16, 0, { 0b0010, 0 }, 0 },
         .allowedWallEdges = 0b0011,
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kLeftQuarterTurn3TilesDown25Seq3 = {
@@ -5749,6 +5821,7 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::corner0 },
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = -1,
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kRightQuarterTurn3TilesDown25Seq0 = {
@@ -5756,16 +5829,19 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1000,
         .woodenSupports = { WoodenSupportSubType::corner3 },
         .metalSupports = { MetalSupportPlace::centre },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kRightQuarterTurn3TilesDown25Seq1 = {
         .clearance = { 0, 32, 16, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kRightQuarterTurn3TilesDown25Seq2 = {
         .clearance = { -32, 0, 16, 0, { 0b0001, 0 }, 0 },
         .allowedWallEdges = 0b1001,
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kRightQuarterTurn3TilesDown25Seq3 = {
@@ -5774,6 +5850,7 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::corner2 },
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = 1,
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kLeftQuarterTurn1TileSeq0 = {
@@ -5799,6 +5876,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftTwistDownToUpSeq1 = {
         .clearance = { -32, 0, 0, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
+        .generalSupportHeight = { -8 },
     };
 
     static constexpr SequenceDescriptor kLeftTwistDownToUpSeq2 = {
@@ -5815,6 +5893,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightTwistDownToUpSeq1 = {
         .clearance = { -32, 0, 0, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
+        .generalSupportHeight = { -8 },
     };
 
     static constexpr SequenceDescriptor kRightTwistDownToUpSeq2 = {
@@ -5830,6 +5909,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftTwistUpToDownSeq1 = {
         .clearance = { -32, 0, -16, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
+        .generalSupportHeight = { -8 },
     };
 
     static constexpr SequenceDescriptor kLeftTwistUpToDownSeq2 = {
@@ -5846,6 +5926,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightTwistUpToDownSeq1 = {
         .clearance = { -32, 0, -16, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
+        .generalSupportHeight = { -8 },
     };
 
     static constexpr SequenceDescriptor kRightTwistUpToDownSeq2 = {
@@ -5858,17 +5939,20 @@ namespace OpenRCT2::TrackMetaData
         .clearance = { 0, 0, 0, 16, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b1010,
         .metalSupports = { MetalSupportPlace::centre },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kHalfLoopUpSeq1 = {
         .clearance = { -32, 0, 16, 16, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b1010,
         .metalSupports = { MetalSupportPlace::centre },
+        .generalSupportHeight = { 32 },
     };
 
     static constexpr SequenceDescriptor kHalfLoopUpSeq2 = {
         .clearance = { -64, 0, 32, 96, { 0b0011, 0 }, 0 },
         .allowedWallEdges = 0b1011,
+        .generalSupportHeight = { 48 },
     };
 
     static constexpr SequenceDescriptor kHalfLoopUpSeq3 = {
@@ -5882,18 +5966,21 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kHalfLoopDownSeq1 = {
         .clearance = { -32, 0, -120, 96, { 0b0011, 0 }, 0 },
         .allowedWallEdges = 0b1011,
+        .generalSupportHeight = { 48 },
     };
 
     static constexpr SequenceDescriptor kHalfLoopDownSeq2 = {
         .clearance = { 0, 0, -136, 16, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b1010,
         .metalSupports = { MetalSupportPlace::centre },
+        .generalSupportHeight = { 32 },
     };
 
     static constexpr SequenceDescriptor kHalfLoopDownSeq3 = {
         .clearance = { 32, 0, -152, 16, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b1010,
         .metalSupports = { MetalSupportPlace::centre },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kLeftCorkscrewUpSeq0 = {
@@ -5905,6 +5992,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftCorkscrewUpSeq1 = {
         .clearance = { -32, 0, 24, 32, { 0b0111, 0 }, 0 },
         .allowedWallEdges = 0b0011,
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kLeftCorkscrewUpSeq2 = {
@@ -5922,6 +6010,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightCorkscrewUpSeq1 = {
         .clearance = { -32, 0, 24, 32, { 0b1011, 0 }, 0 },
         .allowedWallEdges = 0b1001,
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kRightCorkscrewUpSeq2 = {
@@ -5939,6 +6028,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftCorkscrewDownSeq1 = {
         .clearance = { -32, 0, -56, 32, { 0b0111, 0 }, 0 },
         .allowedWallEdges = 0b0011,
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kLeftCorkscrewDownSeq2 = {
@@ -5956,6 +6046,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightCorkscrewDownSeq1 = {
         .clearance = { -32, 0, -56, 32, { 0b1011, 0 }, 0 },
         .allowedWallEdges = 0b1001,
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kRightCorkscrewDownSeq2 = {
@@ -5969,6 +6060,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::flatToUp60Deg },
         .metalSupports = { MetalSupportPlace::centre, true },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kUp60ToFlatSeq0 = {
@@ -5976,6 +6068,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up60DegToFlat },
         .metalSupports = { MetalSupportPlace::centre, true },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kFlatToDown60Seq0 = {
@@ -5984,6 +6077,7 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up60DegToFlat },
         .metalSupports = { MetalSupportPlace::centre, true },
         .extraSupportRotation = -2,
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kDown60ToFlatSeq0 = {
@@ -5992,68 +6086,75 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::flatToUp60Deg },
         .metalSupports = { MetalSupportPlace::centre, true },
         .extraSupportRotation = 2,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kTowerBaseSeq0 = {
         .clearance = { 0, 0, 0, 64, { 0b1111, 0 }, 0 },
-        .flags = TRACK_SEQUENCE_FLAG_ORIGIN,
+        .flags = TRACK_SEQUENCE_FLAG_ORIGIN | TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT,
         .woodenSupports = { WoodenSupportSubType::neSw },
     };
 
     static constexpr SequenceDescriptor kTowerBaseSeq1 = {
         .clearance = { -32, -32, 0, 0, { 0b1111, 0 }, 0 },
-        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_3,
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_3
+            | TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT,
         .woodenSupports = { WoodenSupportSubType::neSw },
     };
 
     static constexpr SequenceDescriptor kTowerBaseSeq2 = {
         .clearance = { -32, 0, 0, 0, { 0b1111, 0 }, 0 },
-        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0,
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT,
         .woodenSupports = { WoodenSupportSubType::neSw },
     };
 
     static constexpr SequenceDescriptor kTowerBaseSeq3 = {
         .clearance = { -32, 32, 0, 0, { 0b1111, 0 }, 0 },
-        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_1,
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_1
+            | TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT,
         .woodenSupports = { WoodenSupportSubType::neSw },
     };
 
     static constexpr SequenceDescriptor kTowerBaseSeq4 = {
         .clearance = { 0, -32, 0, 0, { 0b1111, 0 }, 0 },
-        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_3,
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT,
         .woodenSupports = { WoodenSupportSubType::neSw },
     };
 
     static constexpr SequenceDescriptor kTowerBaseSeq5 = {
         .clearance = { 0, 32, 0, 0, { 0b1111, 0 }, 0 },
-        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1,
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT,
         .woodenSupports = { WoodenSupportSubType::neSw },
     };
 
     static constexpr SequenceDescriptor kTowerBaseSeq6 = {
         .clearance = { 32, -32, 0, 0, { 0b1111, 0 }, 0 },
-        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_2 | TRACK_SEQUENCE_FLAG_DIRECTION_3,
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_2 | TRACK_SEQUENCE_FLAG_DIRECTION_3
+            | TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT,
         .woodenSupports = { WoodenSupportSubType::neSw },
     };
 
     static constexpr SequenceDescriptor kTowerBaseSeq7 = {
         .clearance = { 32, 32, 0, 0, { 0b1111, 0 }, 0 },
-        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_2,
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_2
+            | TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT,
         .woodenSupports = { WoodenSupportSubType::neSw },
     };
 
     static constexpr SequenceDescriptor kTowerBaseSeq8 = {
         .clearance = { 32, 0, 0, 0, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_1 },
-        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_2,
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_2 | TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT,
         .woodenSupports = { WoodenSupportSubType::neSw },
     };
 
     static constexpr SequenceDescriptor kTowerSectionSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .flags = TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT,
     };
 
     static constexpr SequenceDescriptor kTowerSectionSeq1 = {
         .clearance = { 32, 0, 0, 0, { 0b0000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 | RCT_PREVIEW_TRACK_FLAG_1 },
+        .flags = TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT,
     };
 
     static constexpr SequenceDescriptor kFlatCoveredSeq0 = {
@@ -6066,30 +6167,35 @@ namespace OpenRCT2::TrackMetaData
         .clearance = { 0, 0, 0, 16, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b1010,
         .metalSupports = { MetalSupportPlace::centre, true },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kUp60CoveredSeq0 = {
         .clearance = { 0, 0, 0, 64, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b1010,
         .metalSupports = { MetalSupportPlace::centre, true },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kFlatToUp25CoveredSeq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
         .metalSupports = { MetalSupportPlace::centre, true },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kUp25ToUp60CoveredSeq0 = {
         .clearance = { 0, 0, 0, 32, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b1010,
         .metalSupports = { MetalSupportPlace::centre, true },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kUp60ToUp25CoveredSeq0 = {
         .clearance = { 0, 0, 0, 32, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b1010,
         .metalSupports = { MetalSupportPlace::centre, true },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kUp25ToFlatCoveredSeq0 = {
@@ -6102,12 +6208,14 @@ namespace OpenRCT2::TrackMetaData
         .clearance = { 0, 0, 0, 16, { 0b1111, 0b0011 }, 0 },
         .allowedWallEdges = 0b1010,
         .metalSupports = { MetalSupportPlace::centre, true },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDown60CoveredSeq0 = {
         .clearance = { 0, 0, 0, 64, { 0b1111, 0b0011 }, 0 },
         .allowedWallEdges = 0b1010,
         .metalSupports = { MetalSupportPlace::centre, true },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kFlatToDown25CoveredSeq0 = {
@@ -6120,18 +6228,21 @@ namespace OpenRCT2::TrackMetaData
         .clearance = { 0, 0, 0, 32, { 0b1111, 0b0011 }, 0 },
         .allowedWallEdges = 0b1010,
         .metalSupports = { MetalSupportPlace::centre, true },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDown60ToDown25CoveredSeq0 = {
         .clearance = { 0, 0, 0, 32, { 0b1111, 0b0011 }, 0 },
         .allowedWallEdges = 0b1010,
         .metalSupports = { MetalSupportPlace::centre, true },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDown25ToFlatCoveredSeq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
         .metalSupports = { MetalSupportPlace::centre, true },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kLeftQuarterTurn5TilesCoveredSeq0 = {
@@ -6326,17 +6437,20 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::corner2 },
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = -1,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kLeftHalfBankedHelixUpSmallSeq5 = {
         .clearance = { 0, -64, 8, 0, { 0b0100, 0b0000 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
         .woodenSupports = { WoodenSupportSubType::corner0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kLeftHalfBankedHelixUpSmallSeq6 = {
         .clearance = { -32, -96, 8, 4, { 0b0001, 0 }, 0 },
         .allowedWallEdges = 0b1001,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kLeftHalfBankedHelixUpSmallSeq7 = {
@@ -6345,6 +6459,7 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::corner2 },
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = -2,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kRightHalfBankedHelixUpSmallSeq0 = {
@@ -6379,17 +6494,20 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::corner3 },
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = 1,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kRightHalfBankedHelixUpSmallSeq5 = {
         .clearance = { 0, 64, 8, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1100,
         .woodenSupports = { WoodenSupportSubType::corner1 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kRightHalfBankedHelixUpSmallSeq6 = {
         .clearance = { -32, 96, 8, 4, { 0b0010, 0 }, 0 },
         .allowedWallEdges = 0b0011,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kRightHalfBankedHelixUpSmallSeq7 = {
@@ -6398,6 +6516,7 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::corner3 },
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = 2,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kLeftHalfBankedHelixDownSmallSeq0 = {
@@ -6405,17 +6524,20 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b0010,
         .woodenSupports = { WoodenSupportSubType::corner2 },
         .metalSupports = { MetalSupportPlace::centre },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kLeftHalfBankedHelixDownSmallSeq1 = {
         .clearance = { 0, -32, 8, 4, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1100,
         .woodenSupports = { WoodenSupportSubType::corner0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kLeftHalfBankedHelixDownSmallSeq2 = {
         .clearance = { -32, 0, 8, 0, { 0b0010, 0 }, 0 },
         .allowedWallEdges = 0b0011,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kLeftHalfBankedHelixDownSmallSeq3 = {
@@ -6424,6 +6546,7 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::corner2 },
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = -1,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kLeftHalfBankedHelixDownSmallSeq4 = {
@@ -6458,17 +6581,20 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1000,
         .woodenSupports = { WoodenSupportSubType::corner3 },
         .metalSupports = { MetalSupportPlace::centre },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kRightHalfBankedHelixDownSmallSeq1 = {
         .clearance = { 0, 32, 8, 4, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
         .woodenSupports = { WoodenSupportSubType::corner1 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kRightHalfBankedHelixDownSmallSeq2 = {
         .clearance = { -32, 0, 8, 0, { 0b0001, 0 }, 0 },
         .allowedWallEdges = 0b1001,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kRightHalfBankedHelixDownSmallSeq3 = {
@@ -6477,6 +6603,7 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::corner3 },
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = 1,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kRightHalfBankedHelixDownSmallSeq4 = {
@@ -6554,33 +6681,39 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::nwSe },
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = -1,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kLeftHalfBankedHelixUpLargeSeq8 = {
         .clearance = { -32, -96, 8, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kLeftHalfBankedHelixUpLargeSeq9 = {
         .clearance = { -64, -128, 8, 0, { 0b1011, 0 }, 0 },
         .allowedWallEdges = 0b1001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kLeftHalfBankedHelixUpLargeSeq10 = {
         .clearance = { -32, -128, 8, 0, { 0b1110, 0 }, 0 },
         .woodenSupports = { WoodenSupportSubType::corner0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kLeftHalfBankedHelixUpLargeSeq11 = {
         .clearance = { 0, -128, 8, 4, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kLeftHalfBankedHelixUpLargeSeq12 = {
         .clearance = { -32, -160, 8, 4, { 0b1011, 0 }, 0 },
         .allowedWallEdges = 0b1001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kLeftHalfBankedHelixUpLargeSeq13 = {
@@ -6589,6 +6722,7 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::neSw },
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = -2,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kRightHalfBankedHelixUpLargeSeq0 = {
@@ -6639,33 +6773,39 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::nwSe },
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = 1,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kRightHalfBankedHelixUpLargeSeq8 = {
         .clearance = { -32, 96, 8, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1100,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kRightHalfBankedHelixUpLargeSeq9 = {
         .clearance = { -64, 128, 8, 0, { 0b0111, 0 }, 0 },
         .allowedWallEdges = 0b0011,
         .woodenSupports = { WoodenSupportSubType::corner3 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kRightHalfBankedHelixUpLargeSeq10 = {
         .clearance = { -32, 128, 8, 0, { 0b1101, 0 }, 0 },
         .woodenSupports = { WoodenSupportSubType::corner1 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kRightHalfBankedHelixUpLargeSeq11 = {
         .clearance = { 0, 128, 8, 4, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1100,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kRightHalfBankedHelixUpLargeSeq12 = {
         .clearance = { -32, 160, 8, 4, { 0b0111, 0 }, 0 },
         .allowedWallEdges = 0b0011,
         .woodenSupports = { WoodenSupportSubType::corner3 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kRightHalfBankedHelixUpLargeSeq13 = {
@@ -6674,6 +6814,7 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::neSw },
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = 2,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kLeftHalfBankedHelixDownLargeSeq0 = {
@@ -6681,33 +6822,39 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b0010,
         .woodenSupports = { WoodenSupportSubType::neSw },
         .metalSupports = { MetalSupportPlace::centre },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kLeftHalfBankedHelixDownLargeSeq1 = {
         .clearance = { 0, -32, 8, 4, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1100,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kLeftHalfBankedHelixDownLargeSeq2 = {
         .clearance = { -32, 0, 8, 4, { 0b0111, 0 }, 0 },
         .allowedWallEdges = 0b0011,
         .woodenSupports = { WoodenSupportSubType::corner2 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kLeftHalfBankedHelixDownLargeSeq3 = {
         .clearance = { -32, -32, 8, 0, { 0b1101, 0 }, 0 },
         .woodenSupports = { WoodenSupportSubType::corner0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kLeftHalfBankedHelixDownLargeSeq4 = {
         .clearance = { -32, -64, 8, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1100,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kLeftHalfBankedHelixDownLargeSeq5 = {
         .clearance = { -64, -32, 8, 0, { 0b0111, 0 }, 0 },
         .allowedWallEdges = 0b0011,
         .woodenSupports = { WoodenSupportSubType::corner2 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kLeftHalfBankedHelixDownLargeSeq6 = {
@@ -6716,6 +6863,7 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::nwSe },
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = -1,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kLeftHalfBankedHelixDownLargeSeq7 = {
@@ -6766,33 +6914,39 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1000,
         .woodenSupports = { WoodenSupportSubType::neSw },
         .metalSupports = { MetalSupportPlace::centre },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kRightHalfBankedHelixDownLargeSeq1 = {
         .clearance = { 0, 32, 8, 4, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kRightHalfBankedHelixDownLargeSeq2 = {
         .clearance = { -32, 0, 8, 4, { 0b1011, 0 }, 0 },
         .allowedWallEdges = 0b1001,
         .woodenSupports = { WoodenSupportSubType::corner3 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kRightHalfBankedHelixDownLargeSeq3 = {
         .clearance = { -32, 32, 8, 0, { 0b1110, 0 }, 0 },
         .woodenSupports = { WoodenSupportSubType::corner1 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kRightHalfBankedHelixDownLargeSeq4 = {
         .clearance = { -32, 64, 8, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kRightHalfBankedHelixDownLargeSeq5 = {
         .clearance = { -64, 32, 8, 0, { 0b1011, 0 }, 0 },
         .allowedWallEdges = 0b1001,
         .woodenSupports = { WoodenSupportSubType::corner3 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kRightHalfBankedHelixDownLargeSeq6 = {
@@ -6801,6 +6955,7 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::nwSe },
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = 1,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kRightHalfBankedHelixDownLargeSeq7 = {
@@ -6851,6 +7006,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b0011,
         .woodenSupports = { WoodenSupportSubType::corner3 },
         .metalSupports = { MetalSupportPlace::centre },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kRightQuarterTurn1TileUp60Seq0 = {
@@ -6858,6 +7014,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
         .metalSupports = { MetalSupportPlace::centre },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kLeftQuarterTurn1TileDown60Seq0 = {
@@ -6865,6 +7022,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b0011,
         .woodenSupports = { WoodenSupportSubType::corner2 },
         .metalSupports = { MetalSupportPlace::centre },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kRightQuarterTurn1TileDown60Seq0 = {
@@ -6872,6 +7030,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1001,
         .woodenSupports = { WoodenSupportSubType::corner3 },
         .metalSupports = { MetalSupportPlace::centre },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kBrakesSeq0 = {
@@ -6993,11 +7152,13 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftQuarterBankedHelixLargeUpSeq4 = {
         .clearance = { -32, -64, 0, 12, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1100,
+        .generalSupportHeight = { -8 },
     };
 
     static constexpr SequenceDescriptor kLeftQuarterBankedHelixLargeUpSeq5 = {
         .clearance = { -64, -32, 0, 12, { 0b0111, 0 }, 0 },
         .allowedWallEdges = 0b0011,
+        .generalSupportHeight = { -8 },
     };
 
     static constexpr SequenceDescriptor kLeftQuarterBankedHelixLargeUpSeq6 = {
@@ -7005,6 +7166,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b0001,
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = -1,
+        .generalSupportHeight = { -8 },
     };
 
     static constexpr SequenceDescriptor kRightQuarterBankedHelixLargeUpSeq0 = {
@@ -7030,11 +7192,13 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightQuarterBankedHelixLargeUpSeq4 = {
         .clearance = { -32, 64, 0, 12, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
+        .generalSupportHeight = { -8 },
     };
 
     static constexpr SequenceDescriptor kRightQuarterBankedHelixLargeUpSeq5 = {
         .clearance = { -64, 32, 0, 12, { 0b1011, 0 }, 0 },
         .allowedWallEdges = 0b1001,
+        .generalSupportHeight = { -8 },
     };
 
     static constexpr SequenceDescriptor kRightQuarterBankedHelixLargeUpSeq6 = {
@@ -7042,22 +7206,26 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b0001,
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = 1,
+        .generalSupportHeight = { -8 },
     };
 
     static constexpr SequenceDescriptor kLeftQuarterBankedHelixLargeDownSeq0 = {
         .clearance = { 0, 0, 0, 12, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
         .metalSupports = { MetalSupportPlace::centre },
+        .generalSupportHeight = { -8 },
     };
 
     static constexpr SequenceDescriptor kLeftQuarterBankedHelixLargeDownSeq1 = {
         .clearance = { 0, -32, 0, 12, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1100,
+        .generalSupportHeight = { -8 },
     };
 
     static constexpr SequenceDescriptor kLeftQuarterBankedHelixLargeDownSeq2 = {
         .clearance = { -32, 0, 0, 12, { 0b0111, 0 }, 0 },
         .allowedWallEdges = 0b0011,
+        .generalSupportHeight = { -8 },
     };
 
     static constexpr SequenceDescriptor kLeftQuarterBankedHelixLargeDownSeq3 = {
@@ -7085,16 +7253,19 @@ namespace OpenRCT2::TrackMetaData
         .clearance = { 0, 0, 0, 12, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1000,
         .metalSupports = { MetalSupportPlace::centre },
+        .generalSupportHeight = { -8 },
     };
 
     static constexpr SequenceDescriptor kRightQuarterBankedHelixLargeDownSeq1 = {
         .clearance = { 0, 32, 0, 12, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
+        .generalSupportHeight = { -8 },
     };
 
     static constexpr SequenceDescriptor kRightQuarterBankedHelixLargeDownSeq2 = {
         .clearance = { -32, 0, 0, 12, { 0b1011, 0 }, 0 },
         .allowedWallEdges = 0b1001,
+        .generalSupportHeight = { -8 },
     };
 
     static constexpr SequenceDescriptor kRightQuarterBankedHelixLargeDownSeq3 = {
@@ -7141,11 +7312,13 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftQuarterHelixLargeUpSeq4 = {
         .clearance = { -32, -64, 0, 12, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1100,
+        .generalSupportHeight = { -8 },
     };
 
     static constexpr SequenceDescriptor kLeftQuarterHelixLargeUpSeq5 = {
         .clearance = { -64, -32, 0, 12, { 0b0111, 0 }, 0 },
         .allowedWallEdges = 0b0011,
+        .generalSupportHeight = { -8 },
     };
 
     static constexpr SequenceDescriptor kLeftQuarterHelixLargeUpSeq6 = {
@@ -7153,6 +7326,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b0001,
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = -1,
+        .generalSupportHeight = { -8 },
     };
 
     static constexpr SequenceDescriptor kRightQuarterHelixLargeUpSeq0 = {
@@ -7178,11 +7352,13 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightQuarterHelixLargeUpSeq4 = {
         .clearance = { -32, 64, 0, 12, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
+        .generalSupportHeight = { -8 },
     };
 
     static constexpr SequenceDescriptor kRightQuarterHelixLargeUpSeq5 = {
         .clearance = { -64, 32, 0, 12, { 0b1011, 0 }, 0 },
         .allowedWallEdges = 0b1001,
+        .generalSupportHeight = { -8 },
     };
 
     static constexpr SequenceDescriptor kRightQuarterHelixLargeUpSeq6 = {
@@ -7190,22 +7366,26 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b0001,
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = 1,
+        .generalSupportHeight = { -8 },
     };
 
     static constexpr SequenceDescriptor kLeftQuarterHelixLargeDownSeq0 = {
         .clearance = { 0, 0, 0, 12, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
         .metalSupports = { MetalSupportPlace::centre },
+        .generalSupportHeight = { -8 },
     };
 
     static constexpr SequenceDescriptor kLeftQuarterHelixLargeDownSeq1 = {
         .clearance = { 0, -32, 0, 12, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1100,
+        .generalSupportHeight = { -8 },
     };
 
     static constexpr SequenceDescriptor kLeftQuarterHelixLargeDownSeq2 = {
         .clearance = { -32, 0, 0, 12, { 0b0111, 0 }, 0 },
         .allowedWallEdges = 0b0011,
+        .generalSupportHeight = { -8 },
     };
 
     static constexpr SequenceDescriptor kLeftQuarterHelixLargeDownSeq3 = {
@@ -7233,16 +7413,19 @@ namespace OpenRCT2::TrackMetaData
         .clearance = { 0, 0, 0, 12, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1000,
         .metalSupports = { MetalSupportPlace::centre },
+        .generalSupportHeight = { -8 },
     };
 
     static constexpr SequenceDescriptor kRightQuarterHelixLargeDownSeq1 = {
         .clearance = { 0, 32, 0, 12, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
+        .generalSupportHeight = { -8 },
     };
 
     static constexpr SequenceDescriptor kRightQuarterHelixLargeDownSeq2 = {
         .clearance = { -32, 0, 0, 12, { 0b1011, 0 }, 0 },
         .allowedWallEdges = 0b1001,
+        .generalSupportHeight = { -8 },
     };
 
     static constexpr SequenceDescriptor kRightQuarterHelixLargeDownSeq3 = {
@@ -7271,6 +7454,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25Deg },
         .metalSupports = { MetalSupportPlace::centre, true },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kUp25RightBankedSeq0 = {
@@ -7278,6 +7462,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25Deg },
         .metalSupports = { MetalSupportPlace::centre, true },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kWaterfallSeq0 = {
@@ -7304,6 +7489,7 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25Deg },
         .metalSupports = { MetalSupportPlace::centre, true },
         .extraSupportRotation = 2,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDown25RightBankedSeq0 = {
@@ -7312,6 +7498,7 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25Deg },
         .metalSupports = { MetalSupportPlace::centre, true },
         .extraSupportRotation = 2,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kWatersplashSeq0 = {
@@ -7349,6 +7536,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::flatToUp60DegLongBaseSeq0 },
         .metalSupports = { MetalSupportPlace::centre, true },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kFlatToUp60LongBaseSeq1 = {
@@ -7356,6 +7544,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::flatToUp60DegLongBaseSeq1 },
         .metalSupports = { MetalSupportPlace::centre, true },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kFlatToUp60LongBaseSeq2 = {
@@ -7363,6 +7552,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::flatToUp60DegLongBaseSeq2 },
         .metalSupports = { MetalSupportPlace::centre, true },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kFlatToUp60LongBaseSeq3 = {
@@ -7370,6 +7560,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::flatToUp60DegLongBaseSeq3 },
         .metalSupports = { MetalSupportPlace::centre, true },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kUp60ToFlatLongBaseSeq0 = {
@@ -7377,6 +7568,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up60DegToFlatLongBaseSeq0 },
         .metalSupports = { MetalSupportPlace::centre, true },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kUp60ToFlatLongBaseSeq1 = {
@@ -7384,6 +7576,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up60DegToFlatLongBaseSeq1 },
         .metalSupports = { MetalSupportPlace::centre, true },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kUp60ToFlatLongBaseSeq2 = {
@@ -7391,6 +7584,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up60DegToFlatLongBaseSeq2 },
         .metalSupports = { MetalSupportPlace::centre, true },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kUp60ToFlatLongBaseSeq3 = {
@@ -7398,6 +7592,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up60DegToFlatLongBaseSeq3 },
         .metalSupports = { MetalSupportPlace::centre, true },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kWhirlpoolSeq0 = {
@@ -7412,6 +7607,7 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::flatToUp60DegLongBaseSeq3 },
         .metalSupports = { MetalSupportPlace::centre, true },
         .extraSupportRotation = 2,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDown60ToFlatLongBaseSeq1 = {
@@ -7420,6 +7616,7 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::flatToUp60DegLongBaseSeq2 },
         .metalSupports = { MetalSupportPlace::centre, true },
         .extraSupportRotation = 2,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDown60ToFlatLongBaseSeq2 = {
@@ -7428,6 +7625,7 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::flatToUp60DegLongBaseSeq1 },
         .metalSupports = { MetalSupportPlace::centre, true },
         .extraSupportRotation = 2,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDown60ToFlatLongBaseSeq3 = {
@@ -7436,6 +7634,7 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::flatToUp60DegLongBaseSeq0 },
         .metalSupports = { MetalSupportPlace::centre, true },
         .extraSupportRotation = 2,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kFlatToDown60LongBaseSeq0 = {
@@ -7444,6 +7643,7 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up60DegToFlatLongBaseSeq3 },
         .metalSupports = { MetalSupportPlace::centre, true },
         .extraSupportRotation = 2,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kFlatToDown60LongBaseSeq1 = {
@@ -7452,6 +7652,7 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up60DegToFlatLongBaseSeq2 },
         .metalSupports = { MetalSupportPlace::centre, true },
         .extraSupportRotation = 2,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kFlatToDown60LongBaseSeq2 = {
@@ -7460,6 +7661,7 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up60DegToFlatLongBaseSeq1 },
         .metalSupports = { MetalSupportPlace::centre, true },
         .extraSupportRotation = 2,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kFlatToDown60LongBaseSeq3 = {
@@ -7468,30 +7670,35 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up60DegToFlatLongBaseSeq0 },
         .metalSupports = { MetalSupportPlace::centre, true },
         .extraSupportRotation = 2,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kCableLiftHillSeq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b1010,
         .metalSupports = { MetalSupportPlace::centre, true },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kCableLiftHillSeq1 = {
         .clearance = { -32, 0, 0, 8, { 0b1111, 0b0011 }, 0 },
         .allowedWallEdges = 0b1010,
         .metalSupports = { MetalSupportPlace::centre, true },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kCableLiftHillSeq2 = {
         .clearance = { -64, 0, -32, 32, { 0b1111, 0b0011 }, 0 },
         .allowedWallEdges = 0b1010,
         .metalSupports = { MetalSupportPlace::centre, true },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kCableLiftHillSeq3 = {
         .clearance = { -96, 0, -96, 64, { 0b1111, 0b0011 }, 0 },
         .allowedWallEdges = 0b1010,
         .metalSupports = { MetalSupportPlace::centre, true },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kReverseFreefallSlopeSeq0 = {
@@ -7510,18 +7717,21 @@ namespace OpenRCT2::TrackMetaData
         .clearance = { -64, 0, 0, 48, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw },
+        .generalSupportHeight = { 48 },
     };
 
     static constexpr SequenceDescriptor kReverseFreefallSlopeSeq3 = {
         .clearance = { -96, 0, 0, 80, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw },
+        .generalSupportHeight = { 64 },
     };
 
     static constexpr SequenceDescriptor kReverseFreefallSlopeSeq4 = {
         .clearance = { -128, 0, 0, 160, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kReverseFreefallSlopeSeq5 = {
@@ -7550,6 +7760,7 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kUp90Seq1 = {
         .clearance = { 32, 0, 0, 0, { 0b0000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 | RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+        .flags = TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT,
     };
 
     static constexpr SequenceDescriptor kDown90Seq0 = {
@@ -7559,6 +7770,7 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kDown90Seq1 = {
         .clearance = { 32, 0, 0, 0, { 0b0000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 | RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+        .flags = TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT,
     };
 
     static constexpr SequenceDescriptor kUp60ToUp90Seq0 = {
@@ -7569,6 +7781,7 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kUp60ToUp90Seq1 = {
         .clearance = { 32, 0, 0, 0, { 0b0000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 | RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+        .flags = TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT,
     };
 
     static constexpr SequenceDescriptor kDown90ToDown60Seq0 = {
@@ -7591,6 +7804,7 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kDown60ToDown90Seq1 = {
         .clearance = { 32, 0, 0, 0, { 0b0000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 | RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+        .flags = TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT,
     };
 
     static constexpr SequenceDescriptor kBrakeForDropSeq0 = {
@@ -7598,6 +7812,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw },
         .metalSupports = { MetalSupportPlace::centre },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kLeftEighthToDiagSeq0 = {
@@ -7850,322 +8065,386 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kDiagUp25Seq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1101, 0 }, 0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagUp25Seq1 = {
         .clearance = { 0, 32, 0, 16, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
         .woodenSupports = { WoodenSupportSubType::corner0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagUp25Seq2 = {
         .clearance = { -32, 0, 0, 16, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagUp25Seq3 = {
         .clearance = { -32, 32, 0, 16, { 0b0010, 0 }, 0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagUp60Seq0 = {
         .clearance = { 0, 0, 0, 64, { 0b1101, 0 }, 0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagUp60Seq1 = {
         .clearance = { 0, 32, 0, 64, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
         .woodenSupports = { WoodenSupportSubType::corner0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagUp60Seq2 = {
         .clearance = { -32, 0, 0, 64, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagUp60Seq3 = {
         .clearance = { -32, 32, 0, 64, { 0b0010, 0 }, 0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagFlatToUp25Seq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1101, 0 }, 0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagFlatToUp25Seq1 = {
         .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
         .woodenSupports = { WoodenSupportSubType::corner0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagFlatToUp25Seq2 = {
         .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagFlatToUp25Seq3 = {
         .clearance = { -32, 32, 0, 8, { 0b0010, 0 }, 0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagUp25ToUp60Seq0 = {
         .clearance = { 0, 0, 0, 32, { 0b1101, 0 }, 0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagUp25ToUp60Seq1 = {
         .clearance = { 0, 32, 0, 32, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
         .woodenSupports = { WoodenSupportSubType::corner0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagUp25ToUp60Seq2 = {
         .clearance = { -32, 0, 0, 32, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagUp25ToUp60Seq3 = {
         .clearance = { -32, 32, 0, 32, { 0b0010, 0 }, 0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagUp60ToUp25Seq0 = {
         .clearance = { 0, 0, 0, 32, { 0b1101, 0 }, 0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagUp60ToUp25Seq1 = {
         .clearance = { 0, 32, 0, 32, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
         .woodenSupports = { WoodenSupportSubType::corner0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagUp60ToUp25Seq2 = {
         .clearance = { -32, 0, 0, 32, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagUp60ToUp25Seq3 = {
         .clearance = { -32, 32, 0, 32, { 0b0010, 0 }, 0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagUp25ToFlatSeq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1101, 0 }, 0 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kDiagUp25ToFlatSeq1 = {
         .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
         .woodenSupports = { WoodenSupportSubType::corner0 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kDiagUp25ToFlatSeq2 = {
         .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kDiagUp25ToFlatSeq3 = {
         .clearance = { -32, 32, 0, 8, { 0b0010, 0 }, 0 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kDiagDown25Seq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1101, 0 }, 0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagDown25Seq1 = {
         .clearance = { 0, 32, 0, 16, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
         .woodenSupports = { WoodenSupportSubType::corner0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagDown25Seq2 = {
         .clearance = { -32, 0, 0, 16, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagDown25Seq3 = {
         .clearance = { -32, 32, 0, 16, { 0b0010, 0 }, 0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagDown60Seq0 = {
         .clearance = { 0, 0, 0, 64, { 0b1101, 0 }, 0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagDown60Seq1 = {
         .clearance = { 0, 32, 0, 64, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
         .woodenSupports = { WoodenSupportSubType::corner0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagDown60Seq2 = {
         .clearance = { -32, 0, 0, 64, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagDown60Seq3 = {
         .clearance = { -32, 32, 0, 64, { 0b0010, 0 }, 0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagFlatToDown25Seq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1101, 0 }, 0 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kDiagFlatToDown25Seq1 = {
         .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
         .woodenSupports = { WoodenSupportSubType::corner0 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kDiagFlatToDown25Seq2 = {
         .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kDiagFlatToDown25Seq3 = {
         .clearance = { -32, 32, 0, 8, { 0b0010, 0 }, 0 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kDiagDown25ToDown60Seq0 = {
         .clearance = { 0, 0, 0, 32, { 0b1101, 0 }, 0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagDown25ToDown60Seq1 = {
         .clearance = { 0, 32, 0, 32, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
         .woodenSupports = { WoodenSupportSubType::corner0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagDown25ToDown60Seq2 = {
         .clearance = { -32, 0, 0, 32, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagDown25ToDown60Seq3 = {
         .clearance = { -32, 32, 0, 32, { 0b0010, 0 }, 0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagDown60ToDown25Seq0 = {
         .clearance = { 0, 0, 0, 32, { 0b1101, 0 }, 0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagDown60ToDown25Seq1 = {
         .clearance = { 0, 32, 0, 32, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
         .woodenSupports = { WoodenSupportSubType::corner0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagDown60ToDown25Seq2 = {
         .clearance = { -32, 0, 0, 32, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagDown60ToDown25Seq3 = {
         .clearance = { -32, 32, 0, 32, { 0b0010, 0 }, 0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagDown25ToFlatSeq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1101, 0 }, 0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagDown25ToFlatSeq1 = {
         .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
         .woodenSupports = { WoodenSupportSubType::corner0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagDown25ToFlatSeq2 = {
         .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagDown25ToFlatSeq3 = {
         .clearance = { -32, 32, 0, 8, { 0b0010, 0 }, 0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagFlatToUp60Seq0 = {
         .clearance = { 0, 0, 0, 24, { 0b1101, 0 }, 0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagFlatToUp60Seq1 = {
         .clearance = { 0, 32, 0, 24, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
         .woodenSupports = { WoodenSupportSubType::corner0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagFlatToUp60Seq2 = {
         .clearance = { -32, 0, 0, 24, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagFlatToUp60Seq3 = {
         .clearance = { -32, 32, 0, 24, { 0b0010, 0 }, 0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagUp60ToFlatSeq0 = {
         .clearance = { 0, 0, 0, 24, { 0b1101, 0 }, 0 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kDiagUp60ToFlatSeq1 = {
         .clearance = { 0, 32, 0, 24, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
         .woodenSupports = { WoodenSupportSubType::corner0 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kDiagUp60ToFlatSeq2 = {
         .clearance = { -32, 0, 0, 24, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kDiagUp60ToFlatSeq3 = {
         .clearance = { -32, 32, 0, 24, { 0b0010, 0 }, 0 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kDiagFlatToDown60Seq0 = {
         .clearance = { 0, 0, 0, 24, { 0b1101, 0 }, 0 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kDiagFlatToDown60Seq1 = {
         .clearance = { 0, 32, 0, 24, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
         .woodenSupports = { WoodenSupportSubType::corner0 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kDiagFlatToDown60Seq2 = {
         .clearance = { -32, 0, 0, 24, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kDiagFlatToDown60Seq3 = {
         .clearance = { -32, 32, 0, 24, { 0b0010, 0 }, 0 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kDiagDown60ToFlatSeq0 = {
         .clearance = { 0, 0, 0, 24, { 0b1101, 0 }, 0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagDown60ToFlatSeq1 = {
         .clearance = { 0, 32, 0, 24, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
         .woodenSupports = { WoodenSupportSubType::corner0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagDown60ToFlatSeq2 = {
         .clearance = { -32, 0, 0, 24, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagDown60ToFlatSeq3 = {
         .clearance = { -32, 32, 0, 24, { 0b0010, 0 }, 0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagFlatToLeftBankSeq0 = {
@@ -8250,162 +8529,194 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kDiagLeftBankToUp25Seq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1101, 0 }, 0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagLeftBankToUp25Seq1 = {
         .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
         .woodenSupports = { WoodenSupportSubType::corner0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagLeftBankToUp25Seq2 = {
         .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagLeftBankToUp25Seq3 = {
         .clearance = { -32, 32, 0, 8, { 0b0010, 0 }, 0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagRightBankToUp25Seq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1101, 0 }, 0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagRightBankToUp25Seq1 = {
         .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
         .woodenSupports = { WoodenSupportSubType::corner0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagRightBankToUp25Seq2 = {
         .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagRightBankToUp25Seq3 = {
         .clearance = { -32, 32, 0, 8, { 0b0010, 0 }, 0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagUp25ToLeftBankSeq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1101, 0 }, 0 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kDiagUp25ToLeftBankSeq1 = {
         .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
         .woodenSupports = { WoodenSupportSubType::corner0 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kDiagUp25ToLeftBankSeq2 = {
         .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kDiagUp25ToLeftBankSeq3 = {
         .clearance = { -32, 32, 0, 8, { 0b0010, 0 }, 0 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kDiagUp25ToRightBankSeq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1101, 0 }, 0 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kDiagUp25ToRightBankSeq1 = {
         .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
         .woodenSupports = { WoodenSupportSubType::corner0 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kDiagUp25ToRightBankSeq2 = {
         .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kDiagUp25ToRightBankSeq3 = {
         .clearance = { -32, 32, 0, 8, { 0b0010, 0 }, 0 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kDiagLeftBankToDown25Seq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1101, 0 }, 0 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kDiagLeftBankToDown25Seq1 = {
         .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
         .woodenSupports = { WoodenSupportSubType::corner0 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kDiagLeftBankToDown25Seq2 = {
         .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kDiagLeftBankToDown25Seq3 = {
         .clearance = { -32, 32, 0, 8, { 0b0010, 0 }, 0 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kDiagRightBankToDown25Seq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1101, 0 }, 0 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kDiagRightBankToDown25Seq1 = {
         .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
         .woodenSupports = { WoodenSupportSubType::corner0 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kDiagRightBankToDown25Seq2 = {
         .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kDiagRightBankToDown25Seq3 = {
         .clearance = { -32, 32, 0, 8, { 0b0010, 0 }, 0 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kDiagDown25ToLeftBankSeq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1101, 0 }, 0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagDown25ToLeftBankSeq1 = {
         .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
         .woodenSupports = { WoodenSupportSubType::corner0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagDown25ToLeftBankSeq2 = {
         .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagDown25ToLeftBankSeq3 = {
         .clearance = { -32, 32, 0, 8, { 0b0010, 0 }, 0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagDown25ToRightBankSeq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1101, 0 }, 0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagDown25ToRightBankSeq1 = {
         .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
         .woodenSupports = { WoodenSupportSubType::corner0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagDown25ToRightBankSeq2 = {
         .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagDown25ToRightBankSeq3 = {
         .clearance = { -32, 32, 0, 8, { 0b0010, 0 }, 0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagLeftBankSeq0 = {
@@ -8536,6 +8847,7 @@ namespace OpenRCT2::TrackMetaData
         .clearance = { 0, 0, 0, 0, { 0b0111, 0b0100 }, 0 },
         .allowedWallEdges = 0b0010,
         .woodenSupports = { WoodenSupportSubType::corner3 },
+        .generalSupportHeight = { 32 },
     };
 
     static constexpr SequenceDescriptor kLeftBankToLeftQuarterTurn3TilesUp25Seq1 = {
@@ -8552,12 +8864,14 @@ namespace OpenRCT2::TrackMetaData
         .clearance = { -32, -32, 16, 16, { 0b0111, 0b0110 }, 0 },
         .allowedWallEdges = 0b0001,
         .woodenSupports = { WoodenSupportSubType::corner3 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kRightBankToRightQuarterTurn3TilesUp25Seq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1011, 0b1000 }, 0 },
         .allowedWallEdges = 0b1000,
         .woodenSupports = { WoodenSupportSubType::corner2 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kRightBankToRightQuarterTurn3TilesUp25Seq1 = {
@@ -8574,12 +8888,14 @@ namespace OpenRCT2::TrackMetaData
         .clearance = { -32, 32, 16, 16, { 0b1011, 0b1001 }, 0 },
         .allowedWallEdges = 0b0001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kLeftQuarterTurn3TilesDown25ToLeftBankSeq0 = {
         .clearance = { 0, 0, 16, 16, { 0b0111, 0b0011 }, 0 },
         .allowedWallEdges = 0b0010,
         .woodenSupports = { WoodenSupportSubType::corner3 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kLeftQuarterTurn3TilesDown25ToLeftBankSeq1 = {
@@ -8596,12 +8912,14 @@ namespace OpenRCT2::TrackMetaData
         .clearance = { -32, -32, 0, 0, { 0b0111, 0b0001 }, 0 },
         .allowedWallEdges = 0b0001,
         .woodenSupports = { WoodenSupportSubType::corner3 },
+        .generalSupportHeight = { 32 },
     };
 
     static constexpr SequenceDescriptor kRightQuarterTurn3TilesDown25ToRightBankSeq0 = {
         .clearance = { 0, 0, 16, 16, { 0b1011, 0b0011 }, 0 },
         .allowedWallEdges = 0b1000,
         .woodenSupports = { WoodenSupportSubType::corner2 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kRightQuarterTurn3TilesDown25ToRightBankSeq1 = {
@@ -8618,12 +8936,14 @@ namespace OpenRCT2::TrackMetaData
         .clearance = { -32, 32, 0, 0, { 0b1011, 0b0010 }, 0 },
         .allowedWallEdges = 0b0001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
+        .generalSupportHeight = { 32 },
     };
 
     static constexpr SequenceDescriptor kPoweredLiftSeq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25Deg },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kLeftLargeHalfLoopUpSeq0 = {
@@ -8644,6 +8964,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftLargeHalfLoopUpSeq3 = {
         .clearance = { -96, 0, 64, 192, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0011,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kLeftLargeHalfLoopUpSeq4 = {
@@ -8654,6 +8975,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftLargeHalfLoopUpSeq5 = {
         .clearance = { -96, -32, 64, 192, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1000,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kLeftLargeHalfLoopUpSeq6 = {
@@ -8679,6 +9001,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightLargeHalfLoopUpSeq3 = {
         .clearance = { -96, 0, 64, 192, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1001,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kRightLargeHalfLoopUpSeq4 = {
@@ -8689,6 +9012,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightLargeHalfLoopUpSeq5 = {
         .clearance = { -96, 32, 64, 192, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kRightLargeHalfLoopUpSeq6 = {
@@ -8704,6 +9028,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftLargeHalfLoopDownSeq1 = {
         .clearance = { -32, 0, -216, 192, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kLeftLargeHalfLoopDownSeq2 = {
@@ -8714,6 +9039,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftLargeHalfLoopDownSeq3 = {
         .clearance = { -32, -32, -216, 192, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1001,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kLeftLargeHalfLoopDownSeq4 = {
@@ -8739,6 +9065,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightLargeHalfLoopDownSeq1 = {
         .clearance = { -32, 0, -216, 192, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1000,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kRightLargeHalfLoopDownSeq2 = {
@@ -8749,6 +9076,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightLargeHalfLoopDownSeq3 = {
         .clearance = { -32, 32, -216, 192, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0011,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kRightLargeHalfLoopDownSeq4 = {
@@ -8774,11 +9102,13 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftFlyerTwistUpSeq1 = {
         .clearance = { -32, 0, -16, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
+        .generalSupportHeight = { -8 },
     };
 
     static constexpr SequenceDescriptor kLeftFlyerTwistUpSeq2 = {
         .clearance = { -64, 0, -16, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
+        .generalSupportHeight = { -8 },
     };
 
     static constexpr SequenceDescriptor kRightFlyerTwistUpSeq0 = {
@@ -8789,21 +9119,25 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightFlyerTwistUpSeq1 = {
         .clearance = { -32, 0, -16, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
+        .generalSupportHeight = { -8 },
     };
 
     static constexpr SequenceDescriptor kRightFlyerTwistUpSeq2 = {
         .clearance = { -64, 0, -16, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
+        .generalSupportHeight = { -8 },
     };
 
     static constexpr SequenceDescriptor kLeftFlyerTwistDownSeq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
+        .generalSupportHeight = { -8 },
     };
 
     static constexpr SequenceDescriptor kLeftFlyerTwistDownSeq1 = {
         .clearance = { -32, 0, 0, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
+        .generalSupportHeight = { -8 },
     };
 
     static constexpr SequenceDescriptor kLeftFlyerTwistDownSeq2 = {
@@ -8814,11 +9148,13 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightFlyerTwistDownSeq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
+        .generalSupportHeight = { -8 },
     };
 
     static constexpr SequenceDescriptor kRightFlyerTwistDownSeq1 = {
         .clearance = { -32, 0, 0, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
+        .generalSupportHeight = { -8 },
     };
 
     static constexpr SequenceDescriptor kRightFlyerTwistDownSeq2 = {
@@ -8829,16 +9165,19 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kFlyerHalfLoopUninvertedUpSeq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b1010,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kFlyerHalfLoopUninvertedUpSeq1 = {
         .clearance = { -32, 0, 16, 16, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b1010,
+        .generalSupportHeight = { 32 },
     };
 
     static constexpr SequenceDescriptor kFlyerHalfLoopUninvertedUpSeq2 = {
         .clearance = { -64, 0, 32, 96, { 0b0011, 0 }, 0 },
         .allowedWallEdges = 0b1011,
+        .generalSupportHeight = { 48 },
     };
 
     static constexpr SequenceDescriptor kFlyerHalfLoopUninvertedUpSeq3 = {
@@ -8852,16 +9191,19 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kFlyerHalfLoopInvertedDownSeq1 = {
         .clearance = { -32, 0, -88, 96, { 0b0011, 0 }, 0 },
         .allowedWallEdges = 0b1011,
+        .generalSupportHeight = { 48 },
     };
 
     static constexpr SequenceDescriptor kFlyerHalfLoopInvertedDownSeq2 = {
         .clearance = { 0, 0, -104, 16, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b1010,
+        .generalSupportHeight = { 32 },
     };
 
     static constexpr SequenceDescriptor kFlyerHalfLoopInvertedDownSeq3 = {
         .clearance = { 32, 0, -120, 16, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b1010,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kLeftFlyerCorkscrewUpSeq0 = {
@@ -8872,6 +9214,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftFlyerCorkscrewUpSeq1 = {
         .clearance = { -32, 0, 24, 32, { 0b0111, 0 }, 0 },
         .allowedWallEdges = 0b0011,
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kLeftFlyerCorkscrewUpSeq2 = {
@@ -8887,6 +9230,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightFlyerCorkscrewUpSeq1 = {
         .clearance = { -32, 0, 24, 32, { 0b1011, 0 }, 0 },
         .allowedWallEdges = 0b1001,
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kRightFlyerCorkscrewUpSeq2 = {
@@ -8902,6 +9246,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftFlyerCorkscrewDownSeq1 = {
         .clearance = { -32, 0, -24, 32, { 0b0111, 0 }, 0 },
         .allowedWallEdges = 0b0011,
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kLeftFlyerCorkscrewDownSeq2 = {
@@ -8917,6 +9262,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightFlyerCorkscrewDownSeq1 = {
         .clearance = { -32, 0, -24, 32, { 0b1011, 0 }, 0 },
         .allowedWallEdges = 0b1001,
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kRightFlyerCorkscrewDownSeq2 = {
@@ -8928,12 +9274,14 @@ namespace OpenRCT2::TrackMetaData
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::flatToUp25Deg },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kHeartLineTransferUpSeq1 = {
         .clearance = { -32, 0, 0, 32, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25DegToFlat },
+        .generalSupportHeight = { -8 },
     };
 
     static constexpr SequenceDescriptor kHeartLineTransferUpSeq2 = {
@@ -8956,6 +9304,7 @@ namespace OpenRCT2::TrackMetaData
         .clearance = { -32, 0, -32, 32, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25DegToFlat },
+        .generalSupportHeight = { -8 },
     };
 
     static constexpr SequenceDescriptor kHeartLineTransferDownSeq2 = {
@@ -8968,6 +9317,7 @@ namespace OpenRCT2::TrackMetaData
         .clearance = { 0, 0, -32, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::flatToUp25Deg },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kLeftHeartLineRollSeq0 = {
@@ -9110,26 +9460,31 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kMultiDimInvertedFlatToDown90QuarterLoopSeq1 = {
         .clearance = { -32, 0, -40, 32, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
         .allowedWallEdges = 0b1010,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kMultiDimInvertedFlatToDown90QuarterLoopSeq2 = {
         .clearance = { -64, 0, -96, 56, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
         .allowedWallEdges = 0b1010,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kMultiDimInvertedFlatToDown90QuarterLoopSeq3 = {
         .clearance = { -96, 0, -96, 0, { 0b0000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 | RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+        .flags = TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT,
     };
 
     static constexpr SequenceDescriptor kUp90ToInvertedFlatQuarterLoopSeq0 = {
         .clearance = { 0, 0, 0, 56, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
         .allowedWallEdges = 0b1010,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kUp90ToInvertedFlatQuarterLoopSeq1 = {
         .clearance = { 32, 0, 56, 32, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kUp90ToInvertedFlatQuarterLoopSeq2 = {
@@ -9147,60 +9502,71 @@ namespace OpenRCT2::TrackMetaData
         .clearance = { -32, 0, -72, 32, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kInvertedFlatToDown90QuarterLoopSeq2 = {
         .clearance = { -64, 0, -128, 56, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kInvertedFlatToDown90QuarterLoopSeq3 = {
         .clearance = { -96, 0, -128, 0, { 0b0000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 | RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+        .flags = TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT,
     };
 
     static constexpr SequenceDescriptor kLeftCurvedLiftHillSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b0111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
         .woodenSupports = { WoodenSupportSubType::corner3 },
+        .generalSupportHeight = { 48 },
     };
 
     static constexpr SequenceDescriptor kLeftCurvedLiftHillSeq1 = {
         .clearance = { 0, -32, 0, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1100,
+        .generalSupportHeight = { 32 },
     };
 
     static constexpr SequenceDescriptor kLeftCurvedLiftHillSeq2 = {
         .clearance = { -32, 0, 0, 8, { 0b0010, 0 }, 0 },
         .allowedWallEdges = 0b0011,
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kLeftCurvedLiftHillSeq3 = {
         .clearance = { -32, -32, 0, 8, { 0b0111, 0 }, 0 },
         .allowedWallEdges = 0b0001,
         .woodenSupports = { WoodenSupportSubType::corner3 },
+        .generalSupportHeight = { 40 },
     };
 
     static constexpr SequenceDescriptor kRightCurvedLiftHillSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1011, 0 }, 0 },
         .allowedWallEdges = 0b1000,
         .woodenSupports = { WoodenSupportSubType::corner3 },
+        .generalSupportHeight = { 48 },
     };
 
     static constexpr SequenceDescriptor kRightCurvedLiftHillSeq1 = {
         .clearance = { 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
+        .generalSupportHeight = { 32 },
     };
 
     static constexpr SequenceDescriptor kRightCurvedLiftHillSeq2 = {
         .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, 0 },
         .allowedWallEdges = 0b1001,
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kRightCurvedLiftHillSeq3 = {
         .clearance = { -32, 32, 0, 8, { 0b1011, 0 }, 0 },
         .allowedWallEdges = 0b0001,
         .woodenSupports = { WoodenSupportSubType::corner3 },
+        .generalSupportHeight = { 40 },
     };
 
     static constexpr SequenceDescriptor kLeftReverserSeq0 = {
@@ -9265,18 +9631,22 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kAirThrustTopCapSeq0 = {
         .clearance = { 0, 0, 0, 32, { 0b1111, 0 }, 0 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kAirThrustTopCapSeq1 = {
         .clearance = { 32, 0, 0, 32, { 0b1111, 0 }, 0 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kAirThrustTopCapSeq2 = {
         .clearance = { -64, 0, 0, 32, { 0b1111, 0 }, 0 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kAirThrustTopCapSeq3 = {
         .clearance = { -32, 0, 0, 32, { 0b1111, 0 }, 0 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kAirThrustVerticalDownSeq0 = {
@@ -9303,18 +9673,21 @@ namespace OpenRCT2::TrackMetaData
         .clearance = { -32, 0, 0, 160, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kAirThrustVerticalDownToLevelSeq3 = {
         .clearance = { -64, 0, 0, 80, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw },
+        .generalSupportHeight = { 64 },
     };
 
     static constexpr SequenceDescriptor kAirThrustVerticalDownToLevelSeq4 = {
         .clearance = { -96, 0, 0, 48, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw },
+        .generalSupportHeight = { 48 },
     };
 
     static constexpr SequenceDescriptor kAirThrustVerticalDownToLevelSeq5 = {
@@ -9338,126 +9711,149 @@ namespace OpenRCT2::TrackMetaData
         .clearance = { 0, 0, 0, 16, { 0b0111, 0b0100 }, 0 },
         .allowedWallEdges = 0b0010,
         .woodenSupports = { WoodenSupportSubType::corner3 },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kLeftBankedQuarterTurn3TileUp25Seq1 = {
         .clearance = { 0, -32, 16, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1100,
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kLeftBankedQuarterTurn3TileUp25Seq2 = {
         .clearance = { -32, 0, 16, 0, { 0b0010, 0 }, 0 },
         .allowedWallEdges = 0b0011,
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kLeftBankedQuarterTurn3TileUp25Seq3 = {
         .clearance = { -32, -32, 16, 16, { 0b0111, 0b0110 }, 0 },
         .allowedWallEdges = 0b0001,
         .woodenSupports = { WoodenSupportSubType::corner3 },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kRightBankedQuarterTurn3TileUp25Seq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1011, 0b1000 }, 0 },
         .allowedWallEdges = 0b1000,
         .woodenSupports = { WoodenSupportSubType::corner2 },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kRightBankedQuarterTurn3TileUp25Seq1 = {
         .clearance = { 0, 32, 16, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kRightBankedQuarterTurn3TileUp25Seq2 = {
         .clearance = { -32, 0, 16, 0, { 0b0001, 0 }, 0 },
         .allowedWallEdges = 0b1001,
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kRightBankedQuarterTurn3TileUp25Seq3 = {
         .clearance = { -32, 32, 16, 16, { 0b1011, 0b1001 }, 0 },
         .allowedWallEdges = 0b0001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kLeftBankedQuarterTurn3TileDown25Seq0 = {
         .clearance = { 0, 0, 16, 16, { 0b0111, 0b0011 }, 0 },
         .allowedWallEdges = 0b0010,
         .woodenSupports = { WoodenSupportSubType::corner2 },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kLeftBankedQuarterTurn3TileDown25Seq1 = {
         .clearance = { 0, -32, 16, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1100,
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kLeftBankedQuarterTurn3TileDown25Seq2 = {
         .clearance = { -32, 0, 16, 0, { 0b0010, 0 }, 0 },
         .allowedWallEdges = 0b0011,
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kLeftBankedQuarterTurn3TileDown25Seq3 = {
         .clearance = { -32, -32, 0, 16, { 0b0111, 0b0001 }, 0 },
         .allowedWallEdges = 0b0001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kRightBankedQuarterTurn3TileDown25Seq0 = {
         .clearance = { 0, 0, 16, 16, { 0b1011, 0b0011 }, 0 },
         .allowedWallEdges = 0b1000,
         .woodenSupports = { WoodenSupportSubType::corner3 },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kRightBankedQuarterTurn3TileDown25Seq1 = {
         .clearance = { 0, 32, 16, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kRightBankedQuarterTurn3TileDown25Seq2 = {
         .clearance = { -32, 0, 16, 0, { 0b0001, 0 }, 0 },
         .allowedWallEdges = 0b1001,
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kRightBankedQuarterTurn3TileDown25Seq3 = {
         .clearance = { -32, 32, 0, 16, { 0b1011, 0b0010 }, 0 },
         .allowedWallEdges = 0b0001,
         .woodenSupports = { WoodenSupportSubType::corner3 },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kLeftBankedQuarterTurn5TileUp25Seq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b0010,
         .woodenSupports = { WoodenSupportSubType::neSw },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kLeftBankedQuarterTurn5TileUp25Seq1 = {
         .clearance = { 0, -32, 16, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1100,
+        .generalSupportHeight = { 40 },
     };
 
     static constexpr SequenceDescriptor kLeftBankedQuarterTurn5TileUp25Seq2 = {
         .clearance = { -32, 0, 16, 16, { 0b0111, 0b0100 }, 0 },
         .allowedWallEdges = 0b0011,
         .woodenSupports = { WoodenSupportSubType::corner3 },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kLeftBankedQuarterTurn5TileUp25Seq3 = {
         .clearance = { -32, -32, 24, 16, { 0b1101, 0 }, 0 },
         .woodenSupports = { WoodenSupportSubType::corner1 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kLeftBankedQuarterTurn5TileUp25Seq4 = {
         .clearance = { -32, -64, 48, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1100,
+        .generalSupportHeight = { 40 },
     };
 
     static constexpr SequenceDescriptor kLeftBankedQuarterTurn5TileUp25Seq5 = {
         .clearance = { -64, -32, 32, 16, { 0b0111, 0b0100 }, 0 },
         .allowedWallEdges = 0b0011,
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kLeftBankedQuarterTurn5TileUp25Seq6 = {
         .clearance = { -64, -64, 48, 16, { 0b1111, 0b0110 }, 0 },
         .allowedWallEdges = 0b0001,
         .woodenSupports = { WoodenSupportSubType::corner3 },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kLeftBankedQuarterTurn5TileUp25Seq7 = {
@@ -9468,38 +9864,45 @@ namespace OpenRCT2::TrackMetaData
         .clearance = { 0, 0, 0, 16, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b1000,
         .woodenSupports = { WoodenSupportSubType::neSw },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kRightBankedQuarterTurn5TileUp25Seq1 = {
         .clearance = { 0, 32, 16, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
+        .generalSupportHeight = { 40 },
     };
 
     static constexpr SequenceDescriptor kRightBankedQuarterTurn5TileUp25Seq2 = {
         .clearance = { -32, 0, 16, 16, { 0b1011, 0b1000 }, 0 },
         .allowedWallEdges = 0b1001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kRightBankedQuarterTurn5TileUp25Seq3 = {
         .clearance = { -32, 32, 24, 16, { 0b1110, 0 }, 0 },
         .woodenSupports = { WoodenSupportSubType::corner0 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kRightBankedQuarterTurn5TileUp25Seq4 = {
         .clearance = { -32, 64, 48, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
+        .generalSupportHeight = { 40 },
     };
 
     static constexpr SequenceDescriptor kRightBankedQuarterTurn5TileUp25Seq5 = {
         .clearance = { -64, 32, 32, 16, { 0b1011, 0b1000 }, 0 },
         .allowedWallEdges = 0b1001,
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kRightBankedQuarterTurn5TileUp25Seq6 = {
         .clearance = { -64, 64, 48, 16, { 0b1111, 0b1001 }, 0 },
         .allowedWallEdges = 0b0001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kRightBankedQuarterTurn5TileUp25Seq7 = {
@@ -9510,38 +9913,45 @@ namespace OpenRCT2::TrackMetaData
         .clearance = { 0, 0, 48, 16, { 0b1111, 0b0011 }, 0 },
         .allowedWallEdges = 0b0010,
         .woodenSupports = { WoodenSupportSubType::neSw },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kLeftBankedQuarterTurn5TileDown25Seq1 = {
         .clearance = { 0, -32, 48, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1100,
+        .generalSupportHeight = { 40 },
     };
 
     static constexpr SequenceDescriptor kLeftBankedQuarterTurn5TileDown25Seq2 = {
         .clearance = { -32, 0, 32, 16, { 0b0111, 0b0001 }, 0 },
         .allowedWallEdges = 0b0011,
         .woodenSupports = { WoodenSupportSubType::corner2 },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kLeftBankedQuarterTurn5TileDown25Seq3 = {
         .clearance = { -32, -32, 24, 16, { 0b1101, 0 }, 0 },
         .woodenSupports = { WoodenSupportSubType::corner0 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kLeftBankedQuarterTurn5TileDown25Seq4 = {
         .clearance = { -32, -64, 16, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1100,
+        .generalSupportHeight = { 40 },
     };
 
     static constexpr SequenceDescriptor kLeftBankedQuarterTurn5TileDown25Seq5 = {
         .clearance = { -64, -32, 16, 16, { 0b0111, 0b0001 }, 0 },
         .allowedWallEdges = 0b0011,
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kLeftBankedQuarterTurn5TileDown25Seq6 = {
         .clearance = { -64, -64, 0, 16, { 0b1111, 0b1001 }, 0 },
         .allowedWallEdges = 0b0001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kLeftBankedQuarterTurn5TileDown25Seq7 = {
@@ -9552,38 +9962,45 @@ namespace OpenRCT2::TrackMetaData
         .clearance = { 0, 0, 48, 16, { 0b1111, 0b0011 }, 0 },
         .allowedWallEdges = 0b1000,
         .woodenSupports = { WoodenSupportSubType::neSw },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kRightBankedQuarterTurn5TileDown25Seq1 = {
         .clearance = { 0, 32, 48, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
+        .generalSupportHeight = { 40 },
     };
 
     static constexpr SequenceDescriptor kRightBankedQuarterTurn5TileDown25Seq2 = {
         .clearance = { -32, 0, 32, 16, { 0b1011, 0b0010 }, 0 },
         .allowedWallEdges = 0b1001,
         .woodenSupports = { WoodenSupportSubType::corner3 },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kRightBankedQuarterTurn5TileDown25Seq3 = {
         .clearance = { -32, 32, 24, 16, { 0b1110, 0 }, 0 },
         .woodenSupports = { WoodenSupportSubType::corner1 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kRightBankedQuarterTurn5TileDown25Seq4 = {
         .clearance = { -32, 64, 16, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
+        .generalSupportHeight = { 40 },
     };
 
     static constexpr SequenceDescriptor kRightBankedQuarterTurn5TileDown25Seq5 = {
         .clearance = { -64, 32, 16, 16, { 0b1011, 0b0010 }, 0 },
         .allowedWallEdges = 0b1001,
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kRightBankedQuarterTurn5TileDown25Seq6 = {
         .clearance = { -64, 64, 0, 16, { 0b1111, 0b0110 }, 0 },
         .allowedWallEdges = 0b0001,
         .woodenSupports = { WoodenSupportSubType::corner3 },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kRightBankedQuarterTurn5TileDown25Seq7 = {
@@ -9594,24 +10011,28 @@ namespace OpenRCT2::TrackMetaData
         .clearance = { 0, 0, 0, 16, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25Deg },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kUp25ToRightBankedUp25Seq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25Deg },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kLeftBankedUp25ToUp25Seq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25Deg },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kRightBankedUp25ToUp25Seq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25Deg },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDown25ToLeftBankedDown25Seq0 = {
@@ -9619,6 +10040,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25Deg },
         .extraSupportRotation = 2,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDown25ToRightBankedDown25Seq0 = {
@@ -9626,6 +10048,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25Deg },
         .extraSupportRotation = 2,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kLeftBankedDown25ToDown25Seq0 = {
@@ -9633,6 +10056,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25Deg },
         .extraSupportRotation = 2,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kRightBankedDown25ToDown25Seq0 = {
@@ -9640,18 +10064,21 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25Deg },
         .extraSupportRotation = 2,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kLeftBankedFlatToLeftBankedUp25Seq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::flatToUp25Deg },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kRightBankedFlatToRightBankedUp25Seq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::flatToUp25Deg },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kLeftBankedUp25ToLeftBankedFlatSeq0 = {
@@ -9685,6 +10112,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::flatToUp25Deg },
         .extraSupportRotation = 2,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kRightBankedDown25ToRightBankedFlatSeq0 = {
@@ -9692,18 +10120,21 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::flatToUp25Deg },
         .extraSupportRotation = 2,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kFlatToLeftBankedUp25Seq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::flatToUp25Deg },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kFlatToRightBankedUp25Seq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::flatToUp25Deg },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kLeftBankedUp25ToFlatSeq0 = {
@@ -9737,6 +10168,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::flatToUp25Deg },
         .extraSupportRotation = 2,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kRightBankedDown25ToFlatSeq0 = {
@@ -9744,6 +10176,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::flatToUp25Deg },
         .extraSupportRotation = 2,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kLeftQuarterTurn1TileUp90Seq0 = {
@@ -9753,6 +10186,7 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kLeftQuarterTurn1TileUp90Seq1 = {
         .clearance = { 0, 32, 0, 0, { 0b0000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 | RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+        .flags = TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT,
     };
 
     static constexpr SequenceDescriptor kRightQuarterTurn1TileUp90Seq0 = {
@@ -9762,6 +10196,7 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kRightQuarterTurn1TileUp90Seq1 = {
         .clearance = { 0, -32, 0, 0, { 0b0000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 | RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+        .flags = TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT,
     };
 
     static constexpr SequenceDescriptor kLeftQuarterTurn1TileDown90Seq0 = {
@@ -9771,6 +10206,7 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kLeftQuarterTurn1TileDown90Seq1 = {
         .clearance = { 0, 32, 0, 0, { 0b0000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 | RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+        .flags = TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT,
     };
 
     static constexpr SequenceDescriptor kRightQuarterTurn1TileDown90Seq0 = {
@@ -9780,16 +10216,19 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kRightQuarterTurn1TileDown90Seq1 = {
         .clearance = { 0, -32, 0, 0, { 0b0000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 | RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+        .flags = TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT,
     };
 
     static constexpr SequenceDescriptor kMultiDimUp90ToInvertedFlatQuarterLoopSeq0 = {
         .clearance = { 0, 0, 0, 56, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
         .allowedWallEdges = 0b1010,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kMultiDimUp90ToInvertedFlatQuarterLoopSeq1 = {
         .clearance = { 32, 0, 56, 32, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
         .allowedWallEdges = 0b1010,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kMultiDimUp90ToInvertedFlatQuarterLoopSeq2 = {
@@ -9800,35 +10239,42 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kMultiDimFlatToDown90QuarterLoopSeq0 = {
         .clearance = { 0, 0, -32, 16, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
         .allowedWallEdges = 0b1010,
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kMultiDimFlatToDown90QuarterLoopSeq1 = {
         .clearance = { -32, 0, -72, 32, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
         .allowedWallEdges = 0b1010,
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kMultiDimFlatToDown90QuarterLoopSeq2 = {
         .clearance = { -64, 0, -128, 56, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
         .allowedWallEdges = 0b1010,
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kMultiDimFlatToDown90QuarterLoopSeq3 = {
         .clearance = { -96, 0, -128, 0, { 0b0000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 | RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+        .flags = TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT,
     };
 
     static constexpr SequenceDescriptor kMultiDimInvertedUp90ToFlatQuarterLoopSeq0 = {
         .clearance = { 0, 0, 32, 56, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
         .allowedWallEdges = 0b1010,
+        .generalSupportHeight = { -8 },
     };
 
     static constexpr SequenceDescriptor kMultiDimInvertedUp90ToFlatQuarterLoopSeq1 = {
         .clearance = { 32, 0, 88, 32, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
         .allowedWallEdges = 0b1010,
+        .generalSupportHeight = { -8 },
     };
 
     static constexpr SequenceDescriptor kMultiDimInvertedUp90ToFlatQuarterLoopSeq2 = {
         .clearance = { 64, 0, 128, 16, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
         .allowedWallEdges = 0b1010,
+        .generalSupportHeight = { -8 },
     };
 
     static constexpr SequenceDescriptor kRotationControlToggleSeq0 = {
@@ -9839,328 +10285,366 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kFlatTrack1x4ASeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN,
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN
+            | TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT,
         .woodenSupports = { WoodenSupportSubType::neSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack1x4ASeq1 = {
         .clearance = { -64, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .flags = TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT,
         .woodenSupports = { WoodenSupportSubType::neSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack1x4ASeq2 = {
         .clearance = { -32, 0, 0, 0, { 0b1111, 0 }, 0 },
-        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_3,
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_3
+            | TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT,
         .woodenSupports = { WoodenSupportSubType::neSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack1x4ASeq3 = {
         .clearance = { 32, 0, 0, 0, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_1 },
+        .flags = TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT,
         .woodenSupports = { WoodenSupportSubType::neSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack2x2Seq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN,
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN
+            | TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT,
         .woodenSupports = { WoodenSupportSubType::neSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack2x2Seq1 = {
         .clearance = { 0, 32, 0, 0, { 0b1111, 0 }, 0 },
-        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_1,
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_1
+            | TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT,
         .woodenSupports = { WoodenSupportSubType::neSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack2x2Seq2 = {
         .clearance = { 32, 0, 0, 0, { 0b1111, 0 }, 0 },
-        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_2 | TRACK_SEQUENCE_FLAG_DIRECTION_3,
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_2 | TRACK_SEQUENCE_FLAG_DIRECTION_3
+            | TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT,
         .woodenSupports = { WoodenSupportSubType::neSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack2x2Seq3 = {
         .clearance = { 32, 32, 0, 0, { 0b1111, 0 }, 0 },
-        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_2,
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_2
+            | TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT,
         .woodenSupports = { WoodenSupportSubType::neSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack4x4Seq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN,
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN
+            | TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT,
         .woodenSupports = { WoodenSupportSubType::neSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack4x4Seq1 = {
         .clearance = { 0, 32, 0, 0, { 0b1111, 0 }, 0 },
-        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0,
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT,
         .woodenSupports = { WoodenSupportSubType::neSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack4x4Seq2 = {
         .clearance = { 0, 64, 0, 0, { 0b1111, 0 }, 0 },
-        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0,
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT,
         .woodenSupports = { WoodenSupportSubType::neSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack4x4Seq3 = {
         .clearance = { 0, 96, 0, 0, { 0b1111, 0 }, 0 },
-        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_1,
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_1
+            | TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT,
         .woodenSupports = { WoodenSupportSubType::neSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack4x4Seq4 = {
         .clearance = { 32, 0, 0, 0, { 0b1111, 0 }, 0 },
-        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_3,
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT,
         .woodenSupports = { WoodenSupportSubType::neSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack4x4Seq5 = {
         .clearance = { 32, 32, 0, 0, { 0b1111, 0 }, 0 },
+        .flags = TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT,
         .woodenSupports = { WoodenSupportSubType::neSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack4x4Seq6 = {
         .clearance = { 32, 64, 0, 0, { 0b1111, 0 }, 0 },
+        .flags = TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT,
         .woodenSupports = { WoodenSupportSubType::neSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack4x4Seq7 = {
         .clearance = { 32, 96, 0, 0, { 0b1111, 0 }, 0 },
-        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1,
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT,
         .woodenSupports = { WoodenSupportSubType::neSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack4x4Seq8 = {
         .clearance = { 64, 0, 0, 0, { 0b1111, 0 }, 0 },
-        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_3,
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT,
         .woodenSupports = { WoodenSupportSubType::neSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack4x4Seq9 = {
         .clearance = { 64, 32, 0, 0, { 0b1111, 0 }, 0 },
+        .flags = TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT,
         .woodenSupports = { WoodenSupportSubType::neSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack4x4Seq10 = {
         .clearance = { 64, 64, 0, 0, { 0b1111, 0 }, 0 },
+        .flags = TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT,
         .woodenSupports = { WoodenSupportSubType::neSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack4x4Seq11 = {
         .clearance = { 64, 96, 0, 0, { 0b1111, 0 }, 0 },
-        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1,
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT,
         .woodenSupports = { WoodenSupportSubType::neSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack4x4Seq12 = {
         .clearance = { 96, 0, 0, 0, { 0b1111, 0 }, 0 },
-        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_2 | TRACK_SEQUENCE_FLAG_DIRECTION_3,
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_2 | TRACK_SEQUENCE_FLAG_DIRECTION_3
+            | TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT,
         .woodenSupports = { WoodenSupportSubType::neSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack4x4Seq13 = {
         .clearance = { 96, 32, 0, 0, { 0b1111, 0 }, 0 },
-        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_2,
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_2 | TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT,
         .woodenSupports = { WoodenSupportSubType::neSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack4x4Seq14 = {
         .clearance = { 96, 64, 0, 0, { 0b1111, 0 }, 0 },
-        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_2,
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_2 | TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT,
         .woodenSupports = { WoodenSupportSubType::neSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack4x4Seq15 = {
         .clearance = { 96, 96, 0, 0, { 0b1111, 0 }, 0 },
-        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_2,
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_2
+            | TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT,
         .woodenSupports = { WoodenSupportSubType::neSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack2x4Seq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN,
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN
+            | TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT,
         .woodenSupports = { WoodenSupportSubType::neSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack2x4Seq1 = {
         .clearance = { 0, 32, 0, 0, { 0b1111, 0 }, 0 },
-        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0,
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT,
         .woodenSupports = { WoodenSupportSubType::neSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack2x4Seq2 = {
         .clearance = { 0, 64, 0, 0, { 0b1111, 0 }, 0 },
-        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0,
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT,
         .woodenSupports = { WoodenSupportSubType::neSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack2x4Seq3 = {
         .clearance = { 0, 96, 0, 0, { 0b1111, 0 }, 0 },
-        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_1,
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_1
+            | TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT,
         .woodenSupports = { WoodenSupportSubType::neSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack2x4Seq4 = {
         .clearance = { 32, 0, 0, 0, { 0b1111, 0 }, 0 },
-        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_2 | TRACK_SEQUENCE_FLAG_DIRECTION_3,
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_2 | TRACK_SEQUENCE_FLAG_DIRECTION_3
+            | TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT,
         .woodenSupports = { WoodenSupportSubType::neSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack2x4Seq5 = {
         .clearance = { 32, 32, 0, 0, { 0b1111, 0 }, 0 },
-        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_2,
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_2 | TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT,
         .woodenSupports = { WoodenSupportSubType::neSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack2x4Seq6 = {
         .clearance = { 32, 64, 0, 0, { 0b1111, 0 }, 0 },
-        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_2,
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_2 | TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT,
         .woodenSupports = { WoodenSupportSubType::neSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack2x4Seq7 = {
         .clearance = { 32, 96, 0, 0, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_1 },
-        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_2,
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_2
+            | TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT,
         .woodenSupports = { WoodenSupportSubType::neSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack1x5Seq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN,
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN
+            | TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT,
         .woodenSupports = { WoodenSupportSubType::neSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack1x5Seq1 = {
         .clearance = { -64, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .flags = TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT,
         .woodenSupports = { WoodenSupportSubType::neSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack1x5Seq2 = {
         .clearance = { -32, 0, 0, 0, { 0b1111, 0 }, 0 },
-        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_3,
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_3
+            | TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT,
         .woodenSupports = { WoodenSupportSubType::neSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack1x5Seq3 = {
         .clearance = { 32, 0, 0, 0, { 0b1111, 0 }, 0 },
-        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_3,
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_3
+            | TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT,
         .woodenSupports = { WoodenSupportSubType::neSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack1x5Seq4 = {
         .clearance = { 64, 0, 0, 0, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_1 },
+        .flags = TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT,
         .woodenSupports = { WoodenSupportSubType::neSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack1x1ASeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_ORIGIN | TRACK_SEQUENCE_FLAG_CONNECTS_TO_PATH,
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_ORIGIN | TRACK_SEQUENCE_FLAG_CONNECTS_TO_PATH
+            | TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT,
         .woodenSupports = { WoodenSupportSubType::neSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack1x4BSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_ORIGIN,
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_ORIGIN
+            | TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT,
         .woodenSupports = { WoodenSupportSubType::neSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack1x4BSeq1 = {
         .clearance = { -64, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .flags = TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT,
         .woodenSupports = { WoodenSupportSubType::neSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack1x4BSeq2 = {
         .clearance = { -32, 0, 0, 0, { 0b1111, 0 }, 0 },
-        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1,
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT,
         .woodenSupports = { WoodenSupportSubType::neSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack1x4BSeq3 = {
         .clearance = { 32, 0, 0, 0, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_1 },
+        .flags = TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT,
         .woodenSupports = { WoodenSupportSubType::neSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack1x1BSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
         .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_2
-            | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN | TRACK_SEQUENCE_FLAG_CONNECTS_TO_PATH,
+            | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN | TRACK_SEQUENCE_FLAG_CONNECTS_TO_PATH
+            | TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT,
         .woodenSupports = { WoodenSupportSubType::neSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack1x4CSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN,
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN
+            | TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT,
         .woodenSupports = { WoodenSupportSubType::neSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack1x4CSeq1 = {
         .clearance = { -64, 0, 0, 0, { 0b1111, 0 }, 0 },
-        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_3,
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_3
+            | TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT,
         .woodenSupports = { WoodenSupportSubType::neSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack1x4CSeq2 = {
         .clearance = { -32, 0, 0, 0, { 0b1111, 0 }, 0 },
-        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_3,
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_3
+            | TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT,
         .woodenSupports = { WoodenSupportSubType::neSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack1x4CSeq3 = {
         .clearance = { 32, 0, 0, 0, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_1 },
-        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_2 | TRACK_SEQUENCE_FLAG_DIRECTION_3,
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_2 | TRACK_SEQUENCE_FLAG_DIRECTION_3
+            | TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT,
         .woodenSupports = { WoodenSupportSubType::neSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack3x3Seq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        .flags = TRACK_SEQUENCE_FLAG_ORIGIN,
+        .flags = TRACK_SEQUENCE_FLAG_ORIGIN | TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT,
         .woodenSupports = { WoodenSupportSubType::neSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack3x3Seq1 = {
         .clearance = { -32, -32, 0, 0, { 0b1111, 0 }, 0 },
-        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_3,
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_3
+            | TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT,
         .woodenSupports = { WoodenSupportSubType::neSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack3x3Seq2 = {
         .clearance = { -32, 0, 0, 0, { 0b1111, 0 }, 0 },
-        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0,
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT,
         .woodenSupports = { WoodenSupportSubType::neSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack3x3Seq3 = {
         .clearance = { -32, 32, 0, 0, { 0b1111, 0 }, 0 },
-        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_1,
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_1
+            | TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT,
         .woodenSupports = { WoodenSupportSubType::neSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack3x3Seq4 = {
         .clearance = { 0, -32, 0, 0, { 0b1111, 0 }, 0 },
-        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_3,
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT,
         .woodenSupports = { WoodenSupportSubType::neSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack3x3Seq5 = {
         .clearance = { 0, 32, 0, 0, { 0b1111, 0 }, 0 },
-        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1,
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT,
         .woodenSupports = { WoodenSupportSubType::neSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack3x3Seq6 = {
         .clearance = { 32, -32, 0, 0, { 0b1111, 0 }, 0 },
-        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_2 | TRACK_SEQUENCE_FLAG_DIRECTION_3,
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_2 | TRACK_SEQUENCE_FLAG_DIRECTION_3
+            | TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT,
         .woodenSupports = { WoodenSupportSubType::neSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack3x3Seq7 = {
         .clearance = { 32, 32, 0, 0, { 0b1111, 0 }, 0 },
-        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_2,
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_2
+            | TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT,
         .woodenSupports = { WoodenSupportSubType::neSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack3x3Seq8 = {
         .clearance = { 32, 0, 0, 0, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_1 },
-        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_2,
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_2 | TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT,
         .woodenSupports = { WoodenSupportSubType::neSw },
     };
 
@@ -10400,6 +10884,7 @@ namespace OpenRCT2::TrackMetaData
         .clearance = { -64, 0, 24, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kRightZeroGRollUpSeq0 = {
@@ -10418,12 +10903,14 @@ namespace OpenRCT2::TrackMetaData
         .clearance = { -64, 0, 24, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kLeftZeroGRollDownSeq0 = {
         .clearance = { 0, 0, -32, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kLeftZeroGRollDownSeq1 = {
@@ -10442,6 +10929,7 @@ namespace OpenRCT2::TrackMetaData
         .clearance = { 0, 0, -32, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kRightZeroGRollDownSeq1 = {
@@ -10570,6 +11058,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftFlyerLargeHalfLoopUninvertedUpSeq3 = {
         .clearance = { -96, 0, 64, 192, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0011,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kLeftFlyerLargeHalfLoopUninvertedUpSeq4 = {
@@ -10580,6 +11069,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftFlyerLargeHalfLoopUninvertedUpSeq5 = {
         .clearance = { -96, -32, 64, 192, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1000,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kLeftFlyerLargeHalfLoopUninvertedUpSeq6 = {
@@ -10605,6 +11095,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopUninvertedUpSeq3 = {
         .clearance = { -96, 0, 64, 192, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1001,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopUninvertedUpSeq4 = {
@@ -10615,6 +11106,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopUninvertedUpSeq5 = {
         .clearance = { -96, 32, 64, 192, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopUninvertedUpSeq6 = {
@@ -10630,6 +11122,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftFlyerLargeHalfLoopInvertedDownSeq1 = {
         .clearance = { -32, 0, -184, 192, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kLeftFlyerLargeHalfLoopInvertedDownSeq2 = {
@@ -10640,6 +11133,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftFlyerLargeHalfLoopInvertedDownSeq3 = {
         .clearance = { -32, -32, -184, 192, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1001,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kLeftFlyerLargeHalfLoopInvertedDownSeq4 = {
@@ -10665,6 +11159,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopInvertedDownSeq1 = {
         .clearance = { -32, 0, -184, 192, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1000,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopInvertedDownSeq2 = {
@@ -10675,6 +11170,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopInvertedDownSeq3 = {
         .clearance = { -32, 32, -184, 192, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0011,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopInvertedDownSeq4 = {
@@ -10710,6 +11206,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftFlyerLargeHalfLoopInvertedUpSeq3 = {
         .clearance = { -96, 0, 64, 192, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0011,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kLeftFlyerLargeHalfLoopInvertedUpSeq4 = {
@@ -10720,11 +11217,13 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftFlyerLargeHalfLoopInvertedUpSeq5 = {
         .clearance = { -96, -32, 64, 192, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1000,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kLeftFlyerLargeHalfLoopInvertedUpSeq6 = {
         .clearance = { -64, -32, 248, 32, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1000,
+        .generalSupportHeight = { -8 },
     };
 
     static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopInvertedUpSeq0 = {
@@ -10745,6 +11244,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopInvertedUpSeq3 = {
         .clearance = { -96, 0, 64, 192, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1001,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopInvertedUpSeq4 = {
@@ -10755,21 +11255,25 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopInvertedUpSeq5 = {
         .clearance = { -96, 32, 64, 192, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopInvertedUpSeq6 = {
         .clearance = { -64, 32, 248, 32, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
+        .generalSupportHeight = { -8 },
     };
 
     static constexpr SequenceDescriptor kLeftFlyerLargeHalfLoopUninvertedDownSeq0 = {
         .clearance = { 0, 0, -32, 32, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
+        .generalSupportHeight = { -8 },
     };
 
     static constexpr SequenceDescriptor kLeftFlyerLargeHalfLoopUninvertedDownSeq1 = {
         .clearance = { -32, 0, -216, 192, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kLeftFlyerLargeHalfLoopUninvertedDownSeq2 = {
@@ -10780,6 +11284,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftFlyerLargeHalfLoopUninvertedDownSeq3 = {
         .clearance = { -32, -32, -216, 192, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1001,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kLeftFlyerLargeHalfLoopUninvertedDownSeq4 = {
@@ -10800,11 +11305,13 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopUninvertedDownSeq0 = {
         .clearance = { 0, 0, -32, 32, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1000,
+        .generalSupportHeight = { -8 },
     };
 
     static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopUninvertedDownSeq1 = {
         .clearance = { -32, 0, -216, 192, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1000,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopUninvertedDownSeq2 = {
@@ -10815,6 +11322,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopUninvertedDownSeq3 = {
         .clearance = { -32, 32, -216, 192, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0011,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopUninvertedDownSeq4 = {
@@ -10835,16 +11343,19 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kFlyerHalfLoopInvertedUpSeq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b1010,
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kFlyerHalfLoopInvertedUpSeq1 = {
         .clearance = { -32, 0, 16, 16, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b1010,
+        .generalSupportHeight = { 40 },
     };
 
     static constexpr SequenceDescriptor kFlyerHalfLoopInvertedUpSeq2 = {
         .clearance = { -64, 0, 32, 96, { 0b0011, 0 }, 0 },
         .allowedWallEdges = 0b1011,
+        .generalSupportHeight = { 40 },
     };
 
     static constexpr SequenceDescriptor kFlyerHalfLoopInvertedUpSeq3 = {
@@ -10858,72 +11369,85 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kFlyerHalfLoopUninvertedDownSeq1 = {
         .clearance = { -32, 0, -120, 96, { 0b0011, 0 }, 0 },
         .allowedWallEdges = 0b1011,
+        .generalSupportHeight = { 40 },
     };
 
     static constexpr SequenceDescriptor kFlyerHalfLoopUninvertedDownSeq2 = {
         .clearance = { 0, 0, -136, 16, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b1010,
+        .generalSupportHeight = { 40 },
     };
 
     static constexpr SequenceDescriptor kFlyerHalfLoopUninvertedDownSeq3 = {
         .clearance = { 32, 0, -152, 16, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b1010,
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kLeftEighthToDiagUp25Seq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25Deg },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kLeftEighthToDiagUp25Seq1 = {
         .clearance = { -32, 0, 16, 32, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
         .woodenSupports = { WoodenSupportSubType::neSw },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kLeftEighthToDiagUp25Seq2 = {
         .clearance = { -32, -32, 32, 16, { 0b1000, 0 }, 0 },
         .allowedWallEdges = 0b1000,
         .woodenSupports = { WoodenSupportSubType::corner1 },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kLeftEighthToDiagUp25Seq3 = {
         .clearance = { -64, 0, 32, 16, { 0b0010, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0011,
         .woodenSupports = { WoodenSupportSubType::corner3 },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kLeftEighthToDiagUp25Seq4 = {
         .clearance = { -64, -32, 32, 24, { 0b0001, 0 }, 0 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kRightEighthToDiagUp25Seq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1000,
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25Deg },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kRightEighthToDiagUp25Seq1 = {
         .clearance = { -32, 0, 16, 32, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1000,
         .woodenSupports = { WoodenSupportSubType::neSw },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kRightEighthToDiagUp25Seq2 = {
         .clearance = { -32, 32, 32, 16, { 0b0100, 0 }, 0 },
         .allowedWallEdges = 0b0010,
         .woodenSupports = { WoodenSupportSubType::corner0 },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kRightEighthToDiagUp25Seq3 = {
         .clearance = { -64, 0, 32, 16, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kRightEighthToDiagUp25Seq4 = {
         .clearance = { -64, 32, 32, 24, { 0b0010, 0 }, 0 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kLeftEighthToDiagDown25Seq0 = {
@@ -10931,28 +11455,33 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b0010,
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25Deg },
         .extraSupportRotation = 2,
+        .generalSupportHeight = { 32 },
     };
 
     static constexpr SequenceDescriptor kLeftEighthToDiagDown25Seq1 = {
         .clearance = { -32, 0, -32, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
         .woodenSupports = { WoodenSupportSubType::neSw },
+        .generalSupportHeight = { 32 },
     };
 
     static constexpr SequenceDescriptor kLeftEighthToDiagDown25Seq2 = {
         .clearance = { -32, -32, -48, 16, { 0b1000, 0 }, 0 },
         .allowedWallEdges = 0b1000,
         .woodenSupports = { WoodenSupportSubType::corner1 },
+        .generalSupportHeight = { 32 },
     };
 
     static constexpr SequenceDescriptor kLeftEighthToDiagDown25Seq3 = {
         .clearance = { -64, 0, -48, 16, { 0b0010, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0011,
         .woodenSupports = { WoodenSupportSubType::corner3 },
+        .generalSupportHeight = { 32 },
     };
 
     static constexpr SequenceDescriptor kLeftEighthToDiagDown25Seq4 = {
         .clearance = { -64, -32, -48, 16, { 0b0001, 0 }, 0 },
+        .generalSupportHeight = { 32 },
     };
 
     static constexpr SequenceDescriptor kRightEighthToDiagDown25Seq0 = {
@@ -10960,758 +11489,905 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1000,
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25Deg },
         .extraSupportRotation = 2,
+        .generalSupportHeight = { 32 },
     };
 
     static constexpr SequenceDescriptor kRightEighthToDiagDown25Seq1 = {
         .clearance = { -32, 0, -32, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1000,
         .woodenSupports = { WoodenSupportSubType::neSw },
+        .generalSupportHeight = { 32 },
     };
 
     static constexpr SequenceDescriptor kRightEighthToDiagDown25Seq2 = {
         .clearance = { -32, 32, -48, 16, { 0b0100, 0 }, 0 },
         .allowedWallEdges = 0b0010,
         .woodenSupports = { WoodenSupportSubType::corner0 },
+        .generalSupportHeight = { 32 },
     };
 
     static constexpr SequenceDescriptor kRightEighthToDiagDown25Seq3 = {
         .clearance = { -64, 0, -48, 16, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
+        .generalSupportHeight = { 32 },
     };
 
     static constexpr SequenceDescriptor kRightEighthToDiagDown25Seq4 = {
         .clearance = { -64, 32, -48, 16, { 0b0010, 0 }, 0 },
+        .generalSupportHeight = { 32 },
     };
 
     static constexpr SequenceDescriptor kLeftEighthToOrthogonalUp25Seq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1101, 0 }, 0 },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kLeftEighthToOrthogonalUp25Seq1 = {
         .clearance = { -32, 0, 0, 16, { 0b0001, 0 }, 0 },
         .allowedWallEdges = 0b1000,
         .woodenSupports = { WoodenSupportSubType::corner2 },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kLeftEighthToOrthogonalUp25Seq2 = {
         .clearance = { 0, 32, 0, 16, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
         .woodenSupports = { WoodenSupportSubType::corner0 },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kLeftEighthToOrthogonalUp25Seq3 = {
         .clearance = { -32, 32, 16, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
         .woodenSupports = { WoodenSupportSubType::neSw },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kLeftEighthToOrthogonalUp25Seq4 = {
         .clearance = { -64, 32, 32, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
         .woodenSupports = { WoodenSupportSubType::neSw },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kRightEighthToOrthogonalUp25Seq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1101, 0 }, 0 },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kRightEighthToOrthogonalUp25Seq1 = {
         .clearance = { 0, 32, 0, 16, { 0b0100, 0 }, 0 },
         .allowedWallEdges = 0b0100,
         .woodenSupports = { WoodenSupportSubType::corner0 },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kRightEighthToOrthogonalUp25Seq2 = {
         .clearance = { -32, 0, 0, 16, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kRightEighthToOrthogonalUp25Seq3 = {
         .clearance = { -32, 32, 16, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0001,
         .woodenSupports = { WoodenSupportSubType::nwSe },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kRightEighthToOrthogonalUp25Seq4 = {
         .clearance = { -32, 64, 32, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0001,
         .woodenSupports = { WoodenSupportSubType::nwSe },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kLeftEighthToOrthogonalDown25Seq0 = {
         .clearance = { 0, 0, -16, 24, { 0b1101, 0 }, 0 },
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25Deg },
         .extraSupportRotation = 2,
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kLeftEighthToOrthogonalDown25Seq1 = {
         .clearance = { -32, 0, -16, 16, { 0b0001, 0 }, 0 },
         .allowedWallEdges = 0b1000,
         .woodenSupports = { WoodenSupportSubType::neSw },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kLeftEighthToOrthogonalDown25Seq2 = {
         .clearance = { 0, 32, -16, 16, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
         .woodenSupports = { WoodenSupportSubType::corner0 },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kLeftEighthToOrthogonalDown25Seq3 = {
         .clearance = { -32, 32, -32, 32, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
         .woodenSupports = { WoodenSupportSubType::corner2 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kLeftEighthToOrthogonalDown25Seq4 = {
         .clearance = { -64, 32, -48, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kRightEighthToOrthogonalDown25Seq0 = {
         .clearance = { 0, 0, -16, 24, { 0b1101, 0 }, 0 },
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25Deg },
         .extraSupportRotation = 2,
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kRightEighthToOrthogonalDown25Seq1 = {
         .clearance = { 0, 32, -16, 16, { 0b0100, 0 }, 0 },
         .allowedWallEdges = 0b0100,
         .woodenSupports = { WoodenSupportSubType::neSw },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kRightEighthToOrthogonalDown25Seq2 = {
         .clearance = { -32, 0, -16, 16, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
         .woodenSupports = { WoodenSupportSubType::corner1 },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kRightEighthToOrthogonalDown25Seq3 = {
         .clearance = { -32, 32, -32, 32, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0001,
         .woodenSupports = { WoodenSupportSubType::corner3 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kRightEighthToOrthogonalDown25Seq4 = {
         .clearance = { -32, 64, -48, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0001,
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kDiagUp25ToLeftBankedUp25Seq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1101, 0 }, 0 },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kDiagUp25ToLeftBankedUp25Seq1 = {
         .clearance = { 0, 32, 0, 16, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
         .woodenSupports = { WoodenSupportSubType::corner0 },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kDiagUp25ToLeftBankedUp25Seq2 = {
         .clearance = { -32, 0, 0, 16, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kDiagUp25ToLeftBankedUp25Seq3 = {
         .clearance = { -32, 32, 0, 16, { 0b0010, 0 }, 0 },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kDiagUp25ToRightBankedUp25Seq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1101, 0 }, 0 },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kDiagUp25ToRightBankedUp25Seq1 = {
         .clearance = { 0, 32, 0, 16, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
         .woodenSupports = { WoodenSupportSubType::corner0 },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kDiagUp25ToRightBankedUp25Seq2 = {
         .clearance = { -32, 0, 0, 16, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kDiagUp25ToRightBankedUp25Seq3 = {
         .clearance = { -32, 32, 0, 16, { 0b0010, 0 }, 0 },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kDiagLeftBankedUp25ToUp25Seq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1101, 0 }, 0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagLeftBankedUp25ToUp25Seq1 = {
         .clearance = { 0, 32, 0, 16, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
         .woodenSupports = { WoodenSupportSubType::corner0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagLeftBankedUp25ToUp25Seq2 = {
         .clearance = { -32, 0, 0, 16, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagLeftBankedUp25ToUp25Seq3 = {
         .clearance = { -32, 32, 0, 16, { 0b0010, 0 }, 0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagRightBankedUp25ToUp25Seq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1101, 0 }, 0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagRightBankedUp25ToUp25Seq1 = {
         .clearance = { 0, 32, 0, 16, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
         .woodenSupports = { WoodenSupportSubType::corner0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagRightBankedUp25ToUp25Seq2 = {
         .clearance = { -32, 0, 0, 16, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagRightBankedUp25ToUp25Seq3 = {
         .clearance = { -32, 32, 0, 16, { 0b0010, 0 }, 0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagDown25ToLeftBankedDown25Seq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1101, 0 }, 0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagDown25ToLeftBankedDown25Seq1 = {
         .clearance = { 0, 32, 0, 16, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
         .woodenSupports = { WoodenSupportSubType::corner0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagDown25ToLeftBankedDown25Seq2 = {
         .clearance = { -32, 0, 0, 16, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagDown25ToLeftBankedDown25Seq3 = {
         .clearance = { -32, 32, 0, 16, { 0b0010, 0 }, 0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagDown25ToRightBankedDown25Seq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1101, 0 }, 0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagDown25ToRightBankedDown25Seq1 = {
         .clearance = { 0, 32, 0, 16, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
         .woodenSupports = { WoodenSupportSubType::corner0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagDown25ToRightBankedDown25Seq2 = {
         .clearance = { -32, 0, 0, 16, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagDown25ToRightBankedDown25Seq3 = {
         .clearance = { -32, 32, 0, 16, { 0b0010, 0 }, 0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagLeftBankedDown25ToDown25Seq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1101, 0 }, 0 },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kDiagLeftBankedDown25ToDown25Seq1 = {
         .clearance = { 0, 32, 0, 16, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
         .woodenSupports = { WoodenSupportSubType::corner0 },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kDiagLeftBankedDown25ToDown25Seq2 = {
         .clearance = { -32, 0, 0, 16, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kDiagLeftBankedDown25ToDown25Seq3 = {
         .clearance = { -32, 32, 0, 16, { 0b0010, 0 }, 0 },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kDiagRightBankedDown25ToDown25Seq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1101, 0 }, 0 },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kDiagRightBankedDown25ToDown25Seq1 = {
         .clearance = { 0, 32, 0, 16, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
         .woodenSupports = { WoodenSupportSubType::corner0 },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kDiagRightBankedDown25ToDown25Seq2 = {
         .clearance = { -32, 0, 0, 16, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kDiagRightBankedDown25ToDown25Seq3 = {
         .clearance = { -32, 32, 0, 16, { 0b0010, 0 }, 0 },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kDiagLeftBankedFlatToLeftBankedUp25Seq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1101, 0 }, 0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagLeftBankedFlatToLeftBankedUp25Seq1 = {
         .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
         .woodenSupports = { WoodenSupportSubType::corner0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagLeftBankedFlatToLeftBankedUp25Seq2 = {
         .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagLeftBankedFlatToLeftBankedUp25Seq3 = {
         .clearance = { -32, 32, 0, 8, { 0b0010, 0 }, 0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagRightBankedFlatToRightBankedUp25Seq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1101, 0 }, 0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagRightBankedFlatToRightBankedUp25Seq1 = {
         .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
         .woodenSupports = { WoodenSupportSubType::corner0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagRightBankedFlatToRightBankedUp25Seq2 = {
         .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagRightBankedFlatToRightBankedUp25Seq3 = {
         .clearance = { -32, 32, 0, 8, { 0b0010, 0 }, 0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagLeftBankedUp25ToLeftBankedFlatSeq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1101, 0 }, 0 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kDiagLeftBankedUp25ToLeftBankedFlatSeq1 = {
         .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
         .woodenSupports = { WoodenSupportSubType::corner0 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kDiagLeftBankedUp25ToLeftBankedFlatSeq2 = {
         .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kDiagLeftBankedUp25ToLeftBankedFlatSeq3 = {
         .clearance = { -32, 32, 0, 8, { 0b0010, 0 }, 0 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kDiagRightBankedUp25ToRightBankedFlatSeq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1101, 0 }, 0 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kDiagRightBankedUp25ToRightBankedFlatSeq1 = {
         .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
         .woodenSupports = { WoodenSupportSubType::corner0 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kDiagRightBankedUp25ToRightBankedFlatSeq2 = {
         .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kDiagRightBankedUp25ToRightBankedFlatSeq3 = {
         .clearance = { -32, 32, 0, 8, { 0b0010, 0 }, 0 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kDiagLeftBankedFlatToLeftBankedDown25Seq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1101, 0 }, 0 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kDiagLeftBankedFlatToLeftBankedDown25Seq1 = {
         .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
         .woodenSupports = { WoodenSupportSubType::corner0 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kDiagLeftBankedFlatToLeftBankedDown25Seq2 = {
         .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kDiagLeftBankedFlatToLeftBankedDown25Seq3 = {
         .clearance = { -32, 32, 0, 8, { 0b0010, 0 }, 0 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kDiagRightBankedFlatToRightBankedDown25Seq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1101, 0 }, 0 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kDiagRightBankedFlatToRightBankedDown25Seq1 = {
         .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
         .woodenSupports = { WoodenSupportSubType::corner0 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kDiagRightBankedFlatToRightBankedDown25Seq2 = {
         .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kDiagRightBankedFlatToRightBankedDown25Seq3 = {
         .clearance = { -32, 32, 0, 8, { 0b0010, 0 }, 0 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kDiagLeftBankedDown25ToLeftBankedFlatSeq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1101, 0 }, 0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagLeftBankedDown25ToLeftBankedFlatSeq1 = {
         .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
         .woodenSupports = { WoodenSupportSubType::corner0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagLeftBankedDown25ToLeftBankedFlatSeq2 = {
         .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagLeftBankedDown25ToLeftBankedFlatSeq3 = {
         .clearance = { -32, 32, 0, 8, { 0b0010, 0 }, 0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagRightBankedDown25ToRightBankedFlatSeq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1101, 0 }, 0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagRightBankedDown25ToRightBankedFlatSeq1 = {
         .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
         .woodenSupports = { WoodenSupportSubType::corner0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagRightBankedDown25ToRightBankedFlatSeq2 = {
         .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagRightBankedDown25ToRightBankedFlatSeq3 = {
         .clearance = { -32, 32, 0, 8, { 0b0010, 0 }, 0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagFlatToLeftBankedUp25Seq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1101, 0 }, 0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagFlatToLeftBankedUp25Seq1 = {
         .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
         .woodenSupports = { WoodenSupportSubType::corner0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagFlatToLeftBankedUp25Seq2 = {
         .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagFlatToLeftBankedUp25Seq3 = {
         .clearance = { -32, 32, 0, 8, { 0b0010, 0 }, 0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagFlatToRightBankedUp25Seq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1101, 0 }, 0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagFlatToRightBankedUp25Seq1 = {
         .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
         .woodenSupports = { WoodenSupportSubType::corner0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagFlatToRightBankedUp25Seq2 = {
         .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagFlatToRightBankedUp25Seq3 = {
         .clearance = { -32, 32, 0, 8, { 0b0010, 0 }, 0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagLeftBankedUp25ToFlatSeq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1101, 0 }, 0 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kDiagLeftBankedUp25ToFlatSeq1 = {
         .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
         .woodenSupports = { WoodenSupportSubType::corner0 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kDiagLeftBankedUp25ToFlatSeq2 = {
         .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kDiagLeftBankedUp25ToFlatSeq3 = {
         .clearance = { -32, 32, 0, 8, { 0b0010, 0 }, 0 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kDiagRightBankedUp25ToFlatSeq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1101, 0 }, 0 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kDiagRightBankedUp25ToFlatSeq1 = {
         .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
         .woodenSupports = { WoodenSupportSubType::corner0 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kDiagRightBankedUp25ToFlatSeq2 = {
         .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kDiagRightBankedUp25ToFlatSeq3 = {
         .clearance = { -32, 32, 0, 8, { 0b0010, 0 }, 0 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kDiagFlatToLeftBankedDown25Seq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1101, 0 }, 0 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kDiagFlatToLeftBankedDown25Seq1 = {
         .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
         .woodenSupports = { WoodenSupportSubType::corner0 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kDiagFlatToLeftBankedDown25Seq2 = {
         .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kDiagFlatToLeftBankedDown25Seq3 = {
         .clearance = { -32, 32, 0, 8, { 0b0010, 0 }, 0 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kDiagFlatToRightBankedDown25Seq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1101, 0 }, 0 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kDiagFlatToRightBankedDown25Seq1 = {
         .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
         .woodenSupports = { WoodenSupportSubType::corner0 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kDiagFlatToRightBankedDown25Seq2 = {
         .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kDiagFlatToRightBankedDown25Seq3 = {
         .clearance = { -32, 32, 0, 8, { 0b0010, 0 }, 0 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kDiagLeftBankedDown25ToFlatSeq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1101, 0 }, 0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagLeftBankedDown25ToFlatSeq1 = {
         .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
         .woodenSupports = { WoodenSupportSubType::corner0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagLeftBankedDown25ToFlatSeq2 = {
         .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagLeftBankedDown25ToFlatSeq3 = {
         .clearance = { -32, 32, 0, 8, { 0b0010, 0 }, 0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagRightBankedDown25ToFlatSeq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1101, 0 }, 0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagRightBankedDown25ToFlatSeq1 = {
         .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
         .woodenSupports = { WoodenSupportSubType::corner0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagRightBankedDown25ToFlatSeq2 = {
         .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagRightBankedDown25ToFlatSeq3 = {
         .clearance = { -32, 32, 0, 8, { 0b0010, 0 }, 0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagUp25LeftBankedSeq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1101, 0 }, 0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagUp25LeftBankedSeq1 = {
         .clearance = { 0, 32, 0, 16, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
         .woodenSupports = { WoodenSupportSubType::corner0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagUp25LeftBankedSeq2 = {
         .clearance = { -32, 0, 0, 16, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagUp25LeftBankedSeq3 = {
         .clearance = { -32, 32, 0, 16, { 0b0010, 0 }, 0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagUp25RightBankedSeq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1101, 0 }, 0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagUp25RightBankedSeq1 = {
         .clearance = { 0, 32, 0, 16, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
         .woodenSupports = { WoodenSupportSubType::corner0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagUp25RightBankedSeq2 = {
         .clearance = { -32, 0, 0, 16, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagUp25RightBankedSeq3 = {
         .clearance = { -32, 32, 0, 16, { 0b0010, 0 }, 0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagDown25LeftBankedSeq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1101, 0 }, 0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagDown25LeftBankedSeq1 = {
         .clearance = { 0, 32, 0, 16, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
         .woodenSupports = { WoodenSupportSubType::corner0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagDown25LeftBankedSeq2 = {
         .clearance = { -32, 0, 0, 16, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagDown25LeftBankedSeq3 = {
         .clearance = { -32, 32, 0, 16, { 0b0010, 0 }, 0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagDown25RightBankedSeq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1101, 0 }, 0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagDown25RightBankedSeq1 = {
         .clearance = { 0, 32, 0, 16, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
         .woodenSupports = { WoodenSupportSubType::corner0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagDown25RightBankedSeq2 = {
         .clearance = { -32, 0, 0, 16, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kDiagDown25RightBankedSeq3 = {
         .clearance = { -32, 32, 0, 16, { 0b0010, 0 }, 0 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kLeftEighthBankToDiagUp25Seq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25Deg },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kLeftEighthBankToDiagUp25Seq1 = {
         .clearance = { -32, 0, 16, 32, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
         .woodenSupports = { WoodenSupportSubType::neSw },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kLeftEighthBankToDiagUp25Seq2 = {
         .clearance = { -32, -32, 32, 16, { 0b1000, 0 }, 0 },
         .allowedWallEdges = 0b1000,
         .woodenSupports = { WoodenSupportSubType::corner1 },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kLeftEighthBankToDiagUp25Seq3 = {
         .clearance = { -64, 0, 32, 16, { 0b0010, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0011,
         .woodenSupports = { WoodenSupportSubType::corner3 },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kLeftEighthBankToDiagUp25Seq4 = {
         .clearance = { -64, -32, 32, 24, { 0b0001, 0 }, 0 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kRightEighthBankToDiagUp25Seq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1000,
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25Deg },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kRightEighthBankToDiagUp25Seq1 = {
         .clearance = { -32, 0, 16, 32, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1000,
         .woodenSupports = { WoodenSupportSubType::neSw },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kRightEighthBankToDiagUp25Seq2 = {
         .clearance = { -32, 32, 32, 16, { 0b0100, 0 }, 0 },
         .allowedWallEdges = 0b0010,
         .woodenSupports = { WoodenSupportSubType::corner0 },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kRightEighthBankToDiagUp25Seq3 = {
         .clearance = { -64, 0, 32, 16, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kRightEighthBankToDiagUp25Seq4 = {
         .clearance = { -64, 32, 32, 24, { 0b0010, 0 }, 0 },
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kLeftEighthBankToDiagDown25Seq0 = {
@@ -11719,28 +12395,33 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b0010,
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25Deg },
         .extraSupportRotation = 2,
+        .generalSupportHeight = { 32 },
     };
 
     static constexpr SequenceDescriptor kLeftEighthBankToDiagDown25Seq1 = {
         .clearance = { -32, 0, -32, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
         .woodenSupports = { WoodenSupportSubType::neSw },
+        .generalSupportHeight = { 32 },
     };
 
     static constexpr SequenceDescriptor kLeftEighthBankToDiagDown25Seq2 = {
         .clearance = { -32, -32, -48, 16, { 0b1000, 0 }, 0 },
         .allowedWallEdges = 0b1000,
         .woodenSupports = { WoodenSupportSubType::corner1 },
+        .generalSupportHeight = { 32 },
     };
 
     static constexpr SequenceDescriptor kLeftEighthBankToDiagDown25Seq3 = {
         .clearance = { -64, 0, -48, 16, { 0b0010, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0011,
         .woodenSupports = { WoodenSupportSubType::corner3 },
+        .generalSupportHeight = { 32 },
     };
 
     static constexpr SequenceDescriptor kLeftEighthBankToDiagDown25Seq4 = {
         .clearance = { -64, -32, -48, 16, { 0b0001, 0 }, 0 },
+        .generalSupportHeight = { 32 },
     };
 
     static constexpr SequenceDescriptor kRightEighthBankToDiagDown25Seq0 = {
@@ -11748,142 +12429,167 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1000,
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25Deg },
         .extraSupportRotation = 2,
+        .generalSupportHeight = { 32 },
     };
 
     static constexpr SequenceDescriptor kRightEighthBankToDiagDown25Seq1 = {
         .clearance = { -32, 0, -32, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1000,
         .woodenSupports = { WoodenSupportSubType::neSw },
+        .generalSupportHeight = { 32 },
     };
 
     static constexpr SequenceDescriptor kRightEighthBankToDiagDown25Seq2 = {
         .clearance = { -32, 32, -48, 16, { 0b0100, 0 }, 0 },
         .allowedWallEdges = 0b0010,
         .woodenSupports = { WoodenSupportSubType::corner0 },
+        .generalSupportHeight = { 32 },
     };
 
     static constexpr SequenceDescriptor kRightEighthBankToDiagDown25Seq3 = {
         .clearance = { -64, 0, -48, 16, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
+        .generalSupportHeight = { 32 },
     };
 
     static constexpr SequenceDescriptor kRightEighthBankToDiagDown25Seq4 = {
         .clearance = { -64, 32, -48, 16, { 0b0010, 0 }, 0 },
+        .generalSupportHeight = { 32 },
     };
 
     static constexpr SequenceDescriptor kLeftEighthBankToOrthogonalUp25Seq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1101, 0 }, 0 },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kLeftEighthBankToOrthogonalUp25Seq1 = {
         .clearance = { -32, 0, 0, 16, { 0b0001, 0 }, 0 },
         .allowedWallEdges = 0b1000,
         .woodenSupports = { WoodenSupportSubType::corner2 },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kLeftEighthBankToOrthogonalUp25Seq2 = {
         .clearance = { 0, 32, 0, 16, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
         .woodenSupports = { WoodenSupportSubType::corner0 },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kLeftEighthBankToOrthogonalUp25Seq3 = {
         .clearance = { -32, 32, 16, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
         .woodenSupports = { WoodenSupportSubType::neSw },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kLeftEighthBankToOrthogonalUp25Seq4 = {
         .clearance = { -64, 32, 32, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
         .woodenSupports = { WoodenSupportSubType::neSw },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kRightEighthBankToOrthogonalUp25Seq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1101, 0 }, 0 },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kRightEighthBankToOrthogonalUp25Seq1 = {
         .clearance = { 0, 32, 0, 16, { 0b0100, 0 }, 0 },
         .allowedWallEdges = 0b0100,
         .woodenSupports = { WoodenSupportSubType::corner0 },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kRightEighthBankToOrthogonalUp25Seq2 = {
         .clearance = { -32, 0, 0, 16, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kRightEighthBankToOrthogonalUp25Seq3 = {
         .clearance = { -32, 32, 16, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0001,
         .woodenSupports = { WoodenSupportSubType::nwSe },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kRightEighthBankToOrthogonalUp25Seq4 = {
         .clearance = { -32, 64, 32, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0001,
         .woodenSupports = { WoodenSupportSubType::nwSe },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kLeftEighthBankToOrthogonalDown25Seq0 = {
         .clearance = { 0, 0, -16, 24, { 0b1101, 0 }, 0 },
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25Deg },
         .extraSupportRotation = 2,
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kLeftEighthBankToOrthogonalDown25Seq1 = {
         .clearance = { -32, 0, -16, 16, { 0b0001, 0 }, 0 },
         .allowedWallEdges = 0b1000,
         .woodenSupports = { WoodenSupportSubType::neSw },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kLeftEighthBankToOrthogonalDown25Seq2 = {
         .clearance = { 0, 32, -16, 16, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
         .woodenSupports = { WoodenSupportSubType::corner0 },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kLeftEighthBankToOrthogonalDown25Seq3 = {
         .clearance = { -32, 32, -32, 32, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
         .woodenSupports = { WoodenSupportSubType::corner2 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kLeftEighthBankToOrthogonalDown25Seq4 = {
         .clearance = { -64, 32, -48, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kRightEighthBankToOrthogonalDown25Seq0 = {
         .clearance = { 0, 0, -16, 24, { 0b1101, 0 }, 0 },
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25Deg },
         .extraSupportRotation = 2,
+        .generalSupportHeight = { 16 },
     };
 
     static constexpr SequenceDescriptor kRightEighthBankToOrthogonalDown25Seq1 = {
         .clearance = { 0, 32, -16, 16, { 0b0100, 0 }, 0 },
         .allowedWallEdges = 0b0100,
         .woodenSupports = { WoodenSupportSubType::neSw },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kRightEighthBankToOrthogonalDown25Seq2 = {
         .clearance = { -32, 0, -16, 16, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
         .woodenSupports = { WoodenSupportSubType::corner1 },
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kRightEighthBankToOrthogonalDown25Seq3 = {
         .clearance = { -32, 32, -32, 32, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0001,
         .woodenSupports = { WoodenSupportSubType::corner3 },
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceDescriptor kRightEighthBankToOrthogonalDown25Seq4 = {
         .clearance = { -32, 64, -48, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0001,
+        .generalSupportHeight = { 24 },
     };
 
     static constexpr SequenceDescriptor kDiagBrakesSeq0 = {
@@ -11953,6 +12659,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagFlatToUp60LongBaseSeq6 = {
         .clearance = { -64, 64, 8, 64, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0000,
+        .generalSupportHeight = { 8 },
     };
     static constexpr SequenceDescriptor kDiagFlatToUp60LongBaseSeq7 = {
         .clearance = { -64, 96, 40, 88, { 0b0100, 0 }, 0 },
@@ -11969,6 +12676,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagUp60ToFlatLongBaseSeq0 = {
         .clearance = { 0, 0, 0, 64, { 0b1101, 0 }, 0 },
         .allowedWallEdges = 0b0000,
+        .generalSupportHeight = { 8 },
     };
     static constexpr SequenceDescriptor kDiagUp60ToFlatLongBaseSeq1 = {
         .clearance = { 0, 32, 0, 72, { 0b0100, 0 }, 0 },
@@ -11981,6 +12689,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagUp60ToFlatLongBaseSeq3 = {
         .clearance = { -32, 32, 0, 80, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0000,
+        .generalSupportHeight = { 8 },
     };
     static constexpr SequenceDescriptor kDiagUp60ToFlatLongBaseSeq4 = {
         .clearance = { -32, 64, 56, 32, { 0b0100, 0 }, 0 },
@@ -11993,6 +12702,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagUp60ToFlatLongBaseSeq6 = {
         .clearance = { -64, 64, 56, 8, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0000,
+        .generalSupportHeight = { 8 },
     };
     static constexpr SequenceDescriptor kDiagUp60ToFlatLongBaseSeq7 = {
         .clearance = { -64, 96, 80, 8, { 0b0100, 0 }, 0 },
@@ -12021,6 +12731,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagFlatToDown60LongBaseSeq3 = {
         .clearance = { -32, 32, 56, 8, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0000,
+        .generalSupportHeight = { 8 },
     };
     static constexpr SequenceDescriptor kDiagFlatToDown60LongBaseSeq4 = {
         .clearance = { -32, 64, 56, 32, { 0b0100, 0 }, 0 },
@@ -12033,6 +12744,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagFlatToDown60LongBaseSeq6 = {
         .clearance = { -64, 64, 0, 80, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0000,
+        .generalSupportHeight = { 8 },
     };
     static constexpr SequenceDescriptor kDiagFlatToDown60LongBaseSeq7 = {
         .clearance = { -64, 96, 0, 72, { 0b0100, 0 }, 0 },
@@ -12045,6 +12757,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagFlatToDown60LongBaseSeq9 = {
         .clearance = { -96, 96, 0, 64, { 0b0010, 0 }, 0 },
         .allowedWallEdges = 0b0000,
+        .generalSupportHeight = { 8 },
     };
     static constexpr SequenceDescriptor kDiagDown60ToFlatLongBaseSeq0 = {
         .clearance = { 0, 0, 40, 104, { 0b1101, 0 }, 0 },
@@ -12061,6 +12774,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagDown60ToFlatLongBaseSeq3 = {
         .clearance = { -32, 32, 8, 64, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0000,
+        .generalSupportHeight = { 8 },
     };
     static constexpr SequenceDescriptor kDiagDown60ToFlatLongBaseSeq4 = {
         .clearance = { -32, 64, 8, 40, { 0b0100, 0 }, 0 },
@@ -12089,6 +12803,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftEighthDiveLoopUpToOrthogonalSeq0 = {
         .clearance = { 0, 0, 0, 64, { 0b1101, 0 }, 0 },
         .allowedWallEdges = 0b0000,
+        .generalSupportHeight = { 8 },
     };
     static constexpr SequenceDescriptor kLeftEighthDiveLoopUpToOrthogonalSeq1 = {
         .clearance = { 0, 32, 0, 88, { 0b0100, 0 }, 0 },
@@ -12101,10 +12816,12 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftEighthDiveLoopUpToOrthogonalSeq3 = {
         .clearance = { -32, 32, 32, 80, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
+        .generalSupportHeight = { 8 },
     };
     static constexpr SequenceDescriptor kLeftEighthDiveLoopUpToOrthogonalSeq4 = {
         .clearance = { -64, 32, 80, 48, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
+        .generalSupportHeight = { 8 },
     };
     static constexpr SequenceDescriptor kLeftEighthDiveLoopUpToOrthogonalSeq5 = {
         .clearance = { -96, 32, 112, 24, { 0b1111, 0 }, 0 },
@@ -12113,6 +12830,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightEighthDiveLoopUpToOrthogonalSeq0 = {
         .clearance = { 0, 0, 0, 64, { 0b1101, 0 }, 0 },
         .allowedWallEdges = 0b0000,
+        .generalSupportHeight = { 8 },
     };
     static constexpr SequenceDescriptor kRightEighthDiveLoopUpToOrthogonalSeq1 = {
         .clearance = { -32, 0, 0, 88, { 0b0001, 0 }, 0 },
@@ -12125,10 +12843,12 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightEighthDiveLoopUpToOrthogonalSeq3 = {
         .clearance = { -32, 32, 32, 80, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0001,
+        .generalSupportHeight = { 8 },
     };
     static constexpr SequenceDescriptor kRightEighthDiveLoopUpToOrthogonalSeq4 = {
         .clearance = { -32, 64, 80, 48, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0101,
+        .generalSupportHeight = { 8 },
     };
     static constexpr SequenceDescriptor kRightEighthDiveLoopUpToOrthogonalSeq5 = {
         .clearance = { -32, 96, 112, 24, { 0b1111, 0 }, 0 },
@@ -12141,10 +12861,12 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftEighthDiveLoopDownToDiagSeq1 = {
         .clearance = { -32, 0, 80, 48, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
+        .generalSupportHeight = { 8 },
     };
     static constexpr SequenceDescriptor kLeftEighthDiveLoopDownToDiagSeq2 = {
         .clearance = { -64, 0, 32, 80, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
+        .generalSupportHeight = { 8 },
     };
     static constexpr SequenceDescriptor kLeftEighthDiveLoopDownToDiagSeq3 = {
         .clearance = { -64, -32, 0, 88, { 0b1000, 0 }, 0 },
@@ -12157,6 +12879,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftEighthDiveLoopDownToDiagSeq5 = {
         .clearance = { -96, -32, 0, 64, { 0b0001, 0 }, 0 },
         .allowedWallEdges = 0b0000,
+        .generalSupportHeight = { 8 },
     };
     static constexpr SequenceDescriptor kRightEighthDiveLoopDownToDiagSeq0 = {
         .clearance = { 0, 0, 112, 24, { 0b1111, 0 }, 0 },
@@ -12165,10 +12888,12 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightEighthDiveLoopDownToDiagSeq1 = {
         .clearance = { -32, 0, 80, 48, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
+        .generalSupportHeight = { 8 },
     };
     static constexpr SequenceDescriptor kRightEighthDiveLoopDownToDiagSeq2 = {
         .clearance = { -64, 0, 32, 80, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1000,
+        .generalSupportHeight = { 8 },
     };
     static constexpr SequenceDescriptor kRightEighthDiveLoopDownToDiagSeq3 = {
         .clearance = { -64, 32, 0, 88, { 0b0100, 0 }, 0 },
@@ -12181,6 +12906,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightEighthDiveLoopDownToDiagSeq5 = {
         .clearance = { -96, 32, 0, 64, { 0b0010, 0 }, 0 },
         .allowedWallEdges = 0b0000,
+        .generalSupportHeight = { 8 },
     };
 
     static constexpr SequenceData kSequenceDescriptorsByElement[] = {
