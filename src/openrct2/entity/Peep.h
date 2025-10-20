@@ -101,6 +101,14 @@ enum class PeepRideSubState : uint8_t
     leaveShop = 21,
 };
 
+enum class PeepSpiralSlideSubState : uint8_t
+{
+    goingUp = 0,
+    prepareToSlide = 1,
+    slidingDown = 2,
+    finishedSliding = 3
+};
+
 enum class PeepUsingBinSubState : uint8_t
 {
     walkingToBin = 0,
@@ -311,8 +319,16 @@ struct Peep : EntityBase
     PeepAnimationGroup AnimationGroup;
     uint8_t TshirtColour;
     uint8_t TrousersColour;
-    uint16_t DestinationX; // Location that the peep is trying to get to
-    uint16_t DestinationY;
+    union
+    {
+        uint16_t DestinationX; // Location that the peep is trying to get to
+        PeepSpiralSlideSubState spiralSlideSubstate;
+    };
+    union
+    {
+        uint16_t DestinationY; // Location that the peep is trying to get to
+        uint16_t spiralSlideGoingUpTimer;
+    };
     uint8_t DestinationTolerance; // How close to destination before next action/state 0 = exact
     uint8_t Var37;
     uint8_t Energy;

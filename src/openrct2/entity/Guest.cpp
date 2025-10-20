@@ -156,14 +156,6 @@ static constexpr CoordsXY kSpiralSlideWalkingPath[64] = {
     {   0,  32 },
 };
 
-enum SpiralSlideState : uint8_t
-{
-    SPIRAL_SLIDE_STATE_GOING_UP = 0,
-    SPIRAL_SLIDE_STATE_PREPARING_TO_SLIDE = 1,
-    SPIRAL_SLIDE_STATE_SLIDING_DOWN = 2,
-    SPIRAL_SLIDE_STATE_FINISHED_SLIDING = 3
-};
-
 /** rct2: 0x00981F4C, 0x00981F4E */
 static constexpr CoordsXY kWatchingPositionOffsets[] = {
     {  7,  5 },
@@ -4717,7 +4709,8 @@ void Guest::UpdateRideApproachSpiralSlide()
     if (waypoint == 3)
     {
         SubState = 15;
-        SetDestination({ SPIRAL_SLIDE_STATE_GOING_UP, 0 }); // Used as a "sub-substate" for guests inside the Spiral Slide
+        spiralSlideSubstate = PeepSpiralSlideSubState::goingUp;
+        spiralSlideGoingUpTimer = 0;
         Var37 = (Var37 / 4) & 0xC;
         MoveTo({ kLocationNull, y, z });
         return;
@@ -4802,19 +4795,15 @@ void Guest::UpdateRideOnSpiralSlide()
 
     if ((Var37 & 3) == 0)
     {
-        auto destination = GetDestination();
-        auto& spiralSlideState = destination.x;
-        auto& spiralSlideGoingUpCounter = destination.y;
-        switch (spiralSlideState)
+        switch (spiralSlideSubstate)
         {
-            case SPIRAL_SLIDE_STATE_GOING_UP:
-                spiralSlideGoingUpCounter++;
-                if (spiralSlideGoingUpCounter == kTicksToGoUpSpiralSlide)
-                    spiralSlideState = SPIRAL_SLIDE_STATE_PREPARING_TO_SLIDE;
+            case PeepSpiralSlideSubState::goingUp:
+                spiralSlideGoingUpTimer++;
+                if (spiralSlideGoingUpTimer == kTicksToGoUpSpiralSlide)
+                    spiralSlideSubstate = PeepSpiralSlideSubState::prepareToSlide;
 
-                SetDestination({ spiralSlideState, spiralSlideGoingUpCounter });
                 return;
-            case SPIRAL_SLIDE_STATE_PREPARING_TO_SLIDE:
+            case PeepSpiralSlideSubState::prepareToSlide:
                 if (ride->slideInUse)
                     return;
 
@@ -4822,17 +4811,16 @@ void Guest::UpdateRideOnSpiralSlide()
                 ride->slidePeep = Id;
                 ride->slidePeepTShirtColour = TshirtColour;
                 ride->spiralSlideProgress = 0;
-                spiralSlideState = SPIRAL_SLIDE_STATE_SLIDING_DOWN;
+                spiralSlideSubstate = PeepSpiralSlideSubState::slidingDown;
 
-                SetDestination({ spiralSlideState, spiralSlideGoingUpCounter });
                 return;
-            case SPIRAL_SLIDE_STATE_FINISHED_SLIDING:
+            case PeepSpiralSlideSubState::finishedSliding:
             {
                 auto newLocation = ride->getStation(CurrentRideStation).Start;
                 uint8_t dir = (Var37 / 4) & 3;
 
                 // Set the location that the guest walks to go on slide again
-                destination = newLocation + kSpiralSlideEndWaypoint[dir];
+                auto destination = newLocation + kSpiralSlideEndWaypoint[dir];
                 SetDestination(destination);
 
                 // Move the guest sprite to just at the end of the slide
@@ -4846,7 +4834,7 @@ void Guest::UpdateRideOnSpiralSlide()
                 Var37++;
                 return;
             }
-            case SPIRAL_SLIDE_STATE_SLIDING_DOWN:
+            case PeepSpiralSlideSubState::slidingDown:
             default:
                 return;
         }
