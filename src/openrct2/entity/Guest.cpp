@@ -83,6 +83,8 @@
 using namespace OpenRCT2;
 using namespace OpenRCT2::Numerics;
 
+static const uint8_t kTicksToGoUpSpiralSlide = 30;
+
 // Locations of the spiral slide platform that a peep walks from the entrance of the ride to the
 // entrance of the slide. Up to 4 waypoints for each 4 sides that an ride entrance can be located
 // and 4 different rotations of the ride. 4 * 4 * 4 = 64 locations.
@@ -4797,7 +4799,7 @@ void Guest::UpdateRideOnSpiralSlide()
         {
             case 0: // Guest is going up the slide tower
                 destination.y++;
-                if (destination.y == 30) // Guest has reached the top of the tower, go to next state
+                if (destination.y == kTicksToGoUpSpiralSlide) // Guest has reached the top of the tower, go to next state
                     destination.x = 1;
 
                 SetDestination(destination);
