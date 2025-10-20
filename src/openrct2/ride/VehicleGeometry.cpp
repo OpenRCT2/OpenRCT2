@@ -15,7 +15,7 @@ namespace OpenRCT2::RideVehicle::Geometry
 {
 
     /** rct2: 0x009A2930 */
-    static constexpr auto kSubpositionTranslationDistances = std::to_array({
+    constexpr auto kSubpositionTranslationDistances = std::to_array({
         // For a base length of 8716 (0x220C) on the horizontal and 6554 (0x199A) on the vertical,
         // use the Pythagoras theorem and round up.
         0,     // no movement
@@ -37,12 +37,5 @@ namespace OpenRCT2::RideVehicle::Geometry
         34902, // XYZ translation
     });
     static_assert(std::size(kSubpositionTranslationDistances) == 16);
-
-    constexpr int32_t getTranslationDistance(CoordsXYZ distance, bool useReverserDistance)
-    {
-        uint8_t index = ((distance.x != 0) << 0) | ((distance.y != 0) << 1) | ((distance.z != 0) << 2)
-            | ((useReverserDistance) << 3);
-        return kSubpositionTranslationDistances[index];
-    }
 
 } // namespace OpenRCT2::RideVehicle::Geometry
