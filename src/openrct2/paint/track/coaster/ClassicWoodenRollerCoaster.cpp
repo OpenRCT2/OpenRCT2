@@ -923,7 +923,6 @@ static void ClassicWoodenRCTrackBankedRightQuarterTurn5(
     DrawSupportForSequenceA<TrackElemType::BankedRightQuarterTurn5Tiles>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments[trackSequence], direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 static void ClassicWoodenRCTrackBankedLeftQuarterTurn5(
@@ -1083,7 +1082,6 @@ static void ClassicWoodenRCTrackRightQuarterTurn3Bank(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments[trackSequence], direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 static void ClassicWoodenRCTrackLeftQuarterTurn3Bank(
