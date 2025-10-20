@@ -38,4 +38,15 @@ namespace OpenRCT2::RideVehicle::Geometry
     });
     static_assert(std::size(kSubpositionTranslationDistances) == 16);
 
+    /** rct2: 0x009A36C4 */
+    constexpr auto kFreeroamVehicleMovementData = std::to_array<Unk9A36C4Struct>( {
+        { -1, 0, 8716 }, { -1, 0, 8716 },   { -1, 0, 8716 },  { -1, 1, 12327 },  { -1, 1, 12327 },  { -1, 1, 12327 },
+        { 0, 1, 8716 },  { -1, 1, 12327 },  { 0, 1, 8716 },   { 0, 1, 8716 },    { 0, 1, 8716 },    { 1, 1, 12327 },
+        { 1, 1, 12327 }, { 1, 1, 12327 },   { 1, 0, 8716 },   { 1, 1, 12327 },   { 1, 0, 8716 },    { 1, 0, 8716 },
+        { 1, 0, 8716 },  { 1, -1, 12327 },  { 1, -1, 12327 }, { 1, -1, 12327 },  { 0, -1, 8716 },   { 1, -1, 12327 },
+        { 0, -1, 8716 }, { 0, -1, 8716 },   { 0, -1, 8716 },  { -1, -1, 12327 }, { -1, -1, 12327 }, { -1, -1, 12327 },
+        { -1, 0, 8716 }, { -1, -1, 12327 },
+    });
+    static_assert(std::size(kFreeroamVehicleMovementData) == 32);
+
 } // namespace OpenRCT2::RideVehicle::Geometry

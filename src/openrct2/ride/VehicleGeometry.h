@@ -17,7 +17,16 @@
 namespace OpenRCT2::RideVehicle::Geometry
 {
 
+
+    struct Unk9A36C4Struct
+    {
+        int16_t x;
+        int16_t y;
+        uint32_t distance;
+    };
+
     extern const std::array<int32_t, 16> kSubpositionTranslationDistances;
+    extern const std::array<Unk9A36C4Struct, 32> kFreeroamVehicleMovementData;
 
     /** The distance between subposition points in a movement vector.
      * Squashes vector components to 0 or !0, so vector length is ignored.

@@ -380,23 +380,6 @@ static constexpr const int8_t* SwingingTimeToSpriteMaps[] = {
     kSwingingTimeToSpriteMap8, kSwingingTimeToSpriteMap9, kSwingingTimeToSpriteMap10, kSwingingTimeToSpriteMap11,
 };
 
-struct Unk9A36C4Struct
-{
-    int16_t x;
-    int16_t y;
-    uint32_t distance;
-};
-
-/** rct2: 0x009A36C4 */
-static constexpr Unk9A36C4Struct kUnk9A36C4[] = {
-    { -1, 0, 8716 }, { -1, 0, 8716 },   { -1, 0, 8716 },  { -1, 1, 12327 },  { -1, 1, 12327 },  { -1, 1, 12327 },
-    { 0, 1, 8716 },  { -1, 1, 12327 },  { 0, 1, 8716 },   { 0, 1, 8716 },    { 0, 1, 8716 },    { 1, 1, 12327 },
-    { 1, 1, 12327 }, { 1, 1, 12327 },   { 1, 0, 8716 },   { 1, 1, 12327 },   { 1, 0, 8716 },    { 1, 0, 8716 },
-    { 1, 0, 8716 },  { 1, -1, 12327 },  { 1, -1, 12327 }, { 1, -1, 12327 },  { 0, -1, 8716 },   { 1, -1, 12327 },
-    { 0, -1, 8716 }, { 0, -1, 8716 },   { 0, -1, 8716 },  { -1, -1, 12327 }, { -1, -1, 12327 }, { -1, -1, 12327 },
-    { -1, 0, 8716 }, { -1, -1, 12327 },
-};
-
 /** rct2: 0x009A37C4 */
 static constexpr CoordsXY kSurroundingTiles[] = {
     { 0, 0 },
@@ -3792,7 +3775,7 @@ void Vehicle::UpdateMotionBoatHire()
             }
 
             int32_t edi = (Orientation | (var_35 & 1)) & 0x1F;
-            loc2 = { x + kUnk9A36C4[edi].x, y + kUnk9A36C4[edi].y };
+            loc2 = { x + Geometry::kFreeroamVehicleMovementData[edi].x, y + Geometry::kFreeroamVehicleMovementData[edi].y };
             if (UpdateMotionCollisionDetection({ loc2, z }, nullptr))
             {
                 remaining_distance = 0;
@@ -3890,7 +3873,7 @@ void Vehicle::UpdateMotionBoatHire()
                 TrackLocation = { flooredLocation, TrackLocation.z };
             }
 
-            remaining_distance -= kUnk9A36C4[edi].distance;
+            remaining_distance -= Geometry::kFreeroamVehicleMovementData[edi].distance;
             _vehicleCurPosition.x = loc2.x;
             _vehicleCurPosition.y = loc2.y;
             if (remaining_distance < 0x368A)
@@ -5229,10 +5212,10 @@ int32_t Vehicle::UpdateMotionDodgems()
 
         CoordsXYZ location = { x, y, z };
 
-        location.x += kUnk9A36C4[oldCollisionDirection].x;
-        location.y += kUnk9A36C4[oldCollisionDirection].y;
-        location.x += kUnk9A36C4[oldCollisionDirection + 1].x;
-        location.y += kUnk9A36C4[oldCollisionDirection + 1].y;
+        location.x += Geometry::kFreeroamVehicleMovementData[oldCollisionDirection].x;
+        location.y += Geometry::kFreeroamVehicleMovementData[oldCollisionDirection].y;
+        location.x += Geometry::kFreeroamVehicleMovementData[oldCollisionDirection + 1].x;
+        location.y += Geometry::kFreeroamVehicleMovementData[oldCollisionDirection + 1].y;
 
         if (collideSprite = DodgemsCarWouldCollideAt(location); !collideSprite.has_value())
         {
@@ -5256,15 +5239,15 @@ int32_t Vehicle::UpdateMotionDodgems()
             direction |= var_35 & 1;
 
             CoordsXY location = _vehicleCurPosition;
-            location.x += kUnk9A36C4[direction].x;
-            location.y += kUnk9A36C4[direction].y;
+            location.x += Geometry::kFreeroamVehicleMovementData[direction].x;
+            location.y += Geometry::kFreeroamVehicleMovementData[direction].y;
 
             if (collideSprite = DodgemsCarWouldCollideAt(location); collideSprite.has_value())
             {
                 break;
             }
 
-            remaining_distance -= kUnk9A36C4[direction].distance;
+            remaining_distance -= Geometry::kFreeroamVehicleMovementData[direction].distance;
             _vehicleCurPosition.x = location.x;
             _vehicleCurPosition.y = location.y;
             if (remaining_distance < 13962)
