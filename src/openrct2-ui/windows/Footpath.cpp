@@ -1193,6 +1193,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 return;
             }
+            _provisionalFootpath.tiles.clear();
 
             auto mapPos = FootpathGetPlacePositionFromScreenPosition(screenCoords);
             if (!mapPos)
