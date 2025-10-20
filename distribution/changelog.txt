@@ -22,7 +22,7 @@
 - Fix: [#25370] The Hybrid Coaster diagonal brakes and block brakes do not block metal supports consistently.
 - Fix: [#25371] The Wooden Roller Coaster small banked turns block too many metal supports.
 - Fix: [#25378] The land tool sometimes allows land to be raised through a maze.
-- Fix: The Shortcut Keys window uses the wrong colours for separators, scrollbars and buttons.
+- Fix: [#25388] The Shortcut Keys window uses the wrong colours for separators, scrollbars and buttons.
 
 0.4.27 (2025-10-04)
 ------------------------------------------------------------------------
