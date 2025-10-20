@@ -4276,7 +4276,7 @@ void Guest::UpdateRideLeaveVehicle()
                     specialDirection = ((vehicle->Orientation + 3) / 8) + 1;
                     specialDirection &= 3;
 
-                    if (vehicle->TrackSubposition == VehicleTrackSubposition::GoKartsRightLane)
+                    if (vehicle->TrackSubposition == OpenRCT2::Subposition::VehicleTrackSubposition::GoKartsRightLane)
                         specialDirection = DirectionReverse(specialDirection);
                 }
             }

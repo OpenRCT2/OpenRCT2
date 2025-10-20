@@ -18,6 +18,7 @@
 
 using namespace OpenRCT2::Scripting;
 using namespace OpenRCT2::TrackMetaData;
+using namespace OpenRCT2::Subposition;
 
 ScTrackSegment::ScTrackSegment(OpenRCT2::TrackElemType type)
     : _type(type)

@@ -87,6 +87,7 @@
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::TrackMetaData;
+using namespace OpenRCT2::Subposition;
 
 static constexpr auto kRideModeBlockSectionedCounterpart = std::to_array(
     {
@@ -3325,7 +3326,7 @@ static Vehicle* VehicleCreateCar(
     if (carEntry.flags & CAR_ENTRY_FLAG_DODGEM_CAR_PLACEMENT)
     {
         // Loc6DDCA4:
-        vehicle->TrackSubposition = VehicleTrackSubposition::Default;
+        vehicle->TrackSubposition = OpenRCT2::Subposition::VehicleTrackSubposition::Default;
         int32_t direction = trackElement->GetDirection();
         auto dodgemPos = carPosition + CoordsXYZ{ word_9A3AB4[direction], 0 };
         vehicle->TrackLocation = dodgemPos;

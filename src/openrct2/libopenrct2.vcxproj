@@ -533,6 +533,17 @@
     <ClInclude Include="ride\rtd\water\SubmarineRide.h" />
     <ClInclude Include="ride\Station.h" />
     <ClInclude Include="ride\ShopItem.h" />
+    <ClCompile Include="ride\subposition\SubpositionChairliftBullwheels.hpp" />
+    <ClCompile Include="ride\subposition\SubpositionChairliftGoingBack.hpp" />
+    <ClInclude Include="ride\subposition\SubpositionChairliftGoingOut.hpp" />
+    <ClInclude Include="ride\subposition\SubpositionCommon.hpp" />
+    <ClCompile Include="ride\subposition\SubpositionDefault.hpp" />
+    <ClCompile Include="ride\subposition\SubpositionGoKartsLeftLane.hpp" />
+    <ClCompile Include="ride\subposition\SubpositionGoKartsMovingToLeftLane.hpp" />
+    <ClCompile Include="ride\subposition\SubpositionGoKartsMovingToRightLane.hpp" />
+    <ClInclude Include="ride\subposition\SubpositionGoKartsRightLane.hpp" />
+    <ClCompile Include="ride\subposition\SubpositionMinigolf.hpp" />
+    <ClCompile Include="ride\subposition\SubpositionReverserCoaster.hpp" />
     <ClInclude Include="ride\Track.h" />
     <ClInclude Include="ride\TrackData.h" />
     <ClInclude Include="ride\TrackDesign.h" />

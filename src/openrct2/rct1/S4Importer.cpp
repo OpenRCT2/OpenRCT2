@@ -2865,7 +2865,7 @@ namespace OpenRCT2::RCT1
             statusSrc = static_cast<::Vehicle::Status>(src->Status);
         }
         dst->status = statusSrc;
-        dst->TrackSubposition = VehicleTrackSubposition{ src->TrackSubposition };
+        dst->TrackSubposition = OpenRCT2::Subposition::VehicleTrackSubposition{ src->TrackSubposition };
         dst->TrackLocation = { src->TrackX, src->TrackY, src->TrackZ };
         dst->current_station = StationIndex::FromUnderlying(src->CurrentStation);
         if (src->BoatLocation.IsNull() || ride->mode != RideMode::boatHire || statusSrc != ::Vehicle::Status::TravellingBoat)

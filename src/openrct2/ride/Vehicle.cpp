@@ -71,6 +71,7 @@ using namespace OpenRCT2;
 using namespace OpenRCT2::Audio;
 using namespace OpenRCT2::TrackMetaData;
 using namespace OpenRCT2::Math::Trigonometry;
+using namespace OpenRCT2::Subposition;
 static bool vehicle_boat_is_location_accessible(const CoordsXYZ& location);
 
 constexpr int16_t kVehicleMaxSpinSpeed = 1536;
@@ -494,23 +495,23 @@ static bool vehicle_move_info_valid(
     switch (trackSubposition)
     {
         case VehicleTrackSubposition::Default:
-            size = VehicleTrackSubpositionSizeDefault;
+            size = kVehicleTrackSubpositionSizeDefault;
             break;
         case VehicleTrackSubposition::ChairliftGoingOut:
-            size = 692;
+            size = kVehicleTrackSubpositionSizeChairliftGoingOut;
             break;
         case VehicleTrackSubposition::ChairliftGoingBack:
         case VehicleTrackSubposition::ChairliftEndBullwheel:
         case VehicleTrackSubposition::ChairliftStartBullwheel:
-            size = 404;
+            size = kVehicleTrackSubpositionSizeChairliftGoingBack;
             break;
         case VehicleTrackSubposition::GoKartsLeftLane:
         case VehicleTrackSubposition::GoKartsRightLane:
-            size = 1204;
+            size = kVehicleTrackSubpositionSizeGoKartsLane;
             break;
         case VehicleTrackSubposition::GoKartsMovingToRightLane:
         case VehicleTrackSubposition::GoKartsMovingToLeftLane:
-            size = 568;
+            size = kVehicleTrackSubpositionSizeGoKartsSwitchingLanes;
             break;
         case VehicleTrackSubposition::MiniGolfPathA9: // VehicleTrackSubposition::MiniGolfStart9
         case VehicleTrackSubposition::MiniGolfBallPathA10:
@@ -518,11 +519,11 @@ static bool vehicle_move_info_valid(
         case VehicleTrackSubposition::MiniGolfBallPathB12:
         case VehicleTrackSubposition::MiniGolfPathC13:
         case VehicleTrackSubposition::MiniGolfBallPathC14:
-            size = 824;
+            size = kVehicleTrackSubpositionSizeMinigolf;
             break;
         case VehicleTrackSubposition::ReverserRCFrontBogie:
         case VehicleTrackSubposition::ReverserRCRearBogie:
-            size = 868;
+            size = kVehicleTrackSubpositionSizeReverserBogies;
             break;
         default:
             break;

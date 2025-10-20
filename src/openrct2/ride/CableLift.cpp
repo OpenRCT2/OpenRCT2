@@ -65,7 +65,7 @@ Vehicle* CableLiftSegmentCreate(
     {
         peep = EntityId::GetNull();
     }
-    current->TrackSubposition = VehicleTrackSubposition::Default;
+    current->TrackSubposition = OpenRCT2::Subposition::VehicleTrackSubposition::Default;
     current->Orientation = direction << 3;
 
     z = z * kCoordsZStep;

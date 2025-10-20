@@ -36,22 +36,6 @@ struct GForces
     int32_t LateralG{};
 };
 
-// Size: 0x09
-struct VehicleInfo
-{
-    int16_t x;          // 0x00
-    int16_t y;          // 0x02
-    int16_t z;          // 0x04
-    uint8_t direction;  // 0x06
-    VehiclePitch pitch; // 0x07
-    VehicleRoll roll;   // 0x08
-
-    bool IsInvalid() const
-    {
-        return x == 0 && y == 0 && z == 0 && direction == 0 && pitch == VehiclePitch::flat && roll == VehicleRoll::unbanked;
-    }
-};
-
 struct SoundIdVolume;
 
 constexpr uint16_t VehicleTrackDirectionMask = 0b0000000000000011;
@@ -199,7 +183,7 @@ struct Vehicle : EntityBase
     uint8_t PadC6[0x2];
     uint32_t animationState;
     OpenRCT2::Audio::SoundId scream_sound_id;
-    VehicleTrackSubposition TrackSubposition;
+    OpenRCT2::Subposition::VehicleTrackSubposition TrackSubposition;
     union
     {
         uint8_t NumLaps;
@@ -557,7 +541,8 @@ constexpr uint8_t kVehicleSeatNumMask = 0x7F;
 Vehicle* TryGetVehicle(EntityId spriteIndex);
 void VehicleUpdateAll();
 void VehicleSoundsUpdate();
-uint16_t VehicleGetMoveInfoSize(VehicleTrackSubposition trackSubposition, OpenRCT2::TrackElemType type, uint8_t direction);
+uint16_t VehicleGetMoveInfoSize(
+    OpenRCT2::Subposition::VehicleTrackSubposition trackSubposition, OpenRCT2::TrackElemType type, uint8_t direction);
 
 void RideUpdateMeasurementsSpecialElements_Default(Ride& ride, const OpenRCT2::TrackElemType trackType);
 void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const OpenRCT2::TrackElemType trackType);
