@@ -101,7 +101,8 @@ enum class PeepRideSubState : uint8_t
     leaveShop = 21,
 };
 
-enum class PeepSpiralSlideSubState : uint8_t
+// Substates for guests that are inside the Spiral Slide. Declared as uint16_t to match DestinationX.
+enum class PeepSpiralSlideSubState : uint16_t
 {
     goingUp = 0,
     prepareToSlide = 1,
