@@ -156,6 +156,14 @@ static constexpr CoordsXY kSpiralSlideWalkingPath[64] = {
     {   0,  32 },
 };
 
+enum SpiralSlideState : uint8_t
+{
+    SPIRAL_SLIDE_STATE_GOING_UP = 0,
+    SPIRAL_SLIDE_STATE_PREPARING_TO_SLIDE = 1,
+    SPIRAL_SLIDE_STATE_SLIDING_DOWN = 2,
+    SPIRAL_SLIDE_STATE_FINISHED_SLIDING = 3
+};
+
 /** rct2: 0x00981F4C, 0x00981F4E */
 static constexpr CoordsXY kWatchingPositionOffsets[] = {
     {  7,  5 },
@@ -4709,7 +4717,7 @@ void Guest::UpdateRideApproachSpiralSlide()
     if (waypoint == 3)
     {
         SubState = 15;
-        SetDestination({ 0, 0 }); // Used as a "sub-substate" for guests inside the Spiral Slide
+        SetDestination({ SPIRAL_SLIDE_STATE_GOING_UP, 0 }); // Used as a "sub-substate" for guests inside the Spiral Slide
         Var37 = (Var37 / 4) & 0xC;
         MoveTo({ kLocationNull, y, z });
         return;
@@ -4792,19 +4800,21 @@ void Guest::UpdateRideOnSpiralSlide()
     if (rtd.specialType != RtdSpecialType::spiralSlide)
         return;
 
-    auto destination = GetDestination();
     if ((Var37 & 3) == 0)
     {
-        switch (destination.x) // Used as a "sub-substate" for guests inside the Spiral Slide
+        auto destination = GetDestination();
+        auto& spiralSlideState = destination.x;
+        auto& spiralSlideGoingUpCounter = destination.y;
+        switch (spiralSlideState)
         {
-            case 0: // Guest is going up the slide tower
-                destination.y++;
-                if (destination.y == kTicksToGoUpSpiralSlide) // Guest has reached the top of the tower, go to next state
-                    destination.x = 1;
+            case SPIRAL_SLIDE_STATE_GOING_UP:
+                spiralSlideGoingUpCounter++;
+                if (spiralSlideGoingUpCounter == kTicksToGoUpSpiralSlide)
+                    spiralSlideState = SPIRAL_SLIDE_STATE_PREPARING_TO_SLIDE;
 
-                SetDestination(destination);
+                SetDestination({ spiralSlideState, spiralSlideGoingUpCounter });
                 return;
-            case 1: // Get guest ready to slide down
+            case SPIRAL_SLIDE_STATE_PREPARING_TO_SLIDE:
                 if (ride->slideInUse)
                     return;
 
@@ -4812,11 +4822,11 @@ void Guest::UpdateRideOnSpiralSlide()
                 ride->slidePeep = Id;
                 ride->slidePeepTShirtColour = TshirtColour;
                 ride->spiralSlideProgress = 0;
-                destination.x = 2;
+                spiralSlideState = SPIRAL_SLIDE_STATE_SLIDING_DOWN;
 
-                SetDestination(destination);
+                SetDestination({ spiralSlideState, spiralSlideGoingUpCounter });
                 return;
-            case 3: // Guest has reached the end of the sliding down animation
+            case SPIRAL_SLIDE_STATE_FINISHED_SLIDING:
             {
                 auto newLocation = ride->getStation(CurrentRideStation).Start;
                 uint8_t dir = (Var37 / 4) & 3;
@@ -4836,7 +4846,8 @@ void Guest::UpdateRideOnSpiralSlide()
                 Var37++;
                 return;
             }
-            default: // Case 2 is triggered while the guest is sliding down. Otherwise, this condition shouldn't be reached.
+            case SPIRAL_SLIDE_STATE_SLIDING_DOWN:
+            default:
                 return;
         }
     }
