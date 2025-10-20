@@ -41,9 +41,9 @@ namespace OpenRCT2::Ui::Windows
     // clang-format off
     static constexpr auto _shortcutWidgets = makeWidgets(
         makeWindowShim(kWindowTitle, kWindowSize),
-        makeWidget({0,                      43}, {350, 287}, WidgetType::resize, WindowColour::secondary                                                        ),
-        makeWidget({4,                      47}, {412, 215}, WidgetType::scroll, WindowColour::primary, SCROLL_VERTICAL,           STR_SHORTCUT_LIST_TIP        ),
-        makeWidget({4, kWindowSize.height - 15}, {150,  12}, WidgetType::button, WindowColour::primary, STR_SHORTCUT_ACTION_RESET, STR_SHORTCUT_ACTION_RESET_TIP)
+        makeWidget({0,                      43}, {350, 287}, WidgetType::resize, WindowColour::secondary                                                          ),
+        makeWidget({4,                      47}, {412, 215}, WidgetType::scroll, WindowColour::secondary, SCROLL_VERTICAL,           STR_SHORTCUT_LIST_TIP        ),
+        makeWidget({4, kWindowSize.height - 15}, {150,  12}, WidgetType::button, WindowColour::secondary, STR_SHORTCUT_ACTION_RESET, STR_SHORTCUT_ACTION_RESET_TIP)
     );
     // clang-format on
 
@@ -501,8 +501,8 @@ namespace OpenRCT2::Ui::Windows
         void DrawSeparator(RenderTarget& rt, int32_t y, int32_t scrollWidth)
         {
             const int32_t top = y + (kScrollableRowHeight / 2) - 1;
-            GfxFillRect(rt, { { 0, top }, { scrollWidth, top } }, ColourMapA[colours[0].colour].mid_dark);
-            GfxFillRect(rt, { { 0, top + 1 }, { scrollWidth, top + 1 } }, ColourMapA[colours[0].colour].lightest);
+            GfxFillRect(rt, { { 0, top }, { scrollWidth, top } }, ColourMapA[colours[1].colour].mid_dark);
+            GfxFillRect(rt, { { 0, top + 1 }, { scrollWidth, top + 1 } }, ColourMapA[colours[1].colour].lightest);
         }
 
         void DrawItem(RenderTarget& rt, int32_t y, int32_t scrollWidth, const ShortcutStringPair& shortcut, bool isHighlighted)
