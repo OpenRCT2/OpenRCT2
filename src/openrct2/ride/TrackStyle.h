@@ -11,9 +11,11 @@
 
 #include "../core/EnumUtils.hpp"
 #include "Track.h"
+#include "TrackData.h"
 #include "TrackPaint.h"
 
 #include <cstdint>
+#include <optional>
 #include <sfl/static_vector.hpp>
 
 enum class TrackStyle : uint8_t
@@ -103,9 +105,39 @@ enum class TrackStyle : uint8_t
 };
 constexpr const size_t kTrackStyleCount = 82;
 
+struct TrackSequencePaintInfo
+{
+private:
+    static constexpr int8_t kDoNotSetGeneralSupportHeight = std::numeric_limits<int8_t>::min();
+
+    int8_t generalSupportHeight = kDoNotSetGeneralSupportHeight;
+
+public:
+    TrackSequencePaintInfo() {};
+
+    explicit TrackSequencePaintInfo(const std::optional<int32_t> _generalSupportHeight)
+    {
+        if (_generalSupportHeight.has_value())
+        {
+            generalSupportHeight = *_generalSupportHeight / kCoordsZStep;
+        }
+    }
+
+    int32_t getGeneralSupportHeight() const
+    {
+        return generalSupportHeight * kCoordsZStep;
+    }
+
+    bool shouldSetGeneralSupportHeight() const
+    {
+        return generalSupportHeight != kDoNotSetGeneralSupportHeight;
+    }
+};
+
 struct TrackElemTypePaintInfo
 {
     TrackPaintFunction paintFunction;
+    std::array<TrackSequencePaintInfo, OpenRCT2::TrackMetaData::kMaxSequencesPerPiece> sequenceInfo;
 };
 
 struct TrackStylePaintInfo

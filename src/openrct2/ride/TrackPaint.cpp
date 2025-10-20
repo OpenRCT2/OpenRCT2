@@ -2027,7 +2027,14 @@ void PaintTrack(PaintSession& session, Direction direction, int32_t height, cons
 
         const auto& trackStylePaintInfo = GetTrackStylePaintInfo(trackDrawerEntry.trackStyle);
         const auto& paintInfo = trackStylePaintInfo.trackElemTypePaintInfos[EnumValue(UncoverTrackElement(trackType))];
+
+        const uint8_t clampedTrackSequence = trackType == TrackElemType::Maze ? 0 : trackSequence;
+        const auto& sequenceInfo = paintInfo.sequenceInfo[clampedTrackSequence];
+
         paintInfo.paintFunction(session, *ride, trackSequence, direction, height, trackElement, trackDrawerEntry.supportType);
+
+        const int32_t generalSupportHeight = height + sequenceInfo.getGeneralSupportHeight();
+        PaintUtilSetGeneralSupportHeight(session, generalSupportHeight * sequenceInfo.shouldSetGeneralSupportHeight());
     }
 }
 
