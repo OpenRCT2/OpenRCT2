@@ -5405,7 +5405,7 @@ void Vehicle::UpdateTrackMotionUpStopCheck() const
             gForces.LateralG = std::abs(gForces.LateralG);
             if (gForces.LateralG <= 150)
             {
-                if (AccelerationFromPitch[EnumValue(pitch)] < 0)
+                if (Geometry::kAccelerationFromPitch[EnumValue(pitch)] < 0)
                 {
                     if (gForces.VerticalG > -40)
                     {
@@ -5431,7 +5431,7 @@ void Vehicle::UpdateTrackMotionUpStopCheck() const
         {
             auto gForces = GetGForces();
 
-            if (AccelerationFromPitch[EnumValue(pitch)] < 0)
+            if (Geometry::kAccelerationFromPitch[EnumValue(pitch)] < 0)
             {
                 if (gForces.VerticalG > -45)
                 {
@@ -7354,7 +7354,7 @@ bool Vehicle::UpdateTrackMotionForwards(const CarEntry* carEntry, const Ride& cu
             return true;
         }
 
-        acceleration += AccelerationFromPitch[moveInfovehicleAnimationGroup];
+        acceleration += Geometry::kAccelerationFromPitch[moveInfovehicleAnimationGroup];
         _vehicleUnkF64E10++;
     }
 }
@@ -7650,7 +7650,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
         {
             return true;
         }
-        acceleration += AccelerationFromPitch[EnumValue(moveInfoVehicleAnimationGroup)];
+        acceleration += Geometry::kAccelerationFromPitch[EnumValue(moveInfoVehicleAnimationGroup)];
         _vehicleUnkF64E10++;
     }
 }
@@ -7671,7 +7671,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
             Loc6DCDE4(curRide);
             return Vehicle::UpdateMiniGolfSubroutineStatus::stop;
         }
-        acceleration = AccelerationFromPitch[EnumValue(pitch)];
+        acceleration = Geometry::kAccelerationFromPitch[EnumValue(pitch)];
         _vehicleUnkF64E10++;
         return Vehicle::UpdateMiniGolfSubroutineStatus::restart;
     }
@@ -7693,7 +7693,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
                 Loc6DCDE4(curRide);
                 return Vehicle::UpdateMiniGolfSubroutineStatus::stop;
             }
-            acceleration = AccelerationFromPitch[EnumValue(pitch)];
+            acceleration = Geometry::kAccelerationFromPitch[EnumValue(pitch)];
             _vehicleUnkF64E10++;
             return Vehicle::UpdateMiniGolfSubroutineStatus::restart;
         }
@@ -7721,7 +7721,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
                 Loc6DCDE4(curRide);
                 return Vehicle::UpdateMiniGolfSubroutineStatus::stop;
             }
-            acceleration = AccelerationFromPitch[EnumValue(pitch)];
+            acceleration = Geometry::kAccelerationFromPitch[EnumValue(pitch)];
             _vehicleUnkF64E10++;
             return Vehicle::UpdateMiniGolfSubroutineStatus::restart;
         }
@@ -7738,7 +7738,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
                 Loc6DCDE4(curRide);
                 return Vehicle::UpdateMiniGolfSubroutineStatus::stop;
             }
-            acceleration = AccelerationFromPitch[EnumValue(pitch)];
+            acceleration = Geometry::kAccelerationFromPitch[EnumValue(pitch)];
             _vehicleUnkF64E10++;
             return Vehicle::UpdateMiniGolfSubroutineStatus::restart;
         }
@@ -7767,7 +7767,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
                 Loc6DCDE4(curRide);
                 return Vehicle::UpdateMiniGolfSubroutineStatus::stop;
             }
-            acceleration = AccelerationFromPitch[EnumValue(pitch)];
+            acceleration = Geometry::kAccelerationFromPitch[EnumValue(pitch)];
             _vehicleUnkF64E10++;
             return Vehicle::UpdateMiniGolfSubroutineStatus::restart;
         }
@@ -7784,7 +7784,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
                 Loc6DCDE4(curRide);
                 return Vehicle::UpdateMiniGolfSubroutineStatus::stop;
             }
-            acceleration = AccelerationFromPitch[EnumValue(pitch)];
+            acceleration = Geometry::kAccelerationFromPitch[EnumValue(pitch)];
             _vehicleUnkF64E10++;
             return Vehicle::UpdateMiniGolfSubroutineStatus::restart;
         }
@@ -7820,7 +7820,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
                 Loc6DCDE4(curRide);
                 return Vehicle::UpdateMiniGolfSubroutineStatus::stop;
             }
-            acceleration = AccelerationFromPitch[EnumValue(pitch)];
+            acceleration = Geometry::kAccelerationFromPitch[EnumValue(pitch)];
             _vehicleUnkF64E10++;
             return Vehicle::UpdateMiniGolfSubroutineStatus::restart;
         }
@@ -7859,7 +7859,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
                 _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
                 _vehicleVelocityF64E0C -= remaining_distance + 1;
                 remaining_distance = -1;
-                acceleration += AccelerationFromPitch[EnumValue(pitch)];
+                acceleration += Geometry::kAccelerationFromPitch[EnumValue(pitch)];
                 _vehicleUnkF64E10++;
                 return UpdateMiniGolfSubroutineStatus::carryOn;
             }
@@ -7876,7 +7876,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
                 {
                     Loc6DCDE4(curRide);
                 }
-                acceleration += AccelerationFromPitch[EnumValue(pitch)];
+                acceleration += Geometry::kAccelerationFromPitch[EnumValue(pitch)];
                 _vehicleUnkF64E10++;
                 return UpdateMiniGolfSubroutineStatus::carryOn;
             }
@@ -8034,7 +8034,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
             Loc6DCDE4(curRide);
             return UpdateMiniGolfSubroutineStatus::stop;
         }
-        acceleration = AccelerationFromPitch[EnumValue(pitch)];
+        acceleration = Geometry::kAccelerationFromPitch[EnumValue(pitch)];
         _vehicleUnkF64E10++;
     }
 }
@@ -8052,7 +8052,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
                 _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
                 _vehicleVelocityF64E0C -= remaining_distance + 1;
                 remaining_distance = -1;
-                acceleration += AccelerationFromPitch[EnumValue(pitch)];
+                acceleration += Geometry::kAccelerationFromPitch[EnumValue(pitch)];
                 _vehicleUnkF64E10++;
                 continue;
             }
@@ -8065,7 +8065,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
                 _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
                 _vehicleVelocityF64E0C -= remaining_distance - 0x368A;
                 remaining_distance = 0x368A;
-                acceleration = AccelerationFromPitch[EnumValue(pitch)];
+                acceleration = Geometry::kAccelerationFromPitch[EnumValue(pitch)];
                 _vehicleUnkF64E10++;
                 return Vehicle::UpdateMiniGolfSubroutineStatus::restart;
             }
@@ -8135,7 +8135,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
                         vEBP->velocity = vEDI->velocity >> 1;
                     }
                     _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_2;
-                    acceleration = AccelerationFromPitch[EnumValue(pitch)];
+                    acceleration = Geometry::kAccelerationFromPitch[EnumValue(pitch)];
                     _vehicleUnkF64E10++;
                     return UpdateMiniGolfSubroutineStatus::restart;
                 }
@@ -8147,7 +8147,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
             Loc6DCDE4(curRide);
             return UpdateMiniGolfSubroutineStatus::stop;
         }
-        acceleration += AccelerationFromPitch[EnumValue(pitch)];
+        acceleration += Geometry::kAccelerationFromPitch[EnumValue(pitch)];
         _vehicleUnkF64E10++;
     }
 }
@@ -8161,7 +8161,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
 void Vehicle::UpdateTrackMotionMiniGolfVehicle(const Ride& curRide, const RideObjectEntry& rideEntry, const CarEntry* carEntry)
 {
     _vehicleUnkF64E10 = 1;
-    acceleration = AccelerationFromPitch[EnumValue(pitch)];
+    acceleration = Geometry::kAccelerationFromPitch[EnumValue(pitch)];
     if (!HasFlag(VehicleFlags::MoveSingleCar))
     {
         remaining_distance = _vehicleVelocityF64E0C + remaining_distance;
@@ -8487,7 +8487,7 @@ void Vehicle::UpdateTrackMotionPreUpdate(
     {
         car.UpdateAdditionalAnimation();
     }
-    car.acceleration = AccelerationFromPitch[EnumValue(car.pitch)];
+    car.acceleration = Geometry::kAccelerationFromPitch[EnumValue(car.pitch)];
     _vehicleUnkF64E10 = 1;
 
     if (!car.HasFlag(VehicleFlags::MoveSingleCar))
@@ -8515,7 +8515,7 @@ void Vehicle::UpdateTrackMotionPreUpdate(
             {
                 break;
             }
-            car.acceleration += AccelerationFromPitch[EnumValue(car.pitch)];
+            car.acceleration += Geometry::kAccelerationFromPitch[EnumValue(car.pitch)];
             _vehicleUnkF64E10++;
             continue;
         }
@@ -8533,7 +8533,7 @@ void Vehicle::UpdateTrackMotionPreUpdate(
         {
             break;
         }
-        car.acceleration = AccelerationFromPitch[EnumValue(car.pitch)];
+        car.acceleration = Geometry::kAccelerationFromPitch[EnumValue(car.pitch)];
         _vehicleUnkF64E10++;
         continue;
     }

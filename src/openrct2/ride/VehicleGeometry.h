@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../core/EnumUtils.hpp"
 #include "../world/Location.hpp"
 #include "Angles.h"
 
@@ -16,7 +17,6 @@
 
 namespace OpenRCT2::RideVehicle::Geometry
 {
-
 
     struct Unk9A36C4Struct
     {
@@ -27,6 +27,7 @@ namespace OpenRCT2::RideVehicle::Geometry
 
     extern const std::array<int32_t, 16> kSubpositionTranslationDistances;
     extern const std::array<Unk9A36C4Struct, 32> kFreeroamVehicleMovementData;
+    extern const std::array<int32_t, EnumValue(VehiclePitch::pitchCount)> kAccelerationFromPitch;
 
     /** The distance between subposition points in a movement vector.
      * Squashes vector components to 0 or !0, so vector length is ignored.
