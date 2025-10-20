@@ -17,6 +17,9 @@
 namespace OpenRCT2::RideVehicle::Geometry
 {
 
-    extern const int32_t SubpositionTranslationDistances[];
+    /** The distance between subposition points in a movement vector.
+     * Squashes vector components to 0 or !0, so vector length is ignored.
+     */
+    constexpr int32_t getTranslationDistance(CoordsXYZ distance, bool useReverserDistance);
 
 } // namespace OpenRCT2::RideVehicle::Geometry
