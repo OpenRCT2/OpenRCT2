@@ -12,6 +12,7 @@
 #include <algorithm>
 #include <cmath>
 #include <openrct2-ui/UiStringIds.h>
+#include <openrct2-ui/interface/Theme.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Diagnostic.h>
 #include <openrct2/Game.h>
@@ -270,7 +271,8 @@ namespace OpenRCT2::Ui
      */
     static void WidgetFlatButtonDraw(RenderTarget& rt, WindowBase& w, WidgetIndex widgetIndex)
     {
-        if (!widgetIsDisabled(w, widgetIndex) && widgetIsHighlighted(w, widgetIndex))
+        const bool alwaysDrawAs3d = (ThemeGetFlags() & UITHEME_FLAG_USE_3D_IMAGE_BUTTONS);
+        if (alwaysDrawAs3d || (!widgetIsDisabled(w, widgetIndex) && widgetIsHighlighted(w, widgetIndex)))
         {
             WidgetButtonDraw(rt, w, widgetIndex);
             return;

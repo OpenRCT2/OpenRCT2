@@ -262,7 +262,7 @@ namespace OpenRCT2::Ui
     const UITheme kPredefinedThemeRCT1 = UITheme::CreatePredefined(
         "*RCT1", kPredefinedThemeRCT1Entries,
         UITHEME_FLAG_USE_LIGHTS_RIDE | UITHEME_FLAG_USE_LIGHTS_PARK | UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT
-            | UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR);
+            | UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR | UITHEME_FLAG_USE_3D_IMAGE_BUTTONS);
 
     const UITheme kPredefinedThemeRCT2 = UITheme::CreatePredefined("*RCT2", kPredefinedThemeRCT2Entries, 0);
 
@@ -441,6 +441,7 @@ namespace OpenRCT2::Ui
             { "useLightsPark", (Flags & UITHEME_FLAG_USE_LIGHTS_PARK) != 0 },
             { "useAltScenarioSelectFont", (Flags & UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT) != 0 },
             { "useFullBottomToolbar", (Flags & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR) != 0 },
+            { "use3dImageButtons", (Flags & UITHEME_FLAG_USE_3D_IMAGE_BUTTONS) != 0 },
         };
 
         return jsonTheme;
@@ -489,6 +490,7 @@ namespace OpenRCT2::Ui
                     { "useLightsPark", UITHEME_FLAG_USE_LIGHTS_PARK },
                     { "useAltScenarioSelectFont", UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT },
                     { "useFullBottomToolbar", UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR },
+                    { "use3dImageButtons", UITHEME_FLAG_USE_3D_IMAGE_BUTTONS },
                 });
 
             if (jsonEntries.is_object())

@@ -67,7 +67,8 @@ namespace OpenRCT2::Ui::Windows
         WIDX_THEMES_RCT1_RIDE_LIGHTS,
         WIDX_THEMES_RCT1_PARK_LIGHTS,
         WIDX_THEMES_RCT1_SCENARIO_FONT,
-        WIDX_THEMES_RCT1_BOTTOM_TOOLBAR
+        WIDX_THEMES_RCT1_BOTTOM_TOOLBAR,
+        WIDX_THEMES_USE_3D_IMAGE_BUTTONS,
     };
 
     static constexpr StringId kWindowTitle = STR_THEMES_TITLE;
@@ -101,7 +102,8 @@ namespace OpenRCT2::Ui::Windows
         makeWidget({ 10, 54}, {290,                12}, WidgetType::checkbox,     WindowColour::secondary, STR_THEMES_OPTION_RCT1_RIDE_CONTROLS                                          ), // rct1 ride lights
         makeWidget({ 10, 69}, {290,                12}, WidgetType::checkbox,     WindowColour::secondary, STR_THEMES_OPTION_RCT1_PARK_CONTROLS                                          ), // rct1 park lights
         makeWidget({ 10, 84}, {290,                12}, WidgetType::checkbox,     WindowColour::secondary, STR_THEMES_OPTION_RCT1_SCENARIO_SELECTION_FONT                                ), // rct1 scenario font
-        makeWidget({ 10, 99}, {290,                12}, WidgetType::checkbox,     WindowColour::secondary, STR_THEMES_OPTION_RCT1_BOTTOM_TOOLBAR                                         )  // rct1 bottom toolbar
+        makeWidget({ 10, 99}, {290,                12}, WidgetType::checkbox,     WindowColour::secondary, STR_THEMES_OPTION_RCT1_BOTTOM_TOOLBAR                                         ), // rct1 bottom toolbar
+        makeWidget({ 10,114}, {290,                12}, WidgetType::checkbox,     WindowColour::secondary, STR_THEMES_OPTION_USE_3D_IMAGE_BUTTONS                                        )  // use 3D image buttons
     );
     // clang-format on
 
@@ -281,7 +283,7 @@ namespace OpenRCT2::Ui::Windows
             }
             else if (_selectedTab == WINDOW_THEMES_TAB_FEATURES)
             {
-                if (WindowSetResize(*this, { 320, 122 }, { 320, 122 }))
+                if (WindowSetResize(*this, { 320, 137 }, { 320, 137 }))
                     GfxInvalidateScreen();
             }
             else
@@ -329,6 +331,7 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_THEMES_RCT1_PARK_LIGHTS].type = WidgetType::empty;
                 widgets[WIDX_THEMES_RCT1_SCENARIO_FONT].type = WidgetType::empty;
                 widgets[WIDX_THEMES_RCT1_BOTTOM_TOOLBAR].type = WidgetType::empty;
+                widgets[WIDX_THEMES_USE_3D_IMAGE_BUTTONS].type = WidgetType::empty;
                 widgets[WIDX_THEMES_DUPLICATE_BUTTON].type = WidgetType::button;
                 widgets[WIDX_THEMES_DELETE_BUTTON].type = WidgetType::button;
                 widgets[WIDX_THEMES_RENAME_BUTTON].type = WidgetType::button;
@@ -346,6 +349,7 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_THEMES_RCT1_PARK_LIGHTS].type = WidgetType::checkbox;
                 widgets[WIDX_THEMES_RCT1_SCENARIO_FONT].type = WidgetType::checkbox;
                 widgets[WIDX_THEMES_RCT1_BOTTOM_TOOLBAR].type = WidgetType::checkbox;
+                widgets[WIDX_THEMES_USE_3D_IMAGE_BUTTONS].type = WidgetType::checkbox;
                 widgets[WIDX_THEMES_DUPLICATE_BUTTON].type = WidgetType::empty;
                 widgets[WIDX_THEMES_DELETE_BUTTON].type = WidgetType::empty;
                 widgets[WIDX_THEMES_RENAME_BUTTON].type = WidgetType::empty;
@@ -358,6 +362,7 @@ namespace OpenRCT2::Ui::Windows
                 setCheckboxValue(
                     WIDX_THEMES_RCT1_SCENARIO_FONT, ThemeGetFlags() & UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT);
                 setCheckboxValue(WIDX_THEMES_RCT1_BOTTOM_TOOLBAR, ThemeGetFlags() & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR);
+                setCheckboxValue(WIDX_THEMES_USE_3D_IMAGE_BUTTONS, ThemeGetFlags() & UITHEME_FLAG_USE_3D_IMAGE_BUTTONS);
             }
             else
             {
@@ -369,6 +374,7 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_THEMES_RCT1_PARK_LIGHTS].type = WidgetType::empty;
                 widgets[WIDX_THEMES_RCT1_SCENARIO_FONT].type = WidgetType::empty;
                 widgets[WIDX_THEMES_RCT1_BOTTOM_TOOLBAR].type = WidgetType::empty;
+                widgets[WIDX_THEMES_USE_3D_IMAGE_BUTTONS].type = WidgetType::empty;
                 widgets[WIDX_THEMES_DUPLICATE_BUTTON].type = WidgetType::empty;
                 widgets[WIDX_THEMES_DELETE_BUTTON].type = WidgetType::empty;
                 widgets[WIDX_THEMES_RENAME_BUTTON].type = WidgetType::empty;
@@ -497,6 +503,19 @@ namespace OpenRCT2::Ui::Windows
                         ThemeSave();
                         windowMgr->InvalidateAll();
                     }
+                    break;
+                case WIDX_THEMES_USE_3D_IMAGE_BUTTONS:
+                    if (ThemeGetFlags() & UITHEME_FLAG_PREDEFINED)
+                    {
+                        ContextShowError(STR_THEMES_ERR_CANT_CHANGE_THIS_THEME, kStringIdNone, {});
+                    }
+                    else
+                    {
+                        ThemeSetFlags(ThemeGetFlags() ^ static_cast<uint8_t>(UITHEME_FLAG_USE_3D_IMAGE_BUTTONS));
+                        ThemeSave();
+                        windowMgr->InvalidateAll();
+                    }
+                    break;
             }
         }
 
