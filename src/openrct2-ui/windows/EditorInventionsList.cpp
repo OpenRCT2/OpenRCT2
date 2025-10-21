@@ -29,6 +29,8 @@
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Scenery.h>
 
+using namespace OpenRCT2::Drawing;
+
 namespace OpenRCT2::Ui::Windows
 {
 #pragma region Widgets
@@ -302,7 +304,7 @@ namespace OpenRCT2::Ui::Windows
                         bottom = itemY;
                     }
 
-                    GfxFilterRect(rt, { 0, top, boxWidth, bottom }, FilterPaletteID::paletteDarken1);
+                    Rect::filter(rt, { 0, top, boxWidth, bottom }, FilterPaletteID::paletteDarken1);
                 }
 
                 if (dragItem != nullptr && researchItem == *dragItem)
@@ -372,7 +374,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Preview background
             auto& bkWidget = widgets[WIDX_PREVIEW];
-            GfxFillRect(
+            Rect::fill(
                 rt,
                 { windowPos + ScreenCoordsXY{ bkWidget.left + 1, bkWidget.top + 1 },
                   windowPos + ScreenCoordsXY{ bkWidget.right - 1, bkWidget.bottom - 1 } },

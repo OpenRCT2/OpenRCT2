@@ -52,6 +52,7 @@
 
 namespace OpenRCT2::Ui::Windows
 {
+    using namespace OpenRCT2::Drawing;
     using namespace OpenRCT2::Ui::FileBrowser;
 
 #pragma region Widgets
@@ -443,8 +444,8 @@ namespace OpenRCT2::Ui::Windows
 
             if (drawFrame)
             {
-                GfxFillRectInset(
-                    rt, { frameStartPos, frameEndPos }, colours[1], RectBorderStyle::inset,
+                Rect::fillInset(
+                    rt, { frameStartPos, frameEndPos }, colours[1], Rect::BorderStyle::inset,
                     INSET_RECT_FLAG_FILL_DONT_LIGHTEN | INSET_RECT_FLAG_FILL_MID_LIGHT);
             }
 
@@ -1077,7 +1078,7 @@ namespace OpenRCT2::Ui::Windows
 
         void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
-            GfxFillRect(
+            Rect::fill(
                 rt, { { rt.x, rt.y }, { rt.x + rt.width - 1, rt.y + rt.height - 1 } }, ColourMapA[colours[1].colour].mid_light);
 
             const int32_t listWidth = widgets[WIDX_SCROLL].width();
@@ -1102,7 +1103,7 @@ namespace OpenRCT2::Ui::Windows
                 if (i == selectedListItem)
                 {
                     stringId = STR_WINDOW_COLOUR_2_STRINGID;
-                    GfxFilterRect(rt, { 0, y, listWidth, y + kScrollableRowHeight }, FilterPaletteID::paletteDarken1);
+                    Rect::filter(rt, { 0, y, listWidth, y + kScrollableRowHeight }, FilterPaletteID::paletteDarken1);
                 }
                 // display a marker next to the currently loaded game file
                 if (_listItems[i].loaded)

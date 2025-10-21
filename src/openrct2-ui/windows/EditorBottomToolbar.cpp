@@ -31,6 +31,8 @@
 #include <openrct2/world/Scenery.h>
 #include <string>
 
+using namespace OpenRCT2::Drawing;
+
 namespace OpenRCT2::Ui::Windows
 {
     static constexpr int32_t kToolbarHeight = 32;
@@ -337,7 +339,7 @@ namespace OpenRCT2::Ui::Windows
             const auto& previousWidget = widgets[WIDX_PREVIOUS_IMAGE];
             auto leftTop = windowPos + ScreenCoordsXY{ previousWidget.left, previousWidget.top };
             auto rightBottom = windowPos + ScreenCoordsXY{ previousWidget.right, previousWidget.bottom };
-            GfxFilterRect(rt, { leftTop, rightBottom }, FilterPaletteID::palette51);
+            Rect::filter(rt, { leftTop, rightBottom }, FilterPaletteID::palette51);
         }
 
         void DrawLeftButton(RenderTarget& rt)
@@ -346,7 +348,7 @@ namespace OpenRCT2::Ui::Windows
                 + ScreenCoordsXY{ widgets[WIDX_PREVIOUS_IMAGE].left + 1, widgets[WIDX_PREVIOUS_IMAGE].top + 1 };
             const auto bottomRight = windowPos
                 + ScreenCoordsXY{ widgets[WIDX_PREVIOUS_IMAGE].right - 1, widgets[WIDX_PREVIOUS_IMAGE].bottom - 1 };
-            GfxFillRectInset(rt, { topLeft, bottomRight }, colours[1], RectBorderStyle::inset, INSET_RECT_FLAG_FILL_NONE);
+            Rect::fillInset(rt, { topLeft, bottomRight }, colours[1], Rect::BorderStyle::inset, INSET_RECT_FLAG_FILL_NONE);
 
             GfxDrawSprite(
                 rt, ImageId(SPR_PREVIOUS),
@@ -375,7 +377,7 @@ namespace OpenRCT2::Ui::Windows
             auto nextWidget = widgets[WIDX_NEXT_IMAGE];
             auto leftTop = windowPos + ScreenCoordsXY{ nextWidget.left, nextWidget.top };
             auto rightBottom = windowPos + ScreenCoordsXY{ nextWidget.right, nextWidget.bottom };
-            GfxFilterRect(rt, { leftTop, rightBottom }, FilterPaletteID::palette51);
+            Rect::filter(rt, { leftTop, rightBottom }, FilterPaletteID::palette51);
         }
 
         void DrawRightButton(RenderTarget& rt)
@@ -384,7 +386,7 @@ namespace OpenRCT2::Ui::Windows
                 + ScreenCoordsXY{ widgets[WIDX_NEXT_IMAGE].left + 1, widgets[WIDX_NEXT_IMAGE].top + 1 };
             const auto bottomRight = windowPos
                 + ScreenCoordsXY{ widgets[WIDX_NEXT_IMAGE].right - 1, widgets[WIDX_NEXT_IMAGE].bottom - 1 };
-            GfxFillRectInset(rt, { topLeft, bottomRight }, colours[1], RectBorderStyle::inset, INSET_RECT_FLAG_FILL_NONE);
+            Rect::fillInset(rt, { topLeft, bottomRight }, colours[1], Rect::BorderStyle::inset, INSET_RECT_FLAG_FILL_NONE);
 
             GfxDrawSprite(
                 rt, ImageId(SPR_NEXT),

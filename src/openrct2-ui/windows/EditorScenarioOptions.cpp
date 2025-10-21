@@ -37,6 +37,8 @@
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Park.h>
 
+using namespace OpenRCT2::Drawing;
+
 namespace OpenRCT2::Ui::Windows
 {
     static constexpr ScreenSize kSizeObjective = { 450, 122 };
@@ -2338,7 +2340,7 @@ namespace OpenRCT2::Ui::Windows
         void RidesOnScrollDraw(RenderTarget& rt, int32_t scrollIndex)
         {
             int32_t colour = ColourMapA[colours[1].colour].mid_light;
-            GfxFillRect(rt, { { rt.x, rt.y }, { rt.x + rt.width - 1, rt.y + rt.height - 1 } }, colour);
+            Rect::fill(rt, { { rt.x, rt.y }, { rt.x + rt.width - 1, rt.y + rt.height - 1 } }, colour);
 
             for (int32_t i = 0; i < static_cast<int32_t>(_rideableRides.size()); i++)
             {
@@ -2348,8 +2350,8 @@ namespace OpenRCT2::Ui::Windows
                     continue;
 
                 // Checkbox
-                GfxFillRectInset(
-                    rt, { { 2, y }, { 11, y + 10 } }, colours[1], RectBorderStyle::inset,
+                Rect::fillInset(
+                    rt, { { 2, y }, { 11, y + 10 } }, colours[1], Rect::BorderStyle::inset,
                     INSET_RECT_FLAG_FILL_DONT_LIGHTEN | INSET_RECT_FLAG_FILL_MID_LIGHT);
 
                 // Highlighted
@@ -2357,7 +2359,7 @@ namespace OpenRCT2::Ui::Windows
                 if (i == selectedListItem)
                 {
                     stringId = STR_WINDOW_COLOUR_2_STRINGID;
-                    GfxFilterRect(rt, { 0, y, width, y + 11 }, FilterPaletteID::paletteDarken1);
+                    Rect::filter(rt, { 0, y, width, y + 11 }, FilterPaletteID::paletteDarken1);
                 }
 
                 // Checkbox mark

@@ -26,6 +26,8 @@
 #include <openrct2/object/PeepAnimationsObject.h>
 #include <openrct2/ui/WindowManager.h>
 
+using namespace OpenRCT2::Drawing;
+
 namespace OpenRCT2::Ui::Windows
 {
     static constexpr ScreenSize kWindowSize = { 400, 300 };
@@ -463,11 +465,11 @@ namespace OpenRCT2::Ui::Windows
                 }
 
                 // Outer frame
-                GfxFillRectInset(
-                    rt, { -1, y, 383 + scrollbarFill, y + itemHeight - 1 }, colours[1], RectBorderStyle::inset,
+                Rect::fillInset(
+                    rt, { -1, y, 383 + scrollbarFill, y + itemHeight - 1 }, colours[1], Rect::BorderStyle::inset,
                     INSET_RECT_FLAG_FILL_NONE);
                 // Background
-                GfxFillRect(rt, { 0, y + 1, 381 + scrollbarFill, y + itemHeight - 2 }, backgroundPaletteIndex);
+                Rect::fill(rt, { 0, y + 1, 381 + scrollbarFill, y + itemHeight - 2 }, backgroundPaletteIndex);
 
                 // Date text
                 {
@@ -489,16 +491,16 @@ namespace OpenRCT2::Ui::Windows
                 {
                     auto screenCoords = ScreenCoordsXY{ 328 + scrollbarFill, y + lineHeight + 4 };
 
-                    auto borderStyle = RectBorderStyle::outset;
+                    auto borderStyle = Rect::BorderStyle::outset;
                     if (_pressedNewsItemIndex != -1)
                     {
                         News::IsValidIndex(_pressedNewsItemIndex + News::ItemHistoryStart);
                         if (i == _pressedNewsItemIndex && _pressedButtonIndex == 1)
                         {
-                            borderStyle = RectBorderStyle::inset;
+                            borderStyle = Rect::BorderStyle::inset;
                         }
                     }
-                    GfxFillRectInset(rt, { screenCoords, screenCoords + ScreenCoordsXY{ 23, 23 } }, colours[2], borderStyle);
+                    Rect::fillInset(rt, { screenCoords, screenCoords + ScreenCoordsXY{ 23, 23 } }, colours[2], borderStyle);
 
                     switch (newsItem.type)
                     {
@@ -570,14 +572,14 @@ namespace OpenRCT2::Ui::Windows
                 {
                     auto screenCoords = ScreenCoordsXY{ 352 + scrollbarFill, y + lineHeight + 4 };
 
-                    auto borderStyle = RectBorderStyle::outset;
+                    auto borderStyle = Rect::BorderStyle::outset;
                     if (_pressedNewsItemIndex != -1)
                     {
                         News::IsValidIndex(_pressedNewsItemIndex + News::ItemHistoryStart);
                         if (i == _pressedNewsItemIndex && _pressedButtonIndex == 2)
-                            borderStyle = RectBorderStyle::inset;
+                            borderStyle = Rect::BorderStyle::inset;
                     }
-                    GfxFillRectInset(rt, { screenCoords, screenCoords + ScreenCoordsXY{ 23, 23 } }, colours[2], borderStyle);
+                    Rect::fillInset(rt, { screenCoords, screenCoords + ScreenCoordsXY{ 23, 23 } }, colours[2], borderStyle);
                     GfxDrawSprite(rt, ImageId(SPR_LOCATE), screenCoords);
                 }
 

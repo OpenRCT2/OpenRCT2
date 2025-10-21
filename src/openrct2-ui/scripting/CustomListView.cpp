@@ -22,6 +22,7 @@
     #include <openrct2/localisation/Formatter.h>
     #include <openrct2/localisation/Formatting.h>
 
+using namespace OpenRCT2::Drawing;
 using namespace OpenRCT2::Scripting;
 using namespace OpenRCT2::Ui::Windows;
 
@@ -566,7 +567,7 @@ void CustomListView::MouseUp(const ScreenCoordsXY& pos)
 void CustomListView::Paint(WindowBase* w, RenderTarget& rt, const ScrollArea* scroll) const
 {
     auto paletteIndex = ColourMapA[w->colours[1].colour].mid_light;
-    GfxFillRect(rt, { { rt.x, rt.y }, { rt.x + rt.width, rt.y + rt.height } }, paletteIndex);
+    Rect::fill(rt, { { rt.x, rt.y }, { rt.x + rt.width, rt.y + rt.height } }, paletteIndex);
 
     int32_t y = ShowColumnHeaders ? kColumnHeaderHeight : 0;
     for (size_t i = 0; i < Items.size(); i++)
@@ -596,17 +597,17 @@ void CustomListView::Paint(WindowBase* w, RenderTarget& rt, const ScrollArea* sc
                 auto isSelected = (SelectedCell && itemIndex == SelectedCell->Row);
                 if (isSelected)
                 {
-                    GfxFilterRect(
+                    Rect::filter(
                         rt, { { rt.x, y }, { rt.x + rt.width, y + (kListRowHeight - 1) } }, FilterPaletteID::paletteDarken2);
                 }
                 else if (isHighlighted)
                 {
-                    GfxFilterRect(
+                    Rect::filter(
                         rt, { { rt.x, y }, { rt.x + rt.width, y + (kListRowHeight - 1) } }, FilterPaletteID::paletteDarken2);
                 }
                 else if (isStriped)
                 {
-                    GfxFillRect(
+                    Rect::fill(
                         rt, { { rt.x, y }, { rt.x + rt.width, y + (kListRowHeight - 1) } },
                         ColourMapA[w->colours[1].colour].lighter | 0x1000000);
                 }
@@ -653,7 +654,7 @@ void CustomListView::Paint(WindowBase* w, RenderTarget& rt, const ScrollArea* sc
         y = scroll->contentOffsetY;
 
         auto bgColour = ColourMapA[w->colours[1].colour].mid_light;
-        GfxFillRect(rt, { { rt.x, y }, { rt.x + rt.width, y + 12 } }, bgColour);
+        Rect::fill(rt, { { rt.x, y }, { rt.x + rt.width, y + 12 } }, bgColour);
 
         int32_t x = 0;
         for (int32_t j = 0; j < static_cast<int32_t>(Columns.size()); j++)
@@ -680,12 +681,12 @@ void CustomListView::PaintHeading(
     WindowBase* w, RenderTarget& rt, const ScreenCoordsXY& pos, const ScreenSize& size, const std::string& text,
     ColumnSortOrder sortOrder, bool isPressed) const
 {
-    auto borderStyle = RectBorderStyle::outset;
+    auto borderStyle = Rect::BorderStyle::outset;
     if (isPressed)
     {
-        borderStyle = RectBorderStyle::inset;
+        borderStyle = Rect::BorderStyle::inset;
     }
-    GfxFillRectInset(rt, { pos, pos + ScreenCoordsXY{ size.width - 1, size.height - 1 } }, w->colours[1], borderStyle);
+    Rect::fillInset(rt, { pos, pos + ScreenCoordsXY{ size.width - 1, size.height - 1 } }, w->colours[1], borderStyle);
     if (!text.empty())
     {
         PaintCell(rt, pos, size, text.c_str(), false);

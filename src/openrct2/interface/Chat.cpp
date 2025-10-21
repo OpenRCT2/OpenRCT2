@@ -25,6 +25,7 @@
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Audio;
+using namespace OpenRCT2::Drawing;
 
 bool gChatOpen = false;
 static u8string _chatCurrentLine;
@@ -139,19 +140,19 @@ void ChatDraw(RenderTarget& rt, ColourWithFlags chatBackgroundColor)
         ScreenCoordsXY bottomLeft{ _chatLeft, _chatBottom };
         GfxSetDirtyBlocks(
             { topLeft - ScreenCoordsXY{ 0, 5 }, bottomRight + ScreenCoordsXY{ 0, 5 } }); // Background area + Textbox
-        GfxFilterRect(
+        Rect::filter(
             rt, { topLeft - ScreenCoordsXY{ 0, 5 }, bottomRight + ScreenCoordsXY{ 0, 5 } },
             FilterPaletteID::palette51); // Opaque grey background
-        GfxFillRectInset(
+        Rect::fillInset(
             rt, { topLeft - ScreenCoordsXY{ 0, 5 }, bottomRight + ScreenCoordsXY{ 0, 5 } }, chatBackgroundColor,
-            RectBorderStyle::outset, INSET_RECT_FLAG_FILL_NONE);
-        GfxFillRectInset(
+            Rect::BorderStyle::outset, INSET_RECT_FLAG_FILL_NONE);
+        Rect::fillInset(
             rt, { topLeft + ScreenCoordsXY{ 1, -4 }, bottomRight - ScreenCoordsXY{ 1, inputLineHeight + 6 } },
-            chatBackgroundColor, RectBorderStyle::inset);
-        GfxFillRectInset(
+            chatBackgroundColor, Rect::BorderStyle::inset);
+        Rect::fillInset(
             rt, { bottomLeft + ScreenCoordsXY{ 1, -inputLineHeight - 5 }, bottomRight + ScreenCoordsXY{ -1, 4 } },
             chatBackgroundColor,
-            RectBorderStyle::inset); // Textbox
+            Rect::BorderStyle::inset); // Textbox
     }
 
     auto screenCoords = ScreenCoordsXY{ _chatLeft + 5, _chatBottom - inputLineHeight - 20 };
@@ -203,7 +204,7 @@ void ChatDraw(RenderTarget& rt, ColourWithFlags chatBackgroundColor)
             int32_t caretX = screenCoords.x + GfxGetStringWidth(lineBuffer, FontStyle::Medium);
             int32_t caretY = screenCoords.y + 14;
 
-            GfxFillRect(rt, { { caretX, caretY }, { caretX + 6, caretY + 1 } }, PaletteIndex::pi56);
+            Rect::fill(rt, { { caretX, caretY }, { caretX + 6, caretY + 1 } }, PaletteIndex::pi56);
         }
     }
 }

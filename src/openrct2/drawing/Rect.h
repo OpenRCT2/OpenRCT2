@@ -16,16 +16,18 @@ enum class FilterPaletteID : int32_t;
 struct RenderTarget;
 struct ScreenRect;
 
-void GfxFillRect(RenderTarget& rt, const ScreenRect& rect, int32_t colour);
-
-enum class RectBorderStyle : uint8_t
+namespace OpenRCT2::Drawing::Rect
 {
-    outset,
-    inset,
-    none,
-};
+    enum class BorderStyle : uint8_t
+    {
+        outset,
+        inset,
+        none,
+    };
 
-void GfxFillRectInset(
-    RenderTarget& rt, const ScreenRect& rect, ColourWithFlags colour, RectBorderStyle borderStyle = RectBorderStyle::outset,
-    uint8_t flags = 0);
-void GfxFilterRect(RenderTarget& rt, const ScreenRect& rect, FilterPaletteID palette);
+    void fill(RenderTarget& rt, const ScreenRect& rect, int32_t colour);
+    void fillInset(
+        RenderTarget& rt, const ScreenRect& rect, ColourWithFlags colour, BorderStyle borderStyle = BorderStyle::outset,
+        uint8_t flags = 0);
+    void filter(RenderTarget& rt, const ScreenRect& rect, FilterPaletteID palette);
+} // namespace OpenRCT2::Drawing::Rect

@@ -29,6 +29,8 @@
 #include <openrct2/world/tile_element/Slope.h>
 #include <openrct2/world/tile_element/SurfaceElement.h>
 
+using namespace OpenRCT2::Drawing;
+
 namespace OpenRCT2::Ui::Windows
 {
     static constexpr StringId kWindowTitle = STR_OBJECT_SELECTION_PARK_ENTRANCE;
@@ -314,11 +316,11 @@ namespace OpenRCT2::Ui::Windows
             for (auto& entranceType : _entranceTypes)
             {
                 // Draw flat button rectangle
-                auto borderStyle = RectBorderStyle::outset;
+                auto borderStyle = Rect::BorderStyle::outset;
                 int32_t buttonFlags = 0;
                 if (_selectedEntranceType == entranceType.entryIndex)
                 {
-                    borderStyle = RectBorderStyle::inset;
+                    borderStyle = Rect::BorderStyle::inset;
                     buttonFlags |= INSET_RECT_FLAG_FILL_MID_LIGHT;
                 }
                 else if (_highlightedEntranceType == entranceType.entryIndex)
@@ -327,7 +329,7 @@ namespace OpenRCT2::Ui::Windows
                 }
 
                 if (buttonFlags != 0)
-                    GfxFillRectInset(
+                    Rect::fillInset(
                         rt, { coords, coords + ScreenCoordsXY{ kImageSize - 1, kImageSize - 1 } }, colours[1], borderStyle,
                         buttonFlags);
 

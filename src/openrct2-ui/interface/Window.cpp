@@ -31,6 +31,8 @@
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Location.hpp>
 
+using namespace OpenRCT2::Drawing;
+
 namespace OpenRCT2::Ui
 {
     // The amount of pixels to scroll per wheel click
@@ -1023,7 +1025,7 @@ namespace OpenRCT2::Ui::Windows
     void WindowDrawWidgets(WindowBase& w, RenderTarget& rt)
     {
         if ((w.flags.has(WindowFlag::transparent)) && !(w.flags.has(WindowFlag::noBackground)))
-            GfxFilterRect(
+            Rect::filter(
                 rt, { w.windowPos, w.windowPos + ScreenCoordsXY{ w.width - 1, w.height - 1 } }, FilterPaletteID::palette51);
 
         // todo: some code missing here? Between 006EB18C and 006EB260
@@ -1049,9 +1051,9 @@ namespace OpenRCT2::Ui::Windows
 
         if (w.flashTimer > 0)
         {
-            GfxFillRectInset(
+            Rect::fillInset(
                 rt, { w.windowPos, w.windowPos + ScreenCoordsXY{ w.width - 1, w.height - 1 } }, { COLOUR_WHITE },
-                RectBorderStyle::outset, INSET_RECT_FLAG_FILL_NONE);
+                Rect::BorderStyle::outset, INSET_RECT_FLAG_FILL_NONE);
         }
     }
 

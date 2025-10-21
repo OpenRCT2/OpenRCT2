@@ -17,6 +17,8 @@
     #include <openrct2/drawing/Text.h>
     #include <openrct2/scripting/Duktape.hpp>
 
+using namespace OpenRCT2::Drawing;
+
 namespace OpenRCT2::Scripting
 {
     class ScGraphicsContext
@@ -164,13 +166,13 @@ namespace OpenRCT2::Scripting
 
         void box(int32_t x, int32_t y, int32_t width, int32_t height)
         {
-            GfxFillRectInset(_rt, { x, y, x + width - 1, y + height - 1 }, { _colour.value_or(0) });
+            Rect::fillInset(_rt, { x, y, x + width - 1, y + height - 1 }, { _colour.value_or(0) });
         }
 
         void well(int32_t x, int32_t y, int32_t width, int32_t height)
         {
-            GfxFillRectInset(
-                _rt, { x, y, x + width - 1, y + height - 1 }, { _colour.value_or(0) }, RectBorderStyle::inset,
+            Rect::fillInset(
+                _rt, { x, y, x + width - 1, y + height - 1 }, { _colour.value_or(0) }, Rect::BorderStyle::inset,
                 INSET_RECT_FLAG_FILL_DONT_LIGHTEN);
         }
 
@@ -230,7 +232,7 @@ namespace OpenRCT2::Scripting
             }
             if (_fill != 0)
             {
-                GfxFillRect(_rt, { x, y, x + width - 1, y + height - 1 }, _fill);
+                Rect::fill(_rt, { x, y, x + width - 1, y + height - 1 }, _fill);
             }
         }
 

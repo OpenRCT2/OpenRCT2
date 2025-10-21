@@ -683,7 +683,7 @@ void MaskFn(
 
 void GfxFilterPixel(RenderTarget& rt, const ScreenCoordsXY& coords, FilterPaletteID palette)
 {
-    GfxFilterRect(rt, { coords, coords }, palette);
+    Rect::filter(rt, { coords, coords }, palette);
 }
 
 /**

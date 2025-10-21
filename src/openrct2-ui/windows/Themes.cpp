@@ -24,6 +24,8 @@
 #include <openrct2/platform/Platform.h>
 #include <openrct2/ui/WindowManager.h>
 
+using namespace OpenRCT2::Drawing;
+
 namespace OpenRCT2::Ui::Windows
 {
     enum
@@ -720,7 +722,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
 
             if (!colours[1].hasFlag(ColourFlag::translucent))
-                // GfxFillRect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1,
+                // Rect::fill(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1,
                 // ColourMapA[colours[1].colour].mid_light);
                 GfxClear(rt, ColourMapA[colours[1].colour].mid_light);
             screenCoords.y = 0;
@@ -761,16 +763,16 @@ namespace OpenRCT2::Ui::Windows
                         {
                             TranslucentWindowPalette windowPalette = kTranslucentWindowPalettes[colour.colour];
 
-                            GfxFilterRect(rt, { leftTop, rightBottom }, windowPalette.highlight);
-                            GfxFilterRect(rt, { leftTop + yPixelOffset, rightBottom + yPixelOffset }, windowPalette.shadow);
+                            Rect::filter(rt, { leftTop, rightBottom }, windowPalette.highlight);
+                            Rect::filter(rt, { leftTop + yPixelOffset, rightBottom + yPixelOffset }, windowPalette.shadow);
                         }
                         else
                         {
                             colour = ColourMapA[colours[1].colour].mid_dark;
-                            GfxFillRect(rt, { leftTop, rightBottom }, colour.colour);
+                            Rect::fill(rt, { leftTop, rightBottom }, colour.colour);
 
                             colour = ColourMapA[colours[1].colour].lightest;
-                            GfxFillRect(rt, { leftTop + yPixelOffset, rightBottom + yPixelOffset }, colour.colour);
+                            Rect::fill(rt, { leftTop + yPixelOffset, rightBottom + yPixelOffset }, colour.colour);
                         }
                     }
 
@@ -794,8 +796,8 @@ namespace OpenRCT2::Ui::Windows
                         ScreenCoordsXY topLeft{ _check_offset_x, screenCoords.y + _check_offset_y + _button_size * j };
                         ScreenCoordsXY bottomRight{ _check_offset_x + 10,
                                                     screenCoords.y + _check_offset_y + 11 + _button_size * j };
-                        GfxFillRectInset(
-                            rt, { topLeft, bottomRight }, colours[1], RectBorderStyle::inset,
+                        Rect::fillInset(
+                            rt, { topLeft, bottomRight }, colours[1], Rect::BorderStyle::inset,
                             INSET_RECT_FLAG_FILL_DONT_LIGHTEN | INSET_RECT_FLAG_FILL_MID_LIGHT);
                         if (colour.hasFlag(ColourFlag::translucent))
                         {

@@ -22,6 +22,7 @@
 #include <memory>
 
 using OpenRCT2::Audio::SoundId;
+using namespace OpenRCT2::Drawing;
 
 namespace OpenRCT2
 {
@@ -202,7 +203,7 @@ namespace OpenRCT2
                 GfxClear(rt, kBackgroundColourDark);
 
                 // Draw a white rectangle for the logo background (gives a bit of white margin)
-                GfxFillRect(
+                Rect::fill(
                     rt,
                     { { (screenWidth / 2) - 320 + 50, _introStateCounter + 50 },
                       { (screenWidth / 2) - 320 + 50 + 540, _introStateCounter + 50 + 425 } },

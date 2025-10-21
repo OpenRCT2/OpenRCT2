@@ -47,6 +47,8 @@
 #include <string>
 #include <vector>
 
+using namespace OpenRCT2::Drawing;
+
 namespace OpenRCT2::Ui::Windows
 {
     enum : uint16_t
@@ -740,8 +742,8 @@ namespace OpenRCT2::Ui::Windows
                 {
                     // Draw checkbox
                     if (!(gLegacyScene == LegacyScene::trackDesignsManager) && !(*listItem.flags & 0x20))
-                        GfxFillRectInset(
-                            rt, { { 2, screenCoords.y }, { 11, screenCoords.y + 10 } }, colours[1], RectBorderStyle::inset,
+                        Rect::fillInset(
+                            rt, { { 2, screenCoords.y }, { 11, screenCoords.y + 10 } }, colours[1], Rect::BorderStyle::inset,
                             INSET_RECT_FLAG_FILL_DONT_LIGHTEN | INSET_RECT_FLAG_FILL_MID_LIGHT);
 
                     // Highlight background
@@ -750,7 +752,7 @@ namespace OpenRCT2::Ui::Windows
                     if (highlighted)
                     {
                         auto bottom = screenCoords.y + (kScrollableRowHeight - 1);
-                        GfxFilterRect(rt, { 0, screenCoords.y, width, bottom }, FilterPaletteID::paletteDarken1);
+                        Rect::filter(rt, { 0, screenCoords.y, width, bottom }, FilterPaletteID::paletteDarken1);
                     }
 
                     // Draw checkmark
@@ -1059,7 +1061,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Preview background
             const auto& previewWidget = widgets[WIDX_PREVIEW];
-            GfxFillRect(
+            Rect::fill(
                 rt,
                 { windowPos + ScreenCoordsXY{ previewWidget.left + 1, previewWidget.top + 1 },
                   windowPos + ScreenCoordsXY{ previewWidget.right - 1, previewWidget.bottom - 1 } },

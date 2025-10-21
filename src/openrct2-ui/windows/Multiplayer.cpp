@@ -22,6 +22,8 @@
 #include <openrct2/network/Network.h>
 #include <openrct2/ui/WindowManager.h>
 
+using namespace OpenRCT2::Drawing;
+
 namespace OpenRCT2::Ui::Windows
 {
     enum
@@ -268,7 +270,7 @@ namespace OpenRCT2::Ui::Windows
                     auto colour = ColourWithFlags{ COLOUR_BLACK };
                     if (listPosition == selectedListItem)
                     {
-                        GfxFilterRect(
+                        Rect::filter(
                             rt, { 0, screenCoords.y, 800, screenCoords.y + kScrollableRowHeight - 1 },
                             FilterPaletteID::paletteDarken1);
                         _buffer += Network::GetPlayerName(player);
@@ -368,9 +370,9 @@ namespace OpenRCT2::Ui::Windows
 
             screenPos.y += 20;
 
-            GfxFillRectInset(
+            Rect::fillInset(
                 rt, { screenPos - ScreenCoordsXY{ 0, 6 }, screenPos + ScreenCoordsXY{ 310, -5 } }, colours[1],
-                RectBorderStyle::inset);
+                Rect::BorderStyle::inset);
 
             widget = &widgets[WIDX_SELECTED_GROUP];
             group = Network::GetGroupIndex(_selectedGroup);
@@ -391,7 +393,7 @@ namespace OpenRCT2::Ui::Windows
             auto screenCoords = ScreenCoordsXY{ 0, 0 };
 
             auto rtCoords = ScreenCoordsXY{ rt.x, rt.y };
-            GfxFillRect(
+            Rect::fill(
                 rt, { rtCoords, rtCoords + ScreenCoordsXY{ rt.width - 1, rt.height - 1 } },
                 ColourMapA[colours[1].colour].mid_light);
 
@@ -399,7 +401,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 if (i == selectedListItem)
                 {
-                    GfxFilterRect(
+                    Rect::filter(
                         rt, { 0, screenCoords.y, 800, screenCoords.y + kScrollableRowHeight - 1 },
                         FilterPaletteID::paletteDarken1);
                 }

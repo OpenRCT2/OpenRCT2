@@ -29,6 +29,8 @@
     #include <openrct2/ui/WindowManager.h>
     #include <tuple>
 
+using namespace OpenRCT2::Drawing;
+
 namespace OpenRCT2::Ui::Windows
 {
     static constexpr ScreenSize kMinimumWindowSize = { 500, 288 };
@@ -345,7 +347,7 @@ namespace OpenRCT2::Ui::Windows
                 // Draw hover highlight
                 if (highlighted)
                 {
-                    GfxFilterRect(
+                    Rect::filter(
                         rt, { 0, screenCoords.y, listWidgetWidth, screenCoords.y + kItemHeight },
                         FilterPaletteID::paletteDarken1);
                     _version = serverDetails.Version;

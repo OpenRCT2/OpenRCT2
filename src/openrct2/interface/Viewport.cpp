@@ -54,6 +54,7 @@
 
 namespace OpenRCT2
 {
+    using namespace OpenRCT2::Drawing;
     using namespace OpenRCT2::Numerics;
 
     enum : uint8_t
@@ -1037,7 +1038,7 @@ namespace OpenRCT2
             auto y = rt.y;
             auto w = rt.width;
             auto h = rt.height;
-            GfxFilterRect(rt, ScreenRect(x, y, x + w, y + h), paletteId);
+            Rect::filter(rt, ScreenRect(x, y, x + w, y + h), paletteId);
         }
     }
 

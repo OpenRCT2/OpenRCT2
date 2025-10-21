@@ -39,6 +39,7 @@
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
 
+using namespace OpenRCT2::Drawing;
 using namespace OpenRCT2::TrackMetaData;
 
 namespace OpenRCT2::Ui::Windows
@@ -490,12 +491,12 @@ namespace OpenRCT2::Ui::Windows
             while (listItem->Type != kRideTypeNull || listItem->EntryIndex != kObjectEntryIndexNull)
             {
                 // Draw flat button rectangle
-                auto borderStyle = RectBorderStyle::none;
+                auto borderStyle = Rect::BorderStyle::none;
                 if (_newRideVars.SelectedRide == *listItem)
-                    borderStyle = RectBorderStyle::inset;
+                    borderStyle = Rect::BorderStyle::inset;
 
-                if (_newRideVars.HighlightedRide == *listItem || borderStyle != RectBorderStyle::none)
-                    GfxFillRectInset(
+                if (_newRideVars.HighlightedRide == *listItem || borderStyle != Rect::BorderStyle::none)
+                    Rect::fillInset(
                         rt, { coords, coords + ScreenCoordsXY{ 115, 115 } }, colours[1], borderStyle,
                         INSET_RECT_FLAG_FILL_MID_LIGHT);
 

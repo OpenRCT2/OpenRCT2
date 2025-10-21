@@ -30,6 +30,8 @@
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
 
+using namespace OpenRCT2::Drawing;
+
 namespace OpenRCT2::Ui::Windows
 {
     static constexpr StringId kWindowTitle = kStringIdNone;
@@ -621,7 +623,7 @@ namespace OpenRCT2::Ui::Windows
         void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
             auto rtCoords = ScreenCoordsXY{ rt.x, rt.y };
-            GfxFillRect(
+            Rect::fill(
                 rt, { rtCoords, rtCoords + ScreenCoordsXY{ rt.width, rt.height } }, ColourMapA[colours[1].colour].mid_light);
 
             auto y = 0;
@@ -637,7 +639,7 @@ namespace OpenRCT2::Ui::Windows
                 if (i == static_cast<size_t>(selectedListItem))
                 {
                     // Background highlight
-                    GfxFilterRect(rt, { 0, y, 800, y + kScrollableRowHeight - 1 }, FilterPaletteID::paletteDarken1);
+                    Rect::filter(rt, { 0, y, 800, y + kScrollableRowHeight - 1 }, FilterPaletteID::paletteDarken1);
                     format = STR_WINDOW_COLOUR_2_STRINGID;
                     if (_quickDemolishMode)
                         format = STR_LIGHTPINK_STRINGID;

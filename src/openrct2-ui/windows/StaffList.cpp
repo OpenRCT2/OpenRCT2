@@ -45,6 +45,8 @@
 #include <openrct2/world/Park.h>
 #include <vector>
 
+using namespace OpenRCT2::Drawing;
+
 namespace OpenRCT2::Ui::Windows
 {
     enum
@@ -368,7 +370,7 @@ namespace OpenRCT2::Ui::Windows
         void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
             auto rtCoords = ScreenCoordsXY{ rt.x, rt.y };
-            GfxFillRect(
+            Rect::fill(
                 rt, { rtCoords, rtCoords + ScreenCoordsXY{ rt.width - 1, rt.height - 1 } },
                 ColourMapA[colours[1].colour].mid_light);
 
@@ -401,7 +403,7 @@ namespace OpenRCT2::Ui::Windows
 
                     if (i == _highlightedIndex)
                     {
-                        GfxFilterRect(rt, { 0, y, 800, y + (kScrollableRowHeight - 1) }, FilterPaletteID::paletteDarken1);
+                        Rect::filter(rt, { 0, y, 800, y + (kScrollableRowHeight - 1) }, FilterPaletteID::paletteDarken1);
 
                         format = STR_WINDOW_COLOUR_2_STRINGID;
                         if (_quickFireMode)

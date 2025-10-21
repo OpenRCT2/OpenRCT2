@@ -65,6 +65,8 @@
 #include <openrct2/world/tile_element/SurfaceElement.h>
 #include <openrct2/world/tile_element/WallElement.h>
 
+using namespace OpenRCT2::Drawing;
+
 namespace OpenRCT2::Ui::Windows
 {
     static constexpr StringId kWindowTitle = kStringIdNone;
@@ -1658,24 +1660,24 @@ namespace OpenRCT2::Ui::Windows
                 {
                     if (_selectedScenery == currentSceneryGlobal)
                     {
-                        GfxFillRectInset(
+                        Rect::fillInset(
                             rt, { topLeft, topLeft + ScreenCoordsXY{ kSceneryButtonWidth - 1, kSceneryButtonHeight - 1 } },
-                            colours[1], RectBorderStyle::outset, INSET_RECT_FLAG_FILL_MID_LIGHT);
+                            colours[1], Rect::BorderStyle::outset, INSET_RECT_FLAG_FILL_MID_LIGHT);
                     }
                 }
                 else
                 {
                     if (tabSelectedScenery == currentSceneryGlobal)
                     {
-                        GfxFillRectInset(
+                        Rect::fillInset(
                             rt, { topLeft, topLeft + ScreenCoordsXY{ kSceneryButtonWidth - 1, kSceneryButtonHeight - 1 } },
-                            colours[1], RectBorderStyle::inset, INSET_RECT_FLAG_FILL_MID_LIGHT);
+                            colours[1], Rect::BorderStyle::inset, INSET_RECT_FLAG_FILL_MID_LIGHT);
                     }
                     else if (_selectedScenery == currentSceneryGlobal)
                     {
-                        GfxFillRectInset(
+                        Rect::fillInset(
                             rt, { topLeft, topLeft + ScreenCoordsXY{ kSceneryButtonWidth - 1, kSceneryButtonHeight - 1 } },
-                            colours[1], RectBorderStyle::outset, INSET_RECT_FLAG_FILL_MID_LIGHT);
+                            colours[1], Rect::BorderStyle::outset, INSET_RECT_FLAG_FILL_MID_LIGHT);
                     }
                 }
 

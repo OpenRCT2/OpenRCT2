@@ -31,6 +31,8 @@
 #include <string>
 #include <vector>
 
+using namespace OpenRCT2::Drawing;
+
 namespace OpenRCT2::Ui::Windows
 {
     enum
@@ -155,7 +157,7 @@ namespace OpenRCT2::Ui::Windows
             Widget* widget = &widgets[WIDX_TRACK_PREVIEW];
             auto screenPos = windowPos + ScreenCoordsXY{ widget->left + 1, widget->top + 1 };
             int32_t colour = ColourMapA[colours[0].colour].darkest;
-            GfxFillRect(rt, { screenPos, screenPos + ScreenCoordsXY{ 369, 216 } }, colour);
+            Rect::fill(rt, { screenPos, screenPos + ScreenCoordsXY{ 369, 216 } }, colour);
 
             G1Element g1temp = {};
             g1temp.offset = _trackDesignPreviewPixels.data() + (_currentTrackPieceDirection * kTrackPreviewImageSize);

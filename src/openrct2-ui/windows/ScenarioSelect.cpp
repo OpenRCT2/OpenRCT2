@@ -36,6 +36,8 @@
 #include <openrct2/ui/WindowManager.h>
 #include <vector>
 
+using namespace OpenRCT2::Drawing;
+
 namespace OpenRCT2::Ui::Windows
 {
     static constexpr int32_t kInitialNumUnlockedScenarios = 5;
@@ -288,8 +290,8 @@ namespace OpenRCT2::Ui::Windows
             auto startFrameX = width - (GetPreviewPaneWidth() / 2) - (image->width / 2) - kPadding;
             auto frameStartPos = ScreenCoordsXY(windowPos.x + startFrameX, screenPos.y + 15);
             auto frameEndPos = frameStartPos + ScreenCoordsXY(image->width + 1, image->height + 1);
-            GfxFillRectInset(
-                rt, { frameStartPos, frameEndPos }, colours[1], RectBorderStyle::inset,
+            Rect::fillInset(
+                rt, { frameStartPos, frameEndPos }, colours[1], Rect::BorderStyle::inset,
                 INSET_RECT_FLAG_FILL_DONT_LIGHTEN | INSET_RECT_FLAG_FILL_MID_LIGHT);
 
             // Draw image, if available
@@ -583,7 +585,7 @@ namespace OpenRCT2::Ui::Windows
                         bool isHighlighted = _highlightedScenario == scenario;
                         if (isHighlighted)
                         {
-                            GfxFilterRect(rt, { 0, y, width, y + scenarioItemHeight - 1 }, FilterPaletteID::paletteDarken1);
+                            Rect::filter(rt, { 0, y, width, y + scenarioItemHeight - 1 }, FilterPaletteID::paletteDarken1);
                         }
 
                         bool isCompleted = scenario->Highscore != nullptr;

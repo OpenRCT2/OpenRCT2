@@ -45,6 +45,8 @@
 #include <openrct2/world/MapSelection.h>
 #include <openrct2/world/Park.h>
 
+using namespace OpenRCT2::Drawing;
+
 namespace OpenRCT2::Ui::Windows
 {
     static constexpr StringId kWindowTitle = STR_STRINGID;
@@ -1356,7 +1358,7 @@ namespace OpenRCT2::Ui::Windows
         void onScrollDrawRides(int32_t scrollIndex, RenderTarget& rt)
         {
             auto colour = ColourMapA[colours[1].colour].mid_light;
-            GfxFillRect(rt, { { rt.x, rt.y }, { rt.x + rt.width - 1, rt.y + rt.height - 1 } }, colour);
+            Rect::fill(rt, { { rt.x, rt.y }, { rt.x + rt.width - 1, rt.y + rt.height - 1 } }, colour);
 
             for (int32_t listIndex = 0; listIndex < static_cast<int32_t>(_riddenRides.size()); listIndex++)
             {
@@ -1364,7 +1366,7 @@ namespace OpenRCT2::Ui::Windows
                 StringId stringId = STR_BLACK_STRING;
                 if (listIndex == selectedListItem)
                 {
-                    GfxFilterRect(rt, { 0, y, 800, y + 9 }, FilterPaletteID::paletteDarken1);
+                    Rect::filter(rt, { 0, y, 800, y + 9 }, FilterPaletteID::paletteDarken1);
                     stringId = STR_WINDOW_COLOUR_2_STRINGID;
                 }
 
@@ -1443,9 +1445,9 @@ namespace OpenRCT2::Ui::Windows
                 screenCoords.y += kListRowHeight * 2;
             }
 
-            GfxFillRectInset(
+            Rect::fillInset(
                 rt, { screenCoords - ScreenCoordsXY{ 0, 6 }, screenCoords + ScreenCoordsXY{ 179, -5 } }, colours[1],
-                RectBorderStyle::inset);
+                Rect::BorderStyle::inset);
 
             // Paid to enter
             {
