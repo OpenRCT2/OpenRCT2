@@ -467,7 +467,7 @@ namespace OpenRCT2::Ui::Windows
                 // Outer frame
                 Rect::fillInset(
                     rt, { -1, y, 383 + scrollbarFill, y + itemHeight - 1 }, colours[1], Rect::BorderStyle::inset,
-                    Rect::FillBrightness::light, INSET_RECT_FLAG_FILL_NONE);
+                    Rect::FillBrightness::light, Rect::FillMode::none);
                 // Background
                 Rect::fill(rt, { 0, y + 1, 381 + scrollbarFill, y + itemHeight - 2 }, backgroundPaletteIndex);
 

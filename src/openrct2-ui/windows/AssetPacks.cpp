@@ -261,7 +261,8 @@ namespace OpenRCT2::Ui::Windows
         void PaintCheckbox(RenderTarget& rt, const ScreenRect& rect, bool checked)
         {
             Rect::fillInset(
-                rt, rect, colours[1], Rect::BorderStyle::inset, Rect::FillBrightness::dark, INSET_RECT_FLAG_FILL_DONT_LIGHTEN);
+                rt, rect, colours[1], Rect::BorderStyle::inset, Rect::FillBrightness::dark,
+                Rect::FillMode::dontLightenWhenInset);
             if (checked)
             {
                 auto checkmark = Formatter();

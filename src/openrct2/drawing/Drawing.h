@@ -183,12 +183,6 @@ constexpr DrawBlendOp kBlendSrc = 1 << 1;
  */
 constexpr DrawBlendOp kBlendDst = 2 << 2;
 
-enum
-{
-    INSET_RECT_FLAG_FILL_NONE = (1 << 4),         // 0x10
-    INSET_RECT_FLAG_FILL_DONT_LIGHTEN = (1 << 6), // 0x40
-};
-
 enum class FilterPaletteID : int32_t
 {
     paletteNull = 0,

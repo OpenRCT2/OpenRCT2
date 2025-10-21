@@ -798,7 +798,7 @@ namespace OpenRCT2::Ui::Windows
                                                     screenCoords.y + _check_offset_y + 11 + _button_size * j };
                         Rect::fillInset(
                             rt, { topLeft, bottomRight }, colours[1], Rect::BorderStyle::inset, Rect::FillBrightness::dark,
-                            INSET_RECT_FLAG_FILL_DONT_LIGHTEN);
+                            Rect::FillMode::dontLightenWhenInset);
                         if (colour.hasFlag(ColourFlag::translucent))
                         {
                             DrawText(

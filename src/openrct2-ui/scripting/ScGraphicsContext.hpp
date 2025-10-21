@@ -173,7 +173,7 @@ namespace OpenRCT2::Scripting
         {
             Rect::fillInset(
                 _rt, { x, y, x + width - 1, y + height - 1 }, { _colour.value_or(0) }, Rect::BorderStyle::inset,
-                Rect::FillBrightness::light, INSET_RECT_FLAG_FILL_DONT_LIGHTEN);
+                Rect::FillBrightness::light, Rect::FillMode::dontLightenWhenInset);
         }
 
         void clear()

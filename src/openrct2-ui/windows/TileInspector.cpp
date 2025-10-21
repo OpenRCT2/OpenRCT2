@@ -1640,7 +1640,7 @@ static uint64_t PageDisabledWidgets[] = {
                 // Draw checkbox and check if visible
                 Rect::fillInset(
                     rt, { { 2, screenCoords.y }, { 15, screenCoords.y + 11 } }, colours[1], Rect::BorderStyle::inset,
-                    Rect::FillBrightness::dark, INSET_RECT_FLAG_FILL_DONT_LIGHTEN);
+                    Rect::FillBrightness::dark, Rect::FillMode::dontLightenWhenInset);
                 if (!tileElement->IsInvisible())
                 {
                     auto eyeFormatter = Formatter();

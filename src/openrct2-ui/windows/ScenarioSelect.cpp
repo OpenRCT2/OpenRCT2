@@ -292,7 +292,7 @@ namespace OpenRCT2::Ui::Windows
             auto frameEndPos = frameStartPos + ScreenCoordsXY(image->width + 1, image->height + 1);
             Rect::fillInset(
                 rt, { frameStartPos, frameEndPos }, colours[1], Rect::BorderStyle::inset, Rect::FillBrightness::dark,
-                INSET_RECT_FLAG_FILL_DONT_LIGHTEN);
+                Rect::FillMode::dontLightenWhenInset);
 
             // Draw image, if available
             auto imagePos = frameStartPos + ScreenCoordsXY(1, 1);

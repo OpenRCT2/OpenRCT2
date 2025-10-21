@@ -43,7 +43,7 @@ namespace OpenRCT2::Drawing::Rect
      */
     void fillInset(
         RenderTarget& rt, const ScreenRect& rect, ColourWithFlags colour, BorderStyle borderStyle, FillBrightness brightness,
-        uint8_t flags)
+        FillMode fillMode)
     {
         const auto leftTop = ScreenCoordsXY{ rect.GetLeft(), rect.GetTop() };
         const auto leftBottom = ScreenCoordsXY{ rect.GetLeft(), rect.GetBottom() };
@@ -66,7 +66,7 @@ namespace OpenRCT2::Drawing::Rect
                     Rect::filter(rt, { rightTop, rightBottom }, palette.shadow);
                     Rect::filter(rt, { leftBottom, rightBottom }, palette.shadow);
 
-                    if (!(flags & INSET_RECT_FLAG_FILL_NONE))
+                    if (fillMode != FillMode::none)
                     {
                         Rect::filter(
                             rt, { leftTop + ScreenCoordsXY{ 1, 1 }, rightBottom - ScreenCoordsXY{ 1, 1 } }, palette.base);
@@ -80,7 +80,7 @@ namespace OpenRCT2::Drawing::Rect
                     Rect::filter(rt, { rightTop, rightBottom }, palette.highlight);
                     Rect::filter(rt, { leftBottom, rightBottom }, palette.highlight);
 
-                    if (!(flags & INSET_RECT_FLAG_FILL_NONE))
+                    if (fillMode != FillMode::none)
                     {
                         Rect::filter(
                             rt, { leftTop + ScreenCoordsXY{ 1, 1 }, { rightBottom - ScreenCoordsXY{ 1, 1 } } }, palette.base);
@@ -117,9 +117,9 @@ namespace OpenRCT2::Drawing::Rect
                     Rect::fill(rt, { rightTop + ScreenCoordsXY{ 0, 1 }, rightBottom - ScreenCoordsXY{ 0, 1 } }, hilight);
                     Rect::fill(rt, { leftBottom + ScreenCoordsXY{ 1, 0 }, rightBottom }, hilight);
 
-                    if (!(flags & INSET_RECT_FLAG_FILL_NONE))
+                    if (fillMode != FillMode::none)
                     {
-                        if (!(flags & INSET_RECT_FLAG_FILL_DONT_LIGHTEN))
+                        if (fillMode != FillMode::dontLightenWhenInset)
                         {
                             fill = ColourMapA[colour.colour].lighter;
                         }
@@ -134,7 +134,7 @@ namespace OpenRCT2::Drawing::Rect
                     Rect::fill(rt, { rightTop, rightBottom - ScreenCoordsXY{ 0, 1 } }, shadow);
                     Rect::fill(rt, { leftBottom, rightBottom }, shadow);
 
-                    if (!(flags & INSET_RECT_FLAG_FILL_NONE))
+                    if (fillMode != FillMode::none)
                     {
                         Rect::fill(rt, { leftTop + ScreenCoordsXY{ 1, 1 }, rightBottom - ScreenCoordsXY{ 1, 1 } }, fill);
                     }

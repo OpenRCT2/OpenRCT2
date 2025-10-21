@@ -446,7 +446,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 Rect::fillInset(
                     rt, { frameStartPos, frameEndPos }, colours[1], Rect::BorderStyle::inset, Rect::FillBrightness::dark,
-                    INSET_RECT_FLAG_FILL_DONT_LIGHTEN);
+                    Rect::FillMode::dontLightenWhenInset);
             }
 
             // Draw image, or placeholder if no preview was found

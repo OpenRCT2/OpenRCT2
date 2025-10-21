@@ -97,7 +97,7 @@ namespace OpenRCT2::Ui::Windows
             // Draw green inset rectangle on panel
             Rect::fillInset(
                 rt, { topLeft, bottomRight }, colours[0], Rect::BorderStyle::inset, Rect::FillBrightness::light,
-                INSET_RECT_FLAG_FILL_NONE);
+                Rect::FillMode::none);
 
             // Figure out how much line height we have to work with.
             uint32_t line_height = FontGetLineHeight(FontStyle::Medium);
@@ -158,7 +158,7 @@ namespace OpenRCT2::Ui::Windows
             int16_t bar_width = (factor * 114) / 255;
             Rect::fillInset(
                 rt, { coords + ScreenCoordsXY{ 1, 1 }, coords + ScreenCoordsXY{ 114, 9 } }, colours[0],
-                Rect::BorderStyle::inset, Rect::FillBrightness::light, INSET_RECT_FLAG_FILL_NONE);
+                Rect::BorderStyle::inset, Rect::FillBrightness::light, Rect::FillMode::none);
             if (!(colour & kBarBlink) || GameIsPaused() || (gCurrentRealTimeTicks & 8))
             {
                 if (bar_width > 2)
@@ -183,7 +183,7 @@ namespace OpenRCT2::Ui::Windows
             // Draw green inset rectangle on panel
             Rect::fillInset(
                 rt, { topLeft, bottomRight }, colours[0], Rect::BorderStyle::inset, Rect::FillBrightness::light,
-                INSET_RECT_FLAG_FILL_NONE);
+                Rect::FillMode::none);
 
             auto screenCoords = ScreenCoordsXY{ (rightPanelWidget.left + rightPanelWidget.right) / 2 + windowPos.x,
                                                 rightPanelWidget.top + windowPos.y + 2 };
@@ -247,7 +247,7 @@ namespace OpenRCT2::Ui::Windows
 
                 { windowPos + ScreenCoordsXY{ middleOutsetWidget.left + 1, middleOutsetWidget.top + 1 },
                   windowPos + ScreenCoordsXY{ middleOutsetWidget.right - 1, middleOutsetWidget.bottom - 1 } },
-                colours[2], Rect::BorderStyle::inset, Rect::FillBrightness::light, INSET_RECT_FLAG_FILL_NONE);
+                colours[2], Rect::BorderStyle::inset, Rect::FillBrightness::light, Rect::FillMode::none);
 
             // Text
             auto screenCoords = windowPos + ScreenCoordsXY{ middleOutsetWidget.midX(), middleOutsetWidget.top + 11 };
@@ -360,7 +360,7 @@ namespace OpenRCT2::Ui::Windows
                 rt,
                 { windowPos + ScreenCoordsXY{ middleOutsetWidget->left + 1, middleOutsetWidget->top + 1 },
                   windowPos + ScreenCoordsXY{ middleOutsetWidget->right - 1, middleOutsetWidget->bottom - 1 } },
-                colours[0], Rect::BorderStyle::inset, Rect::FillBrightness::light, INSET_RECT_FLAG_FILL_NONE);
+                colours[0], Rect::BorderStyle::inset, Rect::FillBrightness::light, Rect::FillMode::none);
 
             // Figure out how much line height we have to work with.
             uint32_t line_height = FontGetLineHeight(FontStyle::Medium);
