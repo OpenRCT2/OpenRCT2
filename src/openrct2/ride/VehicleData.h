@@ -25,8 +25,3 @@ extern const TopSpinTimeToSpriteMap* TopSpinTimeToSpriteMaps[];
 
 extern const uint8_t MotionSimulatorTimeToSpriteMap[];
 extern const int32_t MotionSimulatorTimeToSpriteMapCount;
-
-extern const int32_t SubpositionTranslationDistances[];
-extern const int32_t AccelerationFromPitch[];
-
-extern const int32_t SpriteDirectionToSoundDirection[];
