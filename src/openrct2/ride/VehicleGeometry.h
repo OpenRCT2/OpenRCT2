@@ -28,6 +28,8 @@ namespace OpenRCT2::RideVehicle::Geometry
     extern const std::array<int32_t, 16> kSubpositionTranslationDistances;
     extern const std::array<Unk9A36C4Struct, 32> kFreeroamVehicleMovementData;
     extern const std::array<int32_t, EnumValue(VehiclePitch::pitchCount)> kAccelerationFromPitch;
+    extern const std::array<int32_t, EnumValue(VehiclePitch::pitchCount)> kPitchHorizontalComponent;
+    extern const std::array<int32_t, EnumValue(VehiclePitch::pitchCount)> kPitchVerticalComponent;
 
     /** The distance between subposition points in a movement vector.
      * Squashes vector components to 0 or !0, so vector length is ignored.

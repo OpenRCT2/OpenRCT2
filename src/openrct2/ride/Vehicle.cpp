@@ -393,28 +393,6 @@ static constexpr CoordsXY kSurroundingTiles[] = {
     { 0, +kCoordsXYStep },
 };
 
-/** rct2: 0x009A37E4 */
-static constexpr int32_t kUnk9A37E4[] = {
-    2147483647,  2106585154,  1985590284,  1636362342,  1127484953,  2106585154,  1985590284,  1636362342,  1127484953,
-    58579923,    0,           -555809667,  -1073741824, -1518500249, -1859775391, -2074309916, -2147483647, 58579923,
-    0,           -555809667,  -1073741824, -1518500249, -1859775391, -2074309916, 1859775393,  1073741824,  0,
-    -1073741824, -1859775393, 1859775393,  1073741824,  0,           -1073741824, -1859775393, 1859775393,  1073741824,
-    0,           -1073741824, -1859775393, 1859775393,  1073741824,  0,           -1073741824, -1859775393, 2144540595,
-    2139311823,  2144540595,  2139311823,  2135719507,  2135719507,  2125953864,  2061796213,  1411702590,  2125953864,
-    2061796213,  1411702590,  1985590284,  1636362342,  1127484953,  2115506168,  2115506168,
-};
-
-/** rct2: 0x009A38D4 */
-static constexpr int32_t kUnk9A38D4[] = {
-    0,           417115092,   817995863,   1390684831,  1827693544,  -417115092,  -817995863,  -1390684831, -1827693544,
-    2066040965,  2147483647,  2074309916,  1859775393,  1518500249,  1073741824,  555809666,   0,           -2066040965,
-    -2147483647, -2074309916, -1859775393, -1518500249, -1073741824, -555809666,  1073741824,  1859775393,  2147483647,
-    1859775393,  1073741824,  -1073741824, -1859775393, -2147483647, -1859775393, -1073741824, 1073741824,  1859775393,
-    2147483647,  1859775393,  1073741824,  -1073741824, -1859775393, -2147483647, -1859775393, -1073741824, 112390610,
-    187165532,   -112390610,  -187165532,  224473165,   -224473165,  303325208,   600568389,   1618265062,  -303325208,
-    -600568389,  -1618265062, -817995863,  -1390684831, -1827693544, 369214930,   -369214930,
-};
-
 /** rct2: 0x009A39C4 */
 static constexpr int32_t kUnk9A39C4[] = {
     2147483647, 2096579710, 1946281152, 2096579710,  1946281152,  1380375879, 555809667,  -372906620, -1231746017, -1859775391,
@@ -2952,9 +2930,9 @@ void Vehicle::UpdateCrashSetup()
         trainVehicle->sub_state = 0;
         int32_t trainX = stru_9A3AC4[trainVehicle->Orientation / 2].x;
         int32_t trainY = stru_9A3AC4[trainVehicle->Orientation / 2].y;
-        auto trainZ = kUnk9A38D4[EnumValue(trainVehicle->pitch)] >> 23;
+        auto trainZ = Geometry::kPitchVerticalComponent[EnumValue(trainVehicle->pitch)] >> 23;
 
-        int32_t ecx = kUnk9A37E4[EnumValue(trainVehicle->pitch)] >> 15;
+        int32_t ecx = Geometry::kPitchHorizontalComponent[EnumValue(trainVehicle->pitch)] >> 15;
         trainX *= ecx;
         trainY *= ecx;
         trainX >>= 16;
@@ -5055,7 +5033,7 @@ OpenRCT2::Audio::SoundId Vehicle::ProduceScreamSound(const int32_t totalNumPeeps
  */
 GForces Vehicle::GetGForces() const
 {
-    int32_t gForceVert = ((static_cast<int64_t>(0x280000)) * kUnk9A37E4[EnumValue(pitch)]) >> 32;
+    int32_t gForceVert = ((static_cast<int64_t>(0x280000)) * Geometry::kPitchHorizontalComponent[EnumValue(pitch)]) >> 32;
     gForceVert = ((static_cast<int64_t>(gForceVert)) * kUnk9A39C4[EnumValue(roll)]) >> 32;
 
     const auto& ted = GetTrackElementDescriptor(GetTrackType());
