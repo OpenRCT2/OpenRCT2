@@ -2930,9 +2930,11 @@ void Vehicle::UpdateCrashSetup()
         trainVehicle->sub_state = 0;
         int32_t trainX = stru_9A3AC4[trainVehicle->Orientation / 2].x;
         int32_t trainY = stru_9A3AC4[trainVehicle->Orientation / 2].y;
-        auto trainZ = Geometry::kPitchToDirectionVectorFromGeometryInt32[EnumValue(trainVehicle->pitch)].y >> 23;
 
-        int32_t ecx = Geometry::kPitchToDirectionVectorFromGeometryInt32[EnumValue(trainVehicle->pitch)].x >> 15;
+        auto carLaunchDirection = Geometry::getPitchVector32(trainVehicle->pitch);
+
+        auto trainZ = carLaunchDirection.y >> 23;
+        int32_t ecx = carLaunchDirection.x >> 15;
         trainX *= ecx;
         trainY *= ecx;
         trainX >>= 16;
@@ -5033,7 +5035,7 @@ OpenRCT2::Audio::SoundId Vehicle::ProduceScreamSound(const int32_t totalNumPeeps
  */
 GForces Vehicle::GetGForces() const
 {
-    int32_t gForceVert = ((static_cast<int64_t>(0x280000)) * Geometry::kPitchToDirectionVectorFromGeometryInt32[EnumValue(pitch)].x) >> 32;
+    int32_t gForceVert = ((static_cast<int64_t>(0x280000)) * Geometry::getPitchVector32(pitch).x) >> 32;
     gForceVert = ((static_cast<int64_t>(gForceVert)) * kUnk9A39C4[EnumValue(roll)]) >> 32;
 
     const auto& ted = GetTrackElementDescriptor(GetTrackType());

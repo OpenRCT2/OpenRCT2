@@ -118,7 +118,7 @@ namespace OpenRCT2::RideVehicle::Geometry
     /** rct2: 0x009A37E4
      *  rct2: 0x009A38D4
      */
-    constexpr auto kPitchToDirectionVectorFromGeometryInt32 = std::to_array<CoordsXY>({
+    constexpr auto kPitchToDirectionVectorInt32 = std::to_array<CoordsXY>({
         { 2147483647, 0 },            // flat
         { 2106585154, 417115092 },    // up12
         { 1985590284, 817995863 },    // up25
@@ -181,6 +181,6 @@ namespace OpenRCT2::RideVehicle::Geometry
         { 2115506168, 369214930 },    // curvedLifthillUp
         { 2115506168, -369214930 },   // curvedLiftHillDown
     });
-    static_assert(std::size(kPitchToDirectionVectorFromGeometryInt32) == EnumValue(VehiclePitch::pitchCount));
+    static_assert(std::size(kPitchToDirectionVectorInt32) == EnumValue(VehiclePitch::pitchCount));
 
 } // namespace OpenRCT2::RideVehicle::Geometry
