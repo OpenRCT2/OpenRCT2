@@ -104,7 +104,7 @@ namespace OpenRCT2::Ui::Windows
         CoordsXY positionA{};
         CoordsXY positionB{};
         /**
-         * Z of the first tile. Used for checking if the provisional path needs updating when in dragArea mode.
+         * Z of the first tile. Used for checking if the provisional path needs updating.
          */
         int32_t startZ{};
         ProvisionalPathFlags flags{};
@@ -1048,9 +1048,8 @@ namespace OpenRCT2::Ui::Windows
                 return;
 
             // Check for change
-            auto provisionalPos = CoordsXYZ(*mapPos, _footpathPlaceZ);
-            if ((_provisionalFootpath.flags.has(ProvisionalPathFlag::placed))
-                && _provisionalFootpath.positionA == provisionalPos)
+            if ((_provisionalFootpath.flags.has(ProvisionalPathFlag::placed)) && _provisionalFootpath.positionA == mapPos
+                && _provisionalFootpath.startZ == _footpathPlaceZ)
             {
                 return;
             }
