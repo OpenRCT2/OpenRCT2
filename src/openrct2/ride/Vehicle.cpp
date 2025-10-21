@@ -7238,7 +7238,8 @@ bool Vehicle::UpdateTrackMotionForwards(const CarEntry* carEntry, const Ride& cu
                 && track_progress >= 30 && track_progress <= 66;
 
             // Loc6DB8A5
-            remaining_distance -= Geometry::getTranslationDistance(nextVehiclePosition - _vehicleCurPosition, useReverserDistance);
+            remaining_distance -= Geometry::getTranslationDistance(
+                nextVehiclePosition - _vehicleCurPosition, useReverserDistance);
 
             if (TrackSubposition == VehicleTrackSubposition::ReverserRCRearBogie
                 && (trackType == TrackElemType::LeftReverser || trackType == TrackElemType::RightReverser)
