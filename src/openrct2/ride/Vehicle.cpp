@@ -2883,12 +2883,6 @@ void Vehicle::UpdateCollisionSetup()
     velocity = 0;
 }
 
-/** rct2: 0x009A3AC4, 0x009A3AC6 */
-static constexpr CoordsXY stru_9A3AC4[] = {
-    { -256, 0 }, { -236, 98 }, { -181, 181 }, { -98, 236 }, { 0, 256 },  { 98, 236 },   { 181, 181 },   { 236, 98 },
-    { 256, 0 },  { 236, -98 }, { 181, -181 }, { 98, -236 }, { 0, -256 }, { -98, -236 }, { -181, -181 }, { -236, -98 },
-};
-
 /**
  *
  *  rct2: 0x006D9EFE
@@ -2922,8 +2916,8 @@ void Vehicle::UpdateCrashSetup()
         lastVehicle = trainVehicle;
 
         trainVehicle->sub_state = 0;
-        int32_t trainX = stru_9A3AC4[trainVehicle->Orientation / 2].x;
-        int32_t trainY = stru_9A3AC4[trainVehicle->Orientation / 2].y;
+        int32_t trainX = Geometry::kCrashDirectionComponents[trainVehicle->Orientation / 2].x;
+        int32_t trainY = Geometry::kCrashDirectionComponents[trainVehicle->Orientation / 2].y;
 
         auto carLaunchDirection = Geometry::getPitchVector32(trainVehicle->pitch);
 
@@ -4922,7 +4916,7 @@ void Vehicle::UpdateSound()
     sound2_volume = soundIdVolume.volume;
 
     // Calculate Sound Vector (used for sound frequency calcs)
-    int32_t soundDirection = SpriteDirectionToSoundDirection[Orientation];
+    int32_t soundDirection = Geometry::kSpriteDirectionToSoundDirection[Orientation];
     int32_t soundVector = ((velocity >> 14) * soundDirection) >> 14;
     soundVector = std::clamp(soundVector, -127, 127);
 

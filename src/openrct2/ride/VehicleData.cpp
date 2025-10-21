@@ -794,40 +794,4 @@ const uint8_t MotionSimulatorTimeToSpriteMap[] = {
 };
 
 const int32_t MotionSimulatorTimeToSpriteMapCount = static_cast<int32_t>(std::size(MotionSimulatorTimeToSpriteMap));
-
-/** rct2: 0x009A3684 */
-const int32_t SpriteDirectionToSoundDirection[] = {
-    -0x4000,    // 0
-    -0x3000,    // 1
-    -0x2000,    // 2
-    -0x1000,    // 3
-          0,    // 4
-     0x1000,    // 5
-     0x2000,    // 6
-     0x3000,    // 7
-     0x4000,    // 8
-     0x4800,    // 9
-     0x4800,    // 10
-     0x4800,    // 11
-     0x4800,    // 12
-     0x4800,    // 13
-     0x4800,    // 14
-     0x4800,    // 15
-     0x4000,    // 16
-     0x3000,    // 17
-     0x2000,    // 18
-     0x1000,    // 19
-          0,    // 20
-    -0x1000,    // 21
-    -0x2000,    // 22
-    -0x3000,    // 23
-    -0x4000,    // 24
-    -0x4800,    // 25
-    -0x4800,    // 26
-    -0x4800,    // 27
-    -0x4800,    // 28
-    -0x4800,    // 29
-    -0x4800,    // 30
-    -0x4800,    // 31
-};
 // clang-format on
