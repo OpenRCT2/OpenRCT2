@@ -145,7 +145,7 @@ void ChatDraw(RenderTarget& rt, ColourWithFlags chatBackgroundColor)
             FilterPaletteID::palette51); // Opaque grey background
         Rect::fillInset(
             rt, { topLeft - ScreenCoordsXY{ 0, 5 }, bottomRight + ScreenCoordsXY{ 0, 5 } }, chatBackgroundColor,
-            Rect::BorderStyle::outset, INSET_RECT_FLAG_FILL_NONE);
+            Rect::BorderStyle::outset, Rect::FillBrightness::light, INSET_RECT_FLAG_FILL_NONE);
         Rect::fillInset(
             rt, { topLeft + ScreenCoordsXY{ 1, -4 }, bottomRight - ScreenCoordsXY{ 1, inputLineHeight + 6 } },
             chatBackgroundColor, Rect::BorderStyle::inset);

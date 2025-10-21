@@ -792,13 +792,14 @@ namespace OpenRCT2::Ui::Windows
             DrawTextBasic(rt, _graphBounds.Point1 - ScreenCoordsXY{ 0, 11 }, fmt, ft);
 
             // Graph
-            Rect::fillInset(rt, _graphBounds, colours[1], Rect::BorderStyle::inset, INSET_RECT_FLAG_FILL_NONE);
+            Rect::fillInset(
+                rt, _graphBounds, colours[1], Rect::BorderStyle::inset, Rect::FillBrightness::light, INSET_RECT_FLAG_FILL_NONE);
             // hide resize widget on graph area
             constexpr ScreenCoordsXY offset{ 1, 1 };
             constexpr ScreenCoordsXY bigOffset{ 5, 5 };
             Rect::fillInset(
                 rt, { _graphBounds.Point2 - bigOffset, _graphBounds.Point2 - offset }, colours[1], Rect::BorderStyle::none,
-                INSET_RECT_FLAG_FILL_DONT_LIGHTEN);
+                Rect::FillBrightness::light, INSET_RECT_FLAG_FILL_DONT_LIGHTEN);
 
             Graph::DrawFinanceGraph(rt, _graphProps);
         }

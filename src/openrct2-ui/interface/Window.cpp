@@ -1053,7 +1053,7 @@ namespace OpenRCT2::Ui::Windows
         {
             Rect::fillInset(
                 rt, { w.windowPos, w.windowPos + ScreenCoordsXY{ w.width - 1, w.height - 1 } }, { COLOUR_WHITE },
-                Rect::BorderStyle::outset, INSET_RECT_FLAG_FILL_NONE);
+                Rect::BorderStyle::outset, Rect::FillBrightness::light, INSET_RECT_FLAG_FILL_NONE);
         }
     }
 

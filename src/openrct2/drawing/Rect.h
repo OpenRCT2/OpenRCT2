@@ -24,10 +24,15 @@ namespace OpenRCT2::Drawing::Rect
         inset,
         none,
     };
+    enum class FillBrightness : uint8_t
+    {
+        light,
+        dark,
+    };
 
     void fill(RenderTarget& rt, const ScreenRect& rect, int32_t colour);
     void fillInset(
         RenderTarget& rt, const ScreenRect& rect, ColourWithFlags colour, BorderStyle borderStyle = BorderStyle::outset,
-        uint8_t flags = 0);
+        FillBrightness brightness = FillBrightness::light, uint8_t flags = 0);
     void filter(RenderTarget& rt, const ScreenRect& rect, FilterPaletteID palette);
 } // namespace OpenRCT2::Drawing::Rect

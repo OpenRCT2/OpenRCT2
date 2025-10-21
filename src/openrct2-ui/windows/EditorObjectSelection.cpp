@@ -744,7 +744,7 @@ namespace OpenRCT2::Ui::Windows
                     if (!(gLegacyScene == LegacyScene::trackDesignsManager) && !(*listItem.flags & 0x20))
                         Rect::fillInset(
                             rt, { { 2, screenCoords.y }, { 11, screenCoords.y + 10 } }, colours[1], Rect::BorderStyle::inset,
-                            INSET_RECT_FLAG_FILL_DONT_LIGHTEN | INSET_RECT_FLAG_FILL_MID_LIGHT);
+                            Rect::FillBrightness::dark, INSET_RECT_FLAG_FILL_DONT_LIGHTEN);
 
                     // Highlight background
                     auto highlighted = i == static_cast<size_t>(selectedListItem)

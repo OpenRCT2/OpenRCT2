@@ -41,7 +41,9 @@ namespace OpenRCT2::Drawing::Rect
      * colour (ebp)
      * flags (si)
      */
-    void fillInset(RenderTarget& rt, const ScreenRect& rect, ColourWithFlags colour, BorderStyle borderStyle, uint8_t flags)
+    void fillInset(
+        RenderTarget& rt, const ScreenRect& rect, ColourWithFlags colour, BorderStyle borderStyle, FillBrightness brightness,
+        uint8_t flags)
     {
         const auto leftTop = ScreenCoordsXY{ rect.GetLeft(), rect.GetTop() };
         const auto leftBottom = ScreenCoordsXY{ rect.GetLeft(), rect.GetBottom() };
@@ -89,7 +91,7 @@ namespace OpenRCT2::Drawing::Rect
         else
         {
             uint8_t shadow, fill, hilight;
-            if (flags & INSET_RECT_FLAG_FILL_MID_LIGHT)
+            if (brightness == FillBrightness::dark)
             {
                 shadow = ColourMapA[colour.colour].dark;
                 fill = ColourMapA[colour.colour].mid_light;

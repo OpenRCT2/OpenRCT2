@@ -322,7 +322,8 @@ void InGameConsole::Draw(RenderTarget& rt) const
     // Paint background colour.
     auto backgroundColour = ThemeGetColour(WindowClass::console, 0);
     Rect::fillInset(
-        rt, { _consoleTopLeft, _consoleBottomRight }, backgroundColour, Rect::BorderStyle::outset, INSET_RECT_FLAG_FILL_NONE);
+        rt, { _consoleTopLeft, _consoleBottomRight }, backgroundColour, Rect::BorderStyle::outset, Rect::FillBrightness::light,
+        INSET_RECT_FLAG_FILL_NONE);
     Rect::fillInset(
         rt, { _consoleTopLeft + ScreenCoordsXY{ 1, 1 }, _consoleBottomRight - ScreenCoordsXY{ 1, 1 } }, backgroundColour,
         Rect::BorderStyle::inset);

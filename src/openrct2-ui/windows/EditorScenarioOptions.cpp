@@ -2351,8 +2351,8 @@ namespace OpenRCT2::Ui::Windows
 
                 // Checkbox
                 Rect::fillInset(
-                    rt, { { 2, y }, { 11, y + 10 } }, colours[1], Rect::BorderStyle::inset,
-                    INSET_RECT_FLAG_FILL_DONT_LIGHTEN | INSET_RECT_FLAG_FILL_MID_LIGHT);
+                    rt, { { 2, y }, { 11, y + 10 } }, colours[1], Rect::BorderStyle::inset, Rect::FillBrightness::dark,
+                    INSET_RECT_FLAG_FILL_DONT_LIGHTEN);
 
                 // Highlighted
                 auto stringId = STR_BLACK_STRING;

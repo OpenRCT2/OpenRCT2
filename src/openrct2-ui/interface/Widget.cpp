@@ -145,12 +145,13 @@ namespace OpenRCT2::Ui
         int32_t b = w.windowPos.y + widget.bottom;
 
         //
-        uint8_t press = (w.flags.has(WindowFlag::higherContrastOnPress) ? INSET_RECT_FLAG_FILL_MID_LIGHT : 0);
+        auto brightness
+            = (w.flags.has(WindowFlag::higherContrastOnPress) ? Rect::FillBrightness::dark : Rect::FillBrightness::light);
 
         auto colour = w.colours[widget.colour];
 
         // Draw the frame
-        Rect::fillInset(rt, { leftTop, { r, b } }, colour, Rect::BorderStyle::outset, press);
+        Rect::fillInset(rt, { leftTop, { r, b } }, colour, Rect::BorderStyle::outset, brightness);
 
         if (!w.canBeResized())
             return;
@@ -210,7 +211,7 @@ namespace OpenRCT2::Ui
         if (static_cast<int32_t>(widget.image.GetIndex()) == -2)
         {
             // Draw border with no fill
-            Rect::fillInset(rt, rect, colour, borderStyle, INSET_RECT_FLAG_FILL_NONE);
+            Rect::fillInset(rt, rect, colour, borderStyle, Rect::FillBrightness::light, INSET_RECT_FLAG_FILL_NONE);
             return;
         }
 
@@ -297,7 +298,8 @@ namespace OpenRCT2::Ui
             if (static_cast<int32_t>(widget.image.GetIndex()) == -2)
             {
                 // Draw border with no fill
-                Rect::fillInset(rt, rect, colour, Rect::BorderStyle::inset, INSET_RECT_FLAG_FILL_NONE);
+                Rect::fillInset(
+                    rt, rect, colour, Rect::BorderStyle::inset, Rect::FillBrightness::light, INSET_RECT_FLAG_FILL_NONE);
                 return;
             }
 
@@ -448,7 +450,8 @@ namespace OpenRCT2::Ui
 
         auto colour = w.colours[widget.colour];
 
-        Rect::fillInset(rt, rect, colour, Rect::BorderStyle::inset, INSET_RECT_FLAG_FILL_DONT_LIGHTEN);
+        Rect::fillInset(
+            rt, rect, colour, Rect::BorderStyle::inset, Rect::FillBrightness::light, INSET_RECT_FLAG_FILL_DONT_LIGHTEN);
         WidgetText(rt, w, widgetIndex);
     }
 
@@ -542,11 +545,12 @@ namespace OpenRCT2::Ui
 
         auto colour = w.colours[widget->colour];
 
-        uint8_t press = INSET_RECT_FLAG_FILL_DONT_LIGHTEN;
+        auto brightness = Rect::FillBrightness::light;
         if (w.flags.has(WindowFlag::higherContrastOnPress))
-            press |= INSET_RECT_FLAG_FILL_MID_LIGHT;
+            brightness = Rect::FillBrightness::dark;
 
-        Rect::fillInset(rt, { topLeft, bottomRight }, colour, Rect::BorderStyle::inset, press);
+        Rect::fillInset(
+            rt, { topLeft, bottomRight }, colour, Rect::BorderStyle::inset, brightness, INSET_RECT_FLAG_FILL_DONT_LIGHTEN);
 
         // Black caption bars look slightly green, this fixes that
         if (colour.colour == COLOUR_BLACK)
@@ -598,17 +602,17 @@ namespace OpenRCT2::Ui
         auto bottomRight = w.windowPos + ScreenCoordsXY{ widget.right, widget.bottom };
 
         // Check if the button is pressed down
-        uint8_t press = 0;
+        auto brightness = Rect::FillBrightness::light;
         auto borderStyle = Rect::BorderStyle::outset;
         if (w.flags.has(WindowFlag::higherContrastOnPress))
-            press |= INSET_RECT_FLAG_FILL_MID_LIGHT;
+            brightness = Rect::FillBrightness::dark;
         if (widgetIsPressed(w, widgetIndex) || isToolActive(w, widgetIndex))
             borderStyle = Rect::BorderStyle::inset;
 
         auto colour = w.colours[widget.colour];
 
         // Draw the button
-        Rect::fillInset(rt, { topLeft, bottomRight }, colour, borderStyle, press);
+        Rect::fillInset(rt, { topLeft, bottomRight }, colour, borderStyle, brightness);
 
         if (widget.string == nullptr)
             return;
@@ -640,7 +644,7 @@ namespace OpenRCT2::Ui
         // checkbox
         Rect::fillInset(
             rt, { midLeft - ScreenCoordsXY{ 0, 5 }, midLeft + ScreenCoordsXY{ 9, 4 } }, colour, Rect::BorderStyle::inset,
-            INSET_RECT_FLAG_FILL_DONT_LIGHTEN);
+            Rect::FillBrightness::light, INSET_RECT_FLAG_FILL_DONT_LIGHTEN);
 
         if (widgetIsDisabled(w, widgetIndex))
         {
@@ -689,7 +693,9 @@ namespace OpenRCT2::Ui
         auto colour = w.colours[widget.colour];
 
         // Draw the border
-        Rect::fillInset(rt, { topLeft, bottomRight }, colour, Rect::BorderStyle::inset, INSET_RECT_FLAG_FILL_DONT_LIGHTEN);
+        Rect::fillInset(
+            rt, { topLeft, bottomRight }, colour, Rect::BorderStyle::inset, Rect::FillBrightness::light,
+            INSET_RECT_FLAG_FILL_DONT_LIGHTEN);
 
         // Inflate by -1
         topLeft.x++;
@@ -1139,7 +1145,7 @@ namespace OpenRCT2::Ui
 
         // Rect::fillInset(rt, l, t, r, b, colour, 0x20 | (!active ? 0x40 : 0x00));
         Rect::fillInset(
-            rt, { topLeft, bottomRight }, w.colours[widget.colour], Rect::BorderStyle::inset,
+            rt, { topLeft, bottomRight }, w.colours[widget.colour], Rect::BorderStyle::inset, Rect::FillBrightness::light,
             INSET_RECT_FLAG_FILL_DONT_LIGHTEN);
 
         // Figure out where the text should be positioned vertically.
@@ -1204,7 +1210,9 @@ namespace OpenRCT2::Ui
         auto isBlinking = (lowerBlinkBounds != upperBlinkBounds) && (percentage >= lowerBlinkBounds)
             && (percentage <= upperBlinkBounds);
 
-        Rect::fillInset(rt, { topLeft, bottomRight }, w.colours[1], Rect::BorderStyle::inset, INSET_RECT_FLAG_FILL_NONE);
+        Rect::fillInset(
+            rt, { topLeft, bottomRight }, w.colours[1], Rect::BorderStyle::inset, Rect::FillBrightness::light,
+            INSET_RECT_FLAG_FILL_NONE);
         if (isBlinking)
         {
             if (GameIsNotPaused() && (gCurrentRealTimeTicks & 8))

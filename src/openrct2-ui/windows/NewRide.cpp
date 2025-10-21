@@ -498,7 +498,7 @@ namespace OpenRCT2::Ui::Windows
                 if (_newRideVars.HighlightedRide == *listItem || borderStyle != Rect::BorderStyle::none)
                     Rect::fillInset(
                         rt, { coords, coords + ScreenCoordsXY{ 115, 115 } }, colours[1], borderStyle,
-                        INSET_RECT_FLAG_FILL_MID_LIGHT);
+                        Rect::FillBrightness::dark);
 
                 // Draw ride image with feathered border
                 auto mask = ImageId(SPR_NEW_RIDE_MASK);

@@ -713,13 +713,15 @@ namespace OpenRCT2::Ui::Windows
             DrawTextBasic(rt, windowPos + ScreenCoordsXY{ widget->left + 3, widget->top + 2 }, STR_PARK_RATING_LABEL, ft);
 
             // Graph border
-            Rect::fillInset(rt, _ratingGraphBounds, colours[1], Rect::BorderStyle::inset, INSET_RECT_FLAG_FILL_NONE);
+            Rect::fillInset(
+                rt, _ratingGraphBounds, colours[1], Rect::BorderStyle::inset, Rect::FillBrightness::light,
+                INSET_RECT_FLAG_FILL_NONE);
             // hide resize widget on graph area
             constexpr ScreenCoordsXY offset{ 1, 1 };
             constexpr ScreenCoordsXY bigOffset{ 5, 5 };
             Rect::fillInset(
                 rt, { _ratingGraphBounds.Point2 - bigOffset, _ratingGraphBounds.Point2 - offset }, colours[1],
-                Rect::BorderStyle::none, INSET_RECT_FLAG_FILL_DONT_LIGHTEN);
+                Rect::BorderStyle::none, Rect::FillBrightness::light, INSET_RECT_FLAG_FILL_DONT_LIGHTEN);
 
             Graph::DrawRatingGraph(rt, _ratingProps);
         }
@@ -792,13 +794,15 @@ namespace OpenRCT2::Ui::Windows
             DrawTextBasic(rt, windowPos + ScreenCoordsXY{ widget->left + 3, widget->top + 2 }, STR_GUESTS_IN_PARK_LABEL, ft);
 
             // Graph border
-            Rect::fillInset(rt, _guestGraphBounds, colours[1], Rect::BorderStyle::inset, INSET_RECT_FLAG_FILL_NONE);
+            Rect::fillInset(
+                rt, _guestGraphBounds, colours[1], Rect::BorderStyle::inset, Rect::FillBrightness::light,
+                INSET_RECT_FLAG_FILL_NONE);
             // hide resize widget on graph area
             constexpr ScreenCoordsXY offset{ 1, 1 };
             constexpr ScreenCoordsXY bigOffset{ 5, 5 };
             Rect::fillInset(
                 rt, { _guestGraphBounds.Point2 - bigOffset, _guestGraphBounds.Point2 - offset }, colours[1],
-                Rect::BorderStyle::none, INSET_RECT_FLAG_FILL_DONT_LIGHTEN);
+                Rect::BorderStyle::none, Rect::FillBrightness::light, INSET_RECT_FLAG_FILL_DONT_LIGHTEN);
 
             Graph::DrawGuestGraph(rt, _guestProps);
         }

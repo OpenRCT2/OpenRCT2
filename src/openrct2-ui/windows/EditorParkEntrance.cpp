@@ -317,21 +317,21 @@ namespace OpenRCT2::Ui::Windows
             {
                 // Draw flat button rectangle
                 auto borderStyle = Rect::BorderStyle::outset;
-                int32_t buttonFlags = 0;
+                auto fillBrightness = Rect::FillBrightness::light;
                 if (_selectedEntranceType == entranceType.entryIndex)
                 {
                     borderStyle = Rect::BorderStyle::inset;
-                    buttonFlags |= INSET_RECT_FLAG_FILL_MID_LIGHT;
+                    fillBrightness = Rect::FillBrightness::dark;
                 }
                 else if (_highlightedEntranceType == entranceType.entryIndex)
                 {
-                    buttonFlags |= INSET_RECT_FLAG_FILL_MID_LIGHT;
+                    fillBrightness = Rect::FillBrightness::dark;
                 }
 
-                if (buttonFlags != 0)
+                if (fillBrightness != Rect::FillBrightness::light)
                     Rect::fillInset(
                         rt, { coords, coords + ScreenCoordsXY{ kImageSize - 1, kImageSize - 1 } }, colours[1], borderStyle,
-                        buttonFlags);
+                        fillBrightness);
 
                 RenderTarget clipDPI;
                 auto screenPos = coords + ScreenCoordsXY{ kScrollPadding, kScrollPadding };

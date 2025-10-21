@@ -230,7 +230,7 @@ namespace OpenRCT2::Ui::Windows
                 rt,
                 { { windowPos.x + 10, screenCoords.y },
                   { windowPos.x + kWindowSize.width - 10, screenCoords.y + 10 * (no_lines + 1) + 3 } },
-                colours[1], Rect::BorderStyle::inset, INSET_RECT_FLAG_FILL_DONT_LIGHTEN);
+                colours[1], Rect::BorderStyle::inset, Rect::FillBrightness::light, INSET_RECT_FLAG_FILL_DONT_LIGHTEN);
 
             screenCoords.y += 1;
 
