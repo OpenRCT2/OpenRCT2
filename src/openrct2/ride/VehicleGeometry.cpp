@@ -41,7 +41,7 @@ namespace OpenRCT2::RideVehicle::Geometry
     static_assert(std::size(kSubpositionTranslationDistances) == 16);
 
     /** rct2: 0x009A36C4 */
-    constexpr auto kFreeroamVehicleMovementData = std::to_array<Unk9A36C4Struct>({
+    const auto kFreeroamVehicleMovementData = std::to_array<Unk9A36C4Struct>({
         { -1, 0, 8716 }, { -1, 0, 8716 },   { -1, 0, 8716 },  { -1, 1, 12327 },  { -1, 1, 12327 },  { -1, 1, 12327 },
         { 0, 1, 8716 },  { -1, 1, 12327 },  { 0, 1, 8716 },   { 0, 1, 8716 },    { 0, 1, 8716 },    { 1, 1, 12327 },
         { 1, 1, 12327 }, { 1, 1, 12327 },   { 1, 0, 8716 },   { 1, 1, 12327 },   { 1, 0, 8716 },    { 1, 0, 8716 },
@@ -186,7 +186,7 @@ namespace OpenRCT2::RideVehicle::Geometry
     static_assert(std::size(kPitchToDirectionVectorInt32) == EnumValue(VehiclePitch::pitchCount));
 
     /** rct2: 0x009A39C4 */
-    constexpr auto kRollHorizontalComponent = std::to_array<int32_t>({
+    const auto kRollHorizontalComponent = std::to_array<int32_t>({
         2147483647,  2096579710,  1946281152,  2096579710, 1946281152, 1380375879, 555809667,
         -372906620,  -1231746017, -1859775391, 1380375879, 555809667,  -372906620, -1231746017,
         -1859775391, 0,           2096579710,  1946281152, 2096579710, 1946281152,
@@ -194,7 +194,7 @@ namespace OpenRCT2::RideVehicle::Geometry
     static_assert(std::size(kRollHorizontalComponent) == EnumValue(VehicleRoll::rollCount));
 
     /** rct2: 0x009A3684 */
-    constexpr auto kSpriteDirectionToSoundDirection = std::to_array<int32_t>({
+    const auto kSpriteDirectionToSoundDirection = std::to_array<int32_t>({
         -0x4000, // 0
         -0x3000, // 1
         -0x2000, // 2
@@ -230,7 +230,7 @@ namespace OpenRCT2::RideVehicle::Geometry
     });
 
     /** rct2: 0x009A3AC4, 0x009A3AC6 */
-    constexpr auto kCrashDirectionComponents = std::to_array<CoordsXY>({
+    const auto kCrashDirectionComponents = std::to_array<CoordsXY>({
         { -256, 0 },
         { -236, 98 },
         { -181, 181 },
@@ -249,5 +249,50 @@ namespace OpenRCT2::RideVehicle::Geometry
         { -236, -98 },
     });
     static_assert(std::size(kCrashDirectionComponents) == 16);
+
+    Unk9A36C4Struct getFreeroamVehicleMovementData(uint8_t orientation)
+    {
+        return kFreeroamVehicleMovementData[orientation];
+    }
+
+    int32_t getRollHorizontalComponent(VehicleRoll roll)
+    {
+        return kRollHorizontalComponent[EnumValue(roll)];
+    }
+
+    int32_t getSoundDirectionFromOrientation(uint8_t orientation)
+    {
+        return kSpriteDirectionToSoundDirection[orientation];
+    }
+
+    CoordsXY getCrashDirectionComponents(uint8_t orientation)
+    {
+        return kCrashDirectionComponents[orientation / 2];
+    }
+
+    int32_t getTranslationDistance(CoordsXYZ distance, bool useReverserDistance)
+    {
+        uint8_t index = ((distance.x != 0) << 0) | ((distance.y != 0) << 1) | ((distance.z != 0) << 2)
+            | ((useReverserDistance) << 3);
+        return kSubpositionTranslationDistances[index];
+    }
+
+    int32_t getAccelerationFromPitch(VehiclePitch pitch)
+    {
+        if (pitch >= VehiclePitch::pitchCount)
+        {
+            return 0;
+        }
+        return kAccelerationFromPitch[EnumValue(pitch)];
+    }
+
+    CoordsXY getPitchVector32(VehiclePitch pitch)
+    {
+        if (pitch >= VehiclePitch::pitchCount)
+        {
+            pitch = VehiclePitch::flat;
+        }
+        return kPitchToDirectionVectorInt32[EnumValue(pitch)];
+    }
 
 } // namespace OpenRCT2::RideVehicle::Geometry

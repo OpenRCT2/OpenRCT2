@@ -2916,8 +2916,9 @@ void Vehicle::UpdateCrashSetup()
         lastVehicle = trainVehicle;
 
         trainVehicle->sub_state = 0;
-        int32_t trainX = Geometry::kCrashDirectionComponents[trainVehicle->Orientation / 2].x;
-        int32_t trainY = Geometry::kCrashDirectionComponents[trainVehicle->Orientation / 2].y;
+        auto crashDirection = Geometry::getCrashDirectionComponents(trainVehicle->Orientation);
+        int32_t trainX = crashDirection.x;
+        int32_t trainY = crashDirection.y;
 
         auto carLaunchDirection = Geometry::getPitchVector32(trainVehicle->pitch);
 
@@ -3743,7 +3744,7 @@ void Vehicle::UpdateMotionBoatHire()
             }
 
             int32_t edi = (Orientation | (var_35 & 1)) & 0x1F;
-            loc2 = { x + Geometry::kFreeroamVehicleMovementData[edi].x, y + Geometry::kFreeroamVehicleMovementData[edi].y };
+            loc2 = { x + Geometry::getFreeroamVehicleMovementData(edi).x, y + Geometry::getFreeroamVehicleMovementData(edi).y };
             if (UpdateMotionCollisionDetection({ loc2, z }, nullptr))
             {
                 remaining_distance = 0;
@@ -3841,7 +3842,7 @@ void Vehicle::UpdateMotionBoatHire()
                 TrackLocation = { flooredLocation, TrackLocation.z };
             }
 
-            remaining_distance -= Geometry::kFreeroamVehicleMovementData[edi].distance;
+            remaining_distance -= Geometry::getFreeroamVehicleMovementData(edi).distance;
             _vehicleCurPosition.x = loc2.x;
             _vehicleCurPosition.y = loc2.y;
             if (remaining_distance < 0x368A)
@@ -4916,7 +4917,7 @@ void Vehicle::UpdateSound()
     sound2_volume = soundIdVolume.volume;
 
     // Calculate Sound Vector (used for sound frequency calcs)
-    int32_t soundDirection = Geometry::kSpriteDirectionToSoundDirection[Orientation];
+    int32_t soundDirection = Geometry::getSoundDirectionFromOrientation(Orientation);
     int32_t soundVector = ((velocity >> 14) * soundDirection) >> 14;
     soundVector = std::clamp(soundVector, -127, 127);
 
@@ -5024,7 +5025,7 @@ OpenRCT2::Audio::SoundId Vehicle::ProduceScreamSound(const int32_t totalNumPeeps
 GForces Vehicle::GetGForces() const
 {
     int32_t gForceVert = ((static_cast<int64_t>(0x280000)) * Geometry::getPitchVector32(pitch).x) >> 32;
-    gForceVert = ((static_cast<int64_t>(gForceVert)) * Geometry::kRollHorizontalComponent[EnumValue(roll)]) >> 32;
+    gForceVert = ((static_cast<int64_t>(gForceVert)) * Geometry::getRollHorizontalComponent(roll)) >> 32;
 
     const auto& ted = GetTrackElementDescriptor(GetTrackType());
     const int32_t vertFactor = ted.verticalFactor(track_progress);
@@ -5180,10 +5181,10 @@ int32_t Vehicle::UpdateMotionDodgems()
 
         CoordsXYZ location = { x, y, z };
 
-        location.x += Geometry::kFreeroamVehicleMovementData[oldCollisionDirection].x;
-        location.y += Geometry::kFreeroamVehicleMovementData[oldCollisionDirection].y;
-        location.x += Geometry::kFreeroamVehicleMovementData[oldCollisionDirection + 1].x;
-        location.y += Geometry::kFreeroamVehicleMovementData[oldCollisionDirection + 1].y;
+        location.x += Geometry::getFreeroamVehicleMovementData(oldCollisionDirection).x;
+        location.y += Geometry::getFreeroamVehicleMovementData(oldCollisionDirection).y;
+        location.x += Geometry::getFreeroamVehicleMovementData(oldCollisionDirection + 1).x;
+        location.y += Geometry::getFreeroamVehicleMovementData(oldCollisionDirection + 1).y;
 
         if (collideSprite = DodgemsCarWouldCollideAt(location); !collideSprite.has_value())
         {
@@ -5207,15 +5208,15 @@ int32_t Vehicle::UpdateMotionDodgems()
             direction |= var_35 & 1;
 
             CoordsXY location = _vehicleCurPosition;
-            location.x += Geometry::kFreeroamVehicleMovementData[direction].x;
-            location.y += Geometry::kFreeroamVehicleMovementData[direction].y;
+            location.x += Geometry::getFreeroamVehicleMovementData(direction).x;
+            location.y += Geometry::getFreeroamVehicleMovementData(direction).y;
 
             if (collideSprite = DodgemsCarWouldCollideAt(location); collideSprite.has_value())
             {
                 break;
             }
 
-            remaining_distance -= Geometry::kFreeroamVehicleMovementData[direction].distance;
+            remaining_distance -= Geometry::getFreeroamVehicleMovementData(direction).distance;
             _vehicleCurPosition.x = location.x;
             _vehicleCurPosition.y = location.y;
             if (remaining_distance < 13962)
