@@ -39,4 +39,13 @@ namespace OpenRCT2::RideVehicle::Geometry
         return kSubpositionTranslationDistances[index];
     }
 
+    constexpr int32_t getAccelerationFromPitch(VehiclePitch pitch)
+    {
+        if (pitch >= VehiclePitch::pitchCount)
+        {
+            return 0;
+        }
+        return kAccelerationFromPitch[EnumValue(pitch)];
+    }
+
 } // namespace OpenRCT2::RideVehicle::Geometry
