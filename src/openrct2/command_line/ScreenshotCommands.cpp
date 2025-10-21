@@ -28,7 +28,7 @@ namespace OpenRCT2
         { CMDLINE_TYPE_SWITCH,  &_options.tidy_up_park,         kNAC, "tidy-up-park",         "clear grass, water plants, fix vandalism and remove litter" },
         { CMDLINE_TYPE_SWITCH,  &_options.transparent,          kNAC, "transparent",          "make the background transparent" },
         { CMDLINE_TYPE_SWITCH,  &_options.draw_bounding_boxes,  kNAC, "draw-bounding-boxes",  "draw bounding boxes" },
-        { CMDLINE_TYPE_SWITCH,  &_options.draw_segment_heights, kNAC, "draw-segment-heights", "draw segment heights" },
+        { CMDLINE_TYPE_SWITCH,  &_options.drawSegmentHeights, kNAC, "draw-segment-heights", "draw segment heights" },
         kOptionTableEnd
     };
 

@@ -34,7 +34,7 @@ struct ScreenshotOptions
     bool tidy_up_park = false;
     bool transparent = false;
     bool draw_bounding_boxes = false;
-    bool draw_segment_heights = false;
+    bool drawSegmentHeights = false;
 };
 
 struct CaptureView

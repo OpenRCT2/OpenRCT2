@@ -429,7 +429,7 @@ static void ApplyOptions(const ScreenshotOptions* options, Viewport& viewport)
         gPaintBoundingBoxes = true;
     }
 
-    if (options->draw_segment_heights)
+    if (options->drawSegmentHeights)
     {
         gShowSupportSegmentHeights = true;
     }
