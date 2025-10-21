@@ -29,6 +29,7 @@ namespace OpenRCT2::RideVehicle::Geometry
     extern const std::array<Unk9A36C4Struct, 32> kFreeroamVehicleMovementData;
     extern const std::array<int32_t, EnumValue(VehiclePitch::pitchCount)> kAccelerationFromPitch;
     extern const std::array<CoordsXY, EnumValue(VehiclePitch::pitchCount)> kPitchToDirectionVectorInt32;
+    extern const std::array<int32_t, EnumValue(VehicleRoll::rollCount)> kRollHorizontalComponent;
 
     /** The distance between subposition points in a movement vector.
      * Squashes vector components to 0 or !0, so vector length is ignored.

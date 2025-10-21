@@ -393,12 +393,6 @@ static constexpr CoordsXY kSurroundingTiles[] = {
     { 0, +kCoordsXYStep },
 };
 
-/** rct2: 0x009A39C4 */
-static constexpr int32_t kUnk9A39C4[] = {
-    2147483647, 2096579710, 1946281152, 2096579710,  1946281152,  1380375879, 555809667,  -372906620, -1231746017, -1859775391,
-    1380375879, 555809667,  -372906620, -1231746017, -1859775391, 0,          2096579710, 1946281152, 2096579710,  1946281152,
-};
-
 static constexpr OpenRCT2::Audio::SoundId kDoorOpenSoundIds[] = {
     OpenRCT2::Audio::SoundId::null,       // DoorSoundType::none
     OpenRCT2::Audio::SoundId::doorOpen,   // DoorSoundType::door
@@ -5036,7 +5030,7 @@ OpenRCT2::Audio::SoundId Vehicle::ProduceScreamSound(const int32_t totalNumPeeps
 GForces Vehicle::GetGForces() const
 {
     int32_t gForceVert = ((static_cast<int64_t>(0x280000)) * Geometry::getPitchVector32(pitch).x) >> 32;
-    gForceVert = ((static_cast<int64_t>(gForceVert)) * kUnk9A39C4[EnumValue(roll)]) >> 32;
+    gForceVert = ((static_cast<int64_t>(gForceVert)) * Geometry::kRollHorizontalComponent[EnumValue(roll)]) >> 32;
 
     const auto& ted = GetTrackElementDescriptor(GetTrackType());
     const int32_t vertFactor = ted.verticalFactor(track_progress);

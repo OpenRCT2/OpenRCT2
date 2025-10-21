@@ -183,4 +183,11 @@ namespace OpenRCT2::RideVehicle::Geometry
     });
     static_assert(std::size(kPitchToDirectionVectorInt32) == EnumValue(VehiclePitch::pitchCount));
 
+    /** rct2: 0x009A39C4 */
+    constexpr auto kRollHorizontalComponent = std::to_array<int32_t>({
+        2147483647,  2096579710,  1946281152,  2096579710, 1946281152, 1380375879, 555809667,
+        -372906620,  -1231746017, -1859775391, 1380375879, 555809667,  -372906620, -1231746017,
+        -1859775391, 0,           2096579710,  1946281152, 2096579710, 1946281152,
+    });
+    static_assert(std::size(kRollHorizontalComponent) == EnumValue(VehicleRoll::rollCount));
 } // namespace OpenRCT2::RideVehicle::Geometry
