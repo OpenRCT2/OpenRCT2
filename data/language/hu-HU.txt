@@ -5,12 +5,12 @@ STR_0000    :
 STR_0001    :{STRINGID} {COMMA16}
 STR_0002    :Spirális hullámvasút
 STR_0003    :Álló hullámvasút
-STR_0004    :Felfüggesztett lengő hullámvasút
+STR_0004    :Függesztett lengő hullámvasút
 STR_0005    :Fordított hullámvasút
 STR_0006    :Gyerek hullámvasút 
 STR_0007    :Kisvasút
 STR_0008    :Egysínű vasút
-STR_0009    :Mini felfüggesztett hullámvasút
+STR_0009    :Mini függesztett hullámvasút
 STR_0010    :Csónakkölcsönző
 STR_0011    :Fa vadegér
 STR_0012    :Akadályverseny
@@ -66,7 +66,7 @@ STR_0061    :Virginia Reel
 STR_0062    :Csobbanó csónakok
 STR_0063    :Mini helikopterek
 STR_0064    :Fekvő hullámvasút
-STR_0065    :Felfüggesztett egysínű vasút
+STR_0065    :Egysínű függővasút
 STR_0066    :Ismeretlen játék (40)
 STR_0067    :Irányváltó hullámvasút
 STR_0068    :Palástorsózó hullámvasút
@@ -103,12 +103,12 @@ STR_0098    :LSM kilövéses hullámvasút
 STR_0099    :Klasszikus fa csavart hullámvasút
 STR_0512    :Egy kompakt hullámvasút spirális felvonószakasszal és sima, csavaros esésekkel.
 STR_0513    :Egy átforduló hullámvasút, amelyen az utasok álló helyzetben utaznak
-STR_0514    :A hullámvasút pályája alatt felfüggesztett vonatok oldalt kilengenek a kanyarokban
-STR_0515    :Egy acél hullámvasút, pálya alatt felfüggesztett vonatokkal, valamint számos összetett és csavarodó pályaelemmel
+STR_0514    :A hullámvasút pályája alatt függesztett vonatok oldalt kilengenek a kanyarokban
+STR_0515    :Egy acél hullámvasút, pálya alatt függesztett vonatokkal, valamint számos összetett és csavarodó pályaelemmel
 STR_0516    :Egy enyhe hullámvasút azok számára, akik még nem éreznek magukban elég bátorságot ahhoz, hogy felüljenek a nagyobb játékokra
 STR_0517    :Az utasok miniatűr vonatokon utaznak egy keskeny nyomtávú vasúti pályán
 STR_0518    :Az utasok elektromos vonatokon utaznak egy egysínű pályán
-STR_0519    :Az utasok az egysínű pálya alatt felfüggesztett kocsikban utaznak, amelyek kétoldalt szabadon kilengenek a kanyarokban
+STR_0519    :Az utasok az egysínű pálya alatt függesztett kocsikban utaznak, amelyek kétoldalt szabadon kilengenek a kanyarokban
 STR_0520    :Egy kikötőállomás, ahonnan a vendégek saját vízi járművel vezethetnek/evezhetnek ki a vízre
 STR_0521    :Egy gyors és csavaros hullámvasút, tele éles kanyarokkal és meredek esésekkel. Nagy intenzitással rendelkezik
 STR_0522    :Egy kisebb hullámvasút, amelyen az utasok a pálya felett ülnek, anélkül, hogy kocsik vennék körbe őket
@@ -138,7 +138,7 @@ STR_0548    :Egy illemhely
 STR_0549    :Nagy forgó kerék, nyitott székekkel
 STR_0550    :Az utasok filmet néznek a mozgásszimulátor kabinjában, miközben azt egy hidraulikus kar forgatja és mozgatja
 STR_0551    :3D-s filmeket vetítő mozi egy geodéziai gömb alakú épületben
-STR_0552    :A nagy forgó karokkal felfüggesztett kabinban az utasok előre-hátra forognak és bukfenceznek 
+STR_0552    :A nagy forgó karokkal függesztett kabinban az utasok előre-hátra forognak és bukfenceznek 
 STR_0553    :Koncentrikus forgó gyűrűk, amelyekben az utasok szabadon foroghatnak minden irányba
 STR_0554    :A kocsi aszinkronmotoros gyorsítással hagyja el az állomást egy hosszú vízszintes pálya mentén, hogy felmenjen egy teljesen függőleges emelkedőn, ahonnan szabadeséssel zuhan le, hogy visszatérjen az állomásra
 STR_0555    :Az utasok egy függőleges torony liftjében utazhatnak a szintek között
@@ -153,7 +153,7 @@ STR_0563    :Kényelmes, egyszerű biztonsági rudas vonatokban ülve élvezheti
 STR_0564    :Ez a fa pályán futó hullámvasút gyors, durva, hangos és „kontrollvesztett” utazási élményt nyújt, bőséges „légi idővel”
 STR_0565    :Egy egyszerű, kizárólag enyhe lejtőkre és fordulókra képes fa hullámvasút, amelyen a kocsikat csak az oldalirányú súrlódásos kerekek és a gravitáció tartják a pályán
 STR_0566    :A különálló hullámvasút kocsik egy szűk, éles kanyarokkal és rövid, meredek esésekkel tarkított, cikcakkos pályán száguldoznak
-STR_0567    :A pálya mindkét oldalán felfüggesztett ülésekben ülve az utasok bukfencezve forognak, miközben meredek eséseken és különböző fordítókon haladnak át
+STR_0567    :A pálya mindkét oldalán függesztett ülésekben ülve az utasok bukfencezve forognak, miközben meredek eséseken és különböző fordítókon haladnak át
 STR_0569    :A pálya alatti speciális rögzítőhámokban utazva az utasok megtapasztalhatják a repülés élményét, ahogy szelik a levegőt
 STR_0571    :Kör alakú autók forognak körbe-körbe, miközben a cikkcakkos fa pályán haladnak
 STR_0572    :A nagy kapacitású csónakok egy széles vízcsatornán haladnak, felfelé a lejtőkön futószalag hajtja őket, majd a meredek lejtőkön lefelé gyorsulva óriási csobbanással áztatják el az utasokat
@@ -168,14 +168,14 @@ STR_0581    :A gyűrű alakban elhelyezkedő székeket egy magas torony tetejér
 STR_0582    :A vendégek légpárnás járművekben utaznak, amelyeket szabadon irányítanak
 STR_0583    :Egy épület, amely ferde szobákat és kanyargó folyosókat tartalmaz, hogy összezavarja az áthaladó embereket
 STR_0584    :Speciális, az utasok pedálozásával hajtott biciklik közlekednek egy acél egysínű pályán
-STR_0585    :Az utasok a pálya alatt felfüggesztett üléspárokban ülnek, miközben kanyarognak és csavarodnak a szoros fordítókon
+STR_0585    :Az utasok a pálya alatt függesztett üléspárokban ülnek, miközben kanyarognak és csavarodnak a szoros fordítókon
 STR_0586    :A csónak alakú kocsik a hullámvasút pályáján haladnak, hogy lehetővé tegyék a csavaros kanyarokat és a meredek zuhanásokat, a szelíd folyószakaszok vizébe csobbanva
 STR_0587    :Egy izgalmas, léghajtású indítás után a vonat felfelé száguld egy függőleges pályán, át a tetején, majd függőlegesen lefelé a másik oldalon, hogy visszatérjen az állomásra
 STR_0588    :Különálló kocsik futnak a cikcakkos, hajtűkanyarokkal és éles esésekkel teli pálya alatt
 STR_0589    :Egy nagy, repülőszőnyeg-témájú kocsi, amely ciklikusan fel-le mozog a 4 kar végén
 STR_0590    :Az utasok egy alámerült tengeralattjáróban utaznak végig egy víz alatti pályán
 STR_0591    :A tutaj alakú csónakok szelíden kanyarognak a folyó pályája mentén
-STR_0593    :Forgó kerék felfüggesztett utaskabinokkal, amely először elkezd forogni, majd egy tartókar segítségével felfelé dől.
+STR_0593    :Forgó kerék függesztett utaskabinokkal, amely először elkezd forogni, majd egy tartókar segítségével felfelé dől.
 STR_0598    :A fordított hullámvasút vonatai az állomásból kifelé gyorsulva felfelé haladnak egy függőleges pályacsúcson, majd visszafordulnak az állomáson keresztül, hogy visszafelé haladjanak egy másik függőleges pályacsúcson.
 STR_0599    :Egy kompakt hullámvasút különálló kocsikkal és sima, csavaros esésekkel
 STR_0600    :Motoros bányavonatok futnak egy sima és csavaros pálya mentén
@@ -375,7 +375,7 @@ STR_0978    :Új enyhe játékok
 STR_0979    :Új hullámvasutak
 STR_0980    :Új izgalmas játékok
 STR_0981    :Új vízi játékok
-STR_0982    :Új boltok & bódék
+STR_0982    :Új boltok és bódék
 STR_0983    :Kutatás-fejlesztés
 STR_0984    :{WINDOW_COLOUR_2}▲{BLACK}  {CURRENCY2DP}
 STR_0985    :{WINDOW_COLOUR_2}▼{BLACK}  {CURRENCY2DP}
@@ -919,7 +919,7 @@ STR_1522    :„{STRINGID} esernyője igazán megéri az árát”
 STR_1523    :„{STRINGID} üdítője igazán megéri az árát”
 STR_1524    :„{STRINGID} hamburgere igazán megéri az árát”
 STR_1525    :„{STRINGID} sült krumplija igazán megéri az árát”
-STR_1526    :„{STRINGID} jégkrémje igazán megéri az árát”
+STR_1526    :„{STRINGID} fagylaltja igazán megéri az árát”
 STR_1527    :„{STRINGID} vattacukra igazán megéri az árát”
 STR_1528    :
 STR_1529    :
@@ -953,7 +953,7 @@ STR_1556    :„{STRINGID} esernyője túl sokba kerül számomra”
 STR_1557    :„{STRINGID} üdítője túl sokba kerül számomra”
 STR_1558    :„{STRINGID} hamburgere túl sokba kerül számomra”
 STR_1559    :„{STRINGID} sült krumplija túl sokba kerül számomra”
-STR_1560    :„{STRINGID} jégkrémje túl sokba kerül számomra”
+STR_1560    :„{STRINGID} fagylaltja túl sokba kerül számomra”
 STR_1561    :„{STRINGID} vattacukra túl sokba kerül számomra”
 STR_1562    :
 STR_1563    :
@@ -1335,7 +1335,7 @@ STR_1964    :{WINDOW_COLOUR_2}Esernyő ára:
 STR_1965    :{WINDOW_COLOUR_2}Üdítőital ára:
 STR_1966    :{WINDOW_COLOUR_2}Hamburger ára:
 STR_1967    :{WINDOW_COLOUR_2}Sült krumpli ára:
-STR_1968    :{WINDOW_COLOUR_2}Jégkrém ára:
+STR_1968    :{WINDOW_COLOUR_2}Fagylalt ára:
 STR_1969    :{WINDOW_COLOUR_2}Vattacukor ára:
 STR_1970    :{WINDOW_COLOUR_2}
 STR_1971    :{WINDOW_COLOUR_2}
@@ -1363,7 +1363,7 @@ STR_1992    :Esernyő
 STR_1993    :Üdítőital
 STR_1994    :Hamburger
 STR_1995    :Sült krumpli
-STR_1996    :Jégkrém
+STR_1996    :Fagylalt
 STR_1997    :Vattacukor
 STR_1998    :Üres italos doboz
 STR_1999    :Szemét
@@ -1391,7 +1391,7 @@ STR_2020    :Esernyő
 STR_2021    :Üdítőital
 STR_2022    :Hamburger
 STR_2023    :Sült krumpli
-STR_2024    :Jégkrém
+STR_2024    :Fagylalt
 STR_2025    :Vattacukor
 STR_2026    :Üres italos doboz
 STR_2027    :Szemét
@@ -1419,7 +1419,7 @@ STR_2048    :egy esernyő
 STR_2049    :üdítőital
 STR_2050    :egy hamburger
 STR_2051    :sült krumpli
-STR_2052    :egy jégkrém
+STR_2052    :egy fagylalt
 STR_2053    :egy vattacukor
 STR_2054    :egy üres italos doboz
 STR_2055    :szemét
@@ -1447,7 +1447,7 @@ STR_2076    :„{STRINGID}” esernyő
 STR_2077    :Üdítőital
 STR_2078    :Hamburger
 STR_2079    :Sült krumpli
-STR_2080    :Jégkrém
+STR_2080    :Fagylalt
 STR_2081    :Vattacukor
 STR_2082    :Üres italos doboz
 STR_2083    :Szemét
@@ -3840,3 +3840,4 @@ STR_7001    :Játéknév
 STR_7002    :{STRINGID} {STRINGID}
 STR_7003    :A(z) „{STRING}” hangfájl csonka. Minta {INT32} lenne az elvárt, de csak {INT32} érhető el. Fontold meg az RCT2 újratelepítését.
 STR_7004    :Újrarajzolás kényszerítése
+STR_7005    :Útterület építése húzással
