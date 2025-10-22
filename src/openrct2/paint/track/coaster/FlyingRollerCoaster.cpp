@@ -111,8 +111,46 @@ TrackPaintFunction GetTrackPaintFunctionFlyingRC(OpenRCT2::TrackElemType trackTy
             return FlyingRCTrackLeftFlyingLargeHalfLoopUninvertedDown;
         case TrackElemType::RightFlyerLargeHalfLoopUninvertedDown:
             return FlyingRCTrackRightFlyingLargeHalfLoopUninvertedDown;
+        case TrackElemType::LeftTwistDownToUp:
+        case TrackElemType::RightTwistDownToUp:
+        case TrackElemType::LeftTwistUpToDown:
+        case TrackElemType::RightTwistUpToDown:
+        case TrackElemType::HalfLoopUp:
+        case TrackElemType::HalfLoopDown:
+        case TrackElemType::LeftCorkscrewUp:
+        case TrackElemType::RightCorkscrewUp:
+        case TrackElemType::LeftCorkscrewDown:
+        case TrackElemType::RightCorkscrewDown:
+        case TrackElemType::LeftBarrelRollUpToDown:
+        case TrackElemType::RightBarrelRollUpToDown:
+        case TrackElemType::LeftBarrelRollDownToUp:
+        case TrackElemType::RightBarrelRollDownToUp:
+        case TrackElemType::LeftLargeHalfLoopUp:
+        case TrackElemType::RightLargeHalfLoopUp:
+        case TrackElemType::LeftLargeHalfLoopDown:
+        case TrackElemType::RightLargeHalfLoopDown:
         case TrackElemType::Up90ToInvertedFlatQuarterLoop:
         case TrackElemType::InvertedFlatToDown90QuarterLoop:
+        case TrackElemType::LeftLargeCorkscrewUp:
+        case TrackElemType::RightLargeCorkscrewUp:
+        case TrackElemType::LeftLargeCorkscrewDown:
+        case TrackElemType::RightLargeCorkscrewDown:
+        case TrackElemType::LeftMediumHalfLoopUp:
+        case TrackElemType::RightMediumHalfLoopUp:
+        case TrackElemType::LeftMediumHalfLoopDown:
+        case TrackElemType::RightMediumHalfLoopDown:
+        case TrackElemType::LeftZeroGRollUp:
+        case TrackElemType::RightZeroGRollUp:
+        case TrackElemType::LeftZeroGRollDown:
+        case TrackElemType::RightZeroGRollDown:
+        case TrackElemType::LeftLargeZeroGRollUp:
+        case TrackElemType::RightLargeZeroGRollUp:
+        case TrackElemType::LeftLargeZeroGRollDown:
+        case TrackElemType::RightLargeZeroGRollDown:
+        case TrackElemType::LeftEighthDiveLoopUpToOrthogonal:
+        case TrackElemType::RightEighthDiveLoopUpToOrthogonal:
+        case TrackElemType::LeftEighthDiveLoopDownToDiag:
+        case TrackElemType::RightEighthDiveLoopDownToDiag:
             return TrackPaintFunctionDummy;
         default:
             return GetTrackPaintFunctionTwisterRC(trackType);
