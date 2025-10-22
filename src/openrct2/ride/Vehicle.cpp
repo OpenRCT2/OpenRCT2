@@ -2693,7 +2693,6 @@ void UpdateDepartingCircuit(Vehicle* vehicle, Ride* curRide, CarEntry carEntry)
         vehicle->acceleration = 3298;
 }
 
-
 /**
  * Part of UpdateDeparting
  * Called after finishing departing sequence to enter
