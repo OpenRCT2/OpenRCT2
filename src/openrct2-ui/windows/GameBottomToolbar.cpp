@@ -57,18 +57,18 @@ namespace OpenRCT2::Ui::Windows
     {
         makeWidget({  0,  0}, {142, 34}, WidgetType::imgBtn,      WindowColour::primary                                                     ), // Left outset panel
         makeWidget({  2,  2}, {138, 30}, WidgetType::imgBtn,      WindowColour::primary                                                     ), // Left inset panel
-        makeWidget({  2,  1}, {138, 12}, WidgetType::flatBtn,     WindowColour::primary , 0xFFFFFFFF, STR_PROFIT_PER_WEEK_AND_PARK_VALUE_TIP), // Money window
-        makeWidget({  2, 11}, {138, 12}, WidgetType::flatBtn,     WindowColour::primary                                                     ), // Guests window
-        makeWidget({  2, 21}, {138, 11}, WidgetType::flatBtn,     WindowColour::primary , 0xFFFFFFFF, STR_PARK_RATING_TIP                   ), // Park rating window
+        makeWidget({  2,  1}, {138, 12}, WidgetType::hiddenButton,WindowColour::primary , 0xFFFFFFFF, STR_PROFIT_PER_WEEK_AND_PARK_VALUE_TIP), // Money window
+        makeWidget({  2, 11}, {138, 12}, WidgetType::hiddenButton,WindowColour::primary                                                     ), // Guests window
+        makeWidget({  2, 21}, {138, 11}, WidgetType::hiddenButton,WindowColour::primary , 0xFFFFFFFF, STR_PARK_RATING_TIP                   ), // Park rating window
 
         makeWidget({142,  0}, {356, 34}, WidgetType::imgBtn,      WindowColour::tertiary                                                    ), // Middle outset panel
-        makeWidget({144,  2}, {352, 30}, WidgetType::flatBtn,     WindowColour::tertiary                                                    ), // Middle inset panel
+        makeWidget({144,  2}, {352, 30}, WidgetType::hiddenButton,WindowColour::tertiary                                                    ), // Middle inset panel
         makeWidget({147,  5}, { 24, 24}, WidgetType::flatBtn,     WindowColour::tertiary, 0xFFFFFFFF, STR_SHOW_SUBJECT_TIP                  ), // Associated news item window
-        makeWidget({469,  5}, { 24, 24}, WidgetType::flatBtn,     WindowColour::tertiary, ImageId(SPR_LOCATE), STR_LOCATE_SUBJECT_TIP                ), // Scroll to news item target
+        makeWidget({469,  5}, { 24, 24}, WidgetType::flatBtn,     WindowColour::tertiary, ImageId(SPR_LOCATE), STR_LOCATE_SUBJECT_TIP       ), // Scroll to news item target
 
         makeWidget({498,  0}, {142, 34}, WidgetType::imgBtn,      WindowColour::primary                                                     ), // Right outset panel
         makeWidget({500,  2}, {138, 30}, WidgetType::imgBtn,      WindowColour::primary                                                     ), // Right inset panel
-        makeWidget({500,  2}, {138, 12}, WidgetType::flatBtn,     WindowColour::primary                                                     ), // Date
+        makeWidget({500,  2}, {138, 12}, WidgetType::hiddenButton,WindowColour::primary                                                     ), // Date
     };
     // clang-format on
 
@@ -524,7 +524,7 @@ namespace OpenRCT2::Ui::Windows
             }
             else
             {
-                widgets[WIDX_MONEY].type = WidgetType::flatBtn;
+                widgets[WIDX_MONEY].type = WidgetType::hiddenButton;
                 widgets[WIDX_MONEY].bottom = widgets[WIDX_MONEY].top + line_height;
                 widgets[WIDX_GUESTS].top = widgets[WIDX_MONEY].bottom + 1;
                 widgets[WIDX_GUESTS].bottom = widgets[WIDX_GUESTS].top + line_height;
@@ -572,7 +572,7 @@ namespace OpenRCT2::Ui::Windows
                 else
                 {
                     widgets[WIDX_MIDDLE_OUTSET].type = WidgetType::imgBtn;
-                    widgets[WIDX_MIDDLE_INSET].type = WidgetType::flatBtn;
+                    widgets[WIDX_MIDDLE_INSET].type = WidgetType::hiddenButton;
                     widgets[WIDX_NEWS_SUBJECT].type = WidgetType::empty;
                     widgets[WIDX_NEWS_LOCATE].type = WidgetType::empty;
                     widgets[WIDX_MIDDLE_OUTSET].colour = 0;
@@ -583,7 +583,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 News::Item* newsItem = News::GetItem(0);
                 widgets[WIDX_MIDDLE_OUTSET].type = WidgetType::imgBtn;
-                widgets[WIDX_MIDDLE_INSET].type = WidgetType::flatBtn;
+                widgets[WIDX_MIDDLE_INSET].type = WidgetType::hiddenButton;
                 widgets[WIDX_NEWS_SUBJECT].type = WidgetType::flatBtn;
                 widgets[WIDX_NEWS_LOCATE].type = WidgetType::flatBtn;
                 widgets[WIDX_MIDDLE_OUTSET].colour = 2;

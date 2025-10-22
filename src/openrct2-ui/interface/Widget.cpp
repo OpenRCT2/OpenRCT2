@@ -81,6 +81,7 @@ namespace OpenRCT2::Ui
                 WidgetTabDraw(rt, w, widgetIndex);
                 break;
             case WidgetType::flatBtn:
+            case WidgetType::hiddenButton:
                 WidgetFlatButtonDraw(rt, w, widgetIndex);
                 break;
             case WidgetType::button:
@@ -271,15 +272,14 @@ namespace OpenRCT2::Ui
      */
     static void WidgetFlatButtonDraw(RenderTarget& rt, WindowBase& w, WidgetIndex widgetIndex)
     {
-        const bool alwaysDrawAs3d = (ThemeGetFlags() & UITHEME_FLAG_USE_3D_IMAGE_BUTTONS);
+        const auto& widget = w.widgets[widgetIndex];
+        // First check is needed as this function handles both WidgetType::flatBtn and WidgetType::hiddenButton
+        const bool alwaysDrawAs3d = widget.type == WidgetType::flatBtn && (ThemeGetFlags() & UITHEME_FLAG_USE_3D_IMAGE_BUTTONS);
         if (alwaysDrawAs3d || (!widgetIsDisabled(w, widgetIndex) && widgetIsHighlighted(w, widgetIndex)))
         {
             WidgetButtonDraw(rt, w, widgetIndex);
             return;
         }
-
-        // Get the widget
-        const auto& widget = w.widgets[widgetIndex];
 
         // Resolve the absolute ltrb
         ScreenRect rect{ w.windowPos + ScreenCoordsXY{ widget.left, widget.top },
