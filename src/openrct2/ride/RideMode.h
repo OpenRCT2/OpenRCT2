@@ -67,6 +67,7 @@ namespace OpenRCT2
         RIDE_MODE_FLAG_IS_POWERED_LAUNCH = (1 << 1),
         RIDE_MODE_FLAG_IS_FERRIS_WHEEL = (1 << 2),
         RIDE_MODE_FLAG_SINGLE_TRAIN = (1 << 3), // Mode only supports a single train
+        RIDE_MODE_FLAG_ALLOW_MULTIPLE_CIRCUITS = (1 << 4),
     };
 
     using StationUpdateFunction = void (*)(Ride&, StationIndex);
@@ -148,7 +149,7 @@ namespace OpenRCT2
         .Name = STR_RIDE_MODE_CONTINUOUS_CIRCUIT,
         .StatBonus = kStatBonusNone,
         .UpkeepCost = 0,
-        .Flags = RIDE_MODE_FLAG_NONE,
+        .Flags = RIDE_MODE_FLAG_ALLOW_MULTIPLE_CIRCUITS,
         .StationType = RIDE_MODE_STATIONS_ANY,
         .ModeSubstate = 0,
         .FuncUpdateStation = RideUpdateStationNormal,
@@ -165,7 +166,7 @@ namespace OpenRCT2
         .Name = STR_RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE,
         .StatBonus = kStatBonusNone,
         .UpkeepCost = 30,
-        .Flags = RIDE_MODE_FLAG_SINGLE_TRAIN,
+        .Flags = RIDE_MODE_FLAG_SINGLE_TRAIN | RIDE_MODE_FLAG_ALLOW_MULTIPLE_CIRCUITS,
         .StationType = RIDE_MODE_STATIONS_ONLY_ONE,
         .ModeSubstate = 0,
         .FuncUpdateStation = RideUpdateStationNormal,
@@ -182,7 +183,7 @@ namespace OpenRCT2
         .Name = STR_RIDE_MODE_POWERED_LAUNCH_PASSTROUGH,
         .StatBonus = kStatBonusNone,
         .UpkeepCost = 160,
-        .Flags = RIDE_MODE_FLAG_IS_POWERED_LAUNCH | RIDE_MODE_FLAG_SINGLE_TRAIN,
+        .Flags = RIDE_MODE_FLAG_IS_POWERED_LAUNCH | RIDE_MODE_FLAG_SINGLE_TRAIN | RIDE_MODE_FLAG_ALLOW_MULTIPLE_CIRCUITS,
         .StationType = RIDE_MODE_STATIONS_ONLY_ONE,
         .ModeSubstate = 0,
         .FuncUpdateStation = RideUpdateStationNormal,

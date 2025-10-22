@@ -883,8 +883,7 @@ bool Ride::canHaveMultipleCircuits() const
         return false;
 
     // Only allow circuit or launch modes
-    if (mode != RideModes::continuousCircuit && mode != RideModes::reverseInclineLaunchedShuttle
-        && mode != RideModes::poweredLaunchPassthrough)
+    if (!mode.hasFlag(RIDE_MODE_FLAG_ALLOW_MULTIPLE_CIRCUITS))
     {
         return false;
     }

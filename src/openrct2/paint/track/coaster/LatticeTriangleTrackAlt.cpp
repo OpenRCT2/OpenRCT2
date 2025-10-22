@@ -47,8 +47,7 @@ static void LatticeTriangleTrackAltStation(
     PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    if (ride.mode == RideModes::poweredLaunch || ride.mode == RideModes::poweredLaunchBlockSectioned
-        || ride.mode == RideModes::poweredLaunchPassthrough)
+    if (ride.mode.hasFlag(RIDE_MODE_FLAG_IS_BLOCK_SECTIONED))
     {
         static constexpr ImageIndex imageIds[4] = {
             SPR_TRACKS_LATTICE_TRIANGLE_TRACK_BOOSTER_ALT_NE_SW,
