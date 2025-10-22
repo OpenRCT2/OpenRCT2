@@ -142,10 +142,10 @@ namespace OpenRCT2::RCT1
             td->trackAndVehicle.rtdIndex = RCT1::GetRideType(td4Base.Type, td4Base.VehicleType);
 
             // All TD4s that use powered launch use the type that doesn't pass the station.
-            td->operation.rideMode = static_cast<RideMode>(td4Base.Mode);
+            td->operation.rideMode = RideModes::FromIndex(td4Base.Mode);
             if (td4Base.Mode == RCT1_RIDE_MODE_POWERED_LAUNCH)
             {
-                td->operation.rideMode = RideMode::poweredLaunch;
+                td->operation.rideMode = RideModes::poweredLaunch;
             }
 
             std::string_view vehicleObject;

@@ -31,8 +31,8 @@ constexpr RideTypeDescriptor LoopingRollerCoasterRTD =
     .Flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt | 
         EnumsToFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation, RtdFlag::checkGForces, 
                      RtdFlag::allowMultipleCircuits, RtdFlag::allowReversedTrains, RtdFlag::poweredLaunchAffectsReliability),
-    .RideModes = EnumsToFlags(RideMode::continuousCircuit, RideMode::continuousCircuitBlockSectioned, RideMode::reverseInclineLaunchedShuttle, RideMode::poweredLaunchPasstrough, RideMode::poweredLaunch),
-    .DefaultMode = RideMode::continuousCircuit,
+    .RideModes = RideModes::IndexToFlags({ RideModeID::CONTINUOUS_CIRCUIT, RideModeID::CONTINUOUS_CIRCUIT_BLOCK_SECTIONED, RideModeID::REVERSE_INCLINE_LAUNCHED_SHUTTLE, RideModeID::POWERED_LAUNCH_PASSTHROUGH, RideModeID::POWERED_LAUNCH }),
+    .DefaultMode = RideModeID::CONTINUOUS_CIRCUIT,
     .OperatingSettings = { 10, 27 },
     .BoosterSettings = { 18, 18 },
     .LegacyBoosterSettings = { 18, 18 },

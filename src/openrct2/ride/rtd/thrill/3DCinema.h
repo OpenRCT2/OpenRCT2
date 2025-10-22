@@ -32,8 +32,8 @@ constexpr RideTypeDescriptor CinemaRTD =
                      RtdFlag::isFlatRide, RtdFlag::describeAsInside, RtdFlag::hasVehicleColours,
                      RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit, RtdFlag::singleSession,
                      RtdFlag::listVehiclesSeparately),
-    .RideModes = EnumsToFlags(RideMode::mouseTails3DFilm, RideMode::stormChasers3DFilm, RideMode::spaceRaiders3DFilm),
-    .DefaultMode = RideMode::mouseTails3DFilm,
+    .RideModes = RideModes::IndexToFlags({ RideModeID::FILM_MOUSE_TAILS, RideModeID::FILM_STORM_CHASERS, RideModeID::FILM_SPACE_RAIDERS }),
+    .DefaultMode = RideModeID::FILM_MOUSE_TAILS,
     .Naming = { STR_RIDE_NAME_3D_CINEMA, STR_RIDE_DESCRIPTION_3D_CINEMA },
     .NameConvention = { RideComponentType::Building, RideComponentType::Structure, RideComponentType::Station },
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT),
@@ -59,7 +59,7 @@ constexpr RideTypeDescriptor CinemaRTD =
         7,
         false,
         {
-            { RatingsModifierType::Bonus3DCinemaMode, 0, 0, 0, 0 },
+            { RatingsModifierType::BonusRideMode, 0, 0, 0, 0 },
         },
     },
 };

@@ -20,6 +20,7 @@
 #include "../rct2/Limits.h"
 #include "RideColour.h"
 #include "RideEntry.h"
+#include "RideMode.h"
 #include "RideRatings.h"
 #include "RideTypes.h"
 #include "Track.h"
@@ -129,7 +130,6 @@ namespace OpenRCT2::ShelteredSectionsBits
 
 struct TrackDesign;
 struct TrackDesignState;
-enum class RideMode : uint8_t;
 enum class RideStatus : uint8_t;
 
 enum class SpecialElement : uint8_t
@@ -156,7 +156,7 @@ struct Ride
     // pointer to static info. for example, wild mouse type is 0x36, subtype is
     // 0x4c.
     OpenRCT2::ObjectEntryIndex subtype{ OpenRCT2::kObjectEntryIndexNull };
-    RideMode mode{};
+    OpenRCT2::RideMode mode;
     VehicleColourSettings vehicleColourSettings{};
     VehicleColour vehicleColours[OpenRCT2::Limits::kMaxVehicleColours]{};
     // 0 = closed, 1 = open, 2 = test
@@ -377,7 +377,7 @@ public:
     ResultWithMessage test(bool isApplying);
     ResultWithMessage simulate(bool isApplying);
 
-    RideMode getDefaultMode() const;
+    OpenRCT2::RideMode getDefaultMode() const;
 
     void setColourPreset(uint8_t index);
 
@@ -639,52 +639,6 @@ enum class RideStatus : uint8_t
     count,
 };
 
-enum class RideMode : uint8_t
-{
-    normal,
-    continuousCircuit,
-    reverseInclineLaunchedShuttle,
-    poweredLaunchPasstrough, // RCT2 style, pass through station
-    shuttle,
-    boatHire,
-    upwardLaunch,
-    rotatingLift,
-    stationToStation,
-    singleRidePerAdmission,
-    unlimitedRidesPerAdmission = 10,
-    maze,
-    race,
-    dodgems,
-    swing,
-    shopStall,
-    rotation,
-    forwardRotation,
-    backwardRotation,
-    filmAvengingAviators,
-    mouseTails3DFilm = 20,
-    spaceRings,
-    beginners,
-    limPoweredLaunch,
-    filmThrillRiders,
-    stormChasers3DFilm,
-    spaceRaiders3DFilm,
-    intense,
-    berserk,
-    hauntedHouse,
-    circus = 30,
-    downwardLaunch,
-    crookedHouse,
-    freefallDrop,
-    continuousCircuitBlockSectioned,
-    poweredLaunch, // RCT1 style, don't pass through station
-    poweredLaunchBlockSectioned,
-
-    count,
-    nullMode = 255,
-};
-
-RideMode& operator++(RideMode& d, int);
-
 enum class RideCategory : uint8_t
 {
     transport,
@@ -945,5 +899,3 @@ std::vector<RideId> GetTracklessRides();
 
 void CircusMusicUpdate(Ride& ride);
 void DefaultMusicUpdate(Ride& ride);
-
-RideMode RideModeGetBlockSectionedCounterpart(RideMode originalMode);

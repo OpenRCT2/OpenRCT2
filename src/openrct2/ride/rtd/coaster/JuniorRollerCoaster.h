@@ -31,8 +31,8 @@ constexpr RideTypeDescriptor JuniorRollerCoasterRTD =
     .Flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt |
         EnumsToFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation, RtdFlag::allowDoorsOnTrack,
                      RtdFlag::checkGForces, RtdFlag::allowMultipleCircuits, RtdFlag::allowReversedTrains),
-    .RideModes = EnumsToFlags(RideMode::continuousCircuit, RideMode::continuousCircuitBlockSectioned),
-    .DefaultMode = RideMode::continuousCircuit,
+    .RideModes = RideModes::IndexToFlags({ RideModeID::CONTINUOUS_CIRCUIT, RideModeID::CONTINUOUS_CIRCUIT_BLOCK_SECTIONED }),
+    .DefaultMode = RideModeID::CONTINUOUS_CIRCUIT,
     .TrackSpeedSettings = { 30, 15 },
     .BoosterSettings = { 17, 16 },
     .LegacyBoosterSettings = { 17, 16, 1 },

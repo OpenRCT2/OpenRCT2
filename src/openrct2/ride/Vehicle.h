@@ -290,6 +290,22 @@ struct Vehicle : EntityBase
     friend void UpdateRotatingDefault(Vehicle& vehicle);
     friend void UpdateRotatingEnterprise(Vehicle& vehicle);
 
+public:
+    void UpdateDodgemsMode();
+    void UpdateRotating();
+    void UpdateSwinging();
+    void UpdateSimulatorOperating();
+    void UpdateTopSpinOperating();
+    void UpdateFerrisWheelRotating();
+    void UpdateSpaceRingsOperating();
+    void UpdateHauntedHouseOperating();
+    void UpdateCrookedHouseOperating();
+    void UpdateShowingFilm();
+    void UpdateDoingCircusShow();
+
+    void UpdateArrivingPassThroughStation(const Ride& curRide, const CarEntry& carEntry, bool stationBrakesWork);
+    void UpdateCollisionSetup();
+
 private:
     const VehicleInfo* GetMoveInfo() const;
     void CableLiftUpdate();
@@ -306,15 +322,6 @@ private:
     void UpdateWaitingForPassengers();
     void UpdateWaitingToDepart();
     void UpdateCrash();
-    void UpdateDodgemsMode();
-    void UpdateSwinging();
-    void UpdateSimulatorOperating();
-    void UpdateTopSpinOperating();
-    void UpdateFerrisWheelRotating();
-    void UpdateSpaceRingsOperating();
-    void UpdateHauntedHouseOperating();
-    void UpdateCrookedHouseOperating();
-    void UpdateRotating();
     void UpdateDeparting();
     void FinishDeparting();
     void UpdateTravelling();
@@ -325,19 +332,16 @@ private:
     void UpdateDepartingBoatHire();
     void UpdateTravellingBoatHireSetup();
     void UpdateBoatLocation();
-    void UpdateArrivingPassThroughStation(const Ride& curRide, const CarEntry& carEntry, bool stationBrakesWork);
+    
     void UpdateArriving();
     void UpdateUnloadingPassengers();
     void UpdateWaitingForCableLift();
-    void UpdateShowingFilm();
-    void UpdateDoingCircusShow();
     void UpdateCrossings() const;
     void UpdateSound();
     void GetLiftHillSound(const Ride& curRide, SoundIdVolume& curSound);
     OpenRCT2::Audio::SoundId UpdateScreamSound();
     OpenRCT2::Audio::SoundId ProduceScreamSound(const int32_t totalNumPeeps);
     void UpdateCrashSetup();
-    void UpdateCollisionSetup();
     int32_t UpdateMotionDodgems();
     void UpdateAdditionalAnimation();
     void CheckIfMissing();
@@ -413,6 +417,31 @@ static_assert(sizeof(Vehicle) <= 512);
 
 void UpdateRotatingDefault(Vehicle& vehicle);
 void UpdateRotatingEnterprise(Vehicle& vehicle);
+
+void UpdateMovingToEndOfStationNormal(Vehicle* vehicle, Ride* curRide);
+void UpdateMovingToEndOfStationTower(Vehicle* vehicle, Ride* curRide);
+void UpdateMovingToEndOfStationFlatRide(Vehicle* vehicle, Ride* curRide);
+
+void UpdateWaitingToDepartNormal(Vehicle* vehicle, Ride* curRide);
+void UpdateWaitingToDepartDodgems(Vehicle* vehicle, Ride* curRide);
+void UpdateWaitingToDepartSwing(Vehicle* vehicle, Ride* curRide);
+void UpdateWaitingToDepartRotation(Vehicle* vehicle, Ride* curRide);
+void UpdateWaitingToDepartMotionSim(Vehicle* vehicle, Ride* curRide);
+void UpdateWaitingToDepartTopSpin(Vehicle* vehicle, Ride* curRide);
+void UpdateWaitingToDepartFerrisWheel(Vehicle* vehicle, Ride* curRide);
+void UpdateWaitingToDepart3DCinema(Vehicle* vehicle, Ride* curRide);
+void UpdateWaitingToDepartCircus(Vehicle* vehicle, Ride* curRide);
+void UpdateWaitingToDepartSpaceRings(Vehicle* vehicle, Ride* curRide);
+void UpdateWaitingToDepartHauntedHouse(Vehicle* vehicle, Ride* curRide);
+void UpdateWaitingToDepartCrookedHouse(Vehicle* vehicle, Ride* curRide);
+
+void UpdateDepartingReverseInclineShuttle(Vehicle* vehicle, Ride* curRide, CarEntry carEntry);
+void UpdateDepartingLaunch(Vehicle* vehicle, Ride* curRide, CarEntry carEntry);
+void UpdateDepartingDownwardLaunch(Vehicle* vehicle, Ride* curRide, CarEntry carEntry);
+void UpdateDepartingCircuit(Vehicle* vehicle, Ride* curRide, CarEntry carEntry);
+
+void UpdateArrivingNormal(Vehicle* vehicle, Ride* curRide);
+void UpdateArrivingFlatRide(Vehicle* vehicle, Ride* curRide);
 
 struct TrainReference
 {

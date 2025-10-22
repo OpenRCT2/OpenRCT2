@@ -81,7 +81,7 @@ namespace OpenRCT2::RCT2
 
             td->trackAndVehicle.rtdIndex = td6.Type; // 0x00
 
-            td->operation.rideMode = static_cast<RideMode>(td6.RideMode);
+            td->operation.rideMode = RideModes::FromIndex(td6.RideMode);
             td->appearance.vehicleColourSettings = static_cast<VehicleColourSettings>(td6.VersionAndColourScheme & 0x3);
             for (auto i = 0; i < Limits::kMaxVehicleColours; ++i)
             {

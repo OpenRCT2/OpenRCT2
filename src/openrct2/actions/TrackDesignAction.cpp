@@ -220,7 +220,7 @@ namespace OpenRCT2::GameActions
             ExecuteNested(&rideSetVehicleAction, gameState);
         }
 
-        SetOperatingSettingNested(ride->id, RideSetSetting::Mode, static_cast<uint8_t>(_td.operation.rideMode), flags);
+        SetOperatingSettingNested(ride->id, RideSetSetting::Mode, RideModes::ToIndex(_td.operation.rideMode), flags);
         auto rideSetVehicleAction2 = GameActions::RideSetVehicleAction(
             ride->id, GameActions::RideSetVehicleType::NumTrains, _td.trackAndVehicle.numberOfTrains);
         ExecuteNested(&rideSetVehicleAction2, gameState);

@@ -31,8 +31,8 @@ constexpr RideTypeDescriptor ReverserRollerCoasterRTD =
     .Flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt |
                  EnumsToFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation,
                               RtdFlag::checkGForces, RtdFlag::layeredVehiclePreview),
-    .RideModes = EnumsToFlags(RideMode::continuousCircuit),
-    .DefaultMode = RideMode::continuousCircuit,
+    .RideModes = RideModes::IndexToFlags({ RideModeID::CONTINUOUS_CIRCUIT }),
+    .DefaultMode = RideModeID::CONTINUOUS_CIRCUIT,
     .Naming = { STR_RIDE_NAME_REVERSER_ROLLER_COASTER, STR_RIDE_DESCRIPTION_REVERSER_ROLLER_COASTER },
     .NameConvention = { RideComponentType::Car, RideComponentType::Track, RideComponentType::Station },
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE),

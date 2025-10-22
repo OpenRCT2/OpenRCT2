@@ -215,45 +215,6 @@ const uint16_t kRideFilmLength[3] = {
     7000, // SPACE_RAIDERS
 };
 
-const StringId kRideModeNames[] = {
-        STR_RIDE_MODE_NORMAL,
-        STR_RIDE_MODE_CONTINUOUS_CIRCUIT,
-        STR_RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE,
-        STR_RIDE_MODE_POWERED_LAUNCH_PASSTROUGH,
-        STR_RIDE_MODE_SHUTTLE,
-        STR_RIDE_MODE_BOAT_HIRE,
-        STR_RIDE_MODE_UPWARD_LAUNCH,
-        STR_RIDE_MODE_ROTATING_LIFT,
-        STR_RIDE_MODE_STATION_TO_STATION,
-        STR_RIDE_MODE_SINGLE_RIDE_PER_ADMISSION,
-        STR_RIDE_MODE_UNLIMITED_RIDES_PER_ADMISSION,
-        STR_RIDE_MODE_MAZE,
-        STR_RIDE_MODE_RACE,
-        STR_RIDE_MODE_DODGEMS,
-        STR_RIDE_MODE_SWING,
-        STR_RIDE_MODE_SHOP_STALL,
-        STR_RIDE_MODE_ROTATION,
-        STR_RIDE_MODE_FORWARD_ROTATION,
-        STR_RIDE_MODE_BACKWARD_ROTATION,
-        STR_RIDE_MODE_FILM_AVENGING_AVIATORS,
-        STR_RIDE_MODE_3D_FILM_MOUSE_TAILS,
-        STR_RIDE_MODE_SPACE_RINGS,
-        STR_RIDE_MODE_BEGINNERS,
-        STR_RIDE_MODE_LIM_POWERED_LAUNCH,
-        STR_RIDE_MODE_FILM_THRILL_RIDERS,
-        STR_RIDE_MODE_3D_FILM_STORM_CHASERS,
-        STR_RIDE_MODE_3D_FILM_SPACE_RAIDERS,
-        STR_RIDE_MODE_INTENSE,
-        STR_RIDE_MODE_BERSERK,
-        STR_RIDE_MODE_HAUNTED_HOUSE,
-        STR_RIDE_MODE_CIRCUS_SHOW,
-        STR_RIDE_MODE_DOWNWARD_LAUNCH,
-        STR_RIDE_MODE_CROOKED_HOUSE,
-        STR_RIDE_MODE_FREEFALL_DROP,
-        STR_RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED,
-        STR_RIDE_MODE_POWERED_LAUNCH,
-        STR_RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED_MODE,
-};
 // clang-format on
 
 constexpr RideTypeDescriptor kRideTypeDescriptors[RIDE_TYPE_COUNT] = {
@@ -395,9 +356,9 @@ ResearchCategory RideTypeDescriptor::GetResearchCategory() const
     return ResearchCategory::transport;
 }
 
-bool RideTypeDescriptor::SupportsRideMode(RideMode rideMode) const
+bool RideTypeDescriptor::SupportsRideMode(RideModeID rideMode) const
 {
-    return RideModes & EnumToFlag(rideMode);
+    return RideModes & (uint64_t(1) << static_cast<uint8_t>(rideMode));
 }
 
 static RideTrackGroups _enabledRideGroups = {};

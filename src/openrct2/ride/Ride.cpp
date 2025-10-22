@@ -88,53 +88,6 @@
 using namespace OpenRCT2;
 using namespace OpenRCT2::TrackMetaData;
 
-static constexpr auto kRideModeBlockSectionedCounterpart = std::to_array(
-    {
-        RideMode::normal,                          // RideMode::normal,
-        RideMode::continuousCircuitBlockSectioned, // RideMode::continuousCircuit,
-        RideMode::reverseInclineLaunchedShuttle,   // RideMode::reverseInclineLaunchedShuttle,
-        RideMode::poweredLaunchBlockSectioned,     // RideMode::poweredLaunchPasstrough,
-        RideMode::shuttle,                         // RideMode::shuttle,
-        RideMode::boatHire,                        // RideMode::boatHire,
-        RideMode::upwardLaunch,                    // RideMode::upwardLaunch,
-        RideMode::rotatingLift,                    // RideMode::rotatingLift,
-        RideMode::stationToStation,                // RideMode::stationToStation,
-        RideMode::singleRidePerAdmission,          // RideMode::singleRidePerAdmission,
-        RideMode::unlimitedRidesPerAdmission,      // RideMode::unlimitedRidesPerAdmission ,
-        RideMode::maze,                            // RideMode::maze,
-        RideMode::race,                            // RideMode::race,
-        RideMode::dodgems,                         // RideMode::dodgems,
-        RideMode::swing,                           // RideMode::swing,
-        RideMode::shopStall,                       // RideMode::shopStall,
-        RideMode::rotation,                        // RideMode::rotation,
-        RideMode::forwardRotation,                 // RideMode::forwardRotation,
-        RideMode::backwardRotation,                // RideMode::backwardRotation,
-        RideMode::filmAvengingAviators,            // RideMode::filmAvengingAviators,
-        RideMode::mouseTails3DFilm,                // RideMode::mouseTails3DFilm,
-        RideMode::spaceRings,                      // RideMode::spaceRings,
-        RideMode::beginners,                       // RideMode::beginners,
-        RideMode::limPoweredLaunch,                // RideMode::limPoweredLaunch,
-        RideMode::filmThrillRiders,                // RideMode::filmThrillRiders,
-        RideMode::stormChasers3DFilm,              // RideMode::stormChasers3DFilm,
-        RideMode::spaceRaiders3DFilm,              // RideMode::spaceRaiders3DFilm,
-        RideMode::intense,                         // RideMode::intense,
-        RideMode::berserk,                         // RideMode::berserk,
-        RideMode::hauntedHouse,                    // RideMode::hauntedHouse,
-        RideMode::circus,                          // RideMode::circus,
-        RideMode::downwardLaunch,                  // RideMode::downwardLaunch,
-        RideMode::crookedHouse,                    // RideMode::crookedHouse,
-        RideMode::freefallDrop,                    // RideMode::freefallDrop,
-        RideMode::continuousCircuitBlockSectioned, // RideMode::continuousCircuitBlockSectioned,
-        RideMode::poweredLaunchBlockSectioned,     // RideMode::poweredLaunch,
-        RideMode::poweredLaunchBlockSectioned,     // RideMode::poweredLaunchBlockSectioned,
-    });
-static_assert(kRideModeBlockSectionedCounterpart.size() == EnumValue(RideMode::count));
-
-RideMode& operator++(RideMode& d, int)
-{
-    return d = (d == RideMode::count) ? RideMode::normal : static_cast<RideMode>(static_cast<uint8_t>(d) + 1);
-}
-
 static constexpr int32_t RideInspectionInterval[] = {
     10, 20, 30, 45, 60, 120, 0, 0,
 };
@@ -883,7 +836,7 @@ void Ride::formatStatusTo(Formatter& ft) const
     {
         ft.Add<StringId>(STR_TEST_RUN);
     }
-    else if (mode == RideMode::race && !(lifecycleFlags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING) && !raceWinner.IsNull())
+    else if (mode == RideModes::race && !(lifecycleFlags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING) && !raceWinner.IsNull())
     {
         auto peep = getGameState().entities.GetEntity<Guest>(raceWinner);
         if (peep != nullptr)
@@ -930,8 +883,8 @@ bool Ride::canHaveMultipleCircuits() const
         return false;
 
     // Only allow circuit or launch modes
-    if (mode != RideMode::continuousCircuit && mode != RideMode::reverseInclineLaunchedShuttle
-        && mode != RideMode::poweredLaunchPasstrough)
+    if (mode != RideModes::continuousCircuit && mode != RideModes::reverseInclineLaunchedShuttle
+        && mode != RideModes::poweredLaunchPassthrough)
     {
         return false;
     }
@@ -2601,24 +2554,16 @@ static ResultWithMessage RideModeCheckValidStationNumbers(const Ride& ride)
         }
     }
 
-    switch (ride.mode)
+    switch (ride.mode.StationType)
     {
-        case RideMode::reverseInclineLaunchedShuttle:
-        case RideMode::poweredLaunchPasstrough:
-        case RideMode::poweredLaunch:
-        case RideMode::limPoweredLaunch:
+        case RIDE_MODE_STATIONS_ONLY_ONE:
             if (numStations <= 1)
                 return { true };
             return { false, STR_UNABLE_TO_OPERATE_WITH_MORE_THAN_ONE_STATION_IN_THIS_MODE };
-        case RideMode::shuttle:
+        case RIDE_MODE_STATIONS_MORE_THAN_ONE:
             if (numStations >= 2)
                 return { true };
             return { false, STR_UNABLE_TO_OPERATE_WITH_LESS_THAN_TWO_STATIONS_IN_THIS_MODE };
-        default:
-        {
-            // This is workaround for multiple compilation errors of type "enumeration value ‘RIDE_MODE_*' not handled
-            // in switch [-Werror=switch]"
-        }
     }
 
     const auto& rtd = ride.getRideTypeDescriptor();
@@ -3653,7 +3598,7 @@ ResultWithMessage Ride::createVehicles(const CoordsXYE& element, bool isApplying
     int32_t direction = trackElement->GetDirection();
 
     //
-    if (mode == RideMode::stationToStation)
+    if (mode == RideModes::stationToStation)
     {
         vehiclePos -= CoordsXYZ{ CoordsDirectionDelta[direction], 0 };
 
@@ -3904,7 +3849,7 @@ static ResultWithMessage RideCreateCableLift(RideId rideIndex, bool isApplying)
     if (ride == nullptr)
         return { false };
 
-    if (ride->mode != RideMode::continuousCircuitBlockSectioned && ride->mode != RideMode::continuousCircuit)
+    if (ride->mode != RideModes::continuousCircuitBlockSectioned && ride->mode != RideModes::continuousCircuit)
     {
         return { false, STR_CABLE_LIFT_UNABLE_TO_WORK_IN_THIS_OPERATING_MODE };
     }
@@ -4274,7 +4219,7 @@ void Ride::stopGuestsQueuing()
 
 RideMode Ride::getDefaultMode() const
 {
-    return getRideTypeDescriptor().DefaultMode;
+    return RideModes::FromID(getRideTypeDescriptor().DefaultMode);
 }
 
 static bool RideTypeWithTrackColoursExists(ride_type_t rideType, const TrackColour& colours)
@@ -4647,13 +4592,12 @@ bool Ride::hasWhirlpool() const
 
 bool Ride::isPoweredLaunched() const
 {
-    return mode == RideMode::poweredLaunchPasstrough || mode == RideMode::poweredLaunch
-        || mode == RideMode::poweredLaunchBlockSectioned;
+    return mode.hasFlag(RIDE_MODE_FLAG_IS_POWERED_LAUNCH);
 }
 
 bool Ride::isBlockSectioned() const
 {
-    return mode == RideMode::continuousCircuitBlockSectioned || mode == RideMode::poweredLaunchBlockSectioned;
+    return mode.hasFlag(RIDE_MODE_FLAG_IS_BLOCK_SECTIONED);
 }
 
 bool RideHasAnyTrackElements(const Ride& ride)
@@ -5165,74 +5109,69 @@ void Ride::updateMaxVehicles()
         maxCarsPerTrain = newMaxCarsPerTrain;
         minCarsPerTrain = rideEntry->min_cars_in_train;
 
-        switch (mode)
+        if (mode.hasFlag(RIDE_MODE_FLAG_IS_BLOCK_SECTIONED))
         {
-            case RideMode::continuousCircuitBlockSectioned:
-            case RideMode::poweredLaunchBlockSectioned:
-                maxNumTrains = std::clamp<int32_t>(numStations + numBlockBrakes - 1, 1, OpenRCT2::Limits::kMaxTrainsPerRide);
-                break;
-            case RideMode::reverseInclineLaunchedShuttle:
-            case RideMode::poweredLaunchPasstrough:
-            case RideMode::shuttle:
-            case RideMode::limPoweredLaunch:
-            case RideMode::poweredLaunch:
-                maxNumTrains = 1;
-                break;
-            default:
-                // Calculate maximum number of trains
-                int32_t trainLength = 0;
+            maxNumTrains = std::clamp<int32_t>(numStations + numBlockBrakes - 1, 1, OpenRCT2::Limits::kMaxTrainsPerRide);
+        }
+        else if (mode.hasFlag(RIDE_MODE_FLAG_SINGLE_TRAIN))
+        {
+            maxNumTrains = 1;
+        }
+        else
+        {
+            // Calculate maximum number of trains
+            int32_t trainLength = 0;
+            for (int32_t i = 0; i < newCarsPerTrain; i++)
+            {
+                const auto& carEntry = rideEntry->Cars[RideEntryGetVehicleAtPosition(subtype, newCarsPerTrain, i)];
+                trainLength += carEntry.spacing;
+            }
+
+            int32_t totalLength = trainLength / 2;
+            if (newCarsPerTrain != 1)
+                totalLength /= 2;
+
+            maxNumTrains = 0;
+            do
+            {
+                maxNumTrains++;
+                totalLength += trainLength;
+            } while (totalLength <= stationLength);
+
+            if ((mode != RideModes::stationToStation && mode != RideModes::continuousCircuit)
+                || !(rtd.HasFlag(RtdFlag::allowMoreVehiclesThanStationFits)))
+            {
+                maxNumTrains = std::min(maxNumTrains, int32_t(OpenRCT2::Limits::kMaxTrainsPerRide));
+            }
+            else
+            {
+                const auto& firstCarEntry = rideEntry->Cars[RideEntryGetVehicleAtPosition(subtype, newCarsPerTrain, 0)];
+                int32_t poweredMaxSpeed = firstCarEntry.powered_max_speed;
+
+                int32_t totalSpacing = 0;
                 for (int32_t i = 0; i < newCarsPerTrain; i++)
                 {
                     const auto& carEntry = rideEntry->Cars[RideEntryGetVehicleAtPosition(subtype, newCarsPerTrain, i)];
-                    trainLength += carEntry.spacing;
+                    totalSpacing += carEntry.spacing;
                 }
 
-                int32_t totalLength = trainLength / 2;
-                if (newCarsPerTrain != 1)
-                    totalLength /= 2;
+                totalSpacing >>= 13;
+                int32_t trackLength = RideGetTrackLength(*this) / 4;
+                if (poweredMaxSpeed > 10)
+                    trackLength = (trackLength * 3) / 4;
+                if (poweredMaxSpeed > 25)
+                    trackLength = (trackLength * 3) / 4;
+                if (poweredMaxSpeed > 40)
+                    trackLength = (trackLength * 3) / 4;
 
                 maxNumTrains = 0;
+                int32_t length = 0;
                 do
                 {
                     maxNumTrains++;
-                    totalLength += trainLength;
-                } while (totalLength <= stationLength);
-
-                if ((mode != RideMode::stationToStation && mode != RideMode::continuousCircuit)
-                    || !(rtd.HasFlag(RtdFlag::allowMoreVehiclesThanStationFits)))
-                {
-                    maxNumTrains = std::min(maxNumTrains, int32_t(OpenRCT2::Limits::kMaxTrainsPerRide));
-                }
-                else
-                {
-                    const auto& firstCarEntry = rideEntry->Cars[RideEntryGetVehicleAtPosition(subtype, newCarsPerTrain, 0)];
-                    int32_t poweredMaxSpeed = firstCarEntry.powered_max_speed;
-
-                    int32_t totalSpacing = 0;
-                    for (int32_t i = 0; i < newCarsPerTrain; i++)
-                    {
-                        const auto& carEntry = rideEntry->Cars[RideEntryGetVehicleAtPosition(subtype, newCarsPerTrain, i)];
-                        totalSpacing += carEntry.spacing;
-                    }
-
-                    totalSpacing >>= 13;
-                    int32_t trackLength = RideGetTrackLength(*this) / 4;
-                    if (poweredMaxSpeed > 10)
-                        trackLength = (trackLength * 3) / 4;
-                    if (poweredMaxSpeed > 25)
-                        trackLength = (trackLength * 3) / 4;
-                    if (poweredMaxSpeed > 40)
-                        trackLength = (trackLength * 3) / 4;
-
-                    maxNumTrains = 0;
-                    int32_t length = 0;
-                    do
-                    {
-                        maxNumTrains++;
-                        length += totalSpacing;
-                    } while (maxNumTrains < OpenRCT2::Limits::kMaxTrainsPerRide && length < trackLength);
-                }
-                break;
+                    length += totalSpacing;
+                } while (maxNumTrains < OpenRCT2::Limits::kMaxTrainsPerRide && length < trackLength);
+            }
         }
         maxTrains = maxNumTrains;
 
@@ -5817,10 +5756,12 @@ void Ride::formatNameTo(Formatter& ft) const
 uint64_t Ride::getAvailableModes() const
 {
     if (getGameState().cheats.showAllOperatingModes)
-        return kAllRideModesAvailable;
-
+    {
+        return RideModes::ToFlags(
+            std::vector<RideMode>(std::begin(RideModes::kOperatingModes), std::end(RideModes::kOperatingModes)));
+    }
     return getRideTypeDescriptor().RideModes;
-}
+};
 
 const RideTypeDescriptor& Ride::getRideTypeDescriptor() const
 {
@@ -5973,7 +5914,7 @@ ResultWithMessage Ride::changeStatusGetStartElement(StationIndex stationIndex, C
 ResultWithMessage Ride::changeStatusCheckCompleteCircuit(const CoordsXYE& trackElement)
 {
     CoordsXYE problematicTrackElement = {};
-    if (mode == RideMode::race || mode == RideMode::continuousCircuit || isBlockSectioned())
+    if (mode == RideModes::race || mode == RideModes::continuousCircuit || isBlockSectioned())
     {
         if (findTrackGap(trackElement, &problematicTrackElement))
         {
@@ -6024,7 +5965,7 @@ ResultWithMessage Ride::changeStatusCheckTrackValidity(const CoordsXYE& trackEle
         }
     }
 
-    if (mode == RideMode::stationToStation)
+    if (mode == RideModes::stationToStation)
     {
         if (!findTrackGap(trackElement, &problematicTrackElement))
         {
@@ -6071,10 +6012,4 @@ ResultWithMessage Ride::changeStatusCreateVehicles(bool isApplying, const Coords
     }
 
     return { true };
-}
-
-RideMode RideModeGetBlockSectionedCounterpart(RideMode originalMode)
-{
-    assert(originalMode < RideMode::count);
-    return kRideModeBlockSectionedCounterpart[EnumValue(originalMode)];
 }

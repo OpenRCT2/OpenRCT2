@@ -23,10 +23,6 @@
 
 using namespace OpenRCT2;
 
-static void RideUpdateStationBlockSection(Ride& ride, StationIndex stationIndex);
-static void RideUpdateStationDodgems(Ride& ride, StationIndex stationIndex);
-static void RideUpdateStationNormal(Ride& ride, StationIndex stationIndex);
-static void RideUpdateStationRace(Ride& ride, StationIndex stationIndex);
 static void RideRaceInitVehicleSpeeds(const Ride& ride);
 static void RideInvalidateStationStart(Ride& ride, StationIndex stationIndex, bool greenLight);
 
@@ -39,29 +35,14 @@ void RideUpdateStation(Ride& ride, StationIndex stationIndex)
     if (ride.getStation(stationIndex).Start.IsNull())
         return;
 
-    switch (ride.mode)
-    {
-        case RideMode::race:
-            RideUpdateStationRace(ride, stationIndex);
-            break;
-        case RideMode::dodgems:
-            RideUpdateStationDodgems(ride, stationIndex);
-            break;
-        case RideMode::continuousCircuitBlockSectioned:
-        case RideMode::poweredLaunchBlockSectioned:
-            RideUpdateStationBlockSection(ride, stationIndex);
-            break;
-        default:
-            RideUpdateStationNormal(ride, stationIndex);
-            break;
-    }
+    ride.mode.FuncUpdateStation(ride, stationIndex);
 }
 
 /**
  *
  *  rct2: 0x006AC0A1
  */
-static void RideUpdateStationBlockSection(Ride& ride, StationIndex stationIndex)
+void RideUpdateStationBlockSection(Ride& ride, StationIndex stationIndex)
 {
     TileElement* tileElement = RideGetStationStartTrackElement(ride, stationIndex);
     auto& station = ride.getStation(stationIndex);
@@ -92,7 +73,7 @@ static void RideUpdateStationBlockSection(Ride& ride, StationIndex stationIndex)
  *
  *  rct2: 0x006AC12B
  */
-static void RideUpdateStationDodgems(Ride& ride, StationIndex stationIndex)
+void RideUpdateStationDodgems(Ride& ride, StationIndex stationIndex)
 {
     auto& station = ride.getStation(stationIndex);
 
@@ -153,7 +134,7 @@ static void RideUpdateStationDodgems(Ride& ride, StationIndex stationIndex)
  *
  *  rct2: 0x006AC02C
  */
-static void RideUpdateStationNormal(Ride& ride, StationIndex stationIndex)
+void RideUpdateStationNormal(Ride& ride, StationIndex stationIndex)
 {
     auto& station = ride.getStation(stationIndex);
     int32_t time = station.Depart & kStationDepartMask;
@@ -189,7 +170,7 @@ static void RideUpdateStationNormal(Ride& ride, StationIndex stationIndex)
  *
  *  rct2: 0x006AC1DF
  */
-static void RideUpdateStationRace(Ride& ride, StationIndex stationIndex)
+void RideUpdateStationRace(Ride& ride, StationIndex stationIndex)
 {
     auto& station = ride.getStation(stationIndex);
     if (ride.status == RideStatus::closed || (ride.lifecycleFlags & (RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED)))

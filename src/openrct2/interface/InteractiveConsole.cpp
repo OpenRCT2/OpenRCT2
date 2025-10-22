@@ -167,10 +167,10 @@ static void ConsoleCommandRides(InteractiveConsole& console, const arguments_t& 
                 if (argv.size() > 1 && argv[1] == "mode")
                 {
                     console.WriteFormatLine("Ride modes are specified using integer IDs as given below:");
-                    for (int32_t i = 0; i < static_cast<uint8_t>(RideMode::count); i++)
+                    for (uint8_t i = 0; i < static_cast<uint8_t>(RideModeID::COUNT); i++)
                     {
                         char mode_name[128] = { 0 };
-                        StringId mode_string_id = kRideModeNames[i];
+                        StringId mode_string_id = RideModes::FromIndex(i).Name;
                         OpenRCT2::FormatStringLegacy(mode_name, 128, mode_string_id, nullptr);
                         console.WriteFormatLine("%02d - %s", i, mode_name);
                     }
@@ -234,7 +234,7 @@ static void ConsoleCommandRides(InteractiveConsole& console, const arguments_t& 
                 else
                 {
                     auto ride = GetRide(RideId::FromUnderlying(ride_index));
-                    if (mode >= static_cast<uint8_t>(RideMode::count))
+                    if (mode >= static_cast<int32_t>(RideModeID::COUNT))
                     {
                         console.WriteFormatLine("Invalid ride mode.");
                     }
@@ -244,7 +244,7 @@ static void ConsoleCommandRides(InteractiveConsole& console, const arguments_t& 
                     }
                     else
                     {
-                        ride->mode = static_cast<RideMode>(mode & 0xFF);
+                        ride->mode = RideModes::FromIndex(mode & 0xFF);
                         InvalidateTestResults(*ride);
                     }
                 }

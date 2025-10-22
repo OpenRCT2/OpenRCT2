@@ -683,15 +683,15 @@ namespace OpenRCT2::GameActions
                 {
                     ride->numBlockBrakes++;
 
-                    auto newMode = RideModeGetBlockSectionedCounterpart(ride->mode);
+                    auto newMode = RideModes::GetBlockSectionedCounterpart(ride->mode);
                     if (ride->mode != newMode)
                     {
-                        bool canSwitch = rtd.SupportsRideMode(newMode) || getGameState().cheats.showAllOperatingModes;
+                        bool canSwitch = rtd.SupportsRideMode(newMode.Index) || getGameState().cheats.showAllOperatingModes;
                         if (canSwitch)
                         {
                             ride->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_OPERATING;
                             auto rideSetSetting = GameActions::RideSetSettingAction(
-                                ride->id, GameActions::RideSetSetting::Mode, static_cast<uint8_t>(newMode));
+                                ride->id, GameActions::RideSetSetting::Mode, RideModes::ToIndex(newMode));
                             ExecuteNested(&rideSetSetting, gameState);
                         }
                     }

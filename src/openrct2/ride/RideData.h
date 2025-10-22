@@ -128,9 +128,7 @@ enum class RatingsModifierType : uint8_t
     BonusMazeSize,
     BonusBoatHireNoCircuit,
     BonusSlideUnlimitedRides,
-    BonusMotionSimulatorMode,
-    Bonus3DCinemaMode,
-    BonusTopSpinMode,
+    BonusRideMode,
     // Number of reversals BONUS for reverser coaster
     BonusReversals,
     // Number of hole BONUS for mini golf
@@ -484,7 +482,7 @@ struct RideTypeDescriptor
     uint64_t Flags{};
     /** rct2: 0x0097C8AC */
     uint64_t RideModes{};
-    RideMode DefaultMode{};
+    OpenRCT2::RideModeID DefaultMode{};
     /** rct2: 0x0097CF40 */
     RideOperatingSettings OperatingSettings{};
     RideTrackSpeedSettings TrackSpeedSettings{};
@@ -547,7 +545,7 @@ struct RideTypeDescriptor
     /** @deprecated */
     bool SupportsTrackGroup(const TrackGroup trackGroup) const;
     ResearchCategory GetResearchCategory() const;
-    bool SupportsRideMode(RideMode rideMode) const;
+    bool SupportsRideMode(OpenRCT2::RideModeID rideMode) const;
     /**
      * Converts booster speed from the ride type's speed regime (Junior, Default, Giga) to to the unified values used by the
      * vehicle. See https://github.com/OpenRCT2/OpenRCT2/discussions/23119 for more information about unified speed.
@@ -597,22 +595,9 @@ constexpr const RideComponentName& GetRideComponentName(const RideComponentType 
     return kRideComponentNames[EnumValue(type)];
 }
 
-constexpr uint64_t kAllRideModesAvailable = EnumsToFlags(
-    RideMode::continuousCircuit, RideMode::continuousCircuitBlockSectioned, RideMode::reverseInclineLaunchedShuttle,
-    RideMode::poweredLaunchPasstrough, RideMode::shuttle, RideMode::normal, RideMode::boatHire, RideMode::upwardLaunch,
-    RideMode::rotatingLift, RideMode::stationToStation, RideMode::singleRidePerAdmission, RideMode::unlimitedRidesPerAdmission,
-    RideMode::maze, RideMode::race, RideMode::dodgems, RideMode::swing, RideMode::shopStall, RideMode::rotation,
-    RideMode::forwardRotation, RideMode::backwardRotation, RideMode::filmAvengingAviators, RideMode::mouseTails3DFilm,
-    RideMode::spaceRings, RideMode::beginners, RideMode::limPoweredLaunch, RideMode::filmThrillRiders,
-    RideMode::stormChasers3DFilm, RideMode::spaceRaiders3DFilm, RideMode::intense, RideMode::berserk, RideMode::hauntedHouse,
-    RideMode::circus, RideMode::downwardLaunch, RideMode::crookedHouse, RideMode::freefallDrop, RideMode::poweredLaunch,
-    RideMode::poweredLaunchBlockSectioned);
-
 extern const CarEntry kCableLiftVehicle;
 
 extern const uint16_t kRideFilmLength[3];
-
-extern const StringId kRideModeNames[EnumValue(RideMode::count)];
 
 // clang-format off
 constexpr RideTypeDescriptor kDummyRTD =
@@ -622,8 +607,8 @@ constexpr RideTypeDescriptor kDummyRTD =
     .TrackPaintFunctions = {},
     .InvertedTrackPaintFunctions = {},
     .Flags = 0,
-    .RideModes = EnumsToFlags(RideMode::continuousCircuit),
-    .DefaultMode = RideMode::continuousCircuit,
+    .RideModes = OpenRCT2::RideModes::IndexToFlags({ OpenRCT2::RideModeID::CONTINUOUS_CIRCUIT }),
+    .DefaultMode = OpenRCT2::RideModeID::CONTINUOUS_CIRCUIT,
     .OperatingSettings = {},
     .TrackSpeedSettings = {},
     .BoosterSettings = {},

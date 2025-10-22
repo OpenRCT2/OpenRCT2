@@ -18,3 +18,8 @@ void RideUpdateStation(Ride& ride, StationIndex stationIndex);
 StationIndex RideGetFirstValidStationExit(const Ride& ride);
 StationIndex RideGetFirstValidStationStart(const Ride& ride);
 StationIndex RideGetFirstEmptyStationStart(const Ride& ride);
+
+void RideUpdateStationBlockSection(Ride& ride, StationIndex stationIndex);
+void RideUpdateStationDodgems(Ride& ride, StationIndex stationIndex);
+void RideUpdateStationNormal(Ride& ride, StationIndex stationIndex);
+void RideUpdateStationRace(Ride& ride, StationIndex stationIndex);

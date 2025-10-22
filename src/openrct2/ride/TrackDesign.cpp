@@ -559,7 +559,7 @@ void TrackDesign::Serialise(DataSerialiser& stream)
     }
     stream << DS_TAG(trackAndVehicle.rtdIndex);
     stream << DS_TAG(gameStateData.cost);
-    stream << DS_TAG(operation.rideMode);
+    stream << DS_TAG(operation.rideMode.Index);
     stream << DS_TAG(gameStateData.flags);
     stream << DS_TAG(appearance.vehicleColourSettings);
     stream << DS_TAG(appearance.vehicleColours);

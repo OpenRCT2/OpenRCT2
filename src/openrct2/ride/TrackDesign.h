@@ -15,6 +15,7 @@
 #include "../object/Object.h"
 #include "../ride/RideColour.h"
 #include "../ride/Track.h"
+#include "RideMode.h"
 #include "RideRatings.h"
 #include "VehicleColour.h"
 
@@ -130,7 +131,6 @@ struct TrackDesignMazeElement
 };
 
 class DataSerialiser;
-enum class RideMode : uint8_t;
 
 enum class TrackDesignGameStateFlag
 {
@@ -149,7 +149,7 @@ struct TrackDesignTrackAndVehicleSettings
 
 struct TrackDesignOperatingSettings
 {
-    RideMode rideMode{};
+    OpenRCT2::RideMode rideMode{};
     uint8_t liftHillSpeed{};
     uint8_t numCircuits{};
     uint8_t operationSetting{};

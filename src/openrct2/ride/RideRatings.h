@@ -48,6 +48,17 @@ namespace OpenRCT2
         };
         static_assert(sizeof(Tuple) == 6);
 
+        constexpr Tuple makeTuple(
+            int16_t excitementWhole, uint8_t excitementFrac, int16_t intensityWhole, uint8_t intensityFrac, int16_t nauseaWhole,
+            uint8_t nauseaFrac)
+        {
+            auto t = Tuple();
+            t.excitement = MakeFixed2dp<RideRating_t>(excitementWhole, excitementFrac);
+            t.intensity = MakeFixed2dp<RideRating_t>(intensityWhole, intensityFrac);
+            t.nausea = MakeFixed2dp<RideRating_t>(nauseaWhole, nauseaFrac);
+            return t;
+        }
+
 #pragma pack(pop)
 
         struct UpdateState

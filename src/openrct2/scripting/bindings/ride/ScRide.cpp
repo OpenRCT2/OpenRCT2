@@ -135,7 +135,7 @@ namespace OpenRCT2::Scripting
     uint8_t ScRide::mode_get() const
     {
         auto ride = GetRide();
-        return ride != nullptr ? static_cast<uint8_t>(ride->mode) : 0;
+        return ride != nullptr ? static_cast<uint8_t>(ride->mode.Index) : 0;
     }
 
     void ScRide::mode_set(uint8_t value)
@@ -144,7 +144,7 @@ namespace OpenRCT2::Scripting
         auto ride = GetRide();
         if (ride != nullptr)
         {
-            ride->mode = static_cast<RideMode>(value);
+            ride->mode = RideModes::FromIndex(value);
         }
     }
 

@@ -708,7 +708,7 @@ namespace OpenRCT2::RCT2
             dst->type = rideType;
             dst->subtype = subtype;
             // Pad002;
-            dst->mode = static_cast<RideMode>(src->mode);
+            dst->mode = RideModes::FromIndex(src->mode);
             dst->vehicleColourSettings = src->vehicleColourSettings;
 
             for (uint8_t i = 0; i < Limits::kMaxVehicleColours; i++)
@@ -1964,7 +1964,7 @@ namespace OpenRCT2::RCT2
         dst->colours.Tertiary = src->ColoursExtended;
         dst->track_progress = src->TrackProgress;
         dst->TrackLocation = { src->TrackX, src->TrackY, src->TrackZ };
-        if (src->BoatLocation.IsNull() || static_cast<RideMode>(ride.mode) != RideMode::boatHire
+        if (src->BoatLocation.IsNull() || RideModes::FromIndex(ride.mode) != RideModes::boatHire
             || src->Status != static_cast<uint8_t>(::Vehicle::Status::TravellingBoat))
         {
             dst->BoatLocation.SetNull();

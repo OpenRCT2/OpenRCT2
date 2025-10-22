@@ -1424,7 +1424,16 @@ namespace OpenRCT2
                     // Status
                     cs.readWrite(ride.type);
                     cs.readWrite(ride.subtype);
-                    cs.readWrite(ride.mode);
+                    if (cs.getMode() == OrcaStream::Mode::reading)
+                    {
+                        RideModeID mode;
+                        cs.readWrite(mode);
+                        ride.mode = RideModes::FromID(mode);
+                    }
+                    else
+                    {
+                        cs.readWrite(ride.mode.Index);
+                    }
                     cs.readWrite(ride.status);
                     cs.readWrite(ride.departFlags);
                     cs.readWrite(ride.lifecycleFlags);

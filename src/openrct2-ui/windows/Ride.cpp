@@ -3059,7 +3059,7 @@ namespace OpenRCT2::Ui::Windows
                 maxValue = OpenRCT2::Limits::kCheatsMaxOperatingLimit;
             }
 
-            uint8_t increment = ride->mode == RideMode::dodgems ? 10 : 1;
+            uint8_t increment = ride->mode == RideModes::dodgems ? 10 : 1;
 
             SetOperatingSetting(
                 rideId, GameActions::RideSetSetting::Operation,
@@ -3081,7 +3081,7 @@ namespace OpenRCT2::Ui::Windows
                 maxValue = OpenRCT2::Limits::kCheatsMaxOperatingLimit;
             }
 
-            uint8_t decrement = ride->mode == RideMode::dodgems ? 10 : 1;
+            uint8_t decrement = ride->mode == RideModes::dodgems ? 10 : 1;
 
             SetOperatingSetting(
                 rideId, GameActions::RideSetSetting::Operation,
@@ -3102,13 +3102,13 @@ namespace OpenRCT2::Ui::Windows
             // Create dropdown list
             auto numAvailableModes = 0;
             auto checkedIndex = -1;
-            for (auto i = 0; i < static_cast<uint8_t>(RideMode::count); i++)
+            for (uint8_t i = 0; i < static_cast<uint8_t>(RideModeID::COUNT); i++)
             {
                 if (availableModes & (1uLL << i))
                 {
-                    gDropdown.items[numAvailableModes] = Dropdown::MenuLabel(kRideModeNames[i]);
+                    gDropdown.items[numAvailableModes] = Dropdown::MenuLabel(RideModes::kOperatingModes[i].Name);
 
-                    if (ride->mode == static_cast<RideMode>(i))
+                    if (ride->mode == RideModes::FromIndex(i))
                         checkedIndex = numAvailableModes;
 
                     numAvailableModes++;
@@ -3318,17 +3318,9 @@ namespace OpenRCT2::Ui::Windows
 
         void OperatingTweakTextInput(const Ride& ride)
         {
-            switch (ride.mode)
+            if (!ride.mode.TweakUITextInput)
             {
-                case RideMode::poweredLaunchPasstrough:
-                case RideMode::poweredLaunch:
-                case RideMode::upwardLaunch:
-                case RideMode::poweredLaunchBlockSectioned:
-                case RideMode::stationToStation:
-                case RideMode::dodgems:
-                    return;
-                default:
-                    break;
+                return;
             }
 
             const auto& operatingSettings = ride.getRideTypeDescriptor().OperatingSettings;
@@ -3362,23 +3354,23 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WIDX_MODE_DROPDOWN:
                 {
-                    RideMode rideMode = RideMode::nullMode;
+                    uint8_t rideMode = static_cast<uint8_t>(RideModeID::COUNT);
                     auto availableModes = ride->getAvailableModes();
                     auto modeInDropdownIndex = -1;
-                    for (RideMode rideModeIndex = RideMode::normal; rideModeIndex < RideMode::count; rideModeIndex++)
+                    for (uint8_t i = 0; i < static_cast<uint8_t>(RideModeID::COUNT); i++)
                     {
-                        if (availableModes & EnumToFlag(rideModeIndex))
+                        if (availableModes & (uint64_t(1) << i))
                         {
                             modeInDropdownIndex++;
                             if (modeInDropdownIndex == dropdownIndex)
                             {
-                                rideMode = rideModeIndex;
+                                rideMode = i;
                                 break;
                             }
                         }
                     }
-                    if (rideMode != RideMode::nullMode)
-                        SetOperatingSetting(rideId, GameActions::RideSetSetting::Mode, static_cast<uint8_t>(rideMode));
+                    if (rideMode != static_cast<uint8_t>(RideModeID::COUNT))
+                        SetOperatingSetting(rideId, GameActions::RideSetSetting::Mode, rideMode);
                     break;
                 }
                 case WIDX_LOAD_DROPDOWN:
@@ -3541,7 +3533,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Mode
-            widgets[WIDX_MODE].text = kRideModeNames[EnumValue(ride->mode)];
+            widgets[WIDX_MODE].text = ride->mode.Name;
 
             // Waiting
             widgets[WIDX_LOAD].text = VehicleLoadNames[(ride->departFlags & RIDE_DEPART_WAIT_FOR_LOAD_MASK)];
@@ -3602,12 +3594,9 @@ namespace OpenRCT2::Ui::Windows
             ft.Rewind();
             ft.Increment(18);
             ft.Add<uint16_t>(static_cast<uint16_t>(ride->operationOption) * multiplier);
-            switch (ride->mode)
+            switch (ride->mode.UIOptionFormat)
             {
-                case RideMode::poweredLaunchPasstrough:
-                case RideMode::poweredLaunch:
-                case RideMode::upwardLaunch:
-                case RideMode::poweredLaunchBlockSectioned:
+                case RIDE_MODE_UI_LAUNCH:
                     ft.Rewind();
                     ft.Increment(18);
                     ft.Add<uint16_t>((ride->launchSpeed * 9) / 4);
@@ -3615,7 +3604,7 @@ namespace OpenRCT2::Ui::Windows
                     caption = STR_LAUNCH_SPEED;
                     tooltip = STR_LAUNCH_SPEED_TIP;
                     break;
-                case RideMode::stationToStation:
+                case RIDE_MODE_UI_CHAIRLIFT:
                     ft.Rewind();
                     ft.Increment(18);
                     ft.Add<uint16_t>((ride->speed * 9) / 4);
@@ -3623,7 +3612,7 @@ namespace OpenRCT2::Ui::Windows
                     caption = STR_SPEED;
                     tooltip = STR_SPEED_TIP;
                     break;
-                case RideMode::race:
+                case RIDE_MODE_UI_RACE:
                     ft.Rewind();
                     ft.Increment(18);
                     ft.Add<uint16_t>(ride->numLaps);
@@ -3631,19 +3620,17 @@ namespace OpenRCT2::Ui::Windows
                     caption = STR_NUMBER_OF_LAPS;
                     tooltip = STR_NUMBER_OF_LAPS_TIP;
                     break;
-                case RideMode::dodgems:
+                case RIDE_MODE_UI_DODGEMS:
                     format = STR_RIDE_MODE_TIME_LIMIT_VALUE;
                     caption = STR_TIME_LIMIT;
                     tooltip = STR_TIME_LIMIT_TIP;
                     break;
-                case RideMode::swing:
+                case RIDE_MODE_UI_SWING:
                     format = STR_RIDE_MODE_NUMBER_OF_SWINGS_VALUE;
                     caption = STR_NUMBER_OF_SWINGS;
                     tooltip = STR_NUMBER_OF_SWINGS_TIP;
                     break;
-                case RideMode::rotation:
-                case RideMode::forwardRotation:
-                case RideMode::backwardRotation:
+                case RIDE_MODE_UI_ROTATION:
                     format = STR_NUMBER_OF_ROTATIONS_VALUE;
                     caption = STR_NUMBER_OF_ROTATIONS;
                     tooltip = STR_NUMBER_OF_ROTATIONS_TIP;
@@ -3701,7 +3688,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 auto ft = Formatter();
                 ft.Add<uint16_t>(ride->numBlockBrakes + ride->numStations);
-                auto underWidget = ride->mode == RideMode::poweredLaunchBlockSectioned ? WIDX_MODE_TWEAK : WIDX_MODE;
+                auto underWidget = ride->mode == RideModes::poweredLaunchBlockSectioned ? WIDX_MODE_TWEAK : WIDX_MODE;
                 DrawTextBasic(
                     rt, windowPos + ScreenCoordsXY{ 21, widgets[underWidget].bottom + 3 }, STR_BLOCK_SECTIONS, ft,
                     { COLOUR_BLACK });

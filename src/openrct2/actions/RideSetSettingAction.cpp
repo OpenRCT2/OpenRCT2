@@ -169,7 +169,7 @@ namespace OpenRCT2::GameActions
                 RideClearForConstruction(*ride);
                 ride->removePeeps();
 
-                ride->mode = static_cast<RideMode>(_value);
+                ride->mode = RideModes::FromIndex(_value);
                 ride->updateMaxVehicles();
                 ride->updateNumberOfCircuits();
                 break;
@@ -281,26 +281,14 @@ namespace OpenRCT2::GameActions
 
     StringId RideSetSettingAction::GetOperationErrorMessage(const Ride& ride) const
     {
-        switch (ride.mode)
+        if (ride.mode.ErrorMessage != 0)
         {
-            case RideMode::stationToStation:
-                return STR_CANT_CHANGE_SPEED;
-            case RideMode::race:
-                return STR_CANT_CHANGE_NUMBER_OF_LAPS;
-            case RideMode::dodgems:
-                return STR_CANT_CHANGE_TIME_LIMIT;
-            case RideMode::swing:
-                return STR_CANT_CHANGE_NUMBER_OF_SWINGS;
-            case RideMode::rotation:
-            case RideMode::forwardRotation:
-            case RideMode::backwardRotation:
-                return STR_CANT_CHANGE_NUMBER_OF_ROTATIONS;
-            default:
-                if (ride.getRideTypeDescriptor().HasFlag(RtdFlag::noVehicles))
-                {
-                    return STR_CANT_CHANGE_THIS;
-                }
-                return STR_CANT_CHANGE_LAUNCH_SPEED;
+            return ride.mode.ErrorMessage;
         }
+        else if (ride.getRideTypeDescriptor().HasFlag(RtdFlag::noVehicles))
+        {
+            return STR_CANT_CHANGE_THIS;
+        }
+        return STR_CANT_CHANGE_LAUNCH_SPEED;
     }
 } // namespace OpenRCT2::GameActions

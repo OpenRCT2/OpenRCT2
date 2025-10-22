@@ -452,22 +452,17 @@ namespace OpenRCT2::GameActions
                     ride->numBlockBrakes--;
                     if (ride->numBlockBrakes == 0 && ride->isBlockSectioned())
                     {
-                        RideMode newMode = RideMode::continuousCircuit;
-                        if (ride->mode == RideMode::poweredLaunchBlockSectioned)
-                        {
-                            // Depending on the ride, the equivalent will be powered launch with or without passing station.
-                            newMode = ride->getRideTypeDescriptor().DefaultMode;
-                        }
+                        RideMode newMode = RideModes::GetNonBlockSectionedCounterpart(ride->mode, ride->getRideTypeDescriptor().DefaultMode);
 
                         if (ride->mode != newMode)
                         {
-                            bool canSwitch = ride->getRideTypeDescriptor().SupportsRideMode(newMode)
+                            bool canSwitch = ride->getRideTypeDescriptor().SupportsRideMode(newMode.Index)
                                 || getGameState().cheats.showAllOperatingModes;
                             if (canSwitch)
                             {
                                 ride->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_OPERATING;
                                 auto rideSetSetting = GameActions::RideSetSettingAction(
-                                    ride->id, GameActions::RideSetSetting::Mode, static_cast<uint8_t>(newMode));
+                                    ride->id, GameActions::RideSetSetting::Mode, RideModes::ToIndex(newMode));
                                 ExecuteNested(&rideSetSetting, gameState);
                             }
                         }

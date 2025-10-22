@@ -308,7 +308,7 @@ enum : StringId
     STR_RIDE_COMPONENT_COURSE_COUNT_PLURAL = 1325,
     STR_RIDE_COMPONENT_COURSE_NO = 1326,
     STR_LEVEL_LAND_REQUIRED = 1328,
-    // 1332 not used. Likely ride_mode_speed value
+    // 1332 not used. Likely speed value
     STR_RIDE_STATION = 1333,
     STR_RIDE_STATION_X = 1334,
     STR_RIDE_ENTRANCE = 1335,

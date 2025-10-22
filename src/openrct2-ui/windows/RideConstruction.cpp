@@ -311,7 +311,7 @@ namespace OpenRCT2::Ui::Windows
             if (RideTryGetOriginElement(*currentRide, nullptr))
             {
                 // Auto open shops if required.
-                if (currentRide->mode == RideMode::shopStall && Config::Get().general.autoOpenShops)
+                if (currentRide->mode == RideModes::shopStall && Config::Get().general.autoOpenShops)
                 {
                     // HACK: Until we find a good a way to defer the game command for opening the shop, stop this
                     //       from getting stuck in an infinite loop as opening the currentRide will try to close this window
