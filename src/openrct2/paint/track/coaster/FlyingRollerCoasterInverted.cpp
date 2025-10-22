@@ -9194,6 +9194,6 @@ TrackPaintFunction GetTrackPaintFunctionFlyingRCInverted(OpenRCT2::TrackElemType
             return InvertedFlyingRCTrackDiagBlockBrakes;
 
         default:
-            return GetTrackPaintFunctionFlyingRC(trackType);
+            return TrackPaintFunctionDummy;
     }
 }
