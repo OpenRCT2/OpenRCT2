@@ -65,111 +65,6 @@ static void FlyingRCTrackStation(
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
-static void FlyingRCTrack90DegToInvertedFlatQuarterLoopUp(
-    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement, SupportType supportType)
-{
-    switch (trackSequence)
-    {
-        case 0:
-            switch (direction)
-            {
-                case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(18062), { 0, 0, height },
-                        { { 4, 6, height + 8 }, { 2, 20, 31 } });
-                    break;
-                case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(18065), { 0, 0, height },
-                        { { 24, 6, height + 8 }, { 2, 20, 31 } });
-                    break;
-                case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(18068), { 0, 0, height },
-                        { { 24, 6, height + 8 }, { 2, 20, 31 } });
-                    break;
-                case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(18071), { 0, 0, height },
-                        { { 4, 6, height + 8 }, { 2, 20, 31 } });
-                    break;
-            }
-            PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 88);
-            break;
-        case 1:
-            switch (direction)
-            {
-                case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(18063), { 0, 0, height },
-                        { { -8, 6, height }, { 2, 20, 31 } });
-                    break;
-                case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(18066), { 0, 0, height },
-                        { { 24, 6, height + 8 }, { 2, 20, 63 } });
-                    break;
-                case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(18069), { 0, 0, height },
-                        { { 24, 6, height + 8 }, { 2, 20, 63 } });
-                    break;
-                case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(18072), { 0, 0, height },
-                        { { -8, 6, height }, { 2, 20, 31 } });
-                    break;
-            }
-            PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
-            break;
-        case 2:
-            switch (direction)
-            {
-                case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(18064), { 0, 0, height },
-                        { { 0, 6, height + 24 }, { 32, 20, 3 } });
-                    break;
-                case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(18067), { 0, 0, height },
-                        { { 24, 6, height + 8 }, { 2, 20, 31 } });
-                    break;
-                case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(18070), { 0, 0, height },
-                        { { 24, 6, height + 8 }, { 2, 20, 31 } });
-                    break;
-                case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(18073), { 0, 0, height },
-                        { { 0, 6, height + 24 }, { 32, 20, 3 } });
-                    break;
-            }
-            if (direction == 0 || direction == 3)
-            {
-                PaintUtilPushTunnelRotated(session, direction, height + 16, kTunnelGroup, TunnelSubType::Flat);
-            }
-            PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
-            break;
-    }
-}
-
-static void FlyingRCTrackInvertedFlatTo90DegQuarterLoopDown(
-    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement, SupportType supportType)
-{
-    FlyingRCTrack90DegToInvertedFlatQuarterLoopUp(
-        session, ride, 2 - trackSequence, direction, height, trackElement, supportType);
-}
-
 static void FlyingRCTrackHalfLoopInvertedUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
@@ -856,10 +751,8 @@ TrackPaintFunction GetTrackPaintFunctionFlyingRC(OpenRCT2::TrackElemType trackTy
         case TrackElemType::MiddleStation:
             return FlyingRCTrackStation;
         // OpenRCT2-specific paint code
-        case TrackElemType::MultiDimInvertedFlatToDown90QuarterLoop:
-            return FlyingRCTrackInvertedFlatTo90DegQuarterLoopDown;
         case TrackElemType::MultiDimUp90ToInvertedFlatQuarterLoop:
-            return FlyingRCTrack90DegToInvertedFlatQuarterLoopUp;
+            return TwisterRCTrack90DegToInvertedFlatQuarterLoopUp;
             // OpenRCT2-specific track elements
         case TrackElemType::LeftFlyerLargeHalfLoopUninvertedUp:
             return TwisterRCTrackLeftLargeHalfLoopUp;
@@ -881,6 +774,9 @@ TrackPaintFunction GetTrackPaintFunctionFlyingRC(OpenRCT2::TrackElemType trackTy
             return FlyingRCTrackLeftFlyingLargeHalfLoopUninvertedDown;
         case TrackElemType::RightFlyerLargeHalfLoopUninvertedDown:
             return FlyingRCTrackRightFlyingLargeHalfLoopUninvertedDown;
+        case TrackElemType::Up90ToInvertedFlatQuarterLoop:
+        case TrackElemType::InvertedFlatToDown90QuarterLoop:
+            return TrackPaintFunctionDummy;
         default:
             return GetTrackPaintFunctionTwisterRC(trackType);
     }
