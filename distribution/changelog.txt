@@ -27,6 +27,7 @@
 - Fix: [#25380] The Lay-down Roller Coaster left corkscrew supports are incorrect at one angle (original bug).
 - Fix: [#25388] The Shortcut Keys window uses the wrong colours for separators, scrollbars and buttons.
 - Fix: [#25401] Mazes can be built 2 units higher than their support limits.
+- Fix: [#25404] Guests that have been removed with the remove all guests cheat will still be visible if they were sliding down the Spiral Slide.
 
 0.4.27 (2025-10-04)
 ------------------------------------------------------------------------
