@@ -21,7 +21,7 @@
 #include <openrct2/audio/Audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/String.hpp>
-#include <openrct2/drawing/Rect.h>
+#include <openrct2/drawing/Rectangle.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/LocalisationService.h>
 #include <openrct2/management/NewsItem.h>
@@ -491,14 +491,14 @@ namespace OpenRCT2::Ui::Windows
             while (listItem->Type != kRideTypeNull || listItem->EntryIndex != kObjectEntryIndexNull)
             {
                 // Draw flat button rectangle
-                auto borderStyle = Rect::BorderStyle::none;
+                auto borderStyle = Rectangle::BorderStyle::none;
                 if (_newRideVars.SelectedRide == *listItem)
-                    borderStyle = Rect::BorderStyle::inset;
+                    borderStyle = Rectangle::BorderStyle::inset;
 
-                if (_newRideVars.HighlightedRide == *listItem || borderStyle != Rect::BorderStyle::none)
-                    Rect::fillInset(
+                if (_newRideVars.HighlightedRide == *listItem || borderStyle != Rectangle::BorderStyle::none)
+                    Rectangle::fillInset(
                         rt, { coords, coords + ScreenCoordsXY{ 115, 115 } }, colours[1], borderStyle,
-                        Rect::FillBrightness::dark);
+                        Rectangle::FillBrightness::dark);
 
                 // Draw ride image with feathered border
                 auto mask = ImageId(SPR_NEW_RIDE_MASK);

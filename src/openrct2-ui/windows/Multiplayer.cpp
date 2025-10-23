@@ -17,7 +17,7 @@
 #include <openrct2/actions/NetworkModifyGroupAction.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/String.hpp>
-#include <openrct2/drawing/Rect.h>
+#include <openrct2/drawing/Rectangle.h>
 #include <openrct2/drawing/Text.h>
 #include <openrct2/network/Network.h>
 #include <openrct2/ui/WindowManager.h>
@@ -270,7 +270,7 @@ namespace OpenRCT2::Ui::Windows
                     auto colour = ColourWithFlags{ COLOUR_BLACK };
                     if (listPosition == selectedListItem)
                     {
-                        Rect::filter(
+                        Rectangle::filter(
                             rt, { 0, screenCoords.y, 800, screenCoords.y + kScrollableRowHeight - 1 },
                             FilterPaletteID::paletteDarken1);
                         _buffer += Network::GetPlayerName(player);
@@ -370,9 +370,9 @@ namespace OpenRCT2::Ui::Windows
 
             screenPos.y += 20;
 
-            Rect::fillInset(
+            Rectangle::fillInset(
                 rt, { screenPos - ScreenCoordsXY{ 0, 6 }, screenPos + ScreenCoordsXY{ 310, -5 } }, colours[1],
-                Rect::BorderStyle::inset);
+                Rectangle::BorderStyle::inset);
 
             widget = &widgets[WIDX_SELECTED_GROUP];
             group = Network::GetGroupIndex(_selectedGroup);
@@ -393,7 +393,7 @@ namespace OpenRCT2::Ui::Windows
             auto screenCoords = ScreenCoordsXY{ 0, 0 };
 
             auto rtCoords = ScreenCoordsXY{ rt.x, rt.y };
-            Rect::fill(
+            Rectangle::fill(
                 rt, { rtCoords, rtCoords + ScreenCoordsXY{ rt.width - 1, rt.height - 1 } },
                 ColourMapA[colours[1].colour].mid_light);
 
@@ -401,7 +401,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 if (i == selectedListItem)
                 {
-                    Rect::filter(
+                    Rectangle::filter(
                         rt, { 0, screenCoords.y, 800, screenCoords.y + kScrollableRowHeight - 1 },
                         FilterPaletteID::paletteDarken1);
                 }

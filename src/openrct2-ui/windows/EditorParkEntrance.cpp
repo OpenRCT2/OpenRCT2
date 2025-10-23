@@ -17,7 +17,7 @@
 #include <openrct2/SpriteIds.h>
 #include <openrct2/actions/ParkEntrancePlaceAction.h>
 #include <openrct2/audio/Audio.h>
-#include <openrct2/drawing/Rect.h>
+#include <openrct2/drawing/Rectangle.h>
 #include <openrct2/object/EntranceObject.h>
 #include <openrct2/object/ObjectLimits.h>
 #include <openrct2/object/ObjectManager.h>
@@ -316,20 +316,20 @@ namespace OpenRCT2::Ui::Windows
             for (auto& entranceType : _entranceTypes)
             {
                 // Draw flat button rectangle
-                auto borderStyle = Rect::BorderStyle::outset;
-                auto fillBrightness = Rect::FillBrightness::light;
+                auto borderStyle = Rectangle::BorderStyle::outset;
+                auto fillBrightness = Rectangle::FillBrightness::light;
                 if (_selectedEntranceType == entranceType.entryIndex)
                 {
-                    borderStyle = Rect::BorderStyle::inset;
-                    fillBrightness = Rect::FillBrightness::dark;
+                    borderStyle = Rectangle::BorderStyle::inset;
+                    fillBrightness = Rectangle::FillBrightness::dark;
                 }
                 else if (_highlightedEntranceType == entranceType.entryIndex)
                 {
-                    fillBrightness = Rect::FillBrightness::dark;
+                    fillBrightness = Rectangle::FillBrightness::dark;
                 }
 
-                if (fillBrightness != Rect::FillBrightness::light)
-                    Rect::fillInset(
+                if (fillBrightness != Rectangle::FillBrightness::light)
+                    Rectangle::fillInset(
                         rt, { coords, coords + ScreenCoordsXY{ kImageSize - 1, kImageSize - 1 } }, colours[1], borderStyle,
                         fillBrightness);
 

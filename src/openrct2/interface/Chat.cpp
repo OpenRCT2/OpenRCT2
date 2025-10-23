@@ -15,7 +15,7 @@
 #include "../audio/AudioMixer.h"
 #include "../core/UTF8.h"
 #include "../drawing/Drawing.h"
-#include "../drawing/Rect.h"
+#include "../drawing/Rectangle.h"
 #include "../drawing/Text.h"
 #include "../localisation/Formatter.h"
 #include "../localisation/Formatting.h"
@@ -140,19 +140,19 @@ void ChatDraw(RenderTarget& rt, ColourWithFlags chatBackgroundColor)
         ScreenCoordsXY bottomLeft{ _chatLeft, _chatBottom };
         GfxSetDirtyBlocks(
             { topLeft - ScreenCoordsXY{ 0, 5 }, bottomRight + ScreenCoordsXY{ 0, 5 } }); // Background area + Textbox
-        Rect::filter(
+        Rectangle::filter(
             rt, { topLeft - ScreenCoordsXY{ 0, 5 }, bottomRight + ScreenCoordsXY{ 0, 5 } },
             FilterPaletteID::palette51); // Opaque grey background
-        Rect::fillInset(
+        Rectangle::fillInset(
             rt, { topLeft - ScreenCoordsXY{ 0, 5 }, bottomRight + ScreenCoordsXY{ 0, 5 } }, chatBackgroundColor,
-            Rect::BorderStyle::outset, Rect::FillBrightness::light, Rect::FillMode::none);
-        Rect::fillInset(
+            Rectangle::BorderStyle::outset, Rectangle::FillBrightness::light, Rectangle::FillMode::none);
+        Rectangle::fillInset(
             rt, { topLeft + ScreenCoordsXY{ 1, -4 }, bottomRight - ScreenCoordsXY{ 1, inputLineHeight + 6 } },
-            chatBackgroundColor, Rect::BorderStyle::inset);
-        Rect::fillInset(
+            chatBackgroundColor, Rectangle::BorderStyle::inset);
+        Rectangle::fillInset(
             rt, { bottomLeft + ScreenCoordsXY{ 1, -inputLineHeight - 5 }, bottomRight + ScreenCoordsXY{ -1, 4 } },
             chatBackgroundColor,
-            Rect::BorderStyle::inset); // Textbox
+            Rectangle::BorderStyle::inset); // Textbox
     }
 
     auto screenCoords = ScreenCoordsXY{ _chatLeft + 5, _chatBottom - inputLineHeight - 20 };
@@ -204,7 +204,7 @@ void ChatDraw(RenderTarget& rt, ColourWithFlags chatBackgroundColor)
             int32_t caretX = screenCoords.x + GfxGetStringWidth(lineBuffer, FontStyle::Medium);
             int32_t caretY = screenCoords.y + 14;
 
-            Rect::fill(rt, { { caretX, caretY }, { caretX + 6, caretY + 1 } }, PaletteIndex::pi56);
+            Rectangle::fill(rt, { { caretX, caretY }, { caretX + 6, caretY + 1 } }, PaletteIndex::pi56);
         }
     }
 }

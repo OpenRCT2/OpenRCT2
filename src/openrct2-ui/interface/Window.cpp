@@ -24,7 +24,7 @@
 #include <openrct2/audio/Audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/drawing/Drawing.h>
-#include <openrct2/drawing/Rect.h>
+#include <openrct2/drawing/Rectangle.h>
 #include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/interface/Viewport.h>
 #include <openrct2/interface/Widget.h>
@@ -1025,7 +1025,7 @@ namespace OpenRCT2::Ui::Windows
     void WindowDrawWidgets(WindowBase& w, RenderTarget& rt)
     {
         if ((w.flags.has(WindowFlag::transparent)) && !(w.flags.has(WindowFlag::noBackground)))
-            Rect::filter(
+            Rectangle::filter(
                 rt, { w.windowPos, w.windowPos + ScreenCoordsXY{ w.width - 1, w.height - 1 } }, FilterPaletteID::palette51);
 
         // todo: some code missing here? Between 006EB18C and 006EB260
@@ -1051,9 +1051,9 @@ namespace OpenRCT2::Ui::Windows
 
         if (w.flashTimer > 0)
         {
-            Rect::fillInset(
+            Rectangle::fillInset(
                 rt, { w.windowPos, w.windowPos + ScreenCoordsXY{ w.width - 1, w.height - 1 } }, { COLOUR_WHITE },
-                Rect::BorderStyle::outset, Rect::FillBrightness::light, Rect::FillMode::none);
+                Rectangle::BorderStyle::outset, Rectangle::FillBrightness::light, Rectangle::FillMode::none);
         }
     }
 

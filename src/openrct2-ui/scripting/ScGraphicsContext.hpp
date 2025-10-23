@@ -13,7 +13,7 @@
 
     #include "CustomImages.h"
 
-    #include <openrct2/drawing/Rect.h>
+    #include <openrct2/drawing/Rectangle.h>
     #include <openrct2/drawing/Text.h>
     #include <openrct2/scripting/Duktape.hpp>
 
@@ -166,14 +166,14 @@ namespace OpenRCT2::Scripting
 
         void box(int32_t x, int32_t y, int32_t width, int32_t height)
         {
-            Rect::fillInset(_rt, { x, y, x + width - 1, y + height - 1 }, { _colour.value_or(0) });
+            Rectangle::fillInset(_rt, { x, y, x + width - 1, y + height - 1 }, { _colour.value_or(0) });
         }
 
         void well(int32_t x, int32_t y, int32_t width, int32_t height)
         {
-            Rect::fillInset(
-                _rt, { x, y, x + width - 1, y + height - 1 }, { _colour.value_or(0) }, Rect::BorderStyle::inset,
-                Rect::FillBrightness::light, Rect::FillMode::dontLightenWhenInset);
+            Rectangle::fillInset(
+                _rt, { x, y, x + width - 1, y + height - 1 }, { _colour.value_or(0) }, Rectangle::BorderStyle::inset,
+                Rectangle::FillBrightness::light, Rectangle::FillMode::dontLightenWhenInset);
         }
 
         void clear()
@@ -232,7 +232,7 @@ namespace OpenRCT2::Scripting
             }
             if (_fill != 0)
             {
-                Rect::fill(_rt, { x, y, x + width - 1, y + height - 1 }, _fill);
+                Rectangle::fill(_rt, { x, y, x + width - 1, y + height - 1 }, _fill);
             }
         }
 

@@ -7,7 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "Rect.h"
+#include "Rectangle.h"
 
 #include "../interface/Colour.h"
 #include "../world/Location.hpp"
@@ -17,7 +17,7 @@
 
 using OpenRCT2::Drawing::IDrawingContext;
 
-namespace OpenRCT2::Drawing::Rect
+namespace OpenRCT2::Drawing::Rectangle
 {
     void fill(RenderTarget& rt, const ScreenRect& rect, int32_t colour)
     {
@@ -56,33 +56,33 @@ namespace OpenRCT2::Drawing::Rect
             switch (borderStyle)
             {
                 case BorderStyle::none:
-                    Rect::filter(rt, rect, palette.base);
+                    Rectangle::filter(rt, rect, palette.base);
                     break;
 
                 case BorderStyle::inset:
                     // Draw outline of box
-                    Rect::filter(rt, { leftTop, leftBottom }, palette.highlight);
-                    Rect::filter(rt, { leftTop, rightTop }, palette.highlight);
-                    Rect::filter(rt, { rightTop, rightBottom }, palette.shadow);
-                    Rect::filter(rt, { leftBottom, rightBottom }, palette.shadow);
+                    Rectangle::filter(rt, { leftTop, leftBottom }, palette.highlight);
+                    Rectangle::filter(rt, { leftTop, rightTop }, palette.highlight);
+                    Rectangle::filter(rt, { rightTop, rightBottom }, palette.shadow);
+                    Rectangle::filter(rt, { leftBottom, rightBottom }, palette.shadow);
 
                     if (fillMode != FillMode::none)
                     {
-                        Rect::filter(
+                        Rectangle::filter(
                             rt, { leftTop + ScreenCoordsXY{ 1, 1 }, rightBottom - ScreenCoordsXY{ 1, 1 } }, palette.base);
                     }
                     break;
 
                 case BorderStyle::outset:
                     // Draw outline of box
-                    Rect::filter(rt, { leftTop, leftBottom }, palette.shadow);
-                    Rect::filter(rt, { leftTop, rightTop }, palette.shadow);
-                    Rect::filter(rt, { rightTop, rightBottom }, palette.highlight);
-                    Rect::filter(rt, { leftBottom, rightBottom }, palette.highlight);
+                    Rectangle::filter(rt, { leftTop, leftBottom }, palette.shadow);
+                    Rectangle::filter(rt, { leftTop, rightTop }, palette.shadow);
+                    Rectangle::filter(rt, { rightTop, rightBottom }, palette.highlight);
+                    Rectangle::filter(rt, { leftBottom, rightBottom }, palette.highlight);
 
                     if (fillMode != FillMode::none)
                     {
-                        Rect::filter(
+                        Rectangle::filter(
                             rt, { leftTop + ScreenCoordsXY{ 1, 1 }, { rightBottom - ScreenCoordsXY{ 1, 1 } } }, palette.base);
                     }
                     break;
@@ -107,15 +107,15 @@ namespace OpenRCT2::Drawing::Rect
             switch (borderStyle)
             {
                 case BorderStyle::none:
-                    Rect::fill(rt, rect, fill);
+                    Rectangle::fill(rt, rect, fill);
                     break;
 
                 case BorderStyle::inset:
                     // Draw outline of box
-                    Rect::fill(rt, { leftTop, leftBottom }, shadow);
-                    Rect::fill(rt, { leftTop + ScreenCoordsXY{ 1, 0 }, rightTop }, shadow);
-                    Rect::fill(rt, { rightTop + ScreenCoordsXY{ 0, 1 }, rightBottom - ScreenCoordsXY{ 0, 1 } }, hilight);
-                    Rect::fill(rt, { leftBottom + ScreenCoordsXY{ 1, 0 }, rightBottom }, hilight);
+                    Rectangle::fill(rt, { leftTop, leftBottom }, shadow);
+                    Rectangle::fill(rt, { leftTop + ScreenCoordsXY{ 1, 0 }, rightTop }, shadow);
+                    Rectangle::fill(rt, { rightTop + ScreenCoordsXY{ 0, 1 }, rightBottom - ScreenCoordsXY{ 0, 1 } }, hilight);
+                    Rectangle::fill(rt, { leftBottom + ScreenCoordsXY{ 1, 0 }, rightBottom }, hilight);
 
                     if (fillMode != FillMode::none)
                     {
@@ -123,20 +123,20 @@ namespace OpenRCT2::Drawing::Rect
                         {
                             fill = ColourMapA[colour.colour].lighter;
                         }
-                        Rect::fill(rt, { leftTop + ScreenCoordsXY{ 1, 1 }, rightBottom - ScreenCoordsXY{ 1, 1 } }, fill);
+                        Rectangle::fill(rt, { leftTop + ScreenCoordsXY{ 1, 1 }, rightBottom - ScreenCoordsXY{ 1, 1 } }, fill);
                     }
                     break;
 
                 case BorderStyle::outset:
                     // Draw outline of box
-                    Rect::fill(rt, { leftTop, leftBottom - ScreenCoordsXY{ 0, 1 } }, hilight);
-                    Rect::fill(rt, { leftTop + ScreenCoordsXY{ 1, 0 }, rightTop - ScreenCoordsXY{ 1, 0 } }, hilight);
-                    Rect::fill(rt, { rightTop, rightBottom - ScreenCoordsXY{ 0, 1 } }, shadow);
-                    Rect::fill(rt, { leftBottom, rightBottom }, shadow);
+                    Rectangle::fill(rt, { leftTop, leftBottom - ScreenCoordsXY{ 0, 1 } }, hilight);
+                    Rectangle::fill(rt, { leftTop + ScreenCoordsXY{ 1, 0 }, rightTop - ScreenCoordsXY{ 1, 0 } }, hilight);
+                    Rectangle::fill(rt, { rightTop, rightBottom - ScreenCoordsXY{ 0, 1 } }, shadow);
+                    Rectangle::fill(rt, { leftBottom, rightBottom }, shadow);
 
                     if (fillMode != FillMode::none)
                     {
-                        Rect::fill(rt, { leftTop + ScreenCoordsXY{ 1, 1 }, rightBottom - ScreenCoordsXY{ 1, 1 } }, fill);
+                        Rectangle::fill(rt, { leftTop + ScreenCoordsXY{ 1, 1 }, rightBottom - ScreenCoordsXY{ 1, 1 } }, fill);
                     }
                     break;
             }
@@ -152,4 +152,4 @@ namespace OpenRCT2::Drawing::Rect
             dc->FilterRect(rt, palette, rect.GetLeft(), rect.GetTop(), rect.GetRight(), rect.GetBottom());
         }
     }
-} // namespace OpenRCT2::Drawing::Rect
+} // namespace OpenRCT2::Drawing::Rectangle

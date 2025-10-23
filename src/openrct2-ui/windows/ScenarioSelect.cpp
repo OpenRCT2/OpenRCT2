@@ -21,7 +21,7 @@
 #include <openrct2/config/Config.h>
 #include <openrct2/core/FileStream.h>
 #include <openrct2/drawing/Drawing.h>
-#include <openrct2/drawing/Rect.h>
+#include <openrct2/drawing/Rectangle.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Formatting.h>
 #include <openrct2/localisation/LocalisationService.h>
@@ -290,9 +290,9 @@ namespace OpenRCT2::Ui::Windows
             auto startFrameX = width - (GetPreviewPaneWidth() / 2) - (image->width / 2) - kPadding;
             auto frameStartPos = ScreenCoordsXY(windowPos.x + startFrameX, screenPos.y + 15);
             auto frameEndPos = frameStartPos + ScreenCoordsXY(image->width + 1, image->height + 1);
-            Rect::fillInset(
-                rt, { frameStartPos, frameEndPos }, colours[1], Rect::BorderStyle::inset, Rect::FillBrightness::dark,
-                Rect::FillMode::dontLightenWhenInset);
+            Rectangle::fillInset(
+                rt, { frameStartPos, frameEndPos }, colours[1], Rectangle::BorderStyle::inset, Rectangle::FillBrightness::dark,
+                Rectangle::FillMode::dontLightenWhenInset);
 
             // Draw image, if available
             auto imagePos = frameStartPos + ScreenCoordsXY(1, 1);
@@ -585,7 +585,7 @@ namespace OpenRCT2::Ui::Windows
                         bool isHighlighted = _highlightedScenario == scenario;
                         if (isHighlighted)
                         {
-                            Rect::filter(rt, { 0, y, width, y + scenarioItemHeight - 1 }, FilterPaletteID::paletteDarken1);
+                            Rectangle::filter(rt, { 0, y, width, y + scenarioItemHeight - 1 }, FilterPaletteID::paletteDarken1);
                         }
 
                         bool isCompleted = scenario->Highscore != nullptr;

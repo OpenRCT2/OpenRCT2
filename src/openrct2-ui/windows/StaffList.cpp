@@ -28,7 +28,7 @@
 #include <openrct2/core/EnumUtils.hpp>
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/Drawing.h>
-#include <openrct2/drawing/Rect.h>
+#include <openrct2/drawing/Rectangle.h>
 #include <openrct2/entity/EntityList.h>
 #include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/entity/PatrolArea.h>
@@ -370,7 +370,7 @@ namespace OpenRCT2::Ui::Windows
         void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
             auto rtCoords = ScreenCoordsXY{ rt.x, rt.y };
-            Rect::fill(
+            Rectangle::fill(
                 rt, { rtCoords, rtCoords + ScreenCoordsXY{ rt.width - 1, rt.height - 1 } },
                 ColourMapA[colours[1].colour].mid_light);
 
@@ -403,7 +403,7 @@ namespace OpenRCT2::Ui::Windows
 
                     if (i == _highlightedIndex)
                     {
-                        Rect::filter(rt, { 0, y, 800, y + (kScrollableRowHeight - 1) }, FilterPaletteID::paletteDarken1);
+                        Rectangle::filter(rt, { 0, y, 800, y + (kScrollableRowHeight - 1) }, FilterPaletteID::paletteDarken1);
 
                         format = STR_WINDOW_COLOUR_2_STRINGID;
                         if (_quickFireMode)

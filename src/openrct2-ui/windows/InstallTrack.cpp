@@ -20,7 +20,7 @@
 #include <openrct2/core/File.h>
 #include <openrct2/core/Path.hpp>
 #include <openrct2/core/UnitConversion.h>
-#include <openrct2/drawing/Rect.h>
+#include <openrct2/drawing/Rectangle.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/ride/RideConstruction.h>
@@ -157,7 +157,7 @@ namespace OpenRCT2::Ui::Windows
             Widget* widget = &widgets[WIDX_TRACK_PREVIEW];
             auto screenPos = windowPos + ScreenCoordsXY{ widget->left + 1, widget->top + 1 };
             int32_t colour = ColourMapA[colours[0].colour].darkest;
-            Rect::fill(rt, { screenPos, screenPos + ScreenCoordsXY{ 369, 216 } }, colour);
+            Rectangle::fill(rt, { screenPos, screenPos + ScreenCoordsXY{ 369, 216 } }, colour);
 
             G1Element g1temp = {};
             g1temp.offset = _trackDesignPreviewPixels.data() + (_currentTrackPieceDirection * kTrackPreviewImageSize);

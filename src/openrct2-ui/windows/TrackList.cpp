@@ -19,7 +19,7 @@
 #include <openrct2/core/String.hpp>
 #include <openrct2/core/UnitConversion.h>
 #include <openrct2/drawing/IDrawingEngine.h>
-#include <openrct2/drawing/Rect.h>
+#include <openrct2/drawing/Rectangle.h>
 #include <openrct2/localisation/Formatting.h>
 #include <openrct2/ride/RideConstruction.h>
 #include <openrct2/ride/RideData.h>
@@ -485,7 +485,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             auto screenPos = windowPos + ScreenCoordsXY{ tdWidget.left + 1, tdWidget.top + 1 };
-            Rect::fill(rt, { screenPos, screenPos + ScreenCoordsXY{ 369, 216 } }, colour); // TODO Check dpi
+            Rectangle::fill(rt, { screenPos, screenPos + ScreenCoordsXY{ 369, 216 } }, colour); // TODO Check dpi
 
             if (_loadedTrackDesignIndex != trackIndex)
             {
@@ -696,7 +696,7 @@ namespace OpenRCT2::Ui::Windows
                 if (listIndex == static_cast<size_t>(selectedListItem))
                 {
                     // Highlight
-                    Rect::filter(
+                    Rectangle::filter(
                         rt, { screenCoords, { width, screenCoords.y + kScrollableRowHeight - 1 } },
                         FilterPaletteID::paletteDarken1);
                     stringId = STR_WINDOW_COLOUR_2_STRINGID;
@@ -721,7 +721,7 @@ namespace OpenRCT2::Ui::Windows
                     if (listIndex == static_cast<size_t>(selectedListItem))
                     {
                         // Highlight
-                        Rect::filter(
+                        Rectangle::filter(
                             rt, { screenCoords, { width, screenCoords.y + kScrollableRowHeight - 1 } },
                             FilterPaletteID::paletteDarken1);
                         stringId = STR_WINDOW_COLOUR_2_STRINGID;

@@ -34,7 +34,7 @@
 #include <openrct2/config/Config.h>
 #include <openrct2/core/Guard.hpp>
 #include <openrct2/core/String.hpp>
-#include <openrct2/drawing/Rect.h>
+#include <openrct2/drawing/Rectangle.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/management/Research.h>
 #include <openrct2/network/Network.h>
@@ -1660,24 +1660,24 @@ namespace OpenRCT2::Ui::Windows
                 {
                     if (_selectedScenery == currentSceneryGlobal)
                     {
-                        Rect::fillInset(
+                        Rectangle::fillInset(
                             rt, { topLeft, topLeft + ScreenCoordsXY{ kSceneryButtonWidth - 1, kSceneryButtonHeight - 1 } },
-                            colours[1], Rect::BorderStyle::outset, Rect::FillBrightness::dark);
+                            colours[1], Rectangle::BorderStyle::outset, Rectangle::FillBrightness::dark);
                     }
                 }
                 else
                 {
                     if (tabSelectedScenery == currentSceneryGlobal)
                     {
-                        Rect::fillInset(
+                        Rectangle::fillInset(
                             rt, { topLeft, topLeft + ScreenCoordsXY{ kSceneryButtonWidth - 1, kSceneryButtonHeight - 1 } },
-                            colours[1], Rect::BorderStyle::inset, Rect::FillBrightness::dark);
+                            colours[1], Rectangle::BorderStyle::inset, Rectangle::FillBrightness::dark);
                     }
                     else if (_selectedScenery == currentSceneryGlobal)
                     {
-                        Rect::fillInset(
+                        Rectangle::fillInset(
                             rt, { topLeft, topLeft + ScreenCoordsXY{ kSceneryButtonWidth - 1, kSceneryButtonHeight - 1 } },
-                            colours[1], Rect::BorderStyle::outset, Rect::FillBrightness::dark);
+                            colours[1], Rectangle::BorderStyle::outset, Rectangle::FillBrightness::dark);
                     }
                 }
 

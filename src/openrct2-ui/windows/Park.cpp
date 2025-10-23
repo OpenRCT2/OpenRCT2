@@ -24,7 +24,7 @@
 #include <openrct2/actions/ParkSetNameAction.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/UnitConversion.h>
-#include <openrct2/drawing/Rect.h>
+#include <openrct2/drawing/Rectangle.h>
 #include <openrct2/localisation/Currency.h>
 #include <openrct2/localisation/Formatting.h>
 #include <openrct2/management/Award.h>
@@ -713,15 +713,15 @@ namespace OpenRCT2::Ui::Windows
             DrawTextBasic(rt, windowPos + ScreenCoordsXY{ widget->left + 3, widget->top + 2 }, STR_PARK_RATING_LABEL, ft);
 
             // Graph border
-            Rect::fillInset(
-                rt, _ratingGraphBounds, colours[1], Rect::BorderStyle::inset, Rect::FillBrightness::light,
-                Rect::FillMode::none);
+            Rectangle::fillInset(
+                rt, _ratingGraphBounds, colours[1], Rectangle::BorderStyle::inset, Rectangle::FillBrightness::light,
+                Rectangle::FillMode::none);
             // hide resize widget on graph area
             constexpr ScreenCoordsXY offset{ 1, 1 };
             constexpr ScreenCoordsXY bigOffset{ 5, 5 };
-            Rect::fillInset(
+            Rectangle::fillInset(
                 rt, { _ratingGraphBounds.Point2 - bigOffset, _ratingGraphBounds.Point2 - offset }, colours[1],
-                Rect::BorderStyle::none, Rect::FillBrightness::light, Rect::FillMode::dontLightenWhenInset);
+                Rectangle::BorderStyle::none, Rectangle::FillBrightness::light, Rectangle::FillMode::dontLightenWhenInset);
 
             Graph::DrawRatingGraph(rt, _ratingProps);
         }
@@ -794,14 +794,15 @@ namespace OpenRCT2::Ui::Windows
             DrawTextBasic(rt, windowPos + ScreenCoordsXY{ widget->left + 3, widget->top + 2 }, STR_GUESTS_IN_PARK_LABEL, ft);
 
             // Graph border
-            Rect::fillInset(
-                rt, _guestGraphBounds, colours[1], Rect::BorderStyle::inset, Rect::FillBrightness::light, Rect::FillMode::none);
+            Rectangle::fillInset(
+                rt, _guestGraphBounds, colours[1], Rectangle::BorderStyle::inset, Rectangle::FillBrightness::light,
+                Rectangle::FillMode::none);
             // hide resize widget on graph area
             constexpr ScreenCoordsXY offset{ 1, 1 };
             constexpr ScreenCoordsXY bigOffset{ 5, 5 };
-            Rect::fillInset(
+            Rectangle::fillInset(
                 rt, { _guestGraphBounds.Point2 - bigOffset, _guestGraphBounds.Point2 - offset }, colours[1],
-                Rect::BorderStyle::none, Rect::FillBrightness::light, Rect::FillMode::dontLightenWhenInset);
+                Rectangle::BorderStyle::none, Rectangle::FillBrightness::light, Rectangle::FillMode::dontLightenWhenInset);
 
             Graph::DrawGuestGraph(rt, _guestProps);
         }

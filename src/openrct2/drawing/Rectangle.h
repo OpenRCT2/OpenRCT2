@@ -16,7 +16,7 @@ enum class FilterPaletteID : int32_t;
 struct RenderTarget;
 struct ScreenRect;
 
-namespace OpenRCT2::Drawing::Rect
+namespace OpenRCT2::Drawing::Rectangle
 {
     enum class BorderStyle : uint8_t
     {
@@ -41,4 +41,4 @@ namespace OpenRCT2::Drawing::Rect
         RenderTarget& rt, const ScreenRect& rect, ColourWithFlags colour, BorderStyle borderStyle = BorderStyle::outset,
         FillBrightness brightness = FillBrightness::light, FillMode fillMode = FillMode::standard);
     void filter(RenderTarget& rt, const ScreenRect& rect, FilterPaletteID palette);
-} // namespace OpenRCT2::Drawing::Rect
+} // namespace OpenRCT2::Drawing::Rectangle

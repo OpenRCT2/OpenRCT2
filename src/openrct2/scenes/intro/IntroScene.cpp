@@ -17,7 +17,7 @@
 #include "../../audio/AudioChannel.h"
 #include "../../audio/AudioMixer.h"
 #include "../../drawing/Drawing.h"
-#include "../../drawing/Rect.h"
+#include "../../drawing/Rectangle.h"
 
 #include <memory>
 
@@ -203,7 +203,7 @@ namespace OpenRCT2
                 GfxClear(rt, kBackgroundColourDark);
 
                 // Draw a white rectangle for the logo background (gives a bit of white margin)
-                Rect::fill(
+                Rectangle::fill(
                     rt,
                     { { (screenWidth / 2) - 320 + 50, _introStateCounter + 50 },
                       { (screenWidth / 2) - 320 + 50 + 540, _introStateCounter + 50 + 425 } },

@@ -20,7 +20,7 @@
 #include <openrct2/config/Config.h>
 #include <openrct2/core/UTF8.h>
 #include <openrct2/drawing/Drawing.h>
-#include <openrct2/drawing/Rect.h>
+#include <openrct2/drawing/Rectangle.h>
 #include <openrct2/interface/Colour.h>
 #include <openrct2/interface/Viewport.h>
 #include <openrct2/interface/Window.h>
@@ -312,21 +312,21 @@ void InGameConsole::Draw(RenderTarget& rt) const
     Invalidate();
 
     // Give console area a translucent effect.
-    Rect::filter(rt, { _consoleTopLeft, _consoleBottomRight }, FilterPaletteID::palette51);
+    Rectangle::filter(rt, { _consoleTopLeft, _consoleBottomRight }, FilterPaletteID::palette51);
 
     // Make input area more opaque.
-    Rect::filter(
+    Rectangle::filter(
         rt, { { _consoleTopLeft.x, _consoleBottomRight.y - lineHeight - 10 }, _consoleBottomRight - ScreenCoordsXY{ 0, 1 } },
         FilterPaletteID::palette51);
 
     // Paint background colour.
     auto backgroundColour = ThemeGetColour(WindowClass::console, 0);
-    Rect::fillInset(
-        rt, { _consoleTopLeft, _consoleBottomRight }, backgroundColour, Rect::BorderStyle::outset, Rect::FillBrightness::light,
-        Rect::FillMode::none);
-    Rect::fillInset(
+    Rectangle::fillInset(
+        rt, { _consoleTopLeft, _consoleBottomRight }, backgroundColour, Rectangle::BorderStyle::outset,
+        Rectangle::FillBrightness::light, Rectangle::FillMode::none);
+    Rectangle::fillInset(
         rt, { _consoleTopLeft + ScreenCoordsXY{ 1, 1 }, _consoleBottomRight - ScreenCoordsXY{ 1, 1 } }, backgroundColour,
-        Rect::BorderStyle::inset);
+        Rectangle::BorderStyle::inset);
 
     std::string lineBuffer;
     auto screenCoords = _consoleTopLeft + ScreenCoordsXY{ kConsoleEdgePadding, kConsoleEdgePadding };
@@ -377,7 +377,7 @@ void InGameConsole::Draw(RenderTarget& rt) const
     {
         auto caret = screenCoords + ScreenCoordsXY{ _caretScreenPosX, lineHeight };
         uint8_t caretColour = ColourMapA[textColour.colour].lightest;
-        Rect::fill(rt, { caret, caret + ScreenCoordsXY{ kConsoleCaretWidth, 1 } }, caretColour);
+        Rectangle::fill(rt, { caret, caret + ScreenCoordsXY{ kConsoleCaretWidth, 1 } }, caretColour);
     }
 
     // What about border colours?
@@ -385,22 +385,22 @@ void InGameConsole::Draw(RenderTarget& rt) const
     uint8_t borderColour2 = ColourMapA[backgroundColour.colour].mid_dark;
 
     // Input area top border
-    Rect::fill(
+    Rectangle::fill(
         rt,
         { { _consoleTopLeft.x, _consoleBottomRight.y - lineHeight - 11 },
           { _consoleBottomRight.x, _consoleBottomRight.y - lineHeight - 11 } },
         borderColour1);
-    Rect::fill(
+    Rectangle::fill(
         rt,
         { { _consoleTopLeft.x, _consoleBottomRight.y - lineHeight - 10 },
           { _consoleBottomRight.x, _consoleBottomRight.y - lineHeight - 10 } },
         borderColour2);
 
     // Input area bottom border
-    Rect::fill(
+    Rectangle::fill(
         rt, { { _consoleTopLeft.x, _consoleBottomRight.y - 1 }, { _consoleBottomRight.x, _consoleBottomRight.y - 1 } },
         borderColour1);
-    Rect::fill(rt, { { _consoleTopLeft.x, _consoleBottomRight.y }, _consoleBottomRight }, borderColour2);
+    Rectangle::fill(rt, { { _consoleTopLeft.x, _consoleBottomRight.y }, _consoleBottomRight }, borderColour2);
 }
 
 // Calculates the amount of visible lines, based on the console size, excluding the input line.

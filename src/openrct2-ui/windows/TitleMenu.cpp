@@ -19,7 +19,7 @@
 #include <openrct2/PlatformEnvironment.h>
 #include <openrct2/SpriteIds.h>
 #include <openrct2/actions/LoadOrQuitAction.h>
-#include <openrct2/drawing/Rect.h>
+#include <openrct2/drawing/Rectangle.h>
 #include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
 
@@ -276,7 +276,7 @@ namespace OpenRCT2::Ui::Windows
 
         void onDraw(RenderTarget& rt) override
         {
-            Rect::filter(rt, _filterRect, FilterPaletteID::palette51);
+            Rectangle::filter(rt, _filterRect, FilterPaletteID::palette51);
             drawWidgets(rt);
         }
     };

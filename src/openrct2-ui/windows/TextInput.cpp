@@ -17,7 +17,7 @@
 #include <openrct2/core/String.hpp>
 #include <openrct2/core/UTF8.h>
 #include <openrct2/drawing/Drawing.h>
-#include <openrct2/drawing/Rect.h>
+#include <openrct2/drawing/Rectangle.h>
 #include <openrct2/localisation/Formatting.h>
 #include <openrct2/localisation/StringIds.h>
 #include <openrct2/ui/WindowManager.h>
@@ -226,11 +226,12 @@ namespace OpenRCT2::Ui::Windows
                 u8string_view{ _buffer.data(), _buffer.size() }, kWindowSize.width - (24 + 13), FontStyle::Medium,
                 &wrappedString, &no_lines);
 
-            Rect::fillInset(
+            Rectangle::fillInset(
                 rt,
                 { { windowPos.x + 10, screenCoords.y },
                   { windowPos.x + kWindowSize.width - 10, screenCoords.y + 10 * (no_lines + 1) + 3 } },
-                colours[1], Rect::BorderStyle::inset, Rect::FillBrightness::light, Rect::FillMode::dontLightenWhenInset);
+                colours[1], Rectangle::BorderStyle::inset, Rectangle::FillBrightness::light,
+                Rectangle::FillMode::dontLightenWhenInset);
 
             screenCoords.y += 1;
 
@@ -270,7 +271,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         uint8_t colour = ColourMapA[colours[1].colour].mid_light;
                         // TODO: palette index addition
-                        Rect::fill(
+                        Rectangle::fill(
                             rt, { { cursorX, screenCoords.y + 9 }, { cursorX + textWidth, screenCoords.y + 9 } }, colour + 5);
                     }
 

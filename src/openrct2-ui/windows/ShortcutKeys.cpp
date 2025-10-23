@@ -15,7 +15,7 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2/SpriteIds.h>
 #include <openrct2/drawing/Drawing.h>
-#include <openrct2/drawing/Rect.h>
+#include <openrct2/drawing/Rectangle.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/StringIds.h>
 #include <openrct2/ui/WindowManager.h>
@@ -300,7 +300,7 @@ namespace OpenRCT2::Ui::Windows
         void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
             auto rtCoords = ScreenCoordsXY{ rt.x, rt.y };
-            Rect::fill(
+            Rectangle::fill(
                 rt, { rtCoords, rtCoords + ScreenCoordsXY{ rt.width - 1, rt.height - 1 } },
                 ColourMapA[colours[1].colour].mid_light);
 
@@ -504,8 +504,8 @@ namespace OpenRCT2::Ui::Windows
         void DrawSeparator(RenderTarget& rt, int32_t y, int32_t scrollWidth)
         {
             const int32_t top = y + (kScrollableRowHeight / 2) - 1;
-            Rect::fill(rt, { { 0, top }, { scrollWidth, top } }, ColourMapA[colours[1].colour].mid_dark);
-            Rect::fill(rt, { { 0, top + 1 }, { scrollWidth, top + 1 } }, ColourMapA[colours[1].colour].lightest);
+            Rectangle::fill(rt, { { 0, top }, { scrollWidth, top } }, ColourMapA[colours[1].colour].mid_dark);
+            Rectangle::fill(rt, { { 0, top + 1 }, { scrollWidth, top + 1 } }, ColourMapA[colours[1].colour].lightest);
         }
 
         void DrawItem(RenderTarget& rt, int32_t y, int32_t scrollWidth, const ShortcutStringPair& shortcut, bool isHighlighted)
@@ -514,7 +514,8 @@ namespace OpenRCT2::Ui::Windows
             if (isHighlighted)
             {
                 format = STR_WINDOW_COLOUR_2_STRINGID;
-                Rect::filter(rt, { 0, y - 1, scrollWidth, y + (kScrollableRowHeight - 2) }, FilterPaletteID::paletteDarken1);
+                Rectangle::filter(
+                    rt, { 0, y - 1, scrollWidth, y + (kScrollableRowHeight - 2) }, FilterPaletteID::paletteDarken1);
             }
 
             auto bindingOffset = (scrollWidth * 2) / 3;

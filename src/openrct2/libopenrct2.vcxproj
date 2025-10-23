@@ -253,7 +253,7 @@
     <ClInclude Include="drawing\InvalidationGrid.h" />
     <ClInclude Include="drawing\LightFX.h" />
     <ClInclude Include="drawing\NewDrawing.h" />
-    <ClInclude Include="drawing\Rect.h" />
+    <ClInclude Include="drawing\Rectangle.h" />
     <ClInclude Include="drawing\ScrollingText.h" />
     <ClInclude Include="drawing\Weather.h" />
     <ClInclude Include="drawing\Text.h" />
@@ -833,7 +833,7 @@
     <ClCompile Include="drawing\Line.cpp" />
     <ClCompile Include="drawing\NewDrawing.cpp" />
     <ClCompile Include="drawing\Weather.cpp" />
-    <ClCompile Include="drawing\Rect.cpp" />
+    <ClCompile Include="drawing\Rectangle.cpp" />
     <ClCompile Include="drawing\ScrollingText.cpp" />
     <ClCompile Include="drawing\SSE41Drawing.cpp" />
     <ClCompile Include="drawing\Text.cpp" />

@@ -20,7 +20,7 @@
 #include <openrct2/actions/RideSetStatusAction.h>
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/Drawing.h>
-#include <openrct2/drawing/Rect.h>
+#include <openrct2/drawing/Rectangle.h>
 #include <openrct2/interface/Colour.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/network/Network.h>
@@ -623,7 +623,7 @@ namespace OpenRCT2::Ui::Windows
         void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
             auto rtCoords = ScreenCoordsXY{ rt.x, rt.y };
-            Rect::fill(
+            Rectangle::fill(
                 rt, { rtCoords, rtCoords + ScreenCoordsXY{ rt.width, rt.height } }, ColourMapA[colours[1].colour].mid_light);
 
             auto y = 0;
@@ -639,7 +639,7 @@ namespace OpenRCT2::Ui::Windows
                 if (i == static_cast<size_t>(selectedListItem))
                 {
                     // Background highlight
-                    Rect::filter(rt, { 0, y, 800, y + kScrollableRowHeight - 1 }, FilterPaletteID::paletteDarken1);
+                    Rectangle::filter(rt, { 0, y, 800, y + kScrollableRowHeight - 1 }, FilterPaletteID::paletteDarken1);
                     format = STR_WINDOW_COLOUR_2_STRINGID;
                     if (_quickDemolishMode)
                         format = STR_LIGHTPINK_STRINGID;
