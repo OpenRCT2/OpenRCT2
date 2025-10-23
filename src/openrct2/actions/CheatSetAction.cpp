@@ -721,6 +721,7 @@ namespace OpenRCT2::GameActions
         for (auto& ride : RideManager(gameState))
         {
             ride.numRiders = 0;
+            ride.slideInUse = 0;
 
             for (auto& station : ride.getStations())
             {
