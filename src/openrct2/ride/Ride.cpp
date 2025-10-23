@@ -1293,9 +1293,7 @@ void updateSpiralSlide(Ride& ride)
         auto* peep = getGameState().entities.GetEntity<Guest>(ride.slidePeep);
         if (peep != nullptr)
         {
-            auto destination = peep->GetDestination();
-            destination.x++;
-            peep->SetDestination(destination);
+            peep->spiralSlideSubstate = PeepSpiralSlideSubState::finishedSliding;
         }
     }
 
