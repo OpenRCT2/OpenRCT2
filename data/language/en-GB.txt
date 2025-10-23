@@ -3844,3 +3844,4 @@ STR_7002    :{STRINGID} {STRINGID}
 STR_7003    :Audio file ‘{STRING}’ is truncated. Expected sample {INT32}, but only {INT32} are available. Consider reinstalling RCT2.
 STR_7004    :Force Redraw
 STR_7005    :Drag an area of footpath
+STR_7006    :Draw border around image buttons

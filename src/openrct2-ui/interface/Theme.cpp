@@ -158,7 +158,7 @@ namespace OpenRCT2::Ui
     {
         // WindowClass                              WindowClassSZ                        WindowName                                        windowColours
         { WindowClass::topToolbar,                  "WC_TOP_TOOLBAR",                    STR_THEMES_WINDOW_TOP_TOOLBAR,                    { opaque(COLOUR_LIGHT_BLUE),               opaque(COLOUR_DARK_GREEN),               opaque(COLOUR_DARK_BROWN),             opaque(COLOUR_GREY)         } },
-        { WindowClass::bottomToolbar,               "WC_BOTTOM_TOOLBAR",                 STR_THEMES_WINDOW_BOTTOM_TOOLBAR,                 { translucent(COLOUR_DARK_GREEN),          translucent(COLOUR_DARK_GREEN),          opaque(COLOUR_BLACK),                  opaque(COLOUR_BRIGHT_GREEN) } },
+        { WindowClass::bottomToolbar,               "WC_BOTTOM_TOOLBAR",                 STR_THEMES_WINDOW_BOTTOM_TOOLBAR,                 { translucent(COLOUR_DARK_GREEN),          opaque(COLOUR_BLACK),                    opaque(COLOUR_BLACK),                  opaque(COLOUR_BRIGHT_GREEN) } },
         { WindowClass::ride,                        "WC_RIDE",                           STR_THEMES_WINDOW_RIDE,                           { opaque(COLOUR_GREY),                     opaque(COLOUR_BORDEAUX_RED),             opaque(COLOUR_SATURATED_GREEN)                                     } },
         { WindowClass::rideConstruction,            "WC_RIDE_CONSTRUCTION",              STR_THEMES_WINDOW_RIDE_CONSTRUCTION,              { opaque(COLOUR_DARK_BROWN),               opaque(COLOUR_DARK_BROWN),               opaque(COLOUR_DARK_BROWN)                                          } },
         { WindowClass::rideList,                    "WC_RIDE_LIST",                      STR_THEMES_WINDOW_RIDE_LIST,                      { opaque(COLOUR_GREY),                     opaque(COLOUR_BORDEAUX_RED),             opaque(COLOUR_BORDEAUX_RED)                                        } },
@@ -232,7 +232,7 @@ namespace OpenRCT2::Ui
 
     static constexpr std::array kPredefinedThemeRCT1Entries = std::to_array<UIThemeWindowEntry>({
         { WindowClass::topToolbar,             { opaque(COLOUR_GREY),             opaque(COLOUR_GREY),             opaque(COLOUR_GREY),                opaque(COLOUR_GREY),     opaque(COLOUR_BLACK),    opaque(COLOUR_BLACK) } },
-        { WindowClass::bottomToolbar,          { translucent(COLOUR_GREY),        translucent(COLOUR_GREY),        opaque(COLOUR_VOID),                opaque(COLOUR_YELLOW),   opaque(COLOUR_BLACK),    opaque(COLOUR_BLACK) } },
+        { WindowClass::bottomToolbar,          { translucent(COLOUR_GREY),        opaque(COLOUR_GREY),             opaque(COLOUR_VOID),                opaque(COLOUR_YELLOW),   opaque(COLOUR_BLACK),    opaque(COLOUR_BLACK) } },
         { WindowClass::ride,                   { opaque(COLOUR_BORDEAUX_RED),     opaque(COLOUR_GREY),             opaque(COLOUR_SATURATED_GREEN),     opaque(COLOUR_BLACK),    opaque(COLOUR_BLACK),    opaque(COLOUR_BLACK) } },
         { WindowClass::rideList,               { opaque(COLOUR_BORDEAUX_RED),     opaque(COLOUR_GREY),             opaque(COLOUR_GREY),                opaque(COLOUR_BLACK),    opaque(COLOUR_BLACK),    opaque(COLOUR_BLACK) } },
         { WindowClass::constructRide,          { opaque(COLOUR_BORDEAUX_RED),     opaque(COLOUR_GREY),             opaque(COLOUR_GREY),                opaque(COLOUR_BLACK),    opaque(COLOUR_BLACK),    opaque(COLOUR_BLACK) } },
@@ -262,7 +262,7 @@ namespace OpenRCT2::Ui
     const UITheme kPredefinedThemeRCT1 = UITheme::CreatePredefined(
         "*RCT1", kPredefinedThemeRCT1Entries,
         UITHEME_FLAG_USE_LIGHTS_RIDE | UITHEME_FLAG_USE_LIGHTS_PARK | UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT
-            | UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR);
+            | UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR | UITHEME_FLAG_USE_3D_IMAGE_BUTTONS);
 
     const UITheme kPredefinedThemeRCT2 = UITheme::CreatePredefined("*RCT2", kPredefinedThemeRCT2Entries, 0);
 
@@ -441,6 +441,7 @@ namespace OpenRCT2::Ui
             { "useLightsPark", (Flags & UITHEME_FLAG_USE_LIGHTS_PARK) != 0 },
             { "useAltScenarioSelectFont", (Flags & UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT) != 0 },
             { "useFullBottomToolbar", (Flags & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR) != 0 },
+            { "use3dImageButtons", (Flags & UITHEME_FLAG_USE_3D_IMAGE_BUTTONS) != 0 },
         };
 
         return jsonTheme;
@@ -489,6 +490,7 @@ namespace OpenRCT2::Ui
                     { "useLightsPark", UITHEME_FLAG_USE_LIGHTS_PARK },
                     { "useAltScenarioSelectFont", UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT },
                     { "useFullBottomToolbar", UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR },
+                    { "use3dImageButtons", UITHEME_FLAG_USE_3D_IMAGE_BUTTONS },
                 });
 
             if (jsonEntries.is_object())

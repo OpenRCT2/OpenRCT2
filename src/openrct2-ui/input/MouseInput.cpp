@@ -1115,6 +1115,7 @@ namespace OpenRCT2
             case WidgetType::trnBtn:
             case WidgetType::tab:
             case WidgetType::flatBtn:
+            case WidgetType::hiddenButton:
             case WidgetType::button:
             case WidgetType::tableHeader:
             case WidgetType::spinner:
