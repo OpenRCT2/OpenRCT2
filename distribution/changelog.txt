@@ -2,6 +2,7 @@
 ------------------------------------------------------------------------
 - Feature: [#25286] Footpath area dragging tool.
 - Feature: [#25379] Add an option to the command line screenshot function to draw debug segment heights.
+- Improved: [#21375] The `load_object` console command now allows loading JSON objects.
 - Improved: [#25297] Paths on the ground in SV4/SC4 no longer block supports of the paths above.
 - Improved: [#25349] ‘Recent Messages’ window can now be fully themed.
 - Change: [#25089] Peep actions and animations that cause them to stop moving no longer trigger when they are on a level crossing.

@@ -1057,22 +1057,32 @@ static void ConsoleCommandLoadObject(InteractiveConsole& console, const argument
         return;
     }
 
-    char name[9] = { 0 };
-    std::fill_n(name, 8, ' ');
-    std::size_t i = 0;
-    for (const char* ch = argv[0].c_str(); *ch != '\0' && i < std::size(name) - 1; ch++)
+    auto& objectRepository = GetContext()->GetObjectRepository();
+    auto objectName = argv[0];
+
+    // First, try and find a JSON object by this name
+    const ObjectRepositoryItem* ori = objectRepository.FindObject(objectName);
+
+    // If this fails, try loading by DAT name
+    if (ori == nullptr)
     {
-        name[i++] = *ch;
+        char name[9] = { 0 };
+        std::fill_n(name, 8, ' ');
+        std::size_t i = 0;
+        for (const char* ch = objectName.c_str(); *ch != '\0' && i < std::size(name) - 1; ch++)
+        {
+            name[i++] = *ch;
+        }
+
+        ori = objectRepository.FindObjectLegacy(name);
     }
 
-    const ObjectRepositoryItem* ori = ObjectRepositoryFindObjectByName(name);
     if (ori == nullptr)
     {
         console.WriteLineError("Could not find the object.");
         return;
     }
 
-    const auto* entry = &ori->ObjectEntry;
     const auto* loadedObject = ObjectManagerGetLoadedObject(ObjectEntryDescriptor(*ori));
     if (loadedObject != nullptr)
     {
@@ -1080,7 +1090,8 @@ static void ConsoleCommandLoadObject(InteractiveConsole& console, const argument
         return;
     }
 
-    loadedObject = ObjectManagerLoadObject(entry);
+    auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
+    loadedObject = objectManager.LoadRepositoryItem(*ori);
     if (loadedObject == nullptr)
     {
         console.WriteLineError("Unable to load object.");
@@ -1088,7 +1099,7 @@ static void ConsoleCommandLoadObject(InteractiveConsole& console, const argument
     }
     auto groupIndex = ObjectManagerGetLoadedObjectEntryIndex(loadedObject);
 
-    ObjectType objectType = entry->GetType();
+    ObjectType objectType = loadedObject->GetObjectType();
     if (objectType == ObjectType::ride)
     {
         // Automatically research the ride so it's supported by the game.
