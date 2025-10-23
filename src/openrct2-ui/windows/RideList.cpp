@@ -839,8 +839,7 @@ namespace OpenRCT2::Ui::Windows
                         break;
                     case INFORMATION_TYPE_RIDETYPE:
                     {
-                        const auto& rtd = ridePtr->getRideTypeDescriptor();
-                        auto rideTypeName = rtd.Naming.Name;
+                        const auto rideTypeName = ridePtr->getTypeNaming().Name;
                         formatSecondary = STR_STRINGID;
                         ft.Add<StringId>(rideTypeName);
                         break;
@@ -1104,11 +1103,8 @@ namespace OpenRCT2::Ui::Windows
                         if (!ridePtrLhs || !ridePtrRhs)
                             return ridePtrLhs != nullptr;
 
-                        auto rtdLhs = ridePtrLhs->getRideTypeDescriptor();
-                        auto rtdRhs = ridePtrRhs->getRideTypeDescriptor();
-
-                        auto rideTypeNameLhs = LanguageGetString(rtdLhs.Naming.Name);
-                        auto rideTypeNameRhs = LanguageGetString(rtdRhs.Naming.Name);
+                        auto rideTypeNameLhs = LanguageGetString(ridePtrLhs->getTypeNaming().Name);
+                        auto rideTypeNameRhs = LanguageGetString(ridePtrRhs->getTypeNaming().Name);
 
                         return String::logicalCmp(rideTypeNameLhs, rideTypeNameRhs) > 0;
                     });
