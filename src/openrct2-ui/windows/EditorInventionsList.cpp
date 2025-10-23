@@ -110,8 +110,7 @@ namespace OpenRCT2::Ui::Windows
         if (researchItem.type == Research::EntryType::ride
             && !GetRideTypeDescriptor(researchItem.baseRideType).HasFlag(RtdFlag::listVehiclesSeparately))
         {
-            const StringId rideTypeName = GetRideNaming(
-                                              researchItem.baseRideType, *GetRideEntryByIndex(researchItem.entryIndex))
+            const StringId rideTypeName = GetRideNaming(researchItem.baseRideType, GetRideEntryByIndex(researchItem.entryIndex))
                                               .Name;
 
             // Draw group name
@@ -419,8 +418,7 @@ namespace OpenRCT2::Ui::Windows
                 && !GetRideTypeDescriptor(researchItem->baseRideType).HasFlag(RtdFlag::listVehiclesSeparately))
             {
                 drawString = STR_WINDOW_COLOUR_2_STRINGID_STRINGID;
-                StringId rideTypeName = GetRideNaming(
-                                            researchItem->baseRideType, *GetRideEntryByIndex(researchItem->entryIndex))
+                StringId rideTypeName = GetRideNaming(researchItem->baseRideType, GetRideEntryByIndex(researchItem->entryIndex))
                                             .Name;
                 ft.Add<StringId>(rideTypeName);
                 ft.Add<StringId>(stringId);

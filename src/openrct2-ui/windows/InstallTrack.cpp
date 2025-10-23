@@ -201,7 +201,7 @@ namespace OpenRCT2::Ui::Windows
                 if (objectEntry != nullptr)
                 {
                     auto groupIndex = ObjectManagerGetLoadedObjectEntryIndex(objectEntry);
-                    auto rideName = GetRideNaming(td.trackAndVehicle.rtdIndex, *GetRideEntryByIndex(groupIndex));
+                    auto rideName = GetRideNaming(td.trackAndVehicle.rtdIndex, GetRideEntryByIndex(groupIndex));
                     ft.Add<StringId>(rideName.Name);
                 }
                 else

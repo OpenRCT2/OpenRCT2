@@ -763,7 +763,7 @@ namespace OpenRCT2::Ui::Windows
 
         bool IsFilterInRideType(const RideObjectEntry& rideEntry)
         {
-            auto rideTypeName = GetRideNaming(rideEntry.ride_type[0], rideEntry).Name;
+            auto rideTypeName = GetRideNaming(rideEntry.ride_type[0], &rideEntry).Name;
             return String::contains(u8string_view(LanguageGetString(rideTypeName)), _filter, true);
         }
 
@@ -921,7 +921,7 @@ namespace OpenRCT2::Ui::Windows
             auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
             const auto* rideObj = objMgr.GetLoadedObject<RideObject>(item.EntryIndex);
             const auto& rideEntry = rideObj->GetEntry();
-            RideNaming rideNaming = GetRideNaming(item.Type, rideEntry);
+            RideNaming rideNaming = GetRideNaming(item.Type, &rideEntry);
             auto ft = Formatter();
 
             UpdateVehicleAvailability(item.Type);

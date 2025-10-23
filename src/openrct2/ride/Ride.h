@@ -403,6 +403,7 @@ public:
 
     uint64_t getAvailableModes() const;
     const RideTypeDescriptor& getRideTypeDescriptor() const;
+    RideNaming getTypeNaming() const;
     OpenRCT2::TrackElement* getOriginElement(StationIndex stationIndex) const;
 
     std::pair<RideMeasurement*, OpenRCT2String> getMeasurement();
