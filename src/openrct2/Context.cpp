@@ -60,6 +60,7 @@
 #include "profiling/Profiling.h"
 #include "rct2/RCT2.h"
 #include "ride/TrackDesignRepository.h"
+#include "ride/TrackStyle.h"
 #include "scenario/Scenario.h"
 #include "scenario/ScenarioRepository.h"
 #include "scenes/game/GameScene.h"
@@ -532,6 +533,8 @@ namespace OpenRCT2
                 }
                 Drawing::LightFx::Init();
             }
+
+            CreateTrackStylePaintInfos();
 
             ViewportInitAll();
 
