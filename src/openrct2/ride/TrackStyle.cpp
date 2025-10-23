@@ -9,6 +9,8 @@
 
 #include "TrackStyle.h"
 
+#include "../core/EnumUtils.hpp"
+#include "Track.h"
 #include "TrackPaint.h"
 
 using TrackPaintFunctionGetter = TrackPaintFunction (*)(OpenRCT2::TrackElemType trackType);
@@ -99,186 +101,42 @@ static constexpr TrackPaintFunctionGetter kPaintFunctionMap[] = {
     GetTrackPaintFunctionWaterRC,                  // waterCoaster
     GetTrackPaintFunctionWoodenRC,                 // woodenRollerCoaster
     GetTrackPaintFunctionWoodenWildMouse,          // woodenWildMouse
-
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
-    DummyGetter,
+    DummyGetter,                                   // null
 };
-static_assert(std::size(kPaintFunctionMap) == (sizeof(TrackStyle) * 256));
+static_assert(std::size(kPaintFunctionMap) == kTrackStyleCount);
 
-TrackPaintFunction GetTrackPaintFunction(TrackStyle trackStyle, OpenRCT2::TrackElemType trackType)
+static TrackPaintFunction GetTrackPaintFunction(TrackStyle trackStyle, OpenRCT2::TrackElemType trackType)
 {
     return kPaintFunctionMap[static_cast<uint8_t>(trackStyle)](trackType);
+}
+
+static std::array<TrackStylePaintInfo, kTrackStyleCount> kTrackStylePaintInfos{};
+static bool kTrackStylePaintInfosCreated = false;
+
+void CreateTrackStylePaintInfos()
+{
+    if (kTrackStylePaintInfosCreated == true)
+    {
+        return;
+    }
+
+    for (size_t trackStyleIndex = 0; trackStyleIndex < kTrackStyleCount; trackStyleIndex++)
+    {
+        auto& trackStylePaintInfo = kTrackStylePaintInfos[trackStyleIndex];
+
+        for (size_t trackElemTypeIndex = 0; trackElemTypeIndex < EnumValue(OpenRCT2::TrackElemType::Count);
+             trackElemTypeIndex++)
+        {
+            const auto trackElemType = static_cast<OpenRCT2::TrackElemType>(trackElemTypeIndex);
+            TrackPaintFunction paintFunction = GetTrackPaintFunction(static_cast<TrackStyle>(trackStyleIndex), trackElemType);
+            trackStylePaintInfo.trackElemTypePaintInfos.emplace_back(paintFunction);
+        }
+    }
+
+    kTrackStylePaintInfosCreated = true;
+}
+
+const TrackStylePaintInfo& GetTrackStylePaintInfo(const TrackStyle trackStyle)
+{
+    return kTrackStylePaintInfos[EnumValue(trackStyle)];
 }

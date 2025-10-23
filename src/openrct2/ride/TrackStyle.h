@@ -9,9 +9,12 @@
 
 #pragma once
 
+#include "../core/EnumUtils.hpp"
+#include "Track.h"
 #include "TrackPaint.h"
 
 #include <cstdint>
+#include <sfl/static_vector.hpp>
 
 enum class TrackStyle : uint8_t
 {
@@ -96,8 +99,19 @@ enum class TrackStyle : uint8_t
     waterCoaster,
     woodenRollerCoaster,
     woodenWildMouse,
+    null,
+};
+constexpr const size_t kTrackStyleCount = 82;
 
-    null = 255,
+struct TrackElemTypePaintInfo
+{
+    TrackPaintFunction paintFunction;
 };
 
-TrackPaintFunction GetTrackPaintFunction(TrackStyle trackStyle, OpenRCT2::TrackElemType trackType);
+struct TrackStylePaintInfo
+{
+    sfl::static_vector<TrackElemTypePaintInfo, EnumValue(OpenRCT2::TrackElemType::Count)> trackElemTypePaintInfos;
+};
+
+void CreateTrackStylePaintInfos();
+const TrackStylePaintInfo& GetTrackStylePaintInfo(const TrackStyle trackStyle);
