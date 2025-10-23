@@ -34,6 +34,7 @@
 - Feature: [#25218] `sprite exportobject` command, which allows extracting images from an object.
 - Feature: [#25274] New title sequence (see https://github.com/OpenRCT2/title-sequences/releases/tag/v0.4.26 for credits).
 - Improved: [#2296, #2307] The land tool now takes sloped track and paths into account when modifying land.
+- Improved: [#25192] Ride List now allows sorting by ride type.
 - Change: [#25111] Frozen guests no longer finish consuming any food or drink they are carrying.
 - Change: [#25161] Revert to the ‘fair ride price’ calculation of vanilla RCT2.
 - Change: [#25201] Ride List: put unknown popularity and satisfaction last when sorting.

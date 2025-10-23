@@ -23,6 +23,7 @@
 #include <openrct2/interface/Colour.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/network/Network.h>
+#include <openrct2/ride/RideData.h>
 #include <openrct2/ride/RideManager.hpp>
 #include <openrct2/ride/RideRatings.h>
 #include <openrct2/ui/WindowManager.h>
@@ -86,6 +87,7 @@ namespace OpenRCT2::Ui::Windows
     enum InformationType
     {
         INFORMATION_TYPE_STATUS,
+        INFORMATION_TYPE_RIDETYPE,
         INFORMATION_TYPE_POPULARITY,
         INFORMATION_TYPE_SATISFACTION,
         INFORMATION_TYPE_PROFIT,
@@ -109,6 +111,7 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr StringId ride_info_type_string_mapping[DROPDOWN_LIST_COUNT] = {
         STR_STATUS,
+        STR_RIDE_LIST_RIDETYPE,
         STR_POPULARITY,
         STR_SATISFACTION,
         STR_PROFIT,
@@ -137,6 +140,7 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr bool ride_info_type_money_mapping[DROPDOWN_LIST_COUNT] = {
         false, // Status
+        false, // Ride Type
         false, // Popularity
         false, // Satisfaction
         true,  // Profit
@@ -833,6 +837,14 @@ namespace OpenRCT2::Ui::Windows
                             ft.Add<uint16_t>(ridePtr->ratings.intensity);
                         }
                         break;
+                    case INFORMATION_TYPE_RIDETYPE:
+                    {
+                        const auto& rtd = ridePtr->getRideTypeDescriptor();
+                        auto rideTypeName = rtd.Naming.Name;
+                        formatSecondary = STR_STRINGID;
+                        ft.Add<StringId>(rideTypeName);
+                        break;
+                    }
                     case INFORMATION_TYPE_NAUSEA:
                         formatSecondary = STR_RATING_UKNOWN_LABEL;
                         if (RideHasRatings(*ridePtr))
@@ -1083,6 +1095,22 @@ namespace OpenRCT2::Ui::Windows
                         const auto rightValue = otherRide.ratings.isNull() ? RideRating::kUndefined
                                                                            : otherRide.ratings.intensity;
                         return leftValue < rightValue;
+                    });
+                    break;
+                case INFORMATION_TYPE_RIDETYPE:
+                    SortListByPredicate([](const Ride& thisRide, const Ride& otherRide) -> bool {
+                        auto* ridePtrLhs = GetRide(thisRide.id);
+                        auto* ridePtrRhs = GetRide(otherRide.id);
+                        if (!ridePtrLhs || !ridePtrRhs)
+                            return ridePtrLhs != nullptr;
+
+                        auto rtdLhs = ridePtrLhs->getRideTypeDescriptor();
+                        auto rtdRhs = ridePtrRhs->getRideTypeDescriptor();
+
+                        auto rideTypeNameLhs = LanguageGetString(rtdLhs.Naming.Name);
+                        auto rideTypeNameRhs = LanguageGetString(rtdRhs.Naming.Name);
+
+                        return String::logicalCmp(rideTypeNameLhs, rideTypeNameRhs) > 0;
                     });
                     break;
                 case INFORMATION_TYPE_NAUSEA:
