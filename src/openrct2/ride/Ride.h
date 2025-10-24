@@ -403,6 +403,7 @@ public:
 
     uint64_t getAvailableModes() const;
     const RideTypeDescriptor& getRideTypeDescriptor() const;
+    RideNaming getTypeNaming() const;
     OpenRCT2::TrackElement* getOriginElement(StationIndex stationIndex) const;
 
     std::pair<RideMeasurement*, OpenRCT2String> getMeasurement();
@@ -497,11 +498,9 @@ enum
     RIDE_ENTRY_FLAG_NO_INVERSIONS = 1 << 1,
     RIDE_ENTRY_FLAG_NO_BANKED_TRACK = 1 << 2,
     RIDE_ENTRY_FLAG_PLAY_DEPART_SOUND = 1 << 3,
-    RIDE_ENTRY_FLAG_ALTERNATIVE_SWING_MODE_1 = 1 << 4,
-    // Twist type rotation ride
-    RIDE_ENTRY_FLAG_ALTERNATIVE_ROTATION_MODE_1 = 1 << 5,
-    // Lifting arm rotation ride (enterprise)
-    RIDE_ENTRY_FLAG_ALTERNATIVE_ROTATION_MODE_2 = 1 << 6,
+    RIDE_ENTRY_FLAG_INVERTER_SHIP_SWING_MODE = 1 << 4,
+    RIDE_ENTRY_FLAG_TWIST_ROTATION_TYPE = 1 << 5,
+    RIDE_ENTRY_FLAG_ENTERPRISE_ROTATION_TYPE = 1 << 6,
     RIDE_ENTRY_FLAG_DISABLE_WANDERING_DEPRECATED = 1 << 7,
     RIDE_ENTRY_FLAG_PLAY_SPLASH_SOUND = 1 << 8,
     RIDE_ENTRY_FLAG_PLAY_SPLASH_SOUND_SLIDE = 1 << 9,
@@ -515,8 +514,8 @@ enum
     RIDE_ENTRY_DISABLE_FIRST_TWO_OPERATING_MODES_DEPRECATED = 1 << 17,
     RIDE_ENTRY_FLAG_DISABLE_COLLISION_CRASHES = 1 << 18,
     RIDE_ENTRY_FLAG_DISABLE_COLOUR_TAB = 1 << 19,
-    // Must be set with swing mode 1 as well.
-    RIDE_ENTRY_FLAG_ALTERNATIVE_SWING_MODE_2 = 1 << 20,
+    // Must be set with Inverter Ship swing mode as well.
+    RIDE_ENTRY_FLAG_MAGIC_CARPET_SWING_MODE = 1 << 20,
     RIDE_ENTRY_FLAG_RIDER_CONTROLS_SPEED = 1 << 21,
     RIDE_ENTRY_FLAG_HIDE_EMPTY_TRAINS = 1 << 22,
 };

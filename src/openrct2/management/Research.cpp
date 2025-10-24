@@ -253,7 +253,7 @@ void ResearchFinishItem(const ResearchItem& researchItem)
             if (GetRideTypeDescriptor(base_ride_type).HasFlag(RtdFlag::listVehiclesSeparately)
                 || researchItem.flags & RESEARCH_ENTRY_FLAG_FIRST_OF_TYPE)
             {
-                RideNaming naming = GetRideNaming(base_ride_type, *rideEntry);
+                RideNaming naming = GetRideNaming(base_ride_type, rideEntry);
                 availabilityString = STR_NEWS_ITEM_RESEARCH_NEW_RIDE_AVAILABLE;
                 ft.Add<StringId>(naming.Name);
             }
@@ -262,7 +262,7 @@ void ResearchFinishItem(const ResearchItem& researchItem)
             else
             {
                 availabilityString = STR_NEWS_ITEM_RESEARCH_NEW_VEHICLE_AVAILABLE;
-                RideNaming baseRideNaming = GetRideNaming(base_ride_type, *rideEntry);
+                RideNaming baseRideNaming = GetRideNaming(base_ride_type, rideEntry);
 
                 ft.Add<StringId>(baseRideNaming.Name);
                 ft.Add<StringId>(rideEntry->naming.Name);

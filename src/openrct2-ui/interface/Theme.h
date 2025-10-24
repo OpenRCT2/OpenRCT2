@@ -21,6 +21,7 @@ namespace OpenRCT2::Ui
         UITHEME_FLAG_USE_LIGHTS_PARK = 1 << 2,
         UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT = 1 << 3,
         UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR = 1 << 4,
+        UITHEME_FLAG_USE_3D_IMAGE_BUTTONS = 1 << 5,
     };
 
     void ColourSchemeUpdate(WindowBase* window);

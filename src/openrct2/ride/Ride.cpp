@@ -4408,15 +4408,15 @@ void Ride::setNameToDefault()
 /**
  * This will return the name of the ride, as seen in the New Ride window.
  */
-RideNaming GetRideNaming(const ride_type_t rideType, const RideObjectEntry& rideEntry)
+RideNaming GetRideNaming(const ride_type_t rideType, const RideObjectEntry* rideEntry)
 {
     const auto& rtd = GetRideTypeDescriptor(rideType);
-    if (!rtd.HasFlag(RtdFlag::listVehiclesSeparately))
+    if (rtd.HasFlag(RtdFlag::listVehiclesSeparately) && rideEntry != nullptr)
     {
-        return rtd.Naming;
+        return rideEntry->naming;
     }
 
-    return rideEntry.naming;
+    return rtd.Naming;
 }
 
 /*
@@ -5798,16 +5798,7 @@ void Ride::formatNameTo(Formatter& ft) const
     }
     else
     {
-        const auto& rtd = getRideTypeDescriptor();
-        auto rideTypeName = rtd.Naming.Name;
-        if (rtd.HasFlag(RtdFlag::listVehiclesSeparately))
-        {
-            auto rideEntry = getRideEntry();
-            if (rideEntry != nullptr)
-            {
-                rideTypeName = rideEntry->naming.Name;
-            }
-        }
+        const auto rideTypeName = getTypeNaming().Name;
         ft.Add<StringId>(1).Add<StringId>(rideTypeName).Add<uint16_t>(defaultNameNumber);
     }
 }
@@ -5823,6 +5814,11 @@ uint64_t Ride::getAvailableModes() const
 const RideTypeDescriptor& Ride::getRideTypeDescriptor() const
 {
     return ::GetRideTypeDescriptor(type);
+}
+
+RideNaming Ride::getTypeNaming() const
+{
+    return GetRideNaming(type, getRideEntry());
 }
 
 uint8_t Ride::getNumShelteredSections() const

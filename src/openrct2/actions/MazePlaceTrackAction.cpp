@@ -91,7 +91,7 @@ namespace OpenRCT2::GameActions
         auto baseHeight = _loc.z;
         auto clearanceHeight = _loc.z + kMazeClearanceHeight;
 
-        auto heightDifference = baseHeight - surfaceElement->GetBaseZ();
+        auto heightDifference = clearanceHeight - surfaceElement->GetBaseZ();
         if (heightDifference >= 0 && !gameState.cheats.disableSupportLimits)
         {
             heightDifference /= kCoordsZPerTinyZ;

@@ -383,7 +383,7 @@ namespace OpenRCT2::Ui::Windows
 
             if (entry != nullptr)
             {
-                RideNaming rideName = GetRideNaming(_window_track_list_item.Type, *entry);
+                RideNaming rideName = GetRideNaming(_window_track_list_item.Type, entry);
                 stringId = rideName.Name;
             }
 

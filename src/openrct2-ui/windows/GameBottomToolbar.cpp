@@ -57,18 +57,18 @@ namespace OpenRCT2::Ui::Windows
     {
         makeWidget({  0,  0}, {142, 34}, WidgetType::imgBtn,      WindowColour::primary                                                     ), // Left outset panel
         makeWidget({  2,  2}, {138, 30}, WidgetType::imgBtn,      WindowColour::primary                                                     ), // Left inset panel
-        makeWidget({  2,  1}, {138, 12}, WidgetType::flatBtn,     WindowColour::primary , 0xFFFFFFFF, STR_PROFIT_PER_WEEK_AND_PARK_VALUE_TIP), // Money window
-        makeWidget({  2, 11}, {138, 12}, WidgetType::flatBtn,     WindowColour::primary                                                     ), // Guests window
-        makeWidget({  2, 21}, {138, 11}, WidgetType::flatBtn,     WindowColour::primary , 0xFFFFFFFF, STR_PARK_RATING_TIP                   ), // Park rating window
+        makeWidget({  2,  1}, {138, 12}, WidgetType::hiddenButton,WindowColour::primary , 0xFFFFFFFF, STR_PROFIT_PER_WEEK_AND_PARK_VALUE_TIP), // Money window
+        makeWidget({  2, 11}, {138, 12}, WidgetType::hiddenButton,WindowColour::primary                                                     ), // Guests window
+        makeWidget({  2, 21}, {138, 11}, WidgetType::hiddenButton,WindowColour::primary , 0xFFFFFFFF, STR_PARK_RATING_TIP                   ), // Park rating window
 
         makeWidget({142,  0}, {356, 34}, WidgetType::imgBtn,      WindowColour::tertiary                                                    ), // Middle outset panel
-        makeWidget({144,  2}, {352, 30}, WidgetType::flatBtn,     WindowColour::tertiary                                                    ), // Middle inset panel
-        makeWidget({147,  5}, { 24, 24}, WidgetType::flatBtn,     WindowColour::tertiary, 0xFFFFFFFF, STR_SHOW_SUBJECT_TIP                  ), // Associated news item window
-        makeWidget({469,  5}, { 24, 24}, WidgetType::flatBtn,     WindowColour::tertiary, ImageId(SPR_LOCATE), STR_LOCATE_SUBJECT_TIP                ), // Scroll to news item target
+        makeWidget({144,  2}, {352, 30}, WidgetType::hiddenButton,WindowColour::tertiary                                                    ), // Middle inset panel
+        makeWidget({147,  5}, { 24, 24}, WidgetType::flatBtn,     WindowColour::secondary, 0xFFFFFFFF, STR_SHOW_SUBJECT_TIP                 ), // Associated news item window
+        makeWidget({469,  5}, { 24, 24}, WidgetType::flatBtn,     WindowColour::secondary, ImageId(SPR_LOCATE), STR_LOCATE_SUBJECT_TIP      ), // Scroll to news item target
 
         makeWidget({498,  0}, {142, 34}, WidgetType::imgBtn,      WindowColour::primary                                                     ), // Right outset panel
         makeWidget({500,  2}, {138, 30}, WidgetType::imgBtn,      WindowColour::primary                                                     ), // Right inset panel
-        makeWidget({500,  2}, {138, 12}, WidgetType::flatBtn,     WindowColour::primary                                                     ), // Date
+        makeWidget({500,  2}, {138, 12}, WidgetType::hiddenButton,WindowColour::primary                                                     ), // Date
     };
     // clang-format on
 
@@ -92,7 +92,7 @@ namespace OpenRCT2::Ui::Windows
             const auto topLeft = windowPos + ScreenCoordsXY{ leftPanelWidget.left + 1, leftPanelWidget.top + 1 };
             const auto bottomRight = windowPos + ScreenCoordsXY{ leftPanelWidget.right - 1, leftPanelWidget.bottom - 1 };
             // Draw green inset rectangle on panel
-            GfxFillRectInset(rt, { topLeft, bottomRight }, colours[1], INSET_RECT_F_30);
+            GfxFillRectInset(rt, { topLeft, bottomRight }, colours[0], INSET_RECT_F_30);
 
             // Figure out how much line height we have to work with.
             uint32_t line_height = FontGetLineHeight(FontStyle::Medium);
@@ -152,7 +152,7 @@ namespace OpenRCT2::Ui::Windows
         {
             int16_t bar_width = (factor * 114) / 255;
             GfxFillRectInset(
-                rt, { coords + ScreenCoordsXY{ 1, 1 }, coords + ScreenCoordsXY{ 114, 9 } }, colours[1], INSET_RECT_F_30);
+                rt, { coords + ScreenCoordsXY{ 1, 1 }, coords + ScreenCoordsXY{ 114, 9 } }, colours[0], INSET_RECT_F_30);
             if (!(colour & kBarBlink) || GameIsPaused() || (gCurrentRealTimeTicks & 8))
             {
                 if (bar_width > 2)
@@ -175,7 +175,7 @@ namespace OpenRCT2::Ui::Windows
             const auto topLeft = windowPos + ScreenCoordsXY{ rightPanelWidget.left + 1, rightPanelWidget.top + 1 };
             const auto bottomRight = windowPos + ScreenCoordsXY{ rightPanelWidget.right - 1, rightPanelWidget.bottom - 1 };
             // Draw green inset rectangle on panel
-            GfxFillRectInset(rt, { topLeft, bottomRight }, colours[1], INSET_RECT_F_30);
+            GfxFillRectInset(rt, { topLeft, bottomRight }, colours[0], INSET_RECT_F_30);
 
             auto screenCoords = ScreenCoordsXY{ (rightPanelWidget.left + rightPanelWidget.right) / 2 + windowPos.x,
                                                 rightPanelWidget.top + windowPos.y + 2 };
@@ -352,7 +352,7 @@ namespace OpenRCT2::Ui::Windows
                 rt,
                 { windowPos + ScreenCoordsXY{ middleOutsetWidget->left + 1, middleOutsetWidget->top + 1 },
                   windowPos + ScreenCoordsXY{ middleOutsetWidget->right - 1, middleOutsetWidget->bottom - 1 } },
-                colours[1], INSET_RECT_F_30);
+                colours[0], INSET_RECT_F_30);
 
             // Figure out how much line height we have to work with.
             uint32_t line_height = FontGetLineHeight(FontStyle::Medium);
@@ -524,7 +524,7 @@ namespace OpenRCT2::Ui::Windows
             }
             else
             {
-                widgets[WIDX_MONEY].type = WidgetType::flatBtn;
+                widgets[WIDX_MONEY].type = WidgetType::hiddenButton;
                 widgets[WIDX_MONEY].bottom = widgets[WIDX_MONEY].top + line_height;
                 widgets[WIDX_GUESTS].top = widgets[WIDX_MONEY].bottom + 1;
                 widgets[WIDX_GUESTS].bottom = widgets[WIDX_GUESTS].top + line_height;
@@ -572,7 +572,7 @@ namespace OpenRCT2::Ui::Windows
                 else
                 {
                     widgets[WIDX_MIDDLE_OUTSET].type = WidgetType::imgBtn;
-                    widgets[WIDX_MIDDLE_INSET].type = WidgetType::flatBtn;
+                    widgets[WIDX_MIDDLE_INSET].type = WidgetType::hiddenButton;
                     widgets[WIDX_NEWS_SUBJECT].type = WidgetType::empty;
                     widgets[WIDX_NEWS_LOCATE].type = WidgetType::empty;
                     widgets[WIDX_MIDDLE_OUTSET].colour = 0;
@@ -583,7 +583,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 News::Item* newsItem = News::GetItem(0);
                 widgets[WIDX_MIDDLE_OUTSET].type = WidgetType::imgBtn;
-                widgets[WIDX_MIDDLE_INSET].type = WidgetType::flatBtn;
+                widgets[WIDX_MIDDLE_INSET].type = WidgetType::hiddenButton;
                 widgets[WIDX_NEWS_SUBJECT].type = WidgetType::flatBtn;
                 widgets[WIDX_NEWS_LOCATE].type = WidgetType::flatBtn;
                 widgets[WIDX_MIDDLE_OUTSET].colour = 2;

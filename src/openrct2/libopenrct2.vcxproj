@@ -543,6 +543,7 @@
     <ClInclude Include="ride\Vehicle.h" />
     <ClInclude Include="ride\VehicleColour.h" />
     <ClInclude Include="ride\VehicleData.h" />
+    <ClInclude Include="ride\VehicleGeometry.h" />
     <ClInclude Include="ride\VehicleRiderControl.h" />
     <ClInclude Include="ride\VehicleSubpositionData.h" />
     <ClInclude Include="sawyer_coding\SawyerCoding.h" />
@@ -1092,6 +1093,7 @@
     <ClCompile Include="ride\TrainManager.cpp" />
     <ClCompile Include="ride\Vehicle.cpp" />
     <ClCompile Include="ride\VehicleData.cpp" />
+    <ClCompile Include="ride\VehicleGeometry.cpp" />
     <ClCompile Include="ride\VehicleRiderControl.cpp" />
     <ClCompile Include="ride\VehicleSubpositionData.cpp" />
     <ClCompile Include="sawyer_coding\SawyerCoding.cpp" />

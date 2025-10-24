@@ -11,9 +11,9 @@
 
 #include <cstdint>
 
-extern const uint8_t* Rotation1TimeToSpriteMaps[];
-extern const uint8_t* Rotation2TimeToSpriteMaps[];
-extern const uint8_t* Rotation3TimeToSpriteMaps[];
+extern const uint8_t* kTwistTimeToSpriteMaps[];
+extern const uint8_t* kEnterpriseTimeToSpriteMaps[];
+extern const uint8_t* kMerryGoRoundTimeToSpriteMaps[];
 
 struct TopSpinTimeToSpriteMap
 {
@@ -21,12 +21,7 @@ struct TopSpinTimeToSpriteMap
     uint8_t bank_rotation;
 };
 
-extern const TopSpinTimeToSpriteMap* TopSpinTimeToSpriteMaps[];
+extern const TopSpinTimeToSpriteMap* kTopSpinTimeToSpriteMaps[];
 
 extern const uint8_t MotionSimulatorTimeToSpriteMap[];
 extern const int32_t MotionSimulatorTimeToSpriteMapCount;
-
-extern const int32_t SubpositionTranslationDistances[];
-extern const int32_t AccelerationFromPitch[];
-
-extern const int32_t SpriteDirectionToSoundDirection[];
