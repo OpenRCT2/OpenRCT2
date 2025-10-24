@@ -2982,6 +2982,7 @@ namespace OpenRCT2::RCT1
         OpenRCT2::RideUse::GetTypeHistory().Set(dst->Id, RCT12GetRideTypesBeenOn(src));
 
         dst->Photo1RideRef = RCT12RideIdToOpenRCT2RideId(src->Photo1RideRef);
+        dst->PeepFlags = src->getPeepFlags(_gameVersion == FILE_VERSION_RCT1_LL);
 
         for (size_t i = 0; i < std::size(src->Thoughts); i++)
         {
