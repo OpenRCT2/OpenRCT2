@@ -4799,7 +4799,7 @@ void Guest::UpdateRideOnSpiralSlide()
         {
             case PeepSpiralSlideSubState::goingUp:
                 spiralSlideGoingUpTimer++;
-                if (spiralSlideGoingUpTimer == kTicksToGoUpSpiralSlide)
+                if (spiralSlideGoingUpTimer >= kTicksToGoUpSpiralSlide)
                     spiralSlideSubstate = PeepSpiralSlideSubState::prepareToSlide;
 
                 return;
