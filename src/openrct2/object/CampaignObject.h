@@ -60,9 +60,6 @@ namespace OpenRCT2
     private:
         // Whether the campaign is officially bundled with OpenRCT2, or a custom list.
         bool _isOfficial;
-        // Whether the campaign should be hidden in the UI (if no scenarios are matched, invalid, etc.)
-        // (Campaign data still needs to be retained even in this case)
-        bool _isHidden;
         // Number of scenario groups (by header/discriminator) to be unlocked at a time.
         // Fully completing a group will unlock the next. (RCTC style progression)
         // If excluded from JSON group-based unlocking will be disabled
