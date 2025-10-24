@@ -4834,7 +4834,7 @@ void Guest::UpdateRideOnSpiralSlide()
                 Var37++;
                 return;
             }
-            case PeepSpiralSlideSubState::slidingDown:
+            case PeepSpiralSlideSubState::slidingDown: // Handled by updateSpiralSlide in Ride.cpp
             default:
                 return;
         }
