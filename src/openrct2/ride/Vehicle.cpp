@@ -4014,10 +4014,10 @@ void Vehicle::UpdateSwinging()
     // 0 == first swing
     // 3 == full swing
     uint8_t swingState = sub_state;
-    if (rideEntry->flags & RIDE_ENTRY_FLAG_ALTERNATIVE_SWING_MODE_1)
+    if (rideEntry->flags & RIDE_ENTRY_FLAG_INVERTER_SHIP_SWING_MODE)
     {
         swingState += 4;
-        if (rideEntry->flags & RIDE_ENTRY_FLAG_ALTERNATIVE_SWING_MODE_2)
+        if (rideEntry->flags & RIDE_ENTRY_FLAG_MAGIC_CARPET_SWING_MODE)
             swingState += 4;
     }
 
@@ -4226,17 +4226,17 @@ void Vehicle::UpdateRotating()
     }
 
     const uint8_t* timeToSpriteMap;
-    if (rideEntry->flags & RIDE_ENTRY_FLAG_ALTERNATIVE_ROTATION_MODE_1)
+    if (rideEntry->flags & RIDE_ENTRY_FLAG_TWIST_ROTATION_TYPE)
     {
-        timeToSpriteMap = Rotation1TimeToSpriteMaps[sub_state];
+        timeToSpriteMap = kTwistTimeToSpriteMaps[sub_state];
     }
-    else if (rideEntry->flags & RIDE_ENTRY_FLAG_ALTERNATIVE_ROTATION_MODE_2)
+    else if (rideEntry->flags & RIDE_ENTRY_FLAG_ENTERPRISE_ROTATION_TYPE)
     {
-        timeToSpriteMap = Rotation2TimeToSpriteMaps[sub_state];
+        timeToSpriteMap = kEnterpriseTimeToSpriteMaps[sub_state];
     }
     else
     {
-        timeToSpriteMap = Rotation3TimeToSpriteMaps[sub_state];
+        timeToSpriteMap = kMerryGoRoundTimeToSpriteMaps[sub_state];
     }
 
     uint16_t time = current_time;
@@ -4399,7 +4399,7 @@ void Vehicle::UpdateTopSpinOperating()
     if (_vehicleBreakdown == 0)
         return;
 
-    const TopSpinTimeToSpriteMap* sprite_map = TopSpinTimeToSpriteMaps[sub_state];
+    const TopSpinTimeToSpriteMap* sprite_map = kTopSpinTimeToSpriteMaps[sub_state];
     uint8_t rotation = sprite_map[current_time + 1].arm_rotation;
     if (rotation != 0xFF)
     {
