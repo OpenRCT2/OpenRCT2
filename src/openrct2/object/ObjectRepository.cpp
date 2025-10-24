@@ -265,7 +265,7 @@ namespace OpenRCT2
             return FindObject(entry.Identifier);
         }
 
-        const ObjectRepositoryItem* FindObjectWithFallback(const ObjectEntryDescriptor& entry) const override final
+        const ObjectRepositoryItem* FindObjectWithFallback(const ObjectEntryDescriptor& entry) const override
         {
             auto* ori = FindObject(entry);
             // If an exact match for a DAT is not found, try again ignoring the checksum.
