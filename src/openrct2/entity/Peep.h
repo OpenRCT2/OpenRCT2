@@ -327,7 +327,7 @@ struct Peep : EntityBase
     };
     union
     {
-        uint16_t DestinationY; // Location that the peep is trying to get to
+        uint16_t DestinationY;
         uint16_t spiralSlideGoingUpTimer;
     };
     uint8_t DestinationTolerance; // How close to destination before next action/state 0 = exact
