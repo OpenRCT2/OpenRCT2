@@ -567,8 +567,7 @@ namespace OpenRCT2::Ui::Windows
                     case ListItemType::Heading:
                     {
                         const int32_t horizontalRuleMargin = 4;
-                        DrawCategoryHeading(
-                            rt, horizontalRuleMargin, listWidth - horizontalRuleMargin, y + 2, listItem);
+                        DrawCategoryHeading(rt, horizontalRuleMargin, listWidth - horizontalRuleMargin, y + 2, listItem);
                         y += 18;
                         break;
                     }
@@ -674,8 +673,7 @@ namespace OpenRCT2::Ui::Windows
         }
 
     private:
-        void DrawCategoryHeading(
-                Drawing::RenderTarget & rt, int32_t left, int32_t right, int32_t y, const ScenarioListItem& headerItem) const
+        void DrawCategoryHeading(Drawing::RenderTarget& rt, int32_t left, int32_t right, int32_t y, const ScenarioListItem& headerItem) const
         {
             auto baseColour = colours[1];
             auto lightColour = ColourMapA[baseColour.colour].lighter;

@@ -111,15 +111,16 @@ namespace OpenRCT2
 
     void CampaignObject::ReadScenarioJson(json_t& scenario, CampaignGroup* group)
     {
-        
         Guard::Assert(scenario["title"].is_string());
         u8string internalName = Json::GetString(scenario["title"]);
 
-        if (scenario["fileName"].is_string()) {
+        if (scenario["fileName"].is_string())
+        {
             MatchAndAddScenario(group, Json::GetString(scenario["fileName"]), internalName);
         }
         // Support multiple valid filenames, prioritize first match
-        else if (scenario["fileName"].is_array()) {
+        else if (scenario["fileName"].is_array())
+        {
             for (auto& fileNameItem : scenario["fileName"])
             {
                 if (MatchAndAddScenario(group, Json::GetString(fileNameItem), internalName))

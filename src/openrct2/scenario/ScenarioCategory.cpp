@@ -39,4 +39,4 @@ namespace OpenRCT2::Scenario
         STR_EMPTY
     };
     // clang-format on
-}
+} // namespace OpenRCT2::Scenario
