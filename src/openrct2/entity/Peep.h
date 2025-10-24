@@ -322,7 +322,7 @@ struct Peep : EntityBase
     uint8_t TrousersColour;
     union
     {
-        uint16_t DestinationX; // Location that the peep is trying to get to
+        uint16_t DestinationX;
         PeepSpiralSlideSubState spiralSlideSubstate;
     };
     union
