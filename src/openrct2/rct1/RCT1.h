@@ -659,7 +659,9 @@ namespace OpenRCT2::RCT1
             uint8_t PeepIsLostCountdown; // 0xC6
         };
         RCT12RideId Photo1RideRef;     // 0xC7
-        uint32_t PeepFlags;            // 0xC8
+        uint8_t PeepFlags;             // 0xC8
+        uint8_t padC9;                 // 0xC9
+        uint16_t itemFlagsBase;        // 0xCA
         RCT12xyzd8 PathfindGoal;       // 0xCC
         RCT12xyzd8 PathfindHistory[4]; // 0xD0
         uint8_t NoActionFrameNum;      // 0xE0
@@ -692,10 +694,10 @@ namespace OpenRCT2::RCT1
         RCT12RideId FavouriteRide;   // 0xF9
         uint8_t FavouriteRideRating; // 0xFA
         uint8_t PadFB;
-        uint32_t ItemStandardFlags; // 0xFC
-        uint64_t GetItemFlags() const
+        uint32_t itemFlagsAALL; // 0xFC
+        uint64_t GetItemFlags(bool isBase) const
         {
-            return ItemStandardFlags;
+            return isBase ? itemFlagsBase : itemFlagsAALL;
         }
     };
     static_assert(sizeof(Peep) == 0x100);

@@ -2933,18 +2933,20 @@ namespace OpenRCT2::RCT1
         dst->OutsideOfPark = static_cast<bool>(src->OutsideOfPark);
         dst->TimeToConsume = src->TimeToConsume;
         dst->VandalismSeen = src->VandalismSeen;
-        dst->UmbrellaColour = RCT1::GetColour(src->UmbrellaColour);
-        dst->HatColour = RCT1::GetColour(src->HatColour);
 
-        // Balloons were always blue in RCT1 without AA/LL
+        // Balloons were always blue in RCT1 without AA/LL, umbrellas always red
         if (_gameVersion == FILE_VERSION_RCT1)
         {
+            dst->UmbrellaColour = COLOUR_BRIGHT_RED;
             dst->BalloonColour = COLOUR_LIGHT_BLUE;
         }
         else
         {
+            dst->UmbrellaColour = RCT1::GetColour(src->UmbrellaColour);
             dst->BalloonColour = RCT1::GetColour(src->BalloonColour);
         }
+        dst->HatColour = RCT1::GetColour(src->HatColour);
+
         dst->Happiness = src->Happiness;
         dst->HappinessTarget = src->HappinessTarget;
         dst->Nausea = src->Nausea;
@@ -3012,7 +3014,7 @@ namespace OpenRCT2::RCT1
             dst->FavouriteRideRating = 0;
         }
 
-        dst->SetItemFlags(src->GetItemFlags());
+        dst->SetItemFlags(src->GetItemFlags(_gameVersion == FILE_VERSION_RCT1));
     }
 
     template<>
