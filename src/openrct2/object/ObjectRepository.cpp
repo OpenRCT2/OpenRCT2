@@ -315,7 +315,7 @@ namespace OpenRCT2
             else
             {
                 LOG_VERBOSE("Adding object: [%s]", objectName);
-                auto path = GetPathForNewObject(ObjectGeneration::DAT, objectName);
+                auto path = GetPathForNewObject(*objectEntry);
                 try
                 {
                     SaveObject(path, objectEntry, data, dataSize);
@@ -332,7 +332,16 @@ namespace OpenRCT2
             ObjectGeneration generation, std::string_view objectName, const void* data, size_t dataSize) override
         {
             LOG_VERBOSE("Adding object: [%s]", std::string(objectName).c_str());
-            auto path = GetPathForNewObject(generation, objectName);
+            u8string path;
+            if (generation == ObjectGeneration::JSON)
+            {
+                path = GetPathForNewObject(objectName);
+            }
+            else
+            {
+                const RCTObjectEntry* entry = reinterpret_cast<const RCTObjectEntry*>(data);
+                path = GetPathForNewObject(*entry);
+            }
             try
             {
                 File::WriteAllBytes(path, data, dataSize);
@@ -590,53 +599,50 @@ namespace OpenRCT2
             return salt;
         }
 
-        std::string GetPathForNewObject(ObjectGeneration generation, std::string_view name)
+        u8string updateFileName(u8string fileName, u8string extension)
         {
             // Get object directory and create it if it doesn't exist
             auto userObjPath = _env.GetDirectoryPath(DirBase::user, DirId::objects);
             Path::CreateDirectory(userObjPath);
 
-            // Find a unique file name
-            auto fileName = GetFileNameForNewObject(generation, name);
-            auto extension = (generation == ObjectGeneration::DAT ? u8".DAT" : u8".parkobj");
             auto fullPath = Path::Combine(userObjPath, fileName + extension);
             auto counter = 1u;
             while (File::Exists(fullPath))
             {
                 counter++;
-                fullPath = Path::Combine(userObjPath, String::stdFormat("%s-%02X%s", fileName.c_str(), counter, extension));
+                fullPath = Path::Combine(
+                    userObjPath, String::stdFormat("%s-%02X%s", fileName.c_str(), counter, extension.c_str()));
             }
 
             return fullPath;
         }
 
-        std::string GetFileNameForNewObject(ObjectGeneration generation, std::string_view name)
+        std::string GetPathForNewObject(const RCTObjectEntry& entry)
         {
-            if (generation == ObjectGeneration::DAT)
-            {
-                // Trim name
-                char normalisedName[9] = { 0 };
-                auto maxLength = std::min<size_t>(name.size(), 8);
-                for (size_t i = 0; i < maxLength; i++)
-                {
-                    if (name[i] != ' ')
-                    {
-                        normalisedName[i] = toupper(name[i]);
-                    }
-                    else
-                    {
-                        normalisedName[i] = '\0';
-                        break;
-                    }
-                }
+            auto fileName = GetFileNameForNewObject(entry);
+            auto extension = u8string(u8".DAT");
+            return updateFileName(fileName, extension);
+        }
 
-                // Convert to UTF-8 filename
-                return String::convertToUtf8(normalisedName, OpenRCT2::CodePage::CP_1252);
-            }
-            else
-            {
-                return std::string(name);
-            }
+        std::string GetPathForNewObject(std::string_view jsonIdentifier)
+        {
+            // Get object directory and create it if it doesn't exist
+            auto userObjPath = _env.GetDirectoryPath(DirBase::user, DirId::objects);
+            Path::CreateDirectory(userObjPath);
+
+            auto fileName = u8string(jsonIdentifier);
+            auto extension = u8string(u8".parkobj");
+            return updateFileName(fileName, extension);
+        }
+
+        std::string GetFileNameForNewObject(const RCTObjectEntry& entry)
+        {
+            utf8 flagsBuffer[10];
+            std::snprintf(flagsBuffer, 9, "%08X", entry.flags);
+            utf8 checksumBuffer[10];
+            std::snprintf(checksumBuffer, 9, "%8X", entry.checksum);
+
+            return u8string(entry.GetName()) + "." + u8string(flagsBuffer) + '.' + u8string(checksumBuffer);
         }
 
         void WritePackedObject(OpenRCT2::IStream* stream, const RCTObjectEntry* entry)
