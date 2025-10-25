@@ -2933,18 +2933,20 @@ namespace OpenRCT2::RCT1
         dst->OutsideOfPark = static_cast<bool>(src->OutsideOfPark);
         dst->TimeToConsume = src->TimeToConsume;
         dst->VandalismSeen = src->VandalismSeen;
-        dst->UmbrellaColour = RCT1::GetColour(src->UmbrellaColour);
-        dst->HatColour = RCT1::GetColour(src->HatColour);
 
-        // Balloons were always blue in RCT1 without AA/LL
+        // Balloons were always blue in RCT1 without AA/LL, umbrellas always red
         if (_gameVersion == FILE_VERSION_RCT1)
         {
+            dst->UmbrellaColour = COLOUR_BRIGHT_RED;
             dst->BalloonColour = COLOUR_LIGHT_BLUE;
         }
         else
         {
+            dst->UmbrellaColour = RCT1::GetColour(src->UmbrellaColour);
             dst->BalloonColour = RCT1::GetColour(src->BalloonColour);
         }
+        dst->HatColour = RCT1::GetColour(src->HatColour);
+
         dst->Happiness = src->Happiness;
         dst->HappinessTarget = src->HappinessTarget;
         dst->Nausea = src->Nausea;
@@ -2980,6 +2982,7 @@ namespace OpenRCT2::RCT1
         OpenRCT2::RideUse::GetTypeHistory().Set(dst->Id, RCT12GetRideTypesBeenOn(src));
 
         dst->Photo1RideRef = RCT12RideIdToOpenRCT2RideId(src->Photo1RideRef);
+        dst->PeepFlags = src->getPeepFlags(_gameVersion == FILE_VERSION_RCT1_LL);
 
         for (size_t i = 0; i < std::size(src->Thoughts); i++)
         {
@@ -3012,7 +3015,7 @@ namespace OpenRCT2::RCT1
             dst->FavouriteRideRating = 0;
         }
 
-        dst->SetItemFlags(src->GetItemFlags());
+        dst->SetItemFlags(src->GetItemFlags(_gameVersion == FILE_VERSION_RCT1));
     }
 
     template<>
