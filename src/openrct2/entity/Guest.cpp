@@ -83,6 +83,8 @@
 using namespace OpenRCT2;
 using namespace OpenRCT2::Numerics;
 
+static const uint8_t kTicksToGoUpSpiralSlide = 30;
+
 // Locations of the spiral slide platform that a peep walks from the entrance of the ride to the
 // entrance of the slide. Up to 4 waypoints for each 4 sides that an ride entrance can be located
 // and 4 different rotations of the ride. 4 * 4 * 4 = 64 locations.
@@ -4707,7 +4709,8 @@ void Guest::UpdateRideApproachSpiralSlide()
     if (waypoint == 3)
     {
         SubState = 15;
-        SetDestination({ 0, 0 });
+        spiralSlideSubstate = PeepSpiralSlideSubState::goingUp;
+        spiralSlideGoingUpTimer = 0;
         Var37 = (Var37 / 4) & 0xC;
         MoveTo({ kLocationNull, y, z });
         return;
@@ -4790,19 +4793,17 @@ void Guest::UpdateRideOnSpiralSlide()
     if (rtd.specialType != RtdSpecialType::spiralSlide)
         return;
 
-    auto destination = GetDestination();
     if ((Var37 & 3) == 0)
     {
-        switch (destination.x)
+        switch (spiralSlideSubstate)
         {
-            case 0:
-                destination.y++;
-                if (destination.y >= 30)
-                    destination.x++;
+            case PeepSpiralSlideSubState::goingUp:
+                spiralSlideGoingUpTimer++;
+                if (spiralSlideGoingUpTimer >= kTicksToGoUpSpiralSlide)
+                    spiralSlideSubstate = PeepSpiralSlideSubState::prepareToSlide;
 
-                SetDestination(destination);
                 return;
-            case 1:
+            case PeepSpiralSlideSubState::prepareToSlide:
                 if (ride->slideInUse)
                     return;
 
@@ -4810,22 +4811,19 @@ void Guest::UpdateRideOnSpiralSlide()
                 ride->slidePeep = Id;
                 ride->slidePeepTShirtColour = TshirtColour;
                 ride->spiralSlideProgress = 0;
-                destination.x++;
+                spiralSlideSubstate = PeepSpiralSlideSubState::slidingDown;
 
-                SetDestination(destination);
                 return;
-            case 2:
-                return;
-            case 3:
+            case PeepSpiralSlideSubState::finishedSliding:
             {
                 auto newLocation = ride->getStation(CurrentRideStation).Start;
                 uint8_t dir = (Var37 / 4) & 3;
 
-                // Set the location that the peep walks to go on slide again
-                destination = newLocation + kSpiralSlideEndWaypoint[dir];
+                // Set the location that the guest walks to go on slide again
+                auto destination = newLocation + kSpiralSlideEndWaypoint[dir];
                 SetDestination(destination);
 
-                // Move the peep sprite to just at the end of the slide
+                // Move the guest sprite to just at the end of the slide
                 newLocation.x += kSpiralSlideEnd[dir].x;
                 newLocation.y += kSpiralSlideEnd[dir].y;
 
@@ -4836,6 +4834,7 @@ void Guest::UpdateRideOnSpiralSlide()
                 Var37++;
                 return;
             }
+            case PeepSpiralSlideSubState::slidingDown: // Handled by updateSpiralSlide in Ride.cpp
             default:
                 return;
         }
