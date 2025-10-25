@@ -41,10 +41,26 @@ static bool MapPlaceClearFunc(
     if ((*tile_element)->getType() != TileElementType::smallScenery)
         return false;
 
+    const auto& smallSceneryElement = *((*tile_element)->asSmallScenery());
+
+    // It’s possible that there is a tree or something like that on ground we only own construction rights for.
+    // In this case, make sure it doesn’t get autoremoved.
+    const auto* surfaceElement = MapGetSurfaceElementAt(coords);
+    if (surfaceElement != nullptr)
+    {
+        if (surfaceElement->asSurface()->hasOwnership(OwnershipFlag::constructionRightsOwned))
+        {
+            auto surfaceZ = surfaceElement->getBaseZ();
+            auto sceneryZ = smallSceneryElement.getBaseZ();
+            if (sceneryZ >= surfaceZ && sceneryZ < (surfaceZ + kConstructionRightsClearanceBig))
+                return false;
+        }
+    }
+
     if (is_scenery && !flags.has(CommandFlag::trackDesign))
         return false;
 
-    auto* scenery = (*tile_element)->asSmallScenery()->getEntry();
+    auto* scenery = smallSceneryElement.getEntry();
 
     auto& park = getGameState().park;
     if (park.flags.has(ParkFlag::forbidTreeRemoval))
@@ -62,7 +78,7 @@ static bool MapPlaceClearFunc(
     if (!flags.has(CommandFlag::apply))
         return true;
 
-    MapInvalidateTile({ coords, (*tile_element)->getBaseZ(), (*tile_element)->getClearanceZ() });
+    MapInvalidateTile({ coords, smallSceneryElement.getBaseZ(), smallSceneryElement.getClearanceZ() });
 
     TileElementRemove(*tile_element);
 
