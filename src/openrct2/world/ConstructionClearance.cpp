@@ -41,10 +41,26 @@ static int32_t MapPlaceClearFunc(
     if ((*tile_element)->GetType() != TileElementType::SmallScenery)
         return 1;
 
+    const auto& smallSceneryElement = *((*tile_element)->AsSmallScenery());
+
+    // It’s possible that there is a tree or something like that on ground we only own construction rights for.
+    // In this case, make sure it doesn’t get autoremoved.
+    const auto* surfaceElement = MapGetSurfaceElementAt(coords);
+    if (surfaceElement != nullptr)
+    {
+        if (surfaceElement->AsSurface()->GetOwnership() & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED)
+        {
+            auto surfaceZ = surfaceElement->GetBaseZ();
+            auto sceneryZ = smallSceneryElement.GetBaseZ();
+            if (sceneryZ >= surfaceZ && sceneryZ < (surfaceZ + kConstructionRightsClearanceBig))
+                return 1;
+        }
+    }
+
     if (is_scenery && !(flags & GAME_COMMAND_FLAG_TRACK_DESIGN))
         return 1;
 
-    auto* scenery = (*tile_element)->AsSmallScenery()->GetEntry();
+    auto* scenery = smallSceneryElement.GetEntry();
 
     auto& park = getGameState().park;
     if (park.flags & PARK_FLAGS_FORBID_TREE_REMOVAL)
@@ -62,7 +78,7 @@ static int32_t MapPlaceClearFunc(
     if (!(flags & GAME_COMMAND_FLAG_APPLY))
         return 0;
 
-    MapInvalidateTile({ coords, (*tile_element)->GetBaseZ(), (*tile_element)->GetClearanceZ() });
+    MapInvalidateTile({ coords, smallSceneryElement.GetBaseZ(), smallSceneryElement.GetClearanceZ() });
 
     TileElementRemove(*tile_element);
 
