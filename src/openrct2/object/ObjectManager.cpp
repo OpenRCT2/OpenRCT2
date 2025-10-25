@@ -202,6 +202,11 @@ namespace OpenRCT2
             return RepositoryItemToObject(ori, slot);
         }
 
+        Object* LoadRepositoryItem(const ObjectRepositoryItem& ori) override
+        {
+            return RepositoryItemToObject(&ori);
+        }
+
         void LoadObjects(const ObjectList& objectList, const bool reportProgress) override
         {
             // Find all the required objects

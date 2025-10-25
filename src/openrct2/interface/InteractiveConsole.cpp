@@ -1051,78 +1051,92 @@ static void ConsoleCommandSet(InteractiveConsole& console, const arguments_t& ar
 
 static void ConsoleCommandLoadObject(InteractiveConsole& console, const arguments_t& argv)
 {
-    if (!argv.empty())
+    if (argv.empty())
+    {
+        console.WriteLineError("Please specify an object name.");
+        return;
+    }
+
+    auto& objectRepository = GetContext()->GetObjectRepository();
+    auto objectName = argv[0];
+
+    // First, try and find a JSON object by this name
+    const ObjectRepositoryItem* ori = objectRepository.FindObject(objectName);
+
+    // If this fails, try loading by DAT name
+    if (ori == nullptr)
     {
         char name[9] = { 0 };
         std::fill_n(name, 8, ' ');
         std::size_t i = 0;
-        for (const char* ch = argv[0].c_str(); *ch != '\0' && i < std::size(name) - 1; ch++)
+        for (const char* ch = objectName.c_str(); *ch != '\0' && i < std::size(name) - 1; ch++)
         {
             name[i++] = *ch;
         }
 
-        const ObjectRepositoryItem* ori = ObjectRepositoryFindObjectByName(name);
-        if (ori == nullptr)
-        {
-            console.WriteLineError("Could not find the object.");
-            return;
-        }
-
-        const auto* entry = &ori->ObjectEntry;
-        const auto* loadedObject = ObjectManagerGetLoadedObject(ObjectEntryDescriptor(*ori));
-        if (loadedObject != nullptr)
-        {
-            console.WriteLineError("Object is already in scenario.");
-            return;
-        }
-
-        loadedObject = ObjectManagerLoadObject(entry);
-        if (loadedObject == nullptr)
-        {
-            console.WriteLineError("Unable to load object.");
-            return;
-        }
-        auto groupIndex = ObjectManagerGetLoadedObjectEntryIndex(loadedObject);
-
-        ObjectType objectType = entry->GetType();
-        if (objectType == ObjectType::ride)
-        {
-            // Automatically research the ride so it's supported by the game.
-            const auto* rideEntry = GetRideEntryByIndex(groupIndex);
-
-            for (int32_t j = 0; j < RCT2::ObjectLimits::kMaxRideTypesPerRideEntry; j++)
-            {
-                auto rideType = rideEntry->ride_type[j];
-                if (rideType != kRideTypeNull)
-                {
-                    ResearchCategory category = GetRideTypeDescriptor(rideType).GetResearchCategory();
-                    ResearchInsertRideEntry(rideType, groupIndex, category, true);
-                }
-            }
-
-            gSilentResearch = true;
-            ResearchResetCurrentItem();
-            gSilentResearch = false;
-        }
-        else if (objectType == ObjectType::sceneryGroup)
-        {
-            ResearchInsertSceneryGroupEntry(groupIndex, true);
-
-            gSilentResearch = true;
-            ResearchResetCurrentItem();
-            gSilentResearch = false;
-        }
-
-        auto sceneryIntent = Intent(INTENT_ACTION_SET_DEFAULT_SCENERY_CONFIG);
-        ContextBroadcastIntent(&sceneryIntent);
-
-        auto ridesIntent = Intent(INTENT_ACTION_REFRESH_NEW_RIDES);
-        ContextBroadcastIntent(&ridesIntent);
-
-        gWindowUpdateTicks = 0;
-        GfxInvalidateScreen();
-        console.WriteLine("Object file loaded.");
+        ori = objectRepository.FindObjectLegacy(name);
     }
+
+    if (ori == nullptr)
+    {
+        console.WriteLineError("Could not find the object.");
+        return;
+    }
+
+    const auto* loadedObject = ObjectManagerGetLoadedObject(ObjectEntryDescriptor(*ori));
+    if (loadedObject != nullptr)
+    {
+        console.WriteLineError("Object is already in scenario.");
+        return;
+    }
+
+    auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
+    loadedObject = objectManager.LoadRepositoryItem(*ori);
+    if (loadedObject == nullptr)
+    {
+        console.WriteLineError("Unable to load object.");
+        return;
+    }
+    auto groupIndex = ObjectManagerGetLoadedObjectEntryIndex(loadedObject);
+
+    ObjectType objectType = loadedObject->GetObjectType();
+    if (objectType == ObjectType::ride)
+    {
+        // Automatically research the ride so it's supported by the game.
+        const auto* rideEntry = GetRideEntryByIndex(groupIndex);
+
+        for (int32_t j = 0; j < RCT2::ObjectLimits::kMaxRideTypesPerRideEntry; j++)
+        {
+            auto rideType = rideEntry->ride_type[j];
+            if (rideType != kRideTypeNull)
+            {
+                ResearchCategory category = GetRideTypeDescriptor(rideType).GetResearchCategory();
+                ResearchInsertRideEntry(rideType, groupIndex, category, true);
+            }
+        }
+
+        gSilentResearch = true;
+        ResearchResetCurrentItem();
+        gSilentResearch = false;
+    }
+    else if (objectType == ObjectType::sceneryGroup)
+    {
+        ResearchInsertSceneryGroupEntry(groupIndex, true);
+
+        gSilentResearch = true;
+        ResearchResetCurrentItem();
+        gSilentResearch = false;
+    }
+
+    auto sceneryIntent = Intent(INTENT_ACTION_SET_DEFAULT_SCENERY_CONFIG);
+    ContextBroadcastIntent(&sceneryIntent);
+
+    auto ridesIntent = Intent(INTENT_ACTION_REFRESH_NEW_RIDES);
+    ContextBroadcastIntent(&ridesIntent);
+
+    gWindowUpdateTicks = 0;
+    GfxInvalidateScreen();
+    console.WriteLine("Object file loaded.");
 }
 
 constexpr auto _objectTypeNames = std::to_array<StringId>({
