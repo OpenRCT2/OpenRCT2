@@ -671,7 +671,7 @@ ResultWithMessage WindowEditorObjectSelectionSelectObject(
     uint8_t isMasterObject, EditorInputFlags flags, const ObjectEntryDescriptor& descriptor)
 {
     auto& objectRepository = OpenRCT2::GetContext()->GetObjectRepository();
-    const auto* item = objectRepository.FindObject(descriptor);
+    const auto* item = objectRepository.FindObjectWithFallback(descriptor);
     return WindowEditorObjectSelectionSelectObject(isMasterObject, flags, item);
 }
 

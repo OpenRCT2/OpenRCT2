@@ -84,9 +84,17 @@ namespace OpenRCT2
         [[nodiscard]] virtual size_t GetNumObjects() const = 0;
         [[nodiscard]] virtual const ObjectRepositoryItem* GetObjects() const = 0;
         [[nodiscard]] virtual const ObjectRepositoryItem* FindObjectLegacy(std::string_view legacyIdentifier) const = 0;
+        [[nodiscard]] virtual const ObjectRepositoryItem* FindObjectLegacy(
+            uint32_t flags, std::string_view legacyIdentifier) const
+            = 0;
         [[nodiscard]] virtual const ObjectRepositoryItem* FindObject(std::string_view identifier) const = 0;
         [[nodiscard]] virtual const ObjectRepositoryItem* FindObject(const RCTObjectEntry* objectEntry) const = 0;
         [[nodiscard]] virtual const ObjectRepositoryItem* FindObject(const ObjectEntryDescriptor& oed) const = 0;
+        /**
+         * Looks for an exact match first. If none is found and the object is a DAT object,
+         * it will look again and ignore the checksum.
+         */
+        [[nodiscard]] virtual const ObjectRepositoryItem* FindObjectWithFallback(const ObjectEntryDescriptor& oed) const = 0;
 
         [[nodiscard]] virtual std::unique_ptr<Object> LoadObject(const ObjectRepositoryItem* ori) = 0;
         virtual void RegisterLoadedObject(const ObjectRepositoryItem* ori, std::unique_ptr<Object>&& object) = 0;

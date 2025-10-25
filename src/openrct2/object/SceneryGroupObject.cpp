@@ -12,6 +12,7 @@
 #include "SceneryGroupObject.h"
 
 #include "../Context.h"
+#include "../Diagnostic.h"
 #include "../core/IStream.hpp"
 #include "../core/Json.hpp"
 #include "../core/Memory.hpp"
@@ -29,7 +30,7 @@
 namespace OpenRCT2
 {
     // Example entry: "$DAT:09F55406|00STBEN "
-    // 5 for $DAT:, 8 for the checksum, 1 for the vertical bar, 8 for the .DAT name.
+    // 5 for $DAT:, 8 for the flags, 1 for the vertical bar, 8 for the .DAT name.
     static constexpr uint8_t kDatEntryPrefixLength = 5;
     static constexpr uint8_t kDatEntryFlagsLength = 8;
     static constexpr uint8_t kDatEntrySeparatorLength = 1;
@@ -106,7 +107,7 @@ namespace OpenRCT2
         _legacyType.SceneryEntries.clear();
         for (const auto& objectEntry : _items)
         {
-            auto ori = objectRepository.FindObject(objectEntry);
+            auto ori = objectRepository.FindObjectWithFallback(objectEntry);
             if (ori == nullptr)
                 continue;
             if (ori->LoadedObject == nullptr)
