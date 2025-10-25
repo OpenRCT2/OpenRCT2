@@ -1568,7 +1568,7 @@ STR_2212    :Amosar a lista de vixilantes no parque
 STR_2213    :Amosar a lista de animadores do parque
 STR_2214    :Non é posible construír mentres o xogo está en pausa!
 STR_2215    :{STRINGID}{NEWLINE}({STRINGID})
-STR_2216    :{WINDOW_COLOUR_2}{COMMA16}°C
+STR_2216    :{WINDOW_COLOUR_1}{COMMA16}°C
 STR_2217    :{WINDOW_COLOUR_2}{COMMA16}°F
 STR_2218    :{RED}{STRINGID} en {STRINGID} non volveu a {STRINGID}!{NEWLINE}Comproba se quedou atascado ou parado.
 STR_2219    :{RED}{COMMA16} persoas morreron nun accidente en {STRINGID}

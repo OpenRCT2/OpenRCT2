@@ -1568,8 +1568,8 @@ STR_2212    :Montri liston de gardistoj en parko
 STR_2213    :Montri liston de amuzistoj en parko
 STR_2214    :Ne eblas konstrui, dum ludo estas paŭzita!
 STR_2215    :{STRINGID}{NEWLINE}({STRINGID})
-STR_2216    :{WINDOW_COLOUR_2}{COMMA16}°C
-STR_2217    :{WINDOW_COLOUR_2}{COMMA16}°F
+STR_2216    :{WINDOW_COLOUR_1}{COMMA16}°C
+STR_2217    :{WINDOW_COLOUR_1}{COMMA16}°F
 STR_2218    :{RED}{STRINGID} sur {STRINGID} ne jam revenis al la {STRINGID}!{NEWLINE}Kontrolu se ĝi ne povas reveni, aŭ staŭlis
 STR_2219    :{RED}{COMMA16} homoj mortis pro akcidento sur {STRINGID}
 STR_2220    :{WINDOW_COLOUR_2}Pritakso de Parko: {BLACK}{COMMA16}

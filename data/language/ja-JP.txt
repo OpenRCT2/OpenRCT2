@@ -1564,8 +1564,8 @@ STR_2212    :パークの警備員の表示
 STR_2213    :パークのエンターテイナーの表示
 STR_2214    :ゲームが一時停止中で建設はできません。
 STR_2215    :{STRINGID}{NEWLINE}({STRINGID})
-STR_2216    :{WINDOW_COLOUR_2}{COMMA16}℃
-STR_2217    :{WINDOW_COLOUR_2}{COMMA16}℉
+STR_2216    :{WINDOW_COLOUR_1}{COMMA16}℃
+STR_2217    :{WINDOW_COLOUR_1}{COMMA16}℉
 STR_2218    :{RED}{STRINGID}の{STRINGID}が{STRINGID}にまだ戻ってきていません!{NEWLINE}どこかにひっかかったり止まったりしていないか確認してください
 STR_2219    :{RED}{COMMA16}人の来客は{STRINGID}上の事故で死亡してしまいました。
 STR_2220    :{WINDOW_COLOUR_2}パーク評価値: {BLACK}{COMMA16}
