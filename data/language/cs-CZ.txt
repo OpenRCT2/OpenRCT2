@@ -3845,3 +3845,4 @@ STR_7002    :{STRINGID} {STRINGID}
 STR_7003    :Zvukový soubor ‘{STRING}’ je zkrácený. Očekáván sample {INT32}, avšak pouze {INT32} je dostupných. Zvažte přeinstalování RCT2.
 STR_7004    :Vynutit překresl. (force redraw)
 STR_7005    :Stavět cesty v oblasti označené tažením
+STR_7006    :Vykreslit okraje tlačítek s obrázky
