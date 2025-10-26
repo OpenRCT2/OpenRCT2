@@ -270,7 +270,7 @@ public:
                             callback(result, std::string(path).c_str());
                         }
                     },
-                    trackDesign);
+                    false, trackDesign);
                 return w;
             }
             case WindowClass::manageTrackDesign:
