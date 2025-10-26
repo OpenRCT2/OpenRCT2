@@ -23,6 +23,7 @@
 #include <openrct2/actions/PeepSpawnPlaceAction.h>
 #include <openrct2/actions/SurfaceSetStyleAction.h>
 #include <openrct2/audio/Audio.h>
+#include <openrct2/drawing/Rectangle.h>
 #include <openrct2/entity/EntityList.h>
 #include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/entity/Staff.h>
@@ -41,6 +42,8 @@
 #include <openrct2/world/tile_element/SurfaceElement.h>
 #include <openrct2/world/tile_element/TrackElement.h>
 #include <vector>
+
+using namespace OpenRCT2::Drawing;
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -676,7 +679,7 @@ namespace OpenRCT2::Ui::Windows
 
                     for (uint32_t i = 0; i < std::size(RideKeyColours); i++)
                     {
-                        GfxFillRect(
+                        Rectangle::fill(
                             rt, { screenCoords + ScreenCoordsXY{ 0, 2 }, screenCoords + ScreenCoordsXY{ 6, 8 } },
                             RideKeyColours[i]);
                         DrawTextBasic(rt, screenCoords + ScreenCoordsXY{ kListRowHeight, 0 }, MapLabels[i], {});
@@ -979,7 +982,7 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
 
-            GfxFillRect(rt, { leftTop, rightBottom }, colour);
+            Rectangle::fill(rt, { leftTop, rightBottom }, colour);
         }
 
         uint8_t GetGuestFlashColour() const
@@ -1019,14 +1022,14 @@ namespace OpenRCT2::Ui::Windows
                     auto mapCoord = TransformToMapCoords({ vehicle->x, vehicle->y });
                     auto pixelCoord = ScreenCoordsXY{ mapCoord.x, mapCoord.y } + offset;
 
-                    GfxFillRect(rt, { pixelCoord, pixelCoord }, PaletteIndex::pi171);
+                    Rectangle::fill(rt, { pixelCoord, pixelCoord }, PaletteIndex::pi171);
                 }
             }
         }
 
         /**
-         * The call to GfxFillRect was originally wrapped in Sub68DABD which made sure that arguments were ordered correctly,
-         * but it doesn't look like it's ever necessary here so the call was removed.
+         * The call to Rectangle::fill was originally wrapped in Sub68DABD which made sure that arguments were ordered
+         * correctly, but it doesn't look like it's ever necessary here so the call was removed.
          */
         void PaintHudRectangle(RenderTarget& rt, const ScreenCoordsXY& widgetOffset)
         {
@@ -1050,20 +1053,20 @@ namespace OpenRCT2::Ui::Windows
             auto leftBottom = ScreenCoordsXY{ leftTop.x, rightBottom.y };
 
             // top horizontal lines
-            GfxFillRect(rt, { leftTop, leftTop + ScreenCoordsXY{ 3, 0 } }, PaletteIndex::pi56);
-            GfxFillRect(rt, { rightTop - ScreenCoordsXY{ 3, 0 }, rightTop }, PaletteIndex::pi56);
+            Rectangle::fill(rt, { leftTop, leftTop + ScreenCoordsXY{ 3, 0 } }, PaletteIndex::pi56);
+            Rectangle::fill(rt, { rightTop - ScreenCoordsXY{ 3, 0 }, rightTop }, PaletteIndex::pi56);
 
             // left vertical lines
-            GfxFillRect(rt, { leftTop, leftTop + ScreenCoordsXY{ 0, 3 } }, PaletteIndex::pi56);
-            GfxFillRect(rt, { leftBottom - ScreenCoordsXY{ 0, 3 }, leftBottom }, PaletteIndex::pi56);
+            Rectangle::fill(rt, { leftTop, leftTop + ScreenCoordsXY{ 0, 3 } }, PaletteIndex::pi56);
+            Rectangle::fill(rt, { leftBottom - ScreenCoordsXY{ 0, 3 }, leftBottom }, PaletteIndex::pi56);
 
             // bottom horizontal lines
-            GfxFillRect(rt, { leftBottom, leftBottom + ScreenCoordsXY{ 3, 0 } }, PaletteIndex::pi56);
-            GfxFillRect(rt, { rightBottom - ScreenCoordsXY{ 3, 0 }, rightBottom }, PaletteIndex::pi56);
+            Rectangle::fill(rt, { leftBottom, leftBottom + ScreenCoordsXY{ 3, 0 } }, PaletteIndex::pi56);
+            Rectangle::fill(rt, { rightBottom - ScreenCoordsXY{ 3, 0 }, rightBottom }, PaletteIndex::pi56);
 
             // right vertical lines
-            GfxFillRect(rt, { rightTop, rightTop + ScreenCoordsXY{ 0, 3 } }, PaletteIndex::pi56);
-            GfxFillRect(rt, { rightBottom - ScreenCoordsXY{ 0, 3 }, rightBottom }, PaletteIndex::pi56);
+            Rectangle::fill(rt, { rightTop, rightTop + ScreenCoordsXY{ 0, 3 } }, PaletteIndex::pi56);
+            Rectangle::fill(rt, { rightBottom - ScreenCoordsXY{ 0, 3 }, rightBottom }, PaletteIndex::pi56);
         }
 
         void DrawTabImages(RenderTarget& rt)

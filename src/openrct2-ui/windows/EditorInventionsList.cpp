@@ -16,6 +16,7 @@
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/SpriteIds.h>
+#include <openrct2/drawing/Rectangle.h>
 #include <openrct2/interface/Cursors.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/management/Research.h>
@@ -27,6 +28,8 @@
 #include <openrct2/ride/RideManager.hpp>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Scenery.h>
+
+using namespace OpenRCT2::Drawing;
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -300,7 +303,7 @@ namespace OpenRCT2::Ui::Windows
                         bottom = itemY;
                     }
 
-                    GfxFilterRect(rt, { 0, top, boxWidth, bottom }, FilterPaletteID::paletteDarken1);
+                    Rectangle::filter(rt, { 0, top, boxWidth, bottom }, FilterPaletteID::paletteDarken1);
                 }
 
                 if (dragItem != nullptr && researchItem == *dragItem)
@@ -370,7 +373,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Preview background
             auto& bkWidget = widgets[WIDX_PREVIEW];
-            GfxFillRect(
+            Rectangle::fill(
                 rt,
                 { windowPos + ScreenCoordsXY{ bkWidget.left + 1, bkWidget.top + 1 },
                   windowPos + ScreenCoordsXY{ bkWidget.right - 1, bkWidget.bottom - 1 } },

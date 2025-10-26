@@ -164,26 +164,6 @@ void GfxClear(RenderTarget& rt, uint8_t paletteIndex)
     }
 }
 
-void GfxFillRect(RenderTarget& rt, const ScreenRect& rect, int32_t colour)
-{
-    auto drawingEngine = rt.DrawingEngine;
-    if (drawingEngine != nullptr)
-    {
-        IDrawingContext* dc = drawingEngine->GetDrawingContext();
-        dc->FillRect(rt, colour, rect.GetLeft(), rect.GetTop(), rect.GetRight(), rect.GetBottom());
-    }
-}
-
-void GfxFilterRect(RenderTarget& rt, const ScreenRect& rect, FilterPaletteID palette)
-{
-    auto drawingEngine = rt.DrawingEngine;
-    if (drawingEngine != nullptr)
-    {
-        IDrawingContext* dc = drawingEngine->GetDrawingContext();
-        dc->FilterRect(rt, palette, rect.GetLeft(), rect.GetTop(), rect.GetRight(), rect.GetBottom());
-    }
-}
-
 void GfxDrawLine(RenderTarget& rt, const ScreenLine& line, int32_t colour)
 {
     auto drawingEngine = rt.DrawingEngine;

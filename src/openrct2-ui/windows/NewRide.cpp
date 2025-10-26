@@ -21,6 +21,7 @@
 #include <openrct2/audio/Audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/String.hpp>
+#include <openrct2/drawing/Rectangle.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/LocalisationService.h>
 #include <openrct2/management/NewsItem.h>
@@ -38,6 +39,7 @@
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
 
+using namespace OpenRCT2::Drawing;
 using namespace OpenRCT2::TrackMetaData;
 
 namespace OpenRCT2::Ui::Windows
@@ -489,13 +491,14 @@ namespace OpenRCT2::Ui::Windows
             while (listItem->Type != kRideTypeNull || listItem->EntryIndex != kObjectEntryIndexNull)
             {
                 // Draw flat button rectangle
-                int32_t buttonFlags = 0;
+                auto borderStyle = Rectangle::BorderStyle::none;
                 if (_newRideVars.SelectedRide == *listItem)
-                    buttonFlags |= INSET_RECT_FLAG_BORDER_INSET;
-                if (_newRideVars.HighlightedRide == *listItem || buttonFlags != 0)
-                    GfxFillRectInset(
-                        rt, { coords, coords + ScreenCoordsXY{ 115, 115 } }, colours[1],
-                        INSET_RECT_FLAG_FILL_MID_LIGHT | buttonFlags);
+                    borderStyle = Rectangle::BorderStyle::inset;
+
+                if (_newRideVars.HighlightedRide == *listItem || borderStyle != Rectangle::BorderStyle::none)
+                    Rectangle::fillInset(
+                        rt, { coords, coords + ScreenCoordsXY{ 115, 115 } }, colours[1], borderStyle,
+                        Rectangle::FillBrightness::dark);
 
                 // Draw ride image with feathered border
                 auto mask = ImageId(SPR_NEW_RIDE_MASK);

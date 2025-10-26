@@ -33,6 +33,7 @@
 #include <openrct2/core/Path.hpp>
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/Drawing.h>
+#include <openrct2/drawing/Rectangle.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.Date.h>
 #include <openrct2/network/Network.h>
@@ -51,6 +52,7 @@
 
 namespace OpenRCT2::Ui::Windows
 {
+    using namespace OpenRCT2::Drawing;
     using namespace OpenRCT2::Ui::FileBrowser;
 
 #pragma region Widgets
@@ -442,8 +444,9 @@ namespace OpenRCT2::Ui::Windows
 
             if (drawFrame)
             {
-                GfxFillRectInset(
-                    rt, { frameStartPos, frameEndPos }, colours[1], INSET_RECT_F_60 | INSET_RECT_FLAG_FILL_MID_LIGHT);
+                Rectangle::fillInset(
+                    rt, { frameStartPos, frameEndPos }, colours[1], Rectangle::BorderStyle::inset,
+                    Rectangle::FillBrightness::dark, Rectangle::FillMode::dontLightenWhenInset);
             }
 
             // Draw image, or placeholder if no preview was found
@@ -1075,7 +1078,7 @@ namespace OpenRCT2::Ui::Windows
 
         void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
-            GfxFillRect(
+            Rectangle::fill(
                 rt, { { rt.x, rt.y }, { rt.x + rt.width - 1, rt.y + rt.height - 1 } }, ColourMapA[colours[1].colour].mid_light);
 
             const int32_t listWidth = widgets[WIDX_SCROLL].width();
@@ -1100,7 +1103,7 @@ namespace OpenRCT2::Ui::Windows
                 if (i == selectedListItem)
                 {
                     stringId = STR_WINDOW_COLOUR_2_STRINGID;
-                    GfxFilterRect(rt, { 0, y, listWidth, y + kScrollableRowHeight }, FilterPaletteID::paletteDarken1);
+                    Rectangle::filter(rt, { 0, y, listWidth, y + kScrollableRowHeight }, FilterPaletteID::paletteDarken1);
                 }
                 // display a marker next to the currently loaded game file
                 if (_listItems[i].loaded)

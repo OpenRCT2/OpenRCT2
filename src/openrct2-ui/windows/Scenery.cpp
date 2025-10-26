@@ -34,6 +34,7 @@
 #include <openrct2/config/Config.h>
 #include <openrct2/core/Guard.hpp>
 #include <openrct2/core/String.hpp>
+#include <openrct2/drawing/Rectangle.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/management/Research.h>
 #include <openrct2/network/Network.h>
@@ -63,6 +64,8 @@
 #include <openrct2/world/tile_element/SmallSceneryElement.h>
 #include <openrct2/world/tile_element/SurfaceElement.h>
 #include <openrct2/world/tile_element/WallElement.h>
+
+using namespace OpenRCT2::Drawing;
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -1657,24 +1660,24 @@ namespace OpenRCT2::Ui::Windows
                 {
                     if (_selectedScenery == currentSceneryGlobal)
                     {
-                        GfxFillRectInset(
+                        Rectangle::fillInset(
                             rt, { topLeft, topLeft + ScreenCoordsXY{ kSceneryButtonWidth - 1, kSceneryButtonHeight - 1 } },
-                            colours[1], INSET_RECT_FLAG_FILL_MID_LIGHT);
+                            colours[1], Rectangle::BorderStyle::outset, Rectangle::FillBrightness::dark);
                     }
                 }
                 else
                 {
                     if (tabSelectedScenery == currentSceneryGlobal)
                     {
-                        GfxFillRectInset(
+                        Rectangle::fillInset(
                             rt, { topLeft, topLeft + ScreenCoordsXY{ kSceneryButtonWidth - 1, kSceneryButtonHeight - 1 } },
-                            colours[1], (INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_MID_LIGHT));
+                            colours[1], Rectangle::BorderStyle::inset, Rectangle::FillBrightness::dark);
                     }
                     else if (_selectedScenery == currentSceneryGlobal)
                     {
-                        GfxFillRectInset(
+                        Rectangle::fillInset(
                             rt, { topLeft, topLeft + ScreenCoordsXY{ kSceneryButtonWidth - 1, kSceneryButtonHeight - 1 } },
-                            colours[1], INSET_RECT_FLAG_FILL_MID_LIGHT);
+                            colours[1], Rectangle::BorderStyle::outset, Rectangle::FillBrightness::dark);
                     }
                 }
 

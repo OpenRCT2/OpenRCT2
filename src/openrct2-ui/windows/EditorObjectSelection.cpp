@@ -27,6 +27,7 @@
 #include <openrct2/core/EnumUtils.hpp>
 #include <openrct2/core/Path.hpp>
 #include <openrct2/core/String.hpp>
+#include <openrct2/drawing/Rectangle.h>
 #include <openrct2/drawing/Text.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/object/ClimateObject.h>
@@ -45,6 +46,8 @@
 #include <span>
 #include <string>
 #include <vector>
+
+using namespace OpenRCT2::Drawing;
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -739,8 +742,10 @@ namespace OpenRCT2::Ui::Windows
                 {
                     // Draw checkbox
                     if (!(gLegacyScene == LegacyScene::trackDesignsManager) && !(*listItem.flags & 0x20))
-                        GfxFillRectInset(
-                            rt, { { 2, screenCoords.y }, { 11, screenCoords.y + 10 } }, colours[1], INSET_RECT_F_E0);
+                        Rectangle::fillInset(
+                            rt, { { 2, screenCoords.y }, { 11, screenCoords.y + 10 } }, colours[1],
+                            Rectangle::BorderStyle::inset, Rectangle::FillBrightness::dark,
+                            Rectangle::FillMode::dontLightenWhenInset);
 
                     // Highlight background
                     auto highlighted = i == static_cast<size_t>(selectedListItem)
@@ -748,7 +753,7 @@ namespace OpenRCT2::Ui::Windows
                     if (highlighted)
                     {
                         auto bottom = screenCoords.y + (kScrollableRowHeight - 1);
-                        GfxFilterRect(rt, { 0, screenCoords.y, width, bottom }, FilterPaletteID::paletteDarken1);
+                        Rectangle::filter(rt, { 0, screenCoords.y, width, bottom }, FilterPaletteID::paletteDarken1);
                     }
 
                     // Draw checkmark
@@ -1057,7 +1062,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Preview background
             const auto& previewWidget = widgets[WIDX_PREVIEW];
-            GfxFillRect(
+            Rectangle::fill(
                 rt,
                 { windowPos + ScreenCoordsXY{ previewWidget.left + 1, previewWidget.top + 1 },
                   windowPos + ScreenCoordsXY{ previewWidget.right - 1, previewWidget.bottom - 1 } },

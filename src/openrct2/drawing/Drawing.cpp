@@ -25,6 +25,7 @@
 #include "../world/Climate.h"
 #include "../world/Location.hpp"
 #include "LightFX.h"
+#include "Rectangle.h"
 
 #include <array>
 #include <cassert>
@@ -682,7 +683,7 @@ void MaskFn(
 
 void GfxFilterPixel(RenderTarget& rt, const ScreenCoordsXY& coords, FilterPaletteID palette)
 {
-    GfxFilterRect(rt, { coords, coords }, palette);
+    Rectangle::filter(rt, { coords, coords }, palette);
 }
 
 /**

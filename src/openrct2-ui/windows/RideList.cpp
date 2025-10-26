@@ -20,6 +20,7 @@
 #include <openrct2/actions/RideSetStatusAction.h>
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/Drawing.h>
+#include <openrct2/drawing/Rectangle.h>
 #include <openrct2/interface/Colour.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/network/Network.h>
@@ -29,6 +30,8 @@
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
+
+using namespace OpenRCT2::Drawing;
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -624,7 +627,7 @@ namespace OpenRCT2::Ui::Windows
         void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
             auto rtCoords = ScreenCoordsXY{ rt.x, rt.y };
-            GfxFillRect(
+            Rectangle::fill(
                 rt, { rtCoords, rtCoords + ScreenCoordsXY{ rt.width, rt.height } }, ColourMapA[colours[1].colour].mid_light);
 
             auto y = 0;
@@ -640,7 +643,7 @@ namespace OpenRCT2::Ui::Windows
                 if (i == static_cast<size_t>(selectedListItem))
                 {
                     // Background highlight
-                    GfxFilterRect(rt, { 0, y, 800, y + kScrollableRowHeight - 1 }, FilterPaletteID::paletteDarken1);
+                    Rectangle::filter(rt, { 0, y, 800, y + kScrollableRowHeight - 1 }, FilterPaletteID::paletteDarken1);
                     format = STR_WINDOW_COLOUR_2_STRINGID;
                     if (_quickDemolishMode)
                         format = STR_LIGHTPINK_STRINGID;

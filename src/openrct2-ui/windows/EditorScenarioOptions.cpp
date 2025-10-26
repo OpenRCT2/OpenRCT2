@@ -24,6 +24,7 @@
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Font.h>
+#include <openrct2/drawing/Rectangle.h>
 #include <openrct2/drawing/Text.h>
 #include <openrct2/entity/Peep.h>
 #include <openrct2/interface/Colour.h>
@@ -35,6 +36,8 @@
 #include <openrct2/ride/RideManager.hpp>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Park.h>
+
+using namespace OpenRCT2::Drawing;
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -2337,7 +2340,7 @@ namespace OpenRCT2::Ui::Windows
         void RidesOnScrollDraw(RenderTarget& rt, int32_t scrollIndex)
         {
             int32_t colour = ColourMapA[colours[1].colour].mid_light;
-            GfxFillRect(rt, { { rt.x, rt.y }, { rt.x + rt.width - 1, rt.y + rt.height - 1 } }, colour);
+            Rectangle::fill(rt, { { rt.x, rt.y }, { rt.x + rt.width - 1, rt.y + rt.height - 1 } }, colour);
 
             for (int32_t i = 0; i < static_cast<int32_t>(_rideableRides.size()); i++)
             {
@@ -2347,14 +2350,16 @@ namespace OpenRCT2::Ui::Windows
                     continue;
 
                 // Checkbox
-                GfxFillRectInset(rt, { { 2, y }, { 11, y + 10 } }, colours[1], INSET_RECT_F_E0);
+                Rectangle::fillInset(
+                    rt, { { 2, y }, { 11, y + 10 } }, colours[1], Rectangle::BorderStyle::inset,
+                    Rectangle::FillBrightness::dark, Rectangle::FillMode::dontLightenWhenInset);
 
                 // Highlighted
                 auto stringId = STR_BLACK_STRING;
                 if (i == selectedListItem)
                 {
                     stringId = STR_WINDOW_COLOUR_2_STRINGID;
-                    GfxFilterRect(rt, { 0, y, width, y + 11 }, FilterPaletteID::paletteDarken1);
+                    Rectangle::filter(rt, { 0, y, width, y + 11 }, FilterPaletteID::paletteDarken1);
                 }
 
                 // Checkbox mark

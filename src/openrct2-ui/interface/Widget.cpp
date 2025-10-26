@@ -19,12 +19,14 @@
 #include <openrct2/Input.h>
 #include <openrct2/SpriteIds.h>
 #include <openrct2/config/Config.h>
+#include <openrct2/drawing/Rectangle.h>
 #include <openrct2/drawing/Text.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Formatting.h>
 #include <openrct2/localisation/StringIds.h>
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::Drawing;
 
 namespace OpenRCT2::Ui
 {
@@ -143,12 +145,14 @@ namespace OpenRCT2::Ui
         int32_t b = w.windowPos.y + widget.bottom;
 
         //
-        uint8_t press = (w.flags.has(WindowFlag::higherContrastOnPress) ? INSET_RECT_FLAG_FILL_MID_LIGHT : 0);
+        auto brightness
+            = (w.flags.has(WindowFlag::higherContrastOnPress) ? Rectangle::FillBrightness::dark
+                                                              : Rectangle::FillBrightness::light);
 
         auto colour = w.colours[widget.colour];
 
         // Draw the frame
-        GfxFillRectInset(rt, { leftTop, { r, b } }, colour, press);
+        Rectangle::fillInset(rt, { leftTop, { r, b } }, colour, Rectangle::BorderStyle::outset, brightness);
 
         if (!w.canBeResized())
             return;
@@ -175,7 +179,7 @@ namespace OpenRCT2::Ui
         auto colour = w.colours[widget.colour];
 
         // Draw the panel
-        GfxFillRectInset(rt, { leftTop, { r, b } }, colour, 0);
+        Rectangle::fillInset(rt, { leftTop, { r, b } }, colour);
 
         if (!w.canBeResized())
             return;
@@ -199,7 +203,8 @@ namespace OpenRCT2::Ui
                          w.windowPos + ScreenCoordsXY{ widget.right, widget.bottom } };
 
         // Check if the button is pressed down
-        uint8_t press = widgetIsPressed(w, widgetIndex) || isToolActive(w, widgetIndex) ? INSET_RECT_FLAG_BORDER_INSET : 0;
+        auto borderStyle = widgetIsPressed(w, widgetIndex) || isToolActive(w, widgetIndex) ? Rectangle::BorderStyle::inset
+                                                                                           : Rectangle::BorderStyle::outset;
 
         auto colour = w.colours[widget.colour];
 
@@ -207,12 +212,12 @@ namespace OpenRCT2::Ui
         if (static_cast<int32_t>(widget.image.GetIndex()) == -2)
         {
             // Draw border with no fill
-            GfxFillRectInset(rt, rect, colour, press | INSET_RECT_FLAG_FILL_NONE);
+            Rectangle::fillInset(rt, rect, colour, borderStyle, Rectangle::FillBrightness::light, Rectangle::FillMode::none);
             return;
         }
 
         // Draw the border with fill
-        GfxFillRectInset(rt, rect, colour, press);
+        Rectangle::fillInset(rt, rect, colour, borderStyle);
 
         WidgetDrawImage(rt, w, widgetIndex);
     }
@@ -294,12 +299,14 @@ namespace OpenRCT2::Ui
             if (static_cast<int32_t>(widget.image.GetIndex()) == -2)
             {
                 // Draw border with no fill
-                GfxFillRectInset(rt, rect, colour, INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_NONE);
+                Rectangle::fillInset(
+                    rt, rect, colour, Rectangle::BorderStyle::inset, Rectangle::FillBrightness::light,
+                    Rectangle::FillMode::none);
                 return;
             }
 
             // Draw the border with fill
-            GfxFillRectInset(rt, rect, colour, INSET_RECT_FLAG_BORDER_INSET);
+            Rectangle::fillInset(rt, rect, colour, Rectangle::BorderStyle::inset);
         }
 
         // Draw image
@@ -322,8 +329,9 @@ namespace OpenRCT2::Ui
         auto colour = w.colours[widget.colour];
 
         // Border
-        uint8_t press = widgetIsPressed(w, widgetIndex) || isToolActive(w, widgetIndex) ? INSET_RECT_FLAG_BORDER_INSET : 0;
-        GfxFillRectInset(rt, rect, colour, press);
+        auto borderStyle = widgetIsPressed(w, widgetIndex) || isToolActive(w, widgetIndex) ? Rectangle::BorderStyle::inset
+                                                                                           : Rectangle::BorderStyle::outset;
+        Rectangle::fillInset(rt, rect, colour, borderStyle);
 
         // Button caption
         if (widget.type != WidgetType::tableHeader)
@@ -444,7 +452,9 @@ namespace OpenRCT2::Ui
 
         auto colour = w.colours[widget.colour];
 
-        GfxFillRectInset(rt, rect, colour, INSET_RECT_F_60);
+        Rectangle::fillInset(
+            rt, rect, colour, Rectangle::BorderStyle::inset, Rectangle::FillBrightness::light,
+            Rectangle::FillMode::dontLightenWhenInset);
         WidgetText(rt, w, widgetIndex);
     }
 
@@ -503,24 +513,24 @@ namespace OpenRCT2::Ui
         uint8_t colour = w.colours[widget.colour].colour;
 
         // Border left of text
-        GfxFillRect(rt, { { l, t }, { l + 4, t } }, ColourMapA[colour].mid_dark);
-        GfxFillRect(rt, { { l + 1, t + 1 }, { l + 4, t + 1 } }, ColourMapA[colour].lighter);
+        Rectangle::fill(rt, { { l, t }, { l + 4, t } }, ColourMapA[colour].mid_dark);
+        Rectangle::fill(rt, { { l + 1, t + 1 }, { l + 4, t + 1 } }, ColourMapA[colour].lighter);
 
         // Border right of text
-        GfxFillRect(rt, { { textRight, t }, { r - 1, t } }, ColourMapA[colour].mid_dark);
-        GfxFillRect(rt, { { textRight, t + 1 }, { r - 2, t + 1 } }, ColourMapA[colour].lighter);
+        Rectangle::fill(rt, { { textRight, t }, { r - 1, t } }, ColourMapA[colour].mid_dark);
+        Rectangle::fill(rt, { { textRight, t + 1 }, { r - 2, t + 1 } }, ColourMapA[colour].lighter);
 
         // Border right
-        GfxFillRect(rt, { { r - 1, t + 1 }, { r - 1, b - 1 } }, ColourMapA[colour].mid_dark);
-        GfxFillRect(rt, { { r, t }, { r, b } }, ColourMapA[colour].lighter);
+        Rectangle::fill(rt, { { r - 1, t + 1 }, { r - 1, b - 1 } }, ColourMapA[colour].mid_dark);
+        Rectangle::fill(rt, { { r, t }, { r, b } }, ColourMapA[colour].lighter);
 
         // Border bottom
-        GfxFillRect(rt, { { l, b - 1 }, { r - 2, b - 1 } }, ColourMapA[colour].mid_dark);
-        GfxFillRect(rt, { { l, b }, { r - 1, b } }, ColourMapA[colour].lighter);
+        Rectangle::fill(rt, { { l, b - 1 }, { r - 2, b - 1 } }, ColourMapA[colour].mid_dark);
+        Rectangle::fill(rt, { { l, b }, { r - 1, b } }, ColourMapA[colour].lighter);
 
         // Border left
-        GfxFillRect(rt, { { l, t + 1 }, { l, b - 2 } }, ColourMapA[colour].mid_dark);
-        GfxFillRect(rt, { { l + 1, t + 2 }, { l + 1, b - 2 } }, ColourMapA[colour].lighter);
+        Rectangle::fill(rt, { { l, t + 1 }, { l, b - 2 } }, ColourMapA[colour].mid_dark);
+        Rectangle::fill(rt, { { l + 1, t + 2 }, { l + 1, b - 2 } }, ColourMapA[colour].lighter);
     }
 
     /**
@@ -538,19 +548,21 @@ namespace OpenRCT2::Ui
 
         auto colour = w.colours[widget->colour];
 
-        uint8_t press = INSET_RECT_F_60;
+        auto brightness = Rectangle::FillBrightness::light;
         if (w.flags.has(WindowFlag::higherContrastOnPress))
-            press |= INSET_RECT_FLAG_FILL_MID_LIGHT;
+            brightness = Rectangle::FillBrightness::dark;
 
-        GfxFillRectInset(rt, { topLeft, bottomRight }, colour, press);
+        Rectangle::fillInset(
+            rt, { topLeft, bottomRight }, colour, Rectangle::BorderStyle::inset, brightness,
+            Rectangle::FillMode::dontLightenWhenInset);
 
         // Black caption bars look slightly green, this fixes that
         if (colour.colour == COLOUR_BLACK)
-            GfxFillRect(
+            Rectangle::fill(
                 rt, { { topLeft + ScreenCoordsXY{ 1, 1 } }, { bottomRight - ScreenCoordsXY{ 1, 1 } } },
                 ColourMapA[colour.colour].dark);
         else
-            GfxFilterRect(
+            Rectangle::filter(
                 rt, { { topLeft + ScreenCoordsXY{ 1, 1 } }, { bottomRight - ScreenCoordsXY{ 1, 1 } } },
                 FilterPaletteID::paletteDarken3);
 
@@ -594,16 +606,17 @@ namespace OpenRCT2::Ui
         auto bottomRight = w.windowPos + ScreenCoordsXY{ widget.right, widget.bottom };
 
         // Check if the button is pressed down
-        uint8_t press = 0;
+        auto brightness = Rectangle::FillBrightness::light;
+        auto borderStyle = Rectangle::BorderStyle::outset;
         if (w.flags.has(WindowFlag::higherContrastOnPress))
-            press |= INSET_RECT_FLAG_FILL_MID_LIGHT;
+            brightness = Rectangle::FillBrightness::dark;
         if (widgetIsPressed(w, widgetIndex) || isToolActive(w, widgetIndex))
-            press |= INSET_RECT_FLAG_BORDER_INSET;
+            borderStyle = Rectangle::BorderStyle::inset;
 
         auto colour = w.colours[widget.colour];
 
         // Draw the button
-        GfxFillRectInset(rt, { topLeft, bottomRight }, colour, press);
+        Rectangle::fillInset(rt, { topLeft, bottomRight }, colour, borderStyle, brightness);
 
         if (widget.string == nullptr)
             return;
@@ -633,7 +646,9 @@ namespace OpenRCT2::Ui
         auto colour = w.colours[widget.colour];
 
         // checkbox
-        GfxFillRectInset(rt, { midLeft - ScreenCoordsXY{ 0, 5 }, midLeft + ScreenCoordsXY{ 9, 4 } }, colour, INSET_RECT_F_60);
+        Rectangle::fillInset(
+            rt, { midLeft - ScreenCoordsXY{ 0, 5 }, midLeft + ScreenCoordsXY{ 9, 4 } }, colour, Rectangle::BorderStyle::inset,
+            Rectangle::FillBrightness::light, Rectangle::FillMode::dontLightenWhenInset);
 
         if (widgetIsDisabled(w, widgetIndex))
         {
@@ -682,7 +697,9 @@ namespace OpenRCT2::Ui
         auto colour = w.colours[widget.colour];
 
         // Draw the border
-        GfxFillRectInset(rt, { topLeft, bottomRight }, colour, INSET_RECT_F_60);
+        Rectangle::fillInset(
+            rt, { topLeft, bottomRight }, colour, Rectangle::BorderStyle::inset, Rectangle::FillBrightness::light,
+            Rectangle::FillMode::dontLightenWhenInset);
 
         // Inflate by -1
         topLeft.x++;
@@ -748,19 +765,24 @@ namespace OpenRCT2::Ui
         colour.setFlag(ColourFlag::translucent, false);
 
         // Trough
-        GfxFillRect(rt, { { l + kScrollBarWidth, t }, { r - kScrollBarWidth, b } }, ColourMapA[colour.colour].lighter);
-        GfxFillRect(
+        Rectangle::fill(rt, { { l + kScrollBarWidth, t }, { r - kScrollBarWidth, b } }, ColourMapA[colour.colour].lighter);
+        Rectangle::fill(
             rt, { { l + kScrollBarWidth, t }, { r - kScrollBarWidth, b } }, 0x1000000 | ColourMapA[colour.colour].mid_dark);
-        GfxFillRect(rt, { { l + kScrollBarWidth, t + 2 }, { r - kScrollBarWidth, t + 2 } }, ColourMapA[colour.colour].mid_dark);
-        GfxFillRect(rt, { { l + kScrollBarWidth, t + 3 }, { r - kScrollBarWidth, t + 3 } }, ColourMapA[colour.colour].lighter);
-        GfxFillRect(rt, { { l + kScrollBarWidth, t + 7 }, { r - kScrollBarWidth, t + 7 } }, ColourMapA[colour.colour].mid_dark);
-        GfxFillRect(rt, { { l + kScrollBarWidth, t + 8 }, { r - kScrollBarWidth, t + 8 } }, ColourMapA[colour.colour].lighter);
+        Rectangle::fill(
+            rt, { { l + kScrollBarWidth, t + 2 }, { r - kScrollBarWidth, t + 2 } }, ColourMapA[colour.colour].mid_dark);
+        Rectangle::fill(
+            rt, { { l + kScrollBarWidth, t + 3 }, { r - kScrollBarWidth, t + 3 } }, ColourMapA[colour.colour].lighter);
+        Rectangle::fill(
+            rt, { { l + kScrollBarWidth, t + 7 }, { r - kScrollBarWidth, t + 7 } }, ColourMapA[colour.colour].mid_dark);
+        Rectangle::fill(
+            rt, { { l + kScrollBarWidth, t + 8 }, { r - kScrollBarWidth, t + 8 } }, ColourMapA[colour.colour].lighter);
 
         // Left button
         {
-            uint8_t flags = (scroll.flags & HSCROLLBAR_LEFT_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0;
+            auto borderStyle = (scroll.flags & HSCROLLBAR_LEFT_PRESSED) ? Rectangle::BorderStyle::inset
+                                                                        : Rectangle::BorderStyle::outset;
 
-            GfxFillRectInset(rt, { { l, t }, { l + (kScrollBarWidth - 1), b } }, colour, flags);
+            Rectangle::fillInset(rt, { { l, t }, { l + (kScrollBarWidth - 1), b } }, colour, borderStyle);
             DrawText(rt, { l + 1, t }, {}, kBlackLeftArrowString);
         }
 
@@ -768,16 +790,18 @@ namespace OpenRCT2::Ui
         {
             int16_t left = std::max(l + kScrollBarWidth, l + scroll.hThumbLeft - 1);
             int16_t right = std::min(r - kScrollBarWidth, l + scroll.hThumbRight - 1);
-            uint8_t flags = (scroll.flags & HSCROLLBAR_THUMB_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0;
+            auto borderStyle = (scroll.flags & HSCROLLBAR_THUMB_PRESSED) ? Rectangle::BorderStyle::inset
+                                                                         : Rectangle::BorderStyle::outset;
 
-            GfxFillRectInset(rt, { { left, t }, { right, b } }, colour, flags);
+            Rectangle::fillInset(rt, { { left, t }, { right, b } }, colour, borderStyle);
         }
 
         // Right button
         {
-            uint8_t flags = (scroll.flags & HSCROLLBAR_RIGHT_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0;
+            auto borderStyle = (scroll.flags & HSCROLLBAR_RIGHT_PRESSED) ? Rectangle::BorderStyle::inset
+                                                                         : Rectangle::BorderStyle::outset;
 
-            GfxFillRectInset(rt, { { r - (kScrollBarWidth - 1), t }, { r, b } }, colour, flags);
+            Rectangle::fillInset(rt, { { r - (kScrollBarWidth - 1), t }, { r, b } }, colour, borderStyle);
             DrawText(rt, { r - 6, t }, {}, kBlackRightArrowString);
         }
     }
@@ -788,31 +812,36 @@ namespace OpenRCT2::Ui
         colour.setFlag(ColourFlag::translucent, false);
 
         // Trough
-        GfxFillRect(rt, { { l, t + kScrollBarWidth }, { r, b - kScrollBarWidth } }, ColourMapA[colour.colour].lighter);
-        GfxFillRect(
+        Rectangle::fill(rt, { { l, t + kScrollBarWidth }, { r, b - kScrollBarWidth } }, ColourMapA[colour.colour].lighter);
+        Rectangle::fill(
             rt, { { l, t + kScrollBarWidth }, { r, b - kScrollBarWidth } }, 0x1000000 | ColourMapA[colour.colour].mid_dark);
-        GfxFillRect(rt, { { l + 2, t + kScrollBarWidth }, { l + 2, b - kScrollBarWidth } }, ColourMapA[colour.colour].mid_dark);
-        GfxFillRect(rt, { { l + 3, t + kScrollBarWidth }, { l + 3, b - kScrollBarWidth } }, ColourMapA[colour.colour].lighter);
-        GfxFillRect(rt, { { l + 7, t + kScrollBarWidth }, { l + 7, b - kScrollBarWidth } }, ColourMapA[colour.colour].mid_dark);
-        GfxFillRect(rt, { { l + 8, t + kScrollBarWidth }, { l + 8, b - kScrollBarWidth } }, ColourMapA[colour.colour].lighter);
+        Rectangle::fill(
+            rt, { { l + 2, t + kScrollBarWidth }, { l + 2, b - kScrollBarWidth } }, ColourMapA[colour.colour].mid_dark);
+        Rectangle::fill(
+            rt, { { l + 3, t + kScrollBarWidth }, { l + 3, b - kScrollBarWidth } }, ColourMapA[colour.colour].lighter);
+        Rectangle::fill(
+            rt, { { l + 7, t + kScrollBarWidth }, { l + 7, b - kScrollBarWidth } }, ColourMapA[colour.colour].mid_dark);
+        Rectangle::fill(
+            rt, { { l + 8, t + kScrollBarWidth }, { l + 8, b - kScrollBarWidth } }, ColourMapA[colour.colour].lighter);
 
         // Up button
-        GfxFillRectInset(
+        Rectangle::fillInset(
             rt, { { l, t }, { r, t + (kScrollBarWidth - 1) } }, colour,
-            ((scroll.flags & VSCROLLBAR_UP_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0));
+            ((scroll.flags & VSCROLLBAR_UP_PRESSED) ? Rectangle::BorderStyle::inset : Rectangle::BorderStyle::outset));
         DrawText(rt, { l + 1, t - 1 }, {}, kBlackUpArrowString);
 
         // Thumb
-        GfxFillRectInset(
+        Rectangle::fillInset(
             rt,
             { { l, std::max(t + kScrollBarWidth, t + scroll.vThumbTop - 1) },
               { r, std::min(b - kScrollBarWidth, t + scroll.vThumbBottom - 1) } },
-            { colour }, ((scroll.flags & VSCROLLBAR_THUMB_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0));
+            { colour },
+            ((scroll.flags & VSCROLLBAR_THUMB_PRESSED) ? Rectangle::BorderStyle::inset : Rectangle::BorderStyle::outset));
 
         // Down button
-        GfxFillRectInset(
+        Rectangle::fillInset(
             rt, { { l, b - (kScrollBarWidth - 1) }, { r, b } }, colour,
-            ((scroll.flags & VSCROLLBAR_DOWN_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0));
+            ((scroll.flags & VSCROLLBAR_DOWN_PRESSED) ? Rectangle::BorderStyle::inset : Rectangle::BorderStyle::outset));
         DrawText(rt, { l + 1, b - (kScrollBarWidth - 1) }, {}, kBlackDownArrowString);
     }
 
@@ -1130,8 +1159,10 @@ namespace OpenRCT2::Ui
         bool active = w.classification == tbIdent.window.classification && w.number == tbIdent.window.number
             && widgetIndex == tbIdent.widgetIndex;
 
-        // GfxFillRectInset(rt, l, t, r, b, colour, 0x20 | (!active ? 0x40 : 0x00));
-        GfxFillRectInset(rt, { topLeft, bottomRight }, w.colours[widget.colour], INSET_RECT_F_60);
+        // Rectangle::fillInset(rt, l, t, r, b, colour, 0x20 | (!active ? 0x40 : 0x00));
+        Rectangle::fillInset(
+            rt, { topLeft, bottomRight }, w.colours[widget.colour], Rectangle::BorderStyle::inset,
+            Rectangle::FillBrightness::light, Rectangle::FillMode::dontLightenWhenInset);
 
         // Figure out where the text should be positioned vertically.
         topLeft.y = w.windowPos.y + widget.textTop();
@@ -1177,7 +1208,7 @@ namespace OpenRCT2::Ui
         {
             auto colour = ColourMapA[w.colours[1].colour].mid_light;
             auto y = topLeft.y + 1 + widget.height() - 4;
-            GfxFillRect(rt, { { curX, y }, { curX + width, y } }, colour + 5);
+            Rectangle::fill(rt, { { curX, y }, { curX + width, y } }, colour + 5);
         }
     }
 
@@ -1195,7 +1226,9 @@ namespace OpenRCT2::Ui
         auto isBlinking = (lowerBlinkBounds != upperBlinkBounds) && (percentage >= lowerBlinkBounds)
             && (percentage <= upperBlinkBounds);
 
-        GfxFillRectInset(rt, { topLeft, bottomRight }, w.colours[1], INSET_RECT_F_30);
+        Rectangle::fillInset(
+            rt, { topLeft, bottomRight }, w.colours[1], Rectangle::BorderStyle::inset, Rectangle::FillBrightness::light,
+            Rectangle::FillMode::none);
         if (isBlinking)
         {
             if (GameIsNotPaused() && (gCurrentRealTimeTicks & 8))
@@ -1206,9 +1239,9 @@ namespace OpenRCT2::Ui
         const int32_t fillSize = (barWidth * percentage) / 100;
         if (fillSize > 0)
         {
-            GfxFillRectInset(
+            Rectangle::fillInset(
                 rt, { topLeft + ScreenCoordsXY{ 1, 1 }, topLeft + ScreenCoordsXY{ fillSize + 1, widget.height() - 1 } },
-                { widget.colour }, 0);
+                { widget.colour });
         }
     }
 
@@ -1217,7 +1250,7 @@ namespace OpenRCT2::Ui
         ScreenCoordsXY topLeft{ w.windowPos + ScreenCoordsXY{ widget.left, widget.top } };
         ScreenCoordsXY bottomRight{ w.windowPos + ScreenCoordsXY{ widget.right, widget.bottom } };
 
-        GfxFillRectInset(rt, { topLeft, bottomRight }, w.colours[1], INSET_RECT_FLAG_BORDER_INSET);
+        Rectangle::fillInset(rt, { topLeft, bottomRight }, w.colours[1], Rectangle::BorderStyle::inset);
     }
 
     ImageId getColourButtonImage(colour_t colour)

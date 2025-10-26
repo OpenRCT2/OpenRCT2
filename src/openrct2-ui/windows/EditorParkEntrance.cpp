@@ -17,6 +17,7 @@
 #include <openrct2/SpriteIds.h>
 #include <openrct2/actions/ParkEntrancePlaceAction.h>
 #include <openrct2/audio/Audio.h>
+#include <openrct2/drawing/Rectangle.h>
 #include <openrct2/object/EntranceObject.h>
 #include <openrct2/object/ObjectLimits.h>
 #include <openrct2/object/ObjectManager.h>
@@ -27,6 +28,8 @@
 #include <openrct2/world/tile_element/PathElement.h>
 #include <openrct2/world/tile_element/Slope.h>
 #include <openrct2/world/tile_element/SurfaceElement.h>
+
+using namespace OpenRCT2::Drawing;
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -313,16 +316,22 @@ namespace OpenRCT2::Ui::Windows
             for (auto& entranceType : _entranceTypes)
             {
                 // Draw flat button rectangle
-                int32_t buttonFlags = 0;
+                auto borderStyle = Rectangle::BorderStyle::outset;
+                auto fillBrightness = Rectangle::FillBrightness::light;
                 if (_selectedEntranceType == entranceType.entryIndex)
-                    buttonFlags |= INSET_RECT_FLAG_BORDER_INSET;
+                {
+                    borderStyle = Rectangle::BorderStyle::inset;
+                    fillBrightness = Rectangle::FillBrightness::dark;
+                }
                 else if (_highlightedEntranceType == entranceType.entryIndex)
-                    buttonFlags |= INSET_RECT_FLAG_FILL_MID_LIGHT;
+                {
+                    fillBrightness = Rectangle::FillBrightness::dark;
+                }
 
-                if (buttonFlags != 0)
-                    GfxFillRectInset(
-                        rt, { coords, coords + ScreenCoordsXY{ kImageSize - 1, kImageSize - 1 } }, colours[1],
-                        INSET_RECT_FLAG_FILL_MID_LIGHT | buttonFlags);
+                if (fillBrightness != Rectangle::FillBrightness::light)
+                    Rectangle::fillInset(
+                        rt, { coords, coords + ScreenCoordsXY{ kImageSize - 1, kImageSize - 1 } }, colours[1], borderStyle,
+                        fillBrightness);
 
                 RenderTarget clipDPI;
                 auto screenPos = coords + ScreenCoordsXY{ kScrollPadding, kScrollPadding };

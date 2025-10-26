@@ -21,6 +21,7 @@
 #include "../core/Numerics.hpp"
 #include "../drawing/Drawing.h"
 #include "../drawing/IDrawingEngine.h"
+#include "../drawing/Rectangle.h"
 #include "../entity/EntityList.h"
 #include "../entity/Guest.h"
 #include "../entity/PatrolArea.h"
@@ -53,6 +54,7 @@
 
 namespace OpenRCT2
 {
+    using namespace OpenRCT2::Drawing;
     using namespace OpenRCT2::Numerics;
 
     enum : uint8_t
@@ -1036,7 +1038,7 @@ namespace OpenRCT2
             auto y = rt.y;
             auto w = rt.width;
             auto h = rt.height;
-            GfxFilterRect(rt, ScreenRect(x, y, x + w, y + h), paletteId);
+            Rectangle::filter(rt, ScreenRect(x, y, x + w, y + h), paletteId);
         }
     }
 

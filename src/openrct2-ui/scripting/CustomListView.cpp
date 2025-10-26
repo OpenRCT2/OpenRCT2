@@ -18,9 +18,11 @@
     #include <numeric>
     #include <openrct2/Context.h>
     #include <openrct2/core/String.hpp>
+    #include <openrct2/drawing/Rectangle.h>
     #include <openrct2/localisation/Formatter.h>
     #include <openrct2/localisation/Formatting.h>
 
+using namespace OpenRCT2::Drawing;
 using namespace OpenRCT2::Scripting;
 using namespace OpenRCT2::Ui::Windows;
 
@@ -565,7 +567,7 @@ void CustomListView::MouseUp(const ScreenCoordsXY& pos)
 void CustomListView::Paint(WindowBase* w, RenderTarget& rt, const ScrollArea* scroll) const
 {
     auto paletteIndex = ColourMapA[w->colours[1].colour].mid_light;
-    GfxFillRect(rt, { { rt.x, rt.y }, { rt.x + rt.width, rt.y + rt.height } }, paletteIndex);
+    Rectangle::fill(rt, { { rt.x, rt.y }, { rt.x + rt.width, rt.y + rt.height } }, paletteIndex);
 
     int32_t y = ShowColumnHeaders ? kColumnHeaderHeight : 0;
     for (size_t i = 0; i < Items.size(); i++)
@@ -595,17 +597,17 @@ void CustomListView::Paint(WindowBase* w, RenderTarget& rt, const ScrollArea* sc
                 auto isSelected = (SelectedCell && itemIndex == SelectedCell->Row);
                 if (isSelected)
                 {
-                    GfxFilterRect(
+                    Rectangle::filter(
                         rt, { { rt.x, y }, { rt.x + rt.width, y + (kListRowHeight - 1) } }, FilterPaletteID::paletteDarken2);
                 }
                 else if (isHighlighted)
                 {
-                    GfxFilterRect(
+                    Rectangle::filter(
                         rt, { { rt.x, y }, { rt.x + rt.width, y + (kListRowHeight - 1) } }, FilterPaletteID::paletteDarken2);
                 }
                 else if (isStriped)
                 {
-                    GfxFillRect(
+                    Rectangle::fill(
                         rt, { { rt.x, y }, { rt.x + rt.width, y + (kListRowHeight - 1) } },
                         ColourMapA[w->colours[1].colour].lighter | 0x1000000);
                 }
@@ -652,7 +654,7 @@ void CustomListView::Paint(WindowBase* w, RenderTarget& rt, const ScrollArea* sc
         y = scroll->contentOffsetY;
 
         auto bgColour = ColourMapA[w->colours[1].colour].mid_light;
-        GfxFillRect(rt, { { rt.x, y }, { rt.x + rt.width, y + 12 } }, bgColour);
+        Rectangle::fill(rt, { { rt.x, y }, { rt.x + rt.width, y + 12 } }, bgColour);
 
         int32_t x = 0;
         for (int32_t j = 0; j < static_cast<int32_t>(Columns.size()); j++)
@@ -679,12 +681,12 @@ void CustomListView::PaintHeading(
     WindowBase* w, RenderTarget& rt, const ScreenCoordsXY& pos, const ScreenSize& size, const std::string& text,
     ColumnSortOrder sortOrder, bool isPressed) const
 {
-    auto boxFlags = 0;
+    auto borderStyle = Rectangle::BorderStyle::outset;
     if (isPressed)
     {
-        boxFlags = INSET_RECT_FLAG_BORDER_INSET;
+        borderStyle = Rectangle::BorderStyle::inset;
     }
-    GfxFillRectInset(rt, { pos, pos + ScreenCoordsXY{ size.width - 1, size.height - 1 } }, w->colours[1], boxFlags);
+    Rectangle::fillInset(rt, { pos, pos + ScreenCoordsXY{ size.width - 1, size.height - 1 } }, w->colours[1], borderStyle);
     if (!text.empty())
     {
         PaintCell(rt, pos, size, text.c_str(), false);
