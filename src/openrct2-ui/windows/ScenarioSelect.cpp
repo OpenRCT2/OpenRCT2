@@ -152,13 +152,6 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void onClose() override
-        {
-            // Unload campaigns
-            auto& objManager = GetContext()->GetObjectManager();
-            objManager.UnloadAllType(ObjectType::campaign);
-        }
-
         int32_t GetPreviewPaneWidth() const
         {
             if (Config::Get().interface.scenarioPreviewScreenshots)
@@ -933,9 +926,7 @@ namespace OpenRCT2::Ui::Windows
 
         void initTabs()
         {
-            auto& objManager = GetContext()->GetObjectManager();
-            objManager.LoadCampaignObjects();
-            auto& loadedCampaigns = objManager.GetObjectList(ObjectType::campaign);
+            auto& loadedCampaigns = GetContext()->GetObjectManager().GetObjectList(ObjectType::campaign);
             std::sort(loadedCampaigns.begin(), loadedCampaigns.end(), [](const Object* campaignA, const Object* campaignB) {
                 return SortCampaigns(
                     static_cast<const CampaignObject*>(campaignA), static_cast<const CampaignObject*>(campaignB));

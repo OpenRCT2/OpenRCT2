@@ -278,8 +278,10 @@ namespace OpenRCT2
                 if (loadedObject != nullptr)
                 {
                     loadedObject->Unload();
+                    loadedObject = nullptr;
                 }
             }
+            list.clear();
         }
 
         void ResetObjects() override
