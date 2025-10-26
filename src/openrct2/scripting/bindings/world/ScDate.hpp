@@ -32,6 +32,7 @@ namespace OpenRCT2::Scripting
         static JSValue monthsElapsed_set(JSContext* ctx, JSValue, JSValue jsValue)
         {
             JS_UNPACK_UINT32(value, ctx, jsValue);
+            JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
             OpenRCT2::getGameState().date = Date{ value, GetDate().GetMonthTicks() };
             return JS_UNDEFINED;
         }
@@ -45,6 +46,7 @@ namespace OpenRCT2::Scripting
         static JSValue monthProgress_set(JSContext* ctx, JSValue, JSValue jsValue)
         {
             JS_UNPACK_INT32(value, ctx, jsValue);
+            JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
             OpenRCT2::getGameState().date = Date{ GetDate().GetMonthsElapsed(), static_cast<uint16_t>(value) };
             return JS_UNDEFINED;
         }
