@@ -31,7 +31,6 @@
 #include "core/FileStream.h"
 #include "core/FileSystem.hpp"
 #include "core/Path.hpp"
-#include "core/String.hpp"
 #include "entity/EntityRegistry.h"
 #include "entity/EntityTweener.h"
 #include "interface/Window.h"
@@ -620,15 +619,7 @@ namespace OpenRCT2
             {
                 if (!fs::exists(filePath))
                 {
-                    if constexpr (std::is_same_v<decltype(filePath), std::wstring>)
-                    {
-                        auto utf8Path = OpenRCT2::String::toUtf8(filePath.wstring());
-                        throw std::invalid_argument(FormatStringID(STR_REPLAY_FILE_NOT_FOUND, utf8Path));
-                    }
-                    else
-                    {
-                        throw std::invalid_argument(FormatStringID(STR_REPLAY_FILE_NOT_FOUND, filePath.c_str()));
-                    }
+                    throw std::invalid_argument(FormatStringID(STR_REPLAY_FILE_NOT_FOUND, filePath.u8string().c_str()));
                 }
             }
             else if (filePath.is_relative())
@@ -643,7 +634,9 @@ namespace OpenRCT2
             }
 
             if (!fs::is_regular_file(filePath))
-                throw std::invalid_argument(FormatStringID(STR_REPLAY_FILE_NOT_FOUND, filePath.c_str()));
+            {
+                throw std::invalid_argument(FormatStringID(STR_REPLAY_FILE_NOT_FOUND, filePath.u8string().c_str()));
+            }
 
             FileStream fileStream(filePath, FileMode::open);
             MemoryStream stream = DecompressFile(fileStream);
