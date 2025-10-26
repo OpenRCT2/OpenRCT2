@@ -614,12 +614,14 @@ namespace OpenRCT2
         void ReadReplayData(const std::string& file, ReplayRecordData& data)
         {
             fs::path filePath = file;
+            fs::path absoluteFilePath;
 
             if (filePath.is_absolute())
             {
+                absoluteFilePath = filePath;
                 if (!fs::exists(filePath))
                 {
-                    throw std::invalid_argument(FormatStringID(STR_REPLAY_FILE_NOT_FOUND, filePath.u8string().c_str()));
+                    throw std::invalid_argument(FormatStringID(STR_REPLAY_FILE_NOT_FOUND, absoluteFilePath.u8string().c_str()));
                 }
             }
             else if (filePath.is_relative())
@@ -631,11 +633,12 @@ namespace OpenRCT2
                     / filePath;
                 if (fs::is_regular_file(replayPath))
                     filePath = replayPath;
+                absoluteFilePath = fs::absolute(filePath);
             }
 
             if (!fs::is_regular_file(filePath))
             {
-                throw std::invalid_argument(FormatStringID(STR_REPLAY_FILE_NOT_FOUND, filePath.u8string().c_str()));
+                throw std::invalid_argument(FormatStringID(STR_REPLAY_FILE_NOT_FOUND, absoluteFilePath.u8string().c_str()));
             }
 
             FileStream fileStream(filePath, FileMode::open);
