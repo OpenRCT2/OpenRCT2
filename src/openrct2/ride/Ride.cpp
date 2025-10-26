@@ -246,7 +246,6 @@ Ride* GetRide(RideId index)
 
     auto& gameState = getGameState();
     const auto idx = index.ToUnderlying();
-    assert(idx < gameState.rides.size());
     if (idx >= gameState.rides.size())
     {
         return nullptr;
