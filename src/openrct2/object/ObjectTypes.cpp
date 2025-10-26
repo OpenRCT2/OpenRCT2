@@ -72,6 +72,11 @@ namespace OpenRCT2
             != std::end(kIntransientObjectTypes);
     }
 
+    bool ShouldFreeObjectType(ObjectType type)
+    {
+        return type != ObjectType::audio;
+    }
+
     std::span<const ObjectType> getAllObjectTypes()
     {
         return kAllObjectTypes;

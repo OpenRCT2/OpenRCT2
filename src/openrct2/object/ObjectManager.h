@@ -56,7 +56,6 @@ namespace OpenRCT2
         virtual void LoadObjects(const ObjectList& entries, const bool reportProgress = false) = 0;
         virtual void LoadCampaignObjects() = 0;
         virtual void UnloadObjects(const std::vector<ObjectEntryDescriptor>& entries) = 0;
-        virtual void UnloadAllType(ObjectType typeIndex) = 0;
         virtual void UnloadAllTransient() = 0;
         virtual void UnloadAll() = 0;
 

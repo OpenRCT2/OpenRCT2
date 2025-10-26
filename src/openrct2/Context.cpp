@@ -218,7 +218,6 @@ namespace OpenRCT2
             if (_objectManager != nullptr)
             {
                 _objectManager->UnloadAll();
-                _objectManager->UnloadAllType(ObjectType::campaign);
             }
 
             GfxObjectCheckAllImagesFreed();
