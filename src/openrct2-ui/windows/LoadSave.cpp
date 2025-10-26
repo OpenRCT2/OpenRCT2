@@ -605,7 +605,7 @@ namespace OpenRCT2::Ui::Windows
                 Audio::Resume();
             }
 
-            RegisterCallback({});
+            UnregisterJSCallback();
         }
 
         void onResize() override
@@ -1163,7 +1163,7 @@ namespace OpenRCT2::Ui::Windows
     };
 
     WindowBase* LoadsaveOpen(
-        LoadSaveAction action, LoadSaveType type, std::string_view defaultPath, LoadSaveCallback callback,
+        LoadSaveAction action, LoadSaveType type, std::string_view defaultPath, LoadSaveCallback callback, bool isJsCallback,
         TrackDesign* trackDesign)
     {
         _trackDesign = trackDesign;
@@ -1184,7 +1184,7 @@ namespace OpenRCT2::Ui::Windows
 
             ScreenSize windowSize = { config.fileBrowserWidth, config.fileBrowserHeight };
 
-            RegisterCallback(callback);
+            RegisterCallback(callback, isJsCallback);
 
             w = windowMgr->Create<LoadSaveWindow>(
                 WindowClass::loadsave, windowSize,

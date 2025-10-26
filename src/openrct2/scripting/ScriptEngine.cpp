@@ -487,6 +487,8 @@ ScTile Scripting::gScTile;
 ScTileElement Scripting::gScTileElement;
 ScEntity Scripting::gScEntity;
 ScThought Scripting::gScThought;
+ScScenario Scripting::gScScenario;
+ScScenarioObjective Scripting::gScScenarioObjective;
 ScPatrolArea Scripting::gScPatrolArea;
 ScPlugin Scripting::gScPlugin;
 
@@ -527,8 +529,8 @@ void ScriptEngine::RegisterClasses(JSContext* ctx)
     // ScSocket::Register(ctx);
     // ScListener::Register(ctx);
     // #endif
-    // ScScenario::Register(ctx);
-    // ScScenarioObjective::Register(ctx);
+    gScScenario.Register(ctx);
+    gScScenarioObjective.Register(ctx);
     gScPatrolArea.Register(ctx);
     gScPlugin.Register(ctx);
 }
@@ -567,7 +569,7 @@ void ScriptEngine::InitialiseContext(JSContext* ctx) const
     JS_SetPropertyStr(ctx, glb, "park", gScPark.New(ctx));
     JS_SetPropertyStr(ctx, glb, "pluginManager", gScPlugin.New(ctx));
     JS_SetPropertyStr(ctx, glb, "profiler", gScProfiler.New(ctx));
-    // dukglue_register_global(ctx, std::make_shared<ScScenario>(), "scenario");
+    JS_SetPropertyStr(ctx, glb, "scenario", gScScenario.New(ctx));
     JS_SetPropertyStr(ctx, glb, "objectManager", gScObjectManager.New(ctx));
     JS_FreeValue(ctx, glb);
 
