@@ -9,21 +9,21 @@
 
 #pragma once
 
-#ifdef ENABLE_SCRIPTING
+#ifdef ENABLE_SCRIPTING_REFACTOR
 
     #include "../../../Context.h"
     #include "../../../GameState.h"
+    #include "../../../core/EnumMap.hpp"
     #include "../../../core/StringTypes.h"
     #include "../../../scenario/Scenario.h"
     #include "../../../world/Park.h"
-    #include "../../Duktape.hpp"
     #include "../../ScriptEngine.h"
 
 namespace OpenRCT2::Scripting
 {
     using namespace OpenRCT2::Scenario;
 
-    static const DukEnumMap<ObjectiveType> ScenarioObjectiveTypeMap(
+    static const EnumMap<ObjectiveType> ScenarioObjectiveTypeMap(
         {
             { "none", ObjectiveType::none },
             { "guestsBy", ObjectiveType::guestsBy },
@@ -39,255 +39,291 @@ namespace OpenRCT2::Scripting
             { "monthlyFoodIncome", ObjectiveType::monthlyFoodIncome },
         });
 
-    class ScScenarioObjective
+    class ScScenarioObjective;
+    extern ScScenarioObjective gScScenarioObjective;
+    class ScScenarioObjective final : public ScBase
     {
     private:
-        std::string type_get()
+        static JSValue type_get(JSContext* ctx, JSValue)
         {
-            return std::string(ScenarioObjectiveTypeMap[getGameState().scenarioOptions.objective.Type]);
+            return JSFromStdString(ctx, ScenarioObjectiveTypeMap[getGameState().scenarioOptions.objective.Type]);
         }
 
-        void type_set(const std::string& value)
+        static JSValue type_set(JSContext* ctx, JSValue, JSValue jsValue)
         {
-            ThrowIfGameStateNotMutable();
+            JS_UNPACK_STR(value, ctx, jsValue);
+            JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
             getGameState().scenarioOptions.objective.Type = ScenarioObjectiveTypeMap[value];
+            return JS_UNDEFINED;
         }
 
-        uint16_t guests_get()
+        static JSValue guests_get(JSContext* ctx, JSValue)
         {
             auto& gameState = getGameState();
             if (gameState.scenarioOptions.objective.Type == ObjectiveType::guestsBy
                 || gameState.scenarioOptions.objective.Type == ObjectiveType::guestsAndRating)
             {
-                return gameState.scenarioOptions.objective.NumGuests;
+                return JS_NewUint32(ctx, gameState.scenarioOptions.objective.NumGuests);
             }
-            return 0;
+            return JS_NewUint32(ctx, 0);
         }
 
-        void guests_set(uint16_t value)
+        static JSValue guests_set(JSContext* ctx, JSValue, JSValue jsValue)
         {
-            ThrowIfGameStateNotMutable();
-            auto& gameState = getGameState();
+            JS_UNPACK_UINT32(value, ctx, jsValue);
+            JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+            auto& gameState = OpenRCT2::getGameState();
             if (gameState.scenarioOptions.objective.Type == ObjectiveType::guestsBy
                 || gameState.scenarioOptions.objective.Type == ObjectiveType::guestsAndRating)
             {
                 gameState.scenarioOptions.objective.NumGuests = value;
             }
+            return JS_UNDEFINED;
         }
 
-        uint8_t year_get()
+        static JSValue year_get(JSContext* ctx, JSValue)
         {
             const auto& gameState = getGameState();
             if (gameState.scenarioOptions.objective.Type == ObjectiveType::guestsBy
                 || gameState.scenarioOptions.objective.Type == ObjectiveType::parkValueBy)
             {
-                return gameState.scenarioOptions.objective.Year;
+                return JS_NewUint32(ctx, gameState.scenarioOptions.objective.Year);
             }
-            return 0;
+            return JS_NewUint32(ctx, 0);
         }
 
-        void year_set(uint8_t value)
+        static JSValue year_set(JSContext* ctx, JSValue, JSValue jsValue)
         {
-            auto& gameState = getGameState();
-            ThrowIfGameStateNotMutable();
+            JS_UNPACK_UINT32(value, ctx, jsValue);
+            JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+            auto& gameState = OpenRCT2::getGameState();
             if (gameState.scenarioOptions.objective.Type == ObjectiveType::guestsBy
                 || gameState.scenarioOptions.objective.Type == ObjectiveType::parkValueBy)
             {
                 gameState.scenarioOptions.objective.Year = value;
             }
+            return JS_UNDEFINED;
         }
 
-        uint16_t length_get()
+        static JSValue length_get(JSContext* ctx, JSValue)
         {
-            const auto& gameState = getGameState();
+            const auto& gameState = OpenRCT2::getGameState();
             if (gameState.scenarioOptions.objective.Type == ObjectiveType::tenRollercoastersLength)
             {
-                return gameState.scenarioOptions.objective.NumGuests;
+                return JS_NewUint32(ctx, gameState.scenarioOptions.objective.NumGuests);
             }
-            return 0;
+            return JS_NewUint32(ctx, 0);
         }
 
-        void length_set(uint16_t value)
+        static JSValue length_set(JSContext* ctx, JSValue, JSValue jsValue)
         {
-            ThrowIfGameStateNotMutable();
-            auto& gameState = getGameState();
+            JS_UNPACK_UINT32(value, ctx, jsValue);
+            JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+            auto& gameState = OpenRCT2::getGameState();
             if (gameState.scenarioOptions.objective.Type == ObjectiveType::tenRollercoastersLength)
             {
                 gameState.scenarioOptions.objective.NumGuests = value;
             }
+            return JS_UNDEFINED;
         }
 
-        money64 excitement_get()
+        static JSValue excitement_get(JSContext* ctx, JSValue)
         {
             const auto& gameState = getGameState();
             if (gameState.scenarioOptions.objective.Type == ObjectiveType::finishFiveRollercoasters)
             {
-                return gameState.scenarioOptions.objective.Currency;
+                return JS_NewInt64(ctx, gameState.scenarioOptions.objective.Currency);
             }
-            return 0;
+            return JS_NewInt64(ctx, 0);
         }
 
-        void excitement_set(money64 value)
+        static JSValue excitement_set(JSContext* ctx, JSValue, JSValue jsValue)
         {
-            ThrowIfGameStateNotMutable();
-            auto& gameState = getGameState();
+            JS_UNPACK_INT64(value, ctx, jsValue);
+            JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+            auto& gameState = OpenRCT2::getGameState();
             if (gameState.scenarioOptions.objective.Type == ObjectiveType::finishFiveRollercoasters)
             {
                 gameState.scenarioOptions.objective.Currency = value;
             }
+            return JS_UNDEFINED;
         }
 
-        money64 parkValue_get()
+        static JSValue parkValue_get(JSContext* ctx, JSValue)
         {
             const auto& gameState = getGameState();
             if (gameState.scenarioOptions.objective.Type == ObjectiveType::parkValueBy
                 || gameState.scenarioOptions.objective.Type == ObjectiveType::repayLoanAndParkValue)
             {
-                return gameState.scenarioOptions.objective.Currency;
+                return JS_NewInt64(ctx, gameState.scenarioOptions.objective.Currency);
             }
-            return 0;
+            return JS_NewInt64(ctx, 0);
         }
 
-        void parkValue_set(money64 value)
+        static JSValue parkValue_set(JSContext* ctx, JSValue, JSValue jsValue)
         {
-            ThrowIfGameStateNotMutable();
-            auto& gameState = getGameState();
+            JS_UNPACK_INT64(value, ctx, jsValue);
+            JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+            auto& gameState = OpenRCT2::getGameState();
             if (gameState.scenarioOptions.objective.Type == ObjectiveType::parkValueBy
                 || gameState.scenarioOptions.objective.Type == ObjectiveType::repayLoanAndParkValue)
             {
                 gameState.scenarioOptions.objective.Currency = value;
             }
+            return JS_UNDEFINED;
         }
 
-        money64 monthlyIncome_get()
+        static JSValue monthlyIncome_get(JSContext* ctx, JSValue)
         {
             const auto& gameState = getGameState();
             if (gameState.scenarioOptions.objective.Type == ObjectiveType::monthlyRideIncome
                 || gameState.scenarioOptions.objective.Type == ObjectiveType::monthlyFoodIncome)
             {
-                return gameState.scenarioOptions.objective.Currency;
+                return JS_NewInt64(ctx, gameState.scenarioOptions.objective.Currency);
             }
-            return 0;
+            return JS_NewInt64(ctx, 0);
         }
 
-        void monthlyIncome_set(money64 value)
+        static JSValue monthlyIncome_set(JSContext* ctx, JSValue, JSValue jsValue)
         {
-            ThrowIfGameStateNotMutable();
-            auto& gameState = getGameState();
+            JS_UNPACK_INT64(value, ctx, jsValue);
+            JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+            auto& gameState = OpenRCT2::getGameState();
             if (gameState.scenarioOptions.objective.Type == ObjectiveType::parkValueBy
                 || gameState.scenarioOptions.objective.Type == ObjectiveType::repayLoanAndParkValue)
             {
                 gameState.scenarioOptions.objective.Currency = value;
             }
+            return JS_UNDEFINED;
         }
 
     public:
-        static void Register(duk_context* ctx)
+        JSValue New(JSContext* ctx)
         {
-            dukglue_register_property(ctx, &ScScenarioObjective::type_get, &ScScenarioObjective::type_set, "type");
-            dukglue_register_property(ctx, &ScScenarioObjective::guests_get, &ScScenarioObjective::guests_set, "guests");
-            dukglue_register_property(ctx, &ScScenarioObjective::year_get, &ScScenarioObjective::year_set, "year");
-            dukglue_register_property(
-                ctx, &ScScenarioObjective::excitement_get, &ScScenarioObjective::excitement_set, "excitement");
-            dukglue_register_property(
-                ctx, &ScScenarioObjective::monthlyIncome_get, &ScScenarioObjective::monthlyIncome_set, "monthlyIncome");
-            dukglue_register_property(
-                ctx, &ScScenarioObjective::parkValue_get, &ScScenarioObjective::parkValue_set, "parkValue");
+            static constexpr JSCFunctionListEntry funcs[] = {
+                JS_CGETSET_DEF("type", ScScenarioObjective::type_get, ScScenarioObjective::type_set),
+                JS_CGETSET_DEF("guests", ScScenarioObjective::guests_get, ScScenarioObjective::guests_set),
+                JS_CGETSET_DEF("year", ScScenarioObjective::year_get, ScScenarioObjective::year_set),
+                JS_CGETSET_DEF("excitement", ScScenarioObjective::excitement_get, ScScenarioObjective::excitement_set),
+                JS_CGETSET_DEF("monthlyIncome", ScScenarioObjective::monthlyIncome_get, ScScenarioObjective::monthlyIncome_set),
+                JS_CGETSET_DEF("parkValue", ScScenarioObjective::parkValue_get, ScScenarioObjective::parkValue_set),
+            };
+
+            return MakeWithOpaque(ctx, funcs, nullptr);
+        }
+
+        void Register(JSContext* ctx)
+        {
+            RegisterBaseStr(ctx, "ScenarioObjective");
         }
     };
 
-    class ScScenario
+    class ScScenario;
+    extern ScScenario gScScenario;
+    class ScScenario final : public ScBase
     {
-    public:
-        std::string name_get()
+    private:
+        static JSValue name_get(JSContext* ctx, JSValue)
         {
-            return getGameState().scenarioOptions.name;
+            return JSFromStdString(ctx, getGameState().scenarioOptions.name);
         }
 
-        void name_set(const std::string& value)
+        static JSValue name_set(JSContext* ctx, JSValue, JSValue jsValue)
         {
-            ThrowIfGameStateNotMutable();
+            JS_UNPACK_STR(value, ctx, jsValue);
+            JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
             getGameState().scenarioOptions.name = value;
+            return JS_UNDEFINED;
         }
 
-        std::string details_get()
+        static JSValue details_get(JSContext* ctx, JSValue)
         {
-            return getGameState().scenarioOptions.details;
+            return JSFromStdString(ctx, getGameState().scenarioOptions.details);
         }
 
-        void details_set(const std::string& value)
+        static JSValue details_set(JSContext* ctx, JSValue, JSValue jsValue)
         {
-            ThrowIfGameStateNotMutable();
+            JS_UNPACK_STR(value, ctx, jsValue);
+            JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
             getGameState().scenarioOptions.details = value;
+            return JS_UNDEFINED;
         }
 
-        std::string completedBy_get()
+        static JSValue completedBy_get(JSContext* ctx, JSValue)
         {
-            return getGameState().scenarioCompletedBy;
+            return JS_NewString(ctx, getGameState().scenarioCompletedBy.c_str());
         }
 
-        void completedBy_set(const std::string& value)
+        static JSValue completedBy_set(JSContext* ctx, JSValue, JSValue jsValue)
         {
-            ThrowIfGameStateNotMutable();
+            JS_UNPACK_STR(value, ctx, jsValue);
+            JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
             getGameState().scenarioCompletedBy = value;
+            return JS_UNDEFINED;
         }
 
-        std::string filename_get()
+        static JSValue filename_get(JSContext* ctx, JSValue)
         {
-            return getGameState().scenarioFileName;
+            return JS_NewString(ctx, getGameState().scenarioFileName.c_str());
         }
 
-        void filename_set(const std::string& value)
+        static JSValue filename_set(JSContext* ctx, JSValue, JSValue jsValue)
         {
-            ThrowIfGameStateNotMutable();
+            JS_UNPACK_STR(value, ctx, jsValue);
+            JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
             getGameState().scenarioFileName = value;
+            return JS_UNDEFINED;
         }
 
-        std::shared_ptr<ScScenarioObjective> objective_get() const
+        static JSValue objective_get(JSContext* ctx, JSValue)
         {
-            return std::make_shared<ScScenarioObjective>();
+            return gScScenarioObjective.New(ctx);
         }
 
-        uint16_t parkRatingWarningDays_get() const
+        static JSValue parkRatingWarningDays_get(JSContext* ctx, JSValue)
         {
-            return getGameState().scenarioParkRatingWarningDays;
+            return JS_NewUint32(ctx, getGameState().scenarioParkRatingWarningDays);
         }
 
-        void parkRatingWarningDays_set(uint16_t value)
+        static JSValue parkRatingWarningDays_set(JSContext* ctx, JSValue, JSValue jsValue)
         {
-            ThrowIfGameStateNotMutable();
+            JS_UNPACK_UINT32(value, ctx, jsValue);
+            JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
             getGameState().scenarioParkRatingWarningDays = value;
+            return JS_UNDEFINED;
         }
 
-        DukValue completedCompanyValue_get() const
+        static JSValue completedCompanyValue_get(JSContext* ctx, JSValue)
         {
             const auto& gameState = getGameState();
-            auto ctx = GetContext()->GetScriptEngine().GetContext();
             if (gameState.scenarioCompletedCompanyValue == kMoney64Undefined
                 || gameState.scenarioCompletedCompanyValue == kCompanyValueOnFailedObjective)
             {
-                return ToDuk(ctx, nullptr);
+                return JS_NULL;
             }
-            return ToDuk(ctx, gameState.scenarioCompletedCompanyValue);
+            return JS_NewInt64(ctx, gameState.scenarioCompletedCompanyValue);
         }
-        void completedCompanyValue_set(int32_t value)
+        static JSValue completedCompanyValue_set(JSContext* ctx, JSValue, JSValue jsValue)
         {
-            ThrowIfGameStateNotMutable();
+            JS_UNPACK_INT32(value, ctx, jsValue);
+            JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
             getGameState().scenarioCompletedCompanyValue = value;
+            return JS_UNDEFINED;
         }
 
-        std::string status_get() const
+        static JSValue status_get(JSContext* ctx, JSValue)
         {
-            const auto& gameState = getGameState();
+            const auto& gameState = OpenRCT2::getGameState();
             if (gameState.scenarioCompletedCompanyValue == kMoney64Undefined)
-                return "inProgress";
+                return JS_NewString(ctx, "inProgress");
             if (gameState.scenarioCompletedCompanyValue == kCompanyValueOnFailedObjective)
-                return "failed";
-            return "completed";
+                return JS_NewString(ctx, "failed");
+            return JS_NewString(ctx, "completed");
         }
-        void status_set(const std::string& value)
+        static JSValue status_set(JSContext* ctx, JSValue, JSValue jsValue)
         {
-            ThrowIfGameStateNotMutable();
+            JS_UNPACK_STR(value, ctx, jsValue);
+            JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
             auto& gameState = getGameState();
             if (value == "inProgress")
                 gameState.scenarioCompletedCompanyValue = kMoney64Undefined;
@@ -295,33 +331,44 @@ namespace OpenRCT2::Scripting
                 gameState.scenarioCompletedCompanyValue = kCompanyValueOnFailedObjective;
             else if (value == "completed")
                 gameState.scenarioCompletedCompanyValue = gameState.park.companyValue;
+            return JS_UNDEFINED;
         }
 
-        money64 companyValueRecord_get() const
+        static JSValue companyValueRecord_get(JSContext* ctx, JSValue)
         {
-            return getGameState().scenarioCompanyValueRecord;
+            return JS_NewInt64(ctx, OpenRCT2::getGameState().scenarioCompanyValueRecord);
         }
-        void companyValueRecord_set(money64 value)
+        static JSValue companyValueRecord_set(JSContext* ctx, JSValue, JSValue jsValue)
         {
-            ThrowIfGameStateNotMutable();
+            JS_UNPACK_MONEY64(value, ctx, jsValue);
+            JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
             getGameState().scenarioCompanyValueRecord = value;
+            return JS_UNDEFINED;
         }
 
     public:
-        static void Register(duk_context* ctx)
+        JSValue New(JSContext* ctx)
         {
-            dukglue_register_property(ctx, &ScScenario::name_get, &ScScenario::name_set, "name");
-            dukglue_register_property(ctx, &ScScenario::details_get, &ScScenario::details_set, "details");
-            dukglue_register_property(ctx, &ScScenario::completedBy_get, &ScScenario::completedBy_set, "completedBy");
-            dukglue_register_property(ctx, &ScScenario::filename_get, &ScScenario::filename_set, "filename");
-            dukglue_register_property(
-                ctx, &ScScenario::parkRatingWarningDays_get, &ScScenario::parkRatingWarningDays_set, "parkRatingWarningDays");
-            dukglue_register_property(ctx, &ScScenario::objective_get, nullptr, "objective");
-            dukglue_register_property(ctx, &ScScenario::status_get, &ScScenario::status_set, "status");
-            dukglue_register_property(
-                ctx, &ScScenario::completedCompanyValue_get, &ScScenario::completedCompanyValue_set, "completedCompanyValue");
-            dukglue_register_property(
-                ctx, &ScScenario::companyValueRecord_get, &ScScenario::companyValueRecord_set, "companyValueRecord");
+            static constexpr JSCFunctionListEntry funcs[] = {
+                JS_CGETSET_DEF("name", ScScenario::name_get, ScScenario::name_set),
+                JS_CGETSET_DEF("details", ScScenario::details_get, ScScenario::details_set),
+                JS_CGETSET_DEF("completedBy", ScScenario::completedBy_get, ScScenario::completedBy_set),
+                JS_CGETSET_DEF("filename", ScScenario::filename_get, ScScenario::filename_set),
+                JS_CGETSET_DEF(
+                    "parkRatingWarningDays", ScScenario::parkRatingWarningDays_get, ScScenario::parkRatingWarningDays_set),
+                JS_CGETSET_DEF("objective", ScScenario::objective_get, nullptr),
+                JS_CGETSET_DEF("status", ScScenario::status_get, ScScenario::status_set),
+                JS_CGETSET_DEF(
+                    "completedCompanyValue", ScScenario::completedCompanyValue_get, ScScenario::completedCompanyValue_set),
+                JS_CGETSET_DEF("companyValueRecord", ScScenario::companyValueRecord_get, ScScenario::companyValueRecord_set),
+            };
+
+            return MakeWithOpaque(ctx, funcs, nullptr);
+        }
+
+        void Register(JSContext* ctx)
+        {
+            RegisterBaseStr(ctx, "Scenario");
         }
     };
 } // namespace OpenRCT2::Scripting
