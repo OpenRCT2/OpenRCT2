@@ -179,7 +179,7 @@ namespace OpenRCT2
         "rct2.campaign.build_your_own",
         "openrct2.campaign.competitions",
         "openrct2.campaign.uces",
-        "openrct2.campaign.original_dlc",
+        "openrct2.campaign.extras",
     };
     // clang-format on
 } // namespace OpenRCT2
