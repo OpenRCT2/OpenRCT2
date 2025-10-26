@@ -270,20 +270,6 @@ namespace OpenRCT2
             UnloadAll(false);
         }
 
-        void UnloadAllType(ObjectType typeIndex) override
-        {
-            std::vector<Object*> list = _loadedObjects[EnumValue(typeIndex)];
-            for (auto* loadedObject : list)
-            {
-                if (loadedObject != nullptr)
-                {
-                    loadedObject->Unload();
-                    loadedObject = nullptr;
-                }
-            }
-            list.clear();
-        }
-
         void ResetObjects() override
         {
             for (auto& list : _loadedObjects)
@@ -359,7 +345,7 @@ namespace OpenRCT2
         {
             for (auto type : getAllObjectTypes())
             {
-                if (!onlyTransient || !ObjectTypeIsIntransient(type))
+                if (!onlyTransient || ShouldFreeObjectType(type))
                 {
                     auto& list = GetObjectList(type);
                     for (auto* loadedObject : list)
@@ -500,7 +486,7 @@ namespace OpenRCT2
             size_t numObjectsUnloaded = 0;
             for (auto type : getAllObjectTypes())
             {
-                if (!ObjectTypeIsIntransient(type))
+                if (ShouldFreeObjectType(type))
                 {
                     auto& list = GetObjectList(type);
                     for (auto& object : list)
@@ -736,7 +722,7 @@ namespace OpenRCT2
             // Set the new object lists
             for (auto type : getAllObjectTypes())
             {
-                if (!ObjectTypeIsIntransient(type))
+                if (ShouldFreeObjectType(type))
                 {
                     auto& list = GetObjectList(type);
                     list.clear();

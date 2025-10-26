@@ -55,6 +55,7 @@ namespace OpenRCT2
 
     bool ObjectTypeIsTransient(ObjectType type);
     bool ObjectTypeIsIntransient(ObjectType type);
+    bool ShouldFreeObjectType(ObjectType type);
 
     std::span<const ObjectType> getAllObjectTypes();
     std::span<const ObjectType> getTransientObjectTypes();
