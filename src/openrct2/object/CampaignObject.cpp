@@ -133,10 +133,14 @@ namespace OpenRCT2
 
     void CampaignObject::Load()
     {
+        // This should not matter...
+        LoadImages();
     }
 
     void CampaignObject::Unload()
     {
+        // ...But just in case
+        UnloadImages();
     }
 
     bool CampaignObject::IsOfficial() const

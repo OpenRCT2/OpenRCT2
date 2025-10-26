@@ -214,6 +214,7 @@ namespace OpenRCT2
             if (_objectManager != nullptr)
             {
                 _objectManager->UnloadAll();
+                _objectManager->UnloadAllType(ObjectType::campaign);
             }
 
             GfxObjectCheckAllImagesFreed();
@@ -587,6 +588,8 @@ namespace OpenRCT2
 
             OpenProgress(STR_CHECKING_SCENARIO_FILES);
             _scenarioRepository->Scan(currentLanguage);
+
+            _objectManager->LoadCampaignObjects();
 
             OpenProgress(STR_CHECKING_TITLE_SEQUENCES);
             TitleSequenceManager::Scan();
