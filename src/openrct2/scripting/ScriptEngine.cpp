@@ -467,6 +467,8 @@ void ScriptEngine::Initialise()
 JSRuntime* ScriptEngine::_runtime = nullptr;
 ScAward Scripting::gScAward;
 ScCheats Scripting::gScCheats;
+ScClimate Scripting::gScClimate;
+ScWeatherState Scripting::gScWeatherState;
 ScConfiguration Scripting::gScConfiguration;
 ScConsole Scripting::gScConsole;
 ScContext Scripting::gScContext;
@@ -492,8 +494,8 @@ void ScriptEngine::RegisterClasses(JSContext* ctx)
     // TODO (mber) register JS Classes
     gScAward.Register(ctx);
     gScCheats.Register(ctx);
-    // ScClimate::Register(ctx);
-    // ScClimateState::Register(ctx);
+    gScClimate.Register(ctx);
+    gScWeatherState.Register(ctx);
     gScConfiguration.Register(ctx);
     gScConsole.Register(ctx);
     gScContext.Register(ctx);
@@ -555,7 +557,7 @@ void ScriptEngine::InitialiseContext(JSContext* ctx) const
 {
     JSValue glb = JS_GetGlobalObject(ctx);
     JS_SetPropertyStr(ctx, glb, "cheats", gScCheats.New(ctx));
-    // dukglue_register_global(ctx, std::make_shared<ScClimate>(), "climate");
+    JS_SetPropertyStr(ctx, glb, "climate", gScClimate.New(ctx));
     JS_SetPropertyStr(ctx, glb, "console", gScConsole.New(ctx, _console));
     JS_SetPropertyStr(ctx, glb, "context", gScContext.New(ctx));
     JS_SetPropertyStr(ctx, glb, "date", gScDate.New(ctx));
