@@ -3080,8 +3080,9 @@ static void VehiclePitchDown42BankedLeft22(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
-    boundingBoxIndex = boundingBoxIndex != kBoundBoxIndexUndefined ? boundingBoxIndex
-                                                                   : getBoundBoxIndex(BoundBoxType::slopeUp42, imageDirection);
+    boundingBoxIndex = boundingBoxIndex != kBoundBoxIndexUndefined
+        ? boundingBoxIndex
+        : getBoundBoxIndex(BoundBoxType::slopeDown42, imageDirection);
     if (carEntry->groupEnabled(SpriteGroupType::slopes42Banked22))
     {
         const int32_t spriteIndex = carEntry->getSpriteOffset(SpriteGroupType::slopes42Banked22, imageDirection, 2);
@@ -3097,8 +3098,9 @@ static void VehiclePitchDown42BankedLeft45(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
-    boundingBoxIndex = boundingBoxIndex != kBoundBoxIndexUndefined ? boundingBoxIndex
-                                                                   : getBoundBoxIndex(BoundBoxType::slopeUp42, imageDirection);
+    boundingBoxIndex = boundingBoxIndex != kBoundBoxIndexUndefined
+        ? boundingBoxIndex
+        : getBoundBoxIndex(BoundBoxType::slopeDown42, imageDirection);
     if (carEntry->groupEnabled(SpriteGroupType::slopes42Banked45))
     {
         const int32_t spriteIndex = carEntry->getSpriteOffset(SpriteGroupType::slopes42Banked45, imageDirection, 2);
@@ -3114,8 +3116,9 @@ static void VehiclePitchDown42BankedRight22(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
-    boundingBoxIndex = boundingBoxIndex != kBoundBoxIndexUndefined ? boundingBoxIndex
-                                                                   : getBoundBoxIndex(BoundBoxType::slopeUp42, imageDirection);
+    boundingBoxIndex = boundingBoxIndex != kBoundBoxIndexUndefined
+        ? boundingBoxIndex
+        : getBoundBoxIndex(BoundBoxType::slopeDown42, imageDirection);
     if (carEntry->groupEnabled(SpriteGroupType::slopes42Banked22))
     {
         const int32_t spriteIndex = carEntry->getSpriteOffset(SpriteGroupType::slopes42Banked22, imageDirection, 3);
@@ -3131,8 +3134,9 @@ static void VehiclePitchDown42BankedRight45(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
-    boundingBoxIndex = boundingBoxIndex != kBoundBoxIndexUndefined ? boundingBoxIndex
-                                                                   : getBoundBoxIndex(BoundBoxType::slopeUp42, imageDirection);
+    boundingBoxIndex = boundingBoxIndex != kBoundBoxIndexUndefined
+        ? boundingBoxIndex
+        : getBoundBoxIndex(BoundBoxType::slopeDown42, imageDirection);
     if (carEntry->groupEnabled(SpriteGroupType::slopes42Banked45))
     {
         const int32_t spriteIndex = carEntry->getSpriteOffset(SpriteGroupType::slopes42Banked45, imageDirection, 3);
@@ -3148,8 +3152,9 @@ static void VehiclePitchDown42BankedLeft67(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
-    boundingBoxIndex = boundingBoxIndex != kBoundBoxIndexUndefined ? boundingBoxIndex
-                                                                   : getBoundBoxIndex(BoundBoxType::slopeUp42, imageDirection);
+    boundingBoxIndex = boundingBoxIndex != kBoundBoxIndexUndefined
+        ? boundingBoxIndex
+        : getBoundBoxIndex(BoundBoxType::slopeDown42, imageDirection);
     if (carEntry->groupEnabled(SpriteGroupType::slopes42Banked67))
     {
         const int32_t spriteIndex = carEntry->getSpriteOffset(SpriteGroupType::slopes42Banked67, imageDirection, 2);
@@ -3165,8 +3170,9 @@ static void VehiclePitchDown42BankedLeft90(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
-    boundingBoxIndex = boundingBoxIndex != kBoundBoxIndexUndefined ? boundingBoxIndex
-                                                                   : getBoundBoxIndex(BoundBoxType::slopeUp42, imageDirection);
+    boundingBoxIndex = boundingBoxIndex != kBoundBoxIndexUndefined
+        ? boundingBoxIndex
+        : getBoundBoxIndex(BoundBoxType::slopeDown42, imageDirection);
     if (carEntry->groupEnabled(SpriteGroupType::slopes42Banked90))
     {
         const int32_t spriteIndex = carEntry->getSpriteOffset(SpriteGroupType::slopes42Banked90, imageDirection, 2);
@@ -3199,8 +3205,9 @@ static void VehiclePitchDown42BankedRight90(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
-    boundingBoxIndex = boundingBoxIndex != kBoundBoxIndexUndefined ? boundingBoxIndex
-                                                                   : getBoundBoxIndex(BoundBoxType::slopeUp42, imageDirection);
+    boundingBoxIndex = boundingBoxIndex != kBoundBoxIndexUndefined
+        ? boundingBoxIndex
+        : getBoundBoxIndex(BoundBoxType::slopeDown42, imageDirection);
     if (carEntry->groupEnabled(SpriteGroupType::slopes42Banked90))
     {
         const int32_t spriteIndex = carEntry->getSpriteOffset(SpriteGroupType::slopes42Banked90, imageDirection, 3);
@@ -3319,8 +3326,9 @@ static void VehiclePitchDown60BankedLeft22(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
-    boundingBoxIndex = boundingBoxIndex != kBoundBoxIndexUndefined ? boundingBoxIndex
-                                                                   : getBoundBoxIndex(BoundBoxType::slopeUp60, imageDirection);
+    boundingBoxIndex = boundingBoxIndex != kBoundBoxIndexUndefined
+        ? boundingBoxIndex
+        : getBoundBoxIndex(BoundBoxType::slopeDown60, imageDirection);
     if (carEntry->groupEnabled(SpriteGroupType::slopes60Banked22))
     {
         const int32_t spriteIndex = carEntry->getSpriteOffset(SpriteGroupType::slopes60Banked22, imageDirection, 2);
@@ -3336,8 +3344,9 @@ static void VehiclePitchDown60BankedRight22(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
-    boundingBoxIndex = boundingBoxIndex != kBoundBoxIndexUndefined ? boundingBoxIndex
-                                                                   : getBoundBoxIndex(BoundBoxType::slopeUp60, imageDirection);
+    boundingBoxIndex = boundingBoxIndex != kBoundBoxIndexUndefined
+        ? boundingBoxIndex
+        : getBoundBoxIndex(BoundBoxType::slopeDown60, imageDirection);
     if (carEntry->groupEnabled(SpriteGroupType::slopes60Banked22))
     {
         const int32_t spriteIndex = carEntry->getSpriteOffset(SpriteGroupType::slopes60Banked22, imageDirection, 3);
