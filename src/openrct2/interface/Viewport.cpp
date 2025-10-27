@@ -1395,6 +1395,7 @@ namespace OpenRCT2
                     switch (ps->Entity->Type)
                     {
                         case EntityType::vehicle:
+                        case EntityType::steamParticle:
                         {
                             if (viewFlags & VIEWPORT_FLAG_HIDE_VEHICLES || clipped)
                             {
