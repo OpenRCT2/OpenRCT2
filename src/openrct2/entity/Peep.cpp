@@ -1180,7 +1180,7 @@ void PeepUpdateCrowdNoise()
 
     // Allows queuing peeps to make half as much noise, and at least 6 peeps must be visible for any crowd noise
     visiblePeeps = (visiblePeeps / 2) - 6;
-    if (visiblePeeps < 0)
+    if (visiblePeeps < 0 || viewport->flags & VIEWPORT_FLAG_HIDE_GUESTS)
     {
         // Mute crowd noise
         if (_crowdSoundChannel != nullptr)
