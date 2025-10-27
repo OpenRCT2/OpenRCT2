@@ -601,7 +601,11 @@ namespace OpenRCT2::Ui::Windows
                     {
                         if (widgetDesc->Type == "button")
                         {
-                            InvokeEventHandler(_info.Owner, widgetDesc->OnClick);
+                            std::vector<DukValue> args;
+                            auto ctx = widgetDesc->OnClick.context();
+                            duk_push_int(ctx, widgetIndex);
+                            args.push_back(DukValue::take_from_stack(ctx));
+                            InvokeEventHandler(_info.Owner, widgetDesc->OnClick, args);
                         }
                         else if (widgetDesc->Type == "checkbox")
                         {
