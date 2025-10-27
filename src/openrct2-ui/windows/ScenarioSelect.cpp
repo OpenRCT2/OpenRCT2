@@ -245,7 +245,7 @@ namespace OpenRCT2::Ui::Windows
                     return;
 
                 auto& objManager = GetContext()->GetObjectManager();
-                if (auto obj = objManager.LoadTempObject(source.textObjectId); obj != nullptr)
+                if (auto obj = objManager.LoadTempObject(source.textObjectId, true); obj != nullptr)
                 {
                     auto& scenarioMetaObj = reinterpret_cast<ScenarioMetaObject&>(*obj);
                     scenarioMetaObj.Load();
