@@ -346,9 +346,6 @@ public:
         {
             const ScenarioIndexEntry* scenario = &_scenarios[i];
 
-            if (scenario->SourceGame == ScenarioSource::Other && scenario->ScenarioId == SC_UNIDENTIFIED)
-                continue;
-
             // Note: this is always case insensitive search for cross platform consistency
             if (String::iequals(name, scenario->InternalName))
             {
