@@ -552,10 +552,11 @@ namespace OpenRCT2
         if (!window->viewportTargetSprite.IsNull())
         {
             ViewportUpdateFollowSprite(window);
-            return;
         }
-
-        ViewportSetUndergroundFlag(0, window, viewport);
+        else
+        {
+            ViewportSetUndergroundFlag(0, window, viewport);
+        }
 
         auto viewportMidPoint = ScreenCoordsXY{ window->savedViewPos.x + viewport->ViewWidth() / 2,
                                                 window->savedViewPos.y + viewport->ViewHeight() / 2 };
@@ -658,7 +659,6 @@ namespace OpenRCT2
             if (centreLoc.has_value())
             {
                 window->savedViewPos = *centreLoc;
-                ViewportMove(*centreLoc, window, window->viewport);
             }
         }
     }
