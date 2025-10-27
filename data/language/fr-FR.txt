@@ -473,12 +473,12 @@ STR_1076    :Mode magasins et boutiques
 STR_1077    :Mode rotation
 STR_1078    :Rotation avant
 STR_1079    :Rotation arrière
-STR_1080    :Film : « Les aviateurs vengeurs »
-STR_1081    :Film 3D : « Les queues de souris »
+STR_1080    :Film : « Les Aviateurs vengeurs »
+STR_1081    :Film 3D : « Les Queues de souris »
 STR_1082    :Mode anneaux de l’espace
 STR_1083    :Mode débutants
 STR_1084    :Lancement à induction linéaire
-STR_1085    :Film : « Le grand frisson »
+STR_1085    :Film : « Le Grand frisson »
 STR_1086    :Film 3D : « Chasseurs de tempêtes »
 STR_1087    :Film 3D : « Commandos de l’espace »
 STR_1088    :Mode intense
@@ -3845,3 +3845,6 @@ STR_7000    :ou
 STR_7001    :Nom de l’attraction
 STR_7002    :{STRINGID} {STRINGID}
 STR_7003    :Le fichier audio « {STRING} » est tronqué. L’échantillon {INT32} était attendu, mais seulement {INT32} sont disponibles. Songez à réinstaller RCT2.
+STR_7004    :Forcer le rendu
+STR_7005    :Remplir de chemin une zone
+STR_7006    :Dessiner une bordure autour des boutons-images
