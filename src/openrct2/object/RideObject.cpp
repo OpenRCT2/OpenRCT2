@@ -157,6 +157,8 @@ namespace OpenRCT2
 
     void RideObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
     {
+        _shouldLoadImages = context->ShouldLoadImages();
+
         stream->Seek(8, STREAM_SEEK_CURRENT);
         _legacyType.flags = stream->ReadValue<uint32_t>();
         for (auto& rideType : _legacyType.ride_type)
@@ -342,7 +344,7 @@ namespace OpenRCT2
                         num_images *= 2;
                     }
 
-                    if (!gOpenRCT2NoGraphics)
+                    if (_shouldLoadImages)
                     {
                         CarEntrySetImageMaxSizes(carEntry, num_images);
                     }
@@ -545,6 +547,7 @@ namespace OpenRCT2
 
     void RideObject::ReadJson(IReadObjectContext* context, json_t& root)
     {
+        _shouldLoadImages = context->ShouldLoadImages();
         Guard::Assert(root.is_object(), "RideObject::ReadJson expects parameter root to be object");
 
         json_t properties = root["properties"];
