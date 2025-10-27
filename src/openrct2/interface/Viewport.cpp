@@ -1420,6 +1420,7 @@ namespace OpenRCT2
                             break;
                         }
                         case EntityType::guest:
+                        case EntityType::balloon:
                             if (viewFlags & VIEWPORT_FLAG_HIDE_GUESTS)
                             {
                                 return VisibilityKind::hidden;

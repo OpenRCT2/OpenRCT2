@@ -11,6 +11,7 @@
 
 #include "../../../entity/EntityList.h"
 #include "../../../interface/WindowBase.h"
+#include "../../../ride/Vehicle.h"
 #include "../../../util/Util.h"
 
 namespace OpenRCT2::Title
@@ -20,11 +21,26 @@ namespace OpenRCT2::Title
         auto* w = WindowGetMain();
         if (w != nullptr)
         {
-            if (Follow.Type != EntityType::null)
+            const auto& entities = getGameState().entities.GetEntityList(Follow.Type);
+            if (Follow.Type != EntityType::null && !entities.empty())
             {
-                const auto& entities = getGameState().entities.GetEntityList(Follow.Type);
                 auto it = entities.begin();
-                std::advance(it, UtilRand() % entities.size());
+                if (Follow.Type == EntityType::vehicle)
+                {
+                    // Do 5 rolls to make it more likely that a vehicle that's currently travelling is chosen
+                    for (int roll = 0; roll < 5; roll++, it = entities.begin())
+                    {
+                        std::advance(it, UtilRand() % entities.size());
+                        Vehicle* entity = getGameState().entities.GetEntity(*it)->As<Vehicle>();
+                        if (entity && entity->status == Vehicle::Status::Travelling)
+                            break;
+                    }
+                }
+                else
+                {
+                    std::advance(it, UtilRand() % entities.size());
+                }
+
                 if (Follow.ScrollToLocation)
                     w->flags.set(WindowFlag::scrollingToLocation);
                 WindowFollowSprite(*w, *it);
