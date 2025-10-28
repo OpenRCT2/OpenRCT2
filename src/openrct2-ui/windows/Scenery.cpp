@@ -226,6 +226,7 @@ namespace OpenRCT2::Ui::Windows
         CoordsXY _dragStartPos{};
         CoordsXY _dragEndPos{};
         uint8_t _startEdge{};
+        bool _inDragMode = false;
         std::vector<ProvisionalWallTile> _provisionalTiles{};
 
     public:
@@ -3084,6 +3085,7 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
 
+            _inDragMode = true;
             _dragStartPos = gridPos;
             _startEdge = edges;
             gMapSelectFlags.set(MapSelectFlag::enable);
@@ -3173,11 +3175,17 @@ namespace OpenRCT2::Ui::Windows
 
         void onToolDragWall(const ScreenCoordsXY& screenCoords)
         {
+            if (!_inDragMode)
+                return;
+
             dragWallSetEndPos(screenCoords);
         }
 
         void onToolUp(WidgetIndex, const ScreenCoordsXY&) override
         {
+            if (_sceneryPaintEnabled || gWindowSceneryEyedropperEnabled)
+                return;
+
             auto tabSelection = WindowSceneryGetTabSelection();
             auto sceneryType = tabSelection.SceneryType;
             if (sceneryType == SCENERY_TYPE_WALL)
@@ -3189,6 +3197,12 @@ namespace OpenRCT2::Ui::Windows
         void onToolUpWall(uint16_t selectedScenery)
         {
             removeProvisionalTilesFromMap();
+
+            if (!_inDragMode)
+            {
+                _provisionalTiles.clear();
+                return;
+            }
 
             auto mapRange = getMapSelectRange();
             bool anySuccessful = false;
