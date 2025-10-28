@@ -216,6 +216,9 @@ namespace OpenRCT2::Ui::Windows
         uint8_t _unkF64F0E{ 0 };
         int16_t _unkF64F0A{ 0 };
 
+        CoordsXY _dragStartPos{};
+        uint8_t _startEdge{};
+
     public:
         void onOpen() override
         {
@@ -1814,6 +1817,13 @@ namespace OpenRCT2::Ui::Windows
 
         void onToolUpdateWall(WidgetIndex widgetIndex, const ScreenCoordsXY& screenPos, ScenerySelection selection)
         {
+            bool isLeftMousePressed = gInputFlags.has(InputFlag::leftMousePressed);
+            if (isLeftMousePressed)
+            {
+                gMapSelectFlags.set(MapSelectFlag::enable);
+                return;
+            }
+
             CoordsXY mapTile = {};
             uint8_t edge;
 
@@ -1826,10 +1836,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             gMapSelectFlags.set(MapSelectFlag::enable);
-            gMapSelectPositionA.x = mapTile.x;
-            gMapSelectPositionA.y = mapTile.y;
-            gMapSelectPositionB.x = mapTile.x;
-            gMapSelectPositionB.y = mapTile.y;
+            setMapSelectRange(mapTile);
             gMapSelectType = getMapSelectEdge(edge);
 
             MapInvalidateSelectionRect();
@@ -3068,19 +3075,90 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
 
-            auto wallPlaceAction = GameActions::WallPlaceAction(
-                selectedScenery, { gridPos, gSceneryPlaceZ }, edges, _sceneryPrimaryColour, _scenerySecondaryColour,
-                _sceneryTertiaryColour);
+            _dragStartPos = gridPos;
+            _startEdge = edges;
+            gMapSelectFlags.set(MapSelectFlag::enable);
+            gMapSelectType = getMapSelectEdge(_startEdge);
+            setMapSelectRange(gridPos);
+        }
 
-            wallPlaceAction.SetCallback([](const GameActions::GameAction* ga, const GameActions::Result* result) {
-                if (result->Error == GameActions::Status::Ok)
+        void dragWallSetEndPos(const ScreenCoordsXY& screenCoords)
+        {
+            CoordsXY endCoords;
+            if (gSceneryPlaceZ > 0)
+            {
+                auto candidate = ScreenGetMapXYWithZ(screenCoords, gSceneryPlaceZ);
+                if (!candidate.has_value())
+                    return;
+
+                endCoords = *candidate;
+            }
+            else
+            {
+                auto info = GetMapCoordinatesFromPos(screenCoords, EnumsToFlags(ViewportInteractionItem::terrain));
+
+                if (info.interactionType == ViewportInteractionItem::none)
+                    return;
+
+                endCoords = info.Loc;
+            }
+
+            auto xDiff = endCoords.x - _dragStartPos.x;
+            auto yDiff = endCoords.y - _dragStartPos.y;
+            if (std::abs(xDiff) > std::abs(yDiff))
+            {
+                endCoords.y = _dragStartPos.y;
+            }
+            else
+            {
+                endCoords.x = _dragStartPos.x;
+            }
+
+            setMapSelectRange({ _dragStartPos, endCoords });
+        }
+
+        void onToolDragWall(const ScreenCoordsXY& screenCoords)
+        {
+            dragWallSetEndPos(screenCoords);
+        }
+
+        void onToolUp(WidgetIndex, const ScreenCoordsXY&) override
+        {
+            auto tabSelection = WindowSceneryGetTabSelection();
+            auto sceneryType = tabSelection.SceneryType;
+            if (sceneryType == SCENERY_TYPE_WALL)
+            {
+                onToolUpWall(tabSelection.EntryIndex);
+            }
+        }
+
+        void onToolUpWall(uint16_t selectedScenery)
+        {
+            auto mapRange = getMapSelectRange();
+            bool anySuccessful = false;
+            CoordsXYZ lastLocation = { mapRange.Point2, gSceneryPlaceZ };
+            for (auto y = mapRange.GetY1(); y <= mapRange.GetY2(); y += kCoordsXYStep)
+            {
+                for (auto x = mapRange.GetX1(); x <= mapRange.GetX2(); x += kCoordsXYStep)
                 {
-                    Audio::Play3D(Audio::SoundId::placeItem, result->Position);
-                }
-            });
+                    auto wallPlaceAction = GameActions::WallPlaceAction(
+                        selectedScenery, { x, y, gSceneryPlaceZ }, _startEdge, _sceneryPrimaryColour, _scenerySecondaryColour,
+                        _sceneryTertiaryColour);
 
-            auto& gameState = getGameState();
-            auto res = GameActions::Execute(&wallPlaceAction, gameState);
+                    auto& gameState = getGameState();
+                    auto result = GameActions::Execute(&wallPlaceAction, gameState);
+                    if (result.Error == GameActions::Status::Ok)
+                    {
+                        anySuccessful = true;
+                        lastLocation = result.Position;
+                    }
+                }
+            }
+
+            if (anySuccessful)
+            {
+                Audio::Play3D(Audio::SoundId::placeItem, lastLocation);
+            }
         }
 
         void onToolDownLargeScenery(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords, uint16_t selectedScenery)
@@ -3223,6 +3301,13 @@ namespace OpenRCT2::Ui::Windows
         {
             if (_sceneryPaintEnabled || gWindowSceneryEyedropperEnabled)
                 onToolDown(widgetIndex, screenCoords);
+
+            auto tabSelection = WindowSceneryGetTabSelection();
+            auto sceneryType = tabSelection.SceneryType;
+            if (sceneryType == SCENERY_TYPE_WALL)
+            {
+                onToolDragWall(screenCoords);
+            }
         }
     };
 
