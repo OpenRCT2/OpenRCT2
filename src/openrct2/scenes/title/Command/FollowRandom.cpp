@@ -19,10 +19,10 @@ namespace OpenRCT2::Title
     int16_t FollowRandomCommand::operator()(int16_t timer)
     {
         auto* w = WindowGetMain();
-        if (w != nullptr)
+        if (w != nullptr && Follow.Type != EntityType::null)
         {
             const auto& entities = getGameState().entities.GetEntityList(Follow.Type);
-            if (Follow.Type != EntityType::null && !entities.empty())
+            if (!entities.empty())
             {
                 auto it = entities.begin();
                 if (Follow.Type == EntityType::vehicle)
@@ -44,10 +44,6 @@ namespace OpenRCT2::Title
                 if (Follow.ScrollToLocation)
                     w->flags.set(WindowFlag::scrollingToLocation);
                 WindowFollowSprite(*w, *it);
-            }
-            else
-            {
-                WindowFollowSprite(*w, EntityId::GetNull());
             }
         }
 
