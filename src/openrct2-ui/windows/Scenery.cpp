@@ -29,6 +29,7 @@
 #include <openrct2/actions/SmallSceneryPlaceAction.h>
 #include <openrct2/actions/SmallScenerySetColourAction.h>
 #include <openrct2/actions/WallPlaceAction.h>
+#include <openrct2/actions/WallRemoveAction.h>
 #include <openrct2/actions/WallSetColourAction.h>
 #include <openrct2/audio/Audio.h>
 #include <openrct2/config/Config.h>
@@ -206,6 +207,12 @@ namespace OpenRCT2::Ui::Windows
             }
         };
 
+        struct ProvisionalWallTile
+        {
+            CoordsXYZD location;
+            int32_t calculatedZ;
+        };
+
         std::vector<SceneryTabInfo> _tabEntries;
         int32_t _requiredWidth;
         int32_t _actualMinHeight;
@@ -217,7 +224,9 @@ namespace OpenRCT2::Ui::Windows
         int16_t _unkF64F0A{ 0 };
 
         CoordsXY _dragStartPos{};
+        CoordsXY _dragEndPos{};
         uint8_t _startEdge{};
+        std::vector<ProvisionalWallTile> _provisionalTiles{};
 
     public:
         void onOpen() override
@@ -3114,7 +3123,52 @@ namespace OpenRCT2::Ui::Windows
                 endCoords.x = _dragStartPos.x;
             }
 
-            setMapSelectRange({ _dragStartPos, endCoords });
+            if (endCoords != _dragEndPos)
+            {
+                setMapSelectRange({ _dragStartPos, endCoords });
+                updateProvisionalTiles();
+            }
+        }
+
+        void removeProvisionalTilesFromMap()
+        {
+            auto& gameState = getGameState();
+            for (const auto& tile : _provisionalTiles)
+            {
+                auto location = tile.location;
+                location.z = tile.calculatedZ;
+                auto wallRemoveAction = GameActions::WallRemoveAction(location);
+                wallRemoveAction.SetFlags(
+                    GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
+                wallRemoveAction.Execute(gameState);
+            }
+        }
+
+        void updateProvisionalTiles()
+        {
+            auto& gameState = getGameState();
+            auto tabSelection = WindowSceneryGetTabSelection();
+            removeProvisionalTilesFromMap();
+
+            _provisionalTiles.clear();
+
+            auto mapRange = getMapSelectRange();
+            for (auto y = mapRange.GetY1(); y <= mapRange.GetY2(); y += kCoordsXYStep)
+            {
+                for (auto x = mapRange.GetX1(); x <= mapRange.GetX2(); x += kCoordsXYStep)
+                {
+                    auto wallPlaceAction = GameActions::WallPlaceAction(
+                        tabSelection.EntryIndex, { x, y, gSceneryPlaceZ }, _startEdge, _sceneryPrimaryColour,
+                        _scenerySecondaryColour, _sceneryTertiaryColour);
+                    wallPlaceAction.SetFlags(GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
+
+                    auto result = GameActions::Execute(&wallPlaceAction, gameState);
+                    if (result.Error == GameActions::Status::Ok)
+                    {
+                        _provisionalTiles.push_back({ CoordsXYZD(x, y, gSceneryPlaceZ, _startEdge), result.Position.z });
+                    }
+                }
+            }
         }
 
         void onToolDragWall(const ScreenCoordsXY& screenCoords)
@@ -3134,26 +3188,27 @@ namespace OpenRCT2::Ui::Windows
 
         void onToolUpWall(uint16_t selectedScenery)
         {
+            removeProvisionalTilesFromMap();
+
             auto mapRange = getMapSelectRange();
             bool anySuccessful = false;
             CoordsXYZ lastLocation = { mapRange.Point2, gSceneryPlaceZ };
-            for (auto y = mapRange.GetY1(); y <= mapRange.GetY2(); y += kCoordsXYStep)
+            for (const auto& tile : _provisionalTiles)
             {
-                for (auto x = mapRange.GetX1(); x <= mapRange.GetX2(); x += kCoordsXYStep)
-                {
-                    auto wallPlaceAction = GameActions::WallPlaceAction(
-                        selectedScenery, { x, y, gSceneryPlaceZ }, _startEdge, _sceneryPrimaryColour, _scenerySecondaryColour,
-                        _sceneryTertiaryColour);
+                auto wallPlaceAction = GameActions::WallPlaceAction(
+                    selectedScenery, tile.location, tile.location.direction, _sceneryPrimaryColour, _scenerySecondaryColour,
+                    _sceneryTertiaryColour);
 
-                    auto& gameState = getGameState();
-                    auto result = GameActions::Execute(&wallPlaceAction, gameState);
-                    if (result.Error == GameActions::Status::Ok)
-                    {
-                        anySuccessful = true;
-                        lastLocation = result.Position;
-                    }
+                auto& gameState = getGameState();
+                auto result = GameActions::Execute(&wallPlaceAction, gameState);
+                if (result.Error == GameActions::Status::Ok)
+                {
+                    anySuccessful = true;
+                    lastLocation = result.Position;
                 }
             }
+
+            _provisionalTiles.clear();
 
             if (anySuccessful)
             {
