@@ -4847,7 +4847,7 @@ namespace OpenRCT2::TrackMetaData
 
 #pragma region trackBlocks
 
-    typedef OpenRCT2::PaintSegment PS;
+    using PS = OpenRCT2::PaintSegment;
 
     static constexpr SequenceDescriptor kFlatSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
