@@ -37,14 +37,14 @@ namespace OpenRCT2
         PaintSegment::topLeft, PaintSegment::topRight, PaintSegment::bottomLeft, PaintSegment::bottomRight);
     constexpr uint16_t kSegmentsUnimplemented = kSegmentsNone;
 
-    constexpr uint16_t PaintSegmentsRotate(const uint16_t segments, const uint8_t rotation)
+    constexpr uint16_t paintSegmentsRotate(const uint16_t segments, const uint8_t rotation)
     {
         uint8_t outerSegments = segments & 0xFF;
         outerSegments = Numerics::rol8(outerSegments, rotation * 2);
         return (segments & EnumToFlag(PaintSegment::centre)) | outerSegments;
     }
 
-    constexpr uint16_t PaintSegmentsFlipXAxis(const uint16_t segments)
+    constexpr uint16_t paintSegmentsFlipXAxis(const uint16_t segments)
     {
         uint8_t outerSegments = segments & 0xFF;
         outerSegments = (outerSegments * 0x0202020202 & 0x010884422010) % 1023; // reverse the bits, std::byteswap is c++23
@@ -60,27 +60,27 @@ namespace OpenRCT2
     };
     constexpr uint32_t kBlockedSegmentsTypeCount = 3;
 
-    constexpr std::array<uint16_t, kBlockedSegmentsTypeCount> BlockedSegmentsAllTypes(const uint16_t segments)
+    constexpr std::array<uint16_t, kBlockedSegmentsTypeCount> blockedSegmentsAllTypes(const uint16_t segments)
     {
         return { segments, segments, segments };
     };
 
-    constexpr std::array<uint16_t, kBlockedSegmentsTypeCount> BlockedSegmentsRotate(
+    constexpr std::array<uint16_t, kBlockedSegmentsTypeCount> blockedSegmentsRotate(
         std::array<uint16_t, kBlockedSegmentsTypeCount> blockedSegments, const uint8_t rotation)
     {
         for (auto& segments : blockedSegments)
         {
-            segments = PaintSegmentsRotate(segments, rotation);
+            segments = paintSegmentsRotate(segments, rotation);
         }
         return blockedSegments;
     }
 
-    constexpr std::array<uint16_t, kBlockedSegmentsTypeCount> BlockedSegmentsFlipXAxis(
+    constexpr std::array<uint16_t, kBlockedSegmentsTypeCount> blockedSegmentsFlipXAxis(
         std::array<uint16_t, kBlockedSegmentsTypeCount> blockedSegments)
     {
         for (auto& segments : blockedSegments)
         {
-            segments = PaintSegmentsFlipXAxis(segments);
+            segments = paintSegmentsFlipXAxis(segments);
         }
         return blockedSegments;
     }
