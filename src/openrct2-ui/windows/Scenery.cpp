@@ -3114,9 +3114,8 @@ namespace OpenRCT2::Ui::Windows
                 endCoords = info.Loc;
             }
 
-            auto xDiff = endCoords.x - _dragStartPos.x;
-            auto yDiff = endCoords.y - _dragStartPos.y;
-            if (std::abs(xDiff) > std::abs(yDiff))
+            const bool onXAxis = (_startEdge == 1 || _startEdge == 3);
+            if (onXAxis)
             {
                 endCoords.y = _dragStartPos.y;
             }
