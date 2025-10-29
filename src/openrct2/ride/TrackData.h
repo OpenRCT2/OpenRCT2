@@ -11,6 +11,7 @@
 
 #include "../paint/support/MetalSupports.h"
 #include "../paint/support/WoodenSupports.h"
+#include "../paint/tile_element/Segment.h"
 #include "Track.h"
 
 using namespace OpenRCT2;
@@ -98,6 +99,8 @@ namespace OpenRCT2::TrackMetaData
         SequenceWoodenSupport woodenSupports{};
         SequenceMetalSupport metalSupports{};
         int8_t extraSupportRotation = 0;
+        bool invertSegmentBlocking = false;
+        std::array<uint16_t, kBlockedSegmentsTypeCount> blockedSegments{ kSegmentsNone, kSegmentsNone, kSegmentsNone };
     };
 
     using TrackComputeFunction = int32_t (*)(const int16_t);
