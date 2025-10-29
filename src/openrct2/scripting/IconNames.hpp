@@ -169,6 +169,10 @@ namespace OpenRCT2::Scripting
         { "selection_edge_se", SPR_G2_SELECTION_EDGE_SE },
         { "palette_invisible", SPR_G2_ICON_PALETTE_INVISIBLE },
         { "palette_invisible_pressed", SPR_G2_ICON_PALETTE_INVISIBLE_PRESSED },
+        { "palette_large", SPR_G2_ICON_PALETTE_LARGE },
+        { "palette_pressed_large", SPR_G2_ICON_PALETTE_PRESSED_LARGE },
+        { "palette_invisible_large", SPR_G2_ICON_PALETTE_INVISIBLE_LARGE },
+        { "palette_invisible_pressed_large", SPR_G2_ICON_PALETTE_INVISIBLE_PRESSED_LARGE },
         { "monitor_start", SPR_G2_MONITOR_TAB_START },
         { "monitor_end", SPR_G2_MONITOR_TAB_END },
     };
