@@ -1057,7 +1057,7 @@ void Vehicle::UpdateMovingToEndOfStation()
             {
                 acceleration = -3298;
             }
-            if (velocity < -131940)
+            else
             {
                 velocity -= velocity / 16;
                 acceleration = 0;
