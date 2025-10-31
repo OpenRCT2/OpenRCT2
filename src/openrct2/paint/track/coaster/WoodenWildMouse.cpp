@@ -145,7 +145,7 @@ static void WoodenWildMouseTrackFlat(
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
     PaintUtilSetSegmentSupportHeight(
         session,
-        PaintUtilRotateSegments(
+        paintSegmentsRotate(
             EnumsToFlags(
                 PaintSegment::top, PaintSegment::left, PaintSegment::right, PaintSegment::bottom, PaintSegment::topLeft,
                 PaintSegment::bottomRight),
