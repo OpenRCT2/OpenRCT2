@@ -491,14 +491,14 @@ namespace OpenRCT2::Ui::Windows
             while (listItem->Type != kRideTypeNull || listItem->EntryIndex != kObjectEntryIndexNull)
             {
                 // Draw flat button rectangle
-                auto borderStyle = Rectangle::BorderStyle::none;
-                if (_newRideVars.SelectedRide == *listItem)
-                    borderStyle = Rectangle::BorderStyle::inset;
-
-                if (_newRideVars.HighlightedRide == *listItem || borderStyle != Rectangle::BorderStyle::none)
+                const bool isSelected = _newRideVars.SelectedRide == *listItem;
+                if (_newRideVars.HighlightedRide == *listItem || isSelected)
+                {
+                    const auto borderStyle = isSelected ? Rectangle::BorderStyle::inset : Rectangle::BorderStyle::outset;
                     Rectangle::fillInset(
                         rt, { coords, coords + ScreenCoordsXY{ 115, 115 } }, colours[1], borderStyle,
                         Rectangle::FillBrightness::dark);
+                }
 
                 // Draw ride image with feathered border
                 auto mask = ImageId(SPR_NEW_RIDE_MASK);
