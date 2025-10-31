@@ -3840,3 +3840,5 @@ STR_7001    :Nome da atracción
 STR_7002    :{STRINGID} {STRINGID}
 STR_7003    :O ficheiro de son ‘{STRING}’ está incompleto. Agardabase {INT32} mostras, pero só {INT32} están dispoñibles. Considera reinstalar RCT2.
 STR_7004    :Forzar redeseño
+STR_7005    :Arrastra unha área de camiño
+STR_7006    :Debuxa un bordo arredor dos botóns de imaxe
