@@ -554,7 +554,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             const auto& listWidget = widgets[WIDX_SCENARIOLIST];
-            int32_t listWidth = listWidget.width() - 12;
+            int32_t listWidth = listWidget.width() - 13;
 
             const int32_t scenarioItemHeight = GetScenarioListItemSize();
 
@@ -611,7 +611,7 @@ namespace OpenRCT2::Ui::Windows
                         if (isCompleted)
                         {
                             // Draw completion tick
-                            GfxDrawSprite(rt, ImageId(SPR_MENU_CHECKMARK), { widgets[WIDX_SCENARIOLIST].width() - 45, y + 1 });
+                            GfxDrawSprite(rt, ImageId(SPR_MENU_CHECKMARK), { widgets[WIDX_SCENARIOLIST].width() - 46, y + 1 });
 
                             // Draw completion score
                             u8string completedByName = "???";

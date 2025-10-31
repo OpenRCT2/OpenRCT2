@@ -382,11 +382,11 @@ namespace OpenRCT2::Ui
         ScreenCoordsXY coords = { (topLeft.x + r + 1) / 2 - 1, topLeft.y };
         if (widget.type == WidgetType::labelCentred)
         {
-            DrawTextWrapped(rt, coords, widget.width() - 2, stringId, ft, { colour, TextAlignment::centre });
+            DrawTextWrapped(rt, coords, widget.width() - 3, stringId, ft, { colour, TextAlignment::centre });
         }
         else
         {
-            DrawTextEllipsised(rt, coords, widget.width() - 2, stringId, ft, { colour, TextAlignment::centre });
+            DrawTextEllipsised(rt, coords, widget.width() - 3, stringId, ft, { colour, TextAlignment::centre });
         }
     }
 
@@ -572,7 +572,7 @@ namespace OpenRCT2::Ui
             return;
 
         topLeft = w.windowPos + ScreenCoordsXY{ widget->left + 2, widget->top + 1 };
-        int32_t width = widget->width() - 4;
+        int32_t width = widget->width() - 5;
 
         if (static_cast<size_t>(widgetIndex + 1) < w.widgets.size()
             && (w.widgets[widgetIndex + 1]).type == WidgetType::closeBox)
@@ -677,7 +677,7 @@ namespace OpenRCT2::Ui
         }
 
         DrawTextEllipsised(
-            rt, w.windowPos + ScreenCoordsXY{ widget.left + 14, widget.textTop() }, widget.width() - 14, stringId, ft, colour);
+            rt, w.windowPos + ScreenCoordsXY{ widget.left + 14, widget.textTop() }, widget.width() - 15, stringId, ft, colour);
     }
 
     /**
@@ -708,7 +708,7 @@ namespace OpenRCT2::Ui
         bottomRight.x--;
         bottomRight.y--;
 
-        bool hScrollNeeded = scroll.contentWidth > widget.width() && (scroll.flags & HSCROLLBAR_VISIBLE);
+        bool hScrollNeeded = scroll.contentWidth > (widget.width() - 1) && (scroll.flags & HSCROLLBAR_VISIBLE);
         bool vScrollNeeded = scroll.contentHeight > widget.height() && (scroll.flags & VSCROLLBAR_VISIBLE);
 
         // Horizontal scrollbar
@@ -982,7 +982,7 @@ namespace OpenRCT2::Ui
         }
 
         const auto& scroll = w.scrolls[*scroll_id];
-        if ((scroll.flags & HSCROLLBAR_VISIBLE) && scroll.contentWidth > widget->width()
+        if ((scroll.flags & HSCROLLBAR_VISIBLE) && scroll.contentWidth > (widget->width() - 1)
             && screenCoords.y >= (w.windowPos.y + widget->bottom - (kScrollBarWidth + 1)))
         {
             // horizontal scrollbar
@@ -1236,7 +1236,7 @@ namespace OpenRCT2::Ui
                 return;
         }
 
-        const auto barWidth = widget.width() - 2;
+        const auto barWidth = widget.width() - 3;
         const int32_t fillSize = (barWidth * percentage) / 100;
         if (fillSize > 0)
         {
@@ -1283,7 +1283,7 @@ namespace OpenRCT2::Ui
 
         if (scroll.flags & HSCROLLBAR_VISIBLE)
         {
-            int32_t view_size = widget.width() - 21;
+            int32_t view_size = widget.width() - 22;
             if (scroll.flags & VSCROLLBAR_VISIBLE)
                 view_size -= 11;
             int32_t x = scroll.contentOffsetX * view_size;
@@ -1291,7 +1291,7 @@ namespace OpenRCT2::Ui
                 x /= scroll.contentWidth;
             scroll.hThumbLeft = x + 11;
 
-            x = widget.width() - 2;
+            x = widget.width() - 3;
             if (scroll.flags & VSCROLLBAR_VISIBLE)
                 x -= 11;
             x += scroll.contentOffsetX;

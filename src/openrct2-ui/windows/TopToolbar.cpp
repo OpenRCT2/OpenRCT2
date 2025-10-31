@@ -1298,7 +1298,7 @@ namespace OpenRCT2::Ui::Windows
                 if (firstItem && widgetIndex == WIDX_SEPARATOR)
                     continue;
 
-                totalWidth += widget->width() + 1;
+                totalWidth += widget->width();
                 firstItem = false;
             }
             return totalWidth;
@@ -1318,7 +1318,7 @@ namespace OpenRCT2::Ui::Windows
                 if (firstItem && widgetIndex == WIDX_SEPARATOR)
                     continue;
 
-                auto widgetWidth = widget->width();
+                auto widgetWidth = widget->width() - 1;
                 widget->left = xPos;
                 xPos += widgetWidth;
                 widget->right = xPos;

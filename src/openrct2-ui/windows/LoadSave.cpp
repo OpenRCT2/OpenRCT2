@@ -772,7 +772,7 @@ namespace OpenRCT2::Ui::Windows
 
                     auto cdpi = const_cast<const RenderTarget&>(rt);
                     DrawTextEllipsised(
-                        cdpi, windowPos + ScreenCoordsXY{ widget.left + 5, widget.top + 1 }, widget.width(), strId, ft,
+                        cdpi, windowPos + ScreenCoordsXY{ widget.left + 5, widget.top + 1 }, widget.width() - 1, strId, ft,
                         { COLOUR_GREY });
                 };
 
@@ -1082,7 +1082,7 @@ namespace OpenRCT2::Ui::Windows
             Rectangle::fill(
                 rt, { { rt.x, rt.y }, { rt.x + rt.width - 1, rt.y + rt.height - 1 } }, ColourMapA[colours[1].colour].mid_light);
 
-            const int32_t listWidth = widgets[WIDX_SCROLL].width();
+            const int32_t listWidth = widgets[WIDX_SCROLL].width() - 1;
             const auto sizeColumnLeft = widgets[WIDX_SORT_SIZE].left;
             const auto dateColumnLeft = widgets[WIDX_SORT_DATE].left;
             const int32_t dateAnchor = dateColumnLeft + maxDateWidth + kDateTimeGap;
@@ -1124,7 +1124,7 @@ namespace OpenRCT2::Ui::Windows
                 auto ft = Formatter();
                 ft.Add<StringId>(STR_STRING);
                 ft.Add<char*>(_listItems[i].name.c_str());
-                int32_t max_file_width = widgets[WIDX_SORT_NAME].width() - 15;
+                int32_t max_file_width = widgets[WIDX_SORT_NAME].width() - 16;
                 DrawTextEllipsised(rt, { 15, y }, max_file_width, stringId, ft);
 
                 // Print formatted modified date, if this is a file

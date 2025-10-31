@@ -252,7 +252,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Text
             auto screenCoords = windowPos + ScreenCoordsXY{ middleOutsetWidget.midX(), middleOutsetWidget.top + 11 };
-            int32_t itemWidth = middleOutsetWidget.width() - 62;
+            int32_t itemWidth = middleOutsetWidget.width() - 63;
             DrawNewsTicker(
                 rt, screenCoords, itemWidth, COLOUR_BRIGHT_GREEN, STR_BOTTOM_TOOLBAR_NEWS_TEXT, newsItem->text,
                 newsItem->ticks);
@@ -368,7 +368,7 @@ namespace OpenRCT2::Ui::Windows
 
             ScreenCoordsXY middleWidgetCoords(
                 windowPos.x + middleOutsetWidget->midX(), windowPos.y + middleOutsetWidget->top + line_height + 1);
-            int32_t panelWidth = middleOutsetWidget->width() - 62;
+            int32_t panelWidth = middleOutsetWidget->width() - 63;
 
             // Check if there is a map tooltip to draw
             StringId stringId;

@@ -783,7 +783,7 @@ namespace OpenRCT2::Ui::Windows
                         darkness = TextDarkness::dark;
                     }
 
-                    int32_t width_limit = widgets[WIDX_LIST].width() - screenCoords.x;
+                    int32_t width_limit = widgets[WIDX_LIST].width() - 1 - screenCoords.x;
 
                     if (ridePage)
                     {
@@ -859,7 +859,7 @@ namespace OpenRCT2::Ui::Windows
             auto& dropdownWidget = widgets[WIDX_FILTER_DROPDOWN];
             resizeDropdown(WIDX_FILTER_DROPDOWN, { width - kFilterWidth - 10, dropdownWidget.top }, { kFilterWidth, 14 });
             auto& installTrackWidget = widgets[WIDX_INSTALL_TRACK];
-            installTrackWidget.moveToX(dropdownWidget.left - installTrackWidget.width() - 10);
+            installTrackWidget.moveToX(dropdownWidget.left - installTrackWidget.width() - 11);
 
             // Set pressed widgets
             pressedWidgets |= 1uLL << WIDX_PREVIEW;
@@ -978,7 +978,7 @@ namespace OpenRCT2::Ui::Windows
             bool isRideTab = GetSelectedObjectType() == ObjectType::ride;
             if (isRideTab)
             {
-                int32_t width_limit = (widgets[WIDX_LIST].width() - 15) / 2;
+                int32_t width_limit = (widgets[WIDX_LIST].width() - 16) / 2;
 
                 widgets[WIDX_LIST_SORT_TYPE].type = WidgetType::tableHeader;
                 widgets[WIDX_LIST_SORT_TYPE].top = widgets[WIDX_FILTER_TEXT_BOX].bottom + 3;
@@ -1091,7 +1091,7 @@ namespace OpenRCT2::Ui::Windows
                                                                 : kStringIdNone;
                 ft.Add<StringId>(stringId);
                 auto screenPos = windowPos + ScreenCoordsXY{ listSortTypeWidget.left + 1, listSortTypeWidget.top + 1 };
-                DrawTextEllipsised(rt, screenPos, listSortTypeWidget.width(), STR_OBJECTS_SORT_TYPE, ft, { colours[1] });
+                DrawTextEllipsised(rt, screenPos, listSortTypeWidget.width() - 1, STR_OBJECTS_SORT_TYPE, ft, { colours[1] });
             }
             const auto& listSortRideWidget = widgets[WIDX_LIST_SORT_RIDE];
             if (listSortRideWidget.type != WidgetType::empty)
@@ -1101,7 +1101,7 @@ namespace OpenRCT2::Ui::Windows
                                                                 : kStringIdNone;
                 ft.Add<StringId>(stringId);
                 auto screenPos = windowPos + ScreenCoordsXY{ listSortRideWidget.left + 1, listSortRideWidget.top + 1 };
-                DrawTextEllipsised(rt, screenPos, listSortRideWidget.width(), STR_OBJECTS_SORT_RIDE, ft, { colours[1] });
+                DrawTextEllipsised(rt, screenPos, listSortRideWidget.width() - 1, STR_OBJECTS_SORT_RIDE, ft, { colours[1] });
             }
 
             if (selectedListItem == -1 || _loadedObject == nullptr)
@@ -1111,7 +1111,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 RenderTarget clipDPI;
                 auto screenPos = windowPos + ScreenCoordsXY{ previewWidget.left + 1, previewWidget.top + 1 };
-                int32_t previewWidth = previewWidget.width() - 1;
+                int32_t previewWidth = previewWidget.width() - 2;
                 int32_t previewHeight = previewWidget.height() - 1;
                 if (ClipDrawPixelInfo(clipDPI, rt, screenPos, previewWidth, previewHeight))
                 {
