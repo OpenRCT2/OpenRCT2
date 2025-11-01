@@ -379,7 +379,7 @@ public:
 
     RideMode getDefaultMode() const;
 
-    void setColourPreset(uint8_t index);
+    void setColourPreset(uint8_t index, uint8_t indexVeh);
 
     const RideObjectEntry* getRideEntry() const;
 
