@@ -1466,6 +1466,11 @@ namespace OpenRCT2
             int32_t dropdown_index = DropdownIndexFromPoint(screenCoords, w);
             if (dropdown_index == -1)
             {
+                if (gDropdown.hasTooltips && gDropdown.lastTooltipHover != -1)
+                {
+                    gDropdown.lastTooltipHover = -1;
+                    WindowTooltipClose();
+                }
                 return;
             }
 
