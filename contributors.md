@@ -252,6 +252,7 @@ Appreciation for contributors who have provided substantial work, but are no lon
 * David Sungaila (sungaila)
 * Garrett Leach (GarrettLeach)
 * Ruohao (Jater) Xu (jaterx)
+* Joshua Maldonado (DrDoodle)
 
 ## Toolchain
 * (Balletie) - macOS

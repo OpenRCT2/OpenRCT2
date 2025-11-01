@@ -106,7 +106,13 @@ namespace OpenRCT2::Ui::Windows
         void onDraw(RenderTarget& rt) override
         {
             drawWidgets(rt);
-
+            // If this dropdown is a colour dropdown and nothing is hovered,
+            // keep showing the selected colour as the "active" one.
+            const bool isColourDropdown = gDropdown.numItems > 0 && gDropdown.items[0].type == Dropdown::ItemType::colour;
+            if (isColourDropdown && gDropdown.highlightedIndex == -1 && gDropdown.defaultIndex != -1)
+            {
+                gDropdown.highlightedIndex = gDropdown.defaultIndex;
+            }
             int32_t highlightedIndex = gDropdown.highlightedIndex;
             for (int32_t i = 0; i < gDropdown.numItems; i++)
             {
@@ -181,10 +187,36 @@ namespace OpenRCT2::Ui::Windows
                         }
                         case Dropdown::ItemType::colour:
                         {
+                            const bool isSelected = (gDropdown.defaultIndex == i);
+                            const bool isHovered = (highlightedIndex == i);
                             auto image = item.image;
-                            if (highlightedIndex == i)
+                            if (isHovered)
                                 image = image.WithIndexOffset(1);
-                            GfxDrawSprite(rt, image, screenCoords);
+                            const auto iconSize = DropdownWindow::GetDefaultRowHeight();
+                            const int32_t offsetX = (ItemWidth - iconSize) / 2;
+                            const int32_t offsetY = (ItemHeight - iconSize) / 2;
+                            const ScreenCoordsXY iconPos = screenCoords + ScreenCoordsXY{ offsetX, offsetY };
+
+                            GfxDrawSprite(rt, image, iconPos);
+
+                            // draw selection frame ALWAYS for the real selected colour
+                            if (isSelected)
+                            {
+                                const auto rb = screenCoords + ScreenCoordsXY{ ItemWidth - 1, ItemHeight - 1 };
+                                const auto borderColour = ColourMapA[colours[0].colour].darkest;
+
+                                // top
+                                Rectangle::fill(
+                                    rt, { screenCoords, screenCoords + ScreenCoordsXY{ ItemWidth - 1, 0 } }, borderColour);
+                                // bottom
+                                Rectangle::fill(rt, { screenCoords + ScreenCoordsXY{ 0, ItemHeight - 1 }, rb }, borderColour);
+                                // left
+                                Rectangle::fill(
+                                    rt, { screenCoords, screenCoords + ScreenCoordsXY{ 0, ItemHeight - 1 } }, borderColour);
+                                // right
+                                Rectangle::fill(rt, { screenCoords + ScreenCoordsXY{ ItemWidth - 1, 0 }, rb }, borderColour);
+                            }
+
                             break;
                         }
                         case Dropdown::ItemType::separator:
@@ -638,9 +670,12 @@ namespace OpenRCT2::Ui::Windows
 
         // Show dropdown
         auto squareSize = DropdownWindow::GetDefaultRowHeight();
+        const bool enlarged = Config::Get().interface.enlargedUi;
+        const int32_t padding = enlarged ? 4 : 2;
+        const int32_t cellSize = squareSize + padding;
         WindowDropdownShowImage(
             w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->height() + 1, dropdownColour,
-            Dropdown::Flag::StayOpen, numColours, squareSize, squareSize,
+            Dropdown::Flag::StayOpen, numColours, cellSize, cellSize,
             DropdownGetAppropriateImageDropdownItemsPerRow(static_cast<uint32_t>(numColours)));
 
         gDropdown.hasTooltips = true;
