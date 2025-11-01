@@ -19,7 +19,7 @@
 ### Download
 | Latest release                                                                                                         | Latest development build |
 |------------------------------------------------------------------------------------------------------------------------|--------------------------|
-| [![OpenRCT2.io](https://img.shields.io/badge/master-v0.4.27-green.svg)](https://openrct2.io/download/release/latest) | [![OpenRCT2.io](https://img.shields.io/github/last-commit/OpenRCT2/OpenRCT2/develop)](https://openrct2.io/download/develop/latest) |
+| [![OpenRCT2.io](https://img.shields.io/badge/master-v0.4.28-green.svg)](https://openrct2.io/download/release/latest) | [![OpenRCT2.io](https://img.shields.io/github/last-commit/OpenRCT2/OpenRCT2/develop)](https://openrct2.io/download/develop/latest) |
 
 ---
 
