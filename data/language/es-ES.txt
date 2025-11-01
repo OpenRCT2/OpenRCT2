@@ -1569,8 +1569,8 @@ STR_2212    :Mostrar lista de guardias de seguridad en el parque
 STR_2213    :Mostrar lista de animadores en el parque
 STR_2214    :¡No es posible construir mientras el juego está pausado!
 STR_2215    :{STRINGID}{NEWLINE}({STRINGID})
-STR_2216    :{WINDOW_COLOUR_2}{COMMA16}°C
-STR_2217    :{WINDOW_COLOUR_2}{COMMA16}°F
+STR_2216    :{WINDOW_COLOUR_1}{COMMA16}°C
+STR_2217    :{WINDOW_COLOUR_1}{COMMA16}°F
 STR_2218    :{RED}¡{STRINGID} en {STRINGID} no ha regresado a la {STRINGID}!{NEWLINE}Comprueba si se ha atorado o se ha detenido.
 STR_2219    :{RED}{COMMA16} personas han muerto en un accidente en {STRINGID}
 STR_2220    :{WINDOW_COLOUR_2}Valoración del parque: {BLACK}{COMMA16}

@@ -29,7 +29,7 @@ namespace OpenRCT2
         _legacyType.scenery_tab_id = kObjectEntryIndexNull;
         stream->Seek(2, OpenRCT2::STREAM_SEEK_CURRENT);
 
-        GetStringTable().Read(context, stream, ObjectStringID::NAME);
+        GetStringTable().Read(context, stream, ObjectStringID::name);
 
         RCTObjectEntry sgEntry = stream->ReadValue<RCTObjectEntry>();
         SetPrimarySceneryGroup(ObjectEntryDescriptor(sgEntry));
@@ -39,13 +39,13 @@ namespace OpenRCT2
         // Validate properties
         if (_legacyType.price <= 0.00_GBP)
         {
-            context->LogError(ObjectError::InvalidProperty, "Price can not be free or negative.");
+            context->LogError(ObjectError::invalidProperty, "Price can not be free or negative.");
         }
 
         // Add banners to 'Signs and items for footpaths' group, rather than lumping them in the Miscellaneous tab.
         // Since this is already done the other way round for original items, avoid adding those to prevent duplicates.
         auto firstSourceGame = GetFirstSourceGame();
-        if (firstSourceGame == ObjectSourceGame::Custom)
+        if (firstSourceGame == ObjectSourceGame::custom)
         {
             auto scgPathX = Object::GetScgPathXHeader();
             SetPrimarySceneryGroup(scgPathX);

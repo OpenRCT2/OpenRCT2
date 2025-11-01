@@ -21,7 +21,7 @@ struct PaintSession;
 
 struct MoneyEffect : EntityBase
 {
-    static constexpr auto cEntityType = EntityType::MoneyEffect;
+    static constexpr auto cEntityType = EntityType::moneyEffect;
 
     uint16_t frame;
     uint16_t MoveDelay;

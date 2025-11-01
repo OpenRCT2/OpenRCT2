@@ -83,8 +83,9 @@ static constexpr float kWindowScrollLocations[][2] = {
 
     void WindowVisitEach(std::function<void(WindowBase*)> func)
     {
-        for (auto& w : gWindowList)
+        for (size_t i = 0; i < gWindowList.size(); i++)
         {
+            auto& w = gWindowList[i];
             if (w->flags.has(WindowFlag::dead))
                 continue;
             func(w.get());
@@ -209,9 +210,9 @@ static constexpr float kWindowScrollLocations[][2] = {
      */
     void WindowSetWindowLimit(int32_t value)
     {
-        int32_t prev = Config::Get().general.WindowLimit;
+        int32_t prev = Config::Get().general.windowLimit;
         int32_t val = std::clamp<int32_t>(value, kWindowLimitMin, kWindowLimitMax);
-        Config::Get().general.WindowLimit = val;
+        Config::Get().general.windowLimit = val;
         Config::Save();
         // Checks if value decreases and then closes surplus
         // windows if one sets a limit lower than the number of windows open
@@ -455,7 +456,7 @@ static constexpr float kWindowScrollLocations[][2] = {
             w.savedViewPos.y -= v->ViewHeight() / 4;
         }
 
-        if (Config::Get().general.ZoomToCursor && atCursor)
+        if (Config::Get().general.zoomToCursor && atCursor)
         {
             const auto mouseCoords = ContextGetCursorPositionScaled() - v->pos;
             const int32_t diffX = (mouseCoords.x - (zoomLevel.ApplyInversedTo(v->ViewWidth()) / 2));

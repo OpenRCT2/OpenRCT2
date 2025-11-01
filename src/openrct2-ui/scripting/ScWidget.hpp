@@ -79,6 +79,7 @@ namespace OpenRCT2::Scripting
                     case WidgetType::imgBtn:
                     case WidgetType::trnBtn:
                     case WidgetType::flatBtn:
+                    case WidgetType::hiddenButton:
                     case WidgetType::button:
                     case WidgetType::closeBox:
                         return "button";

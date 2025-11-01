@@ -47,7 +47,7 @@ constexpr RideTypeDescriptor JuniorRollerCoasterRTD =
     .BuildCosts = { 22.50_GBP, 2.00_GBP, 40, },
     .DefaultPrices = { 20, 20 },
     .DefaultMusic = kMusicObjectSummer,
-    .PhotoItem = ShopItem::Photo,
+    .PhotoItem = ShopItem::photo,
     .BonusValue = 60,
     .ColourPresets = TRACK_COLOUR_PRESETS(
         { COLOUR_YELLOW, COLOUR_YELLOW, COLOUR_SATURATED_BROWN },

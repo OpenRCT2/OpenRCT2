@@ -46,7 +46,7 @@ constexpr RideTypeDescriptor MazeRTD =
     .BuildCosts = { 27.50_GBP, 1.00_GBP, 8, },
     .DefaultPrices = { 10, 0 },
     .DefaultMusic = kMusicObjectSummer,
-    .PhotoItem = ShopItem::Photo,
+    .PhotoItem = ShopItem::photo,
     .BonusValue = 40,
     .ColourPresets = TRACK_COLOUR_PRESETS(
         { COLOUR_GREY, COLOUR_GREY, COLOUR_GREY },

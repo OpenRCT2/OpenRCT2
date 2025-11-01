@@ -47,7 +47,7 @@ constexpr RideTypeDescriptor MonorailRTD =
     .BuildCosts = { 21.00_GBP, 2.50_GBP, 50, },
     .DefaultPrices = { 10, 0 },
     .DefaultMusic = kMusicObjectSummer,
-    .PhotoItem = ShopItem::Photo,
+    .PhotoItem = ShopItem::photo,
     .BonusValue = 60,
     .ColourPresets = TRACK_COLOUR_PRESETS(
         { COLOUR_GREY, COLOUR_GREY, COLOUR_DARK_OLIVE_GREEN },

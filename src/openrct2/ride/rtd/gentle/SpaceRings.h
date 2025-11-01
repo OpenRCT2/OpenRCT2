@@ -44,7 +44,7 @@ constexpr RideTypeDescriptor SpaceRingsRTD =
     .BuildCosts = { 36.00_GBP, 1.00_GBP, 1, },
     .DefaultPrices = { 5, 0 },
     .DefaultMusic = kMusicObjectGentle,
-    .PhotoItem = ShopItem::Photo,
+    .PhotoItem = ShopItem::photo,
     .BonusValue = 30,
     .ColourPresets = kDefaultFlatRideColourPreset,
     .ColourPreview = { 0, 0 },
@@ -61,6 +61,7 @@ constexpr RideTypeDescriptor SpaceRingsRTD =
             { RatingsModifierType::BonusScenery,          0,                25098, 0, 0 },
         },
     },
+    .specialType = RtdSpecialType::spaceRings,
 };
 } // namespace OpenRCT2
 // clang-format on

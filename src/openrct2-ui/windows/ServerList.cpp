@@ -19,6 +19,7 @@
     #include <openrct2/SpriteIds.h>
     #include <openrct2/config/Config.h>
     #include <openrct2/core/Json.hpp>
+    #include <openrct2/drawing/Rectangle.h>
     #include <openrct2/drawing/Text.h>
     #include <openrct2/interface/Colour.h>
     #include <openrct2/localisation/Formatter.h>
@@ -27,6 +28,8 @@
     #include <openrct2/platform/Platform.h>
     #include <openrct2/ui/WindowManager.h>
     #include <tuple>
+
+using namespace OpenRCT2::Drawing;
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -91,7 +94,7 @@ namespace OpenRCT2::Ui::Windows
 
         void onOpen() override
         {
-            _playerName = Config::Get().network.PlayerName;
+            _playerName = Config::Get().network.playerName;
             setWidgets(_serverListWidgets);
             widgets[WIDX_PLAYER_NAME_INPUT].string = const_cast<utf8*>(_playerName.c_str());
             initScrollWidgets();
@@ -275,7 +278,7 @@ namespace OpenRCT2::Ui::Windows
                         return;
 
                     _playerName = temp;
-                    Config::Get().network.PlayerName = _playerName;
+                    Config::Get().network.playerName = _playerName;
                     widgets[WIDX_PLAYER_NAME_INPUT].string = const_cast<utf8*>(_playerName.c_str());
 
                     invalidateWidget(WIDX_PLAYER_NAME_INPUT);
@@ -344,7 +347,7 @@ namespace OpenRCT2::Ui::Windows
                 // Draw hover highlight
                 if (highlighted)
                 {
-                    GfxFilterRect(
+                    Rectangle::filter(
                         rt, { 0, screenCoords.y, listWidgetWidth, screenCoords.y + kItemHeight },
                         FilterPaletteID::paletteDarken1);
                     _version = serverDetails.Version;

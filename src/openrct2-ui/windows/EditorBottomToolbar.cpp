@@ -20,6 +20,7 @@
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/SpriteIds.h>
 #include <openrct2/audio/Audio.h>
+#include <openrct2/drawing/Rectangle.h>
 #include <openrct2/entity/EntityList.h>
 #include <openrct2/management/Research.h>
 #include <openrct2/scenario/Scenario.h>
@@ -29,6 +30,8 @@
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Scenery.h>
 #include <string>
+
+using namespace OpenRCT2::Drawing;
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -336,7 +339,7 @@ namespace OpenRCT2::Ui::Windows
             const auto& previousWidget = widgets[WIDX_PREVIOUS_IMAGE];
             auto leftTop = windowPos + ScreenCoordsXY{ previousWidget.left, previousWidget.top };
             auto rightBottom = windowPos + ScreenCoordsXY{ previousWidget.right, previousWidget.bottom };
-            GfxFilterRect(rt, { leftTop, rightBottom }, FilterPaletteID::palette51);
+            Rectangle::filter(rt, { leftTop, rightBottom }, FilterPaletteID::palette51);
         }
 
         void DrawLeftButton(RenderTarget& rt)
@@ -345,7 +348,9 @@ namespace OpenRCT2::Ui::Windows
                 + ScreenCoordsXY{ widgets[WIDX_PREVIOUS_IMAGE].left + 1, widgets[WIDX_PREVIOUS_IMAGE].top + 1 };
             const auto bottomRight = windowPos
                 + ScreenCoordsXY{ widgets[WIDX_PREVIOUS_IMAGE].right - 1, widgets[WIDX_PREVIOUS_IMAGE].bottom - 1 };
-            GfxFillRectInset(rt, { topLeft, bottomRight }, colours[1], INSET_RECT_F_30);
+            Rectangle::fillInset(
+                rt, { topLeft, bottomRight }, colours[1], Rectangle::BorderStyle::inset, Rectangle::FillBrightness::light,
+                Rectangle::FillMode::none);
 
             GfxDrawSprite(
                 rt, ImageId(SPR_PREVIOUS),
@@ -374,7 +379,7 @@ namespace OpenRCT2::Ui::Windows
             auto nextWidget = widgets[WIDX_NEXT_IMAGE];
             auto leftTop = windowPos + ScreenCoordsXY{ nextWidget.left, nextWidget.top };
             auto rightBottom = windowPos + ScreenCoordsXY{ nextWidget.right, nextWidget.bottom };
-            GfxFilterRect(rt, { leftTop, rightBottom }, FilterPaletteID::palette51);
+            Rectangle::filter(rt, { leftTop, rightBottom }, FilterPaletteID::palette51);
         }
 
         void DrawRightButton(RenderTarget& rt)
@@ -383,7 +388,9 @@ namespace OpenRCT2::Ui::Windows
                 + ScreenCoordsXY{ widgets[WIDX_NEXT_IMAGE].left + 1, widgets[WIDX_NEXT_IMAGE].top + 1 };
             const auto bottomRight = windowPos
                 + ScreenCoordsXY{ widgets[WIDX_NEXT_IMAGE].right - 1, widgets[WIDX_NEXT_IMAGE].bottom - 1 };
-            GfxFillRectInset(rt, { topLeft, bottomRight }, colours[1], INSET_RECT_F_30);
+            Rectangle::fillInset(
+                rt, { topLeft, bottomRight }, colours[1], Rectangle::BorderStyle::inset, Rectangle::FillBrightness::light,
+                Rectangle::FillMode::none);
 
             GfxDrawSprite(
                 rt, ImageId(SPR_NEXT),

@@ -1402,13 +1402,7 @@ namespace OpenRCT2::HybridRC
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
-                        direction),
-                    0xFFFF, 0);
+                PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 1:
@@ -1504,13 +1498,7 @@ namespace OpenRCT2::HybridRC
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
-                        direction),
-                    0xFFFF, 0);
+                PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 1:
@@ -11118,7 +11106,7 @@ namespace OpenRCT2::HybridRC
         const TrackElement& trackElement, SupportType supportType)
     {
         PaintAddImageAsParentRotated(
-            session, direction, ImageId(SPR_STATION_BASE_D, COLOUR_BLACK), { 0, 0, height }, { 32, 32, 1 });
+            session, direction, ImageId(SPR_STATION_BASE_BORDERLESS, COLOUR_BLACK), { 0, 0, height }, { 32, 32, 1 });
         PaintAddImageAsParentRotated(
             session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_FLAT + (direction & 1)),
             { 0, 0, height }, { { 0, 6, height + 3 }, { 32, 20, 0 } });

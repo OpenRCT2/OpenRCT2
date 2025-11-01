@@ -645,7 +645,7 @@ namespace OpenRCT2
 
             serialiser << park.guestGenerationProbability;
             serialiser << park.suggestedGuestMaximum;
-            serialiser << Config::Get().general.ShowRealNamesOfGuests;
+            serialiser << Config::Get().general.showRealNamesOfGuests;
 
             // To make this a little bit less volatile against updates
             // we reserve some space for future additions.

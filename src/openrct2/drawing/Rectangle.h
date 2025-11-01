@@ -1,0 +1,44 @@
+/*****************************************************************************
+ * Copyright (c) 2014-2025 OpenRCT2 developers
+ *
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
+ *
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
+ *****************************************************************************/
+
+#pragma once
+
+#include <cstdint>
+
+struct ColourWithFlags;
+enum class FilterPaletteID : int32_t;
+struct RenderTarget;
+struct ScreenRect;
+
+namespace OpenRCT2::Drawing::Rectangle
+{
+    enum class BorderStyle : uint8_t
+    {
+        outset,
+        inset,
+        none,
+    };
+    enum class FillBrightness : uint8_t
+    {
+        light,
+        dark,
+    };
+    enum class FillMode : uint8_t
+    {
+        standard,
+        none,
+        dontLightenWhenInset,
+    };
+
+    void fill(RenderTarget& rt, const ScreenRect& rect, int32_t colour);
+    void fillInset(
+        RenderTarget& rt, const ScreenRect& rect, ColourWithFlags colour, BorderStyle borderStyle = BorderStyle::outset,
+        FillBrightness brightness = FillBrightness::light, FillMode fillMode = FillMode::standard);
+    void filter(RenderTarget& rt, const ScreenRect& rect, FilterPaletteID palette);
+} // namespace OpenRCT2::Drawing::Rectangle

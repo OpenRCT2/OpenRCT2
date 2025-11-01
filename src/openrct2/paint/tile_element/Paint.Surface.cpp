@@ -1199,7 +1199,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
     }
 
     if (zoomLevel <= ZoomLevel{ 0 } && has_surface && !(session.ViewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
-        && !(session.ViewFlags & VIEWPORT_FLAG_HIDE_BASE) && Config::Get().general.LandscapeSmoothing)
+        && !(session.ViewFlags & VIEWPORT_FLAG_HIDE_BASE) && Config::Get().general.landscapeSmoothing)
     {
         ViewportSurfaceSmoothenEdge(session, EDGE_TOPLEFT, selfDescriptor, tileDescriptors[2]);
         ViewportSurfaceSmoothenEdge(session, EDGE_TOPRIGHT, selfDescriptor, tileDescriptors[3]);
@@ -1229,7 +1229,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
 
     const uint16_t waterHeight = tileElement.GetWaterHeight();
     const bool waterGetsClipped = (session.ViewFlags & VIEWPORT_FLAG_CLIP_VIEW) && (waterHeight > gClipHeight * kCoordsZStep);
-    const bool waterIsTransparent = Config::Get().general.TransparentWater
+    const bool waterIsTransparent = Config::Get().general.transparentWater
         || (session.ViewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE);
 
     if (waterHeight > 0 && !gTrackDesignSaveMode && !waterGetsClipped)

@@ -848,19 +848,19 @@ struct RectRange : public CoordsRange<T>
  * Represents a rectangular range of the map using regular coordinates (32 per tile).
  */
 
-struct MapRange : public RectRange<CoordsXY>
+struct MapRange : public CoordsRange<CoordsXY>
 {
-    using RectRange::RectRange;
+    using CoordsRange::CoordsRange;
 
     constexpr MapRange Normalise() const
     {
         // Don't use std::min/max, as they require <algorithm>, one of C++'s heaviest
         // in this very common header.
         auto result = MapRange(
-            GetLeft() < GetRight() ? GetLeft() : GetRight(), // min
-            GetTop() < GetBottom() ? GetTop() : GetBottom(), // min
-            GetLeft() > GetRight() ? GetLeft() : GetRight(), // max
-            GetTop() > GetBottom() ? GetTop() : GetBottom()  // max
+            GetX1() < GetX2() ? GetX1() : GetX2(), // min
+            GetY1() < GetY2() ? GetY1() : GetY2(), // min
+            GetX1() > GetX2() ? GetX1() : GetX2(), // max
+            GetY1() > GetY2() ? GetY1() : GetY2()  // max
         );
         return result;
     }

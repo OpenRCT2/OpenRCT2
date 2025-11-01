@@ -32,7 +32,7 @@ constexpr RideTypeDescriptor DodgemsRTD =
                      RtdFlag::cannotHaveGaps, RtdFlag::noTestMode, RtdFlag::noWallsAroundTrack,
                      RtdFlag::isFlatRide, RtdFlag::hasVehicleColours, RtdFlag::hasMusicByDefault,
                      RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit,
-                     RtdFlag::slightlyInterestingToLookAt),
+                     RtdFlag::slightlyInterestingToLookAt, RtdFlag::hasRoofOverWholeRide),
     .RideModes = EnumsToFlags(RideMode::dodgems),
     .DefaultMode = RideMode::dodgems,
     .OperatingSettings = { 20, 180 },
@@ -47,7 +47,7 @@ constexpr RideTypeDescriptor DodgemsRTD =
     .BuildCosts = { 27.50_GBP, 1.00_GBP, 1, },
     .DefaultPrices = { 15, 0 },
     .DefaultMusic = kMusicObjectDodgems,
-    .PhotoItem = ShopItem::Photo,
+    .PhotoItem = ShopItem::photo,
     .BonusValue = 35,
     .ColourPresets = TRACK_COLOUR_PRESETS(
         { COLOUR_BRIGHT_RED, COLOUR_SATURATED_BROWN, COLOUR_SATURATED_BROWN },

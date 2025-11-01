@@ -21,44 +21,44 @@
 namespace OpenRCT2
 {
     // clang-format off
-    CurrencyDescriptor CurrencyDescriptors[EnumValue(CurrencyType::Count)] = {
-        {   "GBP",  10,     CurrencyAffix::Prefix,    u8"£",      CurrencyAffix::Suffix,    "GBP",  STR_POUNDS          },  // British Pound
-        {   "USD",  10,     CurrencyAffix::Prefix,    u8"$",      CurrencyAffix::Prefix,    "$",    STR_DOLLARS         },  // US Dollar
-        {   "FRF",  10,     CurrencyAffix::Suffix,    u8"F",      CurrencyAffix::Suffix,    "F",    STR_FRANC           },  // French Franc
-        {   "DEM",  10,     CurrencyAffix::Prefix,    u8"DM",     CurrencyAffix::Prefix,    "DM",   STR_DEUTSCHE_MARK   },  // Deutsche Mark
-        {   "JPY",  1000,   CurrencyAffix::Prefix,    u8"¥",      CurrencyAffix::Suffix,    "YEN",  STR_YEN             },  // Japanese Yen
-        {   "ESP",  10,     CurrencyAffix::Suffix,    u8"Pts",    CurrencyAffix::Suffix,    "Pts",  STR_PESETA          },  // Spanish Peseta
-        {   "ITL",  1000,   CurrencyAffix::Prefix,    u8"L",      CurrencyAffix::Prefix,    "L",    STR_LIRA            },  // Italian Lira
-        {   "NLG",  10,     CurrencyAffix::Prefix,    u8"ƒ ",     CurrencyAffix::Prefix,    "fl.",  STR_GUILDERS        },  // Dutch Guilder
-        {   "SEK",  100,    CurrencyAffix::Suffix,    u8" kr",    CurrencyAffix::Suffix,    " kr",  STR_KRONA           },  // Swedish Krona
-        {   "EUR",  10,     CurrencyAffix::Prefix,    u8"€",      CurrencyAffix::Suffix,    "EUR",  STR_EUROS           },  // Euro
-        {   "KRW",  10000,  CurrencyAffix::Prefix,    u8"₩",      CurrencyAffix::Prefix,    "W",    STR_WON             },  // South Korean Won
-        {   "RUB",  1000,   CurrencyAffix::Suffix,    u8"₽",      CurrencyAffix::Prefix,    "R ",   STR_ROUBLE          },  // Russian Rouble
-        {   "CZK",  100,    CurrencyAffix::Suffix,    u8" Kč",    CurrencyAffix::Suffix,   " Kc",  STR_CZECH_KORUNA    },  // Czech koruna
-        {   "HKD",  100,    CurrencyAffix::Prefix,    u8"$",      CurrencyAffix::Prefix,    "HKD",  STR_HONG_KONG_DOLLAR},  // Hong Kong Dollar
-        {   "TWD",  1000,   CurrencyAffix::Prefix,    u8"NT$",    CurrencyAffix::Prefix,    "NT$",  STR_NEW_TAIWAN_DOLLAR}, // New Taiwan Dollar
-        {   "CNY",  100,    CurrencyAffix::Prefix,    u8"CN¥",    CurrencyAffix::Prefix,    "CNY",  STR_CHINESE_YUAN    },  // Chinese Yuan
-        {   "HUF",  1000,   CurrencyAffix::Suffix,    u8" Ft",    CurrencyAffix::Suffix,    " Ft",  STR_HUNGARIAN_FORINT},  // Hungarian Forint
-        {   "CTM",  10,     CurrencyAffix::Prefix,    u8"Ctm",    CurrencyAffix::Prefix,    "Ctm",  STR_CUSTOM_CURRENCY },  // Customizable currency
+    CurrencyDescriptor CurrencyDescriptors[EnumValue(CurrencyType::count)] = {
+        {   "GBP",  10,     CurrencyAffix::prefix,    u8"£",      CurrencyAffix::suffix,    "GBP",  STR_POUNDS          },  // British Pound
+        {   "USD",  10,     CurrencyAffix::prefix,    u8"$",      CurrencyAffix::prefix,    "$",    STR_DOLLARS         },  // US Dollar
+        {   "FRF",  10,     CurrencyAffix::suffix,    u8"F",      CurrencyAffix::suffix,    "F",    STR_FRANC           },  // French Franc
+        {   "DEM",  10,     CurrencyAffix::prefix,    u8"DM",     CurrencyAffix::prefix,    "DM",   STR_DEUTSCHE_MARK   },  // Deutsche Mark
+        {   "JPY",  1000,   CurrencyAffix::prefix,    u8"¥",      CurrencyAffix::suffix,    "YEN",  STR_YEN             },  // Japanese Yen
+        {   "ESP",  10,     CurrencyAffix::suffix,    u8"Pts",    CurrencyAffix::suffix,    "Pts",  STR_PESETA          },  // Spanish Peseta
+        {   "ITL",  1000,   CurrencyAffix::prefix,    u8"L",      CurrencyAffix::prefix,    "L",    STR_LIRA            },  // Italian Lira
+        {   "NLG",  10,     CurrencyAffix::prefix,    u8"ƒ ",     CurrencyAffix::prefix,    "fl.",  STR_GUILDERS        },  // Dutch Guilder
+        {   "SEK",  100,    CurrencyAffix::suffix,    u8" kr",    CurrencyAffix::suffix,    " kr",  STR_KRONA           },  // Swedish Krona
+        {   "EUR",  10,     CurrencyAffix::prefix,    u8"€",      CurrencyAffix::suffix,    "EUR",  STR_EUROS           },  // Euro
+        {   "KRW",  10000,  CurrencyAffix::prefix,    u8"₩",      CurrencyAffix::prefix,    "W",    STR_WON             },  // South Korean Won
+        {   "RUB",  1000,   CurrencyAffix::suffix,    u8"₽",      CurrencyAffix::prefix,    "R ",   STR_ROUBLE          },  // Russian Rouble
+        {   "CZK",  100,    CurrencyAffix::suffix,    u8" Kč",    CurrencyAffix::suffix,   " Kc",  STR_CZECH_KORUNA    },  // Czech koruna
+        {   "HKD",  100,    CurrencyAffix::prefix,    u8"$",      CurrencyAffix::prefix,    "HKD",  STR_HONG_KONG_DOLLAR},  // Hong Kong Dollar
+        {   "TWD",  1000,   CurrencyAffix::prefix,    u8"NT$",    CurrencyAffix::prefix,    "NT$",  STR_NEW_TAIWAN_DOLLAR}, // New Taiwan Dollar
+        {   "CNY",  100,    CurrencyAffix::prefix,    u8"CN¥",    CurrencyAffix::prefix,    "CNY",  STR_CHINESE_YUAN    },  // Chinese Yuan
+        {   "HUF",  1000,   CurrencyAffix::suffix,    u8" Ft",    CurrencyAffix::suffix,    " Ft",  STR_HUNGARIAN_FORINT},  // Hungarian Forint
+        {   "CTM",  10,     CurrencyAffix::prefix,    u8"Ctm",    CurrencyAffix::prefix,    "Ctm",  STR_CUSTOM_CURRENCY },  // Customizable currency
     };
     // clang-format on
 
     void CurrencyLoadCustomCurrencyConfig()
     {
-        CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate = Config::Get().general.CustomCurrencyRate;
-        CurrencyDescriptors[EnumValue(CurrencyType::Custom)].affix_unicode = Config::Get().general.CustomCurrencyAffix;
-        if (!Config::Get().general.CustomCurrencySymbol.empty())
+        CurrencyDescriptors[EnumValue(CurrencyType::custom)].rate = Config::Get().general.customCurrencyRate;
+        CurrencyDescriptors[EnumValue(CurrencyType::custom)].affix_unicode = Config::Get().general.customCurrencyAffix;
+        if (!Config::Get().general.customCurrencySymbol.empty())
         {
             String::safeUtf8Copy(
-                CurrencyDescriptors[EnumValue(CurrencyType::Custom)].symbol_unicode,
-                Config::Get().general.CustomCurrencySymbol.c_str(), kCurrencySymbolMaxSize);
+                CurrencyDescriptors[EnumValue(CurrencyType::custom)].symbol_unicode,
+                Config::Get().general.customCurrencySymbol.c_str(), kCurrencySymbolMaxSize);
         }
     }
 
     money64 StringToMoney(const char* string_to_monetise)
     {
         const char* decimal_char = LanguageGetString(STR_LOCALE_DECIMAL_POINT);
-        const CurrencyDescriptor* currencyDesc = &CurrencyDescriptors[EnumValue(Config::Get().general.CurrencyFormat)];
+        const CurrencyDescriptor* currencyDesc = &CurrencyDescriptors[EnumValue(Config::Get().general.currencyFormat)];
         char processedString[128] = {};
 
         Guard::Assert(strlen(string_to_monetise) < sizeof(processedString));
@@ -148,7 +148,7 @@ namespace OpenRCT2
             return;
         }
 
-        const CurrencyDescriptor& currencyDesc = CurrencyDescriptors[EnumValue(Config::Get().general.CurrencyFormat)];
+        const CurrencyDescriptor& currencyDesc = CurrencyDescriptors[EnumValue(Config::Get().general.currencyFormat)];
 
         const char* sign = amount >= 0 ? "" : "-";
         const uint64_t a = std::abs(amount) * currencyDesc.rate;

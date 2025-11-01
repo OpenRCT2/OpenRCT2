@@ -25,6 +25,7 @@
 #include "../world/Climate.h"
 #include "../world/Location.hpp"
 #include "LightFX.h"
+#include "Rectangle.h"
 
 #include <array>
 #include <cassert>
@@ -682,7 +683,7 @@ void MaskFn(
 
 void GfxFilterPixel(RenderTarget& rt, const ScreenCoordsXY& coords, FilterPaletteID palette)
 {
-    GfxFilterRect(rt, { coords, coords }, palette);
+    Rectangle::filter(rt, { coords, coords }, palette);
 }
 
 /**
@@ -703,9 +704,11 @@ void GfxTransposePalette(int32_t pal, uint8_t product)
         for (; width > 0; width--)
         {
             auto& dest_pointer = gGamePalette[x];
-            dest_pointer.Blue = (source_pointer[0] * product) >> 8;
-            dest_pointer.Green = (source_pointer[1] * product) >> 8;
-            dest_pointer.Red = (source_pointer[2] * product) >> 8;
+            // Make sure the image never gets darker than the void colour (not-quite-block), to the background colour jumping
+            // between void and 100% black.
+            dest_pointer.Blue = std::max<uint8_t>(35, ((source_pointer[0] * product) >> 8));
+            dest_pointer.Green = std::max<uint8_t>(35, ((source_pointer[1] * product) >> 8));
+            dest_pointer.Red = std::max<uint8_t>(23, ((source_pointer[2] * product) >> 8));
             source_pointer += 3;
 
             x++;
@@ -1011,7 +1014,7 @@ void UpdatePaletteEffects()
 
         // Animate the water/lava/chain movement palette
         uint32_t shade = 0;
-        if (Config::Get().general.RenderWeatherGloom)
+        if (Config::Get().general.renderWeatherGloom)
         {
             auto paletteId = ClimateGetWeatherGloomPaletteId(getGameState().weatherCurrent);
             if (paletteId != FilterPaletteID::paletteNull)
@@ -1113,9 +1116,9 @@ void RefreshVideo()
 
 void ToggleWindowedMode()
 {
-    int32_t rt = Config::Get().general.FullscreenMode == 0 ? 2 : 0;
+    int32_t rt = Config::Get().general.fullscreenMode == 0 ? 2 : 0;
     ContextSetFullscreenMode(rt);
-    Config::Get().general.FullscreenMode = rt;
+    Config::Get().general.fullscreenMode = rt;
     Config::Save();
 }
 

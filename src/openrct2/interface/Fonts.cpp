@@ -149,15 +149,15 @@ static bool LoadFont(LocalisationService& localisationService, TTFFontSetDescrip
 static bool LoadCustomConfigFont(LocalisationService& localisationService)
 {
     static TTFFontSetDescriptor TTFFontCustom = { {
-        { Config::Get().fonts.FileName.c_str(), Config::Get().fonts.FontName.c_str(), Config::Get().fonts.SizeTiny,
-          Config::Get().fonts.OffsetX, Config::Get().fonts.OffsetY, Config::Get().fonts.HeightTiny,
-          Config::Get().fonts.HintingThreshold, nullptr },
-        { Config::Get().fonts.FileName.c_str(), Config::Get().fonts.FontName.c_str(), Config::Get().fonts.SizeSmall,
-          Config::Get().fonts.OffsetX, Config::Get().fonts.OffsetY, Config::Get().fonts.HeightSmall,
-          Config::Get().fonts.HintingThreshold, nullptr },
-        { Config::Get().fonts.FileName.c_str(), Config::Get().fonts.FontName.c_str(), Config::Get().fonts.SizeMedium,
-          Config::Get().fonts.OffsetX, Config::Get().fonts.OffsetY, Config::Get().fonts.HeightMedium,
-          Config::Get().fonts.HintingThreshold, nullptr },
+        { Config::Get().fonts.fileName.c_str(), Config::Get().fonts.fontName.c_str(), Config::Get().fonts.sizeTiny,
+          Config::Get().fonts.offsetX, Config::Get().fonts.offsetY, Config::Get().fonts.heightTiny,
+          Config::Get().fonts.hintingThreshold, nullptr },
+        { Config::Get().fonts.fileName.c_str(), Config::Get().fonts.fontName.c_str(), Config::Get().fonts.sizeSmall,
+          Config::Get().fonts.offsetX, Config::Get().fonts.offsetY, Config::Get().fonts.heightSmall,
+          Config::Get().fonts.hintingThreshold, nullptr },
+        { Config::Get().fonts.fileName.c_str(), Config::Get().fonts.fontName.c_str(), Config::Get().fonts.sizeMedium,
+          Config::Get().fonts.offsetX, Config::Get().fonts.offsetY, Config::Get().fonts.heightMedium,
+          Config::Get().fonts.hintingThreshold, nullptr },
     } };
 
     TTFDispose();
@@ -177,7 +177,7 @@ void TryLoadFonts(LocalisationService& localisationService)
 
     if (fontFamily != kFamilyOpenRCT2Sprite)
     {
-        if (!Config::Get().fonts.FileName.empty())
+        if (!Config::Get().fonts.fileName.empty())
         {
             if (LoadCustomConfigFont(localisationService))
             {

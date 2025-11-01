@@ -32,6 +32,11 @@ namespace OpenRCT2
         trnBtn = 7,
         tab = 8,
         flatBtn = 9,
+        /**
+         * For stuff that mostly acts as a label, while providing a way for power users to quickly
+         * open the associated window. For example: the money display in the lower left of the screen.
+         */
+        hiddenButton = 11,
         button = 10,
         labelCentred = 12, // Centred text
         tableHeader = 13,  // Left-aligned textual button

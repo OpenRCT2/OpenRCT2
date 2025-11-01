@@ -23,7 +23,7 @@ namespace OpenRCT2::GameActions
     {
     private:
         bool _autoPosition{};
-        uint8_t _staffType{ EnumValue(StaffType::Count) };
+        uint8_t _staffType{ EnumValue(StaffType::count) };
         ObjectEntryIndex _costumeIndex;
         uint32_t _staffOrders{};
 

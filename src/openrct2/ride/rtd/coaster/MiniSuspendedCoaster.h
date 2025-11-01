@@ -44,7 +44,7 @@ constexpr RideTypeDescriptor MiniSuspendedCoasterRTD =
     .BuildCosts = { 30.00_GBP, 2.50_GBP, 40, },
     .DefaultPrices = { 20, 20 },
     .DefaultMusic = kMusicObjectWildWest,
-    .PhotoItem = ShopItem::Photo2,
+    .PhotoItem = ShopItem::photo2,
     .BonusValue = 50,
     .ColourPresets = TRACK_COLOUR_PRESETS(
         { COLOUR_BLACK, COLOUR_BLACK, COLOUR_SATURATED_BROWN },

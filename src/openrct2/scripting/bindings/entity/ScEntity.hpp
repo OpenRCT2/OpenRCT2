@@ -56,37 +56,37 @@ namespace OpenRCT2::Scripting
             {
                 switch (entity->Type)
                 {
-                    case EntityType::Vehicle:
+                    case EntityType::vehicle:
                         return "car";
-                    case EntityType::Guest:
+                    case EntityType::guest:
                         if (targetApiVersion <= kApiVersionPeepDeprecation)
                             return "peep";
                         return "guest";
-                    case EntityType::Staff:
+                    case EntityType::staff:
                         if (targetApiVersion <= kApiVersionPeepDeprecation)
                             return "peep";
                         return "staff";
-                    case EntityType::SteamParticle:
+                    case EntityType::steamParticle:
                         return "steam_particle";
-                    case EntityType::MoneyEffect:
+                    case EntityType::moneyEffect:
                         return "money_effect";
-                    case EntityType::CrashedVehicleParticle:
+                    case EntityType::crashedVehicleParticle:
                         return "crashed_vehicle_particle";
-                    case EntityType::ExplosionCloud:
+                    case EntityType::explosionCloud:
                         return "explosion_cloud";
-                    case EntityType::CrashSplash:
+                    case EntityType::crashSplash:
                         return "crash_splash";
-                    case EntityType::ExplosionFlare:
+                    case EntityType::explosionFlare:
                         return "explosion_flare";
-                    case EntityType::Balloon:
+                    case EntityType::balloon:
                         return "balloon";
-                    case EntityType::Duck:
+                    case EntityType::duck:
                         return "duck";
-                    case EntityType::JumpingFountain:
+                    case EntityType::jumpingFountain:
                         return "jumping_fountain";
-                    case EntityType::Litter:
+                    case EntityType::litter:
                         return "litter";
-                    case EntityType::Null:
+                    case EntityType::null:
                         return "unknown";
                     default:
                         break;
@@ -152,16 +152,16 @@ namespace OpenRCT2::Scripting
                 entity->Invalidate();
                 switch (entity->Type)
                 {
-                    case EntityType::Vehicle:
+                    case EntityType::vehicle:
                         duk_error(ctx, DUK_ERR_ERROR, "Removing a vehicle is currently unsupported.");
                         break;
-                    case EntityType::Guest:
-                    case EntityType::Staff:
+                    case EntityType::guest:
+                    case EntityType::staff:
                     {
                         auto peep = entity->As<Peep>();
                         // We can't remove a single peep from a ride at the moment as this can cause complications with the
                         // vehicle car having an unsupported peep capacity.
-                        if (peep == nullptr || peep->State == PeepState::OnRide || peep->State == PeepState::EnteringRide)
+                        if (peep == nullptr || peep->State == PeepState::onRide || peep->State == PeepState::enteringRide)
                         {
                             duk_error(ctx, DUK_ERR_ERROR, "Removing a peep that is on a ride is currently unsupported.");
                         }
@@ -171,19 +171,19 @@ namespace OpenRCT2::Scripting
                         }
                         break;
                     }
-                    case EntityType::SteamParticle:
-                    case EntityType::MoneyEffect:
-                    case EntityType::CrashedVehicleParticle:
-                    case EntityType::ExplosionCloud:
-                    case EntityType::CrashSplash:
-                    case EntityType::ExplosionFlare:
-                    case EntityType::JumpingFountain:
-                    case EntityType::Balloon:
-                    case EntityType::Duck:
-                    case EntityType::Litter:
+                    case EntityType::steamParticle:
+                    case EntityType::moneyEffect:
+                    case EntityType::crashedVehicleParticle:
+                    case EntityType::explosionCloud:
+                    case EntityType::crashSplash:
+                    case EntityType::explosionFlare:
+                    case EntityType::jumpingFountain:
+                    case EntityType::balloon:
+                    case EntityType::duck:
+                    case EntityType::litter:
                         getGameState().entities.EntityRemove(entity);
                         break;
-                    case EntityType::Null:
+                    case EntityType::null:
                         break;
                     default:
                         break;

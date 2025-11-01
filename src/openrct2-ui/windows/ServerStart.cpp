@@ -78,10 +78,10 @@ namespace OpenRCT2::Ui::Windows
             page = 0;
             listInformationType = 0;
 
-            snprintf(_port, 7, "%u", Config::Get().network.DefaultPort);
-            String::safeUtf8Copy(_name, Config::Get().network.ServerName.c_str(), sizeof(_name));
-            String::safeUtf8Copy(_description, Config::Get().network.ServerDescription.c_str(), sizeof(_description));
-            String::safeUtf8Copy(_greeting, Config::Get().network.ServerGreeting.c_str(), sizeof(_greeting));
+            snprintf(_port, 7, "%u", Config::Get().network.defaultPort);
+            String::safeUtf8Copy(_name, Config::Get().network.serverName.c_str(), sizeof(_name));
+            String::safeUtf8Copy(_description, Config::Get().network.serverDescription.c_str(), sizeof(_description));
+            String::safeUtf8Copy(_greeting, Config::Get().network.serverGreeting.c_str(), sizeof(_greeting));
         }
         void onMouseUp(WidgetIndex widgetIndex) override
         {
@@ -106,23 +106,23 @@ namespace OpenRCT2::Ui::Windows
                     WindowStartTextbox(*this, widgetIndex, _password, 32);
                     break;
                 case WIDX_MAXPLAYERS_INCREASE:
-                    if (Config::Get().network.Maxplayers < 255)
+                    if (Config::Get().network.maxplayers < 255)
                     {
-                        Config::Get().network.Maxplayers++;
+                        Config::Get().network.maxplayers++;
                     }
                     Config::Save();
                     invalidate();
                     break;
                 case WIDX_MAXPLAYERS_DECREASE:
-                    if (Config::Get().network.Maxplayers > 1)
+                    if (Config::Get().network.maxplayers > 1)
                     {
-                        Config::Get().network.Maxplayers--;
+                        Config::Get().network.maxplayers--;
                     }
                     Config::Save();
                     invalidate();
                     break;
                 case WIDX_ADVERTISE_CHECKBOX:
-                    Config::Get().network.Advertise = !Config::Get().network.Advertise;
+                    Config::Get().network.advertise = !Config::Get().network.advertise;
                     Config::Save();
                     invalidate();
                     break;
@@ -144,10 +144,10 @@ namespace OpenRCT2::Ui::Windows
         {
             ColourSchemeUpdateByClass(this, WindowClass::serverList);
 
-            setCheckboxValue(WIDX_ADVERTISE_CHECKBOX, Config::Get().network.Advertise);
+            setCheckboxValue(WIDX_ADVERTISE_CHECKBOX, Config::Get().network.advertise);
             auto ft = Formatter::Common();
             ft.Increment(18);
-            ft.Add<uint16_t>(Config::Get().network.Maxplayers);
+            ft.Add<uint16_t>(Config::Get().network.maxplayers);
         }
         void onUpdate() override
         {
@@ -177,7 +177,7 @@ namespace OpenRCT2::Ui::Windows
                     tempPort = atoi(_port);
                     if (tempPort > 0)
                     {
-                        Config::Get().network.DefaultPort = tempPort;
+                        Config::Get().network.defaultPort = tempPort;
                         Config::Save();
                     }
 
@@ -192,7 +192,7 @@ namespace OpenRCT2::Ui::Windows
                     // Don't allow empty server names
                     if (_name[0] != '\0')
                     {
-                        Config::Get().network.ServerName = _name;
+                        Config::Get().network.serverName = _name;
                         Config::Save();
                     }
 
@@ -203,7 +203,7 @@ namespace OpenRCT2::Ui::Windows
                         return;
 
                     String::safeUtf8Copy(_description, temp.c_str(), sizeof(_description));
-                    Config::Get().network.ServerDescription = _description;
+                    Config::Get().network.serverDescription = _description;
                     Config::Save();
 
                     invalidateWidget(WIDX_DESCRIPTION_INPUT);
@@ -213,7 +213,7 @@ namespace OpenRCT2::Ui::Windows
                         return;
 
                     String::safeUtf8Copy(_greeting, temp.c_str(), sizeof(_greeting));
-                    Config::Get().network.ServerGreeting = _greeting;
+                    Config::Get().network.serverGreeting = _greeting;
                     Config::Save();
 
                     invalidateWidget(WIDX_GREETING_INPUT);
@@ -257,7 +257,7 @@ namespace OpenRCT2::Ui::Windows
             GameNotifyMapChange();
             if (GetContext()->LoadParkFromFile(path, false, true))
             {
-                Network::BeginServer(Config::Get().network.DefaultPort, Config::Get().network.ListenAddress);
+                Network::BeginServer(Config::Get().network.defaultPort, Config::Get().network.listenAddress);
             }
         }
 
@@ -267,7 +267,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 GameNotifyMapChange();
                 GetContext()->LoadParkFromFile(path);
-                Network::BeginServer(Config::Get().network.DefaultPort, Config::Get().network.ListenAddress);
+                Network::BeginServer(Config::Get().network.defaultPort, Config::Get().network.listenAddress);
             }
         }
     };

@@ -43,7 +43,7 @@ constexpr RideTypeDescriptor VirginiaReelRTD =
     .BuildCosts = { 26.50_GBP, 3.00_GBP, 25, },
     .DefaultPrices = { 20, 20 },
     .DefaultMusic = kMusicObjectRock1,
-    .PhotoItem = ShopItem::Photo3,
+    .PhotoItem = ShopItem::photo3,
     .BonusValue = 50,
     .ColourPresets = TRACK_COLOUR_PRESETS(
         { COLOUR_SATURATED_BROWN, COLOUR_GREY, COLOUR_SATURATED_BROWN },

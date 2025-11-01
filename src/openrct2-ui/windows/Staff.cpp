@@ -143,7 +143,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
 
             if (staff->isEntertainer())
-                _availableCostumes = getAvailableCostumeStrings(AnimationPeepType::Entertainer);
+                _availableCostumes = getAvailableCostumeStrings(AnimationPeepType::entertainer);
 
             ViewportInit();
         }
@@ -165,7 +165,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
 
             if (staff->isEntertainer())
-                _availableCostumes = getAvailableCostumeStrings(AnimationPeepType::Entertainer);
+                _availableCostumes = getAvailableCostumeStrings(AnimationPeepType::entertainer);
         }
 
         void onMouseUp(WidgetIndex widgetIndex) override
@@ -538,14 +538,6 @@ namespace OpenRCT2::Ui::Windows
 
             widgets[WIDX_FIRE].left = width - 25;
             widgets[WIDX_FIRE].right = width - 2;
-
-            if (viewport != nullptr)
-            {
-                const Widget& viewportWidget = widgets[WIDX_VIEWPORT];
-                viewport->pos = windowPos + ScreenCoordsXY{ viewportWidget.left + 1, viewportWidget.top + 1 };
-                viewport->width = widgets[WIDX_VIEWPORT].width() - 1;
-                viewport->height = widgets[WIDX_VIEWPORT].height() - 1;
-            }
         }
 
         void OverviewDraw(RenderTarget& rt)
@@ -612,13 +604,27 @@ namespace OpenRCT2::Ui::Windows
             if (page == WINDOW_STAFF_OVERVIEW)
                 animFrame = _tabAnimationOffset / 4;
 
-            auto imageIndex = anim.base_image + 1 + anim.frame_offsets[animFrame] * 4;
+            auto imageIndex = anim.baseImage + 1 + anim.frameOffsets[animFrame] * 4;
             GfxDrawSprite(clippedRT, ImageId(imageIndex, staff->TshirtColour, staff->TrousersColour), screenCoords);
         }
 
         void OverviewResize()
         {
             WindowSetResize(*this, kWindowSize, { 500, 450 });
+
+            if (viewport != nullptr)
+            {
+                const Widget& viewportWidget = widgets[WIDX_VIEWPORT];
+                const auto reqViewportWidth = viewportWidget.width() - 1;
+                const auto reqViewportHeight = viewportWidget.height() - 1;
+
+                viewport->pos = windowPos + ScreenCoordsXY{ viewportWidget.left + 1, viewportWidget.top + 1 };
+                if (viewport->width != reqViewportWidth || viewport->height != reqViewportHeight)
+                {
+                    viewport->width = reqViewportWidth;
+                    viewport->height = reqViewportHeight;
+                }
+            }
 
             ViewportInit();
         }
@@ -632,16 +638,16 @@ namespace OpenRCT2::Ui::Windows
             auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(staff->AnimationObjectIndex);
 
             // Get walking animation length
-            const auto& walkingAnim = animObj->GetPeepAnimation(staff->AnimationGroup, PeepAnimationType::Walking);
-            const auto walkingAnimLength = walkingAnim.frame_offsets.size();
+            const auto& walkingAnim = animObj->GetPeepAnimation(staff->AnimationGroup, PeepAnimationType::walking);
+            const auto walkingAnimLength = walkingAnim.frameOffsets.size();
 
             // Overview tab animation offset
             _tabAnimationOffset++;
             _tabAnimationOffset %= walkingAnimLength * 4;
 
             // Get pickup animation length
-            const auto& pickAnim = animObj->GetPeepAnimation(staff->AnimationGroup, PeepAnimationType::Hanging);
-            const auto pickAnimLength = pickAnim.frame_offsets.size();
+            const auto& pickAnim = animObj->GetPeepAnimation(staff->AnimationGroup, PeepAnimationType::hanging);
+            const auto pickAnimLength = pickAnim.frameOffsets.size();
 
             // Update pickup animation frame
             pickedPeepFrame++;
@@ -649,7 +655,7 @@ namespace OpenRCT2::Ui::Windows
 
             invalidateWidget(WIDX_TAB_1);
 
-            const std::optional<Focus> tempFocus = staff->State != PeepState::Picked ? std::optional(Focus(staff->Id))
+            const std::optional<Focus> tempFocus = staff->State != PeepState::picked ? std::optional(Focus(staff->Id))
                                                                                      : std::nullopt;
             if (focus != tempFocus)
             {
@@ -694,8 +700,8 @@ namespace OpenRCT2::Ui::Windows
             auto& objManager = GetContext()->GetObjectManager();
             auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(staff->AnimationObjectIndex);
 
-            auto& pickupAnim = animObj->GetPeepAnimation(staff->AnimationGroup, PeepAnimationType::Hanging);
-            auto baseImageId = pickupAnim.base_image + pickupAnim.frame_offsets[pickedPeepFrame >> 2];
+            auto& pickupAnim = animObj->GetPeepAnimation(staff->AnimationGroup, PeepAnimationType::hanging);
+            auto baseImageId = pickupAnim.baseImage + pickupAnim.frameOffsets[pickedPeepFrame >> 2];
             gPickupPeepImage = ImageId(baseImageId, staff->TshirtColour, staff->TrousersColour);
         }
 
@@ -830,7 +836,7 @@ namespace OpenRCT2::Ui::Windows
 
             switch (staff->AssignedStaffType)
             {
-                case StaffType::Entertainer:
+                case StaffType::entertainer:
                 {
                     widgets[WIDX_CHECKBOX_1].type = WidgetType::empty;
                     widgets[WIDX_CHECKBOX_2].type = WidgetType::empty;
@@ -858,7 +864,7 @@ namespace OpenRCT2::Ui::Windows
 
                     break;
                 }
-                case StaffType::Handyman:
+                case StaffType::handyman:
                     widgets[WIDX_CHECKBOX_1].type = WidgetType::checkbox;
                     widgets[WIDX_CHECKBOX_1].text = STR_STAFF_OPTION_SWEEP_FOOTPATHS;
                     widgets[WIDX_CHECKBOX_2].type = WidgetType::checkbox;
@@ -871,7 +877,7 @@ namespace OpenRCT2::Ui::Windows
                     widgets[WIDX_COSTUME_BTN].type = WidgetType::empty;
                     OptionsSetCheckboxValues();
                     break;
-                case StaffType::Mechanic:
+                case StaffType::mechanic:
                     widgets[WIDX_CHECKBOX_1].type = WidgetType::checkbox;
                     widgets[WIDX_CHECKBOX_1].text = STR_INSPECT_RIDES;
                     widgets[WIDX_CHECKBOX_2].type = WidgetType::checkbox;
@@ -883,10 +889,10 @@ namespace OpenRCT2::Ui::Windows
                     widgets[WIDX_COSTUME_BTN].type = WidgetType::empty;
                     OptionsSetCheckboxValues();
                     break;
-                case StaffType::Security:
+                case StaffType::security:
                     // Security guards don't have an options screen.
                     break;
-                case StaffType::Count:
+                case StaffType::count:
                     break;
             }
         }
@@ -950,7 +956,7 @@ namespace OpenRCT2::Ui::Windows
 
             switch (staff->AssignedStaffType)
             {
-                case StaffType::Handyman:
+                case StaffType::handyman:
                     ft = Formatter();
                     ft.Add<uint32_t>(staff->StaffLawnsMown);
                     DrawTextBasic(rt, screenCoords, STR_STAFF_STAT_LAWNS_MOWN, ft);
@@ -970,7 +976,7 @@ namespace OpenRCT2::Ui::Windows
                     ft.Add<uint32_t>(staff->StaffBinsEmptied);
                     DrawTextBasic(rt, screenCoords, STR_STAFF_STAT_BINS_EMPTIED, ft);
                     break;
-                case StaffType::Mechanic:
+                case StaffType::mechanic:
                     ft = Formatter();
                     ft.Add<uint32_t>(staff->StaffRidesInspected);
                     DrawTextBasic(rt, screenCoords, STR_STAFF_STAT_RIDES_INSPECTED, ft);
@@ -980,13 +986,13 @@ namespace OpenRCT2::Ui::Windows
                     ft.Add<uint32_t>(staff->StaffRidesFixed);
                     DrawTextBasic(rt, screenCoords, STR_STAFF_STAT_RIDES_FIXED, ft);
                     break;
-                case StaffType::Security:
+                case StaffType::security:
                     ft = Formatter();
                     ft.Add<uint32_t>(staff->StaffVandalsStopped);
                     DrawTextBasic(rt, screenCoords, STR_STAFF_STAT_VANDALS_STOPPED, ft);
                     break;
-                case StaffType::Entertainer:
-                case StaffType::Count:
+                case StaffType::entertainer:
+                case StaffType::count:
                     break;
             }
         }
@@ -1027,7 +1033,7 @@ namespace OpenRCT2::Ui::Windows
                 setWidgetDisabled(widgetIndex, false);
             }
 
-            if (staff->AssignedStaffType == StaffType::Security)
+            if (staff->AssignedStaffType == StaffType::security)
             {
                 setWidgetDisabled(WIDX_TAB_2, true);
             }
@@ -1043,7 +1049,7 @@ namespace OpenRCT2::Ui::Windows
                     setWidgetDisabled(WIDX_PICKUP, true);
                 }
 
-                setWidgetDisabled(WIDX_FIRE, staff->State == PeepState::Fixing || staff->State == PeepState::Inspecting);
+                setWidgetDisabled(WIDX_FIRE, staff->State == PeepState::fixing || staff->State == PeepState::inspecting);
             }
         }
 
@@ -1119,7 +1125,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             std::optional<Focus> tempFocus;
-            if (staff->State != PeepState::Picked)
+            if (staff->State != PeepState::picked)
             {
                 tempFocus = Focus(staff->Id);
             }
@@ -1137,7 +1143,7 @@ namespace OpenRCT2::Ui::Windows
             else
             {
                 viewport_flags = 0;
-                if (Config::Get().general.AlwaysShowGridlines)
+                if (Config::Get().general.alwaysShowGridlines)
                     viewport_flags |= VIEWPORT_FLAG_GRIDLINES;
             }
 
@@ -1145,7 +1151,7 @@ namespace OpenRCT2::Ui::Windows
 
             focus = tempFocus;
 
-            if (staff->State != PeepState::Picked)
+            if (staff->State != PeepState::picked)
             {
                 if (viewport == nullptr)
                 {

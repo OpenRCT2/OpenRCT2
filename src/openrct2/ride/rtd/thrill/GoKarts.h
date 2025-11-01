@@ -46,7 +46,7 @@ constexpr RideTypeDescriptor GoKartsRTD =
     .BuildCosts = { 31.00_GBP, 2.00_GBP, 20, },
     .DefaultPrices = { 20, 0 },
     .DefaultMusic = kMusicObjectTechno,
-    .PhotoItem = ShopItem::Photo,
+    .PhotoItem = ShopItem::photo,
     .BonusValue = 55,
     .ColourPresets = TRACK_COLOUR_PRESETS(
         { COLOUR_BORDEAUX_RED, COLOUR_BORDEAUX_RED, COLOUR_DARK_BROWN },

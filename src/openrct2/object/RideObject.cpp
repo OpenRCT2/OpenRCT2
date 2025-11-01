@@ -194,9 +194,9 @@ namespace OpenRCT2
         _legacyType.shop_item[0] = static_cast<ShopItem>(stream->ReadValue<uint8_t>());
         _legacyType.shop_item[1] = static_cast<ShopItem>(stream->ReadValue<uint8_t>());
 
-        GetStringTable().Read(context, stream, ObjectStringID::NAME);
-        GetStringTable().Read(context, stream, ObjectStringID::DESCRIPTION);
-        GetStringTable().Read(context, stream, ObjectStringID::CAPACITY);
+        GetStringTable().Read(context, stream, ObjectStringID::name);
+        GetStringTable().Read(context, stream, ObjectStringID::description);
+        GetStringTable().Read(context, stream, ObjectStringID::capacity);
 
         // Read preset colours, by default there are 32
         _presetColours.count = stream->ReadValue<uint8_t>();
@@ -277,15 +277,15 @@ namespace OpenRCT2
         // Validate properties
         if (_legacyType.excitement_multiplier > 75)
         {
-            context->LogError(ObjectError::InvalidProperty, "Excitement multiplier too high.");
+            context->LogError(ObjectError::invalidProperty, "Excitement multiplier too high.");
         }
         if (_legacyType.intensity_multiplier > 75)
         {
-            context->LogError(ObjectError::InvalidProperty, "Intensity multiplier too high.");
+            context->LogError(ObjectError::invalidProperty, "Intensity multiplier too high.");
         }
         if (_legacyType.nausea_multiplier > 75)
         {
-            context->LogError(ObjectError::InvalidProperty, "Nausea multiplier too high.");
+            context->LogError(ObjectError::invalidProperty, "Nausea multiplier too high.");
         }
         RideObjectUpdateRideType(_legacyType);
         _legacyType.Clearance = GetDefaultClearance();
@@ -391,12 +391,12 @@ namespace OpenRCT2
 
     std::string RideObject::GetDescription() const
     {
-        return GetString(ObjectStringID::DESCRIPTION);
+        return GetString(ObjectStringID::description);
     }
 
     std::string RideObject::GetCapacity() const
     {
-        return GetString(ObjectStringID::CAPACITY);
+        return GetString(ObjectStringID::capacity);
     }
 
     ImageIndex RideObject::GetPreviewImage(ride_type_t type)
@@ -430,9 +430,9 @@ namespace OpenRCT2
         car.num_seats = stream->ReadValue<uint8_t>();
         CarSpriteFlags carSpriteFlags;
         carSpriteFlags.holder = stream->ReadValue<uint16_t>();
-        car.sprite_width = stream->ReadValue<uint8_t>();
-        car.sprite_height_negative = stream->ReadValue<uint8_t>();
-        car.sprite_height_positive = stream->ReadValue<uint8_t>();
+        car.spriteWidth = stream->ReadValue<uint8_t>();
+        car.spriteHeightNegative = stream->ReadValue<uint8_t>();
+        car.spriteHeightPositive = stream->ReadValue<uint8_t>();
         auto legacyAnimation = stream->ReadValue<uint8_t>();
         car.flags = stream->ReadValue<uint32_t>();
         // Implied in vanilla, but can be turned off in OpenRCT2.
@@ -565,7 +565,7 @@ namespace OpenRCT2
 
                     if (rideType == kRideTypeNull)
                     {
-                        context->LogError(ObjectError::InvalidProperty, "Unknown ride type");
+                        context->LogError(ObjectError::invalidProperty, "Unknown ride type");
                     }
                 }
 
@@ -578,7 +578,7 @@ namespace OpenRCT2
             // This needs to be set for both shops/facilities _and_ regular rides.
             for (auto& item : _legacyType.shop_item)
             {
-                item = ShopItem::None;
+                item = ShopItem::none;
             }
 
             auto carColours = Json::AsArray(properties["carColours"]);
@@ -590,9 +590,9 @@ namespace OpenRCT2
                 auto& car = _legacyType.Cars[0];
                 car.spacing = 544;
                 car.SpriteGroups[EnumValue(SpriteGroupType::SlopeFlat)].spritePrecision = SpritePrecision::Sprites4;
-                car.sprite_width = 1;
-                car.sprite_height_negative = 1;
-                car.sprite_height_positive = 1;
+                car.spriteWidth = 1;
+                car.spriteHeightNegative = 1;
+                car.spriteHeightPositive = 1;
                 car.flags = CAR_ENTRY_FLAG_SPINNING;
                 car.PaintStyle = VEHICLE_VISUAL_FLAT_RIDE_OR_CAR_RIDE;
                 car.friction_sound_id = OpenRCT2::Audio::SoundId::null;
@@ -606,9 +606,9 @@ namespace OpenRCT2
                 for (size_t i = 0; i < numShopItems; i++)
                 {
                     auto shopItem = ParseShopItem(Json::GetString(rideSells[i]));
-                    if (shopItem == ShopItem::None)
+                    if (shopItem == ShopItem::none)
                     {
-                        context->LogWarning(ObjectError::InvalidProperty, "Unknown shop item");
+                        context->LogWarning(ObjectError::invalidProperty, "Unknown shop item");
                     }
 
                     _legacyType.shop_item[i] = shopItem;
@@ -621,22 +621,22 @@ namespace OpenRCT2
                 auto swingMode = Json::GetNumber<int32_t>(properties["swingMode"]);
                 if (swingMode == 1)
                 {
-                    _legacyType.flags |= RIDE_ENTRY_FLAG_ALTERNATIVE_SWING_MODE_1;
+                    _legacyType.flags |= RIDE_ENTRY_FLAG_INVERTER_SHIP_SWING_MODE;
                 }
                 else if (swingMode == 2)
                 {
-                    _legacyType.flags |= RIDE_ENTRY_FLAG_ALTERNATIVE_SWING_MODE_1;
-                    _legacyType.flags |= RIDE_ENTRY_FLAG_ALTERNATIVE_SWING_MODE_2;
+                    _legacyType.flags |= RIDE_ENTRY_FLAG_INVERTER_SHIP_SWING_MODE;
+                    _legacyType.flags |= RIDE_ENTRY_FLAG_MAGIC_CARPET_SWING_MODE;
                 }
 
                 auto rotationMode = Json::GetNumber<int32_t>(properties["rotationMode"]);
                 if (rotationMode == 1)
                 {
-                    _legacyType.flags |= RIDE_ENTRY_FLAG_ALTERNATIVE_ROTATION_MODE_1;
+                    _legacyType.flags |= RIDE_ENTRY_FLAG_TWIST_ROTATION_TYPE;
                 }
                 else if (rotationMode == 2)
                 {
-                    _legacyType.flags |= RIDE_ENTRY_FLAG_ALTERNATIVE_ROTATION_MODE_2;
+                    _legacyType.flags |= RIDE_ENTRY_FLAG_ENTERPRISE_ROTATION_TYPE;
                 }
 
                 auto ratingMultiplier = properties["ratingMultipler"];
@@ -745,9 +745,9 @@ namespace OpenRCT2
             car.num_seats |= kVehicleSeatPairFlag;
         }
 
-        car.sprite_width = Json::GetNumber<uint8_t>(jCar["spriteWidth"]);
-        car.sprite_height_negative = Json::GetNumber<uint8_t>(jCar["spriteHeightNegative"]);
-        car.sprite_height_positive = Json::GetNumber<uint8_t>(jCar["spriteHeightPositive"]);
+        car.spriteWidth = Json::GetNumber<uint8_t>(jCar["spriteWidth"]);
+        car.spriteHeightNegative = Json::GetNumber<uint8_t>(jCar["spriteHeightNegative"]);
+        car.spriteHeightPositive = Json::GetNumber<uint8_t>(jCar["spriteHeightPositive"]);
         car.base_num_frames = Json::GetNumber<uint16_t>(jCar["baseNumFrames"]);
         car.NumCarImages = Json::GetNumber<uint32_t>(jCar["numImages"]);
         car.no_seating_rows = Json::GetNumber<uint8_t>(jCar["numSeatRows"]);
@@ -924,7 +924,7 @@ namespace OpenRCT2
                 {
                     if (!std::has_single_bit(numRotationFrames))
                     {
-                        context->LogError(ObjectError::InvalidProperty, "spriteGroups values must be powers of 2");
+                        context->LogError(ObjectError::invalidProperty, "spriteGroups values must be powers of 2");
                         continue;
                     }
                     car.SpriteGroups[i].spritePrecision = PrecisionFromNumFrames(numRotationFrames);
@@ -1036,49 +1036,49 @@ namespace OpenRCT2
     }
 
     static const EnumMap<ShopItem> ShopItemLookupTable{
-        { "burger", ShopItem::Burger },
-        { "chips", ShopItem::Chips },
-        { "ice_cream", ShopItem::IceCream },
-        { "candyfloss", ShopItem::Candyfloss },
-        { "pizza", ShopItem::Pizza },
-        { "popcorn", ShopItem::Popcorn },
-        { "hot_dog", ShopItem::HotDog },
-        { "tentacle", ShopItem::Tentacle },
-        { "toffee_apple", ShopItem::ToffeeApple },
-        { "doughnut", ShopItem::Doughnut },
-        { "chicken", ShopItem::Chicken },
-        { "pretzel", ShopItem::Pretzel },
-        { "funnel_cake", ShopItem::FunnelCake },
-        { "beef_noodles", ShopItem::BeefNoodles },
-        { "fried_rice_noodles", ShopItem::FriedRiceNoodles },
-        { "wonton_soup", ShopItem::WontonSoup },
-        { "meatball_soup", ShopItem::MeatballSoup },
-        { "sub_sandwich", ShopItem::SubSandwich },
-        { "cookie", ShopItem::Cookie },
-        { "roast_sausage", ShopItem::RoastSausage },
-        { "drink", ShopItem::Drink },
-        { "coffee", ShopItem::Coffee },
-        { "lemonade", ShopItem::Lemonade },
-        { "chocolate", ShopItem::Chocolate },
-        { "iced_tea", ShopItem::IcedTea },
-        { "fruit_juice", ShopItem::FruitJuice },
-        { "soybean_milk", ShopItem::SoybeanMilk },
-        { "sujeonggwa", ShopItem::Sujeonggwa },
-        { "balloon", ShopItem::Balloon },
-        { "toy", ShopItem::Toy },
-        { "map", ShopItem::Map },
-        { "photo", ShopItem::Photo },
-        { "umbrella", ShopItem::Umbrella },
-        { "voucher", ShopItem::Voucher },
-        { "hat", ShopItem::Hat },
-        { "tshirt", ShopItem::TShirt },
-        { "sunglasses", ShopItem::Sunglasses },
+        { "burger", ShopItem::burger },
+        { "chips", ShopItem::chips },
+        { "ice_cream", ShopItem::iceCream },
+        { "candyfloss", ShopItem::candyfloss },
+        { "pizza", ShopItem::pizza },
+        { "popcorn", ShopItem::popcorn },
+        { "hot_dog", ShopItem::hotDog },
+        { "tentacle", ShopItem::tentacle },
+        { "toffee_apple", ShopItem::toffeeApple },
+        { "doughnut", ShopItem::doughnut },
+        { "chicken", ShopItem::chicken },
+        { "pretzel", ShopItem::pretzel },
+        { "funnel_cake", ShopItem::funnelCake },
+        { "beef_noodles", ShopItem::beefNoodles },
+        { "fried_rice_noodles", ShopItem::friedRiceNoodles },
+        { "wonton_soup", ShopItem::wontonSoup },
+        { "meatball_soup", ShopItem::meatballSoup },
+        { "sub_sandwich", ShopItem::subSandwich },
+        { "cookie", ShopItem::cookie },
+        { "roast_sausage", ShopItem::roastSausage },
+        { "drink", ShopItem::drink },
+        { "coffee", ShopItem::coffee },
+        { "lemonade", ShopItem::lemonade },
+        { "chocolate", ShopItem::chocolate },
+        { "iced_tea", ShopItem::icedTea },
+        { "fruit_juice", ShopItem::fruitJuice },
+        { "soybean_milk", ShopItem::soybeanMilk },
+        { "sujeonggwa", ShopItem::sujeonggwa },
+        { "balloon", ShopItem::balloon },
+        { "toy", ShopItem::toy },
+        { "map", ShopItem::map },
+        { "photo", ShopItem::photo },
+        { "umbrella", ShopItem::umbrella },
+        { "voucher", ShopItem::voucher },
+        { "hat", ShopItem::hat },
+        { "tshirt", ShopItem::tShirt },
+        { "sunglasses", ShopItem::sunglasses },
     };
 
     ShopItem RideObject::ParseShopItem(const std::string& s)
     {
         auto result = ShopItemLookupTable.find(s);
-        return (result != ShopItemLookupTable.end()) ? result->second : ShopItem::None;
+        return (result != ShopItemLookupTable.end()) ? result->second : ShopItem::none;
     }
 
     // Converts legacy sprite groups into OpenRCT2 sprite groups

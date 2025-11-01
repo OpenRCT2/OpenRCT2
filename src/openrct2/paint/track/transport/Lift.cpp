@@ -74,11 +74,11 @@ static void PaintLiftBase(
 
     int32_t edges = kEdges3x3[trackSequence];
 
-    auto imageId = session.SupportColours.WithIndex(SPR_FLOOR_METAL_B);
+    auto imageId = session.SupportColours.WithIndex(SPR_FLOOR_TILE_DIAMOND);
     PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 0, height }, { 32, 32, 1 } });
 
     TrackPaintUtilPaintFences(
-        session, edges, session.MapPosition, trackElement, ride, session.TrackColours, height, kFenceSpritesMetalB,
+        session, edges, session.MapPosition, trackElement, ride, session.TrackColours, height, kFenceSpritesPicketDuplicate,
         session.CurrentRotation);
 
     int32_t blockedSegments = 0;

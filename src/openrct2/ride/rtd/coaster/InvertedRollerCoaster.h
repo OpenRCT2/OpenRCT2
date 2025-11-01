@@ -47,7 +47,7 @@ constexpr RideTypeDescriptor InvertedRollerCoasterRTD =
     .BuildCosts = { 65.00_GBP, 2.50_GBP, 50, },
     .DefaultPrices = { 20, 20 },
     .DefaultMusic = kMusicObjectTechno,
-    .PhotoItem = ShopItem::Photo2,
+    .PhotoItem = ShopItem::photo2,
     .BonusValue = 100,
     .ColourPresets = TRACK_COLOUR_PRESETS(
         { COLOUR_BORDEAUX_RED, COLOUR_BORDEAUX_RED, COLOUR_BLACK },

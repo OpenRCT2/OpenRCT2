@@ -48,7 +48,7 @@ constexpr RideTypeDescriptor MonsterTrucksRTD =
     .BuildCosts = { 12.50_GBP, 2.50_GBP, 30, },
     .DefaultPrices = { 15, 0 },
     .DefaultMusic = kMusicObjectSummer,
-    .PhotoItem = ShopItem::Photo,
+    .PhotoItem = ShopItem::photo,
     .BonusValue = 50,
     .ColourPresets = TRACK_COLOUR_PRESETS(
         { COLOUR_SATURATED_BROWN, COLOUR_SATURATED_BROWN, COLOUR_GREY },

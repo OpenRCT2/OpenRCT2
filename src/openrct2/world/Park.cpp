@@ -299,8 +299,8 @@ namespace OpenRCT2::Park
         ParkEntranceReset();
 
         gameState.researchPriorities = EnumsToFlags(
-            ResearchCategory::Transport, ResearchCategory::Gentle, ResearchCategory::Rollercoaster, ResearchCategory::Thrill,
-            ResearchCategory::Water, ResearchCategory::Shop, ResearchCategory::SceneryGroup);
+            ResearchCategory::transport, ResearchCategory::gentle, ResearchCategory::rollercoaster, ResearchCategory::thrill,
+            ResearchCategory::water, ResearchCategory::shop, ResearchCategory::sceneryGroup);
         gameState.researchFundingLevel = RESEARCH_FUNDING_NORMAL;
 
         gameState.scenarioOptions.guestInitialCash = 50.00_GBP;
@@ -557,7 +557,7 @@ namespace OpenRCT2::Park
                 peep->SetDestination(destination, 5);
                 peep->PeepDirection = direction;
                 peep->Var37 = 0;
-                peep->State = PeepState::EnteringPark;
+                peep->State = PeepState::enteringPark;
             }
         }
         return peep;

@@ -17,18 +17,18 @@ namespace OpenRCT2::Scripting
 {
     static const DukEnumMap<Litter::Type> LitterTypeMap(
         {
-            { "vomit", Litter::Type::Vomit },
-            { "vomit_alt", Litter::Type::VomitAlt },
-            { "empty_can", Litter::Type::EmptyCan },
-            { "rubbish", Litter::Type::Rubbish },
-            { "burger_box", Litter::Type::BurgerBox },
-            { "empty_cup", Litter::Type::EmptyCup },
-            { "empty_box", Litter::Type::EmptyBox },
-            { "empty_bottle", Litter::Type::EmptyBottle },
-            { "empty_bowl_red", Litter::Type::EmptyBowlRed },
-            { "empty_drink_carton", Litter::Type::EmptyDrinkCarton },
-            { "empty_juice_cup", Litter::Type::EmptyJuiceCup },
-            { "empty_bowl_blue", Litter::Type::EmptyBowlBlue },
+            { "vomit", Litter::Type::vomit },
+            { "vomit_alt", Litter::Type::vomitAlt },
+            { "empty_can", Litter::Type::emptyCan },
+            { "rubbish", Litter::Type::rubbish },
+            { "burger_box", Litter::Type::burgerBox },
+            { "empty_cup", Litter::Type::emptyCup },
+            { "empty_box", Litter::Type::emptyBox },
+            { "empty_bottle", Litter::Type::emptyBottle },
+            { "empty_bowl_red", Litter::Type::emptyBowlRed },
+            { "empty_drink_carton", Litter::Type::emptyDrinkCarton },
+            { "empty_juice_cup", Litter::Type::emptyJuiceCup },
+            { "empty_bowl_blue", Litter::Type::emptyBowlBlue },
         });
 
     ScLitter::ScLitter(EntityId Id)

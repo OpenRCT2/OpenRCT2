@@ -240,13 +240,14 @@ void TrackDesignMirror(TrackDesign& td);
 OpenRCT2::GameActions::Result TrackDesignPlace(
     const TrackDesign& td, uint32_t flags, bool placeScenery, Ride& ride, const CoordsXYZD& coords);
 void TrackDesignPreviewRemoveGhosts(const TrackDesign& td, Ride& ride, const CoordsXYZD& coords);
-void TrackDesignPreviewDrawOutlines(TrackDesignState& tds, const TrackDesign& td, Ride& ride, const CoordsXYZD& coords);
+void TrackDesignPreviewDrawOutlines(
+    TrackDesignState& tds, const TrackDesign& td, Ride& ride, const CoordsXYZD& coords, bool placeScenery);
 int32_t TrackDesignGetZPlacement(const TrackDesign& td, Ride& ride, const CoordsXYZD& coords);
 
 ///////////////////////////////////////////////////////////////////////////////
 // Track design preview
 ///////////////////////////////////////////////////////////////////////////////
-void TrackDesignDrawPreview(TrackDesign& td, uint8_t* pixels);
+void TrackDesignDrawPreview(TrackDesign& td, uint8_t* pixels, bool placeScenery);
 
 ///////////////////////////////////////////////////////////////////////////////
 // Track design saving

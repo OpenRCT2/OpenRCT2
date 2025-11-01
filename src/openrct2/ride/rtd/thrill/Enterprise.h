@@ -45,7 +45,7 @@ constexpr RideTypeDescriptor EnterpriseRTD =
     .BuildCosts = { 50.00_GBP, 1.00_GBP, 1, },
     .DefaultPrices = { 20, 0 },
     .DefaultMusic = kMusicObjectRock2,
-    .PhotoItem = ShopItem::Photo,
+    .PhotoItem = ShopItem::photo,
     .BonusValue = 45,
     .ColourPresets = kDefaultFlatRideColourPreset,
     .ColourPreview = { 0, 0 },
@@ -72,6 +72,7 @@ constexpr RideTypeDescriptor EnterpriseRTD =
     .UpdateLeaveEntrance = PeepUpdateRideLeaveEntranceDefault,
     .SpecialElementRatingAdjustment = SpecialTrackElementRatingsAjustment_Default,
     .GetGuestWaypointLocation = GetGuestWaypointLocationEnterprise,
+    .specialType = RtdSpecialType::enterprise,
 };
 } // namespace OpenRCT2
 // clang-format on

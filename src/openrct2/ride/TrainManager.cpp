@@ -32,6 +32,6 @@ namespace OpenRCT2::TrainManager
 
     View::View()
     {
-        vec = &getGameState().entities.GetEntityList(EntityType::Vehicle);
+        vec = &getGameState().entities.GetEntityList(EntityType::vehicle);
     }
 } // namespace OpenRCT2::TrainManager

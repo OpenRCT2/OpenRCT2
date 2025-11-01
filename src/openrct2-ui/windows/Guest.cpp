@@ -25,6 +25,7 @@
 #include <openrct2/config/Config.h>
 #include <openrct2/core/EnumUtils.hpp>
 #include <openrct2/core/String.hpp>
+#include <openrct2/drawing/Rectangle.h>
 #include <openrct2/entity/Guest.h>
 #include <openrct2/entity/Staff.h>
 #include <openrct2/localisation/Formatter.h>
@@ -43,6 +44,8 @@
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/MapSelection.h>
 #include <openrct2/world/Park.h>
+
+using namespace OpenRCT2::Drawing;
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -494,7 +497,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 newDisabledWidgets |= (1uLL << WIDX_TAB_4); // Disable finance tab if no money
             }
-            if (!Config::Get().general.DebuggingTools)
+            if (!Config::Get().general.debuggingTools)
             {
                 newDisabledWidgets |= (1uLL << WIDX_TAB_7); // Disable debug tab when debug tools not turned on
             }
@@ -569,7 +572,7 @@ namespace OpenRCT2::Ui::Windows
             auto& objManager = GetContext()->GetObjectManager();
             auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(peep->AnimationObjectIndex);
 
-            int32_t animationFrame = animObj->GetPeepAnimation(peep->AnimationGroup).base_image + 1;
+            int32_t animationFrame = animObj->GetPeepAnimation(peep->AnimationGroup).baseImage + 1;
             int32_t animationFrameOffset = 0;
 
             if (page == WINDOW_GUEST_OVERVIEW)
@@ -589,21 +592,21 @@ namespace OpenRCT2::Ui::Windows
             // There are only 6 walking frames available for each item.
             auto itemFrame = (_guestAnimationFrame / 4) % 6;
 
-            if (guest->AnimationGroup == PeepAnimationGroup::Hat)
+            if (guest->AnimationGroup == PeepAnimationGroup::hat)
             {
                 auto itemOffset = kPeepSpriteHatItemStart + 1;
                 auto imageId = ImageId(itemOffset + itemFrame * 4, guest->HatColour);
                 GfxDrawSprite(clipDpi, imageId, screenCoords);
             }
 
-            if (guest->AnimationGroup == PeepAnimationGroup::Balloon)
+            if (guest->AnimationGroup == PeepAnimationGroup::balloon)
             {
                 auto itemOffset = kPeepSpriteBalloonItemStart + 1;
                 auto imageId = ImageId(itemOffset + itemFrame * 4, guest->BalloonColour);
                 GfxDrawSprite(clipDpi, imageId, screenCoords);
             }
 
-            if (guest->AnimationGroup == PeepAnimationGroup::Umbrella)
+            if (guest->AnimationGroup == PeepAnimationGroup::umbrella)
             {
                 auto itemOffset = kPeepSpriteUmbrellaItemStart + 1;
                 auto imageId = ImageId(itemOffset + itemFrame * 4, guest->UmbrellaColour);
@@ -759,7 +762,7 @@ namespace OpenRCT2::Ui::Windows
 
             onPrepareDraw();
 
-            if (peep->State != PeepState::Picked && viewport == nullptr)
+            if (peep->State != PeepState::picked && viewport == nullptr)
             {
                 const auto& viewWidget = widgets[WIDX_VIEWPORT];
                 auto screenPos = ScreenCoordsXY{ viewWidget.left + 1 + windowPos.x, viewWidget.top + 1 + windowPos.y };
@@ -903,8 +906,8 @@ namespace OpenRCT2::Ui::Windows
             _guestAnimationFrame %= 24;
 
             // Get pickup animation length
-            const auto& pickAnim = animObj->GetPeepAnimation(peep->AnimationGroup, PeepAnimationType::Hanging);
-            const auto pickAnimLength = pickAnim.frame_offsets.size();
+            const auto& pickAnim = animObj->GetPeepAnimation(peep->AnimationGroup, PeepAnimationType::hanging);
+            const auto pickAnimLength = pickAnim.frameOffsets.size();
 
             // Update pickup animation, can only happen in this tab.
             pickedPeepFrame++;
@@ -940,7 +943,7 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
 
-            const std::optional<Focus> currentFocus = peep->State != PeepState::Picked ? std::optional(Focus(peep->Id))
+            const std::optional<Focus> currentFocus = peep->State != PeepState::picked ? std::optional(Focus(peep->Id))
                                                                                        : std::nullopt;
             if (focus != currentFocus)
             {
@@ -1006,7 +1009,7 @@ namespace OpenRCT2::Ui::Windows
             auto& objManager = GetContext()->GetObjectManager();
             auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(peep->AnimationObjectIndex);
 
-            auto baseImageId = animObj->GetPeepAnimation(peep->AnimationGroup, PeepAnimationType::Hanging).base_image;
+            auto baseImageId = animObj->GetPeepAnimation(peep->AnimationGroup, PeepAnimationType::hanging).baseImage;
             baseImageId += pickedPeepFrame >> 2;
             gPickupPeepImage = ImageId(baseImageId, peep->TshirtColour, peep->TrousersColour);
         }
@@ -1355,7 +1358,7 @@ namespace OpenRCT2::Ui::Windows
         void onScrollDrawRides(int32_t scrollIndex, RenderTarget& rt)
         {
             auto colour = ColourMapA[colours[1].colour].mid_light;
-            GfxFillRect(rt, { { rt.x, rt.y }, { rt.x + rt.width - 1, rt.y + rt.height - 1 } }, colour);
+            Rectangle::fill(rt, { { rt.x, rt.y }, { rt.x + rt.width - 1, rt.y + rt.height - 1 } }, colour);
 
             for (int32_t listIndex = 0; listIndex < static_cast<int32_t>(_riddenRides.size()); listIndex++)
             {
@@ -1363,7 +1366,7 @@ namespace OpenRCT2::Ui::Windows
                 StringId stringId = STR_BLACK_STRING;
                 if (listIndex == selectedListItem)
                 {
-                    GfxFilterRect(rt, { 0, y, 800, y + 9 }, FilterPaletteID::paletteDarken1);
+                    Rectangle::filter(rt, { 0, y, 800, y + 9 }, FilterPaletteID::paletteDarken1);
                     stringId = STR_WINDOW_COLOUR_2_STRINGID;
                 }
 
@@ -1442,9 +1445,9 @@ namespace OpenRCT2::Ui::Windows
                 screenCoords.y += kListRowHeight * 2;
             }
 
-            GfxFillRectInset(
+            Rectangle::fillInset(
                 rt, { screenCoords - ScreenCoordsXY{ 0, 6 }, screenCoords + ScreenCoordsXY{ 179, -5 } }, colours[1],
-                INSET_RECT_FLAG_BORDER_INSET);
+                Rectangle::BorderStyle::inset);
 
             // Paid to enter
             {
@@ -1643,10 +1646,10 @@ namespace OpenRCT2::Ui::Windows
             Ride* invRide{};
             switch (item)
             {
-                case ShopItem::Balloon:
+                case ShopItem::balloon:
                     itemImage = ImageId(itemDesc.Image, guest.BalloonColour);
                     break;
-                case ShopItem::Photo:
+                case ShopItem::photo:
                     invRide = GetRide(guest.Photo1RideRef);
                     if (invRide != nullptr)
                     {
@@ -1656,10 +1659,10 @@ namespace OpenRCT2::Ui::Windows
                     }
 
                     break;
-                case ShopItem::Umbrella:
+                case ShopItem::umbrella:
                     itemImage = ImageId(itemDesc.Image, guest.UmbrellaColour);
                     break;
-                case ShopItem::Voucher:
+                case ShopItem::voucher:
                     switch (guest.VoucherType)
                     {
                         case VOUCHER_TYPE_PARK_ENTRY_FREE:
@@ -1694,13 +1697,13 @@ namespace OpenRCT2::Ui::Windows
                             break;
                     }
                     break;
-                case ShopItem::Hat:
+                case ShopItem::hat:
                     itemImage = ImageId(itemDesc.Image, guest.HatColour);
                     break;
-                case ShopItem::TShirt:
+                case ShopItem::tShirt:
                     itemImage = ImageId(itemDesc.Image, guest.TshirtColour);
                     break;
-                case ShopItem::Photo2:
+                case ShopItem::photo2:
                     invRide = GetRide(guest.Photo2RideRef);
                     if (invRide != nullptr)
                     {
@@ -1709,7 +1712,7 @@ namespace OpenRCT2::Ui::Windows
                         invRide->formatNameTo(ft);
                     }
                     break;
-                case ShopItem::Photo3:
+                case ShopItem::photo3:
                     invRide = GetRide(guest.Photo3RideRef);
                     if (invRide != nullptr)
                     {
@@ -1718,7 +1721,7 @@ namespace OpenRCT2::Ui::Windows
                         invRide->formatNameTo(ft);
                     }
                     break;
-                case ShopItem::Photo4:
+                case ShopItem::photo4:
                     invRide = GetRide(guest.Photo4RideRef);
                     if (invRide != nullptr)
                     {
@@ -1759,7 +1762,7 @@ namespace OpenRCT2::Ui::Windows
             int32_t maxY = windowPos.y + height - 22;
             int32_t numItems = 0;
 
-            for (ShopItem item = ShopItem::Balloon; item < ShopItem::Count; item++)
+            for (ShopItem item = ShopItem::balloon; item < ShopItem::count; item++)
             {
                 if (screenCoords.y >= maxY)
                     break;
@@ -1921,7 +1924,7 @@ namespace OpenRCT2::Ui::Windows
         if (window == nullptr)
         {
             auto windowSize = kWindowSize;
-            if (Config::Get().general.DebuggingTools)
+            if (Config::Get().general.debuggingTools)
                 windowSize.width += kTabWidth;
 
             window = windowMgr->Create<GuestWindow>(WindowClass::peep, windowSize, WindowFlag::resizable);

@@ -16,12 +16,15 @@
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
 #include <openrct2/SpriteIds.h>
+#include <openrct2/drawing/Rectangle.h>
 #include <openrct2/drawing/Text.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Formatting.h>
 #include <openrct2/localisation/StringIds.h>
 #include <openrct2/platform/Platform.h>
 #include <openrct2/ui/WindowManager.h>
+
+using namespace OpenRCT2::Drawing;
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -67,7 +70,8 @@ namespace OpenRCT2::Ui::Windows
         WIDX_THEMES_RCT1_RIDE_LIGHTS,
         WIDX_THEMES_RCT1_PARK_LIGHTS,
         WIDX_THEMES_RCT1_SCENARIO_FONT,
-        WIDX_THEMES_RCT1_BOTTOM_TOOLBAR
+        WIDX_THEMES_RCT1_BOTTOM_TOOLBAR,
+        WIDX_THEMES_USE_3D_IMAGE_BUTTONS,
     };
 
     static constexpr StringId kWindowTitle = STR_THEMES_TITLE;
@@ -101,7 +105,8 @@ namespace OpenRCT2::Ui::Windows
         makeWidget({ 10, 54}, {290,                12}, WidgetType::checkbox,     WindowColour::secondary, STR_THEMES_OPTION_RCT1_RIDE_CONTROLS                                          ), // rct1 ride lights
         makeWidget({ 10, 69}, {290,                12}, WidgetType::checkbox,     WindowColour::secondary, STR_THEMES_OPTION_RCT1_PARK_CONTROLS                                          ), // rct1 park lights
         makeWidget({ 10, 84}, {290,                12}, WidgetType::checkbox,     WindowColour::secondary, STR_THEMES_OPTION_RCT1_SCENARIO_SELECTION_FONT                                ), // rct1 scenario font
-        makeWidget({ 10, 99}, {290,                12}, WidgetType::checkbox,     WindowColour::secondary, STR_THEMES_OPTION_RCT1_BOTTOM_TOOLBAR                                         )  // rct1 bottom toolbar
+        makeWidget({ 10, 99}, {290,                12}, WidgetType::checkbox,     WindowColour::secondary, STR_THEMES_OPTION_RCT1_BOTTOM_TOOLBAR                                         ), // rct1 bottom toolbar
+        makeWidget({ 10,114}, {290,                12}, WidgetType::checkbox,     WindowColour::secondary, STR_THEMES_OPTION_USE_3D_IMAGE_BUTTONS                                        )  // use 3D image buttons
     );
     // clang-format on
 
@@ -281,7 +286,7 @@ namespace OpenRCT2::Ui::Windows
             }
             else if (_selectedTab == WINDOW_THEMES_TAB_FEATURES)
             {
-                if (WindowSetResize(*this, { 320, 122 }, { 320, 122 }))
+                if (WindowSetResize(*this, { 320, 137 }, { 320, 137 }))
                     GfxInvalidateScreen();
             }
             else
@@ -329,6 +334,7 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_THEMES_RCT1_PARK_LIGHTS].type = WidgetType::empty;
                 widgets[WIDX_THEMES_RCT1_SCENARIO_FONT].type = WidgetType::empty;
                 widgets[WIDX_THEMES_RCT1_BOTTOM_TOOLBAR].type = WidgetType::empty;
+                widgets[WIDX_THEMES_USE_3D_IMAGE_BUTTONS].type = WidgetType::empty;
                 widgets[WIDX_THEMES_DUPLICATE_BUTTON].type = WidgetType::button;
                 widgets[WIDX_THEMES_DELETE_BUTTON].type = WidgetType::button;
                 widgets[WIDX_THEMES_RENAME_BUTTON].type = WidgetType::button;
@@ -346,6 +352,7 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_THEMES_RCT1_PARK_LIGHTS].type = WidgetType::checkbox;
                 widgets[WIDX_THEMES_RCT1_SCENARIO_FONT].type = WidgetType::checkbox;
                 widgets[WIDX_THEMES_RCT1_BOTTOM_TOOLBAR].type = WidgetType::checkbox;
+                widgets[WIDX_THEMES_USE_3D_IMAGE_BUTTONS].type = WidgetType::checkbox;
                 widgets[WIDX_THEMES_DUPLICATE_BUTTON].type = WidgetType::empty;
                 widgets[WIDX_THEMES_DELETE_BUTTON].type = WidgetType::empty;
                 widgets[WIDX_THEMES_RENAME_BUTTON].type = WidgetType::empty;
@@ -358,6 +365,7 @@ namespace OpenRCT2::Ui::Windows
                 setCheckboxValue(
                     WIDX_THEMES_RCT1_SCENARIO_FONT, ThemeGetFlags() & UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT);
                 setCheckboxValue(WIDX_THEMES_RCT1_BOTTOM_TOOLBAR, ThemeGetFlags() & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR);
+                setCheckboxValue(WIDX_THEMES_USE_3D_IMAGE_BUTTONS, ThemeGetFlags() & UITHEME_FLAG_USE_3D_IMAGE_BUTTONS);
             }
             else
             {
@@ -369,6 +377,7 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_THEMES_RCT1_PARK_LIGHTS].type = WidgetType::empty;
                 widgets[WIDX_THEMES_RCT1_SCENARIO_FONT].type = WidgetType::empty;
                 widgets[WIDX_THEMES_RCT1_BOTTOM_TOOLBAR].type = WidgetType::empty;
+                widgets[WIDX_THEMES_USE_3D_IMAGE_BUTTONS].type = WidgetType::empty;
                 widgets[WIDX_THEMES_DUPLICATE_BUTTON].type = WidgetType::empty;
                 widgets[WIDX_THEMES_DELETE_BUTTON].type = WidgetType::empty;
                 widgets[WIDX_THEMES_RENAME_BUTTON].type = WidgetType::empty;
@@ -497,6 +506,19 @@ namespace OpenRCT2::Ui::Windows
                         ThemeSave();
                         windowMgr->InvalidateAll();
                     }
+                    break;
+                case WIDX_THEMES_USE_3D_IMAGE_BUTTONS:
+                    if (ThemeGetFlags() & UITHEME_FLAG_PREDEFINED)
+                    {
+                        ContextShowError(STR_THEMES_ERR_CANT_CHANGE_THIS_THEME, kStringIdNone, {});
+                    }
+                    else
+                    {
+                        ThemeSetFlags(ThemeGetFlags() ^ static_cast<uint8_t>(UITHEME_FLAG_USE_3D_IMAGE_BUTTONS));
+                        ThemeSave();
+                        windowMgr->InvalidateAll();
+                    }
+                    break;
             }
         }
 
@@ -700,7 +722,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
 
             if (!colours[1].hasFlag(ColourFlag::translucent))
-                // GfxFillRect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1,
+                // Rectangle::fill(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1,
                 // ColourMapA[colours[1].colour].mid_light);
                 GfxClear(rt, ColourMapA[colours[1].colour].mid_light);
             screenCoords.y = 0;
@@ -741,16 +763,16 @@ namespace OpenRCT2::Ui::Windows
                         {
                             TranslucentWindowPalette windowPalette = kTranslucentWindowPalettes[colour.colour];
 
-                            GfxFilterRect(rt, { leftTop, rightBottom }, windowPalette.highlight);
-                            GfxFilterRect(rt, { leftTop + yPixelOffset, rightBottom + yPixelOffset }, windowPalette.shadow);
+                            Rectangle::filter(rt, { leftTop, rightBottom }, windowPalette.highlight);
+                            Rectangle::filter(rt, { leftTop + yPixelOffset, rightBottom + yPixelOffset }, windowPalette.shadow);
                         }
                         else
                         {
                             colour = ColourMapA[colours[1].colour].mid_dark;
-                            GfxFillRect(rt, { leftTop, rightBottom }, colour.colour);
+                            Rectangle::fill(rt, { leftTop, rightBottom }, colour.colour);
 
                             colour = ColourMapA[colours[1].colour].lightest;
-                            GfxFillRect(rt, { leftTop + yPixelOffset, rightBottom + yPixelOffset }, colour.colour);
+                            Rectangle::fill(rt, { leftTop + yPixelOffset, rightBottom + yPixelOffset }, colour.colour);
                         }
                     }
 
@@ -774,7 +796,9 @@ namespace OpenRCT2::Ui::Windows
                         ScreenCoordsXY topLeft{ _check_offset_x, screenCoords.y + _check_offset_y + _button_size * j };
                         ScreenCoordsXY bottomRight{ _check_offset_x + 10,
                                                     screenCoords.y + _check_offset_y + 11 + _button_size * j };
-                        GfxFillRectInset(rt, { topLeft, bottomRight }, colours[1], INSET_RECT_F_E0);
+                        Rectangle::fillInset(
+                            rt, { topLeft, bottomRight }, colours[1], Rectangle::BorderStyle::inset,
+                            Rectangle::FillBrightness::dark, Rectangle::FillMode::dontLightenWhenInset);
                         if (colour.hasFlag(ColourFlag::translucent))
                         {
                             DrawText(

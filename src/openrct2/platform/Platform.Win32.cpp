@@ -494,7 +494,7 @@ namespace OpenRCT2::Platform
         return false;
     }
 
-    int32_t Execute(std::string_view command, std::string* output)
+    int32_t Execute(const char* args[], std::string* output)
     {
         LOG_WARNING("Execute() not implemented for Windows!");
         return -1;

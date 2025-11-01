@@ -15,6 +15,7 @@
 #include <openrct2/audio/Audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/drawing/Drawing.h>
+#include <openrct2/drawing/Rectangle.h>
 #include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/entity/Peep.h>
 #include <openrct2/entity/Staff.h>
@@ -25,9 +26,12 @@
 #include <openrct2/object/PeepAnimationsObject.h>
 #include <openrct2/ui/WindowManager.h>
 
+using namespace OpenRCT2::Drawing;
+
 namespace OpenRCT2::Ui::Windows
 {
     static constexpr ScreenSize kWindowSize = { 400, 300 };
+    static constexpr uint8_t kItemSeparatorHeight = 2;
 
     enum WindowNewsWidgetIdx
     {
@@ -80,24 +84,24 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr NewsOption kNewsItemOptionDefinitions[] = {
-        { STR_NEWS_GROUP_PARK,  STR_NOTIFICATION_PARK_AWARD,                        offsetof(Config::Notification, ParkAward)                     },
-        { STR_NEWS_GROUP_PARK,  STR_NOTIFICATION_PARK_MARKETING_CAMPAIGN_FINISHED,  offsetof(Config::Notification, ParkMarketingCampaignFinished) },
-        { STR_NEWS_GROUP_PARK,  STR_NOTIFICATION_PARK_WARNINGS,                     offsetof(Config::Notification, ParkWarnings)                  },
-        { STR_NEWS_GROUP_PARK,  STR_NOTIFICATION_PARK_RATING_WARNINGS,              offsetof(Config::Notification, ParkRatingWarnings)            },
-        { STR_NEWS_GROUP_RIDE,  STR_NOTIFICATION_RIDE_BROKEN_DOWN,                  offsetof(Config::Notification, RideBrokenDown)                },
-        { STR_NEWS_GROUP_RIDE,  STR_NOTIFICATION_RIDE_CRASHED,                      offsetof(Config::Notification, RideCrashed)                   },
-        { STR_NEWS_GROUP_RIDE,  STR_NOTIFICATION_RIDE_CASUALTIES,                   offsetof(Config::Notification, RideCasualties)                },
-        { STR_NEWS_GROUP_RIDE,  STR_NOTIFICATION_RIDE_WARNINGS,                     offsetof(Config::Notification, RideWarnings)                  },
-        { STR_NEWS_GROUP_RIDE,  STR_NOTIFICATION_RIDE_RESEARCHED,                   offsetof(Config::Notification, RideResearched)                },
-        { STR_NEWS_GROUP_RIDE,  STR_NOTIFICATION_RIDE_VEHICLE_STALLED,              offsetof(Config::Notification, RideStalledVehicles)           },
-        { STR_NEWS_GROUP_GUEST, STR_NOTIFICATION_GUEST_WARNINGS,                    offsetof(Config::Notification, GuestWarnings)                 },
-        { STR_NEWS_GROUP_GUEST, STR_NOTIFICATION_GUEST_LEFT_PARK,                   offsetof(Config::Notification, GuestLeftPark)                 },
-        { STR_NEWS_GROUP_GUEST, STR_NOTIFICATION_GUEST_QUEUING_FOR_RIDE,            offsetof(Config::Notification, GuestQueuingForRide)           },
-        { STR_NEWS_GROUP_GUEST, STR_NOTIFICATION_GUEST_ON_RIDE,                     offsetof(Config::Notification, GuestOnRide)                   },
-        { STR_NEWS_GROUP_GUEST, STR_NOTIFICATION_GUEST_LEFT_RIDE,                   offsetof(Config::Notification, GuestLeftRide)                 },
-        { STR_NEWS_GROUP_GUEST, STR_NOTIFICATION_GUEST_BOUGHT_ITEM,                 offsetof(Config::Notification, GuestBoughtItem)               },
-        { STR_NEWS_GROUP_GUEST, STR_NOTIFICATION_GUEST_USED_FACILITY,               offsetof(Config::Notification, GuestUsedFacility)             },
-        { STR_NEWS_GROUP_GUEST, STR_NOTIFICATION_GUEST_DIED,                        offsetof(Config::Notification, GuestDied)                     },
+        { STR_NEWS_GROUP_PARK,  STR_NOTIFICATION_PARK_AWARD,                        offsetof(Config::Notification, parkAward)                     },
+        { STR_NEWS_GROUP_PARK,  STR_NOTIFICATION_PARK_MARKETING_CAMPAIGN_FINISHED,  offsetof(Config::Notification, parkMarketingCampaignFinished) },
+        { STR_NEWS_GROUP_PARK,  STR_NOTIFICATION_PARK_WARNINGS,                     offsetof(Config::Notification, parkWarnings)                  },
+        { STR_NEWS_GROUP_PARK,  STR_NOTIFICATION_PARK_RATING_WARNINGS,              offsetof(Config::Notification, parkRatingWarnings)            },
+        { STR_NEWS_GROUP_RIDE,  STR_NOTIFICATION_RIDE_BROKEN_DOWN,                  offsetof(Config::Notification, rideBrokenDown)                },
+        { STR_NEWS_GROUP_RIDE,  STR_NOTIFICATION_RIDE_CRASHED,                      offsetof(Config::Notification, rideCrashed)                   },
+        { STR_NEWS_GROUP_RIDE,  STR_NOTIFICATION_RIDE_CASUALTIES,                   offsetof(Config::Notification, rideCasualties)                },
+        { STR_NEWS_GROUP_RIDE,  STR_NOTIFICATION_RIDE_WARNINGS,                     offsetof(Config::Notification, rideWarnings)                  },
+        { STR_NEWS_GROUP_RIDE,  STR_NOTIFICATION_RIDE_RESEARCHED,                   offsetof(Config::Notification, rideResearched)                },
+        { STR_NEWS_GROUP_RIDE,  STR_NOTIFICATION_RIDE_VEHICLE_STALLED,              offsetof(Config::Notification, rideStalledVehicles)           },
+        { STR_NEWS_GROUP_GUEST, STR_NOTIFICATION_GUEST_WARNINGS,                    offsetof(Config::Notification, guestWarnings)                 },
+        { STR_NEWS_GROUP_GUEST, STR_NOTIFICATION_GUEST_LEFT_PARK,                   offsetof(Config::Notification, guestLeftPark)                 },
+        { STR_NEWS_GROUP_GUEST, STR_NOTIFICATION_GUEST_QUEUING_FOR_RIDE,            offsetof(Config::Notification, guestQueuingForRide)           },
+        { STR_NEWS_GROUP_GUEST, STR_NOTIFICATION_GUEST_ON_RIDE,                     offsetof(Config::Notification, guestOnRide)                   },
+        { STR_NEWS_GROUP_GUEST, STR_NOTIFICATION_GUEST_LEFT_RIDE,                   offsetof(Config::Notification, guestLeftRide)                 },
+        { STR_NEWS_GROUP_GUEST, STR_NOTIFICATION_GUEST_BOUGHT_ITEM,                 offsetof(Config::Notification, guestBoughtItem)               },
+        { STR_NEWS_GROUP_GUEST, STR_NOTIFICATION_GUEST_USED_FACILITY,               offsetof(Config::Notification, guestUsedFacility)             },
+        { STR_NEWS_GROUP_GUEST, STR_NOTIFICATION_GUEST_DIED,                        offsetof(Config::Notification, guestDied)                     },
     };
     // clang-format on
 
@@ -391,7 +395,8 @@ namespace OpenRCT2::Ui::Windows
         ScreenSize onScrollGetSize(int32_t scrollIndex) override
         {
             int32_t scrollHeight = static_cast<int32_t>(getGameState().newsItems.GetArchived().size())
-                * CalculateNewsItemHeight();
+                    * CalculateNewsItemHeight()
+                - kItemSeparatorHeight;
             return { kWindowSize.width, scrollHeight };
         }
 
@@ -443,6 +448,11 @@ namespace OpenRCT2::Ui::Windows
             int32_t y = 0;
             int32_t i = 0;
 
+            const auto backgroundPaletteIndex = ColourMapA[colours[3].colour].light;
+            // Fill the scrollbar gap if no scrollbar is visible
+            const bool scrollbarVisible = scrolls[0].contentHeight > widgets[WIDX_SCROLL].height();
+            const auto scrollbarFill = scrollbarVisible ? 0 : kScrollBarWidth;
+
             for (const auto& newsItem : getGameState().newsItems.GetArchived())
             {
                 if (y >= rt.y + rt.height)
@@ -454,10 +464,12 @@ namespace OpenRCT2::Ui::Windows
                     continue;
                 }
 
+                // Outer frame
+                Rectangle::fillInset(
+                    rt, { -1, y, 383 + scrollbarFill, y + itemHeight - 1 }, colours[1], Rectangle::BorderStyle::inset,
+                    Rectangle::FillBrightness::light, Rectangle::FillMode::none);
                 // Background
-                GfxFillRectInset(
-                    rt, { -1, y, 383, y + itemHeight - 1 }, colours[1],
-                    (INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_GREY));
+                Rectangle::fill(rt, { 0, y + 1, 381 + scrollbarFill, y + itemHeight - 2 }, backgroundPaletteIndex);
 
                 // Date text
                 {
@@ -477,18 +489,19 @@ namespace OpenRCT2::Ui::Windows
                 // Subject button
                 if ((newsItem.typeHasSubject()) && !(newsItem.hasButton()))
                 {
-                    auto screenCoords = ScreenCoordsXY{ 328, y + lineHeight + 4 };
+                    auto screenCoords = ScreenCoordsXY{ 328 + scrollbarFill, y + lineHeight + 4 };
 
-                    int32_t press = 0;
+                    auto borderStyle = Rectangle::BorderStyle::outset;
                     if (_pressedNewsItemIndex != -1)
                     {
                         News::IsValidIndex(_pressedNewsItemIndex + News::ItemHistoryStart);
                         if (i == _pressedNewsItemIndex && _pressedButtonIndex == 1)
                         {
-                            press = INSET_RECT_FLAG_BORDER_INSET;
+                            borderStyle = Rectangle::BorderStyle::inset;
                         }
                     }
-                    GfxFillRectInset(rt, { screenCoords, screenCoords + ScreenCoordsXY{ 23, 23 } }, colours[2], press);
+                    Rectangle::fillInset(
+                        rt, { screenCoords, screenCoords + ScreenCoordsXY{ 23, 23 } }, colours[2], borderStyle);
 
                     switch (newsItem.type)
                     {
@@ -514,7 +527,7 @@ namespace OpenRCT2::Ui::Windows
 
                             // If normal peep set sprite to normal (no food)
                             // If staff set sprite to staff sprite
-                            auto spriteType = PeepAnimationGroup::Normal;
+                            auto spriteType = PeepAnimationGroup::normal;
                             if (auto* staff = peep->As<Staff>(); staff != nullptr)
                             {
                                 spriteType = staff->AnimationGroup;
@@ -527,7 +540,7 @@ namespace OpenRCT2::Ui::Windows
                             auto& objManager = GetContext()->GetObjectManager();
                             auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(peep->AnimationObjectIndex);
 
-                            ImageIndex imageId = animObj->GetPeepAnimation(spriteType).base_image + 1;
+                            ImageIndex imageId = animObj->GetPeepAnimation(spriteType).baseImage + 1;
                             auto image = ImageId(imageId, peep->TshirtColour, peep->TrousersColour);
                             GfxDrawSprite(clippedRT, image, clipCoords);
                             break;
@@ -558,16 +571,17 @@ namespace OpenRCT2::Ui::Windows
                 // Location button
                 if ((newsItem.typeHasLocation()) && !(newsItem.hasButton()))
                 {
-                    auto screenCoords = ScreenCoordsXY{ 352, y + lineHeight + 4 };
+                    auto screenCoords = ScreenCoordsXY{ 352 + scrollbarFill, y + lineHeight + 4 };
 
-                    int32_t press = 0;
+                    auto borderStyle = Rectangle::BorderStyle::outset;
                     if (_pressedNewsItemIndex != -1)
                     {
                         News::IsValidIndex(_pressedNewsItemIndex + News::ItemHistoryStart);
                         if (i == _pressedNewsItemIndex && _pressedButtonIndex == 2)
-                            press = 0x20;
+                            borderStyle = Rectangle::BorderStyle::inset;
                     }
-                    GfxFillRectInset(rt, { screenCoords, screenCoords + ScreenCoordsXY{ 23, 23 } }, colours[2], press);
+                    Rectangle::fillInset(
+                        rt, { screenCoords, screenCoords + ScreenCoordsXY{ 23, 23 } }, colours[2], borderStyle);
                     GfxDrawSprite(rt, ImageId(SPR_LOCATE), screenCoords);
                 }
 

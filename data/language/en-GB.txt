@@ -473,14 +473,14 @@ STR_1076    :Shop stall mode
 STR_1077    :Rotation mode
 STR_1078    :Forward rotation
 STR_1079    :Backward rotation
-STR_1080    :Film: “Avenging aviators”
-STR_1081    :3D film: “Mouse tails”
+STR_1080    :Film: “Avenging Aviators”
+STR_1081    :3D film: “Mouse Tails”
 STR_1082    :Space rings mode
 STR_1083    :Beginners mode
 STR_1084    :LIM-powered launch
-STR_1085    :Film: “Thrill riders”
-STR_1086    :3D film: “Storm chasers”
-STR_1087    :3D film: “Space raiders”
+STR_1085    :Film: “Thrill Riders”
+STR_1086    :3D film: “Storm Chasers”
+STR_1087    :3D film: “Space Raiders”
 STR_1088    :Intense mode
 STR_1089    :Berserk mode
 STR_1090    :Haunted house mode
@@ -1568,8 +1568,8 @@ STR_2212    :Show list of security guards in park
 STR_2213    :Show list of entertainers in park
 STR_2214    :Construction not possible while game is paused!
 STR_2215    :{STRINGID}{NEWLINE}({STRINGID})
-STR_2216    :{WINDOW_COLOUR_2}{COMMA16}°C
-STR_2217    :{WINDOW_COLOUR_2}{COMMA16}°F
+STR_2216    :{WINDOW_COLOUR_1}{COMMA16}°C
+STR_2217    :{WINDOW_COLOUR_1}{COMMA16}°F
 STR_2218    :{RED}{STRINGID} on {STRINGID} hasn’t returned to the {STRINGID} yet!{NEWLINE}Check whether it is stuck or has stalled
 STR_2219    :{RED}{COMMA16} people have died in an accident on {STRINGID}
 STR_2220    :{WINDOW_COLOUR_2}Park Rating: {BLACK}{COMMA16}
@@ -3843,3 +3843,6 @@ STR_7001    :Ride name
 STR_7002    :{STRINGID} {STRINGID}
 STR_7003    :Audio file ‘{STRING}’ is truncated. Expected sample {INT32}, but only {INT32} are available. Consider reinstalling RCT2.
 STR_7004    :Force Redraw
+STR_7005    :Drag an area of footpath
+STR_7006    :Draw border around image buttons
+STR_7007    :Ride Type

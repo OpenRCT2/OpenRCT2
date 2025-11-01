@@ -33,6 +33,7 @@
 #include <openrct2/core/Path.hpp>
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/Drawing.h>
+#include <openrct2/drawing/Rectangle.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.Date.h>
 #include <openrct2/network/Network.h>
@@ -51,6 +52,7 @@
 
 namespace OpenRCT2::Ui::Windows
 {
+    using namespace OpenRCT2::Drawing;
     using namespace OpenRCT2::Ui::FileBrowser;
 
 #pragma region Widgets
@@ -136,13 +138,13 @@ namespace OpenRCT2::Ui::Windows
         bool ShowPreviews()
         {
             auto& config = Config::Get().general;
-            return config.FileBrowserPreviewType != ParkPreviewPref::disabled;
+            return config.fileBrowserPreviewType != ParkPreviewPref::disabled;
         }
 
         ScreenSize GetPreviewSize() const
         {
             auto& config = Config::Get().general;
-            switch (config.FileBrowserPreviewType)
+            switch (config.fileBrowserPreviewType)
             {
                 case ParkPreviewPref::screenshot:
                     return { kPreviewWidthScreenshot, kPreviewWidthScreenshot / 5 * 4 };
@@ -405,7 +407,7 @@ namespace OpenRCT2::Ui::Windows
         {
             // Find preview image to draw
             PreviewImage* image = nullptr;
-            auto targetPref = Config::Get().general.FileBrowserPreviewType;
+            auto targetPref = Config::Get().general.fileBrowserPreviewType;
             auto targetType = targetPref == ParkPreviewPref::screenshot ? PreviewImageType::screenshot
                                                                         : PreviewImageType::miniMap;
             for (auto& candidate : _preview.images)
@@ -442,8 +444,9 @@ namespace OpenRCT2::Ui::Windows
 
             if (drawFrame)
             {
-                GfxFillRectInset(
-                    rt, { frameStartPos, frameEndPos }, colours[1], INSET_RECT_F_60 | INSET_RECT_FLAG_FILL_MID_LIGHT);
+                Rectangle::fillInset(
+                    rt, { frameStartPos, frameEndPos }, colours[1], Rectangle::BorderStyle::inset,
+                    Rectangle::FillBrightness::dark, Rectangle::FillMode::dontLightenWhenInset);
             }
 
             // Draw image, or placeholder if no preview was found
@@ -483,7 +486,7 @@ namespace OpenRCT2::Ui::Windows
             // Date
             {
                 auto ft = Formatter();
-                ft.Add<StringId>(DateFormatStringFormatIds[Config::Get().general.DateFormat]);
+                ft.Add<StringId>(DateFormatStringFormatIds[Config::Get().general.dateFormat]);
                 ft.Add<StringId>(DateDayNames[_preview.day]);
                 ft.Add<int16_t>(_preview.month);
                 ft.Add<int16_t>(_preview.year + 1);
@@ -606,8 +609,8 @@ namespace OpenRCT2::Ui::Windows
             WindowSetResize(*this, GetMinimumWindowSize(), kWindowSizeMax);
 
             auto& config = Config::Get().general;
-            config.FileBrowserWidth = width;
-            config.FileBrowserHeight = height - getTitleBarDiffNormal();
+            config.fileBrowserWidth = width;
+            config.fileBrowserHeight = height - getTitleBarDiffNormal();
         }
 
         void onUpdate() override
@@ -642,7 +645,7 @@ namespace OpenRCT2::Ui::Windows
             customiseWidget.left = customiseWidget.right - 14;
 
             auto& config = Config::Get().general;
-            if (config.FileBrowserShowDateColumn)
+            if (config.fileBrowserShowDateColumn)
             {
                 // Date column on the right
                 Widget& dateWidget = widgets[WIDX_SORT_DATE];
@@ -650,7 +653,7 @@ namespace OpenRCT2::Ui::Windows
                 dateWidget.right = customiseWidget.left - 1;
                 dateWidget.left = dateWidget.right - (maxDateWidth + maxTimeWidth + (4 * kDateTimeGap) + (kScrollBarWidth + 1));
 
-                if (config.FileBrowserShowSizeColumn)
+                if (config.fileBrowserShowSizeColumn)
                 {
                     // File size column in the middle
                     Widget& sizeWidget = widgets[WIDX_SORT_SIZE];
@@ -671,7 +674,7 @@ namespace OpenRCT2::Ui::Windows
                     widgets[WIDX_SORT_NAME].right = dateWidget.left - 1;
                 }
             }
-            else if (config.FileBrowserShowSizeColumn)
+            else if (config.fileBrowserShowSizeColumn)
             {
                 // Hide date header
                 Widget& dateWidget = widgets[WIDX_SORT_DATE];
@@ -758,9 +761,9 @@ namespace OpenRCT2::Ui::Windows
             const auto drawButtonCaption =
                 [rt, this](Widget& widget, StringId strId, FileBrowserSort ascSort, FileBrowserSort descSort) {
                     StringId indicatorId = kStringIdNone;
-                    if (Config::Get().general.LoadSaveSort == ascSort)
+                    if (Config::Get().general.loadSaveSort == ascSort)
                         indicatorId = STR_UP;
-                    else if (Config::Get().general.LoadSaveSort == descSort)
+                    else if (Config::Get().general.loadSaveSort == descSort)
                         indicatorId = STR_DOWN;
 
                     auto ft = Formatter();
@@ -776,12 +779,12 @@ namespace OpenRCT2::Ui::Windows
             drawButtonCaption(
                 widgets[WIDX_SORT_NAME], STR_NAME_COLUMN, FileBrowserSort::NameAscending, FileBrowserSort::NameDescending);
 
-            if (config.FileBrowserShowSizeColumn)
+            if (config.fileBrowserShowSizeColumn)
                 drawButtonCaption(
                     widgets[WIDX_SORT_SIZE], STR_FILEBROWSER_SIZE_COLUMN, FileBrowserSort::SizeAscending,
                     FileBrowserSort::SizeDescending);
 
-            if (config.FileBrowserShowDateColumn)
+            if (config.fileBrowserShowDateColumn)
                 drawButtonCaption(
                     widgets[WIDX_SORT_DATE], STR_DATE_COLUMN, FileBrowserSort::DateAscending, FileBrowserSort::DateDescending);
 
@@ -833,13 +836,13 @@ namespace OpenRCT2::Ui::Windows
                 break;
 
                 case WIDX_SORT_NAME:
-                    if (Config::Get().general.LoadSaveSort == FileBrowserSort::NameAscending)
+                    if (Config::Get().general.loadSaveSort == FileBrowserSort::NameAscending)
                     {
-                        Config::Get().general.LoadSaveSort = FileBrowserSort::NameDescending;
+                        Config::Get().general.loadSaveSort = FileBrowserSort::NameDescending;
                     }
                     else
                     {
-                        Config::Get().general.LoadSaveSort = FileBrowserSort::NameAscending;
+                        Config::Get().general.loadSaveSort = FileBrowserSort::NameAscending;
                     }
                     Config::Save();
                     SortList();
@@ -847,13 +850,13 @@ namespace OpenRCT2::Ui::Windows
                     break;
 
                 case WIDX_SORT_SIZE:
-                    if (Config::Get().general.LoadSaveSort == FileBrowserSort::SizeDescending)
+                    if (Config::Get().general.loadSaveSort == FileBrowserSort::SizeDescending)
                     {
-                        Config::Get().general.LoadSaveSort = FileBrowserSort::SizeAscending;
+                        Config::Get().general.loadSaveSort = FileBrowserSort::SizeAscending;
                     }
                     else
                     {
-                        Config::Get().general.LoadSaveSort = FileBrowserSort::SizeDescending;
+                        Config::Get().general.loadSaveSort = FileBrowserSort::SizeDescending;
                     }
                     Config::Save();
                     SortList();
@@ -861,13 +864,13 @@ namespace OpenRCT2::Ui::Windows
                     break;
 
                 case WIDX_SORT_DATE:
-                    if (Config::Get().general.LoadSaveSort == FileBrowserSort::DateDescending)
+                    if (Config::Get().general.loadSaveSort == FileBrowserSort::DateDescending)
                     {
-                        Config::Get().general.LoadSaveSort = FileBrowserSort::DateAscending;
+                        Config::Get().general.loadSaveSort = FileBrowserSort::DateAscending;
                     }
                     else
                     {
-                        Config::Get().general.LoadSaveSort = FileBrowserSort::DateDescending;
+                        Config::Get().general.loadSaveSort = FileBrowserSort::DateDescending;
                     }
                     Config::Save();
                     SortList();
@@ -921,11 +924,11 @@ namespace OpenRCT2::Ui::Windows
             auto& config = Config::Get().general;
 
             gDropdown.items[0].setChecked(true);
-            gDropdown.items[1].setChecked(config.FileBrowserShowSizeColumn);
-            gDropdown.items[2].setChecked(config.FileBrowserShowDateColumn);
-            gDropdown.items[4].setChecked(config.FileBrowserPreviewType == ParkPreviewPref::disabled);
-            gDropdown.items[5].setChecked(config.FileBrowserPreviewType == ParkPreviewPref::miniMap);
-            gDropdown.items[6].setChecked(config.FileBrowserPreviewType == ParkPreviewPref::screenshot);
+            gDropdown.items[1].setChecked(config.fileBrowserShowSizeColumn);
+            gDropdown.items[2].setChecked(config.fileBrowserShowDateColumn);
+            gDropdown.items[4].setChecked(config.fileBrowserPreviewType == ParkPreviewPref::disabled);
+            gDropdown.items[5].setChecked(config.fileBrowserPreviewType == ParkPreviewPref::miniMap);
+            gDropdown.items[6].setChecked(config.fileBrowserPreviewType == ParkPreviewPref::screenshot);
         }
 
         void onDropdown(WidgetIndex widgetIndex, int32_t selectedIndex) override
@@ -937,23 +940,23 @@ namespace OpenRCT2::Ui::Windows
             bool changed = false;
             if (selectedIndex == 1)
             {
-                config.FileBrowserShowSizeColumn ^= true;
+                config.fileBrowserShowSizeColumn ^= true;
                 changed = true;
             }
             else if (selectedIndex == 2)
             {
-                config.FileBrowserShowDateColumn ^= true;
+                config.fileBrowserShowDateColumn ^= true;
                 changed = true;
             }
             else if (selectedIndex >= 4 && selectedIndex <= 6)
             {
                 auto newPref = ParkPreviewPref(selectedIndex - 4);
-                if (config.FileBrowserPreviewType != newPref)
+                if (config.fileBrowserPreviewType != newPref)
                 {
                     invalidate();
                     width -= GetPreviewSize().width;
 
-                    config.FileBrowserPreviewType = newPref;
+                    config.fileBrowserPreviewType = newPref;
                     width += GetPreviewSize().width;
 
                     changed = true;
@@ -1075,7 +1078,7 @@ namespace OpenRCT2::Ui::Windows
 
         void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
-            GfxFillRect(
+            Rectangle::fill(
                 rt, { { rt.x, rt.y }, { rt.x + rt.width - 1, rt.y + rt.height - 1 } }, ColourMapA[colours[1].colour].mid_light);
 
             const int32_t listWidth = widgets[WIDX_SCROLL].width();
@@ -1100,7 +1103,7 @@ namespace OpenRCT2::Ui::Windows
                 if (i == selectedListItem)
                 {
                     stringId = STR_WINDOW_COLOUR_2_STRINGID;
-                    GfxFilterRect(rt, { 0, y, listWidth, y + kScrollableRowHeight }, FilterPaletteID::paletteDarken1);
+                    Rectangle::filter(rt, { 0, y, listWidth, y + kScrollableRowHeight }, FilterPaletteID::paletteDarken1);
                 }
                 // display a marker next to the currently loaded game file
                 if (_listItems[i].loaded)
@@ -1127,7 +1130,7 @@ namespace OpenRCT2::Ui::Windows
                 if (_listItems[i].type != FileType::file)
                     continue;
 
-                if (config.FileBrowserShowSizeColumn)
+                if (config.fileBrowserShowSizeColumn)
                 {
                     ft = Formatter();
                     ft.Add<StringId>(STR_FILEBROWSER_FILE_SIZE_VALUE);
@@ -1136,7 +1139,7 @@ namespace OpenRCT2::Ui::Windows
                     DrawTextEllipsised(rt, { sizeColumnLeft + 2, y }, maxDateWidth + maxTimeWidth, stringId, ft);
                 }
 
-                if (config.FileBrowserShowDateColumn)
+                if (config.fileBrowserShowDateColumn)
                 {
                     ft = Formatter();
                     ft.Add<StringId>(STR_STRING);
@@ -1168,15 +1171,15 @@ namespace OpenRCT2::Ui::Windows
         if (w == nullptr)
         {
             auto& config = Config::Get().general;
-            if (config.FileBrowserWidth < kWindowSizeMin.width || config.FileBrowserHeight < kWindowSizeMin.height
-                || config.FileBrowserWidth > kWindowSizeMax.width || config.FileBrowserHeight > kWindowSizeMax.height)
+            if (config.fileBrowserWidth < kWindowSizeMin.width || config.fileBrowserHeight < kWindowSizeMin.height
+                || config.fileBrowserWidth > kWindowSizeMax.width || config.fileBrowserHeight > kWindowSizeMax.height)
             {
-                config.FileBrowserWidth = kWindowSize.width;
-                config.FileBrowserHeight = kWindowSize.height;
+                config.fileBrowserWidth = kWindowSize.width;
+                config.fileBrowserHeight = kWindowSize.height;
                 Config::Save();
             }
 
-            ScreenSize windowSize = { config.FileBrowserWidth, config.FileBrowserHeight };
+            ScreenSize windowSize = { config.fileBrowserWidth, config.fileBrowserHeight };
 
             w = windowMgr->Create<LoadSaveWindow>(
                 WindowClass::loadsave, windowSize,

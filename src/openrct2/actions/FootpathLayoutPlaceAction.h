@@ -18,7 +18,7 @@ namespace OpenRCT2::GameActions
     {
     private:
         CoordsXYZ _loc;
-        uint8_t _slope{};
+        FootpathSlope _slope{};
         ObjectEntryIndex _type{};
         ObjectEntryIndex _railingsType{};
         uint8_t _edges{};
@@ -27,7 +27,7 @@ namespace OpenRCT2::GameActions
     public:
         FootpathLayoutPlaceAction() = default;
         FootpathLayoutPlaceAction(
-            const CoordsXYZ& loc, uint8_t slope, ObjectEntryIndex type, ObjectEntryIndex railingsType, uint8_t edges,
+            const CoordsXYZ& loc, FootpathSlope slope, ObjectEntryIndex type, ObjectEntryIndex railingsType, uint8_t edges,
             PathConstructFlags constructFlags = 0);
 
         void AcceptParameters(GameActionParameterVisitor&) final;

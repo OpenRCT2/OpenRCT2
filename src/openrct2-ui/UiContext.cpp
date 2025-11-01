@@ -198,12 +198,12 @@ public:
             // Set window size
             UpdateFullscreenResolutions();
             Resolution resolution = GetClosestResolution(
-                Config::Get().general.FullscreenWidth, Config::Get().general.FullscreenHeight);
+                Config::Get().general.fullscreenWidth, Config::Get().general.fullscreenHeight);
             SDL_SetWindowSize(_window, resolution.Width, resolution.Height);
         }
         else if (mode == FullscreenMode::windowed)
         {
-            SDL_SetWindowSize(_window, Config::Get().general.WindowWidth, Config::Get().general.WindowHeight);
+            SDL_SetWindowSize(_window, Config::Get().general.windowWidth, Config::Get().general.windowHeight);
         }
 
         if (SDL_SetWindowFullscreen(_window, windowFlags))
@@ -374,16 +374,16 @@ public:
                         {
                             // Update default display index
                             int32_t displayIndex = SDL_GetWindowDisplayIndex(_window);
-                            if (displayIndex != Config::Get().general.DefaultDisplay)
+                            if (displayIndex != Config::Get().general.defaultDisplay)
                             {
-                                Config::Get().general.DefaultDisplay = displayIndex;
+                                Config::Get().general.defaultDisplay = displayIndex;
                                 Config::Save();
                             }
                             break;
                         }
                     }
 
-                    if (Config::Get().sound.audio_focus)
+                    if (Config::Get().sound.audioFocus)
                     {
                         if (e.window.event == SDL_WINDOWEVENT_FOCUS_GAINED)
                         {
@@ -396,8 +396,8 @@ public:
                     }
                     break;
                 case SDL_MOUSEMOTION:
-                    _cursorState.position = { static_cast<int32_t>(e.motion.x / Config::Get().general.WindowScale),
-                                              static_cast<int32_t>(e.motion.y / Config::Get().general.WindowScale) };
+                    _cursorState.position = { static_cast<int32_t>(e.motion.x / Config::Get().general.windowScale),
+                                              static_cast<int32_t>(e.motion.y / Config::Get().general.windowScale) };
                     break;
                 case SDL_MOUSEWHEEL:
                     if (_inGameConsole.IsOpen())
@@ -413,8 +413,8 @@ public:
                     {
                         break;
                     }
-                    ScreenCoordsXY mousePos = { static_cast<int32_t>(e.button.x / Config::Get().general.WindowScale),
-                                                static_cast<int32_t>(e.button.y / Config::Get().general.WindowScale) };
+                    ScreenCoordsXY mousePos = { static_cast<int32_t>(e.button.x / Config::Get().general.windowScale),
+                                                static_cast<int32_t>(e.button.y / Config::Get().general.windowScale) };
                     switch (e.button.button)
                     {
                         case SDL_BUTTON_LEFT:
@@ -449,8 +449,8 @@ public:
                     {
                         break;
                     }
-                    ScreenCoordsXY mousePos = { static_cast<int32_t>(e.button.x / Config::Get().general.WindowScale),
-                                                static_cast<int32_t>(e.button.y / Config::Get().general.WindowScale) };
+                    ScreenCoordsXY mousePos = { static_cast<int32_t>(e.button.x / Config::Get().general.windowScale),
+                                                static_cast<int32_t>(e.button.y / Config::Get().general.windowScale) };
                     switch (e.button.button)
                     {
                         case SDL_BUTTON_LEFT:
@@ -604,7 +604,7 @@ public:
     {
         char scaleQualityBuffer[4];
         _scaleQuality = ScaleQuality::SmoothNearestNeighbour;
-        if (Config::Get().general.WindowScale == std::floor(Config::Get().general.WindowScale))
+        if (Config::Get().general.windowScale == std::floor(Config::Get().general.windowScale))
         {
             _scaleQuality = ScaleQuality::NearestNeighbour;
         }
@@ -624,10 +624,10 @@ public:
 
     void CreateWindow() override
     {
-        SDL_SetHint(SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS, Config::Get().general.MinimizeFullscreenFocusLoss ? "1" : "0");
+        SDL_SetHint(SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS, Config::Get().general.minimizeFullscreenFocusLoss ? "1" : "0");
 
         // Set window position to default display
-        int32_t defaultDisplay = std::clamp(Config::Get().general.DefaultDisplay, 0, 0xFFFF);
+        int32_t defaultDisplay = std::clamp(Config::Get().general.defaultDisplay, 0, 0xFFFF);
         auto windowPos = ScreenCoordsXY{ static_cast<int32_t>(SDL_WINDOWPOS_UNDEFINED_DISPLAY(defaultDisplay)),
                                          static_cast<int32_t>(SDL_WINDOWPOS_UNDEFINED_DISPLAY(defaultDisplay)) };
 
@@ -770,7 +770,7 @@ private:
     void InferDisplayDPI()
     {
         auto& config = Config::Get().general;
-        if (!config.InferDisplayDPI)
+        if (!config.inferDisplayDPI)
             return;
 
         int wWidth, wHeight;
@@ -779,9 +779,9 @@ private:
         auto renderer = SDL_GetRenderer(_window);
         int rWidth, rHeight;
         if (SDL_GetRendererOutputSize(renderer, &rWidth, &rHeight) == 0)
-            config.WindowScale = rWidth / wWidth;
+            config.windowScale = rWidth / wWidth;
 
-        config.InferDisplayDPI = false;
+        config.inferDisplayDPI = false;
         Config::Save();
     }
 
@@ -797,8 +797,8 @@ private:
         emscripten_get_canvas_element_size("!canvas", &width, &height);
 #else
         // Get saved window size
-        int32_t width = Config::Get().general.WindowWidth;
-        int32_t height = Config::Get().general.WindowHeight;
+        int32_t width = Config::Get().general.windowWidth;
+        int32_t height = Config::Get().general.windowHeight;
 #endif
         if (width <= 0)
             width = 640;
@@ -807,7 +807,7 @@ private:
 
         // Create window in window first rather than fullscreen so we have the display the window is on first
         uint32_t flags = SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI;
-        if (Config::Get().general.DrawingEngine == DrawingEngine::OpenGL)
+        if (Config::Get().general.drawingEngine == DrawingEngine::OpenGL)
         {
             flags |= SDL_WINDOW_OPENGL;
         }
@@ -821,7 +821,7 @@ private:
         ApplyScreenSaverLockSetting();
 
         SDL_SetWindowMinimumSize(_window, 720, 480);
-        SetCursorTrap(Config::Get().general.TrapCursor);
+        SetCursorTrap(Config::Get().general.trapCursor);
         _platformUiContext->SetWindowIcon(_window);
 
         // Initialise the surface, palette and draw buffer
@@ -831,15 +831,15 @@ private:
 
         UpdateFullscreenResolutions();
 
-        SetFullscreenMode(static_cast<FullscreenMode>(Config::Get().general.FullscreenMode));
+        SetFullscreenMode(static_cast<FullscreenMode>(Config::Get().general.fullscreenMode));
         TriggerResize();
     }
 
     void OnResize(int32_t width, int32_t height)
     {
         // Scale the native window size to the game's canvas size
-        _width = static_cast<int32_t>(width / Config::Get().general.WindowScale);
-        _height = static_cast<int32_t>(height / Config::Get().general.WindowScale);
+        _width = static_cast<int32_t>(width / Config::Get().general.windowScale);
+        _height = static_cast<int32_t>(height / Config::Get().general.windowScale);
 
         DrawingEngineResize();
 
@@ -861,10 +861,10 @@ private:
 
         if (!(flags & nonWindowFlags))
         {
-            if (width != Config::Get().general.WindowWidth || height != Config::Get().general.WindowHeight)
+            if (width != Config::Get().general.windowWidth || height != Config::Get().general.windowHeight)
             {
-                Config::Get().general.WindowWidth = width;
-                Config::Get().general.WindowHeight = height;
+                Config::Get().general.windowWidth = width;
+                Config::Get().general.windowHeight = height;
                 Config::Save();
             }
         }
@@ -911,10 +911,10 @@ private:
 
         // Update config fullscreen resolution if not set
         if (!resolutions.empty()
-            && (Config::Get().general.FullscreenWidth == -1 || Config::Get().general.FullscreenHeight == -1))
+            && (Config::Get().general.fullscreenWidth == -1 || Config::Get().general.fullscreenHeight == -1))
         {
-            Config::Get().general.FullscreenWidth = resolutions.back().Width;
-            Config::Get().general.FullscreenHeight = resolutions.back().Height;
+            Config::Get().general.fullscreenWidth = resolutions.back().Width;
+            Config::Get().general.fullscreenHeight = resolutions.back().Height;
         }
 
         _fsResolutions = resolutions;

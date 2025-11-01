@@ -202,6 +202,11 @@ namespace OpenRCT2
             return RepositoryItemToObject(ori, slot);
         }
 
+        Object* LoadRepositoryItem(const ObjectRepositoryItem& ori) override
+        {
+            return RepositoryItemToObject(&ori);
+        }
+
         void LoadObjects(const ObjectList& objectList, const bool reportProgress) override
         {
             // Find all the required objects
@@ -294,19 +299,19 @@ namespace OpenRCT2
         {
             switch (sourceGame)
             {
-                case ObjectSourceGame::RCT1:
+                case ObjectSourceGame::rct1:
                     return STR_SCENARIO_CATEGORY_RCT1;
-                case ObjectSourceGame::AddedAttractions:
+                case ObjectSourceGame::addedAttractions:
                     return STR_SCENARIO_CATEGORY_RCT1_AA;
-                case ObjectSourceGame::LoopyLandscapes:
+                case ObjectSourceGame::loopyLandscapes:
                     return STR_SCENARIO_CATEGORY_RCT1_LL;
-                case ObjectSourceGame::RCT2:
+                case ObjectSourceGame::rct2:
                     return STR_ROLLERCOASTER_TYCOON_2_DROPDOWN;
-                case ObjectSourceGame::WackyWorlds:
+                case ObjectSourceGame::wackyWorlds:
                     return STR_OBJECT_FILTER_WW;
-                case ObjectSourceGame::TimeTwister:
+                case ObjectSourceGame::timeTwister:
                     return STR_OBJECT_FILTER_TT;
-                case ObjectSourceGame::OpenRCT2Official:
+                case ObjectSourceGame::openRCT2Official:
                     return STR_OBJECT_FILTER_OPENRCT2_OFFICIAL;
                 default:
                     return STR_OBJECT_FILTER_CUSTOM;

@@ -76,7 +76,7 @@ static constexpr const uint8_t* kDuckAnimations[] = {
 template<>
 bool EntityBase::Is<Duck>() const
 {
-    return Type == EntityType::Duck;
+    return Type == EntityType::duck;
 }
 
 bool Duck::IsFlying()

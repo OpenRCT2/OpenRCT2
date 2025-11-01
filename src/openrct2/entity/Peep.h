@@ -43,151 +43,160 @@ namespace OpenRCT2::GameActions
 
 enum class PeepState : uint8_t
 {
-    Falling = 0, // Drowning is part of falling
-    One = 1,     // was PEEP_STATE_1
-    QueuingFront = 2,
-    OnRide = 3,
-    LeavingRide = 4,
-    Walking = 5,
-    Queuing = 6,
-    EnteringRide = 7,
-    Sitting = 8,
-    Picked = 9,
-    Patrolling = 10, // Not sure
-    Mowing = 11,
-    Sweeping = 12,
-    EnteringPark = 13,
-    LeavingPark = 14,
-    Answering = 15,
-    Fixing = 16,
-    Buying = 17,
-    Watching = 18,
-    EmptyingBin = 19,
-    UsingBin = 20,
-    Watering = 21,
-    HeadingToInspection = 22,
-    Inspecting = 23
+    falling = 0, // Drowning is part of falling
+    one = 1,     // was PEEP_STATE_1
+    queuingFront = 2,
+    onRide = 3,
+    leavingRide = 4,
+    walking = 5,
+    queuing = 6,
+    enteringRide = 7,
+    sitting = 8,
+    picked = 9,
+    patrolling = 10, // Not sure
+    mowing = 11,
+    sweeping = 12,
+    enteringPark = 13,
+    leavingPark = 14,
+    answering = 15,
+    fixing = 16,
+    buying = 17,
+    watching = 18,
+    emptyingBin = 19,
+    usingBin = 20,
+    watering = 21,
+    headingToInspection = 22,
+    inspecting = 23,
 };
 
 enum class PeepSittingSubState : uint8_t
 {
-    TryingToSit, // was = 0
-    SatDown      // was unassigned
+    tryingToSit, // was = 0
+    satDown      // was unassigned
 };
 
 enum class PeepRideSubState : uint8_t
 {
-    AtEntrance = 0,
-    InEntrance = 1,
-    FreeVehicleCheck = 2, // Spend money on ride
-    LeaveEntrance = 3,    // Calculate what direction and where to go after committing to entering vehicle
-    ApproachVehicle = 4,
-    EnterVehicle = 5,
-    OnRide = 6,
-    LeaveVehicle = 7,
-    ApproachExit = 8,
-    InExit = 9,
-    InQueue = 10,
-    AtQueueFront = 11,
-    ApproachVehicleWaypoints = 12,
-    ApproachExitWaypoints = 13,
-    ApproachSpiralSlide = 14,
-    OnSpiralSlide = 15,
-    LeaveSpiralSlide = 16,
-    MazePathfinding = 17,
-    LeaveExit = 18,
-    ApproachShop = 19,
-    InteractShop = 20,
-    LeaveShop = 21
+    atEntrance = 0,
+    inEntrance = 1,
+    freeVehicleCheck = 2, // Spend money on ride
+    leaveEntrance = 3,    // Calculate what direction and where to go after committing to entering vehicle
+    approachVehicle = 4,
+    enterVehicle = 5,
+    onRide = 6,
+    leaveVehicle = 7,
+    approachExit = 8,
+    inExit = 9,
+    inQueue = 10,
+    atQueueFront = 11,
+    approachVehicleWaypoints = 12,
+    approachExitWaypoints = 13,
+    approachSpiralSlide = 14,
+    onSpiralSlide = 15,
+    leaveSpiralSlide = 16,
+    mazePathfinding = 17,
+    leaveExit = 18,
+    approachShop = 19,
+    interactShop = 20,
+    leaveShop = 21,
+};
+
+// Substates for guests that are inside the Spiral Slide. Declared as uint16_t to match DestinationX.
+enum class PeepSpiralSlideSubState : uint16_t
+{
+    goingUp = 0,
+    prepareToSlide = 1,
+    slidingDown = 2,
+    finishedSliding = 3
 };
 
 enum class PeepUsingBinSubState : uint8_t
 {
-    WalkingToBin = 0,
-    GoingBack,
+    walkingToBin = 0,
+    goingBack,
 };
 
 enum class PeepActionType : uint8_t
 {
-    CheckTime = 0,
+    checkTime = 0,
     // If no food then check watch
-    EatFood = 1,
-    ShakeHead = 2,
-    EmptyPockets = 3,
-    SittingEatFood = 4,
-    SittingCheckWatch = 4,
-    SittingLookAroundLeft = 5,
-    SittingLookAroundRight = 6,
-    Wow = 7,
-    ThrowUp = 8,
-    Jump = 9,
-    StaffSweep = 10,
-    Drowning = 11,
-    StaffAnswerCall = 12,
-    StaffAnswerCall2 = 13,
-    StaffCheckBoard = 14,
-    StaffFix = 15,
-    StaffFix2 = 16,
-    StaffFixGround = 17,
-    StaffFix3 = 18,
-    StaffWatering = 19,
-    Joy = 20,
-    ReadMap = 21,
-    Wave = 22,
-    StaffEmptyBin = 23,
-    Wave2 = 24,
-    TakePhoto = 25,
-    Clap = 26,
-    Disgust = 27,
-    DrawPicture = 28,
-    BeingWatched = 29,
-    WithdrawMoney = 30,
+    eatFood = 1,
+    shakeHead = 2,
+    emptyPockets = 3,
+    sittingEatFood = 4,
+    sittingCheckWatch = 4,
+    sittingLookAroundLeft = 5,
+    sittingLookAroundRight = 6,
+    wow = 7,
+    throwUp = 8,
+    jump = 9,
+    staffSweep = 10,
+    drowning = 11,
+    staffAnswerCall = 12,
+    staffAnswerCall2 = 13,
+    staffCheckBoard = 14,
+    staffFix = 15,
+    staffFix2 = 16,
+    staffFixGround = 17,
+    staffFix3 = 18,
+    staffWatering = 19,
+    joy = 20,
+    readMap = 21,
+    wave = 22,
+    staffEmptyBin = 23,
+    wave2 = 24,
+    takePhoto = 25,
+    clap = 26,
+    disgust = 27,
+    drawPicture = 28,
+    beingWatched = 29,
+    withdrawMoney = 30,
 
-    Idle = 254,
-    Walking = 255,
+    idle = 254,
+    walking = 255,
 };
 
 enum class PeepAnimationType : uint8_t
 {
-    Walking = 0,
-    CheckTime = 1,
-    WatchRide = 2,
-    EatFood = 3,
-    ShakeHead = 4,
-    EmptyPockets = 5,
-    HoldMat = 6,
-    SittingIdle = 7,
-    SittingEatFood = 8,
-    SittingLookAroundLeft = 9,
-    SittingLookAroundRight = 10,
-    Hanging = 11,
-    StaffMower = 12,
-    Wow = 13,
-    ThrowUp = 14,
-    Jump = 15,
-    StaffSweep = 16,
-    Drowning = 17,
-    StaffAnswerCall = 18,
-    StaffAnswerCall2 = 19,
-    StaffCheckBoard = 20,
-    StaffFix = 21,
-    StaffFix2 = 22,
-    StaffFixGround = 23,
-    StaffFix3 = 24,
-    StaffWatering = 25,
-    Joy = 26,
-    ReadMap = 27,
-    Wave = 28,
-    StaffEmptyBin = 29,
-    Wave2 = 30,
-    TakePhoto = 31,
-    Clap = 32,
-    Disgust = 33,
-    DrawPicture = 34,
-    BeingWatched = 35,
-    WithdrawMoney = 36,
+    walking = 0,
+    checkTime = 1,
+    watchRide = 2,
+    eatFood = 3,
+    shakeHead = 4,
+    emptyPockets = 5,
+    holdMat = 6,
+    sittingIdle = 7,
+    sittingEatFood = 8,
+    sittingLookAroundLeft = 9,
+    sittingLookAroundRight = 10,
+    hanging = 11,
+    staffMower = 12,
+    wow = 13,
+    throwUp = 14,
+    jump = 15,
+    staffSweep = 16,
+    drowning = 17,
+    staffAnswerCall = 18,
+    staffAnswerCall2 = 19,
+    staffCheckBoard = 20,
+    staffFix = 21,
+    staffFix2 = 22,
+    staffFixGround = 23,
+    staffFix3 = 24,
+    staffWatering = 25,
+    joy = 26,
+    readMap = 27,
+    wave = 28,
+    staffEmptyBin = 29,
+    wave2 = 30,
+    takePhoto = 31,
+    clap = 32,
+    disgust = 33,
+    drawPicture = 34,
+    beingWatched = 35,
+    withdrawMoney = 36,
 
-    Invalid = 255
+    invalid = 255
 };
 
 enum PeepFlags : uint32_t
@@ -238,46 +247,46 @@ enum PeepNextFlags
 
 enum class PeepAnimationGroup : uint8_t
 {
-    Normal = 0,
+    normal = 0,
 
     // Security staff
-    Alternate = 1,
+    alternate = 1,
 
     // Guest variations
-    IceCream = 1,
-    Chips = 2,
-    Burger = 3,
-    Drink = 4,
-    Balloon = 5,
-    Candyfloss = 6,
-    Umbrella = 7,
-    Pizza = 8,
-    Popcorn = 9,
-    ArmsCrossed = 10,
-    HeadDown = 11,
-    Nauseous = 12,
-    VeryNauseous = 13,
-    RequireToilet = 14,
-    Hat = 15,
-    HotDog = 16,
-    Tentacle = 17,
-    ToffeeApple = 18,
-    Doughnut = 19,
-    Coffee = 20,
-    Chicken = 21,
-    Lemonade = 22,
-    Watching = 23,
-    Pretzel = 24,
-    Sunglasses = 25,
-    Sujeonggwa = 26,
-    Juice = 27,
-    FunnelCake = 28,
-    Noodles = 29,
-    Sausage = 30,
-    Soup = 31,
-    Sandwich = 32,
+    iceCream = 1,
+    chips = 2,
+    burger = 3,
+    drink = 4,
+    balloon = 5,
+    candyfloss = 6,
+    umbrella = 7,
+    pizza = 8,
+    popcorn = 9,
+    armsCrossed = 10,
+    headDown = 11,
+    nauseous = 12,
+    veryNauseous = 13,
+    requireToilet = 14,
+    hat = 15,
+    hotDog = 16,
+    tentacle = 17,
+    toffeeApple = 18,
+    doughnut = 19,
+    coffee = 20,
+    chicken = 21,
+    lemonade = 22,
+    watching = 23,
+    pretzel = 24,
+    sunglasses = 25,
+    sujeonggwa = 26,
+    juice = 27,
+    funnelCake = 28,
+    noodles = 29,
+    sausage = 30,
+    soup = 31,
+    sandwich = 32,
 
-    Invalid = 255
+    invalid = 255
 };
 
 // Flags used by peep->WindowInvalidateFlags
@@ -311,8 +320,16 @@ struct Peep : EntityBase
     PeepAnimationGroup AnimationGroup;
     uint8_t TshirtColour;
     uint8_t TrousersColour;
-    uint16_t DestinationX; // Location that the peep is trying to get to
-    uint16_t DestinationY;
+    union
+    {
+        uint16_t DestinationX;
+        PeepSpiralSlideSubState spiralSlideSubstate;
+    };
+    union
+    {
+        uint16_t DestinationY;
+        uint16_t spiralSlideGoingUpTimer;
+    };
     uint8_t DestinationTolerance; // How close to destination before next action/state 0 = exact
     uint8_t Var37;
     uint8_t Energy;
@@ -388,6 +405,7 @@ public: // Peep
     bool IsActionWalking() const;
     bool IsActionIdle() const;
     bool IsActionInterruptable() const;
+    bool IsActionInterruptableSafely() const;
 
     // Reset the peep's stored goal, which means they will forget any stored pathfinding history
     // on the next GuestPathfinding::ChooseDirection call.

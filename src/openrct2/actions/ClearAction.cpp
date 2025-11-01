@@ -67,8 +67,8 @@ namespace OpenRCT2::GameActions
         result.ErrorTitle = STR_UNABLE_TO_REMOVE_ALL_SCENERY_FROM_HERE;
         result.Expenditure = ExpenditureType::landscaping;
 
-        auto x = (_range.GetLeft() + _range.GetRight()) / 2 + 16;
-        auto y = (_range.GetTop() + _range.GetBottom()) / 2 + 16;
+        auto x = (_range.GetX1() + _range.GetX2()) / 2 + 16;
+        auto y = (_range.GetY1() + _range.GetY2()) / 2 + 16;
         auto z = TileElementHeight({ x, y });
         result.Position = CoordsXYZ(x, y, z);
 
@@ -85,9 +85,9 @@ namespace OpenRCT2::GameActions
         money64 totalCost = 0;
 
         auto validRange = ClampRangeWithinMap(_range);
-        for (int32_t y = validRange.GetTop(); y <= validRange.GetBottom(); y += kCoordsXYStep)
+        for (int32_t y = validRange.GetY1(); y <= validRange.GetY2(); y += kCoordsXYStep)
         {
-            for (int32_t x = validRange.GetLeft(); x <= validRange.GetRight(); x += kCoordsXYStep)
+            for (int32_t x = validRange.GetX1(); x <= validRange.GetX2(); x += kCoordsXYStep)
             {
                 if (LocationValid({ x, y }) && MapCanClearAt(gameState, { x, y }))
                 {

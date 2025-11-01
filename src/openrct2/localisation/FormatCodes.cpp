@@ -17,60 +17,60 @@ namespace OpenRCT2
 {
     // clang-format off
     static const EnumMap<FormatToken> FormatTokenMap = {
-        { "MOVE_X",               FormatToken::Move,                },
-        { "NEWLINE",              FormatToken::Newline,             },
-        { "NEWLINE_SMALLER",      FormatToken::NewlineSmall,        },
-        { "TINYFONT",             FormatToken::FontTiny,            },
-        { "MEDIUMFONT",           FormatToken::FontMedium,          },
-        { "SMALLFONT",            FormatToken::FontSmall,           },
-        { "OUTLINE",              FormatToken::OutlineEnable,       },
-        { "OUTLINE_OFF",          FormatToken::OutlineDisable,      },
-        { "WINDOW_COLOUR_1",      FormatToken::ColourWindow1,       },
-        { "WINDOW_COLOUR_2",      FormatToken::ColourWindow2,       },
-        { "WINDOW_COLOUR_3",      FormatToken::ColourWindow3,       },
-        { "INLINE_SPRITE",        FormatToken::InlineSprite,        },
-        { "COMMA32",              FormatToken::Comma32,             },
-        { "INT32",                FormatToken::Int32,               },
-        { "COMMA1DP16",           FormatToken::Comma1dp16,          },
-        { "COMMA2DP32",           FormatToken::Comma2dp32,          },
-        { "COMMA16",              FormatToken::Comma16,             },
-        { "UINT16",               FormatToken::UInt16,              },
-        { "CURRENCY2DP",          FormatToken::Currency2dp,         },
-        { "CURRENCY",             FormatToken::Currency,            },
-        { "STRINGID",             FormatToken::StringById,          },
-        { "STRING",               FormatToken::String,              },
-        { "MONTHYEAR",            FormatToken::MonthYear,           },
-        { "MONTHYEAR_SENTENCE",   FormatToken::MonthYearSentence,   },
-        { "MONTH",                FormatToken::Month,               },
-        { "VELOCITY",             FormatToken::Velocity,            },
-        { "POP16",                FormatToken::Pop16,               },
-        { "PUSH16",               FormatToken::Push16,              },
-        { "DURATION",             FormatToken::DurationShort,       },
-        { "REALTIME",             FormatToken::DurationLong,        },
-        { "LENGTH",               FormatToken::Length,              },
-        { "HEIGHT",               FormatToken::Height,              },
-        { "SPRITE",               FormatToken::Sprite,              },
-        { "BLACK",                FormatToken::ColourBlack,         },
-        { "GREY",                 FormatToken::ColourGrey,          },
-        { "WHITE",                FormatToken::ColourWhite,         },
-        { "RED",                  FormatToken::ColourRed,           },
-        { "GREEN",                FormatToken::ColourGreen,         },
-        { "YELLOW",               FormatToken::ColourYellow,        },
-        { "TOPAZ",                FormatToken::ColourTopaz,         },
-        { "CELADON",              FormatToken::ColourCeladon,       },
-        { "BABYBLUE",             FormatToken::ColourBabyBlue,      },
-        { "PALELAVENDER",         FormatToken::ColourPaleLavender,  },
-        { "PALEGOLD",             FormatToken::ColourPaleGold,      },
-        { "LIGHTPINK",            FormatToken::ColourLightPink,     },
-        { "PEARLAQUA",            FormatToken::ColourPearlAqua,     },
-        { "PALESILVER",           FormatToken::ColourPaleSilver,    },
+        { "MOVE_X",               FormatToken::move,                },
+        { "NEWLINE",              FormatToken::newline,             },
+        { "NEWLINE_SMALLER",      FormatToken::newlineSmall,        },
+        { "TINYFONT",             FormatToken::fontTiny,            },
+        { "MEDIUMFONT",           FormatToken::fontMedium,          },
+        { "SMALLFONT",            FormatToken::fontSmall,           },
+        { "OUTLINE",              FormatToken::outlineEnable,       },
+        { "OUTLINE_OFF",          FormatToken::outlineDisable,      },
+        { "WINDOW_COLOUR_1",      FormatToken::colourWindow1,       },
+        { "WINDOW_COLOUR_2",      FormatToken::colourWindow2,       },
+        { "WINDOW_COLOUR_3",      FormatToken::colourWindow3,       },
+        { "INLINE_SPRITE",        FormatToken::inlineSprite,        },
+        { "COMMA32",              FormatToken::comma32,             },
+        { "INT32",                FormatToken::int32,               },
+        { "COMMA1DP16",           FormatToken::comma1dp16,          },
+        { "COMMA2DP32",           FormatToken::comma2dp32,          },
+        { "COMMA16",              FormatToken::comma16,             },
+        { "UINT16",               FormatToken::uint16,              },
+        { "CURRENCY2DP",          FormatToken::currency2dp,         },
+        { "CURRENCY",             FormatToken::currency,            },
+        { "STRINGID",             FormatToken::stringById,          },
+        { "STRING",               FormatToken::string,              },
+        { "MONTHYEAR",            FormatToken::monthYear,           },
+        { "MONTHYEAR_SENTENCE",   FormatToken::monthYearSentence,   },
+        { "MONTH",                FormatToken::month,               },
+        { "VELOCITY",             FormatToken::velocity,            },
+        { "POP16",                FormatToken::pop16,               },
+        { "PUSH16",               FormatToken::push16,              },
+        { "DURATION",             FormatToken::durationShort,       },
+        { "REALTIME",             FormatToken::durationLong,        },
+        { "LENGTH",               FormatToken::length,              },
+        { "HEIGHT",               FormatToken::height,              },
+        { "SPRITE",               FormatToken::sprite,              },
+        { "BLACK",                FormatToken::colourBlack,         },
+        { "GREY",                 FormatToken::colourGrey,          },
+        { "WHITE",                FormatToken::colourWhite,         },
+        { "RED",                  FormatToken::colourRed,           },
+        { "GREEN",                FormatToken::colourGreen,         },
+        { "YELLOW",               FormatToken::colourYellow,        },
+        { "TOPAZ",                FormatToken::colourTopaz,         },
+        { "CELADON",              FormatToken::colourCeladon,       },
+        { "BABYBLUE",             FormatToken::colourBabyBlue,      },
+        { "PALELAVENDER",         FormatToken::colourPaleLavender,  },
+        { "PALEGOLD",             FormatToken::colourPaleGold,      },
+        { "LIGHTPINK",            FormatToken::colourLightPink,     },
+        { "PEARLAQUA",            FormatToken::colourPearlAqua,     },
+        { "PALESILVER",           FormatToken::colourPaleSilver,    },
     };
     // clang-format on
 
     FormatToken FormatTokenFromString(std::string_view token)
     {
         auto result = FormatTokenMap.find(token);
-        return result != std::end(FormatTokenMap) ? result->second : FormatToken::Unknown;
+        return result != std::end(FormatTokenMap) ? result->second : FormatToken::unknown;
     }
 
     std::string FormatTokenToString(FormatToken token)
@@ -91,25 +91,25 @@ namespace OpenRCT2
     {
         switch (token)
         {
-            case FormatToken::Comma32:
-            case FormatToken::Int32:
-            case FormatToken::Comma1dp16:
-            case FormatToken::Comma2dp32:
-            case FormatToken::Comma16:
-            case FormatToken::UInt16:
-            case FormatToken::Currency2dp:
-            case FormatToken::Currency:
-            case FormatToken::StringById:
-            case FormatToken::String:
-            case FormatToken::MonthYear:
-            case FormatToken::MonthYearSentence:
-            case FormatToken::Month:
-            case FormatToken::Velocity:
-            case FormatToken::DurationShort:
-            case FormatToken::DurationLong:
-            case FormatToken::Length:
-            case FormatToken::Height:
-            case FormatToken::Sprite:
+            case FormatToken::comma32:
+            case FormatToken::int32:
+            case FormatToken::comma1dp16:
+            case FormatToken::comma2dp32:
+            case FormatToken::comma16:
+            case FormatToken::uint16:
+            case FormatToken::currency2dp:
+            case FormatToken::currency:
+            case FormatToken::stringById:
+            case FormatToken::string:
+            case FormatToken::monthYear:
+            case FormatToken::monthYearSentence:
+            case FormatToken::month:
+            case FormatToken::velocity:
+            case FormatToken::durationShort:
+            case FormatToken::durationLong:
+            case FormatToken::length:
+            case FormatToken::height:
+            case FormatToken::sprite:
                 return true;
             default:
                 return false;
@@ -120,20 +120,20 @@ namespace OpenRCT2
     {
         switch (token)
         {
-            case FormatToken::ColourBlack:
-            case FormatToken::ColourGrey:
-            case FormatToken::ColourWhite:
-            case FormatToken::ColourRed:
-            case FormatToken::ColourGreen:
-            case FormatToken::ColourYellow:
-            case FormatToken::ColourTopaz:
-            case FormatToken::ColourCeladon:
-            case FormatToken::ColourBabyBlue:
-            case FormatToken::ColourPaleLavender:
-            case FormatToken::ColourPaleGold:
-            case FormatToken::ColourLightPink:
-            case FormatToken::ColourPearlAqua:
-            case FormatToken::ColourPaleSilver:
+            case FormatToken::colourBlack:
+            case FormatToken::colourGrey:
+            case FormatToken::colourWhite:
+            case FormatToken::colourRed:
+            case FormatToken::colourGreen:
+            case FormatToken::colourYellow:
+            case FormatToken::colourTopaz:
+            case FormatToken::colourCeladon:
+            case FormatToken::colourBabyBlue:
+            case FormatToken::colourPaleLavender:
+            case FormatToken::colourPaleGold:
+            case FormatToken::colourLightPink:
+            case FormatToken::colourPearlAqua:
+            case FormatToken::colourPaleSilver:
                 return true;
             default:
                 return false;
@@ -142,7 +142,7 @@ namespace OpenRCT2
 
     TextColour FormatTokenToTextColour(FormatToken token)
     {
-        uint8_t value = EnumValue(token) - EnumValue(FormatToken::ColourBlack);
+        uint8_t value = EnumValue(token) - EnumValue(FormatToken::colourBlack);
         if (value >= kNumTextColours)
             return TextColour::black;
 
@@ -152,20 +152,20 @@ namespace OpenRCT2
     FormatToken FormatTokenFromTextColour(TextColour textColour)
     {
         static constexpr FormatToken tokens[] = {
-            FormatToken::ColourBlack,        // TextColour::black
-            FormatToken::ColourGrey,         // TextColour::grey
-            FormatToken::ColourWhite,        // TextColour::white
-            FormatToken::ColourRed,          // TextColour::red
-            FormatToken::ColourGreen,        // TextColour::green
-            FormatToken::ColourYellow,       // TextColour::yellow
-            FormatToken::ColourTopaz,        // TextColour::topaz
-            FormatToken::ColourCeladon,      // TextColour::celadon
-            FormatToken::ColourBabyBlue,     // TextColour::babyBlue
-            FormatToken::ColourPaleLavender, // TextColour::paleLavender
-            FormatToken::ColourPaleGold,     // TextColour::paleGold
-            FormatToken::ColourLightPink,    // TextColour::lightPink
-            FormatToken::ColourPearlAqua,    // TextColour::pearlAqua
-            FormatToken::ColourPaleSilver,   // TextColour::paleSilver
+            FormatToken::colourBlack,        // TextColour::black
+            FormatToken::colourGrey,         // TextColour::grey
+            FormatToken::colourWhite,        // TextColour::white
+            FormatToken::colourRed,          // TextColour::red
+            FormatToken::colourGreen,        // TextColour::green
+            FormatToken::colourYellow,       // TextColour::yellow
+            FormatToken::colourTopaz,        // TextColour::topaz
+            FormatToken::colourCeladon,      // TextColour::celadon
+            FormatToken::colourBabyBlue,     // TextColour::babyBlue
+            FormatToken::colourPaleLavender, // TextColour::paleLavender
+            FormatToken::colourPaleGold,     // TextColour::paleGold
+            FormatToken::colourLightPink,    // TextColour::lightPink
+            FormatToken::colourPearlAqua,    // TextColour::pearlAqua
+            FormatToken::colourPaleSilver,   // TextColour::paleSilver
         };
 
         return tokens[EnumValue(textColour)];

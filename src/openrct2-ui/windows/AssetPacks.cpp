@@ -16,10 +16,13 @@
 #include <openrct2/Context.h>
 #include <openrct2/SpriteIds.h>
 #include <openrct2/drawing/Drawing.h>
+#include <openrct2/drawing/Rectangle.h>
 #include <openrct2/drawing/Text.h>
 #include <openrct2/localisation/StringIds.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/ui/WindowManager.h>
+
+using namespace OpenRCT2::Drawing;
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -192,7 +195,7 @@ namespace OpenRCT2::Ui::Windows
         void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
             auto rtCoords = ScreenCoordsXY{ rt.x, rt.y };
-            GfxFillRect(
+            Rectangle::fill(
                 rt, { rtCoords, rtCoords + ScreenCoordsXY{ rt.width - 1, rt.height - 1 } },
                 ColourMapA[colours[1].colour].mid_light);
 
@@ -241,12 +244,12 @@ namespace OpenRCT2::Ui::Windows
             auto fillRectangle = ScreenRect{ { 0, y }, { listWidth, y + ItemHeight - 1 } };
             if (isSelected)
             {
-                GfxFillRect(rt, fillRectangle, ColourMapA[colours[1].colour].mid_dark);
+                Rectangle::fill(rt, fillRectangle, ColourMapA[colours[1].colour].mid_dark);
                 stringId = STR_WINDOW_COLOUR_2_STRINGID;
             }
             else if (isHighlighted)
             {
-                GfxFillRect(rt, fillRectangle, ColourMapA[colours[1].colour].mid_dark);
+                Rectangle::fill(rt, fillRectangle, ColourMapA[colours[1].colour].mid_dark);
             }
 
             DrawTextEllipsised(rt, { 16, y + 1 }, listWidth, stringId, ft);
@@ -257,7 +260,9 @@ namespace OpenRCT2::Ui::Windows
 
         void PaintCheckbox(RenderTarget& rt, const ScreenRect& rect, bool checked)
         {
-            GfxFillRectInset(rt, rect, colours[1], INSET_RECT_F_E0);
+            Rectangle::fillInset(
+                rt, rect, colours[1], Rectangle::BorderStyle::inset, Rectangle::FillBrightness::dark,
+                Rectangle::FillMode::dontLightenWhenInset);
             if (checked)
             {
                 auto checkmark = Formatter();

@@ -45,7 +45,7 @@ constexpr RideTypeDescriptor ObservationTowerRTD =
     .BuildCosts = { 18.50_GBP, 0.00_GBP, 4, },
     .DefaultPrices = { 10, 0 },
     .DefaultMusic = kMusicObjectSummer,
-    .PhotoItem = ShopItem::Photo,
+    .PhotoItem = ShopItem::photo,
     .BonusValue = 45,
     .ColourPresets = TRACK_COLOUR_PRESETS(
         { COLOUR_BRIGHT_RED, COLOUR_BLACK, COLOUR_GREY },

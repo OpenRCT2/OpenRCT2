@@ -3553,9 +3553,6 @@ static void MineTrainRCTrackLeftHalfBankedHelixUpLarge(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(20348), { 0, 0, height },
                         { { 16, 16, height + 27 }, { 16, 16, 1 } });
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20178), { 0, 0, height },
-                        { { 16, 16, height + 27 }, { 16, 16, 1 } });
                     WoodenASupportsPaintSetup(
                         session, supportType.wooden, WoodenSupportSubType::corner2, height, session.SupportColours);
                     break;
@@ -3609,9 +3606,6 @@ static void MineTrainRCTrackLeftHalfBankedHelixUpLarge(
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(20347), { 0, 0, height },
-                        { { 0, 0, height + 27 }, { 16, 32, 1 } });
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20177), { 0, 0, height },
                         { { 0, 0, height + 27 }, { 16, 32, 1 } });
                     WoodenASupportsPaintSetup(
                         session, supportType.wooden, WoodenSupportSubType::corner0, height, session.SupportColours);
@@ -3832,9 +3826,6 @@ static void MineTrainRCTrackLeftHalfBankedHelixUpLarge(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(20348), { 0, 0, height },
                         { { 16, 16, height + 27 }, { 16, 16, 1 } });
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20178), { 0, 0, height },
-                        { { 16, 16, height + 27 }, { 16, 16, 1 } });
                     WoodenASupportsPaintSetup(
                         session, supportType.wooden, WoodenSupportSubType::corner2, height, session.SupportColours);
                     break;
@@ -3888,9 +3879,6 @@ static void MineTrainRCTrackLeftHalfBankedHelixUpLarge(
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(20347), { 0, 0, height },
-                        { { 0, 0, height + 27 }, { 32, 16, 1 } });
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(20177), { 0, 0, height },
                         { { 0, 0, height + 27 }, { 32, 16, 1 } });
                     WoodenASupportsPaintSetup(
                         session, supportType.wooden, WoodenSupportSubType::corner0, height, session.SupportColours);
@@ -6980,8 +6968,6 @@ static void MineTrainRCTrackFlatTo60DegUpLongBase(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
@@ -7011,8 +6997,6 @@ static void MineTrainRCTrackFlatTo60DegUpLongBase(
             WoodenASupportsPaintSetupRotated(
                 session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
                 WoodenSupportTransitionType::flatToUp60DegLongBaseSeq1);
-            PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
@@ -7042,8 +7026,6 @@ static void MineTrainRCTrackFlatTo60DegUpLongBase(
             WoodenASupportsPaintSetupRotated(
                 session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
                 WoodenSupportTransitionType::flatToUp60DegLongBaseSeq2);
-            PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 3:
@@ -7082,11 +7064,10 @@ static void MineTrainRCTrackFlatTo60DegUpLongBase(
                     PaintUtilPushTunnelLeft(session, height + 24, kTunnelGroup, TunnelSubType::SlopeEnd);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 80);
             break;
     }
+    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
 }
 static void MineTrainRCTrack60DegUpToFlatLongBase(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
@@ -7125,8 +7106,6 @@ static void MineTrainRCTrack60DegUpToFlatLongBase(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeStart);
             }
-            PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 80);
             break;
         case 1:
@@ -7156,8 +7135,6 @@ static void MineTrainRCTrack60DegUpToFlatLongBase(
             WoodenASupportsPaintSetupRotated(
                 session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
                 WoodenSupportTransitionType::up60DegToFlatLongBaseSeq1);
-            PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 80);
             break;
         case 2:
@@ -7187,8 +7164,6 @@ static void MineTrainRCTrack60DegUpToFlatLongBase(
             WoodenASupportsPaintSetupRotated(
                 session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
                 WoodenSupportTransitionType::up60DegToFlatLongBaseSeq2);
-            PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 3:
@@ -7227,11 +7202,10 @@ static void MineTrainRCTrack60DegUpToFlatLongBase(
                     PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 40);
             break;
     }
+    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
 }
 
 static void MineTrainRCTrackFlatTo60DegDownLongBase(

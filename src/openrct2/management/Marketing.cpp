@@ -83,7 +83,7 @@ uint16_t MarketingGetCampaignGuestGenerationProbability(int32_t campaignType)
 
 static void MarketingRaiseFinishedNotification(const MarketingCampaign& campaign)
 {
-    if (Config::Get().notifications.ParkMarketingCampaignFinished)
+    if (Config::Get().notifications.parkMarketingCampaignFinished)
     {
         Formatter ft;
         // This sets the string parameters for the marketing types that have an argument.
@@ -155,22 +155,22 @@ void MarketingSetGuestCampaign(Guest* peep, int32_t campaignType)
     switch (campaign->Type)
     {
         case ADVERTISING_CAMPAIGN_PARK_ENTRY_FREE:
-            peep->GiveItem(ShopItem::Voucher);
+            peep->GiveItem(ShopItem::voucher);
             peep->VoucherType = VOUCHER_TYPE_PARK_ENTRY_FREE;
             break;
         case ADVERTISING_CAMPAIGN_RIDE_FREE:
-            peep->GiveItem(ShopItem::Voucher);
+            peep->GiveItem(ShopItem::voucher);
             peep->VoucherType = VOUCHER_TYPE_RIDE_FREE;
             peep->VoucherRideId = campaign->RideId;
             peep->GuestHeadingToRideId = campaign->RideId;
             peep->GuestIsLostCountdown = 240;
             break;
         case ADVERTISING_CAMPAIGN_PARK_ENTRY_HALF_PRICE:
-            peep->GiveItem(ShopItem::Voucher);
+            peep->GiveItem(ShopItem::voucher);
             peep->VoucherType = VOUCHER_TYPE_PARK_ENTRY_HALF_PRICE;
             break;
         case ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE:
-            peep->GiveItem(ShopItem::Voucher);
+            peep->GiveItem(ShopItem::voucher);
             peep->VoucherType = VOUCHER_TYPE_FOOD_OR_DRINK_FREE;
             peep->VoucherShopItem = campaign->ShopItemType;
             break;

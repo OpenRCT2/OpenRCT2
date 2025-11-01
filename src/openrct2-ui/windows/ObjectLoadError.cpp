@@ -15,6 +15,7 @@
 #include <openrct2/core/Http.h>
 #include <openrct2/core/Json.hpp>
 #include <openrct2/core/String.hpp>
+#include <openrct2/drawing/Rectangle.h>
 #include <openrct2/drawing/Text.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Formatting.h>
@@ -29,6 +30,8 @@
 #include <sstream>
 #include <string>
 #include <vector>
+
+using namespace OpenRCT2::Drawing;
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -510,7 +513,7 @@ namespace OpenRCT2::Ui::Windows
         void onScrollDraw(const int32_t scrollIndex, RenderTarget& rt) override
         {
             auto rtCoords = ScreenCoordsXY{ rt.x, rt.y };
-            GfxFillRect(
+            Rectangle::fill(
                 rt, { rtCoords, rtCoords + ScreenCoordsXY{ rt.width - 1, rt.height - 1 } },
                 ColourMapA[colours[1].colour].mid_light);
             const int32_t listWidth = widgets[WIDX_SCROLL].width();
@@ -529,11 +532,11 @@ namespace OpenRCT2::Ui::Windows
                                                     { listWidth, screenCoords.y + kScrollableRowHeight - 1 } };
                 // If hovering over item, change the color and fill the backdrop.
                 if (i == selectedListItem)
-                    GfxFillRect(rt, screenRect, ColourMapA[colours[1].colour].darker);
+                    Rectangle::fill(rt, screenRect, ColourMapA[colours[1].colour].darker);
                 else if (i == _highlightedIndex)
-                    GfxFillRect(rt, screenRect, ColourMapA[colours[1].colour].mid_dark);
+                    Rectangle::fill(rt, screenRect, ColourMapA[colours[1].colour].mid_dark);
                 else if ((i & 1) != 0) // odd / even check
-                    GfxFillRect(rt, screenRect, ColourMapA[colours[1].colour].light);
+                    Rectangle::fill(rt, screenRect, ColourMapA[colours[1].colour].light);
 
                 // Draw the actual object entry's name...
                 screenCoords.x = kNameColLeft - 3;

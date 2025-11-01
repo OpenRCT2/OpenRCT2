@@ -211,27 +211,27 @@ static void ChairliftPaintStationNeSw(
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 13, height + 22 }, { 32, 6, 1 } });
     }
 
-    imageId = session.SupportColours.WithIndex(SPR_FLOOR_METAL);
+    imageId = session.SupportColours.WithIndex(SPR_FLOOR_TILE_CHEQUERBOARD);
     PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 0, height }, { 32, 32, 1 } });
 
     bool hasFence = TrackPaintUtilHasFence(EDGE_NW, pos, trackElement, ride, session.CurrentRotation);
     if (hasFence)
     {
-        imageId = session.TrackColours.WithIndex(SPR_FENCE_METAL_NW);
+        imageId = session.TrackColours.WithIndex(SPR_FENCE_PICKET_NW);
         PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { 0, 2, height + 2 }, { 32, 1, 7 } });
     }
     TrackPaintUtilDrawStationCovers(session, EDGE_NW, hasFence, stationObj, height, stationColour);
 
     if ((direction == 2 && isStart) || (direction == 0 && isEnd))
     {
-        imageId = session.TrackColours.WithIndex(SPR_FENCE_METAL_NE);
+        imageId = session.TrackColours.WithIndex(SPR_FENCE_PICKET_NE);
         PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { 2, 2, height + 4 }, { 1, 28, 7 } });
     }
 
     hasFence = TrackPaintUtilHasFence(EDGE_SE, pos, trackElement, ride, session.CurrentRotation);
     if (hasFence)
     {
-        imageId = session.TrackColours.WithIndex(SPR_FENCE_METAL_SE);
+        imageId = session.TrackColours.WithIndex(SPR_FENCE_PICKET_SE);
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 30, height + 2 }, { 32, 1, 20 } });
     }
     TrackPaintUtilDrawStationCovers(session, EDGE_SE, hasFence, stationObj, height, stationColour);
@@ -240,7 +240,7 @@ static void ChairliftPaintStationNeSw(
     bool drawBackColumn = true;
     if ((direction == 0 && isStart) || (direction == 2 && isEnd))
     {
-        imageId = session.TrackColours.WithIndex(SPR_FENCE_METAL_SW);
+        imageId = session.TrackColours.WithIndex(SPR_FENCE_PICKET_SW);
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 30, 2, height + 4 }, { 1, 28, 27 } });
 
         imageId = session.TrackColours.WithIndex(chairlift_bullwheel_frames[ride.chairliftBullwheelRotation / 16384]);
@@ -304,27 +304,27 @@ static void ChairliftPaintStationSeNw(
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 13, 0, height + 22 }, { 6, 32, 1 } });
     }
 
-    imageId = session.SupportColours.WithIndex(SPR_FLOOR_METAL);
+    imageId = session.SupportColours.WithIndex(SPR_FLOOR_TILE_CHEQUERBOARD);
     PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 0, height }, { 32, 32, 1 } });
 
     bool hasFence = TrackPaintUtilHasFence(EDGE_NE, pos, trackElement, ride, session.CurrentRotation);
     if (hasFence)
     {
-        imageId = session.TrackColours.WithIndex(SPR_FENCE_METAL_NE);
+        imageId = session.TrackColours.WithIndex(SPR_FENCE_PICKET_NE);
         PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { 2, 0, height + 2 }, { 1, 32, 7 } });
     }
     TrackPaintUtilDrawStationCovers(session, EDGE_NE, hasFence, stationObj, height, stationColour);
 
     if ((direction == 1 && isStart) || (direction == 3 && isEnd))
     {
-        imageId = session.TrackColours.WithIndex(SPR_FENCE_METAL_NW);
+        imageId = session.TrackColours.WithIndex(SPR_FENCE_PICKET_NW);
         PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { 2, 2, height + 4 }, { 28, 1, 7 } });
     }
 
     hasFence = TrackPaintUtilHasFence(EDGE_SW, pos, trackElement, ride, session.CurrentRotation);
     if (hasFence)
     {
-        imageId = session.TrackColours.WithIndex(SPR_FENCE_METAL_SW);
+        imageId = session.TrackColours.WithIndex(SPR_FENCE_PICKET_SW);
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 30, 0, height + 2 }, { 1, 32, 20 } });
     }
     TrackPaintUtilDrawStationCovers(session, EDGE_SW, hasFence, stationObj, height, stationColour);
@@ -343,7 +343,7 @@ static void ChairliftPaintStationSeNw(
     }
     else if ((direction == 3 && isStart) || (direction == 1 && isEnd))
     {
-        imageId = session.TrackColours.WithIndex(SPR_FENCE_METAL_SE);
+        imageId = session.TrackColours.WithIndex(SPR_FENCE_PICKET_SE);
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 2, 30, height + 4 }, { 28, 1, 27 } });
 
         imageId = session.TrackColours.WithIndex(chairlift_bullwheel_frames[ride.chairliftBullwheelRotation / 16384]);

@@ -56,7 +56,7 @@ constexpr RideTypeDescriptor LayDownRollerCoasterRTD =
     .BuildCosts = { 53.50_GBP, 2.50_GBP, 50, },
     .DefaultPrices = { 20, 20 },
     .DefaultMusic = kMusicObjectRock1,
-    .PhotoItem = ShopItem::Photo2,
+    .PhotoItem = ShopItem::photo2,
     .BonusValue = 100,
     .ColourPresets = TRACK_COLOUR_PRESETS(
         { COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED, COLOUR_YELLOW },
@@ -127,7 +127,7 @@ constexpr RideTypeDescriptor LayDownRollerCoasterAltRTD =
     .BuildCosts = { 53.50_GBP, 2.50_GBP, 50, },
     .DefaultPrices = { 20, 20 },
     .DefaultMusic = kMusicObjectRock1,
-    .PhotoItem = ShopItem::Photo2,
+    .PhotoItem = ShopItem::photo2,
     .BonusValue = 100,
     .ColourPresets = TRACK_COLOUR_PRESETS(
         { COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED, COLOUR_YELLOW },

@@ -43,7 +43,7 @@ constexpr RideTypeDescriptor MiniGolfRTD =
     .BuildCosts = { 25.00_GBP, 3.50_GBP, 20, },
     .DefaultPrices = { 10, 0 },
     .DefaultMusic = kMusicObjectSummer,
-    .PhotoItem = ShopItem::Photo,
+    .PhotoItem = ShopItem::photo,
     .BonusValue = 23,
     .ColourPresets = TRACK_COLOUR_PRESETS(
         { COLOUR_SATURATED_GREEN, COLOUR_DARK_BROWN, COLOUR_BLACK },

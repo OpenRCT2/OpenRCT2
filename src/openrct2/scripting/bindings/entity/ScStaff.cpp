@@ -54,15 +54,15 @@ namespace OpenRCT2::Scripting
         {
             switch (peep->AssignedStaffType)
             {
-                case StaffType::Handyman:
+                case StaffType::handyman:
                     return "handyman";
-                case StaffType::Mechanic:
+                case StaffType::mechanic:
                     return "mechanic";
-                case StaffType::Security:
+                case StaffType::security:
                     return "security";
-                case StaffType::Entertainer:
+                case StaffType::entertainer:
                     return "entertainer";
-                case StaffType::Count:
+                case StaffType::count:
                     break;
             }
         }
@@ -75,34 +75,34 @@ namespace OpenRCT2::Scripting
         auto peep = GetStaff();
         if (peep != nullptr)
         {
-            if (value == "handyman" && peep->AssignedStaffType != StaffType::Handyman)
+            if (value == "handyman" && peep->AssignedStaffType != StaffType::handyman)
             {
-                peep->AssignedStaffType = StaffType::Handyman;
-                peep->AnimationObjectIndex = findPeepAnimationsIndexForType(AnimationPeepType::Handyman);
-                peep->AnimationGroup = PeepAnimationGroup::Normal;
+                peep->AssignedStaffType = StaffType::handyman;
+                peep->AnimationObjectIndex = findPeepAnimationsIndexForType(AnimationPeepType::handyman);
+                peep->AnimationGroup = PeepAnimationGroup::normal;
             }
             else if (value == "mechanic" && !peep->IsMechanic())
             {
-                peep->AssignedStaffType = StaffType::Mechanic;
-                peep->AnimationObjectIndex = findPeepAnimationsIndexForType(AnimationPeepType::Mechanic);
-                peep->AnimationGroup = PeepAnimationGroup::Normal;
+                peep->AssignedStaffType = StaffType::mechanic;
+                peep->AnimationObjectIndex = findPeepAnimationsIndexForType(AnimationPeepType::mechanic);
+                peep->AnimationGroup = PeepAnimationGroup::normal;
             }
-            else if (value == "security" && peep->AssignedStaffType != StaffType::Security)
+            else if (value == "security" && peep->AssignedStaffType != StaffType::security)
             {
-                peep->AssignedStaffType = StaffType::Security;
-                peep->AnimationObjectIndex = findPeepAnimationsIndexForType(AnimationPeepType::Security);
-                peep->AnimationGroup = PeepAnimationGroup::Normal;
+                peep->AssignedStaffType = StaffType::security;
+                peep->AnimationObjectIndex = findPeepAnimationsIndexForType(AnimationPeepType::security);
+                peep->AnimationGroup = PeepAnimationGroup::normal;
             }
             else if (value == "entertainer" && !peep->isEntertainer())
             {
-                peep->AssignedStaffType = StaffType::Entertainer;
-                peep->AnimationObjectIndex = findPeepAnimationsIndexForType(AnimationPeepType::Entertainer);
-                peep->AnimationGroup = PeepAnimationGroup::Normal;
+                peep->AssignedStaffType = StaffType::entertainer;
+                peep->AnimationObjectIndex = findPeepAnimationsIndexForType(AnimationPeepType::entertainer);
+                peep->AnimationGroup = PeepAnimationGroup::normal;
             }
 
             // Reset state to walking to prevent invalid actions from carrying over
-            peep->Action = PeepActionType::Walking;
-            peep->AnimationType = peep->NextAnimationType = PeepAnimationType::Walking;
+            peep->Action = PeepActionType::walking;
+            peep->AnimationType = peep->NextAnimationType = PeepAnimationType::walking;
             peep->Invalidate();
         }
     }
@@ -203,7 +203,7 @@ namespace OpenRCT2::Scripting
         }
         else if (value.type() == DukValue::Type::NUMBER)
         {
-            auto target = RCT12PeepAnimationGroup(value.as_uint() + EnumValue(RCT12PeepAnimationGroup::EntertainerPanda));
+            auto target = RCT12PeepAnimationGroup(value.as_uint() + EnumValue(RCT12PeepAnimationGroup::entertainerPanda));
             costume = std::find_if(
                 costumes.begin(), costumes.end(), [target](auto& candidate) { return candidate.legacyPosition == target; });
         }
@@ -242,18 +242,18 @@ namespace OpenRCT2::Scripting
         AnimationPeepType animPeepType{};
         switch (staffType)
         {
-            case StaffType::Handyman:
-                animPeepType = AnimationPeepType::Handyman;
+            case StaffType::handyman:
+                animPeepType = AnimationPeepType::handyman;
                 break;
-            case StaffType::Mechanic:
-                animPeepType = AnimationPeepType::Mechanic;
+            case StaffType::mechanic:
+                animPeepType = AnimationPeepType::mechanic;
                 break;
-            case StaffType::Security:
-                animPeepType = AnimationPeepType::Security;
+            case StaffType::security:
+                animPeepType = AnimationPeepType::security;
                 break;
-            case StaffType::Entertainer:
+            case StaffType::entertainer:
             default:
-                animPeepType = AnimationPeepType::Entertainer;
+                animPeepType = AnimationPeepType::entertainer;
         }
         return getAnimationsByPeepType(animPeepType);
     }
@@ -295,10 +295,10 @@ namespace OpenRCT2::Scripting
         auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(peep->AnimationObjectIndex);
 
         const auto& animationGroup = animObj->GetPeepAnimation(peep->AnimationGroup, *animationType);
-        for (auto frameOffset : animationGroup.frame_offsets)
+        for (auto frameOffset : animationGroup.frameOffsets)
         {
-            auto imageId = animationGroup.base_image;
-            if (animationType != PeepAnimationType::Hanging)
+            auto imageId = animationGroup.baseImage;
+            if (animationType != PeepAnimationType::hanging)
                 imageId += rotation + frameOffset * 4;
             else
                 imageId += frameOffset;
@@ -346,7 +346,7 @@ namespace OpenRCT2::Scripting
         auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(peep->AnimationObjectIndex);
 
         const auto& animationGroup = animObj->GetPeepAnimation(peep->AnimationGroup, peep->AnimationType);
-        peep->AnimationImageIdOffset = animationGroup.frame_offsets[offset];
+        peep->AnimationImageIdOffset = animationGroup.frameOffsets[offset];
         peep->Invalidate();
         peep->UpdateSpriteBoundingBox();
         peep->Invalidate();
@@ -376,7 +376,7 @@ namespace OpenRCT2::Scripting
         auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(peep->AnimationObjectIndex);
 
         const auto& animationGroup = animObj->GetPeepAnimation(peep->AnimationGroup, peep->AnimationType);
-        auto length = animationGroup.frame_offsets.size();
+        auto length = animationGroup.frameOffsets.size();
         offset %= length;
 
         if (peep->IsActionWalking())
@@ -384,7 +384,7 @@ namespace OpenRCT2::Scripting
         else
             peep->AnimationFrameNum = offset;
 
-        peep->AnimationImageIdOffset = animationGroup.frame_offsets[offset];
+        peep->AnimationImageIdOffset = animationGroup.frameOffsets[offset];
         peep->Invalidate();
         peep->UpdateSpriteBoundingBox();
         peep->Invalidate();
@@ -402,7 +402,7 @@ namespace OpenRCT2::Scripting
         auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(peep->AnimationObjectIndex);
 
         const auto& animationGroup = animObj->GetPeepAnimation(peep->AnimationGroup, peep->AnimationType);
-        return static_cast<uint8_t>(animationGroup.frame_offsets.size());
+        return static_cast<uint8_t>(animationGroup.frameOffsets.size());
     }
 
     ScHandyman::ScHandyman(EntityId Id)
@@ -429,7 +429,7 @@ namespace OpenRCT2::Scripting
         auto& scriptEngine = GetContext()->GetScriptEngine();
         auto* ctx = scriptEngine.GetContext();
         auto peep = GetHandyman();
-        if (peep != nullptr && peep->AssignedStaffType == StaffType::Handyman)
+        if (peep != nullptr && peep->AssignedStaffType == StaffType::handyman)
         {
             duk_push_uint(ctx, peep->StaffLawnsMown);
         }
@@ -445,7 +445,7 @@ namespace OpenRCT2::Scripting
         auto& scriptEngine = GetContext()->GetScriptEngine();
         auto* ctx = scriptEngine.GetContext();
         auto peep = GetHandyman();
-        if (peep != nullptr && peep->AssignedStaffType == StaffType::Handyman)
+        if (peep != nullptr && peep->AssignedStaffType == StaffType::handyman)
         {
             duk_push_uint(ctx, peep->StaffGardensWatered);
         }
@@ -461,7 +461,7 @@ namespace OpenRCT2::Scripting
         auto& scriptEngine = GetContext()->GetScriptEngine();
         auto* ctx = scriptEngine.GetContext();
         auto peep = GetHandyman();
-        if (peep != nullptr && peep->AssignedStaffType == StaffType::Handyman)
+        if (peep != nullptr && peep->AssignedStaffType == StaffType::handyman)
         {
             duk_push_uint(ctx, peep->StaffLitterSwept);
         }
@@ -477,7 +477,7 @@ namespace OpenRCT2::Scripting
         auto& scriptEngine = GetContext()->GetScriptEngine();
         auto* ctx = scriptEngine.GetContext();
         auto peep = GetHandyman();
-        if (peep != nullptr && peep->AssignedStaffType == StaffType::Handyman)
+        if (peep != nullptr && peep->AssignedStaffType == StaffType::handyman)
         {
             duk_push_uint(ctx, peep->StaffBinsEmptied);
         }
@@ -558,7 +558,7 @@ namespace OpenRCT2::Scripting
         auto& scriptEngine = GetContext()->GetScriptEngine();
         auto* ctx = scriptEngine.GetContext();
         auto peep = GetSecurity();
-        if (peep != nullptr && peep->AssignedStaffType == StaffType::Security)
+        if (peep != nullptr && peep->AssignedStaffType == StaffType::security)
         {
             duk_push_uint(ctx, peep->StaffVandalsStopped);
         }
@@ -606,9 +606,9 @@ namespace OpenRCT2::Scripting
             else
             {
                 auto mapRange = FromDuk<MapRange>(coordsOrRange);
-                for (int32_t y = mapRange.GetTop(); y <= mapRange.GetBottom(); y += kCoordsXYStep)
+                for (int32_t y = mapRange.GetY1(); y <= mapRange.GetY2(); y += kCoordsXYStep)
                 {
-                    for (int32_t x = mapRange.GetLeft(); x <= mapRange.GetRight(); x += kCoordsXYStep)
+                    for (int32_t x = mapRange.GetX1(); x <= mapRange.GetX2(); x += kCoordsXYStep)
                     {
                         CoordsXY coord(x, y);
                         staff->SetPatrolArea(coord, value);

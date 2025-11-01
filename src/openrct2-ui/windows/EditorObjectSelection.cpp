@@ -27,6 +27,7 @@
 #include <openrct2/core/EnumUtils.hpp>
 #include <openrct2/core/Path.hpp>
 #include <openrct2/core/String.hpp>
+#include <openrct2/drawing/Rectangle.h>
 #include <openrct2/drawing/Text.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/object/ClimateObject.h>
@@ -45,6 +46,8 @@
 #include <span>
 #include <string>
 #include <vector>
+
+using namespace OpenRCT2::Drawing;
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -277,7 +280,7 @@ namespace OpenRCT2::Ui::Windows
             Sub6AB211();
             ResetSelectedObjectCountAndSize();
 
-            _filterFlags = FILTER_RIDES_ALL | Config::Get().interface.ObjectSelectionFilterFlags;
+            _filterFlags = FILTER_RIDES_ALL | Config::Get().interface.objectSelectionFilterFlags;
             _filter.clear();
 
             WindowInitScrollWidgets(*this);
@@ -411,7 +414,7 @@ namespace OpenRCT2::Ui::Windows
                     _filterFlags &= ~FILTER_RIDES_ALL;
                     _filterFlags |= subTabDef.flagFilter;
 
-                    Config::Get().interface.ObjectSelectionFilterFlags = _filterFlags;
+                    Config::Get().interface.objectSelectionFilterFlags = _filterFlags;
                     Config::Save();
 
                     VisibleListRefresh();
@@ -572,7 +575,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         _filterFlags ^= (1 << dropdownIndex);
                     }
-                    Config::Get().interface.ObjectSelectionFilterFlags = _filterFlags;
+                    Config::Get().interface.objectSelectionFilterFlags = _filterFlags;
                     Config::Save();
 
                     scrolls->contentOffsetY = 0;
@@ -739,8 +742,10 @@ namespace OpenRCT2::Ui::Windows
                 {
                     // Draw checkbox
                     if (!(gLegacyScene == LegacyScene::trackDesignsManager) && !(*listItem.flags & 0x20))
-                        GfxFillRectInset(
-                            rt, { { 2, screenCoords.y }, { 11, screenCoords.y + 10 } }, colours[1], INSET_RECT_F_E0);
+                        Rectangle::fillInset(
+                            rt, { { 2, screenCoords.y }, { 11, screenCoords.y + 10 } }, colours[1],
+                            Rectangle::BorderStyle::inset, Rectangle::FillBrightness::dark,
+                            Rectangle::FillMode::dontLightenWhenInset);
 
                     // Highlight background
                     auto highlighted = i == static_cast<size_t>(selectedListItem)
@@ -748,7 +753,7 @@ namespace OpenRCT2::Ui::Windows
                     if (highlighted)
                     {
                         auto bottom = screenCoords.y + (kScrollableRowHeight - 1);
-                        GfxFilterRect(rt, { 0, screenCoords.y, width, bottom }, FilterPaletteID::paletteDarken1);
+                        Rectangle::filter(rt, { 0, screenCoords.y, width, bottom }, FilterPaletteID::paletteDarken1);
                     }
 
                     // Draw checkmark
@@ -923,7 +928,7 @@ namespace OpenRCT2::Ui::Windows
                     widget.type = WidgetType::empty;
             }
 
-            if (Config::Get().general.DebuggingTools)
+            if (Config::Get().general.debuggingTools)
                 widgets[WIDX_RELOAD_OBJECT].type = WidgetType::imgBtn;
             else
                 widgets[WIDX_RELOAD_OBJECT].type = WidgetType::empty;
@@ -1057,7 +1062,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Preview background
             const auto& previewWidget = widgets[WIDX_PREVIEW];
-            GfxFillRect(
+            Rectangle::fill(
                 rt,
                 { windowPos + ScreenCoordsXY{ previewWidget.left + 1, previewWidget.top + 1 },
                   windowPos + ScreenCoordsXY{ previewWidget.right - 1, previewWidget.bottom - 1 } },
@@ -1288,12 +1293,12 @@ namespace OpenRCT2::Ui::Windows
             {
                 auto* rideObject = reinterpret_cast<RideObject*>(_loadedObject.get());
                 const auto& rideEntry = rideObject->GetEntry();
-                if (rideEntry.shop_item[0] != ShopItem::None)
+                if (rideEntry.shop_item[0] != ShopItem::none)
                 {
                     std::string sells = "";
                     for (size_t i = 0; i < std::size(rideEntry.shop_item); i++)
                     {
-                        if (rideEntry.shop_item[i] == ShopItem::None)
+                        if (rideEntry.shop_item[i] == ShopItem::none)
                             continue;
 
                         if (!sells.empty())
@@ -1337,15 +1342,15 @@ namespace OpenRCT2::Ui::Windows
         {
             switch (type)
             {
-                case AnimationPeepType::Handyman:
+                case AnimationPeepType::handyman:
                     return STR_HANDYMAN_PLURAL;
-                case AnimationPeepType::Mechanic:
+                case AnimationPeepType::mechanic:
                     return STR_MECHANIC_PLURAL;
-                case AnimationPeepType::Security:
+                case AnimationPeepType::security:
                     return STR_SECURITY_GUARD_PLURAL;
-                case AnimationPeepType::Entertainer:
+                case AnimationPeepType::entertainer:
                     return STR_ENTERTAINER_PLURAL;
-                case AnimationPeepType::Guest:
+                case AnimationPeepType::guest:
                 default:
                     return STR_GUESTS;
             }
@@ -1497,21 +1502,21 @@ namespace OpenRCT2::Ui::Windows
         bool SourcesMatch(ObjectSourceGame source)
         {
             // clang-format off
-            return (IsFilterActive(FILTER_RCT1) && source == ObjectSourceGame::RCT1) ||
-                   (IsFilterActive(FILTER_AA)   && source == ObjectSourceGame::AddedAttractions) ||
-                   (IsFilterActive(FILTER_LL)   && source == ObjectSourceGame::LoopyLandscapes) ||
-                   (IsFilterActive(FILTER_RCT2) && source == ObjectSourceGame::RCT2) ||
-                   (IsFilterActive(FILTER_WW)   && source == ObjectSourceGame::WackyWorlds) ||
-                   (IsFilterActive(FILTER_TT)   && source == ObjectSourceGame::TimeTwister) ||
-                   (IsFilterActive(FILTER_OO)   && source == ObjectSourceGame::OpenRCT2Official) ||
+            return (IsFilterActive(FILTER_RCT1) && source == ObjectSourceGame::rct1) ||
+                   (IsFilterActive(FILTER_AA)   && source == ObjectSourceGame::addedAttractions) ||
+                   (IsFilterActive(FILTER_LL)   && source == ObjectSourceGame::loopyLandscapes) ||
+                   (IsFilterActive(FILTER_RCT2) && source == ObjectSourceGame::rct2) ||
+                   (IsFilterActive(FILTER_WW)   && source == ObjectSourceGame::wackyWorlds) ||
+                   (IsFilterActive(FILTER_TT)   && source == ObjectSourceGame::timeTwister) ||
+                   (IsFilterActive(FILTER_OO)   && source == ObjectSourceGame::openRCT2Official) ||
                    (IsFilterActive(FILTER_CUSTOM) &&
-                        source != ObjectSourceGame::RCT1 &&
-                        source != ObjectSourceGame::AddedAttractions &&
-                        source != ObjectSourceGame::LoopyLandscapes &&
-                        source != ObjectSourceGame::RCT2 &&
-                        source != ObjectSourceGame::WackyWorlds &&
-                        source != ObjectSourceGame::TimeTwister &&
-                        source != ObjectSourceGame::OpenRCT2Official);
+                        source != ObjectSourceGame::rct1 &&
+                        source != ObjectSourceGame::addedAttractions &&
+                        source != ObjectSourceGame::loopyLandscapes &&
+                        source != ObjectSourceGame::rct2 &&
+                        source != ObjectSourceGame::wackyWorlds &&
+                        source != ObjectSourceGame::timeTwister &&
+                        source != ObjectSourceGame::openRCT2Official);
             // clang-format on
         }
 

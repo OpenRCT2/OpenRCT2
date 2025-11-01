@@ -21,6 +21,7 @@
 #include <openrct2/SpriteIds.h>
 #include <openrct2/actions/TileModifyAction.h>
 #include <openrct2/core/Guard.hpp>
+#include <openrct2/drawing/Rectangle.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/object/FootpathObject.h>
 #include <openrct2/object/FootpathRailingsObject.h>
@@ -53,6 +54,8 @@
 #include <openrct2/world/tile_element/SurfaceElement.h>
 #include <openrct2/world/tile_element/TrackElement.h>
 #include <openrct2/world/tile_element/WallElement.h>
+
+using namespace OpenRCT2::Drawing;
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -1584,7 +1587,7 @@ static uint64_t PageDisabledWidgets[] = {
         void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
             const int32_t listWidth = widgets[WIDX_LIST].width();
-            GfxFillRect(
+            Rectangle::fill(
                 rt, { { rt.x, rt.y }, { rt.x + rt.width - 1, rt.y + rt.height - 1 } }, ColourMapA[colours[1].colour].mid_light);
 
             // Show usage hint when nothing is selected
@@ -1619,12 +1622,12 @@ static uint64_t PageDisabledWidgets[] = {
                 auto fillRectangle = ScreenRect{ { 0, screenCoords.y },
                                                  { listWidth, screenCoords.y + kScrollableRowHeight - 1 } };
                 if (selectedRow)
-                    GfxFillRect(rt, fillRectangle, ColourMapA[colours[1].colour].mid_dark);
+                    Rectangle::fill(rt, fillRectangle, ColourMapA[colours[1].colour].mid_dark);
                 else if (hoveredRow)
-                    GfxFillRect(rt, fillRectangle, ColourMapA[colours[1].colour].mid_dark | 0x1000000);
+                    Rectangle::fill(rt, fillRectangle, ColourMapA[colours[1].colour].mid_dark | 0x1000000);
                 // Zebra stripes
                 else if (((windowTileInspectorElementCount - i) & 1) == 0)
-                    GfxFillRect(rt, fillRectangle, ColourMapA[colours[1].colour].light | 0x1000000);
+                    Rectangle::fill(rt, fillRectangle, ColourMapA[colours[1].colour].light | 0x1000000);
 
                 StringId stringFormat = STR_WINDOW_COLOUR_2_STRINGID;
                 if (selectedRow || hoveredRow)
@@ -1635,7 +1638,9 @@ static uint64_t PageDisabledWidgets[] = {
                 checkboxFormatter.Add<char*>(kCheckMarkString);
 
                 // Draw checkbox and check if visible
-                GfxFillRectInset(rt, { { 2, screenCoords.y }, { 15, screenCoords.y + 11 } }, colours[1], INSET_RECT_F_E0);
+                Rectangle::fillInset(
+                    rt, { { 2, screenCoords.y }, { 15, screenCoords.y + 11 } }, colours[1], Rectangle::BorderStyle::inset,
+                    Rectangle::FillBrightness::dark, Rectangle::FillMode::dontLightenWhenInset);
                 if (!tileElement->IsInvisible())
                 {
                     auto eyeFormatter = Formatter();

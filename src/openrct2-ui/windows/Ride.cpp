@@ -40,6 +40,7 @@
 #include <openrct2/config/Config.h>
 #include <openrct2/core/String.hpp>
 #include <openrct2/core/UnitConversion.h>
+#include <openrct2/drawing/Rectangle.h>
 #include <openrct2/entity/EntityList.h>
 #include <openrct2/entity/Staff.h>
 #include <openrct2/localisation/Currency.h>
@@ -76,6 +77,7 @@
 #include <string_view>
 #include <vector>
 
+using namespace OpenRCT2::Drawing;
 using namespace OpenRCT2::TrackMetaData;
 
 namespace OpenRCT2::Ui::Windows
@@ -1326,8 +1328,8 @@ namespace OpenRCT2::Ui::Windows
                 if (page == WINDOW_RIDE_PAGE_CUSTOMER)
                     spriteIndex = pickedPeepFrame & ~3;
 
-                auto* animObj = findPeepAnimationsObjectForType(AnimationPeepType::Guest);
-                spriteIndex += animObj->GetPeepAnimation(PeepAnimationGroup::Normal).base_image + 1;
+                auto* animObj = findPeepAnimationsObjectForType(AnimationPeepType::guest);
+                spriteIndex += animObj->GetPeepAnimation(PeepAnimationGroup::normal).baseImage + 1;
 
                 GfxDrawSprite(
                     rt, ImageId(spriteIndex, COLOUR_BRIGHT_RED, COLOUR_TEAL),
@@ -1565,7 +1567,7 @@ namespace OpenRCT2::Ui::Windows
                 newViewportFlags = viewport->flags;
                 removeViewport();
             }
-            else if (Config::Get().general.AlwaysShowGridlines)
+            else if (Config::Get().general.alwaysShowGridlines)
             {
                 newViewportFlags |= VIEWPORT_FLAG_GRIDLINES;
             }
@@ -2952,7 +2954,7 @@ namespace OpenRCT2::Ui::Windows
             const auto* rideEntry = ride->getRideEntry();
 
             // Background
-            GfxFillRect(rt, { { rt.x, rt.y }, { rt.x + rt.width, rt.y + rt.height } }, PaletteIndex::pi12);
+            Rectangle::fill(rt, { { rt.x, rt.y }, { rt.x + rt.width, rt.y + rt.height } }, PaletteIndex::pi12);
 
             Widget* widget = &widgets[WIDX_VEHICLE_TRAINS_PREVIEW];
             int32_t startX = std::max(2, (widget->width() - ((ride->numTrains - 1) * 36)) / 2 - 25);
@@ -3690,11 +3692,11 @@ namespace OpenRCT2::Ui::Windows
 
             // Horizontal rule between mode settings and depart settings
             auto ruleStart = widgets[WIDX_LOAD_DROPDOWN].top - 8;
-            GfxFillRectInset(
+            Rectangle::fillInset(
                 rt,
                 { windowPos + ScreenCoordsXY{ widgets[WIDX_PAGE_BACKGROUND].left + 4, ruleStart },
                   windowPos + ScreenCoordsXY{ widgets[WIDX_PAGE_BACKGROUND].right - 5, ruleStart + 1 } },
-                colours[1], INSET_RECT_FLAG_BORDER_INSET);
+                colours[1], Rectangle::BorderStyle::inset);
 
             // Number of block sections
             if (ride->isBlockSectioned())
@@ -3997,7 +3999,7 @@ namespace OpenRCT2::Ui::Windows
 
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_10);
 
-            if (Config::Get().general.DebuggingTools && Network::GetMode() == Network::Mode::none)
+            if (Config::Get().general.debuggingTools && Network::GetMode() == Network::Mode::none)
             {
                 widgets[WIDX_FORCE_BREAKDOWN].type = WidgetType::flatBtn;
             }
@@ -4823,7 +4825,7 @@ namespace OpenRCT2::Ui::Windows
             // Track / shop item preview
             const auto& trackPreviewWidget = widgets[WIDX_TRACK_PREVIEW];
             if (trackPreviewWidget.type != WidgetType::empty)
-                GfxFillRect(
+                Rectangle::fill(
                     rt,
                     { { windowPos + ScreenCoordsXY{ trackPreviewWidget.left + 1, trackPreviewWidget.top + 1 } },
                       { windowPos + ScreenCoordsXY{ trackPreviewWidget.right - 1, trackPreviewWidget.bottom - 1 } } },
@@ -4833,7 +4835,7 @@ namespace OpenRCT2::Ui::Windows
 
             //
             auto rideEntry = ride->getRideEntry();
-            if (rideEntry == nullptr || rideEntry->shop_item[0] == ShopItem::None)
+            if (rideEntry == nullptr || rideEntry->shop_item[0] == ShopItem::none)
             {
                 auto screenCoords = windowPos + ScreenCoordsXY{ trackPreviewWidget.left, trackPreviewWidget.top };
 
@@ -4866,7 +4868,7 @@ namespace OpenRCT2::Ui::Windows
                     + ScreenCoordsXY{ (trackPreviewWidget.left + trackPreviewWidget.right) / 2 - 8,
                                       (trackPreviewWidget.bottom + trackPreviewWidget.top) / 2 - 6 };
 
-                ShopItem shopItem = rideEntry->shop_item[1] == ShopItem::None ? rideEntry->shop_item[0]
+                ShopItem shopItem = rideEntry->shop_item[1] == ShopItem::none ? rideEntry->shop_item[0]
                                                                               : rideEntry->shop_item[1];
                 if (ride->hasLifecycleFlag(RIDE_LIFECYCLE_RANDOM_SHOP_COLOURS))
                 {
@@ -4931,7 +4933,7 @@ namespace OpenRCT2::Ui::Windows
             auto vehicleColour = RideGetVehicleColour(*ride, _vehicleIndex);
 
             // Background colour
-            GfxFillRect(rt, { { rt.x, rt.y }, { rt.x + rt.width - 1, rt.y + rt.height - 1 } }, PaletteIndex::pi12);
+            Rectangle::fill(rt, { { rt.x, rt.y }, { rt.x + rt.width - 1, rt.y + rt.height - 1 } }, PaletteIndex::pi12);
 
             // ?
             auto screenCoords = ScreenCoordsXY{ vehiclePreviewWidget->width() / 2, vehiclePreviewWidget->height() - 15 };
@@ -5618,8 +5620,8 @@ namespace OpenRCT2::Ui::Windows
 
                 widgetCoords.x = windowPos.x + 4;
                 widgetCoords.y = windowPos.y + widgets[WIDX_SELECT_NEARBY_SCENERY].bottom + 17;
-                GfxFillRectInset(
-                    rt, { widgetCoords, { windowPos.x + 312, widgetCoords.y + 1 } }, colours[1], INSET_RECT_FLAG_BORDER_INSET);
+                Rectangle::fillInset(
+                    rt, { widgetCoords, { windowPos.x + 312, widgetCoords.y + 1 } }, colours[1], Rectangle::BorderStyle::inset);
             }
             else
             {
@@ -5667,9 +5669,9 @@ namespace OpenRCT2::Ui::Windows
                     screenCoords.y += 2 * kListRowHeight;
 
                     // Horizontal rule
-                    GfxFillRectInset(
+                    Rectangle::fillInset(
                         rt, { screenCoords - ScreenCoordsXY{ 0, 6 }, screenCoords + ScreenCoordsXY{ 303, -5 } }, colours[1],
-                        INSET_RECT_FLAG_BORDER_INSET);
+                        Rectangle::BorderStyle::inset);
 
                     if (!(ride->lifecycleFlags & RIDE_LIFECYCLE_NO_RAW_STATS))
                     {
@@ -6086,11 +6088,11 @@ namespace OpenRCT2::Ui::Windows
                 {
                     auto coord1 = ScreenCoordsXY{ x, rt.y };
                     auto coord2 = ScreenCoordsXY{ x, rt.y + rt.height - 1 };
-                    GfxFillRect(rt, { coord1, coord2 }, lightColour);
-                    GfxFillRect(rt, { coord1 + ScreenCoordsXY{ 16, 0 }, coord2 + ScreenCoordsXY{ 16, 0 } }, darkColour);
-                    GfxFillRect(rt, { coord1 + ScreenCoordsXY{ 32, 0 }, coord2 + ScreenCoordsXY{ 32, 0 } }, darkColour);
-                    GfxFillRect(rt, { coord1 + ScreenCoordsXY{ 48, 0 }, coord2 + ScreenCoordsXY{ 48, 0 } }, darkColour);
-                    GfxFillRect(rt, { coord1 + ScreenCoordsXY{ 64, 0 }, coord2 + ScreenCoordsXY{ 64, 0 } }, darkColour);
+                    Rectangle::fill(rt, { coord1, coord2 }, lightColour);
+                    Rectangle::fill(rt, { coord1 + ScreenCoordsXY{ 16, 0 }, coord2 + ScreenCoordsXY{ 16, 0 } }, darkColour);
+                    Rectangle::fill(rt, { coord1 + ScreenCoordsXY{ 32, 0 }, coord2 + ScreenCoordsXY{ 32, 0 } }, darkColour);
+                    Rectangle::fill(rt, { coord1 + ScreenCoordsXY{ 48, 0 }, coord2 + ScreenCoordsXY{ 48, 0 } }, darkColour);
+                    Rectangle::fill(rt, { coord1 + ScreenCoordsXY{ 64, 0 }, coord2 + ScreenCoordsXY{ 64, 0 } }, darkColour);
                 }
                 time += 5;
             }
@@ -6112,7 +6114,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 // Minor / major line
                 int32_t colour = yUnit == 0 ? lightColour : darkColour;
-                GfxFillRect(rt, { { rt.x, y }, { rt.x + rt.width - 1, y } }, colour);
+                Rectangle::fill(rt, { { rt.x, y }, { rt.x + rt.width - 1, y } }, colour);
 
                 int16_t scaled_yUnit = yUnit;
                 // Scale modifier
@@ -6196,7 +6198,7 @@ namespace OpenRCT2::Ui::Windows
                 const bool previousMeasurement = x > measurement->current_item;
 
                 // Draw the current line in grey.
-                GfxFillRect(
+                Rectangle::fill(
                     rt, { { x, firstPoint }, { x, secondPoint } },
                     previousMeasurement ? PaletteIndex::pi17 : PaletteIndex::pi21);
 
@@ -6210,7 +6212,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         const auto redLineTop = ScreenCoordsXY{ x, std::max(firstPoint, intensityThresholdNegative) };
                         const auto redLineBottom = ScreenCoordsXY{ x, std::max(secondPoint, intensityThresholdNegative) };
-                        GfxFillRect(rt, { redLineTop, redLineBottom }, redLineColour);
+                        Rectangle::fill(rt, { redLineTop, redLineBottom }, redLineColour);
                     }
 
                     // Line exceeds positive threshold (at top of graph).
@@ -6218,7 +6220,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         const auto redLineTop = ScreenCoordsXY{ x, std::min(firstPoint, intensityThresholdPositive) };
                         const auto redLineBottom = ScreenCoordsXY{ x, std::min(secondPoint, intensityThresholdPositive) };
-                        GfxFillRect(rt, { redLineTop, redLineBottom }, redLineColour);
+                        Rectangle::fill(rt, { redLineTop, redLineBottom }, redLineColour);
                     }
                 }
             }
@@ -6237,9 +6239,9 @@ namespace OpenRCT2::Ui::Windows
             if (GetShopItemDescriptor(shop_item).IsPhoto())
             {
                 if (existingFlags & EnumToFlag(shop_item))
-                    newFlags &= ~EnumsToFlags(ShopItem::Photo, ShopItem::Photo2, ShopItem::Photo3, ShopItem::Photo4);
+                    newFlags &= ~EnumsToFlags(ShopItem::photo, ShopItem::photo2, ShopItem::photo3, ShopItem::photo4);
                 else
-                    newFlags |= EnumsToFlags(ShopItem::Photo, ShopItem::Photo2, ShopItem::Photo3, ShopItem::Photo4);
+                    newFlags |= EnumsToFlags(ShopItem::photo, ShopItem::photo2, ShopItem::photo3, ShopItem::photo4);
             }
             else
             {
@@ -6260,7 +6262,7 @@ namespace OpenRCT2::Ui::Windows
             const auto& rtd = ride->getRideTypeDescriptor();
             if (rtd.specialType == RtdSpecialType::toilet)
             {
-                shopItem = ShopItem::Admission;
+                shopItem = ShopItem::admission;
             }
             else
             {
@@ -6268,7 +6270,7 @@ namespace OpenRCT2::Ui::Windows
                 if (rideEntry != nullptr)
                 {
                     shopItem = rideEntry->shop_item[0];
-                    if (shopItem == ShopItem::None)
+                    if (shopItem == ShopItem::none)
                         return;
                 }
                 else
@@ -6294,7 +6296,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
 
             auto shop_item = rideEntry->shop_item[1];
-            if (shop_item == ShopItem::None)
+            if (shop_item == ShopItem::none)
                 shop_item = ride->getRideTypeDescriptor().PhotoItem;
 
             UpdateSamePriceThroughoutFlags(shop_item);
@@ -6365,7 +6367,7 @@ namespace OpenRCT2::Ui::Windows
             auto rideEntry = ride->getRideEntry();
             const auto& rtd = ride->getRideTypeDescriptor();
             return Park::RidePricesUnlocked() || rtd.specialType == RtdSpecialType::toilet
-                || (rideEntry != nullptr && rideEntry->shop_item[0] != ShopItem::None);
+                || (rideEntry != nullptr && rideEntry->shop_item[0] != ShopItem::none);
         }
 
         void IncomeIncreaseSecondaryPrice()
@@ -6533,7 +6535,7 @@ namespace OpenRCT2::Ui::Windows
 
             // If ride prices are locked, do not allow setting the price, unless we're dealing with a shop or toilet.
             const auto& rtd = ride->getRideTypeDescriptor();
-            if (!Park::RidePricesUnlocked() && rideEntry->shop_item[0] == ShopItem::None
+            if (!Park::RidePricesUnlocked() && rideEntry->shop_item[0] == ShopItem::none
                 && rtd.specialType != RtdSpecialType::toilet)
             {
                 disabledWidgets |= (1uLL << WIDX_PRIMARY_PRICE);
@@ -6552,8 +6554,8 @@ namespace OpenRCT2::Ui::Windows
             if (ridePrimaryPrice == 0)
                 widgets[WIDX_PRIMARY_PRICE].text = STR_FREE;
 
-            ShopItem primaryItem = ShopItem::Admission;
-            if (rtd.specialType == RtdSpecialType::toilet || ((primaryItem = rideEntry->shop_item[0]) != ShopItem::None))
+            ShopItem primaryItem = ShopItem::admission;
+            if (rtd.specialType == RtdSpecialType::toilet || ((primaryItem = rideEntry->shop_item[0]) != ShopItem::none))
             {
                 widgets[WIDX_PRIMARY_PRICE_SAME_THROUGHOUT_PARK].type = WidgetType::checkbox;
 
@@ -6567,13 +6569,13 @@ namespace OpenRCT2::Ui::Windows
             auto secondaryItem = ride->getRideTypeDescriptor().PhotoItem;
             if (!(ride->lifecycleFlags & RIDE_LIFECYCLE_ON_RIDE_PHOTO))
             {
-                if ((secondaryItem = rideEntry->shop_item[1]) != ShopItem::None)
+                if ((secondaryItem = rideEntry->shop_item[1]) != ShopItem::none)
                 {
                     widgets[WIDX_SECONDARY_PRICE_LABEL].text = GetShopItemDescriptor(secondaryItem).Naming.PriceLabel;
                 }
             }
 
-            if (secondaryItem == ShopItem::None)
+            if (secondaryItem == ShopItem::none)
             {
                 // Hide secondary item widgets
                 widgets[WIDX_SECONDARY_PRICE_LABEL].type = WidgetType::empty;
@@ -6630,7 +6632,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Primary item profit / loss per item sold
             primaryItem = rideEntry->shop_item[0];
-            if (primaryItem != ShopItem::None)
+            if (primaryItem != ShopItem::none)
             {
                 profit = ride->price[0];
 
@@ -6654,7 +6656,7 @@ namespace OpenRCT2::Ui::Windows
             if (!(ride->lifecycleFlags & RIDE_LIFECYCLE_ON_RIDE_PHOTO))
                 secondaryItem = rideEntry->shop_item[1];
 
-            if (secondaryItem != ShopItem::None)
+            if (secondaryItem != ShopItem::none)
             {
                 profit = ride->price[1];
 
@@ -6883,7 +6885,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Primary shop items sold
             shopItem = ride->getRideEntry()->shop_item[0];
-            if (shopItem != ShopItem::None)
+            if (shopItem != ShopItem::none)
             {
                 ft = Formatter();
                 ft.Add<StringId>(GetShopItemDescriptor(shopItem).Naming.Plural);
@@ -6895,7 +6897,7 @@ namespace OpenRCT2::Ui::Windows
             // Secondary shop items sold / on-ride photos sold
             shopItem = (ride->lifecycleFlags & RIDE_LIFECYCLE_ON_RIDE_PHOTO) ? ride->getRideTypeDescriptor().PhotoItem
                                                                              : ride->getRideEntry()->shop_item[1];
-            if (shopItem != ShopItem::None)
+            if (shopItem != ShopItem::none)
             {
                 ft = Formatter();
                 ft.Add<StringId>(GetShopItemDescriptor(shopItem).Naming.Plural);

@@ -46,7 +46,7 @@ constexpr RideTypeDescriptor MiniRollerCoasterRTD =
     .BuildCosts = { 32.50_GBP, 2.00_GBP, 40, },
     .DefaultPrices = { 20, 20 },
     .DefaultMusic = kMusicObjectSummer,
-    .PhotoItem = ShopItem::Photo,
+    .PhotoItem = ShopItem::photo,
     .BonusValue = 60,
     .ColourPresets = TRACK_COLOUR_PRESETS(
         { COLOUR_GREY, COLOUR_GREY, COLOUR_DARK_BROWN },

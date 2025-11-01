@@ -47,7 +47,7 @@ constexpr RideTypeDescriptor SwingingShipRTD =
     .BuildCosts = { 77.50_GBP, 1.00_GBP, 1, },
     .DefaultPrices = { 15, 0 },
     .DefaultMusic = kMusicObjectPirate,
-    .PhotoItem = ShopItem::Photo,
+    .PhotoItem = ShopItem::photo,
     .BonusValue = 35,
     .ColourPresets = TRACK_COLOUR_PRESETS(
         { COLOUR_DARK_BROWN, COLOUR_DARK_BROWN, COLOUR_BLACK },

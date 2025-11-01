@@ -47,7 +47,7 @@ constexpr RideTypeDescriptor HeartlineTwisterCoasterRTD =
     .BuildCosts = { 72.50_GBP, 3.50_GBP, 30, },
     .DefaultPrices = { 15, 20 },
     .DefaultMusic = kMusicObjectTechno,
-    .PhotoItem = ShopItem::Photo,
+    .PhotoItem = ShopItem::photo,
     .BonusValue = 70,
     .ColourPresets = TRACK_COLOUR_PRESETS(
         { COLOUR_WHITE, COLOUR_LIGHT_BLUE, COLOUR_WHITE },

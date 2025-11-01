@@ -106,28 +106,28 @@ namespace OpenRCT2::Scenario
             gameState.scenarioParkRatingWarningDays++;
             if (gameState.scenarioParkRatingWarningDays == 1)
             {
-                if (Config::Get().notifications.ParkRatingWarnings)
+                if (Config::Get().notifications.parkRatingWarnings)
                 {
                     News::AddItemToQueue(News::ItemType::graph, STR_PARK_RATING_WARNING_4_WEEKS_REMAINING, 0, {});
                 }
             }
             else if (gameState.scenarioParkRatingWarningDays == 8)
             {
-                if (Config::Get().notifications.ParkRatingWarnings)
+                if (Config::Get().notifications.parkRatingWarnings)
                 {
                     News::AddItemToQueue(News::ItemType::graph, STR_PARK_RATING_WARNING_3_WEEKS_REMAINING, 0, {});
                 }
             }
             else if (gameState.scenarioParkRatingWarningDays == 15)
             {
-                if (Config::Get().notifications.ParkRatingWarnings)
+                if (Config::Get().notifications.parkRatingWarnings)
                 {
                     News::AddItemToQueue(News::ItemType::graph, STR_PARK_RATING_WARNING_2_WEEKS_REMAINING, 0, {});
                 }
             }
             else if (gameState.scenarioParkRatingWarningDays == 22)
             {
-                if (Config::Get().notifications.ParkRatingWarnings)
+                if (Config::Get().notifications.parkRatingWarnings)
                 {
                     News::AddItemToQueue(News::ItemType::graph, STR_PARK_RATING_WARNING_1_WEEK_REMAINING, 0, {});
                 }

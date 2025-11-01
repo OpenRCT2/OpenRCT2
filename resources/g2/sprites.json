@@ -325,6 +325,18 @@
         "path": "icons/colour_invisible_pressed.png"
     },
     {
+        "path": "icons/colour_large.png"
+    },
+    {
+        "path": "icons/colour_pressed_large.png"
+    },
+    {
+        "path": "icons/colour_invisible_large.png"
+    },
+    {
+        "path": "icons/colour_invisible_pressed_large.png"
+    },
+    {
         "path": "icons/folder.png"
     },
     {
@@ -838,5 +850,10 @@
     },
     {
         "path": "icons/rotate_view_anti-clockwise.png"
+    },
+    {
+        "path": "tool/path_drag_tool.png",
+        "x": 1,
+        "y": 2
     }
 ]

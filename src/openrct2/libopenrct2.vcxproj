@@ -253,6 +253,7 @@
     <ClInclude Include="drawing\InvalidationGrid.h" />
     <ClInclude Include="drawing\LightFX.h" />
     <ClInclude Include="drawing\NewDrawing.h" />
+    <ClInclude Include="drawing\Rectangle.h" />
     <ClInclude Include="drawing\ScrollingText.h" />
     <ClInclude Include="drawing\Weather.h" />
     <ClInclude Include="drawing\Text.h" />
@@ -543,6 +544,7 @@
     <ClInclude Include="ride\Vehicle.h" />
     <ClInclude Include="ride\VehicleColour.h" />
     <ClInclude Include="ride\VehicleData.h" />
+    <ClInclude Include="ride\VehicleGeometry.h" />
     <ClInclude Include="ride\VehicleRiderControl.h" />
     <ClInclude Include="ride\VehicleSubpositionData.h" />
     <ClInclude Include="sawyer_coding\SawyerCoding.h" />
@@ -831,7 +833,7 @@
     <ClCompile Include="drawing\Line.cpp" />
     <ClCompile Include="drawing\NewDrawing.cpp" />
     <ClCompile Include="drawing\Weather.cpp" />
-    <ClCompile Include="drawing\Rect.cpp" />
+    <ClCompile Include="drawing\Rectangle.cpp" />
     <ClCompile Include="drawing\ScrollingText.cpp" />
     <ClCompile Include="drawing\SSE41Drawing.cpp" />
     <ClCompile Include="drawing\Text.cpp" />
@@ -1092,6 +1094,7 @@
     <ClCompile Include="ride\TrainManager.cpp" />
     <ClCompile Include="ride\Vehicle.cpp" />
     <ClCompile Include="ride\VehicleData.cpp" />
+    <ClCompile Include="ride\VehicleGeometry.cpp" />
     <ClCompile Include="ride\VehicleRiderControl.cpp" />
     <ClCompile Include="ride\VehicleSubpositionData.cpp" />
     <ClCompile Include="sawyer_coding\SawyerCoding.cpp" />

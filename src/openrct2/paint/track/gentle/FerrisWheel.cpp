@@ -53,7 +53,7 @@ static void PaintFerrisWheelRiders(
     for (int32_t i = 0; i < 32; i += 2)
     {
         auto* peep = getGameState().entities.GetEntity<Guest>(vehicle.peep[i]);
-        if (peep == nullptr || peep->State != PeepState::OnRide)
+        if (peep == nullptr || peep->State != PeepState::onRide)
             continue;
 
         auto frameNum = (vehicle.flatRideAnimationFrame + i * 4) % 128;
@@ -127,7 +127,7 @@ static void PaintFerrisWheel(
 
     const StationObject* stationObject = ride.getStationObject();
 
-    TrackPaintUtilPaintFloor(session, edges, session.TrackColours, height, kFloorSpritesCork, stationObject);
+    TrackPaintUtilPaintFloor(session, edges, session.TrackColours, height, kFloorSpritesMulch, stationObject);
 
     ImageId imageId;
     uint8_t rotation = session.CurrentRotation;

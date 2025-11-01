@@ -211,7 +211,7 @@ namespace OpenRCT2::Ui::Windows
             return nullptr;
         }
 
-        if (!Config::Get().general.ConfirmationPrompt)
+        if (!Config::Get().general.confirmationPrompt)
         {
             /* game_load_or_quit_no_save_prompt() will exec requested task and close this window
              * immediately again.

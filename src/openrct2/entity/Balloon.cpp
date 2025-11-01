@@ -16,6 +16,7 @@
 #include "../network/Network.h"
 #include "../paint/Paint.h"
 #include "../profiling/Profiling.h"
+#include "../ride/RideData.h"
 #include "../scenario/Scenario.h"
 #include "../world/Map.h"
 #include "../world/tile_element/TrackElement.h"
@@ -26,7 +27,7 @@ using namespace OpenRCT2;
 template<>
 bool EntityBase::Is<Balloon>() const
 {
-    return Type == EntityType::Balloon;
+    return Type == EntityType::balloon;
 }
 
 void Balloon::Update()
@@ -157,13 +158,13 @@ bool Balloon::Collides() const
         if (tileElement->GetType() == TileElementType::Track)
         {
             const TrackElement* trackElement = tileElement->AsTrack();
-            if (trackElement->GetRideType() == RIDE_TYPE_DODGEMS)
+            const auto* ride = GetRide(trackElement->GetRideIndex());
+            if (ride != nullptr && ride->getRideTypeDescriptor().HasFlag(RtdFlag::hasRoofOverWholeRide))
             {
                 check_ceiling = true;
             }
             else
             {
-                auto* ride = GetRide(trackElement->GetRideIndex());
                 check_ceiling = (ride != nullptr) ? RideHasStationShelter(*ride) : false;
             }
         }

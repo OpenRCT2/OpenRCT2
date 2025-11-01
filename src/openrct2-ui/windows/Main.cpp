@@ -55,17 +55,17 @@ namespace OpenRCT2::Ui::Windows
         void SetViewportFlags()
         {
             viewport->flags |= VIEWPORT_FLAG_SOUND_ON;
-            if (Config::Get().general.InvisibleRides)
+            if (Config::Get().general.invisibleRides)
                 viewport->flags |= VIEWPORT_FLAG_INVISIBLE_RIDES;
-            if (Config::Get().general.InvisibleVehicles)
+            if (Config::Get().general.invisibleVehicles)
                 viewport->flags |= VIEWPORT_FLAG_INVISIBLE_VEHICLES;
-            if (Config::Get().general.InvisibleTrees)
+            if (Config::Get().general.invisibleTrees)
                 viewport->flags |= VIEWPORT_FLAG_INVISIBLE_VEGETATION;
-            if (Config::Get().general.InvisibleScenery)
+            if (Config::Get().general.invisibleScenery)
                 viewport->flags |= VIEWPORT_FLAG_INVISIBLE_SCENERY;
-            if (Config::Get().general.InvisiblePaths)
+            if (Config::Get().general.invisiblePaths)
                 viewport->flags |= VIEWPORT_FLAG_INVISIBLE_PATHS;
-            if (Config::Get().general.InvisibleSupports)
+            if (Config::Get().general.invisibleSupports)
                 viewport->flags |= VIEWPORT_FLAG_INVISIBLE_SUPPORTS;
         }
     };

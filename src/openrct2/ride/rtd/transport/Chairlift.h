@@ -33,7 +33,7 @@ constexpr RideTypeDescriptor ChairliftRTD =
                      RtdFlag::hasLoadOptions, RtdFlag::hasVehicleColours, RtdFlag::hasTrack,
                      RtdFlag::supportsMultipleColourSchemes, RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit,
                      RtdFlag::allowMoreVehiclesThanStationFits, RtdFlag::isTransportRide, RtdFlag::showInTrackDesigner,
-                     RtdFlag::slightlyInterestingToLookAt, RtdFlag::isSuspended),
+                     RtdFlag::slightlyInterestingToLookAt, RtdFlag::isSuspended, RtdFlag::runningSpeedAffectsReliability),
     .RideModes = EnumsToFlags(RideMode::stationToStation),
     .DefaultMode = RideMode::stationToStation,
     .OperatingSettings = { 1, 4 },
@@ -48,7 +48,7 @@ constexpr RideTypeDescriptor ChairliftRTD =
     .BuildCosts = { 32.50_GBP, 0.50_GBP, 30, },
     .DefaultPrices = { 10, 0 },
     .DefaultMusic = kMusicObjectSummer,
-    .PhotoItem = ShopItem::Photo,
+    .PhotoItem = ShopItem::photo,
     .BonusValue = 55,
     .ColourPresets = TRACK_COLOUR_PRESETS(
         { COLOUR_BORDEAUX_RED, COLOUR_BORDEAUX_RED, COLOUR_GREY },

@@ -106,7 +106,7 @@ static void PaintSpaceRings(
         session, supportType.wooden, trackSequence, direction, height, GetStationColourScheme(session, trackElement));
 
     const StationObject* stationObject = ride.getStationObject();
-    TrackPaintUtilPaintFloor(session, edges, session.TrackColours, height, kFloorSpritesCork, stationObject);
+    TrackPaintUtilPaintFloor(session, edges, session.TrackColours, height, kFloorSpritesMulch, stationObject);
 
     switch (trackSequence)
     {

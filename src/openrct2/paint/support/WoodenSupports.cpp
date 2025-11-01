@@ -60,70 +60,89 @@ constexpr SupportsIdDescriptor GetWoodenSupportIds(WoodenSupportType supportType
     return WoodenSupportImageIds[EnumValue(supportType)][EnumValue(subType)];
 }
 
-using ImagesByTransitionTypeArray = std::array<std::array<ImageIndex, kNumOrthogonalDirections>, 21>;
+using ImagesByTransitionTypeArray = std::array<
+    std::array<ImageIndex, kNumOrthogonalDirections>, kWoodenSupportTransitionTypeCount>;
 
 static constexpr ImagesByTransitionTypeArray WoodenCurveSupportImageIds0 = { {
-    { 3465, 3466, 3467, 3468 }, // Flat to gentle
-    { 3469, 3470, 3471, 3472 }, // Gentle to flat
-    { 3473, 3474, 3475, 3476 }, // Gentle slope
-    { 3477, 3478, 3479, 3480 }, // Gentle to steep
-    { 3481, 3482, 3483, 3484 }, // Steep to gentle
-    { 3485, 3486, 3487, 3488 }, // Steep slope
-    { 3489, 3490, 3491, 3492 }, // Slope
-    { 3493, 3494, 3495, 3496 }, // Flat to steep small
-    { 3497, 3498, 3499, 3500 }, // Steep to flat small
-    { 3501, 3502, 3503, 3504 }, // ?
-    { 3505, 3506, 3507, 3508 }, // ?
-    { 3509, 3510, 3511, 3512 }, // ?
-    { 3513, 3513, 3513, 3513 }, // Large scenery
-    { SPR_TRACKS_SUPPORT_WOODEN_TRUSS, SPR_TRACKS_SUPPORT_WOODEN_TRUSS + 1, SPR_TRACKS_SUPPORT_WOODEN_TRUSS + 2,
-      SPR_TRACKS_SUPPORT_WOODEN_TRUSS + 3 }, // Flat to steep large 1
-    { SPR_TRACKS_SUPPORT_WOODEN_TRUSS + 4, SPR_TRACKS_SUPPORT_WOODEN_TRUSS + 5, SPR_TRACKS_SUPPORT_WOODEN_TRUSS + 6,
-      SPR_TRACKS_SUPPORT_WOODEN_TRUSS + 7 }, // Flat to steep large 2
-    { SPR_TRACKS_SUPPORT_WOODEN_TRUSS + 8, SPR_TRACKS_SUPPORT_WOODEN_TRUSS + 9, SPR_TRACKS_SUPPORT_WOODEN_TRUSS + 10,
-      SPR_TRACKS_SUPPORT_WOODEN_TRUSS + 11 }, // Flat to steep large 3
-    { SPR_TRACKS_SUPPORT_WOODEN_TRUSS + 12, SPR_TRACKS_SUPPORT_WOODEN_TRUSS + 13, SPR_TRACKS_SUPPORT_WOODEN_TRUSS + 14,
-      SPR_TRACKS_SUPPORT_WOODEN_TRUSS + 15 }, // Flat to steep large 4
-    { SPR_TRACKS_SUPPORT_WOODEN_TRUSS + 16, SPR_TRACKS_SUPPORT_WOODEN_TRUSS + 17, SPR_TRACKS_SUPPORT_WOODEN_TRUSS + 18,
-      SPR_TRACKS_SUPPORT_WOODEN_TRUSS + 19 }, // Steep to flat large 1
-    { SPR_TRACKS_SUPPORT_WOODEN_TRUSS + 20, SPR_TRACKS_SUPPORT_WOODEN_TRUSS + 21, SPR_TRACKS_SUPPORT_WOODEN_TRUSS + 22,
-      SPR_TRACKS_SUPPORT_WOODEN_TRUSS + 23 }, // Steep to flat large 2
-    { SPR_TRACKS_SUPPORT_WOODEN_TRUSS + 24, SPR_TRACKS_SUPPORT_WOODEN_TRUSS + 25, SPR_TRACKS_SUPPORT_WOODEN_TRUSS + 26,
-      SPR_TRACKS_SUPPORT_WOODEN_TRUSS + 27 }, // Steep to flat large 3
-    { SPR_TRACKS_SUPPORT_WOODEN_TRUSS + 28, SPR_TRACKS_SUPPORT_WOODEN_TRUSS + 29, SPR_TRACKS_SUPPORT_WOODEN_TRUSS + 30,
-      SPR_TRACKS_SUPPORT_WOODEN_TRUSS + 31 }, // Steep to flat large 4
+    { 3465, 3466, 3467, 3468 }, // flatToUp25Deg
+    { 3469, 3470, 3471, 3472 }, // up25DegToFlat
+    { 3473, 3474, 3475, 3476 }, // up25Deg
+    { 3477, 3478, 3479, 3480 }, // up25DegToUp60Deg
+    { 3481, 3482, 3483, 3484 }, // up60DegToUp25Deg
+    { 3485, 3486, 3487, 3488 }, // up60Deg
+    { SPR_TRACKS_SUPPORT_WOODEN_TRUSS_UP_25_EVEN, SPR_TRACKS_SUPPORT_WOODEN_TRUSS_UP_25_EVEN + 1,
+      SPR_TRACKS_SUPPORT_WOODEN_TRUSS_UP_25_EVEN + 2, SPR_TRACKS_SUPPORT_WOODEN_TRUSS_UP_25_EVEN + 3 }, // up25even
+    { 3493, 3494, 3495, 3496 },                                                                         // flatToUp60Deg
+    { 3497, 3498, 3499, 3500 },                                                                         // up60DegToFlat
+    { 3501, 3502, 3503, 3504 },                                                                         // flatToUp25DegRailway
+    { 3505, 3506, 3507, 3508 },                                                                         // up25DegToFlatRailway
+    { 3509, 3510, 3511, 3512 },                                                                         // up25DegRailway
+    { 3513, 3513, 3513, 3513 },                                                                         // scenery
+    { SPR_TRACKS_SUPPORT_WOODEN_TRUSS_LONG_FLAT_TO_STEEP, SPR_TRACKS_SUPPORT_WOODEN_TRUSS_LONG_FLAT_TO_STEEP + 1,
+      SPR_TRACKS_SUPPORT_WOODEN_TRUSS_LONG_FLAT_TO_STEEP + 2,
+      SPR_TRACKS_SUPPORT_WOODEN_TRUSS_LONG_FLAT_TO_STEEP + 3 }, // flatToUp60DegLongBaseSeq0
+    { SPR_TRACKS_SUPPORT_WOODEN_TRUSS_LONG_FLAT_TO_STEEP + 4, SPR_TRACKS_SUPPORT_WOODEN_TRUSS_LONG_FLAT_TO_STEEP + 5,
+      SPR_TRACKS_SUPPORT_WOODEN_TRUSS_LONG_FLAT_TO_STEEP + 6,
+      SPR_TRACKS_SUPPORT_WOODEN_TRUSS_LONG_FLAT_TO_STEEP + 7 }, // flatToUp60DegLongBaseSeq1
+    { SPR_TRACKS_SUPPORT_WOODEN_TRUSS_LONG_FLAT_TO_STEEP + 8, SPR_TRACKS_SUPPORT_WOODEN_TRUSS_LONG_FLAT_TO_STEEP + 9,
+      SPR_TRACKS_SUPPORT_WOODEN_TRUSS_LONG_FLAT_TO_STEEP + 10,
+      SPR_TRACKS_SUPPORT_WOODEN_TRUSS_LONG_FLAT_TO_STEEP + 11 }, // flatToUp60DegLongBaseSeq2
+    { SPR_TRACKS_SUPPORT_WOODEN_TRUSS_LONG_FLAT_TO_STEEP + 12, SPR_TRACKS_SUPPORT_WOODEN_TRUSS_LONG_FLAT_TO_STEEP + 13,
+      SPR_TRACKS_SUPPORT_WOODEN_TRUSS_LONG_FLAT_TO_STEEP + 14,
+      SPR_TRACKS_SUPPORT_WOODEN_TRUSS_LONG_FLAT_TO_STEEP + 15 }, // flatToUp60DegLongBaseSeq3
+    { SPR_TRACKS_SUPPORT_WOODEN_TRUSS_LONG_STEEP_TO_FLAT, SPR_TRACKS_SUPPORT_WOODEN_TRUSS_LONG_STEEP_TO_FLAT + 1,
+      SPR_TRACKS_SUPPORT_WOODEN_TRUSS_LONG_STEEP_TO_FLAT + 2,
+      SPR_TRACKS_SUPPORT_WOODEN_TRUSS_LONG_STEEP_TO_FLAT + 3 }, // up60DegToFlatLongBaseSeq0
+    { SPR_TRACKS_SUPPORT_WOODEN_TRUSS_LONG_STEEP_TO_FLAT + 4, SPR_TRACKS_SUPPORT_WOODEN_TRUSS_LONG_STEEP_TO_FLAT + 5,
+      SPR_TRACKS_SUPPORT_WOODEN_TRUSS_LONG_STEEP_TO_FLAT + 6,
+      SPR_TRACKS_SUPPORT_WOODEN_TRUSS_LONG_STEEP_TO_FLAT + 7 }, // up60DegToFlatLongBaseSeq1
+    { SPR_TRACKS_SUPPORT_WOODEN_TRUSS_LONG_STEEP_TO_FLAT + 8, SPR_TRACKS_SUPPORT_WOODEN_TRUSS_LONG_STEEP_TO_FLAT + 9,
+      SPR_TRACKS_SUPPORT_WOODEN_TRUSS_LONG_STEEP_TO_FLAT + 10,
+      SPR_TRACKS_SUPPORT_WOODEN_TRUSS_LONG_STEEP_TO_FLAT + 11 }, // up60DegToFlatLongBaseSeq2
+    { SPR_TRACKS_SUPPORT_WOODEN_TRUSS_LONG_STEEP_TO_FLAT + 12, SPR_TRACKS_SUPPORT_WOODEN_TRUSS_LONG_STEEP_TO_FLAT + 13,
+      SPR_TRACKS_SUPPORT_WOODEN_TRUSS_LONG_STEEP_TO_FLAT + 14,
+      SPR_TRACKS_SUPPORT_WOODEN_TRUSS_LONG_STEEP_TO_FLAT + 15 }, // up60DegToFlatLongBaseSeq3
 } };
 
 static constexpr ImagesByTransitionTypeArray WoodenCurveSupportImageIds1 = { {
-    { 3681, 3682, 3683, 3684 }, // Flat to gentle
-    { 3685, 3686, 3687, 3688 }, // Gentle to flat
-    { 3689, 3690, 3691, 3692 }, // Gentle slope
-    { 3693, 3694, 3695, 3696 }, // Gentle to steep
-    { 3697, 3698, 3699, 3700 }, // Steep to gentle
-    { 3701, 3702, 3703, 3704 }, // Steep slope
-    { 3705, 3706, 3707, 3708 }, // Slope
-    { 3709, 3710, 3711, 3712 }, // Flat to steep small
-    { 3713, 3714, 3715, 3716 }, // Steep to flat small
-    { 3717, 3718, 3719, 3720 }, // ?
-    { 3721, 3722, 3723, 3724 }, // ?
-    { 3725, 3726, 3727, 3728 }, // ?
-    { 3729, 3729, 3729, 3729 }, // Large scenery
-    { SPR_TRACKS_SUPPORT_WOODEN_MINE, SPR_TRACKS_SUPPORT_WOODEN_MINE + 1, SPR_TRACKS_SUPPORT_WOODEN_MINE + 2,
-      SPR_TRACKS_SUPPORT_WOODEN_MINE + 3 }, // Flat to steep large 1
-    { SPR_TRACKS_SUPPORT_WOODEN_MINE + 4, SPR_TRACKS_SUPPORT_WOODEN_MINE + 5, SPR_TRACKS_SUPPORT_WOODEN_MINE + 6,
-      SPR_TRACKS_SUPPORT_WOODEN_MINE + 7 }, // Flat to steep large 2
-    { SPR_TRACKS_SUPPORT_WOODEN_MINE + 8, SPR_TRACKS_SUPPORT_WOODEN_MINE + 9, SPR_TRACKS_SUPPORT_WOODEN_MINE + 10,
-      SPR_TRACKS_SUPPORT_WOODEN_MINE + 11 }, // Flat to steep large 3
-    { SPR_TRACKS_SUPPORT_WOODEN_MINE + 12, SPR_TRACKS_SUPPORT_WOODEN_MINE + 13, SPR_TRACKS_SUPPORT_WOODEN_MINE + 14,
-      SPR_TRACKS_SUPPORT_WOODEN_MINE + 15 }, // Flat to steep large 4
-    { SPR_TRACKS_SUPPORT_WOODEN_MINE + 16, SPR_TRACKS_SUPPORT_WOODEN_MINE + 17, SPR_TRACKS_SUPPORT_WOODEN_MINE + 18,
-      SPR_TRACKS_SUPPORT_WOODEN_MINE + 19 }, // Steep to flat large 1
-    { SPR_TRACKS_SUPPORT_WOODEN_MINE + 20, SPR_TRACKS_SUPPORT_WOODEN_MINE + 21, SPR_TRACKS_SUPPORT_WOODEN_MINE + 22,
-      SPR_TRACKS_SUPPORT_WOODEN_MINE + 23 }, // Steep to flat large 2
-    { SPR_TRACKS_SUPPORT_WOODEN_MINE + 24, SPR_TRACKS_SUPPORT_WOODEN_MINE + 25, SPR_TRACKS_SUPPORT_WOODEN_MINE + 26,
-      SPR_TRACKS_SUPPORT_WOODEN_MINE + 27 }, // Steep to flat large 3
-    { SPR_TRACKS_SUPPORT_WOODEN_MINE + 28, SPR_TRACKS_SUPPORT_WOODEN_MINE + 29, SPR_TRACKS_SUPPORT_WOODEN_MINE + 30,
-      SPR_TRACKS_SUPPORT_WOODEN_MINE + 31 }, // Steep to flat large 4
+    { 3681, 3682, 3683, 3684 }, // flatToUp25Deg
+    { 3685, 3686, 3687, 3688 }, // up25DegToFlat
+    { 3689, 3690, 3691, 3692 }, // up25Deg
+    { 3693, 3694, 3695, 3696 }, // up25DegToUp60Deg
+    { 3697, 3698, 3699, 3700 }, // up60DegToUp25Deg
+    { 3701, 3702, 3703, 3704 }, // up60Deg
+    { SPR_TRACKS_SUPPORT_WOODEN_MINE_UP_25_EVEN, SPR_TRACKS_SUPPORT_WOODEN_MINE_UP_25_EVEN + 1,
+      SPR_TRACKS_SUPPORT_WOODEN_MINE_UP_25_EVEN + 2, SPR_TRACKS_SUPPORT_WOODEN_MINE_UP_25_EVEN + 3 }, // up25even
+    { 3709, 3710, 3711, 3712 },                                                                       // flatToUp60Deg
+    { 3713, 3714, 3715, 3716 },                                                                       // up60DegToFlat
+    { 3717, 3718, 3719, 3720 },                                                                       // flatToUp25DegRailway
+    { 3721, 3722, 3723, 3724 },                                                                       // up25DegToFlatRailway
+    { 3725, 3726, 3727, 3728 },                                                                       // up25DegRailway
+    { 3729, 3729, 3729, 3729 },                                                                       // scenery
+    { SPR_TRACKS_SUPPORT_WOODEN_MINE_LONG_FLAT_TO_STEEP, SPR_TRACKS_SUPPORT_WOODEN_MINE_LONG_FLAT_TO_STEEP + 1,
+      SPR_TRACKS_SUPPORT_WOODEN_MINE_LONG_FLAT_TO_STEEP + 2,
+      SPR_TRACKS_SUPPORT_WOODEN_MINE_LONG_FLAT_TO_STEEP + 3 }, // flatToUp60DegLongBaseSeq0
+    { SPR_TRACKS_SUPPORT_WOODEN_MINE_LONG_FLAT_TO_STEEP + 4, SPR_TRACKS_SUPPORT_WOODEN_MINE_LONG_FLAT_TO_STEEP + 5,
+      SPR_TRACKS_SUPPORT_WOODEN_MINE_LONG_FLAT_TO_STEEP + 6,
+      SPR_TRACKS_SUPPORT_WOODEN_MINE_LONG_FLAT_TO_STEEP + 7 }, // flatToUp60DegLongBaseSeq1
+    { SPR_TRACKS_SUPPORT_WOODEN_MINE_LONG_FLAT_TO_STEEP + 8, SPR_TRACKS_SUPPORT_WOODEN_MINE_LONG_FLAT_TO_STEEP + 9,
+      SPR_TRACKS_SUPPORT_WOODEN_MINE_LONG_FLAT_TO_STEEP + 10,
+      SPR_TRACKS_SUPPORT_WOODEN_MINE_LONG_FLAT_TO_STEEP + 11 }, // flatToUp60DegLongBaseSeq2
+    { SPR_TRACKS_SUPPORT_WOODEN_MINE_LONG_FLAT_TO_STEEP + 12, SPR_TRACKS_SUPPORT_WOODEN_MINE_LONG_FLAT_TO_STEEP + 13,
+      SPR_TRACKS_SUPPORT_WOODEN_MINE_LONG_FLAT_TO_STEEP + 14,
+      SPR_TRACKS_SUPPORT_WOODEN_MINE_LONG_FLAT_TO_STEEP + 15 }, // flatToUp60DegLongBaseSeq3
+    { SPR_TRACKS_SUPPORT_WOODEN_MINE_LONG_STEEP_TO_FLAT, SPR_TRACKS_SUPPORT_WOODEN_MINE_LONG_STEEP_TO_FLAT + 1,
+      SPR_TRACKS_SUPPORT_WOODEN_MINE_LONG_STEEP_TO_FLAT + 2,
+      SPR_TRACKS_SUPPORT_WOODEN_MINE_LONG_STEEP_TO_FLAT + 3 }, // up60DegToFlatLongBaseSeq0
+    { SPR_TRACKS_SUPPORT_WOODEN_MINE_LONG_STEEP_TO_FLAT + 4, SPR_TRACKS_SUPPORT_WOODEN_MINE_LONG_STEEP_TO_FLAT + 5,
+      SPR_TRACKS_SUPPORT_WOODEN_MINE_LONG_STEEP_TO_FLAT + 6,
+      SPR_TRACKS_SUPPORT_WOODEN_MINE_LONG_STEEP_TO_FLAT + 7 }, // up60DegToFlatLongBaseSeq1
+    { SPR_TRACKS_SUPPORT_WOODEN_MINE_LONG_STEEP_TO_FLAT + 8, SPR_TRACKS_SUPPORT_WOODEN_MINE_LONG_STEEP_TO_FLAT + 9,
+      SPR_TRACKS_SUPPORT_WOODEN_MINE_LONG_STEEP_TO_FLAT + 10,
+      SPR_TRACKS_SUPPORT_WOODEN_MINE_LONG_STEEP_TO_FLAT + 11 }, // up60DegToFlatLongBaseSeq2
+    { SPR_TRACKS_SUPPORT_WOODEN_MINE_LONG_STEEP_TO_FLAT + 12, SPR_TRACKS_SUPPORT_WOODEN_MINE_LONG_STEEP_TO_FLAT + 13,
+      SPR_TRACKS_SUPPORT_WOODEN_MINE_LONG_STEEP_TO_FLAT + 14,
+      SPR_TRACKS_SUPPORT_WOODEN_MINE_LONG_STEEP_TO_FLAT + 15 }, // up60DegToFlatLongBaseSeq3
 } };
 
 // clang-format off
@@ -155,7 +174,7 @@ struct SlopedSupportsDescriptor {
 };
 
 /* 0x0097B23C */
-static constexpr SlopedSupportsDescriptor SupportsDescriptors[] = {
+static constexpr auto kSupportsDescriptors = std::to_array<SlopedSupportsDescriptor>({
     {{{0,  0,  0}, {1,  1,  8}},  false}, // Flat to gentle
     {{{0,  0,  0}, {1,  1,  8}},  false},
     {{{0,  0,  0}, {1,  1,  8}},  false},
@@ -240,7 +259,8 @@ static constexpr SlopedSupportsDescriptor SupportsDescriptors[] = {
     {{{0,  0,  0}, {1,  1,  8}},  false},
     {{{0,  0,  0}, {1,  1,  8}},  false},
     {{{0,  0,  0}, {1,  1,  8}},  false},
-};
+});
+static_assert(std::size(kSupportsDescriptors) == kWoodenSupportTransitionTypeCount * kNumOrthogonalDirections);
 
 /* 0x0098D8D4 */
 static constexpr SlopedSupportsDescriptor kSlopedPathSupportsDescriptor = {{{0, 0, 0}, {1, 1, 4}}, false};
@@ -384,14 +404,8 @@ static bool WoodenABPaintSlopeTransitions(
     PaintSession& session, WoodenSupportType supportType, WoodenSupportSubType subType,
     WoodenSupportTransitionType transitionType, Direction direction, const ImageId& imageTemplate, uint16_t baseHeight)
 {
-    if (EnumValue(transitionType) >= 21)
-    {
-        transitionType = static_cast<WoodenSupportTransitionType>(EnumValue(transitionType) - 21);
-        direction = DirectionReverse(direction);
-    }
-
     const uint16_t supportsDescriptorIndex = (EnumValue(transitionType) * kNumOrthogonalDirections) + direction;
-    const SlopedSupportsDescriptor& supportsDesc = SupportsDescriptors[supportsDescriptorIndex];
+    const SlopedSupportsDescriptor& supportsDesc = kSupportsDescriptors[supportsDescriptorIndex];
     const auto* imageIds = WoodenCurveSupportImageIds[EnumValue(supportType)][EnumValue(subType)];
 
     if (imageIds == nullptr || imageIds[EnumValue(transitionType)][direction] == 0)
@@ -640,29 +654,35 @@ bool PathBoxSupportsPaintSetup(
 }
 
 bool DrawSupportForSequenceA(
-    PaintSession& session, WoodenSupportType supportType, OpenRCT2::TrackElemType trackType, uint8_t sequence,
-    Direction direction, int32_t height, ImageId imageTemplate)
+    PaintSession& session, const WoodenSupportType supportType, const OpenRCT2::TrackElemType trackType, const uint8_t sequence,
+    const Direction direction, const int32_t height, const ImageId imageTemplate)
 {
     const auto& ted = OpenRCT2::TrackMetaData::GetTrackElementDescriptor(trackType);
-    const auto& desc = ted.sequences[sequence].woodenSupports;
+    const auto& sequenceDesc = ted.sequences[sequence];
+    const auto& desc = sequenceDesc.woodenSupports;
 
     if (desc.subType == WoodenSupportSubType::null)
         return false;
 
+    const Direction supportRotation = (direction + sequenceDesc.extraSupportRotation) & 3;
+
     return WoodenASupportsPaintSetupRotated(
-        session, supportType, desc.subType, direction, height, imageTemplate, desc.transitionType);
+        session, supportType, desc.subType, supportRotation, height, imageTemplate, desc.transitionType);
 }
 
 bool DrawSupportForSequenceB(
-    PaintSession& session, WoodenSupportType supportType, OpenRCT2::TrackElemType trackType, uint8_t sequence,
-    Direction direction, int32_t height, ImageId imageTemplate)
+    PaintSession& session, const WoodenSupportType supportType, const OpenRCT2::TrackElemType trackType, const uint8_t sequence,
+    const Direction direction, const int32_t height, const ImageId imageTemplate)
 {
     const auto& ted = OpenRCT2::TrackMetaData::GetTrackElementDescriptor(trackType);
-    const auto& desc = ted.sequences[sequence].woodenSupports;
+    const auto& sequenceDesc = ted.sequences[sequence];
+    const auto& desc = sequenceDesc.woodenSupports;
 
     if (desc.subType == WoodenSupportSubType::null)
         return false;
 
+    const Direction supportRotation = (direction + sequenceDesc.extraSupportRotation) & 3;
+
     return WoodenBSupportsPaintSetupRotated(
-        session, supportType, desc.subType, direction, height, imageTemplate, desc.transitionType);
+        session, supportType, desc.subType, supportRotation, height, imageTemplate, desc.transitionType);
 }

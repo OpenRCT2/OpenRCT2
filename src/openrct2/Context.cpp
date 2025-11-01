@@ -409,20 +409,20 @@ namespace OpenRCT2
 
             CrashInit();
 
-            if (String::equals(Config::Get().general.LastRunVersion, kOpenRCT2Version))
+            if (String::equals(Config::Get().general.lastRunVersion, kOpenRCT2Version))
             {
                 gOpenRCT2ShowChangelog = false;
             }
             else
             {
                 gOpenRCT2ShowChangelog = true;
-                Config::Get().general.LastRunVersion = kOpenRCT2Version;
+                Config::Get().general.lastRunVersion = kOpenRCT2Version;
                 Config::Save();
             }
 
             try
             {
-                _localisationService->OpenLanguage(Config::Get().general.Language);
+                _localisationService->OpenLanguage(Config::Get().general.language);
             }
             catch (const std::exception& e)
             {
@@ -518,7 +518,7 @@ namespace OpenRCT2
                 Audio::Init();
                 Audio::PopulateDevices();
                 Audio::InitRideSoundsAndInfo();
-                Audio::gGameSoundsOff = !Config::Get().sound.MasterSoundEnabled;
+                Audio::gGameSoundsOff = !Config::Get().sound.masterSoundEnabled;
             }
 
             ChatInit();
@@ -622,7 +622,7 @@ namespace OpenRCT2
                     }
 
                     drawingEngine->Initialise();
-                    drawingEngine->SetVSync(Config::Get().general.UseVSync);
+                    drawingEngine->SetVSync(Config::Get().general.useVSync);
 
                     return drawingEngine;
                 }
@@ -634,7 +634,7 @@ namespace OpenRCT2
                 return nullptr;
             };
 
-            auto drawingEngineType = Config::Get().general.DrawingEngine;
+            auto drawingEngineType = Config::Get().general.drawingEngine;
 
             // Attempt to create drawing engine of the type specified in the config.
             {
@@ -667,7 +667,7 @@ namespace OpenRCT2
 
             _drawingEngineType = drawingEngineType;
 
-            Config::Get().general.DrawingEngine = drawingEngineType;
+            Config::Get().general.drawingEngine = drawingEngineType;
             Config::Save();
 
             WindowCheckAllValidZoom();
@@ -1006,11 +1006,11 @@ namespace OpenRCT2
             if (gCustomRCT2DataPath.empty())
             {
                 // Check install directory
-                if (Config::Get().general.RCT2Path.empty() || !Platform::OriginalGameDataExists(Config::Get().general.RCT2Path))
+                if (Config::Get().general.rct2Path.empty() || !Platform::OriginalGameDataExists(Config::Get().general.rct2Path))
                 {
                     LOG_VERBOSE(
                         "install directory does not exist or invalid directory selected, %s",
-                        Config::Get().general.RCT2Path.c_str());
+                        Config::Get().general.rct2Path.c_str());
                     if (!Config::FindOrBrowseInstallDirectory())
                     {
                         auto path = Config::GetDefaultPath();
@@ -1019,7 +1019,7 @@ namespace OpenRCT2
                         return std::string();
                     }
                 }
-                result = Config::Get().general.RCT2Path;
+                result = Config::Get().general.rct2Path;
             }
             else
             {
@@ -1053,7 +1053,7 @@ namespace OpenRCT2
             }
             else
             {
-                if ((gOpenRCT2StartupAction == StartupAction::Title) && Config::Get().general.PlayIntro)
+                if ((gOpenRCT2StartupAction == StartupAction::Title) && Config::Get().general.playIntro)
                 {
                     gOpenRCT2StartupAction = StartupAction::Intro;
                 }
@@ -1159,17 +1159,17 @@ namespace OpenRCT2
                 {
                     if (gNetworkStartPort == 0)
                     {
-                        gNetworkStartPort = Config::Get().network.DefaultPort;
+                        gNetworkStartPort = Config::Get().network.defaultPort;
                     }
 
                     if (gNetworkStartAddress.empty())
                     {
-                        gNetworkStartAddress = Config::Get().network.ListenAddress;
+                        gNetworkStartAddress = Config::Get().network.listenAddress;
                     }
 
                     if (gCustomPassword.empty())
                     {
-                        _network.SetPassword(Config::Get().network.DefaultPassword.c_str());
+                        _network.SetPassword(Config::Get().network.defaultPassword.c_str());
                     }
                     else
                     {
@@ -1190,7 +1190,7 @@ namespace OpenRCT2
             {
                 if (gNetworkStartPort == 0)
                 {
-                    gNetworkStartPort = Config::Get().network.DefaultPort;
+                    gNetworkStartPort = Config::Get().network.defaultPort;
                 }
                 _network.BeginClient(gNetworkStartHost, gNetworkStartPort);
             }
@@ -1251,7 +1251,7 @@ namespace OpenRCT2
         {
             if (!ShouldDraw())
                 return false;
-            if (!Config::Get().general.UncapFPS)
+            if (!Config::Get().general.uncapFPS)
                 return false;
             if (gGameSpeed > 4)
                 return false;
@@ -1608,7 +1608,7 @@ namespace OpenRCT2
 
     void ContextUpdateCursorScale()
     {
-        GetContext()->GetUiContext().SetCursorScale(static_cast<uint8_t>(std::round(Config::Get().general.WindowScale)));
+        GetContext()->GetUiContext().SetCursorScale(static_cast<uint8_t>(std::round(Config::Get().general.windowScale)));
     }
 
     void ContextHideCursor()
@@ -1630,8 +1630,8 @@ namespace OpenRCT2
     {
         auto cursorCoords = ContextGetCursorPosition();
         // Compensate for window scaling.
-        return { static_cast<int32_t>(std::ceil(cursorCoords.x / Config::Get().general.WindowScale)),
-                 static_cast<int32_t>(std::ceil(cursorCoords.y / Config::Get().general.WindowScale)) };
+        return { static_cast<int32_t>(std::ceil(cursorCoords.x / Config::Get().general.windowScale)),
+                 static_cast<int32_t>(std::ceil(cursorCoords.y / Config::Get().general.windowScale)) };
     }
 
     void ContextSetCursorPosition(const ScreenCoordsXY& cursorPosition)

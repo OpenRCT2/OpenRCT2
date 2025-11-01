@@ -47,7 +47,7 @@ constexpr RideTypeDescriptor CorkscrewRollerCoasterRTD =
     .BuildCosts = { 52.50_GBP, 2.50_GBP, 50, },
     .DefaultPrices = { 20, 20 },
     .DefaultMusic = kMusicObjectRock1,
-    .PhotoItem = ShopItem::Photo,
+    .PhotoItem = ShopItem::photo,
     .BonusValue = 100,
     .ColourPresets = TRACK_COLOUR_PRESETS(
         { COLOUR_BORDEAUX_RED, COLOUR_BORDEAUX_RED, COLOUR_BLACK },

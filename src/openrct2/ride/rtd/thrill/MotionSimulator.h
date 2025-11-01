@@ -44,7 +44,7 @@ constexpr RideTypeDescriptor MotionSimulatorRTD =
     .BuildCosts = { 110.00_GBP, 1.00_GBP, 1, },
     .DefaultPrices = { 20, 0 },
     .DefaultMusic = kMusicObjectRock1,
-    .PhotoItem = ShopItem::Photo,
+    .PhotoItem = ShopItem::photo,
     .BonusValue = 45,
     .ColourPresets = kDefaultFlatRideColourPreset,
     .ColourPreview = { 0, 0 },
@@ -75,6 +75,7 @@ constexpr RideTypeDescriptor MotionSimulatorRTD =
     .UpdateMeasurementsSpecialElements = RideUpdateMeasurementsSpecialElements_Default,
     .MusicTrackOffsetLength = RideAudio::RideMusicGetTrackOffsetLength_Default,
     .UpdateRideApproachVehicleWaypoints = UpdateRideApproachVehicleWaypointsMotionSimulator,
+    .specialType = RtdSpecialType::motionSimulator,
 };
 } // namespace OpenRCT2
 // clang-format on

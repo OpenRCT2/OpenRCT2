@@ -364,9 +364,9 @@ namespace OpenRCT2::Network
         auto f = p->get_future();
 
         std::string masterServerUrl = kMasterServerURL;
-        if (!Config::Get().network.MasterServerUrl.empty())
+        if (!Config::Get().network.masterServerUrl.empty())
         {
-            masterServerUrl = Config::Get().network.MasterServerUrl;
+            masterServerUrl = Config::Get().network.masterServerUrl;
         }
 
         Http::Request request;

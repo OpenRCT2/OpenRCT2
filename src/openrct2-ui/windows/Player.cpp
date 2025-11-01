@@ -409,7 +409,7 @@ namespace OpenRCT2::Ui::Windows
 
             // only enable kick button for other players
             const bool canKick = Network::CanPerformAction(
-                Network::GetCurrentPlayerGroupIndex(), Network::Permission::KickPlayer);
+                Network::GetCurrentPlayerGroupIndex(), Network::Permission::kickPlayer);
             const bool isServer = Network::GetPlayerFlags(playerIndex) & Network::PlayerFlags::kIsServer;
             const bool isOwnWindow = (Network::GetCurrentPlayerId() == number);
             widgetSetEnabled(*this, WIDX_KICK, canKick && !isOwnWindow && !isServer);

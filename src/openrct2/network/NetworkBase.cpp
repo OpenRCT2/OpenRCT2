@@ -47,7 +47,7 @@
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
 
-constexpr uint8_t kStreamVersion = 0;
+constexpr uint8_t kStreamVersion = 6;
 
 const std::string kStreamID = std::string(kOpenRCT2Version) + "-" + std::to_string(kStreamVersion);
 
@@ -283,7 +283,7 @@ namespace OpenRCT2::Network
         // risk of tick collision with the server map and title screen map.
         GameActions::SuspendQueue();
 
-        auto keyPath = GetPrivateKeyPath(Config::Get().network.PlayerName);
+        auto keyPath = GetPrivateKeyPath(Config::Get().network.playerName);
         if (!File::Exists(keyPath))
         {
             Console::WriteLine("Generating key... This may take a while");
@@ -311,7 +311,7 @@ namespace OpenRCT2::Network
 
             const std::string hash = _key.PublicKeyHash();
             const utf8* publicKeyHash = hash.c_str();
-            keyPath = GetPublicKeyPath(Config::Get().network.PlayerName, publicKeyHash);
+            keyPath = GetPublicKeyPath(Config::Get().network.playerName, publicKeyHash);
             Console::WriteLine("Key generated, saving public bits as %s", keyPath.c_str());
 
             try
@@ -373,12 +373,12 @@ namespace OpenRCT2::Network
             return false;
         }
 
-        ServerName = Config::Get().network.ServerName;
-        ServerDescription = Config::Get().network.ServerDescription;
-        ServerGreeting = Config::Get().network.ServerGreeting;
-        ServerProviderName = Config::Get().network.ProviderName;
-        ServerProviderEmail = Config::Get().network.ProviderEmail;
-        ServerProviderWebsite = Config::Get().network.ProviderWebsite;
+        ServerName = Config::Get().network.serverName;
+        ServerDescription = Config::Get().network.serverDescription;
+        ServerGreeting = Config::Get().network.serverGreeting;
+        ServerProviderName = Config::Get().network.providerName;
+        ServerProviderEmail = Config::Get().network.providerEmail;
+        ServerProviderWebsite = Config::Get().network.providerWebsite;
 
         IsServerPlayerInvisible = gOpenRCT2Headless;
 
@@ -386,7 +386,7 @@ namespace OpenRCT2::Network
         BeginChatLog();
         BeginServerLog();
 
-        Player* player = AddPlayer(Config::Get().network.PlayerName, "");
+        Player* player = AddPlayer(Config::Get().network.playerName, "");
         player->Flags |= PlayerFlags::kIsServer;
         player->Group = 0;
         player_id = player->Id;
@@ -407,7 +407,7 @@ namespace OpenRCT2::Network
 
         status = Status::connected;
         listening_port = port;
-        _serverState.gamestateSnapshotsEnabled = Config::Get().network.DesyncDebugging;
+        _serverState.gamestateSnapshotsEnabled = Config::Get().network.desyncDebugging;
         _advertiser = CreateServerAdvertiser(listening_port);
 
         GameLoadScripts();
@@ -863,7 +863,7 @@ namespace OpenRCT2::Network
             intent.PutExtra(INTENT_EXTRA_MESSAGE, std::string{ str_desync });
             ContextOpenIntent(&intent);
 
-            if (!Config::Get().network.StayConnected)
+            if (!Config::Get().network.stayConnected)
             {
                 Close();
             }
@@ -935,12 +935,12 @@ namespace OpenRCT2::Network
 
     std::string NetworkBase::GetMasterServerUrl()
     {
-        if (Config::Get().network.MasterServerUrl.empty())
+        if (Config::Get().network.masterServerUrl.empty())
         {
             return kMasterServerURL;
         }
 
-        return Config::Get().network.MasterServerUrl;
+        return Config::Get().network.masterServerUrl;
     }
 
     NetworkGroup* NetworkBase::AddGroup()
@@ -1059,7 +1059,7 @@ namespace OpenRCT2::Network
         // Spectator group
         auto spectator = std::make_unique<NetworkGroup>();
         spectator->SetName("Spectator");
-        spectator->ToggleActionPermission(Permission::Chat);
+        spectator->ToggleActionPermission(Permission::chat);
         spectator->Id = 1;
         group_list.push_back(std::move(spectator));
 
@@ -1067,13 +1067,13 @@ namespace OpenRCT2::Network
         auto user = std::make_unique<NetworkGroup>();
         user->SetName("User");
         user->ActionsAllowed.fill(0xFF);
-        user->ToggleActionPermission(Permission::KickPlayer);
-        user->ToggleActionPermission(Permission::ModifyGroups);
-        user->ToggleActionPermission(Permission::SetPlayerGroup);
-        user->ToggleActionPermission(Permission::Cheat);
-        user->ToggleActionPermission(Permission::PasswordlessLogin);
-        user->ToggleActionPermission(Permission::ModifyTile);
-        user->ToggleActionPermission(Permission::EditScenarioOptions);
+        user->ToggleActionPermission(Permission::kickPlayer);
+        user->ToggleActionPermission(Permission::modifyGroups);
+        user->ToggleActionPermission(Permission::setPlayerGroup);
+        user->ToggleActionPermission(Permission::cheat);
+        user->ToggleActionPermission(Permission::passwordlessLogin);
+        user->ToggleActionPermission(Permission::modifyTile);
+        user->ToggleActionPermission(Permission::editScenarioOptions);
         user->Id = 2;
         group_list.push_back(std::move(user));
 
@@ -1180,7 +1180,7 @@ namespace OpenRCT2::Network
 
     void NetworkBase::AppendChatLog(std::string_view s)
     {
-        if (Config::Get().network.LogChat && _chat_log_fs.is_open())
+        if (Config::Get().network.logChat && _chat_log_fs.is_open())
         {
             AppendLog(_chat_log_fs, s);
         }
@@ -1218,7 +1218,7 @@ namespace OpenRCT2::Network
 
     void NetworkBase::AppendServerLog(const std::string& s)
     {
-        if (Config::Get().network.LogServerActions && _server_log_fs.is_open())
+        if (Config::Get().network.logServerActions && _server_log_fs.is_open())
         {
             AppendLog(_server_log_fs, s);
         }
@@ -1670,13 +1670,13 @@ namespace OpenRCT2::Network
     json_t NetworkBase::GetServerInfoAsJson() const
     {
         json_t jsonObj = {
-            { "name", Config::Get().network.ServerName },
+            { "name", Config::Get().network.serverName },
             { "requiresPassword", _password.size() > 0 },
             { "version", GetVersion() },
             { "players", GetNumVisiblePlayers() },
-            { "maxPlayers", Config::Get().network.Maxplayers },
-            { "description", Config::Get().network.ServerDescription },
-            { "greeting", Config::Get().network.ServerGreeting },
+            { "maxPlayers", Config::Get().network.maxplayers },
+            { "description", Config::Get().network.serverDescription },
+            { "greeting", Config::Get().network.serverGreeting },
             { "dedicated", gOpenRCT2Headless },
         };
         return jsonObj;
@@ -1690,9 +1690,9 @@ namespace OpenRCT2::Network
 
         // Provider details
         json_t jsonProvider = {
-            { "name", Config::Get().network.ProviderName },
-            { "email", Config::Get().network.ProviderEmail },
-            { "website", Config::Get().network.ProviderWebsite },
+            { "name", Config::Get().network.providerName },
+            { "email", Config::Get().network.providerEmail },
+            { "website", Config::Get().network.providerWebsite },
         };
 
         jsonObj["provider"] = jsonProvider;
@@ -2212,7 +2212,7 @@ namespace OpenRCT2::Network
 
     void NetworkBase::Client_Handle_TOKEN(Connection& connection, Packet& packet)
     {
-        auto keyPath = GetPrivateKeyPath(Config::Get().network.PlayerName);
+        auto keyPath = GetPrivateKeyPath(Config::Get().network.playerName);
         if (!File::Exists(keyPath))
         {
             LOG_ERROR("Key file (%s) was not found. Restart client to re-generate it.", keyPath.c_str());
@@ -2255,7 +2255,7 @@ namespace OpenRCT2::Network
         // when process dump gets collected at some point in future.
         _key.Unload();
 
-        Client_Send_AUTH(Config::Get().network.PlayerName, gCustomPassword, pubkey, signature);
+        Client_Send_AUTH(Config::Get().network.playerName, gCustomPassword, pubkey, signature);
     }
 
     void NetworkBase::ServerHandleRequestGamestate(Connection& connection, Packet& packet)
@@ -2688,7 +2688,7 @@ namespace OpenRCT2::Network
                     if (verified)
                     {
                         LOG_VERBOSE("Connection %s: Signature verification ok. Hash %s", hostName, hash.c_str());
-                        if (Config::Get().network.KnownKeysOnly && _userManager.GetUserByHash(hash) == nullptr)
+                        if (Config::Get().network.knownKeysOnly && _userManager.GetUserByHash(hash) == nullptr)
                         {
                             LOG_VERBOSE("Connection %s: Hash %s, not known", hostName, hash.c_str());
                             connection.AuthStatus = Auth::unknownKeyDisallowed;
@@ -2717,7 +2717,7 @@ namespace OpenRCT2::Network
                 const NetworkGroup* group = GetGroupByID(GetGroupIDByHash(connection.key.PublicKeyHash()));
                 if (group != nullptr)
                 {
-                    passwordless = group->CanPerformAction(Permission::PasswordlessLogin);
+                    passwordless = group->CanPerformAction(Permission::passwordlessLogin);
                 }
             }
             if (gameversion != GetVersion())
@@ -2744,7 +2744,7 @@ namespace OpenRCT2::Network
                 }
             }
 
-            if (GetNumVisiblePlayers() >= Config::Get().network.Maxplayers)
+            if (GetNumVisiblePlayers() >= Config::Get().network.maxplayers)
             {
                 connection.AuthStatus = Auth::full;
                 LOG_INFO("Connection %s: Server is full.", hostName);
@@ -2952,7 +2952,7 @@ namespace OpenRCT2::Network
         if (connection.player != nullptr)
         {
             NetworkGroup* group = GetGroupByID(connection.player->Group);
-            if (group == nullptr || !group->CanPerformAction(Permission::Chat))
+            if (group == nullptr || !group->CanPerformAction(Permission::chat))
             {
                 return;
             }
@@ -3981,7 +3981,7 @@ namespace OpenRCT2::Network
     void SendPassword(const std::string& password)
     {
         auto& network = GetContext()->GetNetwork();
-        const auto keyPath = GetPrivateKeyPath(Config::Get().network.PlayerName);
+        const auto keyPath = GetPrivateKeyPath(Config::Get().network.playerName);
         if (!File::Exists(keyPath))
         {
             LOG_ERROR("Private key %s missing! Restart the game to generate it.", keyPath.c_str());
@@ -4004,7 +4004,7 @@ namespace OpenRCT2::Network
         // Don't keep private key in memory. There's no need and it may get leaked
         // when process dump gets collected at some point in future.
         network._key.Unload();
-        network.Client_Send_AUTH(Config::Get().network.PlayerName, password, pubkey, signature);
+        network.Client_Send_AUTH(Config::Get().network.playerName, password, pubkey, signature);
     }
 
     void SetPassword(const char* password)

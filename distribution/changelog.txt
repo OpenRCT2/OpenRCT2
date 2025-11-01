@@ -1,8 +1,46 @@
+0.4.28 (in development)
+------------------------------------------------------------------------
+- Feature: [#25286] Footpath area dragging tool.
+- Feature: [#25379] Add an option to the command line screenshot function to draw debug segment heights.
+- Improved: [#21375] The `load_object` console command now allows loading JSON objects.
+- Improved: [#25297] Paths on the ground in SV4/SC4 no longer block supports of the paths above.
+- Improved: [#25349] ‘Recent Messages’ window can now be fully themed.
+- Improved: [#25433] Colour dropdown now uses bigger images in Enlarged UI mode.
+- Change: [#25089] Peep actions and animations that cause them to stop moving no longer trigger when they are on a level crossing.
+- Change: [#25337] Placing track designs with scenery that is obstructed no longer disables all of the scenery.
+- Fix: [#20198] Guest inventory from RCT1 base game saves is not imported.
+- Fix: [#20486] Multiplayer desync when placing track designs without any scenery.
+- Fix: [#22779, #25330] Incorrect queue paths in Nevermore Park and Six Flags Holland scenarios (bug in the original scenarios).
+- Fix: [#24975] The Corkscrew and LIM Launched (original bug) roller coaster quarter loop tunnels are too high.
+- Fix: [#25139] Steam locomotive and tram claxons can sound louder than normal when approaching crossings that span multiple tiles.
+- Fix: [#25190] Inserting a block brake while a coaster is simulating will cause the simulation to behave strangely.
+- Fix: [#25206] System file picker does not show up on the Steam Deck.
+- Fix: [#25272] Text colour dropdown in the Banner window is too narrow, resulting in truncated labels.
+- Fix: [#25299] The Mine Train Coaster left large helix draws incorrect sprites at certain angles (original bug).
+- Fix: [#25328] Spiral Slide in Blackpool Pleasure Beach has its entrance and exit the wrong way round (bug in the original scenario).
+- Fix: [#25342] The Go-Karts medium right gentle sloped turn does not have a tunnel at the end.
+- Fix: [#25349] Items in Recent Messages are too narrow if there is no scrollbar visible.
+- Fix: [#25350] The scrolling intro background switches colour halfway through (original bug).
+- Fix: [#25350] When skipping the scrolling intro, the screen does not get cleared properly.
+- Fix: [#25350] Scrolling intro cannot be skipped using a mouse click.
+- Fix: [#25358] The Stand Up Roller Coaster left corkscrew does not block supports correctly.
+- Fix: [#25363] The Mine Train Coaster flat-to-steep track pieces do not block all metal supports.
+- Fix: [#25369] The Go-Karts medium turns and small flat and sloped turns do not block metal supports correctly.
+- Fix: [#25370] The Hybrid Coaster diagonal brakes and block brakes do not block metal supports consistently.
+- Fix: [#25371] The Wooden Roller Coaster small banked turns block too many metal supports.
+- Fix: [#25378] The land tool sometimes allows land to be raised through a maze.
+- Fix: [#25380] The Lay-down Roller Coaster left corkscrew supports are incorrect at one angle (original bug).
+- Fix: [#25388] The Shortcut Keys window uses the wrong colours for separators, scrollbars and buttons.
+- Fix: [#25401] Mazes can be built 2 units higher than their support limits.
+- Fix: [#25404] Guests that have been removed with the remove all guests cheat will still be visible if they were sliding down the Spiral Slide.
+- Fix: [#25410] Guest flags (e.g. tracking) not imported from RCT1.
+
 0.4.27 (2025-10-04)
 ------------------------------------------------------------------------
 - Feature: [#25218] `sprite exportobject` command, which allows extracting images from an object.
 - Feature: [#25274] New title sequence (see https://github.com/OpenRCT2/title-sequences/releases/tag/v0.4.26 for credits).
 - Improved: [#2296, #2307] The land tool now takes sloped track and paths into account when modifying land.
+- Improved: [#25192] Ride List now allows sorting by ride type.
 - Change: [#25111] Frozen guests no longer finish consuming any food or drink they are carrying.
 - Change: [#25161] Revert to the ‘fair ride price’ calculation of vanilla RCT2.
 - Change: [#25201] Ride List: put unknown popularity and satisfaction last when sorting.
