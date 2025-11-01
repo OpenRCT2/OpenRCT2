@@ -1,5 +1,6 @@
 0.4.29 (in development)
 ------------------------------------------------------------------------
+- Fix: [#25028] Food stall objects cannot use more than one carColours entry for random placement.
 
 0.4.28 (2025-11-01)
 ------------------------------------------------------------------------

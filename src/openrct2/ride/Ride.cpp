@@ -4347,7 +4347,7 @@ int32_t RideGetRandomColourPresetIndex(ride_type_t rideType)
  *
  *  Based on rct2: 0x006B4776
  */
-void Ride::setColourPreset(uint8_t index)
+void Ride::setColourPreset(uint8_t index, uint8_t indexVeh)
 {
     const TrackColourPresetList* colourPresets = &getRideTypeDescriptor().ColourPresets;
     TrackColour colours = { COLOUR_BLACK, COLOUR_BLACK, COLOUR_BLACK };
@@ -4357,8 +4357,11 @@ void Ride::setColourPreset(uint8_t index)
         const auto* rideEntry = GetRideEntryByIndex(subtype);
         if (rideEntry != nullptr && rideEntry->vehicle_preset_list->count > 0)
         {
-            auto list = rideEntry->vehicle_preset_list->list[0];
-            colours = { list.Body, list.Trim, list.Tertiary };
+            if (indexVeh < rideEntry->vehicle_preset_list->count)
+            {
+                auto list = rideEntry->vehicle_preset_list->list[indexVeh];
+                colours = { list.Body, list.Trim, list.Tertiary };
+            }
         }
     }
     else if (index < colourPresets->count)

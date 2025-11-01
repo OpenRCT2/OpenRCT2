@@ -139,7 +139,7 @@ namespace OpenRCT2::GameActions
 
         ride->type = _rideType;
         ride->subtype = rideEntryIndex;
-        ride->setColourPreset(_colour1);
+        ride->setColourPreset(_colour1, _colour2);
         ride->overallView.SetNull();
         ride->setNameToDefault();
 
