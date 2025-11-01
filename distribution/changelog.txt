@@ -2,6 +2,7 @@
 ------------------------------------------------------------------------
 - Improved: [#25529] The map selection grid no longer redraws every frame if it has not changed.
 - Improved: [#25530] Wall dragging can now be cancelled without closing the Scenery window.
+- Change: [#25485] Make the enlarged pressed swatch sprite more pronounced.
 - Fix: [#25524] The track construction arrow does not immediately change position when deleting track pieces.
 
 0.4.29 (2025-11-22)
