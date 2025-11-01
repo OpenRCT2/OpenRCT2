@@ -1,4 +1,4 @@
-0.4.28 (in development)
+0.4.28 (2025-11-01)
 ------------------------------------------------------------------------
 - Feature: [#25286] Footpath area dragging tool.
 - Feature: [#25379] Add an option to the command line screenshot function to draw debug segment heights.
