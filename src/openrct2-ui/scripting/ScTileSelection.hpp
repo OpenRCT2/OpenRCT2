@@ -105,8 +105,8 @@ namespace OpenRCT2::Scripting
             gMapSelectionTiles.clear();
             if (JS_IsArray(value))
             {
-                JSIterateArray(ctx, value, [](JSContext* c, JSValue v) {
-                    auto coords = GetCoordsXY(c, v);
+                JSIterateArray(ctx, value, [](JSContext* ctx2, JSValue v) {
+                    auto coords = GetCoordsXY(ctx2, v);
                     if (coords.has_value())
                     {
                         gMapSelectionTiles.push_back(coords.value());
