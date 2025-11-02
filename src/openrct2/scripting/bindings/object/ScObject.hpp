@@ -125,7 +125,7 @@ namespace OpenRCT2::Scripting
             auto obj = GetObject(thisVal);
             if (obj != nullptr && obj->GetLegacyIdentifier().find('\0') == std::string::npos)
             {
-                JSFromStdString(ctx, obj->GetLegacyIdentifier());
+                return JSFromStdString(ctx, obj->GetLegacyIdentifier());
             }
             return JSFromStdString(ctx, {});
         }
