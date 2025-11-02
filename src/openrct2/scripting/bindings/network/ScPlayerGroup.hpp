@@ -9,31 +9,35 @@
 
 #pragma once
 
-#ifdef ENABLE_SCRIPTING
+#ifdef ENABLE_SCRIPTING_REFACTOR
 
-    #include "../../Duktape.hpp"
-
-    #include <string>
-    #include <vector>
+    #include "../../ScriptEngine.h"
 
 namespace OpenRCT2::Scripting
 {
-    class ScPlayerGroup
+    class ScPlayerGroup;
+    extern ScPlayerGroup gScPlayerGroup;
+
+    class ScPlayerGroup : public ScBase
     {
-        int32_t _id;
+    private:
+        static int32_t GetGroupId(JSValue thisVal);
+
+        static JSValue id_get(JSContext* ctx, JSValue thisVal);
+
+        static JSValue name_get(JSContext* ctx, JSValue thisVal);
+        static JSValue name_set(JSContext* ctx, JSValue thisVal, JSValue value);
+
+        static JSValue permissions_get(JSContext* ctx, JSValue thisVal);
+        static JSValue permissions_set(JSContext* ctx, JSValue thisVal, JSValue value);
 
     public:
-        ScPlayerGroup(int32_t id);
+        JSValue New(JSContext* ctx, int32_t id);
 
-        int32_t id_get();
+        void Register(JSContext* ctx);
 
-        std::string name_get() const;
-        void name_set(std::string value);
-
-        std::vector<std::string> permissions_get() const;
-        void permissions_set(std::vector<std::string> value);
-
-        static void Register(duk_context* ctx);
+    private:
+        static void Finalize(JSRuntime* rt, JSValue thisVal);
     };
 
 } // namespace OpenRCT2::Scripting
