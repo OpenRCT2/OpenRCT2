@@ -616,8 +616,8 @@ namespace OpenRCT2::Scripting
         {
             if (JS_IsArray(coordsOrRange))
             {
-                JSIterateArray(ctx, coordsOrRange, [staff, reset](JSContext* c, JSValue v) {
-                    auto coord = JSToCoordsXY(c, v);
+                JSIterateArray(ctx, coordsOrRange, [staff, reset](JSContext* ctx2, JSValue v) {
+                    auto coord = JSToCoordsXY(ctx2, v);
                     staff->SetPatrolArea(coord, reset);
                     MapInvalidateTileFull(coord);
                 });
