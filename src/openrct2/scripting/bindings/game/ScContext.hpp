@@ -270,11 +270,11 @@ namespace OpenRCT2::Scripting
                         const JSValue jsArg = argv[i];
                         if (JS_IsNumber(jsArg))
                         {
-                            args.push_back(JSToInt64(ctx, jsArg));
+                            args.emplace_back(JSToInt64(ctx, jsArg));
                         }
                         else if (JS_IsString(jsArg))
                         {
-                            args.push_back(JSToStdString(ctx, jsArg));
+                            args.emplace_back(JSToStdString(ctx, jsArg));
                         }
                         else
                         {
