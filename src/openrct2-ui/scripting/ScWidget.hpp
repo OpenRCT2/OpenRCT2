@@ -759,7 +759,8 @@ namespace OpenRCT2::Scripting
             if (w != nullptr)
             {
                 std::vector<std::string> items;
-                JSIterateArray(ctx, value, [&items](JSContext* ctx, JSValue val) { items.push_back(JSToStdString(ctx, val)); });
+                JSIterateArray(
+                    ctx, value, [&items](JSContext* ctx2, JSValue val) { items.push_back(JSToStdString(ctx2, val)); });
                 Ui::Windows::UpdateWidgetItems(w, data._widgetIndex, items);
             }
             return JS_UNDEFINED;
