@@ -78,7 +78,7 @@ namespace OpenRCT2::Scripting
             auto peep = GetPeep(thisVal);
             if (peep != nullptr)
             {
-                return JS_NewString(ctx, peep->Is<Staff>() ? "staff" : "guest");
+                return JSFromStdString(ctx, peep->Is<Staff>() ? "staff" : "guest");
             }
             return JS_UNDEFINED;
         }
