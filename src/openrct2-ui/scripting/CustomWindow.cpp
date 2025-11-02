@@ -140,8 +140,8 @@ namespace OpenRCT2::Ui::Windows
             }
             else if (result.Type == "dropdown")
             {
-                JSIterateArray(ctx, desc, "items", [&result](JSContext* ctx, JSValue val) {
-                    result.Items.push_back(JSToStdString(ctx, val));
+                JSIterateArray(ctx, desc, "items", [&result](JSContext* ctx2, JSValue val) {
+                    result.Items.push_back(JSToStdString(ctx2, val));
                 });
                 result.SelectedIndex = AsOrDefault(ctx, desc, "selectedIndex", 0);
                 result.OnChange = JSToCallback(ctx, desc, "onChange");
@@ -250,8 +250,8 @@ namespace OpenRCT2::Ui::Windows
             }
             JS_FreeValue(ctx, jsImage);
 
-            JSIterateArray(ctx, desc, "widgets", [&result](JSContext* ctx, JSValue x) {
-                result.Widgets.push_back(CustomWidgetDesc::FromJSValue(ctx, x));
+            JSIterateArray(ctx, desc, "widgets", [&result](JSContext* ctx2, JSValue x) {
+                result.Widgets.push_back(CustomWidgetDesc::FromJSValue(ctx2, x));
             });
             return result;
         }
@@ -302,19 +302,19 @@ namespace OpenRCT2::Ui::Windows
             result.Id = JSToOptionalInt(ctx, desc, "id");
             result.TabIndex = JSToOptionalInt(ctx, desc, "tabIndex");
 
-            JSIterateArray(ctx, desc, "widgets", [&result](JSContext* ctx, JSValue val) {
-                result.Widgets.push_back(CustomWidgetDesc::FromJSValue(ctx, val));
+            JSIterateArray(ctx, desc, "widgets", [&result](JSContext* ctx2, JSValue val) {
+                result.Widgets.push_back(CustomWidgetDesc::FromJSValue(ctx2, val));
             });
 
-            JSIterateArray(ctx, desc, "tabs", [&result](JSContext* ctx, JSValue x) {
-                result.Tabs.push_back(CustomTabDesc::FromJSValue(ctx, x));
+            JSIterateArray(ctx, desc, "tabs", [&result](JSContext* ctx2, JSValue x) {
+                result.Tabs.push_back(CustomTabDesc::FromJSValue(ctx2, x));
             });
 
-            JSIterateArray(ctx, desc, "colours", [&result](JSContext* ctx, JSValue x) {
+            JSIterateArray(ctx, desc, "colours", [&result](JSContext* ctx2, JSValue x) {
                 ColourWithFlags c = { COLOUR_BLACK };
                 if (JS_IsNumber(x))
                 {
-                    int32_t xValue = JSToInt(ctx, x);
+                    int32_t xValue = JSToInt(ctx2, x);
                     colour_t colour = xValue & ~kLegacyColourFlagTranslucent;
                     bool isTranslucent = (xValue & kLegacyColourFlagTranslucent);
                     c.colour = std::clamp<colour_t>(colour, COLOUR_BLACK, COLOUR_COUNT - 1);

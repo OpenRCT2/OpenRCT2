@@ -197,9 +197,9 @@ void Plugin::SetMetadata(const JSValue obj)
         const JSValue authors = JS_GetPropertyStr(_context, obj, "authors");
         if (JS_IsArray(authors))
         {
-            JSIterateArray(_context, authors, [&metadata](JSContext* ctx, JSValue val) {
+            JSIterateArray(_context, authors, [&metadata](JSContext* ctx2, JSValue val) {
                 if (JS_IsString(val))
-                    metadata.Authors.emplace_back(JSToStdString(ctx, val));
+                    metadata.Authors.emplace_back(JSToStdString(ctx2, val));
             });
         }
         else if (JS_IsString(authors))

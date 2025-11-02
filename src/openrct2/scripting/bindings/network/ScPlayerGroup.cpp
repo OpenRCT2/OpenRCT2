@@ -120,8 +120,8 @@ namespace OpenRCT2::Scripting
             GameActions::ModifyGroupType::SetPermissions, id, "", 0, GameActions::PermissionState::ClearAll);
         GameActions::Execute(&networkAction, getGameState());
 
-        std::vector<bool> enabledPermissions;
-        enabledPermissions.resize(Network::NetworkActions::Actions.size());
+        // Don't use vector<bool> since the weird bitpacking specialisation does not work with the lambda (on some compilers)
+        std::vector<uint8_t> enabledPermissions(Network::NetworkActions::Actions.size());
         JSIterateArray(ctx, array, [&enabledPermissions](JSContext* ctx2, JSValue x) {
             auto permissionName = TransformPermissionKeyToInternal(ctx2, x);
 

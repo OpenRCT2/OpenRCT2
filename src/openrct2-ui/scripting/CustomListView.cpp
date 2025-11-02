@@ -112,7 +112,7 @@ namespace OpenRCT2::Scripting
         else if (JS_IsArray(d))
         {
             std::vector<std::string> cells;
-            JSIterateArray(ctx, d, [&cells](JSContext* ctx, JSValue x) { cells.push_back(JSToStdString(ctx, x)); });
+            JSIterateArray(ctx, d, [&cells](JSContext* ctx2, JSValue x) { cells.push_back(JSToStdString(ctx2, x)); });
             result = ListViewItem(std::move(cells));
         }
         else if (JS_IsObject(d))
@@ -134,7 +134,7 @@ namespace OpenRCT2::Scripting
         std::vector<ListViewColumn> result;
         if (JS_IsArray(d))
         {
-            JSIterateArray(ctx, d, [&result](JSContext* ctx, JSValue x) { result.push_back(ListViewColumnFromJS(ctx, x)); });
+            JSIterateArray(ctx, d, [&result](JSContext* ctx2, JSValue x) { result.push_back(ListViewColumnFromJS(ctx2, x)); });
         }
         return result;
     }
@@ -144,7 +144,7 @@ namespace OpenRCT2::Scripting
         std::vector<ListViewItem> result;
         if (JS_IsArray(d))
         {
-            JSIterateArray(ctx, d, [&result](JSContext* ctx, JSValue x) { result.push_back(ListViewItemFromJS(ctx, x)); });
+            JSIterateArray(ctx, d, [&result](JSContext* ctx2, JSValue x) { result.push_back(ListViewItemFromJS(ctx2, x)); });
         }
         return result;
     }

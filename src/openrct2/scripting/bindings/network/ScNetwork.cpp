@@ -274,8 +274,8 @@ namespace OpenRCT2::Scripting
             if (Network::GetMode() == Network::Mode::server)
             {
                 std::vector<uint8_t> playerIds;
-                JSIterateArray(ctx, players, [&playerIds](JSContext* ctx, JSValue val) {
-                    playerIds.push_back(static_cast<uint8_t>(JSToInt(ctx, val)));
+                JSIterateArray(ctx, players, [&playerIds](JSContext* ctx2, JSValue val) {
+                    playerIds.push_back(static_cast<uint8_t>(JSToInt(ctx2, val)));
                 });
                 if (!playerIds.empty())
                 {

@@ -438,7 +438,7 @@ namespace OpenRCT2::Scripting
 
             std::vector<std::string> bindings;
             JSIterateArray(
-                ctx, desc, "bindings", [&bindings](JSContext* ctx, JSValue x) { bindings.push_back(JSToStdString(ctx, x)); });
+                ctx, desc, "bindings", [&bindings](JSContext* ctx2, JSValue x) { bindings.push_back(JSToStdString(ctx2, x)); });
 
             auto callback = JSToCallback(ctx, desc, "callback");
             CustomShortcuts.emplace_back(std::make_unique<CustomShortcut>(owner, id, text, bindings, callback));

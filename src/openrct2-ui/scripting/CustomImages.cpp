@@ -213,7 +213,7 @@ namespace OpenRCT2::Scripting
             if (arrSz > 0)
             {
                 result.resize(arrSz);
-                JSIterateArray(ctx, data, [&result](JSContext* ctx, JSValue val) { result.push_back(JSToInt(ctx, val)); });
+                JSIterateArray(ctx, data, [&result](JSContext* ctx2, JSValue val) { result.push_back(JSToInt(ctx2, val)); });
             }
         }
         else if (JS_IsString(data))
