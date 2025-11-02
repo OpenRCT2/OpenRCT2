@@ -1942,15 +1942,13 @@ static bool TrackDesignPlacePreview(
     auto mapSize = TileCoordsXY{ gameState.mapSize.x * 16, gameState.mapSize.y * 16 };
 
     _currentTrackPieceDirection = 0;
-    int32_t z = TrackDesignGetZPlacement(
-        tds, td, RideGetTemporaryForPreview(), { mapSize.x, mapSize.y, 16, _currentTrackPieceDirection });
+    const CoordsXYZD coords = { mapSize.x, mapSize.y, kMinimumLandZ, _currentTrackPieceDirection };
+    const int32_t z = kMinimumLandZ + TrackDesignGetZPlacement(tds, td, RideGetTemporaryForPreview(), coords);
 
     if (tds.hasScenery)
     {
         gameStateData.setFlag(TrackDesignGameStateFlag::HasScenery, true);
     }
-
-    z += 16 - tds.placeSceneryZ;
 
     if (_trackDesignPlaceStateSceneryUnavailable)
     {
