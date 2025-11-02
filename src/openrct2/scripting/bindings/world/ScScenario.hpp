@@ -251,7 +251,7 @@ namespace OpenRCT2::Scripting
 
         static JSValue completedBy_get(JSContext* ctx, JSValue)
         {
-            return JS_NewString(ctx, getGameState().scenarioCompletedBy.c_str());
+            return JSFromStdString(ctx, getGameState().scenarioCompletedBy);
         }
 
         static JSValue completedBy_set(JSContext* ctx, JSValue, JSValue jsValue)
@@ -264,7 +264,7 @@ namespace OpenRCT2::Scripting
 
         static JSValue filename_get(JSContext* ctx, JSValue)
         {
-            return JS_NewString(ctx, getGameState().scenarioFileName.c_str());
+            return JSFromStdString(ctx, getGameState().scenarioFileName);
         }
 
         static JSValue filename_set(JSContext* ctx, JSValue, JSValue jsValue)
@@ -315,10 +315,10 @@ namespace OpenRCT2::Scripting
         {
             const auto& gameState = OpenRCT2::getGameState();
             if (gameState.scenarioCompletedCompanyValue == kMoney64Undefined)
-                return JS_NewString(ctx, "inProgress");
+                return JSFromStdString(ctx, "inProgress");
             if (gameState.scenarioCompletedCompanyValue == kCompanyValueOnFailedObjective)
-                return JS_NewString(ctx, "failed");
-            return JS_NewString(ctx, "completed");
+                return JSFromStdString(ctx, "failed");
+            return JSFromStdString(ctx, "completed");
         }
         static JSValue status_set(JSContext* ctx, JSValue, JSValue jsValue)
         {
