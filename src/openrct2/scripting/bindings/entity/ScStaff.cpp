@@ -61,13 +61,13 @@ namespace OpenRCT2::Scripting
             switch (peep->AssignedStaffType)
             {
                 case StaffType::handyman:
-                    return JS_NewString(ctx, "handyman");
+                    return JSFromStdString(ctx, "handyman");
                 case StaffType::mechanic:
-                    return JS_NewString(ctx, "mechanic");
+                    return JSFromStdString(ctx, "mechanic");
                 case StaffType::security:
-                    return JS_NewString(ctx, "security");
+                    return JSFromStdString(ctx, "security");
                 case StaffType::entertainer:
-                    return JS_NewString(ctx, "entertainer");
+                    return JSFromStdString(ctx, "entertainer");
                 case StaffType::count:
                     break;
             }

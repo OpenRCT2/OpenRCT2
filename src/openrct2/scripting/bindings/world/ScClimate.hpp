@@ -34,7 +34,7 @@ namespace OpenRCT2::Scripting
 
         static JSValue weather_get(JSContext* ctx, JSValue thisVal)
         {
-            return JS_NewString(ctx, gScWeatherState.GetOpaque<OpaqueWeatherStateData*>(thisVal)->weather.c_str());
+            return JSFromStdString(ctx, gScWeatherState.GetOpaque<OpaqueWeatherStateData*>(thisVal)->weather);
         }
 
         static JSValue temperature_get(JSContext* ctx, JSValue thisVal)
@@ -104,9 +104,9 @@ namespace OpenRCT2::Scripting
             auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
             auto* climateObj = objManager.GetLoadedObject<ClimateObject>(0);
             if (climateObj == nullptr)
-                return JS_NewString(ctx, {});
+                return JSFromStdString(ctx, {});
 
-            return JS_NewString(ctx, climateObj->getScriptName().c_str());
+            return JSFromStdString(ctx, climateObj->getScriptName());
         }
 
         static JSValue current_get(JSContext* ctx, JSValue)

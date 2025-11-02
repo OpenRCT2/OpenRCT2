@@ -497,10 +497,9 @@ namespace OpenRCT2::Scripting
                 JS_SetPropertyStr(ctx, obj, "id", JS_NewInt32(ctx, entry->ScenarioId));
                 JS_SetPropertyStr(ctx, obj, "category", ScenarioCategoryToJS(ctx, entry->Category));
                 JS_SetPropertyStr(ctx, obj, "sourceGame", ScenarioSourceToJS(ctx, entry->SourceGame));
-                JS_SetPropertyStr(
-                    ctx, obj, "internalName", JS_NewStringLen(ctx, entry->InternalName.data(), entry->InternalName.size()));
-                JS_SetPropertyStr(ctx, obj, "name", JS_NewStringLen(ctx, entry->Name.data(), entry->Name.size()));
-                JS_SetPropertyStr(ctx, obj, "details", JS_NewStringLen(ctx, entry->Details.data(), entry->Details.size()));
+                JS_SetPropertyStr(ctx, obj, "internalName", JSFromStdString(ctx, entry->InternalName));
+                JS_SetPropertyStr(ctx, obj, "name", JSFromStdString(ctx, entry->Name));
+                JS_SetPropertyStr(ctx, obj, "details", JSFromStdString(ctx, entry->Details));
 
                 auto* highscore = entry->Highscore;
                 if (highscore == nullptr)
@@ -510,8 +509,7 @@ namespace OpenRCT2::Scripting
                 else
                 {
                     JSValue jsHighscore = JS_NewObject(ctx);
-                    JS_SetPropertyStr(
-                        ctx, jsHighscore, "name", JS_NewStringLen(ctx, highscore->name.data(), highscore->name.size()));
+                    JS_SetPropertyStr(ctx, jsHighscore, "name", JSFromStdString(ctx, highscore->name));
                     JS_SetPropertyStr(ctx, jsHighscore, "companyValue", JS_NewInt64(ctx, highscore->company_value));
                     JS_SetPropertyStr(ctx, obj, "highscore", jsHighscore);
                 }
