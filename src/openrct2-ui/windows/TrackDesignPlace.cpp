@@ -289,7 +289,7 @@ namespace OpenRCT2::Ui::Windows
 
             auto tdAction = GameActions::TrackDesignAction(
                 { trackLoc, _currentTrackPieceDirection }, *_trackDesign, !gTrackDesignSceneryToggle);
-            tdAction.SetCallback([&](const GameActions::GameAction*, const GameActions::Result* result) {
+            tdAction.SetCallback([&, trackLoc](const GameActions::GameAction*, const GameActions::Result* result) {
                 if (result->Error != GameActions::Status::Ok)
                 {
                     Audio::Play3D(Audio::SoundId::error, result->Position);
