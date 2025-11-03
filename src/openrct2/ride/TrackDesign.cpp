@@ -1244,7 +1244,8 @@ static GameActions::Result TrackDesignPlaceSceneryElement(
                     flags |= GAME_COMMAND_FLAG_REPLAY;
                 }
 
-                if (tds.placeOperation == TrackPlaceOperation::place)
+                if (tds.placeOperation == TrackPlaceOperation::placeTrackPreview
+                    || tds.placeOperation == TrackPlaceOperation::place)
                 {
                     if (!pathElement->IsQueue() || FootpathQueueCountConnections(mapCoord, *pathElement) < 2)
                     {
