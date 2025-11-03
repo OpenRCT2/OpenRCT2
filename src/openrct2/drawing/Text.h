@@ -10,11 +10,14 @@
 #pragma once
 
 #include "../interface/Colour.h"
+#include "../interface/ColourWithFlags.h"
 #include "../localisation/StringIdType.h"
 #include "Font.h"
 
 struct ScreenCoordsXY;
 struct RenderTarget;
+
+using OpenRCT2::ColourWithFlags;
 
 namespace OpenRCT2
 {

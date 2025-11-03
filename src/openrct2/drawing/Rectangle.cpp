@@ -10,6 +10,7 @@
 #include "Rectangle.h"
 
 #include "../interface/Colour.h"
+#include "../interface/ColourWithFlags.h"
 #include "../world/Location.hpp"
 #include "Drawing.h"
 #include "IDrawingContext.h"

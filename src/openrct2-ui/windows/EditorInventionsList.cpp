@@ -17,6 +17,7 @@
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/SpriteIds.h>
 #include <openrct2/drawing/Rectangle.h>
+#include <openrct2/interface/ColourWithFlags.h>
 #include <openrct2/interface/Cursors.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/management/Research.h>

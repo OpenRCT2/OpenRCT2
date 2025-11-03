@@ -286,6 +286,7 @@
     <ClInclude Include="Input.h" />
     <ClInclude Include="interface\Chat.h" />
     <ClInclude Include="interface\Colour.h" />
+    <ClInclude Include="interface\ColourWithFlags.h" />
     <ClInclude Include="interface\Cursors.h" />
     <ClInclude Include="interface\FontFamilies.h" />
     <ClInclude Include="interface\Fonts.h" />
@@ -863,6 +864,7 @@
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="interface\Chat.cpp" />
     <ClCompile Include="interface\Colour.cpp" />
+    <ClCompile Include="interface\ColourWithFlags.cpp" />
     <ClCompile Include="interface\Cursors.cpp" />
     <ClCompile Include="interface\FontFamilies.cpp" />
     <ClCompile Include="interface\Fonts.cpp" />

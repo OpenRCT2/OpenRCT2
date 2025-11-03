@@ -19,6 +19,7 @@
 #include "../drawing/IDrawingContext.h"
 #include "../drawing/IDrawingEngine.h"
 #include "../drawing/Text.h"
+#include "../interface/ColourWithFlags.h"
 #include "../interface/Viewport.h"
 #include "../localisation/Formatting.h"
 #include "../localisation/LocalisationService.h"

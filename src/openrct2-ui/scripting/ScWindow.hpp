@@ -13,6 +13,7 @@
 
     #include "ScWidget.hpp"
 
+    #include <openrct2/interface/ColourWithFlags.h>
     #include <openrct2/interface/Window.h>
     #include <openrct2/interface/WindowBase.h>
     #include <openrct2/scripting/Duktape.hpp>

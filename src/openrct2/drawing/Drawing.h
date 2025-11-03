@@ -32,6 +32,7 @@ struct ScreenRect;
 
 namespace OpenRCT2
 {
+    struct ColourWithFlags;
     struct IPlatformEnvironment;
     struct IStream;
 } // namespace OpenRCT2

@@ -20,10 +20,6 @@ using namespace OpenRCT2::Drawing;
 
 ColourShadeMap ColourMapA[COLOUR_COUNT] = {};
 
-static constexpr uint8_t kLegacyColourMaskBase = 0x1F;
-static constexpr uint8_t kLegacyColourFlagOutline = (1 << 5);
-static constexpr uint8_t kLegacyColourFlagInset = (1 << 6);
-
 enum
 {
     INDEX_COLOUR_0 = 243,
@@ -210,31 +206,3 @@ BlendColourMapType* GetBlendColourMap()
     return nullptr;
 }
 #endif
-
-ColourWithFlags ColourWithFlags::withFlag(ColourFlag flag, bool on) const
-{
-    struct ColourWithFlags result = *this;
-    result.flags.set(flag, on);
-    return result;
-}
-
-ColourWithFlags ColourWithFlags::fromLegacy(uint8_t legacy)
-{
-    ColourWithFlags result{};
-    result.colour = legacy & kLegacyColourMaskBase;
-    if (legacy & kLegacyColourFlagTranslucent)
-        result.flags.set(ColourFlag::translucent);
-    if (legacy & kLegacyColourFlagInset)
-        result.flags.set(ColourFlag::inset);
-    if (legacy & kLegacyColourFlagOutline)
-        result.flags.set(ColourFlag::withOutline);
-
-    return result;
-}
-
-ColourWithFlags& ColourWithFlags::operator=(colour_t rhs)
-{
-    colour = rhs;
-    flags = {};
-    return *this;
-}

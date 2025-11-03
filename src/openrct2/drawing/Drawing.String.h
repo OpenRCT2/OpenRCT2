@@ -11,6 +11,7 @@
 
 #include "../core/FlagHolder.hpp"
 #include "../interface/Colour.h"
+#include "../interface/ColourWithFlags.h"
 
 #include <cstdint>
 
@@ -35,7 +36,7 @@ struct TextDrawInfo
     int32_t maxX{};
     int32_t maxY{};
     TextDrawFlags textDrawFlags{};
-    ColourFlags colourFlags{};
+    OpenRCT2::ColourFlags colourFlags{};
     TextDarkness darkness{};
     uint8_t palette[8]{};
     FontStyle fontStyle{};

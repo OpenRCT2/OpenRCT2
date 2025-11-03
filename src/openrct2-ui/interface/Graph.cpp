@@ -12,6 +12,7 @@
 #include <openrct2-ui/interface/Graph.h>
 #include <openrct2/Date.h>
 #include <openrct2/drawing/Rectangle.h>
+#include <openrct2/interface/ColourWithFlags.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Formatting.h>
 #include <openrct2/localisation/Localisation.Date.h>

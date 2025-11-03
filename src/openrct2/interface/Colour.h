@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include "../core/FlagHolder.hpp"
 #include "../core/StringTypes.h"
 
 #include <cstdint>
@@ -211,30 +210,8 @@ constexpr uint8_t kPaletteLengthAnimated = 16;
 constexpr uint8_t kColourNumOriginal = 32;
 constexpr uint8_t kColourNumNormal = 54;
 
-static constexpr uint8_t kLegacyColourFlagTranslucent = (1 << 7);
-
 constexpr colour_t kTextColour254 = 254;
 constexpr colour_t kTextColour255 = 255;
-
-enum class ColourFlag : uint8_t
-{
-    translucent,
-    inset,
-    withOutline,
-};
-using ColourFlags = FlagHolder<uint8_t, ColourFlag>;
-
-struct ColourWithFlags
-{
-    colour_t colour{};
-    ColourFlags flags{};
-
-    ColourWithFlags withFlag(ColourFlag flag, bool on) const;
-
-    static ColourWithFlags fromLegacy(uint8_t legacy);
-
-    ColourWithFlags& operator=(colour_t rhs);
-};
 
 struct ColourShadeMap
 {
