@@ -3166,7 +3166,8 @@ namespace OpenRCT2::Ui::Windows
                     auto result = GameActions::Execute(&wallPlaceAction, gameState);
                     if (result.Error == GameActions::Status::Ok)
                     {
-                        _provisionalTiles.push_back({ CoordsXYZD(x, y, gSceneryPlaceZ, _startEdge), result.Position.z });
+                        const auto placementData = result.GetData<GameActions::WallPlaceActionResult>();
+                        _provisionalTiles.push_back({ CoordsXYZD(x, y, gSceneryPlaceZ, _startEdge), placementData.BaseHeight });
                     }
                 }
             }

@@ -268,7 +268,7 @@ namespace OpenRCT2::GameActions
 
         res.Cost = wallEntry->price;
 
-        res.SetData(WallPlaceActionResult{});
+        res.SetData(WallPlaceActionResult{ targetHeight });
 
         return res;
     }
