@@ -62,7 +62,7 @@ constexpr RideTypeDescriptor GoKartsRTD =
         RatingsCalculationType::Normal,
         { RideRating::make(1, 42), RideRating::make(1, 73), RideRating::make(0, 40) },
         16,
-        -1,
+        kDynamicRideShelterRating,
         false,
         {
             { RatingsModifierType::BonusLength,            700, 32768, 0, 0 },

@@ -69,7 +69,7 @@ constexpr RideTypeDescriptor CarRideRTD =
         RatingsCalculationType::Normal,
         { RideRating::make(2, 00), RideRating::make(0, 50), RideRating::make(0, 00) },
         12,
-        -1,
+        kDynamicRideShelterRating,
         false,
         {
             { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },

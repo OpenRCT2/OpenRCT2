@@ -60,7 +60,7 @@ constexpr RideTypeDescriptor SingleRailRollerCoasterRTD =
         RatingsCalculationType::Normal,
         { RideRating::make(3, 50), RideRating::make(0, 60), RideRating::make(0, 40) },
         16,
-        -1,
+        kDynamicRideShelterRating,
         false,
         {
             { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },
