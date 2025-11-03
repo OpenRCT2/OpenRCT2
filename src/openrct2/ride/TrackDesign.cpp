@@ -1229,12 +1229,6 @@ static GameActions::Result TrackDesignPlaceSceneryElement(
                     return GameActions::Result();
                 }
 
-                if (tds.placeOperation == TrackPlaceOperation::place)
-                {
-                    FootpathQueueChainReset();
-                    FootpathRemoveEdgesAt(mapCoord, reinterpret_cast<TileElement*>(pathElement));
-                }
-
                 flags = GAME_COMMAND_FLAG_APPLY;
                 if (tds.placeOperation == TrackPlaceOperation::placeTrackPreview)
                 {
@@ -1252,8 +1246,11 @@ static GameActions::Result TrackDesignPlaceSceneryElement(
 
                 if (tds.placeOperation == TrackPlaceOperation::place)
                 {
-                    FootpathConnectEdges(mapCoord, reinterpret_cast<TileElement*>(pathElement), flags);
-                    FootpathUpdateQueueChains();
+                    if (!pathElement->IsQueue() || FootpathQueueCountConnections(mapCoord, *pathElement) < 2)
+                    {
+                        FootpathRemoveEdgesAt(mapCoord, reinterpret_cast<TileElement*>(pathElement));
+                        FootpathConnectEdges(mapCoord, reinterpret_cast<TileElement*>(pathElement), flags);
+                    }
                 }
 
                 return GameActions::Result();
@@ -1805,6 +1802,11 @@ static GameActions::Result TrackDesignPlaceVirtual(
     if (sceneryPlaceRes.Error != GameActions::Status::Ok)
     {
         return sceneryPlaceRes;
+    }
+
+    if (tds.placeOperation == TrackPlaceOperation::place || tds.placeOperation == TrackPlaceOperation::placeTrackPreview)
+    {
+        ride.chainQueues();
     }
 
     // 0x6D0FE6
