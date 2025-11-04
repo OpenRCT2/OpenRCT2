@@ -3842,3 +3842,4 @@ STR_7003    :A(z) „{STRING}” hangfájl csonka. Minta {INT32} lenne az elvár
 STR_7004    :Újrarajzolás kényszerítése
 STR_7005    :Útterület építése húzással
 STR_7006    :Keret rajzolása a képgombok köré
+STR_7007    :Játéktípus

@@ -3846,3 +3846,4 @@ STR_7003    :Zvukový soubor ‘{STRING}’ je zkrácený. Očekáván sample {I
 STR_7004    :Vynutit překresl. (force redraw)
 STR_7005    :Stavět cesty v oblasti označené tažením
 STR_7006    :Vykreslit okraje tlačítek s obrázky
+STR_7007    :Typ atrakce
