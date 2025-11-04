@@ -77,6 +77,8 @@ namespace OpenRCT2::Ui::Windows
     );
     // clang-format on
 
+    static bool gPlacingTrackDesign = false;
+
     class TrackDesignPlaceWindow final : public Window
     {
     private:
@@ -174,6 +176,11 @@ namespace OpenRCT2::Ui::Windows
             gMapSelectFlags.unset(MapSelectFlag::enable);
             gMapSelectFlags.unset(MapSelectFlag::enableConstruct);
             gMapSelectFlags.unset(MapSelectFlag::enableArrow);
+
+            if (gPlacingTrackDesign)
+            {
+                return;
+            }
 
             // Take shift modifier into account
             ScreenCoordsXY targetScreenCoords = screenCoords;
@@ -287,12 +294,15 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
+            gPlacingTrackDesign = true;
+
             auto tdAction = GameActions::TrackDesignAction(
                 { trackLoc, _currentTrackPieceDirection }, *_trackDesign, !gTrackDesignSceneryToggle);
             tdAction.SetCallback([&](const GameActions::GameAction*, const GameActions::Result* result) {
                 if (result->Error != GameActions::Status::Ok)
                 {
                     Audio::Play3D(Audio::SoundId::error, result->Position);
+                    gPlacingTrackDesign = false;
                     return;
                 }
 
@@ -321,6 +331,7 @@ namespace OpenRCT2::Ui::Windows
                         wnd->onMouseUp(WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE);
                     }
                 }
+                gPlacingTrackDesign = false;
             });
             GameActions::Execute(&tdAction, getGameState());
         }
