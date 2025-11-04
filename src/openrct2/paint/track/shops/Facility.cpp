@@ -24,7 +24,7 @@
 
 using namespace OpenRCT2;
 
-static constexpr TunnelGroup kTunnelGroup = TunnelGroup::Square;
+static constexpr TunnelStyle kTunnelStyle = TunnelStyle::square;
 
 static void PaintFacility(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
@@ -76,7 +76,7 @@ static void PaintFacility(
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 
     if (direction == 1 || direction == 2)
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelRotated(session, direction, height, kTunnelStyle, TunnelSlope::flat);
 }
 
 /* 0x00762D44 */

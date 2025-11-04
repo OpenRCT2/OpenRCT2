@@ -51,7 +51,6 @@ static void SuspendedMonorailTrackFlat(
         MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 0, height + 42, session.SupportColours);
     }
 
-    PaintUtilPushTunnelRotated(session, direction, height, TunnelType::InvertedSquare);
     PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
@@ -78,7 +77,6 @@ static void SuspendedMonorailTrackStation(
             { { 0, 6, height + 32 }, { 32, 20, 3 } });
         DrawSupportsSideBySide(session, direction, height, session.SupportColours, supportType.metal);
     }
-    PaintUtilPushTunnelRotated(session, direction, height, TunnelType::InvertedSquare);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
@@ -136,14 +134,6 @@ static void SuspendedMonorailTrack25DegUp(
         }
     }
 
-    if (direction == 0 || direction == 3)
-    {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelGroup::Square, TunnelSubType::SlopeStart);
-    }
-    else
-    {
-        PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelGroup::Square, TunnelSubType::SlopeEnd);
-    }
     PaintUtilSetGeneralSupportHeight(session, height + 72);
 }
 
@@ -200,14 +190,6 @@ static void SuspendedMonorailTrackFlatTo25DegUp(
         }
     }
 
-    if (direction == 0 || direction == 3)
-    {
-        PaintUtilPushTunnelRotated(session, direction, height, TunnelType::InvertedSquare);
-    }
-    else
-    {
-        PaintUtilPushTunnelRotated(session, direction, height, TunnelGroup::Square, TunnelSubType::SlopeEnd);
-    }
     PaintUtilSetGeneralSupportHeight(session, height + 64);
 }
 
@@ -264,14 +246,6 @@ static void SuspendedMonorailTrack25DegUpToFlat(
         }
     }
 
-    if (direction == 0 || direction == 3)
-    {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::InvertedSquare);
-    }
-    else
-    {
-        PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::InvertedSquareFlatTo25Deg);
-    }
     PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
@@ -342,10 +316,6 @@ static void SuspendedMonorailTrackLeftQuarterTurn5(
             MetalASupportsPaintSetup(
                 session, supportType.metal, MetalSupportPlace::centre, 0, height + 42, session.SupportColours);
 
-            if (direction == 0 || direction == 3)
-            {
-                PaintUtilPushTunnelRotated(session, direction, height, TunnelType::InvertedSquare);
-            }
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
@@ -485,15 +455,6 @@ static void SuspendedMonorailTrackLeftQuarterTurn5(
             MetalASupportsPaintSetup(
                 session, supportType.metal, MetalSupportPlace::centre, 0, height + 42, session.SupportColours);
 
-            switch (direction)
-            {
-                case 2:
-                    PaintUtilPushTunnelRight(session, height, TunnelType::InvertedSquare);
-                    break;
-                case 3:
-                    PaintUtilPushTunnelLeft(session, height, TunnelType::InvertedSquare);
-                    break;
-            }
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
@@ -549,10 +510,6 @@ static void SuspendedMonorailTrackSBendLeft(
                 0xFFFF, 0);
             DrawSBendLeftSupports(session, supportType.metal, trackSequence, direction, height + 42, 0, 0);
 
-            if (direction == 0 || direction == 3)
-            {
-                PaintUtilPushTunnelRotated(session, direction, height, TunnelType::InvertedSquare);
-            }
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
@@ -658,15 +615,6 @@ static void SuspendedMonorailTrackSBendLeft(
                 0xFFFF, 0);
             DrawSBendLeftSupports(session, supportType.metal, trackSequence, direction, height + 42, 0, 0);
 
-            switch (direction)
-            {
-                case 1:
-                    PaintUtilPushTunnelRight(session, height, TunnelType::InvertedSquare);
-                    break;
-                case 2:
-                    PaintUtilPushTunnelLeft(session, height, TunnelType::InvertedSquare);
-                    break;
-            }
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
@@ -712,10 +660,6 @@ static void SuspendedMonorailTrackSBendRight(
                 0xFFFF, 0);
             DrawSBendRightSupports(session, supportType.metal, trackSequence, direction, height + 42, 0, 0);
 
-            if (direction == 0 || direction == 3)
-            {
-                PaintUtilPushTunnelRotated(session, direction, height, TunnelType::InvertedSquare);
-            }
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
@@ -821,15 +765,6 @@ static void SuspendedMonorailTrackSBendRight(
                 0xFFFF, 0);
             DrawSBendRightSupports(session, supportType.metal, trackSequence, direction, height + 42, 0, 0);
 
-            switch (direction)
-            {
-                case 1:
-                    PaintUtilPushTunnelRight(session, height, TunnelType::InvertedSquare);
-                    break;
-                case 2:
-                    PaintUtilPushTunnelLeft(session, height, TunnelType::InvertedSquare);
-                    break;
-            }
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
@@ -878,10 +813,6 @@ static void SuspendedMonorailTrackLeftQuarterTurn3(
             MetalASupportsPaintSetup(
                 session, supportType.metal, MetalSupportPlace::centre, 0, height + 42, session.SupportColours);
 
-            if (direction == 0 || direction == 3)
-            {
-                PaintUtilPushTunnelRotated(session, direction, height, TunnelType::InvertedSquare);
-            }
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
@@ -954,15 +885,6 @@ static void SuspendedMonorailTrackLeftQuarterTurn3(
             MetalASupportsPaintSetup(
                 session, supportType.metal, MetalSupportPlace::centre, 0, height + 42, session.SupportColours);
 
-            switch (direction)
-            {
-                case 2:
-                    PaintUtilPushTunnelRight(session, height, TunnelType::InvertedSquare);
-                    break;
-                case 3:
-                    PaintUtilPushTunnelLeft(session, height, TunnelType::InvertedSquare);
-                    break;
-            }
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
@@ -1015,10 +937,6 @@ static void SuspendedMonorailTrackLeftEighthToDiag(
             MetalASupportsPaintSetup(
                 session, supportType.metal, MetalSupportPlace::centre, 0, height + 42, session.SupportColours);
 
-            if (direction == 0 || direction == 3)
-            {
-                PaintUtilPushTunnelRotated(session, direction, height, TunnelType::InvertedSquare);
-            }
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
@@ -1193,10 +1111,6 @@ static void SuspendedMonorailTrackRightEighthToDiag(
             MetalASupportsPaintSetup(
                 session, supportType.metal, MetalSupportPlace::centre, 0, height + 42, session.SupportColours);
 
-            if (direction == 0 || direction == 3)
-            {
-                PaintUtilPushTunnelRotated(session, direction, height, TunnelType::InvertedSquare);
-            }
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
