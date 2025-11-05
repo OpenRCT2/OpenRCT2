@@ -15,7 +15,8 @@ Includes all git commit authors. Aliases are GitHub usernames or community nickn
 * Joshua Jacobs (leicestersquare) - Graphic Artist
 
 ## Support team
-* Kenton Boadway (Krutonium) - Lead OpenScenarios
+* (Kyphii) - Lead OpenScenarios
+* Kenton Boadway (Krutonium) - Discord moderation
 
 ## Former development team members
 * Lewis Fox (LRFLEW)
@@ -30,6 +31,7 @@ Appreciation for long term contributors to the project having provided substanti
 * Edward Calver (X7123M3-256)
 * Kelson Blakewood (spacek531)
 * (frutiemax)
+* (mixiate)
 
 ## Special Thanks
 Appreciation for contributors who have provided substantial work, but are no longer active.
