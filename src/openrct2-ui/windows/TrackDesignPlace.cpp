@@ -77,6 +77,8 @@ namespace OpenRCT2::Ui::Windows
     );
     // clang-format on
 
+    static bool _placingTrackDesign = false;
+
     class TrackDesignPlaceWindow final : public Window
     {
     private:
@@ -175,6 +177,11 @@ namespace OpenRCT2::Ui::Windows
             gMapSelectFlags.unset(MapSelectFlag::enableConstruct);
             gMapSelectFlags.unset(MapSelectFlag::enableArrow);
 
+            if (_placingTrackDesign)
+            {
+                return;
+            }
+
             // Take shift modifier into account
             ScreenCoordsXY targetScreenCoords = screenCoords;
             if (_trackPlaceShiftState)
@@ -212,25 +219,26 @@ namespace OpenRCT2::Ui::Windows
             if (GameIsNotPaused() || getGameState().cheats.buildInPauseMode)
             {
                 ClearProvisional();
-                auto res = FindValidTrackDesignPlaceHeight(trackLoc, GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
+                CoordsXYZD ghostTrackLoc = trackLoc;
+                auto res = FindValidTrackDesignPlaceHeight(ghostTrackLoc, GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
 
                 if (res.Error == GameActions::Status::Ok)
                 {
                     // Valid location found. Place the ghost at the location.
-                    auto tdAction = GameActions::TrackDesignAction(trackLoc, *_trackDesign, !gTrackDesignSceneryToggle);
+                    auto tdAction = GameActions::TrackDesignAction(ghostTrackLoc, *_trackDesign, !gTrackDesignSceneryToggle);
                     tdAction.SetFlags(GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
                     tdAction.SetCallback([&](const GameActions::GameAction*, const GameActions::Result* result) {
                         if (result->Error == GameActions::Status::Ok)
                         {
                             _placementGhostRideId = result->GetData<RideId>();
-                            _placementGhostLoc = trackLoc;
+                            _placementGhostLoc = ghostTrackLoc;
                             _hasPlacementGhost = true;
                         }
                     });
                     res = GameActions::Execute(&tdAction, getGameState());
                     cost = res.Error == GameActions::Status::Ok ? res.Cost : kMoney64Undefined;
 
-                    VirtualFloorSetHeight(trackLoc.z);
+                    VirtualFloorSetHeight(ghostTrackLoc.z);
                 }
             }
 
@@ -287,12 +295,15 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
+            _placingTrackDesign = true;
+
             auto tdAction = GameActions::TrackDesignAction(
                 { trackLoc, _currentTrackPieceDirection }, *_trackDesign, !gTrackDesignSceneryToggle);
             tdAction.SetCallback([&](const GameActions::GameAction*, const GameActions::Result* result) {
                 if (result->Error != GameActions::Status::Ok)
                 {
                     Audio::Play3D(Audio::SoundId::error, result->Position);
+                    _placingTrackDesign = false;
                     return;
                 }
 
@@ -321,6 +332,7 @@ namespace OpenRCT2::Ui::Windows
                         wnd->onMouseUp(WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE);
                     }
                 }
+                _placingTrackDesign = false;
             });
             GameActions::Execute(&tdAction, getGameState());
         }
