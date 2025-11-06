@@ -161,10 +161,10 @@ namespace OpenRCT2::GameActions
                 SetScenarioNoMoney(gameState, _param1 != 0);
                 break;
             case CheatType::addMoney:
-                AddMoney(_param1);
+                AddMoney(gameState, _param1);
                 break;
             case CheatType::setMoney:
-                SetMoney(_param1);
+                SetMoney(gameState, _param1);
                 break;
             case CheatType::clearLoan:
                 ClearLoan(gameState);
@@ -229,7 +229,7 @@ namespace OpenRCT2::GameActions
                 gameState.cheats.neverendingMarketing = _param1 != 0;
                 break;
             case CheatType::openClosePark:
-                ParkSetOpen(!Park::IsOpen(gameState.park), gameState);
+                ParkSetOpen(!Park::IsOpen(getUpdatingPark(gameState)), gameState);
                 break;
             case CheatType::haveFun:
                 gameState.scenarioOptions.objective.Type = Scenario::ObjectiveType::haveFun;
@@ -582,7 +582,7 @@ namespace OpenRCT2::GameActions
 
     void CheatSetAction::SetScenarioNoMoney(GameState_t& gameState, bool enabled) const
     {
-        auto& park = gameState.park;
+        auto& park = getUpdatingPark(gameState);
         if (enabled)
         {
             park.flags |= PARK_FLAGS_NO_MONEY;
@@ -603,18 +603,18 @@ namespace OpenRCT2::GameActions
         windowMgr->InvalidateByClass(WindowClass::cheats);
     }
 
-    void CheatSetAction::SetMoney(money64 amount) const
+    void CheatSetAction::SetMoney(GameState_t& gameState, money64 amount) const
     {
-        getGameState().park.cash = amount;
+        getUpdatingPark(gameState).cash = amount;
 
         auto* windowMgr = Ui::GetWindowManager();
         windowMgr->InvalidateByClass(WindowClass::finances);
         windowMgr->InvalidateByClass(WindowClass::bottomToolbar);
     }
 
-    void CheatSetAction::AddMoney(money64 amount) const
+    void CheatSetAction::AddMoney(GameState_t& gameState, money64 amount) const
     {
-        auto& park = getGameState().park;
+        auto& park = getUpdatingPark(gameState);
         park.cash = AddClamp<money64>(park.cash, amount);
 
         auto* windowMgr = Ui::GetWindowManager();
@@ -624,8 +624,10 @@ namespace OpenRCT2::GameActions
 
     void CheatSetAction::ClearLoan(GameState_t& gameState) const
     {
+        auto& park = getUpdatingPark(gameState);
+
         // First give money
-        AddMoney(getGameState().park.bankLoan);
+        AddMoney(gameState, park.bankLoan);
 
         // Then pay the loan
         auto gameAction = ParkSetLoanAction(0.00_GBP);

@@ -232,11 +232,13 @@ static void PaintParkEntranceScrollingText(
     if (scrollingMode == kScrollingModeNone)
         return;
 
-    auto ft = Formatter();
     auto& gameState = getGameState();
-    if (gameState.park.flags & PARK_FLAGS_PARK_OPEN)
+    // TODO: use parkId (owner) from entrance element
+    const auto& park = getUpdatingPark(gameState);
+
+    auto ft = Formatter();
+    if (park.flags & PARK_FLAGS_PARK_OPEN)
     {
-        const auto& park = gameState.park;
         auto name = park.name.c_str();
         ft.Add<StringId>(STR_STRING);
         ft.Add<const char*>(name);
@@ -258,7 +260,7 @@ static void PaintParkEntranceScrollingText(
     }
 
     auto stringWidth = GfxGetStringWidth(text, FontStyle::Tiny);
-    auto scroll = stringWidth > 0 ? (gameState.currentTicks / 2) % stringWidth : 0;
+    auto scroll = stringWidth > 0 ? (getGameState().currentTicks / 2) % stringWidth : 0;
     auto imageIndex = ScrollingTextSetup(
         session, STR_BANNER_TEXT_FORMAT, ft, scroll, scrollingMode + direction / 2, COLOUR_BLACK);
     auto textHeight = height + entrance.GetTextHeight();

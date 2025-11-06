@@ -53,7 +53,7 @@ namespace OpenRCT2::GameActions
         res.Position = { _coords, _height * kCoordsZStep };
 
         if (gLegacyScene != LegacyScene::scenarioEditor && !gameState.cheats.sandboxMode
-            && gameState.park.flags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES)
+            && getUpdatingPark(gameState).flags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES)
         {
             return Result(Status::Disallowed, kStringIdNone, STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY);
         }
