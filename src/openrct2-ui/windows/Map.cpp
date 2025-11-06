@@ -1233,7 +1233,7 @@ namespace OpenRCT2::Ui::Windows
             for (uint32_t i = 0; i < 4; i++)
             {
                 const auto* labelStr = LanguageGetString(MapLabels[i]);
-                _firstColumnWidth = std::max(textOffset + GfxGetStringWidth(labelStr, FontStyle::Medium), _firstColumnWidth);
+                _firstColumnWidth = std::max(textOffset + GfxGetStringWidth(labelStr, FontStyle::medium), _firstColumnWidth);
             }
 
             textOffset += _firstColumnWidth + 4;
@@ -1242,7 +1242,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 const auto* labelStr = LanguageGetString(MapLabels[i]);
                 minWidth = std::max(
-                    static_cast<int16_t>(textOffset + GfxGetStringWidth(labelStr, FontStyle::Medium)), minWidth);
+                    static_cast<int16_t>(textOffset + GfxGetStringWidth(labelStr, FontStyle::medium)), minWidth);
             }
             width = std::max(minWidth, width);
             _recalculateScrollbars = true;

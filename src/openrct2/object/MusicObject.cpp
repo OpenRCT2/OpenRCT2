@@ -94,7 +94,7 @@ namespace OpenRCT2
         if (_hasPreview)
             GfxDrawSprite(rt, ImageId(_previewImageId), { 0, 0 });
         else
-            DrawTextBasic(rt, { x, y }, STR_WINDOW_NO_IMAGE, {}, { TextAlignment::CENTRE });
+            DrawTextBasic(rt, { x, y }, STR_WINDOW_NO_IMAGE, {}, { TextAlignment::centre });
     }
 
     bool MusicObject::HasPreview() const

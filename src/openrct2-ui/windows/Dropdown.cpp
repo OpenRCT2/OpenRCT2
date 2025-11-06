@@ -22,6 +22,7 @@
 #include <openrct2/core/BitSet.hpp>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
+#include <openrct2/interface/ColourWithFlags.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Formatting.h>
 #include <openrct2/localisation/Language.h>
@@ -94,7 +95,7 @@ namespace OpenRCT2::Ui::Windows
             if (highlighted)
                 colour.colour = COLOUR_WHITE;
             if (item.isDisabled())
-                colour = { background, EnumToFlag(ColourFlag::inset) };
+                colour = { background, { ColourFlag::inset } };
 
             auto yOffset = GetAdditionalRowPadding();
             Formatter ft;
@@ -125,7 +126,7 @@ namespace OpenRCT2::Ui::Windows
                     const auto rightBottom = leftTop + ScreenCoordsXY{ ItemWidth - 4, 0 };
                     const auto shadowOffset = ScreenCoordsXY{ 0, 1 };
 
-                    if (colours[0].hasFlag(ColourFlag::translucent))
+                    if (colours[0].flags.has(ColourFlag::translucent))
                     {
                         TranslucentWindowPalette palette = kTranslucentWindowPalettes[colours[0].colour];
                         Rectangle::filter(rt, { leftTop, rightBottom }, palette.highlight);
@@ -231,7 +232,7 @@ namespace OpenRCT2::Ui::Windows
 
             UpdateSizeAndPosition(screenPos, extraY);
 
-            if (colour.hasFlag(ColourFlag::translucent))
+            if (colour.flags.has(ColourFlag::translucent))
                 flags |= WindowFlag::transparent;
             colours[0] = colour;
         }
@@ -264,7 +265,7 @@ namespace OpenRCT2::Ui::Windows
 
             UpdateSizeAndPosition(screenPos, extraY);
 
-            if (colour.hasFlag(ColourFlag::translucent))
+            if (colour.flags.has(ColourFlag::translucent))
                 flags |= WindowFlag::transparent;
             colours[0] = colour;
         }
@@ -354,7 +355,7 @@ namespace OpenRCT2::Ui::Windows
         int32_t maxStringWidth = 0;
         for (size_t i = 0; i < num_items; i++)
         {
-            int32_t stringWidth = GfxGetStringWidth(gDropdown.items[i].text, FontStyle::Medium);
+            int32_t stringWidth = GfxGetStringWidth(gDropdown.items[i].text, FontStyle::medium);
             if (gDropdown.items[i].type != Dropdown::ItemType::plain)
                 stringWidth += kDropdownItemLeftPadding;
             maxStringWidth = std::max(stringWidth, maxStringWidth);

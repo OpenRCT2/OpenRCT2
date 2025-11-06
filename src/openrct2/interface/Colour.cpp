@@ -20,10 +20,6 @@ using namespace OpenRCT2::Drawing;
 
 ColourShadeMap ColourMapA[COLOUR_COUNT] = {};
 
-static constexpr uint8_t kLegacyColourMaskBase = 0x1F;
-static constexpr uint8_t kLegacyColourFlagOutline = (1 << 5);
-static constexpr uint8_t kLegacyColourFlagInset = (1 << 6);
-
 enum
 {
     INDEX_COLOUR_0 = 243,
@@ -210,44 +206,3 @@ BlendColourMapType* GetBlendColourMap()
     return nullptr;
 }
 #endif
-
-bool ColourWithFlags::hasFlag(ColourFlag flag) const
-{
-    return flags & EnumToFlag(flag);
-}
-
-void ColourWithFlags::setFlag(ColourFlag flag, bool on)
-{
-    if (on)
-        flags |= EnumToFlag(flag);
-    else
-        flags &= ~EnumToFlag(flag);
-}
-
-ColourWithFlags ColourWithFlags::withFlag(ColourFlag flag, bool on) const
-{
-    struct ColourWithFlags result = *this;
-    result.setFlag(flag, on);
-    return result;
-}
-
-ColourWithFlags ColourWithFlags::fromLegacy(uint8_t legacy)
-{
-    ColourWithFlags result{};
-    result.colour = legacy & kLegacyColourMaskBase;
-    if (legacy & kLegacyColourFlagTranslucent)
-        result.flags |= EnumToFlag(ColourFlag::translucent);
-    if (legacy & kLegacyColourFlagInset)
-        result.flags |= EnumToFlag(ColourFlag::inset);
-    if (legacy & kLegacyColourFlagOutline)
-        result.flags |= EnumToFlag(ColourFlag::withOutline);
-
-    return result;
-}
-
-ColourWithFlags& ColourWithFlags::operator=(colour_t rhs)
-{
-    colour = rhs;
-    flags = 0;
-    return *this;
-}

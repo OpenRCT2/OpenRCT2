@@ -761,12 +761,12 @@ namespace OpenRCT2::Ui::Windows
                         && (*listItem.flags & ObjectSelectionFlags::Selected))
                     {
                         screenCoords.x = 2;
-                        auto darkness = highlighted ? TextDarkness::ExtraDark : TextDarkness::Dark;
+                        auto darkness = highlighted ? TextDarkness::extraDark : TextDarkness::dark;
                         auto colour2 = colours[1].withFlag(ColourFlag::translucent, false);
                         if (*listItem.flags & (ObjectSelectionFlags::InUse | ObjectSelectionFlags::AlwaysRequired))
-                            colour2.setFlag(ColourFlag::inset, true);
+                            colour2.flags.set(ColourFlag::inset, true);
 
-                        DrawText(rt, screenCoords, { colour2, FontStyle::Medium, darkness }, kCheckMarkString);
+                        DrawText(rt, screenCoords, { colour2, FontStyle::medium, darkness }, kCheckMarkString);
                     }
 
                     screenCoords.x = gLegacyScene == LegacyScene::trackDesignsManager ? 0 : 15;
@@ -776,11 +776,11 @@ namespace OpenRCT2::Ui::Windows
                     auto buffer = strchr(bufferWithColour, '\0');
 
                     colour_t colour = COLOUR_BLACK;
-                    auto darkness = TextDarkness::Regular;
+                    auto darkness = TextDarkness::regular;
                     if (*listItem.flags & ObjectSelectionFlags::Flag6)
                     {
                         colour = colours[1].colour;
-                        darkness = TextDarkness::Dark;
+                        darkness = TextDarkness::dark;
                     }
 
                     int32_t width_limit = widgets[WIDX_LIST].width() - screenCoords.x;
@@ -794,7 +794,7 @@ namespace OpenRCT2::Ui::Windows
                         auto ft = Formatter();
                         ft.Add<const char*>(itemBuffer);
                         DrawTextEllipsised(
-                            rt, screenCoords, width_limit - 15, STR_STRING, ft, { colour, FontStyle::Medium, darkness });
+                            rt, screenCoords, width_limit - 15, STR_STRING, ft, { colour, FontStyle::medium, darkness });
                         screenCoords.x = widgets[WIDX_LIST_SORT_RIDE].left - widgets[WIDX_LIST].left;
                     }
 
@@ -809,7 +809,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     auto ft = Formatter();
                     ft.Add<const char*>(itemBuffer);
-                    DrawTextEllipsised(rt, screenCoords, width_limit, STR_STRING, ft, { colour, FontStyle::Medium, darkness });
+                    DrawTextEllipsised(rt, screenCoords, width_limit, STR_STRING, ft, { colour, FontStyle::medium, darkness });
                 }
                 screenCoords.y += kScrollableRowHeight;
             }
@@ -1261,7 +1261,7 @@ namespace OpenRCT2::Ui::Windows
                 ft.Add<StringId>(STR_STRING);
                 ft.Add<const char*>(listItem->repositoryItem->Name.c_str());
                 screenPos.y += DrawTextWrapped(
-                    rt, screenPos, descriptionWidth, STR_WINDOW_COLOUR_2_STRINGID, ft, { TextAlignment::CENTRE });
+                    rt, screenPos, descriptionWidth, STR_WINDOW_COLOUR_2_STRINGID, ft, { TextAlignment::centre });
 
                 // Leave some space between name and description
                 screenPos.y += kListRowHeight;
@@ -1364,7 +1364,7 @@ namespace OpenRCT2::Ui::Windows
             // Draw fallback image warning
             if (_loadedObject && _loadedObject->UsesFallbackImages())
             {
-                DrawTextBasic(rt, screenPos, STR_OBJECT_USES_FALLBACK_IMAGES, {}, { COLOUR_WHITE, TextAlignment::RIGHT });
+                DrawTextBasic(rt, screenPos, STR_OBJECT_USES_FALLBACK_IMAGES, {}, { COLOUR_WHITE, TextAlignment::right });
             }
             screenPos.y += kListRowHeight;
 
@@ -1372,7 +1372,7 @@ namespace OpenRCT2::Ui::Windows
             if (GetSelectedObjectType() == ObjectType::ride)
             {
                 auto stringId = GetRideTypeStringId(listItem->repositoryItem);
-                DrawTextBasic(rt, screenPos, stringId, {}, { COLOUR_WHITE, TextAlignment::RIGHT });
+                DrawTextBasic(rt, screenPos, stringId, {}, { COLOUR_WHITE, TextAlignment::right });
             }
 
             // Draw peep animation object type
@@ -1380,14 +1380,14 @@ namespace OpenRCT2::Ui::Windows
             {
                 auto* animObj = reinterpret_cast<PeepAnimationsObject*>(_loadedObject.get());
                 auto stringId = GetAnimationPeepTypeStringId(animObj->GetPeepType());
-                DrawTextBasic(rt, screenPos, stringId, {}, { COLOUR_WHITE, TextAlignment::RIGHT });
+                DrawTextBasic(rt, screenPos, stringId, {}, { COLOUR_WHITE, TextAlignment::right });
             }
 
             screenPos.y += kListRowHeight;
 
             // Draw object source
             auto stringId = ObjectManagerGetSourceGameString(listItem->repositoryItem->GetFirstSourceGame());
-            DrawTextBasic(rt, screenPos, stringId, {}, { COLOUR_WHITE, TextAlignment::RIGHT });
+            DrawTextBasic(rt, screenPos, stringId, {}, { COLOUR_WHITE, TextAlignment::right });
             screenPos.y += kListRowHeight;
 
             // Draw object filename
@@ -1398,7 +1398,7 @@ namespace OpenRCT2::Ui::Windows
                 ft.Add<const utf8*>(path.c_str());
                 DrawTextBasic(
                     rt, { windowPos.x + this->width - 5, screenPos.y }, STR_WINDOW_COLOUR_2_STRINGID, ft,
-                    { COLOUR_BLACK, TextAlignment::RIGHT });
+                    { COLOUR_BLACK, TextAlignment::right });
                 screenPos.y += kListRowHeight;
             }
 
@@ -1418,7 +1418,7 @@ namespace OpenRCT2::Ui::Windows
                 ft.Add<const char*>(authorsString.c_str());
                 DrawTextEllipsised(
                     rt, { windowPos.x + width - 5, screenPos.y }, width - widgets[WIDX_LIST].right - 4,
-                    STR_WINDOW_COLOUR_2_STRINGID, ft, { TextAlignment::RIGHT });
+                    STR_WINDOW_COLOUR_2_STRINGID, ft, { TextAlignment::right });
             }
         }
 

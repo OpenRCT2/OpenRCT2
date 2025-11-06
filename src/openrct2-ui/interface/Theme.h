@@ -12,6 +12,11 @@
 #include <openrct2/interface/Colour.h>
 #include <openrct2/interface/Window.h>
 
+namespace OpenRCT2
+{
+    struct ColourWithFlags;
+}
+
 namespace OpenRCT2::Ui
 {
     enum

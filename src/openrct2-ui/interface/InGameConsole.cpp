@@ -22,6 +22,7 @@
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
 #include <openrct2/interface/Colour.h>
+#include <openrct2/interface/ColourWithFlags.h>
 #include <openrct2/interface/Viewport.h>
 #include <openrct2/interface/Window.h>
 #include <openrct2/localisation/Language.h>
@@ -35,7 +36,7 @@ static InGameConsole _inGameConsole;
 
 static FontStyle InGameConsoleGetFontStyle()
 {
-    return (Config::Get().interface.consoleSmallFont ? FontStyle::Small : FontStyle::Medium);
+    return (Config::Get().interface.consoleSmallFont ? FontStyle::small : FontStyle::medium);
 }
 
 static int32_t InGameConsoleGetLineHeight()
@@ -298,7 +299,7 @@ void InGameConsole::Draw(RenderTarget& rt) const
         return;
 
     // Set font
-    ColourWithFlags textColour = { ThemeGetColour(WindowClass::console, 1).colour, 0 };
+    ColourWithFlags textColour = { ThemeGetColour(WindowClass::console, 1).colour, {} };
     const FontStyle style = InGameConsoleGetFontStyle();
     const int32_t lineHeight = InGameConsoleGetLineHeight();
     const int32_t maxLines = GetNumVisibleLines();
@@ -306,7 +307,7 @@ void InGameConsole::Draw(RenderTarget& rt) const
     // TTF looks far better without the outlines
     if (!LocalisationService_UseTrueTypeFont())
     {
-        textColour.setFlag(ColourFlag::withOutline, true);
+        textColour.flags.set(ColourFlag::withOutline, true);
     }
 
     Invalidate();

@@ -22,6 +22,7 @@
 #include <openrct2/core/FileStream.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
+#include <openrct2/interface/ColourWithFlags.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Formatting.h>
 #include <openrct2/localisation/LocalisationService.h>
@@ -306,12 +307,12 @@ namespace OpenRCT2::Ui::Windows
             drawWidgets(rt);
 
             StringId format = STR_WINDOW_COLOUR_2_STRINGID;
-            FontStyle fontStyle = FontStyle::Medium;
+            FontStyle fontStyle = FontStyle::medium;
 
             if (ScenarioSelectUseSmallFont())
             {
                 format = STR_SMALL_WINDOW_COLOUR_2_STRINGID;
-                fontStyle = FontStyle::Small;
+                fontStyle = FontStyle::small;
             }
 
             // Text for each tab
@@ -325,7 +326,7 @@ namespace OpenRCT2::Ui::Windows
                 ft.Add<StringId>(kScenarioOriginStringIds[i]);
 
                 auto stringCoords = windowPos + ScreenCoordsXY{ widget.midX(), widget.midY() - 3 };
-                DrawTextWrapped(rt, stringCoords, 87, format, ft, { COLOUR_AQUAMARINE, fontStyle, TextAlignment::CENTRE });
+                DrawTextWrapped(rt, stringCoords, 87, format, ft, { COLOUR_AQUAMARINE, fontStyle, TextAlignment::centre });
             }
 
             auto previewPaneWidth = GetPreviewPaneWidth();
@@ -341,7 +342,7 @@ namespace OpenRCT2::Ui::Windows
                         + ScreenCoordsXY{ widgets[WIDX_SCENARIOLIST].right + 4, widgets[WIDX_TABCONTENT].top + 5 };
                     DrawTextEllipsised(
                         rt, screenPos + ScreenCoordsXY{ previewPaneWidth / 2, 0 }, previewPaneWidth, STR_SCENARIO_LOCKED, {},
-                        { TextAlignment::CENTRE });
+                        { TextAlignment::centre });
 
                     DrawTextWrapped(rt, screenPos + ScreenCoordsXY{ 0, 15 }, previewPaneWidth, STR_SCENARIO_LOCKED_DESC);
                 }
@@ -359,7 +360,7 @@ namespace OpenRCT2::Ui::Windows
             // Scenario path
             if (Config::Get().general.debuggingTools)
             {
-                const auto shortPath = ShortenPath(scenario->Path, width - 6 - kTabWidth, FontStyle::Medium);
+                const auto shortPath = ShortenPath(scenario->Path, width - 6 - kTabWidth, FontStyle::medium);
 
                 auto ft = Formatter();
                 ft.Add<utf8*>(shortPath.c_str());
@@ -374,7 +375,7 @@ namespace OpenRCT2::Ui::Windows
             ft.Add<const char*>(scenario->Name.c_str());
             DrawTextEllipsised(
                 rt, screenPos + ScreenCoordsXY{ previewPaneWidth / 2, 0 }, previewPaneWidth, STR_WINDOW_COLOUR_2_STRINGID, ft,
-                { TextAlignment::CENTRE });
+                { TextAlignment::centre });
 
             // Still loading the preview?
             if (_previewLoadJob.isValid())
@@ -383,7 +384,7 @@ namespace OpenRCT2::Ui::Windows
                 ft.Add<StringId>(STR_LOADING_GENERIC);
                 DrawTextBasic(
                     rt, screenPos + ScreenCoordsXY{ previewPaneWidth / 2, 15 }, STR_BLACK_STRING, ft,
-                    { TextAlignment::CENTRE });
+                    { TextAlignment::centre });
                 return;
             }
 
@@ -558,7 +559,7 @@ namespace OpenRCT2::Ui::Windows
             const int32_t scenarioItemHeight = GetScenarioListItemSize();
 
             // Scenario title
-            int32_t scenarioTitleHeight = FontGetLineHeight(FontStyle::Medium);
+            int32_t scenarioTitleHeight = FontGetLineHeight(FontStyle::medium);
 
             int32_t y = 0;
             for (const auto& listItem : _listItems)
@@ -599,12 +600,12 @@ namespace OpenRCT2::Ui::Windows
                         ft.Add<const char*>(scenario->Name.c_str());
                         auto colour = isDisabled ? colours[1].withFlag(ColourFlag::inset, true)
                                                  : ColourWithFlags{ COLOUR_BLACK };
-                        auto darkness = isDisabled ? TextDarkness::Dark : TextDarkness::Regular;
+                        auto darkness = isDisabled ? TextDarkness::dark : TextDarkness::regular;
                         const auto scrollCentre = widgets[WIDX_SCENARIOLIST].width() / 2;
 
                         DrawTextBasic(
                             rt, { scrollCentre, y + 1 }, format, ft,
-                            { colour, FontStyle::Medium, TextAlignment::CENTRE, darkness });
+                            { colour, FontStyle::medium, TextAlignment::centre, darkness });
 
                         // Check if scenario is completed
                         if (isCompleted)
@@ -624,7 +625,7 @@ namespace OpenRCT2::Ui::Windows
                             ft.Add<const char*>(completedByName.c_str());
                             DrawTextBasic(
                                 rt, { scrollCentre, y + scenarioTitleHeight + 1 }, format, ft,
-                                { FontStyle::Small, TextAlignment::CENTRE });
+                                { FontStyle::small, TextAlignment::centre });
                         }
 
                         y += scenarioItemHeight;
@@ -643,13 +644,13 @@ namespace OpenRCT2::Ui::Windows
 
             // Draw string
             int32_t centreX = (left + right) / 2;
-            DrawTextBasic(rt, { centreX, y }, stringId, {}, { baseColour, TextAlignment::CENTRE });
+            DrawTextBasic(rt, { centreX, y }, stringId, {}, { baseColour, TextAlignment::centre });
 
             // Get string dimensions
             utf8 buffer[512];
             auto bufferPtr = buffer;
             OpenRCT2::FormatStringLegacy(bufferPtr, sizeof(buffer), stringId, nullptr);
-            int32_t categoryStringHalfWidth = (GfxGetStringWidth(bufferPtr, FontStyle::Medium) / 2) + 4;
+            int32_t categoryStringHalfWidth = (GfxGetStringWidth(bufferPtr, FontStyle::medium) / 2) + 4;
             int32_t strLeft = centreX - categoryStringHalfWidth;
             int32_t strRight = centreX + categoryStringHalfWidth;
 
@@ -848,10 +849,10 @@ namespace OpenRCT2::Ui::Windows
                 return kTrueFontSize;
 
             // Scenario title
-            int32_t lineHeight = FontGetLineHeight(FontStyle::Medium);
+            int32_t lineHeight = FontGetLineHeight(FontStyle::medium);
 
             // 'Completed by' line
-            lineHeight += FontGetLineHeight(FontStyle::Small);
+            lineHeight += FontGetLineHeight(FontStyle::small);
 
             return lineHeight;
         }

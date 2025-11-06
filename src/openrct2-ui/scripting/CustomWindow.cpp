@@ -23,6 +23,7 @@
     #include <openrct2/SpriteIds.h>
     #include <openrct2/config/Config.h>
     #include <openrct2/drawing/Drawing.h>
+    #include <openrct2/interface/ColourWithFlags.h>
     #include <openrct2/interface/Window.h>
     #include <openrct2/localisation/Formatter.h>
     #include <openrct2/scripting/Plugin.h>
@@ -157,7 +158,7 @@ namespace OpenRCT2::Ui::Windows
                 result.Text = ProcessString(desc["text"]);
                 if (ProcessString(desc["textAlign"]) == "centred")
                 {
-                    result.TextAlign = TextAlignment::CENTRE;
+                    result.TextAlign = TextAlignment::centre;
                 }
             }
             else if (result.Type == "listview")
@@ -318,9 +319,9 @@ namespace OpenRCT2::Ui::Windows
                     if (w.type() == DukValue::Type::NUMBER)
                     {
                         colour_t colour = w.as_uint() & ~kLegacyColourFlagTranslucent;
-                        auto isTranslucent = (w.as_uint() & kLegacyColourFlagTranslucent);
+                        bool isTranslucent = (w.as_uint() & kLegacyColourFlagTranslucent);
                         c.colour = std::clamp<colour_t>(colour, COLOUR_BLACK, COLOUR_COUNT - 1);
-                        c.flags = (isTranslucent ? EnumToFlag(ColourFlag::translucent) : 0);
+                        c.flags.set(ColourFlag::translucent, isTranslucent);
                     }
                     return c;
                 });
@@ -488,7 +489,7 @@ namespace OpenRCT2::Ui::Windows
         void onPrepareDraw() override
         {
             auto& closeButton = widgets[WIDX_CLOSE];
-            bool translucent = colours[closeButton.colour].hasFlag(ColourFlag::translucent);
+            bool translucent = colours[closeButton.colour].flags.has(ColourFlag::translucent);
             if (Config::Get().interface.enlargedUi)
                 closeButton.string = !translucent ? kCloseBoxStringBlackLarge : kCloseBoxStringWhiteLarge;
             else
@@ -1053,7 +1054,7 @@ namespace OpenRCT2::Ui::Windows
                 widget.type = WidgetType::label;
                 widget.string = const_cast<utf8*>(desc.Text.c_str());
                 widget.flags.set(WidgetFlag::textIsString);
-                if (desc.TextAlign == TextAlignment::CENTRE)
+                if (desc.TextAlign == TextAlignment::centre)
                 {
                     widget.type = WidgetType::labelCentred;
                 }

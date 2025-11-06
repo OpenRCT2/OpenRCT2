@@ -415,7 +415,7 @@ namespace OpenRCT2::Ui::Windows
 
             const auto& ls = OpenRCT2::GetContext()->GetLocalisationService();
             auto string = ls.GetString(STR_GROUP_BY_TRACK_TYPE);
-            auto strWidth = GfxGetStringWidth(string, FontStyle::Medium);
+            auto strWidth = GfxGetStringWidth(string, FontStyle::medium);
             auto localizedGroupByTrackTypeWidth = strWidth + 14;
             widgets[WIDX_GROUP_BY_TRACK_TYPE].left = width - 8 - localizedGroupByTrackTypeWidth;
         }
@@ -978,7 +978,7 @@ namespace OpenRCT2::Ui::Windows
 
                 ft = Formatter();
                 ft.Add<money64>(price);
-                DrawTextBasic(rt, screenPos + ScreenCoordsXY{ textWidth, 51 }, stringId, ft, { TextAlignment::RIGHT });
+                DrawTextBasic(rt, screenPos + ScreenCoordsXY{ textWidth, 51 }, stringId, ft, { TextAlignment::right });
             }
 
             // Draw object author(s) if debugging tools are active
@@ -1001,7 +1001,7 @@ namespace OpenRCT2::Ui::Windows
 
                 DrawTextEllipsised(
                     rt, screenPos + ScreenCoordsXY{ textWidth, 0 }, kWindowSize.width - 2, STR_WINDOW_COLOUR_2_STRINGID, ft,
-                    { TextAlignment::RIGHT });
+                    { TextAlignment::right });
             }
         }
 

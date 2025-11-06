@@ -440,7 +440,7 @@ namespace OpenRCT2::Ui::Windows
 
                 DrawTextEllipsised(
                     rt, windowPos + ScreenCoordsXY{ widget->midX() - 5, widget->top }, widget->width() - 8, STR_STRING, ft,
-                    { TextAlignment::CENTRE });
+                    { TextAlignment::centre });
             }
 
             // Draw ping
@@ -466,7 +466,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 ft.Add<StringId>(STR_ACTION_NA);
             }
-            DrawTextEllipsised(rt, screenCoords, updatedWidth, STR_LAST_ACTION_RAN, ft, { TextAlignment::CENTRE });
+            DrawTextEllipsised(rt, screenCoords, updatedWidth, STR_LAST_ACTION_RAN, ft, { TextAlignment::centre });
 
             if (viewport != nullptr && _drawViewport)
             {

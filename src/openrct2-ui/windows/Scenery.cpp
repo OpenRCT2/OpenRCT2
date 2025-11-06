@@ -849,7 +849,7 @@ namespace OpenRCT2::Ui::Windows
 
                 // -14
                 DrawTextBasic(
-                    rt, windowPos + ScreenCoordsXY{ width - 0x1A, height - 13 }, STR_COST_LABEL, ft, { TextAlignment::RIGHT });
+                    rt, windowPos + ScreenCoordsXY{ width - 0x1A, height - 13 }, STR_COST_LABEL, ft, { TextAlignment::right });
             }
 
             auto ft = Formatter();

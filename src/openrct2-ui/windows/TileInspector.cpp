@@ -1060,12 +1060,12 @@ static uint64_t PageDisabledWidgets[] = {
                 ft.Add<int32_t>(tileCoords.x);
                 DrawTextBasic(
                     rt, screenCoords + ScreenCoordsXY{ 43, yOffset }, STR_FORMAT_INTEGER, ft,
-                    { colours[1], TextAlignment::RIGHT });
+                    { colours[1], TextAlignment::right });
                 ft = Formatter();
                 ft.Add<int32_t>(tileCoords.y);
                 DrawTextBasic(
                     rt, screenCoords + ScreenCoordsXY{ 113, yOffset }, STR_FORMAT_INTEGER, ft,
-                    { colours[1], TextAlignment::RIGHT });
+                    { colours[1], TextAlignment::right });
             }
             else
             {
@@ -1595,9 +1595,9 @@ static uint64_t PageDisabledWidgets[] = {
             {
                 auto& listWidget = widgets[WIDX_LIST];
                 auto centrePos = ScreenCoordsXY{ listWidget.width() / 2,
-                                                 (listWidget.height() - FontGetLineHeight(FontStyle::Medium)) / 2 };
+                                                 (listWidget.height() - FontGetLineHeight(FontStyle::medium)) / 2 };
                 auto ft = Formatter{};
-                auto textPaint = TextPaint{ colours[1], TextAlignment::CENTRE };
+                auto textPaint = TextPaint{ colours[1], TextAlignment::centre };
                 DrawTextWrapped(rt, centrePos, listWidth, STR_TILE_INSPECTOR_SELECT_TILE_HINT, ft, textPaint);
                 return;
             }

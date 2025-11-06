@@ -2187,7 +2187,7 @@ namespace OpenRCT2::Ui::Windows
 
                 // Get 'Clear' button string width
                 auto clearLabel = LanguageGetString(STR_CLEAR_BUTTON);
-                auto clearLabelWidth = GfxGetStringWidth(clearLabel, FontStyle::Medium) + 12;
+                auto clearLabelWidth = GfxGetStringWidth(clearLabel, FontStyle::medium) + 12;
 
                 widgets[WIDX_PATH_TO_RCT1_CLEAR].right = widgets[WIDX_PAGE_BACKGROUND].right - 12;
                 widgets[WIDX_PATH_TO_RCT1_CLEAR].left = widgets[WIDX_PATH_TO_RCT1_BROWSE].right - clearLabelWidth;
@@ -2200,7 +2200,7 @@ namespace OpenRCT2::Ui::Windows
 
                 // Get 'Browse' button string width
                 auto browseLabel = LanguageGetString(STR_BROWSE);
-                auto browseLabelWidth = GfxGetStringWidth(browseLabel, FontStyle::Medium) + 12;
+                auto browseLabelWidth = GfxGetStringWidth(browseLabel, FontStyle::medium) + 12;
 
                 widgets[WIDX_PATH_TO_RCT1_BROWSE].right = widgets[WIDX_PAGE_BACKGROUND].right - 12;
                 widgets[WIDX_PATH_TO_RCT1_BROWSE].left = widgets[WIDX_PATH_TO_RCT1_BROWSE].right - browseLabelWidth;
@@ -2241,7 +2241,7 @@ namespace OpenRCT2::Ui::Windows
             int32_t widgetHeight = pathWidget.bottom - pathWidget.top;
 
             // Apply vertical alignment if font height requires it
-            int32_t lineHeight = FontGetLineHeight(FontStyle::Medium);
+            int32_t lineHeight = FontGetLineHeight(FontStyle::medium);
             int32_t padding = widgetHeight > lineHeight ? (widgetHeight - lineHeight) / 2 : 0;
 
             auto screenCoords = windowPos + ScreenCoordsXY{ pathWidget.left + 1, pathWidget.top + padding };

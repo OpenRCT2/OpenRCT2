@@ -7,6 +7,8 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../drawing/Drawing.String.h"
+
 #include "../Context.h"
 #include "../SpriteIds.h"
 #include "../config/Config.h"
@@ -17,6 +19,7 @@
 #include "../drawing/IDrawingContext.h"
 #include "../drawing/IDrawingEngine.h"
 #include "../drawing/Text.h"
+#include "../interface/ColourWithFlags.h"
 #include "../interface/Viewport.h"
 #include "../localisation/Formatting.h"
 #include "../localisation/LocalisationService.h"
@@ -264,14 +267,14 @@ void GfxDrawStringLeftCentred(
     char buffer[512];
     auto bufferPtr = buffer;
     FormatStringLegacy(bufferPtr, sizeof(buffer), format, args);
-    int32_t height = StringGetHeightRaw(bufferPtr, FontStyle::Medium);
+    int32_t height = StringGetHeightRaw(bufferPtr, FontStyle::medium);
     DrawText(rt, coords - ScreenCoordsXY{ 0, (height / 2) }, { colour }, bufferPtr);
 }
 
 /**
  * Changes the palette so that the next character changes colour
  */
-static void ColourCharacter(TextColour colour, const uint16_t* current_font_flags, uint8_t* palette_pointer)
+static void ColourCharacter(TextColour colour, bool withOutline, uint8_t* palette_pointer)
 {
     int32_t colour32 = 0;
     const G1Element* g1 = GfxGetG1Element(SPR_TEXT_PALETTE);
@@ -281,7 +284,7 @@ static void ColourCharacter(TextColour colour, const uint16_t* current_font_flag
         std::memcpy(&colour32, &g1->offset[idx], sizeof(colour32));
     }
 
-    if (!(*current_font_flags & TEXT_DRAW_FLAG_OUTLINE))
+    if (!withOutline)
     {
         colour32 = colour32 & 0x0FF0000FF;
     }
@@ -296,12 +299,12 @@ static void ColourCharacter(TextColour colour, const uint16_t* current_font_flag
  * Changes the palette so that the next character changes colour
  * This is specific to changing to a predefined window related colour
  */
-static void ColourCharacterWindow(colour_t colour, const uint16_t* current_font_flags, uint8_t* palette_pointer)
+static void ColourCharacterWindow(colour_t colour, bool withOutline, uint8_t* palette_pointer)
 {
     int32_t eax;
 
     eax = ColourMapA[colour].colour_11;
-    if (*current_font_flags & TEXT_DRAW_FLAG_OUTLINE)
+    if (withOutline)
     {
         eax |= 0x0A0A00;
     }
@@ -350,9 +353,9 @@ void DrawStringCentredRaw(
 int32_t StringGetHeightRaw(std::string_view text, FontStyle fontStyle)
 {
     int32_t height = 0;
-    if (fontStyle <= FontStyle::Medium)
+    if (fontStyle <= FontStyle::medium)
         height += 10;
-    else if (fontStyle == FontStyle::Tiny)
+    else if (fontStyle == FontStyle::tiny)
         height += 6;
 
     FmtString fmt(text);
@@ -361,13 +364,13 @@ int32_t StringGetHeightRaw(std::string_view text, FontStyle fontStyle)
         switch (token.kind)
         {
             case FormatToken::newline:
-                if (fontStyle == FontStyle::Small || fontStyle == FontStyle::Medium)
+                if (fontStyle == FontStyle::small || fontStyle == FontStyle::medium)
                 {
                     height += 10;
                     break;
                 }
 
-                if (fontStyle == FontStyle::Tiny)
+                if (fontStyle == FontStyle::tiny)
                 {
                     height += 6;
                     break;
@@ -375,13 +378,13 @@ int32_t StringGetHeightRaw(std::string_view text, FontStyle fontStyle)
                 height += 18;
                 break;
             case FormatToken::newlineSmall:
-                if (fontStyle == FontStyle::Small || fontStyle == FontStyle::Medium)
+                if (fontStyle == FontStyle::small || fontStyle == FontStyle::medium)
                 {
                     height += 5;
                     break;
                 }
 
-                if (fontStyle == FontStyle::Tiny)
+                if (fontStyle == FontStyle::tiny)
                 {
                     height += 3;
                     break;
@@ -389,13 +392,13 @@ int32_t StringGetHeightRaw(std::string_view text, FontStyle fontStyle)
                 height += 9;
                 break;
             case FormatToken::fontTiny:
-                fontStyle = FontStyle::Tiny;
+                fontStyle = FontStyle::tiny;
                 break;
             case FormatToken::fontMedium:
-                fontStyle = FontStyle::Medium;
+                fontStyle = FontStyle::medium;
                 break;
             case FormatToken::fontSmall:
-                fontStyle = FontStyle::Small;
+                fontStyle = FontStyle::small;
                 break;
             default:
                 break;
@@ -427,8 +430,8 @@ void DrawNewsTicker(
     DrawText(rt, screenCoords, { colour }, "");
 
     u8string wrappedString;
-    GfxWrapString(FormatStringID(format, args), width, FontStyle::Small, &wrappedString, &numLines);
-    lineHeight = FontGetLineHeight(FontStyle::Small);
+    GfxWrapString(FormatStringID(format, args), width, FontStyle::small, &wrappedString, &numLines);
+    lineHeight = FontGetLineHeight(FontStyle::small);
 
     int32_t numCharactersDrawn = 0;
     int32_t numCharactersToDraw = ticks;
@@ -437,7 +440,7 @@ void DrawNewsTicker(
     lineY = coords.y - ((numLines * lineHeight) / 2);
     for (int32_t line = 0; line <= numLines; line++)
     {
-        int32_t halfWidth = GfxGetStringWidth(buffer, FontStyle::Small) / 2;
+        int32_t halfWidth = GfxGetStringWidth(buffer, FontStyle::small) / 2;
 
         FmtString fmt(buffer);
         for (const auto& token : fmt)
@@ -463,7 +466,7 @@ void DrawNewsTicker(
         }
 
         screenCoords = { coords.x - halfWidth, lineY };
-        DrawText(rt, screenCoords, { kTextColour254, FontStyle::Small }, buffer);
+        DrawText(rt, screenCoords, { kTextColour254, FontStyle::small }, buffer);
 
         if (numCharactersDrawn > numCharactersToDraw)
         {
@@ -477,15 +480,15 @@ void DrawNewsTicker(
 
 static void TTFDrawCharacterSprite(RenderTarget& rt, int32_t codepoint, TextDrawInfo* info)
 {
-    int32_t characterWidth = FontSpriteGetCodepointWidth(info->FontStyle, codepoint);
-    auto sprite = FontSpriteGetCodepointSprite(info->FontStyle, codepoint);
+    int32_t characterWidth = FontSpriteGetCodepointWidth(info->fontStyle, codepoint);
+    auto sprite = FontSpriteGetCodepointSprite(info->fontStyle, codepoint);
 
-    if (!(info->flags & TEXT_DRAW_FLAG_NO_DRAW))
+    if (!info->textDrawFlags.has(TextDrawFlag::noDraw))
     {
         auto screenCoords = ScreenCoordsXY{ info->x, info->y };
-        if (info->flags & TEXT_DRAW_FLAG_Y_OFFSET_EFFECT)
+        if (info->textDrawFlags.has(TextDrawFlag::yOffsetEffect))
         {
-            screenCoords.y += *info->y_offset++;
+            screenCoords.y += *info->yOffset++;
         }
 
         PaletteMap paletteMap(info->palette);
@@ -511,14 +514,14 @@ static void TTFDrawStringRawTTF(RenderTarget& rt, std::string_view text, TextDra
     if (!TTFInitialise())
         return;
 
-    TTFFontDescriptor* fontDesc = TTFGetFontFromSpriteBase(info->FontStyle);
+    TTFFontDescriptor* fontDesc = TTFGetFontFromSpriteBase(info->fontStyle);
     if (fontDesc->font == nullptr)
     {
         TTFDrawStringRawSprite(rt, text, info);
         return;
     }
 
-    if (info->flags & TEXT_DRAW_FLAG_NO_DRAW)
+    if (info->textDrawFlags.has(TextDrawFlag::noDraw))
     {
         info->x += TTFGetWidthCacheGetOrAdd(fontDesc->font, text);
         return;
@@ -551,43 +554,40 @@ static void TTFProcessFormatCode(RenderTarget& rt, const FmtString::Token& token
             break;
         case FormatToken::newline:
             info->x = info->startX;
-            info->y += FontGetLineHeight(info->FontStyle);
+            info->y += FontGetLineHeight(info->fontStyle);
             break;
         case FormatToken::newlineSmall:
             info->x = info->startX;
-            info->y += FontGetLineHeightSmall(info->FontStyle);
+            info->y += FontGetLineHeightSmall(info->fontStyle);
             break;
         case FormatToken::fontTiny:
-            info->FontStyle = FontStyle::Tiny;
+            info->fontStyle = FontStyle::tiny;
             break;
         case FormatToken::fontSmall:
-            info->FontStyle = FontStyle::Small;
+            info->fontStyle = FontStyle::small;
             break;
         case FormatToken::fontMedium:
-            info->FontStyle = FontStyle::Medium;
+            info->fontStyle = FontStyle::medium;
             break;
         case FormatToken::outlineEnable:
-            info->flags |= TEXT_DRAW_FLAG_OUTLINE;
+            info->colourFlags.set(ColourFlag::withOutline);
             break;
         case FormatToken::outlineDisable:
-            info->flags &= ~TEXT_DRAW_FLAG_OUTLINE;
+            info->colourFlags.unset(ColourFlag::withOutline);
             break;
         case FormatToken::colourWindow1:
         {
-            uint16_t flags = info->flags;
-            ColourCharacterWindow(gCurrentWindowColours[0], &flags, info->palette);
+            ColourCharacterWindow(gCurrentWindowColours[0], info->colourFlags.has(ColourFlag::withOutline), info->palette);
             break;
         }
         case FormatToken::colourWindow2:
         {
-            uint16_t flags = info->flags;
-            ColourCharacterWindow(gCurrentWindowColours[1], &flags, info->palette);
+            ColourCharacterWindow(gCurrentWindowColours[1], info->colourFlags.has(ColourFlag::withOutline), info->palette);
             break;
         }
         case FormatToken::colourWindow3:
         {
-            uint16_t flags = info->flags;
-            ColourCharacterWindow(gCurrentWindowColours[2], &flags, info->palette);
+            ColourCharacterWindow(gCurrentWindowColours[2], info->colourFlags.has(ColourFlag::withOutline), info->palette);
             break;
         }
         case FormatToken::inlineSprite:
@@ -596,7 +596,7 @@ static void TTFProcessFormatCode(RenderTarget& rt, const FmtString::Token& token
             auto g1 = GfxGetG1Element(imageId);
             if (g1 != nullptr && g1->width <= 32 && g1->height <= 32)
             {
-                if (!(info->flags & TEXT_DRAW_FLAG_NO_DRAW))
+                if (!info->textDrawFlags.has(TextDrawFlag::noDraw))
                 {
                     GfxDrawSprite(rt, imageId, { info->x, info->y });
                 }
@@ -607,9 +607,8 @@ static void TTFProcessFormatCode(RenderTarget& rt, const FmtString::Token& token
         default:
             if (FormatTokenIsColour(token.kind))
             {
-                uint16_t flags = info->flags;
                 auto colourIndex = FormatTokenToTextColour(token.kind);
-                ColourCharacter(colourIndex, &flags, info->palette);
+                ColourCharacter(colourIndex, info->colourFlags.has(ColourFlag::withOutline), info->palette);
             }
             break;
     }
@@ -649,7 +648,7 @@ static bool ShouldUseSpriteForCodepoint(char32_t codepoint)
 static void TTFProcessStringLiteral(RenderTarget& rt, std::string_view text, TextDrawInfo* info)
 {
 #ifndef DISABLE_TTF
-    bool isTTF = info->flags & TEXT_DRAW_FLAG_TTF;
+    bool isTTF = info->textDrawFlags.has(TextDrawFlag::ttf);
 #else
     bool isTTF = false;
 #endif // DISABLE_TTF
@@ -717,7 +716,7 @@ static void TTFProcessStringCodepoint(RenderTarget& rt, codepoint_t codepoint, T
 
 static void TTFProcessString(RenderTarget& rt, std::string_view text, TextDrawInfo* info)
 {
-    if (info->flags & TEXT_DRAW_FLAG_NO_FORMATTING)
+    if (info->textDrawFlags.has(TextDrawFlag::noFormatting))
     {
         TTFProcessStringLiteral(rt, text, info);
         info->maxX = std::max(info->maxX, info->x);
@@ -751,44 +750,34 @@ static void TTFProcessInitialColour(ColourWithFlags colour, TextDrawInfo* info)
 {
     if (colour.colour != kTextColour254 && colour.colour != kTextColour255)
     {
-        info->flags &= ~(TEXT_DRAW_FLAG_INSET | TEXT_DRAW_FLAG_OUTLINE);
-        if (colour.hasFlag(ColourFlag::withOutline))
+        info->colourFlags = colour.flags;
+        if (!colour.flags.has(ColourFlag::inset))
         {
-            info->flags |= TEXT_DRAW_FLAG_OUTLINE;
-        }
-        if (!colour.hasFlag(ColourFlag::inset))
-        {
-            if (!(info->flags & TEXT_DRAW_FLAG_INSET))
-            {
-                uint16_t flags = info->flags;
-                ColourCharacterWindow(colour.colour, &flags, reinterpret_cast<uint8_t*>(&info->palette));
-            }
+            ColourCharacterWindow(
+                colour.colour, info->colourFlags.has(ColourFlag::withOutline), reinterpret_cast<uint8_t*>(&info->palette));
         }
         else
         {
-            info->flags |= TEXT_DRAW_FLAG_INSET;
-
-            uint32_t eax;
-            if (info->flags & TEXT_DRAW_FLAG_DARK)
+            uint32_t eax = 0;
+            switch (info->darkness)
             {
-                if (info->flags & TEXT_DRAW_FLAG_EXTRA_DARK)
-                {
+                case TextDarkness::extraDark:
                     eax = ColourMapA[colour.colour].mid_light;
                     eax = eax << 16;
                     eax = eax | ColourMapA[colour.colour].dark;
-                }
-                else
-                {
+                    break;
+
+                case TextDarkness::dark:
                     eax = ColourMapA[colour.colour].light;
                     eax = eax << 16;
                     eax = eax | ColourMapA[colour.colour].mid_dark;
-                }
-            }
-            else
-            {
-                eax = ColourMapA[colour.colour].lighter;
-                eax = eax << 16;
-                eax = eax | ColourMapA[colour.colour].mid_light;
+                    break;
+
+                case TextDarkness::regular:
+                    eax = ColourMapA[colour.colour].lighter;
+                    eax = eax << 16;
+                    eax = eax | ColourMapA[colour.colour].mid_light;
+                    break;
             }
 
             // Adjust text palette. Store current colour? ;
@@ -807,31 +796,22 @@ void TTFDrawString(
     if (text == nullptr)
         return;
 
-    TextDrawInfo info;
-    info.FontStyle = fontStyle;
-    info.flags = 0;
+    TextDrawInfo info{};
+    info.fontStyle = fontStyle;
     info.startX = coords.x;
     info.startY = coords.y;
     info.x = coords.x;
     info.y = coords.y;
+    info.darkness = darkness;
 
     if (LocalisationService_UseTrueTypeFont())
     {
-        info.flags |= TEXT_DRAW_FLAG_TTF;
+        info.textDrawFlags.set(TextDrawFlag::ttf);
     }
 
     if (noFormatting)
     {
-        info.flags |= TEXT_DRAW_FLAG_NO_FORMATTING;
-    }
-
-    if (darkness == TextDarkness::Dark)
-    {
-        info.flags |= TEXT_DRAW_FLAG_DARK;
-    }
-    else if (darkness == TextDarkness::ExtraDark)
-    {
-        info.flags |= (TEXT_DRAW_FLAG_DARK | TEXT_DRAW_FLAG_EXTRA_DARK);
+        info.textDrawFlags.set(TextDrawFlag::noFormatting);
     }
 
     std::memcpy(info.palette, gTextPalette, sizeof(info.palette));
@@ -844,9 +824,8 @@ void TTFDrawString(
 
 static int32_t TTFGetStringWidth(std::string_view text, FontStyle fontStyle, bool noFormatting)
 {
-    TextDrawInfo info;
-    info.FontStyle = fontStyle;
-    info.flags = 0;
+    TextDrawInfo info{};
+    info.fontStyle = fontStyle;
     info.startX = 0;
     info.startY = 0;
     info.x = 0;
@@ -854,15 +833,15 @@ static int32_t TTFGetStringWidth(std::string_view text, FontStyle fontStyle, boo
     info.maxX = 0;
     info.maxY = 0;
 
-    info.flags |= TEXT_DRAW_FLAG_NO_DRAW;
+    info.textDrawFlags.set(TextDrawFlag::noDraw);
     if (LocalisationService_UseTrueTypeFont())
     {
-        info.flags |= TEXT_DRAW_FLAG_TTF;
+        info.textDrawFlags.set(TextDrawFlag::ttf);
     }
 
     if (noFormatting)
     {
-        info.flags |= TEXT_DRAW_FLAG_NO_FORMATTING;
+        info.textDrawFlags.set(TextDrawFlag::noFormatting);
     }
 
     RenderTarget dummy{};
@@ -879,20 +858,19 @@ void GfxDrawStringWithYOffsets(
     RenderTarget& rt, const utf8* text, ColourWithFlags colour, const ScreenCoordsXY& coords, const int8_t* yOffsets,
     bool forceSpriteFont, FontStyle fontStyle)
 {
-    TextDrawInfo info;
-    info.FontStyle = fontStyle;
-    info.flags = 0;
+    TextDrawInfo info{};
+    info.fontStyle = fontStyle;
     info.startX = coords.x;
     info.startY = coords.y;
     info.x = coords.x;
     info.y = coords.y;
-    info.y_offset = yOffsets;
+    info.yOffset = yOffsets;
 
-    info.flags |= TEXT_DRAW_FLAG_Y_OFFSET_EFFECT;
+    info.textDrawFlags.set(TextDrawFlag::yOffsetEffect);
 
     if (!forceSpriteFont && LocalisationService_UseTrueTypeFont())
     {
-        info.flags |= TEXT_DRAW_FLAG_TTF;
+        info.textDrawFlags.set(TextDrawFlag::ttf);
     }
 
     std::memcpy(info.palette, gTextPalette, sizeof(info.palette));
