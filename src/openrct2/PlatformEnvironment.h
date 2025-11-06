@@ -52,6 +52,7 @@ namespace OpenRCT2
         crashDumps,       // Contains crash dumps.
         assetPacks,       // Contains asset packs.
         scenarioPatches,  // Contains scenario patches.
+        campaigns,        // Contains campaigns (.json)
     };
 
     enum class PathId

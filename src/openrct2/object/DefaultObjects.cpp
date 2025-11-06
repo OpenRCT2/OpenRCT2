@@ -13,6 +13,7 @@
 
 namespace OpenRCT2
 {
+    // clang-format off
     constexpr std::array<std::string_view, 3> kMinimumRequiredObjects = {
         "rct2.terrain_surface.grass",
         "rct2.terrain_edge.rock",
@@ -165,4 +166,20 @@ namespace OpenRCT2
         "rct2.terrain_edge.wood_black",
         "rct2.terrain_edge.ice",
     };
+
+    constexpr std::array<std::string_view, 12> kDefaultCampaignObjects = {
+        "rct2.campaign.rct_classic",
+        "rct1.campaign.base_game",
+        "rct1aa.campaign.added_attractions",
+        "rct1ll.campaign.loopy_landscapes",
+        "rct2.campaign.base_game",
+        "rct2ww.campaign.wacky_worlds",
+        "rct2tt.campaign.time_twister",
+        "rct2.campaign.real_parks",
+        "rct2.campaign.build_your_own",
+        "openrct2.campaign.competitions",
+        "openrct2.campaign.uces",
+        "openrct2.campaign.extras",
+    };
+    // clang-format on
 } // namespace OpenRCT2

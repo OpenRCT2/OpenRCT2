@@ -37,6 +37,8 @@ namespace OpenRCT2
         ObjectStringID Id = ObjectStringID::unknown;
         uint8_t LanguageId = LANGUAGE_UNDEFINED;
         std::string Text;
+        // Identifier for custom strings with unknown ObjectStringID
+        const std::string* CustomKey;
     };
 
     class StringTable
@@ -58,6 +60,7 @@ namespace OpenRCT2
         void Sort();
         std::string GetString(ObjectStringID id) const;
         std::string GetString(uint8_t language, ObjectStringID id) const;
-        void SetString(ObjectStringID id, uint8_t language, const std::string& text);
+        const std::string GetCustomString(const std::string* customKey) const;
+        void SetString(ObjectStringID id, uint8_t language, const std::string& text, const std::string* customKey);
     };
 } // namespace OpenRCT2
