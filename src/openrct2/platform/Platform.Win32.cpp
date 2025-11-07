@@ -13,27 +13,23 @@
     #ifndef WIN32_LEAN_AND_MEAN
         #define WIN32_LEAN_AND_MEAN
     #endif
-    #include "../Diagnostic.h"
-
-    #include <cassert>
-    #include <windows.h>
-
-    // Then the rest
-    #include "../Version.h"
-
     #include <datetimeapi.h>
     #include <lmcons.h>
     #include <memory>
     #include <shlobj.h>
+    #include <windows.h>
     #undef GetEnvironmentVariable
 
     #include "../Date.h"
+    #include "../Diagnostic.h"
     #include "../OpenRCT2.h"
+    #include "../Version.h"
     #include "../core/Path.hpp"
     #include "../core/String.hpp"
     #include "../localisation/Language.h"
     #include "Platform.h"
 
+    #include <cassert>
     #include <cstring>
     #include <format>
     #include <iterator>
