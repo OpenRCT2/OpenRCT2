@@ -1707,7 +1707,7 @@ namespace OpenRCT2::Ui::Windows
             // Draw track piece
             auto screenCoords = ScreenCoordsXY{ windowPos.x + widget->left + 1, windowPos.y + widget->top + 1 };
             widgetWidth = widget->width() - 2;
-            widgetHeight = widget->height() - 1;
+            widgetHeight = widget->height() - 2;
             if (ClipDrawPixelInfo(clippedRT, rt, screenCoords, widgetWidth, widgetHeight))
             {
                 DrawTrackPiece(
@@ -2631,8 +2631,8 @@ namespace OpenRCT2::Ui::Windows
                 ddWidth -= 30;
 
             WindowDropdownShowTextCustomWidth(
-                { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height() + 1, colours[1], 0, 0,
-                elements.size(), ddWidth, targetColumnSize);
+                { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height(), colours[1], 0, 0, elements.size(),
+                ddWidth, targetColumnSize);
 
             for (size_t j = 0; j < elements.size(); j++)
             {

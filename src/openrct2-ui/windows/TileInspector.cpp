@@ -904,7 +904,7 @@ static uint64_t PageDisabledWidgets[] = {
                             gDropdown.items[1] = Dropdown::MenuLabel(STR_TILE_INSPECTOR_WALL_SLOPED_LEFT);
                             gDropdown.items[2] = Dropdown::MenuLabel(STR_TILE_INSPECTOR_WALL_SLOPED_RIGHT);
                             WindowDropdownShowTextCustomWidth(
-                                { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height() + 1, colours[1], 0,
+                                { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height(), colours[1], 0,
                                 Dropdown::Flag::StayOpen, 3, widget->width() - 4);
 
                             // Set current value as checked
@@ -1593,7 +1593,7 @@ static uint64_t PageDisabledWidgets[] = {
             {
                 auto& listWidget = widgets[WIDX_LIST];
                 auto centrePos = ScreenCoordsXY{ listWidget.width() / 2,
-                                                 (listWidget.height() - FontGetLineHeight(FontStyle::medium)) / 2 };
+                                                 (listWidget.height() - 1 - FontGetLineHeight(FontStyle::medium)) / 2 };
                 auto ft = Formatter{};
                 auto textPaint = TextPaint{ colours[1], TextAlignment::centre };
                 DrawTextWrapped(rt, centrePos, listWidth, STR_TILE_INSPECTOR_SELECT_TILE_HINT, ft, textPaint);

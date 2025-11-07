@@ -212,11 +212,11 @@ namespace OpenRCT2::Ui::Windows
                 int32_t yOffset = 0;
                 if (i > 5)
                 {
-                    yOffset = -(widget->height() + 5 + (i * 12));
+                    yOffset = -(widget->height() - 1 + 5 + (i * 12));
                 }
 
                 WindowDropdownShowText(
-                    windowPos + ScreenCoordsXY{ widget->left, widget->top + yOffset }, widget->height() + 1,
+                    windowPos + ScreenCoordsXY{ widget->left, widget->top + yOffset }, widget->height(),
                     colours[0].withFlag(ColourFlag::translucent, true), Dropdown::Flag::StayOpen, i);
             }
         }

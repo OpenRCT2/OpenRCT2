@@ -533,7 +533,7 @@ namespace OpenRCT2::Ui::Windows
             auto& mapArea = widgets[WIDX_MAP];
             if (size.width >= mapArea.width() - 1)
                 size.width -= kScrollBarWidth;
-            if (size.height >= mapArea.height())
+            if (size.height >= mapArea.height() - 1)
                 size.height -= kScrollBarWidth;
 
             return size;
@@ -737,7 +737,7 @@ namespace OpenRCT2::Ui::Windows
             // calculate width and height of minimap
             auto& widget = widgets[WIDX_MAP];
             auto mapWidth = widget.width() - 1 - kScrollBarWidth - 1;
-            auto mapHeight = widget.height() - kScrollBarWidth - 1;
+            auto mapHeight = widget.height() - 1 - kScrollBarWidth - 1;
 
             centreX = std::max(centreX - (mapWidth >> 1), 0);
             centreY = std::max(centreY - (mapHeight >> 1), 0);

@@ -1802,7 +1802,7 @@ namespace OpenRCT2::Ui::Windows
                     }
 
                     WindowDropdownShowTextCustomWidth(
-                        { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height() + 1, colours[1], 0,
+                        { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height(), colours[1], 0,
                         Dropdown::Flag::StayOpen, numItems, widget->width() - 4);
 
                     gDropdown.items[static_cast<int32_t>(ThemeManagerGetAvailableThemeIndex())].setChecked(true);
@@ -1916,7 +1916,7 @@ namespace OpenRCT2::Ui::Windows
                     numItems++;
 
                     WindowDropdownShowText(
-                        { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height() + 1, colours[1],
+                        { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height(), colours[1],
                         Dropdown::Flag::StayOpen, numItems);
 
                     auto selectedIndex = Config::Get().interface.randomTitleSequence
@@ -1933,7 +1933,7 @@ namespace OpenRCT2::Ui::Windows
                     gDropdown.items[1] = Dropdown::MenuLabel(STR_SCENARIO_PREVIEWS_SCREENSHOTS);
 
                     WindowDropdownShowTextCustomWidth(
-                        { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height() + 1, colours[1], 0,
+                        { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height(), colours[1], 0,
                         Dropdown::Flag::StayOpen, numItems, widget->width() - 4);
 
                     gDropdown.items[Config::Get().interface.scenarioPreviewScreenshots].setChecked(true);
@@ -2296,7 +2296,7 @@ namespace OpenRCT2::Ui::Windows
         {
             // helper function, all dropdown boxes have similar properties
             WindowDropdownShowTextCustomWidth(
-                { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height() + 1, colours[1], 0,
+                { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height(), colours[1], 0,
                 Dropdown::Flag::StayOpen, num_items, widget->width() - 4);
         }
 

@@ -533,7 +533,7 @@ namespace OpenRCT2::Ui::Windows
 
                     auto& ddWidget = widgets[WIDX_FILTER_DROPDOWN];
                     WindowDropdownShowText(
-                        { windowPos.x + ddWidget.left, windowPos.y + ddWidget.top }, ddWidget.height() + 1,
+                        { windowPos.x + ddWidget.left, windowPos.y + ddWidget.top }, ddWidget.height(),
                         colours[ddWidget.colour], Dropdown::Flag::StayOpen, _numSourceGameItems + numSelectionItems);
 
                     for (int32_t i = 0; i < _numSourceGameItems; i++)
@@ -1112,7 +1112,7 @@ namespace OpenRCT2::Ui::Windows
                 RenderTarget clipDPI;
                 auto screenPos = windowPos + ScreenCoordsXY{ previewWidget.left + 1, previewWidget.top + 1 };
                 int32_t previewWidth = previewWidget.width() - 2;
-                int32_t previewHeight = previewWidget.height() - 1;
+                int32_t previewHeight = previewWidget.height() - 2;
                 if (ClipDrawPixelInfo(clipDPI, rt, screenPos, previewWidth, previewHeight))
                 {
                     _loadedObject->DrawPreview(clipDPI, previewWidth, previewHeight);

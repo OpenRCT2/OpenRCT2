@@ -220,7 +220,7 @@ namespace OpenRCT2
 
         if (scroll.flags & VSCROLLBAR_VISIBLE)
         {
-            int16_t size = widget.height() - 1;
+            int16_t size = widget.height() - 2;
             if (scroll.flags & HSCROLLBAR_VISIBLE)
                 size -= 11;
             size = std::max(0, scroll.contentHeight - size);
@@ -834,7 +834,7 @@ namespace OpenRCT2
             int32_t newTop;
             newTop = scroll.contentHeight;
             newTop *= y;
-            y = widget.height() - 21;
+            y = widget.height() - 22;
             if (scroll.flags & HSCROLLBAR_VISIBLE)
                 y -= kScrollBarWidth + 1;
             newTop /= y;
@@ -844,7 +844,7 @@ namespace OpenRCT2
             newTop += y;
             if (newTop < 0)
                 newTop = 0;
-            y = widget.height() - 1;
+            y = widget.height() - 2;
             if (scroll.flags & HSCROLLBAR_VISIBLE)
                 y -= kScrollBarWidth + 1;
             y *= -1;
@@ -937,7 +937,7 @@ namespace OpenRCT2
             auto& scroll = w.scrolls[scroll_id];
             scroll.flags |= VSCROLLBAR_DOWN_PRESSED;
             scroll.contentOffsetY += 3;
-            int32_t newTop = widget.height() - 1;
+            int32_t newTop = widget.height() - 2;
             if (scroll.flags & HSCROLLBAR_VISIBLE)
                 newTop -= kScrollBarWidth + 1;
             newTop *= -1;

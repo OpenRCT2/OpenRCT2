@@ -919,7 +919,7 @@ namespace OpenRCT2::Ui::Windows
             Widget* widget = &widgets[WIDX_SORT_CUSTOMISE];
 
             WindowDropdownShowTextCustomWidth(
-                { windowPos.x + widget->left - 70, windowPos.y + widget->top }, widget->height() + 1, colours[1], 0,
+                { windowPos.x + widget->left - 70, windowPos.y + widget->top }, widget->height(), colours[1], 0,
                 Dropdown::Flag::StayOpen, 7, 90);
 
             auto& config = Config::Get().general;

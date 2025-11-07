@@ -507,7 +507,7 @@ namespace OpenRCT2::Ui::Windows
                         else
                         {
                             const auto& listWidget = widgets[WIDX_SCENERY_LIST];
-                            const auto nonListHeight = height - listWidget.height() + 2;
+                            const auto nonListHeight = height - listWidget.height() - 1 + 2;
 
                             const auto numRows = static_cast<int32_t>(CountRows());
                             const auto maxContentHeight = numRows * kSceneryButtonHeight;
@@ -1077,7 +1077,7 @@ namespace OpenRCT2::Ui::Windows
             int32_t newMinHeight = getTitleBarTargetHeight() + kDescriptionHeight + 2 * kTabMargin;
 
             // Room for the search/filter widget
-            newMinHeight += widgets[WIDX_FILTER_TEXT_BOX].height() + 2 * kInputMargin;
+            newMinHeight += widgets[WIDX_FILTER_TEXT_BOX].height() - 1 + 2 * kInputMargin;
 
             // Fit *all* rows of tabs
             newMinHeight += static_cast<int32_t>(1 + (_tabEntries.size() / GetMaxTabCountInARow())) * kTabHeight;
