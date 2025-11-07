@@ -8,6 +8,9 @@
  *****************************************************************************/
 
 #ifdef _WIN32
+    #ifndef WIN32_LEAN_AND_MEAN
+        #define WIN32_LEAN_AND_MEAN
+    #endif
     #include <windows.h>
 #elif defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
     #include <dirent.h>
