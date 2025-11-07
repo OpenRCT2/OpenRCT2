@@ -107,7 +107,7 @@ namespace OpenRCT2
 
         int16_t height() const
         {
-            return bottom - top;
+            return bottom - top + 1;
         }
 
         int16_t midX() const
@@ -117,12 +117,12 @@ namespace OpenRCT2
 
         int16_t midY() const
         {
-            return (top + bottom) / 2;
+            return top + (height() / 2);
         }
 
         int16_t textTop() const
         {
-            if (height() >= 10)
+            if (height() >= 11)
                 return std::max<int32_t>(top, top + (height() / 2) - 5);
 
             return top - 1;

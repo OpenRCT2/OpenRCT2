@@ -808,8 +808,8 @@ namespace OpenRCT2::Ui::Windows
 
             auto itemsPerRow = DropdownGetAppropriateImageDropdownItemsPerRow(numPathTypes);
             WindowDropdownShowImage(
-                windowPos.x + widget->left, windowPos.y + widget->top, widget->height() + 1, colours[1], 0, numPathTypes, 47,
-                36, itemsPerRow);
+                windowPos.x + widget->left, windowPos.y + widget->top, widget->height(), colours[1], 0, numPathTypes, 47, 36,
+                itemsPerRow);
 
             gDropdown.hasTooltips = true;
 
@@ -844,8 +844,8 @@ namespace OpenRCT2::Ui::Windows
 
             auto itemsPerRow = DropdownGetAppropriateImageDropdownItemsPerRow(numRailingsTypes);
             WindowDropdownShowImage(
-                windowPos.x + widget->left, windowPos.y + widget->top, widget->height() + 1, colours[1], 0, numRailingsTypes,
-                47, 36, itemsPerRow);
+                windowPos.x + widget->left, windowPos.y + widget->top, widget->height(), colours[1], 0, numRailingsTypes, 47,
+                36, itemsPerRow);
 
             gDropdown.hasTooltips = true;
 

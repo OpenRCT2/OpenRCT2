@@ -404,7 +404,7 @@ namespace OpenRCT2::Ui::Windows
 
                 viewport->pos = windowPos + ScreenCoordsXY{ viewportWidget->left, viewportWidget->top };
                 viewport->width = viewportWidget->width() - 1;
-                viewport->height = viewportWidget->height();
+                viewport->height = viewportWidget->height() - 1;
             }
 
             // only enable kick button for other players
@@ -557,8 +557,8 @@ namespace OpenRCT2::Ui::Windows
             numItems = Network::GetNumGroups();
 
             WindowDropdownShowTextCustomWidth(
-                { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
-                colours[1], 0, 0, numItems, widget->right - dropdownWidget->left);
+                { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height(), colours[1],
+                0, 0, numItems, widget->right - dropdownWidget->left);
 
             for (i = 0; i < Network::GetNumGroups(); i++)
             {
