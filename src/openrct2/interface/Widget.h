@@ -105,9 +105,19 @@ namespace OpenRCT2
             return right - left + 1;
         }
 
+        void setWidth(int16_t newWidth)
+        {
+            right = left + newWidth - 1;
+        }
+
         int16_t height() const
         {
             return bottom - top + 1;
+        }
+
+        void setHeight(int16_t newHeight)
+        {
+            bottom = top + newHeight - 1;
         }
 
         int16_t midX() const
