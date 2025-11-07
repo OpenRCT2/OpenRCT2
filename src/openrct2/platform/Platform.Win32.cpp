@@ -13,11 +13,13 @@
     #ifndef WIN32_LEAN_AND_MEAN
         #define WIN32_LEAN_AND_MEAN
     #endif
+    // clang-format off
     #include <windows.h>
     #include <datetimeapi.h>
     #include <lmcons.h>
     #include <memory>
     #include <shlobj.h>
+    // clang-format on
     #undef GetEnvironmentVariable
     #undef small
 
