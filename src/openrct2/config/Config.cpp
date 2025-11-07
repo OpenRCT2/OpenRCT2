@@ -967,7 +967,7 @@ namespace OpenRCT2::Config
         std::string rct1Path = FindRCT1Path();
         if (!rct1Path.empty())
         {
-            Get().general.rct2Path = std::move(rct1Path);
+            Get().general.rct1Path = std::move(rct1Path);
         }
 
         return true;
