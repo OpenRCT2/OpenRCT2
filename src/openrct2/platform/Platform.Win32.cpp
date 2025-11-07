@@ -19,6 +19,7 @@
     #include <shlobj.h>
     #include <windows.h>
     #undef GetEnvironmentVariable
+    #undef small
 
     #include "../Date.h"
     #include "../Diagnostic.h"
