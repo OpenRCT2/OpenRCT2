@@ -189,6 +189,7 @@ const OpenRCT2::FootpathRailingsObject* GetPathRailingsEntry(OpenRCT2::ObjectEnt
 
 void FootpathQueueChainReset();
 void FootpathQueueChainPush(RideId rideIndex);
+int32_t FootpathQueueCountConnections(const CoordsXY& position, const OpenRCT2::PathElement& pathElement);
 bool FootpathIsZAndDirectionValid(const OpenRCT2::PathElement& tileElement, int32_t currentZ, int32_t currentDirection);
 
 FootpathPlacementResult FootpathGetOnTerrainPlacement(const TileCoordsXY& location);

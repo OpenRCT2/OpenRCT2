@@ -1,9 +1,11 @@
 0.4.29 (in development)
 ------------------------------------------------------------------------
 - Improved: [#25426] Building the track designs index is now quicker.
+- Fix: [#6228] The saved queue line path connections are not preserved when placing track designs (original bug).
 - Fix: [#14365] Track designs with scenery below the lowest track piece do not preview correctly.
 - Fix: [#25451] Dropdown item tooltips stay open if the mouse is moved over an empty space.
 - Fix: [#25461] Path connections in raised track designs are sometimes broken when placed.
+- Fix: [#25467] Paths are not connected together correctly in track design previews.
 - Fix: [#25476] When both RCT2 and RCT1 are present, autodetection fails.
 
 0.4.28 (2025-11-01)
