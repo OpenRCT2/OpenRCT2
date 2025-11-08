@@ -60,7 +60,8 @@ namespace OpenRCT2::Ui::Windows
         WIDX_ROTATE,
         WIDX_MIRROR,
         WIDX_SELECT_DIFFERENT_DESIGN,
-        WIDX_PRICE
+        WIDX_PRICE,
+        WIDX_PREVIEW,
     };
 
     VALIDATE_GLOBAL_WIDX(WC_TRACK_DESIGN_PLACE, WIDX_ROTATE);
@@ -68,10 +69,11 @@ namespace OpenRCT2::Ui::Windows
     // clang-format off
     static constexpr auto _trackPlaceWidgets = makeWidgets(
         makeWindowShim(kWindowTitle, kWindowSize),
-        makeWidget({173,  83}, { 24, 24}, WidgetType::flatBtn, WindowColour::primary, ImageId(SPR_ROTATE_ARROW),     STR_ROTATE_90_TIP                         ),
-        makeWidget({173,  59}, { 24, 24}, WidgetType::flatBtn, WindowColour::primary, ImageId(SPR_MIRROR_ARROW),     STR_MIRROR_IMAGE_TIP                      ),
-        makeWidget({  4, 109}, {192, 12}, WidgetType::button,  WindowColour::primary, STR_SELECT_A_DIFFERENT_DESIGN, STR_GO_BACK_TO_DESIGN_SELECTION_WINDOW_TIP),
-        makeWidget({  0,   0}, {  1,  1}, WidgetType::empty,   WindowColour::primary)
+        makeWidget({173,  83}, { 24, 24},             WidgetType::flatBtn, WindowColour::primary, ImageId(SPR_ROTATE_ARROW),     STR_ROTATE_90_TIP                         ),
+        makeWidget({173,  59}, { 24, 24},             WidgetType::flatBtn, WindowColour::primary, ImageId(SPR_MIRROR_ARROW),     STR_MIRROR_IMAGE_TIP                      ),
+        makeWidget({  4, 109}, {192, 12},             WidgetType::button,  WindowColour::primary, STR_SELECT_A_DIFFERENT_DESIGN, STR_GO_BACK_TO_DESIGN_SELECTION_WINDOW_TIP),
+        makeWidget({  0,   0}, {  1,  1},             WidgetType::empty,   WindowColour::primary),
+        makeWidget({  4,  17}, kTrackMiniPreviewSize, WidgetType::empty,   WindowColour::primary)
     );
     // clang-format on
 
@@ -358,7 +360,9 @@ namespace OpenRCT2::Ui::Windows
 
             // Draw mini tile preview
             RenderTarget clippedRT;
-            if (ClipDrawPixelInfo(clippedRT, rt, this->windowPos + ScreenCoordsXY{ 4, 18 }, 168, 78))
+            const auto& previewWidget = widgets[WIDX_PREVIEW];
+            const auto previewCoords = windowPos + ScreenCoordsXY{ previewWidget.left, previewWidget.top };
+            if (ClipDrawPixelInfo(clippedRT, rt, previewCoords, previewWidget.width(), previewWidget.height()))
             {
                 G1Element g1temp = {};
                 g1temp.offset = _miniPreview.data();
