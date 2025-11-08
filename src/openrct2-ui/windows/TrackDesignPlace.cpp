@@ -72,7 +72,7 @@ namespace OpenRCT2::Ui::Windows
         makeWidget({173,  83}, { 24, 24},             WidgetType::flatBtn, WindowColour::primary, ImageId(SPR_ROTATE_ARROW),     STR_ROTATE_90_TIP                         ),
         makeWidget({173,  59}, { 24, 24},             WidgetType::flatBtn, WindowColour::primary, ImageId(SPR_MIRROR_ARROW),     STR_MIRROR_IMAGE_TIP                      ),
         makeWidget({  4, 109}, {192, 12},             WidgetType::button,  WindowColour::primary, STR_SELECT_A_DIFFERENT_DESIGN, STR_GO_BACK_TO_DESIGN_SELECTION_WINDOW_TIP),
-        makeWidget({  0,   0}, {  1,  1},             WidgetType::empty,   WindowColour::primary),
+        makeWidget({ 88,  93}, {  1,  1},             WidgetType::empty,   WindowColour::primary),
         makeWidget({  4,  17}, kTrackMiniPreviewSize, WidgetType::empty,   WindowColour::primary)
     );
     // clang-format on
@@ -378,7 +378,9 @@ namespace OpenRCT2::Ui::Windows
             {
                 ft = Formatter();
                 ft.Add<money64>(_placementCost);
-                DrawTextBasic(rt, this->windowPos + ScreenCoordsXY{ 88, 94 }, STR_COST_LABEL, ft, { TextAlignment::centre });
+                const auto& priceWidget = widgets[WIDX_PRICE];
+                const auto priceCoords = windowPos + ScreenCoordsXY{ priceWidget.left, priceWidget.top };
+                DrawTextBasic(rt, priceCoords, STR_COST_LABEL, ft, { TextAlignment::centre });
             }
         }
 
