@@ -218,29 +218,20 @@ namespace OpenRCT2::Scripting
             }
             else
             {
-                return JS_NULL;
-                /* TODO (mber)
-                return GetObjectAsDukValue(ctx, std::make_shared<ScTrackSegment>(static_cast<TrackElemType>(type)));
-                */
+                return gScTrackSegment.New(ctx, static_cast<TrackElemType>(type));
             }
         }
 
         static JSValue getAllTrackSegments(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
         {
-            return JS_NULL;
-
-            /* TODO (mber)
-            std::vector<DukValue> result;
+            auto result = JS_NewArray(ctx);
+            int64_t index = 0;
             for (uint16_t type = 0; type < EnumValue(TrackElemType::count); type++)
             {
-                auto obj = std::make_shared<ScTrackSegment>(static_cast<TrackElemType>(type));
-                if (obj != nullptr)
-                {
-                    result.push_back(GetObjectAsDukValue(ctx, obj));
-                }
+                auto obj = gScTrackSegment.New(ctx, static_cast<TrackElemType>(type));
+                JS_GetPropertyInt64(ctx, obj, index);
             }
             return result;
-            */
         }
 
         static JSValue getRandom(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)

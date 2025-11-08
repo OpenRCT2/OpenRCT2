@@ -58,37 +58,29 @@ namespace OpenRCT2::Scripting
 
     JSValue ScMap::rides_get(JSContext* ctx, JSValue thisVal)
     {
-        // TODO (mber) pending ScRide conversion
-        JS_ThrowInternalError(ctx, "not implemented yet");
-        return JS_EXCEPTION;
-        /*
-        std::vector<std::shared_ptr<ScRide>> result;
+        JSValue result = JS_NewArray(ctx);
 
         auto& gameState = getGameState();
         auto rideManager = RideManager(gameState);
+        int64_t idx = 0;
         for (const auto& ride : rideManager)
         {
-            result.push_back(std::make_shared<ScRide>(ride.id));
+            JS_SetPropertyInt64(ctx, result, idx++, gScRide.New(ctx, ride.id));
         }
         return result;
-        */
     }
 
     JSValue ScMap::getRide(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
     {
-        // TODO (mber) pending ScRide conversion
-        JS_ThrowInternalError(ctx, "not implemented yet");
-        return JS_EXCEPTION;
-        /*
+        JS_UNPACK_INT32(id, ctx, argv[0]);
         auto& gameState = getGameState();
         auto rideManager = RideManager(gameState);
         auto ride = rideManager[RideId::FromUnderlying(id)];
         if (ride != nullptr)
         {
-            return std::make_shared<ScRide>(ride->id);
+            return gScRide.New(ctx, ride->id);
         }
-        return {};
-        */
+        return JS_NULL;
     }
 
     JSValue ScMap::getTile(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
@@ -450,17 +442,11 @@ namespace OpenRCT2::Scripting
 
     JSValue ScMap::getTrackIterator(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
     {
-        // TODO (mber) pending ScTrackIterator conversion
-        JS_ThrowInternalError(ctx, "not implemented yet");
-        return JS_EXCEPTION;
-        /*
-        auto position = FromDuk<CoordsXY>(dukPosition);
-        auto trackIterator = ScTrackIterator::FromElement(position, elementIndex);
-        if (trackIterator == nullptr)
-            return ToDuk(_context, undefined);
+        JS_UNPACK_OBJECT(pos, ctx, argv[0]);
+        JS_UNPACK_UINT32(elementIndex, ctx, argv[1]);
 
-        return GetObjectAsDukValue(_context, trackIterator);
-        */
+        const auto position = JSToCoordsXY(ctx, pos);
+        return ScTrackIterator::FromElement(ctx, position, elementIndex);
     }
 
     void ScMap::Register(JSContext* ctx)
