@@ -45,9 +45,7 @@ namespace OpenRCT2::Ui::Windows
 {
     static constexpr StringId kWindowTitle = STR_STRING;
     static constexpr ScreenSize kWindowSize = { 200, 124 };
-    constexpr int16_t kTrackMiniPreviewWidth = 168;
-    constexpr int16_t kTrackMiniPreviewHeight = 78;
-    constexpr uint16_t kTrackMiniPreviewSize = kTrackMiniPreviewWidth * kTrackMiniPreviewHeight;
+    static constexpr ScreenSize kTrackMiniPreviewSize = { 168, 78 };
 
     static constexpr uint8_t kPaletteIndexColourEntrance = PaletteIndex::pi20; // White
     static constexpr uint8_t kPaletteIndexColourExit = PaletteIndex::pi10;     // Black
@@ -111,7 +109,7 @@ namespace OpenRCT2::Ui::Windows
             gInputFlags.set(InputFlag::unk6);
             WindowPushOthersRight(*this);
             ShowGridlines();
-            _miniPreview.resize(kTrackMiniPreviewSize);
+            _miniPreview.resize(kTrackMiniPreviewSize.width * kTrackMiniPreviewSize.height);
             _placementCost = kMoney64Undefined;
             _placementLoc.SetNull();
             _currentTrackPieceDirection = (2 - GetCurrentRotation()) & 3;
@@ -364,8 +362,8 @@ namespace OpenRCT2::Ui::Windows
             {
                 G1Element g1temp = {};
                 g1temp.offset = _miniPreview.data();
-                g1temp.width = kTrackMiniPreviewWidth;
-                g1temp.height = kTrackMiniPreviewHeight;
+                g1temp.width = kTrackMiniPreviewSize.width;
+                g1temp.height = kTrackMiniPreviewSize.height;
                 GfxSetG1Element(SPR_TEMP, &g1temp);
                 DrawingEngineInvalidateImage(SPR_TEMP);
                 GfxDrawSprite(clippedRT, ImageId(SPR_TEMP, this->colours[0].colour), { 0, 0 });
@@ -735,7 +733,7 @@ namespace OpenRCT2::Ui::Windows
 
         uint8_t* DrawMiniPreviewGetPixelPtr(const ScreenCoordsXY& pixel)
         {
-            return &_miniPreview[pixel.y * kTrackMiniPreviewWidth + pixel.x];
+            return &_miniPreview[pixel.y * kTrackMiniPreviewSize.width + pixel.x];
         }
 
         GameActions::Result FindValidTrackDesignPlaceHeight(CoordsXYZ& loc, uint32_t newFlags)
