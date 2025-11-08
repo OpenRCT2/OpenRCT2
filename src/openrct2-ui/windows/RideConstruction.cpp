@@ -1705,7 +1705,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Draw track piece
             auto screenCoords = ScreenCoordsXY{ windowPos.x + widget->left + 1, windowPos.y + widget->top + 1 };
-            widgetWidth = widget->width() - 1;
+            widgetWidth = widget->width() - 2;
             widgetHeight = widget->height() - 1;
             if (ClipDrawPixelInfo(clippedRT, rt, screenCoords, widgetWidth, widgetHeight))
             {
@@ -2626,7 +2626,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Tune dropdown to the elements it contains
-            auto ddWidth = widget->width();
+            auto ddWidth = widget->width() - 1;
             auto targetColumnSize = _specialElementDropdownState.PreferredNumRows;
             if (targetColumnSize < _specialElementDropdownState.Elements.size())
                 ddWidth -= 30;

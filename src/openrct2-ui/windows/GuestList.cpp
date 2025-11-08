@@ -336,7 +336,7 @@ namespace OpenRCT2::Ui::Windows
 
                     WindowDropdownShowTextCustomWidth(
                         { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height() + 1, colours[1], 0,
-                        Dropdown::Flag::StayOpen, _numPages, widget->width() - 3);
+                        Dropdown::Flag::StayOpen, _numPages, widget->width() - 4);
 
                     for (size_t i = 0; i < _numPages; i++)
                     {
@@ -355,7 +355,7 @@ namespace OpenRCT2::Ui::Windows
                     auto* widget = &widgets[widgetIndex - 1];
                     WindowDropdownShowTextCustomWidth(
                         { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height() + 1, colours[1], 0,
-                        Dropdown::Flag::StayOpen, 2, widget->width() - 3);
+                        Dropdown::Flag::StayOpen, 2, widget->width() - 4);
 
                     gDropdown.items[static_cast<int32_t>(_selectedView)].setChecked(true);
                     break;

@@ -447,7 +447,7 @@ namespace OpenRCT2::Ui::Windows
                 count++;
                 listItem++;
             }
-            return { widgets[WIDX_RIDE_LIST].width(), ((count + 4) / 5) * 116 };
+            return { widgets[WIDX_RIDE_LIST].width() - 1, ((count + 4) / 5) * 116 };
         }
 
         void onScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override

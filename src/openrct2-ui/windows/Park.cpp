@@ -604,8 +604,8 @@ namespace OpenRCT2::Ui::Windows
 
             auto* labelWidget = &widgets[WIDX_STATUS];
             DrawTextEllipsised(
-                rt, windowPos + ScreenCoordsXY{ labelWidget->midX(), labelWidget->top }, labelWidget->width(), STR_BLACK_STRING,
-                ft, { TextAlignment::centre });
+                rt, windowPos + ScreenCoordsXY{ labelWidget->midX(), labelWidget->top }, labelWidget->width() - 1,
+                STR_BLACK_STRING, ft, { TextAlignment::centre });
         }
 
         void initViewport()
@@ -646,7 +646,7 @@ namespace OpenRCT2::Ui::Windows
                     Widget* viewportWidget = &widgets[WIDX_VIEWPORT];
                     ViewportCreate(
                         *this, windowPos + ScreenCoordsXY{ viewportWidget->left + 1, viewportWidget->top + 1 },
-                        viewportWidget->width() - 1, viewportWidget->height() - 1, focus.value());
+                        viewportWidget->width() - 2, viewportWidget->height() - 1, focus.value());
                     flags |= WindowFlag::noScrolling;
                     invalidate();
                 }

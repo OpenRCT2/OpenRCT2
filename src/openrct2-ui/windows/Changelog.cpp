@@ -142,7 +142,7 @@ namespace OpenRCT2::Ui::Windows
         {
             SetResizeDimensions();
 
-            auto downloadButtonWidth = widgets[WIDX_OPEN_URL].width();
+            auto downloadButtonWidth = widgets[WIDX_OPEN_URL].width() - 1;
             widgets[WIDX_OPEN_URL].left = (width - downloadButtonWidth) / 2;
             widgets[WIDX_OPEN_URL].right = widgets[WIDX_OPEN_URL].left + downloadButtonWidth;
         }

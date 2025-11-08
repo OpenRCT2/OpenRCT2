@@ -403,7 +403,7 @@ namespace OpenRCT2::Ui::Windows
             auto screenCoords = ScreenCoordsXY{ 0, kTableCellHeight + 2 };
 
             auto& self = widgets[WIDX_SUMMARY_SCROLL];
-            int32_t row_width = std::max<uint16_t>(scrolls[0].contentWidth, self.width());
+            int32_t row_width = std::max<uint16_t>(scrolls[0].contentWidth, self.width() - 1);
 
             // Expenditure / Income row labels
             for (int32_t i = 0; i < static_cast<int32_t>(ExpenditureType::count); i++)
@@ -847,7 +847,7 @@ namespace OpenRCT2::Ui::Windows
         void initialiseScrollPosition(WidgetIndex widgetIndex, int32_t scrollId)
         {
             const auto& widget = this->widgets[widgetIndex];
-            scrolls[scrollId].contentOffsetX = std::max(0, scrolls[scrollId].contentWidth - (widget.width() - 2));
+            scrolls[scrollId].contentOffsetX = std::max(0, scrolls[scrollId].contentWidth - (widget.width() - 3));
 
             widgetScrollUpdateThumbs(*this, widgetIndex);
         }

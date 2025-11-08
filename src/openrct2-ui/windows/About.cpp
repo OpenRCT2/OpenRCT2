@@ -234,7 +234,7 @@ namespace OpenRCT2::Ui::Windows
             auto centreX = versionWidget.midX();
             auto centreY = versionWidget.midY() - FontGetLineHeight(FontStyle::medium) / 2;
             auto centrePos = windowPos + ScreenCoordsXY(centreX, centreY);
-            DrawTextWrapped(rt, centrePos, versionWidget.width(), STR_STRING, ft, { colours[1], TextAlignment::centre });
+            DrawTextWrapped(rt, centrePos, versionWidget.width() - 1, STR_STRING, ft, { colours[1], TextAlignment::centre });
 
             // Shows the update available button
             if (OpenRCT2::GetContext()->HasNewVersionInfo())

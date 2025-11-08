@@ -277,7 +277,7 @@ namespace OpenRCT2::Ui::Windows
             uint8_t paletteIndex = ColourMapA[colours[1].colour].mid_light;
             GfxClear(rt, paletteIndex);
 
-            int16_t boxWidth = widgets[WIDX_RESEARCH_ORDER_SCROLL].width();
+            int16_t boxWidth = widgets[WIDX_RESEARCH_ORDER_SCROLL].width() - 1;
             int32_t itemY = -kScrollableRowHeight;
             auto* dragItem = WindowEditorInventionsListDragGetItem();
 
@@ -402,7 +402,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 RenderTarget clipDPI;
                 screenPos = windowPos + ScreenCoordsXY{ bkWidget.left + 1, bkWidget.top + 1 };
-                const auto clipWidth = bkWidget.width() - 1;
+                const auto clipWidth = bkWidget.width() - 2;
                 const auto clipHeight = bkWidget.height() - 1;
                 if (ClipDrawPixelInfo(clipDPI, rt, screenPos, clipWidth, clipHeight))
                 {

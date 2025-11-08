@@ -248,7 +248,7 @@ namespace OpenRCT2::Ui::Windows
             }
             else
             {
-                const int32_t iconX = listWidget.width() - kScrollBarWidth - 7 - 10;
+                const int32_t iconX = listWidget.width() - 1 - kScrollBarWidth - 7 - 10;
                 showNetworkVersionTooltip = screenCoords.x > iconX;
             }
 
@@ -332,7 +332,7 @@ namespace OpenRCT2::Ui::Windows
             GfxClear(rt, paletteIndex);
 
             auto& listWidget = widgets[WIDX_LIST];
-            int32_t listWidgetWidth = listWidget.width();
+            int32_t listWidgetWidth = listWidget.width() - 1;
 
             ScreenCoordsXY screenCoords;
             screenCoords.y = 0;

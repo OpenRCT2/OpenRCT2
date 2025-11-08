@@ -519,7 +519,7 @@ namespace OpenRCT2::Ui::Windows
                 if (widget.type == WidgetType::scroll)
                 {
                     auto& listView = _info.ListViews[scrollIndex];
-                    auto wwidth = widget.width() + 1 - 2;
+                    auto wwidth = widget.width() - 2;
                     auto wheight = widget.height() + 1 - 2;
                     if (listView.GetScrollbars() == ScrollbarType::Horizontal
                         || listView.GetScrollbars() == ScrollbarType::Both)
@@ -561,7 +561,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     RenderTarget widgetDpi;
                     if (ClipDrawPixelInfo(
-                            widgetDpi, rt, { windowPos.x + widget.left, windowPos.y + widget.top }, widget.width(),
+                            widgetDpi, rt, { windowPos.x + widget.left, windowPos.y + widget.top }, widget.width() - 1,
                             widget.height()))
                     {
                         auto ctx = onDraw.context();
@@ -654,7 +654,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     WindowDropdownShowTextCustomWidth(
                         { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height() + 1,
-                        colours[widget->colour], 0, Dropdown::Flag::StayOpen, numItems, widget->width() - 3);
+                        colours[widget->colour], 0, Dropdown::Flag::StayOpen, numItems, widget->width() - 4);
 
                     if (selectedIndex >= 0 && selectedIndex < static_cast<int32_t>(numItems))
                         gDropdown.items[selectedIndex].setChecked(true);
@@ -809,7 +809,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     auto left = windowPos.x + viewportWidget->left + 1;
                     auto top = windowPos.y + viewportWidget->top + 1;
-                    auto wwidth = viewportWidget->width() - 1;
+                    auto wwidth = viewportWidget->width() - 2;
                     auto wheight = viewportWidget->height() - 1;
                     if (viewport == nullptr)
                     {
