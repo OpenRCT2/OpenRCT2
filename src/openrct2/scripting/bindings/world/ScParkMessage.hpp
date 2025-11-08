@@ -9,11 +9,10 @@
 
 #pragma once
 
-#ifdef ENABLE_SCRIPTING
+#ifdef ENABLE_SCRIPTING_REFACTOR
 
     #include "../../../Context.h"
     #include "../../../management/NewsItem.h"
-    #include "../../Duktape.hpp"
     #include "../../ScriptEngine.h"
 
     #include <string>
@@ -48,53 +47,54 @@ namespace OpenRCT2::Scripting
         return {};
     }
 
-    template<>
-    inline News::Item FromDuk(const DukValue& value)
+    inline News::Item NewsItemFromJS(JSContext* ctx, JSValue value)
     {
         News::Item result{};
-        result.type = GetParkMessageType(value["type"].as_string());
-        result.assoc = value["subject"].as_uint();
-        result.ticks = value["tickCount"].as_uint();
-        result.monthYear = value["month"].as_uint();
-        result.day = value["day"].as_uint();
-        result.text = value["text"].as_string();
+        result.type = GetParkMessageType(JSToStdString(ctx, value, "type"));
+        result.assoc = JSToUint(ctx, value, "subject");
+        result.ticks = JSToUint(ctx, value, "tickCount");
+        result.monthYear = JSToUint(ctx, value, "month");
+        result.day = JSToUint(ctx, value, "day");
+        result.text = JSToStdString(ctx, value, "text");
         return result;
     }
 
-    class ScParkMessage
+    class ScParkMessage;
+    extern ScParkMessage gScParkMessage;
+    class ScParkMessage : public ScBase
     {
     private:
-        size_t _index{};
+        static News::Item* GetMessage(JSValue thisVal);
+
+        static JSValue isArchived_get(JSContext* ctx, JSValue thisVal);
+
+        static JSValue month_get(JSContext* ctx, JSValue thisVal);
+        static JSValue month_set(JSContext* ctx, JSValue thisVal, JSValue jsValue);
+
+        static JSValue day_get(JSContext* ctx, JSValue thisVal);
+        static JSValue day_set(JSContext* ctx, JSValue thisVal, JSValue jsValue);
+
+        static JSValue tickCount_get(JSContext* ctx, JSValue thisVal);
+        static JSValue tickCount_set(JSContext* ctx, JSValue thisVal, JSValue jsValue);
+
+        static JSValue type_get(JSContext* ctx, JSValue thisVal);
+        static JSValue type_set(JSContext* ctx, JSValue thisVal, JSValue jsValue);
+
+        static JSValue subject_get(JSContext* ctx, JSValue thisVal);
+        static JSValue subject_set(JSContext* ctx, JSValue thisVal, JSValue jsValue);
+
+        static JSValue text_get(JSContext* ctx, JSValue thisVal);
+        static JSValue text_set(JSContext* ctx, JSValue thisVal, JSValue jsValue);
+
+        static JSValue remove(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv);
 
     public:
-        ScParkMessage(size_t index);
+        JSValue New(JSContext* ctx, size_t index);
 
-        static void Register(duk_context* ctx);
+        void Register(JSContext* ctx);
 
     private:
-        News::Item* GetMessage() const;
-
-        bool isArchived_get() const;
-
-        uint16_t month_get() const;
-        void month_set(uint16_t value);
-
-        uint8_t day_get() const;
-        void day_set(uint8_t value);
-
-        uint16_t tickCount_get() const;
-        void tickCount_set(uint16_t value);
-
-        std::string type_get() const;
-        void type_set(const std::string& value);
-
-        uint32_t subject_get() const;
-        void subject_set(uint32_t value);
-
-        std::string text_get() const;
-        void text_set(const std::string& value);
-
-        void remove();
+        void Finalize(JSRuntime* rt, JSValue thisVal);
     };
 
 } // namespace OpenRCT2::Scripting
