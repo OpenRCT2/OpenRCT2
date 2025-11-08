@@ -7,6 +7,7 @@
 - Fix: [#25461] Path connections in raised track designs are sometimes broken when placed.
 - Fix: [#25467] Paths are not connected together correctly in track design previews.
 - Fix: [#25476] When both RCT2 and RCT1 are present, autodetection fails.
+- Fix: [#25480] The mini track design preview and price are misaligned in Enlarged UI mode.
 
 0.4.28 (2025-11-01)
 ------------------------------------------------------------------------
