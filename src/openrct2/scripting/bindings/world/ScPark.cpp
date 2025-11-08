@@ -360,37 +360,29 @@ namespace OpenRCT2::Scripting
 
     JSValue ScPark::messages_get(JSContext* ctx, JSValue thisVal)
     {
-        // TODO (mber) pending ScParkMessage conversion
-        JS_ThrowInternalError(ctx, "not implemented yet");
-        return JS_EXCEPTION;
-        /*
-        std::vector<std::shared_ptr<ScParkMessage>> result;
+        JSValue result = JS_NewArray(ctx);
+        int64_t resultIdx = 0;
         auto& gameState = getGameState();
         for (size_t i = 0, newsSize = gameState.newsItems.GetRecent().size(); i < newsSize; i++)
         {
-            result.push_back(std::make_shared<ScParkMessage>(i));
+            JS_SetPropertyInt64(ctx, result, resultIdx++, gScParkMessage.New(ctx, i));
         }
         for (size_t i = 0, newsSize = gameState.newsItems.GetArchived().size(); i < newsSize; i++)
         {
-            result.push_back(std::make_shared<ScParkMessage>(i + News::ItemHistoryStart));
+            auto offset = i + News::ItemHistoryStart;
+            JS_SetPropertyInt64(ctx, result, resultIdx++, gScParkMessage.New(ctx, offset));
         }
         return result;
-        */
     }
 
     JSValue ScPark::messages_set(JSContext* ctx, JSValue thisVal, JSValue value)
     {
-        // TODO (mber) pending ScParkMessage conversion
-        JS_ThrowInternalError(ctx, "not implemented yet");
-        return JS_EXCEPTION;
-        /*
         int32_t index = 0;
         int32_t archiveIndex = News::ItemHistoryStart;
         auto& gameState = getGameState();
-        for (const auto& item : value)
-        {
-            auto isArchived = item["isArchived"].as_bool();
-            auto newsItem = FromDuk<News::Item>(item);
+        JSIterateArray(ctx, value, [&index, &archiveIndex, &gameState](JSContext* ctx, JSValue item) {
+            auto isArchived = AsOrDefault(ctx, item, "isArchived", false);
+            auto newsItem = NewsItemFromJS(ctx, item);
             if (isArchived)
             {
                 if (archiveIndex < News::MaxItems)
@@ -407,7 +399,7 @@ namespace OpenRCT2::Scripting
                     index++;
                 }
             }
-        }
+        });
 
         // End the lists by setting next item to null
         if (index < News::ItemHistoryStart)
@@ -418,47 +410,44 @@ namespace OpenRCT2::Scripting
         {
             gameState.newsItems[archiveIndex].type = News::ItemType::null;
         }
-        */
+        return JS_UNDEFINED;
     }
 
     JSValue ScPark::postMessage(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
     {
-        // TODO (mber) pending ScParkMessage conversion as we use some functions from the file.
-        JS_ThrowInternalError(ctx, "not implemented yet");
-        return JS_EXCEPTION;
-        /*
-        ThrowIfGameStateNotMutable();
-        try
-        {
-            uint32_t assoc = std::numeric_limits<uint32_t>::max();
-            auto type = News::ItemType::blank;
-            std::string text;
-            if (message.type() == DukValue::Type::STRING)
-            {
-                text = message.as_string();
-            }
-            else
-            {
-                type = GetParkMessageType(message["type"].as_string());
-                text = message["text"].as_string();
-                if (type == News::ItemType::blank)
-                {
-                    assoc = static_cast<uint32_t>(((kCoordsNull & 0xFFFF) << 16) | (kCoordsNull & 0xFFFF));
-                }
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
 
-                auto dukSubject = message["subject"];
-                if (dukSubject.type() == DukValue::Type::NUMBER)
-                {
-                    assoc = static_cast<uint32_t>(dukSubject.as_uint());
-                }
-            }
-            News::AddItemToQueue(type, text.c_str(), assoc);
-        }
-        catch (const DukException&)
+        uint32_t assoc = std::numeric_limits<uint32_t>::max();
+        auto type = News::ItemType::blank;
+        std::string text;
+        if (JS_IsString(argv[0]))
         {
-            duk_error(message.context(), DUK_ERR_ERROR, "Invalid message argument.");
+            text = JSToStdString(ctx, argv[0]);
         }
-        */
+        else
+        {
+            auto textOption = JSToOptionalStdString(ctx, argv[0], "text");
+            auto typeOption = JSToOptionalStdString(ctx, argv[0], "type");
+            if (!textOption.has_value() || !typeOption.has_value())
+            {
+                return JS_ThrowPlainError(ctx, "Invalid message argument.");
+            }
+
+            type = GetParkMessageType(typeOption.value());
+            text = textOption.value();
+            if (type == News::ItemType::blank)
+            {
+                assoc = static_cast<uint32_t>(((kCoordsNull & 0xFFFF) << 16) | (kCoordsNull & 0xFFFF));
+            }
+
+            auto subject = JS_GetPropertyStr(ctx, argv[0], "subject");
+            if (JS_IsNumber(subject))
+            {
+                assoc = JSToUint(ctx, subject);
+            }
+        }
+        News::AddItemToQueue(type, text.c_str(), assoc);
+        return JS_UNDEFINED;
     }
 
     JSValue ScPark::getMonthlyExpenditure(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
