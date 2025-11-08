@@ -7,195 +7,236 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifdef ENABLE_SCRIPTING
+#ifdef ENABLE_SCRIPTING_REFACTOR
 
     #include "ScTrackSegment.h"
 
     #include "../../../Context.h"
+    #include "../../../core/EnumMap.hpp"
     #include "../../../ride/TrackData.h"
     #include "../../../ride/Vehicle.h"
+    #include "../../../world/tile_element/TrackElement.h"
     #include "../../ScriptEngine.h"
+    #include "../../ScriptUtil.hpp"
 
 using namespace OpenRCT2::Scripting;
 using namespace OpenRCT2::TrackMetaData;
 
-ScTrackSegment::ScTrackSegment(OpenRCT2::TrackElemType type)
-    : _type(type)
+static JSValue VehicleInfoToJSValue(JSContext* ctx, const VehicleInfo& value)
 {
+    JSValue obj = JS_NewObject(ctx);
+    JS_SetPropertyStr(ctx, obj, "x", JS_NewInt32(ctx, value.x));
+    JS_SetPropertyStr(ctx, obj, "y", JS_NewInt32(ctx, value.y));
+    JS_SetPropertyStr(ctx, obj, "z", JS_NewInt32(ctx, value.z));
+    JS_SetPropertyStr(ctx, obj, "yaw", JS_NewInt32(ctx, value.yaw));
+    JS_SetPropertyStr(ctx, obj, "pitch", JS_NewInt32(ctx, EnumValue(value.pitch)));
+    JS_SetPropertyStr(ctx, obj, "roll", JS_NewInt32(ctx, EnumValue(value.roll)));
+    return obj;
 }
 
-void ScTrackSegment::Register(duk_context* ctx)
+void ScTrackSegment::Register(JSContext* ctx)
 {
-    dukglue_register_property(ctx, &ScTrackSegment::type_get, nullptr, "type");
-    dukglue_register_property(ctx, &ScTrackSegment::description_get, nullptr, "description");
-    dukglue_register_property(ctx, &ScTrackSegment::elements_get, nullptr, "elements");
-    dukglue_register_property(ctx, &ScTrackSegment::beginDirection_get, nullptr, "beginDirection");
-    dukglue_register_property(ctx, &ScTrackSegment::endDirection_get, nullptr, "endDirection");
-    dukglue_register_property(ctx, &ScTrackSegment::beginSlope_get, nullptr, "beginSlope");
-    dukglue_register_property(ctx, &ScTrackSegment::endSlope_get, nullptr, "endSlope");
-    dukglue_register_property(ctx, &ScTrackSegment::beginBank_get, nullptr, "beginBank");
-    dukglue_register_property(ctx, &ScTrackSegment::endBank_get, nullptr, "endBank");
-    dukglue_register_property(ctx, &ScTrackSegment::beginZ_get, nullptr, "beginZ");
-    dukglue_register_property(ctx, &ScTrackSegment::endZ_get, nullptr, "endZ");
-    dukglue_register_property(ctx, &ScTrackSegment::endX_get, nullptr, "endX");
-    dukglue_register_property(ctx, &ScTrackSegment::endY_get, nullptr, "endY");
-    dukglue_register_property(ctx, &ScTrackSegment::length_get, nullptr, "length");
-    dukglue_register_property(ctx, &ScTrackSegment::nextCurveElement_get, nullptr, "nextSuggestedSegment");
-    dukglue_register_property(ctx, &ScTrackSegment::previousCurveElement_get, nullptr, "previousSuggestedSegment");
-    dukglue_register_property(ctx, &ScTrackSegment::getMirrorElement, nullptr, "mirrorSegment");
-    dukglue_register_property(ctx, &ScTrackSegment::getAlternativeElement, nullptr, "alternateTypeSegment");
-    dukglue_register_property(ctx, &ScTrackSegment::getPriceModifier, nullptr, "priceModifier");
-    dukglue_register_property(ctx, &ScTrackSegment::getTrackGroup, nullptr, "trackGroup");
-    dukglue_register_property(ctx, &ScTrackSegment::getTrackCurvature, nullptr, "turnDirection");
-    dukglue_register_property(ctx, &ScTrackSegment::getTrackPitchDirection, nullptr, "slopeDirection");
-
-    dukglue_register_property(
-        ctx, &ScTrackSegment::getTrackFlag<TrackElementFlag::onlyUnderwater>, nullptr, "onlyAllowedUnderwater");
-    dukglue_register_property(
-        ctx, &ScTrackSegment::getTrackFlag<TrackElementFlag::onlyAboveGround>, nullptr, "onlyAllowedAboveGround");
-    dukglue_register_property(ctx, &ScTrackSegment::getTrackFlag<TrackElementFlag::allowLiftHill>, nullptr, "allowsChainLift");
-    dukglue_register_property(ctx, &ScTrackSegment::getTrackFlag<TrackElementFlag::banked>, nullptr, "isBanked");
-    dukglue_register_property(ctx, &ScTrackSegment::getTrackFlag<TrackElementFlag::inversionToNormal>, nullptr, "isInversion");
-    dukglue_register_property(ctx, &ScTrackSegment::getTrackFlag<TrackElementFlag::isSteepUp>, nullptr, "isSteepUp");
-    dukglue_register_property(
-        ctx, &ScTrackSegment::getTrackFlag<TrackElementFlag::startsAtHalfHeight>, nullptr, "startsHalfHeightUp");
-    dukglue_register_property(ctx, &ScTrackSegment::getTrackFlag<TrackElementFlag::isGolfHole>, nullptr, "countsAsInversion");
-    dukglue_register_property(ctx, &ScTrackSegment::getTrackFlag<TrackElementFlag::turnBanked>, nullptr, "isBankedTurn");
-    dukglue_register_property(ctx, &ScTrackSegment::getTrackFlag<TrackElementFlag::turnSloped>, nullptr, "isSlopedTurn");
-    dukglue_register_property(ctx, &ScTrackSegment::getTrackFlag<TrackElementFlag::helix>, nullptr, "isHelix");
-    dukglue_register_property(
-        ctx, &ScTrackSegment::getTrackFlag<TrackElementFlag::normalToInversion>, nullptr, "countsAsInversion");
-
-    dukglue_register_method(ctx, &ScTrackSegment::getSubpositionLength, "getSubpositionLength");
-    dukglue_register_method(ctx, &ScTrackSegment::getSubpositions, "getSubpositions");
+    RegisterBaseStr(ctx, "TrackSegment", Finalize);
 }
 
-int32_t ScTrackSegment::type_get() const
+JSValue ScTrackSegment::New(JSContext* ctx, OpenRCT2::TrackElemType type)
 {
-    return EnumValue(_type);
+    static constexpr JSCFunctionListEntry funcs[] = {
+        JS_CGETSET_DEF("type", ScTrackSegment::type_get, nullptr),
+        JS_CGETSET_DEF("description", ScTrackSegment::description_get, nullptr),
+        JS_CGETSET_DEF("elements", ScTrackSegment::elements_get, nullptr),
+        JS_CGETSET_DEF("beginDirection", ScTrackSegment::beginDirection_get, nullptr),
+        JS_CGETSET_DEF("endDirection", ScTrackSegment::endDirection_get, nullptr),
+        JS_CGETSET_DEF("beginSlope", ScTrackSegment::beginSlope_get, nullptr),
+        JS_CGETSET_DEF("endSlope", ScTrackSegment::endSlope_get, nullptr),
+        JS_CGETSET_DEF("beginBank", ScTrackSegment::beginBank_get, nullptr),
+        JS_CGETSET_DEF("endBank", ScTrackSegment::endBank_get, nullptr),
+        JS_CGETSET_DEF("beginZ", ScTrackSegment::beginZ_get, nullptr),
+        JS_CGETSET_DEF("endZ", ScTrackSegment::endZ_get, nullptr),
+        JS_CGETSET_DEF("endX", ScTrackSegment::endX_get, nullptr),
+        JS_CGETSET_DEF("endY", ScTrackSegment::endY_get, nullptr),
+        JS_CGETSET_DEF("length", ScTrackSegment::length_get, nullptr),
+        JS_CGETSET_DEF("nextSuggestedSegment", ScTrackSegment::nextCurveElement_get, nullptr),
+        JS_CGETSET_DEF("previousSuggestedSegment", ScTrackSegment::previousCurveElement_get, nullptr),
+        JS_CGETSET_DEF("mirrorSegment", ScTrackSegment::getMirrorElement, nullptr),
+        JS_CGETSET_DEF("alternateTypeSegment", ScTrackSegment::getAlternativeElement, nullptr),
+        JS_CGETSET_DEF("priceModifier", ScTrackSegment::getPriceModifier, nullptr),
+        JS_CGETSET_DEF("trackGroup", ScTrackSegment::getTrackGroup, nullptr),
+        JS_CGETSET_DEF("turnDirection", ScTrackSegment::getTrackCurvature, nullptr),
+        JS_CGETSET_DEF("slopeDirection", ScTrackSegment::getTrackPitchDirection, nullptr),
+        JS_CGETSET_DEF("onlyAllowedUnderwater", ScTrackSegment::getTrackFlag<TrackElementFlag::onlyUnderwater>, nullptr),
+        JS_CGETSET_DEF("onlyAllowedAboveGround", ScTrackSegment::getTrackFlag<TrackElementFlag::onlyAboveGround>, nullptr),
+        JS_CGETSET_DEF("allowsChainLift", ScTrackSegment::getTrackFlag<TrackElementFlag::allowLiftHill>, nullptr),
+        JS_CGETSET_DEF("isBanked", ScTrackSegment::getTrackFlag<TrackElementFlag::banked>, nullptr),
+        JS_CGETSET_DEF("isInversion", ScTrackSegment::getTrackFlag<TrackElementFlag::inversionToNormal>, nullptr),
+        JS_CGETSET_DEF("isSteepUp", ScTrackSegment::getTrackFlag<TrackElementFlag::isSteepUp>, nullptr),
+        JS_CGETSET_DEF("startsHalfHeightUp", ScTrackSegment::getTrackFlag<TrackElementFlag::startsAtHalfHeight>, nullptr),
+        JS_CGETSET_DEF("countsAsGolfHole", ScTrackSegment::getTrackFlag<TrackElementFlag::isGolfHole>, nullptr),
+        JS_CGETSET_DEF("isBankedTurn", ScTrackSegment::getTrackFlag<TrackElementFlag::turnBanked>, nullptr),
+        JS_CGETSET_DEF("isSlopedTurn", ScTrackSegment::getTrackFlag<TrackElementFlag::turnSloped>, nullptr),
+        JS_CGETSET_DEF("isHelix", ScTrackSegment::getTrackFlag<TrackElementFlag::helix>, nullptr),
+        JS_CGETSET_DEF("countsAsInversion", ScTrackSegment::getTrackFlag<TrackElementFlag::normalToInversion>, nullptr),
+        JS_CFUNC_DEF("getSubpositionLength", 2, ScTrackSegment::getSubpositionLength),
+        JS_CFUNC_DEF("getSubpositions", 2, ScTrackSegment::getSubpositions),
+    };
+    return MakeWithOpaque(ctx, funcs, new TrackSegmentData{ type });
 }
 
-std::string ScTrackSegment::description_get() const
+void ScTrackSegment::Finalize(JSRuntime* rt, JSValue thisVal)
 {
-    const auto& ted = GetTrackElementDescriptor(_type);
-    return LanguageGetString(ted.description);
+    TrackSegmentData* data = GetTrackSegmentData(thisVal);
+    if (data)
+        delete data;
 }
 
-int32_t ScTrackSegment::beginZ_get() const
+ScTrackSegment::TrackSegmentData* ScTrackSegment::GetTrackSegmentData(JSValue thisVal)
 {
-    const auto& ted = GetTrackElementDescriptor(_type);
-    return ted.coordinates.zBegin;
+    return gScTrackSegment.GetOpaque<TrackSegmentData*>(thisVal);
 }
 
-int32_t ScTrackSegment::beginDirection_get() const
+JSValue ScTrackSegment::type_get(JSContext* ctx, JSValue thisVal)
 {
-    const auto& ted = GetTrackElementDescriptor(_type);
-    return ted.coordinates.rotationBegin;
+    const auto* data = GetTrackSegmentData(thisVal);
+    return JS_NewInt32(ctx, EnumValue(data->_type));
 }
 
-int32_t ScTrackSegment::beginSlope_get() const
+JSValue ScTrackSegment::description_get(JSContext* ctx, JSValue thisVal)
 {
-    const auto& ted = GetTrackElementDescriptor(_type);
-    return EnumValue(ted.definition.pitchStart);
+    const auto* data = GetTrackSegmentData(thisVal);
+    const auto& ted = GetTrackElementDescriptor(data->_type);
+    return JS_NewString(ctx, LanguageGetString(ted.description));
 }
 
-int32_t ScTrackSegment::beginBank_get() const
+JSValue ScTrackSegment::beginZ_get(JSContext* ctx, JSValue thisVal)
 {
-    const auto& ted = GetTrackElementDescriptor(_type);
-    return EnumValue(ted.definition.rollStart);
+    const auto* data = GetTrackSegmentData(thisVal);
+    const auto& ted = GetTrackElementDescriptor(data->_type);
+    return JS_NewInt32(ctx, ted.coordinates.zBegin);
 }
 
-int32_t ScTrackSegment::endX_get() const
+JSValue ScTrackSegment::beginDirection_get(JSContext* ctx, JSValue thisVal)
 {
-    const auto& ted = GetTrackElementDescriptor(_type);
-    return ted.coordinates.x;
+    const auto* data = GetTrackSegmentData(thisVal);
+    const auto& ted = GetTrackElementDescriptor(data->_type);
+    return JS_NewInt32(ctx, ted.coordinates.rotationBegin);
 }
 
-int32_t ScTrackSegment::endY_get() const
+JSValue ScTrackSegment::beginSlope_get(JSContext* ctx, JSValue thisVal)
 {
-    const auto& ted = GetTrackElementDescriptor(_type);
-    return ted.coordinates.y;
+    const auto* data = GetTrackSegmentData(thisVal);
+    const auto& ted = GetTrackElementDescriptor(data->_type);
+    return JS_NewInt32(ctx, EnumValue(ted.definition.pitchStart));
 }
 
-int32_t ScTrackSegment::endZ_get() const
+JSValue ScTrackSegment::beginBank_get(JSContext* ctx, JSValue thisVal)
 {
-    const auto& ted = GetTrackElementDescriptor(_type);
-    return ted.coordinates.zEnd;
+    const auto* data = GetTrackSegmentData(thisVal);
+    const auto& ted = GetTrackElementDescriptor(data->_type);
+    return JS_NewInt32(ctx, EnumValue(ted.definition.rollStart));
 }
 
-int32_t ScTrackSegment::endDirection_get() const
+JSValue ScTrackSegment::endX_get(JSContext* ctx, JSValue thisVal)
 {
-    const auto& ted = GetTrackElementDescriptor(_type);
-    return ted.coordinates.rotationEnd;
+    const auto* data = GetTrackSegmentData(thisVal);
+    const auto& ted = GetTrackElementDescriptor(data->_type);
+    return JS_NewInt32(ctx, ted.coordinates.x);
 }
 
-int32_t ScTrackSegment::endSlope_get() const
+JSValue ScTrackSegment::endY_get(JSContext* ctx, JSValue thisVal)
 {
-    const auto& ted = GetTrackElementDescriptor(_type);
-    return EnumValue(ted.definition.pitchEnd);
+    const auto* data = GetTrackSegmentData(thisVal);
+    const auto& ted = GetTrackElementDescriptor(data->_type);
+    return JS_NewInt32(ctx, ted.coordinates.y);
 }
 
-int32_t ScTrackSegment::endBank_get() const
+JSValue ScTrackSegment::endZ_get(JSContext* ctx, JSValue thisVal)
 {
-    const auto& ted = GetTrackElementDescriptor(_type);
-    return EnumValue(ted.definition.rollEnd);
+    const auto* data = GetTrackSegmentData(thisVal);
+    const auto& ted = GetTrackElementDescriptor(data->_type);
+    return JS_NewInt32(ctx, ted.coordinates.zEnd);
 }
 
-int32_t ScTrackSegment::length_get() const
+JSValue ScTrackSegment::endDirection_get(JSContext* ctx, JSValue thisVal)
 {
-    const auto& ted = GetTrackElementDescriptor(_type);
-    return ted.pieceLength;
+    const auto* data = GetTrackSegmentData(thisVal);
+    const auto& ted = GetTrackElementDescriptor(data->_type);
+    return JS_NewInt32(ctx, ted.coordinates.rotationEnd);
 }
 
-DukValue ScTrackSegment::elements_get() const
+JSValue ScTrackSegment::endSlope_get(JSContext* ctx, JSValue thisVal)
 {
-    auto& scriptEngine = GetContext()->GetScriptEngine();
-    auto ctx = scriptEngine.GetContext();
+    const auto* data = GetTrackSegmentData(thisVal);
+    const auto& ted = GetTrackElementDescriptor(data->_type);
+    return JS_NewUint32(ctx, EnumValue(ted.definition.pitchEnd));
+}
 
-    const auto& ted = GetTrackElementDescriptor(_type);
+JSValue ScTrackSegment::endBank_get(JSContext* ctx, JSValue thisVal)
+{
+    const auto* data = GetTrackSegmentData(thisVal);
+    const auto& ted = GetTrackElementDescriptor(data->_type);
+    return JS_NewUint32(ctx, EnumValue(ted.definition.rollEnd));
+}
 
-    duk_push_array(ctx);
+JSValue ScTrackSegment::length_get(JSContext* ctx, JSValue thisVal)
+{
+    const auto* data = GetTrackSegmentData(thisVal);
+    const auto& ted = GetTrackElementDescriptor(data->_type);
+    return JS_NewUint32(ctx, ted.pieceLength);
+}
 
-    duk_uarridx_t index = 0;
-    for (uint8_t i = 0; i < ted.numSequences; i++)
+JSValue ScTrackSegment::elements_get(JSContext* ctx, JSValue thisVal)
+{
+    const auto* data = GetTrackSegmentData(thisVal);
+    const auto& ted = GetTrackElementDescriptor(data->_type);
+
+    JSValue result = JS_NewArray(ctx);
+
+    for (int64_t i = 0; i < ted.numSequences; i++)
     {
         auto& block = ted.sequences[i].clearance;
-        duk_push_object(ctx);
-        duk_push_number(ctx, block.x);
-        duk_put_prop_string(ctx, -2, "x");
-        duk_push_number(ctx, block.y);
-        duk_put_prop_string(ctx, -2, "y");
-        duk_push_number(ctx, block.z);
-        duk_put_prop_string(ctx, -2, "z");
-
-        duk_put_prop_index(ctx, -2, index);
-        index++;
+        JSValue element = JS_NewObject(ctx);
+        JS_SetPropertyStr(ctx, element, "x", JS_NewInt32(ctx, block.x));
+        JS_SetPropertyStr(ctx, element, "y", JS_NewInt32(ctx, block.y));
+        JS_SetPropertyStr(ctx, element, "z", JS_NewInt32(ctx, block.z));
+        JS_SetPropertyInt64(ctx, result, i, element);
     }
 
-    return DukValue::take_from_stack(ctx);
-}
-
-uint16_t ScTrackSegment::getSubpositionLength(uint8_t trackSubposition, uint8_t direction) const
-{
-    return VehicleGetMoveInfoSize(static_cast<VehicleTrackSubposition>(trackSubposition), _type, direction);
-}
-
-std::vector<DukValue> ScTrackSegment::getSubpositions(uint8_t trackSubposition, uint8_t direction) const
-{
-    const auto ctx = GetContext()->GetScriptEngine().GetContext();
-    const uint16_t size = getSubpositionLength(trackSubposition, direction);
-    const uint16_t typeAndDirection = (EnumValue(_type) << 2) | (direction & 3);
-
-    std::vector<DukValue> result;
-
-    for (auto idx = 0; idx < size; idx++)
-    {
-        result.push_back(ToDuk<VehicleInfo>(ctx, gTrackVehicleInfo[trackSubposition][typeAndDirection]->info[idx]));
-    }
     return result;
 }
 
-static DukValue _trackCurveToString(duk_context* ctx, TrackCurve curve)
+JSValue ScTrackSegment::getSubpositionLength(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
+{
+    JS_UNPACK_UINT32(trackSubposition, ctx, argv[0]);
+    JS_UNPACK_UINT32(direction, ctx, argv[1]);
+
+    const auto* data = GetTrackSegmentData(thisVal);
+    uint16_t length = VehicleGetMoveInfoSize(
+        static_cast<VehicleTrackSubposition>(trackSubposition), data->_type, static_cast<uint8_t>(direction));
+    return JS_NewUint32(ctx, length);
+}
+
+JSValue ScTrackSegment::getSubpositions(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
+{
+    JS_UNPACK_UINT32(trackSubposition, ctx, argv[0]);
+    JS_UNPACK_UINT32(direction, ctx, argv[1]);
+
+    const auto* data = GetTrackSegmentData(thisVal);
+    const uint16_t size = VehicleGetMoveInfoSize(
+        static_cast<VehicleTrackSubposition>(trackSubposition), data->_type, static_cast<uint8_t>(direction));
+    const uint16_t typeAndDirection = (EnumValue(data->_type) << 2) | (direction & 3);
+
+    JSValue result = JS_NewArray(ctx);
+
+    for (int64_t idx = 0; idx < size; idx++)
+    {
+        JSValue subposition = VehicleInfoToJSValue(ctx, gTrackVehicleInfo[trackSubposition][typeAndDirection]->info[idx]);
+        JS_SetPropertyInt64(ctx, result, idx, subposition);
+    }
+
+    return result;
+}
+
+static JSValue _trackCurveToString(JSContext* ctx, TrackCurve curve)
 {
     static const EnumMap<TrackCurve> map(
         {
@@ -210,92 +251,100 @@ static DukValue _trackCurveToString(duk_context* ctx, TrackCurve curve)
             { "right_large", TrackCurve::rightLarge },
         });
 
-    u8string text = u8string(map[curve]);
-    return ToDuk<std::string>(ctx, text);
+    const auto text = std::string(map[curve]);
+    return JSFromStdString(ctx, text);
 }
 
-DukValue ScTrackSegment::nextCurveElement_get() const
+JSValue ScTrackSegment::nextCurveElement_get(JSContext* ctx, JSValue thisVal)
 {
-    const auto ctx = GetContext()->GetScriptEngine().GetContext();
-    const auto& ted = GetTrackElementDescriptor(_type);
+    const auto* data = GetTrackSegmentData(thisVal);
+    const auto& ted = GetTrackElementDescriptor(data->_type);
 
     auto nextInChain = ted.curveChain.next;
     if (nextInChain.isTrackType)
-        return ToDuk<int32_t>(ctx, EnumValue(nextInChain.trackType));
+        return JS_NewInt32(ctx, EnumValue(nextInChain.trackType));
 
     return _trackCurveToString(ctx, nextInChain.curve);
 }
 
-DukValue ScTrackSegment::previousCurveElement_get() const
+JSValue ScTrackSegment::previousCurveElement_get(JSContext* ctx, JSValue thisVal)
 {
-    const auto ctx = GetContext()->GetScriptEngine().GetContext();
-    const auto& ted = GetTrackElementDescriptor(_type);
+    const auto* data = GetTrackSegmentData(thisVal);
+    const auto& ted = GetTrackElementDescriptor(data->_type);
 
     auto previousInChain = ted.curveChain.previous;
     if (previousInChain.isTrackType)
-        return ToDuk<int32_t>(ctx, EnumValue(previousInChain.trackType));
+        return JS_NewInt32(ctx, EnumValue(previousInChain.trackType));
 
     return _trackCurveToString(ctx, previousInChain.curve);
 }
 
-DukValue ScTrackSegment::getMirrorElement() const
+JSValue ScTrackSegment::getMirrorElement(JSContext* ctx, JSValue thisVal)
 {
-    const auto ctx = GetContext()->GetScriptEngine().GetContext();
-    const auto& ted = GetTrackElementDescriptor(_type);
+    const auto* data = GetTrackSegmentData(thisVal);
+    const auto& ted = GetTrackElementDescriptor(data->_type);
     if (ted.mirrorElement == TrackElemType::none)
-        return ToDuk(ctx, nullptr);
-    return ToDuk<int32_t>(ctx, EnumValue(ted.mirrorElement));
+        return JS_NULL;
+    return JS_NewInt32(ctx, EnumValue(ted.mirrorElement));
 }
 
-DukValue ScTrackSegment::getAlternativeElement() const
+JSValue ScTrackSegment::getAlternativeElement(JSContext* ctx, JSValue thisVal)
 {
-    const auto ctx = GetContext()->GetScriptEngine().GetContext();
-    const auto& ted = GetTrackElementDescriptor(_type);
+    const auto* data = GetTrackSegmentData(thisVal);
+    const auto& ted = GetTrackElementDescriptor(data->_type);
     if (ted.alternativeType == TrackElemType::none)
-        return ToDuk(ctx, nullptr);
-    return ToDuk<int32_t>(ctx, EnumValue(ted.alternativeType));
+        return JS_NULL;
+    return JS_NewInt32(ctx, EnumValue(ted.alternativeType));
 }
 
-int32_t ScTrackSegment::getPriceModifier() const
+JSValue ScTrackSegment::getPriceModifier(JSContext* ctx, JSValue thisVal)
 {
-    const auto& ted = GetTrackElementDescriptor(_type);
-
-    return ted.priceModifier;
+    const auto* data = GetTrackSegmentData(thisVal);
+    const auto& ted = GetTrackElementDescriptor(data->_type);
+    return JS_NewInt32(ctx, ted.priceModifier);
 }
 
 template<TrackElementFlag flag>
-bool ScTrackSegment::getTrackFlag() const
+JSValue ScTrackSegment::getTrackFlag(JSContext* ctx, JSValue thisVal)
 {
-    const auto& ted = GetTrackElementDescriptor(_type);
-
-    return ted.flags.has(flag);
+    const auto* data = GetTrackSegmentData(thisVal);
+    const auto& ted = GetTrackElementDescriptor(data->_type);
+    return JS_NewBool(ctx, ted.flags.has(flag));
 }
 
-int32_t ScTrackSegment::getTrackGroup() const
+JSValue ScTrackSegment::getTrackGroup(JSContext* ctx, JSValue thisVal)
 {
-    const auto& ted = GetTrackElementDescriptor(_type);
-
-    return EnumValue(ted.definition.group);
+    const auto* data = GetTrackSegmentData(thisVal);
+    const auto& ted = GetTrackElementDescriptor(data->_type);
+    return JS_NewInt32(ctx, EnumValue(ted.definition.group));
 }
 
-std::string ScTrackSegment::getTrackCurvature() const
+JSValue ScTrackSegment::getTrackCurvature(JSContext* ctx, JSValue thisVal)
 {
-    const auto& ted = GetTrackElementDescriptor(_type);
+    const auto* data = GetTrackSegmentData(thisVal);
+    const auto& ted = GetTrackElementDescriptor(data->_type);
+    std::string curvature;
     if (ted.flags.has(TrackElementFlag::turnLeft))
-        return "left";
-    if (ted.flags.has(TrackElementFlag::turnRight))
-        return "right";
-    return "straight";
+        curvature = "left";
+    else if (ted.flags.has(TrackElementFlag::turnRight))
+        curvature = "right";
+    else
+        curvature = "straight";
+    return JSFromStdString(ctx, curvature);
 }
 
-std::string ScTrackSegment::getTrackPitchDirection() const
+JSValue ScTrackSegment::getTrackPitchDirection(JSContext* ctx, JSValue thisVal)
 {
-    const auto& ted = GetTrackElementDescriptor(_type);
+    const auto* data = GetTrackSegmentData(thisVal);
+    const auto& ted = GetTrackElementDescriptor(data->_type);
+    std::string pitch;
     if (ted.flags.has(TrackElementFlag::up))
-        return "up";
-    if (ted.flags.has(TrackElementFlag::down))
-        return "down";
-    return "flat";
+        pitch = "up";
+    else if (ted.flags.has(TrackElementFlag::down))
+        pitch = "down";
+    else
+        pitch = "flat";
+    return JSFromStdString(ctx, pitch);
 }
 
 #endif

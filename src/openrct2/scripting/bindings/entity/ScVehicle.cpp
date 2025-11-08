@@ -567,8 +567,8 @@ namespace OpenRCT2::Scripting
         {
             GForces gForces = vehicle->GetGForces();
             JSValue obj = JS_NewObject(ctx);
-            JS_SetPropertyStr(ctx, obj, "lateralG", JS_NewInt32(ctx, gForces.LateralG));
-            JS_SetPropertyStr(ctx, obj, "verticalG", JS_NewInt32(ctx, gForces.VerticalG));
+            JS_SetPropertyStr(ctx, obj, "lateralG", JS_NewInt32(ctx, gForces.lateralG));
+            JS_SetPropertyStr(ctx, obj, "verticalG", JS_NewInt32(ctx, gForces.verticalG));
             return obj;
         }
         return JS_NULL;

@@ -357,6 +357,20 @@ namespace OpenRCT2::Scripting
         return result;
     }
 
+    inline CoordsXYZD JSToCoordsXYZD(JSContext* ctx, JSValue obj)
+    {
+        CoordsXYZD result;
+        if (JS_IsObject(obj))
+        {
+            result = CoordsXYZD(JSToCoordsXYZ(ctx, obj), AsOrDefault(ctx, obj, "direction", 0));
+        }
+        else
+        {
+            result.SetNull();
+        }
+        return result;
+    }
+
     inline JSValue ToJSValue(JSContext* ctx, uint8_t val)
     {
         return JS_NewInt32(ctx, val);
@@ -405,6 +419,18 @@ namespace OpenRCT2::Scripting
         JS_SetPropertyStr(ctx, obj, "x", JS_NewInt32(ctx, value.x));
         JS_SetPropertyStr(ctx, obj, "y", JS_NewInt32(ctx, value.y));
         JS_SetPropertyStr(ctx, obj, "z", JS_NewInt32(ctx, value.z));
+        return obj;
+    }
+
+    inline JSValue ToJSValue(JSContext* ctx, const CoordsXYZD& value)
+    {
+        if (value.IsNull())
+        {
+            return JS_NULL;
+        }
+
+        JSValue obj = ToJSValue(ctx, static_cast<const CoordsXYZ&>(value));
+        JS_SetPropertyStr(ctx, obj, "direction", JS_NewUint32(ctx, value.direction));
         return obj;
     }
 

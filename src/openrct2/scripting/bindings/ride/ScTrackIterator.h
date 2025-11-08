@@ -9,37 +9,43 @@
 
 #pragma once
 
-#ifdef ENABLE_SCRIPTING
+#ifdef ENABLE_SCRIPTING_REFACTOR
 
     #include "../../../Identifiers.h"
-    #include "../../Duktape.hpp"
+    #include "../../ScriptEngine.h"
 
     #include <cstdint>
-    #include <memory>
 
 namespace OpenRCT2::Scripting
 {
-    class ScTrackIterator
+    class ScTrackIterator;
+    extern ScTrackIterator gScTrackIterator;
+
+    class ScTrackIterator final : public ScBase
     {
     private:
-        CoordsXYZD _position;
-        TrackElemType _type;
-        [[maybe_unused]] RideId _ride;
+        struct TrackIteratorData
+        {
+            CoordsXYZD _position;
+            TrackElemType _type;
+        };
 
     public:
-        static std::shared_ptr<ScTrackIterator> FromElement(const CoordsXY& position, int32_t elementIndex);
-        static void Register(duk_context* ctx);
-
-        ScTrackIterator(const CoordsXYZD& position, TrackElemType type, RideId ride);
+        static JSValue FromElement(JSContext* ctx, const CoordsXY& position, int32_t elementIndex);
+        void Register(JSContext* ctx);
+        JSValue New(JSContext* ctx, const CoordsXYZD& position, TrackElemType type);
 
     private:
-        DukValue position_get() const;
-        DukValue segment_get() const;
-        DukValue previousPosition_get() const;
-        DukValue nextPosition_get() const;
+        static void Finalize(JSRuntime* rt, JSValue thisVal);
+        static TrackIteratorData* GetTrackIteratorData(JSValue thisVal);
 
-        bool previous();
-        bool next();
+        static JSValue position_get(JSContext* ctx, JSValue thisVal);
+        static JSValue segment_get(JSContext* ctx, JSValue thisVal);
+        static JSValue previousPosition_get(JSContext* ctx, JSValue thisVal);
+        static JSValue nextPosition_get(JSContext* ctx, JSValue thisVal);
+
+        static JSValue previous(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv);
+        static JSValue next(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv);
     };
 
 } // namespace OpenRCT2::Scripting
