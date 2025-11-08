@@ -481,6 +481,7 @@ ScInstalledObject Scripting::gScInstalledObject;
 ScLargeSceneryObjectTile Scripting::gScLargeSceneryObjectTile;
 ScObject Scripting::gScObject;
 ScPark Scripting::gScPark;
+ScParkMessage Scripting::gScParkMessage;
 ScPlayer Scripting::gScPlayer;
 ScPlayerGroup Scripting::gScPlayerGroup;
 ScProfiler Scripting::gScProfiler;
@@ -517,7 +518,7 @@ void ScriptEngine::RegisterClasses(JSContext* ctx)
     gScObject.Register(ctx);
     gScLargeSceneryObjectTile.Register(ctx);
     gScPark.Register(ctx);
-    // ScParkMessage::Register(ctx);
+    gScParkMessage.Register(ctx);
     gScPlayer.Register(ctx);
     gScPlayerGroup.Register(ctx);
     gScProfiler.Register(ctx);
