@@ -70,9 +70,9 @@ set(TITLE_SEQUENCE_VERSION "0.4.26")
 set(TITLE_SEQUENCE_URL     "https://github.com/OpenRCT2/title-sequences/releases/download/v${TITLE_SEQUENCE_VERSION}/title-sequences.zip")
 set(TITLE_SEQUENCE_SHA256  "dabb9787b1576342fca4dd9f64b3f8cfa04a7e6ce9c2bb9610f47b762905c858")
 
-set(OBJECTS_VERSION "1.7.3")
+set(OBJECTS_VERSION "1.7.4")
 set(OBJECTS_URL     "https://github.com/OpenRCT2/objects/releases/download/v${OBJECTS_VERSION}/objects.zip")
-set(OBJECTS_SHA256  "c81029264578706ed1db88665e12a70a583e71dc4d3eb4db262535d2f0589eab")
+set(OBJECTS_SHA256  "9fa6365450cd7fe4e71d5278d67a10e6526fcd0bb1ec60120dfc66a189ac8911")
 
 set(OPENSFX_VERSION "1.0.6")
 set(OPENSFX_URL     "https://github.com/OpenRCT2/OpenSoundEffects/releases/download/v${OPENSFX_VERSION}/opensound.zip")
