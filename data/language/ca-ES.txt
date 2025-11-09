@@ -567,7 +567,7 @@ STR_1169    :(Cap)
 STR_1170    :{STRING}
 STR_1171    :{RED}Tancada
 STR_1172    :{YELLOW}{STRINGID}
-STR_1173    :Construir camins i cues
+STR_1173    :Construeix camins i cues
 STR_1174    :Hi ha un cartell pel mig.
 STR_1175    :Això no es pot construir a sobre d’un pendent.
 STR_1176    :Aquest camí aquí no es pot construir…
@@ -3845,3 +3845,6 @@ STR_7001    :Nom de l’atracció
 STR_7002    :{STRINGID} {STRINGID}
 STR_7003    :El fitxer d’àudio «{STRING}» està truncat. Mostra esperada de {INT32}, però només n’hi ha {INT32}. Considereu reinstal·lar el RCT2.
 STR_7004    :Força que es torni a dibuixar
+STR_7005    :Dibuixa una àrea de camí
+STR_7006    :Dibuixa una vora al voltant de les imatges dels botons
+STR_7007    :Tipus d’atracció
