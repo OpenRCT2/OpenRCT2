@@ -8,6 +8,12 @@
 - Fix: [#25467] Paths are not connected together correctly in track design previews.
 - Fix: [#25476] When both RCT2 and RCT1 are present, autodetection fails.
 - Fix: [#25480] The mini track design preview and price are misaligned in Enlarged UI mode.
+- Fix: [objects#401] Round tunnels on down slopes glitch.
+- Fix: [objects#404] Wooden Wild Mine cars incorrectly allow setting a third remap colour.
+- Fix: [objects#408] Australian fountain sets have confusing naming.
+- Fix: [objects#409] LIM Launched Coaster trains incorrectly have a 10% intensity modifier set (original bug).
+- Fix: [objects#410] Large scenery from the Wacky Worlds Africa theming have incorrect previews when using specific versions of the RCT2 base game.
+- Fix: [objects#415] Penguin bobsleigh trains show incorrect sprites on the 12° down slope (original bug).
 
 0.4.28 (2025-11-01)
 ------------------------------------------------------------------------
