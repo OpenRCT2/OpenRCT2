@@ -1892,7 +1892,7 @@ static void TrackUp60ToFlatLongBase(
     }
     else if (trackSequence == 3 && (direction == 1 || direction == 2))
     {
-        PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
     }
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     static constexpr std::array generalSupportHeights = { 80, 80, 56, 40 };

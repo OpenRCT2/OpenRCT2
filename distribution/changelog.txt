@@ -10,6 +10,7 @@
 - Fix: [#25476] When both RCT2 and RCT1 are present, autodetection fails.
 - Fix: [#25480] The mini track design preview and price are misaligned in Enlarged UI mode.
 - Fix: [#25488] Crash in headless mode.
+- Fix: [#25494] The Go-Karts steep to flat track does not draw correctly in the flat side tunnel.
 - Fix: [objects#401] Round tunnels on down slopes glitch.
 - Fix: [objects#404] Wooden Wild Mine cars incorrectly allow setting a third remap colour.
 - Fix: [objects#408] Australian fountain sets have confusing naming.
