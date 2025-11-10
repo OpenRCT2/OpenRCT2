@@ -117,8 +117,11 @@ namespace OpenRCT2::TrackMetaData
         StringId description;
         TrackCoordinates coordinates;
 
+        // Used to estimate the ride length for number of powered vehicle trains
         uint8_t pieceLength;
+        // Piece the ride construction window automatically selects next
         TrackCurveChain curveChain;
+        // Track element to build when building "covered"/"splashdown" track
         OpenRCT2::TrackElemType alternativeType;
         // Price Modifier should be used as in the following calculation:
         // (RideTrackPrice * TED::PriceModifier) / 65536

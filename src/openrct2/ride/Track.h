@@ -196,7 +196,15 @@ struct SequenceClearance
     uint8_t flags{};
 };
 
-/* size 0x0A */
+/** TrackCoordinates
+ * rotationBegin: Start direction of the track piece; 0 (cardinal) or 4 (45 degrees clockwise)
+ * rotationEnd: End direction of the track peice, measured clockwise
+ * zBegin: how high above the base level of the lowest track block the spline starts
+ * zEnd: how high above the base level of the lowest track block the spline ends
+ * x: tile offset to the end track block; negative is along the original direction of travel
+ * Next track piece is found by moving one tile after end of the track piece, so vertical track has an x value of 32
+ * y: tile offset to the end track block; negative is to the left of the original direction of travel
+ */
 struct TrackCoordinates
 {
     int8_t rotationBegin; // 0x00
@@ -637,9 +645,10 @@ enum class SequenceFlag : uint8_t
     entranceConnectionSE, // connect to right
     entranceConnectionSW, // connect to back
     entranceConnectionNW, // connect to left
-    trackOrigin,          // 0x10
-    connectsToPath,       // 0x20
-    disallowDoors,        // 0x40
+    trackOrigin,
+    connectsToPath,       // The sides of this sequence block flagged with entrance connections can connect directly to paths
+    disallowDoors,        // Doors cannot be built on any side of this track element (only valid on first sequence of track element)
+    hasHeightMarker,      // Displays a height marker on this sequence block
 };
 
 enum
