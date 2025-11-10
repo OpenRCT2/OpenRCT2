@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../core/BitSet.hpp"
 #include "../paint/support/MetalSupports.h"
 #include "../paint/support/WoodenSupports.h"
 #include "../paint/tile_element/Segment.h"
@@ -19,6 +20,8 @@ using namespace OpenRCT2;
 namespace OpenRCT2::TrackMetaData
 {
     constexpr uint8_t kMaxSequencesPerPiece = 16;
+
+    using TrackPieceSequenceFlag = BitSet<kMaxSequencesPerPiece>;
 
     // 0x009968BB, 0x009968BC, 0x009968BD, 0x009968BF, 0x009968C1, 0x009968C3
 
@@ -119,7 +122,7 @@ namespace OpenRCT2::TrackMetaData
         // (RideTrackPrice * TED::PriceModifier) / 65536
         uint32_t priceModifier;
         OpenRCT2::TrackElemType mirrorElement;
-        uint32_t heightMarkerPositions;
+        TrackPieceSequenceFlag heightMarkerPositions;
         uint32_t flags;
 
         uint8_t numSequences{};
