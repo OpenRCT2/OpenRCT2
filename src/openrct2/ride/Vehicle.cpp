@@ -4107,13 +4107,9 @@ void Vehicle::UpdateFerrisWheelRotating()
         ferris_wheel_var_1 = curFerrisWheelVar0;
     }
 
-    uint8_t rotation = flatRideAnimationFrame;
-    if (curRide->mode == RideMode::forwardRotation)
-        rotation++;
-    else
-        rotation--;
-
-    rotation &= 0x7F;
+    auto rotation = flatRideAnimationFrame;
+    rotation += (curRide->mode == RideMode::forwardRotation) ? 1 : -1;
+    rotation %= 128;
     flatRideAnimationFrame = rotation;
 
     if (rotation == sub_state)
@@ -4121,12 +4117,9 @@ void Vehicle::UpdateFerrisWheelRotating()
 
     Invalidate();
 
-    uint8_t subState = sub_state;
-    if (curRide->mode == RideMode::forwardRotation)
-        subState++;
-    else
-        subState--;
-    subState &= 0x7F;
+    auto subState = sub_state;
+    subState += (curRide->mode == RideMode::forwardRotation) ? 1 : -1;
+    subState %= 128;
 
     if (subState == flatRideAnimationFrame)
     {
@@ -4149,11 +4142,8 @@ void Vehicle::UpdateFerrisWheelRotating()
         return;
 
     subState = sub_state;
-    if (curRide->mode == RideMode::forwardRotation)
-        subState += 8;
-    else
-        subState -= 8;
-    subState &= 0x7F;
+    subState += (curRide->mode == RideMode::forwardRotation) ? 8 : -8;
+    subState %= 128;
 
     if (subState != flatRideAnimationFrame)
         return;
