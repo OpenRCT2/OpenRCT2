@@ -7,16 +7,16 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifdef ENABLE_SCRIPTING
+#ifdef ENABLE_SCRIPTING_REFACTOR
 
     #include "ScResearch.hpp"
 
     #include "../../../Context.h"
     #include "../../../GameState.h"
+    #include "../../../core/EnumMap.hpp"
     #include "../../../core/String.hpp"
     #include "../../../management/Research.h"
     #include "../../../ride/RideData.h"
-    #include "../../Duktape.hpp"
     #include "../../ScriptEngine.h"
     #include "../object/ScObject.hpp"
 
@@ -24,7 +24,7 @@ using namespace OpenRCT2;
 
 namespace OpenRCT2::Scripting
 {
-    static const DukEnumMap<uint8_t> ResearchStageMap(
+    static const EnumMap<uint8_t> ResearchStageMap(
         {
             { "initial_research", RESEARCH_STAGE_INITIAL_RESEARCH },
             { "designing", RESEARCH_STAGE_DESIGNING },
@@ -33,7 +33,7 @@ namespace OpenRCT2::Scripting
             { "finished_all", RESEARCH_STAGE_FINISHED_ALL },
         });
 
-    static const DukEnumMap<ResearchCategory> ResearchCategoryMap(
+    static const EnumMap<ResearchCategory> ResearchCategoryMap(
         {
             { "transport", ResearchCategory::transport },
             { "gentle", ResearchCategory::gentle },
@@ -44,32 +44,31 @@ namespace OpenRCT2::Scripting
             { "scenery", ResearchCategory::sceneryGroup },
         });
 
-    static const DukEnumMap<Research::EntryType> ResearchEntryTypeMap(
+    static const EnumMap<Research::EntryType> ResearchEntryTypeMap(
         {
             { "ride", Research::EntryType::ride },
             { "scenery", Research::EntryType::scenery },
         });
 
-    template<>
-    inline DukValue ToDuk(duk_context* ctx, const ResearchItem& value)
+    static inline JSValue ResearchItemToJSValue(JSContext* ctx, const ResearchItem& value)
     {
-        DukObject obj(ctx);
-        obj.Set("category", ResearchCategoryMap[value.category]);
-        obj.Set("type", ResearchEntryTypeMap[value.type]);
+        JSValue obj = JS_NewObject(ctx);
+        JS_SetPropertyStr(ctx, obj, "category", JSFromStdString(ctx, ResearchCategoryMap[value.category]));
+        JS_SetPropertyStr(ctx, obj, "type", JSFromStdString(ctx, ResearchEntryTypeMap[value.type]));
         if (value.type == Research::EntryType::ride)
         {
-            obj.Set("rideType", value.baseRideType);
+            JS_SetPropertyStr(ctx, obj, "rideType", JS_NewUint32(ctx, value.baseRideType));
         }
-        obj.Set("object", value.entryIndex);
-        return obj.Take();
+        JS_SetPropertyStr(ctx, obj, "object", JS_NewUint32(ctx, value.entryIndex));
+        return obj;
     }
 
-    template<>
-    Research::EntryType inline FromDuk(const DukValue& d)
+    static inline Research::EntryType GetResearchType(JSContext* ctx, JSValue value)
     {
-        if (d.type() == DukValue::STRING)
+        auto type = JSToOptionalStdString(ctx, value, "type");
+        if (type.has_value())
         {
-            auto it = ResearchEntryTypeMap.find(d.as_string());
+            auto it = ResearchEntryTypeMap.find(type.value());
             if (it != ResearchEntryTypeMap.end())
             {
                 return it->second;
@@ -78,198 +77,219 @@ namespace OpenRCT2::Scripting
         return Research::EntryType::scenery;
     }
 
-    template<>
-    ResearchItem inline FromDuk(const DukValue& d)
+    static inline ResearchItem GetResearchItem(JSContext* ctx, JSValue value)
     {
         ResearchItem result;
         result.baseRideType = 0;
         result.category = {}; // We ignore category because it will be derived from ride type
         result.flags = 0;
-        result.type = FromDuk<Research::EntryType>(d["type"]);
-        auto baseRideType = d["rideType"];
-        if (baseRideType.type() == DukValue::NUMBER)
-            result.baseRideType = baseRideType.as_uint();
-        result.entryIndex = d["object"].as_uint();
+        result.type = GetResearchType(ctx, value);
+        result.entryIndex = JSToUint(ctx, value, "object");
+
+        auto rideType = JSToOptionalUint(ctx, value, "rideType");
+        if (rideType.has_value())
+        {
+            result.baseRideType = static_cast<uint8_t>(rideType.value());
+        }
         return result;
     }
 
-    ScResearch::ScResearch(duk_context* ctx)
-        : _context(ctx)
+    JSValue ScResearch::funding_get(JSContext* ctx, JSValue thisVal)
     {
+        return JS_NewUint32(ctx, getGameState().researchFundingLevel);
     }
 
-    uint8_t ScResearch::funding_get() const
+    JSValue ScResearch::funding_set(JSContext* ctx, JSValue thisVal, JSValue value)
     {
-        return getGameState().researchFundingLevel;
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        JS_UNPACK_UINT32(val, ctx, value);
+        getGameState().researchFundingLevel = std::clamp<uint8_t>(
+            static_cast<uint8_t>(val), RESEARCH_FUNDING_NONE, RESEARCH_FUNDING_MAXIMUM);
+        return JS_UNDEFINED;
     }
 
-    void ScResearch::funding_set(uint8_t value)
+    JSValue ScResearch::priorities_get(JSContext* ctx, JSValue thisVal)
     {
-        ThrowIfGameStateNotMutable();
-        getGameState().researchFundingLevel = std::clamp<uint8_t>(value, RESEARCH_FUNDING_NONE, RESEARCH_FUNDING_MAXIMUM);
-    }
-
-    std::vector<std::string> ScResearch::priorities_get() const
-    {
-        std::vector<std::string> result;
+        JSValue result = JS_NewArray(ctx);
+        int64_t index = 0;
         for (auto i = EnumValue(ResearchCategory::transport); i <= EnumValue(ResearchCategory::sceneryGroup); i++)
         {
             auto category = static_cast<ResearchCategory>(i);
             if (getGameState().researchPriorities & EnumToFlag(category))
             {
-                result.emplace_back(ResearchCategoryMap[category]);
+                JS_SetPropertyInt64(ctx, result, index++, JSFromStdString(ctx, ResearchCategoryMap[category]));
             }
         }
         return result;
     }
 
-    void ScResearch::priorities_set(const std::vector<std::string>& values)
+    JSValue ScResearch::priorities_set(JSContext* ctx, JSValue thisVal, JSValue value)
     {
-        ThrowIfGameStateNotMutable();
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        JS_UNPACK_ARRAY(values, ctx, value);
 
         auto priorities = 0;
-        for (const auto& value : values)
-        {
-            auto category = ResearchCategoryMap.TryGet(value);
+        JSIterateArray(ctx, value, [&values, &priorities](JSContext* ctx2, JSValue val) {
+            auto item = JSToStdString(ctx2, val);
+            auto category = ResearchCategoryMap.TryGet(item);
             if (category)
             {
                 priorities |= EnumToFlag(*category);
             }
-        }
+        });
+
         getGameState().researchPriorities = priorities;
+        return JS_UNDEFINED;
     }
 
-    std::string ScResearch::stage_get() const
+    JSValue ScResearch::stage_get(JSContext* ctx, JSValue thisVal)
     {
-        return std::string(ResearchStageMap[getGameState().researchProgressStage]);
+        return JSFromStdString(ctx, ResearchStageMap[getGameState().researchProgressStage]);
     }
 
-    void ScResearch::stage_set(const std::string& value)
+    JSValue ScResearch::stage_set(JSContext* ctx, JSValue thisVal, JSValue value)
     {
-        ThrowIfGameStateNotMutable();
-        auto it = ResearchStageMap.find(value);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        JS_UNPACK_STR(stage, ctx, value);
+        auto it = ResearchStageMap.find(stage);
         if (it != ResearchStageMap.end())
         {
             getGameState().researchProgressStage = it->second;
         }
+        return JS_UNDEFINED;
     }
 
-    uint16_t ScResearch::progress_get() const
+    JSValue ScResearch::progress_get(JSContext* ctx, JSValue thisVal)
     {
-        return getGameState().researchProgress;
+        return JS_NewUint32(ctx, getGameState().researchProgress);
     }
 
-    void ScResearch::progress_set(uint16_t value)
+    JSValue ScResearch::progress_set(JSContext* ctx, JSValue thisVal, JSValue value)
     {
-        ThrowIfGameStateNotMutable();
-        getGameState().researchProgress = value;
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        JS_UNPACK_UINT32(progress, ctx, value);
+        getGameState().researchProgress = progress;
+        return JS_UNDEFINED;
     }
 
-    DukValue ScResearch::expectedMonth_get() const
-    {
-        const auto& gameState = getGameState();
-        if (gameState.researchProgressStage == RESEARCH_STAGE_INITIAL_RESEARCH || gameState.researchExpectedDay == 255)
-            return ToDuk(_context, nullptr);
-        return ToDuk(_context, gameState.researchExpectedMonth);
-    }
-
-    DukValue ScResearch::expectedDay_get() const
+    JSValue ScResearch::expectedMonth_get(JSContext* ctx, JSValue thisVal)
     {
         const auto& gameState = getGameState();
         if (gameState.researchProgressStage == RESEARCH_STAGE_INITIAL_RESEARCH || gameState.researchExpectedDay == 255)
-            return ToDuk(_context, nullptr);
-        return ToDuk(_context, gameState.researchExpectedDay + 1);
+            return JS_NULL;
+        return JS_NewUint32(ctx, gameState.researchExpectedMonth);
     }
 
-    DukValue ScResearch::lastResearchedItem_get() const
+    JSValue ScResearch::expectedDay_get(JSContext* ctx, JSValue thisVal)
+    {
+        const auto& gameState = getGameState();
+        if (gameState.researchProgressStage == RESEARCH_STAGE_INITIAL_RESEARCH || gameState.researchExpectedDay == 255)
+            return JS_NULL;
+        return JS_NewUint32(ctx, gameState.researchExpectedDay + 1);
+    }
+
+    JSValue ScResearch::lastResearchedItem_get(JSContext* ctx, JSValue thisVal)
     {
         const auto& gameState = getGameState();
         if (!gameState.researchLastItem)
-            return ToDuk(_context, nullptr);
-        return ToDuk(_context, *gameState.researchLastItem);
+            return JS_NULL;
+        return ResearchItemToJSValue(ctx, *gameState.researchLastItem);
     }
 
-    DukValue ScResearch::expectedItem_get() const
+    JSValue ScResearch::expectedItem_get(JSContext* ctx, JSValue thisVal)
     {
         const auto& gameState = getGameState();
         if (gameState.researchProgressStage == RESEARCH_STAGE_INITIAL_RESEARCH || !gameState.researchNextItem)
-            return ToDuk(_context, nullptr);
-        return ToDuk(_context, *gameState.researchNextItem);
+            return JS_NULL;
+        return ResearchItemToJSValue(ctx, *gameState.researchNextItem);
     }
 
-    std::vector<DukValue> ScResearch::inventedItems_get() const
+    JSValue ScResearch::inventedItems_get(JSContext* ctx, JSValue thisVal)
     {
-        std::vector<DukValue> result;
+        JSValue result = JS_NewArray(ctx);
+        int64_t index = 0;
         for (auto& item : getGameState().researchItemsInvented)
         {
-            result.push_back(ToDuk(_context, item));
+            JS_SetPropertyInt64(ctx, result, index++, ResearchItemToJSValue(ctx, item));
         }
         return result;
     }
 
-    void ScResearch::inventedItems_set(const std::vector<DukValue>& value)
+    JSValue ScResearch::inventedItems_set(JSContext* ctx, JSValue thisVal, JSValue value)
     {
-        ThrowIfGameStateNotMutable();
-        auto list = ConvertResearchList(value);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        JS_UNPACK_ARRAY(array, ctx, value);
+        auto list = ConvertResearchList(ctx, array);
         getGameState().researchItemsInvented = std::move(list);
         ResearchFix();
+        return JS_UNDEFINED;
     }
 
-    std::vector<DukValue> ScResearch::uninventedItems_get() const
+    JSValue ScResearch::uninventedItems_get(JSContext* ctx, JSValue thisVal)
     {
-        std::vector<DukValue> result;
+        JSValue result = JS_NewArray(ctx);
+        int64_t index = 0;
         for (auto& item : getGameState().researchItemsUninvented)
         {
-            result.push_back(ToDuk(_context, item));
+            JS_SetPropertyInt64(ctx, result, index++, ResearchItemToJSValue(ctx, item));
         }
         return result;
     }
 
-    void ScResearch::uninventedItems_set(const std::vector<DukValue>& value)
+    JSValue ScResearch::uninventedItems_set(JSContext* ctx, JSValue thisVal, JSValue value)
     {
-        ThrowIfGameStateNotMutable();
-        auto list = ConvertResearchList(value);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        JS_UNPACK_ARRAY(array, ctx, value);
+        auto list = ConvertResearchList(ctx, array);
         getGameState().researchItemsUninvented = std::move(list);
         ResearchFix();
+        return JS_UNDEFINED;
     }
 
-    bool ScResearch::isObjectResearched(const std::string& typez, ObjectEntryIndex index)
+    JSValue ScResearch::isObjectResearched(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
     {
-        auto result = false;
+        JS_UNPACK_STR(typez, ctx, argv[0]);
+        JS_UNPACK_UINT32(index, ctx, argv[1]);
+
         auto type = objectTypeFromString(typez);
-        if (type != ObjectType::none)
+        if (type == ObjectType::none)
         {
-            result = ResearchIsInvented(type, index);
+            return JS_ThrowPlainError(ctx, "Invalid object type.");
         }
-        else
-        {
-            duk_error(_context, DUK_ERR_ERROR, "Invalid object type.");
-        }
-        return result;
+
+        auto result = ResearchIsInvented(type, static_cast<ObjectEntryIndex>(index));
+        return JS_NewBool(ctx, result);
     }
 
-    void ScResearch::Register(duk_context* ctx)
+    void ScResearch::Register(JSContext* ctx)
     {
-        dukglue_register_property(ctx, &ScResearch::funding_get, &ScResearch::funding_set, "funding");
-        dukglue_register_property(ctx, &ScResearch::priorities_get, &ScResearch::priorities_set, "priorities");
-        dukglue_register_property(ctx, &ScResearch::stage_get, &ScResearch::stage_set, "stage");
-        dukglue_register_property(ctx, &ScResearch::progress_get, &ScResearch::progress_set, "progress");
-        dukglue_register_property(ctx, &ScResearch::expectedMonth_get, nullptr, "expectedMonth");
-        dukglue_register_property(ctx, &ScResearch::expectedDay_get, nullptr, "expectedDay");
-        dukglue_register_property(ctx, &ScResearch::lastResearchedItem_get, nullptr, "lastResearchedItem");
-        dukglue_register_property(ctx, &ScResearch::expectedItem_get, nullptr, "expectedItem");
-        dukglue_register_property(ctx, &ScResearch::inventedItems_get, &ScResearch::inventedItems_set, "inventedItems");
-        dukglue_register_property(ctx, &ScResearch::uninventedItems_get, &ScResearch::uninventedItems_set, "uninventedItems");
-        dukglue_register_method(ctx, &ScResearch::isObjectResearched, "isObjectResearched");
+        RegisterBaseStr(ctx, "Research");
     }
 
-    std::vector<ResearchItem> ScResearch::ConvertResearchList(const std::vector<DukValue>& value)
+    JSValue ScResearch::New(JSContext* ctx)
+    {
+        static constexpr JSCFunctionListEntry funcs[] = {
+            JS_CGETSET_DEF("funding", ScResearch::funding_get, ScResearch::funding_set),
+            JS_CGETSET_DEF("priorities", ScResearch::priorities_get, ScResearch::priorities_set),
+            JS_CGETSET_DEF("stage", ScResearch::stage_get, ScResearch::stage_set),
+            JS_CGETSET_DEF("progress", ScResearch::progress_get, ScResearch::progress_set),
+            JS_CGETSET_DEF("expectedMonth", ScResearch::expectedMonth_get, nullptr),
+            JS_CGETSET_DEF("expectedDay", ScResearch::expectedDay_get, nullptr),
+            JS_CGETSET_DEF("lastResearchedItem", ScResearch::lastResearchedItem_get, nullptr),
+            JS_CGETSET_DEF("expectedItem", ScResearch::expectedItem_get, nullptr),
+            JS_CGETSET_DEF("inventedItems", ScResearch::inventedItems_get, ScResearch::inventedItems_set),
+            JS_CGETSET_DEF("uninventedItems", ScResearch::uninventedItems_get, ScResearch::uninventedItems_set),
+            JS_CFUNC_DEF("isObjectResearched", 2, ScResearch::isObjectResearched),
+        };
+        return MakeWithOpaque(ctx, funcs, nullptr);
+    }
+
+    std::vector<ResearchItem> ScResearch::ConvertResearchList(JSContext* ctx, JSValue value)
     {
         auto& objManager = GetContext()->GetObjectManager();
         std::vector<ResearchItem> result;
-        for (auto& item : value)
-        {
-            auto researchItem = FromDuk<ResearchItem>(item);
+        JSIterateArray(ctx, value, [&result, &objManager](JSContext* ctx2, JSValue val) {
+            auto researchItem = GetResearchItem(ctx2, val);
             researchItem.flags = 0;
             if (researchItem.type == Research::EntryType::ride)
             {
@@ -290,7 +310,7 @@ namespace OpenRCT2::Scripting
                     result.push_back(researchItem);
                 }
             }
-        }
+        });
         return result;
     }
 } // namespace OpenRCT2::Scripting

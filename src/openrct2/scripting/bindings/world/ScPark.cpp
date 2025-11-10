@@ -352,10 +352,7 @@ namespace OpenRCT2::Scripting
 
     JSValue ScPark::research_get(JSContext* ctx, JSValue thisVal)
     {
-        // TODO (mber) pending ScResearch conversion
-        JS_ThrowInternalError(ctx, "not implemented yet");
-        return JS_EXCEPTION;
-        // return std::make_shared<ScResearch>(_context);
+        return gScResearch.New(ctx);
     }
 
     JSValue ScPark::messages_get(JSContext* ctx, JSValue thisVal)

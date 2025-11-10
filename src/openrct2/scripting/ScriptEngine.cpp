@@ -485,6 +485,7 @@ ScParkMessage Scripting::gScParkMessage;
 ScPlayer Scripting::gScPlayer;
 ScPlayerGroup Scripting::gScPlayerGroup;
 ScProfiler Scripting::gScProfiler;
+ScResearch Scripting::gScResearch;
 ScRide Scripting::gScRide;
 ScRideStation Scripting::gScRideStation;
 ScRideObjectVehicle Scripting::gScRideObjectVehicle;
@@ -522,7 +523,7 @@ void ScriptEngine::RegisterClasses(JSContext* ctx)
     gScPlayer.Register(ctx);
     gScPlayerGroup.Register(ctx);
     gScProfiler.Register(ctx);
-    // ScResearch::Register(ctx);
+    gScResearch.Register(ctx);
     gScRide.Register(ctx);
     gScRideStation.Register(ctx);
     gScRideObjectVehicle.Register(ctx);
