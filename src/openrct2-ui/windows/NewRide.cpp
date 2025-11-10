@@ -56,8 +56,10 @@ namespace OpenRCT2::Ui::Windows
     static constexpr int32_t kMaxRowCount = 7;
     static constexpr int32_t kHorizontalPadding = 21;
     static constexpr int32_t kVerticalPadding = 150;
-    static constexpr ScreenSize kWindowSize = { (kMinColCount * kScrollItemSize) + kHorizontalPadding, (kMinRowCount * kScrollItemSize) + kVerticalPadding };
-    static constexpr ScreenSize kWindowMaxSize = { (kMaxColCount * kScrollItemSize) + kHorizontalPadding, (kMaxRowCount * kScrollItemSize) + kVerticalPadding };
+    static constexpr ScreenSize kWindowSize = { (kMinColCount * kScrollItemSize) + kHorizontalPadding,
+                                                (kMinRowCount * kScrollItemSize) + kVerticalPadding };
+    static constexpr ScreenSize kWindowMaxSize = { (kMaxColCount * kScrollItemSize) + kHorizontalPadding,
+                                                   (kMaxRowCount * kScrollItemSize) + kVerticalPadding };
 
 #pragma region Ride type view order
 
