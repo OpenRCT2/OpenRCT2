@@ -2449,7 +2449,7 @@ namespace OpenRCT2::TrackMetaData
         { 0 }, // TrackElemType::RightQuarterTurn1TileDown60
         { 0 }, // TrackElemType::Brakes
         { 0 }, // TrackElemType::Booster
-        { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 }, // Maze
+        {}, // Maze
         { 0, 6 }, // TrackElemType::LeftQuarterBankedHelixLargeUp
         { 0, 6 }, // TrackElemType::RightQuarterBankedHelixLargeUp
         { 0, 6 }, // TrackElemType::LeftQuarterBankedHelixLargeDown
@@ -2605,16 +2605,16 @@ namespace OpenRCT2::TrackMetaData
         { 0, 2 }, // TrackElemType::MultiDimFlatToDown90QuarterLoop
         { 0, 2 }, // TrackElemType::MultiDimInvertedUp90ToFlatQuarterLoop
         { 0 }, // TrackElemType::RotationControlToggle
-        { 0 }, // TrackElemType::FlatTrack1x4A
-        { 0 }, // TrackElemType::FlatTrack2x2
-        { 0 }, // TrackElemType::FlatTrack4x4
+        { 0, 2 }, // TrackElemType::FlatTrack1x4A
+        { 0, 3 }, // TrackElemType::FlatTrack2x2
+        { 0, 3, 12, 15 }, // TrackElemType::FlatTrack4x4
         { 0 }, // TrackElemType::FlatTrack2x4
-        { 0 }, // TrackElemType::FlatTrack1x5
+        { 2, 3 }, // TrackElemType::FlatTrack1x5
         { 0 }, // TrackElemType::FlatTrack1x1A
-        { 0 }, // TrackElemType::FlatTrack1x4B
-        { 0 }, // TrackElemType::FlatTrack1x1B
-        { 0 }, // TrackElemType::FlatTrack1x4C
-        { 0 }, // TrackElemType::FlatTrack3x3
+        { 0, 2 }, // TrackElemType::FlatTrack1x4B
+        { 1, 3 }, // TrackElemType::FlatTrack1x1B
+        { 1, 3 }, // TrackElemType::FlatTrack1x4C
+        { 1, 3, 6, 7 }, // TrackElemType::FlatTrack3x3
         { 0, 5 }, // TrackElemType::LeftLargeCorkscrewUp
         { 0, 5 }, // TrackElemType::RightLargeCorkscrewUp
         { 0, 5 }, // TrackElemType::LeftLargeCorkscrewDown
