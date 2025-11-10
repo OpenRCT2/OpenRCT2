@@ -3822,22 +3822,20 @@ void Vehicle::UpdateFerrisWheelRotating()
 
     if (curFerrisWheelVar0 == 3)
     {
-        ferris_wheel_var_0 = curFerrisWheelVar0;
         ferris_wheel_var_1 = curFerrisWheelVar0;
     }
     else if (curFerrisWheelVar0 < 3)
     {
         if (curFerrisWheelVar0 != -8)
             curFerrisWheelVar0--;
-        ferris_wheel_var_0 = curFerrisWheelVar0;
         ferris_wheel_var_1 = -curFerrisWheelVar0;
     }
     else
     {
         curFerrisWheelVar0--;
-        ferris_wheel_var_0 = curFerrisWheelVar0;
         ferris_wheel_var_1 = curFerrisWheelVar0;
     }
+    ferris_wheel_var_0 = curFerrisWheelVar0;
 
     auto rotation = flatRideAnimationFrame;
     rotation += (curRide->mode == RideMode::forwardRotation) ? 1 : -1;
