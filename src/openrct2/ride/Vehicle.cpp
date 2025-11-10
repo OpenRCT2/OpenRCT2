@@ -4139,18 +4139,18 @@ void Vehicle::UpdateFerrisWheelRotating()
         }
     }
 
-    if (ferris_wheel_var_0 != -8)
-        return;
+    if (ferris_wheel_var_0 == -8)
+    {
+        subState = sub_state;
+        subState += (curRide->mode == RideMode::forwardRotation) ? 8 : -8;
+        subState %= 128;
 
-    subState = sub_state;
-    subState += (curRide->mode == RideMode::forwardRotation) ? 8 : -8;
-    subState %= 128;
-
-    if (subState != flatRideAnimationFrame)
-        return;
-
-    SetState(Vehicle::Status::Arriving);
-    var_C0 = 0;
+        if (subState != flatRideAnimationFrame)
+        {
+            SetState(Vehicle::Status::Arriving);
+            var_C0 = 0;
+        }
+    }
 }
 
 /**
