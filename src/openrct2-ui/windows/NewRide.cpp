@@ -45,13 +45,21 @@ using namespace OpenRCT2::TrackMetaData;
 namespace OpenRCT2::Ui::Windows
 {
     static constexpr StringId WindowTitle = kStringIdNone;
-    static constexpr ScreenSize kWindowSize = { 601, 382 };
-    static constexpr ScreenSize kWindowMaxSize = { 840, 828 };
     static constexpr int32_t kWindowHeightResearch = 194;
     static constexpr int32_t RideListItemsMax = 384;
     static constexpr int32_t RideTabCount = 6;
     static constexpr int32_t GroupByTrackTypeWidth = 172;
     static constexpr int32_t kScrollItemSize = 116;
+    static constexpr int32_t kMinColCount = 5;
+    static constexpr int32_t kMaxColCount = 15;
+    static constexpr int32_t kMinRowCount = 2;
+    static constexpr int32_t kMaxRowCount = 7;
+    static constexpr int32_t kHorizontalPadding = 21;
+    static constexpr int32_t kVerticalPadding = 150;
+    static constexpr ScreenSize kWindowSize = { kMinColCount * kScrollItemSize + kHorizontalPadding,
+                                                kMinRowCount * kScrollItemSize + kVerticalPadding };
+    static constexpr ScreenSize kWindowMaxSize = { kMaxColCount * kScrollItemSize + kHorizontalPadding,
+                                                   kMaxRowCount * kScrollItemSize + kVerticalPadding };
 
 #pragma region Ride type view order
 
