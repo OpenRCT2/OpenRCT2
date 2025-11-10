@@ -195,7 +195,15 @@ struct SequenceClearance
     uint8_t flags{};
 };
 
-/* size 0x0A */
+/** TrackCoordinates
+ * rotationBegin: Start direction of the track piece; 0 (cardinal) or 4 (45 degrees clockwise)
+ * rotationEnd: End direction of the track peice, measured clockwise
+ * zBegin: how high above the base level of the lowest track block the spline starts
+ * zEnd: how high above the base level of the lowest track block the spline ends
+ * x: tile offset to the end track block; negative is along the original direction of travel
+ * Next track piece is found by moving one tile after end of the track piece, so vertical track has an x value of 32
+ * y: tile offset to the end track block; negative is to the left of the original direction of travel
+ */
 struct TrackCoordinates
 {
     int8_t rotationBegin; // 0x00

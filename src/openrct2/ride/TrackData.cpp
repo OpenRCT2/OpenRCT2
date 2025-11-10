@@ -381,7 +381,7 @@ namespace OpenRCT2::TrackMetaData
         { 4, 4, 16, 0, -32, 32 }   // TrackElemType::DiagDown25Brakes
     };
     static_assert(std::size(kTrackCoordinates) == EnumValue(TrackElemType::Count));
-    
+
     static constexpr uint8_t kTrackPieceLengths[] = {
         32,     // TrackElemType::Flat
         32,     // TrackElemType::EndStation
