@@ -1978,7 +1978,7 @@ void PaintTrack(PaintSession& session, Direction direction, int32_t height, cons
         {
             session.InteractionType = ViewportInteractionItem::none;
             const auto& ted = GetTrackElementDescriptor(trackType);
-            if (ted.heightMarkerPositions.get(trackSequence))
+            if (ted.heightMarkerPositions.get(trackSequence) || trackType == TrackElemType::Maze)
             {
                 uint16_t ax = ride->getRideTypeDescriptor().Heights.VehicleZOffset;
                 // 0x1689 represents 0 height there are -127 to 128 heights above and below it
