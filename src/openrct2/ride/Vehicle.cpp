@@ -3814,7 +3814,8 @@ void Vehicle::UpdateFerrisWheelRotating()
     if (curRide == nullptr)
         return;
 
-    if ((ferris_wheel_var_1 -= 1) != 0)
+    ferris_wheel_var_1--;
+    if (ferris_wheel_var_1 != 0)
         return;
 
     int8_t curFerrisWheelVar0 = ferris_wheel_var_0;
