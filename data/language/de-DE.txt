@@ -3836,3 +3836,7 @@ STR_7000    :oder
 STR_7001    :Fahrgeschäftsname
 STR_7002    :{STRINGID} {STRINGID}
 STR_7003    :Die Audiodatei „{STRING}“ ist abgeschnitten. Sample {INT32} erwartet, es sind aber nur {INT32} verfügbar. Ziehen Sie eine Neuinstallation von RCT2 in Betracht.
+STR_7004    :Erzwinge Neuzeichnung
+STR_7005    :Baue eine Fläche aus Fußwegen
+STR_7006    :Zeichne Ränder um Bildknöpfe
+STR_7007    :Achterbahntyp
