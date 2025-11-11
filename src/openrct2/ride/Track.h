@@ -633,13 +633,13 @@ namespace OpenRCT2
 
 enum class SequenceFlag : uint8_t
 {
-    TRACK_SEQUENCE_FLAG_ENTRANCE_CONNECTS_NE, // Ride Entrances and path connect to front
-    TRACK_SEQUENCE_FLAG_ENTRANCE_CONNECTS_SE, // connect to right
-    TRACK_SEQUENCE_FLAG_ENTRANCE_CONNECTS_SW, // connect to back
-    TRACK_SEQUENCE_FLAG_ENTRANCE_CONNECTS_NW, // connect to left
-    TRACK_SEQUENCE_FLAG_ORIGIN,               // 0x10
-    TRACK_SEQUENCE_FLAG_CONNECTS_TO_PATH,     // 0x20
-    TRACK_SEQUENCE_FLAG_DISALLOW_DOORS,       // 0x40
+    entranceConnectionNE, // Ride Entrances and path connect to front
+    entranceConnectionSE, // connect to right
+    entranceConnectionSW, // connect to back
+    entranceConnectionNW, // connect to left
+    trackOrigin,          // 0x10
+    connectsToPath,       // 0x20
+    disallowDoors,        // 0x40
 };
 
 enum

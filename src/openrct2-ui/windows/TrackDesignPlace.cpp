@@ -650,9 +650,8 @@ namespace OpenRCT2::Ui::Windows
                             auto bits = trackBlock.quarterTile.Rotate(curTrackRotation & 3).GetBaseQuarterOccupied();
 
                             // Station track is a lighter colour
-                            uint8_t colour = ted.sequences[0].flags.has(SequenceFlag::TRACK_SEQUENCE_FLAG_ORIGIN)
-                                ? kPaletteIndexColourStation
-                                : kPaletteIndexColourTrack;
+                            uint8_t colour = ted.sequences[0].flags.has(SequenceFlag::trackOrigin) ? kPaletteIndexColourStation
+                                                                                                   : kPaletteIndexColourTrack;
 
                             for (int32_t i = 0; i < 4; i++)
                             {

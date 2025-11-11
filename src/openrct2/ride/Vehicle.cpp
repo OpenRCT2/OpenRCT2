@@ -6502,7 +6502,7 @@ void Vehicle::Sub6DBF3E()
 
     auto trackType = GetTrackType();
     const auto& ted = GetTrackElementDescriptor(trackType);
-    if (!(ted.sequences[0].flags.has(SequenceFlag::TRACK_SEQUENCE_FLAG_ORIGIN)))
+    if (!(ted.sequences[0].flags.has(SequenceFlag::trackOrigin)))
     {
         return;
     }
@@ -7906,7 +7906,7 @@ void Vehicle::Loc6DCE02(const Ride& curRide)
 
     auto trackType = GetTrackType();
     const auto& ted = GetTrackElementDescriptor(trackType);
-    if (!(ted.sequences[0].flags.has(SequenceFlag::TRACK_SEQUENCE_FLAG_ORIGIN)))
+    if (!(ted.sequences[0].flags.has(SequenceFlag::trackOrigin)))
     {
         return;
     }

@@ -377,7 +377,7 @@ namespace OpenRCT2
                 if (trackElement->GetRideIndex() == gRideEntranceExitPlaceRideIndex)
                 {
                     const auto& ted = GetTrackElementDescriptor(trackElement->GetTrackType());
-                    if (ted.sequences[0].flags.has(SequenceFlag::TRACK_SEQUENCE_FLAG_ORIGIN))
+                    if (ted.sequences[0].flags.has(SequenceFlag::trackOrigin))
                     {
                         if (trackElement->GetTrackType() == TrackElemType::Maze)
                         {

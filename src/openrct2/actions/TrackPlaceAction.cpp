@@ -345,7 +345,7 @@ namespace OpenRCT2::GameActions
                 }
             }
 
-            if ((ted.sequences[0].flags.has(SequenceFlag::TRACK_SEQUENCE_FLAG_ORIGIN)) && blockIndex == 0)
+            if ((ted.sequences[0].flags.has(SequenceFlag::trackOrigin)) && blockIndex == 0)
             {
                 const auto addElementResult = TrackAddStationElement(
                     { mapLoc, baseZ, _origin.direction }, _rideIndex, {}, _fromTrackDesign);
@@ -544,7 +544,7 @@ namespace OpenRCT2::GameActions
             {
                 if (!(GetFlags().has(CommandFlag::noSpend)))
                 {
-                    isOrigin = ted.sequences[0].flags.has(SequenceFlag::TRACK_SEQUENCE_FLAG_ORIGIN);
+                    isOrigin = ted.sequences[0].flags.has(SequenceFlag::trackOrigin);
                 }
             }
 
@@ -606,7 +606,7 @@ namespace OpenRCT2::GameActions
             }
             trackElement->SetColourScheme(static_cast<RideColourScheme>(_colour));
 
-            if (ted.sequences[0].flags.has(SequenceFlag::TRACK_SEQUENCE_FLAG_CONNECTS_TO_PATH))
+            if (ted.sequences[0].flags.has(SequenceFlag::connectsToPath))
             {
                 uint32_t connectionSides = ted.sequences[0].getEntranceConnectionSides();
                 if (connectionSides != 0)
@@ -631,7 +631,7 @@ namespace OpenRCT2::GameActions
             // If the placed tile is a station modify station properties.
             // Don't do this if the tile is a ghost to prevent desyncs
             // However, ghost tiles from track designs need to modify station data to display properly
-            if (ted.sequences[0].flags.has(SequenceFlag::TRACK_SEQUENCE_FLAG_ORIGIN)
+            if (ted.sequences[0].flags.has(SequenceFlag::trackOrigin)
                 && (!(GetFlags().has(CommandFlag::ghost)) || _fromTrackDesign))
             {
                 if (blockIndex == 0)

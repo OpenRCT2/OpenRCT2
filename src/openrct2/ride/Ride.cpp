@@ -507,7 +507,7 @@ bool RideTryGetOriginElement(const Ride& ride, CoordsXYE* output)
         bool specialTrackPiece
             = (it.element->AsTrack()->GetTrackType() != TrackElemType::BeginStation
                && it.element->AsTrack()->GetTrackType() != TrackElemType::MiddleStation
-               && (ted.sequences[0].flags.has(SequenceFlag::TRACK_SEQUENCE_FLAG_ORIGIN)));
+               && (ted.sequences[0].flags.has(SequenceFlag::trackOrigin)));
 
         // Set result tile to this track piece if first found track or a ???
         if (resultTileElement == nullptr || specialTrackPiece)
@@ -2936,7 +2936,7 @@ static int32_t RideCheckStationLength(const CoordsXYE& input, CoordsXYE* output)
     do
     {
         const auto& ted = GetTrackElementDescriptor(output->element->AsTrack()->GetTrackType());
-        if (ted.sequences[0].flags.has(SequenceFlag::TRACK_SEQUENCE_FLAG_ORIGIN))
+        if (ted.sequences[0].flags.has(SequenceFlag::trackOrigin))
         {
             num_station_elements++;
             last_good_station = *output;
@@ -2985,7 +2985,7 @@ static bool RideCheckStartAndEndIsStation(const CoordsXYE& input)
     TrackGetBack(input, &trackBack);
     auto trackType = trackBack.element->AsTrack()->GetTrackType();
     const auto* ted = &GetTrackElementDescriptor(trackType);
-    if (!ted->sequences[0].flags.has(SequenceFlag::TRACK_SEQUENCE_FLAG_ORIGIN))
+    if (!ted->sequences[0].flags.has(SequenceFlag::trackOrigin))
     {
         return false;
     }
@@ -2995,7 +2995,7 @@ static bool RideCheckStartAndEndIsStation(const CoordsXYE& input)
     TrackGetFront(input, &trackFront);
     trackType = trackFront.element->AsTrack()->GetTrackType();
     ted = &GetTrackElementDescriptor(trackType);
-    if (!ted->sequences[0].flags.has(SequenceFlag::TRACK_SEQUENCE_FLAG_ORIGIN))
+    if (!ted->sequences[0].flags.has(SequenceFlag::trackOrigin))
     {
         return false;
     }
@@ -4060,7 +4060,7 @@ TrackElement* Ride::getOriginElement(StationIndex stationIndex) const
 
         auto* trackElement = tileElement->AsTrack();
         const auto& ted = GetTrackElementDescriptor(trackElement->GetTrackType());
-        if (!ted.sequences[0].flags.has(SequenceFlag::TRACK_SEQUENCE_FLAG_ORIGIN))
+        if (!ted.sequences[0].flags.has(SequenceFlag::trackOrigin))
             continue;
 
         if (trackElement->GetRideIndex() == id)
@@ -5055,7 +5055,7 @@ static int32_t RideGetTrackLength(const Ride& ride)
 
             trackType = tileElement->AsTrack()->GetTrackType();
             const auto& ted = GetTrackElementDescriptor(trackType);
-            if (!ted.sequences[0].flags.has(SequenceFlag::TRACK_SEQUENCE_FLAG_ORIGIN))
+            if (!ted.sequences[0].flags.has(SequenceFlag::trackOrigin))
                 continue;
 
             if (tileElement->GetBaseZ() != trackStart.z)
