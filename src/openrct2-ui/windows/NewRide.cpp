@@ -883,7 +883,7 @@ namespace OpenRCT2::Ui::Windows
         {
             widgets[WIDX_GROUP_BY_TRACK_TYPE].left = width - 8 - GroupByTrackTypeWidth;
             widgets[WIDX_GROUP_BY_TRACK_TYPE].right = width - 8;
-            widgets[WIDX_RIDE_LIST].right = width - 6 - 1;
+            widgets[WIDX_RIDE_LIST].right = width - 3 - 1;
             widgets[WIDX_RIDE_LIST].bottom = height - 65;
         }
 
