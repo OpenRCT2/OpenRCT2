@@ -25,3 +25,8 @@ extern const TopSpinTimeToSpriteMap* kTopSpinTimeToSpriteMaps[];
 
 extern const uint8_t MotionSimulatorTimeToSpriteMap[];
 extern const int32_t MotionSimulatorTimeToSpriteMapCount;
+
+extern const uint8_t kSpaceRingsTimeToSpriteMap[];
+
+/** rct2: 0x0099F9D0 */
+extern const int8_t* kSwingingTimeToSpriteMaps[];
