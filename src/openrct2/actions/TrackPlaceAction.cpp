@@ -345,8 +345,7 @@ namespace OpenRCT2::GameActions
                 }
             }
 
-            int32_t entranceDirections = ted.sequences[0].flags;
-            if ((entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN) && blockIndex == 0)
+            if ((ted.sequences[0].flags.has(SequenceFlag::TRACK_SEQUENCE_FLAG_ORIGIN)) && blockIndex == 0)
             {
                 const auto addElementResult = TrackAddStationElement(
                     { mapLoc, baseZ, _origin.direction }, _rideIndex, {}, _fromTrackDesign);
@@ -540,16 +539,16 @@ namespace OpenRCT2::GameActions
 
             supportCosts += (supportHeight / (2 * kCoordsZStep)) * rtd.BuildCosts.SupportPrice;
 
-            int32_t entranceDirections = 0;
+            bool isOrigin = false;
             if (!ride->overallView.IsNull())
             {
                 if (!(GetFlags().has(CommandFlag::noSpend)))
                 {
-                    entranceDirections = ted.sequences[0].flags;
+                    isOrigin = ted.sequences[0].flags.has(SequenceFlag::TRACK_SEQUENCE_FLAG_ORIGIN);
                 }
             }
 
-            if (entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN || ride->overallView.IsNull())
+            if (isOrigin || ride->overallView.IsNull())
             {
                 ride->overallView = mapLoc;
             }
@@ -607,18 +606,17 @@ namespace OpenRCT2::GameActions
             }
             trackElement->SetColourScheme(static_cast<RideColourScheme>(_colour));
 
-            entranceDirections = ted.sequences[0].flags;
-            if (entranceDirections & TRACK_SEQUENCE_FLAG_CONNECTS_TO_PATH)
+            if (ted.sequences[0].flags.has(SequenceFlag::TRACK_SEQUENCE_FLAG_CONNECTS_TO_PATH))
             {
-                uint32_t availableDirections = entranceDirections & 0x0F;
-                if (availableDirections != 0)
+                uint32_t connectionSides = ted.sequences[0].getEntranceConnectionSides();
+                if (connectionSides != 0)
                 {
                     if (!(GetFlags().has(CommandFlag::ghost)) && !gameState.cheats.disableClearanceChecks)
                     {
-                        for (int32_t chosenDirection = Numerics::bitScanForward(availableDirections); chosenDirection != -1;
-                             chosenDirection = Numerics::bitScanForward(availableDirections))
+                        for (int32_t chosenDirection = Numerics::bitScanForward(connectionSides); chosenDirection != -1;
+                             chosenDirection = Numerics::bitScanForward(connectionSides))
                         {
-                            availableDirections &= ~(1 << chosenDirection);
+                            connectionSides &= ~(1 << chosenDirection);
                             CoordsXY tempLoc{ mapLoc.x, mapLoc.y };
                             int32_t tempDirection = (_origin.direction + chosenDirection) & 3;
                             tempLoc.x += CoordsDirectionDelta[tempDirection].x;
@@ -633,7 +631,8 @@ namespace OpenRCT2::GameActions
             // If the placed tile is a station modify station properties.
             // Don't do this if the tile is a ghost to prevent desyncs
             // However, ghost tiles from track designs need to modify station data to display properly
-            if (entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN && (!(GetFlags().has(CommandFlag::ghost)) || _fromTrackDesign))
+            if (ted.sequences[0].flags.has(SequenceFlag::TRACK_SEQUENCE_FLAG_ORIGIN)
+                && (!(GetFlags().has(CommandFlag::ghost)) || _fromTrackDesign))
             {
                 if (blockIndex == 0)
                 {

@@ -1225,7 +1225,7 @@ void Ride::validateStations()
 
                     const auto& ted = GetTrackElementDescriptor(tileElement->AsTrack()->GetTrackType());
                     // keep searching for a station piece (coaster station, tower ride base, shops, and flat ride base)
-                    if (!(ted.sequences[0].flags & TRACK_SEQUENCE_FLAG_ORIGIN))
+                    if (!ted.sequences[0].flags.has(SequenceFlag::TRACK_SEQUENCE_FLAG_ORIGIN))
                         continue;
 
                     trackFound = true;
@@ -1275,7 +1275,7 @@ void Ride::validateStations()
                         continue;
 
                     const auto& ted2 = GetTrackElementDescriptor(tileElement->AsTrack()->GetTrackType());
-                    if (!(ted2.sequences[0].flags & TRACK_SEQUENCE_FLAG_ORIGIN))
+                    if (!ted2.sequences[0].flags.has(SequenceFlag::TRACK_SEQUENCE_FLAG_ORIGIN))
                         continue;
 
                     trackFound = true;
@@ -1382,7 +1382,8 @@ void Ride::validateStations()
 
                     // if the ride entrance is not on a valid side, remove it
                     const auto& ted = GetTrackElementDescriptor(trackType);
-                    if (!(ted.sequences[trackSequence].flags & (1 << direction)))
+                    auto connectionSides = ted.sequences[trackSequence].getEntranceConnectionSides();
+                    if (!(connectionSides & (1 << direction)))
                     {
                         continue;
                     }

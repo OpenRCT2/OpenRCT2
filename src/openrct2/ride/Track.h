@@ -631,15 +631,15 @@ namespace OpenRCT2
     };
 }
 
-enum
+enum class SequenceFlag : uint8_t
 {
-    TRACK_SEQUENCE_FLAG_ENTRANCE_CONNECTS_NE = (1 << 0),      // Ride Entrances and path connect to front
-    TRACK_SEQUENCE_FLAG_ENTRANCE_CONNECTS_SE = (1 << 1),      // connect to right
-    TRACK_SEQUENCE_FLAG_ENTRANCE_CONNECTS_SW = (1 << 2),      // connect to back
-    TRACK_SEQUENCE_FLAG_ENTRANCE_CONNECTS_NW = (1 << 3),      // connect to left
-    TRACK_SEQUENCE_FLAG_ORIGIN = (1 << 4),           // 0x10
-    TRACK_SEQUENCE_FLAG_CONNECTS_TO_PATH = (1 << 5), // 0x20
-    TRACK_SEQUENCE_FLAG_DISALLOW_DOORS = (1 << 6),   // 0x40
+    TRACK_SEQUENCE_FLAG_ENTRANCE_CONNECTS_NE, // Ride Entrances and path connect to front
+    TRACK_SEQUENCE_FLAG_ENTRANCE_CONNECTS_SE, // connect to right
+    TRACK_SEQUENCE_FLAG_ENTRANCE_CONNECTS_SW, // connect to back
+    TRACK_SEQUENCE_FLAG_ENTRANCE_CONNECTS_NW, // connect to left
+    TRACK_SEQUENCE_FLAG_ORIGIN,               // 0x10
+    TRACK_SEQUENCE_FLAG_CONNECTS_TO_PATH,     // 0x20
+    TRACK_SEQUENCE_FLAG_DISALLOW_DOORS,       // 0x40
 };
 
 enum
