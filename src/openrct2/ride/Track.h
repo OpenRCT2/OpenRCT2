@@ -633,10 +633,10 @@ namespace OpenRCT2
 
 enum
 {
-    TRACK_SEQUENCE_FLAG_DIRECTION_0 = (1 << 0),      // Ride Entrances and path connect to front
-    TRACK_SEQUENCE_FLAG_DIRECTION_1 = (1 << 1),      // connect to right
-    TRACK_SEQUENCE_FLAG_DIRECTION_2 = (1 << 2),      // connect to back
-    TRACK_SEQUENCE_FLAG_DIRECTION_3 = (1 << 3),      // connect to left
+    TRACK_SEQUENCE_FLAG_ENTRANCE_CONNECTS_NE = (1 << 0),      // Ride Entrances and path connect to front
+    TRACK_SEQUENCE_FLAG_ENTRANCE_CONNECTS_SE = (1 << 1),      // connect to right
+    TRACK_SEQUENCE_FLAG_ENTRANCE_CONNECTS_SW = (1 << 2),      // connect to back
+    TRACK_SEQUENCE_FLAG_ENTRANCE_CONNECTS_NW = (1 << 3),      // connect to left
     TRACK_SEQUENCE_FLAG_ORIGIN = (1 << 4),           // 0x10
     TRACK_SEQUENCE_FLAG_CONNECTS_TO_PATH = (1 << 5), // 0x20
     TRACK_SEQUENCE_FLAG_DISALLOW_DOORS = (1 << 6),   // 0x40

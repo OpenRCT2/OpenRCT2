@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../core/FlagHolder.hpp"
 #include "../paint/support/MetalSupports.h"
 #include "../paint/support/WoodenSupports.h"
 #include "../paint/tile_element/Segment.h"
