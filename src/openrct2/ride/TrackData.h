@@ -90,18 +90,25 @@ namespace OpenRCT2::TrackMetaData
         uint8_t alternates = false;
     };
 
+    using SequenceFlags = FlagHolder<uint8_t, SequenceFlag>;
+
     struct SequenceDescriptor
     {
         SequenceClearance clearance{};
         /** rct2: 0x00999A94 */
         uint8_t allowedWallEdges{};
         /** rct2: 0x0099BA64 */
-        uint8_t flags{};
+        SequenceFlags flags{};
         SequenceWoodenSupport woodenSupports{};
         SequenceMetalSupport metalSupports{};
         int8_t extraSupportRotation = 0;
         bool invertSegmentBlocking = false;
         std::array<uint16_t, kBlockedSegmentsTypeCount> blockedSegments{ kSegmentsNone, kSegmentsNone, kSegmentsNone };
+
+        const uint8_t getEntranceConnectionSides() const
+        {
+            return flags.holder & 0xF;
+        }
     };
 
     using TrackComputeFunction = int32_t (*)(const int16_t);
