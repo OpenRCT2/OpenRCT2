@@ -209,7 +209,7 @@ namespace OpenRCT2::GameActions
                 return Result(Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_ERR_TRACK_ELEMENT_NOT_FOUND);
             }
 
-            if (ted.sequences[0].flags.has(SequenceFlag::TRACK_SEQUENCE_FLAG_ORIGIN)
+            if (ted.sequences[0].flags.has(SequenceFlag::trackOrigin)
                 && (tileElement->AsTrack()->GetSequenceIndex() == 0))
             {
                 const auto removeElementResult = TrackRemoveStationElement({ mapLoc, _origin.direction }, rideIndex, 0);
@@ -379,7 +379,7 @@ namespace OpenRCT2::GameActions
                 return Result(Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_ERR_TRACK_ELEMENT_NOT_FOUND);
             }
 
-            if (ted.sequences[0].flags.has(SequenceFlag::TRACK_SEQUENCE_FLAG_ORIGIN)
+            if (ted.sequences[0].flags.has(SequenceFlag::trackOrigin)
                 && (tileElement->AsTrack()->GetSequenceIndex() == 0))
             {
                 const auto removeElementResult = TrackRemoveStationElement({ mapLoc, _origin.direction }, rideIndex, 0);
@@ -406,7 +406,7 @@ namespace OpenRCT2::GameActions
 
             // If the removed tile is a station modify station properties.
             // Don't do this if the ride is simulating and the tile is a ghost to prevent desyncs.
-            if (ted.sequences[0].flags.has(SequenceFlag::TRACK_SEQUENCE_FLAG_ORIGIN)
+            if (ted.sequences[0].flags.has(SequenceFlag::trackOrigin)
                 && (!(GetFlags() & GAME_COMMAND_FLAG_GHOST) || (GetFlags() & GAME_COMMAND_FLAG_TRACK_DESIGN))
                 && (tileElement->AsTrack()->GetSequenceIndex() == 0))
             {
