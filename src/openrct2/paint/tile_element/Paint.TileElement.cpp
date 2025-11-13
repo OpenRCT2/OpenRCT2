@@ -380,15 +380,6 @@ void PaintUtilSetSegmentSupportHeight(PaintSession& session, int32_t segments, u
     }
 }
 
-uint16_t PaintUtilRotateSegments(uint16_t segments, uint8_t rotation)
-{
-    // Only the value representing PaintSegment::centre falls beyond 0xFF, so this will be kept in place.
-    uint8_t temp = segments & 0xFF;
-    temp = Numerics::rol8(temp, rotation * 2);
-
-    return (segments & 0xFF00) | temp;
-}
-
 bool PaintShouldShowHeightMarkers(const PaintSession& session, const uint32_t viewportFlag)
 {
     auto rt = &session.DPI;

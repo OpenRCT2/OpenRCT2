@@ -23,8 +23,6 @@
 #include "../paint/support/MetalSupports.h"
 #include "../paint/support/WoodenSupports.h"
 #include "../paint/tile_element/Paint.TileElement.h"
-#include "../paint/tile_element/Segment.h"
-#include "../paint/track/Segment.h"
 #include "../paint/track/Support.h"
 #include "../world/tile_element/TrackElement.h"
 #include "RideData.h"
@@ -1236,8 +1234,6 @@ void TrackPaintUtilDiagTilesPaintExtra(
             session.SupportColours);
     }
 
-    PaintUtilSetSegmentSupportHeight(
-        session, PaintUtilRotateSegments(BlockedSegments::kDiagStraightFlat[trackSequence], direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
@@ -1876,55 +1872,10 @@ void TrackPaintUtilOnridePhotoPaint(
     }
 }
 
-static constexpr uint16_t RightVerticalLoopSegments[] = {
-    EnumsToFlags(
-        PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft,
-        PaintSegment::bottomRight),
-    EnumsToFlags(
-        PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft,
-        PaintSegment::bottomRight),
-    EnumsToFlags(PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
-    EnumsToFlags(
-        PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft,
-        PaintSegment::bottomRight),
-    0,
-    0,
-    EnumsToFlags(
-        PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
-        PaintSegment::bottomLeft),
-    EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
-    EnumsToFlags(
-        PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
-        PaintSegment::bottomLeft),
-    EnumsToFlags(
-        PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
-        PaintSegment::bottomLeft),
-};
-
-void TrackPaintUtilRightVerticalLoopSegments(PaintSession& session, Direction direction, uint8_t trackSequence)
-{
-    if (trackSequence > 9)
-    {
-        // P
-        return;
-    }
-
-    PaintUtilSetSegmentSupportHeight(
-        session, PaintUtilRotateSegments(RightVerticalLoopSegments[trackSequence], direction), 0xFFFF, 0);
-}
-
 void TrackPaintUtilLeftCorkscrewUpSupports(PaintSession& session, Direction direction, uint16_t height)
 {
     MetalASupportsPaintSetupRotated(
         session, MetalSupportType::tubes, MetalSupportPlace::centre, direction, 0, height, session.SupportColours);
-    PaintUtilSetSegmentSupportHeight(
-        session,
-        PaintUtilRotateSegments(
-            EnumsToFlags(
-                PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
-                PaintSegment::bottomLeft),
-            direction),
-        0xFFFF, 0);
 }
 
 ImageId GetStationColourScheme(PaintSession& session, const TrackElement& trackElement)
@@ -2026,9 +1977,25 @@ void PaintTrack(PaintSession& session, Direction direction, int32_t height, cons
         bool isInverted = trackElement.IsInverted() && rtd.HasFlag(RtdFlag::hasInvertedVariant);
         const auto trackDrawerEntry = getTrackDrawerEntry(rtd, isInverted, TrackElementIsCovered(trackType));
 
-        trackType = UncoverTrackElement(trackType);
-        TrackPaintFunction paintFunction = GetTrackPaintFunction(trackDrawerEntry.trackStyle, trackType);
-        paintFunction(session, *ride, trackSequence, direction, height, trackElement, trackDrawerEntry.supportType);
+        const auto& trackStylePaintInfo = GetTrackStylePaintInfo(trackDrawerEntry.trackStyle);
+        const auto& paintInfo = trackStylePaintInfo.trackElemTypePaintInfos[EnumValue(UncoverTrackElement(trackType))];
+
+        const uint8_t clampedTrackSequence = trackType == TrackElemType::Maze ? 0 : trackSequence;
+        const auto& sequenceInfo = paintInfo.sequenceInfo[clampedTrackSequence];
+        const uint16_t blockedSegments = paintSegmentsRotate(sequenceInfo.getBlockedSegments(), direction);
+
+        if (sequenceInfo.blockSegmentsBeforeSupports())
+        {
+            PaintUtilSetSegmentSupportHeight(session, blockedSegments, 0xFFFF, 0);
+            paintInfo.paintFunction(
+                session, *ride, trackSequence, direction, height, trackElement, trackDrawerEntry.supportType);
+        }
+        else
+        {
+            paintInfo.paintFunction(
+                session, *ride, trackSequence, direction, height, trackElement, trackDrawerEntry.supportType);
+            PaintUtilSetSegmentSupportHeight(session, blockedSegments, 0xFFFF, 0);
+        }
     }
 }
 
@@ -2038,7 +2005,6 @@ void TrackPaintUtilOnridePhotoPaint2(
 {
     TrackPaintUtilOnridePhotoPaint(session, direction, height + trackHeightOffset, trackElement);
     PaintUtilPushTunnelRotated(session, direction, height, TunnelGroup::Square, TunnelSubType::Flat);
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + supportsAboveHeightOffset);
 }
 
