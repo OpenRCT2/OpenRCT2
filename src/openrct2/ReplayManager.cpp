@@ -25,6 +25,7 @@
 #include "actions/TileModifyAction.h"
 #include "actions/TrackPlaceAction.h"
 #include "config/Config.h"
+#include "config/ConfigEnum.hpp"
 #include "core/Compression.h"
 #include "core/DataSerialiser.h"
 #include "core/FileStream.h"
@@ -33,6 +34,8 @@
 #include "entity/EntityRegistry.h"
 #include "entity/EntityTweener.h"
 #include "interface/Window.h"
+#include "localisation/Formatting.h"
+#include "localisation/StringIds.h"
 #include "management/NewsItem.h"
 #include "object/ObjectManager.h"
 #include "object/ObjectRepository.h"
@@ -42,6 +45,8 @@
 
 #include <chrono>
 #include <memory>
+#include <stdexcept>
+#include <string>
 #include <vector>
 
 namespace OpenRCT2
@@ -120,6 +125,13 @@ namespace OpenRCT2
             PLAYING,
             NORMALISATION,
         };
+
+        inline static const ConfigEnum<ReplayMode> Enum_ReplayMode = ConfigEnum<ReplayMode>({
+            ConfigEnumEntry<ReplayMode>("NONE", ReplayMode::NONE),
+            ConfigEnumEntry<ReplayMode>("RECORDING", ReplayMode::RECORDING),
+            ConfigEnumEntry<ReplayMode>("PLAYING", ReplayMode::PLAYING),
+            ConfigEnumEntry<ReplayMode>("NORMALISATION", ReplayMode::NORMALISATION),
+        });
 
     public:
         virtual ~ReplayManager()
@@ -415,23 +427,25 @@ namespace OpenRCT2
             }
         }
 
-        virtual bool StartPlayback(const std::string& file) override
+        void StartPlayback(const std::string& file) override
         {
             if (_mode != ReplayMode::NONE && _mode != ReplayMode::NORMALISATION)
-                return false;
+                throw std::invalid_argument("Unexpected mode " + Enum_ReplayMode.GetName(_mode));
 
             auto replayData = std::make_unique<ReplayRecordData>();
 
-            if (!ReadReplayData(file, *replayData))
+            try
             {
-                LOG_ERROR("Unable to read replay data.");
-                return false;
+                ReadReplayData(file, *replayData);
+            }
+            catch (const std::invalid_argument&)
+            {
+                throw;
             }
 
             if (!LoadReplayDataMap(*replayData))
             {
-                LOG_ERROR("Unable to load map.");
-                return false;
+                throw std::invalid_argument("Unable to load map.");
             }
 
             getGameState().currentTicks = replayData->tickStart;
@@ -447,8 +461,6 @@ namespace OpenRCT2
 
             if (_mode != ReplayMode::NORMALISATION)
                 _mode = ReplayMode::PLAYING;
-
-            return true;
         }
 
         virtual bool IsPlaybackStateMismatching() const override
@@ -485,7 +497,11 @@ namespace OpenRCT2
         {
             _mode = ReplayMode::NORMALISATION;
 
-            if (!StartPlayback(file))
+            try
+            {
+                StartPlayback(file);
+            }
+            catch (const std::invalid_argument&)
             {
                 return false;
             }
@@ -595,23 +611,31 @@ namespace OpenRCT2
             return recFile.data;
         }
 
-        bool ReadReplayData(const std::string& file, ReplayRecordData& data)
+        void ReadReplayData(const std::string& file, ReplayRecordData& data)
         {
             fs::path filePath = file;
-            if (filePath.extension() != ".parkrep")
-                filePath += ".parkrep";
 
-            if (filePath.is_relative())
+            if (filePath.is_absolute())
             {
+                if (!fs::exists(filePath))
+                {
+                    throw std::invalid_argument(FormatStringID(STR_REPLAY_FILE_NOT_FOUND, filePath.u8string().c_str()));
+                }
+            }
+            else if (filePath.is_relative())
+            {
+                if (filePath.extension() != ".parkrep")
+                    filePath += ".parkrep";
                 fs::path replayPath = GetContext()->GetPlatformEnvironment().GetDirectoryPath(
                                           DirBase::user, DirId::replayRecordings)
                     / filePath;
-                if (fs::is_regular_file(replayPath))
-                    filePath = replayPath;
+                filePath = replayPath;
             }
 
             if (!fs::is_regular_file(filePath))
-                return false;
+            {
+                throw std::invalid_argument(FormatStringID(STR_REPLAY_FILE_NOT_FOUND, filePath.u8string().c_str()));
+            }
 
             FileStream fileStream(filePath, FileMode::open);
             MemoryStream stream = DecompressFile(fileStream);
@@ -620,7 +644,7 @@ namespace OpenRCT2
             DataSerialiser serialiser(false, stream);
             if (!Serialise(serialiser, data))
             {
-                return false;
+                throw std::invalid_argument(LanguageGetString(STR_REPLAY_NOT_STARTED));
             }
 
             // Reset position of all streams.
@@ -628,8 +652,6 @@ namespace OpenRCT2
             data.parkParams.SetPosition(0);
             data.cheatData.SetPosition(0);
             data.gameStateSnapshots.SetPosition(0);
-
-            return true;
         }
 
         bool SerialiseCheats(DataSerialiser& serialiser)
