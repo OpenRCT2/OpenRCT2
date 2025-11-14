@@ -3842,3 +3842,4 @@ STR_7003    :O ficheiro de son ‘{STRING}’ está incompleto. Agardabase {INT3
 STR_7004    :Forzar redeseño
 STR_7005    :Arrastra unha área de camiño
 STR_7006    :Debuxa un bordo arredor dos botóns de imaxe
+STR_7007    :Tipo de atracción
