@@ -593,13 +593,13 @@ static void Loc6A6D7E(
                         const auto trackType = tileElement->AsTrack()->GetTrackType();
                         const uint8_t trackSequence = tileElement->AsTrack()->GetSequenceIndex();
                         const auto& ted = GetTrackElementDescriptor(trackType);
-                        if (!(ted.sequences[trackSequence].flags & TRACK_SEQUENCE_FLAG_CONNECTS_TO_PATH))
+                        if (!(ted.sequences[trackSequence].flags.has(SequenceFlag::connectsToPath)))
                         {
                             return;
                         }
                         uint16_t dx = DirectionReverse((direction - tileElement->GetDirection()) & kTileElementDirectionMask);
-
-                        if (!(ted.sequences[trackSequence].flags & (1 << dx)))
+                        auto connectionSides = ted.sequences[trackSequence].getEntranceConnectionSides();
+                        if (!(connectionSides & (1 << dx)))
                         {
                             return;
                         }
@@ -679,12 +679,13 @@ static void Loc6A6C85(
         const auto trackType = tileElementPos.element->AsTrack()->GetTrackType();
         const uint8_t trackSequence = tileElementPos.element->AsTrack()->GetSequenceIndex();
         const auto& ted = GetTrackElementDescriptor(trackType);
-        if (!(ted.sequences[trackSequence].flags & TRACK_SEQUENCE_FLAG_CONNECTS_TO_PATH))
+        if (!(ted.sequences[trackSequence].flags.has(SequenceFlag::connectsToPath)))
         {
             return;
         }
         uint16_t dx = (direction - tileElementPos.element->GetDirection()) & kTileElementDirectionMask;
-        if (!(ted.sequences[trackSequence].flags & (1 << dx)))
+        auto connectionSides = ted.sequences[trackSequence].getEntranceConnectionSides();
+        if (!(connectionSides & (1 << dx)))
         {
             return;
         }
@@ -1688,10 +1689,11 @@ bool TileElementWantsPathConnectionTowards(const TileCoordsXYZD& coords, const T
                     const auto trackType = tileElement->AsTrack()->GetTrackType();
                     const uint8_t trackSequence = tileElement->AsTrack()->GetSequenceIndex();
                     const auto& ted = GetTrackElementDescriptor(trackType);
-                    if (ted.sequences[trackSequence].flags & TRACK_SEQUENCE_FLAG_CONNECTS_TO_PATH)
+                    if (ted.sequences[trackSequence].flags.has(SequenceFlag::connectsToPath))
                     {
                         uint16_t dx = ((coords.direction - tileElement->GetDirection()) & kTileElementDirectionMask);
-                        if (ted.sequences[trackSequence].flags & (1 << dx))
+                        auto connectionSides = ted.sequences[trackSequence].getEntranceConnectionSides();
+                        if (connectionSides & (1 << dx))
                         {
                             // Track element has the flags required for the given direction
                             return true;
