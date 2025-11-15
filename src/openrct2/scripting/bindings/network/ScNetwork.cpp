@@ -299,15 +299,7 @@ namespace OpenRCT2::Scripting
     #ifndef DISABLE_NETWORK
     JSValue ScNetwork::createListener(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
     {
-        return JS_UNDEFINED;
-        // TODO (mber)
-        /*
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto plugin = scriptEngine.GetExecInfo().GetCurrentPlugin();
-        auto socket = std::make_shared<ScListener>(plugin);
-        scriptEngine.AddSocket(socket);
-        return socket;
-        */
+        return gScListener.New(ctx, GetContext()->GetScriptEngine().GetExecInfo().GetCurrentPlugin());
     }
     #else
     JSValue ScNetwork::createListener(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
@@ -319,15 +311,7 @@ namespace OpenRCT2::Scripting
     #ifndef DISABLE_NETWORK
     JSValue ScNetwork::createSocket(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
     {
-        return JS_UNDEFINED;
-        // TODO (mber)
-        /*
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto plugin = scriptEngine.GetExecInfo().GetCurrentPlugin();
-        auto socket = std::make_shared<ScSocket>(plugin);
-        scriptEngine.AddSocket(socket);
-        return socket;
-        */
+        return gScSocket.New(ctx, GetContext()->GetScriptEngine().GetExecInfo().GetCurrentPlugin());
     }
     #else
     JSValue ScNetwork::createSocket(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
