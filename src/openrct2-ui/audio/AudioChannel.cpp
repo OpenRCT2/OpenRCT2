@@ -254,7 +254,7 @@ namespace OpenRCT2::Audio
                 size_t readLen = _source->Read(dst, _offset, bytesToRead);
                 if (readLen > 0)
                 {
-                    dst = reinterpret_cast<void*>(reinterpret_cast<uintptr_t>(dst) + readLen);
+                    dst = static_cast<void*>(static_cast<uint8_t*>(dst) + readLen);
                     bytesToRead -= readLen;
                     bytesRead += readLen;
                     _offset += readLen;
