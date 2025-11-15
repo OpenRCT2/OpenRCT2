@@ -130,8 +130,8 @@ namespace OpenRCT2::Scripting
         uint32_t _lastHotReloadCheckTick{};
         HookEngine _hookEngine;
         ScriptExecutionInfo _execInfo;
-        JSValue _sharedStorage{};
-        JSValue _parkStorage{};
+        JSValue _sharedStorage = JS_UNDEFINED;
+        JSValue _parkStorage = JS_UNDEFINED;
 
         uint32_t _lastIntervalTimestamp{};
         std::map<IntervalHandle, ScriptInterval> _intervals;
@@ -204,7 +204,7 @@ namespace OpenRCT2::Scripting
 
         void ClearParkStorage();
         std::string GetParkStorageAsJSON();
-        void SetParkStorageFromJSON(std::string_view value);
+        void SetParkStorageFromJSON(const std::string& value, const std::string& filename);
 
         void Initialise();
         JSContext* CreateContext() const;

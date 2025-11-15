@@ -169,7 +169,7 @@ namespace OpenRCT2::Editor
         GameLoadScripts();
         GameNotifyMapChanged();
 
-#ifdef ENABLE_SCRIPTING
+#ifdef ENABLE_SCRIPTING_REFACTOR
         // Clear the plugin storage before saving
         auto& scriptEngine = GetContext()->GetScriptEngine();
         scriptEngine.ClearParkStorage();

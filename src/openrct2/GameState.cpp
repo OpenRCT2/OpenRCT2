@@ -88,7 +88,7 @@ namespace OpenRCT2
         CheatsReset();
         ClearRestrictedScenery();
 
-#ifdef ENABLE_SCRIPTING
+#ifdef ENABLE_SCRIPTING_REFACTOR
         auto& scriptEngine = GetContext()->GetScriptEngine();
         scriptEngine.ClearParkStorage();
 #endif
