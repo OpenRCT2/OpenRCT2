@@ -506,7 +506,6 @@ ScPlugin Scripting::gScPlugin;
 
 void ScriptEngine::RegisterClasses(JSContext* ctx)
 {
-    // TODO (mber) register JS Classes
     gScAward.Register(ctx);
     gScCheats.Register(ctx);
     gScClimate.Register(ctx);
@@ -587,6 +586,8 @@ ScriptEngine::~ScriptEngine()
 {
     if (_replContext)
     {
+        JS_FreeValue(_replContext, _sharedStorage);
+        JS_FreeValue(_replContext, _parkStorage);
         JS_FreeContext(_replContext);
         _replContext = nullptr;
     }
@@ -1692,15 +1693,15 @@ std::unique_ptr<GameActions::GameAction> ScriptEngine::CreateGameAction(
 
 void ScriptEngine::InitSharedStorage()
 {
-    /* TODO (mber)
-    duk_push_object(_context);
-    _sharedStorage = std::move(DukValue::take_from_stack(_context));
-    */
+    if (_replContext)
+    {
+        JS_FreeValue(_replContext, _sharedStorage);
+        _sharedStorage = JS_NewObject(_replContext);
+    }
 }
 
 void ScriptEngine::LoadSharedStorage()
 {
-    /* TODO (mber)
     InitSharedStorage();
 
     auto path = _env.GetFilePath(PathId::pluginStore);
@@ -1709,11 +1710,18 @@ void ScriptEngine::LoadSharedStorage()
         if (File::Exists(path))
         {
             auto data = File::ReadAllBytes(path);
-            auto result = DuktapeTryParseJson(
-                _context, std::string_view(reinterpret_cast<const char*>(data.data()), data.size()));
-            if (result)
+            // quickjs wants a null terminator not counted in the buf_len
+            data.push_back(0);
+            JSValue result = JS_ParseJSON(
+                _replContext, reinterpret_cast<const char*>(data.data()), data.size() - 1, path.c_str());
+            if (JS_IsObject(result))
             {
-                _sharedStorage = std::move(*result);
+                JS_FreeValue(_replContext, _sharedStorage);
+                _sharedStorage = result;
+            }
+            else
+            {
+                Console::Error::WriteLine("Unable to load plugin shared storage");
             }
         }
     }
@@ -1721,56 +1729,74 @@ void ScriptEngine::LoadSharedStorage()
     {
         Console::Error::WriteLine("Unable to read '%s'", path.c_str());
     }
-    */
 }
 
 void ScriptEngine::SaveSharedStorage()
 {
-    /* TODO (mber)
     auto path = _env.GetFilePath(PathId::pluginStore);
     try
     {
-        _sharedStorage.push();
-        auto json = std::string(duk_json_encode(_context, -1));
-        duk_pop(_context);
-
-        File::WriteAllBytes(path, json.c_str(), json.size());
+        JSValue jsonVal = JS_JSONStringify(_replContext, _sharedStorage, JS_UNDEFINED, JS_UNDEFINED);
+        if (JS_IsString(jsonVal))
+        {
+            // inefficient to copy the whole string out first, but we have to do this to avoid breaking the exception flow
+            std::string json = JSToStdString(_replContext, jsonVal);
+            JS_FreeValue(_replContext, jsonVal);
+            File::WriteAllBytes(path, json.c_str(), json.size());
+            return;
+        }
+        JS_FreeValue(_replContext, jsonVal);
+        Console::Error::WriteLine("Unable to stringify shared storage JSON");
     }
     catch (const std::exception&)
     {
         Console::Error::WriteLine("Unable to write to '%s'", path.c_str());
     }
-    */
 }
 
 void ScriptEngine::ClearParkStorage()
 {
-    /* TODO (mber)
-    duk_push_object(_context);
-    _parkStorage = std::move(DukValue::take_from_stack(_context));
-    */
+    if (_replContext)
+    {
+        JS_FreeValue(_replContext, _parkStorage);
+        _parkStorage = JS_NewObject(_replContext);
+    }
 }
 
 std::string ScriptEngine::GetParkStorageAsJSON()
 {
-    /* TODO (mber)
-    _parkStorage.push();
-    auto json = std::string(duk_json_encode(_context, -1));
-    duk_pop(_context);
-    return json;
-    */
-    return std::string{};
+    std::string retStr{};
+    JSValue jsonVal = JS_JSONStringify(_replContext, _parkStorage, JS_UNDEFINED, JS_UNDEFINED);
+    if (JS_IsString(jsonVal))
+    {
+        retStr = JSToStdString(_replContext, jsonVal);
+    }
+    else
+    {
+        Console::Error::WriteLine("Could not stringify park storage");
+    }
+    JS_FreeValue(_replContext, jsonVal);
+    return retStr;
 }
 
-void ScriptEngine::SetParkStorageFromJSON(std::string_view value)
+void ScriptEngine::SetParkStorageFromJSON(const std::string& value, const std::string& filename)
 {
-    /* TODO (mber)
-    auto result = DuktapeTryParseJson(_context, value);
-    if (result)
+    if (value.empty())
     {
-        _parkStorage = std::move(*result);
+        ClearParkStorage();
+        return;
     }
-    */
+    JSValue result = JS_ParseJSON(_replContext, value.c_str(), value.size(), filename.c_str());
+    if (JS_IsObject(result))
+    {
+        JS_FreeValue(_replContext, _parkStorage);
+        _parkStorage = result;
+    }
+    else
+    {
+        ClearParkStorage();
+        Console::Error::WriteLine("Could not load park storage");
+    }
 }
 
 IntervalHandle ScriptEngine::AllocateHandle()
@@ -1930,7 +1956,10 @@ void ScriptEngine::RemoveSockets(const std::shared_ptr<Plugin>& plugin)
     // We just remove the listeners since they can hold references to the javascript socket objects which will
     // prevent finalisation.
     for (SocketDataBase* socket : _sockets)
-        socket->_eventList.RemoveAllListeners();
+    {
+        if (socket != nullptr)
+            socket->_eventList.RemoveAllListeners();
+    }
     #endif
 }
 

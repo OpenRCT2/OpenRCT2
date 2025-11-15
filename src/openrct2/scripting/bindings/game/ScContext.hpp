@@ -48,69 +48,39 @@ namespace OpenRCT2::Scripting
 
         static JSValue sharedStorage_get(JSContext* ctx, JSValue thisVal)
         {
-            return JS_ThrowPlainError(ctx, "not implemented."); // this requires support in ScriptEngine.cpp
-            /* TODO (mber)
-            auto& scriptEngine = GetContext()->GetScriptEngine();
-            return std::make_shared<ScConfiguration>(ScConfigurationKind::Shared, scriptEngine.GetSharedStorage());
-            */
-        }
-
-        static JSValue GetParkStorageForPlugin(std::string_view pluginName)
-        {
-            return JS_NULL;
-            /* TODO (mber)
-            auto& scriptEngine = GetContext()->GetScriptEngine();
-            auto parkStore = scriptEngine.GetParkStorage();
-            auto pluginStore = parkStore[pluginName];
-
-            // Create if it doesn't exist
-            if (pluginStore.type() != DukValue::Type::OBJECT)
-            {
-                auto* ctx = scriptEngine.GetContext();
-                parkStore.push();
-                duk_push_object(ctx);
-                duk_put_prop_lstring(ctx, -2, pluginName.data(), pluginName.size());
-                duk_pop(ctx);
-
-                pluginStore = parkStore[pluginName];
-            }
-
-            return std::make_shared<ScConfiguration>(ScConfigurationKind::Park, pluginStore);
-            */
+            return gScConfiguration.New(ctx, ScConfigurationKind::Shared);
         }
 
         static JSValue getParkStorage(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
         {
-            return JS_ThrowPlainError(ctx, "not implemented."); // this requires support in ScriptEngine.cpp
-            /* TODO (mber) // dukPluginName is argv[0]
+            JSValue jsPluginName = argv[0];
+
             auto& scriptEngine = GetContext()->GetScriptEngine();
 
-            std::shared_ptr<ScConfiguration> result;
-            if (dukPluginName.type() == DukValue::Type::STRING)
+            JSValue result = JS_UNDEFINED;
+            if (JS_IsString(jsPluginName))
             {
-                auto& pluginName = dukPluginName.as_string();
+                std::string pluginName = JSToStdString(ctx, jsPluginName);
                 if (pluginName.empty())
                 {
-                    duk_error(scriptEngine.GetContext(), DUK_ERR_ERROR, "Plugin name is empty");
+                    return JS_ThrowPlainError(ctx, "Plugin name is empty");
                 }
-                result = GetParkStorageForPlugin(pluginName);
+                result = gScConfiguration.New(ctx, ScConfigurationKind::Park, pluginName);
             }
-            else if (dukPluginName.type() == DukValue::Type::UNDEFINED)
+            else if (JS_IsUndefined(jsPluginName))
             {
-                auto plugin = _execInfo.GetCurrentPlugin();
+                const auto& plugin = scriptEngine.GetExecInfo().GetCurrentPlugin();
                 if (plugin == nullptr)
                 {
-                    duk_error(
-                        scriptEngine.GetContext(), DUK_ERR_ERROR, "Plugin name must be specified when used from console.");
+                    return JS_ThrowPlainError(ctx, "Plugin name must be specified when used from console.");
                 }
-                result = GetParkStorageForPlugin(plugin->GetMetadata().Name);
+                result = gScConfiguration.New(ctx, ScConfigurationKind::Park, plugin->GetMetadata().Name);
             }
             else
             {
-                duk_error(scriptEngine.GetContext(), DUK_ERR_ERROR, "Invalid plugin name.");
+                return JS_ThrowPlainError(ctx, "Invalid plugin name.");
             }
             return result;
-            */
         }
 
         static JSValue mode_get(JSContext* ctx, JSValue thisVal)
