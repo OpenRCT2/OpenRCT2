@@ -66,7 +66,6 @@ namespace OpenRCT2::GameActions
         auto guest = getGameState().entities.TryGetEntity<Guest>(_spriteIndex);
         if (guest == nullptr)
         {
-            LOG_ERROR("Guest entity not found for spriteIndex %u", _spriteIndex);
             return Result(Status::InvalidParameters, STR_CANT_NAME_GUEST, kStringIdNone);
         }
 

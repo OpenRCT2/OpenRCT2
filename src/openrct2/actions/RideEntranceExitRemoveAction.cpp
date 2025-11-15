@@ -72,7 +72,6 @@ namespace OpenRCT2::GameActions
         auto ride = GetRide(_rideIndex);
         if (ride == nullptr)
         {
-            LOG_ERROR("Ride not found for rideIndex %u", _rideIndex.ToUnderlying());
             return Result(Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_RIDE_NOT_FOUND);
         }
 
@@ -101,9 +100,6 @@ namespace OpenRCT2::GameActions
         }
         else if (entranceElement == nullptr)
         {
-            LOG_ERROR(
-                "Entrance/exit element not found. x = %d, y = %d, ride = %u, station = %u", _loc.x, _loc.y,
-                _rideIndex.ToUnderlying(), _stationNum.ToUnderlying());
             return Result(Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_ENTRANCE_ELEMENT_NOT_FOUND);
         }
 

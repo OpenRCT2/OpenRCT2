@@ -82,19 +82,16 @@ namespace OpenRCT2::GameActions
         auto ride = GetRide(_rideIndex);
         if (ride == nullptr)
         {
-            LOG_ERROR("Ride not found for rideIndex %d", _rideIndex.ToUnderlying());
             return Result(Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_ERR_RIDE_NOT_FOUND);
         }
         const auto* rideEntry = GetRideEntryByIndex(ride->subtype);
         if (rideEntry == nullptr)
         {
-            LOG_ERROR("Invalid ride subtype for track placement, rideIndex = %d", _rideIndex.ToUnderlying());
             return Result(Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_UNKNOWN_OBJECT_TYPE);
         }
 
         if (!DirectionValid(_origin.direction))
         {
-            LOG_ERROR("Invalid direction for track placement, direction = %d", _origin.direction);
             return Result(
                 Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_ERR_VALUE_OUT_OF_RANGE);
         }
@@ -106,14 +103,12 @@ namespace OpenRCT2::GameActions
 
         if (_rideType > RIDE_TYPE_COUNT)
         {
-            LOG_ERROR("Invalid ride type for track placement, rideType = %d", _rideType);
             return Result(
                 Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_ERR_VALUE_OUT_OF_RANGE);
         }
 
         if (_brakeSpeed > kMaximumTrackSpeed)
         {
-            LOG_WARNING("Invalid speed for track placement, speed = %d", _brakeSpeed);
             return Result(Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_SPEED_TOO_HIGH);
         }
 
@@ -198,7 +193,6 @@ namespace OpenRCT2::GameActions
 
         if (!CheckMapCapacity(numElements))
         {
-            LOG_ERROR("Not enough free map elements to place track.");
             return Result(
                 Status::NoFreeElements, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_TILE_ELEMENT_LIMIT_REACHED);
         }

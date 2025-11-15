@@ -110,7 +110,6 @@ namespace OpenRCT2::GameActions
 
         if (_direction != kInvalidDirection && !DirectionValid(_direction))
         {
-            LOG_ERROR("Direction invalid. direction = %u", _direction);
             return Result(Status::InvalidParameters, STR_CANT_BUILD_FOOTPATH_HERE, STR_ERR_VALUE_OUT_OF_RANGE);
         }
 

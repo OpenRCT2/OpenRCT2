@@ -51,7 +51,6 @@ namespace OpenRCT2::GameActions
         auto ride = GetRide(_rideIndex);
         if (ride == nullptr)
         {
-            LOG_ERROR("Ride not found for rideIndex %u.", _rideIndex.ToUnderlying());
             return Result(Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_ERR_RIDE_NOT_FOUND);
         }
 
@@ -70,7 +69,6 @@ namespace OpenRCT2::GameActions
 
                 if (!RideIsModeValid(*ride) && !getGameState().cheats.showAllOperatingModes)
                 {
-                    LOG_ERROR("Invalid ride mode: %u", _value);
                     return Result(Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_ERR_VALUE_OUT_OF_RANGE);
                 }
                 break;
@@ -79,28 +77,24 @@ namespace OpenRCT2::GameActions
             case RideSetSetting::MinWaitingTime:
                 if (_value > 250)
                 {
-                    LOG_ERROR("Invalid minimum waiting time: %u", _value);
                     return Result(Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_ERR_VALUE_OUT_OF_RANGE);
                 }
                 break;
             case RideSetSetting::MaxWaitingTime:
                 if (_value > 250)
                 {
-                    LOG_ERROR("Invalid maximum waiting time: %u", _value);
                     return Result(Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_ERR_VALUE_OUT_OF_RANGE);
                 }
                 break;
             case RideSetSetting::Operation:
                 if (!RideIsValidOperationOption(*ride))
                 {
-                    LOG_ERROR("Invalid operation option value: %u", _value);
                     return Result(Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, GetOperationErrorMessage(*ride));
                 }
                 break;
             case RideSetSetting::InspectionInterval:
                 if (_value > RIDE_INSPECTION_NEVER)
                 {
-                    LOG_ERROR("Invalid inspection interval: %u", _value);
                     return Result(Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_ERR_VALUE_OUT_OF_RANGE);
                 }
                 break;
@@ -112,7 +106,6 @@ namespace OpenRCT2::GameActions
                 auto musicObj = objManager.GetLoadedObject<MusicObject>(_value);
                 if (musicObj == nullptr)
                 {
-                    LOG_ERROR("Invalid music style: %u", _value);
                     return Result(Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_ERR_VALUE_OUT_OF_RANGE);
                 }
                 break;
@@ -120,7 +113,6 @@ namespace OpenRCT2::GameActions
             case RideSetSetting::LiftHillSpeed:
                 if (!RideIsValidLiftHillSpeed(*ride))
                 {
-                    LOG_ERROR("Invalid lift hill speed: %u", _value);
                     return Result(Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_ERR_VALUE_OUT_OF_RANGE);
                 }
                 break;
@@ -134,19 +126,16 @@ namespace OpenRCT2::GameActions
 
                 if (!RideIsValidNumCircuits())
                 {
-                    LOG_ERROR("Invalid number of circuits: %u", _value);
                     return Result(Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_ERR_VALUE_OUT_OF_RANGE);
                 }
                 break;
             case RideSetSetting::RideType:
                 if (!getGameState().cheats.allowArbitraryRideTypeChanges)
                 {
-                    LOG_ERROR("Arbitrary ride type changes not allowed.");
                     return Result(Status::Disallowed, STR_CANT_CHANGE_OPERATING_MODE, kStringIdNone);
                 }
                 break;
             default:
-                LOG_ERROR("Invalid ride setting %u", static_cast<uint8_t>(_setting));
                 return Result(Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_ERR_VALUE_OUT_OF_RANGE);
         }
 

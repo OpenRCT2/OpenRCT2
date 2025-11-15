@@ -42,14 +42,12 @@ namespace OpenRCT2::GameActions
     {
         if (_spriteId.ToUnderlying() >= kMaxEntities || _spriteId.IsNull())
         {
-            LOG_ERROR("Invalid spriteId %u", _spriteId);
             return Result(Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
         }
 
         auto staff = getGameState().entities.TryGetEntity<Staff>(_spriteId);
         if (staff == nullptr)
         {
-            LOG_ERROR("Staff entity not found for spriteId %u", _spriteId);
             return Result(Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_STAFF_NOT_FOUND);
         }
 

@@ -67,7 +67,6 @@ namespace OpenRCT2::GameActions
 
         if (!MapCheckCapacityAndReorganise(_loc))
         {
-            LOG_ERROR("No free map elements.");
             return Result(Status::NoFreeElements, STR_CANT_POSITION_THIS_HERE, STR_TILE_ELEMENT_LIMIT_REACHED);
         }
 
@@ -92,14 +91,12 @@ namespace OpenRCT2::GameActions
 
         if (HasReachedBannerLimit())
         {
-            LOG_ERROR("No free banners available");
             return Result(Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_TOO_MANY_BANNERS_IN_GAME);
         }
 
         auto* bannerEntry = OpenRCT2::ObjectManager::GetObjectEntry<BannerSceneryEntry>(_bannerType);
         if (bannerEntry == nullptr)
         {
-            LOG_ERROR("Banner entry not found for bannerType %u", _bannerType);
             return Result(Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_ERR_BANNER_ELEMENT_NOT_FOUND);
         }
         res.Cost = bannerEntry->price;

@@ -79,7 +79,6 @@ namespace OpenRCT2::GameActions
         auto tileElement = MapGetFootpathElement(_loc);
         if (tileElement == nullptr)
         {
-            LOG_ERROR("No path element at x = %d, y = %d, z = %d", _loc.x, _loc.y, _loc.z);
             return Result(Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_ERR_PATH_ELEMENT_NOT_FOUND);
         }
 
@@ -100,7 +99,6 @@ namespace OpenRCT2::GameActions
         auto* pathAdditionEntry = ObjectManager::GetObjectEntry<PathAdditionEntry>(_entryIndex);
         if (pathAdditionEntry == nullptr)
         {
-            LOG_ERROR("Unknown footpath addition entry for entryIndex %d", _entryIndex);
             return Result(Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_UNKNOWN_OBJECT_TYPE);
         }
         uint16_t sceneryFlags = pathAdditionEntry->flags;

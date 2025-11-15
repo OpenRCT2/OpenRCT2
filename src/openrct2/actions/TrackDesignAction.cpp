@@ -92,7 +92,6 @@ namespace OpenRCT2::GameActions
         auto ride = GetRide(rideIndex);
         if (ride == nullptr)
         {
-            LOG_ERROR("Ride not found for rideIndex %d", rideIndex);
             return Result(Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_ERR_RIDE_NOT_FOUND);
         }
 

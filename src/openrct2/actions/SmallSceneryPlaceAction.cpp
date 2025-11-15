@@ -125,7 +125,6 @@ namespace OpenRCT2::GameActions
         auto* sceneryEntry = ObjectManager::GetObjectEntry<SmallSceneryEntry>(_sceneryType);
         if (sceneryEntry == nullptr)
         {
-            LOG_ERROR("Small scenery object entry not found for sceneryType %u", _sceneryType);
             return Result(Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_UNKNOWN_OBJECT_TYPE);
         }
 

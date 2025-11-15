@@ -43,7 +43,6 @@ namespace OpenRCT2::GameActions
         auto balloon = gameState.entities.TryGetEntity<Balloon>(_spriteIndex);
         if (balloon == nullptr)
         {
-            LOG_ERROR("Balloon not found for spriteIndex %u", _spriteIndex);
             return Result(Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_BALLOON_NOT_FOUND);
         }
         return Result();
