@@ -40,9 +40,9 @@ void AudioMixer::Init(const char* device)
 
     SDL_AudioSpec have;
     _deviceId = SDL_OpenAudioDevice(device, 0, &want, &have, 0);
-    _format.format = have.format;
-    _format.channels = have.channels;
-    _format.freq = have.freq;
+    _outputFormat.format = have.format;
+    _outputFormat.channels = have.channels;
+    _outputFormat.freq = have.freq;
 
     SDL_PauseAudioDevice(_deviceId, 0);
 }
@@ -121,7 +121,7 @@ void AudioMixer::RemoveReleasedSources()
 
 const AudioFormat& AudioMixer::GetFormat() const
 {
-    return _format;
+    return _outputFormat;
 }
 
 void AudioMixer::GetNextAudioChunk(uint8_t* dst, size_t length)
@@ -173,10 +173,10 @@ void AudioMixer::UpdateAdjustedSound()
 
 void AudioMixer::MixChannel(ISDLAudioChannel* channel, uint8_t* data, size_t length)
 {
-    int32_t byteRate = _format.GetByteRate();
+    int32_t byteRate = _outputFormat.GetByteRate();
     auto numSamples = static_cast<int32_t>(length / byteRate);
     double rate = 1;
-    if (_format.format == AUDIO_S16SYS)
+    if (_outputFormat.format == AUDIO_S16SYS)
     {
         rate = channel->GetRate();
     }
@@ -185,11 +185,11 @@ void AudioMixer::MixChannel(ISDLAudioChannel* channel, uint8_t* data, size_t len
     SDL_AudioCVT cvt;
     cvt.len_ratio = 1;
     AudioFormat streamformat = channel->GetFormat();
-    if (streamformat != _format)
+    if (streamformat != _outputFormat)
     {
         if (SDL_BuildAudioCVT(
-                &cvt, streamformat.format, streamformat.channels, streamformat.freq, _format.format, _format.channels,
-                _format.freq)
+                &cvt, streamformat.format, streamformat.channels, streamformat.freq, _outputFormat.format,
+                _outputFormat.channels, _outputFormat.freq)
             == -1)
         {
             // Unable to convert channel data
@@ -232,8 +232,8 @@ void AudioMixer::MixChannel(ISDLAudioChannel* channel, uint8_t* data, size_t len
         int32_t outRate = numSamples;
         if (bytesRead != readLength)
         {
-            inRate = _format.freq;
-            outRate = _format.freq * (1 / rate);
+            inRate = _outputFormat.freq;
+            outRate = _outputFormat.freq * (1 / rate);
         }
         _effectBuffer.resize(length);
         bufferLen = ApplyResample(channel, buffer, static_cast<int32_t>(bufferLen / byteRate), numSamples, inRate, outRate);
@@ -246,25 +246,26 @@ void AudioMixer::MixChannel(ISDLAudioChannel* channel, uint8_t* data, size_t len
 
     // Finally mix on to destination buffer
     size_t dstLength = std::min(length, bufferLen);
-    SDL_MixAudioFormat(data, static_cast<const uint8_t*>(buffer), _format.format, static_cast<uint32_t>(dstLength), mixVolume);
+    SDL_MixAudioFormat(
+        data, static_cast<const uint8_t*>(buffer), _outputFormat.format, static_cast<uint32_t>(dstLength), mixVolume);
 
     channel->UpdateOldVolume();
 }
 
 /**
  * Resample the given buffer into _effectBuffer.
- * Assumes that srcBuffer is the same format as _format.
+ * Assumes that srcBuffer is the same format as _outputFormat.
  */
 size_t AudioMixer::ApplyResample(
     ISDLAudioChannel* channel, const void* srcBuffer, int32_t srcSamples, int32_t dstSamples, int32_t inRate, int32_t outRate)
 {
-    int32_t byteRate = _format.GetByteRate();
+    int32_t byteRate = _outputFormat.GetByteRate();
 
     // Create resampler
     SpeexResamplerState* resampler = channel->GetResampler();
     if (resampler == nullptr)
     {
-        resampler = speex_resampler_init(_format.channels, _format.freq, _format.freq, 0, nullptr);
+        resampler = speex_resampler_init(_outputFormat.channels, _outputFormat.freq, _outputFormat.freq, 0, nullptr);
         channel->SetResampler(resampler);
     }
     speex_resampler_set_rate(resampler, inRate, outRate);
@@ -280,9 +281,9 @@ size_t AudioMixer::ApplyResample(
 
 void AudioMixer::ApplyPan(const IAudioChannel* channel, void* buffer, size_t len, size_t sampleSize)
 {
-    if (channel->GetPan() != 0.5f && _format.channels == 2)
+    if (channel->GetPan() != 0.5f && _outputFormat.channels == 2)
     {
-        switch (_format.format)
+        switch (_outputFormat.format)
         {
             case AUDIO_S16SYS:
                 EffectPanS16(channel, static_cast<int16_t*>(buffer), static_cast<int32_t>(len / sampleSize));
@@ -331,8 +332,8 @@ int32_t AudioMixer::ApplyVolume(const IAudioChannel* channel, void* buffer, size
         mixVolume = kMixerVolumeMax;
 
         // Fade between volume levels to smooth out sound and minimize clicks from sudden volume changes
-        int32_t fadeLength = static_cast<int32_t>(len) / _format.BytesPerSample();
-        switch (_format.format)
+        int32_t fadeLength = static_cast<int32_t>(len) / _outputFormat.BytesPerSample();
+        switch (_outputFormat.format)
         {
             case AUDIO_S16SYS:
                 EffectFadeS16(static_cast<int16_t*>(buffer), fadeLength, startVolume, endVolume);
