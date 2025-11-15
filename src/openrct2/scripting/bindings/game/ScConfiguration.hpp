@@ -34,8 +34,45 @@ namespace OpenRCT2::Scripting
         struct ConfigurationData
         {
             ScConfigurationKind _kind;
-            JSValue _backingObject;
+            std::string _pluginName;
         };
+
+        static JSValue GetParkStorageForPlugin(JSContext* ctx, const std::string& pluginName)
+        {
+            auto& scriptEngine = GetContext()->GetScriptEngine();
+            JSValue parkStore = scriptEngine.GetParkStorage();
+            JSValue pluginStore = JS_GetPropertyStr(ctx, parkStore, pluginName.c_str());
+
+            // Create if it doesn't exist
+            if (!JS_IsObject(pluginStore))
+            {
+                JS_FreeValue(ctx, pluginStore);
+                pluginStore = JS_NewObject(ctx);
+                JS_SetPropertyStr(ctx, parkStore, pluginName.c_str(), JS_DupValue(ctx, pluginStore));
+            }
+
+            return pluginStore;
+        }
+
+        static JSValue GetStoreForConfigType(JSContext* ctx, const ConfigurationData* data)
+        {
+            switch (data->_kind)
+            {
+                case ScConfigurationKind::Park:
+                {
+                    return GetParkStorageForPlugin(ctx, data->_pluginName);
+                }
+                case ScConfigurationKind::Shared:
+                {
+                    auto& scriptEngine = GetContext()->GetScriptEngine();
+                    return JS_DupValue(ctx, scriptEngine.GetSharedStorage());
+                }
+                case ScConfigurationKind::User:
+                default:
+                    Guard::Fail("Invalid ScConfigurationKind");
+                    return JS_UNDEFINED;
+            }
+        }
 
         static std::pair<std::string_view, std::string_view> GetNextNamespace(std::string_view input)
         {
@@ -55,9 +92,9 @@ namespace OpenRCT2::Scripting
                                                  : std::make_pair(input.substr(0, pos), input.substr(pos + 1));
         }
 
-        static JSValue GetNamespaceObject(JSContext* ctx, JSValue rootObj, std::string_view ns)
+        static JSValue GetNamespaceObject(JSContext* ctx, const ConfigurationData* data, std::string_view ns)
         {
-            auto store = JS_DupValue(ctx, rootObj);
+            auto store = GetStoreForConfigType(ctx, data);
             if (!ns.empty())
             {
                 auto k = ns;
@@ -75,9 +112,9 @@ namespace OpenRCT2::Scripting
             return store;
         }
 
-        static JSValue GetOrCreateNamespaceObject(JSContext* ctx, JSValue rootObj, std::string_view ns)
+        static JSValue GetOrCreateNamespaceObject(JSContext* ctx, const ConfigurationData* data, std::string_view ns)
         {
-            auto store = JS_DupValue(ctx, rootObj);
+            auto store = GetStoreForConfigType(ctx, data);
             if (!ns.empty())
             {
                 std::string_view k = ns;
@@ -169,7 +206,7 @@ namespace OpenRCT2::Scripting
                 }
                 else
                 {
-                    auto obj = GetNamespaceObject(ctx, data->_backingObject, ns);
+                    auto obj = GetNamespaceObject(ctx, data, ns);
                     if (!JS_IsObject(obj))
                     {
                         JS_FreeValue(ctx, obj);
@@ -219,7 +256,7 @@ namespace OpenRCT2::Scripting
                 }
                 else
                 {
-                    auto obj = GetNamespaceObject(ctx, data->_backingObject, ns);
+                    auto obj = GetNamespaceObject(ctx, data, ns);
                     if (JS_IsObject(obj))
                     {
                         auto val = JS_GetPropertyStr(ctx, obj, std::string(n).c_str());
@@ -280,7 +317,7 @@ namespace OpenRCT2::Scripting
                 }
                 else
                 {
-                    auto obj = GetOrCreateNamespaceObject(ctx, data->_backingObject, ns);
+                    auto obj = GetOrCreateNamespaceObject(ctx, data, ns);
                     JS_SetPropertyStr(ctx, obj, std::string(n).c_str(), JS_DupValue(ctx, value));
                     JS_FreeValue(ctx, obj);
 
@@ -313,14 +350,13 @@ namespace OpenRCT2::Scripting
         // context.configuration
         JSValue New(JSContext* ctx)
         {
-            return MakeWithOpaque(ctx, funcs, new ConfigurationData{ ScConfigurationKind::User, JS_UNDEFINED });
+            return MakeWithOpaque(ctx, funcs, new ConfigurationData{ ScConfigurationKind::User, {} });
         }
 
         // context.sharedStorage / context.getParkStorage
-        JSValue New(JSContext* ctx, ScConfigurationKind kind, JSValue backingObject)
+        JSValue New(JSContext* ctx, ScConfigurationKind kind, std::string_view pluginName = {})
         {
-            // In this instance we don't dup backingObject since we assume it is kept alive by the ScriptEngine
-            return MakeWithOpaque(ctx, funcs, new ConfigurationData{ kind, backingObject });
+            return MakeWithOpaque(ctx, funcs, new ConfigurationData{ kind, std::string(pluginName) });
         }
 
         void Register(JSContext* ctx)
