@@ -224,8 +224,14 @@ namespace OpenRCT2::Ui::Windows
         int16_t _unkF64F0A{ 0 };
 
         CoordsXY _dragStartPos{};
+        /**
+         * When placing fences in the air using Shift, the user may shift their mouse to the left or right.
+         * We save this position to avoid detecting a wall drag where there isn’t one.
+         */
+        CoordsXY _dragStartHoverPos{};
         CoordsXY _dragEndPos{};
         uint8_t _startEdge{};
+        GameActions::Result _lastProvisionalError{};
         bool _inDragMode = false;
         std::vector<ProvisionalWallTile> _provisionalTiles{};
 
@@ -2734,6 +2740,8 @@ namespace OpenRCT2::Ui::Windows
             if (gridPos.IsNull())
                 return;
 
+            gridPos = gridPos.ToTileStart();
+
             if (Config::Get().general.virtualFloorStyle != VirtualFloorStyles::Off)
             {
                 VirtualFloorSetHeight(gSceneryPlaceZ);
@@ -3044,6 +3052,31 @@ namespace OpenRCT2::Ui::Windows
             auto res = GameActions::Execute(&footpathAdditionPlaceAction, gameState);
         }
 
+        std::optional<CoordsXY> getMapPosFromScreenPos(const ScreenCoordsXY& screenCoords)
+        {
+            CoordsXY coords;
+            if (gSceneryPlaceZ > 0)
+            {
+                auto candidate = ScreenGetMapXYWithZ(screenCoords, gSceneryPlaceZ);
+                if (!candidate.has_value())
+                    return std::nullopt;
+
+                coords = *candidate;
+            }
+            else
+            {
+                auto info = GetMapCoordinatesFromPos(screenCoords, EnumsToFlags(ViewportInteractionItem::terrain));
+
+                if (info.interactionType == ViewportInteractionItem::none)
+                    return std::nullopt;
+
+                coords = info.Loc;
+            }
+
+            coords = coords.ToTileStart();
+            return coords;
+        }
+
         void onToolDownWall(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords, uint16_t selectedScenery)
         {
             CoordsXY gridPos;
@@ -3087,6 +3120,9 @@ namespace OpenRCT2::Ui::Windows
 
             _inDragMode = true;
             _dragStartPos = gridPos;
+            auto hoverPos = getMapPosFromScreenPos(screenCoords);
+            _dragStartHoverPos = hoverPos.has_value() ? *hoverPos : gridPos;
+            _dragEndPos = {};
             _startEdge = edges;
             gMapSelectFlags.set(MapSelectFlag::enable);
             gMapSelectType = getMapSelectEdge(_startEdge);
@@ -3095,40 +3131,31 @@ namespace OpenRCT2::Ui::Windows
 
         void dragWallSetEndPos(const ScreenCoordsXY& screenCoords)
         {
-            CoordsXY endCoords;
-            if (gSceneryPlaceZ > 0)
+            auto endCoords = getMapPosFromScreenPos(screenCoords);
+            if (!endCoords.has_value())
+                return;
+
+            if (endCoords == _dragStartHoverPos)
             {
-                auto candidate = ScreenGetMapXYWithZ(screenCoords, gSceneryPlaceZ);
-                if (!candidate.has_value())
-                    return;
-
-                endCoords = *candidate;
-            }
-            else
-            {
-                auto info = GetMapCoordinatesFromPos(screenCoords, EnumsToFlags(ViewportInteractionItem::terrain));
-
-                if (info.interactionType == ViewportInteractionItem::none)
-                    return;
-
-                endCoords = info.Loc;
+                endCoords = _dragStartPos;
             }
 
             const bool onXAxis = (_startEdge == 1 || _startEdge == 3);
             if (onXAxis)
             {
-                endCoords.y = _dragStartPos.y;
+                endCoords->y = _dragStartPos.y;
             }
             else
             {
-                endCoords.x = _dragStartPos.x;
+                endCoords->x = _dragStartPos.x;
             }
 
-            if (endCoords != _dragEndPos)
+            if (*endCoords != _dragEndPos)
             {
-                setMapSelectRange({ _dragStartPos, endCoords });
+                setMapSelectRange({ _dragStartPos, *endCoords });
                 updateProvisionalTiles();
             }
+            _dragEndPos = *endCoords;
         }
 
         void removeProvisionalTilesFromMap()
@@ -3152,6 +3179,7 @@ namespace OpenRCT2::Ui::Windows
             removeProvisionalTilesFromMap();
 
             _provisionalTiles.clear();
+            _lastProvisionalError = {};
 
             auto mapRange = getMapSelectRange();
             for (auto y = mapRange.GetY1(); y <= mapRange.GetY2(); y += kCoordsXYStep)
@@ -3168,6 +3196,10 @@ namespace OpenRCT2::Ui::Windows
                     {
                         const auto placementData = result.GetData<GameActions::WallPlaceActionResult>();
                         _provisionalTiles.push_back({ CoordsXYZD(x, y, gSceneryPlaceZ, _startEdge), placementData.BaseHeight });
+                    }
+                    else
+                    {
+                        _lastProvisionalError = result;
                     }
                 }
             }
@@ -3204,6 +3236,22 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
+            if (_provisionalTiles.empty())
+            {
+                auto z = gSceneryPlaceZ > 0 ? gSceneryPlaceZ : TileElementHeight(_dragStartPos);
+                Audio::Play3D(Audio::SoundId::error, { _dragStartPos, z });
+
+                if (_lastProvisionalError.Error != GameActions::Status::Ok)
+                {
+                    auto windowManager = Ui::GetWindowManager();
+                    windowManager->ShowError(
+                        _lastProvisionalError.GetErrorTitle(), _lastProvisionalError.GetErrorMessage(), true);
+                }
+
+                _inDragMode = false;
+                return;
+            }
+
             auto mapRange = getMapSelectRange();
             bool anySuccessful = false;
             CoordsXYZ lastLocation = { mapRange.Point2, gSceneryPlaceZ };
@@ -3223,6 +3271,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             _provisionalTiles.clear();
+            _inDragMode = false;
 
             if (anySuccessful)
             {
