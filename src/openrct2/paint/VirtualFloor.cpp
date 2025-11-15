@@ -138,7 +138,8 @@ void VirtualFloorInvalidate(const bool alwaysInvalidate)
     }
 
     // Do not invalidate new region if floor hasn't moved.
-    if (min_position == _virtualFloorLastMinPos && _virtualFloorLastMinPos.z == _virtualFloorHeight)
+    if (min_position == _virtualFloorLastMinPos && max_position == _virtualFloorLastMaxPos
+        && _virtualFloorLastMinPos.z == _virtualFloorHeight)
     {
         return;
     }
