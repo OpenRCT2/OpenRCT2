@@ -305,7 +305,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-#ifdef ENABLE_SCRIPTING
+#ifdef ENABLE_SCRIPTING_REFACTOR
             // Clear the plugin storage before saving
             auto& scriptEngine = GetContext()->GetScriptEngine();
             scriptEngine.ClearParkStorage();
