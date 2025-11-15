@@ -33,7 +33,7 @@ namespace OpenRCT2::Audio
         std::vector<std::unique_ptr<SDLAudioSource>> _sources;
 
         SDL_AudioDeviceID _deviceId = 0;
-        AudioFormat _format = {};
+        AudioFormat _outputFormat = {};
         std::list<std::shared_ptr<ISDLAudioChannel>> _channels;
         float _volume = 1.0f;
         float _adjustSoundVolume = 0.0f;
@@ -67,7 +67,7 @@ namespace OpenRCT2::Audio
 
         /**
          * Resample the given buffer into _effectBuffer.
-         * Assumes that srcBuffer is the same format as _format.
+         * Assumes that srcBuffer is the same format as _outputFormat.
          */
         size_t ApplyResample(
             ISDLAudioChannel* channel, const void* srcBuffer, int32_t srcSamples, int32_t dstSamples, int32_t inRate,
