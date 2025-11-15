@@ -1584,7 +1584,7 @@ namespace OpenRCT2::Ui::Windows
 
                 auto screenPos = windowPos + ScreenCoordsXY{ viewWidget.left + 1, viewWidget.top + 1 };
                 int32_t viewWidth = viewWidget.width() - 2;
-                int32_t viewHeight = viewWidget.height() - 1;
+                int32_t viewHeight = viewWidget.height() - 2;
 
                 ViewportCreate(*this, screenPos, viewWidth, viewHeight, focus.value());
 
@@ -1761,8 +1761,8 @@ namespace OpenRCT2::Ui::Windows
             }
 
             WindowDropdownShowTextCustomWidth(
-                { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
-                colours[1], 0, 0, numItems, widget->right - dropdownWidget->left);
+                { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height(), colours[1],
+                0, 0, numItems, widget->right - dropdownWidget->left);
 
             // First item
             gDropdown.items[0] = Dropdown::MenuLabel(STR_OVERALL_VIEW);
@@ -1868,7 +1868,7 @@ namespace OpenRCT2::Ui::Windows
             SetDropdown(info, RideStatus::testing, STR_TEST_RIDE);
             SetDropdown(info, RideStatus::open, STR_OPEN_RIDE);
             WindowDropdownShowText(
-                { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height() + 1, colours[1], 0, info.NumItems);
+                { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height(), colours[1], 0, info.NumItems);
             if (info.CheckedIndex != -1)
             {
                 gDropdown.items[info.CheckedIndex].setChecked(true);
@@ -1927,8 +1927,8 @@ namespace OpenRCT2::Ui::Windows
 
             Widget* dropdownWidget = widget - 1;
             WindowDropdownShowText(
-                { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
-                colours[1], Dropdown::Flag::StayOpen, RIDE_TYPE_COUNT);
+                { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height(), colours[1],
+                Dropdown::Flag::StayOpen, RIDE_TYPE_COUNT);
 
             // Find the current ride type in the ordered list.
             int32_t pos = 0;
@@ -1956,7 +1956,7 @@ namespace OpenRCT2::Ui::Windows
             gDropdown.items[1] = Dropdown::PlainMenuLabel(STR_FOLLOW_SUBJECT_TIP);
 
             WindowDropdownShowText(
-                { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height() + 1, colours[1], 0, 2);
+                { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height(), colours[1], 0, 2);
             gDropdown.defaultIndex = 0;
             if (!ride->getRideTypeDescriptor().HasFlag(RtdFlag::hasTrack) || _viewIndex == 0 || _viewIndex > ride->numTrains)
             {
@@ -2074,8 +2074,8 @@ namespace OpenRCT2::Ui::Windows
 
             Widget* dropdownWidget = widget - 1;
             WindowDropdownShowTextCustomWidth(
-                { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
-                colours[1], 0, Dropdown::Flag::StayOpen, numItems, dropdownWidget->width() - 1);
+                { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height(), colours[1],
+                0, Dropdown::Flag::StayOpen, numItems, dropdownWidget->width() - 1);
 
             // Find the current vehicle type in the ordered list.
             int32_t pos = 0;
@@ -2135,8 +2135,8 @@ namespace OpenRCT2::Ui::Windows
             }
 
             WindowDropdownShowTextCustomWidth(
-                { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
-                colours[1], 0, Dropdown::Flag::StayOpen, _entranceDropdownData.size(),
+                { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height(), colours[1],
+                0, Dropdown::Flag::StayOpen, _entranceDropdownData.size(),
                 widgets[WIDX_ENTRANCE_STYLE_DROPDOWN].right - dropdownWidget->left);
         }
 
@@ -2947,7 +2947,7 @@ namespace OpenRCT2::Ui::Windows
 
             Widget* widget = &widgets[WIDX_VEHICLE_TRAINS_PREVIEW];
             int32_t startX = std::max(2, (widget->width() - 1 - ((ride->numTrains - 1) * 36)) / 2 - 25);
-            int32_t startY = widget->height() - 4;
+            int32_t startY = widget->height() - 5;
 
             bool isReversed = ride->hasLifecycleFlag(RIDE_LIFECYCLE_REVERSED_TRAINS);
             int32_t carIndex = (isReversed) ? ride->numCarsPerTrain - 1 : 0;
@@ -3107,8 +3107,8 @@ namespace OpenRCT2::Ui::Windows
             }
 
             WindowDropdownShowTextCustomWidth(
-                { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
-                colours[1], 0, Dropdown::Flag::StayOpen, numAvailableModes, widget->right - dropdownWidget->left);
+                { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height(), colours[1],
+                0, Dropdown::Flag::StayOpen, numAvailableModes, widget->right - dropdownWidget->left);
 
             if (checkedIndex != -1)
             {
@@ -3128,8 +3128,8 @@ namespace OpenRCT2::Ui::Windows
                 gDropdown.items[i] = Dropdown::MenuLabel(VehicleLoadNames[i]);
             }
             WindowDropdownShowTextCustomWidth(
-                { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
-                colours[1], 0, Dropdown::Flag::StayOpen, 5, widget->right - dropdownWidget->left);
+                { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height(), colours[1],
+                0, Dropdown::Flag::StayOpen, 5, widget->right - dropdownWidget->left);
 
             gDropdown.items[ride->departFlags & RIDE_DEPART_WAIT_FOR_LOAD_MASK].setChecked(true);
         }
@@ -3782,7 +3782,7 @@ namespace OpenRCT2::Ui::Windows
                         gDropdown.items[i] = Dropdown::MenuLabel(kRideInspectionIntervalNames[i]);
                     }
                     WindowDropdownShowTextCustomWidth(
-                        { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
+                        { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height(),
                         colours[1], 0, Dropdown::Flag::StayOpen, 7, widgets[widgetIndex].right - dropdownWidget->left);
 
                     gDropdown.items[ride->inspectionInterval].setChecked(true);
@@ -3817,8 +3817,8 @@ namespace OpenRCT2::Ui::Windows
                     else
                     {
                         WindowDropdownShowText(
-                            { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top },
-                            dropdownWidget->height() + 1, colours[1], Dropdown::Flag::StayOpen, numItems);
+                            { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height(),
+                            colours[1], Dropdown::Flag::StayOpen, numItems);
 
                         numItems = 1;
                         int32_t breakdownReason = ride->breakdownReasonPending;
@@ -4315,7 +4315,7 @@ namespace OpenRCT2::Ui::Windows
                     }
 
                     WindowDropdownShowTextCustomWidth(
-                        { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
+                        { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height(),
                         colours[1], 0, Dropdown::Flag::StayOpen, 4, widgets[widgetIndex].right - dropdownWidget->left);
 
                     gDropdown.items[colourSchemeIndex].setChecked(true);
@@ -4341,7 +4341,7 @@ namespace OpenRCT2::Ui::Windows
                     }
 
                     WindowDropdownShowTextCustomWidth(
-                        { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
+                        { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height(),
                         colours[1], 0, Dropdown::Flag::StayOpen, 4, widgets[widgetIndex].right - dropdownWidget->left);
 
                     gDropdown.items[ride->trackColours[colourSchemeIndex].supports].setChecked(true);
@@ -4368,7 +4368,7 @@ namespace OpenRCT2::Ui::Windows
                     }
 
                     WindowDropdownShowTextCustomWidth(
-                        { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
+                        { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height(),
                         colours[1], 0, Dropdown::Flag::StayOpen, numDropdownItems,
                         widgets[widgetIndex].right - dropdownWidget->left);
 
@@ -4407,7 +4407,7 @@ namespace OpenRCT2::Ui::Windows
                     }
 
                     WindowDropdownShowTextCustomWidth(
-                        { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
+                        { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height(),
                         colours[1], 0, Dropdown::Flag::StayOpen, dropdownIndex,
                         widgets[widgetIndex].right - dropdownWidget->left);
 
@@ -4879,7 +4879,7 @@ namespace OpenRCT2::Ui::Windows
                 if (ClipDrawPixelInfo(
                         clippedDpi, rt,
                         windowPos + ScreenCoordsXY{ entrancePreviewWidget.left + 1, entrancePreviewWidget.top + 1 },
-                        entrancePreviewWidget.width() - 1, entrancePreviewWidget.height()))
+                        entrancePreviewWidget.width() - 1, entrancePreviewWidget.height() - 1))
                 {
                     GfxClear(clippedDpi, PaletteIndex::pi12);
 
@@ -4925,7 +4925,7 @@ namespace OpenRCT2::Ui::Windows
             Rectangle::fill(rt, { { rt.x, rt.y }, { rt.x + rt.width - 1, rt.y + rt.height - 1 } }, PaletteIndex::pi12);
 
             // ?
-            auto screenCoords = ScreenCoordsXY{ vehiclePreviewWidget->width() / 2, vehiclePreviewWidget->height() - 15 };
+            auto screenCoords = ScreenCoordsXY{ vehiclePreviewWidget->width() / 2, vehiclePreviewWidget->height() - 16 };
 
             // ?
             auto trainCarIndex = ride->vehicleColourSettings == VehicleColourSettings::perCar ? _vehicleIndex
@@ -5077,8 +5077,8 @@ namespace OpenRCT2::Ui::Windows
             }
 
             WindowDropdownShowTextCustomWidth(
-                { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
-                colours[1], 0, Dropdown::Flag::StayOpen, numItems, widgets[widgetIndex].right - dropdownWidget->left);
+                { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height(), colours[1],
+                0, Dropdown::Flag::StayOpen, numItems, widgets[widgetIndex].right - dropdownWidget->left);
 
             // Set currently checked item
             for (size_t i = 0; i < numItems; i++)
@@ -5125,7 +5125,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Figure out minimum size
             ScreenSize size{};
-            size.height = widgets[WIDX_MUSIC_DATA].height() - 2;
+            size.height = widgets[WIDX_MUSIC_DATA].height() - 3;
             size.width = widgets[WIDX_MUSIC_DATA].width() - 3;
 
             auto ride = GetRide(rideId);
@@ -5241,7 +5241,7 @@ namespace OpenRCT2::Ui::Windows
             // Figure out where the image should go
             const auto& previewWidget = widgets[WIDX_MUSIC_IMAGE];
             int32_t clipWidth = previewWidget.width() - 2;
-            int32_t clipHeight = previewWidget.height() - 1;
+            int32_t clipHeight = previewWidget.height() - 2;
 
             // Draw the preview image
             RenderTarget clipDPI;
@@ -5459,7 +5459,7 @@ namespace OpenRCT2::Ui::Windows
 
             WindowDropdownShowText(
                 { windowPos.x + widgets[widgetIndex].left, windowPos.y + widgets[widgetIndex].top },
-                widgets[widgetIndex].height() + 1, colours[1], Dropdown::Flag::StayOpen, 2);
+                widgets[widgetIndex].height(), colours[1], Dropdown::Flag::StayOpen, 2);
             gDropdown.defaultIndex = 0;
             if (!ride->getRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
             {
@@ -6060,7 +6060,7 @@ namespace OpenRCT2::Ui::Windows
             if (measurement == nullptr)
             {
                 // No measurement message
-                ScreenCoordsXY stringCoords(widget->width() / 2, widget->height() / 2 - 5);
+                ScreenCoordsXY stringCoords(widget->width() / 2, widget->height() - 1 / 2 - 5);
                 int32_t txtWidth = widget->width() - 3;
                 DrawTextWrapped(rt, stringCoords, txtWidth, message.str, message.args, { TextAlignment::centre });
                 return;
@@ -6099,7 +6099,7 @@ namespace OpenRCT2::Ui::Windows
                 yUnit -= kMapBaseZ * 3;
             }
 
-            for (int32_t y = widget->height() - 13; y >= 8; y -= yInterval, yUnit += yUnitInterval)
+            for (int32_t y = widget->height() - 14; y >= 8; y -= yInterval, yUnit += yUnitInterval)
             {
                 // Minor / major line
                 int32_t colour = yUnit == 0 ? lightColour : darkColour;
@@ -6170,8 +6170,8 @@ namespace OpenRCT2::Ui::Windows
                 }
 
                 // Adjust line to match graph widget position.
-                firstPoint = widget->height() - firstPoint - 13;
-                secondPoint = widget->height() - secondPoint - 13;
+                firstPoint = widget->height() - firstPoint - 14;
+                secondPoint = widget->height() - secondPoint - 14;
                 if (firstPoint > secondPoint)
                 {
                     std::swap(firstPoint, secondPoint);
@@ -6180,8 +6180,8 @@ namespace OpenRCT2::Ui::Windows
                 // Adjust threshold line position as well
                 if (listType == GRAPH_VERTICAL || listType == GRAPH_LATERAL)
                 {
-                    intensityThresholdPositive = widget->height() - intensityThresholdPositive - 13;
-                    intensityThresholdNegative = widget->height() - intensityThresholdNegative - 13;
+                    intensityThresholdPositive = widget->height() - intensityThresholdPositive - 14;
+                    intensityThresholdNegative = widget->height() - intensityThresholdNegative - 14;
                 }
 
                 const bool previousMeasurement = x > measurement->current_item;

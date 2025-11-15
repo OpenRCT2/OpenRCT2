@@ -311,7 +311,7 @@ namespace OpenRCT2::Ui::Windows
                 gDropdown.items[0] = Dropdown::PlainMenuLabel(STR_CLOSE_ALL);
                 gDropdown.items[1] = Dropdown::PlainMenuLabel(STR_OPEN_ALL);
                 WindowDropdownShowText(
-                    { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height(), colours[1], 0, 2);
+                    { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height() - 1, colours[1], 0, 2);
             }
             else if (widgetIndex == WIDX_HEADER_CUSTOMISE)
             {
@@ -346,8 +346,8 @@ namespace OpenRCT2::Ui::Windows
                 auto totalWidth = headerWidget.width() - 1 + customWidget.width() - 1;
 
                 WindowDropdownShowTextCustomWidth(
-                    { windowPos.x + headerWidget.left, windowPos.y + headerWidget.top }, headerWidget.height(), colours[1], 0,
-                    Dropdown::Flag::StayOpen, numItems, totalWidth);
+                    { windowPos.x + headerWidget.left, windowPos.y + headerWidget.top }, headerWidget.height() - 1, colours[1],
+                    0, Dropdown::Flag::StayOpen, numItems, totalWidth);
             }
         }
 

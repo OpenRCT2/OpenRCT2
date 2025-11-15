@@ -166,8 +166,8 @@ namespace OpenRCT2::Ui::Windows
             auto numItems = Network::GetNumGroups();
 
             WindowDropdownShowTextCustomWidth(
-                windowPos + ScreenCoordsXY{ dropdownWidget->left, dropdownWidget->top }, dropdownWidget->height() + 1,
-                colours[1], 0, 0, numItems, widget->right - dropdownWidget->left);
+                windowPos + ScreenCoordsXY{ dropdownWidget->left, dropdownWidget->top }, dropdownWidget->height(), colours[1],
+                0, 0, numItems, widget->right - dropdownWidget->left);
 
             for (auto i = 0; i < Network::GetNumGroups(); i++)
             {
