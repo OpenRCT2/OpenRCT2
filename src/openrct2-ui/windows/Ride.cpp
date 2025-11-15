@@ -5296,6 +5296,13 @@ namespace OpenRCT2::Ui::Windows
                                                         : STR_MUSIC_OBJECT_TRACK_LIST_ITEM_WITH_COMPOSER;
 
                 // Draw the track
+                const bool isCurrentlyPlaying = (i == ride->musicTuneId);
+                if (isCurrentlyPlaying)
+                {
+                    auto scrollWidth = std::max<int32_t>(widgets[WIDX_MUSIC_DATA].width(), scrolls[scrollIndex].contentWidth);
+                    Rectangle::filter(rt, { 0, y, scrollWidth, y + kScrollableRowHeight - 1 }, FilterPaletteID::paletteDarken1);
+                }
+
                 DrawTextBasic(rt, { 0, y }, stringId, ft, { FontStyle::small });
                 y += kScrollableRowHeight;
             }
