@@ -55,7 +55,7 @@ namespace OpenRCT2::Audio
                 auto src = _data.data();
                 if (src != nullptr)
                 {
-                    std::copy_n(src + offset, bytesToRead, reinterpret_cast<uint8_t*>(dst));
+                    std::copy_n(src + offset, bytesToRead, static_cast<uint8_t*>(dst));
                 }
             }
             return bytesToRead;
