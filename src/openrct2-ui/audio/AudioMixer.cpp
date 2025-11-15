@@ -173,8 +173,8 @@ void AudioMixer::UpdateAdjustedSound()
 
 void AudioMixer::MixChannel(ISDLAudioChannel* channel, uint8_t* data, size_t length)
 {
-    int32_t byteRate = _outputFormat.GetByteRate();
-    auto numSamples = static_cast<int32_t>(length / byteRate);
+    int32_t outputByteRate = _outputFormat.GetByteRate();
+    auto numSamples = static_cast<int32_t>(length / outputByteRate);
     double rate = 1;
     if (_outputFormat.format == AUDIO_S16SYS)
     {
@@ -200,7 +200,7 @@ void AudioMixer::MixChannel(ISDLAudioChannel* channel, uint8_t* data, size_t len
 
     // Read raw PCM from channel
     int32_t readSamples = numSamples * rate;
-    auto readLength = static_cast<size_t>(readSamples / cvt.len_ratio) * byteRate;
+    auto readLength = static_cast<size_t>(readSamples / cvt.len_ratio) * outputByteRate;
     _channelBuffer.resize(readLength);
     size_t bytesRead = channel->Read(_channelBuffer.data(), readLength);
 
@@ -228,7 +228,7 @@ void AudioMixer::MixChannel(ISDLAudioChannel* channel, uint8_t* data, size_t len
     // Apply effects
     if (rate != 1)
     {
-        auto inRate = static_cast<int32_t>(bufferLen / byteRate);
+        auto inRate = static_cast<int32_t>(bufferLen / outputByteRate);
         int32_t outRate = numSamples;
         if (bytesRead != readLength)
         {
@@ -236,12 +236,13 @@ void AudioMixer::MixChannel(ISDLAudioChannel* channel, uint8_t* data, size_t len
             outRate = _outputFormat.freq * (1 / rate);
         }
         _effectBuffer.resize(length);
-        bufferLen = ApplyResample(channel, buffer, static_cast<int32_t>(bufferLen / byteRate), numSamples, inRate, outRate);
+        bufferLen = ApplyResample(
+            channel, buffer, static_cast<int32_t>(bufferLen / outputByteRate), numSamples, inRate, outRate);
         buffer = _effectBuffer.data();
     }
 
     // Apply panning and volume
-    ApplyPan(channel, buffer, bufferLen, byteRate);
+    ApplyPan(channel, buffer, bufferLen, outputByteRate);
     int32_t mixVolume = ApplyVolume(channel, buffer, bufferLen);
 
     // Finally mix on to destination buffer
@@ -259,7 +260,7 @@ void AudioMixer::MixChannel(ISDLAudioChannel* channel, uint8_t* data, size_t len
 size_t AudioMixer::ApplyResample(
     ISDLAudioChannel* channel, const void* srcBuffer, int32_t srcSamples, int32_t dstSamples, int32_t inRate, int32_t outRate)
 {
-    int32_t byteRate = _outputFormat.GetByteRate();
+    int32_t outputByteRate = _outputFormat.GetByteRate();
 
     // Create resampler
     SpeexResamplerState* resampler = channel->GetResampler();
@@ -276,7 +277,7 @@ size_t AudioMixer::ApplyResample(
         resampler, static_cast<const spx_int16_t*>(srcBuffer), &inLen, reinterpret_cast<spx_int16_t*>(_effectBuffer.data()),
         &outLen);
 
-    return outLen * byteRate;
+    return outLen * outputByteRate;
 }
 
 void AudioMixer::ApplyPan(const IAudioChannel* channel, void* buffer, size_t len, size_t sampleSize)
