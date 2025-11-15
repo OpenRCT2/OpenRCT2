@@ -53,7 +53,7 @@ namespace OpenRCT2::Scripting
     static constexpr int32_t kApiVersionNetworkIDs = 77;
 
     #ifndef DISABLE_NETWORK
-    class ScSocketBase;
+    struct SocketDataBase;
     #endif
 
     class ScriptExecutionInfo
@@ -153,7 +153,7 @@ namespace OpenRCT2::Scripting
 
         std::unordered_map<std::string, CustomActionInfo> _customActions;
     #ifndef DISABLE_NETWORK
-        std::list<std::shared_ptr<ScSocketBase>> _sockets;
+        std::vector<SocketDataBase*> _sockets;
     #endif
 
         void InitialiseContext(JSContext* ctx) const;
@@ -208,7 +208,6 @@ namespace OpenRCT2::Scripting
 
         void Initialise();
         JSContext* CreateContext() const;
-        void FreeContext(JSContext* ctx) const;
         void LoadTransientPlugins();
         void UnloadTransientPlugins();
         void StopUnloadRegisterAllPlugins();
@@ -217,7 +216,7 @@ namespace OpenRCT2::Scripting
         void ExecutePluginCall(
             const std::shared_ptr<Plugin>& plugin, JSValue func, const std::vector<JSValue>& args, bool isGameStateMutable);
         void ExecutePluginCall(
-            std::shared_ptr<Plugin> plugin, JSValue func, JSValue thisValue, const std::vector<JSValue>& args,
+            const std::shared_ptr<Plugin>& plugin, JSValue func, JSValue thisValue, const std::vector<JSValue>& args,
             bool isGameStateMutable);
 
         void LogPluginInfo(std::string_view message);
@@ -256,7 +255,8 @@ namespace OpenRCT2::Scripting
         static ExpenditureType StringToExpenditureType(std::string_view expenditureType);
 
     #ifndef DISABLE_NETWORK
-        void AddSocket(const std::shared_ptr<ScSocketBase>& socket);
+        void AddSocket(SocketDataBase* data);
+        void RemoveSocket(SocketDataBase* data);
     #endif
 
     private:
@@ -332,6 +332,8 @@ namespace OpenRCT2::Scripting
             // Note: Technically JS_NewClassID is meant to be called once during the lifetime of the program
             //       whereas JS_NewClass is meant to be called for each runtime.
             //       If we ever have any more runtimes, this flow would be wrong.
+            //       More runtimes would also require refactoring the way values are passed to the JS code when
+            //       calling callbacks.
             JSRuntime* rt = JS_GetRuntime(ctx);
             JS_NewClassID(rt, &classId);
             JS_NewClass(rt, classId, &classDef);
