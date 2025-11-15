@@ -67,7 +67,7 @@ void Plugin::Load()
         std::string details = Stringify(_context, exceptionVal);
         JS_FreeValue(_context, exceptionVal);
         JS_FreeValue(_context, res);
-        scriptEngine.FreeContext(_context);
+        JS_FreeContext(_context);
         throw std::runtime_error("Failed to load plug-in script: " + _path + "\n" + details);
     }
     JS_FreeValue(_context, res);
@@ -120,7 +120,7 @@ void Plugin::Unload()
         throw std::runtime_error("Plugin is not loaded");
     }
 
-    OpenRCT2::GetContext()->GetScriptEngine().FreeContext(_context);
+    JS_FreeContext(_context);
     _context = nullptr;
 
     // https://gcc.gnu.org/bugzilla/show_bug.cgi?id=105937, fixed in GCC13
