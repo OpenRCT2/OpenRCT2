@@ -9,40 +9,45 @@
 
 #pragma once
 
-#ifdef ENABLE_SCRIPTING
+#ifdef ENABLE_SCRIPTING_REFACTOR
 
-    #include "../../Duktape.hpp"
-
-    #include <string.h>
+    #include "../../ScriptEngine.h"
+    #include "quickjs.h"
 
 namespace OpenRCT2::Scripting
 {
-    class ScPlayer
+    class ScPlayer;
+    extern ScPlayer gScPlayer;
+
+    class ScPlayer : public ScBase
     {
     private:
-        int32_t _id;
+        static int32_t GetPlayerId(JSValue thisVal);
+
+        static JSValue id_get(JSContext* ctx, JSValue thisVal);
+
+        static JSValue name_get(JSContext* ctx, JSValue thisVal);
+
+        static JSValue group_get(JSContext* ctx, JSValue thisVal);
+        static JSValue group_set(JSContext* ctx, JSValue thisVal, JSValue value);
+
+        static JSValue ping_get(JSContext* ctx, JSValue thisVal);
+
+        static JSValue commandsRan_get(JSContext* ctx, JSValue thisVal);
+
+        static JSValue moneySpent_get(JSContext* ctx, JSValue thisVal);
+
+        static JSValue ipAddress_get(JSContext* ctx, JSValue thisVal);
+
+        static JSValue publicKeyHash_get(JSContext* ctx, JSValue thisVal);
 
     public:
-        ScPlayer(int32_t id);
+        JSValue New(JSContext* ctx, int32_t id);
 
-        int32_t id_get() const;
+        void Register(JSContext* ctx);
 
-        std::string name_get() const;
-
-        int32_t group_get() const;
-        void group_set(int32_t value);
-
-        int32_t ping_get() const;
-
-        int32_t commandsRan_get() const;
-
-        int32_t moneySpent_get() const;
-
-        std::string ipAddress_get() const;
-
-        std::string publicKeyHash_get() const;
-
-        static void Register(duk_context* ctx);
+    private:
+        static void Finalize(JSRuntime* rt, JSValue thisVal);
     };
 
 } // namespace OpenRCT2::Scripting

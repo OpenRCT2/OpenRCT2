@@ -7,10 +7,11 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifdef ENABLE_SCRIPTING
+#ifdef ENABLE_SCRIPTING_REFACTOR
 
     #include "ScriptEngine.h"
 
+    #include "../Context.h"
     #include "../PlatformEnvironment.h"
     #include "../actions/BannerPlaceAction.h"
     #include "../actions/CustomAction.h"
@@ -20,13 +21,14 @@
     #include "../actions/StaffHireNewAction.h"
     #include "../actions/WallPlaceAction.h"
     #include "../config/Config.h"
+    #include "../core/Console.hpp"
     #include "../core/EnumMap.hpp"
     #include "../core/File.h"
     #include "../core/FileScanner.h"
     #include "../core/Path.hpp"
     #include "../interface/InteractiveConsole.h"
     #include "../platform/Platform.h"
-    #include "Duktape.hpp"
+    #include "../profiling/Profiling.h"
     #include "bindings/entity/ScBalloon.hpp"
     #include "bindings/entity/ScEntity.hpp"
     #include "bindings/entity/ScGuest.hpp"
@@ -75,10 +77,10 @@ struct ExpressionStringifier final
 {
 private:
     std::stringstream _ss;
-    duk_context* _context{};
+    JSContext* _context{};
     int32_t _indent{};
 
-    ExpressionStringifier(duk_context* ctx)
+    ExpressionStringifier(JSContext* ctx)
         : _context(ctx)
     {
     }
@@ -98,7 +100,7 @@ private:
         _ss << "\n" << std::string(_indent, ' ');
     }
 
-    void Stringify(const DukValue& val, bool canStartWithNewLine, int32_t nestLevel)
+    void Stringify(const JSValue val, bool canStartWithNewLine, int32_t nestLevel)
     {
         if (nestLevel >= 8)
         {
@@ -106,73 +108,78 @@ private:
             return;
         }
 
-        switch (val.type())
+        if (JS_IsUndefined(val))
         {
-            case DukValue::Type::UNDEFINED:
-                _ss << "undefined";
-                break;
-            case DukValue::Type::NULLREF:
-                _ss << "null";
-                break;
-            case DukValue::Type::BOOLEAN:
-                StringifyBoolean(val);
-                break;
-            case DukValue::Type::NUMBER:
-                StringifyNumber(val);
-                break;
-            case DukValue::Type::STRING:
-                _ss << "'" << val.as_string() << "'";
-                break;
-            case DukValue::Type::OBJECT:
-                if (val.is_function())
-                {
-                    StringifyFunction(val);
-                }
-                else if (val.is_array())
-                {
-                    StringifyArray(val, canStartWithNewLine, nestLevel);
-                }
-                else
-                {
-                    StringifyObject(val, canStartWithNewLine, nestLevel);
-                }
-                break;
-            case DukValue::Type::BUFFER:
-                _ss << "[Buffer]";
-                break;
-            case DukValue::Type::POINTER:
-                _ss << "[Pointer]";
-                break;
-            case DukValue::Type::LIGHTFUNC:
-                _ss << "[LightFunc]";
-                break;
+            _ss << "undefined";
+        }
+        else if (JS_IsNull(val))
+        {
+            _ss << "null";
+        }
+        else if (JS_IsUninitialized(val))
+        {
+            _ss << "uninitialized";
+        }
+        else if (JS_IsBool(val))
+        {
+            _ss << (JS_VALUE_GET_BOOL(val) ? "true" : "false");
+        }
+        else if (JS_IsNumber(val) || JS_IsBigInt(_context, val))
+        {
+            StringifyNumber(val);
+        }
+        else if (JS_IsString(val))
+        {
+            StringifyString(val);
+        }
+        else if (JS_IsObject(val))
+        {
+            if (JS_IsFunction(_context, val))
+            {
+                StringifyFunction(val);
+            }
+            else if (JS_IsArray(val))
+            {
+                StringifyArray(val, canStartWithNewLine, nestLevel);
+            }
+            else if (JS_IsError(_context, val))
+            {
+                StringifyError(val);
+            }
+            else
+            {
+                StringifyObject(val, canStartWithNewLine, nestLevel);
+            }
+        }
+        else if (JS_IsArrayBuffer(val))
+        {
+            _ss << "[Buffer]";
+        }
+        else
+        {
+            _ss << "[Unknown Value]";
         }
     }
 
-    void StringifyArray(const DukValue& val, bool canStartWithNewLine, int32_t nestLevel)
+    void StringifyArray(const JSValue val, bool canStartWithNewLine, int32_t nestLevel)
     {
-        constexpr auto maxItemsToShow = 4;
+        constexpr int64_t maxItemsToShow = 4;
 
-        val.push();
-        auto arrayLen = duk_get_length(_context, -1);
-        if (arrayLen == 0)
+        int64_t arrayLen;
+        if (JS_GetLength(_context, val, &arrayLen) == -1)
+        {
+            _ss << "[error printing array]";
+        }
+        else if (arrayLen == 0)
         {
             _ss << "[]";
         }
         else if (arrayLen == 1)
         {
             _ss << "[ ";
-            for (duk_uarridx_t i = 0; i < arrayLen; i++)
-            {
-                if (duk_get_prop_index(_context, -1, i))
-                {
-                    if (i != 0)
-                    {
-                        _ss << ", ";
-                    }
-                    Stringify(DukValue::take_from_stack(_context), false, nestLevel + 1);
-                }
-            }
+            JSValue prop = JS_GetPropertyInt64(_context, val, 0);
+            Stringify(prop, false, nestLevel + 1);
+            JS_FreeValue(_context, prop);
             _ss << " ]";
         }
         else
@@ -184,7 +191,7 @@ private:
             }
             _ss << "[ ";
             PushIndent(2);
-            for (duk_uarridx_t i = 0; i < arrayLen; i++)
+            for (int64_t i = 0; i < arrayLen; i++)
             {
                 if (i != 0)
                 {
@@ -205,10 +212,9 @@ private:
                     break;
                 }
 
-                if (duk_get_prop_index(_context, -1, i))
-                {
-                    Stringify(DukValue::take_from_stack(_context), false, nestLevel + 1);
-                }
+                JSValue prop = JS_GetPropertyInt64(_context, val, i);
+                Stringify(prop, false, nestLevel + 1);
+                JS_FreeValue(_context, prop);
             }
             _ss << " ]";
             PopIndent(2);
@@ -217,44 +223,37 @@ private:
                 PopIndent();
             }
         }
-        duk_pop(_context);
     }
 
-    void StringifyObject(const DukValue& val, bool canStartWithNewLine, int32_t nestLevel)
+    void StringifyObject(const JSValue val, bool canStartWithNewLine, int32_t nestLevel)
     {
-        auto numEnumerables = GetNumEnumerablesOnObject(val);
-        if (numEnumerables == 0)
+        JSPropertyEnum* props;
+        uint32_t propsLen;
+        JS_GetOwnPropertyNames(_context, &props, &propsLen, val, JS_GPN_STRING_MASK | JS_GPN_SYMBOL_MASK | JS_GPN_PRIVATE_MASK);
+
+        if (propsLen == 0)
         {
             _ss << "{}";
         }
-        else if (numEnumerables == 1)
+        else if (propsLen == 1)
         {
             _ss << "{ ";
 
-            val.push();
-            duk_enum(_context, -1, 0);
-            auto index = 0;
-            while (duk_next(_context, -1, 1))
+            const char* key = JS_AtomToCString(_context, props[0].atom);
+            if (key)
             {
-                if (index != 0)
-                {
-                    _ss << ", ";
-                }
-                auto value = DukValue::take_from_stack(_context, -1);
-                auto key = DukValue::take_from_stack(_context, -1);
-                if (key.type() == DukValue::Type::STRING)
-                {
-                    _ss << key.as_string() << ": ";
-                }
-                else
-                {
-                    // For some reason the key was not a string
-                    _ss << "?: ";
-                }
-                Stringify(value, true, nestLevel + 1);
-                index++;
+                _ss << key << ": ";
+                JS_FreeCString(_context, key);
             }
-            duk_pop_2(_context);
+            else
+            {
+                // For some reason the key was not a string
+                _ss << "?: ";
+            }
+
+            JSValue prop = JS_GetProperty(_context, val, props[0].atom);
+            Stringify(prop, true, nestLevel + 1);
+            JS_FreeValue(_context, prop);
 
             _ss << " }";
         }
@@ -269,31 +268,29 @@ private:
             _ss << "{ ";
             PushIndent(2);
 
-            val.push();
-            duk_enum(_context, -1, 0);
-            auto index = 0;
-            while (duk_next(_context, -1, 1))
+            for (uint32_t i = 0; i < propsLen; i++)
             {
-                if (index != 0)
+                if (i != 0)
                 {
                     _ss << ",";
                     LineFeed();
                 }
-                auto value = DukValue::take_from_stack(_context, -1);
-                auto key = DukValue::take_from_stack(_context, -1);
-                if (key.type() == DukValue::Type::STRING)
+                const char* key = JS_AtomToCString(_context, props[i].atom);
+                if (key)
                 {
-                    _ss << key.as_string() << ": ";
+                    _ss << key << ": ";
+                    JS_FreeCString(_context, key);
                 }
                 else
                 {
                     // For some reason the key was not a string
                     _ss << "?: ";
                 }
-                Stringify(value, true, nestLevel + 1);
-                index++;
+
+                JSValue prop = JS_GetProperty(_context, val, props[i].atom);
+                Stringify(prop, true, nestLevel + 1);
+                JS_FreeValue(_context, prop);
             }
-            duk_pop_2(_context);
 
             PopIndent(2);
             _ss << " }";
@@ -303,57 +300,107 @@ private:
                 PopIndent();
             }
         }
+
+        JS_FreePropertyEnum(_context, props, propsLen);
     }
 
-    void StringifyFunction(const DukValue& val)
+    void StringifyFunction(const JSValue val)
     {
-        val.push();
-        if (duk_is_c_function(_context, -1))
+        if (JS_IsConstructor(_context, val))
         {
-            _ss << "[Native Function]";
-        }
-        else if (duk_is_ecmascript_function(_context, -1))
-        {
-            _ss << "[ECMAScript Function]";
+            _ss << "[Constructor]";
         }
         else
         {
             _ss << "[Function]";
         }
-        duk_pop(_context);
     }
 
-    void StringifyBoolean(const DukValue& val)
+    void StringifyString(const JSValue val)
     {
-        _ss << (val.as_bool() ? "true" : "false");
-    }
-
-    void StringifyNumber(const DukValue& val)
-    {
-        const auto d = val.as_double();
-        const duk_int_t i = val.as_int();
-        if (AlmostEqual<double>(d, i))
+        size_t len;
+        const char* str = JS_ToCStringLen(_context, &len, val);
+        if (str)
         {
-            _ss << std::to_string(i);
+            _ss << "'" << std::string_view(str, len) << "'";
+            JS_FreeCString(_context, str);
         }
         else
         {
-            _ss << std::to_string(d);
+            _ss << "[error printing string]";
         }
     }
 
-    size_t GetNumEnumerablesOnObject(const DukValue& val)
+    void StringifyNumber(const JSValue val)
     {
-        size_t count = 0;
-        val.push();
-        duk_enum(_context, -1, 0);
-        while (duk_next(_context, -1, 0))
+        if (val.tag == JS_TAG_INT)
         {
-            count++;
-            duk_pop(_context);
+            _ss << std::to_string(JS_VALUE_GET_INT(val));
         }
-        duk_pop_2(_context);
-        return count;
+        else if (val.tag == JS_TAG_FLOAT64)
+        {
+            const double d = JS_VALUE_GET_FLOAT64(val);
+            const int64_t i = static_cast<int64_t>(d);
+            if (AlmostEqual<double>(d, i))
+            {
+                _ss << std::to_string(i);
+            }
+            else
+            {
+                _ss << std::to_string(d);
+            }
+        }
+        else if (val.tag == JS_TAG_SHORT_BIG_INT)
+        {
+            _ss << std::to_string(JS_VALUE_GET_SHORT_BIG_INT(val));
+        }
+        else if (val.tag == JS_TAG_BIG_INT)
+        {
+            const char* str = JS_ToCString(_context, val);
+            if (str)
+            {
+                _ss << str;
+                JS_FreeCString(_context, str);
+            }
+            else
+            {
+                _ss << "[BitInt error]";
+            }
+        }
+    }
+
+    void StringifyError(const JSValue val)
+    {
+        const char* str = JS_ToCString(_context, val);
+        if (str)
+        {
+            _ss << str;
+            JS_FreeCString(_context, str);
+        }
+        else
+        {
+            _ss << "[error]";
+        }
+        JSValue stackVal = JS_GetPropertyStr(_context, val, "stack");
+        if (!JS_IsUndefined(stackVal))
+        {
+            const char* stackStr = JS_ToCString(_context, stackVal);
+            if (stackStr)
+            {
+                LineFeed();
+                std::string_view view(stackStr);
+                if (view.ends_with('\n'))
+                    view = view.substr(0, view.length() - 1);
+                _ss << view;
+                JS_FreeCString(_context, stackStr);
+            }
+            else
+            {
+                LineFeed();
+                _ss << "[no stack trace]";
+            }
+        }
+        JS_FreeValue(_context, stackVal);
     }
 
     // Taken from http://en.cppreference.com/w/cpp/types/numeric_limits/epsilon
@@ -369,27 +416,13 @@ private:
     }
 
 public:
-    static std::string StringifyExpression(const DukValue& val)
+    static std::string StringifyExpression(JSContext* ctx, const JSValue val)
     {
-        ExpressionStringifier instance(val.context());
+        ExpressionStringifier instance(ctx);
         instance.Stringify(val, false, 0);
         return instance._ss.str();
     }
 };
-
-DukContext::DukContext()
-{
-    _context = duk_create_heap_default();
-    if (_context == nullptr)
-    {
-        throw std::runtime_error("Unable to initialise duktape context.");
-    }
-}
-
-DukContext::~DukContext()
-{
-    duk_destroy_heap(_context);
-}
 
 ScriptEngine::ScriptEngine(InteractiveConsole& console, IPlatformEnvironment& env)
     : _console(console)
@@ -402,80 +435,26 @@ void ScriptEngine::Initialise()
 {
     if (_initialised)
         throw std::runtime_error("Script engine already initialised.");
+    if (!_runtime)
+    {
+        _runtime = JS_NewRuntime();
+        if (!_runtime)
+            throw std::runtime_error("QuickJS: cannot allocate JS runtime\n");
 
-    auto ctx = static_cast<duk_context*>(_context);
-    ScAward::Register(ctx);
-    ScCheats::Register(ctx);
-    ScClimate::Register(ctx);
-    ScWeatherState::Register(ctx);
-    ScConfiguration::Register(ctx);
-    ScConsole::Register(ctx);
-    ScContext::Register(ctx);
-    ScDate::Register(ctx);
-    ScDisposable::Register(ctx);
-    ScMap::Register(ctx);
-    ScNetwork::Register(ctx);
-    ScObjectManager::Register(ctx);
-    ScInstalledObject::Register(ctx);
-    ScObject::Register(ctx);
-    ScSceneryObject::Register(ctx);
-    ScSmallSceneryObject::Register(ctx);
-    ScLargeSceneryObject::Register(ctx);
-    ScLargeSceneryObjectTile::Register(ctx);
-    ScWallObject::Register(ctx);
-    ScFootpathAdditionObject::Register(ctx);
-    ScBannerObject::Register(ctx);
-    ScSceneryGroupObject::Register(ctx);
-    ScPark::Register(ctx);
-    ScParkMessage::Register(ctx);
-    ScPlayer::Register(ctx);
-    ScPlayerGroup::Register(ctx);
-    ScProfiler::Register(ctx);
-    ScResearch::Register(ctx);
-    ScRide::Register(ctx);
-    ScRideStation::Register(ctx);
-    ScRideObject::Register(ctx);
-    ScRideObjectVehicle::Register(ctx);
-    ScTile::Register(ctx);
-    ScTileElement::Register(ctx);
-    ScTrackIterator::Register(ctx);
-    ScTrackSegment::Register(ctx);
-    ScEntity::Register(ctx);
-    ScLitter::Register(ctx);
-    ScBalloon::Register(ctx);
-    ScMoneyEffect::Register(ctx);
-    ScVehicle::Register(ctx);
-    ScCrashedVehicleParticle::Register(ctx);
-    ScPeep::Register(ctx);
-    ScGuest::Register(ctx);
-    ScThought::Register(ctx);
-    #ifndef DISABLE_NETWORK
-    ScSocket::Register(ctx);
-    ScListener::Register(ctx);
+    #ifndef NDEBUG
+        // Dump JS engine memory leaks
+        JS_SetDumpFlags(_runtime, JS_DUMP_LEAKS);
     #endif
-    ScScenario::Register(ctx);
-    ScScenarioObjective::Register(ctx);
-    ScPatrolArea::Register(ctx);
-    ScStaff::Register(ctx);
-    ScHandyman::Register(ctx);
-    ScMechanic::Register(ctx);
-    ScSecurity::Register(ctx);
-    ScPlugin::Register(ctx);
+    }
 
-    dukglue_register_global(ctx, std::make_shared<ScCheats>(), "cheats");
-    dukglue_register_global(ctx, std::make_shared<ScClimate>(), "climate");
-    dukglue_register_global(ctx, std::make_shared<ScConsole>(_console), "console");
-    dukglue_register_global(ctx, std::make_shared<ScContext>(_execInfo, _hookEngine), "context");
-    dukglue_register_global(ctx, std::make_shared<ScDate>(), "date");
-    dukglue_register_global(ctx, std::make_shared<ScMap>(ctx), "map");
-    dukglue_register_global(ctx, std::make_shared<ScNetwork>(ctx), "network");
-    dukglue_register_global(ctx, std::make_shared<ScPark>(ctx), "park");
-    dukglue_register_global(ctx, std::make_shared<ScPlugin>(), "pluginManager");
-    dukglue_register_global(ctx, std::make_shared<ScProfiler>(ctx), "profiler");
-    dukglue_register_global(ctx, std::make_shared<ScScenario>(), "scenario");
-    dukglue_register_global(ctx, std::make_shared<ScObjectManager>(), "objectManager");
+    // Disable maximum stack size limit for the JS engine.
+    JS_SetMaxStackSize(_runtime, 0);
 
-    RegisterConstants();
+    _replContext = JS_NewContext(_runtime);
+    if (!_replContext)
+        throw std::runtime_error("QuickJS: cannot allocate REPL JS context\n");
+    RegisterClasses(_replContext);
+    InitialiseContext(_replContext);
 
     _initialised = true;
     _transientPluginsEnabled = false;
@@ -485,57 +464,183 @@ void ScriptEngine::Initialise()
     ClearParkStorage();
 }
 
+JSRuntime* ScriptEngine::_runtime = nullptr;
+ScAward Scripting::gScAward;
+ScCheats Scripting::gScCheats;
+ScClimate Scripting::gScClimate;
+ScWeatherState Scripting::gScWeatherState;
+ScConfiguration Scripting::gScConfiguration;
+ScConsole Scripting::gScConsole;
+ScContext Scripting::gScContext;
+ScDate Scripting::gScDate;
+ScDisposable Scripting::gScDisposable;
+ScMap Scripting::gScMap;
+ScNetwork Scripting::gScNetwork;
+ScObjectManager Scripting::gScObjectManager;
+ScInstalledObject Scripting::gScInstalledObject;
+ScLargeSceneryObjectTile Scripting::gScLargeSceneryObjectTile;
+ScObject Scripting::gScObject;
+ScPark Scripting::gScPark;
+ScParkMessage Scripting::gScParkMessage;
+ScPlayer Scripting::gScPlayer;
+ScPlayerGroup Scripting::gScPlayerGroup;
+ScProfiler Scripting::gScProfiler;
+ScResearch Scripting::gScResearch;
+ScRide Scripting::gScRide;
+ScRideStation Scripting::gScRideStation;
+ScRideObjectVehicle Scripting::gScRideObjectVehicle;
+ScTile Scripting::gScTile;
+ScTileElement Scripting::gScTileElement;
+ScTrackIterator Scripting::gScTrackIterator;
+ScTrackSegment Scripting::gScTrackSegment;
+ScEntity Scripting::gScEntity;
+ScThought Scripting::gScThought;
+    #ifndef DISABLE_NETWORK
+ScSocket Scripting::gScSocket;
+ScListener Scripting::gScListener;
+    #endif
+ScScenario Scripting::gScScenario;
+ScScenarioObjective Scripting::gScScenarioObjective;
+ScPatrolArea Scripting::gScPatrolArea;
+ScPlugin Scripting::gScPlugin;
+
+void ScriptEngine::RegisterClasses(JSContext* ctx)
+{
+    gScAward.Register(ctx);
+    gScCheats.Register(ctx);
+    gScClimate.Register(ctx);
+    gScWeatherState.Register(ctx);
+    gScConfiguration.Register(ctx);
+    gScConsole.Register(ctx);
+    gScContext.Register(ctx);
+    gScDate.Register(ctx);
+    gScDisposable.Register(ctx);
+    gScMap.Register(ctx);
+    gScNetwork.Register(ctx);
+    gScObjectManager.Register(ctx);
+    gScInstalledObject.Register(ctx);
+    gScObject.Register(ctx);
+    gScLargeSceneryObjectTile.Register(ctx);
+    gScPark.Register(ctx);
+    gScParkMessage.Register(ctx);
+    gScPlayer.Register(ctx);
+    gScPlayerGroup.Register(ctx);
+    gScProfiler.Register(ctx);
+    gScResearch.Register(ctx);
+    gScRide.Register(ctx);
+    gScRideStation.Register(ctx);
+    gScRideObjectVehicle.Register(ctx);
+    gScTile.Register(ctx);
+    gScTileElement.Register(ctx);
+    gScTrackIterator.Register(ctx);
+    gScTrackSegment.Register(ctx);
+    gScEntity.Register(ctx);
+    gScThought.Register(ctx);
+    #ifndef DISABLE_NETWORK
+    gScSocket.Register(ctx);
+    gScListener.Register(ctx);
+    #endif
+    gScScenario.Register(ctx);
+    gScScenarioObjective.Register(ctx);
+    gScPatrolArea.Register(ctx);
+    gScPlugin.Register(ctx);
+}
+
+JSContext* ScriptEngine::CreateContext() const
+{
+    JSContext* newCtx = JS_NewContext(_runtime);
+    if (!newCtx)
+    {
+        throw std::runtime_error("QuickJS: cannot allocate JS context\n");
+    }
+    InitialiseContext(newCtx);
+
+    for (const auto& callback : _extensions)
+    {
+        callback(newCtx);
+    }
+    return newCtx;
+}
+
+void ScriptEngine::InitialiseContext(JSContext* ctx) const
+{
+    JSValue glb = JS_GetGlobalObject(ctx);
+    JS_SetPropertyStr(ctx, glb, "cheats", gScCheats.New(ctx));
+    JS_SetPropertyStr(ctx, glb, "climate", gScClimate.New(ctx));
+    JS_SetPropertyStr(ctx, glb, "console", gScConsole.New(ctx, _console));
+    JS_SetPropertyStr(ctx, glb, "context", gScContext.New(ctx));
+    JS_SetPropertyStr(ctx, glb, "date", gScDate.New(ctx));
+    JS_SetPropertyStr(ctx, glb, "map", gScMap.New(ctx));
+    JS_SetPropertyStr(ctx, glb, "network", gScNetwork.New(ctx));
+    JS_SetPropertyStr(ctx, glb, "park", gScPark.New(ctx));
+    JS_SetPropertyStr(ctx, glb, "pluginManager", gScPlugin.New(ctx));
+    JS_SetPropertyStr(ctx, glb, "profiler", gScProfiler.New(ctx));
+    JS_SetPropertyStr(ctx, glb, "scenario", gScScenario.New(ctx));
+    JS_SetPropertyStr(ctx, glb, "objectManager", gScObjectManager.New(ctx));
+    JS_FreeValue(ctx, glb);
+
+    RegisterConstants(ctx);
+}
+
+ScriptEngine::~ScriptEngine()
+{
+    if (_replContext)
+    {
+        JS_FreeValue(_replContext, _sharedStorage);
+        JS_FreeValue(_replContext, _parkStorage);
+        JS_FreeContext(_replContext);
+        _replContext = nullptr;
+    }
+    if (_runtime)
+    {
+        JS_FreeRuntime(_runtime);
+        _runtime = nullptr;
+    }
+}
+
 class ConstantBuilder
 {
 private:
-    duk_context* _ctx;
-    DukValue _obj;
+    JSContext* _ctx;
+    JSValue _obj;
 
 public:
-    ConstantBuilder(duk_context* ctx)
+    ConstantBuilder(JSContext* ctx)
         : _ctx(ctx)
     {
-        duk_push_global_object(_ctx);
-        _obj = DukValue::take_from_stack(_ctx);
+        _obj = JS_GetGlobalObject(_ctx);
     }
 
     ConstantBuilder& Namespace(std::string_view ns)
     {
-        auto flags = DUK_DEFPROP_ENUMERABLE | DUK_DEFPROP_HAVE_WRITABLE | DUK_DEFPROP_HAVE_ENUMERABLE
-            | DUK_DEFPROP_HAVE_CONFIGURABLE | DUK_DEFPROP_HAVE_VALUE;
-
         // Create a new object for namespace
-        duk_push_global_object(_ctx);
-        duk_push_lstring(_ctx, ns.data(), ns.size());
-        duk_push_object(_ctx);
-
         // Keep a reference to the namespace object
-        duk_dup_top(_ctx);
-        _obj = DukValue::take_from_stack(_ctx);
+        JS_FreeValue(_ctx, _obj);
+        _obj = JS_NewObject(_ctx);
 
         // Place the namespace object into the global context
-        duk_def_prop(_ctx, -3, flags);
-        duk_pop(_ctx);
+        JSValue global = JS_GetGlobalObject(_ctx);
+        JS_SetPropertyStr(_ctx, global, std::string(ns).c_str(), JS_DupValue(_ctx, _obj));
+        JS_FreeValue(_ctx, global);
 
         return *this;
     }
 
     ConstantBuilder& Constant(std::string_view name, int32_t value)
     {
-        auto flags = DUK_DEFPROP_ENUMERABLE | DUK_DEFPROP_HAVE_WRITABLE | DUK_DEFPROP_HAVE_ENUMERABLE
-            | DUK_DEFPROP_HAVE_CONFIGURABLE | DUK_DEFPROP_HAVE_VALUE;
-        _obj.push();
-        duk_push_lstring(_ctx, name.data(), name.size());
-        duk_push_int(_ctx, value);
-        duk_def_prop(_ctx, -3, flags);
-        duk_pop(_ctx);
+        JS_SetPropertyStr(_ctx, _obj, std::string(name).c_str(), JS_NewInt32(_ctx, value));
         return *this;
+    }
+
+    ~ConstantBuilder()
+    {
+        JS_FreeValue(_ctx, _obj);
     }
 };
 
-void ScriptEngine::RegisterConstants()
+void ScriptEngine::RegisterConstants(JSContext* ctx)
 {
-    ConstantBuilder builder(_context);
+    ConstantBuilder builder(ctx);
     builder.Namespace("TrackSlope")
         .Constant("None", EnumValue(TrackPitch::None))
         .Constant("Up25", EnumValue(TrackPitch::Up25))
@@ -646,7 +751,7 @@ void ScriptEngine::RegisterPlugin(std::string_view path)
 {
     try
     {
-        auto plugin = std::make_shared<Plugin>(_context, path);
+        auto plugin = std::make_shared<Plugin>(path);
 
         // We must load the plugin to get the metadata for it
         ScriptExecutionInfo::PluginScope scope(_execInfo, plugin, false);
@@ -710,7 +815,7 @@ void ScriptEngine::LoadTransientPlugins()
 
 void ScriptEngine::LoadPlugin(const std::string& path)
 {
-    auto plugin = std::make_shared<Plugin>(_context, path);
+    auto plugin = std::make_shared<Plugin>(path);
     LoadPlugin(plugin);
 }
 
@@ -745,6 +850,8 @@ void ScriptEngine::UnloadPlugin(std::shared_ptr<Plugin>& plugin)
     {
         plugin->Unload();
         LogPluginInfo(plugin, "Unloaded");
+        // A GC run is required to clean up all JS objects before the game global context is cleaned up on shut down.
+        JS_RunGC(_runtime);
     }
 }
 
@@ -965,17 +1072,20 @@ void ScriptEngine::ProcessREPL()
         _evalQueue.pop();
         auto promise = std::move(std::get<0>(item));
         auto command = std::move(std::get<1>(item));
-        if (duk_peval_string(_context, command.c_str()) != 0)
+
+        JSValue res = JS_Eval(_replContext, command.c_str(), command.length(), "<repl>", JS_EVAL_TYPE_GLOBAL);
+        if (JS_IsException(res))
         {
-            std::string result = std::string(duk_safe_to_string(_context, -1));
-            _console.WriteLineError(result);
+            JSValue exceptionVal = JS_GetException(_replContext);
+            _console.WriteLineError(Stringify(_replContext, exceptionVal));
+            JS_FreeValue(_replContext, exceptionVal);
         }
-        else if (duk_get_type(_context, -1) != DUK_TYPE_UNDEFINED)
+        else if (!JS_IsUndefined(res))
         {
-            auto result = Stringify(DukValue::copy_from_stack(_context, -1));
-            _console.WriteLine(result);
+            _console.WriteLine(Stringify(_replContext, res));
         }
-        duk_pop(_context);
+        JS_FreeValue(_replContext, res);
+
         // Signal the promise so caller can continue
         promise.set_value();
     }
@@ -989,40 +1099,35 @@ std::future<void> ScriptEngine::Eval(const std::string& s)
     return future;
 }
 
-DukValue ScriptEngine::ExecutePluginCall(
-    const std::shared_ptr<Plugin>& plugin, const DukValue& func, const std::vector<DukValue>& args, bool isGameStateMutable)
+void ScriptEngine::ExecutePluginCall(
+    const std::shared_ptr<Plugin>& plugin, const JSValue func, const std::vector<JSValue>& args, bool isGameStateMutable)
 {
-    duk_push_undefined(_context);
-    auto dukUndefined = DukValue::take_from_stack(_context);
-    return ExecutePluginCall(plugin, func, dukUndefined, args, isGameStateMutable);
+    ExecutePluginCall(plugin, func, JS_UNDEFINED, args, isGameStateMutable);
 }
 
 // Must pass plugin by-value, a JS function could destroy the original reference
-DukValue ScriptEngine::ExecutePluginCall(
-    std::shared_ptr<Plugin> plugin, const DukValue& func, const DukValue& thisValue, const std::vector<DukValue>& args,
+void ScriptEngine::ExecutePluginCall(
+    const std::shared_ptr<Plugin>& plugin, const JSValue func, const JSValue thisValue, const std::vector<JSValue>& args,
     bool isGameStateMutable)
 {
-    DukStackFrame frame(_context);
-    if (func.is_function() && plugin->HasStarted())
+    // Note: the plugin pointer is null when called from the repl, so we assume the repl JSContext in that case.
+    JSContext* ctx = plugin ? plugin->GetContext() : _replContext;
+    if (JS_IsFunction(ctx, func) && (!plugin || plugin->HasStarted()))
     {
         ScriptExecutionInfo::PluginScope scope(_execInfo, plugin, isGameStateMutable);
-        func.push();
-        thisValue.push();
-        for (const auto& arg : args)
+        JSValue res = JS_Call(ctx, func, thisValue, static_cast<int>(args.size()), const_cast<JSValue*>(args.data()));
+        if (JS_IsException(res))
         {
-            arg.push();
+            JSValue exceptionVal = JS_GetException(ctx);
+            _console.WriteLineError(Stringify(ctx, exceptionVal));
+            JS_FreeValue(ctx, exceptionVal);
         }
-        auto result = duk_pcall_method(_context, static_cast<duk_idx_t>(args.size()));
-        if (result == DUK_EXEC_SUCCESS)
-        {
-            return DukValue::take_from_stack(_context);
-        }
-
-        auto message = duk_safe_to_string(_context, -1);
-        LogPluginInfo(plugin, message);
-        duk_pop(_context);
+        JS_FreeValue(ctx, res);
     }
-    return DukValue();
+    for (const JSValue& arg : args)
+    {
+        JS_FreeValue(ctx, arg);
+    }
 }
 
 void ScriptEngine::LogPluginInfo(std::string_view message)
@@ -1046,7 +1151,7 @@ void ScriptEngine::LogPluginInfo(const std::shared_ptr<Plugin>& plugin, std::str
 
 void ScriptEngine::AddNetworkPlugin(std::string_view code)
 {
-    auto plugin = std::make_shared<Plugin>(_context, std::string());
+    auto plugin = std::make_shared<Plugin>(std::string());
     plugin->SetCode(code);
     _plugins.push_back(plugin);
 }
@@ -1074,6 +1179,7 @@ void ScriptEngine::RemoveNetworkPlugins()
 
 GameActions::Result ScriptEngine::QueryOrExecuteCustomGameAction(const GameActions::CustomAction& customAction, bool isExecute)
 {
+    /* TODO (mber)
     std::string actionz = customAction.GetId();
     auto kvp = _customActions.find(actionz);
     if (kvp != _customActions.end())
@@ -1128,10 +1234,13 @@ GameActions::Result ScriptEngine::QueryOrExecuteCustomGameAction(const GameActio
     action.ErrorTitle = "Unknown custom action";
     action.ErrorMessage = customAction.GetPluginName() + ": " + actionz;
     return action;
+    */
+    return GameActions::Result();
 }
 
-GameActions::Result ScriptEngine::DukToGameActionResult(const DukValue& d)
+GameActions::Result ScriptEngine::DukToGameActionResult(const JSValue d)
 {
+    /* TODO (mber)
     auto result = GameActions::Result();
     if (d.type() == DUK_TYPE_OBJECT)
     {
@@ -1156,6 +1265,8 @@ GameActions::Result ScriptEngine::DukToGameActionResult(const DukValue& d)
         result.ErrorMessage = "Unknown";
     }
     return result;
+    */
+    return GameActions::Result();
 }
 
 constexpr static const char* ExpenditureTypes[] = {
@@ -1195,8 +1306,9 @@ ExpenditureType ScriptEngine::StringToExpenditureType(std::string_view expenditu
     return ExpenditureType::count;
 }
 
-DukValue ScriptEngine::GameActionResultToDuk(const GameActions::GameAction& action, const GameActions::Result& result)
+JSValue ScriptEngine::GameActionResultToDuk(const GameActions::GameAction& action, const GameActions::Result& result)
 {
+    /* TODO (mber)
     DukStackFrame frame(_context);
     DukObject obj(_context);
 
@@ -1263,10 +1375,12 @@ DukValue ScriptEngine::GameActionResultToDuk(const GameActions::GameAction& acti
     }
 
     return obj.Take();
+    */
+    return JSValue{};
 }
 
 bool ScriptEngine::RegisterCustomAction(
-    const std::shared_ptr<Plugin>& plugin, std::string_view action, const DukValue& query, const DukValue& execute)
+    const std::shared_ptr<Plugin>& plugin, std::string_view action, const JSCallback& query, const JSCallback& execute)
 {
     std::string actionz = std::string(action);
     if (_customActions.find(actionz) != _customActions.end())
@@ -1298,6 +1412,7 @@ void ScriptEngine::RemoveCustomGameActions(const std::shared_ptr<Plugin>& plugin
     }
 }
 
+/* TODO (mber)
 class DukToGameActionParameterVisitor : public GameActions::GameActionParameterVisitor
 {
 private:
@@ -1354,6 +1469,7 @@ public:
         _dukObject.Set(szName.c_str(), param);
     }
 };
+*/
 
 // clang-format off
 const static EnumMap<GameCommand> ActionNameToType = {
@@ -1441,6 +1557,7 @@ const static EnumMap<GameCommand> ActionNameToType = {
 };
 // clang-format on
 
+/* TODO (mber)
 static std::string GetActionName(GameCommand commandId)
 {
     auto it = ActionNameToType.find(commandId);
@@ -1460,9 +1577,11 @@ static std::unique_ptr<GameActions::GameAction> CreateGameActionFromActionId(con
     }
     return nullptr;
 }
+*/
 
 void ScriptEngine::RunGameActionHooks(const GameActions::GameAction& action, GameActions::Result& result, bool isExecute)
 {
+    /* TODO (mber)
     DukStackFrame frame(_context);
 
     auto hookType = isExecute ? HookType::actionExecute : HookType::actionQuery;
@@ -1528,11 +1647,13 @@ void ScriptEngine::RunGameActionHooks(const GameActions::GameAction& action, Gam
             }
         }
     }
+    */
 }
 
 std::unique_ptr<GameActions::GameAction> ScriptEngine::CreateGameAction(
-    const std::string& actionid, const DukValue& args, const std::string& pluginName)
+    const std::string& actionid, const JSValue args, const std::string& pluginName)
 {
+    /* TODO (mber)
     auto action = CreateGameActionFromActionId(actionid);
     if (action != nullptr)
     {
@@ -1566,12 +1687,17 @@ std::unique_ptr<GameActions::GameAction> ScriptEngine::CreateGameAction(
         customAction->SetPlayer(Network::GetCurrentPlayerId());
     }
     return customAction;
+    */
+    return nullptr;
 }
 
 void ScriptEngine::InitSharedStorage()
 {
-    duk_push_object(_context);
-    _sharedStorage = std::move(DukValue::take_from_stack(_context));
+    if (_replContext)
+    {
+        JS_FreeValue(_replContext, _sharedStorage);
+        _sharedStorage = JS_NewObject(_replContext);
+    }
 }
 
 void ScriptEngine::LoadSharedStorage()
@@ -1584,11 +1710,18 @@ void ScriptEngine::LoadSharedStorage()
         if (File::Exists(path))
         {
             auto data = File::ReadAllBytes(path);
-            auto result = DuktapeTryParseJson(
-                _context, std::string_view(reinterpret_cast<const char*>(data.data()), data.size()));
-            if (result)
+            // quickjs wants a null terminator not counted in the buf_len
+            data.push_back(0);
+            JSValue result = JS_ParseJSON(
+                _replContext, reinterpret_cast<const char*>(data.data()), data.size() - 1, path.c_str());
+            if (JS_IsObject(result))
             {
-                _sharedStorage = std::move(*result);
+                JS_FreeValue(_replContext, _sharedStorage);
+                _sharedStorage = result;
+            }
+            else
+            {
+                Console::Error::WriteLine("Unable to load plugin shared storage");
             }
         }
     }
@@ -1603,11 +1736,17 @@ void ScriptEngine::SaveSharedStorage()
     auto path = _env.GetFilePath(PathId::pluginStore);
     try
     {
-        _sharedStorage.push();
-        auto json = std::string(duk_json_encode(_context, -1));
-        duk_pop(_context);
-
-        File::WriteAllBytes(path, json.c_str(), json.size());
+        JSValue jsonVal = JS_JSONStringify(_replContext, _sharedStorage, JS_UNDEFINED, JS_UNDEFINED);
+        if (JS_IsString(jsonVal))
+        {
+            // inefficient to copy the whole string out first, but we have to do this to avoid breaking the exception flow
+            std::string json = JSToStdString(_replContext, jsonVal);
+            JS_FreeValue(_replContext, jsonVal);
+            File::WriteAllBytes(path, json.c_str(), json.size());
+            return;
+        }
+        JS_FreeValue(_replContext, jsonVal);
+        Console::Error::WriteLine("Unable to stringify shared storage JSON");
     }
     catch (const std::exception&)
     {
@@ -1617,24 +1756,46 @@ void ScriptEngine::SaveSharedStorage()
 
 void ScriptEngine::ClearParkStorage()
 {
-    duk_push_object(_context);
-    _parkStorage = std::move(DukValue::take_from_stack(_context));
+    if (_replContext)
+    {
+        JS_FreeValue(_replContext, _parkStorage);
+        _parkStorage = JS_NewObject(_replContext);
+    }
 }
 
 std::string ScriptEngine::GetParkStorageAsJSON()
 {
-    _parkStorage.push();
-    auto json = std::string(duk_json_encode(_context, -1));
-    duk_pop(_context);
-    return json;
+    std::string retStr{};
+    JSValue jsonVal = JS_JSONStringify(_replContext, _parkStorage, JS_UNDEFINED, JS_UNDEFINED);
+    if (JS_IsString(jsonVal))
+    {
+        retStr = JSToStdString(_replContext, jsonVal);
+    }
+    else
+    {
+        Console::Error::WriteLine("Could not stringify park storage");
+    }
+    JS_FreeValue(_replContext, jsonVal);
+    return retStr;
 }
 
-void ScriptEngine::SetParkStorageFromJSON(std::string_view value)
+void ScriptEngine::SetParkStorageFromJSON(const std::string& value, const std::string& filename)
 {
-    auto result = DuktapeTryParseJson(_context, value);
-    if (result)
+    if (value.empty())
     {
-        _parkStorage = std::move(*result);
+        ClearParkStorage();
+        return;
+    }
+    JSValue result = JS_ParseJSON(_replContext, value.c_str(), value.size(), filename.c_str());
+    if (JS_IsObject(result))
+    {
+        JS_FreeValue(_replContext, _parkStorage);
+        _parkStorage = result;
+    }
+    else
+    {
+        ClearParkStorage();
+        Console::Error::WriteLine("Could not load park storage");
     }
 }
 
@@ -1648,7 +1809,8 @@ IntervalHandle ScriptEngine::AllocateHandle()
     return nextHandle;
 }
 
-IntervalHandle ScriptEngine::AddInterval(const std::shared_ptr<Plugin>& plugin, int32_t delay, bool repeat, DukValue&& callback)
+IntervalHandle ScriptEngine::AddInterval(
+    const std::shared_ptr<Plugin>& plugin, int32_t delay, bool repeat, const JSCallback& callback)
 {
     auto handle = AllocateHandle();
     assert(handle != 0);
@@ -1657,7 +1819,7 @@ IntervalHandle ScriptEngine::AddInterval(const std::shared_ptr<Plugin>& plugin, 
     interval.Owner = plugin;
     interval.Delay = delay;
     interval.LastTimestamp = _lastIntervalTimestamp;
-    interval.Callback = std::move(callback);
+    interval.Callback = callback;
     interval.Repeat = repeat;
 
     return handle;
@@ -1727,7 +1889,7 @@ void ScriptEngine::UpdateIntervals()
             continue;
         }
 
-        ExecutePluginCall(interval.Owner, interval.Callback, {}, false);
+        ExecutePluginCall(interval.Owner, interval.Callback.callback, {}, false);
 
         interval.LastTimestamp = timestamp;
         if (!interval.Repeat)
@@ -1755,63 +1917,55 @@ void ScriptEngine::RemoveIntervals(const std::shared_ptr<Plugin>& plugin)
 }
 
     #ifndef DISABLE_NETWORK
-void ScriptEngine::AddSocket(const std::shared_ptr<ScSocketBase>& socket)
+void ScriptEngine::AddSocket(SocketDataBase* data)
 {
-    _sockets.push_back(socket);
+    _sockets.push_back(data);
+}
+
+void ScriptEngine::RemoveSocket(SocketDataBase* data)
+{
+    // Just remove one
+    auto it = std::find(_sockets.begin(), _sockets.end(), data);
+    if (it != _sockets.end())
+        *it = nullptr;
 }
     #endif
 
 void ScriptEngine::UpdateSockets()
 {
     #ifndef DISABLE_NETWORK
-    // Use simple for i loop as Update calls can modify the list
-    auto it = _sockets.begin();
-    while (it != _sockets.end())
+    // AddSocket and RemoveSocket can be called as a result of the Update
+    // Therefore we add to the end and remove by setting to null and cleaning up
+    // after the update. We also must use [] here and we remember the original
+    // sockets vector size so that we process new ones in the next tick.
+    const size_t sz = _sockets.size();
+    for (size_t i = 0; i < sz; i++)
     {
-        auto& socket = *it;
-        socket->Update();
-        if (socket->IsDisposed())
-        {
-            it = _sockets.erase(it);
-        }
-        else
-        {
-            it++;
-        }
+        if (_sockets[i] != nullptr)
+            _sockets[i]->Update();
     }
+    std::erase(_sockets, nullptr);
     #endif
 }
 
 void ScriptEngine::RemoveSockets(const std::shared_ptr<Plugin>& plugin)
 {
     #ifndef DISABLE_NETWORK
-    auto it = _sockets.begin();
-    while (it != _sockets.end())
+    // The ownership model has the javascript engine owning all the socket data.
+    // Therefore we rely on the javascript engine to finalise all sockets.
+    // We just remove the listeners since they can hold references to the javascript socket objects which will
+    // prevent finalisation.
+    for (SocketDataBase* socket : _sockets)
     {
-        auto socket = it->get();
-        if (socket->GetPlugin() == plugin)
-        {
-            socket->Dispose();
-            it = _sockets.erase(it);
-        }
-        else
-        {
-            it++;
-        }
+        if (socket != nullptr)
+            socket->_eventList.RemoveAllListeners();
     }
     #endif
 }
 
-std::string OpenRCT2::Scripting::Stringify(const DukValue& val)
+std::string OpenRCT2::Scripting::Stringify(JSContext* ctx, const JSValue val)
 {
-    return ExpressionStringifier::StringifyExpression(val);
-}
-
-std::string OpenRCT2::Scripting::ProcessString(const DukValue& value)
-{
-    if (value.type() == DukValue::Type::STRING)
-        return value.as_string();
-    return {};
+    return ExpressionStringifier::StringifyExpression(ctx, val);
 }
 
 bool OpenRCT2::Scripting::IsGameStateMutable()
@@ -1825,21 +1979,6 @@ bool OpenRCT2::Scripting::IsGameStateMutable()
     auto& scriptEngine = GetContext()->GetScriptEngine();
     auto& execInfo = scriptEngine.GetExecInfo();
     return execInfo.IsGameStateMutable();
-}
-
-void OpenRCT2::Scripting::ThrowIfGameStateNotMutable()
-{
-    // Allow single player to alter game state anywhere
-    if (Network::GetMode() != Network::Mode::none)
-    {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto& execInfo = scriptEngine.GetExecInfo();
-        if (!execInfo.IsGameStateMutable())
-        {
-            auto ctx = scriptEngine.GetContext();
-            duk_error(ctx, DUK_ERR_ERROR, "Game state is not mutable in this context.");
-        }
-    }
 }
 
 int32_t OpenRCT2::Scripting::GetTargetAPIVersion()
@@ -1856,11 +1995,6 @@ int32_t OpenRCT2::Scripting::GetTargetAPIVersion()
     }
 
     return plugin->GetTargetAPIVersion();
-}
-
-duk_bool_t duk_exec_timeout_check(void*)
-{
-    return false;
 }
 
 #endif
