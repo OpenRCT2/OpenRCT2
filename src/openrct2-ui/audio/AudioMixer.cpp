@@ -39,7 +39,7 @@ void AudioMixer::Init(const char* device)
     want.userdata = this;
 
     SDL_AudioSpec have;
-    _deviceId = SDL_OpenAudioDevice(device, 0, &want, &have, 0);
+    _deviceId = SDL_OpenAudioDevice(device, 0, &want, &have, SDL_AUDIO_ALLOW_ANY_CHANGE);
     _outputFormat.format = have.format;
     _outputFormat.channels = have.channels;
     _outputFormat.freq = have.freq;
