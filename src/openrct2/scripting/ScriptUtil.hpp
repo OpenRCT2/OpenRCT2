@@ -35,7 +35,9 @@ namespace OpenRCT2::Scripting
 
         JSCallback(const JSCallback& other)
             : context(other.context)
-            , callback(JS_DupValue(other.context, other.callback))
+            , callback(
+                  other.context && JS_IsFunction(other.context, other.callback) ? JS_DupValue(other.context, other.callback)
+                                                                                : JS_UNDEFINED)
         {
         }
 
@@ -82,7 +84,7 @@ namespace OpenRCT2::Scripting
             return context && JS_IsFunction(context, callback);
         }
 
-        ~JSCallback()
+        ~JSCallback() noexcept
         {
             if (context)
             {

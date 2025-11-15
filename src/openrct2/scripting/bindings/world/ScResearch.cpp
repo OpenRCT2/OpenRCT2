@@ -129,7 +129,7 @@ namespace OpenRCT2::Scripting
         JS_UNPACK_ARRAY(values, ctx, value);
 
         auto priorities = 0;
-        JSIterateArray(ctx, value, [&values, &priorities](JSContext* ctx2, JSValue val) {
+        JSIterateArray(ctx, values, [&priorities](JSContext* ctx2, JSValue val) {
             auto item = JSToStdString(ctx2, val);
             auto category = ResearchCategoryMap.TryGet(item);
             if (category)

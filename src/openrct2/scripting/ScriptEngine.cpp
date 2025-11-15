@@ -495,6 +495,10 @@ ScTrackIterator Scripting::gScTrackIterator;
 ScTrackSegment Scripting::gScTrackSegment;
 ScEntity Scripting::gScEntity;
 ScThought Scripting::gScThought;
+    #ifndef DISABLE_NETWORK
+ScSocket Scripting::gScSocket;
+ScListener Scripting::gScListener;
+    #endif
 ScScenario Scripting::gScScenario;
 ScScenarioObjective Scripting::gScScenarioObjective;
 ScPatrolArea Scripting::gScPatrolArea;
@@ -533,10 +537,10 @@ void ScriptEngine::RegisterClasses(JSContext* ctx)
     gScTrackSegment.Register(ctx);
     gScEntity.Register(ctx);
     gScThought.Register(ctx);
-    // #ifndef DISABLE_NETWORK
-    // ScSocket::Register(ctx);
-    // ScListener::Register(ctx);
-    // #endif
+    #ifndef DISABLE_NETWORK
+    gScSocket.Register(ctx);
+    gScListener.Register(ctx);
+    #endif
     gScScenario.Register(ctx);
     gScScenarioObjective.Register(ctx);
     gScPatrolArea.Register(ctx);
@@ -557,11 +561,6 @@ JSContext* ScriptEngine::CreateContext() const
         callback(newCtx);
     }
     return newCtx;
-}
-
-void ScriptEngine::FreeContext(JSContext* ctx) const
-{
-    JS_FreeContext(ctx);
 }
 
 void ScriptEngine::InitialiseContext(JSContext* ctx) const
@@ -850,6 +849,8 @@ void ScriptEngine::UnloadPlugin(std::shared_ptr<Plugin>& plugin)
     {
         plugin->Unload();
         LogPluginInfo(plugin, "Unloaded");
+        // A GC run is required to clean up all JS objects before the game global context is cleaned up on shut down.
+        JS_RunGC(_runtime);
     }
 }
 
@@ -1105,7 +1106,7 @@ void ScriptEngine::ExecutePluginCall(
 
 // Must pass plugin by-value, a JS function could destroy the original reference
 void ScriptEngine::ExecutePluginCall(
-    std::shared_ptr<Plugin> plugin, const JSValue func, const JSValue thisValue, const std::vector<JSValue>& args,
+    const std::shared_ptr<Plugin>& plugin, const JSValue func, const JSValue thisValue, const std::vector<JSValue>& args,
     bool isGameStateMutable)
 {
     // Note: the plugin pointer is null when called from the repl, so we assume the repl JSContext in that case.
@@ -1890,55 +1891,47 @@ void ScriptEngine::RemoveIntervals(const std::shared_ptr<Plugin>& plugin)
 }
 
     #ifndef DISABLE_NETWORK
-void ScriptEngine::AddSocket(const std::shared_ptr<ScSocketBase>& socket)
+void ScriptEngine::AddSocket(SocketDataBase* data)
 {
-    _sockets.push_back(socket);
+    _sockets.push_back(data);
+}
+
+void ScriptEngine::RemoveSocket(SocketDataBase* data)
+{
+    // Just remove one
+    auto it = std::find(_sockets.begin(), _sockets.end(), data);
+    if (it != _sockets.end())
+        *it = nullptr;
 }
     #endif
 
 void ScriptEngine::UpdateSockets()
 {
-    /* TODO (mber)
     #ifndef DISABLE_NETWORK
-    // Use simple for i loop as Update calls can modify the list
-    auto it = _sockets.begin();
-    while (it != _sockets.end())
+    // AddSocket and RemoveSocket can be called as a result of the Update
+    // Therefore we add to the end and remove by setting to null and cleaning up
+    // after the update. We also must use [] here and we remember the original
+    // sockets vector size so that we process new ones in the next tick.
+    const size_t sz = _sockets.size();
+    for (size_t i = 0; i < sz; i++)
     {
-        auto& socket = *it;
-        socket->Update();
-        if (socket->IsDisposed())
-        {
-            it = _sockets.erase(it);
-        }
-        else
-        {
-            it++;
-        }
+        if (_sockets[i] != nullptr)
+            _sockets[i]->Update();
     }
+    std::erase(_sockets, nullptr);
     #endif
-    */
 }
 
 void ScriptEngine::RemoveSockets(const std::shared_ptr<Plugin>& plugin)
 {
-    /* TODO (mber)
     #ifndef DISABLE_NETWORK
-    auto it = _sockets.begin();
-    while (it != _sockets.end())
-    {
-        auto socket = it->get();
-        if (socket->GetPlugin() == plugin)
-        {
-            socket->Dispose();
-            it = _sockets.erase(it);
-        }
-        else
-        {
-            it++;
-        }
-    }
+    // The ownership model has the javascript engine owning all the socket data.
+    // Therefore we rely on the javascript engine to finalise all sockets.
+    // We just remove the listeners since they can hold references to the javascript socket objects which will
+    // prevent finalisation.
+    for (SocketDataBase* socket : _sockets)
+        socket->_eventList.RemoveAllListeners();
     #endif
-    */
 }
 
 std::string Scripting::Stringify(JSContext* ctx, const JSValue val)
