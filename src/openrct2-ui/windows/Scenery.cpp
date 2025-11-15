@@ -274,6 +274,7 @@ namespace OpenRCT2::Ui::Windows
         void onClose() override
         {
             SceneryRemoveGhostToolPlacement();
+            removeProvisionalTilesFromMap();
             HideGridlines();
             ViewportSetVisibility(ViewportVisibility::standard);
 
