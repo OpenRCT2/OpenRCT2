@@ -924,10 +924,11 @@ void TrackDesignMirror(TrackDesign& td)
 
 static void TrackDesignAddSelectedTile(const CoordsXY& coords)
 {
-    auto tileIterator = std::find(gMapSelectionTiles.begin(), gMapSelectionTiles.end(), coords);
-    if (tileIterator == gMapSelectionTiles.end())
+    const auto& selectedTiles = MapSelection::GetSelectedTiles();
+    const auto tileIterator = std::find(selectedTiles.begin(), selectedTiles.end(), coords);
+    if (tileIterator == selectedTiles.end())
     {
-        gMapSelectionTiles.push_back(coords);
+        MapSelection::AddSelectedTile(coords);
     }
 }
 
@@ -1436,7 +1437,7 @@ static GameActions::Result TrackDesignPlaceMaze(
 {
     if (tds.placeOperation == TrackPlaceOperation::drawOutlines)
     {
-        gMapSelectionTiles.clear();
+        MapSelection::ClearSelectedTiles();
         gMapSelectArrowPosition = CoordsXYZ{ origin, TileElementHeight(origin) };
         gMapSelectArrowDirection = _currentTrackPieceDirection;
     }
@@ -1565,7 +1566,7 @@ static GameActions::Result TrackDesignPlaceRide(
     tds.origin = origin;
     if (tds.placeOperation == TrackPlaceOperation::drawOutlines)
     {
-        gMapSelectionTiles.clear();
+        MapSelection::ClearSelectedTiles();
         gMapSelectArrowPosition = CoordsXYZ{ origin, TileElementHeight(origin) };
         gMapSelectArrowDirection = _currentTrackPieceDirection;
     }

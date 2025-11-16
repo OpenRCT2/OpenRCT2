@@ -19,7 +19,8 @@ CoordsXY gMapSelectPositionB;
 CoordsXYZ gMapSelectArrowPosition;
 uint8_t gMapSelectArrowDirection;
 
-std::vector<CoordsXY> gMapSelectionTiles;
+static std::vector<CoordsXY> _mapSelectionTiles;
+static bool _mapSelectionTilesInvalidate = false;
 
 static MapSelectFlags _previousMapSelectFlags;
 static CoordsXY _previousMapSelectPositionA;
@@ -46,6 +47,26 @@ void setMapSelectRange(const CoordsXY coords)
 
 namespace OpenRCT2::MapSelection
 {
+    void ClearSelectedTiles()
+    {
+        for (const CoordsXY& coords : _mapSelectionTiles)
+        {
+            MapInvalidateTileFull(coords);
+        }
+        _mapSelectionTiles.clear();
+        _mapSelectionTilesInvalidate = false;
+    }
+
+    void AddSelectedTile(const CoordsXY& coords)
+    {
+        _mapSelectionTiles.push_back(coords);
+        _mapSelectionTilesInvalidate = true;
+    }
+
+    const std::vector<CoordsXY>& GetSelectedTiles()
+    {
+        return _mapSelectionTiles;
+    }
 
     void Invalidate()
     {
@@ -81,6 +102,16 @@ namespace OpenRCT2::MapSelection
         else if (_previousMapSelectArrowDirection != gMapSelectArrowDirection)
         {
             MapInvalidateTile({ gMapSelectArrowPosition, gMapSelectArrowPosition.z });
+        }
+
+        if (_previousMapSelectFlags.has(MapSelectFlag::enableConstruct) != gMapSelectFlags.has(MapSelectFlag::enableConstruct)
+            || _mapSelectionTilesInvalidate)
+        {
+            for (const CoordsXY& coords : _mapSelectionTiles)
+            {
+                MapInvalidateTileFull(coords);
+            }
+            _mapSelectionTilesInvalidate = false;
         }
 
         _previousMapSelectFlags = gMapSelectFlags;

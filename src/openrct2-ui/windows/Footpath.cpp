@@ -1595,8 +1595,8 @@ namespace OpenRCT2::Ui::Windows
                 gMapSelectFlags.set(MapSelectFlag::enableConstruct, MapSelectFlag::green);
 
                 int32_t direction = _footpathConstructDirection;
-                gMapSelectionTiles.clear();
-                gMapSelectionTiles.push_back(
+                MapSelection::ClearSelectedTiles();
+                MapSelection::AddSelectedTile(
                     { _footpathConstructFromPosition.x + CoordsDirectionDelta[direction].x,
                       _footpathConstructFromPosition.y + CoordsDirectionDelta[direction].y });
             }

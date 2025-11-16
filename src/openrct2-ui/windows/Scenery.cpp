@@ -1899,7 +1899,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             auto* sceneryEntry = ObjectManager::GetObjectEntry<LargeSceneryEntry>(selection.EntryIndex);
-            gMapSelectionTiles.clear();
+            MapSelection::ClearSelectedTiles();
 
             for (auto& tile : sceneryEntry->tiles)
             {
@@ -1909,7 +1909,7 @@ namespace OpenRCT2::Ui::Windows
                 rotatedTileCoords.x += mapTile.x;
                 rotatedTileCoords.y += mapTile.y;
 
-                gMapSelectionTiles.push_back(rotatedTileCoords);
+                MapSelection::AddSelectedTile(rotatedTileCoords);
             }
 
             gMapSelectFlags.set(MapSelectFlag::enableConstruct);
