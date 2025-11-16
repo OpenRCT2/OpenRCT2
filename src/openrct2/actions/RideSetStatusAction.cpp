@@ -60,7 +60,6 @@ namespace OpenRCT2::GameActions
         auto ride = GetRide(_rideIndex);
         if (ride == nullptr)
         {
-            LOG_ERROR("Ride not found for rideIndex %u", _rideIndex.ToUnderlying());
             res.Error = Status::InvalidParameters;
             res.ErrorTitle = STR_RIDE_DESCRIPTION_UNKNOWN;
             res.ErrorMessage = STR_ERR_RIDE_NOT_FOUND;
@@ -69,7 +68,6 @@ namespace OpenRCT2::GameActions
 
         if (_status >= RideStatus::count)
         {
-            LOG_ERROR("Invalid ride status %u for ride %u", EnumValue(_status), _rideIndex.ToUnderlying());
             res.Error = Status::InvalidParameters;
             res.ErrorTitle = STR_RIDE_DESCRIPTION_UNKNOWN;
             res.ErrorMessage = kStringIdNone;

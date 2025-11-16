@@ -95,7 +95,6 @@ namespace OpenRCT2::GameActions
 
         if (sceneryElement == nullptr)
         {
-            LOG_ERROR("Small scenery not found at: x = %d, y = %d, z = %d", _loc.x, _loc.y, _loc.z);
             return Result(Status::InvalidParameters, STR_CANT_REPAINT_THIS, kStringIdNone);
         }
 

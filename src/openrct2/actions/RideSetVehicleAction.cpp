@@ -65,14 +65,12 @@ namespace OpenRCT2::GameActions
     {
         if (_type >= RideSetVehicleType::Count)
         {
-            LOG_ERROR("Invalid ride vehicle type %d", _type);
         }
         auto errTitle = kSetVehicleTypeErrorTitle[EnumValue(_type)];
 
         auto ride = GetRide(_rideIndex);
         if (ride == nullptr)
         {
-            LOG_ERROR("Ride not found for rideIndex %u", _rideIndex.ToUnderlying());
             return Result(Status::InvalidParameters, errTitle, STR_ERR_RIDE_NOT_FOUND);
         }
 
@@ -96,13 +94,11 @@ namespace OpenRCT2::GameActions
             {
                 if (!RideIsVehicleTypeValid(*ride))
                 {
-                    LOG_ERROR("Invalid vehicle type %d", _value);
                     return Result(Status::InvalidParameters, errTitle, STR_ERR_VALUE_OUT_OF_RANGE);
                 }
                 auto rideEntry = GetRideEntryByIndex(_value);
                 if (rideEntry == nullptr)
                 {
-                    LOG_ERROR("Ride entry not found for _value %d", _value);
                     return Result(Status::InvalidParameters, errTitle, kStringIdNone);
                 }
 
@@ -110,14 +106,12 @@ namespace OpenRCT2::GameActions
                 VehicleColourPresetList* presetList = rideEntry->vehicle_preset_list;
                 if (_colour >= presetList->count && _colour != 255 && _colour != 0)
                 {
-                    LOG_ERROR("Unknown vehicle colour preset. colour = %d", _colour);
                     return Result(Status::InvalidParameters, errTitle, STR_ERR_INVALID_COLOUR);
                 }
                 break;
             }
 
             default:
-                LOG_ERROR("Invalid ride vehicle setting %d", _type);
                 return Result(Status::InvalidParameters, errTitle, STR_ERR_VALUE_OUT_OF_RANGE);
         }
 

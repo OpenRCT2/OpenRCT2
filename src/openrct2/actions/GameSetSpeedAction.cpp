@@ -43,7 +43,6 @@ namespace OpenRCT2::GameActions
 
         if (!IsValidSpeed(_speed))
         {
-            LOG_ERROR("Invalid speed %u", _speed);
             return Result(Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
         }
 

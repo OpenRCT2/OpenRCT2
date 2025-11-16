@@ -65,22 +65,18 @@ namespace OpenRCT2::GameActions
         BannerElement* bannerElement = GetBannerElementAt();
         if (bannerElement == nullptr)
         {
-            LOG_ERROR(
-                "Invalid banner location, x = %d, y = %d, z = %d, direction = %d", _loc.x, _loc.y, _loc.z, _loc.direction);
             return Result(Status::InvalidParameters, STR_CANT_REMOVE_THIS, kStringIdNone);
         }
 
         auto bannerIndex = bannerElement->GetIndex();
         if (bannerIndex == BannerIndex::GetNull())
         {
-            LOG_ERROR("Invalid banner index %u", bannerIndex);
             return Result(Status::InvalidParameters, STR_CANT_REMOVE_THIS, kStringIdNone);
         }
 
         auto banner = bannerElement->GetBanner();
         if (banner == nullptr)
         {
-            LOG_ERROR("Invalid banner index %u", bannerIndex);
             return Result(Status::InvalidParameters, STR_CANT_REMOVE_THIS, kStringIdNone);
         }
 

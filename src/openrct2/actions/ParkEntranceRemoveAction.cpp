@@ -60,7 +60,6 @@ namespace OpenRCT2::GameActions
         }
         if (ParkEntranceGetIndex(_loc) == -1)
         {
-            LOG_ERROR("No park entrance at x = %d, y = %d, z = %d", _loc.x, _loc.y, _loc.z);
             return Result(Status::InvalidParameters, STR_CANT_REMOVE_THIS, kStringIdNone);
         }
         return res;

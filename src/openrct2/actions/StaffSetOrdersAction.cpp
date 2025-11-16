@@ -48,7 +48,6 @@ namespace OpenRCT2::GameActions
     {
         if (_spriteIndex.ToUnderlying() >= kMaxEntities || _spriteIndex.IsNull())
         {
-            LOG_ERROR("Invalid sprite index %u", _spriteIndex);
             return Result(Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
         }
 
@@ -56,7 +55,6 @@ namespace OpenRCT2::GameActions
         if (staff == nullptr
             || (staff->AssignedStaffType != StaffType::handyman && staff->AssignedStaffType != StaffType::mechanic))
         {
-            LOG_ERROR("Staff orders can't be changed for staff of type %u", _spriteIndex);
             return Result(Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_ACTION_INVALID_FOR_THAT_STAFF_TYPE);
         }
 

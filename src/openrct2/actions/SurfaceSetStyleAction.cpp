@@ -60,7 +60,6 @@ namespace OpenRCT2::GameActions
 
             if (surfaceObj == nullptr)
             {
-                LOG_ERROR("Invalid surface style %u", _surfaceStyle);
                 return Result(Status::InvalidParameters, STR_CANT_CHANGE_LAND_TYPE, STR_UNKNOWN_OBJECT_TYPE);
             }
         }
@@ -71,7 +70,6 @@ namespace OpenRCT2::GameActions
 
             if (edgeObj == nullptr)
             {
-                LOG_ERROR("Invalid edge style %u", _edgeStyle);
                 return Result(Status::InvalidParameters, STR_CANT_CHANGE_LAND_TYPE, STR_UNKNOWN_OBJECT_TYPE);
             }
         }

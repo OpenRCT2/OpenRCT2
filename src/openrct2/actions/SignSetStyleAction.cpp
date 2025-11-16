@@ -55,7 +55,6 @@ namespace OpenRCT2::GameActions
         auto banner = GetBanner(_bannerIndex);
         if (banner == nullptr)
         {
-            LOG_ERROR("Banner not found for bannerIndex %u", _bannerIndex);
             return Result(Status::InvalidParameters, STR_CANT_REPAINT_THIS, kStringIdNone);
         }
 
@@ -66,14 +65,10 @@ namespace OpenRCT2::GameActions
             TileElement* tileElement = BannerGetTileElement(_bannerIndex);
             if (tileElement == nullptr)
             {
-                LOG_ERROR("Banner tile element not found for bannerIndex %u", _bannerIndex);
                 return Result(Status::InvalidParameters, STR_CANT_REPAINT_THIS, kStringIdNone);
             }
             if (tileElement->GetType() != TileElementType::LargeScenery)
             {
-                LOG_ERROR(
-                    "Tile element has type %u, expected %d (LargeScenery)", tileElement->GetType(),
-                    TileElementType::LargeScenery);
                 return Result(Status::InvalidParameters, STR_CANT_REPAINT_THIS, kStringIdNone);
             }
             loc = { banner->position.ToCoordsXY(), tileElement->GetBaseZ() };
@@ -84,7 +79,6 @@ namespace OpenRCT2::GameActions
 
             if (wallElement == nullptr)
             {
-                LOG_ERROR("Wall element not found for bannerIndex", _bannerIndex);
                 return Result(Status::InvalidParameters, STR_CANT_REPAINT_THIS, kStringIdNone);
             }
             loc = { banner->position.ToCoordsXY(), wallElement->GetBaseZ() };

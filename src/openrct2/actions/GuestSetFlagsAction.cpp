@@ -46,7 +46,6 @@ namespace OpenRCT2::GameActions
         auto* peep = gameState.entities.TryGetEntity<Guest>(_peepId);
         if (peep == nullptr)
         {
-            LOG_ERROR("Guest entity not found for peepID %u", _peepId.ToUnderlying());
             return Result(Status::InvalidParameters, STR_CANT_CHANGE_THIS, kStringIdNone);
         }
         return Result();
