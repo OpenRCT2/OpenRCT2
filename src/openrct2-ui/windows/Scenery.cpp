@@ -1910,10 +1910,10 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            MapSelection::ClearSelectedTiles();
+            MapSelection::clearSelectedTiles();
             for (auto& tile : sceneryEntry->tiles)
             {
-                MapSelection::AddSelectedTile(mapTile + tile.offset.Rotate(direction));
+                MapSelection::addSelectedTile(mapTile + tile.offset.Rotate(direction));
             }
 
             SceneryRemoveGhostToolPlacement();

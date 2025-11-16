@@ -76,7 +76,7 @@ namespace OpenRCT2::Scripting
             if (gMapSelectFlags.has(MapSelectFlag::enableConstruct))
             {
                 duk_uarridx_t index = 0;
-                for (const auto& tile : MapSelection::GetSelectedTiles())
+                for (const auto& tile : MapSelection::getSelectedTiles())
                 {
                     duk_push_object(_ctx);
                     duk_push_int(_ctx, tile.x);
@@ -92,7 +92,7 @@ namespace OpenRCT2::Scripting
 
         void tiles_set(DukValue value)
         {
-            MapSelection::ClearSelectedTiles();
+            MapSelection::clearSelectedTiles();
             if (value.is_array())
             {
                 value.push();
@@ -105,14 +105,14 @@ namespace OpenRCT2::Scripting
                         auto coords = GetCoordsXY(dukElement);
                         if (coords)
                         {
-                            MapSelection::AddSelectedTile(*coords);
+                            MapSelection::addSelectedTile(*coords);
                         }
                     }
                 }
                 duk_pop(_ctx);
             }
 
-            if (MapSelection::GetSelectedTiles().empty())
+            if (MapSelection::getSelectedTiles().empty())
             {
                 gMapSelectFlags.unset(MapSelectFlag::enableConstruct);
                 gMapSelectFlags.unset(MapSelectFlag::green);

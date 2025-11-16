@@ -48,7 +48,7 @@ void setMapSelectRange(const CoordsXY coords)
 
 namespace OpenRCT2::MapSelection
 {
-    void ClearSelectedTiles()
+    void clearSelectedTiles()
     {
         for (const CoordsXY& coords : _mapSelectionTiles)
         {
@@ -58,18 +58,18 @@ namespace OpenRCT2::MapSelection
         _mapSelectionTilesInvalidate = false;
     }
 
-    void AddSelectedTile(const CoordsXY& coords)
+    void addSelectedTile(const CoordsXY& coords)
     {
         _mapSelectionTiles.push_back(coords);
         _mapSelectionTilesInvalidate = true;
     }
 
-    const std::vector<CoordsXY>& GetSelectedTiles()
+    const std::vector<CoordsXY>& getSelectedTiles()
     {
         return _mapSelectionTiles;
     }
 
-    void Invalidate()
+    void invalidate()
     {
         if (!_previousMapSelectFlags.has(MapSelectFlag::enable) && gMapSelectFlags.has(MapSelectFlag::enable))
         {

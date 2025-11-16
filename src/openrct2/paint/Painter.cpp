@@ -49,7 +49,7 @@ void Painter::Paint(IDrawingEngine& de)
     }
     else
     {
-        MapSelection::Invalidate();
+        MapSelection::invalidate();
         VirtualFloorInvalidate(false);
 
         de.PaintWindows();

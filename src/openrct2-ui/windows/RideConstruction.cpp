@@ -2257,7 +2257,7 @@ namespace OpenRCT2::Ui::Windows
                     trackPos = _currentTrackBegin;
                     break;
                 case RideConstructionState::EntranceExit:
-                    MapSelection::ClearSelectedTiles();
+                    MapSelection::clearSelectedTiles();
                     return;
                 default:
                     if (WindowRideConstructionUpdateState(&trackType, &trackDirection, nullptr, nullptr, &trackPos, nullptr))
@@ -2286,13 +2286,13 @@ namespace OpenRCT2::Ui::Windows
 
             const auto& ted = GetTrackElementDescriptor(trackType);
             trackDirection &= 3;
-            MapSelection::ClearSelectedTiles();
+            MapSelection::clearSelectedTiles();
             for (uint8_t i = 0; i < ted.numSequences; i++)
             {
                 CoordsXY offsets = { ted.sequences[i].clearance.x, ted.sequences[i].clearance.y };
                 CoordsXY currentTileCoords = tileCoords + offsets.Rotate(trackDirection);
 
-                MapSelection::AddSelectedTile(currentTileCoords);
+                MapSelection::addSelectedTile(currentTileCoords);
             }
         }
 
@@ -3367,8 +3367,8 @@ namespace OpenRCT2::Ui::Windows
         gMapSelectFlags.unset(MapSelectFlag::green);
         gMapSelectArrowPosition = CoordsXYZ{ *mapCoords, z };
         gMapSelectArrowDirection = _currentTrackPieceDirection;
-        MapSelection::ClearSelectedTiles();
-        MapSelection::AddSelectedTile(*mapCoords);
+        MapSelection::clearSelectedTiles();
+        MapSelection::addSelectedTile(*mapCoords);
 
         RideId rideIndex;
         OpenRCT2::TrackElemType trackType;
@@ -3409,7 +3409,7 @@ namespace OpenRCT2::Ui::Windows
             if (gMapSelectFlags.has(MapSelectFlag::enableConstruct))
             {
                 int32_t highestZ = 0;
-                for (const auto& selectedTile : MapSelection::GetSelectedTiles())
+                for (const auto& selectedTile : MapSelection::getSelectedTiles())
                 {
                     if (MapIsLocationValid(selectedTile))
                     {
@@ -3620,7 +3620,7 @@ namespace OpenRCT2::Ui::Windows
         highestZ = 0;
         if (gMapSelectFlags.has(MapSelectFlag::enableConstruct))
         {
-            for (const auto& selectedTile : MapSelection::GetSelectedTiles())
+            for (const auto& selectedTile : MapSelection::getSelectedTiles())
             {
                 if (!MapIsLocationValid(selectedTile))
                     continue;

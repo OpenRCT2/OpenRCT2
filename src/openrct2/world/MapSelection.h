@@ -67,9 +67,9 @@ void setMapSelectRange(const CoordsXY coords);
 
 namespace OpenRCT2::MapSelection
 {
-    void ClearSelectedTiles();
-    void AddSelectedTile(const CoordsXY& coords);
-    const std::vector<CoordsXY>& GetSelectedTiles();
+    void clearSelectedTiles();
+    void addSelectedTile(const CoordsXY& coords);
+    const std::vector<CoordsXY>& getSelectedTiles();
 
-    void Invalidate();
+    void invalidate();
 } // namespace OpenRCT2::MapSelection

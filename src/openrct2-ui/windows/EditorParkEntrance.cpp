@@ -175,12 +175,12 @@ namespace OpenRCT2::Ui::Windows
             }
 
             int32_t sideDirection = (parkEntrancePosition.direction + 1) & 3;
-            MapSelection::ClearSelectedTiles();
-            MapSelection::AddSelectedTile({ parkEntrancePosition.x, parkEntrancePosition.y });
-            MapSelection::AddSelectedTile(
+            MapSelection::clearSelectedTiles();
+            MapSelection::addSelectedTile({ parkEntrancePosition.x, parkEntrancePosition.y });
+            MapSelection::addSelectedTile(
                 { parkEntrancePosition.x + CoordsDirectionDelta[sideDirection].x,
                   parkEntrancePosition.y + CoordsDirectionDelta[sideDirection].y });
-            MapSelection::AddSelectedTile(
+            MapSelection::addSelectedTile(
                 { parkEntrancePosition.x - CoordsDirectionDelta[sideDirection].x,
                   parkEntrancePosition.y - CoordsDirectionDelta[sideDirection].y });
 
