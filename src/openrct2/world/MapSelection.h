@@ -63,8 +63,6 @@ extern uint8_t gMapSelectArrowDirection;
 
 extern std::vector<CoordsXY> gMapSelectionTiles;
 
-void MapInvalidateMapSelectionTiles();
-void MapInvalidateSelectionRect();
 MapRange getMapSelectRange();
 void setMapSelectRange(const MapRange& range);
 void setMapSelectRange(const CoordsXY coords);

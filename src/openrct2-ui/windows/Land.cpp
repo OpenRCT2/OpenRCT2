@@ -444,7 +444,6 @@ namespace OpenRCT2::Ui::Windows
         {
             uint8_t state_changed = 0;
 
-            MapInvalidateSelectionRect();
             gMapSelectFlags.unset(MapSelectFlag::enable);
 
             auto mapTile = ScreenGetMapXY(screenPos, nullptr);
@@ -501,7 +500,6 @@ namespace OpenRCT2::Ui::Windows
                 state_changed++;
             }
 
-            MapInvalidateSelectionRect();
             return state_changed;
         }
 
@@ -582,7 +580,6 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_BACKGROUND:
-                    MapInvalidateSelectionRect();
                     gMapSelectFlags.unset(MapSelectFlag::enable);
                     gCurrentToolId = Tool::digDown;
                     break;
@@ -608,8 +605,6 @@ namespace OpenRCT2::Ui::Windows
         {
             const bool mapCtrlPressed = GetInputManager().isModifierKeyPressed(ModifierKey::ctrl);
             auto* windowMgr = Ui::GetWindowManager();
-
-            MapInvalidateSelectionRect();
 
             if (gCurrentToolId == Tool::upDownArrow)
             {
@@ -700,7 +695,6 @@ namespace OpenRCT2::Ui::Windows
                     state_changed++;
                 }
 
-                MapInvalidateSelectionRect();
                 if (!state_changed)
                     return;
 
@@ -827,7 +821,6 @@ namespace OpenRCT2::Ui::Windows
                 state_changed++;
             }
 
-            MapInvalidateSelectionRect();
             if (!state_changed)
                 return;
 

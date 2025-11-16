@@ -166,8 +166,6 @@ namespace OpenRCT2::Ui::Windows
 
         void PlaceParkEntranceToolUpdate(const ScreenCoordsXY& screenCoords)
         {
-            MapInvalidateSelectionRect();
-            MapInvalidateMapSelectionTiles();
             gMapSelectFlags.unset(MapSelectFlag::enable, MapSelectFlag::enableArrow, MapSelectFlag::enableConstruct);
             CoordsXYZD parkEntrancePosition = PlaceParkEntranceGetMapPosition(screenCoords);
             if (parkEntrancePosition.IsNull())
@@ -190,7 +188,6 @@ namespace OpenRCT2::Ui::Windows
             gMapSelectArrowDirection = parkEntrancePosition.direction;
 
             gMapSelectFlags.set(MapSelectFlag::enableConstruct, MapSelectFlag::enableArrow);
-            MapInvalidateMapSelectionTiles();
             if (gParkEntranceGhostExists && parkEntrancePosition == gParkEntranceGhostPosition)
             {
                 return;

@@ -1816,7 +1816,6 @@ static GameActions::Result TrackDesignPlaceVirtual(
         gMapSelectFlags.set(MapSelectFlag::enableConstruct);
         gMapSelectFlags.set(MapSelectFlag::enableArrow);
         gMapSelectFlags.unset(MapSelectFlag::green);
-        MapInvalidateMapSelectionTiles();
     }
 
     auto res = GameActions::Result();

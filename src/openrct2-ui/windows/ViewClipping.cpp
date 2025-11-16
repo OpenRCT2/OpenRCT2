@@ -248,14 +248,12 @@ namespace OpenRCT2::Ui::Windows
             auto mapCoords = ScreenPosToMapPos(screenCoords, &direction);
             if (mapCoords)
             {
-                MapInvalidateSelectionRect();
                 gMapSelectFlags.set(MapSelectFlag::enable);
                 gMapSelectPositionA.x = std::min(_selectionStart.x, mapCoords->x);
                 gMapSelectPositionB.x = std::max(_selectionStart.x, mapCoords->x);
                 gMapSelectPositionA.y = std::min(_selectionStart.y, mapCoords->y);
                 gMapSelectPositionB.y = std::max(_selectionStart.y, mapCoords->y);
                 gMapSelectType = MapSelectType::full;
-                MapInvalidateSelectionRect();
             }
         }
 

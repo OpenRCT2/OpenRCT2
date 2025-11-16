@@ -977,8 +977,6 @@ namespace OpenRCT2::Ui::Windows
             if (widgetIndex != WIDX_PICKUP)
                 return;
 
-            MapInvalidateSelectionRect();
-
             gMapSelectFlags.unset(MapSelectFlag::enable);
 
             auto mapCoords = FootpathGetCoordinatesFromPos({ screenCoords.x, screenCoords.y + 16 }, nullptr, nullptr);
@@ -988,7 +986,6 @@ namespace OpenRCT2::Ui::Windows
                 gMapSelectType = MapSelectType::full;
                 gMapSelectPositionA = mapCoords;
                 gMapSelectPositionB = mapCoords;
-                MapInvalidateSelectionRect();
             }
 
             gPickupPeepImage = ImageId();

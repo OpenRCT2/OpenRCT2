@@ -121,7 +121,6 @@ namespace OpenRCT2::Ui::Windows
         {
             ClearProvisional();
             ViewportSetVisibility(ViewportVisibility::standard);
-            MapInvalidateMapSelectionTiles();
             gMapSelectFlags.unset(MapSelectFlag::enableConstruct);
             gMapSelectFlags.unset(MapSelectFlag::enableArrow);
             HideGridlines();
@@ -172,7 +171,6 @@ namespace OpenRCT2::Ui::Windows
         {
             TrackDesignState tds{};
 
-            MapInvalidateMapSelectionTiles();
             gMapSelectFlags.unset(MapSelectFlag::enable);
             gMapSelectFlags.unset(MapSelectFlag::enableConstruct);
             gMapSelectFlags.unset(MapSelectFlag::enableArrow);
@@ -256,7 +254,6 @@ namespace OpenRCT2::Ui::Windows
         void onToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
             ClearProvisional();
-            MapInvalidateMapSelectionTiles();
             gMapSelectFlags.unset(MapSelectFlag::enable);
             gMapSelectFlags.unset(MapSelectFlag::enableConstruct);
             gMapSelectFlags.unset(MapSelectFlag::enableArrow);

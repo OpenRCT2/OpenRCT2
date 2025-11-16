@@ -449,7 +449,6 @@ namespace OpenRCT2::Ui::Windows
         {
             int32_t direction;
             TileElement* tileElement;
-            MapInvalidateSelectionRect();
             gMapSelectFlags.unset(MapSelectFlag::enable, MapSelectFlag::enableArrow);
             auto mapCoords = FootpathBridgeGetInfoFromPos(screenCoords, &direction, &tileElement);
             if (mapCoords.IsNull())
@@ -470,7 +469,6 @@ namespace OpenRCT2::Ui::Windows
             gMapSelectPositionB = mapCoords;
             gMapSelectArrowPosition = CoordsXYZ{ mapCoords, mapZ };
             gMapSelectArrowDirection = DirectionReverse(direction);
-            MapInvalidateSelectionRect();
         }
 
         void SetPeepSpawnToolDown(const ScreenCoordsXY& screenCoords)
