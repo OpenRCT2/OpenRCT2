@@ -13,6 +13,7 @@
 - Fix: [#25488] Crash in headless mode.
 - Fix: [#25494] The Go-Karts steep to flat track does not draw correctly in the flat side tunnel.
 - Fix: [#25518] The virtual floor does not draw correctly if expanded on the positive x and y axes.
+- Fix: [#25524] The track construction arrow does not immediately change position when deleting track pieces.
 - Fix: [objects#401] Round tunnels on down slopes glitch.
 - Fix: [objects#404] Wooden Wild Mine cars incorrectly allow setting a third remap colour.
 - Fix: [objects#408] Australian fountain sets have confusing naming.
