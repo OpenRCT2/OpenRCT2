@@ -1899,18 +1899,6 @@ namespace OpenRCT2::Ui::Windows
             }
 
             auto* sceneryEntry = ObjectManager::GetObjectEntry<LargeSceneryEntry>(selection.EntryIndex);
-            MapSelection::ClearSelectedTiles();
-
-            for (auto& tile : sceneryEntry->tiles)
-            {
-                CoordsXY tileLocation = { tile.offset };
-                auto rotatedTileCoords = tileLocation.Rotate(direction);
-
-                rotatedTileCoords.x += mapTile.x;
-                rotatedTileCoords.y += mapTile.y;
-
-                MapSelection::AddSelectedTile(rotatedTileCoords);
-            }
 
             gMapSelectFlags.set(MapSelectFlag::enableConstruct);
 
@@ -1920,6 +1908,12 @@ namespace OpenRCT2::Ui::Windows
                 && gSceneryPlaceObject.EntryIndex == selection.EntryIndex)
             {
                 return;
+            }
+
+            MapSelection::ClearSelectedTiles();
+            for (auto& tile : sceneryEntry->tiles)
+            {
+                MapSelection::AddSelectedTile(mapTile + tile.offset.Rotate(direction));
             }
 
             SceneryRemoveGhostToolPlacement();
