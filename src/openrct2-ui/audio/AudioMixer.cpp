@@ -200,7 +200,7 @@ void AudioMixer::MixChannel(ISDLAudioChannel* channel, uint8_t* data, size_t len
 
     // Read raw PCM from channel
     int32_t readSamples = numSamples * rate;
-    auto readLength = static_cast<size_t>(readSamples / cvt.len_ratio) * outputByteRate;
+    auto readLength = static_cast<size_t>(ceil(readSamples / cvt.len_ratio)) * outputByteRate;
     _channelBuffer.resize(readLength);
     size_t bytesRead = channel->Read(_channelBuffer.data(), readLength);
 
