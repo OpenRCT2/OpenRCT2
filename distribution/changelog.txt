@@ -2,6 +2,7 @@
 ------------------------------------------------------------------------
 - Feature: [#22704] Rides can be made invisible more easily.
 - Improved: [#21753] Tracked rides with cheated powered launch mode can change powered launch speed without extra cheats.
+- Improved: [#25526] When a shop item cannot be recoloured, show a preview of the building instead.
 - Improved: [#25941] The command line sprite build command is now faster.
 - Fix: [#14686, #23996, #25981] Preview images from different windows overwrite each other when using OpenGL.
 - Fix: [#15128, #15626, #16331, #17443, #18626, #21597, #24175, #24971, #25963] Crash when loading corrupted RCT2/RCT1 save files with duplicate entity indices.
