@@ -1,5 +1,6 @@
 0.4.29 (in development)
 ------------------------------------------------------------------------
+- Improved: [#25028] Stalls now support colour presets, just like regular rides.
 - Improved: [#25426] Building the track designs index is now quicker.
 - Improved: [#25490] The ‘New Ride’ window can now be resized.
 - Fix: [#6228] The saved queue line path connections are not preserved when placing track designs (original bug).

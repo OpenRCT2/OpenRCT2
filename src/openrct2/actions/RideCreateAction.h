@@ -19,13 +19,13 @@ namespace OpenRCT2::GameActions
         ride_type_t _rideType{ kRideTypeNull };
         ObjectEntryIndex _subType{ kObjectEntryIndexNull };
         ObjectEntryIndex _entranceObjectIndex{ kObjectEntryIndexNull };
-        colour_t _colour1{ COLOUR_NULL };
-        colour_t _colour2{ COLOUR_NULL };
+        uint8_t _trackColourPreset{ COLOUR_NULL };
+        uint8_t _vehicleColourPreset{ COLOUR_NULL };
 
     public:
         RideCreateAction() = default;
         RideCreateAction(
-            ride_type_t rideType, ObjectEntryIndex subType, colour_t colour1, colour_t colour2,
+            ride_type_t rideType, ObjectEntryIndex subType, uint8_t trackColourPreset, uint8_t vehicleColourPreset,
             ObjectEntryIndex entranceStyleIndex);
 
         void AcceptParameters(GameActionParameterVisitor&) final;
