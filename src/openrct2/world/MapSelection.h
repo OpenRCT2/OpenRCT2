@@ -66,3 +66,8 @@ extern std::vector<CoordsXY> gMapSelectionTiles;
 MapRange getMapSelectRange();
 void setMapSelectRange(const MapRange& range);
 void setMapSelectRange(const CoordsXY coords);
+
+namespace OpenRCT2::MapSelection
+{
+    void Invalidate();
+} // namespace OpenRCT2::MapSelection

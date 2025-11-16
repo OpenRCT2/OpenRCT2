@@ -24,6 +24,7 @@
 #include "../scenes/intro/IntroScene.h"
 #include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
+#include "../world/MapSelection.h"
 #include "../world/TileInspector.h"
 
 using namespace OpenRCT2;
@@ -48,6 +49,7 @@ void Painter::Paint(IDrawingEngine& de)
     }
     else
     {
+        MapSelection::Invalidate();
         VirtualFloorInvalidate(false);
 
         de.PaintWindows();
