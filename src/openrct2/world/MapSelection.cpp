@@ -23,6 +23,7 @@ static std::vector<CoordsXY> _mapSelectionTiles;
 static bool _mapSelectionTilesInvalidate = false;
 
 static MapSelectFlags _previousMapSelectFlags;
+static MapSelectType _previousMapSelectType;
 static CoordsXY _previousMapSelectPositionA;
 static CoordsXY _previousMapSelectPositionB;
 static CoordsXYZ _previousMapSelectArrowPosition;
@@ -85,6 +86,10 @@ namespace OpenRCT2::MapSelection
             MapInvalidateRegion(_previousMapSelectPositionA, _previousMapSelectPositionB);
             MapInvalidateRegion(gMapSelectPositionA, gMapSelectPositionB);
         }
+        else if (_previousMapSelectType != gMapSelectType)
+        {
+            MapInvalidateRegion(gMapSelectPositionA, gMapSelectPositionB);
+        }
 
         if (!_previousMapSelectFlags.has(MapSelectFlag::enableArrow) && gMapSelectFlags.has(MapSelectFlag::enableArrow))
         {
@@ -115,6 +120,7 @@ namespace OpenRCT2::MapSelection
         }
 
         _previousMapSelectFlags = gMapSelectFlags;
+        _previousMapSelectType = gMapSelectType;
         _previousMapSelectPositionA = gMapSelectPositionA;
         _previousMapSelectPositionB = gMapSelectPositionB;
         _previousMapSelectArrowPosition = gMapSelectArrowPosition;
