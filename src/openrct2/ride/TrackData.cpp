@@ -2606,9 +2606,9 @@ namespace OpenRCT2::TrackMetaData
         { 0, 2 }, // TrackElemType::MultiDimInvertedUp90ToFlatQuarterLoop
         { 0 }, // TrackElemType::RotationControlToggle
         { 0, 2 }, // TrackElemType::FlatTrack1x4A
-        { 0, 3 }, // TrackElemType::FlatTrack2x2
+        { 0, 1, 2, 3 }, // TrackElemType::FlatTrack2x2
         { 0, 3, 12, 15 }, // TrackElemType::FlatTrack4x4
-        { 0 }, // TrackElemType::FlatTrack2x4
+        { 0, 3, 4, 7 }, // TrackElemType::FlatTrack2x4
         { 2, 3 }, // TrackElemType::FlatTrack1x5
         { 0 }, // TrackElemType::FlatTrack1x1A
         { 0, 2 }, // TrackElemType::FlatTrack1x4B
