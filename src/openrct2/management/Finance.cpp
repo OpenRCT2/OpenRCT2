@@ -91,7 +91,7 @@ void FinancePayment(money64 amount, ExpenditureType type)
 {
     // overflow check
     auto& park = getGameState().park;
-    park.cash = AddClamp<money64>(park.cash, -amount);
+    park.cash = AddClamp(park.cash, -amount);
 
     park.expenditureTable[0][EnumValue(type)] -= amount;
     if (kCountTowardsCurrentExpenditure[EnumValue(type)])

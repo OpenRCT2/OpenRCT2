@@ -848,12 +848,12 @@ static StringId window_cheats_page_titles[] = {
             switch (widgetIndex)
             {
                 case WIDX_MONEY_SPINNER_INCREMENT:
-                    _moneySpinnerValue = AddClamp<money64>(
+                    _moneySpinnerValue = AddClamp(
                         kCheatsMoneyIncrement * (_moneySpinnerValue / kCheatsMoneyIncrement), kCheatsMoneyIncrement);
                     invalidateWidget(WIDX_MONEY_SPINNER);
                     break;
                 case WIDX_MONEY_SPINNER_DECREMENT:
-                    _moneySpinnerValue = AddClamp<money64>(
+                    _moneySpinnerValue = AddClamp(
                         kCheatsMoneyIncrement * (_moneySpinnerValue / kCheatsMoneyIncrement), -kCheatsMoneyIncrement);
                     invalidateWidget(WIDX_MONEY_SPINNER);
                     break;
