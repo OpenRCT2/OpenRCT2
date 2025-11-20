@@ -89,7 +89,6 @@ bool FinanceCheckAffordability(money64 cost, uint32_t flags)
  */
 void FinancePayment(money64 amount, ExpenditureType type)
 {
-    // overflow check
     auto& park = getGameState().park;
     park.cash = AddClamp(park.cash, -amount);
 
