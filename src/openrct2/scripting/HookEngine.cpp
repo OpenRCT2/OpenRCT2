@@ -14,8 +14,6 @@
     #include "../core/EnumMap.hpp"
     #include "ScriptEngine.h"
 
-    #include <unordered_map>
-
 using namespace OpenRCT2::Scripting;
 
 static const EnumMap<HookType> HooksLookupTable(
@@ -54,7 +52,7 @@ HookEngine::HookEngine(ScriptEngine& scriptEngine)
     }
 }
 
-uint32_t HookEngine::Subscribe(HookType type, std::shared_ptr<Plugin> owner, JSValue function)
+uint32_t HookEngine::Subscribe(HookType type, const std::shared_ptr<Plugin>& owner, const JSCallback& function)
 {
     auto& hookList = GetHookList(type);
     auto cookie = _nextCookie++;
@@ -76,7 +74,7 @@ void HookEngine::Unsubscribe(HookType type, uint32_t cookie)
     }
 }
 
-void HookEngine::UnsubscribeAll(std::shared_ptr<const Plugin> owner)
+void HookEngine::UnsubscribeAll(const std::shared_ptr<const Plugin>& owner)
 {
     for (auto& hookList : _hookMap)
     {
@@ -115,56 +113,46 @@ void HookEngine::Call(HookType type, bool isGameStateMutable)
     auto& hookList = GetHookList(type);
     for (auto& hook : hookList.Hooks)
     {
-        _scriptEngine.ExecutePluginCall(hook.Owner, hook.Function, {}, isGameStateMutable);
+        _scriptEngine.ExecutePluginCall(hook.Owner, hook.Function.callback, {}, isGameStateMutable);
     }
 }
 
-void HookEngine::Call(HookType type, const JSValue arg, bool isGameStateMutable)
+void HookEngine::Call(HookType type, const JSValue arg, bool isGameStateMutable, bool keepArgsAlive)
 {
     auto& hookList = GetHookList(type);
     for (auto& hook : hookList.Hooks)
     {
-        _scriptEngine.ExecutePluginCall(hook.Owner, hook.Function, { arg }, isGameStateMutable);
+        _scriptEngine.ExecutePluginCall(hook.Owner, hook.Function.callback, { arg }, isGameStateMutable, keepArgsAlive);
     }
 }
 
 void HookEngine::Call(
-    HookType type, const std::initializer_list<std::pair<std::string_view, std::any>>& args, bool isGameStateMutable)
+    HookType type, const std::initializer_list<std::pair<std::string, HookValue>>& args, bool isGameStateMutable)
 {
-    // TODO (mber)
-    throw std::runtime_error("HookEngine::Call() not implemented");
-    /*
     auto& hookList = GetHookList(type);
     for (auto& hook : hookList.Hooks)
     {
-        auto ctx = _scriptEngine.GetContext();
+        JSContext* ctx = hook.Owner.get()->GetContext();
 
         // Convert key/value pairs into an object
-        auto objIdx = duk_push_object(ctx);
+        JSValue obj = JS_NewObject(ctx);
         for (const auto& arg : args)
         {
-            if (arg.second.type() == typeid(int32_t))
-            {
-                auto val = std::any_cast<int32_t>(arg.second);
-                duk_push_int(ctx, val);
-            }
-            else if (arg.second.type() == typeid(std::string))
-            {
-                const auto& val = std::any_cast<std::string>(arg.second);
-                duk_push_string(ctx, val.c_str());
-            }
-            else
-            {
-                throw std::runtime_error("Not implemented");
-            }
-            duk_put_prop_string(ctx, objIdx, arg.first.data());
+            JSValue member = std::visit(
+                HookValuesToJS{
+                    [ctx](int64_t v) { return JS_NewInt64(ctx, v); },
+                    [ctx](uint32_t v) { return JS_NewInt64(ctx, v); },
+                    [ctx](int32_t v) { return JS_NewInt32(ctx, v); },
+                    [ctx](uint16_t v) { return JS_NewInt32(ctx, v); },
+                    [ctx](int16_t v) { return JS_NewInt32(ctx, v); },
+                    [ctx](const std::string& v) { return JSFromStdString(ctx, v); },
+                },
+                arg.second);
+            JS_SetPropertyStr(ctx, obj, arg.first.c_str(), member);
         }
 
-        std::vector<DukValue> dukArgs;
-        dukArgs.push_back(DukValue::take_from_stack(ctx));
-        _scriptEngine.ExecutePluginCall(hook.Owner, hook.Function, dukArgs, isGameStateMutable);
+        _scriptEngine.ExecutePluginCall(hook.Owner, hook.Function.callback, { obj }, isGameStateMutable);
     }
-    */
 }
 
 HookList& HookEngine::GetHookList(HookType type)

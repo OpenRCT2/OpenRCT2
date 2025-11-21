@@ -298,7 +298,7 @@ namespace OpenRCT2
             }
         }
 
-#ifdef ENABLE_SCRIPTING
+#ifdef ENABLE_SCRIPTING_REFACTOR
         // Stash the current day number before updating the date so that we
         // know if the day number changes on this tick.
         auto day = gameState.date.GetDay();
@@ -357,7 +357,7 @@ namespace OpenRCT2
 
         gameState.currentTicks++;
 
-#ifdef ENABLE_SCRIPTING
+#ifdef ENABLE_SCRIPTING_REFACTOR
         auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
         hookEngine.Call(HookType::intervalTick, true);
 
