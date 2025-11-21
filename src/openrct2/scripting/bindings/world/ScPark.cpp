@@ -377,9 +377,9 @@ namespace OpenRCT2::Scripting
         int32_t index = 0;
         int32_t archiveIndex = News::ItemHistoryStart;
         auto& gameState = getGameState();
-        JSIterateArray(ctx, value, [&index, &archiveIndex, &gameState](JSContext* ctx, JSValue item) {
-            auto isArchived = AsOrDefault(ctx, item, "isArchived", false);
-            auto newsItem = NewsItemFromJS(ctx, item);
+        JSIterateArray(ctx, value, [&index, &archiveIndex, &gameState](JSContext* ctx2, JSValue item) {
+            auto isArchived = AsOrDefault(ctx2, item, "isArchived", false);
+            auto newsItem = NewsItemFromJS(ctx2, item);
             if (isArchived)
             {
                 if (archiveIndex < News::MaxItems)
