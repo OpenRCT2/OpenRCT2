@@ -780,6 +780,9 @@ private:
         int rWidth, rHeight;
         if (SDL_GetRendererOutputSize(renderer, &rWidth, &rHeight) == 0)
             config.windowScale = rWidth / wWidth;
+#ifdef __MACOSX__
+            config.windowScale = (rWidth / wWidth) * .75;
+#endif
 
         config.inferDisplayDPI = false;
         Config::Save();
