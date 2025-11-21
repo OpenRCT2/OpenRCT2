@@ -214,10 +214,11 @@ namespace OpenRCT2::Scripting
         void Tick();
         std::future<void> Eval(const std::string& s);
         void ExecutePluginCall(
-            const std::shared_ptr<Plugin>& plugin, JSValue func, const std::vector<JSValue>& args, bool isGameStateMutable);
+            const std::shared_ptr<Plugin>& plugin, JSValue func, const std::vector<JSValue>& args, bool isGameStateMutable,
+            bool keepArgsAlive = false);
         void ExecutePluginCall(
             const std::shared_ptr<Plugin>& plugin, JSValue func, JSValue thisValue, const std::vector<JSValue>& args,
-            bool isGameStateMutable);
+            bool isGameStateMutable, bool keepArgsAlive = false);
 
         void LogPluginInfo(std::string_view message);
         void LogPluginInfo(const std::shared_ptr<Plugin>& plugin, std::string_view message);

@@ -134,7 +134,7 @@ bool EntityBase::Is<Vehicle>() const
     return Type == EntityType::vehicle;
 }
 
-#ifdef ENABLE_SCRIPTING
+#ifdef ENABLE_SCRIPTING_REFACTOR
 /**
  * Fires the "vehicle.crash" api hook
  * @param vehicleId Entity id of the vehicle that just crashed
@@ -145,16 +145,15 @@ static void InvokeVehicleCrashHook(const EntityId vehicleId, const std::string_v
     auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
     if (hookEngine.HasSubscriptions(Scripting::HookType::vehicleCrash))
     {
-        auto ctx = GetContext()->GetScriptEngine().GetContext();
+        JSContext* ctx = GetContext()->GetScriptEngine().GetContext();
 
         // Create event args object
-        auto obj = Scripting::DukObject(ctx);
-        obj.Set("id", vehicleId.ToUnderlying());
-        obj.Set("crashIntoType", crashId);
+        JSValue obj = JS_NewObject(ctx);
+        JS_SetPropertyStr(ctx, obj, "id", JS_NewInt64(ctx, vehicleId.ToUnderlying()));
+        JS_SetPropertyStr(ctx, obj, "crashIntoType", Scripting::JSFromStdString(ctx, crashId));
 
         // Call the subscriptions
-        auto e = obj.Take();
-        hookEngine.Call(Scripting::HookType::vehicleCrash, e, true);
+        hookEngine.Call(Scripting::HookType::vehicleCrash, obj, true);
     }
 }
 #endif
@@ -2553,7 +2552,7 @@ void Vehicle::UpdateCollisionSetup()
 
         train->sub_state = 2;
 
-#ifdef ENABLE_SCRIPTING
+#ifdef ENABLE_SCRIPTING_REFACTOR
         InvokeVehicleCrashHook(train->Id, "another_vehicle");
 #endif
         const auto trainLoc = train->GetLocation();
@@ -4307,7 +4306,7 @@ void Vehicle::CrashOnLand()
     }
     SetState(Status::crashed, sub_state);
 
-#ifdef ENABLE_SCRIPTING
+#ifdef ENABLE_SCRIPTING_REFACTOR
     InvokeVehicleCrashHook(Id, "land");
 #endif
 
@@ -4375,7 +4374,7 @@ void Vehicle::CrashOnWater()
     }
     SetState(Status::crashed, sub_state);
 
-#ifdef ENABLE_SCRIPTING
+#ifdef ENABLE_SCRIPTING_REFACTOR
     InvokeVehicleCrashHook(Id, "water");
 #endif
 

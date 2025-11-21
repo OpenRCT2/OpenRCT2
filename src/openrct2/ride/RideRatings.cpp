@@ -1068,7 +1068,7 @@ static void RideRatingsCalculate(RideRating::UpdateState& state, Ride& ride)
     }
 #endif
 
-#ifdef ENABLE_SCRIPTING
+#ifdef ENABLE_SCRIPTING_REFACTOR
     // Only call the 'ride.ratings.calculate' API hook if testing of the ride is complete
     if (ride.lifecycleFlags & RIDE_LIFECYCLE_TESTED)
     {
@@ -1079,19 +1079,19 @@ static void RideRatingsCalculate(RideRating::UpdateState& state, Ride& ride)
             auto originalRatings = ride.ratings;
 
             // Create event args object
-            auto obj = DukObject(ctx);
-            obj.Set("rideId", ride.id.ToUnderlying());
-            obj.Set("excitement", originalRatings.excitement);
-            obj.Set("intensity", originalRatings.intensity);
-            obj.Set("nausea", originalRatings.nausea);
+            JSValue obj = JS_NewObject(ctx);
+            JS_SetPropertyStr(ctx, obj, "rideId", JS_NewInt32(ctx, ride.id.ToUnderlying()));
+            JS_SetPropertyStr(ctx, obj, "excitement", JS_NewInt32(ctx, originalRatings.excitement));
+            JS_SetPropertyStr(ctx, obj, "intensity", JS_NewInt32(ctx, originalRatings.intensity));
+            JS_SetPropertyStr(ctx, obj, "nausea", JS_NewInt32(ctx, originalRatings.nausea));
 
             // Call the subscriptions
-            auto e = obj.Take();
-            hookEngine.Call(HookType::rideRatingsCalculate, e, true);
+            hookEngine.Call(HookType::rideRatingsCalculate, obj, true, true);
 
-            auto scriptExcitement = AsOrDefault(e["excitement"], static_cast<int32_t>(originalRatings.excitement));
-            auto scriptIntensity = AsOrDefault(e["intensity"], static_cast<int32_t>(originalRatings.intensity));
-            auto scriptNausea = AsOrDefault(e["nausea"], static_cast<int32_t>(originalRatings.nausea));
+            auto scriptExcitement = AsOrDefault(ctx, obj, "excitement", static_cast<int32_t>(originalRatings.excitement));
+            auto scriptIntensity = AsOrDefault(ctx, obj, "intensity", static_cast<int32_t>(originalRatings.intensity));
+            auto scriptNausea = AsOrDefault(ctx, obj, "nausea", static_cast<int32_t>(originalRatings.nausea));
+            JS_FreeValue(ctx, obj);
 
             ride.ratings.excitement = std::clamp<int32_t>(scriptExcitement, 0, INT16_MAX);
             ride.ratings.intensity = std::clamp<int32_t>(scriptIntensity, 0, INT16_MAX);

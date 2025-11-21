@@ -1100,15 +1100,15 @@ std::future<void> ScriptEngine::Eval(const std::string& s)
 }
 
 void ScriptEngine::ExecutePluginCall(
-    const std::shared_ptr<Plugin>& plugin, const JSValue func, const std::vector<JSValue>& args, bool isGameStateMutable)
+    const std::shared_ptr<Plugin>& plugin, const JSValue func, const std::vector<JSValue>& args, bool isGameStateMutable,
+    bool keepArgsAlive)
 {
-    ExecutePluginCall(plugin, func, JS_UNDEFINED, args, isGameStateMutable);
+    ExecutePluginCall(plugin, func, JS_UNDEFINED, args, isGameStateMutable, keepArgsAlive);
 }
 
-// Must pass plugin by-value, a JS function could destroy the original reference
 void ScriptEngine::ExecutePluginCall(
     const std::shared_ptr<Plugin>& plugin, const JSValue func, const JSValue thisValue, const std::vector<JSValue>& args,
-    bool isGameStateMutable)
+    bool isGameStateMutable, bool keepArgsAlive)
 {
     // Note: the plugin pointer is null when called from the repl, so we assume the repl JSContext in that case.
     JSContext* ctx = plugin ? plugin->GetContext() : _replContext;
@@ -1124,9 +1124,12 @@ void ScriptEngine::ExecutePluginCall(
         }
         JS_FreeValue(ctx, res);
     }
-    for (const JSValue& arg : args)
+    [[likely]] if (!keepArgsAlive)
     {
-        JS_FreeValue(ctx, arg);
+        for (const JSValue& arg : args)
+        {
+            JS_FreeValue(ctx, arg);
+        }
     }
 }
 
