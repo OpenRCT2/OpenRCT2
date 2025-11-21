@@ -32,12 +32,9 @@ STR_0027    :Doĝemoj
 STR_0028    :Svingiĝanta Ŝipo
 STR_0029    :Svingiĝanta Inversiĝanta Ŝipo
 STR_0030    :Manĝaĵbudo
-STR_0031    :Nekonata Budo (1D)
 STR_0032    :Trinkaĵbudo
-STR_0033    :Nekonata Budo (1F)
 STR_0034    :Vendejo
 STR_0035    :Karuselo
-STR_0036    :Nekonata Budo (22)
 STR_0037    :Informokiosko
 STR_0038    :Necesejo
 STR_0039    :Spektoradego
@@ -83,16 +80,10 @@ STR_0078    :Inversigita Onda Fervojo kun Harpingloformaj Kurboj
 STR_0079    :Magia Tapiŝo
 STR_0080    :Submarŝiprajdo
 STR_0081    :Riverflosoj
-STR_0082    :Nekonata Atrakcio (50)
 STR_0083    :Centrifugilo
-STR_0084    :Nekonata Atrakcio (52)
-STR_0085    :Nekonata Atrakcio (53)
-STR_0086    :Nekonata Atrakcio (54)
-STR_0087    :Nekonata Atrakcio (55)
 STR_0088    :Inversigita Lanĉita Onda Fervojo
 STR_0089    :Miniatura Onda Fervojo
 STR_0090    :Minrajdo
-STR_0091    :Nekonata Atrakcio (59)
 STR_0092    :Onda Fervojo Lanĉita per Linearaj Induktaj Motoroj
 STR_0093    :Hibrida Onda Fervojo
 STR_0094    :Onda Fervojo kun Unuopa Relo

@@ -32,12 +32,9 @@ STR_0027    :Autodrom
 STR_0028    :Pirátská loď
 STR_0029    :Houpající se obrácená loď
 STR_0030    :Stánek s jídlem
-STR_0031    :Neznámý obchod (1D)
 STR_0032    :Stánek s pitím
-STR_0033    :Neznámý obchod (1F)
 STR_0034    :Obchod
 STR_0035    :Kolotoč
-STR_0036    :Neznámý obchod (22)
 STR_0037    :Informační kiosek
 STR_0038    :Toalety
 STR_0039    :Ruské kolo
@@ -83,16 +80,10 @@ STR_0078    :Ostrá zavěšená horská dráha
 STR_0079    :Kouzelný koberec
 STR_0080    :Podmořská jízda
 STR_0081    :Říční vory
-STR_0082    :Neznámá atrakce (50)
 STR_0083    :Loď Enterprise
-STR_0084    :Neznámá atrakce (52)
-STR_0085    :Neznámá atrakce (53)
-STR_0086    :Neznámá atrakce (54)
-STR_0087    :Neznámá atrakce (55)
 STR_0088    :Otočená impulsní dráha
 STR_0089    :Malá horská dráha
 STR_0090    :Mini dráha
-STR_0091    :Neznámá atrakce (59)
 STR_0092    :LIM horská dráha
 STR_0093    :Hybridní horská dráha
 STR_0094    :Jednokolejná horská dráha

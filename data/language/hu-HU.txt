@@ -32,12 +32,9 @@ STR_0027    :Dodzsem
 STR_0028    :Hajóhinta
 STR_0029    :Fejreálló hajóhinta 
 STR_0030    :Ételes bódé
-STR_0031    :Ismeretlen bódé (1D)
 STR_0032    :Italos bódé
-STR_0033    :Ismeretlen bódé (1F)
 STR_0034    :Bolt
 STR_0035    :Körhinta
-STR_0036    :Ismeretlen bódé (22)
 STR_0037    :Információs bódé
 STR_0038    :WC
 STR_0039    :Óriáskerék
@@ -83,16 +80,10 @@ STR_0078    :Fordított hajtű hullámvasút
 STR_0079    :Varázsszőnyeg
 STR_0080    :Tengeralattjáró-játék
 STR_0081    :Folyami tutajok
-STR_0082    :Ismeretlen játék (50)
 STR_0083    :Enterprise
-STR_0084    :Ismeretlen játék (52)
-STR_0085    :Ismeretlen játék (53)
-STR_0086    :Ismeretlen játék (54)
-STR_0087    :Ismeretlen játék (55)
 STR_0088    :Fordított impulzus hullámvasút
 STR_0089    :Mini hullámvasút
 STR_0090    :Bányavasút
-STR_0091    :Ismeretlen játék (59)
 STR_0092    :Aszinkronmotoros hullámvasút
 STR_0093    :Hibrid hullámvasút
 STR_0094    :Egysínű hullámvasút

@@ -34,12 +34,9 @@ STR_0027    :Autos tamponneuses
 STR_0028    :Bateau pirate
 STR_0029    :Bateau renverseur
 STR_0030    :Stand de nourriture
-STR_0031    :Stand inconnu (1D)
 STR_0032    :Stand de boissons
-STR_0033    :Stand inconnu (1F)
 STR_0034    :Boutique
 STR_0035    :Carrousel
-STR_0036    :Stand inconnu (22)
 STR_0037    :Kiosque d’information
 STR_0038    :Toilettes
 STR_0039    :Grande roue
@@ -85,16 +82,10 @@ STR_0078    :Epingle à cheveux inversée
 STR_0079    :Tapis volant
 STR_0080    :Balade sous-marine
 STR_0081    :Radeau
-STR_0082    :Manège Inconnu (50)
 STR_0083    :Entreprise
-STR_0084    :Manège Inconnu (52)
-STR_0085    :Manège Inconnu (53)
-STR_0086    :Manège Inconnu (54)
-STR_0087    :Manège Inconnu (55)
 STR_0088    :Impulsion inversée
 STR_0089    :Mini-montagnes russes
 STR_0090    :Mineur
-STR_0091    :Manège Inconnu (59)
 STR_0092    :Moteur à induction linéaire
 STR_0093    :Montagnes russes hybrides
 STR_0094    :Montagnes russes à rail unique

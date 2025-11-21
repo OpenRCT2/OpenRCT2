@@ -32,12 +32,9 @@ STR_0027    :Coches de choque
 STR_0028    :Barco pirata
 STR_0029    :Barco basculante invertido
 STR_0030    :posto de comida
-STR_0031    :Posto descoñecido (1D)
 STR_0032    :Posto de bebidas
-STR_0033    :Posto descoñecido (1F)
 STR_0034    :Tenda
 STR_0035    :Carrusel
-STR_0036    :Posto descoñecido (22)
 STR_0037    :Quiosco de información
 STR_0038    :Aseos
 STR_0039    :Nora
@@ -83,16 +80,10 @@ STR_0078    :Montaña Rusa de Prendedor invertido
 STR_0079    :Alfombra máxica
 STR_0080    :Viaxe submarina
 STR_0081    :Balsas fluviais
-STR_0082    :Atracción Descoñecida (50)
 STR_0083    :Enterprise
-STR_0084    :Atracción Descoñecida (52)
-STR_0085    :Atracción Descoñecida (53)
-STR_0086    :Atracción Descoñecida (54)
-STR_0087    :Atracción Descoñecida (55)
 STR_0088    :Montaña rusa de impulso inverso
 STR_0089    :Mini montaña rusa
 STR_0090    :Atracción da mina
-STR_0091    :Atracción Descoñecida (59)
 STR_0092    :Montaña Rusa Lanzada por MIL
 STR_0093    :Montaña Rusa Híbrida
 STR_0094    :Montaña rusa dun só raíl
