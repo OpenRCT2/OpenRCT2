@@ -7434,19 +7434,11 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
 
     IncrementGuestsHeadingForPark();
 
-#ifdef ENABLE_SCRIPTING
+#ifdef ENABLE_SCRIPTING_REFACTOR
     auto& hookEngine = OpenRCT2::GetContext()->GetScriptEngine().GetHookEngine();
     if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HookType::guestGeneration))
     {
-        auto ctx = OpenRCT2::GetContext()->GetScriptEngine().GetContext();
-
-        // Create event args object
-        auto obj = OpenRCT2::Scripting::DukObject(ctx);
-        obj.Set("id", peep->Id.ToUnderlying());
-
-        // Call the subscriptions
-        auto e = obj.Take();
-        hookEngine.Call(OpenRCT2::Scripting::HookType::guestGeneration, e, true);
+        hookEngine.Call(OpenRCT2::Scripting::HookType::guestGeneration, { { "id", peep->Id.ToUnderlying() } }, true);
     }
 #endif
 

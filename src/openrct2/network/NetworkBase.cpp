@@ -205,7 +205,7 @@ namespace OpenRCT2::Network
             _pendingPlayerLists.clear();
             _pendingPlayerInfo.clear();
 
-    #ifdef ENABLE_SCRIPTING
+    #ifdef ENABLE_SCRIPTING_REFACTOR
             auto& scriptEngine = GetContext().GetScriptEngine();
             scriptEngine.RemoveNetworkPlugins();
     #endif
@@ -1357,7 +1357,7 @@ namespace OpenRCT2::Network
 
     void NetworkBase::ServerSendScripts(Connection& connection)
     {
-    #ifdef ENABLE_SCRIPTING
+    #ifdef ENABLE_SCRIPTING_REFACTOR
         using namespace OpenRCT2::Scripting;
 
         auto& scriptEngine = GetContext().GetScriptEngine();
@@ -1828,7 +1828,7 @@ namespace OpenRCT2::Network
     static bool ProcessPlayerAuthenticatePluginHooks(
         const Connection& connection, std::string_view name, std::string_view publicKeyHash)
     {
-    #ifdef ENABLE_SCRIPTING
+    #ifdef ENABLE_SCRIPTING_REFACTOR
         using namespace OpenRCT2::Scripting;
 
         auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
@@ -1837,18 +1837,19 @@ namespace OpenRCT2::Network
             auto ctx = GetContext()->GetScriptEngine().GetContext();
 
             // Create event args object
-            DukObject eObj(ctx);
-            eObj.Set("name", name);
-            eObj.Set("publicKeyHash", publicKeyHash);
-            eObj.Set("ipAddress", connection.Socket->GetIpAddress());
-            eObj.Set("cancel", false);
-            auto e = eObj.Take();
+            JSValue obj = JS_NewObject(ctx);
+            JS_SetPropertyStr(ctx, obj, "name", JSFromStdString(ctx, name));
+            JS_SetPropertyStr(ctx, obj, "publicKeyHash", JSFromStdString(ctx, publicKeyHash));
+            JS_SetPropertyStr(ctx, obj, "ipAddress", JSFromStdString(ctx, connection.Socket->GetIpAddress()));
+            JS_SetPropertyStr(ctx, obj, "cancel", JS_NewBool(ctx, false));
 
             // Call the subscriptions
-            hookEngine.Call(Scripting::HookType::networkAuthenticate, e, false);
+            hookEngine.Call(Scripting::HookType::networkAuthenticate, obj, false, true);
 
             // Check if any hook has cancelled the join
-            if (AsOrDefault(e["cancel"], false))
+            const bool canceled = AsOrDefault(ctx, obj, "cancel", false);
+            JS_FreeValue(ctx, obj);
+            if (canceled)
             {
                 return false;
             }
@@ -1859,7 +1860,7 @@ namespace OpenRCT2::Network
 
     static void ProcessPlayerJoinedPluginHooks(uint8_t playerId)
     {
-    #ifdef ENABLE_SCRIPTING
+    #ifdef ENABLE_SCRIPTING_REFACTOR
         using namespace OpenRCT2::Scripting;
 
         auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
@@ -1868,19 +1869,18 @@ namespace OpenRCT2::Network
             auto ctx = GetContext()->GetScriptEngine().GetContext();
 
             // Create event args object
-            DukObject eObj(ctx);
-            eObj.Set("player", playerId);
-            auto e = eObj.Take();
+            JSValue obj = JS_NewObject(ctx);
+            JS_SetPropertyStr(ctx, obj, "player", JS_NewInt32(ctx, playerId));
 
             // Call the subscriptions
-            hookEngine.Call(Scripting::HookType::networkJoin, e, false);
+            hookEngine.Call(Scripting::HookType::networkJoin, obj, false);
         }
     #endif
     }
 
     static void ProcessPlayerLeftPluginHooks(uint8_t playerId)
     {
-    #ifdef ENABLE_SCRIPTING
+    #ifdef ENABLE_SCRIPTING_REFACTOR
         using namespace OpenRCT2::Scripting;
 
         auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
@@ -1889,12 +1889,11 @@ namespace OpenRCT2::Network
             auto ctx = GetContext()->GetScriptEngine().GetContext();
 
             // Create event args object
-            DukObject eObj(ctx);
-            eObj.Set("player", playerId);
-            auto e = eObj.Take();
+            JSValue obj = JS_NewObject(ctx);
+            JS_SetPropertyStr(ctx, obj, "player", JS_NewInt32(ctx, playerId));
 
             // Call the subscriptions
-            hookEngine.Call(Scripting::HookType::networkLeave, e, false);
+            hookEngine.Call(Scripting::HookType::networkJoin, obj, false);
         }
     #endif
     }
@@ -2476,7 +2475,7 @@ namespace OpenRCT2::Network
         uint32_t dataSize{};
         packet >> numScripts >> dataSize;
 
-    #ifdef ENABLE_SCRIPTING
+    #ifdef ENABLE_SCRIPTING_REFACTOR
         _serverScriptsData.data.Clear();
         _serverScriptsData.pluginCount = numScripts;
         _serverScriptsData.dataSize = dataSize;
@@ -2491,7 +2490,7 @@ namespace OpenRCT2::Network
 
     void NetworkBase::Client_Handle_SCRIPTS_DATA(Connection& connection, Packet& packet)
     {
-    #ifdef ENABLE_SCRIPTING
+    #ifdef ENABLE_SCRIPTING_REFACTOR
         uint32_t dataSize{};
         packet >> dataSize;
         Guard::Assert(dataSize > 0);
@@ -2909,30 +2908,30 @@ namespace OpenRCT2::Network
 
     static bool ProcessChatMessagePluginHooks(uint8_t playerId, std::string& text)
     {
-    #ifdef ENABLE_SCRIPTING
+    #ifdef ENABLE_SCRIPTING_REFACTOR
         auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
         if (hookEngine.HasSubscriptions(Scripting::HookType::networkChat))
         {
             auto ctx = GetContext()->GetScriptEngine().GetContext();
 
             // Create event args object
-            auto objIdx = duk_push_object(ctx);
-            duk_push_number(ctx, playerId);
-            duk_put_prop_string(ctx, objIdx, "player");
-            duk_push_string(ctx, text.c_str());
-            duk_put_prop_string(ctx, objIdx, "message");
-            auto e = DukValue::take_from_stack(ctx);
+            JSValue obj = JS_NewObject(ctx);
+            JS_SetPropertyStr(ctx, obj, "player", JS_NewInt32(ctx, playerId));
+            JS_SetPropertyStr(ctx, obj, "message", Scripting::JSFromStdString(ctx, text));
 
             // Call the subscriptions
-            hookEngine.Call(Scripting::HookType::networkChat, e, false);
+            hookEngine.Call(Scripting::HookType::networkChat, obj, false, true);
 
             // Update text from object if subscriptions changed it
-            if (e["message"].type() != DukValue::Type::STRING)
+            auto message = Scripting::JSToOptionalStdString(ctx, obj, "message");
+            JS_FreeValue(ctx, obj);
+
+            if (!message.has_value())
             {
                 // Subscription set text to non-string, do not relay message
                 return false;
             }
-            text = e["message"].as_string();
+            text = message.value();
             if (text.empty())
             {
                 // Subscription set text to empty string, do not relay message
