@@ -678,8 +678,20 @@ namespace OpenRCT2
             _drawingEngine = nullptr;
         }
 
+        static bool canSafelyShowProgressWindow(std::thread::id mainThreadId)
+        {
+            if (gOpenRCT2Headless)
+                return false;
+
+            const auto isMainThread = mainThreadId == std::this_thread::get_id();
+            return isMainThread;
+        }
+
         void OpenProgress(StringId captionStringId) override
         {
+            if (!canSafelyShowProgressWindow(_mainThreadId))
+                return;
+
             auto captionString = _localisationService->GetString(captionStringId);
             auto intent = Intent(INTENT_ACTION_PROGRESS_OPEN);
             intent.PutExtra(INTENT_EXTRA_MESSAGE, captionString);
@@ -688,6 +700,9 @@ namespace OpenRCT2
 
         void SetProgress(uint32_t currentProgress, uint32_t totalCount, StringId format = kStringIdNone) override
         {
+            if (!canSafelyShowProgressWindow(_mainThreadId))
+                return;
+
             if (_forcedUpdateTimer.GetElapsedTime() < kForcedUpdateInterval)
                 return;
 
@@ -700,19 +715,17 @@ namespace OpenRCT2
             ContextOpenIntent(&intent);
 
             // When we call this from the main thread we can pump messages and redraw.
-            const auto isMainThread = _mainThreadId == std::this_thread::get_id();
-
-            if (!gOpenRCT2Headless && isMainThread)
-            {
-                _uiContext->ProcessMessages();
-                auto* windowMgr = Ui::GetWindowManager();
-                windowMgr->InvalidateByClass(WindowClass::progressWindow);
-                Draw();
-            }
+            _uiContext->ProcessMessages();
+            auto* windowMgr = Ui::GetWindowManager();
+            windowMgr->InvalidateByClass(WindowClass::progressWindow);
+            Draw();
         }
 
         void CloseProgress() override
         {
+            if (!canSafelyShowProgressWindow(_mainThreadId))
+                return;
+
             auto intent = Intent(INTENT_ACTION_PROGRESS_CLOSE);
             ContextOpenIntent(&intent);
         }
