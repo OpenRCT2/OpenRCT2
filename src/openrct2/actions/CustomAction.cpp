@@ -7,7 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifdef ENABLE_SCRIPTING
+#ifdef ENABLE_SCRIPTING_REFACTOR
     #include "CustomAction.h"
 
     #include "../Context.h"
@@ -22,17 +22,17 @@ namespace OpenRCT2::GameActions
     {
     }
 
-    std::string CustomAction::GetId() const
+    const std::string& CustomAction::GetId() const
     {
         return _id;
     }
 
-    std::string CustomAction::GetJson() const
+    const std::string& CustomAction::GetJson() const
     {
         return _json;
     }
 
-    std::string CustomAction::GetPluginName() const
+    const std::string& CustomAction::GetPluginName() const
     {
         return _pluginName;
     }

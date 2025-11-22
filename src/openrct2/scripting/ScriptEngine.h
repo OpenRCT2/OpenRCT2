@@ -216,9 +216,9 @@ namespace OpenRCT2::Scripting
         void ExecutePluginCall(
             const std::shared_ptr<Plugin>& plugin, JSValue func, const std::vector<JSValue>& args, bool isGameStateMutable,
             bool keepArgsAlive = false);
-        void ExecutePluginCall(
+        JSValue ExecutePluginCall(
             const std::shared_ptr<Plugin>& plugin, JSValue func, JSValue thisValue, const std::vector<JSValue>& args,
-            bool isGameStateMutable, bool keepArgsAlive = false);
+            bool isGameStateMutable, bool keepArgsAlive = false, bool keepRetValueAlive = false);
 
         void LogPluginInfo(std::string_view message);
         void LogPluginInfo(const std::shared_ptr<Plugin>& plugin, std::string_view message);
@@ -242,9 +242,10 @@ namespace OpenRCT2::Scripting
         bool RegisterCustomAction(
             const std::shared_ptr<Plugin>& plugin, std::string_view action, const JSCallback& query, const JSCallback& execute);
         void RunGameActionHooks(const GameActions::GameAction& action, GameActions::Result& result, bool isExecute);
-        [[nodiscard]] std::unique_ptr<GameActions::GameAction> CreateGameAction(
-            const std::string& actionid, JSValue args, const std::string& pluginName);
-        [[nodiscard]] JSValue GameActionResultToDuk(const GameActions::GameAction& action, const GameActions::Result& result);
+        [[nodiscard]] std::pair<std::unique_ptr<GameActions::GameAction>, bool> CreateGameAction(
+            JSContext* ctx, const std::string& actionid, JSValue args, const std::string& pluginName);
+        [[nodiscard]] JSValue GameActionResultToJS(
+            JSContext* ctx, const GameActions::GameAction& action, const GameActions::Result& result);
 
         void SaveSharedStorage();
 
@@ -283,7 +284,7 @@ namespace OpenRCT2::Scripting
         void AutoReloadPlugins();
         void ProcessREPL();
         void RemoveCustomGameActions(const std::shared_ptr<Plugin>& plugin);
-        [[nodiscard]] GameActions::Result DukToGameActionResult(JSValue d);
+        [[nodiscard]] static GameActions::Result JSToGameActionResult(JSContext* ctx, JSValue d);
 
         void InitSharedStorage();
         void LoadSharedStorage();

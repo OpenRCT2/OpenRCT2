@@ -11,6 +11,7 @@
 
 #ifdef ENABLE_SCRIPTING_REFACTOR
 
+    #include "../../../GameState.h"
     #include "../../../OpenRCT2.h"
     #include "../../../actions/GameAction.h"
     #include "../../../interface/Screenshot.h"
@@ -295,10 +296,7 @@ namespace OpenRCT2::Scripting
             JS_UNPACK_OBJECT(args, ctx, argv[1]);
             JS_UNPACK_CALLBACK(callback, ctx, argv[2]);
 
-            throw std::runtime_error("not implemented");
-            /* TODO (mber)
-            QueryOrExecuteAction(action, args, callback, false);
-            */
+            return QueryOrExecuteAction(ctx, action, args, callback, false);
         }
 
         static JSValue executeAction(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
@@ -307,62 +305,54 @@ namespace OpenRCT2::Scripting
             JS_UNPACK_OBJECT(args, ctx, argv[1]);
             JS_UNPACK_CALLBACK(callback, ctx, argv[2]);
 
-            throw std::runtime_error("not implemented");
-            /* TODO (mber)
-            QueryOrExecuteAction(action, args, callback, true);
-            */
+            return QueryOrExecuteAction(ctx, action, args, callback, true);
         }
 
-        /* TODO (mber)
-        void QueryOrExecuteAction(const std::string& actionid, const DukValue& args, const DukValue& callback, bool isExecute)
+        static JSValue QueryOrExecuteAction(
+            JSContext* ctx, const std::string& actionid, JSValue args, const JSCallback& callback, bool isExecute)
         {
             auto& scriptEngine = GetContext()->GetScriptEngine();
-            auto ctx = scriptEngine.GetContext();
-            try
+            auto plugin = scriptEngine.GetExecInfo().GetCurrentPlugin();
+            auto pair = scriptEngine.CreateGameAction(ctx, actionid, args, plugin->GetMetadata().Name);
+
+            std::unique_ptr<GameActions::GameAction> action = std::move(pair.first);
+
+            if (pair.second)
+                return JS_ThrowPlainError(ctx, "Invalid action parameters.");
+
+            if (action != nullptr)
             {
-                auto plugin = scriptEngine.GetExecInfo().GetCurrentPlugin();
-                auto action = scriptEngine.CreateGameAction(actionid, args, plugin->GetMetadata().Name);
-                if (action != nullptr)
+                if (isExecute)
                 {
-                    if (isExecute)
-                    {
-                        action->SetCallback(
-                            [this, plugin,
-                             callback](const GameActions::GameAction* act, const GameActions::Result* res) -> void {
-                                HandleGameActionResult(plugin, *act, *res, callback);
-                            });
-                        GameActions::Execute(action.get(), getGameState());
-                    }
-                    else
-                    {
-                        auto res = GameActions::Query(action.get(), getGameState());
-                        HandleGameActionResult(plugin, *action, res, callback);
-                    }
+                    action->SetCallback(
+                        [plugin, callback](const GameActions::GameAction* act, const GameActions::Result* res) -> void {
+                            HandleGameActionResult(plugin, *act, *res, callback);
+                        });
+                    GameActions::Execute(action.get(), getGameState());
                 }
                 else
                 {
-                    duk_error(ctx, DUK_ERR_ERROR, "Unknown action.");
+                    auto res = GameActions::Query(action.get(), getGameState());
+                    HandleGameActionResult(plugin, *action, res, callback);
                 }
             }
-            catch (DukException&)
+            else
             {
-                duk_error(ctx, DUK_ERR_ERROR, "Invalid action parameters.");
+                return JS_ThrowPlainError(ctx, "Unknown action.");
             }
+            return JS_UNDEFINED;
         }
 
-        void HandleGameActionResult(
+        static void HandleGameActionResult(
             const std::shared_ptr<Plugin>& plugin, const GameActions::GameAction& action, const GameActions::Result& res,
-            const DukValue& callback)
+            const JSCallback& callback)
         {
-            if (callback.is_function())
-            {
-                auto& scriptEngine = GetContext()->GetScriptEngine();
-                auto dukResult = scriptEngine.GameActionResultToDuk(action, res);
-                // Call the plugin callback and pass the result object
-                scriptEngine.ExecutePluginCall(plugin, callback, { dukResult }, false);
-            }
+            auto& scriptEngine = GetContext()->GetScriptEngine();
+            JSContext* ctx = plugin ? plugin->GetContext() : scriptEngine.GetContext();
+            JSValue jsResult = scriptEngine.GameActionResultToJS(ctx, action, res);
+            // Call the plugin callback and pass the result object
+            scriptEngine.ExecutePluginCall(plugin, callback.callback, { jsResult }, false);
         }
-        */
 
         static JSValue registerAction(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
         {

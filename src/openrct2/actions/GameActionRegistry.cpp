@@ -210,7 +210,7 @@ namespace OpenRCT2::GameActions
         REGISTER_ACTION(MapChangeSizeAction);
         REGISTER_ACTION(GameSetSpeedAction);
         REGISTER_ACTION(ScenerySetRestrictedAction);
-#ifdef ENABLE_SCRIPTING
+#ifdef ENABLE_SCRIPTING_REFACTOR
         REGISTER_ACTION(CustomAction);
 #endif
 
