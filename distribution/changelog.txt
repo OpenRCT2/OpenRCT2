@@ -1,5 +1,6 @@
 0.4.30 (in development)
 ------------------------------------------------------------------------
+- Fix: [#25524] The track construction arrow does not immediately change position when deleting track pieces.
 
 0.4.29 (2025-11-22)
 ------------------------------------------------------------------------

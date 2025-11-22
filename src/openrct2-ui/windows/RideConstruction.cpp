@@ -3261,6 +3261,15 @@ namespace OpenRCT2::Ui::Windows
                             rideIndex, type, direction, liftHillAndAlternativeState, trackPos);
                         WindowRideConstructionUpdateActiveElements();
 
+                        gMapSelectArrowPosition = _currentTrackBegin;
+                        Direction arrowDirection = _currentTrackPieceDirection;
+                        // diagonal pieces trigger this
+                        if (arrowDirection >= 4)
+                            arrowDirection += 4;
+                        if (_rideConstructionState == RideConstructionState::Back)
+                            arrowDirection = DirectionReverse(arrowDirection);
+                        gMapSelectArrowDirection = arrowDirection;
+
                         if (!(gMapSelectFlags.has(MapSelectFlag::enable)))
                         {
                             // Set height to where the next track piece would begin
@@ -3275,20 +3284,11 @@ namespace OpenRCT2::Ui::Windows
                 _rideConstructionNextArrowPulse = curTime + kArrowPulseDuration;
 
                 _currentTrackSelectionFlags.flip(TrackSelectionFlag::arrow);
-                trackPos = _currentTrackBegin;
-                direction = _currentTrackPieceDirection;
-                type = _currentTrackPieceType;
-                // diagonal pieces trigger this
-                if (direction >= 4)
-                    direction += 4;
-                if (_rideConstructionState == RideConstructionState::Back)
-                    direction = DirectionReverse(direction);
-                gMapSelectArrowPosition = trackPos;
-                gMapSelectArrowDirection = direction;
+
                 gMapSelectFlags.unset(MapSelectFlag::enableArrow);
                 if (_currentTrackSelectionFlags.has(TrackSelectionFlag::arrow))
                     gMapSelectFlags.set(MapSelectFlag::enableArrow);
-                MapInvalidateTileFull(trackPos);
+                MapInvalidateTileFull(_currentTrackBegin);
                 break;
             }
             case RideConstructionState::Selected:
