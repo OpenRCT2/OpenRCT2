@@ -309,7 +309,7 @@ namespace OpenRCT2::GameActions
         }
 
         Result result = QueryInternal(action, gameState, topLevel);
-#ifdef ENABLE_SCRIPTING
+#ifdef ENABLE_SCRIPTING_REFACTOR
         if (result.error == Status::ok && ((Network::GetMode() == Network::Mode::none) || flags.has(CommandFlag::networked)))
         {
             auto& scriptEngine = GetContext()->GetScriptEngine();
@@ -356,7 +356,7 @@ namespace OpenRCT2::GameActions
 
             // Execute the action, changing the game state
             result = action->Execute(gameState);
-#ifdef ENABLE_SCRIPTING
+#ifdef ENABLE_SCRIPTING_REFACTOR
             if (result.error == Status::ok)
             {
                 auto& scriptEngine = GetContext()->GetScriptEngine();
@@ -479,28 +479,28 @@ namespace OpenRCT2::GameActions
         auto result = MapIsLocationValid(coords);
         if (!result)
             return false;
-#ifdef ENABLE_SCRIPTING
+#ifdef ENABLE_SCRIPTING_REFACTOR
         auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
         if (hookEngine.HasSubscriptions(Scripting::HookType::actionLocation))
         {
             auto ctx = GetContext()->GetScriptEngine().GetContext();
 
             // Create event args object
-            auto obj = Scripting::DukObject(ctx);
-            obj.Set("x", coords.x);
-            obj.Set("y", coords.y);
-            obj.Set("player", _playerId);
-            obj.Set("type", EnumValue(_type));
+            JSValue obj = JS_NewObject(ctx);
+            JS_SetPropertyStr(ctx, obj, "x", JS_NewInt32(ctx, coords.x));
+            JS_SetPropertyStr(ctx, obj, "y", JS_NewInt32(ctx, coords.y));
+            JS_SetPropertyStr(ctx, obj, "player", JS_NewInt32(ctx, _playerId));
+            JS_SetPropertyStr(ctx, obj, "type", JS_NewInt32(ctx, EnumValue(_type)));
 
             auto flags = GetActionFlags();
-            obj.Set("isClientOnly", (flags & Flags::ClientOnly) != 0);
-            obj.Set("result", true);
+            JS_SetPropertyStr(ctx, obj, "isClientOnly", JS_NewBool(ctx, (flags & Flags::ClientOnly) != 0));
+            JS_SetPropertyStr(ctx, obj, "result", JS_NewBool(ctx, true));
 
             // Call the subscriptions
-            auto e = obj.Take();
-            hookEngine.Call(Scripting::HookType::actionLocation, e, true);
+            hookEngine.Call(Scripting::HookType::actionLocation, obj, true, true);
 
-            auto scriptResult = Scripting::AsOrDefault(e["result"], true);
+            auto scriptResult = Scripting::AsOrDefault(ctx, obj, "result", true);
+            JS_FreeValue(ctx, obj);
 
             return scriptResult;
         }

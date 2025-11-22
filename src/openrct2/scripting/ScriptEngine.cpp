@@ -1106,23 +1106,29 @@ void ScriptEngine::ExecutePluginCall(
     ExecutePluginCall(plugin, func, JS_UNDEFINED, args, isGameStateMutable, keepArgsAlive);
 }
 
-void ScriptEngine::ExecutePluginCall(
+JSValue ScriptEngine::ExecutePluginCall(
     const std::shared_ptr<Plugin>& plugin, const JSValue func, const JSValue thisValue, const std::vector<JSValue>& args,
-    bool isGameStateMutable, bool keepArgsAlive)
+    bool isGameStateMutable, bool keepArgsAlive, bool keepRetValueAlive)
 {
+    JSValue ret = JS_UNDEFINED;
+
     // Note: the plugin pointer is null when called from the repl, so we assume the repl JSContext in that case.
     JSContext* ctx = plugin ? plugin->GetContext() : _replContext;
     if (JS_IsFunction(ctx, func) && (!plugin || plugin->HasStarted()))
     {
         ScriptExecutionInfo::PluginScope scope(_execInfo, plugin, isGameStateMutable);
-        JSValue res = JS_Call(ctx, func, thisValue, static_cast<int>(args.size()), const_cast<JSValue*>(args.data()));
-        if (JS_IsException(res))
+        ret = JS_Call(ctx, func, thisValue, static_cast<int>(args.size()), const_cast<JSValue*>(args.data()));
+        if (JS_IsException(ret))
         {
             JSValue exceptionVal = JS_GetException(ctx);
             _console.WriteLineError(Stringify(ctx, exceptionVal));
             JS_FreeValue(ctx, exceptionVal);
         }
-        JS_FreeValue(ctx, res);
+        if (!keepRetValueAlive)
+        {
+            JS_FreeValue(ctx, ret);
+            ret = JS_UNDEFINED;
+        }
     }
     [[likely]] if (!keepArgsAlive)
     {
@@ -1131,6 +1137,7 @@ void ScriptEngine::ExecutePluginCall(
             JS_FreeValue(ctx, arg);
         }
     }
+    return ret;
 }
 
 void ScriptEngine::LogPluginInfo(std::string_view message)
@@ -1182,7 +1189,7 @@ void ScriptEngine::RemoveNetworkPlugins()
 
 GameActions::Result ScriptEngine::QueryOrExecuteCustomGameAction(const GameActions::CustomAction& customAction, bool isExecute)
 {
-    /* TODO (mber)
+    JSContext* ctx = _replContext;
     std::string actionz = customAction.GetId();
     auto kvp = _customActions.find(actionz);
     if (kvp != _customActions.end())
@@ -1190,10 +1197,10 @@ GameActions::Result ScriptEngine::QueryOrExecuteCustomGameAction(const GameActio
         const auto& customActionInfo = kvp->second;
 
         // Deserialise the JSON args
-        std::string argsz = customAction.GetJson();
+        const std::string& argsz = customAction.GetJson();
 
-        auto dukArgs = DuktapeTryParseJson(_context, argsz);
-        if (!dukArgs)
+        auto jsArgs = JS_ParseJSON(ctx, argsz.c_str(), argsz.size(), customActionInfo.Name.c_str());
+        if (JS_IsException(jsArgs))
         {
             auto res = GameActions::Result();
             res.error = GameActions::Status::invalidParameters;
@@ -1201,35 +1208,40 @@ GameActions::Result ScriptEngine::QueryOrExecuteCustomGameAction(const GameActio
             return res;
         }
 
-        std::vector<DukValue> pluginCallArgs;
+        std::vector<JSValue> pluginCallArgs;
         if (customActionInfo.Owner->GetTargetAPIVersion() <= kApiVersionCustomActionArgs)
         {
-            pluginCallArgs = { *dukArgs };
+            pluginCallArgs = { jsArgs };
         }
         else
         {
-            DukObject obj(_context);
-            obj.Set("action", actionz);
-            obj.Set("args", *dukArgs);
-            obj.Set("player", customAction.GetPlayer());
-            obj.Set("type", EnumValue(customAction.GetType()));
+            JSValue obj = JS_NewObject(ctx);
+            JS_SetPropertyStr(ctx, obj, "action", JSFromStdString(ctx, actionz));
+            JS_SetPropertyStr(ctx, obj, "args", jsArgs);
+            JS_SetPropertyStr(ctx, obj, "player", JS_NewInt32(ctx, customAction.GetPlayer()));
+            JS_SetPropertyStr(ctx, obj, "type", JS_NewInt32(ctx, EnumValue(customAction.GetType())));
 
             auto flags = customAction.GetActionFlags();
-            obj.Set("isClientOnly", (flags & GameActions::Flags::ClientOnly) != 0);
-            pluginCallArgs = { obj.Take() };
+            JS_SetPropertyStr(ctx, obj, "isClientOnly", JS_NewBool(ctx, (flags & GameActions::Flags::ClientOnly) != 0));
+            pluginCallArgs = { obj };
         }
 
         // Ready to call plugin handler
-        DukValue dukResult;
+        JSValue jsResult;
         if (!isExecute)
         {
-            dukResult = ExecutePluginCall(customActionInfo.Owner, customActionInfo.Query, pluginCallArgs, false);
+            jsResult = ExecutePluginCall(
+                customActionInfo.Owner, customActionInfo.Query.callback, JS_UNDEFINED, pluginCallArgs, false, false, true);
         }
         else
         {
-            dukResult = ExecutePluginCall(customActionInfo.Owner, customActionInfo.Execute, pluginCallArgs, true);
+            jsResult = ExecutePluginCall(
+                customActionInfo.Owner, customActionInfo.Execute.callback, JS_UNDEFINED, pluginCallArgs, true, false, true);
         }
-        return DukToGameActionResult(dukResult);
+
+        GameActions::Result res = JSToGameActionResult(ctx, jsResult);
+        JS_FreeValue(ctx, jsResult);
+        return res;
     }
 
     auto res = GameActions::Result();
@@ -1237,21 +1249,18 @@ GameActions::Result ScriptEngine::QueryOrExecuteCustomGameAction(const GameActio
     res.errorTitle = "Unknown custom action";
     res.errorMessage = customAction.GetPluginName() + ": " + actionz;
     return res;
-    */
-    return GameActions::Result();
 }
 
-GameActions::Result ScriptEngine::DukToGameActionResult(const JSValue d)
+GameActions::Result ScriptEngine::JSToGameActionResult(JSContext* ctx, JSValue d)
 {
-    /* TODO (mber)
     auto result = GameActions::Result();
-    if (d.type() == DUK_TYPE_OBJECT)
+    if (JS_IsObject(d))
     {
-        result.error = static_cast<GameActions::Status>(AsOrDefault<int32_t>(d["error"]));
-        result.errorTitle = AsOrDefault<std::string>(d["errorTitle"]);
-        result.errorMessage = AsOrDefault<std::string>(d["errorMessage"]);
-        result.cost = AsOrDefault<int32_t>(d["cost"]);
-        auto expenditureType = AsOrDefault<std::string>(d["expenditureType"]);
+        result.error = static_cast<GameActions::Status>(AsOrDefault(ctx, d, "error", int32_t()));
+        result.errorTitle = AsOrDefault(ctx, d, "errorTitle", "");
+        result.errorMessage = AsOrDefault(ctx, d, "errorMessage", "");
+        result.cost = AsOrDefault(ctx, d, "cost", int64_t());
+        auto expenditureType = AsOrDefault(ctx, d, "expenditureType", "");
         if (!expenditureType.empty())
         {
             auto expenditure = StringToExpenditureType(expenditureType);
@@ -1268,8 +1277,6 @@ GameActions::Result ScriptEngine::DukToGameActionResult(const JSValue d)
         result.errorMessage = "Unknown";
     }
     return result;
-    */
-    return GameActions::Result();
 }
 
 constexpr static const char* ExpenditureTypes[] = {
@@ -1309,30 +1316,30 @@ ExpenditureType ScriptEngine::StringToExpenditureType(std::string_view expenditu
     return ExpenditureType::count;
 }
 
-JSValue ScriptEngine::GameActionResultToDuk(const GameActions::GameAction& action, const GameActions::Result& result)
+JSValue ScriptEngine::GameActionResultToJS(
+    JSContext* ctx, const GameActions::GameAction& action, const GameActions::Result& result)
 {
-    /* TODO (mber)
-    DukStackFrame frame(_context);
-    DukObject obj(_context);
+    JSValue obj = JS_NewObject(ctx);
 
-    obj.Set("error", static_cast<duk_int_t>(result.error));
+    JS_SetPropertyStr(
+        ctx, obj, "error", JS_NewInt32(ctx, static_cast<std::underlying_type_t<GameActions::Status>>(result.error)));
     if (result.error != GameActions::Status::ok)
     {
-        obj.Set("errorTitle", result.getErrorTitle());
-        obj.Set("errorMessage", result.getErrorMessage());
+        JS_SetPropertyStr(ctx, obj, "errorTitle", JSFromStdString(ctx, result.getErrorTitle()));
+        JS_SetPropertyStr(ctx, obj, "errorMessage", JSFromStdString(ctx, result.getErrorMessage()));
     }
 
     if (result.cost != kMoney64Undefined)
     {
-        obj.Set("cost", result.cost);
+        JS_SetPropertyStr(ctx, obj, "cost", JS_NewInt64(ctx, result.cost));
     }
     if (!result.position.IsNull())
     {
-        obj.Set("position", ToDuk(_context, result.position));
+        JS_SetPropertyStr(ctx, obj, "position", ToJSValue(ctx, result.position));
     }
     if (result.expenditure != ExpenditureType::count)
     {
-        obj.Set("expenditureType", ExpenditureTypeToString(result.expenditure));
+        JS_SetPropertyStr(ctx, obj, "expenditureType", JSFromStdString(ctx, ExpenditureTypeToString(result.expenditure)));
     }
 
     // RideCreateAction only
@@ -1341,7 +1348,7 @@ JSValue ScriptEngine::GameActionResultToDuk(const GameActions::GameAction& actio
         if (result.error == GameActions::Status::ok)
         {
             const auto rideIndex = result.getData<RideId>();
-            obj.Set("ride", rideIndex.ToUnderlying());
+            JS_SetPropertyStr(ctx, obj, "ride", JS_NewInt32(ctx, rideIndex.ToUnderlying()));
         }
     }
     // StaffHireNewAction only
@@ -1352,7 +1359,7 @@ JSValue ScriptEngine::GameActionResultToDuk(const GameActions::GameAction& actio
             const auto actionResult = result.getData<GameActions::StaffHireNewActionResult>();
             if (!actionResult.StaffEntityId.IsNull())
             {
-                obj.Set("peep", actionResult.StaffEntityId.ToUnderlying());
+                JS_SetPropertyStr(ctx, obj, "peep", JS_NewInt32(ctx, actionResult.StaffEntityId.ToUnderlying()));
             }
         }
     }
@@ -1374,12 +1381,10 @@ JSValue ScriptEngine::GameActionResultToDuk(const GameActions::GameAction& actio
     }
     if (!bannerId.IsNull())
     {
-        obj.Set("bannerIndex", bannerId.ToUnderlying());
+        JS_SetPropertyStr(ctx, obj, "bannerIndex", JS_NewInt32(ctx, bannerId.ToUnderlying()));
     }
 
-    return obj.Take();
-    */
-    return JSValue{};
+    return obj;
 }
 
 bool ScriptEngine::RegisterCustomAction(
@@ -1415,64 +1420,84 @@ void ScriptEngine::RemoveCustomGameActions(const std::shared_ptr<Plugin>& plugin
     }
 }
 
-/* TODO (mber)
-class DukToGameActionParameterVisitor : public GameActions::GameActionParameterVisitor
+class JSToGameActionParameterVisitor : public GameActions::GameActionParameterVisitor
 {
 private:
-    DukValue _dukValue;
+    JSValue _jsValue;
+    JSContext* _ctx;
+    bool _error = false;
 
 public:
-    DukToGameActionParameterVisitor(DukValue&& dukValue)
-        : _dukValue(std::move(dukValue))
+    JSToGameActionParameterVisitor(JSContext* ctx, JSValue jsValue)
+        : _jsValue(jsValue)
+        , _ctx(ctx)
     {
     }
 
     void Visit(std::string_view name, bool& param) override
     {
-        param = _dukValue[name].as_bool();
+        auto val = JSToOptionalBool(_ctx, _jsValue, std::string(name).c_str());
+        if (val.has_value())
+            param = val.value();
+        else
+            _error = true;
     }
 
     void Visit(std::string_view name, int32_t& param) override
     {
-        param = _dukValue[name].as_int();
+        auto val = JSToOptionalInt(_ctx, _jsValue, std::string(name).c_str());
+        if (val.has_value())
+            param = val.value();
+        else
+            _error = true;
     }
 
     void Visit(std::string_view name, std::string& param) override
     {
-        param = _dukValue[name].as_string();
+        auto val = JSToOptionalStdString(_ctx, _jsValue, std::string(name).c_str());
+        if (val.has_value())
+            param = val.value();
+        else
+            _error = true;
+    }
+
+    bool GetErrorFlag() const
+    {
+        return _error;
     }
 };
 
-class DukFromGameActionParameterVisitor : public GameActions::GameActionParameterVisitor
+class JSFromGameActionParameterVisitor : public GameActions::GameActionParameterVisitor
 {
 private:
-    DukObject& _dukObject;
+    JSValue _jsObject;
+    JSContext* _ctx;
 
 public:
-    DukFromGameActionParameterVisitor(DukObject& dukObject)
-        : _dukObject(dukObject)
+    JSFromGameActionParameterVisitor(JSContext* ctx, JSValue jsObject)
+        : _jsObject(jsObject)
+        , _ctx(ctx)
     {
     }
 
     void Visit(std::string_view name, bool& param) override
     {
         std::string szName(name);
-        _dukObject.Set(szName.c_str(), param);
+        JS_SetPropertyStr(_ctx, _jsObject, szName.c_str(), JS_NewBool(_ctx, param));
     }
 
     void Visit(std::string_view name, int32_t& param) override
     {
         std::string szName(name);
-        _dukObject.Set(szName.c_str(), param);
+        JS_SetPropertyStr(_ctx, _jsObject, szName.c_str(), JS_NewInt32(_ctx, param));
     }
 
     void Visit(std::string_view name, std::string& param) override
     {
         std::string szName(name);
-        _dukObject.Set(szName.c_str(), param);
+        JS_SetPropertyStr(_ctx, _jsObject, szName.c_str(), JSFromStdString(_ctx, param));
     }
 };
-*/
 
 // clang-format off
 const static EnumMap<GameCommand> ActionNameToType = {
@@ -1560,7 +1585,6 @@ const static EnumMap<GameCommand> ActionNameToType = {
 };
 // clang-format on
 
-/* TODO (mber)
 static std::string GetActionName(GameCommand commandId)
 {
     auto it = ActionNameToType.find(commandId);
@@ -1580,118 +1604,121 @@ static std::unique_ptr<GameActions::GameAction> CreateGameActionFromActionId(con
     }
     return nullptr;
 }
-*/
 
 void ScriptEngine::RunGameActionHooks(const GameActions::GameAction& action, GameActions::Result& result, bool isExecute)
 {
-    /* TODO (mber)
-    DukStackFrame frame(_context);
-
     auto hookType = isExecute ? HookType::actionExecute : HookType::actionQuery;
     if (_hookEngine.HasSubscriptions(hookType))
     {
-        DukObject obj(_context);
+        JSContext* ctx = _replContext;
+        JSValue obj = JS_NewObject(ctx);
 
         auto actionId = action.GetType();
         if (action.GetType() == GameCommand::Custom)
         {
             auto customAction = static_cast<const GameActions::CustomAction&>(action);
-            obj.Set("action", customAction.GetId());
+            JS_SetPropertyStr(ctx, obj, "action", JSFromStdString(ctx, customAction.GetId()));
 
-            auto dukArgs = DuktapeTryParseJson(_context, customAction.GetJson());
-            if (dukArgs)
+            JSValue jsArgs = JS_ParseJSON(
+                ctx, customAction.GetJson().c_str(), customAction.GetJson().length(), customAction.GetName());
+            if (!JS_IsException(jsArgs))
             {
-                obj.Set("args", *dukArgs);
+                JS_SetPropertyStr(ctx, obj, "args", jsArgs);
             }
             else
             {
-                DukObject args(_context);
-                obj.Set("args", args.Take());
+                JS_SetPropertyStr(ctx, obj, "args", JS_NewObject(ctx));
             }
+            JS_FreeValue(ctx, jsArgs);
         }
         else
         {
             auto actionName = GetActionName(actionId);
             if (!actionName.empty())
             {
-                obj.Set("action", actionName);
+                JS_SetPropertyStr(ctx, obj, "action", JSFromStdString(ctx, actionName));
             }
 
-            DukObject args(_context);
-            DukFromGameActionParameterVisitor visitor(args);
+            JSValue args = JS_NewObject(ctx);
+            JSFromGameActionParameterVisitor visitor(ctx, args);
             const_cast<GameActions::GameAction&>(action).AcceptParameters(visitor);
             const_cast<GameActions::GameAction&>(action).AcceptFlags(visitor);
-            obj.Set("args", args.Take());
+            JS_SetPropertyStr(ctx, obj, "args", args);
         }
 
-        obj.Set("player", action.GetPlayer());
-        obj.Set("type", EnumValue(actionId));
+        JS_SetPropertyStr(ctx, obj, "player", JS_NewInt32(ctx, action.GetPlayer()));
+        JS_SetPropertyStr(ctx, obj, "type", JS_NewInt32(ctx, EnumValue(actionId)));
 
         auto flags = action.GetActionFlags();
-        obj.Set("isClientOnly", (flags & GameActions::Flags::ClientOnly) != 0);
+        JS_SetPropertyStr(ctx, obj, "isClientOnly", JS_NewBool(ctx, (flags & GameActions::Flags::ClientOnly) != 0));
 
-        obj.Set("result", GameActionResultToDuk(action, result));
-        auto dukEventArgs = obj.Take();
+        JS_SetPropertyStr(ctx, obj, "result", GameActionResultToJS(ctx, action, result));
 
-        _hookEngine.Call(hookType, dukEventArgs, false);
+        _hookEngine.Call(hookType, obj, false, true);
 
         if (!isExecute)
         {
-            auto dukResult = dukEventArgs["result"];
-            if (dukResult.type() == DukValue::Type::OBJECT)
+            JSValue jsResult = JS_GetPropertyStr(ctx, obj, "result");
+            if (JS_IsObject(jsResult))
             {
-                auto error = AsOrDefault<int32_t>(dukResult["error"]);
+                int32_t error = AsOrDefault(ctx, jsResult, "error", int32_t());
                 if (error != 0)
                 {
                     result.error = static_cast<GameActions::Status>(error);
-                    result.errorTitle = AsOrDefault<std::string>(dukResult["errorTitle"]);
-                    result.errorMessage = AsOrDefault<std::string>(dukResult["errorMessage"]);
+                    result.errorTitle = AsOrDefault(ctx, jsResult, "errorTitle", "");
+                    result.errorMessage = AsOrDefault(ctx, jsResult, "errorMessage", "");
                 }
             }
+            JS_FreeValue(ctx, jsResult);
         }
+        JS_FreeValue(ctx, obj);
     }
-    */
 }
 
-std::unique_ptr<GameActions::GameAction> ScriptEngine::CreateGameAction(
-    const std::string& actionid, const JSValue args, const std::string& pluginName)
+std::pair<std::unique_ptr<GameActions::GameAction>, bool> ScriptEngine::CreateGameAction(
+    JSContext* ctx, const std::string& actionid, JSValue args, const std::string& pluginName)
 {
-    /* TODO (mber)
     auto action = CreateGameActionFromActionId(actionid);
     if (action != nullptr)
     {
-        DukValue argsCopy = args;
-        DukToGameActionParameterVisitor visitor(std::move(argsCopy));
+        JSToGameActionParameterVisitor visitor(ctx, args);
         action->AcceptParameters(visitor);
-        if (args["flags"].type() == DukValue::Type::NUMBER)
+
+        JSValue flags = JS_GetPropertyStr(ctx, args, "flags");
+        if (JS_IsNumber(flags))
         {
             action->AcceptFlags(visitor);
         }
-        return action;
+        JS_FreeValue(ctx, flags);
+        return { std::move(action), visitor.GetErrorFlag() };
     }
 
     // Serialise args to json so that it can be sent
-    auto ctx = args.context();
-    if (args.type() == DukValue::Type::OBJECT)
+    std::string json;
+    if (JS_IsObject(args))
     {
-        args.push();
+        JSValue jsonVal = JS_JSONStringify(ctx, args, JS_UNDEFINED, JS_UNDEFINED);
+        if (JS_IsString(jsonVal))
+        {
+            json = JSToStdString(ctx, jsonVal);
+        }
+        JS_FreeValue(ctx, jsonVal);
     }
-    else
+    if (json.empty())
     {
-        duk_push_object(ctx);
+        JSValue emptyObj = JS_NewObject(ctx);
+        JSValue jsonVal = JS_JSONStringify(ctx, args, JS_UNDEFINED, JS_UNDEFINED);
+        json = JSToStdString(ctx, jsonVal);
+        JS_FreeValue(ctx, emptyObj);
+        JS_FreeValue(ctx, jsonVal);
     }
-    auto jsonz = duk_json_encode(ctx, -1);
-    auto json = std::string(jsonz);
-    duk_pop(ctx);
     auto customAction = std::make_unique<GameActions::CustomAction>(actionid, json, pluginName);
 
     if (customAction->GetPlayer() == -1 && Network::GetMode() != Network::Mode::none)
     {
         customAction->SetPlayer(Network::GetCurrentPlayerId());
     }
-    return customAction;
-    */
-    return nullptr;
+    return { std::move(customAction), false };
 }
 
 void ScriptEngine::InitSharedStorage()

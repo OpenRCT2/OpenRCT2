@@ -186,6 +186,22 @@ namespace OpenRCT2::Scripting
         return output;
     }
 
+    inline std::optional<bool> JSToOptionalBool(JSContext* ctx, JSValue obj, const char* property)
+    {
+        JSValue val = JS_GetPropertyStr(ctx, obj, property);
+        std::optional<bool> output = std::nullopt;
+        if (JS_IsBool(val))
+        {
+            const int result = JS_ToBool(ctx, val);
+            if (result != -1)
+            {
+                output = std::make_optional(result);
+            }
+        }
+        JS_FreeValue(ctx, val);
+        return output;
+    }
+
     inline bool AsOrDefault(JSContext* ctx, JSValue obj, const char* property, bool def)
     {
         JSValue val = JS_GetPropertyStr(ctx, obj, property);
@@ -228,6 +244,22 @@ namespace OpenRCT2::Scripting
             output = def;
         }
         else if (JS_ToUint32(ctx, &output, val) < 0)
+        {
+            output = def;
+        }
+        JS_FreeValue(ctx, val);
+        return output;
+    }
+
+    inline int64_t AsOrDefault(JSContext* ctx, JSValue obj, const char* property, int64_t def)
+    {
+        JSValue val = JS_GetPropertyStr(ctx, obj, property);
+        int64_t output;
+        if (!JS_IsNumber(val))
+        {
+            output = def;
+        }
+        else if (JS_ToInt64(ctx, &output, val) < 0)
         {
             output = def;
         }
