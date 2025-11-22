@@ -3834,3 +3834,4 @@ STR_7004    :Forçar Redesenho
 STR_7005    :Arrastar uma área de calçada
 STR_7006    :Desenhar borda ao redor dos botões com imagens
 STR_7007    :Tipo de Atração
+STR_7008    :Tipo de atração desconhecido ({INT32})
