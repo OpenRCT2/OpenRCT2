@@ -7434,7 +7434,7 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
 
     IncrementGuestsHeadingForPark();
 
-#ifdef ENABLE_SCRIPTING_REFACTOR
+#ifdef ENABLE_SCRIPTING
     auto& hookEngine = OpenRCT2::GetContext()->GetScriptEngine().GetHookEngine();
     if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HookType::guestGeneration))
     {

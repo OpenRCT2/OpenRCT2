@@ -309,7 +309,7 @@ namespace OpenRCT2::GameActions
         }
 
         Result result = QueryInternal(action, gameState, topLevel);
-#ifdef ENABLE_SCRIPTING_REFACTOR
+#ifdef ENABLE_SCRIPTING
         if (result.Error == Status::Ok
             && ((Network::GetMode() == Network::Mode::none) || (flags & GAME_COMMAND_FLAG_NETWORKED)))
         {
@@ -354,7 +354,7 @@ namespace OpenRCT2::GameActions
 
             // Execute the action, changing the game state
             result = action->Execute(gameState);
-#ifdef ENABLE_SCRIPTING_REFACTOR
+#ifdef ENABLE_SCRIPTING
             if (result.Error == Status::Ok)
             {
                 auto& scriptEngine = GetContext()->GetScriptEngine();
@@ -475,7 +475,7 @@ namespace OpenRCT2::GameActions
         auto result = MapIsLocationValid(coords);
         if (!result)
             return false;
-#ifdef ENABLE_SCRIPTING_REFACTOR
+#ifdef ENABLE_SCRIPTING
         auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
         if (hookEngine.HasSubscriptions(Scripting::HookType::actionLocation))
         {
