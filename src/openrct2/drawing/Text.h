@@ -10,11 +10,14 @@
 #pragma once
 
 #include "../interface/Colour.h"
+#include "../interface/ColourWithFlags.h"
 #include "../localisation/StringIdType.h"
 #include "Font.h"
 
 struct ScreenCoordsXY;
 struct RenderTarget;
+
+using OpenRCT2::ColourWithFlags;
 
 namespace OpenRCT2
 {
@@ -23,31 +26,31 @@ namespace OpenRCT2
 
 enum class TextAlignment
 {
-    LEFT,
-    CENTRE,
-    RIGHT
+    left,
+    centre,
+    right,
 };
 
 enum class TextUnderline
 {
-    Off,
-    On,
+    off,
+    on,
 };
 
-enum class TextDarkness
+enum class TextDarkness : uint8_t
 {
-    Regular = 0,
-    Dark = 1,
-    ExtraDark = 2,
+    regular = 0,
+    dark = 1,
+    extraDark = 2,
 };
 
 struct TextPaint
 {
     ColourWithFlags Colour = { COLOUR_BLACK };
-    ::FontStyle FontStyle = FontStyle::Medium;
-    TextUnderline UnderlineText = TextUnderline::Off;
-    TextAlignment Alignment = TextAlignment::LEFT;
-    TextDarkness Darkness = TextDarkness::Regular;
+    ::FontStyle FontStyle = FontStyle::medium;
+    TextUnderline UnderlineText = TextUnderline::off;
+    TextAlignment Alignment = TextAlignment::left;
+    TextDarkness Darkness = TextDarkness::regular;
 
     TextPaint() = default;
     TextPaint(ColourWithFlags colour)

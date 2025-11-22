@@ -37,6 +37,7 @@
 #include <openrct2/core/String.hpp>
 #include <openrct2/entity/Staff.h>
 #include <openrct2/interface/Chat.h>
+#include <openrct2/interface/ColourWithFlags.h>
 #include <openrct2/interface/Screenshot.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/network/Network.h>
@@ -1297,7 +1298,7 @@ namespace OpenRCT2::Ui::Windows
                 if (firstItem && widgetIndex == WIDX_SEPARATOR)
                     continue;
 
-                totalWidth += widget->width() + 1;
+                totalWidth += widget->width();
                 firstItem = false;
             }
             return totalWidth;
@@ -1317,7 +1318,7 @@ namespace OpenRCT2::Ui::Windows
                 if (firstItem && widgetIndex == WIDX_SEPARATOR)
                     continue;
 
-                auto widgetWidth = widget->width();
+                auto widgetWidth = widget->width() - 1;
                 widget->left = xPos;
                 xPos += widgetWidth;
                 widget->right = xPos;
@@ -1422,7 +1423,7 @@ namespace OpenRCT2::Ui::Windows
                     auto colour = ColourWithFlags{ COLOUR_DARK_ORANGE }.withFlag(ColourFlag::withOutline, true);
                     DrawTextBasic(
                         rt, screenPos + ScreenCoordsXY{ 26, 2 }, STR_OVERLAY_CLEARANCE_CHECKS_DISABLED, {},
-                        { colour, TextAlignment::RIGHT });
+                        { colour, TextAlignment::right });
                 }
             }
 
@@ -1486,7 +1487,7 @@ namespace OpenRCT2::Ui::Windows
                 auto ft = Formatter();
                 ft.Add<int32_t>(Network::GetNumVisiblePlayers());
                 auto colour = ColourWithFlags{ COLOUR_WHITE }.withFlag(ColourFlag::withOutline, true);
-                DrawTextBasic(rt, screenPos + ScreenCoordsXY{ 23, 1 }, STR_COMMA16, ft, { colour, TextAlignment::RIGHT });
+                DrawTextBasic(rt, screenPos + ScreenCoordsXY{ 23, 1 }, STR_COMMA16, ft, { colour, TextAlignment::right });
             }
 
             if (widgets[WIDX_ROTATE_ANTI_CLOCKWISE].type != WidgetType::empty)

@@ -1229,12 +1229,6 @@ static GameActions::Result TrackDesignPlaceSceneryElement(
                     return GameActions::Result();
                 }
 
-                if (tds.placeOperation == TrackPlaceOperation::place)
-                {
-                    FootpathQueueChainReset();
-                    FootpathRemoveEdgesAt(mapCoord, reinterpret_cast<TileElement*>(pathElement));
-                }
-
                 flags = GAME_COMMAND_FLAG_APPLY;
                 if (tds.placeOperation == TrackPlaceOperation::placeTrackPreview)
                 {
@@ -1250,10 +1244,14 @@ static GameActions::Result TrackDesignPlaceSceneryElement(
                     flags |= GAME_COMMAND_FLAG_REPLAY;
                 }
 
-                if (tds.placeOperation == TrackPlaceOperation::place)
+                if (tds.placeOperation == TrackPlaceOperation::placeTrackPreview
+                    || tds.placeOperation == TrackPlaceOperation::place)
                 {
-                    FootpathConnectEdges(mapCoord, reinterpret_cast<TileElement*>(pathElement), flags);
-                    FootpathUpdateQueueChains();
+                    if (!pathElement->IsQueue() || FootpathQueueCountConnections(mapCoord, *pathElement) < 2)
+                    {
+                        FootpathRemoveEdgesAt(mapCoord, reinterpret_cast<TileElement*>(pathElement));
+                        FootpathConnectEdges(mapCoord, reinterpret_cast<TileElement*>(pathElement), flags);
+                    }
                 }
 
                 return GameActions::Result();
@@ -1807,6 +1805,11 @@ static GameActions::Result TrackDesignPlaceVirtual(
         return sceneryPlaceRes;
     }
 
+    if (tds.placeOperation == TrackPlaceOperation::place || tds.placeOperation == TrackPlaceOperation::placeTrackPreview)
+    {
+        ride.chainQueues();
+    }
+
     // 0x6D0FE6
     if (tds.placeOperation == TrackPlaceOperation::drawOutlines)
     {
@@ -1942,15 +1945,13 @@ static bool TrackDesignPlacePreview(
     auto mapSize = TileCoordsXY{ gameState.mapSize.x * 16, gameState.mapSize.y * 16 };
 
     _currentTrackPieceDirection = 0;
-    int32_t z = TrackDesignGetZPlacement(
-        tds, td, RideGetTemporaryForPreview(), { mapSize.x, mapSize.y, 16, _currentTrackPieceDirection });
+    const CoordsXYZD coords = { mapSize.x, mapSize.y, kMinimumLandZ, _currentTrackPieceDirection };
+    const int32_t z = kMinimumLandZ + TrackDesignGetZPlacement(tds, td, RideGetTemporaryForPreview(), coords);
 
     if (tds.hasScenery)
     {
         gameStateData.setFlag(TrackDesignGameStateFlag::HasScenery, true);
     }
-
-    z += 16 - tds.placeSceneryZ;
 
     if (_trackDesignPlaceStateSceneryUnavailable)
     {

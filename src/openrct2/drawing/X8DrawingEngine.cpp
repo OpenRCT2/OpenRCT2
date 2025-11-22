@@ -18,6 +18,7 @@
 #include "../interface/Window.h"
 #include "../scenes/intro/IntroScene.h"
 #include "../ui/UiContext.h"
+#include "Drawing.String.h"
 #include "Drawing.h"
 #include "IDrawingContext.h"
 #include "IDrawingEngine.h"
@@ -746,14 +747,14 @@ void X8DrawingContext::DrawTTFBitmap(
     const uint8_t fgColor = info->palette[1];
     const uint8_t bgColor = info->palette[3];
 
-    if (info->flags & TEXT_DRAW_FLAG_OUTLINE)
+    if (info->colourFlags.has(ColourFlag::withOutline))
     {
         DrawTTFBitmapInternal<false>(rt, bgColor, surface, x + 1, y, 0);
         DrawTTFBitmapInternal<false>(rt, bgColor, surface, x - 1, y, 0);
         DrawTTFBitmapInternal<false>(rt, bgColor, surface, x, y + 1, 0);
         DrawTTFBitmapInternal<false>(rt, bgColor, surface, x, y - 1, 0);
     }
-    if (info->flags & TEXT_DRAW_FLAG_INSET)
+    if (info->colourFlags.has(ColourFlag::inset))
     {
         DrawTTFBitmapInternal<false>(rt, bgColor, surface, x + 1, y + 1, 0);
     }

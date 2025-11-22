@@ -93,7 +93,7 @@ namespace OpenRCT2
         auto& closeButton = widgets[2];
         if (closeButton.type == WidgetType::closeBox || closeButton.type == WidgetType::empty)
         {
-            bool translucent = colours[closeButton.colour].hasFlag(ColourFlag::translucent);
+            bool translucent = colours[closeButton.colour].flags.has(ColourFlag::translucent);
             repositionCloseButton(closeButton, width, translucent);
         }
 

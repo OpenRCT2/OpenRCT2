@@ -336,7 +336,7 @@ namespace OpenRCT2::Ui::Windows
 
                     WindowDropdownShowTextCustomWidth(
                         { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height() + 1, colours[1], 0,
-                        Dropdown::Flag::StayOpen, _numPages, widget->width() - 3);
+                        Dropdown::Flag::StayOpen, _numPages, widget->width() - 4);
 
                     for (size_t i = 0; i < _numPages; i++)
                     {
@@ -355,7 +355,7 @@ namespace OpenRCT2::Ui::Windows
                     auto* widget = &widgets[widgetIndex - 1];
                     WindowDropdownShowTextCustomWidth(
                         { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height() + 1, colours[1], 0,
-                        Dropdown::Flag::StayOpen, 2, widget->width() - 3);
+                        Dropdown::Flag::StayOpen, 2, widget->width() - 4);
 
                     gDropdown.items[static_cast<int32_t>(_selectedView)].setChecked(true);
                     break;
@@ -699,7 +699,7 @@ namespace OpenRCT2::Ui::Windows
 
                                 ft = Formatter();
                                 PeepThoughtSetFormatArgs(&thought, ft);
-                                DrawTextEllipsised(rt, { 118, y }, 329, format, ft, { FontStyle::Small });
+                                DrawTextEllipsised(rt, { 118, y }, 329, format, ft, { FontStyle::small });
                                 break;
                             }
                             break;
@@ -744,7 +744,7 @@ namespace OpenRCT2::Ui::Windows
                     // Draw small font if displaying guests
                     if (_selectedView == GuestViewType::Thoughts)
                     {
-                        DrawTextEllipsised(rt, { 0, y }, 414, format, ft, { FontStyle::Small });
+                        DrawTextEllipsised(rt, { 0, y }, 414, format, ft, { FontStyle::small });
                     }
                     else
                     {
@@ -755,7 +755,7 @@ namespace OpenRCT2::Ui::Windows
                     ft = Formatter();
                     ft.Add<StringId>(STR_GUESTS_COUNT_COMMA_SEP);
                     ft.Add<uint32_t>(group.NumGuests);
-                    DrawTextBasic(rt, { 326, y }, format, ft, { TextAlignment::RIGHT });
+                    DrawTextBasic(rt, { 326, y }, format, ft, { TextAlignment::right });
                 }
                 y += kSummarisedGuestsRowHeight;
                 index++;

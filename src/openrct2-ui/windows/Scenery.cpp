@@ -29,6 +29,7 @@
 #include <openrct2/actions/SmallSceneryPlaceAction.h>
 #include <openrct2/actions/SmallScenerySetColourAction.h>
 #include <openrct2/actions/WallPlaceAction.h>
+#include <openrct2/actions/WallRemoveAction.h>
 #include <openrct2/actions/WallSetColourAction.h>
 #include <openrct2/audio/Audio.h>
 #include <openrct2/config/Config.h>
@@ -206,6 +207,12 @@ namespace OpenRCT2::Ui::Windows
             }
         };
 
+        struct ProvisionalWallTile
+        {
+            CoordsXYZD location;
+            int32_t calculatedZ;
+        };
+
         std::vector<SceneryTabInfo> _tabEntries;
         int32_t _requiredWidth;
         int32_t _actualMinHeight;
@@ -215,6 +222,18 @@ namespace OpenRCT2::Ui::Windows
 
         uint8_t _unkF64F0E{ 0 };
         int16_t _unkF64F0A{ 0 };
+
+        CoordsXY _dragStartPos{};
+        /**
+         * When placing fences in the air using Shift, the user may shift their mouse to the left or right.
+         * We save this position to avoid detecting a wall drag where there isn’t one.
+         */
+        CoordsXY _dragStartHoverPos{};
+        CoordsXY _dragEndPos{};
+        uint8_t _startEdge{};
+        GameActions::Result _lastProvisionalError{};
+        bool _inDragMode = false;
+        std::vector<ProvisionalWallTile> _provisionalTiles{};
 
     public:
         void onOpen() override
@@ -255,6 +274,7 @@ namespace OpenRCT2::Ui::Windows
         void onClose() override
         {
             SceneryRemoveGhostToolPlacement();
+            removeProvisionalTilesFromMap();
             HideGridlines();
             ViewportSetVisibility(ViewportVisibility::standard);
 
@@ -849,7 +869,7 @@ namespace OpenRCT2::Ui::Windows
 
                 // -14
                 DrawTextBasic(
-                    rt, windowPos + ScreenCoordsXY{ width - 0x1A, height - 13 }, STR_COST_LABEL, ft, { TextAlignment::RIGHT });
+                    rt, windowPos + ScreenCoordsXY{ width - 0x1A, height - 13 }, STR_COST_LABEL, ft, { TextAlignment::right });
             }
 
             auto ft = Formatter();
@@ -1058,7 +1078,7 @@ namespace OpenRCT2::Ui::Windows
         int32_t GetNumColumns() const
         {
             const auto& listWidget = widgets[WIDX_SCENERY_LIST];
-            const auto contentWidth = listWidget.width() - kScrollBarWidth;
+            const auto contentWidth = listWidget.width() - 1 - kScrollBarWidth;
             return contentWidth / kSceneryButtonWidth;
         }
 
@@ -1814,6 +1834,13 @@ namespace OpenRCT2::Ui::Windows
 
         void onToolUpdateWall(WidgetIndex widgetIndex, const ScreenCoordsXY& screenPos, ScenerySelection selection)
         {
+            bool isLeftMousePressed = gInputFlags.has(InputFlag::leftMousePressed);
+            if (isLeftMousePressed)
+            {
+                gMapSelectFlags.set(MapSelectFlag::enable);
+                return;
+            }
+
             CoordsXY mapTile = {};
             uint8_t edge;
 
@@ -1826,10 +1853,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             gMapSelectFlags.set(MapSelectFlag::enable);
-            gMapSelectPositionA.x = mapTile.x;
-            gMapSelectPositionA.y = mapTile.y;
-            gMapSelectPositionB.x = mapTile.x;
-            gMapSelectPositionB.y = mapTile.y;
+            setMapSelectRange(mapTile);
             gMapSelectType = getMapSelectEdge(edge);
 
             MapInvalidateSelectionRect();
@@ -2717,6 +2741,8 @@ namespace OpenRCT2::Ui::Windows
             if (gridPos.IsNull())
                 return;
 
+            gridPos = gridPos.ToTileStart();
+
             if (Config::Get().general.virtualFloorStyle != VirtualFloorStyles::Off)
             {
                 VirtualFloorSetHeight(gSceneryPlaceZ);
@@ -3027,6 +3053,31 @@ namespace OpenRCT2::Ui::Windows
             auto res = GameActions::Execute(&footpathAdditionPlaceAction, gameState);
         }
 
+        std::optional<CoordsXY> getMapPosFromScreenPos(const ScreenCoordsXY& screenCoords)
+        {
+            CoordsXY coords;
+            if (gSceneryPlaceZ > 0)
+            {
+                auto candidate = ScreenGetMapXYWithZ(screenCoords, gSceneryPlaceZ);
+                if (!candidate.has_value())
+                    return std::nullopt;
+
+                coords = *candidate;
+            }
+            else
+            {
+                auto info = GetMapCoordinatesFromPos(screenCoords, EnumsToFlags(ViewportInteractionItem::terrain));
+
+                if (info.interactionType == ViewportInteractionItem::none)
+                    return std::nullopt;
+
+                coords = info.Loc;
+            }
+
+            coords = coords.ToTileStart();
+            return coords;
+        }
+
         void onToolDownWall(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords, uint16_t selectedScenery)
         {
             CoordsXY gridPos;
@@ -3068,19 +3119,165 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
 
-            auto wallPlaceAction = GameActions::WallPlaceAction(
-                selectedScenery, { gridPos, gSceneryPlaceZ }, edges, _sceneryPrimaryColour, _scenerySecondaryColour,
-                _sceneryTertiaryColour);
+            _inDragMode = true;
+            _dragStartPos = gridPos;
+            auto hoverPos = getMapPosFromScreenPos(screenCoords);
+            _dragStartHoverPos = hoverPos.has_value() ? *hoverPos : gridPos;
+            _dragEndPos = {};
+            _startEdge = edges;
+            gMapSelectFlags.set(MapSelectFlag::enable);
+            gMapSelectType = getMapSelectEdge(_startEdge);
+            setMapSelectRange(gridPos);
+        }
 
-            wallPlaceAction.SetCallback([](const GameActions::GameAction* ga, const GameActions::Result* result) {
-                if (result->Error == GameActions::Status::Ok)
-                {
-                    Audio::Play3D(Audio::SoundId::placeItem, result->Position);
-                }
-            });
+        void dragWallSetEndPos(const ScreenCoordsXY& screenCoords)
+        {
+            auto endCoords = getMapPosFromScreenPos(screenCoords);
+            if (!endCoords.has_value())
+                return;
 
+            if (endCoords == _dragStartHoverPos)
+            {
+                endCoords = _dragStartPos;
+            }
+
+            const bool onXAxis = (_startEdge == 1 || _startEdge == 3);
+            if (onXAxis)
+            {
+                endCoords->y = _dragStartPos.y;
+            }
+            else
+            {
+                endCoords->x = _dragStartPos.x;
+            }
+
+            if (*endCoords != _dragEndPos)
+            {
+                setMapSelectRange({ _dragStartPos, *endCoords });
+                updateProvisionalTiles();
+            }
+            _dragEndPos = *endCoords;
+        }
+
+        void removeProvisionalTilesFromMap()
+        {
             auto& gameState = getGameState();
-            auto res = GameActions::Execute(&wallPlaceAction, gameState);
+            for (const auto& tile : _provisionalTiles)
+            {
+                auto location = tile.location;
+                location.z = tile.calculatedZ;
+                auto wallRemoveAction = GameActions::WallRemoveAction(location);
+                wallRemoveAction.SetFlags(
+                    GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
+                wallRemoveAction.Execute(gameState);
+            }
+        }
+
+        void updateProvisionalTiles()
+        {
+            auto& gameState = getGameState();
+            auto tabSelection = WindowSceneryGetTabSelection();
+            removeProvisionalTilesFromMap();
+
+            _provisionalTiles.clear();
+            _lastProvisionalError = {};
+
+            auto mapRange = getMapSelectRange();
+            for (auto y = mapRange.GetY1(); y <= mapRange.GetY2(); y += kCoordsXYStep)
+            {
+                for (auto x = mapRange.GetX1(); x <= mapRange.GetX2(); x += kCoordsXYStep)
+                {
+                    auto wallPlaceAction = GameActions::WallPlaceAction(
+                        tabSelection.EntryIndex, { x, y, gSceneryPlaceZ }, _startEdge, _sceneryPrimaryColour,
+                        _scenerySecondaryColour, _sceneryTertiaryColour);
+                    wallPlaceAction.SetFlags(GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
+
+                    auto result = GameActions::Execute(&wallPlaceAction, gameState);
+                    if (result.Error == GameActions::Status::Ok)
+                    {
+                        const auto placementData = result.GetData<GameActions::WallPlaceActionResult>();
+                        _provisionalTiles.push_back({ CoordsXYZD(x, y, gSceneryPlaceZ, _startEdge), placementData.BaseHeight });
+                    }
+                    else
+                    {
+                        _lastProvisionalError = result;
+                    }
+                }
+            }
+        }
+
+        void onToolDragWall(const ScreenCoordsXY& screenCoords)
+        {
+            if (!_inDragMode)
+                return;
+
+            dragWallSetEndPos(screenCoords);
+        }
+
+        void onToolUp(WidgetIndex, const ScreenCoordsXY&) override
+        {
+            if (_sceneryPaintEnabled || gWindowSceneryEyedropperEnabled)
+                return;
+
+            auto tabSelection = WindowSceneryGetTabSelection();
+            auto sceneryType = tabSelection.SceneryType;
+            if (sceneryType == SCENERY_TYPE_WALL)
+            {
+                onToolUpWall(tabSelection.EntryIndex);
+            }
+        }
+
+        void onToolUpWall(uint16_t selectedScenery)
+        {
+            removeProvisionalTilesFromMap();
+
+            if (!_inDragMode)
+            {
+                _provisionalTiles.clear();
+                return;
+            }
+
+            if (_provisionalTiles.empty())
+            {
+                auto z = gSceneryPlaceZ > 0 ? gSceneryPlaceZ : TileElementHeight(_dragStartPos);
+                Audio::Play3D(Audio::SoundId::error, { _dragStartPos, z });
+
+                if (_lastProvisionalError.Error != GameActions::Status::Ok)
+                {
+                    auto windowManager = Ui::GetWindowManager();
+                    windowManager->ShowError(
+                        _lastProvisionalError.GetErrorTitle(), _lastProvisionalError.GetErrorMessage(), true);
+                }
+
+                _inDragMode = false;
+                return;
+            }
+
+            auto mapRange = getMapSelectRange();
+            bool anySuccessful = false;
+            CoordsXYZ lastLocation = { mapRange.Point2, gSceneryPlaceZ };
+            for (const auto& tile : _provisionalTiles)
+            {
+                auto wallPlaceAction = GameActions::WallPlaceAction(
+                    selectedScenery, tile.location, tile.location.direction, _sceneryPrimaryColour, _scenerySecondaryColour,
+                    _sceneryTertiaryColour);
+
+                auto& gameState = getGameState();
+                auto result = GameActions::Execute(&wallPlaceAction, gameState);
+                if (result.Error == GameActions::Status::Ok)
+                {
+                    anySuccessful = true;
+                    lastLocation = result.Position;
+                }
+            }
+
+            _provisionalTiles.clear();
+            _inDragMode = false;
+
+            if (anySuccessful)
+            {
+                Audio::Play3D(Audio::SoundId::placeItem, lastLocation);
+            }
         }
 
         void onToolDownLargeScenery(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords, uint16_t selectedScenery)
@@ -3223,6 +3420,13 @@ namespace OpenRCT2::Ui::Windows
         {
             if (_sceneryPaintEnabled || gWindowSceneryEyedropperEnabled)
                 onToolDown(widgetIndex, screenCoords);
+
+            auto tabSelection = WindowSceneryGetTabSelection();
+            auto sceneryType = tabSelection.SceneryType;
+            if (sceneryType == SCENERY_TYPE_WALL)
+            {
+                onToolDragWall(screenCoords);
+            }
         }
     };
 

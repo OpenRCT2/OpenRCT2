@@ -12,6 +12,8 @@
 #include "Drawing.h"
 #include "TTF.h"
 
+struct TextDrawInfo;
+
 namespace OpenRCT2::Drawing
 {
     struct IDrawingEngine;

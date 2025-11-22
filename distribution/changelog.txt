@@ -1,3 +1,28 @@
+0.4.29 (in development)
+------------------------------------------------------------------------
+- Feature: [#25459] Wall line dragging tool.
+- Improved: [#25028] Stalls now support colour presets, just like regular rides.
+- Improved: [#25426] Building the track designs index is now quicker.
+- Improved: [#25490] The ‘New Ride’ window can now be resized.
+- Fix: [#6228] The saved queue line path connections are not preserved when placing track designs (original bug).
+- Fix: [#14365] Track designs with scenery below the lowest track piece do not preview correctly.
+- Fix: [#25451] Dropdown item tooltips stay open if the mouse is moved over an empty space.
+- Fix: [#25454] Opening the land tool while building a path bridge or tunnel closes the Footpaths window.
+- Fix: [#25461] Path connections in raised track designs are sometimes broken when placed.
+- Fix: [#25467] Paths are not connected together correctly in track design previews.
+- Fix: [#25476] When both RCT2 and RCT1 are present, autodetection fails.
+- Fix: [#25480] The mini track design preview and price are misaligned in Enlarged UI mode.
+- Fix: [#25488] Crash in headless mode.
+- Fix: [#25494] The Go-Karts steep to flat track does not draw correctly in the flat side tunnel.
+- Fix: [#25518] The virtual floor does not draw correctly if expanded on the positive x and y axes.
+- Fix: [#25519] Crackling audio when sampling frequencies do not match.
+- Fix: [objects#401] Round tunnels on down slopes glitch.
+- Fix: [objects#404] Wooden Wild Mine cars incorrectly allow setting a third remap colour.
+- Fix: [objects#408] Australian fountain sets have confusing naming.
+- Fix: [objects#409] LIM Launched Coaster trains incorrectly have a 10% intensity modifier set (original bug).
+- Fix: [objects#410] Large scenery from the Wacky Worlds Africa theming have incorrect previews when using specific versions of the RCT2 base game.
+- Fix: [objects#415] Penguin bobsleigh trains show incorrect sprites on the 12° down slope (original bug).
+
 0.4.28 (2025-11-01)
 ------------------------------------------------------------------------
 - Feature: [#25286] Footpath area dragging tool.

@@ -1705,7 +1705,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Draw track piece
             auto screenCoords = ScreenCoordsXY{ windowPos.x + widget->left + 1, windowPos.y + widget->top + 1 };
-            widgetWidth = widget->width() - 1;
+            widgetWidth = widget->width() - 2;
             widgetHeight = widget->height() - 1;
             if (ClipDrawPixelInfo(clippedRT, rt, screenCoords, widgetWidth, widgetHeight))
             {
@@ -1716,14 +1716,14 @@ namespace OpenRCT2::Ui::Windows
             // Draw cost
             screenCoords = { windowPos.x + widget->midX(), windowPos.y + widget->bottom - 23 };
             if (_rideConstructionState != RideConstructionState::Place)
-                DrawTextBasic(rt, screenCoords, STR_BUILD_THIS, {}, { TextAlignment::CENTRE });
+                DrawTextBasic(rt, screenCoords, STR_BUILD_THIS, {}, { TextAlignment::centre });
 
             screenCoords.y += 11;
             if (_currentTrackPrice != kMoney64Undefined && !(getGameState().park.flags & PARK_FLAGS_NO_MONEY))
             {
                 auto ft = Formatter();
                 ft.Add<money64>(_currentTrackPrice);
-                DrawTextBasic(rt, screenCoords, STR_COST_LABEL, ft, { TextAlignment::CENTRE });
+                DrawTextBasic(rt, screenCoords, STR_COST_LABEL, ft, { TextAlignment::centre });
             }
         }
 
@@ -2626,7 +2626,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Tune dropdown to the elements it contains
-            auto ddWidth = widget->width();
+            auto ddWidth = widget->width() - 1;
             auto targetColumnSize = _specialElementDropdownState.PreferredNumRows;
             if (targetColumnSize < _specialElementDropdownState.Elements.size())
                 ddWidth -= 30;

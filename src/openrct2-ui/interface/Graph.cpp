@@ -12,6 +12,7 @@
 #include <openrct2-ui/interface/Graph.h>
 #include <openrct2/Date.h>
 #include <openrct2/drawing/Rectangle.h>
+#include <openrct2/interface/ColourWithFlags.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Formatting.h>
 #include <openrct2/localisation/Localisation.Date.h>
@@ -37,7 +38,7 @@ namespace OpenRCT2::Graph
             char buffer[64]{};
             FormatStringToBuffer(buffer, sizeof(buffer), fmt, curLabel);
             DrawText(
-                rt, { internalBounds.GetLeft() - kYTickMarkPadding, curScreenPos }, { FontStyle::Small, TextAlignment::RIGHT },
+                rt, { internalBounds.GetLeft() - kYTickMarkPadding, curScreenPos }, { FontStyle::small, TextAlignment::right },
                 buffer);
             // Draw Y label tick mark
             Rectangle::fill(
@@ -69,7 +70,7 @@ namespace OpenRCT2::Graph
                 ft.Add<StringId>(DateGameShortMonthNames[DateGetMonth((yearOver32 / 4) + MONTH_COUNT)]);
                 DrawTextBasic(
                     rt, screenCoords - ScreenCoordsXY{ 0, 14 }, STR_GRAPH_LABEL, ft,
-                    { FontStyle::Small, TextAlignment::CENTRE });
+                    { FontStyle::small, TextAlignment::centre });
                 // Draw month tick mark
                 Rectangle::fill(
                     rt, { screenCoords - ScreenCoordsXY{ 0, 4 }, screenCoords - ScreenCoordsXY{ 0, 1 } }, PaletteIndex::pi10);
@@ -100,7 +101,7 @@ namespace OpenRCT2::Graph
             kDashLength, PaletteIndex::pi10);
         GfxDrawDashedLine(rt, { { bounds.GetLeft(), coords.y }, coords }, kDashLength, PaletteIndex::pi10);
 
-        DrawText(rt, coords - ScreenCoordsXY{ 0, 16 }, { textCol, TextAlignment::CENTRE }, text);
+        DrawText(rt, coords - ScreenCoordsXY{ 0, 16 }, { textCol, TextAlignment::centre }, text);
 
         Rectangle::fill(rt, { { coords - ScreenCoordsXY{ 2, 2 } }, coords + ScreenCoordsXY{ 2, 2 } }, PaletteIndex::pi10);
         Rectangle::fill(rt, { { coords - ScreenCoordsXY{ 1, 1 } }, { coords + ScreenCoordsXY{ 1, 1 } } }, PaletteIndex::pi21);

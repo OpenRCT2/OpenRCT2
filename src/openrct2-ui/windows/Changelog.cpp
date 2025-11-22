@@ -142,7 +142,7 @@ namespace OpenRCT2::Ui::Windows
         {
             SetResizeDimensions();
 
-            auto downloadButtonWidth = widgets[WIDX_OPEN_URL].width();
+            auto downloadButtonWidth = widgets[WIDX_OPEN_URL].width() - 1;
             widgets[WIDX_OPEN_URL].left = (width - downloadButtonWidth) / 2;
             widgets[WIDX_OPEN_URL].right = widgets[WIDX_OPEN_URL].left + downloadButtonWidth;
         }
@@ -177,7 +177,7 @@ namespace OpenRCT2::Ui::Windows
 
         void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
-            const int32_t lineHeight = FontGetLineHeight(FontStyle::Medium);
+            const int32_t lineHeight = FontGetLineHeight(FontStyle::medium);
 
             ScreenCoordsXY screenCoords(3, 3 - lineHeight);
             for (const auto& line : _changelogLines)
@@ -194,7 +194,7 @@ namespace OpenRCT2::Ui::Windows
         {
             return ScreenSize(
                 _changelogLongestLineWidth + 4,
-                static_cast<int32_t>(_changelogLines.size()) * FontGetLineHeight(FontStyle::Medium));
+                static_cast<int32_t>(_changelogLines.size()) * FontGetLineHeight(FontStyle::medium));
         }
 
     private:
@@ -271,7 +271,7 @@ namespace OpenRCT2::Ui::Windows
             _changelogLongestLineWidth = 0;
             for (const auto& line : _changelogLines)
             {
-                int32_t linewidth = GfxGetStringWidth(line.c_str(), FontStyle::Medium);
+                int32_t linewidth = GfxGetStringWidth(line.c_str(), FontStyle::medium);
                 _changelogLongestLineWidth = std::max(linewidth, _changelogLongestLineWidth);
             }
         }

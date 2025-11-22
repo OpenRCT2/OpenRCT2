@@ -282,6 +282,11 @@ namespace OpenRCT2::Ui::Windows
                         close();
                     break;
                 case PathConstructionMode::dragArea:
+                    // If another window has enabled a tool, close ours.
+                    // If the user merely pressed Escape, we cancel the tool but don’t close the window.
+                    if (gInputFlags.has(InputFlag::toolActive)
+                        && gCurrentToolWidget.windowClassification != WindowClass::footpath)
+                        close();
                     break;
                 case PathConstructionMode::bridgeOrTunnelPick:
                     if (!isToolActive(WindowClass::footpath, WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL))
@@ -290,10 +295,6 @@ namespace OpenRCT2::Ui::Windows
                 case PathConstructionMode::bridgeOrTunnel:
                     break;
             }
-
-            // If another window has enabled a tool, close ours.
-            if (gInputFlags.has(InputFlag::toolActive) && gCurrentToolWidget.windowClassification != WindowClass::footpath)
-                close();
         }
 
         void onMouseDown(WidgetIndex widgetIndex) override
@@ -593,7 +594,7 @@ namespace OpenRCT2::Ui::Windows
                 // Draw build this... label
                 screenCoords = this->windowPos
                     + ScreenCoordsXY{ widgets[WIDX_CONSTRUCT].midX(), widgets[WIDX_CONSTRUCT].bottom - 23 };
-                DrawTextBasic(rt, screenCoords, STR_BUILD_THIS, {}, { TextAlignment::CENTRE });
+                DrawTextBasic(rt, screenCoords, STR_BUILD_THIS, {}, { TextAlignment::centre });
             }
 
             // Draw cost
@@ -605,7 +606,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     auto ft = Formatter();
                     ft.Add<money64>(_windowFootpathCost);
-                    DrawTextBasic(rt, screenCoords, STR_COST_LABEL, ft, { TextAlignment::CENTRE });
+                    DrawTextBasic(rt, screenCoords, STR_COST_LABEL, ft, { TextAlignment::centre });
                 }
             }
         }

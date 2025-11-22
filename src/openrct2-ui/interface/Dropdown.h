@@ -20,8 +20,9 @@ struct ImageId;
 
 namespace OpenRCT2
 {
+    struct ColourWithFlags;
     class Formatter;
-}
+} // namespace OpenRCT2
 
 namespace OpenRCT2::Dropdown
 {

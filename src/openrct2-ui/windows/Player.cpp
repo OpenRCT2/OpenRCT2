@@ -390,7 +390,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_VIEWPORT].right = width - 26;
             widgets[WIDX_VIEWPORT].bottom = height - 14;
 
-            int32_t groupDropdownWidth = widgets[WIDX_GROUP].width();
+            int32_t groupDropdownWidth = widgets[WIDX_GROUP].width() - 1;
             widgets[WIDX_GROUP].left = (width - groupDropdownWidth) / 2;
             widgets[WIDX_GROUP].right = widgets[WIDX_GROUP].left + groupDropdownWidth;
             widgets[WIDX_GROUP_DROPDOWN].left = widgets[WIDX_GROUP].right - 10;
@@ -403,7 +403,7 @@ namespace OpenRCT2::Ui::Windows
                 Widget* viewportWidget = &widgets[WIDX_VIEWPORT];
 
                 viewport->pos = windowPos + ScreenCoordsXY{ viewportWidget->left, viewportWidget->top };
-                viewport->width = viewportWidget->width();
+                viewport->width = viewportWidget->width() - 1;
                 viewport->height = viewportWidget->height();
             }
 
@@ -439,8 +439,8 @@ namespace OpenRCT2::Ui::Windows
                 ft.Add<const char*>(_buffer.c_str());
 
                 DrawTextEllipsised(
-                    rt, windowPos + ScreenCoordsXY{ widget->midX() - 5, widget->top }, widget->width() - 8, STR_STRING, ft,
-                    { TextAlignment::CENTRE });
+                    rt, windowPos + ScreenCoordsXY{ widget->midX() - 5, widget->top }, widget->width() - 9, STR_STRING, ft,
+                    { TextAlignment::centre });
             }
 
             // Draw ping
@@ -466,7 +466,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 ft.Add<StringId>(STR_ACTION_NA);
             }
-            DrawTextEllipsised(rt, screenCoords, updatedWidth, STR_LAST_ACTION_RAN, ft, { TextAlignment::CENTRE });
+            DrawTextEllipsised(rt, screenCoords, updatedWidth, STR_LAST_ACTION_RAN, ft, { TextAlignment::centre });
 
             if (viewport != nullptr && _drawViewport)
             {

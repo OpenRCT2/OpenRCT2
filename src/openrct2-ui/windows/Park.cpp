@@ -604,8 +604,8 @@ namespace OpenRCT2::Ui::Windows
 
             auto* labelWidget = &widgets[WIDX_STATUS];
             DrawTextEllipsised(
-                rt, windowPos + ScreenCoordsXY{ labelWidget->midX(), labelWidget->top }, labelWidget->width(), STR_BLACK_STRING,
-                ft, { TextAlignment::CENTRE });
+                rt, windowPos + ScreenCoordsXY{ labelWidget->midX(), labelWidget->top }, labelWidget->width() - 1,
+                STR_BLACK_STRING, ft, { TextAlignment::centre });
         }
 
         void initViewport()
@@ -646,7 +646,7 @@ namespace OpenRCT2::Ui::Windows
                     Widget* viewportWidget = &widgets[WIDX_VIEWPORT];
                     ViewportCreate(
                         *this, windowPos + ScreenCoordsXY{ viewportWidget->left + 1, viewportWidget->top + 1 },
-                        viewportWidget->width() - 1, viewportWidget->height() - 1, focus.value());
+                        viewportWidget->width() - 2, viewportWidget->height() - 1, focus.value());
                     flags |= WindowFlag::noScrolling;
                     invalidate();
                 }
@@ -692,7 +692,7 @@ namespace OpenRCT2::Ui::Windows
 
             char buffer[64]{};
             FormatStringToBuffer(buffer, sizeof(buffer), "{BLACK}{COMMA32}", _ratingProps.max);
-            int32_t maxGraphWidth = GfxGetStringWidth(buffer, FontStyle::Small) + Graph::kYTickMarkPadding + 1;
+            int32_t maxGraphWidth = GfxGetStringWidth(buffer, FontStyle::small) + Graph::kYTickMarkPadding + 1;
             const ScreenCoordsXY dynamicPadding{ std::max(maxGraphWidth, kGraphTopLeftPadding.x), kGraphTopLeftPadding.y };
 
             _ratingProps.RecalculateLayout(
@@ -773,7 +773,7 @@ namespace OpenRCT2::Ui::Windows
 
             char buffer[64]{};
             FormatStringToBuffer(buffer, sizeof(buffer), "{BLACK}{COMMA32}", _guestProps.max);
-            int32_t maxGraphWidth = GfxGetStringWidth(buffer, FontStyle::Small) + Graph::kYTickMarkPadding + 1;
+            int32_t maxGraphWidth = GfxGetStringWidth(buffer, FontStyle::small) + Graph::kYTickMarkPadding + 1;
             const ScreenCoordsXY dynamicPadding{ std::max(maxGraphWidth, kGraphTopLeftPadding.x), kGraphTopLeftPadding.y };
 
             _guestProps.RecalculateLayout(

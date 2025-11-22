@@ -11,6 +11,7 @@
 
 #ifndef DISABLE_NETWORK
 
+    #include <cstdint>
     #include <memory>
     #include <string>
     #include <vector>
