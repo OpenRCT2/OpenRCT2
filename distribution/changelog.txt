@@ -1,4 +1,4 @@
-0.4.29 (in development)
+0.4.29 (2025-11-22)
 ------------------------------------------------------------------------
 - Feature: [#25459] Wall line dragging tool.
 - Improved: [#25028] Stalls now support colour presets, just like regular rides.
