@@ -195,7 +195,7 @@ namespace OpenRCT2::Scripting
             const int result = JS_ToBool(ctx, val);
             if (result != -1)
             {
-                output = std::make_optional(result);
+                output = std::make_optional(static_cast<bool>(result));
             }
         }
         JS_FreeValue(ctx, val);
