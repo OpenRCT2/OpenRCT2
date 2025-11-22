@@ -32,12 +32,9 @@ STR_0027    :Coches de Choque
 STR_0028    :Barco Pirata
 STR_0029    :Barco Balancín Invertido
 STR_0030    :Puesto de comida
-STR_0031    :Puesto Desconocido (1D)
 STR_0032    :Puesto de Bebidas
-STR_0033    :Puesto Desconocido (1F)
 STR_0034    :Tienda
 STR_0035    :Tiovivo
-STR_0036    :Puesto Desconocido (22)
 STR_0037    :Quiosco de Información
 STR_0038    :Baños
 STR_0039    :Rueda Gigante
@@ -83,16 +80,10 @@ STR_0078    :Horquilla invertida
 STR_0079    :Alfombra Mágica
 STR_0080    :Viaje Submarino
 STR_0081    :Balsas de Río
-STR_0082    :Atracc. Desconocida (50)
 STR_0083    :Enterprise
-STR_0084    :Atracc. Desconocida (52)
-STR_0085    :Atracc. Desconocida (53)
-STR_0086    :Atracc. Desconocida (54)
-STR_0087    :Atracc. Desconocida (55)
 STR_0088    :Montaña Rusa Impulso Inverso
 STR_0089    :Mini Montaña Rusa
 STR_0090    :Trenes Mineros
-STR_0091    :Atracc. Desconocida (59)
 STR_0092    :Montaña Rusa acelerada por LIM
 STR_0093    :Montaña Rusa Híbrida
 STR_0094    :Montaña Rusa de un solo carril

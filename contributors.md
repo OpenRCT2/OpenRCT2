@@ -255,6 +255,7 @@ Appreciation for contributors who have provided substantial work, but are no lon
 * Garrett Leach (GarrettLeach)
 * Ruohao (Jater) Xu (jaterx)
 * Marcel Vos (MarcelVos96)
+* Jonas Doggart
 
 ## Toolchain
 * (Balletie) - macOS

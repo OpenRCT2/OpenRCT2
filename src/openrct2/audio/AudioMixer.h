@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include <cstdint>
 #include <memory>
 
 namespace OpenRCT2::Audio

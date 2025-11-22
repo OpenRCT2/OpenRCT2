@@ -32,12 +32,9 @@ STR_0027    :Xe điện đụng
 STR_0028    :Tàu cướp biển
 STR_0029    :Tàu lượn siêu tốc xoay tròn
 STR_0030    :Quầy đồ ăn
-STR_0031    :Quầy không xác định (1D)
 STR_0032    :Quầy đồ uống
-STR_0033    :Quầy không xác định (1F)
 STR_0034    :Cửa hàng
 STR_0035    :Đu quay ngựa gỗ
-STR_0036    :Quầy không xác định (22)
 STR_0037    :Quầy thông tin
 STR_0038    :Nhà vệ sinh
 STR_0039    :Vòng quay Ferris
@@ -83,16 +80,10 @@ STR_0078    :Tàu lượn ngược hình kẹp tóc
 STR_0079    :Thảm thần
 STR_0080    :Tàu ngầm
 STR_0081    :Thuyền bè
-STR_0082    :Trò chơi không xác định (50)
 STR_0083    :Vòng quay Enterprise
-STR_0084    :Trò chơi không xác định (52)
-STR_0085    :Trò chơi không xác định (53)
-STR_0086    :Trò chơi không xác định (54)
-STR_0087    :Trò chơi không xác định (55)
 STR_0088    :Tàu lượn siêu tốc xung ngược
 STR_0089    :Tàu lượn siêu tốc mini
 STR_0090    :Chuyến tàu mỏ
-STR_0091    :Trò chơi không xác định (59)
 STR_0092    :Tàu lượn siêu tốc khởi động LIM
 STR_0093    :Tàu lượn siêu tốc lai
 STR_0094    :Tàu lượn siêu tốc một ray

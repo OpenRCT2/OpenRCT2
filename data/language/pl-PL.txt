@@ -32,12 +32,9 @@ STR_0027    :Unikajki
 STR_0028    :Okręt piracki
 STR_0029    :Morska huśtawka
 STR_0030    :Budka z jedzeniem
-STR_0031    :Nieznane stoisko (1D)
 STR_0032    :Budka z napojami
-STR_0033    :Nieznane stoisko (1F)
 STR_0034    :Stoisko
 STR_0035    :Karuzela obrotowa
-STR_0036    :Nieznane stoisko (22)
 STR_0037    :Punkt informacyjny
 STR_0038    :Toalety
 STR_0039    :Diabelski młyn
@@ -83,16 +80,10 @@ STR_0078    :Kolejka serpentynowa
 STR_0079    :Latający dywan
 STR_0080    :Podwodna podróż
 STR_0081    :Tratwy rzeczne
-STR_0082    :Nieznana atrakcja (50)
 STR_0083    :Krynolina
-STR_0084    :Nieznana atrakcja (52)
-STR_0085    :Nieznana atrakcja (53)
-STR_0086    :Nieznana atrakcja (54)
-STR_0087    :Nieznana atrakcja (55)
 STR_0088    :Kolejka zwrotna
 STR_0089    :Minikolejka
 STR_0090    :Przejażdżka kopalniana
-STR_0091    :Nieznana atrakcja (59)
 STR_0092    :Kolejka z napędem indukcyjnym liniowym
 STR_0093    :Kolejka hybrydowa
 STR_0094    :Kolejka jednoszynowa

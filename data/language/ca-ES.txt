@@ -32,12 +32,9 @@ STR_0027    :Cotxes de xoc
 STR_0028    :Vaixell amb balanceig
 STR_0029    :Vaixell amb balanceig i inversió
 STR_0030    :Estand de menjar
-STR_0031    :Estand desconegut (1D)
 STR_0032    :Estand de begudes
-STR_0033    :Estand desconegut (1F)
 STR_0034    :Tenda
 STR_0035    :Cavallets
-STR_0036    :Estand desconegut (22)
 STR_0037    :Quiosc d’informació
 STR_0038    :Lavabos
 STR_0039    :Roda de fira
@@ -83,16 +80,10 @@ STR_0078    :Forquilla invertida
 STR_0079    :Catifa màgica
 STR_0080    :Viatge submarí
 STR_0081    :Barques soleres
-STR_0082    :Atracció desconeguda (50)
 STR_0083    :Enterprise
-STR_0084    :Atracció desconeguda (52)
-STR_0085    :Atracció desconeguda (53)
-STR_0086    :Atracció desconeguda (54)
-STR_0087    :Atracció desconeguda (55)
 STR_0088    :Muntanya russa d’impuls invers
 STR_0089    :Minimuntanya russa
 STR_0090    :La mina
-STR_0091    :Atracció desconeguda (59)
 STR_0092    :Muntanya russa d’impuls LIM
 STR_0093    :Muntanya russa híbrida
 STR_0094    :Muntanya russa d’un sol rail

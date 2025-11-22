@@ -32,12 +32,9 @@ STR_0027    :Autoscooter
 STR_0028    :Piratenschiff
 STR_0029    :Schwingendes Überkopfschiff
 STR_0030    :Imbissstand
-STR_0031    :Unbekannter Stand (1D)
 STR_0032    :Getränkestand
-STR_0033    :Unbekannter Stand (1F)
 STR_0034    :Stand
 STR_0035    :Karussell
-STR_0036    :Stand
 STR_0037    :Kiosk
 STR_0038    :Toiletten
 STR_0039    :Riesenrad
@@ -83,16 +80,10 @@ STR_0078    :Umgekehrte Haarnadelbahn
 STR_0079    :Fliegender Teppich
 STR_0080    :U-Boot-Fahrt
 STR_0081    :Floße
-STR_0082    :Unbekannte Bahn (50)
 STR_0083    :Enterprise
-STR_0084    :Unbekannte Bahn (52)
-STR_0085    :Unbekannte Bahn (53)
-STR_0086    :Unbekannte Bahn (54)
-STR_0087    :Unbekannte Bahn (55)
 STR_0088    :Umgekehrte Impuls-Bahn
 STR_0089    :Miniachterbahn
 STR_0090    :Minenbahn
-STR_0091    :Unbekannte Bahn (59)
 STR_0092    :LIM-Achterbahn
 STR_0093    :Hybridachterbahn
 STR_0094    :Einschienenachterbahn
