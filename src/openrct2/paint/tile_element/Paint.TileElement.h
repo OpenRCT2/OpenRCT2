@@ -48,7 +48,6 @@ extern const uint8_t kPathSlopeToLandSlope[4];
 void PaintUtilSetGeneralSupportHeight(PaintSession& session, int16_t height);
 void PaintUtilForceSetGeneralSupportHeight(PaintSession& session, int16_t height, uint8_t slope);
 void PaintUtilSetSegmentSupportHeight(PaintSession& session, int32_t segments, uint16_t height, uint8_t slope);
-uint16_t PaintUtilRotateSegments(uint16_t segments, uint8_t rotation);
 
 void TileElementPaintSetup(PaintSession& session, const CoordsXY& mapCoords, bool isTrackPiecePreview = false);
 
