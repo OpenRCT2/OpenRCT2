@@ -1041,8 +1041,7 @@ namespace OpenRCT2::Ui::Windows
             if (mainViewport == nullptr)
                 return;
 
-            auto centreScreen = mainViewport->pos
-                + ScreenCoordsXY{ mainViewport->width / 2, mainViewport->height / 2 };
+            auto centreScreen = mainViewport->pos + ScreenCoordsXY{ mainViewport->width / 2, mainViewport->height / 2 };
             auto mapCentre = OpenRCT2::ScreenGetMapXY(centreScreen, nullptr);
 
             ScreenCoordsXY minimapCentre;
@@ -1058,7 +1057,8 @@ namespace OpenRCT2::Ui::Windows
                 mapOffset.x *= getPracticalMapSize();
                 mapOffset.y *= getPracticalMapSize();
                 minimapCentre = mapOffset
-                    + ScreenCoordsXY{ (mainViewport->viewPos.x / kCoordsXYStep), (mainViewport->viewPos.y / kCoordsXYHalfTile) };
+                    + ScreenCoordsXY{ (mainViewport->viewPos.x / kCoordsXYStep),
+                                      (mainViewport->viewPos.y / kCoordsXYHalfTile) };
 
                 // Adjust to center (viewPos is top-left)
                 minimapCentre += ScreenCoordsXY{ mainViewport->ViewWidth() / 64, mainViewport->ViewHeight() / 32 };
