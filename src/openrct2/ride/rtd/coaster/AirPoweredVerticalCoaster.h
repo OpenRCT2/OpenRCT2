@@ -61,7 +61,7 @@ constexpr RideTypeDescriptor AirPoweredVerticalCoasterRTD =
         RatingsCalculationType::Normal,
         { RideRating::make(4, 13), RideRating::make(2, 50), RideRating::make(2, 80) },
         28,
-        -1,
+        kDynamicRideShelterRating,
         false,
         {
             { RatingsModifierType::BonusLength,           6000,             327, 0, 0 },

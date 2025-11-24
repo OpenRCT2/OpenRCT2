@@ -60,7 +60,7 @@ constexpr RideTypeDescriptor SubmarineRideRTD =
         RatingsCalculationType::Normal,
         { RideRating::make(2, 20), RideRating::make(1, 80), RideRating::make(1, 40) },
         7,
-        -1,
+        kDynamicRideShelterRating,
         false,
         {
             { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },

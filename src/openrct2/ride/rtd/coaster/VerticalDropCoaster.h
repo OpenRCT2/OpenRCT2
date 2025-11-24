@@ -64,7 +64,7 @@ constexpr RideTypeDescriptor VerticalDropCoasterRTD =
         RatingsCalculationType::Normal,
         { RideRating::make(3, 20), RideRating::make(0, 80), RideRating::make(0, 30) },
         16,
-        -1,
+        kDynamicRideShelterRating,
         false,
         {
             { RatingsModifierType::BonusLength,           4000,             1146, 0, 0 },

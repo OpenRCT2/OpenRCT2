@@ -63,7 +63,7 @@ constexpr RideTypeDescriptor ChairliftRTD =
         RatingsCalculationType::Normal,
         { RideRating::make(1, 60), RideRating::make(0, 40), RideRating::make(0, 50) },
         14,
-        -1,
+        kDynamicRideShelterRating,
         false,
         {
             { RatingsModifierType::BonusLength,            6000,     764, 0, 0 },
