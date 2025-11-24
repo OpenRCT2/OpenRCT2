@@ -11,10 +11,10 @@
 
     #include "Plugin.h"
 
+    #include "../Context.h"
     #include "../Diagnostic.h"
     #include "../OpenRCT2.h"
     #include "../core/File.h"
-    #include "Duktape.hpp"
     #include "ScriptEngine.h"
 
     #include <fstream>
@@ -22,9 +22,8 @@
 
 using namespace OpenRCT2::Scripting;
 
-Plugin::Plugin(duk_context* context, std::string_view path)
-    : _context(context)
-    , _path(path)
+Plugin::Plugin(std::string_view path)
+    : _path(path)
 {
 }
 
@@ -33,45 +32,46 @@ void Plugin::SetCode(std::string_view code)
     _code = code;
 }
 
+static JSValue registerPlugin(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
+{
+    Plugin* plugin = static_cast<Plugin*>(JS_GetContextOpaque(ctx));
+    plugin->SetMetadata(argv[0]);
+    return JS_UNDEFINED;
+}
+
 void Plugin::Load()
 {
+    if (_context)
+    {
+        JS_FreeContext(_context);
+    }
+
     if (!_path.empty())
     {
         LoadCodeFromFile();
     }
 
-    std::string projectedVariables = "console,context,date,map,network,park,profiler";
-    if (!gOpenRCT2Headless)
+    auto& scriptEngine = OpenRCT2::GetContext()->GetScriptEngine();
+    _context = scriptEngine.CreateContext();
+    JS_SetContextOpaque(_context, this);
+
+    JSValue registerFunc = JS_NewCFunction(_context, registerPlugin, "registerPlugin", 1);
+    JSValue glb = JS_GetGlobalObject(_context);
+    JS_SetPropertyStr(_context, glb, "registerPlugin", registerFunc);
+    JS_FreeValue(_context, glb);
+
+    JSValue res = JS_Eval(_context, _code.c_str(), _code.length(), _path.c_str(), JS_EVAL_TYPE_GLOBAL);
+    if (JS_IsException(res))
     {
-        projectedVariables += ",ui";
+        JSValue exceptionVal = JS_GetException(_context);
+        std::string details = Stringify(_context, exceptionVal);
+        JS_FreeValue(_context, exceptionVal);
+        JS_FreeValue(_context, res);
+        JS_FreeContext(_context);
+        throw std::runtime_error("Failed to load plug-in script: " + _path + "\n" + details);
     }
+    JS_FreeValue(_context, res);
 
-    // Wrap the script in a function and pass the global objects as variables
-    // so that if the script modifies them, they are not modified for other scripts.
-
-    // clang-format off
-    auto code = _code;
-    code =
-        "     (function(" + projectedVariables + ") {"
-        "         var __metadata__ = null;"
-        "         var registerPlugin = function(m) { __metadata__ = m };"
-        "         (function(__metadata__) {"
-                      + code +
-        "         })();"
-        "         return __metadata__;"
-        "     })(" + projectedVariables + ");";
-    // clang-format on
-
-    auto flags = DUK_COMPILE_EVAL | DUK_COMPILE_SAFE | DUK_COMPILE_NOSOURCE | DUK_COMPILE_NOFILENAME;
-    auto result = duk_eval_raw(_context, code.c_str(), code.size(), flags);
-    if (result != DUK_ERR_NONE)
-    {
-        auto val = std::string(duk_safe_to_string(_context, -1));
-        duk_pop(_context);
-        throw std::runtime_error("Failed to load plug-in script: " + val + " at " + _path);
-    }
-
-    _metadata = GetMetadata(DukValue::take_from_stack(_context));
     _hasLoaded = true;
 }
 
@@ -82,23 +82,24 @@ void Plugin::Start()
         throw std::runtime_error("Plugin has not been loaded.");
     }
 
-    const auto& mainFunc = _metadata.Main;
-    if (mainFunc.context() == nullptr)
+    const JSValue mainFunc = _metadata.Main.callback;
+    if (!JS_IsFunction(_context, mainFunc))
     {
         throw std::runtime_error("No main function specified.");
     }
 
     _hasStarted = true;
 
-    mainFunc.push();
-    auto result = duk_pcall(_context, 0);
-    if (result != DUK_ERR_NONE)
+    const JSValue res = JS_Call(_context, mainFunc, JS_UNDEFINED, 0, nullptr);
+    if (JS_IsException(res))
     {
-        auto val = std::string(duk_safe_to_string(_context, -1));
-        duk_pop(_context);
-        throw std::runtime_error("[" + _metadata.Name + "] " + val);
+        JSValue exceptionVal = JS_GetException(_context);
+        std::string details = Stringify(_context, exceptionVal);
+        JS_FreeValue(_context, exceptionVal);
+        JS_FreeValue(_context, res);
+        throw std::runtime_error("[" + _metadata.Name + "]\n" + details);
     }
-    duk_pop(_context);
+    JS_FreeValue(_context, res);
 }
 
 void Plugin::StopBegin()
@@ -112,16 +113,16 @@ void Plugin::StopEnd()
     _hasStarted = false;
 }
 
-void Plugin::ThrowIfStopping() const
-{
-    if (IsStopping())
-    {
-        duk_error(_context, DUK_ERR_ERROR, "Plugin is stopping.");
-    }
-}
-
 void Plugin::Unload()
 {
+    if (!_context)
+    {
+        throw std::runtime_error("Plugin is not loaded");
+    }
+
+    JS_FreeContext(_context);
+    _context = nullptr;
+
     // https://gcc.gnu.org/bugzilla/show_bug.cgi?id=105937, fixed in GCC13
     #if defined(__GNUC__) && !defined(__clang__)
         #pragma GCC diagnostic push
@@ -139,34 +140,51 @@ void Plugin::LoadCodeFromFile()
     _code = File::ReadAllText(_path);
 }
 
-static std::string TryGetString(const DukValue& value, const std::string& message)
+std::string Plugin::TryGetString(const JSValue value, const char* property, const std::string& message) const
 {
-    if (value.type() != DukValue::Type::STRING)
+    const JSValue res = JS_GetPropertyStr(_context, value, property);
+    if (!JS_IsString(res))
+    {
+        JS_FreeValue(_context, res);
         throw std::runtime_error(message);
-    return value.as_string();
+    }
+    std::string str = JSToStdString(_context, res);
+    JS_FreeValue(_context, res);
+    return str;
 }
 
-PluginMetadata Plugin::GetMetadata(const DukValue& dukMetadata)
+void Plugin::SetMetadata(const JSValue obj)
 {
-    PluginMetadata metadata;
-    if (dukMetadata.type() == DukValue::Type::OBJECT)
+    PluginMetadata metadata{};
+    if (JS_IsObject(obj))
     {
-        metadata.Name = TryGetString(dukMetadata["name"], "Plugin name not specified.");
-        metadata.Version = TryGetString(dukMetadata["version"], "Plugin version not specified.");
-        metadata.Type = ParsePluginType(TryGetString(dukMetadata["type"], "Plugin type not specified."));
+        metadata.Name = TryGetString(obj, "name", "Plugin name not specified.");
+        metadata.Version = TryGetString(obj, "version", "Plugin version not specified.");
+        metadata.Type = ParsePluginType(TryGetString(obj, "type", "Plugin type not specified."));
 
-        CheckForLicence(dukMetadata["licence"], metadata.Name);
-
-        auto dukMinApiVersion = dukMetadata["minApiVersion"];
-        if (dukMinApiVersion.type() == DukValue::Type::NUMBER)
+        const JSValue licence = JS_GetPropertyStr(_context, obj, "licence");
+        int64_t licenseLen = -1;
+        if (!JS_IsString(licence) || JS_GetLength(_context, licence, &licenseLen) == -1 || licenseLen == 0)
         {
-            metadata.MinApiVersion = dukMinApiVersion.as_uint();
+            LOG_ERROR("Plugin %s does not specify a licence", _metadata.Name.c_str());
         }
+        JS_FreeValue(_context, licence);
 
-        auto dukTargetApiVersion = dukMetadata["targetApiVersion"];
-        if (dukTargetApiVersion.type() == DukValue::Type::NUMBER)
+        const JSValue minApiVersion = JS_GetPropertyStr(_context, obj, "minApiVersion");
+        if (JS_IsNumber(minApiVersion))
         {
-            metadata.TargetApiVersion = dukTargetApiVersion.as_uint();
+            int64_t val = -1;
+            JS_ToInt64(_context, &val, minApiVersion);
+            metadata.MinApiVersion = val;
+        }
+        JS_FreeValue(_context, minApiVersion);
+
+        const JSValue targetApiVersion = JS_GetPropertyStr(_context, obj, "targetApiVersion");
+        if (JS_IsNumber(targetApiVersion))
+        {
+            int64_t val = -1;
+            JS_ToInt64(_context, &val, targetApiVersion);
+            metadata.TargetApiVersion = val;
         }
         else
         {
@@ -174,23 +192,25 @@ PluginMetadata Plugin::GetMetadata(const DukValue& dukMetadata)
                 u8"Plug-in “%s” does not specify a target API version or specifies it incorrectly. Emulating deprecated APIs.",
                 metadata.Name.c_str());
         }
+        JS_FreeValue(_context, targetApiVersion);
 
-        auto dukAuthors = dukMetadata["authors"];
-        dukAuthors.push();
-        if (dukAuthors.is_array())
+        const JSValue authors = JS_GetPropertyStr(_context, obj, "authors");
+        if (JS_IsArray(authors))
         {
-            auto elements = dukAuthors.as_array();
-            std::transform(elements.begin(), elements.end(), std::back_inserter(metadata.Authors), [](const DukValue& v) {
-                return v.as_string();
+            JSIterateArray(_context, authors, [&metadata](JSContext* ctx2, JSValue val) {
+                if (JS_IsString(val))
+                    metadata.Authors.emplace_back(JSToStdString(ctx2, val));
             });
         }
-        else if (dukAuthors.type() == DukValue::Type::STRING)
+        else if (JS_IsString(authors))
         {
-            metadata.Authors = { dukAuthors.as_string() };
+            metadata.Authors = { JSToStdString(_context, authors) };
         }
-        metadata.Main = dukMetadata["main"];
+        JS_FreeValue(_context, authors);
+
+        metadata.Main = JSToCallback(_context, obj, "main");
     }
-    return metadata;
+    _metadata = metadata;
 }
 
 PluginType Plugin::ParsePluginType(std::string_view type)
@@ -202,12 +222,6 @@ PluginType Plugin::ParsePluginType(std::string_view type)
     if (type == "intransient")
         return PluginType::Intransient;
     throw std::invalid_argument("Unknown plugin type.");
-}
-
-void Plugin::CheckForLicence(const DukValue& dukLicence, std::string_view pluginName)
-{
-    if (dukLicence.type() != DukValue::Type::STRING || dukLicence.as_string().empty())
-        LOG_ERROR("Plugin %s does not specify a licence", std::string(pluginName).c_str());
 }
 
 int32_t Plugin::GetTargetAPIVersion() const

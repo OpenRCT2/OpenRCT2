@@ -53,7 +53,7 @@ project(openrct2 CXX)
 include(cmake/platform.cmake)
 include(CMakeDependentOption)
 
-# vcpkg includes its own copy of duktapeConfig.cmake; only include ours as needed.
+# vcpkg includes its own copy of *.cmake; only include ours as needed.
 if (NOT MSVC)
     include(FindPkgConfig)
     set(CMAKE_PREFIX_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake;${CMAKE_MODULE_PATH}")
@@ -396,10 +396,10 @@ if(NOT DISABLE_GUI)
     include("${ROOT_DIR}/src/openrct2-ui/CMakeLists.txt" NO_POLICY_SCOPE)
 endif()
 
-# graphics files (g2.dat and font.dat) 
+# graphics files (g2.dat and font.dat)
 if (NOT CMAKE_CROSSCOMPILING)
     set(graphics_files "g2" "fonts" "tracks")
-    
+
     foreach(graphics_file ${graphics_files})
         set(output_file "${graphics_file}.dat")
         set(json_file "${ROOT_DIR}/resources/${graphics_file}/sprites.json")
