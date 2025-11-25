@@ -10,6 +10,7 @@
 #include "Wall.h"
 
 #include "Map.h"
+#include "TileElementsView.h"
 #include "tile_element/TileElement.h"
 #include "tile_element/WallElement.h"
 
@@ -38,17 +39,48 @@ void WallRemoveAtZ(const CoordsXYZ& wallPos)
     WallRemoveAt({ wallPos, wallPos.z, wallPos.z + 48 });
 }
 
+bool WallCanRemoveAt(const CoordsXYRangedZ& wallPos)
+{
+    for (const auto* wallElement : TileElementsView<WallElement>(wallPos))
+    {
+        if (wallElement->GetClearanceZ() <= wallPos.baseZ || wallElement->GetBaseZ() >= wallPos.clearanceZ)
+            continue;
+
+        if (!MapCanBuildAt({ wallPos, wallElement->GetBaseZ() }))
+            return false;
+    }
+
+    return true;
+}
+
+bool WallCanRemoveIntersectingWalls(const CoordsXYRangedZ& wallPos, Direction direction)
+{
+    for (const auto* wallElement : TileElementsView<WallElement>(wallPos))
+    {
+        if (wallElement->GetClearanceZ() <= wallPos.baseZ || wallElement->GetBaseZ() >= wallPos.clearanceZ)
+            continue;
+
+        if (direction != wallElement->GetDirection())
+            continue;
+
+        if (!MapCanBuildAt({ wallPos, wallElement->GetBaseZ() }))
+            return false;
+    }
+
+    return true;
+}
+
 /**
  *
  *  rct2: 0x006E5935
  */
-void WallRemoveIntersectingWalls(const CoordsXYRangedZ& wallPos, Direction direction)
+bool WallRemoveIntersectingWalls(const CoordsXYRangedZ& wallPos, Direction direction)
 {
     TileElement* tileElement;
 
     tileElement = MapGetFirstElementAt(wallPos);
     if (tileElement == nullptr)
-        return;
+        return true;
     do
     {
         if (tileElement->GetType() != TileElementType::Wall)
@@ -60,11 +92,16 @@ void WallRemoveIntersectingWalls(const CoordsXYRangedZ& wallPos, Direction direc
         if (direction != tileElement->GetDirection())
             continue;
 
+        if (!MapCanBuildAt({ wallPos, tileElement->GetBaseZ() }))
+            return false;
+
         tileElement->RemoveBannerEntry();
         MapInvalidateTileZoom1({ wallPos, tileElement->GetBaseZ(), tileElement->GetBaseZ() + 72 });
         TileElementRemove(tileElement);
         tileElement--;
     } while (!(tileElement++)->IsLastForTile());
+
+    return true;
 }
 
 #pragma region Edge Slopes Table
