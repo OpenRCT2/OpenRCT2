@@ -286,7 +286,6 @@ namespace OpenRCT2::Ui::Windows
             RideConstructionInvalidateCurrentTrack();
             ViewportSetVisibility(ViewportVisibility::standard);
 
-            MapInvalidateMapSelectionTiles();
             gMapSelectFlags.unset(MapSelectFlag::enableConstruct);
             gMapSelectFlags.unset(MapSelectFlag::enableArrow);
 
@@ -2242,7 +2241,6 @@ namespace OpenRCT2::Ui::Windows
             int32_t trackDirection;
             CoordsXYZ trackPos{};
 
-            MapInvalidateMapSelectionTiles();
             gMapSelectFlags.set(MapSelectFlag::enableConstruct);
             gMapSelectFlags.set(MapSelectFlag::green);
 
@@ -2259,7 +2257,7 @@ namespace OpenRCT2::Ui::Windows
                     trackPos = _currentTrackBegin;
                     break;
                 case RideConstructionState::EntranceExit:
-                    gMapSelectionTiles.clear();
+                    MapSelection::clearSelectedTiles();
                     return;
                 default:
                     if (WindowRideConstructionUpdateState(&trackType, &trackDirection, nullptr, nullptr, &trackPos, nullptr))
@@ -2274,7 +2272,6 @@ namespace OpenRCT2::Ui::Windows
             if (GetRide(_currentRideIndex))
             {
                 selectMapTiles(trackType, trackDirection, trackPos);
-                MapInvalidateMapSelectionTiles();
             }
         }
 
@@ -2289,13 +2286,13 @@ namespace OpenRCT2::Ui::Windows
 
             const auto& ted = GetTrackElementDescriptor(trackType);
             trackDirection &= 3;
-            gMapSelectionTiles.clear();
+            MapSelection::clearSelectedTiles();
             for (uint8_t i = 0; i < ted.numSequences; i++)
             {
                 CoordsXY offsets = { ted.sequences[i].clearance.x, ted.sequences[i].clearance.y };
                 CoordsXY currentTileCoords = tileCoords + offsets.Rotate(trackDirection);
 
-                gMapSelectionTiles.push_back(currentTileCoords);
+                MapSelection::addSelectedTile(currentTileCoords);
             }
         }
 
@@ -2653,7 +2650,6 @@ namespace OpenRCT2::Ui::Windows
         void ToolDownEntranceExit(const ScreenCoordsXY& screenCoords)
         {
             RideConstructionInvalidateCurrentTrack();
-            MapInvalidateSelectionRect();
             gMapSelectFlags.unset(MapSelectFlag::enable);
             gMapSelectFlags.unset(MapSelectFlag::enableArrow);
 
@@ -3288,7 +3284,6 @@ namespace OpenRCT2::Ui::Windows
                 gMapSelectFlags.unset(MapSelectFlag::enableArrow);
                 if (_currentTrackSelectionFlags.has(TrackSelectionFlag::arrow))
                     gMapSelectFlags.set(MapSelectFlag::enableArrow);
-                MapInvalidateTileFull(_currentTrackBegin);
                 break;
             }
             case RideConstructionState::Selected:
@@ -3338,7 +3333,6 @@ namespace OpenRCT2::Ui::Windows
                 gMapSelectFlags.unset(MapSelectFlag::enableArrow);
                 if (_currentTrackSelectionFlags.has(TrackSelectionFlag::arrow))
                     gMapSelectFlags.set(MapSelectFlag::enableArrow);
-                MapInvalidateTileFull(trackPos);
                 break;
             }
             default:
@@ -3354,7 +3348,6 @@ namespace OpenRCT2::Ui::Windows
     {
         int32_t z;
 
-        MapInvalidateMapSelectionTiles();
         gMapSelectFlags.unset(MapSelectFlag::enable);
         gMapSelectFlags.unset(MapSelectFlag::enableConstruct);
         gMapSelectFlags.unset(MapSelectFlag::enableArrow);
@@ -3362,7 +3355,6 @@ namespace OpenRCT2::Ui::Windows
         if (!mapCoords)
         {
             RideConstructionInvalidateCurrentTrack();
-            MapInvalidateMapSelectionTiles();
             return;
         }
 
@@ -3375,8 +3367,8 @@ namespace OpenRCT2::Ui::Windows
         gMapSelectFlags.unset(MapSelectFlag::green);
         gMapSelectArrowPosition = CoordsXYZ{ *mapCoords, z };
         gMapSelectArrowDirection = _currentTrackPieceDirection;
-        gMapSelectionTiles.clear();
-        gMapSelectionTiles.push_back(*mapCoords);
+        MapSelection::clearSelectedTiles();
+        MapSelection::addSelectedTile(*mapCoords);
 
         RideId rideIndex;
         OpenRCT2::TrackElemType trackType;
@@ -3386,7 +3378,6 @@ namespace OpenRCT2::Ui::Windows
                 &trackType, &trackDirection, &rideIndex, &liftHillAndAlternativeState, nullptr, nullptr))
         {
             RideConstructionInvalidateCurrentTrack();
-            MapInvalidateMapSelectionTiles();
             return;
         }
         _currentTrackPieceType = trackType;
@@ -3418,7 +3409,7 @@ namespace OpenRCT2::Ui::Windows
             if (gMapSelectFlags.has(MapSelectFlag::enableConstruct))
             {
                 int32_t highestZ = 0;
-                for (const auto& selectedTile : gMapSelectionTiles)
+                for (const auto& selectedTile : MapSelection::getSelectedTiles())
                 {
                     if (MapIsLocationValid(selectedTile))
                     {
@@ -3446,7 +3437,6 @@ namespace OpenRCT2::Ui::Windows
         _currentTrackBegin.z = z;
         if (_currentTrackSelectionFlags.has(TrackSelectionFlag::track) && _currentTrackBegin == _previousTrackPiece)
         {
-            MapInvalidateMapSelectionTiles();
             return;
         }
 
@@ -3475,7 +3465,6 @@ namespace OpenRCT2::Ui::Windows
 
             auto intent = Intent(INTENT_ACTION_UPDATE_MAZE_CONSTRUCTION);
             ContextBroadcastIntent(&intent);
-            MapInvalidateMapSelectionTiles();
             return;
         }
 
@@ -3564,7 +3553,6 @@ namespace OpenRCT2::Ui::Windows
         }
 
         WindowRideConstructionUpdateActiveElements();
-        MapInvalidateMapSelectionTiles();
     }
 
     /**
@@ -3573,8 +3561,6 @@ namespace OpenRCT2::Ui::Windows
      */
     void RideConstructionToolupdateEntranceExit(const ScreenCoordsXY& screenCoords)
     {
-        MapInvalidateSelectionRect();
-        MapInvalidateMapSelectionTiles();
         gMapSelectFlags.unset(MapSelectFlag::enable);
         gMapSelectFlags.unset(MapSelectFlag::enableConstruct);
         gMapSelectFlags.unset(MapSelectFlag::enableArrow);
@@ -3591,7 +3577,6 @@ namespace OpenRCT2::Ui::Windows
         gMapSelectPositionB = entranceOrExitCoords;
         gMapSelectArrowPosition = entranceOrExitCoords;
         gMapSelectArrowDirection = DirectionReverse(entranceOrExitCoords.direction);
-        MapInvalidateSelectionRect();
 
         entranceOrExitCoords.direction = DirectionReverse(gRideEntranceExitPlaceDirection);
         StationIndex stationNum = gRideEntranceExitPlaceStationIndex;
@@ -3619,7 +3604,6 @@ namespace OpenRCT2::Ui::Windows
 
         WindowBase* w;
 
-        MapInvalidateMapSelectionTiles();
         RideConstructionInvalidateCurrentTrack();
 
         CoordsXYZ mapCoords{};
@@ -3636,7 +3620,7 @@ namespace OpenRCT2::Ui::Windows
         highestZ = 0;
         if (gMapSelectFlags.has(MapSelectFlag::enableConstruct))
         {
-            for (const auto& selectedTile : gMapSelectionTiles)
+            for (const auto& selectedTile : MapSelection::getSelectedTiles())
             {
                 if (!MapIsLocationValid(selectedTile))
                     continue;

@@ -533,7 +533,6 @@ void RideConstructionInvalidateCurrentTrack()
             {
                 _currentTrackSelectionFlags.unset(TrackSelectionFlag::arrow);
                 gMapSelectFlags.unset(MapSelectFlag::enableArrow);
-                MapInvalidateTileFull(_currentTrackBegin);
             }
             RideConstructionRemoveGhosts();
             break;

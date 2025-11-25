@@ -969,7 +969,6 @@ static uint64_t PageDisabledWidgets[] = {
 
         void onToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
-            MapInvalidateSelectionRect();
             gMapSelectFlags.set(MapSelectFlag::enable);
 
             CoordsXY mapCoords;
@@ -999,7 +998,6 @@ static uint64_t PageDisabledWidgets[] = {
                 gMapSelectFlags.unset(MapSelectFlag::enable);
 
             gMapSelectType = MapSelectType::full;
-            MapInvalidateSelectionRect();
         }
 
         void onToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override

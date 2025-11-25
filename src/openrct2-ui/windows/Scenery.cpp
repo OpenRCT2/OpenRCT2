@@ -1761,8 +1761,6 @@ namespace OpenRCT2::Ui::Windows
                 gMapSelectType = getMapSelectQuarter((quadrant ^ 2));
             }
 
-            MapInvalidateSelectionRect();
-
             // If no change in ghost placement
             if ((gSceneryGhostType & SCENERY_GHOST_FLAG_0) && mapTile == gSceneryGhostPosition && quadrant == _unkF64F0E
                 && gSceneryPlaceZ == _unkF64F0A && gSceneryPlaceObject.SceneryType == SCENERY_TYPE_SMALL
@@ -1817,8 +1815,6 @@ namespace OpenRCT2::Ui::Windows
             gMapSelectPositionB.y = mapTile.y;
             gMapSelectType = MapSelectType::full;
 
-            MapInvalidateSelectionRect();
-
             // If no change in ghost placement
             if ((gSceneryGhostType & SCENERY_GHOST_FLAG_1) && mapTile == gSceneryGhostPosition && z == gSceneryGhostPosition.z)
             {
@@ -1855,8 +1851,6 @@ namespace OpenRCT2::Ui::Windows
             gMapSelectFlags.set(MapSelectFlag::enable);
             setMapSelectRange(mapTile);
             gMapSelectType = getMapSelectEdge(edge);
-
-            MapInvalidateSelectionRect();
 
             // If no change in ghost placement
             if ((gSceneryGhostType & SCENERY_GHOST_FLAG_2) && mapTile == gSceneryGhostPosition
@@ -1905,21 +1899,8 @@ namespace OpenRCT2::Ui::Windows
             }
 
             auto* sceneryEntry = ObjectManager::GetObjectEntry<LargeSceneryEntry>(selection.EntryIndex);
-            gMapSelectionTiles.clear();
-
-            for (auto& tile : sceneryEntry->tiles)
-            {
-                CoordsXY tileLocation = { tile.offset };
-                auto rotatedTileCoords = tileLocation.Rotate(direction);
-
-                rotatedTileCoords.x += mapTile.x;
-                rotatedTileCoords.y += mapTile.y;
-
-                gMapSelectionTiles.push_back(rotatedTileCoords);
-            }
 
             gMapSelectFlags.set(MapSelectFlag::enableConstruct);
-            MapInvalidateMapSelectionTiles();
 
             // If no change in ghost placement
             if ((gSceneryGhostType & SCENERY_GHOST_FLAG_3) && mapTile == gSceneryGhostPosition && gSceneryPlaceZ == _unkF64F0A
@@ -1927,6 +1908,12 @@ namespace OpenRCT2::Ui::Windows
                 && gSceneryPlaceObject.EntryIndex == selection.EntryIndex)
             {
                 return;
+            }
+
+            MapSelection::clearSelectedTiles();
+            for (auto& tile : sceneryEntry->tiles)
+            {
+                MapSelection::addSelectedTile(mapTile + tile.offset.Rotate(direction));
             }
 
             SceneryRemoveGhostToolPlacement();
@@ -1977,8 +1964,6 @@ namespace OpenRCT2::Ui::Windows
             gMapSelectPositionB.y = mapTile.y;
             gMapSelectType = MapSelectType::full;
 
-            MapInvalidateSelectionRect();
-
             // If no change in ghost placement
             if ((gSceneryGhostType & SCENERY_GHOST_FLAG_4) && mapTile == gSceneryGhostPosition && z == gSceneryGhostPosition.z
                 && direction == gSceneryPlaceRotation)
@@ -1999,9 +1984,6 @@ namespace OpenRCT2::Ui::Windows
          */
         void onToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenPos) override
         {
-            MapInvalidateSelectionRect();
-            MapInvalidateMapSelectionTiles();
-
             gMapSelectFlags.unset(MapSelectFlag::enable);
             gMapSelectFlags.unset(MapSelectFlag::enableConstruct);
 
