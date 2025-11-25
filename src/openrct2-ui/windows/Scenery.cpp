@@ -553,8 +553,20 @@ namespace OpenRCT2::Ui::Windows
 
             if (!isToolActive(WindowClass::scenery))
             {
-                close();
-                return;
+                if (_inDragMode)
+                {
+                    removeProvisionalTilesFromMap();
+                    _provisionalTiles.clear();
+                    _inDragMode = false;
+
+                    ToolSet(*this, WIDX_SCENERY_BACKGROUND, Tool::arrow);
+                    gInputFlags.set(InputFlag::unk6);
+                }
+                else
+                {
+                    close();
+                    return;
+                }
             }
 
             if (gWindowSceneryEyedropperEnabled)
