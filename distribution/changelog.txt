@@ -1,5 +1,6 @@
 0.4.30 (in development)
 ------------------------------------------------------------------------
+- Improved: [#25314] Add unbanked and banked quarter helices to the Alpine, Corkscrew, Giga, Hybrid, Looping, Mine Ride, Mini, Single Rail, Stand Up and Twister track types.
 - Fix: [#25524] The track construction arrow does not immediately change position when deleting track pieces.
 
 0.4.29 (2025-11-22)

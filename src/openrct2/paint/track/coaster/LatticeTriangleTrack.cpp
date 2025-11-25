@@ -87,6 +87,11 @@ static constexpr uint32_t kLatticeTriangleDiagBrakeImages[2][2][kNumOrthogonalDi
     },
 };
 
+static constexpr std::array<int8_t, 8> kLeftQuarterHelixSupportHeights = { 1, 0, 0, 0, 0, 4, 4, 1 };
+static constexpr std::array<int8_t, 8> kRightQuarterHelixSupportHeights = { 0, 0, 0, 1, 1, 4, 4, 1 };
+static constexpr std::array<int8_t, 8> kLeftQuarterBankedHelixSupportHeights = { 0, 0, 4, 5, 10, 1, 1, 8 };
+static constexpr std::array<int8_t, 8> kRightQuarterBankedHelixSupportHeights = { 4, 4, 0, 0, 8, 1, 1, 10 };
+
 /** rct2: 0x008AD674 */
 static void LatticeTriangleTrackFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
@@ -20065,6 +20070,46 @@ TrackPaintFunction GetTrackPaintFunctionLatticeTriangleTrack(OpenRCT2::TrackElem
             return LatticeTriangleTrackDiagBrakes;
         case TrackElemType::DiagBooster:
             return LatticeTriangleTrackDiagBooster;
+        case TrackElemType::LeftQuarterHelixLargeUp:
+            return TrackPaintLeftQuarterHelixLargeUp<
+                SPR_TRACKS_LATTICE_TRIANGLE_TRACK_QUARTER_HELIX_LEFT, kLeftQuarterHelixLargeUpSpriteMap, false,
+                kLeftQuarterHelixSupportHeights, OpenRCT2::BlockedSegments::kLeftQuarterHelixLargeUp, kTunnelGroup, false,
+                false>;
+        case TrackElemType::RightQuarterHelixLargeUp:
+            return TrackPaintRightQuarterHelixLargeUp<
+                SPR_TRACKS_LATTICE_TRIANGLE_TRACK_QUARTER_HELIX_RIGHT, kRightQuarterHelixLargeUpSpriteMap, false,
+                kRightQuarterHelixSupportHeights, OpenRCT2::BlockedSegments::kRightQuarterHelixLargeUp, kTunnelGroup, false,
+                false>;
+        case TrackElemType::LeftQuarterHelixLargeDown:
+            return TrackPaintRightQuarterHelixLargeUp<
+                SPR_TRACKS_LATTICE_TRIANGLE_TRACK_QUARTER_HELIX_RIGHT, kRightQuarterHelixLargeUpSpriteMap, false,
+                kRightQuarterHelixSupportHeights, OpenRCT2::BlockedSegments::kRightQuarterHelixLargeUp, kTunnelGroup, true,
+                false>;
+        case TrackElemType::RightQuarterHelixLargeDown:
+            return TrackPaintLeftQuarterHelixLargeUp<
+                SPR_TRACKS_LATTICE_TRIANGLE_TRACK_QUARTER_HELIX_LEFT, kLeftQuarterHelixLargeUpSpriteMap, false,
+                kLeftQuarterHelixSupportHeights, OpenRCT2::BlockedSegments::kLeftQuarterHelixLargeUp, kTunnelGroup, true,
+                false>;
+        case TrackElemType::LeftQuarterBankedHelixLargeUp:
+            return TrackPaintLeftQuarterHelixLargeUp<
+                SPR_TRACKS_LATTICE_TRIANGLE_TRACK_QUARTER_HELIX_LEFT_BANKED, kLeftQuarterBankedHelixLargeUpSpriteMap, false,
+                kLeftQuarterBankedHelixSupportHeights, OpenRCT2::BlockedSegments::kLeftQuarterHelixLargeUp, kTunnelGroup, false,
+                false>;
+        case TrackElemType::RightQuarterBankedHelixLargeUp:
+            return TrackPaintRightQuarterHelixLargeUp<
+                SPR_TRACKS_LATTICE_TRIANGLE_TRACK_QUARTER_HELIX_RIGHT_BANKED, kRightQuarterBankedHelixLargeUpSpriteMap, false,
+                kRightQuarterBankedHelixSupportHeights, OpenRCT2::BlockedSegments::kRightQuarterHelixLargeUp, kTunnelGroup,
+                false, false>;
+        case TrackElemType::LeftQuarterBankedHelixLargeDown:
+            return TrackPaintRightQuarterHelixLargeUp<
+                SPR_TRACKS_LATTICE_TRIANGLE_TRACK_QUARTER_HELIX_RIGHT_BANKED, kRightQuarterBankedHelixLargeUpSpriteMap, false,
+                kRightQuarterBankedHelixSupportHeights, OpenRCT2::BlockedSegments::kRightQuarterHelixLargeUp, kTunnelGroup,
+                true, false>;
+        case TrackElemType::RightQuarterBankedHelixLargeDown:
+            return TrackPaintLeftQuarterHelixLargeUp<
+                SPR_TRACKS_LATTICE_TRIANGLE_TRACK_QUARTER_HELIX_LEFT_BANKED, kLeftQuarterBankedHelixLargeUpSpriteMap, false,
+                kLeftQuarterBankedHelixSupportHeights, OpenRCT2::BlockedSegments::kLeftQuarterHelixLargeUp, kTunnelGroup, true,
+                false>;
         default:
             return TrackPaintFunctionDummy;
     }

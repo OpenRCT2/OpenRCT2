@@ -11,8 +11,10 @@
 
 #include "../paint/Paint.h"
 #include "../paint/support/MetalSupports.h"
+#include "../paint/support/WoodenSupports.hpp"
 #include "../paint/tile_element/Paint.TileElement.h"
 #include "../paint/track/Support.h"
+#include "../world/tile_element/TrackElement.h"
 
 namespace OpenRCT2
 {
@@ -549,6 +551,93 @@ inline void TrackPaintUtilDiagTilesPaint(
 void TrackPaintUtilDiagTilesPaintExtra(
     PaintSession& session, int8_t thickness, int16_t height, Direction direction, uint8_t trackSequence,
     const uint32_t sprites[4], MetalSupportType supportType);
+
+ImageId GetPrimaryTrackColourWithSecondarySupportColour(const PaintSession& session);
+
+void TrackPaintUtilLeftQuarterHelixLargeUpMetalSupports(
+    PaintSession& session, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const SupportType supportType, const std::array<int8_t, 8>& supportHeights);
+void TrackPaintUtilRightQuarterHelixLargeUpMetalSupports(
+    PaintSession& session, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const SupportType supportType, const std::array<int8_t, 8>& supportHeights);
+
+void TrackPaintUtilLeftQuarterHelixLargeUp(
+    PaintSession& session, const ImageId imageId, const uint64_t spriteMap, const uint8_t trackSequence,
+    const Direction direction, const int32_t height, const TunnelGroup tunnelGroup);
+void TrackPaintUtilRightQuarterHelixLargeUp(
+    PaintSession& session, const ImageId imageId, const uint64_t spriteMap, const uint8_t trackSequence,
+    const Direction direction, const int32_t height, const TunnelGroup tunnelGroup);
+
+static constexpr uint64_t kLeftQuarterHelixLargeUpSpriteMap = 0b01010001010001010100010100010101000101000101010001010001;
+static constexpr uint64_t kRightQuarterHelixLargeUpSpriteMap = 0b01010001010001010100010100010101000101000101010001010001;
+static constexpr uint64_t kLeftQuarterBankedHelixLargeUpSpriteMap = 0b01010001010001111100010100011010001010001001010001010011;
+static constexpr uint64_t kRightQuarterBankedHelixLargeUpSpriteMap = 0b01010001010011101000101000101111000101000101010001010001;
+
+template<
+    const ImageIndex imageIndex, const uint64_t spriteMap, const bool woodenSupports,
+    const std::array<int8_t, 8>& supportHeights, const std::array<uint16_t, 7>& blockedSegments, const TunnelGroup tunnelGroup,
+    const bool down, const bool trackSupportColours>
+void TrackPaintLeftQuarterHelixLargeUp(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, Direction direction, const int32_t height,
+    const OpenRCT2::TrackElement& trackElement, const SupportType supportType)
+{
+    if constexpr (down)
+    {
+        trackSequence = kMapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
+        direction = DirectionPrev(direction);
+    }
+
+    if constexpr (woodenSupports)
+    {
+        DrawSupportForSequenceA<OpenRCT2::TrackElemType::LeftQuarterHelixLargeUp>(
+            session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
+    }
+    else
+    {
+        TrackPaintUtilLeftQuarterHelixLargeUpMetalSupports(
+            session, trackSequence, direction, height, supportType, supportHeights);
+    }
+
+    const ImageId imageId = trackSupportColours ? GetPrimaryTrackColourWithSecondarySupportColour(session)
+                                                : session.TrackColours;
+    TrackPaintUtilLeftQuarterHelixLargeUp(
+        session, imageId.WithIndex(imageIndex), spriteMap, trackSequence, direction, height, tunnelGroup);
+
+    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments[trackSequence], direction), 0xFFFF, 0);
+}
+
+template<
+    const ImageIndex imageIndex, const uint64_t spriteMap, const bool woodenSupports,
+    const std::array<int8_t, 8>& supportHeights, const std::array<uint16_t, 7>& blockedSegments, const TunnelGroup tunnelGroup,
+    const bool down, const bool trackSupportColours>
+void TrackPaintRightQuarterHelixLargeUp(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, Direction direction, const int32_t height,
+    const OpenRCT2::TrackElement& trackElement, const SupportType supportType)
+{
+    if constexpr (down)
+    {
+        trackSequence = kMapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
+        direction = DirectionNext(direction);
+    }
+
+    if constexpr (woodenSupports)
+    {
+        DrawSupportForSequenceA<OpenRCT2::TrackElemType::RightQuarterHelixLargeUp>(
+            session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
+    }
+    else
+    {
+        TrackPaintUtilRightQuarterHelixLargeUpMetalSupports(
+            session, trackSequence, direction, height, supportType, supportHeights);
+    }
+
+    const ImageId imageId = trackSupportColours ? GetPrimaryTrackColourWithSecondarySupportColour(session)
+                                                : session.TrackColours;
+    TrackPaintUtilRightQuarterHelixLargeUp(
+        session, imageId.WithIndex(imageIndex), spriteMap, trackSequence, direction, height, tunnelGroup);
+
+    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments[trackSequence], direction), 0xFFFF, 0);
+}
 
 void TrackPaintUtilRightVerticalLoopSegments(PaintSession& session, Direction direction, uint8_t trackSequence);
 

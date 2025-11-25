@@ -18,6 +18,7 @@
 #include "../drawing/LightFX.h"
 #include "../interface/Viewport.h"
 #include "../object/StationObject.h"
+#include "../paint/Boundbox.h"
 #include "../paint/Paint.SessionFlags.h"
 #include "../paint/Paint.h"
 #include "../paint/support/MetalSupports.h"
@@ -1874,6 +1875,175 @@ void TrackPaintUtilOnridePhotoPaint(
             PaintAddImageAsParent(session, flashImageId, { 28, 6, height - 3 }, { 1, 1, 19 });
             break;
     }
+}
+
+ImageId GetPrimaryTrackColourWithSecondarySupportColour(const PaintSession& session)
+{
+    if (session.TrackColours == ConstructionMarker)
+        return session.TrackColours;
+    else
+        return session.TrackColours.WithSecondary(session.SupportColours.GetPrimary());
+}
+
+static void PaintTrackSprite(
+    PaintSession& session, const Direction direction, const uint8_t trackSequenceCount, const uint8_t trackSequence,
+    const uint8_t spriteCount, const uint8_t spriteIndex, const uint64_t spriteMap, const ImageId imageId, const int32_t height,
+    const BoundBoxXYZ* const boundingBoxes)
+{
+    const uint64_t sequenceIndex = (direction * trackSequenceCount * spriteCount) + (trackSequence * spriteCount) + spriteIndex;
+    const uint64_t sequenceIndexBit = 1ull << sequenceIndex;
+    if (spriteMap & sequenceIndexBit)
+    {
+        const ImageIndex imageIndexOffset = std::popcount(spriteMap & (sequenceIndexBit - 1));
+        PaintAddImageAsParentHeight(
+            session, imageId.WithIndexOffset(imageIndexOffset), height, { 0, 0, 0 }, boundingBoxes[sequenceIndex]);
+    }
+}
+
+static constexpr uint8_t kQuarterHelixTrackSequenceCount = 7;
+
+static constexpr std::array<std::array<std::array<BoundBoxXYZ, 2>, kQuarterHelixTrackSequenceCount>, kNumOrthogonalDirections>
+    kLeftQuarterHelixLargeUpBoundingBoxes = { {
+        { {
+            { { { { 0, 6, 1 }, { 32, 20, 1 } }, { { 0, 27, 1 }, { 32, 1, 22 } } } },
+            { { kBoundingBoxUnimplemented, kBoundingBoxUnimplemented } },
+            { { { { 0, 0, 1 }, { 32, 16, 1 } }, { { 0, 15, 1 }, { 32, 1, 22 } } } },
+            { { { { 0, 16, 1 }, { 16, 16, 1 } }, { { 0, 16, 30 }, { 16, 16, 1 } } } },
+            { { kBoundingBoxUnimplemented, kBoundingBoxUnimplemented } },
+            { { { { 16, 0, 1 }, { 16, 32, 1 } }, { { 16, 0, 38 }, { 16, 32, 1 } } } },
+            { { { { 6, 0, kCoordsZStep + 1 }, { 20, 32, 1 } }, { { 27, 0, kCoordsZStep + 1 }, { 1, 32, 22 } } } },
+        } },
+        { {
+            { { { { 6, 0, 1 }, { 20, 32, 1 } }, { { 27, 0, 1 }, { 1, 32, 22 } } } },
+            { { kBoundingBoxUnimplemented, kBoundingBoxUnimplemented } },
+            { { { { 0, 0, 1 }, { 16, 32, 1 } }, { { 15, 15, 3 }, { 1, 1, 20 } } } },
+            { { { { 16, 16, 1 }, { 16, 16, 1 } }, { { 31, 31, 3 }, { 1, 1, 20 } } } },
+            { { kBoundingBoxUnimplemented, kBoundingBoxUnimplemented } },
+            { { { { 0, 0, 1 }, { 32, 16, 1 } }, { { 15, 15, 3 }, { 1, 1, 28 } } } },
+            { { { { 0, 6, kCoordsZStep + 1 }, { 32, 20, 1 } }, { { 0, 27, kCoordsZStep + 1 }, { 32, 1, 22 } } } },
+        } },
+        { {
+            { { { { 0, 6, 1 }, { 32, 20, 1 } }, { { 0, 27, 1 }, { 32, 1, 30 } } } },
+            { { kBoundingBoxUnimplemented, kBoundingBoxUnimplemented } },
+            { { { { 0, 16, 1 }, { 32, 16, 1 } }, { { 0, 16, 30 }, { 32, 16, 1 } } } },
+            { { { { 16, 0, 1 }, { 16, 16, 1 } }, { { 16, 0, 30 }, { 16, 16, 1 } } } },
+            { { kBoundingBoxUnimplemented, kBoundingBoxUnimplemented } },
+            { { { { 0, 0, 1 }, { 16, 32, 1 } }, { { 27, 16, 1 }, { 1, 16, 30 } } } },
+            { { { { 6, 0, kCoordsZStep + 1 }, { 20, 32, 1 } }, { { 27, 0, kCoordsZStep + 1 }, { 1, 32, 22 } } } },
+        } },
+        { {
+            { { { { 6, 0, 1 }, { 20, 32, 1 } }, { { 6, 0, 30 }, { 20, 32, 1 } } } },
+            { { { { 0, 0, 1 }, { 16, 16, 1 } }, kBoundingBoxUnimplemented } },
+            { { { { 16, 0, 1 }, { 16, 32, 1 } }, { { 16, 0, 30 }, { 16, 32, 1 } } } },
+            { { { { 0, 0, 1 }, { 16, 16, 1 } }, { { 0, 0, 38 }, { 16, 16, 1 } } } },
+            { { kBoundingBoxUnimplemented, kBoundingBoxUnimplemented } },
+            { { { { 0, 16, 1 }, { 32, 16, 1 } }, { { 0, 16, 38 }, { 32, 16, 1 } } } },
+            { { { { 0, 6, kCoordsZStep + 1 }, { 32, 20, 1 } }, { { 0, 6, kCoordsZStep + 30 }, { 32, 20, 1 } } } },
+        } },
+    } };
+
+static constexpr auto kRightQuarterHelixLargeUpBoundingBoxes = flipTrackSequenceBoundBoxesXAxis(
+    kLeftQuarterHelixLargeUpBoundingBoxes);
+
+static constexpr std::array<int8_t, kQuarterHelixTrackSequenceCount> kQuarterHelixGeneralSupportHeights = { 32, 32, 32, 48,
+                                                                                                            48, 48, 48 };
+
+void TrackPaintUtilLeftQuarterHelixLargeUpMetalSupports(
+    PaintSession& session, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const SupportType supportType, const std::array<int8_t, 8>& supportHeights)
+{
+    if (trackSequence == 0)
+    {
+        MetalASupportsPaintSetupRotated(
+            session, supportType.metal, MetalSupportPlace::centre, direction, supportHeights[direction], height,
+            session.SupportColours);
+    }
+    else if (trackSequence == 6)
+    {
+        MetalASupportsPaintSetupRotated(
+            session, supportType.metal, MetalSupportPlace::centre, DirectionPrev(direction),
+            supportHeights[kNumOrthogonalDirections + direction], height + kCoordsZStep, session.SupportColours);
+    }
+}
+
+void TrackPaintUtilRightQuarterHelixLargeUpMetalSupports(
+    PaintSession& session, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const SupportType supportType, const std::array<int8_t, 8>& supportHeights)
+{
+    if (trackSequence == 0)
+    {
+        MetalASupportsPaintSetupRotated(
+            session, supportType.metal, MetalSupportPlace::centre, direction, supportHeights[direction], height,
+            session.SupportColours);
+    }
+    else if (trackSequence == 6)
+    {
+        MetalASupportsPaintSetupRotated(
+            session, supportType.metal, MetalSupportPlace::centre, DirectionNext(direction),
+            supportHeights[kNumOrthogonalDirections + direction], height + kCoordsZStep, session.SupportColours);
+    }
+}
+
+void TrackPaintUtilLeftQuarterHelixLargeUp(
+    PaintSession& session, const ImageId imageId, const uint64_t spriteMap, const uint8_t trackSequence,
+    const Direction direction, const int32_t height, const TunnelGroup tunnelGroup)
+{
+    PaintTrackSprite(
+        session, direction, kQuarterHelixTrackSequenceCount, trackSequence, 2, 0, spriteMap, imageId, height,
+        &kLeftQuarterHelixLargeUpBoundingBoxes[0][0][0]);
+    PaintTrackSprite(
+        session, direction, kQuarterHelixTrackSequenceCount, trackSequence, 2, 1, spriteMap, imageId, height,
+        &kLeftQuarterHelixLargeUpBoundingBoxes[0][0][0]);
+
+    if (trackSequence == 0 && (direction == 0 || direction == 3))
+    {
+        PaintUtilPushTunnelRotated(session, direction, height, tunnelGroup, TunnelSubType::Flat);
+    }
+    else if (trackSequence == 6)
+    {
+        switch (direction)
+        {
+            case 2:
+                PaintUtilPushTunnelRight(session, height + kLandHeightStep, tunnelGroup, TunnelSubType::FlatTo25Deg);
+                break;
+            case 3:
+                PaintUtilPushTunnelLeft(session, height + kLandHeightStep, tunnelGroup, TunnelSubType::FlatTo25Deg);
+                break;
+        }
+    }
+
+    PaintUtilSetGeneralSupportHeight(session, height + kQuarterHelixGeneralSupportHeights[trackSequence]);
+}
+
+void TrackPaintUtilRightQuarterHelixLargeUp(
+    PaintSession& session, const ImageId imageId, const uint64_t spriteMap, const uint8_t trackSequence,
+    const Direction direction, const int32_t height, const TunnelGroup tunnelGroup)
+{
+    PaintTrackSprite(
+        session, direction, 7, trackSequence, 2, 0, spriteMap, imageId, height,
+        &kRightQuarterHelixLargeUpBoundingBoxes[0][0][0]);
+    PaintTrackSprite(
+        session, direction, 7, trackSequence, 2, 1, spriteMap, imageId, height,
+        &kRightQuarterHelixLargeUpBoundingBoxes[0][0][0]);
+
+    if (trackSequence == 0 && (direction == 0 || direction == 3))
+    {
+        PaintUtilPushTunnelRotated(session, direction, height, tunnelGroup, TunnelSubType::Flat);
+    }
+    else if (trackSequence == 6)
+    {
+        switch (direction)
+        {
+            case 0:
+                PaintUtilPushTunnelRight(session, height + kLandHeightStep, tunnelGroup, TunnelSubType::FlatTo25Deg);
+                break;
+            case 1:
+                PaintUtilPushTunnelLeft(session, height + kLandHeightStep, tunnelGroup, TunnelSubType::FlatTo25Deg);
+                break;
+        }
+    }
+
+    PaintUtilSetGeneralSupportHeight(session, height + kQuarterHelixGeneralSupportHeights[trackSequence]);
 }
 
 static constexpr uint16_t RightVerticalLoopSegments[] = {
