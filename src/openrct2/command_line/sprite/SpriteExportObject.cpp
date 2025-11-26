@@ -48,7 +48,7 @@ namespace OpenRCT2::CommandLine::Sprite
         }
 
         const auto& imageTable = metaObject->GetEmbeddedImages();
-        const uint32_t maxIndex = imageTable.GetCount();
+        const uint32_t maxIndex = static_cast<uint32_t>(imageTable.GetCount());
         const int32_t numbers = static_cast<int32_t>(std::floor(std::log10(maxIndex) + 1));
 
         std::ostringstream oss; // TODO: Remove when C++20 is enabled and std::format can be used

@@ -87,7 +87,7 @@ namespace OpenRCT2
             else
             {
                 sourceInfo = ParseSource(jImage.at("path").get<std::string>());
-                sourceInfo.Kind = SourceKind::Png;
+                sourceInfo.Kind = SourceKind::png;
             }
         }
 
@@ -146,7 +146,7 @@ namespace OpenRCT2
         for (size_t i = 0; i < length; i++)
         {
             const auto& sourceEntry = table._entries[sourceStartIndex + i];
-            if (sourceEntry.Kind != SourceKind::None)
+            if (sourceEntry.Kind != SourceKind::none)
             {
                 _entries[i] = sourceEntry;
             }
@@ -290,14 +290,14 @@ namespace OpenRCT2
     {
         switch (entry.Kind)
         {
-            case SourceKind::G1:
+            case SourceKind::g1:
                 return "$G1";
-            case SourceKind::Csg:
+            case SourceKind::csg:
                 return "$CSG";
-            case SourceKind::None:
-            case SourceKind::Gx:
-            case SourceKind::ObjData:
-            case SourceKind::Png:
+            case SourceKind::none:
+            case SourceKind::gx:
+            case SourceKind::objData:
+            case SourceKind::png:
                 if (!entry.Asset)
                     return {};
                 return entry.Asset->GetZipPath() + entry.Asset->GetPath();
@@ -324,14 +324,14 @@ namespace OpenRCT2
         std::unique_ptr<ImageSource> source;
         switch (entry.Kind)
         {
-            case SourceKind::G1:
+            case SourceKind::g1:
             {
                 auto& env = GetContext()->GetPlatformEnvironment();
                 auto dataPath = env.FindFile(DirBase::rct2, DirId::data, "g1.dat");
                 source = std::make_unique<GxImageSource>(std::make_unique<FileStream>(dataPath, FileMode::open));
                 break;
             }
-            case SourceKind::Csg:
+            case SourceKind::csg:
             {
                 auto& env = GetContext()->GetPlatformEnvironment();
                 auto dataPathElements = env.FindFile(DirBase::rct1, DirId::data, "csg1i.dat");
@@ -341,7 +341,7 @@ namespace OpenRCT2
                     std::make_unique<FileStream>(dataPathData, FileMode::open));
                 break;
             }
-            case SourceKind::Gx:
+            case SourceKind::gx:
             {
                 if (entry.Asset)
                 {
@@ -353,12 +353,12 @@ namespace OpenRCT2
                 }
                 break;
             }
-            case SourceKind::ObjData:
+            case SourceKind::objData:
             {
                 source = std::make_unique<ObjectImageSource>(*entry.Asset);
                 break;
             }
-            case SourceKind::Png:
+            case SourceKind::png:
             {
                 if (entry.Asset)
                 {
