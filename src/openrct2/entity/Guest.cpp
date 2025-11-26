@@ -1715,28 +1715,24 @@ static bool GuestDecideAndBuyItem(Guest& guest, Ride& ride, const ShopItem shopI
         }
     }
 
-    if (shopItemDescriptor.IsFood())
-        guest.AmountOfFood++;
-
-    if (shopItemDescriptor.IsDrink())
-        guest.AmountOfDrinks++;
-
-    if (shopItemDescriptor.IsSouvenir())
-        guest.AmountOfSouvenirs++;
-
     money64* expend_type = &guest.PaidOnSouvenirs;
     ExpenditureType expenditure = ExpenditureType::shopStock;
 
     if (shopItemDescriptor.IsFood())
     {
+        guest.AmountOfFood++;
         expend_type = &guest.PaidOnFood;
         expenditure = ExpenditureType::foodDrinkStock;
     }
-
-    if (shopItemDescriptor.IsDrink())
+    else if (shopItemDescriptor.IsDrink())
     {
+        guest.AmountOfDrinks++;
         expend_type = &guest.PaidOnDrink;
         expenditure = ExpenditureType::foodDrinkStock;
+    }
+    else if (shopItemDescriptor.IsSouvenir())
+    {
+        guest.AmountOfSouvenirs++;
     }
 
     if (!(gameState.park.flags & PARK_FLAGS_NO_MONEY))
