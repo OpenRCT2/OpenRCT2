@@ -19,12 +19,23 @@
 namespace OpenRCT2::Network
 {
 #pragma pack(push, 1)
-    struct PacketHeader
+    struct PacketLegacyHeader
     {
         uint16_t Size = 0;
         Command Id = Command::invalid;
     };
-    static_assert(sizeof(PacketHeader) == 6);
+    static_assert(sizeof(PacketLegacyHeader) == 6);
+
+    struct PacketHeader
+    {
+        static constexpr uint32_t kMagic = 0x3254524F; // 'ORT2'
+        static constexpr uint16_t kVersion = 2;
+
+        uint32_t magic{};
+        uint16_t version{};
+        uint32_t size{};
+        Command id{};
+    };
 #pragma pack(pop)
 
     struct Packet final
@@ -49,7 +60,7 @@ namespace OpenRCT2::Network
         template<typename T>
         Packet& operator>>(T& value)
         {
-            if (BytesRead + sizeof(value) > Header.Size)
+            if (BytesRead + sizeof(value) > Header.size)
             {
                 value = T{};
             }

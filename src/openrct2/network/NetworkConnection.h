@@ -67,6 +67,7 @@ namespace OpenRCT2::Network
         std::vector<uint8_t> _outboundBuffer;
         uint32_t _lastPacketTime = 0;
         std::string _lastDisconnectReason;
+        bool _isLegacyProtocol = false;
 
         void RecordPacketStats(const Packet& packet, bool sending);
         void receiveData();
