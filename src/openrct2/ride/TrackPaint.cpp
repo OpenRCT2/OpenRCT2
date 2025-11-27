@@ -1238,7 +1238,6 @@ void TrackPaintUtilDiagTilesPaintExtra(
 
     PaintUtilSetSegmentSupportHeight(
         session, PaintUtilRotateSegments(BlockedSegments::kDiagStraightFlat[trackSequence], direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 const uint8_t kMapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[] = {
@@ -2026,9 +2025,16 @@ void PaintTrack(PaintSession& session, Direction direction, int32_t height, cons
         bool isInverted = trackElement.IsInverted() && rtd.HasFlag(RtdFlag::hasInvertedVariant);
         const auto trackDrawerEntry = getTrackDrawerEntry(rtd, isInverted, TrackElementIsCovered(trackType));
 
-        trackType = UncoverTrackElement(trackType);
-        TrackPaintFunction paintFunction = GetTrackPaintFunction(trackDrawerEntry.trackStyle, trackType);
-        paintFunction(session, *ride, trackSequence, direction, height, trackElement, trackDrawerEntry.supportType);
+        const auto& trackStylePaintInfo = GetTrackStylePaintInfo(trackDrawerEntry.trackStyle);
+        const auto& paintInfo = trackStylePaintInfo.trackElemTypePaintInfos[EnumValue(UncoverTrackElement(trackType))];
+
+        const uint8_t clampedTrackSequence = trackType == TrackElemType::Maze ? 0 : trackSequence;
+        const auto& sequenceInfo = paintInfo.sequenceInfo[clampedTrackSequence];
+
+        paintInfo.paintFunction(session, *ride, trackSequence, direction, height, trackElement, trackDrawerEntry.supportType);
+
+        const int32_t generalSupportHeight = height + sequenceInfo.getGeneralSupportHeight();
+        PaintUtilSetGeneralSupportHeight(session, generalSupportHeight * sequenceInfo.shouldSetGeneralSupportHeight());
     }
 }
 
@@ -2039,7 +2045,6 @@ void TrackPaintUtilOnridePhotoPaint2(
     TrackPaintUtilOnridePhotoPaint(session, direction, height + trackHeightOffset, trackElement);
     PaintUtilPushTunnelRotated(session, direction, height, TunnelGroup::Square, TunnelSubType::Flat);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + supportsAboveHeightOffset);
 }
 
 void DrawSBendLeftSupports(
