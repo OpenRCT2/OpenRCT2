@@ -61,6 +61,7 @@ namespace OpenRCT2::Network
         void CloseConnection();
         Player* AddPlayer(const std::string& name, const std::string& keyhash);
         void ProcessPacket(Connection& connection, Packet& packet);
+        bool UpdateConnection(Connection& connection);
 
     public: // Server
         Connection* GetPlayerConnection(uint8_t id) const;

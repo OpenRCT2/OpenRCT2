@@ -527,6 +527,14 @@ namespace OpenRCT2::Network
 
     void NetworkBase::UpdateServer()
     {
+        for (auto& connection : client_connection_list)
+        {
+            // This can be called multiple times before the connection is removed.
+            if (!connection->IsValid())
+                continue;
+
+            connection->update();
+        }
     }
 
     void NetworkBase::TickServer()
@@ -568,7 +576,7 @@ namespace OpenRCT2::Network
 
     void NetworkBase::UpdateClient()
     {
-
+        _serverConnection->update();
     }
 
     void NetworkBase::TickClient()
@@ -1762,6 +1770,13 @@ namespace OpenRCT2::Network
         packet.WriteString(playerName);
         packet.WriteString(reason);
         SendPacketToClients(packet);
+    }
+
+    bool NetworkBase::UpdateConnection(Connection& connection)
+    {
+        connection.update();
+
+        return connection.IsValid();
     }
 
     bool NetworkBase::ProcessConnection(Connection& connection)

@@ -45,6 +45,7 @@ namespace OpenRCT2::Network
 
         Connection() noexcept;
 
+        void update();
         ReadPacket readPacket();
         void QueuePacket(const Packet& packet, bool front = false);
 
@@ -62,11 +63,13 @@ namespace OpenRCT2::Network
         void SetLastDisconnectReason(const StringId string_id, void* args = nullptr);
 
     private:
+        std::vector<uint8_t> _inboundBuffer;
         std::vector<uint8_t> _outboundBuffer;
         uint32_t _lastPacketTime = 0;
         std::string _lastDisconnectReason;
 
         void RecordPacketStats(const Packet& packet, bool sending);
+        void receiveData();
     };
 } // namespace OpenRCT2::Network
 
