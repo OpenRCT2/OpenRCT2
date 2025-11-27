@@ -85,6 +85,7 @@ static void PaintCrookedHouseStructure(
         { { boundBox.offset, height + 3 }, { boundBox.length, 127 } });
 
     session.CurrentlyDrawnEntity = nullptr;
+    session.InteractionType = ViewportInteractionItem::ride;
 }
 
 static void PaintCrookedHouse(
