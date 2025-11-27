@@ -464,8 +464,6 @@ namespace OpenRCT2::Network
 
     void NetworkBase::Update()
     {
-
-
         switch (GetMode())
         {
             case Mode::server:
@@ -1506,8 +1504,8 @@ namespace OpenRCT2::Network
             objects = objManager.GetPackableObjects();
         }
 
-        auto header = SaveForNetwork(objects);
-        if (header.empty())
+        auto mapContent = SaveForNetwork(objects);
+        if (mapContent.empty())
         {
             if (connection != nullptr)
             {
@@ -1516,20 +1514,32 @@ namespace OpenRCT2::Network
             }
             return;
         }
-        size_t chunksize = kChunkSize;
-        for (size_t i = 0; i < header.size(); i += chunksize)
+
+        // NEW
+        if constexpr (true)
         {
-            size_t datasize = std::min(chunksize, header.size() - i);
             Packet packet(Command::map);
-            packet << static_cast<uint32_t>(header.size()) << static_cast<uint32_t>(i);
-            packet.Write(&header[i], datasize);
-            if (connection != nullptr)
+            packet.Write(mapContent.data(), mapContent.size());
+        }
+
+        // OLD
+        if constexpr (false)
+        {
+            size_t chunksize = kChunkSize;
+            for (size_t i = 0; i < mapContent.size(); i += chunksize)
             {
-                connection->QueuePacket(std::move(packet));
-            }
-            else
-            {
-                SendPacketToClients(packet);
+                size_t datasize = std::min(chunksize, mapContent.size() - i);
+                Packet packet(Command::map);
+                packet << static_cast<uint32_t>(mapContent.size()) << static_cast<uint32_t>(i);
+                packet.Write(&mapContent[i], datasize);
+                if (connection != nullptr)
+                {
+                    connection->QueuePacket(std::move(packet));
+                }
+                else
+                {
+                    SendPacketToClients(packet);
+                }
             }
         }
     }
