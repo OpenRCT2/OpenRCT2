@@ -53,6 +53,7 @@ namespace OpenRCT2::Network
     void SendTick();
     bool GamestateSnapshotsEnabled();
     void Update();
+    void Tick();
     void PostTick();
     void Flush();
 

@@ -251,7 +251,7 @@ namespace OpenRCT2
 
         GetContext()->GetReplayManager()->Update();
 
-        Network::Update();
+        Network::Tick();
 
         auto& gameState = getGameState();
 
