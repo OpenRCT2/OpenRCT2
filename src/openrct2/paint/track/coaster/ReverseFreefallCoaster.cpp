@@ -24,8 +24,6 @@
 
 using namespace OpenRCT2;
 
-static constexpr TunnelGroup kTunnelGroup = TunnelGroup::Square;
-
 enum
 {
     SPR_REVERSE_FREEFALL_RC_STATION_SW_NE = 22162,
@@ -211,13 +209,11 @@ static void PaintReverseFreefallRCFlat(
     {
         auto imageId = session.TrackColours.WithIndex(SPR_REVERSE_FREEFALL_RC_FLAT_NW_SE);
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 6, 0, height }, { 20, 32, 1 } });
-        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
     }
     else
     {
         auto imageId = session.TrackColours.WithIndex(SPR_REVERSE_FREEFALL_RC_FLAT_SW_NE);
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
-        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
     }
 
     DrawSupportForSequenceA<TrackElemType::Flat>(
@@ -244,7 +240,6 @@ static void PaintReverseFreefallRCStation(
     }
     DrawSupportForSequenceA<TrackElemType::EndStation>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-    TrackPaintUtilDrawStationTunnel(session, direction, height);
 
     TrackPaintUtilDrawNarrowStationPlatform(session, ride, direction, height, 5, trackElement, StationBaseType::b, -2);
 
@@ -259,7 +254,6 @@ static void PaintReverseFreefallRCSlope(
     static constexpr int8_t bbHeights03[] = { 1, 6, 14, 37, 64 };
     static constexpr int8_t bbHeights12[] = { 1, 6, 14, 27, 59 };
     static constexpr int32_t supportHeights[] = { 48, 64, 128, 176, 208, 240, 240 };
-    static constexpr int32_t tunnelOffsets03[] = { 0, 0, 0, 16, 64 };
 
     auto supportsImageId = session.SupportColours.WithIndex(kPiecesSlopeSupports[trackSequence][direction]);
     auto trackImageId = session.TrackColours.WithIndex(kPiecesSlope[trackSequence][direction]);
@@ -279,16 +273,6 @@ static void PaintReverseFreefallRCSlope(
                     session, direction, supportsImageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, bbHeight } });
                 PaintAddImageAsChildRotated(
                     session, direction, trackImageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, bbHeight } });
-
-                int32_t tunnelOffset = tunnelOffsets03[trackSequence];
-                if (direction & 1)
-                {
-                    PaintUtilPushTunnelRight(session, height + tunnelOffset, kTunnelGroup, TunnelSubType::Flat);
-                }
-                else
-                {
-                    PaintUtilPushTunnelLeft(session, height + tunnelOffset, kTunnelGroup, TunnelSubType::Flat);
-                }
             }
             else
             {
@@ -350,7 +334,6 @@ static void PaintReverseFreefallRCSlope(
                 session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + supportHeights[trackSequence]);
-            PaintUtilSetVerticalTunnel(session, height + 240);
             break;
     }
 }
@@ -380,7 +363,6 @@ static void PaintReverseFreefallRCVertical(
                 PaintAddImageAsParentRotated(
                     session, direction, trackImageId, { 0, 0, height }, { { 30, 6, height }, { 2, 20, 79 } });
             }
-            PaintUtilSetVerticalTunnel(session, height + 80);
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 80);
             break;
