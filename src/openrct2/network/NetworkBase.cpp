@@ -62,7 +62,7 @@ static constexpr uint32_t kChunkSize = 1024 * 63;
 
 // If data is sent fast enough it would halt the entire server, process only a maximum amount.
 // This limit is per connection, the current value was determined by tests with fuzzing.
-static constexpr uint32_t kMaxPacketsPerUpdate = 100;
+static constexpr uint32_t kMaxPacketsPerTick = 100;
 
     #include "../Cheats.h"
     #include "../ParkImporter.h"
@@ -464,6 +464,8 @@ namespace OpenRCT2::Network
 
     void NetworkBase::Update()
     {
+
+
         switch (GetMode())
         {
             case Mode::server:
@@ -1812,7 +1814,7 @@ namespace OpenRCT2::Network
                     // could not read anything from socket
                     break;
             }
-        } while (packetStatus == ReadPacket::success && countProcessed < kMaxPacketsPerUpdate);
+        } while (packetStatus == ReadPacket::success && countProcessed < kMaxPacketsPerTick);
 
         if (!connection.ReceivedPacketRecently())
         {
