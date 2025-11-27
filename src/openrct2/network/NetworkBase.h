@@ -38,9 +38,9 @@ namespace OpenRCT2::Network
         void Close();
         uint32_t GetServerTick() const noexcept;
         // FIXME: This is currently the wrong function to override in System, will be refactored later.
-        void Update() override final;
+        void Tick() override final;
         void Flush();
-        void ProcessPending();
+        void PostTick() override final;
         void ProcessPlayerList();
         auto GetPlayerIteratorByID(uint8_t id) const;
         auto GetGroupIteratorByID(uint8_t id) const;
@@ -80,7 +80,7 @@ namespace OpenRCT2::Network
         std::string GenerateAdvertiseKey();
         void SetupDefaultGroups();
         void RemovePlayer(std::unique_ptr<Connection>& connection);
-        void UpdateServer();
+        void TickServer();
         void ServerClientDisconnected(std::unique_ptr<Connection>& connection);
         bool SaveMap(IStream* stream, const std::vector<const ObjectRepositoryItem*>& objects) const;
         std::vector<uint8_t> SaveForNetwork(const std::vector<const ObjectRepositoryItem*>& objects) const;
@@ -135,7 +135,7 @@ namespace OpenRCT2::Network
         ServerState GetServerState() const noexcept;
         void ServerClientDisconnected();
         bool LoadMap(IStream* stream);
-        void UpdateClient();
+        void TickClient();
 
         // Packet dispatchers.
         void Client_Send_RequestGameState(uint32_t tick);

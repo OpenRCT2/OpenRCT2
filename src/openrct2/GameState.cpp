@@ -173,7 +173,7 @@ namespace OpenRCT2
                 getGameState().entities.UpdateMoneyEffect();
 
                 // Post-tick network update
-                Network::ProcessPending();
+                Network::PostTick();
 
                 // Post-tick game actions.
                 GameActions::ProcessQueue();
@@ -344,7 +344,7 @@ namespace OpenRCT2
 
         GameActions::ProcessQueue();
 
-        Network::ProcessPending();
+        Network::PostTick();
         Network::Flush();
 
         gameState.currentTicks++;
