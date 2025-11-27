@@ -1520,6 +1520,15 @@ namespace OpenRCT2::Network
         {
             Packet packet(Command::map);
             packet.Write(mapContent.data(), mapContent.size());
+
+            if (connection != nullptr)
+            {
+                connection->QueuePacket(std::move(packet));
+            }
+            else
+            {
+                SendPacketToClients(packet);
+            }
         }
 
         // OLD
@@ -2821,82 +2830,52 @@ namespace OpenRCT2::Network
 
     void NetworkBase::Client_Handle_MAP([[maybe_unused]] Connection& connection, Packet& packet)
     {
-        uint32_t size, offset;
-        packet >> size >> offset;
-        int32_t chunksize = static_cast<int32_t>(packet.Header.size - packet.BytesRead);
-        if (chunksize <= 0)
+        // TODO: We need a new packet that tells the client that a new map will be sent so the client
+        // starts buffering game actions and tick data to catch up once the map is received.
+
+        // Start of a new map load, clear the queue now as we have to buffer them
+        // until the map is fully loaded.
+        GameActions::ClearQueue();
+        GameActions::SuspendQueue();
+
+        // GetContext().SetProgress(currentProgressKiB, totalSizeKiB, STR_STRING_M_OF_N_KIB);
+
+        // Allow queue processing of game actions again.
+        GameActions::ResumeQueue();
+
+        ContextForceCloseWindowByClass(WindowClass::progressWindow);
+        GameUnloadScripts();
+        GameNotifyMapChange();
+
+        auto ms = MemoryStream(packet.Data.data(), packet.Data.size());
+        if (LoadMap(&ms))
         {
-            return;
+            GameLoadInit();
+            GameLoadScripts();
+            GameNotifyMapChanged();
+            _serverState.tick = getGameState().currentTicks;
+            // NetworkStatusOpen("Loaded new map from network");
+            _serverState.state = ServerStatus::ok;
+            _clientMapLoaded = true;
+            gFirstTimeSaving = true;
+
+            // Notify user he is now online and which shortcut key enables chat
+            ChatShowConnectedMessage();
+
+            // Fix invalid vehicle sprite sizes, thus preventing visual corruption of sprites
+            FixInvalidVehicleSpriteSizes();
+
+            // NOTE: Game actions are normally processed before processing the player list.
+            // Given that during map load game actions are buffered we have to process the
+            // player list first to have valid players for the queued game actions.
+            ProcessPlayerList();
         }
-        if (offset == 0)
+        else
         {
-            // Start of a new map load, clear the queue now as we have to buffer them
-            // until the map is fully loaded.
-            GameActions::ClearQueue();
-            GameActions::SuspendQueue();
-
-            _serverTickData.clear();
-            _clientMapLoaded = false;
-
-            OpenNetworkProgress(STR_MULTIPLAYER_DOWNLOADING_MAP);
-        }
-        if (size > chunk_buffer.size())
-        {
-            chunk_buffer.resize(size);
-        }
-
-        const auto currentProgressKiB = (offset + chunksize) / 1024;
-        const auto totalSizeKiB = size / 1024;
-
-        GetContext().SetProgress(currentProgressKiB, totalSizeKiB, STR_STRING_M_OF_N_KIB);
-
-        std::memcpy(&chunk_buffer[offset], const_cast<void*>(static_cast<const void*>(packet.Read(chunksize))), chunksize);
-        if (offset + chunksize == size)
-        {
-            // Allow queue processing of game actions again.
-            GameActions::ResumeQueue();
-
-            ContextForceCloseWindowByClass(WindowClass::progressWindow);
-            GameUnloadScripts();
-            GameNotifyMapChange();
-
-            bool has_to_free = false;
-            uint8_t* data = &chunk_buffer[0];
-            size_t data_size = size;
-            auto ms = MemoryStream(data, data_size);
-            if (LoadMap(&ms))
-            {
-                GameLoadInit();
-                GameLoadScripts();
-                GameNotifyMapChanged();
-                _serverState.tick = getGameState().currentTicks;
-                // NetworkStatusOpen("Loaded new map from network");
-                _serverState.state = ServerStatus::ok;
-                _clientMapLoaded = true;
-                gFirstTimeSaving = true;
-
-                // Notify user he is now online and which shortcut key enables chat
-                ChatShowConnectedMessage();
-
-                // Fix invalid vehicle sprite sizes, thus preventing visual corruption of sprites
-                FixInvalidVehicleSpriteSizes();
-
-                // NOTE: Game actions are normally processed before processing the player list.
-                // Given that during map load game actions are buffered we have to process the
-                // player list first to have valid players for the queued game actions.
-                ProcessPlayerList();
-            }
-            else
-            {
-                // Something went wrong, game is not loaded. Return to main screen.
-                auto loadOrQuitAction = GameActions::LoadOrQuitAction(
-                    GameActions::LoadOrQuitModes::OpenSavePrompt, PromptMode::saveBeforeQuit);
-                GameActions::Execute(&loadOrQuitAction, getGameState());
-            }
-            if (has_to_free)
-            {
-                free(data);
-            }
+            // Something went wrong, game is not loaded. Return to main screen.
+            auto loadOrQuitAction = GameActions::LoadOrQuitAction(
+                GameActions::LoadOrQuitModes::OpenSavePrompt, PromptMode::saveBeforeQuit);
+            GameActions::Execute(&loadOrQuitAction, getGameState());
         }
     }
 
