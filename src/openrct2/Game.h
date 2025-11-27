@@ -26,6 +26,12 @@ namespace OpenRCT2
     // The maximum threshold to advance.
     constexpr float kGameUpdateMaxThreshold = kGameUpdateTimeMS * kGameMaxUpdates;
 
+    // The network update runs at a different rate to the game update.
+    constexpr uint32_t kNetworkUpdateFPS = 140;
+    // The network update interval in milliseconds, (1000 / 140fps) = ~7.14ms
+    constexpr float kNetworkUpdateTimeMS = 1.0f / kNetworkUpdateFPS;
+
+
     constexpr float kGameMinTimeScale = 0.1f;
     constexpr float kGameMaxTimeScale = 5.0f;
 } // namespace OpenRCT2

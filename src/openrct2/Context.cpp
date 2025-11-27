@@ -1336,7 +1336,7 @@ namespace OpenRCT2
 
             if (_ticksAccumulator < kGameUpdateTimeMS)
             {
-                const auto sleepTimeSec = (kGameUpdateTimeMS - _ticksAccumulator);
+                const auto sleepTimeSec = std::min(kNetworkUpdateTimeMS, kGameUpdateTimeMS - _ticksAccumulator);
                 Platform::Sleep(static_cast<uint32_t>(sleepTimeSec * 1000.f));
                 return;
             }
