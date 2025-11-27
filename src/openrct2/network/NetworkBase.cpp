@@ -462,7 +462,7 @@ namespace OpenRCT2::Network
         return nullptr;
     }
 
-    void NetworkBase::Update()
+    void NetworkBase::Tick()
     {
         _closeLock = true;
 
@@ -474,10 +474,10 @@ namespace OpenRCT2::Network
         switch (GetMode())
         {
             case Mode::server:
-                UpdateServer();
+                TickServer();
                 break;
             case Mode::client:
-                UpdateClient();
+                TickClient();
                 break;
             default:
                 break;
@@ -510,7 +510,7 @@ namespace OpenRCT2::Network
         }
     }
 
-    void NetworkBase::UpdateServer()
+    void NetworkBase::TickServer()
     {
         for (auto& connection : client_connection_list)
         {
@@ -547,7 +547,7 @@ namespace OpenRCT2::Network
         }
     }
 
-    void NetworkBase::UpdateClient()
+    void NetworkBase::TickClient()
     {
         assert(_serverConnection != nullptr);
 
@@ -1812,7 +1812,7 @@ namespace OpenRCT2::Network
     }
 
     // This is called at the end of each game tick, this where things should be processed that affects the game state.
-    void NetworkBase::ProcessPending()
+    void NetworkBase::PostTick()
     {
         if (GetMode() == Mode::server)
         {
@@ -3306,9 +3306,9 @@ namespace OpenRCT2::Network
         GetContext()->GetNetwork().Update();
     }
 
-    void ProcessPending()
+    void PostTick()
     {
-        GetContext()->GetNetwork().ProcessPending();
+        GetContext()->GetNetwork().PostTick();
     }
 
     void Flush()
@@ -4150,7 +4150,7 @@ namespace OpenRCT2::Network
     void Update()
     {
     }
-    void ProcessPending()
+    void PostTick()
     {
     }
     int32_t BeginClient(const std::string& host, int32_t port)

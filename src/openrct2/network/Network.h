@@ -53,7 +53,7 @@ namespace OpenRCT2::Network
     void SendTick();
     bool GamestateSnapshotsEnabled();
     void Update();
-    void ProcessPending();
+    void PostTick();
     void Flush();
 
     [[nodiscard]] Auth GetAuthstatus();
