@@ -32,12 +32,9 @@ STR_0027    :Çarpışan Arabalar
 STR_0028    :Korsan Gemisi
 STR_0029    :Tepe Takla Gemisi
 STR_0030    :Yiyecek Standı
-STR_0031    :Bilinmeyen Stant (1D)
 STR_0032    :İçecek Standı
-STR_0033    :Bilinmeyen Stant (1F)
 STR_0034    :Dükkan
 STR_0035    :Atlıkarınca
-STR_0036    :Bilinmeyen Stant (22)
 STR_0037    :Danışma
 STR_0038    :Tuvalet
 STR_0039    :Dönme Dolap
@@ -83,16 +80,10 @@ STR_0078    :Teleferik Treni
 STR_0079    :Sihirli Halı
 STR_0080    :Denizaltı Kiralama
 STR_0081    :Sal Seyahati
-STR_0082    :Bilinmeyen Alet (50)
 STR_0083    :Dönen Teker
-STR_0084    :Bilinmeyen Alet (52)
-STR_0085    :Bilinmeyen Alet (53)
-STR_0086    :Bilinmeyen Alet (54)
-STR_0087    :Bilinmeyen Alet (55)
 STR_0088    :Vida Treni
 STR_0089    :Mini Tren
 STR_0090    :Küçük Maden Treni
-STR_0091    :Bilinmeyen Alet (59)
 STR_0092    :LIM Tren
 STR_0096    :Klasik Tahta Tren
 STR_0512    :Sarmal şeklinde tırmanma zinciri rayı ile yükseğe çıkabilen çelik yapılı bir tren

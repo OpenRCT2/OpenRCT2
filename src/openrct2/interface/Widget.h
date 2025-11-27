@@ -102,7 +102,7 @@ namespace OpenRCT2
 
         int16_t width() const
         {
-            return right - left;
+            return right - left + 1;
         }
 
         int16_t height() const
@@ -112,7 +112,7 @@ namespace OpenRCT2
 
         int16_t midX() const
         {
-            return (left + right) / 2;
+            return left + (width() / 2);
         }
 
         int16_t midY() const

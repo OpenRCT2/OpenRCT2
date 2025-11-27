@@ -67,6 +67,22 @@ struct FlagHolder
         holder |= EnumsToFlags(types...);
     }
 
+    template<typename... TTypes>
+    constexpr FlagHolder with(TTypes... types)
+    {
+        FlagHolder res = *this;
+        res.set(types...);
+        return res;
+    }
+
+    template<typename... TTypes>
+    constexpr FlagHolder without(TTypes... types)
+    {
+        FlagHolder res = *this;
+        res.unset(types...);
+        return res;
+    }
+
     /**
      * For situations where you don’t know upfront whether to set or unset the flag,
      * e.g. in game actions where this is passed as a variable.

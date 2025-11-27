@@ -59,7 +59,7 @@ static void ScrollingTextInitialiseCharacterBitmaps(uint32_t glyphStart, uint16_
     for (int32_t i = 0; i < count; i++)
     {
         std::fill_n(drawingSurface, sizeof(drawingSurface), 0x00);
-        GfxDrawSpriteSoftware(rt, ImageId(glyphStart + (EnumValue(FontStyle::Tiny) * count) + i), { -1, 0 });
+        GfxDrawSpriteSoftware(rt, ImageId(glyphStart + (EnumValue(FontStyle::tiny) * count) + i), { -1, 0 });
 
         for (int32_t x = 0; x < 8; x++)
         {
@@ -1493,7 +1493,7 @@ static void ScrollingTextSetBitmapForSprite(
                 CodepointView codepoints(token.text);
                 for (auto codepoint : codepoints)
                 {
-                    auto characterWidth = FontSpriteGetCodepointWidth(FontStyle::Tiny, codepoint);
+                    auto characterWidth = FontSpriteGetCodepointWidth(FontStyle::tiny, codepoint);
                     auto characterBitmap = FontSpriteGetCodepointBitmap(codepoint);
                     for (; characterWidth != 0; characterWidth--, characterBitmap++)
                     {
@@ -1541,7 +1541,7 @@ static void ScrollingTextSetBitmapForTTF(
     std::string_view text, int32_t scroll, uint8_t* bitmap, const int16_t* scrollPositionOffsets, colour_t colour)
 {
 #ifndef DISABLE_TTF
-    auto fontDesc = TTFGetFontFromSpriteBase(FontStyle::Tiny);
+    auto fontDesc = TTFGetFontFromSpriteBase(FontStyle::tiny);
     if (fontDesc->font == nullptr)
     {
         ScrollingTextSetBitmapForSprite(text, scroll, bitmap, scrollPositionOffsets, colour);

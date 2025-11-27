@@ -165,7 +165,7 @@ namespace OpenRCT2
             return objectList;
         }
 
-        std::unique_ptr<Object> LoadTempObject(std::string_view id) override
+        std::unique_ptr<Object> LoadTempObject(std::string_view id, bool loadImages) override
         {
             const ObjectRepositoryItem* ori = _objectRepository.FindObject(id);
             if (ori == nullptr)
@@ -174,7 +174,7 @@ namespace OpenRCT2
                 return nullptr;
             }
 
-            auto object = _objectRepository.LoadObject(ori);
+            auto object = _objectRepository.LoadObject(ori, loadImages);
             return object;
         }
 

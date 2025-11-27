@@ -32,12 +32,9 @@ STR_0027    :Radiobiler
 STR_0028    :Svingende Skib
 STR_0029    :Svingende Inverteret Skib
 STR_0030    :Madbod
-STR_0031    :Ukendt Bod (1D)
 STR_0032    :Drikkebod
-STR_0033    :Ukendt Bod (1F)
 STR_0034    :Butik
 STR_0035    :Karrusel
-STR_0036    :Ukendt Bod (22)
 STR_0037    :Informations Kiosk
 STR_0038    :Toiletter
 STR_0039    :Pariserhjul
@@ -83,16 +80,10 @@ STR_0078    :Inverteret Hårnåls Rutschebane
 STR_0079    :Flyvende Tæppe
 STR_0080    :Ubåds Forlystelse
 STR_0081    :River Rafts
-STR_0082    :Ukendt Forlystelse (50)
 STR_0083    :Enterprise
-STR_0084    :Ukendt Forlystelse (52)
-STR_0085    :Ukendt Forlystelse (53)
-STR_0086    :Ukendt Forlystelse (54)
-STR_0087    :Ukendt Forlystelse (55)
 STR_0088    :Inverteret Impuls Rutschebane
 STR_0089    :Mini Rutschebane
 STR_0090    :Mine Forlystelse
-STR_0091    :Ukendt Forlystelse (59)
 STR_0092    :LIM Accelereret Rutschebane
 STR_0093    :Hybrid Rutschebane
 STR_0094    :Enkelt skinde rutchebane

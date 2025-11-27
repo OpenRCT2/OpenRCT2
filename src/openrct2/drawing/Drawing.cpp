@@ -1139,8 +1139,8 @@ void DebugDPI(RenderTarget& rt)
     GfxDrawLine(rt, { topLeft, topLeft + ScreenCoordsXY{ 4, 0 } }, PaletteIndex::pi136);
 
     const auto str = std::to_string(rt.x);
-    DrawText(rt, ScreenCoordsXY{ rt.x, rt.y }, { COLOUR_WHITE, FontStyle::Tiny }, str.c_str());
+    DrawText(rt, ScreenCoordsXY{ rt.x, rt.y }, { COLOUR_WHITE, FontStyle::tiny }, str.c_str());
 
     const auto str2 = std::to_string(rt.y);
-    DrawText(rt, ScreenCoordsXY{ rt.x, rt.y + 6 }, { COLOUR_WHITE, FontStyle::Tiny }, str2.c_str());
+    DrawText(rt, ScreenCoordsXY{ rt.x, rt.y + 6 }, { COLOUR_WHITE, FontStyle::tiny }, str2.c_str());
 }

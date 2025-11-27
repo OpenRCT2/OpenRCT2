@@ -184,7 +184,7 @@ static void PaintWallScrollingText(
         OpenRCT2::FormatStringLegacy(signString, sizeof(signString), STR_SCROLLING_SIGN_TEXT, ft.Data());
     }
 
-    auto stringWidth = GfxGetStringWidth(signString, FontStyle::Tiny);
+    auto stringWidth = GfxGetStringWidth(signString, FontStyle::tiny);
     auto scroll = stringWidth > 0 ? (getGameState().currentTicks / 2) % stringWidth : 0;
     auto imageId = ScrollingTextSetup(session, STR_SCROLLING_SIGN_TEXT, ft, scroll, scrollingMode, textPaletteIndex);
     PaintAddImageAsChild(session, imageId, { 0, 0, height + 8 }, { boundsOffset, { 1, 1, 13 } });

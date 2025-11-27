@@ -108,7 +108,7 @@ void MoneyEffect::SetValue(money64 value)
         auto [stringId, newValue] = GetStringId();
         char buffer[128];
         OpenRCT2::FormatStringLegacy(buffer, 128, stringId, &newValue);
-        offsetX = -(GfxGetStringWidth(buffer, FontStyle::Medium) / 2);
+        offsetX = -(GfxGetStringWidth(buffer, FontStyle::medium) / 2);
     }
     OffsetX = offsetX;
     Wiggle = 0;

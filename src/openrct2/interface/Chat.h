@@ -14,6 +14,11 @@
 
 #include <string_view>
 
+namespace OpenRCT2
+{
+    struct ColourWithFlags;
+}
+
 constexpr int8_t kChatHistorySize = 10;
 constexpr int16_t kChatInputSize = 1024;
 constexpr uint8_t kChatMaxMessageLength = 200;
@@ -38,7 +43,7 @@ void ChatToggle();
 
 void ChatInit();
 void ChatUpdate();
-void ChatDraw(RenderTarget& rt, ColourWithFlags chatBackgroundColour);
+void ChatDraw(RenderTarget& rt, OpenRCT2::ColourWithFlags chatBackgroundColour);
 
 void ChatAddHistory(std::string_view s);
 void ChatInput(ChatInput input);

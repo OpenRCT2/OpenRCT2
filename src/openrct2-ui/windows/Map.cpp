@@ -449,7 +449,6 @@ namespace OpenRCT2::Ui::Windows
         {
             int32_t direction;
             TileElement* tileElement;
-            MapInvalidateSelectionRect();
             gMapSelectFlags.unset(MapSelectFlag::enable, MapSelectFlag::enableArrow);
             auto mapCoords = FootpathBridgeGetInfoFromPos(screenCoords, &direction, &tileElement);
             if (mapCoords.IsNull())
@@ -470,7 +469,6 @@ namespace OpenRCT2::Ui::Windows
             gMapSelectPositionB = mapCoords;
             gMapSelectArrowPosition = CoordsXYZ{ mapCoords, mapZ };
             gMapSelectArrowDirection = DirectionReverse(direction);
-            MapInvalidateSelectionRect();
         }
 
         void SetPeepSpawnToolDown(const ScreenCoordsXY& screenCoords)
@@ -533,7 +531,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Adjust for hidden scrollbars if needed
             auto& mapArea = widgets[WIDX_MAP];
-            if (size.width >= mapArea.width())
+            if (size.width >= mapArea.width() - 1)
                 size.width -= kScrollBarWidth;
             if (size.height >= mapArea.height())
                 size.height -= kScrollBarWidth;
@@ -738,7 +736,7 @@ namespace OpenRCT2::Ui::Windows
 
             // calculate width and height of minimap
             auto& widget = widgets[WIDX_MAP];
-            auto mapWidth = widget.width() - kScrollBarWidth - 1;
+            auto mapWidth = widget.width() - 1 - kScrollBarWidth - 1;
             auto mapHeight = widget.height() - kScrollBarWidth - 1;
 
             centreX = std::max(centreX - (mapWidth >> 1), 0);
@@ -1233,7 +1231,7 @@ namespace OpenRCT2::Ui::Windows
             for (uint32_t i = 0; i < 4; i++)
             {
                 const auto* labelStr = LanguageGetString(MapLabels[i]);
-                _firstColumnWidth = std::max(textOffset + GfxGetStringWidth(labelStr, FontStyle::Medium), _firstColumnWidth);
+                _firstColumnWidth = std::max(textOffset + GfxGetStringWidth(labelStr, FontStyle::medium), _firstColumnWidth);
             }
 
             textOffset += _firstColumnWidth + 4;
@@ -1242,7 +1240,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 const auto* labelStr = LanguageGetString(MapLabels[i]);
                 minWidth = std::max(
-                    static_cast<int16_t>(textOffset + GfxGetStringWidth(labelStr, FontStyle::Medium)), minWidth);
+                    static_cast<int16_t>(textOffset + GfxGetStringWidth(labelStr, FontStyle::medium)), minWidth);
             }
             width = std::max(minWidth, width);
             _recalculateScrollbars = true;

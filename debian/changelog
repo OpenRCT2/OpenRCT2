@@ -1,3 +1,65 @@
+openrct2 (0.4.29-develop-1) unstable; urgency=medium
+
+* Feature: [#25459] Wall line dragging tool.
+* Improved: [#25028] Stalls now support colour presets, just like regular rides.
+* Improved: [#25426] Building the track designs index is now quicker.
+* Improved: [#25490] The ‘New Ride’ window can now be resized.
+* Fix: [#6228] The saved queue line path connections are not preserved when placing track designs (original bug).
+* Fix: [#14365] Track designs with scenery below the lowest track piece do not preview correctly.
+* Fix: [#25451] Dropdown item tooltips stay open if the mouse is moved over an empty space.
+* Fix: [#25454] Opening the land tool while building a path bridge or tunnel closes the Footpaths window.
+* Fix: [#25461] Path connections in raised track designs are sometimes broken when placed.
+* Fix: [#25467] Paths are not connected together correctly in track design previews.
+* Fix: [#25476] When both RCT2 and RCT1 are present, autodetection fails.
+* Fix: [#25480] The mini track design preview and price are misaligned in Enlarged UI mode.
+* Fix: [#25488] Crash in headless mode.
+* Fix: [#25494] The Go-Karts steep to flat track does not draw correctly in the flat side tunnel.
+* Fix: [#25518] The virtual floor does not draw correctly if expanded on the positive x and y axes.
+* Fix: [#25519] Crackling audio when sampling frequencies do not match.
+* Fix: [objects#401] Round tunnels on down slopes glitch.
+* Fix: [objects#404] Wooden Wild Mine cars incorrectly allow setting a third remap colour.
+* Fix: [objects#408] Australian fountain sets have confusing naming.
+* Fix: [objects#409] LIM Launched Coaster trains incorrectly have a 10% intensity modifier set (original bug).
+* Fix: [objects#410] Large scenery from the Wacky Worlds Africa theming have incorrect previews when using specific versions of the RCT2 base game.
+* Fix: [objects#415] Penguin bobsleigh trains show incorrect sprites on the 12° down slope (original bug).
+
+openrct2 (0.4.28-develop-1) unstable; urgency=medium
+
+ * Feature: [#25286] Footpath area dragging tool.
+ * Feature: [#25379] Add an option to the command line screenshot function to draw debug segment heights.
+ * Improved: [#21375] The `load_object` console command now allows loading JSON objects.
+ * Improved: [#25297] Paths on the ground in SV4/SC4 no longer block supports of the paths above.
+ * Improved: [#25349] ‘Recent Messages’ window can now be fully themed.
+ * Improved: [#25433] Colour dropdown now uses bigger images in Enlarged UI mode.
+ * Change: [#25089] Peep actions and animations that cause them to stop moving no longer trigger when they are on a level crossing.
+ * Change: [#25337] Placing track designs with scenery that is obstructed no longer disables all of the scenery.
+ * Fix: [#20198] Guest inventory from RCT1 base game saves is not imported.
+ * Fix: [#20486] Multiplayer desync when placing track designs without any scenery.
+ * Fix: [#22779, #25330] Incorrect queue paths in Nevermore Park and Six Flags Holland scenarios (bug in the original scenarios).
+ * Fix: [#24975] The Corkscrew and LIM Launched (original bug) roller coaster quarter loop tunnels are too high.
+ * Fix: [#25139] Steam locomotive and tram claxons can sound louder than normal when approaching crossings that span multiple tiles.
+ * Fix: [#25190] Inserting a block brake while a coaster is simulating will cause the simulation to behave strangely.
+ * Fix: [#25206] System file picker does not show up on the Steam Deck.
+ * Fix: [#25272] Text colour dropdown in the Banner window is too narrow, resulting in truncated labels.
+ * Fix: [#25299] The Mine Train Coaster left large helix draws incorrect sprites at certain angles (original bug).
+ * Fix: [#25328] Spiral Slide in Blackpool Pleasure Beach has its entrance and exit the wrong way round (bug in the original scenario).
+ * Fix: [#25342] The Go-Karts medium right gentle sloped turn does not have a tunnel at the end.
+ * Fix: [#25349] Items in Recent Messages are too narrow if there is no scrollbar visible.
+ * Fix: [#25350] The scrolling intro background switches colour halfway through (original bug).
+ * Fix: [#25350] When skipping the scrolling intro, the screen does not get cleared properly.
+ * Fix: [#25350] Scrolling intro cannot be skipped using a mouse click.
+ * Fix: [#25358] The Stand Up Roller Coaster left corkscrew does not block supports correctly.
+ * Fix: [#25363] The Mine Train Coaster flat-to-steep track pieces do not block all metal supports.
+ * Fix: [#25369] The Go-Karts medium turns and small flat and sloped turns do not block metal supports correctly.
+ * Fix: [#25370] The Hybrid Coaster diagonal brakes and block brakes do not block metal supports consistently.
+ * Fix: [#25371] The Wooden Roller Coaster small banked turns block too many metal supports.
+ * Fix: [#25378] The land tool sometimes allows land to be raised through a maze.
+ * Fix: [#25380] The Lay-down Roller Coaster left corkscrew supports are incorrect at one angle (original bug).
+ * Fix: [#25388] The Shortcut Keys window uses the wrong colours for separators, scrollbars and buttons.
+ * Fix: [#25401] Mazes can be built 2 units higher than their support limits.
+ * Fix: [#25404] Guests that have been removed with the remove all guests cheat will still be visible if they were sliding down the Spiral Slide.
+ * Fix: [#25410] Guest flags (e.g. tracking) not imported from RCT1.
+
 openrct2 (0.4.27-develop-1) unstable; urgency=medium
 
  * Feature: [#25218] `sprite exportobject` command, which allows extracting images from an object.

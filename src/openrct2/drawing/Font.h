@@ -18,13 +18,13 @@ constexpr uint16_t kSpriteFontGlyphCount = 224;
 
 enum class FontStyle : uint8_t
 {
-    Small = 0,
-    Medium = 1,
-    Tiny = 2,
+    small = 0,
+    medium = 1,
+    tiny = 2,
 };
 
 constexpr uint8_t FontStyleCount = 3;
-constexpr std::array<FontStyle, FontStyleCount> FontStyles = { FontStyle::Small, FontStyle::Medium, FontStyle::Tiny };
+constexpr std::array<FontStyle, FontStyleCount> FontStyles = { FontStyle::small, FontStyle::medium, FontStyle::tiny };
 
 #ifndef DISABLE_TTF
 

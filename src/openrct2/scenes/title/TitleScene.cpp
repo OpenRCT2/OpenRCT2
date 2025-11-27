@@ -141,7 +141,7 @@ void TitleScene::Tick()
     ScreenshotCheck();
     TitleHandleKeyboardInput();
 
-    if (GameIsNotPaused())
+    if (!gOpenRCT2Headless && GameIsNotPaused())
     {
         TryLoadSequence();
         _sequencePlayer->Update();
@@ -205,6 +205,10 @@ void TitleScene::CreateWindows()
 
 void TitleScene::TitleInitialise()
 {
+    if (gOpenRCT2Headless)
+    {
+        return;
+    }
     if (_sequencePlayer == nullptr)
     {
         _sequencePlayer = GetContext().GetUiContext().GetTitleSequencePlayer();
@@ -285,7 +289,7 @@ void TitleScene::TitleInitialise()
 
 bool TitleScene::TryLoadSequence(bool loadPreview)
 {
-    if (_loadedTitleSequenceId != _currentSequence || loadPreview)
+    if (!gOpenRCT2Headless && (_loadedTitleSequenceId != _currentSequence || loadPreview))
     {
         if (_sequencePlayer == nullptr)
         {

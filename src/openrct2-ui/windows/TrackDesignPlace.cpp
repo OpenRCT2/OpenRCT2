@@ -45,9 +45,7 @@ namespace OpenRCT2::Ui::Windows
 {
     static constexpr StringId kWindowTitle = STR_STRING;
     static constexpr ScreenSize kWindowSize = { 200, 124 };
-    constexpr int16_t kTrackMiniPreviewWidth = 168;
-    constexpr int16_t kTrackMiniPreviewHeight = 78;
-    constexpr uint16_t kTrackMiniPreviewSize = kTrackMiniPreviewWidth * kTrackMiniPreviewHeight;
+    static constexpr ScreenSize kTrackMiniPreviewSize = { 168, 78 };
 
     static constexpr uint8_t kPaletteIndexColourEntrance = PaletteIndex::pi20; // White
     static constexpr uint8_t kPaletteIndexColourExit = PaletteIndex::pi10;     // Black
@@ -62,7 +60,8 @@ namespace OpenRCT2::Ui::Windows
         WIDX_ROTATE,
         WIDX_MIRROR,
         WIDX_SELECT_DIFFERENT_DESIGN,
-        WIDX_PRICE
+        WIDX_PRICE,
+        WIDX_PREVIEW,
     };
 
     VALIDATE_GLOBAL_WIDX(WC_TRACK_DESIGN_PLACE, WIDX_ROTATE);
@@ -70,12 +69,15 @@ namespace OpenRCT2::Ui::Windows
     // clang-format off
     static constexpr auto _trackPlaceWidgets = makeWidgets(
         makeWindowShim(kWindowTitle, kWindowSize),
-        makeWidget({173,  83}, { 24, 24}, WidgetType::flatBtn, WindowColour::primary, ImageId(SPR_ROTATE_ARROW),     STR_ROTATE_90_TIP                         ),
-        makeWidget({173,  59}, { 24, 24}, WidgetType::flatBtn, WindowColour::primary, ImageId(SPR_MIRROR_ARROW),     STR_MIRROR_IMAGE_TIP                      ),
-        makeWidget({  4, 109}, {192, 12}, WidgetType::button,  WindowColour::primary, STR_SELECT_A_DIFFERENT_DESIGN, STR_GO_BACK_TO_DESIGN_SELECTION_WINDOW_TIP),
-        makeWidget({  0,   0}, {  1,  1}, WidgetType::empty,   WindowColour::primary)
+        makeWidget({173,  83}, { 24, 24},             WidgetType::flatBtn, WindowColour::primary, ImageId(SPR_ROTATE_ARROW),     STR_ROTATE_90_TIP                         ),
+        makeWidget({173,  59}, { 24, 24},             WidgetType::flatBtn, WindowColour::primary, ImageId(SPR_MIRROR_ARROW),     STR_MIRROR_IMAGE_TIP                      ),
+        makeWidget({  4, 109}, {192, 12},             WidgetType::button,  WindowColour::primary, STR_SELECT_A_DIFFERENT_DESIGN, STR_GO_BACK_TO_DESIGN_SELECTION_WINDOW_TIP),
+        makeWidget({ 88,  93}, {  1,  1},             WidgetType::empty,   WindowColour::primary),
+        makeWidget({  4,  17}, kTrackMiniPreviewSize, WidgetType::empty,   WindowColour::primary)
     );
     // clang-format on
+
+    static bool _placingTrackDesign = false;
 
     class TrackDesignPlaceWindow final : public Window
     {
@@ -109,7 +111,7 @@ namespace OpenRCT2::Ui::Windows
             gInputFlags.set(InputFlag::unk6);
             WindowPushOthersRight(*this);
             ShowGridlines();
-            _miniPreview.resize(kTrackMiniPreviewSize);
+            _miniPreview.resize(kTrackMiniPreviewSize.width * kTrackMiniPreviewSize.height);
             _placementCost = kMoney64Undefined;
             _placementLoc.SetNull();
             _currentTrackPieceDirection = (2 - GetCurrentRotation()) & 3;
@@ -119,7 +121,6 @@ namespace OpenRCT2::Ui::Windows
         {
             ClearProvisional();
             ViewportSetVisibility(ViewportVisibility::standard);
-            MapInvalidateMapSelectionTiles();
             gMapSelectFlags.unset(MapSelectFlag::enableConstruct);
             gMapSelectFlags.unset(MapSelectFlag::enableArrow);
             HideGridlines();
@@ -170,10 +171,14 @@ namespace OpenRCT2::Ui::Windows
         {
             TrackDesignState tds{};
 
-            MapInvalidateMapSelectionTiles();
             gMapSelectFlags.unset(MapSelectFlag::enable);
             gMapSelectFlags.unset(MapSelectFlag::enableConstruct);
             gMapSelectFlags.unset(MapSelectFlag::enableArrow);
+
+            if (_placingTrackDesign)
+            {
+                return;
+            }
 
             // Take shift modifier into account
             ScreenCoordsXY targetScreenCoords = screenCoords;
@@ -212,25 +217,26 @@ namespace OpenRCT2::Ui::Windows
             if (GameIsNotPaused() || getGameState().cheats.buildInPauseMode)
             {
                 ClearProvisional();
-                auto res = FindValidTrackDesignPlaceHeight(trackLoc, GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
+                CoordsXYZD ghostTrackLoc = trackLoc;
+                auto res = FindValidTrackDesignPlaceHeight(ghostTrackLoc, GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
 
                 if (res.Error == GameActions::Status::Ok)
                 {
                     // Valid location found. Place the ghost at the location.
-                    auto tdAction = GameActions::TrackDesignAction(trackLoc, *_trackDesign, !gTrackDesignSceneryToggle);
+                    auto tdAction = GameActions::TrackDesignAction(ghostTrackLoc, *_trackDesign, !gTrackDesignSceneryToggle);
                     tdAction.SetFlags(GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
                     tdAction.SetCallback([&](const GameActions::GameAction*, const GameActions::Result* result) {
                         if (result->Error == GameActions::Status::Ok)
                         {
                             _placementGhostRideId = result->GetData<RideId>();
-                            _placementGhostLoc = trackLoc;
+                            _placementGhostLoc = ghostTrackLoc;
                             _hasPlacementGhost = true;
                         }
                     });
                     res = GameActions::Execute(&tdAction, getGameState());
                     cost = res.Error == GameActions::Status::Ok ? res.Cost : kMoney64Undefined;
 
-                    VirtualFloorSetHeight(trackLoc.z);
+                    VirtualFloorSetHeight(ghostTrackLoc.z);
                 }
             }
 
@@ -248,7 +254,6 @@ namespace OpenRCT2::Ui::Windows
         void onToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
             ClearProvisional();
-            MapInvalidateMapSelectionTiles();
             gMapSelectFlags.unset(MapSelectFlag::enable);
             gMapSelectFlags.unset(MapSelectFlag::enableConstruct);
             gMapSelectFlags.unset(MapSelectFlag::enableArrow);
@@ -287,12 +292,15 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
+            _placingTrackDesign = true;
+
             auto tdAction = GameActions::TrackDesignAction(
                 { trackLoc, _currentTrackPieceDirection }, *_trackDesign, !gTrackDesignSceneryToggle);
-            tdAction.SetCallback([&](const GameActions::GameAction*, const GameActions::Result* result) {
+            tdAction.SetCallback([&, trackLoc](const GameActions::GameAction*, const GameActions::Result* result) {
                 if (result->Error != GameActions::Status::Ok)
                 {
                     Audio::Play3D(Audio::SoundId::error, result->Position);
+                    _placingTrackDesign = false;
                     return;
                 }
 
@@ -321,6 +329,7 @@ namespace OpenRCT2::Ui::Windows
                         wnd->onMouseUp(WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE);
                     }
                 }
+                _placingTrackDesign = false;
             });
             GameActions::Execute(&tdAction, getGameState());
         }
@@ -348,12 +357,14 @@ namespace OpenRCT2::Ui::Windows
 
             // Draw mini tile preview
             RenderTarget clippedRT;
-            if (ClipDrawPixelInfo(clippedRT, rt, this->windowPos + ScreenCoordsXY{ 4, 18 }, 168, 78))
+            const auto& previewWidget = widgets[WIDX_PREVIEW];
+            const auto previewCoords = windowPos + ScreenCoordsXY{ previewWidget.left, previewWidget.top };
+            if (ClipDrawPixelInfo(clippedRT, rt, previewCoords, previewWidget.width(), previewWidget.height()))
             {
                 G1Element g1temp = {};
                 g1temp.offset = _miniPreview.data();
-                g1temp.width = kTrackMiniPreviewWidth;
-                g1temp.height = kTrackMiniPreviewHeight;
+                g1temp.width = kTrackMiniPreviewSize.width;
+                g1temp.height = kTrackMiniPreviewSize.height;
                 GfxSetG1Element(SPR_TEMP, &g1temp);
                 DrawingEngineInvalidateImage(SPR_TEMP);
                 GfxDrawSprite(clippedRT, ImageId(SPR_TEMP, this->colours[0].colour), { 0, 0 });
@@ -364,7 +375,9 @@ namespace OpenRCT2::Ui::Windows
             {
                 ft = Formatter();
                 ft.Add<money64>(_placementCost);
-                DrawTextBasic(rt, this->windowPos + ScreenCoordsXY{ 88, 94 }, STR_COST_LABEL, ft, { TextAlignment::CENTRE });
+                const auto& priceWidget = widgets[WIDX_PRICE];
+                const auto priceCoords = windowPos + ScreenCoordsXY{ priceWidget.left, priceWidget.top };
+                DrawTextBasic(rt, priceCoords, STR_COST_LABEL, ft, { TextAlignment::centre });
             }
         }
 
@@ -723,7 +736,7 @@ namespace OpenRCT2::Ui::Windows
 
         uint8_t* DrawMiniPreviewGetPixelPtr(const ScreenCoordsXY& pixel)
         {
-            return &_miniPreview[pixel.y * kTrackMiniPreviewWidth + pixel.x];
+            return &_miniPreview[pixel.y * kTrackMiniPreviewSize.width + pixel.x];
         }
 
         GameActions::Result FindValidTrackDesignPlaceHeight(CoordsXYZ& loc, uint32_t newFlags)

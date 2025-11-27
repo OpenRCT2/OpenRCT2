@@ -61,10 +61,15 @@ extern CoordsXY gMapSelectPositionB;
 extern CoordsXYZ gMapSelectArrowPosition;
 extern uint8_t gMapSelectArrowDirection;
 
-extern std::vector<CoordsXY> gMapSelectionTiles;
-
-void MapInvalidateMapSelectionTiles();
-void MapInvalidateSelectionRect();
 MapRange getMapSelectRange();
 void setMapSelectRange(const MapRange& range);
 void setMapSelectRange(const CoordsXY coords);
+
+namespace OpenRCT2::MapSelection
+{
+    void clearSelectedTiles();
+    void addSelectedTile(const CoordsXY& coords);
+    const std::vector<CoordsXY>& getSelectedTiles();
+
+    void invalidate();
+} // namespace OpenRCT2::MapSelection

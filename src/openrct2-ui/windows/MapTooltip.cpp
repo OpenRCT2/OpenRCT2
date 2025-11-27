@@ -56,7 +56,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             auto stringCoords = windowPos + ScreenCoordsXY{ width / 2, height / 2 };
-            DrawTextWrapped(rt, stringCoords, width, STR_MAP_TOOLTIP_STRINGID, _mapTooltipArgs, { TextAlignment::CENTRE });
+            DrawTextWrapped(rt, stringCoords, width, STR_MAP_TOOLTIP_STRINGID, _mapTooltipArgs, { TextAlignment::centre });
         }
     };
 

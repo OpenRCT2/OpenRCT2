@@ -254,7 +254,6 @@ namespace OpenRCT2::Ui::Windows
         {
             FootpathUpdateProvisional();
             ViewportSetVisibility(ViewportVisibility::standard);
-            MapInvalidateMapSelectionTiles();
             gMapSelectFlags.unset(MapSelectFlag::enableConstruct);
 
             auto* windowMgr = Ui::GetWindowManager();
@@ -282,6 +281,11 @@ namespace OpenRCT2::Ui::Windows
                         close();
                     break;
                 case PathConstructionMode::dragArea:
+                    // If another window has enabled a tool, close ours.
+                    // If the user merely pressed Escape, we cancel the tool but don’t close the window.
+                    if (gInputFlags.has(InputFlag::toolActive)
+                        && gCurrentToolWidget.windowClassification != WindowClass::footpath)
+                        close();
                     break;
                 case PathConstructionMode::bridgeOrTunnelPick:
                     if (!isToolActive(WindowClass::footpath, WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL))
@@ -290,10 +294,6 @@ namespace OpenRCT2::Ui::Windows
                 case PathConstructionMode::bridgeOrTunnel:
                     break;
             }
-
-            // If another window has enabled a tool, close ours.
-            if (gInputFlags.has(InputFlag::toolActive) && gCurrentToolWidget.windowClassification != WindowClass::footpath)
-                close();
         }
 
         void onMouseDown(WidgetIndex widgetIndex) override
@@ -344,7 +344,6 @@ namespace OpenRCT2::Ui::Windows
             _windowFootpathCost = kMoney64Undefined;
             ToolCancel();
             FootpathUpdateProvisional();
-            MapInvalidateMapSelectionTiles();
             gMapSelectFlags.unset(MapSelectFlag::enableConstruct);
             _footpathConstructionMode = PathConstructionMode::dragArea;
             ToolSet(*this, WIDX_CONSTRUCT_DRAG_AREA, Tool::pathDown);
@@ -369,7 +368,6 @@ namespace OpenRCT2::Ui::Windows
                     _windowFootpathCost = kMoney64Undefined;
                     ToolCancel();
                     FootpathUpdateProvisional();
-                    MapInvalidateMapSelectionTiles();
                     gMapSelectFlags.unset(MapSelectFlag::enableConstruct);
                     _footpathConstructionMode = PathConstructionMode::onLand;
                     ToolSet(*this, WIDX_CONSTRUCT_ON_LAND, Tool::pathDown);
@@ -394,7 +392,6 @@ namespace OpenRCT2::Ui::Windows
                     _windowFootpathCost = kMoney64Undefined;
                     ToolCancel();
                     FootpathUpdateProvisional();
-                    MapInvalidateMapSelectionTiles();
                     gMapSelectFlags.unset(MapSelectFlag::enableConstruct);
                     _footpathConstructionMode = PathConstructionMode::bridgeOrTunnelPick;
                     ToolSet(*this, WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL, Tool::crosshair);
@@ -593,7 +590,7 @@ namespace OpenRCT2::Ui::Windows
                 // Draw build this... label
                 screenCoords = this->windowPos
                     + ScreenCoordsXY{ widgets[WIDX_CONSTRUCT].midX(), widgets[WIDX_CONSTRUCT].bottom - 23 };
-                DrawTextBasic(rt, screenCoords, STR_BUILD_THIS, {}, { TextAlignment::CENTRE });
+                DrawTextBasic(rt, screenCoords, STR_BUILD_THIS, {}, { TextAlignment::centre });
             }
 
             // Draw cost
@@ -605,7 +602,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     auto ft = Formatter();
                     ft.Add<money64>(_windowFootpathCost);
-                    DrawTextBasic(rt, screenCoords, STR_COST_LABEL, ft, { TextAlignment::CENTRE });
+                    DrawTextBasic(rt, screenCoords, STR_COST_LABEL, ft, { TextAlignment::centre });
                 }
             }
         }
@@ -669,7 +666,6 @@ namespace OpenRCT2::Ui::Windows
                 {
                     gMapSelectFlags.unset(MapSelectFlag::enableArrow);
                 }
-                MapInvalidateTileFull(footpathLoc);
             }
         }
 
@@ -1039,7 +1035,6 @@ namespace OpenRCT2::Ui::Windows
          */
         void WindowFootpathSetProvisionalPathAtPoint(const ScreenCoordsXY& screenCoords)
         {
-            MapInvalidateSelectionRect();
             gMapSelectFlags.unset(MapSelectFlag::enableArrow);
 
             // Get current map pos and handle key modifier state
@@ -1106,7 +1101,6 @@ namespace OpenRCT2::Ui::Windows
 
         void WindowFootpathSetProvisionalPathDragArea(MapRange range, int32_t baseZ)
         {
-            MapInvalidateSelectionRect();
             gMapSelectFlags.unset(MapSelectFlag::enableArrow);
 
             // Check for change
@@ -1145,7 +1139,6 @@ namespace OpenRCT2::Ui::Windows
             int32_t direction;
             TileElement* tileElement;
 
-            MapInvalidateSelectionRect();
             gMapSelectFlags.unset(MapSelectFlag::enable, MapSelectFlag::enableArrow);
 
             auto mapCoords = FootpathBridgeGetInfoFromPos(screenCoords, &direction, &tileElement);
@@ -1173,8 +1166,6 @@ namespace OpenRCT2::Ui::Windows
 
             gMapSelectArrowPosition = CoordsXYZ{ mapCoords, z };
             gMapSelectArrowDirection = direction;
-
-            MapInvalidateSelectionRect();
         }
 
         FootpathPlacementResult WindowFootpathGetPlacementFromScreenCoords(const ScreenCoordsXY& screenCoords)
@@ -1601,15 +1592,13 @@ namespace OpenRCT2::Ui::Windows
         {
             if (_footpathConstructionMode == PathConstructionMode::bridgeOrTunnel)
             {
-                MapInvalidateMapSelectionTiles();
                 gMapSelectFlags.set(MapSelectFlag::enableConstruct, MapSelectFlag::green);
 
                 int32_t direction = _footpathConstructDirection;
-                gMapSelectionTiles.clear();
-                gMapSelectionTiles.push_back(
+                MapSelection::clearSelectedTiles();
+                MapSelection::addSelectedTile(
                     { _footpathConstructFromPosition.x + CoordsDirectionDelta[direction].x,
                       _footpathConstructFromPosition.y + CoordsDirectionDelta[direction].y });
-                MapInvalidateMapSelectionTiles();
             }
 
             uint64_t newPressedWidgets = pressedWidgets
@@ -2035,7 +2024,6 @@ namespace OpenRCT2::Ui::Windows
             _provisionalFootpath.flags.unset(ProvisionalPathFlag::showArrow);
 
             gMapSelectFlags.unset(MapSelectFlag::enableArrow);
-            MapInvalidateTileFull(_footpathConstructFromPosition);
         }
         FootpathRemoveProvisional();
     }

@@ -696,13 +696,13 @@ void CustomListView::PaintHeading(
     {
         auto ft = Formatter();
         ft.Add<StringId>(STR_UP);
-        DrawTextBasic(rt, pos + ScreenCoordsXY{ size.width - 1, 0 }, STR_BLACK_STRING, ft, { TextAlignment::RIGHT });
+        DrawTextBasic(rt, pos + ScreenCoordsXY{ size.width - 1, 0 }, STR_BLACK_STRING, ft, { TextAlignment::right });
     }
     else if (sortOrder == ColumnSortOrder::Descending)
     {
         auto ft = Formatter();
         ft.Add<StringId>(STR_DOWN);
-        DrawTextBasic(rt, pos + ScreenCoordsXY{ size.width - 1, 0 }, STR_BLACK_STRING, ft, { TextAlignment::RIGHT });
+        DrawTextBasic(rt, pos + ScreenCoordsXY{ size.width - 1, 0 }, STR_BLACK_STRING, ft, { TextAlignment::right });
     }
 }
 
@@ -724,12 +724,12 @@ void CustomListView::PaintSeparator(RenderTarget& rt, const ScreenCoordsXY& pos,
         // Draw string
         Formatter ft;
         ft.Add<const char*>(text);
-        DrawTextBasic(rt, { centreX, pos.y }, STR_STRING, ft, { baseColour, TextAlignment::CENTRE });
+        DrawTextBasic(rt, { centreX, pos.y }, STR_STRING, ft, { baseColour, TextAlignment::centre });
 
         // Get string dimensions
         utf8 stringBuffer[512]{};
         FormatStringLegacy(stringBuffer, sizeof(stringBuffer), STR_STRING, ft.Data());
-        int32_t categoryStringHalfWidth = (GfxGetStringWidth(stringBuffer, FontStyle::Medium) / 2) + 4;
+        int32_t categoryStringHalfWidth = (GfxGetStringWidth(stringBuffer, FontStyle::medium) / 2) + 4;
         int32_t strLeft = centreX - categoryStringHalfWidth;
         int32_t strRight = centreX + categoryStringHalfWidth;
 

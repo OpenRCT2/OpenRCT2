@@ -220,7 +220,7 @@ namespace OpenRCT2::RCT2
             if (RCT2RideTypeNeedsConversion(td->trackAndVehicle.rtdIndex))
             {
                 std::scoped_lock<std::mutex> lock(_objectLookupMutex);
-                auto rawObject = ObjectRepositoryLoadObject(&td->trackAndVehicle.vehicleObject.Entry);
+                auto rawObject = ObjectRepositoryLoadObject(&td->trackAndVehicle.vehicleObject.Entry, false);
                 if (rawObject != nullptr)
                 {
                     const auto& rideEntry = static_cast<RideObject*>(rawObject.get())->GetEntry();

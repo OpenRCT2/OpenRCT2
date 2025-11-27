@@ -107,7 +107,7 @@ void VirtualFloorInvalidate(const bool alwaysInvalidate)
 
     if (gMapSelectFlags.has(MapSelectFlag::enableConstruct))
     {
-        for (const auto& tile : gMapSelectionTiles)
+        for (const auto& tile : MapSelection::getSelectedTiles())
         {
             min_position.x = std::min(min_position.x, tile.x);
             min_position.y = std::min(min_position.y, tile.y);
@@ -138,7 +138,8 @@ void VirtualFloorInvalidate(const bool alwaysInvalidate)
     }
 
     // Do not invalidate new region if floor hasn't moved.
-    if (min_position == _virtualFloorLastMinPos && _virtualFloorLastMinPos.z == _virtualFloorHeight)
+    if (min_position == _virtualFloorLastMinPos && max_position == _virtualFloorLastMaxPos
+        && _virtualFloorLastMinPos.z == _virtualFloorHeight)
     {
         return;
     }
@@ -176,7 +177,7 @@ bool VirtualFloorTileIsFloor(const CoordsXY& loc)
     if (gMapSelectFlags.has(MapSelectFlag::enableConstruct))
     {
         // Check if we are anywhere near the selection tiles (larger scenery / rides)
-        for (const auto& tile : gMapSelectionTiles)
+        for (const auto& tile : MapSelection::getSelectedTiles())
         {
             if (loc.x >= tile.x - kVirtualFloorBaseSize && loc.y >= tile.y - kVirtualFloorBaseSize
                 && loc.x <= tile.x + kVirtualFloorBaseSize && loc.y <= tile.y + kVirtualFloorBaseSize)
@@ -212,7 +213,7 @@ static void VirtualFloorGetTileProperties(
     // See if we are on top of the selection tiles
     if (gMapSelectFlags.has(MapSelectFlag::enableConstruct))
     {
-        for (const auto& tile : gMapSelectionTiles)
+        for (const auto& tile : MapSelection::getSelectedTiles())
         {
             if (tile == loc)
             {

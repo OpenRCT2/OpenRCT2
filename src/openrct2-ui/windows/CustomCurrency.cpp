@@ -92,7 +92,7 @@ namespace OpenRCT2::Ui::Windows
 
                     WindowDropdownShowTextCustomWidth(
                         { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height() + 1, colours[1], 0,
-                        Dropdown::Flag::StayOpen, 2, widget->width() - 3);
+                        Dropdown::Flag::StayOpen, 2, widget->width() - 4);
 
                     if (CurrencyDescriptors[EnumValue(CurrencyType::custom)].affix_unicode == CurrencyAffix::prefix)
                     {

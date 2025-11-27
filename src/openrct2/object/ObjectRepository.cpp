@@ -254,9 +254,14 @@ namespace OpenRCT2
 
         std::unique_ptr<Object> LoadObject(const ObjectRepositoryItem* ori) override
         {
+            return LoadObject(ori, !gOpenRCT2NoGraphics);
+        }
+
+        std::unique_ptr<Object> LoadObject(const ObjectRepositoryItem* ori, bool loadImages) override
+        {
             Guard::ArgumentNotNull(ori, GUARD_LINE);
 
-            return ObjectFactory::CreateObjectFromFile(ori->Path, !gOpenRCT2NoGraphics);
+            return ObjectFactory::CreateObjectFromFile(ori->Path, loadImages);
         }
 
         void RegisterLoadedObject(const ObjectRepositoryItem* ori, std::unique_ptr<Object>&& object) override
@@ -662,14 +667,14 @@ namespace OpenRCT2
         }
     }
 
-    std::unique_ptr<Object> ObjectRepositoryLoadObject(const RCTObjectEntry* objectEntry)
+    std::unique_ptr<Object> ObjectRepositoryLoadObject(const RCTObjectEntry* objectEntry, bool loadImages)
     {
         std::unique_ptr<Object> object;
         auto& objRepository = GetContext()->GetObjectRepository();
         const ObjectRepositoryItem* ori = objRepository.FindObject(objectEntry);
         if (ori != nullptr)
         {
-            object = objRepository.LoadObject(ori);
+            object = objRepository.LoadObject(ori, loadImages);
             if (object != nullptr)
             {
                 object->Load();

@@ -165,14 +165,14 @@ namespace OpenRCT2::Ui::Windows
                 ft.Add<StringId>(STR_TITLE_SEQUENCE_OPENRCT2);
                 DrawTextWrapped(
                     rt, aboutOpenRCT2Coords, 87, STR_WINDOW_COLOUR_2_STRINGID, ft,
-                    { COLOUR_AQUAMARINE, TextAlignment::CENTRE });
+                    { COLOUR_AQUAMARINE, TextAlignment::centre });
             }
             {
                 // TODO: this string shouldn't be reused for this tab
                 auto ft = Formatter();
                 ft.Add<StringId>(STR_TITLE_SEQUENCE_RCT2);
                 DrawTextWrapped(
-                    rt, aboutRCT2Coords, 87, STR_WINDOW_COLOUR_2_STRINGID, ft, { COLOUR_AQUAMARINE, TextAlignment::CENTRE });
+                    rt, aboutRCT2Coords, 87, STR_WINDOW_COLOUR_2_STRINGID, ft, { COLOUR_AQUAMARINE, TextAlignment::centre });
             }
 
             int32_t newHeight = 0;
@@ -232,9 +232,9 @@ namespace OpenRCT2::Ui::Windows
 
             const auto& versionWidget = widgets[WIDX_VERSION];
             auto centreX = versionWidget.midX();
-            auto centreY = versionWidget.midY() - FontGetLineHeight(FontStyle::Medium) / 2;
+            auto centreY = versionWidget.midY() - FontGetLineHeight(FontStyle::medium) / 2;
             auto centrePos = windowPos + ScreenCoordsXY(centreX, centreY);
-            DrawTextWrapped(rt, centrePos, versionWidget.width(), STR_STRING, ft, { colours[1], TextAlignment::CENTRE });
+            DrawTextWrapped(rt, centrePos, versionWidget.width() - 1, STR_STRING, ft, { colours[1], TextAlignment::centre });
 
             // Shows the update available button
             if (OpenRCT2::GetContext()->HasNewVersionInfo())
@@ -243,7 +243,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Draw the rest of the text
-            TextPaint tp{ colours[1], TextAlignment::CENTRE };
+            TextPaint tp{ colours[1], TextAlignment::centre };
             auto textCoords = windowPos + ScreenCoordsXY((width / 2) - 1, 240);
             auto textWidth = kWindowSize.width - (kPadding * 2);
             for (auto stringId : _OpenRCT2InfoStrings)
@@ -257,7 +257,7 @@ namespace OpenRCT2::Ui::Windows
             auto& backgroundWidget = widgets[WIDX_PAGE_BACKGROUND];
             auto textCoords = windowPos + ScreenCoordsXY{ backgroundWidget.midX(), backgroundWidget.top + kPadding };
             auto textWidth = kWindowSize.width - 20;
-            TextPaint tp{ colours[1], TextAlignment::CENTRE };
+            TextPaint tp{ colours[1], TextAlignment::centre };
 
             // Draw credits
             for (auto stringId : _RCT2InfoStrings)

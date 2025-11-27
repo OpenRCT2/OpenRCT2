@@ -1098,6 +1098,6 @@ void PaintDrawMoneyStructs(RenderTarget& rt, PaintStringStruct* ps)
 
         GfxDrawStringWithYOffsets(
             rt, buffer, { COLOUR_BLACK }, ps->ScreenPos, reinterpret_cast<int8_t*>(ps->y_offsets), forceSpriteFont,
-            FontStyle::Medium);
+            FontStyle::medium);
     } while ((ps = ps->NextEntry) != nullptr);
 }

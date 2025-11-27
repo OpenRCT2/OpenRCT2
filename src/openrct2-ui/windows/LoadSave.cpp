@@ -34,6 +34,7 @@
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
+#include <openrct2/interface/ColourWithFlags.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.Date.h>
 #include <openrct2/network/Network.h>
@@ -319,7 +320,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Check how this date is represented (e.g. 2000-02-20, or 00/02/20)
             std::string date = Platform::FormatShortDate(long_time);
-            maxDateWidth = GfxGetStringWidth(date.c_str(), FontStyle::Medium) + kDateTimeGap;
+            maxDateWidth = GfxGetStringWidth(date.c_str(), FontStyle::medium) + kDateTimeGap;
 
             // Some locales do not use leading zeros for months and days, so let's try October, too.
             tm.tm_mon = 10;
@@ -328,12 +329,12 @@ namespace OpenRCT2::Ui::Windows
 
             // Again, check how this date is represented (e.g. 2000-10-20, or 00/10/20)
             date = Platform::FormatShortDate(long_time);
-            maxDateWidth = std::max(maxDateWidth, GfxGetStringWidth(date.c_str(), FontStyle::Medium) + kDateTimeGap);
+            maxDateWidth = std::max(maxDateWidth, GfxGetStringWidth(date.c_str(), FontStyle::medium) + kDateTimeGap);
 
             // Time appears to be universally represented with two digits for minutes, so 12:00 or 00:00 should be
             // representable.
             std::string time = Platform::FormatTime(long_time);
-            maxTimeWidth = GfxGetStringWidth(time.c_str(), FontStyle::Medium) + kDateTimeGap;
+            maxTimeWidth = GfxGetStringWidth(time.c_str(), FontStyle::medium) + kDateTimeGap;
         }
 
         void LoadPreview()
@@ -431,7 +432,7 @@ namespace OpenRCT2::Ui::Windows
                 ft.Add<const char*>(_preview.parkName.c_str());
                 DrawTextEllipsised(
                     rt, namePos, previewPaneSize.width - kPadding * 2, STR_WINDOW_COLOUR_2_STRINGID, ft,
-                    { TextAlignment::CENTRE });
+                    { TextAlignment::centre });
             }
 
             const bool drawFrame = image != nullptr || targetType == PreviewImageType::screenshot;
@@ -476,7 +477,7 @@ namespace OpenRCT2::Ui::Windows
 
                 DrawTextBasic(
                     rt, textPos, previewText, {},
-                    { ColourWithFlags{ COLOUR_WHITE }.withFlag(ColourFlag::withOutline, true), TextAlignment::CENTRE });
+                    { ColourWithFlags{ COLOUR_WHITE }.withFlag(ColourFlag::withOutline, true), TextAlignment::centre });
                 return;
             }
 
@@ -705,7 +706,7 @@ namespace OpenRCT2::Ui::Windows
 
                 // Get 'Save' button string width
                 auto saveLabel = LanguageGetString(STR_FILEBROWSER_SAVE_BUTTON);
-                auto saveLabelWidth = GfxGetStringWidth(saveLabel, FontStyle::Medium) + 12;
+                auto saveLabelWidth = GfxGetStringWidth(saveLabel, FontStyle::medium) + 12;
 
                 widgets[WIDX_SAVE].type = WidgetType::button;
                 widgets[WIDX_SAVE].top = height - paddingBottom - 15;
@@ -715,7 +716,7 @@ namespace OpenRCT2::Ui::Windows
 
                 // Get 'Filename:' string width
                 auto filenameLabel = LanguageGetString(STR_FILENAME_LABEL);
-                auto filenameLabelWidth = GfxGetStringWidth(filenameLabel, FontStyle::Medium);
+                auto filenameLabelWidth = GfxGetStringWidth(filenameLabel, FontStyle::medium);
 
                 widgets[WIDX_FILENAME_TEXTBOX].type = WidgetType::textBox;
                 widgets[WIDX_FILENAME_TEXTBOX].top = height - paddingBottom - 15;
@@ -740,7 +741,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 const auto& widget = widgets[WIDX_PARENT_FOLDER];
                 const auto pathWidth = widget.left - 8;
-                const auto shortPath = ShortenPath(_directory, pathWidth, FontStyle::Medium);
+                const auto shortPath = ShortenPath(_directory, pathWidth, FontStyle::medium);
 
                 // Format text
                 std::string buffer;
@@ -771,7 +772,7 @@ namespace OpenRCT2::Ui::Windows
 
                     auto cdpi = const_cast<const RenderTarget&>(rt);
                     DrawTextEllipsised(
-                        cdpi, windowPos + ScreenCoordsXY{ widget.left + 5, widget.top + 1 }, widget.width(), strId, ft,
+                        cdpi, windowPos + ScreenCoordsXY{ widget.left + 5, widget.top + 1 }, widget.width() - 1, strId, ft,
                         { COLOUR_GREY });
                 };
 
@@ -1081,7 +1082,7 @@ namespace OpenRCT2::Ui::Windows
             Rectangle::fill(
                 rt, { { rt.x, rt.y }, { rt.x + rt.width - 1, rt.y + rt.height - 1 } }, ColourMapA[colours[1].colour].mid_light);
 
-            const int32_t listWidth = widgets[WIDX_SCROLL].width();
+            const int32_t listWidth = widgets[WIDX_SCROLL].width() - 1;
             const auto sizeColumnLeft = widgets[WIDX_SORT_SIZE].left;
             const auto dateColumnLeft = widgets[WIDX_SORT_DATE].left;
             const int32_t dateAnchor = dateColumnLeft + maxDateWidth + kDateTimeGap;
@@ -1123,7 +1124,7 @@ namespace OpenRCT2::Ui::Windows
                 auto ft = Formatter();
                 ft.Add<StringId>(STR_STRING);
                 ft.Add<char*>(_listItems[i].name.c_str());
-                int32_t max_file_width = widgets[WIDX_SORT_NAME].width() - 15;
+                int32_t max_file_width = widgets[WIDX_SORT_NAME].width() - 16;
                 DrawTextEllipsised(rt, { 15, y }, max_file_width, stringId, ft);
 
                 // Print formatted modified date, if this is a file
@@ -1145,7 +1146,7 @@ namespace OpenRCT2::Ui::Windows
                     ft.Add<StringId>(STR_STRING);
                     ft.Add<char*>(_listItems[i].dateFormatted.c_str());
                     DrawTextEllipsised(
-                        rt, { dateAnchor - kDateTimeGap, y }, maxDateWidth, stringId, ft, { TextAlignment::RIGHT });
+                        rt, { dateAnchor - kDateTimeGap, y }, maxDateWidth, stringId, ft, { TextAlignment::right });
 
                     ft = Formatter();
                     ft.Add<StringId>(STR_STRING);

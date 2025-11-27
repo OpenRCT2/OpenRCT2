@@ -211,7 +211,7 @@ namespace OpenRCT2
 
         if (scroll.flags & HSCROLLBAR_VISIBLE)
         {
-            int16_t size = widget.width() - 1;
+            int16_t size = widget.width() - 2;
             if (scroll.flags & VSCROLLBAR_VISIBLE)
                 size -= 11;
             size = std::max(0, scroll.contentWidth - size);
@@ -671,7 +671,7 @@ namespace OpenRCT2
         const auto& widg = w.widgets[widgetIndex];
         auto& scroll = w.scrolls[scroll_id];
 
-        int32_t widget_width = widg.width() - 1;
+        int32_t widget_width = widg.width() - 2;
         if (scroll.flags & VSCROLLBAR_VISIBLE)
             widget_width -= kScrollBarWidth + 1;
         int32_t widget_content_width = std::max(scroll.contentWidth - widget_width, 0);
@@ -794,7 +794,7 @@ namespace OpenRCT2
             int32_t newLeft;
             newLeft = scroll.contentWidth;
             newLeft *= x;
-            x = widget.width() - 21;
+            x = widget.width() - 22;
             if (scroll.flags & VSCROLLBAR_VISIBLE)
                 x -= kScrollBarWidth + 1;
             newLeft /= x;
@@ -804,7 +804,7 @@ namespace OpenRCT2
             newLeft += x;
             if (newLeft < 0)
                 newLeft = 0;
-            x = widget.width() - 1;
+            x = widget.width() - 2;
             if (scroll.flags & VSCROLLBAR_VISIBLE)
                 x -= kScrollBarWidth + 1;
             x *= -1;
@@ -891,7 +891,7 @@ namespace OpenRCT2
             auto& scroll = w.scrolls[scroll_id];
             scroll.flags |= HSCROLLBAR_RIGHT_PRESSED;
             scroll.contentOffsetX += 3;
-            int32_t newLeft = widget.width() - 1;
+            int32_t newLeft = widget.width() - 2;
             if (scroll.flags & VSCROLLBAR_VISIBLE)
                 newLeft -= kScrollBarWidth + 1;
             newLeft *= -1;
@@ -1466,6 +1466,11 @@ namespace OpenRCT2
             int32_t dropdown_index = DropdownIndexFromPoint(screenCoords, w);
             if (dropdown_index == -1)
             {
+                if (gDropdown.hasTooltips && gDropdown.lastTooltipHover != -1)
+                {
+                    gDropdown.lastTooltipHover = -1;
+                    WindowTooltipClose();
+                }
                 return;
             }
 

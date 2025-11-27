@@ -32,12 +32,9 @@ STR_0027    :Autoscontri
 STR_0028    :Nave dei pirati
 STR_0029    :Nave oscillante invertita
 STR_0030    :Chiosco del cibo
-STR_0031    :Chiosco sconosciuto (1D)
 STR_0032    :Chiosco delle bibite
-STR_0033    :Chiosco sconosciuto (1F)
 STR_0034    :Chiosco
 STR_0035    :Giostra
-STR_0036    :Chiosco sconosciuto (22)
 STR_0037    :Chiosco
 STR_0038    :Servizi igienici
 STR_0039    :Ruota panoramica
@@ -83,16 +80,10 @@ STR_0078    :Ottovolante sottile invertito
 STR_0079    :Tappeto magico
 STR_0080    :Corsa sottomarina
 STR_0081    :River Rafts
-STR_0082    :Attrazione sconosciuta (50)
 STR_0083    :Enterprise
-STR_0084    :Attrazione sconosciuta (52)
-STR_0085    :Attrazione sconosciuta (53)
-STR_0086    :Attrazione sconosciuta (54)
-STR_0087    :Attrazione sconosciuta (55)
 STR_0088    :Ottovolante invertito a impulso
 STR_0089    :Mini-ottovolante
 STR_0090    :Corsa nella miniera
-STR_0091    :Attrazione sconosciuta (59)
 STR_0092    :Ottovolante a lancio MIL
 STR_0093    :Ottovolante ibrido
 STR_0094    :Ottovolante a binario singolo

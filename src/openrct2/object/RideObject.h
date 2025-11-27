@@ -28,6 +28,7 @@ namespace OpenRCT2
         VehicleColourPresetList _presetColours = {};
         std::vector<int8_t> _peepLoadingPositions[OpenRCT2::RCT2::ObjectLimits::kMaxCarTypesPerRideEntry];
         std::vector<std::array<CoordsXY, 3>> _peepLoadingWaypoints[OpenRCT2::RCT2::ObjectLimits::kMaxCarTypesPerRideEntry];
+        bool _shouldLoadImages = false;
 
     public:
         static constexpr ObjectType kObjectType = ObjectType::ride;

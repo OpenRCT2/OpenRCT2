@@ -17,6 +17,7 @@
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/SpriteIds.h>
 #include <openrct2/drawing/Rectangle.h>
+#include <openrct2/interface/ColourWithFlags.h>
 #include <openrct2/interface/Cursors.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/management/Research.h>
@@ -276,7 +277,7 @@ namespace OpenRCT2::Ui::Windows
             uint8_t paletteIndex = ColourMapA[colours[1].colour].mid_light;
             GfxClear(rt, paletteIndex);
 
-            int16_t boxWidth = widgets[WIDX_RESEARCH_ORDER_SCROLL].width();
+            int16_t boxWidth = widgets[WIDX_RESEARCH_ORDER_SCROLL].width() - 1;
             int32_t itemY = -kScrollableRowHeight;
             auto* dragItem = WindowEditorInventionsListDragGetItem();
 
@@ -312,15 +313,15 @@ namespace OpenRCT2::Ui::Windows
                 // TODO: this parameter by itself produces very light text.
                 // It needs a {BLACK} token in the string to work properly.
                 ColourWithFlags colour = { COLOUR_BLACK };
-                FontStyle fontStyle = FontStyle::Medium;
-                auto darkness = TextDarkness::Regular;
+                FontStyle fontStyle = FontStyle::medium;
+                auto darkness = TextDarkness::regular;
 
                 if (researchItem.IsAlwaysResearched())
                 {
                     if (_selectedResearchItem == &researchItem && dragItem == nullptr)
-                        darkness = TextDarkness::ExtraDark;
+                        darkness = TextDarkness::extraDark;
                     else
-                        darkness = TextDarkness::Dark;
+                        darkness = TextDarkness::dark;
                     colour = colours[1].withFlag(ColourFlag::inset, true);
                 }
 
@@ -401,7 +402,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 RenderTarget clipDPI;
                 screenPos = windowPos + ScreenCoordsXY{ bkWidget.left + 1, bkWidget.top + 1 };
-                const auto clipWidth = bkWidget.width() - 1;
+                const auto clipWidth = bkWidget.width() - 2;
                 const auto clipHeight = bkWidget.height() - 1;
                 if (ClipDrawPixelInfo(clipDPI, rt, screenPos, clipWidth, clipHeight))
                 {
@@ -431,7 +432,7 @@ namespace OpenRCT2::Ui::Windows
                 ft.Add<StringId>(stringId);
             }
 
-            DrawTextEllipsised(rt, screenPos, itemWidth, drawString, ft, { TextAlignment::CENTRE });
+            DrawTextEllipsised(rt, screenPos, itemWidth, drawString, ft, { TextAlignment::centre });
             screenPos.y += 15;
 
             // Item category

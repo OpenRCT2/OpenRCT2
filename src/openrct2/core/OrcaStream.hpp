@@ -671,7 +671,10 @@ namespace OpenRCT2
                 {
                     len = s.size();
                 }
-                _buffer.Write(s.data(), len);
+                if (len > 0)
+                {
+                    _buffer.Write(s.data(), len);
+                }
                 _buffer.Write(&nullt, sizeof(nullt));
             }
 

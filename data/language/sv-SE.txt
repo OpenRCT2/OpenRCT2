@@ -33,12 +33,9 @@ STR_0027    :Radiobilar
 STR_0028    :Piratskepp
 STR_0029    :Svängande omvänt piratskepp
 STR_0030    :Matstånd
-STR_0031    :Okänt stånd (1D)
 STR_0032    :Dryckesstånd
-STR_0033    :Okänt stånd (1F)
 STR_0034    :Stånd
 STR_0035    :Karusell
-STR_0036    :Okänt stånd (22)
 STR_0037    :Informationskiosk
 STR_0038    :Toaletter
 STR_0039    :Pariserhjul
@@ -84,16 +81,10 @@ STR_0078    :Inverterad hårnålsbana
 STR_0079    :Flygande matta
 STR_0080    :Ubåtsbana
 STR_0081    :Flodflottar
-STR_0082    :Okänd åktur (50)
 STR_0083    :Enterprise
-STR_0084    :Okänd åktur (52)
-STR_0085    :Okänd åktur (53)
-STR_0086    :Okänd åktur (54)
-STR_0087    :Okänd åktur (55)
 STR_0088    :Inverterad impulsbana
 STR_0089    :Miniberg- och dalbana
 STR_0090    :Gruvattraktion
-STR_0091    :Okänd åktur (59)
 STR_0092    :Induktionsberg- och dalbana
 STR_0093    :Hybridberg- och dalbana
 STR_0094    :Enkelspårig berg- och dalbana

@@ -113,7 +113,7 @@ namespace OpenRCT2::Ui::Windows
 
         static int32_t CalculateNewsItemHeight()
         {
-            return 4 * FontGetLineHeight(FontStyle::Small) + 2;
+            return 4 * FontGetLineHeight(FontStyle::small) + 2;
         }
 
         void initNewsWidgets()
@@ -443,7 +443,7 @@ namespace OpenRCT2::Ui::Windows
 
         void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
-            int32_t lineHeight = FontGetLineHeight(FontStyle::Small);
+            int32_t lineHeight = FontGetLineHeight(FontStyle::small);
             int32_t itemHeight = CalculateNewsItemHeight();
             int32_t y = 0;
             int32_t i = 0;
@@ -476,7 +476,7 @@ namespace OpenRCT2::Ui::Windows
                     auto ft = Formatter();
                     ft.Add<StringId>(DateDayNames[newsItem.day - 1]);
                     ft.Add<StringId>(DateGameMonthNames[DateGetMonth(newsItem.monthYear)]);
-                    DrawTextBasic(rt, { 2, y }, STR_NEWS_DATE_FORMAT, ft, { COLOUR_WHITE, FontStyle::Small });
+                    DrawTextBasic(rt, { 2, y }, STR_NEWS_DATE_FORMAT, ft, { COLOUR_WHITE, FontStyle::small });
                 }
                 // Item text
                 {
@@ -484,7 +484,7 @@ namespace OpenRCT2::Ui::Windows
                     ft.Add<const char*>(newsItem.text.c_str());
                     DrawTextWrapped(
                         rt, { 2, y + lineHeight }, 325, STR_BOTTOM_TOOLBAR_NEWS_TEXT, ft,
-                        { COLOUR_BRIGHT_GREEN, FontStyle::Small });
+                        { COLOUR_BRIGHT_GREEN, FontStyle::small });
                 }
                 // Subject button
                 if ((newsItem.typeHasSubject()) && !(newsItem.hasButton()))

@@ -183,7 +183,7 @@ namespace OpenRCT2::Ui::Windows
                 auto ft = Formatter();
                 ft.Add<uint16_t>(gLandToolSize);
                 DrawTextBasic(
-                    rt, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, ft, { TextAlignment::CENTRE });
+                    rt, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, ft, { TextAlignment::centre });
             }
 
             // Draw cost amount
@@ -194,7 +194,7 @@ namespace OpenRCT2::Ui::Windows
                 ft.Add<money64>(_clearSceneryCost);
                 screenCoords.x = widgets[WIDX_PREVIEW].midX() + windowPos.x;
                 screenCoords.y = widgets[WIDX_PREVIEW].bottom + windowPos.y + 5 + 27;
-                DrawTextBasic(rt, screenCoords, STR_COST_AMOUNT, ft, { TextAlignment::CENTRE });
+                DrawTextBasic(rt, screenCoords, STR_COST_AMOUNT, ft, { TextAlignment::centre });
             }
         }
 
@@ -218,7 +218,6 @@ namespace OpenRCT2::Ui::Windows
         {
             uint8_t state_changed = 0;
 
-            MapInvalidateSelectionRect();
             gMapSelectFlags.unset(MapSelectFlag::enable);
 
             auto mapTile = ScreenGetMapXY(screenPos, nullptr);
@@ -275,7 +274,6 @@ namespace OpenRCT2::Ui::Windows
                 state_changed++;
             }
 
-            MapInvalidateSelectionRect();
             return state_changed;
         }
 
@@ -347,7 +345,6 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_BACKGROUND:
-                    MapInvalidateSelectionRect();
                     gMapSelectFlags.unset(MapSelectFlag::enable);
                     gCurrentToolId = Tool::bulldozer;
                     break;

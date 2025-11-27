@@ -31,13 +31,13 @@
 namespace OpenRCT2::GameActions
 {
     RideCreateAction::RideCreateAction(
-        ride_type_t rideType, ObjectEntryIndex subType, colour_t colour1, colour_t colour2,
+        ride_type_t rideType, ObjectEntryIndex subType, uint8_t trackColourPreset, uint8_t vehicleColourPreset,
         ObjectEntryIndex entranceObjectIndex)
         : _rideType(rideType)
         , _subType(subType)
         , _entranceObjectIndex(entranceObjectIndex)
-        , _colour1(colour1)
-        , _colour2(colour2)
+        , _trackColourPreset(trackColourPreset)
+        , _vehicleColourPreset(vehicleColourPreset)
     {
     }
 
@@ -46,8 +46,8 @@ namespace OpenRCT2::GameActions
         visitor.Visit("rideType", _rideType);
         visitor.Visit("rideObject", _subType);
         visitor.Visit("entranceObject", _entranceObjectIndex);
-        visitor.Visit("colour1", _colour1);
-        visitor.Visit("colour2", _colour2);
+        visitor.Visit("colour1", _trackColourPreset);
+        visitor.Visit("colour2", _vehicleColourPreset);
     }
 
     ride_type_t RideCreateAction::GetRideType() const
@@ -69,7 +69,8 @@ namespace OpenRCT2::GameActions
     {
         GameAction::Serialise(stream);
 
-        stream << DS_TAG(_rideType) << DS_TAG(_subType) << DS_TAG(_entranceObjectIndex) << DS_TAG(_colour1) << DS_TAG(_colour2);
+        stream << DS_TAG(_rideType) << DS_TAG(_subType) << DS_TAG(_entranceObjectIndex) << DS_TAG(_trackColourPreset)
+               << DS_TAG(_vehicleColourPreset);
     }
 
     Result RideCreateAction::Query(GameState_t& gameState) const
@@ -95,9 +96,9 @@ namespace OpenRCT2::GameActions
         }
 
         const auto& colourPresets = GetRideTypeDescriptor(_rideType).ColourPresets;
-        if (_colour1 >= colourPresets.count)
+        if (_trackColourPreset >= colourPresets.count)
         {
-            LOG_ERROR("Can't create ride, invalid colour preset %d", _colour1);
+            LOG_ERROR("Can't create ride, invalid colour preset %d", _trackColourPreset);
             return Result(Status::InvalidParameters, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_ERR_INVALID_COLOUR);
         }
 
@@ -109,7 +110,7 @@ namespace OpenRCT2::GameActions
         }
 
         const auto* presetList = rideEntry->vehicle_preset_list;
-        if ((presetList->count > 0 && presetList->count != 255) && _colour2 >= presetList->count)
+        if ((presetList->count > 0 && presetList->count != 255) && _vehicleColourPreset >= presetList->count)
         {
             return Result(Status::InvalidParameters, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, kStringIdNone);
         }
@@ -139,7 +140,7 @@ namespace OpenRCT2::GameActions
 
         ride->type = _rideType;
         ride->subtype = rideEntryIndex;
-        ride->setColourPreset(_colour1);
+        ride->setColourPreset(_trackColourPreset, _vehicleColourPreset);
         ride->overallView.SetNull();
         ride->setNameToDefault();
 
@@ -288,7 +289,7 @@ namespace OpenRCT2::GameActions
         ride->mode = ride->getDefaultMode();
         ride->minCarsPerTrain = rideEntry->min_cars_in_train;
         ride->maxCarsPerTrain = rideEntry->max_cars_in_train;
-        RideSetVehicleColoursToRandomPreset(*ride, _colour2);
+        RideSetVehicleColoursToRandomPreset(*ride, _vehicleColourPreset);
 
         auto* windowMgr = Ui::GetWindowManager();
         windowMgr->InvalidateByClass(WindowClass::rideList);

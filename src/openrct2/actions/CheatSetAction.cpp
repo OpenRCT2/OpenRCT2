@@ -615,7 +615,7 @@ namespace OpenRCT2::GameActions
     void CheatSetAction::AddMoney(money64 amount) const
     {
         auto& park = getGameState().park;
-        park.cash = AddClamp<money64>(park.cash, amount);
+        park.cash = AddClamp(park.cash, amount);
 
         auto* windowMgr = Ui::GetWindowManager();
         windowMgr->InvalidateByClass(WindowClass::finances);

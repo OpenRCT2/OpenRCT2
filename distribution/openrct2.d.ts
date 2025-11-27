@@ -5354,11 +5354,11 @@ declare global {
         write(data: string): boolean;
 
         on(event: "close", callback: (hadError: boolean) => void): Socket;
-        on(event: "error", callback: (hadError: boolean) => void): Socket;
+        on(event: "error", callback: (errorString: string) => void): Socket;
         on(event: "data", callback: (data: string) => void): Socket;
 
         off(event: "close", callback: (hadError: boolean) => void): Socket;
-        off(event: "error", callback: (hadError: boolean) => void): Socket;
+        off(event: "error", callback: (errorString: string) => void): Socket;
         off(event: "data", callback: (data: string) => void): Socket;
     }
 

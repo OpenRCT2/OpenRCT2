@@ -516,7 +516,7 @@ namespace OpenRCT2::Ui::Windows
             Rectangle::fill(
                 rt, { rtCoords, rtCoords + ScreenCoordsXY{ rt.width - 1, rt.height - 1 } },
                 ColourMapA[colours[1].colour].mid_light);
-            const int32_t listWidth = widgets[WIDX_SCROLL].width();
+            const int32_t listWidth = widgets[WIDX_SCROLL].width() - 1;
 
             for (int32_t i = 0; i < numListItems; i++)
             {

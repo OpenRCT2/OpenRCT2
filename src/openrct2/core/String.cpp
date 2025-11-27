@@ -27,6 +27,9 @@
     #include <unicode/unistr.h>
     #include <unicode/utypes.h>
 #else
+    #ifndef WIN32_LEAN_AND_MEAN
+        #define WIN32_LEAN_AND_MEAN
+    #endif
     #include <windows.h>
 #endif
 

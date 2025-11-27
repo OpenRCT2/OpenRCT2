@@ -24,6 +24,7 @@
 #include "../scenes/intro/IntroScene.h"
 #include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
+#include "../world/MapSelection.h"
 #include "../world/TileInspector.h"
 
 using namespace OpenRCT2;
@@ -48,6 +49,7 @@ void Painter::Paint(IDrawingEngine& de)
     }
     else
     {
+        MapSelection::invalidate();
         VirtualFloorInvalidate(false);
 
         de.PaintWindows();
@@ -88,7 +90,7 @@ void Painter::PaintReplayNotice(RenderTarget& rt, const char* text)
     char buffer[64]{};
     FormatStringToBuffer(buffer, sizeof(buffer), "{OUTLINE}{RED}{STRING}", text);
 
-    auto stringWidth = GfxGetStringWidth(buffer, FontStyle::Medium);
+    auto stringWidth = GfxGetStringWidth(buffer, FontStyle::medium);
     screenCoords.x = screenCoords.x - stringWidth;
 
     if (((getGameState().currentTicks >> 1) & 0xF) > 4)
@@ -116,7 +118,7 @@ void Painter::PaintFPS(RenderTarget& rt)
 
     char buffer[64]{};
     FormatStringToBuffer(buffer, sizeof(buffer), "{OUTLINE}{WHITE}{INT32}", _currentFPS);
-    const int32_t stringWidth = GfxGetStringWidth(buffer, FontStyle::Medium);
+    const int32_t stringWidth = GfxGetStringWidth(buffer, FontStyle::medium);
 
     // Figure out where counter should be rendered
     ScreenCoordsXY screenCoords(_uiContext.GetWidth() / 2, 2);
