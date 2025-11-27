@@ -462,6 +462,21 @@ namespace OpenRCT2::Network
         return nullptr;
     }
 
+    void NetworkBase::Update()
+    {
+        switch (GetMode())
+        {
+            case Mode::server:
+                UpdateServer();
+                break;
+            case Mode::client:
+                UpdateClient();
+                break;
+            default:
+                break;
+        }
+    }
+
     void NetworkBase::Tick()
     {
         _closeLock = true;
@@ -510,6 +525,10 @@ namespace OpenRCT2::Network
         }
     }
 
+    void NetworkBase::UpdateServer()
+    {
+    }
+
     void NetworkBase::TickServer()
     {
         for (auto& connection : client_connection_list)
@@ -545,6 +564,11 @@ namespace OpenRCT2::Network
         {
             AddClient(std::move(tcpSocket));
         }
+    }
+
+    void NetworkBase::UpdateClient()
+    {
+
     }
 
     void NetworkBase::TickClient()
@@ -3306,6 +3330,11 @@ namespace OpenRCT2::Network
         GetContext()->GetNetwork().Update();
     }
 
+    void Tick()
+    {
+        GetContext()->GetNetwork().Tick();
+    }
+
     void PostTick()
     {
         GetContext()->GetNetwork().PostTick();
@@ -4145,6 +4174,9 @@ namespace OpenRCT2::Network
     {
     }
     void SendGameAction(const GameActions::GameAction* action)
+    {
+    }
+    void Tick()
     {
     }
     void Update()
