@@ -9,6 +9,7 @@
 - Fix: [#25552] Clear Scenery does not show an error message about insufficient money if cash is negative.
 - Fix: [#25565] Chairlift station ends are missing tunnels at certain rotations.
 - Fix: [#25569] Placing park entrances in multiplayer does not show for other players, causing desyncs.
+- Fix: [#25571] Potential crash due to drawing a Crooked House ride.
 
 0.4.29 (2025-11-22)
 ------------------------------------------------------------------------
