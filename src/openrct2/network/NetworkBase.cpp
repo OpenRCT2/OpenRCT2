@@ -2813,7 +2813,7 @@ namespace OpenRCT2::Network
     {
         uint32_t size, offset;
         packet >> size >> offset;
-        int32_t chunksize = static_cast<int32_t>(packet.Header.Size - packet.BytesRead);
+        int32_t chunksize = static_cast<int32_t>(packet.Header.size - packet.BytesRead);
         if (chunksize <= 0)
         {
             return;
@@ -3021,7 +3021,7 @@ namespace OpenRCT2::Network
         packet >> tick >> actionType;
 
         MemoryStream stream;
-        const size_t size = packet.Header.Size - packet.BytesRead;
+        const size_t size = packet.Header.size - packet.BytesRead;
         stream.WriteArray(packet.Read(size), size);
         stream.SetPosition(0);
 
@@ -3111,7 +3111,7 @@ namespace OpenRCT2::Network
         }
 
         DataSerialiser stream(false);
-        const size_t size = packet.Header.Size - packet.BytesRead;
+        const size_t size = packet.Header.size - packet.BytesRead;
         stream.GetStream().WriteArray(packet.Read(size), size);
         stream.GetStream().SetPosition(0);
 
