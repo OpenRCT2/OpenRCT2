@@ -52,7 +52,8 @@ namespace WindowCloseFlags
     static constexpr uint32_t CloseSingle = (1 << 0);
 } // namespace WindowCloseFlags
 
-// Temporary thing, Intent is not yet queued.
+// Temporary thing, Intent is not yet queued, we just want to find who is directly accessing the WindowManager
+// the calls to the Intent functions need to be replaced with queued Intents later on, for now pretend its fine.
 struct UiUpdateScope
 {
     bool& inUpdate;
