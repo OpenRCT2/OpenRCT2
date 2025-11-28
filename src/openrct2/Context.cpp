@@ -1299,7 +1299,7 @@ namespace OpenRCT2
 
             UpdateTimeAccumulators(deltaTime);
 
-            _network.Update();
+            Network::Update();
 
             if (useVariableFrame)
             {
@@ -1310,7 +1310,7 @@ namespace OpenRCT2
                 RunFixedFrame(deltaTime);
             }
 
-            _network.Flush();
+            Network::Flush();
         }
 
         void UpdateTimeAccumulators(float deltaTime)
