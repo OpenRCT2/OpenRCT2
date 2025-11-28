@@ -119,6 +119,7 @@ namespace OpenRCT2::Network
         _actionId = 0;
 
         client_command_handlers[Command::auth] = &NetworkBase::Client_Handle_AUTH;
+        client_command_handlers[Command::beginMap] = &NetworkBase::Client_Handle_BEGINMAP;
         client_command_handlers[Command::map] = &NetworkBase::Client_Handle_MAP;
         client_command_handlers[Command::chat] = &NetworkBase::Client_Handle_CHAT;
         client_command_handlers[Command::gameAction] = &NetworkBase::Client_Handle_GAME_ACTION;
@@ -134,7 +135,6 @@ namespace OpenRCT2::Network
         client_command_handlers[Command::gameInfo] = &NetworkBase::Client_Handle_GAMEINFO;
         client_command_handlers[Command::token] = &NetworkBase::Client_Handle_TOKEN;
         client_command_handlers[Command::objectsList] = &NetworkBase::Client_Handle_OBJECTS_LIST;
-        client_command_handlers[Command::scriptsHeader] = &NetworkBase::Client_Handle_SCRIPTS_HEADER;
         client_command_handlers[Command::scriptsData] = &NetworkBase::Client_Handle_SCRIPTS_DATA;
         client_command_handlers[Command::gameState] = &NetworkBase::Client_Handle_GAMESTATE;
 
@@ -547,6 +547,7 @@ namespace OpenRCT2::Network
 
             if (!ProcessConnection(*connection))
             {
+                LOG_INFO("Disconnecting player %s", connection->player->Name.c_str());
                 connection->Disconnect();
             }
             else
@@ -1378,47 +1379,12 @@ namespace OpenRCT2::Network
         }
 
         connection.QueuePacket(std::move(packet));
-
-        /*
-        if (objects.empty())
-        {
-            Packet packet(Command::objectsList);
-            packet << static_cast<uint32_t>(0) << static_cast<uint32_t>(objects.size());
-
-            connection.QueuePacket(std::move(packet));
-        }
-        else
-        {
-            for (size_t i = 0; i < objects.size(); ++i)
-            {
-                const auto* object = objects[i];
-
-                Packet packet(Command::objectsList);
-                packet << static_cast<uint32_t>(i) << static_cast<uint32_t>(objects.size());
-
-                if (object->Identifier.empty())
-                {
-                    // DAT
-                    LOG_VERBOSE("Object %.8s (checksum %x)", object->ObjectEntry.name, object->ObjectEntry.checksum);
-                    packet << static_cast<uint8_t>(0);
-                    packet.Write(&object->ObjectEntry, sizeof(RCTObjectEntry));
-                }
-                else
-                {
-                    // JSON
-                    LOG_VERBOSE("Object %s", object->Identifier.c_str());
-                    packet << static_cast<uint8_t>(1);
-                    packet.WriteString(object->Identifier);
-                }
-
-                connection.QueuePacket(std::move(packet));
-            }
-        }
-        */
     }
 
     void NetworkBase::ServerSendScripts(Connection& connection)
     {
+        Packet packet(Command::scriptsData);
+
     #ifdef ENABLE_SCRIPTING
         using namespace OpenRCT2::Scripting;
 
@@ -1428,45 +1394,21 @@ namespace OpenRCT2::Network
         const auto remotePlugins = scriptEngine.GetRemotePlugins();
         LOG_VERBOSE("Server sends %zu scripts", remotePlugins.size());
 
-        // Build the data contents for each plugin.
-        MemoryStream pluginData;
+        packet << static_cast<uint32_t>(remotePlugins.size());
+
         for (auto& plugin : remotePlugins)
         {
             const auto& code = plugin->GetCode();
-
             const auto codeSize = static_cast<uint32_t>(code.size());
-            pluginData.WriteValue(codeSize);
-            pluginData.WriteArray(code.c_str(), code.size());
+
+            packet << codeSize;
+            packet.Write(code.c_str(), code.size());
         }
-
-        // Send the header packet.
-        Packet packetScriptHeader(Command::scriptsHeader);
-        packetScriptHeader << static_cast<uint32_t>(remotePlugins.size());
-        packetScriptHeader << static_cast<uint32_t>(pluginData.GetLength());
-        connection.QueuePacket(std::move(packetScriptHeader));
-
-        // Segment the plugin data into chunks and send them.
-        const uint8_t* pluginDataBuffer = static_cast<const uint8_t*>(pluginData.GetData());
-        uint32_t dataOffset = 0;
-        while (dataOffset < pluginData.GetLength())
-        {
-            const uint32_t chunkSize = std::min<uint32_t>(pluginData.GetLength() - dataOffset, kChunkSize);
-
-            Packet packet(Command::scriptsData);
-            packet << chunkSize;
-            packet.Write(pluginDataBuffer + dataOffset, chunkSize);
-
-            connection.QueuePacket(std::move(packet));
-
-            dataOffset += chunkSize;
-        }
-        Guard::Assert(dataOffset == pluginData.GetLength());
-
     #else
-        Packet packetScriptHeader(Command::scriptsHeader);
-        packetScriptHeader << static_cast<uint32_t>(0u);
-        packetScriptHeader << static_cast<uint32_t>(0u);
+        packet << static_cast<uint32_t>(0);
     #endif
+
+        connection.QueuePacket(std::move(packet));
     }
 
     void NetworkBase::Client_Send_HEARTBEAT(Connection& connection) const
@@ -1545,16 +1487,20 @@ namespace OpenRCT2::Network
             return;
         }
 
-        Packet packet(Command::map);
-        packet.Write(mapContent.data(), mapContent.size());
+        Packet packetBeginMap(Command::beginMap);
+
+        Packet packetMap(Command::map);
+        packetMap.Write(mapContent.data(), mapContent.size());
 
         if (connection != nullptr)
         {
-            connection->QueuePacket(std::move(packet));
+            connection->QueuePacket(std::move(packetBeginMap));
+            connection->QueuePacket(std::move(packetMap));
         }
         else
         {
-            SendPacketToClients(packet);
+            SendPacketToClients(packetBeginMap);
+            SendPacketToClients(packetMap);
         }
     }
 
@@ -1810,7 +1756,10 @@ namespace OpenRCT2::Network
         auto captionString = GetContext()->GetLocalisationService().GetString(captionStringId);
         auto intent = Intent(INTENT_ACTION_PROGRESS_OPEN);
         intent.PutExtra(INTENT_EXTRA_MESSAGE, captionString);
-        intent.PutExtra(INTENT_EXTRA_CALLBACK, []() -> void { OpenRCT2::GetContext()->GetNetwork().Close(); });
+        intent.PutExtra(INTENT_EXTRA_CALLBACK, []() -> void {
+            LOG_INFO("User aborted network operation");
+            OpenRCT2::GetContext()->GetNetwork().Close();
+        });
         ContextOpenIntent(&intent);
     }
 
@@ -1832,6 +1781,10 @@ namespace OpenRCT2::Network
                 break;
             case Command::map:
                 displayNetworkProgress(STR_MULTIPLAYER_DOWNLOADING_MAP);
+                break;
+            case Command::scriptsData:
+                // FIXME: Create new string id for "Receiving scripts"
+                displayNetworkProgress(STR_MULTIPLAYER_RECEIVING_OBJECTS_LIST);
                 break;
             default:
                 // Nothing to report.
@@ -2552,55 +2505,25 @@ namespace OpenRCT2::Network
         Client_Send_MAPREQUEST(missingObjects);
     }
 
-    void NetworkBase::Client_Handle_SCRIPTS_HEADER(Connection& connection, Packet& packet)
-    {
-        uint32_t numScripts{};
-        uint32_t dataSize{};
-        packet >> numScripts >> dataSize;
-
-    #ifdef ENABLE_SCRIPTING
-        _serverScriptsData.data.Clear();
-        _serverScriptsData.pluginCount = numScripts;
-        _serverScriptsData.dataSize = dataSize;
-    #else
-        if (numScripts > 0)
-        {
-            connection.SetLastDisconnectReason("The client requires plugin support.");
-            Close();
-        }
-    #endif
-    }
-
     void NetworkBase::Client_Handle_SCRIPTS_DATA(Connection& connection, Packet& packet)
     {
     #ifdef ENABLE_SCRIPTING
-        uint32_t dataSize{};
-        packet >> dataSize;
-        Guard::Assert(dataSize > 0);
+        auto& scriptEngine = GetContext().GetScriptEngine();
 
-        const auto* data = packet.Read(dataSize);
-        Guard::Assert(data != nullptr);
+        uint32_t count{};
+        packet >> count;
 
-        auto& scriptsData = _serverScriptsData.data;
-        scriptsData.Write(data, dataSize);
-
-        if (scriptsData.GetLength() == _serverScriptsData.dataSize)
+        for (uint32_t i = 0; i < count; ++i)
         {
-            auto& scriptEngine = GetContext().GetScriptEngine();
+            uint32_t codeSize{};
+            packet >> codeSize;
 
-            scriptsData.SetPosition(0);
-            for (uint32_t i = 0; i < _serverScriptsData.pluginCount; ++i)
-            {
-                const auto codeSize = scriptsData.ReadValue<uint32_t>();
-                const auto scriptData = scriptsData.ReadArray<char>(codeSize);
+            const uint8_t* scriptData = packet.Read(codeSize);
 
-                auto code = std::string_view(reinterpret_cast<const char*>(scriptData.get()), codeSize);
-                scriptEngine.AddNetworkPlugin(code);
-            }
-            Guard::Assert(scriptsData.GetPosition() == scriptsData.GetLength());
+            auto code = std::string_view(reinterpret_cast<const char*>(scriptData), codeSize);
+            scriptEngine.AddNetworkPlugin(code);
 
-            // Empty the current buffer.
-            _serverScriptsData = {};
+            LOG_INFO("Received and loaded network script plugin %u/%u", i + 1, count);
         }
     #else
         connection.SetLastDisconnectReason("The client requires plugin support.");
@@ -2850,25 +2773,26 @@ namespace OpenRCT2::Network
         }
     }
 
-    void NetworkBase::Client_Handle_MAP([[maybe_unused]] Connection& connection, Packet& packet)
+    void NetworkBase::Client_Handle_BEGINMAP([[maybe_unused]] Connection& connection, Packet& packet)
     {
-        // TODO: We need a new packet that tells the client that a new map will be sent so the client
-        // starts buffering game actions and tick data to catch up once the map is received.
-
         // Start of a new map load, clear the queue now as we have to buffer them
         // until the map is fully loaded.
         GameActions::ClearQueue();
         GameActions::SuspendQueue();
 
+        displayNetworkProgress(STR_LOADING_SAVED_GAME);
+    }
+
+    void NetworkBase::Client_Handle_MAP([[maybe_unused]] Connection& connection, Packet& packet)
+    {
         // Allow queue processing of game actions again.
         GameActions::ResumeQueue();
 
-        ContextForceCloseWindowByClass(WindowClass::progressWindow);
+        // This prevents invoking the callback for when the window closes which would close the connection.
+        GetContext().CloseProgress();
+
         GameUnloadScripts();
         GameNotifyMapChange();
-
-        // FIXME: LoadMap should handle this stuff.
-        displayNetworkProgress(STR_LOADING_SAVED_GAME);
 
         auto ms = MemoryStream(packet.Data.data(), packet.Data.size());
         if (LoadMap(&ms))
@@ -2876,8 +2800,10 @@ namespace OpenRCT2::Network
             GameLoadInit();
             GameLoadScripts();
             GameNotifyMapChanged();
-            _serverState.tick = getGameState().currentTicks;
-            // NetworkStatusOpen("Loaded new map from network");
+
+            // This seems wrong, we want to catch up to that tick so we shouldn't mess with this.
+            //_serverState.tick = getGameState().currentTicks;
+
             _serverState.state = ServerStatus::ok;
             _clientMapLoaded = true;
             gFirstTimeSaving = true;
@@ -2898,7 +2824,8 @@ namespace OpenRCT2::Network
             // Something went wrong, game is not loaded. Return to main screen.
             auto loadOrQuitAction = GameActions::LoadOrQuitAction(
                 GameActions::LoadOrQuitModes::OpenSavePrompt, PromptMode::saveBeforeQuit);
-            GameActions::Execute(&loadOrQuitAction, getGameState());
+
+            loadOrQuitAction.Execute(getGameState());
         }
     }
 
