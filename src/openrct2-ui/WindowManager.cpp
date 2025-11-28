@@ -61,6 +61,12 @@ public:
         WindowNewRideInitVars();
     }
 
+    void update() override
+    {
+        ContextHandleInput();
+        WindowUpdateAll();
+    }
+
     WindowBase* OpenWindow(WindowClass wc) override
     {
         switch (wc)

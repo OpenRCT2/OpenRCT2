@@ -14,6 +14,9 @@ namespace OpenRCT2::Ui
     class DummyWindowManager final : public IWindowManager
     {
         void Init() override {};
+        void update() override
+        {
+        }
         WindowBase* OpenWindow(WindowClass /*wc*/) override
         {
             return nullptr;

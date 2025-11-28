@@ -1346,8 +1346,7 @@ namespace OpenRCT2
 
             _backgroundWorker.dispatchCompleted();
 
-            ContextHandleInput();
-            WindowUpdateAll();
+            _uiContext->GetWindowManager()->update();
 
             if (ShouldDraw())
             {
@@ -1381,8 +1380,7 @@ namespace OpenRCT2
 
             _backgroundWorker.dispatchCompleted();
 
-            ContextHandleInput();
-            WindowUpdateAll();
+            _uiContext->GetWindowManager()->update();
 
             if (shouldDraw)
             {
