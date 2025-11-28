@@ -294,6 +294,23 @@ namespace OpenRCT2::Network
         }
     }
 
+    Command Connection::getPendingPacketCommand() const noexcept
+    {
+        return InboundPacket.GetCommand();
+    }
+
+    size_t Connection::getPendingPacketSize() const noexcept
+    {
+        return InboundPacket.Header.size;
+    }
+
+    size_t Connection::getPendingPacketAvailable() const noexcept
+    {
+        size_t maxSize = std::min<size_t>(InboundPacket.Header.size, _inboundBuffer.size());
+
+        return maxSize;
+    }
+
 } // namespace OpenRCT2::Network
 
 #endif

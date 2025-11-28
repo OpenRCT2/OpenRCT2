@@ -49,6 +49,10 @@ namespace OpenRCT2::Network
         ReadPacket readPacket();
         void QueuePacket(const Packet& packet, bool front = false);
 
+        Command getPendingPacketCommand() const noexcept;
+        size_t getPendingPacketSize() const noexcept;
+        size_t getPendingPacketAvailable() const noexcept;
+
         // This will not immediately disconnect the client. The disconnect
         // will happen post-tick.
         void Disconnect() noexcept;

@@ -1351,6 +1351,35 @@ namespace OpenRCT2::Network
     {
         LOG_VERBOSE("Server sends objects list with %u items", objects.size());
 
+        Packet packet(Command::objectsList);
+
+        // Count.
+        packet << static_cast<uint32_t>(objects.size());
+
+        // List
+        for (size_t i = 0; i < objects.size(); ++i)
+        {
+            const auto* object = objects[i];
+
+            if (object->Identifier.empty())
+            {
+                // DAT
+                LOG_VERBOSE("Object %.8s (checksum %x)", object->ObjectEntry.name, object->ObjectEntry.checksum);
+                packet << static_cast<uint8_t>(0);
+                packet.Write(&object->ObjectEntry, sizeof(RCTObjectEntry));
+            }
+            else
+            {
+                // JSON
+                LOG_VERBOSE("Object %s", object->Identifier.c_str());
+                packet << static_cast<uint8_t>(1);
+                packet.WriteString(object->Identifier);
+            }
+        }
+
+        connection.QueuePacket(std::move(packet));
+
+        /*
         if (objects.empty())
         {
             Packet packet(Command::objectsList);
@@ -1385,6 +1414,7 @@ namespace OpenRCT2::Network
                 connection.QueuePacket(std::move(packet));
             }
         }
+        */
     }
 
     void NetworkBase::ServerSendScripts(Connection& connection)
@@ -1515,41 +1545,16 @@ namespace OpenRCT2::Network
             return;
         }
 
-        // NEW
-        if constexpr (true)
-        {
-            Packet packet(Command::map);
-            packet.Write(mapContent.data(), mapContent.size());
+        Packet packet(Command::map);
+        packet.Write(mapContent.data(), mapContent.size());
 
-            if (connection != nullptr)
-            {
-                connection->QueuePacket(std::move(packet));
-            }
-            else
-            {
-                SendPacketToClients(packet);
-            }
+        if (connection != nullptr)
+        {
+            connection->QueuePacket(std::move(packet));
         }
-
-        // OLD
-        if constexpr (false)
+        else
         {
-            size_t chunksize = kChunkSize;
-            for (size_t i = 0; i < mapContent.size(); i += chunksize)
-            {
-                size_t datasize = std::min(chunksize, mapContent.size() - i);
-                Packet packet(Command::map);
-                packet << static_cast<uint32_t>(mapContent.size()) << static_cast<uint32_t>(i);
-                packet.Write(&mapContent[i], datasize);
-                if (connection != nullptr)
-                {
-                    connection->QueuePacket(std::move(packet));
-                }
-                else
-                {
-                    SendPacketToClients(packet);
-                }
-            }
+            SendPacketToClients(packet);
         }
     }
 
@@ -1800,6 +1805,43 @@ namespace OpenRCT2::Network
         return connection.IsValid();
     }
 
+    static void displayNetworkProgress(StringId captionStringId)
+    {
+        auto captionString = GetContext()->GetLocalisationService().GetString(captionStringId);
+        auto intent = Intent(INTENT_ACTION_PROGRESS_OPEN);
+        intent.PutExtra(INTENT_EXTRA_MESSAGE, captionString);
+        intent.PutExtra(INTENT_EXTRA_CALLBACK, []() -> void { OpenRCT2::GetContext()->GetNetwork().Close(); });
+        ContextOpenIntent(&intent);
+    }
+
+    static void reportPacketProgress(NetworkBase& network, Connection& connection)
+    {
+        if (network.GetMode() != Mode::client)
+        {
+            return;
+        }
+
+        const auto nextPacketCommand = connection.getPendingPacketCommand();
+        const auto bytesReceived = connection.getPendingPacketAvailable();
+        const auto bytesTotal = connection.getPendingPacketSize();
+
+        switch (nextPacketCommand)
+        {
+            case Command::objectsList:
+                displayNetworkProgress(STR_MULTIPLAYER_RECEIVING_OBJECTS_LIST);
+                break;
+            case Command::map:
+                displayNetworkProgress(STR_MULTIPLAYER_DOWNLOADING_MAP);
+                break;
+            default:
+                // Nothing to report.
+                return;
+        }
+
+        network.GetContext().SetProgress(
+            static_cast<uint32_t>(bytesReceived), static_cast<uint32_t>(bytesTotal), STR_STRING_M_OF_N_KIB);
+    }
+
     bool NetworkBase::ProcessConnection(Connection& connection)
     {
         ReadPacket packetStatus;
@@ -1828,6 +1870,7 @@ namespace OpenRCT2::Network
                     break;
                 case ReadPacket::moreData:
                     // more data required to be read
+                    reportPacketProgress(*this, connection);
                     break;
                 case ReadPacket::noData:
                     // could not read anything from socket
@@ -2452,34 +2495,17 @@ namespace OpenRCT2::Network
         ServerSendToken(connection);
     }
 
-    static void OpenNetworkProgress(StringId captionStringId)
-    {
-        auto captionString = GetContext()->GetLocalisationService().GetString(captionStringId);
-        auto intent = Intent(INTENT_ACTION_PROGRESS_OPEN);
-        intent.PutExtra(INTENT_EXTRA_MESSAGE, captionString);
-        intent.PutExtra(INTENT_EXTRA_CALLBACK, []() -> void { OpenRCT2::GetContext()->GetNetwork().Close(); });
-        ContextOpenIntent(&intent);
-    }
-
     void NetworkBase::Client_Handle_OBJECTS_LIST(Connection& connection, Packet& packet)
     {
         auto& repo = GetContext().GetObjectRepository();
 
-        uint32_t index = 0;
-        uint32_t totalObjects = 0;
-        packet >> index >> totalObjects;
+        uint32_t objectCount{};
+        packet >> objectCount;
 
-        static constexpr uint32_t kObjectStartIndex = 0;
-        if (index == kObjectStartIndex)
+        std::vector<ObjectEntryDescriptor> missingObjects;
+
+        for (uint32_t i = 0; i < objectCount; ++i)
         {
-            _missingObjects.clear();
-        }
-
-        if (totalObjects > 0)
-        {
-            OpenNetworkProgress(STR_MULTIPLAYER_RECEIVING_OBJECTS_LIST);
-            GetContext().SetProgress(index + 1, totalObjects);
-
             uint8_t objectType{};
             packet >> objectType;
 
@@ -2494,7 +2520,7 @@ namespace OpenRCT2::Network
                     {
                         auto objectName = std::string(entry->GetName());
                         LOG_VERBOSE("Requesting object %s with checksum %x from server", objectName.c_str(), entry->checksum);
-                        _missingObjects.push_back(ObjectEntryDescriptor(*entry));
+                        missingObjects.push_back(ObjectEntryDescriptor(*entry));
                     }
                     else if (object->ObjectEntry.checksum != entry->checksum || object->ObjectEntry.flags != entry->flags)
                     {
@@ -2516,18 +2542,14 @@ namespace OpenRCT2::Network
                     {
                         auto objectName = std::string(identifier);
                         LOG_VERBOSE("Requesting object %s from server", objectName.c_str());
-                        _missingObjects.push_back(ObjectEntryDescriptor(objectName));
+                        missingObjects.push_back(ObjectEntryDescriptor(objectName));
                     }
                 }
             }
         }
 
-        if (index + 1 >= totalObjects)
-        {
-            LOG_VERBOSE("client received object list, it has %u entries", totalObjects);
-            Client_Send_MAPREQUEST(_missingObjects);
-            _missingObjects.clear();
-        }
+        LOG_VERBOSE("client received object list, it has %u entries, %zu missing", objectCount, missingObjects.size());
+        Client_Send_MAPREQUEST(missingObjects);
     }
 
     void NetworkBase::Client_Handle_SCRIPTS_HEADER(Connection& connection, Packet& packet)
@@ -2838,14 +2860,15 @@ namespace OpenRCT2::Network
         GameActions::ClearQueue();
         GameActions::SuspendQueue();
 
-        // GetContext().SetProgress(currentProgressKiB, totalSizeKiB, STR_STRING_M_OF_N_KIB);
-
         // Allow queue processing of game actions again.
         GameActions::ResumeQueue();
 
         ContextForceCloseWindowByClass(WindowClass::progressWindow);
         GameUnloadScripts();
         GameNotifyMapChange();
+
+        // FIXME: LoadMap should handle this stuff.
+        displayNetworkProgress(STR_LOADING_SAVED_GAME);
 
         auto ms = MemoryStream(packet.Data.data(), packet.Data.size());
         if (LoadMap(&ms))

@@ -64,6 +64,7 @@ namespace OpenRCT2::Network
     enum class Command : uint32_t
     {
         auth,
+        beginMap,
         map,
         chat,
         tick = 4,
