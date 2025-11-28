@@ -156,6 +156,7 @@ namespace OpenRCT2::Network
 
         // Handlers.
         void Client_Handle_AUTH(Connection& connection, Packet& packet);
+        void Client_Handle_BEGINMAP([[maybe_unused]] Connection& connection, Packet& packet);
         void Client_Handle_MAP(Connection& connection, Packet& packet);
         void Client_Handle_CHAT(Connection& connection, Packet& packet);
         void Client_Handle_GAME_ACTION(Connection& connection, Packet& packet);
@@ -171,10 +172,8 @@ namespace OpenRCT2::Network
         void Client_Handle_EVENT(Connection& connection, Packet& packet);
         void Client_Handle_TOKEN(Connection& connection, Packet& packet);
         void Client_Handle_OBJECTS_LIST(Connection& connection, Packet& packet);
-        void Client_Handle_SCRIPTS_HEADER(Connection& connection, Packet& packet);
         void Client_Handle_SCRIPTS_DATA(Connection& connection, Packet& packet);
         void Client_Handle_GAMESTATE(Connection& connection, Packet& packet);
-
         std::vector<uint8_t> _challenge;
         std::map<uint32_t, GameActions::GameAction::Callback_t> _gameActionCallbacks;
         Key _key;
@@ -226,13 +225,6 @@ namespace OpenRCT2::Network
             std::string spriteHash;
         };
 
-        struct ServerScriptsData
-        {
-            uint32_t pluginCount{};
-            uint32_t dataSize{};
-            MemoryStream data;
-        };
-
         std::unordered_map<Command, CommandHandler> client_command_handlers;
         std::unique_ptr<Connection> _serverConnection;
         std::map<uint32_t, PlayerListUpdate> _pendingPlayerLists;
@@ -254,7 +246,6 @@ namespace OpenRCT2::Network
         SocketStatus _lastConnectStatus = SocketStatus::closed;
         bool _requireReconnect = false;
         bool _clientMapLoaded = false;
-        ServerScriptsData _serverScriptsData{};
     };
 } // namespace OpenRCT2::Network
 

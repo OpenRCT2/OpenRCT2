@@ -181,6 +181,12 @@ namespace OpenRCT2
             }
         }
 
+        // Network has to always tick.
+        if (numUpdates == 0)
+        {
+            Network::Tick();
+        }
+
         // Update the game one or more times
         for (uint32_t i = 0; i < numUpdates; i++)
         {

@@ -64,7 +64,6 @@ namespace OpenRCT2::Network
     enum class Command : uint32_t
     {
         auth,
-        beginMap,
         map,
         chat,
         tick = 4,
@@ -83,9 +82,10 @@ namespace OpenRCT2::Network
         playerInfo,
         requestGameState,
         gameState,
-        scriptsHeader,
+        scriptsHeader, // Deprecated.
         scriptsData,
         heartbeat,
+        beginMap,
         max,
         invalid = static_cast<uint32_t>(-1),
     };
