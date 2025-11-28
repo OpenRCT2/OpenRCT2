@@ -154,6 +154,10 @@ namespace OpenRCT2::GameActions
                                 totalCost += res.Cost;
                                 tileEdited = executing;
                             }
+                            else if (res.Error == Status::InsufficientFunds)
+                            {
+                                totalCost += res.Cost;
+                            }
                         }
                         break;
                     case TileElementType::SmallScenery:
@@ -172,6 +176,10 @@ namespace OpenRCT2::GameActions
                                 totalCost += res.Cost;
                                 tileEdited = executing;
                             }
+                            else if (res.Error == Status::InsufficientFunds)
+                            {
+                                totalCost += res.Cost;
+                            }
                         }
                         break;
                     case TileElementType::Wall:
@@ -188,6 +196,10 @@ namespace OpenRCT2::GameActions
                             {
                                 totalCost += res.Cost;
                                 tileEdited = executing;
+                            }
+                            else if (res.Error == Status::InsufficientFunds)
+                            {
+                                totalCost += res.Cost;
                             }
                         }
                         break;
@@ -206,6 +218,10 @@ namespace OpenRCT2::GameActions
                             {
                                 totalCost += res.Cost;
                                 tileEdited = executing;
+                            }
+                            else if (res.Error == Status::InsufficientFunds)
+                            {
+                                totalCost += res.Cost;
                             }
                         }
                         break;
