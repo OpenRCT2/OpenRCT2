@@ -132,6 +132,7 @@ namespace OpenRCT2::Network
 
         if (_inboundBuffer.size() < totalPacketLength)
         {
+            InboundPacket.BytesTransferred = _inboundBuffer.size();
             return ReadPacket::moreData;
         }
 
@@ -299,9 +300,7 @@ namespace OpenRCT2::Network
 
     size_t Connection::getPendingPacketAvailable() const noexcept
     {
-        size_t maxSize = std::min<size_t>(InboundPacket.Header.size, _inboundBuffer.size());
-
-        return maxSize;
+        return InboundPacket.BytesTransferred;
     }
 
 } // namespace OpenRCT2::Network
