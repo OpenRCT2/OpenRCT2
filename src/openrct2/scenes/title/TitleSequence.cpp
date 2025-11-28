@@ -371,15 +371,26 @@ namespace OpenRCT2::Title
                     uint8_t zoom = atoi(parts[1].data()) & 0xFF;
                     command = SetZoomCommand{ zoom };
                 }
+                else if (String::iequals(token, "VISIBILITY"))
+                {
+                    uint32_t flags = atoi(parts[1].data());
+                    command = VisibilityCommand{ flags };
+                }
                 else if (String::iequals(token, "SPEED"))
                 {
                     uint8_t speed = std::max(1, std::min(4, atoi(parts[1].data()) & 0xFF));
                     command = SetSpeedCommand{ speed };
                 }
-                else if (String::iequals(token, "FOLLOW"))
+                else if (String::iequals(token, "RANDOM") || String::iequals(token, "RANDOMSCROLL"))
+                {
+                    auto entityType = static_cast<EntityType>(atoi(parts[1].data()) & 0xFF);
+                    auto followCommand = FollowRandomCommand{ entityType, String::iequals(token, "RANDOMSCROLL") };
+                    command = followCommand;
+                }
+                else if (String::iequals(token, "FOLLOW") || String::iequals(token, "FOLLOWSCROLL"))
                 {
                     auto entityID = EntityId::FromUnderlying(atoi(parts[1].data()) & 0xFFFF);
-                    auto followCommand = FollowEntityCommand{ entityID };
+                    auto followCommand = FollowEntityCommand{ entityID, String::iequals(token, "FOLLOWSCROLL") };
                     String::safeUtf8Copy(followCommand.Follow.SpriteName, parts[2].data(), kUserStringMaxLength);
                     command = followCommand;
                 }
@@ -544,10 +555,32 @@ namespace OpenRCT2::Title
                     {
                         sb.Append(String::stdFormat("ZOOM %u", command.Zoom));
                     }
+                    else if constexpr (std::is_same_v<T, VisibilityCommand>)
+                    {
+                        sb.Append(String::stdFormat("VISIBILITY %u", command.Flags));
+                    }
                     else if constexpr (std::is_same_v<T, FollowEntityCommand>)
                     {
-                        sb.Append(String::stdFormat("FOLLOW %u ", command.Follow.SpriteIndex));
+                        if (command.Follow.ScrollToLocation)
+                        {
+                            sb.Append(String::stdFormat("FOLLOWSCROLL %u ", command.Follow.SpriteIndex));
+                        }
+                        else
+                        {
+                            sb.Append(String::stdFormat("FOLLOW %u ", command.Follow.SpriteIndex));
+                        }
                         sb.Append(command.Follow.SpriteName);
+                    }
+                    else if constexpr (std::is_same_v<T, FollowRandomCommand>)
+                    {
+                        if (command.Follow.ScrollToLocation)
+                        {
+                            sb.Append(String::stdFormat("RANDOMSCROLL %u", command.Follow.Type));
+                        }
+                        else
+                        {
+                            sb.Append(String::stdFormat("RANDOM %u", command.Follow.Type));
+                        }
                     }
                     else if constexpr (std::is_same_v<T, SetSpeedCommand>)
                     {
