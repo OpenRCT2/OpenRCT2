@@ -571,6 +571,8 @@ void PeepDecrementNumRiders(Peep* peep)
 void PeepWindowStateUpdate(Peep* peep)
 {
     auto* windowMgr = Ui::GetWindowManager();
+
+    // FIXME: We should not be directly accessing the window manager outside the Ui system.
     WindowBase* w = windowMgr->FindByNumber(WindowClass::peep, peep->Id.ToUnderlying());
     if (w != nullptr)
         w->onPrepareDraw();
@@ -587,13 +589,15 @@ void PeepWindowStateUpdate(Peep* peep)
             }
         }
 
-        windowMgr->InvalidateByNumber(WindowClass::peep, peep->Id);
-        windowMgr->InvalidateByClass(WindowClass::guestList);
+        //windowMgr->InvalidateByNumber(WindowClass::peep, peep->Id);
+        //windowMgr->InvalidateByClass(WindowClass::guestList);
+        ContextBroadcastIntent(Intent(INTENT_ACTION_INVALIDATE_BY_CLASS).SetWindowClass(WindowClass::guestList));
     }
     else
     {
-        windowMgr->InvalidateByNumber(WindowClass::peep, peep->Id);
-        windowMgr->InvalidateByClass(WindowClass::staffList);
+        //windowMgr->InvalidateByNumber(WindowClass::peep, peep->Id);
+        //windowMgr->InvalidateByClass(WindowClass::staffList);
+        ContextBroadcastIntent(Intent(INTENT_ACTION_INVALIDATE_BY_CLASS).SetWindowClass(WindowClass::staffList));
     }
 }
 
@@ -1894,8 +1898,10 @@ static bool PeepInteractWithEntrance(Peep* peep, const CoordsXYE& coords, uint8_
 
         getGameState().park.totalAdmissions++;
 
-        auto* windowMgr = Ui::GetWindowManager();
-        windowMgr->InvalidateByNumber(WindowClass::parkInformation, 0);
+        //auto* windowMgr = Ui::GetWindowManager();
+        //windowMgr->InvalidateByNumber(WindowClass::parkInformation, 0);
+        // FIXME: We need invalidate by number Intent.
+        ContextBroadcastIntent(Intent(INTENT_ACTION_INVALIDATE_BY_CLASS).SetWindowClass(WindowClass::parkInformation));
 
         guest->Var37 = 1;
         auto destination = guest->GetDestination();

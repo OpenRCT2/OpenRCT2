@@ -52,8 +52,9 @@ void PreloaderScene::Tick()
 
     ContextHandleInput();
 
-    auto* windowMgr = Ui::GetWindowManager();
-    windowMgr->InvalidateAll();
+    //auto* windowMgr = Ui::GetWindowManager();
+    //windowMgr->InvalidateAll();
+    ContextBroadcastIntent(Intent(INTENT_ACTION_INVALIDATE_ALL));
 
     gInUpdateCode = false;
 

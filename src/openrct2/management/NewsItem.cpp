@@ -192,15 +192,15 @@ void News::ItemQueues::ArchiveCurrent()
     Archived.push_back(Current());
 
     // Invalidate the news window
-    auto* windowMgr = Ui::GetWindowManager();
-    windowMgr->InvalidateByClass(WindowClass::recentNews);
+    //auto* windowMgr = Ui::GetWindowManager();
+    //windowMgr->InvalidateByClass(WindowClass::recentNews);
+    ContextBroadcastIntent(Intent(INTENT_ACTION_INVALIDATE_BY_CLASS).SetWindowClass(WindowClass::recentNews));
 
     // Dequeue the current news item, shift news up
     Recent.pop_front();
 
     // Invalidate current news item bar
-    auto intent = Intent(INTENT_ACTION_INVALIDATE_TICKER_NEWS);
-    ContextBroadcastIntent(&intent);
+    ContextBroadcastIntent(Intent(INTENT_ACTION_INVALIDATE_TICKER_NEWS));
 }
 
 /**

@@ -59,6 +59,8 @@ namespace OpenRCT2
         INTENT_ACTION_REMOVE_PROVISIONAL_TRACK_PIECE,
 
         INTENT_ACTION_INVALIDATE_ALL,
+        INTENT_ACTION_INVALIDATE_BY_CLASS,
+        INTENT_ACTION_CLOSE_BY_CLASS,
 
         INTENT_ACTION_NULL = 255,
     };
@@ -80,11 +82,16 @@ namespace OpenRCT2
     public:
         explicit Intent(WindowClass windowClass);
         explicit Intent(WindowDetail windowDetail);
-        explicit Intent(IntentAction windowclass);
+        explicit Intent(IntentAction action);
 
         WindowClass GetWindowClass() const;
+        Intent& SetWindowClass(WindowClass wc);
+
         WindowDetail GetWindowDetail() const;
+        Intent& SetWindowDetail(WindowDetail wd);
+
         IntentAction GetAction() const;
+        Intent& SetAction(IntentAction action);
 
         void* GetPointerExtra(uint32_t key) const;
         std::string GetStringExtra(uint32_t key) const;

@@ -304,6 +304,22 @@ public:
         {
             case WindowClass::mainWindow:
                 return MainOpen();
+            case WindowClass::titleMenu:
+                return TitleMenuOpen();
+            case WindowClass::titleExit:
+                return TitleExitOpen();
+            case WindowClass::titleOptions:
+                return TitleOptionsOpen();
+            case WindowClass::titleLogo:
+                return TitleLogoOpen();
+            case WindowClass::titleVersion:
+                return TitleVersionOpen();
+            case WindowClass::topToolbar:
+                return TopToolbarOpen();
+            case WindowClass::bottomToolbar:
+                return GameBottomToolbarOpen();
+            case WindowClass::parkInformation:
+                return ParkEntranceOpen();
             case WindowClass::peep:
                 return GuestOpen(static_cast<Peep*>(intent->GetPointerExtra(INTENT_EXTRA_PEEP)));
             case WindowClass::firePrompt:
@@ -641,6 +657,12 @@ public:
             case INTENT_ACTION_INVALIDATE_ALL:
                 WindowVisitEach([](WindowBase* w) { w->invalidate(); });
                 break;
+            case INTENT_ACTION_INVALIDATE_BY_CLASS:
+                InvalidateByClass(intent.GetWindowClass());
+                break;
+            case INTENT_ACTION_CLOSE_BY_CLASS:
+                CloseByClass(intent.GetWindowClass());
+                break;
             default:
                 break;
         }
@@ -694,7 +716,7 @@ public:
 
     void SetMainView(const ScreenCoordsXY& viewPos, ZoomLevel zoom, int32_t rotation) override
     {
-        Guard::Assert(_inUpdate, "Attempt to access UI system outside the UI update");
+        // Guard::Assert(_inUpdate, "Attempt to access UI system outside the UI update");
 
         auto mainWindow = WindowGetMain();
         if (mainWindow != nullptr)
@@ -1354,9 +1376,9 @@ public:
      */
     void InvalidateAll() override
     {
-        //WindowVisitEach([](WindowBase* w) { w->invalidate(); });
-        auto intent = Intent(INTENT_ACTION_INVALIDATE_ALL);
-        BroadcastIntent(intent);
+        Guard::Assert(_inUpdate, "Attempt to access UI system outside the UI update");
+
+        WindowVisitEach([](WindowBase* w) { w->invalidate(); });
     }
 
     /**
