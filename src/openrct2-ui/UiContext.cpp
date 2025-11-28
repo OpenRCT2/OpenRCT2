@@ -780,6 +780,7 @@ private:
         int rWidth, rHeight;
         if (SDL_GetRendererOutputSize(renderer, &rWidth, &rHeight) == 0)
             config.windowScale = rWidth / wWidth;
+
         config.inferDisplayDPI = false;
         Config::Save();
     }
