@@ -25,15 +25,13 @@ namespace OpenRCT2::Network
 {
     static constexpr size_t kDisconnectReasonBufSize = 256;
     static constexpr size_t kBufferSize = 1024 * 16; // 16 KiB.
-    #ifndef DEBUG
-    static constexpr size_t kNoDataTimeout = 20; // Seconds.
-    #endif
+    static constexpr size_t kNoDataTimeout = 40;     // Seconds.
 
     static_assert(kBufferSize <= std::numeric_limits<uint16_t>::max(), "kBufferSize too big, uint16_t is max.");
 
     Connection::Connection() noexcept
     {
-        ResetLastPacketTime();
+        _lastReceiveTime = Platform::GetTicks();
     }
 
     void Connection::update()
@@ -61,6 +59,7 @@ namespace OpenRCT2::Network
 
         if (status == ReadPacket::success)
         {
+            _lastReceiveTime = Platform::GetTicks();
             _inboundBuffer.insert(_inboundBuffer.end(), buffer, buffer + bytesRead);
         }
     }
@@ -230,20 +229,16 @@ namespace OpenRCT2::Network
         }
     }
 
-    void Connection::ResetLastPacketTime() noexcept
+    bool Connection::ReceivedDataRecently() const noexcept
     {
-        _lastPacketTime = Platform::GetTicks();
-    }
-
-    bool Connection::ReceivedPacketRecently() const noexcept
-    {
-    #ifndef DEBUG
         constexpr auto kTimeoutMs = kNoDataTimeout * 1000;
-        if (Platform::GetTicks() > _lastPacketTime + kTimeoutMs)
+
+        const auto timeSinceLastRecv = Platform::GetTicks() - _lastReceiveTime;
+        if (timeSinceLastRecv > kTimeoutMs)
         {
             return false;
         }
-    #endif
+
         return true;
     }
 

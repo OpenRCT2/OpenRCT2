@@ -627,7 +627,6 @@ namespace OpenRCT2::Network
                     case SocketStatus::connected:
                     {
                         status = Status::connected;
-                        _serverConnection->ResetLastPacketTime();
                         Client_Send_TOKEN();
                         char str_authenticating[256];
                         FormatStringLegacy(str_authenticating, 256, STR_MULTIPLAYER_AUTHENTICATING, nullptr);
@@ -1831,8 +1830,12 @@ namespace OpenRCT2::Network
             }
         } while (packetStatus == ReadPacket::success && countProcessed < kMaxPacketsPerTick);
 
-        if (!connection.ReceivedPacketRecently())
+        if (!connection.ReceivedDataRecently())
         {
+            LOG_INFO(
+                "No data received recently from connection %s, disconnecting connection.",
+                connection.Socket->GetIpAddress().c_str());
+
             if (!connection.GetLastDisconnectReason())
             {
                 connection.SetLastDisconnectReason(STR_MULTIPLAYER_NO_DATA);
@@ -2358,8 +2361,7 @@ namespace OpenRCT2::Network
 
     void NetworkBase::ServerHandleHeartbeat(Connection& connection, Packet& packet)
     {
-        LOG_VERBOSE("Client %s heartbeat", connection.Socket->GetHostName());
-        connection.ResetLastPacketTime();
+        LOG_VERBOSE("Client %s heartbeat", connection.Socket->GetIpAddress().c_str());
     }
 
     void NetworkBase::Client_Handle_AUTH(Connection& connection, Packet& packet)

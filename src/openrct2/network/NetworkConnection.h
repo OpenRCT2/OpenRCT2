@@ -59,8 +59,7 @@ namespace OpenRCT2::Network
 
         bool IsValid() const;
         void SendQueuedData();
-        void ResetLastPacketTime() noexcept;
-        bool ReceivedPacketRecently() const noexcept;
+        bool ReceivedDataRecently() const noexcept;
 
         const utf8* GetLastDisconnectReason() const noexcept;
         void SetLastDisconnectReason(std::string_view src);
@@ -69,7 +68,7 @@ namespace OpenRCT2::Network
     private:
         std::vector<uint8_t> _inboundBuffer;
         std::vector<uint8_t> _outboundBuffer;
-        uint32_t _lastPacketTime = 0;
+        uint32_t _lastReceiveTime = 0;
         std::string _lastDisconnectReason;
         bool _isLegacyProtocol = false;
 
