@@ -24,10 +24,8 @@
 namespace OpenRCT2::Network
 {
     static constexpr size_t kDisconnectReasonBufSize = 256;
-    static constexpr size_t kBufferSize = 1024 * 16; // 16 KiB.
-    static constexpr size_t kNoDataTimeout = 40;     // Seconds.
-
-    static_assert(kBufferSize <= std::numeric_limits<uint16_t>::max(), "kBufferSize too big, uint16_t is max.");
+    static constexpr size_t kBufferSize = 1024 * 128; // 128 KiB.
+    static constexpr size_t kNoDataTimeout = 40;      // Seconds.
 
     Connection::Connection() noexcept
     {
