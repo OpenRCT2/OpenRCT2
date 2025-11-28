@@ -1720,10 +1720,15 @@ namespace OpenRCT2
         return windowManager->openDetails(type, id);
     }
 
-    WindowBase* ContextOpenIntent(Intent* intent)
+    WindowBase* ContextOpenIntent(const Intent* intent)
     {
         auto windowManager = Ui::GetWindowManager();
         return windowManager->OpenIntent(intent);
+    }
+
+    WindowBase* ContextOpenIntent(const Intent& intent)
+    {
+        return ContextOpenIntent(&intent);
     }
 
     void ContextBroadcastIntent(Intent* intent)

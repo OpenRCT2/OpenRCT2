@@ -31,10 +31,11 @@ namespace OpenRCT2::Ui
         virtual ~IWindowManager() = default;
         virtual void Init() = 0;
         virtual void update() = 0;
+        virtual void tick() = 0;
         virtual WindowBase* OpenWindow(WindowClass wc) = 0;
         virtual WindowBase* openView(WindowView view) = 0;
         virtual WindowBase* openDetails(WindowDetail type, int32_t id) = 0;
-        virtual WindowBase* OpenIntent(Intent* intent) = 0;
+        virtual WindowBase* OpenIntent(const Intent* intent) = 0;
         virtual void BroadcastIntent(const Intent& intent) = 0;
         virtual WindowBase* ShowError(StringId title, StringId message, const Formatter& formatter, bool autoClose = false) = 0;
         virtual WindowBase* ShowError(std::string_view title, std::string_view message, bool autoClose = false) = 0;

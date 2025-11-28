@@ -171,12 +171,13 @@ namespace OpenRCT2
     int32_t ContextGetHeight();
     bool ContextHasFocus();
     void ContextSetCursorTrap(bool value);
-    OpenRCT2::WindowBase* ContextOpenWindow(WindowClass wc);
-    OpenRCT2::WindowBase* ContextOpenDetailWindow(WindowDetail type, int32_t id);
-    OpenRCT2::WindowBase* ContextOpenWindowView(WindowView view);
-    OpenRCT2::WindowBase* ContextShowError(
+    WindowBase* ContextOpenWindow(WindowClass wc);
+    WindowBase* ContextOpenDetailWindow(WindowDetail type, int32_t id);
+    WindowBase* ContextOpenWindowView(WindowView view);
+    WindowBase* ContextShowError(
         StringId title, StringId message, const class OpenRCT2::Formatter& args, bool autoClose = false);
-    OpenRCT2::WindowBase* ContextOpenIntent(OpenRCT2::Intent* intent);
+    WindowBase* ContextOpenIntent(const Intent* intent);
+    WindowBase* ContextOpenIntent(const Intent& intent);
     void ContextBroadcastIntent(OpenRCT2::Intent* intent);
     void ContextForceCloseWindowByClass(WindowClass wc);
     void ContextHandleInput();

@@ -108,7 +108,8 @@ void TitleScene::Load()
 #endif
     gameStateInitAll(getGameState(), kDefaultMapSize);
     ViewportInitAll();
-    ContextOpenWindow(WindowClass::mainWindow);
+    //ContextOpenWindow(WindowClass::mainWindow);
+    ContextOpenIntent(Intent(WindowClass::mainWindow));
 
     TitleInitialise();
 

@@ -58,6 +58,8 @@ namespace OpenRCT2
         INTENT_ACTION_REMOVE_PROVISIONAL_FOOTPATH,
         INTENT_ACTION_REMOVE_PROVISIONAL_TRACK_PIECE,
 
+        INTENT_ACTION_INVALIDATE_ALL,
+
         INTENT_ACTION_NULL = 255,
     };
 
@@ -90,7 +92,7 @@ namespace OpenRCT2
         int32_t GetSIntExtra(uint32_t key) const;
         CloseCallback GetCloseCallbackExtra(uint32_t key) const;
         template<typename TEnumType>
-        TEnumType GetEnumExtra(uint32_t key)
+        TEnumType GetEnumExtra(uint32_t key) const
         {
             static_assert(std::is_enum_v<TEnumType>);
             return static_cast<TEnumType>(GetUIntExtra(key));

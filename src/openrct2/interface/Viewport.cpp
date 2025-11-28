@@ -102,7 +102,8 @@ namespace OpenRCT2
             ColoursInitMaps();
         }
 
-        WindowInitAll();
+        Ui::GetWindowManager()->Init();
+        //WindowInitAll();
 
         // ?
         gInputFlags.clearAll();
@@ -112,7 +113,6 @@ namespace OpenRCT2
         ResetTooltipNotShown();
         gMapSelectFlags.clearAll();
         ClearPatrolAreaToRender();
-        TextinputCancel();
     }
 
     /**
