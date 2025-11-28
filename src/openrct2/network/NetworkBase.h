@@ -238,7 +238,6 @@ namespace OpenRCT2::Network
         std::map<uint32_t, PlayerListUpdate> _pendingPlayerLists;
         std::multimap<uint32_t, Player> _pendingPlayerInfo;
         std::map<uint32_t, ServerTickData> _serverTickData;
-        std::vector<ObjectEntryDescriptor> _missingObjects;
         std::string _host;
         std::string _chatLogPath;
         std::string _chatLogFilenameFormat = "%Y%m%d-%H%M%S.txt";
