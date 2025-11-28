@@ -1814,6 +1814,7 @@ namespace OpenRCT2::Network
                     return false;
                 case ReadPacket::success:
                     // done reading in packet
+                    reportPacketProgress(*this, connection);
                     ProcessPacket(connection, connection.InboundPacket);
                     if (!connection.IsValid())
                     {
@@ -2525,7 +2526,7 @@ namespace OpenRCT2::Network
             auto code = std::string_view(reinterpret_cast<const char*>(scriptData), codeSize);
             scriptEngine.AddNetworkPlugin(code);
 
-            LOG_INFO("Received and loaded network script plugin %u/%u", i + 1, count);
+            LOG_VERBOSE("Received and loaded network script plugin %u/%u", i + 1, count);
         }
     #else
         connection.SetLastDisconnectReason("The client requires plugin support.");
