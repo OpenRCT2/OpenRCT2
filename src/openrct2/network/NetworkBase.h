@@ -38,10 +38,10 @@ namespace OpenRCT2::Network
         bool Init();
         void Close();
         uint32_t GetServerTick() const noexcept;
-        void Update() override final;
-        void Tick() override final;
+        void Update() final;
+        void Tick() final;
         void Flush();
-        void PostTick() override final;
+        void PostTick() final;
         void ProcessPlayerList();
         auto GetPlayerIteratorByID(uint8_t id) const;
         auto GetGroupIteratorByID(uint8_t id) const;

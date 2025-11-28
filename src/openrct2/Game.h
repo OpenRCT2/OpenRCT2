@@ -31,7 +31,6 @@ namespace OpenRCT2
     // The network update interval in milliseconds, (1000 / 140fps) = ~7.14ms
     constexpr float kNetworkUpdateTimeMS = 1.0f / kNetworkUpdateFPS;
 
-
     constexpr float kGameMinTimeScale = 0.1f;
     constexpr float kGameMaxTimeScale = 5.0f;
 } // namespace OpenRCT2
