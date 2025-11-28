@@ -809,6 +809,7 @@ private:
             width = 640;
         if (height <= 0)
             height = 480;
+#endif
 
         // Create window in window first rather than fullscreen so we have the display the window is on first
         uint32_t flags = SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI;
