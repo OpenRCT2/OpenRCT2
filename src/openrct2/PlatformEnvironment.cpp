@@ -153,14 +153,27 @@ public:
         auto dataPath = GetDirectoryPath(base, did);
 
         std::string alternativeFilename;
-        if (_rct2Variant != RCT2Variant::rct2Original && base == DirBase::rct2 && did == DirId::data)
+        if (_rct2Variant != RCT2Variant::rct2Original && base == DirBase::rct2)
         {
-            // Special case, handle RCT Classic css ogg files
-            if (String::startsWith(fileName, "css", true) && String::endsWith(fileName, ".dat", true))
+            if (did == DirId::data)
             {
-                alternativeFilename = fileName.substr(0, fileName.size() - 3);
-                alternativeFilename.append("ogg");
-                fileName = alternativeFilename;
+                // Special case, handle RCT Classic css ogg files
+                if (String::startsWith(fileName, "css", true) && String::endsWith(fileName, ".dat", true))
+                {
+                    alternativeFilename = fileName.substr(0, fileName.size() - 3);
+                    alternativeFilename.append("ogg");
+                    fileName = alternativeFilename;
+                }
+            }
+            else if (did == DirId::objects)
+            {
+                // Special case, handle RCT Classic pob files
+                if (String::endsWith(fileName, ".dat", true))
+                {
+                    alternativeFilename = fileName.substr(0, fileName.size() - 3);
+                    alternativeFilename.append("pob");
+                    fileName = alternativeFilename;
+                }
             }
         }
 

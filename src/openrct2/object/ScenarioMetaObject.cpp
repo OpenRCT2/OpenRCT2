@@ -18,7 +18,7 @@ namespace OpenRCT2
 {
     void ScenarioMetaObject::Load()
     {
-        auto numImages = GetImageTable().GetCount();
+        auto numImages = GetNumImages();
         if (numImages == 0)
             return;
 
@@ -28,6 +28,7 @@ namespace OpenRCT2
     void ScenarioMetaObject::Unload()
     {
         UnloadImages();
+        _imageOffsetId = kImageIndexUndefined;
     }
 
     void ScenarioMetaObject::ReadJson(IReadObjectContext* context, json_t& root)
