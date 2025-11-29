@@ -198,9 +198,14 @@ namespace OpenRCT2::Ui::Windows
             int16_t vehicleWidth = (vehicle != nullptr) ? vehicle->width : 0;
             int32_t position;
             if (_totalCount > 0)
-                position = (-vehicleWidth + 2) + width * _currentProgress / _totalCount;
+            {
+                const auto progress = static_cast<double>(_currentProgress) / _totalCount;
+                position = static_cast<int32_t>((-vehicleWidth + 2) + width * progress);
+            }
             else
+            {
                 position = (vehicleWidth + width) / 2;
+            }
 
             GfxDrawSprite(clipDPI, variant.vehicle, ScreenCoordsXY(position, widget.bottom + 1));
         }
@@ -208,9 +213,6 @@ namespace OpenRCT2::Ui::Windows
         void setCaption(const std::string& text)
         {
             _progressTitle = text;
-            _currentProgress = 0;
-            _totalCount = 0;
-
             invalidate();
         }
 
