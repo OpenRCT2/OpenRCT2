@@ -15,6 +15,7 @@
 #include "EntranceElement.h"
 #include "LargeSceneryElement.h"
 #include "PathElement.h"
+#include "Slope.h"
 #include "SmallSceneryElement.h"
 #include "SurfaceElement.h"
 #include "TileElement.h"
@@ -138,6 +139,29 @@ namespace OpenRCT2
     {
         Owner &= ~kTileElementOwnerMask;
         Owner |= (newOwner & kTileElementOwnerMask);
+    }
+
+    bool TileElementBase::intersects(int32_t zStart, int32_t zEnd) const
+    {
+        auto clearanceZ = GetClearanceZ();
+        if (GetType() == TileElementType::Surface)
+        {
+            const auto* surfaceElement = AsSurface();
+            const auto slope = surfaceElement->GetSlope();
+            if (slope & kTileSlopeRaisedCornersMask)
+            {
+                clearanceZ = GetBaseZ() + (2 * kCoordsZStep);
+                if (slope & kTileSlopeDiagonalFlag)
+                    clearanceZ += (2 * kCoordsZStep);
+            }
+        }
+
+        if (clearanceZ <= zStart)
+            return false;
+        if (GetBaseZ() >= zEnd)
+            return false;
+
+        return true;
     }
 
     const SurfaceElement* TileElementBase::AsSurface() const

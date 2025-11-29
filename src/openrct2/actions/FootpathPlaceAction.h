@@ -47,5 +47,7 @@ namespace OpenRCT2::GameActions
         PathElement* MapGetFootpathElementWithSlope(const CoordsXYZ& footpathPos, FootpathSlope slope) const;
         bool IsSameAsPathElement(const PathElement* pathElement) const;
         bool IsSameAsEntranceElement(const EntranceElement& entranceElement) const;
+        bool landFitsUnderPath(const SurfaceElement& surfaceElement, int32_t zLow, int32_t zHigh) const;
+        void autoshapeLand(Result& res, SurfaceElement& surfaceElement, int32_t zLow, int32_t zHigh) const;
     };
 } // namespace OpenRCT2::GameActions

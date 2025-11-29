@@ -52,4 +52,6 @@ namespace OpenRCT2
 
     SlopeRelativeCornerHeights GetSlopeRelativeCornerHeights(const uint8_t slope);
     TileCornersZ GetSlopeCornerHeights(const int32_t height, const uint8_t slope);
+
+    uint8_t getLandSlopeFromPathSlope(Direction slopeDirection);
 } // namespace OpenRCT2

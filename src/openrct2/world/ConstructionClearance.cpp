@@ -113,19 +113,25 @@ static bool landSlopeFitsUnderTrack(int32_t baseZ, uint8_t slope, const TrackEle
     return false;
 }
 
-static bool landSlopeFitsUnderPath(int32_t baseZ, uint8_t slope, const PathElement& pathElement)
+bool landSlopeFitsUnderPath(int32_t landBaseZ, uint8_t landSlope, int32_t pathZ, Direction pathSlopeDirection)
 {
-    const auto slopeCornerHeights = GetSlopeCornerHeights(baseZ, slope);
+    const auto slopeCornerHeights = GetSlopeCornerHeights(landBaseZ, landSlope);
 
-    const uint8_t pathSlope = Numerics::rol4(kTileSlopeSWSideUp, pathElement.GetSlopeDirection());
-    const auto pathCornerHeights = GetSlopeCornerHeights(pathElement.GetBaseZ(), pathSlope);
+    const uint8_t pathSlope = Numerics::rol4(kTileSlopeSWSideUp, pathSlopeDirection);
+    const auto pathCornerHeights = GetSlopeCornerHeights(pathZ, pathSlope);
 
     return (slopeCornerHeights <= pathCornerHeights);
 }
 
+static bool landSlopeFitsUnderPath(int32_t baseZ, uint8_t slope, const PathElement& pathElement)
+{
+    return landSlopeFitsUnderPath(baseZ, slope, pathElement.GetBaseZ(), pathElement.GetSlopeDirection());
+}
+
 static bool MapLoc68BABCShouldContinue(
     TileElement** tileElementPtr, const CoordsXYRangedZ& pos, ClearingFunction clearFunc, const CommandFlags flags,
-    money64& price, const CreateCrossingMode crossingMode, const bool canBuildCrossing, const uint8_t slope)
+    money64& price, const CreateCrossingMode crossingMode, const TerrainShapeMode terrainShapeMode, const bool canBuildCrossing,
+    const uint8_t slope)
 {
     if (clearFunc(tileElementPtr, pos, flags, &price))
     {
@@ -133,6 +139,11 @@ static bool MapLoc68BABCShouldContinue(
     }
 
     const TileElement* const tileElement = *tileElementPtr;
+
+    if (terrainShapeMode == TerrainShapeMode::autoshape && tileElement->GetType() == TileElementType::Surface)
+    {
+        return true;
+    }
 
     if (slope != kTileSlopeFlat && tileElement->GetType() == TileElementType::Track)
     {
@@ -182,7 +193,7 @@ static bool MapLoc68BABCShouldContinue(
  */
 GameActions::Result MapCanConstructWithClearAt(
     const CoordsXYRangedZ& pos, ClearingFunction clearFunc, const QuarterTile quarterTile, const CommandFlags flags,
-    const uint8_t slope, const CreateCrossingMode crossingMode, const bool isTree)
+    const uint8_t slope, const CreateCrossingMode crossingMode, const TerrainShapeMode terrainShapeMode, const bool isTree)
 {
     auto res = GameActions::Result();
 
@@ -221,7 +232,8 @@ GameActions::Result MapCanConstructWithClearAt(
                 if (tileElement->GetOccupiedQuadrants() & (quarterTile.GetBaseQuarterOccupied()))
                 {
                     if (MapLoc68BABCShouldContinue(
-                            &tileElement, pos, clearFunc, flags, res.cost, crossingMode, canBuildCrossing, slope))
+                            &tileElement, pos, clearFunc, flags, res.cost, crossingMode, terrainShapeMode, canBuildCrossing,
+                            slope))
                     {
                         continue;
                     }
@@ -292,7 +304,7 @@ GameActions::Result MapCanConstructWithClearAt(
                 }
 
                 if (MapLoc68BABCShouldContinue(
-                        &tileElement, pos, clearFunc, flags, res.cost, crossingMode, canBuildCrossing, slope))
+                        &tileElement, pos, clearFunc, flags, res.cost, crossingMode, terrainShapeMode, canBuildCrossing, slope))
                 {
                     continue;
                 }

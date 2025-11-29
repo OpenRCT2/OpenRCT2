@@ -44,6 +44,12 @@ enum class CreateCrossingMode
     pathOverTrack,
 };
 
+enum class TerrainShapeMode
+{
+    none,
+    autoshape,
+};
+
 bool MapPlaceNonSceneryClearFunc(
     OpenRCT2::TileElement** tile_element, const CoordsXY& coords, OpenRCT2::GameActions::CommandFlags flags, money64* price);
 bool MapPlaceSceneryClearFunc(
@@ -54,9 +60,11 @@ struct ConstructClearResult
     uint8_t GroundFlags{ 0 };
 };
 
+bool landSlopeFitsUnderPath(int32_t landBaseZ, uint8_t landSlope, int32_t pathZ, Direction pathSlopeDirection);
 [[nodiscard]] OpenRCT2::GameActions::Result MapCanConstructWithClearAt(
     const CoordsXYRangedZ& pos, ClearingFunction clearFunc, QuarterTile quarterTile, OpenRCT2::GameActions::CommandFlags flags,
-    uint8_t slope, CreateCrossingMode crossingMode = CreateCrossingMode::none, bool isTree = false);
+    uint8_t slope, CreateCrossingMode crossingMode = CreateCrossingMode::none,
+    TerrainShapeMode terrainShapeMode = TerrainShapeMode::none, bool isTree = false);
 
 [[nodiscard]] OpenRCT2::GameActions::Result MapCanConstructAt(const CoordsXYRangedZ& pos, QuarterTile bl);
 

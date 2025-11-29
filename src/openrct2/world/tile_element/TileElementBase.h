@@ -86,6 +86,8 @@ namespace OpenRCT2
         uint8_t GetOwner() const;
         void SetOwner(uint8_t newOwner);
 
+        bool intersects(int32_t zStart, int32_t zEnd) const;
+
         template<typename TType>
         const TType* as() const
         {

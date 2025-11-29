@@ -35,6 +35,7 @@
 #include "../world/tile_element/SurfaceElement.h"
 
 #include <algorithm>
+#include <bit>
 
 namespace OpenRCT2::GameActions
 {
@@ -320,7 +321,8 @@ namespace OpenRCT2::GameActions
         auto crossingMode = isQueue || (_slope.type != FootpathSlopeType::flat) ? CreateCrossingMode::none
                                                                                 : CreateCrossingMode::pathOverTrack;
         auto canBuild = MapCanConstructWithClearAt(
-            { _loc, zLow, zHigh }, MapPlaceNonSceneryClearFunc, quarterTile, GetFlags(), kTileSlopeFlat, crossingMode);
+            { _loc, zLow, zHigh }, MapPlaceNonSceneryClearFunc, quarterTile, GetFlags(), kTileSlopeFlat, crossingMode,
+            TerrainShapeMode::autoshape);
         if (!entrancePath && canBuild.error != Status::ok)
         {
             canBuild.errorTitle = STR_CANT_BUILD_FOOTPATH_HERE;
@@ -341,6 +343,7 @@ namespace OpenRCT2::GameActions
         {
             return Result(Status::invalidParameters, STR_CANT_BUILD_FOOTPATH_HERE, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
         }
+
         int32_t supportHeight = zLow - surfaceElement->GetBaseZ();
         res.cost += supportHeight < 0 ? 20.00_GBP : (supportHeight / kPathHeightStep) * 5.00_GBP;
 
@@ -349,6 +352,56 @@ namespace OpenRCT2::GameActions
             res.cost = 0;
 
         return res;
+    }
+
+    bool FootpathPlaceAction::landFitsUnderPath(const SurfaceElement& surfaceElement, int32_t zLow, int32_t zHigh) const
+    {
+        if (!surfaceElement.intersects(zLow, zHigh))
+            return true;
+
+        if (_slope.type != FootpathSlopeType::flat)
+        {
+            return landSlopeFitsUnderPath(surfaceElement.GetBaseZ(), surfaceElement.GetSlope(), zLow, _slope.direction);
+        }
+
+        return false;
+    }
+
+    void FootpathPlaceAction::autoshapeLand(Result& res, SurfaceElement& surfaceElement, int32_t zLow, int32_t zHigh) const
+    {
+        if (landFitsUnderPath(surfaceElement, zLow, zHigh))
+            return;
+
+        auto surfaceSlope = surfaceElement.GetSlope();
+        // A diagonal surface tile may have the path ending up between the lowest and highest point.
+        // In that case, chopping off the diagonal bit (reducing it to three corners up) may be sufficient.
+        if (surfaceSlope & kTileSlopeDiagonalFlag)
+        {
+            surfaceSlope &= ~kTileSlopeDiagonalFlag;
+            surfaceElement.SetSlope(surfaceSlope);
+            res.Cost += 5.00_GBP;
+
+            if (landFitsUnderPath(surfaceElement, zLow, zHigh))
+            {
+                return;
+            }
+        }
+
+        const uint8_t requiredLandSlope = _slope.type != FootpathSlopeType::flat ? getLandSlopeFromPathSlope(_slope.direction)
+                                                                                 : kTileSlopeFlat;
+        if (surfaceElement.GetBaseZ() == zLow)
+        {
+            surfaceSlope &= requiredLandSlope;
+        }
+        else
+        {
+            surfaceElement.SetBaseZ(zLow);
+            surfaceSlope = requiredLandSlope;
+        }
+
+        const uint8_t changedEdges = (surfaceElement.GetSlope() ^ surfaceSlope) & 0b1111;
+        surfaceElement.SetSlope(surfaceSlope);
+        res.Cost += (std::popcount(changedEdges) * 5.00_GBP);
     }
 
     Result FootpathPlaceAction::ElementInsertExecute(Result res) const
@@ -389,7 +442,7 @@ namespace OpenRCT2::GameActions
                                                                                 : CreateCrossingMode::pathOverTrack;
         auto canBuild = MapCanConstructWithClearAt(
             { _loc, zLow, zHigh }, MapPlaceNonSceneryClearFunc, quarterTile, GetFlags().with(CommandFlag::apply),
-            kTileSlopeFlat, crossingMode);
+            kTileSlopeFlat, crossingMode, TerrainShapeMode::autoshape);
         if (!entrancePath && canBuild.error != Status::ok)
         {
             canBuild.errorTitle = STR_CANT_BUILD_FOOTPATH_HERE;
@@ -405,6 +458,12 @@ namespace OpenRCT2::GameActions
         {
             return Result(Status::invalidParameters, STR_CANT_BUILD_FOOTPATH_HERE, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
         }
+
+        if (!(GetFlags().has(CommandFlag::ghost)) && !getGameState().cheats.disableClearanceChecks)
+        {
+            autoshapeLand(res, *surfaceElement, zLow, zHigh);
+        }
+
         int32_t supportHeight = zLow - surfaceElement->GetBaseZ();
         res.cost += supportHeight < 0 ? 20.00_GBP : (supportHeight / kPathHeightStep) * 5.00_GBP;
 

@@ -139,7 +139,7 @@ namespace OpenRCT2::GameActions
             const auto isTree = (sceneryEntry->flags & LARGE_SCENERY_FLAG_IS_TREE) != 0;
             auto canBuild = MapCanConstructWithClearAt(
                 { curTile, zLow, zHigh }, MapPlaceSceneryClearFunc, quarterTile, GetFlags(), kTileSlopeFlat,
-                CreateCrossingMode::none, isTree);
+                CreateCrossingMode::none, TerrainShapeMode::none, isTree);
             if (canBuild.error != Status::ok)
             {
                 canBuild.errorTitle = STR_CANT_POSITION_THIS_HERE;
@@ -271,7 +271,7 @@ namespace OpenRCT2::GameActions
             const auto isTree = (sceneryEntry->flags & LARGE_SCENERY_FLAG_IS_TREE) != 0;
             auto canBuild = MapCanConstructWithClearAt(
                 { curTile, zLow, zHigh }, MapPlaceSceneryClearFunc, quarterTile, GetFlags(), kTileSlopeFlat,
-                CreateCrossingMode::none, isTree);
+                CreateCrossingMode::none, TerrainShapeMode::none, isTree);
             if (canBuild.error != Status::ok)
             {
                 if (banner != nullptr)
