@@ -15,6 +15,7 @@
 #include "../../GameState.h"
 #include "../../OpenRCT2.h"
 #include "../../audio/Audio.h"
+#include "../../windows/Intent.h"
 
 using namespace OpenRCT2;
 
@@ -39,5 +40,6 @@ void GameScene::Stop()
     // Force closure of any object selection windows, regardless of valid state.
     // NB: this is relevant for both in-game scenes and editors, as the window
     // may be opened in-game using cheats.
-    ContextForceCloseWindowByClass(WindowClass::editorObjectSelection);
+    // ContextForceCloseWindowByClass(WindowClass::editorObjectSelection);
+    ContextBroadcastIntent(Intent(INTENT_ACTION_CLOSE_BY_CLASS).SetWindowClass(WindowClass::editorObjectSelection));
 }

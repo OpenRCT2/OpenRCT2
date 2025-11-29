@@ -105,16 +105,6 @@ static constexpr float kWindowScrollLocations[][2] = {
         });
     }
 
-    /**
-     *
-     *  rct2: 0x006ED7B0
-     */
-    void WindowDispatchUpdateAll()
-    {
-        // gTooltipNotShownTicks++;
-        WindowVisitEach([&](WindowBase* w) { w->onUpdate(); });
-    }
-
     void WindowUpdateAllViewports()
     {
         WindowVisitEach([&](WindowBase* w) {

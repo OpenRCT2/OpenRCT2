@@ -139,9 +139,12 @@ void GameReduceGameSpeed()
  */
 void GameCreateWindows()
 {
-    ContextOpenWindow(WindowClass::mainWindow);
-    ContextOpenWindow(WindowClass::topToolbar);
-    ContextOpenWindow(WindowClass::bottomToolbar);
+    //ContextOpenWindow(WindowClass::mainWindow);
+    //ContextOpenWindow(WindowClass::topToolbar);
+    //ContextOpenWindow(WindowClass::bottomToolbar);
+    ContextOpenIntent(Intent(WindowClass::mainWindow));
+    ContextOpenIntent(Intent(WindowClass::topToolbar));
+    ContextOpenIntent(Intent(WindowClass::bottomToolbar));
     WindowResizeGui(ContextGetWidth(), ContextGetHeight());
 }
 
@@ -149,8 +152,9 @@ void PauseToggle()
 {
     gGamePaused ^= GAME_PAUSED_NORMAL;
 
-    auto* windowMgr = Ui::GetWindowManager();
-    windowMgr->InvalidateByClass(WindowClass::topToolbar);
+    //auto* windowMgr = Ui::GetWindowManager();
+    //windowMgr->InvalidateByClass(WindowClass::topToolbar);
+    ContextBroadcastIntent(Intent(INTENT_ACTION_INVALIDATE_BY_CLASS).SetWindowClass(WindowClass::topToolbar));
 
     if (gGamePaused & GAME_PAUSED_NORMAL)
     {
