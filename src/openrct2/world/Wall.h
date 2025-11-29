@@ -23,7 +23,12 @@ enum EDGE_SLOPE
 
 void WallRemoveAt(const CoordsXYRangedZ& wallPos);
 void WallRemoveAtZ(const CoordsXYZ& wallPos);
-void WallRemoveIntersectingWalls(const CoordsXYRangedZ& wallPos, Direction direction);
+bool WallCanRemoveAt(const CoordsXYRangedZ& wallPos);
+bool WallCanRemoveIntersectingWalls(const CoordsXYRangedZ& wallPos, Direction direction);
+/**
+ * @return false if not all interesting walls could be removed, true otherwise.
+ */
+bool WallRemoveIntersectingWalls(const CoordsXYRangedZ& wallPos, Direction direction);
 
 uint8_t GetWallSlopeFromEdgeSlope(uint8_t Slope, uint8_t Edge);
 
