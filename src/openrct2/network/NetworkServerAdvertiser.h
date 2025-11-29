@@ -18,6 +18,7 @@ namespace OpenRCT2::Network
     {
         disabled,
         unregistered,
+        registering,
         registered,
     };
 
