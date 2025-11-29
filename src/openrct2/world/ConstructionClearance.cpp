@@ -111,6 +111,16 @@ static bool landSlopeFitsUnderTrack(int32_t baseZ, uint8_t slope, const TrackEle
     return false;
 }
 
+static bool landSlopeFitsUnderPath(int32_t baseZ, uint8_t slope, const PathElement& pathElement)
+{
+    const auto slopeCornerHeights = GetSlopeCornerHeights(baseZ, slope);
+
+    const uint8_t pathSlope = Numerics::rol4(kTileSlopeSWSideUp, pathElement.GetSlopeDirection());
+    const auto pathCornerHeights = GetSlopeCornerHeights(pathElement.GetBaseZ(), pathSlope);
+
+    return (slopeCornerHeights <= pathCornerHeights);
+}
+
 static bool MapLoc68BABCShouldContinue(
     TileElement** tileElementPtr, const CoordsXYRangedZ& pos, CLEAR_FUNC clearFunc, const uint8_t flags, money64& price,
     const CreateCrossingMode crossingMode, const bool canBuildCrossing, const uint8_t slope)
@@ -135,13 +145,7 @@ static bool MapLoc68BABCShouldContinue(
 
     if (slope != kTileSlopeFlat && tileElement->GetType() == TileElementType::Path && tileElement->AsPath()->IsSloped())
     {
-        const auto slopeCornerHeights = GetSlopeCornerHeights(pos.baseZ, slope);
-
-        const PathElement& pathElement = *tileElement->AsPath();
-        const uint8_t pathSlope = Numerics::rol4(kTileSlopeSWSideUp, pathElement.GetSlopeDirection());
-        const auto pathCornerHeights = GetSlopeCornerHeights(pathElement.GetBaseZ(), pathSlope);
-
-        if (slopeCornerHeights <= pathCornerHeights)
+        if (landSlopeFitsUnderPath(pos.baseZ, slope, *tileElement->AsPath()))
         {
             return true;
         }
