@@ -11,6 +11,7 @@
 #include "NetworkTypes.h"
 #include "NetworkUser.h"
 
+#include <chrono>
 #include <fstream>
 #include <list>
 #include <memory>
@@ -37,10 +38,10 @@ namespace OpenRCT2::Network
         bool Init();
         void Close();
         uint32_t GetServerTick() const noexcept;
-        // FIXME: This is currently the wrong function to override in System, will be refactored later.
-        void Update() override final;
+        void Update() final;
+        void Tick() final;
         void Flush();
-        void ProcessPending();
+        void PostTick() final;
         void ProcessPlayerList();
         auto GetPlayerIteratorByID(uint8_t id) const;
         auto GetGroupIteratorByID(uint8_t id) const;
@@ -61,6 +62,7 @@ namespace OpenRCT2::Network
         void CloseConnection();
         Player* AddPlayer(const std::string& name, const std::string& keyhash);
         void ProcessPacket(Connection& connection, Packet& packet);
+        bool UpdateConnection(Connection& connection);
 
     public: // Server
         Connection* GetPlayerConnection(uint8_t id) const;
@@ -81,6 +83,7 @@ namespace OpenRCT2::Network
         void SetupDefaultGroups();
         void RemovePlayer(std::unique_ptr<Connection>& connection);
         void UpdateServer();
+        void TickServer();
         void ServerClientDisconnected(std::unique_ptr<Connection>& connection);
         bool SaveMap(IStream* stream, const std::vector<const ObjectRepositoryItem*>& objects) const;
         std::vector<uint8_t> SaveForNetwork(const std::vector<const ObjectRepositoryItem*>& objects) const;
@@ -136,6 +139,7 @@ namespace OpenRCT2::Network
         void ServerClientDisconnected();
         bool LoadMap(IStream* stream);
         void UpdateClient();
+        void TickClient();
 
         // Packet dispatchers.
         void Client_Send_RequestGameState(uint32_t tick);
@@ -152,6 +156,7 @@ namespace OpenRCT2::Network
 
         // Handlers.
         void Client_Handle_AUTH(Connection& connection, Packet& packet);
+        void Client_Handle_BEGINMAP([[maybe_unused]] Connection& connection, Packet& packet);
         void Client_Handle_MAP(Connection& connection, Packet& packet);
         void Client_Handle_CHAT(Connection& connection, Packet& packet);
         void Client_Handle_GAME_ACTION(Connection& connection, Packet& packet);
@@ -167,10 +172,8 @@ namespace OpenRCT2::Network
         void Client_Handle_EVENT(Connection& connection, Packet& packet);
         void Client_Handle_TOKEN(Connection& connection, Packet& packet);
         void Client_Handle_OBJECTS_LIST(Connection& connection, Packet& packet);
-        void Client_Handle_SCRIPTS_HEADER(Connection& connection, Packet& packet);
         void Client_Handle_SCRIPTS_DATA(Connection& connection, Packet& packet);
         void Client_Handle_GAMESTATE(Connection& connection, Packet& packet);
-
         std::vector<uint8_t> _challenge;
         std::map<uint32_t, GameActions::GameAction::Callback_t> _gameActionCallbacks;
         Key _key;
@@ -190,7 +193,6 @@ namespace OpenRCT2::Network
     private: // Common Data
         using CommandHandler = void (NetworkBase::*)(Connection& connection, Packet& packet);
 
-        std::vector<uint8_t> chunk_buffer;
         std::ofstream _chat_log_fs;
         uint32_t _lastUpdateTime = 0;
         uint32_t _currentDeltaTime = 0;
@@ -223,19 +225,11 @@ namespace OpenRCT2::Network
             std::string spriteHash;
         };
 
-        struct ServerScriptsData
-        {
-            uint32_t pluginCount{};
-            uint32_t dataSize{};
-            MemoryStream data;
-        };
-
         std::unordered_map<Command, CommandHandler> client_command_handlers;
         std::unique_ptr<Connection> _serverConnection;
         std::map<uint32_t, PlayerListUpdate> _pendingPlayerLists;
         std::multimap<uint32_t, Player> _pendingPlayerInfo;
         std::map<uint32_t, ServerTickData> _serverTickData;
-        std::vector<ObjectEntryDescriptor> _missingObjects;
         std::string _host;
         std::string _chatLogPath;
         std::string _chatLogFilenameFormat = "%Y%m%d-%H%M%S.txt";
@@ -252,7 +246,6 @@ namespace OpenRCT2::Network
         SocketStatus _lastConnectStatus = SocketStatus::closed;
         bool _requireReconnect = false;
         bool _clientMapLoaded = false;
-        ServerScriptsData _serverScriptsData{};
     };
 } // namespace OpenRCT2::Network
 

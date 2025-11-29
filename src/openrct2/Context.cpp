@@ -1299,6 +1299,8 @@ namespace OpenRCT2
 
             UpdateTimeAccumulators(deltaTime);
 
+            Network::Update();
+
             if (useVariableFrame)
             {
                 RunVariableFrame(deltaTime);
@@ -1307,6 +1309,8 @@ namespace OpenRCT2
             {
                 RunFixedFrame(deltaTime);
             }
+
+            Network::Flush();
         }
 
         void UpdateTimeAccumulators(float deltaTime)
@@ -1332,7 +1336,7 @@ namespace OpenRCT2
 
             if (_ticksAccumulator < kGameUpdateTimeMS)
             {
-                const auto sleepTimeSec = (kGameUpdateTimeMS - _ticksAccumulator);
+                const auto sleepTimeSec = std::min(kNetworkUpdateTimeMS, kGameUpdateTimeMS - _ticksAccumulator);
                 Platform::Sleep(static_cast<uint32_t>(sleepTimeSec * 1000.f));
                 return;
             }

@@ -18,7 +18,7 @@
 namespace OpenRCT2::Network
 {
     Packet::Packet(Command id) noexcept
-        : Header{ 0, id }
+        : Header{ PacketHeader::kMagic, PacketHeader::kVersion, 0, id }
     {
     }
 
@@ -34,7 +34,7 @@ namespace OpenRCT2::Network
 
     Command Packet::GetCommand() const noexcept
     {
-        return Header.Id;
+        return Header.id;
     }
 
     void Packet::Clear() noexcept

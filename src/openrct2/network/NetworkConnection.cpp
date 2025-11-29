@@ -11,6 +11,8 @@
 
     #include "NetworkConnection.h"
 
+    #include "../Diagnostic.h"
+    #include "../core/Diagnostics.hpp"
     #include "../core/String.hpp"
     #include "../localisation/Formatting.h"
     #include "../platform/Platform.h"
@@ -22,42 +24,80 @@
 namespace OpenRCT2::Network
 {
     static constexpr size_t kDisconnectReasonBufSize = 256;
-    static constexpr size_t kBufferSize = (1024 * 64) - 1; // 64 KiB, maximum packet size.
-    #ifndef DEBUG
-    static constexpr size_t kNoDataTimeout = 20; // Seconds.
-    #endif
-
-    static_assert(kBufferSize <= std::numeric_limits<uint16_t>::max(), "kBufferSize too big, uint16_t is max.");
+    static constexpr size_t kBufferSize = 1024 * 128; // 128 KiB.
+    static constexpr size_t kNoDataTimeout = 40;      // Seconds.
 
     Connection::Connection() noexcept
     {
-        ResetLastPacketTime();
+        _lastReceiveTime = Platform::GetTicks();
+    }
+
+    void Connection::update()
+    {
+        if (!IsValid())
+        {
+            return;
+        }
+
+        receiveData();
+        SendQueuedData();
+    }
+
+    void Connection::receiveData()
+    {
+        uint8_t buffer[kBufferSize];
+        size_t bytesRead = 0;
+
+        ReadPacket status = Socket->ReceiveData(buffer, sizeof(buffer), &bytesRead);
+        if (status == ReadPacket::disconnected)
+        {
+            Disconnect();
+            return;
+        }
+
+        if (status == ReadPacket::success)
+        {
+            _lastReceiveTime = Platform::GetTicks();
+            _inboundBuffer.insert(_inboundBuffer.end(), buffer, buffer + bytesRead);
+        }
     }
 
     ReadPacket Connection::readPacket()
     {
-        size_t bytesRead = 0;
+        uint32_t magic = 0;
 
-        // Read packet header.
-        auto& header = InboundPacket.Header;
-        if (InboundPacket.BytesTransferred < sizeof(InboundPacket.Header))
+        // Check if we have enough data for the magic.
+        if (_inboundBuffer.size() < sizeof(magic))
         {
-            const size_t missingLength = sizeof(header) - InboundPacket.BytesTransferred;
+            return ReadPacket::moreData;
+        }
 
-            uint8_t* buffer = reinterpret_cast<uint8_t*>(&InboundPacket.Header);
+        // Read magic.
+        std::memcpy(&magic, _inboundBuffer.data(), sizeof(magic));
 
-            ReadPacket status = Socket->ReceiveData(buffer, missingLength, &bytesRead);
-            if (status != ReadPacket::success)
-            {
-                return status;
-            }
+        size_t totalPacketLength = 0;
+        size_t headerSize = 0;
 
-            InboundPacket.BytesTransferred += bytesRead;
-            if (InboundPacket.BytesTransferred < sizeof(InboundPacket.Header))
-            {
-                // If still not enough data for header, keep waiting.
-                return ReadPacket::moreData;
-            }
+        magic = Convert::NetworkToHost(magic);
+        if (magic == PacketHeader::kMagic)
+        {
+            // New format.
+            auto& header = InboundPacket.Header;
+            std::memcpy(&header, _inboundBuffer.data(), sizeof(header));
+
+            header.magic = magic;
+            header.version = Convert::NetworkToHost(header.version);
+            header.size = Convert::NetworkToHost(header.size);
+            header.id = Convert::NetworkToHost(header.id);
+
+            headerSize = sizeof(header);
+            totalPacketLength = sizeof(header) + header.size;
+        }
+        else
+        {
+            // Legacy format.
+            PacketLegacyHeader header{};
+            std::memcpy(&header, _inboundBuffer.data(), sizeof(header));
 
             // Normalise values.
             header.Size = Convert::NetworkToHost(header.Size);
@@ -65,61 +105,81 @@ namespace OpenRCT2::Network
 
             // NOTE: For compatibility reasons for the master server we need to remove sizeof(Header.Id) from the size.
             // Previously the Id field was not part of the header rather part of the body.
-            header.Size -= std::min<uint16_t>(header.Size, sizeof(header.Id));
+            // We correct the size to have only the length of the body.
+            if (header.Size < sizeof(header.Id))
+            {
+                // This is a malformed packet, disconnect.
+                LOG_INFO(
+                    "Received malformed packet (size: %u) from {%s}, disconnecting.", header.Size,
+                    Socket->GetIpAddress().c_str());
 
-            // Fall-through: Read rest of packet.
+                Disconnect();
+                return ReadPacket::disconnected;
+            }
+
+            header.Size -= sizeof(header.Id);
+
+            // Fill in new header format.
+            InboundPacket.Header.magic = PacketHeader::kMagic;
+            InboundPacket.Header.size = header.Size;
+            InboundPacket.Header.id = header.Id;
+
+            headerSize = sizeof(header);
+            totalPacketLength = sizeof(header) + header.Size;
+
+            _isLegacyProtocol = true;
+        }
+
+        if (_inboundBuffer.size() < totalPacketLength)
+        {
+            InboundPacket.BytesTransferred = _inboundBuffer.size();
+            return ReadPacket::moreData;
         }
 
         // Read packet body.
-        {
-            // NOTE: BytesTransfered includes the header length, this will not underflow.
-            const size_t missingLength = header.Size - (InboundPacket.BytesTransferred - sizeof(header));
+        InboundPacket.BytesTransferred = totalPacketLength;
+        InboundPacket.Write(_inboundBuffer.data() + headerSize, totalPacketLength - headerSize);
 
-            uint8_t buffer[kBufferSize];
+        // Remove read data from buffer.
+        _inboundBuffer.erase(_inboundBuffer.begin(), _inboundBuffer.begin() + totalPacketLength);
 
-            if (missingLength > 0)
-            {
-                ReadPacket status = Socket->ReceiveData(buffer, std::min(missingLength, kBufferSize), &bytesRead);
-                if (status != ReadPacket::success)
-                {
-                    return status;
-                }
+        RecordPacketStats(InboundPacket, false);
 
-                InboundPacket.BytesTransferred += bytesRead;
-                InboundPacket.Write(buffer, bytesRead);
-            }
-
-            if (InboundPacket.Data.size() == header.Size)
-            {
-                // Received complete packet.
-                _lastPacketTime = Platform::GetTicks();
-
-                RecordPacketStats(InboundPacket, false);
-
-                return ReadPacket::success;
-            }
-        }
-
-        return ReadPacket::moreData;
+        return ReadPacket::success;
     }
 
-    static sfl::small_vector<uint8_t, 512> serializePacket(const Packet& packet)
+    static sfl::small_vector<uint8_t, 512> serializePacket(bool legacyProtocol, const Packet& packet)
     {
-        // NOTE: For compatibility reasons for the master server we need to add sizeof(Header.Id) to the size.
-        // Previously the Id field was not part of the header rather part of the body.
-        const auto bodyLength = packet.Data.size() + sizeof(packet.Header.Id);
-
-        Guard::Assert(bodyLength <= std::numeric_limits<uint16_t>::max(), "Packet size too large");
-
-        auto header = packet.Header;
-        header.Size = static_cast<uint16_t>(bodyLength);
-        header.Size = Convert::HostToNetwork(header.Size);
-        header.Id = ByteSwapBE(header.Id);
-
         sfl::small_vector<uint8_t, 512> buffer;
-        buffer.reserve(sizeof(header) + packet.Data.size());
 
-        buffer.insert(buffer.end(), reinterpret_cast<uint8_t*>(&header), reinterpret_cast<uint8_t*>(&header) + sizeof(header));
+        if (legacyProtocol)
+        {
+            // NOTE: For compatibility reasons for the master server we need to add sizeof(Header.Id) to the size.
+            // Previously the Id field was not part of the header rather part of the body.
+            const auto bodyLength = packet.Data.size() + sizeof(PacketLegacyHeader::Id);
+
+            Guard::Assert(bodyLength <= std::numeric_limits<uint16_t>::max(), "Packet size too large");
+
+            PacketLegacyHeader header{};
+            header.Size = static_cast<uint16_t>(bodyLength);
+            header.Size = Convert::HostToNetwork(header.Size);
+            header.Id = ByteSwapBE(packet.Header.id);
+
+            buffer.insert(
+                buffer.end(), reinterpret_cast<uint8_t*>(&header), reinterpret_cast<uint8_t*>(&header) + sizeof(header));
+        }
+        else
+        {
+            PacketHeader header{};
+            header.magic = Convert::HostToNetwork(PacketHeader::kMagic);
+            header.version = Convert::HostToNetwork(PacketHeader::kVersion);
+            header.size = Convert::HostToNetwork(static_cast<uint32_t>(packet.Data.size()));
+            header.id = Convert::HostToNetwork(packet.Header.id);
+
+            buffer.insert(
+                buffer.end(), reinterpret_cast<uint8_t*>(&header), reinterpret_cast<uint8_t*>(&header) + sizeof(header));
+        }
+
         buffer.insert(buffer.end(), packet.Data.begin(), packet.Data.end());
 
         return buffer;
@@ -129,7 +189,7 @@ namespace OpenRCT2::Network
     {
         if (AuthStatus == Auth::ok || !packet.CommandRequiresAuth())
         {
-            const auto payload = serializePacket(packet);
+            const auto payload = serializePacket(_isLegacyProtocol, packet);
             if (front)
             {
                 _outboundBuffer.insert(_outboundBuffer.begin(), payload.begin(), payload.end());
@@ -168,20 +228,16 @@ namespace OpenRCT2::Network
         }
     }
 
-    void Connection::ResetLastPacketTime() noexcept
+    bool Connection::ReceivedDataRecently() const noexcept
     {
-        _lastPacketTime = Platform::GetTicks();
-    }
-
-    bool Connection::ReceivedPacketRecently() const noexcept
-    {
-    #ifndef DEBUG
         constexpr auto kTimeoutMs = kNoDataTimeout * 1000;
-        if (Platform::GetTicks() > _lastPacketTime + kTimeoutMs)
+
+        const auto timeSinceLastRecv = Platform::GetTicks() - _lastReceiveTime;
+        if (timeSinceLastRecv > kTimeoutMs)
         {
             return false;
         }
-    #endif
+
         return true;
     }
 
@@ -231,6 +287,22 @@ namespace OpenRCT2::Network
             stats.bytesReceived[EnumValue(StatisticsGroup::Total)] += packetSize;
         }
     }
+
+    Command Connection::getPendingPacketCommand() const noexcept
+    {
+        return InboundPacket.GetCommand();
+    }
+
+    size_t Connection::getPendingPacketSize() const noexcept
+    {
+        return InboundPacket.Header.size;
+    }
+
+    size_t Connection::getPendingPacketAvailable() const noexcept
+    {
+        return InboundPacket.BytesTransferred;
+    }
+
 } // namespace OpenRCT2::Network
 
 #endif

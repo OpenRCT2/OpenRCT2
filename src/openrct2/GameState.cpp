@@ -173,12 +173,18 @@ namespace OpenRCT2
                 getGameState().entities.UpdateMoneyEffect();
 
                 // Post-tick network update
-                Network::ProcessPending();
+                Network::PostTick();
 
                 // Post-tick game actions.
                 GameActions::ProcessQueue();
                 getGameState().entities.UpdateEntitiesSpatialIndex();
             }
+        }
+
+        // Network has to always tick.
+        if (numUpdates == 0)
+        {
+            Network::Tick();
         }
 
         // Update the game one or more times
@@ -251,7 +257,7 @@ namespace OpenRCT2
 
         GetContext()->GetReplayManager()->Update();
 
-        Network::Update();
+        Network::Tick();
 
         auto& gameState = getGameState();
 
@@ -344,7 +350,7 @@ namespace OpenRCT2
 
         GameActions::ProcessQueue();
 
-        Network::ProcessPending();
+        Network::PostTick();
         Network::Flush();
 
         gameState.currentTicks++;

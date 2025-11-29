@@ -982,17 +982,4 @@ namespace OpenRCT2::Network
 
 } // namespace OpenRCT2::Network
 
-namespace OpenRCT2::Convert
-{
-    uint16_t HostToNetwork(uint16_t value)
-    {
-        return htons(value);
-    }
-
-    uint16_t NetworkToHost(uint16_t value)
-    {
-        return ntohs(value);
-    }
-} // namespace OpenRCT2::Convert
-
 #endif
