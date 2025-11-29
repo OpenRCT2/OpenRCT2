@@ -88,6 +88,29 @@ int32_t MapPlaceNonSceneryClearFunc(TileElement** tile_element, const CoordsXY& 
     return MapPlaceClearFunc(tile_element, coords, flags, price, /*is_scenery=*/false);
 }
 
+static bool landSlopeFitsUnderTrack(int32_t baseZ, uint8_t slope, const TrackElement& trackElement)
+{
+    const auto [slopeNorthZ, slopeEastZ, slopeSouthZ, slopeWestZ] = GetSlopeCornerHeights(baseZ, slope);
+
+    const TrackElemType trackElemType = trackElement.GetTrackType();
+    const auto& ted = OpenRCT2::TrackMetaData::GetTrackElementDescriptor(trackElemType);
+    const uint8_t sequenceIndex = trackElemType == TrackElemType::Maze ? 0 : trackElement.GetSequenceIndex();
+    const auto& trackClearances = ted.sequences[sequenceIndex].clearance;
+    const auto trackQuarters = trackClearances.quarterTile.Rotate(trackElement.GetDirection());
+    const auto trackQuarterHeights = trackQuarters.GetQuarterHeights(trackElement.GetBaseZ());
+    const uint8_t trackOccupiedQuarters = trackQuarters.GetBaseQuarterOccupied();
+
+    if ((!(trackOccupiedQuarters & 0b0001) || slopeNorthZ <= trackQuarterHeights.north)
+        && (!(trackOccupiedQuarters & 0b0010) || slopeEastZ <= trackQuarterHeights.east)
+        && (!(trackOccupiedQuarters & 0b0100) || slopeSouthZ <= trackQuarterHeights.south)
+        && (!(trackOccupiedQuarters & 0b1000) || slopeWestZ <= trackQuarterHeights.west))
+    {
+        return true;
+    }
+
+    return false;
+}
+
 static bool MapLoc68BABCShouldContinue(
     TileElement** tileElementPtr, const CoordsXYRangedZ& pos, CLEAR_FUNC clearFunc, const uint8_t flags, money64& price,
     const CreateCrossingMode crossingMode, const bool canBuildCrossing, const uint8_t slope)
@@ -104,21 +127,7 @@ static bool MapLoc68BABCShouldContinue(
 
     if (slope != kTileSlopeFlat && tileElement->GetType() == TileElementType::Track)
     {
-        const auto [slopeNorthZ, slopeEastZ, slopeSouthZ, slopeWestZ] = GetSlopeCornerHeights(pos.baseZ, slope);
-
-        const TrackElement* const trackElement = tileElement->AsTrack();
-        const TrackElemType trackElemType = trackElement->GetTrackType();
-        const auto& ted = OpenRCT2::TrackMetaData::GetTrackElementDescriptor(trackElemType);
-        const uint8_t sequenceIndex = trackElemType == TrackElemType::Maze ? 0 : trackElement->GetSequenceIndex();
-        const auto& trackClearances = ted.sequences[sequenceIndex].clearance;
-        const auto trackQuarters = trackClearances.quarterTile.Rotate(trackElement->GetDirection());
-        const auto trackQuarterHeights = trackQuarters.GetQuarterHeights(trackElement->GetBaseZ());
-        const uint8_t trackOccupiedQuarters = trackQuarters.GetBaseQuarterOccupied();
-
-        if ((!(trackOccupiedQuarters & 0b0001) || slopeNorthZ <= trackQuarterHeights.north)
-            && (!(trackOccupiedQuarters & 0b0010) || slopeEastZ <= trackQuarterHeights.east)
-            && (!(trackOccupiedQuarters & 0b0100) || slopeSouthZ <= trackQuarterHeights.south)
-            && (!(trackOccupiedQuarters & 0b1000) || slopeWestZ <= trackQuarterHeights.west))
+        if (landSlopeFitsUnderTrack(pos.baseZ, slope, *tileElement->AsTrack()))
         {
             return true;
         }
