@@ -23,7 +23,7 @@ struct CoordsXY;
 struct CoordsXYRangedZ;
 class QuarterTile;
 
-using ClearingFunction = bool (*)(OpenRCT2::TileElement** tile_element, const CoordsXY& coords, uint8_t flags, money64* price);
+using ClearingFunction = bool (&)(OpenRCT2::TileElement** tile_element, const CoordsXY& coords, uint8_t flags, money64* price);
 
 enum
 {

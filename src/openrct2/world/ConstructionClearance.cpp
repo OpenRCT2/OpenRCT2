@@ -125,12 +125,9 @@ static bool MapLoc68BABCShouldContinue(
     TileElement** tileElementPtr, const CoordsXYRangedZ& pos, ClearingFunction clearFunc, const uint8_t flags, money64& price,
     const CreateCrossingMode crossingMode, const bool canBuildCrossing, const uint8_t slope)
 {
-    if (clearFunc != nullptr)
+    if (clearFunc(tileElementPtr, pos, flags, &price))
     {
-        if (clearFunc(tileElementPtr, pos, flags, &price))
-        {
-            return true;
-        }
+        return true;
     }
 
     const TileElement* const tileElement = *tileElementPtr;
@@ -241,7 +238,7 @@ GameActions::Result MapCanConstructWithClearAt(
             groundFlags |= ELEMENT_IS_UNDERWATER;
             if (waterHeight < pos.clearanceZ)
             {
-                if (clearFunc != nullptr && !clearFunc(&tileElement, pos, flags, &res.Cost))
+                if (!clearFunc(&tileElement, pos, flags, &res.Cost))
                 {
                     res.Error = GameActions::Status::NoClearance;
                     res.ErrorMessage = STR_CANNOT_BUILD_PARTLY_ABOVE_AND_PARTLY_BELOW_WATER;
@@ -310,9 +307,16 @@ GameActions::Result MapCanConstructWithClearAt(
     return res;
 }
 
+static bool dummyClearFunc(
+    [[maybe_unused]] OpenRCT2::TileElement** tile_element, [[maybe_unused]] const CoordsXY& coords,
+    [[maybe_unused]] uint8_t flags, [[maybe_unused]] money64* price)
+{
+    return false;
+}
+
 GameActions::Result MapCanConstructAt(const CoordsXYRangedZ& pos, QuarterTile bl)
 {
-    return MapCanConstructWithClearAt(pos, nullptr, bl, 0, kTileSlopeFlat);
+    return MapCanConstructWithClearAt(pos, dummyClearFunc, bl, 0, kTileSlopeFlat);
 }
 
 /**
