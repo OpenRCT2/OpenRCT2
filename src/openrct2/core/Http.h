@@ -12,9 +12,9 @@
 #ifndef DISABLE_HTTP
 
     #include <functional>
+    #include <future>
     #include <map>
     #include <string>
-    #include <thread>
 
 namespace OpenRCT2::Http
 {
@@ -52,9 +52,9 @@ namespace OpenRCT2::Http
 
     Response Do(const Request& req);
 
-    inline void DoAsync(const Request& req, std::function<void(Response& res)> fn)
+    inline auto DoAsync(const Request& req, std::function<void(Response& res)> fn)
     {
-        auto thread = std::thread([=]() {
+        return std::async(std::launch::async, [=]() {
             Response res{};
             try
             {
@@ -67,7 +67,6 @@ namespace OpenRCT2::Http
             }
             fn(res);
         });
-        thread.detach();
     }
 } // namespace OpenRCT2::Http
 
