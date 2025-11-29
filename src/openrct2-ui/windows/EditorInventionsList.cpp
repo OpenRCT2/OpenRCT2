@@ -403,7 +403,7 @@ namespace OpenRCT2::Ui::Windows
                 RenderTarget clipDPI;
                 screenPos = windowPos + ScreenCoordsXY{ bkWidget.left + 1, bkWidget.top + 1 };
                 const auto clipWidth = bkWidget.width() - 2;
-                const auto clipHeight = bkWidget.height() - 1;
+                const auto clipHeight = bkWidget.height() - 2;
                 if (ClipDrawPixelInfo(clipDPI, rt, screenPos, clipWidth, clipHeight))
                 {
                     object->DrawPreview(clipDPI, clipWidth, clipHeight);

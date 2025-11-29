@@ -461,7 +461,7 @@ namespace OpenRCT2::Ui::Windows
 
                     Widget* ddWidget = &widgets[widgetIndex - 1];
                     WindowDropdownShowTextCustomWidth(
-                        { windowPos.x + ddWidget->left, windowPos.y + ddWidget->top }, ddWidget->height() + 1, colours[1], 0,
+                        { windowPos.x + ddWidget->left, windowPos.y + ddWidget->top }, ddWidget->height(), colours[1], 0,
                         Dropdown::Flag::StayOpen, std::size(items), ddWidget->width() - 3);
 
                     gDropdown.items[EnumValue(_settings.algorithm)].setChecked(true);
