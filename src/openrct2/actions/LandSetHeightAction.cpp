@@ -347,16 +347,16 @@ namespace OpenRCT2::GameActions
         MapInvalidateTileFull(_coords);
     }
 
-    int32_t LandSetHeightAction::MapSetLandHeightClearFunc(
+    bool LandSetHeightAction::MapSetLandHeightClearFunc(
         TileElement** tile_element, [[maybe_unused]] const CoordsXY& coords, [[maybe_unused]] uint8_t flags,
         [[maybe_unused]] money64* price)
     {
         if ((*tile_element)->GetType() == TileElementType::Surface)
-            return 0;
+            return true;
 
         if ((*tile_element)->GetType() == TileElementType::SmallScenery)
-            return 0;
+            return true;
 
-        return 1;
+        return false;
     }
 } // namespace OpenRCT2::GameActions

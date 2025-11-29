@@ -35,14 +35,14 @@
 
 using namespace OpenRCT2;
 
-static int32_t MapPlaceClearFunc(
+static bool MapPlaceClearFunc(
     TileElement** tile_element, const CoordsXY& coords, uint8_t flags, money64* price, bool is_scenery)
 {
     if ((*tile_element)->GetType() != TileElementType::SmallScenery)
-        return 1;
+        return false;
 
     if (is_scenery && !(flags & GAME_COMMAND_FLAG_TRACK_DESIGN))
-        return 1;
+        return false;
 
     auto* scenery = (*tile_element)->AsSmallScenery()->GetEntry();
 
@@ -50,31 +50,31 @@ static int32_t MapPlaceClearFunc(
     if (park.flags & PARK_FLAGS_FORBID_TREE_REMOVAL)
     {
         if (scenery != nullptr && scenery->HasFlag(SMALL_SCENERY_FLAG_IS_TREE))
-            return 1;
+            return false;
     }
 
     if (!(park.flags & PARK_FLAGS_NO_MONEY) && scenery != nullptr)
         *price += scenery->removal_price;
 
     if (flags & GAME_COMMAND_FLAG_GHOST)
-        return 0;
+        return true;
 
     if (!(flags & GAME_COMMAND_FLAG_APPLY))
-        return 0;
+        return true;
 
     MapInvalidateTile({ coords, (*tile_element)->GetBaseZ(), (*tile_element)->GetClearanceZ() });
 
     TileElementRemove(*tile_element);
 
     (*tile_element)--;
-    return 0;
+    return true;
 }
 
 /**
  *
  *  rct2: 0x006E0D6E, 0x006B8D88
  */
-int32_t MapPlaceSceneryClearFunc(TileElement** tile_element, const CoordsXY& coords, uint8_t flags, money64* price)
+bool MapPlaceSceneryClearFunc(TileElement** tile_element, const CoordsXY& coords, uint8_t flags, money64* price)
 {
     return MapPlaceClearFunc(tile_element, coords, flags, price, /*is_scenery=*/true);
 }
@@ -83,7 +83,7 @@ int32_t MapPlaceSceneryClearFunc(TileElement** tile_element, const CoordsXY& coo
  *
  *  rct2: 0x006C5A4F, 0x006CDE57, 0x006A6733, 0x0066637E
  */
-int32_t MapPlaceNonSceneryClearFunc(TileElement** tile_element, const CoordsXY& coords, uint8_t flags, money64* price)
+bool MapPlaceNonSceneryClearFunc(TileElement** tile_element, const CoordsXY& coords, uint8_t flags, money64* price)
 {
     return MapPlaceClearFunc(tile_element, coords, flags, price, /*is_scenery=*/false);
 }
@@ -122,12 +122,12 @@ static bool landSlopeFitsUnderPath(int32_t baseZ, uint8_t slope, const PathEleme
 }
 
 static bool MapLoc68BABCShouldContinue(
-    TileElement** tileElementPtr, const CoordsXYRangedZ& pos, CLEAR_FUNC clearFunc, const uint8_t flags, money64& price,
+    TileElement** tileElementPtr, const CoordsXYRangedZ& pos, ClearingFunction clearFunc, const uint8_t flags, money64& price,
     const CreateCrossingMode crossingMode, const bool canBuildCrossing, const uint8_t slope)
 {
     if (clearFunc != nullptr)
     {
-        if (!clearFunc(tileElementPtr, pos, flags, &price))
+        if (clearFunc(tileElementPtr, pos, flags, &price))
         {
             return true;
         }
@@ -182,8 +182,8 @@ static bool MapLoc68BABCShouldContinue(
  *  bl = bl
  */
 GameActions::Result MapCanConstructWithClearAt(
-    const CoordsXYRangedZ& pos, CLEAR_FUNC clearFunc, const QuarterTile quarterTile, const uint8_t flags, const uint8_t slope,
-    const CreateCrossingMode crossingMode, const bool isTree)
+    const CoordsXYRangedZ& pos, ClearingFunction clearFunc, const QuarterTile quarterTile, const uint8_t flags,
+    const uint8_t slope, const CreateCrossingMode crossingMode, const bool isTree)
 {
     auto res = GameActions::Result();
 
@@ -241,7 +241,7 @@ GameActions::Result MapCanConstructWithClearAt(
             groundFlags |= ELEMENT_IS_UNDERWATER;
             if (waterHeight < pos.clearanceZ)
             {
-                if (clearFunc != nullptr && clearFunc(&tileElement, pos, flags, &res.Cost))
+                if (clearFunc != nullptr && !clearFunc(&tileElement, pos, flags, &res.Cost))
                 {
                     res.Error = GameActions::Status::NoClearance;
                     res.ErrorMessage = STR_CANNOT_BUILD_PARTLY_ABOVE_AND_PARTLY_BELOW_WATER;
