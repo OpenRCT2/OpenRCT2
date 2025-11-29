@@ -319,7 +319,7 @@ namespace OpenRCT2::GameActions
             // Script hooks may now have changed the game action result...
         }
 #endif
-        if (result.Error == Status::Ok)
+        if (result.Error  ==  Status::Ok)
         {
             if (topLevel)
             {
