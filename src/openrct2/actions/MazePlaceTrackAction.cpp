@@ -107,7 +107,7 @@ namespace OpenRCT2::GameActions
         }
 
         auto canBuild = MapCanConstructWithClearAt(
-            { _loc.ToTileStart(), baseHeight, clearanceHeight }, &MapPlaceNonSceneryClearFunc, { 0b1111, 0 }, GetFlags(),
+            { _loc.ToTileStart(), baseHeight, clearanceHeight }, MapPlaceNonSceneryClearFunc, { 0b1111, 0 }, GetFlags(),
             kTileSlopeFlat);
         if (canBuild.Error != Status::Ok)
         {
@@ -172,7 +172,7 @@ namespace OpenRCT2::GameActions
         auto clearanceHeight = _loc.z + kMazeClearanceHeight;
 
         auto canBuild = MapCanConstructWithClearAt(
-            { _loc.ToTileStart(), baseHeight, clearanceHeight }, &MapPlaceNonSceneryClearFunc, { 0b1111, 0 },
+            { _loc.ToTileStart(), baseHeight, clearanceHeight }, MapPlaceNonSceneryClearFunc, { 0b1111, 0 },
             GetFlags() | GAME_COMMAND_FLAG_APPLY, kTileSlopeFlat);
         if (canBuild.Error != Status::Ok)
         {
