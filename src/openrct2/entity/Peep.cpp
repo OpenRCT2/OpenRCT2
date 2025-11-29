@@ -211,7 +211,7 @@ void PeepUpdateAll()
     const auto currentTicksMasked = currentTicks & kTicks128Mask;
 
     uint32_t index = 0;
-    // Warning this loop can delete peeps
+
     for (auto peep : EntityList<Guest>())
     {
         if ((index & kTicks128Mask) == currentTicksMasked)
@@ -219,11 +219,7 @@ void PeepUpdateAll()
             peep->Tick128UpdateGuest(index);
         }
 
-        // 128 tick can delete so double check its not deleted
-        if (peep->Type == EntityType::guest)
-        {
-            peep->Update();
-        }
+        peep->Update();
 
         index++;
     }
@@ -235,11 +231,7 @@ void PeepUpdateAll()
             staff->Tick128UpdateStaff();
         }
 
-        // 128 tick can delete so double check its not deleted
-        if (staff->Type == EntityType::staff)
-        {
-            staff->Update();
-        }
+        staff->Update();
 
         index++;
     }
