@@ -47,7 +47,7 @@ namespace OpenRCT2::Network
 
     #ifndef DISABLE_HTTP
     using namespace std::chrono_literals;
-    constexpr int32_t kMasterServerRegisterTime = std::chrono::milliseconds(2min).count();
+    constexpr int32_t kMasterServerRegisterTime = std::chrono::milliseconds(30s).count();
     constexpr int32_t kMasterServerHeartbeatTime = std::chrono::milliseconds(1min).count();
     #endif
 
@@ -162,10 +162,7 @@ namespace OpenRCT2::Network
                 case AdvertiseStatus::unregistered:
                     if (_lastAdvertiseTime == 0 || Platform::GetTicks() > _lastAdvertiseTime + kMasterServerRegisterTime)
                     {
-                        if (_lastAdvertiseTime == 0)
-                        {
-                            Console::WriteLine("Registering server on master server");
-                        }
+                        Console::WriteLine("Registering server on master server...");
                         SendRegistration(_forceIPv4);
                     }
                     break;
@@ -211,7 +208,10 @@ namespace OpenRCT2::Network
             _currentRequest = Http::DoAsync(request, [&](Http::Response response) -> void {
                                   if (response.status != Http::Status::Ok)
                                   {
-                                      Console::Error::WriteLine("Unable to connect to master server");
+                                      Console::Error::WriteLine(
+                                          "Unable to connect to master server, retrying in %d seconds",
+                                          kMasterServerRegisterTime / 1000);
+
                                       _status = AdvertiseStatus::unregistered;
                                       return;
                                   }
@@ -237,7 +237,10 @@ namespace OpenRCT2::Network
             _currentRequest = Http::DoAsync(request, [&](Http::Response response) -> void {
                                   if (response.status != Http::Status::Ok)
                                   {
-                                      Console::Error::WriteLine("Unable to connect to master server");
+                                      Console::Error::WriteLine(
+                                          "Unable to connect to master server, retrying in %d seconds",
+                                          kMasterServerRegisterTime / 1000);
+
                                       _status = AdvertiseStatus::unregistered;
                                       // Don't immediately retry advertising, wait for kMasterServerRegisterTime.
                                       _lastAdvertiseTime = Platform::GetTicks();
