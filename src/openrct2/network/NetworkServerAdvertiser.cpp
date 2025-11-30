@@ -6,6 +6,7 @@
  *
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
+#pragma optimize("", off)
 
 #ifndef DISABLE_NETWORK
 
@@ -212,14 +213,12 @@ namespace OpenRCT2::Network
                                   {
                                       Console::Error::WriteLine("Unable to connect to master server");
                                       _status = AdvertiseStatus::unregistered;
-                                      _currentRequest = {};
                                       return;
                                   }
 
                                   json_t root = Json::FromString(response.body);
                                   root = Json::AsObject(root);
                                   this->OnRegistrationResponse(root);
-                                  _currentRequest = {};
                               }).share();
         }
 
@@ -242,14 +241,12 @@ namespace OpenRCT2::Network
                                       _status = AdvertiseStatus::unregistered;
                                       // Don't immediately retry advertising, wait for kMasterServerRegisterTime.
                                       _lastAdvertiseTime = Platform::GetTicks();
-                                      _currentRequest = {};
                                       return;
                                   }
 
                                   json_t root = Json::FromString(response.body);
                                   root = Json::AsObject(root);
                                   this->OnHeartbeatResponse(root);
-                                  _currentRequest = {};
                               }).share();
         }
 
