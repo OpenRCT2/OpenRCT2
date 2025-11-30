@@ -21,6 +21,7 @@ namespace OpenRCT2::Http
     enum class Status
     {
         Invalid = 0,
+        Error = 1,
         Ok = 200,
         NotFound = 404
     };
