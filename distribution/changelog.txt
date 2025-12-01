@@ -10,6 +10,7 @@
 - Fix: [#25565] Chairlift station ends are missing tunnels at certain rotations.
 - Fix: [#25569] Placing park entrances in multiplayer does not show for other players, causing desyncs.
 - Fix: [#25571] Potential crash due to drawing a Crooked House ride.
+- Fix: [#25592] Log flume, river rapids, & splash boats can get control failure breakdown instead of brakes failure
 
 0.4.29 (2025-11-22)
 ------------------------------------------------------------------------
