@@ -236,7 +236,11 @@ namespace OpenRCT2::Http
             WinHttpCloseHandle(hSession);
             WinHttpCloseHandle(hConnect);
             WinHttpCloseHandle(hRequest);
-            throw;
+
+            Response response;
+            response.status = Status::Error;
+            response.error = e.what();
+            return response;
         }
     }
 } // namespace OpenRCT2::Http
