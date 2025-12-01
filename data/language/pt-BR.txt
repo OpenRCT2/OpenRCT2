@@ -32,12 +32,9 @@ STR_0027    :Carrinho de Bate-Bate
 STR_0028    :Barco Viking
 STR_0029    :Navio de Balanço Reverso
 STR_0030    :Barraca de Comida
-STR_0031    :Barraca Desconhecida (1D)
 STR_0032    :Barraca de Bebida
-STR_0033    :Barraca Desconhecida (1F)
 STR_0034    :Loja
 STR_0035    :Carrossel
-STR_0036    :Barraca Desconhecida (22)
 STR_0037    :Quiosque de Informações
 STR_0038    :Banheiros
 STR_0039    :Roda Gigante
@@ -83,16 +80,10 @@ STR_0078    :Montanha Fechada Invertida
 STR_0079    :Tapete Mágico
 STR_0080    :Submarino
 STR_0081    :Balsas de rio
-STR_0082    :Brinquedo Desconhecido (50)
 STR_0083    :Enterprise
-STR_0084    :Brinquedo Desconhecido (52)
-STR_0085    :Brinquedo Desconhecido (53)
-STR_0086    :Brinquedo Desconhecido (54)
-STR_0087    :Brinquedo Desconhecido (55)
 STR_0088    :Montanha de Impulso Invertida
 STR_0089    :Minimontanha-Russa
 STR_0090    :Brinquedo de Mina
-STR_0091    :Brinquedo Desconhecido (59)
 STR_0092    :Montanha-Russa de Indução Linear
 STR_0093    :Montanha-Russa Híbrida
 STR_0094    :Montanha-Russa de Trilho Único
@@ -3843,3 +3834,4 @@ STR_7004    :Forçar Redesenho
 STR_7005    :Arrastar uma área de calçada
 STR_7006    :Desenhar borda ao redor dos botões com imagens
 STR_7007    :Tipo de Atração
+STR_7008    :Tipo de atração desconhecido ({INT32})

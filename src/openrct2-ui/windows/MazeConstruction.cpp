@@ -118,7 +118,6 @@ namespace OpenRCT2::Ui::Windows
             RideConstructionInvalidateCurrentTrack();
             ViewportSetVisibility(ViewportVisibility::standard);
 
-            MapInvalidateMapSelectionTiles();
             gMapSelectFlags.unset(MapSelectFlag::enableConstruct);
             gMapSelectFlags.unset(MapSelectFlag::enableArrow);
 
@@ -343,8 +342,6 @@ namespace OpenRCT2::Ui::Windows
         void WindowMazeConstructionEntranceTooldown(const ScreenCoordsXY& screenCoords)
         {
             RideConstructionInvalidateCurrentTrack();
-
-            MapInvalidateSelectionRect();
 
             gMapSelectFlags.unset(MapSelectFlag::enable);
             gMapSelectFlags.unset(MapSelectFlag::enableArrow);

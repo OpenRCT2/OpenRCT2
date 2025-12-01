@@ -62,7 +62,7 @@ void ParkEntranceRemoveGhost()
     {
         gParkEntranceGhostExists = false;
         auto parkEntranceRemoveAction = GameActions::ParkEntranceRemoveAction(gParkEntranceGhostPosition);
-        parkEntranceRemoveAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
+        parkEntranceRemoveAction.SetFlags(GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
         GameActions::Execute(&parkEntranceRemoveAction, getGameState());
     }
 }

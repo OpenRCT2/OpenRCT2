@@ -45,6 +45,7 @@
 #include <openrct2/entity/Staff.h>
 #include <openrct2/localisation/Currency.h>
 #include <openrct2/localisation/Formatter.h>
+#include <openrct2/localisation/Formatting.h>
 #include <openrct2/localisation/Localisation.Date.h>
 #include <openrct2/localisation/LocalisationService.h>
 #include <openrct2/network/Network.h>
@@ -624,7 +625,7 @@ namespace OpenRCT2::Ui::Windows
     {
         ride_type_t RideTypeId;
         StringId LabelId;
-        u8string_view LabelString;
+        u8string LabelString;
     };
 
     // Used for sorting the vehicle type dropdown.
@@ -1877,29 +1878,12 @@ namespace OpenRCT2::Ui::Windows
 
         static constexpr StringId GetRideTypeNameForDropdown(ride_type_t rideType)
         {
-            switch (rideType)
+            auto stringId = GetRideTypeDescriptor(rideType).Naming.Name;
+            if (stringId == STR_UNKNOWN_RIDE)
             {
-                case RIDE_TYPE_1D:
-                    return STR_RIDE_NAME_1D;
-                case RIDE_TYPE_1F:
-                    return STR_RIDE_NAME_1F;
-                case RIDE_TYPE_22:
-                    return STR_RIDE_NAME_22;
-                case RIDE_TYPE_50:
-                    return STR_RIDE_NAME_50;
-                case RIDE_TYPE_52:
-                    return STR_RIDE_NAME_52;
-                case RIDE_TYPE_53:
-                    return STR_RIDE_NAME_53;
-                case RIDE_TYPE_54:
-                    return STR_RIDE_NAME_54;
-                case RIDE_TYPE_55:
-                    return STR_RIDE_NAME_55;
-                case RIDE_TYPE_59:
-                    return STR_RIDE_NAME_59;
-                default:
-                    return GetRideTypeDescriptor(rideType).Naming.Name;
+                stringId = STR_RIDE_NAME_UNKNOWN_INT32;
             }
+            return stringId;
         }
 
         void PopulateRideTypeDropdown()
@@ -1912,8 +1896,13 @@ namespace OpenRCT2::Ui::Windows
 
             for (uint8_t i = 0; i < RIDE_TYPE_COUNT; i++)
             {
+                // Will return the actual name for most rides, but a special string "Unknown Ride ({INT32})" for unknown ones.
+                // The placeholder will then be filled with the ID.
                 auto name = GetRideTypeNameForDropdown(i);
-                _rideDropdownData.push_back({ i, name, u8string_view{ ls.GetString(name) } });
+                auto ft = Formatter();
+                ft.Add<int32_t>(i);
+                auto label = FormatStringIDLegacy(name, ft.Data());
+                _rideDropdownData.push_back({ i, name, label });
             }
 
             std::sort(_rideDropdownData.begin(), _rideDropdownData.end(), [](auto& a, auto& b) {
@@ -1933,7 +1922,7 @@ namespace OpenRCT2::Ui::Windows
 
             for (size_t i = 0; i < _rideDropdownData.size(); i++)
             {
-                gDropdown.items[i] = Dropdown::MenuLabel(_rideDropdownData[i].LabelId);
+                gDropdown.items[i] = Dropdown::MenuLabel(_rideDropdownData[i].LabelString);
             }
 
             Widget* dropdownWidget = widget - 1;

@@ -181,15 +181,10 @@ namespace OpenRCT2::Ui::Windows
 
             if (stateChanged)
             {
-                // Invalidate previous area
-                MapInvalidateSelectionRect();
-
-                // Update and invalidate new area
                 gMapSelectFlags.set(MapSelectFlag::enable);
                 gMapSelectType = MapSelectType::full;
                 gMapSelectPositionA = posA;
                 gMapSelectPositionB = posB;
-                MapInvalidateSelectionRect();
             }
         }
 

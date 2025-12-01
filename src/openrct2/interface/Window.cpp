@@ -696,9 +696,6 @@ static constexpr float kWindowScrollLocations[][2] = {
         {
             gInputFlags.unset(InputFlag::toolActive);
 
-            MapInvalidateSelectionRect();
-            MapInvalidateMapSelectionTiles();
-
             // Reset map selection
             gMapSelectFlags.clearAll();
 

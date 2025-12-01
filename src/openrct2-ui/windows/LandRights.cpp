@@ -459,7 +459,6 @@ namespace OpenRCT2::Ui::Windows
 
         void onToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
-            MapInvalidateSelectionRect();
             gMapSelectFlags.unset(MapSelectFlag::enable);
 
             auto info = GetMapCoordinatesFromPos(
@@ -529,7 +528,6 @@ namespace OpenRCT2::Ui::Windows
                 state_changed++;
             }
 
-            MapInvalidateSelectionRect();
             if (!state_changed)
                 return;
 

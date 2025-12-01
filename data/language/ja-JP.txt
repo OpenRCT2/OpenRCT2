@@ -32,12 +32,9 @@ STR_0027    :バンパーカー
 STR_0028    :パイレーツシップ
 STR_0029    :スイング・インバータ・シップ
 STR_0030    :食べ物の店
-STR_0031    :Unknown Stall (1D)
 STR_0032    :飲料の店
-STR_0033    :Unknown Stall (1F)
 STR_0034    :ショップ
 STR_0035    :メリーゴーラウンド
-STR_0036    :Unknown Stall (22)
 STR_0037    :インフォーメーションセンター
 STR_0038    :トイレ
 STR_0039    :観覧車
@@ -83,16 +80,10 @@ STR_0078    :インバーテッドヘアピンコースター
 STR_0079    :空飛ぶじゅうたん
 STR_0080    :潜水艦ライド
 STR_0081    :川いかだ
-STR_0082    :Unknown Ride (50)
 STR_0083    :エンタープライズ
-STR_0084    :Unknown Ride (52)
-STR_0085    :Unknown Ride (53)
-STR_0086    :Unknown Ride (54)
-STR_0087    :Unknown Ride (55)
 STR_0088    :インバーテッドインパルスコースター
 STR_0089    :ミニジェットコースター
 STR_0090    :鉱山ライド
-STR_0091    :Unknown Ride (59)
 STR_0092    :リニアモーターコースター
 STR_0093    :ハイブリッドコースター
 STR_0094    :シングルレール・ジェットコースター

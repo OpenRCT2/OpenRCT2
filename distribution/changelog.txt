@@ -1,16 +1,34 @@
-0.4.29 (in development)
+0.4.30 (in development)
 ------------------------------------------------------------------------
+- Improved: [#25529] The map selection grid no longer redraws every frame if it has not changed.
+- Improved: [#25530] Wall dragging can now be cancelled without closing the Scenery window.
+- Change: [#25485] Make the enlarged pressed swatch sprite more pronounced.
+- Fix: [#22484] Lingering ghost entrance after placing park entrance.
+- Fix: [#24952] Duplicate track designs when running via Steam without having RCT1 linked.
+- Fix: [#25524] The track construction arrow does not immediately change position when deleting track pieces.
+- Fix: [#25552] Clear Scenery does not show an error message about insufficient money if cash is negative.
+- Fix: [#25565] Chairlift station ends are missing tunnels at certain rotations.
+- Fix: [#25569] Placing park entrances in multiplayer does not show for other players, causing desyncs.
+- Fix: [#25571] Potential crash due to drawing a Crooked House ride.
+
+0.4.29 (2025-11-22)
+------------------------------------------------------------------------
+- Feature: [#25459] Wall line dragging tool.
+- Improved: [#25028] Stalls now support colour presets, just like regular rides.
 - Improved: [#25426] Building the track designs index is now quicker.
 - Improved: [#25490] The ‘New Ride’ window can now be resized.
 - Fix: [#6228] The saved queue line path connections are not preserved when placing track designs (original bug).
 - Fix: [#14365] Track designs with scenery below the lowest track piece do not preview correctly.
 - Fix: [#25451] Dropdown item tooltips stay open if the mouse is moved over an empty space.
+- Fix: [#25454] Opening the land tool while building a path bridge or tunnel closes the Footpaths window.
 - Fix: [#25461] Path connections in raised track designs are sometimes broken when placed.
 - Fix: [#25467] Paths are not connected together correctly in track design previews.
 - Fix: [#25476] When both RCT2 and RCT1 are present, autodetection fails.
 - Fix: [#25480] The mini track design preview and price are misaligned in Enlarged UI mode.
 - Fix: [#25488] Crash in headless mode.
 - Fix: [#25494] The Go-Karts steep to flat track does not draw correctly in the flat side tunnel.
+- Fix: [#25518] The virtual floor does not draw correctly if expanded on the positive x and y axes.
+- Fix: [#25519] Crackling audio when sampling frequencies do not match.
 - Fix: [objects#401] Round tunnels on down slopes glitch.
 - Fix: [objects#404] Wooden Wild Mine cars incorrectly allow setting a third remap colour.
 - Fix: [objects#408] Australian fountain sets have confusing naming.

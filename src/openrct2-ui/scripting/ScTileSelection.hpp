@@ -51,7 +51,6 @@ namespace OpenRCT2::Scripting
 
         void range_set(DukValue value)
         {
-            MapInvalidateSelectionRect();
             if (value.type() == DukValue::Type::OBJECT)
             {
                 auto range = GetMapRange(value);
@@ -69,7 +68,6 @@ namespace OpenRCT2::Scripting
             {
                 gMapSelectFlags.unset(MapSelectFlag::enable);
             }
-            MapInvalidateSelectionRect();
         }
 
         DukValue tiles_get() const
@@ -78,7 +76,7 @@ namespace OpenRCT2::Scripting
             if (gMapSelectFlags.has(MapSelectFlag::enableConstruct))
             {
                 duk_uarridx_t index = 0;
-                for (const auto& tile : gMapSelectionTiles)
+                for (const auto& tile : MapSelection::getSelectedTiles())
                 {
                     duk_push_object(_ctx);
                     duk_push_int(_ctx, tile.x);
@@ -94,8 +92,7 @@ namespace OpenRCT2::Scripting
 
         void tiles_set(DukValue value)
         {
-            MapInvalidateMapSelectionTiles();
-            gMapSelectionTiles.clear();
+            MapSelection::clearSelectedTiles();
             if (value.is_array())
             {
                 value.push();
@@ -108,14 +105,14 @@ namespace OpenRCT2::Scripting
                         auto coords = GetCoordsXY(dukElement);
                         if (coords)
                         {
-                            gMapSelectionTiles.push_back(*coords);
+                            MapSelection::addSelectedTile(*coords);
                         }
                     }
                 }
                 duk_pop(_ctx);
             }
 
-            if (gMapSelectionTiles.empty())
+            if (MapSelection::getSelectedTiles().empty())
             {
                 gMapSelectFlags.unset(MapSelectFlag::enableConstruct);
                 gMapSelectFlags.unset(MapSelectFlag::green);
@@ -124,7 +121,6 @@ namespace OpenRCT2::Scripting
             {
                 gMapSelectFlags.set(MapSelectFlag::enableConstruct);
             }
-            MapInvalidateMapSelectionTiles();
         }
 
         static void Register(duk_context* ctx)

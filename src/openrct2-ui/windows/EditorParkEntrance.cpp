@@ -41,6 +41,7 @@ namespace OpenRCT2::Ui::Windows
     static constexpr int32_t kScrollWidth = (kImageSize * kNumColumns) + kScrollBarWidth + 4;
     static constexpr int32_t kScrollHeight = (kImageSize * kNumRows);
     static constexpr ScreenSize kWindowSize = { kScrollWidth + 28, kScrollHeight + 51 };
+    static bool _placingEntrance = false;
 
     struct EntranceSelection
     {
@@ -166,8 +167,11 @@ namespace OpenRCT2::Ui::Windows
 
         void PlaceParkEntranceToolUpdate(const ScreenCoordsXY& screenCoords)
         {
-            MapInvalidateSelectionRect();
-            MapInvalidateMapSelectionTiles();
+            if (_placingEntrance)
+            {
+                return;
+            }
+
             gMapSelectFlags.unset(MapSelectFlag::enable, MapSelectFlag::enableArrow, MapSelectFlag::enableConstruct);
             CoordsXYZD parkEntrancePosition = PlaceParkEntranceGetMapPosition(screenCoords);
             if (parkEntrancePosition.IsNull())
@@ -177,12 +181,12 @@ namespace OpenRCT2::Ui::Windows
             }
 
             int32_t sideDirection = (parkEntrancePosition.direction + 1) & 3;
-            gMapSelectionTiles.clear();
-            gMapSelectionTiles.push_back({ parkEntrancePosition.x, parkEntrancePosition.y });
-            gMapSelectionTiles.push_back(
+            MapSelection::clearSelectedTiles();
+            MapSelection::addSelectedTile({ parkEntrancePosition.x, parkEntrancePosition.y });
+            MapSelection::addSelectedTile(
                 { parkEntrancePosition.x + CoordsDirectionDelta[sideDirection].x,
                   parkEntrancePosition.y + CoordsDirectionDelta[sideDirection].y });
-            gMapSelectionTiles.push_back(
+            MapSelection::addSelectedTile(
                 { parkEntrancePosition.x - CoordsDirectionDelta[sideDirection].x,
                   parkEntrancePosition.y - CoordsDirectionDelta[sideDirection].y });
 
@@ -190,7 +194,6 @@ namespace OpenRCT2::Ui::Windows
             gMapSelectArrowDirection = parkEntrancePosition.direction;
 
             gMapSelectFlags.set(MapSelectFlag::enableConstruct, MapSelectFlag::enableArrow);
-            MapInvalidateMapSelectionTiles();
             if (gParkEntranceGhostExists && parkEntrancePosition == gParkEntranceGhostPosition)
             {
                 return;
@@ -214,6 +217,8 @@ namespace OpenRCT2::Ui::Windows
 
         void PlaceParkEntranceToolDown(const ScreenCoordsXY& screenCoords)
         {
+            _placingEntrance = true;
+            gMapSelectFlags.unset(MapSelectFlag::enable, MapSelectFlag::enableArrow, MapSelectFlag::enableConstruct);
             ParkEntranceRemoveGhost();
 
             CoordsXYZD parkEntrancePosition = PlaceParkEntranceGetMapPosition(screenCoords);
@@ -223,6 +228,8 @@ namespace OpenRCT2::Ui::Windows
                 auto pathIndex = isLegacyPath ? gFootpathSelection.LegacyPath : gFootpathSelection.NormalSurface;
                 auto gameAction = GameActions::ParkEntrancePlaceAction(
                     parkEntrancePosition, pathIndex, _selectedEntranceType, isLegacyPath);
+                gameAction.SetCallback(
+                    [&](const GameActions::GameAction*, const GameActions::Result* result) { _placingEntrance = false; });
                 auto result = GameActions::Execute(&gameAction, getGameState());
                 if (result.Error == GameActions::Status::Ok)
                 {
@@ -415,6 +422,7 @@ namespace OpenRCT2::Ui::Windows
         window = windowMgr->Create<EditorParkEntrance>(
             WindowClass::editorParkEntrance, kWindowSize, { WindowFlag::higherContrastOnPress, WindowFlag::resizable });
 
+        _placingEntrance = false;
         return window;
     }
 } // namespace OpenRCT2::Ui::Windows
