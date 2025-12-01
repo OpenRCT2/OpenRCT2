@@ -1062,7 +1062,7 @@ STR_1676    :Ustaw limit prędkości hamowania
 STR_1677    :{WINDOW_COLOUR_2}Popularność: {BLACK}Nieznana
 STR_1678    :{WINDOW_COLOUR_2}Popularność: {BLACK}{COMMA16}%
 STR_1679    :Spirala w górę (lewo)
-STR_1680    :Spirala w dół (prawo)
+STR_1680    :Spirala w górę (prawo)
 STR_1681    :Spirala w dół (lewo)
 STR_1682    :Spirala w dół (prawo)
 STR_1683    :Wymiary bazowe 2 × 2
