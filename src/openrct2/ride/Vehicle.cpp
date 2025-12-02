@@ -5164,10 +5164,9 @@ void Vehicle::UpdateTrackMotionUpStopCheck() const
 void Vehicle::ApplyNonStopBlockBrake(const Ride& curRide)
 {
     bool hasBlockBrakesFailure = (curRide.lifecycleFlags & RIDE_LIFECYCLE_BROKEN_DOWN
-        && curRide.breakdownReasonPending == BREAKDOWN_BRAKES_FAILURE)
-        && (curRide.mode == RideMode::poweredLaunch
-        || curRide.mode == RideMode::poweredLaunchPasstrough
-        || curRide.mode == RideMode::reverseInclineLaunchedShuttle);
+                                  && curRide.breakdownReasonPending == BREAKDOWN_BRAKES_FAILURE)
+        && (curRide.mode == RideMode::poweredLaunch || curRide.mode == RideMode::poweredLaunchPasstrough
+            || curRide.mode == RideMode::reverseInclineLaunchedShuttle);
     if (!hasBlockBrakesFailure || curRide.mechanicStatus == RIDE_MECHANIC_STATUS_HAS_FIXED_STATION_BRAKES)
     {
         if (velocity >= 0)
