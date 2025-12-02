@@ -5161,21 +5161,29 @@ void Vehicle::UpdateTrackMotionUpStopCheck() const
  * merely as a velocity regulator, in a closed state. When the brake is open, it
  * boosts the train to the speed limit
  */
-void Vehicle::ApplyNonStopBlockBrake()
+void Vehicle::ApplyNonStopBlockBrake(const Ride& curRide)
 {
-    if (velocity >= 0)
+    bool hasBlockBrakesFailure = (curRide.lifecycleFlags & RIDE_LIFECYCLE_BROKEN_DOWN
+        && curRide.breakdownReasonPending == BREAKDOWN_BRAKES_FAILURE)
+        && (curRide.mode == RideMode::poweredLaunch
+        || curRide.mode == RideMode::poweredLaunchPasstrough
+        || curRide.mode == RideMode::reverseInclineLaunchedShuttle);
+    if (!hasBlockBrakesFailure || curRide.mechanicStatus == RIDE_MECHANIC_STATUS_HAS_FIXED_STATION_BRAKES)
     {
-        // If the vehicle is below the speed limit
-        if (velocity <= kBlockBrakeBaseSpeed)
+        if (velocity >= 0)
         {
-            // Boost it to the fixed block brake speed
-            velocity = kBlockBrakeBaseSpeed;
-            acceleration = 0;
-        }
-        else if (velocity > (brake_speed << kTrackSpeedShiftAmount) + kBlockBrakeSpeedOffset)
-        {
-            velocity -= velocity >> 4;
-            acceleration = 0;
+            // If the vehicle is below the speed limit
+            if (velocity <= kBlockBrakeBaseSpeed)
+            {
+                // Boost it to the fixed block brake speed
+                velocity = kBlockBrakeBaseSpeed;
+                acceleration = 0;
+            }
+            else if (velocity > (brake_speed << kTrackSpeedShiftAmount) + kBlockBrakeSpeedOffset)
+            {
+                velocity -= velocity >> 4;
+                acceleration = 0;
+            }
         }
     }
 }
@@ -5281,7 +5289,7 @@ void Vehicle::CheckAndApplyBlockSectionStopSite()
             if (curRide->isBlockSectioned() && trackElement->AsTrack()->IsBrakeClosed())
                 ApplyStopBlockBrake();
             else
-                ApplyNonStopBlockBrake();
+                ApplyNonStopBlockBrake(*curRide);
 
             break;
         case TrackElemType::EndStation:

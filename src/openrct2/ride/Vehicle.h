@@ -357,7 +357,7 @@ private:
     void UpdateHandleWaterSplash() const;
     void Claxon() const;
     void UpdateTrackMotionUpStopCheck() const;
-    void ApplyNonStopBlockBrake();
+    void ApplyNonStopBlockBrake(const Ride& curRide);
     void ApplyStopBlockBrake();
     void ApplyCableLiftBlockBrake(bool brakeClosed);
     void CheckAndApplyBlockSectionStopSite();
