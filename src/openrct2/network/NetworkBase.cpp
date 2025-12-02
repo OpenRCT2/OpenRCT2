@@ -1782,8 +1782,7 @@ namespace OpenRCT2::Network
                 displayNetworkProgress(STR_MULTIPLAYER_DOWNLOADING_MAP);
                 break;
             case Command::scriptsData:
-                // FIXME: Create new string id for "Receiving scripts"
-                displayNetworkProgress(STR_MULTIPLAYER_RECEIVING_OBJECTS_LIST);
+                displayNetworkProgress(STR_MULTIPLAYER_RECEIVING_SCRIPTS);
                 break;
             default:
                 // Nothing to report.
