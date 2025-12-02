@@ -9,6 +9,8 @@
 
 #pragma once
 
+#include "../core/Endianness.h"
+
 #include <memory>
 #include <string>
 #include <vector>
@@ -106,6 +108,24 @@ namespace OpenRCT2::Network
 
 namespace OpenRCT2::Convert
 {
-    uint16_t HostToNetwork(uint16_t value);
-    uint16_t NetworkToHost(uint16_t value);
+    template<typename T>
+    constexpr T HostToNetwork(T value)
+    {
+        if constexpr (std::endian::native == std::endian::big)
+        {
+            return value; // already network order
+        }
+        else
+        {
+            return ByteSwapBE(value);
+        }
+    }
+
+    template<typename T>
+    constexpr T NetworkToHost(T value)
+    {
+        // Conversion is symmetric
+        return HostToNetwork(value);
+    }
+
 } // namespace OpenRCT2::Convert
