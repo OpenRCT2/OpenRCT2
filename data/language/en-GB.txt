@@ -3838,3 +3838,4 @@ STR_7005    :Drag an area of footpath
 STR_7006    :Draw border around image buttons
 STR_7007    :Ride Type
 STR_7008    :Unknown ride type ({INT32})
+STR_7009    :Can’t remove intersecting walls…

@@ -64,6 +64,7 @@
 - Fix: [#25350] Scrolling intro cannot be skipped using a mouse click.
 - Fix: [#25358] The Stand Up Roller Coaster left corkscrew does not block supports correctly.
 - Fix: [#25363] The Mine Train Coaster flat-to-steep track pieces do not block all metal supports.
+- Fix: [#25366] Unowned trees on land the park owns construction rights for still get deleted during construction.
 - Fix: [#25369] The Go-Karts medium turns and small flat and sloped turns do not block metal supports correctly.
 - Fix: [#25370] The Hybrid Coaster diagonal brakes and block brakes do not block metal supports consistently.
 - Fix: [#25371] The Wooden Roller Coaster small banked turns block too many metal supports.
