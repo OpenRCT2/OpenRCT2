@@ -101,7 +101,9 @@ namespace OpenRCT2::GameActions
                 entranceLoc.y += CoordsDirectionDelta[(_loc.direction + 1) & 0x3].y * 2;
             }
 
-            if (auto res2 = MapCanConstructWithClearAt({ entranceLoc, zLow, zHigh }, MapPlaceParkEntranceClearFunc, { 0b1111, 0 }, 0, kTileSlopeFlat); res2.Error != Status::Ok)
+            if (auto res2 = MapCanConstructWithClearAt(
+                    { entranceLoc, zLow, zHigh }, MapPlaceParkEntranceClearFunc, { 0b1111, 0 }, 0, kTileSlopeFlat);
+                res2.Error != Status::Ok)
             {
                 res2.ErrorTitle = STR_CANT_BUILD_THIS_HERE;
                 return res2;
@@ -146,7 +148,8 @@ namespace OpenRCT2::GameActions
 
             // Remove any obstructions (e.g. paths)
             (void)MapCanConstructWithClearAt(
-                { entranceLoc, zLow, zHigh }, MapPlaceParkEntranceClearFunc, { 0b1111, 0 }, flags | GAME_COMMAND_FLAG_APPLY, kTileSlopeFlat);
+                { entranceLoc, zLow, zHigh }, MapPlaceParkEntranceClearFunc, { 0b1111, 0 }, flags | GAME_COMMAND_FLAG_APPLY,
+                kTileSlopeFlat);
 
             if (!(flags & GAME_COMMAND_FLAG_GHOST))
             {
