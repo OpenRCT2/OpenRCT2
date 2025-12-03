@@ -1041,28 +1041,59 @@ namespace OpenRCT2::Ui::Windows
             if (mainViewport == nullptr)
                 return;
 
-            auto centreScreen = mainViewport->pos + ScreenCoordsXY{ mainViewport->width / 2, mainViewport->height / 2 };
-            auto mapCentre = OpenRCT2::ScreenGetMapXY(centreScreen, nullptr);
+            // Hybrid Smoothing: Raycast Seed + Z-Averaging
+            // 1. Raycast Seed: Find the actual map tile at the center of the screen.
+            // We must use SCREEN coordinates (viewport->pos) for the raycast, not world coordinates.
+            auto screenCenter = mainViewport->pos + ScreenCoordsXY{ mainViewport->width / 2, mainViewport->height / 2 };
+            auto seedInteraction = GetMapCoordinatesFromPosWindow(mainWindow, screenCenter, kViewportInteractionItemAll);
 
-            ScreenCoordsXY minimapCentre;
-            if (mapCentre.has_value())
+            CoordsXY seedPos;
+            if (seedInteraction.interactionType != ViewportInteractionItem::none)
             {
-                auto mc = TransformToMapCoords(*mapCentre);
-                minimapCentre = ScreenCoordsXY{ mc.x, mc.y };
+                seedPos = seedInteraction.Loc;
             }
             else
             {
-                // Fallback to viewPos if looking at void
-                auto mapOffset = MiniMapOffsetFactors[GetCurrentRotation()];
-                mapOffset.x *= getPracticalMapSize();
-                mapOffset.y *= getPracticalMapSize();
-                minimapCentre = mapOffset
-                    + ScreenCoordsXY{ (mainViewport->viewPos.x / kCoordsXYStep),
-                                      (mainViewport->viewPos.y / kCoordsXYHalfTile) };
-
-                // Adjust to center (viewPos is top-left)
-                minimapCentre += ScreenCoordsXY{ mainViewport->ViewWidth() / 64, mainViewport->ViewHeight() / 32 };
+                // Fallback to Z=0 if looking at void.
+                // For the fallback, we need the world center.
+                auto worldCenter = mainViewport->viewPos
+                    + ScreenCoordsXY{ mainViewport->ViewWidth() / 2, mainViewport->ViewHeight() / 2 };
+                seedPos = ViewportPosToMapPos(worldCenter, 0, mainViewport->rotation);
             }
+
+            // 2. Z-Averaging: Sample terrain height in a 3x3 grid around the seed position.
+            // We use the surface element directly to ignore rides/scenery and avoid object-based jitter.
+            int32_t sumZ = 0;
+            int32_t count = 0;
+            const int32_t kSampleRadius = 32; // 1 tile radius
+
+            // Align seedPos to tile start for consistent sampling
+            seedPos = seedPos.ToTileStart();
+
+            for (int32_t y = -kSampleRadius; y <= kSampleRadius; y += 32)
+            {
+                for (int32_t x = -kSampleRadius; x <= kSampleRadius; x += 32)
+                {
+                    auto samplePos = seedPos + CoordsXY{ static_cast<int16_t>(x), static_cast<int16_t>(y) };
+                    auto* surface = MapGetSurfaceElementAt(samplePos);
+                    if (surface != nullptr)
+                    {
+                        sumZ += surface->GetBaseZ();
+                        count++;
+                    }
+                }
+            }
+
+            // 3. Math Positioning: Calculate final position using the averaged Z.
+            // This locks the marker to the camera movement (smoothness) but adjusted for the correct terrain height (accuracy).
+            auto worldCenter = mainViewport->viewPos
+                + ScreenCoordsXY{ mainViewport->ViewWidth() / 2, mainViewport->ViewHeight() / 2 };
+            int32_t avgZ = (count > 0) ? (sumZ / count) : 0;
+            auto mapPos = ViewportPosToMapPos(worldCenter, avgZ, mainViewport->rotation);
+
+            // Convert map coordinates to minimap screen coordinates
+            auto mc = TransformToMapCoords(mapPos);
+            ScreenCoordsXY minimapCentre = ScreenCoordsXY{ mc.x, mc.y };
 
             auto rectWidth = mainViewport->ViewWidth() / kCoordsXYStep;
             auto rectHeight = mainViewport->ViewHeight() / kCoordsXYHalfTile;
