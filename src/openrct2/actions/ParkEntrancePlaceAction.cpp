@@ -22,6 +22,7 @@
 #include "../world/MapAnimation.h"
 #include "../world/Park.h"
 #include "../world/tile_element/EntranceElement.h"
+#include "../world/tile_element/Slope.h"
 #include "../world/tile_element/SurfaceElement.h"
 
 namespace OpenRCT2::GameActions
@@ -100,7 +101,7 @@ namespace OpenRCT2::GameActions
                 entranceLoc.y += CoordsDirectionDelta[(_loc.direction + 1) & 0x3].y * 2;
             }
 
-            if (auto res2 = MapCanConstructAt({ entranceLoc, zLow, zHigh }, { 0b1111, 0 }); res2.Error != Status::Ok)
+            if (auto res2 = MapCanConstructWithClearAt({ entranceLoc, zLow, zHigh }, MapPlaceParkEntranceClearFunc, { 0b1111, 0 }, 0, kTileSlopeFlat); res2.Error != Status::Ok)
             {
                 res2.ErrorTitle = STR_CANT_BUILD_THIS_HERE;
                 return res2;
@@ -142,6 +143,10 @@ namespace OpenRCT2::GameActions
                 entranceLoc.x += CoordsDirectionDelta[(_loc.direction + 1) & 0x3].x * 2;
                 entranceLoc.y += CoordsDirectionDelta[(_loc.direction + 1) & 0x3].y * 2;
             }
+
+            // Remove any obstructions (e.g. paths)
+            (void)MapCanConstructWithClearAt(
+                { entranceLoc, zLow, zHigh }, MapPlaceParkEntranceClearFunc, { 0b1111, 0 }, flags | GAME_COMMAND_FLAG_APPLY, kTileSlopeFlat);
 
             if (!(flags & GAME_COMMAND_FLAG_GHOST))
             {
