@@ -4,6 +4,7 @@
 - Improved: [#25530] Wall dragging can now be cancelled without closing the Scenery window.
 - Improved: [#25575] Updated the network protocol to a new format that supports larger packets, allowing clients to connect reliably to servers with many objects or large maps.
 - Change: [#25485] Make the enlarged pressed swatch sprite more pronounced.
+- Fix: [#9895] Stand-up coaster gets wrong intensity boost from the synchronisation bonus.
 - Fix: [#22484] Lingering ghost entrance after placing park entrance.
 - Fix: [#24952] Duplicate track designs when running via Steam without having RCT1 linked.
 - Fix: [#25524] The track construction arrow does not immediately change position when deleting track pieces.
