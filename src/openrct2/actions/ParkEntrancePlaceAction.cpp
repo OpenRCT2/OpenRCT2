@@ -147,11 +147,11 @@ namespace OpenRCT2::GameActions
             }
 
             // Remove any obstructions (e.g. paths)
-            auto res = MapCanConstructWithClearAt(
+            auto clearRes = MapCanConstructWithClearAt(
                 { entranceLoc, zLow, zHigh }, MapPlaceParkEntranceClearFunc, { 0b1111, 0 }, flags | GAME_COMMAND_FLAG_APPLY,
                 kTileSlopeFlat);
-            if (res.Error != Status::Ok)
-                return res;
+            if (clearRes.Error != Status::Ok)
+                return clearRes;
 
             if (!(flags & GAME_COMMAND_FLAG_GHOST))
             {
