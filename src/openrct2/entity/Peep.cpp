@@ -2252,7 +2252,13 @@ static bool PeepInteractWithShop(Peep* peep, const CoordsXYE& coords)
         {
             ride->totalProfit = AddClamp(ride->totalProfit, cost);
             ride->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_INCOME;
-            guest->SpendMoney(cost, ExpenditureType::parkRideTickets);
+
+            ExpenditureType expenditureType = ExpenditureType::parkRideTickets;
+            if (ride->type == RIDE_TYPE_TOILETS)
+            {
+                expenditureType = ExpenditureType::shopSales;
+            }
+            guest->SpendMoney(cost, expenditureType);
         }
 
         auto coordsCentre = coords.ToTileCentre();
