@@ -955,6 +955,51 @@ void FootpathUpdateQueueChains()
     }
 }
 
+int32_t FootpathQueueCountConnections(const CoordsXY& position, const PathElement& pathElement)
+{
+    int32_t connectionCount = 0;
+    for (const Direction direction : kAllDirections)
+    {
+        const uint8_t edge = 1 << direction;
+        if (pathElement.GetEdges() & edge)
+        {
+            const CoordsXY adjacentPathPosition = position + CoordsDirectionDelta[direction];
+            const int32_t z = pathElement.GetBaseZ();
+            const TileElement* tileElement = FootpathGetElement({ adjacentPathPosition, z, z + kLandHeightStep }, direction);
+
+            if (tileElement == nullptr)
+            {
+                tileElement = FootpathGetElement({ adjacentPathPosition, z - kLandHeightStep, z }, direction);
+
+                if (tileElement == nullptr)
+                {
+                    const EntranceElement* entrance = MapGetRideEntranceElementAt(CoordsXYZ{ adjacentPathPosition, z }, true);
+                    if (entrance == nullptr)
+                    {
+                        entrance = MapGetRideEntranceElementAt(CoordsXYZ{ adjacentPathPosition, z + kLandHeightStep }, true);
+                        if (entrance == nullptr)
+                            continue;
+                    }
+
+                    if (entrance_has_direction(*entrance, direction + entrance->GetDirection()))
+                    {
+                        connectionCount++;
+                    }
+                    continue;
+                }
+            }
+
+            const PathElement& adjacentPath = *tileElement->AsPath();
+
+            if (adjacentPath.GetEdges() & Numerics::rol4(edge, 2))
+            {
+                connectionCount++;
+            }
+        }
+    }
+    return connectionCount;
+}
+
 /**
  *
  *  rct2: 0x0069ADBD

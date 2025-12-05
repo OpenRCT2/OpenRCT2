@@ -43,12 +43,12 @@ public:
         auto lineCoords = coords;
         switch (Paint.Alignment)
         {
-            case TextAlignment::LEFT:
+            case TextAlignment::left:
                 break;
-            case TextAlignment::CENTRE:
+            case TextAlignment::centre:
                 lineCoords.x += MaxWidth / 2;
                 break;
-            case TextAlignment::RIGHT:
+            case TextAlignment::right:
                 lineCoords.x += MaxWidth;
                 break;
         }
@@ -86,19 +86,19 @@ void DrawText(RenderTarget& rt, const ScreenCoordsXY& coords, const TextPaint& p
     auto alignedCoords = coords;
     switch (paint.Alignment)
     {
-        case TextAlignment::LEFT:
+        case TextAlignment::left:
             break;
-        case TextAlignment::CENTRE:
+        case TextAlignment::centre:
             alignedCoords.x -= (width - 1) / 2;
             break;
-        case TextAlignment::RIGHT:
+        case TextAlignment::right:
             alignedCoords.x -= width;
             break;
     }
 
     TTFDrawString(rt, text, paint.Colour, alignedCoords, noFormatting, paint.FontStyle, paint.Darkness);
 
-    if (paint.UnderlineText == TextUnderline::On)
+    if (paint.UnderlineText == TextUnderline::on)
     {
         Rectangle::fill(
             rt, { { alignedCoords + ScreenCoordsXY{ 0, 11 } }, { alignedCoords + ScreenCoordsXY{ width, 11 } } },
@@ -157,7 +157,7 @@ int32_t DrawTextWrapped(
 
     StaticLayout layout(OpenRCT2::FormatStringIDLegacy(format, args), textPaint, width);
 
-    if (textPaint.Alignment == TextAlignment::CENTRE)
+    if (textPaint.Alignment == TextAlignment::centre)
     {
         // The original tried to vertically centre the text, but used line count - 1
         int32_t lineCount = layout.GetLineCount();

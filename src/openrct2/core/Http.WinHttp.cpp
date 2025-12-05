@@ -17,6 +17,10 @@
 
     #include <cstdio>
     #include <stdexcept>
+
+    #ifndef WIN32_LEAN_AND_MEAN
+        #define WIN32_LEAN_AND_MEAN
+    #endif
     #include <windows.h>
     #include <winhttp.h>
 
@@ -232,7 +236,11 @@ namespace OpenRCT2::Http
             WinHttpCloseHandle(hSession);
             WinHttpCloseHandle(hConnect);
             WinHttpCloseHandle(hRequest);
-            throw;
+
+            Response response;
+            response.status = Status::Error;
+            response.error = e.what();
+            return response;
         }
     }
 } // namespace OpenRCT2::Http

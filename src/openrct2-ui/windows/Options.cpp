@@ -1803,7 +1803,7 @@ namespace OpenRCT2::Ui::Windows
 
                     WindowDropdownShowTextCustomWidth(
                         { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height() + 1, colours[1], 0,
-                        Dropdown::Flag::StayOpen, numItems, widget->width() - 3);
+                        Dropdown::Flag::StayOpen, numItems, widget->width() - 4);
 
                     gDropdown.items[static_cast<int32_t>(ThemeManagerGetAvailableThemeIndex())].setChecked(true);
                     invalidateWidget(WIDX_THEMES_DROPDOWN);
@@ -1934,7 +1934,7 @@ namespace OpenRCT2::Ui::Windows
 
                     WindowDropdownShowTextCustomWidth(
                         { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height() + 1, colours[1], 0,
-                        Dropdown::Flag::StayOpen, numItems, widget->width() - 3);
+                        Dropdown::Flag::StayOpen, numItems, widget->width() - 4);
 
                     gDropdown.items[Config::Get().interface.scenarioPreviewScreenshots].setChecked(true);
                     break;
@@ -2187,7 +2187,7 @@ namespace OpenRCT2::Ui::Windows
 
                 // Get 'Clear' button string width
                 auto clearLabel = LanguageGetString(STR_CLEAR_BUTTON);
-                auto clearLabelWidth = GfxGetStringWidth(clearLabel, FontStyle::Medium) + 12;
+                auto clearLabelWidth = GfxGetStringWidth(clearLabel, FontStyle::medium) + 12;
 
                 widgets[WIDX_PATH_TO_RCT1_CLEAR].right = widgets[WIDX_PAGE_BACKGROUND].right - 12;
                 widgets[WIDX_PATH_TO_RCT1_CLEAR].left = widgets[WIDX_PATH_TO_RCT1_BROWSE].right - clearLabelWidth;
@@ -2200,7 +2200,7 @@ namespace OpenRCT2::Ui::Windows
 
                 // Get 'Browse' button string width
                 auto browseLabel = LanguageGetString(STR_BROWSE);
-                auto browseLabelWidth = GfxGetStringWidth(browseLabel, FontStyle::Medium) + 12;
+                auto browseLabelWidth = GfxGetStringWidth(browseLabel, FontStyle::medium) + 12;
 
                 widgets[WIDX_PATH_TO_RCT1_BROWSE].right = widgets[WIDX_PAGE_BACKGROUND].right - 12;
                 widgets[WIDX_PATH_TO_RCT1_BROWSE].left = widgets[WIDX_PATH_TO_RCT1_BROWSE].right - browseLabelWidth;
@@ -2241,11 +2241,11 @@ namespace OpenRCT2::Ui::Windows
             int32_t widgetHeight = pathWidget.bottom - pathWidget.top;
 
             // Apply vertical alignment if font height requires it
-            int32_t lineHeight = FontGetLineHeight(FontStyle::Medium);
+            int32_t lineHeight = FontGetLineHeight(FontStyle::medium);
             int32_t padding = widgetHeight > lineHeight ? (widgetHeight - lineHeight) / 2 : 0;
 
             auto screenCoords = windowPos + ScreenCoordsXY{ pathWidget.left + 1, pathWidget.top + padding };
-            DrawTextEllipsised(rt, screenCoords, pathWidget.width(), STR_BLACK_STRING, ft);
+            DrawTextEllipsised(rt, screenCoords, pathWidget.width() - 1, STR_BLACK_STRING, ft);
         }
 
         OpenRCT2String AdvancedTooltip(WidgetIndex widgetIndex, StringId fallback)
@@ -2297,7 +2297,7 @@ namespace OpenRCT2::Ui::Windows
             // helper function, all dropdown boxes have similar properties
             WindowDropdownShowTextCustomWidth(
                 { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height() + 1, colours[1], 0,
-                Dropdown::Flag::StayOpen, num_items, widget->width() - 3);
+                Dropdown::Flag::StayOpen, num_items, widget->width() - 4);
         }
 
         void DrawTabImages(RenderTarget& rt)
@@ -2352,7 +2352,7 @@ namespace OpenRCT2::Ui::Windows
 
         uint8_t GetScrollPercentage(const Widget& widget, const ScrollArea& scroll)
         {
-            uint8_t w = widget.width() - 1;
+            uint8_t w = widget.width() - 2;
             return static_cast<float>(scroll.contentOffsetX) / (scroll.contentWidth - w) * 100;
         }
 
@@ -2361,7 +2361,7 @@ namespace OpenRCT2::Ui::Windows
             const auto& widget = widgets[widgetIndex];
             auto& scroll = scrolls[scrollId];
 
-            int32_t widgetSize = scroll.contentWidth - (widget.width() - 1);
+            int32_t widgetSize = scroll.contentWidth - (widget.width() - 2);
             scroll.contentOffsetX = ceil(volume / 100.0f * widgetSize);
 
             widgetScrollUpdateThumbs(*this, widgetIndex);

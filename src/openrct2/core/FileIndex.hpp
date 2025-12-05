@@ -144,6 +144,9 @@ private:
         std::vector<std::string> files;
         for (const auto& directory : SearchPaths)
         {
+            if (directory.empty())
+                continue;
+
             auto absoluteDirectory = OpenRCT2::Path::GetAbsolute(directory);
             LOG_VERBOSE("FileIndex:Scanning for %s in '%s'", _pattern.c_str(), absoluteDirectory.c_str());
 

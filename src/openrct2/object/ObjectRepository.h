@@ -89,6 +89,7 @@ namespace OpenRCT2
         [[nodiscard]] virtual const ObjectRepositoryItem* FindObject(const ObjectEntryDescriptor& oed) const = 0;
 
         [[nodiscard]] virtual std::unique_ptr<Object> LoadObject(const ObjectRepositoryItem* ori) = 0;
+        [[nodiscard]] virtual std::unique_ptr<Object> LoadObject(const ObjectRepositoryItem* ori, bool loadImages) = 0;
         virtual void RegisterLoadedObject(const ObjectRepositoryItem* ori, std::unique_ptr<Object>&& object) = 0;
         virtual void UnregisterLoadedObject(const ObjectRepositoryItem* ori, Object* object) = 0;
 
@@ -108,5 +109,5 @@ namespace OpenRCT2
     [[nodiscard]] const ObjectRepositoryItem* ObjectRepositoryGetItems();
     [[nodiscard]] const ObjectRepositoryItem* ObjectRepositoryFindObjectByEntry(const RCTObjectEntry* entry);
     [[nodiscard]] const ObjectRepositoryItem* ObjectRepositoryFindObjectByName(const char* name);
-    [[nodiscard]] std::unique_ptr<Object> ObjectRepositoryLoadObject(const RCTObjectEntry* objectEntry);
+    [[nodiscard]] std::unique_ptr<Object> ObjectRepositoryLoadObject(const RCTObjectEntry* objectEntry, bool loadImages);
 } // namespace OpenRCT2

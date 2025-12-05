@@ -32,12 +32,9 @@ STR_0027    :Törmäilyautot
 STR_0028    :Merirosvolaiva
 STR_0029    :Kieppuva merirosvolaiva
 STR_0030    :Ruokakoju
-STR_0031    :Tuntematon koju (1D)
 STR_0032    :Juomakoju
-STR_0033    :Tuntematon koju (1F)
 STR_0034    :Kauppa
 STR_0035    :Karuselli
-STR_0036    :Tuntematon koju (22)
 STR_0037    :Infokioski
 STR_0038    :Vessa
 STR_0039    :Maailmanpyörä
@@ -83,17 +80,11 @@ STR_0078    :Käänteinen hiusneularata
 STR_0079    :Taikamatto
 STR_0080    :Sukellusveneajelu
 STR_0081    :Jokilautat
-STR_0082    :Tuntematon laite (50)
 # 0083 is a name, and can't be translated. The ride itself was named after USS Enterprise from star trek, see wikipedia.
 STR_0083    :Enterprise
-STR_0084    :Tuntematon laite (52)
-STR_0085    :Tuntematon laite (53)
-STR_0086    :Tuntematon laite (54)
-STR_0087    :Tuntematon laite (55)
 STR_0088    :Käänteinen impulssirata
 STR_0089    :Minivuoristorata
 STR_0090    :Kaivosajelu
-STR_0091    :Tuntematon laite (59)
 STR_0092    :Laukaisuvuoristorata
 STR_0093    :Hybridivuoristorata
 STR_0094    :Yksikiskoinen vuoristorata

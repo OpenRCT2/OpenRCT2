@@ -13,6 +13,7 @@
 
     #include "ScWidget.hpp"
 
+    #include <openrct2/interface/ColourWithFlags.h>
     #include <openrct2/interface/Window.h>
     #include <openrct2/interface/WindowBase.h>
     #include <openrct2/scripting/Duktape.hpp>
@@ -238,7 +239,7 @@ namespace OpenRCT2::Scripting
                 for (auto c : w->colours)
                 {
                     auto colour = c.colour;
-                    if (c.hasFlag(ColourFlag::translucent))
+                    if (c.flags.has(ColourFlag::translucent))
                         colour |= kLegacyColourFlagTranslucent;
                     result.push_back(colour);
                 }
@@ -256,9 +257,9 @@ namespace OpenRCT2::Scripting
                     if (i < colours.size())
                     {
                         colour_t colour = colours[i] & ~kLegacyColourFlagTranslucent;
-                        auto isTranslucent = (colours[i] & kLegacyColourFlagTranslucent);
+                        bool isTranslucent = (colours[i] & kLegacyColourFlagTranslucent);
                         c.colour = std::clamp<colour_t>(colour, COLOUR_BLACK, COLOUR_COUNT - 1);
-                        c.flags = (isTranslucent ? EnumToFlag(ColourFlag::translucent) : 0);
+                        c.flags.set(ColourFlag::translucent, isTranslucent);
                     }
                     w->colours[i] = c;
                 }

@@ -102,7 +102,7 @@ namespace OpenRCT2::Ui
         }
         else
         {
-            int32_t size = widget->width() - 1;
+            int32_t size = widget->width() - 2;
             if (scroll.flags & VSCROLLBAR_VISIBLE)
                 size -= 11;
             size = std::max(0, scroll.contentWidth - size);
@@ -492,7 +492,7 @@ namespace OpenRCT2::Ui
         assert(end_tab_id < w->widgets.size());
 
         int32_t i, x = w->widgets[start_tab_id].left;
-        int32_t tab_width = w->widgets[start_tab_id].width();
+        int32_t tab_width = w->widgets[start_tab_id].width() - 1;
 
         for (i = start_tab_id; i <= end_tab_id; i++)
         {

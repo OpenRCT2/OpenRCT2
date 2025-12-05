@@ -327,13 +327,14 @@ public:
     // in the station array. e.g. if only slot 0 and 2 are in use, index 2 returns 2 instead of 3.
     StationIndex::UnderlyingType getStationNumber(StationIndex in) const;
 
+    void chainQueues() const;
+
 private:
     void update();
     void updateQueueLength(StationIndex stationIndex);
     ResultWithMessage createVehicles(const CoordsXYE& element, bool isApplying, bool isSimulating);
     void moveTrainsToBlockBrakes(const CoordsXYZ& firstBlockPosition, OpenRCT2::TrackElement& firstBlock);
     money64 calculateIncomePerHour() const;
-    void chainQueues() const;
     void constructMissingEntranceOrExit() const;
 
     ResultWithMessage changeStatusDoStationChecks(StationIndex& stationIndex);
@@ -379,7 +380,7 @@ public:
 
     RideMode getDefaultMode() const;
 
-    void setColourPreset(uint8_t index);
+    void setColourPreset(uint8_t trackColourPreset, uint8_t vehicleColourPreset);
 
     const RideObjectEntry* getRideEntry() const;
 

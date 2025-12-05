@@ -368,10 +368,9 @@ static void ChairliftPaintStationSeNw(
         imageId = session.TrackColours.WithIndex(SPR_CHAIRLIFT_STATION_COLUMN_SE_NW);
         PaintAddImageAsParent(
             session, imageId, { 16, 30, height + 2 }, { { 16, 1, height + 2 }, { 1, 1, 7 } }); // bound offset x is wrong?
-
-        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
     }
 
+    PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }

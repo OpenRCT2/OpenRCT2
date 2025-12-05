@@ -27,6 +27,7 @@
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/interface/Colour.h>
+#include <openrct2/interface/ColourWithFlags.h>
 #include <openrct2/localisation/Language.h>
 #include <openrct2/localisation/StringIds.h>
 #include <stdexcept>
@@ -151,7 +152,7 @@ namespace OpenRCT2::Ui
     }
     static constexpr ColourWithFlags translucent(colour_t colour)
     {
-        return ColourWithFlags{ colour, EnumToFlag(ColourFlag::translucent) };
+    return ColourWithFlags{ colour, { ColourFlag::translucent } };
     }
 
     static constexpr WindowThemeDesc kWindowThemeDescriptors[] =
@@ -322,7 +323,7 @@ namespace OpenRCT2::Ui
         for (uint8_t i = 0; i < wtDesc->windowColours.numColours; i++)
         {
             json_t jsonEntry = { { "colour", Colour::ToString(Theme.Colours[i].colour) },
-                                 { "translucent", Theme.Colours[i].hasFlag(ColourFlag::translucent) } };
+                                 { "translucent", Theme.Colours[i].flags.has(ColourFlag::translucent) } };
 
             jsonColours.emplace_back(jsonEntry);
         }
@@ -364,7 +365,8 @@ namespace OpenRCT2::Ui
                 auto colourObject = Json::AsObject(jsonColours[i]);
                 auto colour = Colour::FromString(Json::GetString(colourObject["colour"]), COLOUR_BLACK);
                 auto isTranslucent = Json::GetBoolean(colourObject["translucent"], false);
-                uint8_t flags = isTranslucent ? EnumToFlag(ColourFlag::translucent) : 0;
+                ColourFlags flags{};
+                flags.set(ColourFlag::translucent, isTranslucent);
 
                 result.Theme.Colours[i] = { colour, flags };
             }

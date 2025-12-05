@@ -483,7 +483,7 @@ namespace OpenRCT2::Ui::Windows
         }
         WindowDropdownShowTextCustomWidth(
             { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
-            w->colours[1], 0, Dropdown::Flag::StayOpen, 4, dropdownWidget->width() - 3);
+            w->colours[1], 0, Dropdown::Flag::StayOpen, 4, dropdownWidget->width() - 4);
 
         int32_t currentResearchLevel = gameState.researchFundingLevel;
         gDropdown.items[currentResearchLevel].setChecked(true);

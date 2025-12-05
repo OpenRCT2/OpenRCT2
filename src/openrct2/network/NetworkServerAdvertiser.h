@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include <cstdint>
 #include <memory>
 
 namespace OpenRCT2::Network
@@ -17,6 +18,7 @@ namespace OpenRCT2::Network
     {
         disabled,
         unregistered,
+        registering,
         registered,
     };
 

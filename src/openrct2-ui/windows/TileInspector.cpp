@@ -905,7 +905,7 @@ static uint64_t PageDisabledWidgets[] = {
                             gDropdown.items[2] = Dropdown::MenuLabel(STR_TILE_INSPECTOR_WALL_SLOPED_RIGHT);
                             WindowDropdownShowTextCustomWidth(
                                 { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height() + 1, colours[1], 0,
-                                Dropdown::Flag::StayOpen, 3, widget->width() - 3);
+                                Dropdown::Flag::StayOpen, 3, widget->width() - 4);
 
                             // Set current value as checked
                             gDropdown.items[tileElement->AsWall()->GetSlope()].setChecked(true);
@@ -969,7 +969,6 @@ static uint64_t PageDisabledWidgets[] = {
 
         void onToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
-            MapInvalidateSelectionRect();
             gMapSelectFlags.set(MapSelectFlag::enable);
 
             CoordsXY mapCoords;
@@ -999,7 +998,6 @@ static uint64_t PageDisabledWidgets[] = {
                 gMapSelectFlags.unset(MapSelectFlag::enable);
 
             gMapSelectType = MapSelectType::full;
-            MapInvalidateSelectionRect();
         }
 
         void onToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
@@ -1060,12 +1058,12 @@ static uint64_t PageDisabledWidgets[] = {
                 ft.Add<int32_t>(tileCoords.x);
                 DrawTextBasic(
                     rt, screenCoords + ScreenCoordsXY{ 43, yOffset }, STR_FORMAT_INTEGER, ft,
-                    { colours[1], TextAlignment::RIGHT });
+                    { colours[1], TextAlignment::right });
                 ft = Formatter();
                 ft.Add<int32_t>(tileCoords.y);
                 DrawTextBasic(
                     rt, screenCoords + ScreenCoordsXY{ 113, yOffset }, STR_FORMAT_INTEGER, ft,
-                    { colours[1], TextAlignment::RIGHT });
+                    { colours[1], TextAlignment::right });
             }
             else
             {
@@ -1586,7 +1584,7 @@ static uint64_t PageDisabledWidgets[] = {
 
         void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
-            const int32_t listWidth = widgets[WIDX_LIST].width();
+            const int32_t listWidth = widgets[WIDX_LIST].width() - 1;
             Rectangle::fill(
                 rt, { { rt.x, rt.y }, { rt.x + rt.width - 1, rt.y + rt.height - 1 } }, ColourMapA[colours[1].colour].mid_light);
 
@@ -1595,9 +1593,9 @@ static uint64_t PageDisabledWidgets[] = {
             {
                 auto& listWidget = widgets[WIDX_LIST];
                 auto centrePos = ScreenCoordsXY{ listWidget.width() / 2,
-                                                 (listWidget.height() - FontGetLineHeight(FontStyle::Medium)) / 2 };
+                                                 (listWidget.height() - FontGetLineHeight(FontStyle::medium)) / 2 };
                 auto ft = Formatter{};
-                auto textPaint = TextPaint{ colours[1], TextAlignment::CENTRE };
+                auto textPaint = TextPaint{ colours[1], TextAlignment::centre };
                 DrawTextWrapped(rt, centrePos, listWidth, STR_TILE_INSPECTOR_SELECT_TILE_HINT, ft, textPaint);
                 return;
             }

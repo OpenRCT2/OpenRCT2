@@ -511,10 +511,9 @@ namespace OpenRCT2::Park
 
     money64 CalculateCompanyValue(const ParkData& park)
     {
-        auto result = park.value - park.bankLoan;
+        money64 result = park.value - park.bankLoan;
 
-        // Clamp addition to prevent overflow
-        result = AddClamp<money64>(result, park.cash);
+        result = AddClamp(result, park.cash);
 
         return result;
     }

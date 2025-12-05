@@ -22,6 +22,7 @@
 #include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/entity/Guest.h>
 #include <openrct2/entity/Staff.h>
+#include <openrct2/interface/ColourWithFlags.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.Date.h>
 #include <openrct2/localisation/StringIds.h>
@@ -100,7 +101,7 @@ namespace OpenRCT2::Ui::Windows
                 Rectangle::FillMode::none);
 
             // Figure out how much line height we have to work with.
-            uint32_t line_height = FontGetLineHeight(FontStyle::Medium);
+            uint32_t line_height = FontGetLineHeight(FontStyle::medium);
 
             auto& gameState = getGameState();
 
@@ -115,7 +116,7 @@ namespace OpenRCT2::Ui::Windows
                 StringId stringId = gameState.park.cash < 0 ? STR_BOTTOM_TOOLBAR_CASH_NEGATIVE : STR_BOTTOM_TOOLBAR_CASH;
                 auto ft = Formatter();
                 ft.Add<money64>(gameState.park.cash);
-                DrawTextBasic(rt, screenCoords, stringId, ft, { colour, TextAlignment::CENTRE });
+                DrawTextBasic(rt, screenCoords, stringId, ft, { colour, TextAlignment::centre });
             }
 
             static constexpr StringId _guestCountFormats[] = {
@@ -141,7 +142,7 @@ namespace OpenRCT2::Ui::Windows
                 auto colour = GetHoverWidgetColour(WIDX_GUESTS);
                 auto ft = Formatter();
                 ft.Add<uint32_t>(gameState.park.numGuestsInPark);
-                DrawTextBasic(rt, screenCoords, stringId, ft, { colour, TextAlignment::CENTRE });
+                DrawTextBasic(rt, screenCoords, stringId, ft, { colour, TextAlignment::centre });
             }
 
             // Draw park rating
@@ -200,10 +201,10 @@ namespace OpenRCT2::Ui::Windows
             ft.Add<StringId>(DateDayNames[day]);
             ft.Add<int16_t>(month);
             ft.Add<int16_t>(year);
-            DrawTextBasic(rt, screenCoords, stringId, ft, { colour, TextAlignment::CENTRE });
+            DrawTextBasic(rt, screenCoords, stringId, ft, { colour, TextAlignment::centre });
 
             // Figure out how much line height we have to work with.
-            uint32_t line_height = FontGetLineHeight(FontStyle::Medium);
+            uint32_t line_height = FontGetLineHeight(FontStyle::medium);
 
             // Temperature
             screenCoords = { windowPos.x + rightPanelWidget.left + 15, static_cast<int32_t>(screenCoords.y + line_height + 1) };
@@ -251,7 +252,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Text
             auto screenCoords = windowPos + ScreenCoordsXY{ middleOutsetWidget.midX(), middleOutsetWidget.top + 11 };
-            int32_t itemWidth = middleOutsetWidget.width() - 62;
+            int32_t itemWidth = middleOutsetWidget.width() - 63;
             DrawNewsTicker(
                 rt, screenCoords, itemWidth, COLOUR_BRIGHT_GREEN, STR_BOTTOM_TOOLBAR_NEWS_TEXT, newsItem->text,
                 newsItem->ticks);
@@ -363,11 +364,11 @@ namespace OpenRCT2::Ui::Windows
                 colours[0], Rectangle::BorderStyle::inset, Rectangle::FillBrightness::light, Rectangle::FillMode::none);
 
             // Figure out how much line height we have to work with.
-            uint32_t line_height = FontGetLineHeight(FontStyle::Medium);
+            uint32_t line_height = FontGetLineHeight(FontStyle::medium);
 
             ScreenCoordsXY middleWidgetCoords(
                 windowPos.x + middleOutsetWidget->midX(), windowPos.y + middleOutsetWidget->top + line_height + 1);
-            int32_t panelWidth = middleOutsetWidget->width() - 62;
+            int32_t panelWidth = middleOutsetWidget->width() - 63;
 
             // Check if there is a map tooltip to draw
             StringId stringId;
@@ -377,12 +378,12 @@ namespace OpenRCT2::Ui::Windows
             {
                 // TODO: this string probably shouldn't be reused for this
                 DrawTextWrapped(
-                    rt, middleWidgetCoords, panelWidth, STR_TITLE_SEQUENCE_OPENRCT2, ft, { colours[0], TextAlignment::CENTRE });
+                    rt, middleWidgetCoords, panelWidth, STR_TITLE_SEQUENCE_OPENRCT2, ft, { colours[0], TextAlignment::centre });
             }
             else
             {
                 // Show tooltip in bottom toolbar
-                DrawTextWrapped(rt, middleWidgetCoords, panelWidth, STR_STRINGID, ft, { colours[0], TextAlignment::CENTRE });
+                DrawTextWrapped(rt, middleWidgetCoords, panelWidth, STR_STRINGID, ft, { colours[0], TextAlignment::centre });
             }
         }
 
@@ -508,7 +509,7 @@ namespace OpenRCT2::Ui::Windows
         void onPrepareDraw() override
         {
             // Figure out how much line height we have to work with.
-            uint32_t line_height = FontGetLineHeight(FontStyle::Medium);
+            uint32_t line_height = FontGetLineHeight(FontStyle::medium);
 
             // Reset dimensions as appropriate -- in case we're switching languages.
             height = line_height * 2 + 12;
@@ -695,7 +696,7 @@ namespace OpenRCT2::Ui::Windows
         int32_t screenHeight = ContextGetHeight();
 
         // Figure out how much line height we have to work with.
-        uint32_t lineHeight = FontGetLineHeight(FontStyle::Medium);
+        uint32_t lineHeight = FontGetLineHeight(FontStyle::medium);
         int32_t toolbarHeight = lineHeight * 2 + 12;
 
         auto* windowMgr = GetWindowManager();

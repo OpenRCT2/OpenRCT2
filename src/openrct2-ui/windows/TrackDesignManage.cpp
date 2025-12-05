@@ -189,7 +189,7 @@ namespace OpenRCT2::Ui::Windows
 
             const auto titleBarBottom = widgets[WIDX_TITLE].bottom;
             const auto buttonTop = widgets[WIDX_PROMPT_DELETE].top;
-            const auto fontHeight = FontGetLineHeight(FontStyle::Medium);
+            const auto fontHeight = FontGetLineHeight(FontStyle::medium);
 
             const auto maxMessageHeight = buttonTop - titleBarBottom;
             const auto messageTop = titleBarBottom + (maxMessageHeight - fontHeight) / 2;
@@ -198,7 +198,7 @@ namespace OpenRCT2::Ui::Windows
             ft.Add<const utf8*>(_trackDesignFileReference->name.c_str());
             DrawTextWrapped(
                 rt, windowPos + ScreenCoordsXY{ width / 2, messageTop }, (width - 4),
-                STR_ARE_YOU_SURE_YOU_WANT_TO_PERMANENTLY_DELETE_TRACK, ft, { TextAlignment::CENTRE });
+                STR_ARE_YOU_SURE_YOU_WANT_TO_PERMANENTLY_DELETE_TRACK, ft, { TextAlignment::centre });
         }
     };
     /**

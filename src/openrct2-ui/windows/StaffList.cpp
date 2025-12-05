@@ -322,7 +322,7 @@ namespace OpenRCT2::Ui::Windows
                 invalidate();
             }
 
-            auto scrollWidth = widgets[WIDX_STAFF_LIST_LIST].width() - 15;
+            auto scrollWidth = widgets[WIDX_STAFF_LIST_LIST].width() - 16;
             return { scrollWidth, scrollHeight };
         }
 
@@ -375,7 +375,7 @@ namespace OpenRCT2::Ui::Windows
                 ColourMapA[colours[1].colour].mid_light);
 
             // How much space do we have for the name and action columns? (Discount scroll area and icons.)
-            const int32_t nonIconSpace = widgets[WIDX_STAFF_LIST_LIST].width() - 15 - 68;
+            const int32_t nonIconSpace = widgets[WIDX_STAFF_LIST_LIST].width() - 1 - 15 - 68;
             const int32_t nameColumnSize = nonIconSpace * 0.42;
             const int32_t actionColumnSize = nonIconSpace * 0.58;
             const int32_t actionOffset = widgets[WIDX_STAFF_LIST_LIST].right - actionColumnSize - 15;

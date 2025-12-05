@@ -32,12 +32,9 @@ STR_0027    :Radiobiler
 STR_0028    :Piratskip
 STR_0029    :Roterende skip
 STR_0030    :Matbod
-STR_0031    :Ukjent bod (1D)
 STR_0032    :Drikkebod
-STR_0033    :Ukjent bod (1F)
 STR_0034    :Bod
 STR_0035    :Karusell
-STR_0036    :Ukjent bod (22)
 STR_0037    :Informasjonskiosk
 STR_0038    :Toaletter
 STR_0039    :Pariserhjul
@@ -83,16 +80,10 @@ STR_0078    :Invertert hårnålsbane
 STR_0079    :Flyvende teppe
 STR_0080    :Ubåtbane
 STR_0081    :Elveflåter
-STR_0082    :Ukjent attraksjon (50)
 STR_0083    :Enterprise
-STR_0084    :Ukjent attraksjon (52)
-STR_0085    :Ukjent attraksjon (53)
-STR_0086    :Ukjent attraksjon (54)
-STR_0087    :Ukjent attraksjon (55)
 STR_0088    :Invertert impulsbane
 STR_0089    :Miniberg-og-dal-bane
 STR_0090    :Gruvebane
-STR_0091    :Ukjent attraksjon (59)
 STR_0092    :LIM-berg-og-dal-bane
 STR_0093    :Hybrid berg-og-dal-bane
 STR_0094    :Enkeltspor berg-og-dal-bane

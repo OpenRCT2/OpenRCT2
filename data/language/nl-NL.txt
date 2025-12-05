@@ -29,12 +29,9 @@ STR_0027    :Botsauto’s
 STR_0028    :Schommelschip
 STR_0029    :Loopingschip
 STR_0030    :Eetkraam
-STR_0031    :Onbekende kraam (1D)
 STR_0032    :Drankkraam
-STR_0033    :Onbekende kraam (1F)
 STR_0034    :Winkel
 STR_0035    :Draaimolen
-STR_0036    :Onbekende kraam (22)
 STR_0037    :Informatiekiosk
 STR_0038    :Toilet
 STR_0039    :Reuzenrad
@@ -80,16 +77,10 @@ STR_0078    :Omgekeerde haarspeldachtbaan
 STR_0079    :Vliegend tapijt
 STR_0080    :Onderzeeër-attractie
 STR_0081    :Riviertocht
-STR_0082    :Onbekende attractie (50)
 STR_0083    :Enterprise
-STR_0084    :Onbekende attractie (52)
-STR_0085    :Onbekende attractie (53)
-STR_0086    :Onbekende attractie (54)
-STR_0087    :Onbekende attractie (55)
 STR_0088    :Omgekeerde Impulse-achtbaan
 STR_0089    :Mini-achtbaan
 STR_0090    :Aangedreven mijntrein
-STR_0091    :Onbekende attractie (59)
 STR_0092    :LIM-lanceringsachtbaan
 STR_0093    :Hybride achtbaan
 STR_0094    :Achtbaan met enkele rail
@@ -3840,3 +3831,6 @@ STR_7002    :{STRINGID} {STRINGID}
 STR_7003    :Audiobestand ‘{STRING}’ is beschadigd. Sample nr. {INT32} kon niet worden geladen, aangezien er maar {INT32} beschikbaar zijn. Installeer RollerCoaster Tycoon 2 opnieuw.
 STR_7004    :Volledig beeld hertekenen
 STR_7005    :Voetpaden aanleggen door te slepen
+STR_7006    :Rand tekenen om knoppen met alleen een plaatje
+STR_7007    :Attractietype
+STR_7008    :Onbekend attractietype ({INT32})

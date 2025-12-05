@@ -1168,7 +1168,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
     {
         const CoordsXY& pos = session.MapPosition;
 
-        for (const auto& tile : gMapSelectionTiles)
+        for (const auto& tile : MapSelection::getSelectedTiles())
         {
             if (tile.x != pos.x || tile.y != pos.y)
             {

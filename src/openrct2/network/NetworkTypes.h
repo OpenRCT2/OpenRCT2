@@ -82,9 +82,10 @@ namespace OpenRCT2::Network
         playerInfo,
         requestGameState,
         gameState,
-        scriptsHeader,
+        scriptsHeader, // Deprecated.
         scriptsData,
         heartbeat,
+        beginMap,
         max,
         invalid = static_cast<uint32_t>(-1),
     };

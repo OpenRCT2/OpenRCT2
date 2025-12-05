@@ -84,81 +84,91 @@ namespace OpenRCT2::Http
 
     Response Do(const Request& req)
     {
-        CURL* curl = curl_easy_init();
-        std::shared_ptr<void> _(nullptr, [curl](...) { curl_easy_cleanup(curl); });
-
-        if (!curl)
-            throw std::runtime_error("Failed to initialize curl");
-
-        Response res;
-        WriteThis wt;
-
-        if (req.method == Method::POST || req.method == Method::PUT)
+        try
         {
-            wt.readptr = req.body.c_str();
-            wt.sizeleft = req.body.size();
+            CURL* curl = curl_easy_init();
+            std::shared_ptr<void> _(nullptr, [curl](...) { curl_easy_cleanup(curl); });
 
-            curl_easy_setopt(curl, CURLOPT_READFUNCTION, ReadCallback);
-            curl_easy_setopt(curl, CURLOPT_READDATA, &wt);
-            curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, static_cast<long>(wt.sizeleft));
-        }
+            if (!curl)
+                throw std::runtime_error("Failed to initialize curl");
 
-        if (req.forceIPv4)
-            curl_easy_setopt(curl, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
+            Response res;
+            WriteThis wt;
 
-        if (req.method == Method::POST)
-            curl_easy_setopt(curl, CURLOPT_POST, 1L);
-
-        if (req.method == Method::PUT)
-            curl_easy_setopt(curl, CURLOPT_UPLOAD, 1L);
-
-        curl_easy_setopt(curl, CURLOPT_URL, req.url.c_str());
-        curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, true);
-        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteData);
-        curl_easy_setopt(curl, CURLOPT_WRITEDATA, static_cast<void*>(&res));
-        curl_easy_setopt(curl, CURLOPT_HEADERFUNCTION, HeaderCallback);
-        curl_easy_setopt(curl, CURLOPT_HEADERDATA, static_cast<void*>(&res));
-        curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, true);
-        curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, true);
-        curl_easy_setopt(curl, CURLOPT_USERAGENT, kOpenRCT2UserAgent);
-
-        curl_slist* chunk = nullptr;
-        std::shared_ptr<void> __(nullptr, [chunk](...) { curl_slist_free_all(chunk); });
-        for (auto header : req.header)
-        {
-            std::string hs = header.first + ": " + header.second;
-            chunk = curl_slist_append(chunk, hs.c_str());
-        }
-        if (req.header.size() != 0)
-        {
-            if (chunk == nullptr)
+            if (req.method == Method::POST || req.method == Method::PUT)
             {
-                throw std::runtime_error("Failed to set headers");
+                wt.readptr = req.body.c_str();
+                wt.sizeleft = req.body.size();
+
+                curl_easy_setopt(curl, CURLOPT_READFUNCTION, ReadCallback);
+                curl_easy_setopt(curl, CURLOPT_READDATA, &wt);
+                curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, static_cast<long>(wt.sizeleft));
             }
-            curl_easy_setopt(curl, CURLOPT_HTTPHEADER, chunk);
-        }
 
-        CURLcode curl_code = curl_easy_perform(curl);
-        if (curl_code != CURLE_OK)
+            if (req.forceIPv4)
+                curl_easy_setopt(curl, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
+
+            if (req.method == Method::POST)
+                curl_easy_setopt(curl, CURLOPT_POST, 1L);
+
+            if (req.method == Method::PUT)
+                curl_easy_setopt(curl, CURLOPT_UPLOAD, 1L);
+
+            curl_easy_setopt(curl, CURLOPT_URL, req.url.c_str());
+            curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, true);
+            curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteData);
+            curl_easy_setopt(curl, CURLOPT_WRITEDATA, static_cast<void*>(&res));
+            curl_easy_setopt(curl, CURLOPT_HEADERFUNCTION, HeaderCallback);
+            curl_easy_setopt(curl, CURLOPT_HEADERDATA, static_cast<void*>(&res));
+            curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, true);
+            curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, true);
+            curl_easy_setopt(curl, CURLOPT_USERAGENT, kOpenRCT2UserAgent);
+
+            curl_slist* chunk = nullptr;
+            std::shared_ptr<void> __(nullptr, [chunk](...) { curl_slist_free_all(chunk); });
+            for (auto header : req.header)
+            {
+                std::string hs = header.first + ": " + header.second;
+                chunk = curl_slist_append(chunk, hs.c_str());
+            }
+            if (req.header.size() != 0)
+            {
+                if (chunk == nullptr)
+                {
+                    throw std::runtime_error("Failed to set headers");
+                }
+                curl_easy_setopt(curl, CURLOPT_HTTPHEADER, chunk);
+            }
+
+            CURLcode curl_code = curl_easy_perform(curl);
+            if (curl_code != CURLE_OK)
+            {
+                using namespace std::literals;
+                throw std::runtime_error(
+                    "Failed to perform request. curl error code: "s + std::to_string(curl_code) + ": "
+                    + curl_easy_strerror(curl_code));
+            }
+
+            // gets freed by curl_easy_cleanup
+            char* content_type;
+            long code;
+            curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &code);
+            curl_easy_getinfo(curl, CURLINFO_CONTENT_TYPE, &content_type);
+            res.status = static_cast<Status>(code);
+            if (content_type != nullptr)
+            {
+                res.content_type = std::string(content_type);
+            }
+
+            return res;
+        }
+        catch (const std::exception& e)
         {
-            using namespace std::literals;
-            throw std::runtime_error(
-                "Failed to perform request. curl error code: "s + std::to_string(curl_code) + ": "
-                + curl_easy_strerror(curl_code));
+            Response response;
+            response.status = Status::Error;
+            response.error = e.what();
+            return response;
         }
-
-        // gets freed by curl_easy_cleanup
-        char* content_type;
-        long code;
-        curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &code);
-        curl_easy_getinfo(curl, CURLINFO_CONTENT_TYPE, &content_type);
-        res.status = static_cast<Status>(code);
-        if (content_type != nullptr)
-        {
-            res.content_type = std::string(content_type);
-        }
-
-        return res;
     }
 
 } // namespace OpenRCT2::Http

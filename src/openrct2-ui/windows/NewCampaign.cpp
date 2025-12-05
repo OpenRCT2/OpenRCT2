@@ -221,7 +221,7 @@ namespace OpenRCT2::Ui::Windows
                             WindowDropdownShowTextCustomWidth(
                                 { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top },
                                 dropdownWidget->height() + 1, colours[1], 0, Dropdown::Flag::StayOpen, numItems,
-                                dropdownWidget->width() - 3);
+                                dropdownWidget->width() - 4);
                         }
                     }
                     else
@@ -242,7 +242,7 @@ namespace OpenRCT2::Ui::Windows
                         WindowDropdownShowTextCustomWidth(
                             { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top },
                             dropdownWidget->height() + 1, colours[1], 0, Dropdown::Flag::StayOpen, numItems,
-                            dropdownWidget->width() - 3);
+                            dropdownWidget->width() - 4);
                     }
                     break;
                     // In RCT2, the maximum was 6 weeks

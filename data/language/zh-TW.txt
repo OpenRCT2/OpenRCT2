@@ -32,12 +32,9 @@ STR_0027    :碰碰車
 STR_0028    :海盜船
 STR_0029    :垂直迴轉海盜船
 STR_0030    :食物店鋪
-STR_0031    :Unknown Stall (1D)
 STR_0032    :飲料店鋪
-STR_0033    :Unknown Stall (1F)
 STR_0034    :商店
 STR_0035    :旋轉木馬
-STR_0036    :Unknown Stall (22)
 STR_0037    :訪客資訊中心
 STR_0038    :廁所
 STR_0039    :摩天輪
@@ -83,16 +80,10 @@ STR_0078    :反轉髮夾彎式雲霄飛車
 STR_0079    :魔法地毯
 STR_0080    :潛艇遊道
 STR_0081    :木筏河道
-STR_0082    :Unknown Ride (50)
 STR_0083    :太空摩天輪
-STR_0084    :Unknown Ride (52)
-STR_0085    :Unknown Ride (53)
-STR_0086    :Unknown Ride (54)
-STR_0087    :Unknown Ride (55)
 STR_0088    :反轉極速式雲霄飛車
 STR_0089    :迷你雲霄飛車
 STR_0090    :礦遊式雲霄飛車
-STR_0091    :Unknown Ride (59)
 STR_0092    :直線電動機發車雲霄飛車
 STR_0093    :混合式雲霄飛車
 STR_0094    :單軌式雲霄飛車

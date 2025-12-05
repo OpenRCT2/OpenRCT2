@@ -155,7 +155,7 @@ namespace OpenRCT2::GameActions
         auto crossingMode = isQueue || (_slope.type != FootpathSlopeType::flat) ? CreateCrossingMode::none
                                                                                 : CreateCrossingMode::pathOverTrack;
         auto canBuild = MapCanConstructWithClearAt(
-            { _loc, zLow, zHigh }, &MapPlaceNonSceneryClearFunc, quarterTile, GetFlags(), kTileSlopeFlat, crossingMode);
+            { _loc, zLow, zHigh }, MapPlaceNonSceneryClearFunc, quarterTile, GetFlags(), kTileSlopeFlat, crossingMode);
         if (!entrancePath && canBuild.Error != Status::Ok)
         {
             canBuild.ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
@@ -224,7 +224,7 @@ namespace OpenRCT2::GameActions
         auto crossingMode = isQueue || (_slope.type != FootpathSlopeType::flat) ? CreateCrossingMode::none
                                                                                 : CreateCrossingMode::pathOverTrack;
         auto canBuild = MapCanConstructWithClearAt(
-            { _loc, zLow, zHigh }, &MapPlaceNonSceneryClearFunc, quarterTile, GAME_COMMAND_FLAG_APPLY | GetFlags(),
+            { _loc, zLow, zHigh }, MapPlaceNonSceneryClearFunc, quarterTile, GAME_COMMAND_FLAG_APPLY | GetFlags(),
             kTileSlopeFlat, crossingMode);
         if (!entrancePath && canBuild.Error != Status::Ok)
         {

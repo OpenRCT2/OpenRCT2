@@ -1575,6 +1575,7 @@ enum : StringId
     STR_UNKNOWN_RIDE = 6375,
 
     STR_MULTIPLAYER_RECEIVING_OBJECTS_LIST = 6378,
+    STR_MULTIPLAYER_RECEIVING_SCRIPTS = 7009,
 
     STR_MULTIPLAYER_RECEIVED_INVALID_DATA = 6379,
 
@@ -1757,8 +1758,8 @@ enum : StringId
     // Window: Error
     STR_AUDIO_FILE_TRUNCATED = 7003,
 
-    STR_REPLAY_FILE_NOT_FOUND = 7008,
-    STR_REPLAY_NOT_STARTED = 7009,
+    STR_REPLAY_FILE_NOT_FOUND = 7010,
+    STR_REPLAY_NOT_STARTED = 7011,
 
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings

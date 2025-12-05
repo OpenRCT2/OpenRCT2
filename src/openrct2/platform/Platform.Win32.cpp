@@ -13,27 +13,27 @@
     #ifndef WIN32_LEAN_AND_MEAN
         #define WIN32_LEAN_AND_MEAN
     #endif
-    #include "../Diagnostic.h"
-
-    #include <cassert>
+// clang-format off
     #include <windows.h>
-
-    // Then the rest
-    #include "../Version.h"
-
     #include <datetimeapi.h>
     #include <lmcons.h>
     #include <memory>
     #include <shlobj.h>
+    // clang-format on
     #undef GetEnvironmentVariable
+    #undef small
+
+    #include "Platform.h"
 
     #include "../Date.h"
+    #include "../Diagnostic.h"
     #include "../OpenRCT2.h"
+    #include "../Version.h"
     #include "../core/Path.hpp"
     #include "../core/String.hpp"
     #include "../localisation/Language.h"
-    #include "Platform.h"
 
+    #include <cassert>
     #include <cstring>
     #include <format>
     #include <iterator>
@@ -494,7 +494,7 @@ namespace OpenRCT2::Platform
         return false;
     }
 
-    int32_t Execute(std::string_view command, std::string* output)
+    int32_t Execute(const char* args[], std::string* output)
     {
         LOG_WARNING("Execute() not implemented for Windows!");
         return -1;

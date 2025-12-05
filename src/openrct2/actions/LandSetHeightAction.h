@@ -46,7 +46,7 @@ namespace OpenRCT2::GameActions
          *
          *  rct2: 0x00663CB9
          */
-        static int32_t MapSetLandHeightClearFunc(
+        static bool MapSetLandHeightClearFunc(
             TileElement** tile_element, [[maybe_unused]] const CoordsXY& coords, [[maybe_unused]] uint8_t flags,
             [[maybe_unused]] money64* price);
     };

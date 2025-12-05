@@ -46,7 +46,7 @@ namespace OpenRCT2::Network
 
     #ifndef DISABLE_HTTP
     using namespace std::chrono_literals;
-    constexpr int32_t kMasterServerRegisterTime = std::chrono::milliseconds(2min).count();
+    constexpr int32_t kMasterServerRegisterTime = std::chrono::milliseconds(30s).count();
     constexpr int32_t kMasterServerHeartbeatTime = std::chrono::milliseconds(1min).count();
     #endif
 
@@ -56,6 +56,7 @@ namespace OpenRCT2::Network
         uint16_t _port;
 
         std::unique_ptr<IUdpSocket> _lanListener;
+        std::shared_future<void> _currentRequest;
         uint32_t _lastListenTime{};
 
         AdvertiseStatus _status = AdvertiseStatus::unregistered;
@@ -82,6 +83,17 @@ namespace OpenRCT2::Network
     #ifndef DISABLE_HTTP
             _key = GenerateAdvertiseKey();
     #endif
+        }
+
+        ~NetworkServerAdvertiser() final
+        {
+            _lanListener->Close();
+
+            auto currentRequest = _currentRequest;
+            if (currentRequest.valid())
+            {
+                currentRequest.wait();
+            }
         }
 
         AdvertiseStatus GetStatus() const override
@@ -149,12 +161,12 @@ namespace OpenRCT2::Network
                 case AdvertiseStatus::unregistered:
                     if (_lastAdvertiseTime == 0 || Platform::GetTicks() > _lastAdvertiseTime + kMasterServerRegisterTime)
                     {
-                        if (_lastAdvertiseTime == 0)
-                        {
-                            Console::WriteLine("Registering server on master server");
-                        }
+                        Console::WriteLine("Registering server on master server...");
                         SendRegistration(_forceIPv4);
                     }
+                    break;
+                case AdvertiseStatus::registering:
+                    // Waiting for registration response.
                     break;
                 case AdvertiseStatus::registered:
                     if (Platform::GetTicks() > _lastHeartbeatTime + kMasterServerHeartbeatTime)
@@ -171,6 +183,7 @@ namespace OpenRCT2::Network
         void SendRegistration(bool forceIPv4)
         {
             _lastAdvertiseTime = Platform::GetTicks();
+            _status = AdvertiseStatus::registering;
 
             // Send the registration request
             Http::Request request;
@@ -191,17 +204,21 @@ namespace OpenRCT2::Network
             request.body = body.dump();
             request.header["Content-Type"] = "application/json";
 
-            Http::DoAsync(request, [&](Http::Response response) -> void {
-                if (response.status != Http::Status::Ok)
-                {
-                    Console::Error::WriteLine("Unable to connect to master server");
-                    return;
-                }
+            _currentRequest = Http::DoAsync(request, [&](Http::Response response) -> void {
+                                  if (response.status != Http::Status::Ok)
+                                  {
+                                      Console::Error::WriteLine(
+                                          "Unable to connect to master server, retrying in %d seconds",
+                                          kMasterServerRegisterTime / 1000);
 
-                json_t root = Json::FromString(response.body);
-                root = Json::AsObject(root);
-                this->OnRegistrationResponse(root);
-            });
+                                      _status = AdvertiseStatus::unregistered;
+                                      return;
+                                  }
+
+                                  json_t root = Json::FromString(response.body);
+                                  root = Json::AsObject(root);
+                                  this->OnRegistrationResponse(root);
+                              }).share();
         }
 
         void SendHeartbeat()
@@ -215,17 +232,24 @@ namespace OpenRCT2::Network
             request.header["Content-Type"] = "application/json";
 
             _lastHeartbeatTime = Platform::GetTicks();
-            Http::DoAsync(request, [&](Http::Response response) -> void {
-                if (response.status != Http::Status::Ok)
-                {
-                    Console::Error::WriteLine("Unable to connect to master server");
-                    return;
-                }
 
-                json_t root = Json::FromString(response.body);
-                root = Json::AsObject(root);
-                this->OnHeartbeatResponse(root);
-            });
+            _currentRequest = Http::DoAsync(request, [&](Http::Response response) -> void {
+                                  if (response.status != Http::Status::Ok)
+                                  {
+                                      Console::Error::WriteLine(
+                                          "Unable to connect to master server, retrying in %d seconds",
+                                          kMasterServerRegisterTime / 1000);
+
+                                      _status = AdvertiseStatus::unregistered;
+                                      // Don't immediately retry advertising, wait for kMasterServerRegisterTime.
+                                      _lastAdvertiseTime = Platform::GetTicks();
+                                      return;
+                                  }
+
+                                  json_t root = Json::FromString(response.body);
+                                  root = Json::AsObject(root);
+                                  this->OnHeartbeatResponse(root);
+                              }).share();
         }
 
         /**

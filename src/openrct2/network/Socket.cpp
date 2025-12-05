@@ -26,6 +26,9 @@
 #ifdef _WIN32
     #pragma comment(lib, "Ws2_32.lib")
 
+    #ifndef WIN32_LEAN_AND_MEAN
+        #define WIN32_LEAN_AND_MEAN
+    #endif
     // winsock2 must be included before windows.h
     #include <winsock2.h>
     #include <ws2tcpip.h>
@@ -978,18 +981,5 @@ namespace OpenRCT2::Network
     }
 
 } // namespace OpenRCT2::Network
-
-namespace OpenRCT2::Convert
-{
-    uint16_t HostToNetwork(uint16_t value)
-    {
-        return htons(value);
-    }
-
-    uint16_t NetworkToHost(uint16_t value)
-    {
-        return ntohs(value);
-    }
-} // namespace OpenRCT2::Convert
 
 #endif

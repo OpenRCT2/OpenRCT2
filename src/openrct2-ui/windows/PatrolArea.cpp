@@ -148,7 +148,7 @@ namespace OpenRCT2::Ui::Windows
                 auto ft = Formatter();
                 ft.Add<uint16_t>(gLandToolSize);
                 DrawTextBasic(
-                    rt, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, ft, { TextAlignment::CENTRE });
+                    rt, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, ft, { TextAlignment::centre });
             }
         }
 
@@ -181,15 +181,10 @@ namespace OpenRCT2::Ui::Windows
 
             if (stateChanged)
             {
-                // Invalidate previous area
-                MapInvalidateSelectionRect();
-
-                // Update and invalidate new area
                 gMapSelectFlags.set(MapSelectFlag::enable);
                 gMapSelectType = MapSelectType::full;
                 gMapSelectPositionA = posA;
                 gMapSelectPositionB = posB;
-                MapInvalidateSelectionRect();
             }
         }
 

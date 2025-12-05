@@ -161,7 +161,7 @@ namespace OpenRCT2::Ui::Windows
                 auto ft = Formatter();
                 ft.Add<uint16_t>(gLandToolSize);
                 DrawTextBasic(
-                    rt, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, ft, { TextAlignment::CENTRE });
+                    rt, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, ft, { TextAlignment::centre });
             }
 
             if (!(getGameState().park.flags & PARK_FLAGS_NO_MONEY))
@@ -172,7 +172,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     auto ft = Formatter();
                     ft.Add<money64>(_waterToolRaiseCost);
-                    DrawTextBasic(rt, screenCoords, STR_RAISE_COST_AMOUNT, ft, { TextAlignment::CENTRE });
+                    DrawTextBasic(rt, screenCoords, STR_RAISE_COST_AMOUNT, ft, { TextAlignment::centre });
                 }
                 screenCoords.y += 10;
 
@@ -181,7 +181,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     auto ft = Formatter();
                     ft.Add<money64>(_waterToolLowerCost);
-                    DrawTextBasic(rt, screenCoords, STR_LOWER_COST_AMOUNT, ft, { TextAlignment::CENTRE });
+                    DrawTextBasic(rt, screenCoords, STR_LOWER_COST_AMOUNT, ft, { TextAlignment::centre });
                 }
             }
         }
@@ -224,7 +224,6 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_BACKGROUND:
-                    MapInvalidateSelectionRect();
                     gMapSelectFlags.unset(MapSelectFlag::enable);
                     gCurrentToolId = Tool::waterDown;
                     break;
@@ -295,8 +294,6 @@ namespace OpenRCT2::Ui::Windows
          */
         void ToolUpdateWater(const ScreenCoordsXY& screenPos)
         {
-            MapInvalidateSelectionRect();
-
             auto* windowMgr = Ui::GetWindowManager();
             auto& gameState = getGameState();
 
@@ -392,7 +389,6 @@ namespace OpenRCT2::Ui::Windows
                 state_changed++;
             }
 
-            MapInvalidateSelectionRect();
             if (!state_changed)
                 return;
 

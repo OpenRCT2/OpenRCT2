@@ -101,7 +101,7 @@ namespace OpenRCT2::Audio
             }
 
             auto readLen = static_cast<int64_t>(len);
-            auto dst8 = reinterpret_cast<char*>(dst);
+            auto dst8 = static_cast<char*>(dst);
             int64_t totalBytesRead{};
             int64_t bytesRead;
             do
@@ -139,17 +139,17 @@ namespace OpenRCT2::Audio
     private:
         static size_t VorbisCallbackRead(void* ptr, size_t size, size_t nmemb, void* datasource)
         {
-            return SDL_RWread(reinterpret_cast<SDL_RWops*>(datasource), ptr, size, nmemb);
+            return SDL_RWread(static_cast<SDL_RWops*>(datasource), ptr, size, nmemb);
         }
 
         static int VorbisCallbackSeek(void* datasource, ogg_int64_t offset, int whence)
         {
-            return (SDL_RWseek(reinterpret_cast<SDL_RWops*>(datasource), offset, whence) < 0) ? -1 : 0;
+            return (SDL_RWseek(static_cast<SDL_RWops*>(datasource), offset, whence) < 0) ? -1 : 0;
         }
 
         static long VorbisCallbackTell(void* datasource)
         {
-            return static_cast<long>(SDL_RWtell(reinterpret_cast<SDL_RWops*>(datasource)));
+            return static_cast<long>(SDL_RWtell(static_cast<SDL_RWops*>(datasource)));
         }
     };
 #endif

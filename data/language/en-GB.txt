@@ -32,12 +32,9 @@ STR_0027    :Dodgems
 STR_0028    :Swinging Ship
 STR_0029    :Swinging Inverter Ship
 STR_0030    :Food Stall
-STR_0031    :Unknown Stall (1D)
 STR_0032    :Drink Stall
-STR_0033    :Unknown Stall (1F)
 STR_0034    :Shop
 STR_0035    :Merry-Go-Round
-STR_0036    :Unknown Stall (22)
 STR_0037    :Information Kiosk
 STR_0038    :Toilets
 STR_0039    :Ferris Wheel
@@ -83,16 +80,10 @@ STR_0078    :Inverted Hairpin Coaster
 STR_0079    :Magic Carpet
 STR_0080    :Submarine Ride
 STR_0081    :River Rafts
-STR_0082    :Unknown Ride (50)
 STR_0083    :Enterprise
-STR_0084    :Unknown Ride (52)
-STR_0085    :Unknown Ride (53)
-STR_0086    :Unknown Ride (54)
-STR_0087    :Unknown Ride (55)
 STR_0088    :Inverted Impulse Coaster
 STR_0089    :Mini Roller Coaster
 STR_0090    :Mine Ride
-STR_0091    :Unknown Ride (59)
 STR_0092    :LIM Launched Roller Coaster
 STR_0093    :Hybrid Coaster
 STR_0094    :Single Rail Roller Coaster
@@ -3846,5 +3837,7 @@ STR_7004    :Force Redraw
 STR_7005    :Drag an area of footpath
 STR_7006    :Draw border around image buttons
 STR_7007    :Ride Type
-STR_7008    :Could not start replay, file ‘{STRING}’ doesn’t exist or isn't valid
-STR_7009    :Could not start replay
+STR_7008    :Unknown ride type ({INT32})
+STR_7009    :Receiving scripts…
+STR_7010    :Could not start replay, file ‘{STRING}’ doesn’t exist or isn't valid
+STR_7011    :Could not start replay
