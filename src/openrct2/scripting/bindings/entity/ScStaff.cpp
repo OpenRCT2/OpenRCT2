@@ -203,7 +203,7 @@ namespace OpenRCT2::Scripting
         }
         else if (value.type() == DukValue::Type::NUMBER)
         {
-            auto target = RCT12PeepAnimationGroup(value.as_uint() + EnumValue(RCT12PeepAnimationGroup::EntertainerPanda));
+            auto target = RCT12PeepAnimationGroup(value.as_uint() + EnumValue(RCT12PeepAnimationGroup::entertainerPanda));
             costume = std::find_if(
                 costumes.begin(), costumes.end(), [target](auto& candidate) { return candidate.legacyPosition == target; });
         }
@@ -606,9 +606,9 @@ namespace OpenRCT2::Scripting
             else
             {
                 auto mapRange = FromDuk<MapRange>(coordsOrRange);
-                for (int32_t y = mapRange.GetTop(); y <= mapRange.GetBottom(); y += kCoordsXYStep)
+                for (int32_t y = mapRange.GetY1(); y <= mapRange.GetY2(); y += kCoordsXYStep)
                 {
-                    for (int32_t x = mapRange.GetLeft(); x <= mapRange.GetRight(); x += kCoordsXYStep)
+                    for (int32_t x = mapRange.GetX1(); x <= mapRange.GetX2(); x += kCoordsXYStep)
                     {
                         CoordsXY coord(x, y);
                         staff->SetPatrolArea(coord, value);

@@ -27,8 +27,6 @@ namespace OpenRCT2
         LogoFadeIn,
         LogoWait,
         LogoFadeOut,
-        Disclaimer1,
-        Disclaimer2,
         Clear = 254,
         Finish = 255,
     };

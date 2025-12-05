@@ -13,7 +13,7 @@
 
 // clang-format off
 /** rct2: 0x0099F100 */
-static constexpr uint8_t Rotation1TimeToSpriteMap_0[] = {
+static constexpr uint8_t kTwistAnimationStart[] = {
     0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,
     0,   0,   0,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,
     1,   1,   1,   1,   2,   2,   2,   2,   2,   2,   2,   2,   2,   2,   2,   2,   2,
@@ -66,7 +66,7 @@ static constexpr uint8_t Rotation1TimeToSpriteMap_0[] = {
 };
 
 /** rct2: 0x0099F422 */
-static constexpr uint8_t Rotation1TimeToSpriteMap_1[] = {
+static constexpr uint8_t kTwistAnimationLoop[] = {
     0,   0,   0,   1,   1,   1,   2,   2,   2,   3,   3,   3,   4,   4,   4,   5,   5,
     5,   6,   6,   6,   7,   7,   7,   8,   8,   8,   9,   9,   9,  10,  10,  10,  11,
     11,  11,  12,  12,  12,  13,  13,  13,  14,  14,  14,  15,  15,  15,  16,  16,  16,
@@ -110,7 +110,7 @@ static constexpr uint8_t Rotation1TimeToSpriteMap_1[] = {
 };
 
 /** rct2: 0x0099F6AB */
-static constexpr uint8_t Rotation1TimeToSpriteMap_2[] = {
+static constexpr uint8_t kTwistAnimationEnd[] = {
     0,   0,   0,   1,   1,   1,   2,   2,   2,   3,   3,   3,   4,   4,   4,   5,   5,
     5,   6,   6,   6,   7,   7,   7,   8,   8,   8,   9,   9,   9,  10,  10,  10,  11,
     11,  11,  12,  12,  12,  13,  13,  13,  14,  14,  14,  15,  15,  15,  16,  16,  16,
@@ -163,14 +163,14 @@ static constexpr uint8_t Rotation1TimeToSpriteMap_2[] = {
 };
 
 /** rct2: 0x0099F0F4 */
-const uint8_t * Rotation1TimeToSpriteMaps[] = {
-    Rotation1TimeToSpriteMap_0,
-    Rotation1TimeToSpriteMap_1,
-    Rotation1TimeToSpriteMap_2,
+const uint8_t* kTwistTimeToSpriteMaps[] = {
+    kTwistAnimationStart,
+    kTwistAnimationLoop,
+    kTwistAnimationEnd,
 };
 
 /** rct2: 0x009A2434 */
-static constexpr uint8_t Rotation2TimeToSpriteMap_0[] = {
+static constexpr uint8_t kEnterpriseAnimationStart[] = {
     0,   0,   0,   0,   0,   0,   0,   0,   1,   1,   1,   1,   1,   1,   1,   1,   2,
     2,   2,   2,   2,   2,   2,   2,   3,   3,   3,   3,   3,   3,   3,   3,   4,   4,
     4,   4,   4,   4,   4,   4,   5,   5,   5,   5,   5,   5,   5,   5,   6,   6,   6,
@@ -212,7 +212,7 @@ static constexpr uint8_t Rotation2TimeToSpriteMap_0[] = {
 };
 
 /** rct2: 0x009A26A6 */
-static constexpr uint8_t Rotation2TimeToSpriteMap_1[] = {
+static constexpr uint8_t kEnterpriseAnimationLoop[] = {
     46,  46,  47,  47,  48,  48,  46,  46,  47,  47,  48,  48,  46,  46,  47,  47,  48,
     48,  46,  46,  47,  47,  48,  48,  46,  46,  47,  47,  48,  48,  46,  46,  47,  47,
     48,  48,  46,  46,  47,  47,  48,  48,  46,  46,  47,  47,  48,  48,  46,  46,  47,
@@ -223,7 +223,7 @@ static constexpr uint8_t Rotation2TimeToSpriteMap_1[] = {
 };
 
 /** rct2: 0x009A270E */
-static constexpr uint8_t Rotation2TimeToSpriteMap_2[] = {
+static constexpr uint8_t kEnterpriseAnimationEnd[] = {
     43,  43,  44,  44,  45,  45,  43,  43,  44,  44,  45,  45,  43,  43,  44,  44,  45,
     45,  40,  40,  41,  41,  42,  42,  40,  40,  41,  41,  42,  42,  40,  40,  41,  41,
     42,  42,  37,  37,  38,  38,  39,  39,  37,  37,  38,  38,  39,  39,  37,  37,  38,
@@ -256,14 +256,14 @@ static constexpr uint8_t Rotation2TimeToSpriteMap_2[] = {
 };
 
 /** rct2: 0x009A2428 */
-const uint8_t * Rotation2TimeToSpriteMaps[] = {
-    Rotation2TimeToSpriteMap_0,
-    Rotation2TimeToSpriteMap_1,
-    Rotation2TimeToSpriteMap_2,
+const uint8_t* kEnterpriseTimeToSpriteMaps[] = {
+    kEnterpriseAnimationStart,
+    kEnterpriseAnimationLoop,
+    kEnterpriseAnimationEnd,
 };
 
 /** rct2: 0x0099EB28 */
-static constexpr uint8_t Rotation3TimeToSpriteMap_0[] = {
+static constexpr uint8_t kMerryGoRoundAnimationStart[] = {
     0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,
     0,   0,   0,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,
     1,   1,   1,   1,   2,   2,   2,   2,   2,   2,   2,   2,   2,   2,   2,   2,   2,
@@ -300,7 +300,7 @@ static constexpr uint8_t Rotation3TimeToSpriteMap_0[] = {
 };
 
 /** rct2: 0x0099ED49 */
-static constexpr uint8_t Rotation3TimeToSpriteMap_1[] = {
+static constexpr uint8_t kMerryGoRoundAnimationLoop[] = {
     0,   0,   0,   1,   1,   1,   2,   2,   2,   3,   3,   3,   4,   4,   4,   5,   5,
     5,   6,   6,   6,   7,   7,   7,   8,   8,   8,   9,   9,   9,  10,  10,  10,  11,
     11,  11,  12,  12,  12,  13,  13,  13,  14,  14,  14,  15,  15,  15,  16,  16,  16,
@@ -328,7 +328,7 @@ static constexpr uint8_t Rotation3TimeToSpriteMap_1[] = {
 };
 
 /** rct2: 0x0099EED1 */
-static constexpr uint8_t Rotation3TimeToSpriteMap_2[] = {
+static constexpr uint8_t kMerryGoRoundAnimationEnd[] = {
     0,   0,   0,   1,   1,   1,   2,   2,   2,   3,   3,   3,   4,   4,   4,   5,   5,
     5,   6,   6,   6,   7,   7,   7,   8,   8,   8,   9,   9,   9,  10,  10,  10,  11,
     11,  11,  12,  12,  12,  13,  13,  13,  14,  14,  14,  15,  15,  15,  16,  16,  16,
@@ -365,14 +365,14 @@ static constexpr uint8_t Rotation3TimeToSpriteMap_2[] = {
 };
 
 /** rct2: 0x0099EB1C */
-const uint8_t * Rotation3TimeToSpriteMaps[] = {
-    Rotation3TimeToSpriteMap_0,
-    Rotation3TimeToSpriteMap_1,
-    Rotation3TimeToSpriteMap_2,
+const uint8_t* kMerryGoRoundTimeToSpriteMaps[] = {
+    kMerryGoRoundAnimationStart,
+    kMerryGoRoundAnimationLoop,
+    kMerryGoRoundAnimationEnd,
 };
 
 /** rct2: 0x009A12EC */
-static constexpr TopSpinTimeToSpriteMap TopSpinTimeToSpriteMap_0[] = {
+static constexpr TopSpinTimeToSpriteMap kTopSpinAnimationBeginners[] = {
     {  0,  0 }, {  0,  0 }, {  0,  0 }, {  0,  0 }, {  0,  0 }, {  0,  0 }, {  0,  0 },
     {  0,  0 }, {  0,  0 }, {  1,  0 }, {  1,  0 }, {  1,  0 }, {  1,  0 }, {  1,  0 },
     {  1,  0 }, {  1,  0 }, {  1,  0 }, {  2,  0 }, {  2,  0 }, {  2,  0 }, {  2,  0 },
@@ -458,7 +458,7 @@ static constexpr TopSpinTimeToSpriteMap TopSpinTimeToSpriteMap_0[] = {
 };
 
 /** rct2: 0x009A1751 */
-static constexpr TopSpinTimeToSpriteMap TopSpinTimeToSpriteMap_1[] = {
+static constexpr TopSpinTimeToSpriteMap kTopSpinAnimationIntense[] = {
     {  0,  0 }, {  0,  0 }, {  0,  0 }, {  0,  0 }, {  0,  0 }, {  0,  0 }, {  0,  0 },
     {  0,  0 }, {  0,  0 }, {  1,  0 }, {  1,  0 }, {  1,  0 }, {  1,  0 }, {  1,  0 },
     {  1,  0 }, {  1,  0 }, {  1,  0 }, {  2,  0 }, {  2,  0 }, {  2,  0 }, {  2,  0 },
@@ -563,7 +563,7 @@ static constexpr TopSpinTimeToSpriteMap TopSpinTimeToSpriteMap_1[] = {
 };
 
 /** rct2: 0x009A1CC6 */
-static constexpr TopSpinTimeToSpriteMap TopSpinTimeToSpriteMap_2[] = {
+static constexpr TopSpinTimeToSpriteMap kTopSpinAnimationBerserk[] = {
     {  0,  0 }, {  0,  0 }, {  0,  0 }, {  0,  0 }, {  0,  0 }, {  0,  0 }, {  0,  0 },
     {  0,  0 }, {  0,  0 }, {  1,  0 }, {  1,  0 }, {  1,  0 }, {  1,  0 }, {  1,  0 },
     {  1,  0 }, {  1,  0 }, {  1,  0 }, {  2,  0 }, {  2,  0 }, {  2,  0 }, {  2,  0 },
@@ -703,10 +703,10 @@ static constexpr TopSpinTimeToSpriteMap TopSpinTimeToSpriteMap_2[] = {
 };
 
 /** rct2: 0x009A12E0 */
-const TopSpinTimeToSpriteMap * TopSpinTimeToSpriteMaps[] = {
-    TopSpinTimeToSpriteMap_0,
-    TopSpinTimeToSpriteMap_1,
-    TopSpinTimeToSpriteMap_2,
+const TopSpinTimeToSpriteMap* kTopSpinTimeToSpriteMaps[] = {
+    kTopSpinAnimationBeginners,
+    kTopSpinAnimationIntense,
+    kTopSpinAnimationBerserk,
 };
 
 /** rct2: 0x009A0434 */
@@ -794,132 +794,4 @@ const uint8_t MotionSimulatorTimeToSpriteMap[] = {
 };
 
 const int32_t MotionSimulatorTimeToSpriteMapCount = static_cast<int32_t>(std::size(MotionSimulatorTimeToSpriteMap));
-
-/** rct2: 0x009A2930
-The distance between subposition points in a movement direction (but not distance).
-*/
-const int32_t SubpositionTranslationDistances[] = {
-    // For a base length of 8716 (0x220C) on the horizontal and 6554 (0x199A) on the vertical,
-    // use the Pythagoras theorem and round up.
-    0,      // no movement
-    8716,   // X translation
-    8716,   // Y translation
-    12327,  // XY translation
-    6554,   // Z translation
-    10905,  // XZ translation
-    10905,  // YZ translation
-    13961,  // XYZ translation
-    // For the reverser car, multiply the horizontal distance by 2.5 and the vertical distance by 4.072.
-    0,      // no movement
-    21790,  // X translation
-    21790,  // Y translation
-    30817,  // Z translation
-    16385,  // XY translation
-    27262,  // XZ translation
-    27262,  // YZ translation
-    34902,  // XYZ translation
-};
-
-/** rct2: 0x009A2970 */
-const int32_t AccelerationFromPitch[] = {
-          0,    // Flat
-     // The geometric angle of slopes 12.5 and 25 are actually 11.1 and 22.2 respectively.
-    -124548,    // 1 Slope Up 12.5
-    -243318,    // 2 Slope Up 25
-    -416016,    // 3 Slope Up 42.5
-    -546342,    // 4 Slope Up 60
-     124548,    // 5 Slope Down 12.5
-     243318,    // 6 Slope Down 25
-     416016,    // 7 Slope Down 42.5
-     546342,    // 8 Slope Down 60
-    -617604,    // 9 Slope Up 75
-    -642000,    // 10 Slope Up 90
-    -620172,    // 11 Slope Up 105
-    -555972,    // 12 Slope Up 120
-    -453894,    // 13 Slope Up 135
-    -321000,    // 14 Slope Up 150
-    -166278,    // 15 Slope Up 165
-          0,    // 16 Fully Inverted
-     617604,    // 17 Slope Down 75
-     642000,    // 18 Slope Down 90
-     620172,    // 19 Slope Down 105
-     555972,    // 20 Slope Down 120
-     453894,    // 21 Slope Down 135
-     321000,    // 22 Slope Down 150
-     166278,    // 23 Slope Down 165
-    -321000,    // 24 Corkscrew Right Up 0
-    -555972,    // 25 Corkscrew Right Up 1
-    -642000,    // 26 Corkscrew Right Up 2
-    -555972,    // 27 Corkscrew Right Up 3
-    -321000,    // 28 Corkscrew Right Up 4
-     321000,    // 29 Corkscrew Right Down 4
-     555972,    // 30 Corkscrew Right Down 3
-     642000,    // 31 Corkscrew Right Down 2
-     555972,    // 32 Corkscrew Right Down 1
-     321000,    // 33 Corkscrew Right Down 0
-    -321000,    // 34 Corkscrew Left Up 0
-    -555972,    // 35 Corkscrew Left Up 1
-    -642000,    // 36 Corkscrew Left Up 2
-    -555972,    // 37 Corkscrew Left Up 3
-    -321000,    // 38 Corkscrew Left Up 4
-     321000,    // 39 Corkscrew Left Down 4
-     555972,    // 40 Corkscrew Left Down 2
-     642000,    // 41 Corkscrew Left Down 1
-     555972,    // 42 Corkscrew Left Down 1
-     321000,    // 43 Corkscrew Left Down 0
-     -33384,    // 44 Half Helix Up Large
-     -55854,    // 45 Half Helix Up Small
-      33384,    // 46 Half Helix Down Large
-      55854,    // 47 Half Helix Down Small
-     -66768,    // 48 Quarter Helix Up
-      66768,    // 49 Quarter Helix Down
-     // currently only diagonal elements use slopes angles 8, 16, 50. Diagonal gentle-to-steep transition uses
-     // diagonal sprites of slopes 25 and 42.
-     -90522,    // 50 Slope Up 8
-    -179760,    // 51 Slope Down 16
-    -484068,    // 52 Slope Up 50
-      90522,    // 53 Slope Down 8
-     179760,    // 54 Slope Down 16
-     484068,    // 55 Slope Down 50
-     243318,    // 56 Inverting Loop Down 25
-     416016,    // 57 Inverting Loop Down 42.5
-     546342,    // 58 Inverting Loop Down 60
-    -110424,    // 59 Slope Up Spiral Lift Hill
-};
-
-/** rct2: 0x009A3684 */
-const int32_t SpriteDirectionToSoundDirection[] = {
-    -0x4000,    // 0
-    -0x3000,    // 1
-    -0x2000,    // 2
-    -0x1000,    // 3
-          0,    // 4
-     0x1000,    // 5
-     0x2000,    // 6
-     0x3000,    // 7
-     0x4000,    // 8
-     0x4800,    // 9
-     0x4800,    // 10
-     0x4800,    // 11
-     0x4800,    // 12
-     0x4800,    // 13
-     0x4800,    // 14
-     0x4800,    // 15
-     0x4000,    // 16
-     0x3000,    // 17
-     0x2000,    // 18
-     0x1000,    // 19
-          0,    // 20
-    -0x1000,    // 21
-    -0x2000,    // 22
-    -0x3000,    // 23
-    -0x4000,    // 24
-    -0x4800,    // 25
-    -0x4800,    // 26
-    -0x4800,    // 27
-    -0x4800,    // 28
-    -0x4800,    // 29
-    -0x4800,    // 30
-    -0x4800,    // 31
-};
 // clang-format on

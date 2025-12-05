@@ -22,19 +22,19 @@ namespace OpenRCT2
 
     enum class ObjectStringID : uint8_t
     {
-        UNKNOWN = 255,
-        NAME = 0,
-        DESCRIPTION,
-        SCENARIO_NAME = 0,
-        PARK_NAME = 1,
-        SCENARIO_DETAILS = 2,
-        CAPACITY = 2,
-        VEHICLE_NAME = 3,
+        unknown = 255,
+        name = 0,
+        description,
+        scenarioName = 0,
+        parkName = 1,
+        scenarioDetails = 2,
+        capacity = 2,
+        vehicleName = 3,
     };
 
     struct StringTableEntry
     {
-        ObjectStringID Id = ObjectStringID::UNKNOWN;
+        ObjectStringID Id = ObjectStringID::unknown;
         uint8_t LanguageId = LANGUAGE_UNDEFINED;
         std::string Text;
     };

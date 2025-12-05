@@ -72,6 +72,7 @@ constexpr RideTypeDescriptor EnterpriseRTD =
     .UpdateLeaveEntrance = PeepUpdateRideLeaveEntranceDefault,
     .SpecialElementRatingAdjustment = SpecialTrackElementRatingsAjustment_Default,
     .GetGuestWaypointLocation = GetGuestWaypointLocationEnterprise,
+    .specialType = RtdSpecialType::enterprise,
 };
 } // namespace OpenRCT2
 // clang-format on

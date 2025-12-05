@@ -28,6 +28,7 @@
 #include <openrct2/core/EnumUtils.hpp>
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/Drawing.h>
+#include <openrct2/drawing/Rectangle.h>
 #include <openrct2/entity/EntityList.h>
 #include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/entity/PatrolArea.h>
@@ -43,6 +44,8 @@
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Park.h>
 #include <vector>
+
+using namespace OpenRCT2::Drawing;
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -367,7 +370,7 @@ namespace OpenRCT2::Ui::Windows
         void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
             auto rtCoords = ScreenCoordsXY{ rt.x, rt.y };
-            GfxFillRect(
+            Rectangle::fill(
                 rt, { rtCoords, rtCoords + ScreenCoordsXY{ rt.width - 1, rt.height - 1 } },
                 ColourMapA[colours[1].colour].mid_light);
 
@@ -400,7 +403,7 @@ namespace OpenRCT2::Ui::Windows
 
                     if (i == _highlightedIndex)
                     {
-                        GfxFilterRect(rt, { 0, y, 800, y + (kScrollableRowHeight - 1) }, FilterPaletteID::paletteDarken1);
+                        Rectangle::filter(rt, { 0, y, 800, y + (kScrollableRowHeight - 1) }, FilterPaletteID::paletteDarken1);
 
                         format = STR_WINDOW_COLOUR_2_STRINGID;
                         if (_quickFireMode)
@@ -511,7 +514,7 @@ namespace OpenRCT2::Ui::Windows
          */
         void HireNewMember(StaffType staffType)
         {
-            bool autoPosition = Config::Get().general.AutoStaffPlacement;
+            bool autoPosition = Config::Get().general.autoStaffPlacement;
             if (GetInputManager().isModifierKeyPressed(ModifierKey::shift))
             {
                 autoPosition = autoPosition ^ 1;
@@ -522,7 +525,7 @@ namespace OpenRCT2::Ui::Windows
             if (staffType == StaffType::handyman)
             {
                 staffOrders = STAFF_ORDERS_SWEEPING | STAFF_ORDERS_WATER_FLOWERS | STAFF_ORDERS_EMPTY_BINS;
-                if (Config::Get().general.HandymenMowByDefault)
+                if (Config::Get().general.handymenMowByDefault)
                 {
                     staffOrders |= STAFF_ORDERS_MOWING;
                 }

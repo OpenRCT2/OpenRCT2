@@ -1569,8 +1569,8 @@ STR_2212    :Liste der Aufseher im Park anzeigen
 STR_2213    :Liste der Animateure im Park anzeigen
 STR_2214    :Konstruktion während des Pausemodus nicht möglich!
 STR_2215    :{STRINGID}{NEWLINE}({STRINGID})
-STR_2216    :{WINDOW_COLOUR_2}{COMMA16}°C
-STR_2217    :{WINDOW_COLOUR_2}{COMMA16}°F
+STR_2216    :{WINDOW_COLOUR_1}{COMMA16}°C
+STR_2217    :{WINDOW_COLOUR_1}{COMMA16}°F
 STR_2218    :{RED}{STRINGID} bei {STRINGID} ist noch nicht zu {STRINGID} zurückgekehrt!{NEWLINE}Überprüfen Sie, ob es steckengeblieben ist oder angehalten hat
 STR_2219    :{RED}{COMMA16} Menschen sind bei einem Unfall in {STRINGID} gestorben
 STR_2220    :{WINDOW_COLOUR_2}Parkbewertung: {BLACK}{COMMA16}

@@ -22,7 +22,7 @@ class DrawingUniqueLock
 public:
     DrawingUniqueLock(T& mutex)
         : _mutex(mutex)
-        , _enabled(Config::Get().general.MultiThreading)
+        , _enabled(Config::Get().general.multiThreading)
     {
         if (_enabled)
             _mutex.lock();
@@ -43,7 +43,7 @@ class DrawingSharedLock
 public:
     DrawingSharedLock(T& mutex)
         : _mutex(mutex)
-        , _enabled(Config::Get().general.MultiThreading)
+        , _enabled(Config::Get().general.multiThreading)
     {
         if (_enabled)
             _mutex.lock_shared();

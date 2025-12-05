@@ -21,6 +21,7 @@
 #include "../core/Numerics.hpp"
 #include "../drawing/Drawing.h"
 #include "../drawing/IDrawingEngine.h"
+#include "../drawing/Rectangle.h"
 #include "../entity/EntityList.h"
 #include "../entity/Guest.h"
 #include "../entity/PatrolArea.h"
@@ -53,6 +54,7 @@
 
 namespace OpenRCT2
 {
+    using namespace OpenRCT2::Drawing;
     using namespace OpenRCT2::Numerics;
 
     enum : uint8_t
@@ -201,7 +203,7 @@ namespace OpenRCT2
         viewport->flags = 0;
         viewport->rotation = GetCurrentRotation();
 
-        if (Config::Get().general.AlwaysShowGridlines)
+        if (Config::Get().general.alwaysShowGridlines)
             viewport->flags |= VIEWPORT_FLAG_GRIDLINES;
         w.viewport = viewport;
         viewport->isVisible = w.isVisible;
@@ -889,7 +891,7 @@ namespace OpenRCT2
 
         PaintDrawStructs(session);
 
-        if (Config::Get().general.RenderWeatherGloom && !gTrackDesignSaveMode
+        if (Config::Get().general.renderWeatherGloom && !gTrackDesignSaveMode
             && !(session.ViewFlags & VIEWPORT_FLAG_HIDE_ENTITIES) && !(session.ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
         {
             ViewportPaintWeatherGloom(session.DPI);
@@ -934,7 +936,7 @@ namespace OpenRCT2
 
         _paintColumns.clear();
 
-        bool useMultithreading = Config::Get().general.MultiThreading;
+        bool useMultithreading = Config::Get().general.multiThreading;
         if (useMultithreading && _paintJobs == nullptr)
         {
             _paintJobs = std::make_unique<JobPool>();
@@ -1036,7 +1038,7 @@ namespace OpenRCT2
             auto y = rt.y;
             auto w = rt.width;
             auto h = rt.height;
-            GfxFilterRect(rt, ScreenRect(x, y, x + w, y + h), paletteId);
+            Rectangle::filter(rt, ScreenRect(x, y, x + w, y + h), paletteId);
         }
     }
 
@@ -1172,7 +1174,7 @@ namespace OpenRCT2
             WindowBase* mainWindow = WindowGetMain();
             if (mainWindow != nullptr)
             {
-                if (!Config::Get().general.AlwaysShowGridlines)
+                if (!Config::Get().general.alwaysShowGridlines)
                 {
                     mainWindow->viewport->flags &= ~VIEWPORT_FLAG_GRIDLINES;
                     mainWindow->invalidate();
@@ -1989,11 +1991,11 @@ namespace OpenRCT2
     int32_t GetHeightMarkerOffset()
     {
         // Height labels in units
-        if (Config::Get().general.ShowHeightAsUnits)
+        if (Config::Get().general.showHeightAsUnits)
             return 0;
 
         // Height labels in feet
-        if (Config::Get().general.MeasurementFormat == MeasurementFormat::Imperial)
+        if (Config::Get().general.measurementFormat == MeasurementFormat::Imperial)
             return 1 * 256;
 
         // Height labels in metres

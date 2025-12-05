@@ -74,7 +74,7 @@ void Painter::Paint(IDrawingEngine& de)
     if (text != nullptr)
         PaintReplayNotice(*rt, text);
 
-    if (Config::Get().general.ShowFPS)
+    if (Config::Get().general.showFPS)
     {
         PaintFPS(*rt);
     }
@@ -124,7 +124,7 @@ void Painter::PaintFPS(RenderTarget& rt)
 
     // Move counter below toolbar if buttons are centred
     const bool isTitle = gLegacyScene == LegacyScene::titleSequence;
-    if (!isTitle && Config::Get().interface.ToolbarButtonsCentred)
+    if (!isTitle && Config::Get().interface.toolbarButtonsCentred)
     {
         screenCoords.y = kTopToolbarHeight + 3;
     }

@@ -32,15 +32,6 @@ namespace OpenRCT2
         FOOTPATH_ELEMENT_TYPE_DIRECTION_MASK = (1 << 6) | (1 << 7),
     };
 
-    // Masks and flags for values stored in TileElement.properties.path.type
-    enum
-    {
-        FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK = (1 << 0) | (1 << 1),
-        FOOTPATH_PROPERTIES_FLAG_IS_SLOPED = (1 << 2),
-        FOOTPATH_PROPERTIES_FLAG_HAS_QUEUE_BANNER = (1 << 3),
-        FOOTPATH_PROPERTIES_TYPE_MASK = (1 << 4) | (1 << 5) | (1 << 6) | (1 << 7),
-    };
-
     // Masks and flags for values stored in TileElement.properties.path.edges
     enum
     {

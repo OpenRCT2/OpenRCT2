@@ -11,10 +11,13 @@
 
 #include <openrct2-ui/interface/Graph.h>
 #include <openrct2/Date.h>
+#include <openrct2/drawing/Rectangle.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Formatting.h>
 #include <openrct2/localisation/Localisation.Date.h>
 #include <openrct2/world/ParkData.h>
+
+using namespace OpenRCT2::Drawing;
 
 namespace OpenRCT2::Graph
 {
@@ -37,13 +40,13 @@ namespace OpenRCT2::Graph
                 rt, { internalBounds.GetLeft() - kYTickMarkPadding, curScreenPos }, { FontStyle::Small, TextAlignment::RIGHT },
                 buffer);
             // Draw Y label tick mark
-            GfxFillRect(
+            Rectangle::fill(
                 rt, { { internalBounds.GetLeft() - 5, curScreenPos + 5 }, { internalBounds.GetLeft(), curScreenPos + 5 } },
                 PaletteIndex::pi10);
             // Draw horizontal gridline
-            GfxFillRectInset(
+            Rectangle::fillInset(
                 rt, { { internalBounds.GetLeft(), curScreenPos + 5 }, { internalBounds.GetRight(), curScreenPos + 5 } },
-                lineCol, INSET_RECT_FLAG_BORDER_INSET);
+                lineCol, Rectangle::BorderStyle::inset);
             curScreenPos += yLabelStepPx;
             curLabel -= yLabelStep;
         }
@@ -68,7 +71,7 @@ namespace OpenRCT2::Graph
                     rt, screenCoords - ScreenCoordsXY{ 0, 14 }, STR_GRAPH_LABEL, ft,
                     { FontStyle::Small, TextAlignment::CENTRE });
                 // Draw month tick mark
-                GfxFillRect(
+                Rectangle::fill(
                     rt, { screenCoords - ScreenCoordsXY{ 0, 4 }, screenCoords - ScreenCoordsXY{ 0, 1 } }, PaletteIndex::pi10);
             }
 
@@ -99,8 +102,8 @@ namespace OpenRCT2::Graph
 
         DrawText(rt, coords - ScreenCoordsXY{ 0, 16 }, { textCol, TextAlignment::CENTRE }, text);
 
-        GfxFillRect(rt, { { coords - ScreenCoordsXY{ 2, 2 } }, coords + ScreenCoordsXY{ 2, 2 } }, PaletteIndex::pi10);
-        GfxFillRect(rt, { { coords - ScreenCoordsXY{ 1, 1 } }, { coords + ScreenCoordsXY{ 1, 1 } } }, PaletteIndex::pi21);
+        Rectangle::fill(rt, { { coords - ScreenCoordsXY{ 2, 2 } }, coords + ScreenCoordsXY{ 2, 2 } }, PaletteIndex::pi10);
+        Rectangle::fill(rt, { { coords - ScreenCoordsXY{ 1, 1 } }, { coords + ScreenCoordsXY{ 1, 1 } } }, PaletteIndex::pi21);
     }
 
     template<typename T, T TkNoValue, bool TbackgroundLine>
@@ -134,7 +137,7 @@ namespace OpenRCT2::Graph
                     }
                     if (i == 0)
                     {
-                        GfxFillRect(rt, { coords, coords + ScreenCoordsXY{ 2, 2 } }, PaletteIndex::pi10);
+                        Rectangle::fill(rt, { coords, coords + ScreenCoordsXY{ 2, 2 } }, PaletteIndex::pi10);
                     }
                 }
                 else
@@ -147,7 +150,7 @@ namespace OpenRCT2::Graph
                     }
                     if (i == 0)
                     {
-                        GfxFillRect(
+                        Rectangle::fill(
                             rt, { coords - ScreenCoordsXY{ 1, 1 }, coords + ScreenCoordsXY{ 1, 1 } }, PaletteIndex::pi21);
                     }
                 }

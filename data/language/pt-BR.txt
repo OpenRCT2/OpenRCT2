@@ -473,14 +473,14 @@ STR_1076    :Modo de lojas e barracas
 STR_1077    :Modo de rotação
 STR_1078    :Rotação para frente
 STR_1079    :Rotação para trás
-STR_1080    :Filme: ”Aviadores Vingadores”
-STR_1081    :Filme em 3D: ”Caudas de Rato”
+STR_1080    :Filme: “Aviadores vingadores”
+STR_1081    :Filme em 3D: “Bichos e rabichos”
 STR_1082    :Modo anéis espaciais
 STR_1083    :Modo iniciante
 STR_1084    :Lançamento por indução linear
-STR_1085    :Filme: ”Pilotos de Emoção”
-STR_1086    :Filme em 3D: ”Caçadores de tempestades”
-STR_1087    :Filme em 3D: ”Caçadores do espaço”
+STR_1085    :Filme: “Pilotos de emoção”
+STR_1086    :Filme em 3D: “Caçadores de tempestades”
+STR_1087    :Filme em 3D: “Corsários do espaço”
 STR_1088    :Modo intenso
 STR_1089    :Modo frenético
 STR_1090    :Modo casa mal-assombrada
@@ -1568,8 +1568,8 @@ STR_2212    :Exibir a lista de seguranças no parque
 STR_2213    :Exibir a lista de animadores no parque
 STR_2214    :Impossível construir enquanto o jogo está pausado!
 STR_2215    :{STRINGID}{NEWLINE}({STRINGID})
-STR_2216    :{WINDOW_COLOUR_2}{COMMA16}°C
-STR_2217    :{WINDOW_COLOUR_2}{COMMA16}°F
+STR_2216    :{WINDOW_COLOUR_1}{COMMA16}°C
+STR_2217    :{WINDOW_COLOUR_1}{COMMA16}°F
 STR_2218    :{RED}{STRINGID} em {STRINGID} não voltou à {STRINGID} ainda!{NEWLINE}Verifique se está preso ou parado
 STR_2219    :{RED}{COMMA16} pessoas morreram em um acidente em {STRINGID}
 STR_2220    :{WINDOW_COLOUR_2}Classificação do Parque: {BLACK}{COMMA16}
@@ -3840,3 +3840,4 @@ STR_7001    :Nome da atração
 STR_7002    :{STRINGID} {STRINGID}
 STR_7003    :O arquivo de áudio ‘{STRING}’ está incompleto. {INT32} amostras eram esperadas, mas apenas {INT32} estão disponíveis. Considere reinstalar o RCT2.
 STR_7004    :Forçar Redesenho
+STR_7005    :Arrastar uma área de calçada

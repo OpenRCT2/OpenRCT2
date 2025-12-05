@@ -100,7 +100,7 @@ static void PaintTwist(
         session, WoodenSupportType::truss, WoodenSupportSubType::neSw, direction, height, stationColour);
 
     const StationObject* stationObject = ride.getStationObject();
-    TrackPaintUtilPaintFloor(session, edges, stationColour, height, kFloorSpritesCork, stationObject);
+    TrackPaintUtilPaintFloor(session, edges, stationColour, height, kFloorSpritesMulch, stationObject);
 
     switch (trackSequence)
     {

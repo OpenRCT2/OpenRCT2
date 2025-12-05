@@ -18,6 +18,7 @@
 #include <openrct2/core/Numerics.hpp>
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/Drawing.h>
+#include <openrct2/drawing/Rectangle.h>
 #include <openrct2/entity/EntityList.h>
 #include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/entity/Guest.h>
@@ -30,6 +31,7 @@
 #include <openrct2/world/Park.h>
 #include <vector>
 
+using namespace OpenRCT2::Drawing;
 using namespace OpenRCT2::Numerics;
 
 namespace OpenRCT2::Ui::Windows
@@ -573,7 +575,7 @@ namespace OpenRCT2::Ui::Windows
 
         void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
-            GfxFillRect(
+            Rectangle::fill(
                 rt, { { rt.x, rt.y }, { rt.x + rt.width - 1, rt.y + rt.height - 1 } }, ColourMapA[colours[1].colour].mid_light);
             switch (_selectedTab)
             {
@@ -655,7 +657,7 @@ namespace OpenRCT2::Ui::Windows
                     StringId format = STR_BLACK_STRING;
                     if (index == _highlightedIndex)
                     {
-                        GfxFilterRect(rt, { 0, y, 800, y + kScrollableRowHeight - 1 }, FilterPaletteID::paletteDarken1);
+                        Rectangle::filter(rt, { 0, y, 800, y + kScrollableRowHeight - 1 }, FilterPaletteID::paletteDarken1);
                         format = STR_WINDOW_COLOUR_2_STRINGID;
                     }
 
@@ -725,7 +727,7 @@ namespace OpenRCT2::Ui::Windows
                     StringId format = STR_BLACK_STRING;
                     if (index == _highlightedIndex)
                     {
-                        GfxFilterRect(rt, { 0, y, 800, y + kSummarisedGuestsRowHeight }, FilterPaletteID::paletteDarken1);
+                        Rectangle::filter(rt, { 0, y, 800, y + kSummarisedGuestsRowHeight }, FilterPaletteID::paletteDarken1);
                         format = STR_WINDOW_COLOUR_2_STRINGID;
                     }
 

@@ -153,7 +153,7 @@ public:
 
             SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, scaleQualityBuffer);
 
-            uint32_t scale = std::ceil(Config::Get().general.WindowScale);
+            uint32_t scale = std::ceil(Config::Get().general.windowScale);
             _scaledScreenTexture = SDL_CreateTexture(
                 _sdlRenderer, pixelFormat, SDL_TEXTUREACCESS_TARGET, width * scale, height * scale);
 
@@ -186,7 +186,7 @@ public:
                 _paletteHWMapped[i] = SDL_MapRGB(_screenTextureFormat, palette[i].Red, palette[i].Green, palette[i].Blue);
             }
 
-            if (Config::Get().general.EnableLightFx)
+            if (Config::Get().general.enableLightFx)
             {
                 auto& lightPalette = LightFx::GetPalette();
                 for (int32_t i = 0; i < 256; i++)
@@ -235,7 +235,7 @@ private:
     {
         auto* viewport = WindowGetViewport(WindowGetMain());
 
-        if (Config::Get().general.EnableLightFx && viewport != nullptr)
+        if (Config::Get().general.enableLightFx && viewport != nullptr)
         {
             void* pixels;
             int32_t pitch;
@@ -351,8 +351,8 @@ private:
         SDL_GetWindowSize(_window, &windowX, &windowY);
         SDL_GetRendererOutputSize(_sdlRenderer, &renderX, &renderY);
 
-        float scaleX = Config::Get().general.WindowScale * renderX / static_cast<float>(windowX);
-        float scaleY = Config::Get().general.WindowScale * renderY / static_cast<float>(windowY);
+        float scaleX = Config::Get().general.windowScale * renderX / static_cast<float>(windowX);
+        float scaleY = Config::Get().general.windowScale * renderY / static_cast<float>(windowY);
 
         SDL_SetRenderDrawBlendMode(_sdlRenderer, SDL_BLENDMODE_BLEND);
         for (uint32_t y = 0; y < _invalidationGrid.getRowCount(); y++)

@@ -58,7 +58,7 @@ static void PaintBannerScrollingText(
     banner.formatTextWithColourTo(ft);
 
     char text[256];
-    if (Config::Get().general.UpperCaseBanners)
+    if (Config::Get().general.upperCaseBanners)
     {
         FormatStringToUpper(text, sizeof(text), STR_BANNER_TEXT_FORMAT, ft.Data());
     }

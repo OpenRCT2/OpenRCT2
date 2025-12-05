@@ -53,22 +53,22 @@ namespace OpenRCT2
 
     enum class RCT2LanguageId : uint8_t
     {
-        EnglishUK,
-        EnglishUS,
-        French,
-        German,
-        Spanish,
-        Italian,
-        Dutch,
-        Swedish,
-        Japanese,
-        Korean,
-        ChineseSimplified,
-        ChineseTraditional,
-        Undefined,
-        Portuguese,
-        Blank = 254,
-        End = 255
+        englishUK,
+        englishUS,
+        french,
+        german,
+        spanish,
+        italian,
+        dutch,
+        swedish,
+        japanese,
+        korean,
+        chineseSimplified,
+        chineseTraditional,
+        undefined,
+        portuguese,
+        blank = 254,
+        end = 255
     };
 
     struct LanguageDescriptor

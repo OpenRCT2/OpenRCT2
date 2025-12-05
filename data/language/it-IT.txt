@@ -1569,8 +1569,8 @@ STR_2212    :Mostra la lista dei vigilanti del parco
 STR_2213    :Mostra la lista degli intrattenitori del parco
 STR_2214    :Non è possibile costruire quando il gioco è in pausa!
 STR_2215    :{STRINGID}{NEWLINE}({STRINGID})
-STR_2216    :{WINDOW_COLOUR_2}{COMMA16}°C
-STR_2217    :{WINDOW_COLOUR_2}{COMMA16}°F
+STR_2216    :{WINDOW_COLOUR_1}{COMMA16}°C
+STR_2217    :{WINDOW_COLOUR_1}{COMMA16}°F
 STR_2218    :{RED}{STRINGID} sull’attrazione {STRINGID} non ha ancora fatto ritorno presso: {STRINGID}!{NEWLINE}Controlla se si è bloccato o se è entrato in stallo
 STR_2219    :{RED}{COMMA16} persone sono rimaste uccise in un incidente su {STRINGID}
 STR_2220    :{WINDOW_COLOUR_2}Valutazione del parco: {BLACK}{COMMA16}

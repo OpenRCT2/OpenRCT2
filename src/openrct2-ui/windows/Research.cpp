@@ -335,7 +335,7 @@ namespace OpenRCT2::Ui::Windows
         {
             auto type = gameState.researchLastItem->type;
             w->widgets[WIDX_LAST_DEVELOPMENT_BUTTON + widgetOffset].type = WidgetType::flatBtn;
-            const auto image = type == Research::EntryType::Ride ? SPR_NEW_RIDE : SPR_NEW_SCENERY;
+            const auto image = type == Research::EntryType::ride ? SPR_NEW_RIDE : SPR_NEW_SCENERY;
             w->widgets[WIDX_LAST_DEVELOPMENT_BUTTON + widgetOffset].image = ImageId(image);
         }
     }
@@ -380,7 +380,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 ft.Add<StringId>(gameState.researchNextItem->GetCategoryName());
             }
-            else if (gameState.researchNextItem->type == Research::EntryType::Ride)
+            else if (gameState.researchNextItem->type == Research::EntryType::ride)
             {
                 const auto& rtd = GetRideTypeDescriptor(gameState.researchNextItem->baseRideType);
                 if (rtd.HasFlag(RtdFlag::listVehiclesSeparately))
@@ -434,7 +434,7 @@ namespace OpenRCT2::Ui::Windows
         {
             StringId lastDevelopmentFormat = kStringIdEmpty;
             auto ft = Formatter();
-            if (gameState.researchLastItem->type == Research::EntryType::Scenery)
+            if (gameState.researchLastItem->type == Research::EntryType::scenery)
             {
                 lastDevelopmentFormat = STR_RESEARCH_SCENERY_LABEL;
                 ft.Add<StringId>(gameState.researchLastItem->GetName());

@@ -203,7 +203,8 @@ namespace OpenRCT2::Ui::Windows
             if (trackLoc == _placementLoc)
             {
                 TrackDesignPreviewDrawOutlines(
-                    tds, *_trackDesign, RideGetTemporaryForPreview(), { mapCoords, 0, _currentTrackPieceDirection });
+                    tds, *_trackDesign, RideGetTemporaryForPreview(), { mapCoords, 0, _currentTrackPieceDirection },
+                    !gTrackDesignSceneryToggle);
                 return;
             }
 
@@ -216,7 +217,7 @@ namespace OpenRCT2::Ui::Windows
                 if (res.Error == GameActions::Status::Ok)
                 {
                     // Valid location found. Place the ghost at the location.
-                    auto tdAction = GameActions::TrackDesignAction(trackLoc, *_trackDesign);
+                    auto tdAction = GameActions::TrackDesignAction(trackLoc, *_trackDesign, !gTrackDesignSceneryToggle);
                     tdAction.SetFlags(GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
                     tdAction.SetCallback([&](const GameActions::GameAction*, const GameActions::Result* result) {
                         if (result->Error == GameActions::Status::Ok)
@@ -240,7 +241,8 @@ namespace OpenRCT2::Ui::Windows
                 invalidateWidget(WIDX_PRICE);
             }
 
-            TrackDesignPreviewDrawOutlines(tds, *_trackDesign, RideGetTemporaryForPreview(), trackLoc);
+            TrackDesignPreviewDrawOutlines(
+                tds, *_trackDesign, RideGetTemporaryForPreview(), trackLoc, !gTrackDesignSceneryToggle);
         }
 
         void onToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
@@ -285,7 +287,8 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            auto tdAction = GameActions::TrackDesignAction({ trackLoc, _currentTrackPieceDirection }, *_trackDesign);
+            auto tdAction = GameActions::TrackDesignAction(
+                { trackLoc, _currentTrackPieceDirection }, *_trackDesign, !gTrackDesignSceneryToggle);
             tdAction.SetCallback([&](const GameActions::GameAction*, const GameActions::Result* result) {
                 if (result->Error != GameActions::Status::Ok)
                 {
@@ -381,7 +384,8 @@ namespace OpenRCT2::Ui::Windows
         {
             if (_hasPlacementGhost)
             {
-                auto tdAction = GameActions::TrackDesignAction({ _placementGhostLoc }, *_trackDesign);
+                auto tdAction = GameActions::TrackDesignAction(
+                    { _placementGhostLoc }, *_trackDesign, !gTrackDesignSceneryToggle);
                 tdAction.SetFlags(GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
                 auto res = GameActions::Execute(&tdAction, getGameState());
                 if (res.Error != GameActions::Status::Ok)
@@ -728,7 +732,7 @@ namespace OpenRCT2::Ui::Windows
             for (int32_t i = 0; i < 7; i++, loc.z += kCoordsZStep)
             {
                 auto tdAction = GameActions::TrackDesignAction(
-                    CoordsXYZD{ loc.x, loc.y, loc.z, _currentTrackPieceDirection }, *_trackDesign);
+                    CoordsXYZD{ loc.x, loc.y, loc.z, _currentTrackPieceDirection }, *_trackDesign, !gTrackDesignSceneryToggle);
                 tdAction.SetFlags(newFlags);
                 res = GameActions::Query(&tdAction, getGameState());
 

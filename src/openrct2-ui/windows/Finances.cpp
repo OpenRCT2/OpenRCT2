@@ -14,6 +14,7 @@
 #include <openrct2/GameState.h>
 #include <openrct2/SpriteIds.h>
 #include <openrct2/actions/ParkSetLoanAction.h>
+#include <openrct2/drawing/Rectangle.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Formatting.h>
 #include <openrct2/localisation/Localisation.Date.h>
@@ -22,6 +23,8 @@
 #include <openrct2/ride/ShopItem.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Park.h>
+
+using namespace OpenRCT2::Drawing;
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -407,7 +410,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 // Darken every even row
                 if (i % 2 == 0)
-                    GfxFillRect(
+                    Rectangle::fill(
                         rt,
                         { screenCoords - ScreenCoordsXY{ 0, 1 },
                           screenCoords + ScreenCoordsXY{ row_width, (kTableCellHeight - 2) } },
@@ -462,7 +465,7 @@ namespace OpenRCT2::Ui::Windows
                 DrawTextBasic(
                     rt, screenCoords + ScreenCoordsXY{ kExpenditureColumnWidth, 0 }, format, ft, { TextAlignment::RIGHT });
 
-                GfxFillRect(
+                Rectangle::fill(
                     rt,
                     { screenCoords + ScreenCoordsXY{ 10, -2 }, screenCoords + ScreenCoordsXY{ kExpenditureColumnWidth, -2 } },
                     PaletteIndex::pi10);
@@ -602,7 +605,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 // Darken every even row
                 if (i % 2 == 0)
-                    GfxFillRect(
+                    Rectangle::fill(
                         rt,
                         { screenCoords - ScreenCoordsXY{ 0, 1 }, screenCoords + ScreenCoordsXY{ 121, (kTableCellHeight - 2) } },
                         ColourMapA[colours[1].colour].lighter | 0x1000000);
@@ -612,11 +615,11 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Horizontal rule below expenditure / income table
-            GfxFillRectInset(
+            Rectangle::fillInset(
                 rt,
                 { windowPos + ScreenCoordsXY{ 8, titleBarBottom + 258 },
                   windowPos + ScreenCoordsXY{ 8 + 513, titleBarBottom + 258 + 1 } },
-                colours[1], INSET_RECT_FLAG_BORDER_INSET);
+                colours[1], Rectangle::BorderStyle::inset);
 
             // Loan and interest rate
             DrawTextBasic(rt, windowPos + ScreenCoordsXY{ 8, titleBarBottom + 265 }, STR_FINANCES_SUMMARY_LOAN);
@@ -789,13 +792,15 @@ namespace OpenRCT2::Ui::Windows
             DrawTextBasic(rt, _graphBounds.Point1 - ScreenCoordsXY{ 0, 11 }, fmt, ft);
 
             // Graph
-            GfxFillRectInset(rt, _graphBounds, colours[1], INSET_RECT_F_30);
+            Rectangle::fillInset(
+                rt, _graphBounds, colours[1], Rectangle::BorderStyle::inset, Rectangle::FillBrightness::light,
+                Rectangle::FillMode::none);
             // hide resize widget on graph area
             constexpr ScreenCoordsXY offset{ 1, 1 };
             constexpr ScreenCoordsXY bigOffset{ 5, 5 };
-            GfxFillRectInset(
-                rt, { _graphBounds.Point2 - bigOffset, _graphBounds.Point2 - offset }, colours[1],
-                INSET_RECT_FLAG_FILL_DONT_LIGHTEN | INSET_RECT_FLAG_BORDER_NONE);
+            Rectangle::fillInset(
+                rt, { _graphBounds.Point2 - bigOffset, _graphBounds.Point2 - offset }, colours[1], Rectangle::BorderStyle::none,
+                Rectangle::FillBrightness::light, Rectangle::FillMode::dontLightenWhenInset);
 
             Graph::DrawFinanceGraph(rt, _graphProps);
         }

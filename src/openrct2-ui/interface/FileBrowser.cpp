@@ -62,7 +62,7 @@ namespace OpenRCT2::Ui::FileBrowser
         auto& config = Config::Get().general;
 
         // Open system file picker?
-        if (config.UseNativeBrowseDialog && hasFilePicker)
+        if (config.useNativeBrowseDialog && hasFilePicker)
         {
             const bool isSave = (action == LoadSaveAction::save);
             const auto defaultDirectory = GetDir(type);
@@ -84,7 +84,7 @@ namespace OpenRCT2::Ui::FileBrowser
         if (a.type != b.type)
             return EnumValue(a.type) - EnumValue(b.type) < 0;
 
-        switch (Config::Get().general.LoadSaveSort)
+        switch (Config::Get().general.loadSaveSort)
         {
             case FileBrowserSort::NameAscending:
                 return String::logicalCmp(a.name.c_str(), b.name.c_str()) < 0;
@@ -123,16 +123,16 @@ namespace OpenRCT2::Ui::FileBrowser
         switch (type)
         {
             case LoadSaveType::park:
-                return Config::Get().general.LastSaveGameDirectory;
+                return Config::Get().general.lastSaveGameDirectory;
 
             case LoadSaveType::landscape:
-                return Config::Get().general.LastSaveLandscapeDirectory;
+                return Config::Get().general.lastSaveLandscapeDirectory;
 
             case LoadSaveType::scenario:
-                return Config::Get().general.LastSaveScenarioDirectory;
+                return Config::Get().general.lastSaveScenarioDirectory;
 
             case LoadSaveType::track:
-                return Config::Get().general.LastSaveTrackDirectory;
+                return Config::Get().general.lastSaveTrackDirectory;
 
             default:
                 return u8string();
@@ -257,7 +257,7 @@ namespace OpenRCT2::Ui::FileBrowser
                 {
                     case (LoadSaveType::park):
                     {
-                        SetAndSaveConfigPath(Config::Get().general.LastSaveGameDirectory, pathBuffer);
+                        SetAndSaveConfigPath(Config::Get().general.lastSaveGameDirectory, pathBuffer);
                         if (GetContext()->LoadParkFromFile(pathBuffer))
                         {
                             InvokeCallback(ModalResult::ok, pathBuffer);
@@ -278,7 +278,7 @@ namespace OpenRCT2::Ui::FileBrowser
                     }
                     case (LoadSaveType::landscape):
                     {
-                        SetAndSaveConfigPath(Config::Get().general.LastSaveLandscapeDirectory, pathBuffer);
+                        SetAndSaveConfigPath(Config::Get().general.lastSaveLandscapeDirectory, pathBuffer);
                         if (Editor::LoadLandscape(pathBuffer))
                         {
                             gCurrentLoadedPath = pathBuffer;
@@ -295,12 +295,12 @@ namespace OpenRCT2::Ui::FileBrowser
                     }
                     case (LoadSaveType::scenario):
                     {
-                        SetAndSaveConfigPath(Config::Get().general.LastSaveScenarioDirectory, pathBuffer);
+                        SetAndSaveConfigPath(Config::Get().general.lastSaveScenarioDirectory, pathBuffer);
                         int32_t parkFlagsBackup = gameState.park.flags;
                         gameState.park.flags &= ~PARK_FLAGS_SPRITES_INITIALISED;
                         gameState.editorStep = EditorStep::Invalid;
                         gameState.scenarioFileName = std::string(String::toStringView(pathBuffer, std::size(pathBuffer)));
-                        int32_t success = ScenarioSave(gameState, pathBuffer, Config::Get().general.SavePluginData ? 3 : 2);
+                        int32_t success = ScenarioSave(gameState, pathBuffer, Config::Get().general.savePluginData ? 3 : 2);
                         gameState.park.flags = parkFlagsBackup;
 
                         if (success)
@@ -321,7 +321,7 @@ namespace OpenRCT2::Ui::FileBrowser
                     }
                     case (LoadSaveType::track):
                     {
-                        SetAndSaveConfigPath(Config::Get().general.LastSaveTrackDirectory, pathBuffer);
+                        SetAndSaveConfigPath(Config::Get().general.lastSaveTrackDirectory, pathBuffer);
                         auto intent = Intent(WindowClass::installTrack);
                         intent.PutExtra(INTENT_EXTRA_PATH, std::string{ pathBuffer });
                         ContextOpenIntent(&intent);
@@ -344,8 +344,8 @@ namespace OpenRCT2::Ui::FileBrowser
                 {
                     case LoadSaveType::park:
                     {
-                        SetAndSaveConfigPath(Config::Get().general.LastSaveGameDirectory, pathBuffer);
-                        if (ScenarioSave(gameState, pathBuffer, Config::Get().general.SavePluginData ? 1 : 0))
+                        SetAndSaveConfigPath(Config::Get().general.lastSaveGameDirectory, pathBuffer);
+                        if (ScenarioSave(gameState, pathBuffer, Config::Get().general.savePluginData ? 1 : 0))
                         {
                             gScenarioSavePath = pathBuffer;
                             gCurrentLoadedPath = pathBuffer;
@@ -366,9 +366,9 @@ namespace OpenRCT2::Ui::FileBrowser
                     }
                     case LoadSaveType::landscape:
                     {
-                        SetAndSaveConfigPath(Config::Get().general.LastSaveLandscapeDirectory, pathBuffer);
+                        SetAndSaveConfigPath(Config::Get().general.lastSaveLandscapeDirectory, pathBuffer);
                         gameState.scenarioFileName = std::string(String::toStringView(pathBuffer, std::size(pathBuffer)));
-                        if (ScenarioSave(gameState, pathBuffer, Config::Get().general.SavePluginData ? 3 : 2))
+                        if (ScenarioSave(gameState, pathBuffer, Config::Get().general.savePluginData ? 3 : 2))
                         {
                             gCurrentLoadedPath = pathBuffer;
                             windowMgr->CloseByClass(WindowClass::loadsave);
@@ -384,12 +384,12 @@ namespace OpenRCT2::Ui::FileBrowser
                     }
                     case LoadSaveType::scenario:
                     {
-                        SetAndSaveConfigPath(Config::Get().general.LastSaveScenarioDirectory, pathBuffer);
+                        SetAndSaveConfigPath(Config::Get().general.lastSaveScenarioDirectory, pathBuffer);
                         int32_t parkFlagsBackup = gameState.park.flags;
                         gameState.park.flags &= ~PARK_FLAGS_SPRITES_INITIALISED;
                         gameState.editorStep = EditorStep::Invalid;
                         gameState.scenarioFileName = std::string(String::toStringView(pathBuffer, std::size(pathBuffer)));
-                        int32_t success = ScenarioSave(gameState, pathBuffer, Config::Get().general.SavePluginData ? 3 : 2);
+                        int32_t success = ScenarioSave(gameState, pathBuffer, Config::Get().general.savePluginData ? 3 : 2);
                         gameState.park.flags = parkFlagsBackup;
 
                         if (success)
@@ -410,7 +410,7 @@ namespace OpenRCT2::Ui::FileBrowser
                     }
                     case LoadSaveType::track:
                     {
-                        SetAndSaveConfigPath(Config::Get().general.LastSaveTrackDirectory, pathBuffer);
+                        SetAndSaveConfigPath(Config::Get().general.lastSaveTrackDirectory, pathBuffer);
 
                         const auto withExtension = Path::WithExtension(pathBuffer, ".td6");
                         String::set(pathBuffer, sizeof(pathBuffer), withExtension.c_str());

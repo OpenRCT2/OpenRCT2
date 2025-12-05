@@ -19,6 +19,7 @@
 #include "../world/Location.hpp"
 #include "../world/Map.h"
 #include "../world/Park.h"
+#include "../world/TileElementsView.h"
 #include "../world/tile_element/BannerElement.h"
 #include "../world/tile_element/PathElement.h"
 #include "BannerRemoveAction.h"
@@ -127,30 +128,18 @@ namespace OpenRCT2::GameActions
     {
         bool getGhostPath = GetFlags() & GAME_COMMAND_FLAG_GHOST;
 
-        // FIXME: This is a hack to get the footpath element. It should be done in a better way.
-        TileElement* tileElement = MapGetFootpathElement(_loc)->as<TileElement>();
-        TileElement* footpathElement = nullptr;
-        if (tileElement != nullptr)
+        for (auto* pathElement : TileElementsView<PathElement>(_loc))
         {
-            if (getGhostPath && !tileElement->IsGhost())
-            {
-                while (!(tileElement++)->IsLastForTile())
-                {
-                    if (tileElement->GetType() != TileElementType::Path && !tileElement->IsGhost())
-                    {
-                        continue;
-                    }
-                    footpathElement = tileElement;
-                    break;
-                }
-            }
-            else
-            {
-                footpathElement = tileElement;
-            }
+            if (pathElement->IsGhost() != getGhostPath)
+                continue;
+
+            if (pathElement->GetBaseZ() != _loc.z)
+                continue;
+
+            return reinterpret_cast<TileElement*>(pathElement);
         }
 
-        return footpathElement;
+        return nullptr;
     }
 
     money64 FootpathRemoveAction::GetRefundPrice(TileElement* footpathElement) const

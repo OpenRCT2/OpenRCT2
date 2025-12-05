@@ -70,6 +70,6 @@ namespace OpenRCT2::GameActions
 
     bool GameSetSpeedAction::IsValidSpeed(uint8_t speed) const
     {
-        return speed >= 1 && (speed <= 4 || (Config::Get().general.DebuggingTools && speed <= 8));
+        return speed >= 1 && (speed <= 4 || (Config::Get().general.debuggingTools && speed <= 8));
     }
 } // namespace OpenRCT2::GameActions

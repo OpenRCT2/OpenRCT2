@@ -40,6 +40,7 @@
 #include <openrct2/config/Config.h>
 #include <openrct2/core/String.hpp>
 #include <openrct2/core/UnitConversion.h>
+#include <openrct2/drawing/Rectangle.h>
 #include <openrct2/entity/EntityList.h>
 #include <openrct2/entity/Staff.h>
 #include <openrct2/localisation/Currency.h>
@@ -76,6 +77,7 @@
 #include <string_view>
 #include <vector>
 
+using namespace OpenRCT2::Drawing;
 using namespace OpenRCT2::TrackMetaData;
 
 namespace OpenRCT2::Ui::Windows
@@ -1565,7 +1567,7 @@ namespace OpenRCT2::Ui::Windows
                 newViewportFlags = viewport->flags;
                 removeViewport();
             }
-            else if (Config::Get().general.AlwaysShowGridlines)
+            else if (Config::Get().general.alwaysShowGridlines)
             {
                 newViewportFlags |= VIEWPORT_FLAG_GRIDLINES;
             }
@@ -2952,7 +2954,7 @@ namespace OpenRCT2::Ui::Windows
             const auto* rideEntry = ride->getRideEntry();
 
             // Background
-            GfxFillRect(rt, { { rt.x, rt.y }, { rt.x + rt.width, rt.y + rt.height } }, PaletteIndex::pi12);
+            Rectangle::fill(rt, { { rt.x, rt.y }, { rt.x + rt.width, rt.y + rt.height } }, PaletteIndex::pi12);
 
             Widget* widget = &widgets[WIDX_VEHICLE_TRAINS_PREVIEW];
             int32_t startX = std::max(2, (widget->width() - ((ride->numTrains - 1) * 36)) / 2 - 25);
@@ -3690,11 +3692,11 @@ namespace OpenRCT2::Ui::Windows
 
             // Horizontal rule between mode settings and depart settings
             auto ruleStart = widgets[WIDX_LOAD_DROPDOWN].top - 8;
-            GfxFillRectInset(
+            Rectangle::fillInset(
                 rt,
                 { windowPos + ScreenCoordsXY{ widgets[WIDX_PAGE_BACKGROUND].left + 4, ruleStart },
                   windowPos + ScreenCoordsXY{ widgets[WIDX_PAGE_BACKGROUND].right - 5, ruleStart + 1 } },
-                colours[1], INSET_RECT_FLAG_BORDER_INSET);
+                colours[1], Rectangle::BorderStyle::inset);
 
             // Number of block sections
             if (ride->isBlockSectioned())
@@ -3997,7 +3999,7 @@ namespace OpenRCT2::Ui::Windows
 
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_10);
 
-            if (Config::Get().general.DebuggingTools && Network::GetMode() == Network::Mode::none)
+            if (Config::Get().general.debuggingTools && Network::GetMode() == Network::Mode::none)
             {
                 widgets[WIDX_FORCE_BREAKDOWN].type = WidgetType::flatBtn;
             }
@@ -4823,7 +4825,7 @@ namespace OpenRCT2::Ui::Windows
             // Track / shop item preview
             const auto& trackPreviewWidget = widgets[WIDX_TRACK_PREVIEW];
             if (trackPreviewWidget.type != WidgetType::empty)
-                GfxFillRect(
+                Rectangle::fill(
                     rt,
                     { { windowPos + ScreenCoordsXY{ trackPreviewWidget.left + 1, trackPreviewWidget.top + 1 } },
                       { windowPos + ScreenCoordsXY{ trackPreviewWidget.right - 1, trackPreviewWidget.bottom - 1 } } },
@@ -4931,7 +4933,7 @@ namespace OpenRCT2::Ui::Windows
             auto vehicleColour = RideGetVehicleColour(*ride, _vehicleIndex);
 
             // Background colour
-            GfxFillRect(rt, { { rt.x, rt.y }, { rt.x + rt.width - 1, rt.y + rt.height - 1 } }, PaletteIndex::pi12);
+            Rectangle::fill(rt, { { rt.x, rt.y }, { rt.x + rt.width - 1, rt.y + rt.height - 1 } }, PaletteIndex::pi12);
 
             // ?
             auto screenCoords = ScreenCoordsXY{ vehiclePreviewWidget->width() / 2, vehiclePreviewWidget->height() - 15 };
@@ -5618,8 +5620,8 @@ namespace OpenRCT2::Ui::Windows
 
                 widgetCoords.x = windowPos.x + 4;
                 widgetCoords.y = windowPos.y + widgets[WIDX_SELECT_NEARBY_SCENERY].bottom + 17;
-                GfxFillRectInset(
-                    rt, { widgetCoords, { windowPos.x + 312, widgetCoords.y + 1 } }, colours[1], INSET_RECT_FLAG_BORDER_INSET);
+                Rectangle::fillInset(
+                    rt, { widgetCoords, { windowPos.x + 312, widgetCoords.y + 1 } }, colours[1], Rectangle::BorderStyle::inset);
             }
             else
             {
@@ -5667,9 +5669,9 @@ namespace OpenRCT2::Ui::Windows
                     screenCoords.y += 2 * kListRowHeight;
 
                     // Horizontal rule
-                    GfxFillRectInset(
+                    Rectangle::fillInset(
                         rt, { screenCoords - ScreenCoordsXY{ 0, 6 }, screenCoords + ScreenCoordsXY{ 303, -5 } }, colours[1],
-                        INSET_RECT_FLAG_BORDER_INSET);
+                        Rectangle::BorderStyle::inset);
 
                     if (!(ride->lifecycleFlags & RIDE_LIFECYCLE_NO_RAW_STATS))
                     {
@@ -6086,11 +6088,11 @@ namespace OpenRCT2::Ui::Windows
                 {
                     auto coord1 = ScreenCoordsXY{ x, rt.y };
                     auto coord2 = ScreenCoordsXY{ x, rt.y + rt.height - 1 };
-                    GfxFillRect(rt, { coord1, coord2 }, lightColour);
-                    GfxFillRect(rt, { coord1 + ScreenCoordsXY{ 16, 0 }, coord2 + ScreenCoordsXY{ 16, 0 } }, darkColour);
-                    GfxFillRect(rt, { coord1 + ScreenCoordsXY{ 32, 0 }, coord2 + ScreenCoordsXY{ 32, 0 } }, darkColour);
-                    GfxFillRect(rt, { coord1 + ScreenCoordsXY{ 48, 0 }, coord2 + ScreenCoordsXY{ 48, 0 } }, darkColour);
-                    GfxFillRect(rt, { coord1 + ScreenCoordsXY{ 64, 0 }, coord2 + ScreenCoordsXY{ 64, 0 } }, darkColour);
+                    Rectangle::fill(rt, { coord1, coord2 }, lightColour);
+                    Rectangle::fill(rt, { coord1 + ScreenCoordsXY{ 16, 0 }, coord2 + ScreenCoordsXY{ 16, 0 } }, darkColour);
+                    Rectangle::fill(rt, { coord1 + ScreenCoordsXY{ 32, 0 }, coord2 + ScreenCoordsXY{ 32, 0 } }, darkColour);
+                    Rectangle::fill(rt, { coord1 + ScreenCoordsXY{ 48, 0 }, coord2 + ScreenCoordsXY{ 48, 0 } }, darkColour);
+                    Rectangle::fill(rt, { coord1 + ScreenCoordsXY{ 64, 0 }, coord2 + ScreenCoordsXY{ 64, 0 } }, darkColour);
                 }
                 time += 5;
             }
@@ -6112,7 +6114,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 // Minor / major line
                 int32_t colour = yUnit == 0 ? lightColour : darkColour;
-                GfxFillRect(rt, { { rt.x, y }, { rt.x + rt.width - 1, y } }, colour);
+                Rectangle::fill(rt, { { rt.x, y }, { rt.x + rt.width - 1, y } }, colour);
 
                 int16_t scaled_yUnit = yUnit;
                 // Scale modifier
@@ -6196,7 +6198,7 @@ namespace OpenRCT2::Ui::Windows
                 const bool previousMeasurement = x > measurement->current_item;
 
                 // Draw the current line in grey.
-                GfxFillRect(
+                Rectangle::fill(
                     rt, { { x, firstPoint }, { x, secondPoint } },
                     previousMeasurement ? PaletteIndex::pi17 : PaletteIndex::pi21);
 
@@ -6210,7 +6212,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         const auto redLineTop = ScreenCoordsXY{ x, std::max(firstPoint, intensityThresholdNegative) };
                         const auto redLineBottom = ScreenCoordsXY{ x, std::max(secondPoint, intensityThresholdNegative) };
-                        GfxFillRect(rt, { redLineTop, redLineBottom }, redLineColour);
+                        Rectangle::fill(rt, { redLineTop, redLineBottom }, redLineColour);
                     }
 
                     // Line exceeds positive threshold (at top of graph).
@@ -6218,7 +6220,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         const auto redLineTop = ScreenCoordsXY{ x, std::min(firstPoint, intensityThresholdPositive) };
                         const auto redLineBottom = ScreenCoordsXY{ x, std::min(secondPoint, intensityThresholdPositive) };
-                        GfxFillRect(rt, { redLineTop, redLineBottom }, redLineColour);
+                        Rectangle::fill(rt, { redLineTop, redLineBottom }, redLineColour);
                     }
                 }
             }

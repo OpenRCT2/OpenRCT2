@@ -83,6 +83,8 @@
 using namespace OpenRCT2;
 using namespace OpenRCT2::Numerics;
 
+static const uint8_t kTicksToGoUpSpiralSlide = 30;
+
 // Locations of the spiral slide platform that a peep walks from the entrance of the ride to the
 // entrance of the slide. Up to 4 waypoints for each 4 sides that an ride entrance can be located
 // and 4 different rotations of the ride. 4 * 4 * 4 = 64 locations.
@@ -1701,7 +1703,7 @@ static bool GuestDecideAndBuyItem(Guest& guest, Ride& ride, const ShopItem shopI
         auto ft = Formatter();
         guest.FormatNameTo(ft);
         ft.Add<StringId>(shopItemDescriptor.Naming.Indefinite);
-        if (Config::Get().notifications.GuestBoughtItem)
+        if (Config::Get().notifications.guestBoughtItem)
         {
             News::AddItemToQueue(News::ItemType::peepOnRide, STR_PEEP_TRACKING_NOTIFICATION_BOUGHT_X, guest.Id, ft);
         }
@@ -3633,7 +3635,7 @@ void PeepUpdateRideLeaveEntranceDefault(Guest& guest, Ride& ride, CoordsXYZD& en
 
         auto ft = Formatter();
         ride.formatNameTo(ft);
-        if (Config::Get().notifications.RideWarnings)
+        if (Config::Get().notifications.rideWarnings)
         {
             News::AddItemToQueue(News::ItemType::ride, STR_GUESTS_GETTING_STUCK_ON_RIDE, guest.CurrentRide.ToUnderlying(), ft);
         }
@@ -3649,7 +3651,7 @@ uint8_t Guest::GetWaypointedSeatLocation(const Ride& ride, const CarEntry* vehic
     uint8_t seatLocationFixed = CurrentSeat & 0xF8;
 
     // Enterprise has more segments (8) compared to the normal (4)
-    if (ride.type != RIDE_TYPE_ENTERPRISE)
+    if (ride.getRideTypeDescriptor().specialType != RtdSpecialType::enterprise)
         track_direction *= 2;
 
     // Type 1 loading doesn't do segments and all peeps go to the same
@@ -3938,7 +3940,7 @@ void Guest::UpdateRideFreeVehicleEnterRide(Ride& ride)
         else
             msg_string = STR_PEEP_TRACKING_PEEP_IS_ON_X;
 
-        if (Config::Get().notifications.GuestOnRide)
+        if (Config::Get().notifications.guestOnRide)
         {
             News::AddItemToQueue(News::ItemType::peepOnRide, msg_string, Id, ft);
         }
@@ -4374,7 +4376,7 @@ void Guest::UpdateRideLeaveVehicle()
         exitWaypointLoc.y += carEntry->peep_loading_waypoints[waypointIndex][2].y;
     }
 
-    if (ride->type == RIDE_TYPE_MOTION_SIMULATOR)
+    if (ride->getRideTypeDescriptor().specialType == RtdSpecialType::motionSimulator)
         exitWaypointLoc.z += 15;
 
     MoveTo(exitWaypointLoc);
@@ -4598,7 +4600,7 @@ void Guest::UpdateRideApproachExitWaypoints()
     {
         int16_t actionZ;
 
-        if (ride->type == RIDE_TYPE_MOTION_SIMULATOR)
+        if (ride->getRideTypeDescriptor().specialType == RtdSpecialType::motionSimulator)
         {
             actionZ = ride->getStation(CurrentRideStation).GetBaseZ() + 2;
 
@@ -4707,7 +4709,8 @@ void Guest::UpdateRideApproachSpiralSlide()
     if (waypoint == 3)
     {
         SubState = 15;
-        SetDestination({ 0, 0 });
+        spiralSlideSubstate = PeepSpiralSlideSubState::goingUp;
+        spiralSlideGoingUpTimer = 0;
         Var37 = (Var37 / 4) & 0xC;
         MoveTo({ kLocationNull, y, z });
         return;
@@ -4790,19 +4793,17 @@ void Guest::UpdateRideOnSpiralSlide()
     if (rtd.specialType != RtdSpecialType::spiralSlide)
         return;
 
-    auto destination = GetDestination();
     if ((Var37 & 3) == 0)
     {
-        switch (destination.x)
+        switch (spiralSlideSubstate)
         {
-            case 0:
-                destination.y++;
-                if (destination.y >= 30)
-                    destination.x++;
+            case PeepSpiralSlideSubState::goingUp:
+                spiralSlideGoingUpTimer++;
+                if (spiralSlideGoingUpTimer >= kTicksToGoUpSpiralSlide)
+                    spiralSlideSubstate = PeepSpiralSlideSubState::prepareToSlide;
 
-                SetDestination(destination);
                 return;
-            case 1:
+            case PeepSpiralSlideSubState::prepareToSlide:
                 if (ride->slideInUse)
                     return;
 
@@ -4810,22 +4811,19 @@ void Guest::UpdateRideOnSpiralSlide()
                 ride->slidePeep = Id;
                 ride->slidePeepTShirtColour = TshirtColour;
                 ride->spiralSlideProgress = 0;
-                destination.x++;
+                spiralSlideSubstate = PeepSpiralSlideSubState::slidingDown;
 
-                SetDestination(destination);
                 return;
-            case 2:
-                return;
-            case 3:
+            case PeepSpiralSlideSubState::finishedSliding:
             {
                 auto newLocation = ride->getStation(CurrentRideStation).Start;
                 uint8_t dir = (Var37 / 4) & 3;
 
-                // Set the location that the peep walks to go on slide again
-                destination = newLocation + kSpiralSlideEndWaypoint[dir];
+                // Set the location that the guest walks to go on slide again
+                auto destination = newLocation + kSpiralSlideEndWaypoint[dir];
                 SetDestination(destination);
 
-                // Move the peep sprite to just at the end of the slide
+                // Move the guest sprite to just at the end of the slide
                 newLocation.x += kSpiralSlideEnd[dir].x;
                 newLocation.y += kSpiralSlideEnd[dir].y;
 
@@ -4836,6 +4834,7 @@ void Guest::UpdateRideOnSpiralSlide()
                 Var37++;
                 return;
             }
+            case PeepSpiralSlideSubState::slidingDown: // Handled by updateSpiralSlide in Ride.cpp
             default:
                 return;
         }
@@ -5097,7 +5096,7 @@ void Guest::UpdateRideLeaveExit()
             FormatNameTo(ft);
             ride->formatNameTo(ft);
 
-            if (Config::Get().notifications.GuestLeftRide)
+            if (Config::Get().notifications.guestLeftRide)
             {
                 News::AddItemToQueue(News::ItemType::peepOnRide, STR_PEEP_TRACKING_LEFT_RIDE_X, Id, ft);
             }

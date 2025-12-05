@@ -123,10 +123,10 @@ void StdInOutConsole::WriteLine(const std::string& s, FormatToken colourFormat)
     std::string formatBegin;
     switch (colourFormat)
     {
-        case FormatToken::ColourRed:
+        case FormatToken::colourRed:
             formatBegin = "\033[31m";
             break;
-        case FormatToken::ColourYellow:
+        case FormatToken::colourYellow:
             formatBegin = "\033[33m";
             break;
         default:

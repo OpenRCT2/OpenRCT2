@@ -18,7 +18,7 @@ namespace OpenRCT2::GameActions
     {
     private:
         CoordsXYZ _loc;
-        uint8_t _slope{};
+        FootpathSlope _slope{};
         ObjectEntryIndex _type{};
         ObjectEntryIndex _railingsType{};
         Direction _direction{ kInvalidDirection };
@@ -27,7 +27,7 @@ namespace OpenRCT2::GameActions
     public:
         FootpathPlaceAction() = default;
         FootpathPlaceAction(
-            const CoordsXYZ& loc, uint8_t slope, ObjectEntryIndex type, ObjectEntryIndex railingsType,
+            const CoordsXYZ& loc, FootpathSlope slope, ObjectEntryIndex type, ObjectEntryIndex railingsType,
             Direction direction = kInvalidDirection, PathConstructFlags constructFlags = 0);
         void AcceptParameters(GameActionParameterVisitor&) final;
 
@@ -44,7 +44,7 @@ namespace OpenRCT2::GameActions
         Result ElementInsertExecute(Result res) const;
         void AutomaticallySetPeepSpawn() const;
         void RemoveIntersectingWalls(PathElement* pathElement) const;
-        PathElement* MapGetFootpathElementSlope(const CoordsXYZ& footpathPos, int32_t slope) const;
+        PathElement* MapGetFootpathElementWithSlope(const CoordsXYZ& footpathPos, FootpathSlope slope) const;
         bool IsSameAsPathElement(const PathElement* pathElement) const;
         bool IsSameAsEntranceElement(const EntranceElement& entranceElement) const;
     };

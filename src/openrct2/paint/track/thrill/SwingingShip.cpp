@@ -175,7 +175,7 @@ static void PaintSwingingShip(
         DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::tubes);
         if (stationObject != nullptr && !(stationObject->Flags & StationObjectFlags::noPlatforms))
         {
-            ImageIndex base = (direction & 1) ? SPR_STATION_BASE_A_NW_SE : SPR_STATION_BASE_A_SW_NE;
+            ImageIndex base = (direction & 1) ? SPR_STATION_BASE_TALL_NW_SE : SPR_STATION_BASE_TALL_SW_NE;
             imageId = session.SupportColours.WithIndex(base);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 1 });
         }

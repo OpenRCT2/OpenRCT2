@@ -1562,8 +1562,8 @@ STR_2212    :Vis liste over sikkerhetsvakter i parken
 STR_2213    :Vis liste over underholdere i parken
 STR_2214    :Konstruksjon ikke mulig mens spillet er pauset!
 STR_2215    :{STRINGID}{NEWLINE}({STRINGID})
-STR_2216    :{WINDOW_COLOUR_2}{COMMA16}°C
-STR_2217    :{WINDOW_COLOUR_2}{COMMA16}°F
+STR_2216    :{WINDOW_COLOUR_1}{COMMA16}°C
+STR_2217    :{WINDOW_COLOUR_1}{COMMA16}°F
 STR_2218    :{RED}{STRINGID} på {STRINGID} har ikke returnet til {STRINGID} enda!{NEWLINE}Sjekk om den sitter fast eller har stoppet
 STR_2219    :{RED}{COMMA16} personer har omkommet i en ulykke på {STRINGID}
 STR_2220    :{WINDOW_COLOUR_2}Park Vurdering: {BLACK}{COMMA16}

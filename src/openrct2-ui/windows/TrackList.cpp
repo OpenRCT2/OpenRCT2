@@ -19,6 +19,7 @@
 #include <openrct2/core/String.hpp>
 #include <openrct2/core/UnitConversion.h>
 #include <openrct2/drawing/IDrawingEngine.h>
+#include <openrct2/drawing/Rectangle.h>
 #include <openrct2/localisation/Formatting.h>
 #include <openrct2/ride/RideConstruction.h>
 #include <openrct2/ride/RideData.h>
@@ -27,6 +28,8 @@
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 #include <vector>
+
+using namespace OpenRCT2::Drawing;
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -201,7 +204,7 @@ namespace OpenRCT2::Ui::Windows
             _loadedTrackDesign = TrackDesignImport(path.c_str());
             if (_loadedTrackDesign != nullptr)
             {
-                TrackDesignDrawPreview(*_loadedTrackDesign, _trackDesignPreviewPixels.data());
+                TrackDesignDrawPreview(*_loadedTrackDesign, _trackDesignPreviewPixels.data(), !gTrackDesignSceneryToggle);
                 return true;
             }
             return false;
@@ -383,7 +386,7 @@ namespace OpenRCT2::Ui::Windows
 
             if (entry != nullptr)
             {
-                RideNaming rideName = GetRideNaming(_window_track_list_item.Type, *entry);
+                RideNaming rideName = GetRideNaming(_window_track_list_item.Type, entry);
                 stringId = rideName.Name;
             }
 
@@ -423,7 +426,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // When debugging tools are on, shift everything up a bit to make room for displaying the path.
-            const int32_t bottomMargin = Config::Get().general.DebuggingTools ? (kWindowPadding + kDebugPathHeight)
+            const int32_t bottomMargin = Config::Get().general.debuggingTools ? (kWindowPadding + kDebugPathHeight)
                                                                               : kWindowPadding;
             widgets[WIDX_TRACK_LIST].bottom = height - bottomMargin;
             widgets[WIDX_ROTATE].bottom = height - bottomMargin;
@@ -471,7 +474,7 @@ namespace OpenRCT2::Ui::Windows
             u8string path = _trackDesigns[trackIndex].path;
 
             // Show track file path (in debug mode)
-            if (Config::Get().general.DebuggingTools)
+            if (Config::Get().general.debuggingTools)
             {
                 const auto shortPath = ShortenPath(path, width, FontStyle::Medium);
                 auto ft = Formatter();
@@ -482,7 +485,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             auto screenPos = windowPos + ScreenCoordsXY{ tdWidget.left + 1, tdWidget.top + 1 };
-            GfxFillRect(rt, { screenPos, screenPos + ScreenCoordsXY{ 369, 216 } }, colour); // TODO Check dpi
+            Rectangle::fill(rt, { screenPos, screenPos + ScreenCoordsXY{ 369, 216 } }, colour); // TODO Check dpi
 
             if (_loadedTrackDesignIndex != trackIndex)
             {
@@ -693,7 +696,7 @@ namespace OpenRCT2::Ui::Windows
                 if (listIndex == static_cast<size_t>(selectedListItem))
                 {
                     // Highlight
-                    GfxFilterRect(
+                    Rectangle::filter(
                         rt, { screenCoords, { width, screenCoords.y + kScrollableRowHeight - 1 } },
                         FilterPaletteID::paletteDarken1);
                     stringId = STR_WINDOW_COLOUR_2_STRINGID;
@@ -718,7 +721,7 @@ namespace OpenRCT2::Ui::Windows
                     if (listIndex == static_cast<size_t>(selectedListItem))
                     {
                         // Highlight
-                        GfxFilterRect(
+                        Rectangle::filter(
                             rt, { screenCoords, { width, screenCoords.y + kScrollableRowHeight - 1 } },
                             FilterPaletteID::paletteDarken1);
                         stringId = STR_WINDOW_COLOUR_2_STRINGID;

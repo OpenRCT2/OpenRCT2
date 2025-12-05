@@ -24,11 +24,14 @@
 #include <openrct2/audio/Audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/drawing/Drawing.h>
+#include <openrct2/drawing/Rectangle.h>
 #include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/interface/Viewport.h>
 #include <openrct2/interface/Widget.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Location.hpp>
+
+using namespace OpenRCT2::Drawing;
 
 namespace OpenRCT2::Ui
 {
@@ -314,7 +317,7 @@ namespace OpenRCT2::Ui
 
     void ApplyScreenSaverLockSetting()
     {
-        Config::Get().general.DisableScreensaver ? SDL_DisableScreenSaver() : SDL_EnableScreenSaver();
+        Config::Get().general.disableScreensaver ? SDL_DisableScreenSaver() : SDL_EnableScreenSaver();
     }
 
     void Window::scrollToViewport()
@@ -514,7 +517,7 @@ namespace OpenRCT2::Ui
 
     ScreenCoordsXY WindowGetViewportSoundIconPos(WindowBase& w)
     {
-        const uint8_t buttonOffset = (Config::Get().interface.WindowButtonsOnTheLeft) ? kCloseButtonSize + 2 : 0;
+        const uint8_t buttonOffset = (Config::Get().interface.windowButtonsOnTheLeft) ? kCloseButtonSize + 2 : 0;
         return w.windowPos + ScreenCoordsXY{ 2 + buttonOffset, 2 };
     }
 } // namespace OpenRCT2::Ui
@@ -960,7 +963,7 @@ namespace OpenRCT2::Ui::Windows
         w.maxWidth = std::max(minSize.width, maxSize.width);
         w.maxHeight = std::max(minSize.height, maxSize.height);
 
-        if (Config::Get().interface.EnlargedUi)
+        if (Config::Get().interface.enlargedUi)
         {
             // Not sure why plugin windows have to be treated differently,
             // but they currently show a deviation if we don't.
@@ -1022,7 +1025,7 @@ namespace OpenRCT2::Ui::Windows
     void WindowDrawWidgets(WindowBase& w, RenderTarget& rt)
     {
         if ((w.flags.has(WindowFlag::transparent)) && !(w.flags.has(WindowFlag::noBackground)))
-            GfxFilterRect(
+            Rectangle::filter(
                 rt, { w.windowPos, w.windowPos + ScreenCoordsXY{ w.width - 1, w.height - 1 } }, FilterPaletteID::palette51);
 
         // todo: some code missing here? Between 006EB18C and 006EB260
@@ -1048,9 +1051,9 @@ namespace OpenRCT2::Ui::Windows
 
         if (w.flashTimer > 0)
         {
-            GfxFillRectInset(
+            Rectangle::fillInset(
                 rt, { w.windowPos, w.windowPos + ScreenCoordsXY{ w.width - 1, w.height - 1 } }, { COLOUR_WHITE },
-                INSET_RECT_FLAG_FILL_NONE);
+                Rectangle::BorderStyle::outset, Rectangle::FillBrightness::light, Rectangle::FillMode::none);
         }
     }
 

@@ -1569,8 +1569,8 @@ STR_2212    :Toon lijst van bewakers in het park
 STR_2213    :Toon lijst van entertainers in het park
 STR_2214    :Bouwen is niet mogelijk wanneer het spel is gepauzeerd!
 STR_2215    :{STRINGID}{NEWLINE}({STRINGID})
-STR_2216    :{WINDOW_COLOUR_2}{COMMA16} °C
-STR_2217    :{WINDOW_COLOUR_2}{COMMA16} °F
+STR_2216    :{WINDOW_COLOUR_1}{COMMA16} °C
+STR_2217    :{WINDOW_COLOUR_1}{COMMA16} °F
 STR_2218    :{RED}{STRINGID} van {STRINGID} is nog niet teruggekeerd naar de opstapplaats ({STRINGID})!{NEWLINE}Controleer of het is vastgelopen of stil komen te staan
 STR_2219    :{RED}{COMMA16} personen zijn om het leven gekomen bij een ongeluk in {STRINGID}
 STR_2220    :{WINDOW_COLOUR_2}Parkwaardering: {BLACK}{COMMA16}
@@ -3839,3 +3839,4 @@ STR_7001    :Attractienaam
 STR_7002    :{STRINGID} {STRINGID}
 STR_7003    :Audiobestand ‘{STRING}’ is beschadigd. Sample nr. {INT32} kon niet worden geladen, aangezien er maar {INT32} beschikbaar zijn. Installeer RollerCoaster Tycoon 2 opnieuw.
 STR_7004    :Volledig beeld hertekenen
+STR_7005    :Voetpaden aanleggen door te slepen

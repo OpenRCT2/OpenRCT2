@@ -1573,8 +1573,8 @@ STR_2212    :Zobrazit seznam hlídačů
 STR_2213    :Zobrazit seznam maskotů
 STR_2214    :Nelze stavět při pozastavené hře!
 STR_2215    :{STRINGID}{NEWLINE}({STRINGID})
-STR_2216    :{WINDOW_COLOUR_2}{COMMA16}°C
-STR_2217    :{WINDOW_COLOUR_2}{COMMA16}°F
+STR_2216    :{WINDOW_COLOUR_1}{COMMA16}°C
+STR_2217    :{WINDOW_COLOUR_1}{COMMA16}°F
 STR_2218    :{RED}{STRINGID} na {STRINGID} se stále nevrátil do {STRINGID}!{NEWLINE}Zkontrolujte, jestli se nezasekl nebo nezastavil
 STR_2219    :{RED}{COMMA16} lidí zemřelo při nehodě na {STRINGID}
 STR_2220    :{WINDOW_COLOUR_2}Hodnocení parku: {BLACK}{COMMA16}
@@ -3843,3 +3843,6 @@ STR_7000    :nebo
 STR_7001    :Název atrakce
 STR_7002    :{STRINGID} {STRINGID}
 STR_7003    :Zvukový soubor ‘{STRING}’ je zkrácený. Očekáván sample {INT32}, avšak pouze {INT32} je dostupných. Zvažte přeinstalování RCT2.
+STR_7004    :Vynutit překresl. (force redraw)
+STR_7005    :Stavět cesty v oblasti označené tažením
+STR_7006    :Vykreslit okraje tlačítek s obrázky

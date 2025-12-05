@@ -21,10 +21,13 @@
 #include <openrct2/config/Config.h>
 #include <openrct2/core/BitSet.hpp>
 #include <openrct2/drawing/Drawing.h>
+#include <openrct2/drawing/Rectangle.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Formatting.h>
 #include <openrct2/localisation/Language.h>
 #include <openrct2/ui/WindowManager.h>
+
+using namespace OpenRCT2::Drawing;
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -75,12 +78,12 @@ namespace OpenRCT2::Ui::Windows
 
         static int32_t GetDefaultRowHeight()
         {
-            return Config::Get().interface.EnlargedUi ? kDropdownItemHeightTouch : kDropdownItemHeight;
+            return Config::Get().interface.enlargedUi ? kDropdownItemHeightTouch : kDropdownItemHeight;
         }
 
         static int32_t GetAdditionalRowPadding()
         {
-            return Config::Get().interface.EnlargedUi ? 6 : 0;
+            return Config::Get().interface.enlargedUi ? 6 : 0;
         }
 
         static void drawTextItem(
@@ -125,13 +128,13 @@ namespace OpenRCT2::Ui::Windows
                     if (colours[0].hasFlag(ColourFlag::translucent))
                     {
                         TranslucentWindowPalette palette = kTranslucentWindowPalettes[colours[0].colour];
-                        GfxFilterRect(rt, { leftTop, rightBottom }, palette.highlight);
-                        GfxFilterRect(rt, { leftTop + shadowOffset, rightBottom + shadowOffset }, palette.shadow);
+                        Rectangle::filter(rt, { leftTop, rightBottom }, palette.highlight);
+                        Rectangle::filter(rt, { leftTop + shadowOffset, rightBottom + shadowOffset }, palette.shadow);
                     }
                     else
                     {
-                        GfxFillRect(rt, { leftTop, rightBottom }, ColourMapA[colours[0].colour].mid_dark);
-                        GfxFillRect(
+                        Rectangle::fill(rt, { leftTop, rightBottom }, ColourMapA[colours[0].colour].mid_dark);
+                        Rectangle::fill(
                             rt, { leftTop + shadowOffset, rightBottom + shadowOffset }, ColourMapA[colours[0].colour].lightest);
                     }
                 }
@@ -142,7 +145,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         // Darken the cell's background slightly when highlighted
                         const ScreenCoordsXY rightBottom = screenCoords + ScreenCoordsXY{ ItemWidth - 1, ItemHeight - 1 };
-                        GfxFilterRect(rt, { screenCoords, rightBottom }, FilterPaletteID::paletteDarken3);
+                        Rectangle::filter(rt, { screenCoords, rightBottom }, FilterPaletteID::paletteDarken3);
                     }
 
                     const auto& item = gDropdown.items[i];
@@ -386,7 +389,7 @@ namespace OpenRCT2::Ui::Windows
         size_t num_items, int32_t width, size_t prefRowsPerColumn)
     {
         gInputFlags.unset(InputFlag::dropdownStayOpen, InputFlag::dropdownMouseUp);
-        if (flags & Dropdown::Flag::StayOpen || Config::Get().interface.TouchEnhancements)
+        if (flags & Dropdown::Flag::StayOpen || Config::Get().interface.touchEnhancements)
             gInputFlags.set(InputFlag::dropdownStayOpen);
 
         WindowDropdownClose();
@@ -430,7 +433,7 @@ namespace OpenRCT2::Ui::Windows
         int32_t itemHeight, int32_t numColumns)
     {
         gInputFlags.unset(InputFlag::dropdownStayOpen, InputFlag::dropdownMouseUp);
-        if (flags & Dropdown::Flag::StayOpen || Config::Get().interface.TouchEnhancements)
+        if (flags & Dropdown::Flag::StayOpen || Config::Get().interface.touchEnhancements)
             gInputFlags.set(InputFlag::dropdownStayOpen);
 
         // Close existing dropdown

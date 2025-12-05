@@ -376,7 +376,7 @@ namespace OpenRCT2
         auto configPath = env->GetFilePath(OpenRCT2::PathId::config);
         Config::SetDefaults();
         Config::OpenFromPath(configPath);
-        Config::Get().general.RCT2Path = path;
+        Config::Get().general.rct2Path = path;
         if (Config::SaveToPath(configPath))
         {
             Console::WriteFormat("Updating RCT2 path to '%s'.", path.c_str());
@@ -403,7 +403,7 @@ namespace OpenRCT2
         auto context = OpenRCT2::CreateContext();
         auto& env = context->GetPlatformEnvironment();
         auto objectRepository = CreateObjectRepository(env);
-        objectRepository->Construct(Config::Get().general.Language);
+        objectRepository->Construct(Config::Get().general.language);
         return EXITCODE_OK;
     }
 

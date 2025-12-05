@@ -457,7 +457,7 @@ static void ShortcutOpenSceneryPicker()
 
 static void ShortcutScaleUp()
 {
-    Config::Get().general.WindowScale += 0.25f;
+    Config::Get().general.windowScale += 0.25f;
     Config::Save();
     GfxInvalidateScreen();
     ContextTriggerResize();
@@ -466,8 +466,8 @@ static void ShortcutScaleUp()
 
 static void ShortcutScaleDown()
 {
-    Config::Get().general.WindowScale -= 0.25f;
-    Config::Get().general.WindowScale = std::max(0.5f, Config::Get().general.WindowScale);
+    Config::Get().general.windowScale -= 0.25f;
+    Config::Get().general.windowScale = std::max(0.5f, Config::Get().general.windowScale);
     Config::Save();
     GfxInvalidateScreen();
     ContextTriggerResize();
@@ -623,7 +623,7 @@ static void ShortcutToggleConsole()
     {
         console.Toggle();
     }
-    else if (Config::Get().general.DebuggingTools && !ContextIsInputActive())
+    else if (Config::Get().general.debuggingTools && !ContextIsInputActive())
     {
         WindowCancelTextbox();
         console.Toggle();
@@ -737,7 +737,7 @@ static void ShortcutToggleTransparentWater()
     if (gLegacyScene == LegacyScene::titleSequence)
         return;
 
-    Config::Get().general.TransparentWater ^= 1;
+    Config::Get().general.transparentWater ^= 1;
     Config::Save();
     GfxInvalidateScreen();
 }
@@ -827,7 +827,7 @@ void ShortcutManager::registerDefaultShortcuts()
     registerShortcut(ShortcutId::kInterfaceOpenTransparencyOptions, STR_SHORTCUT_OPEN_TRANSPARENCY_OPTIONS, "CTRL+T", ShortcutOpenTransparencyWindow);
     registerShortcut(ShortcutId::kInterfaceOpenCheats, STR_SHORTCUT_OPEN_CHEATS_WINDOW, "CTRL+ALT+C", ShortcutOpenCheatWindow);
     registerShortcut(ShortcutId::kInterfaceOpenTileInspector, STR_SHORTCUT_OPEN_TILE_INSPECTOR, []() {
-        if (Config::Get().interface.ToolbarShowCheats)
+        if (Config::Get().interface.toolbarShowCheats)
         {
             OpenWindow(WindowClass::tileInspector);
         }

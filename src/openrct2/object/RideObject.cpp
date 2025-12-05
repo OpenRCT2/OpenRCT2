@@ -194,9 +194,9 @@ namespace OpenRCT2
         _legacyType.shop_item[0] = static_cast<ShopItem>(stream->ReadValue<uint8_t>());
         _legacyType.shop_item[1] = static_cast<ShopItem>(stream->ReadValue<uint8_t>());
 
-        GetStringTable().Read(context, stream, ObjectStringID::NAME);
-        GetStringTable().Read(context, stream, ObjectStringID::DESCRIPTION);
-        GetStringTable().Read(context, stream, ObjectStringID::CAPACITY);
+        GetStringTable().Read(context, stream, ObjectStringID::name);
+        GetStringTable().Read(context, stream, ObjectStringID::description);
+        GetStringTable().Read(context, stream, ObjectStringID::capacity);
 
         // Read preset colours, by default there are 32
         _presetColours.count = stream->ReadValue<uint8_t>();
@@ -277,15 +277,15 @@ namespace OpenRCT2
         // Validate properties
         if (_legacyType.excitement_multiplier > 75)
         {
-            context->LogError(ObjectError::InvalidProperty, "Excitement multiplier too high.");
+            context->LogError(ObjectError::invalidProperty, "Excitement multiplier too high.");
         }
         if (_legacyType.intensity_multiplier > 75)
         {
-            context->LogError(ObjectError::InvalidProperty, "Intensity multiplier too high.");
+            context->LogError(ObjectError::invalidProperty, "Intensity multiplier too high.");
         }
         if (_legacyType.nausea_multiplier > 75)
         {
-            context->LogError(ObjectError::InvalidProperty, "Nausea multiplier too high.");
+            context->LogError(ObjectError::invalidProperty, "Nausea multiplier too high.");
         }
         RideObjectUpdateRideType(_legacyType);
         _legacyType.Clearance = GetDefaultClearance();
@@ -391,12 +391,12 @@ namespace OpenRCT2
 
     std::string RideObject::GetDescription() const
     {
-        return GetString(ObjectStringID::DESCRIPTION);
+        return GetString(ObjectStringID::description);
     }
 
     std::string RideObject::GetCapacity() const
     {
-        return GetString(ObjectStringID::CAPACITY);
+        return GetString(ObjectStringID::capacity);
     }
 
     ImageIndex RideObject::GetPreviewImage(ride_type_t type)
@@ -565,7 +565,7 @@ namespace OpenRCT2
 
                     if (rideType == kRideTypeNull)
                     {
-                        context->LogError(ObjectError::InvalidProperty, "Unknown ride type");
+                        context->LogError(ObjectError::invalidProperty, "Unknown ride type");
                     }
                 }
 
@@ -608,7 +608,7 @@ namespace OpenRCT2
                     auto shopItem = ParseShopItem(Json::GetString(rideSells[i]));
                     if (shopItem == ShopItem::none)
                     {
-                        context->LogWarning(ObjectError::InvalidProperty, "Unknown shop item");
+                        context->LogWarning(ObjectError::invalidProperty, "Unknown shop item");
                     }
 
                     _legacyType.shop_item[i] = shopItem;
@@ -621,22 +621,22 @@ namespace OpenRCT2
                 auto swingMode = Json::GetNumber<int32_t>(properties["swingMode"]);
                 if (swingMode == 1)
                 {
-                    _legacyType.flags |= RIDE_ENTRY_FLAG_ALTERNATIVE_SWING_MODE_1;
+                    _legacyType.flags |= RIDE_ENTRY_FLAG_INVERTER_SHIP_SWING_MODE;
                 }
                 else if (swingMode == 2)
                 {
-                    _legacyType.flags |= RIDE_ENTRY_FLAG_ALTERNATIVE_SWING_MODE_1;
-                    _legacyType.flags |= RIDE_ENTRY_FLAG_ALTERNATIVE_SWING_MODE_2;
+                    _legacyType.flags |= RIDE_ENTRY_FLAG_INVERTER_SHIP_SWING_MODE;
+                    _legacyType.flags |= RIDE_ENTRY_FLAG_MAGIC_CARPET_SWING_MODE;
                 }
 
                 auto rotationMode = Json::GetNumber<int32_t>(properties["rotationMode"]);
                 if (rotationMode == 1)
                 {
-                    _legacyType.flags |= RIDE_ENTRY_FLAG_ALTERNATIVE_ROTATION_MODE_1;
+                    _legacyType.flags |= RIDE_ENTRY_FLAG_TWIST_ROTATION_TYPE;
                 }
                 else if (rotationMode == 2)
                 {
-                    _legacyType.flags |= RIDE_ENTRY_FLAG_ALTERNATIVE_ROTATION_MODE_2;
+                    _legacyType.flags |= RIDE_ENTRY_FLAG_ENTERPRISE_ROTATION_TYPE;
                 }
 
                 auto ratingMultiplier = properties["ratingMultipler"];
@@ -924,7 +924,7 @@ namespace OpenRCT2
                 {
                     if (!std::has_single_bit(numRotationFrames))
                     {
-                        context->LogError(ObjectError::InvalidProperty, "spriteGroups values must be powers of 2");
+                        context->LogError(ObjectError::invalidProperty, "spriteGroups values must be powers of 2");
                         continue;
                     }
                     car.SpriteGroups[i].spritePrecision = PrecisionFromNumFrames(numRotationFrames);

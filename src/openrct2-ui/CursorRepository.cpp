@@ -28,7 +28,7 @@ CursorRepository::~CursorRepository()
 
 void CursorRepository::LoadCursors()
 {
-    SetCursorScale(static_cast<uint8_t>(round(Config::Get().general.WindowScale)));
+    SetCursorScale(static_cast<uint8_t>(round(Config::Get().general.windowScale)));
     SetCurrentCursor(CursorID::Arrow);
 }
 

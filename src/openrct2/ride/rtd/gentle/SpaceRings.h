@@ -61,6 +61,7 @@ constexpr RideTypeDescriptor SpaceRingsRTD =
             { RatingsModifierType::BonusScenery,          0,                25098, 0, 0 },
         },
     },
+    .specialType = RtdSpecialType::spaceRings,
 };
 } // namespace OpenRCT2
 // clang-format on

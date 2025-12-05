@@ -25,6 +25,7 @@
 #include <openrct2/config/Config.h>
 #include <openrct2/core/EnumUtils.hpp>
 #include <openrct2/core/String.hpp>
+#include <openrct2/drawing/Rectangle.h>
 #include <openrct2/entity/Guest.h>
 #include <openrct2/entity/Staff.h>
 #include <openrct2/localisation/Formatter.h>
@@ -43,6 +44,8 @@
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/MapSelection.h>
 #include <openrct2/world/Park.h>
+
+using namespace OpenRCT2::Drawing;
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -494,7 +497,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 newDisabledWidgets |= (1uLL << WIDX_TAB_4); // Disable finance tab if no money
             }
-            if (!Config::Get().general.DebuggingTools)
+            if (!Config::Get().general.debuggingTools)
             {
                 newDisabledWidgets |= (1uLL << WIDX_TAB_7); // Disable debug tab when debug tools not turned on
             }
@@ -1355,7 +1358,7 @@ namespace OpenRCT2::Ui::Windows
         void onScrollDrawRides(int32_t scrollIndex, RenderTarget& rt)
         {
             auto colour = ColourMapA[colours[1].colour].mid_light;
-            GfxFillRect(rt, { { rt.x, rt.y }, { rt.x + rt.width - 1, rt.y + rt.height - 1 } }, colour);
+            Rectangle::fill(rt, { { rt.x, rt.y }, { rt.x + rt.width - 1, rt.y + rt.height - 1 } }, colour);
 
             for (int32_t listIndex = 0; listIndex < static_cast<int32_t>(_riddenRides.size()); listIndex++)
             {
@@ -1363,7 +1366,7 @@ namespace OpenRCT2::Ui::Windows
                 StringId stringId = STR_BLACK_STRING;
                 if (listIndex == selectedListItem)
                 {
-                    GfxFilterRect(rt, { 0, y, 800, y + 9 }, FilterPaletteID::paletteDarken1);
+                    Rectangle::filter(rt, { 0, y, 800, y + 9 }, FilterPaletteID::paletteDarken1);
                     stringId = STR_WINDOW_COLOUR_2_STRINGID;
                 }
 
@@ -1442,9 +1445,9 @@ namespace OpenRCT2::Ui::Windows
                 screenCoords.y += kListRowHeight * 2;
             }
 
-            GfxFillRectInset(
+            Rectangle::fillInset(
                 rt, { screenCoords - ScreenCoordsXY{ 0, 6 }, screenCoords + ScreenCoordsXY{ 179, -5 } }, colours[1],
-                INSET_RECT_FLAG_BORDER_INSET);
+                Rectangle::BorderStyle::inset);
 
             // Paid to enter
             {
@@ -1921,7 +1924,7 @@ namespace OpenRCT2::Ui::Windows
         if (window == nullptr)
         {
             auto windowSize = kWindowSize;
-            if (Config::Get().general.DebuggingTools)
+            if (Config::Get().general.debuggingTools)
                 windowSize.width += kTabWidth;
 
             window = windowMgr->Create<GuestWindow>(WindowClass::peep, windowSize, WindowFlag::resizable);

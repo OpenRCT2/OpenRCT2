@@ -1555,8 +1555,8 @@ STR_2212    :Parktaki tüm güvenlikler
 STR_2213    :Parktaki tüm animatörler
 STR_2214    :Oyun durdurulduğu sürece inşa edilemiyor!
 STR_2215    :{STRINGID}{NEWLINE}({STRINGID})
-STR_2216    :{WINDOW_COLOUR_2}{COMMA16}°C
-STR_2217    :{WINDOW_COLOUR_2}{COMMA16}°F
+STR_2216    :{WINDOW_COLOUR_1}{COMMA16}°C
+STR_2217    :{WINDOW_COLOUR_1}{COMMA16}°F
 STR_2218    :{RED}{STRINGID} aletinde {STRINGID} halen {STRINGID}ye dönmedi!{NEWLINE}Aleti kontrol ediniz
 STR_2219    :{RED}{STRINGID} aletinde {COMMA16} kişi canını kayıp etti
 STR_2220    :{WINDOW_COLOUR_2}Park değerlendirmesi: {BLACK}{COMMA16}

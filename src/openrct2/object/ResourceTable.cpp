@@ -74,34 +74,34 @@ namespace OpenRCT2
         auto& env = GetContext()->GetPlatformEnvironment();
         if (String::startsWith(base, "$LGX:"))
         {
-            info.Kind = SourceKind::Gx;
+            info.Kind = SourceKind::gx;
             info.Path = fileName;
         }
         else if (String::startsWith(base, "$G1"))
         {
             auto dataPath = env.GetDirectoryPath(DirBase::rct2, DirId::data);
-            info.Kind = SourceKind::G1;
+            info.Kind = SourceKind::g1;
             // info.Path = env->FindFile(DirBase::rct2, DirId::data, "g1.dat");
         }
         else if (String::startsWith(base, "$CSG"))
         {
             auto dataPath = env.GetDirectoryPath(DirBase::rct2, DirId::data);
-            info.Kind = SourceKind::Csg;
+            info.Kind = SourceKind::csg;
             // info.Path = env->FindFile(DirBase::rct2, DirId::data, "g1.dat");
         }
         else if (String::startsWith(base, "$RCT1:DATA/"))
         {
-            info.Kind = SourceKind::Data;
+            info.Kind = SourceKind::data;
             info.Path = env.FindFile(DirBase::rct1, DirId::data, fileName);
         }
         else if (String::startsWith(base, "$RCT2:DATA/"))
         {
-            info.Kind = SourceKind::Data;
+            info.Kind = SourceKind::data;
             info.Path = env.FindFile(DirBase::rct2, DirId::data, fileName);
         }
         else if (String::startsWith(base, "$RCT2:OBJDATA/"))
         {
-            info.Kind = SourceKind::ObjData;
+            info.Kind = SourceKind::objData;
             info.Path = env.FindFile(DirBase::rct2, DirId::objects, fileName);
         }
         else if (!String::startsWith(base, "$"))

@@ -20,6 +20,7 @@
 #include <openrct2/core/File.h>
 #include <openrct2/core/Path.hpp>
 #include <openrct2/core/UnitConversion.h>
+#include <openrct2/drawing/Rectangle.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/ride/RideConstruction.h>
@@ -29,6 +30,8 @@
 #include <openrct2/ui/WindowManager.h>
 #include <string>
 #include <vector>
+
+using namespace OpenRCT2::Drawing;
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -154,7 +157,7 @@ namespace OpenRCT2::Ui::Windows
             Widget* widget = &widgets[WIDX_TRACK_PREVIEW];
             auto screenPos = windowPos + ScreenCoordsXY{ widget->left + 1, widget->top + 1 };
             int32_t colour = ColourMapA[colours[0].colour].darkest;
-            GfxFillRect(rt, { screenPos, screenPos + ScreenCoordsXY{ 369, 216 } }, colour);
+            Rectangle::fill(rt, { screenPos, screenPos + ScreenCoordsXY{ 369, 216 } }, colour);
 
             G1Element g1temp = {};
             g1temp.offset = _trackDesignPreviewPixels.data() + (_currentTrackPieceDirection * kTrackPreviewImageSize);
@@ -201,7 +204,7 @@ namespace OpenRCT2::Ui::Windows
                 if (objectEntry != nullptr)
                 {
                     auto groupIndex = ObjectManagerGetLoadedObjectEntryIndex(objectEntry);
-                    auto rideName = GetRideNaming(td.trackAndVehicle.rtdIndex, *GetRideEntryByIndex(groupIndex));
+                    auto rideName = GetRideNaming(td.trackAndVehicle.rtdIndex, GetRideEntryByIndex(groupIndex));
                     ft.Add<StringId>(rideName.Name);
                 }
                 else
@@ -356,7 +359,7 @@ namespace OpenRCT2::Ui::Windows
     private:
         void UpdatePreview()
         {
-            TrackDesignDrawPreview(*_trackDesign, _trackDesignPreviewPixels.data());
+            TrackDesignDrawPreview(*_trackDesign, _trackDesignPreviewPixels.data(), !gTrackDesignSceneryToggle);
         }
 
         void InstallTrackDesign()

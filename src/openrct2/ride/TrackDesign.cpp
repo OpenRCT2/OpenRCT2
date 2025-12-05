@@ -340,7 +340,8 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
         }
     }
 
-    TrackDesignPreviewDrawOutlines(tds, *this, RideGetTemporaryForPreview(), { 4096, 4096, 0, _currentTrackPieceDirection });
+    TrackDesignPreviewDrawOutlines(
+        tds, *this, RideGetTemporaryForPreview(), { 4096, 4096, 0, _currentTrackPieceDirection }, false);
 
     // Resave global vars for scenery reasons.
     tds.origin = startPos;
@@ -454,7 +455,8 @@ ResultWithMessage TrackDesign::CreateTrackDesignMaze(TrackDesignState& tds, cons
 
     // Save global vars as they are still used by scenery????
     int32_t startZ = tds.origin.z;
-    TrackDesignPreviewDrawOutlines(tds, *this, RideGetTemporaryForPreview(), { 4096, 4096, 0, _currentTrackPieceDirection });
+    TrackDesignPreviewDrawOutlines(
+        tds, *this, RideGetTemporaryForPreview(), { 4096, 4096, 0, _currentTrackPieceDirection }, false);
     tds.origin = { startLoc.x, startLoc.y, startZ };
 
     gMapSelectFlags.unset(MapSelectFlag::enableConstruct);
@@ -1196,9 +1198,10 @@ static GameActions::Result TrackDesignPlaceSceneryElement(
                 {
                     flags |= GAME_COMMAND_FLAG_REPLAY;
                 }
-                uint8_t slope = (scenery.getSlopeDirection() + rotation) & 0x3;
+                uint8_t slopeDirection = (scenery.getSlopeDirection() + rotation) & 0x3;
+                FootpathSlope slope = { FootpathSlopeType::flat, slopeDirection };
                 if (scenery.hasSlope())
-                    slope |= FOOTPATH_PROPERTIES_FLAG_IS_SLOPED;
+                    slope.type = FootpathSlopeType::sloped;
                 uint8_t edges = Numerics::rol4(scenery.getEdges(), rotation);
                 PathConstructFlags constructFlags = 0;
                 if (scenery.isQueue())
@@ -1298,10 +1301,16 @@ static GameActions::Result TrackDesignPlaceAllScenery(
             auto placementRes = TrackDesignPlaceSceneryElement(tds, mapCoord, mode, scenery, rotation, origin.z);
             if (placementRes.Error != GameActions::Status::Ok)
             {
-                // Allow operation to fail when its removing ghosts.
                 if (tds.placeOperation != TrackPlaceOperation::removeGhost)
                 {
+                    // Allow operation to fail when its removing ghosts.
                     return placementRes;
+                }
+
+                if (placementRes.Error == GameActions::Status::NoClearance)
+                {
+                    // Some scenery might be obstructed, don't abort the entire operation.
+                    continue;
                 }
             }
             cost += placementRes.Cost;
@@ -1767,11 +1776,6 @@ static GameActions::Result TrackDesignPlaceVirtual(
     tds.previewMax = coords;
     tds.placeSceneryZ = 0;
 
-    if (gTrackDesignSceneryToggle)
-    {
-        tds.placeScenery = false;
-    }
-
     // NOTE: We need to save this, in networked games this would affect all clients otherwise.
     auto savedRideId = _currentRideIndex;
     auto savedTrackPieceDirection = _currentTrackPieceDirection;
@@ -1839,9 +1843,10 @@ void TrackDesignPreviewRemoveGhosts(const TrackDesign& td, Ride& ride, const Coo
     TrackDesignPlaceVirtual(tds, td, TrackPlaceOperation::removeGhost, true, ride, coords);
 }
 
-void TrackDesignPreviewDrawOutlines(TrackDesignState& tds, const TrackDesign& td, Ride& ride, const CoordsXYZD& coords)
+void TrackDesignPreviewDrawOutlines(
+    TrackDesignState& tds, const TrackDesign& td, Ride& ride, const CoordsXYZD& coords, bool placeScenery)
 {
-    TrackDesignPlaceVirtual(tds, td, TrackPlaceOperation::drawOutlines, true, ride, coords);
+    TrackDesignPlaceVirtual(tds, td, TrackPlaceOperation::drawOutlines, placeScenery, ride, coords);
 }
 
 static int32_t TrackDesignGetZPlacement(TrackDesignState& tds, const TrackDesign& td, Ride& ride, const CoordsXYZD& coords)
@@ -1887,7 +1892,7 @@ static money64 TrackDesignCreateRide(int32_t type, int32_t subType, int32_t flag
  * cost = edi
  */
 static bool TrackDesignPlacePreview(
-    TrackDesignState& tds, const TrackDesign& td, Ride** outRide, TrackDesignGameStateData& gameStateData)
+    TrackDesignState& tds, const TrackDesign& td, Ride** outRide, TrackDesignGameStateData& gameStateData, bool placeScenery)
 {
     *outRide = nullptr;
     gameStateData.flags = 0;
@@ -1947,7 +1952,6 @@ static bool TrackDesignPlacePreview(
 
     z += 16 - tds.placeSceneryZ;
 
-    bool placeScenery = true;
     if (_trackDesignPlaceStateSceneryUnavailable)
     {
         placeScenery = false;
@@ -2072,7 +2076,7 @@ bool TrackDesignSceneryElement::operator!=(const TrackDesignSceneryElement& rhs)
  *
  *  rct2: 0x006D1EF0
  */
-void TrackDesignDrawPreview(TrackDesign& td, uint8_t* pixels)
+void TrackDesignDrawPreview(TrackDesign& td, uint8_t* pixels, bool placeScenery)
 {
     StashMap();
     TrackDesignPreviewClearMap();
@@ -2086,7 +2090,7 @@ void TrackDesignDrawPreview(TrackDesign& td, uint8_t* pixels)
 
     Ride* ride;
     TrackDesignGameStateData updatedGameStateData = td.gameStateData;
-    if (!TrackDesignPlacePreview(tds, td, &ride, updatedGameStateData))
+    if (!TrackDesignPlacePreview(tds, td, &ride, updatedGameStateData, placeScenery))
     {
         std::fill_n(pixels, kTrackPreviewImageSize * 4, 0x00);
         UnstashMap();

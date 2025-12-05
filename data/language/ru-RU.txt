@@ -1562,8 +1562,8 @@ STR_2212    :Показать список охранников
 STR_2213    :Показать список  артистов
 STR_2214    :Нельзя строить во время паузы!
 STR_2215    :{STRINGID}{NEWLINE}({STRINGID})
-STR_2216    :{WINDOW_COLOUR_2}{COMMA16}°C
-STR_2217    :{WINDOW_COLOUR_2}{COMMA16}°F
+STR_2216    :{WINDOW_COLOUR_1}{COMMA16}°C
+STR_2217    :{WINDOW_COLOUR_1}{COMMA16}°F
 STR_2218    :{RED}{STRINGID} на аттр. {STRINGID} не возвращается к {STRINGID}!{NEWLINE}Нужна помощь.
 STR_2219    :{RED}{COMMA16} людей погибло на {STRINGID}
 STR_2220    :{WINDOW_COLOUR_2}Рейтинг парка: {BLACK}{COMMA16}
@@ -3828,3 +3828,4 @@ STR_7001    :Название аттр.
 STR_7002    :{STRINGID} {STRINGID}
 STR_7003    :Аудио-файл «{STRING}» повреждён. Ожидалось {INT32} образцов, но доступны только {INT32}. Рекомендуется повторная установка RCT2.
 STR_7004    :Полная перерисовка
+STR_7006    :Бордюр на кнопках с изображениями

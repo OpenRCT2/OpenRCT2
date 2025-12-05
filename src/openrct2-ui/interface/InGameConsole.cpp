@@ -20,6 +20,7 @@
 #include <openrct2/config/Config.h>
 #include <openrct2/core/UTF8.h>
 #include <openrct2/drawing/Drawing.h>
+#include <openrct2/drawing/Rectangle.h>
 #include <openrct2/interface/Colour.h>
 #include <openrct2/interface/Viewport.h>
 #include <openrct2/interface/Window.h>
@@ -27,13 +28,14 @@
 #include <openrct2/localisation/LocalisationService.h>
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::Drawing;
 using namespace OpenRCT2::Ui;
 
 static InGameConsole _inGameConsole;
 
 static FontStyle InGameConsoleGetFontStyle()
 {
-    return (Config::Get().interface.ConsoleSmallFont ? FontStyle::Small : FontStyle::Medium);
+    return (Config::Get().interface.consoleSmallFont ? FontStyle::Small : FontStyle::Medium);
 }
 
 static int32_t InGameConsoleGetLineHeight()
@@ -310,19 +312,21 @@ void InGameConsole::Draw(RenderTarget& rt) const
     Invalidate();
 
     // Give console area a translucent effect.
-    GfxFilterRect(rt, { _consoleTopLeft, _consoleBottomRight }, FilterPaletteID::palette51);
+    Rectangle::filter(rt, { _consoleTopLeft, _consoleBottomRight }, FilterPaletteID::palette51);
 
     // Make input area more opaque.
-    GfxFilterRect(
+    Rectangle::filter(
         rt, { { _consoleTopLeft.x, _consoleBottomRight.y - lineHeight - 10 }, _consoleBottomRight - ScreenCoordsXY{ 0, 1 } },
         FilterPaletteID::palette51);
 
     // Paint background colour.
     auto backgroundColour = ThemeGetColour(WindowClass::console, 0);
-    GfxFillRectInset(rt, { _consoleTopLeft, _consoleBottomRight }, backgroundColour, INSET_RECT_FLAG_FILL_NONE);
-    GfxFillRectInset(
+    Rectangle::fillInset(
+        rt, { _consoleTopLeft, _consoleBottomRight }, backgroundColour, Rectangle::BorderStyle::outset,
+        Rectangle::FillBrightness::light, Rectangle::FillMode::none);
+    Rectangle::fillInset(
         rt, { _consoleTopLeft + ScreenCoordsXY{ 1, 1 }, _consoleBottomRight - ScreenCoordsXY{ 1, 1 } }, backgroundColour,
-        INSET_RECT_FLAG_BORDER_INSET);
+        Rectangle::BorderStyle::inset);
 
     std::string lineBuffer;
     auto screenCoords = _consoleTopLeft + ScreenCoordsXY{ kConsoleEdgePadding, kConsoleEdgePadding };
@@ -331,7 +335,7 @@ void InGameConsole::Draw(RenderTarget& rt) const
     for (std::size_t i = 0; i < _consoleLines.size() && i < static_cast<size_t>(maxLines); i++)
     {
         const size_t index = i + _consoleScrollPos;
-        if (_consoleLines[index].second == FormatToken::ColourWindow2)
+        if (_consoleLines[index].second == FormatToken::colourWindow2)
         {
             // This is something of a hack to ensure the text is actually black
             // as opposed to a desaturated grey
@@ -373,7 +377,7 @@ void InGameConsole::Draw(RenderTarget& rt) const
     {
         auto caret = screenCoords + ScreenCoordsXY{ _caretScreenPosX, lineHeight };
         uint8_t caretColour = ColourMapA[textColour.colour].lightest;
-        GfxFillRect(rt, { caret, caret + ScreenCoordsXY{ kConsoleCaretWidth, 1 } }, caretColour);
+        Rectangle::fill(rt, { caret, caret + ScreenCoordsXY{ kConsoleCaretWidth, 1 } }, caretColour);
     }
 
     // What about border colours?
@@ -381,22 +385,22 @@ void InGameConsole::Draw(RenderTarget& rt) const
     uint8_t borderColour2 = ColourMapA[backgroundColour.colour].mid_dark;
 
     // Input area top border
-    GfxFillRect(
+    Rectangle::fill(
         rt,
         { { _consoleTopLeft.x, _consoleBottomRight.y - lineHeight - 11 },
           { _consoleBottomRight.x, _consoleBottomRight.y - lineHeight - 11 } },
         borderColour1);
-    GfxFillRect(
+    Rectangle::fill(
         rt,
         { { _consoleTopLeft.x, _consoleBottomRight.y - lineHeight - 10 },
           { _consoleBottomRight.x, _consoleBottomRight.y - lineHeight - 10 } },
         borderColour2);
 
     // Input area bottom border
-    GfxFillRect(
+    Rectangle::fill(
         rt, { { _consoleTopLeft.x, _consoleBottomRight.y - 1 }, { _consoleBottomRight.x, _consoleBottomRight.y - 1 } },
         borderColour1);
-    GfxFillRect(rt, { { _consoleTopLeft.x, _consoleBottomRight.y }, _consoleBottomRight }, borderColour2);
+    Rectangle::fill(rt, { { _consoleTopLeft.x, _consoleBottomRight.y }, _consoleBottomRight }, borderColour2);
 }
 
 // Calculates the amount of visible lines, based on the console size, excluding the input line.

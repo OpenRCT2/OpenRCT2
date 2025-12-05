@@ -19,11 +19,14 @@
 #include <openrct2/PlatformEnvironment.h>
 #include <openrct2/SpriteIds.h>
 #include <openrct2/actions/LoadOrQuitAction.h>
+#include <openrct2/drawing/Rectangle.h>
 #include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
 
 namespace OpenRCT2::Ui::Windows
 {
+    using namespace OpenRCT2::Drawing;
+
     enum
     {
         WIDX_START_NEW_GAME,
@@ -273,7 +276,7 @@ namespace OpenRCT2::Ui::Windows
 
         void onDraw(RenderTarget& rt) override
         {
-            GfxFilterRect(rt, _filterRect, FilterPaletteID::palette51);
+            Rectangle::filter(rt, _filterRect, FilterPaletteID::palette51);
             drawWidgets(rt);
         }
     };

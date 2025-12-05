@@ -17,6 +17,7 @@
 #include "../ride/RideColour.h"
 #include "../ride/TrackDesign.h"
 #include "../world/Banner.h"
+#include "../world/Footpath.h"
 #include "../world/Location.hpp"
 #include "../world/tile_element/TileElement.h"
 #include "DataSerialiserTag.h"
@@ -422,10 +423,10 @@ struct DataSerializerTraitsT<MapRange>
 {
     static void encode(OpenRCT2::IStream* stream, const MapRange& v)
     {
-        stream->WriteValue(ByteSwapBE(v.GetLeft()));
-        stream->WriteValue(ByteSwapBE(v.GetTop()));
-        stream->WriteValue(ByteSwapBE(v.GetRight()));
-        stream->WriteValue(ByteSwapBE(v.GetBottom()));
+        stream->WriteValue(ByteSwapBE(v.GetX1()));
+        stream->WriteValue(ByteSwapBE(v.GetY1()));
+        stream->WriteValue(ByteSwapBE(v.GetX2()));
+        stream->WriteValue(ByteSwapBE(v.GetY2()));
     }
     static void decode(OpenRCT2::IStream* stream, MapRange& v)
     {
@@ -439,8 +440,7 @@ struct DataSerializerTraitsT<MapRange>
     {
         char coords[128] = {};
         snprintf(
-            coords, sizeof(coords), "MapRange(l = %d, t = %d, r = %d, b = %d)", v.GetLeft(), v.GetTop(), v.GetRight(),
-            v.GetBottom());
+            coords, sizeof(coords), "MapRange(x1 = %d, y1 = %d, x2 = %d, y2 = %d)", v.GetX1(), v.GetY1(), v.GetX2(), v.GetY2());
 
         stream->Write(coords, strlen(coords));
     }
@@ -987,6 +987,31 @@ struct DataSerializerTraitsT<Banner>
         char msg[128] = {};
         snprintf(
             msg, sizeof(msg), "Banner(x = %d, y = %d, text = %s)", banner.position.x, banner.position.y, banner.text.c_str());
+        stream->Write(msg, strlen(msg));
+    }
+};
+
+template<>
+struct DataSerializerTraitsT<FootpathSlope>
+{
+    static void encode(OpenRCT2::IStream* stream, const FootpathSlope& slope)
+    {
+        uint8_t combined = (EnumValue(slope.type) << 2) | (slope.direction % kNumOrthogonalDirections);
+        stream->WriteValue(combined);
+    }
+
+    static void decode(OpenRCT2::IStream* stream, FootpathSlope& slope)
+    {
+        auto combined = stream->ReadValue<uint8_t>();
+        auto type = static_cast<FootpathSlopeType>(combined >> 2);
+        Direction direction = combined & 0b00000011;
+        slope = FootpathSlope{ type, direction };
+    }
+
+    static void log(OpenRCT2::IStream* stream, const FootpathSlope& slope)
+    {
+        char msg[128] = {};
+        snprintf(msg, sizeof(msg), "FootpathSlope(type = %d, direction = %d)", EnumValue(slope.type), slope.direction);
         stream->Write(msg, strlen(msg));
     }
 };

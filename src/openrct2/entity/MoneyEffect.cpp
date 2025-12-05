@@ -192,7 +192,7 @@ void MoneyEffect::Paint(PaintSession& session, int32_t imageDirection) const
         return;
     }
 
-    if (GuestPurchase && !Config::Get().general.ShowGuestPurchases)
+    if (GuestPurchase && !Config::Get().general.showGuestPurchases)
     {
         // Don't show the money effect for guest purchases when the option is disabled.
         return;

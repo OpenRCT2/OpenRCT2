@@ -30,7 +30,7 @@ namespace OpenRCT2
         stream->Seek(14, STREAM_SEEK_CURRENT);
         _legacyType.flags = stream->ReadValue<uint16_t>();
 
-        GetStringTable().Read(context, stream, ObjectStringID::NAME);
+        GetStringTable().Read(context, stream, ObjectStringID::name);
         GetImageTable().Read(context, stream);
     }
 

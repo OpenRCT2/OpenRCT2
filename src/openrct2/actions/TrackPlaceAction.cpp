@@ -667,21 +667,21 @@ namespace OpenRCT2::GameActions
         // Update ride stats and block brake count if the piece was successfully built
         if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
         {
-            InvalidateTestResults(*ride);
             switch (_trackType)
             {
                 case TrackElemType::OnRidePhoto:
                     ride->lifecycleFlags |= RIDE_LIFECYCLE_ON_RIDE_PHOTO;
+                    InvalidateTestResults(*ride);
                     break;
                 case TrackElemType::CableLiftHill:
                     ride->lifecycleFlags |= RIDE_LIFECYCLE_CABLE_LIFT_HILL_COMPONENT_USED;
                     ride->cableLiftLoc = originLocation;
+                    InvalidateTestResults(*ride);
                     break;
                 case TrackElemType::DiagBlockBrakes:
                 case TrackElemType::BlockBrakes:
                 {
                     ride->numBlockBrakes++;
-                    ride->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_OPERATING;
 
                     auto newMode = RideModeGetBlockSectionedCounterpart(ride->mode);
                     if (ride->mode != newMode)
@@ -689,6 +689,7 @@ namespace OpenRCT2::GameActions
                         bool canSwitch = rtd.SupportsRideMode(newMode) || getGameState().cheats.showAllOperatingModes;
                         if (canSwitch)
                         {
+                            ride->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_OPERATING;
                             auto rideSetSetting = GameActions::RideSetSettingAction(
                                 ride->id, GameActions::RideSetSetting::Mode, static_cast<uint8_t>(newMode));
                             ExecuteNested(&rideSetSetting, gameState);

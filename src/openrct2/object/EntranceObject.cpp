@@ -25,7 +25,7 @@ namespace OpenRCT2
         _legacyType.scrolling_mode = stream->ReadValue<uint8_t>();
         _legacyType.text_height = stream->ReadValue<uint8_t>();
 
-        GetStringTable().Read(context, stream, ObjectStringID::NAME);
+        GetStringTable().Read(context, stream, ObjectStringID::name);
         GetImageTable().Read(context, stream);
     }
 

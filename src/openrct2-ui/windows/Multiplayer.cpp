@@ -17,9 +17,12 @@
 #include <openrct2/actions/NetworkModifyGroupAction.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/String.hpp>
+#include <openrct2/drawing/Rectangle.h>
 #include <openrct2/drawing/Text.h>
 #include <openrct2/network/Network.h>
 #include <openrct2/ui/WindowManager.h>
+
+using namespace OpenRCT2::Drawing;
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -137,7 +140,7 @@ namespace OpenRCT2::Ui::Windows
 
     static bool IsServerPlayerInvisible()
     {
-        return Network::IsServerPlayerInvisible() && !Config::Get().general.DebuggingTools;
+        return Network::IsServerPlayerInvisible() && !Config::Get().general.debuggingTools;
     }
 
     class MultiplayerWindow final : public Window
@@ -267,7 +270,7 @@ namespace OpenRCT2::Ui::Windows
                     auto colour = ColourWithFlags{ COLOUR_BLACK };
                     if (listPosition == selectedListItem)
                     {
-                        GfxFilterRect(
+                        Rectangle::filter(
                             rt, { 0, screenCoords.y, 800, screenCoords.y + kScrollableRowHeight - 1 },
                             FilterPaletteID::paletteDarken1);
                         _buffer += Network::GetPlayerName(player);
@@ -367,9 +370,9 @@ namespace OpenRCT2::Ui::Windows
 
             screenPos.y += 20;
 
-            GfxFillRectInset(
+            Rectangle::fillInset(
                 rt, { screenPos - ScreenCoordsXY{ 0, 6 }, screenPos + ScreenCoordsXY{ 310, -5 } }, colours[1],
-                INSET_RECT_FLAG_BORDER_INSET);
+                Rectangle::BorderStyle::inset);
 
             widget = &widgets[WIDX_SELECTED_GROUP];
             group = Network::GetGroupIndex(_selectedGroup);
@@ -390,7 +393,7 @@ namespace OpenRCT2::Ui::Windows
             auto screenCoords = ScreenCoordsXY{ 0, 0 };
 
             auto rtCoords = ScreenCoordsXY{ rt.x, rt.y };
-            GfxFillRect(
+            Rectangle::fill(
                 rt, { rtCoords, rtCoords + ScreenCoordsXY{ rt.width - 1, rt.height - 1 } },
                 ColourMapA[colours[1].colour].mid_light);
 
@@ -398,7 +401,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 if (i == selectedListItem)
                 {
-                    GfxFilterRect(
+                    Rectangle::filter(
                         rt, { 0, screenCoords.y, 800, screenCoords.y + kScrollableRowHeight - 1 },
                         FilterPaletteID::paletteDarken1);
                 }
@@ -589,15 +592,15 @@ namespace OpenRCT2::Ui::Windows
                     switch (widgetIndex)
                     {
                         case WIDX_LOG_CHAT_CHECKBOX:
-                            Config::Get().network.LogChat = !Config::Get().network.LogChat;
+                            Config::Get().network.logChat = !Config::Get().network.logChat;
                             Config::Save();
                             break;
                         case WIDX_LOG_SERVER_ACTIONS_CHECKBOX:
-                            Config::Get().network.LogServerActions = !Config::Get().network.LogServerActions;
+                            Config::Get().network.logServerActions = !Config::Get().network.logServerActions;
                             Config::Save();
                             break;
                         case WIDX_KNOWN_KEYS_ONLY_CHECKBOX:
-                            Config::Get().network.KnownKeysOnly = !Config::Get().network.KnownKeysOnly;
+                            Config::Get().network.knownKeysOnly = !Config::Get().network.knownKeysOnly;
                             Config::Save();
                             break;
                     }
@@ -692,9 +695,9 @@ namespace OpenRCT2::Ui::Windows
                         widgets[WIDX_KNOWN_KEYS_ONLY_CHECKBOX].type = WidgetType::empty;
                     }
 
-                    setCheckboxValue(WIDX_LOG_CHAT_CHECKBOX, Config::Get().network.LogChat);
-                    setCheckboxValue(WIDX_LOG_SERVER_ACTIONS_CHECKBOX, Config::Get().network.LogServerActions);
-                    setCheckboxValue(WIDX_KNOWN_KEYS_ONLY_CHECKBOX, Config::Get().network.KnownKeysOnly);
+                    setCheckboxValue(WIDX_LOG_CHAT_CHECKBOX, Config::Get().network.logChat);
+                    setCheckboxValue(WIDX_LOG_SERVER_ACTIONS_CHECKBOX, Config::Get().network.logServerActions);
+                    setCheckboxValue(WIDX_KNOWN_KEYS_ONLY_CHECKBOX, Config::Get().network.knownKeysOnly);
                     break;
                 }
             }

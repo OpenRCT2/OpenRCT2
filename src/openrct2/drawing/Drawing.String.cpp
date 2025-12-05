@@ -39,7 +39,7 @@ int32_t GfxGetStringWidthNewLined(std::string_view text, FontStyle fontStyle)
     FmtString fmt(text);
     for (const auto& token : fmt)
     {
-        if (token.kind == FormatToken::Newline || token.kind == FormatToken::NewlineSmall)
+        if (token.kind == FormatToken::newline || token.kind == FormatToken::newlineSmall)
         {
             auto width = GfxGetStringWidth(buffer, fontStyle);
             if (!maxWidth.has_value() || maxWidth.value() > width)
@@ -221,7 +221,7 @@ int32_t GfxWrapString(u8string_view text, int32_t width, FontStyle fontStyle, u8
                 }
             }
         }
-        else if (token.kind == FormatToken::Newline)
+        else if (token.kind == FormatToken::newline)
         {
             buffer.push_back('\0');
 
@@ -360,7 +360,7 @@ int32_t StringGetHeightRaw(std::string_view text, FontStyle fontStyle)
     {
         switch (token.kind)
         {
-            case FormatToken::Newline:
+            case FormatToken::newline:
                 if (fontStyle == FontStyle::Small || fontStyle == FontStyle::Medium)
                 {
                     height += 10;
@@ -374,7 +374,7 @@ int32_t StringGetHeightRaw(std::string_view text, FontStyle fontStyle)
                 }
                 height += 18;
                 break;
-            case FormatToken::NewlineSmall:
+            case FormatToken::newlineSmall:
                 if (fontStyle == FontStyle::Small || fontStyle == FontStyle::Medium)
                 {
                     height += 5;
@@ -388,13 +388,13 @@ int32_t StringGetHeightRaw(std::string_view text, FontStyle fontStyle)
                 }
                 height += 9;
                 break;
-            case FormatToken::FontTiny:
+            case FormatToken::fontTiny:
                 fontStyle = FontStyle::Tiny;
                 break;
-            case FormatToken::FontMedium:
+            case FormatToken::fontMedium:
                 fontStyle = FontStyle::Medium;
                 break;
-            case FormatToken::FontSmall:
+            case FormatToken::fontSmall:
                 fontStyle = FontStyle::Small;
                 break;
             default:
@@ -533,7 +533,7 @@ static void TTFDrawStringRawTTF(RenderTarget& rt, std::string_view text, TextDra
     {
         int32_t drawX = info->x + fontDesc->offset_x;
         int32_t drawY = info->y + fontDesc->offset_y;
-        uint8_t hintThresh = Config::Get().fonts.EnableHinting ? fontDesc->hinting_threshold : 0;
+        uint8_t hintThresh = Config::Get().fonts.enableHinting ? fontDesc->hinting_threshold : 0;
         OpenRCT2::Drawing::IDrawingContext* dc = drawingEngine->GetDrawingContext();
         dc->DrawTTFBitmap(rt, info, surface, drawX, drawY, hintThresh);
     }
@@ -546,51 +546,51 @@ static void TTFProcessFormatCode(RenderTarget& rt, const FmtString::Token& token
 {
     switch (token.kind)
     {
-        case FormatToken::Move:
+        case FormatToken::move:
             info->x = info->startX + token.parameter;
             break;
-        case FormatToken::Newline:
+        case FormatToken::newline:
             info->x = info->startX;
             info->y += FontGetLineHeight(info->FontStyle);
             break;
-        case FormatToken::NewlineSmall:
+        case FormatToken::newlineSmall:
             info->x = info->startX;
             info->y += FontGetLineHeightSmall(info->FontStyle);
             break;
-        case FormatToken::FontTiny:
+        case FormatToken::fontTiny:
             info->FontStyle = FontStyle::Tiny;
             break;
-        case FormatToken::FontSmall:
+        case FormatToken::fontSmall:
             info->FontStyle = FontStyle::Small;
             break;
-        case FormatToken::FontMedium:
+        case FormatToken::fontMedium:
             info->FontStyle = FontStyle::Medium;
             break;
-        case FormatToken::OutlineEnable:
+        case FormatToken::outlineEnable:
             info->flags |= TEXT_DRAW_FLAG_OUTLINE;
             break;
-        case FormatToken::OutlineDisable:
+        case FormatToken::outlineDisable:
             info->flags &= ~TEXT_DRAW_FLAG_OUTLINE;
             break;
-        case FormatToken::ColourWindow1:
+        case FormatToken::colourWindow1:
         {
             uint16_t flags = info->flags;
             ColourCharacterWindow(gCurrentWindowColours[0], &flags, info->palette);
             break;
         }
-        case FormatToken::ColourWindow2:
+        case FormatToken::colourWindow2:
         {
             uint16_t flags = info->flags;
             ColourCharacterWindow(gCurrentWindowColours[1], &flags, info->palette);
             break;
         }
-        case FormatToken::ColourWindow3:
+        case FormatToken::colourWindow3:
         {
             uint16_t flags = info->flags;
             ColourCharacterWindow(gCurrentWindowColours[2], &flags, info->palette);
             break;
         }
-        case FormatToken::InlineSprite:
+        case FormatToken::inlineSprite:
         {
             auto imageId = ImageId(token.parameter);
             auto g1 = GfxGetG1Element(imageId);

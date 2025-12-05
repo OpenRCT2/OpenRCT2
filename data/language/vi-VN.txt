@@ -1518,8 +1518,8 @@ STR_2212    :Hiện danh sách nhân viên bảo vệ trong công viên
 STR_2213    :Hiện danh sách người giải trí trong công viên
 STR_2214    :Không thể xây dựng khi trò chơi đang tạm dừng!
 STR_2215    :{STRINGID}{NEWLINE}({STRINGID})
-STR_2216    :{WINDOW_COLOUR_2}{COMMA16}°C
-STR_2217    :{WINDOW_COLOUR_2}{COMMA16}°F
+STR_2216    :{WINDOW_COLOUR_1}{COMMA16}°C
+STR_2217    :{WINDOW_COLOUR_1}{COMMA16}°F
 STR_2218    :{RED}{STRINGID} trên {STRINGID} vẫn chưa trở lại {STRINGID}!{NEWLINE}Kiểm tra xem nó có bị kẹt hay bị dừng không
 STR_2219    :{RED}{COMMA16} người đã chết trong một tai nạn trên {STRINGID}
 STR_2220    :{WINDOW_COLOUR_2}Đánh giá công viên: {BLACK}{COMMA16}

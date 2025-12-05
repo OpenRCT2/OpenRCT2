@@ -1571,8 +1571,8 @@ STR_2212    :Mostra una llista dels guardes de seguretat del parc.
 STR_2213    :Mostra una llista dels animadors del parc.
 STR_2214    :No es pot construir mentre la partida està en pausa!
 STR_2215    :{STRINGID}{NEWLINE}({STRINGID})
-STR_2216    :{WINDOW_COLOUR_2}{COMMA16}°C
-STR_2217    :{WINDOW_COLOUR_2}{COMMA16}°F
+STR_2216    :{WINDOW_COLOUR_1}{COMMA16}°C
+STR_2217    :{WINDOW_COLOUR_1}{COMMA16}°F
 STR_2218    :{RED}{STRINGID} de {STRINGID} encara no ha tornat a {STRINGID}!{NEWLINE}Comproveu què li ha passat.
 STR_2219    :{RED}{COMMA16} persones han mort en l’accident de {STRINGID}
 STR_2220    :{WINDOW_COLOUR_2}Valoració del parc: {BLACK}{COMMA16}
@@ -3296,7 +3296,7 @@ STR_6237    :Grups
 STR_6238    :Opcions multijugador
 STR_6239    :Retallat vertical
 STR_6240    :Retallat horitzontal
-STR_6241    :Seleccioneu una àrea
+STR_6241    :Selecciona una àrea
 STR_6242    :Esborra la selecció
 STR_6243    :Retoca l’atracció,{NEWLINE}fent-la parèixer nova
 STR_6244    :No es pot retocar l’atracció…
@@ -3825,3 +3825,23 @@ STR_6781    :Captures de pantalla
 STR_6782    :Notificacions de parc
 STR_6783    :Notificacions d’atraccions
 STR_6784    :Notificacions de visitants
+STR_6785    :Comandament de joc
+STR_6786    :Zona morta:
+STR_6787    :Zona morta del pal analògic (cal moviment mínim)
+STR_6788    :Sensitivitat:
+STR_6789    :Multiplicador de la sensivitat del pal analògic
+STR_6790    :Zona morta {COMMA32} %
+STR_6791    :Sensitivitat: {COMMA32} %
+STR_6792    :Entrades d’edificis
+STR_6793    :Visitants i treballadors
+STR_6794    :Decoracions i temes
+STR_6795    :{MOVE_X}{10}{STRINGID}
+STR_6796    :•{MOVE_X}{10}{STRINGID}
+STR_6797    :Sense previsualització
+STR_6798    :Captura de pantalla
+STR_6799    :Minimapa
+STR_7000    :o
+STR_7001    :Nom de l’atracció
+STR_7002    :{STRINGID} {STRINGID}
+STR_7003    :El fitxer d’àudio «{STRING}» està truncat. Mostra esperada de {INT32}, però només n’hi ha {INT32}. Considereu reinstal·lar el RCT2.
+STR_7004    :Força que es torni a dibuixar
