@@ -9,9 +9,14 @@
 
 #pragma once
 
+#include "../core/EnumUtils.hpp"
+#include "../core/FlagHolder.hpp"
+#include "../ride/TrackData.h"
+#include "Track.h"
 #include "TrackPaint.h"
 
 #include <cstdint>
+#include <sfl/static_vector.hpp>
 
 enum class TrackStyle : uint8_t
 {
@@ -96,8 +101,66 @@ enum class TrackStyle : uint8_t
     waterCoaster,
     woodenRollerCoaster,
     woodenWildMouse,
+    null,
+};
+constexpr const size_t kTrackStyleCount = 82;
 
-    null = 255,
+enum class TrackStyleTunnelFlags : uint8_t
+{
+    allowDoors,
+    flatToDown25,
 };
 
-TrackPaintFunction GetTrackPaintFunction(TrackStyle trackStyle, OpenRCT2::TrackElemType trackType);
+struct TrackStyleTunnel
+{
+    int8_t height = 0;
+    Direction direction = kInvalidDirection;
+    TunnelType type{};
+    FlagHolder<uint8_t, TrackStyleTunnelFlags> flags{};
+};
+
+struct TrackSequencePaintInfo
+{
+public:
+    static constexpr uint8_t kInvalidVerticalTunnel = std::numeric_limits<uint8_t>::max();
+
+private:
+    std::array<TrackStyleTunnel, OpenRCT2::TrackMetaData::kSequenceTunnelMaxPerSequence> tunnels;
+    uint8_t verticalTunnelHeight = kInvalidVerticalTunnel;
+
+public:
+    TrackSequencePaintInfo() {};
+
+    explicit TrackSequencePaintInfo(
+        const OpenRCT2::TrackMetaData::SequenceTunnelGroup& sequenceTunnelGroups, const std::optional<TunnelStyle> tunnelStyle,
+        const std::optional<uint8_t> _verticalTunnelHeight);
+
+    const std::array<TrackStyleTunnel, OpenRCT2::TrackMetaData::kSequenceTunnelMaxPerSequence>& getTunnels() const
+    {
+        return tunnels;
+    }
+
+    bool hasVerticalTunnel() const
+    {
+        return verticalTunnelHeight != kInvalidVerticalTunnel;
+    }
+
+    uint8_t getVerticalTunnelHeight() const
+    {
+        return verticalTunnelHeight;
+    }
+};
+
+struct TrackElemTypePaintInfo
+{
+    TrackPaintFunction paintFunction;
+    std::array<TrackSequencePaintInfo, OpenRCT2::TrackMetaData::kMaxSequencesPerPiece> sequenceInfo;
+};
+
+struct TrackStylePaintInfo
+{
+    sfl::static_vector<TrackElemTypePaintInfo, EnumValue(OpenRCT2::TrackElemType::Count)> trackElemTypePaintInfos;
+};
+
+void CreateTrackStylePaintInfos();
+const TrackStylePaintInfo& GetTrackStylePaintInfo(const TrackStyle trackStyle);
