@@ -89,6 +89,12 @@ namespace OpenRCT2::TrackMetaData
         uint8_t alternates = false;
     };
 
+    struct GeneralSupportHeight
+    {
+        int8_t clearance = 0;
+        int8_t minimumClearance = 0;
+    };
+
     struct SequenceDescriptor
     {
         SequenceClearance clearance{};
@@ -101,6 +107,7 @@ namespace OpenRCT2::TrackMetaData
         int8_t extraSupportRotation = 0;
         bool invertSegmentBlocking = false;
         std::array<uint16_t, kBlockedSegmentsTypeCount> blockedSegments{ kSegmentsNone, kSegmentsNone, kSegmentsNone };
+        GeneralSupportHeight generalSupportHeight{};
     };
 
     using TrackComputeFunction = int32_t (*)(const int16_t);
