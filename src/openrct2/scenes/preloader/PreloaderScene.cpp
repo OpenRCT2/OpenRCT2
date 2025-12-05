@@ -38,7 +38,8 @@ void PreloaderScene::Load()
     gLegacyScene = LegacyScene::playing;
     gameStateInitAll(getGameState(), kDefaultMapSize);
     ViewportInitAll();
-    ContextOpenWindow(WindowClass::mainWindow);
+    //ContextOpenWindow(WindowClass::mainWindow);
+    ContextOpenIntent(Intent(WindowClass::mainWindow));
     WindowSetFlagForAllViewports(VIEWPORT_FLAG_RENDERING_INHIBITED, true);
     WindowResizeGui(ContextGetWidth(), ContextGetHeight());
 
@@ -51,8 +52,9 @@ void PreloaderScene::Tick()
 
     ContextHandleInput();
 
-    auto* windowMgr = Ui::GetWindowManager();
-    windowMgr->InvalidateAll();
+    //auto* windowMgr = Ui::GetWindowManager();
+    //windowMgr->InvalidateAll();
+    ContextBroadcastIntent(Intent(INTENT_ACTION_INVALIDATE_ALL));
 
     gInUpdateCode = false;
 

@@ -705,8 +705,12 @@ namespace OpenRCT2
             if (!gOpenRCT2Headless && isMainThread)
             {
                 _uiContext->ProcessMessages();
-                auto* windowMgr = Ui::GetWindowManager();
-                windowMgr->InvalidateByClass(WindowClass::progressWindow);
+
+                // INTENT_ACTION_PROGRESS_SET already invalidates!
+
+                //auto* windowMgr = Ui::GetWindowManager();
+                //windowMgr->InvalidateByClass(WindowClass::progressWindow);
+
                 Draw();
             }
         }
@@ -1350,8 +1354,7 @@ namespace OpenRCT2
 
             _backgroundWorker.dispatchCompleted();
 
-            ContextHandleInput();
-            WindowUpdateAll();
+            _uiContext->GetWindowManager()->update();
 
             if (ShouldDraw())
             {
@@ -1385,8 +1388,7 @@ namespace OpenRCT2
 
             _backgroundWorker.dispatchCompleted();
 
-            ContextHandleInput();
-            WindowUpdateAll();
+            _uiContext->GetWindowManager()->update();
 
             if (shouldDraw)
             {
@@ -1710,8 +1712,13 @@ namespace OpenRCT2
 
     WindowBase* ContextOpenWindow(WindowClass wc)
     {
-        auto windowManager = Ui::GetWindowManager();
-        return windowManager->OpenWindow(wc);
+        //auto windowManager = Ui::GetWindowManager();
+        //return windowManager->OpenWindow(wc);
+
+        ContextOpenIntent(Intent(wc));
+
+        // FIXME: We should not be returning a window.
+        return nullptr;
     }
 
     WindowBase* ContextOpenWindowView(WindowView view)
@@ -1726,16 +1733,26 @@ namespace OpenRCT2
         return windowManager->openDetails(type, id);
     }
 
-    WindowBase* ContextOpenIntent(Intent* intent)
+    WindowBase* ContextOpenIntent(const Intent* intent)
     {
         auto windowManager = Ui::GetWindowManager();
         return windowManager->OpenIntent(intent);
     }
 
-    void ContextBroadcastIntent(Intent* intent)
+    WindowBase* ContextOpenIntent(const Intent& intent)
+    {
+        return ContextOpenIntent(&intent);
+    }
+
+    void ContextBroadcastIntent(const Intent* intent)
     {
         auto windowManager = Ui::GetWindowManager();
         windowManager->BroadcastIntent(*intent);
+    }
+
+    void ContextBroadcastIntent(const Intent& intent)
+    {
+        ContextBroadcastIntent(&intent);
     }
 
     void ContextForceCloseWindowByClass(WindowClass windowClass)

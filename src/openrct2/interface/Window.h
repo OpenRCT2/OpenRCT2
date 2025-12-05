@@ -290,7 +290,6 @@ namespace OpenRCT2
 
     void WindowSetFlagForAllViewports(uint32_t viewportFlag, bool enabled);
 
-    void WindowDispatchUpdateAll();
     void WindowUpdateAllViewports();
     void WindowUpdateAll();
     void WindowNotifyLanguageChange();
