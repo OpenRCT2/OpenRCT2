@@ -28,6 +28,7 @@
 #include "config/ConfigEnum.hpp"
 #include "core/Compression.h"
 #include "core/DataSerialiser.h"
+#include "core/EnumUtils.hpp"
 #include "core/FileStream.h"
 #include "core/FileSystem.hpp"
 #include "core/Path.hpp"
@@ -127,12 +128,12 @@ namespace OpenRCT2
             NORMALISATION,
         };
 
-        inline static const ConfigEnum<ReplayMode> Enum_ReplayMode = ConfigEnum<ReplayMode>({
-            ConfigEnumEntry<ReplayMode>("NONE", ReplayMode::NONE),
-            ConfigEnumEntry<ReplayMode>("RECORDING", ReplayMode::RECORDING),
-            ConfigEnumEntry<ReplayMode>("PLAYING", ReplayMode::PLAYING),
-            ConfigEnumEntry<ReplayMode>("NORMALISATION", ReplayMode::NORMALISATION),
-        });
+        static constexpr std::array modeToName = {
+            "NONE",
+            "RECORDING",
+            "PLAYING",
+            "NORMALISATION",
+        };
 
     public:
         virtual ~ReplayManager()
@@ -431,7 +432,7 @@ namespace OpenRCT2
         void StartPlayback(const std::string& file) override
         {
             if (_mode != ReplayMode::NONE && _mode != ReplayMode::NORMALISATION)
-                throw std::invalid_argument("Unexpected mode " + Enum_ReplayMode.GetName(_mode));
+                throw std::invalid_argument(std::string("Unexpected mode ") + modeToName[EnumValue(_mode)]);
 
             auto replayData = std::make_unique<ReplayRecordData>();
 
