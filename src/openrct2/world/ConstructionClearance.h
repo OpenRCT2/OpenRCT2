@@ -44,6 +44,7 @@ enum class CreateCrossingMode
 
 bool MapPlaceNonSceneryClearFunc(OpenRCT2::TileElement** tile_element, const CoordsXY& coords, uint8_t flags, money64* price);
 bool MapPlaceSceneryClearFunc(OpenRCT2::TileElement** tile_element, const CoordsXY& coords, uint8_t flags, money64* price);
+bool MapPlaceParkEntranceClearFunc(OpenRCT2::TileElement** tile_element, const CoordsXY& coords, uint8_t flags, money64* price);
 
 struct ConstructClearResult
 {
