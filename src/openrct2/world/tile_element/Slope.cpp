@@ -15,6 +15,13 @@
 
 namespace OpenRCT2
 {
+    const uint8_t kPathSlopeToLandSlope[] = {
+        kTileSlopeSWSideUp,
+        kTileSlopeNWSideUp,
+        kTileSlopeNESideUp,
+        kTileSlopeSESideUp,
+    };
+
     // clang-format off
     static constexpr std::array<SlopeRelativeCornerHeights, kTileSlopeMask + 1> kSlopeRelativeCornerHeights = {{
         { 0, 0, 0, 0 },
@@ -65,5 +72,10 @@ namespace OpenRCT2
         const int32_t southZ = height + (cornerHeights.top * kLandHeightStep);
         const int32_t westZ = height + (cornerHeights.right * kLandHeightStep);
         return { northZ, eastZ, southZ, westZ };
+    }
+
+    uint8_t getLandSlopeFromPathSlope(Direction direction)
+    {
+        return kPathSlopeToLandSlope[direction];
     }
 } // namespace OpenRCT2

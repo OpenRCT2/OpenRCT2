@@ -140,6 +140,16 @@ namespace OpenRCT2
         Owner |= (newOwner & kTileElementOwnerMask);
     }
 
+    bool TileElementBase::intersects(int32_t zStart, int32_t zEnd)
+    {
+        if (GetClearanceZ() <= zStart)
+            return false;
+        if (GetBaseZ() >= zEnd)
+            return false;
+
+        return true;
+    }
+
     const SurfaceElement* TileElementBase::AsSurface() const
     {
         return as<SurfaceElement>();

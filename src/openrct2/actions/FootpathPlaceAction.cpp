@@ -320,7 +320,8 @@ namespace OpenRCT2::GameActions
         auto crossingMode = isQueue || (_slope.type != FootpathSlopeType::flat) ? CreateCrossingMode::none
                                                                                 : CreateCrossingMode::pathOverTrack;
         auto canBuild = MapCanConstructWithClearAt(
-            { _loc, zLow, zHigh }, MapPlaceNonSceneryClearFunc, quarterTile, GetFlags(), kTileSlopeFlat, crossingMode);
+            { _loc, zLow, zHigh }, MapPlaceNonSceneryClearFunc, quarterTile, GetFlags(), kTileSlopeFlat, crossingMode,
+            TerrainShapeMode::autoshape);
         if (!entrancePath && canBuild.Error != Status::Ok)
         {
             canBuild.ErrorTitle = STR_CANT_BUILD_FOOTPATH_HERE;
@@ -341,6 +342,7 @@ namespace OpenRCT2::GameActions
         {
             return Result(Status::InvalidParameters, STR_CANT_BUILD_FOOTPATH_HERE, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
         }
+
         int32_t supportHeight = zLow - surfaceElement->GetBaseZ();
         res.Cost += supportHeight < 0 ? 20.00_GBP : (supportHeight / kPathHeightStep) * 5.00_GBP;
 
@@ -389,7 +391,7 @@ namespace OpenRCT2::GameActions
                                                                                 : CreateCrossingMode::pathOverTrack;
         auto canBuild = MapCanConstructWithClearAt(
             { _loc, zLow, zHigh }, MapPlaceNonSceneryClearFunc, quarterTile, GAME_COMMAND_FLAG_APPLY | GetFlags(),
-            kTileSlopeFlat, crossingMode);
+            kTileSlopeFlat, crossingMode, TerrainShapeMode::autoshape);
         if (!entrancePath && canBuild.Error != Status::Ok)
         {
             canBuild.ErrorTitle = STR_CANT_BUILD_FOOTPATH_HERE;
@@ -405,6 +407,29 @@ namespace OpenRCT2::GameActions
         {
             return Result(Status::InvalidParameters, STR_CANT_BUILD_FOOTPATH_HERE, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
         }
+
+        if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
+        {
+            if (surfaceElement->intersects(zLow, zHigh))
+            {
+                bool landHasSuitableSlope = false;
+                if (_slope.type != FootpathSlopeType::flat)
+                {
+                    landHasSuitableSlope = landSlopeFitsUnderPath(
+                        surfaceElement->GetBaseZ(), surfaceElement->GetSlope(), zLow, _slope.direction);
+                }
+
+                if (!landHasSuitableSlope)
+                {
+                    const uint8_t requiredLandSlope = _slope.type != FootpathSlopeType::flat
+                        ? getLandSlopeFromPathSlope(_slope.direction)
+                        : kTileSlopeFlat;
+                    surfaceElement->SetBaseZ(zLow);
+                    surfaceElement->SetSlope(requiredLandSlope);
+                }
+            }
+        }
+
         int32_t supportHeight = zLow - surfaceElement->GetBaseZ();
         res.Cost += supportHeight < 0 ? 20.00_GBP : (supportHeight / kPathHeightStep) * 5.00_GBP;
 

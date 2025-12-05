@@ -50,13 +50,6 @@ using namespace OpenRCT2;
 
 bool gPaintWidePathsAsGhost = false;
 
-const uint8_t kPathSlopeToLandSlope[] = {
-    kTileSlopeSWSideUp,
-    kTileSlopeNWSideUp,
-    kTileSlopeNESideUp,
-    kTileSlopeSESideUp,
-};
-
 static constexpr uint8_t kPathEdgesAndCornersToSurfaceImageIndexOffset[] = {
     0, 1, 2, 3, 4, 5, 6,  7,  8, 9,  10, 11, 12, 13, 14, 15, 0, 1, 2, 20, 4, 5, 6, 22, 8, 9, 10, 26, 12, 13, 14, 36,
     0, 1, 2, 3, 4, 5, 21, 23, 8, 9,  10, 11, 12, 13, 33, 37, 0, 1, 2, 3,  4, 5, 6, 24, 8, 9, 10, 11, 12, 13, 14, 38,
@@ -719,7 +712,7 @@ static bool ShouldDrawSupports(PaintSession& session, const PathElement& pathEl,
     else if (pathEl.IsSloped())
     {
         // Diagonal path
-        if (surface->GetSlope() != kPathSlopeToLandSlope[pathEl.GetSlopeDirection()])
+        if (surface->GetSlope() != getLandSlopeFromPathSlope(pathEl.GetSlopeDirection()))
         {
             return true;
         }
