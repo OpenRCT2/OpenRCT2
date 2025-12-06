@@ -9,18 +9,24 @@
 
 #pragma once
 
+#include "../drawing/Drawing.h"
 #include "Object.h"
 #include "WaterEntry.h"
+
+#include <tuple>
+#include <vector>
 
 namespace OpenRCT2
 {
     class WaterObject final : public Object
     {
     private:
+        std::vector<G1Element> _palettes{};
         WaterObjectEntry _legacyType = {};
 
     public:
         static constexpr ObjectType kObjectType = ObjectType::water;
+        ~WaterObject();
 
         void* GetLegacyData() override
         {

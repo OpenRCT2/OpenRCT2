@@ -112,6 +112,17 @@ namespace OpenRCT2
         }
     }
 
+    void AssetPackManager::LoadImagesForObject(std::string_view id, ImageTable& objectTable)
+    {
+        for (auto& assetPack : _assetPacks)
+        {
+            if (assetPack->IsEnabled() && assetPack->ContainsObject(id))
+            {
+                return assetPack->LoadImagesForObject(id, objectTable);
+            }
+        }
+    }
+
     void AssetPackManager::LoadSamplesForObject(std::string_view id, AudioSampleTable& objectTable)
     {
         std::for_each(_assetPacks.rbegin(), _assetPacks.rend(), [&](auto& assetPack) {

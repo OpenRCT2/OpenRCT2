@@ -14,6 +14,7 @@
 #include "../OpenRCT2.h"
 #include "../core/IStream.hpp"
 #include "../core/Json.hpp"
+#include "../drawing/Image.h"
 #include "../localisation/Formatter.h"
 #include "../localisation/Language.h"
 #include "../localisation/StringIds.h"
@@ -25,20 +26,35 @@
 
 namespace OpenRCT2
 {
+    WaterObject::~WaterObject()
+    {
+        for (auto& palette : _palettes)
+        {
+            delete[] palette.offset;
+        }
+    }
+
     void WaterObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
     {
         stream->Seek(14, STREAM_SEEK_CURRENT);
         _legacyType.flags = stream->ReadValue<uint16_t>();
 
         GetStringTable().Read(context, stream, ObjectStringID::name);
-        GetImageTable().Read(context, stream);
+        ReadEmbeddedImages(*context, *stream);
+
+        auto& embeddedImages = GetEmbeddedImages();
+        for (size_t i = 0; i < embeddedImages.GetCount(); i++)
+        {
+            _palettes.push_back(embeddedImages.GetImageCopy(i));
+        }
     }
 
     void WaterObject::Load()
     {
         GetStringTable().Sort();
         _legacyType.string_idx = LanguageAllocateObjectString(GetName());
-        _legacyType.image_id = LoadImages();
+        //    _legacyType.image_id = LoadImages();
+        _legacyType.image_id = GfxObjectAllocateImages(_palettes.data(), static_cast<uint32_t>(_palettes.size()));
         _legacyType.palette_index_1 = _legacyType.image_id + 1;
         _legacyType.palette_index_2 = _legacyType.image_id + 4;
 
@@ -47,13 +63,14 @@ namespace OpenRCT2
 
     void WaterObject::Unload()
     {
-        UnloadImages();
+        GfxObjectFreeImages(_legacyType.image_id, static_cast<uint32_t>(_palettes.size()));
+        // UnloadImages();
         LanguageFreeObjectString(_legacyType.string_idx);
 
         _legacyType.string_idx = 0;
-        _legacyType.image_id = 0;
-        _legacyType.palette_index_1 = 0;
-        _legacyType.palette_index_2 = 0;
+        _legacyType.image_id = kImageIndexUndefined;
+        _legacyType.palette_index_1 = kImageIndexUndefined;
+        _legacyType.palette_index_2 = kImageIndexUndefined;
     }
 
     void WaterObject::DrawPreview(RenderTarget& rt, int32_t width, int32_t height) const
@@ -106,7 +123,7 @@ namespace OpenRCT2
         auto numColours = jColours.size();
 
         // This pointer gets memcopied in ImageTable::AddImage so it's fine for the unique_ptr to go out of scope
-        auto data = std::make_unique<uint8_t[]>(numColours * 3);
+        auto data = new uint8_t[numColours * 3];
         size_t dataIndex = 0;
 
         for (auto& jColour : jColours)
@@ -121,14 +138,13 @@ namespace OpenRCT2
             dataIndex += 3;
         }
 
-        G1Element g1 = {};
-        g1.offset = data.get();
+        auto& g1 = _palettes.emplace_back();
+        g1.offset = data;
+        //    G1Element g1 = {};
+        //    g1.offset = data.get();
         g1.width = static_cast<int16_t>(numColours);
         g1.x_offset = Json::GetNumber<int16_t>(jPalette["index"]);
         g1.flags = G1_FLAG_PALETTE;
-
-        auto& imageTable = GetImageTable();
-        imageTable.AddImage(&g1);
     }
 
     uint32_t WaterObject::ParseColour(const std::string& s) const
