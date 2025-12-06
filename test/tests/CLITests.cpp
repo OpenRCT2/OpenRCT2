@@ -6,6 +6,7 @@
 #include <gtest/gtest.h>
 #include <iterator>
 #include <openrct2/command_line/sprite/SpriteCommands.h>
+#include <openrct2/core/FileSystem.hpp>
 #include <openrct2/core/Path.hpp>
 
 using namespace OpenRCT2;
@@ -68,10 +69,50 @@ TEST_F(CommandLineTests, command_line_for_sprite_details)
     ASSERT_EQ(result, 0);
 }
 
+class ScopedFileRemover final
+{
+public:
+    explicit ScopedFileRemover(fs::path fileToRemove)
+        : _fileToRemove(std::move(fileToRemove))
+    {
+    }
+
+    ScopedFileRemover(const ScopedFileRemover& other) = delete;
+    ScopedFileRemover(ScopedFileRemover&& other) = delete;
+    ScopedFileRemover& operator=(const ScopedFileRemover& other) = delete;
+    ScopedFileRemover& operator=(ScopedFileRemover&& other) = delete;
+
+    ~ScopedFileRemover()
+    {
+        std::error_code ec;
+        // If the file does not exist, remove returns successfully, but returns false
+        // (https://en.cppreference.com/w/cpp/filesystem/remove.html).
+        const bool wasRemoved = fs::remove(_fileToRemove, ec);
+        if (ec)
+        {
+            std::cerr << "Failed to remove " << _fileToRemove << ": " << ec << '\n';
+        }
+        if (testing::Test::HasFailure())
+        {
+            return;
+        }
+        if (wasRemoved)
+        {
+            return;
+        }
+        std::cerr << "Tried to remove " << _fileToRemove
+                  << ", but it did not exist. Please check whether this test is cleaning up files correctly.\n";
+    }
+
+private:
+    fs::path _fileToRemove;
+};
+
 TEST_F(CommandLineTests, command_line_for_sprite_build)
 {
     std::string manifestFilePath = ManifestFilePath();
     std::string outputfilePath = BuildOutputfilePath();
+    const ScopedFileRemover outputfilePathRemover(outputfilePath);
     const char* buildCmd[3] = { "build", outputfilePath.c_str(), manifestFilePath.c_str() };
 
     int32_t result = build(buildCmd, 3, ImportMode::Default);
@@ -85,6 +126,7 @@ TEST_F(CommandLineTests, command_line_for_sprite_failed_build)
     // run on correct manifest file
     std::string manifestFilePath = ManifestFilePath();
     std::string outputfilePath = BuildOutputfilePath();
+    const ScopedFileRemover outputfilePathRemover(outputfilePath);
     const char* buildCmd[3] = { "build", outputfilePath.c_str(), manifestFilePath.c_str() };
     int32_t result = build(buildCmd, 3, ImportMode::Default);
     ASSERT_EQ(result, 0);
