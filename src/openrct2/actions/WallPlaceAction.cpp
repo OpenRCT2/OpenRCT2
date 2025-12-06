@@ -438,7 +438,7 @@ namespace OpenRCT2::GameActions
         int32_t z;
         if (sequence == 0)
         {
-            if (ted.sequences[0].flags & TRACK_SEQUENCE_FLAG_DISALLOW_DOORS)
+            if (ted.sequences[0].flags.has(SequenceFlag::disallowDoors))
             {
                 return false;
             }
