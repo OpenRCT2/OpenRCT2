@@ -108,6 +108,12 @@ namespace OpenRCT2::RCT2
             {
                 return LoadSavedGame(path, skipObjectCheck);
             }
+            if (String::iequals(Path::GetExtension(path), ".sea"))
+            {
+                auto data = DecryptSea(fs::u8path(path));
+                auto ms = MemoryStream(data.data(), data.size(), MemoryAccess::read);
+                return LoadFromStream(&ms, true, skipObjectCheck);
+            }
 
             throw std::runtime_error("Invalid RCT2 park extension.");
         }
