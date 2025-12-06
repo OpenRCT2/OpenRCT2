@@ -313,7 +313,7 @@ namespace OpenRCT2::Ui::Windows
             SetItems(items);
 
             WindowDropdownShowText(
-                { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height() + 1,
+                { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height(),
                 colours[1].withFlag(ColourFlag::translucent, true), 0, TOP_TOOLBAR_VIEW_MENU_COUNT);
 
             auto mvpFlags = WindowGetMain()->viewport->flags;
@@ -445,7 +445,7 @@ namespace OpenRCT2::Ui::Windows
 #endif
 
             WindowDropdownShowText(
-                { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height() + 1,
+                { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height(),
                 colours[1].withFlag(ColourFlag::translucent, true), 0, i);
             gDropdown.defaultIndex = DDIDX_SHOW_MAP;
         }
@@ -512,7 +512,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             WindowDropdownShowText(
-                { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height() + 1,
+                { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height(),
                 colours[0].withFlag(ColourFlag::translucent, true), 0, num_items);
 
             // Set checkmarks
@@ -624,7 +624,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             WindowDropdownShowText(
-                { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height() + 1,
+                { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height(),
                 colours[0].withFlag(ColourFlag::translucent, true), Dropdown::Flag::StayOpen, numItems);
         }
 
@@ -648,7 +648,7 @@ namespace OpenRCT2::Ui::Windows
             SetItems(items);
 
             WindowDropdownShowText(
-                { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height() + 1,
+                { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height(),
                 colours[0].withFlag(ColourFlag::translucent, true), Dropdown::Flag::StayOpen, TOP_TOOLBAR_CHEATS_COUNT);
 
             // Disable items that are not yet available in multiplayer
@@ -724,7 +724,7 @@ namespace OpenRCT2::Ui::Windows
             gDropdown.items[DDIDX_DEBUG_PAINT] = Dropdown::ToggleOption(STR_DEBUG_DROPDOWN_DEBUG_PAINT);
 
             WindowDropdownShowText(
-                { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height() + 1,
+                { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height(),
                 colours[0].withFlag(ColourFlag::translucent, true), Dropdown::Flag::StayOpen, TOP_TOOLBAR_DEBUG_COUNT);
 
             auto* windowMgr = GetWindowManager();
@@ -768,7 +768,7 @@ namespace OpenRCT2::Ui::Windows
             gDropdown.items[DDIDX_MULTIPLAYER_RECONNECT] = Dropdown::PlainMenuLabel(STR_MULTIPLAYER_RECONNECT);
 
             WindowDropdownShowText(
-                { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height() + 1,
+                { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height(),
                 colours[0].withFlag(ColourFlag::translucent, true), 0, TOP_TOOLBAR_NETWORK_COUNT);
 
             gDropdown.items[DDIDX_MULTIPLAYER_RECONNECT].setDisabled(!Network::IsDesynchronised());
