@@ -9,6 +9,7 @@
 
 #include "TestData.h"
 
+#include <exception>
 #include <gtest/gtest.h>
 #include <openrct2/Context.h>
 #include <openrct2/Diagnostic.h>
@@ -90,7 +91,7 @@ TEST_P(ReplayTests, RunReplay)
     {
         replayManager->StartPlayback(replayFile);
     }
-    catch (const std::invalid_argument& e)
+    catch (const std::exception& e)
     {
         LOG_WARNING("Can't start replay!. %s", e.what());
         FAIL();

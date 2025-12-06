@@ -46,6 +46,7 @@
 #include "world/Park.h"
 
 #include <chrono>
+#include <exception>
 #include <memory>
 #include <stdexcept>
 #include <string>
@@ -440,14 +441,14 @@ namespace OpenRCT2
             {
                 ReadReplayData(file, *replayData);
             }
-            catch (const std::invalid_argument&)
+            catch (const std::exception&)
             {
                 throw;
             }
 
             if (!LoadReplayDataMap(*replayData))
             {
-                throw std::invalid_argument("Unable to load map.");
+                throw std::runtime_error("Unable to load map.");
             }
 
             getGameState().currentTicks = replayData->tickStart;
@@ -621,7 +622,7 @@ namespace OpenRCT2
             {
                 if (!fs::exists(filePath))
                 {
-                    throw std::invalid_argument(FormatStringID(STR_REPLAY_FILE_NOT_FOUND, filePath.u8string().c_str()));
+                    throw std::runtime_error(FormatStringID(STR_REPLAY_FILE_NOT_FOUND, filePath.u8string().c_str()));
                 }
             }
             else if (filePath.is_relative())
@@ -636,7 +637,7 @@ namespace OpenRCT2
 
             if (!fs::is_regular_file(filePath))
             {
-                throw std::invalid_argument(FormatStringID(STR_REPLAY_FILE_NOT_FOUND, filePath.u8string().c_str()));
+                throw std::runtime_error(FormatStringID(STR_REPLAY_FILE_NOT_FOUND, filePath.u8string().c_str()));
             }
 
             FileStream fileStream(filePath, FileMode::open);
@@ -646,7 +647,7 @@ namespace OpenRCT2
             DataSerialiser serialiser(false, stream);
             if (!Serialise(serialiser, data))
             {
-                throw std::invalid_argument(LanguageGetString(STR_REPLAY_NOT_STARTED));
+                throw std::runtime_error(LanguageGetString(STR_REPLAY_NOT_STARTED));
             }
 
             // Reset position of all streams.

@@ -1490,7 +1490,7 @@ static void ConsoleCommandReplayStart(InteractiveConsole& console, const argumen
     {
         replayManager->StartPlayback(name);
     }
-    catch (const std::invalid_argument& e)
+    catch (const std::exception& e)
     {
         console.WriteLine(e.what());
         return;
