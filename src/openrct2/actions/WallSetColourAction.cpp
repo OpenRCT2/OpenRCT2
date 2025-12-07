@@ -81,7 +81,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_ERR_WALL_ELEMENT_NOT_FOUND);
         }
 
-        if ((GetFlags() & GAME_COMMAND_FLAG_GHOST) && !(wallElement->IsGhost()))
+        if ((GetFlags().has(CommandFlag::ghost)) && !(wallElement->IsGhost()))
         {
             return res;
         }
@@ -134,7 +134,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::InvalidParameters, STR_CANT_REPAINT_THIS, kStringIdNone);
         }
 
-        if ((GetFlags() & GAME_COMMAND_FLAG_GHOST) && !(wallElement->IsGhost()))
+        if ((GetFlags().has(CommandFlag::ghost)) && !(wallElement->IsGhost()))
         {
             return res;
         }

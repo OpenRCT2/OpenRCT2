@@ -49,7 +49,7 @@ namespace OpenRCT2::GameActions
     }
 
     static TileElement* FindEntranceElement(
-        const CoordsXY& loc, RideId rideIndex, StationIndex stationNum, int32_t entranceType, uint32_t flags)
+        const CoordsXY& loc, RideId rideIndex, StationIndex stationNum, int32_t entranceType)
     {
         for (auto* entranceElement : TileElementsView<EntranceElement>(loc))
         {
@@ -92,10 +92,10 @@ namespace OpenRCT2::GameActions
         }
 
         auto* entranceElement = FindEntranceElement(
-            _loc, _rideIndex, _stationNum, _isExit ? ENTRANCE_TYPE_RIDE_EXIT : ENTRANCE_TYPE_RIDE_ENTRANCE, GetFlags());
+            _loc, _rideIndex, _stationNum, _isExit ? ENTRANCE_TYPE_RIDE_EXIT : ENTRANCE_TYPE_RIDE_ENTRANCE);
 
         // If we are trying to remove a ghost and the element we found is real, return an error, but don't log a warning
-        if (entranceElement != nullptr && (GetFlags() & GAME_COMMAND_FLAG_GHOST) && !(entranceElement->IsGhost()))
+        if (entranceElement != nullptr && (GetFlags().has(CommandFlag::ghost)) && !(entranceElement->IsGhost()))
         {
             return Result(Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_GHOST_ELEMENT_NOT_FOUND);
         }
@@ -119,7 +119,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_RIDE_NOT_FOUND);
         }
 
-        const bool isGhost = GetFlags() & GAME_COMMAND_FLAG_GHOST;
+        const bool isGhost = GetFlags().has(CommandFlag::ghost);
         if (!isGhost)
         {
             RideClearForConstruction(*ride);
@@ -128,7 +128,7 @@ namespace OpenRCT2::GameActions
         }
 
         auto* entranceElement = FindEntranceElement(
-            _loc, _rideIndex, _stationNum, _isExit ? ENTRANCE_TYPE_RIDE_EXIT : ENTRANCE_TYPE_RIDE_ENTRANCE, GetFlags());
+            _loc, _rideIndex, _stationNum, _isExit ? ENTRANCE_TYPE_RIDE_EXIT : ENTRANCE_TYPE_RIDE_ENTRANCE);
 
         // If we are trying to remove a ghost and the element we found is real, return an error, but don't log a warning
         if (entranceElement != nullptr && isGhost && !(entranceElement->IsGhost()))

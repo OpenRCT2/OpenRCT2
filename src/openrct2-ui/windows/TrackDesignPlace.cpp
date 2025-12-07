@@ -40,6 +40,7 @@
 
 using namespace OpenRCT2::Numerics;
 using namespace OpenRCT2::TrackMetaData;
+using OpenRCT2::GameActions::CommandFlag;
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -218,13 +219,13 @@ namespace OpenRCT2::Ui::Windows
             {
                 ClearProvisional();
                 CoordsXYZD ghostTrackLoc = trackLoc;
-                auto res = FindValidTrackDesignPlaceHeight(ghostTrackLoc, GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
+                auto res = FindValidTrackDesignPlaceHeight(ghostTrackLoc, { CommandFlag::noSpend, CommandFlag::ghost });
 
                 if (res.Error == GameActions::Status::Ok)
                 {
                     // Valid location found. Place the ghost at the location.
                     auto tdAction = GameActions::TrackDesignAction(ghostTrackLoc, *_trackDesign, !gTrackDesignSceneryToggle);
-                    tdAction.SetFlags(GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
+                    tdAction.SetFlags({ CommandFlag::noSpend, CommandFlag::ghost });
                     tdAction.SetCallback([&](const GameActions::GameAction*, const GameActions::Result* result) {
                         if (result->Error == GameActions::Status::Ok)
                         {
@@ -281,7 +282,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Try increasing Z until a feasible placement is found
             CoordsXYZ trackLoc = { mapCoords, maybeMapZ.value() };
-            auto res = FindValidTrackDesignPlaceHeight(trackLoc, 0);
+            auto res = FindValidTrackDesignPlaceHeight(trackLoc, {});
             if (res.Error != GameActions::Status::Ok)
             {
                 // Unable to build track
@@ -399,7 +400,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 auto tdAction = GameActions::TrackDesignAction(
                     { _placementGhostLoc }, *_trackDesign, !gTrackDesignSceneryToggle);
-                tdAction.SetFlags(GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
+                tdAction.SetFlags({ CommandFlag::noSpend, CommandFlag::ghost });
                 auto res = GameActions::Execute(&tdAction, getGameState());
                 if (res.Error != GameActions::Status::Ok)
                 {
@@ -739,7 +740,7 @@ namespace OpenRCT2::Ui::Windows
             return &_miniPreview[pixel.y * kTrackMiniPreviewSize.width + pixel.x];
         }
 
-        GameActions::Result FindValidTrackDesignPlaceHeight(CoordsXYZ& loc, uint32_t newFlags)
+        GameActions::Result FindValidTrackDesignPlaceHeight(CoordsXYZ& loc, CommandFlags newFlags)
         {
             GameActions::Result res;
             for (int32_t i = 0; i < 7; i++, loc.z += kCoordsZStep)

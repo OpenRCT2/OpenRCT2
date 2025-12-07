@@ -154,7 +154,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::InvalidParameters, errorTitle, STR_ERR_RIDE_NOT_FOUND);
         }
 
-        if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
+        if (!(GetFlags().has(CommandFlag::ghost)))
         {
             RideClearForConstruction(*ride);
             ride->removePeeps();
@@ -177,7 +177,7 @@ namespace OpenRCT2::GameActions
         }
 
         auto z = station.GetBaseZ();
-        if (!(GetFlags() & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED) && !(GetFlags() & GAME_COMMAND_FLAG_GHOST)
+        if (!(GetFlags().has(CommandFlag::allowDuringPaused)) && !(GetFlags().has(CommandFlag::ghost))
             && !getGameState().cheats.disableClearanceChecks)
         {
             FootpathRemoveLitter({ _loc, z });
@@ -186,7 +186,7 @@ namespace OpenRCT2::GameActions
 
         auto clear_z = z + (_isExit ? RideExitHeight : RideEntranceHeight);
         auto canBuild = MapCanConstructWithClearAt(
-            { _loc, z, clear_z }, MapPlaceNonSceneryClearFunc, { 0b1111, 0 }, GetFlags() | GAME_COMMAND_FLAG_APPLY,
+            { _loc, z, clear_z }, MapPlaceNonSceneryClearFunc, { 0b1111, 0 }, GetFlags().with(CommandFlag::apply),
             kTileSlopeFlat);
         if (canBuild.Error != Status::Ok)
         {
@@ -207,7 +207,7 @@ namespace OpenRCT2::GameActions
         entranceElement->SetEntranceType(_isExit ? ENTRANCE_TYPE_RIDE_EXIT : ENTRANCE_TYPE_RIDE_ENTRANCE);
         entranceElement->SetStationIndex(_stationNum);
         entranceElement->SetRideIndex(_rideIndex);
-        entranceElement->SetGhost(GetFlags() & GAME_COMMAND_FLAG_GHOST);
+        entranceElement->SetGhost(GetFlags().has(CommandFlag::ghost));
 
         if (_isExit)
         {
@@ -224,7 +224,7 @@ namespace OpenRCT2::GameActions
 
         FootpathQueueChainReset();
 
-        if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
+        if (!(GetFlags().has(CommandFlag::ghost)))
         {
             MazeEntranceHedgeRemoval({ _loc, entranceElement->as<TileElement>() });
         }
@@ -254,7 +254,7 @@ namespace OpenRCT2::GameActions
         int16_t baseZ = loc.z;
         int16_t clearZ = baseZ + (isExit ? RideExitHeight : RideEntranceHeight);
         auto canBuild = MapCanConstructWithClearAt(
-            { loc, baseZ, clearZ }, MapPlaceNonSceneryClearFunc, { 0b1111, 0 }, 0, kTileSlopeFlat);
+            { loc, baseZ, clearZ }, MapPlaceNonSceneryClearFunc, { 0b1111, 0 }, {}, kTileSlopeFlat);
         if (canBuild.Error != Status::Ok)
         {
             canBuild.ErrorTitle = errorTitle;

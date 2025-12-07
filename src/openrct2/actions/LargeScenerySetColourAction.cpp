@@ -104,7 +104,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::InvalidParameters, STR_CANT_REPAINT_THIS, kStringIdNone);
         }
 
-        if ((GetFlags() & GAME_COMMAND_FLAG_GHOST) && !(largeElement->IsGhost()))
+        if ((GetFlags().has(CommandFlag::ghost)) && !(largeElement->IsGhost()))
         {
             return res;
         }

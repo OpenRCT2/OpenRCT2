@@ -91,7 +91,7 @@ namespace OpenRCT2::GameActions
         }
 
         // No change
-        if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST) && pathElement->GetAdditionEntryIndex() == _entryIndex
+        if (!(GetFlags().has(CommandFlag::ghost)) && pathElement->GetAdditionEntryIndex() == _entryIndex
             && !(pathElement->IsBroken()))
         {
             return res;
@@ -129,7 +129,7 @@ namespace OpenRCT2::GameActions
         res.Cost = pathAdditionEntry->price;
 
         // Should place a ghost?
-        if (GetFlags() & GAME_COMMAND_FLAG_GHOST)
+        if (GetFlags().has(CommandFlag::ghost))
         {
             // Check if there is something on the path already
             if (pathElement->HasAddition())
@@ -156,7 +156,7 @@ namespace OpenRCT2::GameActions
         }
 
         // No change
-        if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST) && pathElement->GetAdditionEntryIndex() == _entryIndex
+        if (!(GetFlags().has(CommandFlag::ghost)) && pathElement->GetAdditionEntryIndex() == _entryIndex
             && !(pathElement->IsBroken()) && !pathElement->AdditionIsGhost())
         {
             return res;
@@ -171,7 +171,7 @@ namespace OpenRCT2::GameActions
 
         res.Cost = pathAdditionEntry->price;
 
-        if (GetFlags() & GAME_COMMAND_FLAG_GHOST)
+        if (GetFlags().has(CommandFlag::ghost))
         {
             pathElement->SetAdditionIsGhost(true);
         }

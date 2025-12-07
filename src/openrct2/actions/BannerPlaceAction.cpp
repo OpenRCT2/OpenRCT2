@@ -151,7 +151,7 @@ namespace OpenRCT2::GameActions
         bannerElement->SetPosition(_loc.direction);
         bannerElement->ResetAllowedEdges();
         bannerElement->SetIndex(banner->id);
-        bannerElement->SetGhost(GetFlags() & GAME_COMMAND_FLAG_GHOST);
+        bannerElement->SetGhost(GetFlags().has(CommandFlag::ghost));
 
         MapInvalidateTileFull(_loc);
         MapAnimations::MarkTileForInvalidation(TileCoordsXY(_loc));
@@ -170,7 +170,7 @@ namespace OpenRCT2::GameActions
             if (!(pathElement->GetEdges() & (1 << _loc.direction)))
                 continue;
 
-            if (pathElement->IsGhost() && !(GetFlags() & GAME_COMMAND_FLAG_GHOST))
+            if (pathElement->IsGhost() && !(GetFlags().has(CommandFlag::ghost)))
                 continue;
 
             return pathElement;

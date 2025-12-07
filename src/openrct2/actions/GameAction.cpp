@@ -138,7 +138,7 @@ namespace OpenRCT2::GameActions
             }
 
             GameAction* action = queued.action.get();
-            action->SetFlags(action->GetFlags() | GAME_COMMAND_FLAG_NETWORKED);
+            action->SetFlags(action->GetFlags().with(CommandFlag::networked));
 
             Guard::Assert(action != nullptr);
 
@@ -288,7 +288,7 @@ namespace OpenRCT2::GameActions
         Guard::ArgumentNotNull(action);
 
         uint16_t actionFlags = action->GetActionFlags();
-        uint32_t flags = action->GetFlags();
+        auto flags = action->GetFlags();
 
         // Some actions are not recorded in the replay.
         const auto ignoreForReplays = (actionFlags & Flags::IgnoreForReplays) != 0;
@@ -297,7 +297,7 @@ namespace OpenRCT2::GameActions
         if (replayManager != nullptr && (replayManager->IsReplaying() || replayManager->IsNormalising()))
         {
             // We only accept replay commands as long the replay is active.
-            if ((flags & GAME_COMMAND_FLAG_REPLAY) == 0 && !ignoreForReplays)
+            if (!flags.has(CommandFlag::replay) && !ignoreForReplays)
             {
                 // TODO: Introduce proper error.
                 auto result = Result();
@@ -311,8 +311,7 @@ namespace OpenRCT2::GameActions
 
         Result result = QueryInternal(action, gameState, topLevel);
 #ifdef ENABLE_SCRIPTING
-        if (result.Error == Status::Ok
-            && ((Network::GetMode() == Network::Mode::none) || (flags & GAME_COMMAND_FLAG_NETWORKED)))
+        if (result.Error == Status::Ok && ((Network::GetMode() == Network::Mode::none) || flags.has(CommandFlag::networked)))
         {
             auto& scriptEngine = GetContext()->GetScriptEngine();
             scriptEngine.RunGameActionHooks(*action, result, false);
@@ -327,7 +326,7 @@ namespace OpenRCT2::GameActions
                 if (Network::GetMode() == Network::Mode::client)
                 {
                     // As a client we have to wait or send it first.
-                    if (!(actionFlags & Flags::ClientOnly) && !(flags & GAME_COMMAND_FLAG_NETWORKED))
+                    if (!(actionFlags & Flags::ClientOnly) && !flags.has(CommandFlag::networked))
                     {
                         LOG_VERBOSE("[%s] GameAction::Execute %s (Out)", GetRealm(), action->GetName());
                         Network::SendGameAction(action);
@@ -340,7 +339,7 @@ namespace OpenRCT2::GameActions
                     // If player is the server it would execute right away as where clients execute the commands
                     // at the beginning of the frame, so we have to put them into the queue.
                     // This is also the case when its executed from the UI update.
-                    if (!(actionFlags & Flags::ClientOnly) && !(flags & GAME_COMMAND_FLAG_NETWORKED))
+                    if (!(actionFlags & Flags::ClientOnly) && !flags.has(CommandFlag::networked))
                     {
                         LOG_VERBOSE("[%s] GameAction::Execute %s (Queue)", GetRealm(), action->GetName());
                         Enqueue(action, getGameState().currentTicks);
@@ -401,14 +400,14 @@ namespace OpenRCT2::GameActions
                 }
                 else
                 {
-                    bool commandExecutes = (flags & GAME_COMMAND_FLAG_GHOST) == 0 && (flags & GAME_COMMAND_FLAG_NO_SPEND) == 0;
+                    bool commandExecutes = !(flags.hasAny(CommandFlag::ghost, CommandFlag::noSpend));
 
                     bool recordAction = false;
                     if (replayManager != nullptr && !ignoreForReplays)
                     {
                         if (replayManager->IsRecording() && commandExecutes)
                             recordAction = true;
-                        else if (replayManager->IsNormalising() && (flags & GAME_COMMAND_FLAG_REPLAY) != 0)
+                        else if (replayManager->IsNormalising() && flags.has(CommandFlag::replay))
                             recordAction = true; // In normalisation we only feed back actions issued by the replay manager.
                     }
                     if (recordAction)
@@ -433,14 +432,14 @@ namespace OpenRCT2::GameActions
         }
 
         // Only show errors when its not a ghost and not a preview and also top level action.
-        bool shouldShowError = !(flags & GAME_COMMAND_FLAG_GHOST) && !(flags & GAME_COMMAND_FLAG_NO_SPEND) && topLevel;
+        bool shouldShowError = !(flags.has(CommandFlag::ghost)) && !(flags.has(CommandFlag::noSpend)) && topLevel;
 
         // In network mode the error should be only shown to the issuer of the action.
         if (Network::GetMode() != Network::Mode::none)
         {
             // If the action was never networked and query fails locally the player id is not assigned.
             // So compare only if the action went into the queue otherwise show errors by default.
-            const bool isActionFromNetwork = (action->GetFlags() & GAME_COMMAND_FLAG_NETWORKED) != 0;
+            const bool isActionFromNetwork = action->GetFlags().has(CommandFlag::networked);
             if (isActionFromNetwork && action->GetPlayer() != Network::GetCurrentPlayerId())
             {
                 shouldShowError = false;

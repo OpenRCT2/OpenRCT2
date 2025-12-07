@@ -358,7 +358,7 @@ namespace OpenRCT2::GameActions
             targetHeight = surfaceHeight;
         }
 
-        if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
+        if (!(GetFlags().has(CommandFlag::ghost)))
         {
             FootpathRemoveLitter({ _loc, targetHeight });
             if (!getGameState().cheats.disableClearanceChecks && (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_NO_WALLS)))
@@ -406,7 +406,7 @@ namespace OpenRCT2::GameActions
         QuarterTile quarterTile = QuarterTile{ collisionQuadrants, supports }.Rotate(quadRotation);
         const auto isTree = sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_IS_TREE);
         auto canBuild = MapCanConstructWithClearAt(
-            { _loc, zLow, zHigh }, MapPlaceSceneryClearFunc, quarterTile, GetFlags() | GAME_COMMAND_FLAG_APPLY, kTileSlopeFlat,
+            { _loc, zLow, zHigh }, MapPlaceSceneryClearFunc, quarterTile, GetFlags().with(CommandFlag::apply), kTileSlopeFlat,
             CreateCrossingMode::none, isTree);
         if (canBuild.Error != Status::Ok)
         {
@@ -432,7 +432,7 @@ namespace OpenRCT2::GameActions
         sceneryElement->SetSecondaryColour(_secondaryColour);
         sceneryElement->SetTertiaryColour(_tertiaryColour);
         sceneryElement->SetClearanceZ(sceneryElement->GetBaseZ() + sceneryEntry->height + 7);
-        sceneryElement->SetGhost(GetFlags() & GAME_COMMAND_FLAG_GHOST);
+        sceneryElement->SetGhost(GetFlags().has(CommandFlag::ghost));
         if (supportsRequired)
         {
             sceneryElement->SetNeedsSupports();

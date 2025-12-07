@@ -30,6 +30,7 @@
 #include <openrct2/world/tile_element/SurfaceElement.h>
 
 using namespace OpenRCT2::Drawing;
+using OpenRCT2::GameActions::CommandFlag;
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -205,7 +206,7 @@ namespace OpenRCT2::Ui::Windows
             auto pathIndex = isLegacyPath ? gFootpathSelection.LegacyPath : gFootpathSelection.NormalSurface;
             auto gameAction = GameActions::ParkEntrancePlaceAction(
                 parkEntrancePosition, pathIndex, _selectedEntranceType, isLegacyPath);
-            gameAction.SetFlags(GAME_COMMAND_FLAG_GHOST);
+            gameAction.SetFlags({ CommandFlag::ghost });
 
             auto result = GameActions::Execute(&gameAction, getGameState());
             if (result.Error == GameActions::Status::Ok)
