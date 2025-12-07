@@ -264,7 +264,8 @@ void Peep::UpdateWaitingAtCrossing()
     NextAnimationType = PeepAnimationType::watchRide;
     SwitchNextAnimationType();
 
-    if (auto* guest = As<Guest>(); guest != nullptr)
+    auto* guest = As<Guest>();
+    if (guest != nullptr)
     {
         if (guest->IsActionInterruptable())
         {
