@@ -112,7 +112,7 @@ namespace OpenRCT2::Ui::Windows
                 }
                 else
                 {
-                    result.Text = JSToStdString(ctx, desc, "text");
+                    result.Text = AsOrDefault(ctx, desc, "text", "");
                     result.HasBorder = true;
                 }
                 JS_FreeValue(ctx, jsImage);
@@ -121,7 +121,7 @@ namespace OpenRCT2::Ui::Windows
             }
             else if (result.Type == "checkbox")
             {
-                result.Text = JSToStdString(ctx, desc, "text");
+                result.Text = AsOrDefault(ctx, desc, "text", "");
                 result.IsChecked = AsOrDefault(ctx, desc, "isChecked", false);
                 result.OnChange = JSToCallback(ctx, desc, "onChange");
             }
@@ -148,11 +148,11 @@ namespace OpenRCT2::Ui::Windows
             }
             else if (result.Type == "groupbox")
             {
-                result.Text = JSToStdString(ctx, desc, "text");
+                result.Text = AsOrDefault(ctx, desc, "text", "");
             }
             else if (result.Type == "label")
             {
-                result.Text = JSToStdString(ctx, desc, "text");
+                result.Text = AsOrDefault(ctx, desc, "text", "");
                 if (JSToStdString(ctx, desc, "textAlign") == "centred")
                 {
                     result.TextAlign = TextAlignment::centre;
@@ -183,14 +183,14 @@ namespace OpenRCT2::Ui::Windows
             }
             else if (result.Type == "spinner")
             {
-                result.Text = JSToStdString(ctx, desc, "text");
+                result.Text = AsOrDefault(ctx, desc, "text", "");
                 result.OnIncrement = JSToCallback(ctx, desc, "onIncrement");
                 result.OnDecrement = JSToCallback(ctx, desc, "onDecrement");
                 result.OnClick = JSToCallback(ctx, desc, "onClick");
             }
             else if (result.Type == "textbox")
             {
-                result.Text = JSToStdString(ctx, desc, "text");
+                result.Text = AsOrDefault(ctx, desc, "text", "");
                 result.MaxLength = AsOrDefault(ctx, desc, "maxLength", 32);
                 result.OnChange = JSToCallback(ctx, desc, "onChange");
             }
