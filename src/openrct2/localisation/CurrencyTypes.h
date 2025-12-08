@@ -33,6 +33,7 @@ namespace OpenRCT2
         newTaiwanDollar, // New Taiwan Dollar
         yuan,            // Chinese Yuan
         forint,          // Hungarian Forint
+        zloty,           // Polish Złoty
 
         custom, // Custom currency
 
