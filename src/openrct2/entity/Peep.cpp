@@ -250,6 +250,46 @@ void PeepUpdateAllBoundingBoxes()
     }
 }
 
+void Peep::UpdateWaitingAtCrossing()
+{
+    if (!IsActionInterruptable())
+    {
+        UpdateAction();
+        Invalidate();
+        if (!IsActionWalking())
+            return;
+    }
+
+    Action = PeepActionType::idle;
+    NextAnimationType = PeepAnimationType::watchRide;
+    SwitchNextAnimationType();
+
+    auto* guest = As<Guest>();
+    if (guest != nullptr)
+    {
+        if (guest->IsActionInterruptable())
+        {
+            if (guest->HasFoodOrDrink())
+            {
+                if ((ScenarioRand() & 0xFFFF) <= 1310)
+                {
+                    Action = PeepActionType::eatFood;
+                    AnimationFrameNum = 0;
+                    AnimationImageIdOffset = 0;
+                }
+            }
+            else if ((ScenarioRand() & 0xFFFF) <= 64)
+            {
+                Action = PeepActionType::wave2;
+                AnimationFrameNum = 0;
+                AnimationImageIdOffset = 0;
+            }
+        }
+    }
+
+    UpdateCurrentAnimationType();
+}
+
 /*
  * rct2: 0x68F3AE
  * Set peep state to falling if path below has gone missing, return true if current path is valid, false if peep starts falling.
