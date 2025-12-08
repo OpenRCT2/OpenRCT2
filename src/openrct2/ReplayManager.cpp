@@ -25,7 +25,6 @@
 #include "actions/TileModifyAction.h"
 #include "actions/TrackPlaceAction.h"
 #include "config/Config.h"
-#include "config/ConfigEnum.hpp"
 #include "core/Compression.h"
 #include "core/DataSerialiser.h"
 #include "core/EnumUtils.hpp"
