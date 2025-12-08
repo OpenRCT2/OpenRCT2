@@ -324,7 +324,9 @@ namespace OpenRCT2::Ui::Windows
                     }
                 }
 
-                currentRide->setToDefaultInspectionInterval();
+                // Do not reset inspection interval when closing the construction window.
+                // The player may have changed this in the ride window (see issue #25601).
+                // currentRide->setToDefaultInspectionInterval();
                 auto intent = Intent(WindowClass::ride);
                 intent.PutExtra(INTENT_EXTRA_RIDE_ID, currentRide->id.ToUnderlying());
                 ContextOpenIntent(&intent);
