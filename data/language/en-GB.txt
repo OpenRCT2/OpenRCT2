@@ -3839,3 +3839,4 @@ STR_7006    :Draw border around image buttons
 STR_7007    :Ride Type
 STR_7008    :Unknown ride type ({INT32})
 STR_7009    :Receiving scripts…
+STR_7010    :Polish Złoty (PLN)
