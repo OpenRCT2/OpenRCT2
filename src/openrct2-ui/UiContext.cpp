@@ -807,9 +807,9 @@ private:
             height = 800;
 #else
         if (width <= 0)
-            width = 640;
+            width = 1280;
         if (height <= 0)
-            height = 480;
+            height = 720;
 #endif
 
         // Create window in window first rather than fullscreen so we have the display the window is on first
