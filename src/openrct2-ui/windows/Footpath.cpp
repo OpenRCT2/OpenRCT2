@@ -1039,12 +1039,14 @@ namespace OpenRCT2::Ui::Windows
 
             // Get current map pos and handle key modifier state
             auto mapPos = FootpathGetPlacePositionFromScreenPosition(screenCoords);
+            
             if (!mapPos)
                 return;
 
             // Check for change
+            auto placement = WindowFootpathGetPlacementFromScreenCoords(screenCoords);
             if ((_provisionalFootpath.flags.has(ProvisionalPathFlag::placed)) && _provisionalFootpath.positionA == mapPos
-                && _provisionalFootpath.startZ == _footpathPlaceZ)
+                && _provisionalFootpath.startZ == placement.baseZ)
             {
                 return;
             }
@@ -1057,7 +1059,7 @@ namespace OpenRCT2::Ui::Windows
             FootpathUpdateProvisional();
 
             // Figure out what slope and height to use
-            auto placement = WindowFootpathGetPlacementFromScreenCoords(screenCoords);
+
             if (!placement.isValid())
             {
                 gMapSelectFlags.unset(MapSelectFlag::enable);
