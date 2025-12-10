@@ -88,6 +88,25 @@ bool MapPlaceNonSceneryClearFunc(TileElement** tile_element, const CoordsXY& coo
     return MapPlaceClearFunc(tile_element, coords, flags, price, /*is_scenery=*/false);
 }
 
+bool MapPlaceParkEntranceClearFunc(TileElement** tile_element, const CoordsXY& coords, uint8_t flags, money64* price)
+{
+    if ((*tile_element)->GetType() == TileElementType::Path)
+    {
+        if (flags & GAME_COMMAND_FLAG_GHOST)
+            return true;
+
+        if (!(flags & GAME_COMMAND_FLAG_APPLY))
+            return true;
+
+        MapInvalidateTile({ coords, (*tile_element)->GetBaseZ(), (*tile_element)->GetClearanceZ() });
+        TileElementRemove(*tile_element);
+        (*tile_element)--;
+        return true;
+    }
+
+    return MapPlaceClearFunc(tile_element, coords, flags, price, /*is_scenery=*/false);
+}
+
 static bool landSlopeFitsUnderTrack(int32_t baseZ, uint8_t slope, const TrackElement& trackElement)
 {
     const auto [slopeNorthZ, slopeEastZ, slopeSouthZ, slopeWestZ] = GetSlopeCornerHeights(baseZ, slope);
