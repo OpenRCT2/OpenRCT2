@@ -964,7 +964,7 @@ void Vehicle::Update()
         {
             if (!(carEntry->flags & CAR_ENTRY_FLAG_WATER_RIDE) || (pitch == VehiclePitch::up25 && velocity <= 2.0_mph))
             {
-                SetFlag(VehicleFlags::StoppedOnLift);
+                SetFlag(VehicleFlags::StoppedBySafetyCutOut);
             }
         }
     }
@@ -2342,7 +2342,7 @@ void Vehicle::UpdateDeparting()
                 {
                     if (_vehicleBreakdown == BREAKDOWN_SAFETY_CUT_OUT)
                     {
-                        SetFlag(VehicleFlags::StoppedOnLift);
+                        SetFlag(VehicleFlags::StoppedBySafetyCutOut);
                         ClearFlag(VehicleFlags::CollisionDisabled);
                     }
                 }
@@ -2360,7 +2360,7 @@ void Vehicle::UpdateDeparting()
                 {
                     if (_vehicleBreakdown == BREAKDOWN_SAFETY_CUT_OUT)
                     {
-                        SetFlag(VehicleFlags::StoppedOnLift);
+                        SetFlag(VehicleFlags::StoppedBySafetyCutOut);
                         ClearFlag(VehicleFlags::CollisionDisabled);
                     }
                 }
@@ -2822,7 +2822,7 @@ void Vehicle::UpdateTravelling()
                         if (_vehicleBreakdown == 0)
                         {
                             sound2_flags &= ~VEHICLE_SOUND2_FLAGS_LIFT_HILL;
-                            SetFlag(VehicleFlags::StoppedOnLift);
+                            SetFlag(VehicleFlags::StoppedBySafetyCutOut);
                         }
                     }
                 }
@@ -2838,7 +2838,7 @@ void Vehicle::UpdateTravelling()
                 {
                     if (_vehicleBreakdown == 0)
                     {
-                        SetFlag(VehicleFlags::StoppedOnLift);
+                        SetFlag(VehicleFlags::StoppedBySafetyCutOut);
                         sound2_flags &= ~VEHICLE_SOUND2_FLAGS_LIFT_HILL;
                     }
                 }
@@ -5317,7 +5317,7 @@ void Vehicle::CheckAndApplyBlockSectionStopSite()
 void Vehicle::UpdateVelocity()
 {
     int32_t nextVelocity = acceleration + velocity;
-    if (HasFlag(VehicleFlags::StoppedOnLift))
+    if (HasFlag(VehicleFlags::StoppedBySafetyCutOut))
     {
         nextVelocity = 0;
     }

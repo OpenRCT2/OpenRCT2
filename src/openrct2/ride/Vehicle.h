@@ -470,7 +470,8 @@ namespace OpenRCT2::VehicleFlags
     constexpr uint32_t Testing = (1 << 5);
     constexpr uint32_t CurrentlyColliding = (1 << 6); // When go-karts are colliding, they have a higher chance of changing
                                                       // lanes
-    constexpr uint32_t StoppedOnLift = (1 << 7);      // Used on rides when safety cutout stops them on a lift
+    // Used on vehicles when a safety cut-out stops them, such as RCs on a lift hill and powered rides
+    constexpr uint32_t StoppedBySafetyCutOut = (1 << 7);
     constexpr uint32_t CarIsBroken = (1 << 8);
     constexpr uint32_t TrainIsBroken = (1 << 9);
     constexpr uint32_t StoppedOnHoldingBrake = (1 << 10);
