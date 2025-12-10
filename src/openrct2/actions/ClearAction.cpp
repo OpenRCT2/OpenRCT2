@@ -209,7 +209,7 @@ namespace OpenRCT2::GameActions
                             auto removeSceneryAction = LargeSceneryRemoveAction(
                                 { tilePos, tileElement->GetBaseZ(), tileElement->GetDirection() },
                                 tileElement->AsLargeScenery()->GetSequenceIndex());
-                            removeSceneryAction.SetFlags(GetFlags() | GAME_COMMAND_FLAG_TRACK_DESIGN);
+                            removeSceneryAction.SetFlags(GetFlags().with(CommandFlag::trackDesign));
 
                             auto res = executing ? ExecuteNested(&removeSceneryAction, gameState)
                                                  : QueryNested(&removeSceneryAction, gameState);

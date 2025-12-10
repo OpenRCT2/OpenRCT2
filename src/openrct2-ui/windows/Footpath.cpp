@@ -47,6 +47,7 @@
 #include <openrct2/world/tile_element/SurfaceElement.h>
 
 using namespace OpenRCT2::Numerics;
+using OpenRCT2::GameActions::CommandFlag;
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -1937,7 +1938,7 @@ namespace OpenRCT2::Ui::Windows
         {
             auto footpathPlaceAction = GameActions::FootpathPlaceAction(
                 tile.position, tile.slope, type, railingsType, kInvalidDirection, constructFlags);
-            footpathPlaceAction.SetFlags(GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
+            footpathPlaceAction.SetFlags({ CommandFlag::ghost, CommandFlag::allowDuringPaused });
             res = GameActions::Execute(&footpathPlaceAction, getGameState());
             // The latter status will be returned if there is already path at the tile in question, to prevent a ghost
             // from glitching through the existing path.
@@ -2008,7 +2009,7 @@ namespace OpenRCT2::Ui::Windows
         for (const auto& tile : _provisionalFootpath.tiles)
         {
             auto action = GameActions::FootpathRemoveAction(tile.position);
-            action.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
+            action.SetFlags({ CommandFlag::allowDuringPaused, CommandFlag::noSpend, CommandFlag::ghost });
             GameActions::Execute(&action, getGameState());
         }
     }

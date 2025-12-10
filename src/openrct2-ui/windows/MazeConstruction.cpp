@@ -32,6 +32,8 @@
 #include <openrct2/world/MapSelection.h>
 #include <openrct2/world/tile_element/EntranceElement.h>
 
+using OpenRCT2::GameActions::CommandFlag;
+
 namespace OpenRCT2::Ui::Windows
 {
 #pragma region Widgets
@@ -133,7 +135,7 @@ namespace OpenRCT2::Ui::Windows
                 if (currentRide->overallView.IsNull())
                 {
                     auto gameAction = GameActions::RideDemolishAction(currentRide->id, GameActions::RideModifyType::demolish);
-                    gameAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
+                    gameAction.SetFlags({ CommandFlag::allowDuringPaused });
                     GameActions::Execute(&gameAction, getGameState());
                 }
                 else
@@ -396,7 +398,8 @@ namespace OpenRCT2::Ui::Windows
 
         void WindowMazeConstructionConstruct(int32_t direction)
         {
-            int32_t x, y, z, actionFlags = 0, mode;
+            int32_t x, y, z, mode;
+            CommandFlags actionFlags = {};
 
             _currentTrackSelectionFlags.clearAll();
             _rideConstructionNextArrowPulse = 0;
@@ -413,7 +416,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 case RideConstructionState::MazeMove:
                     mode = GC_SET_MAZE_TRACK_MOVE;
-                    actionFlags = GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED;
+                    actionFlags = { CommandFlag::allowDuringPaused };
                     break;
                 default:
                 case RideConstructionState::MazeFill:

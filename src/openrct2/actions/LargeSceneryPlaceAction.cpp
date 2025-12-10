@@ -287,7 +287,7 @@ namespace OpenRCT2::GameActions
             const auto clearanceData = canBuild.GetData<ConstructClearResult>();
             resultData.GroundFlags = clearanceData.GroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
 
-            if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
+            if (!(GetFlags().has(CommandFlag::ghost)))
             {
                 FootpathRemoveLitter({ curTile, zLow });
                 if (!getGameState().cheats.disableClearanceChecks)
@@ -389,7 +389,7 @@ namespace OpenRCT2::GameActions
         sceneryElement.SetSecondaryColour(_secondaryColour);
         sceneryElement.SetTertiaryColour(_tertiaryColour);
 
-        if (GetFlags() & GAME_COMMAND_FLAG_GHOST)
+        if (GetFlags().has(CommandFlag::ghost))
         {
             sceneryElement.SetGhost(true);
         }

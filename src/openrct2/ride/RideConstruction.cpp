@@ -50,6 +50,7 @@
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::TrackMetaData;
+using OpenRCT2::GameActions::CommandFlag;
 
 money64 _currentTrackPrice;
 
@@ -1131,7 +1132,7 @@ money64 RideGetRefundPrice(const Ride& ride)
         auto trackRemoveAction = GameActions::TrackRemoveAction(
             trackElement.element->AsTrack()->GetTrackType(), trackElement.element->AsTrack()->GetSequenceIndex(),
             { trackElement.x, trackElement.y, trackElement.element->GetBaseZ(), direction });
-        trackRemoveAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
+        trackRemoveAction.SetFlags(CommandFlag::allowDuringPaused);
 
         auto res = GameActions::Query(&trackRemoveAction, getGameState());
 
@@ -1165,14 +1166,14 @@ money64 SetOperatingSetting(RideId rideId, GameActions::RideSetSetting setting, 
     return res.Error == GameActions::Status::Ok ? 0 : kMoney64Undefined;
 }
 
-money64 SetOperatingSettingNested(RideId rideId, GameActions::RideSetSetting setting, uint8_t value, uint8_t flags)
+money64 SetOperatingSettingNested(RideId rideId, GameActions::RideSetSetting setting, uint8_t value, CommandFlags flags)
 {
     auto rideSetSetting = GameActions::RideSetSettingAction(rideId, setting, value);
     rideSetSetting.SetFlags(flags);
 
     auto& gameState = getGameState();
-    auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&rideSetSetting, gameState)
-                                               : GameActions::QueryNested(&rideSetSetting, gameState);
+    auto res = flags.has(CommandFlag::apply) ? GameActions::ExecuteNested(&rideSetSetting, gameState)
+                                             : GameActions::QueryNested(&rideSetSetting, gameState);
     return res.Error == GameActions::Status::Ok ? 0 : kMoney64Undefined;
 }
 

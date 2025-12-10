@@ -28,6 +28,7 @@
 #include <numeric>
 
 using namespace OpenRCT2;
+using OpenRCT2::GameActions::CommandFlag;
 
 // Monthly research funding costs
 const money64 kResearchCosts[RESEARCH_FUNDING_COUNT] = {
@@ -58,15 +59,15 @@ static constexpr bool kCountTowardsCurrentExpenditure[EnumValue(ExpenditureType:
  * Checks the condition if the game is required to use money.
  * @param flags game command flags.
  */
-bool FinanceCheckMoneyRequired(uint32_t flags)
+bool FinanceCheckMoneyRequired(CommandFlags flags)
 {
     if (getGameState().park.flags & PARK_FLAGS_NO_MONEY)
         return false;
     if (isInEditorMode())
         return false;
-    if (flags & GAME_COMMAND_FLAG_NO_SPEND)
+    if (flags.has(CommandFlag::noSpend))
         return false;
-    if (flags & GAME_COMMAND_FLAG_GHOST)
+    if (flags.has(CommandFlag::ghost))
         return false;
     return true;
 }
@@ -76,7 +77,7 @@ bool FinanceCheckMoneyRequired(uint32_t flags)
  * @param cost.
  * @param flags game command flags.
  */
-bool FinanceCheckAffordability(money64 cost, uint32_t flags)
+bool FinanceCheckAffordability(money64 cost, CommandFlags flags)
 {
     return !FinanceCheckMoneyRequired(flags) || cost <= 0 || cost <= getGameState().park.cash;
 }

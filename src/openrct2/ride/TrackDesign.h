@@ -238,7 +238,7 @@ extern RideId gTrackDesignSaveRideIndex;
 void TrackDesignMirror(TrackDesign& td);
 
 OpenRCT2::GameActions::Result TrackDesignPlace(
-    const TrackDesign& td, uint32_t flags, bool placeScenery, Ride& ride, const CoordsXYZD& coords);
+    const TrackDesign& td, CommandFlags flags, bool placeScenery, Ride& ride, const CoordsXYZD& coords);
 void TrackDesignPreviewRemoveGhosts(const TrackDesign& td, Ride& ride, const CoordsXYZD& coords);
 void TrackDesignPreviewDrawOutlines(
     TrackDesignState& tds, const TrackDesign& td, Ride& ride, const CoordsXYZD& coords, bool placeScenery);

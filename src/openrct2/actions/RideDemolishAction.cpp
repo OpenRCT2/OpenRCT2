@@ -227,7 +227,7 @@ namespace OpenRCT2::GameActions
                     if (type != TrackElemType::Maze)
                     {
                         auto trackRemoveAction = TrackRemoveAction(type, trackElement->GetSequenceIndex(), location);
-                        trackRemoveAction.SetFlags(GAME_COMMAND_FLAG_NO_SPEND);
+                        trackRemoveAction.SetFlags({ CommandFlag::noSpend });
 
                         auto removRes = ExecuteNested(&trackRemoveAction, gameState);
                         if (removRes.Error != Status::Ok)

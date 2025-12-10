@@ -144,7 +144,7 @@ namespace OpenRCT2::GameActions
         {
             if (bannerElement->GetBaseZ() != _loc.z)
                 continue;
-            if (bannerElement->IsGhost() && !(GetFlags() & GAME_COMMAND_FLAG_GHOST))
+            if (bannerElement->IsGhost() && !(GetFlags().has(CommandFlag::ghost)))
                 continue;
             if (bannerElement->GetPosition() != _loc.direction)
                 continue;

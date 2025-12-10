@@ -9,8 +9,11 @@
 
 #pragma once
 
+#include "../actions/CommandFlag.h"
 #include "../core/Money.hpp"
 #include "Research.h"
+
+using OpenRCT2::GameActions::CommandFlags;
 
 enum class ExpenditureType : int32_t
 {
@@ -38,8 +41,8 @@ constexpr uint8_t kMaxBankLoanInterestRate = 255;
 
 extern const money64 kResearchCosts[RESEARCH_FUNDING_COUNT];
 
-bool FinanceCheckMoneyRequired(uint32_t flags);
-bool FinanceCheckAffordability(money64 cost, uint32_t flags);
+bool FinanceCheckMoneyRequired(CommandFlags flags);
+bool FinanceCheckAffordability(money64 cost, CommandFlags flags);
 void FinancePayment(money64 amount, ExpenditureType type);
 void FinancePayWages();
 void FinancePayResearch();

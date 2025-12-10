@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../Identifiers.h"
+#include "../actions/CommandFlag.h"
 #include "../object/Object.h"
 #include "../world/Location.hpp"
 #include "../world/QuarterTile.h"
@@ -737,8 +738,9 @@ TrackRoll TrackGetActualBank(OpenRCT2::TileElement* tileElement, TrackRoll bank)
 TrackRoll TrackGetActualBank2(ride_type_t rideType, bool isInverted, TrackRoll bank);
 TrackRoll TrackGetActualBank3(bool useInvertedSprites, OpenRCT2::TileElement* tileElement);
 
-ResultWithMessage TrackAddStationElement(CoordsXYZD loc, RideId rideIndex, int32_t flags, bool fromTrackDesign);
-ResultWithMessage TrackRemoveStationElement(const CoordsXYZD& loc, RideId rideIndex, int32_t flags);
+ResultWithMessage TrackAddStationElement(
+    CoordsXYZD loc, RideId rideIndex, OpenRCT2::GameActions::CommandFlags flags, bool fromTrackDesign);
+ResultWithMessage TrackRemoveStationElement(const CoordsXYZD& loc, RideId rideIndex, OpenRCT2::GameActions::CommandFlags flags);
 
 bool TrackTypeHasSpeedSetting(OpenRCT2::TrackElemType trackType);
 bool TrackTypeIsHelix(OpenRCT2::TrackElemType trackType);

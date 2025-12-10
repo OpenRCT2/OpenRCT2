@@ -53,7 +53,7 @@ namespace OpenRCT2::GameActions
     {
         auto res = Result();
 
-        const uint32_t flags = GetFlags();
+        const auto flags = GetFlags();
 
         res.Position.x = _loc.x + 16;
         res.Position.y = _loc.y + 16;
@@ -113,7 +113,7 @@ namespace OpenRCT2::GameActions
             }
             // Prevent duplicate costs when using the clear scenery tool that overlaps multiple large
             // scenery tile elements.
-            if (flags & GAME_COMMAND_FLAG_TRACK_DESIGN)
+            if (flags.has(CommandFlag::trackDesign))
             {
                 if (tileElement->AsLargeScenery()->IsAccounted())
                     calculate_cost = false;
@@ -194,7 +194,7 @@ namespace OpenRCT2::GameActions
 
     TileElement* LargeSceneryRemoveAction::FindLargeSceneryElement(const CoordsXYZ& pos, int32_t sequenceIndex) const
     {
-        const bool isGhost = GetFlags() & GAME_COMMAND_FLAG_GHOST;
+        const bool isGhost = GetFlags().has(CommandFlag::ghost);
         for (auto* sceneryElement : TileElementsView<LargeSceneryElement>(pos))
         {
             // If we are removing ghost elements

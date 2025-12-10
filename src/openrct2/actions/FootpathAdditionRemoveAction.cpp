@@ -82,7 +82,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_ERR_PATH_ELEMENT_NOT_FOUND);
         }
 
-        if (!pathElement->AdditionIsGhost() && (GetFlags() & GAME_COMMAND_FLAG_GHOST))
+        if (!pathElement->AdditionIsGhost() && (GetFlags().has(CommandFlag::ghost)))
         {
             LOG_WARNING("Tried to remove non ghost during ghost removal.");
             return Result(Status::Disallowed, STR_CANT_REMOVE_THIS, kStringIdNone);
@@ -96,7 +96,7 @@ namespace OpenRCT2::GameActions
     Result FootpathAdditionRemoveAction::Execute(GameState_t& gameState) const
     {
         auto* pathElement = MapGetFootpathElement(_loc);
-        if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
+        if (!(GetFlags().has(CommandFlag::ghost)))
         {
             FootpathInterruptPeeps(_loc);
         }

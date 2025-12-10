@@ -76,6 +76,7 @@
 #include <memory>
 
 using namespace OpenRCT2;
+using OpenRCT2::GameActions::CommandFlag;
 
 namespace OpenRCT2::TrackDesignSceneryElementFlags
 {
@@ -956,8 +957,7 @@ static GameActions::Result TrackDesignPlaceSceneryElementRemoveGhost(
 
     int32_t z = scenery.loc.z + originZ;
     uint8_t sceneryRotation = (rotation + scenery.getRotation()) & kTileElementDirectionMask;
-    const uint32_t flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
-        | GAME_COMMAND_FLAG_GHOST;
+    const CommandFlags flags = { CommandFlag::apply, CommandFlag::allowDuringPaused, CommandFlag::noSpend, CommandFlag::ghost };
     std::unique_ptr<GameActions::GameAction> ga;
     switch (entryInfo->Type)
     {
@@ -1046,7 +1046,7 @@ static GameActions::Result TrackDesignPlaceSceneryElement(
     }
 
     int16_t z;
-    uint8_t flags;
+    CommandFlags flags;
 
     auto& gameState = getGameState();
 
@@ -1064,24 +1064,23 @@ static GameActions::Result TrackDesignPlaceSceneryElement(
             z = scenery.loc.z + originZ;
             uint8_t quadrant = (scenery.getQuadrant() + _currentTrackPieceDirection) & 3;
 
-            flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_TRACK_DESIGN;
+            flags = { CommandFlag::apply, CommandFlag::trackDesign };
             if (tds.placeOperation == TrackPlaceOperation::placeTrackPreview)
             {
-                flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_TRACK_DESIGN | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED
-                    | GAME_COMMAND_FLAG_NO_SPEND;
+                flags = { CommandFlag::apply, CommandFlag::trackDesign, CommandFlag::allowDuringPaused, CommandFlag::noSpend };
             }
             else if (tds.placeOperation == TrackPlaceOperation::placeGhost)
             {
-                flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_TRACK_DESIGN | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED
-                    | GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_NO_SPEND;
+                flags = { CommandFlag::apply, CommandFlag::trackDesign, CommandFlag::allowDuringPaused, CommandFlag::ghost,
+                          CommandFlag::noSpend };
             }
             else if (tds.placeOperation == TrackPlaceOperation::placeQuery)
             {
-                flags = GAME_COMMAND_FLAG_TRACK_DESIGN;
+                flags = { CommandFlag::trackDesign };
             }
             if (tds.isReplay)
             {
-                flags |= GAME_COMMAND_FLAG_REPLAY;
+                flags.set(CommandFlag::replay);
             }
 
             auto smallSceneryPlace = GameActions::SmallSceneryPlaceAction(
@@ -1089,8 +1088,8 @@ static GameActions::Result TrackDesignPlaceSceneryElement(
                 scenery.secondaryColour, scenery.tertiaryColour);
 
             smallSceneryPlace.SetFlags(flags);
-            auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&smallSceneryPlace, gameState)
-                                                       : GameActions::QueryNested(&smallSceneryPlace, gameState);
+            auto res = flags.has(CommandFlag::apply) ? GameActions::ExecuteNested(&smallSceneryPlace, gameState)
+                                                     : GameActions::QueryNested(&smallSceneryPlace, gameState);
 
             cost = res.Error == GameActions::Status::Ok ? res.Cost : 0;
             break;
@@ -1107,31 +1106,30 @@ static GameActions::Result TrackDesignPlaceSceneryElement(
 
             z = scenery.loc.z + originZ;
 
-            flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_TRACK_DESIGN;
+            flags = { CommandFlag::apply, CommandFlag::trackDesign };
             if (tds.placeOperation == TrackPlaceOperation::placeTrackPreview)
             {
-                flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_TRACK_DESIGN | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED
-                    | GAME_COMMAND_FLAG_NO_SPEND;
+                flags = { CommandFlag::apply, CommandFlag::trackDesign, CommandFlag::allowDuringPaused, CommandFlag::noSpend };
             }
             else if (tds.placeOperation == TrackPlaceOperation::placeGhost)
             {
-                flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_TRACK_DESIGN | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED
-                    | GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_NO_SPEND;
+                flags = { CommandFlag::apply, CommandFlag::trackDesign, CommandFlag::allowDuringPaused, CommandFlag::ghost,
+                          CommandFlag::noSpend };
             }
             else if (tds.placeOperation == TrackPlaceOperation::placeQuery)
             {
-                flags = GAME_COMMAND_FLAG_TRACK_DESIGN;
+                flags = { CommandFlag::trackDesign };
             }
             if (tds.isReplay)
             {
-                flags |= GAME_COMMAND_FLAG_REPLAY;
+                flags.set(CommandFlag::replay);
             }
             auto sceneryPlaceAction = GameActions::LargeSceneryPlaceAction(
                 { mapCoord.x, mapCoord.y, z, rotation }, entryInfo->Index, scenery.primaryColour, scenery.secondaryColour,
                 scenery.tertiaryColour);
             sceneryPlaceAction.SetFlags(flags);
-            auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&sceneryPlaceAction, gameState)
-                                                       : GameActions::QueryNested(&sceneryPlaceAction, gameState);
+            auto res = flags.has(CommandFlag::apply) ? GameActions::ExecuteNested(&sceneryPlaceAction, gameState)
+                                                     : GameActions::QueryNested(&sceneryPlaceAction, gameState);
 
             cost = res.Cost;
             break;
@@ -1147,31 +1145,29 @@ static GameActions::Result TrackDesignPlaceSceneryElement(
             rotation += scenery.getRotation();
             rotation &= 3;
 
-            flags = GAME_COMMAND_FLAG_APPLY;
+            flags = { CommandFlag::apply };
             if (tds.placeOperation == TrackPlaceOperation::placeTrackPreview)
             {
-                flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_TRACK_DESIGN | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED
-                    | GAME_COMMAND_FLAG_NO_SPEND;
+                flags = { CommandFlag::apply, CommandFlag::trackDesign, CommandFlag::allowDuringPaused, CommandFlag::noSpend };
             }
             else if (tds.placeOperation == TrackPlaceOperation::placeGhost)
             {
-                flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
-                    | GAME_COMMAND_FLAG_GHOST;
+                flags = { CommandFlag::apply, CommandFlag::allowDuringPaused, CommandFlag::noSpend, CommandFlag::ghost };
             }
             else if (tds.placeOperation == TrackPlaceOperation::placeQuery)
             {
-                flags = 0;
+                flags = {};
             }
             if (tds.isReplay)
             {
-                flags |= GAME_COMMAND_FLAG_REPLAY;
+                flags.set(CommandFlag::replay);
             }
             auto wallPlaceAction = GameActions::WallPlaceAction(
                 entryInfo->Index, { mapCoord.x, mapCoord.y, z }, rotation, scenery.primaryColour, scenery.secondaryColour,
                 scenery.tertiaryColour);
             wallPlaceAction.SetFlags(flags);
-            auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&wallPlaceAction, gameState)
-                                                       : GameActions::QueryNested(&wallPlaceAction, gameState);
+            auto res = flags.has(CommandFlag::apply) ? GameActions::ExecuteNested(&wallPlaceAction, gameState)
+                                                     : GameActions::QueryNested(&wallPlaceAction, gameState);
 
             cost = res.Cost;
             break;
@@ -1181,23 +1177,22 @@ static GameActions::Result TrackDesignPlaceSceneryElement(
             z = scenery.loc.z + originZ;
             if (mode == 0)
             {
-                flags = GAME_COMMAND_FLAG_APPLY;
+                flags = { CommandFlag::apply };
                 if (tds.placeOperation == TrackPlaceOperation::placeTrackPreview)
                 {
-                    flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND;
+                    flags = { CommandFlag::apply, CommandFlag::allowDuringPaused, CommandFlag::noSpend };
                 }
                 if (tds.placeOperation == TrackPlaceOperation::placeGhost)
                 {
-                    flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
-                        | GAME_COMMAND_FLAG_GHOST;
+                    flags = { CommandFlag::apply, CommandFlag::allowDuringPaused, CommandFlag::noSpend, CommandFlag::ghost };
                 }
                 if (tds.placeOperation == TrackPlaceOperation::placeQuery)
                 {
-                    flags = 0;
+                    flags = {};
                 }
                 if (tds.isReplay)
                 {
-                    flags |= GAME_COMMAND_FLAG_REPLAY;
+                    flags.set(CommandFlag::replay);
                 }
                 uint8_t slopeDirection = (scenery.getSlopeDirection() + rotation) & 0x3;
                 FootpathSlope slope = { FootpathSlopeType::flat, slopeDirection };
@@ -1212,8 +1207,8 @@ static GameActions::Result TrackDesignPlaceSceneryElement(
                 auto footpathPlaceAction = GameActions::FootpathLayoutPlaceAction(
                     { mapCoord.x, mapCoord.y, z }, slope, entryInfo->Index, entryInfo->SecondaryIndex, edges, constructFlags);
                 footpathPlaceAction.SetFlags(flags);
-                auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&footpathPlaceAction, gameState)
-                                                           : GameActions::QueryNested(&footpathPlaceAction, gameState);
+                auto res = flags.has(CommandFlag::apply) ? GameActions::ExecuteNested(&footpathPlaceAction, gameState)
+                                                         : GameActions::QueryNested(&footpathPlaceAction, gameState);
                 // Ignore failures
                 cost = res.Error == GameActions::Status::Ok ? res.Cost : 0;
             }
@@ -1230,19 +1225,18 @@ static GameActions::Result TrackDesignPlaceSceneryElement(
                     return GameActions::Result();
                 }
 
-                flags = GAME_COMMAND_FLAG_APPLY;
+                flags = { CommandFlag::apply };
                 if (tds.placeOperation == TrackPlaceOperation::placeTrackPreview)
                 {
-                    flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND;
+                    flags = { CommandFlag::apply, CommandFlag::allowDuringPaused, CommandFlag::noSpend };
                 }
                 if (tds.placeOperation == TrackPlaceOperation::placeGhost)
                 {
-                    flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
-                        | GAME_COMMAND_FLAG_GHOST;
+                    flags = { CommandFlag::apply, CommandFlag::allowDuringPaused, CommandFlag::noSpend, CommandFlag::ghost };
                 }
                 if (tds.isReplay)
                 {
-                    flags |= GAME_COMMAND_FLAG_REPLAY;
+                    flags.set(CommandFlag::replay);
                 }
 
                 if (tds.placeOperation == TrackPlaceOperation::placeTrackPreview
@@ -1372,30 +1366,29 @@ static std::optional<GameActions::Result> TrackDesignPlaceEntrances(
                         }
 
                         auto stationIndex = tile_element->AsTrack()->GetStationIndex();
-                        uint8_t flags = GAME_COMMAND_FLAG_APPLY;
+                        CommandFlags flags = { CommandFlag::apply };
                         if (tds.placeOperation == TrackPlaceOperation::placeTrackPreview)
                         {
-                            flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED
-                                | GAME_COMMAND_FLAG_NO_SPEND;
+                            flags = { CommandFlag::apply, CommandFlag::allowDuringPaused, CommandFlag::noSpend };
                         }
                         if (tds.placeOperation == TrackPlaceOperation::placeGhost)
                         {
-                            flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
-                                | GAME_COMMAND_FLAG_GHOST;
+                            flags = { CommandFlag::apply, CommandFlag::allowDuringPaused, CommandFlag::noSpend,
+                                      CommandFlag::ghost };
                         }
                         if (tds.placeOperation == TrackPlaceOperation::placeQuery)
                         {
-                            flags = 0;
+                            flags = {};
                         }
                         if (tds.isReplay)
                         {
-                            flags |= GAME_COMMAND_FLAG_REPLAY;
+                            flags.set(CommandFlag::replay);
                         }
 
                         auto rideEntranceExitPlaceAction = GameActions::RideEntranceExitPlaceAction(
                             newCoords, rotation, rideId, stationIndex, entrance.isExit);
                         rideEntranceExitPlaceAction.SetFlags(flags);
-                        auto res = flags & GAME_COMMAND_FLAG_APPLY
+                        auto res = flags.has(CommandFlag::apply)
                             ? GameActions::ExecuteNested(&rideEntranceExitPlaceAction, gameState)
                             : GameActions::QueryNested(&rideEntranceExitPlaceAction, gameState);
 
@@ -1465,37 +1458,36 @@ static GameActions::Result TrackDesignPlaceMaze(
             || tds.placeOperation == TrackPlaceOperation::placeGhost
             || tds.placeOperation == TrackPlaceOperation::placeTrackPreview)
         {
-            uint8_t flags;
+            CommandFlags flags;
             money64 cost = 0;
 
             uint16_t mazeEntry = Numerics::rol16(maze_element.mazeEntry, rotation * 4);
 
             if (tds.placeOperation == TrackPlaceOperation::placeTrackPreview)
             {
-                flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND;
+                flags = { CommandFlag::apply, CommandFlag::allowDuringPaused, CommandFlag::noSpend };
             }
             else if (tds.placeOperation == TrackPlaceOperation::placeGhost)
             {
-                flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
-                    | GAME_COMMAND_FLAG_GHOST;
+                flags = { CommandFlag::apply, CommandFlag::allowDuringPaused, CommandFlag::noSpend, CommandFlag::ghost };
             }
             else if (tds.placeOperation == TrackPlaceOperation::placeQuery)
             {
-                flags = 0;
+                flags = {};
             }
             else
             {
-                flags = GAME_COMMAND_FLAG_APPLY;
+                flags = { CommandFlag::apply };
             }
             if (tds.isReplay)
             {
-                flags |= GAME_COMMAND_FLAG_REPLAY;
+                flags.set(CommandFlag::replay);
             }
 
             auto mazePlace = GameActions::MazePlaceTrackAction({ mapCoord, origin.z }, ride.id, mazeEntry);
             mazePlace.SetFlags(flags);
-            auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&mazePlace, gameState)
-                                                       : GameActions::QueryNested(&mazePlace, gameState);
+            auto res = flags.has(CommandFlag::apply) ? GameActions::ExecuteNested(&mazePlace, gameState)
+                                                     : GameActions::QueryNested(&mazePlace, gameState);
             if (res.Error != GameActions::Status::Ok)
             {
                 return res;
@@ -1550,7 +1542,7 @@ static GameActions::Result TrackDesignPlaceMaze(
     if (tds.placeOperation == TrackPlaceOperation::removeGhost)
     {
         auto gameAction = GameActions::RideDemolishAction(ride.id, GameActions::RideModifyType::demolish);
-        gameAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
+        gameAction.SetFlags({ CommandFlag::allowDuringPaused, CommandFlag::noSpend, CommandFlag::ghost });
         GameActions::Execute(&gameAction, getGameState());
     }
 
@@ -1604,8 +1596,7 @@ static GameActions::Result TrackDesignPlaceRide(
                 auto trackRemoveAction = GameActions::TrackRemoveAction(
                     trackType, 0, { newCoords, tempZ, static_cast<Direction>(rotation & 3) });
                 trackRemoveAction.SetFlags(
-                    GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST
-                    | GAME_COMMAND_FLAG_TRACK_DESIGN);
+                    { CommandFlag::allowDuringPaused, CommandFlag::noSpend, CommandFlag::ghost, CommandFlag::trackDesign });
                 GameActions::ExecuteNested(&trackRemoveAction, gameState);
                 break;
             }
@@ -1629,25 +1620,22 @@ static GameActions::Result TrackDesignPlaceRide(
                     liftHillAndAlternativeState.set(LiftHillAndInverted::inverted);
                 }
 
-                uint8_t flags = GAME_COMMAND_FLAG_APPLY;
+                CommandFlags flags = { CommandFlag::apply };
                 if (tds.placeOperation == TrackPlaceOperation::placeTrackPreview)
                 {
-                    flags |= GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED;
-                    flags |= GAME_COMMAND_FLAG_NO_SPEND;
+                    flags.set(CommandFlag::allowDuringPaused, CommandFlag::noSpend);
                 }
                 else if (tds.placeOperation == TrackPlaceOperation::placeGhost)
                 {
-                    flags |= GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED;
-                    flags |= GAME_COMMAND_FLAG_NO_SPEND;
-                    flags |= GAME_COMMAND_FLAG_GHOST;
+                    flags.set(CommandFlag::allowDuringPaused, CommandFlag::noSpend, CommandFlag::ghost);
                 }
                 else if (tds.placeOperation == TrackPlaceOperation::placeQuery)
                 {
-                    flags = GAME_COMMAND_FLAG_NO_SPEND;
+                    flags = { CommandFlag::noSpend };
                 }
                 if (tds.isReplay)
                 {
-                    flags |= GAME_COMMAND_FLAG_REPLAY;
+                    flags.set(CommandFlag::replay);
                 }
 
                 auto trackPlaceAction = GameActions::TrackPlaceAction(
@@ -1655,8 +1643,8 @@ static GameActions::Result TrackDesignPlaceRide(
                     track.brakeBoosterSpeed, track.colourScheme, track.seatRotation, liftHillAndAlternativeState, true);
                 trackPlaceAction.SetFlags(flags);
 
-                auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&trackPlaceAction, gameState)
-                                                           : GameActions::QueryNested(&trackPlaceAction, gameState);
+                auto res = flags.has(CommandFlag::apply) ? GameActions::ExecuteNested(&trackPlaceAction, gameState)
+                                                         : GameActions::QueryNested(&trackPlaceAction, gameState);
                 if (res.Error != GameActions::Status::Ok)
                 {
                     return res;
@@ -1826,15 +1814,15 @@ static GameActions::Result TrackDesignPlaceVirtual(
 }
 
 GameActions::Result TrackDesignPlace(
-    const TrackDesign& td, uint32_t flags, bool placeScenery, Ride& ride, const CoordsXYZD& coords)
+    const TrackDesign& td, CommandFlags flags, bool placeScenery, Ride& ride, const CoordsXYZD& coords)
 {
-    TrackPlaceOperation ptdOperation = (flags & GAME_COMMAND_FLAG_APPLY) != 0 ? TrackPlaceOperation::place
-                                                                              : TrackPlaceOperation::placeQuery;
-    if ((flags & GAME_COMMAND_FLAG_APPLY) != 0 && (flags & GAME_COMMAND_FLAG_GHOST) != 0)
+    TrackPlaceOperation ptdOperation = flags.has(CommandFlag::apply) ? TrackPlaceOperation::place
+                                                                     : TrackPlaceOperation::placeQuery;
+    if (flags.hasAll(CommandFlag::apply, CommandFlag::ghost))
     {
         ptdOperation = TrackPlaceOperation::placeGhost;
     }
-    bool isReplay = flags & GAME_COMMAND_FLAG_REPLAY;
+    bool isReplay = flags.has(CommandFlag::replay);
 
     TrackDesignState tds{};
     return TrackDesignPlaceVirtual(tds, td, ptdOperation, placeScenery, ride, coords, isReplay);
@@ -1867,7 +1855,7 @@ int32_t TrackDesignGetZPlacement(const TrackDesign& td, Ride& ride, const Coords
     return TrackDesignGetZPlacement(tds, td, ride, coords);
 }
 
-static money64 TrackDesignCreateRide(int32_t type, int32_t subType, int32_t flags, RideId* outRideIndex)
+static money64 TrackDesignCreateRide(int32_t type, int32_t subType, CommandFlags flags, RideId* outRideIndex)
 {
     // Don't set colours as will be set correctly later.
     auto gameAction = GameActions::RideCreateAction(type, subType, 0, 0, getGameState().lastEntranceStyle);
@@ -1905,7 +1893,7 @@ static bool TrackDesignPlacePreview(
     auto entry_index = objManager.GetLoadedObjectEntryIndex(td.trackAndVehicle.vehicleObject);
 
     RideId rideIndex;
-    uint8_t rideCreateFlags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND;
+    CommandFlags rideCreateFlags = { CommandFlag::apply, CommandFlag::allowDuringPaused, CommandFlag::noSpend };
     if (TrackDesignCreateRide(td.trackAndVehicle.rtdIndex, entry_index, rideCreateFlags, &rideIndex) == kMoney64Undefined)
     {
         return false;

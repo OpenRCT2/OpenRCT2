@@ -40,6 +40,8 @@
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::TrackMetaData;
+using OpenRCT2::GameActions::CommandFlag;
+using OpenRCT2::GameActions::CommandFlags;
 
 PitchAndRoll TrackPitchAndRollStart(OpenRCT2::TrackElemType trackType)
 {
@@ -114,7 +116,7 @@ static void ride_remove_station(Ride& ride, const CoordsXYZ& location)
  *
  *  rct2: 0x006C4D89
  */
-ResultWithMessage TrackAddStationElement(CoordsXYZD loc, RideId rideIndex, int32_t flags, bool fromTrackDesign)
+ResultWithMessage TrackAddStationElement(CoordsXYZD loc, RideId rideIndex, CommandFlags flags, bool fromTrackDesign)
 {
     auto ride = GetRide(rideIndex);
     if (ride == nullptr)
@@ -130,7 +132,7 @@ ResultWithMessage TrackAddStationElement(CoordsXYZD loc, RideId rideIndex, int32
         {
             return { false, STR_NO_MORE_STATIONS_ALLOWED_ON_THIS_RIDE };
         }
-        if (flags & GAME_COMMAND_FLAG_APPLY)
+        if (flags.has(CommandFlag::apply))
         {
             auto stationIndex = RideGetFirstEmptyStationStart(*ride);
             assert(!stationIndex.IsNull());
@@ -159,7 +161,7 @@ ResultWithMessage TrackAddStationElement(CoordsXYZD loc, RideId rideIndex, int32
         {
             if (stationElement->AsTrack()->GetTrackType() == TrackElemType::EndStation)
             {
-                if (flags & GAME_COMMAND_FLAG_APPLY)
+                if (flags.has(CommandFlag::apply))
                 {
                     ride_remove_station(*ride, loc);
                 }
@@ -181,7 +183,7 @@ ResultWithMessage TrackAddStationElement(CoordsXYZD loc, RideId rideIndex, int32
         {
             if (stationElement->AsTrack()->GetTrackType() == TrackElemType::EndStation)
             {
-                if (flags & GAME_COMMAND_FLAG_APPLY)
+                if (flags.has(CommandFlag::apply))
                 {
                     ride_remove_station(*ride, loc);
                 }
@@ -205,7 +207,7 @@ ResultWithMessage TrackAddStationElement(CoordsXYZD loc, RideId rideIndex, int32
         return { false, STR_STATION_PLATFORM_TOO_LONG };
     }
 
-    if (flags & GAME_COMMAND_FLAG_APPLY)
+    if (flags.has(CommandFlag::apply))
     {
         loc = { stationFrontLoc, loc.z, loc.direction };
 
@@ -264,7 +266,7 @@ ResultWithMessage TrackAddStationElement(CoordsXYZD loc, RideId rideIndex, int32
  *
  *  rct2: 0x006C494B
  */
-ResultWithMessage TrackRemoveStationElement(const CoordsXYZD& loc, RideId rideIndex, int32_t flags)
+ResultWithMessage TrackRemoveStationElement(const CoordsXYZD& loc, RideId rideIndex, CommandFlags flags)
 {
     auto ride = GetRide(rideIndex);
     if (ride == nullptr)
@@ -281,7 +283,7 @@ ResultWithMessage TrackRemoveStationElement(const CoordsXYZD& loc, RideId rideIn
         TileElement* tileElement = MapGetTrackElementAtWithDirectionFromRide(loc, rideIndex);
         if (tileElement != nullptr)
         {
-            if (flags & GAME_COMMAND_FLAG_APPLY)
+            if (flags.has(CommandFlag::apply))
             {
                 ride_remove_station(*ride, loc);
             }
@@ -297,7 +299,7 @@ ResultWithMessage TrackRemoveStationElement(const CoordsXYZD& loc, RideId rideIn
     {
         if (stationElement->AsTrack()->GetTrackType() == TrackElemType::EndStation)
         {
-            if (flags & GAME_COMMAND_FLAG_APPLY)
+            if (flags.has(CommandFlag::apply))
             {
                 ride_remove_station(*ride, currentLoc);
             }
@@ -320,7 +322,7 @@ ResultWithMessage TrackRemoveStationElement(const CoordsXYZD& loc, RideId rideIn
         {
             if (stationElement->AsTrack()->GetTrackType() == TrackElemType::EndStation)
             {
-                if (flags & GAME_COMMAND_FLAG_APPLY)
+                if (flags.has(CommandFlag::apply))
                 {
                     ride_remove_station(*ride, currentLoc);
                 }
@@ -330,7 +332,7 @@ ResultWithMessage TrackRemoveStationElement(const CoordsXYZD& loc, RideId rideIn
         }
     } while (stationElement != nullptr);
 
-    if (!(flags & GAME_COMMAND_FLAG_APPLY))
+    if (!(flags.has(CommandFlag::apply)))
     {
         if ((removeLoc != stationBackLoc) && (removeLoc != stationFrontLoc) && ride->numStations >= Limits::kMaxStationsPerRide)
         {

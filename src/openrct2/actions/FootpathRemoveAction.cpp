@@ -83,7 +83,7 @@ namespace OpenRCT2::GameActions
         res.Expenditure = ExpenditureType::landscaping;
         res.Position = { _loc.x + 16, _loc.y + 16, _loc.z };
 
-        if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
+        if (!(GetFlags().has(CommandFlag::ghost)))
         {
             FootpathInterruptPeeps(_loc);
             FootpathRemoveLitter(_loc);
@@ -126,7 +126,7 @@ namespace OpenRCT2::GameActions
 
     TileElement* FootpathRemoveAction::GetFootpathElement() const
     {
-        bool getGhostPath = GetFlags() & GAME_COMMAND_FLAG_GHOST;
+        bool getGhostPath = GetFlags().has(CommandFlag::ghost);
 
         for (auto* pathElement : TileElementsView<PathElement>(_loc))
         {
@@ -167,7 +167,9 @@ namespace OpenRCT2::GameActions
             auto bannerRemoveAction = BannerRemoveAction(
                 { loc, tileElement->GetBaseZ(), tileElement->AsBanner()->GetPosition() });
             bool isGhost = tileElement->IsGhost();
-            auto bannerFlags = GetFlags() | (isGhost ? static_cast<uint32_t>(GAME_COMMAND_FLAG_GHOST) : 0);
+            auto bannerFlags = GetFlags();
+            if (isGhost)
+                bannerFlags.set(CommandFlag::ghost);
             bannerRemoveAction.SetFlags(bannerFlags);
 
             auto res = ExecuteNested(&bannerRemoveAction, gameState);

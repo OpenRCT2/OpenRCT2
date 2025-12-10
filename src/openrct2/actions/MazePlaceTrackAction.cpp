@@ -161,8 +161,8 @@ namespace OpenRCT2::GameActions
             return res;
         }
 
-        uint32_t flags = GetFlags();
-        if (!(flags & GAME_COMMAND_FLAG_GHOST))
+        auto flags = GetFlags();
+        if (!(flags.has(CommandFlag::ghost)))
         {
             FootpathRemoveLitter(_loc);
             WallRemoveAt({ _loc.ToTileStart(), _loc.z, _loc.z + 32 });
@@ -173,7 +173,7 @@ namespace OpenRCT2::GameActions
 
         auto canBuild = MapCanConstructWithClearAt(
             { _loc.ToTileStart(), baseHeight, clearanceHeight }, MapPlaceNonSceneryClearFunc, { 0b1111, 0 },
-            GetFlags() | GAME_COMMAND_FLAG_APPLY, kTileSlopeFlat);
+            GetFlags().with(CommandFlag::apply), kTileSlopeFlat);
         if (canBuild.Error != Status::Ok)
         {
             canBuild.ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
@@ -192,7 +192,7 @@ namespace OpenRCT2::GameActions
         trackElement->SetRideType(ride->type);
         trackElement->SetRideIndex(_rideIndex);
         trackElement->SetMazeEntry(_mazeEntry);
-        trackElement->SetGhost(flags & GAME_COMMAND_FLAG_GHOST);
+        trackElement->SetGhost(flags.has(CommandFlag::ghost));
 
         MapInvalidateTileFull(startLoc);
 

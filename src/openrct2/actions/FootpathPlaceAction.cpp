@@ -132,7 +132,7 @@ namespace OpenRCT2::GameActions
         res.Expenditure = ExpenditureType::landscaping;
         res.Position = _loc.ToTileCentre();
 
-        if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
+        if (!(GetFlags().has(CommandFlag::ghost)))
         {
             FootpathInterruptPeeps(_loc);
         }
@@ -142,7 +142,7 @@ namespace OpenRCT2::GameActions
         // Force ride construction to recheck area
         _currentTrackSelectionFlags.set(TrackSelectionFlag::recheck);
 
-        if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
+        if (!(GetFlags().has(CommandFlag::ghost)))
         {
             if (_direction != kInvalidDirection && !getGameState().cheats.disableClearanceChecks)
             {
@@ -223,7 +223,7 @@ namespace OpenRCT2::GameActions
             res.Cost += 6.00_GBP;
         }
 
-        if (GetFlags() & GAME_COMMAND_FLAG_GHOST && !pathElement->IsGhost())
+        if (GetFlags().has(CommandFlag::ghost) && !pathElement->IsGhost())
         {
             return Result(Status::ItemAlreadyPlaced, STR_CANT_BUILD_FOOTPATH_HERE, kStringIdNone);
         }
@@ -239,7 +239,7 @@ namespace OpenRCT2::GameActions
 
         FootpathQueueChainReset();
 
-        if (!(GetFlags() & GAME_COMMAND_FLAG_TRACK_DESIGN))
+        if (!(GetFlags().has(CommandFlag::trackDesign)))
         {
             FootpathRemoveEdgesAt(_loc, reinterpret_cast<TileElement*>(pathElement));
         }
@@ -355,7 +355,7 @@ namespace OpenRCT2::GameActions
     {
         bool entrancePath = false, entranceIsSamePath = false;
 
-        if (!(GetFlags() & (GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_GHOST)))
+        if (!(GetFlags().hasAny(CommandFlag::allowDuringPaused, CommandFlag::ghost)))
         {
             FootpathRemoveLitter(_loc);
         }
@@ -388,7 +388,7 @@ namespace OpenRCT2::GameActions
         auto crossingMode = isQueue || (_slope.type != FootpathSlopeType::flat) ? CreateCrossingMode::none
                                                                                 : CreateCrossingMode::pathOverTrack;
         auto canBuild = MapCanConstructWithClearAt(
-            { _loc, zLow, zHigh }, MapPlaceNonSceneryClearFunc, quarterTile, GAME_COMMAND_FLAG_APPLY | GetFlags(),
+            { _loc, zLow, zHigh }, MapPlaceNonSceneryClearFunc, quarterTile, GetFlags().with(CommandFlag::apply),
             kTileSlopeFlat, crossingMode);
         if (!entrancePath && canBuild.Error != Status::Ok)
         {
@@ -410,7 +410,7 @@ namespace OpenRCT2::GameActions
 
         if (entrancePath)
         {
-            if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST) && !entranceIsSamePath)
+            if (!(GetFlags().has(CommandFlag::ghost)) && !entranceIsSamePath)
             {
                 if (_constructFlags & PathConstructFlag::IsLegacyPathObject)
                 {
@@ -445,15 +445,15 @@ namespace OpenRCT2::GameActions
             pathElement->SetRideIndex(RideId::GetNull());
             pathElement->SetAdditionStatus(255);
             pathElement->SetIsBroken(false);
-            pathElement->SetGhost(GetFlags() & GAME_COMMAND_FLAG_GHOST);
+            pathElement->SetGhost(GetFlags().has(CommandFlag::ghost));
 
             FootpathQueueChainReset();
 
-            if (!(GetFlags() & GAME_COMMAND_FLAG_TRACK_DESIGN))
+            if (!(GetFlags().has(CommandFlag::trackDesign)))
             {
                 FootpathRemoveEdgesAt(_loc, pathElement->as<TileElement>());
             }
-            if (gLegacyScene == LegacyScene::scenarioEditor && !(GetFlags() & GAME_COMMAND_FLAG_GHOST))
+            if (gLegacyScene == LegacyScene::scenarioEditor && !(GetFlags().has(CommandFlag::ghost)))
             {
                 AutomaticallySetPeepSpawn();
             }
@@ -505,7 +505,7 @@ namespace OpenRCT2::GameActions
 
     void FootpathPlaceAction::RemoveIntersectingWalls(PathElement* pathElement) const
     {
-        if (pathElement->IsSloped() && !(GetFlags() & GAME_COMMAND_FLAG_GHOST))
+        if (pathElement->IsSloped() && !(GetFlags().has(CommandFlag::ghost)))
         {
             auto direction = pathElement->GetSlopeDirection();
             int32_t z = pathElement->GetBaseZ();
@@ -520,7 +520,7 @@ namespace OpenRCT2::GameActions
             }
         }
 
-        if (!(GetFlags() & GAME_COMMAND_FLAG_TRACK_DESIGN))
+        if (!(GetFlags().has(CommandFlag::trackDesign)))
             FootpathConnectEdges(_loc, reinterpret_cast<TileElement*>(pathElement), GetFlags());
 
         FootpathUpdateQueueChains();

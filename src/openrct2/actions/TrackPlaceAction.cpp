@@ -349,7 +349,7 @@ namespace OpenRCT2::GameActions
             if ((entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN) && blockIndex == 0)
             {
                 const auto addElementResult = TrackAddStationElement(
-                    { mapLoc, baseZ, _origin.direction }, _rideIndex, 0, _fromTrackDesign);
+                    { mapLoc, baseZ, _origin.direction }, _rideIndex, {}, _fromTrackDesign);
                 if (!addElementResult.Successful)
                 {
                     return Result(Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, addElementResult.Message);
@@ -468,7 +468,7 @@ namespace OpenRCT2::GameActions
                 ? CreateCrossingMode::trackOverPath
                 : CreateCrossingMode::none;
             auto canBuild = MapCanConstructWithClearAt(
-                mapLocWithClearance, MapPlaceNonSceneryClearFunc, quarterTile, GetFlags() | GAME_COMMAND_FLAG_APPLY,
+                mapLocWithClearance, MapPlaceNonSceneryClearFunc, quarterTile, GetFlags().with(CommandFlag::apply),
                 kTileSlopeFlat, crossingMode);
             if (canBuild.Error != Status::Ok)
             {
@@ -478,7 +478,7 @@ namespace OpenRCT2::GameActions
             costs += canBuild.Cost;
 
             // When building a level crossing, remove any pre-existing path furniture.
-            if (crossingMode == CreateCrossingMode::trackOverPath && !(GetFlags() & GAME_COMMAND_FLAG_GHOST))
+            if (crossingMode == CreateCrossingMode::trackOverPath && !(GetFlags().has(CommandFlag::ghost)))
             {
                 auto footpathElement = MapGetFootpathElement(mapLoc);
                 if (footpathElement != nullptr && footpathElement->HasAddition())
@@ -487,7 +487,7 @@ namespace OpenRCT2::GameActions
                 }
             }
 
-            if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST) && !gameState.cheats.disableClearanceChecks)
+            if (!(GetFlags().has(CommandFlag::ghost)) && !gameState.cheats.disableClearanceChecks)
             {
                 FootpathRemoveLitter(mapLoc);
                 if (rtd.HasFlag(RtdFlag::noWallsAroundTrack))
@@ -543,7 +543,7 @@ namespace OpenRCT2::GameActions
             int32_t entranceDirections = 0;
             if (!ride->overallView.IsNull())
             {
-                if (!(GetFlags() & GAME_COMMAND_FLAG_NO_SPEND))
+                if (!(GetFlags().has(CommandFlag::noSpend)))
                 {
                     entranceDirections = ted.sequences[0].flags;
                 }
@@ -569,7 +569,7 @@ namespace OpenRCT2::GameActions
             trackElement->SetRideIndex(_rideIndex);
             trackElement->SetTrackType(_trackType);
             trackElement->SetRideType(_rideType);
-            trackElement->SetGhost(GetFlags() & GAME_COMMAND_FLAG_GHOST);
+            trackElement->SetGhost(GetFlags().has(CommandFlag::ghost));
 
             switch (_trackType)
             {
@@ -613,7 +613,7 @@ namespace OpenRCT2::GameActions
                 uint32_t availableDirections = entranceDirections & 0x0F;
                 if (availableDirections != 0)
                 {
-                    if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST) && !gameState.cheats.disableClearanceChecks)
+                    if (!(GetFlags().has(CommandFlag::ghost)) && !gameState.cheats.disableClearanceChecks)
                     {
                         for (int32_t chosenDirection = Numerics::bitScanForward(availableDirections); chosenDirection != -1;
                              chosenDirection = Numerics::bitScanForward(availableDirections))
@@ -633,13 +633,11 @@ namespace OpenRCT2::GameActions
             // If the placed tile is a station modify station properties.
             // Don't do this if the tile is a ghost to prevent desyncs
             // However, ghost tiles from track designs need to modify station data to display properly
-            if (entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN
-                && (!(GetFlags() & GAME_COMMAND_FLAG_GHOST) || _fromTrackDesign))
+            if (entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN && (!(GetFlags().has(CommandFlag::ghost)) || _fromTrackDesign))
             {
                 if (blockIndex == 0)
                 {
-                    TrackAddStationElement(
-                        { mapLoc, _origin.direction }, _rideIndex, GAME_COMMAND_FLAG_APPLY, _fromTrackDesign);
+                    TrackAddStationElement({ mapLoc, _origin.direction }, _rideIndex, { CommandFlag::apply }, _fromTrackDesign);
                 }
                 ride->validateStations();
                 ride->updateMaxVehicles();
@@ -657,7 +655,7 @@ namespace OpenRCT2::GameActions
                 }
             }
 
-            if (!gameState.cheats.disableClearanceChecks || !(GetFlags() & GAME_COMMAND_FLAG_GHOST))
+            if (!gameState.cheats.disableClearanceChecks || !(GetFlags().has(CommandFlag::ghost)))
             {
                 FootpathConnectEdges(mapLoc, tileElement, GetFlags());
             }
@@ -665,7 +663,7 @@ namespace OpenRCT2::GameActions
         }
 
         // Update ride stats and block brake count if the piece was successfully built
-        if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
+        if (!(GetFlags().has(CommandFlag::ghost)))
         {
             switch (_trackType)
             {
