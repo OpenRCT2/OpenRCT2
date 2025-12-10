@@ -77,6 +77,7 @@
 
 using namespace OpenRCT2;
 using OpenRCT2::GameActions::CommandFlag;
+using OpenRCT2::GameActions::CommandFlags;
 
 namespace OpenRCT2::TrackDesignSceneryElementFlags
 {

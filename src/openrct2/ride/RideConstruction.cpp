@@ -51,6 +51,7 @@
 using namespace OpenRCT2;
 using namespace OpenRCT2::TrackMetaData;
 using OpenRCT2::GameActions::CommandFlag;
+using OpenRCT2::GameActions::CommandFlags;
 
 money64 _currentTrackPrice;
 

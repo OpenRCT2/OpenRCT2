@@ -33,6 +33,7 @@
 #include <openrct2/world/tile_element/EntranceElement.h>
 
 using OpenRCT2::GameActions::CommandFlag;
+using OpenRCT2::GameActions::CommandFlags;
 
 namespace OpenRCT2::Ui::Windows
 {

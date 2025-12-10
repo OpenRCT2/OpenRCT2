@@ -35,6 +35,7 @@
 
 using namespace OpenRCT2;
 using OpenRCT2::GameActions::CommandFlag;
+using OpenRCT2::GameActions::CommandFlags;
 
 static bool MapPlaceClearFunc(
     TileElement** tile_element, const CoordsXY& coords, CommandFlags flags, money64* price, bool is_scenery)

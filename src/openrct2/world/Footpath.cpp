@@ -50,6 +50,7 @@
 using namespace OpenRCT2;
 using namespace OpenRCT2::TrackMetaData;
 using OpenRCT2::GameActions::CommandFlag;
+using OpenRCT2::GameActions::CommandFlags;
 
 void FootpathUpdateQueueEntranceBanner(const CoordsXY& footpathPos, TileElement* tileElement);
 
