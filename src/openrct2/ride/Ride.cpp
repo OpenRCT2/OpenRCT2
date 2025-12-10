@@ -5386,6 +5386,8 @@ void Ride::renew()
     // Set build date to current date (so the ride is brand new)
     buildDate = GetDate().GetMonthsElapsed();
     reliability = kRideInitialReliability;
+    std::fill(std::begin(downtimeHistory), std::end(downtimeHistory), 0);
+    downtime = 0;
 }
 
 RideClassification Ride::getClassification() const
