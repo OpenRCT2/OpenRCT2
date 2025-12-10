@@ -15,6 +15,7 @@
 - Fix: [#25571] Potential crash due to drawing a Crooked House ride.
 - Fix: [#25588] When the master server becomes unreachable the server would not register again until a restart.
 - Fix: [#25592] Log flume, river rapids, & splash boats can get control failure breakdown instead of brakes failure.
+- Fix: [#25628] Availability of AVX2 and SSE4.1 is not detected correctly. 
 
 0.4.29 (2025-11-22)
 ------------------------------------------------------------------------
