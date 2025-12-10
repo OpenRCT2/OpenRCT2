@@ -5386,10 +5386,7 @@ void Ride::renew()
     // Set build date to current date (so the ride is brand new)
     buildDate = GetDate().GetMonthsElapsed();
     reliability = kRideInitialReliability;
-    for (int32_t i = OpenRCT2::Limits::kDowntimeHistorySize - 1; i >= 0; i--)
-    {
-        downtimeHistory[i] = 0;
-    }
+    std::fill(std::begin(downtimeHistory), std::end(downtimeHistory), 0);
     downtime = 0;
 }
 
