@@ -141,7 +141,13 @@ jobs:
         uses: actions/checkout@v4
       - run: git config --global --add safe.directory $PWD
       - name: Run clang-format
+        id: clang_format
         run: scripts/check-code-formatting
+      - uses: parkerbxyz/suggest-changes@v3
+        if: github.event_name == 'pull_request' && failure()
+        with:
+          comment: 'Please commit the suggested changes from clang-format.'
+          event: 'REQUEST_CHANGES'
   check-changelog-formatting:
     name: Check changelog formatting
     runs-on: ubuntu-latest
