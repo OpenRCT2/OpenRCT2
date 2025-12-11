@@ -4723,7 +4723,7 @@ void RideFixBreakdown(Ride& ride, int32_t reliabilityIncreaseFactor)
             for (Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[i]); vehicle != nullptr;
                  vehicle = getGameState().entities.GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
             {
-                vehicle->ClearFlag(VehicleFlags::StoppedOnLift);
+                vehicle->ClearFlag(VehicleFlags::StoppedBySafetyCutOut);
                 vehicle->ClearFlag(VehicleFlags::CarIsBroken);
                 vehicle->ClearFlag(VehicleFlags::TrainIsBroken);
             }

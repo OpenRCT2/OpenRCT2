@@ -468,19 +468,20 @@ namespace OpenRCT2::VehicleFlags
     constexpr uint32_t PoweredCarInReverse = (1 << 3);
     constexpr uint32_t ReadyToDepart = (1 << 4);
     constexpr uint32_t Testing = (1 << 5);
-    constexpr uint32_t CurrentlyColliding = (1 << 6); // When go-karts are colliding, they have a higher chance of changing
-                                                      // lanes
-    constexpr uint32_t StoppedOnLift = (1 << 7);      // Used on rides when safety cutout stops them on a lift
+    // When go-karts are colliding, they have a higher chance of changing lanes
+    constexpr uint32_t CurrentlyColliding = (1 << 6);
+    // Used on vehicles when a safety cut-out stops them, such as RCs on a lift hill and powered rides
+    constexpr uint32_t StoppedBySafetyCutOut = (1 << 7);
     constexpr uint32_t CarIsBroken = (1 << 8);
     constexpr uint32_t TrainIsBroken = (1 << 9);
     constexpr uint32_t StoppedOnHoldingBrake = (1 << 10);
-    constexpr uint32_t CarIsInverted = (1 << 11); // Used on rides where trains can run for extended periods of time,
-                                                  // i.e. the Flying, Lay-down and Multi-dimension RCs.
-    constexpr uint32_t ReverseInclineCompletedLap = (1 << 12); // Set when the vehicle travels backwards through the station for
-                                                               // the first time
-    constexpr uint32_t SpinningIsLocked = (1 << 13);           // After passing a rotation toggle track piece this will enable
-    constexpr uint32_t MoveSingleCar = (1 << 14); // OpenRCT2 Flag: Used to override UpdateMotion to move the position of
-                                                  // an individual car on a train
+    // Used on vehicles that can run inverted for extended periods of time, i.e. the Flying, Lay-down and Multi-Dimension trains
+    constexpr uint32_t CarIsInverted = (1 << 11);
+    // Set when the vehicle travels backwards through the station for the first time
+    constexpr uint32_t ReverseInclineCompletedLap = (1 << 12);
+    constexpr uint32_t SpinningIsLocked = (1 << 13); // After passing a rotation toggle track piece this will enable
+    // OpenRCT2 Flag: Used to override UpdateMotion to move the position of an individual car on a train
+    constexpr uint32_t MoveSingleCar = (1 << 14);
     constexpr uint32_t Crashed = (1 << 15);       // Car displays as smoke plume
     constexpr uint32_t CarIsReversed = (1 << 16); // Car is displayed running backwards
 } // namespace OpenRCT2::VehicleFlags

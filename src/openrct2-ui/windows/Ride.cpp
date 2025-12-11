@@ -3889,7 +3889,7 @@ namespace OpenRCT2::Ui::Windows
                                          vehicle = getGameState().entities.GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
                                     {
                                         vehicle->ClearFlag(
-                                            VehicleFlags::CarIsBroken | VehicleFlags::StoppedOnLift
+                                            VehicleFlags::CarIsBroken | VehicleFlags::StoppedBySafetyCutOut
                                             | VehicleFlags::TrainIsBroken);
                                     }
                                 }
