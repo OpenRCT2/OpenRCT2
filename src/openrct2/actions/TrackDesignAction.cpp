@@ -98,11 +98,9 @@ namespace OpenRCT2::GameActions
 
         bool placeScenery = _placeScenery;
 
-        uint32_t flags = 0;
-        if (GetFlags() & GAME_COMMAND_FLAG_GHOST)
-            flags |= GAME_COMMAND_FLAG_GHOST;
-        if (GetFlags() & GAME_COMMAND_FLAG_REPLAY)
-            flags |= GAME_COMMAND_FLAG_REPLAY;
+        CommandFlags flags = {};
+        flags.set(CommandFlag::ghost, GetFlags().has(CommandFlag::ghost));
+        flags.set(CommandFlag::replay, GetFlags().has(CommandFlag::replay));
 
         auto queryRes = TrackDesignPlace(_td, flags, placeScenery, *ride, _loc);
         if (_trackDesignPlaceStateSceneryUnavailable)
@@ -169,7 +167,7 @@ namespace OpenRCT2::GameActions
         }
 
         // Query first, this is required again to determine if scenery is available.
-        uint32_t flags = GetFlags() & ~GAME_COMMAND_FLAG_APPLY;
+        auto flags = GetFlags().without(CommandFlag::apply);
 
         bool placeScenery = _placeScenery;
 
@@ -195,7 +193,7 @@ namespace OpenRCT2::GameActions
         }
 
         // Execute.
-        flags |= GAME_COMMAND_FLAG_APPLY;
+        flags.set(CommandFlag::apply);
 
         auto execRes = TrackDesignPlace(_td, flags, placeScenery, *ride, _loc);
         if (execRes.Error != Status::Ok)

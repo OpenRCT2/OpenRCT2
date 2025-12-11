@@ -377,7 +377,6 @@ private:
     void UpdateRide();
     void UpdateOnRide() {}; // TODO
     void UpdateWalking();
-    void UpdateWaitingAtCrossing();
     void UpdateQueuing();
     void UpdateSitting();
     void UpdateEnteringPark();

@@ -74,7 +74,7 @@ namespace OpenRCT2::GameActions
         res.Expenditure = ExpenditureType::landscaping;
         res.Position = _loc;
 
-        if (gLegacyScene != LegacyScene::scenarioEditor && !(GetFlags() & GAME_COMMAND_FLAG_GHOST)
+        if (gLegacyScene != LegacyScene::scenarioEditor && !(GetFlags().has(CommandFlag::ghost))
             && !getGameState().cheats.sandboxMode)
         {
             // Check if allowed to remove item
@@ -137,7 +137,7 @@ namespace OpenRCT2::GameActions
 
     TileElement* SmallSceneryRemoveAction::FindSceneryElement() const
     {
-        const bool isGhost = GetFlags() & GAME_COMMAND_FLAG_GHOST;
+        const bool isGhost = GetFlags().has(CommandFlag::ghost);
         for (auto* sceneryElement : TileElementsView<SmallSceneryElement>(_loc))
         {
             // If we are removing ghost elements

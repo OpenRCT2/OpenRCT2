@@ -1,9 +1,11 @@
 0.4.30 (in development)
 ------------------------------------------------------------------------
+- Improved: [#24912] Staff now use an appropriate standing animation while waiting at level crossings.
 - Improved: [#25529] The map selection grid no longer redraws every frame if it has not changed.
 - Improved: [#25530] Wall dragging can now be cancelled without closing the Scenery window.
 - Improved: [#25575] Updated the network protocol to a new format that supports larger packets, allowing clients to connect reliably to servers with many objects or large maps.
 - Improved: [#25621] Added the Polish Złoty (PLN) to the list of available currencies.
+- Improved: [#25625] Renewing and refurbishing rides now also resets the downtime.
 - Change: [#25485] Make the enlarged pressed swatch sprite more pronounced.
 - Fix: [#9895] Stand-up coaster gets wrong intensity boost from the synchronisation bonus.
 - Fix: [#22484] Lingering ghost entrance after placing park entrance.
@@ -15,6 +17,7 @@
 - Fix: [#25571] Potential crash due to drawing a Crooked House ride.
 - Fix: [#25588] When the master server becomes unreachable the server would not register again until a restart.
 - Fix: [#25592] Log flume, river rapids, & splash boats can get control failure breakdown instead of brakes failure.
+- Fix: [#25628] Availability of AVX2 and SSE4.1 is not detected correctly. 
 
 0.4.29 (2025-11-22)
 ------------------------------------------------------------------------

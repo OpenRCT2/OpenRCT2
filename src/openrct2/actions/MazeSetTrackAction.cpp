@@ -205,8 +205,8 @@ namespace OpenRCT2::GameActions
             return res;
         }
 
-        uint32_t flags = GetFlags();
-        if (!(flags & GAME_COMMAND_FLAG_GHOST))
+        auto flags = GetFlags();
+        if (!(flags.has(CommandFlag::ghost)))
         {
             FootpathRemoveLitter(_loc);
             WallRemoveAt({ _loc.ToTileStart(), _loc.z, _loc.z + 32 });
@@ -227,7 +227,7 @@ namespace OpenRCT2::GameActions
             trackElement->SetRideType(ride->type);
             trackElement->SetRideIndex(_rideIndex);
             trackElement->SetMazeEntry(0xFFFF);
-            trackElement->SetGhost(flags & GAME_COMMAND_FLAG_GHOST);
+            trackElement->SetGhost(flags.has(CommandFlag::ghost));
 
             tileElement = trackElement->as<TileElement>();
 
@@ -237,7 +237,7 @@ namespace OpenRCT2::GameActions
             ride->getStation().SetBaseZ(tileElement->GetBaseZ());
             ride->getStation().Start = { 0, 0 };
 
-            if (_initialPlacement && !(flags & GAME_COMMAND_FLAG_GHOST))
+            if (_initialPlacement && !(flags.has(CommandFlag::ghost)))
             {
                 ride->overallView = startLoc;
             }

@@ -67,6 +67,7 @@
 #include <openrct2/world/tile_element/WallElement.h>
 
 using namespace OpenRCT2::Drawing;
+using OpenRCT2::GameActions::CommandFlag;
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -2051,7 +2052,7 @@ namespace OpenRCT2::Ui::Windows
             // 6e252b
             auto smallSceneryPlaceAction = GameActions::SmallSceneryPlaceAction(
                 loc, quadrant, entryIndex, primaryColour, secondaryColour, tertiaryColour);
-            smallSceneryPlaceAction.SetFlags(GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
+            smallSceneryPlaceAction.SetFlags({ CommandFlag::ghost, CommandFlag::allowDuringPaused });
             auto res = GameActions::Execute(&smallSceneryPlaceAction, getGameState());
             if (res.Error != GameActions::Status::Ok)
                 return kMoney64Undefined;
@@ -2085,7 +2086,7 @@ namespace OpenRCT2::Ui::Windows
 
             // 6e265b
             auto footpathAdditionPlaceAction = GameActions::FootpathAdditionPlaceAction(loc, entryIndex);
-            footpathAdditionPlaceAction.SetFlags(GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
+            footpathAdditionPlaceAction.SetFlags({ CommandFlag::ghost, CommandFlag::allowDuringPaused });
             footpathAdditionPlaceAction.SetCallback([=](const GameActions::GameAction* ga, const GameActions::Result* result) {
                 if (result->Error != GameActions::Status::Ok)
                 {
@@ -2110,8 +2111,7 @@ namespace OpenRCT2::Ui::Windows
             // 6e26b0
             auto wallPlaceAction = GameActions::WallPlaceAction(
                 entryIndex, loc, edge, primaryColour, secondaryColour, tertiaryColour);
-            wallPlaceAction.SetFlags(
-                GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND);
+            wallPlaceAction.SetFlags({ CommandFlag::ghost, CommandFlag::allowDuringPaused, CommandFlag::noSpend });
             wallPlaceAction.SetCallback([=](const GameActions::GameAction* ga, const GameActions::Result* result) {
                 if (result->Error != GameActions::Status::Ok)
                     return;
@@ -2139,8 +2139,7 @@ namespace OpenRCT2::Ui::Windows
             // 6e25a7
             auto sceneryPlaceAction = GameActions::LargeSceneryPlaceAction(
                 loc, entryIndex, primaryColour, secondaryColour, tertiaryColour);
-            sceneryPlaceAction.SetFlags(
-                GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND);
+            sceneryPlaceAction.SetFlags({ CommandFlag::ghost, CommandFlag::allowDuringPaused, CommandFlag::noSpend });
             auto res = GameActions::Execute(&sceneryPlaceAction, getGameState());
             if (res.Error != GameActions::Status::Ok)
                 return kMoney64Undefined;
@@ -2172,8 +2171,7 @@ namespace OpenRCT2::Ui::Windows
             // 6e2612
             auto primaryColour = _sceneryPrimaryColour;
             auto bannerPlaceAction = GameActions::BannerPlaceAction(loc, entryIndex, primaryColour);
-            bannerPlaceAction.SetFlags(
-                GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND);
+            bannerPlaceAction.SetFlags({ CommandFlag::ghost, CommandFlag::allowDuringPaused, CommandFlag::noSpend });
             auto res = GameActions::Execute(&bannerPlaceAction, getGameState());
             if (res.Error != GameActions::Status::Ok)
                 return kMoney64Undefined;
@@ -3161,8 +3159,7 @@ namespace OpenRCT2::Ui::Windows
                 auto location = tile.location;
                 location.z = tile.calculatedZ;
                 auto wallRemoveAction = GameActions::WallRemoveAction(location);
-                wallRemoveAction.SetFlags(
-                    GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
+                wallRemoveAction.SetFlags({ CommandFlag::allowDuringPaused, CommandFlag::noSpend, CommandFlag::ghost });
                 wallRemoveAction.Execute(gameState);
             }
         }
@@ -3184,7 +3181,7 @@ namespace OpenRCT2::Ui::Windows
                     auto wallPlaceAction = GameActions::WallPlaceAction(
                         tabSelection.EntryIndex, { x, y, gSceneryPlaceZ }, _startEdge, _sceneryPrimaryColour,
                         _scenerySecondaryColour, _sceneryTertiaryColour);
-                    wallPlaceAction.SetFlags(GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
+                    wallPlaceAction.SetFlags({ CommandFlag::ghost, CommandFlag::allowDuringPaused });
 
                     auto result = GameActions::Execute(&wallPlaceAction, gameState);
                     if (result.Error == GameActions::Status::Ok)

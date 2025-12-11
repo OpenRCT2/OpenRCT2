@@ -123,7 +123,7 @@ namespace OpenRCT2::GameActions
         res.Expenditure = ExpenditureType::landPurchase;
         res.Position = CoordsXYZ{ _loc.x, _loc.y, _loc.z };
 
-        uint32_t flags = GetFlags();
+        auto flags = GetFlags();
 
         getGameState().park.entrances.push_back(_loc);
 
@@ -143,7 +143,7 @@ namespace OpenRCT2::GameActions
                 entranceLoc.y += CoordsDirectionDelta[(_loc.direction + 1) & 0x3].y * 2;
             }
 
-            if (!(flags & GAME_COMMAND_FLAG_GHOST))
+            if (!(flags.has(CommandFlag::ghost)))
             {
                 SurfaceElement* surfaceElement = MapGetSurfaceElementAt(entranceLoc);
                 if (surfaceElement != nullptr)
@@ -156,7 +156,7 @@ namespace OpenRCT2::GameActions
             Guard::Assert(entranceElement != nullptr);
 
             entranceElement->SetClearanceZ(zHigh);
-            entranceElement->SetGhost(flags & GAME_COMMAND_FLAG_GHOST);
+            entranceElement->SetGhost(flags.has(CommandFlag::ghost));
             entranceElement->SetDirection(_loc.direction);
             entranceElement->SetSequenceIndex(index);
             entranceElement->SetEntranceType(ENTRANCE_TYPE_PARK_ENTRANCE);
@@ -172,7 +172,7 @@ namespace OpenRCT2::GameActions
 
             if (!entranceElement->IsGhost())
             {
-                FootpathConnectEdges(entranceLoc, entranceElement->as<TileElement>(), GAME_COMMAND_FLAG_APPLY);
+                FootpathConnectEdges(entranceLoc, entranceElement->as<TileElement>(), { CommandFlag::apply });
             }
 
             Park::UpdateFences(entranceLoc);

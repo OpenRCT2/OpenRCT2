@@ -34,6 +34,7 @@
 #include "tile_element/TrackElement.h"
 
 using namespace OpenRCT2;
+using OpenRCT2::GameActions::CommandFlag;
 
 bool gParkEntranceGhostExists = false;
 CoordsXYZD gParkEntranceGhostPosition = { 0, 0, 0, 0 };
@@ -46,7 +47,7 @@ static money64 RideEntranceExitPlaceGhost(
 {
     auto rideEntranceExitPlaceAction = GameActions::RideEntranceExitPlaceAction(
         entranceExitCoords, direction, rideIndex, stationNum, placeType == ENTRANCE_TYPE_RIDE_EXIT);
-    rideEntranceExitPlaceAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_GHOST);
+    rideEntranceExitPlaceAction.SetFlags({ CommandFlag::allowDuringPaused, CommandFlag::ghost });
     auto res = GameActions::Execute(&rideEntranceExitPlaceAction, getGameState());
 
     return res.Error == GameActions::Status::Ok ? res.Cost : kMoney64Undefined;
@@ -62,7 +63,7 @@ void ParkEntranceRemoveGhost()
     {
         gParkEntranceGhostExists = false;
         auto parkEntranceRemoveAction = GameActions::ParkEntranceRemoveAction(gParkEntranceGhostPosition);
-        parkEntranceRemoveAction.SetFlags(GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
+        parkEntranceRemoveAction.SetFlags({ CommandFlag::ghost, CommandFlag::allowDuringPaused });
         GameActions::Execute(&parkEntranceRemoveAction, getGameState());
     }
 }
@@ -104,7 +105,7 @@ void RideEntranceExitRemoveGhost()
             gRideEntranceExitGhostPosition, _currentRideIndex, gRideEntranceExitGhostStationIndex,
             gRideEntranceExitPlaceType == ENTRANCE_TYPE_RIDE_EXIT);
 
-        rideEntranceExitRemove.SetFlags(GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
+        rideEntranceExitRemove.SetFlags({ CommandFlag::ghost, CommandFlag::allowDuringPaused });
         GameActions::Execute(&rideEntranceExitRemove, getGameState());
     }
 }

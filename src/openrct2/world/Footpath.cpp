@@ -49,6 +49,8 @@
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::TrackMetaData;
+using OpenRCT2::GameActions::CommandFlag;
+using OpenRCT2::GameActions::CommandFlags;
 
 void FootpathUpdateQueueEntranceBanner(const CoordsXY& footpathPos, TileElement* tileElement);
 
@@ -480,7 +482,7 @@ static void Loc6A6FD2(const CoordsXYZ& initialTileElementPos, int32_t direction,
 
 static void Loc6A6F1F(
     const CoordsXYZ& initialTileElementPos, int32_t direction, TileElement* tileElement, TileElement* initialTileElement,
-    const CoordsXY& targetPos, int32_t flags, bool query, FootpathNeighbourList* neighbourList)
+    const CoordsXY& targetPos, CommandFlags flags, bool query, FootpathNeighbourList* neighbourList)
 {
     if (query)
     {
@@ -516,14 +518,15 @@ static void Loc6A6F1F(
     }
     else
     {
-        FootpathDisconnectQueueFromPath(targetPos, tileElement, 1 + ((flags >> 6) & 1));
+        const bool isGhost = flags.has(CommandFlag::ghost);
+        FootpathDisconnectQueueFromPath(targetPos, tileElement, isGhost ? 2 : 1);
         tileElement->AsPath()->SetEdges(tileElement->AsPath()->GetEdges() | (1 << DirectionReverse(direction)));
         if (tileElement->AsPath()->IsQueue())
         {
             FootpathQueueChainPush(tileElement->AsPath()->GetRideIndex());
         }
     }
-    if (!(flags & (GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED)))
+    if (!(flags.hasAny(CommandFlag::ghost, CommandFlag::allowDuringPaused)))
     {
         FootpathInterruptPeeps({ targetPos, tileElement->GetBaseZ() });
     }
@@ -532,7 +535,7 @@ static void Loc6A6F1F(
 }
 
 static void Loc6A6D7E(
-    const CoordsXYZ& initialTileElementPos, int32_t direction, TileElement* initialTileElement, int32_t flags, bool query,
+    const CoordsXYZ& initialTileElementPos, int32_t direction, TileElement* initialTileElement, CommandFlags flags, bool query,
     FootpathNeighbourList* neighbourList)
 {
     auto targetPos = CoordsXY{ initialTileElementPos } + CoordsDirectionDelta[direction];
@@ -647,7 +650,7 @@ static void Loc6A6D7E(
 // TODO: Change this into a simple check that validates if the direction should be fully checked with Loc6A6D7E and move the
 // calling of Loc6A6D7E into the parent function.
 static void Loc6A6C85(
-    const CoordsXYE& tileElementPos, int32_t direction, int32_t flags, bool query, FootpathNeighbourList* neighbourList)
+    const CoordsXYE& tileElementPos, int32_t direction, CommandFlags flags, bool query, FootpathNeighbourList* neighbourList)
 {
     if (query
         && WallInTheWay(
@@ -713,7 +716,7 @@ static void Loc6A6C85(
  *
  *  rct2: 0x006A6C66
  */
-void FootpathConnectEdges(const CoordsXY& footpathPos, TileElement* tileElement, int32_t flags)
+void FootpathConnectEdges(const CoordsXY& footpathPos, TileElement* tileElement, CommandFlags flags)
 {
     FootpathNeighbourList neighbourList;
     FootpathNeighbour neighbour;
@@ -1035,7 +1038,7 @@ static void FootpathFixOwnership(const CoordsXY& mapPos)
 
     auto landSetRightsAction = GameActions::LandSetRightsAction(
         mapPos, GameActions::LandSetRightSetting::SetOwnershipWithChecks, ownership);
-    landSetRightsAction.SetFlags(GAME_COMMAND_FLAG_NO_SPEND);
+    landSetRightsAction.SetFlags({ CommandFlag::noSpend });
     GameActions::Execute(&landSetRightsAction, getGameState());
 }
 

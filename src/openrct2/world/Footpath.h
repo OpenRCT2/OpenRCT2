@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../Identifiers.h"
+#include "../actions/CommandFlag.h"
 #include "../object/Object.h"
 
 namespace OpenRCT2
@@ -172,7 +173,8 @@ extern const std::array<CoordsXY, kNumOrthogonalDirections * 2> BenchUseOffsets;
 OpenRCT2::PathElement* MapGetFootpathElement(const CoordsXYZ& coords);
 void FootpathInterruptPeeps(const CoordsXYZ& footpathPos);
 void FootpathRemoveLitter(const CoordsXYZ& footpathPos);
-void FootpathConnectEdges(const CoordsXY& footpathPos, OpenRCT2::TileElement* tileElement, int32_t flags);
+void FootpathConnectEdges(
+    const CoordsXY& footpathPos, OpenRCT2::TileElement* tileElement, OpenRCT2::GameActions::CommandFlags flags);
 void FootpathUpdateQueueChains();
 void FootpathChainRideQueue(
     RideId rideIndex, StationIndex entranceIndex, const CoordsXY& footpathPos, OpenRCT2::TileElement* tileElement,

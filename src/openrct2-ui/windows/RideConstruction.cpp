@@ -65,6 +65,8 @@ constexpr uint8_t kVerticalDropButtonStart = 6;
 
 using namespace OpenRCT2::Numerics;
 using namespace OpenRCT2::TrackMetaData;
+using OpenRCT2::GameActions::CommandFlag;
+using OpenRCT2::GameActions::CommandFlags;
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -331,7 +333,7 @@ namespace OpenRCT2::Ui::Windows
             else
             {
                 auto gameAction = GameActions::RideDemolishAction(currentRide->id, GameActions::RideModifyType::demolish);
-                gameAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
+                gameAction.SetFlags({ CommandFlag::allowDuringPaused });
                 GameActions::Execute(&gameAction, gameState);
             }
         }
@@ -4754,7 +4756,7 @@ namespace OpenRCT2::Ui::Windows
         const auto& rtd = ride->getRideTypeDescriptor();
         if (rtd.specialType == RtdSpecialType::maze)
         {
-            int32_t flags = GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST;
+            CommandFlags flags = { CommandFlag::allowDuringPaused, CommandFlag::noSpend, CommandFlag::ghost };
             auto gameAction = GameActions::MazeSetTrackAction(
                 CoordsXYZD{ trackPos, 0 }, true, rideIndex, GC_SET_MAZE_TRACK_BUILD);
             gameAction.SetFlags(flags);
@@ -4775,7 +4777,7 @@ namespace OpenRCT2::Ui::Windows
         auto trackPlaceAction = GameActions::TrackPlaceAction(
             rideIndex, trackType, ride->type, { trackPos, static_cast<uint8_t>(trackDirection) }, 0, 0, 0,
             liftHillAndAlternativeState, false);
-        trackPlaceAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
+        trackPlaceAction.SetFlags({ CommandFlag::allowDuringPaused, CommandFlag::noSpend, CommandFlag::ghost });
         // This command must not be sent over the network
         auto res = GameActions::Execute(&trackPlaceAction, getGameState());
         if (res.Error != GameActions::Status::Ok)
@@ -5135,7 +5137,7 @@ namespace OpenRCT2::Ui::Windows
         const auto& rtd = ride->getRideTypeDescriptor();
         if (rtd.specialType == RtdSpecialType::maze)
         {
-            const int32_t flags = GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST;
+            const CommandFlags flags = { CommandFlag::allowDuringPaused, CommandFlag::noSpend, CommandFlag::ghost };
             const CoordsXYZD quadrants[kNumOrthogonalDirections] = {
                 { x, y, z, 0 },
                 { x, y + 16, z, 1 },
@@ -5165,8 +5167,7 @@ namespace OpenRCT2::Ui::Windows
                 auto trackRemoveAction = GameActions::TrackRemoveAction{
                     trackType, trackSequence, { next_track.x, next_track.y, z, static_cast<Direction>(direction) }
                 };
-                trackRemoveAction.SetFlags(
-                    GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
+                trackRemoveAction.SetFlags({ CommandFlag::allowDuringPaused, CommandFlag::noSpend, CommandFlag::ghost });
                 GameActions::Execute(&trackRemoveAction, getGameState());
             }
         }

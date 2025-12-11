@@ -45,6 +45,7 @@
 #include <iostream>
 
 using namespace OpenRCT2;
+using OpenRCT2::GameActions::CommandFlag;
 
 static bool _dryRun = false;
 
@@ -531,7 +532,7 @@ static void SwapRideEntranceAndExit(RideId rideId)
         FootpathQueueChainReset();
         FootpathConnectEdges(
             entranceCoords.ToCoordsXY(), reinterpret_cast<TileElement*>(entranceElement),
-            GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
+            { CommandFlag::apply, CommandFlag::allowDuringPaused });
         FootpathUpdateQueueChains();
     }
 }

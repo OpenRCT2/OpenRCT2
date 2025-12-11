@@ -50,7 +50,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_OFF_EDGE_OF_MAP);
         }
 
-        const bool isGhost = GetFlags() & GAME_COMMAND_FLAG_GHOST;
+        const bool isGhost = GetFlags().has(CommandFlag::ghost);
         if (!isGhost && gLegacyScene != LegacyScene::scenarioEditor && !getGameState().cheats.sandboxMode
             && !MapIsLocationOwned(_loc))
         {
@@ -73,7 +73,7 @@ namespace OpenRCT2::GameActions
         res.Cost = 0;
         res.Expenditure = ExpenditureType::landscaping;
 
-        const bool isGhost = GetFlags() & GAME_COMMAND_FLAG_GHOST;
+        const bool isGhost = GetFlags().has(CommandFlag::ghost);
 
         TileElement* wallElement = GetFirstWallElementAt(_loc, isGhost);
         if (wallElement == nullptr)

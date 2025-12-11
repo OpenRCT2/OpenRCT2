@@ -104,7 +104,7 @@ namespace OpenRCT2::GameActions
         res.Expenditure = ExpenditureType::landscaping;
         res.Position = _loc.ToTileCentre();
 
-        if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
+        if (!(GetFlags().has(CommandFlag::ghost)))
         {
             FootpathInterruptPeeps(_loc);
         }
@@ -191,7 +191,7 @@ namespace OpenRCT2::GameActions
     {
         bool entrancePath = false, entranceIsSamePath = false;
 
-        if (!(GetFlags() & (GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_GHOST)))
+        if (!(GetFlags().hasAny(CommandFlag::allowDuringPaused, CommandFlag::ghost)))
         {
             FootpathRemoveLitter(_loc);
         }
@@ -224,7 +224,7 @@ namespace OpenRCT2::GameActions
         auto crossingMode = isQueue || (_slope.type != FootpathSlopeType::flat) ? CreateCrossingMode::none
                                                                                 : CreateCrossingMode::pathOverTrack;
         auto canBuild = MapCanConstructWithClearAt(
-            { _loc, zLow, zHigh }, MapPlaceNonSceneryClearFunc, quarterTile, GAME_COMMAND_FLAG_APPLY | GetFlags(),
+            { _loc, zLow, zHigh }, MapPlaceNonSceneryClearFunc, quarterTile, GetFlags().with(CommandFlag::apply),
             kTileSlopeFlat, crossingMode);
         if (!entrancePath && canBuild.Error != Status::Ok)
         {
@@ -247,7 +247,7 @@ namespace OpenRCT2::GameActions
 
         if (entrancePath)
         {
-            if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST) && !entranceIsSamePath)
+            if (!(GetFlags().has(CommandFlag::ghost)) && !entranceIsSamePath)
             {
                 if (_constructFlags & PathConstructFlag::IsLegacyPathObject)
                 {
@@ -284,7 +284,7 @@ namespace OpenRCT2::GameActions
             pathElement->SetIsBroken(false);
             pathElement->SetEdges(_edges);
             pathElement->SetCorners(0);
-            pathElement->SetGhost(GetFlags() & GAME_COMMAND_FLAG_GHOST);
+            pathElement->SetGhost(GetFlags().has(CommandFlag::ghost));
 
             MapInvalidateTileFull(_loc);
         }

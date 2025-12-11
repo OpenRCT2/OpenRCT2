@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../actions/CommandFlag.h"
 #include "../core/Money.hpp"
 #include "Research.h"
 
@@ -38,8 +39,8 @@ constexpr uint8_t kMaxBankLoanInterestRate = 255;
 
 extern const money64 kResearchCosts[RESEARCH_FUNDING_COUNT];
 
-bool FinanceCheckMoneyRequired(uint32_t flags);
-bool FinanceCheckAffordability(money64 cost, uint32_t flags);
+bool FinanceCheckMoneyRequired(OpenRCT2::GameActions::CommandFlags flags);
+bool FinanceCheckAffordability(money64 cost, OpenRCT2::GameActions::CommandFlags flags);
 void FinancePayment(money64 amount, ExpenditureType type);
 void FinancePayWages();
 void FinancePayResearch();

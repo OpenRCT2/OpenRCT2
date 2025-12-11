@@ -27,6 +27,7 @@
 
 #include "../Context.h"
 #include "../Game.h"
+#include "../core/CallingConventions.h"
 #include "../core/File.h"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
