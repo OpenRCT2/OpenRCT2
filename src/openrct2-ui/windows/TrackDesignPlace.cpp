@@ -41,6 +41,7 @@
 using namespace OpenRCT2::Numerics;
 using namespace OpenRCT2::TrackMetaData;
 using OpenRCT2::GameActions::CommandFlag;
+using OpenRCT2::GameActions::CommandFlags;
 
 namespace OpenRCT2::Ui::Windows
 {

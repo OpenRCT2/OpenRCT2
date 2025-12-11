@@ -29,6 +29,7 @@
 
 using namespace OpenRCT2;
 using OpenRCT2::GameActions::CommandFlag;
+using OpenRCT2::GameActions::CommandFlags;
 
 // Monthly research funding costs
 const money64 kResearchCosts[RESEARCH_FUNDING_COUNT] = {

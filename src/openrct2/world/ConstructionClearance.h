@@ -25,7 +25,7 @@ struct CoordsXYRangedZ;
 class QuarterTile;
 
 using ClearingFunction = bool (&)(
-    OpenRCT2::TileElement** tile_element, const CoordsXY& coords, CommandFlags flags, money64* price);
+    OpenRCT2::TileElement** tile_element, const CoordsXY& coords, OpenRCT2::GameActions::CommandFlags flags, money64* price);
 
 enum
 {
@@ -45,8 +45,9 @@ enum class CreateCrossingMode
 };
 
 bool MapPlaceNonSceneryClearFunc(
-    OpenRCT2::TileElement** tile_element, const CoordsXY& coords, CommandFlags flags, money64* price);
-bool MapPlaceSceneryClearFunc(OpenRCT2::TileElement** tile_element, const CoordsXY& coords, CommandFlags flags, money64* price);
+    OpenRCT2::TileElement** tile_element, const CoordsXY& coords, OpenRCT2::GameActions::CommandFlags flags, money64* price);
+bool MapPlaceSceneryClearFunc(
+    OpenRCT2::TileElement** tile_element, const CoordsXY& coords, OpenRCT2::GameActions::CommandFlags flags, money64* price);
 
 struct ConstructClearResult
 {
@@ -54,8 +55,8 @@ struct ConstructClearResult
 };
 
 [[nodiscard]] OpenRCT2::GameActions::Result MapCanConstructWithClearAt(
-    const CoordsXYRangedZ& pos, ClearingFunction clearFunc, QuarterTile quarterTile, CommandFlags flags, uint8_t slope,
-    CreateCrossingMode crossingMode = CreateCrossingMode::none, bool isTree = false);
+    const CoordsXYRangedZ& pos, ClearingFunction clearFunc, QuarterTile quarterTile, OpenRCT2::GameActions::CommandFlags flags,
+    uint8_t slope, CreateCrossingMode crossingMode = CreateCrossingMode::none, bool isTree = false);
 
 [[nodiscard]] OpenRCT2::GameActions::Result MapCanConstructAt(const CoordsXYRangedZ& pos, QuarterTile bl);
 
