@@ -83,8 +83,8 @@ namespace OpenRCT2::GameActions
                           (validRange.GetY1() + validRange.GetY2()) / 2 + 16, 0 };
         centre.z = TileElementHeight(centre);
 
-        res.Position = centre;
-        res.Expenditure = ExpenditureType::landPurchase;
+        res.position = centre;
+        res.expenditure = ExpenditureType::landPurchase;
 
         if (!isInEditorMode() && !getGameState().cheats.sandboxMode)
         {
@@ -99,9 +99,9 @@ namespace OpenRCT2::GameActions
                 if (!LocationValid({ x, y }))
                     continue;
                 auto result = MapBuyLandRightsForTile({ x, y }, isExecuting);
-                if (result.Error == Status::ok)
+                if (result.error == Status::ok)
                 {
-                    res.Cost += result.Cost;
+                    res.cost += result.cost;
                 }
             }
         }
@@ -195,23 +195,23 @@ namespace OpenRCT2::GameActions
                 {
                     // Buying land
                     if (!(currentOwnership & OWNERSHIP_OWNED) && (_ownership & OWNERSHIP_OWNED))
-                        res.Cost = gameState.scenarioOptions.landPrice;
+                        res.cost = gameState.scenarioOptions.landPrice;
 
                     // Buying construction rights
                     if (!(currentOwnership & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED)
                         && (_ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED))
-                        res.Cost = gameState.scenarioOptions.constructionRightsPrice;
+                        res.cost = gameState.scenarioOptions.constructionRightsPrice;
                 }
                 else
                 {
                     // Selling land
                     if ((currentOwnership & OWNERSHIP_OWNED) && !(_ownership & OWNERSHIP_OWNED))
-                        res.Cost = -gameState.scenarioOptions.landPrice;
+                        res.cost = -gameState.scenarioOptions.landPrice;
 
                     // Selling construction rights
                     if ((currentOwnership & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED)
                         && !(_ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED))
-                        res.Cost = -gameState.scenarioOptions.constructionRightsPrice;
+                        res.cost = -gameState.scenarioOptions.constructionRightsPrice;
                 }
 
                 if (isExecuting)

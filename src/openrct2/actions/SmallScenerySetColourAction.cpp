@@ -72,11 +72,11 @@ namespace OpenRCT2::GameActions
     Result SmallScenerySetColourAction::QueryExecute(bool isExecuting) const
     {
         auto res = Result();
-        res.Expenditure = ExpenditureType::landscaping;
-        res.Position.x = _loc.x + 16;
-        res.Position.y = _loc.y + 16;
-        res.Position.z = _loc.z;
-        res.ErrorTitle = STR_CANT_REPAINT_THIS;
+        res.expenditure = ExpenditureType::landscaping;
+        res.position.x = _loc.x + 16;
+        res.position.y = _loc.y + 16;
+        res.position.z = _loc.z;
+        res.errorTitle = STR_CANT_REPAINT_THIS;
 
         if (!LocationValid(_loc))
         {

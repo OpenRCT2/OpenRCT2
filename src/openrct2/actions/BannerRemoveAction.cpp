@@ -47,11 +47,11 @@ namespace OpenRCT2::GameActions
     Result BannerRemoveAction::Query(GameState_t& gameState) const
     {
         auto res = Result();
-        res.Expenditure = ExpenditureType::landscaping;
-        res.Position.x = _loc.x + 16;
-        res.Position.y = _loc.y + 16;
-        res.Position.z = _loc.z;
-        res.ErrorTitle = STR_CANT_REMOVE_THIS;
+        res.expenditure = ExpenditureType::landscaping;
+        res.position.x = _loc.x + 16;
+        res.position.y = _loc.y + 16;
+        res.position.z = _loc.z;
+        res.errorTitle = STR_CANT_REMOVE_THIS;
 
         if (!LocationValid(_loc))
         {
@@ -87,7 +87,7 @@ namespace OpenRCT2::GameActions
         auto* bannerEntry = ObjectManager::GetObjectEntry<BannerSceneryEntry>(banner->type);
         if (bannerEntry != nullptr)
         {
-            res.Cost = -((bannerEntry->price * 3) / 4);
+            res.cost = -((bannerEntry->price * 3) / 4);
         }
 
         return res;
@@ -96,11 +96,11 @@ namespace OpenRCT2::GameActions
     Result BannerRemoveAction::Execute(GameState_t& gameState) const
     {
         auto res = Result();
-        res.Expenditure = ExpenditureType::landscaping;
-        res.Position.x = _loc.x + 16;
-        res.Position.y = _loc.y + 16;
-        res.Position.z = _loc.z;
-        res.ErrorTitle = STR_CANT_REMOVE_THIS;
+        res.expenditure = ExpenditureType::landscaping;
+        res.position.x = _loc.x + 16;
+        res.position.y = _loc.y + 16;
+        res.position.z = _loc.z;
+        res.errorTitle = STR_CANT_REMOVE_THIS;
 
         BannerElement* bannerElement = GetBannerElementAt();
         if (bannerElement == nullptr)
@@ -127,7 +127,7 @@ namespace OpenRCT2::GameActions
         auto* bannerEntry = ObjectManager::GetObjectEntry<BannerSceneryEntry>(banner->type);
         if (bannerEntry != nullptr)
         {
-            res.Cost = -((bannerEntry->price * 3) / 4);
+            res.cost = -((bannerEntry->price * 3) / 4);
         }
 
         reinterpret_cast<TileElement*>(bannerElement)->RemoveBannerEntry();

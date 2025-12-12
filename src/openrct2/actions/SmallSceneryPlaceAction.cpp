@@ -97,13 +97,13 @@ namespace OpenRCT2::GameActions
         }
         auto res = Result();
         auto centre = _loc.ToTileCentre();
-        res.Position.x = centre.x;
-        res.Position.y = centre.y;
-        res.Position.z = surfaceHeight;
+        res.position.x = centre.x;
+        res.position.y = centre.y;
+        res.position.z = surfaceHeight;
         if (_loc.z != 0)
         {
             surfaceHeight = _loc.z;
-            res.Position.z = surfaceHeight;
+            res.position.z = surfaceHeight;
         }
 
         if (!LocationValid(_loc))
@@ -269,18 +269,18 @@ namespace OpenRCT2::GameActions
         auto canBuild = MapCanConstructWithClearAt(
             { _loc, zLow, zHigh }, MapPlaceSceneryClearFunc, quarterTile, GetFlags(), kTileSlopeFlat, CreateCrossingMode::none,
             isTree);
-        if (canBuild.Error != Status::ok)
+        if (canBuild.error != Status::ok)
         {
-            canBuild.ErrorTitle = STR_CANT_POSITION_THIS_HERE;
+            canBuild.errorTitle = STR_CANT_POSITION_THIS_HERE;
             return canBuild;
         }
 
-        const auto clearanceData = canBuild.GetData<ConstructClearResult>();
+        const auto clearanceData = canBuild.getData<ConstructClearResult>();
         const uint8_t groundFlags = clearanceData.GroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
-        res.SetData(SmallSceneryPlaceActionResult{ groundFlags, 0, 0 });
+        res.setData(SmallSceneryPlaceActionResult{ groundFlags, 0, 0 });
 
-        res.Expenditure = ExpenditureType::landscaping;
-        res.Cost = sceneryEntry->price + canBuild.Cost;
+        res.expenditure = ExpenditureType::landscaping;
+        res.cost = sceneryEntry->price + canBuild.cost;
 
         return res;
     }
@@ -303,13 +303,13 @@ namespace OpenRCT2::GameActions
         }
         auto res = Result();
         auto centre = _loc.ToTileCentre();
-        res.Position.x = centre.x;
-        res.Position.y = centre.y;
-        res.Position.z = surfaceHeight;
+        res.position.x = centre.x;
+        res.position.y = centre.y;
+        res.position.z = surfaceHeight;
         if (_loc.z != 0)
         {
             surfaceHeight = _loc.z;
-            res.Position.z = surfaceHeight;
+            res.position.z = surfaceHeight;
         }
 
         auto* sceneryEntry = ObjectManager::GetObjectEntry<SmallSceneryEntry>(_sceneryType);
@@ -408,14 +408,14 @@ namespace OpenRCT2::GameActions
         auto canBuild = MapCanConstructWithClearAt(
             { _loc, zLow, zHigh }, MapPlaceSceneryClearFunc, quarterTile, GetFlags().with(CommandFlag::apply), kTileSlopeFlat,
             CreateCrossingMode::none, isTree);
-        if (canBuild.Error != Status::ok)
+        if (canBuild.error != Status::ok)
         {
-            canBuild.ErrorTitle = STR_CANT_POSITION_THIS_HERE;
+            canBuild.errorTitle = STR_CANT_POSITION_THIS_HERE;
             return canBuild;
         }
 
-        res.Expenditure = ExpenditureType::landscaping;
-        res.Cost = sceneryEntry->price + canBuild.Cost;
+        res.expenditure = ExpenditureType::landscaping;
+        res.cost = sceneryEntry->price + canBuild.cost;
 
         auto* sceneryElement = TileElementInsert<SmallSceneryElement>(
             CoordsXYZ{ _loc, zLow }, quarterTile.GetBaseQuarterOccupied());
@@ -438,9 +438,9 @@ namespace OpenRCT2::GameActions
             sceneryElement->SetNeedsSupports();
         }
 
-        const auto clearanceData = canBuild.GetData<ConstructClearResult>();
+        const auto clearanceData = canBuild.getData<ConstructClearResult>();
         const uint8_t groundFlags = clearanceData.GroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
-        res.SetData(
+        res.setData(
             SmallSceneryPlaceActionResult{ groundFlags, sceneryElement->GetBaseZ(), sceneryElement->GetSceneryQuadrant() });
 
         MapInvalidateTileFull(_loc);

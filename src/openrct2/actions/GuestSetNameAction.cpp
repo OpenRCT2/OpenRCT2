@@ -102,7 +102,7 @@ namespace OpenRCT2::GameActions
         ContextBroadcastIntent(&intent);
 
         auto res = Result();
-        res.Position = guest->GetLocation();
+        res.position = guest->GetLocation();
 
         return res;
     }

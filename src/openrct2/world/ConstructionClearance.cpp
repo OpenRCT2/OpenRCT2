@@ -187,27 +187,27 @@ GameActions::Result MapCanConstructWithClearAt(
     auto res = GameActions::Result();
 
     uint8_t groundFlags = ELEMENT_IS_ABOVE_GROUND;
-    res.SetData(ConstructClearResult{ groundFlags });
+    res.setData(ConstructClearResult{ groundFlags });
 
     bool canBuildCrossing = false;
     if (MapIsEdge(pos))
     {
-        res.Error = GameActions::Status::invalidParameters;
-        res.ErrorMessage = STR_OFF_EDGE_OF_MAP;
+        res.error = GameActions::Status::invalidParameters;
+        res.errorMessage = STR_OFF_EDGE_OF_MAP;
         return res;
     }
 
     if (getGameState().cheats.disableClearanceChecks)
     {
-        res.SetData(ConstructClearResult{ groundFlags });
+        res.setData(ConstructClearResult{ groundFlags });
         return res;
     }
 
     TileElement* tileElement = MapGetFirstElementAt(pos);
     if (tileElement == nullptr)
     {
-        res.Error = GameActions::Status::unknown;
-        res.ErrorMessage = kStringIdNone;
+        res.error = GameActions::Status::unknown;
+        res.errorMessage = kStringIdNone;
         return res;
     }
 
@@ -221,13 +221,13 @@ GameActions::Result MapCanConstructWithClearAt(
                 if (tileElement->GetOccupiedQuadrants() & (quarterTile.GetBaseQuarterOccupied()))
                 {
                     if (MapLoc68BABCShouldContinue(
-                            &tileElement, pos, clearFunc, flags, res.Cost, crossingMode, canBuildCrossing, slope))
+                            &tileElement, pos, clearFunc, flags, res.cost, crossingMode, canBuildCrossing, slope))
                     {
                         continue;
                     }
 
                     MapGetObstructionErrorText(tileElement, res);
-                    res.Error = GameActions::Status::noClearance;
+                    res.error = GameActions::Status::noClearance;
                     return res;
                 }
             }
@@ -240,10 +240,10 @@ GameActions::Result MapCanConstructWithClearAt(
             groundFlags |= ELEMENT_IS_UNDERWATER;
             if (waterHeight < pos.clearanceZ)
             {
-                if (!clearFunc(&tileElement, pos, flags, &res.Cost))
+                if (!clearFunc(&tileElement, pos, flags, &res.cost))
                 {
-                    res.Error = GameActions::Status::noClearance;
-                    res.ErrorMessage = STR_CANNOT_BUILD_PARTLY_ABOVE_AND_PARTLY_BELOW_WATER;
+                    res.error = GameActions::Status::noClearance;
+                    res.errorMessage = STR_CANNOT_BUILD_PARTLY_ABOVE_AND_PARTLY_BELOW_WATER;
                     return res;
                 }
             }
@@ -255,8 +255,8 @@ GameActions::Result MapCanConstructWithClearAt(
 
             if (heightFromGround > (18 * kCoordsZStep))
             {
-                res.Error = GameActions::Status::disallowed;
-                res.ErrorMessage = STR_LOCAL_AUTHORITY_WONT_ALLOW_CONSTRUCTION_ABOVE_TREE_HEIGHT;
+                res.error = GameActions::Status::disallowed;
+                res.errorMessage = STR_LOCAL_AUTHORITY_WONT_ALLOW_CONSTRUCTION_ABOVE_TREE_HEIGHT;
                 return res;
             }
         }
@@ -292,19 +292,19 @@ GameActions::Result MapCanConstructWithClearAt(
                 }
 
                 if (MapLoc68BABCShouldContinue(
-                        &tileElement, pos, clearFunc, flags, res.Cost, crossingMode, canBuildCrossing, slope))
+                        &tileElement, pos, clearFunc, flags, res.cost, crossingMode, canBuildCrossing, slope))
                 {
                     continue;
                 }
 
                 MapGetObstructionErrorText(tileElement, res);
-                res.Error = GameActions::Status::noClearance;
+                res.error = GameActions::Status::noClearance;
                 return res;
             }
         }
     } while (!(tileElement++)->IsLastForTile());
 
-    res.SetData(ConstructClearResult{ groundFlags });
+    res.setData(ConstructClearResult{ groundFlags });
 
     return res;
 }
@@ -329,30 +329,30 @@ void MapGetObstructionErrorText(TileElement* tileElement, GameActions::Result& r
 {
     Ride* ride;
 
-    res.ErrorMessage = STR_OBJECT_IN_THE_WAY;
+    res.errorMessage = STR_OBJECT_IN_THE_WAY;
     switch (tileElement->GetType())
     {
         case TileElementType::Surface:
-            res.ErrorMessage = STR_RAISE_OR_LOWER_LAND_FIRST;
+            res.errorMessage = STR_RAISE_OR_LOWER_LAND_FIRST;
             break;
         case TileElementType::Path:
-            res.ErrorMessage = STR_FOOTPATH_IN_THE_WAY;
+            res.errorMessage = STR_FOOTPATH_IN_THE_WAY;
             break;
         case TileElementType::Track:
             ride = GetRide(tileElement->AsTrack()->GetRideIndex());
             if (ride != nullptr)
             {
-                res.ErrorMessage = STR_X_IN_THE_WAY;
+                res.errorMessage = STR_X_IN_THE_WAY;
 
-                Formatter ft(res.ErrorMessageArgs.data());
+                Formatter ft(res.errorMessageArgs.data());
                 ride->formatNameTo(ft);
             }
             break;
         case TileElementType::SmallScenery:
         {
             auto* sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
-            res.ErrorMessage = STR_X_IN_THE_WAY;
-            auto ft = Formatter(res.ErrorMessageArgs.data());
+            res.errorMessage = STR_X_IN_THE_WAY;
+            auto ft = Formatter(res.errorMessageArgs.data());
             StringId stringId = sceneryEntry != nullptr ? sceneryEntry->name : static_cast<StringId>(kStringIdEmpty);
             ft.Add<StringId>(stringId);
             break;
@@ -361,21 +361,21 @@ void MapGetObstructionErrorText(TileElement* tileElement, GameActions::Result& r
             switch (tileElement->AsEntrance()->GetEntranceType())
             {
                 case ENTRANCE_TYPE_RIDE_ENTRANCE:
-                    res.ErrorMessage = STR_RIDE_ENTRANCE_IN_THE_WAY;
+                    res.errorMessage = STR_RIDE_ENTRANCE_IN_THE_WAY;
                     break;
                 case ENTRANCE_TYPE_RIDE_EXIT:
-                    res.ErrorMessage = STR_RIDE_EXIT_IN_THE_WAY;
+                    res.errorMessage = STR_RIDE_EXIT_IN_THE_WAY;
                     break;
                 case ENTRANCE_TYPE_PARK_ENTRANCE:
-                    res.ErrorMessage = STR_PARK_ENTRANCE_IN_THE_WAY;
+                    res.errorMessage = STR_PARK_ENTRANCE_IN_THE_WAY;
                     break;
             }
             break;
         case TileElementType::Wall:
         {
             auto* wallEntry = tileElement->AsWall()->GetEntry();
-            res.ErrorMessage = STR_X_IN_THE_WAY;
-            auto ft = Formatter(res.ErrorMessageArgs.data());
+            res.errorMessage = STR_X_IN_THE_WAY;
+            auto ft = Formatter(res.errorMessageArgs.data());
             StringId stringId = wallEntry != nullptr ? wallEntry->name : static_cast<StringId>(kStringIdEmpty);
             ft.Add<StringId>(stringId);
             break;
@@ -383,8 +383,8 @@ void MapGetObstructionErrorText(TileElement* tileElement, GameActions::Result& r
         case TileElementType::LargeScenery:
         {
             auto* sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
-            res.ErrorMessage = STR_X_IN_THE_WAY;
-            auto ft = Formatter(res.ErrorMessageArgs.data());
+            res.errorMessage = STR_X_IN_THE_WAY;
+            auto ft = Formatter(res.errorMessageArgs.data());
             StringId stringId = sceneryEntry != nullptr ? sceneryEntry->name : static_cast<StringId>(kStringIdEmpty);
             ft.Add<StringId>(stringId);
             break;

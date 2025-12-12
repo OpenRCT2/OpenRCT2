@@ -55,12 +55,12 @@ namespace OpenRCT2::GameActions
     Result WallSetColourAction::Query(GameState_t& gameState) const
     {
         auto res = Result();
-        res.ErrorTitle = STR_CANT_REPAINT_THIS;
-        res.Position.x = _loc.x + 16;
-        res.Position.y = _loc.y + 16;
-        res.Position.z = _loc.z;
+        res.errorTitle = STR_CANT_REPAINT_THIS;
+        res.position.x = _loc.x + 16;
+        res.position.y = _loc.y + 16;
+        res.position.z = _loc.z;
 
-        res.Expenditure = ExpenditureType::landscaping;
+        res.expenditure = ExpenditureType::landscaping;
 
         if (!LocationValid(_loc))
         {
@@ -119,11 +119,11 @@ namespace OpenRCT2::GameActions
     Result WallSetColourAction::Execute(GameState_t& gameState) const
     {
         auto res = Result();
-        res.ErrorTitle = STR_CANT_REPAINT_THIS;
-        res.Position.x = _loc.x + 16;
-        res.Position.y = _loc.y + 16;
-        res.Position.z = _loc.z;
-        res.Expenditure = ExpenditureType::landscaping;
+        res.errorTitle = STR_CANT_REPAINT_THIS;
+        res.position.x = _loc.x + 16;
+        res.position.y = _loc.y + 16;
+        res.position.z = _loc.z;
+        res.expenditure = ExpenditureType::landscaping;
 
         auto wallElement = MapGetWallElementAt(_loc);
         if (wallElement == nullptr)

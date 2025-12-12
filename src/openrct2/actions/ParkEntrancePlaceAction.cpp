@@ -65,8 +65,8 @@ namespace OpenRCT2::GameActions
         }
 
         auto res = Result();
-        res.Expenditure = ExpenditureType::landPurchase;
-        res.Position = _loc;
+        res.expenditure = ExpenditureType::landPurchase;
+        res.position = _loc;
 
         auto mapSizeUnits = GetMapSizeUnits() - CoordsXY{ kCoordsXYStep, kCoordsXYStep };
         if (!LocationValid(_loc) || _loc.x <= kCoordsXYStep || _loc.y <= kCoordsXYStep || _loc.x >= mapSizeUnits.x
@@ -100,9 +100,9 @@ namespace OpenRCT2::GameActions
                 entranceLoc.y += CoordsDirectionDelta[(_loc.direction + 1) & 0x3].y * 2;
             }
 
-            if (auto res2 = MapCanConstructAt({ entranceLoc, zLow, zHigh }, { 0b1111, 0 }); res2.Error != Status::ok)
+            if (auto res2 = MapCanConstructAt({ entranceLoc, zLow, zHigh }, { 0b1111, 0 }); res2.error != Status::ok)
             {
-                res2.ErrorTitle = STR_CANT_BUILD_THIS_HERE;
+                res2.errorTitle = STR_CANT_BUILD_THIS_HERE;
                 return res2;
             }
 
@@ -120,8 +120,8 @@ namespace OpenRCT2::GameActions
     Result ParkEntrancePlaceAction::Execute(GameState_t& gameState) const
     {
         auto res = Result();
-        res.Expenditure = ExpenditureType::landPurchase;
-        res.Position = CoordsXYZ{ _loc.x, _loc.y, _loc.z };
+        res.expenditure = ExpenditureType::landPurchase;
+        res.position = CoordsXYZ{ _loc.x, _loc.y, _loc.z };
 
         auto flags = GetFlags();
 

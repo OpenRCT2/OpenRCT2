@@ -67,12 +67,12 @@ namespace OpenRCT2::GameActions
     Result LargeSceneryPlaceAction::Query(GameState_t& gameState) const
     {
         auto res = Result();
-        res.ErrorTitle = STR_CANT_POSITION_THIS_HERE;
-        res.Expenditure = ExpenditureType::landscaping;
+        res.errorTitle = STR_CANT_POSITION_THIS_HERE;
+        res.expenditure = ExpenditureType::landscaping;
         int16_t surfaceHeight = TileElementHeight(_loc);
-        res.Position.x = _loc.x + 16;
-        res.Position.y = _loc.y + 16;
-        res.Position.z = surfaceHeight;
+        res.position.x = _loc.x + 16;
+        res.position.y = _loc.y + 16;
+        res.position.z = surfaceHeight;
 
         auto resultData = LargeSceneryPlaceActionResult{};
 
@@ -114,7 +114,7 @@ namespace OpenRCT2::GameActions
             maxHeight = _loc.z;
         }
 
-        res.Position.z = maxHeight;
+        res.position.z = maxHeight;
 
         if (sceneryEntry->scrolling_mode != kScrollingModeNone)
         {
@@ -140,15 +140,15 @@ namespace OpenRCT2::GameActions
             auto canBuild = MapCanConstructWithClearAt(
                 { curTile, zLow, zHigh }, MapPlaceSceneryClearFunc, quarterTile, GetFlags(), kTileSlopeFlat,
                 CreateCrossingMode::none, isTree);
-            if (canBuild.Error != Status::ok)
+            if (canBuild.error != Status::ok)
             {
-                canBuild.ErrorTitle = STR_CANT_POSITION_THIS_HERE;
+                canBuild.errorTitle = STR_CANT_POSITION_THIS_HERE;
                 return canBuild;
             }
 
-            supportsCost += canBuild.Cost;
+            supportsCost += canBuild.cost;
 
-            const auto clearanceData = canBuild.GetData<ConstructClearResult>();
+            const auto clearanceData = canBuild.getData<ConstructClearResult>();
             int32_t tempSceneryGroundFlags = clearanceData.GroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
             if (!gameState.cheats.disableClearanceChecks)
             {
@@ -186,8 +186,8 @@ namespace OpenRCT2::GameActions
         // Force ride construction to recheck area
         _currentTrackSelectionFlags.set(TrackSelectionFlag::recheck);
 
-        res.Cost = sceneryEntry->price + supportsCost;
-        res.SetData(std::move(resultData));
+        res.cost = sceneryEntry->price + supportsCost;
+        res.setData(std::move(resultData));
 
         return res;
     }
@@ -195,13 +195,13 @@ namespace OpenRCT2::GameActions
     Result LargeSceneryPlaceAction::Execute(GameState_t& gameState) const
     {
         auto res = Result();
-        res.ErrorTitle = STR_CANT_POSITION_THIS_HERE;
-        res.Expenditure = ExpenditureType::landscaping;
+        res.errorTitle = STR_CANT_POSITION_THIS_HERE;
+        res.expenditure = ExpenditureType::landscaping;
 
         int16_t surfaceHeight = TileElementHeight(_loc);
-        res.Position.x = _loc.x + 16;
-        res.Position.y = _loc.y + 16;
-        res.Position.z = surfaceHeight;
+        res.position.x = _loc.x + 16;
+        res.position.y = _loc.y + 16;
+        res.position.z = surfaceHeight;
 
         auto resultData = LargeSceneryPlaceActionResult{};
 
@@ -227,7 +227,7 @@ namespace OpenRCT2::GameActions
             maxHeight = _loc.z;
         }
 
-        res.Position.z = maxHeight;
+        res.position.z = maxHeight;
 
         // Allocate banner
         Banner* banner = nullptr;
@@ -272,19 +272,19 @@ namespace OpenRCT2::GameActions
             auto canBuild = MapCanConstructWithClearAt(
                 { curTile, zLow, zHigh }, MapPlaceSceneryClearFunc, quarterTile, GetFlags(), kTileSlopeFlat,
                 CreateCrossingMode::none, isTree);
-            if (canBuild.Error != Status::ok)
+            if (canBuild.error != Status::ok)
             {
                 if (banner != nullptr)
                 {
                     DeleteBanner(banner->id);
                 }
-                canBuild.ErrorTitle = STR_CANT_POSITION_THIS_HERE;
+                canBuild.errorTitle = STR_CANT_POSITION_THIS_HERE;
                 return canBuild;
             }
 
-            supportsCost += canBuild.Cost;
+            supportsCost += canBuild.cost;
 
-            const auto clearanceData = canBuild.GetData<ConstructClearResult>();
+            const auto clearanceData = canBuild.getData<ConstructClearResult>();
             resultData.GroundFlags = clearanceData.GroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
 
             if (!(GetFlags().has(CommandFlag::ghost)))
@@ -319,8 +319,8 @@ namespace OpenRCT2::GameActions
         // Force ride construction to recheck area
         _currentTrackSelectionFlags.set(TrackSelectionFlag::recheck);
 
-        res.Cost = sceneryEntry->price + supportsCost;
-        res.SetData(std::move(resultData));
+        res.cost = sceneryEntry->price + supportsCost;
+        res.setData(std::move(resultData));
 
         return res;
     }

@@ -210,7 +210,7 @@ namespace OpenRCT2::GameActions
         if (!ride->overallView.IsNull())
         {
             auto location = ride->overallView.ToTileCentre();
-            res.Position = { location, TileElementHeight(res.Position) };
+            res.position = { location, TileElementHeight(res.position) };
         }
 
         auto intent = Intent(INTENT_ACTION_RIDE_PAINT_RESET_VEHICLE);

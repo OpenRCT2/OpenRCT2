@@ -64,13 +64,13 @@ namespace OpenRCT2::GameActions
     Result ClearAction::CreateResult() const
     {
         auto result = Result();
-        result.ErrorTitle = STR_UNABLE_TO_REMOVE_ALL_SCENERY_FROM_HERE;
-        result.Expenditure = ExpenditureType::landscaping;
+        result.errorTitle = STR_UNABLE_TO_REMOVE_ALL_SCENERY_FROM_HERE;
+        result.expenditure = ExpenditureType::landscaping;
 
         auto x = (_range.GetX1() + _range.GetX2()) / 2 + 16;
         auto y = (_range.GetY1() + _range.GetY2()) / 2 + 16;
         auto z = TileElementHeight({ x, y });
-        result.Position = CoordsXYZ(x, y, z);
+        result.position = CoordsXYZ(x, y, z);
 
         return result;
     }
@@ -113,11 +113,11 @@ namespace OpenRCT2::GameActions
 
         if (noValidTiles)
         {
-            result.Error = error;
-            result.ErrorMessage = errorMessage;
+            result.error = error;
+            result.errorMessage = errorMessage;
         }
 
-        result.Cost = totalCost;
+        result.cost = totalCost;
         return result;
     }
 
@@ -149,14 +149,14 @@ namespace OpenRCT2::GameActions
                             auto res = executing ? ExecuteNested(&footpathRemoveAction, gameState)
                                                  : QueryNested(&footpathRemoveAction, gameState);
 
-                            if (res.Error == Status::ok)
+                            if (res.error == Status::ok)
                             {
-                                totalCost += res.Cost;
+                                totalCost += res.cost;
                                 tileEdited = executing;
                             }
-                            else if (res.Error == Status::insufficientFunds)
+                            else if (res.error == Status::insufficientFunds)
                             {
-                                totalCost += res.Cost;
+                                totalCost += res.cost;
                             }
                         }
                         break;
@@ -171,14 +171,14 @@ namespace OpenRCT2::GameActions
                             auto res = executing ? ExecuteNested(&removeSceneryAction, gameState)
                                                  : QueryNested(&removeSceneryAction, gameState);
 
-                            if (res.Error == Status::ok)
+                            if (res.error == Status::ok)
                             {
-                                totalCost += res.Cost;
+                                totalCost += res.cost;
                                 tileEdited = executing;
                             }
-                            else if (res.Error == Status::insufficientFunds)
+                            else if (res.error == Status::insufficientFunds)
                             {
-                                totalCost += res.Cost;
+                                totalCost += res.cost;
                             }
                         }
                         break;
@@ -192,14 +192,14 @@ namespace OpenRCT2::GameActions
                             auto res = executing ? ExecuteNested(&wallRemoveAction, gameState)
                                                  : QueryNested(&wallRemoveAction, gameState);
 
-                            if (res.Error == Status::ok)
+                            if (res.error == Status::ok)
                             {
-                                totalCost += res.Cost;
+                                totalCost += res.cost;
                                 tileEdited = executing;
                             }
-                            else if (res.Error == Status::insufficientFunds)
+                            else if (res.error == Status::insufficientFunds)
                             {
-                                totalCost += res.Cost;
+                                totalCost += res.cost;
                             }
                         }
                         break;
@@ -214,14 +214,14 @@ namespace OpenRCT2::GameActions
                             auto res = executing ? ExecuteNested(&removeSceneryAction, gameState)
                                                  : QueryNested(&removeSceneryAction, gameState);
 
-                            if (res.Error == Status::ok)
+                            if (res.error == Status::ok)
                             {
-                                totalCost += res.Cost;
+                                totalCost += res.cost;
                                 tileEdited = executing;
                             }
-                            else if (res.Error == Status::insufficientFunds)
+                            else if (res.error == Status::insufficientFunds)
                             {
-                                totalCost += res.Cost;
+                                totalCost += res.cost;
                             }
                         }
                         break;

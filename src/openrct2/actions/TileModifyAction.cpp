@@ -243,9 +243,9 @@ namespace OpenRCT2::GameActions
                 return Result(Status::invalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
         }
 
-        res.Position.x = _loc.x;
-        res.Position.y = _loc.y;
-        res.Position.z = TileElementHeight(_loc);
+        res.position.x = _loc.x;
+        res.position.y = _loc.y;
+        res.position.z = TileElementHeight(_loc);
 
         if (isExecuting)
         {

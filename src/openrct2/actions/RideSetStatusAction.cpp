@@ -61,32 +61,32 @@ namespace OpenRCT2::GameActions
         if (ride == nullptr)
         {
             LOG_ERROR("Ride not found for rideIndex %u", _rideIndex.ToUnderlying());
-            res.Error = Status::invalidParameters;
-            res.ErrorTitle = STR_RIDE_DESCRIPTION_UNKNOWN;
-            res.ErrorMessage = STR_ERR_RIDE_NOT_FOUND;
+            res.error = Status::invalidParameters;
+            res.errorTitle = STR_RIDE_DESCRIPTION_UNKNOWN;
+            res.errorMessage = STR_ERR_RIDE_NOT_FOUND;
             return res;
         }
 
         if (_status >= RideStatus::count)
         {
             LOG_ERROR("Invalid ride status %u for ride %u", EnumValue(_status), _rideIndex.ToUnderlying());
-            res.Error = Status::invalidParameters;
-            res.ErrorTitle = STR_RIDE_DESCRIPTION_UNKNOWN;
-            res.ErrorMessage = kStringIdNone;
+            res.error = Status::invalidParameters;
+            res.errorTitle = STR_RIDE_DESCRIPTION_UNKNOWN;
+            res.errorMessage = kStringIdNone;
             return res;
         }
 
-        res.ErrorTitle = _StatusErrorTitles[EnumValue(_status)];
+        res.errorTitle = _StatusErrorTitles[EnumValue(_status)];
 
-        Formatter ft(res.ErrorMessageArgs.data());
+        Formatter ft(res.errorMessageArgs.data());
         ride->formatNameTo(ft);
         if (_status != ride->status)
         {
             if (_status == RideStatus::simulating && (ride->lifecycleFlags & RIDE_LIFECYCLE_BROKEN_DOWN))
             {
                 // Simulating will force clear the track, so make sure player can't cheat around a break down
-                res.Error = Status::disallowed;
-                res.ErrorMessage = STR_HAS_BROKEN_DOWN_AND_REQUIRES_FIXING;
+                res.error = Status::disallowed;
+                res.errorMessage = STR_HAS_BROKEN_DOWN_AND_REQUIRES_FIXING;
                 return res;
             }
 
@@ -108,8 +108,8 @@ namespace OpenRCT2::GameActions
 
             if (!modeSwitchResult.Successful)
             {
-                res.Error = Status::unknown;
-                res.ErrorMessage = modeSwitchResult.Message;
+                res.error = Status::unknown;
+                res.errorMessage = modeSwitchResult.Message;
                 return res;
             }
         }
@@ -119,27 +119,27 @@ namespace OpenRCT2::GameActions
     Result RideSetStatusAction::Execute(GameState_t& gameState) const
     {
         Result res = Result();
-        res.Expenditure = ExpenditureType::rideRunningCosts;
+        res.expenditure = ExpenditureType::rideRunningCosts;
 
         auto ride = GetRide(_rideIndex);
         if (ride == nullptr)
         {
             LOG_ERROR("Ride not found for rideIndex %u", _rideIndex.ToUnderlying());
-            res.Error = Status::invalidParameters;
-            res.ErrorTitle = STR_RIDE_DESCRIPTION_UNKNOWN;
-            res.ErrorMessage = STR_ERR_RIDE_NOT_FOUND;
+            res.error = Status::invalidParameters;
+            res.errorTitle = STR_RIDE_DESCRIPTION_UNKNOWN;
+            res.errorMessage = STR_ERR_RIDE_NOT_FOUND;
             return res;
         }
 
-        res.ErrorTitle = _StatusErrorTitles[EnumValue(_status)];
+        res.errorTitle = _StatusErrorTitles[EnumValue(_status)];
 
-        Formatter ft(res.ErrorMessageArgs.data());
+        Formatter ft(res.errorMessageArgs.data());
         ft.Increment(6);
         ride->formatNameTo(ft);
         if (!ride->overallView.IsNull())
         {
             auto location = ride->overallView.ToTileCentre();
-            res.Position = { location, TileElementHeight(location) };
+            res.position = { location, TileElementHeight(location) };
         }
 
         auto* windowMgr = Ui::GetWindowManager();
@@ -172,8 +172,8 @@ namespace OpenRCT2::GameActions
                 const auto modeSwitchResult = ride->simulate(true);
                 if (!modeSwitchResult.Successful)
                 {
-                    res.Error = Status::unknown;
-                    res.ErrorMessage = modeSwitchResult.Message;
+                    res.error = Status::unknown;
+                    res.errorMessage = modeSwitchResult.Message;
                     return res;
                 }
 
@@ -215,8 +215,8 @@ namespace OpenRCT2::GameActions
                     const auto modeSwitchResult = ride->test(true);
                     if (!modeSwitchResult.Successful)
                     {
-                        res.Error = Status::unknown;
-                        res.ErrorMessage = modeSwitchResult.Message;
+                        res.error = Status::unknown;
+                        res.errorMessage = modeSwitchResult.Message;
                         return res;
                     }
                 }
@@ -225,8 +225,8 @@ namespace OpenRCT2::GameActions
                     const auto modeSwitchResult = ride->open(true);
                     if (!modeSwitchResult.Successful)
                     {
-                        res.Error = Status::unknown;
-                        res.ErrorMessage = modeSwitchResult.Message;
+                        res.error = Status::unknown;
+                        res.errorMessage = modeSwitchResult.Message;
                         return res;
                     }
                 }

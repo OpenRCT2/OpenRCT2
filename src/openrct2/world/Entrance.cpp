@@ -50,7 +50,7 @@ static money64 RideEntranceExitPlaceGhost(
     rideEntranceExitPlaceAction.SetFlags({ CommandFlag::allowDuringPaused, CommandFlag::ghost });
     auto res = GameActions::Execute(&rideEntranceExitPlaceAction, getGameState());
 
-    return res.Error == GameActions::Status::ok ? res.Cost : kMoney64Undefined;
+    return res.error == GameActions::Status::ok ? res.cost : kMoney64Undefined;
 }
 
 /**

@@ -74,16 +74,16 @@ namespace OpenRCT2::GameActions
     Result WallPlaceAction::Query(GameState_t& gameState) const
     {
         auto res = Result();
-        res.ErrorTitle = STR_CANT_BUILD_THIS_HERE;
-        res.Position = _loc;
+        res.errorTitle = STR_CANT_BUILD_THIS_HERE;
+        res.position = _loc;
 
-        res.Expenditure = ExpenditureType::landscaping;
-        res.Position.x += 16;
-        res.Position.y += 16;
+        res.expenditure = ExpenditureType::landscaping;
+        res.position.x += 16;
+        res.position.y += 16;
 
         if (_loc.z == 0)
         {
-            res.Position.z = TileElementHeight(res.Position);
+            res.position.z = TileElementHeight(res.position);
         }
 
         if (!LocationValid(_loc))
@@ -255,7 +255,7 @@ namespace OpenRCT2::GameActions
         if (!(GetFlags().has(CommandFlag::trackDesign)) && !gameState.cheats.disableClearanceChecks)
         {
             auto result = WallCheckObstruction(wallEntry, targetHeight / 8, clearanceHeight, &wallAcrossTrack);
-            if (result.Error != Status::ok)
+            if (result.error != Status::ok)
             {
                 return result;
             }
@@ -266,9 +266,9 @@ namespace OpenRCT2::GameActions
             return Result(Status::noFreeElements, STR_CANT_BUILD_THIS_HERE, STR_TILE_ELEMENT_LIMIT_REACHED);
         }
 
-        res.Cost = wallEntry->price;
+        res.cost = wallEntry->price;
 
-        res.SetData(WallPlaceActionResult{ targetHeight });
+        res.setData(WallPlaceActionResult{ targetHeight });
 
         return res;
     }
@@ -276,16 +276,16 @@ namespace OpenRCT2::GameActions
     Result WallPlaceAction::Execute(GameState_t& gameState) const
     {
         auto res = Result();
-        res.ErrorTitle = STR_CANT_BUILD_THIS_HERE;
-        res.Position = _loc;
+        res.errorTitle = STR_CANT_BUILD_THIS_HERE;
+        res.position = _loc;
 
-        res.Expenditure = ExpenditureType::landscaping;
-        res.Position.x += 16;
-        res.Position.y += 16;
+        res.expenditure = ExpenditureType::landscaping;
+        res.position.x += 16;
+        res.position.y += 16;
 
-        if (res.Position.z == 0)
+        if (res.position.z == 0)
         {
-            res.Position.z = TileElementHeight(res.Position);
+            res.position.z = TileElementHeight(res.position);
         }
 
         uint8_t edgeSlope = 0;
@@ -329,7 +329,7 @@ namespace OpenRCT2::GameActions
         if (!(GetFlags().has(CommandFlag::trackDesign)) && !gameState.cheats.disableClearanceChecks)
         {
             auto result = WallCheckObstruction(wallEntry, targetHeight / kCoordsZStep, clearanceHeight, &wallAcrossTrack);
-            if (result.Error != Status::ok)
+            if (result.error != Status::ok)
             {
                 return result;
             }
@@ -387,10 +387,10 @@ namespace OpenRCT2::GameActions
         MapAnimations::MarkTileForInvalidation(TileCoordsXY(targetLoc));
         MapInvalidateTileZoom1({ _loc, wallElement->GetBaseZ(), wallElement->GetBaseZ() + 72 });
 
-        res.Cost = wallEntry->price;
+        res.cost = wallEntry->price;
 
         const auto bannerId = banner != nullptr ? banner->id : BannerIndex::GetNull();
-        res.SetData(WallPlaceActionResult{ wallElement->GetBaseZ(), bannerId });
+        res.setData(WallPlaceActionResult{ wallElement->GetBaseZ(), bannerId });
 
         return res;
     }

@@ -142,15 +142,15 @@ namespace OpenRCT2::GameActions
             auto clearResult = MapCanConstructWithClearAt(
                 { _coords, _height * kCoordsZStep, zCorner * kCoordsZStep }, MapSetLandHeightClearFunc, { 0b1111, 0 }, {},
                 _style, CreateCrossingMode::none);
-            if (clearResult.Error != Status::ok)
+            if (clearResult.error != Status::ok)
             {
-                clearResult.Error = Status::disallowed;
+                clearResult.error = Status::disallowed;
                 return clearResult;
             }
         }
         auto res = Result();
-        res.Cost = sceneryRemovalCost + GetSurfaceHeightChangeCost(surfaceElement);
-        res.Expenditure = ExpenditureType::landscaping;
+        res.cost = sceneryRemovalCost + GetSurfaceHeightChangeCost(surfaceElement);
+        res.expenditure = ExpenditureType::landscaping;
         return res;
     }
 
@@ -175,9 +175,9 @@ namespace OpenRCT2::GameActions
         SetSurfaceHeight(reinterpret_cast<TileElement*>(surfaceElement));
 
         auto res = Result();
-        res.Position = { _coords.x + 16, _coords.y + 16, surfaceHeight };
-        res.Cost = cost;
-        res.Expenditure = ExpenditureType::landscaping;
+        res.position = { _coords.x + 16, _coords.y + 16, surfaceHeight };
+        res.cost = cost;
+        res.expenditure = ExpenditureType::landscaping;
         return res;
     }
 

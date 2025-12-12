@@ -2337,18 +2337,18 @@ namespace OpenRCT2::Ui::Windows
             }
 
             auto res = GameActions::Execute(&trackPlaceAction, getGameState());
-            if (res.Error != GameActions::Status::ok)
+            if (res.error != GameActions::Status::ok)
             {
                 _trackPlaceCost = kMoney64Undefined;
-                _trackPlaceErrorMessage = std::get<StringId>(res.ErrorMessage);
+                _trackPlaceErrorMessage = std::get<StringId>(res.errorMessage);
             }
             else
             {
-                _trackPlaceCost = res.Cost;
+                _trackPlaceCost = res.cost;
                 _trackPlaceErrorMessage = kStringIdNone;
             }
 
-            if (res.Error != GameActions::Status::ok)
+            if (res.error != GameActions::Status::ok)
             {
                 return;
             }
@@ -2360,7 +2360,7 @@ namespace OpenRCT2::Ui::Windows
                 _currentTrackSelectionFlags.set(TrackSelectionFlag::trackPlaceActionQueued);
             }
 
-            const auto resultData = res.GetData<GameActions::TrackPlaceActionResult>();
+            const auto resultData = res.getData<GameActions::TrackPlaceActionResult>();
             if (resultData.GroundFlags & ELEMENT_IS_UNDERGROUND)
             {
                 ViewportSetVisibility(ViewportVisibility::undergroundViewOn);
@@ -2460,7 +2460,7 @@ namespace OpenRCT2::Ui::Windows
                 { _currentTrackBegin.x, _currentTrackBegin.y, _currentTrackBegin.z, currentDirection });
 
             trackRemoveAction.SetCallback([=](const GameActions::GameAction* ga, const GameActions::Result* result) {
-                if (result->Error != GameActions::Status::ok)
+                if (result->error != GameActions::Status::ok)
                 {
                     WindowRideConstructionUpdateActiveElements();
                 }
@@ -2665,10 +2665,10 @@ namespace OpenRCT2::Ui::Windows
 
             rideEntranceExitPlaceAction.SetCallback(
                 [=, this](const GameActions::GameAction* ga, const GameActions::Result* result) {
-                    if (result->Error != GameActions::Status::ok)
+                    if (result->error != GameActions::Status::ok)
                         return;
 
-                    OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::placeItem, result->Position);
+                    OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::placeItem, result->position);
 
                     auto* windowMgr = GetWindowManager();
 
@@ -2951,7 +2951,7 @@ namespace OpenRCT2::Ui::Windows
     static void RideConstructPlacedForwardGameActionCallback(
         const GameActions::GameAction* ga, const GameActions::Result* result)
     {
-        if (result->Error != GameActions::Status::ok)
+        if (result->error != GameActions::Status::ok)
         {
             WindowRideConstructionUpdateActiveElements();
             return;
@@ -2998,7 +2998,7 @@ namespace OpenRCT2::Ui::Windows
     static void RideConstructPlacedBackwardGameActionCallback(
         const GameActions::GameAction* ga, const GameActions::Result* result)
     {
-        if (result->Error != GameActions::Status::ok)
+        if (result->error != GameActions::Status::ok)
         {
             WindowRideConstructionUpdateActiveElements();
             return;
@@ -3700,23 +3700,23 @@ namespace OpenRCT2::Ui::Windows
                 auto gameAction = GameActions::MazeSetTrackAction(
                     CoordsXYZD{ _currentTrackBegin, 0 }, true, _currentRideIndex, GC_SET_MAZE_TRACK_BUILD);
                 auto mazeSetTrackResult = GameActions::Execute(&gameAction, getGameState());
-                if (mazeSetTrackResult.Error == GameActions::Status::ok)
+                if (mazeSetTrackResult.error == GameActions::Status::ok)
                 {
-                    _trackPlaceCost = mazeSetTrackResult.Cost;
+                    _trackPlaceCost = mazeSetTrackResult.cost;
                     _trackPlaceErrorMessage = kStringIdNone;
                 }
                 else
                 {
                     _trackPlaceCost = kMoney64Undefined;
-                    _trackPlaceErrorMessage = std::get<StringId>(mazeSetTrackResult.ErrorMessage);
+                    _trackPlaceErrorMessage = std::get<StringId>(mazeSetTrackResult.errorMessage);
                 }
 
                 gDisableErrorWindowSound = false;
 
-                if (mazeSetTrackResult.Error != GameActions::Status::ok)
+                if (mazeSetTrackResult.error != GameActions::Status::ok)
                 {
                     _rideConstructionState = RideConstructionState::Place;
-                    StringId errorText = std::get<StringId>(mazeSetTrackResult.ErrorMessage);
+                    StringId errorText = std::get<StringId>(mazeSetTrackResult.errorMessage);
                     z -= 8;
                     if (errorText == STR_NOT_ENOUGH_CASH_REQUIRES || errorText == STR_CAN_ONLY_BUILD_THIS_UNDERWATER
                         || errorText == STR_CAN_ONLY_BUILD_THIS_ON_WATER || errorText == STR_RIDE_CANT_BUILD_THIS_UNDERWATER
@@ -4762,7 +4762,7 @@ namespace OpenRCT2::Ui::Windows
             gameAction.SetFlags(flags);
             auto result = GameActions::Execute(&gameAction, getGameState());
 
-            if (result.Error != GameActions::Status::ok)
+            if (result.error != GameActions::Status::ok)
                 return kMoney64Undefined;
 
             _unkF440C5 = { trackPos, static_cast<Direction>(trackDirection) };
@@ -4771,7 +4771,7 @@ namespace OpenRCT2::Ui::Windows
             if (_currentTrackPitchEnd != TrackPitch::None)
                 ViewportSetVisibility(ViewportVisibility::trackHeights);
 
-            return result.Cost;
+            return result.cost;
         }
 
         auto trackPlaceAction = GameActions::TrackPlaceAction(
@@ -4780,7 +4780,7 @@ namespace OpenRCT2::Ui::Windows
         trackPlaceAction.SetFlags({ CommandFlag::allowDuringPaused, CommandFlag::noSpend, CommandFlag::ghost });
         // This command must not be sent over the network
         auto res = GameActions::Execute(&trackPlaceAction, getGameState());
-        if (res.Error != GameActions::Status::ok)
+        if (res.error != GameActions::Status::ok)
             return kMoney64Undefined;
 
         int16_t zBegin{}, zEnd{};
@@ -4799,7 +4799,7 @@ namespace OpenRCT2::Ui::Windows
         _unkF440C5 = { trackPos.x, trackPos.y, trackPos.z + zBegin, static_cast<Direction>(trackDirection) };
         _currentTrackSelectionFlags.set(TrackSelectionFlag::track);
 
-        const auto resultData = res.GetData<GameActions::TrackPlaceActionResult>();
+        const auto resultData = res.getData<GameActions::TrackPlaceActionResult>();
         const auto visiblity = (resultData.GroundFlags & ELEMENT_IS_UNDERGROUND) ? ViewportVisibility::undergroundViewOn
                                                                                  : ViewportVisibility::undergroundViewOff;
         ViewportSetVisibility(visiblity);
@@ -4812,7 +4812,7 @@ namespace OpenRCT2::Ui::Windows
             VirtualFloorSetHeight(trackPos.z - zBegin + zEnd);
         }
 
-        return res.Cost;
+        return res.cost;
     }
 
     static std::pair<bool, OpenRCT2::TrackElemType> WindowRideConstructionUpdateStateGetTrackElement()

@@ -51,9 +51,9 @@ namespace OpenRCT2::GameActions
     Result FootpathRemoveAction::Query(GameState_t& gameState) const
     {
         auto res = Result();
-        res.Cost = 0;
-        res.Expenditure = ExpenditureType::landscaping;
-        res.Position = { _loc.x + 16, _loc.y + 16, _loc.z };
+        res.cost = 0;
+        res.expenditure = ExpenditureType::landscaping;
+        res.position = { _loc.x + 16, _loc.y + 16, _loc.z };
 
         if (!LocationValid(_loc))
         {
@@ -71,7 +71,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_CANT_REMOVE_FOOTPATH_FROM_HERE, STR_ERR_PATH_ELEMENT_NOT_FOUND);
         }
 
-        res.Cost = GetRefundPrice(footpathElement);
+        res.cost = GetRefundPrice(footpathElement);
 
         return res;
     }
@@ -79,9 +79,9 @@ namespace OpenRCT2::GameActions
     Result FootpathRemoveAction::Execute(GameState_t& gameState) const
     {
         auto res = Result();
-        res.Cost = 0;
-        res.Expenditure = ExpenditureType::landscaping;
-        res.Position = { _loc.x + 16, _loc.y + 16, _loc.z };
+        res.cost = 0;
+        res.expenditure = ExpenditureType::landscaping;
+        res.position = { _loc.x + 16, _loc.y + 16, _loc.z };
 
         if (!(GetFlags().has(CommandFlag::ghost)))
         {
@@ -94,9 +94,9 @@ namespace OpenRCT2::GameActions
         {
             FootpathQueueChainReset();
             auto bannerRes = RemoveBannersAtElement(gameState, _loc, footpathElement);
-            if (bannerRes.Error == Status::ok)
+            if (bannerRes.error == Status::ok)
             {
-                res.Cost += bannerRes.Cost;
+                res.cost += bannerRes.cost;
             }
             FootpathRemoveEdgesAt(_loc, footpathElement);
             MapInvalidateTileFull(_loc);
@@ -119,7 +119,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_CANT_REMOVE_FOOTPATH_FROM_HERE, kStringIdNone);
         }
 
-        res.Cost += GetRefundPrice(footpathElement);
+        res.cost += GetRefundPrice(footpathElement);
 
         return res;
     }
@@ -174,9 +174,9 @@ namespace OpenRCT2::GameActions
 
             auto res = ExecuteNested(&bannerRemoveAction, gameState);
             // Ghost removal is free
-            if (res.Error == Status::ok && !isGhost)
+            if (res.error == Status::ok && !isGhost)
             {
-                result.Cost += res.Cost;
+                result.cost += res.cost;
             }
             tileElement--;
         }

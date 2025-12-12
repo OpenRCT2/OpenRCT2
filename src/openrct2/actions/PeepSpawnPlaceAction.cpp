@@ -52,8 +52,8 @@ namespace OpenRCT2::GameActions
         }
 
         auto res = Result();
-        res.Expenditure = ExpenditureType::landPurchase;
-        res.Position = _location;
+        res.expenditure = ExpenditureType::landPurchase;
+        res.position = _location;
 
         auto mapSizeUnits = GetMapSizeUnits() - CoordsXY{ 16, 16 };
         if (!LocationValid(_location) || _location.x <= 16 || _location.y <= 16 || _location.x >= mapSizeUnits.x
@@ -87,8 +87,8 @@ namespace OpenRCT2::GameActions
     Result PeepSpawnPlaceAction::Execute(GameState_t& gameState) const
     {
         auto res = Result();
-        res.Expenditure = ExpenditureType::landPurchase;
-        res.Position = _location;
+        res.expenditure = ExpenditureType::landPurchase;
+        res.position = _location;
 
         // Shift the spawn point to the edge of the tile
         auto spawnPos = CoordsXY{ _location.ToTileCentre() }

@@ -144,9 +144,9 @@ namespace OpenRCT2::GameActions
         }
 
         auto res = Result();
-        res.Position.x = _loc.x + 16;
-        res.Position.y = _loc.y + 16;
-        res.Position.z = TileElementHeight(res.Position);
+        res.position.x = _loc.x + 16;
+        res.position.y = _loc.y + 16;
+        res.position.z = TileElementHeight(res.position);
 
         FootpathQueueChainReset();
         MazeEntranceHedgeReplacement({ _loc, entranceElement });

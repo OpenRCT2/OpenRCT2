@@ -55,11 +55,11 @@ namespace OpenRCT2::GameActions
 
         const auto flags = GetFlags();
 
-        res.Position.x = _loc.x + 16;
-        res.Position.y = _loc.y + 16;
-        res.Position.z = _loc.z;
-        res.Expenditure = ExpenditureType::landscaping;
-        res.Cost = 0;
+        res.position.x = _loc.x + 16;
+        res.position.y = _loc.y + 16;
+        res.position.z = _loc.z;
+        res.expenditure = ExpenditureType::landscaping;
+        res.cost = 0;
 
         TileElement* tileElement = FindLargeSceneryElement(_loc, _tileIndex);
         if (tileElement == nullptr)
@@ -94,9 +94,9 @@ namespace OpenRCT2::GameActions
                 {
                     if (sceneryEntry->HasFlag(LARGE_SCENERY_FLAG_IS_TREE))
                     {
-                        res.Error = Status::noClearance;
-                        res.ErrorTitle = STR_CANT_REMOVE_THIS;
-                        res.ErrorMessage = STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY;
+                        res.error = Status::noClearance;
+                        res.errorTitle = STR_CANT_REMOVE_THIS;
+                        res.errorMessage = STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY;
                         return res;
                     }
                 }
@@ -124,7 +124,7 @@ namespace OpenRCT2::GameActions
         }
 
         if (calculate_cost)
-            res.Cost = sceneryEntry->removal_price;
+            res.cost = sceneryEntry->removal_price;
 
         return res;
     }
@@ -133,11 +133,11 @@ namespace OpenRCT2::GameActions
     {
         auto res = Result();
 
-        res.Position.x = _loc.x + 16;
-        res.Position.y = _loc.y + 16;
-        res.Position.z = _loc.z;
-        res.Expenditure = ExpenditureType::landscaping;
-        res.Cost = 0;
+        res.position.x = _loc.x + 16;
+        res.position.y = _loc.y + 16;
+        res.position.z = _loc.z;
+        res.expenditure = ExpenditureType::landscaping;
+        res.cost = 0;
 
         TileElement* tileElement = FindLargeSceneryElement(_loc, _tileIndex);
         if (tileElement == nullptr)
@@ -187,7 +187,7 @@ namespace OpenRCT2::GameActions
             }
         }
 
-        res.Cost = sceneryEntry->removal_price;
+        res.cost = sceneryEntry->removal_price;
 
         return res;
     }

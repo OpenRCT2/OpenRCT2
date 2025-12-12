@@ -187,7 +187,7 @@ namespace OpenRCT2::TileInspector
         if (isExecuting)
         {
             auto res = SwapTileElements(loc, first, second);
-            if (res.Error != GameActions::Status::ok)
+            if (res.error != GameActions::Status::ok)
             {
                 return res;
             }
@@ -400,7 +400,7 @@ namespace OpenRCT2::TileInspector
                                && otherElement->ClearanceHeight > currentElement->ClearanceHeight)))
                 {
                     auto res = SwapTileElements(loc, currentId - 1, currentId);
-                    if (res.Error != GameActions::Status::ok)
+                    if (res.error != GameActions::Status::ok)
                     {
                         // don't return error here, we've already ran some actions
                         // and moved things as far as we could, the only sensible
@@ -455,7 +455,7 @@ namespace OpenRCT2::TileInspector
                 GameActions::Status::invalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_TILE_ELEMENT_NOT_FOUND);
 
         auto heightValidationResult = ValidateTileHeight(tileElement, heightOffset);
-        if (heightValidationResult.Error != GameActions::Status::ok)
+        if (heightValidationResult.error != GameActions::Status::ok)
             return heightValidationResult;
 
         if (isExecuting)

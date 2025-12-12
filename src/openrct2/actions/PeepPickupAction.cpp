@@ -72,7 +72,7 @@ namespace OpenRCT2::GameActions
         {
             case PeepPickupType::Pickup:
             {
-                res.Position = peep->GetLocation();
+                res.position = peep->GetLocation();
                 if (!peep->CanBePickedUp())
                 {
                     return Result(Status::disallowed, STR_ERR_CANT_PLACE_PERSON_HERE, kStringIdNone);
@@ -94,16 +94,16 @@ namespace OpenRCT2::GameActions
             }
             break;
             case PeepPickupType::Cancel:
-                res.Position = peep->GetLocation();
+                res.position = peep->GetLocation();
                 break;
             case PeepPickupType::Place:
-                res.Position = _loc;
+                res.position = _loc;
                 if (Network::GetPickupPeep(_owner) != peep)
                 {
                     return Result(Status::unknown, STR_ERR_CANT_PLACE_PERSON_HERE, kStringIdNone);
                 }
 
-                if (auto res2 = peep->Place(TileCoordsXYZ(_loc), false); res2.Error != Status::ok)
+                if (auto res2 = peep->Place(TileCoordsXYZ(_loc), false); res2.error != Status::ok)
                 {
                     return res2;
                 }
@@ -130,7 +130,7 @@ namespace OpenRCT2::GameActions
         {
             case PeepPickupType::Pickup:
             {
-                res.Position = peep->GetLocation();
+                res.position = peep->GetLocation();
 
                 Peep* existing = Network::GetPickupPeep(_owner);
                 if (existing != nullptr)
@@ -159,7 +159,7 @@ namespace OpenRCT2::GameActions
             break;
             case PeepPickupType::Cancel:
             {
-                res.Position = peep->GetLocation();
+                res.position = peep->GetLocation();
 
                 Peep* const pickedUpPeep = Network::GetPickupPeep(_owner);
                 if (pickedUpPeep != nullptr)
@@ -170,8 +170,8 @@ namespace OpenRCT2::GameActions
             }
             break;
             case PeepPickupType::Place:
-                res.Position = _loc;
-                if (auto res2 = peep->Place(TileCoordsXYZ(_loc), true); res2.Error != Status::ok)
+                res.position = _loc;
+                if (auto res2 = peep->Place(TileCoordsXYZ(_loc), true); res2.error != Status::ok)
                 {
                     return res2;
                 }

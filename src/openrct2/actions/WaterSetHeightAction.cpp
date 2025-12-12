@@ -49,8 +49,8 @@ namespace OpenRCT2::GameActions
     Result WaterSetHeightAction::Query(GameState_t& gameState) const
     {
         auto res = Result();
-        res.Expenditure = ExpenditureType::landscaping;
-        res.Position = { _coords, _height * kCoordsZStep };
+        res.expenditure = ExpenditureType::landscaping;
+        res.position = { _coords, _height * kCoordsZStep };
 
         if (gLegacyScene != LegacyScene::scenarioEditor && !gameState.cheats.sandboxMode
             && gameState.park.flags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES)
@@ -97,7 +97,7 @@ namespace OpenRCT2::GameActions
             zLow = temp;
         }
 
-        if (auto res2 = MapCanConstructAt({ _coords, zLow, zHigh }, { 0b1111, 0b1111 }); res2.Error != Status::ok)
+        if (auto res2 = MapCanConstructAt({ _coords, zLow, zHigh }, { 0b1111, 0b1111 }); res2.error != Status::ok)
         {
             return res2;
         }
@@ -106,7 +106,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::disallowed, STR_ERR_INVALID_PARAMETER, STR_ERR_TRACK_ON_THIS_TILE_NEEDS_WATER);
         }
 
-        res.Cost = 250;
+        res.cost = 250;
 
         return res;
     }
@@ -114,8 +114,8 @@ namespace OpenRCT2::GameActions
     Result WaterSetHeightAction::Execute(GameState_t& gameState) const
     {
         auto res = Result();
-        res.Expenditure = ExpenditureType::landscaping;
-        res.Position = { _coords, _height * kCoordsZStep };
+        res.expenditure = ExpenditureType::landscaping;
+        res.position = { _coords, _height * kCoordsZStep };
 
         int32_t surfaceHeight = TileElementHeight(_coords);
         FootpathRemoveLitter({ _coords, surfaceHeight });
@@ -139,7 +139,7 @@ namespace OpenRCT2::GameActions
         }
         MapInvalidateTileFull(_coords);
 
-        res.Cost = 250;
+        res.cost = 250;
 
         return res;
     }

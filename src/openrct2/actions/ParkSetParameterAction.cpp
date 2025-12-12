@@ -50,7 +50,7 @@ namespace OpenRCT2::GameActions
         }
 
         auto res = Result();
-        res.ErrorTitle = kErrorTitles[EnumValue(_parameter)];
+        res.errorTitle = kErrorTitles[EnumValue(_parameter)];
         return res;
     }
 
@@ -85,7 +85,7 @@ namespace OpenRCT2::GameActions
         }
 
         auto res = Result();
-        res.ErrorTitle = kErrorTitles[EnumValue(_parameter)];
+        res.errorTitle = kErrorTitles[EnumValue(_parameter)];
         return res;
     }
 } // namespace OpenRCT2::GameActions

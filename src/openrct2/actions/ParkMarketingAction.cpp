@@ -89,9 +89,9 @@ namespace OpenRCT2::GameActions
     Result ParkMarketingAction::CreateResult() const
     {
         auto result = Result();
-        result.ErrorTitle = STR_CANT_START_MARKETING_CAMPAIGN;
-        result.Expenditure = ExpenditureType::marketing;
-        result.Cost = CalculatePrice();
+        result.errorTitle = STR_CANT_START_MARKETING_CAMPAIGN;
+        result.expenditure = ExpenditureType::marketing;
+        result.cost = CalculatePrice();
         return result;
     }
 

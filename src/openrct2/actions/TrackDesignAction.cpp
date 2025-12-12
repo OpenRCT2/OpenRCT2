@@ -57,10 +57,10 @@ namespace OpenRCT2::GameActions
     Result TrackDesignAction::Query(GameState_t& gameState) const
     {
         auto res = Result();
-        res.Position.x = _loc.x + 16;
-        res.Position.y = _loc.y + 16;
-        res.Position.z = _loc.z;
-        res.Expenditure = ExpenditureType::rideConstruction;
+        res.position.x = _loc.x + 16;
+        res.position.y = _loc.y + 16;
+        res.position.z = _loc.z;
+        res.expenditure = ExpenditureType::rideConstruction;
 
         if (!LocationValid(_loc))
         {
@@ -83,12 +83,12 @@ namespace OpenRCT2::GameActions
         auto rideCreateAction = RideCreateAction(_td.trackAndVehicle.rtdIndex, entryIndex, 0, 0, gameState.lastEntranceStyle);
         rideCreateAction.SetFlags(GetFlags());
         auto r = ExecuteNested(&rideCreateAction, gameState);
-        if (r.Error != Status::ok)
+        if (r.error != Status::ok)
         {
             return Result(Status::noFreeElements, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, kStringIdNone);
         }
 
-        const auto rideIndex = r.GetData<RideId>();
+        const auto rideIndex = r.getData<RideId>();
         auto ride = GetRide(rideIndex);
         if (ride == nullptr)
         {
@@ -114,17 +114,17 @@ namespace OpenRCT2::GameActions
 
         ExecuteNested(&gameAction, gameState);
 
-        if (queryRes.Error != Status::ok)
+        if (queryRes.error != Status::ok)
         {
-            res.Error = queryRes.Error;
-            res.ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
-            res.ErrorMessage = queryRes.ErrorMessage;
-            res.ErrorMessageArgs = queryRes.ErrorMessageArgs;
+            res.error = queryRes.error;
+            res.errorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
+            res.errorMessage = queryRes.errorMessage;
+            res.errorMessageArgs = queryRes.errorMessageArgs;
             return res;
         }
 
-        res.Cost = queryRes.Cost;
-        res.SetData(RideId{ RideId::GetNull() });
+        res.cost = queryRes.cost;
+        res.setData(RideId{ RideId::GetNull() });
 
         return res;
     }
@@ -132,10 +132,10 @@ namespace OpenRCT2::GameActions
     Result TrackDesignAction::Execute(GameState_t& gameState) const
     {
         auto res = Result();
-        res.Position.x = _loc.x + 16;
-        res.Position.y = _loc.y + 16;
-        res.Position.z = _loc.z;
-        res.Expenditure = ExpenditureType::rideConstruction;
+        res.position.x = _loc.x + 16;
+        res.position.y = _loc.y + 16;
+        res.position.z = _loc.z;
+        res.expenditure = ExpenditureType::rideConstruction;
 
         auto& objManager = GetContext()->GetObjectManager();
         auto entryIndex = objManager.GetLoadedObjectEntryIndex(_td.trackAndVehicle.vehicleObject);
@@ -153,12 +153,12 @@ namespace OpenRCT2::GameActions
         auto rideCreateAction = RideCreateAction(_td.trackAndVehicle.rtdIndex, entryIndex, 0, 0, gameState.lastEntranceStyle);
         rideCreateAction.SetFlags(GetFlags());
         auto r = ExecuteNested(&rideCreateAction, gameState);
-        if (r.Error != Status::ok)
+        if (r.error != Status::ok)
         {
             return Result(Status::noFreeElements, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, kStringIdNone);
         }
 
-        const auto rideIndex = r.GetData<RideId>();
+        const auto rideIndex = r.getData<RideId>();
         auto ride = GetRide(rideIndex);
         if (ride == nullptr)
         {
@@ -178,16 +178,16 @@ namespace OpenRCT2::GameActions
             queryRes = TrackDesignPlace(_td, flags, placeScenery, *ride, _loc);
         }
 
-        if (queryRes.Error != Status::ok)
+        if (queryRes.error != Status::ok)
         {
             auto gameAction = RideDemolishAction(ride->id, RideModifyType::demolish);
             gameAction.SetFlags(GetFlags());
             ExecuteNested(&gameAction, gameState);
 
-            res.Error = queryRes.Error;
-            res.ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
-            res.ErrorMessage = queryRes.ErrorMessage;
-            res.ErrorMessageArgs = queryRes.ErrorMessageArgs;
+            res.error = queryRes.error;
+            res.errorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
+            res.errorMessage = queryRes.errorMessage;
+            res.errorMessageArgs = queryRes.errorMessageArgs;
 
             return res;
         }
@@ -196,16 +196,16 @@ namespace OpenRCT2::GameActions
         flags.set(CommandFlag::apply);
 
         auto execRes = TrackDesignPlace(_td, flags, placeScenery, *ride, _loc);
-        if (execRes.Error != Status::ok)
+        if (execRes.error != Status::ok)
         {
             auto gameAction = RideDemolishAction(ride->id, RideModifyType::demolish);
             gameAction.SetFlags(GetFlags());
             ExecuteNested(&gameAction, gameState);
 
-            res.Error = execRes.Error;
-            res.ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
-            res.ErrorMessage = execRes.ErrorMessage;
-            res.ErrorMessageArgs = execRes.ErrorMessageArgs;
+            res.error = execRes.error;
+            res.errorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
+            res.errorMessage = execRes.errorMessage;
+            res.errorMessageArgs = execRes.errorMessageArgs;
 
             return res;
         }
@@ -259,15 +259,15 @@ namespace OpenRCT2::GameActions
             ride->vehicleColours[i] = _td.appearance.vehicleColours[i];
         }
 
-        for (int32_t count = 1; count == 1 || r.Error != Status::ok; ++count)
+        for (int32_t count = 1; count == 1 || r.error != Status::ok; ++count)
         {
             auto name = count == 1 ? _td.gameStateData.name : (_td.gameStateData.name + " " + std::to_string(count));
             auto gameAction = RideSetNameAction(ride->id, name);
             gameAction.SetFlags(GetFlags());
             r = ExecuteNested(&gameAction, gameState);
         }
-        res.Cost = execRes.Cost;
-        res.SetData(RideId{ ride->id });
+        res.cost = execRes.cost;
+        res.setData(RideId{ ride->id });
 
         return res;
     }

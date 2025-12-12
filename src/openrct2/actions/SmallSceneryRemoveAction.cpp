@@ -70,9 +70,9 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
         }
 
-        res.Cost = entry->removal_price;
-        res.Expenditure = ExpenditureType::landscaping;
-        res.Position = _loc;
+        res.cost = entry->removal_price;
+        res.expenditure = ExpenditureType::landscaping;
+        res.position = _loc;
 
         if (gLegacyScene != LegacyScene::scenarioEditor && !(GetFlags().has(CommandFlag::ghost))
             && !getGameState().cheats.sandboxMode)
@@ -82,9 +82,9 @@ namespace OpenRCT2::GameActions
             {
                 if (entry->HasFlag(SMALL_SCENERY_FLAG_IS_TREE))
                 {
-                    res.Error = Status::noClearance;
-                    res.ErrorTitle = STR_CANT_REMOVE_THIS;
-                    res.ErrorMessage = STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY;
+                    res.error = Status::noClearance;
+                    res.errorTitle = STR_CANT_REMOVE_THIS;
+                    res.errorMessage = STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY;
                     return res;
                 }
             }
@@ -92,9 +92,9 @@ namespace OpenRCT2::GameActions
             // Check if the land is owned
             if (!MapIsLocationOwned(_loc))
             {
-                res.Error = Status::noClearance;
-                res.ErrorTitle = STR_CANT_REMOVE_THIS;
-                res.ErrorMessage = STR_LAND_NOT_OWNED_BY_PARK;
+                res.error = Status::noClearance;
+                res.errorTitle = STR_CANT_REMOVE_THIS;
+                res.errorMessage = STR_LAND_NOT_OWNED_BY_PARK;
                 return res;
             }
         }
@@ -119,9 +119,9 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
         }
 
-        res.Cost = entry->removal_price;
-        res.Expenditure = ExpenditureType::landscaping;
-        res.Position = _loc;
+        res.cost = entry->removal_price;
+        res.expenditure = ExpenditureType::landscaping;
+        res.position = _loc;
 
         TileElement* tileElement = FindSceneryElement();
         if (tileElement == nullptr)

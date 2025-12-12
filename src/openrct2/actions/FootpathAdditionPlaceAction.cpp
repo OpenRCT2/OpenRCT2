@@ -54,8 +54,8 @@ namespace OpenRCT2::GameActions
     Result FootpathAdditionPlaceAction::Query(GameState_t& gameState) const
     {
         auto res = Result();
-        res.Expenditure = ExpenditureType::landscaping;
-        res.Position = _loc;
+        res.expenditure = ExpenditureType::landscaping;
+        res.position = _loc;
         if (!LocationValid(_loc))
         {
             return Result(Status::invalidParameters, STR_CANT_POSITION_THIS_HERE, STR_OFF_EDGE_OF_MAP);
@@ -126,7 +126,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_CANT_POSITION_THIS_HERE, STR_CAN_ONLY_PLACE_THESE_ON_QUEUE_AREA);
         }
 
-        res.Cost = pathAdditionEntry->price;
+        res.cost = pathAdditionEntry->price;
 
         // Should place a ghost?
         if (GetFlags().has(CommandFlag::ghost))
@@ -143,8 +143,8 @@ namespace OpenRCT2::GameActions
     Result FootpathAdditionPlaceAction::Execute(GameState_t& gameState) const
     {
         auto res = Result();
-        res.Position = _loc;
-        res.Expenditure = ExpenditureType::landscaping;
+        res.position = _loc;
+        res.expenditure = ExpenditureType::landscaping;
 
         auto tileElement = MapGetFootpathElement(_loc);
         auto pathElement = tileElement->AsPath();
@@ -169,7 +169,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_CANT_POSITION_THIS_HERE, STR_UNKNOWN_OBJECT_TYPE);
         }
 
-        res.Cost = pathAdditionEntry->price;
+        res.cost = pathAdditionEntry->price;
 
         if (GetFlags().has(CommandFlag::ghost))
         {

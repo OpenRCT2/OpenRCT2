@@ -76,8 +76,8 @@ namespace OpenRCT2::GameActions
 
         auto validRange = ClampRangeWithinMap(_range);
 
-        res.Position = { _coords.x, _coords.y, TileElementHeight(_coords) };
-        res.Expenditure = ExpenditureType::landscaping;
+        res.position = { _coords.x, _coords.y, TileElementHeight(_coords) };
+        res.expenditure = ExpenditureType::landscaping;
 
         if (isExecuting)
         {
@@ -127,13 +127,13 @@ namespace OpenRCT2::GameActions
                 landSetHeightAction.SetFlags(GetFlags());
                 auto result = isExecuting ? ExecuteNested(&landSetHeightAction, gameState)
                                           : QueryNested(&landSetHeightAction, gameState);
-                if (result.Error == Status::ok)
+                if (result.error == Status::ok)
                 {
-                    res.Cost += result.Cost;
+                    res.cost += result.cost;
                 }
                 else
                 {
-                    result.ErrorTitle = STR_CANT_LOWER_LAND_HERE;
+                    result.errorTitle = STR_CANT_LOWER_LAND_HERE;
                     return result;
                 }
             }

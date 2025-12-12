@@ -75,7 +75,7 @@ namespace OpenRCT2::GameActions
     Result StaffHireNewAction::QueryExecute(bool execute) const
     {
         auto res = Result();
-        res.Expenditure = ExpenditureType::wages;
+        res.expenditure = ExpenditureType::wages;
 
         if (_staffType >= static_cast<uint8_t>(StaffType::count))
         {
@@ -110,7 +110,7 @@ namespace OpenRCT2::GameActions
             // In query we just want to see if we can obtain a sprite slot.
             getGameState().entities.EntityRemove(newPeep);
 
-            res.SetData(StaffHireNewActionResult{ EntityId::GetNull() });
+            res.setData(StaffHireNewActionResult{ EntityId::GetNull() });
         }
         else
         {
@@ -215,7 +215,7 @@ namespace OpenRCT2::GameActions
             newPeep->StaffMowingTimeout = 0;
             newPeep->PatrolInfo = nullptr;
 
-            res.SetData(StaffHireNewActionResult{ newPeep->Id });
+            res.setData(StaffHireNewActionResult{ newPeep->Id });
         }
 
         return res;

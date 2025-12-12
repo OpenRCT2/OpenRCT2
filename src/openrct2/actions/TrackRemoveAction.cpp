@@ -68,10 +68,10 @@ namespace OpenRCT2::GameActions
     Result TrackRemoveAction::Query(GameState_t& gameState) const
     {
         auto res = Result();
-        res.Position.x = _origin.x + 16;
-        res.Position.y = _origin.y + 16;
-        res.Position.z = _origin.z;
-        res.Expenditure = ExpenditureType::rideConstruction;
+        res.position.x = _origin.x + 16;
+        res.position.y = _origin.y + 16;
+        res.position.z = _origin.z;
+        res.expenditure = ExpenditureType::rideConstruction;
 
         auto comparableTrackType = normaliseTrackType(_trackType);
 
@@ -154,9 +154,9 @@ namespace OpenRCT2::GameActions
         startLoc.x -= rotatedTrack.x;
         startLoc.y -= rotatedTrack.y;
         startLoc.z -= rotatedTrack.z;
-        res.Position.x = startLoc.x;
-        res.Position.y = startLoc.y;
-        res.Position.z = startLoc.z;
+        res.position.x = startLoc.x;
+        res.position.y = startLoc.y;
+        res.position.z = startLoc.z;
 
         money64 supportCosts = 0;
 
@@ -245,17 +245,17 @@ namespace OpenRCT2::GameActions
             price = (price * 45875) / 65536;
         }
 
-        res.Cost = -price;
+        res.cost = -price;
         return res;
     }
 
     Result TrackRemoveAction::Execute(GameState_t& gameState) const
     {
         auto res = Result();
-        res.Position.x = _origin.x + 16;
-        res.Position.y = _origin.y + 16;
-        res.Position.z = _origin.z;
-        res.Expenditure = ExpenditureType::rideConstruction;
+        res.position.x = _origin.x + 16;
+        res.position.y = _origin.y + 16;
+        res.position.z = _origin.z;
+        res.expenditure = ExpenditureType::rideConstruction;
 
         auto comparableTrackType = normaliseTrackType(_trackType);
 
@@ -327,9 +327,9 @@ namespace OpenRCT2::GameActions
         startLoc.x -= rotatedTrackLoc.x;
         startLoc.y -= rotatedTrackLoc.y;
         startLoc.z -= rotatedTrackLoc.z;
-        res.Position.x = startLoc.x;
-        res.Position.y = startLoc.y;
-        res.Position.z = startLoc.z;
+        res.position.x = startLoc.x;
+        res.position.y = startLoc.y;
+        res.position.z = startLoc.z;
 
         money64 supportCosts = 0;
 
@@ -505,7 +505,7 @@ namespace OpenRCT2::GameActions
             price = (price * 45875) / 65536;
         }
 
-        res.Cost = -price;
+        res.cost = -price;
         return res;
     }
 } // namespace OpenRCT2::GameActions

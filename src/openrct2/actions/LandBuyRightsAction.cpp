@@ -85,8 +85,8 @@ namespace OpenRCT2::GameActions
                           (validRange.GetY1() + validRange.GetY2()) / 2 + 16, 0 };
         centre.z = TileElementHeight(centre);
 
-        res.Position = centre;
-        res.Expenditure = ExpenditureType::landPurchase;
+        res.position = centre;
+        res.expenditure = ExpenditureType::landPurchase;
 
         // Game command modified to accept selection size
         for (auto y = validRange.GetY1(); y <= validRange.GetY2(); y += kCoordsXYStep)
@@ -96,9 +96,9 @@ namespace OpenRCT2::GameActions
                 if (!LocationValid({ x, y }))
                     continue;
                 auto result = MapBuyLandRightsForTile({ x, y }, isExecuting);
-                if (result.Error == Status::ok)
+                if (result.error == Status::ok)
                 {
-                    res.Cost += result.Cost;
+                    res.cost += result.cost;
                 }
             }
         }
@@ -142,7 +142,7 @@ namespace OpenRCT2::GameActions
                     surfaceElement->SetOwnership(OWNERSHIP_OWNED);
                     Park::UpdateFencesAroundTile(loc);
                 }
-                res.Cost = getGameState().scenarioOptions.landPrice;
+                res.cost = getGameState().scenarioOptions.landPrice;
                 return res;
 
             case LandBuyRightSetting::BuyConstructionRights: // 2
@@ -163,7 +163,7 @@ namespace OpenRCT2::GameActions
                     uint16_t baseZ = surfaceElement->GetBaseZ();
                     MapInvalidateTile({ loc, baseZ, baseZ + 16 });
                 }
-                res.Cost = getGameState().scenarioOptions.constructionRightsPrice;
+                res.cost = getGameState().scenarioOptions.constructionRightsPrice;
                 return res;
 
             default:

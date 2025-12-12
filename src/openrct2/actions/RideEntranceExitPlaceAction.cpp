@@ -93,9 +93,9 @@ namespace OpenRCT2::GameActions
             rideEntranceExitRemove.SetFlags(GetFlags());
 
             auto result = QueryNested(&rideEntranceExitRemove, gameState);
-            if (result.Error != Status::ok)
+            if (result.error != Status::ok)
             {
-                result.ErrorTitle = errorTitle;
+                result.errorTitle = errorTitle;
                 return result;
             }
         }
@@ -117,13 +117,13 @@ namespace OpenRCT2::GameActions
         auto clear_z = z + (_isExit ? RideExitHeight : RideEntranceHeight);
         auto canBuild = MapCanConstructWithClearAt(
             { _loc, z, clear_z }, MapPlaceNonSceneryClearFunc, { 0b1111, 0 }, GetFlags(), kTileSlopeFlat);
-        if (canBuild.Error != Status::ok)
+        if (canBuild.error != Status::ok)
         {
-            canBuild.ErrorTitle = errorTitle;
+            canBuild.errorTitle = errorTitle;
             return canBuild;
         }
 
-        const auto clearanceData = canBuild.GetData<ConstructClearResult>();
+        const auto clearanceData = canBuild.getData<ConstructClearResult>();
         if (clearanceData.GroundFlags & ELEMENT_IS_UNDERWATER)
         {
             return Result(Status::disallowed, errorTitle, STR_RIDE_CANT_BUILD_THIS_UNDERWATER);
@@ -135,9 +135,9 @@ namespace OpenRCT2::GameActions
         }
 
         auto res = Result();
-        res.Position = { _loc.ToTileCentre(), z };
-        res.Expenditure = ExpenditureType::rideConstruction;
-        res.Cost += canBuild.Cost;
+        res.position = { _loc.ToTileCentre(), z };
+        res.expenditure = ExpenditureType::rideConstruction;
+        res.cost += canBuild.cost;
         return res;
     }
 
@@ -169,9 +169,9 @@ namespace OpenRCT2::GameActions
             rideEntranceExitRemove.SetFlags(GetFlags());
 
             auto result = ExecuteNested(&rideEntranceExitRemove, gameState);
-            if (result.Error != Status::ok)
+            if (result.error != Status::ok)
             {
-                result.ErrorTitle = errorTitle;
+                result.errorTitle = errorTitle;
                 return result;
             }
         }
@@ -188,16 +188,16 @@ namespace OpenRCT2::GameActions
         auto canBuild = MapCanConstructWithClearAt(
             { _loc, z, clear_z }, MapPlaceNonSceneryClearFunc, { 0b1111, 0 }, GetFlags().with(CommandFlag::apply),
             kTileSlopeFlat);
-        if (canBuild.Error != Status::ok)
+        if (canBuild.error != Status::ok)
         {
-            canBuild.ErrorTitle = errorTitle;
+            canBuild.errorTitle = errorTitle;
             return canBuild;
         }
 
         auto res = Result();
-        res.Position = { _loc.ToTileCentre(), z };
-        res.Expenditure = ExpenditureType::rideConstruction;
-        res.Cost += canBuild.Cost;
+        res.position = { _loc.ToTileCentre(), z };
+        res.expenditure = ExpenditureType::rideConstruction;
+        res.cost += canBuild.cost;
 
         auto* entranceElement = TileElementInsert<EntranceElement>(CoordsXYZ{ _loc, z }, 0b1111);
         Guard::Assert(entranceElement != nullptr);
@@ -255,13 +255,13 @@ namespace OpenRCT2::GameActions
         int16_t clearZ = baseZ + (isExit ? RideExitHeight : RideEntranceHeight);
         auto canBuild = MapCanConstructWithClearAt(
             { loc, baseZ, clearZ }, MapPlaceNonSceneryClearFunc, { 0b1111, 0 }, {}, kTileSlopeFlat);
-        if (canBuild.Error != Status::ok)
+        if (canBuild.error != Status::ok)
         {
-            canBuild.ErrorTitle = errorTitle;
+            canBuild.errorTitle = errorTitle;
             return canBuild;
         }
 
-        const auto clearanceData = canBuild.GetData<ConstructClearResult>();
+        const auto clearanceData = canBuild.getData<ConstructClearResult>();
         if (clearanceData.GroundFlags & ELEMENT_IS_UNDERWATER)
         {
             return Result(Status::disallowed, errorTitle, STR_RIDE_CANT_BUILD_THIS_UNDERWATER);
@@ -272,9 +272,9 @@ namespace OpenRCT2::GameActions
             return Result(Status::disallowed, errorTitle, STR_TOO_HIGH);
         }
         auto res = Result();
-        res.Position = { loc.ToTileCentre(), TileElementHeight(loc) };
-        res.Expenditure = ExpenditureType::rideConstruction;
-        res.Cost += canBuild.Cost;
+        res.position = { loc.ToTileCentre(), TileElementHeight(loc) };
+        res.expenditure = ExpenditureType::rideConstruction;
+        res.cost += canBuild.cost;
         return res;
     }
 } // namespace OpenRCT2::GameActions

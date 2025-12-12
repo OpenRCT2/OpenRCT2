@@ -88,8 +88,8 @@ namespace OpenRCT2::GameActions
             return Result(Status::disallowed, STR_CANT_REMOVE_THIS, kStringIdNone);
         }
         auto res = Result();
-        res.Position = _loc;
-        res.Cost = 0.00_GBP;
+        res.position = _loc;
+        res.cost = 0.00_GBP;
         return res;
     }
 
@@ -111,8 +111,8 @@ namespace OpenRCT2::GameActions
         MapInvalidateTileFull(_loc);
 
         auto res = Result();
-        res.Position = _loc;
-        res.Cost = 0.00_GBP;
+        res.position = _loc;
+        res.cost = 0.00_GBP;
         return res;
     }
 } // namespace OpenRCT2::GameActions

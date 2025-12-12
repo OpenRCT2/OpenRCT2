@@ -59,7 +59,7 @@ namespace OpenRCT2::GameActions
     {
         // Update global uniform colour property
         auto res = StaffSetColour(static_cast<StaffType>(_staffType), _colour);
-        if (res.Error != Status::ok)
+        if (res.error != Status::ok)
         {
             return res;
         }

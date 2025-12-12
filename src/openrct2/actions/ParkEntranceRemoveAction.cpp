@@ -50,9 +50,9 @@ namespace OpenRCT2::GameActions
         }
 
         auto res = Result();
-        res.Expenditure = ExpenditureType::landPurchase;
-        res.Position = _loc;
-        res.ErrorTitle = STR_CANT_REMOVE_THIS;
+        res.expenditure = ExpenditureType::landPurchase;
+        res.position = _loc;
+        res.errorTitle = STR_CANT_REMOVE_THIS;
 
         if (!LocationValid(_loc))
         {
@@ -69,9 +69,9 @@ namespace OpenRCT2::GameActions
     Result ParkEntranceRemoveAction::Execute(GameState_t& gameState) const
     {
         auto res = Result();
-        res.Expenditure = ExpenditureType::landPurchase;
-        res.Position = _loc;
-        res.ErrorTitle = STR_CANT_REMOVE_THIS;
+        res.expenditure = ExpenditureType::landPurchase;
+        res.position = _loc;
+        res.errorTitle = STR_CANT_REMOVE_THIS;
 
         auto entranceIndex = ParkEntranceGetIndex(_loc);
         if (entranceIndex == -1)

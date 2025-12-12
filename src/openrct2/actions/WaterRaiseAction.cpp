@@ -56,16 +56,16 @@ namespace OpenRCT2::GameActions
         auto res = Result();
 
         auto validRange = ClampRangeWithinMap(_range);
-        res.Position.x = ((validRange.GetX1() + validRange.GetX2()) / 2) + 16;
-        res.Position.y = ((validRange.GetY1() + validRange.GetY2()) / 2) + 16;
-        int32_t z = TileElementHeight(res.Position);
-        int16_t waterHeight = TileElementWaterHeight(res.Position);
+        res.position.x = ((validRange.GetX1() + validRange.GetX2()) / 2) + 16;
+        res.position.y = ((validRange.GetY1() + validRange.GetY2()) / 2) + 16;
+        int32_t z = TileElementHeight(res.position);
+        int16_t waterHeight = TileElementWaterHeight(res.position);
         if (waterHeight != 0)
         {
             z = waterHeight;
         }
-        res.Position.z = z;
-        res.Expenditure = ExpenditureType::landscaping;
+        res.position.z = z;
+        res.expenditure = ExpenditureType::landscaping;
 
         auto maxHeight = GetHighestHeight(gameState, validRange) / kCoordsZStep;
         bool hasChanged = false;
@@ -116,14 +116,14 @@ namespace OpenRCT2::GameActions
                 waterSetHeightAction.SetFlags(GetFlags());
                 auto result = isExecuting ? ExecuteNested(&waterSetHeightAction, gameState)
                                           : QueryNested(&waterSetHeightAction, gameState);
-                if (result.Error == Status::ok)
+                if (result.error == Status::ok)
                 {
-                    res.Cost += result.Cost;
+                    res.cost += result.cost;
                     hasChanged = true;
                 }
                 else
                 {
-                    result.ErrorTitle = STR_CANT_RAISE_WATER_LEVEL_HERE;
+                    result.errorTitle = STR_CANT_RAISE_WATER_LEVEL_HERE;
                     return result;
                 }
             }
@@ -136,7 +136,7 @@ namespace OpenRCT2::GameActions
 
         if (isExecuting && hasChanged)
         {
-            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::layingOutWater, res.Position);
+            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::layingOutWater, res.position);
         }
         // Force ride construction to recheck area
         _currentTrackSelectionFlags.set(TrackSelectionFlag::recheck);

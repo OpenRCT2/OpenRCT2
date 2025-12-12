@@ -64,9 +64,9 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, errorTitle, STR_ERR_BANNER_ELEMENT_NOT_FOUND);
         }
 
-        res.Expenditure = ExpenditureType::landscaping;
+        res.expenditure = ExpenditureType::landscaping;
         auto location = banner->position.ToCoordsXY().ToTileCentre();
-        res.Position = { location, TileElementHeight(location) };
+        res.position = { location, TileElementHeight(location) };
 
         TileElement* tileElement = BannerGetTileElement(_bannerIndex);
 
@@ -130,9 +130,9 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_CANT_REPAINT_THIS, STR_ERR_BANNER_ELEMENT_NOT_FOUND);
         }
 
-        res.Expenditure = ExpenditureType::landscaping;
+        res.expenditure = ExpenditureType::landscaping;
         auto location = banner->position.ToCoordsXY().ToTileCentre();
-        res.Position = { location, TileElementHeight(location) };
+        res.position = { location, TileElementHeight(location) };
 
         TileElement* tileElement = BannerGetTileElement(_bannerIndex);
 

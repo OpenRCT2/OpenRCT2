@@ -1092,7 +1092,7 @@ static GameActions::Result TrackDesignPlaceSceneryElement(
             auto res = flags.has(CommandFlag::apply) ? GameActions::ExecuteNested(&smallSceneryPlace, gameState)
                                                      : GameActions::QueryNested(&smallSceneryPlace, gameState);
 
-            cost = res.Error == GameActions::Status::ok ? res.Cost : 0;
+            cost = res.error == GameActions::Status::ok ? res.cost : 0;
             break;
         }
         case ObjectType::largeScenery:
@@ -1132,7 +1132,7 @@ static GameActions::Result TrackDesignPlaceSceneryElement(
             auto res = flags.has(CommandFlag::apply) ? GameActions::ExecuteNested(&sceneryPlaceAction, gameState)
                                                      : GameActions::QueryNested(&sceneryPlaceAction, gameState);
 
-            cost = res.Cost;
+            cost = res.cost;
             break;
         }
         case ObjectType::walls:
@@ -1170,7 +1170,7 @@ static GameActions::Result TrackDesignPlaceSceneryElement(
             auto res = flags.has(CommandFlag::apply) ? GameActions::ExecuteNested(&wallPlaceAction, gameState)
                                                      : GameActions::QueryNested(&wallPlaceAction, gameState);
 
-            cost = res.Cost;
+            cost = res.cost;
             break;
         }
         case ObjectType::paths:
@@ -1211,7 +1211,7 @@ static GameActions::Result TrackDesignPlaceSceneryElement(
                 auto res = flags.has(CommandFlag::apply) ? GameActions::ExecuteNested(&footpathPlaceAction, gameState)
                                                          : GameActions::QueryNested(&footpathPlaceAction, gameState);
                 // Ignore failures
-                cost = res.Error == GameActions::Status::ok ? res.Cost : 0;
+                cost = res.error == GameActions::Status::ok ? res.cost : 0;
             }
             else
             {
@@ -1259,7 +1259,7 @@ static GameActions::Result TrackDesignPlaceSceneryElement(
     }
 
     auto res = GameActions::Result();
-    res.Cost = cost;
+    res.cost = cost;
 
     return res;
 }
@@ -1293,7 +1293,7 @@ static GameActions::Result TrackDesignPlaceAllScenery(
             TrackDesignUpdatePreviewBounds(tds, mapCoord);
 
             auto placementRes = TrackDesignPlaceSceneryElement(tds, mapCoord, mode, scenery, rotation, origin.z);
-            if (placementRes.Error != GameActions::Status::ok)
+            if (placementRes.error != GameActions::Status::ok)
             {
                 if (tds.placeOperation != TrackPlaceOperation::removeGhost)
                 {
@@ -1301,18 +1301,18 @@ static GameActions::Result TrackDesignPlaceAllScenery(
                     return placementRes;
                 }
 
-                if (placementRes.Error == GameActions::Status::noClearance)
+                if (placementRes.error == GameActions::Status::noClearance)
                 {
                     // Some scenery might be obstructed, don't abort the entire operation.
                     continue;
                 }
             }
-            cost += placementRes.Cost;
+            cost += placementRes.cost;
         }
     }
 
     auto res = GameActions::Result();
-    res.Cost = cost;
+    res.cost = cost;
 
     return res;
 }
@@ -1393,11 +1393,11 @@ static std::optional<GameActions::Result> TrackDesignPlaceEntrances(
                             ? GameActions::ExecuteNested(&rideEntranceExitPlaceAction, gameState)
                             : GameActions::QueryNested(&rideEntranceExitPlaceAction, gameState);
 
-                        if (res.Error != GameActions::Status::ok)
+                        if (res.error != GameActions::Status::ok)
                         {
                             return res;
                         }
-                        totalCost += res.Cost;
+                        totalCost += res.cost;
                         tds.entranceExitPlaced = true;
                         _trackDesignPlaceStateEntranceExitPlaced = true;
                         break;
@@ -1406,12 +1406,12 @@ static std::optional<GameActions::Result> TrackDesignPlaceEntrances(
                 else
                 {
                     auto res = GameActions::RideEntranceExitPlaceAction::TrackPlaceQuery(newCoords, false);
-                    if (res.Error != GameActions::Status::ok)
+                    if (res.error != GameActions::Status::ok)
                     {
                         return res;
                     }
 
-                    totalCost += res.Cost;
+                    totalCost += res.cost;
                     tds.entranceExitPlaced = true;
                     _trackDesignPlaceStateEntranceExitPlaced = true;
                 }
@@ -1489,11 +1489,11 @@ static GameActions::Result TrackDesignPlaceMaze(
             mazePlace.SetFlags(flags);
             auto res = flags.has(CommandFlag::apply) ? GameActions::ExecuteNested(&mazePlace, gameState)
                                                      : GameActions::QueryNested(&mazePlace, gameState);
-            if (res.Error != GameActions::Status::ok)
+            if (res.error != GameActions::Status::ok)
             {
                 return res;
             }
-            cost = res.Cost;
+            cost = res.cost;
 
             totalCost += cost;
         }
@@ -1548,7 +1548,7 @@ static GameActions::Result TrackDesignPlaceMaze(
     }
 
     auto res = GameActions::Result();
-    res.Cost = totalCost;
+    res.cost = totalCost;
 
     return res;
 }
@@ -1646,12 +1646,12 @@ static GameActions::Result TrackDesignPlaceRide(
 
                 auto res = flags.has(CommandFlag::apply) ? GameActions::ExecuteNested(&trackPlaceAction, gameState)
                                                          : GameActions::QueryNested(&trackPlaceAction, gameState);
-                if (res.Error != GameActions::Status::ok)
+                if (res.error != GameActions::Status::ok)
                 {
                     return res;
                 }
 
-                totalCost += res.Cost;
+                totalCost += res.cost;
                 break;
             }
             case TrackPlaceOperation::getPlaceZ:
@@ -1728,7 +1728,7 @@ static GameActions::Result TrackDesignPlaceRide(
     }
 
     auto res = GameActions::Result();
-    res.Cost = totalCost;
+    res.cost = totalCost;
 
     return res;
 }
@@ -1783,14 +1783,14 @@ static GameActions::Result TrackDesignPlaceVirtual(
     _currentRideIndex = savedRideId;
     _currentTrackPieceDirection = savedTrackPieceDirection;
 
-    if (trackPlaceRes.Error != GameActions::Status::ok)
+    if (trackPlaceRes.error != GameActions::Status::ok)
     {
         return trackPlaceRes;
     }
 
     // Scenery elements
     auto sceneryPlaceRes = TrackDesignPlaceAllScenery(tds, td.sceneryElements, coords.direction);
-    if (sceneryPlaceRes.Error != GameActions::Status::ok)
+    if (sceneryPlaceRes.error != GameActions::Status::ok)
     {
         return sceneryPlaceRes;
     }
@@ -1809,7 +1809,7 @@ static GameActions::Result TrackDesignPlaceVirtual(
     }
 
     auto res = GameActions::Result();
-    res.Cost = trackPlaceRes.Cost + sceneryPlaceRes.Cost;
+    res.cost = trackPlaceRes.cost + sceneryPlaceRes.cost;
 
     return res;
 }
@@ -1867,14 +1867,14 @@ static money64 TrackDesignCreateRide(int32_t type, int32_t subType, CommandFlags
     auto res = GameActions::ExecuteNested(&gameAction, gameState);
 
     // Callee's of this function expect kMoney64Undefined in case of failure.
-    if (res.Error != GameActions::Status::ok)
+    if (res.error != GameActions::Status::ok)
     {
         return kMoney64Undefined;
     }
 
-    *outRideIndex = res.GetData<RideId>();
+    *outRideIndex = res.getData<RideId>();
 
-    return res.Cost;
+    return res.cost;
 }
 
 /**
@@ -1953,7 +1953,7 @@ static bool TrackDesignPlacePreview(
         { mapSize.x, mapSize.y, z, _currentTrackPieceDirection });
     gameState.park.flags = backup_park_flags;
 
-    if (res.Error == GameActions::Status::ok)
+    if (res.error == GameActions::Status::ok)
     {
         if (entry_index == kObjectEntryIndexNull)
         {
@@ -1966,7 +1966,7 @@ static bool TrackDesignPlacePreview(
 
         _currentTrackPieceDirection = backup_rotation;
         _trackDesignDrawingPreview = false;
-        gameStateData.cost = res.Cost;
+        gameStateData.cost = res.cost;
         *outRide = ride;
         return true;
     }

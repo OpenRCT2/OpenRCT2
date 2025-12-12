@@ -48,8 +48,8 @@ namespace OpenRCT2::GameActions
     Result SurfaceSetStyleAction::Query(GameState_t& gameState) const
     {
         auto res = Result();
-        res.ErrorTitle = STR_CANT_CHANGE_LAND_TYPE;
-        res.Expenditure = ExpenditureType::landscaping;
+        res.errorTitle = STR_CANT_CHANGE_LAND_TYPE;
+        res.expenditure = ExpenditureType::landscaping;
 
         auto validRange = ClampRangeWithinMap(_range.Normalise());
         auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
@@ -80,9 +80,9 @@ namespace OpenRCT2::GameActions
         auto yMid = (validRange.GetY1() + validRange.GetY2()) / 2 + 16;
         auto heightMid = TileElementHeight({ xMid, yMid });
 
-        res.Position.x = xMid;
-        res.Position.y = yMid;
-        res.Position.z = heightMid;
+        res.position.x = xMid;
+        res.position.y = yMid;
+        res.position.z = heightMid;
 
         // Do nothing if not in editor, sandbox mode or landscaping is forbidden
         if (gLegacyScene != LegacyScene::scenarioEditor && !gameState.cheats.sandboxMode
@@ -138,7 +138,7 @@ namespace OpenRCT2::GameActions
                 }
             }
         }
-        res.Cost = surfaceCost + edgeCost;
+        res.cost = surfaceCost + edgeCost;
 
         return res;
     }
@@ -146,17 +146,17 @@ namespace OpenRCT2::GameActions
     Result SurfaceSetStyleAction::Execute(GameState_t& gameState) const
     {
         auto res = Result();
-        res.ErrorTitle = STR_CANT_CHANGE_LAND_TYPE;
-        res.Expenditure = ExpenditureType::landscaping;
+        res.errorTitle = STR_CANT_CHANGE_LAND_TYPE;
+        res.expenditure = ExpenditureType::landscaping;
 
         auto validRange = ClampRangeWithinMap(_range.Normalise());
         auto xMid = (validRange.GetX1() + validRange.GetX2()) / 2 + 16;
         auto yMid = (validRange.GetY1() + validRange.GetY2()) / 2 + 16;
         auto heightMid = TileElementHeight({ xMid, yMid });
 
-        res.Position.x = xMid;
-        res.Position.y = yMid;
-        res.Position.z = heightMid;
+        res.position.x = xMid;
+        res.position.y = yMid;
+        res.position.z = heightMid;
 
         money64 surfaceCost = 0;
         money64 edgeCost = 0;
@@ -220,7 +220,7 @@ namespace OpenRCT2::GameActions
                 }
             }
         }
-        res.Cost = surfaceCost + edgeCost;
+        res.cost = surfaceCost + edgeCost;
 
         return res;
     }

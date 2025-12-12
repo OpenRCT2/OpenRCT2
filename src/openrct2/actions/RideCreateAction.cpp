@@ -116,7 +116,7 @@ namespace OpenRCT2::GameActions
         }
 
         auto res = Result();
-        res.SetData(RideId{ rideIndex });
+        res.setData(RideId{ rideIndex });
 
         return res;
     }
@@ -294,8 +294,8 @@ namespace OpenRCT2::GameActions
         auto* windowMgr = Ui::GetWindowManager();
         windowMgr->InvalidateByClass(WindowClass::rideList);
 
-        res.Expenditure = ExpenditureType::rideConstruction;
-        res.SetData(RideId{ rideIndex });
+        res.expenditure = ExpenditureType::rideConstruction;
+        res.setData(RideId{ rideIndex });
 
         return res;
     }

@@ -65,11 +65,11 @@ namespace OpenRCT2::GameActions
     Result LargeScenerySetColourAction::QueryExecute(bool isExecuting) const
     {
         auto res = Result();
-        res.Expenditure = ExpenditureType::landscaping;
-        res.Position.x = _loc.x + 16;
-        res.Position.y = _loc.y + 16;
-        res.Position.z = TileElementHeight(_loc);
-        res.ErrorTitle = STR_CANT_REPAINT_THIS;
+        res.expenditure = ExpenditureType::landscaping;
+        res.position.x = _loc.x + 16;
+        res.position.y = _loc.y + 16;
+        res.position.z = TileElementHeight(_loc);
+        res.errorTitle = STR_CANT_REPAINT_THIS;
 
         auto mapSizeMax = GetMapSizeMaxXY();
         if (_loc.x < 0 || _loc.y < 0 || _loc.x > mapSizeMax.x || _loc.y > mapSizeMax.y)

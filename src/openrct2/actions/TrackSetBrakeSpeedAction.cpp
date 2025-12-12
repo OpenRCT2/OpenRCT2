@@ -57,10 +57,10 @@ namespace OpenRCT2::GameActions
     {
         auto res = Result();
 
-        res.Position = _loc;
-        res.Position.x += 16;
-        res.Position.y += 16;
-        res.Expenditure = ExpenditureType::rideConstruction;
+        res.position = _loc;
+        res.position.x += 16;
+        res.position.y += 16;
+        res.expenditure = ExpenditureType::rideConstruction;
 
         if (!LocationValid(_loc))
         {

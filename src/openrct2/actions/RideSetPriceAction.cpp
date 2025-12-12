@@ -78,7 +78,7 @@ namespace OpenRCT2::GameActions
     Result RideSetPriceAction::Execute(GameState_t& gameState) const
     {
         Result res = Result();
-        res.Expenditure = ExpenditureType::parkRideTickets;
+        res.expenditure = ExpenditureType::parkRideTickets;
 
         auto ride = GetRide(_rideIndex);
         if (ride == nullptr)
@@ -103,7 +103,7 @@ namespace OpenRCT2::GameActions
         if (!ride->overallView.IsNull())
         {
             auto location = ride->overallView.ToTileCentre();
-            res.Position = { location, TileElementHeight(location) };
+            res.position = { location, TileElementHeight(location) };
         }
 
         auto* windowMgr = Ui::GetWindowManager();

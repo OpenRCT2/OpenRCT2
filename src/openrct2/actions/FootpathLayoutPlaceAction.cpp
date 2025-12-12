@@ -68,9 +68,9 @@ namespace OpenRCT2::GameActions
     Result FootpathLayoutPlaceAction::Query(GameState_t& gameState) const
     {
         auto res = Result();
-        res.Cost = 0;
-        res.Expenditure = ExpenditureType::landscaping;
-        res.Position = _loc.ToTileCentre();
+        res.cost = 0;
+        res.expenditure = ExpenditureType::landscaping;
+        res.position = _loc.ToTileCentre();
 
         gFootpathGroundFlags = 0;
 
@@ -100,9 +100,9 @@ namespace OpenRCT2::GameActions
     Result FootpathLayoutPlaceAction::Execute(GameState_t& gameState) const
     {
         auto res = Result();
-        res.Cost = 0;
-        res.Expenditure = ExpenditureType::landscaping;
-        res.Position = _loc.ToTileCentre();
+        res.cost = 0;
+        res.expenditure = ExpenditureType::landscaping;
+        res.position = _loc.ToTileCentre();
 
         if (!(GetFlags().has(CommandFlag::ghost)))
         {
@@ -127,7 +127,7 @@ namespace OpenRCT2::GameActions
                 Status::noFreeElements, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_TILE_ELEMENT_LIMIT_REACHED);
         }
 
-        res.Cost = 12.00_GBP;
+        res.cost = 12.00_GBP;
 
         QuarterTile quarterTile{ 0b1111, 0 };
         auto zLow = _loc.z;
@@ -147,7 +147,7 @@ namespace OpenRCT2::GameActions
             if (IsSameAsEntranceElement(*entranceElement))
                 entranceIsSamePath = true;
             else
-                res.Cost -= 6.00_GBP;
+                res.cost -= 6.00_GBP;
         }
 
         // Do not attempt to build a crossing with a queue or a sloped path.
@@ -156,14 +156,14 @@ namespace OpenRCT2::GameActions
                                                                                 : CreateCrossingMode::pathOverTrack;
         auto canBuild = MapCanConstructWithClearAt(
             { _loc, zLow, zHigh }, MapPlaceNonSceneryClearFunc, quarterTile, GetFlags(), kTileSlopeFlat, crossingMode);
-        if (!entrancePath && canBuild.Error != Status::ok)
+        if (!entrancePath && canBuild.error != Status::ok)
         {
-            canBuild.ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
+            canBuild.errorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
             return canBuild;
         }
-        res.Cost += canBuild.Cost;
+        res.cost += canBuild.cost;
 
-        const auto clearanceData = canBuild.GetData<ConstructClearResult>();
+        const auto clearanceData = canBuild.getData<ConstructClearResult>();
         gFootpathGroundFlags = clearanceData.GroundFlags;
 
         if (!getGameState().cheats.disableClearanceChecks && (clearanceData.GroundFlags & ELEMENT_IS_UNDERWATER))
@@ -178,11 +178,11 @@ namespace OpenRCT2::GameActions
                 Status::invalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
         }
         int32_t supportHeight = zLow - surfaceElement->GetBaseZ();
-        res.Cost += supportHeight < 0 ? 20.00_GBP : (supportHeight / kPathHeightStep) * 5.00_GBP;
+        res.cost += supportHeight < 0 ? 20.00_GBP : (supportHeight / kPathHeightStep) * 5.00_GBP;
 
         // Prevent the place sound from being spammed
         if (entranceIsSamePath)
-            res.Cost = 0;
+            res.cost = 0;
 
         return res;
     }
@@ -196,7 +196,7 @@ namespace OpenRCT2::GameActions
             FootpathRemoveLitter(_loc);
         }
 
-        res.Cost = 12.00_GBP;
+        res.cost = 12.00_GBP;
 
         QuarterTile quarterTile{ 0b1111, 0 };
         auto zLow = _loc.z;
@@ -216,7 +216,7 @@ namespace OpenRCT2::GameActions
             if (IsSameAsEntranceElement(*entranceElement))
                 entranceIsSamePath = true;
             else
-                res.Cost -= 6.00_GBP;
+                res.cost -= 6.00_GBP;
         }
 
         // Do not attempt to build a crossing with a queue or a sloped path.
@@ -226,14 +226,14 @@ namespace OpenRCT2::GameActions
         auto canBuild = MapCanConstructWithClearAt(
             { _loc, zLow, zHigh }, MapPlaceNonSceneryClearFunc, quarterTile, GetFlags().with(CommandFlag::apply),
             kTileSlopeFlat, crossingMode);
-        if (!entrancePath && canBuild.Error != Status::ok)
+        if (!entrancePath && canBuild.error != Status::ok)
         {
-            canBuild.ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
+            canBuild.errorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
             return canBuild;
         }
-        res.Cost += canBuild.Cost;
+        res.cost += canBuild.cost;
 
-        const auto clearanceData = canBuild.GetData<ConstructClearResult>();
+        const auto clearanceData = canBuild.getData<ConstructClearResult>();
         gFootpathGroundFlags = clearanceData.GroundFlags;
 
         auto surfaceElement = MapGetSurfaceElementAt(_loc);
@@ -243,7 +243,7 @@ namespace OpenRCT2::GameActions
                 Status::invalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
         }
         int32_t supportHeight = zLow - surfaceElement->GetBaseZ();
-        res.Cost += supportHeight < 0 ? 20.00_GBP : (supportHeight / kPathHeightStep) * 5.00_GBP;
+        res.cost += supportHeight < 0 ? 20.00_GBP : (supportHeight / kPathHeightStep) * 5.00_GBP;
 
         if (entrancePath)
         {
@@ -291,7 +291,7 @@ namespace OpenRCT2::GameActions
 
         // Prevent the place sound from being spammed
         if (entranceIsSamePath)
-            res.Cost = 0;
+            res.cost = 0;
 
         return res;
     }

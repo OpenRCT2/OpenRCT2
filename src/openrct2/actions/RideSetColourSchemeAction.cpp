@@ -73,8 +73,8 @@ namespace OpenRCT2::GameActions
     Result RideSetColourSchemeAction::Execute(GameState_t& gameState) const
     {
         Result res = Result();
-        res.Expenditure = ExpenditureType::rideConstruction;
-        res.ErrorTitle = STR_CANT_SET_COLOUR_SCHEME;
+        res.expenditure = ExpenditureType::rideConstruction;
+        res.errorTitle = STR_CANT_SET_COLOUR_SCHEME;
 
         GetTrackElementOriginAndApplyChanges(
             _loc, _trackType, _newColourScheme, nullptr, { TrackElementSetFlag::colourScheme });

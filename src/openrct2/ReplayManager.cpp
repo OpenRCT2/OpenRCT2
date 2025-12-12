@@ -864,17 +864,17 @@ namespace OpenRCT2
                 action->SetFlags(action->GetFlags().with(CommandFlag::replay));
 
                 GameActions::Result result = GameActions::Execute(action, gameState);
-                if (result.Error == GameActions::Status::ok)
+                if (result.error == GameActions::Status::ok)
                 {
                     isPositionValid = true;
                 }
 
                 // Focus camera on event.
-                if (!gSilentReplays && isPositionValid && !result.Position.IsNull())
+                if (!gSilentReplays && isPositionValid && !result.position.IsNull())
                 {
                     auto* mainWindow = WindowGetMain();
                     if (mainWindow != nullptr)
-                        WindowScrollToLocation(*mainWindow, result.Position);
+                        WindowScrollToLocation(*mainWindow, result.position);
                 }
 
                 replayQueue.erase(replayQueue.begin());

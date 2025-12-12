@@ -118,10 +118,10 @@ namespace OpenRCT2::GameActions
         }
 
         auto res = Result();
-        res.Expenditure = ExpenditureType::rideConstruction;
-        res.Position.x = _origin.x + 16;
-        res.Position.y = _origin.y + 16;
-        res.Position.z = _origin.z;
+        res.expenditure = ExpenditureType::rideConstruction;
+        res.position.x = _origin.x + 16;
+        res.position.y = _origin.y + 16;
+        res.position.z = _origin.z;
 
         auto resultData = TrackPlaceActionResult{};
 
@@ -265,14 +265,14 @@ namespace OpenRCT2::GameActions
             auto canBuild = MapCanConstructWithClearAt(
                 { mapLoc, baseZ, clearanceZ }, MapPlaceNonSceneryClearFunc, quarterTile, GetFlags(), kTileSlopeFlat,
                 crossingMode);
-            if (canBuild.Error != Status::ok)
+            if (canBuild.error != Status::ok)
             {
-                canBuild.ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
+                canBuild.errorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
                 return canBuild;
             }
-            costs += canBuild.Cost;
+            costs += canBuild.cost;
 
-            const auto clearanceData = canBuild.GetData<ConstructClearResult>();
+            const auto clearanceData = canBuild.getData<ConstructClearResult>();
             uint8_t mapGroundFlags = clearanceData.GroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
             if (!(ted.flags & TRACK_ELEM_FLAG_CAN_BE_PARTLY_UNDERGROUND))
             {
@@ -402,8 +402,8 @@ namespace OpenRCT2::GameActions
         price *= ted.priceModifier;
 
         price >>= 16;
-        res.Cost = costs + supportCosts + price;
-        res.SetData(std::move(resultData));
+        res.cost = costs + supportCosts + price;
+        res.setData(std::move(resultData));
 
         return res;
     }
@@ -425,10 +425,10 @@ namespace OpenRCT2::GameActions
         }
 
         auto res = Result();
-        res.Expenditure = ExpenditureType::rideConstruction;
-        res.Position.x = _origin.x + 16;
-        res.Position.y = _origin.y + 16;
-        res.Position.z = _origin.z;
+        res.expenditure = ExpenditureType::rideConstruction;
+        res.position.x = _origin.x + 16;
+        res.position.y = _origin.y + 16;
+        res.position.z = _origin.z;
 
         auto resultData = TrackPlaceActionResult{};
 
@@ -470,12 +470,12 @@ namespace OpenRCT2::GameActions
             auto canBuild = MapCanConstructWithClearAt(
                 mapLocWithClearance, MapPlaceNonSceneryClearFunc, quarterTile, GetFlags().with(CommandFlag::apply),
                 kTileSlopeFlat, crossingMode);
-            if (canBuild.Error != Status::ok)
+            if (canBuild.error != Status::ok)
             {
-                canBuild.ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
+                canBuild.errorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
                 return canBuild;
             }
-            costs += canBuild.Cost;
+            costs += canBuild.cost;
 
             // When building a level crossing, remove any pre-existing path furniture.
             if (crossingMode == CreateCrossingMode::trackOverPath && !(GetFlags().has(CommandFlag::ghost)))
@@ -510,7 +510,7 @@ namespace OpenRCT2::GameActions
                 }
             }
 
-            const auto clearanceData = canBuild.GetData<ConstructClearResult>();
+            const auto clearanceData = canBuild.getData<ConstructClearResult>();
             uint8_t mapGroundFlags = clearanceData.GroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
             if (!(ted.flags & TRACK_ELEM_FLAG_CAN_BE_PARTLY_UNDERGROUND))
             {
@@ -721,8 +721,8 @@ namespace OpenRCT2::GameActions
         price *= ted.priceModifier;
 
         price >>= 16;
-        res.Cost = costs + supportCosts + price;
-        res.SetData(std::move(resultData));
+        res.cost = costs + supportCosts + price;
+        res.setData(std::move(resultData));
 
         return res;
     }

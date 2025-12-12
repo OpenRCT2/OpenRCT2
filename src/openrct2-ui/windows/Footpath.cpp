@@ -1276,10 +1276,10 @@ namespace OpenRCT2::Ui::Windows
                 auto footpathPlaceAction = GameActions::FootpathPlaceAction(
                     tile.position, tile.slope, selectedType, gFootpathSelection.Railings, kInvalidDirection, constructFlags);
                 auto result = GameActions::Execute(&footpathPlaceAction, getGameState());
-                if (result.Error == GameActions::Status::ok)
+                if (result.error == GameActions::Status::ok)
                 {
                     anySuccess = true;
-                    cost += result.Cost;
+                    cost += result.cost;
                 }
                 lastLocation = tile.position;
             }
@@ -1326,12 +1326,12 @@ namespace OpenRCT2::Ui::Windows
                 { *mapPos, placement.baseZ }, placement.slope, selectedType, gFootpathSelection.Railings, kInvalidDirection,
                 constructFlags);
             footpathPlaceAction.SetCallback([this](const GameActions::GameAction* ga, const GameActions::Result* result) {
-                if (result->Error == GameActions::Status::ok)
+                if (result->error == GameActions::Status::ok)
                 {
                     // Don't play sound if it is no cost to prevent multiple sounds. TODO: make this work in no money scenarios
-                    if (result->Cost != 0)
+                    if (result->cost != 0)
                     {
-                        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::placeItem, result->Position);
+                        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::placeItem, result->position);
                     }
                 }
                 else
@@ -1420,9 +1420,9 @@ namespace OpenRCT2::Ui::Windows
 
             footpathPlaceAction.SetCallback(
                 [footpathLoc](const GameActions::GameAction* ga, const GameActions::Result* result) {
-                    if (result->Error == GameActions::Status::ok)
+                    if (result->error == GameActions::Status::ok)
                     {
-                        Audio::Play3D(OpenRCT2::Audio::SoundId::placeItem, result->Position);
+                        Audio::Play3D(OpenRCT2::Audio::SoundId::placeItem, result->position);
                     }
 
                     auto* windowMgr = GetWindowManager();
@@ -1432,7 +1432,7 @@ namespace OpenRCT2::Ui::Windows
                         return;
                     }
 
-                    if (result->Error == GameActions::Status::ok)
+                    if (result->error == GameActions::Status::ok)
                     {
                         if (_footpathConstructSlope == SlopePitch::flat)
                         {
@@ -1942,10 +1942,10 @@ namespace OpenRCT2::Ui::Windows
             res = GameActions::Execute(&footpathPlaceAction, getGameState());
             // The latter status will be returned if there is already path at the tile in question, to prevent a ghost
             // from glitching through the existing path.
-            if (res.Error == GameActions::Status::ok || res.Error == GameActions::Status::itemAlreadyPlaced)
+            if (res.error == GameActions::Status::ok || res.error == GameActions::Status::itemAlreadyPlaced)
             {
                 succesfulTiles.emplace_back(tile);
-                cost += res.Cost;
+                cost += res.cost;
             }
         }
 

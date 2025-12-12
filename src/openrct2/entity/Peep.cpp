@@ -685,13 +685,13 @@ GameActions::Result Peep::Place(const TileCoordsXYZ& location, bool apply)
     }
 
     if (auto res = MapCanConstructAt({ destination, destination.z, destination.z + (1 * 8) }, { 0b1111, 0 });
-        res.Error != GameActions::Status::ok)
+        res.error != GameActions::Status::ok)
     {
-        const auto stringId = std::get<StringId>(res.ErrorMessage);
+        const auto stringId = std::get<StringId>(res.errorMessage);
         if (stringId != STR_RAISE_OR_LOWER_LAND_FIRST && stringId != STR_FOOTPATH_IN_THE_WAY)
         {
             return GameActions::Result(
-                GameActions::Status::noClearance, STR_ERR_CANT_PLACE_PERSON_HERE, stringId, res.ErrorMessageArgs.data());
+                GameActions::Status::noClearance, STR_ERR_CANT_PLACE_PERSON_HERE, stringId, res.errorMessageArgs.data());
         }
     }
 

@@ -54,11 +54,11 @@ namespace OpenRCT2::GameActions
     Result BannerPlaceAction::Query(GameState_t& gameState) const
     {
         auto res = Result();
-        res.Position.x = _loc.x + 16;
-        res.Position.y = _loc.y + 16;
-        res.Position.z = _loc.z;
-        res.Expenditure = ExpenditureType::landscaping;
-        res.ErrorTitle = STR_CANT_POSITION_THIS_HERE;
+        res.position.x = _loc.x + 16;
+        res.position.y = _loc.y + 16;
+        res.position.z = _loc.z;
+        res.expenditure = ExpenditureType::landscaping;
+        res.errorTitle = STR_CANT_POSITION_THIS_HERE;
 
         if (!LocationValid(_loc))
         {
@@ -102,8 +102,8 @@ namespace OpenRCT2::GameActions
             LOG_ERROR("Banner entry not found for bannerType %u", _bannerType);
             return Result(Status::invalidParameters, STR_CANT_POSITION_THIS_HERE, STR_ERR_BANNER_ELEMENT_NOT_FOUND);
         }
-        res.Cost = bannerEntry->price;
-        res.SetData(BannerPlaceActionResult{});
+        res.cost = bannerEntry->price;
+        res.setData(BannerPlaceActionResult{});
 
         return res;
     }
@@ -111,11 +111,11 @@ namespace OpenRCT2::GameActions
     Result BannerPlaceAction::Execute(GameState_t& gameState) const
     {
         auto res = Result();
-        res.Position.x = _loc.x + 16;
-        res.Position.y = _loc.y + 16;
-        res.Position.z = _loc.z;
-        res.Expenditure = ExpenditureType::landscaping;
-        res.ErrorTitle = STR_CANT_POSITION_THIS_HERE;
+        res.position.x = _loc.x + 16;
+        res.position.y = _loc.y + 16;
+        res.position.z = _loc.z;
+        res.expenditure = ExpenditureType::landscaping;
+        res.errorTitle = STR_CANT_POSITION_THIS_HERE;
 
         if (!MapCheckCapacityAndReorganise(_loc))
         {
@@ -143,7 +143,7 @@ namespace OpenRCT2::GameActions
         banner->colour = _primaryColour;
         banner->position = TileCoordsXY(_loc);
 
-        res.SetData(BannerPlaceActionResult{ banner->id });
+        res.setData(BannerPlaceActionResult{ banner->id });
         auto* bannerElement = TileElementInsert<BannerElement>({ _loc, _loc.z + (2 * kCoordsZStep) }, 0b0000);
         Guard::Assert(bannerElement != nullptr);
 
@@ -156,7 +156,7 @@ namespace OpenRCT2::GameActions
         MapInvalidateTileFull(_loc);
         MapAnimations::MarkTileForInvalidation(TileCoordsXY(_loc));
 
-        res.Cost = bannerEntry->price;
+        res.cost = bannerEntry->price;
         return res;
     }
 

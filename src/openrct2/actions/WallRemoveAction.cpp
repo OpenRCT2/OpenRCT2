@@ -42,8 +42,8 @@ namespace OpenRCT2::GameActions
     Result WallRemoveAction::Query(GameState_t& gameState) const
     {
         Result res = Result();
-        res.Cost = 0;
-        res.Expenditure = ExpenditureType::landscaping;
+        res.cost = 0;
+        res.expenditure = ExpenditureType::landscaping;
 
         if (!LocationValid(_loc))
         {
@@ -63,15 +63,15 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
         }
 
-        res.Cost = 0;
+        res.cost = 0;
         return res;
     }
 
     Result WallRemoveAction::Execute(GameState_t& gameState) const
     {
         Result res = Result();
-        res.Cost = 0;
-        res.Expenditure = ExpenditureType::landscaping;
+        res.cost = 0;
+        res.expenditure = ExpenditureType::landscaping;
 
         const bool isGhost = GetFlags().has(CommandFlag::ghost);
 
@@ -81,9 +81,9 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
         }
 
-        res.Position.x = _loc.x + 16;
-        res.Position.y = _loc.y + 16;
-        res.Position.z = _loc.z;
+        res.position.x = _loc.x + 16;
+        res.position.y = _loc.y + 16;
+        res.position.z = _loc.z;
 
         wallElement->RemoveBannerEntry();
         MapInvalidateTileZoom1({ _loc, wallElement->GetBaseZ(), (wallElement->GetBaseZ()) + 72 });

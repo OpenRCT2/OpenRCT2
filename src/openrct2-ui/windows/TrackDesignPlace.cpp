@@ -222,21 +222,21 @@ namespace OpenRCT2::Ui::Windows
                 CoordsXYZD ghostTrackLoc = trackLoc;
                 auto res = FindValidTrackDesignPlaceHeight(ghostTrackLoc, { CommandFlag::noSpend, CommandFlag::ghost });
 
-                if (res.Error == GameActions::Status::ok)
+                if (res.error == GameActions::Status::ok)
                 {
                     // Valid location found. Place the ghost at the location.
                     auto tdAction = GameActions::TrackDesignAction(ghostTrackLoc, *_trackDesign, !gTrackDesignSceneryToggle);
                     tdAction.SetFlags({ CommandFlag::noSpend, CommandFlag::ghost });
                     tdAction.SetCallback([&](const GameActions::GameAction*, const GameActions::Result* result) {
-                        if (result->Error == GameActions::Status::ok)
+                        if (result->error == GameActions::Status::ok)
                         {
-                            _placementGhostRideId = result->GetData<RideId>();
+                            _placementGhostRideId = result->getData<RideId>();
                             _placementGhostLoc = ghostTrackLoc;
                             _hasPlacementGhost = true;
                         }
                     });
                     res = GameActions::Execute(&tdAction, getGameState());
-                    cost = res.Error == GameActions::Status::ok ? res.Cost : kMoney64Undefined;
+                    cost = res.error == GameActions::Status::ok ? res.cost : kMoney64Undefined;
 
                     VirtualFloorSetHeight(ghostTrackLoc.z);
                 }
@@ -284,13 +284,13 @@ namespace OpenRCT2::Ui::Windows
             // Try increasing Z until a feasible placement is found
             CoordsXYZ trackLoc = { mapCoords, maybeMapZ.value() };
             auto res = FindValidTrackDesignPlaceHeight(trackLoc, {});
-            if (res.Error != GameActions::Status::ok)
+            if (res.error != GameActions::Status::ok)
             {
                 // Unable to build track
                 Audio::Play3D(Audio::SoundId::error, trackLoc);
 
                 auto windowManager = GetWindowManager();
-                windowManager->ShowError(res.GetErrorTitle(), res.GetErrorMessage());
+                windowManager->ShowError(res.getErrorTitle(), res.getErrorMessage());
                 return;
             }
 
@@ -299,14 +299,14 @@ namespace OpenRCT2::Ui::Windows
             auto tdAction = GameActions::TrackDesignAction(
                 { trackLoc, _currentTrackPieceDirection }, *_trackDesign, !gTrackDesignSceneryToggle);
             tdAction.SetCallback([&, trackLoc](const GameActions::GameAction*, const GameActions::Result* result) {
-                if (result->Error != GameActions::Status::ok)
+                if (result->error != GameActions::Status::ok)
                 {
-                    Audio::Play3D(Audio::SoundId::error, result->Position);
+                    Audio::Play3D(Audio::SoundId::error, result->position);
                     _placingTrackDesign = false;
                     return;
                 }
 
-                rideId = result->GetData<RideId>();
+                rideId = result->getData<RideId>();
                 auto getRide = GetRide(rideId);
                 if (getRide != nullptr)
                 {
@@ -403,7 +403,7 @@ namespace OpenRCT2::Ui::Windows
                     { _placementGhostLoc }, *_trackDesign, !gTrackDesignSceneryToggle);
                 tdAction.SetFlags({ CommandFlag::noSpend, CommandFlag::ghost });
                 auto res = GameActions::Execute(&tdAction, getGameState());
-                if (res.Error != GameActions::Status::ok)
+                if (res.error != GameActions::Status::ok)
                 {
                     _hasPlacementGhost = false;
                 }
@@ -753,7 +753,7 @@ namespace OpenRCT2::Ui::Windows
 
                 // If successful don't keep trying.
                 // If failure due to no money then increasing height only makes problem worse
-                if (res.Error == GameActions::Status::ok || res.Error == GameActions::Status::insufficientFunds)
+                if (res.error == GameActions::Status::ok || res.error == GameActions::Status::insufficientFunds)
                 {
                     return res;
                 }
