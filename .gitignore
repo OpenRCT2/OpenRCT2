@@ -29,6 +29,8 @@ data/tracks.dat
 data/sequence
 data/object
 data/assetpack
+test/tests/testdata/replays
+test/tests/testdata/sprites/result.dat
 
 #################
 ## Eclipse
