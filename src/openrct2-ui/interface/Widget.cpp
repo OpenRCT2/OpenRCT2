@@ -622,12 +622,13 @@ namespace OpenRCT2::Ui
         if (widget.string == nullptr)
             return;
 
-        topLeft = w.windowPos + ScreenCoordsXY{ widget.midX() - 1, std::max<int32_t>(widget.top, widget.midY() - 6) };
+        const auto closeButtonTextOffset = Config::Get().interface.enlargedUi ? 5 : 6;
+        auto crossMidPoint = w.windowPos + ScreenCoordsXY{ widget.midX() - 1, widget.midY() - closeButtonTextOffset };
 
         if (widgetIsDisabled(w, widgetIndex))
             colour.flags.set(ColourFlag::inset, true);
 
-        DrawText(rt, topLeft, { colour, TextAlignment::centre }, widget.string);
+        DrawText(rt, crossMidPoint, { colour, TextAlignment::centre }, widget.string);
     }
 
     /**
