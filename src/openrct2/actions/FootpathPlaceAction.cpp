@@ -33,6 +33,7 @@
 #include "../world/tile_element/PathElement.h"
 #include "../world/tile_element/Slope.h"
 #include "../world/tile_element/SurfaceElement.h"
+#include "LandSetHeightAction.h"
 
 #include <algorithm>
 #include <bit>
@@ -121,7 +122,7 @@ namespace OpenRCT2::GameActions
         auto tileElement = MapGetFootpathElementWithSlope(_loc, _slope);
         if (tileElement == nullptr)
         {
-            return ElementInsertQuery(std::move(res));
+            return ElementInsertQuery(std::move(res), gameState);
         }
         return ElementUpdateQuery(tileElement, std::move(res));
     }
@@ -162,7 +163,7 @@ namespace OpenRCT2::GameActions
         auto tileElement = MapGetFootpathElementWithSlope(_loc, _slope);
         if (tileElement == nullptr)
         {
-            return ElementInsertExecute(std::move(res));
+            return ElementInsertExecute(std::move(res), gameState);
         }
         return ElementUpdateExecute(tileElement, std::move(res));
     }
@@ -284,7 +285,7 @@ namespace OpenRCT2::GameActions
         return res;
     }
 
-    Result FootpathPlaceAction::ElementInsertQuery(Result res) const
+    Result FootpathPlaceAction::ElementInsertQuery(Result res, GameState_t& gameState) const
     {
         bool entrancePath = false, entranceIsSamePath = false;
 
@@ -344,6 +345,22 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_CANT_BUILD_FOOTPATH_HERE, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
         }
 
+        if (!getGameState().cheats.disableClearanceChecks)
+        {
+            auto changes = getUpdatedSurfaceProperties(*surfaceElement, zLow, zHigh);
+            if (surfaceElement->GetBaseZ() != changes.newBaseZ || surfaceElement->GetSlope() != changes.newSlope)
+            {
+                auto changeLandSetting = GameActions::LandSetHeightAction(
+                    _loc, changes.newBaseZ / kCoordsZStep, changes.newSlope);
+                auto nestedRes = QueryNested(&changeLandSetting, gameState);
+                if (nestedRes.error != Status::ok)
+                {
+                    return nestedRes;
+                }
+                res.cost += nestedRes.cost;
+            }
+        }
+
         int32_t supportHeight = zLow - surfaceElement->GetBaseZ();
         res.cost += supportHeight < 0 ? 20.00_GBP : (supportHeight / kPathHeightStep) * 5.00_GBP;
 
@@ -367,10 +384,12 @@ namespace OpenRCT2::GameActions
         return false;
     }
 
-    void FootpathPlaceAction::autoshapeLand(Result& res, SurfaceElement& surfaceElement, int32_t zLow, int32_t zHigh) const
+    FootpathPlaceAction::SurfaceChanges FootpathPlaceAction::getUpdatedSurfaceProperties(
+        const SurfaceElement& surfaceElement, int32_t zLow, int32_t zHigh) const
     {
+        SurfaceChanges ret = { surfaceElement.GetBaseZ(), surfaceElement.GetSlope() };
         if (landFitsUnderPath(surfaceElement, zLow, zHigh))
-            return;
+            return ret;
 
         auto surfaceSlope = surfaceElement.GetSlope();
         // A diagonal surface tile may have the path ending up between the lowest and highest point.
@@ -378,12 +397,11 @@ namespace OpenRCT2::GameActions
         if (surfaceSlope & kTileSlopeDiagonalFlag)
         {
             surfaceSlope &= ~kTileSlopeDiagonalFlag;
-            surfaceElement.SetSlope(surfaceSlope);
-            res.Cost += 5.00_GBP;
+            ret.newSlope = surfaceSlope;
 
             if (landFitsUnderPath(surfaceElement, zLow, zHigh))
             {
-                return;
+                return ret;
             }
         }
 
@@ -395,16 +413,15 @@ namespace OpenRCT2::GameActions
         }
         else
         {
-            surfaceElement.SetBaseZ(zLow);
             surfaceSlope = requiredLandSlope;
         }
 
-        const uint8_t changedEdges = (surfaceElement.GetSlope() ^ surfaceSlope) & 0b1111;
-        surfaceElement.SetSlope(surfaceSlope);
-        res.Cost += (std::popcount(changedEdges) * 5.00_GBP);
+        ret.newBaseZ = zLow;
+        ret.newSlope = surfaceSlope;
+        return ret;
     }
 
-    Result FootpathPlaceAction::ElementInsertExecute(Result res) const
+    Result FootpathPlaceAction::ElementInsertExecute(Result res, GameState_t& gameState) const
     {
         bool entrancePath = false, entranceIsSamePath = false;
 
@@ -459,9 +476,27 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_CANT_BUILD_FOOTPATH_HERE, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
         }
 
-        if (!(GetFlags().has(CommandFlag::ghost)) && !getGameState().cheats.disableClearanceChecks)
+        if (!getGameState().cheats.disableClearanceChecks)
         {
-            autoshapeLand(res, *surfaceElement, zLow, zHigh);
+            auto changes = getUpdatedSurfaceProperties(*surfaceElement, zLow, zHigh);
+            if (surfaceElement->GetBaseZ() != changes.newBaseZ || surfaceElement->GetSlope() != changes.newSlope)
+            {
+                auto changeLandSetting = GameActions::LandSetHeightAction(
+                    _loc, changes.newBaseZ / kCoordsZStep, changes.newSlope);
+
+                // Needed in order to make sure that provisional footpath placement returns the correct price.
+                Result nestedRes;
+                if (GetFlags().has(CommandFlag::ghost))
+                    nestedRes = QueryNested(&changeLandSetting, gameState);
+                else
+                    nestedRes = ExecuteNested(&changeLandSetting, gameState);
+
+                if (nestedRes.error != Status::ok)
+                {
+                    return nestedRes;
+                }
+                res.cost += nestedRes.cost;
+            }
         }
 
         int32_t supportHeight = zLow - surfaceElement->GetBaseZ();

@@ -16,6 +16,12 @@ namespace OpenRCT2::GameActions
 {
     class FootpathPlaceAction final : public GameActionBase<GameCommand::PlacePath>
     {
+        struct SurfaceChanges
+        {
+            int32_t newBaseZ;
+            uint8_t newSlope;
+        };
+
     private:
         CoordsXYZ _loc;
         FootpathSlope _slope{};
@@ -40,14 +46,15 @@ namespace OpenRCT2::GameActions
     private:
         Result ElementUpdateQuery(PathElement* pathElement, Result res) const;
         Result ElementUpdateExecute(PathElement* pathElement, Result res) const;
-        Result ElementInsertQuery(Result res) const;
-        Result ElementInsertExecute(Result res) const;
+        Result ElementInsertQuery(Result res, GameState_t& gameState) const;
+        Result ElementInsertExecute(Result res, GameState_t& gameState) const;
         void AutomaticallySetPeepSpawn() const;
         void RemoveIntersectingWalls(PathElement* pathElement) const;
         PathElement* MapGetFootpathElementWithSlope(const CoordsXYZ& footpathPos, FootpathSlope slope) const;
         bool IsSameAsPathElement(const PathElement* pathElement) const;
         bool IsSameAsEntranceElement(const EntranceElement& entranceElement) const;
         bool landFitsUnderPath(const SurfaceElement& surfaceElement, int32_t zLow, int32_t zHigh) const;
-        void autoshapeLand(Result& res, SurfaceElement& surfaceElement, int32_t zLow, int32_t zHigh) const;
+        [[nodiscard]] SurfaceChanges getUpdatedSurfaceProperties(
+            const SurfaceElement& surfaceElement, int32_t zLow, int32_t zHigh) const;
     };
 } // namespace OpenRCT2::GameActions
