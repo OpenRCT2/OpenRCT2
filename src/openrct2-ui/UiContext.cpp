@@ -800,17 +800,12 @@ private:
         int32_t width = Config::Get().general.windowWidth;
         int32_t height = Config::Get().general.windowHeight;
 #endif
-#ifdef __MACOSX__
-        if (width <= 0)
-            width = 1280;
-        if (height <= 0)
-            height = 800;
-#else
+
+        // Set defaults if size is invalid
         if (width <= 0)
             width = 1280;
         if (height <= 0)
             height = 720;
-#endif
 
         // Create window in window first rather than fullscreen so we have the display the window is on first
         uint32_t flags = SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI;
