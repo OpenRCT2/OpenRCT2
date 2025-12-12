@@ -6,6 +6,7 @@
 - Improved: [#25575] Updated the network protocol to a new format that supports larger packets, allowing clients to connect reliably to servers with many objects or large maps.
 - Improved: [#25621] Added the Polish Złoty (PLN) to the list of available currencies.
 - Improved: [#25625] Renewing and refurbishing rides now also resets the downtime.
+- Change: [#21912] Toilet income is now categorised as shop sales instead of ride tickets.
 - Change: [#25485] Make the enlarged pressed swatch sprite more pronounced.
 - Fix: [#9895] Stand-up coaster gets wrong intensity boost from the synchronisation bonus.
 - Fix: [#22484] Lingering ghost entrance after placing park entrance.
