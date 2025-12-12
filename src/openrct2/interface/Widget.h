@@ -133,7 +133,7 @@ namespace OpenRCT2
         int16_t textTop() const
         {
             if (height() >= 11)
-                return std::max<int32_t>(top, top + (height() / 2) - 5);
+                return std::max<int32_t>(top, top + (height() / 2) - 6);
 
             return top - 1;
         }
