@@ -55,11 +55,11 @@ namespace OpenRCT2::GameActions
 
         if (!LocationValid(_loc))
         {
-            return Result(Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_OFF_EDGE_OF_MAP);
+            return Result(Status::invalidParameters, STR_CANT_REMOVE_THIS, STR_OFF_EDGE_OF_MAP);
         }
         if (!MapCanBuildAt({ _loc.x, _loc.y, _loc.z - 16 }))
         {
-            return Result(Status::NotOwned, STR_CANT_REMOVE_THIS, STR_LAND_NOT_OWNED_BY_PARK);
+            return Result(Status::notOwned, STR_CANT_REMOVE_THIS, STR_LAND_NOT_OWNED_BY_PARK);
         }
 
         BannerElement* bannerElement = GetBannerElementAt();
@@ -67,21 +67,21 @@ namespace OpenRCT2::GameActions
         {
             LOG_ERROR(
                 "Invalid banner location, x = %d, y = %d, z = %d, direction = %d", _loc.x, _loc.y, _loc.z, _loc.direction);
-            return Result(Status::InvalidParameters, STR_CANT_REMOVE_THIS, kStringIdNone);
+            return Result(Status::invalidParameters, STR_CANT_REMOVE_THIS, kStringIdNone);
         }
 
         auto bannerIndex = bannerElement->GetIndex();
         if (bannerIndex == BannerIndex::GetNull())
         {
             LOG_ERROR("Invalid banner index %u", bannerIndex);
-            return Result(Status::InvalidParameters, STR_CANT_REMOVE_THIS, kStringIdNone);
+            return Result(Status::invalidParameters, STR_CANT_REMOVE_THIS, kStringIdNone);
         }
 
         auto banner = bannerElement->GetBanner();
         if (banner == nullptr)
         {
             LOG_ERROR("Invalid banner index %u", bannerIndex);
-            return Result(Status::InvalidParameters, STR_CANT_REMOVE_THIS, kStringIdNone);
+            return Result(Status::invalidParameters, STR_CANT_REMOVE_THIS, kStringIdNone);
         }
 
         auto* bannerEntry = ObjectManager::GetObjectEntry<BannerSceneryEntry>(banner->type);
@@ -107,21 +107,21 @@ namespace OpenRCT2::GameActions
         {
             LOG_ERROR(
                 "Invalid banner location, x = %d, y = %d, z = %d, direction = %d", _loc.x, _loc.y, _loc.z, _loc.direction);
-            return Result(Status::InvalidParameters, STR_CANT_REMOVE_THIS, kStringIdNone);
+            return Result(Status::invalidParameters, STR_CANT_REMOVE_THIS, kStringIdNone);
         }
 
         auto bannerIndex = bannerElement->GetIndex();
         if (bannerIndex == BannerIndex::GetNull())
         {
             LOG_ERROR("Invalid banner index %u", bannerIndex);
-            return Result(Status::InvalidParameters, STR_CANT_REMOVE_THIS, kStringIdNone);
+            return Result(Status::invalidParameters, STR_CANT_REMOVE_THIS, kStringIdNone);
         }
 
         auto banner = bannerElement->GetBanner();
         if (banner == nullptr)
         {
             LOG_ERROR("Invalid banner index %u", bannerIndex);
-            return Result(Status::InvalidParameters, STR_CANT_REMOVE_THIS, kStringIdNone);
+            return Result(Status::invalidParameters, STR_CANT_REMOVE_THIS, kStringIdNone);
         }
 
         auto* bannerEntry = ObjectManager::GetObjectEntry<BannerSceneryEntry>(banner->type);

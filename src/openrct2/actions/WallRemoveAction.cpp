@@ -47,20 +47,20 @@ namespace OpenRCT2::GameActions
 
         if (!LocationValid(_loc))
         {
-            return Result(Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_OFF_EDGE_OF_MAP);
+            return Result(Status::invalidParameters, STR_CANT_REMOVE_THIS, STR_OFF_EDGE_OF_MAP);
         }
 
         const bool isGhost = GetFlags().has(CommandFlag::ghost);
         if (!isGhost && gLegacyScene != LegacyScene::scenarioEditor && !getGameState().cheats.sandboxMode
             && !MapIsLocationOwned(_loc))
         {
-            return Result(Status::NotOwned, STR_CANT_REMOVE_THIS, STR_LAND_NOT_OWNED_BY_PARK);
+            return Result(Status::notOwned, STR_CANT_REMOVE_THIS, STR_LAND_NOT_OWNED_BY_PARK);
         }
 
         TileElement* wallElement = GetFirstWallElementAt(_loc, isGhost);
         if (wallElement == nullptr)
         {
-            return Result(Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
+            return Result(Status::invalidParameters, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
         }
 
         res.Cost = 0;
@@ -78,7 +78,7 @@ namespace OpenRCT2::GameActions
         TileElement* wallElement = GetFirstWallElementAt(_loc, isGhost);
         if (wallElement == nullptr)
         {
-            return Result(Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
+            return Result(Status::invalidParameters, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
         }
 
         res.Position.x = _loc.x + 16;

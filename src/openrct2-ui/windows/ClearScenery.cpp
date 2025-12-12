@@ -288,7 +288,7 @@ namespace OpenRCT2::Ui::Windows
 
             auto action = GetClearAction();
             auto result = GameActions::Query(&action, getGameState());
-            auto cost = (result.Error == GameActions::Status::Ok ? result.Cost : kMoney64Undefined);
+            auto cost = (result.Error == GameActions::Status::ok ? result.Cost : kMoney64Undefined);
             if (_clearSceneryCost != cost)
             {
                 _clearSceneryCost = cost;

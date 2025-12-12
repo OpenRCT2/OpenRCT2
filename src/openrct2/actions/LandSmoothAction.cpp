@@ -238,7 +238,7 @@ namespace OpenRCT2::GameActions
             landSetHeightAction.SetFlags(GetFlags());
             auto res = isExecuting ? ExecuteNested(&landSetHeightAction, gameState)
                                    : QueryNested(&landSetHeightAction, gameState);
-            if (res.Error == Status::Ok)
+            if (res.Error == Status::ok)
             {
                 totalCost += res.Cost;
             }
@@ -326,7 +326,7 @@ namespace OpenRCT2::GameActions
             expectedLandHeight += landChangePerTile;
             // change land of current tile
             auto result = SmoothLandTile(gameState, direction, isExecuting, nextLoc, surfaceElement);
-            if (result.Error == Status::Ok)
+            if (result.Error == Status::ok)
             {
                 totalCost += result.Cost;
             }
@@ -642,7 +642,7 @@ namespace OpenRCT2::GameActions
             }
             default:
                 LOG_ERROR("Invalid map selection type %u", _selectionType);
-                return Result(Status::InvalidParameters, std::get<StringId>(res.ErrorTitle), STR_ERR_VALUE_OUT_OF_RANGE);
+                return Result(Status::invalidParameters, std::get<StringId>(res.ErrorTitle), STR_ERR_VALUE_OUT_OF_RANGE);
         } // switch selectionType
 
         // Raise / lower the land tool selection area
@@ -659,7 +659,7 @@ namespace OpenRCT2::GameActions
             lowerLandAction.SetFlags(GetFlags());
             result = isExecuting ? ExecuteNested(&lowerLandAction, gameState) : QueryNested(&lowerLandAction, gameState);
         }
-        if (result.Error != Status::Ok)
+        if (result.Error != Status::ok)
         {
             return result;
         }

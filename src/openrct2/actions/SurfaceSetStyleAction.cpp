@@ -61,7 +61,7 @@ namespace OpenRCT2::GameActions
             if (surfaceObj == nullptr)
             {
                 LOG_ERROR("Invalid surface style %u", _surfaceStyle);
-                return Result(Status::InvalidParameters, STR_CANT_CHANGE_LAND_TYPE, STR_UNKNOWN_OBJECT_TYPE);
+                return Result(Status::invalidParameters, STR_CANT_CHANGE_LAND_TYPE, STR_UNKNOWN_OBJECT_TYPE);
             }
         }
 
@@ -72,7 +72,7 @@ namespace OpenRCT2::GameActions
             if (edgeObj == nullptr)
             {
                 LOG_ERROR("Invalid edge style %u", _edgeStyle);
-                return Result(Status::InvalidParameters, STR_CANT_CHANGE_LAND_TYPE, STR_UNKNOWN_OBJECT_TYPE);
+                return Result(Status::invalidParameters, STR_CANT_CHANGE_LAND_TYPE, STR_UNKNOWN_OBJECT_TYPE);
             }
         }
 
@@ -88,7 +88,7 @@ namespace OpenRCT2::GameActions
         if (gLegacyScene != LegacyScene::scenarioEditor && !gameState.cheats.sandboxMode
             && (gameState.park.flags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES))
         {
-            return Result(Status::Disallowed, STR_CANT_CHANGE_LAND_TYPE, STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY);
+            return Result(Status::disallowed, STR_CANT_CHANGE_LAND_TYPE, STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY);
         }
 
         money64 surfaceCost = 0;

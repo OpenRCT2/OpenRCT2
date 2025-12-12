@@ -546,7 +546,7 @@ namespace OpenRCT2::Ui::Windows
 
             auto hireStaffAction = GameActions::StaffHireNewAction(autoPosition, staffType, costume, staffOrders);
             hireStaffAction.SetCallback([=](const GameActions::GameAction*, const GameActions::Result* res) -> void {
-                if (res->Error != GameActions::Status::Ok)
+                if (res->Error != GameActions::Status::ok)
                     return;
 
                 auto actionResult = res->GetData<GameActions::StaffHireNewActionResult>();
@@ -564,7 +564,7 @@ namespace OpenRCT2::Ui::Windows
                                                                 Network::GetCurrentPlayerId() };
                     pickupAction.SetCallback(
                         [staffId = staff->Id](const GameActions::GameAction* ga, const GameActions::Result* result) {
-                            if (result->Error != GameActions::Status::Ok)
+                            if (result->Error != GameActions::Status::ok)
                                 return;
 
                             auto* staff2 = getGameState().entities.GetEntity<Staff>(staffId);

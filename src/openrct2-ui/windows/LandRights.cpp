@@ -536,13 +536,13 @@ namespace OpenRCT2::Ui::Windows
             {
                 auto landSetRightsAction = GetLandSetAction();
                 auto res = GameActions::Query(&landSetRightsAction, gameState);
-                _landRightsCost = res.Error == GameActions::Status::Ok ? res.Cost : kMoney64Undefined;
+                _landRightsCost = res.Error == GameActions::Status::ok ? res.Cost : kMoney64Undefined;
             }
             else
             {
                 auto landBuyRightsAction = GetLandBuyAction();
                 auto res = GameActions::Query(&landBuyRightsAction, gameState);
-                _landRightsCost = res.Error == GameActions::Status::Ok ? res.Cost : kMoney64Undefined;
+                _landRightsCost = res.Error == GameActions::Status::ok ? res.Cost : kMoney64Undefined;
             }
         }
 

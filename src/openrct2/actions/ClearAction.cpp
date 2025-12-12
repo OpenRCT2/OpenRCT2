@@ -80,7 +80,7 @@ namespace OpenRCT2::GameActions
         auto result = CreateResult();
 
         auto noValidTiles = true;
-        auto error = Status::Ok;
+        auto error = Status::ok;
         StringId errorMessage = kStringIdNone;
         money64 totalCost = 0;
 
@@ -100,7 +100,7 @@ namespace OpenRCT2::GameActions
                 }
                 else
                 {
-                    error = Status::NotOwned;
+                    error = Status::notOwned;
                     errorMessage = STR_LAND_NOT_OWNED_BY_PARK;
                 }
             }
@@ -149,12 +149,12 @@ namespace OpenRCT2::GameActions
                             auto res = executing ? ExecuteNested(&footpathRemoveAction, gameState)
                                                  : QueryNested(&footpathRemoveAction, gameState);
 
-                            if (res.Error == Status::Ok)
+                            if (res.Error == Status::ok)
                             {
                                 totalCost += res.Cost;
                                 tileEdited = executing;
                             }
-                            else if (res.Error == Status::InsufficientFunds)
+                            else if (res.Error == Status::insufficientFunds)
                             {
                                 totalCost += res.Cost;
                             }
@@ -171,12 +171,12 @@ namespace OpenRCT2::GameActions
                             auto res = executing ? ExecuteNested(&removeSceneryAction, gameState)
                                                  : QueryNested(&removeSceneryAction, gameState);
 
-                            if (res.Error == Status::Ok)
+                            if (res.Error == Status::ok)
                             {
                                 totalCost += res.Cost;
                                 tileEdited = executing;
                             }
-                            else if (res.Error == Status::InsufficientFunds)
+                            else if (res.Error == Status::insufficientFunds)
                             {
                                 totalCost += res.Cost;
                             }
@@ -192,12 +192,12 @@ namespace OpenRCT2::GameActions
                             auto res = executing ? ExecuteNested(&wallRemoveAction, gameState)
                                                  : QueryNested(&wallRemoveAction, gameState);
 
-                            if (res.Error == Status::Ok)
+                            if (res.Error == Status::ok)
                             {
                                 totalCost += res.Cost;
                                 tileEdited = executing;
                             }
-                            else if (res.Error == Status::InsufficientFunds)
+                            else if (res.Error == Status::insufficientFunds)
                             {
                                 totalCost += res.Cost;
                             }
@@ -214,12 +214,12 @@ namespace OpenRCT2::GameActions
                             auto res = executing ? ExecuteNested(&removeSceneryAction, gameState)
                                                  : QueryNested(&removeSceneryAction, gameState);
 
-                            if (res.Error == Status::Ok)
+                            if (res.Error == Status::ok)
                             {
                                 totalCost += res.Cost;
                                 tileEdited = executing;
                             }
-                            else if (res.Error == Status::InsufficientFunds)
+                            else if (res.Error == Status::insufficientFunds)
                             {
                                 totalCost += res.Cost;
                             }

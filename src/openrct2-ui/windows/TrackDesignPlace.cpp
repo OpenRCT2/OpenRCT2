@@ -222,13 +222,13 @@ namespace OpenRCT2::Ui::Windows
                 CoordsXYZD ghostTrackLoc = trackLoc;
                 auto res = FindValidTrackDesignPlaceHeight(ghostTrackLoc, { CommandFlag::noSpend, CommandFlag::ghost });
 
-                if (res.Error == GameActions::Status::Ok)
+                if (res.Error == GameActions::Status::ok)
                 {
                     // Valid location found. Place the ghost at the location.
                     auto tdAction = GameActions::TrackDesignAction(ghostTrackLoc, *_trackDesign, !gTrackDesignSceneryToggle);
                     tdAction.SetFlags({ CommandFlag::noSpend, CommandFlag::ghost });
                     tdAction.SetCallback([&](const GameActions::GameAction*, const GameActions::Result* result) {
-                        if (result->Error == GameActions::Status::Ok)
+                        if (result->Error == GameActions::Status::ok)
                         {
                             _placementGhostRideId = result->GetData<RideId>();
                             _placementGhostLoc = ghostTrackLoc;
@@ -236,7 +236,7 @@ namespace OpenRCT2::Ui::Windows
                         }
                     });
                     res = GameActions::Execute(&tdAction, getGameState());
-                    cost = res.Error == GameActions::Status::Ok ? res.Cost : kMoney64Undefined;
+                    cost = res.Error == GameActions::Status::ok ? res.Cost : kMoney64Undefined;
 
                     VirtualFloorSetHeight(ghostTrackLoc.z);
                 }
@@ -284,7 +284,7 @@ namespace OpenRCT2::Ui::Windows
             // Try increasing Z until a feasible placement is found
             CoordsXYZ trackLoc = { mapCoords, maybeMapZ.value() };
             auto res = FindValidTrackDesignPlaceHeight(trackLoc, {});
-            if (res.Error != GameActions::Status::Ok)
+            if (res.Error != GameActions::Status::ok)
             {
                 // Unable to build track
                 Audio::Play3D(Audio::SoundId::error, trackLoc);
@@ -299,7 +299,7 @@ namespace OpenRCT2::Ui::Windows
             auto tdAction = GameActions::TrackDesignAction(
                 { trackLoc, _currentTrackPieceDirection }, *_trackDesign, !gTrackDesignSceneryToggle);
             tdAction.SetCallback([&, trackLoc](const GameActions::GameAction*, const GameActions::Result* result) {
-                if (result->Error != GameActions::Status::Ok)
+                if (result->Error != GameActions::Status::ok)
                 {
                     Audio::Play3D(Audio::SoundId::error, result->Position);
                     _placingTrackDesign = false;
@@ -403,7 +403,7 @@ namespace OpenRCT2::Ui::Windows
                     { _placementGhostLoc }, *_trackDesign, !gTrackDesignSceneryToggle);
                 tdAction.SetFlags({ CommandFlag::noSpend, CommandFlag::ghost });
                 auto res = GameActions::Execute(&tdAction, getGameState());
-                if (res.Error != GameActions::Status::Ok)
+                if (res.Error != GameActions::Status::ok)
                 {
                     _hasPlacementGhost = false;
                 }
@@ -753,7 +753,7 @@ namespace OpenRCT2::Ui::Windows
 
                 // If successful don't keep trying.
                 // If failure due to no money then increasing height only makes problem worse
-                if (res.Error == GameActions::Status::Ok || res.Error == GameActions::Status::InsufficientFunds)
+                if (res.Error == GameActions::Status::ok || res.Error == GameActions::Status::insufficientFunds)
                 {
                     return res;
                 }

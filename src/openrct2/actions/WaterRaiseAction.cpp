@@ -116,7 +116,7 @@ namespace OpenRCT2::GameActions
                 waterSetHeightAction.SetFlags(GetFlags());
                 auto result = isExecuting ? ExecuteNested(&waterSetHeightAction, gameState)
                                           : QueryNested(&waterSetHeightAction, gameState);
-                if (result.Error == Status::Ok)
+                if (result.Error == Status::ok)
                 {
                     res.Cost += result.Cost;
                     hasChanged = true;
@@ -131,7 +131,7 @@ namespace OpenRCT2::GameActions
 
         if (!withinOwnership)
         {
-            return Result(Status::Disallowed, STR_CANT_RAISE_WATER_LEVEL_HERE, STR_LAND_NOT_OWNED_BY_PARK);
+            return Result(Status::disallowed, STR_CANT_RAISE_WATER_LEVEL_HERE, STR_LAND_NOT_OWNED_BY_PARK);
         }
 
         if (isExecuting && hasChanged)

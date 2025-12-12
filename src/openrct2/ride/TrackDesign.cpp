@@ -1092,7 +1092,7 @@ static GameActions::Result TrackDesignPlaceSceneryElement(
             auto res = flags.has(CommandFlag::apply) ? GameActions::ExecuteNested(&smallSceneryPlace, gameState)
                                                      : GameActions::QueryNested(&smallSceneryPlace, gameState);
 
-            cost = res.Error == GameActions::Status::Ok ? res.Cost : 0;
+            cost = res.Error == GameActions::Status::ok ? res.Cost : 0;
             break;
         }
         case ObjectType::largeScenery:
@@ -1211,7 +1211,7 @@ static GameActions::Result TrackDesignPlaceSceneryElement(
                 auto res = flags.has(CommandFlag::apply) ? GameActions::ExecuteNested(&footpathPlaceAction, gameState)
                                                          : GameActions::QueryNested(&footpathPlaceAction, gameState);
                 // Ignore failures
-                cost = res.Error == GameActions::Status::Ok ? res.Cost : 0;
+                cost = res.Error == GameActions::Status::ok ? res.Cost : 0;
             }
             else
             {
@@ -1293,7 +1293,7 @@ static GameActions::Result TrackDesignPlaceAllScenery(
             TrackDesignUpdatePreviewBounds(tds, mapCoord);
 
             auto placementRes = TrackDesignPlaceSceneryElement(tds, mapCoord, mode, scenery, rotation, origin.z);
-            if (placementRes.Error != GameActions::Status::Ok)
+            if (placementRes.Error != GameActions::Status::ok)
             {
                 if (tds.placeOperation != TrackPlaceOperation::removeGhost)
                 {
@@ -1301,7 +1301,7 @@ static GameActions::Result TrackDesignPlaceAllScenery(
                     return placementRes;
                 }
 
-                if (placementRes.Error == GameActions::Status::NoClearance)
+                if (placementRes.Error == GameActions::Status::noClearance)
                 {
                     // Some scenery might be obstructed, don't abort the entire operation.
                     continue;
@@ -1352,7 +1352,7 @@ static std::optional<GameActions::Result> TrackDesignPlaceEntrances(
                     if (tile_element == nullptr)
                     {
                         return GameActions::Result(
-                            GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_TILE_ELEMENT_NOT_FOUND);
+                            GameActions::Status::invalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_TILE_ELEMENT_NOT_FOUND);
                     }
 
                     do
@@ -1393,7 +1393,7 @@ static std::optional<GameActions::Result> TrackDesignPlaceEntrances(
                             ? GameActions::ExecuteNested(&rideEntranceExitPlaceAction, gameState)
                             : GameActions::QueryNested(&rideEntranceExitPlaceAction, gameState);
 
-                        if (res.Error != GameActions::Status::Ok)
+                        if (res.Error != GameActions::Status::ok)
                         {
                             return res;
                         }
@@ -1406,7 +1406,7 @@ static std::optional<GameActions::Result> TrackDesignPlaceEntrances(
                 else
                 {
                     auto res = GameActions::RideEntranceExitPlaceAction::TrackPlaceQuery(newCoords, false);
-                    if (res.Error != GameActions::Status::Ok)
+                    if (res.Error != GameActions::Status::ok)
                     {
                         return res;
                     }
@@ -1489,7 +1489,7 @@ static GameActions::Result TrackDesignPlaceMaze(
             mazePlace.SetFlags(flags);
             auto res = flags.has(CommandFlag::apply) ? GameActions::ExecuteNested(&mazePlace, gameState)
                                                      : GameActions::QueryNested(&mazePlace, gameState);
-            if (res.Error != GameActions::Status::Ok)
+            if (res.Error != GameActions::Status::ok)
             {
                 return res;
             }
@@ -1646,7 +1646,7 @@ static GameActions::Result TrackDesignPlaceRide(
 
                 auto res = flags.has(CommandFlag::apply) ? GameActions::ExecuteNested(&trackPlaceAction, gameState)
                                                          : GameActions::QueryNested(&trackPlaceAction, gameState);
-                if (res.Error != GameActions::Status::Ok)
+                if (res.Error != GameActions::Status::ok)
                 {
                     return res;
                 }
@@ -1670,7 +1670,7 @@ static GameActions::Result TrackDesignPlaceRide(
                     if (surfaceElement == nullptr)
                     {
                         return GameActions::Result(
-                            GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER,
+                            GameActions::Status::invalidParameters, STR_ERR_INVALID_PARAMETER,
                             STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
                     }
 
@@ -1783,14 +1783,14 @@ static GameActions::Result TrackDesignPlaceVirtual(
     _currentRideIndex = savedRideId;
     _currentTrackPieceDirection = savedTrackPieceDirection;
 
-    if (trackPlaceRes.Error != GameActions::Status::Ok)
+    if (trackPlaceRes.Error != GameActions::Status::ok)
     {
         return trackPlaceRes;
     }
 
     // Scenery elements
     auto sceneryPlaceRes = TrackDesignPlaceAllScenery(tds, td.sceneryElements, coords.direction);
-    if (sceneryPlaceRes.Error != GameActions::Status::Ok)
+    if (sceneryPlaceRes.Error != GameActions::Status::ok)
     {
         return sceneryPlaceRes;
     }
@@ -1867,7 +1867,7 @@ static money64 TrackDesignCreateRide(int32_t type, int32_t subType, CommandFlags
     auto res = GameActions::ExecuteNested(&gameAction, gameState);
 
     // Callee's of this function expect kMoney64Undefined in case of failure.
-    if (res.Error != GameActions::Status::Ok)
+    if (res.Error != GameActions::Status::ok)
     {
         return kMoney64Undefined;
     }
@@ -1953,7 +1953,7 @@ static bool TrackDesignPlacePreview(
         { mapSize.x, mapSize.y, z, _currentTrackPieceDirection });
     gameState.park.flags = backup_park_flags;
 
-    if (res.Error == GameActions::Status::Ok)
+    if (res.Error == GameActions::Status::ok)
     {
         if (entry_index == kObjectEntryIndexNull)
         {

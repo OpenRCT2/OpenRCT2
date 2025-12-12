@@ -864,7 +864,7 @@ namespace OpenRCT2
                 action->SetFlags(action->GetFlags().with(CommandFlag::replay));
 
                 GameActions::Result result = GameActions::Execute(action, gameState);
-                if (result.Error == GameActions::Status::Ok)
+                if (result.Error == GameActions::Status::ok)
                 {
                     isPositionValid = true;
                 }

@@ -73,17 +73,17 @@ namespace OpenRCT2::GameActions
         if (ride == nullptr)
         {
             LOG_ERROR("Ride not found for rideIndex %u", _rideIndex.ToUnderlying());
-            return Result(Status::InvalidParameters, errTitle, STR_ERR_RIDE_NOT_FOUND);
+            return Result(Status::invalidParameters, errTitle, STR_ERR_RIDE_NOT_FOUND);
         }
 
         if (ride->lifecycleFlags & RIDE_LIFECYCLE_BROKEN_DOWN)
         {
-            return Result(Status::Broken, errTitle, STR_HAS_BROKEN_DOWN_AND_REQUIRES_FIXING);
+            return Result(Status::broken, errTitle, STR_HAS_BROKEN_DOWN_AND_REQUIRES_FIXING);
         }
 
         if (ride->status != RideStatus::closed && ride->status != RideStatus::simulating)
         {
-            return Result(Status::NotClosed, errTitle, STR_MUST_BE_CLOSED_FIRST);
+            return Result(Status::notClosed, errTitle, STR_MUST_BE_CLOSED_FIRST);
         }
 
         switch (_type)
@@ -97,13 +97,13 @@ namespace OpenRCT2::GameActions
                 if (!RideIsVehicleTypeValid(*ride))
                 {
                     LOG_ERROR("Invalid vehicle type %d", _value);
-                    return Result(Status::InvalidParameters, errTitle, STR_ERR_VALUE_OUT_OF_RANGE);
+                    return Result(Status::invalidParameters, errTitle, STR_ERR_VALUE_OUT_OF_RANGE);
                 }
                 auto rideEntry = GetRideEntryByIndex(_value);
                 if (rideEntry == nullptr)
                 {
                     LOG_ERROR("Ride entry not found for _value %d", _value);
-                    return Result(Status::InvalidParameters, errTitle, kStringIdNone);
+                    return Result(Status::invalidParameters, errTitle, kStringIdNone);
                 }
 
                 // Validate preset
@@ -111,14 +111,14 @@ namespace OpenRCT2::GameActions
                 if (_colour >= presetList->count && _colour != 255 && _colour != 0)
                 {
                     LOG_ERROR("Unknown vehicle colour preset. colour = %d", _colour);
-                    return Result(Status::InvalidParameters, errTitle, STR_ERR_INVALID_COLOUR);
+                    return Result(Status::invalidParameters, errTitle, STR_ERR_INVALID_COLOUR);
                 }
                 break;
             }
 
             default:
                 LOG_ERROR("Invalid ride vehicle setting %d", _type);
-                return Result(Status::InvalidParameters, errTitle, STR_ERR_VALUE_OUT_OF_RANGE);
+                return Result(Status::invalidParameters, errTitle, STR_ERR_VALUE_OUT_OF_RANGE);
         }
 
         return Result();
@@ -131,7 +131,7 @@ namespace OpenRCT2::GameActions
         if (ride == nullptr)
         {
             LOG_ERROR("Ride not found for rideIndex %u", _rideIndex.ToUnderlying());
-            return Result(Status::InvalidParameters, errTitle, STR_ERR_RIDE_NOT_FOUND);
+            return Result(Status::invalidParameters, errTitle, STR_ERR_RIDE_NOT_FOUND);
         }
 
         switch (_type)
@@ -154,7 +154,7 @@ namespace OpenRCT2::GameActions
                 if (rideEntry == nullptr)
                 {
                     LOG_ERROR("Ride entry not found for index %d", ride->subtype);
-                    return Result(Status::InvalidParameters, errTitle, kStringIdNone);
+                    return Result(Status::invalidParameters, errTitle, kStringIdNone);
                 }
                 uint8_t clampValue = _value;
                 static_assert(sizeof(clampValue) == sizeof(ride->proposedNumCarsPerTrain));
@@ -177,7 +177,7 @@ namespace OpenRCT2::GameActions
                 if (rideEntry == nullptr)
                 {
                     LOG_ERROR("Ride entry not found for index %d", ride->subtype);
-                    return Result(Status::InvalidParameters, errTitle, kStringIdNone);
+                    return Result(Status::invalidParameters, errTitle, kStringIdNone);
                 }
 
                 RideSetVehicleColoursToRandomPreset(*ride, _colour);
@@ -200,7 +200,7 @@ namespace OpenRCT2::GameActions
 
             default:
                 LOG_ERROR("Invalid ride vehicle setting %d", _type);
-                return Result(Status::InvalidParameters, errTitle, kStringIdNone);
+                return Result(Status::invalidParameters, errTitle, kStringIdNone);
         }
 
         ride->numCircuits = 1;

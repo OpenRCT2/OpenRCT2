@@ -88,7 +88,7 @@ namespace OpenRCT2::GameActions
 
         if (!isInEditorMode() && !getGameState().cheats.sandboxMode)
         {
-            return Result(Status::NotInEditorMode, kStringIdNone, STR_LAND_NOT_FOR_SALE);
+            return Result(Status::notInEditorMode, kStringIdNone, STR_LAND_NOT_FOR_SALE);
         }
 
         // Game command modified to accept selection size
@@ -99,7 +99,7 @@ namespace OpenRCT2::GameActions
                 if (!LocationValid({ x, y }))
                     continue;
                 auto result = MapBuyLandRightsForTile({ x, y }, isExecuting);
-                if (result.Error == Status::Ok)
+                if (result.Error == Status::ok)
                 {
                     res.Cost += result.Cost;
                 }
@@ -120,7 +120,7 @@ namespace OpenRCT2::GameActions
         if (surfaceElement == nullptr)
         {
             LOG_ERROR("No surface at x = %d, y = %d", loc.x, loc.y);
-            return Result(Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
+            return Result(Status::invalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
         }
 
         auto res = Result();
@@ -234,7 +234,7 @@ namespace OpenRCT2::GameActions
             }
             default:
                 LOG_ERROR("Invalid setting %u to set land rights", _setting);
-                return Result(Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
+                return Result(Status::invalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
         }
     }
 } // namespace OpenRCT2::GameActions

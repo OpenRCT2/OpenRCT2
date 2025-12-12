@@ -46,7 +46,7 @@ namespace OpenRCT2::GameActions
         if (_parameter >= ParkParameter::Count)
         {
             LOG_ERROR("Invalid park parameter %d", _parameter);
-            return Result(Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
+            return Result(Status::invalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
         }
 
         auto res = Result();
@@ -81,7 +81,7 @@ namespace OpenRCT2::GameActions
                 break;
             default:
                 LOG_ERROR("Invalid park parameter %d", _parameter);
-                return Result(Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
+                return Result(Status::invalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
         }
 
         auto res = Result();

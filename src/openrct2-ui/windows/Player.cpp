@@ -533,7 +533,7 @@ namespace OpenRCT2::Ui::Windows
             auto playerSetGroupAction = GameActions::PlayerSetGroupAction(playerId, groupId);
             playerSetGroupAction.SetCallback(
                 [windowHandle](const GameActions::GameAction* ga, const GameActions::Result* result) {
-                    if (result->Error == GameActions::Status::Ok)
+                    if (result->Error == GameActions::Status::ok)
                     {
                         auto* windowMgr = Ui::GetWindowManager();
                         windowMgr->InvalidateByNumber(windowHandle.first, windowHandle.second);

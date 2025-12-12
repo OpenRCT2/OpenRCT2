@@ -85,33 +85,33 @@ namespace OpenRCT2::GameActions
 
         if (!LocationValid(_loc) || MapIsEdge(_loc))
         {
-            return Result(Status::InvalidParameters, STR_CANT_BUILD_FOOTPATH_HERE, STR_OFF_EDGE_OF_MAP);
+            return Result(Status::invalidParameters, STR_CANT_BUILD_FOOTPATH_HERE, STR_OFF_EDGE_OF_MAP);
         }
 
         if (!(gLegacyScene == LegacyScene::scenarioEditor || getGameState().cheats.sandboxMode) && !MapIsLocationOwned(_loc))
         {
-            return Result(Status::Disallowed, STR_CANT_BUILD_FOOTPATH_HERE, STR_LAND_NOT_OWNED_BY_PARK);
+            return Result(Status::disallowed, STR_CANT_BUILD_FOOTPATH_HERE, STR_LAND_NOT_OWNED_BY_PARK);
         }
 
         if (_slope.type == FootpathSlopeType::irregular || _slope.type == FootpathSlopeType::raise)
         {
-            return Result(Status::Disallowed, STR_CANT_BUILD_FOOTPATH_HERE, STR_LAND_SLOPE_UNSUITABLE);
+            return Result(Status::disallowed, STR_CANT_BUILD_FOOTPATH_HERE, STR_LAND_SLOPE_UNSUITABLE);
         }
 
         if (_loc.z < kFootpathMinHeight)
         {
-            return Result(Status::Disallowed, STR_CANT_BUILD_FOOTPATH_HERE, STR_TOO_LOW);
+            return Result(Status::disallowed, STR_CANT_BUILD_FOOTPATH_HERE, STR_TOO_LOW);
         }
 
         if (_loc.z > kFootpathMaxHeight)
         {
-            return Result(Status::Disallowed, STR_CANT_BUILD_FOOTPATH_HERE, STR_TOO_HIGH);
+            return Result(Status::disallowed, STR_CANT_BUILD_FOOTPATH_HERE, STR_TOO_HIGH);
         }
 
         if (_direction != kInvalidDirection && !DirectionValid(_direction))
         {
             LOG_ERROR("Direction invalid. direction = %u", _direction);
-            return Result(Status::InvalidParameters, STR_CANT_BUILD_FOOTPATH_HERE, STR_ERR_VALUE_OUT_OF_RANGE);
+            return Result(Status::invalidParameters, STR_CANT_BUILD_FOOTPATH_HERE, STR_ERR_VALUE_OUT_OF_RANGE);
         }
 
         auto intent = Intent(INTENT_ACTION_REMOVE_PROVISIONAL_FOOTPATH);
@@ -215,7 +215,7 @@ namespace OpenRCT2::GameActions
     {
         if (_constructFlags & PathConstructFlag::IsQueue && pathElement->IsLevelCrossing(_loc))
         {
-            return Result(Status::Disallowed, STR_CANT_BUILD_FOOTPATH_HERE, STR_QUEUE_PATHS_CANNOT_BE_USED_FOR_LEVEL_CROSSINGS);
+            return Result(Status::disallowed, STR_CANT_BUILD_FOOTPATH_HERE, STR_QUEUE_PATHS_CANNOT_BE_USED_FOR_LEVEL_CROSSINGS);
         }
 
         if (!IsSameAsPathElement(pathElement))
@@ -225,7 +225,7 @@ namespace OpenRCT2::GameActions
 
         if (GetFlags().has(CommandFlag::ghost) && !pathElement->IsGhost())
         {
-            return Result(Status::ItemAlreadyPlaced, STR_CANT_BUILD_FOOTPATH_HERE, kStringIdNone);
+            return Result(Status::itemAlreadyPlaced, STR_CANT_BUILD_FOOTPATH_HERE, kStringIdNone);
         }
         return res;
     }
@@ -289,7 +289,7 @@ namespace OpenRCT2::GameActions
 
         if (!MapCheckCapacityAndReorganise(_loc))
         {
-            return Result(Status::NoFreeElements, STR_CANT_BUILD_FOOTPATH_HERE, kStringIdNone);
+            return Result(Status::noFreeElements, STR_CANT_BUILD_FOOTPATH_HERE, kStringIdNone);
         }
 
         res.Cost = 12.00_GBP;
@@ -321,7 +321,7 @@ namespace OpenRCT2::GameActions
                                                                                 : CreateCrossingMode::pathOverTrack;
         auto canBuild = MapCanConstructWithClearAt(
             { _loc, zLow, zHigh }, MapPlaceNonSceneryClearFunc, quarterTile, GetFlags(), kTileSlopeFlat, crossingMode);
-        if (!entrancePath && canBuild.Error != Status::Ok)
+        if (!entrancePath && canBuild.Error != Status::ok)
         {
             canBuild.ErrorTitle = STR_CANT_BUILD_FOOTPATH_HERE;
             return canBuild;
@@ -333,13 +333,13 @@ namespace OpenRCT2::GameActions
         gFootpathGroundFlags = clearanceData.GroundFlags;
         if (!getGameState().cheats.disableClearanceChecks && (clearanceData.GroundFlags & ELEMENT_IS_UNDERWATER))
         {
-            return Result(Status::Disallowed, STR_CANT_BUILD_FOOTPATH_HERE, STR_CANT_BUILD_THIS_UNDERWATER);
+            return Result(Status::disallowed, STR_CANT_BUILD_FOOTPATH_HERE, STR_CANT_BUILD_THIS_UNDERWATER);
         }
 
         auto surfaceElement = MapGetSurfaceElementAt(_loc);
         if (surfaceElement == nullptr)
         {
-            return Result(Status::InvalidParameters, STR_CANT_BUILD_FOOTPATH_HERE, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
+            return Result(Status::invalidParameters, STR_CANT_BUILD_FOOTPATH_HERE, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
         }
         int32_t supportHeight = zLow - surfaceElement->GetBaseZ();
         res.Cost += supportHeight < 0 ? 20.00_GBP : (supportHeight / kPathHeightStep) * 5.00_GBP;
@@ -390,7 +390,7 @@ namespace OpenRCT2::GameActions
         auto canBuild = MapCanConstructWithClearAt(
             { _loc, zLow, zHigh }, MapPlaceNonSceneryClearFunc, quarterTile, GetFlags().with(CommandFlag::apply),
             kTileSlopeFlat, crossingMode);
-        if (!entrancePath && canBuild.Error != Status::Ok)
+        if (!entrancePath && canBuild.Error != Status::ok)
         {
             canBuild.ErrorTitle = STR_CANT_BUILD_FOOTPATH_HERE;
             return canBuild;
@@ -403,7 +403,7 @@ namespace OpenRCT2::GameActions
         auto surfaceElement = MapGetSurfaceElementAt(_loc);
         if (surfaceElement == nullptr)
         {
-            return Result(Status::InvalidParameters, STR_CANT_BUILD_FOOTPATH_HERE, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
+            return Result(Status::invalidParameters, STR_CANT_BUILD_FOOTPATH_HERE, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
         }
         int32_t supportHeight = zLow - surfaceElement->GetBaseZ();
         res.Cost += supportHeight < 0 ? 20.00_GBP : (supportHeight / kPathHeightStep) * 5.00_GBP;

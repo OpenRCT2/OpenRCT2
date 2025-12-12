@@ -48,7 +48,7 @@ namespace OpenRCT2::GameActions
         if (_fundingAmount >= RESEARCH_FUNDING_COUNT)
         {
             LOG_ERROR("Invalid research funding amount %d", _fundingAmount);
-            return Result(Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
+            return Result(Status::invalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
         }
         return Result();
     }

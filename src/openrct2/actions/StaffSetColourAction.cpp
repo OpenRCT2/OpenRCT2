@@ -50,7 +50,7 @@ namespace OpenRCT2::GameActions
         if (staffType != StaffType::handyman && staffType != StaffType::mechanic && staffType != StaffType::security)
         {
             LOG_ERROR("Staff color can't be changed for staff type %d", _staffType);
-            return Result(Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_ACTION_INVALID_FOR_THAT_STAFF_TYPE);
+            return Result(Status::invalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_ACTION_INVALID_FOR_THAT_STAFF_TYPE);
         }
         return Result();
     }
@@ -59,7 +59,7 @@ namespace OpenRCT2::GameActions
     {
         // Update global uniform colour property
         auto res = StaffSetColour(static_cast<StaffType>(_staffType), _colour);
-        if (res.Error != Status::Ok)
+        if (res.Error != Status::ok)
         {
             return res;
         }

@@ -192,7 +192,7 @@ GameActions::Result MapCanConstructWithClearAt(
     bool canBuildCrossing = false;
     if (MapIsEdge(pos))
     {
-        res.Error = GameActions::Status::InvalidParameters;
+        res.Error = GameActions::Status::invalidParameters;
         res.ErrorMessage = STR_OFF_EDGE_OF_MAP;
         return res;
     }
@@ -206,7 +206,7 @@ GameActions::Result MapCanConstructWithClearAt(
     TileElement* tileElement = MapGetFirstElementAt(pos);
     if (tileElement == nullptr)
     {
-        res.Error = GameActions::Status::Unknown;
+        res.Error = GameActions::Status::unknown;
         res.ErrorMessage = kStringIdNone;
         return res;
     }
@@ -227,7 +227,7 @@ GameActions::Result MapCanConstructWithClearAt(
                     }
 
                     MapGetObstructionErrorText(tileElement, res);
-                    res.Error = GameActions::Status::NoClearance;
+                    res.Error = GameActions::Status::noClearance;
                     return res;
                 }
             }
@@ -242,7 +242,7 @@ GameActions::Result MapCanConstructWithClearAt(
             {
                 if (!clearFunc(&tileElement, pos, flags, &res.Cost))
                 {
-                    res.Error = GameActions::Status::NoClearance;
+                    res.Error = GameActions::Status::noClearance;
                     res.ErrorMessage = STR_CANNOT_BUILD_PARTLY_ABOVE_AND_PARTLY_BELOW_WATER;
                     return res;
                 }
@@ -255,7 +255,7 @@ GameActions::Result MapCanConstructWithClearAt(
 
             if (heightFromGround > (18 * kCoordsZStep))
             {
-                res.Error = GameActions::Status::Disallowed;
+                res.Error = GameActions::Status::disallowed;
                 res.ErrorMessage = STR_LOCAL_AUTHORITY_WONT_ALLOW_CONSTRUCTION_ABOVE_TREE_HEIGHT;
                 return res;
             }
@@ -298,7 +298,7 @@ GameActions::Result MapCanConstructWithClearAt(
                 }
 
                 MapGetObstructionErrorText(tileElement, res);
-                res.Error = GameActions::Status::NoClearance;
+                res.Error = GameActions::Status::noClearance;
                 return res;
             }
         }

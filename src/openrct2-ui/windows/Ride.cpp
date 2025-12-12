@@ -4483,7 +4483,7 @@ namespace OpenRCT2::Ui::Windows
                         rideId, GameActions::RideSetAppearanceType::EntranceStyle, objIndex, 0);
                     rideSetAppearanceAction.SetCallback(
                         [objIndex](const GameActions::GameAction*, const GameActions::Result* res) {
-                            if (res->Error != GameActions::Status::Ok)
+                            if (res->Error != GameActions::Status::ok)
                                 return;
                             getGameState().lastEntranceStyle = objIndex;
                         });
@@ -4496,7 +4496,7 @@ namespace OpenRCT2::Ui::Windows
                         rideId, GameActions::RideSetAppearanceType::VehicleColourScheme, dropdownIndex, 0);
                     rideSetAppearanceAction.SetCallback(
                         [this](const GameActions::GameAction* ga, const GameActions::Result* result) {
-                            if (result->Error == GameActions::Status::Ok)
+                            if (result->Error == GameActions::Status::ok)
                             {
                                 resetVehicleIndex();
                             }

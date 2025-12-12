@@ -57,18 +57,18 @@ namespace OpenRCT2::GameActions
 
         if (!LocationValid(_loc))
         {
-            return Result(Status::InvalidParameters, STR_CANT_REMOVE_FOOTPATH_FROM_HERE, STR_OFF_EDGE_OF_MAP);
+            return Result(Status::invalidParameters, STR_CANT_REMOVE_FOOTPATH_FROM_HERE, STR_OFF_EDGE_OF_MAP);
         }
 
         if (!(gLegacyScene == LegacyScene::scenarioEditor || getGameState().cheats.sandboxMode) && !MapIsLocationOwned(_loc))
         {
-            return Result(Status::NotOwned, STR_CANT_REMOVE_FOOTPATH_FROM_HERE, STR_LAND_NOT_OWNED_BY_PARK);
+            return Result(Status::notOwned, STR_CANT_REMOVE_FOOTPATH_FROM_HERE, STR_LAND_NOT_OWNED_BY_PARK);
         }
 
         TileElement* footpathElement = GetFootpathElement();
         if (footpathElement == nullptr)
         {
-            return Result(Status::InvalidParameters, STR_CANT_REMOVE_FOOTPATH_FROM_HERE, STR_ERR_PATH_ELEMENT_NOT_FOUND);
+            return Result(Status::invalidParameters, STR_CANT_REMOVE_FOOTPATH_FROM_HERE, STR_ERR_PATH_ELEMENT_NOT_FOUND);
         }
 
         res.Cost = GetRefundPrice(footpathElement);
@@ -94,7 +94,7 @@ namespace OpenRCT2::GameActions
         {
             FootpathQueueChainReset();
             auto bannerRes = RemoveBannersAtElement(gameState, _loc, footpathElement);
-            if (bannerRes.Error == Status::Ok)
+            if (bannerRes.Error == Status::ok)
             {
                 res.Cost += bannerRes.Cost;
             }
@@ -116,7 +116,7 @@ namespace OpenRCT2::GameActions
         }
         else
         {
-            return Result(Status::InvalidParameters, STR_CANT_REMOVE_FOOTPATH_FROM_HERE, kStringIdNone);
+            return Result(Status::invalidParameters, STR_CANT_REMOVE_FOOTPATH_FROM_HERE, kStringIdNone);
         }
 
         res.Cost += GetRefundPrice(footpathElement);
@@ -174,7 +174,7 @@ namespace OpenRCT2::GameActions
 
             auto res = ExecuteNested(&bannerRemoveAction, gameState);
             // Ghost removal is free
-            if (res.Error == Status::Ok && !isGhost)
+            if (res.Error == Status::ok && !isGhost)
             {
                 result.Cost += res.Cost;
             }

@@ -2337,7 +2337,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             auto res = GameActions::Execute(&trackPlaceAction, getGameState());
-            if (res.Error != GameActions::Status::Ok)
+            if (res.Error != GameActions::Status::ok)
             {
                 _trackPlaceCost = kMoney64Undefined;
                 _trackPlaceErrorMessage = std::get<StringId>(res.ErrorMessage);
@@ -2348,7 +2348,7 @@ namespace OpenRCT2::Ui::Windows
                 _trackPlaceErrorMessage = kStringIdNone;
             }
 
-            if (res.Error != GameActions::Status::Ok)
+            if (res.Error != GameActions::Status::ok)
             {
                 return;
             }
@@ -2460,7 +2460,7 @@ namespace OpenRCT2::Ui::Windows
                 { _currentTrackBegin.x, _currentTrackBegin.y, _currentTrackBegin.z, currentDirection });
 
             trackRemoveAction.SetCallback([=](const GameActions::GameAction* ga, const GameActions::Result* result) {
-                if (result->Error != GameActions::Status::Ok)
+                if (result->Error != GameActions::Status::ok)
                 {
                     WindowRideConstructionUpdateActiveElements();
                 }
@@ -2665,7 +2665,7 @@ namespace OpenRCT2::Ui::Windows
 
             rideEntranceExitPlaceAction.SetCallback(
                 [=, this](const GameActions::GameAction* ga, const GameActions::Result* result) {
-                    if (result->Error != GameActions::Status::Ok)
+                    if (result->Error != GameActions::Status::ok)
                         return;
 
                     OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::placeItem, result->Position);
@@ -2951,7 +2951,7 @@ namespace OpenRCT2::Ui::Windows
     static void RideConstructPlacedForwardGameActionCallback(
         const GameActions::GameAction* ga, const GameActions::Result* result)
     {
-        if (result->Error != GameActions::Status::Ok)
+        if (result->Error != GameActions::Status::ok)
         {
             WindowRideConstructionUpdateActiveElements();
             return;
@@ -2998,7 +2998,7 @@ namespace OpenRCT2::Ui::Windows
     static void RideConstructPlacedBackwardGameActionCallback(
         const GameActions::GameAction* ga, const GameActions::Result* result)
     {
-        if (result->Error != GameActions::Status::Ok)
+        if (result->Error != GameActions::Status::ok)
         {
             WindowRideConstructionUpdateActiveElements();
             return;
@@ -3700,7 +3700,7 @@ namespace OpenRCT2::Ui::Windows
                 auto gameAction = GameActions::MazeSetTrackAction(
                     CoordsXYZD{ _currentTrackBegin, 0 }, true, _currentRideIndex, GC_SET_MAZE_TRACK_BUILD);
                 auto mazeSetTrackResult = GameActions::Execute(&gameAction, getGameState());
-                if (mazeSetTrackResult.Error == GameActions::Status::Ok)
+                if (mazeSetTrackResult.Error == GameActions::Status::ok)
                 {
                     _trackPlaceCost = mazeSetTrackResult.Cost;
                     _trackPlaceErrorMessage = kStringIdNone;
@@ -3713,7 +3713,7 @@ namespace OpenRCT2::Ui::Windows
 
                 gDisableErrorWindowSound = false;
 
-                if (mazeSetTrackResult.Error != GameActions::Status::Ok)
+                if (mazeSetTrackResult.Error != GameActions::Status::ok)
                 {
                     _rideConstructionState = RideConstructionState::Place;
                     StringId errorText = std::get<StringId>(mazeSetTrackResult.ErrorMessage);
@@ -4762,7 +4762,7 @@ namespace OpenRCT2::Ui::Windows
             gameAction.SetFlags(flags);
             auto result = GameActions::Execute(&gameAction, getGameState());
 
-            if (result.Error != GameActions::Status::Ok)
+            if (result.Error != GameActions::Status::ok)
                 return kMoney64Undefined;
 
             _unkF440C5 = { trackPos, static_cast<Direction>(trackDirection) };
@@ -4780,7 +4780,7 @@ namespace OpenRCT2::Ui::Windows
         trackPlaceAction.SetFlags({ CommandFlag::allowDuringPaused, CommandFlag::noSpend, CommandFlag::ghost });
         // This command must not be sent over the network
         auto res = GameActions::Execute(&trackPlaceAction, getGameState());
-        if (res.Error != GameActions::Status::Ok)
+        if (res.Error != GameActions::Status::ok)
             return kMoney64Undefined;
 
         int16_t zBegin{}, zEnd{};

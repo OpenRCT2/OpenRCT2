@@ -81,29 +81,29 @@ namespace OpenRCT2::GameActions
         if (_primaryColour >= COLOUR_COUNT)
         {
             LOG_ERROR("Invalid primary colour %u", _primaryColour);
-            return Result(Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_ERR_INVALID_COLOUR);
+            return Result(Status::invalidParameters, STR_CANT_POSITION_THIS_HERE, STR_ERR_INVALID_COLOUR);
         }
         else if (_secondaryColour >= COLOUR_COUNT)
         {
             LOG_ERROR("Invalid secondary colour %u", _secondaryColour);
-            return Result(Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_ERR_INVALID_COLOUR);
+            return Result(Status::invalidParameters, STR_CANT_POSITION_THIS_HERE, STR_ERR_INVALID_COLOUR);
         }
         else if (_tertiaryColour >= COLOUR_COUNT)
         {
             LOG_ERROR("Invalid tertiary colour %u", _tertiaryColour);
-            return Result(Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_ERR_INVALID_COLOUR);
+            return Result(Status::invalidParameters, STR_CANT_POSITION_THIS_HERE, STR_ERR_INVALID_COLOUR);
         }
         else if (_sceneryType >= kMaxLargeSceneryObjects)
         {
             LOG_ERROR("Invalid sceneryType %u", _sceneryType);
-            return Result(Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_ERR_VALUE_OUT_OF_RANGE);
+            return Result(Status::invalidParameters, STR_CANT_POSITION_THIS_HERE, STR_ERR_VALUE_OUT_OF_RANGE);
         }
 
         auto* sceneryEntry = ObjectManager::GetObjectEntry<LargeSceneryEntry>(_sceneryType);
         if (sceneryEntry == nullptr)
         {
             LOG_ERROR("Large scenery entry not found for sceneryType %u", _sceneryType);
-            return Result(Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_UNKNOWN_OBJECT_TYPE);
+            return Result(Status::invalidParameters, STR_CANT_POSITION_THIS_HERE, STR_UNKNOWN_OBJECT_TYPE);
         }
 
         const auto totalNumTiles = sceneryEntry->tiles.size();
@@ -121,7 +121,7 @@ namespace OpenRCT2::GameActions
             if (HasReachedBannerLimit())
             {
                 LOG_ERROR("No free banners available");
-                return Result(Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_TOO_MANY_BANNERS_IN_GAME);
+                return Result(Status::invalidParameters, STR_CANT_POSITION_THIS_HERE, STR_TOO_MANY_BANNERS_IN_GAME);
             }
         }
 
@@ -140,7 +140,7 @@ namespace OpenRCT2::GameActions
             auto canBuild = MapCanConstructWithClearAt(
                 { curTile, zLow, zHigh }, MapPlaceSceneryClearFunc, quarterTile, GetFlags(), kTileSlopeFlat,
                 CreateCrossingMode::none, isTree);
-            if (canBuild.Error != Status::Ok)
+            if (canBuild.Error != Status::ok)
             {
                 canBuild.ErrorTitle = STR_CANT_POSITION_THIS_HERE;
                 return canBuild;
@@ -154,12 +154,12 @@ namespace OpenRCT2::GameActions
             {
                 if ((clearanceData.GroundFlags & ELEMENT_IS_UNDERWATER) || (clearanceData.GroundFlags & ELEMENT_IS_UNDERGROUND))
                 {
-                    return Result(Status::Disallowed, STR_CANT_POSITION_THIS_HERE, STR_CANT_BUILD_THIS_UNDERWATER);
+                    return Result(Status::disallowed, STR_CANT_POSITION_THIS_HERE, STR_CANT_BUILD_THIS_UNDERWATER);
                 }
                 if (resultData.GroundFlags && !(resultData.GroundFlags & tempSceneryGroundFlags))
                 {
                     return Result(
-                        Status::Disallowed, STR_CANT_POSITION_THIS_HERE, STR_CANT_BUILD_PARTLY_ABOVE_AND_PARTLY_BELOW_GROUND);
+                        Status::disallowed, STR_CANT_POSITION_THIS_HERE, STR_CANT_BUILD_PARTLY_ABOVE_AND_PARTLY_BELOW_GROUND);
                 }
             }
 
@@ -167,20 +167,20 @@ namespace OpenRCT2::GameActions
 
             if (!LocationValid(curTile) || MapIsEdge(curTile))
             {
-                return Result(Status::Disallowed, STR_CANT_POSITION_THIS_HERE, STR_OFF_EDGE_OF_MAP);
+                return Result(Status::disallowed, STR_CANT_POSITION_THIS_HERE, STR_OFF_EDGE_OF_MAP);
             }
 
             if (gLegacyScene != LegacyScene::scenarioEditor && !MapIsLocationOwned({ curTile, zLow })
                 && !gameState.cheats.sandboxMode)
             {
-                return Result(Status::Disallowed, STR_CANT_POSITION_THIS_HERE, STR_LAND_NOT_OWNED_BY_PARK);
+                return Result(Status::disallowed, STR_CANT_POSITION_THIS_HERE, STR_LAND_NOT_OWNED_BY_PARK);
             }
         }
 
         if (!CheckMapCapacity(sceneryEntry->tiles, totalNumTiles))
         {
             LOG_ERROR("No free map elements available");
-            return Result(Status::NoFreeElements, STR_CANT_POSITION_THIS_HERE, STR_TILE_ELEMENT_LIMIT_REACHED);
+            return Result(Status::noFreeElements, STR_CANT_POSITION_THIS_HERE, STR_TILE_ELEMENT_LIMIT_REACHED);
         }
 
         // Force ride construction to recheck area
@@ -211,13 +211,13 @@ namespace OpenRCT2::GameActions
         if (sceneryEntry == nullptr)
         {
             LOG_ERROR("Large scenery entry not found for sceneryType = %u", _sceneryType);
-            return Result(Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_UNKNOWN_OBJECT_TYPE);
+            return Result(Status::invalidParameters, STR_CANT_POSITION_THIS_HERE, STR_UNKNOWN_OBJECT_TYPE);
         }
 
         if (sceneryEntry->tiles.empty())
         {
             LOG_ERROR("Invalid large scenery object, sceneryType = %u", _sceneryType);
-            return Result(Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, kStringIdNone);
+            return Result(Status::invalidParameters, STR_CANT_POSITION_THIS_HERE, kStringIdNone);
         }
 
         int16_t maxHeight = GetMaxSurfaceHeight(sceneryEntry->tiles);
@@ -237,7 +237,7 @@ namespace OpenRCT2::GameActions
             if (banner == nullptr)
             {
                 LOG_ERROR("No free banners available");
-                return Result(Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_TOO_MANY_BANNERS_IN_GAME);
+                return Result(Status::invalidParameters, STR_CANT_POSITION_THIS_HERE, STR_TOO_MANY_BANNERS_IN_GAME);
             }
 
             banner->text = {};
@@ -272,7 +272,7 @@ namespace OpenRCT2::GameActions
             auto canBuild = MapCanConstructWithClearAt(
                 { curTile, zLow, zHigh }, MapPlaceSceneryClearFunc, quarterTile, GetFlags(), kTileSlopeFlat,
                 CreateCrossingMode::none, isTree);
-            if (canBuild.Error != Status::Ok)
+            if (canBuild.Error != Status::ok)
             {
                 if (banner != nullptr)
                 {

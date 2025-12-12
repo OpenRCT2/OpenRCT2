@@ -55,35 +55,35 @@ namespace OpenRCT2::GameActions
         res.ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
         if ((_loc.z & 0xF) != 0)
         {
-            res.Error = Status::Unknown;
+            res.Error = Status::unknown;
             res.ErrorMessage = STR_INVALID_HEIGHT;
             return res;
         }
 
         if (!LocationValid(_loc))
         {
-            res.Error = Status::InvalidParameters;
+            res.Error = Status::invalidParameters;
             res.ErrorMessage = STR_OFF_EDGE_OF_MAP;
             return res;
         }
 
         if (!MapIsLocationOwned(_loc) && !gameState.cheats.sandboxMode)
         {
-            res.Error = Status::NotOwned;
+            res.Error = Status::notOwned;
             res.ErrorMessage = STR_LAND_NOT_OWNED_BY_PARK;
             return res;
         }
 
         if (!MapCheckCapacityAndReorganise(_loc))
         {
-            res.Error = Status::NoFreeElements;
+            res.Error = Status::noFreeElements;
             res.ErrorMessage = STR_TILE_ELEMENT_LIMIT_REACHED;
             return res;
         }
         auto surfaceElement = MapGetSurfaceElementAt(_loc);
         if (surfaceElement == nullptr)
         {
-            res.Error = Status::Unknown;
+            res.Error = Status::unknown;
             res.ErrorMessage = STR_INVALID_SELECTION_OF_OBJECTS;
             return res;
         }
@@ -100,7 +100,7 @@ namespace OpenRCT2::GameActions
             const auto& rtd = ride->getRideTypeDescriptor();
             if (heightDifference > rtd.Heights.MaxHeight)
             {
-                res.Error = Status::TooHigh;
+                res.Error = Status::tooHigh;
                 res.ErrorMessage = STR_TOO_HIGH_FOR_SUPPORTS;
                 return res;
             }
@@ -109,7 +109,7 @@ namespace OpenRCT2::GameActions
         auto canBuild = MapCanConstructWithClearAt(
             { _loc.ToTileStart(), baseHeight, clearanceHeight }, MapPlaceNonSceneryClearFunc, { 0b1111, 0 }, GetFlags(),
             kTileSlopeFlat);
-        if (canBuild.Error != Status::Ok)
+        if (canBuild.Error != Status::ok)
         {
             canBuild.ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
             return canBuild;
@@ -118,14 +118,14 @@ namespace OpenRCT2::GameActions
         const auto clearanceData = canBuild.GetData<ConstructClearResult>();
         if (clearanceData.GroundFlags & ELEMENT_IS_UNDERWATER)
         {
-            res.Error = Status::NoClearance;
+            res.Error = Status::noClearance;
             res.ErrorMessage = STR_RIDE_CANT_BUILD_THIS_UNDERWATER;
             return res;
         }
 
         if (clearanceData.GroundFlags & ELEMENT_IS_UNDERGROUND)
         {
-            res.Error = Status::NoClearance;
+            res.Error = Status::noClearance;
             res.ErrorMessage = STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND;
             return res;
         }
@@ -134,7 +134,7 @@ namespace OpenRCT2::GameActions
         if (ride == nullptr || ride->type == kRideTypeNull)
         {
             LOG_ERROR("Ride not found for rideIndex %u", _rideIndex);
-            res.Error = Status::InvalidParameters;
+            res.Error = Status::invalidParameters;
             res.ErrorMessage = STR_ERR_RIDE_NOT_FOUND;
             return res;
         }
@@ -156,7 +156,7 @@ namespace OpenRCT2::GameActions
         if (ride == nullptr)
         {
             LOG_ERROR("Ride not found for rideIndex %u", _rideIndex);
-            res.Error = Status::InvalidParameters;
+            res.Error = Status::invalidParameters;
             res.ErrorMessage = STR_ERR_RIDE_NOT_FOUND;
             return res;
         }
@@ -174,7 +174,7 @@ namespace OpenRCT2::GameActions
         auto canBuild = MapCanConstructWithClearAt(
             { _loc.ToTileStart(), baseHeight, clearanceHeight }, MapPlaceNonSceneryClearFunc, { 0b1111, 0 },
             GetFlags().with(CommandFlag::apply), kTileSlopeFlat);
-        if (canBuild.Error != Status::Ok)
+        if (canBuild.Error != Status::ok)
         {
             canBuild.ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
             return canBuild;

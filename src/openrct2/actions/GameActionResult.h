@@ -28,25 +28,25 @@ namespace OpenRCT2::GameActions
      */
     enum class Status : uint16_t
     {
-        Ok,
-        InvalidParameters,
-        Disallowed,
-        GamePaused,
-        InsufficientFunds,
-        NotInEditorMode,
+        ok,
+        invalidParameters,
+        disallowed,
+        gamePaused,
+        insufficientFunds,
+        notInEditorMode,
 
-        NotOwned,
-        TooLow,
-        TooHigh,
-        NoClearance,
-        ItemAlreadyPlaced,
+        notOwned,
+        tooLow,
+        tooHigh,
+        noClearance,
+        itemAlreadyPlaced,
 
-        NotClosed,
-        Broken,
+        notClosed,
+        broken,
 
-        NoFreeElements,
+        noFreeElements,
 
-        Unknown = std::numeric_limits<std::underlying_type_t<Status>>::max(),
+        unknown = std::numeric_limits<std::underlying_type_t<Status>>::max(),
     };
 
     /**
@@ -57,7 +57,7 @@ namespace OpenRCT2::GameActions
     public:
         using StringVariant = std::variant<std::string, StringId>;
 
-        Status Error = Status::Ok;
+        Status Error = Status::ok;
         StringVariant ErrorTitle = kStringIdNone;
         StringVariant ErrorMessage = kStringIdNone;
         std::array<uint8_t, 32> ErrorMessageArgs{};

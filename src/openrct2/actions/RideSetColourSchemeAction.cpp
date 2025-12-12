@@ -51,7 +51,7 @@ namespace OpenRCT2::GameActions
     {
         if (!LocationValid(_loc))
         {
-            return Result(Status::InvalidParameters, STR_CANT_SET_COLOUR_SCHEME, STR_OFF_EDGE_OF_MAP);
+            return Result(Status::invalidParameters, STR_CANT_SET_COLOUR_SCHEME, STR_OFF_EDGE_OF_MAP);
         }
         // Find the relevant track piece, prefer sequence 0 (logic copied from GetTrackElementOriginAndApplyChanges)
         auto trackElement = MapGetTrackElementAtOfTypeSeq(_loc, _trackType, 0);
@@ -60,12 +60,12 @@ namespace OpenRCT2::GameActions
             trackElement = MapGetTrackElementAtOfType(_loc, _trackType);
             if (trackElement == nullptr)
             {
-                return Result(Status::InvalidParameters, STR_CANT_SET_COLOUR_SCHEME, STR_INVALID_TRACK_PARAMETERS);
+                return Result(Status::invalidParameters, STR_CANT_SET_COLOUR_SCHEME, STR_INVALID_TRACK_PARAMETERS);
             }
         }
         if (_newColourScheme >= kNumRideColourSchemes)
         {
-            return Result(Status::InvalidParameters, STR_CANT_SET_COLOUR_SCHEME, STR_INVALID_COLOUR_SCHEME_PARAMETER);
+            return Result(Status::invalidParameters, STR_CANT_SET_COLOUR_SCHEME, STR_INVALID_COLOUR_SCHEME_PARAMETER);
         }
         return Result();
     }

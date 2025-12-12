@@ -1164,7 +1164,7 @@ money64 SetOperatingSetting(RideId rideId, GameActions::RideSetSetting setting, 
 {
     auto rideSetSetting = GameActions::RideSetSettingAction(rideId, setting, value);
     auto res = GameActions::Execute(&rideSetSetting, getGameState());
-    return res.Error == GameActions::Status::Ok ? 0 : kMoney64Undefined;
+    return res.Error == GameActions::Status::ok ? 0 : kMoney64Undefined;
 }
 
 money64 SetOperatingSettingNested(RideId rideId, GameActions::RideSetSetting setting, uint8_t value, CommandFlags flags)
@@ -1175,7 +1175,7 @@ money64 SetOperatingSettingNested(RideId rideId, GameActions::RideSetSetting set
     auto& gameState = getGameState();
     auto res = flags.has(CommandFlag::apply) ? GameActions::ExecuteNested(&rideSetSetting, gameState)
                                              : GameActions::QueryNested(&rideSetSetting, gameState);
-    return res.Error == GameActions::Status::Ok ? 0 : kMoney64Undefined;
+    return res.Error == GameActions::Status::ok ? 0 : kMoney64Undefined;
 }
 
 /**

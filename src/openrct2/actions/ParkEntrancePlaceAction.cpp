@@ -61,7 +61,7 @@ namespace OpenRCT2::GameActions
     {
         if (!isInEditorMode() && !getGameState().cheats.sandboxMode)
         {
-            return Result(Status::NotInEditorMode, STR_CANT_BUILD_THIS_HERE, kStringIdNone);
+            return Result(Status::notInEditorMode, STR_CANT_BUILD_THIS_HERE, kStringIdNone);
         }
 
         auto res = Result();
@@ -72,17 +72,17 @@ namespace OpenRCT2::GameActions
         if (!LocationValid(_loc) || _loc.x <= kCoordsXYStep || _loc.y <= kCoordsXYStep || _loc.x >= mapSizeUnits.x
             || _loc.y >= mapSizeUnits.y)
         {
-            return Result(Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_TOO_CLOSE_TO_EDGE_OF_MAP);
+            return Result(Status::invalidParameters, STR_CANT_BUILD_THIS_HERE, STR_TOO_CLOSE_TO_EDGE_OF_MAP);
         }
 
         if (!CheckMapCapacity(3))
         {
-            return Result(Status::NoFreeElements, STR_CANT_BUILD_THIS_HERE, STR_ERR_LANDSCAPE_DATA_AREA_FULL);
+            return Result(Status::noFreeElements, STR_CANT_BUILD_THIS_HERE, STR_ERR_LANDSCAPE_DATA_AREA_FULL);
         }
 
         if (gameState.park.entrances.size() >= OpenRCT2::Limits::kMaxParkEntrances)
         {
-            return Result(Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_ERR_TOO_MANY_PARK_ENTRANCES);
+            return Result(Status::invalidParameters, STR_CANT_BUILD_THIS_HERE, STR_ERR_TOO_MANY_PARK_ENTRANCES);
         }
 
         auto zLow = _loc.z;
@@ -100,7 +100,7 @@ namespace OpenRCT2::GameActions
                 entranceLoc.y += CoordsDirectionDelta[(_loc.direction + 1) & 0x3].y * 2;
             }
 
-            if (auto res2 = MapCanConstructAt({ entranceLoc, zLow, zHigh }, { 0b1111, 0 }); res2.Error != Status::Ok)
+            if (auto res2 = MapCanConstructAt({ entranceLoc, zLow, zHigh }, { 0b1111, 0 }); res2.Error != Status::ok)
             {
                 res2.ErrorTitle = STR_CANT_BUILD_THIS_HERE;
                 return res2;
@@ -110,7 +110,7 @@ namespace OpenRCT2::GameActions
             EntranceElement* entranceElement = MapGetParkEntranceElementAt(entranceLoc, false);
             if (entranceElement != nullptr)
             {
-                return Result(Status::ItemAlreadyPlaced, STR_CANT_BUILD_THIS_HERE, kStringIdNone);
+                return Result(Status::itemAlreadyPlaced, STR_CANT_BUILD_THIS_HERE, kStringIdNone);
             }
         }
 

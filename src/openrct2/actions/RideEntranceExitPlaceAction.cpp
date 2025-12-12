@@ -64,23 +64,23 @@ namespace OpenRCT2::GameActions
         if (ride == nullptr)
         {
             LOG_ERROR("Ride not found for rideIndex %u", _rideIndex.ToUnderlying());
-            return Result(Status::InvalidParameters, errorTitle, STR_ERR_RIDE_NOT_FOUND);
+            return Result(Status::invalidParameters, errorTitle, STR_ERR_RIDE_NOT_FOUND);
         }
 
         if (_stationNum.ToUnderlying() >= Limits::kMaxStationsPerRide)
         {
             LOG_ERROR("Invalid station number for ride. stationNum: %u", _stationNum.ToUnderlying());
-            return Result(Status::InvalidParameters, errorTitle, STR_ERR_VALUE_OUT_OF_RANGE);
+            return Result(Status::invalidParameters, errorTitle, STR_ERR_VALUE_OUT_OF_RANGE);
         }
 
         if (ride->status != RideStatus::closed && ride->status != RideStatus::simulating)
         {
-            return Result(Status::NotClosed, errorTitle, STR_MUST_BE_CLOSED_FIRST);
+            return Result(Status::notClosed, errorTitle, STR_MUST_BE_CLOSED_FIRST);
         }
 
         if (ride->lifecycleFlags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK)
         {
-            return Result(Status::Disallowed, errorTitle, STR_NOT_ALLOWED_TO_MODIFY_STATION);
+            return Result(Status::disallowed, errorTitle, STR_NOT_ALLOWED_TO_MODIFY_STATION);
         }
 
         const auto& station = ride->getStation(_stationNum);
@@ -93,7 +93,7 @@ namespace OpenRCT2::GameActions
             rideEntranceExitRemove.SetFlags(GetFlags());
 
             auto result = QueryNested(&rideEntranceExitRemove, gameState);
-            if (result.Error != Status::Ok)
+            if (result.Error != Status::ok)
             {
                 result.ErrorTitle = errorTitle;
                 return result;
@@ -103,21 +103,21 @@ namespace OpenRCT2::GameActions
         auto z = ride->getStation(_stationNum).GetBaseZ();
         if (!LocationValid(_loc))
         {
-            return Result(Status::InvalidParameters, errorTitle, STR_OFF_EDGE_OF_MAP);
+            return Result(Status::invalidParameters, errorTitle, STR_OFF_EDGE_OF_MAP);
         }
         if (!getGameState().cheats.sandboxMode && !MapIsLocationOwned({ _loc, z }))
         {
-            return Result(Status::NotOwned, errorTitle, STR_LAND_NOT_OWNED_BY_PARK);
+            return Result(Status::notOwned, errorTitle, STR_LAND_NOT_OWNED_BY_PARK);
         }
 
         if (!MapCheckCapacityAndReorganise(_loc))
         {
-            return Result(Status::NoFreeElements, errorTitle, STR_TILE_ELEMENT_LIMIT_REACHED);
+            return Result(Status::noFreeElements, errorTitle, STR_TILE_ELEMENT_LIMIT_REACHED);
         }
         auto clear_z = z + (_isExit ? RideExitHeight : RideEntranceHeight);
         auto canBuild = MapCanConstructWithClearAt(
             { _loc, z, clear_z }, MapPlaceNonSceneryClearFunc, { 0b1111, 0 }, GetFlags(), kTileSlopeFlat);
-        if (canBuild.Error != Status::Ok)
+        if (canBuild.Error != Status::ok)
         {
             canBuild.ErrorTitle = errorTitle;
             return canBuild;
@@ -126,12 +126,12 @@ namespace OpenRCT2::GameActions
         const auto clearanceData = canBuild.GetData<ConstructClearResult>();
         if (clearanceData.GroundFlags & ELEMENT_IS_UNDERWATER)
         {
-            return Result(Status::Disallowed, errorTitle, STR_RIDE_CANT_BUILD_THIS_UNDERWATER);
+            return Result(Status::disallowed, errorTitle, STR_RIDE_CANT_BUILD_THIS_UNDERWATER);
         }
 
         if (z > MaxRideEntranceOrExitHeight)
         {
-            return Result(Status::Disallowed, errorTitle, STR_TOO_HIGH);
+            return Result(Status::disallowed, errorTitle, STR_TOO_HIGH);
         }
 
         auto res = Result();
@@ -151,7 +151,7 @@ namespace OpenRCT2::GameActions
         if (ride == nullptr)
         {
             LOG_ERROR("Ride not found for rideIndex %u", _rideIndex.ToUnderlying());
-            return Result(Status::InvalidParameters, errorTitle, STR_ERR_RIDE_NOT_FOUND);
+            return Result(Status::invalidParameters, errorTitle, STR_ERR_RIDE_NOT_FOUND);
         }
 
         if (!(GetFlags().has(CommandFlag::ghost)))
@@ -169,7 +169,7 @@ namespace OpenRCT2::GameActions
             rideEntranceExitRemove.SetFlags(GetFlags());
 
             auto result = ExecuteNested(&rideEntranceExitRemove, gameState);
-            if (result.Error != Status::Ok)
+            if (result.Error != Status::ok)
             {
                 result.ErrorTitle = errorTitle;
                 return result;
@@ -188,7 +188,7 @@ namespace OpenRCT2::GameActions
         auto canBuild = MapCanConstructWithClearAt(
             { _loc, z, clear_z }, MapPlaceNonSceneryClearFunc, { 0b1111, 0 }, GetFlags().with(CommandFlag::apply),
             kTileSlopeFlat);
-        if (canBuild.Error != Status::Ok)
+        if (canBuild.Error != Status::ok)
         {
             canBuild.ErrorTitle = errorTitle;
             return canBuild;
@@ -244,18 +244,18 @@ namespace OpenRCT2::GameActions
 
         if (!getGameState().cheats.sandboxMode && !MapIsLocationOwned(loc))
         {
-            return Result(Status::NotOwned, errorTitle, STR_LAND_NOT_OWNED_BY_PARK);
+            return Result(Status::notOwned, errorTitle, STR_LAND_NOT_OWNED_BY_PARK);
         }
 
         if (!MapCheckCapacityAndReorganise(loc))
         {
-            return Result(Status::NoFreeElements, errorTitle, STR_TILE_ELEMENT_LIMIT_REACHED);
+            return Result(Status::noFreeElements, errorTitle, STR_TILE_ELEMENT_LIMIT_REACHED);
         }
         int16_t baseZ = loc.z;
         int16_t clearZ = baseZ + (isExit ? RideExitHeight : RideEntranceHeight);
         auto canBuild = MapCanConstructWithClearAt(
             { loc, baseZ, clearZ }, MapPlaceNonSceneryClearFunc, { 0b1111, 0 }, {}, kTileSlopeFlat);
-        if (canBuild.Error != Status::Ok)
+        if (canBuild.Error != Status::ok)
         {
             canBuild.ErrorTitle = errorTitle;
             return canBuild;
@@ -264,12 +264,12 @@ namespace OpenRCT2::GameActions
         const auto clearanceData = canBuild.GetData<ConstructClearResult>();
         if (clearanceData.GroundFlags & ELEMENT_IS_UNDERWATER)
         {
-            return Result(Status::Disallowed, errorTitle, STR_RIDE_CANT_BUILD_THIS_UNDERWATER);
+            return Result(Status::disallowed, errorTitle, STR_RIDE_CANT_BUILD_THIS_UNDERWATER);
         }
 
         if (baseZ > MaxRideEntranceOrExitHeight)
         {
-            return Result(Status::Disallowed, errorTitle, STR_TOO_HIGH);
+            return Result(Status::disallowed, errorTitle, STR_TOO_HIGH);
         }
         auto res = Result();
         res.Position = { loc.ToTileCentre(), TileElementHeight(loc) };

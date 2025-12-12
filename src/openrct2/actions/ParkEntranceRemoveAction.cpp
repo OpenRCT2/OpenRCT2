@@ -46,7 +46,7 @@ namespace OpenRCT2::GameActions
     {
         if (!isInEditorMode() && !getGameState().cheats.sandboxMode)
         {
-            return Result(Status::NotInEditorMode, STR_CANT_REMOVE_THIS, kStringIdNone);
+            return Result(Status::notInEditorMode, STR_CANT_REMOVE_THIS, kStringIdNone);
         }
 
         auto res = Result();
@@ -56,12 +56,12 @@ namespace OpenRCT2::GameActions
 
         if (!LocationValid(_loc))
         {
-            return Result(Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_OFF_EDGE_OF_MAP);
+            return Result(Status::invalidParameters, STR_CANT_REMOVE_THIS, STR_OFF_EDGE_OF_MAP);
         }
         if (ParkEntranceGetIndex(_loc) == -1)
         {
             LOG_ERROR("No park entrance at x = %d, y = %d, z = %d", _loc.x, _loc.y, _loc.z);
-            return Result(Status::InvalidParameters, STR_CANT_REMOVE_THIS, kStringIdNone);
+            return Result(Status::invalidParameters, STR_CANT_REMOVE_THIS, kStringIdNone);
         }
         return res;
     }
@@ -77,7 +77,7 @@ namespace OpenRCT2::GameActions
         if (entranceIndex == -1)
         {
             LOG_ERROR("No park entrance at x = %d, y = %d, z = %d", _loc.x, _loc.y, _loc.z);
-            return Result(Status::InvalidParameters, STR_CANT_REMOVE_THIS, kStringIdNone);
+            return Result(Status::invalidParameters, STR_CANT_REMOVE_THIS, kStringIdNone);
         }
 
         auto& park = getGameState().park;

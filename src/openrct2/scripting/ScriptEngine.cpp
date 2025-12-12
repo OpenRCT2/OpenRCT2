@@ -1087,7 +1087,7 @@ GameActions::Result ScriptEngine::QueryOrExecuteCustomGameAction(const GameActio
         if (!dukArgs)
         {
             auto action = GameActions::Result();
-            action.Error = GameActions::Status::InvalidParameters;
+            action.Error = GameActions::Status::invalidParameters;
             action.ErrorTitle = "Invalid JSON";
             return action;
         }
@@ -1124,7 +1124,7 @@ GameActions::Result ScriptEngine::QueryOrExecuteCustomGameAction(const GameActio
     }
 
     auto action = GameActions::Result();
-    action.Error = GameActions::Status::Unknown;
+    action.Error = GameActions::Status::unknown;
     action.ErrorTitle = "Unknown custom action";
     action.ErrorMessage = customAction.GetPluginName() + ": " + actionz;
     return action;
@@ -1151,7 +1151,7 @@ GameActions::Result ScriptEngine::DukToGameActionResult(const DukValue& d)
     }
     else
     {
-        result.Error = GameActions::Status::Unknown;
+        result.Error = GameActions::Status::unknown;
         result.ErrorTitle = "Unknown";
         result.ErrorMessage = "Unknown";
     }
@@ -1201,7 +1201,7 @@ DukValue ScriptEngine::GameActionResultToDuk(const GameActions::GameAction& acti
     DukObject obj(_context);
 
     obj.Set("error", static_cast<duk_int_t>(result.Error));
-    if (result.Error != GameActions::Status::Ok)
+    if (result.Error != GameActions::Status::ok)
     {
         obj.Set("errorTitle", result.GetErrorTitle());
         obj.Set("errorMessage", result.GetErrorMessage());
@@ -1223,7 +1223,7 @@ DukValue ScriptEngine::GameActionResultToDuk(const GameActions::GameAction& acti
     // RideCreateAction only
     if (action.GetType() == GameCommand::CreateRide)
     {
-        if (result.Error == GameActions::Status::Ok)
+        if (result.Error == GameActions::Status::ok)
         {
             const auto rideIndex = result.GetData<RideId>();
             obj.Set("ride", rideIndex.ToUnderlying());
@@ -1232,7 +1232,7 @@ DukValue ScriptEngine::GameActionResultToDuk(const GameActions::GameAction& acti
     // StaffHireNewAction only
     else if (action.GetType() == GameCommand::HireNewStaffMember)
     {
-        if (result.Error == GameActions::Status::Ok)
+        if (result.Error == GameActions::Status::ok)
         {
             const auto actionResult = result.GetData<GameActions::StaffHireNewActionResult>();
             if (!actionResult.StaffEntityId.IsNull())

@@ -38,12 +38,12 @@ namespace OpenRCT2::GameActions
     {
         if (!ObjectTypeCanBeRestricted(_objectType))
         {
-            return Result(Status::InvalidParameters, STR_CANT_RESTRICT_OBJECT, STR_OBJECT_TYPE_CANNOT_BE_RESTRICTED);
+            return Result(Status::invalidParameters, STR_CANT_RESTRICT_OBJECT, STR_OBJECT_TYPE_CANNOT_BE_RESTRICTED);
         }
         const auto* loadedObject = ObjectEntryGetObject(_objectType, _objectIndex);
         if (loadedObject == nullptr)
         {
-            return Result(Status::InvalidParameters, STR_CANT_RESTRICT_OBJECT, STR_OBJECT_NOT_FOUND);
+            return Result(Status::invalidParameters, STR_CANT_RESTRICT_OBJECT, STR_OBJECT_NOT_FOUND);
         }
 
         return Result();

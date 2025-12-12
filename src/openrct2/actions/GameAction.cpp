@@ -143,7 +143,7 @@ namespace OpenRCT2::GameActions
             Guard::Assert(action != nullptr);
 
             Result result = Execute(action, getGameState());
-            if (result.Error == Status::Ok && Network::GetMode() == Network::Mode::server)
+            if (result.Error == Status::ok && Network::GetMode() == Network::Mode::server)
             {
                 // Relay this action to all other clients.
                 Network::SendGameAction(action);
@@ -197,7 +197,7 @@ namespace OpenRCT2::GameActions
         {
             Result result = Result();
 
-            result.Error = Status::GamePaused;
+            result.Error = Status::gamePaused;
             result.ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
             result.ErrorMessage = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
 
@@ -206,11 +206,11 @@ namespace OpenRCT2::GameActions
 
         auto result = action->Query(gameState);
 
-        if (result.Error == Status::Ok)
+        if (result.Error == Status::ok)
         {
             if (!FinanceCheckAffordability(result.Cost, action->GetFlags()))
             {
-                result.Error = Status::InsufficientFunds;
+                result.Error = Status::insufficientFunds;
                 result.ErrorTitle = STR_CANT_DO_THIS;
                 result.ErrorMessage = STR_NOT_ENOUGH_CASH_REQUIRES;
                 Formatter(result.ErrorMessageArgs.data()).Add<uint32_t>(result.Cost);
@@ -266,7 +266,7 @@ namespace OpenRCT2::GameActions
 
         char temp[128] = {};
 
-        if (result.Error != Status::Ok)
+        if (result.Error != Status::ok)
         {
             snprintf(temp, sizeof(temp), ") Failed, %u", static_cast<uint32_t>(result.Error));
         }
@@ -301,7 +301,7 @@ namespace OpenRCT2::GameActions
             {
                 // TODO: Introduce proper error.
                 auto result = Result();
-                result.Error = Status::GamePaused;
+                result.Error = Status::gamePaused;
                 result.ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
                 result.ErrorMessage = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
 
@@ -311,14 +311,14 @@ namespace OpenRCT2::GameActions
 
         Result result = QueryInternal(action, gameState, topLevel);
 #ifdef ENABLE_SCRIPTING
-        if (result.Error == Status::Ok && ((Network::GetMode() == Network::Mode::none) || flags.has(CommandFlag::networked)))
+        if (result.Error == Status::ok && ((Network::GetMode() == Network::Mode::none) || flags.has(CommandFlag::networked)))
         {
             auto& scriptEngine = GetContext()->GetScriptEngine();
             scriptEngine.RunGameActionHooks(*action, result, false);
             // Script hooks may now have changed the game action result...
         }
 #endif
-        if (result.Error == Status::Ok)
+        if (result.Error == Status::ok)
         {
             if (topLevel)
             {
@@ -355,7 +355,7 @@ namespace OpenRCT2::GameActions
             // Execute the action, changing the game state
             result = action->Execute(gameState);
 #ifdef ENABLE_SCRIPTING
-            if (result.Error == Status::Ok)
+            if (result.Error == Status::ok)
             {
                 auto& scriptEngine = GetContext()->GetScriptEngine();
                 scriptEngine.RunGameActionHooks(*action, result, true);
@@ -370,13 +370,13 @@ namespace OpenRCT2::GameActions
                 return result;
 
             // Update money balance
-            if (result.Error == Status::Ok && FinanceCheckMoneyRequired(flags) && result.Cost != 0)
+            if (result.Error == Status::ok && FinanceCheckMoneyRequired(flags) && result.Cost != 0)
             {
                 FinancePayment(result.Cost, result.Expenditure);
                 MoneyEffect::Create(result.Cost, result.Position);
             }
 
-            if (!(actionFlags & Flags::ClientOnly) && result.Error == Status::Ok)
+            if (!(actionFlags & Flags::ClientOnly) && result.Error == Status::ok)
             {
                 if (Network::GetMode() != Network::Mode::none)
                 {
@@ -446,7 +446,7 @@ namespace OpenRCT2::GameActions
             }
         }
 
-        if (result.Error != Status::Ok && shouldShowError)
+        if (result.Error != Status::ok && shouldShowError)
         {
             auto windowManager = Ui::GetWindowManager();
             windowManager->ShowError(result.GetErrorTitle(), result.GetErrorMessage());

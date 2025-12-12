@@ -751,7 +751,7 @@ static void ConsoleSetVariableAction(InteractiveConsole& console, std::string va
 {
     auto action = TAction(std::forward<TArgs>(args)...);
     action.SetCallback([&console, var](const GameActions::GameAction*, const GameActions::Result* res) {
-        if (res->Error != GameActions::Status::Ok)
+        if (res->Error != GameActions::Status::ok)
             console.WriteLineError(
                 String::stdFormat(
                     "set %s command failed: %s - %s.", var.c_str(), res->GetErrorTitle().c_str(),

@@ -57,7 +57,7 @@ namespace OpenRCT2::GameActions
         {
             LOG_ERROR("Ride not found for rideIndex %u", _rideIndex.ToUnderlying());
             return GameActions::Result(
-                GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_RIDE_NOT_FOUND);
+                GameActions::Status::invalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_RIDE_NOT_FOUND);
         }
 
         switch (_type)
@@ -69,7 +69,7 @@ namespace OpenRCT2::GameActions
                 {
                     LOG_ERROR("Invalid track colour %u", _index);
                     return GameActions::Result(
-                        GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_INVALID_COLOUR);
+                        GameActions::Status::invalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_INVALID_COLOUR);
                 }
                 break;
             case RideSetAppearanceType::VehicleColourBody:
@@ -79,7 +79,7 @@ namespace OpenRCT2::GameActions
                 {
                     LOG_ERROR("Invalid vehicle colour %u", _index);
                     return GameActions::Result(
-                        GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_INVALID_COLOUR);
+                        GameActions::Status::invalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_INVALID_COLOUR);
                 }
                 break;
             case RideSetAppearanceType::VehicleColourScheme:
@@ -89,7 +89,7 @@ namespace OpenRCT2::GameActions
             default:
                 LOG_ERROR("Invalid ride appearance type %u", _type);
                 return GameActions::Result(
-                    GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
+                    GameActions::Status::invalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
         }
 
         return GameActions::Result();
@@ -102,7 +102,7 @@ namespace OpenRCT2::GameActions
         {
             LOG_ERROR("Ride not found for rideIndex %u", _rideIndex.ToUnderlying());
             return GameActions::Result(
-                GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_RIDE_NOT_FOUND);
+                GameActions::Status::invalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_RIDE_NOT_FOUND);
         }
 
         switch (_type)

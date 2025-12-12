@@ -2054,7 +2054,7 @@ namespace OpenRCT2::Ui::Windows
                 loc, quadrant, entryIndex, primaryColour, secondaryColour, tertiaryColour);
             smallSceneryPlaceAction.SetFlags({ CommandFlag::ghost, CommandFlag::allowDuringPaused });
             auto res = GameActions::Execute(&smallSceneryPlaceAction, getGameState());
-            if (res.Error != GameActions::Status::Ok)
+            if (res.Error != GameActions::Status::ok)
                 return kMoney64Undefined;
 
             const auto placementData = res.GetData<GameActions::SmallSceneryPlaceActionResult>();
@@ -2088,7 +2088,7 @@ namespace OpenRCT2::Ui::Windows
             auto footpathAdditionPlaceAction = GameActions::FootpathAdditionPlaceAction(loc, entryIndex);
             footpathAdditionPlaceAction.SetFlags({ CommandFlag::ghost, CommandFlag::allowDuringPaused });
             footpathAdditionPlaceAction.SetCallback([=](const GameActions::GameAction* ga, const GameActions::Result* result) {
-                if (result->Error != GameActions::Status::Ok)
+                if (result->Error != GameActions::Status::ok)
                 {
                     return;
                 }
@@ -2096,7 +2096,7 @@ namespace OpenRCT2::Ui::Windows
                 gSceneryGhostType |= SCENERY_GHOST_FLAG_1;
             });
             auto res = GameActions::Execute(&footpathAdditionPlaceAction, getGameState());
-            if (res.Error != GameActions::Status::Ok)
+            if (res.Error != GameActions::Status::ok)
                 return kMoney64Undefined;
 
             return res.Cost;
@@ -2113,7 +2113,7 @@ namespace OpenRCT2::Ui::Windows
                 entryIndex, loc, edge, primaryColour, secondaryColour, tertiaryColour);
             wallPlaceAction.SetFlags({ CommandFlag::ghost, CommandFlag::allowDuringPaused, CommandFlag::noSpend });
             wallPlaceAction.SetCallback([=](const GameActions::GameAction* ga, const GameActions::Result* result) {
-                if (result->Error != GameActions::Status::Ok)
+                if (result->Error != GameActions::Status::ok)
                     return;
 
                 const auto placementData = result->GetData<GameActions::WallPlaceActionResult>();
@@ -2124,7 +2124,7 @@ namespace OpenRCT2::Ui::Windows
             });
 
             auto res = GameActions::Execute(&wallPlaceAction, getGameState());
-            if (res.Error != GameActions::Status::Ok)
+            if (res.Error != GameActions::Status::ok)
                 return kMoney64Undefined;
 
             return res.Cost;
@@ -2141,7 +2141,7 @@ namespace OpenRCT2::Ui::Windows
                 loc, entryIndex, primaryColour, secondaryColour, tertiaryColour);
             sceneryPlaceAction.SetFlags({ CommandFlag::ghost, CommandFlag::allowDuringPaused, CommandFlag::noSpend });
             auto res = GameActions::Execute(&sceneryPlaceAction, getGameState());
-            if (res.Error != GameActions::Status::Ok)
+            if (res.Error != GameActions::Status::ok)
                 return kMoney64Undefined;
 
             const auto placementData = res.GetData<GameActions::LargeSceneryPlaceActionResult>();
@@ -2173,7 +2173,7 @@ namespace OpenRCT2::Ui::Windows
             auto bannerPlaceAction = GameActions::BannerPlaceAction(loc, entryIndex, primaryColour);
             bannerPlaceAction.SetFlags({ CommandFlag::ghost, CommandFlag::allowDuringPaused, CommandFlag::noSpend });
             auto res = GameActions::Execute(&bannerPlaceAction, getGameState());
-            if (res.Error != GameActions::Status::Ok)
+            if (res.Error != GameActions::Status::ok)
                 return kMoney64Undefined;
 
             gSceneryGhostPosition = loc;
@@ -2965,7 +2965,7 @@ namespace OpenRCT2::Ui::Windows
                     zAttemptRange = 20;
                 }
 
-                auto success = GameActions::Status::Unknown;
+                auto success = GameActions::Status::unknown;
                 // Try find a valid z coordinate
                 for (; zAttemptRange != 0; zAttemptRange--)
                 {
@@ -2976,12 +2976,12 @@ namespace OpenRCT2::Ui::Windows
                     auto& gameState = getGameState();
                     auto res = GameActions::Query(&smallSceneryPlaceAction, gameState);
                     success = res.Error;
-                    if (res.Error == GameActions::Status::Ok)
+                    if (res.Error == GameActions::Status::ok)
                     {
                         break;
                     }
 
-                    if (res.Error == GameActions::Status::InsufficientFunds)
+                    if (res.Error == GameActions::Status::insufficientFunds)
                     {
                         break;
                     }
@@ -2992,7 +2992,7 @@ namespace OpenRCT2::Ui::Windows
                 }
 
                 // Actually place
-                if (success == GameActions::Status::Ok || ((q + 1 == quantity) && forceError))
+                if (success == GameActions::Status::ok || ((q + 1 == quantity) && forceError))
                 {
                     auto smallSceneryPlaceAction = GameActions::SmallSceneryPlaceAction(
                         { cur_grid_x, cur_grid_y, gSceneryPlaceZ, gSceneryPlaceRotation }, quadrant, selectedScenery,
@@ -3000,7 +3000,7 @@ namespace OpenRCT2::Ui::Windows
 
                     smallSceneryPlaceAction.SetCallback(
                         [=](const GameActions::GameAction* ga, const GameActions::Result* result) {
-                            if (result->Error == GameActions::Status::Ok)
+                            if (result->Error == GameActions::Status::ok)
                             {
                                 Audio::Play3D(Audio::SoundId::placeItem, result->Position);
                             }
@@ -3008,12 +3008,12 @@ namespace OpenRCT2::Ui::Windows
 
                     auto& gameState = getGameState();
                     auto res = GameActions::Execute(&smallSceneryPlaceAction, gameState);
-                    if (res.Error == GameActions::Status::Ok)
+                    if (res.Error == GameActions::Status::ok)
                     {
                         forceError = false;
                     }
 
-                    if (res.Error == GameActions::Status::InsufficientFunds)
+                    if (res.Error == GameActions::Status::insufficientFunds)
                     {
                         break;
                     }
@@ -3034,7 +3034,7 @@ namespace OpenRCT2::Ui::Windows
             auto footpathAdditionPlaceAction = GameActions::FootpathAdditionPlaceAction({ gridPos, z }, selectedScenery);
 
             footpathAdditionPlaceAction.SetCallback([](const GameActions::GameAction* ga, const GameActions::Result* result) {
-                if (result->Error != GameActions::Status::Ok)
+                if (result->Error != GameActions::Status::ok)
                 {
                     return;
                 }
@@ -3092,7 +3092,7 @@ namespace OpenRCT2::Ui::Windows
 
                 auto& gameState = getGameState();
                 auto res = GameActions::Query(&wallPlaceAction, gameState);
-                if (res.Error == GameActions::Status::Ok)
+                if (res.Error == GameActions::Status::ok)
                 {
                     break;
                 }
@@ -3184,7 +3184,7 @@ namespace OpenRCT2::Ui::Windows
                     wallPlaceAction.SetFlags({ CommandFlag::ghost, CommandFlag::allowDuringPaused });
 
                     auto result = GameActions::Execute(&wallPlaceAction, gameState);
-                    if (result.Error == GameActions::Status::Ok)
+                    if (result.Error == GameActions::Status::ok)
                     {
                         const auto placementData = result.GetData<GameActions::WallPlaceActionResult>();
                         _provisionalTiles.push_back({ CoordsXYZD(x, y, gSceneryPlaceZ, _startEdge), placementData.BaseHeight });
@@ -3233,7 +3233,7 @@ namespace OpenRCT2::Ui::Windows
                 auto z = gSceneryPlaceZ > 0 ? gSceneryPlaceZ : TileElementHeight(_dragStartPos);
                 Audio::Play3D(Audio::SoundId::error, { _dragStartPos, z });
 
-                if (_lastProvisionalError.Error != GameActions::Status::Ok)
+                if (_lastProvisionalError.Error != GameActions::Status::ok)
                 {
                     auto windowManager = Ui::GetWindowManager();
                     windowManager->ShowError(
@@ -3255,7 +3255,7 @@ namespace OpenRCT2::Ui::Windows
 
                 auto& gameState = getGameState();
                 auto result = GameActions::Execute(&wallPlaceAction, gameState);
-                if (result.Error == GameActions::Status::Ok)
+                if (result.Error == GameActions::Status::ok)
                 {
                     anySuccessful = true;
                     lastLocation = result.Position;
@@ -3294,7 +3294,7 @@ namespace OpenRCT2::Ui::Windows
 
                 auto& gameState = getGameState();
                 auto res = GameActions::Query(&sceneryPlaceAction, gameState);
-                if (res.Error == GameActions::Status::Ok)
+                if (res.Error == GameActions::Status::ok)
                 {
                     break;
                 }
@@ -3318,7 +3318,7 @@ namespace OpenRCT2::Ui::Windows
             auto sceneryPlaceAction = GameActions::LargeSceneryPlaceAction(
                 loc, selectedScenery, _sceneryPrimaryColour, _scenerySecondaryColour, _sceneryTertiaryColour);
             sceneryPlaceAction.SetCallback([=](const GameActions::GameAction* ga, const GameActions::Result* result) {
-                if (result->Error == GameActions::Status::Ok)
+                if (result->Error == GameActions::Status::ok)
                 {
                     Audio::Play3D(Audio::SoundId::placeItem, result->Position);
                 }
@@ -3345,7 +3345,7 @@ namespace OpenRCT2::Ui::Windows
             auto primaryColour = _sceneryPrimaryColour;
             auto bannerPlaceAction = GameActions::BannerPlaceAction(loc, selectedScenery, primaryColour);
             bannerPlaceAction.SetCallback([=](const GameActions::GameAction* ga, const GameActions::Result* result) {
-                if (result->Error == GameActions::Status::Ok)
+                if (result->Error == GameActions::Status::ok)
                 {
                     auto data = result->GetData<GameActions::BannerPlaceActionResult>();
                     Audio::Play3D(Audio::SoundId::placeItem, result->Position);

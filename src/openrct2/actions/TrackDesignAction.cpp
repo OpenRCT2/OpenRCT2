@@ -64,7 +64,7 @@ namespace OpenRCT2::GameActions
 
         if (!LocationValid(_loc))
         {
-            return Result(Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_OFF_EDGE_OF_MAP);
+            return Result(Status::invalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_OFF_EDGE_OF_MAP);
         }
 
         auto& objManager = GetContext()->GetObjectManager();
@@ -83,9 +83,9 @@ namespace OpenRCT2::GameActions
         auto rideCreateAction = RideCreateAction(_td.trackAndVehicle.rtdIndex, entryIndex, 0, 0, gameState.lastEntranceStyle);
         rideCreateAction.SetFlags(GetFlags());
         auto r = ExecuteNested(&rideCreateAction, gameState);
-        if (r.Error != Status::Ok)
+        if (r.Error != Status::ok)
         {
-            return Result(Status::NoFreeElements, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, kStringIdNone);
+            return Result(Status::noFreeElements, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, kStringIdNone);
         }
 
         const auto rideIndex = r.GetData<RideId>();
@@ -93,7 +93,7 @@ namespace OpenRCT2::GameActions
         if (ride == nullptr)
         {
             LOG_ERROR("Ride not found for rideIndex %d", rideIndex);
-            return Result(Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_ERR_RIDE_NOT_FOUND);
+            return Result(Status::unknown, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_ERR_RIDE_NOT_FOUND);
         }
 
         bool placeScenery = _placeScenery;
@@ -114,7 +114,7 @@ namespace OpenRCT2::GameActions
 
         ExecuteNested(&gameAction, gameState);
 
-        if (queryRes.Error != Status::Ok)
+        if (queryRes.Error != Status::ok)
         {
             res.Error = queryRes.Error;
             res.ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
@@ -153,9 +153,9 @@ namespace OpenRCT2::GameActions
         auto rideCreateAction = RideCreateAction(_td.trackAndVehicle.rtdIndex, entryIndex, 0, 0, gameState.lastEntranceStyle);
         rideCreateAction.SetFlags(GetFlags());
         auto r = ExecuteNested(&rideCreateAction, gameState);
-        if (r.Error != Status::Ok)
+        if (r.Error != Status::ok)
         {
-            return Result(Status::NoFreeElements, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, kStringIdNone);
+            return Result(Status::noFreeElements, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, kStringIdNone);
         }
 
         const auto rideIndex = r.GetData<RideId>();
@@ -163,7 +163,7 @@ namespace OpenRCT2::GameActions
         if (ride == nullptr)
         {
             LOG_ERROR("Ride not found for rideIndex %d", rideIndex);
-            return Result(Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_ERR_RIDE_NOT_FOUND);
+            return Result(Status::unknown, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_ERR_RIDE_NOT_FOUND);
         }
 
         // Query first, this is required again to determine if scenery is available.
@@ -178,7 +178,7 @@ namespace OpenRCT2::GameActions
             queryRes = TrackDesignPlace(_td, flags, placeScenery, *ride, _loc);
         }
 
-        if (queryRes.Error != Status::Ok)
+        if (queryRes.Error != Status::ok)
         {
             auto gameAction = RideDemolishAction(ride->id, RideModifyType::demolish);
             gameAction.SetFlags(GetFlags());
@@ -196,7 +196,7 @@ namespace OpenRCT2::GameActions
         flags.set(CommandFlag::apply);
 
         auto execRes = TrackDesignPlace(_td, flags, placeScenery, *ride, _loc);
-        if (execRes.Error != Status::Ok)
+        if (execRes.Error != Status::ok)
         {
             auto gameAction = RideDemolishAction(ride->id, RideModifyType::demolish);
             gameAction.SetFlags(GetFlags());
@@ -259,7 +259,7 @@ namespace OpenRCT2::GameActions
             ride->vehicleColours[i] = _td.appearance.vehicleColours[i];
         }
 
-        for (int32_t count = 1; count == 1 || r.Error != Status::Ok; ++count)
+        for (int32_t count = 1; count == 1 || r.Error != Status::ok; ++count)
         {
             auto name = count == 1 ? _td.gameStateData.name : (_td.gameStateData.name + " " + std::to_string(count));
             auto gameAction = RideSetNameAction(ride->id, name);
