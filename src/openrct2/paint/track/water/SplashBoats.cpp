@@ -508,7 +508,6 @@ static void PaintSplashBoatsTrack25DegUp(
         PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 static void PaintSplashBoatsTrack60DegUp(
@@ -534,7 +533,6 @@ static void PaintSplashBoatsTrack60DegUp(
         PaintUtilPushTunnelRotated(session, direction, height + 56, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 104);
 }
 
 static void PaintSplashBoatsTrackFlatTo25DegUp(
@@ -559,7 +557,6 @@ static void PaintSplashBoatsTrackFlatTo25DegUp(
         PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 static void PaintSplashBoatsTrack25DegUpToFlat(
@@ -584,7 +581,6 @@ static void PaintSplashBoatsTrack25DegUpToFlat(
         PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
     }
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 40);
 }
 
 static void PaintSplashBoatsTrack25DegUpTo60DegUp(
@@ -610,7 +606,6 @@ static void PaintSplashBoatsTrack25DegUpTo60DegUp(
         PaintUtilPushTunnelRotated(session, direction, height + 24, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 72);
 }
 
 static void PaintSplashBoatsTrack60DegUpTo25DegUp(
@@ -636,7 +631,6 @@ static void PaintSplashBoatsTrack60DegUpTo25DegUp(
         PaintUtilPushTunnelRotated(session, direction, height + 24, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 72);
 }
 
 static void PaintSplashBoatsTrack25DegDown(
@@ -661,7 +655,6 @@ static void PaintSplashBoatsTrack25DegDown(
         PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
     }
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 static void PaintSplashBoatsTrack60DegDown(
@@ -693,7 +686,6 @@ static void PaintSplashBoatsTrackFlatTo25DegDown(
         PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::Flat);
     }
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 40);
 }
 
 static void PaintSplashBoatsTrack25DegDownTo60DegDown(
@@ -732,7 +724,6 @@ static void PaintSplashBoatsTrack25DegDownToFlat(
         PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
     }
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 /** Start of elements originally from River Rafts */
@@ -759,7 +750,6 @@ static void PaintSplashBoatsTrackFlat(
     }
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x0089B1A0 */
@@ -782,7 +772,6 @@ static void PaintSplashBoatsStation(
     TrackPaintUtilDrawStationTunnel(session, direction, height);
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x0089B1D0 */
@@ -867,8 +856,6 @@ static void PaintSplashBoatsTrackLeftQuarterTurn5Tiles(
             }
             break;
     }
-
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x0089B1D0 */
@@ -953,8 +940,6 @@ static void PaintSplashBoatsTrackRightQuarterTurn5Tiles(
             }
             break;
     }
-
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x0089B180 */
@@ -1063,8 +1048,6 @@ static void PaintSplashBoatsTrackSBendLeft(
             PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
         }
     }
-
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x0089B190 */
@@ -1173,8 +1156,6 @@ static void PaintSplashBoatsTrackSBendRight(
             PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
         }
     }
-
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 static void PaintSplashBoatsTrackOnRidePhoto(

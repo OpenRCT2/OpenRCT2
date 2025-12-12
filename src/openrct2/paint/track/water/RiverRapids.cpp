@@ -208,7 +208,6 @@ static void PaintRiverRapidsTrackFlat(
     }
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x007576C0 */
@@ -218,7 +217,6 @@ static void PaintRiverRapidsStation(
 {
     PaintRiverRapidsTrackFlat(session, ride, trackSequence, direction, height, trackElement, supportType);
     TrackPaintUtilDrawNarrowStationPlatform(session, ride, direction, height, 12, trackElement, StationBaseType::none, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 static void PaintRiverRapidsTrack25Deg(
@@ -244,7 +242,6 @@ static void PaintRiverRapidsTrack25Deg(
     PaintUtilPushTunnelRotated(session, direction, height + tunnelHeightOffset, kTunnelGroup, tunnelSubType);
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 static void PaintRiverRapidsTrack25DegToFlatA(
@@ -299,7 +296,6 @@ static void PaintRiverRapidsTrack25DegToFlatA(
     PaintUtilPushTunnelRotated(session, direction, height + heightOffset, kTunnelGroup, tunnelSubType);
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 40);
 }
 
 static void PaintRiverRapidsTrack25DegToFlatB(
@@ -351,7 +347,6 @@ static void PaintRiverRapidsTrack25DegToFlatB(
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, tunnelType);
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 /** rct2: 0x00757660 */
@@ -458,7 +453,6 @@ static void PaintRiverRapidsTrackLeftQuarterTurn1Tile(
     WoodenASupportsPaintSetupRotated(
         session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x00757700 */
@@ -516,7 +510,6 @@ static void PaintRiverRapidsTrackRightQuarterTurn1Tile(
     WoodenASupportsPaintSetupRotated(
         session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x00757710 */
@@ -587,7 +580,6 @@ static void PaintRiverRapidsTrackWaterfall(
     }
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 /** rct2: 0x00757720 */
@@ -629,7 +621,6 @@ static void PaintRiverRapidsTrackRapids(
     }
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x00757740 */
@@ -639,7 +630,6 @@ static void PaintRiverRapidsTrackOnRidePhoto(
 {
     PaintRiverRapidsTrackFlat(session, ride, trackSequence, direction, height, trackElement, supportType);
     TrackPaintUtilOnridePhotoPaint(session, direction, height + 13, trackElement);
-    PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 /** rct2: 0x */
@@ -699,7 +689,6 @@ static void PaintRiverRapidsTrackWhirlpool(
     }
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /**
