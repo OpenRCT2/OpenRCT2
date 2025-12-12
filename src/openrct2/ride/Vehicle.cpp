@@ -580,26 +580,26 @@ void Vehicle::UpdateMeasurements()
         if (curRide->getRideTypeDescriptor().HasFlag(RtdFlag::hasGForces))
         {
             auto gForces = GetGForces();
-            gForces.VerticalG += curRide->previousVerticalG;
-            gForces.LateralG += curRide->previousLateralG;
-            gForces.VerticalG /= 2;
-            gForces.LateralG /= 2;
+            gForces.verticalG += curRide->previousVerticalG;
+            gForces.lateralG += curRide->previousLateralG;
+            gForces.verticalG /= 2;
+            gForces.lateralG /= 2;
 
-            curRide->previousVerticalG = gForces.VerticalG;
-            curRide->previousLateralG = gForces.LateralG;
-            if (gForces.VerticalG <= 0)
+            curRide->previousVerticalG = gForces.verticalG;
+            curRide->previousLateralG = gForces.lateralG;
+            if (gForces.verticalG <= 0)
             {
                 curRide->totalAirTime++;
             }
 
-            if (gForces.VerticalG > curRide->maxPositiveVerticalG)
-                curRide->maxPositiveVerticalG = gForces.VerticalG;
+            if (gForces.verticalG > curRide->maxPositiveVerticalG)
+                curRide->maxPositiveVerticalG = gForces.verticalG;
 
-            if (gForces.VerticalG < curRide->maxNegativeVerticalG)
-                curRide->maxNegativeVerticalG = gForces.VerticalG;
+            if (gForces.verticalG < curRide->maxNegativeVerticalG)
+                curRide->maxNegativeVerticalG = gForces.verticalG;
 
-            gForces.LateralG = std::abs(gForces.LateralG);
-            curRide->maxLateralG = std::max(curRide->maxLateralG, static_cast<fixed16_2dp>(gForces.LateralG));
+            gForces.lateralG = std::abs(gForces.lateralG);
+            curRide->maxLateralG = std::max(curRide->maxLateralG, static_cast<fixed16_2dp>(gForces.lateralG));
         }
     }
 
@@ -5102,17 +5102,17 @@ void Vehicle::UpdateTrackMotionUpStopCheck() const
         if (!IsOnCoveredTrack())
         {
             auto gForces = GetGForces();
-            gForces.LateralG = std::abs(gForces.LateralG);
-            if (gForces.LateralG <= 150)
+            gForces.lateralG = std::abs(gForces.lateralG);
+            if (gForces.lateralG <= 150)
             {
                 if (Geometry::getAccelerationFromPitch(pitch) < 0)
                 {
-                    if (gForces.VerticalG > -40)
+                    if (gForces.verticalG > -40)
                     {
                         return;
                     }
                 }
-                else if (gForces.VerticalG > -80)
+                else if (gForces.verticalG > -80)
                 {
                     return;
                 }
@@ -5133,14 +5133,14 @@ void Vehicle::UpdateTrackMotionUpStopCheck() const
 
             if (Geometry::getAccelerationFromPitch(pitch) < 0)
             {
-                if (gForces.VerticalG > -45)
+                if (gForces.verticalG > -45)
                 {
                     return;
                 }
             }
             else
             {
-                if (gForces.VerticalG > -80)
+                if (gForces.verticalG > -80)
                 {
                     return;
                 }

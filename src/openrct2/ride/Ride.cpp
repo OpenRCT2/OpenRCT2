@@ -2059,17 +2059,17 @@ static void RideMeasurementUpdate(Ride& ride, RideMeasurement& measurement)
     if (measurement.flags & RIDE_MEASUREMENT_FLAG_G_FORCES)
     {
         auto gForces = vehicle->GetGForces();
-        gForces.VerticalG = std::clamp(gForces.VerticalG / 8, -127, 127);
-        gForces.LateralG = std::clamp(gForces.LateralG / 8, -127, 127);
+        gForces.verticalG = std::clamp(gForces.verticalG / 8, -127, 127);
+        gForces.lateralG = std::clamp(gForces.lateralG / 8, -127, 127);
 
         if (currentTicks & 1)
         {
-            gForces.VerticalG = (gForces.VerticalG + measurement.vertical[measurement.current_item]) / 2;
-            gForces.LateralG = (gForces.LateralG + measurement.lateral[measurement.current_item]) / 2;
+            gForces.verticalG = (gForces.verticalG + measurement.vertical[measurement.current_item]) / 2;
+            gForces.lateralG = (gForces.lateralG + measurement.lateral[measurement.current_item]) / 2;
         }
 
-        measurement.vertical[measurement.current_item] = gForces.VerticalG & 0xFF;
-        measurement.lateral[measurement.current_item] = gForces.LateralG & 0xFF;
+        measurement.vertical[measurement.current_item] = gForces.verticalG & 0xFF;
+        measurement.lateral[measurement.current_item] = gForces.lateralG & 0xFF;
     }
 
     auto velocity = std::min(std::abs((vehicle->velocity * 5) >> 16), 255);

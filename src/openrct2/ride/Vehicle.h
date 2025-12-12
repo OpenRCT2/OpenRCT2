@@ -29,8 +29,8 @@ struct PaintSession;
 
 struct GForces
 {
-    int32_t VerticalG{};
-    int32_t LateralG{};
+    int32_t verticalG{};
+    int32_t lateralG{};
 };
 
 // Size: 0x09
