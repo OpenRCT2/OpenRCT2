@@ -36,7 +36,7 @@ Vehicle* CableLiftSegmentCreate(
     {
         ride.cableLift = current->Id;
     }
-    current->SubType = head ? Vehicle::Type::Head : Vehicle::Type::Tail;
+    current->SubType = head ? Vehicle::Type::head : Vehicle::Type::tail;
     current->var_44 = var_44;
     current->remaining_distance = remaining_distance;
     current->SpriteData.Width = 10;

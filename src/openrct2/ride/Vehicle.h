@@ -62,8 +62,8 @@ struct Vehicle : EntityBase
 
     enum class Type : uint8_t
     {
-        Head,
-        Tail,
+        head,
+        tail,
     };
 
     enum class Status : uint8_t
@@ -219,7 +219,7 @@ struct Vehicle : EntityBase
 
     constexpr bool IsHead() const
     {
-        return SubType == Vehicle::Type::Head;
+        return SubType == Vehicle::Type::head;
     }
     void Update();
     Vehicle* GetHead();

@@ -3273,7 +3273,7 @@ static Vehicle* VehicleCreateCar(
     vehicle->ride_subtype = ride.subtype;
 
     vehicle->vehicle_type = carEntryIndex;
-    vehicle->SubType = carIndex == 0 ? Vehicle::Type::Head : Vehicle::Type::Tail;
+    vehicle->SubType = carIndex == 0 ? Vehicle::Type::head : Vehicle::Type::tail;
     vehicle->var_44 = Numerics::ror32(carEntry.spacing, 10) & 0xFFFF;
 
     const auto halfSpacing = carEntry.spacing >> 1;
@@ -3445,7 +3445,7 @@ static Vehicle* VehicleCreateCar(
 
         if (ride.hasLifecycleFlag(RIDE_LIFECYCLE_REVERSED_TRAINS))
         {
-            vehicle->SubType = carIndex == (ride.numCarsPerTrain - 1) ? Vehicle::Type::Head : Vehicle::Type::Tail;
+            vehicle->SubType = carIndex == (ride.numCarsPerTrain - 1) ? Vehicle::Type::head : Vehicle::Type::tail;
             vehicle->SetFlag(VehicleFlags::CarIsReversed);
         }
     }
