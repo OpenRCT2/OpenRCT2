@@ -542,48 +542,48 @@ namespace OpenRCT2::Ui::Windows
     static_assert(std::size(VehicleColourSchemeNames) == kNumVehicleColourSettings);
 
     static constexpr std::array VehicleStatusNames = {
-        STR_MOVING_TO_END_OF,          // Vehicle::Status::MovingToEndOfStation
-        STR_WAITING_FOR_PASSENGERS_AT, // Vehicle::Status::WaitingForPassengers
-        STR_WAITING_TO_DEPART,         // Vehicle::Status::WaitingToDepart
-        STR_DEPARTING,                 // Vehicle::Status::Departing
-        STR_TRAVELLING_AT_0,           // Vehicle::Status::Travelling
-        STR_ARRIVING_AT,               // Vehicle::Status::Arriving
-        STR_UNLOADING_PASSENGERS_AT,   // Vehicle::Status::UnloadingPassengers
-        STR_TRAVELLING_AT_1,           // Vehicle::Status::TravellingBoat
-        STR_CRASHING,                  // Vehicle::Status::Crashing
-        STR_CRASHED_0,                 // Vehicle::Status::Crashed
-        STR_TRAVELLING_AT_2,           // Vehicle::Status::TravellingDodgems
-        STR_SWINGING,                  // Vehicle::Status::Swinging
-        STR_ROTATING_0,                // Vehicle::Status::Rotating
-        STR_ROTATING_1,                // Vehicle::Status::FerrisWheelRotating
-        STR_OPERATING_0,               // Vehicle::Status::SimulatorOperating
-        STR_SHOWING_FILM,              // Vehicle::Status::ShowingFilm
-        STR_ROTATING_2,                // Vehicle::Status::SpaceRingsOperating
-        STR_OPERATING_1,               // Vehicle::Status::TopSpinOperating
-        STR_OPERATING_2,               // Vehicle::Status::HauntedHouseOperating
-        STR_DOING_CIRCUS_SHOW,         // Vehicle::Status::DoingCircusShow
-        STR_OPERATING_3,               // Vehicle::Status::CrookedHouseOperating
-        STR_WAITING_FOR_CABLE_LIFT,    // Vehicle::Status::WaitingForCableLift
-        STR_TRAVELLING_AT_3,           // Vehicle::Status::TravellingCableLift
-        STR_STOPPING_0,                // Vehicle::Status::Stopping
-        STR_WAITING_FOR_PASSENGERS,    // Vehicle::Status::WaitingForPassengers17
-        STR_WAITING_TO_START,          // Vehicle::Status::WaitingToStart
-        STR_STARTING,                  // Vehicle::Status::Starting
-        STR_OPERATING,                 // Vehicle::Status::Operating1A
-        STR_STOPPING_1,                // Vehicle::Status::Stopping1B
-        STR_UNLOADING_PASSENGERS,      // Vehicle::Status::UnloadingPassengers1C
-        STR_STOPPED_BY_BLOCK_BRAKES,   // Vehicle::Status::StoppedByBlockBrakes
+        STR_MOVING_TO_END_OF,          // Vehicle::Status::movingToEndOfStation
+        STR_WAITING_FOR_PASSENGERS_AT, // Vehicle::Status::waitingForPassengers
+        STR_WAITING_TO_DEPART,         // Vehicle::Status::waitingToDepart
+        STR_DEPARTING,                 // Vehicle::Status::departing
+        STR_TRAVELLING_AT_0,           // Vehicle::Status::travelling
+        STR_ARRIVING_AT,               // Vehicle::Status::arriving
+        STR_UNLOADING_PASSENGERS_AT,   // Vehicle::Status::unloadingPassengers
+        STR_TRAVELLING_AT_1,           // Vehicle::Status::travellingBoat
+        STR_CRASHING,                  // Vehicle::Status::crashing
+        STR_CRASHED_0,                 // Vehicle::Status::crashed
+        STR_TRAVELLING_AT_2,           // Vehicle::Status::travellingDodgems
+        STR_SWINGING,                  // Vehicle::Status::swinging
+        STR_ROTATING_0,                // Vehicle::Status::rotating
+        STR_ROTATING_1,                // Vehicle::Status::ferrisWheelRotating
+        STR_OPERATING_0,               // Vehicle::Status::simulatorOperating
+        STR_SHOWING_FILM,              // Vehicle::Status::showingFilm
+        STR_ROTATING_2,                // Vehicle::Status::spaceRingsOperating
+        STR_OPERATING_1,               // Vehicle::Status::topSpinOperating
+        STR_OPERATING_2,               // Vehicle::Status::hauntedHouseOperating
+        STR_DOING_CIRCUS_SHOW,         // Vehicle::Status::doingCircusShow
+        STR_OPERATING_3,               // Vehicle::Status::crookedHouseOperating
+        STR_WAITING_FOR_CABLE_LIFT,    // Vehicle::Status::waitingForCableLift
+        STR_TRAVELLING_AT_3,           // Vehicle::Status::travellingCableLift
+        STR_STOPPING_0,                // Vehicle::Status::stopping
+        STR_WAITING_FOR_PASSENGERS,    // Vehicle::Status::waitingForPassengers17
+        STR_WAITING_TO_START,          // Vehicle::Status::waitingToStart
+        STR_STARTING,                  // Vehicle::Status::starting
+        STR_OPERATING,                 // Vehicle::Status::operating1A
+        STR_STOPPING_1,                // Vehicle::Status::stopping1B
+        STR_UNLOADING_PASSENGERS,      // Vehicle::Status::unloadingPassengers1C
+        STR_STOPPED_BY_BLOCK_BRAKES,   // Vehicle::Status::stoppedByBlockBrakes
     };
     static_assert(std::size(VehicleStatusNames) == 31);
 
     static constexpr std::array SingleSessionVehicleStatusNames = {
-        STR_STOPPING_0,             // Vehicle::Status::MovingToEndOfStation
-        STR_WAITING_FOR_PASSENGERS, // Vehicle::Status::WaitingForPassengers
-        STR_WAITING_TO_START,       // Vehicle::Status::WaitingToDepart
-        STR_STARTING,               // Vehicle::Status::Departing
-        STR_OPERATING,              // Vehicle::Status::Travelling
-        STR_STOPPING_1,             // Vehicle::Status::Arriving
-        STR_UNLOADING_PASSENGERS,   // Vehicle::Status::UnloadingPassengers
+        STR_STOPPING_0,             // Vehicle::Status::movingToEndOfStation
+        STR_WAITING_FOR_PASSENGERS, // Vehicle::Status::waitingForPassengers
+        STR_WAITING_TO_START,       // Vehicle::Status::waitingToDepart
+        STR_STARTING,               // Vehicle::Status::departing
+        STR_OPERATING,              // Vehicle::Status::travelling
+        STR_STOPPING_1,             // Vehicle::Status::arriving
+        STR_UNLOADING_PASSENGERS,   // Vehicle::Status::unloadingPassengers
     };
     static_assert(std::size(SingleSessionVehicleStatusNames) == 7);
 
@@ -2262,10 +2262,10 @@ namespace OpenRCT2::Ui::Windows
                     {
                         Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(ride->vehicles[_viewIndex - 1]);
                         if (vehicle == nullptr
-                            || (vehicle->status != Vehicle::Status::Travelling
-                                && vehicle->status != Vehicle::Status::TravellingCableLift
-                                && vehicle->status != Vehicle::Status::TravellingDodgems
-                                && vehicle->status != Vehicle::Status::TravellingBoat))
+                            || (vehicle->status != Vehicle::Status::travelling
+                                && vehicle->status != Vehicle::Status::travellingCableLift
+                                && vehicle->status != Vehicle::Status::travellingDodgems
+                                && vehicle->status != Vehicle::Status::travellingBoat))
                         {
                             return;
                         }
@@ -2459,7 +2459,7 @@ namespace OpenRCT2::Ui::Windows
                 return kStringIdEmpty;
 
             auto& rtd = ride->getRideTypeDescriptor();
-            if (vehicle->status != Vehicle::Status::Crashing && vehicle->status != Vehicle::Status::Crashed)
+            if (vehicle->status != Vehicle::Status::crashing && vehicle->status != Vehicle::Status::crashed)
             {
                 auto trackType = vehicle->GetTrackType();
                 if (trackType == TrackElemType::BlockBrakes || trackType == TrackElemType::CableLiftHill
@@ -2480,7 +2480,7 @@ namespace OpenRCT2::Ui::Windows
 
             auto stringId = VehicleStatusNames[EnumValue(vehicle->status)];
             if (ride->getRideTypeDescriptor().HasFlag(RtdFlag::singleSession)
-                && vehicle->status <= Vehicle::Status::UnloadingPassengers)
+                && vehicle->status <= Vehicle::Status::unloadingPassengers)
             {
                 stringId = SingleSessionVehicleStatusNames[EnumValue(vehicle->status)];
             }

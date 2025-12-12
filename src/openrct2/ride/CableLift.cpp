@@ -79,7 +79,7 @@ Vehicle* CableLiftSegmentCreate(
     current->SetTrackDirection(current->Orientation >> 3);
     current->track_progress = 164;
     current->Flags = VehicleFlags::CollisionDisabled;
-    current->SetState(Vehicle::Status::MovingToEndOfStation, 0);
+    current->SetState(Vehicle::Status::movingToEndOfStation, 0);
     current->num_peeps = 0;
     current->next_free_seat = 0;
     current->BoatLocation.SetNull();
@@ -90,22 +90,22 @@ void Vehicle::CableLiftUpdate()
 {
     switch (status)
     {
-        case Vehicle::Status::MovingToEndOfStation:
+        case Vehicle::Status::movingToEndOfStation:
             CableLiftUpdateMovingToEndOfStation();
             break;
-        case Vehicle::Status::WaitingForPassengers:
+        case Vehicle::Status::waitingForPassengers:
             // Stays in this state until a train puts it into next state
             break;
-        case Vehicle::Status::WaitingToDepart:
+        case Vehicle::Status::waitingToDepart:
             CableLiftUpdateWaitingToDepart();
             break;
-        case Vehicle::Status::Departing:
+        case Vehicle::Status::departing:
             CableLiftUpdateDeparting();
             break;
-        case Vehicle::Status::Travelling:
+        case Vehicle::Status::travelling:
             CableLiftUpdateTravelling();
             break;
-        case Vehicle::Status::Arriving:
+        case Vehicle::Status::arriving:
             CableLiftUpdateArriving();
             break;
         default:
@@ -135,7 +135,7 @@ void Vehicle::CableLiftUpdateMovingToEndOfStation()
 
     velocity = 0;
     acceleration = 0;
-    SetState(Vehicle::Status::WaitingForPassengers, sub_state);
+    SetState(Vehicle::Status::waitingForPassengers, sub_state);
 }
 
 /**
@@ -175,7 +175,7 @@ void Vehicle::CableLiftUpdateWaitingToDepart()
 
     velocity = 0;
     acceleration = 0;
-    SetState(Vehicle::Status::Departing, 0);
+    SetState(Vehicle::Status::departing, 0);
 }
 
 /**
@@ -193,8 +193,8 @@ void Vehicle::CableLiftUpdateDeparting()
     {
         return;
     }
-    SetState(Vehicle::Status::Travelling, sub_state);
-    passengerVehicle->SetState(Vehicle::Status::TravellingCableLift, passengerVehicle->sub_state);
+    SetState(Vehicle::Status::travelling, sub_state);
+    passengerVehicle->SetState(Vehicle::Status::travellingCableLift, passengerVehicle->sub_state);
 }
 
 /**
@@ -219,7 +219,7 @@ void Vehicle::CableLiftUpdateTravelling()
 
     velocity = 0;
     acceleration = 0;
-    SetState(Vehicle::Status::Arriving, 0);
+    SetState(Vehicle::Status::arriving, 0);
 }
 
 /**
@@ -230,7 +230,7 @@ void Vehicle::CableLiftUpdateArriving()
 {
     sub_state++;
     if (sub_state >= 64)
-        SetState(Vehicle::Status::MovingToEndOfStation, sub_state);
+        SetState(Vehicle::Status::movingToEndOfStation, sub_state);
 }
 
 bool Vehicle::CableLiftUpdateTrackMotionForwards()

@@ -1944,7 +1944,7 @@ static bool RideMusicBreakdownEffect(Ride& ride)
 void CircusMusicUpdate(Ride& ride)
 {
     Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[0]);
-    if (vehicle == nullptr || vehicle->status != Vehicle::Status::DoingCircusShow)
+    if (vehicle == nullptr || vehicle->status != Vehicle::Status::doingCircusShow)
     {
         ride.musicPosition = 0;
         ride.musicTuneId = kTuneIDNull;
@@ -2029,7 +2029,7 @@ static void RideMeasurementUpdate(Ride& ride, RideMeasurement& measurement)
 
     if (measurement.flags & RIDE_MEASUREMENT_FLAG_UNLOADING)
     {
-        if (vehicle->status != Vehicle::Status::Departing && vehicle->status != Vehicle::Status::TravellingCableLift)
+        if (vehicle->status != Vehicle::Status::departing && vehicle->status != Vehicle::Status::travellingCableLift)
             return;
 
         measurement.flags &= ~RIDE_MEASUREMENT_FLAG_UNLOADING;
@@ -2037,7 +2037,7 @@ static void RideMeasurementUpdate(Ride& ride, RideMeasurement& measurement)
             measurement.current_item = 0;
     }
 
-    if (vehicle->status == Vehicle::Status::UnloadingPassengers)
+    if (vehicle->status == Vehicle::Status::unloadingPassengers)
     {
         measurement.flags |= RIDE_MEASUREMENT_FLAG_UNLOADING;
         return;
@@ -2123,8 +2123,8 @@ void RideMeasurementsUpdate()
                     auto vehicle = gameState.entities.GetEntity<Vehicle>(vehicleSpriteIdx);
                     if (vehicle != nullptr)
                     {
-                        if (vehicle->status == Vehicle::Status::Departing
-                            || vehicle->status == Vehicle::Status::TravellingCableLift)
+                        if (vehicle->status == Vehicle::Status::departing
+                            || vehicle->status == Vehicle::Status::travellingCableLift)
                         {
                             measurement->vehicle_index = j;
                             measurement->current_station = vehicle->current_station;
@@ -3333,7 +3333,7 @@ static Vehicle* VehicleCreateCar(
         vehicle->SetTrackDirection(0);
         vehicle->SetTrackType(trackElement->GetTrackType());
         vehicle->track_progress = 0;
-        vehicle->SetState(Vehicle::Status::MovingToEndOfStation);
+        vehicle->SetState(Vehicle::Status::movingToEndOfStation);
         vehicle->Flags = 0;
 
         CoordsXY chosenLoc;
@@ -3441,7 +3441,7 @@ static Vehicle* VehicleCreateCar(
                 vehicle->SetFlag(VehicleFlags::CarIsInverted);
             }
         }
-        vehicle->SetState(Vehicle::Status::MovingToEndOfStation);
+        vehicle->SetState(Vehicle::Status::movingToEndOfStation);
 
         if (ride.hasLifecycleFlag(RIDE_LIFECYCLE_REVERSED_TRAINS))
         {
@@ -3790,10 +3790,10 @@ void Ride::moveTrainsToBlockBrakes(const CoordsXYZ& firstBlockPosition, TrackEle
         for (Vehicle* car = train; car != nullptr; car = getGameState().entities.GetEntity<Vehicle>(car->next_vehicle_on_train))
         {
             car->ClearFlag(VehicleFlags::CollisionDisabled);
-            car->SetState(Vehicle::Status::Travelling, car->sub_state);
+            car->SetState(Vehicle::Status::travelling, car->sub_state);
             if ((car->GetTrackType()) == TrackElemType::EndStation)
             {
-                car->SetState(Vehicle::Status::MovingToEndOfStation, car->sub_state);
+                car->SetState(Vehicle::Status::movingToEndOfStation, car->sub_state);
             }
         }
     }

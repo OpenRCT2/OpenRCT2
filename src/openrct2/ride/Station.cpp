@@ -135,7 +135,7 @@ static void RideUpdateStationDodgems(Ride& ride, StationIndex stationIndex)
             if (vehicle == nullptr)
                 continue;
 
-            if (vehicle->status != Vehicle::Status::WaitingToDepart)
+            if (vehicle->status != Vehicle::Status::waitingToDepart)
             {
                 station.Depart &= ~kStationDepartFlag;
                 return;
@@ -212,7 +212,7 @@ static void RideUpdateStationRace(Ride& ride, StationIndex stationIndex)
             if (vehicle == nullptr)
                 continue;
 
-            if (vehicle->status != Vehicle::Status::WaitingToDepart && vehicle->NumLaps >= numLaps)
+            if (vehicle->status != Vehicle::Status::waitingToDepart && vehicle->NumLaps >= numLaps)
             {
                 // Found a winner
                 if (vehicle->num_peeps != 0)
@@ -248,7 +248,7 @@ static void RideUpdateStationRace(Ride& ride, StationIndex stationIndex)
             if (vehicle == nullptr)
                 continue;
 
-            if (vehicle->status != Vehicle::Status::WaitingToDepart && vehicle->status != Vehicle::Status::Departing)
+            if (vehicle->status != Vehicle::Status::waitingToDepart && vehicle->status != Vehicle::Status::departing)
             {
                 if (station.Depart & kStationDepartFlag)
                 {

@@ -1965,7 +1965,7 @@ namespace OpenRCT2::RCT2
         dst->track_progress = src->TrackProgress;
         dst->TrackLocation = { src->TrackX, src->TrackY, src->TrackZ };
         if (src->BoatLocation.IsNull() || static_cast<RideMode>(ride.mode) != RideMode::boatHire
-            || src->Status != static_cast<uint8_t>(::Vehicle::Status::TravellingBoat))
+            || src->Status != static_cast<uint8_t>(::Vehicle::Status::travellingBoat))
         {
             dst->BoatLocation.SetNull();
             dst->SetTrackDirection(src->GetTrackDirection());
@@ -2010,8 +2010,8 @@ namespace OpenRCT2::RCT2
         dst->current_time = src->CurrentTime;
         dst->crash_z = src->CrashZ;
 
-        ::Vehicle::Status statusSrc = ::Vehicle::Status::MovingToEndOfStation;
-        if (src->Status <= static_cast<uint8_t>(::Vehicle::Status::StoppedByBlockBrakes))
+        ::Vehicle::Status statusSrc = ::Vehicle::Status::movingToEndOfStation;
+        if (src->Status <= static_cast<uint8_t>(::Vehicle::Status::stoppedByBlockBrakes))
         {
             statusSrc = static_cast<::Vehicle::Status>(src->Status);
         }
