@@ -39,13 +39,13 @@ struct VehicleInfo
     int16_t x;          // 0x00
     int16_t y;          // 0x02
     int16_t z;          // 0x04
-    uint8_t direction;  // 0x06
+    uint8_t yaw;        // 0x06
     VehiclePitch pitch; // 0x07
     VehicleRoll roll;   // 0x08
 
-    bool IsInvalid() const
+    bool isInvalid() const
     {
-        return x == 0 && y == 0 && z == 0 && direction == 0 && pitch == VehiclePitch::flat && roll == VehicleRoll::unbanked;
+        return x == 0 && y == 0 && z == 0 && yaw == 0 && pitch == VehiclePitch::flat && roll == VehicleRoll::unbanked;
     }
 };
 

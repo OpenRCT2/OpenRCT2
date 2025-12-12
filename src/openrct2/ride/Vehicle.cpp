@@ -281,12 +281,12 @@ void Vehicle::UpdateTrackChange()
         return;
 
     const auto moveInfo = GetMoveInfo();
-    if (moveInfo == nullptr || moveInfo->IsInvalid())
+    if (moveInfo == nullptr || moveInfo->isInvalid())
         return;
 
     _vehicleCurPosition = TrackLocation
         + CoordsXYZ{ moveInfo->x, moveInfo->y, moveInfo->z + GetRideTypeDescriptor((*curRide).type).Heights.VehicleZOffset };
-    Orientation = moveInfo->direction;
+    Orientation = moveInfo->yaw;
     roll = moveInfo->roll;
     pitch = moveInfo->pitch;
     MoveTo(_vehicleCurPosition);
@@ -6985,7 +6985,7 @@ bool Vehicle::UpdateTrackMotionForwards(const CarEntry* carEntry, const Ride& cu
             }
 
             _vehicleCurPosition = nextVehiclePosition;
-            Orientation = moveInfo->direction;
+            Orientation = moveInfo->yaw;
             roll = moveInfo->roll;
             pitch = moveInfo->pitch;
 
@@ -7283,7 +7283,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
             remaining_distance += Geometry::getTranslationDistance(nextVehiclePosition - _vehicleCurPosition, false);
 
             _vehicleCurPosition = nextVehiclePosition;
-            Orientation = moveInfo->direction;
+            Orientation = moveInfo->yaw;
             roll = moveInfo->roll;
             pitch = moveInfo->pitch;
 
@@ -7713,7 +7713,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
         }
 
         _vehicleCurPosition = trackPos;
-        Orientation = moveInfo->direction;
+        Orientation = moveInfo->yaw;
         roll = moveInfo->roll;
         pitch = moveInfo->pitch;
 
@@ -7803,7 +7803,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
         }
 
         _vehicleCurPosition = trackPos;
-        Orientation = moveInfo->direction;
+        Orientation = moveInfo->yaw;
         roll = moveInfo->roll;
         pitch = moveInfo->pitch;
 

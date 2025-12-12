@@ -281,7 +281,7 @@ bool Vehicle::CableLiftUpdateTrackMotionForwards()
         remaining_distance -= Geometry::getTranslationDistance(nextVehiclePosition - _vehicleCurPosition, false);
         _vehicleCurPosition = nextVehiclePosition;
 
-        Orientation = moveInfo->direction;
+        Orientation = moveInfo->yaw;
         roll = moveInfo->roll;
         pitch = moveInfo->pitch;
 
@@ -341,7 +341,7 @@ bool Vehicle::CableLiftUpdateTrackMotionBackwards()
         remaining_distance += Geometry::getTranslationDistance(nextVehiclePosition - _vehicleCurPosition, false);
 
         _vehicleCurPosition = nextVehiclePosition;
-        Orientation = moveInfo->direction;
+        Orientation = moveInfo->yaw;
         roll = moveInfo->roll;
         pitch = moveInfo->pitch;
 
