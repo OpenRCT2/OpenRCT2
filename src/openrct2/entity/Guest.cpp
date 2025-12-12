@@ -4811,7 +4811,7 @@ void Guest::UpdateRideOnSpiralSlide()
 
                 return;
             case PeepSpiralSlideSubState::prepareToSlide:
-                if (ride->slideInUse)
+                if (ride->slideInUse || ride->lifecycleFlags & RIDE_LIFECYCLE_BROKEN_DOWN)
                     return;
 
                 ride->slideInUse = 1;
