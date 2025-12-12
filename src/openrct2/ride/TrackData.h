@@ -105,7 +105,7 @@ namespace OpenRCT2::TrackMetaData
         bool invertSegmentBlocking = false;
         std::array<uint16_t, kBlockedSegmentsTypeCount> blockedSegments{ kSegmentsNone, kSegmentsNone, kSegmentsNone };
 
-        const uint8_t getEntranceConnectionSides() const
+        constexpr uint8_t getEntranceConnectionSides() const
         {
             return flags.holder & 0xF;
         }
