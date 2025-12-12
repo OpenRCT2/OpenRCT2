@@ -145,13 +145,13 @@ namespace OpenRCT2
     template<size_t TBitSize>
     class BitSet
     {
-        static constexpr size_t ByteAlignedBitSize = Detail::BitSet::ByteAlignBits<TBitSize>();
+        static constexpr size_t kByteAlignedBitSize = Detail::BitSet::ByteAlignBits<TBitSize>();
 
-        using StorageBlockType = typename Detail::BitSet::storage_block_type_aligned<ByteAlignedBitSize>::value_type;
+        using StorageBlockType = typename Detail::BitSet::storage_block_type_aligned<kByteAlignedBitSize>::value_type;
 
         static constexpr size_t kBlockByteSize = sizeof(StorageBlockType);
         static constexpr size_t kBlockBitSize = kBlockByteSize * Detail::BitSet::kBitsPerByte;
-        static constexpr size_t kBlockCount = Detail::BitSet::ComputekBlockCount<ByteAlignedBitSize, kBlockByteSize>();
+        static constexpr size_t kBlockCount = Detail::BitSet::ComputekBlockCount<kByteAlignedBitSize, kBlockByteSize>();
         static constexpr size_t kCapacityBits = kBlockCount * kBlockBitSize;
 
         static constexpr StorageBlockType kBlockValueZero = StorageBlockType{ 0u };
