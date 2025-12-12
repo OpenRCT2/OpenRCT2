@@ -16,13 +16,10 @@
 #include "../world/Location.hpp"
 #include "Angles.h"
 #include "CarEntry.h"
-#include "Station.h"
 #include "VehicleColour.h"
 #include "VehicleSubpositionData.h"
 
-#include <array>
 #include <cstddef>
-#include <vector>
 
 struct Ride;
 struct RideObjectEntry;
