@@ -3841,3 +3841,4 @@ STR_7008    :Unknown ride type ({INT32})
 STR_7009    :Receiving scripts…
 STR_7010    :Could not start replay, file ‘{STRING}’ doesn’t exist or isn’t valid
 STR_7011    :Could not start replay
+STR_7012    :Polish Złoty (PLN)
