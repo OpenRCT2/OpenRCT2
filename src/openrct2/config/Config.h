@@ -19,6 +19,8 @@
     #undef interface
 #endif
 
+enum class RideInspection : uint8_t;
+
 namespace OpenRCT2::Config
 {
     struct General
@@ -98,7 +100,7 @@ namespace OpenRCT2::Config
         bool autoStaffPlacement;
         bool handymenMowByDefault;
         bool autoOpenShops;
-        int32_t defaultInspectionInterval;
+        RideInspection defaultInspectionInterval;
         int32_t windowLimit;
         bool scenarioUnlockingEnabled;
         bool scenarioHideMegaPark;

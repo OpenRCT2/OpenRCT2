@@ -1345,7 +1345,7 @@ static void RideInspectionUpdate(Ride& ride)
     ride.lastInspection = AddClamp<decltype(ride.lastInspection)>(ride.lastInspection, 1);
     ride.windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAINTENANCE;
 
-    int32_t inspectionIntervalMinutes = RideInspectionInterval[ride.inspectionInterval];
+    int32_t inspectionIntervalMinutes = RideInspectionInterval[EnumValue(ride.inspectionInterval)];
     // An inspection interval of 0 minutes means the ride is set to never be inspected.
     if (inspectionIntervalMinutes == 0)
     {
@@ -5302,13 +5302,10 @@ void Ride::setReversedTrains(bool reverseTrains)
 
 void Ride::setToDefaultInspectionInterval()
 {
-    uint8_t defaultInspectionInterval = Config::Get().general.defaultInspectionInterval;
+    auto defaultInspectionInterval = Config::Get().general.defaultInspectionInterval;
     if (inspectionInterval != defaultInspectionInterval)
     {
-        if (defaultInspectionInterval <= RIDE_INSPECTION_NEVER)
-        {
-            SetOperatingSetting(id, GameActions::RideSetSetting::InspectionInterval, defaultInspectionInterval);
-        }
+        SetOperatingSetting(id, GameActions::RideSetSetting::InspectionInterval, EnumValue(defaultInspectionInterval));
     }
 }
 

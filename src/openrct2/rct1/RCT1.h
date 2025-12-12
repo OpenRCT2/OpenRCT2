@@ -17,6 +17,7 @@
 #include "../world/ParkData.h"
 #include "Limits.h"
 
+enum class RideInspection : uint8_t;
 enum class VehicleColourSettings : uint8_t;
 
 namespace OpenRCT2::Scenario
@@ -381,7 +382,7 @@ namespace OpenRCT2::RCT1
         };
         uint8_t unreliabilityFactor;                    // 0x148
         uint8_t downtime;                               // 0x149
-        uint8_t inspectionInterval;                     // 0x14A
+        RideInspection inspectionInterval;              // 0x14A
         uint8_t lastInspection;                         // 0x14B
         uint8_t unk14C[20];                             // 0x14C
         money32 incomePerHour;                          // 0x160

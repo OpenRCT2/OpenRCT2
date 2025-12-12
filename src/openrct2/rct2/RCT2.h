@@ -23,6 +23,7 @@
 struct RideObjectEntry;
 enum class EditorStep : uint8_t;
 enum class VehicleColourSettings : uint8_t;
+enum class RideInspection : uint8_t;
 
 namespace OpenRCT2::Scenario
 {
@@ -260,7 +261,7 @@ namespace OpenRCT2::RCT2
         uint8_t unreliabilityFactor; // 0x198
         // Range from [0, 100]
         uint8_t downtime;                                      // 0x199
-        uint8_t inspectionInterval;                            // 0x19A
+        RideInspection inspectionInterval;                     // 0x19A
         uint8_t lastInspection;                                // 0x19B
         uint8_t downtimeHistory[Limits::kDowntimeHistorySize]; // 0x19C
         uint32_t numPrimaryItemsSold;                          // 0x1A4

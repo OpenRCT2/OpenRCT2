@@ -274,7 +274,7 @@ namespace OpenRCT2::GameActions
         ride->upkeepCost = kMoney64Undefined;
         ride->reliability = kRideInitialReliability;
         ride->unreliabilityFactor = 1;
-        ride->inspectionInterval = RIDE_INSPECTION_EVERY_30_MINUTES;
+        ride->inspectionInterval = RideInspection::every30Minutes;
         ride->lastCrashType = RIDE_CRASH_TYPE_NONE;
         ride->incomePerHour = kMoney64Undefined;
         ride->profit = kMoney64Undefined;

@@ -574,7 +574,7 @@ namespace OpenRCT2::GameActions
         for (auto& ride : RideManager(gameState))
         {
             // Set inspection interval to 10 minutes
-            ride.inspectionInterval = RIDE_INSPECTION_EVERY_10_MINUTES;
+            ride.inspectionInterval = RideInspection::every10Minutes;
         }
         auto* windowMgr = Ui::GetWindowManager();
         windowMgr->InvalidateByClass(WindowClass::ride);
