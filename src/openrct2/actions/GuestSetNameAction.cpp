@@ -60,14 +60,14 @@ namespace OpenRCT2::GameActions
     {
         if (_spriteIndex.ToUnderlying() >= kMaxEntities || _spriteIndex.IsNull())
         {
-            return Result(Status::InvalidParameters, STR_CANT_NAME_GUEST, STR_ERR_VALUE_OUT_OF_RANGE);
+            return Result(Status::invalidParameters, STR_CANT_NAME_GUEST, STR_ERR_VALUE_OUT_OF_RANGE);
         }
 
         auto guest = getGameState().entities.TryGetEntity<Guest>(_spriteIndex);
         if (guest == nullptr)
         {
             LOG_ERROR("Guest entity not found for spriteIndex %u", _spriteIndex);
-            return Result(Status::InvalidParameters, STR_CANT_NAME_GUEST, kStringIdNone);
+            return Result(Status::invalidParameters, STR_CANT_NAME_GUEST, kStringIdNone);
         }
 
         return Result();
@@ -79,7 +79,7 @@ namespace OpenRCT2::GameActions
         if (guest == nullptr)
         {
             LOG_ERROR("Guest entity not found for spriteIndex %u", _spriteIndex);
-            return Result(Status::InvalidParameters, STR_CANT_NAME_GUEST, kStringIdNone);
+            return Result(Status::invalidParameters, STR_CANT_NAME_GUEST, kStringIdNone);
         }
 
         auto curName = guest->GetName();
@@ -90,7 +90,7 @@ namespace OpenRCT2::GameActions
 
         if (!guest->SetName(_name))
         {
-            return Result(Status::Unknown, STR_CANT_NAME_GUEST, kStringIdNone);
+            return Result(Status::unknown, STR_CANT_NAME_GUEST, kStringIdNone);
         }
 
         // Easter egg functions are for guests only
@@ -102,7 +102,7 @@ namespace OpenRCT2::GameActions
         ContextBroadcastIntent(&intent);
 
         auto res = Result();
-        res.Position = guest->GetLocation();
+        res.position = guest->GetLocation();
 
         return res;
     }

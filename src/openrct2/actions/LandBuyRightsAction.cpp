@@ -85,8 +85,8 @@ namespace OpenRCT2::GameActions
                           (validRange.GetY1() + validRange.GetY2()) / 2 + 16, 0 };
         centre.z = TileElementHeight(centre);
 
-        res.Position = centre;
-        res.Expenditure = ExpenditureType::landPurchase;
+        res.position = centre;
+        res.expenditure = ExpenditureType::landPurchase;
 
         // Game command modified to accept selection size
         for (auto y = validRange.GetY1(); y <= validRange.GetY2(); y += kCoordsXYStep)
@@ -96,9 +96,9 @@ namespace OpenRCT2::GameActions
                 if (!LocationValid({ x, y }))
                     continue;
                 auto result = MapBuyLandRightsForTile({ x, y }, isExecuting);
-                if (result.Error == Status::Ok)
+                if (result.error == Status::ok)
                 {
-                    res.Cost += result.Cost;
+                    res.cost += result.cost;
                 }
             }
         }
@@ -114,14 +114,14 @@ namespace OpenRCT2::GameActions
         if (_setting >= LandBuyRightSetting::Count)
         {
             LOG_ERROR("Invalid land buying setting %u", _setting);
-            return Result(Status::InvalidParameters, kErrorTitles[0], STR_ERR_VALUE_OUT_OF_RANGE);
+            return Result(Status::invalidParameters, kErrorTitles[0], STR_ERR_VALUE_OUT_OF_RANGE);
         }
 
         SurfaceElement* surfaceElement = MapGetSurfaceElementAt(loc);
         if (surfaceElement == nullptr)
         {
             LOG_ERROR("No surface at x = %d, y = %d", loc.x, loc.y);
-            return Result(Status::InvalidParameters, kErrorTitles[EnumValue(_setting)], STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
+            return Result(Status::invalidParameters, kErrorTitles[EnumValue(_setting)], STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
         }
 
         auto res = Result();
@@ -135,14 +135,14 @@ namespace OpenRCT2::GameActions
 
                 if (gLegacyScene == LegacyScene::scenarioEditor || (surfaceElement->GetOwnership() & OWNERSHIP_AVAILABLE) == 0)
                 {
-                    return Result(Status::NotOwned, kErrorTitles[EnumValue(_setting)], STR_LAND_NOT_FOR_SALE);
+                    return Result(Status::notOwned, kErrorTitles[EnumValue(_setting)], STR_LAND_NOT_FOR_SALE);
                 }
                 if (isExecuting)
                 {
                     surfaceElement->SetOwnership(OWNERSHIP_OWNED);
                     Park::UpdateFencesAroundTile(loc);
                 }
-                res.Cost = getGameState().scenarioOptions.landPrice;
+                res.cost = getGameState().scenarioOptions.landPrice;
                 return res;
 
             case LandBuyRightSetting::BuyConstructionRights: // 2
@@ -154,7 +154,7 @@ namespace OpenRCT2::GameActions
                 if (gLegacyScene == LegacyScene::scenarioEditor
                     || (surfaceElement->GetOwnership() & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE) == 0)
                 {
-                    return Result(Status::NotOwned, kErrorTitles[EnumValue(_setting)], STR_CONSTRUCTION_RIGHTS_NOT_FOR_SALE);
+                    return Result(Status::notOwned, kErrorTitles[EnumValue(_setting)], STR_CONSTRUCTION_RIGHTS_NOT_FOR_SALE);
                 }
 
                 if (isExecuting)
@@ -163,12 +163,12 @@ namespace OpenRCT2::GameActions
                     uint16_t baseZ = surfaceElement->GetBaseZ();
                     MapInvalidateTile({ loc, baseZ, baseZ + 16 });
                 }
-                res.Cost = getGameState().scenarioOptions.constructionRightsPrice;
+                res.cost = getGameState().scenarioOptions.constructionRightsPrice;
                 return res;
 
             default:
                 LOG_ERROR("Invalid land buying setting %u", _setting);
-                return Result(Status::InvalidParameters, kErrorTitles[0], STR_ERR_VALUE_OUT_OF_RANGE);
+                return Result(Status::invalidParameters, kErrorTitles[0], STR_ERR_VALUE_OUT_OF_RANGE);
         }
     }
 } // namespace OpenRCT2::GameActions

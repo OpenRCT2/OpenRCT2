@@ -209,7 +209,7 @@ namespace OpenRCT2::Ui::Windows
             gameAction.SetFlags({ CommandFlag::ghost });
 
             auto result = GameActions::Execute(&gameAction, getGameState());
-            if (result.Error == GameActions::Status::Ok)
+            if (result.error == GameActions::Status::ok)
             {
                 gParkEntranceGhostPosition = parkEntrancePosition;
                 gParkEntranceGhostExists = true;
@@ -232,9 +232,9 @@ namespace OpenRCT2::Ui::Windows
                 gameAction.SetCallback(
                     [&](const GameActions::GameAction*, const GameActions::Result* result) { _placingEntrance = false; });
                 auto result = GameActions::Execute(&gameAction, getGameState());
-                if (result.Error == GameActions::Status::Ok)
+                if (result.error == GameActions::Status::ok)
                 {
-                    Audio::Play3D(Audio::SoundId::placeItem, result.Position);
+                    Audio::Play3D(Audio::SoundId::placeItem, result.position);
                 }
             }
         }

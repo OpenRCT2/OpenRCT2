@@ -3579,23 +3579,23 @@ namespace OpenRCT2::Network
         NetworkGroup* fromgroup = network.GetGroupByID(actionPlayerId);
         if (player == nullptr)
         {
-            return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_DO_THIS, kStringIdNone);
+            return GameActions::Result(GameActions::Status::invalidParameters, STR_CANT_DO_THIS, kStringIdNone);
         }
 
         if (network.GetGroupByID(groupId) == nullptr)
         {
-            return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_DO_THIS, kStringIdNone);
+            return GameActions::Result(GameActions::Status::invalidParameters, STR_CANT_DO_THIS, kStringIdNone);
         }
 
         if (player->Flags & PlayerFlags::kIsServer)
         {
             return GameActions::Result(
-                GameActions::Status::InvalidParameters, STR_CANT_CHANGE_GROUP_THAT_THE_HOST_BELONGS_TO, kStringIdNone);
+                GameActions::Status::invalidParameters, STR_CANT_CHANGE_GROUP_THAT_THE_HOST_BELONGS_TO, kStringIdNone);
         }
 
         if (groupId == 0 && fromgroup != nullptr && fromgroup->Id != 0)
         {
-            return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_SET_TO_THIS_GROUP, kStringIdNone);
+            return GameActions::Result(GameActions::Status::invalidParameters, STR_CANT_SET_TO_THIS_GROUP, kStringIdNone);
         }
 
         if (isExecuting)
@@ -3644,7 +3644,7 @@ namespace OpenRCT2::Network
                     NetworkGroup* newgroup = network.AddGroup();
                     if (newgroup == nullptr)
                     {
-                        return GameActions::Result(GameActions::Status::Unknown, STR_CANT_DO_THIS, kStringIdNone);
+                        return GameActions::Result(GameActions::Status::unknown, STR_CANT_DO_THIS, kStringIdNone);
                     }
                 }
             }
@@ -3654,14 +3654,14 @@ namespace OpenRCT2::Network
                 if (groupId == 0)
                 {
                     return GameActions::Result(
-                        GameActions::Status::Disallowed, STR_THIS_GROUP_CANNOT_BE_MODIFIED, kStringIdNone);
+                        GameActions::Status::disallowed, STR_THIS_GROUP_CANNOT_BE_MODIFIED, kStringIdNone);
                 }
                 for (const auto& it : network.player_list)
                 {
                     if ((it.get())->Group == groupId)
                     {
                         return GameActions::Result(
-                            GameActions::Status::Disallowed, STR_CANT_REMOVE_GROUP_THAT_PLAYERS_BELONG_TO, kStringIdNone);
+                            GameActions::Status::disallowed, STR_CANT_REMOVE_GROUP_THAT_PLAYERS_BELONG_TO, kStringIdNone);
                     }
                 }
                 if (isExecuting)
@@ -3675,7 +3675,7 @@ namespace OpenRCT2::Network
                 if (groupId == 0)
                 { // can't change admin group permissions
                     return GameActions::Result(
-                        GameActions::Status::Disallowed, STR_THIS_GROUP_CANNOT_BE_MODIFIED, kStringIdNone);
+                        GameActions::Status::disallowed, STR_THIS_GROUP_CANNOT_BE_MODIFIED, kStringIdNone);
                 }
                 NetworkGroup* mygroup = nullptr;
                 Player* player = network.GetPlayerByID(actionPlayerId);
@@ -3686,7 +3686,7 @@ namespace OpenRCT2::Network
                     if (mygroup == nullptr || !mygroup->CanPerformAction(networkPermission))
                     {
                         return GameActions::Result(
-                            GameActions::Status::Disallowed, STR_CANT_MODIFY_PERMISSION_THAT_YOU_DO_NOT_HAVE_YOURSELF,
+                            GameActions::Status::disallowed, STR_CANT_MODIFY_PERMISSION_THAT_YOU_DO_NOT_HAVE_YOURSELF,
                             kStringIdNone);
                     }
                 }
@@ -3722,7 +3722,7 @@ namespace OpenRCT2::Network
                 NetworkGroup* group = network.GetGroupByID(groupId);
                 if (group == nullptr)
                 {
-                    return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_RENAME_GROUP, kStringIdNone);
+                    return GameActions::Result(GameActions::Status::invalidParameters, STR_CANT_RENAME_GROUP, kStringIdNone);
                 }
 
                 const char* oldName = group->GetName().c_str();
@@ -3735,7 +3735,7 @@ namespace OpenRCT2::Network
                 if (name.empty())
                 {
                     return GameActions::Result(
-                        GameActions::Status::InvalidParameters, STR_CANT_RENAME_GROUP, STR_INVALID_GROUP_NAME);
+                        GameActions::Status::invalidParameters, STR_CANT_RENAME_GROUP, STR_INVALID_GROUP_NAME);
                 }
 
                 if (isExecuting)
@@ -3751,7 +3751,7 @@ namespace OpenRCT2::Network
             {
                 if (groupId == 0)
                 {
-                    return GameActions::Result(GameActions::Status::Disallowed, STR_CANT_SET_TO_THIS_GROUP, kStringIdNone);
+                    return GameActions::Result(GameActions::Status::disallowed, STR_CANT_SET_TO_THIS_GROUP, kStringIdNone);
                 }
                 if (isExecuting)
                 {
@@ -3762,7 +3762,7 @@ namespace OpenRCT2::Network
             default:
                 LOG_ERROR("Invalid Modify Group Type: %u", static_cast<uint8_t>(type));
                 return GameActions::Result(
-                    GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
+                    GameActions::Status::invalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
         }
 
         network.SaveGroups();
@@ -3779,12 +3779,12 @@ namespace OpenRCT2::Network
             // Player might be already removed by the PLAYERLIST command, need to refactor non-game commands executing too
             // early.
             return GameActions::Result(
-                GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_PLAYER_NOT_FOUND);
+                GameActions::Status::invalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_PLAYER_NOT_FOUND);
         }
 
         if (player->Flags & PlayerFlags::kIsServer)
         {
-            return GameActions::Result(GameActions::Status::Disallowed, STR_CANT_KICK_THE_HOST, kStringIdNone);
+            return GameActions::Result(GameActions::Status::disallowed, STR_CANT_KICK_THE_HOST, kStringIdNone);
         }
 
         if (isExecuting)

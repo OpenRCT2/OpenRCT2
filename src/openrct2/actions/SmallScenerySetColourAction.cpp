@@ -72,22 +72,22 @@ namespace OpenRCT2::GameActions
     Result SmallScenerySetColourAction::QueryExecute(bool isExecuting) const
     {
         auto res = Result();
-        res.Expenditure = ExpenditureType::landscaping;
-        res.Position.x = _loc.x + 16;
-        res.Position.y = _loc.y + 16;
-        res.Position.z = _loc.z;
-        res.ErrorTitle = STR_CANT_REPAINT_THIS;
+        res.expenditure = ExpenditureType::landscaping;
+        res.position.x = _loc.x + 16;
+        res.position.y = _loc.y + 16;
+        res.position.z = _loc.z;
+        res.errorTitle = STR_CANT_REPAINT_THIS;
 
         if (!LocationValid(_loc))
         {
-            return Result(Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_OFF_EDGE_OF_MAP);
+            return Result(Status::invalidParameters, STR_CANT_REPAINT_THIS, STR_OFF_EDGE_OF_MAP);
         }
 
         if (gLegacyScene != LegacyScene::scenarioEditor && !getGameState().cheats.sandboxMode)
         {
             if (!MapIsLocationOwned(_loc))
             {
-                return Result(Status::NotOwned, STR_CANT_REPAINT_THIS, STR_LAND_NOT_OWNED_BY_PARK);
+                return Result(Status::notOwned, STR_CANT_REPAINT_THIS, STR_LAND_NOT_OWNED_BY_PARK);
             }
         }
 
@@ -96,7 +96,7 @@ namespace OpenRCT2::GameActions
         if (sceneryElement == nullptr)
         {
             LOG_ERROR("Small scenery not found at: x = %d, y = %d, z = %d", _loc.x, _loc.y, _loc.z);
-            return Result(Status::InvalidParameters, STR_CANT_REPAINT_THIS, kStringIdNone);
+            return Result(Status::invalidParameters, STR_CANT_REPAINT_THIS, kStringIdNone);
         }
 
         if ((GetFlags().has(CommandFlag::ghost)) && !(sceneryElement->IsGhost()))

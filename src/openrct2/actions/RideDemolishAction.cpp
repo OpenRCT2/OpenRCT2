@@ -61,7 +61,7 @@ namespace OpenRCT2::GameActions
         if (ride == nullptr)
         {
             LOG_ERROR("Ride not found for rideIndex %u", _rideIndex.ToUnderlying());
-            return Result(Status::InvalidParameters, STR_CANT_DEMOLISH_RIDE, STR_ERR_RIDE_NOT_FOUND);
+            return Result(Status::invalidParameters, STR_CANT_DEMOLISH_RIDE, STR_ERR_RIDE_NOT_FOUND);
         }
 
         if ((ride->lifecycleFlags & (RIDE_LIFECYCLE_INDESTRUCTIBLE | RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK)
@@ -69,7 +69,7 @@ namespace OpenRCT2::GameActions
             && !getGameState().cheats.makeAllDestructible)
         {
             return Result(
-                Status::NoClearance, STR_CANT_DEMOLISH_RIDE,
+                Status::noClearance, STR_CANT_DEMOLISH_RIDE,
                 STR_LOCAL_AUTHORITY_FORBIDS_DEMOLITION_OR_MODIFICATIONS_TO_THIS_RIDE);
         }
 
@@ -79,22 +79,22 @@ namespace OpenRCT2::GameActions
         {
             if (ride->status != RideStatus::closed && ride->status != RideStatus::simulating)
             {
-                return Result(Status::Disallowed, STR_CANT_REFURBISH_RIDE, STR_MUST_BE_CLOSED_FIRST);
+                return Result(Status::disallowed, STR_CANT_REFURBISH_RIDE, STR_MUST_BE_CLOSED_FIRST);
             }
 
             if (ride->numRiders > 0)
             {
-                return Result(Status::Disallowed, STR_CANT_REFURBISH_RIDE, STR_RIDE_NOT_YET_EMPTY);
+                return Result(Status::disallowed, STR_CANT_REFURBISH_RIDE, STR_RIDE_NOT_YET_EMPTY);
             }
 
             if (!(ride->lifecycleFlags & RIDE_LIFECYCLE_EVER_BEEN_OPENED)
                 || ride->getRideTypeDescriptor().AvailableBreakdowns == 0)
             {
-                return Result(Status::Disallowed, STR_CANT_REFURBISH_RIDE, STR_CANT_REFURBISH_NOT_NEEDED);
+                return Result(Status::disallowed, STR_CANT_REFURBISH_RIDE, STR_CANT_REFURBISH_NOT_NEEDED);
             }
 
-            result.ErrorTitle = STR_CANT_REFURBISH_RIDE;
-            result.Cost = GetRefurbishPrice(*ride);
+            result.errorTitle = STR_CANT_REFURBISH_RIDE;
+            result.cost = GetRefurbishPrice(*ride);
         }
 
         return result;
@@ -106,7 +106,7 @@ namespace OpenRCT2::GameActions
         if (ride == nullptr)
         {
             LOG_ERROR("Ride not found for rideIndex %u", _rideIndex.ToUnderlying());
-            return Result(Status::InvalidParameters, STR_CANT_DEMOLISH_RIDE, STR_ERR_RIDE_NOT_FOUND);
+            return Result(Status::invalidParameters, STR_CANT_DEMOLISH_RIDE, STR_ERR_RIDE_NOT_FOUND);
         }
 
         switch (_modifyType)
@@ -117,7 +117,7 @@ namespace OpenRCT2::GameActions
                 return RefurbishRide(gameState, *ride);
             default:
                 LOG_ERROR("Unknown ride demolish type %d", _modifyType);
-                return Result(Status::InvalidParameters, STR_CANT_DO_THIS, STR_ERR_VALUE_OUT_OF_RANGE);
+                return Result(Status::invalidParameters, STR_CANT_DO_THIS, STR_ERR_VALUE_OUT_OF_RANGE);
         }
     }
 
@@ -146,13 +146,13 @@ namespace OpenRCT2::GameActions
         MarketingCancelCampaignsForRide(_rideIndex);
 
         auto res = Result();
-        res.Expenditure = ExpenditureType::rideConstruction;
-        res.Cost = refundPrice;
+        res.expenditure = ExpenditureType::rideConstruction;
+        res.cost = refundPrice;
 
         if (!ride.overallView.IsNull())
         {
             auto xy = ride.overallView.ToTileCentre();
-            res.Position = { xy, TileElementHeight(xy) };
+            res.position = { xy, TileElementHeight(xy) };
         }
 
         ride.remove();
@@ -183,9 +183,9 @@ namespace OpenRCT2::GameActions
         setMazeTrack.SetFlags(GetFlags());
 
         auto execRes = ExecuteNested(&setMazeTrack, gameState);
-        if (execRes.Error == Status::Ok)
+        if (execRes.error == Status::ok)
         {
-            return execRes.Cost;
+            return execRes.cost;
         }
 
         return kMoney64Undefined;
@@ -229,14 +229,14 @@ namespace OpenRCT2::GameActions
                         auto trackRemoveAction = TrackRemoveAction(type, trackElement->GetSequenceIndex(), location);
                         trackRemoveAction.SetFlags({ CommandFlag::noSpend });
 
-                        auto removRes = ExecuteNested(&trackRemoveAction, gameState);
-                        if (removRes.Error != Status::Ok)
+                        auto removeRes = ExecuteNested(&trackRemoveAction, gameState);
+                        if (removeRes.error != Status::ok)
                         {
                             TileElementRemove(tileElement);
                         }
                         else
                         {
-                            refundPrice += removRes.Cost;
+                            refundPrice += removeRes.cost;
                         }
                     }
                     else
@@ -271,8 +271,8 @@ namespace OpenRCT2::GameActions
     Result RideDemolishAction::RefurbishRide(GameState_t& gameState, Ride& ride) const
     {
         auto res = Result();
-        res.Expenditure = ExpenditureType::rideConstruction;
-        res.Cost = GetRefurbishPrice(ride);
+        res.expenditure = ExpenditureType::rideConstruction;
+        res.cost = GetRefurbishPrice(ride);
 
         ride.renew();
 
@@ -284,7 +284,7 @@ namespace OpenRCT2::GameActions
         if (!ride.overallView.IsNull())
         {
             auto location = ride.overallView.ToTileCentre();
-            res.Position = { location, TileElementHeight(location) };
+            res.position = { location, TileElementHeight(location) };
         }
 
         auto* windowMgr = Ui::GetWindowManager();

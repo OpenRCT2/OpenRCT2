@@ -55,21 +55,21 @@ namespace OpenRCT2::GameActions
     Result WallSetColourAction::Query(GameState_t& gameState) const
     {
         auto res = Result();
-        res.ErrorTitle = STR_CANT_REPAINT_THIS;
-        res.Position.x = _loc.x + 16;
-        res.Position.y = _loc.y + 16;
-        res.Position.z = _loc.z;
+        res.errorTitle = STR_CANT_REPAINT_THIS;
+        res.position.x = _loc.x + 16;
+        res.position.y = _loc.y + 16;
+        res.position.z = _loc.z;
 
-        res.Expenditure = ExpenditureType::landscaping;
+        res.expenditure = ExpenditureType::landscaping;
 
         if (!LocationValid(_loc))
         {
-            return Result(Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_OFF_EDGE_OF_MAP);
+            return Result(Status::invalidParameters, STR_CANT_REPAINT_THIS, STR_OFF_EDGE_OF_MAP);
         }
 
         if (gLegacyScene != LegacyScene::scenarioEditor && !MapIsLocationInPark(_loc) && !getGameState().cheats.sandboxMode)
         {
-            return Result(Status::NotOwned, STR_CANT_REPAINT_THIS, STR_LAND_NOT_OWNED_BY_PARK);
+            return Result(Status::notOwned, STR_CANT_REPAINT_THIS, STR_LAND_NOT_OWNED_BY_PARK);
         }
 
         auto wallElement = MapGetWallElementAt(_loc);
@@ -78,7 +78,7 @@ namespace OpenRCT2::GameActions
             LOG_ERROR(
                 "Could not find wall element at: x = %d, y = %d, z = %d, direction = %u", _loc.x, _loc.y, _loc.z,
                 _loc.direction);
-            return Result(Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_ERR_WALL_ELEMENT_NOT_FOUND);
+            return Result(Status::invalidParameters, STR_CANT_REPAINT_THIS, STR_ERR_WALL_ELEMENT_NOT_FOUND);
         }
 
         if ((GetFlags().has(CommandFlag::ghost)) && !(wallElement->IsGhost()))
@@ -92,25 +92,25 @@ namespace OpenRCT2::GameActions
             LOG_ERROR(
                 "Wall element does not have wall entry at x = %d, y = %d, z = %d, direction = %u", _loc.x, _loc.y, _loc.z,
                 _loc.direction);
-            return Result(Status::Unknown, STR_CANT_REPAINT_THIS, kStringIdNone);
+            return Result(Status::unknown, STR_CANT_REPAINT_THIS, kStringIdNone);
         }
 
         if (_primaryColour >= COLOUR_COUNT)
         {
             LOG_ERROR("Primary colour invalid: colour = %d", _primaryColour);
-            return Result(Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_ERR_INVALID_COLOUR);
+            return Result(Status::invalidParameters, STR_CANT_REPAINT_THIS, STR_ERR_INVALID_COLOUR);
         }
         else if (_secondaryColour >= COLOUR_COUNT)
         {
             LOG_ERROR("Secondary colour invalid: colour = %d", _secondaryColour);
-            return Result(Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_ERR_INVALID_COLOUR);
+            return Result(Status::invalidParameters, STR_CANT_REPAINT_THIS, STR_ERR_INVALID_COLOUR);
         }
         else if (wallEntry->flags & WALL_SCENERY_HAS_TERTIARY_COLOUR)
         {
             if (_tertiaryColour >= COLOUR_COUNT)
             {
                 LOG_ERROR("Tertiary colour invalid: colour = %d", _tertiaryColour);
-                return Result(Status::InvalidParameters, STR_CANT_REPAINT_THIS, kStringIdNone);
+                return Result(Status::invalidParameters, STR_CANT_REPAINT_THIS, kStringIdNone);
             }
         }
         return res;
@@ -119,11 +119,11 @@ namespace OpenRCT2::GameActions
     Result WallSetColourAction::Execute(GameState_t& gameState) const
     {
         auto res = Result();
-        res.ErrorTitle = STR_CANT_REPAINT_THIS;
-        res.Position.x = _loc.x + 16;
-        res.Position.y = _loc.y + 16;
-        res.Position.z = _loc.z;
-        res.Expenditure = ExpenditureType::landscaping;
+        res.errorTitle = STR_CANT_REPAINT_THIS;
+        res.position.x = _loc.x + 16;
+        res.position.y = _loc.y + 16;
+        res.position.z = _loc.z;
+        res.expenditure = ExpenditureType::landscaping;
 
         auto wallElement = MapGetWallElementAt(_loc);
         if (wallElement == nullptr)
@@ -131,7 +131,7 @@ namespace OpenRCT2::GameActions
             LOG_ERROR(
                 "Could not find wall element at: x = %d, y = %d, z = %d, direction = %u", _loc.x, _loc.y, _loc.z,
                 _loc.direction);
-            return Result(Status::InvalidParameters, STR_CANT_REPAINT_THIS, kStringIdNone);
+            return Result(Status::invalidParameters, STR_CANT_REPAINT_THIS, kStringIdNone);
         }
 
         if ((GetFlags().has(CommandFlag::ghost)) && !(wallElement->IsGhost()))
@@ -145,7 +145,7 @@ namespace OpenRCT2::GameActions
             LOG_ERROR(
                 "Wall element does not have wall entry at x = %d, y = %d, z = %d, direction = %u", _loc.x, _loc.y, _loc.z,
                 _loc.direction);
-            return Result(Status::Unknown, STR_CANT_REPAINT_THIS, kStringIdNone);
+            return Result(Status::unknown, STR_CANT_REPAINT_THIS, kStringIdNone);
         }
 
         wallElement->SetPrimaryColour(_primaryColour);

@@ -74,21 +74,21 @@ namespace OpenRCT2::GameActions
     Result WallPlaceAction::Query(GameState_t& gameState) const
     {
         auto res = Result();
-        res.ErrorTitle = STR_CANT_BUILD_THIS_HERE;
-        res.Position = _loc;
+        res.errorTitle = STR_CANT_BUILD_THIS_HERE;
+        res.position = _loc;
 
-        res.Expenditure = ExpenditureType::landscaping;
-        res.Position.x += 16;
-        res.Position.y += 16;
+        res.expenditure = ExpenditureType::landscaping;
+        res.position.x += 16;
+        res.position.y += 16;
 
         if (_loc.z == 0)
         {
-            res.Position.z = TileElementHeight(res.Position);
+            res.position.z = TileElementHeight(res.position);
         }
 
         if (!LocationValid(_loc))
         {
-            return Result(Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_OFF_EDGE_OF_MAP);
+            return Result(Status::invalidParameters, STR_CANT_BUILD_THIS_HERE, STR_OFF_EDGE_OF_MAP);
         }
 
         auto mapSizeMax = GetMapSizeMaxXY();
@@ -99,23 +99,23 @@ namespace OpenRCT2::GameActions
             {
                 if (!MapIsLocationInPark(_loc))
                 {
-                    return Result(Status::NotOwned, STR_CANT_BUILD_THIS_HERE, STR_LAND_NOT_OWNED_BY_PARK);
+                    return Result(Status::notOwned, STR_CANT_BUILD_THIS_HERE, STR_LAND_NOT_OWNED_BY_PARK);
                 }
             }
             else if (!MapIsLocationOwned(_loc))
             {
-                return Result(Status::NotOwned, STR_CANT_BUILD_THIS_HERE, STR_LAND_NOT_OWNED_BY_PARK);
+                return Result(Status::notOwned, STR_CANT_BUILD_THIS_HERE, STR_LAND_NOT_OWNED_BY_PARK);
             }
         }
         else if (!_trackDesignDrawingPreview && (_loc.x > mapSizeMax.x || _loc.y > mapSizeMax.y))
         {
             LOG_ERROR("Invalid x/y coordinates. x = %d y = %d", _loc.x, _loc.y);
-            return Result(Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_OFF_EDGE_OF_MAP);
+            return Result(Status::invalidParameters, STR_CANT_BUILD_THIS_HERE, STR_OFF_EDGE_OF_MAP);
         }
 
         if (_edge > 3)
         {
-            return Result(Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, kStringIdNone);
+            return Result(Status::invalidParameters, STR_CANT_BUILD_THIS_HERE, kStringIdNone);
         }
 
         uint8_t edgeSlope = 0;
@@ -126,7 +126,7 @@ namespace OpenRCT2::GameActions
             if (surfaceElement == nullptr)
             {
                 LOG_ERROR("Surface element not found at %d, %d.", _loc.x, _loc.y);
-                return Result(Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
+                return Result(Status::invalidParameters, STR_CANT_BUILD_THIS_HERE, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
             }
             targetHeight = surfaceElement->GetBaseZ();
 
@@ -143,7 +143,7 @@ namespace OpenRCT2::GameActions
         if (surfaceElement == nullptr)
         {
             LOG_ERROR("Surface element not found at %d, %d.", _loc.x, _loc.y);
-            return Result(Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
+            return Result(Status::invalidParameters, STR_CANT_BUILD_THIS_HERE, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
         }
 
         if (surfaceElement->GetWaterHeight() > 0)
@@ -152,13 +152,13 @@ namespace OpenRCT2::GameActions
 
             if (targetHeight < waterHeight && !gameState.cheats.disableClearanceChecks)
             {
-                return Result(Status::Disallowed, STR_CANT_BUILD_THIS_HERE, STR_CANT_BUILD_THIS_UNDERWATER);
+                return Result(Status::disallowed, STR_CANT_BUILD_THIS_HERE, STR_CANT_BUILD_THIS_UNDERWATER);
             }
         }
 
         if (targetHeight < surfaceElement->GetBaseZ() && !gameState.cheats.disableClearanceChecks)
         {
-            return Result(Status::Disallowed, STR_CANT_BUILD_THIS_HERE, STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND);
+            return Result(Status::disallowed, STR_CANT_BUILD_THIS_HERE, STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND);
         }
 
         if (!(edgeSlope & (EDGE_SLOPE_UPWARDS | EDGE_SLOPE_DOWNWARDS)))
@@ -170,7 +170,7 @@ namespace OpenRCT2::GameActions
             {
                 if (targetHeight / 8 < newBaseHeight && !gameState.cheats.disableClearanceChecks)
                 {
-                    return Result(Status::Disallowed, STR_CANT_BUILD_THIS_HERE, STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND);
+                    return Result(Status::disallowed, STR_CANT_BUILD_THIS_HERE, STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND);
                 }
 
                 if (surfaceElement->GetSlope() & kTileSlopeDiagonalFlag)
@@ -186,7 +186,7 @@ namespace OpenRCT2::GameActions
                             if (targetHeight / 8 < newBaseHeight && !gameState.cheats.disableClearanceChecks)
                             {
                                 return Result(
-                                    Status::Disallowed, STR_CANT_BUILD_THIS_HERE, STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND);
+                                    Status::disallowed, STR_CANT_BUILD_THIS_HERE, STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND);
                             }
                             newBaseHeight -= 2;
                         }
@@ -199,7 +199,7 @@ namespace OpenRCT2::GameActions
             {
                 if (targetHeight / 8 < newBaseHeight && !gameState.cheats.disableClearanceChecks)
                 {
-                    return Result(Status::Disallowed, STR_CANT_BUILD_THIS_HERE, STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND);
+                    return Result(Status::disallowed, STR_CANT_BUILD_THIS_HERE, STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND);
                 }
 
                 if (surfaceElement->GetSlope() & kTileSlopeDiagonalFlag)
@@ -215,7 +215,7 @@ namespace OpenRCT2::GameActions
                             if (targetHeight / 8 < newBaseHeight && !gameState.cheats.disableClearanceChecks)
                             {
                                 return Result(
-                                    Status::Disallowed, STR_CANT_BUILD_THIS_HERE, STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND);
+                                    Status::disallowed, STR_CANT_BUILD_THIS_HERE, STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND);
                             }
                         }
                     }
@@ -228,7 +228,7 @@ namespace OpenRCT2::GameActions
         if (wallEntry == nullptr)
         {
             LOG_ERROR("Wall Type not found %d", _wallType);
-            return Result(Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_UNKNOWN_OBJECT_TYPE);
+            return Result(Status::invalidParameters, STR_CANT_BUILD_THIS_HERE, STR_UNKNOWN_OBJECT_TYPE);
         }
 
         if (wallEntry->scrolling_mode != kScrollingModeNone)
@@ -236,7 +236,7 @@ namespace OpenRCT2::GameActions
             if (HasReachedBannerLimit())
             {
                 LOG_ERROR("No free banners available");
-                return Result(Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_TOO_MANY_BANNERS_IN_GAME);
+                return Result(Status::invalidParameters, STR_CANT_BUILD_THIS_HERE, STR_TOO_MANY_BANNERS_IN_GAME);
             }
         }
 
@@ -245,7 +245,7 @@ namespace OpenRCT2::GameActions
         {
             if (wallEntry->flags & WALL_SCENERY_CANT_BUILD_ON_SLOPE)
             {
-                return Result(Status::Disallowed, STR_CANT_BUILD_THIS_HERE, STR_ERR_UNABLE_TO_BUILD_THIS_ON_SLOPE);
+                return Result(Status::disallowed, STR_CANT_BUILD_THIS_HERE, STR_ERR_UNABLE_TO_BUILD_THIS_ON_SLOPE);
             }
             clearanceHeight += 2;
         }
@@ -255,7 +255,7 @@ namespace OpenRCT2::GameActions
         if (!(GetFlags().has(CommandFlag::trackDesign)) && !gameState.cheats.disableClearanceChecks)
         {
             auto result = WallCheckObstruction(wallEntry, targetHeight / 8, clearanceHeight, &wallAcrossTrack);
-            if (result.Error != Status::Ok)
+            if (result.error != Status::ok)
             {
                 return result;
             }
@@ -263,12 +263,12 @@ namespace OpenRCT2::GameActions
 
         if (!MapCheckCapacityAndReorganise(_loc))
         {
-            return Result(Status::NoFreeElements, STR_CANT_BUILD_THIS_HERE, STR_TILE_ELEMENT_LIMIT_REACHED);
+            return Result(Status::noFreeElements, STR_CANT_BUILD_THIS_HERE, STR_TILE_ELEMENT_LIMIT_REACHED);
         }
 
-        res.Cost = wallEntry->price;
+        res.cost = wallEntry->price;
 
-        res.SetData(WallPlaceActionResult{ targetHeight });
+        res.setData(WallPlaceActionResult{ targetHeight });
 
         return res;
     }
@@ -276,16 +276,16 @@ namespace OpenRCT2::GameActions
     Result WallPlaceAction::Execute(GameState_t& gameState) const
     {
         auto res = Result();
-        res.ErrorTitle = STR_CANT_BUILD_THIS_HERE;
-        res.Position = _loc;
+        res.errorTitle = STR_CANT_BUILD_THIS_HERE;
+        res.position = _loc;
 
-        res.Expenditure = ExpenditureType::landscaping;
-        res.Position.x += 16;
-        res.Position.y += 16;
+        res.expenditure = ExpenditureType::landscaping;
+        res.position.x += 16;
+        res.position.y += 16;
 
-        if (res.Position.z == 0)
+        if (res.position.z == 0)
         {
-            res.Position.z = TileElementHeight(res.Position);
+            res.position.z = TileElementHeight(res.position);
         }
 
         uint8_t edgeSlope = 0;
@@ -296,7 +296,7 @@ namespace OpenRCT2::GameActions
             if (surfaceElement == nullptr)
             {
                 LOG_ERROR("Surface element not found at %d, %d.", _loc.x, _loc.y);
-                return Result(Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
+                return Result(Status::invalidParameters, STR_CANT_BUILD_THIS_HERE, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
             }
             targetHeight = surfaceElement->GetBaseZ();
 
@@ -315,7 +315,7 @@ namespace OpenRCT2::GameActions
         if (wallEntry == nullptr)
         {
             LOG_ERROR("Wall Type not found %d", _wallType);
-            return Result(Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_UNKNOWN_OBJECT_TYPE);
+            return Result(Status::invalidParameters, STR_CANT_BUILD_THIS_HERE, STR_UNKNOWN_OBJECT_TYPE);
         }
 
         uint8_t clearanceHeight = targetHeight / kCoordsZStep;
@@ -329,7 +329,7 @@ namespace OpenRCT2::GameActions
         if (!(GetFlags().has(CommandFlag::trackDesign)) && !gameState.cheats.disableClearanceChecks)
         {
             auto result = WallCheckObstruction(wallEntry, targetHeight / kCoordsZStep, clearanceHeight, &wallAcrossTrack);
-            if (result.Error != Status::Ok)
+            if (result.error != Status::ok)
             {
                 return result;
             }
@@ -342,7 +342,7 @@ namespace OpenRCT2::GameActions
             if (banner == nullptr)
             {
                 LOG_ERROR("No free banners available");
-                return Result(Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_TOO_MANY_BANNERS_IN_GAME);
+                return Result(Status::invalidParameters, STR_CANT_BUILD_THIS_HERE, STR_TOO_MANY_BANNERS_IN_GAME);
             }
 
             banner->text = {};
@@ -363,7 +363,7 @@ namespace OpenRCT2::GameActions
         auto* wallElement = TileElementInsert<WallElement>(targetLoc, 0b0000);
         if (wallElement == nullptr)
         {
-            return Result(Status::NoFreeElements, STR_CANT_POSITION_THIS_HERE, STR_TILE_ELEMENT_LIMIT_REACHED);
+            return Result(Status::noFreeElements, STR_CANT_POSITION_THIS_HERE, STR_TILE_ELEMENT_LIMIT_REACHED);
         }
 
         wallElement->ClearanceHeight = clearanceHeight;
@@ -387,10 +387,10 @@ namespace OpenRCT2::GameActions
         MapAnimations::MarkTileForInvalidation(TileCoordsXY(targetLoc));
         MapInvalidateTileZoom1({ _loc, wallElement->GetBaseZ(), wallElement->GetBaseZ() + 72 });
 
-        res.Cost = wallEntry->price;
+        res.cost = wallEntry->price;
 
         const auto bannerId = banner != nullptr ? banner->id : BannerIndex::GetNull();
-        res.SetData(WallPlaceActionResult{ wallElement->GetBaseZ(), bannerId });
+        res.setData(WallPlaceActionResult{ wallElement->GetBaseZ(), bannerId });
 
         return res;
     }
@@ -499,7 +499,7 @@ namespace OpenRCT2::GameActions
         *wallAcrossTrack = false;
         if (MapIsEdge(_loc))
         {
-            return Result(Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_OFF_EDGE_OF_MAP);
+            return Result(Status::invalidParameters, STR_CANT_BUILD_THIS_HERE, STR_OFF_EDGE_OF_MAP);
         }
 
         TileElement* tileElement = MapGetFirstElementAt(_loc);
@@ -521,7 +521,7 @@ namespace OpenRCT2::GameActions
                 int32_t direction = tileElement->GetDirection();
                 if (_edge == direction)
                 {
-                    auto res = Result(Status::NoClearance, STR_CANT_BUILD_THIS_HERE, kStringIdNone);
+                    auto res = Result(Status::noClearance, STR_CANT_BUILD_THIS_HERE, kStringIdNone);
                     MapGetObstructionErrorText(tileElement, res);
                     return res;
                 }
@@ -529,7 +529,7 @@ namespace OpenRCT2::GameActions
             }
             if (tileElement->GetOccupiedQuadrants() == 0)
                 continue;
-            auto res = Result(Status::NoClearance, STR_CANT_BUILD_THIS_HERE, kStringIdNone);
+            auto res = Result(Status::noClearance, STR_CANT_BUILD_THIS_HERE, kStringIdNone);
             switch (elementType)
             {
                 case TileElementType::Entrance:

@@ -16,13 +16,10 @@
 #include "../world/Location.hpp"
 #include "Angles.h"
 #include "CarEntry.h"
-#include "Station.h"
 #include "VehicleColour.h"
 #include "VehicleSubpositionData.h"
 
-#include <array>
 #include <cstddef>
-#include <vector>
 
 struct Ride;
 struct RideObjectEntry;
@@ -32,8 +29,8 @@ struct PaintSession;
 
 struct GForces
 {
-    int32_t VerticalG{};
-    int32_t LateralG{};
+    int32_t verticalG{};
+    int32_t lateralG{};
 };
 
 // Size: 0x09
@@ -42,20 +39,20 @@ struct VehicleInfo
     int16_t x;          // 0x00
     int16_t y;          // 0x02
     int16_t z;          // 0x04
-    uint8_t direction;  // 0x06
+    uint8_t yaw;        // 0x06
     VehiclePitch pitch; // 0x07
     VehicleRoll roll;   // 0x08
 
-    bool IsInvalid() const
+    bool isInvalid() const
     {
-        return x == 0 && y == 0 && z == 0 && direction == 0 && pitch == VehiclePitch::flat && roll == VehicleRoll::unbanked;
+        return x == 0 && y == 0 && z == 0 && yaw == 0 && pitch == VehiclePitch::flat && roll == VehicleRoll::unbanked;
     }
 };
 
 struct SoundIdVolume;
 
-constexpr uint16_t VehicleTrackDirectionMask = 0b0000000000000011;
-constexpr uint16_t VehicleTrackTypeMask = 0b1111111111111100;
+static constexpr uint16_t kVehicleTrackDirectionMask = 0b0000000000000011;
+static constexpr uint16_t kVehicleTrackTypeMask = 0b1111111111111100;
 
 enum class MiniGolfAnimation : uint8_t;
 
@@ -65,43 +62,43 @@ struct Vehicle : EntityBase
 
     enum class Type : uint8_t
     {
-        Head,
-        Tail,
+        head,
+        tail,
     };
 
     enum class Status : uint8_t
     {
-        MovingToEndOfStation,
-        WaitingForPassengers,
-        WaitingToDepart,
-        Departing,
-        Travelling,
-        Arriving,
-        UnloadingPassengers,
-        TravellingBoat,
-        Crashing,
-        Crashed,
-        TravellingDodgems,
-        Swinging,
-        Rotating,
-        FerrisWheelRotating,
-        SimulatorOperating,
-        ShowingFilm,
-        SpaceRingsOperating,
-        TopSpinOperating,
-        HauntedHouseOperating,
-        DoingCircusShow,
-        CrookedHouseOperating,
-        WaitingForCableLift,
-        TravellingCableLift,
-        Stopping,
-        WaitingForPassengers17,
-        WaitingToStart,
-        Starting,
-        Operating1A,
-        Stopping1B,
-        UnloadingPassengers1C,
-        StoppedByBlockBrakes
+        movingToEndOfStation,
+        waitingForPassengers,
+        waitingToDepart,
+        departing,
+        travelling,
+        arriving,
+        unloadingPassengers,
+        travellingBoat,
+        crashing,
+        crashed,
+        travellingDodgems,
+        swinging,
+        rotating,
+        ferrisWheelRotating,
+        simulatorOperating,
+        showingFilm,
+        spaceRingsOperating,
+        topSpinOperating,
+        hauntedHouseOperating,
+        doingCircusShow,
+        crookedHouseOperating,
+        waitingForCableLift,
+        travellingCableLift,
+        stopping,
+        waitingForPassengers17,
+        waitingToStart,
+        starting,
+        operating1A,
+        stopping1B,
+        unloadingPassengers1C,
+        stoppedByBlockBrakes,
     };
 
     Type SubType;
@@ -222,7 +219,7 @@ struct Vehicle : EntityBase
 
     constexpr bool IsHead() const
     {
-        return SubType == Vehicle::Type::Head;
+        return SubType == Vehicle::Type::head;
     }
     void Update();
     Vehicle* GetHead();
@@ -256,19 +253,19 @@ struct Vehicle : EntityBase
     bool IsOnCoveredTrack() const;
     uint8_t GetTrackDirection() const
     {
-        return TrackTypeAndDirection & VehicleTrackDirectionMask;
+        return TrackTypeAndDirection & kVehicleTrackDirectionMask;
     }
     void SetTrackType(OpenRCT2::TrackElemType trackType)
     {
         // set the upper 14 bits to 0, then set track type
-        TrackTypeAndDirection &= ~VehicleTrackTypeMask;
+        TrackTypeAndDirection &= ~kVehicleTrackTypeMask;
         TrackTypeAndDirection |= EnumValue(trackType) << 2;
     }
     void SetTrackDirection(uint8_t trackDirection)
     {
         // set the lower 2 bits only
-        TrackTypeAndDirection &= ~VehicleTrackDirectionMask;
-        TrackTypeAndDirection |= trackDirection & VehicleTrackDirectionMask;
+        TrackTypeAndDirection &= ~kVehicleTrackDirectionMask;
+        TrackTypeAndDirection |= trackDirection & kVehicleTrackDirectionMask;
     }
     bool HasFlag(uint32_t flag) const
     {

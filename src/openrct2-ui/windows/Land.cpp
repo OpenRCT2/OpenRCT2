@@ -356,7 +356,7 @@ namespace OpenRCT2::Ui::Windows
                     gMapSelectType, false);
                 auto res = (mode == SelectionMode::apply) ? GameActions::Execute(&landSmoothAction, gameState)
                                                           : GameActions::Query(&landSmoothAction, gameState);
-                return res.Error == GameActions::Status::Ok ? res.Cost : kMoney64Undefined;
+                return res.error == GameActions::Status::ok ? res.cost : kMoney64Undefined;
             }
 
             auto landRaiseAction = GameActions::LandRaiseAction(
@@ -365,7 +365,7 @@ namespace OpenRCT2::Ui::Windows
             auto res = (mode == SelectionMode::apply) ? GameActions::Execute(&landRaiseAction, gameState)
                                                       : GameActions::Query(&landRaiseAction, gameState);
 
-            return res.Error == GameActions::Status::Ok ? res.Cost : kMoney64Undefined;
+            return res.error == GameActions::Status::ok ? res.cost : kMoney64Undefined;
         }
 
         /**
@@ -389,7 +389,7 @@ namespace OpenRCT2::Ui::Windows
                     gMapSelectType, true);
                 auto res = (mode == SelectionMode::apply) ? GameActions::Execute(&landSmoothAction, gameState)
                                                           : GameActions::Query(&landSmoothAction, gameState);
-                return res.Error == GameActions::Status::Ok ? res.Cost : kMoney64Undefined;
+                return res.error == GameActions::Status::ok ? res.cost : kMoney64Undefined;
             }
 
             auto landLowerAction = GameActions::LandLowerAction(
@@ -398,7 +398,7 @@ namespace OpenRCT2::Ui::Windows
             auto res = (mode == SelectionMode::apply) ? GameActions::Execute(&landLowerAction, gameState)
                                                       : GameActions::Query(&landLowerAction, gameState);
 
-            return res.Error == GameActions::Status::Ok ? res.Cost : kMoney64Undefined;
+            return res.error == GameActions::Status::ok ? res.cost : kMoney64Undefined;
         }
 
         /**

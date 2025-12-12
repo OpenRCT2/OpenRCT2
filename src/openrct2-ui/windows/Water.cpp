@@ -308,10 +308,10 @@ namespace OpenRCT2::Ui::Windows
                     { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y });
 
                 auto res = GameActions::Query(&waterLowerAction, gameState);
-                money64 lowerCost = res.Error == GameActions::Status::Ok ? res.Cost : kMoney64Undefined;
+                money64 lowerCost = res.error == GameActions::Status::ok ? res.cost : kMoney64Undefined;
 
                 res = GameActions::Query(&waterRaiseAction, gameState);
-                money64 raiseCost = res.Error == GameActions::Status::Ok ? res.Cost : kMoney64Undefined;
+                money64 raiseCost = res.error == GameActions::Status::ok ? res.cost : kMoney64Undefined;
 
                 if (_waterToolRaiseCost != raiseCost || _waterToolLowerCost != lowerCost)
                 {
@@ -398,10 +398,10 @@ namespace OpenRCT2::Ui::Windows
                 { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y });
 
             auto res = GameActions::Query(&waterLowerAction, gameState);
-            money64 lowerCost = res.Error == GameActions::Status::Ok ? res.Cost : kMoney64Undefined;
+            money64 lowerCost = res.error == GameActions::Status::ok ? res.cost : kMoney64Undefined;
 
             res = GameActions::Query(&waterRaiseAction, gameState);
-            money64 raiseCost = res.Error == GameActions::Status::Ok ? res.Cost : kMoney64Undefined;
+            money64 raiseCost = res.error == GameActions::Status::ok ? res.cost : kMoney64Undefined;
 
             if (_waterToolRaiseCost != raiseCost || _waterToolLowerCost != lowerCost)
             {

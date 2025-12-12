@@ -442,8 +442,8 @@ namespace OpenRCT2::Scripting
     inline DukValue ToDuk(duk_context* ctx, const GForces& value)
     {
         DukObject dukGForces(ctx);
-        dukGForces.Set("lateralG", value.LateralG);
-        dukGForces.Set("verticalG", value.VerticalG);
+        dukGForces.Set("lateralG", value.lateralG);
+        dukGForces.Set("verticalG", value.verticalG);
         return dukGForces.Take();
     }
 

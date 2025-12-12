@@ -1005,7 +1005,7 @@ GameActions::Result StaffSetColour(StaffType staffType, colour_t value)
             break;
         default:
             return GameActions::Result(
-                GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_ACTION_INVALID_FOR_THAT_STAFF_TYPE);
+                GameActions::Status::invalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_ACTION_INVALID_FOR_THAT_STAFF_TYPE);
     }
     return GameActions::Result();
 }

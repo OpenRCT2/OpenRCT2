@@ -2595,7 +2595,7 @@ static bool FindVehicleToEnter(
             if (vehicle->next_free_seat >= vehicle->num_seats)
                 continue;
 
-            if (vehicle->status != Vehicle::Status::WaitingForPassengers)
+            if (vehicle->status != Vehicle::Status::waitingForPassengers)
                 continue;
             chosen_train = i;
             break;

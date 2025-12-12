@@ -52,12 +52,12 @@ namespace OpenRCT2::GameActions
         if (ride == nullptr)
         {
             LOG_ERROR("Ride not found for rideIndex %u", _rideIndex.ToUnderlying());
-            return Result(Status::InvalidParameters, STR_CANT_RENAME_RIDE_ATTRACTION, STR_ERR_RIDE_NOT_FOUND);
+            return Result(Status::invalidParameters, STR_CANT_RENAME_RIDE_ATTRACTION, STR_ERR_RIDE_NOT_FOUND);
         }
 
         if (!_name.empty() && Ride::nameExists(_name, ride->id))
         {
-            return Result(Status::InvalidParameters, STR_CANT_RENAME_RIDE_ATTRACTION, STR_ERROR_EXISTING_NAME);
+            return Result(Status::invalidParameters, STR_CANT_RENAME_RIDE_ATTRACTION, STR_ERROR_EXISTING_NAME);
         }
 
         return Result();
@@ -69,7 +69,7 @@ namespace OpenRCT2::GameActions
         if (ride == nullptr)
         {
             LOG_ERROR("Ride not found for rideIndex %u", _rideIndex.ToUnderlying());
-            return Result(Status::InvalidParameters, STR_CANT_RENAME_RIDE_ATTRACTION, STR_ERR_RIDE_NOT_FOUND);
+            return Result(Status::invalidParameters, STR_CANT_RENAME_RIDE_ATTRACTION, STR_ERR_RIDE_NOT_FOUND);
         }
 
         if (_name.empty())
@@ -92,7 +92,7 @@ namespace OpenRCT2::GameActions
 
         auto res = Result();
         auto location = ride->overallView.ToTileCentre();
-        res.Position = { location, TileElementHeight(location) };
+        res.position = { location, TileElementHeight(location) };
 
         return res;
     }

@@ -364,10 +364,10 @@ namespace OpenRCT2::Ui::Windows
 
             rideEntranceExitPlaceAction.SetCallback([=, this](
                                                         const GameActions::GameAction* ga, const GameActions::Result* result) {
-                if (result->Error != GameActions::Status::Ok)
+                if (result->error != GameActions::Status::ok)
                     return;
 
-                OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::placeItem, result->Position);
+                OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::placeItem, result->position);
 
                 auto* windowMgr = Ui::GetWindowManager();
 
@@ -429,7 +429,7 @@ namespace OpenRCT2::Ui::Windows
             auto action = GameActions::MazeSetTrackAction(loc, false, _currentRideIndex, mode);
             action.SetFlags(actionFlags);
             const auto res = GameActions::Execute(&action, getGameState());
-            if (res.Error != GameActions::Status::Ok)
+            if (res.error != GameActions::Status::ok)
             {
                 return;
             }

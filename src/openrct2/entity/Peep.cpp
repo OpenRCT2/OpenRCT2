@@ -660,7 +660,7 @@ void Peep::PickupAbort(int32_t old_x)
     gPickupPeepImage = ImageId();
 }
 
-// Returns GameActions::Status::OK when a peep can be dropped at the given location. When apply is set to true the peep gets
+// Returns GameActions::Status::ok when a peep can be dropped at the given location. When apply is set to true the peep gets
 // dropped.
 GameActions::Result Peep::Place(const TileCoordsXYZ& location, bool apply)
 {
@@ -672,7 +672,7 @@ GameActions::Result Peep::Place(const TileCoordsXYZ& location, bool apply)
     }
     if (tileElement == nullptr)
     {
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_ERR_CANT_PLACE_PERSON_HERE, kStringIdNone);
+        return GameActions::Result(GameActions::Status::invalidParameters, STR_ERR_CANT_PLACE_PERSON_HERE, kStringIdNone);
     }
 
     // Set the coordinate of destination to be exactly
@@ -681,17 +681,17 @@ GameActions::Result Peep::Place(const TileCoordsXYZ& location, bool apply)
 
     if (!MapIsLocationOwned(destination))
     {
-        return GameActions::Result(GameActions::Status::NotOwned, STR_ERR_CANT_PLACE_PERSON_HERE, STR_LAND_NOT_OWNED_BY_PARK);
+        return GameActions::Result(GameActions::Status::notOwned, STR_ERR_CANT_PLACE_PERSON_HERE, STR_LAND_NOT_OWNED_BY_PARK);
     }
 
     if (auto res = MapCanConstructAt({ destination, destination.z, destination.z + (1 * 8) }, { 0b1111, 0 });
-        res.Error != GameActions::Status::Ok)
+        res.error != GameActions::Status::ok)
     {
-        const auto stringId = std::get<StringId>(res.ErrorMessage);
+        const auto stringId = std::get<StringId>(res.errorMessage);
         if (stringId != STR_RAISE_OR_LOWER_LAND_FIRST && stringId != STR_FOOTPATH_IN_THE_WAY)
         {
             return GameActions::Result(
-                GameActions::Status::NoClearance, STR_ERR_CANT_PLACE_PERSON_HERE, stringId, res.ErrorMessageArgs.data());
+                GameActions::Status::noClearance, STR_ERR_CANT_PLACE_PERSON_HERE, stringId, res.errorMessageArgs.data());
         }
     }
 

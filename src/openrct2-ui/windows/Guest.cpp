@@ -661,7 +661,7 @@ namespace OpenRCT2::Ui::Windows
                                                                 Network::GetCurrentPlayerId() };
                     pickupAction.SetCallback(
                         [peepnum = number](const GameActions::GameAction* ga, const GameActions::Result* result) {
-                            if (result->Error != GameActions::Status::Ok)
+                            if (result->error != GameActions::Status::ok)
                                 return;
                             auto* windowMgr = GetWindowManager();
                             WindowBase* wind = windowMgr->FindByNumber(WindowClass::peep, peepnum);
@@ -1027,7 +1027,7 @@ namespace OpenRCT2::Ui::Windows
                                                         { destCoords, tileElement->GetBaseZ() },
                                                         Network::GetCurrentPlayerId() };
             pickupAction.SetCallback([](const GameActions::GameAction* ga, const GameActions::Result* result) {
-                if (result->Error != GameActions::Status::Ok)
+                if (result->error != GameActions::Status::ok)
                     return;
                 ToolCancel();
                 gPickupPeepImage = ImageId();

@@ -50,46 +50,46 @@ namespace OpenRCT2::GameActions
     {
         if (!LocationValid(_loc))
         {
-            return Result(Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_OFF_EDGE_OF_MAP);
+            return Result(Status::invalidParameters, STR_CANT_REMOVE_THIS, STR_OFF_EDGE_OF_MAP);
         }
 
         if (!(gLegacyScene == LegacyScene::scenarioEditor || getGameState().cheats.sandboxMode) && !MapIsLocationOwned(_loc))
         {
-            return Result(Status::Disallowed, STR_CANT_REMOVE_THIS, STR_LAND_NOT_OWNED_BY_PARK);
+            return Result(Status::disallowed, STR_CANT_REMOVE_THIS, STR_LAND_NOT_OWNED_BY_PARK);
         }
 
         if (_loc.z < kFootpathMinHeight)
         {
-            return Result(Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_TOO_LOW);
+            return Result(Status::invalidParameters, STR_CANT_REMOVE_THIS, STR_TOO_LOW);
         }
 
         if (_loc.z > kFootpathMaxHeight)
         {
-            return Result(Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_TOO_HIGH);
+            return Result(Status::invalidParameters, STR_CANT_REMOVE_THIS, STR_TOO_HIGH);
         }
 
         auto tileElement = MapGetFootpathElement(_loc);
         if (tileElement == nullptr)
         {
             LOG_ERROR("No path element at x = %d, y = %d, z = %d", _loc.x, _loc.y, _loc.z);
-            return Result(Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_ERR_PATH_ELEMENT_NOT_FOUND);
+            return Result(Status::invalidParameters, STR_CANT_REMOVE_THIS, STR_ERR_PATH_ELEMENT_NOT_FOUND);
         }
 
         auto pathElement = tileElement->AsPath();
         if (pathElement == nullptr)
         {
             LOG_ERROR("No path element at x = %d, y = %d, z = %d", _loc.x, _loc.y, _loc.z);
-            return Result(Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_ERR_PATH_ELEMENT_NOT_FOUND);
+            return Result(Status::invalidParameters, STR_CANT_REMOVE_THIS, STR_ERR_PATH_ELEMENT_NOT_FOUND);
         }
 
         if (!pathElement->AdditionIsGhost() && (GetFlags().has(CommandFlag::ghost)))
         {
             LOG_WARNING("Tried to remove non ghost during ghost removal.");
-            return Result(Status::Disallowed, STR_CANT_REMOVE_THIS, kStringIdNone);
+            return Result(Status::disallowed, STR_CANT_REMOVE_THIS, kStringIdNone);
         }
         auto res = Result();
-        res.Position = _loc;
-        res.Cost = 0.00_GBP;
+        res.position = _loc;
+        res.cost = 0.00_GBP;
         return res;
     }
 
@@ -104,15 +104,15 @@ namespace OpenRCT2::GameActions
         if (pathElement == nullptr)
         {
             LOG_ERROR("No path element at x = %d, y = %d, z = %d", _loc.x, _loc.y, _loc.z);
-            return Result(Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_ERR_PATH_ELEMENT_NOT_FOUND);
+            return Result(Status::invalidParameters, STR_CANT_REMOVE_THIS, STR_ERR_PATH_ELEMENT_NOT_FOUND);
         }
 
         pathElement->SetAddition(0);
         MapInvalidateTileFull(_loc);
 
         auto res = Result();
-        res.Position = _loc;
-        res.Cost = 0.00_GBP;
+        res.position = _loc;
+        res.cost = 0.00_GBP;
         return res;
     }
 } // namespace OpenRCT2::GameActions

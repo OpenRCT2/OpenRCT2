@@ -44,7 +44,7 @@ namespace OpenRCT2::GameActions
         if (balloon == nullptr)
         {
             LOG_ERROR("Balloon not found for spriteIndex %u", _spriteIndex);
-            return Result(Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_BALLOON_NOT_FOUND);
+            return Result(Status::invalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_BALLOON_NOT_FOUND);
         }
         return Result();
     }
@@ -55,7 +55,7 @@ namespace OpenRCT2::GameActions
         if (balloon == nullptr)
         {
             LOG_ERROR("Balloon not found for spriteIndex %u", _spriteIndex);
-            return Result(Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_BALLOON_NOT_FOUND);
+            return Result(Status::invalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_BALLOON_NOT_FOUND);
         }
 
         balloon->Press();

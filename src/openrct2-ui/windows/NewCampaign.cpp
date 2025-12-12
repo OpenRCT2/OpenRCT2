@@ -269,7 +269,7 @@ namespace OpenRCT2::Ui::Windows
                     auto gameAction = GameActions::ParkMarketingAction(
                         Campaign.campaign_type, Campaign.RideId.ToUnderlying(), Campaign.no_weeks);
                     gameAction.SetCallback([](const GameActions::GameAction* ga, const GameActions::Result* result) {
-                        if (result->Error == GameActions::Status::Ok)
+                        if (result->error == GameActions::Status::ok)
                         {
                             auto* windowMgr = Ui::GetWindowManager();
                             windowMgr->CloseByClass(WindowClass::newCampaign);

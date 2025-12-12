@@ -1086,10 +1086,10 @@ GameActions::Result ScriptEngine::QueryOrExecuteCustomGameAction(const GameActio
         auto dukArgs = DuktapeTryParseJson(_context, argsz);
         if (!dukArgs)
         {
-            auto action = GameActions::Result();
-            action.Error = GameActions::Status::InvalidParameters;
-            action.ErrorTitle = "Invalid JSON";
-            return action;
+            auto res = GameActions::Result();
+            res.error = GameActions::Status::invalidParameters;
+            res.errorTitle = "Invalid JSON";
+            return res;
         }
 
         std::vector<DukValue> pluginCallArgs;
@@ -1123,11 +1123,11 @@ GameActions::Result ScriptEngine::QueryOrExecuteCustomGameAction(const GameActio
         return DukToGameActionResult(dukResult);
     }
 
-    auto action = GameActions::Result();
-    action.Error = GameActions::Status::Unknown;
-    action.ErrorTitle = "Unknown custom action";
-    action.ErrorMessage = customAction.GetPluginName() + ": " + actionz;
-    return action;
+    auto res = GameActions::Result();
+    res.error = GameActions::Status::unknown;
+    res.errorTitle = "Unknown custom action";
+    res.errorMessage = customAction.GetPluginName() + ": " + actionz;
+    return res;
 }
 
 GameActions::Result ScriptEngine::DukToGameActionResult(const DukValue& d)
@@ -1135,25 +1135,25 @@ GameActions::Result ScriptEngine::DukToGameActionResult(const DukValue& d)
     auto result = GameActions::Result();
     if (d.type() == DUK_TYPE_OBJECT)
     {
-        result.Error = static_cast<GameActions::Status>(AsOrDefault<int32_t>(d["error"]));
-        result.ErrorTitle = AsOrDefault<std::string>(d["errorTitle"]);
-        result.ErrorMessage = AsOrDefault<std::string>(d["errorMessage"]);
-        result.Cost = AsOrDefault<int32_t>(d["cost"]);
+        result.error = static_cast<GameActions::Status>(AsOrDefault<int32_t>(d["error"]));
+        result.errorTitle = AsOrDefault<std::string>(d["errorTitle"]);
+        result.errorMessage = AsOrDefault<std::string>(d["errorMessage"]);
+        result.cost = AsOrDefault<int32_t>(d["cost"]);
         auto expenditureType = AsOrDefault<std::string>(d["expenditureType"]);
         if (!expenditureType.empty())
         {
             auto expenditure = StringToExpenditureType(expenditureType);
             if (expenditure != ExpenditureType::count)
             {
-                result.Expenditure = expenditure;
+                result.expenditure = expenditure;
             }
         }
     }
     else
     {
-        result.Error = GameActions::Status::Unknown;
-        result.ErrorTitle = "Unknown";
-        result.ErrorMessage = "Unknown";
+        result.error = GameActions::Status::unknown;
+        result.errorTitle = "Unknown";
+        result.errorMessage = "Unknown";
     }
     return result;
 }
@@ -1200,41 +1200,41 @@ DukValue ScriptEngine::GameActionResultToDuk(const GameActions::GameAction& acti
     DukStackFrame frame(_context);
     DukObject obj(_context);
 
-    obj.Set("error", static_cast<duk_int_t>(result.Error));
-    if (result.Error != GameActions::Status::Ok)
+    obj.Set("error", static_cast<duk_int_t>(result.error));
+    if (result.error != GameActions::Status::ok)
     {
-        obj.Set("errorTitle", result.GetErrorTitle());
-        obj.Set("errorMessage", result.GetErrorMessage());
+        obj.Set("errorTitle", result.getErrorTitle());
+        obj.Set("errorMessage", result.getErrorMessage());
     }
 
-    if (result.Cost != kMoney64Undefined)
+    if (result.cost != kMoney64Undefined)
     {
-        obj.Set("cost", result.Cost);
+        obj.Set("cost", result.cost);
     }
-    if (!result.Position.IsNull())
+    if (!result.position.IsNull())
     {
-        obj.Set("position", ToDuk(_context, result.Position));
+        obj.Set("position", ToDuk(_context, result.position));
     }
-    if (result.Expenditure != ExpenditureType::count)
+    if (result.expenditure != ExpenditureType::count)
     {
-        obj.Set("expenditureType", ExpenditureTypeToString(result.Expenditure));
+        obj.Set("expenditureType", ExpenditureTypeToString(result.expenditure));
     }
 
     // RideCreateAction only
     if (action.GetType() == GameCommand::CreateRide)
     {
-        if (result.Error == GameActions::Status::Ok)
+        if (result.error == GameActions::Status::ok)
         {
-            const auto rideIndex = result.GetData<RideId>();
+            const auto rideIndex = result.getData<RideId>();
             obj.Set("ride", rideIndex.ToUnderlying());
         }
     }
     // StaffHireNewAction only
     else if (action.GetType() == GameCommand::HireNewStaffMember)
     {
-        if (result.Error == GameActions::Status::Ok)
+        if (result.error == GameActions::Status::ok)
         {
-            const auto actionResult = result.GetData<GameActions::StaffHireNewActionResult>();
+            const auto actionResult = result.getData<GameActions::StaffHireNewActionResult>();
             if (!actionResult.StaffEntityId.IsNull())
             {
                 obj.Set("peep", actionResult.StaffEntityId.ToUnderlying());
@@ -1246,13 +1246,13 @@ DukValue ScriptEngine::GameActionResultToDuk(const GameActions::GameAction& acti
     switch (action.GetType())
     {
         case GameCommand::PlaceBanner:
-            bannerId = result.GetData<GameActions::BannerPlaceActionResult>().bannerId;
+            bannerId = result.getData<GameActions::BannerPlaceActionResult>().bannerId;
             break;
         case GameCommand::PlaceLargeScenery:
-            bannerId = result.GetData<GameActions::LargeSceneryPlaceActionResult>().bannerId;
+            bannerId = result.getData<GameActions::LargeSceneryPlaceActionResult>().bannerId;
             break;
         case GameCommand::PlaceWall:
-            bannerId = result.GetData<GameActions::WallPlaceActionResult>().BannerId;
+            bannerId = result.getData<GameActions::WallPlaceActionResult>().BannerId;
             break;
         default:
             break;
@@ -1521,9 +1521,9 @@ void ScriptEngine::RunGameActionHooks(const GameActions::GameAction& action, Gam
                 auto error = AsOrDefault<int32_t>(dukResult["error"]);
                 if (error != 0)
                 {
-                    result.Error = static_cast<GameActions::Status>(error);
-                    result.ErrorTitle = AsOrDefault<std::string>(dukResult["errorTitle"]);
-                    result.ErrorMessage = AsOrDefault<std::string>(dukResult["errorMessage"]);
+                    result.error = static_cast<GameActions::Status>(error);
+                    result.errorTitle = AsOrDefault<std::string>(dukResult["errorTitle"]);
+                    result.errorMessage = AsOrDefault<std::string>(dukResult["errorMessage"]);
                 }
             }
         }

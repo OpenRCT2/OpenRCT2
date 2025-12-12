@@ -484,9 +484,9 @@ namespace OpenRCT2::Ui::Windows
 
             auto gameAction = GameActions::PeepSpawnPlaceAction({ mapCoords, mapZ, static_cast<Direction>(direction) });
             auto result = GameActions::Execute(&gameAction, getGameState());
-            if (result.Error == GameActions::Status::Ok)
+            if (result.error == GameActions::Status::ok)
             {
-                Audio::Play3D(Audio::SoundId::placeItem, result.Position);
+                Audio::Play3D(Audio::SoundId::placeItem, result.position);
             }
         }
 

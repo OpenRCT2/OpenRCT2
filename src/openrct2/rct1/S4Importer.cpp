@@ -2876,8 +2876,8 @@ namespace OpenRCT2::RCT1
             }
         }
 
-        ::Vehicle::Status statusSrc = ::Vehicle::Status::MovingToEndOfStation;
-        if (src->Status <= static_cast<uint8_t>(::Vehicle::Status::StoppedByBlockBrakes))
+        ::Vehicle::Status statusSrc = ::Vehicle::Status::movingToEndOfStation;
+        if (src->Status <= static_cast<uint8_t>(::Vehicle::Status::stoppedByBlockBrakes))
         {
             statusSrc = static_cast<::Vehicle::Status>(src->Status);
         }
@@ -2885,7 +2885,7 @@ namespace OpenRCT2::RCT1
         dst->TrackSubposition = VehicleTrackSubposition{ src->TrackSubposition };
         dst->TrackLocation = { src->TrackX, src->TrackY, src->TrackZ };
         dst->current_station = StationIndex::FromUnderlying(src->CurrentStation);
-        if (src->BoatLocation.IsNull() || ride->mode != RideMode::boatHire || statusSrc != ::Vehicle::Status::TravellingBoat)
+        if (src->BoatLocation.IsNull() || ride->mode != RideMode::boatHire || statusSrc != ::Vehicle::Status::travellingBoat)
         {
             dst->BoatLocation.SetNull();
             dst->SetTrackDirection(src->GetTrackDirection());

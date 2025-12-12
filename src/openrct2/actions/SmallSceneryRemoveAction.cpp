@@ -61,18 +61,18 @@ namespace OpenRCT2::GameActions
 
         if (!LocationValid(_loc))
         {
-            return Result(Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_OFF_EDGE_OF_MAP);
+            return Result(Status::invalidParameters, STR_CANT_REMOVE_THIS, STR_OFF_EDGE_OF_MAP);
         }
 
         auto* entry = OpenRCT2::ObjectManager::GetObjectEntry<SmallSceneryEntry>(_sceneryType);
         if (entry == nullptr)
         {
-            return Result(Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
+            return Result(Status::invalidParameters, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
         }
 
-        res.Cost = entry->removal_price;
-        res.Expenditure = ExpenditureType::landscaping;
-        res.Position = _loc;
+        res.cost = entry->removal_price;
+        res.expenditure = ExpenditureType::landscaping;
+        res.position = _loc;
 
         if (gLegacyScene != LegacyScene::scenarioEditor && !(GetFlags().has(CommandFlag::ghost))
             && !getGameState().cheats.sandboxMode)
@@ -82,9 +82,9 @@ namespace OpenRCT2::GameActions
             {
                 if (entry->HasFlag(SMALL_SCENERY_FLAG_IS_TREE))
                 {
-                    res.Error = Status::NoClearance;
-                    res.ErrorTitle = STR_CANT_REMOVE_THIS;
-                    res.ErrorMessage = STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY;
+                    res.error = Status::noClearance;
+                    res.errorTitle = STR_CANT_REMOVE_THIS;
+                    res.errorMessage = STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY;
                     return res;
                 }
             }
@@ -92,9 +92,9 @@ namespace OpenRCT2::GameActions
             // Check if the land is owned
             if (!MapIsLocationOwned(_loc))
             {
-                res.Error = Status::NoClearance;
-                res.ErrorTitle = STR_CANT_REMOVE_THIS;
-                res.ErrorMessage = STR_LAND_NOT_OWNED_BY_PARK;
+                res.error = Status::noClearance;
+                res.errorTitle = STR_CANT_REMOVE_THIS;
+                res.errorMessage = STR_LAND_NOT_OWNED_BY_PARK;
                 return res;
             }
         }
@@ -102,7 +102,7 @@ namespace OpenRCT2::GameActions
         TileElement* tileElement = FindSceneryElement();
         if (tileElement == nullptr)
         {
-            return Result(Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
+            return Result(Status::invalidParameters, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
         }
 
         return res;
@@ -116,17 +116,17 @@ namespace OpenRCT2::GameActions
         if (entry == nullptr)
         {
             LOG_ERROR("Invalid small scenery type %u", _sceneryType);
-            return Result(Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
+            return Result(Status::invalidParameters, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
         }
 
-        res.Cost = entry->removal_price;
-        res.Expenditure = ExpenditureType::landscaping;
-        res.Position = _loc;
+        res.cost = entry->removal_price;
+        res.expenditure = ExpenditureType::landscaping;
+        res.position = _loc;
 
         TileElement* tileElement = FindSceneryElement();
         if (tileElement == nullptr)
         {
-            return Result(Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
+            return Result(Status::invalidParameters, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
         }
 
         MapInvalidateTileFull(_loc);

@@ -73,22 +73,22 @@ namespace OpenRCT2::GameActions
         if (ride == nullptr)
         {
             LOG_ERROR("Ride not found for rideIndex %u", _rideIndex.ToUnderlying());
-            return Result(Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_RIDE_NOT_FOUND);
+            return Result(Status::invalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_RIDE_NOT_FOUND);
         }
 
         if (ride->status != RideStatus::closed && ride->status != RideStatus::simulating)
         {
-            return Result(Status::InvalidParameters, STR_MUST_BE_CLOSED_FIRST, kStringIdNone);
+            return Result(Status::invalidParameters, STR_MUST_BE_CLOSED_FIRST, kStringIdNone);
         }
 
         if (ride->lifecycleFlags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK)
         {
-            return Result(Status::InvalidParameters, STR_NOT_ALLOWED_TO_MODIFY_STATION, kStringIdNone);
+            return Result(Status::invalidParameters, STR_NOT_ALLOWED_TO_MODIFY_STATION, kStringIdNone);
         }
 
         if (!LocationValid(_loc))
         {
-            return Result(Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_OFF_EDGE_OF_MAP);
+            return Result(Status::invalidParameters, STR_CANT_REMOVE_THIS, STR_OFF_EDGE_OF_MAP);
         }
 
         auto* entranceElement = FindEntranceElement(
@@ -97,14 +97,14 @@ namespace OpenRCT2::GameActions
         // If we are trying to remove a ghost and the element we found is real, return an error, but don't log a warning
         if (entranceElement != nullptr && (GetFlags().has(CommandFlag::ghost)) && !(entranceElement->IsGhost()))
         {
-            return Result(Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_GHOST_ELEMENT_NOT_FOUND);
+            return Result(Status::invalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_GHOST_ELEMENT_NOT_FOUND);
         }
         else if (entranceElement == nullptr)
         {
             LOG_ERROR(
                 "Entrance/exit element not found. x = %d, y = %d, ride = %u, station = %u", _loc.x, _loc.y,
                 _rideIndex.ToUnderlying(), _stationNum.ToUnderlying());
-            return Result(Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_ENTRANCE_ELEMENT_NOT_FOUND);
+            return Result(Status::invalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_ENTRANCE_ELEMENT_NOT_FOUND);
         }
 
         return Result();
@@ -116,7 +116,7 @@ namespace OpenRCT2::GameActions
         if (ride == nullptr)
         {
             LOG_ERROR("Ride not found for rideIndex %u", _rideIndex.ToUnderlying());
-            return Result(Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_RIDE_NOT_FOUND);
+            return Result(Status::invalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_RIDE_NOT_FOUND);
         }
 
         const bool isGhost = GetFlags().has(CommandFlag::ghost);
@@ -133,20 +133,20 @@ namespace OpenRCT2::GameActions
         // If we are trying to remove a ghost and the element we found is real, return an error, but don't log a warning
         if (entranceElement != nullptr && isGhost && !(entranceElement->IsGhost()))
         {
-            return Result(Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_GHOST_ELEMENT_NOT_FOUND);
+            return Result(Status::invalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_GHOST_ELEMENT_NOT_FOUND);
         }
         else if (entranceElement == nullptr)
         {
             LOG_ERROR(
                 "Entrance/exit element not found. x = %d, y = %d, ride = %u, station = %d", _loc.x, _loc.y,
                 _rideIndex.ToUnderlying(), _stationNum);
-            return Result(Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_ENTRANCE_ELEMENT_NOT_FOUND);
+            return Result(Status::invalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_ENTRANCE_ELEMENT_NOT_FOUND);
         }
 
         auto res = Result();
-        res.Position.x = _loc.x + 16;
-        res.Position.y = _loc.y + 16;
-        res.Position.z = TileElementHeight(res.Position);
+        res.position.x = _loc.x + 16;
+        res.position.y = _loc.y + 16;
+        res.position.z = TileElementHeight(res.position);
 
         FootpathQueueChainReset();
         MazeEntranceHedgeReplacement({ _loc, entranceElement });

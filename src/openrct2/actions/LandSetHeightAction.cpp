@@ -62,20 +62,20 @@ namespace OpenRCT2::GameActions
     {
         if (gameState.park.flags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES)
         {
-            return Result(Status::Disallowed, STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY, kStringIdNone);
+            return Result(Status::disallowed, STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY, kStringIdNone);
         }
 
         StringId errorMessage = CheckParameters();
         if (errorMessage != kStringIdNone)
         {
-            return Result(Status::Disallowed, kStringIdNone, errorMessage);
+            return Result(Status::disallowed, kStringIdNone, errorMessage);
         }
 
         if (gLegacyScene != LegacyScene::scenarioEditor && !gameState.cheats.sandboxMode)
         {
             if (!MapIsLocationInPark(_coords))
             {
-                return Result(Status::Disallowed, STR_LAND_NOT_OWNED_BY_PARK, kStringIdNone);
+                return Result(Status::disallowed, STR_LAND_NOT_OWNED_BY_PARK, kStringIdNone);
             }
         }
 
@@ -88,7 +88,7 @@ namespace OpenRCT2::GameActions
                 TileElement* tileElement = CheckTreeObstructions();
                 if (tileElement != nullptr)
                 {
-                    auto res = Result(Status::Disallowed, kStringIdNone, kStringIdNone);
+                    auto res = Result(Status::disallowed, kStringIdNone, kStringIdNone);
                     MapGetObstructionErrorText(tileElement, res);
                     return res;
                 }
@@ -102,13 +102,13 @@ namespace OpenRCT2::GameActions
             errorMessage = CheckRideSupports();
             if (errorMessage != kStringIdNone)
             {
-                return Result(Status::Disallowed, kStringIdNone, errorMessage);
+                return Result(Status::disallowed, kStringIdNone, errorMessage);
             }
         }
 
         auto* surfaceElement = MapGetSurfaceElementAt(_coords);
         if (surfaceElement == nullptr)
-            return Result(Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
+            return Result(Status::invalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
 
         // We need to check if there is _currently_ a level crossing on the tile.
         // For that, we need the old height, so we can't use the _height variable.
@@ -116,13 +116,13 @@ namespace OpenRCT2::GameActions
         auto* pathElement = MapGetFootpathElement(oldCoords);
         if (pathElement != nullptr && pathElement->AsPath()->IsLevelCrossing(oldCoords))
         {
-            return Result(Status::Disallowed, STR_REMOVE_LEVEL_CROSSING_FIRST, kStringIdNone);
+            return Result(Status::disallowed, STR_REMOVE_LEVEL_CROSSING_FIRST, kStringIdNone);
         }
 
         TileElement* tileElement = CheckFloatingStructures(reinterpret_cast<TileElement*>(surfaceElement), _height);
         if (tileElement != nullptr)
         {
-            auto res = Result(Status::Disallowed, kStringIdNone, kStringIdNone);
+            auto res = Result(Status::disallowed, kStringIdNone, kStringIdNone);
             MapGetObstructionErrorText(tileElement, res);
             return res;
         }
@@ -142,15 +142,15 @@ namespace OpenRCT2::GameActions
             auto clearResult = MapCanConstructWithClearAt(
                 { _coords, _height * kCoordsZStep, zCorner * kCoordsZStep }, MapSetLandHeightClearFunc, { 0b1111, 0 }, {},
                 _style, CreateCrossingMode::none);
-            if (clearResult.Error != Status::Ok)
+            if (clearResult.error != Status::ok)
             {
-                clearResult.Error = Status::Disallowed;
+                clearResult.error = Status::disallowed;
                 return clearResult;
             }
         }
         auto res = Result();
-        res.Cost = sceneryRemovalCost + GetSurfaceHeightChangeCost(surfaceElement);
-        res.Expenditure = ExpenditureType::landscaping;
+        res.cost = sceneryRemovalCost + GetSurfaceHeightChangeCost(surfaceElement);
+        res.expenditure = ExpenditureType::landscaping;
         return res;
     }
 
@@ -169,15 +169,15 @@ namespace OpenRCT2::GameActions
 
         auto* surfaceElement = MapGetSurfaceElementAt(_coords);
         if (surfaceElement == nullptr)
-            return Result(Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
+            return Result(Status::invalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
 
         cost += GetSurfaceHeightChangeCost(surfaceElement);
         SetSurfaceHeight(reinterpret_cast<TileElement*>(surfaceElement));
 
         auto res = Result();
-        res.Position = { _coords.x + 16, _coords.y + 16, surfaceHeight };
-        res.Cost = cost;
-        res.Expenditure = ExpenditureType::landscaping;
+        res.position = { _coords.x + 16, _coords.y + 16, surfaceHeight };
+        res.cost = cost;
+        res.expenditure = ExpenditureType::landscaping;
         return res;
     }
 

@@ -75,17 +75,17 @@ namespace OpenRCT2::GameActions
     Result StaffHireNewAction::QueryExecute(bool execute) const
     {
         auto res = Result();
-        res.Expenditure = ExpenditureType::wages;
+        res.expenditure = ExpenditureType::wages;
 
         if (_staffType >= static_cast<uint8_t>(StaffType::count))
         {
             LOG_ERROR("Invalid staff type %u", static_cast<uint32_t>(_staffType));
-            return Result(Status::InvalidParameters, STR_CANT_HIRE_NEW_STAFF, STR_ERR_VALUE_OUT_OF_RANGE);
+            return Result(Status::invalidParameters, STR_CANT_HIRE_NEW_STAFF, STR_ERR_VALUE_OUT_OF_RANGE);
         }
 
         if (getGameState().entities.GetNumFreeEntities() < 400)
         {
-            return Result(Status::NoFreeElements, STR_CANT_HIRE_NEW_STAFF, STR_TOO_MANY_PEOPLE_IN_GAME);
+            return Result(Status::noFreeElements, STR_CANT_HIRE_NEW_STAFF, STR_TOO_MANY_PEOPLE_IN_GAME);
         }
 
         if (_staffType == static_cast<uint8_t>(StaffType::entertainer))
@@ -94,7 +94,7 @@ namespace OpenRCT2::GameActions
             if (std::find(costumes.begin(), costumes.end(), _costumeIndex) == costumes.end())
             {
                 LOG_ERROR("Unavailable entertainer costume %u", static_cast<uint32_t>(_costumeIndex));
-                return Result(Status::InvalidParameters, STR_CANT_HIRE_NEW_STAFF, STR_ERR_VALUE_OUT_OF_RANGE);
+                return Result(Status::invalidParameters, STR_CANT_HIRE_NEW_STAFF, STR_ERR_VALUE_OUT_OF_RANGE);
             }
         }
 
@@ -102,7 +102,7 @@ namespace OpenRCT2::GameActions
         if (newPeep == nullptr)
         {
             // Too many peeps exist already.
-            return Result(Status::NoFreeElements, STR_CANT_HIRE_NEW_STAFF, STR_TOO_MANY_PEOPLE_IN_GAME);
+            return Result(Status::noFreeElements, STR_CANT_HIRE_NEW_STAFF, STR_TOO_MANY_PEOPLE_IN_GAME);
         }
 
         if (execute == false)
@@ -110,7 +110,7 @@ namespace OpenRCT2::GameActions
             // In query we just want to see if we can obtain a sprite slot.
             getGameState().entities.EntityRemove(newPeep);
 
-            res.SetData(StaffHireNewActionResult{ EntityId::GetNull() });
+            res.setData(StaffHireNewActionResult{ EntityId::GetNull() });
         }
         else
         {
@@ -215,7 +215,7 @@ namespace OpenRCT2::GameActions
             newPeep->StaffMowingTimeout = 0;
             newPeep->PatrolInfo = nullptr;
 
-            res.SetData(StaffHireNewActionResult{ newPeep->Id });
+            res.setData(StaffHireNewActionResult{ newPeep->Id });
         }
 
         return res;

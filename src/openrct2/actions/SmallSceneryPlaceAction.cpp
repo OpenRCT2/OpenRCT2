@@ -97,36 +97,36 @@ namespace OpenRCT2::GameActions
         }
         auto res = Result();
         auto centre = _loc.ToTileCentre();
-        res.Position.x = centre.x;
-        res.Position.y = centre.y;
-        res.Position.z = surfaceHeight;
+        res.position.x = centre.x;
+        res.position.y = centre.y;
+        res.position.z = surfaceHeight;
         if (_loc.z != 0)
         {
             surfaceHeight = _loc.z;
-            res.Position.z = surfaceHeight;
+            res.position.z = surfaceHeight;
         }
 
         if (!LocationValid(_loc))
         {
-            return Result(Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_OFF_EDGE_OF_MAP);
+            return Result(Status::invalidParameters, STR_CANT_POSITION_THIS_HERE, STR_OFF_EDGE_OF_MAP);
         }
 
         if (!MapCheckCapacityAndReorganise(_loc))
         {
-            return Result(Status::NoFreeElements, STR_CANT_POSITION_THIS_HERE, STR_TILE_ELEMENT_LIMIT_REACHED);
+            return Result(Status::noFreeElements, STR_CANT_POSITION_THIS_HERE, STR_TILE_ELEMENT_LIMIT_REACHED);
         }
 
         auto maxSizeMax = GetMapSizeMaxXY();
         if (!_trackDesignDrawingPreview && (_loc.x > maxSizeMax.x || _loc.y > maxSizeMax.y))
         {
-            return Result(Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_ERR_VALUE_OUT_OF_RANGE);
+            return Result(Status::invalidParameters, STR_CANT_POSITION_THIS_HERE, STR_ERR_VALUE_OUT_OF_RANGE);
         }
 
         auto* sceneryEntry = ObjectManager::GetObjectEntry<SmallSceneryEntry>(_sceneryType);
         if (sceneryEntry == nullptr)
         {
             LOG_ERROR("Small scenery object entry not found for sceneryType %u", _sceneryType);
-            return Result(Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_UNKNOWN_OBJECT_TYPE);
+            return Result(Status::invalidParameters, STR_CANT_POSITION_THIS_HERE, STR_UNKNOWN_OBJECT_TYPE);
         }
 
         auto quadrant = _quadrant;
@@ -173,7 +173,7 @@ namespace OpenRCT2::GameActions
         if (gLegacyScene != LegacyScene::scenarioEditor && !gameState.cheats.sandboxMode
             && !MapIsLocationOwned({ _loc.x, _loc.y, targetHeight }))
         {
-            return Result(Status::NotOwned, STR_CANT_POSITION_THIS_HERE, STR_LAND_NOT_OWNED_BY_PARK);
+            return Result(Status::notOwned, STR_CANT_POSITION_THIS_HERE, STR_LAND_NOT_OWNED_BY_PARK);
         }
 
         auto* surfaceElement = MapGetSurfaceElementAt(_loc);
@@ -183,7 +183,7 @@ namespace OpenRCT2::GameActions
             int32_t water_height = surfaceElement->GetWaterHeight() - 1;
             if (water_height > targetHeight)
             {
-                return Result(Status::Disallowed, STR_CANT_POSITION_THIS_HERE, STR_CANT_BUILD_THIS_UNDERWATER);
+                return Result(Status::disallowed, STR_CANT_POSITION_THIS_HERE, STR_CANT_BUILD_THIS_UNDERWATER);
             }
         }
 
@@ -191,14 +191,14 @@ namespace OpenRCT2::GameActions
         {
             if (isOnWater)
             {
-                return Result(Status::Disallowed, STR_CANT_POSITION_THIS_HERE, STR_CAN_ONLY_BUILD_THIS_ON_LAND);
+                return Result(Status::disallowed, STR_CANT_POSITION_THIS_HERE, STR_CAN_ONLY_BUILD_THIS_ON_LAND);
             }
 
             if (surfaceElement != nullptr && surfaceElement->GetWaterHeight() > 0)
             {
                 if (surfaceElement->GetWaterHeight() > targetHeight)
                 {
-                    return Result(Status::Disallowed, STR_CANT_POSITION_THIS_HERE, STR_CAN_ONLY_BUILD_THIS_ON_LAND);
+                    return Result(Status::disallowed, STR_CANT_POSITION_THIS_HERE, STR_CAN_ONLY_BUILD_THIS_ON_LAND);
                 }
             }
         }
@@ -206,7 +206,7 @@ namespace OpenRCT2::GameActions
         if (!gameState.cheats.disableClearanceChecks && (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_REQUIRE_FLAT_SURFACE))
             && !supportsRequired && !isOnWater && surfaceElement != nullptr && (surfaceElement->GetSlope() != kTileSlopeFlat))
         {
-            return Result(Status::Disallowed, STR_CANT_POSITION_THIS_HERE, STR_LEVEL_LAND_REQUIRED);
+            return Result(Status::disallowed, STR_CANT_POSITION_THIS_HERE, STR_LEVEL_LAND_REQUIRED);
         }
 
         if (!gameState.cheats.disableSupportLimits && !(sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_STACKABLE))
@@ -218,13 +218,13 @@ namespace OpenRCT2::GameActions
                 {
                     if (surfaceElement->GetWaterHeight() > 0 || (surfaceElement->GetBaseZ()) != targetHeight)
                     {
-                        return Result(Status::Disallowed, STR_CANT_POSITION_THIS_HERE, STR_LEVEL_LAND_REQUIRED);
+                        return Result(Status::disallowed, STR_CANT_POSITION_THIS_HERE, STR_LEVEL_LAND_REQUIRED);
                     }
                 }
             }
             else
             {
-                return Result(Status::Disallowed, STR_CANT_POSITION_THIS_HERE, STR_CAN_ONLY_BUILD_THIS_ON_LAND);
+                return Result(Status::disallowed, STR_CANT_POSITION_THIS_HERE, STR_CAN_ONLY_BUILD_THIS_ON_LAND);
             }
         }
 
@@ -269,18 +269,18 @@ namespace OpenRCT2::GameActions
         auto canBuild = MapCanConstructWithClearAt(
             { _loc, zLow, zHigh }, MapPlaceSceneryClearFunc, quarterTile, GetFlags(), kTileSlopeFlat, CreateCrossingMode::none,
             isTree);
-        if (canBuild.Error != Status::Ok)
+        if (canBuild.error != Status::ok)
         {
-            canBuild.ErrorTitle = STR_CANT_POSITION_THIS_HERE;
+            canBuild.errorTitle = STR_CANT_POSITION_THIS_HERE;
             return canBuild;
         }
 
-        const auto clearanceData = canBuild.GetData<ConstructClearResult>();
+        const auto clearanceData = canBuild.getData<ConstructClearResult>();
         const uint8_t groundFlags = clearanceData.GroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
-        res.SetData(SmallSceneryPlaceActionResult{ groundFlags, 0, 0 });
+        res.setData(SmallSceneryPlaceActionResult{ groundFlags, 0, 0 });
 
-        res.Expenditure = ExpenditureType::landscaping;
-        res.Cost = sceneryEntry->price + canBuild.Cost;
+        res.expenditure = ExpenditureType::landscaping;
+        res.cost = sceneryEntry->price + canBuild.cost;
 
         return res;
     }
@@ -303,20 +303,20 @@ namespace OpenRCT2::GameActions
         }
         auto res = Result();
         auto centre = _loc.ToTileCentre();
-        res.Position.x = centre.x;
-        res.Position.y = centre.y;
-        res.Position.z = surfaceHeight;
+        res.position.x = centre.x;
+        res.position.y = centre.y;
+        res.position.z = surfaceHeight;
         if (_loc.z != 0)
         {
             surfaceHeight = _loc.z;
-            res.Position.z = surfaceHeight;
+            res.position.z = surfaceHeight;
         }
 
         auto* sceneryEntry = ObjectManager::GetObjectEntry<SmallSceneryEntry>(_sceneryType);
         if (sceneryEntry == nullptr)
         {
             LOG_ERROR("Small scenery object entry not found for sceneryType %u", _sceneryType);
-            return Result(Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_UNKNOWN_OBJECT_TYPE);
+            return Result(Status::invalidParameters, STR_CANT_POSITION_THIS_HERE, STR_UNKNOWN_OBJECT_TYPE);
         }
 
         auto quadrant = _quadrant;
@@ -408,20 +408,20 @@ namespace OpenRCT2::GameActions
         auto canBuild = MapCanConstructWithClearAt(
             { _loc, zLow, zHigh }, MapPlaceSceneryClearFunc, quarterTile, GetFlags().with(CommandFlag::apply), kTileSlopeFlat,
             CreateCrossingMode::none, isTree);
-        if (canBuild.Error != Status::Ok)
+        if (canBuild.error != Status::ok)
         {
-            canBuild.ErrorTitle = STR_CANT_POSITION_THIS_HERE;
+            canBuild.errorTitle = STR_CANT_POSITION_THIS_HERE;
             return canBuild;
         }
 
-        res.Expenditure = ExpenditureType::landscaping;
-        res.Cost = sceneryEntry->price + canBuild.Cost;
+        res.expenditure = ExpenditureType::landscaping;
+        res.cost = sceneryEntry->price + canBuild.cost;
 
         auto* sceneryElement = TileElementInsert<SmallSceneryElement>(
             CoordsXYZ{ _loc, zLow }, quarterTile.GetBaseQuarterOccupied());
         if (sceneryElement == nullptr)
         {
-            return Result(Status::NoFreeElements, STR_CANT_POSITION_THIS_HERE, STR_TILE_ELEMENT_LIMIT_REACHED);
+            return Result(Status::noFreeElements, STR_CANT_POSITION_THIS_HERE, STR_TILE_ELEMENT_LIMIT_REACHED);
         }
 
         sceneryElement->SetDirection(_loc.direction);
@@ -438,9 +438,9 @@ namespace OpenRCT2::GameActions
             sceneryElement->SetNeedsSupports();
         }
 
-        const auto clearanceData = canBuild.GetData<ConstructClearResult>();
+        const auto clearanceData = canBuild.getData<ConstructClearResult>();
         const uint8_t groundFlags = clearanceData.GroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
-        res.SetData(
+        res.setData(
             SmallSceneryPlaceActionResult{ groundFlags, sceneryElement->GetBaseZ(), sceneryElement->GetSceneryQuadrant() });
 
         MapInvalidateTileFull(_loc);

@@ -83,45 +83,45 @@ namespace OpenRCT2::GameActions
         if (ride == nullptr)
         {
             LOG_ERROR("Ride not found for rideIndex %d", _rideIndex.ToUnderlying());
-            return Result(Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_ERR_RIDE_NOT_FOUND);
+            return Result(Status::invalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_ERR_RIDE_NOT_FOUND);
         }
         const auto* rideEntry = GetRideEntryByIndex(ride->subtype);
         if (rideEntry == nullptr)
         {
             LOG_ERROR("Invalid ride subtype for track placement, rideIndex = %d", _rideIndex.ToUnderlying());
-            return Result(Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_UNKNOWN_OBJECT_TYPE);
+            return Result(Status::invalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_UNKNOWN_OBJECT_TYPE);
         }
 
         if (!DirectionValid(_origin.direction))
         {
             LOG_ERROR("Invalid direction for track placement, direction = %d", _origin.direction);
             return Result(
-                Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_ERR_VALUE_OUT_OF_RANGE);
+                Status::invalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_ERR_VALUE_OUT_OF_RANGE);
         }
 
         if (_rideType != ride->type && !gameState.cheats.allowArbitraryRideTypeChanges)
         {
-            return Result(Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, kStringIdNone);
+            return Result(Status::invalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, kStringIdNone);
         }
 
         if (_rideType > RIDE_TYPE_COUNT)
         {
             LOG_ERROR("Invalid ride type for track placement, rideType = %d", _rideType);
             return Result(
-                Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_ERR_VALUE_OUT_OF_RANGE);
+                Status::invalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_ERR_VALUE_OUT_OF_RANGE);
         }
 
         if (_brakeSpeed > kMaximumTrackSpeed)
         {
             LOG_WARNING("Invalid speed for track placement, speed = %d", _brakeSpeed);
-            return Result(Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_SPEED_TOO_HIGH);
+            return Result(Status::invalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_SPEED_TOO_HIGH);
         }
 
         auto res = Result();
-        res.Expenditure = ExpenditureType::rideConstruction;
-        res.Position.x = _origin.x + 16;
-        res.Position.y = _origin.y + 16;
-        res.Position.z = _origin.z;
+        res.expenditure = ExpenditureType::rideConstruction;
+        res.position.x = _origin.x + 16;
+        res.position.y = _origin.y + 16;
+        res.position.z = _origin.z;
 
         auto resultData = TrackPlaceActionResult{};
 
@@ -130,7 +130,7 @@ namespace OpenRCT2::GameActions
         if ((ride->lifecycleFlags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK) && _trackType == TrackElemType::EndStation)
         {
             return Result(
-                Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NOT_ALLOWED_TO_MODIFY_STATION);
+                Status::disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NOT_ALLOWED_TO_MODIFY_STATION);
         }
 
         if (!(GetActionFlags() & Flags::AllowWhilePaused))
@@ -138,7 +138,7 @@ namespace OpenRCT2::GameActions
             if (GameIsPaused() && !gameState.cheats.buildInPauseMode)
             {
                 return Result(
-                    Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
+                    Status::disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
                     STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED);
             }
         }
@@ -150,7 +150,7 @@ namespace OpenRCT2::GameActions
                 if (ride->lifecycleFlags & RIDE_LIFECYCLE_ON_RIDE_PHOTO)
                 {
                     return Result(
-                        Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
+                        Status::disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
                         STR_ONLY_ONE_ON_RIDE_PHOTO_PER_RIDE);
                 }
             }
@@ -159,7 +159,7 @@ namespace OpenRCT2::GameActions
                 if (ride->lifecycleFlags & RIDE_LIFECYCLE_CABLE_LIFT_HILL_COMPONENT_USED)
                 {
                     return Result(
-                        Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
+                        Status::disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
                         STR_ONLY_ONE_CABLE_LIFT_HILL_PER_RIDE);
                 }
             }
@@ -171,7 +171,7 @@ namespace OpenRCT2::GameActions
                 if (ted.flags & TRACK_ELEM_FLAG_IS_STEEP_UP)
                 {
                     return Result(
-                        Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_TOO_STEEP_FOR_LIFT_HILL);
+                        Status::disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_TOO_STEEP_FOR_LIFT_HILL);
                 }
             }
         }
@@ -187,11 +187,11 @@ namespace OpenRCT2::GameActions
 
             if (!LocationValid(tileCoords))
             {
-                return Result(Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_OFF_EDGE_OF_MAP);
+                return Result(Status::invalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_OFF_EDGE_OF_MAP);
             }
             if (!MapIsLocationOwned(tileCoords) && !gameState.cheats.sandboxMode)
             {
-                return Result(Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_LAND_NOT_OWNED_BY_PARK);
+                return Result(Status::disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_LAND_NOT_OWNED_BY_PARK);
             }
             numElements++;
         }
@@ -200,7 +200,7 @@ namespace OpenRCT2::GameActions
         {
             LOG_ERROR("Not enough free map elements to place track.");
             return Result(
-                Status::NoFreeElements, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_TILE_ELEMENT_LIMIT_REACHED);
+                Status::noFreeElements, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_TILE_ELEMENT_LIMIT_REACHED);
         }
 
         if (!gameState.cheats.allowTrackPlaceInvalidHeights)
@@ -210,7 +210,7 @@ namespace OpenRCT2::GameActions
                 if ((_origin.z & 0x0F) != 8)
                 {
                     return Result(
-                        Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_INVALID_HEIGHT);
+                        Status::invalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_INVALID_HEIGHT);
                 }
             }
             else
@@ -218,7 +218,7 @@ namespace OpenRCT2::GameActions
                 if ((_origin.z & 0x0F) != 0)
                 {
                     return Result(
-                        Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_INVALID_HEIGHT);
+                        Status::invalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_INVALID_HEIGHT);
                 }
             }
         }
@@ -237,7 +237,7 @@ namespace OpenRCT2::GameActions
 
             if (mapLoc.z < 16)
             {
-                return Result(Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_TOO_LOW);
+                return Result(Status::invalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_TOO_LOW);
             }
 
             int32_t baseZ = floor2(mapLoc.z, kCoordsZStep);
@@ -256,7 +256,7 @@ namespace OpenRCT2::GameActions
 
             if (clearanceZ > MAX_TRACK_HEIGHT)
             {
-                return Result(Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_TOO_HIGH);
+                return Result(Status::invalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_TOO_HIGH);
             }
 
             auto crossingMode = (rtd.HasFlag(RtdFlag::supportsLevelCrossings) && _trackType == TrackElemType::Flat)
@@ -265,21 +265,21 @@ namespace OpenRCT2::GameActions
             auto canBuild = MapCanConstructWithClearAt(
                 { mapLoc, baseZ, clearanceZ }, MapPlaceNonSceneryClearFunc, quarterTile, GetFlags(), kTileSlopeFlat,
                 crossingMode);
-            if (canBuild.Error != Status::Ok)
+            if (canBuild.error != Status::ok)
             {
-                canBuild.ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
+                canBuild.errorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
                 return canBuild;
             }
-            costs += canBuild.Cost;
+            costs += canBuild.cost;
 
-            const auto clearanceData = canBuild.GetData<ConstructClearResult>();
+            const auto clearanceData = canBuild.getData<ConstructClearResult>();
             uint8_t mapGroundFlags = clearanceData.GroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
             if (!(ted.flags & TRACK_ELEM_FLAG_CAN_BE_PARTLY_UNDERGROUND))
             {
                 if (resultData.GroundFlags != 0 && (resultData.GroundFlags & mapGroundFlags) == 0)
                 {
                     return Result(
-                        Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
+                        Status::disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
                         STR_CANT_BUILD_PARTLY_ABOVE_AND_PARTLY_BELOW_GROUND);
                 }
             }
@@ -290,7 +290,7 @@ namespace OpenRCT2::GameActions
                 if (resultData.GroundFlags & ELEMENT_IS_UNDERGROUND)
                 {
                     return Result(
-                        Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
+                        Status::disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
                         STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND);
                 }
             }
@@ -300,14 +300,14 @@ namespace OpenRCT2::GameActions
                 if (clearanceData.GroundFlags & ELEMENT_IS_UNDERWATER)
                 {
                     return Result(
-                        Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_CAN_ONLY_BUILD_THIS_UNDERWATER);
+                        Status::disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_CAN_ONLY_BUILD_THIS_UNDERWATER);
                 }
             }
 
             if (clearanceData.GroundFlags & ELEMENT_IS_UNDERWATER && !gameState.cheats.disableClearanceChecks)
             {
                 return Result(
-                    Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_RIDE_CANT_BUILD_THIS_UNDERWATER);
+                    Status::disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_RIDE_CANT_BUILD_THIS_UNDERWATER);
             }
 
             if (rtd.HasFlag(RtdFlag::trackMustBeOnWater) && !_trackDesignDrawingPreview)
@@ -316,20 +316,20 @@ namespace OpenRCT2::GameActions
                 if (surfaceElement == nullptr)
                 {
                     return Result(
-                        Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
+                        Status::unknown, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
                 }
 
                 auto waterHeight = surfaceElement->GetWaterHeight();
                 if (waterHeight == 0)
                 {
                     return Result(
-                        Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_CAN_ONLY_BUILD_THIS_ON_WATER);
+                        Status::disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_CAN_ONLY_BUILD_THIS_ON_WATER);
                 }
 
                 if (waterHeight != baseZ)
                 {
                     return Result(
-                        Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_CAN_ONLY_BUILD_THIS_ON_WATER);
+                        Status::disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_CAN_ONLY_BUILD_THIS_ON_WATER);
                 }
                 waterHeight -= kLandHeightStep;
                 if (waterHeight == surfaceElement->GetBaseZ())
@@ -339,7 +339,7 @@ namespace OpenRCT2::GameActions
                         || slope == kTileSlopeNCornerDown)
                     {
                         return Result(
-                            Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
+                            Status::disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
                             STR_CAN_ONLY_BUILD_THIS_ON_WATER);
                     }
                 }
@@ -352,7 +352,7 @@ namespace OpenRCT2::GameActions
                     { mapLoc, baseZ, _origin.direction }, _rideIndex, {}, _fromTrackDesign);
                 if (!addElementResult.Successful)
                 {
-                    return Result(Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, addElementResult.Message);
+                    return Result(Status::unknown, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, addElementResult.Message);
                 }
             }
 
@@ -361,7 +361,7 @@ namespace OpenRCT2::GameActions
             if (surfaceElement == nullptr)
             {
                 return Result(
-                    Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
+                    Status::unknown, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
             }
 
             if (!gameState.cheats.disableSupportLimits)
@@ -384,7 +384,7 @@ namespace OpenRCT2::GameActions
                     if (ride_height > maxHeight && !_trackDesignDrawingPreview)
                     {
                         return Result(
-                            Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_TOO_HIGH_FOR_SUPPORTS);
+                            Status::disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_TOO_HIGH_FOR_SUPPORTS);
                     }
                 }
             }
@@ -402,8 +402,8 @@ namespace OpenRCT2::GameActions
         price *= ted.priceModifier;
 
         price >>= 16;
-        res.Cost = costs + supportCosts + price;
-        res.SetData(std::move(resultData));
+        res.cost = costs + supportCosts + price;
+        res.setData(std::move(resultData));
 
         return res;
     }
@@ -414,21 +414,21 @@ namespace OpenRCT2::GameActions
         if (ride == nullptr)
         {
             LOG_ERROR("Invalid ride for track placement, rideIndex = %d", _rideIndex.ToUnderlying());
-            return Result(Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_ERR_RIDE_NOT_FOUND);
+            return Result(Status::invalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_ERR_RIDE_NOT_FOUND);
         }
 
         const auto* rideEntry = GetRideEntryByIndex(ride->subtype);
         if (rideEntry == nullptr)
         {
             LOG_ERROR("Invalid ride subtype for track placement, rideIndex = %d", _rideIndex.ToUnderlying());
-            return Result(Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_UNKNOWN_OBJECT_TYPE);
+            return Result(Status::invalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_UNKNOWN_OBJECT_TYPE);
         }
 
         auto res = Result();
-        res.Expenditure = ExpenditureType::rideConstruction;
-        res.Position.x = _origin.x + 16;
-        res.Position.y = _origin.y + 16;
-        res.Position.z = _origin.z;
+        res.expenditure = ExpenditureType::rideConstruction;
+        res.position.x = _origin.x + 16;
+        res.position.y = _origin.y + 16;
+        res.position.z = _origin.z;
 
         auto resultData = TrackPlaceActionResult{};
 
@@ -470,12 +470,12 @@ namespace OpenRCT2::GameActions
             auto canBuild = MapCanConstructWithClearAt(
                 mapLocWithClearance, MapPlaceNonSceneryClearFunc, quarterTile, GetFlags().with(CommandFlag::apply),
                 kTileSlopeFlat, crossingMode);
-            if (canBuild.Error != Status::Ok)
+            if (canBuild.error != Status::ok)
             {
-                canBuild.ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
+                canBuild.errorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
                 return canBuild;
             }
-            costs += canBuild.Cost;
+            costs += canBuild.cost;
 
             // When building a level crossing, remove any pre-existing path furniture.
             if (crossingMode == CreateCrossingMode::trackOverPath && !(GetFlags().has(CommandFlag::ghost)))
@@ -510,14 +510,14 @@ namespace OpenRCT2::GameActions
                 }
             }
 
-            const auto clearanceData = canBuild.GetData<ConstructClearResult>();
+            const auto clearanceData = canBuild.getData<ConstructClearResult>();
             uint8_t mapGroundFlags = clearanceData.GroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
             if (!(ted.flags & TRACK_ELEM_FLAG_CAN_BE_PARTLY_UNDERGROUND))
             {
                 if (resultData.GroundFlags != 0 && (resultData.GroundFlags & mapGroundFlags) == 0)
                 {
                     return Result(
-                        Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
+                        Status::disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
                         STR_CANT_BUILD_PARTLY_ABOVE_AND_PARTLY_BELOW_GROUND);
                 }
             }
@@ -529,7 +529,7 @@ namespace OpenRCT2::GameActions
             if (surfaceElement == nullptr)
             {
                 return Result(
-                    Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
+                    Status::unknown, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
             }
 
             int32_t supportHeight = baseZ - surfaceElement->GetBaseZ();
@@ -559,7 +559,7 @@ namespace OpenRCT2::GameActions
             {
                 LOG_ERROR("Cannot create track element for ride = %d", _rideIndex.ToUnderlying());
                 return Result(
-                    Status::NoFreeElements, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_TILE_ELEMENT_LIMIT_REACHED);
+                    Status::noFreeElements, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_TILE_ELEMENT_LIMIT_REACHED);
             }
 
             trackElement->SetClearanceZ(clearanceZ);
@@ -721,8 +721,8 @@ namespace OpenRCT2::GameActions
         price *= ted.priceModifier;
 
         price >>= 16;
-        res.Cost = costs + supportCosts + price;
-        res.SetData(std::move(resultData));
+        res.cost = costs + supportCosts + price;
+        res.setData(std::move(resultData));
 
         return res;
     }
