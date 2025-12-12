@@ -28,8 +28,8 @@ namespace OpenRCT2
             template<size_t TNumBits>
             static constexpr size_t ByteAlignBits()
             {
-                const auto reminder = TNumBits % kBitsPerByte;
-                if constexpr (reminder == 0u)
+                const auto remainder = TNumBits % kBitsPerByte;
+                if constexpr (remainder == 0u)
                 {
                     return TNumBits;
                 }
