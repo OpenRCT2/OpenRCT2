@@ -21,14 +21,6 @@
 
 using namespace OpenRCT2;
 
-static constexpr TunnelGroup kTunnelGroupIncline = TunnelGroup::Standard;
-
-void TrackPaintUtilLeftQuarterTurn1TileTunnel(
-    PaintSession& session, Direction direction, uint16_t baseHeight, int8_t startOffset, TunnelType startTunnel,
-    int8_t endOffset, TunnelType endTunnel);
-void TrackPaintUtilRightQuarterTurn3TilesTunnel(
-    PaintSession& session, int16_t height, Direction direction, uint8_t trackSequence, TunnelType tunnelType);
-
 enum
 {
     SprGhostTrainTrackFlatSwNe = 28821,
@@ -152,46 +144,6 @@ static constexpr uint32_t kGhostTrainTrackPiecesBrakes[4] = {
     SprGhostTrainTrackBrakesNwSe,
 };
 
-static constexpr std::array<TunnelType, kLandEdgeDoorFrameCount> kDoorOpeningOutwardsToImage = {
-    TunnelType::doorClosed,         TunnelType::doorOpeningOutward, TunnelType::doorOpeningOutward, TunnelType::doorOpenOutward,
-    TunnelType::doorOpeningOutward, TunnelType::doorOpeningOutward, TunnelType::doorClosed,         TunnelType::doorClosed,
-};
-
-static constexpr std::array<TunnelType, kLandEdgeDoorFrameCount> kDoorOpeningInwardsToImage = {
-    TunnelType::doorClosed,        TunnelType::doorOpeningInward, TunnelType::doorOpeningInward, TunnelType::doorOpenInward,
-    TunnelType::doorOpeningInward, TunnelType::doorOpeningInward, TunnelType::doorClosed,        TunnelType::doorClosed,
-};
-
-static TunnelType GetTunnelDoorsImageStraightFlat(const TrackElement& trackElement, uint8_t direction)
-{
-    switch (direction)
-    {
-        case 0:
-            return kDoorOpeningInwardsToImage[trackElement.GetDoorAState()];
-        case 1:
-            return kDoorOpeningOutwardsToImage[trackElement.GetDoorBState()];
-        case 2:
-            return kDoorOpeningOutwardsToImage[trackElement.GetDoorBState()];
-        case 3:
-            return kDoorOpeningInwardsToImage[trackElement.GetDoorAState()];
-    }
-    return TunnelType::doorClosed;
-}
-
-static constexpr std::array<TunnelType, kLandEdgeDoorFrameCount> kDoorFlatTo25DegOpeningOutwardsToImage = {
-    TunnelType::doorClosedFlatToDown25,         TunnelType::doorOpeningOutwardFlatToDown25,
-    TunnelType::doorOpeningOutwardFlatToDown25, TunnelType::doorOpenOutwardFlatToDown25,
-    TunnelType::doorOpeningOutwardFlatToDown25, TunnelType::doorOpeningOutwardFlatToDown25,
-    TunnelType::doorClosedFlatToDown25,         TunnelType::doorClosedFlatToDown25,
-};
-
-static constexpr std::array<TunnelType, kLandEdgeDoorFrameCount> kDoorFlatTo25DegOpeningInwardsToImage = {
-    TunnelType::doorClosedFlatToDown25,        TunnelType::doorOpeningInwardFlatToDown25,
-    TunnelType::doorOpeningInwardFlatToDown25, TunnelType::doorOpenInwardFlatToDown25,
-    TunnelType::doorOpeningInwardFlatToDown25, TunnelType::doorOpeningInwardFlatToDown25,
-    TunnelType::doorClosedFlatToDown25,        TunnelType::doorClosedFlatToDown25,
-};
-
 /** rct2: 0x00770BEC */
 static void PaintGhostTrainTrackFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
@@ -200,9 +152,6 @@ static void PaintGhostTrainTrackFlat(
     auto imageId = session.TrackColours.WithIndex(kGhostTrainTrackPiecesFlat[direction]);
 
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
-
-    auto tunnelImage = GetTunnelDoorsImageStraightFlat(trackElement, direction);
-    PaintUtilPushTunnelRotated(session, direction, height, tunnelImage);
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
@@ -233,22 +182,6 @@ static void PaintGhostTrainTrack25DegUp(
         MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 8, height, session.SupportColours);
     }
 
-    switch (direction)
-    {
-        case 0:
-            PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroupIncline, TunnelSubType::SlopeStart);
-            break;
-        case 1:
-            PaintUtilPushTunnelRight(session, height + 8, kTunnelGroupIncline, TunnelSubType::SlopeEnd);
-            break;
-        case 2:
-            PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroupIncline, TunnelSubType::SlopeEnd);
-            break;
-        case 3:
-            PaintUtilPushTunnelRight(session, height - 8, kTunnelGroupIncline, TunnelSubType::SlopeStart);
-            break;
-    }
-
     PaintUtilSetSegmentSupportHeight(
         session,
         PaintUtilRotateSegments(
@@ -262,17 +195,6 @@ static void PaintGhostTrainTrackFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    bool isBackwards = trackElement.GetTrackType() == TrackElemType::Down25ToFlat;
-    TunnelType doorImage;
-    if (!isBackwards)
-    {
-        doorImage = kDoorOpeningInwardsToImage[trackElement.GetDoorAState()];
-    }
-    else
-    {
-        doorImage = kDoorOpeningOutwardsToImage[trackElement.GetDoorBState()];
-    }
-
     auto imageId = session.TrackColours.WithIndex(kGhostTrainTrackPiecesFlatTo25DegUp[direction][0]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
 
@@ -282,22 +204,6 @@ static void PaintGhostTrainTrackFlatTo25DegUp(
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 3, height, session.SupportColours);
-    }
-
-    switch (direction)
-    {
-        case 0:
-            PaintUtilPushTunnelLeft(session, height, doorImage);
-            break;
-        case 1:
-            PaintUtilPushTunnelRight(session, height, kTunnelGroupIncline, TunnelSubType::SlopeEnd);
-            break;
-        case 2:
-            PaintUtilPushTunnelLeft(session, height, kTunnelGroupIncline, TunnelSubType::SlopeEnd);
-            break;
-        case 3:
-            PaintUtilPushTunnelRight(session, height, doorImage);
-            break;
     }
 
     PaintUtilSetSegmentSupportHeight(
@@ -337,22 +243,6 @@ static void PaintGhostTrainTrack25DegUpToFlat(
     const TrackElement& trackElement, SupportType supportType)
 {
     PaintGhostTrainTrack25DegUpToFlatShared(session, ride, trackSequence, direction, height, trackElement, supportType);
-
-    switch (direction)
-    {
-        case 0:
-            PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroupIncline, TunnelSubType::Flat);
-            break;
-        case 1:
-            PaintUtilPushTunnelRight(session, height + 8, kDoorFlatTo25DegOpeningOutwardsToImage[trackElement.GetDoorBState()]);
-            break;
-        case 2:
-            PaintUtilPushTunnelLeft(session, height + 8, kDoorFlatTo25DegOpeningOutwardsToImage[trackElement.GetDoorBState()]);
-            break;
-        case 3:
-            PaintUtilPushTunnelRight(session, height - 8, kTunnelGroupIncline, TunnelSubType::Flat);
-            break;
-    }
 }
 
 /** rct2: 0x00770C2C */
@@ -370,22 +260,6 @@ static void PaintGhostTrainTrackFlatTo25DegDown(
 {
     PaintGhostTrainTrack25DegUpToFlatShared(
         session, ride, trackSequence, (direction + 2) % 4, height, trackElement, supportType);
-
-    switch ((direction + 2) % 4)
-    {
-        case 0:
-            PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroupIncline, TunnelSubType::Flat);
-            break;
-        case 1:
-            PaintUtilPushTunnelRight(session, height + 8, kDoorFlatTo25DegOpeningInwardsToImage[trackElement.GetDoorAState()]);
-            break;
-        case 2:
-            PaintUtilPushTunnelLeft(session, height + 8, kDoorFlatTo25DegOpeningInwardsToImage[trackElement.GetDoorAState()]);
-            break;
-        case 3:
-            PaintUtilPushTunnelRight(session, height - 8, kTunnelGroupIncline, TunnelSubType::Flat);
-            break;
-    }
 }
 
 /** rct2: 0x00770C4C */
@@ -403,8 +277,6 @@ static void PaintGhostTrainStation(
 {
     const ImageId imageId = session.TrackColours.WithIndex(kGhostTrainTrackPiecesFlat[direction]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height + 1 }, { 32, 20, 3 } });
-
-    TrackPaintUtilDrawStationTunnel(session, direction, height);
 
     if (TrackPaintUtilDrawStation(session, ride, direction, height, trackElement, StationBaseType::b, -2))
     {
@@ -428,11 +300,6 @@ static void PaintGhostTrainTrackRightQuarterTurn3Tiles(
     TrackPaintUtilRightQuarterTurn3TilesPaint(
         session, 3, height, direction, trackSequence, session.TrackColours, kGhostTrainTrackPiecesQuarterTurn3Tiles, nullptr,
         defaultRightQuarterTurn3TilesBoundLengths, defaultRightQuarterTurn3TilesBoundOffsets);
-    bool isBackwards = trackElement.GetTrackType() == TrackElemType::LeftQuarterTurn3Tiles;
-    bool isDoorA = (!isBackwards && trackSequence == 0) || (isBackwards && trackSequence == 3);
-    auto tunnelType = isDoorA ? kDoorOpeningInwardsToImage[trackElement.GetDoorAState()]
-                              : kDoorOpeningOutwardsToImage[trackElement.GetDoorBState()];
-    TrackPaintUtilRightQuarterTurn3TilesTunnel(session, height, direction, trackSequence, tunnelType);
 
     switch (trackSequence)
     {
@@ -478,22 +345,8 @@ static void PaintGhostTrainTrackLeftQuarterTurn1Tile(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    bool isBackwards = trackElement.GetTrackType() == TrackElemType::RightQuarterTurn1Tile;
-    TunnelType tunnelStartImage, tunnelEndImage;
-    if (!isBackwards)
-    {
-        tunnelStartImage = kDoorOpeningInwardsToImage[trackElement.GetDoorAState()];
-        tunnelEndImage = kDoorOpeningOutwardsToImage[trackElement.GetDoorBState()];
-    }
-    else
-    {
-        tunnelStartImage = kDoorOpeningOutwardsToImage[trackElement.GetDoorBState()];
-        tunnelEndImage = kDoorOpeningInwardsToImage[trackElement.GetDoorAState()];
-    }
-
     TrackPaintUtilLeftQuarterTurn1TilePaint(
         session, 3, height, 0, direction, session.TrackColours, kGhostTrainTrackPiecesQuarterTurn1Tile);
-    TrackPaintUtilLeftQuarterTurn1TileTunnel(session, direction, height, 0, tunnelStartImage, 0, tunnelEndImage);
 
     MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 0, height, session.SupportColours);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -520,9 +373,6 @@ static void PaintGhostTrainTrackSpinningTunnel(
 
     TrackPaintUtilSpinningTunnelPaint(session, 3, height, direction);
 
-    auto tunnelImage = GetTunnelDoorsImageStraightFlat(trackElement, direction);
-    PaintUtilPushTunnelRotated(session, direction, height, tunnelImage);
-
     WoodenASupportsPaintSetupRotated(
         session, WoodenSupportType::truss, WoodenSupportSubType::neSw, direction, height,
         GetStationColourScheme(session, trackElement));
@@ -539,9 +389,6 @@ static void PaintGhostTrainTrackBrakes(
     auto imageId = session.TrackColours.WithIndex(kGhostTrainTrackPiecesBrakes[direction]);
 
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
-
-    auto tunnelImage = GetTunnelDoorsImageStraightFlat(trackElement, direction);
-    PaintUtilPushTunnelRotated(session, direction, height, tunnelImage);
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {

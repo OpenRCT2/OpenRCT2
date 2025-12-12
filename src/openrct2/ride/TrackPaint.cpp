@@ -1953,6 +1953,13 @@ ImageId GetShopSupportColourScheme(PaintSession& session, const TrackElement& tr
     return ShopSupportColour;
 }
 
+static TunnelType GetTunnelType(const RideTypeDescriptor& rtd, const TrackElement& trackElement, const TrackStyleTunnel& tunnel)
+{
+    const bool doors = rtd.HasFlag(RtdFlag::hasLandscapeDoors) && tunnel.flags.has(TrackStyleTunnelFlags::allowDoors);
+    return doors ? GetTunnelTypeDoors(trackElement, tunnel.direction, tunnel.flags.has(TrackStyleTunnelFlags::flatToDown25))
+                 : tunnel.type;
+}
+
 /**
  *
  *  rct2: 0x006C4794
@@ -2026,9 +2033,29 @@ void PaintTrack(PaintSession& session, Direction direction, int32_t height, cons
         bool isInverted = trackElement.IsInverted() && rtd.HasFlag(RtdFlag::hasInvertedVariant);
         const auto trackDrawerEntry = getTrackDrawerEntry(rtd, isInverted, TrackElementIsCovered(trackType));
 
-        trackType = UncoverTrackElement(trackType);
-        TrackPaintFunction paintFunction = GetTrackPaintFunction(trackDrawerEntry.trackStyle, trackType);
-        paintFunction(session, *ride, trackSequence, direction, height, trackElement, trackDrawerEntry.supportType);
+        const auto& trackStylePaintInfo = GetTrackStylePaintInfo(trackDrawerEntry.trackStyle);
+        const auto& paintInfo = trackStylePaintInfo.trackElemTypePaintInfos[EnumValue(UncoverTrackElement(trackType))];
+
+        paintInfo.paintFunction(session, *ride, trackSequence, direction, height, trackElement, trackDrawerEntry.supportType);
+
+        const uint8_t clampedTrackSequence = trackType == TrackElemType::Maze ? 0 : trackSequence;
+        const auto& sequenceInfo = paintInfo.sequenceInfo[clampedTrackSequence];
+
+        for (const auto& tunnel : sequenceInfo.getTunnels())
+        {
+            if (tunnel.direction == direction)
+            {
+                PaintUtilPushTunnelLeft(session, height + tunnel.height, GetTunnelType(rtd, trackElement, tunnel));
+            }
+            else if (tunnel.direction == DirectionNext(direction))
+            {
+                PaintUtilPushTunnelRight(session, height + tunnel.height, GetTunnelType(rtd, trackElement, tunnel));
+            }
+        }
+        if (sequenceInfo.hasVerticalTunnel())
+        {
+            PaintUtilSetVerticalTunnel(session, height + sequenceInfo.getVerticalTunnelHeight());
+        }
     }
 }
 
@@ -2037,7 +2064,6 @@ void TrackPaintUtilOnridePhotoPaint2(
     int32_t supportsAboveHeightOffset, int32_t trackHeightOffset)
 {
     TrackPaintUtilOnridePhotoPaint(session, direction, height + trackHeightOffset, trackElement);
-    PaintUtilPushTunnelRotated(session, direction, height, TunnelGroup::Square, TunnelSubType::Flat);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + supportsAboveHeightOffset);
 }

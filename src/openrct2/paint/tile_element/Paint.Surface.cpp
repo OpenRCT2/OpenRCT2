@@ -114,22 +114,22 @@ struct TunnelDescriptor
     uint8_t imageOffset;
 };
 static constexpr TunnelDescriptor kTunnels[] = {
-    { 2, 2, 0,   15, TunnelType::StandardFlat,                    36 }, // TunnelType::StandardFlat
-    { 3, 3, 0,   15, TunnelType::StandardFlat,                    40 }, // TunnelType::StandardSlopeStart
-    { 3, 5, -32,  4, TunnelType::StandardFlat,                    44 }, // TunnelType::StandardSlopeEnd
-    { 3, 3, 0,   15, TunnelType::InvertedFlat,                    48 }, // TunnelType::InvertedFlat
-    { 4, 4, 0,   15, TunnelType::InvertedFlat,                    52 }, // TunnelType::InvertedSlopeStart
-    { 4, 7, -48,  4, TunnelType::InvertedFlat,                    56 }, // TunnelType::InvertedSlopeEnd
-    { 2, 2, 0,   15, TunnelType::SquareFlat,                      60 }, // TunnelType::SquareFlat
-    { 3, 3, 0,   15, TunnelType::SquareFlat,                      64 }, // TunnelType::SquareSlopeStart
-    { 3, 5, -32,  4, TunnelType::SquareFlat,                      68 }, // TunnelType::SquareSlopeEnd
-    { 3, 3, 0,   15, TunnelType::SquareFlat,                      72 }, // TunnelType::InvertedSquare
-    { 2, 3, -16, 15, TunnelType::PathAndMiniGolf,                 76 }, // TunnelType::PathAndMiniGolf
-    { 2, 3, -16, 15, TunnelType::Path11,                          80 }, // TunnelType::Path11
-    { 2, 3, -16,  4, TunnelType::StandardFlatTo25Deg,             36 }, // TunnelType::StandardFlatTo25Deg
-    { 3, 4, -16,  4, TunnelType::InvertedFlatTo25Deg,             48 }, // TunnelType::InvertedFlatTo25Deg
-    { 2, 3, -16,  4, TunnelType::SquareFlatTo25Deg,               60 }, // TunnelType::SquareFlatTo25Deg
-    { 3, 4, -16,  4, TunnelType::SquareFlatTo25Deg,               72 }, // TunnelType::InvertedSquareFlatTo25Deg
+    { 2, 2, 0,   15, TunnelType::standardFlat,                    36 }, // TunnelType::standardFlat
+    { 3, 3, 0,   15, TunnelType::standardFlat,                    40 }, // TunnelType::standardUp25
+    { 3, 5, -32,  4, TunnelType::standardFlat,                    44 }, // TunnelType::standardDown25
+    { 2, 3, -16,  4, TunnelType::standardFlatToDown25,            36 }, // TunnelType::standardFlatToDown25
+    { 3, 3, 0,   15, TunnelType::invertedFlat,                    48 }, // TunnelType::invertedFlat
+    { 4, 4, 0,   15, TunnelType::invertedFlat,                    52 }, // TunnelType::invertedUp25
+    { 4, 7, -48,  4, TunnelType::invertedFlat,                    56 }, // TunnelType::invertedDown25
+    { 3, 4, -16,  4, TunnelType::invertedFlatToDown25,            48 }, // TunnelType::invertedFlatToDown25
+    { 2, 2, 0,   15, TunnelType::squareFlat,                      60 }, // TunnelType::squareFlat
+    { 3, 3, 0,   15, TunnelType::squareFlat,                      64 }, // TunnelType::squareUp25
+    { 3, 5, -32,  4, TunnelType::squareFlat,                      68 }, // TunnelType::squareDown25
+    { 2, 3, -16,  4, TunnelType::squareFlatToDown25,              60 }, // TunnelType::squareFlatToDown25
+    { 3, 3, 0,   15, TunnelType::squareFlat,                      72 }, // TunnelType::invertedSquareFlat
+    { 3, 4, -16,  4, TunnelType::squareFlatToDown25,              72 }, // TunnelType::invertedSquareFlatToDown25
+    { 2, 3, -16, 15, TunnelType::path,                            76 }, // TunnelType::path
+    { 2, 3, -16, 15, TunnelType::pathOpenBack,                    80 }, // TunnelType::pathOpenBack
     { 2, 2, 0,   15, TunnelType::doorClosed,                      84 }, // TunnelType::doorClosed
     { 2, 2, 0,   15, TunnelType::doorOpeningOutward,              88 }, // TunnelType::doorOpeningOutward
     { 2, 2, 0,   15, TunnelType::doorOpenOutward,                 92 }, // TunnelType::doorOpenOutward
@@ -303,7 +303,7 @@ static ImageId GetTunnelImage(const TerrainEdgeObject* edgeObject, TunnelType ty
     }
 
     if (!hasDoors && EnumValue(type) >= kRegularTunnelTypeCount)
-        type = TunnelType::StandardFlat;
+        type = TunnelType::standardFlat;
 
     ImageId result = GetEdgeImageWithOffset(edgeObject, kTunnels[EnumValue(type)].imageOffset)
                          .WithIndexOffset(edge == EDGE_BOTTOMRIGHT ? 2 : 0);

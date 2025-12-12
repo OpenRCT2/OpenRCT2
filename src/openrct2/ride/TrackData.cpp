@@ -3191,12 +3191,12 @@ namespace OpenRCT2::TrackMetaData
         { TrackGroup::liftHillCable,                     TrackPitch::Down60,           TrackPitch::Up25,           TrackRoll::None,        TrackRoll::None,        0   }, // TrackElemType::CableLiftHill
         { TrackGroup::reverseFreefall,                   TrackPitch::ReverseFreefall,  TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        0   }, // TrackElemType::ReverseFreefallSlope
         { TrackGroup::reverseFreefall,                   TrackPitch::ReverseFreefall,  TrackPitch::ReverseFreefall,TrackRoll::None,        TrackRoll::None,        0   }, // TrackElemType::ReverseFreefallVertical
-        { TrackGroup::flat,                              TrackPitch::Up90,             TrackPitch::Up90,           TrackRoll::None,        TrackRoll::None,        0   }, // TrackElemType::Up90
-        { TrackGroup::flat,                              TrackPitch::Down90,           TrackPitch::Down90,         TrackRoll::None,        TrackRoll::None,        0   }, // TrackElemType::Down90
-        { TrackGroup::flat,                              TrackPitch::Up90,             TrackPitch::Up60,           TrackRoll::None,        TrackRoll::None,        0   }, // TrackElemType::Up60ToUp90
-        { TrackGroup::flat,                              TrackPitch::Down60,           TrackPitch::Down90,         TrackRoll::None,        TrackRoll::None,        0   }, // TrackElemType::Down90ToDown60
-        { TrackGroup::flat,                              TrackPitch::Up60,             TrackPitch::Up90,           TrackRoll::None,        TrackRoll::None,        0   }, // TrackElemType::Up90ToUp60
-        { TrackGroup::flat,                              TrackPitch::Down90,           TrackPitch::Down60,         TrackRoll::None,        TrackRoll::None,        0   }, // TrackElemType::Down60ToDown90
+        { TrackGroup::slopeVertical,                     TrackPitch::Up90,             TrackPitch::Up90,           TrackRoll::None,        TrackRoll::None,        0   }, // TrackElemType::Up90
+        { TrackGroup::slopeVertical,                     TrackPitch::Down90,           TrackPitch::Down90,         TrackRoll::None,        TrackRoll::None,        0   }, // TrackElemType::Down90
+        { TrackGroup::slopeVertical,                     TrackPitch::Up90,             TrackPitch::Up60,           TrackRoll::None,        TrackRoll::None,        0   }, // TrackElemType::Up60ToUp90
+        { TrackGroup::slopeVertical,                     TrackPitch::Down60,           TrackPitch::Down90,         TrackRoll::None,        TrackRoll::None,        0   }, // TrackElemType::Down90ToDown60
+        { TrackGroup::slopeVertical,                     TrackPitch::Up60,             TrackPitch::Up90,           TrackRoll::None,        TrackRoll::None,        0   }, // TrackElemType::Up90ToUp60
+        { TrackGroup::slopeVertical,                     TrackPitch::Down90,           TrackPitch::Down60,         TrackRoll::None,        TrackRoll::None,        0   }, // TrackElemType::Down60ToDown90
         { TrackGroup::brakeForDrop,                      TrackPitch::Down60,           TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        0   }, // TrackElemType::BrakeForDrop
         { TrackGroup::flat,                              TrackPitch::None,             TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        0   }, // TrackElemType::LeftEighthToDiag
         { TrackGroup::flat,                              TrackPitch::None,             TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        0   }, // TrackElemType::RightEighthToDiag
@@ -4859,6 +4859,8 @@ namespace OpenRCT2::TrackMetaData
             EnumsToFlags(PS::centre, PS::topRight, PS::bottomLeft), // inverted
             kSegmentsAll,                                           // wide
         } },
+        .tunnels = SequenceTunnelsAllGroups(
+            { { SequenceTunnel{ 0, 0, TunnelSlope::flat, true }, SequenceTunnel{ 0, 2, TunnelSlope::flat, true } } }),
     };
 
     static constexpr SequenceDescriptor kEndStationSeq0 = {
@@ -4868,6 +4870,8 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::neSw },
         .metalSupports = { MetalSupportPlace::centre, true },
         .blockedSegments = blockedSegmentsAllTypes(kSegmentsAll),
+        .tunnels = SequenceTunnelsAllGroups(
+            { { SequenceTunnel{ 0, 0, TunnelSlope::flat }, SequenceTunnel{ 0, 2, TunnelSlope::flat } } }),
     };
 
     static constexpr SequenceDescriptor kBeginStationSeq0 = {
@@ -4877,6 +4881,8 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::neSw },
         .metalSupports = { MetalSupportPlace::centre, true },
         .blockedSegments = blockedSegmentsAllTypes(kSegmentsAll),
+        .tunnels = SequenceTunnelsAllGroups(
+            { { SequenceTunnel{ 0, 0, TunnelSlope::flat }, SequenceTunnel{ 0, 2, TunnelSlope::flat } } }),
     };
 
     static constexpr SequenceDescriptor kMiddleStationSeq0 = {
@@ -4886,6 +4892,8 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::neSw },
         .metalSupports = { MetalSupportPlace::centre, true },
         .blockedSegments = blockedSegmentsAllTypes(kSegmentsAll),
+        .tunnels = SequenceTunnelsAllGroups(
+            { { SequenceTunnel{ 0, 0, TunnelSlope::flat }, SequenceTunnel{ 0, 2, TunnelSlope::flat } } }),
     };
 
     static constexpr SequenceDescriptor kUp25Seq0 = {
@@ -4894,6 +4902,8 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25Deg },
         .metalSupports = { MetalSupportPlace::centre, true },
         .blockedSegments = kFlatSeq0.blockedSegments,
+        .tunnels = SequenceTunnelsAllGroups(
+            { { SequenceTunnel{ -8, 0, TunnelSlope::up25 }, SequenceTunnel{ 8, 2, TunnelSlope::down25 } } }),
     };
 
     static constexpr SequenceDescriptor kUp60Seq0 = {
@@ -4902,6 +4912,8 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up60Deg },
         .metalSupports = { MetalSupportPlace::centre, true },
         .blockedSegments = kFlatSeq0.blockedSegments,
+        .tunnels = SequenceTunnelsAllGroups(
+            { { SequenceTunnel{ -8, 0, TunnelSlope::up25 }, SequenceTunnel{ 56, 2, TunnelSlope::down25 } } }),
     };
 
     static constexpr SequenceDescriptor kFlatToUp25Seq0 = {
@@ -4910,6 +4922,8 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::flatToUp25Deg },
         .metalSupports = { MetalSupportPlace::centre, true },
         .blockedSegments = kFlatSeq0.blockedSegments,
+        .tunnels = SequenceTunnelsAllGroups(
+            { { SequenceTunnel{ 0, 0, TunnelSlope::flat, true }, SequenceTunnel{ 0, 2, TunnelSlope::down25 } } }),
     };
 
     static constexpr SequenceDescriptor kUp25ToUp60Seq0 = {
@@ -4918,6 +4932,8 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25DegToUp60Deg },
         .metalSupports = { MetalSupportPlace::centre, true },
         .blockedSegments = kFlatSeq0.blockedSegments,
+        .tunnels = SequenceTunnelsAllGroups(
+            { { SequenceTunnel{ -8, 0, TunnelSlope::up25 }, SequenceTunnel{ 24, 2, TunnelSlope::down25 } } }),
     };
 
     static constexpr SequenceDescriptor kUp60ToUp25Seq0 = {
@@ -4926,6 +4942,8 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up60DegToUp25Deg },
         .metalSupports = { MetalSupportPlace::centre, true },
         .blockedSegments = kFlatSeq0.blockedSegments,
+        .tunnels = SequenceTunnelsAllGroups(
+            { { SequenceTunnel{ -8, 0, TunnelSlope::up25 }, SequenceTunnel{ 24, 2, TunnelSlope::down25 } } }),
     };
 
     static constexpr SequenceDescriptor kUp25ToFlatSeq0 = {
@@ -4934,6 +4952,8 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25DegToFlat },
         .metalSupports = { MetalSupportPlace::centre, true },
         .blockedSegments = kFlatSeq0.blockedSegments,
+        .tunnels = SequenceTunnelsAllGroups(
+            { { SequenceTunnel{ -8, 0, TunnelSlope::up25 }, SequenceTunnel{ 8, 2, TunnelSlope::flatToDown25, true } } }),
     };
 
     static constexpr SequenceDescriptor kDown25Seq0 = {
@@ -4943,6 +4963,7 @@ namespace OpenRCT2::TrackMetaData
         .metalSupports = { MetalSupportPlace::centre, true },
         .extraSupportRotation = 2,
         .blockedSegments = kFlatSeq0.blockedSegments,
+        .tunnels = SequenceTunnelsReverse(kUp25Seq0.tunnels),
     };
 
     static constexpr SequenceDescriptor kDown60Seq0 = {
@@ -4952,6 +4973,7 @@ namespace OpenRCT2::TrackMetaData
         .metalSupports = { MetalSupportPlace::centre, true },
         .extraSupportRotation = 2,
         .blockedSegments = kFlatSeq0.blockedSegments,
+        .tunnels = SequenceTunnelsReverse(kUp60Seq0.tunnels),
     };
 
     static constexpr SequenceDescriptor kFlatToDown25Seq0 = {
@@ -4961,6 +4983,7 @@ namespace OpenRCT2::TrackMetaData
         .metalSupports = { MetalSupportPlace::centre, true },
         .extraSupportRotation = 2,
         .blockedSegments = kFlatSeq0.blockedSegments,
+        .tunnels = SequenceTunnelsReverse(kUp25ToFlatSeq0.tunnels),
     };
 
     static constexpr SequenceDescriptor kDown25ToDown60Seq0 = {
@@ -4970,6 +4993,7 @@ namespace OpenRCT2::TrackMetaData
         .metalSupports = { MetalSupportPlace::centre, true },
         .extraSupportRotation = 2,
         .blockedSegments = kFlatSeq0.blockedSegments,
+        .tunnels = SequenceTunnelsReverse(kUp60ToUp25Seq0.tunnels),
     };
 
     static constexpr SequenceDescriptor kDown60ToDown25Seq0 = {
@@ -4979,6 +5003,7 @@ namespace OpenRCT2::TrackMetaData
         .metalSupports = { MetalSupportPlace::centre, true },
         .extraSupportRotation = 2,
         .blockedSegments = kFlatSeq0.blockedSegments,
+        .tunnels = SequenceTunnelsReverse(kUp25ToUp60Seq0.tunnels),
     };
 
     static constexpr SequenceDescriptor kDown25ToFlatSeq0 = {
@@ -4988,6 +5013,7 @@ namespace OpenRCT2::TrackMetaData
         .metalSupports = { MetalSupportPlace::centre, true },
         .extraSupportRotation = 2,
         .blockedSegments = kFlatSeq0.blockedSegments,
+        .tunnels = SequenceTunnelsReverse(kFlatToUp25Seq0.tunnels),
     };
 
     static constexpr SequenceDescriptor kLeftQuarterTurn5TilesSeq0 = {
@@ -5000,6 +5026,7 @@ namespace OpenRCT2::TrackMetaData
             EnumsToFlags(PS::top, PS::centre, PS::topRight, PS::bottomLeft, PS::bottomRight), // inverted
             kSegmentsAll,                                                                     // wide
         } },
+        .tunnels = SequenceTunnelsAllGroups({ { SequenceTunnel{ 0, 0, TunnelSlope::flat } } }),
     };
 
     static constexpr SequenceDescriptor kLeftQuarterTurn5TilesSeq1 = {
@@ -5065,6 +5092,7 @@ namespace OpenRCT2::TrackMetaData
             EnumsToFlags(PS::bottom, PS::centre, PS::topLeft, PS::topRight, PS::bottomRight), // inverted
             kSegmentsAll,                                                                     // wide
         } },
+        .tunnels = SequenceTunnelsAllGroups({ { SequenceTunnel{ 0, 3, TunnelSlope::flat } } }),
     };
 
     static constexpr SequenceDescriptor kRightQuarterTurn5TilesSeq0 = {
@@ -5073,6 +5101,7 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::neSw },
         .metalSupports = { MetalSupportPlace::centre },
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftQuarterTurn5TilesSeq0.blockedSegments),
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftQuarterTurn5TilesSeq0.tunnels),
     };
 
     static constexpr SequenceDescriptor kRightQuarterTurn5TilesSeq1 = {
@@ -5118,6 +5147,7 @@ namespace OpenRCT2::TrackMetaData
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = 1,
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftQuarterTurn5TilesSeq6.blockedSegments),
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftQuarterTurn5TilesSeq6.tunnels),
     };
 
     static constexpr SequenceDescriptor kFlatToLeftBankSeq0 = {
@@ -5130,6 +5160,8 @@ namespace OpenRCT2::TrackMetaData
             EnumsToFlags(PS::right, PS::bottom, PS::centre, PS::topRight, PS::bottomLeft, PS::bottomRight), // inverted
             kSegmentsAll,                                                                                   // wide
         } },
+        .tunnels = SequenceTunnelsAllGroups(
+            { { SequenceTunnel{ 0, 0, TunnelSlope::flat }, SequenceTunnel{ 0, 2, TunnelSlope::flat } } }),
     };
 
     static constexpr SequenceDescriptor kFlatToRightBankSeq0 = {
@@ -5138,6 +5170,8 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::neSw },
         .metalSupports = { MetalSupportPlace::centre, true },
         .blockedSegments = blockedSegmentsFlipXAxis(kFlatToLeftBankSeq0.blockedSegments),
+        .tunnels = SequenceTunnelsAllGroups(
+            { { SequenceTunnel{ 0, 0, TunnelSlope::flat }, SequenceTunnel{ 0, 2, TunnelSlope::flat } } }),
     };
 
     static constexpr SequenceDescriptor kLeftBankToFlatSeq0 = {
@@ -5150,6 +5184,8 @@ namespace OpenRCT2::TrackMetaData
             EnumsToFlags(PS::right, PS::bottom, PS::centre, PS::topRight, PS::bottomLeft, PS::bottomRight), // inverted
             kSegmentsAll,                                                                                   // wide
         } },
+        .tunnels = SequenceTunnelsAllGroups(
+            { { SequenceTunnel{ 0, 0, TunnelSlope::flat }, SequenceTunnel{ 0, 2, TunnelSlope::flat } } }),
     };
 
     static constexpr SequenceDescriptor kRightBankToFlatSeq0 = {
@@ -5158,6 +5194,8 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::neSw },
         .metalSupports = { MetalSupportPlace::centre, true },
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftBankToFlatSeq0.blockedSegments),
+        .tunnels = SequenceTunnelsAllGroups(
+            { { SequenceTunnel{ 0, 0, TunnelSlope::flat }, SequenceTunnel{ 0, 2, TunnelSlope::flat } } }),
     };
 
     static constexpr SequenceDescriptor kBankedLeftQuarterTurn5TilesSeq0 = {
@@ -5166,6 +5204,7 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::neSw },
         .metalSupports = { MetalSupportPlace::centre },
         .blockedSegments = kLeftQuarterTurn5TilesSeq0.blockedSegments,
+        .tunnels = kLeftQuarterTurn5TilesSeq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kBankedLeftQuarterTurn5TilesSeq1 = {
@@ -5211,6 +5250,7 @@ namespace OpenRCT2::TrackMetaData
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = -1,
         .blockedSegments = kLeftQuarterTurn5TilesSeq6.blockedSegments,
+        .tunnels = kLeftQuarterTurn5TilesSeq6.tunnels,
     };
 
     static constexpr SequenceDescriptor kBankedRightQuarterTurn5TilesSeq0 = {
@@ -5219,6 +5259,7 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::neSw },
         .metalSupports = { MetalSupportPlace::centre },
         .blockedSegments = kRightQuarterTurn5TilesSeq0.blockedSegments,
+        .tunnels = kRightQuarterTurn5TilesSeq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kBankedRightQuarterTurn5TilesSeq1 = {
@@ -5264,6 +5305,7 @@ namespace OpenRCT2::TrackMetaData
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = 1,
         .blockedSegments = kRightQuarterTurn5TilesSeq6.blockedSegments,
+        .tunnels = kRightQuarterTurn5TilesSeq6.tunnels,
     };
 
     static constexpr SequenceDescriptor kLeftBankToUp25Seq0 = {
@@ -5276,6 +5318,8 @@ namespace OpenRCT2::TrackMetaData
             EnumsToFlags(PS::right, PS::bottom, PS::centre, PS::topRight, PS::bottomLeft, PS::bottomRight), // inverted
             kSegmentsAll,                                                                                   // wide
         } },
+        .tunnels = SequenceTunnelsAllGroups(
+            { { SequenceTunnel{ 0, 0, TunnelSlope::flat }, SequenceTunnel{ 0, 2, TunnelSlope::down25 } } }),
     };
 
     static constexpr SequenceDescriptor kRightBankToUp25Seq0 = {
@@ -5284,6 +5328,8 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::flatToUp25Deg },
         .metalSupports = { MetalSupportPlace::centre, true },
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftBankToUp25Seq0.blockedSegments),
+        .tunnels = SequenceTunnelsAllGroups(
+            { { SequenceTunnel{ 0, 0, TunnelSlope::flat }, SequenceTunnel{ 0, 2, TunnelSlope::down25 } } }),
     };
 
     static constexpr SequenceDescriptor kUp25ToLeftBankSeq0 = {
@@ -5296,6 +5342,8 @@ namespace OpenRCT2::TrackMetaData
             EnumsToFlags(PS::right, PS::bottom, PS::centre, PS::topRight, PS::bottomLeft, PS::bottomRight), // inverted
             kSegmentsAll,                                                                                   // wide
         } },
+        .tunnels = SequenceTunnelsAllGroups(
+            { { SequenceTunnel{ -8, 0, TunnelSlope::flat }, SequenceTunnel{ 8, 2, TunnelSlope::flatToDown25 } } }),
     };
 
     static constexpr SequenceDescriptor kUp25ToRightBankSeq0 = {
@@ -5304,6 +5352,8 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25DegToFlat },
         .metalSupports = { MetalSupportPlace::centre, true },
         .blockedSegments = blockedSegmentsFlipXAxis(kUp25ToLeftBankSeq0.blockedSegments),
+        .tunnels = SequenceTunnelsAllGroups(
+            { { SequenceTunnel{ -8, 0, TunnelSlope::flat }, SequenceTunnel{ 8, 2, TunnelSlope::flatToDown25 } } }),
     };
 
     static constexpr SequenceDescriptor kLeftBankToDown25Seq0 = {
@@ -5317,6 +5367,7 @@ namespace OpenRCT2::TrackMetaData
             EnumsToFlags(PS::right, PS::bottom, PS::centre, PS::topRight, PS::bottomLeft, PS::bottomRight), // inverted
             kSegmentsAll,                                                                                   // wide
         } },
+        .tunnels = SequenceTunnelsReverse(kUp25ToRightBankSeq0.tunnels),
     };
 
     static constexpr SequenceDescriptor kRightBankToDown25Seq0 = {
@@ -5326,6 +5377,7 @@ namespace OpenRCT2::TrackMetaData
         .metalSupports = { MetalSupportPlace::centre, true },
         .extraSupportRotation = 2,
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftBankToDown25Seq0.blockedSegments),
+        .tunnels = SequenceTunnelsReverse(kUp25ToLeftBankSeq0.tunnels),
     };
 
     static constexpr SequenceDescriptor kDown25ToLeftBankSeq0 = {
@@ -5339,6 +5391,7 @@ namespace OpenRCT2::TrackMetaData
             EnumsToFlags(PS::right, PS::bottom, PS::centre, PS::topRight, PS::bottomLeft, PS::bottomRight), // inverted
             kSegmentsAll,                                                                                   // wide
         } },
+        .tunnels = SequenceTunnelsReverse(kRightBankToUp25Seq0.tunnels),
     };
 
     static constexpr SequenceDescriptor kDown25ToRightBankSeq0 = {
@@ -5348,6 +5401,7 @@ namespace OpenRCT2::TrackMetaData
         .metalSupports = { MetalSupportPlace::centre, true },
         .extraSupportRotation = 2,
         .blockedSegments = blockedSegmentsFlipXAxis(kDown25ToLeftBankSeq0.blockedSegments),
+        .tunnels = SequenceTunnelsReverse(kLeftBankToUp25Seq0.tunnels),
     };
 
     static constexpr SequenceDescriptor kLeftBankSeq0 = {
@@ -5360,6 +5414,8 @@ namespace OpenRCT2::TrackMetaData
             EnumsToFlags(PS::right, PS::bottom, PS::centre, PS::topRight, PS::bottomLeft, PS::bottomRight), // inverted
             kSegmentsAll,                                                                                   // wide
         } },
+        .tunnels = SequenceTunnelsAllGroups(
+            { { SequenceTunnel{ 0, 0, TunnelSlope::flat }, SequenceTunnel{ 0, 2, TunnelSlope::flat } } }),
     };
 
     static constexpr SequenceDescriptor kRightBankSeq0 = {
@@ -5368,6 +5424,8 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::neSw },
         .metalSupports = { MetalSupportPlace::centre, true },
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftBankSeq0.blockedSegments),
+        .tunnels = SequenceTunnelsAllGroups(
+            { { SequenceTunnel{ 0, 0, TunnelSlope::flat }, SequenceTunnel{ 0, 2, TunnelSlope::flat } } }),
     };
 
     static constexpr SequenceDescriptor kLeftQuarterTurn5TilesUp25Seq0 = {
@@ -5376,6 +5434,7 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25Deg },
         .metalSupports = { MetalSupportPlace::centre },
         .blockedSegments = kLeftQuarterTurn5TilesSeq0.blockedSegments,
+        .tunnels = SequenceTunnelsAllGroups({ { SequenceTunnel{ -8, 0, TunnelSlope::up25 } } }),
     };
 
     static constexpr SequenceDescriptor kLeftQuarterTurn5TilesUp25Seq1 = {
@@ -5419,6 +5478,7 @@ namespace OpenRCT2::TrackMetaData
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = -1,
         .blockedSegments = kLeftQuarterTurn5TilesSeq6.blockedSegments,
+        .tunnels = SequenceTunnelsAllGroups({ { SequenceTunnel{ 8, 3, TunnelSlope::down25 } } }),
     };
 
     static constexpr SequenceDescriptor kRightQuarterTurn5TilesUp25Seq0 = {
@@ -5427,6 +5487,7 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25Deg },
         .metalSupports = { MetalSupportPlace::centre },
         .blockedSegments = kRightQuarterTurn5TilesSeq0.blockedSegments,
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftQuarterTurn5TilesUp25Seq0.tunnels),
     };
 
     static constexpr SequenceDescriptor kRightQuarterTurn5TilesUp25Seq1 = {
@@ -5470,6 +5531,7 @@ namespace OpenRCT2::TrackMetaData
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = 1,
         .blockedSegments = kRightQuarterTurn5TilesSeq6.blockedSegments,
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftQuarterTurn5TilesUp25Seq6.tunnels),
     };
 
     static constexpr SequenceDescriptor kLeftQuarterTurn5TilesDown25Seq0 = {
@@ -5479,6 +5541,7 @@ namespace OpenRCT2::TrackMetaData
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = 2,
         .blockedSegments = kLeftQuarterTurn5TilesSeq0.blockedSegments,
+        .tunnels = SequenceTunnelsPrev(kRightQuarterTurn5TilesUp25Seq6.tunnels),
     };
 
     static constexpr SequenceDescriptor kLeftQuarterTurn5TilesDown25Seq1 = {
@@ -5522,6 +5585,7 @@ namespace OpenRCT2::TrackMetaData
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = -1,
         .blockedSegments = kLeftQuarterTurn5TilesSeq6.blockedSegments,
+        .tunnels = SequenceTunnelsPrev(kRightQuarterTurn5TilesUp25Seq0.tunnels),
     };
 
     static constexpr SequenceDescriptor kRightQuarterTurn5TilesDown25Seq0 = {
@@ -5531,6 +5595,7 @@ namespace OpenRCT2::TrackMetaData
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = 2,
         .blockedSegments = kRightQuarterTurn5TilesSeq0.blockedSegments,
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftQuarterTurn5TilesDown25Seq0.tunnels),
     };
 
     static constexpr SequenceDescriptor kRightQuarterTurn5TilesDown25Seq1 = {
@@ -5574,6 +5639,7 @@ namespace OpenRCT2::TrackMetaData
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = 1,
         .blockedSegments = kRightQuarterTurn5TilesSeq6.blockedSegments,
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftQuarterTurn5TilesDown25Seq6.tunnels),
     };
 
     static constexpr SequenceDescriptor kSBendLeftSeq0 = {
@@ -5585,6 +5651,7 @@ namespace OpenRCT2::TrackMetaData
             EnumsToFlags(PS::top, PS::centre, PS::topRight, PS::bottomLeft), // inverted
             kSegmentsAll,                                                    // wide
         } },
+        .tunnels = SequenceTunnelsAllGroups({ { SequenceTunnel{ 0, 0, TunnelSlope::flat } } }),
     };
 
     static constexpr SequenceDescriptor kSBendLeftSeq1 = {
@@ -5612,6 +5679,7 @@ namespace OpenRCT2::TrackMetaData
             EnumsToFlags(PS::bottom, PS::centre, PS::topRight, PS::bottomLeft), // inverted
             kSegmentsAll,                                                       // wide
         } },
+        .tunnels = SequenceTunnelsAllGroups({ { SequenceTunnel{ 0, 2, TunnelSlope::flat } } }),
     };
 
     static constexpr SequenceDescriptor kSBendRightSeq0 = {
@@ -5619,6 +5687,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw },
         .blockedSegments = blockedSegmentsFlipXAxis(kSBendLeftSeq0.blockedSegments),
+        .tunnels = SequenceTunnelsFlipXAxis(kSBendLeftSeq0.tunnels),
     };
 
     static constexpr SequenceDescriptor kSBendRightSeq1 = {
@@ -5640,6 +5709,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw },
         .blockedSegments = blockedSegmentsFlipXAxis(kSBendLeftSeq3.blockedSegments),
+        .tunnels = SequenceTunnelsFlipXAxis(kSBendLeftSeq3.tunnels),
     };
 
     static constexpr SequenceDescriptor kLeftVerticalLoopSeq0 = {
@@ -5653,6 +5723,7 @@ namespace OpenRCT2::TrackMetaData
                 PS::bottomRight),   // inverted
             kSegmentsUnimplemented, // wide
         } },
+        .tunnels = SequenceTunnelsAllGroups({ { SequenceTunnel{ -8, 0, TunnelSlope::up25 } } }),
     };
 
     static constexpr SequenceDescriptor kLeftVerticalLoopSeq1 = {
@@ -5742,6 +5813,7 @@ namespace OpenRCT2::TrackMetaData
                 PS::bottomRight),   // inverted
             kSegmentsUnimplemented, // wide
         } },
+        .tunnels = SequenceTunnelsAllGroups({ { SequenceTunnel{ -8, 2, TunnelSlope::up25 } } }),
     };
 
     static constexpr SequenceDescriptor kRightVerticalLoopSeq0 = {
@@ -5749,6 +5821,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1000,
         .metalSupports = { MetalSupportPlace::centre },
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftVerticalLoopSeq0.blockedSegments),
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftVerticalLoopSeq0.tunnels),
     };
 
     static constexpr SequenceDescriptor kRightVerticalLoopSeq1 = {
@@ -5800,6 +5873,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b0010,
         .metalSupports = { MetalSupportPlace::centre },
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftVerticalLoopSeq9.blockedSegments),
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftVerticalLoopSeq9.tunnels),
     };
 
     static constexpr SequenceDescriptor kLeftQuarterTurn3TilesSeq0 = {
@@ -5812,6 +5886,7 @@ namespace OpenRCT2::TrackMetaData
             EnumsToFlags(PS::top, PS::centre, PS::topRight, PS::bottomLeft, PS::bottomRight), // inverted
             kSegmentsAll,                                                                     // wide
         } },
+        .tunnels = SequenceTunnelsAllGroups({ { SequenceTunnel{ 0, 0, TunnelSlope::flat, true } } }),
     };
 
     static constexpr SequenceDescriptor kLeftQuarterTurn3TilesSeq1 = {
@@ -5836,6 +5911,7 @@ namespace OpenRCT2::TrackMetaData
             EnumsToFlags(PS::bottom, PS::centre, PS::topLeft, PS::topRight, PS::bottomRight), // inverted
             kSegmentsAll,                                                                     // wide
         } },
+        .tunnels = SequenceTunnelsAllGroups({ { SequenceTunnel{ 0, 3, TunnelSlope::flat, true } } }),
     };
 
     static constexpr SequenceDescriptor kRightQuarterTurn3TilesSeq0 = {
@@ -5844,6 +5920,7 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::corner2 },
         .metalSupports = { MetalSupportPlace::centre },
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftQuarterTurn3TilesSeq0.blockedSegments),
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftQuarterTurn3TilesSeq0.tunnels),
     };
 
     static constexpr SequenceDescriptor kRightQuarterTurn3TilesSeq1 = {
@@ -5865,6 +5942,7 @@ namespace OpenRCT2::TrackMetaData
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = 1,
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftQuarterTurn3TilesSeq3.blockedSegments),
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftQuarterTurn3TilesSeq3.tunnels),
     };
 
     static constexpr SequenceDescriptor kLeftBankedQuarterTurn3TilesSeq0 = {
@@ -5877,6 +5955,7 @@ namespace OpenRCT2::TrackMetaData
             EnumsToFlags(PS::top, PS::centre, PS::topRight, PS::bottomLeft, PS::bottomRight), // inverted
             kSegmentsAll,                                                                     // wide
         } },
+        .tunnels = kLeftQuarterTurn3TilesSeq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kLeftBankedQuarterTurn3TilesSeq1 = {
@@ -5901,6 +5980,7 @@ namespace OpenRCT2::TrackMetaData
             EnumsToFlags(PS::bottom, PS::centre, PS::topLeft, PS::topRight, PS::bottomRight), // inverted
             kSegmentsAll,                                                                     // wide
         } },
+        .tunnels = kLeftQuarterTurn3TilesSeq3.tunnels,
     };
 
     static constexpr SequenceDescriptor kRightBankedQuarterTurn3TilesSeq0 = {
@@ -5909,6 +5989,7 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::corner2 },
         .metalSupports = { MetalSupportPlace::centre },
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftBankedQuarterTurn3TilesSeq0.blockedSegments),
+        .tunnels = kRightQuarterTurn3TilesSeq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kRightBankedQuarterTurn3TilesSeq1 = {
@@ -5930,6 +6011,7 @@ namespace OpenRCT2::TrackMetaData
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = 1,
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftBankedQuarterTurn3TilesSeq3.blockedSegments),
+        .tunnels = kRightQuarterTurn3TilesSeq3.tunnels,
     };
 
     static constexpr SequenceDescriptor kLeftQuarterTurn3TilesUp25Seq0 = {
@@ -5942,6 +6024,7 @@ namespace OpenRCT2::TrackMetaData
             EnumsToFlags(PS::top, PS::centre, PS::topRight, PS::bottomLeft, PS::bottomRight), // inverted
             kSegmentsAll,                                                                     // wide
         } },
+        .tunnels = SequenceTunnelsAllGroups({ { SequenceTunnel{ -8, 0, TunnelSlope::up25 } } }),
     };
 
     static constexpr SequenceDescriptor kLeftQuarterTurn3TilesUp25Seq1 = {
@@ -5970,6 +6053,7 @@ namespace OpenRCT2::TrackMetaData
             EnumsToFlags(PS::bottom, PS::centre, PS::topLeft, PS::topRight, PS::bottomRight), // inverted
             kSegmentsAll,                                                                     // wide
         } },
+        .tunnels = SequenceTunnelsAllGroups({ { SequenceTunnel{ 8, 3, TunnelSlope::down25 } } }),
     };
 
     static constexpr SequenceDescriptor kRightQuarterTurn3TilesUp25Seq0 = {
@@ -5978,6 +6062,7 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::corner3 },
         .metalSupports = { MetalSupportPlace::centre },
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftQuarterTurn3TilesUp25Seq0.blockedSegments),
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftQuarterTurn3TilesUp25Seq0.tunnels),
     };
 
     static constexpr SequenceDescriptor kRightQuarterTurn3TilesUp25Seq1 = {
@@ -5999,6 +6084,7 @@ namespace OpenRCT2::TrackMetaData
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = 1,
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftQuarterTurn3TilesUp25Seq3.blockedSegments),
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftQuarterTurn3TilesUp25Seq3.tunnels),
     };
 
     static constexpr SequenceDescriptor kLeftQuarterTurn3TilesDown25Seq0 = {
@@ -6007,6 +6093,7 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::corner3 },
         .metalSupports = { MetalSupportPlace::centre },
         .blockedSegments = kLeftQuarterTurn3TilesUp25Seq0.blockedSegments,
+        .tunnels = SequenceTunnelsPrev(kRightQuarterTurn3TilesUp25Seq3.tunnels),
     };
 
     static constexpr SequenceDescriptor kLeftQuarterTurn3TilesDown25Seq1 = {
@@ -6028,6 +6115,7 @@ namespace OpenRCT2::TrackMetaData
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = -1,
         .blockedSegments = kLeftQuarterTurn3TilesUp25Seq3.blockedSegments,
+        .tunnels = SequenceTunnelsPrev(kRightQuarterTurn3TilesUp25Seq0.tunnels),
     };
 
     static constexpr SequenceDescriptor kRightQuarterTurn3TilesDown25Seq0 = {
@@ -6036,6 +6124,7 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::corner3 },
         .metalSupports = { MetalSupportPlace::centre },
         .blockedSegments = kRightQuarterTurn3TilesUp25Seq0.blockedSegments,
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftQuarterTurn3TilesDown25Seq0.tunnels),
     };
 
     static constexpr SequenceDescriptor kRightQuarterTurn3TilesDown25Seq1 = {
@@ -6057,6 +6146,7 @@ namespace OpenRCT2::TrackMetaData
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = 1,
         .blockedSegments = kRightQuarterTurn3TilesUp25Seq3.blockedSegments,
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftQuarterTurn3TilesDown25Seq3.tunnels),
     };
 
     static constexpr SequenceDescriptor kLeftQuarterTurn1TileSeq0 = {
@@ -6069,6 +6159,8 @@ namespace OpenRCT2::TrackMetaData
             EnumsToFlags(PS::left, PS::centre, PS::topLeft, PS::bottomLeft), // inverted
             kSegmentsAll,                                                    // wide
         } },
+        .tunnels = SequenceTunnelsAllGroups(
+            { { SequenceTunnel{ 0, 0, TunnelSlope::flat, true }, SequenceTunnel{ 0, 3, TunnelSlope::flat, true } } }),
     };
 
     static constexpr SequenceDescriptor kRightQuarterTurn1TileSeq0 = {
@@ -6077,6 +6169,7 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::corner2 },
         .metalSupports = { MetalSupportPlace::centre },
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftQuarterTurn1TileSeq0.blockedSegments),
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftQuarterTurn1TileSeq0.tunnels),
     };
 
     static constexpr SequenceDescriptor kLeftTwistDownToUpSeq0 = {
@@ -6088,6 +6181,7 @@ namespace OpenRCT2::TrackMetaData
             EnumsToFlags(PS::right, PS::bottom, PS::centre, PS::topRight, PS::bottomLeft, PS::bottomRight), // inverted
             kSegmentsUnimplemented,                                                                         // wide
         } },
+        .tunnels = SequenceTunnelsAllGroups({ { SequenceTunnel{ 0, 0, TunnelSlope::flat } } }),
     };
 
     static constexpr SequenceDescriptor kLeftTwistDownToUpSeq1 = {
@@ -6109,6 +6203,9 @@ namespace OpenRCT2::TrackMetaData
             EnumsToFlags(PS::right, PS::bottom, PS::centre, PS::topRight, PS::bottomLeft, PS::bottomRight), // inverted
             kSegmentsUnimplemented,                                                                         // wide
         } },
+        .tunnels = { { { { { SequenceTunnel{ -26, 2, TunnelSlope::tall } } },
+                         { { SequenceTunnel{ 0, 2, TunnelSlope::flat } } },
+                         kSequenceTunnelUnimplemented } } },
     };
 
     static constexpr SequenceDescriptor kRightTwistDownToUpSeq0 = {
@@ -6116,6 +6213,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .metalSupports = { MetalSupportPlace::centre },
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftTwistDownToUpSeq0.blockedSegments),
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftTwistDownToUpSeq0.tunnels),
     };
 
     static constexpr SequenceDescriptor kRightTwistDownToUpSeq1 = {
@@ -6129,6 +6227,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .invertSegmentBlocking = true,
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftTwistDownToUpSeq2.blockedSegments),
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftTwistDownToUpSeq2.tunnels),
     };
 
     static constexpr SequenceDescriptor kLeftTwistUpToDownSeq0 = {
@@ -6136,6 +6235,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .invertSegmentBlocking = true,
         .blockedSegments = blockedSegmentsRotate(kLeftTwistDownToUpSeq2.blockedSegments, 2),
+        .tunnels = SequenceTunnelsReverse(kLeftTwistDownToUpSeq2.tunnels),
     };
 
     static constexpr SequenceDescriptor kLeftTwistUpToDownSeq1 = {
@@ -6149,6 +6249,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .metalSupports = { MetalSupportPlace::centre },
         .blockedSegments = blockedSegmentsRotate(kLeftTwistDownToUpSeq0.blockedSegments, 2),
+        .tunnels = SequenceTunnelsReverse(kLeftTwistDownToUpSeq0.tunnels),
     };
 
     static constexpr SequenceDescriptor kRightTwistUpToDownSeq0 = {
@@ -6156,6 +6257,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .invertSegmentBlocking = true,
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftTwistUpToDownSeq0.blockedSegments),
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftTwistUpToDownSeq0.tunnels),
     };
 
     static constexpr SequenceDescriptor kRightTwistUpToDownSeq1 = {
@@ -6169,6 +6271,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .metalSupports = { MetalSupportPlace::centre },
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftTwistUpToDownSeq2.blockedSegments),
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftTwistUpToDownSeq2.tunnels),
     };
 
     static constexpr SequenceDescriptor kHalfLoopUpSeq0 = {
@@ -6180,6 +6283,7 @@ namespace OpenRCT2::TrackMetaData
             EnumsToFlags(PS::centre, PS::topRight, PS::bottomLeft), // inverted
             kSegmentsUnimplemented,                                 // wide
         } },
+        .tunnels = SequenceTunnelsAllGroups({ { SequenceTunnel{ -8, 0, TunnelSlope::up25 } } }),
     };
 
     static constexpr SequenceDescriptor kHalfLoopUpSeq1 = {
@@ -6210,6 +6314,9 @@ namespace OpenRCT2::TrackMetaData
             EnumsToFlags(PS::centre, PS::topRight, PS::bottomLeft), // inverted
             kSegmentsUnimplemented,                                 // wide
         } },
+        .tunnels = { { { { { SequenceTunnel{ 0, 0, TunnelSlope::flat } } },
+                         { { SequenceTunnel{ 32, 0, TunnelSlope::flat } } },
+                         { { SequenceTunnel{ 0, 0, TunnelSlope::flat } } } } } },
     };
 
     static constexpr SequenceDescriptor kHalfLoopDownSeq0 = {
@@ -6219,6 +6326,7 @@ namespace OpenRCT2::TrackMetaData
             EnumsToFlags(PS::centre, PS::topRight, PS::bottomLeft), // inverted
             kSegmentsUnimplemented,                                 // wide
         } },
+        .tunnels = kHalfLoopUpSeq3.tunnels,
     };
 
     static constexpr SequenceDescriptor kHalfLoopDownSeq1 = {
@@ -6251,6 +6359,7 @@ namespace OpenRCT2::TrackMetaData
             EnumsToFlags(PS::centre, PS::topRight, PS::bottomLeft), // inverted
             kSegmentsUnimplemented,                                 // wide
         } },
+        .tunnels = kHalfLoopUpSeq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kLeftCorkscrewUpSeq0 = {
@@ -6262,6 +6371,7 @@ namespace OpenRCT2::TrackMetaData
             EnumsToFlags(PS::top, PS::right, PS::bottom, PS::centre, PS::topRight, PS::bottomLeft, PS::bottomRight), // inverted
             kSegmentsUnimplemented,                                                                                  // wide
         } },
+        .tunnels = SequenceTunnelsAllGroups({ { SequenceTunnel{ 0, 0, TunnelSlope::flat } } }),
     };
 
     static constexpr SequenceDescriptor kLeftCorkscrewUpSeq1 = {
@@ -6284,6 +6394,9 @@ namespace OpenRCT2::TrackMetaData
             EnumsToFlags(PS::top, PS::right, PS::bottom, PS::centre, PS::topLeft, PS::topRight, PS::bottomRight), // inverted
             kSegmentsUnimplemented,                                                                               // wide
         } },
+        .tunnels = { { { { { SequenceTunnel{ 8, 3, TunnelSlope::flat } } },
+                         { { SequenceTunnel{ 40, 3, TunnelSlope::flat } } },
+                         { { SequenceTunnel{ 8, 3, TunnelSlope::flat } } } } } },
     };
 
     static constexpr SequenceDescriptor kRightCorkscrewUpSeq0 = {
@@ -6291,6 +6404,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .metalSupports = { MetalSupportPlace::centre },
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftCorkscrewUpSeq0.blockedSegments),
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftCorkscrewUpSeq0.tunnels),
     };
 
     static constexpr SequenceDescriptor kRightCorkscrewUpSeq1 = {
@@ -6309,6 +6423,7 @@ namespace OpenRCT2::TrackMetaData
             EnumsToFlags(PS::top, PS::left, PS::right, PS::centre, PS::topLeft, PS::topRight, PS::bottomRight), // inverted
             kSegmentsUnimplemented,                                                                             // wide
         } },
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftCorkscrewUpSeq2.tunnels),
     };
 
     static constexpr SequenceDescriptor kLeftCorkscrewDownSeq0 = {
@@ -6317,6 +6432,7 @@ namespace OpenRCT2::TrackMetaData
         .metalSupports = { MetalSupportPlace::centre },
         .invertSegmentBlocking = true,
         .blockedSegments = blockedSegmentsRotate(kRightCorkscrewUpSeq2.blockedSegments, 1),
+        .tunnels = SequenceTunnelsPrev(kRightCorkscrewUpSeq2.tunnels),
     };
 
     static constexpr SequenceDescriptor kLeftCorkscrewDownSeq1 = {
@@ -6330,6 +6446,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b0101,
         .metalSupports = { MetalSupportPlace::centre },
         .blockedSegments = blockedSegmentsRotate(kRightCorkscrewUpSeq0.blockedSegments, 1),
+        .tunnels = SequenceTunnelsPrev(kRightCorkscrewUpSeq0.tunnels),
     };
 
     static constexpr SequenceDescriptor kRightCorkscrewDownSeq0 = {
@@ -6338,6 +6455,7 @@ namespace OpenRCT2::TrackMetaData
         .metalSupports = { MetalSupportPlace::centre },
         .invertSegmentBlocking = true,
         .blockedSegments = blockedSegmentsRotate(kLeftCorkscrewUpSeq2.blockedSegments, 3),
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftCorkscrewDownSeq0.tunnels),
     };
 
     static constexpr SequenceDescriptor kRightCorkscrewDownSeq1 = {
@@ -6351,6 +6469,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b0101,
         .metalSupports = { MetalSupportPlace::centre },
         .blockedSegments = blockedSegmentsRotate(kLeftCorkscrewUpSeq0.blockedSegments, 3),
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftCorkscrewDownSeq2.tunnels),
     };
 
     static constexpr SequenceDescriptor kFlatToUp60Seq0 = {
@@ -6359,6 +6478,8 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::flatToUp60Deg },
         .metalSupports = { MetalSupportPlace::centre, true },
         .blockedSegments = kFlatSeq0.blockedSegments,
+        .tunnels = SequenceTunnelsAllGroups(
+            { { SequenceTunnel{ 0, 0, TunnelSlope::flat }, SequenceTunnel{ 24, 2, TunnelSlope::down25 } } }),
     };
 
     static constexpr SequenceDescriptor kUp60ToFlatSeq0 = {
@@ -6367,6 +6488,8 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up60DegToFlat },
         .metalSupports = { MetalSupportPlace::centre, true },
         .blockedSegments = kFlatSeq0.blockedSegments,
+        .tunnels = SequenceTunnelsAllGroups(
+            { { SequenceTunnel{ -8, 0, TunnelSlope::up25 }, SequenceTunnel{ 24, 2, TunnelSlope::flat } } }),
     };
 
     static constexpr SequenceDescriptor kFlatToDown60Seq0 = {
@@ -6376,6 +6499,7 @@ namespace OpenRCT2::TrackMetaData
         .metalSupports = { MetalSupportPlace::centre, true },
         .extraSupportRotation = -2,
         .blockedSegments = kFlatSeq0.blockedSegments,
+        .tunnels = SequenceTunnelsReverse(kUp60ToFlatSeq0.tunnels),
     };
 
     static constexpr SequenceDescriptor kDown60ToFlatSeq0 = {
@@ -6385,12 +6509,14 @@ namespace OpenRCT2::TrackMetaData
         .metalSupports = { MetalSupportPlace::centre, true },
         .extraSupportRotation = 2,
         .blockedSegments = kFlatSeq0.blockedSegments,
+        .tunnels = SequenceTunnelsReverse(kFlatToUp60Seq0.tunnels),
     };
 
     static constexpr SequenceDescriptor kTowerBaseSeq0 = {
         .clearance = { 0, 0, 0, 64, { 0b1111, 0 }, 0 },
         .flags = TRACK_SEQUENCE_FLAG_ORIGIN,
         .woodenSupports = { WoodenSupportSubType::neSw },
+        .tunnels = { {}, 96 },
     };
 
     static constexpr SequenceDescriptor kTowerBaseSeq1 = {
@@ -6443,6 +6569,7 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kTowerSectionSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .tunnels = { {}, 32 },
     };
 
     static constexpr SequenceDescriptor kTowerSectionSeq1 = {
@@ -6454,6 +6581,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .metalSupports = { MetalSupportPlace::centre, true },
         .blockedSegments = kFlatSeq0.blockedSegments,
+        .tunnels = kFlatSeq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kUp25CoveredSeq0 = {
@@ -6461,6 +6589,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .metalSupports = { MetalSupportPlace::centre, true },
         .blockedSegments = kUp25Seq0.blockedSegments,
+        .tunnels = kUp25Seq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kUp60CoveredSeq0 = {
@@ -6468,6 +6597,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .metalSupports = { MetalSupportPlace::centre, true },
         .blockedSegments = kUp60Seq0.blockedSegments,
+        .tunnels = kUp60Seq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kFlatToUp25CoveredSeq0 = {
@@ -6475,6 +6605,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .metalSupports = { MetalSupportPlace::centre, true },
         .blockedSegments = kFlatToUp25Seq0.blockedSegments,
+        .tunnels = kFlatToUp25Seq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kUp25ToUp60CoveredSeq0 = {
@@ -6482,6 +6613,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .metalSupports = { MetalSupportPlace::centre, true },
         .blockedSegments = kUp25ToUp60Seq0.blockedSegments,
+        .tunnels = kUp25ToUp60Seq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kUp60ToUp25CoveredSeq0 = {
@@ -6489,6 +6621,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .metalSupports = { MetalSupportPlace::centre, true },
         .blockedSegments = kUp60ToUp25Seq0.blockedSegments,
+        .tunnels = kUp60ToUp25Seq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kUp25ToFlatCoveredSeq0 = {
@@ -6496,6 +6629,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .metalSupports = { MetalSupportPlace::centre, true },
         .blockedSegments = kUp25ToFlatSeq0.blockedSegments,
+        .tunnels = kUp25ToFlatSeq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kDown25CoveredSeq0 = {
@@ -6503,6 +6637,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .metalSupports = { MetalSupportPlace::centre, true },
         .blockedSegments = kDown25Seq0.blockedSegments,
+        .tunnels = kDown25Seq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kDown60CoveredSeq0 = {
@@ -6510,6 +6645,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .metalSupports = { MetalSupportPlace::centre, true },
         .blockedSegments = kDown60Seq0.blockedSegments,
+        .tunnels = kDown60Seq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kFlatToDown25CoveredSeq0 = {
@@ -6517,6 +6653,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .metalSupports = { MetalSupportPlace::centre, true },
         .blockedSegments = kFlatToDown25Seq0.blockedSegments,
+        .tunnels = kFlatToDown25Seq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kDown25ToDown60CoveredSeq0 = {
@@ -6524,6 +6661,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .metalSupports = { MetalSupportPlace::centre, true },
         .blockedSegments = kDown25ToDown60Seq0.blockedSegments,
+        .tunnels = kDown25ToDown60Seq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kDown60ToDown25CoveredSeq0 = {
@@ -6531,6 +6669,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .metalSupports = { MetalSupportPlace::centre, true },
         .blockedSegments = kDown60ToDown25Seq0.blockedSegments,
+        .tunnels = kDown60ToDown25Seq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kDown25ToFlatCoveredSeq0 = {
@@ -6538,6 +6677,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .metalSupports = { MetalSupportPlace::centre, true },
         .blockedSegments = kDown25ToFlatSeq0.blockedSegments,
+        .tunnels = kDown25ToFlatSeq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kLeftQuarterTurn5TilesCoveredSeq0 = {
@@ -6545,35 +6685,41 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b0010,
         .metalSupports = { MetalSupportPlace::centre },
         .blockedSegments = kLeftQuarterTurn5TilesSeq0.blockedSegments,
+        .tunnels = kLeftQuarterTurn5TilesSeq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kLeftQuarterTurn5TilesCoveredSeq1 = {
         .clearance = { 0, -32, 0, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1100,
         .blockedSegments = kLeftQuarterTurn5TilesSeq1.blockedSegments,
+        .tunnels = kLeftQuarterTurn5TilesSeq1.tunnels,
     };
 
     static constexpr SequenceDescriptor kLeftQuarterTurn5TilesCoveredSeq2 = {
         .clearance = { -32, 0, 0, 0, { 0b0111, 0 }, 0 },
         .allowedWallEdges = 0b0011,
         .blockedSegments = kLeftQuarterTurn5TilesSeq2.blockedSegments,
+        .tunnels = kLeftQuarterTurn5TilesSeq2.tunnels,
     };
 
     static constexpr SequenceDescriptor kLeftQuarterTurn5TilesCoveredSeq3 = {
         .clearance = { -32, -32, 0, 0, { 0b1101, 0 }, 0 },
         .blockedSegments = kLeftQuarterTurn5TilesSeq3.blockedSegments,
+        .tunnels = kLeftQuarterTurn5TilesSeq3.tunnels,
     };
 
     static constexpr SequenceDescriptor kLeftQuarterTurn5TilesCoveredSeq4 = {
         .clearance = { -32, -64, 0, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1100,
         .blockedSegments = kLeftQuarterTurn5TilesSeq4.blockedSegments,
+        .tunnels = kLeftQuarterTurn5TilesSeq4.tunnels,
     };
 
     static constexpr SequenceDescriptor kLeftQuarterTurn5TilesCoveredSeq5 = {
         .clearance = { -64, -32, 0, 0, { 0b0111, 0 }, 0 },
         .allowedWallEdges = 0b0011,
         .blockedSegments = kLeftQuarterTurn5TilesSeq5.blockedSegments,
+        .tunnels = kLeftQuarterTurn5TilesSeq5.tunnels,
     };
 
     static constexpr SequenceDescriptor kLeftQuarterTurn5TilesCoveredSeq6 = {
@@ -6582,6 +6728,7 @@ namespace OpenRCT2::TrackMetaData
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = -1,
         .blockedSegments = kLeftQuarterTurn5TilesSeq6.blockedSegments,
+        .tunnels = kLeftQuarterTurn5TilesSeq6.tunnels,
     };
 
     static constexpr SequenceDescriptor kRightQuarterTurn5TilesCoveredSeq0 = {
@@ -6589,6 +6736,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1000,
         .metalSupports = { MetalSupportPlace::centre },
         .blockedSegments = kRightQuarterTurn5TilesSeq0.blockedSegments,
+        .tunnels = kRightQuarterTurn5TilesSeq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kRightQuarterTurn5TilesCoveredSeq1 = {
@@ -6626,12 +6774,14 @@ namespace OpenRCT2::TrackMetaData
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = 1,
         .blockedSegments = kRightQuarterTurn5TilesSeq6.blockedSegments,
+        .tunnels = kRightQuarterTurn5TilesSeq6.tunnels,
     };
 
     static constexpr SequenceDescriptor kSBendLeftCoveredSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
         .blockedSegments = kSBendLeftSeq0.blockedSegments,
+        .tunnels = kSBendLeftSeq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kSBendLeftCoveredSeq1 = {
@@ -6650,12 +6800,14 @@ namespace OpenRCT2::TrackMetaData
         .clearance = { -64, -32, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
         .blockedSegments = kSBendLeftSeq3.blockedSegments,
+        .tunnels = kSBendLeftSeq3.tunnels,
     };
 
     static constexpr SequenceDescriptor kSBendRightCoveredSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
         .blockedSegments = kSBendRightSeq0.blockedSegments,
+        .tunnels = kSBendRightSeq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kSBendRightCoveredSeq1 = {
@@ -6674,6 +6826,7 @@ namespace OpenRCT2::TrackMetaData
         .clearance = { -64, 32, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
         .blockedSegments = kSBendRightSeq3.blockedSegments,
+        .tunnels = kSBendRightSeq3.tunnels,
     };
 
     static constexpr SequenceDescriptor kLeftQuarterTurn3TilesCoveredSeq0 = {
@@ -6681,6 +6834,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b0010,
         .metalSupports = { MetalSupportPlace::centre },
         .blockedSegments = kLeftQuarterTurn3TilesSeq0.blockedSegments,
+        .tunnels = kLeftQuarterTurn3TilesSeq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kLeftQuarterTurn3TilesCoveredSeq1 = {
@@ -6708,6 +6862,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1000,
         .metalSupports = { MetalSupportPlace::centre },
         .blockedSegments = kRightQuarterTurn3TilesSeq0.blockedSegments,
+        .tunnels = kRightQuarterTurn3TilesSeq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kRightQuarterTurn3TilesCoveredSeq1 = {
@@ -6728,6 +6883,7 @@ namespace OpenRCT2::TrackMetaData
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = 1,
         .blockedSegments = kRightQuarterTurn3TilesSeq3.blockedSegments,
+        .tunnels = kRightQuarterTurn3TilesSeq3.tunnels,
     };
 
     static constexpr SequenceDescriptor kLeftHalfBankedHelixUpSmallSeq0 = {
@@ -6740,6 +6896,9 @@ namespace OpenRCT2::TrackMetaData
             kSegmentsUnimplemented,                                                       // inverted
             kSegmentsAll,                                                                 // wide
         } },
+        .tunnels = { { { { SequenceTunnel{ 0, 0, TunnelSlope::flat } },
+                         kSequenceTunnelUnimplemented,
+                         kSequenceTunnelUnimplemented } } },
     };
 
     static constexpr SequenceDescriptor kLeftHalfBankedHelixUpSmallSeq1 = {
@@ -6774,6 +6933,9 @@ namespace OpenRCT2::TrackMetaData
             kSegmentsUnimplemented,                                                             // inverted
             kSegmentsAll,                                                                       // wide
         } },
+        .tunnels = { { { { SequenceTunnel{ 8, 3, TunnelSlope::flat } },
+                         kSequenceTunnelUnimplemented,
+                         kSequenceTunnelUnimplemented } } },
     };
 
     static constexpr SequenceDescriptor kLeftHalfBankedHelixUpSmallSeq4 = {
@@ -6787,6 +6949,9 @@ namespace OpenRCT2::TrackMetaData
             kSegmentsUnimplemented,                                                           // inverted
             kSegmentsAll,                                                                     // wide
         } },
+        .tunnels = { { { { SequenceTunnel{ 0, 1, TunnelSlope::flat } },
+                         kSequenceTunnelUnimplemented,
+                         kSequenceTunnelUnimplemented } } },
     };
 
     static constexpr SequenceDescriptor kLeftHalfBankedHelixUpSmallSeq5 = {
@@ -6821,6 +6986,9 @@ namespace OpenRCT2::TrackMetaData
             kSegmentsUnimplemented,                                                             // inverted
             kSegmentsAll,                                                                       // wide
         } },
+        .tunnels = { { { { SequenceTunnel{ 8, 0, TunnelSlope::flat } },
+                         kSequenceTunnelUnimplemented,
+                         kSequenceTunnelUnimplemented } } },
     };
 
     static constexpr SequenceDescriptor kRightHalfBankedHelixUpSmallSeq0 = {
@@ -6829,6 +6997,7 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::corner2 },
         .metalSupports = { MetalSupportPlace::centre },
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftHalfBankedHelixUpSmallSeq0.blockedSegments),
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftHalfBankedHelixUpSmallSeq0.tunnels),
     };
 
     static constexpr SequenceDescriptor kRightHalfBankedHelixUpSmallSeq1 = {
@@ -6851,6 +7020,7 @@ namespace OpenRCT2::TrackMetaData
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = 1,
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftHalfBankedHelixUpSmallSeq3.blockedSegments),
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftHalfBankedHelixUpSmallSeq3.tunnels),
     };
 
     static constexpr SequenceDescriptor kRightHalfBankedHelixUpSmallSeq4 = {
@@ -6860,6 +7030,7 @@ namespace OpenRCT2::TrackMetaData
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = 1,
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftHalfBankedHelixUpSmallSeq4.blockedSegments),
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftHalfBankedHelixUpSmallSeq4.tunnels),
     };
 
     static constexpr SequenceDescriptor kRightHalfBankedHelixUpSmallSeq5 = {
@@ -6882,6 +7053,7 @@ namespace OpenRCT2::TrackMetaData
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = 2,
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftHalfBankedHelixUpSmallSeq7.blockedSegments),
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftHalfBankedHelixUpSmallSeq7.tunnels),
     };
 
     static constexpr SequenceDescriptor kLeftHalfBankedHelixDownSmallSeq0 = {
@@ -6890,6 +7062,7 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::corner2 },
         .metalSupports = { MetalSupportPlace::centre },
         .blockedSegments = kLeftHalfBankedHelixUpSmallSeq0.blockedSegments,
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftHalfBankedHelixUpSmallSeq7.tunnels),
     };
 
     static constexpr SequenceDescriptor kLeftHalfBankedHelixDownSmallSeq1 = {
@@ -6912,6 +7085,7 @@ namespace OpenRCT2::TrackMetaData
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = -1,
         .blockedSegments = kLeftHalfBankedHelixUpSmallSeq3.blockedSegments,
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftHalfBankedHelixUpSmallSeq4.tunnels),
     };
 
     static constexpr SequenceDescriptor kLeftHalfBankedHelixDownSmallSeq4 = {
@@ -6921,6 +7095,7 @@ namespace OpenRCT2::TrackMetaData
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = -1,
         .blockedSegments = kLeftHalfBankedHelixUpSmallSeq4.blockedSegments,
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftHalfBankedHelixUpSmallSeq3.tunnels),
     };
 
     static constexpr SequenceDescriptor kLeftHalfBankedHelixDownSmallSeq5 = {
@@ -6943,6 +7118,7 @@ namespace OpenRCT2::TrackMetaData
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = -2,
         .blockedSegments = kLeftHalfBankedHelixUpSmallSeq7.blockedSegments,
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftHalfBankedHelixUpSmallSeq0.tunnels),
     };
 
     static constexpr SequenceDescriptor kRightHalfBankedHelixDownSmallSeq0 = {
@@ -6951,6 +7127,7 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::corner3 },
         .metalSupports = { MetalSupportPlace::centre },
         .blockedSegments = kRightHalfBankedHelixUpSmallSeq0.blockedSegments,
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftHalfBankedHelixDownSmallSeq0.tunnels),
     };
 
     static constexpr SequenceDescriptor kRightHalfBankedHelixDownSmallSeq1 = {
@@ -6973,6 +7150,7 @@ namespace OpenRCT2::TrackMetaData
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = 1,
         .blockedSegments = kRightHalfBankedHelixUpSmallSeq3.blockedSegments,
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftHalfBankedHelixDownSmallSeq3.tunnels),
     };
 
     static constexpr SequenceDescriptor kRightHalfBankedHelixDownSmallSeq4 = {
@@ -6982,6 +7160,7 @@ namespace OpenRCT2::TrackMetaData
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = 1,
         .blockedSegments = kRightHalfBankedHelixUpSmallSeq4.blockedSegments,
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftHalfBankedHelixDownSmallSeq4.tunnels),
     };
 
     static constexpr SequenceDescriptor kRightHalfBankedHelixDownSmallSeq5 = {
@@ -7004,6 +7183,7 @@ namespace OpenRCT2::TrackMetaData
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = 2,
         .blockedSegments = kRightHalfBankedHelixUpSmallSeq7.blockedSegments,
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftHalfBankedHelixDownSmallSeq7.tunnels),
     };
 
     static constexpr SequenceDescriptor kLeftHalfBankedHelixUpLargeSeq0 = {
@@ -7016,6 +7196,9 @@ namespace OpenRCT2::TrackMetaData
             kSegmentsUnimplemented,                                                       // inverted
             kSegmentsAll,                                                                 // wide
         } },
+        .tunnels = { { { { SequenceTunnel{ 0, 0, TunnelSlope::flat } },
+                         kSequenceTunnelUnimplemented,
+                         kSequenceTunnelUnimplemented } } },
     };
 
     static constexpr SequenceDescriptor kLeftHalfBankedHelixUpLargeSeq1 = {
@@ -7083,6 +7266,9 @@ namespace OpenRCT2::TrackMetaData
             kSegmentsUnimplemented,                                                             // inverted
             kSegmentsAll,                                                                       // wide
         } },
+        .tunnels = { { { { SequenceTunnel{ 8, 3, TunnelSlope::flat } },
+                         kSequenceTunnelUnimplemented,
+                         kSequenceTunnelUnimplemented } } },
     };
 
     static constexpr SequenceDescriptor kLeftHalfBankedHelixUpLargeSeq7 = {
@@ -7096,6 +7282,9 @@ namespace OpenRCT2::TrackMetaData
             kSegmentsUnimplemented,                                                           // inverted
             kSegmentsAll,                                                                     // wide
         } },
+        .tunnels = { { { { SequenceTunnel{ 0, 1, TunnelSlope::flat } },
+                         kSequenceTunnelUnimplemented,
+                         kSequenceTunnelUnimplemented } } },
     };
 
     static constexpr SequenceDescriptor kLeftHalfBankedHelixUpLargeSeq8 = {
@@ -7163,6 +7352,9 @@ namespace OpenRCT2::TrackMetaData
             kSegmentsUnimplemented,                                                             // inverted
             kSegmentsAll,                                                                       // wide
         } },
+        .tunnels = { { { { SequenceTunnel{ 8, 0, TunnelSlope::flat } },
+                         kSequenceTunnelUnimplemented,
+                         kSequenceTunnelUnimplemented } } },
     };
 
     static constexpr SequenceDescriptor kRightHalfBankedHelixUpLargeSeq0 = {
@@ -7171,6 +7363,7 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::neSw },
         .metalSupports = { MetalSupportPlace::centre },
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftHalfBankedHelixUpLargeSeq0.blockedSegments),
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftHalfBankedHelixUpLargeSeq0.tunnels),
     };
 
     static constexpr SequenceDescriptor kRightHalfBankedHelixUpLargeSeq1 = {
@@ -7212,6 +7405,7 @@ namespace OpenRCT2::TrackMetaData
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = 1,
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftHalfBankedHelixUpLargeSeq6.blockedSegments),
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftHalfBankedHelixUpLargeSeq6.tunnels),
     };
 
     static constexpr SequenceDescriptor kRightHalfBankedHelixUpLargeSeq7 = {
@@ -7221,6 +7415,7 @@ namespace OpenRCT2::TrackMetaData
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = 1,
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftHalfBankedHelixUpLargeSeq7.blockedSegments),
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftHalfBankedHelixUpLargeSeq7.tunnels),
     };
 
     static constexpr SequenceDescriptor kRightHalfBankedHelixUpLargeSeq8 = {
@@ -7262,6 +7457,7 @@ namespace OpenRCT2::TrackMetaData
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = 2,
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftHalfBankedHelixUpLargeSeq13.blockedSegments),
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftHalfBankedHelixUpLargeSeq13.tunnels),
     };
 
     static constexpr SequenceDescriptor kLeftHalfBankedHelixDownLargeSeq0 = {
@@ -7270,6 +7466,7 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::neSw },
         .metalSupports = { MetalSupportPlace::centre },
         .blockedSegments = kLeftHalfBankedHelixUpLargeSeq0.blockedSegments,
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftHalfBankedHelixUpLargeSeq13.tunnels),
     };
 
     static constexpr SequenceDescriptor kLeftHalfBankedHelixDownLargeSeq1 = {
@@ -7311,6 +7508,7 @@ namespace OpenRCT2::TrackMetaData
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = -1,
         .blockedSegments = kLeftHalfBankedHelixUpLargeSeq6.blockedSegments,
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftHalfBankedHelixUpLargeSeq7.tunnels),
     };
 
     static constexpr SequenceDescriptor kLeftHalfBankedHelixDownLargeSeq7 = {
@@ -7320,6 +7518,7 @@ namespace OpenRCT2::TrackMetaData
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = -1,
         .blockedSegments = kLeftHalfBankedHelixUpLargeSeq7.blockedSegments,
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftHalfBankedHelixUpLargeSeq6.tunnels),
     };
 
     static constexpr SequenceDescriptor kLeftHalfBankedHelixDownLargeSeq8 = {
@@ -7361,6 +7560,7 @@ namespace OpenRCT2::TrackMetaData
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = -2,
         .blockedSegments = kLeftHalfBankedHelixUpLargeSeq13.blockedSegments,
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftHalfBankedHelixUpLargeSeq0.tunnels),
     };
 
     static constexpr SequenceDescriptor kRightHalfBankedHelixDownLargeSeq0 = {
@@ -7369,6 +7569,7 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::neSw },
         .metalSupports = { MetalSupportPlace::centre },
         .blockedSegments = kRightHalfBankedHelixUpLargeSeq0.blockedSegments,
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftHalfBankedHelixDownLargeSeq0.tunnels),
     };
 
     static constexpr SequenceDescriptor kRightHalfBankedHelixDownLargeSeq1 = {
@@ -7410,6 +7611,7 @@ namespace OpenRCT2::TrackMetaData
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = 1,
         .blockedSegments = kRightHalfBankedHelixUpLargeSeq6.blockedSegments,
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftHalfBankedHelixDownLargeSeq6.tunnels),
     };
 
     static constexpr SequenceDescriptor kRightHalfBankedHelixDownLargeSeq7 = {
@@ -7419,6 +7621,7 @@ namespace OpenRCT2::TrackMetaData
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = 1,
         .blockedSegments = kRightHalfBankedHelixUpLargeSeq7.blockedSegments,
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftHalfBankedHelixDownLargeSeq7.tunnels),
     };
 
     static constexpr SequenceDescriptor kRightHalfBankedHelixDownLargeSeq8 = {
@@ -7460,6 +7663,7 @@ namespace OpenRCT2::TrackMetaData
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = 2,
         .blockedSegments = kRightHalfBankedHelixUpLargeSeq13.blockedSegments,
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftHalfBankedHelixDownLargeSeq13.tunnels),
     };
 
     static constexpr SequenceDescriptor kLeftQuarterTurn1TileUp60Seq0 = {
@@ -7468,6 +7672,8 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::corner3 },
         .metalSupports = { MetalSupportPlace::centre },
         .blockedSegments = blockedSegmentsAllTypes(kSegmentsAll),
+        .tunnels = SequenceTunnelsAllGroups(
+            { { SequenceTunnel{ -8, 0, TunnelSlope::up25 }, SequenceTunnel{ 56, 3, TunnelSlope::down25 } } }),
     };
 
     static constexpr SequenceDescriptor kRightQuarterTurn1TileUp60Seq0 = {
@@ -7476,6 +7682,7 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::corner2 },
         .metalSupports = { MetalSupportPlace::centre },
         .blockedSegments = blockedSegmentsAllTypes(kSegmentsAll),
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftQuarterTurn1TileUp60Seq0.tunnels),
     };
 
     static constexpr SequenceDescriptor kLeftQuarterTurn1TileDown60Seq0 = {
@@ -7484,6 +7691,7 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::corner2 },
         .metalSupports = { MetalSupportPlace::centre },
         .blockedSegments = blockedSegmentsAllTypes(kSegmentsAll),
+        .tunnels = SequenceTunnelsPrev(kRightQuarterTurn1TileUp60Seq0.tunnels),
     };
 
     static constexpr SequenceDescriptor kRightQuarterTurn1TileDown60Seq0 = {
@@ -7492,6 +7700,7 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::corner3 },
         .metalSupports = { MetalSupportPlace::centre },
         .blockedSegments = blockedSegmentsAllTypes(kSegmentsAll),
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftQuarterTurn1TileDown60Seq0.tunnels),
     };
 
     static constexpr SequenceDescriptor kBrakesSeq0 = {
@@ -7500,6 +7709,7 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::neSw },
         .metalSupports = { MetalSupportPlace::centre, true },
         .blockedSegments = kFlatSeq0.blockedSegments,
+        .tunnels = kFlatSeq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kBoosterSeq0 = {
@@ -7508,6 +7718,7 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::neSw },
         .metalSupports = { MetalSupportPlace::centre, true },
         .blockedSegments = kFlatSeq0.blockedSegments,
+        .tunnels = kFlatSeq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kMazeSeq0 = {
@@ -7597,6 +7808,9 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b0010,
         .metalSupports = { MetalSupportPlace::centre },
         .blockedSegments = kBankedLeftQuarterTurn5TilesSeq0.blockedSegments,
+        .tunnels = { { { kSequenceTunnelUnimplemented,
+                         { SequenceTunnel{ 0, 0, TunnelSlope::flat } },
+                         { SequenceTunnel{ 0, 0, TunnelSlope::tall } } } } },
     };
 
     static constexpr SequenceDescriptor kLeftQuarterBankedHelixLargeUpSeq1 = {
@@ -7634,6 +7848,9 @@ namespace OpenRCT2::TrackMetaData
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = -1,
         .blockedSegments = kBankedLeftQuarterTurn5TilesSeq6.blockedSegments,
+        .tunnels = { { { kSequenceTunnelUnimplemented,
+                         { SequenceTunnel{ 16, 3, TunnelSlope::flat } },
+                         { SequenceTunnel{ 16, 3, TunnelSlope::tall } } } } },
     };
 
     static constexpr SequenceDescriptor kRightQuarterBankedHelixLargeUpSeq0 = {
@@ -7641,6 +7858,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1000,
         .metalSupports = { MetalSupportPlace::centre },
         .blockedSegments = kBankedRightQuarterTurn5TilesSeq0.blockedSegments,
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftQuarterBankedHelixLargeUpSeq0.tunnels),
     };
 
     static constexpr SequenceDescriptor kRightQuarterBankedHelixLargeUpSeq1 = {
@@ -7678,6 +7896,7 @@ namespace OpenRCT2::TrackMetaData
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = 1,
         .blockedSegments = kBankedRightQuarterTurn5TilesSeq6.blockedSegments,
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftQuarterBankedHelixLargeUpSeq6.tunnels),
     };
 
     static constexpr SequenceDescriptor kLeftQuarterBankedHelixLargeDownSeq0 = {
@@ -7685,6 +7904,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b0010,
         .metalSupports = { MetalSupportPlace::centre },
         .blockedSegments = kBankedLeftQuarterTurn5TilesSeq0.blockedSegments,
+        .tunnels = SequenceTunnelsPrev(kRightQuarterBankedHelixLargeUpSeq6.tunnels),
     };
 
     static constexpr SequenceDescriptor kLeftQuarterBankedHelixLargeDownSeq1 = {
@@ -7722,6 +7942,7 @@ namespace OpenRCT2::TrackMetaData
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = -1,
         .blockedSegments = kBankedLeftQuarterTurn5TilesSeq6.blockedSegments,
+        .tunnels = SequenceTunnelsPrev(kRightQuarterBankedHelixLargeUpSeq0.tunnels),
     };
 
     static constexpr SequenceDescriptor kRightQuarterBankedHelixLargeDownSeq0 = {
@@ -7729,6 +7950,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1000,
         .metalSupports = { MetalSupportPlace::centre },
         .blockedSegments = kBankedRightQuarterTurn5TilesSeq0.blockedSegments,
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftQuarterBankedHelixLargeDownSeq0.tunnels),
     };
 
     static constexpr SequenceDescriptor kRightQuarterBankedHelixLargeDownSeq1 = {
@@ -7766,6 +7988,7 @@ namespace OpenRCT2::TrackMetaData
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = 1,
         .blockedSegments = kBankedRightQuarterTurn5TilesSeq6.blockedSegments,
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftQuarterBankedHelixLargeDownSeq6.tunnels),
     };
 
     static constexpr SequenceDescriptor kLeftQuarterHelixLargeUpSeq0 = {
@@ -7773,6 +7996,9 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b0010,
         .metalSupports = { MetalSupportPlace::centre },
         .blockedSegments = kLeftQuarterTurn5TilesSeq0.blockedSegments,
+        .tunnels = { { { { SequenceTunnel{ 0, 0, TunnelSlope::flat } },
+                         { SequenceTunnel{ 0, 0, TunnelSlope::flat } },
+                         kSequenceTunnelUnimplemented } } },
     };
 
     static constexpr SequenceDescriptor kLeftQuarterHelixLargeUpSeq1 = {
@@ -7810,6 +8036,9 @@ namespace OpenRCT2::TrackMetaData
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = -1,
         .blockedSegments = kLeftQuarterTurn5TilesSeq6.blockedSegments,
+        .tunnels = { { { { SequenceTunnel{ 16, 3, TunnelSlope::flatToDown25 } },
+                         { SequenceTunnel{ 16, 3, TunnelSlope::flat } },
+                         kSequenceTunnelUnimplemented } } },
     };
 
     static constexpr SequenceDescriptor kRightQuarterHelixLargeUpSeq0 = {
@@ -7817,6 +8046,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1000,
         .metalSupports = { MetalSupportPlace::centre },
         .blockedSegments = kRightQuarterTurn5TilesSeq0.blockedSegments,
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftQuarterHelixLargeUpSeq0.tunnels),
     };
 
     static constexpr SequenceDescriptor kRightQuarterHelixLargeUpSeq1 = {
@@ -7854,6 +8084,7 @@ namespace OpenRCT2::TrackMetaData
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = 1,
         .blockedSegments = kRightQuarterTurn5TilesSeq6.blockedSegments,
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftQuarterHelixLargeUpSeq6.tunnels),
     };
 
     static constexpr SequenceDescriptor kLeftQuarterHelixLargeDownSeq0 = {
@@ -7861,6 +8092,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b0010,
         .metalSupports = { MetalSupportPlace::centre },
         .blockedSegments = kLeftQuarterTurn5TilesSeq0.blockedSegments,
+        .tunnels = SequenceTunnelsPrev(kRightQuarterHelixLargeUpSeq6.tunnels),
     };
 
     static constexpr SequenceDescriptor kLeftQuarterHelixLargeDownSeq1 = {
@@ -7898,6 +8130,7 @@ namespace OpenRCT2::TrackMetaData
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = -1,
         .blockedSegments = kLeftQuarterTurn5TilesSeq6.blockedSegments,
+        .tunnels = SequenceTunnelsPrev(kRightQuarterHelixLargeUpSeq0.tunnels),
     };
 
     static constexpr SequenceDescriptor kRightQuarterHelixLargeDownSeq0 = {
@@ -7905,6 +8138,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1000,
         .metalSupports = { MetalSupportPlace::centre },
         .blockedSegments = kRightQuarterTurn5TilesSeq0.blockedSegments,
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftQuarterHelixLargeDownSeq0.tunnels),
     };
 
     static constexpr SequenceDescriptor kRightQuarterHelixLargeDownSeq1 = {
@@ -7942,6 +8176,7 @@ namespace OpenRCT2::TrackMetaData
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = 1,
         .blockedSegments = kRightQuarterTurn5TilesSeq6.blockedSegments,
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftQuarterHelixLargeDownSeq6.tunnels),
     };
 
     static constexpr SequenceDescriptor kUp25LeftBankedSeq0 = {
@@ -7950,6 +8185,8 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25Deg },
         .metalSupports = { MetalSupportPlace::centre, true },
         .blockedSegments = kFlatSeq0.blockedSegments,
+        .tunnels = SequenceTunnelsAllGroups(
+            { { SequenceTunnel{ -8, 0, TunnelSlope::up25 }, SequenceTunnel{ 8, 2, TunnelSlope::down25 } } }),
     };
 
     static constexpr SequenceDescriptor kUp25RightBankedSeq0 = {
@@ -7958,6 +8195,7 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25Deg },
         .metalSupports = { MetalSupportPlace::centre, true },
         .blockedSegments = kFlatSeq0.blockedSegments,
+        .tunnels = SequenceTunnelsFlipXAxis(kUp25LeftBankedSeq0.tunnels),
     };
 
     static constexpr SequenceDescriptor kWaterfallSeq0 = {
@@ -7969,6 +8207,9 @@ namespace OpenRCT2::TrackMetaData
             kSegmentsUnimplemented, // inverted
             kSegmentsAll,           // wide
         } },
+        .tunnels = { { { { { SequenceTunnel{ 0, 0, TunnelSlope::tall }, SequenceTunnel{ 0, 2, TunnelSlope::tall } } },
+                         kSequenceTunnelUnimplemented,
+                         kSequenceTunnelUnimplemented } } },
     };
 
     static constexpr SequenceDescriptor kRapidsSeq0 = {
@@ -7976,6 +8217,9 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw },
         .blockedSegments = kFlatSeq0.blockedSegments,
+        .tunnels = { { { { { SequenceTunnel{ 0, 0, TunnelSlope::flat }, SequenceTunnel{ 0, 2, TunnelSlope::flat } } },
+                         kSequenceTunnelUnimplemented,
+                         kSequenceTunnelUnimplemented } } },
     };
 
     static constexpr SequenceDescriptor kOnRidePhotoSeq0 = {
@@ -7983,6 +8227,9 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw },
         .blockedSegments = blockedSegmentsAllTypes(kSegmentsAll),
+        .tunnels = { { { { { SequenceTunnel{ 0, 0, TunnelSlope::flat }, SequenceTunnel{ 0, 2, TunnelSlope::flat } } },
+                         { { SequenceTunnel{ 0, 0, TunnelSlope::flat }, SequenceTunnel{ 0, 2, TunnelSlope::flat } } },
+                         { { SequenceTunnel{ 0, 0, TunnelSlope::flat }, SequenceTunnel{ 0, 2, TunnelSlope::flat } } } } } },
     };
 
     static constexpr SequenceDescriptor kDown25LeftBankedSeq0 = {
@@ -7992,6 +8239,7 @@ namespace OpenRCT2::TrackMetaData
         .metalSupports = { MetalSupportPlace::centre, true },
         .extraSupportRotation = 2,
         .blockedSegments = kFlatSeq0.blockedSegments,
+        .tunnels = SequenceTunnelsReverse(kUp25RightBankedSeq0.tunnels),
     };
 
     static constexpr SequenceDescriptor kDown25RightBankedSeq0 = {
@@ -8001,6 +8249,7 @@ namespace OpenRCT2::TrackMetaData
         .metalSupports = { MetalSupportPlace::centre, true },
         .extraSupportRotation = 2,
         .blockedSegments = kFlatSeq0.blockedSegments,
+        .tunnels = SequenceTunnelsFlipXAxis(kDown25LeftBankedSeq0.tunnels),
     };
 
     static constexpr SequenceDescriptor kWatersplashSeq0 = {
@@ -8012,6 +8261,9 @@ namespace OpenRCT2::TrackMetaData
             kSegmentsUnimplemented, // inverted
             kSegmentsAll,           // wide
         } },
+        .tunnels = { { { { SequenceTunnel{ 16, 0, TunnelSlope::flat } },
+                         kSequenceTunnelUnimplemented,
+                         kSequenceTunnelUnimplemented } } },
     };
 
     static constexpr SequenceDescriptor kWatersplashSeq1 = {
@@ -8056,6 +8308,9 @@ namespace OpenRCT2::TrackMetaData
             kSegmentsUnimplemented, // inverted
             kSegmentsAll,           // wide
         } },
+        .tunnels = { { { { SequenceTunnel{ 16, 2, TunnelSlope::flat } },
+                         kSequenceTunnelUnimplemented,
+                         kSequenceTunnelUnimplemented } } },
     };
 
     static constexpr SequenceDescriptor kFlatToUp60LongBaseSeq0 = {
@@ -8064,6 +8319,7 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::flatToUp60DegLongBaseSeq0 },
         .metalSupports = { MetalSupportPlace::centre, true },
         .blockedSegments = kFlatSeq0.blockedSegments,
+        .tunnels = SequenceTunnelsAllGroups({ { SequenceTunnel{ 0, 0, TunnelSlope::flat } } }),
     };
 
     static constexpr SequenceDescriptor kFlatToUp60LongBaseSeq1 = {
@@ -8088,6 +8344,7 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::flatToUp60DegLongBaseSeq3 },
         .metalSupports = { MetalSupportPlace::centre, true },
         .blockedSegments = kFlatSeq0.blockedSegments,
+        .tunnels = SequenceTunnelsAllGroups({ { SequenceTunnel{ 24, 2, TunnelSlope::down25 } } }),
     };
 
     static constexpr SequenceDescriptor kUp60ToFlatLongBaseSeq0 = {
@@ -8096,6 +8353,7 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up60DegToFlatLongBaseSeq0 },
         .metalSupports = { MetalSupportPlace::centre, true },
         .blockedSegments = kFlatSeq0.blockedSegments,
+        .tunnels = SequenceTunnelsAllGroups({ { SequenceTunnel{ 0, 0, TunnelSlope::up25 } } }),
     };
 
     static constexpr SequenceDescriptor kUp60ToFlatLongBaseSeq1 = {
@@ -8120,6 +8378,7 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up60DegToFlatLongBaseSeq3 },
         .metalSupports = { MetalSupportPlace::centre, true },
         .blockedSegments = kFlatSeq0.blockedSegments,
+        .tunnels = SequenceTunnelsAllGroups({ { SequenceTunnel{ 8, 2, TunnelSlope::flatToDown25 } } }),
     };
 
     static constexpr SequenceDescriptor kWhirlpoolSeq0 = {
@@ -8131,6 +8390,9 @@ namespace OpenRCT2::TrackMetaData
             kSegmentsUnimplemented, // inverted
             kSegmentsAll,           // wide
         } },
+        .tunnels = { { { { { SequenceTunnel{ 0, 0, TunnelSlope::flat }, SequenceTunnel{ 0, 2, TunnelSlope::flat } } },
+                         kSequenceTunnelUnimplemented,
+                         kSequenceTunnelUnimplemented } } },
     };
 
     static constexpr SequenceDescriptor kDown60ToFlatLongBaseSeq0 = {
@@ -8140,6 +8402,7 @@ namespace OpenRCT2::TrackMetaData
         .metalSupports = { MetalSupportPlace::centre, true },
         .extraSupportRotation = 2,
         .blockedSegments = kFlatSeq0.blockedSegments,
+        .tunnels = SequenceTunnelsReverse(kFlatToUp60LongBaseSeq3.tunnels),
     };
 
     static constexpr SequenceDescriptor kDown60ToFlatLongBaseSeq1 = {
@@ -8167,6 +8430,7 @@ namespace OpenRCT2::TrackMetaData
         .metalSupports = { MetalSupportPlace::centre, true },
         .extraSupportRotation = 2,
         .blockedSegments = kFlatSeq0.blockedSegments,
+        .tunnels = SequenceTunnelsReverse(kFlatToUp60LongBaseSeq0.tunnels),
     };
 
     static constexpr SequenceDescriptor kFlatToDown60LongBaseSeq0 = {
@@ -8176,6 +8440,7 @@ namespace OpenRCT2::TrackMetaData
         .metalSupports = { MetalSupportPlace::centre, true },
         .extraSupportRotation = 2,
         .blockedSegments = kFlatSeq0.blockedSegments,
+        .tunnels = SequenceTunnelsReverse(kUp60ToFlatLongBaseSeq3.tunnels),
     };
 
     static constexpr SequenceDescriptor kFlatToDown60LongBaseSeq1 = {
@@ -8203,6 +8468,7 @@ namespace OpenRCT2::TrackMetaData
         .metalSupports = { MetalSupportPlace::centre, true },
         .extraSupportRotation = 2,
         .blockedSegments = kFlatSeq0.blockedSegments,
+        .tunnels = SequenceTunnelsReverse(kUp60ToFlatLongBaseSeq0.tunnels),
     };
 
     static constexpr SequenceDescriptor kCableLiftHillSeq0 = {
@@ -8210,6 +8476,9 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .metalSupports = { MetalSupportPlace::centre, true },
         .blockedSegments = kFlatSeq0.blockedSegments,
+        .tunnels = { { { { { SequenceTunnel{ -8, 0, TunnelSlope::flat }, SequenceTunnel{ 8, 2, TunnelSlope::flat } } },
+                         kSequenceTunnelUnimplemented,
+                         kSequenceTunnelUnimplemented } } },
     };
 
     static constexpr SequenceDescriptor kCableLiftHillSeq1 = {
@@ -8217,6 +8486,9 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .metalSupports = { MetalSupportPlace::centre, true },
         .blockedSegments = kFlatSeq0.blockedSegments,
+        .tunnels = { { { { { SequenceTunnel{ 8, 0, TunnelSlope::flat }, SequenceTunnel{ -8, 2, TunnelSlope::flat } } },
+                         kSequenceTunnelUnimplemented,
+                         kSequenceTunnelUnimplemented } } },
     };
 
     static constexpr SequenceDescriptor kCableLiftHillSeq2 = {
@@ -8224,6 +8496,9 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .metalSupports = { MetalSupportPlace::centre, true },
         .blockedSegments = kFlatSeq0.blockedSegments,
+        .tunnels = { { { { { SequenceTunnel{ 24, 0, TunnelSlope::down25 }, SequenceTunnel{ -8, 2, TunnelSlope::up25 } } },
+                         kSequenceTunnelUnimplemented,
+                         kSequenceTunnelUnimplemented } } },
     };
 
     static constexpr SequenceDescriptor kCableLiftHillSeq3 = {
@@ -8231,6 +8506,9 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .metalSupports = { MetalSupportPlace::centre, true },
         .blockedSegments = kFlatSeq0.blockedSegments,
+        .tunnels = { { { { { SequenceTunnel{ 56, 0, TunnelSlope::down25 }, SequenceTunnel{ -8, 2, TunnelSlope::up25 } } },
+                         kSequenceTunnelUnimplemented,
+                         kSequenceTunnelUnimplemented } } },
     };
 
     static constexpr SequenceDescriptor kReverseFreefallSlopeSeq0 = {
@@ -8238,6 +8516,9 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw },
         .blockedSegments = kFlatSeq0.blockedSegments,
+        .tunnels = { { { { SequenceTunnel{ 0, 0, TunnelSlope::flat } },
+                         kSequenceTunnelUnimplemented,
+                         kSequenceTunnelUnimplemented } } },
     };
 
     static constexpr SequenceDescriptor kReverseFreefallSlopeSeq1 = {
@@ -8279,6 +8560,7 @@ namespace OpenRCT2::TrackMetaData
         .clearance = { -160, 0, 0, 208, { 0b1111, 0 }, 0 },
         .woodenSupports = { WoodenSupportSubType::neSw },
         .blockedSegments = kFlatSeq0.blockedSegments,
+        .tunnels = { {}, 240 },
     };
 
     static constexpr SequenceDescriptor kReverseFreefallVerticalSeq0 = {
@@ -8289,12 +8571,14 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kReverseFreefallVerticalSeq1 = {
         .clearance = { 32, 0, 0, 48, { 0b1111, 0 }, 0 },
         .blockedSegments = kFlatSeq0.blockedSegments,
+        .tunnels = { {}, 80 },
     };
 
     static constexpr SequenceDescriptor kUp90Seq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
         .allowedWallEdges = 0b1111,
         .blockedSegments = kFlatSeq0.blockedSegments,
+        .tunnels = { {}, 32 },
     };
 
     static constexpr SequenceDescriptor kUp90Seq1 = {
@@ -8305,6 +8589,7 @@ namespace OpenRCT2::TrackMetaData
         .clearance = { 0, 0, 0, 8, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
         .allowedWallEdges = 0b1111,
         .blockedSegments = kFlatSeq0.blockedSegments,
+        .tunnels = { {}, 32 },
     };
 
     static constexpr SequenceDescriptor kDown90Seq1 = {
@@ -8316,6 +8601,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1011,
         .woodenSupports = { WoodenSupportSubType::neSw },
         .blockedSegments = kFlatSeq0.blockedSegments,
+        .tunnels = SequenceTunnelsAllGroups({ { SequenceTunnel{ -8, 0, TunnelSlope::up25 } } }, 56),
     };
 
     static constexpr SequenceDescriptor kUp60ToUp90Seq1 = {
@@ -8327,6 +8613,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1110,
         .woodenSupports = { WoodenSupportSubType::neSw },
         .blockedSegments = kFlatSeq0.blockedSegments,
+        .tunnels = SequenceTunnelsReverse(kUp60ToUp90Seq0.tunnels),
     };
 
     static constexpr SequenceDescriptor kUp90ToUp60Seq0 = {
@@ -8334,6 +8621,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1011,
         .woodenSupports = { WoodenSupportSubType::neSw },
         .blockedSegments = kFlatSeq0.blockedSegments,
+        .tunnels = SequenceTunnelsAllGroups({ { SequenceTunnel{ 48, 2, TunnelSlope::down25 } } }),
     };
 
     static constexpr SequenceDescriptor kDown60ToDown90Seq0 = {
@@ -8341,6 +8629,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1110,
         .woodenSupports = { WoodenSupportSubType::neSw },
         .blockedSegments = kFlatSeq0.blockedSegments,
+        .tunnels = SequenceTunnelsReverse(kUp90ToUp60Seq0.tunnels),
     };
 
     static constexpr SequenceDescriptor kDown60ToDown90Seq1 = {
@@ -8353,6 +8642,7 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::neSw },
         .metalSupports = { MetalSupportPlace::centre },
         .blockedSegments = kFlatSeq0.blockedSegments,
+        .tunnels = kFlatToDown60Seq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kLeftEighthToDiagSeq0 = {
@@ -8365,6 +8655,7 @@ namespace OpenRCT2::TrackMetaData
             EnumsToFlags(PS::centre, PS::topRight, PS::bottomLeft), // inverted
             kSegmentsAll,                                           // wide
         } },
+        .tunnels = SequenceTunnelsAllGroups({ { SequenceTunnel{ 0, 0, TunnelSlope::flat } } }),
     };
 
     static constexpr SequenceDescriptor kLeftEighthToDiagSeq1 = {
@@ -8416,6 +8707,7 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::neSw },
         .metalSupports = { MetalSupportPlace::centre },
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftEighthToDiagSeq0.blockedSegments),
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftEighthToDiagSeq0.tunnels),
     };
 
     static constexpr SequenceDescriptor kRightEighthToDiagSeq1 = {
@@ -8476,6 +8768,7 @@ namespace OpenRCT2::TrackMetaData
         .clearance = { -64, 32, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
         .blockedSegments = blockedSegmentsRotate(kRightEighthToDiagSeq0.blockedSegments, 2),
+        .tunnels = SequenceTunnelsAllGroups({ { SequenceTunnel{ 0, 2, TunnelSlope::flat } } }),
     };
 
     static constexpr SequenceDescriptor kRightEighthToOrthogonalSeq0 = {
@@ -8509,6 +8802,7 @@ namespace OpenRCT2::TrackMetaData
         .clearance = { -32, 64, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0001,
         .blockedSegments = blockedSegmentsRotate(kLeftEighthToDiagSeq0.blockedSegments, 3),
+        .tunnels = SequenceTunnelsAllGroups({ { SequenceTunnel{ 0, 1, TunnelSlope::flat } } }),
     };
 
     static constexpr SequenceDescriptor kLeftEighthBankToDiagSeq0 = {
@@ -8520,6 +8814,7 @@ namespace OpenRCT2::TrackMetaData
             EnumsToFlags(PS::centre, PS::topRight, PS::bottomLeft, PS::bottomRight), // inverted
             kSegmentsAll,                                                            // wide
         } },
+        .tunnels = kLeftEighthToDiagSeq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kLeftEighthBankToDiagSeq1 = {
@@ -8571,6 +8866,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1000,
         .woodenSupports = { WoodenSupportSubType::neSw },
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftEighthBankToDiagSeq0.blockedSegments),
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftEighthBankToDiagSeq0.tunnels),
     };
 
     static constexpr SequenceDescriptor kRightEighthBankToDiagSeq1 = {
@@ -8603,6 +8899,7 @@ namespace OpenRCT2::TrackMetaData
         .clearance = { 0, 0, 0, 0, { 0b1101, 0 }, 0 },
         .woodenSupports = { WoodenSupportSubType::neSw },
         .blockedSegments = blockedSegmentsRotate(kRightEighthBankToDiagSeq4.blockedSegments, 2),
+        .tunnels = kLeftEighthToOrthogonalSeq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kLeftEighthBankToOrthogonalSeq1 = {
@@ -8630,6 +8927,7 @@ namespace OpenRCT2::TrackMetaData
         .clearance = { -64, 32, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
         .blockedSegments = blockedSegmentsRotate(kRightEighthBankToDiagSeq0.blockedSegments, 2),
+        .tunnels = kLeftEighthToOrthogonalSeq4.tunnels,
     };
 
     static constexpr SequenceDescriptor kRightEighthBankToOrthogonalSeq0 = {
@@ -8663,6 +8961,7 @@ namespace OpenRCT2::TrackMetaData
         .clearance = { -32, 64, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0001,
         .blockedSegments = blockedSegmentsRotate(kLeftEighthBankToDiagSeq0.blockedSegments, 3),
+        .tunnels = kRightEighthToOrthogonalSeq4.tunnels,
     };
 
     static constexpr SequenceDescriptor kDiagFlatSeq0 = {
@@ -9781,6 +10080,7 @@ namespace OpenRCT2::TrackMetaData
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
         .woodenSupports = { WoodenSupportSubType::neSw },
         .blockedSegments = kFlatSeq0.blockedSegments,
+        .tunnels = kFlatSeq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kSpinningTunnelSeq0 = {
@@ -9793,6 +10093,7 @@ namespace OpenRCT2::TrackMetaData
             kSegmentsUnimplemented, // inverted
             kSegmentsAll,           // wide
         } },
+        .tunnels = kFlatSeq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kLeftBarrelRollUpToDownSeq0 = {
@@ -9804,6 +10105,9 @@ namespace OpenRCT2::TrackMetaData
             kSegmentsUnimplemented,                                                             // inverted
             kSegmentsAll,                                                                       // wide
         } },
+        .tunnels = { { { { SequenceTunnel{ 0, 0, TunnelSlope::flat } },
+                         kSequenceTunnelUnimplemented,
+                         kSequenceTunnelUnimplemented } } },
     };
 
     static constexpr SequenceDescriptor kLeftBarrelRollUpToDownSeq1 = {
@@ -9827,6 +10131,9 @@ namespace OpenRCT2::TrackMetaData
             kSegmentsUnimplemented,                                                              // inverted
             kSegmentsAll,                                                                        // wide
         } },
+        .tunnels = { { { { SequenceTunnel{ 0, 2, TunnelSlope::tall } },
+                         kSequenceTunnelUnimplemented,
+                         kSequenceTunnelUnimplemented } } },
     };
 
     static constexpr SequenceDescriptor kRightBarrelRollUpToDownSeq0 = {
@@ -9834,6 +10141,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw },
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftBarrelRollUpToDownSeq0.blockedSegments),
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftBarrelRollUpToDownSeq0.tunnels),
     };
 
     static constexpr SequenceDescriptor kRightBarrelRollUpToDownSeq1 = {
@@ -9849,6 +10157,7 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::neSw },
         .invertSegmentBlocking = true,
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftBarrelRollUpToDownSeq2.blockedSegments),
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftBarrelRollUpToDownSeq2.tunnels),
     };
 
     static constexpr SequenceDescriptor kLeftBarrelRollDownToUpSeq0 = {
@@ -9857,6 +10166,7 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::neSw },
         .invertSegmentBlocking = true,
         .blockedSegments = blockedSegmentsRotate(kLeftBarrelRollUpToDownSeq2.blockedSegments, 2),
+        .tunnels = SequenceTunnelsReverse(kRightBarrelRollUpToDownSeq2.tunnels),
     };
 
     static constexpr SequenceDescriptor kLeftBarrelRollDownToUpSeq1 = {
@@ -9871,6 +10181,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw },
         .blockedSegments = blockedSegmentsRotate(kLeftBarrelRollUpToDownSeq0.blockedSegments, 2),
+        .tunnels = SequenceTunnelsReverse(kRightBarrelRollUpToDownSeq0.tunnels),
     };
 
     static constexpr SequenceDescriptor kRightBarrelRollDownToUpSeq0 = {
@@ -9879,6 +10190,7 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::neSw },
         .invertSegmentBlocking = true,
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftBarrelRollDownToUpSeq0.blockedSegments),
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftBarrelRollDownToUpSeq0.tunnels),
     };
 
     static constexpr SequenceDescriptor kRightBarrelRollDownToUpSeq1 = {
@@ -9893,6 +10205,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw },
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftBarrelRollDownToUpSeq2.blockedSegments),
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftBarrelRollDownToUpSeq2.tunnels),
     };
 
     static constexpr SequenceDescriptor kLeftBankToLeftQuarterTurn3TilesUp25Seq0 = {
@@ -9904,6 +10217,9 @@ namespace OpenRCT2::TrackMetaData
             kSegmentsUnimplemented,                                          // inverted
             kSegmentsAll,                                                    // wide
         } },
+        .tunnels = { { { { SequenceTunnel{ 0, 0, TunnelSlope::flat } },
+                         kSequenceTunnelUnimplemented,
+                         kSequenceTunnelUnimplemented } } },
     };
 
     static constexpr SequenceDescriptor kLeftBankToLeftQuarterTurn3TilesUp25Seq1 = {
@@ -9935,6 +10251,9 @@ namespace OpenRCT2::TrackMetaData
             kSegmentsUnimplemented,                                             // inverted
             kSegmentsAll,                                                       // wide
         } },
+        .tunnels = { { { { SequenceTunnel{ 0, 3, TunnelSlope::down25 } },
+                         kSequenceTunnelUnimplemented,
+                         kSequenceTunnelUnimplemented } } },
     };
 
     static constexpr SequenceDescriptor kRightBankToRightQuarterTurn3TilesUp25Seq0 = {
@@ -9942,6 +10261,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1000,
         .woodenSupports = { WoodenSupportSubType::corner2 },
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftBankToLeftQuarterTurn3TilesUp25Seq0.blockedSegments),
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftBankToLeftQuarterTurn3TilesUp25Seq0.tunnels),
     };
 
     static constexpr SequenceDescriptor kRightBankToRightQuarterTurn3TilesUp25Seq1 = {
@@ -9961,6 +10281,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b0001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftBankToLeftQuarterTurn3TilesUp25Seq3.blockedSegments),
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftBankToLeftQuarterTurn3TilesUp25Seq3.tunnels),
     };
 
     static constexpr SequenceDescriptor kLeftQuarterTurn3TilesDown25ToLeftBankSeq0 = {
@@ -9968,6 +10289,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b0010,
         .woodenSupports = { WoodenSupportSubType::corner3 },
         .blockedSegments = blockedSegmentsRotate(kRightBankToRightQuarterTurn3TilesUp25Seq3.blockedSegments, 1),
+        .tunnels = SequenceTunnelsPrev(kRightBankToRightQuarterTurn3TilesUp25Seq3.tunnels),
     };
 
     static constexpr SequenceDescriptor kLeftQuarterTurn3TilesDown25ToLeftBankSeq1 = {
@@ -9987,6 +10309,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b0001,
         .woodenSupports = { WoodenSupportSubType::corner3 },
         .blockedSegments = blockedSegmentsRotate(kRightBankToRightQuarterTurn3TilesUp25Seq0.blockedSegments, 1),
+        .tunnels = SequenceTunnelsPrev(kRightBankToRightQuarterTurn3TilesUp25Seq0.tunnels),
     };
 
     static constexpr SequenceDescriptor kRightQuarterTurn3TilesDown25ToRightBankSeq0 = {
@@ -9994,6 +10317,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1000,
         .woodenSupports = { WoodenSupportSubType::corner2 },
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftQuarterTurn3TilesDown25ToLeftBankSeq0.blockedSegments),
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftQuarterTurn3TilesDown25ToLeftBankSeq0.tunnels),
     };
 
     static constexpr SequenceDescriptor kRightQuarterTurn3TilesDown25ToRightBankSeq1 = {
@@ -10013,6 +10337,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b0001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftQuarterTurn3TilesDown25ToLeftBankSeq3.blockedSegments),
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftQuarterTurn3TilesDown25ToLeftBankSeq3.tunnels),
     };
 
     static constexpr SequenceDescriptor kPoweredLiftSeq0 = {
@@ -10020,6 +10345,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25Deg },
         .blockedSegments = kFlatSeq0.blockedSegments,
+        .tunnels = kUp25Seq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kLeftLargeHalfLoopUpSeq0 = {
@@ -10030,6 +10356,9 @@ namespace OpenRCT2::TrackMetaData
             EnumsToFlags(PS::centre, PS::topRight, PS::bottomLeft), // inverted
             kSegmentsUnimplemented,                                 // wide
         } },
+        .tunnels = { { { { { SequenceTunnel{ -8, 0, TunnelSlope::up25 } } },
+                         { { SequenceTunnel{ -8, 0, TunnelSlope::up25 } } },
+                         kSequenceTunnelUnimplemented } } },
     };
 
     static constexpr SequenceDescriptor kLeftLargeHalfLoopUpSeq1 = {
@@ -10091,12 +10420,16 @@ namespace OpenRCT2::TrackMetaData
             EnumsToFlags(PS::right, PS::bottom, PS::centre, PS::topRight, PS::bottomLeft, PS::bottomRight), // inverted
             kSegmentsUnimplemented,                                                                         // wide
         } },
+        .tunnels = { { { { { SequenceTunnel{ 0, 0, TunnelSlope::flat } } },
+                         { { SequenceTunnel{ 32, 0, TunnelSlope::flat } } },
+                         kSequenceTunnelUnimplemented } } },
     };
 
     static constexpr SequenceDescriptor kRightLargeHalfLoopUpSeq0 = {
         .clearance = { 0, 0, 0, 24, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b1010,
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftLargeHalfLoopUpSeq0.blockedSegments),
+        .tunnels = kLeftLargeHalfLoopUpSeq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kRightLargeHalfLoopUpSeq1 = {
@@ -10134,6 +10467,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b0010,
         .invertSegmentBlocking = true,
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftLargeHalfLoopUpSeq6.blockedSegments),
+        .tunnels = kLeftLargeHalfLoopUpSeq6.tunnels,
     };
 
     static constexpr SequenceDescriptor kLeftLargeHalfLoopDownSeq0 = {
@@ -10141,6 +10475,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b0010,
         .invertSegmentBlocking = true,
         .blockedSegments = kRightLargeHalfLoopUpSeq6.blockedSegments,
+        .tunnels = kLeftLargeHalfLoopUpSeq6.tunnels,
     };
 
     static constexpr SequenceDescriptor kLeftLargeHalfLoopDownSeq1 = {
@@ -10177,6 +10512,7 @@ namespace OpenRCT2::TrackMetaData
         .clearance = { 64, -32, -280, 24, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b1010,
         .blockedSegments = kRightLargeHalfLoopUpSeq0.blockedSegments,
+        .tunnels = kLeftLargeHalfLoopUpSeq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kRightLargeHalfLoopDownSeq0 = {
@@ -10184,6 +10520,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1000,
         .invertSegmentBlocking = true,
         .blockedSegments = kLeftLargeHalfLoopUpSeq6.blockedSegments,
+        .tunnels = kLeftLargeHalfLoopUpSeq6.tunnels,
     };
 
     static constexpr SequenceDescriptor kRightLargeHalfLoopDownSeq1 = {
@@ -10220,6 +10557,7 @@ namespace OpenRCT2::TrackMetaData
         .clearance = { 64, 32, -280, 24, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b1010,
         .blockedSegments = kLeftLargeHalfLoopUpSeq0.blockedSegments,
+        .tunnels = kLeftLargeHalfLoopUpSeq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kLeftFlyerTwistUpSeq0 = {
@@ -10230,6 +10568,9 @@ namespace OpenRCT2::TrackMetaData
             EnumsToFlags(PS::top, PS::left, PS::centre, PS::topLeft, PS::topRight, PS::bottomLeft), // inverted
             kSegmentsUnimplemented,                                                                 // wide
         } },
+        .tunnels = { { { { SequenceTunnel{ 0, 0, TunnelSlope::flat } },
+                         kSequenceTunnelUnimplemented,
+                         kSequenceTunnelUnimplemented } } },
     };
 
     static constexpr SequenceDescriptor kLeftFlyerTwistUpSeq1 = {
@@ -10251,12 +10592,16 @@ namespace OpenRCT2::TrackMetaData
             EnumsToFlags(PS::top, PS::left, PS::centre, PS::topLeft, PS::topRight, PS::bottomLeft), // inverted
             kSegmentsUnimplemented,                                                                 // wide
         } },
+        .tunnels = { { { { SequenceTunnel{ 0, 2, TunnelSlope::flat } },
+                         kSequenceTunnelUnimplemented,
+                         kSequenceTunnelUnimplemented } } },
     };
 
     static constexpr SequenceDescriptor kRightFlyerTwistUpSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftFlyerTwistUpSeq0.blockedSegments),
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftFlyerTwistUpSeq0.tunnels),
     };
 
     static constexpr SequenceDescriptor kRightFlyerTwistUpSeq1 = {
@@ -10270,12 +10615,16 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .invertSegmentBlocking = true,
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftFlyerTwistUpSeq2.blockedSegments),
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftFlyerTwistUpSeq2.tunnels),
     };
 
     static constexpr SequenceDescriptor kLeftFlyerTwistDownSeq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
         .blockedSegments = blockedSegmentsRotate(kLeftFlyerTwistUpSeq2.blockedSegments, 2),
+        .tunnels = { { kSequenceTunnelUnimplemented,
+                       kSequenceTunnelUnimplemented,
+                       { { SequenceTunnel{ 0, 0, TunnelSlope::flat } } } } },
     };
 
     static constexpr SequenceDescriptor kLeftFlyerTwistDownSeq1 = {
@@ -10289,12 +10638,16 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .invertSegmentBlocking = true,
         .blockedSegments = blockedSegmentsRotate(kLeftFlyerTwistUpSeq0.blockedSegments, 2),
+        .tunnels = { { kSequenceTunnelUnimplemented,
+                       kSequenceTunnelUnimplemented,
+                       { { SequenceTunnel{ 0, 2, TunnelSlope::flat } } } } },
     };
 
     static constexpr SequenceDescriptor kRightFlyerTwistDownSeq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftFlyerTwistDownSeq0.blockedSegments),
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftFlyerTwistDownSeq0.tunnels),
     };
 
     static constexpr SequenceDescriptor kRightFlyerTwistDownSeq1 = {
@@ -10308,6 +10661,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .invertSegmentBlocking = true,
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftFlyerTwistDownSeq2.blockedSegments),
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftFlyerTwistDownSeq2.tunnels),
     };
 
     static constexpr SequenceDescriptor kFlyerHalfLoopUninvertedUpSeq0 = {
@@ -10318,6 +10672,7 @@ namespace OpenRCT2::TrackMetaData
             EnumsToFlags(PS::centre, PS::topRight, PS::bottomLeft), // inverted
             kSegmentsUnimplemented,                                 // wide
         } },
+        .tunnels = kHalfLoopUpSeq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kFlyerHalfLoopUninvertedUpSeq1 = {
@@ -10349,11 +10704,13 @@ namespace OpenRCT2::TrackMetaData
             EnumsToFlags(PS::centre, PS::topRight, PS::bottomLeft), // inverted
             kSegmentsUnimplemented,                                 // wide
         } },
+        .tunnels = kHalfLoopUpSeq3.tunnels,
     };
 
     static constexpr SequenceDescriptor kFlyerHalfLoopInvertedDownSeq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1111, 0 }, 0 },
         .blockedSegments = kFlyerHalfLoopUninvertedUpSeq3.blockedSegments,
+        .tunnels = kFlyerHalfLoopUninvertedUpSeq3.tunnels,
     };
 
     static constexpr SequenceDescriptor kFlyerHalfLoopInvertedDownSeq1 = {
@@ -10374,12 +10731,14 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .invertSegmentBlocking = true,
         .blockedSegments = kFlyerHalfLoopUninvertedUpSeq0.blockedSegments,
+        .tunnels = kFlyerHalfLoopUninvertedUpSeq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kLeftFlyerCorkscrewUpSeq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
         .blockedSegments = kLeftCorkscrewUpSeq0.blockedSegments,
+        .tunnels = kLeftCorkscrewUpSeq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kLeftFlyerCorkscrewUpSeq1 = {
@@ -10393,12 +10752,14 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b0101,
         .invertSegmentBlocking = true,
         .blockedSegments = kLeftCorkscrewUpSeq2.blockedSegments,
+        .tunnels = kLeftCorkscrewUpSeq2.tunnels,
     };
 
     static constexpr SequenceDescriptor kRightFlyerCorkscrewUpSeq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
         .blockedSegments = kRightCorkscrewUpSeq0.blockedSegments,
+        .tunnels = kRightCorkscrewUpSeq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kRightFlyerCorkscrewUpSeq1 = {
@@ -10412,6 +10773,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b0101,
         .invertSegmentBlocking = true,
         .blockedSegments = kRightCorkscrewUpSeq2.blockedSegments,
+        .tunnels = kRightCorkscrewUpSeq2.tunnels,
     };
 
     static constexpr SequenceDescriptor kLeftFlyerCorkscrewDownSeq0 = {
@@ -10422,6 +10784,7 @@ namespace OpenRCT2::TrackMetaData
             EnumsToFlags(PS::top, PS::centre, PS::topLeft, PS::topRight, PS::bottomLeft), // inverted
             kSegmentsUnimplemented,                                                       // wide
         } },
+        .tunnels = kLeftCorkscrewDownSeq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kLeftFlyerCorkscrewDownSeq1 = {
@@ -10443,6 +10806,7 @@ namespace OpenRCT2::TrackMetaData
             EnumsToFlags(PS::bottom, PS::centre, PS::topLeft, PS::bottomLeft, PS::bottomRight), // inverted
             kSegmentsUnimplemented,                                                             // wide
         } },
+        .tunnels = kLeftCorkscrewDownSeq2.tunnels,
     };
 
     static constexpr SequenceDescriptor kRightFlyerCorkscrewDownSeq0 = {
@@ -10453,6 +10817,7 @@ namespace OpenRCT2::TrackMetaData
             EnumsToFlags(PS::bottom, PS::centre, PS::topRight, PS::bottomLeft, PS::bottomRight), // inverted
             kSegmentsUnimplemented,                                                              // wide
         } },
+        .tunnels = kRightCorkscrewDownSeq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kRightFlyerCorkscrewDownSeq1 = {
@@ -10466,6 +10831,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b0101,
         .invertSegmentBlocking = true,
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftFlyerCorkscrewDownSeq2.blockedSegments),
+        .tunnels = kRightCorkscrewDownSeq2.tunnels,
     };
 
     static constexpr SequenceDescriptor kHeartLineTransferUpSeq0 = {
@@ -10477,6 +10843,9 @@ namespace OpenRCT2::TrackMetaData
             kSegmentsUnimplemented, // inverted
             kSegmentsAll,           // wide
         } },
+        .tunnels = { { { { { SequenceTunnel{ 0, 0, TunnelSlope::flat }, SequenceTunnel{ 0, 2, TunnelSlope::down25 } } },
+                         kSequenceTunnelUnimplemented,
+                         kSequenceTunnelUnimplemented } } },
     };
 
     static constexpr SequenceDescriptor kHeartLineTransferUpSeq1 = {
@@ -10509,12 +10878,16 @@ namespace OpenRCT2::TrackMetaData
             kSegmentsUnimplemented, // inverted
             kSegmentsAll,           // wide
         } },
+        .tunnels = { { { { { SequenceTunnel{ 0, 0, TunnelSlope::flat }, SequenceTunnel{ -16, 2, TunnelSlope::flat } } },
+                         kSequenceTunnelUnimplemented,
+                         kSequenceTunnelUnimplemented } } },
     };
 
     static constexpr SequenceDescriptor kHeartLineTransferDownSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
         .blockedSegments = kHeartLineTransferUpSeq3.blockedSegments,
+        .tunnels = kHeartLineTransferUpSeq3.tunnels,
     };
 
     static constexpr SequenceDescriptor kHeartLineTransferDownSeq1 = {
@@ -10522,6 +10895,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25DegToFlat },
         .blockedSegments = kHeartLineTransferUpSeq2.blockedSegments,
+        .tunnels = kHeartLineTransferUpSeq2.tunnels,
     };
 
     static constexpr SequenceDescriptor kHeartLineTransferDownSeq2 = {
@@ -10529,6 +10903,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw },
         .blockedSegments = kHeartLineTransferUpSeq1.blockedSegments,
+        .tunnels = kHeartLineTransferUpSeq1.tunnels,
     };
 
     static constexpr SequenceDescriptor kHeartLineTransferDownSeq3 = {
@@ -10536,6 +10911,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::flatToUp25Deg },
         .blockedSegments = kHeartLineTransferUpSeq0.blockedSegments,
+        .tunnels = kHeartLineTransferUpSeq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kLeftHeartLineRollSeq0 = {
@@ -10547,6 +10923,9 @@ namespace OpenRCT2::TrackMetaData
             kSegmentsUnimplemented, // inverted
             kSegmentsAll,           // wide
         } },
+        .tunnels = { { { { { SequenceTunnel{ 0, 0, TunnelSlope::flat }, SequenceTunnel{ 0, 2, TunnelSlope::flat } } },
+                         kSequenceTunnelUnimplemented,
+                         kSequenceTunnelUnimplemented } } },
     };
 
     static constexpr SequenceDescriptor kLeftHeartLineRollSeq1 = {
@@ -10558,6 +10937,9 @@ namespace OpenRCT2::TrackMetaData
             kSegmentsUnimplemented, // inverted
             kSegmentsAll,           // wide
         } },
+        .tunnels = { { { { { SequenceTunnel{ 0, 0, TunnelSlope::flat }, SequenceTunnel{ 0, 2, TunnelSlope::flat } } },
+                         kSequenceTunnelUnimplemented,
+                         kSequenceTunnelUnimplemented } } },
     };
 
     static constexpr SequenceDescriptor kLeftHeartLineRollSeq2 = {
@@ -10569,6 +10951,9 @@ namespace OpenRCT2::TrackMetaData
             kSegmentsUnimplemented, // inverted
             kSegmentsAll,           // wide
         } },
+        .tunnels = { { { { { SequenceTunnel{ 0, 0, TunnelSlope::flat }, SequenceTunnel{ 0, 2, TunnelSlope::flat } } },
+                         kSequenceTunnelUnimplemented,
+                         kSequenceTunnelUnimplemented } } },
     };
 
     static constexpr SequenceDescriptor kLeftHeartLineRollSeq3 = {
@@ -10580,6 +10965,9 @@ namespace OpenRCT2::TrackMetaData
             kSegmentsUnimplemented, // inverted
             kSegmentsAll,           // wide
         } },
+        .tunnels = { { { { { SequenceTunnel{ 0, 0, TunnelSlope::flat }, SequenceTunnel{ 0, 2, TunnelSlope::flat } } },
+                         kSequenceTunnelUnimplemented,
+                         kSequenceTunnelUnimplemented } } },
     };
 
     static constexpr SequenceDescriptor kLeftHeartLineRollSeq4 = {
@@ -10591,6 +10979,9 @@ namespace OpenRCT2::TrackMetaData
             kSegmentsUnimplemented, // inverted
             kSegmentsAll,           // wide
         } },
+        .tunnels = { { { { { SequenceTunnel{ 0, 0, TunnelSlope::flat }, SequenceTunnel{ 0, 2, TunnelSlope::flat } } },
+                         kSequenceTunnelUnimplemented,
+                         kSequenceTunnelUnimplemented } } },
     };
 
     static constexpr SequenceDescriptor kLeftHeartLineRollSeq5 = {
@@ -10602,6 +10993,9 @@ namespace OpenRCT2::TrackMetaData
             kSegmentsUnimplemented, // inverted
             kSegmentsAll,           // wide
         } },
+        .tunnels = { { { { { SequenceTunnel{ 0, 0, TunnelSlope::flat }, SequenceTunnel{ 0, 2, TunnelSlope::flat } } },
+                         kSequenceTunnelUnimplemented,
+                         kSequenceTunnelUnimplemented } } },
     };
 
     static constexpr SequenceDescriptor kRightHeartLineRollSeq0 = {
@@ -10609,6 +11003,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw },
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftHeartLineRollSeq0.blockedSegments),
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftHeartLineRollSeq0.tunnels),
     };
 
     static constexpr SequenceDescriptor kRightHeartLineRollSeq1 = {
@@ -10616,6 +11011,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw },
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftHeartLineRollSeq1.blockedSegments),
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftHeartLineRollSeq1.tunnels),
     };
 
     static constexpr SequenceDescriptor kRightHeartLineRollSeq2 = {
@@ -10623,6 +11019,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw },
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftHeartLineRollSeq2.blockedSegments),
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftHeartLineRollSeq2.tunnels),
     };
 
     static constexpr SequenceDescriptor kRightHeartLineRollSeq3 = {
@@ -10630,6 +11027,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw },
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftHeartLineRollSeq3.blockedSegments),
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftHeartLineRollSeq3.tunnels),
     };
 
     static constexpr SequenceDescriptor kRightHeartLineRollSeq4 = {
@@ -10637,6 +11035,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw },
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftHeartLineRollSeq4.blockedSegments),
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftHeartLineRollSeq4.tunnels),
     };
 
     static constexpr SequenceDescriptor kRightHeartLineRollSeq5 = {
@@ -10644,6 +11043,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw },
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftHeartLineRollSeq5.blockedSegments),
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftHeartLineRollSeq5.tunnels),
     };
 
     static constexpr SequenceDescriptor kMinigolfHoleASeq0 = {
@@ -10654,6 +11054,9 @@ namespace OpenRCT2::TrackMetaData
             kSegmentsUnimplemented, // inverted
             kSegmentsAll,           // wide
         } },
+        .tunnels = { { { { SequenceTunnel{ 0, 0, TunnelSlope::flat } },
+                         kSequenceTunnelUnimplemented,
+                         kSequenceTunnelUnimplemented } } },
     };
 
     static constexpr SequenceDescriptor kMinigolfHoleASeq1 = {
@@ -10664,6 +11067,9 @@ namespace OpenRCT2::TrackMetaData
             kSegmentsUnimplemented, // inverted
             kSegmentsAll,           // wide
         } },
+        .tunnels = { { { { SequenceTunnel{ 0, 2, TunnelSlope::flat } },
+                         kSequenceTunnelUnimplemented,
+                         kSequenceTunnelUnimplemented } } },
     };
 
     static constexpr SequenceDescriptor kMinigolfHoleBSeq0 = {
@@ -10674,6 +11080,7 @@ namespace OpenRCT2::TrackMetaData
             kSegmentsUnimplemented, // inverted
             kSegmentsAll,           // wide
         } },
+        .tunnels = kMinigolfHoleASeq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kMinigolfHoleBSeq1 = {
@@ -10684,6 +11091,7 @@ namespace OpenRCT2::TrackMetaData
             kSegmentsUnimplemented, // inverted
             kSegmentsAll,           // wide
         } },
+        .tunnels = kMinigolfHoleASeq1.tunnels,
     };
 
     static constexpr SequenceDescriptor kMinigolfHoleCSeq0 = {
@@ -10694,6 +11102,7 @@ namespace OpenRCT2::TrackMetaData
             kSegmentsUnimplemented, // inverted
             kSegmentsAll,           // wide
         } },
+        .tunnels = kMinigolfHoleASeq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kMinigolfHoleCSeq1 = {
@@ -10704,6 +11113,7 @@ namespace OpenRCT2::TrackMetaData
             kSegmentsUnimplemented, // inverted
             kSegmentsAll,           // wide
         } },
+        .tunnels = kMinigolfHoleASeq1.tunnels,
     };
 
     static constexpr SequenceDescriptor kMinigolfHoleDSeq0 = {
@@ -10714,6 +11124,9 @@ namespace OpenRCT2::TrackMetaData
             kSegmentsUnimplemented, // inverted
             kSegmentsAll,           // wide
         } },
+        .tunnels = { { { { SequenceTunnel{ 0, 0, TunnelSlope::flat } },
+                         kSequenceTunnelUnimplemented,
+                         kSequenceTunnelUnimplemented } } },
     };
 
     static constexpr SequenceDescriptor kMinigolfHoleDSeq1 = {
@@ -10734,6 +11147,9 @@ namespace OpenRCT2::TrackMetaData
             kSegmentsUnimplemented, // inverted
             kSegmentsAll,           // wide
         } },
+        .tunnels = { { { { SequenceTunnel{ 0, 1, TunnelSlope::flat } },
+                         kSequenceTunnelUnimplemented,
+                         kSequenceTunnelUnimplemented } } },
     };
 
     static constexpr SequenceDescriptor kMinigolfHoleESeq0 = {
@@ -10744,6 +11160,9 @@ namespace OpenRCT2::TrackMetaData
             kSegmentsUnimplemented, // inverted
             kSegmentsAll,           // wide
         } },
+        .tunnels = { { { { SequenceTunnel{ 0, 0, TunnelSlope::flat } },
+                         kSequenceTunnelUnimplemented,
+                         kSequenceTunnelUnimplemented } } },
     };
 
     static constexpr SequenceDescriptor kMinigolfHoleESeq1 = {
@@ -10764,12 +11183,18 @@ namespace OpenRCT2::TrackMetaData
             kSegmentsUnimplemented, // inverted
             kSegmentsAll,           // wide
         } },
+        .tunnels = { { { { SequenceTunnel{ 0, 3, TunnelSlope::flat } },
+                         kSequenceTunnelUnimplemented,
+                         kSequenceTunnelUnimplemented } } },
     };
 
     static constexpr SequenceDescriptor kMultiDimInvertedFlatToDown90QuarterLoopSeq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
         .allowedWallEdges = 0b1010,
         .blockedSegments = kFlatSeq0.blockedSegments,
+        .tunnels = { { { kSequenceTunnelUnimplemented,
+                         kSequenceTunnelUnimplemented,
+                         { SequenceTunnel{ 16, 0, TunnelSlope::flat } } } } },
     };
 
     static constexpr SequenceDescriptor kMultiDimInvertedFlatToDown90QuarterLoopSeq1 = {
@@ -10818,6 +11243,9 @@ namespace OpenRCT2::TrackMetaData
             kSegmentsUnimplemented,                                 // inverted
             kSegmentsAll,                                           // wide
         } },
+        .tunnels = { { { { SequenceTunnel{ 8, 0, TunnelSlope::flat } },
+                         kSequenceTunnelUnimplemented,
+                         kSequenceTunnelUnimplemented } } },
     };
 
     static constexpr SequenceDescriptor kInvertedFlatToDown90QuarterLoopSeq0 = {
@@ -10828,6 +11256,7 @@ namespace OpenRCT2::TrackMetaData
             kSegmentsUnimplemented,                                 // inverted
             kSegmentsAll,                                           // wide
         } },
+        .tunnels = kUp90ToInvertedFlatQuarterLoopSeq2.tunnels,
     };
 
     static constexpr SequenceDescriptor kInvertedFlatToDown90QuarterLoopSeq1 = {
@@ -10850,6 +11279,7 @@ namespace OpenRCT2::TrackMetaData
             kSegmentsUnimplemented,                                 // inverted
             kSegmentsAll,                                           // wide
         } },
+        .tunnels = kUp90ToInvertedFlatQuarterLoopSeq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kInvertedFlatToDown90QuarterLoopSeq3 = {
@@ -10870,6 +11300,9 @@ namespace OpenRCT2::TrackMetaData
             kSegmentsUnimplemented,                                          // inverted
             kSegmentsUnimplemented,                                          // wide
         } },
+        .tunnels = { { { { SequenceTunnel{ 0, 0, TunnelSlope::flat } },
+                         kSequenceTunnelUnimplemented,
+                         kSequenceTunnelUnimplemented } } },
     };
 
     static constexpr SequenceDescriptor kLeftCurvedLiftHillSeq1 = {
@@ -10901,6 +11334,9 @@ namespace OpenRCT2::TrackMetaData
             kSegmentsUnimplemented,                                             // inverted
             kSegmentsUnimplemented,                                             // wide
         } },
+        .tunnels = { { { { SequenceTunnel{ 16, 3, TunnelSlope::down25 } },
+                         kSequenceTunnelUnimplemented,
+                         kSequenceTunnelUnimplemented } } },
     };
 
     static constexpr SequenceDescriptor kRightCurvedLiftHillSeq0 = {
@@ -10908,6 +11344,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1000,
         .woodenSupports = { WoodenSupportSubType::corner3 },
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftCurvedLiftHillSeq0.blockedSegments),
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftCurvedLiftHillSeq0.tunnels),
     };
 
     static constexpr SequenceDescriptor kRightCurvedLiftHillSeq1 = {
@@ -10927,6 +11364,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b0001,
         .woodenSupports = { WoodenSupportSubType::corner3 },
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftCurvedLiftHillSeq3.blockedSegments),
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftCurvedLiftHillSeq3.tunnels),
     };
 
     static constexpr SequenceDescriptor kLeftReverserSeq0 = {
@@ -10937,6 +11375,9 @@ namespace OpenRCT2::TrackMetaData
             kSegmentsUnimplemented, // inverted
             kSegmentsAll,           // wide
         } },
+        .tunnels = { { { { SequenceTunnel{ 0, 0, TunnelSlope::flat } },
+                         kSequenceTunnelUnimplemented,
+                         kSequenceTunnelUnimplemented } } },
     };
 
     static constexpr SequenceDescriptor kLeftReverserSeq1 = {
@@ -10987,12 +11428,16 @@ namespace OpenRCT2::TrackMetaData
             kSegmentsUnimplemented, // inverted
             kSegmentsAll,           // wide
         } },
+        .tunnels = { { { { SequenceTunnel{ 0, 2, TunnelSlope::flat } },
+                         kSequenceTunnelUnimplemented,
+                         kSequenceTunnelUnimplemented } } },
     };
 
     static constexpr SequenceDescriptor kRightReverserSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
         .woodenSupports = { WoodenSupportSubType::neSw },
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftReverserSeq0.blockedSegments),
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftReverserSeq0.tunnels),
     };
 
     static constexpr SequenceDescriptor kRightReverserSeq1 = {
@@ -11023,6 +11468,7 @@ namespace OpenRCT2::TrackMetaData
         .clearance = { -64, 0, 0, 0, { 0b1111, 0 }, 0 },
         .woodenSupports = { WoodenSupportSubType::neSw },
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftReverserSeq5.blockedSegments),
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftReverserSeq5.tunnels),
     };
 
     static constexpr SequenceDescriptor kAirThrustTopCapSeq0 = {
@@ -11068,6 +11514,7 @@ namespace OpenRCT2::TrackMetaData
             kSegmentsUnimplemented, // inverted
             kSegmentsAll,           // wide
         } },
+        .tunnels = { {}, 80 },
     };
 
     static constexpr SequenceDescriptor kAirThrustVerticalDownSeq1 = {
@@ -11088,6 +11535,7 @@ namespace OpenRCT2::TrackMetaData
             kSegmentsUnimplemented, // inverted
             kSegmentsAll,           // wide
         } },
+        .tunnels = SequenceTunnelsReverse(kReverseFreefallSlopeSeq6.tunnels),
     };
 
     static constexpr SequenceDescriptor kAirThrustVerticalDownToLevelSeq1 = {
@@ -11099,6 +11547,7 @@ namespace OpenRCT2::TrackMetaData
             kSegmentsUnimplemented, // inverted
             kSegmentsAll,           // wide
         } },
+        .tunnels = SequenceTunnelsReverse(kReverseFreefallSlopeSeq5.tunnels),
     };
 
     static constexpr SequenceDescriptor kAirThrustVerticalDownToLevelSeq2 = {
@@ -11110,6 +11559,7 @@ namespace OpenRCT2::TrackMetaData
             kSegmentsUnimplemented, // inverted
             kSegmentsAll,           // wide
         } },
+        .tunnels = SequenceTunnelsReverse(kReverseFreefallSlopeSeq4.tunnels),
     };
 
     static constexpr SequenceDescriptor kAirThrustVerticalDownToLevelSeq3 = {
@@ -11121,6 +11571,7 @@ namespace OpenRCT2::TrackMetaData
             kSegmentsUnimplemented, // inverted
             kSegmentsAll,           // wide
         } },
+        .tunnels = SequenceTunnelsReverse(kReverseFreefallSlopeSeq3.tunnels),
     };
 
     static constexpr SequenceDescriptor kAirThrustVerticalDownToLevelSeq4 = {
@@ -11132,6 +11583,7 @@ namespace OpenRCT2::TrackMetaData
             kSegmentsUnimplemented, // inverted
             kSegmentsAll,           // wide
         } },
+        .tunnels = SequenceTunnelsReverse(kReverseFreefallSlopeSeq2.tunnels),
     };
 
     static constexpr SequenceDescriptor kAirThrustVerticalDownToLevelSeq5 = {
@@ -11143,6 +11595,7 @@ namespace OpenRCT2::TrackMetaData
             kSegmentsUnimplemented, // inverted
             kSegmentsAll,           // wide
         } },
+        .tunnels = SequenceTunnelsReverse(kReverseFreefallSlopeSeq1.tunnels),
     };
 
     static constexpr SequenceDescriptor kAirThrustVerticalDownToLevelSeq6 = {
@@ -11153,6 +11606,7 @@ namespace OpenRCT2::TrackMetaData
             kSegmentsUnimplemented, // inverted
             kSegmentsAll,           // wide
         } },
+        .tunnels = SequenceTunnelsReverse(kReverseFreefallSlopeSeq0.tunnels),
     };
 
     static constexpr SequenceDescriptor kBlockBrakesSeq0 = {
@@ -11160,6 +11614,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw },
         .blockedSegments = kFlatSeq0.blockedSegments,
+        .tunnels = kFlatSeq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kLeftBankedQuarterTurn3TileUp25Seq0 = {
@@ -11171,6 +11626,7 @@ namespace OpenRCT2::TrackMetaData
             EnumsToFlags(PS::top, PS::centre, PS::topRight, PS::bottomLeft, PS::bottomRight), // inverted
             kSegmentsAll,                                                                     // wide
         } },
+        .tunnels = kLeftQuarterTurn3TilesUp25Seq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kLeftBankedQuarterTurn3TileUp25Seq1 = {
@@ -11197,6 +11653,7 @@ namespace OpenRCT2::TrackMetaData
             EnumsToFlags(PS::bottom, PS::centre, PS::topLeft, PS::topRight, PS::bottomRight), // inverted
             kSegmentsAll,                                                                     // wide
         } },
+        .tunnels = kLeftQuarterTurn3TilesUp25Seq3.tunnels,
     };
 
     static constexpr SequenceDescriptor kRightBankedQuarterTurn3TileUp25Seq0 = {
@@ -11204,6 +11661,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1000,
         .woodenSupports = { WoodenSupportSubType::corner2 },
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftBankedQuarterTurn3TileUp25Seq0.blockedSegments),
+        .tunnels = kRightQuarterTurn3TilesUp25Seq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kRightBankedQuarterTurn3TileUp25Seq1 = {
@@ -11223,6 +11681,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b0001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftBankedQuarterTurn3TileUp25Seq3.blockedSegments),
+        .tunnels = kRightQuarterTurn3TilesUp25Seq3.tunnels,
     };
 
     static constexpr SequenceDescriptor kLeftBankedQuarterTurn3TileDown25Seq0 = {
@@ -11230,6 +11689,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b0010,
         .woodenSupports = { WoodenSupportSubType::corner2 },
         .blockedSegments = blockedSegmentsRotate(kRightBankedQuarterTurn3TileUp25Seq3.blockedSegments, 1),
+        .tunnels = kLeftQuarterTurn3TilesDown25Seq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kLeftBankedQuarterTurn3TileDown25Seq1 = {
@@ -11249,6 +11709,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b0001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
         .blockedSegments = blockedSegmentsRotate(kRightBankedQuarterTurn3TileUp25Seq0.blockedSegments, 1),
+        .tunnels = kLeftQuarterTurn3TilesDown25Seq3.tunnels,
     };
 
     static constexpr SequenceDescriptor kRightBankedQuarterTurn3TileDown25Seq0 = {
@@ -11256,6 +11717,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1000,
         .woodenSupports = { WoodenSupportSubType::corner3 },
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftBankedQuarterTurn3TileDown25Seq0.blockedSegments),
+        .tunnels = kRightQuarterTurn3TilesDown25Seq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kRightBankedQuarterTurn3TileDown25Seq1 = {
@@ -11275,6 +11737,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b0001,
         .woodenSupports = { WoodenSupportSubType::corner3 },
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftBankedQuarterTurn3TileDown25Seq3.blockedSegments),
+        .tunnels = kRightQuarterTurn3TilesDown25Seq3.tunnels,
     };
 
     static constexpr SequenceDescriptor kLeftBankedQuarterTurn5TileUp25Seq0 = {
@@ -11286,6 +11749,7 @@ namespace OpenRCT2::TrackMetaData
             EnumsToFlags(PS::top, PS::centre, PS::topRight, PS::bottomLeft, PS::bottomRight), // inverted
             kSegmentsAll,                                                                     // wide
         } },
+        .tunnels = kLeftQuarterTurn5TilesUp25Seq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kLeftBankedQuarterTurn5TileUp25Seq1 = {
@@ -11344,6 +11808,7 @@ namespace OpenRCT2::TrackMetaData
             EnumsToFlags(PS::bottom, PS::centre, PS::topLeft, PS::topRight, PS::bottomRight), // inverted
             kSegmentsAll,                                                                     // wide
         } },
+        .tunnels = kLeftQuarterTurn5TilesUp25Seq6.tunnels,
     };
 
     static constexpr SequenceDescriptor kLeftBankedQuarterTurn5TileUp25Seq7 = {
@@ -11355,6 +11820,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1000,
         .woodenSupports = { WoodenSupportSubType::neSw },
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftBankedQuarterTurn5TileUp25Seq0.blockedSegments),
+        .tunnels = kRightQuarterTurn5TilesUp25Seq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kRightBankedQuarterTurn5TileUp25Seq1 = {
@@ -11393,6 +11859,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b0001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftBankedQuarterTurn5TileUp25Seq6.blockedSegments),
+        .tunnels = kRightQuarterTurn5TilesUp25Seq6.tunnels,
     };
 
     static constexpr SequenceDescriptor kRightBankedQuarterTurn5TileUp25Seq7 = {
@@ -11404,6 +11871,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b0010,
         .woodenSupports = { WoodenSupportSubType::neSw },
         .blockedSegments = blockedSegmentsRotate(kRightBankedQuarterTurn5TileUp25Seq6.blockedSegments, 1),
+        .tunnels = kLeftQuarterTurn5TilesDown25Seq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kLeftBankedQuarterTurn5TileDown25Seq1 = {
@@ -11442,6 +11910,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b0001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
         .blockedSegments = blockedSegmentsRotate(kRightBankedQuarterTurn5TileUp25Seq0.blockedSegments, 1),
+        .tunnels = kLeftQuarterTurn5TilesDown25Seq6.tunnels,
     };
 
     static constexpr SequenceDescriptor kLeftBankedQuarterTurn5TileDown25Seq7 = {
@@ -11453,6 +11922,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1000,
         .woodenSupports = { WoodenSupportSubType::neSw },
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftBankedQuarterTurn5TileDown25Seq0.blockedSegments),
+        .tunnels = kRightQuarterTurn5TilesDown25Seq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kRightBankedQuarterTurn5TileDown25Seq1 = {
@@ -11491,6 +11961,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b0001,
         .woodenSupports = { WoodenSupportSubType::corner3 },
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftBankedQuarterTurn5TileDown25Seq6.blockedSegments),
+        .tunnels = kRightQuarterTurn5TilesDown25Seq6.tunnels,
     };
 
     static constexpr SequenceDescriptor kRightBankedQuarterTurn5TileDown25Seq7 = {
@@ -11506,6 +11977,7 @@ namespace OpenRCT2::TrackMetaData
             EnumsToFlags(PS::centre, PS::topRight, PS::bottomLeft), // inverted
             kSegmentsAll,                                           // wide
         } },
+        .tunnels = kUp25Seq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kUp25ToRightBankedUp25Seq0 = {
@@ -11513,6 +11985,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25Deg },
         .blockedSegments = blockedSegmentsFlipXAxis(kUp25ToLeftBankedUp25Seq0.blockedSegments),
+        .tunnels = kUp25Seq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kLeftBankedUp25ToUp25Seq0 = {
@@ -11524,6 +11997,7 @@ namespace OpenRCT2::TrackMetaData
             EnumsToFlags(PS::centre, PS::topRight, PS::bottomLeft), // inverted
             kSegmentsAll,                                           // wide
         } },
+        .tunnels = kUp25Seq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kRightBankedUp25ToUp25Seq0 = {
@@ -11531,6 +12005,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25Deg },
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftBankedUp25ToUp25Seq0.blockedSegments),
+        .tunnels = kUp25Seq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kDown25ToLeftBankedDown25Seq0 = {
@@ -11543,6 +12018,7 @@ namespace OpenRCT2::TrackMetaData
             EnumsToFlags(PS::centre, PS::topRight, PS::bottomLeft), // inverted
             kSegmentsAll,                                           // wide
         } },
+        .tunnels = kDown25Seq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kDown25ToRightBankedDown25Seq0 = {
@@ -11551,6 +12027,7 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25Deg },
         .extraSupportRotation = 2,
         .blockedSegments = blockedSegmentsFlipXAxis(kDown25ToLeftBankedDown25Seq0.blockedSegments),
+        .tunnels = kDown25Seq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kLeftBankedDown25ToDown25Seq0 = {
@@ -11563,6 +12040,7 @@ namespace OpenRCT2::TrackMetaData
             EnumsToFlags(PS::centre, PS::topRight, PS::bottomLeft), // inverted
             kSegmentsAll,                                           // wide
         } },
+        .tunnels = kDown25Seq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kRightBankedDown25ToDown25Seq0 = {
@@ -11571,6 +12049,7 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25Deg },
         .extraSupportRotation = 2,
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftBankedDown25ToDown25Seq0.blockedSegments),
+        .tunnels = kDown25Seq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kLeftBankedFlatToLeftBankedUp25Seq0 = {
@@ -11582,6 +12061,7 @@ namespace OpenRCT2::TrackMetaData
             EnumsToFlags(PS::centre, PS::topRight, PS::bottomLeft), // inverted
             kSegmentsAll,                                           // wide
         } },
+        .tunnels = kFlatToUp25Seq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kRightBankedFlatToRightBankedUp25Seq0 = {
@@ -11589,6 +12069,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::flatToUp25Deg },
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftBankedFlatToLeftBankedUp25Seq0.blockedSegments),
+        .tunnels = kFlatToUp25Seq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kLeftBankedUp25ToLeftBankedFlatSeq0 = {
@@ -11600,6 +12081,7 @@ namespace OpenRCT2::TrackMetaData
             EnumsToFlags(PS::centre, PS::topRight, PS::bottomLeft), // inverted
             kSegmentsAll,                                           // wide
         } },
+        .tunnels = kUp25ToFlatSeq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kRightBankedUp25ToRightBankedFlatSeq0 = {
@@ -11607,6 +12089,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25DegToFlat },
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftBankedUp25ToLeftBankedFlatSeq0.blockedSegments),
+        .tunnels = kUp25ToFlatSeq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kLeftBankedFlatToLeftBankedDown25Seq0 = {
@@ -11619,6 +12102,7 @@ namespace OpenRCT2::TrackMetaData
             EnumsToFlags(PS::centre, PS::topRight, PS::bottomLeft), // inverted
             kSegmentsAll,                                           // wide
         } },
+        .tunnels = kFlatToDown25Seq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kRightBankedFlatToRightBankedDown25Seq0 = {
@@ -11627,6 +12111,7 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25DegToFlat },
         .extraSupportRotation = 2,
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftBankedFlatToLeftBankedDown25Seq0.blockedSegments),
+        .tunnels = kFlatToDown25Seq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kLeftBankedDown25ToLeftBankedFlatSeq0 = {
@@ -11639,6 +12124,7 @@ namespace OpenRCT2::TrackMetaData
             EnumsToFlags(PS::centre, PS::topRight, PS::bottomLeft), // inverted
             kSegmentsAll,                                           // wide
         } },
+        .tunnels = kDown25ToFlatSeq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kRightBankedDown25ToRightBankedFlatSeq0 = {
@@ -11647,6 +12133,7 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::flatToUp25Deg },
         .extraSupportRotation = 2,
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftBankedDown25ToLeftBankedFlatSeq0.blockedSegments),
+        .tunnels = kDown25ToFlatSeq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kFlatToLeftBankedUp25Seq0 = {
@@ -11658,6 +12145,7 @@ namespace OpenRCT2::TrackMetaData
             EnumsToFlags(PS::centre, PS::topRight, PS::bottomLeft), // inverted
             kSegmentsAll,                                           // wide
         } },
+        .tunnels = kFlatToUp25Seq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kFlatToRightBankedUp25Seq0 = {
@@ -11665,6 +12153,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::flatToUp25Deg },
         .blockedSegments = blockedSegmentsFlipXAxis(kFlatToLeftBankedUp25Seq0.blockedSegments),
+        .tunnels = kFlatToUp25Seq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kLeftBankedUp25ToFlatSeq0 = {
@@ -11676,6 +12165,7 @@ namespace OpenRCT2::TrackMetaData
             EnumsToFlags(PS::centre, PS::topRight, PS::bottomLeft), // inverted
             kSegmentsAll,                                           // wide
         } },
+        .tunnels = kUp25ToFlatSeq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kRightBankedUp25ToFlatSeq0 = {
@@ -11683,6 +12173,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25DegToFlat },
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftBankedUp25ToFlatSeq0.blockedSegments),
+        .tunnels = kUp25ToFlatSeq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kFlatToLeftBankedDown25Seq0 = {
@@ -11695,6 +12186,7 @@ namespace OpenRCT2::TrackMetaData
             EnumsToFlags(PS::centre, PS::topRight, PS::bottomLeft), // inverted
             kSegmentsAll,                                           // wide
         } },
+        .tunnels = kFlatToDown25Seq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kFlatToRightBankedDown25Seq0 = {
@@ -11703,6 +12195,7 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25DegToFlat },
         .extraSupportRotation = 2,
         .blockedSegments = blockedSegmentsFlipXAxis(kFlatToLeftBankedDown25Seq0.blockedSegments),
+        .tunnels = kFlatToDown25Seq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kLeftBankedDown25ToFlatSeq0 = {
@@ -11715,6 +12208,7 @@ namespace OpenRCT2::TrackMetaData
             EnumsToFlags(PS::centre, PS::topRight, PS::bottomLeft), // inverted
             kSegmentsAll,                                           // wide
         } },
+        .tunnels = kDown25ToFlatSeq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kRightBankedDown25ToFlatSeq0 = {
@@ -11723,6 +12217,7 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::flatToUp25Deg },
         .extraSupportRotation = 2,
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftBankedDown25ToFlatSeq0.blockedSegments),
+        .tunnels = kDown25ToFlatSeq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kLeftQuarterTurn1TileUp90Seq0 = {
@@ -11733,6 +12228,7 @@ namespace OpenRCT2::TrackMetaData
             EnumsToFlags(PS::centre, PS::topRight, PS::bottomLeft), // inverted
             kSegmentsAll,                                           // wide
         } },
+        .tunnels = { {}, 96 },
     };
 
     static constexpr SequenceDescriptor kLeftQuarterTurn1TileUp90Seq1 = {
@@ -11743,6 +12239,7 @@ namespace OpenRCT2::TrackMetaData
         .clearance = { 0, 0, 0, 72, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
         .allowedWallEdges = 0b1111,
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftQuarterTurn1TileUp90Seq0.blockedSegments),
+        .tunnels = { {}, 96 },
     };
 
     static constexpr SequenceDescriptor kRightQuarterTurn1TileUp90Seq1 = {
@@ -11757,6 +12254,7 @@ namespace OpenRCT2::TrackMetaData
             EnumsToFlags(PS::centre, PS::topLeft, PS::bottomRight), // inverted
             kSegmentsAll,                                           // wide
         } },
+        .tunnels = { {}, 96 },
     };
 
     static constexpr SequenceDescriptor kLeftQuarterTurn1TileDown90Seq1 = {
@@ -11767,6 +12265,7 @@ namespace OpenRCT2::TrackMetaData
         .clearance = { 0, 0, 0, 72, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
         .allowedWallEdges = 0b1111,
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftQuarterTurn1TileDown90Seq0.blockedSegments),
+        .tunnels = { {}, 96 },
     };
 
     static constexpr SequenceDescriptor kRightQuarterTurn1TileDown90Seq1 = {
@@ -11789,12 +12288,18 @@ namespace OpenRCT2::TrackMetaData
         .clearance = { 64, 0, 96, 16, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
         .allowedWallEdges = 0b1010,
         .blockedSegments = kFlatSeq0.blockedSegments,
+        .tunnels = { { { { SequenceTunnel{ 16, 0, TunnelSlope::flat } },
+                         kSequenceTunnelUnimplemented,
+                         kSequenceTunnelUnimplemented } } },
     };
 
     static constexpr SequenceDescriptor kMultiDimFlatToDown90QuarterLoopSeq0 = {
         .clearance = { 0, 0, -32, 16, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
         .allowedWallEdges = 0b1010,
         .blockedSegments = kFlatSeq0.blockedSegments,
+        .tunnels = { { { { SequenceTunnel{ 32, 0, TunnelSlope::flat } },
+                         kSequenceTunnelUnimplemented,
+                         kSequenceTunnelUnimplemented } } },
     };
 
     static constexpr SequenceDescriptor kMultiDimFlatToDown90QuarterLoopSeq1 = {
@@ -11829,6 +12334,9 @@ namespace OpenRCT2::TrackMetaData
         .clearance = { 64, 0, 128, 16, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
         .allowedWallEdges = 0b1010,
         .blockedSegments = kFlatSeq0.blockedSegments,
+        .tunnels = { { { kSequenceTunnelUnimplemented,
+                         kSequenceTunnelUnimplemented,
+                         { SequenceTunnel{ 0, 0, TunnelSlope::flat } } } } },
     };
 
     static constexpr SequenceDescriptor kRotationControlToggleSeq0 = {
@@ -11836,6 +12344,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw },
         .blockedSegments = kFlatSeq0.blockedSegments,
+        .tunnels = kFlatSeq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kFlatTrack1x4ASeq0 = {
@@ -12173,6 +12682,7 @@ namespace OpenRCT2::TrackMetaData
             kSegmentsUnimplemented,                                                       // inverted
             kSegmentsUnimplemented,                                                       // wide
         } },
+        .tunnels = SequenceTunnelsAllGroups({ { SequenceTunnel{ 0, 0, TunnelSlope::flat } } }),
     };
 
     static constexpr SequenceDescriptor kLeftLargeCorkscrewUpSeq1 = {
@@ -12225,12 +12735,16 @@ namespace OpenRCT2::TrackMetaData
             kSegmentsUnimplemented,                                                                       // inverted
             kSegmentsUnimplemented,                                                                       // wide
         } },
+        .tunnels = { { { { SequenceTunnel{ 8, 3, TunnelSlope::flat } },
+                         kSequenceTunnelUnimplemented,
+                         kSequenceTunnelUnimplemented } } },
     };
 
     static constexpr SequenceDescriptor kRightLargeCorkscrewUpSeq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftLargeCorkscrewUpSeq0.blockedSegments),
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftLargeCorkscrewUpSeq0.tunnels),
     };
 
     static constexpr SequenceDescriptor kRightLargeCorkscrewUpSeq1 = {
@@ -12263,6 +12777,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b0101,
         .invertSegmentBlocking = true,
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftLargeCorkscrewUpSeq5.blockedSegments),
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftLargeCorkscrewUpSeq5.tunnels),
     };
 
     static constexpr SequenceDescriptor kLeftLargeCorkscrewDownSeq0 = {
@@ -12270,6 +12785,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .invertSegmentBlocking = true,
         .blockedSegments = blockedSegmentsRotate(kRightLargeCorkscrewUpSeq5.blockedSegments, 1),
+        .tunnels = SequenceTunnelsPrev(kRightLargeCorkscrewUpSeq5.tunnels),
     };
 
     static constexpr SequenceDescriptor kLeftLargeCorkscrewDownSeq1 = {
@@ -12301,6 +12817,7 @@ namespace OpenRCT2::TrackMetaData
         .clearance = { -64, -64, -112, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0101,
         .blockedSegments = blockedSegmentsRotate(kRightLargeCorkscrewUpSeq0.blockedSegments, 1),
+        .tunnels = SequenceTunnelsPrev(kRightLargeCorkscrewUpSeq0.tunnels),
     };
 
     static constexpr SequenceDescriptor kRightLargeCorkscrewDownSeq0 = {
@@ -12308,6 +12825,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .invertSegmentBlocking = true,
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftLargeCorkscrewDownSeq0.blockedSegments),
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftLargeCorkscrewDownSeq0.tunnels),
     };
 
     static constexpr SequenceDescriptor kRightLargeCorkscrewDownSeq1 = {
@@ -12339,6 +12857,7 @@ namespace OpenRCT2::TrackMetaData
         .clearance = { -64, 64, -112, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0101,
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftLargeCorkscrewDownSeq5.blockedSegments),
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftLargeCorkscrewDownSeq5.tunnels),
     };
 
     static constexpr SequenceDescriptor kLeftMediumHalfLoopUpSeq0 = {
@@ -12349,6 +12868,9 @@ namespace OpenRCT2::TrackMetaData
             kSegmentsUnimplemented,                                 // inverted
             kSegmentsUnimplemented,                                 // wide
         } },
+        .tunnels = { { { { SequenceTunnel{ -8, 0, TunnelSlope::up25 } },
+                         kSequenceTunnelUnimplemented,
+                         kSequenceTunnelUnimplemented } } },
     };
 
     static constexpr SequenceDescriptor kLeftMediumHalfLoopUpSeq1 = {
@@ -12389,12 +12911,16 @@ namespace OpenRCT2::TrackMetaData
             kSegmentsUnimplemented,                                                                         // inverted
             kSegmentsUnimplemented,                                                                         // wide
         } },
+        .tunnels = { { { { SequenceTunnel{ 16, 0, TunnelSlope::flat } },
+                         kSequenceTunnelUnimplemented,
+                         kSequenceTunnelUnimplemented } } },
     };
 
     static constexpr SequenceDescriptor kRightMediumHalfLoopUpSeq0 = {
         .clearance = { 0, 0, 0, 24, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftMediumHalfLoopUpSeq0.blockedSegments),
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftMediumHalfLoopUpSeq0.tunnels),
     };
 
     static constexpr SequenceDescriptor kRightMediumHalfLoopUpSeq1 = {
@@ -12419,12 +12945,14 @@ namespace OpenRCT2::TrackMetaData
         .clearance = { -32, 32, 168, 24, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftMediumHalfLoopUpSeq4.blockedSegments),
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftMediumHalfLoopUpSeq4.tunnels),
     };
 
     static constexpr SequenceDescriptor kLeftMediumHalfLoopDownSeq0 = {
         .clearance = { 0, 0, -48, 24, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
         .blockedSegments = kRightMediumHalfLoopUpSeq4.blockedSegments,
+        .tunnels = kRightMediumHalfLoopUpSeq4.tunnels,
     };
 
     static constexpr SequenceDescriptor kLeftMediumHalfLoopDownSeq1 = {
@@ -12449,12 +12977,14 @@ namespace OpenRCT2::TrackMetaData
         .clearance = { 32, -32, -216, 24, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
         .blockedSegments = kRightMediumHalfLoopUpSeq0.blockedSegments,
+        .tunnels = kRightMediumHalfLoopUpSeq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kRightMediumHalfLoopDownSeq0 = {
         .clearance = { 0, 0, -48, 24, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1000,
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftMediumHalfLoopDownSeq0.blockedSegments),
+        .tunnels = kLeftMediumHalfLoopUpSeq4.tunnels,
     };
 
     static constexpr SequenceDescriptor kRightMediumHalfLoopDownSeq1 = {
@@ -12479,6 +13009,7 @@ namespace OpenRCT2::TrackMetaData
         .clearance = { 32, 32, -216, 24, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftMediumHalfLoopDownSeq4.blockedSegments),
+        .tunnels = kLeftMediumHalfLoopUpSeq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kLeftZeroGRollUpSeq0 = {
@@ -12490,6 +13021,9 @@ namespace OpenRCT2::TrackMetaData
             kSegmentsUnimplemented,                                 // inverted
             kSegmentsAll,                                           // wide
         } },
+        .tunnels = { { { { SequenceTunnel{ -8, 0, TunnelSlope::up25 } },
+                         kSequenceTunnelUnimplemented,
+                         kSequenceTunnelUnimplemented } } },
     };
 
     static constexpr SequenceDescriptor kLeftZeroGRollUpSeq1 = {
@@ -12513,6 +13047,9 @@ namespace OpenRCT2::TrackMetaData
             kSegmentsUnimplemented,                                                                 // inverted
             kSegmentsAll,                                                                           // wide
         } },
+        .tunnels = { { { { SequenceTunnel{ 8, 2, TunnelSlope::flat } },
+                         kSequenceTunnelUnimplemented,
+                         kSequenceTunnelUnimplemented } } },
     };
 
     static constexpr SequenceDescriptor kRightZeroGRollUpSeq0 = {
@@ -12520,6 +13057,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw },
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftZeroGRollUpSeq0.blockedSegments),
+        .tunnels = kLeftZeroGRollUpSeq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kRightZeroGRollUpSeq1 = {
@@ -12535,6 +13073,7 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::neSw },
         .invertSegmentBlocking = true,
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftZeroGRollUpSeq2.blockedSegments),
+        .tunnels = kLeftZeroGRollUpSeq2.tunnels,
     };
 
     static constexpr SequenceDescriptor kLeftZeroGRollDownSeq0 = {
@@ -12543,6 +13082,7 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::neSw },
         .invertSegmentBlocking = true,
         .blockedSegments = blockedSegmentsRotate(kLeftZeroGRollUpSeq2.blockedSegments, 2),
+        .tunnels = SequenceTunnelsReverse(kLeftZeroGRollUpSeq2.tunnels),
     };
 
     static constexpr SequenceDescriptor kLeftZeroGRollDownSeq1 = {
@@ -12557,6 +13097,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw },
         .blockedSegments = blockedSegmentsRotate(kLeftZeroGRollUpSeq0.blockedSegments, 2),
+        .tunnels = SequenceTunnelsReverse(kLeftZeroGRollUpSeq0.tunnels),
     };
 
     static constexpr SequenceDescriptor kRightZeroGRollDownSeq0 = {
@@ -12565,6 +13106,7 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::neSw },
         .invertSegmentBlocking = true,
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftZeroGRollDownSeq0.blockedSegments),
+        .tunnels = kLeftZeroGRollDownSeq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kRightZeroGRollDownSeq1 = {
@@ -12579,6 +13121,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw },
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftZeroGRollDownSeq2.blockedSegments),
+        .tunnels = kLeftZeroGRollDownSeq2.tunnels,
     };
 
     static constexpr SequenceDescriptor kLeftLargeZeroGRollUpSeq0 = {
@@ -12590,6 +13133,9 @@ namespace OpenRCT2::TrackMetaData
             kSegmentsUnimplemented,                                 // inverted
             kSegmentsAll,                                           // wide
         } },
+        .tunnels = { { { { SequenceTunnel{ -8, 0, TunnelSlope::up25 } },
+                         kSequenceTunnelUnimplemented,
+                         kSequenceTunnelUnimplemented } } },
     };
 
     static constexpr SequenceDescriptor kLeftLargeZeroGRollUpSeq1 = {
@@ -12624,6 +13170,9 @@ namespace OpenRCT2::TrackMetaData
             kSegmentsUnimplemented,                                                                 // inverted
             kSegmentsAll,                                                                           // wide
         } },
+        .tunnels = { { { { SequenceTunnel{ 8, 2, TunnelSlope::flat } },
+                         kSequenceTunnelUnimplemented,
+                         kSequenceTunnelUnimplemented } } },
     };
 
     static constexpr SequenceDescriptor kRightLargeZeroGRollUpSeq0 = {
@@ -12631,6 +13180,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw },
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftLargeZeroGRollUpSeq0.blockedSegments),
+        .tunnels = kLeftLargeZeroGRollUpSeq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kRightLargeZeroGRollUpSeq1 = {
@@ -12653,6 +13203,7 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::neSw },
         .invertSegmentBlocking = true,
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftLargeZeroGRollUpSeq3.blockedSegments),
+        .tunnels = kLeftLargeZeroGRollUpSeq3.tunnels,
     };
 
     static constexpr SequenceDescriptor kLeftLargeZeroGRollDownSeq0 = {
@@ -12661,6 +13212,7 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::neSw },
         .invertSegmentBlocking = true,
         .blockedSegments = blockedSegmentsRotate(kLeftLargeZeroGRollUpSeq3.blockedSegments, 2),
+        .tunnels = SequenceTunnelsReverse(kLeftLargeZeroGRollUpSeq3.tunnels),
     };
 
     static constexpr SequenceDescriptor kLeftLargeZeroGRollDownSeq1 = {
@@ -12682,6 +13234,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw },
         .blockedSegments = blockedSegmentsRotate(kLeftLargeZeroGRollUpSeq0.blockedSegments, 2),
+        .tunnels = SequenceTunnelsReverse(kLeftLargeZeroGRollUpSeq0.tunnels),
     };
 
     static constexpr SequenceDescriptor kRightLargeZeroGRollDownSeq0 = {
@@ -12690,6 +13243,7 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::neSw },
         .invertSegmentBlocking = true,
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftLargeZeroGRollDownSeq0.blockedSegments),
+        .tunnels = kLeftLargeZeroGRollDownSeq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kRightLargeZeroGRollDownSeq1 = {
@@ -12711,6 +13265,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw },
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftLargeZeroGRollDownSeq3.blockedSegments),
+        .tunnels = kLeftLargeZeroGRollDownSeq3.tunnels,
     };
 
     static constexpr SequenceDescriptor kLeftFlyerLargeHalfLoopUninvertedUpSeq0 = {
@@ -12721,6 +13276,7 @@ namespace OpenRCT2::TrackMetaData
             kSegmentsUnimplemented,                                 // inverted
             kSegmentsUnimplemented,                                 // wide
         } },
+        .tunnels = kLeftLargeHalfLoopUpSeq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kLeftFlyerLargeHalfLoopUninvertedUpSeq1 = {
@@ -12782,12 +13338,14 @@ namespace OpenRCT2::TrackMetaData
             kSegmentsUnimplemented,                                                                         // inverted
             kSegmentsUnimplemented,                                                                         // wide
         } },
+        .tunnels = kLeftLargeHalfLoopUpSeq6.tunnels,
     };
 
     static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopUninvertedUpSeq0 = {
         .clearance = { 0, 0, 0, 24, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b1010,
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftFlyerLargeHalfLoopUninvertedUpSeq0.blockedSegments),
+        .tunnels = kRightLargeHalfLoopUpSeq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopUninvertedUpSeq1 = {
@@ -12825,6 +13383,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b0010,
         .invertSegmentBlocking = true,
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftFlyerLargeHalfLoopUninvertedUpSeq6.blockedSegments),
+        .tunnels = kRightLargeHalfLoopUpSeq6.tunnels,
     };
 
     static constexpr SequenceDescriptor kLeftFlyerLargeHalfLoopInvertedDownSeq0 = {
@@ -12835,6 +13394,9 @@ namespace OpenRCT2::TrackMetaData
             EnumsToFlags(PS::top, PS::left, PS::centre, PS::topLeft, PS::topRight, PS::bottomLeft), // inverted
             kSegmentsUnimplemented,                                                                 // wide
         } },
+        .tunnels = { { { kSequenceTunnelUnimplemented,
+                         kSequenceTunnelUnimplemented,
+                         { { SequenceTunnel{ 0, 0, TunnelSlope::flat } } } } } },
     };
 
     static constexpr SequenceDescriptor kLeftFlyerLargeHalfLoopInvertedDownSeq1 = {
@@ -12899,12 +13461,16 @@ namespace OpenRCT2::TrackMetaData
             EnumsToFlags(PS::centre, PS::topRight, PS::bottomLeft), // inverted
             kSegmentsUnimplemented,                                 // wide
         } },
+        .tunnels = { { { kSequenceTunnelUnimplemented,
+                         kSequenceTunnelUnimplemented,
+                         { { SequenceTunnel{ -8, 0, TunnelSlope::up25 } } } } } },
     };
 
     static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopInvertedDownSeq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1000,
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftFlyerLargeHalfLoopInvertedDownSeq0.blockedSegments),
+        .tunnels = kLeftFlyerLargeHalfLoopInvertedDownSeq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopInvertedDownSeq1 = {
@@ -12945,6 +13511,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .invertSegmentBlocking = true,
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftFlyerLargeHalfLoopInvertedDownSeq6.blockedSegments),
+        .tunnels = kLeftFlyerLargeHalfLoopInvertedDownSeq6.tunnels,
     };
 
     static constexpr SequenceDescriptor kLeftFlyerLargeHalfLoopInvertedUpSeq0 = {
@@ -12955,6 +13522,9 @@ namespace OpenRCT2::TrackMetaData
             EnumsToFlags(PS::centre, PS::topRight, PS::bottomLeft), // inverted
             kSegmentsUnimplemented,                                 // wide
         } },
+        .tunnels = { { { kSequenceTunnelUnimplemented,
+                         kSequenceTunnelUnimplemented,
+                         { { SequenceTunnel{ -8, 0, TunnelSlope::up25 } } } } } },
     };
 
     static constexpr SequenceDescriptor kLeftFlyerLargeHalfLoopInvertedUpSeq1 = {
@@ -13016,12 +13586,16 @@ namespace OpenRCT2::TrackMetaData
             EnumsToFlags(PS::right, PS::bottom, PS::centre, PS::topRight, PS::bottomLeft, PS::bottomRight), // inverted
             kSegmentsUnimplemented,                                                                         // wide
         } },
+        .tunnels = { { { kSequenceTunnelUnimplemented,
+                         kSequenceTunnelUnimplemented,
+                         { { SequenceTunnel{ 32, 0, TunnelSlope::flat } } } } } },
     };
 
     static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopInvertedUpSeq0 = {
         .clearance = { 0, 0, 0, 24, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b1010,
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftFlyerLargeHalfLoopInvertedUpSeq0.blockedSegments),
+        .tunnels = kLeftFlyerLargeHalfLoopInvertedUpSeq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopInvertedUpSeq1 = {
@@ -13059,6 +13633,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b0010,
         .invertSegmentBlocking = true,
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftFlyerLargeHalfLoopInvertedUpSeq6.blockedSegments),
+        .tunnels = kLeftFlyerLargeHalfLoopInvertedUpSeq6.tunnels,
     };
 
     static constexpr SequenceDescriptor kLeftFlyerLargeHalfLoopUninvertedDownSeq0 = {
@@ -13069,6 +13644,9 @@ namespace OpenRCT2::TrackMetaData
             kSegmentsUnimplemented,                                                                 // inverted
             kSegmentsUnimplemented,                                                                 // wide
         } },
+        .tunnels = { { { { { SequenceTunnel{ 32, 0, TunnelSlope::flat } } },
+                         kSequenceTunnelUnimplemented,
+                         kSequenceTunnelUnimplemented } } },
     };
 
     static constexpr SequenceDescriptor kLeftFlyerLargeHalfLoopUninvertedDownSeq1 = {
@@ -13130,12 +13708,16 @@ namespace OpenRCT2::TrackMetaData
             kSegmentsUnimplemented,                                 // inverted
             kSegmentsUnimplemented,                                 // wide
         } },
+        .tunnels = { { { { { SequenceTunnel{ -8, 0, TunnelSlope::up25 } } },
+                         kSequenceTunnelUnimplemented,
+                         kSequenceTunnelUnimplemented } } },
     };
 
     static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopUninvertedDownSeq0 = {
         .clearance = { 0, 0, -32, 32, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1000,
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftFlyerLargeHalfLoopUninvertedDownSeq0.blockedSegments),
+        .tunnels = kLeftFlyerLargeHalfLoopUninvertedDownSeq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopUninvertedDownSeq1 = {
@@ -13173,6 +13755,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .invertSegmentBlocking = true,
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftFlyerLargeHalfLoopUninvertedDownSeq6.blockedSegments),
+        .tunnels = kLeftFlyerLargeHalfLoopUninvertedDownSeq6.tunnels,
     };
 
     static constexpr SequenceDescriptor kFlyerHalfLoopInvertedUpSeq0 = {
@@ -13183,6 +13766,9 @@ namespace OpenRCT2::TrackMetaData
             EnumsToFlags(PS::centre, PS::topRight, PS::bottomLeft), // inverted
             kSegmentsUnimplemented,                                 // wide
         } },
+        .tunnels = { { { kSequenceTunnelUnimplemented,
+                         kSequenceTunnelUnimplemented,
+                         { { SequenceTunnel{ -8, 0, TunnelSlope::up25 } } } } } },
     };
 
     static constexpr SequenceDescriptor kFlyerHalfLoopInvertedUpSeq1 = {
@@ -13215,6 +13801,9 @@ namespace OpenRCT2::TrackMetaData
             EnumsToFlags(PS::centre, PS::topRight, PS::bottomLeft), // inverted
             kSegmentsUnimplemented,                                 // wide
         } },
+        .tunnels = { { { kSequenceTunnelUnimplemented,
+                         kSequenceTunnelUnimplemented,
+                         { { SequenceTunnel{ 32, 0, TunnelSlope::flat } } } } } },
     };
 
     static constexpr SequenceDescriptor kFlyerHalfLoopUninvertedDownSeq0 = {
@@ -13224,6 +13813,9 @@ namespace OpenRCT2::TrackMetaData
             kSegmentsUnimplemented,                                 // inverted
             kSegmentsUnimplemented,                                 // wide
         } },
+        .tunnels = { { { { { SequenceTunnel{ 32, 0, TunnelSlope::flat } } },
+                         kSequenceTunnelUnimplemented,
+                         kSequenceTunnelUnimplemented } } },
     };
 
     static constexpr SequenceDescriptor kFlyerHalfLoopUninvertedDownSeq1 = {
@@ -13255,6 +13847,9 @@ namespace OpenRCT2::TrackMetaData
             kSegmentsUnimplemented,                                 // inverted
             kSegmentsUnimplemented,                                 // wide
         } },
+        .tunnels = { { { { { SequenceTunnel{ -8, 0, TunnelSlope::up25 } } },
+                         kSequenceTunnelUnimplemented,
+                         kSequenceTunnelUnimplemented } } },
     };
 
     static constexpr SequenceDescriptor kLeftEighthToDiagUp25Seq0 = {
@@ -13266,6 +13861,9 @@ namespace OpenRCT2::TrackMetaData
             kSegmentsUnimplemented,                                 // inverted
             kSegmentsAll,                                           // wide
         } },
+        .tunnels = { { { { SequenceTunnel{ -8, 0, TunnelSlope::up25 } },
+                         kSequenceTunnelUnimplemented,
+                         kSequenceTunnelUnimplemented } } },
     };
 
     static constexpr SequenceDescriptor kLeftEighthToDiagUp25Seq1 = {
@@ -13315,6 +13913,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1000,
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25Deg },
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftEighthToDiagUp25Seq0.blockedSegments),
+        .tunnels = SequenceTunnelsFlipXAxis(kLeftEighthToDiagUp25Seq0.tunnels),
     };
 
     static constexpr SequenceDescriptor kRightEighthToDiagUp25Seq1 = {
@@ -13349,6 +13948,9 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25Deg },
         .extraSupportRotation = 2,
         .blockedSegments = kLeftEighthToDiagUp25Seq0.blockedSegments,
+        .tunnels = { { { { SequenceTunnel{ 8, 0, TunnelSlope::down25 } },
+                         kSequenceTunnelUnimplemented,
+                         kSequenceTunnelUnimplemented } } },
     };
 
     static constexpr SequenceDescriptor kLeftEighthToDiagDown25Seq1 = {
@@ -13383,6 +13985,9 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25Deg },
         .extraSupportRotation = 2,
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftEighthToDiagDown25Seq0.blockedSegments),
+        .tunnels = { { { { SequenceTunnel{ 8, 0, TunnelSlope::down25 } },
+                         kSequenceTunnelUnimplemented,
+                         kSequenceTunnelUnimplemented } } },
     };
 
     static constexpr SequenceDescriptor kRightEighthToDiagDown25Seq1 = {
@@ -13442,6 +14047,9 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b0010,
         .woodenSupports = { WoodenSupportSubType::neSw },
         .blockedSegments = blockedSegmentsRotate(kRightEighthToDiagUp25Seq0.blockedSegments, 2),
+        .tunnels = { { { { SequenceTunnel{ 8, 2, TunnelSlope::down25 } },
+                         kSequenceTunnelUnimplemented,
+                         kSequenceTunnelUnimplemented } } },
     };
 
     static constexpr SequenceDescriptor kRightEighthToOrthogonalUp25Seq0 = {
@@ -13475,6 +14083,9 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b0001,
         .woodenSupports = { WoodenSupportSubType::nwSe },
         .blockedSegments = blockedSegmentsRotate(kLeftEighthToDiagUp25Seq0.blockedSegments, 3),
+        .tunnels = { { { { SequenceTunnel{ 8, 1, TunnelSlope::down25 } },
+                         kSequenceTunnelUnimplemented,
+                         kSequenceTunnelUnimplemented } } },
     };
 
     static constexpr SequenceDescriptor kLeftEighthToOrthogonalDown25Seq0 = {
@@ -13509,6 +14120,9 @@ namespace OpenRCT2::TrackMetaData
         .clearance = { -64, 32, -48, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
         .blockedSegments = kLeftEighthToOrthogonalUp25Seq4.blockedSegments,
+        .tunnels = { { { { SequenceTunnel{ -8, 2, TunnelSlope::up25 } },
+                         kSequenceTunnelUnimplemented,
+                         kSequenceTunnelUnimplemented } } },
     };
 
     static constexpr SequenceDescriptor kRightEighthToOrthogonalDown25Seq0 = {
@@ -13543,6 +14157,9 @@ namespace OpenRCT2::TrackMetaData
         .clearance = { -32, 64, -48, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0001,
         .blockedSegments = kRightEighthToOrthogonalUp25Seq4.blockedSegments,
+        .tunnels = { { { { SequenceTunnel{ -8, 1, TunnelSlope::up25 } },
+                         kSequenceTunnelUnimplemented,
+                         kSequenceTunnelUnimplemented } } },
     };
 
     static constexpr SequenceDescriptor kDiagUp25ToLeftBankedUp25Seq0 = {
@@ -14222,6 +14839,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b0010,
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25Deg },
         .blockedSegments = kLeftEighthToDiagUp25Seq0.blockedSegments,
+        .tunnels = kLeftEighthToDiagUp25Seq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kLeftEighthBankToDiagUp25Seq1 = {
@@ -14255,6 +14873,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1000,
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25Deg },
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftEighthBankToDiagUp25Seq0.blockedSegments),
+        .tunnels = kRightEighthToDiagUp25Seq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kRightEighthBankToDiagUp25Seq1 = {
@@ -14289,6 +14908,7 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25Deg },
         .extraSupportRotation = 2,
         .blockedSegments = kLeftEighthBankToDiagUp25Seq0.blockedSegments,
+        .tunnels = kLeftEighthToDiagDown25Seq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kLeftEighthBankToDiagDown25Seq1 = {
@@ -14323,6 +14943,7 @@ namespace OpenRCT2::TrackMetaData
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25Deg },
         .extraSupportRotation = 2,
         .blockedSegments = kRightEighthBankToDiagUp25Seq0.blockedSegments,
+        .tunnels = kRightEighthToDiagDown25Seq0.tunnels,
     };
 
     static constexpr SequenceDescriptor kRightEighthBankToDiagDown25Seq1 = {
@@ -14382,6 +15003,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b0010,
         .woodenSupports = { WoodenSupportSubType::neSw },
         .blockedSegments = blockedSegmentsRotate(kRightEighthBankToDiagUp25Seq0.blockedSegments, 2),
+        .tunnels = kLeftEighthToOrthogonalUp25Seq4.tunnels,
     };
 
     static constexpr SequenceDescriptor kRightEighthBankToOrthogonalUp25Seq0 = {
@@ -14415,6 +15037,7 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b0001,
         .woodenSupports = { WoodenSupportSubType::nwSe },
         .blockedSegments = blockedSegmentsRotate(kLeftEighthBankToDiagUp25Seq0.blockedSegments, 3),
+        .tunnels = kRightEighthToOrthogonalUp25Seq4.tunnels,
     };
 
     static constexpr SequenceDescriptor kLeftEighthBankToOrthogonalDown25Seq0 = {
@@ -14449,6 +15072,7 @@ namespace OpenRCT2::TrackMetaData
         .clearance = { -64, 32, -48, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
         .blockedSegments = kLeftEighthBankToOrthogonalUp25Seq4.blockedSegments,
+        .tunnels = kLeftEighthToOrthogonalDown25Seq4.tunnels,
     };
 
     static constexpr SequenceDescriptor kRightEighthBankToOrthogonalDown25Seq0 = {
@@ -14483,6 +15107,7 @@ namespace OpenRCT2::TrackMetaData
         .clearance = { -32, 64, -48, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0001,
         .blockedSegments = kRightEighthBankToOrthogonalUp25Seq4.blockedSegments,
+        .tunnels = kRightEighthToOrthogonalDown25Seq4.tunnels,
     };
 
     static constexpr SequenceDescriptor kDiagBrakesSeq0 = {
@@ -14868,6 +15493,9 @@ namespace OpenRCT2::TrackMetaData
             kSegmentsUnimplemented,                                                                 // inverted
             kSegmentsUnimplemented,                                                                 // wide
         } },
+        .tunnels = { { { { SequenceTunnel{ 8, 2, TunnelSlope::tall } },
+                         kSequenceTunnelUnimplemented,
+                         kSequenceTunnelUnimplemented } } },
     };
     static constexpr SequenceDescriptor kRightEighthDiveLoopUpToOrthogonalSeq0 = {
         .clearance = { 0, 0, 0, 64, { 0b1101, 0 }, 0 },
@@ -14906,12 +15534,18 @@ namespace OpenRCT2::TrackMetaData
         .invertSegmentBlocking = true,
         .blockedSegments = blockedSegmentsRotate(
             blockedSegmentsFlipXAxis(kLeftEighthDiveLoopUpToOrthogonalSeq5.blockedSegments), 1),
+        .tunnels = { { { { SequenceTunnel{ 8, 1, TunnelSlope::tall } },
+                         kSequenceTunnelUnimplemented,
+                         kSequenceTunnelUnimplemented } } },
     };
     static constexpr SequenceDescriptor kLeftEighthDiveLoopDownToDiagSeq0 = {
         .clearance = { 0, 0, 112, 24, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
         .invertSegmentBlocking = true,
         .blockedSegments = blockedSegmentsRotate(kRightEighthDiveLoopUpToOrthogonalSeq5.blockedSegments, 1),
+        .tunnels = { { { { SequenceTunnel{ 8, 0, TunnelSlope::tall } },
+                         kSequenceTunnelUnimplemented,
+                         kSequenceTunnelUnimplemented } } },
     };
     static constexpr SequenceDescriptor kLeftEighthDiveLoopDownToDiagSeq1 = {
         .clearance = { -32, 0, 80, 48, { 0b1111, 0 }, 0 },
@@ -14944,6 +15578,9 @@ namespace OpenRCT2::TrackMetaData
         .allowedWallEdges = 0b1010,
         .invertSegmentBlocking = true,
         .blockedSegments = blockedSegmentsRotate(kLeftEighthDiveLoopUpToOrthogonalSeq5.blockedSegments, 2),
+        .tunnels = { { { { SequenceTunnel{ 8, 0, TunnelSlope::tall } },
+                         kSequenceTunnelUnimplemented,
+                         kSequenceTunnelUnimplemented } } },
     };
     static constexpr SequenceDescriptor kRightEighthDiveLoopDownToDiagSeq1 = {
         .clearance = { -32, 0, 80, 48, { 0b1111, 0 }, 0 },
