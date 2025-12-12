@@ -51,8 +51,8 @@ struct VehicleInfo
 
 struct SoundIdVolume;
 
-constexpr uint16_t VehicleTrackDirectionMask = 0b0000000000000011;
-constexpr uint16_t VehicleTrackTypeMask = 0b1111111111111100;
+static constexpr uint16_t kVehicleTrackDirectionMask = 0b0000000000000011;
+static constexpr uint16_t kVehicleTrackTypeMask = 0b1111111111111100;
 
 enum class MiniGolfAnimation : uint8_t;
 
@@ -253,19 +253,19 @@ struct Vehicle : EntityBase
     bool IsOnCoveredTrack() const;
     uint8_t GetTrackDirection() const
     {
-        return TrackTypeAndDirection & VehicleTrackDirectionMask;
+        return TrackTypeAndDirection & kVehicleTrackDirectionMask;
     }
     void SetTrackType(OpenRCT2::TrackElemType trackType)
     {
         // set the upper 14 bits to 0, then set track type
-        TrackTypeAndDirection &= ~VehicleTrackTypeMask;
+        TrackTypeAndDirection &= ~kVehicleTrackTypeMask;
         TrackTypeAndDirection |= EnumValue(trackType) << 2;
     }
     void SetTrackDirection(uint8_t trackDirection)
     {
         // set the lower 2 bits only
-        TrackTypeAndDirection &= ~VehicleTrackDirectionMask;
-        TrackTypeAndDirection |= trackDirection & VehicleTrackDirectionMask;
+        TrackTypeAndDirection &= ~kVehicleTrackDirectionMask;
+        TrackTypeAndDirection |= trackDirection & kVehicleTrackDirectionMask;
     }
     bool HasFlag(uint32_t flag) const
     {
