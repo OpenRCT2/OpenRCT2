@@ -640,7 +640,7 @@ namespace OpenRCT2::Ui::Windows
         // Show dropdown
         auto squareSize = DropdownWindow::GetDefaultRowHeight();
         WindowDropdownShowImage(
-            w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->height() + 1, dropdownColour,
+            w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->height(), dropdownColour,
             Dropdown::Flag::StayOpen, numColours, squareSize, squareSize,
             DropdownGetAppropriateImageDropdownItemsPerRow(static_cast<uint32_t>(numColours)));
 

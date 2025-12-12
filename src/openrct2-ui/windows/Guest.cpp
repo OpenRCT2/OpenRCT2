@@ -550,7 +550,7 @@ namespace OpenRCT2::Ui::Windows
 
             const auto& widget = widgets[WIDX_TAB_1];
             int32_t widgWidth = widget.width() - 2;
-            int32_t widgHeight = widget.height() - 1;
+            int32_t widgHeight = widget.height() - 2;
             auto screenCoords = windowPos + ScreenCoordsXY{ widget.left + 1, widget.top + 1 };
             if (page == WINDOW_GUEST_OVERVIEW)
                 widgHeight++;
@@ -625,7 +625,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 const auto& widget = widgets[WIDX_VIEWPORT];
                 const auto reqViewportWidth = widget.width() - 2;
-                const auto reqViewportHeight = widget.height() - 1;
+                const auto reqViewportHeight = widget.height() - 2;
                 viewport->pos = windowPos + ScreenCoordsXY{ widget.left + 1, widget.top + 1 };
                 if (viewport->width != reqViewportWidth || viewport->height != reqViewportHeight)
                 {
@@ -728,7 +728,7 @@ namespace OpenRCT2::Ui::Windows
             };
 
             WindowDropdownShowText(
-                { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height() + 1, colours[1], 0, dropdownItems);
+                { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height(), colours[1], 0, dropdownItems);
             gDropdown.defaultIndex = 0;
         }
 
@@ -767,7 +767,7 @@ namespace OpenRCT2::Ui::Windows
                 const auto& viewWidget = widgets[WIDX_VIEWPORT];
                 auto screenPos = ScreenCoordsXY{ viewWidget.left + 1 + windowPos.x, viewWidget.top + 1 + windowPos.y };
                 int32_t widgWidth = viewWidget.width() - 2;
-                int32_t widgHeight = viewWidget.height() - 1;
+                int32_t widgHeight = viewWidget.height() - 2;
 
                 ViewportCreate(*this, screenPos, widgWidth, widgHeight, focus.value());
                 if (viewport != nullptr && reCreateViewport)
@@ -823,7 +823,7 @@ namespace OpenRCT2::Ui::Windows
             auto marqWidth = marqueeWidget.width() - 4;
             int32_t left = marqueeWidget.left + 2 + windowPos.x;
             int32_t top = marqueeWidget.top + windowPos.y;
-            int32_t marqHeight = marqueeWidget.height();
+            int32_t marqHeight = marqueeWidget.height() - 1;
             RenderTarget rtMarquee;
             if (!ClipDrawPixelInfo(rtMarquee, rt, { left, top }, marqWidth, marqHeight))
             {

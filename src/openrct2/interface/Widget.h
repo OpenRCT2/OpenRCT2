@@ -105,9 +105,19 @@ namespace OpenRCT2
             return right - left + 1;
         }
 
+        void setWidth(int16_t newWidth)
+        {
+            right = left + newWidth - 1;
+        }
+
         int16_t height() const
         {
-            return bottom - top;
+            return bottom - top + 1;
+        }
+
+        void setHeight(int16_t newHeight)
+        {
+            bottom = top + newHeight - 1;
         }
 
         int16_t midX() const
@@ -117,13 +127,13 @@ namespace OpenRCT2
 
         int16_t midY() const
         {
-            return (top + bottom) / 2;
+            return top + (height() / 2);
         }
 
         int16_t textTop() const
         {
-            if (height() >= 10)
-                return std::max<int32_t>(top, top + (height() / 2) - 5);
+            if (height() >= 11)
+                return std::max<int32_t>(top, top + (height() / 2) - 6);
 
             return top - 1;
         }

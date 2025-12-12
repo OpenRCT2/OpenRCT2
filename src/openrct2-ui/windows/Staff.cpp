@@ -435,7 +435,7 @@ namespace OpenRCT2::Ui::Windows
                     gDropdown.items[1] = Dropdown::PlainMenuLabel(STR_CLEAR_PATROL_AREA);
 
                     auto ddPos = ScreenCoordsXY{ widget->left + windowPos.x, widget->top + windowPos.y };
-                    int32_t extraHeight = widget->height() + 1;
+                    int32_t extraHeight = widget->height();
                     WindowDropdownShowText(ddPos, extraHeight, colours[1], 0, 2);
                     gDropdown.defaultIndex = 0;
 
@@ -574,7 +574,7 @@ namespace OpenRCT2::Ui::Windows
 
             const auto& widget = widgets[WIDX_TAB_1];
             int32_t widgetWidth = widget.width() - 2;
-            int32_t widgetHeight = widget.height() - 1;
+            int32_t widgetHeight = widget.height() - 2;
             auto screenCoords = windowPos + ScreenCoordsXY{ widget.left + 1, widget.top + 1 };
             if (page == WINDOW_STAFF_OVERVIEW)
                 widgetHeight++;
@@ -616,7 +616,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 const Widget& viewportWidget = widgets[WIDX_VIEWPORT];
                 const auto reqViewportWidth = viewportWidget.width() - 2;
-                const auto reqViewportHeight = viewportWidget.height() - 1;
+                const auto reqViewportHeight = viewportWidget.height() - 2;
 
                 viewport->pos = windowPos + ScreenCoordsXY{ viewportWidget.left + 1, viewportWidget.top + 1 };
                 if (viewport->width != reqViewportWidth || viewport->height != reqViewportHeight)
@@ -799,7 +799,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             auto ddPos = ScreenCoordsXY{ ddWidget->left + windowPos.x, ddWidget->top + windowPos.y };
-            int32_t ddHeight = ddWidget->height() + 1;
+            int32_t ddHeight = ddWidget->height();
             int32_t ddWidth = ddWidget->width() - 4;
             WindowDropdownShowTextCustomWidth(ddPos, ddHeight, colours[1], 0, Dropdown::Flag::StayOpen, numCostumes, ddWidth);
 
@@ -1156,7 +1156,7 @@ namespace OpenRCT2::Ui::Windows
 
                     auto screenPos = ScreenCoordsXY{ viewWidget.left + 1 + windowPos.x, viewWidget.top + 1 + windowPos.y };
                     int32_t viewportWidth = viewWidget.width() - 2;
-                    int32_t viewportHeight = viewWidget.height() - 1;
+                    int32_t viewportHeight = viewWidget.height() - 2;
 
                     ViewportCreate(*this, screenPos, viewportWidth, viewportHeight, focus.value());
                     flags |= WindowFlag::noScrolling;
@@ -1175,7 +1175,7 @@ namespace OpenRCT2::Ui::Windows
             gDropdown.items[1] = Dropdown::PlainMenuLabel(STR_FOLLOW_SUBJECT_TIP);
 
             WindowDropdownShowText(
-                { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height() + 1, colours[1], 0, 2);
+                { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height(), colours[1], 0, 2);
             gDropdown.defaultIndex = 0;
         }
 

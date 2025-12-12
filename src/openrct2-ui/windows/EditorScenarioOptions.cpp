@@ -766,8 +766,8 @@ namespace OpenRCT2::Ui::Windows
 
             Widget* dropdownWidget = &widgets[WIDX_OBJECTIVE];
             WindowDropdownShowTextCustomWidth(
-                { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
-                colours[1], 0, Dropdown::Flag::StayOpen, numItems, dropdownWidget->width() - 4);
+                { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height(), colours[1],
+                0, Dropdown::Flag::StayOpen, numItems, dropdownWidget->width() - 4);
         }
 
         void ShowCategoryDropdown()
@@ -779,8 +779,8 @@ namespace OpenRCT2::Ui::Windows
 
             Widget* dropdownWidget = &widgets[WIDX_CATEGORY];
             WindowDropdownShowTextCustomWidth(
-                { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
-                colours[1], 0, Dropdown::Flag::StayOpen, 5, dropdownWidget->width() - 4);
+                { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height(), colours[1],
+                0, Dropdown::Flag::StayOpen, 5, dropdownWidget->width() - 4);
 
             gDropdown.items[EnumValue(getGameState().scenarioOptions.category)].setChecked(true);
         }
@@ -1561,7 +1561,7 @@ namespace OpenRCT2::Ui::Windows
                     gDropdown.items[2] = Dropdown::MenuLabel(STR_PAID_ENTRY_PAID_RIDES);
 
                     WindowDropdownShowTextCustomWidth(
-                        { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() - 1,
+                        { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() - 2,
                         colours[1], 0, Dropdown::Flag::StayOpen, 3, dropdownWidget->width() - 4);
 
                     if (gameState.park.flags & PARK_FLAGS_UNLOCK_ALL_PRICES)
@@ -1899,7 +1899,7 @@ namespace OpenRCT2::Ui::Windows
                     gDropdown.items[3] = Dropdown::MenuLabel(STR_GUESTS_PREFER_INTENSITY_MORE_INTENSE_RIDES);
 
                     WindowDropdownShowTextCustomWidth(
-                        { windowPos.x + dropdownWidget.left, windowPos.y + dropdownWidget.top }, dropdownWidget.height() - 1,
+                        { windowPos.x + dropdownWidget.left, windowPos.y + dropdownWidget.top }, dropdownWidget.height() - 2,
                         colours[1], 0, Dropdown::Flag::StayOpen, 4, dropdownWidget.width() - 4);
 
                     const auto preferLess = gameState.park.flags & PARK_FLAGS_PREF_LESS_INTENSE_RIDES;
