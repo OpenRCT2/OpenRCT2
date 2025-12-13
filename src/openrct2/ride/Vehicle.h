@@ -146,19 +146,19 @@ struct Vehicle : EntityBase
     {
         int16_t SwingPosition;
         int16_t current_time;
-        struct FerrisWheelState
+        struct
         {
             /**
              * Controls when the rotation should be accelerating, decelerating or at constant speed. Ranges from 8 (coming out
              * of a standstill) to -8 (stopping for guests to get in/off), 3 indicates constant speed.
              */
-            int8_t rotationPhase;
+            int8_t ferrisWheelRotationPhase;
             /**
              * Countdown that controls when the current animation frame should update, ranges from 8 to 0. The closer
-             * rotationPhase is to 3, the faster the animation frame changes.
+             * ferrisWheelRotationPhase is to 3, the faster the animation frame changes.
              */
-            int8_t timer;
-        } ferrisWheel;
+            int8_t ferrisWheelTimer;
+        };
         int16_t rider_speed_preference;
     };
     union
