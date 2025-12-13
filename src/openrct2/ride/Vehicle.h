@@ -167,7 +167,12 @@ struct Vehicle : EntityBase
         int16_t crash_z;
     };
     Status status;
-    uint8_t sub_state;
+    union
+    {
+        uint8_t sub_state;
+        // Index of the last animation frame the Ferris Wheel stopped at for guests to get in or off
+        uint8_t ferrisWheelLastStopFrame;
+    };
     EntityId peep[32];
     OpenRCT2::Drawing::Colour peep_tshirt_colours[32];
     uint8_t num_seats;

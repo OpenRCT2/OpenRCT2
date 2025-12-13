@@ -3789,12 +3789,12 @@ void Vehicle::UpdateFerrisWheelRotating()
     rotation &= 0x7F;
     flatRideAnimationFrame = rotation;
 
-    if (rotation == sub_state)
+    if (rotation == ferrisWheelLastStopFrame)
         NumRotations++;
 
     Invalidate();
 
-    uint8_t subState = sub_state;
+    uint8_t subState = ferrisWheelLastStopFrame;
     if (curRide->mode == RideMode::forwardRotation)
         subState++;
     else
@@ -3821,7 +3821,7 @@ void Vehicle::UpdateFerrisWheelRotating()
     if (ferrisWheel.rotationPhase != -8)
         return;
 
-    subState = sub_state;
+    subState = ferrisWheelLastStopFrame;
     if (curRide->mode == RideMode::forwardRotation)
         subState += 8;
     else
