@@ -1559,8 +1559,8 @@ void Vehicle::UpdateWaitingToDepart()
         case RideMode::backwardRotation:
             SetState(Status::ferrisWheelRotating, flatRideAnimationFrame);
             NumRotations = 0;
-            ferris_wheel_var_0 = 8;
-            ferris_wheel_var_1 = 8;
+            ferrisWheel.rotationPhase = 8;
+            ferrisWheel.timer = 8;
             UpdateFerrisWheelRotating();
             break;
         case RideMode::mouseTails3DFilm:
@@ -3756,28 +3756,28 @@ void Vehicle::UpdateFerrisWheelRotating()
     if (curRide == nullptr)
         return;
 
-    if ((ferris_wheel_var_1 -= 1) != 0)
+    if ((ferrisWheel.timer -= 1) != 0)
         return;
 
-    int8_t curFerrisWheelVar0 = ferris_wheel_var_0;
+    int8_t curFerrisWheelVar0 = ferrisWheel.rotationPhase;
 
     if (curFerrisWheelVar0 == 3)
     {
-        ferris_wheel_var_0 = curFerrisWheelVar0;
-        ferris_wheel_var_1 = curFerrisWheelVar0;
+        ferrisWheel.rotationPhase = curFerrisWheelVar0;
+        ferrisWheel.timer = curFerrisWheelVar0;
     }
     else if (curFerrisWheelVar0 < 3)
     {
         if (curFerrisWheelVar0 != -8)
             curFerrisWheelVar0--;
-        ferris_wheel_var_0 = curFerrisWheelVar0;
-        ferris_wheel_var_1 = -curFerrisWheelVar0;
+        ferrisWheel.rotationPhase = curFerrisWheelVar0;
+        ferrisWheel.timer = -curFerrisWheelVar0;
     }
     else
     {
         curFerrisWheelVar0--;
-        ferris_wheel_var_0 = curFerrisWheelVar0;
-        ferris_wheel_var_1 = curFerrisWheelVar0;
+        ferrisWheel.rotationPhase = curFerrisWheelVar0;
+        ferrisWheel.timer = curFerrisWheelVar0;
     }
 
     uint8_t rotation = flatRideAnimationFrame;
@@ -3812,13 +3812,13 @@ void Vehicle::UpdateFerrisWheelRotating()
 
         if (shouldStop)
         {
-            curFerrisWheelVar0 = ferris_wheel_var_0;
-            ferris_wheel_var_0 = -abs(curFerrisWheelVar0);
-            ferris_wheel_var_1 = abs(curFerrisWheelVar0);
+            curFerrisWheelVar0 = ferrisWheel.rotationPhase;
+            ferrisWheel.rotationPhase = -abs(curFerrisWheelVar0);
+            ferrisWheel.timer = abs(curFerrisWheelVar0);
         }
     }
 
-    if (ferris_wheel_var_0 != -8)
+    if (ferrisWheel.rotationPhase != -8)
         return;
 
     subState = sub_state;
