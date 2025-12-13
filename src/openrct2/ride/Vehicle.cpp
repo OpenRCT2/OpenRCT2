@@ -3756,7 +3756,8 @@ void Vehicle::UpdateFerrisWheelRotating()
     if (curRide == nullptr)
         return;
 
-    if ((ferrisWheel.timer -= 1) != 0)
+    ferrisWheel.timer--;
+    if (ferrisWheel.timer != 0)
         return;
 
     int8_t curFerrisWheelVar0 = ferrisWheel.rotationPhase;
