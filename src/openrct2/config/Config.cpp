@@ -745,25 +745,8 @@ namespace OpenRCT2::Config
         return {};
     }
 
-    /**
-     * Attempts to find the RCT2 installation directory.
-     * This should be created from some other resource when OpenRCT2 grows.
-     * @returns Path to RCT2, if found. Empty string otherwise.
-     */
-    static u8string FindRCT2Path()
+    static u8string FindRCT2SteamPath()
     {
-        LOG_VERBOSE("config_find_rct2_path(...)");
-
-        static std::vector<u8string_view> searchLocations = Platform::GetSearchablePathsRCT2();
-
-        for (const auto& location : searchLocations)
-        {
-            if (Platform::OriginalGameDataExists(location))
-            {
-                return u8string(location);
-            }
-        }
-
         auto steamPaths = Platform::GetSteamPaths();
         if (steamPaths.isSteamPresent())
         {
@@ -790,6 +773,35 @@ namespace OpenRCT2::Config
                     }
                 }
             }
+        }
+
+        return {};
+    }
+
+    /**
+     * Attempts to find the RCT2 installation directory.
+     * This should be created from some other resource when OpenRCT2 grows.
+     * @returns Path to RCT2, if found. Empty string otherwise.
+     */
+    static u8string FindRCT2Path()
+    {
+        LOG_VERBOSE("config_find_rct2_path(...)");
+
+        static std::vector<u8string_view> searchLocations = Platform::GetSearchablePathsRCT2();
+
+        for (const auto& location : searchLocations)
+        {
+            if (Platform::OriginalGameDataExists(location))
+            {
+                return u8string(location);
+            }
+        }
+
+        // Will only return a path if the RCT2 data is present, so no need to check twice.
+        auto steamPath = FindRCT2SteamPath();
+        if (!steamPath.empty())
+        {
+            return steamPath;
         }
 
         auto discordPath = Platform::GetFolderPath(SpecialFolder::rct2Discord);
