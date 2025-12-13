@@ -3834,3 +3834,7 @@ STR_7005    :Voetpaden aanleggen door te slepen
 STR_7006    :Rand tekenen om knoppen met alleen een plaatje
 STR_7007    :Attractietype
 STR_7008    :Onbekend attractietype ({INT32})
+STR_7009    :Scripts ophalen…
+STR_7010    :Kon de replay niet starten, bestand ‘{STRING}’ bestaat niet of is ongeldig.
+STR_7011    :Kon de replay niet starten.
+STR_7012    :Poolse Złoty (PLN)
