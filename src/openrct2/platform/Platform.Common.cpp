@@ -213,4 +213,15 @@ namespace OpenRCT2::Platform
         return false;
     }
 
+    bool SteamPaths::isSteamPresent() const
+    {
+        return !roots.empty();
+    }
+
+    u8string SteamPaths::getDownloadDepotFolder(u8string_view steamroot, const SteamGameData& data) const
+    {
+        return Path::Combine(
+            steamroot, downloadDepotFolder, "app_" + std::to_string(data.appId), "depot_" + std::to_string(data.depotId));
+    }
+
 } // namespace OpenRCT2::Platform

@@ -716,13 +716,24 @@ namespace OpenRCT2::Config
             }
         }
 
-        auto steamPath = Platform::GetSteamPath();
-        if (!steamPath.empty())
+        auto steamPaths = Platform::GetSteamPaths();
+        if (steamPaths.isSteamPresent())
         {
-            std::string location = Path::Combine(steamPath, Platform::GetRCT1SteamDir());
-            if (RCT1DataPresentAtLocation(location))
+            for (const auto& root : steamPaths.roots)
             {
-                return location;
+                auto nativePath = Path::Combine(root, steamPaths.nativeFolder, Platform::kSteamRCT1Data.nativeFolder);
+                if (RCT1DataPresentAtLocation(nativePath))
+                {
+                    return nativePath;
+                }
+                if (!steamPaths.downloadDepotFolder.empty())
+                {
+                    auto downloadDepotPath = steamPaths.getDownloadDepotFolder(root, Platform::kSteamRCT1Data);
+                    if (RCT1DataPresentAtLocation(downloadDepotPath))
+                    {
+                        return downloadDepotPath;
+                    }
+                }
             }
         }
 
@@ -753,19 +764,31 @@ namespace OpenRCT2::Config
             }
         }
 
-        auto steamPath = Platform::GetSteamPath();
-        if (!steamPath.empty())
+        auto steamPaths = Platform::GetSteamPaths();
+        if (steamPaths.isSteamPresent())
         {
-            std::string location = Path::Combine(steamPath, Platform::GetRCT2SteamDir());
-            if (Platform::OriginalGameDataExists(location))
+            const std::array<Platform::SteamGameData, 2> gamesToCheck = {
+                Platform::kSteamRCT2Data,
+                Platform::kSteamRCTCData,
+            };
+            for (const auto& root : steamPaths.roots)
             {
-                return location;
-            }
-
-            std::string location2 = Path::Combine(steamPath, Platform::GetRCTClassicSteamDir());
-            if (Platform::OriginalGameDataExists(location2))
-            {
-                return location2;
+                for (const auto& game : gamesToCheck)
+                {
+                    auto nativePath = Path::Combine(root, steamPaths.nativeFolder, game.nativeFolder);
+                    if (Platform::OriginalGameDataExists(nativePath))
+                    {
+                        return nativePath;
+                    }
+                    if (!steamPaths.downloadDepotFolder.empty())
+                    {
+                        auto downloadDepotPath = steamPaths.getDownloadDepotFolder(root, game);
+                        if (Platform::OriginalGameDataExists(downloadDepotPath))
+                        {
+                            return downloadDepotPath;
+                        }
+                    }
+                }
             }
         }
 
