@@ -224,4 +224,32 @@ namespace OpenRCT2::Platform
             steamroot, downloadDepotFolder, "app_" + std::to_string(data.appId), "depot_" + std::to_string(data.depotId));
     }
 
+    bool triggerSteamDownload()
+    {
+        const auto steamPaths = GetSteamPaths();
+        if (!steamPaths.isSteamPresent() || steamPaths.manifests.empty())
+            return false;
+
+        const auto manifestsDir = Path::Combine(steamPaths.roots[0], steamPaths.manifests);
+        const std::array<SteamGameData, 3> gamesToTrigger = { kSteamRCT2Data, kSteamRCTCData, kSteamRCT1Data };
+        for (const auto& game : gamesToTrigger)
+        {
+            auto fullFilename = Path::Combine(manifestsDir, "appmanifest_" + std::to_string(game.appId) + ".acf");
+            // If the file exists, we assume a download has been triggered already.
+            if (File::Exists(fullFilename))
+                continue;
+
+            // clang-format off
+            auto buffer = u8string("\"AppState\"\r\n") + u8string("{\r\n")
+                + u8string("	\"AppID\"	\"" + std::to_string(game.appId) + "\"\r\n")
+                + u8string("	\"Universe\"	\"1\"\r\n")
+                + u8string("	\"installdir\"	\"" + game.nativeFolder + "\"\r\n")
+                + u8string("	\"StateFlags\"	\"1026\"\r\n") + u8string("}\r\n");
+            // clang-format on
+            File::WriteAllBytes(fullFilename, buffer.data(), buffer.size());
+        }
+
+        return true;
+    }
+
 } // namespace OpenRCT2::Platform

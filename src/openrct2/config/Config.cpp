@@ -909,6 +909,7 @@ namespace OpenRCT2::Config
                 {
                     uiContext.ShowMessageBox(LanguageGetString(STR_NEEDS_RCT2_FILES));
                     std::string gog = LanguageGetString(STR_OWN_ON_GOG);
+                    std::string steam = LanguageGetString(STR_OWN_ON_STEAM);
                     std::string hdd = LanguageGetString(STR_INSTALLED_ON_HDD);
 
                     std::vector<std::string> options;
@@ -918,6 +919,7 @@ namespace OpenRCT2::Config
                     {
                         options.push_back(hdd);
                         options.push_back(gog);
+                        options.push_back(steam);
                         int optionIndex = uiContext.ShowMenuDialog(
                             options, LanguageGetString(STR_OPENRCT2_SETUP), LanguageGetString(STR_WHICH_APPLIES_BEST));
                         if (optionIndex < 0 || static_cast<uint32_t>(optionIndex) >= options.size())
@@ -974,6 +976,21 @@ namespace OpenRCT2::Config
                         // New installer extracts to ‘dest’, old installer installs in ‘dest/app’.
                         possibleInstallPaths.emplace_back(dest);
                         possibleInstallPaths.emplace_back(Path::Combine(dest, u8"app"));
+                    }
+                    else if (chosenOption == steam)
+                    {
+                        uiContext.ShowMessageBox(LanguageGetString(STR_PLEASE_CLOSE_STEAM));
+
+                        Platform::triggerSteamDownload();
+
+                        uiContext.ShowMessageBox(LanguageGetString(STR_WAIT_FOR_STEAM_DOWNLOAD));
+
+                        auto steamPath = FindRCT2SteamPath();
+                        if (!steamPath.empty())
+                        {
+                            Get().general.rct2Path = steamPath;
+                            return true;
+                        }
                     }
                     if (possibleInstallPaths.empty())
                     {
