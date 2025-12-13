@@ -1136,7 +1136,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
             {
                 auto [waterHeight, waterSurfaceShape] = SurfaceGetHeightAboveWater(tileElement, height, surfaceShape);
 
-                const auto fpId = FilterPaletteID::paletteGlassLightPurple;
+                const auto fpId = FilterPaletteID::paletteSceneryGroundMarker;
                 const auto imageId1 = ImageId(SPR_TERRAIN_SELECTION_CORNER + Byte97B444[surfaceShape], fpId);
                 PaintAttachToPreviousPS(session, imageId1, 0, 0);
 
