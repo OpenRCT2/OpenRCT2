@@ -3760,25 +3760,20 @@ void Vehicle::UpdateFerrisWheelRotating()
     if (ferrisWheel.timer != 0)
         return;
 
-    int8_t curFerrisWheelVar0 = ferrisWheel.rotationPhase;
-
-    if (curFerrisWheelVar0 == 3)
+    if (ferrisWheel.rotationPhase > 3) // Accelerating, closer to 3 is faster
     {
-        ferrisWheel.rotationPhase = curFerrisWheelVar0;
-        ferrisWheel.timer = curFerrisWheelVar0;
+        ferrisWheel.rotationPhase--;
+        ferrisWheel.timer = ferrisWheel.rotationPhase;
     }
-    else if (curFerrisWheelVar0 < 3)
+    else if (ferrisWheel.rotationPhase == 3) // Constant speed, animation frame updates every 3 ticks
     {
-        if (curFerrisWheelVar0 != -8)
-            curFerrisWheelVar0--;
-        ferrisWheel.rotationPhase = curFerrisWheelVar0;
-        ferrisWheel.timer = -curFerrisWheelVar0;
+        ferrisWheel.timer = ferrisWheel.rotationPhase;
     }
-    else
+    else // Decelerating, closer to -8 is slower
     {
-        curFerrisWheelVar0--;
-        ferrisWheel.rotationPhase = curFerrisWheelVar0;
-        ferrisWheel.timer = curFerrisWheelVar0;
+        if (ferrisWheel.rotationPhase != -8)
+            ferrisWheel.rotationPhase--;
+        ferrisWheel.timer = -ferrisWheel.rotationPhase;
     }
 
     uint8_t rotation = flatRideAnimationFrame;
@@ -3813,9 +3808,8 @@ void Vehicle::UpdateFerrisWheelRotating()
 
         if (shouldStop)
         {
-            curFerrisWheelVar0 = ferrisWheel.rotationPhase;
-            ferrisWheel.rotationPhase = -abs(curFerrisWheelVar0);
-            ferrisWheel.timer = abs(curFerrisWheelVar0);
+            ferrisWheel.timer = abs(ferrisWheel.rotationPhase);
+            ferrisWheel.rotationPhase = -abs(ferrisWheel.rotationPhase);
         }
     }
 
