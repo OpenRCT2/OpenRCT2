@@ -381,7 +381,7 @@ namespace OpenRCT2::Scripting
     JSValue ScVehicle::flag_get(JSContext* ctx, JSValue thisVal)
     {
         auto vehicle = GetVehicle(thisVal);
-        return JS_NewUint32(ctx, vehicle != nullptr ? vehicle->HasFlag(flag) : false);
+        return JS_NewBool(ctx, vehicle != nullptr ? vehicle->HasFlag(flag) : false);
     }
 
     template<uint32_t flag>

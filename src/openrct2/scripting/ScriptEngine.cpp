@@ -1629,7 +1629,6 @@ void ScriptEngine::RunGameActionHooks(const GameActions::GameAction& action, Gam
             {
                 JS_SetPropertyStr(ctx, obj, "args", JS_NewObject(ctx));
             }
-            JS_FreeValue(ctx, jsArgs);
         }
         else
         {
