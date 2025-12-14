@@ -333,11 +333,11 @@ private:
 
     void StringifyNumber(const JSValue val)
     {
-        if (val.tag == JS_TAG_INT)
+        if (JS_VALUE_GET_TAG(val) == JS_TAG_INT)
         {
             _ss << std::to_string(JS_VALUE_GET_INT(val));
         }
-        else if (val.tag == JS_TAG_FLOAT64)
+        else if (JS_TAG_IS_FLOAT64(JS_VALUE_GET_TAG(val)))
         {
             const double d = JS_VALUE_GET_FLOAT64(val);
             const int64_t i = static_cast<int64_t>(d);
@@ -350,11 +350,11 @@ private:
                 _ss << std::to_string(d);
             }
         }
-        else if (val.tag == JS_TAG_SHORT_BIG_INT)
+        else if (JS_VALUE_GET_TAG(val) == JS_TAG_SHORT_BIG_INT)
         {
             _ss << std::to_string(JS_VALUE_GET_SHORT_BIG_INT(val));
         }
-        else if (val.tag == JS_TAG_BIG_INT)
+        else if (JS_VALUE_GET_TAG(val) == JS_TAG_BIG_INT)
         {
             const char* str = JS_ToCString(_context, val);
             if (str)
