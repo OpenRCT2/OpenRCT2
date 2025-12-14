@@ -294,18 +294,16 @@ namespace OpenRCT2::Scripting
         {
             JS_UNPACK_STR(action, ctx, argv[0]);
             JS_UNPACK_OBJECT(args, ctx, argv[1]);
-            JS_UNPACK_CALLBACK(callback, ctx, argv[2]);
 
-            return QueryOrExecuteAction(ctx, action, args, callback, false);
+            return QueryOrExecuteAction(ctx, action, args, JSCallback(ctx, argv[2]), false);
         }
 
         static JSValue executeAction(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
         {
             JS_UNPACK_STR(action, ctx, argv[0]);
             JS_UNPACK_OBJECT(args, ctx, argv[1]);
-            JS_UNPACK_CALLBACK(callback, ctx, argv[2]);
 
-            return QueryOrExecuteAction(ctx, action, args, callback, true);
+            return QueryOrExecuteAction(ctx, action, args, JSCallback(ctx, argv[2]), true);
         }
 
         static JSValue QueryOrExecuteAction(
