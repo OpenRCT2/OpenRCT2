@@ -15,7 +15,7 @@
 #include "../object/ScObject.hpp"
 #include "ScRideStation.hpp"
 
-#ifdef ENABLE_SCRIPTING_REFACTOR
+#ifdef ENABLE_SCRIPTING
 
 namespace OpenRCT2::Scripting
 {

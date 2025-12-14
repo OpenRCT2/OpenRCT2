@@ -144,7 +144,7 @@ bool EntityBase::Is<Vehicle>() const
     return Type == EntityType::vehicle;
 }
 
-#ifdef ENABLE_SCRIPTING_REFACTOR
+#ifdef ENABLE_SCRIPTING
 /**
  * Fires the "vehicle.crash" api hook
  * @param vehicleId Entity id of the vehicle that just crashed
@@ -2567,7 +2567,7 @@ void Vehicle::UpdateCollisionSetup()
 
         train->sub_state = 2;
 
-#ifdef ENABLE_SCRIPTING_REFACTOR
+#ifdef ENABLE_SCRIPTING
         InvokeVehicleCrashHook(train->Id, "another_vehicle");
 #endif
         const auto trainLoc = train->GetLocation();
@@ -4323,7 +4323,7 @@ void Vehicle::CrashOnLand()
     }
     SetState(Vehicle::Status::crashed, sub_state);
 
-#ifdef ENABLE_SCRIPTING_REFACTOR
+#ifdef ENABLE_SCRIPTING
     InvokeVehicleCrashHook(Id, "land");
 #endif
 
@@ -4391,7 +4391,7 @@ void Vehicle::CrashOnWater()
     }
     SetState(Vehicle::Status::crashed, sub_state);
 
-#ifdef ENABLE_SCRIPTING_REFACTOR
+#ifdef ENABLE_SCRIPTING
     InvokeVehicleCrashHook(Id, "water");
 #endif
 

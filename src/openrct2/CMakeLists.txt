@@ -32,7 +32,7 @@ endif ()
 set_target_properties(libopenrct2 PROPERTIES PREFIX "")
 SET_CHECK_CXX_FLAGS(libopenrct2)
 
-if (ENABLE_SCRIPTING OR ENABLE_SCRIPTING_REFACTOR) #TODO (mber) remove refactor build option.
+if (ENABLE_SCRIPTING)
     include(ExternalProject)
     externalproject_add(quickjs
         GIT_REPOSITORY      https://github.com/quickjs-ng/quickjs.git

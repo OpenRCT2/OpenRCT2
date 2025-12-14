@@ -60,7 +60,7 @@
       -->
       <PreprocessorDefinitions>OPENGL_NO_LINK;_CRT_SECURE_NO_WARNINGS;SDL_MAIN_HANDLED;_WINSOCK_DEPRECATED_NO_WARNINGS;NOMINMAX;WIN32_LEAN_AND_MEAN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Platform)'=='Win32' or '$(Platform)'=='x64'">__AVX2__;__SSE4_1__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <PreprocessorDefinitions>ENABLE_SCRIPTING_REFACTOR;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>ENABLE_SCRIPTING;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary Condition="'$(UseSharedLibs)'!='true'">MultiThreaded</RuntimeLibrary>
       <RuntimeLibrary Condition="'$(UseSharedLibs)'=='true'">MultiThreadedDLL</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
