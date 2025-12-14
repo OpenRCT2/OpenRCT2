@@ -9,7 +9,7 @@
 
 #pragma once
 
-#ifdef ENABLE_SCRIPTING_REFACTOR
+#ifdef ENABLE_SCRIPTING
 
     #include "../interface/Widget.h"
     #include "CustomListView.h"

@@ -88,7 +88,7 @@ namespace OpenRCT2
         CheatsReset();
         ClearRestrictedScenery();
 
-#ifdef ENABLE_SCRIPTING_REFACTOR
+#ifdef ENABLE_SCRIPTING
         auto& scriptEngine = GetContext()->GetScriptEngine();
         scriptEngine.ClearParkStorage();
 #endif
@@ -298,7 +298,7 @@ namespace OpenRCT2
             }
         }
 
-#ifdef ENABLE_SCRIPTING_REFACTOR
+#ifdef ENABLE_SCRIPTING
         // Stash the current day number before updating the date so that we
         // know if the day number changes on this tick.
         auto day = gameState.date.GetDay();
@@ -357,7 +357,7 @@ namespace OpenRCT2
 
         gameState.currentTicks++;
 
-#ifdef ENABLE_SCRIPTING_REFACTOR
+#ifdef ENABLE_SCRIPTING
         auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
         hookEngine.Call(HookType::intervalTick, true);
 

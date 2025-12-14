@@ -205,9 +205,7 @@ include_directories(SYSTEM "${CMAKE_BINARY_DIR}/libs/include/SDL2")
 add_definitions(-DDISABLE_DISCORD_RPC -DDISABLE_OPENGL -DGL_GLEXT_PROTOTYPES -D__STDC_LIMIT_MACROS -DSDL_MAIN_HANDLED)
 
 # Enable scripting
-#add_definitions(-DENABLE_SCRIPTING)
-# TODO (mber) Temporary build for quickjs refactor. Revert.
-add_definitions(-DENABLE_SCRIPTING_REFACTOR)
+add_definitions(-DENABLE_SCRIPTING)
 
 # Fix SpeexDSP compilation
 add_definitions(-DHAVE_STDINT_H)

@@ -1068,7 +1068,7 @@ static void RideRatingsCalculate(RideRating::UpdateState& state, Ride& ride)
     }
 #endif
 
-#ifdef ENABLE_SCRIPTING_REFACTOR
+#ifdef ENABLE_SCRIPTING
     // Only call the 'ride.ratings.calculate' API hook if testing of the ride is complete
     if (ride.lifecycleFlags & RIDE_LIFECYCLE_TESTED)
     {

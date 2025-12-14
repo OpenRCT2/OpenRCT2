@@ -152,7 +152,7 @@ namespace OpenRCT2::Park
 
         suggestedMaxGuests = std::min<uint32_t>(suggestedMaxGuests, 65535);
 
-#ifdef ENABLE_SCRIPTING_REFACTOR
+#ifdef ENABLE_SCRIPTING
         auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
         if (hookEngine.HasSubscriptions(HookType::parkCalculateGuestCap))
         {

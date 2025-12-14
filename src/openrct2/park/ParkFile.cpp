@@ -745,7 +745,7 @@ namespace OpenRCT2
         {
             if (os.getMode() == OrcaStream::Mode::writing)
             {
-#ifdef ENABLE_SCRIPTING_REFACTOR
+#ifdef ENABLE_SCRIPTING
                 // Dump the plugin storage to JSON (stored in park)
                 auto& scriptEngine = GetContext()->GetScriptEngine();
                 gameState.pluginStorage = scriptEngine.GetParkStorageAsJSON();
@@ -763,7 +763,7 @@ namespace OpenRCT2
 
             if (os.getMode() == OrcaStream::Mode::reading)
             {
-#ifdef ENABLE_SCRIPTING_REFACTOR
+#ifdef ENABLE_SCRIPTING
                 auto& scriptEngine = GetContext()->GetScriptEngine();
                 scriptEngine.SetParkStorageFromJSON(gameState.pluginStorage, gameState.scenarioFileName);
 #endif
