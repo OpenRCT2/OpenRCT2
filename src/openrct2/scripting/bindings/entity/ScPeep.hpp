@@ -9,7 +9,7 @@
 
 #pragma once
 
-#ifdef ENABLE_SCRIPTING_REFACTOR
+#ifdef ENABLE_SCRIPTING
 
     #include "../../../core/EnumMap.hpp"
     #include "ScEntity.hpp"

@@ -7390,7 +7390,7 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
 
     IncrementGuestsHeadingForPark();
 
-#ifdef ENABLE_SCRIPTING_REFACTOR
+#ifdef ENABLE_SCRIPTING
     auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
     if (hookEngine.HasSubscriptions(Scripting::HookType::guestGeneration))
     {

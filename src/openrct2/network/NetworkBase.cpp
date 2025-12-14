@@ -205,7 +205,7 @@ namespace OpenRCT2::Network
             _pendingPlayerLists.clear();
             _pendingPlayerInfo.clear();
 
-    #ifdef ENABLE_SCRIPTING_REFACTOR
+    #ifdef ENABLE_SCRIPTING
             auto& scriptEngine = GetContext().GetScriptEngine();
             scriptEngine.RemoveNetworkPlugins();
     #endif
@@ -1387,7 +1387,7 @@ namespace OpenRCT2::Network
     {
         Packet packet(Command::scriptsData);
 
-    #ifdef ENABLE_SCRIPTING_REFACTOR
+    #ifdef ENABLE_SCRIPTING
         using namespace OpenRCT2::Scripting;
 
         auto& scriptEngine = GetContext().GetScriptEngine();
@@ -1890,7 +1890,7 @@ namespace OpenRCT2::Network
     static bool ProcessPlayerAuthenticatePluginHooks(
         const Connection& connection, std::string_view name, std::string_view publicKeyHash)
     {
-    #ifdef ENABLE_SCRIPTING_REFACTOR
+    #ifdef ENABLE_SCRIPTING
         using namespace OpenRCT2::Scripting;
 
         auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
@@ -1922,7 +1922,7 @@ namespace OpenRCT2::Network
 
     static void ProcessPlayerJoinedPluginHooks(uint8_t playerId)
     {
-    #ifdef ENABLE_SCRIPTING_REFACTOR
+    #ifdef ENABLE_SCRIPTING
         using namespace OpenRCT2::Scripting;
 
         auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
@@ -1942,7 +1942,7 @@ namespace OpenRCT2::Network
 
     static void ProcessPlayerLeftPluginHooks(uint8_t playerId)
     {
-    #ifdef ENABLE_SCRIPTING_REFACTOR
+    #ifdef ENABLE_SCRIPTING
         using namespace OpenRCT2::Scripting;
 
         auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
@@ -2511,7 +2511,7 @@ namespace OpenRCT2::Network
 
     void NetworkBase::Client_Handle_SCRIPTS_DATA(Connection& connection, Packet& packet)
     {
-    #ifdef ENABLE_SCRIPTING_REFACTOR
+    #ifdef ENABLE_SCRIPTING
         auto& scriptEngine = GetContext().GetScriptEngine();
 
         uint32_t count{};
@@ -2893,7 +2893,7 @@ namespace OpenRCT2::Network
 
     static bool ProcessChatMessagePluginHooks(uint8_t playerId, std::string& text)
     {
-    #ifdef ENABLE_SCRIPTING_REFACTOR
+    #ifdef ENABLE_SCRIPTING
         auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
         if (hookEngine.HasSubscriptions(Scripting::HookType::networkChat))
         {

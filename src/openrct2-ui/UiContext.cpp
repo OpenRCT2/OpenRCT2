@@ -136,7 +136,7 @@ public:
 
     void InitialiseScriptExtensions() override
     {
-#ifdef ENABLE_SCRIPTING_REFACTOR
+#ifdef ENABLE_SCRIPTING
         auto& scriptEngine = GetContext()->GetScriptEngine();
         Scripting::UiScriptExtensions::Extend(scriptEngine);
 #endif
