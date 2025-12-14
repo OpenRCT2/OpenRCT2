@@ -3426,7 +3426,7 @@ STR_6396    :Schermbeveiliging en -energiebesparing uitschakelen
 STR_6397    :Als dit is ingeschakeld, zal (zolang OpenRCT2 loopt) de schermbeveiliging niet worden ingeschakeld en gaat het scherm ook niet na verloop van tijd op zwart.
 STR_6398    :Bestand bevat niet-ondersteunde attractietypes. Update naar een nieuwere versie van OpenRCT2 om dit bestand te openen.
 STR_6399    :OpenRCT2 heeft bestanden van een RollerCoaster Tycoon 2-installatie nodig. Voer het pad naar de map waar de bestanden van RollerCoaster Tycoon 2 zich bevinden in bij de variabele “game_path” in config.ini. Start daarna OpenRCT2 opnieuw op.
-STR_6400    :Ik heb offline GOG-installer voor RollerCoaster Tycoon 2 gedownload, maar nog niet geïnstalleerd
+STR_6400    :Ik heb de offline GOG-installer voor RollerCoaster Tycoon 2 gedownload, maar nog niet geïnstalleerd
 STR_6401    :Ik heb RollerCoaster Tycoon 2 al geïnstalleerd
 STR_6402    :OpenRCT2-data instellen
 STR_6403    :Selecteer de optie die op je situatie van toepassing is:
