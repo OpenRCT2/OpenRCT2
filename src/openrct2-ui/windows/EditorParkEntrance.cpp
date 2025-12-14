@@ -272,7 +272,7 @@ namespace OpenRCT2::Ui::Windows
             pressedWidgets |= 1LL << WIDX_TAB;
 
             ToolSet(*this, WIDX_LIST, Tool::entranceDown);
-            gInputFlags.set(InputFlag::unk6);
+            gInputFlags.set(InputFlag::allowRightMouseRemoval);
         }
 
         void onMouseUp(WidgetIndex widgetIndex) override

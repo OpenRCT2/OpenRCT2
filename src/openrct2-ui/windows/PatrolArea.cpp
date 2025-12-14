@@ -249,7 +249,6 @@ namespace OpenRCT2::Ui::Windows
                 if (!ToolSet(*this, 0, Tool::walkDown))
                 {
                     ShowGridlines();
-                    gInputFlags.set(InputFlag::unk6);
                     SetPatrolAreaToRender(_staffId);
                     GfxInvalidateScreen();
                 }

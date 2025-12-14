@@ -467,7 +467,7 @@ namespace OpenRCT2::Ui
                 break;
         }
 
-        if (!gInputFlags.has(InputFlag::unk6) || !gInputFlags.has(InputFlag::toolActive))
+        if (!gInputFlags.has(InputFlag::allowRightMouseRemoval) || !gInputFlags.has(InputFlag::toolActive))
         {
             auto* windowMgr = GetWindowManager();
             if (windowMgr->FindByClass(WindowClass::rideConstruction) == nullptr

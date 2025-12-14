@@ -241,7 +241,7 @@ namespace OpenRCT2::Ui::Windows
             ToolCancel();
             _footpathConstructionMode = PathConstructionMode::onLand;
             ToolSet(*this, WIDX_CONSTRUCT_ON_LAND, Tool::pathDown);
-            gInputFlags.set(InputFlag::unk6);
+            gInputFlags.set(InputFlag::allowRightMouseRemoval);
             _footpathErrorOccured = false;
             WindowFootpathSetEnabledAndPressedWidgets();
 
@@ -348,7 +348,7 @@ namespace OpenRCT2::Ui::Windows
             gMapSelectFlags.unset(MapSelectFlag::enableConstruct);
             _footpathConstructionMode = PathConstructionMode::dragArea;
             ToolSet(*this, WIDX_CONSTRUCT_DRAG_AREA, Tool::pathDown);
-            gInputFlags.set(InputFlag::unk6);
+            gInputFlags.set(InputFlag::allowRightMouseRemoval);
             _footpathErrorOccured = false;
             WindowFootpathSetEnabledAndPressedWidgets();
         }
@@ -372,7 +372,7 @@ namespace OpenRCT2::Ui::Windows
                     gMapSelectFlags.unset(MapSelectFlag::enableConstruct);
                     _footpathConstructionMode = PathConstructionMode::onLand;
                     ToolSet(*this, WIDX_CONSTRUCT_ON_LAND, Tool::pathDown);
-                    gInputFlags.set(InputFlag::unk6);
+                    gInputFlags.set(InputFlag::allowRightMouseRemoval);
                     _footpathErrorOccured = false;
                     WindowFootpathSetEnabledAndPressedWidgets();
                     break;
@@ -396,7 +396,7 @@ namespace OpenRCT2::Ui::Windows
                     gMapSelectFlags.unset(MapSelectFlag::enableConstruct);
                     _footpathConstructionMode = PathConstructionMode::bridgeOrTunnelPick;
                     ToolSet(*this, WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL, Tool::crosshair);
-                    gInputFlags.set(InputFlag::unk6);
+                    gInputFlags.set(InputFlag::allowRightMouseRemoval);
                     _footpathErrorOccured = false;
                     WindowFootpathSetEnabledAndPressedWidgets();
                     break;
