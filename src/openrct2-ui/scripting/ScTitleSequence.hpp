@@ -123,7 +123,6 @@ namespace OpenRCT2::Scripting
         if (!type.has_value())
             return std::nullopt;
 
-        TitleCommand command{};
         switch (type.value())
         {
             case TitleScript::Load:
@@ -132,9 +131,8 @@ namespace OpenRCT2::Scripting
                 if (!index.has_value())
                     return std::nullopt;
 
-                command = LoadParkCommand{ static_cast<uint8_t>(index.value()) };
+                return LoadParkCommand{ static_cast<uint8_t>(index.value()) };
             }
-            break;
             case TitleScript::Location:
             {
                 auto x = JSToOptionalInt(ctx, value, "x");
@@ -142,58 +140,52 @@ namespace OpenRCT2::Scripting
                 if (!x.has_value() || !y.has_value())
                     return std::nullopt;
 
-                command = SetLocationCommand{
+                return SetLocationCommand{
                     static_cast<uint8_t>(x.value()),
                     static_cast<uint8_t>(y.value()),
                 };
             }
-            break;
             case TitleScript::Rotate:
             {
                 auto rotations = JSToOptionalInt(ctx, value, "rotations");
                 if (!rotations.has_value())
                     return std::nullopt;
 
-                command = RotateViewCommand{ static_cast<uint8_t>(rotations.value()) };
+                return RotateViewCommand{ static_cast<uint8_t>(rotations.value()) };
             }
-            break;
             case TitleScript::Zoom:
             {
                 auto zoom = JSToOptionalInt(ctx, value, "zoom");
                 if (!zoom.has_value())
                     return std::nullopt;
 
-                command = SetZoomCommand{ static_cast<uint8_t>(zoom.value()) };
+                return SetZoomCommand{ static_cast<uint8_t>(zoom.value()) };
             }
-            break;
             case TitleScript::Follow:
                 if (auto id = JSToOptionalInt(ctx, value, "id"); id.has_value())
                 {
-                    command = FollowEntityCommand{ EntityId::FromUnderlying(id.value()) };
+                    return FollowEntityCommand{ EntityId::FromUnderlying(id.value()) };
                 }
                 else
                 {
-                    command = FollowEntityCommand{ EntityId::GetNull() };
+                    return FollowEntityCommand{ EntityId::GetNull() };
                 }
-                break;
             case TitleScript::Speed:
             {
                 auto speed = JSToOptionalInt(ctx, value, "speed");
                 if (!speed.has_value())
                     return std::nullopt;
 
-                command = SetSpeedCommand{ static_cast<uint8_t>(speed.value()) };
+                return SetSpeedCommand{ static_cast<uint8_t>(speed.value()) };
             }
-            break;
             case TitleScript::Wait:
             {
                 auto duration = JSToOptionalInt(ctx, value, "duration");
                 if (!duration.has_value())
                     return std::nullopt;
 
-                command = WaitCommand{ static_cast<uint16_t>(duration.value()) };
+                return WaitCommand{ static_cast<uint16_t>(duration.value()) };
             }
-            break;
             case TitleScript::LoadSc:
             {
                 auto scenario = JSToOptionalStdString(ctx, value, "scenario");
@@ -202,19 +194,15 @@ namespace OpenRCT2::Scripting
 
                 auto loadScenarioCommand = LoadScenarioCommand{};
                 String::set(loadScenarioCommand.Scenario, sizeof(loadScenarioCommand.Scenario), scenario.value().c_str());
-                command = loadScenarioCommand;
-                break;
+                return loadScenarioCommand;
             }
             case TitleScript::Restart:
-                command = RestartCommand{};
-                break;
+                return RestartCommand{};
             case TitleScript::End:
-                command = EndCommand{};
-                break;
+                return EndCommand{};
             default:
-                break;
+                return std::nullopt;
         }
-        return command;
     }
 
     class ScTitleSequencePark;
