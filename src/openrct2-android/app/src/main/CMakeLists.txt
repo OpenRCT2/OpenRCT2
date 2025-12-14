@@ -272,6 +272,7 @@ target_include_directories(openrct2-ui PRIVATE "${ORCT2_ROOT}/src/thirdparty/duk
 target_include_directories(openrct2-ui PRIVATE "${ORCT2_ROOT}/src")
 target_include_directories(openrct2-ui SYSTEM PRIVATE "${ORCT2_ROOT}/src/thirdparty")
 target_include_directories(openrct2-cli PRIVATE "${ORCT2_ROOT}/src")
+target_include_directories(openrct2-cli SYSTEM PRIVATE "${ORCT2_ROOT}/src/thirdparty")
 
 target_include_directories(openrct2 PRIVATE "/opt/openrct2/include/nlohmann/../")
 target_include_directories(openrct2-ui PRIVATE "/opt/openrct2/include/nlohmann/../")
