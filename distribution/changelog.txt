@@ -22,6 +22,7 @@
 - Fix: [#25592] Log flume, river rapids, & splash boats can get control failure breakdown instead of brakes failure.
 - Fix: [#25628] Availability of AVX2 and SSE4.1 is not detected correctly. 
 - Fix: [#25642] The selection marker for purchasing land rights is not drawn with the correct colours.
+- Fix: [#25646] It is possible to remove scenery and paths when setting staff patrol areas and purchasing land.
 
 0.4.29 (2025-11-22)
 ------------------------------------------------------------------------

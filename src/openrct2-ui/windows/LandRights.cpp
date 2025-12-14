@@ -109,7 +109,6 @@ namespace OpenRCT2::Ui::Windows
             _landRightsMode = mode;
 
             ToolSet(*this, widgetIndex, Tool::upArrow);
-            gInputFlags.set(InputFlag::unk6);
 
             if (kLandRightsVisibleByMode[EnumValue(mode)])
                 ShowLandRights();
