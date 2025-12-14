@@ -561,7 +561,7 @@ namespace OpenRCT2::Ui::Windows
                     _inDragMode = false;
 
                     ToolSet(*this, WIDX_SCENERY_BACKGROUND, Tool::arrow);
-                    gInputFlags.set(InputFlag::unk6);
+                    gInputFlags.set(InputFlag::allowRightMouseRemoval);
                 }
                 else
                 {
@@ -3506,7 +3506,7 @@ namespace OpenRCT2::Ui::Windows
         {
             auto* toolWindow = ContextOpenWindow(WindowClass::scenery);
             ToolSet(*toolWindow, WIDX_SCENERY_BACKGROUND, Tool::arrow);
-            gInputFlags.set(InputFlag::unk6);
+            gInputFlags.set(InputFlag::allowRightMouseRemoval);
         }
     }
 } // namespace OpenRCT2::Ui::Windows

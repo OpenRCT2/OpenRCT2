@@ -110,7 +110,7 @@ namespace OpenRCT2::Ui::Windows
             setWidgets(_trackPlaceWidgets);
             WindowInitScrollWidgets(*this);
             ToolSet(*this, WIDX_PRICE, Tool::crosshair);
-            gInputFlags.set(InputFlag::unk6);
+            gInputFlags.set(InputFlag::allowRightMouseRemoval);
             WindowPushOthersRight(*this);
             ShowGridlines();
             _miniPreview.resize(kTrackMiniPreviewSize.width * kTrackMiniPreviewSize.height);

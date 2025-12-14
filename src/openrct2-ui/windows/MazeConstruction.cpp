@@ -319,7 +319,7 @@ namespace OpenRCT2::Ui::Windows
                                                                            : ENTRANCE_TYPE_RIDE_EXIT;
             gRideEntranceExitPlaceRideIndex = rideId;
             gRideEntranceExitPlaceStationIndex = StationIndex::FromUnderlying(0);
-            gInputFlags.set(InputFlag::unk6);
+            gInputFlags.set(InputFlag::allowRightMouseRemoval);
 
             RideConstructionInvalidateCurrentTrack();
 

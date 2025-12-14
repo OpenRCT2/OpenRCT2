@@ -33,9 +33,7 @@ namespace OpenRCT2
 
         rightMousePressed,
 
-        // Some of the map tools (clear, footpath, scenery)
-        // never read as far as I know.
-        unk6,
+        allowRightMouseRemoval,
 
         viewportScrolling,
     };
