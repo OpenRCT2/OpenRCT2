@@ -64,7 +64,7 @@ namespace OpenRCT2::Scripting
             auto& listeners = GetListenerList(id);
             std::erase_if(listeners, [&value](const JSCallback& x) {
                 // Note: this might be hacky because I am not sure if/when quickjs will keep these function ptrs stable.
-                return value.callback.u.ptr == x.callback.u.ptr;
+                return JS_VALUE_GET_PTR(value.callback) == JS_VALUE_GET_PTR(x.callback);
             });
         }
 
