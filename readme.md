@@ -85,7 +85,6 @@ Some Linux distributions offer native packages:
 
 Some \*BSD operating systems offer native packages:
 * FreeBSD: [games/openrct2](https://www.freshports.org/games/openrct2)
-* OpenBSD: [games/openrct2](https://openports.se/games/openrct2)
 
 ---
 
