@@ -350,7 +350,10 @@ namespace OpenRCT2::GameActions
             }
 
             ActionLogContext logContext;
-            LogActionBegin(logContext, action);
+            if (topLevel && !flags.has(CommandFlag::ghost))
+            {
+                LogActionBegin(logContext, action);
+            }
 
             // Execute the action, changing the game state
             result = action->Execute(gameState);
@@ -362,8 +365,10 @@ namespace OpenRCT2::GameActions
                 // Script hooks may now have changed the game action result...
             }
 #endif
-
-            LogActionFinish(logContext, action, result);
+            if (topLevel && !flags.has(CommandFlag::ghost))
+            {
+                LogActionFinish(logContext, action, result);
+            }
 
             // If not top level just give away the result.
             if (!topLevel)
