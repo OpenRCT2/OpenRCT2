@@ -3835,3 +3835,7 @@ STR_7005    :Útterület építése húzással
 STR_7006    :Keret rajzolása a képgombok köré
 STR_7007    :Játéktípus
 STR_7008    :Ismeretlen játéktípus ({INT32})
+STR_7009    :Szkriptek fogadása…
+STR_7010    :Nem sikerült elindítani a visszajátszást, „{STRING}” fájl nem létezik vagy érvénytelen
+STR_7011    :Nem sikerült elindítani a visszajátszást
+STR_7012    :Lengyel złoty (PLN)
