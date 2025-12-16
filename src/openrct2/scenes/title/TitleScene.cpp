@@ -108,7 +108,8 @@ void TitleScene::Load()
 #endif
     gameStateInitAll(getGameState(), kDefaultMapSize);
     ViewportInitAll();
-    ContextOpenWindow(WindowClass::mainWindow);
+    //ContextOpenWindow(WindowClass::mainWindow);
+    ContextOpenIntent(Intent(WindowClass::mainWindow));
 
     TitleInitialise();
 
@@ -185,8 +186,9 @@ void TitleScene::ChangePresetSequence(size_t preset)
     if (!_previewingSequence)
         _currentSequence = preset;
 
-    auto* windowMgr = Ui::GetWindowManager();
-    windowMgr->InvalidateAll();
+    //auto* windowMgr = Ui::GetWindowManager();
+    //windowMgr->InvalidateAll();
+    ContextBroadcastIntent(Intent(INTENT_ACTION_INVALIDATE_ALL));
 }
 
 /**

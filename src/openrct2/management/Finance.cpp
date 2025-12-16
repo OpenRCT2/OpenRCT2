@@ -304,8 +304,9 @@ void FinanceUpdateDailyProfit()
     park.weeklyProfitAverageDividend += park.currentProfit;
     park.weeklyProfitAverageDivisor += 1;
 
-    auto* windowMgr = Ui::GetWindowManager();
-    windowMgr->InvalidateByClass(WindowClass::finances);
+    //auto* windowMgr = Ui::GetWindowManager();
+    //windowMgr->InvalidateByClass(WindowClass::finances);
+    ContextBroadcastIntent(Intent(INTENT_ACTION_CLOSE_BY_CLASS).SetWindowClass(WindowClass::finances));
 }
 
 /**

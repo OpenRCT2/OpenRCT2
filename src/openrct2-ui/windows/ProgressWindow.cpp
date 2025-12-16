@@ -236,7 +236,8 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* ProgressWindowOpen(const std::string& text, CloseCallback onClose)
     {
-        ContextForceCloseWindowByClass(WindowClass::networkStatus);
+        //ContextForceCloseWindowByClass(WindowClass::networkStatus);
+        ContextBroadcastIntent(Intent(INTENT_ACTION_CLOSE_BY_CLASS).SetWindowClass(WindowClass::networkStatus));
 
         auto* windowMgr = GetWindowManager();
 

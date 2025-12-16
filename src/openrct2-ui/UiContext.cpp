@@ -147,9 +147,7 @@ public:
     {
         _inGameConsole.Update();
 
-        _windowManager->UpdateMapTooltip();
-
-        WindowDispatchUpdateAll();
+        _windowManager->tick();
     }
 
     void Draw(RenderTarget& rt) override

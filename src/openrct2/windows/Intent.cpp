@@ -93,14 +93,32 @@ WindowClass Intent::GetWindowClass() const
     return this->_Class;
 }
 
+Intent& Intent::SetWindowClass(WindowClass wc)
+{
+    _Class = wc;
+    return *this;
+}
+
 WindowDetail Intent::GetWindowDetail() const
 {
     return this->_WindowDetail;
 }
 
+Intent& Intent::SetWindowDetail(WindowDetail wd)
+{
+    _WindowDetail = wd;
+    return *this;
+}
+
 IntentAction Intent::GetAction() const
 {
     return this->_Action;
+}
+
+Intent& Intent::SetAction(IntentAction action)
+{
+    _Action = action;
+    return *this;
 }
 
 void* Intent::GetPointerExtra(uint32_t key) const

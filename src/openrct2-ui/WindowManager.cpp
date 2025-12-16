@@ -52,17 +52,66 @@ namespace WindowCloseFlags
     static constexpr uint32_t CloseSingle = (1 << 0);
 } // namespace WindowCloseFlags
 
+// Temporary thing, Intent is not yet queued, we just want to find who is directly accessing the WindowManager
+// the calls to the Intent functions need to be replaced with queued Intents later on, for now pretend its fine.
+struct UiUpdateScope
+{
+    bool& inUpdate;
+    bool previousValue;
+    UiUpdateScope(bool& inUpdateRef)
+        : inUpdate(inUpdateRef)
+    {
+        previousValue = inUpdate;
+        inUpdate = true;
+    }
+    ~UiUpdateScope()
+    {
+        inUpdate = previousValue;
+    }
+};
+
 class WindowManager final : public IWindowManager
 {
+    bool _inUpdate = false;
+
 public:
     void Init() override
     {
+        _inUpdate = true;
+
         ThemeManagerInitialise();
         WindowNewRideInitVars();
+        WindowInitAll();
+        TextinputCancel();
+
+        _inUpdate = false;
+    }
+
+    void tick() override
+    {
+        _inUpdate = true;
+
+        UpdateMapTooltip();
+
+        WindowVisitEach([&](WindowBase* w) { w->onUpdate(); });
+
+        _inUpdate = false;
+    }
+
+    void update() override
+    {
+        _inUpdate = true;
+
+        ContextHandleInput();
+        WindowUpdateAll();
+
+        _inUpdate = false;
     }
 
     WindowBase* OpenWindow(WindowClass wc) override
     {
+        Guard::Assert(_inUpdate, "Attempt to access UI system outside the UI update");
+
         switch (wc)
         {
             case WindowClass::about:
@@ -169,6 +218,8 @@ public:
 
     WindowBase* openView(WindowView view) override
     {
+        Guard::Assert(_inUpdate, "Attempt to access UI system outside the UI update");
+
         switch (view)
         {
             case WindowView::parkAwards:
@@ -208,6 +259,8 @@ public:
 
     WindowBase* openDetails(WindowDetail type, int32_t id) override
     {
+        Guard::Assert(_inUpdate, "Attempt to access UI system outside the UI update");
+
         switch (type)
         {
             case WindowDetail::banner:
@@ -232,18 +285,42 @@ public:
 
     WindowBase* ShowError(StringId title, StringId message, const Formatter& args, bool autoClose /* = false */) override
     {
+        Guard::Assert(_inUpdate, "Attempt to access UI system outside the UI update");
+
         return ErrorOpen(title, message, args, autoClose);
     }
 
     WindowBase* ShowError(std::string_view title, std::string_view message, bool autoClose /* = false */) override
     {
+        Guard::Assert(_inUpdate, "Attempt to access UI system outside the UI update");
+
         return ErrorOpen(title, message, autoClose);
     }
 
-    WindowBase* OpenIntent(Intent* intent) override
+    WindowBase* OpenIntent(const Intent* intent) override
     {
+        UiUpdateScope updateScope(_inUpdate);
+
         switch (intent->GetWindowClass())
         {
+            case WindowClass::mainWindow:
+                return MainOpen();
+            case WindowClass::titleMenu:
+                return TitleMenuOpen();
+            case WindowClass::titleExit:
+                return TitleExitOpen();
+            case WindowClass::titleOptions:
+                return TitleOptionsOpen();
+            case WindowClass::titleLogo:
+                return TitleLogoOpen();
+            case WindowClass::titleVersion:
+                return TitleVersionOpen();
+            case WindowClass::topToolbar:
+                return TopToolbarOpen();
+            case WindowClass::bottomToolbar:
+                return GameBottomToolbarOpen();
+            case WindowClass::parkInformation:
+                return ParkEntranceOpen();
             case WindowClass::peep:
                 return GuestOpen(static_cast<Peep*>(intent->GetPointerExtra(INTENT_EXTRA_PEEP)));
             case WindowClass::firePrompt:
@@ -398,6 +475,8 @@ public:
 
     void BroadcastIntent(const Intent& intent) override
     {
+        UiUpdateScope updateScope(_inUpdate);
+
         switch (intent.GetAction())
         {
             case INTENT_ACTION_MAP:
@@ -576,6 +655,15 @@ public:
             case INTENT_ACTION_REMOVE_PROVISIONAL_TRACK_PIECE:
                 RideRemoveProvisionalTrackPiece();
                 break;
+            case INTENT_ACTION_INVALIDATE_ALL:
+                WindowVisitEach([](WindowBase* w) { w->invalidate(); });
+                break;
+            case INTENT_ACTION_INVALIDATE_BY_CLASS:
+                InvalidateByClass(intent.GetWindowClass());
+                break;
+            case INTENT_ACTION_CLOSE_BY_CLASS:
+                CloseByClass(intent.GetWindowClass());
+                break;
             default:
                 break;
         }
@@ -583,6 +671,8 @@ public:
 
     void ForceClose(WindowClass windowClass) override
     {
+        Guard::Assert(_inUpdate, "Attempt to access UI system outside the UI update");
+
         switch (windowClass)
         {
             case WindowClass::editorObjectSelection:
@@ -627,6 +717,8 @@ public:
 
     void SetMainView(const ScreenCoordsXY& viewPos, ZoomLevel zoom, int32_t rotation) override
     {
+        // Guard::Assert(_inUpdate, "Attempt to access UI system outside the UI update");
+
         auto mainWindow = WindowGetMain();
         if (mainWindow != nullptr)
         {
@@ -837,6 +929,8 @@ public:
         std::unique_ptr<WindowBase>&& wp, WindowClass cls, ScreenCoordsXY pos, ScreenSize windowSize,
         WindowFlags flags) override
     {
+        Guard::Assert(_inUpdate, "Attempt to access UI system outside the UI update");
+
         windowSize.height += wp->getTitleBarDiffTarget();
 
         if (flags.has(WindowFlag::autoPosition))
@@ -933,6 +1027,8 @@ public:
      */
     void Close(WindowBase& w) override
     {
+        Guard::Assert(_inUpdate, "Attempt to access UI system outside the UI update");
+
         if (!w.canClose())
         {
             // Something's preventing this window from closing -- bail out early
@@ -952,6 +1048,8 @@ public:
 
     void CloseSurplus(int32_t cap, WindowClass avoid_classification) override
     {
+        Guard::Assert(_inUpdate, "Attempt to access UI system outside the UI update");
+
         // find the amount of windows that are currently open
         auto count = static_cast<int32_t>(gWindowList.size());
         // difference between amount open and cap = amount to close
@@ -984,6 +1082,8 @@ public:
     template<typename TPred>
     void CloseByCondition(TPred pred, uint32_t flags = WindowCloseFlags::None)
     {
+        Guard::Assert(_inUpdate, "Attempt to access UI system outside the UI update");
+
         // Collect windows to close first to avoid iterator invalidation
         // when Close() might trigger window creation via OnClose()
         std::vector<WindowBase*> windowsToClose;
@@ -1045,6 +1145,8 @@ public:
      */
     void CloseTop() override
     {
+        Guard::Assert(_inUpdate, "Attempt to access UI system outside the UI update");
+
         CloseByClass(WindowClass::dropdown);
 
         if (gLegacyScene == LegacyScene::scenarioEditor)
@@ -1064,6 +1166,8 @@ public:
      */
     void CloseAll() override
     {
+        Guard::Assert(_inUpdate, "Attempt to access UI system outside the UI update");
+
         CloseByClass(WindowClass::dropdown);
         CloseByCondition(
             [](WindowBase* w) -> bool { return !(w->flags.hasAny(WindowFlag::stickToBack, WindowFlag::stickToFront)); });
@@ -1104,6 +1208,8 @@ public:
      */
     void CloseConstructionWindows() override
     {
+        Guard::Assert(_inUpdate, "Attempt to access UI system outside the UI update");
+
         CloseByClass(WindowClass::rideConstruction);
         CloseByClass(WindowClass::footpath);
         CloseByClass(WindowClass::trackDesignList);
@@ -1242,6 +1348,8 @@ public:
      */
     void InvalidateByClass(WindowClass cls) override
     {
+        Guard::Assert(_inUpdate, "Attempt to access UI system outside the UI update");
+
         InvalidateByCondition([cls](WindowBase* w) -> bool { return w->classification == cls; });
     }
 
@@ -1251,12 +1359,16 @@ public:
      */
     void InvalidateByNumber(WindowClass cls, WindowNumber number) override
     {
+        Guard::Assert(_inUpdate, "Attempt to access UI system outside the UI update");
+
         InvalidateByCondition([cls, number](WindowBase* w) -> bool { return w->classification == cls && w->number == number; });
     }
 
     // TODO: Use variant for this once the window framework is done.
     void InvalidateByNumber(WindowClass cls, EntityId id) override
     {
+        Guard::Assert(_inUpdate, "Attempt to access UI system outside the UI update");
+
         InvalidateByNumber(cls, static_cast<WindowNumber>(id.ToUnderlying()));
     }
 
@@ -1265,6 +1377,8 @@ public:
      */
     void InvalidateAll() override
     {
+        Guard::Assert(_inUpdate, "Attempt to access UI system outside the UI update");
+
         WindowVisitEach([](WindowBase* w) { w->invalidate(); });
     }
 
@@ -1274,6 +1388,8 @@ public:
      */
     void InvalidateWidget(WindowBase& w, WidgetIndex widgetIndex) override
     {
+        Guard::Assert(_inUpdate, "Attempt to access UI system outside the UI update");
+
         if (w.widgets.empty())
         {
             // This might be called before the window is fully created.
@@ -1299,6 +1415,8 @@ public:
      */
     void InvalidateWidgetByClass(WindowClass cls, WidgetIndex widgetIndex) override
     {
+        Guard::Assert(_inUpdate, "Attempt to access UI system outside the UI update");
+
         WindowVisitEach([this, cls, widgetIndex](WindowBase* w) {
             if (w->classification == cls)
             {
@@ -1313,6 +1431,8 @@ public:
      */
     void InvalidateWidgetByNumber(WindowClass cls, WindowNumber number, WidgetIndex widgetIndex) override
     {
+        Guard::Assert(_inUpdate, "Attempt to access UI system outside the UI update");
+
         WindowVisitEach([this, cls, number, widgetIndex](WindowBase* w) {
             if (w->classification == cls && w->number == number)
             {
@@ -1327,6 +1447,8 @@ public:
      */
     WindowBase* BringToFront(WindowBase& w) override
     {
+        Guard::Assert(_inUpdate, "Attempt to access UI system outside the UI update");
+
         if (!(w.flags.hasAny(WindowFlag::stickToBack, WindowFlag::stickToFront)))
         {
             auto itSourcePos = WindowGetIterator(&w);
@@ -1370,6 +1492,8 @@ public:
 
     WindowBase* BringToFrontByClass(WindowClass cls) override
     {
+        Guard::Assert(_inUpdate, "Attempt to access UI system outside the UI update");
+
         WindowBase* w = FindByClass(cls);
         if (w != nullptr)
         {
@@ -1387,6 +1511,8 @@ public:
      */
     WindowBase* BringToFrontByNumber(WindowClass cls, WindowNumber number) override
     {
+        Guard::Assert(_inUpdate, "Attempt to access UI system outside the UI update");
+
         WindowBase* w = FindByNumber(cls, number);
         if (w != nullptr)
         {

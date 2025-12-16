@@ -2351,8 +2351,10 @@ void Guest::SpendMoney(money64& peep_expend_type, money64 amount, ExpenditureTyp
 
     peep_expend_type += amount;
 
-    auto* windowMgr = Ui::GetWindowManager();
-    windowMgr->InvalidateByNumber(WindowClass::peep, Id);
+    // auto* windowMgr = Ui::GetWindowManager();
+    // windowMgr->InvalidateByNumber(WindowClass::peep, Id);
+    //  FIXME: We need invalidate by id.
+    ContextBroadcastIntent(Intent(INTENT_ACTION_INVALIDATE_BY_CLASS).SetWindowClass(WindowClass::peep));
 
     FinancePayment(-amount, expenditure);
 
@@ -3163,11 +3165,15 @@ static void GuestLeavePark(Guest& guest)
 
     guest.InsertNewThought(PeepThoughtType::GoHome);
 
+    // FIXME: This should not happen.
     auto* windowMgr = Ui::GetWindowManager();
     WindowBase* w = windowMgr->FindByNumber(WindowClass::peep, guest.Id);
     if (w != nullptr)
         w->onPrepareDraw();
-    windowMgr->InvalidateByNumber(WindowClass::peep, guest.Id);
+
+    // FIXME: Invalidate by id.
+    //windowMgr->InvalidateByNumber(WindowClass::peep, guest.Id);
+    ContextBroadcastIntent(Intent(INTENT_ACTION_INVALIDATE_BY_CLASS).SetWindowClass(WindowClass::peep));
 }
 
 template<typename T>
@@ -3924,8 +3930,11 @@ void Guest::UpdateRideFreeVehicleEnterRide(Ride& ride)
     if (queueTime != station.QueueTime)
     {
         station.QueueTime = queueTime;
-        auto* windowMgr = Ui::GetWindowManager();
-        windowMgr->InvalidateByNumber(WindowClass::ride, CurrentRide.ToUnderlying());
+
+        // auto* windowMgr = Ui::GetWindowManager();
+        // windowMgr->InvalidateByNumber(WindowClass::ride, CurrentRide.ToUnderlying());
+        //  FIXME: Needs to invalidate with ride id.
+        ContextBroadcastIntent(Intent(INTENT_ACTION_INVALIDATE_BY_CLASS).SetWindowClass(WindowClass::ride));
     }
 
     if (PeepFlags & PEEP_FLAGS_TRACKING)
@@ -5874,8 +5883,9 @@ void Guest::UpdateLeavingPark()
     ContextBroadcastIntent(&intent);
     Var37 = 1;
 
-    auto* windowMgr = Ui::GetWindowManager();
-    windowMgr->InvalidateByClass(WindowClass::guestList);
+    // auto* windowMgr = Ui::GetWindowManager();
+    // windowMgr->InvalidateByClass(WindowClass::guestList);
+    ContextBroadcastIntent(Intent(INTENT_ACTION_INVALIDATE_BY_CLASS).SetWindowClass(WindowClass::guestList));
 
     const auto [pathingResult, _] = PerformNextAction();
     if (!(pathingResult & PATHING_OUTSIDE_PARK))

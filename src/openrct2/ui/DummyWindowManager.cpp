@@ -14,6 +14,8 @@ namespace OpenRCT2::Ui
     class DummyWindowManager final : public IWindowManager
     {
         void Init() override {};
+        void tick() override {};
+        void update() override {};
         WindowBase* OpenWindow(WindowClass /*wc*/) override
         {
             return nullptr;
@@ -35,7 +37,7 @@ namespace OpenRCT2::Ui
         {
             return nullptr;
         }
-        WindowBase* OpenIntent(Intent* /*intent*/) override
+        WindowBase* OpenIntent(const Intent* /*intent*/) override
         {
             return nullptr;
         };
