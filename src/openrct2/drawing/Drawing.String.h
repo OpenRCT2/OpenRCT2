@@ -12,6 +12,7 @@
 #include "../core/FlagHolder.hpp"
 #include "../interface/Colour.h"
 #include "../interface/ColourWithFlags.h"
+#include "TextColour.h"
 
 #include <cstdint>
 
@@ -38,7 +39,7 @@ struct TextDrawInfo
     TextDrawFlags textDrawFlags{};
     OpenRCT2::ColourFlags colourFlags{};
     TextDarkness darkness{};
-    uint8_t palette[8]{};
+    OpenRCT2::Drawing::TextColours palette{};
     FontStyle fontStyle{};
     const int8_t* yOffset{};
 };

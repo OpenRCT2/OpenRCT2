@@ -27,9 +27,9 @@ namespace OpenRCT2::Drawing
 
     struct TextColours
     {
-        PaletteIndex fill;
-        PaletteIndex sunnyOutline;
-        PaletteIndex shadowOutline;
+        PaletteIndex fill{};
+        PaletteIndex sunnyOutline{};
+        PaletteIndex shadowOutline{};
     };
 
     TextColours getTextColourMapping(TextColour textColour);
