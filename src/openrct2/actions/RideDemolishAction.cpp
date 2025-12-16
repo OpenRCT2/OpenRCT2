@@ -14,7 +14,7 @@
 #include "../Diagnostic.h"
 #include "../GameState.h"
 #include "../core/MemoryStream.h"
-#include "../drawing/Drawing.h"
+#include "../drawing/ScrollingText.h"
 #include "../entity/EntityList.h"
 #include "../management/NewsItem.h"
 #include "../peep/RideUseSystem.h"
@@ -171,7 +171,7 @@ namespace OpenRCT2::GameActions
         windowMgr->BroadcastIntent(Intent(INTENT_ACTION_REFRESH_RIDE_LIST));
         windowMgr->BroadcastIntent(Intent(INTENT_ACTION_REFRESH_GUEST_LIST));
 
-        ScrollingTextInvalidate();
+        Drawing::ScrollingText::invalidate();
         GfxInvalidateScreen();
 
         return res;

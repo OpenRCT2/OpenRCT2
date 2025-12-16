@@ -437,7 +437,7 @@ static Gx _g2 = {};
 static Gx _fonts = {};
 static Gx _tracks = {};
 static Gx _csg = {};
-static G1Element _scrollingText[kMaxScrollingTextEntries]{};
+static G1Element _scrollingText[Drawing::ScrollingText::kMaxEntries]{};
 static bool _csgLoaded = false;
 
 static G1Element _g1Temp = {};

@@ -839,6 +839,7 @@
     <ClCompile Include="drawing\ScrollingText.cpp" />
     <ClCompile Include="drawing\SSE41Drawing.cpp" />
     <ClCompile Include="drawing\Text.cpp" />
+    <ClCompile Include="drawing\TextColour.cpp" />
     <ClCompile Include="drawing\TTF.cpp" />
     <ClCompile Include="drawing\TTFSDLPort.cpp" />
     <ClCompile Include="drawing\X8DrawingEngine.cpp" />

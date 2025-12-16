@@ -242,7 +242,7 @@ namespace OpenRCT2::GameActions
 
             banner->text = {};
             banner->colour = 2;
-            banner->textColour = TextColour::white;
+            banner->textColour = Drawing::TextColour::white;
             banner->flags = { BannerFlag::isLargeScenery };
             banner->type = 0;
             banner->position = TileCoordsXY(_loc);

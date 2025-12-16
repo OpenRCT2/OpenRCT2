@@ -86,6 +86,6 @@ namespace OpenRCT2
     std::string FormatTokenToStringWithBraces(FormatToken token);
     bool FormatTokenTakesArgument(FormatToken token);
     bool FormatTokenIsColour(FormatToken token);
-    TextColour FormatTokenToTextColour(FormatToken token);
-    FormatToken FormatTokenFromTextColour(TextColour textColour);
+    Drawing::TextColour FormatTokenToTextColour(FormatToken token);
+    FormatToken FormatTokenFromTextColour(Drawing::TextColour textColour);
 } // namespace OpenRCT2

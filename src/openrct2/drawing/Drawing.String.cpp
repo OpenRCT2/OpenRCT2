@@ -274,25 +274,20 @@ void GfxDrawStringLeftCentred(
 /**
  * Changes the palette so that the next character changes colour
  */
-static void ColourCharacter(TextColour colour, bool withOutline, uint8_t* palette_pointer)
+static void ColourCharacter(Drawing::TextColour colour, bool withOutline, uint8_t* palette_pointer)
 {
-    int32_t colour32 = 0;
-    const G1Element* g1 = GfxGetG1Element(SPR_TEXT_PALETTE);
-    if (g1 != nullptr)
-    {
-        uint32_t idx = EnumValue(colour) * 4;
-        std::memcpy(&colour32, &g1->offset[idx], sizeof(colour32));
-    }
+    auto mapping = Drawing::getTextColourMapping(colour);
 
     if (!withOutline)
     {
-        colour32 = colour32 & 0x0FF0000FF;
+        mapping.sunnyOutline = PaletteIndex::pi0;
+        mapping.shadowOutline = PaletteIndex::pi0;
     }
     // Adjust text palette. Store current colour?
-    palette_pointer[1] = colour32 & 0xFF;
-    palette_pointer[2] = (colour32 >> 8) & 0xFF;
-    palette_pointer[3] = (colour32 >> 16) & 0xFF;
-    palette_pointer[4] = (colour32 >> 24) & 0xFF;
+    palette_pointer[1] = mapping.fill;
+    palette_pointer[2] = mapping.sunnyOutline;
+    palette_pointer[3] = mapping.shadowOutline;
+    palette_pointer[4] = PaletteIndex::pi0;
 }
 
 /**

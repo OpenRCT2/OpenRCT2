@@ -11,6 +11,7 @@
 
 #include "../Context.h"
 #include "../Diagnostic.h"
+#include "../drawing/ScrollingText.h"
 #include "../localisation/StringIdType.h"
 #include "../management/Finance.h"
 #include "../windows/Intent.h"
@@ -148,7 +149,7 @@ namespace OpenRCT2::GameActions
                 banner->colour = _parameter;
                 break;
             case BannerSetStyleType::TextColour:
-                banner->textColour = static_cast<TextColour>(_parameter);
+                banner->textColour = static_cast<Drawing::TextColour>(_parameter);
                 break;
             case BannerSetStyleType::NoEntry:
             {
@@ -177,7 +178,7 @@ namespace OpenRCT2::GameActions
         intent.PutExtra(INTENT_EXTRA_BANNER_INDEX, _bannerIndex);
         ContextBroadcastIntent(&intent);
 
-        ScrollingTextInvalidate();
+        Drawing::ScrollingText::invalidate();
         GfxInvalidateScreen();
 
         return res;
