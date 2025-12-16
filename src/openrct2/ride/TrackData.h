@@ -127,7 +127,6 @@ namespace OpenRCT2::TrackMetaData
         // (RideTrackPrice * TED::PriceModifier) / 65536
         uint32_t priceModifier;
         OpenRCT2::TrackElemType mirrorElement;
-        uint32_t heightMarkerPositions;
         uint32_t flags;
 
         uint8_t numSequences{};
