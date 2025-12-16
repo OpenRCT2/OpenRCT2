@@ -13726,7 +13726,6 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kLeftEighthToDiagUp25Seq4 = {
         .clearance = { -64, -32, 32, 24, { 0b0001, 0 }, 0 },
-        .flags = {SequenceFlag::hasHeightMarker},
         .blockedSegments = { {
             EnumsToFlags(PS::bottom, PS::centre, PS::topLeft, PS::topRight, PS::bottomLeft, PS::bottomRight), // narrow
             kSegmentsUnimplemented,                                                                           // inverted
@@ -13765,7 +13764,6 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kRightEighthToDiagUp25Seq4 = {
         .clearance = { -64, 32, 32, 24, { 0b0010, 0 }, 0 },
-        .flags = {SequenceFlag::hasHeightMarker},
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftEighthToDiagUp25Seq4.blockedSegments),
     };
 
@@ -13871,7 +13869,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftEighthToOrthogonalUp25Seq4 = {
         .clearance = { -64, 32, 32, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
-        .flags = {SequenceFlag::hasHeightMarker},
         .woodenSupports = { WoodenSupportSubType::neSw },
         .blockedSegments = blockedSegmentsRotate(kRightEighthToDiagUp25Seq0.blockedSegments, 2),
     };
@@ -13913,7 +13910,6 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kLeftEighthToOrthogonalDown25Seq0 = {
         .clearance = { 0, 0, -16, 24, { 0b1101, 0 }, 0 },
-        .flags = {SequenceFlag::hasHeightMarker},
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25Deg },
         .extraSupportRotation = 2,
         .blockedSegments = kLeftEighthToOrthogonalUp25Seq0.blockedSegments,
@@ -13949,7 +13945,6 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kRightEighthToOrthogonalDown25Seq0 = {
         .clearance = { 0, 0, -16, 24, { 0b1101, 0 }, 0 },
-        .flags = {SequenceFlag::hasHeightMarker},
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25Deg },
         .extraSupportRotation = 2,
         .blockedSegments = kRightEighthToOrthogonalUp25Seq0.blockedSegments,
@@ -14085,7 +14080,6 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kDiagDown25ToLeftBankedDown25Seq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1101, 0 }, 0 },
-        .flags = {SequenceFlag::hasHeightMarker},
         .blockedSegments = kDiagFlatSeq0.blockedSegments,
     };
 
@@ -14105,12 +14099,12 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kDiagDown25ToLeftBankedDown25Seq3 = {
         .clearance = { -32, 32, 0, 16, { 0b0010, 0 }, 0 },
+        .flags = {SequenceFlag::hasHeightMarker},
         .blockedSegments = kDiagFlatSeq3.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kDiagDown25ToRightBankedDown25Seq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1101, 0 }, 0 },
-        .flags = {SequenceFlag::hasHeightMarker},
         .blockedSegments = kDiagFlatSeq0.blockedSegments,
     };
 
@@ -14130,12 +14124,12 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kDiagDown25ToRightBankedDown25Seq3 = {
         .clearance = { -32, 32, 0, 16, { 0b0010, 0 }, 0 },
+        .flags = {SequenceFlag::hasHeightMarker},
         .blockedSegments = kDiagFlatSeq3.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kDiagLeftBankedDown25ToDown25Seq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1101, 0 }, 0 },
-        .flags = {SequenceFlag::hasHeightMarker},
         .blockedSegments = kDiagFlatSeq0.blockedSegments,
     };
 
@@ -14155,12 +14149,12 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kDiagLeftBankedDown25ToDown25Seq3 = {
         .clearance = { -32, 32, 0, 16, { 0b0010, 0 }, 0 },
+        .flags = {SequenceFlag::hasHeightMarker},
         .blockedSegments = kDiagFlatSeq3.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kDiagRightBankedDown25ToDown25Seq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1101, 0 }, 0 },
-        .flags = {SequenceFlag::hasHeightMarker},
         .blockedSegments = kDiagFlatSeq0.blockedSegments,
     };
 
@@ -14180,6 +14174,7 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kDiagRightBankedDown25ToDown25Seq3 = {
         .clearance = { -32, 32, 0, 16, { 0b0010, 0 }, 0 },
+        .flags = {SequenceFlag::hasHeightMarker},
         .blockedSegments = kDiagFlatSeq3.blockedSegments,
     };
 
@@ -14285,7 +14280,6 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kDiagLeftBankedFlatToLeftBankedDown25Seq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1101, 0 }, 0 },
-        .flags = {SequenceFlag::hasHeightMarker},
         .blockedSegments = kDiagFlatSeq0.blockedSegments,
     };
 
@@ -14305,12 +14299,12 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kDiagLeftBankedFlatToLeftBankedDown25Seq3 = {
         .clearance = { -32, 32, 0, 8, { 0b0010, 0 }, 0 },
+        .flags = {SequenceFlag::hasHeightMarker},
         .blockedSegments = kDiagFlatSeq3.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kDiagRightBankedFlatToRightBankedDown25Seq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1101, 0 }, 0 },
-        .flags = {SequenceFlag::hasHeightMarker},
         .blockedSegments = kDiagFlatSeq0.blockedSegments,
     };
 
@@ -14330,12 +14324,12 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kDiagRightBankedFlatToRightBankedDown25Seq3 = {
         .clearance = { -32, 32, 0, 8, { 0b0010, 0 }, 0 },
+        .flags = {SequenceFlag::hasHeightMarker},
         .blockedSegments = kDiagFlatSeq3.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kDiagLeftBankedDown25ToLeftBankedFlatSeq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1101, 0 }, 0 },
-        .flags = {SequenceFlag::hasHeightMarker},
         .blockedSegments = kDiagFlatSeq0.blockedSegments,
     };
 
@@ -14355,12 +14349,12 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kDiagLeftBankedDown25ToLeftBankedFlatSeq3 = {
         .clearance = { -32, 32, 0, 8, { 0b0010, 0 }, 0 },
+        .flags = {SequenceFlag::hasHeightMarker},
         .blockedSegments = kDiagFlatSeq3.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kDiagRightBankedDown25ToRightBankedFlatSeq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1101, 0 }, 0 },
-        .flags = {SequenceFlag::hasHeightMarker},
         .blockedSegments = kDiagFlatSeq0.blockedSegments,
     };
 
@@ -14380,6 +14374,7 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kDiagRightBankedDown25ToRightBankedFlatSeq3 = {
         .clearance = { -32, 32, 0, 8, { 0b0010, 0 }, 0 },
+        .flags = {SequenceFlag::hasHeightMarker},
         .blockedSegments = kDiagFlatSeq3.blockedSegments,
     };
 
@@ -14510,7 +14505,6 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kDiagFlatToRightBankedDown25Seq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1101, 0 }, 0 },
-        .flags = {SequenceFlag::hasHeightMarker},
         .blockedSegments = kDiagFlatSeq0.blockedSegments,
     };
 
@@ -14530,12 +14524,12 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kDiagFlatToRightBankedDown25Seq3 = {
         .clearance = { -32, 32, 0, 8, { 0b0010, 0 }, 0 },
+        .flags = {SequenceFlag::hasHeightMarker},
         .blockedSegments = kDiagFlatSeq3.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kDiagLeftBankedDown25ToFlatSeq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1101, 0 }, 0 },
-        .flags = {SequenceFlag::hasHeightMarker},
         .blockedSegments = kDiagFlatSeq0.blockedSegments,
     };
 
@@ -14555,12 +14549,12 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kDiagLeftBankedDown25ToFlatSeq3 = {
         .clearance = { -32, 32, 0, 8, { 0b0010, 0 }, 0 },
+        .flags = {SequenceFlag::hasHeightMarker},
         .blockedSegments = kDiagFlatSeq3.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kDiagRightBankedDown25ToFlatSeq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1101, 0 }, 0 },
-        .flags = {SequenceFlag::hasHeightMarker},
         .blockedSegments = kDiagFlatSeq0.blockedSegments,
     };
 
@@ -14580,6 +14574,7 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kDiagRightBankedDown25ToFlatSeq3 = {
         .clearance = { -32, 32, 0, 8, { 0b0010, 0 }, 0 },
+        .flags = {SequenceFlag::hasHeightMarker},
         .blockedSegments = kDiagFlatSeq3.blockedSegments,
     };
 
@@ -14635,7 +14630,6 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kDiagDown25LeftBankedSeq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1101, 0 }, 0 },
-        .flags = {SequenceFlag::hasHeightMarker},
         .blockedSegments = kDiagFlatSeq0.blockedSegments,
     };
 
@@ -14655,12 +14649,12 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kDiagDown25LeftBankedSeq3 = {
         .clearance = { -32, 32, 0, 16, { 0b0010, 0 }, 0 },
+        .flags = {SequenceFlag::hasHeightMarker},
         .blockedSegments = kDiagFlatSeq3.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kDiagDown25RightBankedSeq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1101, 0 }, 0 },
-        .flags = {SequenceFlag::hasHeightMarker},
         .blockedSegments = kDiagFlatSeq0.blockedSegments,
     };
 
@@ -14680,6 +14674,7 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kDiagDown25RightBankedSeq3 = {
         .clearance = { -32, 32, 0, 16, { 0b0010, 0 }, 0 },
+        .flags = {SequenceFlag::hasHeightMarker},
         .blockedSegments = kDiagFlatSeq3.blockedSegments,
     };
 
@@ -14714,7 +14709,6 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kLeftEighthBankToDiagUp25Seq4 = {
         .clearance = { -64, -32, 32, 24, { 0b0001, 0 }, 0 },
-        .flags = {SequenceFlag::hasHeightMarker},
         .blockedSegments = kLeftEighthToDiagUp25Seq4.blockedSegments,
     };
 
@@ -14749,7 +14743,6 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kRightEighthBankToDiagUp25Seq4 = {
         .clearance = { -64, 32, 32, 24, { 0b0010, 0 }, 0 },
-        .flags = {SequenceFlag::hasHeightMarker},
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftEighthBankToDiagUp25Seq4.blockedSegments),
     };
 
@@ -14897,7 +14890,6 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kLeftEighthBankToOrthogonalDown25Seq0 = {
         .clearance = { 0, 0, -16, 24, { 0b1101, 0 }, 0 },
-        .flags = {SequenceFlag::hasHeightMarker},
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25Deg },
         .extraSupportRotation = 2,
         .blockedSegments = kLeftEighthBankToOrthogonalUp25Seq0.blockedSegments,
@@ -16436,7 +16428,6 @@ namespace OpenRCT2::TrackMetaData
                 desc.sequences[sequenceIndex] = kSequenceDescriptorsByElement[i].sequences[sequenceIndex];
             }
         }
-
         return res;
     }
 
