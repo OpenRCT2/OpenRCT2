@@ -3835,3 +3835,7 @@ STR_7005    :Arrastar uma área de calçada
 STR_7006    :Desenhar borda ao redor dos botões com imagens
 STR_7007    :Tipo de Atração
 STR_7008    :Tipo de atração desconhecido ({INT32})
+STR_7009    :Recebendo scripts…
+STR_7010    :Não foi possível iniciar o replay, o arquivo ‘{STRING}’ não existe ou é inválido
+STR_7011    :Não foi possível iniciar o replay
+STR_7012    :Złoty polonês (PLN)
