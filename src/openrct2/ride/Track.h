@@ -646,9 +646,9 @@ enum class SequenceFlag : uint8_t
     entranceConnectionSW, // connect to back
     entranceConnectionNW, // connect to left
     trackOrigin,
-    connectsToPath,       // The sides of this sequence block flagged with entrance connections can connect directly to paths
-    disallowDoors,        // Doors cannot be built on any side of this track element (only valid on first sequence of track element)
-    hasHeightMarker,      // Displays a height marker on this sequence block
+    connectsToPath,  // The sides of this sequence block flagged with entrance connections can connect directly to paths
+    disallowDoors,   // Doors cannot be built on any side of this track element (only valid on first sequence of track element)
+    hasHeightMarker, // Displays a height marker on this sequence block
 };
 
 enum
