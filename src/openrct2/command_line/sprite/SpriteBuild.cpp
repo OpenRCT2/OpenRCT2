@@ -84,14 +84,17 @@ namespace OpenRCT2::CommandLine::Sprite
 
             auto imagePath = Path::GetAbsolute(Path::Combine(directoryPath, strPath));
 
-            auto importResult = SpriteImageImport(imagePath, meta);
-            if (importResult == std::nullopt)
+            const auto image = SpriteImageLoad(imagePath, meta);
+            if (image == std::nullopt)
             {
-                fprintf(stderr, "Could not import image file: %s\nCanceling\n", imagePath.c_str());
+                fprintf(stderr, "Could not read image file: %s\nCanceling\n", imagePath.c_str());
                 return -1;
             }
 
-            spriteFile.AddImage(importResult.value());
+            ImageImporter importer;
+            auto importResult = importer.Import(image.value(), meta);
+
+            spriteFile.AddImage(importResult);
 
             if (!silent)
                 fprintf(stdout, "Added: %s\n", imagePath.c_str());
