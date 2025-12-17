@@ -32,12 +32,13 @@ namespace OpenRCT2::GameActions
 {
     RideCreateAction::RideCreateAction(
         ride_type_t rideType, ObjectEntryIndex subType, uint8_t trackColourPreset, uint8_t vehicleColourPreset,
-        ObjectEntryIndex entranceObjectIndex)
+        ObjectEntryIndex entranceObjectIndex, RideInspection inspectionInterval)
         : _rideType(rideType)
         , _subType(subType)
         , _entranceObjectIndex(entranceObjectIndex)
         , _trackColourPreset(trackColourPreset)
         , _vehicleColourPreset(vehicleColourPreset)
+        , _inspectionInterval(inspectionInterval)
     {
     }
 
@@ -48,6 +49,7 @@ namespace OpenRCT2::GameActions
         visitor.Visit("entranceObject", _entranceObjectIndex);
         visitor.Visit("colour1", _trackColourPreset);
         visitor.Visit("colour2", _vehicleColourPreset);
+        visitor.Visit("inspectionInterval", _inspectionInterval);
     }
 
     ride_type_t RideCreateAction::GetRideType() const
@@ -70,11 +72,17 @@ namespace OpenRCT2::GameActions
         GameAction::Serialise(stream);
 
         stream << DS_TAG(_rideType) << DS_TAG(_subType) << DS_TAG(_entranceObjectIndex) << DS_TAG(_trackColourPreset)
-               << DS_TAG(_vehicleColourPreset);
+               << DS_TAG(_vehicleColourPreset) << DS_TAG(_inspectionInterval);
     }
 
     Result RideCreateAction::Query(GameState_t& gameState) const
     {
+        if (_inspectionInterval > RideInspection::never)
+        {
+            LOG_ERROR("Invalid inspection interval: %u", EnumValue(_inspectionInterval));
+            return Result(Status::invalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_ERR_VALUE_OUT_OF_RANGE);
+        }
+
         auto rideIndex = GetNextFreeRideId();
         if (rideIndex.IsNull())
         {
@@ -274,7 +282,7 @@ namespace OpenRCT2::GameActions
         ride->upkeepCost = kMoney64Undefined;
         ride->reliability = kRideInitialReliability;
         ride->unreliabilityFactor = 1;
-        ride->inspectionInterval = RideInspection::every30Minutes;
+        ride->inspectionInterval = _inspectionInterval;
         ride->lastCrashType = RIDE_CRASH_TYPE_NONE;
         ride->incomePerHour = kMoney64Undefined;
         ride->profit = kMoney64Undefined;

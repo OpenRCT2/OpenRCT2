@@ -20,10 +20,12 @@ namespace OpenRCT2::GameActions
         CoordsXYZD _loc;
         TrackDesign _td;
         bool _placeScenery{ false };
+        RideInspection _inspectionInterval{ RideInspection::every30Minutes };
 
     public:
         TrackDesignAction() = default;
-        TrackDesignAction(const CoordsXYZD& location, const TrackDesign& td, bool placeScenery);
+        TrackDesignAction(
+            const CoordsXYZD& location, const TrackDesign& td, bool placeScenery, RideInspection inspectionInterval);
 
         void AcceptParameters(GameActionParameterVisitor&) final;
 

@@ -5300,15 +5300,6 @@ void Ride::setReversedTrains(bool reverseTrains)
     GameActions::Execute(&rideSetVehicleAction, getGameState());
 }
 
-void Ride::setToDefaultInspectionInterval()
-{
-    auto defaultInspectionInterval = Config::Get().general.defaultInspectionInterval;
-    if (inspectionInterval != defaultInspectionInterval)
-    {
-        SetOperatingSetting(id, GameActions::RideSetSetting::InspectionInterval, EnumValue(defaultInspectionInterval));
-    }
-}
-
 /**
  *
  *  rct2: 0x006B752C

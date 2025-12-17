@@ -13,6 +13,7 @@
 
 #include <openrct2/GameState.h>
 #include <openrct2/actions/RideCreateAction.h>
+#include <openrct2/config/Config.h>
 #include <openrct2/ride/Ride.h>
 #include <openrct2/ride/RideConstruction.h>
 #include <openrct2/ride/RideData.h>
@@ -231,7 +232,8 @@ namespace OpenRCT2
         int32_t colour2 = RideGetUnusedPresetVehicleColour(rideEntryIndex);
 
         auto gameAction = GameActions::RideCreateAction(
-            listItem.Type, listItem.EntryIndex, colour1, colour2, getGameState().lastEntranceStyle);
+            listItem.Type, listItem.EntryIndex, colour1, colour2, getGameState().lastEntranceStyle,
+            Config::Get().general.defaultInspectionInterval);
 
         gameAction.SetCallback([](const GameActions::GameAction* ga, const GameActions::Result* result) {
             if (result->error != GameActions::Status::ok)

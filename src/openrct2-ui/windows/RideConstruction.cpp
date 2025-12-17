@@ -326,7 +326,6 @@ namespace OpenRCT2::Ui::Windows
                     }
                 }
 
-                currentRide->setToDefaultInspectionInterval();
                 auto intent = Intent(WindowClass::ride);
                 intent.PutExtra(INTENT_EXTRA_RIDE_ID, currentRide->id.ToUnderlying());
                 ContextOpenIntent(&intent);

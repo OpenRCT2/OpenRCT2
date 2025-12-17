@@ -361,7 +361,6 @@ public:
     void renew();
     void remove();
     void crash(uint8_t vehicleIndex);
-    void setToDefaultInspectionInterval();
     void setRideEntry(OpenRCT2::ObjectEntryIndex entryIndex);
 
     void setNumTrains(int32_t newNumTrains);
