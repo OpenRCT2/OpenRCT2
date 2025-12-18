@@ -3839,3 +3839,9 @@ STR_7003    :Le fichier audio « {STRING} » est tronqué. L’échantillon {I
 STR_7004    :Forcer le rendu
 STR_7005    :Remplir de chemin une zone
 STR_7006    :Dessiner une bordure autour des boutons-images
+STR_7007    :Type d’attraction
+STR_7008    :Type d’attraction inconnu ({INT32})
+STR_7012    :Złoty polonais (PLN)
+STR_7009    :Réception des scripts…
+STR_7010    :Impossible de jouer l’enregistrement, le fichier {SMALLFONT}{STRING}{MEDIUMFONT} n’existe pas ou est invalide
+STR_7011    :Impossible de jouer l’enregistrement
