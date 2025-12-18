@@ -6,6 +6,7 @@
 - Improved: [#25575] Updated the network protocol to a new format that supports larger packets, allowing clients to connect reliably to servers with many objects or large maps.
 - Improved: [#25621] Added the Polish Złoty (PLN) to the list of available currencies.
 - Improved: [#25625] Renewing and refurbishing rides now also resets the downtime.
+- Improved: [#25662] The sprite build command is faster when building sprites from the same image file.
 - Change: [#21912] Toilet income is now categorised as shop sales instead of ride tickets.
 - Change: [#25403] Guests will not slide down the Spiral Slide if it's broken, even if they have already entered the ride structure.
 - Change: [#25485] Make the enlarged pressed swatch sprite more pronounced.
