@@ -12,7 +12,7 @@
 #include "../Context.h"
 #include "../Diagnostic.h"
 #include "../core/String.hpp"
-#include "../drawing/Drawing.h"
+#include "../drawing/ScrollingText.h"
 #include "../localisation/StringIds.h"
 #include "../windows/Intent.h"
 #include "../world/Banner.h"
@@ -92,7 +92,7 @@ namespace OpenRCT2::GameActions
         intent.PutExtra(INTENT_EXTRA_BANNER_INDEX, _bannerIndex);
         ContextBroadcastIntent(&intent);
 
-        ScrollingTextInvalidate();
+        Drawing::ScrollingText::invalidate();
         GfxInvalidateScreen();
 
         return Result();

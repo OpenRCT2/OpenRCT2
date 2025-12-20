@@ -13,7 +13,7 @@
 #include "../Context.h"
 #include "../Diagnostic.h"
 #include "../core/MemoryStream.h"
-#include "../drawing/Drawing.h"
+#include "../drawing/ScrollingText.h"
 #include "../localisation/StringIds.h"
 #include "../ride/Ride.h"
 #include "../ui/WindowManager.h"
@@ -81,7 +81,7 @@ namespace OpenRCT2::GameActions
             ride->customName = _name;
         }
 
-        ScrollingTextInvalidate();
+        Drawing::ScrollingText::invalidate();
         GfxInvalidateScreen();
 
         // Refresh windows that display ride name

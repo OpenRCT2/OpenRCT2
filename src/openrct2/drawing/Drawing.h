@@ -18,6 +18,7 @@
 #include "Font.h"
 #include "ImageId.hpp"
 #include "Text.h"
+#include "TextColour.h"
 
 #include <array>
 #include <cassert>
@@ -454,13 +455,11 @@ void FASTCALL BlitPixels(const uint8_t* src, uint8_t* dst, const PaletteMap& pal
 
 constexpr uint8_t kPaletteTotalOffsets = 192;
 
-constexpr int8_t kMaxScrollingTextModes = 38;
-
 extern OpenRCT2::Drawing::GamePalette gPalette;
 extern OpenRCT2::Drawing::GamePalette gGamePalette;
 extern uint32_t gPaletteEffectFrame;
 
-extern uint8_t gTextPalette[];
+extern OpenRCT2::Drawing::TextColours gTextPalette;
 extern const TranslucentWindowPalette kTranslucentWindowPalettes[COLOUR_COUNT];
 
 extern ImageId gPickupPeepImage;
@@ -537,18 +536,10 @@ void TTFDrawString(
     RenderTarget& rt, const_utf8string text, ColourWithFlags colour, const ScreenCoordsXY& coords, bool noFormatting,
     FontStyle fontStyle, TextDarkness darkness);
 
-// scrolling text
-void ScrollingTextInitialiseBitmaps();
-void ScrollingTextInvalidate();
-
 namespace OpenRCT2
 {
     class Formatter;
 }
-
-ImageId ScrollingTextSetup(
-    struct PaintSession& session, StringId stringId, OpenRCT2::Formatter& ft, uint16_t scroll, uint16_t scrollingMode,
-    colour_t colour);
 
 size_t G1CalculateDataSize(const G1Element* g1);
 

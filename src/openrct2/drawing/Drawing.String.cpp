@@ -274,45 +274,38 @@ void GfxDrawStringLeftCentred(
 /**
  * Changes the palette so that the next character changes colour
  */
-static void ColourCharacter(TextColour colour, bool withOutline, uint8_t* palette_pointer)
+static void ColourCharacter(Drawing::TextColour colour, bool withOutline, Drawing::TextColours& textPalette)
 {
-    int32_t colour32 = 0;
-    const G1Element* g1 = GfxGetG1Element(SPR_TEXT_PALETTE);
-    if (g1 != nullptr)
-    {
-        uint32_t idx = EnumValue(colour) * 4;
-        std::memcpy(&colour32, &g1->offset[idx], sizeof(colour32));
-    }
+    auto mapping = Drawing::getTextColourMapping(colour);
 
     if (!withOutline)
     {
-        colour32 = colour32 & 0x0FF0000FF;
+        mapping.sunnyOutline = PaletteIndex::pi0;
+        mapping.shadowOutline = PaletteIndex::pi0;
     }
-    // Adjust text palette. Store current colour?
-    palette_pointer[1] = colour32 & 0xFF;
-    palette_pointer[2] = (colour32 >> 8) & 0xFF;
-    palette_pointer[3] = (colour32 >> 16) & 0xFF;
-    palette_pointer[4] = (colour32 >> 24) & 0xFF;
+
+    textPalette = mapping;
 }
 
 /**
  * Changes the palette so that the next character changes colour
  * This is specific to changing to a predefined window related colour
  */
-static void ColourCharacterWindow(colour_t colour, bool withOutline, uint8_t* palette_pointer)
+static void ColourCharacterWindow(colour_t colour, bool withOutline, Drawing::TextColours& textPalette)
 {
-    int32_t eax;
+    Drawing::TextColours mapping = {
+        ColourMapA[colour].colour_11,
+        PaletteIndex::pi0,
+        PaletteIndex::pi0,
+    };
 
-    eax = ColourMapA[colour].colour_11;
     if (withOutline)
     {
-        eax |= 0x0A0A00;
+        mapping.sunnyOutline = PaletteIndex::pi10;
+        mapping.shadowOutline = PaletteIndex::pi10;
     }
-    // Adjust text palette. Store current colour?
-    palette_pointer[1] = eax & 0xFF;
-    palette_pointer[2] = (eax >> 8) & 0xFF;
-    palette_pointer[3] = (eax >> 16) & 0xFF;
-    palette_pointer[4] = (eax >> 24) & 0xFF;
+
+    textPalette = mapping;
 }
 
 /**
@@ -491,7 +484,12 @@ static void TTFDrawCharacterSprite(RenderTarget& rt, int32_t codepoint, TextDraw
             screenCoords.y += *info->yOffset++;
         }
 
-        PaletteMap paletteMap(info->palette);
+        uint8_t palette[8]{};
+        palette[1] = info->palette.fill;
+        palette[2] = info->palette.sunnyOutline;
+        palette[3] = info->palette.shadowOutline;
+
+        PaletteMap paletteMap(palette);
         GfxDrawGlyph(rt, sprite, screenCoords, paletteMap);
     }
 
@@ -753,38 +751,30 @@ static void TTFProcessInitialColour(ColourWithFlags colour, TextDrawInfo* info)
         info->colourFlags = colour.flags;
         if (!colour.flags.has(ColourFlag::inset))
         {
-            ColourCharacterWindow(
-                colour.colour, info->colourFlags.has(ColourFlag::withOutline), reinterpret_cast<uint8_t*>(&info->palette));
+            ColourCharacterWindow(colour.colour, info->colourFlags.has(ColourFlag::withOutline), info->palette);
         }
         else
         {
-            uint32_t eax = 0;
+            Drawing::TextColours newPalette = {};
             switch (info->darkness)
             {
                 case TextDarkness::extraDark:
-                    eax = ColourMapA[colour.colour].mid_light;
-                    eax = eax << 16;
-                    eax = eax | ColourMapA[colour.colour].dark;
+                    newPalette.fill = ColourMapA[colour.colour].dark;
+                    newPalette.shadowOutline = ColourMapA[colour.colour].mid_light;
                     break;
 
                 case TextDarkness::dark:
-                    eax = ColourMapA[colour.colour].light;
-                    eax = eax << 16;
-                    eax = eax | ColourMapA[colour.colour].mid_dark;
+                    newPalette.fill = ColourMapA[colour.colour].mid_dark;
+                    newPalette.shadowOutline = ColourMapA[colour.colour].light;
                     break;
 
                 case TextDarkness::regular:
-                    eax = ColourMapA[colour.colour].lighter;
-                    eax = eax << 16;
-                    eax = eax | ColourMapA[colour.colour].mid_light;
+                    newPalette.fill = ColourMapA[colour.colour].mid_light;
+                    newPalette.shadowOutline = ColourMapA[colour.colour].lighter;
                     break;
             }
 
-            // Adjust text palette. Store current colour? ;
-            info->palette[1] = eax & 0xFF;
-            info->palette[2] = (eax >> 8) & 0xFF;
-            info->palette[3] = (eax >> 16) & 0xFF;
-            info->palette[4] = (eax >> 24) & 0xFF;
+            info->palette = newPalette;
         }
     }
 }
@@ -814,10 +804,10 @@ void TTFDrawString(
         info.textDrawFlags.set(TextDrawFlag::noFormatting);
     }
 
-    std::memcpy(info.palette, gTextPalette, sizeof(info.palette));
+    info.palette = gTextPalette;
     TTFProcessInitialColour(colour, &info);
     TTFProcessString(rt, text, &info);
-    std::memcpy(gTextPalette, info.palette, sizeof(info.palette));
+    gTextPalette = info.palette;
 
     rt.lastStringPos = { info.x, info.y };
 }
@@ -873,10 +863,10 @@ void GfxDrawStringWithYOffsets(
         info.textDrawFlags.set(TextDrawFlag::ttf);
     }
 
-    std::memcpy(info.palette, gTextPalette, sizeof(info.palette));
+    info.palette = gTextPalette;
     TTFProcessInitialColour(colour, &info);
     TTFProcessString(rt, text, &info);
-    std::memcpy(gTextPalette, info.palette, sizeof(info.palette));
+    gTextPalette = info.palette;
 
     rt.lastStringPos = { info.x, info.y };
 }

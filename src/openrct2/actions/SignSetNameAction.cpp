@@ -11,7 +11,7 @@
 
 #include "../Context.h"
 #include "../Diagnostic.h"
-#include "../drawing/Drawing.h"
+#include "../drawing/ScrollingText.h"
 #include "../localisation/StringIds.h"
 #include "../ride/Ride.h"
 #include "../world/Banner.h"
@@ -108,7 +108,7 @@ namespace OpenRCT2::GameActions
             }
         }
 
-        ScrollingTextInvalidate();
+        Drawing::ScrollingText::invalidate();
         GfxInvalidateScreen();
         return Result();
     }

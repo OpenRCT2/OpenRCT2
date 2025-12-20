@@ -442,7 +442,7 @@ Banner* CreateBanner()
         banner->type = 0;
         banner->text = {};
         banner->colour = COLOUR_WHITE;
-        banner->textColour = TextColour::white;
+        banner->textColour = Drawing::TextColour::white;
     }
     return banner;
 }

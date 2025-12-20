@@ -162,7 +162,7 @@ static void PaintWallScrollingText(
         return;
 
     scrollingMode = wallEntry.scrolling_mode + ((direction + 1) & 3);
-    if (scrollingMode >= kMaxScrollingTextModes)
+    if (scrollingMode >= Drawing::ScrollingText::kMaxModes)
         return;
 
     auto banner = wallElement.GetBanner();
@@ -186,7 +186,7 @@ static void PaintWallScrollingText(
 
     auto stringWidth = GfxGetStringWidth(signString, FontStyle::tiny);
     auto scroll = stringWidth > 0 ? (getGameState().currentTicks / 2) % stringWidth : 0;
-    auto imageId = ScrollingTextSetup(session, STR_SCROLLING_SIGN_TEXT, ft, scroll, scrollingMode, textPaletteIndex);
+    auto imageId = Drawing::ScrollingText::setup(session, STR_SCROLLING_SIGN_TEXT, ft, scroll, scrollingMode, textPaletteIndex);
     PaintAddImageAsChild(session, imageId, { 0, 0, height + 8 }, { boundsOffset, { 1, 1, 13 } });
 }
 

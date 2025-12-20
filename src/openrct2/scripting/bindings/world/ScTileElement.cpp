@@ -1462,7 +1462,7 @@ namespace OpenRCT2::Scripting
             case TileElementType::Banner:
             {
                 auto* el = _element->AsBanner();
-                el->GetBanner()->textColour = static_cast<TextColour>(value);
+                el->GetBanner()->textColour = static_cast<Drawing::TextColour>(value);
                 Invalidate();
                 break;
             }
@@ -2245,7 +2245,7 @@ namespace OpenRCT2::Scripting
         {
             banner->text = {};
             banner->colour = 0;
-            banner->textColour = TextColour::black;
+            banner->textColour = Drawing::TextColour::black;
             banner->flags = {};
             if (_element->GetType() == TileElementType::Wall)
                 banner->flags.set(BannerFlag::isWall);

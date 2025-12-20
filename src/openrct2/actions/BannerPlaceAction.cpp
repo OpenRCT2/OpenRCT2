@@ -138,7 +138,7 @@ namespace OpenRCT2::GameActions
         }
         banner->flags = {};
         banner->text = {};
-        banner->textColour = TextColour::white;
+        banner->textColour = Drawing::TextColour::white;
         banner->type = _bannerType; // Banner must be deleted after this point in an early return
         banner->colour = _primaryColour;
         banner->position = TileCoordsXY(_loc);

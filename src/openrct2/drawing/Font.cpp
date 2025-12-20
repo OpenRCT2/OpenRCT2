@@ -17,6 +17,7 @@
 #include "../localisation/LocalisationService.h"
 #include "../rct12/CSChar.h"
 #include "Drawing.h"
+#include "ScrollingText.h"
 #include "TTF.h"
 
 #include <iterator>
@@ -279,7 +280,7 @@ void FontSpriteInitialiseCharacters()
         }
     }
 
-    ScrollingTextInitialiseBitmaps();
+    Drawing::ScrollingText::initialiseBitmaps();
 }
 
 int32_t FontSpriteGetCodepointOffset(int32_t codepoint)

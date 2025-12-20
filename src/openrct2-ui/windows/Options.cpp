@@ -31,6 +31,7 @@
 #include <openrct2/core/File.h>
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/IDrawingEngine.h>
+#include <openrct2/drawing/ScrollingText.h>
 #include <openrct2/localisation/Currency.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Language.h>
@@ -1072,7 +1073,7 @@ namespace OpenRCT2::Ui::Windows
                     Config::Get().general.upperCaseBanners ^= 1;
                     Config::Save();
                     invalidate();
-                    ScrollingTextInvalidate();
+                    Drawing::ScrollingText::invalidate();
                     break;
                 case WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX:
                     Config::Get().general.disableLightningEffect ^= 1;

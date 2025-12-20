@@ -1229,7 +1229,7 @@ void OpenGLDrawingContext::DrawTTFBitmap(
             command.texMaskBounds = { 0.0f, 0.0f, 0.0f, 0.0f };
             command.palettes = { 0, 0, 0 };
             command.flags = DrawRectCommand::FLAG_TTF_TEXT;
-            command.colour = info->palette[3];
+            command.colour = info->palette.shadowOutline;
             command.bounds = b;
             command.depth = _drawCount++;
             command.zoom = 1.0f;
@@ -1245,7 +1245,7 @@ void OpenGLDrawingContext::DrawTTFBitmap(
         command.texMaskBounds = { 0.0f, 0.0f, 0.0f, 0.0f };
         command.palettes = { 0, 0, 0 };
         command.flags = DrawRectCommand::FLAG_TTF_TEXT;
-        command.colour = info->palette[3];
+        command.colour = info->palette.shadowOutline;
         command.bounds = { left + 1, top + 1, right + 1, bottom + 1 };
         command.depth = _drawCount++;
         command.zoom = 1.0f;
@@ -1259,7 +1259,7 @@ void OpenGLDrawingContext::DrawTTFBitmap(
     command.texMaskBounds = { 0.0f, 0.0f, 0.0f, 0.0f };
     command.palettes = { 0, 0, 0 };
     command.flags = DrawRectCommand::FLAG_TTF_TEXT | (hintingThreshold << 8);
-    command.colour = info->palette[1];
+    command.colour = info->palette.fill;
     command.bounds = { left, top, right, bottom };
     command.depth = _drawCount++;
     command.zoom = 1.0f;

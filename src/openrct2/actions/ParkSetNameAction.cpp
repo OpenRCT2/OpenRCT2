@@ -60,7 +60,7 @@ namespace OpenRCT2::GameActions
         if (_name != park.name)
         {
             park.name = _name;
-            ScrollingTextInvalidate();
+            Drawing::ScrollingText::invalidate();
             GfxInvalidateScreen();
         }
         return Result();
