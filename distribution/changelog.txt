@@ -32,6 +32,7 @@
 - Improved: [#25028] Stalls now support colour presets, just like regular rides.
 - Improved: [#25426] Building the track designs index is now quicker.
 - Improved: [#25490] The ‘New Ride’ window can now be resized.
+- Improved: [#25502] Track height markers on flat rides now more sensible.
 - Fix: [#6228] The saved queue line path connections are not preserved when placing track designs (original bug).
 - Fix: [#14365] Track designs with scenery below the lowest track piece do not preview correctly.
 - Fix: [#25451] Dropdown item tooltips stay open if the mouse is moved over an empty space.
@@ -42,6 +43,7 @@
 - Fix: [#25480] The mini track design preview and price are misaligned in Enlarged UI mode.
 - Fix: [#25488] Crash in headless mode.
 - Fix: [#25494] The Go-Karts steep to flat track does not draw correctly in the flat side tunnel.
+- Fix: [#25503] Height markers missing from some maze tiles.
 - Fix: [#25518] The virtual floor does not draw correctly if expanded on the positive x and y axes.
 - Fix: [#25519] Crackling audio when sampling frequencies do not match.
 - Fix: [objects#401] Round tunnels on down slopes glitch.
