@@ -4853,21 +4853,41 @@ namespace OpenRCT2::Ui::Windows
             }
             else
             {
-                auto screenCoords = windowPos
-                    + ScreenCoordsXY{ (trackPreviewWidget.left + trackPreviewWidget.right) / 2 - 8,
-                                      (trackPreviewWidget.bottom + trackPreviewWidget.top) / 2 - 6 };
+                ShopItem shopItemIndex = rideEntry->shop_item[1] == ShopItem::none ? rideEntry->shop_item[0]
+                                                                                   : rideEntry->shop_item[1];
+                auto shopItem = GetShopItemDescriptor(shopItemIndex);
 
-                ShopItem shopItem = rideEntry->shop_item[1] == ShopItem::none ? rideEntry->shop_item[0]
-                                                                              : rideEntry->shop_item[1];
-                if (ride->hasLifecycleFlag(RIDE_LIFECYCLE_RANDOM_SHOP_COLOURS))
+                if (shopItem.IsRecolourable())
                 {
-                    colour_t spriteColour = (getGameState().currentTicks / 32) % COLOUR_COUNT;
+                    auto screenCoords = windowPos
+                        + ScreenCoordsXY{ (trackPreviewWidget.left + trackPreviewWidget.right) / 2 - 8,
+                                          (trackPreviewWidget.bottom + trackPreviewWidget.top) / 2 - 6 };
 
-                    GfxDrawSprite(rt, ImageId(GetShopItemDescriptor(shopItem).Image, spriteColour), screenCoords);
+                    colour_t spriteColour = ride->trackColours[0].main;
+                    if (ride->hasLifecycleFlag(RIDE_LIFECYCLE_RANDOM_SHOP_COLOURS))
+                        spriteColour = (getGameState().currentTicks / 32) % COLOUR_COUNT;
+
+                    GfxDrawSprite(rt, ImageId(shopItem.Image, spriteColour), screenCoords);
                 }
                 else
                 {
-                    GfxDrawSprite(rt, ImageId(GetShopItemDescriptor(shopItem).Image, ride->trackColours[0].main), screenCoords);
+                    const ImageIndex previewImage = rideEntry->images_offset + 3 + 1;
+                    auto image = GfxGetG1Element(previewImage);
+                    if (image == nullptr)
+                        return;
+
+                    const auto& previewWidget = widgets[WIDX_TRACK_PREVIEW];
+
+                    RenderTarget clipRT;
+                    auto clipScreenPos = windowPos + ScreenCoordsXY{ previewWidget.left + 1, previewWidget.top + 1 };
+                    const auto clipWidth = previewWidget.width() - 2;
+                    const auto clipHeight = previewWidget.height() - 1;
+                    ClipDrawPixelInfo(clipRT, rt, clipScreenPos, clipWidth, clipHeight);
+                    auto imageLocationX = (clipWidth / 2) - (image->width / 2) - image->x_offset;
+                    auto imageLocationY = (clipHeight / 2) - (image->height / 2) - image->y_offset;
+
+                    GfxDrawSprite(
+                        clipRT, ImageId(previewImage, ride->trackColours[0].main), { imageLocationX, imageLocationY });
                 }
             }
 

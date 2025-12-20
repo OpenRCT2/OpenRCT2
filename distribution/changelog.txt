@@ -32,6 +32,7 @@
 - Improved: [#25028] Stalls now support colour presets, just like regular rides.
 - Improved: [#25426] Building the track designs index is now quicker.
 - Improved: [#25490] The ‘New Ride’ window can now be resized.
+- Improved: [#25526] When a shop item cannot be recoloured, show a preview of the building instead.
 - Fix: [#6228] The saved queue line path connections are not preserved when placing track designs (original bug).
 - Fix: [#14365] Track designs with scenery below the lowest track piece do not preview correctly.
 - Fix: [#25451] Dropdown item tooltips stay open if the mouse is moved over an empty space.
