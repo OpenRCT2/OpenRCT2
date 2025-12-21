@@ -688,8 +688,8 @@ namespace OpenRCT2::Ui::Windows
             if (gFootpathSelection.LegacyPath == kObjectEntryIndexNull)
             {
                 // Set footpath and queue type button images
-                auto pathImage = kSpriteIdNull;
-                auto queueImage = kSpriteIdNull;
+                auto pathImage = kImageIndexUndefined;
+                auto queueImage = kImageIndexUndefined;
                 auto pathEntry = GetPathSurfaceEntry(gFootpathSelection.NormalSurface);
                 if (pathEntry != nullptr)
                 {
@@ -706,7 +706,7 @@ namespace OpenRCT2::Ui::Windows
                 WindowFootpathDrawDropdownButton(rt, WIDX_QUEUELINE_TYPE, queueImage);
 
                 // Set railing
-                auto railingsImage = kSpriteIdNull;
+                auto railingsImage = kImageIndexUndefined;
                 auto railingsEntry = GetPathRailingsEntry(gFootpathSelection.Railings);
                 if (railingsEntry != nullptr)
                 {
@@ -719,8 +719,8 @@ namespace OpenRCT2::Ui::Windows
                 auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
 
                 // Set footpath and queue type button images
-                auto pathImage = kSpriteIdNull;
-                auto queueImage = kSpriteIdNull;
+                auto pathImage = kImageIndexUndefined;
+                auto queueImage = kImageIndexUndefined;
                 const auto* pathObj = objManager.GetLoadedObject<FootpathObject>(gFootpathSelection.LegacyPath);
                 if (pathObj != nullptr)
                 {
