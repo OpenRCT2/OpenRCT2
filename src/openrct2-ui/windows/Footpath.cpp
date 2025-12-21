@@ -29,6 +29,7 @@
 #include <openrct2/audio/Audio.h>
 #include <openrct2/core/FlagHolder.hpp>
 #include <openrct2/localisation/Formatter.h>
+#include <openrct2/network/NetworkAction.h>
 #include <openrct2/object/FootpathObject.h>
 #include <openrct2/object/FootpathRailingsObject.h>
 #include <openrct2/object/FootpathSurfaceObject.h>
@@ -531,6 +532,18 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_CONSTRUCT].type = _footpathConstructionMode == PathConstructionMode::bridgeOrTunnel
                 ? WidgetType::imgBtn
                 : WidgetType::empty;
+
+#ifndef DISABLE_NETWORK
+            bool canDrag = true;
+            if (Network::GetMode() == Network::Mode::client)
+            {
+                canDrag = Network::CanPerformAction(Network::GetCurrentPlayerGroupIndex(), Network::Permission::dragPathArea);
+            }
+            if (canDrag)
+                disabledWidgets &= ~(1uLL << WIDX_CONSTRUCT_DRAG_AREA);
+            else
+                disabledWidgets |= (1uLL << WIDX_CONSTRUCT_DRAG_AREA);
+#endif
 
             if (gFootpathSelection.LegacyPath == kObjectEntryIndexNull)
             {
