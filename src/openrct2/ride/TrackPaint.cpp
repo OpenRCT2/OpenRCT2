@@ -1793,10 +1793,18 @@ void TrackPaintUtilSpinningTunnelPaint(PaintSession& session, int8_t thickness, 
     }
 }
 
+void TrackPaintUtilOnridePhotoPlatformPaintBase(PaintSession& session, int32_t height)
+{
+    auto image = ImageId(SPR_STATION_BASE_BORDERLESS, COLOUR_BLACK);
+    if (session.TrackColours == ConstructionMarker)
+        image = session.TrackColours.WithIndex(SPR_STATION_BASE_BORDERLESS);
+    PaintAddImageAsParent(session, image, { 0, 0, height }, { 32, 32, 1 });
+}
+
 void TrackPaintUtilOnridePhotoPlatformPaint(
     PaintSession& session, Direction direction, int32_t height, MetalSupportType supportType)
 {
-    PaintAddImageAsParent(session, ImageId(SPR_STATION_BASE_BORDERLESS, COLOUR_BLACK), { 0, 0, height }, { 32, 32, 1 });
+    TrackPaintUtilOnridePhotoPlatformPaintBase(session, height);
     DrawSupportsSideBySide(session, direction, height, session.SupportColours, supportType);
 }
 

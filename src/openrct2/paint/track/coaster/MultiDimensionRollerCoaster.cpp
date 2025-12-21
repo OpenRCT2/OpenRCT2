@@ -5356,11 +5356,10 @@ static void MultiDimensionRCTrackOnRidePhoto(
     }
     else
     {
+        TrackPaintUtilOnridePhotoPlatformPaintBase(session, height);
         switch (direction)
         {
             case 0:
-                PaintAddImageAsParentRotated(
-                    session, direction, ImageId(SPR_STATION_BASE_BORDERLESS, COLOUR_BLACK), { 0, 0, height }, { 32, 32, 1 });
                 MetalASupportsPaintSetup(
                     session, supportType.metal, MetalSupportPlace::topLeftSide, 0, height, session.SupportColours);
                 MetalASupportsPaintSetup(
@@ -5370,8 +5369,6 @@ static void MultiDimensionRCTrackOnRidePhoto(
                     { { 0, 6, height + 24 }, { 32, 20, 3 } });
                 break;
             case 1:
-                PaintAddImageAsParentRotated(
-                    session, direction, ImageId(SPR_STATION_BASE_BORDERLESS, COLOUR_BLACK), { 0, 0, height }, { 32, 32, 1 });
                 MetalASupportsPaintSetup(
                     session, supportType.metal, MetalSupportPlace::topRightSide, 0, height, session.SupportColours);
                 MetalASupportsPaintSetup(
@@ -5381,8 +5378,6 @@ static void MultiDimensionRCTrackOnRidePhoto(
                     { { 0, 6, height + 24 }, { 32, 20, 3 } });
                 break;
             case 2:
-                PaintAddImageAsParentRotated(
-                    session, direction, ImageId(SPR_STATION_BASE_BORDERLESS, COLOUR_BLACK), { 0, 0, height }, { 32, 32, 1 });
                 MetalASupportsPaintSetup(
                     session, supportType.metal, MetalSupportPlace::topLeftSide, 0, height, session.SupportColours);
                 MetalASupportsPaintSetup(
@@ -5392,8 +5387,6 @@ static void MultiDimensionRCTrackOnRidePhoto(
                     { { 0, 6, height + 24 }, { 32, 20, 3 } });
                 break;
             case 3:
-                PaintAddImageAsParentRotated(
-                    session, direction, ImageId(SPR_STATION_BASE_BORDERLESS, COLOUR_BLACK), { 0, 0, height }, { 32, 32, 1 });
                 MetalASupportsPaintSetup(
                     session, supportType.metal, MetalSupportPlace::topRightSide, 0, height, session.SupportColours);
                 MetalASupportsPaintSetup(
