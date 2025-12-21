@@ -917,7 +917,7 @@ namespace OpenRCT2::Ui::Windows
             for (size_t i = 0; i < std::size(ObjectSelectionPages); i++)
             {
                 auto& widget = widgets[WIDX_TAB_1 + i];
-                if (ObjectSelectionPages[i].Image != kSpriteIdNull)
+                if (ObjectSelectionPages[i].Image != kImageIndexUndefined)
                 {
                     widget.type = WidgetType::tab;
                     widget.left = x;
