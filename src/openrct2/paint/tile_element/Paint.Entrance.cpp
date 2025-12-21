@@ -118,8 +118,8 @@ static void PaintRideEntranceExit(PaintSession& session, uint8_t direction, int3
     PROFILED_FUNCTION();
 
     auto rideIndex = entranceEl.GetRideIndex();
-    if ((gTrackDesignSaveMode || (session.ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
-        && (rideIndex != gTrackDesignSaveRideIndex))
+    if ((session.ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES)
+        || (gTrackDesignSaveMode && rideIndex != gTrackDesignSaveRideIndex))
     {
         return;
     }
