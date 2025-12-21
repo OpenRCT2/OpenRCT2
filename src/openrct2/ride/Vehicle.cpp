@@ -3799,14 +3799,7 @@ void Vehicle::UpdateFerrisWheelRotating()
 
     if (subState == flatRideAnimationFrame)
     {
-        bool shouldStop = true;
-        if (curRide->status != RideStatus::closed)
-        {
-            if (NumRotations < curRide->rotations)
-                shouldStop = false;
-        }
-
-        if (shouldStop)
+        if (curRide->status == RideStatus::closed || NumRotations >= curRide->rotations)
         {
             ferrisWheelTimer = abs(ferrisWheelRotationPhase);
             ferrisWheelRotationPhase = -abs(ferrisWheelRotationPhase);
