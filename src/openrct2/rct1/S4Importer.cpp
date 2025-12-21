@@ -1561,7 +1561,8 @@ namespace OpenRCT2::RCT1
             AppendRequiredObjects(result, ObjectType::footpathSurface, _footpathSurfaceEntries);
             AppendRequiredObjects(result, ObjectType::footpathRailings, _footpathRailingsEntries);
             AppendRequiredObjects(result, ObjectType::peepNames, std::vector<std::string_view>({ "rct2.peep_names.original" }));
-            RCT12AddDefaultObjects(result);
+            AppendRequiredObjects(result, ObjectType::station, kDefaultStationStyles);
+            RCT12AddDefaultMusic(result);
 
             // Normalise the name to make the scenario as recognisable as possible
             auto normalisedName = ScenarioSources::NormaliseName(_s4.ScenarioName);

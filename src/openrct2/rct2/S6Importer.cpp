@@ -90,6 +90,7 @@ namespace OpenRCT2::RCT2
         ObjectEntryIndex _pathToRailingMap[16];
         RCT12::EntryList _terrainSurfaceEntries;
         RCT12::EntryList _terrainEdgeEntries;
+        RCT12::EntryList _stationEntries;
 
     public:
         S6Importer(IObjectRepository& objectRepository)
@@ -612,6 +613,8 @@ namespace OpenRCT2::RCT2
 
             // Add default edges
             _terrainEdgeEntries.AddRange(DefaultTerrainEdges);
+
+            _stationEntries.AddRange(kDefaultStationStyles);
         }
 
         void ConvertScenarioStringsToUTF8(GameState_t& gameState)
@@ -971,11 +974,11 @@ namespace OpenRCT2::RCT2
             }
             dst->music = musicStyle;
 
+            auto entranceStyle = src->entranceStyle;
             // In SV7, "plain" entrances are invisible.
-            auto entranceStyle = kObjectEntryIndexNull;
-            if (!_isSV7 && GetRideTypeDescriptor(dst->type).HasFlag(RtdFlag::hasEntranceAndExit))
+            if (_isSV7)
             {
-                entranceStyle = src->entranceStyle;
+                entranceStyle = _stationEntries.GetOrAddEntry(kNoEntranceNoPlatformIdentifier);
             }
             dst->entranceStyle = entranceStyle;
 
@@ -1920,9 +1923,26 @@ namespace OpenRCT2::RCT2
 
             AppendRequiredObjects(objectList, ObjectType::terrainSurface, _terrainSurfaceEntries);
             AppendRequiredObjects(objectList, ObjectType::terrainEdge, _terrainEdgeEntries);
+
+            const bool hasInvisibleEntrance = std::any_of(std::begin(_s6.Rides), std::end(_s6.Rides), [](Ride& ride) {
+                if (ride.type == kRideTypeNull)
+                    return false;
+
+                return ride.entranceStyle == RCT12_STATION_STYLE_INVISIBLE;
+            });
+            if (hasInvisibleEntrance)
+            {
+                _stationEntries.GetOrAddEntry(GetStationIdentifierFromStyle(RCT12_STATION_STYLE_INVISIBLE));
+            }
+            if (_isSV7)
+            {
+                _stationEntries.GetOrAddEntry(kNoEntranceNoPlatformIdentifier);
+            }
+            AppendRequiredObjects(objectList, ObjectType::station, _stationEntries);
+
             AppendRequiredObjects(
                 objectList, ObjectType::peepNames, std::vector<std::string_view>({ "rct2.peep_names.original" }));
-            RCT12AddDefaultObjects(objectList);
+            RCT12AddDefaultMusic(objectList);
 
             // Normalise the name to make the scenario as recognisable as possible
             auto normalisedName = ScenarioSources::NormaliseName(_s6.Info.Name);
