@@ -3776,29 +3776,33 @@ void Vehicle::UpdateFerrisWheelRotating()
         ferrisWheelTimer = -ferrisWheelRotationPhase;
     }
 
-    uint8_t rotation = flatRideAnimationFrame;
+    uint8_t frameIndex = flatRideAnimationFrame;
     if (curRide->mode == RideMode::forwardRotation)
-        rotation++;
+        frameIndex++;
     else
-        rotation--;
+        frameIndex--;
 
-    rotation &= 0x7F;
-    flatRideAnimationFrame = rotation;
+    frameIndex %= 128;
+    flatRideAnimationFrame = frameIndex;
 
-    if (rotation == ferrisWheelLastStopFrame)
+    if (frameIndex == ferrisWheelLastStopFrame)
+    {
         NumRotations++;
+    }
 
     Invalidate();
 
-    uint8_t subState = ferrisWheelLastStopFrame;
+    uint8_t afterLastStopFrameIndex = ferrisWheelLastStopFrame;
     if (curRide->mode == RideMode::forwardRotation)
-        subState++;
+        afterLastStopFrameIndex++;
     else
-        subState--;
-    subState &= 0x7F;
+        afterLastStopFrameIndex--;
+    afterLastStopFrameIndex %= 128;
 
-    if (subState == flatRideAnimationFrame)
+    // We are in the first frame of rotation, or we have just completed a full rotation
+    if (afterLastStopFrameIndex == flatRideAnimationFrame)
     {
+        // Should we start slowing down to stop?
         if (curRide->status == RideStatus::closed || NumRotations >= curRide->rotations)
         {
             ferrisWheelTimer = abs(ferrisWheelRotationPhase);
@@ -3806,17 +3810,19 @@ void Vehicle::UpdateFerrisWheelRotating()
         }
     }
 
+    // Have we slowed down enough to stop yet?
     if (ferrisWheelRotationPhase != -8)
         return;
 
-    subState = ferrisWheelLastStopFrame;
+    auto newStopFrame = ferrisWheelLastStopFrame;
     if (curRide->mode == RideMode::forwardRotation)
-        subState += 8;
+        newStopFrame += 8;
     else
-        subState -= 8;
-    subState &= 0x7F;
+        newStopFrame -= 8;
+    newStopFrame %= 128;
 
-    if (subState != flatRideAnimationFrame)
+    // Are we in the correct animation frame to stop yet?
+    if (newStopFrame != flatRideAnimationFrame)
         return;
 
     SetState(Status::arriving);
