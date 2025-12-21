@@ -10,7 +10,7 @@
 #pragma once
 
 #include "../core/Money.hpp"
-#include "../drawing/Drawing.h"
+#include "../drawing/ImageId.hpp"
 #include "../interface/Colour.h"
 #include "../world/Location.hpp"
 #include "../world/MapLimits.h"

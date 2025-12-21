@@ -536,11 +536,6 @@ void TTFDrawString(
     RenderTarget& rt, const_utf8string text, ColourWithFlags colour, const ScreenCoordsXY& coords, bool noFormatting,
     FontStyle fontStyle, TextDarkness darkness);
 
-namespace OpenRCT2
-{
-    class Formatter;
-}
-
 size_t G1CalculateDataSize(const G1Element* g1);
 
 void MaskScalar(

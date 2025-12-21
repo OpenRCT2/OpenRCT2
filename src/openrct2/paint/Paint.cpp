@@ -19,6 +19,7 @@
 #include "../localisation/Currency.h"
 #include "../localisation/Formatting.h"
 #include "../localisation/LocalisationService.h"
+#include "../localisation/StringIdType.h"
 #include "../paint/Painter.h"
 #include "../platform/Memory.h"
 #include "../profiling/Profiling.h"
