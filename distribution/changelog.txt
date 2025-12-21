@@ -23,7 +23,8 @@
 - Fix: [#25571] Potential crash due to drawing a Crooked House ride.
 - Fix: [#25588] When the master server becomes unreachable the server would not register again until a restart.
 - Fix: [#25592] Log flume, river rapids, & splash boats can get control failure breakdown instead of brakes failure.
-- Fix: [#25628] Availability of AVX2 and SSE4.1 is not detected correctly. 
+- Fix: [#25628] Availability of AVX2 and SSE4.1 is not detected correctly.
+- Fix: [#25639] Scenery window crashes when a no longer present object is still selected.
 - Fix: [#25642] The selection marker for purchasing land rights is not drawn with the correct colours.
 - Fix: [#25646] It is possible to remove scenery and paths when setting staff patrol areas and purchasing land.
 - Fix: [#25660] After saving a track design with scenery, that ride’s entrances and exits are visible in ‘Highlight path issues’ mode.

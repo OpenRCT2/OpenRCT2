@@ -11,8 +11,10 @@
 
     #include "ScObjectManager.h"
 
+    #include "../../../Context.h"
     #include "../../../object/ObjectList.h"
     #include "../../../ride/RideData.h"
+    #include "../../../windows/Intent.h"
     #include "../../Duktape.hpp"
     #include "../../ScriptEngine.h"
 
@@ -191,6 +193,8 @@ void ScObjectManager::unload(const DukValue& p1, const DukValue& p2)
         }
         objectManager.UnloadObjects(descriptors);
     }
+    auto intent = Intent(INTENT_ACTION_REFRESH_SCENERY);
+    ContextBroadcastIntent(&intent);
 }
 
 DukValue ScObjectManager::getObject(const std::string& typez, int32_t index) const
