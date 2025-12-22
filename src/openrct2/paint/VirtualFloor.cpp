@@ -202,7 +202,7 @@ static void VirtualFloorGetTileProperties(
     *tileOwned = false;
 
     // See if we are a selected tile
-    if ((gMapSelectFlags.has(MapSelectFlag::enable)))
+    if (gMapSelectFlags.has(MapSelectFlag::enable))
     {
         if (loc >= gMapSelectPositionA && loc <= gMapSelectPositionB)
         {

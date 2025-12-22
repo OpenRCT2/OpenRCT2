@@ -490,9 +490,7 @@ namespace OpenRCT2
     static void InputWindowPositionContinue(
         WindowBase& w, const ScreenCoordsXY& lastScreenCoords, const ScreenCoordsXY& newScreenCoords)
     {
-        int32_t snapProximity;
-
-        snapProximity = (w.flags.has(WindowFlag::noSnapping)) ? 0 : Config::Get().general.windowSnapProximity;
+        int32_t snapProximity = w.flags.has(WindowFlag::noSnapping) ? 0 : Config::Get().general.windowSnapProximity;
         WindowMoveAndSnap(w, newScreenCoords - lastScreenCoords, snapProximity);
     }
 
@@ -1603,7 +1601,7 @@ namespace OpenRCT2
         mainWindow = WindowGetMain();
         if (mainWindow == nullptr)
             return;
-        if ((mainWindow->flags.has(WindowFlag::noScrolling))
+        if (mainWindow->flags.has(WindowFlag::noScrolling)
             || (gLegacyScene == LegacyScene::trackDesignsManager || gLegacyScene == LegacyScene::titleSequence))
             return;
         if (mainWindow->viewport == nullptr)

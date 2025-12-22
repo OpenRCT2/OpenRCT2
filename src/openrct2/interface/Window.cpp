@@ -562,7 +562,7 @@ static constexpr float kWindowScrollLocations[][2] = {
             auto* v = (*it).get();
             if (v->flags.has(WindowFlag::dead))
                 continue;
-            if ((&w == v || (v->flags.has(WindowFlag::transparent))) && v->isVisible)
+            if ((&w == v || v->flags.has(WindowFlag::transparent)) && v->isVisible)
             {
                 WindowDrawSingle(rt, *v, left, top, right, bottom);
             }

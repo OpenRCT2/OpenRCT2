@@ -329,7 +329,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_BACKGROUND:
                 {
                     auto* windowMgr = GetWindowManager();
-                    if (windowMgr->FindByClass(WindowClass::error) == nullptr && (gMapSelectFlags.has(MapSelectFlag::enable)))
+                    if (windowMgr->FindByClass(WindowClass::error) == nullptr && gMapSelectFlags.has(MapSelectFlag::enable))
                     {
                         auto action = GetClearAction();
                         GameActions::Execute(&action, getGameState());

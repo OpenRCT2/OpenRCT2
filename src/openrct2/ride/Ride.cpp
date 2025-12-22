@@ -507,7 +507,7 @@ bool RideTryGetOriginElement(const Ride& ride, CoordsXYE* output)
         bool specialTrackPiece
             = (it.element->AsTrack()->GetTrackType() != TrackElemType::BeginStation
                && it.element->AsTrack()->GetTrackType() != TrackElemType::MiddleStation
-               && (ted.sequences[0].flags.has(SequenceFlag::trackOrigin)));
+               && ted.sequences[0].flags.has(SequenceFlag::trackOrigin));
 
         // Set result tile to this track piece if first found track or a ???
         if (resultTileElement == nullptr || specialTrackPiece)
