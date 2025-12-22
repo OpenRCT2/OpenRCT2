@@ -3835,3 +3835,7 @@ STR_7005    :Treni areon de trotuaro
 STR_7006    :Desegni borderon ĉirkaŭ bildo-butonoj
 STR_7007    :Atrakciotipo
 STR_7008    :Nekonata atrakciotipo ({INT32})
+STR_7009    :Ricevas skriptojn…
+STR_7010    :Ne povas komenci reludigon, la dosiero ‘{STRING}’ ne ekzistas aŭ ne validas
+STR_7011    :Ne povas komenci reludigon
+STR_7012    :Pola zloto (PLN)
