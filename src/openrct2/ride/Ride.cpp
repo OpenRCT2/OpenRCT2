@@ -925,7 +925,7 @@ int32_t Ride::getTotalTime() const
 
 bool Ride::canHaveMultipleCircuits() const
 {
-    if (!(getRideTypeDescriptor().HasFlag(RtdFlag::allowMultipleCircuits)))
+    if (!getRideTypeDescriptor().HasFlag(RtdFlag::allowMultipleCircuits))
         return false;
 
     // Only allow circuit or launch modes
@@ -5199,7 +5199,7 @@ void Ride::updateMaxVehicles()
                 } while (totalLength <= stationLength);
 
                 if ((mode != RideMode::stationToStation && mode != RideMode::continuousCircuit)
-                    || !(rtd.HasFlag(RtdFlag::allowMoreVehiclesThanStationFits)))
+                    || !rtd.HasFlag(RtdFlag::allowMoreVehiclesThanStationFits))
                 {
                     maxNumTrains = std::min(maxNumTrains, int32_t(OpenRCT2::Limits::kMaxTrainsPerRide));
                 }

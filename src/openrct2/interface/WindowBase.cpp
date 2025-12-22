@@ -151,7 +151,7 @@ namespace OpenRCT2
 
     int16_t WindowBase::getTitleBarCurrentHeight() const
     {
-        if (!(flags.has(WindowFlag::noTitleBar)) && widgets.size() > 2)
+        if (!flags.has(WindowFlag::noTitleBar) && widgets.size() > 2)
             return widgets[1].height() - 1;
         else
             return 0;

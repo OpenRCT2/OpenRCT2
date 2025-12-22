@@ -170,7 +170,7 @@ namespace OpenRCT2::GameActions
             if (!(pathElement->GetEdges() & (1 << _loc.direction)))
                 continue;
 
-            if (pathElement->IsGhost() && !(GetFlags().has(CommandFlag::ghost)))
+            if (pathElement->IsGhost() && !GetFlags().has(CommandFlag::ghost))
                 continue;
 
             return pathElement;

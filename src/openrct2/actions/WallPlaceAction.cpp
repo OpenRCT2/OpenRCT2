@@ -92,7 +92,7 @@ namespace OpenRCT2::GameActions
         }
 
         auto mapSizeMax = GetMapSizeMaxXY();
-        if (gLegacyScene != LegacyScene::scenarioEditor && !(GetFlags().has(CommandFlag::trackDesign))
+        if (gLegacyScene != LegacyScene::scenarioEditor && !GetFlags().has(CommandFlag::trackDesign)
             && !gameState.cheats.sandboxMode)
         {
             if (_loc.z == 0)
@@ -252,7 +252,7 @@ namespace OpenRCT2::GameActions
         clearanceHeight += wallEntry->height;
 
         bool wallAcrossTrack = false;
-        if (!(GetFlags().has(CommandFlag::trackDesign)) && !gameState.cheats.disableClearanceChecks)
+        if (!GetFlags().has(CommandFlag::trackDesign) && !gameState.cheats.disableClearanceChecks)
         {
             auto result = WallCheckObstruction(wallEntry, targetHeight / 8, clearanceHeight, &wallAcrossTrack);
             if (result.error != Status::ok)
@@ -326,7 +326,7 @@ namespace OpenRCT2::GameActions
         clearanceHeight += wallEntry->height;
 
         bool wallAcrossTrack = false;
-        if (!(GetFlags().has(CommandFlag::trackDesign)) && !gameState.cheats.disableClearanceChecks)
+        if (!GetFlags().has(CommandFlag::trackDesign) && !gameState.cheats.disableClearanceChecks)
         {
             auto result = WallCheckObstruction(wallEntry, targetHeight / kCoordsZStep, clearanceHeight, &wallAcrossTrack);
             if (result.error != Status::ok)

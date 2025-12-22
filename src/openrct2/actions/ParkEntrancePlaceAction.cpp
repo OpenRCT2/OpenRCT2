@@ -143,7 +143,7 @@ namespace OpenRCT2::GameActions
                 entranceLoc.y += CoordsDirectionDelta[(_loc.direction + 1) & 0x3].y * 2;
             }
 
-            if (!(flags.has(CommandFlag::ghost)))
+            if (!flags.has(CommandFlag::ghost))
             {
                 SurfaceElement* surfaceElement = MapGetSurfaceElementAt(entranceLoc);
                 if (surfaceElement != nullptr)

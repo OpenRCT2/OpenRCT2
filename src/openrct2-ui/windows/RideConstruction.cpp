@@ -1138,12 +1138,12 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 case WIDX_NEXT_SECTION:
                     RideSelectNextSection();
-                    if (!(gMapSelectFlags.has(MapSelectFlag::enable)))
+                    if (!gMapSelectFlags.has(MapSelectFlag::enable))
                         VirtualFloorSetHeight(_currentTrackBegin.z);
                     break;
                 case WIDX_PREVIOUS_SECTION:
                     RideSelectPreviousSection();
-                    if (!(gMapSelectFlags.has(MapSelectFlag::enable)))
+                    if (!gMapSelectFlags.has(MapSelectFlag::enable))
                         VirtualFloorSetHeight(_currentTrackBegin.z);
                     break;
                 case WIDX_LEFT_CURVE:
@@ -3268,7 +3268,7 @@ namespace OpenRCT2::Ui::Windows
                             arrowDirection = DirectionReverse(arrowDirection);
                         gMapSelectArrowDirection = arrowDirection;
 
-                        if (!(gMapSelectFlags.has(MapSelectFlag::enable)))
+                        if (!gMapSelectFlags.has(MapSelectFlag::enable))
                         {
                             // Set height to where the next track piece would begin
                             VirtualFloorSetHeight(_currentTrackBegin.z);
@@ -4806,7 +4806,7 @@ namespace OpenRCT2::Ui::Windows
         if (_currentTrackPitchEnd != TrackPitch::None)
             ViewportSetVisibility(ViewportVisibility::trackHeights);
 
-        if (!(gMapSelectFlags.has(MapSelectFlag::enable)))
+        if (!gMapSelectFlags.has(MapSelectFlag::enable))
         {
             // Set height to where the next track piece would begin
             VirtualFloorSetHeight(trackPos.z - zBegin + zEnd);

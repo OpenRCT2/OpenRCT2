@@ -43,7 +43,7 @@ static bool MapPlaceClearFunc(
     if ((*tile_element)->GetType() != TileElementType::SmallScenery)
         return false;
 
-    if (is_scenery && !(flags.has(CommandFlag::trackDesign)))
+    if (is_scenery && !flags.has(CommandFlag::trackDesign))
         return false;
 
     auto* scenery = (*tile_element)->AsSmallScenery()->GetEntry();
@@ -61,7 +61,7 @@ static bool MapPlaceClearFunc(
     if (flags.has(CommandFlag::ghost))
         return true;
 
-    if (!(flags.has(CommandFlag::apply)))
+    if (!flags.has(CommandFlag::apply))
         return true;
 
     MapInvalidateTile({ coords, (*tile_element)->GetBaseZ(), (*tile_element)->GetClearanceZ() });

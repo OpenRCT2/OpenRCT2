@@ -154,7 +154,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, errorTitle, STR_ERR_RIDE_NOT_FOUND);
         }
 
-        if (!(GetFlags().has(CommandFlag::ghost)))
+        if (!GetFlags().has(CommandFlag::ghost))
         {
             RideClearForConstruction(*ride);
             ride->removePeeps();
@@ -177,7 +177,7 @@ namespace OpenRCT2::GameActions
         }
 
         auto z = station.GetBaseZ();
-        if (!(GetFlags().has(CommandFlag::allowDuringPaused)) && !(GetFlags().has(CommandFlag::ghost))
+        if (!GetFlags().has(CommandFlag::allowDuringPaused) && !GetFlags().has(CommandFlag::ghost)
             && !getGameState().cheats.disableClearanceChecks)
         {
             FootpathRemoveLitter({ _loc, z });
@@ -224,7 +224,7 @@ namespace OpenRCT2::GameActions
 
         FootpathQueueChainReset();
 
-        if (!(GetFlags().has(CommandFlag::ghost)))
+        if (!GetFlags().has(CommandFlag::ghost))
         {
             MazeEntranceHedgeRemoval({ _loc, entranceElement->as<TileElement>() });
         }

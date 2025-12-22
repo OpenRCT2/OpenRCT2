@@ -643,7 +643,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Update provisional bridge mode path
-            if (!(_provisionalFootpath.flags.has(ProvisionalPathFlag::placed)))
+            if (!_provisionalFootpath.flags.has(ProvisionalPathFlag::placed))
             {
                 ObjectEntryIndex type;
                 ObjectEntryIndex railings = gFootpathSelection.Railings;

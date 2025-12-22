@@ -477,7 +477,7 @@ namespace OpenRCT2::Ui::Windows
 
             uint8_t state_changed = 0;
 
-            if (!(gMapSelectFlags.has(MapSelectFlag::enable)))
+            if (!gMapSelectFlags.has(MapSelectFlag::enable))
             {
                 gMapSelectFlags.set(MapSelectFlag::enable);
                 state_changed++;

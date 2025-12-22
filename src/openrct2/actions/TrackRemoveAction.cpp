@@ -405,7 +405,7 @@ namespace OpenRCT2::GameActions
             // If the removed tile is a station modify station properties.
             // Don't do this if the ride is simulating and the tile is a ghost to prevent desyncs.
             if (ted.sequences[0].flags.has(SequenceFlag::trackOrigin)
-                && (!(GetFlags().has(CommandFlag::ghost)) || (GetFlags().has(CommandFlag::trackDesign)))
+                && (!GetFlags().has(CommandFlag::ghost) || (GetFlags().has(CommandFlag::trackDesign)))
                 && (tileElement->AsTrack()->GetSequenceIndex() == 0))
             {
                 const auto removeElementResult = TrackRemoveStationElement(
@@ -429,13 +429,13 @@ namespace OpenRCT2::GameActions
             }
             TileElementRemove(tileElement);
             ride->validateStations();
-            if (!(GetFlags().has(CommandFlag::ghost)))
+            if (!GetFlags().has(CommandFlag::ghost))
             {
                 ride->updateMaxVehicles();
             }
         }
 
-        if (!(GetFlags().has(CommandFlag::ghost)))
+        if (!GetFlags().has(CommandFlag::ghost))
         {
             switch (trackType)
             {

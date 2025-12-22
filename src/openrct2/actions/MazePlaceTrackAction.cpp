@@ -162,7 +162,7 @@ namespace OpenRCT2::GameActions
         }
 
         auto flags = GetFlags();
-        if (!(flags.has(CommandFlag::ghost)))
+        if (!flags.has(CommandFlag::ghost))
         {
             FootpathRemoveLitter(_loc);
             WallRemoveAt({ _loc.ToTileStart(), _loc.z, _loc.z + 32 });

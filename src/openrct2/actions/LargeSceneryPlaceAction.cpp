@@ -287,7 +287,7 @@ namespace OpenRCT2::GameActions
             const auto clearanceData = canBuild.getData<ConstructClearResult>();
             resultData.GroundFlags = clearanceData.GroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
 
-            if (!(GetFlags().has(CommandFlag::ghost)))
+            if (!GetFlags().has(CommandFlag::ghost))
             {
                 FootpathRemoveLitter({ curTile, zLow });
                 if (!getGameState().cheats.disableClearanceChecks)

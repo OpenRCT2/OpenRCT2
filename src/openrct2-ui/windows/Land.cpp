@@ -461,7 +461,7 @@ namespace OpenRCT2::Ui::Windows
                 return state_changed;
             }
 
-            if (!(gMapSelectFlags.has(MapSelectFlag::enable)))
+            if (!gMapSelectFlags.has(MapSelectFlag::enable))
             {
                 gMapSelectFlags.set(MapSelectFlag::enable);
                 state_changed++;
@@ -616,7 +616,7 @@ namespace OpenRCT2::Ui::Windows
 
             if (gCurrentToolId == Tool::upDownArrow)
             {
-                if (!(gMapSelectFlags.has(MapSelectFlag::enable)))
+                if (!gMapSelectFlags.has(MapSelectFlag::enable))
                     return;
 
                 money64 lower_cost = SelectionLowerLand(SelectionMode::query);
@@ -660,7 +660,7 @@ namespace OpenRCT2::Ui::Windows
 
                 uint8_t state_changed = 0;
 
-                if (!(gMapSelectFlags.has(MapSelectFlag::enable)))
+                if (!gMapSelectFlags.has(MapSelectFlag::enable))
                 {
                     gMapSelectFlags.set(MapSelectFlag::enable);
                     state_changed++;
@@ -737,7 +737,7 @@ namespace OpenRCT2::Ui::Windows
 
             uint8_t state_changed = 0;
 
-            if (!(gMapSelectFlags.has(MapSelectFlag::enable)))
+            if (!gMapSelectFlags.has(MapSelectFlag::enable))
             {
                 gMapSelectFlags.set(MapSelectFlag::enable);
                 state_changed++;

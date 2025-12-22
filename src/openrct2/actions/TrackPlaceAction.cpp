@@ -477,7 +477,7 @@ namespace OpenRCT2::GameActions
             costs += canBuild.cost;
 
             // When building a level crossing, remove any pre-existing path furniture.
-            if (crossingMode == CreateCrossingMode::trackOverPath && !(GetFlags().has(CommandFlag::ghost)))
+            if (crossingMode == CreateCrossingMode::trackOverPath && !GetFlags().has(CommandFlag::ghost))
             {
                 auto footpathElement = MapGetFootpathElement(mapLoc);
                 if (footpathElement != nullptr && footpathElement->HasAddition())
@@ -486,7 +486,7 @@ namespace OpenRCT2::GameActions
                 }
             }
 
-            if (!(GetFlags().has(CommandFlag::ghost)) && !gameState.cheats.disableClearanceChecks)
+            if (!GetFlags().has(CommandFlag::ghost) && !gameState.cheats.disableClearanceChecks)
             {
                 FootpathRemoveLitter(mapLoc);
                 if (rtd.HasFlag(RtdFlag::noWallsAroundTrack))
@@ -542,7 +542,7 @@ namespace OpenRCT2::GameActions
             bool isOrigin = false;
             if (!ride->overallView.IsNull())
             {
-                if (!(GetFlags().has(CommandFlag::noSpend)))
+                if (!GetFlags().has(CommandFlag::noSpend))
                 {
                     isOrigin = ted.sequences[0].flags.has(SequenceFlag::trackOrigin);
                 }
@@ -611,7 +611,7 @@ namespace OpenRCT2::GameActions
                 uint32_t connectionSides = ted.sequences[0].getEntranceConnectionSides();
                 if (connectionSides != 0)
                 {
-                    if (!(GetFlags().has(CommandFlag::ghost)) && !gameState.cheats.disableClearanceChecks)
+                    if (!GetFlags().has(CommandFlag::ghost) && !gameState.cheats.disableClearanceChecks)
                     {
                         for (int32_t chosenDirection = Numerics::bitScanForward(connectionSides); chosenDirection != -1;
                              chosenDirection = Numerics::bitScanForward(connectionSides))
@@ -632,7 +632,7 @@ namespace OpenRCT2::GameActions
             // Don't do this if the tile is a ghost to prevent desyncs
             // However, ghost tiles from track designs need to modify station data to display properly
             if (ted.sequences[0].flags.has(SequenceFlag::trackOrigin)
-                && (!(GetFlags().has(CommandFlag::ghost)) || _fromTrackDesign))
+                && (!GetFlags().has(CommandFlag::ghost) || _fromTrackDesign))
             {
                 if (blockIndex == 0)
                 {
@@ -654,7 +654,7 @@ namespace OpenRCT2::GameActions
                 }
             }
 
-            if (!gameState.cheats.disableClearanceChecks || !(GetFlags().has(CommandFlag::ghost)))
+            if (!gameState.cheats.disableClearanceChecks || !GetFlags().has(CommandFlag::ghost))
             {
                 FootpathConnectEdges(mapLoc, tileElement, GetFlags());
             }
@@ -662,7 +662,7 @@ namespace OpenRCT2::GameActions
         }
 
         // Update ride stats and block brake count if the piece was successfully built
-        if (!(GetFlags().has(CommandFlag::ghost)))
+        if (!GetFlags().has(CommandFlag::ghost))
         {
             switch (_trackType)
             {

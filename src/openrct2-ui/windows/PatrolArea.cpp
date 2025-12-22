@@ -159,7 +159,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
 
             auto stateChanged = false;
-            if (!(gMapSelectFlags.has(MapSelectFlag::enable)))
+            if (!gMapSelectFlags.has(MapSelectFlag::enable))
                 stateChanged = true;
 
             if (gMapSelectType != MapSelectType::full)

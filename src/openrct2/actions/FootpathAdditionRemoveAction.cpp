@@ -96,7 +96,7 @@ namespace OpenRCT2::GameActions
     Result FootpathAdditionRemoveAction::Execute(GameState_t& gameState) const
     {
         auto* pathElement = MapGetFootpathElement(_loc);
-        if (!(GetFlags().has(CommandFlag::ghost)))
+        if (!GetFlags().has(CommandFlag::ghost))
         {
             FootpathInterruptPeeps(_loc);
         }
