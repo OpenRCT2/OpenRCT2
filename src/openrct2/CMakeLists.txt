@@ -33,6 +33,9 @@ set_target_properties(libopenrct2 PROPERTIES PREFIX "")
 SET_CHECK_CXX_FLAGS(libopenrct2)
 
 if (ENABLE_SCRIPTING)
+    set(QUICKJS_REPO "https://github.com/quickjs-ng/quickjs.git")
+    set(QUICKJS_TAG "3c9afc9943323ee9c7dbd123c0cd991448f4b6c2")
+
     include(ExternalProject)
 
     set(QUICKJS_CMAKE_ARGS
@@ -52,8 +55,8 @@ if (ENABLE_SCRIPTING)
     endif ()
 
     externalproject_add(quickjs
-            GIT_REPOSITORY https://github.com/quickjs-ng/quickjs.git
-            GIT_TAG 3c9afc9943323ee9c7dbd123c0cd991448f4b6c2
+            GIT_REPOSITORY ${QUICKJS_REPO}
+            GIT_TAG ${QUICKJS_TAG}
             CMAKE_ARGS ${QUICKJS_CMAKE_ARGS}
             SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/../thirdparty/quickjs-ng"
             INSTALL_COMMAND ""
