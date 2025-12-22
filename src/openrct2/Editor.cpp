@@ -118,7 +118,7 @@ namespace OpenRCT2::Editor
         gameState.park.flags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
         gameState.scenarioOptions.category = Scenario::Category::other;
         ObjectListLoad();
-        ViewportInitAll();
+        ContextResetSubsystems();
         WindowBase* mainWindow = OpenEditorWindows();
         mainWindow->setViewportLocation(TileCoordsXYZ{ 75, 75, 14 }.ToCoordsXYZ());
         LoadPalette();
@@ -161,7 +161,7 @@ namespace OpenRCT2::Editor
         gLegacyScene = LegacyScene::scenarioEditor;
         gameState.editorStep = EditorStep::OptionsSelection;
         gameState.scenarioOptions.category = Scenario::Category::other;
-        ViewportInitAll();
+        ContextResetSubsystems();
         OpenEditorWindows();
         FinaliseMainView();
         gScreenAge = 0;
@@ -195,7 +195,7 @@ namespace OpenRCT2::Editor
         gameState.editorStep = EditorStep::ObjectSelection;
         SetAllLandOwned();
         ObjectListLoad();
-        ViewportInitAll();
+        ContextResetSubsystems();
         WindowBase* mainWindow = OpenEditorWindows();
         mainWindow->setViewportLocation(TileCoordsXYZ{ 75, 75, 14 }.ToCoordsXYZ());
         LoadPalette();
@@ -223,7 +223,7 @@ namespace OpenRCT2::Editor
         SetAllLandOwned();
         gameState.editorStep = EditorStep::ObjectSelection;
         ObjectListLoad();
-        ViewportInitAll();
+        ContextResetSubsystems();
         WindowBase* mainWindow = OpenEditorWindows();
         mainWindow->setViewportLocation(TileCoordsXYZ{ 75, 75, 14 }.ToCoordsXYZ());
         LoadPalette();
@@ -263,7 +263,7 @@ namespace OpenRCT2::Editor
         getGameState().editorStep = EditorStep::LandscapeEditor;
         gScreenAge = 0;
         gLegacyScene = LegacyScene::scenarioEditor;
-        ViewportInitAll();
+        ContextResetSubsystems();
         OpenEditorWindows();
         FinaliseMainView();
 

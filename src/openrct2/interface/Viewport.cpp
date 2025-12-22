@@ -13,7 +13,6 @@
 #include "../Diagnostic.h"
 #include "../Game.h"
 #include "../GameState.h"
-#include "../Input.h"
 #include "../OpenRCT2.h"
 #include "../config/Config.h"
 #include "../core/Guard.hpp"
@@ -24,7 +23,6 @@
 #include "../drawing/Rectangle.h"
 #include "../entity/EntityList.h"
 #include "../entity/Guest.h"
-#include "../entity/PatrolArea.h"
 #include "../entity/Staff.h"
 #include "../interface/Cursors.h"
 #include "../object/LargeSceneryEntry.h"
@@ -39,7 +37,6 @@
 #include "../ui/WindowManager.h"
 #include "../world/Climate.h"
 #include "../world/Map.h"
-#include "../world/MapSelection.h"
 #include "../world/tile_element/LargeSceneryElement.h"
 #include "../world/tile_element/SmallSceneryElement.h"
 #include "../world/tile_element/TileElement.h"
@@ -89,31 +86,6 @@ namespace OpenRCT2
     static void ViewportUpdateSmartFollowStaff(WindowBase* window, const Staff& peep);
     static void ViewportUpdateSmartFollowVehicle(WindowBase* window);
     static void ViewportInvalidate(const Viewport* viewport, const ScreenRect& screenRect);
-
-    /**
-     * This is not a viewport function. It is used to setup many variables for
-     * multiple things.
-     *  rct2: 0x006E6EAC
-     */
-    void ViewportInitAll()
-    {
-        if (!gOpenRCT2NoGraphics)
-        {
-            ColoursInitMaps();
-        }
-
-        WindowInitAll();
-
-        // ?
-        gInputFlags.clearAll();
-        InputSetState(InputState::Reset);
-        gPressedWidget.windowClassification = WindowClass::null;
-        gPickupPeepImage = ImageId();
-        ResetTooltipNotShown();
-        gMapSelectFlags.clearAll();
-        ClearPatrolAreaToRender();
-        TextinputCancel();
-    }
 
     /**
      * Converts between 3d point of a sprite to 2d coordinates for centring on that

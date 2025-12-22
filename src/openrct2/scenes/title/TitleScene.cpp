@@ -107,7 +107,7 @@ void TitleScene::Load()
     GetContext().GetNetwork().Close();
 #endif
     gameStateInitAll(getGameState(), kDefaultMapSize);
-    ViewportInitAll();
+    ContextResetSubsystems();
     ContextOpenWindow(WindowClass::mainWindow);
 
     TitleInitialise();
