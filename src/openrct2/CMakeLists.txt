@@ -34,15 +34,27 @@ SET_CHECK_CXX_FLAGS(libopenrct2)
 
 if (ENABLE_SCRIPTING)
     include(ExternalProject)
+
+    set(QUICKJS_CMAKE_ARGS
+            "-DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}"
+            "-DCMAKE_POSITION_INDEPENDENT_CODE=${CMAKE_POSITION_INDEPENDENT_CODE}"
+    )
+    if (CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
+        list(APPEND QUICKJS_CMAKE_ARGS "-DEMSCRIPTEN=ON")
+        list(APPEND QUICKJS_CMAKE_ARGS "-DCMAKE_BUILD_WITH_INSTALL_RPATH=ON")
+    elseif (APPLE)
+        list(APPEND QUICKJS_CMAKE_ARGS "-DCMAKE_OSX_ARCHITECTURES=${CMAKE_OSX_ARCHITECTURES}")
+        list(APPEND QUICKJS_CMAKE_ARGS "-DCMAKE_OSX_DEPLOYMENT_TARGET=${CMAKE_OSX_DEPLOYMENT_TARGET}")
+        list(APPEND QUICKJS_CMAKE_ARGS "-DCMAKE_SYSTEM_PROCESSOR=${CMAKE_SYSTEM_PROCESSOR}")
+    elseif (FORCE32 AND CMAKE_SYSTEM_NAME STREQUAL "Windows")
+        # Win32 mingw
+        list(APPEND QUICKJS_CMAKE_ARGS "-DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}")
+    endif ()
+
     externalproject_add(quickjs
             GIT_REPOSITORY https://github.com/quickjs-ng/quickjs.git
             GIT_TAG 3c9afc9943323ee9c7dbd123c0cd991448f4b6c2
-
-            CMAKE_ARGS
-            "-DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}"
-            "-DCMAKE_POSITION_INDEPENDENT_CODE=ON"
-            "-DCMAKE_BUILD_WITH_INSTALL_RPATH=ON"
-
+            CMAKE_ARGS ${QUICKJS_CMAKE_ARGS}
             SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/../thirdparty/quickjs-ng"
             INSTALL_COMMAND ""
             BUILD_BYPRODUCTS "quickjs-prefix/src/quickjs-build/libqjs.a"
