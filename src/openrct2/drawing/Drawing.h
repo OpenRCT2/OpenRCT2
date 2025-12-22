@@ -262,12 +262,12 @@ void GfxDrawDashedLine(
     OpenRCT2::Drawing::RenderTarget& rt, const ScreenLine& screenLine, int32_t dashedLineSegmentLength,
     OpenRCT2::Drawing::PaletteIndex colour);
 
-// sprite
+// sprite catalogues
 bool GfxLoadG1(const OpenRCT2::IPlatformEnvironment& env);
-void GfxLoadG2FontsAndTracks();
+void GfxLoadG2PalettesFontsTracks();
 bool GfxLoadCsg();
 void GfxUnloadG1();
-void GfxUnloadG2AndFonts();
+void GfxUnloadG2PalettesFontsTracks();
 void GfxUnloadCsg();
 const OpenRCT2::G1Element* GfxGetG1Element(ImageId imageId);
 const OpenRCT2::G1Element* GfxGetG1Element(ImageIndex image_id);
@@ -275,6 +275,8 @@ const OpenRCT2::G1Palette* GfxGetG1Palette(ImageIndex imageId);
 void GfxSetG1Element(ImageIndex imageId, const OpenRCT2::G1Element* g1);
 std::optional<OpenRCT2::Gx> GfxLoadGx(const std::vector<uint8_t>& buffer);
 bool IsCsgLoaded();
+
+// sprite blitting
 void FASTCALL GfxSpriteToBuffer(OpenRCT2::Drawing::RenderTarget& rt, const DrawSpriteArgs& args);
 void FASTCALL GfxBmpSpriteToBuffer(OpenRCT2::Drawing::RenderTarget& rt, const DrawSpriteArgs& args);
 void FASTCALL GfxRleSpriteToBuffer(OpenRCT2::Drawing::RenderTarget& rt, const DrawSpriteArgs& args);
