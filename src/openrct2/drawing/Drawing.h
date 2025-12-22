@@ -316,18 +316,20 @@ void GfxDrawDashedLine(
     OpenRCT2::Drawing::RenderTarget& rt, const ScreenLine& screenLine, const int32_t dashedLineSegmentLength,
     const int32_t color);
 
-// sprite
+// sprite catalogues
 bool GfxLoadG1(const OpenRCT2::IPlatformEnvironment& env);
-void GfxLoadG2FontsAndTracks();
+void GfxLoadG2PalettesFontsTracks();
 bool GfxLoadCsg();
 void GfxUnloadG1();
-void GfxUnloadG2AndFonts();
+void GfxUnloadG2PalettesFontsTracks();
 void GfxUnloadCsg();
 const G1Element* GfxGetG1Element(const ImageId imageId);
 const G1Element* GfxGetG1Element(ImageIndex image_id);
 void GfxSetG1Element(ImageIndex imageId, const G1Element* g1);
 std::optional<Gx> GfxLoadGx(const std::vector<uint8_t>& buffer);
 bool IsCsgLoaded();
+
+// sprite blitting
 void FASTCALL GfxSpriteToBuffer(OpenRCT2::Drawing::RenderTarget& rt, const DrawSpriteArgs& args);
 void FASTCALL GfxBmpSpriteToBuffer(OpenRCT2::Drawing::RenderTarget& rt, const DrawSpriteArgs& args);
 void FASTCALL GfxRleSpriteToBuffer(OpenRCT2::Drawing::RenderTarget& rt, const DrawSpriteArgs& args);
