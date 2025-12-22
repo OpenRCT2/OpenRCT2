@@ -296,7 +296,7 @@ struct TrackDrawerEntry
     // or because they are not realistic for the ride type (e.g. LIM boosters in Mini Roller Coasters).
     RideTrackGroups extraTrackGroups{};
 
-    ImageIndex icon = kSpriteIdNull;
+    ImageIndex icon = kImageIndexUndefined;
     StringId tooltip = kStringIdNone;
 
     void GetAvailableTrackGroups(RideTrackGroups& res) const;
@@ -642,7 +642,7 @@ constexpr RideTypeDescriptor kDummyRTD =
     .PhotoItem = ShopItem::photo,
     .BonusValue = 0,
     .ColourPresets = kDefaultFlatRideColourPreset,
-    .ColourPreview = { kSpriteIdNull, kSpriteIdNull },
+    .ColourPreview = { kImageIndexUndefined, kImageIndexUndefined },
     .ColourKey = RideColourKey::Ride,
     .Name = "invalid",
 	.RatingsData =

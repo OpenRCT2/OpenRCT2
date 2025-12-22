@@ -48,7 +48,7 @@ namespace OpenRCT2::Ui::Windows
     {
         ObjectEntryIndex entryIndex = kObjectEntryIndexNull;
         StringId stringId = kStringIdNone;
-        ImageIndex imageId = kSpriteIdNull;
+        ImageIndex imageId = kImageIndexUndefined;
     };
 
     enum WindowEditorParkEntranceListWidgetIdx

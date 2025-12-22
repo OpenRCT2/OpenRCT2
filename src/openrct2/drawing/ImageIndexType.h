@@ -14,4 +14,4 @@
 
 using ImageIndex = uint32_t;
 
-constexpr ImageIndex kSpriteIdNull = std::numeric_limits<ImageIndex>::max();
+constexpr ImageIndex kImageIndexUndefined = std::numeric_limits<ImageIndex>::max();
