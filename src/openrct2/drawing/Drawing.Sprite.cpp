@@ -436,6 +436,7 @@ static void MaskMagnify(
 static Gx _g1 = {};
 static Gx _g2 = {};
 static Gx _fonts = {};
+static Gx _palettes = {};
 static Gx _tracks = {};
 static Gx _csg = {};
 static G1Element _scrollingText[ScrollingText::kMaxEntries]{};
@@ -509,14 +510,20 @@ void GfxUnloadG1()
     _g1.elements.shrink_to_fit();
 }
 
-void GfxUnloadG2AndFonts()
+void GfxUnloadG2PalettesFontsTracks()
 {
     _g2.data.reset();
     _g2.elements.clear();
     _g2.elements.shrink_to_fit();
+
+    _palettes.data.reset();
+    _palettes.elements.clear();
+    _palettes.elements.shrink_to_fit();
+
     _fonts.data.reset();
     _fonts.elements.clear();
     _fonts.elements.shrink_to_fit();
+
     _tracks.data.reset();
     _tracks.elements.clear();
     _tracks.elements.shrink_to_fit();
@@ -527,6 +534,7 @@ void GfxUnloadCsg()
     _csg.data.reset();
     _csg.elements.clear();
     _csg.elements.shrink_to_fit();
+    _csgLoaded = false;
 }
 
 static bool GfxLoadOpenRCT2Gx(std::string filename, Gx& target, size_t expectedNumItems)
@@ -596,9 +604,10 @@ static bool GfxLoadOpenRCT2Gx(std::string filename, Gx& target, size_t expectedN
     return false;
 }
 
-void GfxLoadG2FontsAndTracks()
+void GfxLoadG2PalettesFontsTracks()
 {
     GfxLoadOpenRCT2Gx("g2.dat", _g2, kG2SpriteCount);
+    GfxLoadOpenRCT2Gx("palettes.dat", _palettes, kPalettesDatSpriteCount);
     GfxLoadOpenRCT2Gx("fonts.dat", _fonts, kFontsDatSpriteCount);
     GfxLoadOpenRCT2Gx("tracks.dat", _tracks, kTracksDatSpriteCount);
 }
@@ -1053,6 +1062,16 @@ const G1Element* GfxGetG1Element(ImageIndex image_id)
         }
 
         LOG_WARNING("Invalid entry in g2.dat requested, idx = %u. You may have to update your g2.dat.", idx);
+    }
+    else if (offset < SPR_PALETTE_EXT_END)
+    {
+        size_t idx = offset - SPR_PALETTE_START;
+        if (idx < _palettes.header.numEntries)
+        {
+            return &_palettes.elements[idx];
+        }
+
+        LOG_WARNING("Invalid entry in palettes.dat requested, idx = %u. You may have to update your palettes.dat.", idx);
     }
     else if (offset < SPR_FONTS_END)
     {

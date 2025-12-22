@@ -396,9 +396,9 @@ if(NOT DISABLE_GUI)
     include("${ROOT_DIR}/src/openrct2-ui/CMakeLists.txt" NO_POLICY_SCOPE)
 endif()
 
-# graphics files (g2.dat and font.dat) 
+# graphics files (g2.dat, fonts.dat, palettes.dat, tracks.dat)
 if (NOT CMAKE_CROSSCOMPILING)
-    set(graphics_files "g2" "fonts" "tracks")
+    set(graphics_files "g2" "fonts" "palettes" "tracks")
     
     foreach(graphics_file ${graphics_files})
         set(output_file "${graphics_file}.dat")
