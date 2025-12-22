@@ -2030,8 +2030,3 @@ namespace OpenRCT2
         return viewports;
     }
 } // namespace OpenRCT2
-
-ZoomLevel ZoomLevel::min()
-{
-    return ZoomLevel{ -2 };
-}
