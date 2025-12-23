@@ -556,7 +556,7 @@ static void ride_construction_reset_current_piece()
     if (rtd.HasFlag(RtdFlag::hasTrack) || ride->numStations == 0)
     {
         _currentlySelectedTrack = rtd.StartTrackPiece;
-        _currentTrackPitchEnd = TrackPitch::None;
+        _currentTrackPitchEnd = TrackPitch::none;
         _currentTrackRollEnd = TrackRoll::none;
         _currentTrackHasLiftHill = false;
         _currentTrackAlternative.clearAll();
@@ -564,7 +564,7 @@ static void ride_construction_reset_current_piece()
         {
             _currentTrackAlternative.set(AlternativeTrackFlag::inverted);
         }
-        _previousTrackPitchEnd = TrackPitch::None;
+        _previousTrackPitchEnd = TrackPitch::none;
         _previousTrackRollEnd = TrackRoll::none;
     }
     else
@@ -649,7 +649,7 @@ void RideConstructionSetDefaultNextPiece()
             _currentTrackPitchEnd = slope;
             _previousTrackPitchEnd = slope;
             _currentTrackHasLiftHill = trackElement->HasChain()
-                && ((slope != TrackPitch::Down25 && slope != TrackPitch::Down60)
+                && ((slope != TrackPitch::down25 && slope != TrackPitch::down60)
                     || getGameState().cheats.enableChainLiftOnAllTrack);
 
             if (TrackTypeHasSpeedSetting(trackElement->GetTrackType()))
@@ -1083,7 +1083,7 @@ int32_t RideInitialiseConstructionWindow(Ride& ride)
     gInputFlags.set(InputFlag::allowRightMouseRemoval);
 
     _currentlySelectedTrack = ride.getRideTypeDescriptor().StartTrackPiece;
-    _currentTrackPitchEnd = TrackPitch::None;
+    _currentTrackPitchEnd = TrackPitch::none;
     _currentTrackRollEnd = TrackRoll::none;
     _currentTrackHasLiftHill = false;
     _currentTrackAlternative.clearAll();
@@ -1092,7 +1092,7 @@ int32_t RideInitialiseConstructionWindow(Ride& ride)
         _currentTrackAlternative.set(AlternativeTrackFlag::inverted);
 
     _previousTrackRollEnd = TrackRoll::none;
-    _previousTrackPitchEnd = TrackPitch::None;
+    _previousTrackPitchEnd = TrackPitch::none;
 
     _currentTrackPieceDirection = 0;
     _rideConstructionState = RideConstructionState::Place;

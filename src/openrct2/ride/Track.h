@@ -44,16 +44,16 @@ enum class TrackRoll : uint8_t
 
 enum class TrackPitch : uint8_t
 {
-    None = 0,
-    Up25 = 2,
-    Up60 = 4,
-    Down25 = 6,
-    Down60 = 8,
-    Up90 = 10,
-    Down90 = 18,
+    none = 0,
+    up25 = 2,
+    up60 = 4,
+    down25 = 6,
+    down60 = 8,
+    up90 = 10,
+    down90 = 18,
 
-    Tower = 10,
-    ReverseFreefall = 10
+    tower = 10,
+    reverseFreefall = 10
 };
 
 // Vehicle sprite groups required by track groups are defined in ride_entry_get_supported_track_pieces
