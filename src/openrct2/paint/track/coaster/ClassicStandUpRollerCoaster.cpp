@@ -1372,157 +1372,157 @@ TrackPaintFunction GetTrackPaintFunctionClassicStandUpRC(OpenRCT2::TrackElemType
 
     switch (trackType)
     {
-        case TrackElemType::FlatToLeftBank:
+        case TrackElemType::flatToLeftBank:
             return classicStandUpRCTrackFlatToLeftBank;
-        case TrackElemType::FlatToRightBank:
+        case TrackElemType::flatToRightBank:
             return classicStandUpRCTrackFlatToRightBank;
-        case TrackElemType::LeftBankToFlat:
+        case TrackElemType::leftBankToFlat:
             return classicStandUpRCTrackLeftBankToFlat;
-        case TrackElemType::RightBankToFlat:
+        case TrackElemType::rightBankToFlat:
             return classicStandUpRCTrackRightBankToFlat;
-        case TrackElemType::BankedLeftQuarterTurn5Tiles:
+        case TrackElemType::bankedLeftQuarterTurn5Tiles:
             return classicStandUpRCTrackBankedLeftQuarterTurn5;
-        case TrackElemType::BankedRightQuarterTurn5Tiles:
+        case TrackElemType::bankedRightQuarterTurn5Tiles:
             return classicStandUpRCTrackBankedRightQuarterTurn5;
-        case TrackElemType::LeftBankToUp25:
+        case TrackElemType::leftBankToUp25:
             return classicStandUpRCTrackLeftBankTo25DegUp;
-        case TrackElemType::RightBankToUp25:
+        case TrackElemType::rightBankToUp25:
             return classicStandUpRCTrackRightBankTo25DegUp;
-        case TrackElemType::Up25ToLeftBank:
+        case TrackElemType::up25ToLeftBank:
             return classicStandUpRCTrack25DegUpToLeftBank;
-        case TrackElemType::Up25ToRightBank:
+        case TrackElemType::up25ToRightBank:
             return classicStandUpRCTrack25DegUpToRightBank;
-        case TrackElemType::LeftBankToDown25:
+        case TrackElemType::leftBankToDown25:
             return classicStandUpRCTrackLeftBankTo25DegDown;
-        case TrackElemType::RightBankToDown25:
+        case TrackElemType::rightBankToDown25:
             return classicStandUpRCTrackRightBankTo25DegDown;
-        case TrackElemType::Down25ToLeftBank:
+        case TrackElemType::down25ToLeftBank:
             return classicStandUpRCTrack25DegDownToLeftBank;
-        case TrackElemType::Down25ToRightBank:
+        case TrackElemType::down25ToRightBank:
             return classicStandUpRCTrack25DegDownToRightBank;
-        case TrackElemType::LeftBank:
+        case TrackElemType::leftBank:
             return classicStandUpRCTrackLeftBank;
-        case TrackElemType::RightBank:
+        case TrackElemType::rightBank:
             return classicStandUpRCTrackRightBank;
 
-        case TrackElemType::LeftEighthBankToDiag:
+        case TrackElemType::leftEighthBankToDiag:
             return classicStandUpRCTrackLeftEighthBankToDiag;
-        case TrackElemType::RightEighthBankToDiag:
+        case TrackElemType::rightEighthBankToDiag:
             return classicStandUpRCTrackRightEighthBankToDiag;
-        case TrackElemType::LeftEighthBankToOrthogonal:
+        case TrackElemType::leftEighthBankToOrthogonal:
             return classicStandUpRCTrackLeftEighthDiagBankToOrthogonal;
-        case TrackElemType::RightEighthBankToOrthogonal:
+        case TrackElemType::rightEighthBankToOrthogonal:
             return classicStandUpRCTrackRightEighthDiagBankToOrthogonal;
 
-        case TrackElemType::LeftBankedQuarterTurn3Tiles:
+        case TrackElemType::leftBankedQuarterTurn3Tiles:
             return classicStandUpRCTrackLeftBankedQuarterTurn3;
-        case TrackElemType::RightBankedQuarterTurn3Tiles:
+        case TrackElemType::rightBankedQuarterTurn3Tiles:
             return classicStandUpRCTrackRightBankedQuarterTurn3;
-        case TrackElemType::DiagFlatToLeftBank:
+        case TrackElemType::diagFlatToLeftBank:
             return classicStandUpRCTrackDiagFlatToLeftBank;
-        case TrackElemType::DiagFlatToRightBank:
+        case TrackElemType::diagFlatToRightBank:
             return classicStandUpRCTrackDiagFlatToRightBank;
-        case TrackElemType::DiagLeftBankToFlat:
+        case TrackElemType::diagLeftBankToFlat:
             return classicStandUpRCTrackDiagLeftBankToFlat;
-        case TrackElemType::DiagRightBankToFlat:
+        case TrackElemType::diagRightBankToFlat:
             return classicStandUpRCTrackDiagRightBankToFlat;
-        case TrackElemType::DiagLeftBankToUp25:
+        case TrackElemType::diagLeftBankToUp25:
             return classicStandUpRCTrackDiagLeftBankTo25DegUp;
-        case TrackElemType::DiagRightBankToUp25:
+        case TrackElemType::diagRightBankToUp25:
             return classicStandUpRCTrackDiagRightBankTo25DegUp;
-        case TrackElemType::DiagUp25ToLeftBank:
+        case TrackElemType::diagUp25ToLeftBank:
             return classicStandUpRCTrackDiag25DegUpToLeftBank;
-        case TrackElemType::DiagUp25ToRightBank:
+        case TrackElemType::diagUp25ToRightBank:
             return classicStandUpRCTrackDiag25DegUpToRightBank;
-        case TrackElemType::DiagLeftBankToDown25:
+        case TrackElemType::diagLeftBankToDown25:
             return classicStandUpRCTrackDiagLeftBankTo25DegDown;
-        case TrackElemType::DiagRightBankToDown25:
+        case TrackElemType::diagRightBankToDown25:
             return classicStandUpRCTrackDiagRightBankTo25DegDown;
-        case TrackElemType::DiagDown25ToLeftBank:
+        case TrackElemType::diagDown25ToLeftBank:
             return classicStandUpRCTrackDiag25DegDownToLeftBank;
-        case TrackElemType::DiagDown25ToRightBank:
+        case TrackElemType::diagDown25ToRightBank:
             return classicStandUpRCTrackDiag25DegDownToRightBank;
-        case TrackElemType::DiagLeftBank:
+        case TrackElemType::diagLeftBank:
             return classicStandUpRCTrackDiagLeftBank;
-        case TrackElemType::DiagRightBank:
+        case TrackElemType::diagRightBank:
             return classicStandUpRCTrackDiagRightBank;
 
-        case TrackElemType::Up25ToLeftBankedUp25:
-        case TrackElemType::Up25ToRightBankedUp25:
-        case TrackElemType::LeftBankedUp25ToUp25:
-        case TrackElemType::RightBankedUp25ToUp25:
-        case TrackElemType::Down25ToLeftBankedDown25:
-        case TrackElemType::Down25ToRightBankedDown25:
-        case TrackElemType::LeftBankedDown25ToDown25:
-        case TrackElemType::RightBankedDown25ToDown25:
-        case TrackElemType::LeftBankedFlatToLeftBankedUp25:
-        case TrackElemType::RightBankedFlatToRightBankedUp25:
-        case TrackElemType::LeftBankedUp25ToLeftBankedFlat:
-        case TrackElemType::RightBankedUp25ToRightBankedFlat:
-        case TrackElemType::LeftBankedFlatToLeftBankedDown25:
-        case TrackElemType::RightBankedFlatToRightBankedDown25:
-        case TrackElemType::LeftBankedDown25ToLeftBankedFlat:
-        case TrackElemType::RightBankedDown25ToRightBankedFlat:
-        case TrackElemType::Down25LeftBanked:
-        case TrackElemType::Down25RightBanked:
-        case TrackElemType::FlatToLeftBankedUp25:
-        case TrackElemType::FlatToRightBankedUp25:
-        case TrackElemType::LeftBankedUp25ToFlat:
-        case TrackElemType::RightBankedUp25ToFlat:
-        case TrackElemType::FlatToLeftBankedDown25:
-        case TrackElemType::FlatToRightBankedDown25:
-        case TrackElemType::LeftBankedDown25ToFlat:
-        case TrackElemType::RightBankedDown25ToFlat:
-        case TrackElemType::Up25LeftBanked:
-        case TrackElemType::Up25RightBanked:
-        case TrackElemType::LeftBankedQuarterTurn3TileUp25:
-        case TrackElemType::RightBankedQuarterTurn3TileUp25:
-        case TrackElemType::LeftBankedQuarterTurn3TileDown25:
-        case TrackElemType::RightBankedQuarterTurn3TileDown25:
-        case TrackElemType::LeftBankedQuarterTurn5TileUp25:
-        case TrackElemType::RightBankedQuarterTurn5TileUp25:
-        case TrackElemType::LeftBankedQuarterTurn5TileDown25:
-        case TrackElemType::RightBankedQuarterTurn5TileDown25:
-        case TrackElemType::DiagUp25ToLeftBankedUp25:
-        case TrackElemType::DiagUp25ToRightBankedUp25:
-        case TrackElemType::DiagLeftBankedUp25ToUp25:
-        case TrackElemType::DiagRightBankedUp25ToUp25:
-        case TrackElemType::DiagDown25ToLeftBankedDown25:
-        case TrackElemType::DiagDown25ToRightBankedDown25:
-        case TrackElemType::DiagLeftBankedDown25ToDown25:
-        case TrackElemType::DiagRightBankedDown25ToDown25:
-        case TrackElemType::DiagLeftBankedFlatToLeftBankedUp25:
-        case TrackElemType::DiagRightBankedFlatToRightBankedUp25:
-        case TrackElemType::DiagLeftBankedUp25ToLeftBankedFlat:
-        case TrackElemType::DiagRightBankedUp25ToRightBankedFlat:
-        case TrackElemType::DiagLeftBankedFlatToLeftBankedDown25:
-        case TrackElemType::DiagRightBankedFlatToRightBankedDown25:
-        case TrackElemType::DiagLeftBankedDown25ToLeftBankedFlat:
-        case TrackElemType::DiagRightBankedDown25ToRightBankedFlat:
-        case TrackElemType::DiagUp25LeftBanked:
-        case TrackElemType::DiagUp25RightBanked:
-        case TrackElemType::DiagDown25LeftBanked:
-        case TrackElemType::DiagDown25RightBanked:
-        case TrackElemType::DiagFlatToLeftBankedUp25:
-        case TrackElemType::DiagFlatToRightBankedUp25:
-        case TrackElemType::DiagLeftBankedUp25ToFlat:
-        case TrackElemType::DiagRightBankedUp25ToFlat:
-        case TrackElemType::DiagFlatToLeftBankedDown25:
-        case TrackElemType::DiagFlatToRightBankedDown25:
-        case TrackElemType::DiagLeftBankedDown25ToFlat:
-        case TrackElemType::DiagRightBankedDown25ToFlat:
-        case TrackElemType::LeftEighthBankToDiagUp25:
-        case TrackElemType::RightEighthBankToDiagUp25:
-        case TrackElemType::LeftEighthBankToDiagDown25:
-        case TrackElemType::RightEighthBankToDiagDown25:
-        case TrackElemType::LeftEighthBankToOrthogonalUp25:
-        case TrackElemType::RightEighthBankToOrthogonalUp25:
-        case TrackElemType::LeftEighthBankToOrthogonalDown25:
-        case TrackElemType::RightEighthBankToOrthogonalDown25:
-        case TrackElemType::LeftBankToLeftQuarterTurn3TilesUp25:
-        case TrackElemType::RightBankToRightQuarterTurn3TilesUp25:
-        case TrackElemType::LeftQuarterTurn3TilesDown25ToLeftBank:
-        case TrackElemType::RightQuarterTurn3TilesDown25ToRightBank:
+        case TrackElemType::up25ToLeftBankedUp25:
+        case TrackElemType::up25ToRightBankedUp25:
+        case TrackElemType::leftBankedUp25ToUp25:
+        case TrackElemType::rightBankedUp25ToUp25:
+        case TrackElemType::down25ToLeftBankedDown25:
+        case TrackElemType::down25ToRightBankedDown25:
+        case TrackElemType::leftBankedDown25ToDown25:
+        case TrackElemType::rightBankedDown25ToDown25:
+        case TrackElemType::leftBankedFlatToLeftBankedUp25:
+        case TrackElemType::rightBankedFlatToRightBankedUp25:
+        case TrackElemType::leftBankedUp25ToLeftBankedFlat:
+        case TrackElemType::rightBankedUp25ToRightBankedFlat:
+        case TrackElemType::leftBankedFlatToLeftBankedDown25:
+        case TrackElemType::rightBankedFlatToRightBankedDown25:
+        case TrackElemType::leftBankedDown25ToLeftBankedFlat:
+        case TrackElemType::rightBankedDown25ToRightBankedFlat:
+        case TrackElemType::down25LeftBanked:
+        case TrackElemType::down25RightBanked:
+        case TrackElemType::flatToLeftBankedUp25:
+        case TrackElemType::flatToRightBankedUp25:
+        case TrackElemType::leftBankedUp25ToFlat:
+        case TrackElemType::rightBankedUp25ToFlat:
+        case TrackElemType::flatToLeftBankedDown25:
+        case TrackElemType::flatToRightBankedDown25:
+        case TrackElemType::leftBankedDown25ToFlat:
+        case TrackElemType::rightBankedDown25ToFlat:
+        case TrackElemType::up25LeftBanked:
+        case TrackElemType::up25RightBanked:
+        case TrackElemType::leftBankedQuarterTurn3TileUp25:
+        case TrackElemType::rightBankedQuarterTurn3TileUp25:
+        case TrackElemType::leftBankedQuarterTurn3TileDown25:
+        case TrackElemType::rightBankedQuarterTurn3TileDown25:
+        case TrackElemType::leftBankedQuarterTurn5TileUp25:
+        case TrackElemType::rightBankedQuarterTurn5TileUp25:
+        case TrackElemType::leftBankedQuarterTurn5TileDown25:
+        case TrackElemType::rightBankedQuarterTurn5TileDown25:
+        case TrackElemType::diagUp25ToLeftBankedUp25:
+        case TrackElemType::diagUp25ToRightBankedUp25:
+        case TrackElemType::diagLeftBankedUp25ToUp25:
+        case TrackElemType::diagRightBankedUp25ToUp25:
+        case TrackElemType::diagDown25ToLeftBankedDown25:
+        case TrackElemType::diagDown25ToRightBankedDown25:
+        case TrackElemType::diagLeftBankedDown25ToDown25:
+        case TrackElemType::diagRightBankedDown25ToDown25:
+        case TrackElemType::diagLeftBankedFlatToLeftBankedUp25:
+        case TrackElemType::diagRightBankedFlatToRightBankedUp25:
+        case TrackElemType::diagLeftBankedUp25ToLeftBankedFlat:
+        case TrackElemType::diagRightBankedUp25ToRightBankedFlat:
+        case TrackElemType::diagLeftBankedFlatToLeftBankedDown25:
+        case TrackElemType::diagRightBankedFlatToRightBankedDown25:
+        case TrackElemType::diagLeftBankedDown25ToLeftBankedFlat:
+        case TrackElemType::diagRightBankedDown25ToRightBankedFlat:
+        case TrackElemType::diagUp25LeftBanked:
+        case TrackElemType::diagUp25RightBanked:
+        case TrackElemType::diagDown25LeftBanked:
+        case TrackElemType::diagDown25RightBanked:
+        case TrackElemType::diagFlatToLeftBankedUp25:
+        case TrackElemType::diagFlatToRightBankedUp25:
+        case TrackElemType::diagLeftBankedUp25ToFlat:
+        case TrackElemType::diagRightBankedUp25ToFlat:
+        case TrackElemType::diagFlatToLeftBankedDown25:
+        case TrackElemType::diagFlatToRightBankedDown25:
+        case TrackElemType::diagLeftBankedDown25ToFlat:
+        case TrackElemType::diagRightBankedDown25ToFlat:
+        case TrackElemType::leftEighthBankToDiagUp25:
+        case TrackElemType::rightEighthBankToDiagUp25:
+        case TrackElemType::leftEighthBankToDiagDown25:
+        case TrackElemType::rightEighthBankToDiagDown25:
+        case TrackElemType::leftEighthBankToOrthogonalUp25:
+        case TrackElemType::rightEighthBankToOrthogonalUp25:
+        case TrackElemType::leftEighthBankToOrthogonalDown25:
+        case TrackElemType::rightEighthBankToOrthogonalDown25:
+        case TrackElemType::leftBankToLeftQuarterTurn3TilesUp25:
+        case TrackElemType::rightBankToRightQuarterTurn3TilesUp25:
+        case TrackElemType::leftQuarterTurn3TilesDown25ToLeftBank:
+        case TrackElemType::rightQuarterTurn3TilesDown25ToRightBank:
             return TrackPaintFunctionDummy;
 
         default:

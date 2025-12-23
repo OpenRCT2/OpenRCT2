@@ -19,7 +19,7 @@ namespace OpenRCT2
 constexpr RideTypeDescriptor EnterpriseRTD =
 {
     .Category = RideCategory::thrill,
-    .StartTrackPiece = TrackElemType::FlatTrack4x4,
+    .StartTrackPiece = TrackElemType::flatTrack4x4,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::enterprise,
         .enabledTrackGroups = {},

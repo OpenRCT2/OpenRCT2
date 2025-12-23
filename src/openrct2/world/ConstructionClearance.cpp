@@ -96,7 +96,7 @@ static bool landSlopeFitsUnderTrack(int32_t baseZ, uint8_t slope, const TrackEle
 
     const TrackElemType trackElemType = trackElement.GetTrackType();
     const auto& ted = OpenRCT2::TrackMetaData::GetTrackElementDescriptor(trackElemType);
-    const uint8_t sequenceIndex = trackElemType == TrackElemType::Maze ? 0 : trackElement.GetSequenceIndex();
+    const uint8_t sequenceIndex = trackElemType == TrackElemType::maze ? 0 : trackElement.GetSequenceIndex();
     const auto& trackClearances = ted.sequences[sequenceIndex].clearance;
     const auto trackQuarters = trackClearances.quarterTile.Rotate(trackElement.GetDirection());
     const auto trackQuarterHeights = trackQuarters.GetQuarterHeights(trackElement.GetBaseZ());
@@ -158,7 +158,7 @@ static bool MapLoc68BABCShouldContinue(
     else if (
         crossingMode == CreateCrossingMode::pathOverTrack && canBuildCrossing
         && tileElement->GetType() == TileElementType::Track && tileElement->GetBaseZ() == pos.baseZ
-        && tileElement->AsTrack()->GetTrackType() == TrackElemType::Flat)
+        && tileElement->AsTrack()->GetTrackType() == TrackElemType::flat)
     {
         auto ride = GetRide(tileElement->AsTrack()->GetRideIndex());
         if (ride != nullptr && ride->getRideTypeDescriptor().HasFlag(RtdFlag::supportsLevelCrossings))

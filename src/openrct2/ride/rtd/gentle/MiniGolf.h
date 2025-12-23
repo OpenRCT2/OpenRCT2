@@ -19,7 +19,7 @@ namespace OpenRCT2 {
 constexpr RideTypeDescriptor MiniGolfRTD =
 {
     .Category = RideCategory::gentle,
-    .StartTrackPiece = TrackElemType::EndStation,
+    .StartTrackPiece = TrackElemType::endStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::miniGolf,
         .supportType = MetalSupportType::boxed,

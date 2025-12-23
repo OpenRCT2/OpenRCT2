@@ -1892,7 +1892,7 @@ static void JuniorRCPaintStation(
     if (direction == 0 || direction == 2)
     {
         // height += 2 (height)
-        if (trackElement.GetTrackType() == TrackElemType::EndStation && TSubType == JuniorRCSubType::Junior)
+        if (trackElement.GetTrackType() == TrackElemType::endStation && TSubType == JuniorRCSubType::Junior)
         {
             imageId = session.TrackColours.WithIndex(junior_rc_track_pieces_block_brake[isBraked][direction]);
         }
@@ -1905,7 +1905,7 @@ static void JuniorRCPaintStation(
     else if (direction == 1 || direction == 3)
     {
         // height += 2 (height)
-        if (trackElement.GetTrackType() == TrackElemType::EndStation && TSubType == JuniorRCSubType::Junior)
+        if (trackElement.GetTrackType() == TrackElemType::endStation && TSubType == JuniorRCSubType::Junior)
         {
             imageId = session.TrackColours.WithIndex(junior_rc_track_pieces_block_brake[isBraked][direction]);
         }
@@ -5772,225 +5772,225 @@ TrackPaintFunction GetTrackPaintFunctionJuniorRCTemplate(OpenRCT2::TrackElemType
 {
     switch (trackType)
     {
-        case TrackElemType::Flat:
+        case TrackElemType::flat:
             return JuniorRCPaintTrackFlat<TSubType>;
-        case TrackElemType::EndStation:
+        case TrackElemType::endStation:
             return JuniorRCPaintStation<TSubType>;
-        case TrackElemType::BeginStation:
+        case TrackElemType::beginStation:
             return JuniorRCPaintStation<TSubType>;
-        case TrackElemType::MiddleStation:
+        case TrackElemType::middleStation:
             return JuniorRCPaintStation<TSubType>;
-        case TrackElemType::Up25:
+        case TrackElemType::up25:
             return JuniorRCPaintTrack25DegUp<TSubType>;
-        case TrackElemType::Up60:
+        case TrackElemType::up60:
             return JuniorRCPaintTrack60DegUp;
-        case TrackElemType::FlatToUp25:
+        case TrackElemType::flatToUp25:
             return JuniorRCPaintTrackFlatTo25DegUp<TSubType>;
-        case TrackElemType::Up25ToUp60:
+        case TrackElemType::up25ToUp60:
             return JuniorRCPaintTrack25DegUpTo60DegUp;
-        case TrackElemType::Up60ToUp25:
+        case TrackElemType::up60ToUp25:
             return JuniorRCPaintTrack60DegUpTo25DegUp;
-        case TrackElemType::Up25ToFlat:
+        case TrackElemType::up25ToFlat:
             return JuniorRCPaintTrack25DegUpToFlat<TSubType>;
-        case TrackElemType::Down25:
+        case TrackElemType::down25:
             return JuniorRC25DegDownPaintSetup<TSubType>;
-        case TrackElemType::Down60:
+        case TrackElemType::down60:
             return JuniorRC60DegDownPaintSetup;
-        case TrackElemType::FlatToDown25:
+        case TrackElemType::flatToDown25:
             return JuniorRCFlatTo25DegDownPaintSetup<TSubType>;
-        case TrackElemType::Down25ToDown60:
+        case TrackElemType::down25ToDown60:
             return JuniorRC25DegDownTo60DegDownPaintSetup;
-        case TrackElemType::Down60ToDown25:
+        case TrackElemType::down60ToDown25:
             return JuniorRC60DegDownTo25DegDownPaintSetup;
-        case TrackElemType::Down25ToFlat:
+        case TrackElemType::down25ToFlat:
             return JuniorRC25DegDownToFlatPaintSetup<TSubType>;
-        case TrackElemType::LeftQuarterTurn5Tiles:
+        case TrackElemType::leftQuarterTurn5Tiles:
             return JuniorRCLeftQuarterTurn5TilesPaintSetup;
-        case TrackElemType::RightQuarterTurn5Tiles:
+        case TrackElemType::rightQuarterTurn5Tiles:
             return JuniorRCRightQuarterTurn5TilesPaintSetup;
-        case TrackElemType::FlatToLeftBank:
+        case TrackElemType::flatToLeftBank:
             return JuniorRCFlatToLeftBankPaintSetup;
-        case TrackElemType::FlatToRightBank:
+        case TrackElemType::flatToRightBank:
             return JuniorRCFlatToRightBankPaintSetup;
-        case TrackElemType::LeftBankToFlat:
+        case TrackElemType::leftBankToFlat:
             return JuniorRCLeftBankToFlatPaintSetup;
-        case TrackElemType::RightBankToFlat:
+        case TrackElemType::rightBankToFlat:
             return JuniorRCRightBankToFlatPaintSetup;
-        case TrackElemType::BankedLeftQuarterTurn5Tiles:
+        case TrackElemType::bankedLeftQuarterTurn5Tiles:
             return JuniorRCBankedLeftQuarterTurn5TilesPaintSetup;
-        case TrackElemType::BankedRightQuarterTurn5Tiles:
+        case TrackElemType::bankedRightQuarterTurn5Tiles:
             return JuniorRCBankedRightQuarterTurn5TilesPaintSetup;
-        case TrackElemType::LeftBankToUp25:
+        case TrackElemType::leftBankToUp25:
             return JuniorRCLeftBankTo25DegUpPaintSetup;
-        case TrackElemType::RightBankToUp25:
+        case TrackElemType::rightBankToUp25:
             return JuniorRCRightBankTo25DegUpPaintSetup;
-        case TrackElemType::Up25ToLeftBank:
+        case TrackElemType::up25ToLeftBank:
             return JuniorRC25DegUpToLeftBankPaintSetup;
-        case TrackElemType::Up25ToRightBank:
+        case TrackElemType::up25ToRightBank:
             return JuniorRC25DegUpToRightBankPaintSetup;
-        case TrackElemType::LeftBankToDown25:
+        case TrackElemType::leftBankToDown25:
             return JuniorRCLeftBankTo25DegDownPaintSetup;
-        case TrackElemType::RightBankToDown25:
+        case TrackElemType::rightBankToDown25:
             return JuniorRCRightBankTo25DegDownPaintSetup;
-        case TrackElemType::Down25ToLeftBank:
+        case TrackElemType::down25ToLeftBank:
             return JuniorRC25DegDownToLeftBankPaintSetup;
-        case TrackElemType::Down25ToRightBank:
+        case TrackElemType::down25ToRightBank:
             return JuniorRC25DegDownToRightBankPaintSetup;
-        case TrackElemType::LeftBank:
+        case TrackElemType::leftBank:
             return JuniorRCLeftBankPaintSetup;
-        case TrackElemType::RightBank:
+        case TrackElemType::rightBank:
             return JuniorRCRightBankPaintSetup;
-        case TrackElemType::LeftQuarterTurn5TilesUp25:
+        case TrackElemType::leftQuarterTurn5TilesUp25:
             return JuniorRCPaintTrackLeftQuarterTurn5Tiles25DegUp;
-        case TrackElemType::RightQuarterTurn5TilesUp25:
+        case TrackElemType::rightQuarterTurn5TilesUp25:
             return JuniorRCPaintTrackRightQuarterTurn5Tiles25DegUp;
-        case TrackElemType::LeftQuarterTurn5TilesDown25:
+        case TrackElemType::leftQuarterTurn5TilesDown25:
             return JuniorRCLeftQuarterTurn5Tiles25DegDownPaintSetup;
-        case TrackElemType::RightQuarterTurn5TilesDown25:
+        case TrackElemType::rightQuarterTurn5TilesDown25:
             return JuniorRCRightQuarterTurn5Tiles25DegDownPaintSetup;
-        case TrackElemType::SBendLeft:
+        case TrackElemType::sBendLeft:
             return JuniorRCSBendLeftPaintSetup;
-        case TrackElemType::SBendRight:
+        case TrackElemType::sBendRight:
             return JuniorRCSBendRightPaintSetup;
 
-        case TrackElemType::LeftQuarterTurn3Tiles:
+        case TrackElemType::leftQuarterTurn3Tiles:
             return JuniorRCLeftQuarterTurn3TilesPaintSetup;
-        case TrackElemType::RightQuarterTurn3Tiles:
+        case TrackElemType::rightQuarterTurn3Tiles:
             return JuniorRCRightQuarterTurn3TilesPaintSetup;
-        case TrackElemType::LeftBankedQuarterTurn3Tiles:
+        case TrackElemType::leftBankedQuarterTurn3Tiles:
             return JuniorRCLeftQuarterTurn3TilesBankPaintSetup;
-        case TrackElemType::RightBankedQuarterTurn3Tiles:
+        case TrackElemType::rightBankedQuarterTurn3Tiles:
             return JuniorRCRightQuarterTurn3TilesBankPaintSetup;
-        case TrackElemType::LeftQuarterTurn3TilesUp25:
+        case TrackElemType::leftQuarterTurn3TilesUp25:
             return JuniorRCLeftQuarterTurn3Tiles25DegUpPaintSetup;
-        case TrackElemType::RightQuarterTurn3TilesUp25:
+        case TrackElemType::rightQuarterTurn3TilesUp25:
             return JuniorRCPaintTrackRightQuarterTurn3Tiles25DegUp;
-        case TrackElemType::LeftQuarterTurn3TilesDown25:
+        case TrackElemType::leftQuarterTurn3TilesDown25:
             return JuniorRCLeftQuarterTurn3Tiles25DegDownPaintSetup;
-        case TrackElemType::RightQuarterTurn3TilesDown25:
+        case TrackElemType::rightQuarterTurn3TilesDown25:
             return JuniorRCPaintTrackRightQuarterTurn3Tiles25DegDown;
 
-        case TrackElemType::FlatToUp60:
+        case TrackElemType::flatToUp60:
             return JuniorRCFlatTo60DegUpPaintSetup;
-        case TrackElemType::Up60ToFlat:
+        case TrackElemType::up60ToFlat:
             return JuniorRC60DegUpToFlatPaintSetup;
-        case TrackElemType::FlatToDown60:
+        case TrackElemType::flatToDown60:
             return JuniorRCFlatTo60DegDownPaintSetup;
-        case TrackElemType::Down60ToFlat:
+        case TrackElemType::down60ToFlat:
             return JuniorRC60DegDownToFlatPaintSetup;
 
-        case TrackElemType::LeftHalfBankedHelixUpSmall:
+        case TrackElemType::leftHalfBankedHelixUpSmall:
             return JuniorRCLeftHalfBankedHelixUpSmallPaintSetup;
-        case TrackElemType::RightHalfBankedHelixUpSmall:
+        case TrackElemType::rightHalfBankedHelixUpSmall:
             return JuniorRCRightHalfBankedHelixUpSmallPaintSetup;
-        case TrackElemType::LeftHalfBankedHelixDownSmall:
+        case TrackElemType::leftHalfBankedHelixDownSmall:
             return JuniorRCLeftHalfBankedHelixDownSmallPaintSetup;
-        case TrackElemType::RightHalfBankedHelixDownSmall:
+        case TrackElemType::rightHalfBankedHelixDownSmall:
             return JuniorRCRightHalfBankedHelixDownSmallPaintSetup;
-        case TrackElemType::LeftHalfBankedHelixUpLarge:
+        case TrackElemType::leftHalfBankedHelixUpLarge:
             return JuniorRCLeftHalfBankedHelixUpLargePaintSetup;
-        case TrackElemType::RightHalfBankedHelixUpLarge:
+        case TrackElemType::rightHalfBankedHelixUpLarge:
             return JuniorRCRightHalfBankedHelixUpLargePaintSetup;
-        case TrackElemType::LeftHalfBankedHelixDownLarge:
+        case TrackElemType::leftHalfBankedHelixDownLarge:
             return JuniorRCLeftHalfBankedHelixDownLargePaintSetup;
-        case TrackElemType::RightHalfBankedHelixDownLarge:
+        case TrackElemType::rightHalfBankedHelixDownLarge:
             return JuniorRCRightHalfBankedHelixDownLargePaintSetup;
 
-        case TrackElemType::Brakes:
+        case TrackElemType::brakes:
             return JuniorRCBrakePaintSetup;
 
-        case TrackElemType::LeftEighthToDiag:
+        case TrackElemType::leftEighthToDiag:
             return JuniorRCLeftEighthToDiagPaintSetup;
-        case TrackElemType::RightEighthToDiag:
+        case TrackElemType::rightEighthToDiag:
             return JuniorRCRightEighthToDiagPaintSetup;
-        case TrackElemType::LeftEighthToOrthogonal:
+        case TrackElemType::leftEighthToOrthogonal:
             return JuniorRCLeftEighthToOrthogonalPaintSetup;
-        case TrackElemType::RightEighthToOrthogonal:
+        case TrackElemType::rightEighthToOrthogonal:
             return JuniorRCRightEighthToOrthogonalPaintSetup;
-        case TrackElemType::LeftEighthBankToDiag:
+        case TrackElemType::leftEighthBankToDiag:
             return JuniorRCLeftEighthToDiagBankPaintSetup;
-        case TrackElemType::RightEighthBankToDiag:
+        case TrackElemType::rightEighthBankToDiag:
             return JuniorRCRightEighthToDiagBankPaintSetup;
-        case TrackElemType::LeftEighthBankToOrthogonal:
+        case TrackElemType::leftEighthBankToOrthogonal:
             return JuniorRCLeftEighthToOrthogonalBankPaintSetup;
-        case TrackElemType::RightEighthBankToOrthogonal:
+        case TrackElemType::rightEighthBankToOrthogonal:
             return JuniorRCRightEighthToOrthogonalBankPaintSetup;
-        case TrackElemType::DiagFlat:
+        case TrackElemType::diagFlat:
             return JuniorRCPaintTrackDiagFlat<TSubType>;
-        case TrackElemType::DiagUp25:
+        case TrackElemType::diagUp25:
             return JuniorRCPaintTrackDiag25DegUp<TSubType>;
-        case TrackElemType::DiagUp60:
+        case TrackElemType::diagUp60:
             return JuniorRCPaintTrackDiag60DegUp;
-        case TrackElemType::DiagFlatToUp25:
+        case TrackElemType::diagFlatToUp25:
             return JuniorRCPaintTrackDiagFlatTo25DegUp<TSubType>;
-        case TrackElemType::DiagUp25ToUp60:
+        case TrackElemType::diagUp25ToUp60:
             return JuniorRCPaintTrackDiag25DegUpTo60DegUp;
-        case TrackElemType::DiagUp60ToUp25:
+        case TrackElemType::diagUp60ToUp25:
             return JuniorRCPaintTrackDiag60DegUpTo25DegUp;
-        case TrackElemType::DiagUp25ToFlat:
+        case TrackElemType::diagUp25ToFlat:
             return JuniorRCPaintTrackDiag25DegUpToFlat<TSubType>;
-        case TrackElemType::DiagDown25:
+        case TrackElemType::diagDown25:
             return JuniorRCPaintTrackDiag25DegDown<TSubType>;
-        case TrackElemType::DiagDown60:
+        case TrackElemType::diagDown60:
             return JuniorRCPaintTrackDiag60DegDown;
-        case TrackElemType::DiagFlatToDown25:
+        case TrackElemType::diagFlatToDown25:
             return JuniorRCPaintTrackDiagFlatTo25DegDown<TSubType>;
-        case TrackElemType::DiagDown25ToDown60:
+        case TrackElemType::diagDown25ToDown60:
             return JuniorRCPaintTrackDiag25DegDownTo60DegDown;
-        case TrackElemType::DiagDown60ToDown25:
+        case TrackElemType::diagDown60ToDown25:
             return JuniorRCPaintTrackDiag60DegDownTo25DegDown;
-        case TrackElemType::DiagDown25ToFlat:
+        case TrackElemType::diagDown25ToFlat:
             return JuniorRCPaintTrackDiag25DegDownToFlat<TSubType>;
 
-        case TrackElemType::DiagFlatToLeftBank:
+        case TrackElemType::diagFlatToLeftBank:
             return JuniorRCDiagFlatToLeftBankPaintSetup;
-        case TrackElemType::DiagFlatToRightBank:
+        case TrackElemType::diagFlatToRightBank:
             return JuniorRCDiagFlatToRightBankPaintSetup;
-        case TrackElemType::DiagLeftBankToFlat:
+        case TrackElemType::diagLeftBankToFlat:
             return JuniorRCDiagLeftBankToFlatPaintSetup;
-        case TrackElemType::DiagRightBankToFlat:
+        case TrackElemType::diagRightBankToFlat:
             return JuniorRCDiagRightBankToFlatPaintSetup;
-        case TrackElemType::DiagLeftBankToUp25:
+        case TrackElemType::diagLeftBankToUp25:
             return JuniorRCDiagLeftBankTo25DegUpPaintSetup;
-        case TrackElemType::DiagRightBankToUp25:
+        case TrackElemType::diagRightBankToUp25:
             return JuniorRCDiagRightBankTo25DegUpPaintSetup;
-        case TrackElemType::DiagUp25ToLeftBank:
+        case TrackElemType::diagUp25ToLeftBank:
             return JuniorRCDiag25DegUpToLeftBankPaintSetup;
-        case TrackElemType::DiagUp25ToRightBank:
+        case TrackElemType::diagUp25ToRightBank:
             return JuniorRCDiag25DegUpToRightBankPaintSetup;
-        case TrackElemType::DiagLeftBankToDown25:
+        case TrackElemType::diagLeftBankToDown25:
             return JuniorRCDiagLeftBankTo25DegDownPaintSetup;
-        case TrackElemType::DiagRightBankToDown25:
+        case TrackElemType::diagRightBankToDown25:
             return JuniorRCDiagRightBankTo25DegDownPaintSetup;
-        case TrackElemType::DiagDown25ToLeftBank:
+        case TrackElemType::diagDown25ToLeftBank:
             return JuniorRCDiag25DegDownToLeftBankPaintSetup;
-        case TrackElemType::DiagDown25ToRightBank:
+        case TrackElemType::diagDown25ToRightBank:
             return JuniorRCDiag25DegDownToRightBankPaintSetup;
-        case TrackElemType::DiagLeftBank:
+        case TrackElemType::diagLeftBank:
             return JuniorRCDiagLeftBankPaintSetup;
-        case TrackElemType::DiagRightBank:
+        case TrackElemType::diagRightBank:
             return JuniorRCDiagRightBankPaintSetup;
 
-        case TrackElemType::BlockBrakes:
+        case TrackElemType::blockBrakes:
             return JuniorRCBlockBrakePaintSetup;
-        case TrackElemType::DiagBrakes:
+        case TrackElemType::diagBrakes:
             return JuniorRCTrackDiagBrakes;
-        case TrackElemType::DiagBlockBrakes:
+        case TrackElemType::diagBlockBrakes:
             return JuniorRCTrackDiagBlockBrakes;
 
-        case TrackElemType::Booster:
+        case TrackElemType::booster:
             return JuniorRCBoosterPaintSetup;
 
-        case TrackElemType::DiagDown60ToFlat:
+        case TrackElemType::diagDown60ToFlat:
             return JuniorRCPaintTrackDiag60DegDownToFlat;
-        case TrackElemType::DiagUp60ToFlat:
+        case TrackElemType::diagUp60ToFlat:
             return JuniorRCPaintTrackDiag60DegUpToFlat;
-        case TrackElemType::DiagFlatToUp60:
+        case TrackElemType::diagFlatToUp60:
             return JuniorRCPaintTrackDiagFlatTo60DegUp;
-        case TrackElemType::DiagFlatToDown60:
+        case TrackElemType::diagFlatToDown60:
             return JuniorRCPaintTrackDiagFlatTo60DegDown;
 
-        case TrackElemType::OnRidePhoto:
+        case TrackElemType::onRidePhoto:
             return JuniorRCTrackOnRidePhoto;
         default:
             return TrackPaintFunctionDummy;

@@ -1090,42 +1090,42 @@ TrackPaintFunction GetTrackPaintFunctionMiniGolf(OpenRCT2::TrackElemType trackTy
 {
     switch (trackType)
     {
-        case TrackElemType::Flat:
+        case TrackElemType::flat:
             return PaintMiniGolfTrackFlat;
 
-        case TrackElemType::BeginStation:
-        case TrackElemType::MiddleStation:
-        case TrackElemType::EndStation:
+        case TrackElemType::beginStation:
+        case TrackElemType::middleStation:
+        case TrackElemType::endStation:
             return PaintMiniGolfStation;
 
-        case TrackElemType::Up25:
+        case TrackElemType::up25:
             return PaintMiniGolfTrack25DegUp;
-        case TrackElemType::FlatToUp25:
+        case TrackElemType::flatToUp25:
             return PaintMiniGolfTrackFlatTo25DegUp;
-        case TrackElemType::Up25ToFlat:
+        case TrackElemType::up25ToFlat:
             return PaintMiniGolfTrack25DegUpToFlat;
 
-        case TrackElemType::Down25:
+        case TrackElemType::down25:
             return PaintMiniGolfTrack25DegDown;
-        case TrackElemType::FlatToDown25:
+        case TrackElemType::flatToDown25:
             return PaintMiniGolfTrackFlatTo25DegDown;
-        case TrackElemType::Down25ToFlat:
+        case TrackElemType::down25ToFlat:
             return PaintMiniGolfTrack25DegDownToFlat;
 
-        case TrackElemType::LeftQuarterTurn1Tile:
+        case TrackElemType::leftQuarterTurn1Tile:
             return PaintMiniGolfTrackLeftQuarterTurn1Tile;
-        case TrackElemType::RightQuarterTurn1Tile:
+        case TrackElemType::rightQuarterTurn1Tile:
             return PaintMiniGolfTrackRightQuarterTurn1Tile;
 
-        case TrackElemType::MinigolfHoleA:
+        case TrackElemType::minigolfHoleA:
             return PaintMiniGolfHoleA;
-        case TrackElemType::MinigolfHoleB:
+        case TrackElemType::minigolfHoleB:
             return PaintMiniGolfHoleB;
-        case TrackElemType::MinigolfHoleC:
+        case TrackElemType::minigolfHoleC:
             return PaintMiniGolfHoleC;
-        case TrackElemType::MinigolfHoleD:
+        case TrackElemType::minigolfHoleD:
             return PaintMiniGolfHoleD;
-        case TrackElemType::MinigolfHoleE:
+        case TrackElemType::minigolfHoleE:
             return PaintMiniGolfHoleE;
         default:
             return TrackPaintFunctionDummy;

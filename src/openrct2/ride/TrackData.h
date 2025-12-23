@@ -69,11 +69,11 @@ namespace OpenRCT2::TrackMetaData
 
     constexpr DodgemsTrackSize GetDodgemsTrackSize(OpenRCT2::TrackElemType type)
     {
-        if (type == OpenRCT2::TrackElemType::FlatTrack2x2)
+        if (type == OpenRCT2::TrackElemType::flatTrack2x2)
             return { 4, 4, 59, 59 };
-        if (type == OpenRCT2::TrackElemType::FlatTrack4x4)
+        if (type == OpenRCT2::TrackElemType::flatTrack4x4)
             return { 4, 4, 123, 123 };
-        if (type == OpenRCT2::TrackElemType::FlatTrack2x4)
+        if (type == OpenRCT2::TrackElemType::flatTrack2x4)
             return { 4, 4, 59, 123 };
         return { 0, 0, 0, 0 };
     }

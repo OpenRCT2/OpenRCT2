@@ -74,7 +74,7 @@ static void PaintHauntedHouse(
 
     int32_t edges = kEdges3x3[trackSequence];
 
-    DrawSupportForSequenceA<TrackElemType::FlatTrack3x3>(
+    DrawSupportForSequenceA<TrackElemType::flatTrack3x3>(
         session, supportType.wooden, trackSequence, direction, height, GetStationColourScheme(session, trackElement));
 
     const StationObject* stationObject = ride.getStationObject();
@@ -127,7 +127,7 @@ static void PaintHauntedHouse(
 
 TrackPaintFunction GetTrackPaintFunctionHauntedHouse(OpenRCT2::TrackElemType trackType)
 {
-    if (trackType != TrackElemType::FlatTrack3x3)
+    if (trackType != TrackElemType::flatTrack3x3)
     {
         return TrackPaintFunctionDummy;
     }

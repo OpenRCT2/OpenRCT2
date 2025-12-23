@@ -224,7 +224,7 @@ namespace OpenRCT2::GameActions
                     const auto location = CoordsXYZD(tileCoords, trackElement->GetBaseZ(), trackElement->GetDirection());
                     const auto type = trackElement->GetTrackType();
 
-                    if (type != TrackElemType::Maze)
+                    if (type != TrackElemType::maze)
                     {
                         auto trackRemoveAction = TrackRemoveAction(type, trackElement->GetSequenceIndex(), location);
                         trackRemoveAction.SetFlags({ CommandFlag::noSpend });

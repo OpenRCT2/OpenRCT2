@@ -145,10 +145,10 @@ TrackPaintFunction GetTrackPaintFunctionLaunchedFreefall(OpenRCT2::TrackElemType
 {
     switch (trackType)
     {
-        case TrackElemType::TowerBase:
+        case TrackElemType::towerBase:
             return PaintLaunchedFreefallBase;
 
-        case TrackElemType::TowerSection:
+        case TrackElemType::towerSection:
             return PaintLaunchedFreefallTowerSection;
         default:
             return TrackPaintFunctionDummy;

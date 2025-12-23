@@ -135,7 +135,7 @@ static void CorkscrewRCTrackStation(
         16237,
     };
 
-    if (trackElement.GetTrackType() == TrackElemType::EndStation)
+    if (trackElement.GetTrackType() == TrackElemType::endStation)
     {
         bool isClosed = trackElement.IsBrakeClosed();
         PaintAddImageAsParentRotated(
@@ -10788,7 +10788,7 @@ static void LayDownRCTrackHalfLoopUninvertedDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    auto function = GetTrackPaintFunctionLayDownRCInverted(TrackElemType::FlyerHalfLoopInvertedUp);
+    auto function = GetTrackPaintFunctionLayDownRCInverted(TrackElemType::flyerHalfLoopInvertedUp);
     function(session, ride, 3 - trackSequence, direction, height, trackElement, supportType);
     return;
 }
@@ -20420,564 +20420,564 @@ TrackPaintFunction GetTrackPaintFunctionCorkscrewRC(OpenRCT2::TrackElemType trac
 {
     switch (trackType)
     {
-        case TrackElemType::Flat:
+        case TrackElemType::flat:
             return CorkscrewRCTrackFlat;
-        case TrackElemType::EndStation:
-        case TrackElemType::BeginStation:
-        case TrackElemType::MiddleStation:
+        case TrackElemType::endStation:
+        case TrackElemType::beginStation:
+        case TrackElemType::middleStation:
             return CorkscrewRCTrackStation;
-        case TrackElemType::Up25:
+        case TrackElemType::up25:
             return CorkscrewRCTrack25DegUp;
-        case TrackElemType::Up60:
+        case TrackElemType::up60:
             return CorkscrewRCTrack60DegUp;
-        case TrackElemType::FlatToUp25:
+        case TrackElemType::flatToUp25:
             return CorkscrewRCTrackFlatTo25DegUp;
-        case TrackElemType::Up25ToUp60:
+        case TrackElemType::up25ToUp60:
             return CorkscrewRCTrack25DegUpTo60DegUp;
-        case TrackElemType::Up60ToUp25:
+        case TrackElemType::up60ToUp25:
             return CorkscrewRCTrack60DegUpTo25DegUp;
-        case TrackElemType::Up25ToFlat:
+        case TrackElemType::up25ToFlat:
             return CorkscrewRCTrack25DegUpToFlat;
-        case TrackElemType::Down25:
+        case TrackElemType::down25:
             return CorkscrewRCTrack25DegDown;
-        case TrackElemType::Down60:
+        case TrackElemType::down60:
             return CorkscrewRCTrack60DegDown;
-        case TrackElemType::FlatToDown25:
+        case TrackElemType::flatToDown25:
             return CorkscrewRCTrackFlatTo25DegDown;
-        case TrackElemType::Down25ToDown60:
+        case TrackElemType::down25ToDown60:
             return CorkscrewRCTrack25DegDownTo60DegDown;
-        case TrackElemType::Down60ToDown25:
+        case TrackElemType::down60ToDown25:
             return CorkscrewRCTrack60DegDownTo25DegDown;
-        case TrackElemType::Down25ToFlat:
+        case TrackElemType::down25ToFlat:
             return CorkscrewRCTrack25DegDownToFlat;
-        case TrackElemType::LeftQuarterTurn5Tiles:
+        case TrackElemType::leftQuarterTurn5Tiles:
             return CorkscrewRCTrackLeftQuarterTurn5;
-        case TrackElemType::RightQuarterTurn5Tiles:
+        case TrackElemType::rightQuarterTurn5Tiles:
             return CorkscrewRCTrackRightQuarterTurn5;
-        case TrackElemType::FlatToLeftBank:
+        case TrackElemType::flatToLeftBank:
             return CorkscrewRCTrackFlatToLeftBank;
-        case TrackElemType::FlatToRightBank:
+        case TrackElemType::flatToRightBank:
             return CorkscrewRCTrackFlatToRightBank;
-        case TrackElemType::LeftBankToFlat:
+        case TrackElemType::leftBankToFlat:
             return CorkscrewRCTrackLeftBankToFlat;
-        case TrackElemType::RightBankToFlat:
+        case TrackElemType::rightBankToFlat:
             return CorkscrewRCTrackRightBankToFlat;
-        case TrackElemType::BankedLeftQuarterTurn5Tiles:
+        case TrackElemType::bankedLeftQuarterTurn5Tiles:
             return CorkscrewRCTrackBankedLeftQuarterTurn5;
-        case TrackElemType::BankedRightQuarterTurn5Tiles:
+        case TrackElemType::bankedRightQuarterTurn5Tiles:
             return CorkscrewRCTrackBankedRightQuarterTurn5;
-        case TrackElemType::LeftBankToUp25:
+        case TrackElemType::leftBankToUp25:
             return CorkscrewRCTrackLeftBankTo25DegUp;
-        case TrackElemType::RightBankToUp25:
+        case TrackElemType::rightBankToUp25:
             return CorkscrewRCTrackRightBankTo25DegUp;
-        case TrackElemType::Up25ToLeftBank:
+        case TrackElemType::up25ToLeftBank:
             return CorkscrewRCTrack25DegUpToLeftBank;
-        case TrackElemType::Up25ToRightBank:
+        case TrackElemType::up25ToRightBank:
             return CorkscrewRCTrack25DegUpToRightBank;
-        case TrackElemType::LeftBankToDown25:
+        case TrackElemType::leftBankToDown25:
             return CorkscrewRCTrackLeftBankTo25DegDown;
-        case TrackElemType::RightBankToDown25:
+        case TrackElemType::rightBankToDown25:
             return CorkscrewRCTrackRightBankTo25DegDown;
-        case TrackElemType::Down25ToLeftBank:
+        case TrackElemType::down25ToLeftBank:
             return CorkscrewRCTrack25DegDownToLeftBank;
-        case TrackElemType::Down25ToRightBank:
+        case TrackElemType::down25ToRightBank:
             return CorkscrewRCTrack25DegDownToRightBank;
-        case TrackElemType::LeftBank:
+        case TrackElemType::leftBank:
             return CorkscrewRCTrackLeftBank;
-        case TrackElemType::RightBank:
+        case TrackElemType::rightBank:
             return CorkscrewRCTrackRightBank;
-        case TrackElemType::LeftQuarterTurn5TilesUp25:
+        case TrackElemType::leftQuarterTurn5TilesUp25:
             return CorkscrewRCTrackLeftQuarterTurn525DegUp;
-        case TrackElemType::RightQuarterTurn5TilesUp25:
+        case TrackElemType::rightQuarterTurn5TilesUp25:
             return CorkscrewRCTrackRightQuarterTurn525DegUp;
-        case TrackElemType::LeftQuarterTurn5TilesDown25:
+        case TrackElemType::leftQuarterTurn5TilesDown25:
             return CorkscrewRCTrackLeftQuarterTurn525DegDown;
-        case TrackElemType::RightQuarterTurn5TilesDown25:
+        case TrackElemType::rightQuarterTurn5TilesDown25:
             return CorkscrewRCTrackRightQuarterTurn525DegDown;
-        case TrackElemType::SBendLeft:
+        case TrackElemType::sBendLeft:
             return CorkscrewRCTrackSBendLeft;
-        case TrackElemType::SBendRight:
+        case TrackElemType::sBendRight:
             return CorkscrewRCTrackSBendRight;
-        case TrackElemType::LeftVerticalLoop:
+        case TrackElemType::leftVerticalLoop:
             return CorkscrewRCTrackLeftVerticalLoop;
-        case TrackElemType::RightVerticalLoop:
+        case TrackElemType::rightVerticalLoop:
             return CorkscrewRCTrackRightVerticalLoop;
-        case TrackElemType::LeftQuarterTurn3Tiles:
+        case TrackElemType::leftQuarterTurn3Tiles:
             return CorkscrewRCTrackLeftQuarterTurn3;
-        case TrackElemType::RightQuarterTurn3Tiles:
+        case TrackElemType::rightQuarterTurn3Tiles:
             return CorkscrewRCTrackRightQuarterTurn3;
-        case TrackElemType::LeftBankedQuarterTurn3Tiles:
+        case TrackElemType::leftBankedQuarterTurn3Tiles:
             return CorkscrewRCTrackLeftQuarterTurn3Bank;
-        case TrackElemType::RightBankedQuarterTurn3Tiles:
+        case TrackElemType::rightBankedQuarterTurn3Tiles:
             return CorkscrewRCTrackRightQuarterTurn3Bank;
-        case TrackElemType::LeftQuarterTurn3TilesUp25:
+        case TrackElemType::leftQuarterTurn3TilesUp25:
             return CorkscrewRCTrackLeftQuarterTurn325DegUp;
-        case TrackElemType::RightQuarterTurn3TilesUp25:
+        case TrackElemType::rightQuarterTurn3TilesUp25:
             return CorkscrewRCTrackRightQuarterTurn325DegUp;
-        case TrackElemType::LeftQuarterTurn3TilesDown25:
+        case TrackElemType::leftQuarterTurn3TilesDown25:
             return CorkscrewRCTrackLeftQuarterTurn325DegDown;
-        case TrackElemType::RightQuarterTurn3TilesDown25:
+        case TrackElemType::rightQuarterTurn3TilesDown25:
             return CorkscrewRCTrackRightQuarterTurn325DegDown;
-        case TrackElemType::HalfLoopUp:
+        case TrackElemType::halfLoopUp:
             return CorkscrewRCTrackHalfLoopUp;
-        case TrackElemType::HalfLoopDown:
+        case TrackElemType::halfLoopDown:
             return CorkscrewRCTrackHalfLoopDown;
-        case TrackElemType::LeftCorkscrewUp:
+        case TrackElemType::leftCorkscrewUp:
             return CorkscrewRCTrackLeftCorkscrewUp;
-        case TrackElemType::RightCorkscrewUp:
+        case TrackElemType::rightCorkscrewUp:
             return CorkscrewRCTrackRightCorkscrewUp;
-        case TrackElemType::LeftCorkscrewDown:
+        case TrackElemType::leftCorkscrewDown:
             return CorkscrewRCTrackLeftCorkscrewDown;
-        case TrackElemType::RightCorkscrewDown:
+        case TrackElemType::rightCorkscrewDown:
             return CorkscrewRCTrackRightCorkscrewDown;
-        case TrackElemType::LeftHalfBankedHelixUpSmall:
+        case TrackElemType::leftHalfBankedHelixUpSmall:
             return CorkscrewRCTrackLeftHalfBankedHelixUpSmall;
-        case TrackElemType::RightHalfBankedHelixUpSmall:
+        case TrackElemType::rightHalfBankedHelixUpSmall:
             return CorkscrewRCTrackRightHalfBankedHelixUpSmall;
-        case TrackElemType::LeftHalfBankedHelixDownSmall:
+        case TrackElemType::leftHalfBankedHelixDownSmall:
             return CorkscrewRCTrackLeftHalfBankedHelixDownSmall;
-        case TrackElemType::RightHalfBankedHelixDownSmall:
+        case TrackElemType::rightHalfBankedHelixDownSmall:
             return CorkscrewRCTrackRightHalfBankedHelixDownSmall;
-        case TrackElemType::LeftHalfBankedHelixUpLarge:
+        case TrackElemType::leftHalfBankedHelixUpLarge:
             return CorkscrewRCTrackLeftHalfBankedHelixUpLarge;
-        case TrackElemType::RightHalfBankedHelixUpLarge:
+        case TrackElemType::rightHalfBankedHelixUpLarge:
             return CorkscrewRCTrackRightHalfBankedHelixUpLarge;
-        case TrackElemType::LeftHalfBankedHelixDownLarge:
+        case TrackElemType::leftHalfBankedHelixDownLarge:
             return CorkscrewRCTrackLeftHalfBankedHelixDownLarge;
-        case TrackElemType::RightHalfBankedHelixDownLarge:
+        case TrackElemType::rightHalfBankedHelixDownLarge:
             return CorkscrewRCTrackRightHalfBankedHelixDownLarge;
-        case TrackElemType::LeftQuarterTurn1TileUp60:
+        case TrackElemType::leftQuarterTurn1TileUp60:
             return CorkscrewRCTrackLeftQuarterTurn160DegUp;
-        case TrackElemType::RightQuarterTurn1TileUp60:
+        case TrackElemType::rightQuarterTurn1TileUp60:
             return CorkscrewRCTrackRightQuarterTurn160DegUp;
-        case TrackElemType::LeftQuarterTurn1TileDown60:
+        case TrackElemType::leftQuarterTurn1TileDown60:
             return CorkscrewRCTrackLeftQuarterTurn160DegDown;
-        case TrackElemType::RightQuarterTurn1TileDown60:
+        case TrackElemType::rightQuarterTurn1TileDown60:
             return CorkscrewRCTrackRightQuarterTurn160DegDown;
-        case TrackElemType::Brakes:
+        case TrackElemType::brakes:
             return CorkscrewRCTrackBrakes;
-        case TrackElemType::OnRidePhoto:
+        case TrackElemType::onRidePhoto:
             return CorkscrewRCTrackOnRidePhoto;
-        case TrackElemType::FlatToUp60LongBase:
+        case TrackElemType::flatToUp60LongBase:
             return CorkscrewRCTrackFlatTo60DegUpLongBase;
-        case TrackElemType::Up60ToFlatLongBase:
+        case TrackElemType::up60ToFlatLongBase:
             return CorkscrewRCTrack60DegUpToFlatLongBase;
-        case TrackElemType::Down60ToFlatLongBase:
+        case TrackElemType::down60ToFlatLongBase:
             return CorkscrewRCTrack60DegDownToFlatLongBase;
-        case TrackElemType::FlatToDown60LongBase:
+        case TrackElemType::flatToDown60LongBase:
             return CorkscrewRCTrackFlatTo60DegDownLongBase;
-        case TrackElemType::LeftEighthToDiag:
+        case TrackElemType::leftEighthToDiag:
             return CorkscrewRCTrackLeftEighthToDiag;
-        case TrackElemType::RightEighthToDiag:
+        case TrackElemType::rightEighthToDiag:
             return CorkscrewRCTrackRightEighthToDiag;
-        case TrackElemType::LeftEighthToOrthogonal:
+        case TrackElemType::leftEighthToOrthogonal:
             return CorkscrewRCTrackLeftEighthToOrthogonal;
-        case TrackElemType::RightEighthToOrthogonal:
+        case TrackElemType::rightEighthToOrthogonal:
             return CorkscrewRCTrackRightEighthToOrthogonal;
-        case TrackElemType::LeftEighthBankToDiag:
+        case TrackElemType::leftEighthBankToDiag:
             return CorkscrewRCTrackLeftEighthBankToDiag;
-        case TrackElemType::RightEighthBankToDiag:
+        case TrackElemType::rightEighthBankToDiag:
             return CorkscrewRCTrackRightEighthBankToDiag;
-        case TrackElemType::LeftEighthBankToOrthogonal:
+        case TrackElemType::leftEighthBankToOrthogonal:
             return CorkscrewRCTrackLeftEighthBankToOrthogonal;
-        case TrackElemType::RightEighthBankToOrthogonal:
+        case TrackElemType::rightEighthBankToOrthogonal:
             return CorkscrewRCTrackRightEighthBankToOrthogonal;
-        case TrackElemType::DiagFlat:
+        case TrackElemType::diagFlat:
             return CorkscrewRCTrackDiagFlat;
-        case TrackElemType::DiagUp25:
+        case TrackElemType::diagUp25:
             return CorkscrewRCTrackDiag25DegUp;
-        case TrackElemType::DiagUp60:
+        case TrackElemType::diagUp60:
             return CorkscrewRCTrackDiag60DegUp;
-        case TrackElemType::DiagFlatToUp25:
+        case TrackElemType::diagFlatToUp25:
             return CorkscrewRCTrackDiagFlatTo25DegUp;
-        case TrackElemType::DiagUp25ToUp60:
+        case TrackElemType::diagUp25ToUp60:
             return CorkscrewRCTrackDiag25DegUpTo60DegUp;
-        case TrackElemType::DiagUp60ToUp25:
+        case TrackElemType::diagUp60ToUp25:
             return CorkscrewRCTrackDiag60DegUpTo25DegUp;
-        case TrackElemType::DiagUp25ToFlat:
+        case TrackElemType::diagUp25ToFlat:
             return CorkscrewRCTrackDiag25DegUpToFlat;
-        case TrackElemType::DiagDown25:
+        case TrackElemType::diagDown25:
             return CorkscrewRCTrackDiag25DegDown;
-        case TrackElemType::DiagDown60:
+        case TrackElemType::diagDown60:
             return CorkscrewRCTrackDiag60DegDown;
-        case TrackElemType::DiagFlatToDown25:
+        case TrackElemType::diagFlatToDown25:
             return CorkscrewRCTrackDiagFlatTo25DegDown;
-        case TrackElemType::DiagDown25ToDown60:
+        case TrackElemType::diagDown25ToDown60:
             return CorkscrewRCTrackDiag25DegDownTo60DegDown;
-        case TrackElemType::DiagDown60ToDown25:
+        case TrackElemType::diagDown60ToDown25:
             return CorkscrewRCTrackDiag60DegDownTo25DegDown;
-        case TrackElemType::DiagDown25ToFlat:
+        case TrackElemType::diagDown25ToFlat:
             return CorkscrewRCTrackDiag25DegDownToFlat;
-        case TrackElemType::DiagFlatToLeftBank:
+        case TrackElemType::diagFlatToLeftBank:
             return CorkscrewRCTrackDiagFlatToLeftBank;
-        case TrackElemType::DiagFlatToRightBank:
+        case TrackElemType::diagFlatToRightBank:
             return CorkscrewRCTrackDiagFlatToRightBank;
-        case TrackElemType::DiagLeftBankToFlat:
+        case TrackElemType::diagLeftBankToFlat:
             return CorkscrewRCTrackDiagLeftBankToFlat;
-        case TrackElemType::DiagRightBankToFlat:
+        case TrackElemType::diagRightBankToFlat:
             return CorkscrewRCTrackDiagRightBankToFlat;
-        case TrackElemType::DiagLeftBankToUp25:
+        case TrackElemType::diagLeftBankToUp25:
             return CorkscrewRCTrackDiagLeftBankTo25DegUp;
-        case TrackElemType::DiagRightBankToUp25:
+        case TrackElemType::diagRightBankToUp25:
             return CorkscrewRCTrackDiagRightBankTo25DegUp;
-        case TrackElemType::DiagUp25ToLeftBank:
+        case TrackElemType::diagUp25ToLeftBank:
             return CorkscrewRCTrackDiag25DegUpToLeftBank;
-        case TrackElemType::DiagUp25ToRightBank:
+        case TrackElemType::diagUp25ToRightBank:
             return CorkscrewRCTrackDiag25DegUpToRightBank;
-        case TrackElemType::DiagLeftBankToDown25:
+        case TrackElemType::diagLeftBankToDown25:
             return CorkscrewRCTrackDiagLeftBankTo25DegDown;
-        case TrackElemType::DiagRightBankToDown25:
+        case TrackElemType::diagRightBankToDown25:
             return CorkscrewRCTrackDiagRightBankTo25DegDown;
-        case TrackElemType::DiagDown25ToLeftBank:
+        case TrackElemType::diagDown25ToLeftBank:
             return CorkscrewRCTrackDiag25DegDownToLeftBank;
-        case TrackElemType::DiagDown25ToRightBank:
+        case TrackElemType::diagDown25ToRightBank:
             return CorkscrewRCTrackDiag25DegDownToRightBank;
-        case TrackElemType::DiagLeftBank:
+        case TrackElemType::diagLeftBank:
             return CorkscrewRCTrackDiagLeftBank;
-        case TrackElemType::DiagRightBank:
+        case TrackElemType::diagRightBank:
             return CorkscrewRCTrackDiagRightBank;
-        case TrackElemType::BlockBrakes:
+        case TrackElemType::blockBrakes:
             return CorkscrewRCTrackBlockBrakes;
-        case TrackElemType::DiagBrakes:
+        case TrackElemType::diagBrakes:
             return CorkscrewRCTrackDiagBrakes;
-        case TrackElemType::DiagBlockBrakes:
+        case TrackElemType::diagBlockBrakes:
             return CorkscrewRCTrackDiagBlockBrakes;
 
-        case TrackElemType::Booster:
+        case TrackElemType::booster:
             return CorkscrewRCTrackBooster;
-        case TrackElemType::LeftTwistDownToUp:
+        case TrackElemType::leftTwistDownToUp:
             return CorkscrewRCTrackLeftTwistDownToUp;
-        case TrackElemType::RightTwistDownToUp:
+        case TrackElemType::rightTwistDownToUp:
             return CorkscrewRCTrackRightTwistDownToUp;
-        case TrackElemType::LeftTwistUpToDown:
+        case TrackElemType::leftTwistUpToDown:
             return CorkscrewRCTrackLeftTwistUpToDown;
-        case TrackElemType::RightTwistUpToDown:
+        case TrackElemType::rightTwistUpToDown:
             return CorkscrewRCTrackRightTwistUpToDown;
 
             // From Lay-down
-        case TrackElemType::LeftFlyerTwistUp:
+        case TrackElemType::leftFlyerTwistUp:
             return LayDownRCTrackLeftFlyerTwistUp;
-        case TrackElemType::RightFlyerTwistUp:
+        case TrackElemType::rightFlyerTwistUp:
             return LayDownRCTrackRightFlyerTwistUp;
-        case TrackElemType::FlyerHalfLoopUninvertedUp:
+        case TrackElemType::flyerHalfLoopUninvertedUp:
             return LayDownRCTrackFlyerHalfLoopUp;
-        case TrackElemType::LeftFlyerCorkscrewUp:
+        case TrackElemType::leftFlyerCorkscrewUp:
             return LayDownRCTrackLeftFlyerCorkscrewUp;
-        case TrackElemType::RightFlyerCorkscrewUp:
+        case TrackElemType::rightFlyerCorkscrewUp:
             return LayDownRCTrackRightFlyerCorkscrewUp;
-        case TrackElemType::FlyerHalfLoopUninvertedDown:
+        case TrackElemType::flyerHalfLoopUninvertedDown:
             return LayDownRCTrackHalfLoopUninvertedDown;
 
         // Added by OpenRCT2
 
         // Small flat to steep
-        case TrackElemType::FlatToUp60:
+        case TrackElemType::flatToUp60:
             return CorkscrewRCTrackFlatTo60DegUp;
-        case TrackElemType::Up60ToFlat:
+        case TrackElemType::up60ToFlat:
             return CorkscrewRCTrack60DegUpToFlat;
-        case TrackElemType::FlatToDown60:
+        case TrackElemType::flatToDown60:
             return CorkscrewRCTrackFlatTo60DegDown;
-        case TrackElemType::Down60ToFlat:
+        case TrackElemType::down60ToFlat:
             return CorkscrewRCTrack60DegDownToFlat;
-        case TrackElemType::DiagFlatToUp60:
+        case TrackElemType::diagFlatToUp60:
             return CorkscrewRCTrackDiagFlatTo60DegUp;
-        case TrackElemType::DiagUp60ToFlat:
+        case TrackElemType::diagUp60ToFlat:
             return CorkscrewRCTrackDiag60DegUpToFlat;
-        case TrackElemType::DiagFlatToDown60:
+        case TrackElemType::diagFlatToDown60:
             return CorkscrewRCTrackDiagFlatTo60DegDown;
-        case TrackElemType::DiagDown60ToFlat:
+        case TrackElemType::diagDown60ToFlat:
             return CorkscrewRCTrackDiag60DegDownToFlat;
 
         // Diagonal large flat to steep
-        case TrackElemType::DiagFlatToUp60LongBase:
+        case TrackElemType::diagFlatToUp60LongBase:
             return CorkscrewRCTrackDiagFlatTo60DegUpLongBase;
-        case TrackElemType::DiagUp60ToFlatLongBase:
+        case TrackElemType::diagUp60ToFlatLongBase:
             return CorkscrewRCTrackDiag60DegUpToFlatLongBase;
-        case TrackElemType::DiagFlatToDown60LongBase:
+        case TrackElemType::diagFlatToDown60LongBase:
             return CorkscrewRCTrackDiagFlatTo60DegDownLongBase;
-        case TrackElemType::DiagDown60ToFlatLongBase:
+        case TrackElemType::diagDown60ToFlatLongBase:
             return CorkscrewRCTrackDiag60DegDownToFlatLongBase;
 
         // Vertical slopes
-        case TrackElemType::Up90:
+        case TrackElemType::up90:
             return CorkscrewRCTrack90DegUp;
-        case TrackElemType::Down90:
+        case TrackElemType::down90:
             return CorkscrewRCTrack90DegDown;
-        case TrackElemType::Up60ToUp90:
+        case TrackElemType::up60ToUp90:
             return CorkscrewRCTrack60DegUpTo90DegUp;
-        case TrackElemType::Down90ToDown60:
+        case TrackElemType::down90ToDown60:
             return CorkscrewRCTrack90DegDownTo60DegDown;
-        case TrackElemType::Up90ToUp60:
+        case TrackElemType::up90ToUp60:
             return CorkscrewRCTrack90DegUpTo60DegUp;
-        case TrackElemType::Down60ToDown90:
+        case TrackElemType::down60ToDown90:
             return CorkscrewRCTrack60DegDownTo90DegDown;
 
         // Vertical turns
-        case TrackElemType::LeftQuarterTurn1TileUp90:
+        case TrackElemType::leftQuarterTurn1TileUp90:
             return CorkscrewRCTrackLeftQuarterTurn190DegUp;
-        case TrackElemType::RightQuarterTurn1TileUp90:
+        case TrackElemType::rightQuarterTurn1TileUp90:
             return CorkscrewRCTrackRightQuarterTurn190DegUp;
-        case TrackElemType::LeftQuarterTurn1TileDown90:
+        case TrackElemType::leftQuarterTurn1TileDown90:
             return CorkscrewRCTrackLeftQuarterTurn190DegDown;
-        case TrackElemType::RightQuarterTurn1TileDown90:
+        case TrackElemType::rightQuarterTurn1TileDown90:
             return CorkscrewRCTrackRightQuarterTurn190DegDown;
 
         // Banked slope transitions
-        case TrackElemType::Up25ToLeftBankedUp25:
+        case TrackElemType::up25ToLeftBankedUp25:
             return CorkscrewRCTrack25DegUpToLeftBanked25DegUp;
-        case TrackElemType::Up25ToRightBankedUp25:
+        case TrackElemType::up25ToRightBankedUp25:
             return CorkscrewRCTrack25DegUpToRightBanked25DegUp;
-        case TrackElemType::LeftBankedUp25ToUp25:
+        case TrackElemType::leftBankedUp25ToUp25:
             return CorkscrewRCTrackLeftBanked25DegUpTo25DegUp;
-        case TrackElemType::RightBankedUp25ToUp25:
+        case TrackElemType::rightBankedUp25ToUp25:
             return CorkscrewRCTrackRightBanked25DegUpTo25DegUp;
-        case TrackElemType::Down25ToLeftBankedDown25:
+        case TrackElemType::down25ToLeftBankedDown25:
             return CorkscrewRCTrack25DegDownToLeftBanked25DegDown;
-        case TrackElemType::Down25ToRightBankedDown25:
+        case TrackElemType::down25ToRightBankedDown25:
             return CorkscrewRCTrack25DegDownToRightBanked25DegDown;
-        case TrackElemType::LeftBankedDown25ToDown25:
+        case TrackElemType::leftBankedDown25ToDown25:
             return CorkscrewRCTrackLeftBanked25DegDownTo25DegDown;
-        case TrackElemType::RightBankedDown25ToDown25:
+        case TrackElemType::rightBankedDown25ToDown25:
             return CorkscrewRCTrackRightBanked25DegDownTo25DegDown;
-        case TrackElemType::LeftBankedFlatToLeftBankedUp25:
+        case TrackElemType::leftBankedFlatToLeftBankedUp25:
             return CorkscrewRCTrackLeftBankedFlatToLeftBanked25DegUp;
-        case TrackElemType::RightBankedFlatToRightBankedUp25:
+        case TrackElemType::rightBankedFlatToRightBankedUp25:
             return CorkscrewRCTrackRightBankedFlatToRightBanked25DegUp;
-        case TrackElemType::LeftBankedUp25ToLeftBankedFlat:
+        case TrackElemType::leftBankedUp25ToLeftBankedFlat:
             return CorkscrewRCTrackLeftBanked25DegUpToLeftBankedFlat;
-        case TrackElemType::RightBankedUp25ToRightBankedFlat:
+        case TrackElemType::rightBankedUp25ToRightBankedFlat:
             return CorkscrewRCTrackRightBanked25DegUpToRightBankedFlat;
-        case TrackElemType::LeftBankedFlatToLeftBankedDown25:
+        case TrackElemType::leftBankedFlatToLeftBankedDown25:
             return CorkscrewRCTrackLeftBankedFlatToLeftBanked25DegDown;
-        case TrackElemType::RightBankedFlatToRightBankedDown25:
+        case TrackElemType::rightBankedFlatToRightBankedDown25:
             return CorkscrewRCTrackRightBankedFlatToRightBanked25DegDown;
-        case TrackElemType::LeftBankedDown25ToLeftBankedFlat:
+        case TrackElemType::leftBankedDown25ToLeftBankedFlat:
             return CorkscrewRCTrackLeftBanked25DegDownToLeftBankedFlat;
-        case TrackElemType::RightBankedDown25ToRightBankedFlat:
+        case TrackElemType::rightBankedDown25ToRightBankedFlat:
             return CorkscrewRCTrackRightBanked25DegDownToRightBankedFlat;
-        case TrackElemType::Down25LeftBanked:
+        case TrackElemType::down25LeftBanked:
             return CorkscrewRCTrack25DegDownLeftBanked;
-        case TrackElemType::Down25RightBanked:
+        case TrackElemType::down25RightBanked:
             return CorkscrewRCTrack25DegDownRightBanked;
-        case TrackElemType::FlatToLeftBankedUp25:
+        case TrackElemType::flatToLeftBankedUp25:
             return CorkscrewRCTrackFlatToLeftBanked25DegUp;
-        case TrackElemType::FlatToRightBankedUp25:
+        case TrackElemType::flatToRightBankedUp25:
             return CorkscrewRCTrackFlatToRightBanked25DegUp;
-        case TrackElemType::LeftBankedUp25ToFlat:
+        case TrackElemType::leftBankedUp25ToFlat:
             return CorkscrewRCTrackLeftBanked25DegUpToFlat;
-        case TrackElemType::RightBankedUp25ToFlat:
+        case TrackElemType::rightBankedUp25ToFlat:
             return CorkscrewRCTrackRightBanked25DegUpToFlat;
-        case TrackElemType::FlatToLeftBankedDown25:
+        case TrackElemType::flatToLeftBankedDown25:
             return CorkscrewRCTrackFlatToLeftBanked25DegDown;
-        case TrackElemType::FlatToRightBankedDown25:
+        case TrackElemType::flatToRightBankedDown25:
             return CorkscrewRCTrackFlatToRightBanked25DegDown;
-        case TrackElemType::LeftBankedDown25ToFlat:
+        case TrackElemType::leftBankedDown25ToFlat:
             return CorkscrewRCTrackLeftBanked25DegDownToFlat;
-        case TrackElemType::RightBankedDown25ToFlat:
+        case TrackElemType::rightBankedDown25ToFlat:
             return CorkscrewRCTrackRightBanked25DegDownToFlat;
-        case TrackElemType::Up25LeftBanked:
+        case TrackElemType::up25LeftBanked:
             return CorkscrewRCTrack25DegUpLeftBanked;
-        case TrackElemType::Up25RightBanked:
+        case TrackElemType::up25RightBanked:
             return CorkscrewRCTrack25DegUpRightBanked;
 
         // Small banked sloped curves
-        case TrackElemType::LeftBankedQuarterTurn3TileUp25:
+        case TrackElemType::leftBankedQuarterTurn3TileUp25:
             return CorkscrewRCTrackLeftBankedQuarterTurn3Tile25DegUp;
-        case TrackElemType::RightBankedQuarterTurn3TileUp25:
+        case TrackElemType::rightBankedQuarterTurn3TileUp25:
             return CorkscrewRCTrackRightBankedQuarterTurn3Tile25DegUp;
-        case TrackElemType::LeftBankedQuarterTurn3TileDown25:
+        case TrackElemType::leftBankedQuarterTurn3TileDown25:
             return CorkscrewRCTrackLeftBankedQuarterTurn3Tile25DegDown;
-        case TrackElemType::RightBankedQuarterTurn3TileDown25:
+        case TrackElemType::rightBankedQuarterTurn3TileDown25:
             return CorkscrewRCTrackRightBankedQuarterTurn3Tile25DegDown;
 
         // Medium banked sloped curves
-        case TrackElemType::LeftBankedQuarterTurn5TileUp25:
+        case TrackElemType::leftBankedQuarterTurn5TileUp25:
             return CorkscrewRCTrackLeftBankedQuarterTurn525DegUp;
-        case TrackElemType::RightBankedQuarterTurn5TileUp25:
+        case TrackElemType::rightBankedQuarterTurn5TileUp25:
             return CorkscrewRCTrackRightBankedQuarterTurn525DegUp;
-        case TrackElemType::LeftBankedQuarterTurn5TileDown25:
+        case TrackElemType::leftBankedQuarterTurn5TileDown25:
             return CorkscrewRCTrackLeftBankedQuarterTurn525DegDown;
-        case TrackElemType::RightBankedQuarterTurn5TileDown25:
+        case TrackElemType::rightBankedQuarterTurn5TileDown25:
             return CorkscrewRCTrackRightBankedQuarterTurn525DegDown;
 
         // Large sloped curves
-        case TrackElemType::LeftEighthToDiagUp25:
+        case TrackElemType::leftEighthToDiagUp25:
             return CorkscrewRCTrackLeftEighthToDiagUp25;
-        case TrackElemType::RightEighthToDiagUp25:
+        case TrackElemType::rightEighthToDiagUp25:
             return CorkscrewRCTrackRightEighthToDiagUp25;
-        case TrackElemType::LeftEighthToDiagDown25:
+        case TrackElemType::leftEighthToDiagDown25:
             return CorkscrewRCTrackLeftEighthToDiagDown25;
-        case TrackElemType::RightEighthToDiagDown25:
+        case TrackElemType::rightEighthToDiagDown25:
             return CorkscrewRCTrackRightEighthToDiagDown25;
-        case TrackElemType::LeftEighthToOrthogonalUp25:
+        case TrackElemType::leftEighthToOrthogonalUp25:
             return CorkscrewRCTrackLeftEighthToOrthogonalUp25;
-        case TrackElemType::RightEighthToOrthogonalUp25:
+        case TrackElemType::rightEighthToOrthogonalUp25:
             return CorkscrewRCTrackRightEighthToOrthogonalUp25;
-        case TrackElemType::LeftEighthToOrthogonalDown25:
+        case TrackElemType::leftEighthToOrthogonalDown25:
             return CorkscrewRCTrackLeftEighthToOrthogonalDown25;
-        case TrackElemType::RightEighthToOrthogonalDown25:
+        case TrackElemType::rightEighthToOrthogonalDown25:
             return CorkscrewRCTrackRightEighthToOrthogonalDown25;
 
         // Large banked sloped curves
-        case TrackElemType::DiagUp25ToLeftBankedUp25:
+        case TrackElemType::diagUp25ToLeftBankedUp25:
             return CorkscrewRCTrackDiagUp25ToLeftBankedUp25;
-        case TrackElemType::DiagUp25ToRightBankedUp25:
+        case TrackElemType::diagUp25ToRightBankedUp25:
             return CorkscrewRCTrackDiagUp25ToRightBankedUp25;
-        case TrackElemType::DiagLeftBankedUp25ToUp25:
+        case TrackElemType::diagLeftBankedUp25ToUp25:
             return CorkscrewRCTrackDiagLeftBankedUp25ToUp25;
-        case TrackElemType::DiagRightBankedUp25ToUp25:
+        case TrackElemType::diagRightBankedUp25ToUp25:
             return CorkscrewRCTrackDiagRightBankedUp25ToUp25;
-        case TrackElemType::DiagDown25ToLeftBankedDown25:
+        case TrackElemType::diagDown25ToLeftBankedDown25:
             return CorkscrewRCTrackDiagDown25ToLeftBankedDown25;
-        case TrackElemType::DiagDown25ToRightBankedDown25:
+        case TrackElemType::diagDown25ToRightBankedDown25:
             return CorkscrewRCTrackDiagDown25ToRightBankedDown25;
-        case TrackElemType::DiagLeftBankedDown25ToDown25:
+        case TrackElemType::diagLeftBankedDown25ToDown25:
             return CorkscrewRCTrackDiagLeftBankedDown25ToDown25;
-        case TrackElemType::DiagRightBankedDown25ToDown25:
+        case TrackElemType::diagRightBankedDown25ToDown25:
             return CorkscrewRCTrackDiagRightBankedDown25ToDown25;
-        case TrackElemType::DiagLeftBankedFlatToLeftBankedUp25:
+        case TrackElemType::diagLeftBankedFlatToLeftBankedUp25:
             return CorkscrewRCTrackDiagLeftBankedFlatToLeftBankedUp25;
-        case TrackElemType::DiagRightBankedFlatToRightBankedUp25:
+        case TrackElemType::diagRightBankedFlatToRightBankedUp25:
             return CorkscrewRCTrackDiagRightBankedFlatToRightBankedUp25;
-        case TrackElemType::DiagLeftBankedUp25ToLeftBankedFlat:
+        case TrackElemType::diagLeftBankedUp25ToLeftBankedFlat:
             return CorkscrewRCTrackDiagLeftBankedUp25ToLeftBankedFlat;
-        case TrackElemType::DiagRightBankedUp25ToRightBankedFlat:
+        case TrackElemType::diagRightBankedUp25ToRightBankedFlat:
             return CorkscrewRCTrackDiagRightBankedUp25ToRightBankedFlat;
-        case TrackElemType::DiagLeftBankedFlatToLeftBankedDown25:
+        case TrackElemType::diagLeftBankedFlatToLeftBankedDown25:
             return CorkscrewRCTrackDiagLeftBankedFlatToLeftBankedDown25;
-        case TrackElemType::DiagRightBankedFlatToRightBankedDown25:
+        case TrackElemType::diagRightBankedFlatToRightBankedDown25:
             return CorkscrewRCTrackDiagRightBankedFlatToRightBankedDown25;
-        case TrackElemType::DiagLeftBankedDown25ToLeftBankedFlat:
+        case TrackElemType::diagLeftBankedDown25ToLeftBankedFlat:
             return CorkscrewRCTrackDiagLeftBankedDown25ToLeftBankedFlat;
-        case TrackElemType::DiagRightBankedDown25ToRightBankedFlat:
+        case TrackElemType::diagRightBankedDown25ToRightBankedFlat:
             return CorkscrewRCTrackDiagRightBankedDown25ToRightBankedFlat;
-        case TrackElemType::DiagUp25LeftBanked:
+        case TrackElemType::diagUp25LeftBanked:
             return CorkscrewRCTrackDiagUp25LeftBanked;
-        case TrackElemType::DiagUp25RightBanked:
+        case TrackElemType::diagUp25RightBanked:
             return CorkscrewRCTrackDiagUp25RightBanked;
-        case TrackElemType::DiagDown25LeftBanked:
+        case TrackElemType::diagDown25LeftBanked:
             return CorkscrewRCTrackDiagDown25LeftBanked;
-        case TrackElemType::DiagDown25RightBanked:
+        case TrackElemType::diagDown25RightBanked:
             return CorkscrewRCTrackDiagDown25RightBanked;
-        case TrackElemType::DiagFlatToLeftBankedUp25:
+        case TrackElemType::diagFlatToLeftBankedUp25:
             return CorkscrewRCTrackDiagFlatToLeftBankedUp25;
-        case TrackElemType::DiagFlatToRightBankedUp25:
+        case TrackElemType::diagFlatToRightBankedUp25:
             return CorkscrewRCTrackDiagFlatToRightBankedUp25;
-        case TrackElemType::DiagLeftBankedUp25ToFlat:
+        case TrackElemType::diagLeftBankedUp25ToFlat:
             return CorkscrewRCTrackDiagLeftBankedUp25ToFlat;
-        case TrackElemType::DiagRightBankedUp25ToFlat:
+        case TrackElemType::diagRightBankedUp25ToFlat:
             return CorkscrewRCTrackDiagRightBankedUp25ToFlat;
-        case TrackElemType::DiagFlatToLeftBankedDown25:
+        case TrackElemType::diagFlatToLeftBankedDown25:
             return CorkscrewRCTrackDiagFlatToLeftBankedDown25;
-        case TrackElemType::DiagFlatToRightBankedDown25:
+        case TrackElemType::diagFlatToRightBankedDown25:
             return CorkscrewRCTrackDiagFlatToRightBankedDown25;
-        case TrackElemType::DiagLeftBankedDown25ToFlat:
+        case TrackElemType::diagLeftBankedDown25ToFlat:
             return CorkscrewRCTrackDiagLeftBankedDown25ToFlat;
-        case TrackElemType::DiagRightBankedDown25ToFlat:
+        case TrackElemType::diagRightBankedDown25ToFlat:
             return CorkscrewRCTrackDiagRightBankedDown25ToFlat;
 
-        case TrackElemType::LeftEighthBankToDiagUp25:
+        case TrackElemType::leftEighthBankToDiagUp25:
             return CorkscrewRCTrackLeftEighthBankToDiagUp25;
-        case TrackElemType::RightEighthBankToDiagUp25:
+        case TrackElemType::rightEighthBankToDiagUp25:
             return CorkscrewRCTrackRightEighthBankToDiagUp25;
-        case TrackElemType::LeftEighthBankToDiagDown25:
+        case TrackElemType::leftEighthBankToDiagDown25:
             return CorkscrewRCTrackLeftEighthBankToDiagDown25;
-        case TrackElemType::RightEighthBankToDiagDown25:
+        case TrackElemType::rightEighthBankToDiagDown25:
             return CorkscrewRCTrackRightEighthBankToDiagDown25;
 
-        case TrackElemType::LeftEighthBankToOrthogonalUp25:
+        case TrackElemType::leftEighthBankToOrthogonalUp25:
             return CorkscrewRCTrackLeftEighthBankToOrthogonalUp25;
-        case TrackElemType::RightEighthBankToOrthogonalUp25:
+        case TrackElemType::rightEighthBankToOrthogonalUp25:
             return CorkscrewRCTrackRightEighthBankToOrthogonalUp25;
-        case TrackElemType::LeftEighthBankToOrthogonalDown25:
+        case TrackElemType::leftEighthBankToOrthogonalDown25:
             return CorkscrewRCTrackLeftEighthBankToOrthogonalDown25;
-        case TrackElemType::RightEighthBankToOrthogonalDown25:
+        case TrackElemType::rightEighthBankToOrthogonalDown25:
             return CorkscrewRCTrackRightEighthBankToOrthogonalDown25;
 
         // Small banked to unbanked curves
-        case TrackElemType::LeftBankToLeftQuarterTurn3TilesUp25:
+        case TrackElemType::leftBankToLeftQuarterTurn3TilesUp25:
             return CorkscrewRCTrackLeftBankToLeftQuarterTurn325DegUp;
-        case TrackElemType::RightBankToRightQuarterTurn3TilesUp25:
+        case TrackElemType::rightBankToRightQuarterTurn3TilesUp25:
             return CorkscrewRCTrackRightBankToRightQuarterTurn325DegUp;
-        case TrackElemType::LeftQuarterTurn3TilesDown25ToLeftBank:
+        case TrackElemType::leftQuarterTurn3TilesDown25ToLeftBank:
             return CorkscrewRCTrackLeftQuarterTurn325DegDownToLeftBank;
-        case TrackElemType::RightQuarterTurn3TilesDown25ToRightBank:
+        case TrackElemType::rightQuarterTurn3TilesDown25ToRightBank:
             return CorkscrewRCTrackRightQuarterTurn325DegDownToRightBank;
 
         // Large corkscrews
-        case TrackElemType::LeftLargeCorkscrewUp:
+        case TrackElemType::leftLargeCorkscrewUp:
             return CorkscrewRCTrackLeftLargeCorkscrewUp;
-        case TrackElemType::RightLargeCorkscrewUp:
+        case TrackElemType::rightLargeCorkscrewUp:
             return CorkscrewRCTrackRightLargeCorkscrewUp;
-        case TrackElemType::LeftLargeCorkscrewDown:
+        case TrackElemType::leftLargeCorkscrewDown:
             return CorkscrewRCTrackLeftLargeCorkscrewDown;
-        case TrackElemType::RightLargeCorkscrewDown:
+        case TrackElemType::rightLargeCorkscrewDown:
             return CorkscrewRCTrackRightLargeCorkscrewDown;
 
         // Quarter loops
-        case TrackElemType::Up90ToInvertedFlatQuarterLoop:
+        case TrackElemType::up90ToInvertedFlatQuarterLoop:
             return CorkscrewRCTrack90DegToInvertedFlatQuarterLoopUp;
-        case TrackElemType::InvertedFlatToDown90QuarterLoop:
+        case TrackElemType::invertedFlatToDown90QuarterLoop:
             return CorkscrewRCTrackInvertedFlatTo90DegQuarterLoopDown;
 
         // Medium half loops
-        case TrackElemType::LeftMediumHalfLoopUp:
+        case TrackElemType::leftMediumHalfLoopUp:
             return CorkscrewRCTrackLeftMediumHalfLoopUp;
-        case TrackElemType::RightMediumHalfLoopUp:
+        case TrackElemType::rightMediumHalfLoopUp:
             return CorkscrewRCTrackRightMediumHalfLoopUp;
-        case TrackElemType::LeftMediumHalfLoopDown:
+        case TrackElemType::leftMediumHalfLoopDown:
             return CorkscrewRCTrackLeftMediumHalfLoopDown;
-        case TrackElemType::RightMediumHalfLoopDown:
+        case TrackElemType::rightMediumHalfLoopDown:
             return CorkscrewRCTrackRightMediumHalfLoopDown;
 
         // Large half loops
-        case TrackElemType::LeftLargeHalfLoopUp:
+        case TrackElemType::leftLargeHalfLoopUp:
             return CorkscrewRCTrackLeftLargeHalfLoopUp;
-        case TrackElemType::RightLargeHalfLoopUp:
+        case TrackElemType::rightLargeHalfLoopUp:
             return CorkscrewRCTrackRightLargeHalfLoopUp;
-        case TrackElemType::LeftLargeHalfLoopDown:
+        case TrackElemType::leftLargeHalfLoopDown:
             return CorkscrewRCTrackLeftLargeHalfLoopDown;
-        case TrackElemType::RightLargeHalfLoopDown:
+        case TrackElemType::rightLargeHalfLoopDown:
             return CorkscrewRCTrackRightLargeHalfLoopDown;
 
         // Barrel rolls
-        case TrackElemType::LeftBarrelRollUpToDown:
+        case TrackElemType::leftBarrelRollUpToDown:
             return CorkscrewRCTrackLeftBarrelRollUpToDown;
-        case TrackElemType::RightBarrelRollUpToDown:
+        case TrackElemType::rightBarrelRollUpToDown:
             return CorkscrewRCTrackRightBarrelRollUpToDown;
-        case TrackElemType::LeftBarrelRollDownToUp:
+        case TrackElemType::leftBarrelRollDownToUp:
             return CorkscrewRCTrackLeftBarrelRollDownToUp;
-        case TrackElemType::RightBarrelRollDownToUp:
+        case TrackElemType::rightBarrelRollDownToUp:
             return CorkscrewRCTrackRightBarrelRollDownToUp;
 
         // Zero g rolls
-        case TrackElemType::LeftZeroGRollUp:
+        case TrackElemType::leftZeroGRollUp:
             return CorkscrewRCTrackLeftZeroGRollUp;
-        case TrackElemType::RightZeroGRollUp:
+        case TrackElemType::rightZeroGRollUp:
             return CorkscrewRCTrackRightZeroGRollUp;
-        case TrackElemType::LeftZeroGRollDown:
+        case TrackElemType::leftZeroGRollDown:
             return CorkscrewRCTrackLeftZeroGRollDown;
-        case TrackElemType::RightZeroGRollDown:
+        case TrackElemType::rightZeroGRollDown:
             return CorkscrewRCTrackRightZeroGRollDown;
 
         // Large zero g rolls
-        case TrackElemType::LeftLargeZeroGRollUp:
+        case TrackElemType::leftLargeZeroGRollUp:
             return CorkscrewRCTrackLeftLargeZeroGRollUp;
-        case TrackElemType::RightLargeZeroGRollUp:
+        case TrackElemType::rightLargeZeroGRollUp:
             return CorkscrewRCTrackRightLargeZeroGRollUp;
-        case TrackElemType::LeftLargeZeroGRollDown:
+        case TrackElemType::leftLargeZeroGRollDown:
             return CorkscrewRCTrackLeftLargeZeroGRollDown;
-        case TrackElemType::RightLargeZeroGRollDown:
+        case TrackElemType::rightLargeZeroGRollDown:
             return CorkscrewRCTrackRightLargeZeroGRollDown;
 
         // Dive loops
-        case TrackElemType::LeftEighthDiveLoopUpToOrthogonal:
+        case TrackElemType::leftEighthDiveLoopUpToOrthogonal:
             return CorkscrewRCTrackLeftEighthDiveLoopUpToOrthogonal;
-        case TrackElemType::RightEighthDiveLoopUpToOrthogonal:
+        case TrackElemType::rightEighthDiveLoopUpToOrthogonal:
             return CorkscrewRCTrackRightEighthDiveLoopUpToOrthogonal;
-        case TrackElemType::LeftEighthDiveLoopDownToDiag:
+        case TrackElemType::leftEighthDiveLoopDownToDiag:
             return CorkscrewRCTrackLeftEighthDiveLoopDownToDiag;
-        case TrackElemType::RightEighthDiveLoopDownToDiag:
+        case TrackElemType::rightEighthDiveLoopDownToDiag:
             return CorkscrewRCTrackRightEighthDiveLoopToDownOrthogonal;
 
         default:

@@ -158,10 +158,10 @@ TrackPaintFunction GetTrackPaintFunctionRotoDrop(OpenRCT2::TrackElemType trackTy
 {
     switch (trackType)
     {
-        case TrackElemType::TowerBase:
+        case TrackElemType::towerBase:
             return PaintRotoDropBase;
 
-        case TrackElemType::TowerSection:
+        case TrackElemType::towerSection:
             return PaintRotoDropTowerSection;
         default:
             return TrackPaintFunctionDummy;

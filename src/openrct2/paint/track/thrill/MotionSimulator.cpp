@@ -150,7 +150,7 @@ TrackPaintFunction GetTrackPaintFunctionMotionsimulator(OpenRCT2::TrackElemType 
 {
     switch (trackType)
     {
-        case TrackElemType::FlatTrack2x2:
+        case TrackElemType::flatTrack2x2:
             return PaintMotionSimulator;
         default:
             return TrackPaintFunctionDummy;

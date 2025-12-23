@@ -145,10 +145,10 @@ TrackPaintFunction GetTrackPaintFunctionLift(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
-        case TrackElemType::TowerBase:
+        case TrackElemType::towerBase:
             return PaintLiftBase;
 
-        case TrackElemType::TowerSection:
+        case TrackElemType::towerSection:
             return PaintLiftTowerSection;
         default:
             return TrackPaintFunctionDummy;

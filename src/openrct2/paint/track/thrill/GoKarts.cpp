@@ -1367,7 +1367,7 @@ static void PaintGoKartsTrackFlat(
         PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
     }
 
-    DrawSupportForSequenceA<TrackElemType::Flat>(
+    DrawSupportForSequenceA<TrackElemType::flat>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -1404,7 +1404,7 @@ static void PaintGoKartsTrack25DegUp(
 
     session.WoodenSupportsPrependTo = ps;
 
-    DrawSupportForSequenceA<TrackElemType::Up25>(
+    DrawSupportForSequenceA<TrackElemType::up25>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
     switch (direction)
@@ -1457,7 +1457,7 @@ static void PaintGoKartsTrackFlatTo25DegUp(
 
     session.WoodenSupportsPrependTo = ps;
 
-    DrawSupportForSequenceA<TrackElemType::FlatToUp25>(
+    DrawSupportForSequenceA<TrackElemType::flatToUp25>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
     switch (direction)
@@ -1510,7 +1510,7 @@ static void PaintGoKartsTrack25DegUpToFlat(
 
     session.WoodenSupportsPrependTo = ps;
 
-    DrawSupportForSequenceA<TrackElemType::Up25ToFlat>(
+    DrawSupportForSequenceA<TrackElemType::up25ToFlat>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
     switch (direction)
@@ -1569,7 +1569,7 @@ static void PaintGoKartsStation(
     ImageId imageId;
     const uint32_t (*sprites)[2] = go_karts_track_pieces_starting_grid;
 
-    if (trackElement.GetTrackType() == TrackElemType::EndStation)
+    if (trackElement.GetTrackType() == TrackElemType::endStation)
     {
         sprites = go_karts_track_pieces_starting_grid_end;
     }
@@ -1621,7 +1621,7 @@ static void PaintGoKartsStation(
         TrackPaintUtilDrawStationCovers(session, EDGE_SW, hasFence, stationObj, height, stationColour);
     }
 
-    if (trackElement.GetTrackType() == TrackElemType::EndStation)
+    if (trackElement.GetTrackType() == TrackElemType::endStation)
     {
         const bool hasGreenLight = trackElement.HasGreenLight();
 
@@ -1662,7 +1662,7 @@ static void PaintGoKartsStation(
         }
     }
 
-    DrawSupportForSequenceA<TrackElemType::EndStation>(
+    DrawSupportForSequenceA<TrackElemType::endStation>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -1858,7 +1858,7 @@ static void TrackFlatToUp60LongBase(
         session, session.TrackColours.WithIndex(kGoKartsFlatToUp60LongBaseSprites[direction][trackSequence][1]), height,
         { 0, 0, 0 }, kGoKartsFlatToUp60LongBaseBoundBoxes[direction][trackSequence][1]);
 
-    DrawSupportForSequenceA<TrackElemType::FlatToUp60LongBase>(
+    DrawSupportForSequenceA<TrackElemType::flatToUp60LongBase>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
     if (trackSequence == 0 && (direction == 0 || direction == 3))
     {
@@ -1884,7 +1884,7 @@ static void TrackUp60ToFlatLongBase(
         session, session.TrackColours.WithIndex(kGoKartsUp60ToFlatLongBaseSprites[direction][trackSequence][1]), height,
         { 0, 0, 0 }, kGoKartsUp60ToFlatLongBaseBoundBoxes[direction][trackSequence][1]);
 
-    DrawSupportForSequenceA<TrackElemType::Up60ToFlatLongBase>(
+    DrawSupportForSequenceA<TrackElemType::up60ToFlatLongBase>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
     if (trackSequence == 0 && (direction == 0 || direction == 3))
     {
@@ -1971,7 +1971,7 @@ static void TrackLeftQuarterTurn5Tiles(
         session, session.TrackColours.WithIndex(kGoKartsLeftQuarterTurn5TilesSprites[direction][trackSequence][2]), height,
         { 0, 0, 0 }, kGoKartsLeftQuarterTurn5TilesBoundBoxes[direction][trackSequence][2]);
 
-    DrawSupportForSequenceA<OpenRCT2::TrackElemType::LeftQuarterTurn5Tiles>(
+    DrawSupportForSequenceA<OpenRCT2::TrackElemType::leftQuarterTurn5Tiles>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
     if (trackSequence == 0 && (direction == 0 || direction == 3))
     {
@@ -2023,7 +2023,7 @@ static void TrackLeftEighthToDiag(
         session, session.TrackColours.WithIndex(kGoKartsLeftEighthToDiagSprites[direction][trackSequence][2]), height,
         { 0, 0, 0 }, kGoKartsLeftEighthToDiagBoundBoxes[direction][trackSequence][2]);
 
-    DrawSupportForSequenceA<OpenRCT2::TrackElemType::LeftEighthToDiag>(
+    DrawSupportForSequenceA<OpenRCT2::TrackElemType::leftEighthToDiag>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
     if (trackSequence == 0 && (direction == 0 || direction == 3))
     {
@@ -2047,7 +2047,7 @@ static void TrackRightEighthToDiag(
         session, session.TrackColours.WithIndex(kGoKartsRightEighthToDiagSprites[direction][trackSequence][2]), height,
         { 0, 0, 0 }, kGoKartsRightEighthToDiagBoundBoxes[direction][trackSequence][2]);
 
-    DrawSupportForSequenceA<OpenRCT2::TrackElemType::RightEighthToDiag>(
+    DrawSupportForSequenceA<OpenRCT2::TrackElemType::rightEighthToDiag>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
     if (trackSequence == 0 && (direction == 0 || direction == 3))
     {
@@ -2086,7 +2086,7 @@ static void TrackDiagFlat(
         session, session.TrackColours.WithIndex(kGoKartsDiagFlatSprites[direction][trackSequence][1]), height, { 0, 0, 0 },
         kGoKartsDiagFlatBoundBoxes[direction][trackSequence][1]);
 
-    DrawSupportForSequenceA<OpenRCT2::TrackElemType::DiagFlat>(
+    DrawSupportForSequenceA<OpenRCT2::TrackElemType::diagFlat>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -2103,7 +2103,7 @@ static void TrackDiagFlatToUp25(
         session, session.TrackColours.WithIndex(kGoKartsDiagFlatToUp25Sprites[direction][trackSequence][1]), height,
         { 0, 0, 0 }, kGoKartsDiagFlatToUp25BoundBoxes[direction][trackSequence][1]);
 
-    DrawSupportForSequenceA<OpenRCT2::TrackElemType::DiagFlatToUp25>(
+    DrawSupportForSequenceA<OpenRCT2::TrackElemType::diagFlatToUp25>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48);
@@ -2120,7 +2120,7 @@ static void TrackDiagUp25ToFlat(
         session, session.TrackColours.WithIndex(kGoKartsDiagUp25ToFlatSprites[direction][trackSequence][1]), height,
         { 0, 0, 0 }, kGoKartsDiagUp25ToFlatBoundBoxes[direction][trackSequence][1]);
 
-    DrawSupportForSequenceB<OpenRCT2::TrackElemType::DiagUp25ToFlat>(
+    DrawSupportForSequenceB<OpenRCT2::TrackElemType::diagUp25ToFlat>(
         session, supportType.wooden, trackSequence, direction, height + 16, session.SupportColours);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56);
@@ -2137,7 +2137,7 @@ static void TrackDiagUp25(
         session, session.TrackColours.WithIndex(kGoKartsDiagUp25Sprites[direction][trackSequence][1]), height, { 0, 0, 0 },
         kGoKartsDiagUp25BoundBoxes[direction][trackSequence][1]);
 
-    DrawSupportForSequenceB<OpenRCT2::TrackElemType::DiagUp25>(
+    DrawSupportForSequenceB<OpenRCT2::TrackElemType::diagUp25>(
         session, supportType.wooden, trackSequence, direction, height + 16, session.SupportColours);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56);
@@ -2181,7 +2181,7 @@ static void TrackDiagUp25ToUp60(
         session, session.TrackColours.WithIndex(kGoKartsDiagUp25ToUp60Sprites[direction][trackSequence][1]), height,
         { 0, 0, 0 }, kGoKartsDiagUp25ToUp60BoundBoxes[direction][trackSequence][1]);
 
-    DrawSupportForSequenceB<OpenRCT2::TrackElemType::DiagUp25ToUp60>(
+    DrawSupportForSequenceB<OpenRCT2::TrackElemType::diagUp25ToUp60>(
         session, supportType.wooden, trackSequence, direction, height + 16, session.SupportColours);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 72);
@@ -2198,7 +2198,7 @@ static void TrackDiagUp60ToUp25(
         session, session.TrackColours.WithIndex(kGoKartsDiagUp60ToUp25Sprites[direction][trackSequence][1]), height,
         { 0, 0, 0 }, kGoKartsDiagUp60ToUp25BoundBoxes[direction][trackSequence][1]);
 
-    DrawSupportForSequenceB<OpenRCT2::TrackElemType::DiagUp60ToUp25>(
+    DrawSupportForSequenceB<OpenRCT2::TrackElemType::diagUp60ToUp25>(
         session, supportType.wooden, trackSequence, direction, height + 16, session.SupportColours);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 72);
@@ -2215,7 +2215,7 @@ static void TrackDiagUp60(
         session, session.TrackColours.WithIndex(kGoKartsDiagUp60Sprites[direction][trackSequence][1]), height, { 0, 0, 0 },
         kGoKartsDiagUp60BoundBoxes[direction][trackSequence][1]);
 
-    DrawSupportForSequenceB<OpenRCT2::TrackElemType::DiagUp60>(
+    DrawSupportForSequenceB<OpenRCT2::TrackElemType::diagUp60>(
         session, supportType.wooden, trackSequence, direction, height + 16, session.SupportColours);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 104);
@@ -2708,7 +2708,7 @@ static void TrackSBendLeft(
         session, session.TrackColours.WithIndex(kGoKartsSBendLeftSprites[direction][trackSequence][2]), height, { 0, 0, 0 },
         kGoKartsSBendLeftBoundBoxes[direction][trackSequence][2]);
 
-    DrawSupportForSequenceA<OpenRCT2::TrackElemType::SBendLeft>(
+    DrawSupportForSequenceA<OpenRCT2::TrackElemType::sBendLeft>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
     if ((trackSequence == 0 && (direction == 0 || direction == 3))
         || (trackSequence == 3 && (direction == 1 || direction == 2)))
@@ -2743,7 +2743,7 @@ static void TrackSBendRight(
         session, session.TrackColours.WithIndex(kGoKartsSBendRightSprites[direction][trackSequence][2]), height, { 0, 0, 0 },
         kGoKartsSBendRightBoundBoxes[direction][trackSequence][2]);
 
-    DrawSupportForSequenceA<OpenRCT2::TrackElemType::SBendRight>(
+    DrawSupportForSequenceA<OpenRCT2::TrackElemType::sBendRight>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
     if ((trackSequence == 0 && (direction == 0 || direction == 3))
         || (trackSequence == 3 && (direction == 1 || direction == 2)))
@@ -2771,151 +2771,151 @@ TrackPaintFunction GetTrackPaintFunctionGoKarts(OpenRCT2::TrackElemType trackTyp
 {
     switch (trackType)
     {
-        case TrackElemType::Flat:
+        case TrackElemType::flat:
             return PaintGoKartsTrackFlat;
 
-        case TrackElemType::EndStation:
-        case TrackElemType::BeginStation:
-        case TrackElemType::MiddleStation:
+        case TrackElemType::endStation:
+        case TrackElemType::beginStation:
+        case TrackElemType::middleStation:
             return PaintGoKartsStation;
 
-        case TrackElemType::Up25:
+        case TrackElemType::up25:
             return PaintGoKartsTrack25DegUp;
-        case TrackElemType::FlatToUp25:
+        case TrackElemType::flatToUp25:
             return PaintGoKartsTrackFlatTo25DegUp;
-        case TrackElemType::Up25ToFlat:
+        case TrackElemType::up25ToFlat:
             return PaintGoKartsTrack25DegUpToFlat;
 
-        case TrackElemType::Down25:
+        case TrackElemType::down25:
             return PaintGoKartsTrack25DegDown;
-        case TrackElemType::FlatToDown25:
+        case TrackElemType::flatToDown25:
             return PaintGoKartsTrackFlatTo25DegDown;
-        case TrackElemType::Down25ToFlat:
+        case TrackElemType::down25ToFlat:
             return PaintGoKartsTrack25DegDownToFlat;
 
-        case TrackElemType::LeftQuarterTurn1Tile:
+        case TrackElemType::leftQuarterTurn1Tile:
             return PaintGoKartsTrackLeftQuarterTurn1Tile;
-        case TrackElemType::RightQuarterTurn1Tile:
+        case TrackElemType::rightQuarterTurn1Tile:
             return PaintGoKartsTrackRightQuarterTurn1Tile;
 
         // Added by OpenRCT2
 
         // Steep
-        case TrackElemType::Up60:
+        case TrackElemType::up60:
             return TrackUp60;
-        case TrackElemType::Up25ToUp60:
+        case TrackElemType::up25ToUp60:
             return TrackUp25ToUp60;
-        case TrackElemType::Up60ToUp25:
+        case TrackElemType::up60ToUp25:
             return TrackUp60ToUp25;
-        case TrackElemType::Down60:
+        case TrackElemType::down60:
             return TrackDown60;
-        case TrackElemType::Down25ToDown60:
+        case TrackElemType::down25ToDown60:
             return TrackDown25ToDown60;
-        case TrackElemType::Down60ToDown25:
+        case TrackElemType::down60ToDown25:
             return TrackDown60ToDown25;
 
         // Flat to steep
-        case TrackElemType::FlatToUp60LongBase:
+        case TrackElemType::flatToUp60LongBase:
             return TrackFlatToUp60LongBase;
-        case TrackElemType::Up60ToFlatLongBase:
+        case TrackElemType::up60ToFlatLongBase:
             return TrackUp60ToFlatLongBase;
-        case TrackElemType::FlatToDown60LongBase:
+        case TrackElemType::flatToDown60LongBase:
             return TrackFlatToDown60LongBase;
-        case TrackElemType::Down60ToFlatLongBase:
+        case TrackElemType::down60ToFlatLongBase:
             return TrackDown60ToFlatLongBase;
 
         // Small turns
-        case TrackElemType::LeftQuarterTurn3Tiles:
+        case TrackElemType::leftQuarterTurn3Tiles:
             return TrackLeftQuarterTurn3Tiles;
-        case TrackElemType::RightQuarterTurn3Tiles:
+        case TrackElemType::rightQuarterTurn3Tiles:
             return TrackRightQuarterTurn3Tiles;
 
         // Medium turns
-        case TrackElemType::LeftQuarterTurn5Tiles:
+        case TrackElemType::leftQuarterTurn5Tiles:
             return TrackLeftQuarterTurn5Tiles;
-        case TrackElemType::RightQuarterTurn5Tiles:
+        case TrackElemType::rightQuarterTurn5Tiles:
             return TrackRightQuarterTurn5Tiles;
 
         // Large turns
-        case TrackElemType::LeftEighthToDiag:
+        case TrackElemType::leftEighthToDiag:
             return TrackLeftEighthToDiag;
-        case TrackElemType::RightEighthToDiag:
+        case TrackElemType::rightEighthToDiag:
             return TrackRightEighthToDiag;
-        case TrackElemType::LeftEighthToOrthogonal:
+        case TrackElemType::leftEighthToOrthogonal:
             return TrackLeftEighthToOrthogonal;
-        case TrackElemType::RightEighthToOrthogonal:
+        case TrackElemType::rightEighthToOrthogonal:
             return TrackRightEighthToOrthogonal;
 
         // Diagonal
-        case TrackElemType::DiagFlat:
+        case TrackElemType::diagFlat:
             return TrackDiagFlat;
-        case TrackElemType::DiagFlatToUp25:
+        case TrackElemType::diagFlatToUp25:
             return TrackDiagFlatToUp25;
-        case TrackElemType::DiagUp25ToFlat:
+        case TrackElemType::diagUp25ToFlat:
             return TrackDiagUp25ToFlat;
-        case TrackElemType::DiagFlatToDown25:
+        case TrackElemType::diagFlatToDown25:
             return TrackDiagFlatToDown25;
-        case TrackElemType::DiagDown25ToFlat:
+        case TrackElemType::diagDown25ToFlat:
             return TrackDiagDown25ToFlat;
-        case TrackElemType::DiagUp25:
+        case TrackElemType::diagUp25:
             return TrackDiagUp25;
-        case TrackElemType::DiagDown25:
+        case TrackElemType::diagDown25:
             return TrackDiagDown25;
-        case TrackElemType::DiagUp25ToUp60:
+        case TrackElemType::diagUp25ToUp60:
             return TrackDiagUp25ToUp60;
-        case TrackElemType::DiagUp60ToUp25:
+        case TrackElemType::diagUp60ToUp25:
             return TrackDiagUp60ToUp25;
-        case TrackElemType::DiagUp60:
+        case TrackElemType::diagUp60:
             return TrackDiagUp60;
-        case TrackElemType::DiagDown25ToDown60:
+        case TrackElemType::diagDown25ToDown60:
             return TrackDiagDown25ToDown60;
-        case TrackElemType::DiagDown60ToDown25:
+        case TrackElemType::diagDown60ToDown25:
             return TrackDiagDown60ToDown25;
-        case TrackElemType::DiagDown60:
+        case TrackElemType::diagDown60:
             return TrackDiagDown60;
 
         // Small gentle turns
-        case TrackElemType::LeftQuarterTurn3TilesUp25:
+        case TrackElemType::leftQuarterTurn3TilesUp25:
             return TrackLeftQuarterTurn3TilesUp25;
-        case TrackElemType::RightQuarterTurn3TilesUp25:
+        case TrackElemType::rightQuarterTurn3TilesUp25:
             return TrackRightQuarterTurn3TilesUp25;
-        case TrackElemType::LeftQuarterTurn3TilesDown25:
+        case TrackElemType::leftQuarterTurn3TilesDown25:
             return TrackLeftQuarterTurn3TilesDown25;
-        case TrackElemType::RightQuarterTurn3TilesDown25:
+        case TrackElemType::rightQuarterTurn3TilesDown25:
             return TrackRightQuarterTurn3TilesDown25;
 
         // Medium gentle turns
-        case TrackElemType::LeftQuarterTurn5TilesUp25:
+        case TrackElemType::leftQuarterTurn5TilesUp25:
             return TrackLeftQuarterTurn5TilesUp25;
-        case TrackElemType::RightQuarterTurn5TilesUp25:
+        case TrackElemType::rightQuarterTurn5TilesUp25:
             return TrackRightQuarterTurn5TilesUp25;
-        case TrackElemType::LeftQuarterTurn5TilesDown25:
+        case TrackElemType::leftQuarterTurn5TilesDown25:
             return TrackLeftQuarterTurn5TilesDown25;
-        case TrackElemType::RightQuarterTurn5TilesDown25:
+        case TrackElemType::rightQuarterTurn5TilesDown25:
             return TrackRightQuarterTurn5TilesDown25;
 
         // Large gentle turns
-        case TrackElemType::LeftEighthToDiagUp25:
+        case TrackElemType::leftEighthToDiagUp25:
             return TrackLeftEighthToDiagUp25;
-        case TrackElemType::RightEighthToDiagUp25:
+        case TrackElemType::rightEighthToDiagUp25:
             return TrackRightEighthToDiagUp25;
-        case TrackElemType::LeftEighthToDiagDown25:
+        case TrackElemType::leftEighthToDiagDown25:
             return TrackLeftEighthToDiagDown25;
-        case TrackElemType::RightEighthToDiagDown25:
+        case TrackElemType::rightEighthToDiagDown25:
             return TrackRightEighthToDiagDown25;
-        case TrackElemType::LeftEighthToOrthogonalUp25:
+        case TrackElemType::leftEighthToOrthogonalUp25:
             return TrackLeftEighthToOrthogonalUp25;
-        case TrackElemType::RightEighthToOrthogonalUp25:
+        case TrackElemType::rightEighthToOrthogonalUp25:
             return TrackRightEighthToOrthogonalUp25;
-        case TrackElemType::LeftEighthToOrthogonalDown25:
+        case TrackElemType::leftEighthToOrthogonalDown25:
             return TrackLeftEighthToOrthogonalDown25;
-        case TrackElemType::RightEighthToOrthogonalDown25:
+        case TrackElemType::rightEighthToOrthogonalDown25:
             return TrackRightEighthToOrthogonalDown25;
 
         // S bends
-        case TrackElemType::SBendLeft:
+        case TrackElemType::sBendLeft:
             return TrackSBendLeft;
-        case TrackElemType::SBendRight:
+        case TrackElemType::sBendRight:
             return TrackSBendRight;
 
         default:

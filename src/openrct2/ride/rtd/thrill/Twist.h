@@ -19,7 +19,7 @@ namespace OpenRCT2
 constexpr RideTypeDescriptor TwistRTD =
 {
     .Category = RideCategory::thrill,
-    .StartTrackPiece = TrackElemType::FlatTrack3x3,
+    .StartTrackPiece = TrackElemType::flatTrack3x3,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::twist,
         .enabledTrackGroups = {},

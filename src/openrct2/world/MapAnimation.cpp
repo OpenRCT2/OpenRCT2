@@ -209,20 +209,20 @@ static bool UpdateTrackAnimation(TrackElement& track, const CoordsXYZ& loc, cons
 {
     switch (track.GetTrackType())
     {
-        case TrackElemType::Waterfall:
+        case TrackElemType::waterfall:
             if constexpr (invalidate)
             {
                 Invalidate<invalidateAllViewports>(viewport, loc.x, loc.y, baseZ + 14, baseZ + 46, kMaxZoom);
             }
             return true;
-        case TrackElemType::Rapids:
-        case TrackElemType::Whirlpool:
+        case TrackElemType::rapids:
+        case TrackElemType::whirlpool:
             if constexpr (invalidate)
             {
                 Invalidate<invalidateAllViewports>(viewport, loc.x, loc.y, baseZ + 14, baseZ + 18, kMaxZoom);
             }
             return true;
-        case TrackElemType::SpinningTunnel:
+        case TrackElemType::spinningTunnel:
             if constexpr (invalidate)
             {
                 Invalidate<invalidateAllViewports>(viewport, loc.x, loc.y, baseZ + 14, baseZ + 32, kMaxZoom);
@@ -485,7 +485,7 @@ static bool UpdateTemporaryAnimation(const TemporaryMapAnimation& animation)
             case MapAnimations::TemporaryType::onRidePhoto:
             {
                 if (tileElement->GetType() == TileElementType::Track && tileElement->BaseHeight == tileCoords.z
-                    && tileElement->AsTrack()->GetTrackType() == TrackElemType::OnRidePhoto)
+                    && tileElement->AsTrack()->GetTrackType() == TrackElemType::onRidePhoto)
                 {
                     isAnimating |= UpdateOnRidePhotoAnimation<invalidate>(*tileElement->AsTrack(), animation.location);
                 }
@@ -581,10 +581,10 @@ static std::optional<UpdateType> IsElementAnimated(const TileElementBase& elemen
             const auto* const track = element.AsTrack();
             switch (track->GetTrackType())
             {
-                case TrackElemType::Waterfall:
-                case TrackElemType::Rapids:
-                case TrackElemType::Whirlpool:
-                case TrackElemType::SpinningTunnel:
+                case TrackElemType::waterfall:
+                case TrackElemType::rapids:
+                case TrackElemType::whirlpool:
+                case TrackElemType::spinningTunnel:
                     return std::optional(UpdateType::invalidate);
                 default:
                     break;

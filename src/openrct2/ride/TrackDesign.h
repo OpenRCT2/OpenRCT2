@@ -101,7 +101,7 @@ enum class TrackDesignTrackElementFlag : uint8_t
 
 struct TrackDesignTrackElement
 {
-    OpenRCT2::TrackElemType type = OpenRCT2::TrackElemType::Flat;
+    OpenRCT2::TrackElemType type = OpenRCT2::TrackElemType::flat;
     uint8_t flags = 0;
     uint8_t colourScheme = 0;
     ::StationIndex stationIndex = StationIndex::FromUnderlying(0);

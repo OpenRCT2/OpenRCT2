@@ -19,7 +19,7 @@ namespace OpenRCT2
 constexpr RideTypeDescriptor InformationKioskRTD =
 {
     .Category = RideCategory::shop,
-    .StartTrackPiece = TrackElemType::FlatTrack1x1B,
+    .StartTrackPiece = TrackElemType::flatTrack1x1B,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::shop,
         .enabledTrackGroups = {},

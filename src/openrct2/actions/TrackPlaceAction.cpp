@@ -127,7 +127,7 @@ namespace OpenRCT2::GameActions
 
         const auto& rtd = ride->getRideTypeDescriptor();
 
-        if ((ride->lifecycleFlags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK) && _trackType == TrackElemType::EndStation)
+        if ((ride->lifecycleFlags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK) && _trackType == TrackElemType::endStation)
         {
             return Result(
                 Status::disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NOT_ALLOWED_TO_MODIFY_STATION);
@@ -145,7 +145,7 @@ namespace OpenRCT2::GameActions
 
         if (!rtd.HasFlag(RtdFlag::isFlatRide))
         {
-            if (_trackType == TrackElemType::OnRidePhoto)
+            if (_trackType == TrackElemType::onRidePhoto)
             {
                 if (ride->lifecycleFlags & RIDE_LIFECYCLE_ON_RIDE_PHOTO)
                 {
@@ -154,7 +154,7 @@ namespace OpenRCT2::GameActions
                         STR_ONLY_ONE_ON_RIDE_PHOTO_PER_RIDE);
                 }
             }
-            else if (_trackType == TrackElemType::CableLiftHill)
+            else if (_trackType == TrackElemType::cableLiftHill)
             {
                 if (ride->lifecycleFlags & RIDE_LIFECYCLE_CABLE_LIFT_HILL_COMPONENT_USED)
                 {
@@ -259,7 +259,7 @@ namespace OpenRCT2::GameActions
                 return Result(Status::invalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_TOO_HIGH);
             }
 
-            auto crossingMode = (rtd.HasFlag(RtdFlag::supportsLevelCrossings) && _trackType == TrackElemType::Flat)
+            auto crossingMode = (rtd.HasFlag(RtdFlag::supportsLevelCrossings) && _trackType == TrackElemType::flat)
                 ? CreateCrossingMode::trackOverPath
                 : CreateCrossingMode::none;
             auto canBuild = MapCanConstructWithClearAt(
@@ -463,7 +463,7 @@ namespace OpenRCT2::GameActions
             clearanceZ = floor2(clearanceZ, kCoordsZStep) + baseZ;
             const auto mapLocWithClearance = CoordsXYRangedZ(mapLoc, baseZ, clearanceZ);
 
-            auto crossingMode = (rtd.HasFlag(RtdFlag::supportsLevelCrossings) && _trackType == TrackElemType::Flat)
+            auto crossingMode = (rtd.HasFlag(RtdFlag::supportsLevelCrossings) && _trackType == TrackElemType::flat)
                 ? CreateCrossingMode::trackOverPath
                 : CreateCrossingMode::none;
             auto canBuild = MapCanConstructWithClearAt(
@@ -572,14 +572,14 @@ namespace OpenRCT2::GameActions
 
             switch (_trackType)
             {
-                case TrackElemType::Waterfall:
-                case TrackElemType::Rapids:
-                case TrackElemType::Whirlpool:
-                case TrackElemType::SpinningTunnel:
+                case TrackElemType::waterfall:
+                case TrackElemType::rapids:
+                case TrackElemType::whirlpool:
+                case TrackElemType::spinningTunnel:
                     MapAnimations::MarkTileForInvalidation(TileCoordsXY(mapLoc));
                     break;
-                case TrackElemType::Brakes:
-                case TrackElemType::DiagBrakes:
+                case TrackElemType::brakes:
+                case TrackElemType::diagBrakes:
                     trackElement->SetBrakeClosed(true);
                     break;
                 default:
@@ -666,17 +666,17 @@ namespace OpenRCT2::GameActions
         {
             switch (_trackType)
             {
-                case TrackElemType::OnRidePhoto:
+                case TrackElemType::onRidePhoto:
                     ride->lifecycleFlags |= RIDE_LIFECYCLE_ON_RIDE_PHOTO;
                     InvalidateTestResults(*ride);
                     break;
-                case TrackElemType::CableLiftHill:
+                case TrackElemType::cableLiftHill:
                     ride->lifecycleFlags |= RIDE_LIFECYCLE_CABLE_LIFT_HILL_COMPONENT_USED;
                     ride->cableLiftLoc = originLocation;
                     InvalidateTestResults(*ride);
                     break;
-                case TrackElemType::DiagBlockBrakes:
-                case TrackElemType::BlockBrakes:
+                case TrackElemType::diagBlockBrakes:
+                case TrackElemType::blockBrakes:
                 {
                     ride->numBlockBrakes++;
 
@@ -701,14 +701,14 @@ namespace OpenRCT2::GameActions
 
             switch (_trackType)
             {
-                case TrackElemType::Up25ToFlat:
-                case TrackElemType::Up60ToFlat:
-                case TrackElemType::DiagUp25ToFlat:
-                case TrackElemType::DiagUp60ToFlat:
+                case TrackElemType::up25ToFlat:
+                case TrackElemType::up60ToFlat:
+                case TrackElemType::diagUp25ToFlat:
+                case TrackElemType::diagUp60ToFlat:
                     if (!_trackPlaceFlags.has(LiftHillAndInverted::liftHill))
                         break;
                     [[fallthrough]];
-                case TrackElemType::CableLiftHill:
+                case TrackElemType::cableLiftHill:
                     ride->numBlockBrakes++;
                     break;
                 default:

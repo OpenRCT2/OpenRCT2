@@ -262,7 +262,7 @@ static void PaintGhostTrainTrackFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    bool isBackwards = trackElement.GetTrackType() == TrackElemType::Down25ToFlat;
+    bool isBackwards = trackElement.GetTrackType() == TrackElemType::down25ToFlat;
     TunnelType doorImage;
     if (!isBackwards)
     {
@@ -428,7 +428,7 @@ static void PaintGhostTrainTrackRightQuarterTurn3Tiles(
     TrackPaintUtilRightQuarterTurn3TilesPaint(
         session, 3, height, direction, trackSequence, session.TrackColours, kGhostTrainTrackPiecesQuarterTurn3Tiles, nullptr,
         defaultRightQuarterTurn3TilesBoundLengths, defaultRightQuarterTurn3TilesBoundOffsets);
-    bool isBackwards = trackElement.GetTrackType() == TrackElemType::LeftQuarterTurn3Tiles;
+    bool isBackwards = trackElement.GetTrackType() == TrackElemType::leftQuarterTurn3Tiles;
     bool isDoorA = (!isBackwards && trackSequence == 0) || (isBackwards && trackSequence == 3);
     auto tunnelType = isDoorA ? kDoorOpeningInwardsToImage[trackElement.GetDoorAState()]
                               : kDoorOpeningOutwardsToImage[trackElement.GetDoorBState()];
@@ -478,7 +478,7 @@ static void PaintGhostTrainTrackLeftQuarterTurn1Tile(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    bool isBackwards = trackElement.GetTrackType() == TrackElemType::RightQuarterTurn1Tile;
+    bool isBackwards = trackElement.GetTrackType() == TrackElemType::rightQuarterTurn1Tile;
     TunnelType tunnelStartImage, tunnelEndImage;
     if (!isBackwards)
     {
@@ -563,42 +563,42 @@ TrackPaintFunction GetTrackPaintFunctionGhostTrain(OpenRCT2::TrackElemType track
 {
     switch (trackType)
     {
-        case TrackElemType::Flat:
+        case TrackElemType::flat:
             return PaintGhostTrainTrackFlat;
 
-        case TrackElemType::EndStation:
-        case TrackElemType::BeginStation:
-        case TrackElemType::MiddleStation:
+        case TrackElemType::endStation:
+        case TrackElemType::beginStation:
+        case TrackElemType::middleStation:
             return PaintGhostTrainStation;
 
-        case TrackElemType::Up25:
+        case TrackElemType::up25:
             return PaintGhostTrainTrack25DegUp;
-        case TrackElemType::FlatToUp25:
+        case TrackElemType::flatToUp25:
             return PaintGhostTrainTrackFlatTo25DegUp;
-        case TrackElemType::Up25ToFlat:
+        case TrackElemType::up25ToFlat:
             return PaintGhostTrainTrack25DegUpToFlat;
 
-        case TrackElemType::Down25:
+        case TrackElemType::down25:
             return PaintGhostTrainTrack25DegDown;
-        case TrackElemType::FlatToDown25:
+        case TrackElemType::flatToDown25:
             return PaintGhostTrainTrackFlatTo25DegDown;
-        case TrackElemType::Down25ToFlat:
+        case TrackElemType::down25ToFlat:
             return PaintGhostTrainTrack25DegDownToFlat;
 
-        case TrackElemType::LeftQuarterTurn3Tiles:
+        case TrackElemType::leftQuarterTurn3Tiles:
             return PaintGhostTrainTrackLeftQuarterTurn3Tiles;
-        case TrackElemType::RightQuarterTurn3Tiles:
+        case TrackElemType::rightQuarterTurn3Tiles:
             return PaintGhostTrainTrackRightQuarterTurn3Tiles;
 
-        case TrackElemType::LeftQuarterTurn1Tile:
+        case TrackElemType::leftQuarterTurn1Tile:
             return PaintGhostTrainTrackLeftQuarterTurn1Tile;
-        case TrackElemType::RightQuarterTurn1Tile:
+        case TrackElemType::rightQuarterTurn1Tile:
             return PaintGhostTrainTrackRightQuarterTurn1Tile;
 
-        case TrackElemType::Brakes:
+        case TrackElemType::brakes:
             return PaintGhostTrainTrackBrakes;
 
-        case TrackElemType::SpinningTunnel:
+        case TrackElemType::spinningTunnel:
             return PaintGhostTrainTrackSpinningTunnel;
         default:
             return TrackPaintFunctionDummy;

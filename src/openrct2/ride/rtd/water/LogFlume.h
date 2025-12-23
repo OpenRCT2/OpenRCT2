@@ -20,7 +20,7 @@ namespace OpenRCT2
 constexpr RideTypeDescriptor LogFlumeRTD =
 {
     .Category = RideCategory::water,
-    .StartTrackPiece = TrackElemType::EndStation,
+    .StartTrackPiece = TrackElemType::endStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::logFlume,
         .supportType = MetalSupportType::boxed,

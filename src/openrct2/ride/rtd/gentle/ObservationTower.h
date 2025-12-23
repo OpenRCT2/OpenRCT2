@@ -21,7 +21,7 @@ namespace OpenRCT2
 constexpr RideTypeDescriptor ObservationTowerRTD =
 {
     .Category = RideCategory::gentle,
-    .StartTrackPiece = TrackElemType::TowerBase,
+    .StartTrackPiece = TrackElemType::towerBase,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::observationTower,
         .enabledTrackGroups = {TrackGroup::tower},

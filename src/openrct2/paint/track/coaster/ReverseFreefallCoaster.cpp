@@ -220,7 +220,7 @@ static void PaintReverseFreefallRCFlat(
         PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
     }
 
-    DrawSupportForSequenceA<TrackElemType::Flat>(
+    DrawSupportForSequenceA<TrackElemType::flat>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -242,7 +242,7 @@ static void PaintReverseFreefallRCStation(
         imageId = session.TrackColours.WithIndex(kPiecesStation[direction]);
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 6, 0, height + 1 }, { 20, 32, 1 } });
     }
-    DrawSupportForSequenceA<TrackElemType::EndStation>(
+    DrawSupportForSequenceA<TrackElemType::endStation>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
     TrackPaintUtilDrawStationTunnel(session, direction, height);
 
@@ -299,13 +299,13 @@ static void PaintReverseFreefallRCSlope(
                     session, direction, supportsImageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, bbHeight } });
             }
 
-            DrawSupportForSequenceA<TrackElemType::ReverseFreefallSlope>(
+            DrawSupportForSequenceA<TrackElemType::reverseFreefallSlope>(
                 session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + supportHeights[trackSequence]);
             break;
         case 5:
-            if (DrawSupportForSequenceA<TrackElemType::ReverseFreefallSlope>(
+            if (DrawSupportForSequenceA<TrackElemType::reverseFreefallSlope>(
                     session, supportType.wooden, trackSequence, direction, height, session.SupportColours))
             {
                 ImageId floorImageId;
@@ -346,7 +346,7 @@ static void PaintReverseFreefallRCSlope(
                 PaintAddImageAsChildRotated(
                     session, direction, supportsImageId, { 0, 0, height }, { { 27, 6, height }, { 1, 20, 126 } });
             }
-            DrawSupportForSequenceA<TrackElemType::ReverseFreefallSlope>(
+            DrawSupportForSequenceA<TrackElemType::reverseFreefallSlope>(
                 session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + supportHeights[trackSequence]);
@@ -395,7 +395,7 @@ static void PaintReverseFreefallRCOnridePhoto(
         session, direction, session.TrackColours.WithIndex(kPiecesStation[direction]), { 0, 0, height },
         { { 0, 6, height }, { 32, 20, 1 } });
 
-    DrawSupportForSequenceA<TrackElemType::OnRidePhoto>(
+    DrawSupportForSequenceA<TrackElemType::onRidePhoto>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
     TrackPaintUtilOnridePhotoPaint2(session, direction, trackElement, height);
@@ -405,17 +405,17 @@ TrackPaintFunction GetTrackPaintFunctionReverseFreefallRC(OpenRCT2::TrackElemTyp
 {
     switch (trackType)
     {
-        case TrackElemType::Flat:
+        case TrackElemType::flat:
             return PaintReverseFreefallRCFlat;
-        case TrackElemType::EndStation:
-        case TrackElemType::BeginStation:
-        case TrackElemType::MiddleStation:
+        case TrackElemType::endStation:
+        case TrackElemType::beginStation:
+        case TrackElemType::middleStation:
             return PaintReverseFreefallRCStation;
-        case TrackElemType::ReverseFreefallSlope:
+        case TrackElemType::reverseFreefallSlope:
             return PaintReverseFreefallRCSlope;
-        case TrackElemType::ReverseFreefallVertical:
+        case TrackElemType::reverseFreefallVertical:
             return PaintReverseFreefallRCVertical;
-        case TrackElemType::OnRidePhoto:
+        case TrackElemType::onRidePhoto:
             return PaintReverseFreefallRCOnridePhoto;
         default:
             return TrackPaintFunctionDummy;

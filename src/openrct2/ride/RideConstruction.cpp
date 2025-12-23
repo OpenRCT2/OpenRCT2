@@ -569,7 +569,7 @@ static void ride_construction_reset_current_piece()
     }
     else
     {
-        _currentlySelectedTrack = TrackElemType::None;
+        _currentlySelectedTrack = TrackElemType::none;
         _rideConstructionState = RideConstructionState::State0;
     }
 }
@@ -1373,7 +1373,7 @@ void Ride::validateStations()
 
                 // get the StationIndex for the station
                 StationIndex stationId = StationIndex::FromUnderlying(0);
-                if (trackType != TrackElemType::Maze)
+                if (trackType != TrackElemType::maze)
                 {
                     uint8_t trackSequence = trackElement->AsTrack()->GetSequenceIndex();
 
@@ -1540,5 +1540,5 @@ OpenRCT2::TrackElemType GetTrackTypeFromCurve(
         return trackDescriptor->trackElement;
     }
 
-    return TrackElemType::None;
+    return TrackElemType::none;
 }

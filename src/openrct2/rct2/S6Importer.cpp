@@ -1059,7 +1059,7 @@ namespace OpenRCT2::RCT2
             }
             else
             {
-                dst.ProximityTrackType = TrackElemType::None;
+                dst.ProximityTrackType = TrackElemType::none;
             }
             dst.ProximityBaseHeight = src.ProximityBaseHeight;
             dst.ProximityTotal = src.ProximityTotal;
@@ -1394,12 +1394,12 @@ namespace OpenRCT2::RCT2
                     dst2->SetStationIndex(StationIndex::FromUnderlying(src2->GetStationIndex()));
                     dst2->SetHasGreenLight(src2->HasGreenLight());
                     // Brakes import as closed to preserve legacy behaviour
-                    dst2->SetBrakeClosed(src2->BlockBrakeClosed() || (trackType == TrackElemType::Brakes));
+                    dst2->SetBrakeClosed(src2->BlockBrakeClosed() || (trackType == TrackElemType::brakes));
                     dst2->SetIsIndestructible(src2->IsIndestructible());
                     // Skipping IsHighlighted()
 
                     // Import block brakes to keep legacy behaviour
-                    if (trackType == TrackElemType::BlockBrakes)
+                    if (trackType == TrackElemType::blockBrakes)
                     {
                         dst2->SetBrakeBoosterSpeed(kRCT2DefaultBlockBrakeSpeed);
                     }
@@ -1407,7 +1407,7 @@ namespace OpenRCT2::RCT2
                     {
                         dst2->SetBrakeBoosterSpeed(src2->GetBrakeBoosterSpeed());
                     }
-                    else if (trackType == TrackElemType::OnRidePhoto)
+                    else if (trackType == TrackElemType::onRidePhoto)
                     {
                         dst2->SetPhotoTimeout(src2->GetPhotoTimeout());
                     }
@@ -2002,10 +2002,10 @@ namespace OpenRCT2::RCT2
                 // booster track but this is unlikely since only two rides have spinning control track - by default they load as
                 // booster.
                 TileElement* tileElement2 = MapGetTrackElementAtOfTypeSeq(
-                    dst->TrackLocation, TrackElemType::RotationControlToggle, 0);
+                    dst->TrackLocation, TrackElemType::rotationControlToggle, 0);
 
                 if (tileElement2 != nullptr)
-                    dst->SetTrackType(TrackElemType::RotationControlToggle);
+                    dst->SetTrackType(TrackElemType::rotationControlToggle);
             }
             else if (src->GetTrackType() == OpenRCT2::RCT12::TrackElemType::blockBrakes)
             {
@@ -2016,7 +2016,7 @@ namespace OpenRCT2::RCT2
         {
             dst->BoatLocation = TileCoordsXY{ src->BoatLocation.x, src->BoatLocation.y }.ToCoordsXY();
             dst->SetTrackDirection(0);
-            dst->SetTrackType(OpenRCT2::TrackElemType::Flat);
+            dst->SetTrackType(OpenRCT2::TrackElemType::flat);
         }
 
         dst->next_vehicle_on_train = EntityId::FromUnderlying(src->NextVehicleOnTrain);

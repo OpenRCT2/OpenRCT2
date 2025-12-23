@@ -1035,10 +1035,10 @@ namespace OpenRCT2::Ui::Windows
             {
                 switch (_currentlySelectedTrack.trackType)
                 {
-                    case TrackElemType::SpinningTunnel:
-                    case TrackElemType::Whirlpool:
-                    case TrackElemType::Rapids:
-                    case TrackElemType::Waterfall:
+                    case TrackElemType::spinningTunnel:
+                    case TrackElemType::whirlpool:
+                    case TrackElemType::rapids:
+                    case TrackElemType::waterfall:
                         invalidateWidget(WIDX_CONSTRUCT);
                         break;
                     default:
@@ -1212,28 +1212,28 @@ namespace OpenRCT2::Ui::Windows
                     {
                         if (_currentlySelectedTrack == TrackCurve::Left && _currentTrackRollEnd == TrackRoll::Left)
                         {
-                            _currentlySelectedTrack = TrackElemType::LeftHalfBankedHelixDownLarge;
+                            _currentlySelectedTrack = TrackElemType::leftHalfBankedHelixDownLarge;
                             _currentTrackPrice = kMoney64Undefined;
                             WindowRideConstructionUpdateActiveElements();
                             break;
                         }
                         if (_currentlySelectedTrack == TrackCurve::Right && _currentTrackRollEnd == TrackRoll::Right)
                         {
-                            _currentlySelectedTrack = TrackElemType::RightHalfBankedHelixDownLarge;
+                            _currentlySelectedTrack = TrackElemType::rightHalfBankedHelixDownLarge;
                             _currentTrackPrice = kMoney64Undefined;
                             WindowRideConstructionUpdateActiveElements();
                             break;
                         }
                         if (_currentlySelectedTrack == TrackCurve::LeftSmall && _currentTrackRollEnd == TrackRoll::Left)
                         {
-                            _currentlySelectedTrack = TrackElemType::LeftHalfBankedHelixDownSmall;
+                            _currentlySelectedTrack = TrackElemType::leftHalfBankedHelixDownSmall;
                             _currentTrackPrice = kMoney64Undefined;
                             WindowRideConstructionUpdateActiveElements();
                             break;
                         }
                         if (_currentlySelectedTrack == TrackCurve::RightSmall && _currentTrackRollEnd == TrackRoll::Right)
                         {
-                            _currentlySelectedTrack = TrackElemType::RightHalfBankedHelixDownSmall;
+                            _currentlySelectedTrack = TrackElemType::rightHalfBankedHelixDownSmall;
                             _currentTrackPrice = kMoney64Undefined;
                             WindowRideConstructionUpdateActiveElements();
                             break;
@@ -1243,14 +1243,14 @@ namespace OpenRCT2::Ui::Windows
                     {
                         if (_currentlySelectedTrack == TrackCurve::Left && _currentTrackRollEnd == TrackRoll::Left)
                         {
-                            _currentlySelectedTrack = TrackElemType::LeftQuarterBankedHelixLargeDown;
+                            _currentlySelectedTrack = TrackElemType::leftQuarterBankedHelixLargeDown;
                             _currentTrackPrice = kMoney64Undefined;
                             WindowRideConstructionUpdateActiveElements();
                             break;
                         }
                         if (_currentlySelectedTrack == TrackCurve::Right && _currentTrackRollEnd == TrackRoll::Right)
                         {
-                            _currentlySelectedTrack = TrackElemType::RightQuarterBankedHelixLargeDown;
+                            _currentlySelectedTrack = TrackElemType::rightQuarterBankedHelixLargeDown;
                             _currentTrackPrice = kMoney64Undefined;
                             WindowRideConstructionUpdateActiveElements();
                             break;
@@ -1263,14 +1263,14 @@ namespace OpenRCT2::Ui::Windows
                         {
                             if (_currentlySelectedTrack == TrackCurve::Left)
                             {
-                                _currentlySelectedTrack = TrackElemType::LeftQuarterHelixLargeDown;
+                                _currentlySelectedTrack = TrackElemType::leftQuarterHelixLargeDown;
                                 _currentTrackPrice = kMoney64Undefined;
                                 WindowRideConstructionUpdateActiveElements();
                                 break;
                             }
                             if (_currentlySelectedTrack == TrackCurve::Right)
                             {
-                                _currentlySelectedTrack = TrackElemType::RightQuarterHelixLargeDown;
+                                _currentlySelectedTrack = TrackElemType::rightQuarterHelixLargeDown;
                                 _currentTrackPrice = kMoney64Undefined;
                                 WindowRideConstructionUpdateActiveElements();
                                 break;
@@ -1326,7 +1326,7 @@ namespace OpenRCT2::Ui::Windows
                         if (_rideConstructionState == RideConstructionState::Front
                             && _currentlySelectedTrack == TrackCurve::None)
                         {
-                            _currentlySelectedTrack = TrackElemType::ReverseFreefallSlope;
+                            _currentlySelectedTrack = TrackElemType::reverseFreefallSlope;
                             WindowRideConstructionUpdateActiveElements();
                         }
                     }
@@ -1341,28 +1341,28 @@ namespace OpenRCT2::Ui::Windows
                     {
                         if (_currentlySelectedTrack == TrackCurve::Left && _currentTrackRollEnd == TrackRoll::Left)
                         {
-                            _currentlySelectedTrack = TrackElemType::LeftHalfBankedHelixUpLarge;
+                            _currentlySelectedTrack = TrackElemType::leftHalfBankedHelixUpLarge;
                             _currentTrackPrice = kMoney64Undefined;
                             WindowRideConstructionUpdateActiveElements();
                             break;
                         }
                         if (_currentlySelectedTrack == TrackCurve::Right && _currentTrackRollEnd == TrackRoll::Right)
                         {
-                            _currentlySelectedTrack = TrackElemType::RightHalfBankedHelixUpLarge;
+                            _currentlySelectedTrack = TrackElemType::rightHalfBankedHelixUpLarge;
                             _currentTrackPrice = kMoney64Undefined;
                             WindowRideConstructionUpdateActiveElements();
                             break;
                         }
                         if (_currentlySelectedTrack == TrackCurve::LeftSmall && _currentTrackRollEnd == TrackRoll::Left)
                         {
-                            _currentlySelectedTrack = TrackElemType::LeftHalfBankedHelixUpSmall;
+                            _currentlySelectedTrack = TrackElemType::leftHalfBankedHelixUpSmall;
                             _currentTrackPrice = kMoney64Undefined;
                             WindowRideConstructionUpdateActiveElements();
                             break;
                         }
                         if (_currentlySelectedTrack == TrackCurve::RightSmall && _currentTrackRollEnd == TrackRoll::Right)
                         {
-                            _currentlySelectedTrack = TrackElemType::RightHalfBankedHelixUpSmall;
+                            _currentlySelectedTrack = TrackElemType::rightHalfBankedHelixUpSmall;
                             _currentTrackPrice = kMoney64Undefined;
                             WindowRideConstructionUpdateActiveElements();
                             break;
@@ -1372,14 +1372,14 @@ namespace OpenRCT2::Ui::Windows
                     {
                         if (_currentlySelectedTrack == TrackCurve::Left && _currentTrackRollEnd == TrackRoll::Left)
                         {
-                            _currentlySelectedTrack = TrackElemType::LeftQuarterBankedHelixLargeUp;
+                            _currentlySelectedTrack = TrackElemType::leftQuarterBankedHelixLargeUp;
                             _currentTrackPrice = kMoney64Undefined;
                             WindowRideConstructionUpdateActiveElements();
                             break;
                         }
                         if (_currentlySelectedTrack == TrackCurve::Right && _currentTrackRollEnd == TrackRoll::Right)
                         {
-                            _currentlySelectedTrack = TrackElemType::RightQuarterBankedHelixLargeUp;
+                            _currentlySelectedTrack = TrackElemType::rightQuarterBankedHelixLargeUp;
                             _currentTrackPrice = kMoney64Undefined;
                             WindowRideConstructionUpdateActiveElements();
                             break;
@@ -1392,14 +1392,14 @@ namespace OpenRCT2::Ui::Windows
                         {
                             if (_currentlySelectedTrack == TrackCurve::Left)
                             {
-                                _currentlySelectedTrack = TrackElemType::LeftQuarterHelixLargeUp;
+                                _currentlySelectedTrack = TrackElemType::leftQuarterHelixLargeUp;
                                 _currentTrackPrice = kMoney64Undefined;
                                 WindowRideConstructionUpdateActiveElements();
                                 break;
                             }
                             if (_currentlySelectedTrack == TrackCurve::Right)
                             {
-                                _currentlySelectedTrack = TrackElemType::RightQuarterHelixLargeUp;
+                                _currentlySelectedTrack = TrackElemType::rightQuarterHelixLargeUp;
                                 _currentTrackPrice = kMoney64Undefined;
                                 WindowRideConstructionUpdateActiveElements();
                                 break;
@@ -1548,18 +1548,18 @@ namespace OpenRCT2::Ui::Windows
             OpenRCT2::TrackElemType trackPiece = _specialElementDropdownState.Elements[selectedIndex].TrackType;
             switch (trackPiece)
             {
-                case TrackElemType::EndStation:
-                case TrackElemType::SBendLeft:
-                case TrackElemType::SBendRight:
+                case TrackElemType::endStation:
+                case TrackElemType::sBendLeft:
+                case TrackElemType::sBendRight:
                     _currentTrackPitchEnd = TrackPitch::None;
                     break;
-                case TrackElemType::LeftVerticalLoop:
-                case TrackElemType::RightVerticalLoop:
+                case TrackElemType::leftVerticalLoop:
+                case TrackElemType::rightVerticalLoop:
                     _currentTrackRollEnd = TrackRoll::None;
                     _currentTrackHasLiftHill = false;
                     break;
-                case TrackElemType::BlockBrakes:
-                case TrackElemType::DiagBlockBrakes:
+                case TrackElemType::blockBrakes:
+                case TrackElemType::diagBlockBrakes:
                     _currentBrakeSpeed = kRCT2DefaultBlockBrakeSpeed;
                     break;
                 default:
@@ -1990,9 +1990,9 @@ namespace OpenRCT2::Ui::Windows
                 || TrackTypeIsBooster(_currentlySelectedTrack.trackType);
 
             // only necessary because TD6 writes speed and seat rotation to the same bits. Remove for new track design format.
-            bool trackHasSpeedAndSeatRotation = _selectedTrackType == TrackElemType::BlockBrakes
-                || _currentlySelectedTrack == TrackElemType::BlockBrakes || _selectedTrackType > TrackElemType::HighestAlias
-                || _currentlySelectedTrack.trackType > TrackElemType::HighestAlias;
+            bool trackHasSpeedAndSeatRotation = _selectedTrackType == TrackElemType::blockBrakes
+                || _currentlySelectedTrack == TrackElemType::blockBrakes || _selectedTrackType > TrackElemType::highestAlias
+                || _currentlySelectedTrack.trackType > TrackElemType::highestAlias;
 
             bool rideHasSeatRotation = rtd.HasFlag(RtdFlag::hasSeatRotation);
 
@@ -2250,7 +2250,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 case RideConstructionState::State0:
                     trackDirection = _currentTrackPieceDirection;
-                    trackType = TrackElemType::Flat;
+                    trackType = TrackElemType::flat;
                     trackPos = _currentTrackBegin;
                     break;
                 case RideConstructionState::Selected:
@@ -2265,7 +2265,7 @@ namespace OpenRCT2::Ui::Windows
                     if (WindowRideConstructionUpdateState(&trackType, &trackDirection, nullptr, nullptr, &trackPos, nullptr))
                     {
                         trackDirection = _currentTrackPieceDirection;
-                        trackType = OpenRCT2::TrackElemType::Flat;
+                        trackType = OpenRCT2::TrackElemType::flat;
                         trackPos = _currentTrackBegin;
                     }
                     break;
@@ -2596,7 +2596,7 @@ namespace OpenRCT2::Ui::Windows
                 TrackElemType trackPiece = element.TrackType;
 
                 // Separate elements logically
-                if (trackPiece == TrackElemType::None)
+                if (trackPiece == TrackElemType::none)
                 {
                     gDropdown.items[i++] = Dropdown::Separator();
                     continue;
@@ -3176,7 +3176,7 @@ namespace OpenRCT2::Ui::Windows
 
         window->updateMapSelection();
 
-        _selectedTrackType = TrackElemType::None;
+        _selectedTrackType = TrackElemType::none;
         if (_rideConstructionState == RideConstructionState::Selected)
         {
             TileElement* tileElement;
@@ -4701,16 +4701,16 @@ namespace OpenRCT2::Ui::Windows
             if (_rideConstructionState2 == RideConstructionState::Selected
                 || _rideConstructionState2 == RideConstructionState::Front)
             {
-                if (type == TrackElemType::MiddleStation || type == TrackElemType::BeginStation)
+                if (type == TrackElemType::middleStation || type == TrackElemType::beginStation)
                 {
-                    type = TrackElemType::EndStation;
+                    type = TrackElemType::endStation;
                 }
             }
             if (_rideConstructionState2 == RideConstructionState::Back)
             {
-                if (type == TrackElemType::MiddleStation)
+                if (type == TrackElemType::middleStation)
                 {
-                    type = TrackElemType::BeginStation;
+                    type = TrackElemType::beginStation;
                 }
             }
             if (Network::GetMode() == Network::Mode::client)
@@ -4831,9 +4831,9 @@ namespace OpenRCT2::Ui::Windows
         }
 
         auto selectedTrack = _currentlySelectedTrack;
-        if (selectedTrack == TrackElemType::None)
+        if (selectedTrack == TrackElemType::none)
         {
-            return std::make_pair(false, OpenRCT2::TrackElemType::Flat);
+            return std::make_pair(false, OpenRCT2::TrackElemType::flat);
         }
 
         bool startsDiagonal = (_currentTrackPieceDirection & (1 << 2)) != 0;
@@ -4849,49 +4849,49 @@ namespace OpenRCT2::Ui::Windows
         {
             auto trackPiece = GetTrackTypeFromCurve(
                 selectedTrack.curve, startsDiagonal, startSlope, endSlope, startBank, endBank);
-            if (trackPiece != TrackElemType::None)
+            if (trackPiece != TrackElemType::none)
                 return std::make_pair(true, trackPiece);
             else
-                return std::make_pair(false, OpenRCT2::TrackElemType::Flat);
+                return std::make_pair(false, OpenRCT2::TrackElemType::flat);
         }
 
         auto asTrackType = selectedTrack.trackType;
         switch (asTrackType)
         {
-            case TrackElemType::EndStation:
-            case TrackElemType::SBendLeft:
-            case TrackElemType::SBendRight:
+            case TrackElemType::endStation:
+            case TrackElemType::sBendLeft:
+            case TrackElemType::sBendRight:
                 if (startSlope != TrackPitch::None || endSlope != TrackPitch::None)
                 {
-                    return std::make_pair(false, OpenRCT2::TrackElemType::Flat);
+                    return std::make_pair(false, OpenRCT2::TrackElemType::flat);
                 }
 
                 if (startBank != TrackRoll::None || endBank != TrackRoll::None)
                 {
-                    return std::make_pair(false, OpenRCT2::TrackElemType::Flat);
+                    return std::make_pair(false, OpenRCT2::TrackElemType::flat);
                 }
 
                 return std::make_pair(true, asTrackType);
 
-            case TrackElemType::LeftVerticalLoop:
-            case TrackElemType::RightVerticalLoop:
+            case TrackElemType::leftVerticalLoop:
+            case TrackElemType::rightVerticalLoop:
                 if (startBank != TrackRoll::None || endBank != TrackRoll::None)
                 {
-                    return std::make_pair(false, OpenRCT2::TrackElemType::Flat);
+                    return std::make_pair(false, OpenRCT2::TrackElemType::flat);
                 }
 
                 if (_rideConstructionState == RideConstructionState::Back)
                 {
                     if (endSlope != TrackPitch::Down25)
                     {
-                        return std::make_pair(false, OpenRCT2::TrackElemType::Flat);
+                        return std::make_pair(false, OpenRCT2::TrackElemType::flat);
                     }
                 }
                 else
                 {
                     if (startSlope != TrackPitch::Up25)
                     {
-                        return std::make_pair(false, OpenRCT2::TrackElemType::Flat);
+                        return std::make_pair(false, OpenRCT2::TrackElemType::flat);
                     }
                 }
 
@@ -4952,20 +4952,20 @@ namespace OpenRCT2::Ui::Windows
         {
             switch (trackType)
             {
-                case TrackElemType::FlatToUp60:
-                    trackType = TrackElemType::FlatToUp60LongBase;
+                case TrackElemType::flatToUp60:
+                    trackType = TrackElemType::flatToUp60LongBase;
                     break;
 
-                case TrackElemType::Up60ToFlat:
-                    trackType = TrackElemType::Up60ToFlatLongBase;
+                case TrackElemType::up60ToFlat:
+                    trackType = TrackElemType::up60ToFlatLongBase;
                     break;
 
-                case TrackElemType::FlatToDown60:
-                    trackType = TrackElemType::FlatToDown60LongBase;
+                case TrackElemType::flatToDown60:
+                    trackType = TrackElemType::flatToDown60LongBase;
                     break;
 
-                case TrackElemType::Down60ToFlat:
-                    trackType = TrackElemType::Down60ToFlatLongBase;
+                case TrackElemType::down60ToFlat:
+                    trackType = TrackElemType::down60ToFlatLongBase;
                     break;
 
                 default:
@@ -4977,20 +4977,20 @@ namespace OpenRCT2::Ui::Windows
         {
             switch (trackType)
             {
-                case TrackElemType::DiagFlatToUp60:
-                    trackType = TrackElemType::DiagFlatToUp60LongBase;
+                case TrackElemType::diagFlatToUp60:
+                    trackType = TrackElemType::diagFlatToUp60LongBase;
                     break;
 
-                case TrackElemType::DiagUp60ToFlat:
-                    trackType = TrackElemType::DiagUp60ToFlatLongBase;
+                case TrackElemType::diagUp60ToFlat:
+                    trackType = TrackElemType::diagUp60ToFlatLongBase;
                     break;
 
-                case TrackElemType::DiagFlatToDown60:
-                    trackType = TrackElemType::DiagFlatToDown60LongBase;
+                case TrackElemType::diagFlatToDown60:
+                    trackType = TrackElemType::diagFlatToDown60LongBase;
                     break;
 
-                case TrackElemType::DiagDown60ToFlat:
-                    trackType = TrackElemType::DiagDown60ToFlatLongBase;
+                case TrackElemType::diagDown60ToFlat:
+                    trackType = TrackElemType::diagDown60ToFlatLongBase;
                     break;
 
                 default:
@@ -5007,7 +5007,7 @@ namespace OpenRCT2::Ui::Windows
 
             auto coveredVariant = ted.alternativeType;
             // this method limits the track element types that can be used
-            if (coveredVariant != TrackElemType::None && (availableGroups.get(EnumValue(ted.definition.group))))
+            if (coveredVariant != TrackElemType::none && (availableGroups.get(EnumValue(ted.definition.group))))
             {
                 trackType = coveredVariant;
                 if (!getGameState().cheats.enableChainLiftOnAllTrack)
@@ -5065,7 +5065,7 @@ namespace OpenRCT2::Ui::Windows
             liftHillAndInvertedState.unset(LiftHillAndInverted::liftHill);
             _currentTrackHasLiftHill = false;
 
-            if (trackType == TrackElemType::LeftCurvedLiftHill || trackType == TrackElemType::RightCurvedLiftHill)
+            if (trackType == TrackElemType::leftCurvedLiftHill || trackType == TrackElemType::rightCurvedLiftHill)
             {
                 liftHillAndInvertedState.set(LiftHillAndInverted::liftHill);
             }

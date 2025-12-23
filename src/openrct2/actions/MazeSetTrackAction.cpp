@@ -140,7 +140,7 @@ namespace OpenRCT2::GameActions
             }
         }
 
-        TileElement* tileElement = MapGetTrackElementAtOfTypeFromRide(_loc, TrackElemType::Maze, _rideIndex);
+        TileElement* tileElement = MapGetTrackElementAtOfTypeFromRide(_loc, TrackElemType::maze, _rideIndex);
         if (tileElement == nullptr)
         {
             if (_mode != GC_SET_MAZE_TRACK_BUILD)
@@ -212,7 +212,7 @@ namespace OpenRCT2::GameActions
             WallRemoveAt({ _loc.ToTileStart(), _loc.z, _loc.z + 32 });
         }
 
-        auto tileElement = MapGetTrackElementAtOfTypeFromRide(_loc, TrackElemType::Maze, _rideIndex);
+        auto tileElement = MapGetTrackElementAtOfTypeFromRide(_loc, TrackElemType::maze, _rideIndex);
         if (tileElement == nullptr)
         {
             res.cost = MazeCalculateCost(0, *ride, _loc);
@@ -223,7 +223,7 @@ namespace OpenRCT2::GameActions
             Guard::Assert(trackElement != nullptr);
 
             trackElement->SetClearanceZ(_loc.z + kMazeClearanceHeight);
-            trackElement->SetTrackType(TrackElemType::Maze);
+            trackElement->SetTrackType(TrackElemType::maze);
             trackElement->SetRideType(ride->type);
             trackElement->SetRideIndex(_rideIndex);
             trackElement->SetMazeEntry(0xFFFF);
@@ -262,7 +262,7 @@ namespace OpenRCT2::GameActions
                         auto previousElementLoc = CoordsXY{ _loc }.ToTileStart() - CoordsDirectionDelta[_loc.direction];
 
                         TileElement* previousTileElement = MapGetTrackElementAtOfTypeFromRide(
-                            { previousElementLoc, _loc.z }, TrackElemType::Maze, _rideIndex);
+                            { previousElementLoc, _loc.z }, TrackElemType::maze, _rideIndex);
 
                         if (previousTileElement != nullptr)
                         {
@@ -288,7 +288,7 @@ namespace OpenRCT2::GameActions
                                                      _loc.y - CoordsDirectionDelta[_loc.direction].y / 2 };
 
                     tileElement = MapGetTrackElementAtOfTypeFromRide(
-                        { previousSegment, _loc.z }, TrackElemType::Maze, _rideIndex);
+                        { previousSegment, _loc.z }, TrackElemType::maze, _rideIndex);
 
                     MapInvalidateTileFull(previousSegment.ToTileStart());
                     if (tileElement == nullptr)
@@ -316,7 +316,7 @@ namespace OpenRCT2::GameActions
                         auto nextElementLoc = previousSegment.ToTileStart() + CoordsDirectionDelta[direction1];
 
                         TileElement* tmp_tileElement = MapGetTrackElementAtOfTypeFromRide(
-                            { nextElementLoc, _loc.z }, TrackElemType::Maze, _rideIndex);
+                            { nextElementLoc, _loc.z }, TrackElemType::maze, _rideIndex);
 
                         if (tmp_tileElement != nullptr)
                         {

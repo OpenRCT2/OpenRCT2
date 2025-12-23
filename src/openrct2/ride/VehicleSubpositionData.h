@@ -14,7 +14,7 @@
 
 #include <cstdint>
 
-constexpr const size_t VehicleTrackSubpositionSizeDefault = EnumValue(OpenRCT2::TrackElemType::Count)
+constexpr const size_t VehicleTrackSubpositionSizeDefault = EnumValue(OpenRCT2::TrackElemType::count)
     * kNumOrthogonalDirections;
 
 struct VehicleInfo;

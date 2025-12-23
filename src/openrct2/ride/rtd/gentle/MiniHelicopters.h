@@ -21,7 +21,7 @@ namespace OpenRCT2
 constexpr RideTypeDescriptor MiniHelicoptersRTD =
 {
     .Category = RideCategory::gentle,
-    .StartTrackPiece = TrackElemType::EndStation,
+    .StartTrackPiece = TrackElemType::endStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::miniHelicopters,
         .supportType = MetalSupportType::stick,

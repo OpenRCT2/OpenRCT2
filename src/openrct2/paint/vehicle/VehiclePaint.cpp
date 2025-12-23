@@ -3396,8 +3396,8 @@ static void VehiclePitchDown75(
 {
     if (vehicle->HasFlag(VehicleFlags::CarIsInverted))
     {
-        if (vehicle->GetTrackType() != TrackElemType::Down90ToDown60
-            && (vehicle->GetTrackType()) != TrackElemType::Down60ToDown90)
+        if (vehicle->GetTrackType() != TrackElemType::down90ToDown60
+            && (vehicle->GetTrackType()) != TrackElemType::down60ToDown90)
         {
             carEntry--;
         }
@@ -3422,8 +3422,8 @@ static void VehiclePitchDown90(
 {
     if (vehicle->HasFlag(VehicleFlags::CarIsInverted))
     {
-        if (vehicle->GetTrackType() != TrackElemType::Down90 && (vehicle->GetTrackType()) != TrackElemType::Down90ToDown60
-            && (vehicle->GetTrackType()) != TrackElemType::Down60ToDown90)
+        if (vehicle->GetTrackType() != TrackElemType::down90 && (vehicle->GetTrackType()) != TrackElemType::down90ToDown60
+            && (vehicle->GetTrackType()) != TrackElemType::down60ToDown90)
         {
             carEntry--;
         }
@@ -4536,7 +4536,7 @@ static_assert(std::size(PaintFunctionsByPitch) == EnumValue(VehiclePitch::pitchC
  */
 static void vehicle_visual_splash1_effect(PaintSession& session, const int32_t z, const Vehicle* vehicle)
 {
-    if (vehicle->GetTrackType() != TrackElemType::Watersplash)
+    if (vehicle->GetTrackType() != TrackElemType::watersplash)
     {
         return;
     }

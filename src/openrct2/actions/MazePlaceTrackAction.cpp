@@ -188,7 +188,7 @@ namespace OpenRCT2::GameActions
         Guard::Assert(trackElement != nullptr);
 
         trackElement->SetClearanceZ(clearanceHeight);
-        trackElement->SetTrackType(TrackElemType::Maze);
+        trackElement->SetTrackType(TrackElemType::maze);
         trackElement->SetRideType(ride->type);
         trackElement->SetRideIndex(_rideIndex);
         trackElement->SetMazeEntry(_mazeEntry);

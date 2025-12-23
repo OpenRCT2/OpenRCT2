@@ -21,7 +21,7 @@ namespace OpenRCT2
 constexpr RideTypeDescriptor FlyingRollerCoasterRTD =
 {
     .Category = RideCategory::rollerCoaster,
-    .StartTrackPiece = TrackElemType::EndStation,
+    .StartTrackPiece = TrackElemType::endStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::flyingRollerCoaster,
         .supportType = MetalSupportType::tubesInverted,
@@ -99,7 +99,7 @@ constexpr RideTypeDescriptor FlyingRollerCoasterRTD =
 constexpr RideTypeDescriptor FlyingRollerCoasterAltRTD =
 {
     .Category = RideCategory::none,
-    .StartTrackPiece = TrackElemType::EndStation,
+    .StartTrackPiece = TrackElemType::endStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({ 
         .trackStyle = TrackStyle::null,
         .enabledTrackGroups = {  },
