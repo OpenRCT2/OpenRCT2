@@ -593,13 +593,13 @@ TrackRoll TrackGetActualBank2(ride_type_t rideType, bool isInverted, TrackRoll b
     {
         if (isInverted)
         {
-            if (bank == TrackRoll::None)
+            if (bank == TrackRoll::none)
             {
-                bank = TrackRoll::UpsideDown;
+                bank = TrackRoll::upsideDown;
             }
-            else if (bank == TrackRoll::UpsideDown)
+            else if (bank == TrackRoll::upsideDown)
             {
-                bank = TrackRoll::None;
+                bank = TrackRoll::none;
             }
         }
     }

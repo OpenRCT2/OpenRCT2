@@ -557,7 +557,7 @@ static void ride_construction_reset_current_piece()
     {
         _currentlySelectedTrack = rtd.StartTrackPiece;
         _currentTrackPitchEnd = TrackPitch::None;
-        _currentTrackRollEnd = TrackRoll::None;
+        _currentTrackRollEnd = TrackRoll::none;
         _currentTrackHasLiftHill = false;
         _currentTrackAlternative.clearAll();
         if (rtd.HasFlag(RtdFlag::startConstructionInverted))
@@ -565,7 +565,7 @@ static void ride_construction_reset_current_piece()
             _currentTrackAlternative.set(AlternativeTrackFlag::inverted);
         }
         _previousTrackPitchEnd = TrackPitch::None;
-        _previousTrackRollEnd = TrackRoll::None;
+        _previousTrackRollEnd = TrackRoll::none;
     }
     else
     {
@@ -634,9 +634,9 @@ void RideConstructionSetDefaultNextPiece()
             // Set track banking
             if (rtd.HasFlag(RtdFlag::hasInvertedVariant))
             {
-                if (bank == TrackRoll::UpsideDown)
+                if (bank == TrackRoll::upsideDown)
                 {
-                    bank = TrackRoll::None;
+                    bank = TrackRoll::none;
                     _currentTrackAlternative.flip(AlternativeTrackFlag::inverted);
                 }
             }
@@ -693,9 +693,9 @@ void RideConstructionSetDefaultNextPiece()
             // Set track banking
             if (rtd.HasFlag(RtdFlag::hasInvertedVariant))
             {
-                if (bank == TrackRoll::UpsideDown)
+                if (bank == TrackRoll::upsideDown)
                 {
-                    bank = TrackRoll::None;
+                    bank = TrackRoll::none;
                     _currentTrackAlternative.flip(AlternativeTrackFlag::inverted);
                 }
             }
@@ -1084,14 +1084,14 @@ int32_t RideInitialiseConstructionWindow(Ride& ride)
 
     _currentlySelectedTrack = ride.getRideTypeDescriptor().StartTrackPiece;
     _currentTrackPitchEnd = TrackPitch::None;
-    _currentTrackRollEnd = TrackRoll::None;
+    _currentTrackRollEnd = TrackRoll::none;
     _currentTrackHasLiftHill = false;
     _currentTrackAlternative.clearAll();
 
     if (ride.getRideTypeDescriptor().HasFlag(RtdFlag::startConstructionInverted))
         _currentTrackAlternative.set(AlternativeTrackFlag::inverted);
 
-    _previousTrackRollEnd = TrackRoll::None;
+    _previousTrackRollEnd = TrackRoll::none;
     _previousTrackPitchEnd = TrackPitch::None;
 
     _currentTrackPieceDirection = 0;

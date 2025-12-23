@@ -36,10 +36,10 @@ struct ResultWithMessage;
 
 enum class TrackRoll : uint8_t
 {
-    None = 0,
-    Left = 2,
-    Right = 4,
-    UpsideDown = 15,
+    none = 0,
+    left = 2,
+    right = 4,
+    upsideDown = 15,
 };
 
 enum class TrackPitch : uint8_t

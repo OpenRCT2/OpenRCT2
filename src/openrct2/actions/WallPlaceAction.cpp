@@ -443,7 +443,7 @@ namespace OpenRCT2::GameActions
                 return false;
             }
 
-            if (ted.definition.rollStart == TrackRoll::None)
+            if (ted.definition.rollStart == TrackRoll::none)
             {
                 if (!(ted.coordinates.rotationBegin & 4))
                 {
@@ -467,7 +467,7 @@ namespace OpenRCT2::GameActions
             return false;
         }
 
-        if (ted.definition.rollEnd != TrackRoll::None)
+        if (ted.definition.rollEnd != TrackRoll::none)
         {
             return false;
         }
