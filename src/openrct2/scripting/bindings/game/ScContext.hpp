@@ -232,7 +232,7 @@ namespace OpenRCT2::Scripting
                         const JSValue jsArg = argv[i];
                         if (JS_IsNumber(jsArg))
                         {
-                            args.emplace_back(JSToInt64(ctx, jsArg));
+                            args.emplace_back(JSToInt(ctx, jsArg));
                         }
                         else if (JS_IsString(jsArg))
                         {
