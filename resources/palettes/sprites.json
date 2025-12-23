@@ -75,61 +75,6 @@
         "y": 7
     },
     {
-        "path": "base/palette_3100.png",
-        "palette": "keep",
-        "format": "raw"
-    },
-    {
-        "path": "base/palette_3101.png",
-        "palette": "keep",
-        "format": "raw"
-    },
-    {
-        "path": "base/palette_3102.png",
-        "palette": "keep",
-        "format": "raw"
-    },
-    {
-        "path": "base/palette_3103.png",
-        "palette": "keep",
-        "format": "raw"
-    },
-    {
-        "path": "base/palette_3104.png",
-        "palette": "keep",
-        "format": "raw"
-    },
-    {
-        "path": "base/palette_3105.png",
-        "palette": "keep",
-        "format": "raw"
-    },
-    {
-        "path": "base/palette_3106.png",
-        "palette": "keep",
-        "format": "raw"
-    },
-    {
-        "path": "base/palette_3107.png",
-        "palette": "keep",
-        "format": "raw"
-    },
-    {
-        "path": "base/palette_3108.png",
-        "palette": "keep",
-        "format": "raw"
-    },
-    {
-        "path": "base/palette_3109.png",
-        "palette": "keep",
-        "format": "raw"
-    },
-    {
-        "path": "base/palette_3110.png",
-        "palette": "keep",
-        "format": "raw"
-    },
-    {
         "path": "map_base/palette_map_black.png",
         "palette": "keep",
         "format": "raw"
@@ -290,7 +235,182 @@
         "format": "raw"
     },
     {
+        "path": "map_base/palette_map_dark_olive_dark.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_dark_olive_light.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_saturated_brown_light.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_bordeaux_red_dark.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_bordeaux_red_light.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_grass_green_dark.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_grass_green_light.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_olive_dark.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_olive_light.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_saturated_green_light.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_tan_dark.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_tan_light.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_dull_purple_light.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_dull_green_dark.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_dull_green_light.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_saturated_purple_dark.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_saturated_purple_light.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_orange_light.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_aqua_dark.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_magenta_light.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_dull_brown_dark.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_dull_brown_light.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_invisible.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_void.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
         "path": "map_base/palette_map_water.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "base/palette_3100.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "base/palette_3101.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "base/palette_3102.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "base/palette_3103.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "base/palette_3104.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "base/palette_3106.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "base/palette_3107.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "base/palette_3108.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "base/palette_3109.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "base/palette_3110.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "base/palette_3105.png",
         "palette": "keep",
         "format": "raw"
     },
@@ -791,126 +911,6 @@
     },
     {
         "path": "map_glass/palette_map_glass_light_pink.png",
-        "palette": "keep",
-        "format": "raw"
-    },
-    {
-        "path": "map_base/palette_map_dark_olive_dark.png",
-        "palette": "keep",
-        "format": "raw"
-    },
-    {
-        "path": "map_base/palette_map_dark_olive_light.png",
-        "palette": "keep",
-        "format": "raw"
-    },
-    {
-        "path": "map_base/palette_map_saturated_brown_light.png",
-        "palette": "keep",
-        "format": "raw"
-    },
-    {
-        "path": "map_base/palette_map_bordeaux_red_dark.png",
-        "palette": "keep",
-        "format": "raw"
-    },
-    {
-        "path": "map_base/palette_map_bordeaux_red_light.png",
-        "palette": "keep",
-        "format": "raw"
-    },
-    {
-        "path": "map_base/palette_map_grass_green_dark.png",
-        "palette": "keep",
-        "format": "raw"
-    },
-    {
-        "path": "map_base/palette_map_grass_green_light.png",
-        "palette": "keep",
-        "format": "raw"
-    },
-    {
-        "path": "map_base/palette_map_olive_dark.png",
-        "palette": "keep",
-        "format": "raw"
-    },
-    {
-        "path": "map_base/palette_map_olive_light.png",
-        "palette": "keep",
-        "format": "raw"
-    },
-    {
-        "path": "map_base/palette_map_saturated_green_light.png",
-        "palette": "keep",
-        "format": "raw"
-    },
-    {
-        "path": "map_base/palette_map_tan_dark.png",
-        "palette": "keep",
-        "format": "raw"
-    },
-    {
-        "path": "map_base/palette_map_tan_light.png",
-        "palette": "keep",
-        "format": "raw"
-    },
-    {
-        "path": "map_base/palette_map_dull_purple_light.png",
-        "palette": "keep",
-        "format": "raw"
-    },
-    {
-        "path": "map_base/palette_map_dull_green_dark.png",
-        "palette": "keep",
-        "format": "raw"
-    },
-    {
-        "path": "map_base/palette_map_dull_green_light.png",
-        "palette": "keep",
-        "format": "raw"
-    },
-    {
-        "path": "map_base/palette_map_saturated_purple_dark.png",
-        "palette": "keep",
-        "format": "raw"
-    },
-    {
-        "path": "map_base/palette_map_saturated_purple_light.png",
-        "palette": "keep",
-        "format": "raw"
-    },
-    {
-        "path": "map_base/palette_map_orange_light.png",
-        "palette": "keep",
-        "format": "raw"
-    },
-    {
-        "path": "map_base/palette_map_aqua_dark.png",
-        "palette": "keep",
-        "format": "raw"
-    },
-    {
-        "path": "map_base/palette_map_magenta_light.png",
-        "palette": "keep",
-        "format": "raw"
-    },
-    {
-        "path": "map_base/palette_map_dull_brown_dark.png",
-        "palette": "keep",
-        "format": "raw"
-    },
-    {
-        "path": "map_base/palette_map_dull_brown_light.png",
-        "palette": "keep",
-        "format": "raw"
-    },
-    {
-        "path": "map_base/palette_map_invisible.png",
-        "palette": "keep",
-        "format": "raw"
-    },
-    {
-        "path": "map_base/palette_map_void.png",
         "palette": "keep",
         "format": "raw"
     },

@@ -158,6 +158,7 @@ static constexpr FilterPaletteID kGlassPaletteIds[COLOUR_COUNT] = {
 // Previously 0x97FCBC use it to get the correct palette from g1_elements
 // clang-format off
 static constexpr uint16_t kPaletteToG1Offset[kPaletteTotalOffsets] = {
+    // Main remap palettes
     SPR_PALETTE_BLACK,
     SPR_PALETTE_GREY,
     SPR_PALETTE_WHITE,
@@ -190,6 +191,8 @@ static constexpr uint16_t kPaletteToG1Offset[kPaletteTotalOffsets] = {
     SPR_PALETTE_DARK_PINK,
     SPR_PALETTE_BRIGHT_PINK,
     SPR_PALETTE_LIGHT_PINK,
+
+    // Extended remap palettes
     SPR_PALETTE_DARK_OLIVE_DARK,
     SPR_PALETTE_DARK_OLIVE_LIGHT,
     SPR_PALETTE_SATURATED_BROWN_LIGHT,
@@ -215,6 +218,7 @@ static constexpr uint16_t kPaletteToG1Offset[kPaletteTotalOffsets] = {
     SPR_PALETTE_INVISIBLE,
     SPR_PALETTE_VOID,
 
+    // Additional palettes
     SPR_PALETTE_WATER,      // PaletteWater (water)
     SPR_PALETTE_3100,
     SPR_PALETTE_3101,       // Palette34
@@ -236,6 +240,7 @@ static constexpr uint16_t kPaletteToG1Offset[kPaletteTotalOffsets] = {
     SPR_PALETTE_DARKEN_2,   // PaletteDarken2 (construction marker)
     SPR_PALETTE_4955,       // Palette51
 
+    // Translucent remap palettes
     SPR_PALETTE_TRANSLUCENT_GREY,
     SPR_PALETTE_TRANSLUCENT_GREY_HIGHLIGHT,
     SPR_PALETTE_TRANSLUCENT_GREY_SHADOW,
@@ -297,6 +302,7 @@ static constexpr uint16_t kPaletteToG1Offset[kPaletteTotalOffsets] = {
     SPR_PALETTE_TRANSLUCENT_WHITE_HIGHLIGHT,
     SPR_PALETTE_TRANSLUCENT_WHITE_SHADOW,
 
+    // Main glass remap palettes
     SPR_PALETTE_GLASS_BLACK,
     SPR_PALETTE_GLASS_GREY,
     SPR_PALETTE_GLASS_WHITE,
@@ -329,6 +335,8 @@ static constexpr uint16_t kPaletteToG1Offset[kPaletteTotalOffsets] = {
     SPR_PALETTE_GLASS_DARK_PINK,
     SPR_PALETTE_GLASS_BRIGHT_PINK,
     SPR_PALETTE_GLASS_LIGHT_PINK,
+
+    // Extended glass remap palettes
     SPR_PALETTE_GLASS_DARK_OLIVE_DARK,
     SPR_PALETTE_GLASS_DARK_OLIVE_LIGHT,
     SPR_PALETTE_GLASS_SATURATED_BROWN_LIGHT,
