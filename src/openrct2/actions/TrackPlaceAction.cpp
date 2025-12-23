@@ -345,7 +345,7 @@ namespace OpenRCT2::GameActions
                 }
             }
 
-            if ((ted.sequences[0].flags.has(SequenceFlag::trackOrigin)) && blockIndex == 0)
+            if (ted.sequences[0].flags.has(SequenceFlag::trackOrigin) && blockIndex == 0)
             {
                 const auto addElementResult = TrackAddStationElement(
                     { mapLoc, baseZ, _origin.direction }, _rideIndex, {}, _fromTrackDesign);

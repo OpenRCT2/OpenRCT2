@@ -1057,7 +1057,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
 
             // Check for change
-            if ((_provisionalFootpath.flags.has(ProvisionalPathFlag::placed)) && _provisionalFootpath.positionA == mapPos
+            if (_provisionalFootpath.flags.has(ProvisionalPathFlag::placed) && _provisionalFootpath.positionA == mapPos
                 && _provisionalFootpath.startZ == _footpathPlaceZ)
             {
                 return;
@@ -1118,7 +1118,7 @@ namespace OpenRCT2::Ui::Windows
             gMapSelectFlags.unset(MapSelectFlag::enableArrow);
 
             // Check for change
-            if ((_provisionalFootpath.flags.has(ProvisionalPathFlag::placed)) && range.Point1 == _provisionalFootpath.positionA
+            if (_provisionalFootpath.flags.has(ProvisionalPathFlag::placed) && range.Point1 == _provisionalFootpath.positionA
                 && range.Point2 == _provisionalFootpath.positionB && baseZ == _provisionalFootpath.startZ)
             {
                 return;

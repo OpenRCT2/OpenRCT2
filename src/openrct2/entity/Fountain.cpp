@@ -178,7 +178,7 @@ void JumpingFountain::Update()
     switch (FountainType)
     {
         case JumpingFountainType::Water:
-            if (frame == 11 && (fountainFlags.has(FountainFlag::fast)))
+            if (frame == 11 && fountainFlags.has(FountainFlag::fast))
             {
                 AdvanceAnimation();
             }

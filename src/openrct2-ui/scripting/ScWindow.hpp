@@ -208,7 +208,7 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr)
             {
-                return (w->flags.hasAny(WindowFlag::stickToBack, WindowFlag::stickToFront));
+                return w->flags.hasAny(WindowFlag::stickToBack, WindowFlag::stickToFront);
             }
             return false;
         }
