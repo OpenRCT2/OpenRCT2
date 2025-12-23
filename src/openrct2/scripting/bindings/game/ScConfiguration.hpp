@@ -336,7 +336,9 @@ namespace OpenRCT2::Scripting
             {
                 return val;
             }
-            return JS_NewBool(ctx, !JS_IsUndefined(val));
+            bool retval = !JS_IsUndefined(val);
+            JS_FreeValue(ctx, val);
+            return JS_NewBool(ctx, retval);
         }
 
         static constexpr JSCFunctionListEntry funcs[] = {
