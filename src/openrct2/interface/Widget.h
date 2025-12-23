@@ -168,7 +168,7 @@ namespace OpenRCT2
 
         bool IsVisible() const
         {
-            return !(flags.has(OpenRCT2::WidgetFlag::isHidden));
+            return !flags.has(OpenRCT2::WidgetFlag::isHidden);
         }
     };
 

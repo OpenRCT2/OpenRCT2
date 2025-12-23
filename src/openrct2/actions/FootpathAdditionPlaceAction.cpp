@@ -91,7 +91,7 @@ namespace OpenRCT2::GameActions
         }
 
         // No change
-        if (!(GetFlags().has(CommandFlag::ghost)) && pathElement->GetAdditionEntryIndex() == _entryIndex
+        if (!GetFlags().has(CommandFlag::ghost) && pathElement->GetAdditionEntryIndex() == _entryIndex
             && !(pathElement->IsBroken()))
         {
             return res;
@@ -156,7 +156,7 @@ namespace OpenRCT2::GameActions
         }
 
         // No change
-        if (!(GetFlags().has(CommandFlag::ghost)) && pathElement->GetAdditionEntryIndex() == _entryIndex
+        if (!GetFlags().has(CommandFlag::ghost) && pathElement->GetAdditionEntryIndex() == _entryIndex
             && !(pathElement->IsBroken()) && !pathElement->AdditionIsGhost())
         {
             return res;

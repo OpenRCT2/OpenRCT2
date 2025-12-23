@@ -405,7 +405,7 @@ static constexpr float kWindowScrollLocations[][2] = {
         // rct2: 0x006E7C76
         if (w.viewportTargetSprite.IsNull())
         {
-            if (!(w.flags.has(WindowFlag::noScrolling)))
+            if (!w.flags.has(WindowFlag::noScrolling))
             {
                 w.savedViewPos = screenCoords
                     - ScreenCoordsXY{ static_cast<int32_t>(w.viewport->ViewWidth() * kWindowScrollLocations[i][0]),

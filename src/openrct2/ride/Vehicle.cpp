@@ -615,7 +615,7 @@ void Vehicle::UpdateMeasurements()
         auto trackElemType = GetTrackType();
         if (trackElemType == TrackElemType::PoweredLift || HasFlag(VehicleFlags::OnLiftHill))
         {
-            if (!(curRide->testingFlags.has(RideTestingFlag::poweredLift)))
+            if (!curRide->testingFlags.has(RideTestingFlag::poweredLift))
             {
                 curRide->testingFlags.set(RideTestingFlag::poweredLift);
                 if (curRide->numPoweredLifts < OpenRCT2::Limits::kRideMaxNumPoweredLiftsCount)
@@ -677,10 +677,10 @@ void Vehicle::UpdateMeasurements()
                 RideTestingFlag::turnSloped);
 
             uint8_t turnType = 1;
-            if (!(testingFlags.has(RideTestingFlag::turnBanked)))
+            if (!testingFlags.has(RideTestingFlag::turnBanked))
             {
                 turnType = 2;
-                if (!(testingFlags.has(RideTestingFlag::turnSloped)))
+                if (!testingFlags.has(RideTestingFlag::turnSloped))
                 {
                     turnType = 0;
                 }
@@ -858,7 +858,7 @@ void Vehicle::UpdateMeasurements()
         }
     }
 
-    if (!(curRide->testingFlags.has(RideTestingFlag::sheltered)))
+    if (!curRide->testingFlags.has(RideTestingFlag::sheltered))
     {
         curRide->testingFlags.set(RideTestingFlag::sheltered);
 
@@ -6502,7 +6502,7 @@ void Vehicle::Sub6DBF3E()
 
     auto trackType = GetTrackType();
     const auto& ted = GetTrackElementDescriptor(trackType);
-    if (!(ted.sequences[0].flags.has(SequenceFlag::trackOrigin)))
+    if (!ted.sequences[0].flags.has(SequenceFlag::trackOrigin))
     {
         return;
     }
@@ -7906,7 +7906,7 @@ void Vehicle::Loc6DCE02(const Ride& curRide)
 
     auto trackType = GetTrackType();
     const auto& ted = GetTrackElementDescriptor(trackType);
-    if (!(ted.sequences[0].flags.has(SequenceFlag::trackOrigin)))
+    if (!ted.sequences[0].flags.has(SequenceFlag::trackOrigin))
     {
         return;
     }

@@ -526,7 +526,7 @@ static void Loc6A6F1F(
             FootpathQueueChainPush(tileElement->AsPath()->GetRideIndex());
         }
     }
-    if (!(flags.hasAny(CommandFlag::ghost, CommandFlag::allowDuringPaused)))
+    if (!flags.hasAny(CommandFlag::ghost, CommandFlag::allowDuringPaused))
     {
         FootpathInterruptPeeps({ targetPos, tileElement->GetBaseZ() });
     }
@@ -596,7 +596,7 @@ static void Loc6A6D7E(
                         const auto trackType = tileElement->AsTrack()->GetTrackType();
                         const uint8_t trackSequence = tileElement->AsTrack()->GetSequenceIndex();
                         const auto& ted = GetTrackElementDescriptor(trackType);
-                        if (!(ted.sequences[trackSequence].flags.has(SequenceFlag::connectsToPath)))
+                        if (!ted.sequences[trackSequence].flags.has(SequenceFlag::connectsToPath))
                         {
                             return;
                         }
@@ -682,7 +682,7 @@ static void Loc6A6C85(
         const auto trackType = tileElementPos.element->AsTrack()->GetTrackType();
         const uint8_t trackSequence = tileElementPos.element->AsTrack()->GetSequenceIndex();
         const auto& ted = GetTrackElementDescriptor(trackType);
-        if (!(ted.sequences[trackSequence].flags.has(SequenceFlag::connectsToPath)))
+        if (!ted.sequences[trackSequence].flags.has(SequenceFlag::connectsToPath))
         {
             return;
         }

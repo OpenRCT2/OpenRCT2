@@ -74,7 +74,7 @@ namespace OpenRCT2::GameActions
         res.expenditure = ExpenditureType::landscaping;
         res.position = _loc;
 
-        if (gLegacyScene != LegacyScene::scenarioEditor && !(GetFlags().has(CommandFlag::ghost))
+        if (gLegacyScene != LegacyScene::scenarioEditor && !GetFlags().has(CommandFlag::ghost)
             && !getGameState().cheats.sandboxMode)
         {
             // Check if allowed to remove item

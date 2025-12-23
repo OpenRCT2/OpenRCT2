@@ -332,7 +332,7 @@ ResultWithMessage TrackRemoveStationElement(const CoordsXYZD& loc, RideId rideIn
         }
     } while (stationElement != nullptr);
 
-    if (!(flags.has(CommandFlag::apply)))
+    if (!flags.has(CommandFlag::apply))
     {
         if ((removeLoc != stationBackLoc) && (removeLoc != stationFrontLoc) && ride->numStations >= Limits::kMaxStationsPerRide)
         {

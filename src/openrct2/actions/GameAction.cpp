@@ -405,7 +405,7 @@ namespace OpenRCT2::GameActions
                 }
                 else
                 {
-                    bool commandExecutes = !(flags.hasAny(CommandFlag::ghost, CommandFlag::noSpend));
+                    bool commandExecutes = !flags.hasAny(CommandFlag::ghost, CommandFlag::noSpend);
 
                     bool recordAction = false;
                     if (replayManager != nullptr && !ignoreForReplays)
@@ -437,7 +437,7 @@ namespace OpenRCT2::GameActions
         }
 
         // Only show errors when its not a ghost and not a preview and also top level action.
-        bool shouldShowError = !(flags.has(CommandFlag::ghost)) && !(flags.has(CommandFlag::noSpend)) && topLevel;
+        bool shouldShowError = !flags.has(CommandFlag::ghost) && !flags.has(CommandFlag::noSpend) && topLevel;
 
         // In network mode the error should be only shown to the issuer of the action.
         if (Network::GetMode() != Network::Mode::none)

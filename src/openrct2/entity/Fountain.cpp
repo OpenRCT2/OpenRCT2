@@ -182,7 +182,7 @@ void JumpingFountain::Update()
             {
                 AdvanceAnimation();
             }
-            if (frame == 16 && !(fountainFlags.has(FountainFlag::fast)))
+            if (frame == 16 && !fountainFlags.has(FountainFlag::fast))
             {
                 AdvanceAnimation();
             }

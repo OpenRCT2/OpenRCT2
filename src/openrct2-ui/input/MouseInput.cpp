@@ -397,7 +397,7 @@ namespace OpenRCT2
                             break;
 
                         if (w->classification != _dragWidget.windowClassification || w->number != _dragWidget.windowNumber
-                            || !(gInputFlags.has(InputFlag::toolActive)))
+                            || !gInputFlags.has(InputFlag::toolActive))
                         {
                             break;
                         }
@@ -591,7 +591,7 @@ namespace OpenRCT2
         }
         else if (differentialCoords.x != 0 || differentialCoords.y != 0)
         {
-            if (!(w->flags.has(WindowFlag::noScrolling)))
+            if (!w->flags.has(WindowFlag::noScrolling))
             {
                 // User dragged a scrollable viewport
 

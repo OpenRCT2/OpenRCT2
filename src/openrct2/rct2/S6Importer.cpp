@@ -1134,7 +1134,7 @@ namespace OpenRCT2::RCT2
             dst->type = RCTEntryIndexToOpenRCT2EntryIndex(src->Type);
             dst->flags = src->flags;
 
-            if (!(src->flags.has(BannerFlag::linkedToRide)) && IsUserStringID(src->StringID))
+            if (!src->flags.has(BannerFlag::linkedToRide) && IsUserStringID(src->StringID))
             {
                 dst->text = GetUserString(src->StringID);
             }

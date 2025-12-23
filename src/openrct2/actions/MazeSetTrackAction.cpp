@@ -206,7 +206,7 @@ namespace OpenRCT2::GameActions
         }
 
         auto flags = GetFlags();
-        if (!(flags.has(CommandFlag::ghost)))
+        if (!flags.has(CommandFlag::ghost))
         {
             FootpathRemoveLitter(_loc);
             WallRemoveAt({ _loc.ToTileStart(), _loc.z, _loc.z + 32 });
@@ -237,7 +237,7 @@ namespace OpenRCT2::GameActions
             ride->getStation().SetBaseZ(tileElement->GetBaseZ());
             ride->getStation().Start = { 0, 0 };
 
-            if (_initialPlacement && !(flags.has(CommandFlag::ghost)))
+            if (_initialPlacement && !flags.has(CommandFlag::ghost))
             {
                 ride->overallView = startLoc;
             }
