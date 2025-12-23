@@ -275,7 +275,7 @@ static constexpr auto window_cheats_guests_widgets = makeWidgets(
     makeWidget({ 11, 380+1}, kCheatCheckSize,   WidgetType::checkbox, WindowColour::secondary, STR_CHEAT_IGNORE_PRICE,          STR_CHEAT_IGNORE_PRICE_TIP     ), // guests ignore price
     makeWidget({ 11, 397+1}, kCheatCheckSize,   WidgetType::checkbox, WindowColour::secondary, STR_CHEAT_DISABLE_VANDALISM,     STR_CHEAT_DISABLE_VANDALISM_TIP), // disable vandalism
     makeWidget({ 11, 414+1}, kCheatCheckSize,   WidgetType::checkbox, WindowColour::secondary, STR_CHEAT_DISABLE_LITTERING,     STR_CHEAT_DISABLE_LITTERING_TIP), // disable littering
-    makeWidget({ 11, 431+1}, kCheatCheckSize,   WidgetType::checkbox, WindowColour::secondary, STR_CHEAT_DISABLE_DEATH_FROM_DROWNING,     STR_CHEAT_DISABLE_DEATH_FROM_DROWNING_TIP)  // disable littering
+    makeWidget({ 11, 431+1}, kCheatCheckSize,   WidgetType::checkbox, WindowColour::secondary, STR_CHEAT_DISABLE_DEATH_FROM_DROWNING,     STR_CHEAT_DISABLE_DEATH_FROM_DROWNING_TIP)  // disable death from drowning
 );
 
 static constexpr auto window_cheats_staff_widgets = makeWidgets(
