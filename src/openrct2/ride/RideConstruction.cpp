@@ -556,20 +556,20 @@ static void ride_construction_reset_current_piece()
     if (rtd.HasFlag(RtdFlag::hasTrack) || ride->numStations == 0)
     {
         _currentlySelectedTrack = rtd.StartTrackPiece;
-        _currentTrackPitchEnd = TrackPitch::None;
-        _currentTrackRollEnd = TrackRoll::None;
+        _currentTrackPitchEnd = TrackPitch::none;
+        _currentTrackRollEnd = TrackRoll::none;
         _currentTrackHasLiftHill = false;
         _currentTrackAlternative.clearAll();
         if (rtd.HasFlag(RtdFlag::startConstructionInverted))
         {
             _currentTrackAlternative.set(AlternativeTrackFlag::inverted);
         }
-        _previousTrackPitchEnd = TrackPitch::None;
-        _previousTrackRollEnd = TrackRoll::None;
+        _previousTrackPitchEnd = TrackPitch::none;
+        _previousTrackRollEnd = TrackRoll::none;
     }
     else
     {
-        _currentlySelectedTrack = TrackElemType::None;
+        _currentlySelectedTrack = TrackElemType::none;
         _rideConstructionState = RideConstructionState::State0;
     }
 }
@@ -634,9 +634,9 @@ void RideConstructionSetDefaultNextPiece()
             // Set track banking
             if (rtd.HasFlag(RtdFlag::hasInvertedVariant))
             {
-                if (bank == TrackRoll::UpsideDown)
+                if (bank == TrackRoll::upsideDown)
                 {
-                    bank = TrackRoll::None;
+                    bank = TrackRoll::none;
                     _currentTrackAlternative.flip(AlternativeTrackFlag::inverted);
                 }
             }
@@ -649,7 +649,7 @@ void RideConstructionSetDefaultNextPiece()
             _currentTrackPitchEnd = slope;
             _previousTrackPitchEnd = slope;
             _currentTrackHasLiftHill = trackElement->HasChain()
-                && ((slope != TrackPitch::Down25 && slope != TrackPitch::Down60)
+                && ((slope != TrackPitch::down25 && slope != TrackPitch::down60)
                     || getGameState().cheats.enableChainLiftOnAllTrack);
 
             if (TrackTypeHasSpeedSetting(trackElement->GetTrackType()))
@@ -693,9 +693,9 @@ void RideConstructionSetDefaultNextPiece()
             // Set track banking
             if (rtd.HasFlag(RtdFlag::hasInvertedVariant))
             {
-                if (bank == TrackRoll::UpsideDown)
+                if (bank == TrackRoll::upsideDown)
                 {
-                    bank = TrackRoll::None;
+                    bank = TrackRoll::none;
                     _currentTrackAlternative.flip(AlternativeTrackFlag::inverted);
                 }
             }
@@ -1083,16 +1083,16 @@ int32_t RideInitialiseConstructionWindow(Ride& ride)
     gInputFlags.set(InputFlag::allowRightMouseRemoval);
 
     _currentlySelectedTrack = ride.getRideTypeDescriptor().StartTrackPiece;
-    _currentTrackPitchEnd = TrackPitch::None;
-    _currentTrackRollEnd = TrackRoll::None;
+    _currentTrackPitchEnd = TrackPitch::none;
+    _currentTrackRollEnd = TrackRoll::none;
     _currentTrackHasLiftHill = false;
     _currentTrackAlternative.clearAll();
 
     if (ride.getRideTypeDescriptor().HasFlag(RtdFlag::startConstructionInverted))
         _currentTrackAlternative.set(AlternativeTrackFlag::inverted);
 
-    _previousTrackRollEnd = TrackRoll::None;
-    _previousTrackPitchEnd = TrackPitch::None;
+    _previousTrackRollEnd = TrackRoll::none;
+    _previousTrackPitchEnd = TrackPitch::none;
 
     _currentTrackPieceDirection = 0;
     _rideConstructionState = RideConstructionState::Place;
@@ -1373,7 +1373,7 @@ void Ride::validateStations()
 
                 // get the StationIndex for the station
                 StationIndex stationId = StationIndex::FromUnderlying(0);
-                if (trackType != TrackElemType::Maze)
+                if (trackType != TrackElemType::maze)
                 {
                     uint8_t trackSequence = trackElement->AsTrack()->GetSequenceIndex();
 
@@ -1540,5 +1540,5 @@ OpenRCT2::TrackElemType GetTrackTypeFromCurve(
         return trackDescriptor->trackElement;
     }
 
-    return TrackElemType::None;
+    return TrackElemType::none;
 }

@@ -4235,7 +4235,7 @@ void Guest::UpdateRideLeaveVehicle()
                  vehicle = gameState.entities.GetEntity<Vehicle>(vehicle->prev_vehicle_on_ride))
             {
                 auto trackType = vehicle->GetTrackType();
-                if (trackType == TrackElemType::Flat || trackType > TrackElemType::MiddleStation)
+                if (trackType == TrackElemType::flat || trackType > TrackElemType::middleStation)
                     continue;
 
                 bool foundStation = false;

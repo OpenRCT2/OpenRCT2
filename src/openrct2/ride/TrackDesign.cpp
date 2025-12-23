@@ -224,7 +224,7 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
         const auto& element = trackElement.element->AsTrack();
 
         // Remove this check for new track design format
-        if (element->GetTrackType() > TrackElemType::HighestAlias)
+        if (element->GetTrackType() > TrackElemType::highestAlias)
         {
             return { false, STR_TRACK_ELEM_UNSUPPORTED_TD6 };
         }
@@ -237,7 +237,7 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
         track.seatRotation = element->GetSeatRotation();
 
         // This warning will not apply to new track design format
-        if (track.type == TrackElemType::BlockBrakes && element->GetBrakeBoosterSpeed() != kRCT2DefaultBlockBrakeSpeed)
+        if (track.type == TrackElemType::blockBrakes && element->GetBrakeBoosterSpeed() != kRCT2DefaultBlockBrakeSpeed)
         {
             warningMessage = STR_TRACK_DESIGN_BLOCK_BRAKE_SPEED_RESET;
         }

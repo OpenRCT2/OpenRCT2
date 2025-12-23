@@ -385,10 +385,10 @@ static void ride_ratings_update_state_2(RideRating::UpdateState& state)
                 continue;
         }
 
-        if (trackType == TrackElemType::None
+        if (trackType == TrackElemType::none
             || (tileElement->AsTrack()->GetSequenceIndex() == 0 && trackType == tileElement->AsTrack()->GetTrackType()))
         {
-            if (trackType == TrackElemType::EndStation)
+            if (trackType == TrackElemType::endStation)
             {
                 auto entranceIndex = tileElement->AsTrack()->GetStationIndex();
                 state.StationFlags &= ~RIDE_RATING_STATION_FLAG_NO_ENTRANCE;
@@ -490,7 +490,7 @@ static void ride_ratings_update_state_5(RideRating::UpdateState& state)
                 continue;
         }
 
-        if (trackType == TrackElemType::None || trackType == tileElement->AsTrack()->GetTrackType())
+        if (trackType == TrackElemType::none || trackType == tileElement->AsTrack()->GetTrackType())
         {
             ride_ratings_score_close_proximity(state, tileElement);
 
@@ -550,7 +550,7 @@ static void ride_ratings_begin_proximity_loop(RideRating::UpdateState& state)
 
             auto location = station.GetStart();
             state.Proximity = location;
-            state.ProximityTrackType = TrackElemType::None;
+            state.ProximityTrackType = TrackElemType::none;
             state.ProximityStart = location;
             return;
         }
@@ -659,8 +659,8 @@ static void ride_ratings_score_close_proximity_loops_helper(RideRating::UpdateSt
                 if (zDiff >= 0 && zDiff <= 16)
                 {
                     proximity_score_increment(state, PROXIMITY_TRACK_THROUGH_VERTICAL_LOOP);
-                    if (tileElement->AsTrack()->GetTrackType() == TrackElemType::LeftVerticalLoop
-                        || tileElement->AsTrack()->GetTrackType() == TrackElemType::RightVerticalLoop)
+                    if (tileElement->AsTrack()->GetTrackType() == TrackElemType::leftVerticalLoop
+                        || tileElement->AsTrack()->GetTrackType() == TrackElemType::rightVerticalLoop)
                     {
                         proximity_score_increment(state, PROXIMITY_INTERSECTING_VERTICAL_LOOP);
                     }
@@ -677,7 +677,7 @@ static void ride_ratings_score_close_proximity_loops_helper(RideRating::UpdateSt
 static void ride_ratings_score_close_proximity_loops(RideRating::UpdateState& state, TileElement* inputTileElement)
 {
     auto trackType = inputTileElement->AsTrack()->GetTrackType();
-    if (trackType == TrackElemType::LeftVerticalLoop || trackType == TrackElemType::RightVerticalLoop)
+    if (trackType == TrackElemType::leftVerticalLoop || trackType == TrackElemType::rightVerticalLoop)
     {
         ride_ratings_score_close_proximity_loops_helper(state, { state.Proximity, inputTileElement });
 
@@ -771,7 +771,7 @@ static void ride_ratings_score_close_proximity(RideRating::UpdateState& state, T
             case TileElementType::Track:
             {
                 auto trackType = tileElement->AsTrack()->GetTrackType();
-                if (trackType == TrackElemType::LeftVerticalLoop || trackType == TrackElemType::RightVerticalLoop)
+                if (trackType == TrackElemType::leftVerticalLoop || trackType == TrackElemType::rightVerticalLoop)
                 {
                     int32_t sequence = tileElement->AsTrack()->GetSequenceIndex();
                     if (sequence == 3 || sequence == 6)
@@ -865,11 +865,11 @@ static void ride_ratings_score_close_proximity(RideRating::UpdateState& state, T
 
     switch (state.ProximityTrackType)
     {
-        case TrackElemType::Brakes:
+        case TrackElemType::brakes:
             state.AmountOfBrakes++;
             break;
-        case TrackElemType::LeftReverser:
-        case TrackElemType::RightReverser:
+        case TrackElemType::leftReverser:
+        case TrackElemType::rightReverser:
             state.AmountOfReversers++;
             break;
         default:

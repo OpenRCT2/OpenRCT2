@@ -21,7 +21,7 @@ namespace OpenRCT2
 constexpr RideTypeDescriptor DinghySlideRTD =
 {
     .Category = RideCategory::water,
-    .StartTrackPiece = TrackElemType::EndStation,
+    .StartTrackPiece = TrackElemType::endStation,
     .TrackPaintFunctions = TrackDrawerDescriptor(
         {
             .trackStyle = TrackStyle::dinghySlide,

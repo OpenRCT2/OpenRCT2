@@ -50,9 +50,9 @@ namespace OpenRCT2::GameActions
     {
         switch (trackType)
         {
-            case TrackElemType::BeginStation:
-            case TrackElemType::MiddleStation:
-                return TrackElemType::EndStation;
+            case TrackElemType::beginStation:
+            case TrackElemType::middleStation:
+                return TrackElemType::endStation;
             default:
                 return trackType;
         }
@@ -439,14 +439,14 @@ namespace OpenRCT2::GameActions
         {
             switch (trackType)
             {
-                case TrackElemType::OnRidePhoto:
+                case TrackElemType::onRidePhoto:
                     ride->lifecycleFlags &= ~RIDE_LIFECYCLE_ON_RIDE_PHOTO;
                     break;
-                case TrackElemType::CableLiftHill:
+                case TrackElemType::cableLiftHill:
                     ride->lifecycleFlags &= ~RIDE_LIFECYCLE_CABLE_LIFT_HILL_COMPONENT_USED;
                     break;
-                case TrackElemType::BlockBrakes:
-                case TrackElemType::DiagBlockBrakes:
+                case TrackElemType::blockBrakes:
+                case TrackElemType::diagBlockBrakes:
                     ride->numBlockBrakes--;
                     if (ride->numBlockBrakes == 0 && ride->isBlockSectioned())
                     {
@@ -478,14 +478,14 @@ namespace OpenRCT2::GameActions
 
             switch (trackType)
             {
-                case TrackElemType::Up25ToFlat:
-                case TrackElemType::Up60ToFlat:
-                case TrackElemType::DiagUp25ToFlat:
-                case TrackElemType::DiagUp60ToFlat:
+                case TrackElemType::up25ToFlat:
+                case TrackElemType::up60ToFlat:
+                case TrackElemType::diagUp25ToFlat:
+                case TrackElemType::diagUp60ToFlat:
                     if (!isLiftHill)
                         break;
                     [[fallthrough]];
-                case TrackElemType::CableLiftHill:
+                case TrackElemType::cableLiftHill:
                     ride->numBlockBrakes--;
                     break;
                 default:

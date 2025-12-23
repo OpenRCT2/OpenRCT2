@@ -184,7 +184,7 @@ static void PaintVirginiaReelTrackFlat(
         PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
     }
 
-    DrawSupportForSequenceA<TrackElemType::Flat>(
+    DrawSupportForSequenceA<TrackElemType::flat>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -219,7 +219,7 @@ static void PaintVirginiaReelTrack25DegUp(
         session.WoodenSupportsPrependTo = ps;
     }
 
-    DrawSupportForSequenceA<TrackElemType::Up25>(
+    DrawSupportForSequenceA<TrackElemType::up25>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
     switch (direction)
     {
@@ -273,7 +273,7 @@ static void PaintVirginiaReelTrackFlatTo25DegUp(
             break;
     }
 
-    DrawSupportForSequenceA<TrackElemType::FlatToUp25>(
+    DrawSupportForSequenceA<TrackElemType::flatToUp25>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
 
@@ -309,7 +309,7 @@ static void PaintVirginiaReelTrack25DegUpToFlat(
         session.WoodenSupportsPrependTo = ps;
     }
 
-    DrawSupportForSequenceA<TrackElemType::Up25ToFlat>(
+    DrawSupportForSequenceA<TrackElemType::up25ToFlat>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
     switch (direction)
     {
@@ -377,7 +377,7 @@ static void PaintVirginiaReelStation(
         PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
     }
 
-    DrawSupportForSequenceA<TrackElemType::EndStation>(
+    DrawSupportForSequenceA<TrackElemType::endStation>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
     TrackPaintUtilDrawStation(session, ride, direction, height, trackElement, StationBaseType::b, -2);
 
@@ -406,7 +406,7 @@ static void PaintVirginiaReelTrackLeftQuarterTurn3Tiles(
             break;
         case 0:
         case 3:
-            DrawSupportForSequenceA<TrackElemType::LeftQuarterTurn3Tiles>(
+            DrawSupportForSequenceA<TrackElemType::leftQuarterTurn3Tiles>(
                 session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             break;
@@ -440,7 +440,7 @@ static void PaintVirginiaReelTrackLeftQuarterTurn1Tile(
     TrackPaintUtilLeftQuarterTurn1TilePaint(
         session, 2, height, 0, direction, session.TrackColours, kPiecesFlatQuarterTurn1Tile);
 
-    DrawSupportForSequenceA<TrackElemType::LeftQuarterTurn1Tile>(
+    DrawSupportForSequenceA<TrackElemType::leftQuarterTurn1Tile>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
     switch (direction)
     {
@@ -476,36 +476,36 @@ TrackPaintFunction GetTrackPaintFunctionVirginiaReel(OpenRCT2::TrackElemType tra
 {
     switch (trackType)
     {
-        case TrackElemType::Flat:
+        case TrackElemType::flat:
             return PaintVirginiaReelTrackFlat;
 
-        case TrackElemType::EndStation:
-        case TrackElemType::BeginStation:
-        case TrackElemType::MiddleStation:
+        case TrackElemType::endStation:
+        case TrackElemType::beginStation:
+        case TrackElemType::middleStation:
             return PaintVirginiaReelStation;
 
-        case TrackElemType::Up25:
+        case TrackElemType::up25:
             return PaintVirginiaReelTrack25DegUp;
-        case TrackElemType::FlatToUp25:
+        case TrackElemType::flatToUp25:
             return PaintVirginiaReelTrackFlatTo25DegUp;
-        case TrackElemType::Up25ToFlat:
+        case TrackElemType::up25ToFlat:
             return PaintVirginiaReelTrack25DegUpToFlat;
 
-        case TrackElemType::Down25:
+        case TrackElemType::down25:
             return PaintVirginiaReelTrack25DegDown;
-        case TrackElemType::FlatToDown25:
+        case TrackElemType::flatToDown25:
             return PaintVirginiaReelTrackFlatTo25DegDown;
-        case TrackElemType::Down25ToFlat:
+        case TrackElemType::down25ToFlat:
             return PaintVirginiaReelTrack25DegDownToFlat;
 
-        case TrackElemType::LeftQuarterTurn3Tiles:
+        case TrackElemType::leftQuarterTurn3Tiles:
             return PaintVirginiaReelTrackLeftQuarterTurn3Tiles;
-        case TrackElemType::RightQuarterTurn3Tiles:
+        case TrackElemType::rightQuarterTurn3Tiles:
             return PaintVirginiaReelTrackRightQuarterTurn3Tiles;
 
-        case TrackElemType::LeftQuarterTurn1Tile:
+        case TrackElemType::leftQuarterTurn1Tile:
             return PaintVirginiaReelTrackLeftQuarterTurn1Tile;
-        case TrackElemType::RightQuarterTurn1Tile:
+        case TrackElemType::rightQuarterTurn1Tile:
             return PaintVirginiaReelTrackRightQuarterTurn1Tile;
 
         default:

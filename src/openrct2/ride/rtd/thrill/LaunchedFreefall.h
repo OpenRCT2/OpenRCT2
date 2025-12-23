@@ -20,7 +20,7 @@ namespace OpenRCT2
 constexpr RideTypeDescriptor LaunchedFreefallRTD =
 {
     .Category = RideCategory::thrill,
-    .StartTrackPiece = TrackElemType::TowerBase,
+    .StartTrackPiece = TrackElemType::towerBase,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::launchedFreefall,
         .enabledTrackGroups = {TrackGroup::tower},

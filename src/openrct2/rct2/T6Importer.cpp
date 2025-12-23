@@ -162,7 +162,7 @@ namespace OpenRCT2::RCT2
                     OpenRCT2::TrackElemType trackType;
                     if (t6TrackElement.Type == OpenRCT2::RCT12::TrackElemType::invertedUp90ToFlatQuarterLoopAlias)
                     {
-                        trackType = TrackElemType::MultiDimInvertedUp90ToFlatQuarterLoop;
+                        trackType = TrackElemType::multiDimInvertedUp90ToFlatQuarterLoop;
                     }
                     else
                     {

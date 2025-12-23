@@ -20,7 +20,7 @@ namespace OpenRCT2
 constexpr RideTypeDescriptor SuspendedMonorailRTD =
 {
     .Category = RideCategory::transport,
-    .StartTrackPiece = TrackElemType::EndStation,
+    .StartTrackPiece = TrackElemType::endStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::suspendedMonorail,
         .supportType = MetalSupportType::boxed,

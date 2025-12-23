@@ -20,7 +20,7 @@ namespace OpenRCT2
 constexpr RideTypeDescriptor CompactInvertedCoasterRTD =
 {
     .Category = RideCategory::rollerCoaster,
-    .StartTrackPiece = TrackElemType::EndStation,
+    .StartTrackPiece = TrackElemType::endStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::compactInvertedCoaster,
         .supportType = MetalSupportType::tubesInverted,

@@ -19,7 +19,7 @@ namespace OpenRCT2
 constexpr RideTypeDescriptor SingleRailRollerCoasterRTD =
 {
     .Category = RideCategory::rollerCoaster,
-    .StartTrackPiece = TrackElemType::EndStation,
+    .StartTrackPiece = TrackElemType::endStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::singleRailRollerCoaster,
         .supportType = MetalSupportType::tubes,

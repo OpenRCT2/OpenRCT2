@@ -102,7 +102,7 @@ static void PaintSpaceRings(
     ImageId imageId;
 
     auto stationColour = GetStationColourScheme(session, trackElement);
-    DrawSupportForSequenceA<TrackElemType::FlatTrack3x3>(
+    DrawSupportForSequenceA<TrackElemType::flatTrack3x3>(
         session, supportType.wooden, trackSequence, direction, height, GetStationColourScheme(session, trackElement));
 
     const StationObject* stationObject = ride.getStationObject();
@@ -192,7 +192,7 @@ static void PaintSpaceRings(
  */
 TrackPaintFunction GetTrackPaintFunctionSpaceRings(OpenRCT2::TrackElemType trackType)
 {
-    if (trackType != TrackElemType::FlatTrack3x3)
+    if (trackType != TrackElemType::flatTrack3x3)
     {
         return TrackPaintFunctionDummy;
     }

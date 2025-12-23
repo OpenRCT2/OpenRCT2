@@ -21,7 +21,7 @@ namespace OpenRCT2
 constexpr RideTypeDescriptor MiniatureRailwayRTD =
 {
     .Category = RideCategory::transport,
-    .StartTrackPiece = TrackElemType::EndStation,
+    .StartTrackPiece = TrackElemType::endStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::miniatureRailway,
         .supportType = WoodenSupportType::truss,

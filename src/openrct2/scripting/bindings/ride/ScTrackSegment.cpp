@@ -199,15 +199,15 @@ static DukValue _trackCurveToString(duk_context* ctx, TrackCurve curve)
 {
     static const EnumMap<TrackCurve> map(
         {
-            { "straight", TrackCurve::None },
-            { "left", TrackCurve::Left },
-            { "right", TrackCurve::Right },
-            { "left_small", TrackCurve::LeftSmall },
-            { "right_small", TrackCurve::RightSmall },
-            { "left_very_small", TrackCurve::LeftVerySmall },
-            { "right_very_small", TrackCurve::RightVerySmall },
-            { "left_large", TrackCurve::LeftLarge },
-            { "right_large", TrackCurve::RightLarge },
+            { "straight", TrackCurve::none },
+            { "left", TrackCurve::left },
+            { "right", TrackCurve::right },
+            { "left_small", TrackCurve::leftSmall },
+            { "right_small", TrackCurve::rightSmall },
+            { "left_very_small", TrackCurve::leftVerySmall },
+            { "right_very_small", TrackCurve::rightVerySmall },
+            { "left_large", TrackCurve::leftLarge },
+            { "right_large", TrackCurve::rightLarge },
         });
 
     u8string text = u8string(map[curve]);
@@ -242,7 +242,7 @@ DukValue ScTrackSegment::getMirrorElement() const
 {
     const auto ctx = GetContext()->GetScriptEngine().GetContext();
     const auto& ted = GetTrackElementDescriptor(_type);
-    if (ted.mirrorElement == TrackElemType::None)
+    if (ted.mirrorElement == TrackElemType::none)
         return ToDuk(ctx, nullptr);
     return ToDuk<int32_t>(ctx, EnumValue(ted.mirrorElement));
 }
@@ -251,7 +251,7 @@ DukValue ScTrackSegment::getAlternativeElement() const
 {
     const auto ctx = GetContext()->GetScriptEngine().GetContext();
     const auto& ted = GetTrackElementDescriptor(_type);
-    if (ted.alternativeType == TrackElemType::None)
+    if (ted.alternativeType == TrackElemType::none)
         return ToDuk(ctx, nullptr);
     return ToDuk<int32_t>(ctx, EnumValue(ted.alternativeType));
 }

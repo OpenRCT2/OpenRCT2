@@ -666,25 +666,25 @@ OpenRCT2::TrackElemType RCT12FlatTrackTypeToOpenRCT2(OpenRCT2::RCT12::TrackElemT
     switch (origTrackType)
     {
         case OpenRCT2::RCT12::TrackElemType::flatTrack1x4A_Alias:
-            return TrackElemType::FlatTrack1x4A;
+            return TrackElemType::flatTrack1x4A;
         case OpenRCT2::RCT12::TrackElemType::flatTrack2x2_Alias:
-            return TrackElemType::FlatTrack2x2;
+            return TrackElemType::flatTrack2x2;
         case OpenRCT2::RCT12::TrackElemType::flatTrack4x4_Alias:
-            return TrackElemType::FlatTrack4x4;
+            return TrackElemType::flatTrack4x4;
         case OpenRCT2::RCT12::TrackElemType::flatTrack2x4_Alias:
-            return TrackElemType::FlatTrack2x4;
+            return TrackElemType::flatTrack2x4;
         case OpenRCT2::RCT12::TrackElemType::flatTrack1x5_Alias:
-            return TrackElemType::FlatTrack1x5;
+            return TrackElemType::flatTrack1x5;
         case OpenRCT2::RCT12::TrackElemType::flatTrack1x1A_Alias:
-            return TrackElemType::FlatTrack1x1A;
+            return TrackElemType::flatTrack1x1A;
         case OpenRCT2::RCT12::TrackElemType::flatTrack1x4B_Alias:
-            return TrackElemType::FlatTrack1x4B;
+            return TrackElemType::flatTrack1x4B;
         case OpenRCT2::RCT12::TrackElemType::flatTrack1x1B_Alias:
-            return TrackElemType::FlatTrack1x1B;
+            return TrackElemType::flatTrack1x1B;
         case OpenRCT2::RCT12::TrackElemType::flatTrack1x4C_Alias:
-            return TrackElemType::FlatTrack1x4C;
+            return TrackElemType::flatTrack1x4C;
         case OpenRCT2::RCT12::TrackElemType::flatTrack3x3_Alias:
-            return TrackElemType::FlatTrack3x3;
+            return TrackElemType::flatTrack3x3;
         default:
             return static_cast<OpenRCT2::TrackElemType>(origTrackType);
     }
@@ -694,25 +694,25 @@ OpenRCT2::RCT12::TrackElemType OpenRCT2FlatTrackTypeToRCT12(OpenRCT2::TrackElemT
 {
     switch (origTrackType)
     {
-        case TrackElemType::FlatTrack1x4A:
+        case TrackElemType::flatTrack1x4A:
             return OpenRCT2::RCT12::TrackElemType::flatTrack1x4A_Alias;
-        case TrackElemType::FlatTrack2x2:
+        case TrackElemType::flatTrack2x2:
             return OpenRCT2::RCT12::TrackElemType::flatTrack2x2_Alias;
-        case TrackElemType::FlatTrack4x4:
+        case TrackElemType::flatTrack4x4:
             return OpenRCT2::RCT12::TrackElemType::flatTrack4x4_Alias;
-        case TrackElemType::FlatTrack2x4:
+        case TrackElemType::flatTrack2x4:
             return OpenRCT2::RCT12::TrackElemType::flatTrack2x4_Alias;
-        case TrackElemType::FlatTrack1x5:
+        case TrackElemType::flatTrack1x5:
             return OpenRCT2::RCT12::TrackElemType::flatTrack1x5_Alias;
-        case TrackElemType::FlatTrack1x1A:
+        case TrackElemType::flatTrack1x1A:
             return OpenRCT2::RCT12::TrackElemType::flatTrack1x1A_Alias;
-        case TrackElemType::FlatTrack1x4B:
+        case TrackElemType::flatTrack1x4B:
             return OpenRCT2::RCT12::TrackElemType::flatTrack1x4B_Alias;
-        case TrackElemType::FlatTrack1x1B:
+        case TrackElemType::flatTrack1x1B:
             return OpenRCT2::RCT12::TrackElemType::flatTrack1x1B_Alias;
-        case TrackElemType::FlatTrack1x4C:
+        case TrackElemType::flatTrack1x4C:
             return OpenRCT2::RCT12::TrackElemType::flatTrack1x4C_Alias;
-        case TrackElemType::FlatTrack3x3:
+        case TrackElemType::flatTrack3x3:
             return OpenRCT2::RCT12::TrackElemType::flatTrack3x3_Alias;
         default:
             return static_cast<OpenRCT2::RCT12::TrackElemType>(origTrackType);

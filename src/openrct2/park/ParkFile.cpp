@@ -1236,9 +1236,9 @@ namespace OpenRCT2
                                     }
                                     if (os.getHeader().targetVersion < kBlockBrakeImprovementsVersion)
                                     {
-                                        if (trackType == TrackElemType::Brakes)
+                                        if (trackType == TrackElemType::brakes)
                                             trackElement->SetBrakeClosed(true);
-                                        if (trackType == TrackElemType::BlockBrakes)
+                                        if (trackType == TrackElemType::blockBrakes)
                                             trackElement->SetBrakeBoosterSpeed(kRCT2DefaultBlockBrakeSpeed);
                                     }
                                 }
@@ -2280,7 +2280,7 @@ namespace OpenRCT2
         {
             uint8_t brakeSpeed;
             cs.readWrite(brakeSpeed);
-            if (entity.GetTrackType() == TrackElemType::BlockBrakes)
+            if (entity.GetTrackType() == TrackElemType::blockBrakes)
                 brakeSpeed = kRCT2DefaultBlockBrakeSpeed;
             entity.brake_speed = brakeSpeed;
         }

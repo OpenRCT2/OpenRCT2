@@ -285,13 +285,13 @@ static void ApplyWaterFixes(const json_t& scenarioPatch)
 static TrackElemType toTrackType(const u8string_view trackTypeString)
 {
     if (trackTypeString == "flat")
-        return TrackElemType::Flat;
+        return TrackElemType::flat;
     else if (trackTypeString == "flat_covered")
-        return TrackElemType::FlatCovered;
+        return TrackElemType::flatCovered;
     else
     {
         Guard::Assert(0, "Unsupported track type conversion");
-        return TrackElemType::None;
+        return TrackElemType::none;
     }
 }
 

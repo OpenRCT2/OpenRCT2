@@ -144,10 +144,10 @@ TrackPaintFunction GetTrackPaintFunctionObservationTower(OpenRCT2::TrackElemType
 {
     switch (trackType)
     {
-        case TrackElemType::TowerBase:
+        case TrackElemType::towerBase:
             return PaintObservationTowerBase;
 
-        case TrackElemType::TowerSection:
+        case TrackElemType::towerSection:
             return PaintObservationTowerSection;
         default:
             return TrackPaintFunctionDummy;

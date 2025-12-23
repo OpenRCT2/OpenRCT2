@@ -1759,12 +1759,12 @@ namespace OpenRCT2::RCT1
 
                     auto trackType = dst2->GetTrackType();
                     // Brakes import as closed to preserve legacy behaviour
-                    dst2->SetBrakeClosed(trackType == TrackElemType::Brakes);
+                    dst2->SetBrakeClosed(trackType == TrackElemType::brakes);
                     if (TrackTypeHasSpeedSetting(trackType))
                     {
                         dst2->SetBrakeBoosterSpeed(src2->GetBrakeBoosterSpeed());
                     }
-                    else if (trackType == TrackElemType::OnRidePhoto)
+                    else if (trackType == TrackElemType::onRidePhoto)
                     {
                         dst2->SetPhotoTimeout(src2->GetPhotoTimeout());
                     }
@@ -2677,10 +2677,10 @@ namespace OpenRCT2::RCT1
                             auto trackType = tileElement->AsTrack()->GetTrackType();
                             switch (trackType)
                             {
-                                case TrackElemType::Up25ToFlat:
-                                case TrackElemType::Up60ToFlat:
-                                case TrackElemType::DiagUp25ToFlat:
-                                case TrackElemType::DiagUp60ToFlat:
+                                case TrackElemType::up25ToFlat:
+                                case TrackElemType::up60ToFlat:
+                                case TrackElemType::diagUp25ToFlat:
+                                case TrackElemType::diagUp60ToFlat:
                                     break;
                                 default:
                                     continue;
@@ -2896,7 +2896,7 @@ namespace OpenRCT2::RCT1
         {
             dst->BoatLocation = TileCoordsXY{ src->BoatLocation.x, src->BoatLocation.y }.ToCoordsXY();
             dst->SetTrackDirection(0);
-            dst->SetTrackType(OpenRCT2::TrackElemType::Flat);
+            dst->SetTrackType(OpenRCT2::TrackElemType::flat);
         }
         dst->track_progress = src->TrackProgress;
         dst->vertical_drop_countdown = src->VerticalDropCountdown;

@@ -153,7 +153,7 @@ namespace OpenRCT2::RCT2
             for (const auto& trackElement : _trackDesign.trackElements)
             {
                 auto trackType = OpenRCT2TrackTypeToRCT2(trackElement.type);
-                if (trackElement.type == TrackElemType::MultiDimInvertedUp90ToFlatQuarterLoop)
+                if (trackElement.type == TrackElemType::multiDimInvertedUp90ToFlatQuarterLoop)
                 {
                     trackType = OpenRCT2::RCT12::TrackElemType::invertedUp90ToFlatQuarterLoopAlias;
                 }

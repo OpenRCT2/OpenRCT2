@@ -189,7 +189,7 @@ static void MazePaintSetup(
  */
 TrackPaintFunction GetTrackPaintFunctionMaze(OpenRCT2::TrackElemType trackType)
 {
-    if (trackType != TrackElemType::Maze)
+    if (trackType != TrackElemType::maze)
     {
         return TrackPaintFunctionDummy;
     }

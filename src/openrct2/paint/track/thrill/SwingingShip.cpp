@@ -301,7 +301,7 @@ static void PaintSwingingShip(
 
 TrackPaintFunction GetTrackPaintFunctionSwingingShip(OpenRCT2::TrackElemType trackType)
 {
-    if (trackType != TrackElemType::FlatTrack1x5)
+    if (trackType != TrackElemType::flatTrack1x5)
     {
         return TrackPaintFunctionDummy;
     }

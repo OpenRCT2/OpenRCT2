@@ -19,7 +19,7 @@ namespace OpenRCT2
 constexpr RideTypeDescriptor ToiletsRTD =
 {
     .Category = RideCategory::shop,
-    .StartTrackPiece = TrackElemType::FlatTrack1x1A,
+    .StartTrackPiece = TrackElemType::flatTrack1x1A,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::facility,
         .enabledTrackGroups = {},

@@ -618,7 +618,7 @@ extern const StringId kRideModeNames[EnumValue(RideMode::count)];
 constexpr RideTypeDescriptor kDummyRTD =
 {
     .Category = RideCategory::none,
-    .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
+    .StartTrackPiece = OpenRCT2::TrackElemType::endStation,
     .TrackPaintFunctions = {},
     .InvertedTrackPaintFunctions = {},
     .Flags = 0,

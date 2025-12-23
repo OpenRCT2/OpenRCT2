@@ -20,7 +20,7 @@ namespace OpenRCT2
 constexpr RideTypeDescriptor MultiDimensionRollerCoasterRTD =
 {
     .Category = RideCategory::rollerCoaster,
-    .StartTrackPiece = TrackElemType::EndStation,
+    .StartTrackPiece = TrackElemType::endStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::multiDimensionRollerCoaster,
         .supportType = MetalSupportType::tubesInverted,
@@ -98,7 +98,7 @@ constexpr RideTypeDescriptor MultiDimensionRollerCoasterRTD =
 constexpr RideTypeDescriptor MultiDimensionRollerCoasterAltRTD =
 {
     .Category = RideCategory::none,
-    .StartTrackPiece = TrackElemType::EndStation,
+    .StartTrackPiece = TrackElemType::endStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({ 
         .trackStyle = TrackStyle::null,
         .enabledTrackGroups = {  },
