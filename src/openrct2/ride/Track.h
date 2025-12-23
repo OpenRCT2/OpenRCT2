@@ -228,15 +228,15 @@ constexpr uint8_t const DEFAULT_SEAT_ROTATION = 4;
 
 enum class TrackCurve : uint8_t
 {
-    LeftVerySmall = 5,
-    LeftSmall = 3,
-    Left = 1,
-    LeftLarge = 7,
-    None = 0,
-    RightLarge = 8,
-    Right = 2,
-    RightSmall = 4,
-    RightVerySmall = 6
+    leftVerySmall = 5,
+    leftSmall = 3,
+    left = 1,
+    leftLarge = 7,
+    none = 0,
+    rightLarge = 8,
+    right = 2,
+    rightSmall = 4,
+    rightVerySmall = 6
 };
 constexpr const uint8_t kHighestCurveValue = 8;
 
@@ -681,7 +681,7 @@ struct TypeOrCurve
     constexpr TypeOrCurve() noexcept
     {
         isTrackType = false;
-        curve = TrackCurve::None;
+        curve = TrackCurve::none;
     }
 
     constexpr bool operator==(OpenRCT2::TrackElemType rhs)
