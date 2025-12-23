@@ -20,7 +20,6 @@
 #include "../../core/Console.hpp"
 #include "../../drawing/Text.h"
 #include "../../interface/Screenshot.h"
-#include "../../interface/Viewport.h"
 #include "../../network/Network.h"
 #include "../../network/NetworkBase.h"
 #include "../../scenario/ScenarioRepository.h"
