@@ -1063,7 +1063,7 @@ const G1Element* GfxGetG1Element(ImageIndex image_id)
 
         LOG_WARNING("Invalid entry in g2.dat requested, idx = %u. You may have to update your g2.dat.", idx);
     }
-    else if (offset < SPR_PALETTE_EXT_END)
+    else if (offset < SPR_PALETTE_END)
     {
         size_t idx = offset - SPR_PALETTE_START;
         if (idx < _palettes.header.numEntries)
