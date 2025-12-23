@@ -58,7 +58,8 @@ namespace OpenRCT2::GameActions
     };
     // clang-format on
 
-    MazeSetTrackAction::MazeSetTrackAction(const CoordsXYZD& location, bool initialPlacement, RideId rideIndex, uint8_t mode)
+    MazeSetTrackAction::MazeSetTrackAction(
+        const CoordsXYZD& location, bool initialPlacement, RideId rideIndex, MazeBuildMode mode)
         : _loc(location)
         , _initialPlacement(initialPlacement)
         , _rideIndex(rideIndex)
@@ -87,7 +88,7 @@ namespace OpenRCT2::GameActions
         res.position = _loc + CoordsXYZ{ 8, 8, 0 };
         res.expenditure = ExpenditureType::rideConstruction;
         res.errorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
-        if ((_loc.z & 0xF) != 0 && _mode == GC_SET_MAZE_TRACK_BUILD)
+        if ((_loc.z & 0xF) != 0 && _mode == MazeBuildMode::build)
         {
             res.error = Status::unknown;
             res.errorMessage = STR_INVALID_HEIGHT;
@@ -143,7 +144,7 @@ namespace OpenRCT2::GameActions
         TileElement* tileElement = MapGetTrackElementAtOfTypeFromRide(_loc, TrackElemType::maze, _rideIndex);
         if (tileElement == nullptr)
         {
-            if (_mode != GC_SET_MAZE_TRACK_BUILD)
+            if (_mode != MazeBuildMode::build)
             {
                 res.error = Status::unknown;
                 res.errorMessage = STR_INVALID_SELECTION_OF_OBJECTS;
@@ -245,7 +246,7 @@ namespace OpenRCT2::GameActions
 
         switch (_mode)
         {
-            case GC_SET_MAZE_TRACK_BUILD:
+            case MazeBuildMode::build:
             {
                 uint8_t segmentOffset = MazeGetSegmentBit(_loc);
 
@@ -278,10 +279,10 @@ namespace OpenRCT2::GameActions
                 break;
             }
 
-            case GC_SET_MAZE_TRACK_MOVE:
+            case MazeBuildMode::move:
                 break;
 
-            case GC_SET_MAZE_TRACK_FILL:
+            case MazeBuildMode::fill:
                 if (!_initialPlacement)
                 {
                     auto previousSegment = CoordsXY{ _loc.x - CoordsDirectionDelta[_loc.direction].x / 2,

@@ -651,13 +651,6 @@ enum class SequenceFlag : uint8_t
     hasHeightMarker, // Displays a height marker on this sequence block
 };
 
-enum
-{
-    GC_SET_MAZE_TRACK_BUILD = 0,
-    GC_SET_MAZE_TRACK_MOVE = 1,
-    GC_SET_MAZE_TRACK_FILL = 2,
-};
-
 struct TrackCircuitIterator
 {
     CoordsXYE last;

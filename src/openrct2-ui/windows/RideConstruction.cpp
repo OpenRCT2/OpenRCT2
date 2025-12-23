@@ -67,6 +67,7 @@ using namespace OpenRCT2::Numerics;
 using namespace OpenRCT2::TrackMetaData;
 using OpenRCT2::GameActions::CommandFlag;
 using OpenRCT2::GameActions::CommandFlags;
+using OpenRCT2::GameActions::MazeBuildMode;
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -3698,7 +3699,7 @@ namespace OpenRCT2::Ui::Windows
                 gDisableErrorWindowSound = true;
 
                 auto gameAction = GameActions::MazeSetTrackAction(
-                    CoordsXYZD{ _currentTrackBegin, 0 }, true, _currentRideIndex, GC_SET_MAZE_TRACK_BUILD);
+                    CoordsXYZD{ _currentTrackBegin, 0 }, true, _currentRideIndex, MazeBuildMode::build);
                 auto mazeSetTrackResult = GameActions::Execute(&gameAction, getGameState());
                 if (mazeSetTrackResult.error == GameActions::Status::ok)
                 {
@@ -4757,8 +4758,7 @@ namespace OpenRCT2::Ui::Windows
         if (rtd.specialType == RtdSpecialType::maze)
         {
             CommandFlags flags = { CommandFlag::allowDuringPaused, CommandFlag::noSpend, CommandFlag::ghost };
-            auto gameAction = GameActions::MazeSetTrackAction(
-                CoordsXYZD{ trackPos, 0 }, true, rideIndex, GC_SET_MAZE_TRACK_BUILD);
+            auto gameAction = GameActions::MazeSetTrackAction(CoordsXYZD{ trackPos, 0 }, true, rideIndex, MazeBuildMode::build);
             gameAction.SetFlags(flags);
             auto result = GameActions::Execute(&gameAction, getGameState());
 
@@ -5146,7 +5146,7 @@ namespace OpenRCT2::Ui::Windows
             };
             for (const auto& quadrant : quadrants)
             {
-                auto gameAction = GameActions::MazeSetTrackAction(quadrant, false, rideIndex, GC_SET_MAZE_TRACK_FILL);
+                auto gameAction = GameActions::MazeSetTrackAction(quadrant, false, rideIndex, MazeBuildMode::fill);
                 gameAction.SetFlags(flags);
                 auto res = GameActions::Execute(&gameAction, getGameState());
             }

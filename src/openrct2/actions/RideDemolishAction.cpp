@@ -179,7 +179,7 @@ namespace OpenRCT2::GameActions
 
     money64 RideDemolishAction::MazeRemoveTrack(GameState_t& gameState, const CoordsXYZD& coords) const
     {
-        auto setMazeTrack = MazeSetTrackAction(coords, false, _rideIndex, GC_SET_MAZE_TRACK_FILL);
+        auto setMazeTrack = MazeSetTrackAction(coords, false, _rideIndex, MazeBuildMode::fill);
         setMazeTrack.SetFlags(GetFlags());
 
         auto execRes = ExecuteNested(&setMazeTrack, gameState);
