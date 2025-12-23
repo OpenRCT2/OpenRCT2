@@ -534,7 +534,7 @@ void LoadPalette()
         return;
     }
 
-    uint32_t palette = SPR_G2_DEFAULT_PALETTE;
+    uint32_t palette = SPR_GAME_DEFAULT_PALETTE;
 
     auto water_type = OpenRCT2::ObjectManager::GetObjectEntry<WaterObjectEntry>(0);
     if (water_type != nullptr)
@@ -736,7 +736,7 @@ void UpdatePaletteEffects()
     if (gClimateLightningFlash == 1)
     {
         // Change palette to lighter colour during lightning
-        int32_t palette = SPR_G2_DEFAULT_PALETTE;
+        int32_t palette = SPR_GAME_DEFAULT_PALETTE;
 
         if (water_type != nullptr)
         {
@@ -765,7 +765,7 @@ void UpdatePaletteEffects()
         if (gClimateLightningFlash == 2)
         {
             // Change palette back to normal after lightning
-            int32_t palette = SPR_G2_DEFAULT_PALETTE;
+            int32_t palette = SPR_GAME_DEFAULT_PALETTE;
 
             if (water_type != nullptr)
             {
@@ -804,7 +804,7 @@ void UpdatePaletteEffects()
         }
         uint32_t j = gPaletteEffectFrame;
         j = ((static_cast<uint16_t>((~j / 2) * 128) * 15) >> 16);
-        uint32_t waterId = SPR_G2_PALETTE_WATER;
+        uint32_t waterId = SPR_GAME_PALETTE_WATER;
         if (water_type != nullptr)
         {
             waterId = water_type->waterWavesPalette;
@@ -828,7 +828,7 @@ void UpdatePaletteEffects()
             }
         }
 
-        waterId = SPR_G2_PALETTE_3;
+        waterId = SPR_GAME_PALETTE_3;
         if (water_type != nullptr)
         {
             waterId = water_type->waterSparklesPalette;
@@ -854,7 +854,7 @@ void UpdatePaletteEffects()
         }
 
         j = (static_cast<uint16_t>(gPaletteEffectFrame * -960) * 3) >> 16;
-        waterId = SPR_G2_PALETTE_4;
+        waterId = SPR_GAME_PALETTE_4;
         g1 = GfxGetG1Palette(shade + waterId);
         if (g1 != nullptr)
         {
