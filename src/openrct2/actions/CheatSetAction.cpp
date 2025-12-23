@@ -271,6 +271,9 @@ namespace OpenRCT2::GameActions
             case CheatType::removeParkFences:
                 RemoveParkFences();
                 break;
+            case CheatType::disableDeathFromDrowning:
+                gameState.cheats.disableDeathFromDrowning = _param1 != 0;
+                break;
             default:
             {
                 LOG_ERROR("Invalid cheat type %d", _cheatType.id);
@@ -346,6 +349,8 @@ namespace OpenRCT2::GameActions
             case CheatType::allowSpecialColourSchemes:
                 [[fallthrough]];
             case CheatType::allowTrackPlaceInvalidHeights:
+                [[fallthrough]];
+            case CheatType::disableDeathFromDrowning:
                 [[fallthrough]];
             case CheatType::openClosePark:
                 return { { 0, 1 }, { 0, 0 } };

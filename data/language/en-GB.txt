@@ -3843,3 +3843,5 @@ STR_7010    :Could not start replay, file ‘{STRING}’ doesn’t exist or isn�
 STR_7011    :Could not start replay
 STR_7012    :Polish Złoty (PLN)
 STR_7013    :Drag areas of path
+STR_7014    :Disable death from drowning
+STR_7015    :Keeps peeps in a perpetual animation when drowning so that they do not die.

@@ -46,6 +46,7 @@ struct CheatsState
     bool allowRegularPathAsQueue;
     bool allowSpecialColourSchemes;
     bool makeAllDestructible;
+    bool disableDeathFromDrowning;
     StaffSpeedCheat selectedStaffSpeed;
     int32_t forcedParkRating;
 };
@@ -106,6 +107,7 @@ enum class CheatType : int32_t
     allowSpecialColourSchemes,
     removeParkFences,
     ignorePrice,
+    disableDeathFromDrowning,
     count,
 };
 

@@ -786,6 +786,14 @@ void Peep::UpdateFalling()
         // Check to see if we are ready to drown.
         UpdateAction();
         Invalidate();
+
+        auto& gameState = getGameState();
+        if (gameState.cheats.disableDeathFromDrowning)
+        {
+            Action = PeepActionType::drowning;
+            AnimationFrameNum %= 8;
+        }
+
         if (Action == PeepActionType::drowning)
             return;
 
@@ -795,8 +803,7 @@ void Peep::UpdateFalling()
             FormatNameTo(ft);
             News::AddItemToQueue(News::ItemType::blank, STR_NEWS_ITEM_GUEST_DROWNED, x | (y << 16), ft);
         }
-
-        auto& gameState = getGameState();
+        
         gameState.park.ratingCasualtyPenalty = std::min(gameState.park.ratingCasualtyPenalty + 25, 1000);
         Remove();
         return;

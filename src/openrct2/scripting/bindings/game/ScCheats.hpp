@@ -80,6 +80,8 @@ namespace OpenRCT2::Scripting
                 "showVehiclesFromOtherTrackTypes");
             dukglue_register_property(
                 ctx, &ScCheats::makeAllDestructible_get, &ScCheats::makeAllDestructible_set, "makeAllDestructible");
+            dukglue_register_property(
+                ctx, &ScCheats::disableDeathFromDrowning_get, &ScCheats::disableDeathFromDrowning_set, "disableDeathFromDrowning");
         }
 
     private:
@@ -380,6 +382,17 @@ namespace OpenRCT2::Scripting
         {
             ThrowIfGameStateNotMutable();
             getGameState().cheats.makeAllDestructible = value;
+        }
+
+         bool disableDeathFromDrowning_get()
+        {
+            return getGameState().cheats.disableDeathFromDrowning;
+        }
+
+        void disableDeathFromDrowning_set(bool value)
+        {
+            ThrowIfGameStateNotMutable();
+            getGameState().cheats.disableDeathFromDrowning = value;
         }
     };
 } // namespace OpenRCT2::Scripting

@@ -56,6 +56,7 @@ void CheatsReset()
     gameState.cheats.makeAllDestructible = false;
     gameState.cheats.selectedStaffSpeed = StaffSpeedCheat::None;
     gameState.cheats.forcedParkRating = kForcedParkRatingDisabled;
+    gameState.cheats.disableDeathFromDrowning = false;
 }
 
 void CheatsSet(CheatType cheatType, int64_t param1 /* = 0*/, int64_t param2 /* = 0*/)
@@ -115,6 +116,7 @@ void CheatsSerialise(DataSerialiser& ds)
         CheatEntrySerialise(ds, CheatType::setStaffSpeed, gameState.cheats.selectedStaffSpeed, count);
         CheatEntrySerialise(ds, CheatType::ignorePrice, gameState.cheats.ignorePrice, count);
         CheatEntrySerialise(ds, CheatType::setForcedParkRating, gameState.cheats.forcedParkRating, count);
+        CheatEntrySerialise(ds, CheatType::disableDeathFromDrowning, gameState.cheats.disableDeathFromDrowning, count);
 
         // Remember current position and update count.
         uint64_t endOffset = stream.GetPosition();
@@ -224,6 +226,9 @@ void CheatsSerialise(DataSerialiser& ds)
                     break;
                 case CheatType::setForcedParkRating:
                     ds << gameState.cheats.forcedParkRating;
+                    break;
+                case CheatType::disableDeathFromDrowning:
+                    ds << gameState.cheats.disableDeathFromDrowning;
                     break;
                 default:
                     break;
@@ -336,6 +341,8 @@ const char* CheatsGetName(CheatType cheatType)
             return LanguageGetString(STR_CHEAT_ALLOW_SPECIAL_COLOUR_SCHEMES);
         case CheatType::removeParkFences:
             return LanguageGetString(STR_CHEAT_REMOVE_PARK_FENCES);
+        case CheatType::disableDeathFromDrowning:
+            return LanguageGetString(STR_CHEAT_DISABLE_DEATH_FROM_DROWNING);
         default:
             return "Unknown Cheat";
     }

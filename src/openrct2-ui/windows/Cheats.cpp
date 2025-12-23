@@ -134,6 +134,7 @@ enum WindowCheatsWidgetIdx
     WIDX_GUEST_IGNORE_PRICE,
     WIDX_DISABLE_VANDALISM,
     WIDX_DISABLE_LITTERING,
+    WIDX_DISABLE_DEATH_FROM_DROWNING,
 
     WIDX_STAFF_GROUP = WIDX_TAB_CONTENT,
     WIDX_STAFF_SPEED,
@@ -269,11 +270,12 @@ static constexpr auto window_cheats_guests_widgets = makeWidgets(
     makeWidget({ 11, 300+15+6-3}, kCheatButtonSize, WidgetType::button,   WindowColour::secondary, STR_SHOP_ITEM_PLURAL_BALLOON                                    ), // give guests balloons
     makeWidget({127, 300+15+6-3}, kCheatButtonSize, WidgetType::button,   WindowColour::secondary, STR_SHOP_ITEM_PLURAL_UMBRELLA                                   ), // give guests umbrellas
 
-    makeWidget({  5, 342+6}, {238,  85},        WidgetType::groupbox, WindowColour::secondary, STR_GUEST_BEHAVIOUR                                             ), // Guests behaviour group frame
+    makeWidget({  5, 342+6}, {238,  102},        WidgetType::groupbox, WindowColour::secondary, STR_GUEST_BEHAVIOUR                                             ), // Guests behaviour group frame
     makeWidget({ 11, 363+1}, kCheatCheckSize,   WidgetType::checkbox, WindowColour::secondary, STR_CHEAT_IGNORE_INTENSITY,      STR_CHEAT_IGNORE_INTENSITY_TIP ), // guests ignore intensity
     makeWidget({ 11, 380+1}, kCheatCheckSize,   WidgetType::checkbox, WindowColour::secondary, STR_CHEAT_IGNORE_PRICE,          STR_CHEAT_IGNORE_PRICE_TIP     ), // guests ignore price
     makeWidget({ 11, 397+1}, kCheatCheckSize,   WidgetType::checkbox, WindowColour::secondary, STR_CHEAT_DISABLE_VANDALISM,     STR_CHEAT_DISABLE_VANDALISM_TIP), // disable vandalism
-    makeWidget({ 11, 414+1}, kCheatCheckSize,   WidgetType::checkbox, WindowColour::secondary, STR_CHEAT_DISABLE_LITTERING,     STR_CHEAT_DISABLE_LITTERING_TIP)  // disable littering
+    makeWidget({ 11, 414+1}, kCheatCheckSize,   WidgetType::checkbox, WindowColour::secondary, STR_CHEAT_DISABLE_LITTERING,     STR_CHEAT_DISABLE_LITTERING_TIP), // disable littering
+    makeWidget({ 11, 431+1}, kCheatCheckSize,   WidgetType::checkbox, WindowColour::secondary, STR_CHEAT_DISABLE_DEATH_FROM_DROWNING,     STR_CHEAT_DISABLE_DEATH_FROM_DROWNING_TIP)  // disable littering
 );
 
 static constexpr auto window_cheats_staff_widgets = makeWidgets(
@@ -536,6 +538,7 @@ static StringId window_cheats_page_titles[] = {
                     setCheckboxValue(WIDX_GUEST_IGNORE_PRICE, gameState.cheats.ignorePrice);
                     setCheckboxValue(WIDX_DISABLE_VANDALISM, gameState.cheats.disableVandalism);
                     setCheckboxValue(WIDX_DISABLE_LITTERING, gameState.cheats.disableLittering);
+                    setCheckboxValue(WIDX_DISABLE_DEATH_FROM_DROWNING, gameState.cheats.disableDeathFromDrowning);
                     break;
                 }
                 case WINDOW_CHEATS_PAGE_PARK:
@@ -1243,6 +1246,9 @@ static StringId window_cheats_page_titles[] = {
                     break;
                 case WIDX_DISABLE_LITTERING:
                     CheatsSet(CheatType::disableLittering, !gameState.cheats.disableLittering);
+                    break;
+                case WIDX_DISABLE_DEATH_FROM_DROWNING:
+                    CheatsSet(CheatType::disableDeathFromDrowning, !gameState.cheats.disableDeathFromDrowning);
                     break;
             }
         }
