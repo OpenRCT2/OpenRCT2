@@ -183,7 +183,6 @@ namespace OpenRCT2
     // rct2: 0x014234BC
     extern Viewport* gMusicTrackingViewport;
 
-    void ViewportInitAll();
     std::optional<ScreenCoordsXY> centre2dCoordinates(const CoordsXYZ& loc, Viewport* viewport);
     void ViewportCreate(WindowBase& w, const ScreenCoordsXY& screenCoords, int32_t width, int32_t height, const Focus& focus);
     void ViewportRemove(Viewport* viewport);

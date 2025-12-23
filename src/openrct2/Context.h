@@ -119,6 +119,8 @@ namespace OpenRCT2
         virtual int32_t RunOpenRCT2(int argc, const char** argv) = 0;
 
         virtual bool Initialise() = 0;
+        virtual void ResetSubsystems() = 0;
+
         virtual void InitialiseDrawingEngine() = 0;
         virtual void DisposeDrawingEngine() = 0;
 
@@ -151,6 +153,7 @@ namespace OpenRCT2
     [[nodiscard]] IContext* GetContext();
 
     void ContextInit();
+    void ContextResetSubsystems();
     void ContextSetCurrentCursor(CursorID cursor);
     void ContextUpdateCursorScale();
     void ContextHideCursor();
