@@ -254,7 +254,7 @@ namespace OpenRCT2::GameActions
 
             clearanceZ = floor2(clearanceZ, kCoordsZStep) + baseZ;
 
-            if (clearanceZ > MAX_TRACK_HEIGHT)
+            if (clearanceZ > kMaximumTrackHeight)
             {
                 return Result(Status::invalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_TOO_HIGH);
             }

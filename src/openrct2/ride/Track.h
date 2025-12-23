@@ -223,7 +223,7 @@ enum
 };
 
 constexpr int8_t kMaxStationPlatformLength = 32;
-constexpr uint16_t const MAX_TRACK_HEIGHT = 254 * kCoordsZStep;
+constexpr uint16_t kMaximumTrackHeight = 254 * kCoordsZStep;
 constexpr uint8_t const DEFAULT_SEAT_ROTATION = 4;
 
 enum class TrackCurve : uint8_t
