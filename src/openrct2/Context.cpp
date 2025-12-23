@@ -569,7 +569,6 @@ namespace OpenRCT2
 
             WindowInitAll();
 
-            // ?
             gInputFlags.clearAll();
             InputSetState(InputState::Reset);
             gPressedWidget.windowClassification = WindowClass::null;
