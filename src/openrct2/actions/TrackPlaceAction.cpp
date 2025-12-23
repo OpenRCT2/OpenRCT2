@@ -168,7 +168,7 @@ namespace OpenRCT2::GameActions
                 && !gameState.cheats.enableChainLiftOnAllTrack)
             {
                 const auto& ted = GetTrackElementDescriptor(_trackType);
-                if (ted.flags & TRACK_ELEM_FLAG_IS_STEEP_UP)
+                if (ted.flags.has(TrackElementFlag::isSteepUp))
                 {
                     return Result(
                         Status::disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_TOO_STEEP_FOR_LIFT_HILL);
@@ -205,7 +205,7 @@ namespace OpenRCT2::GameActions
 
         if (!gameState.cheats.allowTrackPlaceInvalidHeights)
         {
-            if (ted.flags & TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT)
+            if (ted.flags.has(TrackElementFlag::startsAtHalfHeight))
             {
                 if ((_origin.z & 0x0F) != 8)
                 {
@@ -274,7 +274,7 @@ namespace OpenRCT2::GameActions
 
             const auto clearanceData = canBuild.getData<ConstructClearResult>();
             uint8_t mapGroundFlags = clearanceData.GroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
-            if (!(ted.flags & TRACK_ELEM_FLAG_CAN_BE_PARTLY_UNDERGROUND))
+            if (!ted.flags.has(TrackElementFlag::canBePartlyUnderground))
             {
                 if (resultData.GroundFlags != 0 && (resultData.GroundFlags & mapGroundFlags) == 0)
                 {
@@ -285,7 +285,7 @@ namespace OpenRCT2::GameActions
             }
 
             resultData.GroundFlags = mapGroundFlags;
-            if (ted.flags & TRACK_ELEM_FLAG_ONLY_ABOVE_GROUND)
+            if (ted.flags.has(TrackElementFlag::onlyAboveGround))
             {
                 if (resultData.GroundFlags & ELEMENT_IS_UNDERGROUND)
                 {
@@ -295,7 +295,7 @@ namespace OpenRCT2::GameActions
                 }
             }
 
-            if (ted.flags & TRACK_ELEM_FLAG_ONLY_UNDERWATER)
+            if (ted.flags.has(TrackElementFlag::onlyUnderwater))
             { // No element has this flag
                 if (clearanceData.GroundFlags & ELEMENT_IS_UNDERWATER)
                 {
@@ -511,7 +511,7 @@ namespace OpenRCT2::GameActions
 
             const auto clearanceData = canBuild.getData<ConstructClearResult>();
             uint8_t mapGroundFlags = clearanceData.GroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
-            if (!(ted.flags & TRACK_ELEM_FLAG_CAN_BE_PARTLY_UNDERGROUND))
+            if (!ted.flags.has(TrackElementFlag::canBePartlyUnderground))
             {
                 if (resultData.GroundFlags != 0 && (resultData.GroundFlags & mapGroundFlags) == 0)
                 {

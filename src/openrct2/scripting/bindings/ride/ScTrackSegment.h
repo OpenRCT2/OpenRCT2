@@ -65,7 +65,7 @@ namespace OpenRCT2::Scripting
         int32_t getPriceModifier() const;
         int32_t getPreviewZOffset() const;
         int32_t getTrackGroup() const;
-        template<uint16_t flag>
+        template<TrackElementFlag flag>
         bool getTrackFlag() const;
         std::string getTrackCurvature() const;
         std::string getTrackPitchDirection() const;

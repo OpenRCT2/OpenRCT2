@@ -496,8 +496,7 @@ bool Vehicle::OpenRestraints()
 void RideUpdateMeasurementsSpecialElements_Default(Ride& ride, const OpenRCT2::TrackElemType trackType)
 {
     const auto& ted = GetTrackElementDescriptor(trackType);
-    uint16_t trackFlags = ted.flags;
-    if (trackFlags & TRACK_ELEM_FLAG_NORMAL_TO_INVERSION)
+    if (ted.flags.has(TrackElementFlag::normalToInversion))
     {
         if (ride.numInversions < OpenRCT2::Limits::kMaxInversions)
             ride.numInversions++;
@@ -507,8 +506,7 @@ void RideUpdateMeasurementsSpecialElements_Default(Ride& ride, const OpenRCT2::T
 void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const OpenRCT2::TrackElemType trackType)
 {
     const auto& ted = GetTrackElementDescriptor(trackType);
-    uint16_t trackFlags = ted.flags;
-    if (trackFlags & TRACK_ELEM_FLAG_IS_GOLF_HOLE)
+    if (ted.flags.has(TrackElementFlag::isGolfHole))
     {
         if (ride.numHoles < OpenRCT2::Limits::kMaxGolfHoles)
             ride.numHoles++;
@@ -658,14 +656,13 @@ void Vehicle::UpdateMeasurements()
         }
 
         const auto& ted = GetTrackElementDescriptor(trackElemType);
-        uint16_t trackFlags = ted.flags;
         auto testingFlags = curRide->testingFlags;
-        if (testingFlags.has(RideTestingFlag::turnLeft) && trackFlags & TRACK_ELEM_FLAG_TURN_LEFT)
+        if (testingFlags.has(RideTestingFlag::turnLeft) && ted.flags.has(TrackElementFlag::turnLeft))
         {
             // 0x800 as this is masked to kCurrentTurnCountMask
             curRide->turnCountDefault += 0x800;
         }
-        else if (testingFlags.has(RideTestingFlag::turnRight) && trackFlags & TRACK_ELEM_FLAG_TURN_RIGHT)
+        else if (testingFlags.has(RideTestingFlag::turnRight) && ted.flags.has(TrackElementFlag::turnRight))
         {
             // 0x800 as this is masked to kCurrentTurnCountMask
             curRide->turnCountDefault += 0x800;
@@ -703,31 +700,31 @@ void Vehicle::UpdateMeasurements()
         }
         else
         {
-            if (trackFlags & TRACK_ELEM_FLAG_TURN_LEFT)
+            if (ted.flags.has(TrackElementFlag::turnLeft))
             {
                 curRide->testingFlags.set(RideTestingFlag::turnLeft);
                 curRide->turnCountDefault &= ~kCurrentTurnCountMask;
 
-                if (trackFlags & TRACK_ELEM_FLAG_TURN_BANKED)
+                if (ted.flags.has(TrackElementFlag::turnBanked))
                 {
                     curRide->testingFlags.set(RideTestingFlag::turnBanked);
                 }
-                if (trackFlags & TRACK_ELEM_FLAG_TURN_SLOPED)
+                if (ted.flags.has(TrackElementFlag::turnSloped))
                 {
                     curRide->testingFlags.set(RideTestingFlag::turnSloped);
                 }
             }
 
-            if (trackFlags & TRACK_ELEM_FLAG_TURN_RIGHT)
+            if (ted.flags.has(TrackElementFlag::turnRight))
             {
                 curRide->testingFlags.set(RideTestingFlag::turnRight);
                 curRide->turnCountDefault &= ~kCurrentTurnCountMask;
 
-                if (trackFlags & TRACK_ELEM_FLAG_TURN_BANKED)
+                if (ted.flags.has(TrackElementFlag::turnBanked))
                 {
                     curRide->testingFlags.set(RideTestingFlag::turnBanked);
                 }
-                if (trackFlags & TRACK_ELEM_FLAG_TURN_SLOPED)
+                if (ted.flags.has(TrackElementFlag::turnSloped))
                 {
                     curRide->testingFlags.set(RideTestingFlag::turnSloped);
                 }
@@ -736,7 +733,7 @@ void Vehicle::UpdateMeasurements()
 
         if (testingFlags.has(RideTestingFlag::dropDown))
         {
-            if (velocity < 0 || !(trackFlags & TRACK_ELEM_FLAG_DOWN))
+            if (velocity < 0 || !ted.flags.has(TrackElementFlag::down))
             {
                 curRide->testingFlags.unset(RideTestingFlag::dropDown);
 
@@ -751,7 +748,7 @@ void Vehicle::UpdateMeasurements()
                 }
             }
         }
-        else if (trackFlags & TRACK_ELEM_FLAG_DOWN && velocity >= 0)
+        else if (ted.flags.has(TrackElementFlag::down) && velocity >= 0)
         {
             curRide->testingFlags.unset(RideTestingFlag::dropUp);
             curRide->testingFlags.set(RideTestingFlag::dropDown);
@@ -765,7 +762,7 @@ void Vehicle::UpdateMeasurements()
 
         if (testingFlags.has(RideTestingFlag::dropUp))
         {
-            if (velocity > 0 || !(trackFlags & TRACK_ELEM_FLAG_UP))
+            if (velocity > 0 || !ted.flags.has(TrackElementFlag::up))
             {
                 curRide->testingFlags.unset(RideTestingFlag::dropUp);
 
@@ -780,7 +777,7 @@ void Vehicle::UpdateMeasurements()
                 }
             }
         }
-        else if (trackFlags & TRACK_ELEM_FLAG_UP && velocity <= 0)
+        else if (ted.flags.has(TrackElementFlag::up) && velocity <= 0)
         {
             curRide->testingFlags.unset(RideTestingFlag::dropDown);
             curRide->testingFlags.set(RideTestingFlag::dropUp);
@@ -791,7 +788,7 @@ void Vehicle::UpdateMeasurements()
             curRide->startDropHeight = z / kCoordsZStep;
         }
 
-        if (trackFlags & TRACK_ELEM_FLAG_HELIX)
+        if (ted.flags.has(TrackElementFlag::helix))
         {
             if (curRide->numHelices < OpenRCT2::Limits::kMaxHelices)
                 curRide->numHelices++;
@@ -7185,7 +7182,7 @@ bool Vehicle::UpdateTrackMotionBackwardsGetNewTrack(TrackElemType trackType, con
             {
                 trackType = tileElement->AsTrack()->GetTrackType();
                 const auto& ted = GetTrackElementDescriptor(trackType);
-                if (!(ted.flags & TRACK_ELEM_FLAG_DOWN))
+                if (!ted.flags.has(TrackElementFlag::down))
                 {
                     _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_9;
                 }

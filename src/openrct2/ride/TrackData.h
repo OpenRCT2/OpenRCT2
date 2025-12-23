@@ -20,6 +20,7 @@ using namespace OpenRCT2;
 namespace OpenRCT2::TrackMetaData
 {
     constexpr uint8_t kMaxSequencesPerPiece = 16;
+    using TrackFlags = FlagHolder<uint32_t, TrackElementFlag>;
 
     // 0x009968BB, 0x009968BC, 0x009968BD, 0x009968BF, 0x009968C1, 0x009968C3
 
@@ -127,7 +128,7 @@ namespace OpenRCT2::TrackMetaData
         // (RideTrackPrice * TED::PriceModifier) / 65536
         uint32_t priceModifier;
         OpenRCT2::TrackElemType mirrorElement;
-        uint32_t flags;
+        TrackFlags flags;
 
         uint8_t numSequences{};
         std::array<SequenceDescriptor, kMaxSequencesPerPiece> sequences;

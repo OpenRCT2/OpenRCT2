@@ -5049,13 +5049,13 @@ namespace OpenRCT2::Ui::Windows
         bool turnOffLiftHill = false;
         if (!IsTrackEnabled(TrackGroup::liftHillCurve))
         {
-            if (ted.flags & TRACK_ELEM_FLAG_CURVE_ALLOWS_LIFT)
+            if (ted.flags.has(TrackElementFlag::curveAllowsLift))
             {
                 turnOffLiftHill = true;
             }
         }
 
-        if (!(ted.flags & TRACK_ELEM_FLAG_ALLOW_LIFT_HILL))
+        if (!ted.flags.has(TrackElementFlag::allowLiftHill))
         {
             turnOffLiftHill = true;
         }

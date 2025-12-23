@@ -240,27 +240,31 @@ enum class TrackCurve : uint8_t
 };
 constexpr const uint8_t kHighestCurveValue = 8;
 
-enum
+enum class TrackElementFlag : uint8_t
 {
-    TRACK_ELEM_FLAG_ONLY_UNDERWATER = (1 << 0),
-    TRACK_ELEM_FLAG_TURN_LEFT = (1 << 1),
-    TRACK_ELEM_FLAG_TURN_RIGHT = (1 << 2),
-    TRACK_ELEM_FLAG_TURN_BANKED = (1 << 3),
-    TRACK_ELEM_FLAG_TURN_SLOPED = (1 << 4),
-    TRACK_ELEM_FLAG_DOWN = (1 << 5),
-    TRACK_ELEM_FLAG_UP = (1 << 6),
-    TRACK_ELEM_FLAG_NORMAL_TO_INVERSION = (1 << 7),
-    TRACK_ELEM_FLAG_IS_GOLF_HOLE = (1 << 7),
-    TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT = (1 << 8),
-    TRACK_ELEM_FLAG_ONLY_ABOVE_GROUND = (1 << 9),
-    TRACK_ELEM_FLAG_IS_STEEP_UP = (1 << 10), // Used to allow steep backwards lifts on roller coasters that do not allow steep
-                                             // forward lift hills
-    TRACK_ELEM_FLAG_HELIX = (1 << 11),
-    TRACK_ELEM_FLAG_ALLOW_LIFT_HILL = (1 << 12),
-    TRACK_ELEM_FLAG_CURVE_ALLOWS_LIFT = (1 << 13),
-    TRACK_ELEM_FLAG_INVERSION_TO_NORMAL = (1 << 14),
-    TRACK_ELEM_FLAG_BANKED = (1 << 15), // Also set on Spinning Tunnel and Log Flume reverser, probably to save a flag.
-    TRACK_ELEM_FLAG_CAN_BE_PARTLY_UNDERGROUND = (1 << 16),
+    onlyUnderwater,
+    turnLeft,
+    turnRight,
+    turnBanked,
+    turnSloped,
+    down,
+    up,
+    normalToInversion,
+    isGolfHole = normalToInversion,
+    startsAtHalfHeight,
+    onlyAboveGround,
+
+    // Used to allow steep backwards lifts on roller coasters that do not allow steep
+    // forward lift hills
+    isSteepUp,
+    helix,
+    allowLiftHill,
+    curveAllowsLift,
+    inversionToNormal,
+
+    // Also set on Spinning Tunnel and Log Flume reverser, probably to save a flag.
+    banked,
+    canBePartlyUnderground,
 };
 
 namespace OpenRCT2
