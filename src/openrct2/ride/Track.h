@@ -24,6 +24,10 @@ constexpr auto kTrackDirectionDiagonalMask = 0b0100;
 
 constexpr uint8_t kMaximumTrackSpeed = 30;
 
+constexpr int8_t kMaxStationPlatformLength = 32;
+constexpr uint16_t kMaximumTrackHeight = 254 * kCoordsZStep;
+constexpr uint8_t kDefaultSeatRotation = 4;
+
 namespace OpenRCT2
 {
     enum class TrackElemType : uint16_t;
@@ -221,10 +225,6 @@ enum
     RCT_PREVIEW_TRACK_FLAG_1 = (1 << 1),
     RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL = (1 << 2),
 };
-
-constexpr int8_t kMaxStationPlatformLength = 32;
-constexpr uint16_t kMaximumTrackHeight = 254 * kCoordsZStep;
-constexpr uint8_t kDefaultSeatRotation = 4;
 
 enum class TrackCurve : uint8_t
 {
