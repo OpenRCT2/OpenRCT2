@@ -2859,8 +2859,8 @@ namespace OpenRCT2::Ui::Windows
 
                 // Non-default vehicle visuals do not use this system, so we have to assume it supports all the track pieces.
                 auto& firstCar = currentRideEntry->Cars[0];
-                if (firstCar.PaintStyle != VEHICLE_VISUAL_DEFAULT || (firstCar.flags & CAR_ENTRY_FLAG_CHAIRLIFT)
-                    || (firstCar.flags & CAR_ENTRY_FLAG_SLIDE_SWING))
+                if (firstCar.PaintStyle != VEHICLE_VISUAL_DEFAULT
+                    || firstCar.flags.hasAny(CarEntryFlag::isChairlift, CarEntryFlag::useSlideSwing))
                 {
                     disabledGroups.reset();
                     break;

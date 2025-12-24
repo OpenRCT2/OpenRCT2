@@ -285,12 +285,12 @@ namespace OpenRCT2::Scripting
             return 0;
         }
 
-        uint32_t flags_get() const
+        uint64_t flags_get() const
         {
             auto entry = GetEntry();
             if (entry != nullptr)
             {
-                return entry->flags;
+                return entry->flags.holder;
             }
             return 0;
         }

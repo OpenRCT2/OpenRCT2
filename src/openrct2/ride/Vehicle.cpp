@@ -395,13 +395,13 @@ bool Vehicle::OpenRestraints()
 
         const auto& carEntry = rideEntry->Cars[vehicle->vehicle_type];
 
-        if (carEntry.flags & CAR_ENTRY_FLAG_SPINNING)
+        if (carEntry.flags.has(CarEntryFlag::hasSpinning))
         {
             // If the vehicle is a spinner it must be spinning slow
             // For vehicles without additional frames there are 4 rotations it can unload from
             // For vehicles with additional frames it must be facing forward
             if (abs(vehicle->spin_speed) <= kVehicleMaxSpinSpeedForStopping && !(vehicle->spin_sprite & 0x30)
-                && (!(carEntry.flags & CAR_ENTRY_FLAG_SPINNING_COMBINED_WITH_NONSPINNING) || !(vehicle->spin_sprite & 0xF8)))
+                && (!carEntry.flags.has(CarEntryFlag::hasSpinningCombinedWithNonSpinning) || !(vehicle->spin_sprite & 0xF8)))
             {
                 vehicle->spin_speed = 0;
             }
@@ -949,9 +949,9 @@ void Vehicle::Update()
     {
         _vehicleBreakdown = curRide->breakdownReasonPending;
         auto carEntry = &rideEntry->Cars[vehicle_type];
-        if ((carEntry->flags & CAR_ENTRY_FLAG_POWERED) && curRide->breakdownReasonPending == BREAKDOWN_SAFETY_CUT_OUT)
+        if (carEntry->flags.has(CarEntryFlag::isPowered) && curRide->breakdownReasonPending == BREAKDOWN_SAFETY_CUT_OUT)
         {
-            if (!(carEntry->flags & CAR_ENTRY_FLAG_WATER_RIDE) || (pitch == VehiclePitch::up25 && velocity <= 2.0_mph))
+            if (!carEntry->flags.has(CarEntryFlag::isWaterRide) || (pitch == VehiclePitch::up25 && velocity <= 2.0_mph))
             {
                 SetFlag(VehicleFlags::StoppedBySafetyCutOut);
             }
@@ -1098,7 +1098,7 @@ void Vehicle::UpdateMovingToEndOfStation()
 
             const auto& carEntry = rideEntry->Cars[vehicle_type];
 
-            if (!(carEntry.flags & CAR_ENTRY_FLAG_POWERED))
+            if (!carEntry.flags.has(CarEntryFlag::isPowered))
             {
                 if (velocity <= 131940)
                 {
@@ -1411,7 +1411,7 @@ void Vehicle::UpdateDodgemsMode()
     const auto& carEntry = rideEntry->Cars[vehicle_type];
 
     // Mark the dodgem as in use.
-    if (carEntry.flags & CAR_ENTRY_FLAG_DODGEM_INUSE_LIGHTS && animation_frame != 1)
+    if (carEntry.flags.has(CarEntryFlag::hasDodgemInUseLights) && animation_frame != 1)
     {
         animation_frame = 1;
         Invalidate();
@@ -2270,7 +2270,7 @@ void Vehicle::UpdateDeparting()
         case RideMode::rotatingLift:
         case RideMode::freefallDrop:
         case RideMode::boatHire:
-            if (carEntry.flags & CAR_ENTRY_FLAG_POWERED)
+            if (carEntry.flags.has(CarEntryFlag::isPowered))
                 break;
 
             if (velocity <= 131940)
@@ -2896,7 +2896,7 @@ void Vehicle::UpdateArrivingPassThroughStation(const Ride& curRide, const CarEnt
     }
     else
     {
-        if (!(carEntry.flags & CAR_ENTRY_FLAG_POWERED) && velocity >= -131940)
+        if (!carEntry.flags.has(CarEntryFlag::isPowered) && velocity >= -131940)
         {
             acceleration = -3298;
         }
@@ -3021,7 +3021,7 @@ void Vehicle::UpdateArriving()
     }
 
     var_C0++;
-    if ((curFlags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_1) && (carEntry.flags & CAR_ENTRY_FLAG_GO_KART) && (var_C0 < 40))
+    if ((curFlags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_1) && carEntry.flags.has(CarEntryFlag::isGoKart) && (var_C0 < 40))
     {
         return;
     }
@@ -3342,7 +3342,7 @@ void Vehicle::UpdateMotionBoatHire()
     {
         return;
     }
-    if (carEntry->flags & (CAR_ENTRY_FLAG_VEHICLE_ANIMATION | CAR_ENTRY_FLAG_RIDER_ANIMATION))
+    if (carEntry->flags.hasAny(CarEntryFlag::hasVehicleAnimation, CarEntryFlag::hasRiderAnimation))
     {
         UpdateAdditionalAnimation();
     }
@@ -3590,7 +3590,7 @@ void Vehicle::UpdateMotionBoatHire()
 
         int32_t eax = ((velocity >> 1) + edx) / curMass;
         int32_t newAcceleration = -eax;
-        if (carEntry->flags & CAR_ENTRY_FLAG_POWERED)
+        if (carEntry->flags.has(CarEntryFlag::isPowered))
         {
             eax = speed << 14;
             int32_t ebx = (speed * curMass) >> 2;
@@ -4610,7 +4610,7 @@ void Vehicle::UpdateSound()
             break;
 
         default:
-            if ((carEntry.flags & CAR_ENTRY_FLAG_RIDERS_SCREAM))
+            if (carEntry.flags.has(CarEntryFlag::hasScreamingRiders))
             {
                 screamSound.id = UpdateScreamSound();
                 if (screamSound.id == OpenRCT2::Audio::SoundId::noScream)
@@ -4992,7 +4992,7 @@ int32_t Vehicle::UpdateMotionDodgems()
     const auto* rideEntry = GetRideEntry();
     const auto& carEntry = rideEntry->Cars[vehicle_type];
 
-    if (!(carEntry.flags & CAR_ENTRY_FLAG_POWERED))
+    if (!carEntry.flags.has(CarEntryFlag::isPowered))
     {
         acceleration = -eax;
         return _vehicleMotionTrackFlags;
@@ -5086,7 +5086,7 @@ void Vehicle::UpdateTrackMotionUpStopCheck() const
     }
 
     // No up stops (coaster types)
-    if (carEntry->flags & CAR_ENTRY_FLAG_NO_UPSTOP_WHEELS)
+    if (carEntry->flags.has(CarEntryFlag::hasNoUpstopWheels))
     {
         if (!IsOnCoveredTrack())
         {
@@ -5113,7 +5113,7 @@ void Vehicle::UpdateTrackMotionUpStopCheck() const
             }
         }
     }
-    else if (carEntry->flags & CAR_ENTRY_FLAG_NO_UPSTOP_BOBSLEIGH)
+    else if (carEntry->flags.has(CarEntryFlag::hasNoUpstopWheelsBobsleigh))
     {
         // No up stops bobsleigh type
         if (!IsOnCoveredTrack())
@@ -5234,7 +5234,7 @@ void Vehicle::CheckAndApplyBlockSectionStopSite()
         return;
 
     // Is chair lift type
-    if (carEntry->flags & CAR_ENTRY_FLAG_CHAIRLIFT)
+    if (carEntry->flags.has(CarEntryFlag::isChairlift))
     {
         velocity = _vehicleBreakdown == 0 ? 0 : curRide->speed << 16;
         acceleration = 0;
@@ -5524,17 +5524,17 @@ void Vehicle::UpdateSwingingCar()
         return;
     }
     int16_t dx = 3185;
-    if (carEntry->flags & CAR_ENTRY_FLAG_SUSPENDED_SWING)
+    if (carEntry->flags.has(CarEntryFlag::useSuspendedSwing))
     {
         dx = 5006;
     }
-    if (carEntry->flags & CAR_ENTRY_FLAG_WOODEN_WILD_MOUSE_SWING)
+    if (carEntry->flags.has(CarEntryFlag::useWoodenWildMouseSwing))
     {
         dx = 1820;
     }
     int16_t cx = -dx;
 
-    if (carEntry->flags & CAR_ENTRY_FLAG_SLIDE_SWING)
+    if (carEntry->flags.has(CarEntryFlag::useSlideSwing))
     {
         dx = 5370;
         cx = -5370;
@@ -6259,7 +6259,7 @@ bool Vehicle::UpdateMotionCollisionDetection(const CoordsXYZ& loc, EntityId* oth
         return false;
     }
 
-    if (!(carEntry->flags & CAR_ENTRY_FLAG_BOAT_HIRE_COLLISION_DETECTION))
+    if (!carEntry->flags.has(CarEntryFlag::useBoatHireCollisionDetection))
     {
         CollisionDetectionTimer = 0;
 
@@ -6321,7 +6321,7 @@ bool Vehicle::UpdateMotionCollisionDetection(const CoordsXYZ& loc, EntityId* oth
             if (collideCarEntry == nullptr)
                 continue;
 
-            if (!(collideCarEntry->flags & CAR_ENTRY_FLAG_BOAT_HIRE_COLLISION_DETECTION))
+            if (!collideCarEntry->flags.has(CarEntryFlag::useBoatHireCollisionDetection))
                 continue;
 
             uint32_t x_diff = abs(vehicle2->x - loc.x);
@@ -6346,7 +6346,7 @@ bool Vehicle::UpdateMotionCollisionDetection(const CoordsXYZ& loc, EntityId* oth
             if (x_diff + y_diff >= ecx)
                 continue;
 
-            if (!(collideCarEntry->flags & CAR_ENTRY_FLAG_GO_KART))
+            if (!collideCarEntry->flags.has(CarEntryFlag::isGoKart))
             {
                 collideVehicle = vehicle2;
                 mayCollide = true;
@@ -6550,11 +6550,11 @@ void Vehicle::Sub6DBF3E()
     else
     {
         uint16_t cx = 17;
-        if (carEntry->flags & CAR_ENTRY_FLAG_CHAIRLIFT)
+        if (carEntry->flags.has(CarEntryFlag::isChairlift))
         {
             cx = 6;
         }
-        if (carEntry->flags & CAR_ENTRY_FLAG_GO_KART)
+        if (carEntry->flags.has(CarEntryFlag::isGoKart))
         {
             // Determine the stop positions for the karts. If in left lane it's further along the track than the right lane.
             // Since it's not possible to overtake when the race has ended, this does not check for overtake states (7 and
@@ -6652,7 +6652,7 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(
             SetBrakeClosedMultiTile(*tileElement->AsTrack(), TrackLocation, true);
             if (TrackTypeIsBlockBrakes(trackType) || trackType == TrackElemType::endStation)
             {
-                if (!(rideEntry.Cars[0].flags & CAR_ENTRY_FLAG_POWERED))
+                if (!rideEntry.Cars[0].flags.has(CarEntryFlag::isPowered))
                 {
                     OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::blockBrakeRelease, TrackLocation);
                 }
@@ -6757,7 +6757,7 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(
     {
         return false;
     }
-    if ((carEntry->flags & CAR_ENTRY_FLAG_GO_KART) && TrackSubposition < VehicleTrackSubposition::GoKartsMovingToRightLane)
+    if (carEntry->flags.has(CarEntryFlag::isGoKart) && TrackSubposition < VehicleTrackSubposition::GoKartsMovingToRightLane)
     {
         trackType = tileElement->AsTrack()->GetTrackType();
         if (trackType == TrackElemType::flat || trackType == TrackElemType::leftQuarterTurn3Tiles
@@ -6978,7 +6978,7 @@ bool Vehicle::UpdateTrackMotionForwards(const CarEntry* carEntry, const Ride& cu
             roll = moveInfo->roll;
             pitch = moveInfo->pitch;
 
-            if ((carEntry->flags & CAR_ENTRY_FLAG_WOODEN_WILD_MOUSE_SWING) && moveInfo->pitch != VehiclePitch::flat)
+            if (carEntry->flags.has(CarEntryFlag::useWoodenWildMouseSwing) && moveInfo->pitch != VehiclePitch::flat)
             {
                 SwingSprite = 0;
                 SwingPosition = 0;
@@ -7011,14 +7011,14 @@ bool Vehicle::UpdateTrackMotionForwards(const CarEntry* carEntry, const Ride& cu
                         {
                             if (velocityDelta > 14.0_mph)
                             {
-                                if (!(carEntry->flags & CAR_ENTRY_FLAG_BOAT_HIRE_COLLISION_DETECTION))
+                                if (!carEntry->flags.has(CarEntryFlag::useBoatHireCollisionDetection))
                                 {
                                     _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_COLLISION;
                                 }
                             }
                         }
 
-                        if (carEntry->flags & CAR_ENTRY_FLAG_GO_KART)
+                        if (carEntry->flags.has(CarEntryFlag::isGoKart))
                         {
                             velocity -= velocity >> 2;
                         }
@@ -7276,7 +7276,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
             roll = moveInfo->roll;
             pitch = moveInfo->pitch;
 
-            if ((carEntry->flags & CAR_ENTRY_FLAG_WOODEN_WILD_MOUSE_SWING) && pitch != VehiclePitch::flat)
+            if (carEntry->flags.has(CarEntryFlag::useWoodenWildMouseSwing) && pitch != VehiclePitch::flat)
             {
                 SwingSprite = 0;
                 SwingPosition = 0;
@@ -7304,14 +7304,14 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
                         {
                             if (abs(v4->velocity - v3->velocity) > 14.0_mph)
                             {
-                                if (!(carEntry->flags & CAR_ENTRY_FLAG_BOAT_HIRE_COLLISION_DETECTION))
+                                if (!carEntry->flags.has(CarEntryFlag::useBoatHireCollisionDetection))
                                 {
                                     _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_COLLISION;
                                 }
                             }
                         }
 
-                        if (carEntry->flags & CAR_ENTRY_FLAG_GO_KART)
+                        if (carEntry->flags.has(CarEntryFlag::isGoKart))
                         {
                             velocity -= velocity >> 2;
                             _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_2;
@@ -8084,7 +8084,7 @@ static uint8_t modified_speed(TrackElemType trackType, VehicleTrackSubposition t
 int32_t Vehicle::UpdateTrackMotionPoweredRideAcceleration(
     const CarEntry* carEntry, uint32_t totalMass, const int32_t curAcceleration)
 {
-    if (carEntry->flags & CAR_ENTRY_FLAG_POWERED_RIDE_UNRESTRICTED_GRAVITY)
+    if (carEntry->flags.has(CarEntryFlag::isPoweredRideWithUnrestrictedGravity))
     {
         if (velocity > (speed * 0x4000))
         {
@@ -8110,19 +8110,19 @@ int32_t Vehicle::UpdateTrackMotionPoweredRideAcceleration(
         poweredAcceleration /= quarterForce;
     }
 
-    if (carEntry->flags & CAR_ENTRY_FLAG_LIFT)
+    if (carEntry->flags.has(CarEntryFlag::isLift))
     {
         poweredAcceleration *= 4;
     }
 
-    if (carEntry->flags & CAR_ENTRY_FLAG_WATER_RIDE)
+    if (carEntry->flags.has(CarEntryFlag::isWaterRide))
     {
         if (poweredAcceleration < 0)
         {
             poweredAcceleration >>= 4;
         }
 
-        if (carEntry->flags & CAR_ENTRY_FLAG_SPINNING)
+        if (carEntry->flags.has(CarEntryFlag::hasSpinning))
         {
             spin_speed = std::clamp(spin_speed, kVehicleMinSpinSpeedWaterRide, kVehicleMaxSpinSpeedWaterRide);
         }
@@ -8134,7 +8134,7 @@ int32_t Vehicle::UpdateTrackMotionPoweredRideAcceleration(
                 poweredAcceleration = 0;
             }
 
-            if (carEntry->flags & CAR_ENTRY_FLAG_SPINNING)
+            if (carEntry->flags.has(CarEntryFlag::hasSpinning))
             {
                 // If the vehicle is on the up slope kill the spin speedModifier
                 if (pitch == VehiclePitch::up25)
@@ -8157,18 +8157,15 @@ int32_t Vehicle::UpdateTrackMotionPoweredRideAcceleration(
 void Vehicle::UpdateTrackMotionPreUpdate(
     Vehicle& car, const Ride& curRide, const RideObjectEntry& rideEntry, const CarEntry* carEntry)
 {
-    // Swinging cars
-    if (carEntry->flags & CAR_ENTRY_FLAG_SWINGING)
+    if (carEntry->flags.has(CarEntryFlag::hasSwinging))
     {
         car.UpdateSwingingCar();
     }
-    // Spinning cars
-    if (carEntry->flags & CAR_ENTRY_FLAG_SPINNING)
+    if (carEntry->flags.has(CarEntryFlag::hasSpinning))
     {
         car.UpdateSpinningCar();
     }
-    // Rider sprites?? animation??
-    if ((carEntry->flags & CAR_ENTRY_FLAG_VEHICLE_ANIMATION) || (carEntry->flags & CAR_ENTRY_FLAG_RIDER_ANIMATION))
+    if (carEntry->flags.hasAny(CarEntryFlag::hasVehicleAnimation, CarEntryFlag::hasRiderAnimation))
     {
         car.UpdateAdditionalAnimation();
     }
@@ -8244,7 +8241,7 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
         return 0;
     }
 
-    if (carEntry->flags & CAR_ENTRY_FLAG_MINI_GOLF)
+    if (carEntry->flags.has(CarEntryFlag::isMiniGolf))
     {
         return UpdateTrackMotionMiniGolf(outStation);
     }
@@ -8337,7 +8334,7 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
     curAcceleration -= vehicle->velocity / 4096;
     curAcceleration -= GetAccelerationDecrease2(vehicle->velocity, totalMass);
 
-    if (carEntry->flags & CAR_ENTRY_FLAG_POWERED)
+    if (carEntry->flags.has(CarEntryFlag::isPowered))
     {
         curAcceleration = vehicle->UpdateTrackMotionPoweredRideAcceleration(carEntry, totalMass, curAcceleration);
     }

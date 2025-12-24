@@ -4235,13 +4235,13 @@ namespace OpenRCT2::Ui::Windows
                     {
                         uint8_t vehicleTypeIndex = RideEntryGetVehicleAtPosition(ride->subtype, ride->numCarsPerTrain, i);
 
-                        if (rideEntry->Cars[vehicleTypeIndex].flags & CAR_ENTRY_FLAG_ENABLE_BODY_COLOUR)
+                        if (rideEntry->Cars[vehicleTypeIndex].flags.has(CarEntryFlag::enableBodyColour))
                             allowChangingBodyColour = true;
 
-                        if (rideEntry->Cars[vehicleTypeIndex].flags & CAR_ENTRY_FLAG_ENABLE_TRIM_COLOUR)
+                        if (rideEntry->Cars[vehicleTypeIndex].flags.has(CarEntryFlag::enableTrimColour))
                             allowChangingTrimColour = true;
 
-                        if (rideEntry->Cars[vehicleTypeIndex].flags & CAR_ENTRY_FLAG_ENABLE_TERTIARY_COLOUR)
+                        if (rideEntry->Cars[vehicleTypeIndex].flags.has(CarEntryFlag::enableTertiaryColour))
                             allowChangingTertiaryColour = true;
                     }
 
@@ -4713,13 +4713,13 @@ namespace OpenRCT2::Ui::Windows
                 {
                     uint8_t vehicleTypeIndex = RideEntryGetVehicleAtPosition(ride->subtype, ride->numCarsPerTrain, i);
 
-                    if (rideEntry->Cars[vehicleTypeIndex].flags & CAR_ENTRY_FLAG_ENABLE_BODY_COLOUR)
+                    if (rideEntry->Cars[vehicleTypeIndex].flags.has(CarEntryFlag::enableBodyColour))
                         allowChangingBodyColour = true;
 
-                    if (rideEntry->Cars[vehicleTypeIndex].flags & CAR_ENTRY_FLAG_ENABLE_TRIM_COLOUR)
+                    if (rideEntry->Cars[vehicleTypeIndex].flags.has(CarEntryFlag::enableTrimColour))
                         allowChangingTrimColour = true;
 
-                    if (rideEntry->Cars[vehicleTypeIndex].flags & CAR_ENTRY_FLAG_ENABLE_TERTIARY_COLOUR)
+                    if (rideEntry->Cars[vehicleTypeIndex].flags.has(CarEntryFlag::enableTertiaryColour))
                         allowChangingTertiaryColour = true;
                 }
 
