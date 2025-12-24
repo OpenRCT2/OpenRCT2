@@ -290,7 +290,7 @@ namespace OpenRCT2::Scripting
             auto entry = GetEntry();
             if (entry != nullptr)
             {
-                return entry->flags;
+                return static_cast<uint32_t>(entry->flags.holder);
             }
             return 0;
         }

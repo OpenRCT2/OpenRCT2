@@ -2555,8 +2555,8 @@ void Guest::GoToRideEntrance(const Ride& ride)
     const auto* rideEntry = GetRideEntryByIndex(ride.subtype);
     if (rideEntry != nullptr)
     {
-        if (rideEntry->Cars[rideEntry->DefaultCar].flags & CAR_ENTRY_FLAG_MINI_GOLF
-            || rideEntry->Cars[rideEntry->DefaultCar].flags & (CAR_ENTRY_FLAG_CHAIRLIFT | CAR_ENTRY_FLAG_GO_KART))
+        if (rideEntry->Cars[rideEntry->DefaultCar].flags.hasAny(
+                CarEntryFlag::isMiniGolf, CarEntryFlag::isChairlift, CarEntryFlag::isGoKart))
         {
             shift_multiplier = 32;
         }
@@ -3728,8 +3728,8 @@ void Guest::UpdateRideAdvanceThroughEntrance()
         if (rideEntry != nullptr)
         {
             uint8_t vehicle = rideEntry->DefaultCar;
-            if (rideEntry->Cars[vehicle].flags & CAR_ENTRY_FLAG_MINI_GOLF
-                || rideEntry->Cars[vehicle].flags & (CAR_ENTRY_FLAG_CHAIRLIFT | CAR_ENTRY_FLAG_GO_KART))
+            if (rideEntry->Cars[vehicle].flags.hasAny(
+                    CarEntryFlag::isMiniGolf, CarEntryFlag::isChairlift, CarEntryFlag::isGoKart))
             {
                 distanceThreshold = 28;
             }
@@ -3792,13 +3792,13 @@ void Guest::UpdateRideAdvanceThroughEntrance()
 
     const auto* vehicle_type = &rideEntry->Cars[vehicle->vehicle_type];
 
-    if (vehicle_type->flags & CAR_ENTRY_FLAG_LOADING_WAYPOINTS)
+    if (vehicle_type->flags.has(CarEntryFlag::loadingWaypoints))
     {
         UpdateRideLeaveEntranceWaypoints(*ride);
         return;
     }
 
-    if (vehicle_type->flags & CAR_ENTRY_FLAG_DODGEM_CAR_PLACEMENT)
+    if (vehicle_type->flags.has(CarEntryFlag::useDodgemCarPlacement))
     {
         SetDestination(vehicle->GetLocation(), 15);
         RideSubState = PeepRideSubState::approachVehicle;
@@ -3876,7 +3876,7 @@ static void PeepGoToRideExit(Guest& guest, const Ride& ride, int16_t x, int16_t 
     if (rideEntry != nullptr)
     {
         const CarEntry& carEntry = rideEntry->Cars[rideEntry->DefaultCar];
-        if (carEntry.flags & CAR_ENTRY_FLAG_MINI_GOLF || carEntry.flags & (CAR_ENTRY_FLAG_CHAIRLIFT | CAR_ENTRY_FLAG_GO_KART))
+        if (carEntry.flags.hasAny(CarEntryFlag::isMiniGolf, CarEntryFlag::isChairlift, CarEntryFlag::isGoKart))
         {
             shift_multiplier = 32;
         }
@@ -4024,7 +4024,7 @@ void Guest::UpdateRideFreeVehicleCheck()
         return;
     }
 
-    if (rideEntry->Cars[0].flags & CAR_ENTRY_FLAG_MINI_GOLF)
+    if (rideEntry->Cars[0].flags.has(CarEntryFlag::isMiniGolf))
     {
         vehicle->mini_golf_flags &= ~MiniGolfFlag::Flag5;
 
@@ -4223,7 +4223,7 @@ void Guest::UpdateRideLeaveVehicle()
     assert(CurrentRideStation.ToUnderlying() < OpenRCT2::Limits::kMaxStationsPerRide);
     auto& station = ride->getStation(CurrentRideStation);
 
-    if (!(carEntry->flags & CAR_ENTRY_FLAG_LOADING_WAYPOINTS))
+    if (!carEntry->flags.has(CarEntryFlag::loadingWaypoints))
     {
         TileCoordsXYZD exitLocation = station.Exit;
         CoordsXYZD platformLocation;
@@ -4270,12 +4270,12 @@ void Guest::UpdateRideLeaveVehicle()
             {
                 carEntry = &rideEntry->Cars[rideEntry->DefaultCar];
 
-                if (carEntry->flags & CAR_ENTRY_FLAG_GO_KART)
+                if (carEntry->flags.has(CarEntryFlag::isGoKart))
                 {
                     shiftMultiplier = 9;
                 }
 
-                if (carEntry->flags & (CAR_ENTRY_FLAG_CHAIRLIFT | CAR_ENTRY_FLAG_GO_KART))
+                if (carEntry->flags.hasAny(CarEntryFlag::isChairlift, CarEntryFlag::isGoKart))
                 {
                     specialDirection = ((vehicle->Orientation + 3) / 8) + 1;
                     specialDirection &= 3;
@@ -4423,7 +4423,7 @@ void Guest::UpdateRidePrepareForExit()
     if (rideEntry != nullptr)
     {
         const auto& carEntry = rideEntry->Cars[rideEntry->DefaultCar];
-        if (carEntry.flags & (CAR_ENTRY_FLAG_CHAIRLIFT | CAR_ENTRY_FLAG_GO_KART))
+        if (carEntry.flags.hasAny(CarEntryFlag::isChairlift, CarEntryFlag::isGoKart))
         {
             shiftMultiplier = 32;
         }
@@ -4675,7 +4675,7 @@ void Guest::UpdateRideApproachExitWaypoints()
     if (rideEntry != nullptr)
     {
         auto carEntry = &rideEntry->Cars[rideEntry->DefaultCar];
-        if (carEntry->flags & (CAR_ENTRY_FLAG_CHAIRLIFT | CAR_ENTRY_FLAG_GO_KART))
+        if (carEntry->flags.hasAny(CarEntryFlag::isChairlift, CarEntryFlag::isGoKart))
         {
             shift_multiplier = 32;
         }
