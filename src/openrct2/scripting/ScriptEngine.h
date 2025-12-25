@@ -141,7 +141,14 @@ namespace OpenRCT2::Scripting
         std::unordered_set<std::string> _changedPluginFiles;
         std::mutex _changedPluginFilesMutex;
         std::vector<std::function<void(std::shared_ptr<Plugin>)>> _pluginStoppedSubscriptions;
-        std::vector<std::function<void(JSContext*)>> _extensions;
+
+        struct ExtensionCallbacks
+        {
+            std::function<void(JSContext*)> newContext;
+            std::function<void()> unregister;
+        };
+
+        std::vector<ExtensionCallbacks> _extensions;
 
         struct CustomActionInfo
         {
@@ -228,10 +235,10 @@ namespace OpenRCT2::Scripting
             _pluginStoppedSubscriptions.push_back(callback);
         }
 
-        void RegisterExtension(std::function<void(JSContext*)> callback)
+        void RegisterExtension(std::function<void(JSContext*)> newContext, std::function<void()> unregister)
         {
-            _extensions.push_back(callback);
-            callback(_replContext);
+            _extensions.emplace_back(newContext, unregister);
+            newContext(_replContext);
         }
 
         void AddNetworkPlugin(std::string_view code);
@@ -263,6 +270,7 @@ namespace OpenRCT2::Scripting
 
     private:
         static void RegisterClasses(JSContext* ctx);
+        static void UnregisterClasses();
         static void RegisterConstants(JSContext* ctx);
         void RefreshPlugins();
         std::vector<std::string> GetPluginFiles() const;
@@ -306,6 +314,12 @@ namespace OpenRCT2::Scripting
     {
     private:
         JSClassID classId = JS_INVALID_CLASS_ID;
+
+    public:
+        void Unregister()
+        {
+            classId = JS_INVALID_CLASS_ID;
+        }
 
     protected:
         [[nodiscard]] JSValue MakeWithOpaque(JSContext* ctx, std::span<const JSCFunctionListEntry> classFuncs, void* opaque)
