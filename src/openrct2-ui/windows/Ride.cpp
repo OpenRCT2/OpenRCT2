@@ -4079,7 +4079,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 switch (ride->mechanicStatus)
                 {
-                    case RIDE_MECHANIC_STATUS_CALLING:
+                    case MechanicStatus::calling:
                     {
                         stringId = STR_NO_MECHANICS_ARE_HIRED_MESSAGE;
 
@@ -4093,11 +4093,11 @@ namespace OpenRCT2::Ui::Windows
                         }
                         break;
                     }
-                    case RIDE_MECHANIC_STATUS_HEADING:
+                    case MechanicStatus::heading:
                         stringId = STR_MECHANIC_IS_HEADING_FOR_THE_RIDE;
                         break;
-                    case RIDE_MECHANIC_STATUS_FIXING:
-                    case RIDE_MECHANIC_STATUS_HAS_FIXED_STATION_BRAKES:
+                    case MechanicStatus::fixing:
+                    case MechanicStatus::hasFixedStationBrakes:
                         stringId = STR_MECHANIC_IS_FIXING_THE_RIDE;
                         break;
                     default:

@@ -529,13 +529,11 @@ namespace OpenRCT2::GameActions
 
                 if (mechanic != nullptr)
                 {
-                    if (ride.mechanicStatus == RIDE_MECHANIC_STATUS_FIXING)
+                    if (ride.mechanicStatus == MechanicStatus::fixing)
                     {
                         mechanic->RideSubState = PeepRideSubState::approachExit;
                     }
-                    else if (
-                        ride.mechanicStatus == RIDE_MECHANIC_STATUS_CALLING
-                        || ride.mechanicStatus == RIDE_MECHANIC_STATUS_HEADING)
+                    else if (ride.mechanicStatus == MechanicStatus::calling || ride.mechanicStatus == MechanicStatus::heading)
                     {
                         mechanic->RemoveFromRide();
                     }

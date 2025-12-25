@@ -22,6 +22,7 @@
 
 struct RideObjectEntry;
 enum class EditorStep : uint8_t;
+enum class MechanicStatus : uint8_t;
 enum class VehicleColourSettings : uint8_t;
 
 namespace OpenRCT2::Scenario
@@ -239,7 +240,7 @@ namespace OpenRCT2::RCT2
         uint8_t pad186[0x02];           // 0x186
         uint32_t musicPosition;         // 0x188
         uint8_t breakdownReasonPending; // 0x18C
-        uint8_t mechanicStatus;         // 0x18D
+        MechanicStatus mechanicStatus;  // 0x18D
         uint16_t mechanic;              // 0x18E
         uint8_t inspectionStation;      // 0x190
         uint8_t brokenTrain;            // 0x191
