@@ -70,7 +70,24 @@ void UiScriptExtensions::Extend(ScriptEngine& scriptEngine)
     scriptEngine.SubscribeToPluginStoppedEvent(
         [](std::shared_ptr<Plugin> plugin) -> void { Ui::Windows::CloseWindowsOwnedByPlugin(plugin); });
 
-    scriptEngine.RegisterExtension(InitialiseContext);
+    scriptEngine.RegisterExtension(InitialiseContext, Unregister);
+}
+
+void UiScriptExtensions::Unregister()
+{
+    gScGraphicsContext.Unregister();
+    gScImageManager.Unregister();
+    gScTileSelection.Unregister();
+    gScTool.Unregister();
+    gScUi.Unregister();
+    gScViewport.Unregister();
+
+    gScWidget.Unregister();
+
+    gScTitleSequence.Unregister();
+    gScTitleSequenceManager.Unregister();
+    gScTitleSequencePark.Unregister();
+    gScWindow.Unregister();
 }
 
 #endif

@@ -546,6 +546,48 @@ void ScriptEngine::RegisterClasses(JSContext* ctx)
     gScPlugin.Register(ctx);
 }
 
+void ScriptEngine::UnregisterClasses()
+{
+    gScAward.Unregister();
+    gScCheats.Unregister();
+    gScClimate.Unregister();
+    gScWeatherState.Unregister();
+    gScConfiguration.Unregister();
+    gScConsole.Unregister();
+    gScContext.Unregister();
+    gScDate.Unregister();
+    gScDisposable.Unregister();
+    gScMap.Unregister();
+    gScNetwork.Unregister();
+    gScObjectManager.Unregister();
+    gScInstalledObject.Unregister();
+    gScObject.Unregister();
+    gScLargeSceneryObjectTile.Unregister();
+    gScPark.Unregister();
+    gScParkMessage.Unregister();
+    gScPlayer.Unregister();
+    gScPlayerGroup.Unregister();
+    gScProfiler.Unregister();
+    gScResearch.Unregister();
+    gScRide.Unregister();
+    gScRideStation.Unregister();
+    gScRideObjectVehicle.Unregister();
+    gScTile.Unregister();
+    gScTileElement.Unregister();
+    gScTrackIterator.Unregister();
+    gScTrackSegment.Unregister();
+    gScEntity.Unregister();
+    gScThought.Unregister();
+    #ifndef DISABLE_NETWORK
+    gScSocket.Unregister();
+    gScListener.Unregister();
+    #endif
+    gScScenario.Unregister();
+    gScScenarioObjective.Unregister();
+    gScPatrolArea.Unregister();
+    gScPlugin.Unregister();
+}
+
 JSContext* ScriptEngine::CreateContext() const
 {
     JSContext* newCtx = JS_NewContext(_runtime);
@@ -555,9 +597,9 @@ JSContext* ScriptEngine::CreateContext() const
     }
     InitialiseContext(newCtx);
 
-    for (const auto& callback : _extensions)
+    for (const auto& ext : _extensions)
     {
-        callback(newCtx);
+        ext.newContext(newCtx);
     }
     return newCtx;
 }
@@ -596,6 +638,11 @@ ScriptEngine::~ScriptEngine()
         JS_FreeRuntime(_runtime);
         _runtime = nullptr;
     }
+    for (const ExtensionCallbacks& ext : _extensions)
+    {
+        ext.unregister();
+    }
+    UnregisterClasses();
 }
 
 class ConstantBuilder
