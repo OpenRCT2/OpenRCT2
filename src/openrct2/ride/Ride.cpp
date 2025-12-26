@@ -13,7 +13,6 @@
 #include "../Context.h"
 #include "../Diagnostic.h"
 #include "../Editor.h"
-#include "../Game.h"
 #include "../GameState.h"
 #include "../Input.h"
 #include "../OpenRCT2.h"
@@ -22,7 +21,6 @@
 #include "../actions/RideSetStatusAction.h"
 #include "../actions/RideSetVehicleAction.h"
 #include "../audio/Audio.h"
-#include "../audio/AudioMixer.h"
 #include "../config/Config.h"
 #include "../core/BitSet.hpp"
 #include "../core/EnumUtils.hpp"
@@ -37,10 +35,7 @@
 #include "../interface/WindowBase.h"
 #include "../localisation/Formatter.h"
 #include "../localisation/Formatting.h"
-#include "../management/Finance.h"
-#include "../management/Marketing.h"
 #include "../management/NewsItem.h"
-#include "../network/Network.h"
 #include "../object/MusicObject.h"
 #include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
@@ -52,14 +47,12 @@
 #include "../ui/WindowManager.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
-#include "../world/Banner.h"
 #include "../world/Climate.h"
 #include "../world/Entrance.h"
 #include "../world/Footpath.h"
 #include "../world/Location.hpp"
 #include "../world/Map.h"
 #include "../world/Park.h"
-#include "../world/Scenery.h"
 #include "../world/TileElementsView.h"
 #include "../world/tile_element/EntranceElement.h"
 #include "../world/tile_element/PathElement.h"
@@ -75,16 +68,12 @@
 #include "Track.h"
 #include "TrackData.h"
 #include "TrackDesign.h"
-#include "TrainManager.h"
 #include "Vehicle.h"
 
 #include <cassert>
-#include <climits>
-#include <cstdlib>
 #include <iterator>
 #include <limits>
 #include <optional>
-#include <sfl/static_vector.hpp>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::TrackMetaData;

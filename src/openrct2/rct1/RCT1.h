@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include "../Diagnostic.h"
 #include "../core/FixedPoint.hpp"
 #include "../rct12/RCT12.h"
 #include "../ride/Angles.h"
