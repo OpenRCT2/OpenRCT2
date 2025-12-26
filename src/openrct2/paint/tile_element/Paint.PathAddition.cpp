@@ -10,7 +10,6 @@
 #include "Paint.PathAddition.h"
 
 #include "../../core/Numerics.hpp"
-#include "../../drawing/Drawing.h"
 #include "../../drawing/LightFX.h"
 #include "../../interface/Viewport.h"
 #include "../../object/PathAdditionEntry.h"

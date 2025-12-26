@@ -16,7 +16,6 @@
 #include "../../core/EnumUtils.hpp"
 #include "../../core/Numerics.hpp"
 #include "../../core/UTF8.h"
-#include "../../drawing/Drawing.h"
 #include "../../interface/Viewport.h"
 #include "../../localisation/Formatting.h"
 #include "../../localisation/StringIds.h"

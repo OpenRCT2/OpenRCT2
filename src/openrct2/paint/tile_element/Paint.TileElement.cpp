@@ -14,7 +14,6 @@
 #include "../../SpriteIds.h"
 #include "../../config/Config.h"
 #include "../../core/Numerics.hpp"
-#include "../../drawing/Drawing.h"
 #include "../../interface/Viewport.h"
 #include "../../profiling/Profiling.h"
 #include "../../ride/RideData.h"

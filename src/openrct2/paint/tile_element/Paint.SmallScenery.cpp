@@ -12,7 +12,6 @@
 #include "../../Game.h"
 #include "../../GameState.h"
 #include "../../core/EnumUtils.hpp"
-#include "../../drawing/Drawing.h"
 #include "../../interface/Viewport.h"
 #include "../../object/SmallSceneryEntry.h"
 #include "../../profiling/Profiling.h"
