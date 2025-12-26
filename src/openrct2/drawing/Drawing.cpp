@@ -875,23 +875,6 @@ std::optional<PaletteMap> GetPaletteMapForColour(colour_t paletteId)
     return std::nullopt;
 }
 
-uint8_t* RenderTarget::GetBitsOffset(const ScreenCoordsXY& pos) const
-{
-    return bits + pos.x + pos.y * LineStride();
-}
-
-RenderTarget RenderTarget::Crop(const ScreenCoordsXY& pos, const ScreenSize& size) const
-{
-    RenderTarget result = *this;
-    result.bits = GetBitsOffset(pos);
-    result.x = pos.x;
-    result.y = pos.y;
-    result.width = size.width;
-    result.height = size.height;
-    result.pitch = width + pitch - size.width;
-    return result;
-}
-
 FilterPaletteID GetGlassPaletteId(colour_t c)
 {
     return kGlassPaletteIds[c];
