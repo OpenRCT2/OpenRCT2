@@ -7,11 +7,6 @@
         "y": 7
     },
     {
-        "path": "base/palette_text.png",
-        "palette": "keep",
-        "format": "raw"
-    },
-    {
         "path": "base/palette_water.png",
         "palette": "keep",
         "format": "raw",
