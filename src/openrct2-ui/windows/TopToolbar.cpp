@@ -1261,16 +1261,16 @@ namespace OpenRCT2::Ui::Windows
                 };
 
                 uint32_t mapImageId = _imageIdByRotation[GetCurrentRotation()];
-                widgets[WIDX_MAP].image = ImageId(mapImageId, FilterPaletteID::paletteNull);
+                widgets[WIDX_MAP].image = ImageId(mapImageId, Drawing::FilterPaletteID::paletteNull);
             }
         }
 
         void ApplyAudioState()
         {
             if (!OpenRCT2::Audio::gGameSoundsOff)
-                widgets[WIDX_MUTE].image = ImageId(SPR_G2_TOOLBAR_MUTE, FilterPaletteID::paletteNull);
+                widgets[WIDX_MUTE].image = ImageId(SPR_G2_TOOLBAR_MUTE, Drawing::FilterPaletteID::paletteNull);
             else
-                widgets[WIDX_MUTE].image = ImageId(SPR_G2_TOOLBAR_UNMUTE, FilterPaletteID::paletteNull);
+                widgets[WIDX_MUTE].image = ImageId(SPR_G2_TOOLBAR_UNMUTE, Drawing::FilterPaletteID::paletteNull);
         }
 
         void ApplyFootpathPressed()
@@ -1371,7 +1371,7 @@ namespace OpenRCT2::Ui::Windows
                 AlignButtonsCentre();
         }
 
-        void onDraw(RenderTarget& rt) override
+        void onDraw(Drawing::RenderTarget& rt) override
         {
             const auto& gameState = getGameState();
             int32_t imgId;

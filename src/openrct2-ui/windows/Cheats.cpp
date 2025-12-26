@@ -593,7 +593,7 @@ static StringId window_cheats_page_titles[] = {
             }
         }
 
-        void onDraw(RenderTarget& rt) override
+        void onDraw(Drawing::RenderTarget& rt) override
         {
             drawWidgets(rt);
             DrawTabImages(rt);
@@ -775,7 +775,7 @@ static StringId window_cheats_page_titles[] = {
             }
         }
 
-        void DrawTabImages(RenderTarget& rt)
+        void DrawTabImages(Drawing::RenderTarget& rt)
         {
             // Money tab
             if (!isWidgetDisabled(WIDX_TAB_1))

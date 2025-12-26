@@ -49,7 +49,7 @@ namespace OpenRCT2
         RailingsImageId = 0;
     }
 
-    void FootpathRailingsObject::DrawPreview(RenderTarget& rt, int32_t width, int32_t height) const
+    void FootpathRailingsObject::DrawPreview(Drawing::RenderTarget& rt, int32_t width, int32_t height) const
     {
         auto x = width / 2;
         auto y = height / 2;

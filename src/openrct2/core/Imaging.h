@@ -18,8 +18,6 @@
 #include <string_view>
 #include <vector>
 
-struct RenderTarget;
-
 enum class ImageFormat
 {
     unknown,

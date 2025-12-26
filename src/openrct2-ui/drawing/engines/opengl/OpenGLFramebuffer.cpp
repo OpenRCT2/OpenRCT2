@@ -180,7 +180,7 @@ GLuint OpenGLFramebuffer::CreateDepthTexture(int32_t width, int32_t height)
     return depth;
 }
 
-void OpenGLFramebuffer::GetPixels(RenderTarget& rt) const
+void OpenGLFramebuffer::GetPixels(Drawing::RenderTarget& rt) const
 {
     assert(rt.width == _width && rt.height == _height);
 
@@ -200,7 +200,7 @@ void OpenGLFramebuffer::GetPixels(RenderTarget& rt) const
     }
 }
 
-void OpenGLFramebuffer::SetPixels(const RenderTarget& rt)
+void OpenGLFramebuffer::SetPixels(const Drawing::RenderTarget& rt)
 {
     assert(rt.width == _width && rt.height == _height);
 

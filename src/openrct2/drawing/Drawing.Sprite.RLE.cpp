@@ -12,6 +12,8 @@
 #include <cassert>
 #include <cstring>
 
+using namespace OpenRCT2::Drawing;
+
 template<DrawBlendOp TBlendOp>
 static void FASTCALL DrawRLESpriteMagnify(RenderTarget& rt, const DrawSpriteArgs& args)
 {

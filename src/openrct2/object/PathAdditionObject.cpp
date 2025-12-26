@@ -73,7 +73,7 @@ namespace OpenRCT2
         _legacyType.image = 0;
     }
 
-    void PathAdditionObject::DrawPreview(RenderTarget& rt, int32_t width, int32_t height) const
+    void PathAdditionObject::DrawPreview(Drawing::RenderTarget& rt, int32_t width, int32_t height) const
     {
         auto screenCoords = ScreenCoordsXY{ width / 2, height / 2 };
         GfxDrawSprite(rt, ImageId(_legacyType.image), screenCoords - ScreenCoordsXY{ 22, 24 });

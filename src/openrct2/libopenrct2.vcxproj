@@ -245,6 +245,7 @@
     <ClInclude Include="drawing\ColourPalette.h" />
     <ClInclude Include="drawing\Drawing.h" />
     <ClInclude Include="drawing\Drawing.String.h" />
+    <ClInclude Include="drawing\FilterPaletteIds.h" />
     <ClInclude Include="drawing\Font.h" />
     <ClInclude Include="drawing\IDrawingContext.h" />
     <ClInclude Include="drawing\IDrawingEngine.h" />
@@ -255,6 +256,7 @@
     <ClInclude Include="drawing\LightFX.h" />
     <ClInclude Include="drawing\NewDrawing.h" />
     <ClInclude Include="drawing\Rectangle.h" />
+    <ClInclude Include="drawing\RenderTarget.h" />
     <ClInclude Include="drawing\ScrollingText.h" />
     <ClInclude Include="drawing\Weather.h" />
     <ClInclude Include="drawing\Text.h" />
@@ -836,6 +838,7 @@
     <ClCompile Include="drawing\NewDrawing.cpp" />
     <ClCompile Include="drawing\Weather.cpp" />
     <ClCompile Include="drawing\Rectangle.cpp" />
+    <ClCompile Include="drawing\RenderTarget.cpp" />
     <ClCompile Include="drawing\ScrollingText.cpp" />
     <ClCompile Include="drawing\SSE41Drawing.cpp" />
     <ClCompile Include="drawing\Text.cpp" />

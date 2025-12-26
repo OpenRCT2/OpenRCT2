@@ -147,7 +147,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void onDraw(RenderTarget& rt) override
+        void onDraw(Drawing::RenderTarget& rt) override
         {
             drawWidgets(rt);
 
@@ -219,7 +219,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        int32_t DrawOpenRCT2Info(RenderTarget& rt)
+        int32_t DrawOpenRCT2Info(Drawing::RenderTarget& rt)
         {
             // Draw logo on placeholder widget
             const auto& logoWidget = widgets[WIDX_OPENRCT2_LOGO];
@@ -252,7 +252,7 @@ namespace OpenRCT2::Ui::Windows
             return textCoords.y - windowPos.y;
         }
 
-        int32_t DrawRCT2Info(RenderTarget& rt)
+        int32_t DrawRCT2Info(Drawing::RenderTarget& rt)
         {
             auto& backgroundWidget = widgets[WIDX_PAGE_BACKGROUND];
             auto textCoords = windowPos + ScreenCoordsXY{ backgroundWidget.midX(), backgroundWidget.top + kPadding };

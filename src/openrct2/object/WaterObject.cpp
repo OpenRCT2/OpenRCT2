@@ -56,7 +56,7 @@ namespace OpenRCT2
         _legacyType.palette_index_2 = 0;
     }
 
-    void WaterObject::DrawPreview(RenderTarget& rt, int32_t width, int32_t height) const
+    void WaterObject::DrawPreview(Drawing::RenderTarget& rt, int32_t width, int32_t height) const
     {
         // Write (no image)
         auto screenCoords = ScreenCoordsXY{ width / 2, height / 2 };

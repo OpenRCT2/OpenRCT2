@@ -27,6 +27,7 @@
 #include "TTF.h"
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::Drawing;
 
 static int32_t TTFGetStringWidth(std::string_view text, FontStyle fontStyle, bool noFormatting);
 

@@ -15,13 +15,17 @@
 
 struct CoordsXY;
 struct Vehicle;
-struct RenderTarget;
 struct CoordsXYZ;
 struct EntityBase;
 
 namespace OpenRCT2
 {
     struct Viewport;
+}
+
+namespace OpenRCT2::Drawing
+{
+    struct RenderTarget;
 }
 
 namespace OpenRCT2::Drawing::LightFx

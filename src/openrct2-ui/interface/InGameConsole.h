@@ -69,7 +69,7 @@ namespace OpenRCT2::Ui
         void Scroll(int32_t linesToScroll);
 
         void Update();
-        void Draw(RenderTarget& rt) const;
+        void Draw(Drawing::RenderTarget& rt) const;
 
     private:
         void ClearInput();

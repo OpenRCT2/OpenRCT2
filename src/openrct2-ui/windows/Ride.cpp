@@ -893,7 +893,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
             }
         }
-        void onDraw(RenderTarget& rt) override
+        void onDraw(Drawing::RenderTarget& rt) override
         {
             switch (page)
             {
@@ -1072,7 +1072,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
             }
         }
-        void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
+        void onScrollDraw(int32_t scrollIndex, Drawing::RenderTarget& rt) override
         {
             switch (page)
             {
@@ -1204,7 +1204,7 @@ namespace OpenRCT2::Ui::Windows
         }
 
     private:
-        void drawTabImage(RenderTarget& rt, int32_t tab, int32_t spriteIndex)
+        void drawTabImage(Drawing::RenderTarget& rt, int32_t tab, int32_t spriteIndex)
         {
             WidgetIndex widgetIndex = WIDX_TAB_1 + tab;
 
@@ -1221,7 +1221,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void DrawTabMain(RenderTarget& rt)
+        void DrawTabMain(Drawing::RenderTarget& rt)
         {
             WidgetIndex widgetIndex = WIDX_TAB_1 + static_cast<int32_t>(WINDOW_RIDE_PAGE_MAIN);
             if (!widgetIsDisabled(*this, widgetIndex))
@@ -1255,7 +1255,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void DrawTabVehicle(RenderTarget& rt)
+        void DrawTabVehicle(Drawing::RenderTarget& rt)
         {
             WidgetIndex widgetIndex = WIDX_TAB_1 + static_cast<int32_t>(WINDOW_RIDE_PAGE_VEHICLE);
             const auto& widget = widgets[widgetIndex];
@@ -1318,7 +1318,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void DrawTabCustomer(RenderTarget& rt)
+        void DrawTabCustomer(Drawing::RenderTarget& rt)
         {
             WidgetIndex widgetIndex = WIDX_TAB_1 + static_cast<int32_t>(WINDOW_RIDE_PAGE_CUSTOMER);
 
@@ -1338,7 +1338,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void drawTabImages(RenderTarget& rt)
+        void drawTabImages(Drawing::RenderTarget& rt)
         {
             DrawTabVehicle(rt);
             drawTabImage(rt, WINDOW_RIDE_PAGE_OPERATING, SPR_TAB_GEARS_0);
@@ -2558,7 +2558,7 @@ namespace OpenRCT2::Ui::Windows
             return GetStatusStation(ft);
         }
 
-        void MainOnDraw(RenderTarget& rt)
+        void MainOnDraw(Drawing::RenderTarget& rt)
         {
             WindowDrawWidgets(*this, rt);
             drawTabImages(rt);
@@ -2847,7 +2847,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void VehicleOnDraw(RenderTarget& rt)
+        void VehicleOnDraw(Drawing::RenderTarget& rt)
         {
             WindowDrawWidgets(*this, rt);
             drawTabImages(rt);
@@ -2934,7 +2934,7 @@ namespace OpenRCT2::Ui::Windows
             ImageId imageId;
         };
 
-        void VehicleOnScrollDraw(RenderTarget& rt, int32_t scrollIndex)
+        void VehicleOnScrollDraw(Drawing::RenderTarget& rt, int32_t scrollIndex)
         {
             auto ride = GetRide(rideId);
             if (ride == nullptr)
@@ -3670,7 +3670,7 @@ namespace OpenRCT2::Ui::Windows
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_10);
         }
 
-        void OperatingOnDraw(RenderTarget& rt)
+        void OperatingOnDraw(Drawing::RenderTarget& rt)
         {
             drawWidgets(rt);
             drawTabImages(rt);
@@ -4010,7 +4010,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void MaintenanceOnDraw(RenderTarget& rt)
+        void MaintenanceOnDraw(Drawing::RenderTarget& rt)
         {
             auto ride = GetRide(rideId);
             if (ride == nullptr)
@@ -4799,7 +4799,7 @@ namespace OpenRCT2::Ui::Windows
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_10);
         }
 
-        void ColourOnDraw(RenderTarget& rt)
+        void ColourOnDraw(Drawing::RenderTarget& rt)
         {
             // TODO: This should use lists and identified sprites
             RenderTarget clippedDpi;
@@ -4908,7 +4908,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void ColourOnScrollDraw(RenderTarget& rt, int32_t scrollIndex) const
+        void ColourOnScrollDraw(Drawing::RenderTarget& rt, int32_t scrollIndex) const
         {
             auto ride = GetRide(rideId);
             if (ride == nullptr)
@@ -5215,7 +5215,7 @@ namespace OpenRCT2::Ui::Windows
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_10);
         }
 
-        void MusicOnDraw(RenderTarget& rt)
+        void MusicOnDraw(Drawing::RenderTarget& rt)
         {
             drawWidgets(rt);
             drawTabImages(rt);
@@ -5252,7 +5252,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void MusicOnScrollDraw(RenderTarget& rt, int32_t scrollIndex)
+        void MusicOnScrollDraw(Drawing::RenderTarget& rt, int32_t scrollIndex)
         {
             auto ride = GetRide(rideId);
             if (ride == nullptr)
@@ -5594,7 +5594,7 @@ namespace OpenRCT2::Ui::Windows
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_10);
         }
 
-        void MeasurementsOnDraw(RenderTarget& rt)
+        void MeasurementsOnDraw(Drawing::RenderTarget& rt)
         {
             drawWidgets(rt);
             drawTabImages(rt);
@@ -6038,13 +6038,13 @@ namespace OpenRCT2::Ui::Windows
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_10);
         }
 
-        void GraphsOnDraw(RenderTarget& rt)
+        void GraphsOnDraw(Drawing::RenderTarget& rt)
         {
             drawWidgets(rt);
             drawTabImages(rt);
         }
 
-        void GraphsOnScrollDraw(RenderTarget& rt, int32_t scrollIndex)
+        void GraphsOnScrollDraw(Drawing::RenderTarget& rt, int32_t scrollIndex)
         {
             GfxClear(rt, ColourMapA[COLOUR_SATURATED_GREEN].darker);
 
@@ -6599,7 +6599,7 @@ namespace OpenRCT2::Ui::Windows
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_10);
         }
 
-        void IncomeOnDraw(RenderTarget& rt)
+        void IncomeOnDraw(Drawing::RenderTarget& rt)
         {
             StringId stringId;
             money64 profit;
@@ -6798,7 +6798,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void CustomerOnDraw(RenderTarget& rt)
+        void CustomerOnDraw(Drawing::RenderTarget& rt)
         {
             ShopItem shopItem;
             int16_t popularity, satisfaction, queueTime;

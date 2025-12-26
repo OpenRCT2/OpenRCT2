@@ -15,7 +15,6 @@
 #include "../../SpriteIds.h"
 #include "../../config/Config.h"
 #include "../../core/Numerics.hpp"
-#include "../../drawing/Drawing.h"
 #include "../../entity/EntityRegistry.h"
 #include "../../entity/PatrolArea.h"
 #include "../../entity/Peep.h"
@@ -42,6 +41,7 @@
 #include <iterator>
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::Drawing;
 
 // Needed to make the sign appear above footpaths.
 static constexpr int16_t ForSaleSignZOffset = 3;

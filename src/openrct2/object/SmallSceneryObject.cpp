@@ -98,7 +98,7 @@ namespace OpenRCT2
         _legacyType.image = 0;
     }
 
-    void SmallSceneryObject::DrawPreview(RenderTarget& rt, int32_t width, int32_t height) const
+    void SmallSceneryObject::DrawPreview(Drawing::RenderTarget& rt, int32_t width, int32_t height) const
     {
         auto imageId = ImageId(_legacyType.image);
         if (_legacyType.HasFlag(SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR))

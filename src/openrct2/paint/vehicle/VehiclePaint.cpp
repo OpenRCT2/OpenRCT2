@@ -27,6 +27,7 @@
 #include <iterator>
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::Drawing;
 using namespace OpenRCT2::Entity::Yaw;
 
 #pragma region VehicleBoundboxes

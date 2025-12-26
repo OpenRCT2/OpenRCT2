@@ -452,7 +452,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void onDraw(RenderTarget& rt) override
+        void onDraw(Drawing::RenderTarget& rt) override
         {
             drawWidgets(rt);
 
@@ -673,7 +673,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void onScrollDraw(const int32_t scrollIndex, RenderTarget& rt) override
+        void onScrollDraw(const int32_t scrollIndex, Drawing::RenderTarget& rt) override
         {
             uint8_t paletteIndex = ColourMapA[colours[0].colour].mid_light;
             GfxClear(rt, paletteIndex);

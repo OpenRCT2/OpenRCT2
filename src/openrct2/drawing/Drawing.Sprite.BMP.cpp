@@ -9,6 +9,8 @@
 
 #include "Drawing.h"
 
+using namespace OpenRCT2::Drawing;
+
 template<DrawBlendOp TBlendOp>
 static void FASTCALL DrawBMPSpriteMagnify(RenderTarget& rt, const DrawSpriteArgs& args)
 {

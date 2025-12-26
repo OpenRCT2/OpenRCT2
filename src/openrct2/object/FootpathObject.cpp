@@ -70,7 +70,7 @@ namespace OpenRCT2
         _legacyType.image = 0;
     }
 
-    void FootpathObject::DrawPreview(RenderTarget& rt, int32_t width, int32_t height) const
+    void FootpathObject::DrawPreview(Drawing::RenderTarget& rt, int32_t width, int32_t height) const
     {
         auto screenCoords = ScreenCoordsXY{ width / 2, height / 2 };
         GfxDrawSprite(rt, ImageId(_pathSurfaceDescriptor.PreviewImage), screenCoords - ScreenCoordsXY{ 49, 17 });

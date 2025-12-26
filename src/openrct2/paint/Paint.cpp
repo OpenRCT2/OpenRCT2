@@ -19,6 +19,7 @@
 #include "../localisation/Currency.h"
 #include "../localisation/Formatting.h"
 #include "../localisation/LocalisationService.h"
+#include "../localisation/StringIdType.h"
 #include "../paint/Painter.h"
 #include "../platform/Memory.h"
 #include "../profiling/Profiling.h"
@@ -31,6 +32,7 @@
 #include <cassert>
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::Drawing;
 using namespace OpenRCT2::Numerics;
 
 // Globals for paint clipping

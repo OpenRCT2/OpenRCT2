@@ -351,14 +351,14 @@ namespace OpenRCT2::Ui::Windows
             DrawMiniPreview(*_trackDesign);
         }
 
-        void onDraw(RenderTarget& rt) override
+        void onDraw(Drawing::RenderTarget& rt) override
         {
             auto ft = Formatter::Common();
             ft.Add<char*>(_trackDesign->gameStateData.name.c_str());
             WindowDrawWidgets(*this, rt);
 
             // Draw mini tile preview
-            RenderTarget clippedRT;
+            Drawing::RenderTarget clippedRT;
             const auto& previewWidget = widgets[WIDX_PREVIEW];
             const auto previewCoords = windowPos + ScreenCoordsXY{ previewWidget.left, previewWidget.top };
             if (ClipDrawPixelInfo(clippedRT, rt, previewCoords, previewWidget.width(), previewWidget.height()))

@@ -86,7 +86,7 @@ namespace OpenRCT2
         NameStringId = 0;
     }
 
-    void MusicObject::DrawPreview(RenderTarget& rt, int32_t width, int32_t height) const
+    void MusicObject::DrawPreview(Drawing::RenderTarget& rt, int32_t width, int32_t height) const
     {
         // Write (no image)
         int32_t x = width / 2;

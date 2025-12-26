@@ -70,7 +70,7 @@ namespace OpenRCT2
         _legacyType.image = 0;
     }
 
-    void SceneryGroupObject::DrawPreview(RenderTarget& rt, int32_t width, int32_t height) const
+    void SceneryGroupObject::DrawPreview(Drawing::RenderTarget& rt, int32_t width, int32_t height) const
     {
         auto screenCoords = ScreenCoordsXY{ width / 2, height / 2 };
 

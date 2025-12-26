@@ -267,7 +267,7 @@ namespace OpenRCT2::Ui::Windows
             invalidate();
         }
 
-        ScreenCoordsXY DrawPreview(RenderTarget& rt, ScreenCoordsXY screenPos)
+        ScreenCoordsXY DrawPreview(Drawing::RenderTarget& rt, ScreenCoordsXY screenPos)
         {
             auto targetImageType = PreviewImageType::miniMap;
             if (Config::Get().interface.scenarioPreviewScreenshots)
@@ -302,7 +302,7 @@ namespace OpenRCT2::Ui::Windows
             return frameEndPos;
         }
 
-        void onDraw(RenderTarget& rt) override
+        void onDraw(Drawing::RenderTarget& rt) override
         {
             drawWidgets(rt);
 
@@ -540,7 +540,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
+        void onScrollDraw(int32_t scrollIndex, Drawing::RenderTarget& rt) override
         {
             uint8_t paletteIndex = ColourMapA[colours[1].colour].mid_light;
             GfxClear(rt, paletteIndex);
@@ -636,7 +636,7 @@ namespace OpenRCT2::Ui::Windows
         }
 
     private:
-        void DrawCategoryHeading(RenderTarget& rt, int32_t left, int32_t right, int32_t y, StringId stringId) const
+        void DrawCategoryHeading(Drawing::RenderTarget& rt, int32_t left, int32_t right, int32_t y, StringId stringId) const
         {
             auto baseColour = colours[1];
             colour_t lightColour = ColourMapA[baseColour.colour].lighter;
