@@ -11,11 +11,10 @@
 
 #include <cstdint>
 
-struct RenderTarget;
-
 namespace OpenRCT2::Drawing
 {
     struct IWeatherDrawer;
+    struct RenderTarget;
 }
 
 // clang-format off
@@ -37,4 +36,4 @@ static constexpr uint8_t kSnowPattern[] =
 
 // clang-format on
 
-void DrawWeather(RenderTarget& rt, OpenRCT2::Drawing::IWeatherDrawer* weatherDrawer);
+void DrawWeather(OpenRCT2::Drawing::RenderTarget& rt, OpenRCT2::Drawing::IWeatherDrawer* weatherDrawer);

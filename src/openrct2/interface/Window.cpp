@@ -73,13 +73,14 @@ static constexpr float kWindowScrollLocations[][2] = {
 };
     // clang-format on
 
-    static void WindowDrawCore(RenderTarget& rt, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom);
-    static void WindowDrawSingle(RenderTarget& rt, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom);
+static void WindowDrawCore(Drawing::RenderTarget& rt, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom);
+static void WindowDrawSingle(
+    Drawing::RenderTarget& rt, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom);
 
-    std::vector<std::unique_ptr<WindowBase>>::iterator WindowGetIterator(const WindowBase* w)
-    {
-        return std::find_if(gWindowList.begin(), gWindowList.end(), [w](auto&& w2) { return w == w2.get(); });
-    }
+std::vector<std::unique_ptr<WindowBase>>::iterator WindowGetIterator(const WindowBase* w)
+{
+    return std::find_if(gWindowList.begin(), gWindowList.end(), [w](auto&& w2) { return w == w2.get(); });
+}
 
     void WindowVisitEach(std::function<void(WindowBase*)> func)
     {
@@ -487,7 +488,7 @@ static constexpr float kWindowScrollLocations[][2] = {
      * Splits a drawing of a window into regions that can be seen and are not hidden
      * by other opaque overlapping windows.
      */
-    void WindowDraw(RenderTarget& rt, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom)
+    void WindowDraw(Drawing::RenderTarget& rt, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom)
     {
         if (!w.isVisible)
             return;
@@ -544,7 +545,8 @@ static constexpr float kWindowScrollLocations[][2] = {
     /**
      * Draws the given window and any other overlapping transparent windows.
      */
-    static void WindowDrawCore(RenderTarget& rt, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom)
+    static void WindowDrawCore(
+        Drawing::RenderTarget& rt, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom)
     {
         // Clamp region
         left = std::max<int32_t>(left, w.windowPos.x);
@@ -569,11 +571,13 @@ static constexpr float kWindowScrollLocations[][2] = {
         }
     }
 
-    static void WindowDrawSingle(RenderTarget& rt, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom)
+    static void WindowDrawSingle(
+        Drawing::RenderTarget& rt, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom)
     {
         assert(rt.zoom_level == ZoomLevel{ 0 });
+
         // Copy render target so we can crop it
-        RenderTarget copy = rt;
+        Drawing::RenderTarget copy = rt;
 
         // Clamp left to 0
         int32_t overflow = left - copy.x;
@@ -852,7 +856,7 @@ static constexpr float kWindowScrollLocations[][2] = {
      * right (dx)
      * bottom (bp)
      */
-    void WindowDrawAll(RenderTarget& rt, int32_t left, int32_t top, int32_t right, int32_t bottom)
+    void WindowDrawAll(Drawing::RenderTarget& rt, int32_t left, int32_t top, int32_t right, int32_t bottom)
     {
         auto windowRT = rt.Crop({ left, top }, { right - left, bottom - top });
         WindowVisitEach([&windowRT, left, top, right, bottom](WindowBase* w) {

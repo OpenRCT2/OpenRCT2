@@ -18,7 +18,6 @@
 #include <vector>
 
 struct ScreenCoordsXY;
-struct RenderTarget;
 struct ITitleSequencePlayer;
 
 namespace OpenRCT2
@@ -27,9 +26,9 @@ namespace OpenRCT2
     {
         struct IDrawingEngineFactory;
         struct IWeatherDrawer;
+        struct RenderTarget;
         using DrawWeatherFunc = void (*)(
-            RenderTarget& rt, OpenRCT2::Drawing::IWeatherDrawer* weatherDrawer, int32_t left, int32_t top, int32_t width,
-            int32_t height);
+            RenderTarget& rt, IWeatherDrawer* weatherDrawer, int32_t left, int32_t top, int32_t width, int32_t height);
     } // namespace Drawing
 
     namespace Ui
@@ -106,7 +105,7 @@ namespace OpenRCT2
 
             virtual void InitialiseScriptExtensions() = 0;
             virtual void Tick() = 0;
-            virtual void Draw(RenderTarget& rt) = 0;
+            virtual void Draw(Drawing::RenderTarget& rt) = 0;
 
             // Window
             virtual void CreateWindow() = 0;
@@ -156,7 +155,7 @@ namespace OpenRCT2
             // Drawing
             [[nodiscard]] virtual std::shared_ptr<Drawing::IDrawingEngineFactory> GetDrawingEngineFactory() = 0;
             virtual void DrawWeatherAnimation(
-                OpenRCT2::Drawing::IWeatherDrawer* weatherDrawer, RenderTarget& rt, OpenRCT2::Drawing::DrawWeatherFunc drawFunc)
+                Drawing::IWeatherDrawer* weatherDrawer, Drawing::RenderTarget& rt, Drawing::DrawWeatherFunc drawFunc)
                 = 0;
 
             // Text input

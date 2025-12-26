@@ -16,7 +16,10 @@
 #include <string>
 #include <vector>
 
-struct RenderTarget;
+namespace OpenRCT2::Drawing
+{
+    struct RenderTarget;
+}
 
 namespace OpenRCT2
 {
@@ -54,5 +57,5 @@ namespace OpenRCT2
     struct GameState_t;
 
     ParkPreview generatePreviewFromGameState(const GameState_t& gameState);
-    void drawPreviewImage(const PreviewImage& image, RenderTarget& rt, ScreenCoordsXY screenPos);
+    void drawPreviewImage(const PreviewImage& image, Drawing::RenderTarget& rt, ScreenCoordsXY screenPos);
 } // namespace OpenRCT2

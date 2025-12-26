@@ -176,7 +176,7 @@ void VehicleCrashParticle::Paint(PaintSession& session, int32_t imageDirection) 
 {
     PROFILED_FUNCTION();
 
-    RenderTarget& rt = session.DPI;
+    auto& rt = session.DPI;
     if (rt.zoom_level > ZoomLevel{ 0 })
     {
         return;

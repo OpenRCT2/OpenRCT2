@@ -13,8 +13,6 @@
 #include <cstdint>
 #include <string>
 
-struct RenderTarget;
-
 enum class ConsoleInput : uint8_t
 {
     None,
@@ -31,6 +29,11 @@ namespace OpenRCT2
     enum class FormatToken : uint8_t;
     struct TextInputSession;
 } // namespace OpenRCT2
+
+namespace OpenRCT2::Drawing
+{
+    struct RenderTarget;
+}
 
 class InteractiveConsole
 {

@@ -7,6 +7,8 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "RenderTarget.h"
+
 namespace OpenRCT2::Drawing
 {
     uint8_t* RenderTarget::GetBitsOffset(const ScreenCoordsXY& pos) const

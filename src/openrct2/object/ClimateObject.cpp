@@ -52,7 +52,7 @@ namespace OpenRCT2
     static RawClimate readWeatherTable(json_t& weather);
     static Climate convertRawClimate(const RawClimate& rawClimate);
 
-    void ClimateObject::DrawPreview(RenderTarget& rt, int32_t width, int32_t height) const
+    void ClimateObject::DrawPreview(Drawing::RenderTarget& rt, int32_t width, int32_t height) const
     {
         const auto dist = getYearlyDistribution();
         const auto totalSize = kNumClimateMonths * kWeatherDistSize;

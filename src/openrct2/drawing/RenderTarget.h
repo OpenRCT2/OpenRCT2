@@ -9,8 +9,13 @@
 
 #pragma once
 
+#include "../interface/ZoomLevel.h"
+#include "../world/Location.hpp"
+
 namespace OpenRCT2::Drawing
 {
+    struct IDrawingEngine;
+
     struct RenderTarget
     {
         uint8_t* bits{};

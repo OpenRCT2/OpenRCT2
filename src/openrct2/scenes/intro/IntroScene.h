@@ -13,7 +13,10 @@
 
 #include <cstdint>
 
-struct RenderTarget;
+namespace OpenRCT2::Drawing
+{
+    struct RenderTarget;
+}
 
 namespace OpenRCT2
 {
@@ -43,5 +46,5 @@ namespace OpenRCT2
 
     bool IntroIsPlaying();
     void IntroUpdate();
-    void IntroDraw(RenderTarget& rt);
+    void IntroDraw(Drawing::RenderTarget& rt);
 } // namespace OpenRCT2

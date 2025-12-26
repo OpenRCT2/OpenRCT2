@@ -19,11 +19,15 @@
 
 struct PaintSession;
 struct PaintStruct;
-struct RenderTarget;
 struct EntityBase;
 struct Guest;
 struct Staff;
 struct PaintEntry;
+
+namespace OpenRCT2::Drawing
+{
+    struct RenderTarget;
+}
 
 namespace OpenRCT2
 {
@@ -196,7 +200,7 @@ namespace OpenRCT2
     void ViewportUpdateSmartFollowGuest(WindowBase* window, const Guest& peep);
     void ViewportRotateSingle(WindowBase* window, int32_t direction);
     void ViewportRotateAll(int32_t direction);
-    void ViewportRender(RenderTarget& rt, const Viewport* viewport);
+    void ViewportRender(OpenRCT2::Drawing::RenderTarget& rt, const Viewport* viewport);
 
     CoordsXYZ ViewportAdjustForMapHeight(const ScreenCoordsXY& startCoords, uint8_t rotation);
 

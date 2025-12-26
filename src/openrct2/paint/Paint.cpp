@@ -32,6 +32,7 @@
 #include <cassert>
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::Drawing;
 using namespace OpenRCT2::Numerics;
 
 // Globals for paint clipping

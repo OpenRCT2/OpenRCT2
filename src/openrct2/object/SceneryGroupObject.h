@@ -38,7 +38,7 @@ namespace OpenRCT2
         void Unload() override;
         void UpdateEntryIndexes();
 
-        void DrawPreview(RenderTarget& rt, int32_t width, int32_t height) const override;
+        void DrawPreview(Drawing::RenderTarget& rt, int32_t width, int32_t height) const override;
 
         void SetRepositoryItem(ObjectRepositoryItem* item) const override;
 

@@ -12,12 +12,16 @@
 #include <cstdint>
 
 enum class FilterPaletteID : int32_t;
-struct RenderTarget;
 struct ScreenRect;
 
 namespace OpenRCT2
 {
     struct ColourWithFlags;
+}
+
+namespace OpenRCT2::Drawing
+{
+    struct RenderTarget;
 }
 
 namespace OpenRCT2::Drawing::Rectangle

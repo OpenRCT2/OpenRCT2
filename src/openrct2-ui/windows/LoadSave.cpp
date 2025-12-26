@@ -404,7 +404,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void DrawPreview(RenderTarget& rt)
+        void DrawPreview(Drawing::RenderTarget& rt)
         {
             // Find preview image to draw
             PreviewImage* image = nullptr;

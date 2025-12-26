@@ -22,8 +22,12 @@
 #include <string_view>
 #include <vector>
 
-struct RenderTarget;
 using ride_type_t = uint16_t;
+
+namespace OpenRCT2::Drawing
+{
+    struct RenderTarget;
+}
 
 namespace OpenRCT2
 {
@@ -292,7 +296,7 @@ namespace OpenRCT2
         virtual void Load() = 0;
         virtual void Unload() = 0;
 
-        virtual void DrawPreview(RenderTarget& /*rt*/, int32_t /*width*/, int32_t /*height*/) const
+        virtual void DrawPreview(Drawing::RenderTarget& /*rt*/, int32_t /*width*/, int32_t /*height*/) const
         {
         }
 

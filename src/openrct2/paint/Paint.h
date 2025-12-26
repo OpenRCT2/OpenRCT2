@@ -11,7 +11,9 @@
 
 #include "../core/Money.hpp"
 #include "../drawing/ImageId.hpp"
+#include "../drawing/RenderTarget.h"
 #include "../interface/Colour.h"
+#include "../localisation/StringIdType.h"
 #include "../world/Location.hpp"
 #include "../world/MapLimits.h"
 #include "Boundbox.h"
@@ -193,7 +195,7 @@ struct PaintNodeStorage
 
 struct PaintSession : public PaintSessionCore
 {
-    RenderTarget DPI;
+    OpenRCT2::Drawing::RenderTarget DPI;
     PaintNodeStorage paintEntries;
 
     PaintStruct* AllocateNormalPaintEntry() noexcept
@@ -309,9 +311,9 @@ void PaintFloatingMoneyEffect(
     PaintSession& session, money64 amount, StringId string_id, int32_t y, int32_t z, int8_t y_offsets[], int32_t offset_x,
     uint32_t rotation);
 
-PaintSession* PaintSessionAlloc(RenderTarget& rt, uint32_t viewFlags, uint8_t rotation);
+PaintSession* PaintSessionAlloc(OpenRCT2::Drawing::RenderTarget& rt, uint32_t viewFlags, uint8_t rotation);
 void PaintSessionFree(PaintSession* session);
 void PaintSessionGenerate(PaintSession& session);
 void PaintSessionArrange(PaintSessionCore& session);
 void PaintDrawStructs(PaintSession& session);
-void PaintDrawMoneyStructs(RenderTarget& rt, PaintStringStruct* ps);
+void PaintDrawMoneyStructs(OpenRCT2::Drawing::RenderTarget& rt, PaintStringStruct* ps);
