@@ -120,6 +120,15 @@ enum class RideClassification
     kioskOrFacility
 };
 
+enum class MechanicStatus : uint8_t
+{
+    undefined,
+    calling,
+    heading,
+    fixing,
+    hasFixedStationBrakes
+};
+
 namespace OpenRCT2::ShelteredSectionsBits
 {
     constexpr uint8_t kNumShelteredSectionsMask = 0b00011111;
@@ -253,7 +262,7 @@ struct Ride
     EntityId raceWinner{};
     uint32_t musicPosition{};
     uint8_t breakdownReasonPending{};
-    uint8_t mechanicStatus{};
+    MechanicStatus mechanicStatus{};
     EntityId mechanic{ EntityId::GetNull() };
     StationIndex inspectionStation{ StationIndex::GetNull() };
     uint8_t brokenTrain{};
@@ -748,15 +757,6 @@ enum
     BREAKDOWN_CONTROL_FAILURE,
 
     BREAKDOWN_COUNT
-};
-
-enum
-{
-    RIDE_MECHANIC_STATUS_UNDEFINED,
-    RIDE_MECHANIC_STATUS_CALLING,
-    RIDE_MECHANIC_STATUS_HEADING,
-    RIDE_MECHANIC_STATUS_FIXING,
-    RIDE_MECHANIC_STATUS_HAS_FIXED_STATION_BRAKES
 };
 
 enum

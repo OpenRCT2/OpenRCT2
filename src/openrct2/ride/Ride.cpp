@@ -169,7 +169,7 @@ static void RideCallMechanic(Ride& ride, Peep* mechanic, int32_t forInspection);
 static void RideEntranceExitConnected(Ride& ride);
 static int32_t RideGetNewBreakdownProblem(const Ride& ride);
 static void RideInspectionUpdate(Ride& ride);
-static void RideMechanicStatusUpdate(Ride& ride, int32_t mechanicStatus);
+static void RideMechanicStatusUpdate(Ride& ride, MechanicStatus mechanicStatus);
 static void RideMusicUpdate(Ride& ride);
 static void RideShopConnected(const Ride& ride);
 
@@ -1366,7 +1366,7 @@ static void RideInspectionUpdate(Ride& ride)
 
     // Inspect the first station that has an exit
     ride.lifecycleFlags |= RIDE_LIFECYCLE_DUE_INSPECTION;
-    ride.mechanicStatus = RIDE_MECHANIC_STATUS_CALLING;
+    ride.mechanicStatus = MechanicStatus::calling;
 
     auto stationIndex = RideGetFirstValidStationExit(ride);
     ride.inspectionStation = (!stationIndex.IsNull()) ? stationIndex : StationIndex::FromUnderlying(0);
@@ -1658,8 +1658,8 @@ static void RideBreakdownStatusUpdate(Ride& ride)
         if (ride.notFixedTimeout == 0)
             ride.notFixedTimeout -= 16;
 
-        if (!(ride.notFixedTimeout & 15) && ride.mechanicStatus != RIDE_MECHANIC_STATUS_FIXING
-            && ride.mechanicStatus != RIDE_MECHANIC_STATUS_HAS_FIXED_STATION_BRAKES)
+        if (!(ride.notFixedTimeout & 15) && ride.mechanicStatus != MechanicStatus::fixing
+            && ride.mechanicStatus != MechanicStatus::hasFixedStationBrakes)
         {
             if (Config::Get().notifications.rideWarnings)
             {
@@ -1677,11 +1677,11 @@ static void RideBreakdownStatusUpdate(Ride& ride)
  *
  *  rct2: 0x006B762F
  */
-static void RideMechanicStatusUpdate(Ride& ride, int32_t mechanicStatus)
+static void RideMechanicStatusUpdate(Ride& ride, MechanicStatus mechanicStatus)
 {
     // Turn a pending breakdown into a breakdown.
-    if ((mechanicStatus == RIDE_MECHANIC_STATUS_UNDEFINED || mechanicStatus == RIDE_MECHANIC_STATUS_CALLING
-         || mechanicStatus == RIDE_MECHANIC_STATUS_HEADING)
+    if ((mechanicStatus == MechanicStatus::undefined || mechanicStatus == MechanicStatus::calling
+         || mechanicStatus == MechanicStatus::heading)
         && (ride.lifecycleFlags & RIDE_LIFECYCLE_BREAKDOWN_PENDING) && !(ride.lifecycleFlags & RIDE_LIFECYCLE_BROKEN_DOWN))
     {
         auto breakdownReason = ride.breakdownReasonPending;
@@ -1697,13 +1697,13 @@ static void RideMechanicStatusUpdate(Ride& ride, int32_t mechanicStatus)
     }
     switch (mechanicStatus)
     {
-        case RIDE_MECHANIC_STATUS_UNDEFINED:
+        case MechanicStatus::undefined:
             if (ride.lifecycleFlags & RIDE_LIFECYCLE_BROKEN_DOWN)
             {
-                ride.mechanicStatus = RIDE_MECHANIC_STATUS_CALLING;
+                ride.mechanicStatus = MechanicStatus::calling;
             }
             break;
-        case RIDE_MECHANIC_STATUS_CALLING:
+        case MechanicStatus::calling:
             if (ride.getRideTypeDescriptor().AvailableBreakdowns == 0)
             {
                 ride.lifecycleFlags &= ~(
@@ -1713,7 +1713,7 @@ static void RideMechanicStatusUpdate(Ride& ride, int32_t mechanicStatus)
 
             RideCallClosestMechanic(ride);
             break;
-        case RIDE_MECHANIC_STATUS_HEADING:
+        case MechanicStatus::heading:
         {
             auto mechanic = RideGetMechanic(ride);
             bool rideNeedsRepair = (ride.lifecycleFlags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN));
@@ -1721,9 +1721,9 @@ static void RideMechanicStatusUpdate(Ride& ride, int32_t mechanicStatus)
                 || (mechanic->State != PeepState::headingToInspection && mechanic->State != PeepState::answering)
                 || mechanic->CurrentRide != ride.id)
             {
-                ride.mechanicStatus = RIDE_MECHANIC_STATUS_CALLING;
+                ride.mechanicStatus = MechanicStatus::calling;
                 ride.windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAINTENANCE;
-                RideMechanicStatusUpdate(ride, RIDE_MECHANIC_STATUS_CALLING);
+                RideMechanicStatusUpdate(ride, MechanicStatus::calling);
             }
             // if the ride is broken down, but a mechanic was heading for an inspection, update orders to fix
             else if (rideNeedsRepair && mechanic->State == PeepState::headingToInspection)
@@ -1734,19 +1734,21 @@ static void RideMechanicStatusUpdate(Ride& ride, int32_t mechanicStatus)
             }
             break;
         }
-        case RIDE_MECHANIC_STATUS_FIXING:
+        case MechanicStatus::fixing:
         {
             auto mechanic = RideGetMechanic(ride);
             if (mechanic == nullptr
                 || (mechanic->State != PeepState::headingToInspection && mechanic->State != PeepState::fixing
                     && mechanic->State != PeepState::inspecting && mechanic->State != PeepState::answering))
             {
-                ride.mechanicStatus = RIDE_MECHANIC_STATUS_CALLING;
+                ride.mechanicStatus = MechanicStatus::calling;
                 ride.windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAINTENANCE;
-                RideMechanicStatusUpdate(ride, RIDE_MECHANIC_STATUS_CALLING);
+                RideMechanicStatusUpdate(ride, MechanicStatus::calling);
             }
             break;
         }
+        default:
+            break;
     }
 }
 
@@ -1758,7 +1760,7 @@ static void RideCallMechanic(Ride& ride, Peep* mechanic, int32_t forInspection)
 {
     mechanic->SetState(forInspection ? PeepState::headingToInspection : PeepState::answering);
     mechanic->SubState = 0;
-    ride.mechanicStatus = RIDE_MECHANIC_STATUS_HEADING;
+    ride.mechanicStatus = MechanicStatus::heading;
     ride.windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAINTENANCE;
     ride.mechanic = mechanic->Id;
     mechanic->CurrentRide = ride.id;
@@ -1869,8 +1871,8 @@ Staff* RideGetAssignedMechanic(const Ride& ride)
 {
     if (ride.lifecycleFlags & RIDE_LIFECYCLE_BROKEN_DOWN)
     {
-        if (ride.mechanicStatus == RIDE_MECHANIC_STATUS_HEADING || ride.mechanicStatus == RIDE_MECHANIC_STATUS_FIXING
-            || ride.mechanicStatus == RIDE_MECHANIC_STATUS_HAS_FIXED_STATION_BRAKES)
+        if (ride.mechanicStatus == MechanicStatus::heading || ride.mechanicStatus == MechanicStatus::fixing
+            || ride.mechanicStatus == MechanicStatus::hasFixedStationBrakes)
         {
             return RideGetMechanic(ride);
         }

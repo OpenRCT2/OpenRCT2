@@ -1261,7 +1261,7 @@ void Staff::UpdateHeadingToInspect()
         return;
     }
 
-    if (ride->mechanicStatus != RIDE_MECHANIC_STATUS_HEADING || !(ride->lifecycleFlags & RIDE_LIFECYCLE_DUE_INSPECTION))
+    if (ride->mechanicStatus != MechanicStatus::heading || !(ride->lifecycleFlags & RIDE_LIFECYCLE_DUE_INSPECTION))
     {
         SetState(PeepState::falling);
         return;
@@ -1279,9 +1279,9 @@ void Staff::UpdateHeadingToInspect()
         MechanicTimeSinceCall++;
         if (MechanicTimeSinceCall > 2500)
         {
-            if (ride->lifecycleFlags & RIDE_LIFECYCLE_DUE_INSPECTION && ride->mechanicStatus == RIDE_MECHANIC_STATUS_HEADING)
+            if (ride->lifecycleFlags & RIDE_LIFECYCLE_DUE_INSPECTION && ride->mechanicStatus == MechanicStatus::heading)
             {
-                ride->mechanicStatus = RIDE_MECHANIC_STATUS_CALLING;
+                ride->mechanicStatus = MechanicStatus::calling;
             }
             SetState(PeepState::falling);
             return;
@@ -1349,7 +1349,7 @@ void Staff::UpdateHeadingToInspect()
 void Staff::UpdateAnswering()
 {
     auto ride = GetRide(CurrentRide);
-    if (ride == nullptr || ride->mechanicStatus != RIDE_MECHANIC_STATUS_HEADING)
+    if (ride == nullptr || ride->mechanicStatus != MechanicStatus::heading)
     {
         SetState(PeepState::falling);
         return;
@@ -1386,7 +1386,7 @@ void Staff::UpdateAnswering()
         MechanicTimeSinceCall++;
         if (MechanicTimeSinceCall > 2500)
         {
-            ride->mechanicStatus = RIDE_MECHANIC_STATUS_CALLING;
+            ride->mechanicStatus = MechanicStatus::calling;
             ride->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAINTENANCE;
             SetState(PeepState::falling);
             return;
@@ -2086,7 +2086,7 @@ void Staff::UpdateFixing(int32_t steps)
  */
 bool Staff::UpdateFixingEnterStation(Ride& ride) const
 {
-    ride.mechanicStatus = RIDE_MECHANIC_STATUS_FIXING;
+    ride.mechanicStatus = MechanicStatus::fixing;
     ride.windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAINTENANCE;
 
     return true;
@@ -2463,7 +2463,7 @@ bool Staff::UpdateFixingFixStationBrakes(bool firstRun, Ride& ride)
 
     if (AnimationFrameNum == 0x28)
     {
-        ride.mechanicStatus = RIDE_MECHANIC_STATUS_HAS_FIXED_STATION_BRAKES;
+        ride.mechanicStatus = MechanicStatus::hasFixedStationBrakes;
         ride.windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAINTENANCE;
     }
 
@@ -2529,7 +2529,7 @@ bool Staff::UpdateFixingFinishFixOrInspect(bool firstRun, int32_t steps, Ride& r
 
             StaffRidesInspected = AddClamp(StaffRidesInspected, 1u);
             WindowInvalidateFlags |= RIDE_INVALIDATE_RIDE_INCOME | RIDE_INVALIDATE_RIDE_LIST;
-            ride.mechanicStatus = RIDE_MECHANIC_STATUS_UNDEFINED;
+            ride.mechanicStatus = MechanicStatus::undefined;
             return true;
         }
 
@@ -2552,7 +2552,7 @@ bool Staff::UpdateFixingFinishFixOrInspect(bool firstRun, int32_t steps, Ride& r
     }
 
     RideFixBreakdown(ride, steps);
-    ride.mechanicStatus = RIDE_MECHANIC_STATUS_UNDEFINED;
+    ride.mechanicStatus = MechanicStatus::undefined;
     return true;
 }
 

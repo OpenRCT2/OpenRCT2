@@ -351,7 +351,7 @@ bool Vehicle::CloseRestraints()
                 curRide->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST
                     | RIDE_INVALIDATE_RIDE_MAINTENANCE;
 
-                curRide->mechanicStatus = RIDE_MECHANIC_STATUS_CALLING;
+                curRide->mechanicStatus = MechanicStatus::calling;
 
                 Vehicle* broken_vehicle = getGameState().entities.GetEntity<Vehicle>(curRide->vehicles[curRide->brokenTrain]);
                 if (broken_vehicle != nullptr)
@@ -467,7 +467,7 @@ bool Vehicle::OpenRestraints()
                 curRide->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST
                     | RIDE_INVALIDATE_RIDE_MAINTENANCE;
 
-                curRide->mechanicStatus = RIDE_MECHANIC_STATUS_CALLING;
+                curRide->mechanicStatus = MechanicStatus::calling;
 
                 Vehicle* broken_vehicle = getGameState().entities.GetEntity<Vehicle>(curRide->vehicles[curRide->brokenTrain]);
                 if (broken_vehicle != nullptr)
@@ -2206,7 +2206,7 @@ void Vehicle::UpdateDeparting()
 
             curRide->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST
                 | RIDE_INVALIDATE_RIDE_MAINTENANCE;
-            curRide->mechanicStatus = RIDE_MECHANIC_STATUS_CALLING;
+            curRide->mechanicStatus = MechanicStatus::calling;
             curRide->inspectionStation = current_station;
             curRide->breakdownReason = curRide->breakdownReasonPending;
             velocity = 0;
@@ -2999,7 +2999,7 @@ void Vehicle::UpdateArriving()
     bool hasBrakesFailure = curRide->lifecycleFlags & RIDE_LIFECYCLE_BROKEN_DOWN
         && curRide->breakdownReasonPending == BREAKDOWN_BRAKES_FAILURE;
     if (hasBrakesFailure && curRide->inspectionStation == current_station
-        && curRide->mechanicStatus != RIDE_MECHANIC_STATUS_HAS_FIXED_STATION_BRAKES)
+        && curRide->mechanicStatus != MechanicStatus::hasFixedStationBrakes)
     {
         stationBrakesWork = false;
     }
@@ -3234,7 +3234,7 @@ void Vehicle::UpdateTravellingCableLift()
             curRide->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST
                 | RIDE_INVALIDATE_RIDE_MAINTENANCE;
 
-            curRide->mechanicStatus = RIDE_MECHANIC_STATUS_CALLING;
+            curRide->mechanicStatus = MechanicStatus::calling;
             curRide->inspectionStation = current_station;
             curRide->breakdownReason = curRide->breakdownReasonPending;
             velocity = 0;
@@ -6864,7 +6864,7 @@ bool Vehicle::UpdateTrackMotionForwards(const CarEntry* carEntry, const Ride& cu
         {
             bool hasBrakesFailure = curRide.lifecycleFlags & RIDE_LIFECYCLE_BROKEN_DOWN
                 && curRide.breakdownReasonPending == BREAKDOWN_BRAKES_FAILURE;
-            if (!hasBrakesFailure || curRide.mechanicStatus == RIDE_MECHANIC_STATUS_HAS_FIXED_STATION_BRAKES)
+            if (!hasBrakesFailure || curRide.mechanicStatus == MechanicStatus::hasFixedStationBrakes)
             {
                 auto brakeSpeed = ChooseBrakeSpeed() << kTrackSpeedShiftAmount;
 
