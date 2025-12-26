@@ -590,7 +590,7 @@ void PeepDecrementNumRiders(Peep* peep)
         if (ride != nullptr)
         {
             ride->numRiders = std::max(0, ride->numRiders - 1);
-            ride->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
+            ride->windowInvalidateFlags.set(RideInvalidateFlag::main, RideInvalidateFlag::list);
         }
     }
 }
@@ -615,7 +615,7 @@ void PeepWindowStateUpdate(Peep* peep)
             if (ride != nullptr)
             {
                 ride->numRiders++;
-                ride->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
+                ride->windowInvalidateFlags.set(RideInvalidateFlag::main, RideInvalidateFlag::list);
             }
         }
 
@@ -2291,7 +2291,7 @@ static bool PeepInteractWithShop(Peep* peep, const CoordsXYE& coords)
         if (cost != 0 && !(getGameState().park.flags & PARK_FLAGS_NO_MONEY))
         {
             ride->totalProfit = AddClamp(ride->totalProfit, cost);
-            ride->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_INCOME;
+            ride->windowInvalidateFlags.set(RideInvalidateFlag::income);
             guest->SpendMoney(cost, ExpenditureType::shopSales);
         }
 

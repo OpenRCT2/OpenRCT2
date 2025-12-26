@@ -145,7 +145,7 @@ static void RideUpdateStationDodgems(Ride& ride, StationIndex stationIndex)
         // Begin the match
         ride.lifecycleFlags |= RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING;
         station.Depart |= kStationDepartFlag;
-        ride.windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
+        ride.windowInvalidateFlags.set(RideInvalidateFlag::main, RideInvalidateFlag::list);
     }
 }
 
@@ -221,7 +221,7 @@ static void RideUpdateStationRace(Ride& ride, StationIndex stationIndex)
                     if (peep != nullptr)
                     {
                         ride.raceWinner = peep->Id;
-                        ride.windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
+                        ride.windowInvalidateFlags.set(RideInvalidateFlag::main, RideInvalidateFlag::list);
                     }
                 }
 
@@ -267,7 +267,7 @@ static void RideUpdateStationRace(Ride& ride, StationIndex stationIndex)
             station.Depart |= kStationDepartFlag;
             RideInvalidateStationStart(ride, stationIndex, true);
         }
-        ride.windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
+        ride.windowInvalidateFlags.set(RideInvalidateFlag::main, RideInvalidateFlag::list);
     }
 }
 

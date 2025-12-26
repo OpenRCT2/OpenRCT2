@@ -1748,10 +1748,10 @@ static bool GuestDecideAndBuyItem(Guest& guest, Ride& ride, const ShopItem shopI
         guest.SpendMoney(*expend_type, price, expenditure);
     }
     ride.totalProfit = AddClamp(ride.totalProfit, price - shopItemDescriptor.Cost);
-    ride.windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_INCOME;
+    ride.windowInvalidateFlags.set(RideInvalidateFlag::income);
     ride.curNumCustomers++;
     ride.totalCustomers = AddClamp(ride.totalCustomers, 1u);
-    ride.windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_CUSTOMER;
+    ride.windowInvalidateFlags.set(RideInvalidateFlag::customers);
 
     return true;
 }
@@ -1840,7 +1840,7 @@ void Guest::OnExitRide(Ride& ride)
     }
 
     ride.totalCustomers = AddClamp(ride.totalCustomers, 1u);
-    ride.windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_CUSTOMER;
+    ride.windowInvalidateFlags.set(RideInvalidateFlag::customers);
 }
 
 /**
@@ -3372,7 +3372,7 @@ static bool PeepShouldUseCashMachine(Guest& guest, RideId rideIndex)
         ride->updateSatisfaction(guest.Happiness >> 6);
         ride->curNumCustomers++;
         ride->totalCustomers = AddClamp(ride->totalCustomers, 1u);
-        ride->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_CUSTOMER;
+        ride->windowInvalidateFlags.set(RideInvalidateFlag::customers);
     }
     return true;
 }
@@ -3909,7 +3909,7 @@ void Guest::UpdateRideFreeVehicleEnterRide(Ride& ride)
         else
         {
             ride.totalProfit = AddClamp<money64>(ride.totalProfit, ridePrice);
-            ride.windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_INCOME;
+            ride.windowInvalidateFlags.set(RideInvalidateFlag::income);
             SpendMoney(PaidOnRides, ridePrice, ExpenditureType::parkRideTickets);
         }
     }
@@ -5216,7 +5216,7 @@ void Guest::UpdateRideShopLeave()
     if (ride != nullptr)
     {
         ride->totalCustomers = AddClamp(ride->totalCustomers, 1u);
-        ride->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_CUSTOMER;
+        ride->windowInvalidateFlags.set(RideInvalidateFlag::customers);
         ride->updateSatisfaction(Happiness / 64);
     }
 }

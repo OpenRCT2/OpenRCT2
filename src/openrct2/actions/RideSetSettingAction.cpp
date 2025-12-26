@@ -203,7 +203,7 @@ namespace OpenRCT2::GameActions
                 {
                     ride->lifecycleFlags |= RIDE_LIFECYCLE_MUSIC;
                 }
-                ride->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MUSIC;
+                ride->windowInvalidateFlags.set(RideInvalidateFlag::music);
                 break;
             case RideSetSetting::MusicType:
                 if (_value != ride->music)

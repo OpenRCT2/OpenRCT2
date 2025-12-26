@@ -279,7 +279,7 @@ namespace OpenRCT2::GameActions
         ride.lifecycleFlags &= ~RIDE_LIFECYCLE_EVER_BEEN_OPENED;
         ride.lastCrashType = RIDE_CRASH_TYPE_NONE;
 
-        ride.windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAINTENANCE | RIDE_INVALIDATE_RIDE_CUSTOMER;
+        ride.windowInvalidateFlags.set(RideInvalidateFlag::maintenance, RideInvalidateFlag::customers);
 
         if (!ride.overallView.IsNull())
         {

@@ -185,7 +185,7 @@ void FinancePayRideUpkeep()
             if (upkeep != kMoney64Undefined)
             {
                 ride.totalProfit = AddClamp(ride.totalProfit, -upkeep);
-                ride.windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_INCOME;
+                ride.windowInvalidateFlags.set(RideInvalidateFlag::income);
                 FinancePayment(upkeep, ExpenditureType::rideRunningCosts);
             }
         }
