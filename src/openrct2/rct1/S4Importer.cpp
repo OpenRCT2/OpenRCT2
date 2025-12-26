@@ -1754,7 +1754,7 @@ namespace OpenRCT2::RCT1
                     }
                     else
                     {
-                        dst2->SetSeatRotation(DEFAULT_SEAT_ROTATION);
+                        dst2->SetSeatRotation(kDefaultSeatRotation);
                     }
                     // Skipping IsHighlighted()
 
@@ -2859,8 +2859,8 @@ namespace OpenRCT2::RCT1
         dst->roll = src->roll;
 
         // Seat rotation was not in RCT1
-        dst->target_seat_rotation = DEFAULT_SEAT_ROTATION;
-        dst->seat_rotation = DEFAULT_SEAT_ROTATION;
+        dst->target_seat_rotation = kDefaultSeatRotation;
+        dst->seat_rotation = kDefaultSeatRotation;
 
         // Vehicle links (indexes converted later)
         dst->prev_vehicle_on_ride = EntityId::FromUnderlying(src->PrevVehicleOnRide);

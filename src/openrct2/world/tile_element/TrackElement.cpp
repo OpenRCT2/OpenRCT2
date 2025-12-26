@@ -65,7 +65,7 @@ namespace OpenRCT2
     {
         const auto* ride = GetRide(GetRideIndex());
         if (ride != nullptr && ride->getRideTypeDescriptor().HasFlag(RtdFlag::hasLandscapeDoors))
-            return DEFAULT_SEAT_ROTATION;
+            return kDefaultSeatRotation;
 
         return URide.ColourScheme >> 4;
     }

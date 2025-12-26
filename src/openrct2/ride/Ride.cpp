@@ -2826,7 +2826,7 @@ static bool RideCheckTrackContainsInversions(const CoordsXYE& input, CoordsXYE* 
     {
         auto trackType = it.current.element->AsTrack()->GetTrackType();
         const auto& ted = GetTrackElementDescriptor(trackType);
-        if (ted.flags & TRACK_ELEM_FLAG_INVERSION_TO_NORMAL)
+        if (ted.flags.has(TrackElementFlag::inversionToNormal))
         {
             *output = it.current;
             return true;
@@ -2887,7 +2887,7 @@ static bool RideCheckTrackContainsBanked(const CoordsXYE& input, CoordsXYE* outp
     {
         auto trackType = it.current.element->AsTrack()->GetTrackType();
         const auto& ted = GetTrackElementDescriptor(trackType);
-        if (ted.flags & TRACK_ELEM_FLAG_BANKED)
+        if (ted.flags.has(TrackElementFlag::banked))
         {
             *output = it.current;
             return true;

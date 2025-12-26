@@ -3445,7 +3445,7 @@ namespace OpenRCT2::Ui::Windows
 
         _previousTrackPiece = _currentTrackBegin;
         // search for appropriate z value for ghost, up to max ride height
-        int numAttempts = (z <= MAX_TRACK_HEIGHT ? ((MAX_TRACK_HEIGHT - z) / kCoordsZStep + 1) : 2);
+        int numAttempts = (z <= kMaximumTrackHeight ? ((kMaximumTrackHeight - z) / kCoordsZStep + 1) : 2);
 
         if (rtd.specialType == RtdSpecialType::maze)
         {
@@ -3676,7 +3676,7 @@ namespace OpenRCT2::Ui::Windows
         }
 
         // search for z value to build at, up to max ride height
-        int numAttempts = (z <= MAX_TRACK_HEIGHT ? ((MAX_TRACK_HEIGHT - z) / kCoordsZStep + 1) : 2);
+        int numAttempts = (z <= kMaximumTrackHeight ? ((kMaximumTrackHeight - z) / kCoordsZStep + 1) : 2);
 
         const auto& rtd = ride->getRideTypeDescriptor();
         if (rtd.specialType == RtdSpecialType::maze)
@@ -5049,13 +5049,13 @@ namespace OpenRCT2::Ui::Windows
         bool turnOffLiftHill = false;
         if (!IsTrackEnabled(TrackGroup::liftHillCurve))
         {
-            if (ted.flags & TRACK_ELEM_FLAG_CURVE_ALLOWS_LIFT)
+            if (ted.flags.has(TrackElementFlag::curveAllowsLift))
             {
                 turnOffLiftHill = true;
             }
         }
 
-        if (!(ted.flags & TRACK_ELEM_FLAG_ALLOW_LIFT_HILL))
+        if (!ted.flags.has(TrackElementFlag::allowLiftHill))
         {
             turnOffLiftHill = true;
         }
