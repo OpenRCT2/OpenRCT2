@@ -1737,7 +1737,7 @@ namespace OpenRCT2
 
         static void ReadWriteRideMeasurement(OrcaStream::ChunkStream& cs, RideMeasurement& measurement)
         {
-            cs.readWrite(measurement.flags);
+            cs.readWrite(measurement.flags.holder);
             cs.readWrite(measurement.last_use_tick);
             cs.readWrite(measurement.num_items);
             cs.readWrite(measurement.current_item);

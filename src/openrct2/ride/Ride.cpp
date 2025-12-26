@@ -2018,19 +2018,19 @@ static void RideMeasurementUpdate(Ride& ride, RideMeasurement& measurement)
     if (vehicle == nullptr)
         return;
 
-    if (measurement.flags & RIDE_MEASUREMENT_FLAG_UNLOADING)
+    if (measurement.flags.has(RideMeasurementFlag::unloading))
     {
         if (vehicle->status != Vehicle::Status::departing && vehicle->status != Vehicle::Status::travellingCableLift)
             return;
 
-        measurement.flags &= ~RIDE_MEASUREMENT_FLAG_UNLOADING;
+        measurement.flags.unset(RideMeasurementFlag::unloading);
         if (measurement.current_station == vehicle->current_station)
             measurement.current_item = 0;
     }
 
     if (vehicle->status == Vehicle::Status::unloadingPassengers)
     {
-        measurement.flags |= RIDE_MEASUREMENT_FLAG_UNLOADING;
+        measurement.flags.set(RideMeasurementFlag::unloading);
         return;
     }
 
@@ -2047,7 +2047,7 @@ static void RideMeasurementUpdate(Ride& ride, RideMeasurement& measurement)
 
     const auto currentTicks = getGameState().currentTicks;
 
-    if (measurement.flags & RIDE_MEASUREMENT_FLAG_G_FORCES)
+    if (measurement.flags.has(RideMeasurementFlag::gForces))
     {
         auto gForces = vehicle->GetGForces();
         gForces.verticalG = std::clamp(gForces.verticalG / 8, -127, 127);
@@ -2101,7 +2101,7 @@ void RideMeasurementsUpdate()
         auto measurement = ride.measurement.get();
         if (measurement != nullptr && (ride.lifecycleFlags & RIDE_LIFECYCLE_ON_TRACK) && ride.status != RideStatus::simulating)
         {
-            if (measurement->flags & RIDE_MEASUREMENT_FLAG_RUNNING)
+            if (measurement->flags.has(RideMeasurementFlag::running))
             {
                 RideMeasurementUpdate(ride, *measurement);
             }
@@ -2119,8 +2119,8 @@ void RideMeasurementsUpdate()
                         {
                             measurement->vehicle_index = j;
                             measurement->current_station = vehicle->current_station;
-                            measurement->flags |= RIDE_MEASUREMENT_FLAG_RUNNING;
-                            measurement->flags &= ~RIDE_MEASUREMENT_FLAG_UNLOADING;
+                            measurement->flags.set(RideMeasurementFlag::running);
+                            measurement->flags.unset(RideMeasurementFlag::unloading);
                             RideMeasurementUpdate(ride, *measurement);
                             break;
                         }
@@ -2178,14 +2178,14 @@ std::pair<RideMeasurement*, OpenRCT2String> Ride::getMeasurement()
         measurement = std::make_unique<RideMeasurement>();
         if (rtd.HasFlag(RtdFlag::hasGForces))
         {
-            measurement->flags |= RIDE_MEASUREMENT_FLAG_G_FORCES;
+            measurement->flags.set(RideMeasurementFlag::gForces);
         }
         RideFreeOldMeasurements();
         assert(measurement != nullptr);
     }
 
     measurement->last_use_tick = getGameState().currentTicks;
-    if (measurement->flags & 1)
+    if (measurement->flags.has(RideMeasurementFlag::running))
     {
         return { measurement.get(), { kStringIdEmpty, {} } };
     }

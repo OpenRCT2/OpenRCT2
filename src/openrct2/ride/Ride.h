@@ -85,6 +85,14 @@ enum class RideInvalidateFlag : uint8_t
 };
 using RideInvalidateFlags = FlagHolder<uint8_t, RideInvalidateFlag>;
 
+enum class RideMeasurementFlag : uint8_t
+{
+    running,
+    unloading,
+    gForces
+};
+using RideMeasurementFlags = FlagHolder<uint8_t, RideMeasurementFlag>;
+
 enum class RideTestingFlag : uint8_t
 {
     sheltered,
@@ -124,7 +132,7 @@ struct RideMeasurement
 {
     static constexpr size_t kMaxItems = 4800;
 
-    uint8_t flags{};
+    RideMeasurementFlags flags{};
     uint32_t last_use_tick{};
     uint16_t num_items{};
     uint16_t current_item{};
@@ -800,13 +808,6 @@ enum
     WAIT_FOR_LOAD_ANY,
 
     WAIT_FOR_LOAD_COUNT,
-};
-
-enum
-{
-    RIDE_MEASUREMENT_FLAG_RUNNING = 1 << 0,
-    RIDE_MEASUREMENT_FLAG_UNLOADING = 1 << 1,
-    RIDE_MEASUREMENT_FLAG_G_FORCES = 1 << 2
 };
 
 enum
