@@ -11105,8 +11105,7 @@ namespace OpenRCT2::HybridRC
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement, SupportType supportType)
     {
-        PaintAddImageAsParentRotated(
-            session, direction, ImageId(SPR_STATION_BASE_BORDERLESS, COLOUR_BLACK), { 0, 0, height }, { 32, 32, 1 });
+        TrackPaintUtilOnridePhotoPlatformPaintBase(session, height);
         PaintAddImageAsParentRotated(
             session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_FLAT + (direction & 1)),
             { 0, 0, height }, { { 0, 6, height + 3 }, { 32, 20, 0 } });

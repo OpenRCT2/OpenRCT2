@@ -5756,11 +5756,10 @@ static void JuniorRCTrackOnRidePhoto(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    auto imageId = session.TrackColours.WithIndex(junior_rc_track_pieces_flat[0][direction]);
-    PaintAddImageAsParentRotated(
-        session, direction, ImageId(SPR_STATION_BASE_BORDERLESS, COLOUR_BLACK), { 0, 0, height }, { 32, 32, 1 });
+    TrackPaintUtilOnridePhotoPlatformPaintBase(session, height);
     DrawSupportsSideBySide(session, direction, height, session.SupportColours, supportType.metal, 6);
 
+    auto imageId = session.TrackColours.WithIndex(junior_rc_track_pieces_flat[0][direction]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 6, height }, { { 0, 6, height + 3 }, { 32, 20, 1 } });
 
     TrackPaintUtilOnridePhotoPaint2(session, direction, trackElement, height);
