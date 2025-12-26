@@ -27,4 +27,4 @@ namespace OpenRCT2::Drawing
         result.pitch = width + pitch - size.width;
         return result;
     }
-}
+} // namespace OpenRCT2::Drawing

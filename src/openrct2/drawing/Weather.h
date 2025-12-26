@@ -15,7 +15,7 @@ namespace OpenRCT2::Drawing
 {
     struct IWeatherDrawer;
     struct RenderTarget;
-}
+} // namespace OpenRCT2::Drawing
 
 // clang-format off
 static constexpr uint8_t kRainPattern[] =

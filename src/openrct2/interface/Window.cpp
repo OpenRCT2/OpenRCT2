@@ -73,14 +73,15 @@ static constexpr float kWindowScrollLocations[][2] = {
 };
     // clang-format on
 
-static void WindowDrawCore(Drawing::RenderTarget& rt, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom);
-static void WindowDrawSingle(
-    Drawing::RenderTarget& rt, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom);
+    static void WindowDrawCore(
+        Drawing::RenderTarget& rt, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom);
+    static void WindowDrawSingle(
+        Drawing::RenderTarget& rt, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom);
 
-std::vector<std::unique_ptr<WindowBase>>::iterator WindowGetIterator(const WindowBase* w)
-{
-    return std::find_if(gWindowList.begin(), gWindowList.end(), [w](auto&& w2) { return w == w2.get(); });
-}
+    std::vector<std::unique_ptr<WindowBase>>::iterator WindowGetIterator(const WindowBase* w)
+    {
+        return std::find_if(gWindowList.begin(), gWindowList.end(), [w](auto&& w2) { return w == w2.get(); });
+    }
 
     void WindowVisitEach(std::function<void(WindowBase*)> func)
     {

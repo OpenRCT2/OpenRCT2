@@ -60,4 +60,4 @@ namespace OpenRCT2::Drawing
             return width + pitch;
         }
     };
-}
+} // namespace OpenRCT2::Drawing
