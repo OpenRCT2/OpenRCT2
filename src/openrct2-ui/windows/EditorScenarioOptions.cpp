@@ -457,7 +457,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void onDraw(RenderTarget& rt) override
+        void onDraw(Drawing::RenderTarget& rt) override
         {
             switch (page)
             {
@@ -515,7 +515,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
+        void onScrollDraw(int32_t scrollIndex, Drawing::RenderTarget& rt) override
         {
             if (page == WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_RIDES)
             {
@@ -590,7 +590,7 @@ namespace OpenRCT2::Ui::Windows
             setWidgetPressed(WIDX_TAB_1 + page, true);
         }
 
-        void DrawTabImages(RenderTarget& rt)
+        void DrawTabImages(Drawing::RenderTarget& rt)
         {
             Widget* widget;
             int32_t spriteIndex;
@@ -1141,7 +1141,7 @@ namespace OpenRCT2::Ui::Windows
          *
          *  rct2: 0x0067161C
          */
-        void ObjectiveOnDraw(RenderTarget& rt)
+        void ObjectiveOnDraw(Drawing::RenderTarget& rt)
         {
             const auto& gameState = getGameState();
             const auto& scenarioOptions = gameState.scenarioOptions;
@@ -1272,7 +1272,7 @@ namespace OpenRCT2::Ui::Windows
             SetPressedTab();
         }
 
-        void ScenarioDetailsOnDraw(RenderTarget& rt)
+        void ScenarioDetailsOnDraw(Drawing::RenderTarget& rt)
         {
             drawWidgets(rt);
             DrawTabImages(rt);
@@ -1684,7 +1684,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_CLOSE].type = gLegacyScene == LegacyScene::scenarioEditor ? WidgetType::empty : WidgetType::closeBox;
         }
 
-        void FinancialDraw(RenderTarget& rt)
+        void FinancialDraw(Drawing::RenderTarget& rt)
         {
             ScreenCoordsXY screenCoords{};
 
@@ -1970,7 +1970,7 @@ namespace OpenRCT2::Ui::Windows
             setWidgetPressed(WIDX_HARD_GUEST_GENERATION, gameState.park.flags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION);
         }
 
-        void GuestsDraw(RenderTarget& rt)
+        void GuestsDraw(Drawing::RenderTarget& rt)
         {
             ScreenCoordsXY screenCoords{};
 
@@ -2173,7 +2173,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_CLOSE].type = gLegacyScene == LegacyScene::scenarioEditor ? WidgetType::empty : WidgetType::closeBox;
         }
 
-        void LandDraw(RenderTarget& rt)
+        void LandDraw(Drawing::RenderTarget& rt)
         {
             ScreenCoordsXY screenCoords{};
 
@@ -2327,7 +2327,7 @@ namespace OpenRCT2::Ui::Windows
          *
          *  rct2: 0x00672340
          */
-        void RidesOnDraw(RenderTarget& rt)
+        void RidesOnDraw(Drawing::RenderTarget& rt)
         {
             drawWidgets(rt);
             DrawTabImages(rt);
@@ -2337,7 +2337,7 @@ namespace OpenRCT2::Ui::Windows
          *
          *  rct2: 0x0067236F
          */
-        void RidesOnScrollDraw(RenderTarget& rt, int32_t scrollIndex)
+        void RidesOnScrollDraw(Drawing::RenderTarget& rt, int32_t scrollIndex)
         {
             int32_t colour = ColourMapA[colours[1].colour].mid_light;
             Rectangle::fill(rt, { { rt.x, rt.y }, { rt.x + rt.width - 1, rt.y + rt.height - 1 } }, colour);

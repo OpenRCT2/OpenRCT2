@@ -1044,7 +1044,7 @@ static uint64_t PageDisabledWidgets[] = {
             invalidateWidget(WIDX_LIST);
         }
 
-        void onDraw(RenderTarget& rt) override
+        void onDraw(Drawing::RenderTarget& rt) override
         {
             drawWidgets(rt);
             ScreenCoordsXY screenCoords(windowPos.x, windowPos.y);
@@ -1582,7 +1582,7 @@ static uint64_t PageDisabledWidgets[] = {
             }
         }
 
-        void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
+        void onScrollDraw(int32_t scrollIndex, Drawing::RenderTarget& rt) override
         {
             const int32_t listWidth = widgets[WIDX_LIST].width() - 1;
             Rectangle::fill(

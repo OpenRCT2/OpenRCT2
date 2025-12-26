@@ -171,14 +171,14 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void onDraw(RenderTarget& rt) override
+        void onDraw(Drawing::RenderTarget& rt) override
         {
             WindowDrawWidgets(*this, rt);
 
             auto& widget = widgets[WIDX_TITLE];
             auto screenCoords = windowPos + ScreenCoordsXY{ widget.left, widget.bottom + 1 };
 
-            RenderTarget clipDPI;
+            Drawing::RenderTarget clipDPI;
             if (!ClipDrawPixelInfo(clipDPI, rt, screenCoords, width - 3, height - widget.bottom - 3))
                 return;
 

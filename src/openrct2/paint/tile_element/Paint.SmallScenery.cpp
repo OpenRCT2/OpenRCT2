@@ -25,6 +25,7 @@
 #include "Segment.h"
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::Drawing;
 using namespace OpenRCT2::Numerics;
 
 static constexpr CoordsXY kLengths[] = {

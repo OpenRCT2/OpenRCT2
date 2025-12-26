@@ -46,7 +46,7 @@ namespace OpenRCT2::Ui::Windows
             invalidate();
         }
 
-        void onDraw(RenderTarget& rt) override
+        void onDraw(Drawing::RenderTarget& rt) override
         {
             StringId stringId;
             std::memcpy(&stringId, _mapTooltipArgs.Data(), sizeof(StringId));

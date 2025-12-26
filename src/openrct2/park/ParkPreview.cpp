@@ -228,7 +228,7 @@ namespace OpenRCT2
 
         drawingEngine->BeginDraw();
 
-        RenderTarget rt{
+        Drawing::RenderTarget rt{
             .bits = static_cast<uint8_t*>(image.pixels),
             .x = 0,
             .y = 0,
@@ -246,7 +246,7 @@ namespace OpenRCT2
         return image;
     }
 
-    void drawPreviewImage(const PreviewImage& image, RenderTarget& rt, ScreenCoordsXY screenPos)
+    void drawPreviewImage(const PreviewImage& image, Drawing::RenderTarget& rt, ScreenCoordsXY screenPos)
     {
         G1Element g1temp = {};
         g1temp.offset = const_cast<uint8_t*>(image.pixels);

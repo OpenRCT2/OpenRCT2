@@ -48,6 +48,7 @@
 #include "Segment.h"
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::Drawing;
 
 bool gPaintWidePathsAsGhost = false;
 

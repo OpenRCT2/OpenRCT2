@@ -22,6 +22,7 @@
 #include "../../track/Support.h"
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::Drawing;
 
 static constexpr TunnelGroup kTunnelGroup = TunnelGroup::Square;
 

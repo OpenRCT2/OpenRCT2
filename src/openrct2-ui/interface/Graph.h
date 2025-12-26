@@ -68,7 +68,7 @@ namespace OpenRCT2::Graph
         }
     };
 
-    void DrawFinanceGraph(RenderTarget& rt, const GraphProperties<money64>& p);
-    void DrawRatingGraph(RenderTarget& rt, const GraphProperties<uint16_t>& p);
-    void DrawGuestGraph(RenderTarget& rt, const GraphProperties<uint32_t>& p);
+    void DrawFinanceGraph(Drawing::RenderTarget& rt, const GraphProperties<money64>& p);
+    void DrawRatingGraph(Drawing::RenderTarget& rt, const GraphProperties<uint16_t>& p);
+    void DrawGuestGraph(Drawing::RenderTarget& rt, const GraphProperties<uint32_t>& p);
 } // namespace OpenRCT2::Graph

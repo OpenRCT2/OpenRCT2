@@ -11,7 +11,6 @@
 
 #include <cstdint>
 
-enum class FilterPaletteID : int32_t;
 struct ScreenRect;
 
 namespace OpenRCT2
@@ -21,6 +20,7 @@ namespace OpenRCT2
 
 namespace OpenRCT2::Drawing
 {
+    enum class FilterPaletteID : int32_t;
     struct RenderTarget;
 }
 

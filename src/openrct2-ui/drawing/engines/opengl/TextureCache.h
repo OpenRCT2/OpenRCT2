@@ -21,10 +21,10 @@
 #include <vector>
 
 struct PaletteMap;
-enum class FilterPaletteID : int32_t;
 
 namespace OpenRCT2::Drawing
 {
+    enum class FilterPaletteID : int32_t;
     struct RenderTarget;
 }
 
@@ -215,7 +215,7 @@ namespace OpenRCT2::Ui
         GLuint GetAtlasesTexture();
         GLuint GetPaletteTexture();
         GLuint GetBlendPaletteTexture();
-        static GLint PaletteToY(FilterPaletteID palette);
+        static GLint PaletteToY(Drawing::FilterPaletteID palette);
 
     private:
         void CreateTextures();

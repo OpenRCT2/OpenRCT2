@@ -1685,9 +1685,9 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_O_TRACK].tooltip = trackDrawerDescriptor.Covered.tooltip;
         }
 
-        void onDraw(RenderTarget& rt) override
+        void onDraw(Drawing::RenderTarget& rt) override
         {
-            RenderTarget clippedRT;
+            Drawing::RenderTarget clippedRT;
             Widget* widget;
             int32_t widgetWidth, widgetHeight;
 
@@ -2699,7 +2699,7 @@ namespace OpenRCT2::Ui::Windows
         }
 
         void DrawTrackPiece(
-            RenderTarget& rt, RideId rideIndex, OpenRCT2::TrackElemType trackType, int32_t trackDirection,
+            Drawing::RenderTarget& rt, RideId rideIndex, OpenRCT2::TrackElemType trackType, int32_t trackDirection,
             SelectedLiftAndInverted liftHillAndInvertedState, int32_t widgetWidth, int32_t widgetHeight)
         {
             auto currentRide = GetRide(rideIndex);
@@ -2740,7 +2740,7 @@ namespace OpenRCT2::Ui::Windows
         }
 
         void DrawTrackPieceHelper(
-            RenderTarget& rt, RideId rideIndex, OpenRCT2::TrackElemType trackType, int32_t trackDirection,
+            Drawing::RenderTarget& rt, RideId rideIndex, OpenRCT2::TrackElemType trackType, int32_t trackDirection,
             SelectedLiftAndInverted liftHillAndInvertedState, const CoordsXY& originCoords, int32_t originZ)
         {
             TileElement tempSideTrackTileElement{ 0x80, 0x8F, 128, 128, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };

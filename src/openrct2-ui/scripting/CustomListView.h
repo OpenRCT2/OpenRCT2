@@ -138,15 +138,17 @@ namespace OpenRCT2::Ui::Windows
         void MouseOver(const ScreenCoordsXY& pos, bool isMouseDown);
         void MouseDown(const ScreenCoordsXY& pos);
         void MouseUp(const ScreenCoordsXY& pos);
-        void Paint(WindowBase* w, RenderTarget& rt, const ScrollArea* scroll) const;
+        void Paint(WindowBase* w, Drawing::RenderTarget& rt, const ScrollArea* scroll) const;
 
     private:
         void PaintHeading(
-            WindowBase* w, RenderTarget& rt, const ScreenCoordsXY& pos, const ScreenSize& size, const std::string& text,
-            ColumnSortOrder sortOrder, bool isPressed) const;
-        void PaintSeparator(RenderTarget& rt, const ScreenCoordsXY& pos, const ScreenSize& size, const char* text) const;
+            WindowBase* w, Drawing::RenderTarget& rt, const ScreenCoordsXY& pos, const ScreenSize& size,
+            const std::string& text, ColumnSortOrder sortOrder, bool isPressed) const;
+        void PaintSeparator(
+            Drawing::RenderTarget& rt, const ScreenCoordsXY& pos, const ScreenSize& size, const char* text) const;
         void PaintCell(
-            RenderTarget& rt, const ScreenCoordsXY& pos, const ScreenSize& size, const char* text, bool isHighlighted) const;
+            Drawing::RenderTarget& rt, const ScreenCoordsXY& pos, const ScreenSize& size, const char* text,
+            bool isHighlighted) const;
         std::optional<RowColumn> GetItemIndexAt(const ScreenCoordsXY& pos);
         Widget* GetWidget() const;
         void Invalidate();

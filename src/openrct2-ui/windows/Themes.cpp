@@ -388,7 +388,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void onDraw(RenderTarget& rt) override
+        void onDraw(Drawing::RenderTarget& rt) override
         {
             // Widgets
             WindowDrawWidgets(*this, rt);
@@ -715,7 +715,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
+        void onScrollDraw(int32_t scrollIndex, Drawing::RenderTarget& rt) override
         {
             ScreenCoordsXY screenCoords;
 
@@ -906,7 +906,7 @@ namespace OpenRCT2::Ui::Windows
             return 0;
         }
 
-        void WindowThemesDrawTabImages(RenderTarget& rt)
+        void WindowThemesDrawTabImages(Drawing::RenderTarget& rt)
         {
             for (int32_t i = 0; i < WINDOW_THEMES_TAB_COUNT; i++)
             {

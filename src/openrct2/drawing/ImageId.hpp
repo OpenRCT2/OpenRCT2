@@ -16,7 +16,11 @@
 #include <limits>
 
 using colour_t = uint8_t;
-enum class FilterPaletteID : int32_t;
+
+namespace OpenRCT2::Drawing
+{
+    enum class FilterPaletteID : int32_t;
+}
 
 enum class ImageCatalogue
 {
@@ -28,7 +32,7 @@ enum class ImageCatalogue
     TEMPORARY,
 };
 
-FilterPaletteID GetGlassPaletteId(colour_t);
+OpenRCT2::Drawing::FilterPaletteID GetGlassPaletteId(colour_t);
 
 /**
  * Represents a specific image from a catalogue such as G1, G2, CSG etc. with remap
@@ -65,7 +69,7 @@ public:
     {
     }
 
-    constexpr ImageId(uint32_t index, FilterPaletteID palette)
+    constexpr ImageId(uint32_t index, OpenRCT2::Drawing::FilterPaletteID palette)
         : ImageId(ImageId(index).WithRemap(palette))
     {
     }
@@ -156,7 +160,7 @@ public:
         return result;
     }
 
-    [[nodiscard]] constexpr ImageId WithRemap(FilterPaletteID paletteId) const
+    [[nodiscard]] constexpr ImageId WithRemap(OpenRCT2::Drawing::FilterPaletteID paletteId) const
     {
         return WithRemap(static_cast<uint8_t>(paletteId));
     }
@@ -216,7 +220,7 @@ public:
         return WithTransparency(GetGlassPaletteId(colour));
     }
 
-    [[nodiscard]] ImageId WithTransparency(FilterPaletteID palette) const
+    [[nodiscard]] ImageId WithTransparency(OpenRCT2::Drawing::FilterPaletteID palette) const
     {
         ImageId result = *this;
         result._primary = static_cast<uint8_t>(palette);

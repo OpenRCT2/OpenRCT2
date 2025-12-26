@@ -492,7 +492,7 @@ namespace OpenRCT2::Ui::Windows
             invalidateWidget(WIDX_SCROLL);
         }
 
-        void onDraw(RenderTarget& rt) override
+        void onDraw(Drawing::RenderTarget& rt) override
         {
             WindowDrawWidgets(*this, rt);
 
@@ -510,7 +510,7 @@ namespace OpenRCT2::Ui::Windows
             DrawTextEllipsised(rt, screenPos + ScreenCoordsXY{ 0, 29 }, kWindowSize.width - 5, STR_BLACK_STRING, ft);
         }
 
-        void onScrollDraw(const int32_t scrollIndex, RenderTarget& rt) override
+        void onScrollDraw(const int32_t scrollIndex, Drawing::RenderTarget& rt) override
         {
             auto rtCoords = ScreenCoordsXY{ rt.x, rt.y };
             Rectangle::fill(

@@ -187,7 +187,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void onDraw(RenderTarget& rt) override
+        void onDraw(Drawing::RenderTarget& rt) override
         {
             auto ft = Formatter::Common();
             ft.Add<money64>(10.00_GBP);

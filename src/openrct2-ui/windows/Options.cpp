@@ -628,7 +628,7 @@ namespace OpenRCT2::Ui::Windows
             CommonPrepareDrawAfter();
         }
 
-        void onDraw(RenderTarget& rt) override
+        void onDraw(Drawing::RenderTarget& rt) override
         {
             drawWidgets(rt);
             DrawTabImages(rt);
@@ -1019,7 +1019,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_FRAME_RATE_LIMIT].text = kFrameRateLimitStringIds[activeItem];
         }
 
-        void DisplayDraw(RenderTarget& rt)
+        void DisplayDraw(Drawing::RenderTarget& rt)
         {
             auto ft = Formatter();
             ft.Add<int32_t>(static_cast<int32_t>(Config::Get().general.windowScale * 100));
@@ -2224,7 +2224,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_ASSET_PACKS].bottom = widgets[WIDX_GROUP_ADVANCED].bottom - 6;
         }
 
-        void AdvancedDraw(RenderTarget& rt)
+        void AdvancedDraw(Drawing::RenderTarget& rt)
         {
             auto ft = Formatter();
             ft.Add<int32_t>(static_cast<int32_t>(Config::Get().general.autosaveAmount));
@@ -2301,7 +2301,7 @@ namespace OpenRCT2::Ui::Windows
                 Dropdown::Flag::StayOpen, num_items, widget->width() - 4);
         }
 
-        void DrawTabImages(RenderTarget& rt)
+        void DrawTabImages(Drawing::RenderTarget& rt)
         {
             DrawTabImage(rt, WINDOW_OPTIONS_PAGE_DISPLAY, SPR_G2_MONITOR_TAB_START);
             DrawTabImage(rt, WINDOW_OPTIONS_PAGE_RENDERING, SPR_G2_TAB_TREE);
@@ -2313,7 +2313,7 @@ namespace OpenRCT2::Ui::Windows
             DrawTabImage(rt, WINDOW_OPTIONS_PAGE_ADVANCED, SPR_TAB_WRENCH_0);
         }
 
-        void DrawTabImage(RenderTarget& rt, int32_t p, int32_t spriteIndex)
+        void DrawTabImage(Drawing::RenderTarget& rt, int32_t p, int32_t spriteIndex)
         {
             WidgetIndex widgetIndex = WIDX_FIRST_TAB + p;
             Widget* widget = &widgets[widgetIndex];

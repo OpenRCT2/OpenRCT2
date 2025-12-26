@@ -28,6 +28,7 @@
 #include "Paint.TileElement.h"
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::Drawing;
 
 // kBannerBoundBoxes[rotation][0] is for the pole in the back
 // kBannerBoundBoxes[rotation][1] is for the pole and the banner in the front

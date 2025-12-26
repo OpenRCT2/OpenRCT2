@@ -42,6 +42,7 @@
 #include <iterator>
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::Drawing;
 
 // Needed to make the sign appear above footpaths.
 static constexpr int16_t ForSaleSignZOffset = 3;

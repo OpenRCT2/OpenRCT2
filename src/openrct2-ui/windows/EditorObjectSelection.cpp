@@ -725,7 +725,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
+        void onScrollDraw(int32_t scrollIndex, Drawing::RenderTarget& rt) override
         {
             // ScrollPaint
             ScreenCoordsXY screenCoords;
@@ -1008,7 +1008,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_PREVIEW].right = widgets[WIDX_PREVIEW].left + kPreviewSize;
         }
 
-        void onDraw(RenderTarget& rt) override
+        void onDraw(Drawing::RenderTarget& rt) override
         {
             drawWidgets(rt);
 
@@ -1248,7 +1248,7 @@ namespace OpenRCT2::Ui::Windows
             _listItems.shrink_to_fit();
         }
 
-        void DrawDescriptions(RenderTarget& rt)
+        void DrawDescriptions(Drawing::RenderTarget& rt)
         {
             auto screenPos = windowPos + ScreenCoordsXY{ widgets[WIDX_PREVIEW].midX(), widgets[WIDX_PREVIEW].bottom + 3 };
             auto descriptionWidth = width - widgets[WIDX_LIST].right - 12;
@@ -1356,7 +1356,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void DrawDebugData(RenderTarget& rt)
+        void DrawDebugData(Drawing::RenderTarget& rt)
         {
             ObjectListItem* listItem = &_listItems[selectedListItem];
             auto screenPos = windowPos + ScreenCoordsXY{ width - 5, height - (kListRowHeight * 6) };

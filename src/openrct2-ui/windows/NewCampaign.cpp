@@ -353,7 +353,7 @@ namespace OpenRCT2::Ui::Windows
                 widgetSetDisabled(*this, WIDX_START_BUTTON, true);
         }
 
-        void onDraw(RenderTarget& rt) override
+        void onDraw(Drawing::RenderTarget& rt) override
         {
             ScreenCoordsXY screenCoords{};
 

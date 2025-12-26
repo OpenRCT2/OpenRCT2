@@ -875,7 +875,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_SCENERY_BUILD_CLUSTER_BUTTON].type = canFit ? WidgetType::flatBtn : WidgetType::empty;
         }
 
-        void onDraw(RenderTarget& rt) override
+        void onDraw(Drawing::RenderTarget& rt) override
         {
             drawWidgets(rt);
             DrawTabs(rt, windowPos);
@@ -1572,7 +1572,7 @@ namespace OpenRCT2::Ui::Windows
             return { name, price };
         }
 
-        void DrawTabs(RenderTarget& rt, const ScreenCoordsXY& offset)
+        void DrawTabs(Drawing::RenderTarget& rt, const ScreenCoordsXY& offset)
         {
             for (size_t tabIndex = 0; tabIndex < _tabEntries.size(); tabIndex++)
             {
@@ -1587,7 +1587,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void DrawSceneryItem(RenderTarget& rt, ScenerySelection scenerySelection)
+        void DrawSceneryItem(Drawing::RenderTarget& rt, ScenerySelection scenerySelection)
         {
             if (scenerySelection.SceneryType == SCENERY_TYPE_BANNER)
             {
@@ -1705,7 +1705,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
+        void onScrollDraw(int32_t scrollIndex, Drawing::RenderTarget& rt) override
         {
             GfxClear(rt, ColourMapA[colours[1].colour].mid_light);
 
