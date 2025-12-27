@@ -21,6 +21,7 @@
 #include "tile_element/Paint.Tunnel.h"
 
 #include <mutex>
+#include <optional>
 #include <sfl/segmented_vector.hpp>
 #include <sfl/static_vector.hpp>
 #include <thread>
