@@ -1164,7 +1164,14 @@ JSValue ScriptEngine::ExecutePluginCall(
     if (JS_IsFunction(ctx, func) && (!plugin || plugin->HasStarted()))
     {
         ScriptExecutionInfo::PluginScope scope(_execInfo, plugin, isGameStateMutable);
+
+        // The call can free itself (by closing windows/clearing timers etc.) so we need to dup the values to keep them alive
+        JS_DupValue(ctx, thisValue);
+        JS_DupValue(ctx, func);
         ret = JS_Call(ctx, func, thisValue, static_cast<int>(args.size()), const_cast<JSValue*>(args.data()));
+        JS_FreeValue(ctx, thisValue);
+        JS_FreeValue(ctx, func);
+
         if (JS_IsException(ret))
         {
             JSValue exceptionVal = JS_GetException(ctx);
