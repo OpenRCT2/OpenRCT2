@@ -85,7 +85,7 @@ bool CsgAtLocationIsUsable(u8string_view path)
     size_t fileDataSize = fileData.GetLength();
 
     Gx csg = {};
-    csg.header.numEntries = static_cast<uint32_t>(fileHeaderSize / sizeof(RCTG1Element));
+    csg.header.numEntries = static_cast<uint32_t>(fileHeaderSize / sizeof(StoredG1Element));
     csg.header.totalSize = static_cast<uint32_t>(fileDataSize);
     return CsgIsUsable(csg);
 }

@@ -32,7 +32,7 @@ namespace OpenRCT2::CommandLine::Sprite
         auto fileHeaderSize = fileHeader.GetLength();
         auto fileDataSize = fileData.GetLength();
 
-        uint32_t numEntries = fileHeaderSize / sizeof(RCTG1Element);
+        uint32_t numEntries = fileHeaderSize / sizeof(StoredG1Element);
 
         G1Header header = {};
         header.numEntries = numEntries;
@@ -40,17 +40,17 @@ namespace OpenRCT2::CommandLine::Sprite
         FileStream outputStream(outputPath, FileMode::write);
 
         outputStream.Write(&header, sizeof(G1Header));
-        auto g1Elements32 = std::make_unique<RCTG1Element[]>(numEntries);
-        fileHeader.Read(g1Elements32.get(), numEntries * sizeof(RCTG1Element));
+        auto g1Elements32 = std::make_unique<StoredG1Element[]>(numEntries);
+        fileHeader.Read(g1Elements32.get(), numEntries * sizeof(StoredG1Element));
         for (uint32_t i = 0; i < numEntries; i++)
         {
             // RCT1 used zoomed offsets that counted from the beginning of the file, rather than from the current sprite.
             if (g1Elements32[i].flags.has(G1Flag::hasZoomSprite))
             {
-                g1Elements32[i].zoomed_offset = i - g1Elements32[i].zoomed_offset;
+                g1Elements32[i].zoomedOffset = i - g1Elements32[i].zoomedOffset;
             }
 
-            outputStream.Write(&g1Elements32[i], sizeof(RCTG1Element));
+            outputStream.Write(&g1Elements32[i], sizeof(StoredG1Element));
         }
 
         std::vector<uint8_t> data;

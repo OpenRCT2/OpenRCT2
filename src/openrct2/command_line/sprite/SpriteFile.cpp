@@ -28,17 +28,17 @@ namespace OpenRCT2::CommandLine::Sprite
 
                 for (uint32_t i = 0; i < spriteFile.Header.numEntries; ++i)
                 {
-                    RCTG1Element entry32bit{};
+                    StoredG1Element entry32bit{};
                     stream.Read(&entry32bit, sizeof(entry32bit));
                     G1Element entry{};
 
                     entry.offset = reinterpret_cast<uint8_t*>(static_cast<uintptr_t>(entry32bit.offset));
                     entry.width = entry32bit.width;
                     entry.height = entry32bit.height;
-                    entry.xOffset = entry32bit.x_offset;
-                    entry.yOffset = entry32bit.y_offset;
+                    entry.xOffset = entry32bit.xOffset;
+                    entry.yOffset = entry32bit.yOffset;
                     entry.flags = entry32bit.flags;
-                    entry.zoomedOffset = entry32bit.zoomed_offset;
+                    entry.zoomedOffset = entry32bit.zoomedOffset;
                     spriteFile.Entries.push_back(std::move(entry));
                 }
                 spriteFile.Data.resize(spriteFile.Header.totalSize);
@@ -104,15 +104,15 @@ namespace OpenRCT2::CommandLine::Sprite
 
                 for (const auto& entry : Entries)
                 {
-                    RCTG1Element entry32bit{};
+                    StoredG1Element entry32bit{};
 
                     entry32bit.offset = static_cast<uint32_t>(reinterpret_cast<uintptr_t>(const_cast<uint8_t*>(entry.offset)));
                     entry32bit.width = entry.width;
                     entry32bit.height = entry.height;
-                    entry32bit.x_offset = entry.xOffset;
-                    entry32bit.y_offset = entry.yOffset;
+                    entry32bit.xOffset = entry.xOffset;
+                    entry32bit.yOffset = entry.yOffset;
                     entry32bit.flags = entry.flags;
-                    entry32bit.zoomed_offset = entry.zoomedOffset;
+                    entry32bit.zoomedOffset = entry.zoomedOffset;
 
                     stream.Write(&entry32bit, sizeof(entry32bit));
                 }

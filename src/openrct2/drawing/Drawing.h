@@ -92,17 +92,17 @@ struct Gx
     std::unique_ptr<uint8_t[]> data;
 };
 
-struct RCTG1Element
+struct StoredG1Element
 {
-    uint32_t offset;        // 0x00 note: uint32_t always!
-    int16_t width;          // 0x04
-    int16_t height;         // 0x06
-    int16_t x_offset;       // 0x08
-    int16_t y_offset;       // 0x0A
-    G1Flags flags;          // 0x0C
-    uint16_t zoomed_offset; // 0x0E
+    uint32_t offset;       // 0x00 note: uint32_t always!
+    int16_t width;         // 0x04
+    int16_t height;        // 0x06
+    int16_t xOffset;       // 0x08
+    int16_t yOffset;       // 0x0A
+    G1Flags flags;         // 0x0C
+    uint16_t zoomedOffset; // 0x0E
 };
-static_assert(sizeof(RCTG1Element) == 0x10);
+static_assert(sizeof(StoredG1Element) == 0x10);
 
 using DrawBlendOp = uint8_t;
 

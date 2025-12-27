@@ -304,8 +304,8 @@ static void OverrideElementOffsets(size_t index, G1Element& element)
 
 static void ReadAndConvertGxDat(IStream* stream, size_t count, bool is_rctc, G1Element* elements)
 {
-    auto g1Elements32 = std::make_unique<RCTG1Element[]>(count);
-    stream->Read(g1Elements32.get(), count * sizeof(RCTG1Element));
+    auto g1Elements32 = std::make_unique<StoredG1Element[]>(count);
+    stream->Read(g1Elements32.get(), count * sizeof(StoredG1Element));
     if (is_rctc)
     {
         // Process RCTC's g1.dat file
@@ -334,24 +334,24 @@ static void ReadAndConvertGxDat(IStream* stream, size_t count, bool is_rctc, G1E
                     break;
             }
 
-            const RCTG1Element& src = g1Elements32[rctc];
+            const StoredG1Element& src = g1Elements32[rctc];
 
             // Double cast to silence compiler warning about casting to
             // pointer from integer of mismatched length.
             elements[i].offset = reinterpret_cast<uint8_t*>(static_cast<uintptr_t>(src.offset));
             elements[i].width = src.width;
             elements[i].height = src.height;
-            elements[i].xOffset = src.x_offset;
-            elements[i].yOffset = src.y_offset;
+            elements[i].xOffset = src.xOffset;
+            elements[i].yOffset = src.yOffset;
             elements[i].flags = src.flags;
 
             if (src.flags.has(G1Flag::hasZoomSprite))
             {
-                elements[i].zoomedOffset = static_cast<int32_t>(i - rctc_to_rct2_index(rctc - src.zoomed_offset));
+                elements[i].zoomedOffset = static_cast<int32_t>(i - rctc_to_rct2_index(rctc - src.zoomedOffset));
             }
             else
             {
-                elements[i].zoomedOffset = src.zoomed_offset;
+                elements[i].zoomedOffset = src.zoomedOffset;
             }
 
             ++rctc;
@@ -373,17 +373,17 @@ static void ReadAndConvertGxDat(IStream* stream, size_t count, bool is_rctc, G1E
     {
         for (size_t i = 0; i < count; i++)
         {
-            const RCTG1Element& src = g1Elements32[i];
+            const StoredG1Element& src = g1Elements32[i];
 
             // Double cast to silence compiler warning about casting to
             // pointer from integer of mismatched length.
             elements[i].offset = reinterpret_cast<uint8_t*>(static_cast<uintptr_t>(src.offset));
             elements[i].width = src.width;
             elements[i].height = src.height;
-            elements[i].xOffset = src.x_offset;
-            elements[i].yOffset = src.y_offset;
+            elements[i].xOffset = src.xOffset;
+            elements[i].yOffset = src.yOffset;
             elements[i].flags = src.flags;
-            elements[i].zoomedOffset = src.zoomed_offset;
+            elements[i].zoomedOffset = src.zoomedOffset;
         }
     }
 }
@@ -622,7 +622,7 @@ bool GfxLoadCsg()
         size_t fileHeaderSize = fileHeader.GetLength();
         size_t fileDataSize = fileData.GetLength();
 
-        _csg.header.numEntries = static_cast<uint32_t>(fileHeaderSize / sizeof(RCTG1Element));
+        _csg.header.numEntries = static_cast<uint32_t>(fileHeaderSize / sizeof(StoredG1Element));
         _csg.header.totalSize = static_cast<uint32_t>(fileDataSize);
 
         if (!CsgIsUsable(_csg))
