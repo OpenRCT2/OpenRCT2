@@ -1722,49 +1722,6 @@ bool TileElementWantsPathConnectionTowards(const TileCoordsXYZD& coords, const T
     return false;
 }
 
-// fix up the corners around the given path element that gets removed
-static void FootpathFixCornersAround(const TileCoordsXY& footpathPos, TileElement* pathElement)
-{
-    // A mask for the paths' corners of each possible neighbour
-    static constexpr uint8_t cornersTouchingTile[3][3] = {
-        { 0b0010, 0b0011, 0b0001 },
-        { 0b0110, 0b0000, 0b1001 },
-        { 0b0100, 0b1100, 0b1000 },
-    };
-
-    // Sloped paths don't create filled corners, so no need to remove any
-    if (pathElement->GetType() == TileElementType::Path && pathElement->AsPath()->IsSloped())
-        return;
-
-    for (int32_t xOffset = -1; xOffset <= 1; xOffset++)
-    {
-        for (int32_t yOffset = -1; yOffset <= 1; yOffset++)
-        {
-            // Skip self
-            if (xOffset == 0 && yOffset == 0)
-                continue;
-
-            TileElement* tileElement = MapGetFirstElementAt(
-                TileCoordsXY{ footpathPos.x + xOffset, footpathPos.y + yOffset }.ToCoordsXY());
-            if (tileElement == nullptr)
-                continue;
-            do
-            {
-                if (tileElement->GetType() != TileElementType::Path)
-                    continue;
-                if (tileElement->AsPath()->IsSloped())
-                    continue;
-                if (tileElement->BaseHeight != pathElement->BaseHeight)
-                    continue;
-
-                const int32_t ix = xOffset + 1;
-                const int32_t iy = yOffset + 1;
-                tileElement->AsPath()->SetCorners(tileElement->AsPath()->GetCorners() & ~(cornersTouchingTile[iy][ix]));
-            } while (!(tileElement++)->IsLastForTile());
-        }
-    }
-}
-
 /**
  *
  *  rct2: 0x006A6AA7
@@ -1786,7 +1743,6 @@ void FootpathRemoveEdgesAt(const CoordsXY& footpathPos, TileElement* tileElement
 
     FootpathUpdateQueueEntranceBanner(footpathPos, tileElement);
 
-    bool fixCorners = false;
     for (uint8_t direction = 0; direction < kNumOrthogonalDirections; direction++)
     {
         int32_t z1 = tileElement->BaseHeight;
@@ -1814,18 +1770,6 @@ void FootpathRemoveEdgesAt(const CoordsXY& footpathPos, TileElement* tileElement
             FootpathRemoveEdgesTowards(
                 { footpathPos + CoordsDirectionDelta[direction], z0 * kCoordsZStep, z1 * kCoordsZStep }, direction, isQueue);
         }
-        else
-        {
-            // A footpath may stay connected, but its edges must be fixed later on when another edge does get removed.
-            fixCorners = true;
-        }
-    }
-
-    // Only fix corners when needed, to avoid changing corners that have been set for its looks.
-    if (fixCorners && tileElement->IsGhost())
-    {
-        auto tileFootpathPos = TileCoordsXY{ footpathPos };
-        FootpathFixCornersAround(tileFootpathPos, tileElement);
     }
 
     if (tileElement->GetType() == TileElementType::Path)

@@ -13,6 +13,7 @@
 - Change: [#25485] Make the enlarged pressed swatch sprite more pronounced.
 - Change: [#25544] The default game window size is now 1280×720px instead of 640×480px.
 - Fix: [#9895] Stand-up coaster gets wrong intensity boost from the synchronisation bonus.
+- Fix: [#11617] Path corner connections are broken when hovering track design ghosts with paths over them in zero clearances.
 - Fix: [#22484] Lingering ghost entrance after placing park entrance.
 - Fix: [#24952] Duplicate track designs when running via Steam without having RCT1 linked.
 - Fix: [#25187] On-ride photo platform does not render as ghost when placing track design.
