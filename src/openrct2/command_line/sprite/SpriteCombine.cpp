@@ -45,7 +45,7 @@ namespace OpenRCT2::CommandLine::Sprite
         for (uint32_t i = 0; i < numEntries; i++)
         {
             // RCT1 used zoomed offsets that counted from the beginning of the file, rather than from the current sprite.
-            if (g1Elements32[i].flags & G1_FLAG_HAS_ZOOM_SPRITE)
+            if (g1Elements32[i].flags.has(G1Flag::hasZoomSprite))
             {
                 g1Elements32[i].zoomed_offset = i - g1Elements32[i].zoomed_offset;
             }

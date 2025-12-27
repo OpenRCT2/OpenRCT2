@@ -51,7 +51,7 @@ namespace OpenRCT2
             g1 = orig;
             g1.offset = new uint8_t[length];
             std::memcpy(g1.offset, orig.offset, length);
-            g1.flags &= ~G1_FLAG_HAS_ZOOM_SPRITE;
+            g1.flags.unset(G1Flag::hasZoomSprite);
         }
 
         RequiredImage(uint32_t idx, std::function<const G1Element*(uint32_t)> getter)
@@ -63,14 +63,14 @@ namespace OpenRCT2
                 g1 = *orig;
                 g1.offset = new uint8_t[length];
                 std::memcpy(g1.offset, orig->offset, length);
-                if ((g1.flags & G1_FLAG_HAS_ZOOM_SPRITE) && g1.zoomedOffset != 0)
+                if (g1.flags.has(G1Flag::hasZoomSprite) && g1.zoomedOffset != 0)
                 {
                     // Fetch image for next zoom level
                     next_zoom = std::make_unique<RequiredImage>(static_cast<uint32_t>(idx - g1.zoomedOffset), getter);
                     if (!next_zoom->HasData())
                     {
                         next_zoom = nullptr;
-                        g1.flags &= ~G1_FLAG_HAS_ZOOM_SPRITE;
+                        g1.flags.unset(G1Flag::hasZoomSprite);
                     }
                 }
             }
@@ -471,7 +471,7 @@ namespace OpenRCT2
                 g1Element.height = stream->ReadValue<int16_t>();
                 g1Element.xOffset = stream->ReadValue<int16_t>();
                 g1Element.yOffset = stream->ReadValue<int16_t>();
-                g1Element.flags = stream->ReadValue<uint16_t>();
+                g1Element.flags = stream->ReadValue<G1Flags>();
                 g1Element.zoomedOffset = stream->ReadValue<uint16_t>();
 
                 newEntries.push_back(std::move(g1Element));

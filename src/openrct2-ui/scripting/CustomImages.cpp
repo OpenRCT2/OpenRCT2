@@ -155,12 +155,12 @@ namespace OpenRCT2::Scripting
         obj.Set("width", g1->width);
         obj.Set("height", g1->height);
 
-        obj.Set("hasTransparent", (g1->flags & G1_FLAG_HAS_TRANSPARENCY) != 0);
-        obj.Set("isRLE", (g1->flags & G1_FLAG_RLE_COMPRESSION) != 0);
-        obj.Set("isPalette", (g1->flags & G1_FLAG_PALETTE) != 0);
-        obj.Set("noZoom", (g1->flags & G1_FLAG_NO_ZOOM_DRAW) != 0);
+        obj.Set("hasTransparent", g1->flags.has(G1Flag::hasTransparency));
+        obj.Set("isRLE", g1->flags.has(G1Flag::hasRLECompression));
+        obj.Set("isPalette", g1->flags.has(G1Flag::isPalette));
+        obj.Set("noZoom", g1->flags.has(G1Flag::noZoomDraw));
 
-        if (g1->flags & G1_FLAG_HAS_ZOOM_SPRITE)
+        if (g1->flags.has(G1Flag::hasZoomSprite))
         {
             obj.Set("nextZoomId", id - g1->zoomedOffset);
         }
@@ -173,9 +173,9 @@ namespace OpenRCT2::Scripting
 
     static const char* GetPixelDataTypeForG1(const G1Element& g1)
     {
-        if (g1.flags & G1_FLAG_RLE_COMPRESSION)
+        if (g1.flags.has(G1Flag::hasRLECompression))
             return "rle";
-        else if (g1.flags & G1_FLAG_PALETTE)
+        else if (g1.flags.has(G1Flag::isPalette))
             return "palette";
         return "raw";
     }
@@ -405,10 +405,10 @@ namespace OpenRCT2::Scripting
         el.offset = newData;
         el.width = pixelData.Width;
         el.height = pixelData.Height;
-        el.flags = 0;
+        el.flags = {};
         if (pixelData.Type == PixelDataKind::Rle)
         {
-            el.flags |= G1_FLAG_RLE_COMPRESSION;
+            el.flags.set(G1Flag::hasRLECompression);
         }
         GfxSetG1Element(id, &el);
         DrawingEngineInvalidateImage(id);
@@ -441,7 +441,7 @@ namespace OpenRCT2::Scripting
 
         auto createNewImage = false;
         auto g1 = GfxGetG1Element(id);
-        if (g1 == nullptr || g1->width != size.width || g1->height != size.height || (g1->flags & G1_FLAG_RLE_COMPRESSION))
+        if (g1 == nullptr || g1->width != size.width || g1->height != size.height || g1->flags.has(G1Flag::hasRLECompression))
         {
             createNewImage = true;
         }
@@ -478,7 +478,7 @@ namespace OpenRCT2::Scripting
             newg1.offset = rt.bits;
             newg1.width = size.width;
             newg1.height = size.height;
-            newg1.flags = 0;
+            newg1.flags = {};
             GfxSetG1Element(id, &newg1);
         }
 

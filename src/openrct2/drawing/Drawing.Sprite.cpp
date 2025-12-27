@@ -345,7 +345,7 @@ static void ReadAndConvertGxDat(IStream* stream, size_t count, bool is_rctc, G1E
             elements[i].yOffset = src.y_offset;
             elements[i].flags = src.flags;
 
-            if (src.flags & G1_FLAG_HAS_ZOOM_SPRITE)
+            if (src.flags.has(G1Flag::hasZoomSprite))
             {
                 elements[i].zoomedOffset = static_cast<int32_t>(i - rctc_to_rct2_index(rctc - src.zoomed_offset));
             }
@@ -650,7 +650,7 @@ bool GfxLoadCsg()
                 _csg.elements[i].offset += reinterpret_cast<uintptr_t>(_csg.data.get());
             }
             // RCT1 used zoomed offsets that counted from the beginning of the file, rather than from the current sprite.
-            if (_csg.elements[i].flags & G1_FLAG_HAS_ZOOM_SPRITE)
+            if (_csg.elements[i].flags.has(G1Flag::hasZoomSprite))
             {
                 _csg.elements[i].zoomedOffset = i - _csg.elements[i].zoomedOffset;
             }
@@ -768,7 +768,7 @@ void FASTCALL GfxDrawSpritePaletteSetSoftware(
         return;
     }
 
-    if (zoomLevel > ZoomLevel{ 0 } && (g1->flags & G1_FLAG_HAS_ZOOM_SPRITE))
+    if (zoomLevel > ZoomLevel{ 0 } && g1->flags.has(G1Flag::hasZoomSprite))
     {
         RenderTarget zoomedRT = rt;
         zoomedRT.bits = rt.bits;
@@ -785,7 +785,7 @@ void FASTCALL GfxDrawSpritePaletteSetSoftware(
         return;
     }
 
-    if (zoomLevel > ZoomLevel{ 0 } && (g1->flags & G1_FLAG_NO_ZOOM_DRAW))
+    if (zoomLevel > ZoomLevel{ 0 } && g1->flags.has(G1Flag::noZoomDraw))
     {
         return;
     }
@@ -820,7 +820,7 @@ void FASTCALL GfxDrawSpritePaletteSetSoftware(
 
     const int32_t zoom_mask = zoomLevel > ZoomLevel{ 0 } ? zoomLevel.ApplyTo(0xFFFFFFFF) : 0xFFFFFFFF;
 
-    if (zoomLevel > ZoomLevel{ 0 } && g1->flags & G1_FLAG_RLE_COMPRESSION)
+    if (zoomLevel > ZoomLevel{ 0 } && g1->flags.has(G1Flag::hasRLECompression))
     {
         x -= ~zoom_mask;
         y -= ~zoom_mask;
@@ -834,7 +834,7 @@ void FASTCALL GfxDrawSpritePaletteSetSoftware(
 
     // For whatever reason the RLE version does not use
     // the zoom mask on the y coordinate but does on x.
-    if (g1->flags & G1_FLAG_RLE_COMPRESSION)
+    if (g1->flags.has(G1Flag::hasRLECompression))
     {
         dest_start_y -= rt.WorldY();
     }
@@ -862,7 +862,7 @@ void FASTCALL GfxDrawSpritePaletteSetSoftware(
     }
     else
     {
-        if ((g1->flags & G1_FLAG_RLE_COMPRESSION) && zoomLevel > ZoomLevel{ 0 })
+        if (g1->flags.has(G1Flag::hasRLECompression) && zoomLevel > ZoomLevel{ 0 })
         {
             source_start_y -= dest_start_y & ~zoom_mask;
             height += dest_start_y & ~zoom_mask;
@@ -908,7 +908,7 @@ void FASTCALL GfxDrawSpritePaletteSetSoftware(
     }
     else
     {
-        if ((g1->flags & G1_FLAG_RLE_COMPRESSION) && zoomLevel > ZoomLevel{ 0 })
+        if (g1->flags.has(G1Flag::hasRLECompression) && zoomLevel > ZoomLevel{ 0 })
         {
             source_start_x -= dest_start_x & ~zoom_mask;
         }
@@ -938,11 +938,11 @@ void FASTCALL GfxDrawSpritePaletteSetSoftware(
 
 void FASTCALL GfxSpriteToBuffer(RenderTarget& rt, const DrawSpriteArgs& args)
 {
-    if (args.SourceImage.flags & G1_FLAG_RLE_COMPRESSION)
+    if (args.SourceImage.flags.has(G1Flag::hasRLECompression))
     {
         GfxRleSpriteToBuffer(rt, args);
     }
-    else if (!(args.SourceImage.flags & G1_FLAG_1))
+    else if (!args.SourceImage.flags.has(G1Flag::one))
     {
         GfxBmpSpriteToBuffer(rt, args);
     }
@@ -966,7 +966,7 @@ void FASTCALL GfxDrawSpriteRawMaskedSoftware(
     }
 
     // Must have transparency in order to pass check
-    if (!(imgMask->flags & G1_FLAG_HAS_TRANSPARENCY) || !(imgColour->flags & G1_FLAG_HAS_TRANSPARENCY))
+    if (!imgMask->flags.has(G1Flag::hasTransparency) || !imgColour->flags.has(G1Flag::hasTransparency))
     {
         GfxDrawSpriteSoftware(rt, colourImage, scrCoords);
         return;
@@ -1161,12 +1161,12 @@ bool IsCsgLoaded()
 
 size_t G1CalculateDataSize(const G1Element* g1)
 {
-    if (g1->flags & G1_FLAG_PALETTE)
+    if (g1->flags.has(G1Flag::isPalette))
     {
         return g1->numColours * 3;
     }
 
-    if (g1->flags & G1_FLAG_RLE_COMPRESSION)
+    if (g1->flags.has(G1Flag::hasRLECompression))
     {
         if (g1->offset == nullptr)
         {

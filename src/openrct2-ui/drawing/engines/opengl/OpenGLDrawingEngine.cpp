@@ -878,7 +878,7 @@ void OpenGLDrawingContext::DrawSprite(RenderTarget& rt, const ImageId imageId, c
 
     if (rt.zoom_level > ZoomLevel{ 0 })
     {
-        if (g1Element->flags & G1_FLAG_HAS_ZOOM_SPRITE)
+        if (g1Element->flags.has(G1Flag::hasZoomSprite))
         {
             RenderTarget zoomedRT;
             zoomedRT.bits = rt.bits;
@@ -891,7 +891,7 @@ void OpenGLDrawingContext::DrawSprite(RenderTarget& rt, const ImageId imageId, c
             DrawSprite(zoomedRT, imageId.WithIndex(imageId.GetIndex() - g1Element->zoomedOffset), x >> 1, y >> 1);
             return;
         }
-        if (g1Element->flags & G1_FLAG_NO_ZOOM_DRAW)
+        if (g1Element->flags.has(G1Flag::noZoomDraw))
         {
             return;
         }

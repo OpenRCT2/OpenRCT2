@@ -91,7 +91,7 @@ namespace OpenRCT2::Drawing::ScrollingText
             g1.offset = _drawScrollTextList[i].bitmap;
             g1.xOffset = -32;
             g1.yOffset = 0;
-            g1.flags = G1_FLAG_HAS_TRANSPARENCY;
+            g1.flags = { G1Flag::hasTransparency };
             g1.width = 64;
             g1.height = 40;
             g1.offset[0] = 0xFF;
