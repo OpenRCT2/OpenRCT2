@@ -1239,7 +1239,7 @@ namespace OpenRCT2
 
             if (!gOpenRCT2Headless)
             {
-                _preloaderScene->SetOnComplete([&]() { SwitchToStartUpScene(); });
+                GetPreloaderScene()->SetOnComplete([&]() { SwitchToStartUpScene(); });
             }
             else
             {
