@@ -122,7 +122,7 @@ static void OverrideElementOffsets(size_t index, G1Element& element)
     switch (index)
     {
         case 25285:
-            element.x_offset -= 1;
+            element.xOffset -= 1;
             break;
         case 25286:
         case 25317:
@@ -288,16 +288,16 @@ static void OverrideElementOffsets(size_t index, G1Element& element)
         case 25850:
         case 25851:
         case 25852:
-            element.y_offset += 1;
+            element.yOffset += 1;
             break;
         case 25307:
         case 25315:
         case 25319:
-            element.x_offset -= 1;
-            element.y_offset += 1;
+            element.xOffset -= 1;
+            element.yOffset += 1;
             break;
         case 25802:
-            element.y_offset += 2;
+            element.yOffset += 2;
             break;
     }
 }
@@ -341,17 +341,17 @@ static void ReadAndConvertGxDat(IStream* stream, size_t count, bool is_rctc, G1E
             elements[i].offset = reinterpret_cast<uint8_t*>(static_cast<uintptr_t>(src.offset));
             elements[i].width = src.width;
             elements[i].height = src.height;
-            elements[i].x_offset = src.x_offset;
-            elements[i].y_offset = src.y_offset;
+            elements[i].xOffset = src.x_offset;
+            elements[i].yOffset = src.y_offset;
             elements[i].flags = src.flags;
 
             if (src.flags & G1_FLAG_HAS_ZOOM_SPRITE)
             {
-                elements[i].zoomed_offset = static_cast<int32_t>(i - rctc_to_rct2_index(rctc - src.zoomed_offset));
+                elements[i].zoomedOffset = static_cast<int32_t>(i - rctc_to_rct2_index(rctc - src.zoomed_offset));
             }
             else
             {
-                elements[i].zoomed_offset = src.zoomed_offset;
+                elements[i].zoomedOffset = src.zoomed_offset;
             }
 
             ++rctc;
@@ -364,8 +364,8 @@ static void ReadAndConvertGxDat(IStream* stream, size_t count, bool is_rctc, G1E
         {
             for (auto i = 0u; i < SPR_PEEP_PICKUP_COUNT; ++i)
             {
-                elements[animation.start + i].x_offset -= animation.x_offset;
-                elements[animation.start + i].y_offset -= animation.y_offset;
+                elements[animation.start + i].xOffset -= animation.x_offset;
+                elements[animation.start + i].yOffset -= animation.y_offset;
             }
         }
     }
@@ -380,10 +380,10 @@ static void ReadAndConvertGxDat(IStream* stream, size_t count, bool is_rctc, G1E
             elements[i].offset = reinterpret_cast<uint8_t*>(static_cast<uintptr_t>(src.offset));
             elements[i].width = src.width;
             elements[i].height = src.height;
-            elements[i].x_offset = src.x_offset;
-            elements[i].y_offset = src.y_offset;
+            elements[i].xOffset = src.x_offset;
+            elements[i].yOffset = src.y_offset;
             elements[i].flags = src.flags;
-            elements[i].zoomed_offset = src.zoomed_offset;
+            elements[i].zoomedOffset = src.zoomed_offset;
         }
     }
 }
@@ -652,7 +652,7 @@ bool GfxLoadCsg()
             // RCT1 used zoomed offsets that counted from the beginning of the file, rather than from the current sprite.
             if (_csg.elements[i].flags & G1_FLAG_HAS_ZOOM_SPRITE)
             {
-                _csg.elements[i].zoomed_offset = i - _csg.elements[i].zoomed_offset;
+                _csg.elements[i].zoomedOffset = i - _csg.elements[i].zoomedOffset;
             }
         }
         _csgLoaded = true;
@@ -781,7 +781,7 @@ void FASTCALL GfxDrawSpritePaletteSetSoftware(
 
         const auto spriteCoords = ScreenCoordsXY{ coords.x / 2, coords.y / 2 };
         GfxDrawSpritePaletteSetSoftware(
-            zoomedRT, imageId.WithIndex(imageId.GetIndex() - g1->zoomed_offset), spriteCoords, paletteMap);
+            zoomedRT, imageId.WithIndex(imageId.GetIndex() - g1->zoomedOffset), spriteCoords, paletteMap);
         return;
     }
 
@@ -795,11 +795,11 @@ void FASTCALL GfxDrawSpritePaletteSetSoftware(
     //       For the moment, I've added this block here just for magnification with the old code continuing below.
     if (zoomLevel < ZoomLevel{ 0 })
     {
-        ScreenCoordsXY spriteTopLeft = { zoomLevel.ApplyInversedTo(coords.x + g1->x_offset),
-                                         zoomLevel.ApplyInversedTo(coords.y + g1->y_offset) };
+        ScreenCoordsXY spriteTopLeft = { zoomLevel.ApplyInversedTo(coords.x + g1->xOffset),
+                                         zoomLevel.ApplyInversedTo(coords.y + g1->yOffset) };
 
-        ScreenCoordsXY spriteBottomLeft{ zoomLevel.ApplyInversedTo(coords.x + g1->x_offset + g1->width),
-                                         zoomLevel.ApplyInversedTo(coords.y + g1->y_offset + g1->height) };
+        ScreenCoordsXY spriteBottomLeft{ zoomLevel.ApplyInversedTo(coords.x + g1->xOffset + g1->width),
+                                         zoomLevel.ApplyInversedTo(coords.y + g1->yOffset + g1->height) };
 
         const int32_t width = std::min(spriteBottomLeft.x, rt.x + rt.width) - std::max(spriteTopLeft.x, rt.x);
         const int32_t height = std::min(spriteBottomLeft.y, rt.y + rt.height) - std::max(spriteTopLeft.y, rt.y);
@@ -830,7 +830,7 @@ void FASTCALL GfxDrawSpritePaletteSetSoftware(
     int32_t height = g1->height;
 
     // This is the start y coordinate on the destination
-    int16_t dest_start_y = y + g1->y_offset;
+    int16_t dest_start_y = y + g1->yOffset;
 
     // For whatever reason the RLE version does not use
     // the zoom mask on the y coordinate but does on x.
@@ -889,7 +889,7 @@ void FASTCALL GfxDrawSpritePaletteSetSoftware(
     // This is the source start x coordinate
     int32_t source_start_x = 0;
     // This is the destination start x coordinate
-    int16_t dest_start_x = ((x + g1->x_offset + ~zoom_mask) & zoom_mask) - rt.WorldX();
+    int16_t dest_start_x = ((x + g1->xOffset + ~zoom_mask) & zoom_mask) - rt.WorldX();
 
     if (dest_start_x < 0)
     {
@@ -981,7 +981,7 @@ void FASTCALL GfxDrawSpriteRawMaskedSoftware(
     width = zoom.ApplyInversedTo(std::min(imgMask->width, imgColour->width));
     height = zoom.ApplyInversedTo(std::min(imgMask->height, imgColour->height));
 
-    ScreenCoordsXY offsetCoords = scrCoords + ScreenCoordsXY{ imgMask->x_offset, imgMask->y_offset };
+    ScreenCoordsXY offsetCoords = scrCoords + ScreenCoordsXY{ imgMask->xOffset, imgMask->yOffset };
     offsetCoords.x = zoom.ApplyInversedTo(offsetCoords.x);
     offsetCoords.y = zoom.ApplyInversedTo(offsetCoords.y);
 
@@ -1163,7 +1163,7 @@ size_t G1CalculateDataSize(const G1Element* g1)
 {
     if (g1->flags & G1_FLAG_PALETTE)
     {
-        return g1->width * 3;
+        return g1->numColours * 3;
     }
 
     if (g1->flags & G1_FLAG_RLE_COMPRESSION)

@@ -63,10 +63,10 @@ namespace OpenRCT2
                 g1 = *orig;
                 g1.offset = new uint8_t[length];
                 std::memcpy(g1.offset, orig->offset, length);
-                if ((g1.flags & G1_FLAG_HAS_ZOOM_SPRITE) && g1.zoomed_offset != 0)
+                if ((g1.flags & G1_FLAG_HAS_ZOOM_SPRITE) && g1.zoomedOffset != 0)
                 {
                     // Fetch image for next zoom level
-                    next_zoom = std::make_unique<RequiredImage>(static_cast<uint32_t>(idx - g1.zoomed_offset), getter);
+                    next_zoom = std::make_unique<RequiredImage>(static_cast<uint32_t>(idx - g1.zoomedOffset), getter);
                     if (!next_zoom->HasData())
                     {
                         next_zoom = nullptr;
@@ -469,10 +469,10 @@ namespace OpenRCT2
 
                 g1Element.width = stream->ReadValue<int16_t>();
                 g1Element.height = stream->ReadValue<int16_t>();
-                g1Element.x_offset = stream->ReadValue<int16_t>();
-                g1Element.y_offset = stream->ReadValue<int16_t>();
+                g1Element.xOffset = stream->ReadValue<int16_t>();
+                g1Element.yOffset = stream->ReadValue<int16_t>();
                 g1Element.flags = stream->ReadValue<uint16_t>();
-                g1Element.zoomed_offset = stream->ReadValue<uint16_t>();
+                g1Element.zoomedOffset = stream->ReadValue<uint16_t>();
 
                 newEntries.push_back(std::move(g1Element));
             }
@@ -568,9 +568,9 @@ namespace OpenRCT2
                             for (auto& image : images)
                             {
                                 if (hasXOverride)
-                                    image->g1.x_offset = xOverride;
+                                    image->g1.xOffset = xOverride;
                                 if (hasYOverride)
-                                    image->g1.y_offset = yOverride;
+                                    image->g1.yOffset = yOverride;
                             }
                         }
 
@@ -606,14 +606,14 @@ namespace OpenRCT2
 
                     // Set old image zoom offset to zoom image which we are about to add
                     auto g1a = const_cast<G1Element*>(&GetImages()[tableIndex]);
-                    g1a->zoomed_offset = static_cast<int32_t>(tableIndex) - static_cast<int32_t>(GetCount());
+                    g1a->zoomedOffset = static_cast<int32_t>(tableIndex) - static_cast<int32_t>(GetCount());
 
                     while (img != nullptr)
                     {
                         auto g1b = img->g1;
                         if (img->next_zoom != nullptr)
                         {
-                            g1b.zoomed_offset = -1;
+                            g1b.zoomedOffset = -1;
                         }
                         AddImage(&g1b);
                         img = img->next_zoom.get();

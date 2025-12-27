@@ -48,12 +48,20 @@ namespace OpenRCT2::Drawing
 struct G1Element
 {
     uint8_t* offset = nullptr; // 0x00
-    int16_t width = 0;         // 0x04
-    int16_t height = 0;        // 0x06
-    int16_t x_offset = 0;      // 0x08
-    int16_t y_offset = 0;      // 0x0A
+    union
+    {
+        int16_t width = 0;  // 0x04
+        int16_t numColours; // If G1_FLAG_PALETTE is set
+    };
+    int16_t height = 0; // 0x06
+    union
+    {
+        int16_t xOffset = 0; // 0x08
+        int16_t startIndex;  // If G1_FLAG_PALETTE is set
+    };
+    int16_t yOffset = 0;       // 0x0A
     uint16_t flags = 0;        // 0x0C
-    int32_t zoomed_offset = 0; // 0x0E
+    int32_t zoomedOffset = 0;  // 0x0E
 };
 
 #pragma pack(push, 1)

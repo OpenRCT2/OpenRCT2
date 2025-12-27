@@ -888,7 +888,7 @@ void OpenGLDrawingContext::DrawSprite(RenderTarget& rt, const ImageId imageId, c
             zoomedRT.width = rt.width;
             zoomedRT.pitch = rt.pitch;
             zoomedRT.zoom_level = rt.zoom_level - 1;
-            DrawSprite(zoomedRT, imageId.WithIndex(imageId.GetIndex() - g1Element->zoomed_offset), x >> 1, y >> 1);
+            DrawSprite(zoomedRT, imageId.WithIndex(imageId.GetIndex() - g1Element->zoomedOffset), x >> 1, y >> 1);
             return;
         }
         if (g1Element->flags & G1_FLAG_NO_ZOOM_DRAW)
@@ -899,8 +899,8 @@ void OpenGLDrawingContext::DrawSprite(RenderTarget& rt, const ImageId imageId, c
 
     auto texture = _textureCache->GetOrLoadImageTexture(imageId);
 
-    int32_t left = x + g1Element->x_offset;
-    int32_t top = y + g1Element->y_offset;
+    int32_t left = x + g1Element->xOffset;
+    int32_t top = y + g1Element->yOffset;
 
     int32_t xModifier = 0;
     int32_t yModifier = 0;
@@ -1015,8 +1015,8 @@ void OpenGLDrawingContext::DrawSpriteRawMasked(
     const auto textureMask = _textureCache->GetOrLoadImageTexture(maskImage);
     const auto textureColour = _textureCache->GetOrLoadImageTexture(colourImage);
 
-    int32_t drawOffsetX = g1ElementMask->x_offset;
-    int32_t drawOffsetY = g1ElementMask->y_offset;
+    int32_t drawOffsetX = g1ElementMask->xOffset;
+    int32_t drawOffsetY = g1ElementMask->yOffset;
     int32_t drawWidth = std::min(g1ElementMask->width, g1ElementColour->width);
     int32_t drawHeight = std::min(g1ElementMask->height, g1ElementColour->height);
 
@@ -1075,8 +1075,8 @@ void OpenGLDrawingContext::DrawSpriteSolid(RenderTarget& rt, const ImageId image
 
     const auto texture = _textureCache->GetOrLoadImageTexture(image);
 
-    int32_t drawOffsetX = g1Element->x_offset;
-    int32_t drawOffsetY = g1Element->y_offset;
+    int32_t drawOffsetX = g1Element->xOffset;
+    int32_t drawOffsetY = g1Element->yOffset;
     int32_t drawWidth = static_cast<uint16_t>(g1Element->width);
     int32_t drawHeight = static_cast<uint16_t>(g1Element->height);
 
@@ -1127,8 +1127,8 @@ void OpenGLDrawingContext::DrawGlyph(RenderTarget& rt, const ImageId image, int3
 
     const auto texture = _textureCache->GetOrLoadGlyphTexture(image, palette);
 
-    int32_t left = x + g1Element->x_offset;
-    int32_t top = y + g1Element->y_offset;
+    int32_t left = x + g1Element->xOffset;
+    int32_t top = y + g1Element->yOffset;
     int32_t right = left + static_cast<uint16_t>(g1Element->width);
     int32_t bottom = top + static_cast<uint16_t>(g1Element->height);
 

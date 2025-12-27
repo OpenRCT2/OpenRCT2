@@ -47,7 +47,7 @@ namespace OpenRCT2::CommandLine::Sprite
             fprintf(stderr, "Could not export\n");
             return -1;
         }
-        fprintf(stdout, "{ \"x\": %d, \"y\": %d }\n", spriteHeader.x_offset, spriteHeader.y_offset);
+        fprintf(stdout, "{ \"x\": %d, \"y\": %d }\n", spriteHeader.xOffset, spriteHeader.yOffset);
         return 0;
     }
 } // namespace OpenRCT2::CommandLine::Sprite

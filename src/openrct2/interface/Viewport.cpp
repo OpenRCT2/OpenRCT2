@@ -1567,7 +1567,7 @@ namespace OpenRCT2
 
             while (g1->flags & G1_FLAG_HAS_ZOOM_SPRITE && zoomLevel > ZoomLevel{ 0 })
             {
-                imageId = imageId.WithIndex(imageId.GetIndex() - g1->zoomed_offset);
+                imageId = imageId.WithIndex(imageId.GetIndex() - g1->zoomedOffset);
                 g1 = GfxGetG1Element(imageId);
                 if (g1 == nullptr || g1->flags & G1_FLAG_NO_ZOOM_DRAW)
                 {
@@ -1581,8 +1581,8 @@ namespace OpenRCT2
             }
         }
 
-        origin.x += g1->x_offset;
-        origin.y += g1->y_offset;
+        origin.x += g1->xOffset;
+        origin.y += g1->yOffset;
         interactionPoint -= origin;
 
         if (interactionPoint.x < 0 || interactionPoint.y < 0 || interactionPoint.x >= g1->width

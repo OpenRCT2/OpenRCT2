@@ -89,8 +89,8 @@ namespace OpenRCT2::Drawing::ScrollingText
             // Initialize the scrolling text sprite.
             G1Element g1{};
             g1.offset = _drawScrollTextList[i].bitmap;
-            g1.x_offset = -32;
-            g1.y_offset = 0;
+            g1.xOffset = -32;
+            g1.yOffset = 0;
             g1.flags = G1_FLAG_HAS_TRANSPARENCY;
             g1.width = 64;
             g1.height = 40;

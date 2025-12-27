@@ -151,7 +151,7 @@ namespace OpenRCT2::Scripting
 
         DukObject obj(ctx);
         obj.Set("id", id);
-        obj.Set("offset", ToDuk<ScreenCoordsXY>(ctx, { g1->x_offset, g1->y_offset }));
+        obj.Set("offset", ToDuk<ScreenCoordsXY>(ctx, { g1->xOffset, g1->yOffset }));
         obj.Set("width", g1->width);
         obj.Set("height", g1->height);
 
@@ -162,7 +162,7 @@ namespace OpenRCT2::Scripting
 
         if (g1->flags & G1_FLAG_HAS_ZOOM_SPRITE)
         {
-            obj.Set("nextZoomId", id - g1->zoomed_offset);
+            obj.Set("nextZoomId", id - g1->zoomedOffset);
         }
         else
         {

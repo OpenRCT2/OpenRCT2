@@ -35,10 +35,10 @@ namespace OpenRCT2::CommandLine::Sprite
                     entry.offset = reinterpret_cast<uint8_t*>(static_cast<uintptr_t>(entry32bit.offset));
                     entry.width = entry32bit.width;
                     entry.height = entry32bit.height;
-                    entry.x_offset = entry32bit.x_offset;
-                    entry.y_offset = entry32bit.y_offset;
+                    entry.xOffset = entry32bit.x_offset;
+                    entry.yOffset = entry32bit.y_offset;
                     entry.flags = entry32bit.flags;
-                    entry.zoomed_offset = entry32bit.zoomed_offset;
+                    entry.zoomedOffset = entry32bit.zoomed_offset;
                     spriteFile.Entries.push_back(std::move(entry));
                 }
                 spriteFile.Data.resize(spriteFile.Header.total_size);
@@ -109,10 +109,10 @@ namespace OpenRCT2::CommandLine::Sprite
                     entry32bit.offset = static_cast<uint32_t>(reinterpret_cast<uintptr_t>(const_cast<uint8_t*>(entry.offset)));
                     entry32bit.width = entry.width;
                     entry32bit.height = entry.height;
-                    entry32bit.x_offset = entry.x_offset;
-                    entry32bit.y_offset = entry.y_offset;
+                    entry32bit.x_offset = entry.xOffset;
+                    entry32bit.y_offset = entry.yOffset;
                     entry32bit.flags = entry.flags;
-                    entry32bit.zoomed_offset = entry.zoomed_offset;
+                    entry32bit.zoomed_offset = entry.zoomedOffset;
 
                     stream.Write(&entry32bit, sizeof(entry32bit));
                 }

@@ -58,8 +58,8 @@ namespace OpenRCT2::CommandLine::Sprite
         G1Element* g1 = &spriteFile->Entries[spriteIndex];
         printf("width: %d\n", g1->width);
         printf("height: %d\n", g1->height);
-        printf("x offset: %d\n", g1->x_offset);
-        printf("y offset: %d\n", g1->y_offset);
+        printf("x offset: %d\n", g1->xOffset);
+        printf("y offset: %d\n", g1->yOffset);
         printf("data offset: %p\n", g1->offset);
         return 0;
     }
