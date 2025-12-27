@@ -455,25 +455,25 @@ bool GfxLoadG1(const IPlatformEnvironment& env)
     {
         auto path = env.FindFile(DirBase::rct2, DirId::data, u8"g1.dat");
         auto fs = FileStream(path, FileMode::open);
-        _g1.header = fs.ReadValue<RCTG1Header>();
+        _g1.header = fs.ReadValue<G1Header>();
 
-        LOG_VERBOSE("g1.dat, number of entries: %u", _g1.header.num_entries);
+        LOG_VERBOSE("g1.dat, number of entries: %u", _g1.header.numEntries);
 
-        if (_g1.header.num_entries < SPR_G1_END)
+        if (_g1.header.numEntries < SPR_G1_END)
         {
             throw std::runtime_error("Not enough elements in g1.dat");
         }
 
         // Read element headers
-        bool is_rctc = _g1.header.num_entries == SPR_RCTC_G1_END;
-        _g1.elements.resize(_g1.header.num_entries);
-        ReadAndConvertGxDat(&fs, _g1.header.num_entries, is_rctc, _g1.elements.data());
+        bool is_rctc = _g1.header.numEntries == SPR_RCTC_G1_END;
+        _g1.elements.resize(_g1.header.numEntries);
+        ReadAndConvertGxDat(&fs, _g1.header.numEntries, is_rctc, _g1.elements.data());
 
         // Read element data
-        _g1.data = fs.ReadArray<uint8_t>(_g1.header.total_size);
+        _g1.data = fs.ReadArray<uint8_t>(_g1.header.totalSize);
 
         // Fix entry data offsets
-        for (uint32_t i = 0; i < _g1.header.num_entries; i++)
+        for (uint32_t i = 0; i < _g1.header.numEntries; i++)
         {
             if (_g1.elements[i].offset == nullptr)
             {
@@ -539,19 +539,19 @@ static bool GfxLoadOpenRCT2Gx(std::string filename, Gx& target, size_t expectedN
     try
     {
         auto fs = FileStream(path, FileMode::open);
-        target.header = fs.ReadValue<RCTG1Header>();
+        target.header = fs.ReadValue<G1Header>();
 
         // Read element headers
-        target.elements.resize(target.header.num_entries);
-        ReadAndConvertGxDat(&fs, target.header.num_entries, false, target.elements.data());
+        target.elements.resize(target.header.numEntries);
+        ReadAndConvertGxDat(&fs, target.header.numEntries, false, target.elements.data());
 
         // Read element data
-        target.data = fs.ReadArray<uint8_t>(target.header.total_size);
+        target.data = fs.ReadArray<uint8_t>(target.header.totalSize);
 
-        if (target.header.num_entries != expectedNumItems)
+        if (target.header.numEntries != expectedNumItems)
         {
             std::string errorMessage = "Mismatched " + filename + " size.\nExpected: " + std::to_string(expectedNumItems)
-                + "\nActual: " + std::to_string(target.header.num_entries) + "\n" + filename
+                + "\nActual: " + std::to_string(target.header.numEntries) + "\n" + filename
                 + " may be installed improperly.\nPath to " + filename + ": " + path;
 
             LOG_ERROR(errorMessage.c_str());
@@ -568,7 +568,7 @@ static bool GfxLoadOpenRCT2Gx(std::string filename, Gx& target, size_t expectedN
         }
 
         // Fix entry data offsets
-        for (uint32_t i = 0; i < target.header.num_entries; i++)
+        for (uint32_t i = 0; i < target.header.numEntries; i++)
         {
             if (target.elements[i].offset == nullptr)
             {
@@ -622,8 +622,8 @@ bool GfxLoadCsg()
         size_t fileHeaderSize = fileHeader.GetLength();
         size_t fileDataSize = fileData.GetLength();
 
-        _csg.header.num_entries = static_cast<uint32_t>(fileHeaderSize / sizeof(RCTG1Element));
-        _csg.header.total_size = static_cast<uint32_t>(fileDataSize);
+        _csg.header.numEntries = static_cast<uint32_t>(fileHeaderSize / sizeof(RCTG1Element));
+        _csg.header.totalSize = static_cast<uint32_t>(fileDataSize);
 
         if (!CsgIsUsable(_csg))
         {
@@ -632,14 +632,14 @@ bool GfxLoadCsg()
         }
 
         // Read element headers
-        _csg.elements.resize(_csg.header.num_entries);
-        ReadAndConvertGxDat(&fileHeader, _csg.header.num_entries, false, _csg.elements.data());
+        _csg.elements.resize(_csg.header.numEntries);
+        ReadAndConvertGxDat(&fileHeader, _csg.header.numEntries, false, _csg.elements.data());
 
         // Read element data
-        _csg.data = fileData.ReadArray<uint8_t>(_csg.header.total_size);
+        _csg.data = fileData.ReadArray<uint8_t>(_csg.header.totalSize);
 
         // Fix entry data offsets
-        for (uint32_t i = 0; i < _csg.header.num_entries; i++)
+        for (uint32_t i = 0; i < _csg.header.numEntries; i++)
         {
             if (_csg.elements[i].offset == nullptr)
             {
@@ -675,14 +675,14 @@ std::optional<Gx> GfxLoadGx(const std::vector<uint8_t>& buffer)
         OpenRCT2::MemoryStream istream(buffer.data(), buffer.size());
         Gx gx;
 
-        gx.header = istream.ReadValue<RCTG1Header>();
+        gx.header = istream.ReadValue<G1Header>();
 
         // Read element headers
-        gx.elements.resize(gx.header.num_entries);
-        ReadAndConvertGxDat(&istream, gx.header.num_entries, false, gx.elements.data());
+        gx.elements.resize(gx.header.numEntries);
+        ReadAndConvertGxDat(&istream, gx.header.numEntries, false, gx.elements.data());
 
         // Read element data
-        gx.data = istream.ReadArray<uint8_t>(gx.header.total_size);
+        gx.data = istream.ReadArray<uint8_t>(gx.header.totalSize);
 
         return std::make_optional(std::move(gx));
     }
@@ -1046,7 +1046,7 @@ const G1Element* GfxGetG1Element(ImageIndex image_id)
     else if (offset < SPR_G2_END)
     {
         size_t idx = offset - SPR_G2_BEGIN;
-        if (idx < _g2.header.num_entries)
+        if (idx < _g2.header.numEntries)
         {
             return &_g2.elements[idx];
         }
@@ -1056,7 +1056,7 @@ const G1Element* GfxGetG1Element(ImageIndex image_id)
     else if (offset < SPR_FONTS_END)
     {
         size_t idx = offset - SPR_FONTS_BEGIN;
-        if (idx < _fonts.header.num_entries)
+        if (idx < _fonts.header.numEntries)
         {
             return &_fonts.elements[idx];
         }
@@ -1066,7 +1066,7 @@ const G1Element* GfxGetG1Element(ImageIndex image_id)
     else if (offset < SPR_TRACKS_END)
     {
         size_t idx = offset - SPR_TRACKS_BEGIN;
-        if (idx < _tracks.header.num_entries)
+        if (idx < _tracks.header.numEntries)
         {
             return &_tracks.elements[idx];
         }
@@ -1078,7 +1078,7 @@ const G1Element* GfxGetG1Element(ImageIndex image_id)
         if (IsCsgLoaded())
         {
             size_t idx = offset - SPR_CSG_BEGIN;
-            if (idx < _csg.header.num_entries)
+            if (idx < _csg.header.numEntries)
             {
                 return &_csg.elements[idx];
             }

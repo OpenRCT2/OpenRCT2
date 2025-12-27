@@ -19,7 +19,7 @@ namespace OpenRCT2::CommandLine::Sprite
     class SpriteFile
     {
     public:
-        RCTG1Header Header{};
+        G1Header Header{};
         std::vector<G1Element> Entries;
         std::vector<uint8_t> Data;
         void AddImage(ImageImporter::ImportResult& image);

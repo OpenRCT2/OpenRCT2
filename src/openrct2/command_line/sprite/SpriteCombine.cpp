@@ -34,12 +34,12 @@ namespace OpenRCT2::CommandLine::Sprite
 
         uint32_t numEntries = fileHeaderSize / sizeof(RCTG1Element);
 
-        RCTG1Header header = {};
-        header.num_entries = numEntries;
-        header.total_size = fileDataSize;
+        G1Header header = {};
+        header.numEntries = numEntries;
+        header.totalSize = fileDataSize;
         FileStream outputStream(outputPath, FileMode::write);
 
-        outputStream.Write(&header, sizeof(RCTG1Header));
+        outputStream.Write(&header, sizeof(G1Header));
         auto g1Elements32 = std::make_unique<RCTG1Element[]>(numEntries);
         fileHeader.Read(g1Elements32.get(), numEntries * sizeof(RCTG1Element));
         for (uint32_t i = 0; i < numEntries; i++)

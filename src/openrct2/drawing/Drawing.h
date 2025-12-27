@@ -77,17 +77,17 @@ struct G1Element
 };
 
 #pragma pack(push, 1)
-struct RCTG1Header
+struct G1Header
 {
-    uint32_t num_entries = 0;
-    uint32_t total_size = 0;
+    uint32_t numEntries = 0;
+    uint32_t totalSize = 0;
 };
-static_assert(sizeof(RCTG1Header) == 8);
+static_assert(sizeof(G1Header) == 8);
 #pragma pack(pop)
 
 struct Gx
 {
-    RCTG1Header header;
+    G1Header header;
     std::vector<G1Element> elements;
     std::unique_ptr<uint8_t[]> data;
 };

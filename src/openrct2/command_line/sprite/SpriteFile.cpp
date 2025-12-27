@@ -20,13 +20,13 @@ namespace OpenRCT2::CommandLine::Sprite
             FileStream stream(path, FileMode::open);
 
             SpriteFile spriteFile;
-            stream.Read(&spriteFile.Header, sizeof(RCTG1Header));
+            stream.Read(&spriteFile.Header, sizeof(G1Header));
 
-            if (spriteFile.Header.num_entries > 0)
+            if (spriteFile.Header.numEntries > 0)
             {
-                spriteFile.Entries.reserve(spriteFile.Header.num_entries);
+                spriteFile.Entries.reserve(spriteFile.Header.numEntries);
 
-                for (uint32_t i = 0; i < spriteFile.Header.num_entries; ++i)
+                for (uint32_t i = 0; i < spriteFile.Header.numEntries; ++i)
                 {
                     RCTG1Element entry32bit{};
                     stream.Read(&entry32bit, sizeof(entry32bit));
@@ -41,8 +41,8 @@ namespace OpenRCT2::CommandLine::Sprite
                     entry.zoomedOffset = entry32bit.zoomed_offset;
                     spriteFile.Entries.push_back(std::move(entry));
                 }
-                spriteFile.Data.resize(spriteFile.Header.total_size);
-                stream.Read(spriteFile.Data.data(), spriteFile.Header.total_size);
+                spriteFile.Data.resize(spriteFile.Header.totalSize);
+                stream.Read(spriteFile.Data.data(), spriteFile.Header.totalSize);
             }
             spriteFile.MakeEntriesAbsolute();
             return spriteFile;
@@ -75,15 +75,15 @@ namespace OpenRCT2::CommandLine::Sprite
 
     void SpriteFile::AddImage(ImageImporter::ImportResult& image)
     {
-        Header.num_entries++;
+        Header.numEntries++;
         // New image will have its data inserted after previous image
-        uint8_t* newElementOffset = reinterpret_cast<uint8_t*>(static_cast<uintptr_t>(Header.total_size));
-        Header.total_size += static_cast<uint32_t>(image.Buffer.size());
-        Entries.reserve(Header.num_entries);
+        uint8_t* newElementOffset = reinterpret_cast<uint8_t*>(static_cast<uintptr_t>(Header.totalSize));
+        Header.totalSize += static_cast<uint32_t>(image.Buffer.size());
+        Entries.reserve(Header.numEntries);
 
         {
             ScopedRelativeSpriteFile scopedRelative(*this);
-            Data.reserve(Header.total_size);
+            Data.reserve(Header.totalSize);
             Entries.push_back(image.Element);
             Entries.back().offset = newElementOffset;
             const auto& buffer = image.Buffer;
@@ -96,9 +96,9 @@ namespace OpenRCT2::CommandLine::Sprite
         try
         {
             FileStream stream(path, FileMode::write);
-            stream.Write(&Header, sizeof(RCTG1Header));
+            stream.Write(&Header, sizeof(G1Header));
 
-            if (Header.num_entries > 0)
+            if (Header.numEntries > 0)
             {
                 ScopedRelativeSpriteFile scopedRelative(*this);
 
@@ -116,7 +116,7 @@ namespace OpenRCT2::CommandLine::Sprite
 
                     stream.Write(&entry32bit, sizeof(entry32bit));
                 }
-                stream.Write(Data.data(), Header.total_size);
+                stream.Write(Data.data(), Header.totalSize);
             }
             return true;
         }

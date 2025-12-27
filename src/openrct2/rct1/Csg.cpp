@@ -62,8 +62,7 @@ bool RCT1DataPresentAtLocation(u8string_view path)
 
 bool CsgIsUsable(const Gx& csg)
 {
-    return csg.header.total_size == RCT1::Limits::kLLCsg1DatFileSize
-        && csg.header.num_entries == RCT1::Limits::kNumLLCsgEntries;
+    return csg.header.totalSize == RCT1::Limits::kLLCsg1DatFileSize && csg.header.numEntries == RCT1::Limits::kNumLLCsgEntries;
 }
 
 bool CsgAtLocationIsUsable(u8string_view path)
@@ -86,7 +85,7 @@ bool CsgAtLocationIsUsable(u8string_view path)
     size_t fileDataSize = fileData.GetLength();
 
     Gx csg = {};
-    csg.header.num_entries = static_cast<uint32_t>(fileHeaderSize / sizeof(RCTG1Element));
-    csg.header.total_size = static_cast<uint32_t>(fileDataSize);
+    csg.header.numEntries = static_cast<uint32_t>(fileHeaderSize / sizeof(RCTG1Element));
+    csg.header.totalSize = static_cast<uint32_t>(fileDataSize);
     return CsgIsUsable(csg);
 }

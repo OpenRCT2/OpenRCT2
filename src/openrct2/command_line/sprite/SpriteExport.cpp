@@ -35,7 +35,7 @@ namespace OpenRCT2::CommandLine::Sprite
             return -1;
         }
 
-        if (spriteIndex < 0 || spriteIndex >= static_cast<int32_t>(spriteFile->Header.num_entries))
+        if (spriteIndex < 0 || spriteIndex >= static_cast<int32_t>(spriteFile->Header.numEntries))
         {
             fprintf(stderr, "Sprite #%d does not exist in sprite file.\n", spriteIndex);
             return -1;

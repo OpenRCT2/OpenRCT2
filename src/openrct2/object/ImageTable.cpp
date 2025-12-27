@@ -231,7 +231,7 @@ namespace OpenRCT2
         if (gxData.has_value())
         {
             // Fix entry data offsets
-            for (uint32_t i = 0; i < gxData->header.num_entries; i++)
+            for (uint32_t i = 0; i < gxData->header.numEntries; i++)
             {
                 if (gxData->elements[i].offset == nullptr)
                 {
@@ -248,7 +248,7 @@ namespace OpenRCT2
                 size_t placeHoldersAdded = 0;
                 for (auto i : range)
                 {
-                    if (i >= 0 && (i < static_cast<int32_t>(gxData->header.num_entries)))
+                    if (i >= 0 && (i < static_cast<int32_t>(gxData->header.numEntries)))
                     {
                         result.push_back(std::make_unique<RequiredImage>(gxData->elements[i]));
                     }
@@ -268,7 +268,7 @@ namespace OpenRCT2
             }
             else
             {
-                for (int i = 0; i < static_cast<int32_t>(gxData->header.num_entries); i++)
+                for (int i = 0; i < static_cast<int32_t>(gxData->header.numEntries); i++)
                     result.push_back(std::make_unique<RequiredImage>(gxData->elements[i]));
             }
         }
