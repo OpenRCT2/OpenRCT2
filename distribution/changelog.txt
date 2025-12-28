@@ -31,6 +31,7 @@
 - Fix: [#25642] The selection marker for purchasing land rights is not drawn with the correct colours.
 - Fix: [#25646] It is possible to remove scenery and paths when setting staff patrol areas and purchasing land.
 - Fix: [#25660] After saving a track design with scenery, that ride’s entrances and exits are visible in ‘Highlight path issues’ mode.
+- Fix: [#25717] Umbrellas given to guests by means of cheats do not use the full (extended) range of colours.
 
 0.4.29 (2025-11-22)
 ------------------------------------------------------------------------
