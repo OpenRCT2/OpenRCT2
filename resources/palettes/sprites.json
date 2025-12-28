@@ -355,97 +355,97 @@
         "format": "raw"
     },
     {
-        "path": "base/palette_3100.png",
+        "path": "marker/palette_land_marker_0.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "base/palette_3101.png",
+        "path": "marker/palette_land_marker_1.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "base/palette_3102.png",
+        "path": "marker/palette_land_marker_2.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "base/palette_3103.png",
+        "path": "marker/palette_land_marker_3.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "base/palette_3104.png",
+        "path": "marker/palette_scenery_ground_marker.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "base/palette_3106.png",
+        "path": "marker/palette_water_marker.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "base/palette_3107.png",
+        "path": "marker/palette_quarter_marker_0.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "base/palette_3108.png",
+        "path": "marker/palette_quarter_marker_1.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "base/palette_3109.png",
+        "path": "marker/palette_quarter_marker_2.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "base/palette_3110.png",
+        "path": "marker/palette_quarter_marker_3.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "base/palette_3105.png",
+        "path": "marker/palette_ride_ground_marker.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "map_base/palette_map_4948.png",
+        "path": "base/palette_ghost.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "map_base/palette_map_4949.png",
+        "path": "base/palette_45.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "map_base/palette_map_4950.png",
+        "path": "base/palette_46.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "map_base/palette_map_darken_3.png",
+        "path": "base/palette_darken_3.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "map_base/palette_map_4952.png",
+        "path": "base/palette_decreased_contrast.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "map_base/palette_map_darken_1.png",
+        "path": "base/palette_darken_1.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "map_base/palette_map_darken_2.png",
+        "path": "base/palette_darken_2.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "map_base/palette_map_4955.png",
+        "path": "base/palette_51.png",
         "palette": "keep",
         "format": "raw"
     },
