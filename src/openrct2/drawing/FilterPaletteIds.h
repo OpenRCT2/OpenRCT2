@@ -17,8 +17,8 @@ namespace OpenRCT2::Drawing
     {
         paletteNull = 0,
 
+        // Additional palettes
         paletteWater = COLOUR_COUNT,
-
         paletteLandMarker0, // North (corner/edge)
         paletteLandMarker1, // East (corner/edge)
         paletteLandMarker2, // South (corner/edge)
@@ -33,12 +33,12 @@ namespace OpenRCT2::Drawing
         paletteGhost, // Construction marker
         palette45,    // Decolourise + lighten
         palette46,
-
         paletteDarken3,
-
         paletteDarken1 = paletteDarken3 + 2,
         paletteDarken2,
         palette51, // Decolourise + darken
+
+        // Translucent remap palettes
         paletteTranslucentGrey,
         paletteTranslucentGreyHighlight,
         paletteTranslucentGreyShadow,
@@ -99,6 +99,8 @@ namespace OpenRCT2::Drawing
         paletteTranslucentWhite,
         paletteTranslucentWhiteHighlight,
         paletteTranslucentWhiteShadow,
+
+        // Main glass remap palettes
         paletteGlass,
         paletteGlassBlack = paletteGlass + COLOUR_BLACK,
         paletteGlassGrey = paletteGlass + COLOUR_GREY,
@@ -139,6 +141,8 @@ namespace OpenRCT2::Drawing
         paletteGlassBordeauxRedLight = paletteGlass + COLOUR_BORDEAUX_RED_LIGHT,
         paletteGlassGrassGreenDark = paletteGlass + COLOUR_GRASS_GREEN_DARK,
         paletteGlassGrassGreenLight = paletteGlass + COLOUR_GRASS_GREEN_LIGHT,
+
+        // Extended glass remap palettes
         paletteGlassOliveDark = paletteGlass + COLOUR_OLIVE_DARK,
         paletteGlassOliveLight = paletteGlass + COLOUR_OLIVE_LIGHT,
         paletteGlassSaturatedGreenLight = paletteGlass + COLOUR_SATURATED_GREEN_LIGHT,
