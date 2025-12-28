@@ -465,7 +465,9 @@ namespace OpenRCT2::Scripting
         }
 
         auto dukG = GetObjectAsDukValue(ctx, std::make_shared<ScGraphicsContext>(ctx, rt));
+        drawingEngine->BeginDraw();
         scriptEngine.ExecutePluginCall(plugin, callback, { dukG }, false);
+        drawingEngine->EndDraw();
 
         if (createNewImage)
         {
