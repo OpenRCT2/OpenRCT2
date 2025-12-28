@@ -56,18 +56,17 @@ static StringId _staffSpeedNames[] =
     STR_FAST,
 };
 
-static constexpr StringId WeatherTypes[] =
-{
-    STR_SUNNY,
-    STR_PARTIALLY_CLOUDY,
-    STR_CLOUDY,
-    STR_RAIN,
-    STR_HEAVY_RAIN,
-    STR_THUNDERSTORM,
-    STR_SNOW,
-    STR_HEAVY_SNOW,
-    STR_BLIZZARD,
-};
+static constexpr auto kWeatherTypes = std::to_array<std::pair<ImageIndex, StringId>>({
+    { SPR_WEATHER_SUN, STR_SUNNY },
+    { SPR_WEATHER_SUN_CLOUD, STR_PARTIALLY_CLOUDY },
+    { SPR_WEATHER_CLOUD, STR_CLOUDY },
+    { SPR_WEATHER_LIGHT_RAIN, STR_RAIN },
+    { SPR_WEATHER_HEAVY_RAIN, STR_HEAVY_RAIN },
+    { SPR_WEATHER_STORM, STR_THUNDERSTORM },
+    { SPR_G2_WEATHER_SNOW, STR_SNOW },
+    { SPR_G2_WEATHER_HEAVY_SNOW, STR_HEAVY_SNOW },
+    { SPR_G2_WEATHER_BLIZZARD, STR_BLIZZARD },
+});
 
 enum WindowCheatsWidgetIdx
 {
@@ -577,7 +576,8 @@ static StringId window_cheats_page_titles[] = {
             // Current weather
             if (page == WINDOW_CHEATS_PAGE_WEATHER)
             {
-                widgets[WIDX_WEATHER].text = WeatherTypes[EnumValue(gameState.weatherCurrent.weatherType)];
+                auto& weatherType = kWeatherTypes[EnumValue(gameState.weatherCurrent.weatherType)];
+                widgets[WIDX_WEATHER].text = weatherType.second;
             }
 
             // Staff speed
@@ -1000,26 +1000,26 @@ static StringId window_cheats_page_titles[] = {
 
         void onMouseDownWeather(WidgetIndex widgetIndex)
         {
-            auto* widget = &widgets[widgetIndex];
-            auto& gameState = getGameState();
             switch (widgetIndex)
             {
                 case WIDX_WEATHER_DROPDOWN_BUTTON:
                 {
-                    Widget* dropdownWidget = widget - 1;
-
-                    for (size_t i = 0; i < std::size(WeatherTypes); i++)
+                    auto& dropdownWidget = widgets[widgetIndex - 1];
+                    auto i = 0U;
+                    for (auto& weatherType : kWeatherTypes)
                     {
-                        gDropdown.items[i] = Dropdown::MenuLabel(WeatherTypes[i]);
+                        gDropdown.items[i] = Dropdown::ImageItem(ImageId(weatherType.first), weatherType.second);
+                        i++;
                     }
-                    WindowDropdownShowTextCustomWidth(
-                        { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height(),
-                        colours[1], 0, Dropdown::Flag::StayOpen, std::size(WeatherTypes), dropdownWidget->width() - 4);
 
-                    auto currentWeather = gameState.weatherCurrent.weatherType;
+                    auto itemsPerRow = DropdownGetAppropriateImageDropdownItemsPerRow(std::size(kWeatherTypes));
+                    WindowDropdownShowImage(
+                        windowPos.x + dropdownWidget.left, windowPos.y + dropdownWidget.top, dropdownWidget.height(),
+                        colours[1], 0, std::size(kWeatherTypes), /* w */28,  /* h */ 24, itemsPerRow);
+
+                    auto currentWeather = getGameState().weatherCurrent.weatherType;
                     gDropdown.items[EnumValue(currentWeather)].setChecked(true);
-
-                    break;
+                    gDropdown.hasTooltips = true;
                 }
             }
         }
