@@ -219,21 +219,21 @@ static constexpr uint16_t kPaletteToG1Offset[kPaletteTotalOffsets] = {
     SPR_PALETTE_VOID,
 
     // Additional palettes
-    SPR_PALETTE_WATER,      // PaletteWater (water)
-    SPR_PALETTE_3100,
-    SPR_PALETTE_3101,       // Palette34
-    SPR_PALETTE_3102,
-    SPR_PALETTE_3103,
-    SPR_PALETTE_3104,
-    SPR_PALETTE_3106,
-    SPR_PALETTE_3107,
-    SPR_PALETTE_3108,       // 40
-    SPR_PALETTE_3109,
-    SPR_PALETTE_3110,
-    SPR_PALETTE_3105,
-    SPR_PALETTE_4948,
-    SPR_PALETTE_4949,       // Palette45
-    SPR_PALETTE_4950,
+    SPR_PALETTE_WATER,      // paletteWater (water)
+    SPR_PALETTE_3100,       // paletteLandMarker0
+    SPR_PALETTE_3101,       // paletteLandMarker1
+    SPR_PALETTE_3102,       // paletteLandMarker2
+    SPR_PALETTE_3103,       // paletteLandMarker3
+    SPR_PALETTE_3104,       // paletteSceneryGroundMarker
+    SPR_PALETTE_3106,       // paletteWaterMarker
+    SPR_PALETTE_3107,       // paletteQuarterMarker0
+    SPR_PALETTE_3108,       // paletteQuarterMarker1
+    SPR_PALETTE_3109,       // paletteQuarterMarker2
+    SPR_PALETTE_3110,       // paletteQuarterMarker3
+    SPR_PALETTE_3105,       // paletteRideGroundMarker
+    SPR_PALETTE_4948,       // paletteGhost
+    SPR_PALETTE_4949,       // palette45
+    SPR_PALETTE_4950,       // palette46
     SPR_PALETTE_DARKEN_3,   // PaletteDarken3
     SPR_PALETTE_4952,       // Decreases contrast
     SPR_PALETTE_DARKEN_1,   // PaletteDarken1
