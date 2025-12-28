@@ -1005,7 +1005,7 @@ static StringId window_cheats_page_titles[] = {
                 case WIDX_WEATHER_DROPDOWN_BUTTON:
                 {
                     auto& dropdownWidget = widgets[widgetIndex - 1];
-                    auto i = 0U;
+                    auto i = 0u;
                     for (auto& weatherType : kWeatherTypes)
                     {
                         Formatter fmt;
