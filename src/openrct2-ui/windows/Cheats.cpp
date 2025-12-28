@@ -1008,18 +1008,20 @@ static StringId window_cheats_page_titles[] = {
                     auto i = 0U;
                     for (auto& weatherType : kWeatherTypes)
                     {
-                        gDropdown.items[i] = Dropdown::ImageItem(ImageId(weatherType.first), weatherType.second);
+                        Formatter fmt;
+                        fmt.Add<uint32_t>(weatherType.first);
+                        fmt.Add<StringId>(weatherType.second);
+
+                        gDropdown.items[i] = Dropdown::MenuLabel(StringId(7017), fmt);
                         i++;
                     }
 
-                    auto itemsPerRow = DropdownGetAppropriateImageDropdownItemsPerRow(std::size(kWeatherTypes));
-                    WindowDropdownShowImage(
-                        windowPos.x + dropdownWidget.left, windowPos.y + dropdownWidget.top, dropdownWidget.height(),
-                        colours[1], 0, std::size(kWeatherTypes), /* w */28,  /* h */ 24, itemsPerRow);
+                    WindowDropdownShowTextCustomWidth(
+                        { windowPos.x + dropdownWidget.left, windowPos.y + dropdownWidget.bottom }, 0, colours[1], 22,
+                        Dropdown::Flag::CustomHeight, std::size(kWeatherTypes), dropdownWidget.width() + 34);
 
                     auto currentWeather = getGameState().weatherCurrent.weatherType;
                     gDropdown.items[EnumValue(currentWeather)].setChecked(true);
-                    gDropdown.hasTooltips = true;
                 }
             }
         }
