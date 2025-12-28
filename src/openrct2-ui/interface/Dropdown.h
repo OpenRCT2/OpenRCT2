@@ -178,6 +178,7 @@ namespace OpenRCT2::Dropdown
     Item PlainMenuLabel(StringId stringId);
     Item PlainMenuLabel(u8string string);
     Item PlainMenuLabel(const utf8* string);
+    Item PlainMenuLabel(StringId format, const Formatter& ft);
 
     /**
      * Like MenuLabel, but shows a tick when selected.
