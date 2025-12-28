@@ -72,7 +72,7 @@ namespace OpenRCT2
             }
         }
 
-        _hasPreview = !!GetImageTable().GetCount();
+        _hasPreview = !!GetNumImages();
         _previewImageId = LoadImages();
     }
 
@@ -82,7 +82,7 @@ namespace OpenRCT2
         UnloadImages();
 
         _hasPreview = false;
-        _previewImageId = 0;
+        _previewImageId = kImageIndexUndefined;
         NameStringId = 0;
     }
 

@@ -35,8 +35,8 @@ namespace OpenRCT2
         UnloadImages();
 
         NameStringId = 0;
-        IconImageId = 0;
-        BaseImageId = 0;
+        IconImageId = kImageIndexUndefined;
+        BaseImageId = kImageIndexUndefined;
     }
 
     void TerrainEdgeObject::DrawPreview(Drawing::RenderTarget& rt, int32_t width, int32_t height) const

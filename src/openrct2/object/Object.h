@@ -10,8 +10,11 @@
 #pragma once
 
 #include "../core/JsonFwd.hpp"
+#include "../core/String.hpp"
 #include "../core/StringTypes.h"
+#include "../drawing/Gx.h"
 #include "../drawing/ImageIndexType.h"
+#include "../util/Util.h"
 #include "ImageTable.h"
 #include "ObjectAsset.h"
 #include "ObjectTypes.h"
@@ -153,6 +156,7 @@ namespace OpenRCT2
     };
 
     struct IObjectRepository;
+    class ImageTable;
     struct IStream;
     struct ObjectRepositoryItem;
 
@@ -193,7 +197,9 @@ namespace OpenRCT2
         ObjectVersion _version;
         ObjectEntryDescriptor _descriptor{};
         StringTable _stringTable;
-        ImageTable _imageTable;
+        std::unique_ptr<OpenRCT2::ImageTable> _imageTable;
+        std::unique_ptr<OpenRCT2::ImageTable> _loadedImageTable;
+        OpenRCT2::GxFile _embeddedImages;
         std::vector<ObjectSourceGame> _sourceGames;
         std::vector<std::string> _authors;
         ObjectGeneration _generation{};
@@ -212,6 +218,8 @@ namespace OpenRCT2
             return _stringTable;
         }
 
+        void ReadEmbeddedImages(IReadObjectContext& context, OpenRCT2::IStream& stream);
+
         /**
          * Populates the image and string tables from a JSON object
          * @param context
@@ -223,8 +231,12 @@ namespace OpenRCT2
         std::string GetString(ObjectStringID index) const;
         std::string GetString(int32_t language, ObjectStringID index) const;
 
+        ImageIndex LoadImages();
+        void UnloadImages();
+
     public:
-        virtual ~Object() = default;
+        Object();
+        virtual ~Object();
 
         std::string_view GetIdentifier() const
         {
@@ -273,6 +285,7 @@ namespace OpenRCT2
             return _usesFallbackImages;
         }
 
+        // Legacy data structures
         // DONOT USE THIS CAN LEAD TO OBJECT COLLISIONS
         std::string_view GetLegacyIdentifier() const
         {
@@ -324,30 +337,23 @@ namespace OpenRCT2
         bool IsCompatibilityObject() const;
         void SetIsCompatibilityObject(const bool on);
 
-        const ImageTable& GetImageTable() const
-        {
-            return _imageTable;
-        }
+        OpenRCT2::ImageTable* GetImageTable();
+
+        const OpenRCT2::ImageTable* GetImageTable() const;
 
         ObjectEntryDescriptor GetScgPathXHeader() const;
         RCTObjectEntry CreateHeader(const char name[9], uint32_t flags, uint32_t checksum);
 
-        uint32_t GetNumImages() const
+        uint32_t GetNumImages() const;
+
+        const OpenRCT2::GxSource& GetEmbeddedImages() const
         {
-            return GetImageTable().GetCount();
+            return _embeddedImages;
         }
 
         ImageIndex GetBaseImageId() const
         {
             return _baseImageId;
-        }
-
-        uint32_t LoadImages();
-        void UnloadImages();
-
-        ImageTable& GetImageTable()
-        {
-            return _imageTable;
         }
     };
 #ifdef __WARN_SUGGEST_FINAL_TYPES__

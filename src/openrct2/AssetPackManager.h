@@ -19,6 +19,7 @@ namespace OpenRCT2
 {
     class AssetPack;
     class AudioSampleTable;
+    class ImageTable;
 
     class AssetPackManager
     {
@@ -39,6 +40,7 @@ namespace OpenRCT2
         void Reload();
         void Swap(size_t index, size_t otherIndex);
 
+        void LoadImagesForObject(std::string_view id, ImageTable& objectTable);
         void LoadSamplesForObject(std::string_view id, AudioSampleTable& objectTable);
 
         void LoadEnabledAssetPacks();
