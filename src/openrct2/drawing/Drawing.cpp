@@ -700,7 +700,7 @@ void GfxTransposePalette(int32_t pal, uint8_t product)
     if (g1 != nullptr)
     {
         int32_t width = g1->width;
-        int32_t x = g1->x_offset;
+        int32_t x = g1->xOffset;
         uint8_t* source_pointer = g1->offset;
 
         for (; width > 0; width--)
@@ -743,7 +743,7 @@ void LoadPalette()
     if (g1 != nullptr)
     {
         int32_t width = g1->width;
-        int32_t x = g1->x_offset;
+        int32_t x = g1->xOffset;
         uint8_t* src = g1->offset;
         for (; width > 0; width--)
         {
@@ -835,8 +835,8 @@ void GfxInvalidatePickedUpPeep()
         auto* g1 = GfxGetG1Element(imageId);
         if (g1 != nullptr)
         {
-            int32_t left = gPickupPeepX + g1->x_offset;
-            int32_t top = gPickupPeepY + g1->y_offset;
+            int32_t left = gPickupPeepX + g1->xOffset;
+            int32_t top = gPickupPeepY + g1->yOffset;
             int32_t right = left + g1->width;
             int32_t bottom = top + g1->height;
             GfxSetDirtyBlocks({ { left, top }, { right, bottom } });
@@ -956,7 +956,7 @@ void UpdatePaletteEffects()
         const G1Element* g1 = GfxGetG1Element(palette);
         if (g1 != nullptr)
         {
-            int32_t xoffset = g1->x_offset;
+            int32_t xoffset = g1->xOffset;
 
             for (int32_t i = 0; i < g1->width; i++)
             {
@@ -985,7 +985,7 @@ void UpdatePaletteEffects()
             const G1Element* g1 = GfxGetG1Element(palette);
             if (g1 != nullptr)
             {
-                int32_t xoffset = g1->x_offset;
+                int32_t xoffset = g1->xOffset;
 
                 for (int32_t i = 0; i < g1->width; i++)
                 {

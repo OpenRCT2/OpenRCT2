@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../core/CallingConventions.h"
+#include "../core/FlagHolder.hpp"
 #include "../core/StringTypes.h"
 #include "../interface/Colour.h"
 #include "../interface/ZoomLevel.h"
@@ -45,54 +46,63 @@ namespace OpenRCT2::Drawing
     struct IDrawingEngine;
 }
 
+enum class G1Flag : uint8_t
+{
+    hasTransparency, // Image data contains transparent pixels (0XFF) which will not be rendered
+    one,
+    hasRLECompression, // Image data is encoded using RCT2's form of run length encoding
+    isPalette,         // Image data is a sequence of palette entries R8G8B8
+    hasZoomSprite,     // Use a different sprite for higher zoom levels
+    noZoomDraw,        // Does not get drawn at higher zoom levels (only zoom 0)
+};
+using G1Flags = FlagHolder<uint16_t, G1Flag>;
+
 struct G1Element
 {
     uint8_t* offset = nullptr; // 0x00
-    int16_t width = 0;         // 0x04
-    int16_t height = 0;        // 0x06
-    int16_t x_offset = 0;      // 0x08
-    int16_t y_offset = 0;      // 0x0A
-    uint16_t flags = 0;        // 0x0C
-    int32_t zoomed_offset = 0; // 0x0E
+    union
+    {
+        int16_t width = 0;  // 0x04
+        int16_t numColours; // If G1Flag::isPalette is set
+    };
+    int16_t height = 0; // 0x06
+    union
+    {
+        int16_t xOffset = 0; // 0x08
+        int16_t startIndex;  // If G1Flag::isPalette is set
+    };
+    int16_t yOffset = 0;      // 0x0A
+    G1Flags flags = {};       // 0x0C
+    int32_t zoomedOffset = 0; // 0x0E
 };
 
 #pragma pack(push, 1)
-struct RCTG1Header
+struct G1Header
 {
-    uint32_t num_entries = 0;
-    uint32_t total_size = 0;
+    uint32_t numEntries = 0;
+    uint32_t totalSize = 0;
 };
-static_assert(sizeof(RCTG1Header) == 8);
+static_assert(sizeof(G1Header) == 8);
 #pragma pack(pop)
 
 struct Gx
 {
-    RCTG1Header header;
+    G1Header header;
     std::vector<G1Element> elements;
     std::unique_ptr<uint8_t[]> data;
 };
 
-struct RCTG1Element
+struct StoredG1Element
 {
-    uint32_t offset;        // 0x00 note: uint32_t always!
-    int16_t width;          // 0x04
-    int16_t height;         // 0x06
-    int16_t x_offset;       // 0x08
-    int16_t y_offset;       // 0x0A
-    uint16_t flags;         // 0x0C
-    uint16_t zoomed_offset; // 0x0E
+    uint32_t offset;       // 0x00 note: uint32_t always!
+    int16_t width;         // 0x04
+    int16_t height;        // 0x06
+    int16_t xOffset;       // 0x08
+    int16_t yOffset;       // 0x0A
+    G1Flags flags;         // 0x0C
+    uint16_t zoomedOffset; // 0x0E
 };
-static_assert(sizeof(RCTG1Element) == 0x10);
-
-enum
-{
-    G1_FLAG_HAS_TRANSPARENCY = (1 << 0), // Image data contains transparent pixels (0XFF) which will not be rendered
-    G1_FLAG_1 = (1 << 1),
-    G1_FLAG_RLE_COMPRESSION = (1 << 2), // Image data is encoded using RCT2's form of run length encoding
-    G1_FLAG_PALETTE = (1 << 3),         // Image data is a sequence of palette entries R8G8B8
-    G1_FLAG_HAS_ZOOM_SPRITE = (1 << 4), // Use a different sprite for higher zoom levels
-    G1_FLAG_NO_ZOOM_DRAW = (1 << 5),    // Does not get drawn at higher zoom levels (only zoom 0)
-};
+static_assert(sizeof(StoredG1Element) == 0x10);
 
 using DrawBlendOp = uint8_t;
 

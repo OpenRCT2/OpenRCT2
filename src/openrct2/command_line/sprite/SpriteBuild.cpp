@@ -53,8 +53,8 @@ namespace OpenRCT2::CommandLine::Sprite
         // keep sprite file entirely in memory until ready to write out a complete,
         // correct file
         SpriteFile spriteFile;
-        spriteFile.Header.num_entries = 0;
-        spriteFile.Header.total_size = 0;
+        spriteFile.Header.numEntries = 0;
+        spriteFile.Header.totalSize = 0;
 
         fprintf(stdout, "Building: %s\n", spriteFilePath);
 

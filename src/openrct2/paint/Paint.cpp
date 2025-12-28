@@ -107,8 +107,8 @@ static void PaintSessionAddPSToQuadrant(PaintSession& session, PaintStruct* ps)
 
 static constexpr bool imageWithinDPI(const ScreenCoordsXY& imagePos, const G1Element& g1, const RenderTarget& rt)
 {
-    const int32_t left = imagePos.x + g1.x_offset;
-    const int32_t bottom = imagePos.y + g1.y_offset;
+    const int32_t left = imagePos.x + g1.xOffset;
+    const int32_t bottom = imagePos.y + g1.yOffset;
 
     const int32_t right = left + g1.width;
     const int32_t top = bottom + g1.height;

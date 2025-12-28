@@ -1498,7 +1498,7 @@ namespace OpenRCT2
         uint8_t* index = g1->offset + (y * g1->width) + x;
 
         // Needs investigation as it has no consideration for pure BMP maps.
-        if (!(g1->flags & G1_FLAG_HAS_TRANSPARENCY))
+        if (!g1->flags.has(G1Flag::hasTransparency))
         {
             return false;
         }
@@ -1560,16 +1560,16 @@ namespace OpenRCT2
 
         if (rt.zoom_level > ZoomLevel{ 0 })
         {
-            if (g1->flags & G1_FLAG_NO_ZOOM_DRAW)
+            if (g1->flags.has(G1Flag::noZoomDraw))
             {
                 return false;
             }
 
-            while (g1->flags & G1_FLAG_HAS_ZOOM_SPRITE && zoomLevel > ZoomLevel{ 0 })
+            while (g1->flags.has(G1Flag::hasZoomSprite) && zoomLevel > ZoomLevel{ 0 })
             {
-                imageId = imageId.WithIndex(imageId.GetIndex() - g1->zoomed_offset);
+                imageId = imageId.WithIndex(imageId.GetIndex() - g1->zoomedOffset);
                 g1 = GfxGetG1Element(imageId);
-                if (g1 == nullptr || g1->flags & G1_FLAG_NO_ZOOM_DRAW)
+                if (g1 == nullptr || g1->flags.has(G1Flag::noZoomDraw))
                 {
                     return false;
                 }
@@ -1581,8 +1581,8 @@ namespace OpenRCT2
             }
         }
 
-        origin.x += g1->x_offset;
-        origin.y += g1->y_offset;
+        origin.x += g1->xOffset;
+        origin.y += g1->yOffset;
         interactionPoint -= origin;
 
         if (interactionPoint.x < 0 || interactionPoint.y < 0 || interactionPoint.x >= g1->width
@@ -1591,12 +1591,12 @@ namespace OpenRCT2
             return false;
         }
 
-        if (g1->flags & G1_FLAG_RLE_COMPRESSION)
+        if (g1->flags.has(G1Flag::hasRLECompression))
         {
             return IsPixelPresentRLE(g1->offset, interactionPoint.x, interactionPoint.y);
         }
 
-        if (!(g1->flags & G1_FLAG_1))
+        if (!g1->flags.has(G1Flag::one))
         {
             return IsPixelPresentBMP(imageType, g1, interactionPoint.x, interactionPoint.y, paletteMap);
         }

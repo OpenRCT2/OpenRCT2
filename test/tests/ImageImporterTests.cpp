@@ -48,9 +48,9 @@ TEST_F(ImageImporterTests, Import_Logo)
     ASSERT_EQ(result.Buffer.data(), result.Element.offset);
     ASSERT_EQ(128, result.Element.width);
     ASSERT_EQ(128, result.Element.height);
-    ASSERT_EQ(3, result.Element.x_offset);
-    ASSERT_EQ(5, result.Element.y_offset);
-    ASSERT_EQ(0, result.Element.zoomed_offset);
+    ASSERT_EQ(3, result.Element.xOffset);
+    ASSERT_EQ(5, result.Element.yOffset);
+    ASSERT_EQ(0, result.Element.zoomedOffset);
 
     // Check to ensure RLE data doesn't change unexpectedly.
     // Update expected hash if change is expected.
