@@ -670,6 +670,12 @@ namespace OpenRCT2::Dropdown
         return StringItem(ItemType::plain, LanguageGetString(stringId));
     }
 
+    Item PlainMenuLabel(StringId format, const Formatter& ft)
+    {
+        auto string = FormatStringIDLegacy(format, ft.Data());
+        return StringItem(ItemType::plain, string.c_str());
+    }
+
     Item ToggleOption(StringId stringId)
     {
         return StringItem(ItemType::toggle, LanguageGetString(stringId));

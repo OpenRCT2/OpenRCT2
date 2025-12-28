@@ -1012,16 +1012,16 @@ static StringId window_cheats_page_titles[] = {
                         fmt.Add<uint32_t>(weatherType.first);
                         fmt.Add<StringId>(weatherType.second);
 
-                        gDropdown.items[i] = Dropdown::MenuLabel(StringId(7017), fmt);
+                        gDropdown.items[i] = Dropdown::PlainMenuLabel(StringId(7017), fmt);
                         i++;
                     }
 
                     WindowDropdownShowTextCustomWidth(
-                        { windowPos.x + dropdownWidget.left, windowPos.y + dropdownWidget.bottom }, 0, colours[1], 22,
-                        Dropdown::Flag::CustomHeight, std::size(kWeatherTypes), dropdownWidget.width() + 34);
+                        { windowPos.x - 30 + dropdownWidget.left, windowPos.y + dropdownWidget.bottom }, 0, colours[1], 22,
+                        Dropdown::Flag::CustomHeight, std::size(kWeatherTypes), dropdownWidget.width() + 26);
 
-                    auto currentWeather = getGameState().weatherCurrent.weatherType;
-                    gDropdown.items[EnumValue(currentWeather)].setChecked(true);
+                    // auto currentWeather = getGameState().weatherCurrent.weatherType;
+                    // gDropdown.items[EnumValue(currentWeather)].setChecked(true);
                 }
             }
         }
