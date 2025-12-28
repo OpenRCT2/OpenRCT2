@@ -16,6 +16,7 @@
 #include <bit>
 #include <ctime>
 #include <optional>
+#include <sfl/static_vector.hpp>
 #include <vector>
 
 #ifdef _WIN32
@@ -60,6 +61,49 @@ struct TTFFontDescriptor;
 
 namespace OpenRCT2::Platform
 {
+    struct SteamGameData
+    {
+        u8string nativeFolder;
+        uint32_t appId;
+        uint32_t depotId;
+    };
+    const SteamGameData kSteamRCT1Data = {
+        .nativeFolder = u8"Rollercoaster Tycoon Deluxe",
+        .appId = 285310,
+        .depotId = 285311,
+    };
+    const SteamGameData kSteamRCT2Data = {
+        .nativeFolder = u8"Rollercoaster Tycoon 2",
+        .appId = 285330,
+        .depotId = 285331,
+    };
+    const SteamGameData kSteamRCTCData = {
+        .nativeFolder = u8"RollerCoaster Tycoon Classic",
+        .appId = 683900,
+        .depotId = 683901,
+    };
+
+    struct SteamPaths
+    {
+        sfl::static_vector<u8string, 5> roots{};
+        /**
+         * Used by native applications and applications installed through Steam Play.
+         */
+        u8string nativeFolder{};
+        /**
+         * Used by applications downloaded through download_depot. Most likely used on macOS and Linux,
+         * though technically possible on Windows too.
+         */
+        u8string downloadDepotFolder{};
+        /**
+         * Directory that contains the manifests to trigger a download.
+         */
+        u8string manifests{};
+
+        bool isSteamPresent() const;
+        u8string getDownloadDepotFolder(u8string_view steamroot, const SteamGameData& data) const;
+    };
+
     constexpr u8string_view kRCTClassicWindowsDataFolder = u8"Assets";
     // clang-format off
     constexpr u8string_view kRCTClassicMacOSDataFolder =
@@ -101,7 +145,8 @@ namespace OpenRCT2::Platform
 
     std::string GetUsername();
 
-    std::string GetSteamPath();
+    SteamPaths GetSteamPaths();
+    bool triggerSteamDownload();
 #if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__)) || defined(__FreeBSD__) || defined(__NetBSD__)
     std::string GetEnvironmentPath(const char* name);
     std::string GetHomePath();
@@ -138,9 +183,6 @@ namespace OpenRCT2::Platform
 
     bool LockSingleInstance();
 
-    u8string GetRCT1SteamDir();
-    u8string GetRCT2SteamDir();
-    u8string GetRCTClassicSteamDir();
     datetime64 GetDatetimeNowUTC();
     uint32_t GetTicks();
 

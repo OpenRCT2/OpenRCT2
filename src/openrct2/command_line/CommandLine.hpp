@@ -125,5 +125,6 @@ namespace OpenRCT2
         exitcode_t HandleCommandDefault();
 
         exitcode_t HandleCommandUri(CommandLineArgEnumerator* enumerator);
+        exitcode_t HandleCommandTriggerSteamDownload(CommandLineArgEnumerator* enumerator);
     } // namespace CommandLine
 } // namespace OpenRCT2

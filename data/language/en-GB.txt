@@ -3843,3 +3843,6 @@ STR_7010    :Could not start replay, file ‘{STRING}’ doesn’t exist or isn�
 STR_7011    :Could not start replay
 STR_7012    :Polish Złoty (PLN)
 STR_7013    :Drag areas of path
+STR_7014    :I own the game on Steam, but I haven’t installed it yet.
+STR_7015    :Please close Steam if it’s running, then click ‘OK’.
+STR_7016    :OpenRCT2 has tried to trigger a download in Steam. Please open Steam and let it download the game. When Steam is finished, click ‘OK’.
