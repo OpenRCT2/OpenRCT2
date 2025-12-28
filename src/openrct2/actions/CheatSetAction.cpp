@@ -704,7 +704,7 @@ namespace OpenRCT2::GameActions
                     break;
                 case OBJECT_UMBRELLA:
                     peep->GiveItem(ShopItem::umbrella);
-                    peep->UmbrellaColour = ScenarioRandMax(kColourNumOriginal);
+                    peep->UmbrellaColour = ScenarioRandMax(kColourNumNormal);
                     peep->UpdateAnimationGroup();
                     break;
             }
