@@ -219,26 +219,26 @@ static constexpr uint16_t kPaletteToG1Offset[kPaletteTotalOffsets] = {
     SPR_PALETTE_VOID,
 
     // Additional palettes
-    SPR_PALETTE_WATER,      // paletteWater (water)
-    SPR_PALETTE_3100,       // paletteLandMarker0
-    SPR_PALETTE_3101,       // paletteLandMarker1
-    SPR_PALETTE_3102,       // paletteLandMarker2
-    SPR_PALETTE_3103,       // paletteLandMarker3
-    SPR_PALETTE_3104,       // paletteSceneryGroundMarker
-    SPR_PALETTE_3106,       // paletteWaterMarker
-    SPR_PALETTE_3107,       // paletteQuarterMarker0
-    SPR_PALETTE_3108,       // paletteQuarterMarker1
-    SPR_PALETTE_3109,       // paletteQuarterMarker2
-    SPR_PALETTE_3110,       // paletteQuarterMarker3
-    SPR_PALETTE_3105,       // paletteRideGroundMarker
-    SPR_PALETTE_4948,       // paletteGhost
-    SPR_PALETTE_4949,       // palette45
-    SPR_PALETTE_4950,       // palette46
-    SPR_PALETTE_DARKEN_3,   // PaletteDarken3
-    SPR_PALETTE_4952,       // Decreases contrast
-    SPR_PALETTE_DARKEN_1,   // PaletteDarken1
-    SPR_PALETTE_DARKEN_2,   // PaletteDarken2 (construction marker)
-    SPR_PALETTE_4955,       // Palette51
+    SPR_PALETTE_WATER,
+    SPR_PALETTE_LAND_MARKER_0,
+    SPR_PALETTE_LAND_MARKER_1,
+    SPR_PALETTE_LAND_MARKER_2,
+    SPR_PALETTE_LAND_MARKER_3,
+    SPR_PALETTE_SCENERY_GROUND_MARKER,
+    SPR_PALETTE_WATER_MARKER,
+    SPR_PALETTE_QUARTER_MARKER_0,
+    SPR_PALETTE_QUARTER_MARKER_1,
+    SPR_PALETTE_QUARTER_MARKER_2,
+    SPR_PALETTE_QUARTER_MARKER_3,
+    SPR_PALETTE_RIDE_GROUND_MARKER,
+    SPR_PALETTE_GHOST,
+    SPR_PALETTE_45,
+    SPR_PALETTE_46,
+    SPR_PALETTE_DARKEN_3,
+    SPR_PALETTE_DECREASED_CONTRAST,
+    SPR_PALETTE_DARKEN_1,
+    SPR_PALETTE_DARKEN_2,
+    SPR_PALETTE_51,
 
     // Translucent remap palettes
     SPR_PALETTE_TRANSLUCENT_GREY,
