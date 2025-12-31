@@ -1008,7 +1008,8 @@ namespace OpenRCT2::RCT1
 
             // Maintenance
             dst->buildDate = static_cast<int32_t>(src->buildDate);
-            dst->inspectionInterval = src->inspectionInterval;
+            auto clampedInspectionInterval = std::clamp<uint8_t>(src->inspectionInterval, 0, EnumValue(RideInspection::never));
+            dst->inspectionInterval = static_cast<RideInspection>(clampedInspectionInterval);
             dst->lastInspection = src->lastInspection;
             dst->reliability = src->reliability;
             dst->unreliabilityFactor = src->unreliabilityFactor;

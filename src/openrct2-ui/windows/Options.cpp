@@ -1947,7 +1947,8 @@ namespace OpenRCT2::Ui::Windows
                     }
 
                     ShowDropdown(widget, 7);
-                    gDropdown.items[Config::Get().general.defaultInspectionInterval].setChecked(true);
+                    auto selectedIndex = EnumValue(Config::Get().general.defaultInspectionInterval);
+                    gDropdown.items[selectedIndex].setChecked(true);
                     break;
             }
         }
@@ -1975,9 +1976,9 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 }
                 case WIDX_DEFAULT_INSPECTION_INTERVAL_DROPDOWN:
-                    if (dropdownIndex != Config::Get().general.defaultInspectionInterval)
+                    if (dropdownIndex != EnumValue(Config::Get().general.defaultInspectionInterval))
                     {
-                        Config::Get().general.defaultInspectionInterval = static_cast<uint8_t>(dropdownIndex);
+                        Config::Get().general.defaultInspectionInterval = static_cast<RideInspection>(dropdownIndex);
                         Config::Save();
                         invalidate();
                     }
@@ -2040,8 +2041,8 @@ namespace OpenRCT2::Ui::Windows
 
             setCheckboxValue(WIDX_SCENARIO_UNLOCKING, Config::Get().general.scenarioUnlockingEnabled);
 
-            widgets[WIDX_DEFAULT_INSPECTION_INTERVAL].text = kRideInspectionIntervalNames
-                [Config::Get().general.defaultInspectionInterval];
+            auto selectedIndex = EnumValue(Config::Get().general.defaultInspectionInterval);
+            widgets[WIDX_DEFAULT_INSPECTION_INTERVAL].text = kRideInspectionIntervalNames[selectedIndex];
         }
 
 #pragma endregion

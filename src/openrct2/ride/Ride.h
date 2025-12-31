@@ -62,6 +62,17 @@ constexpr money64 kRideMaxPrice = 20.00_GBP;
 
 extern const StringId kRideInspectionIntervalNames[];
 
+enum class RideInspection : uint8_t
+{
+    every10Minutes,
+    every20Minutes,
+    every30Minutes,
+    every45Minutes,
+    everyHour,
+    every2Hours,
+    never,
+};
+
 enum class RideTestingFlag : uint8_t
 {
     sheltered,
@@ -282,7 +293,7 @@ struct Ride
     uint8_t unreliabilityFactor{};
     // Range from [0, 100]
     uint8_t downtime{};
-    uint8_t inspectionInterval{};
+    RideInspection inspectionInterval{};
     uint8_t lastInspection{};
     uint8_t downtimeHistory[OpenRCT2::Limits::kDowntimeHistorySize]{};
     uint32_t numPrimaryItemsSold{};
@@ -359,7 +370,6 @@ public:
     void renew();
     void remove();
     void crash(uint8_t vehicleIndex);
-    void setToDefaultInspectionInterval();
     void setRideEntry(OpenRCT2::ObjectEntryIndex entryIndex);
 
     void setNumTrains(int32_t newNumTrains);
@@ -778,17 +788,6 @@ enum
     WAIT_FOR_LOAD_ANY,
 
     WAIT_FOR_LOAD_COUNT,
-};
-
-enum
-{
-    RIDE_INSPECTION_EVERY_10_MINUTES,
-    RIDE_INSPECTION_EVERY_20_MINUTES,
-    RIDE_INSPECTION_EVERY_30_MINUTES,
-    RIDE_INSPECTION_EVERY_45_MINUTES,
-    RIDE_INSPECTION_EVERY_HOUR,
-    RIDE_INSPECTION_EVERY_2_HOURS,
-    RIDE_INSPECTION_NEVER
 };
 
 // Flags used by ride->windowInvalidateFlags

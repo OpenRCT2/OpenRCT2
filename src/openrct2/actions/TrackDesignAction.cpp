@@ -27,10 +27,12 @@
 
 namespace OpenRCT2::GameActions
 {
-    TrackDesignAction::TrackDesignAction(const CoordsXYZD& location, const TrackDesign& td, bool placeScenery)
+    TrackDesignAction::TrackDesignAction(
+        const CoordsXYZD& location, const TrackDesign& td, bool placeScenery, RideInspection inspectionInterval)
         : _loc(location)
         , _td(td)
         , _placeScenery(placeScenery)
+        , _inspectionInterval(inspectionInterval)
     {
     }
 
@@ -52,6 +54,7 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_loc);
         _td.Serialise(stream);
         stream << DS_TAG(_placeScenery);
+        stream << DS_TAG(_inspectionInterval);
     }
 
     Result TrackDesignAction::Query(GameState_t& gameState) const
@@ -67,6 +70,12 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_OFF_EDGE_OF_MAP);
         }
 
+        if (_inspectionInterval > RideInspection::never)
+        {
+            LOG_ERROR("Invalid inspection interval: %u", EnumValue(_inspectionInterval));
+            return Result(Status::invalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_ERR_VALUE_OUT_OF_RANGE);
+        }
+
         auto& objManager = GetContext()->GetObjectManager();
         auto entryIndex = objManager.GetLoadedObjectEntryIndex(_td.trackAndVehicle.vehicleObject);
         if (entryIndex == kObjectEntryIndexNull)
@@ -80,7 +89,8 @@ namespace OpenRCT2::GameActions
         }
 
         // Colours do not matter as will be overwritten
-        auto rideCreateAction = RideCreateAction(_td.trackAndVehicle.rtdIndex, entryIndex, 0, 0, gameState.lastEntranceStyle);
+        auto rideCreateAction = RideCreateAction(
+            _td.trackAndVehicle.rtdIndex, entryIndex, 0, 0, gameState.lastEntranceStyle, _inspectionInterval);
         rideCreateAction.SetFlags(GetFlags());
         auto r = ExecuteNested(&rideCreateAction, gameState);
         if (r.error != Status::ok)
@@ -150,7 +160,8 @@ namespace OpenRCT2::GameActions
         }
 
         // Colours do not matter as will be overwritten
-        auto rideCreateAction = RideCreateAction(_td.trackAndVehicle.rtdIndex, entryIndex, 0, 0, gameState.lastEntranceStyle);
+        auto rideCreateAction = RideCreateAction(
+            _td.trackAndVehicle.rtdIndex, entryIndex, 0, 0, gameState.lastEntranceStyle, _inspectionInterval);
         rideCreateAction.SetFlags(GetFlags());
         auto r = ExecuteNested(&rideCreateAction, gameState);
         if (r.error != Status::ok)
@@ -235,10 +246,6 @@ namespace OpenRCT2::GameActions
 
         auto numCircuits = std::max<uint8_t>(1, _td.operation.numCircuits);
         SetOperatingSettingNested(ride->id, RideSetSetting::NumCircuits, numCircuits, flags);
-
-        uint8_t defaultInspectionInterval = Config::Get().general.defaultInspectionInterval;
-        if (defaultInspectionInterval <= RIDE_INSPECTION_NEVER)
-            SetOperatingSettingNested(ride->id, RideSetSetting::InspectionInterval, defaultInspectionInterval, flags);
 
         ride->lifecycleFlags |= RIDE_LIFECYCLE_NOT_CUSTOM_DESIGN;
         ride->vehicleColourSettings = _td.appearance.vehicleColourSettings;

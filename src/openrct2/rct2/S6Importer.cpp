@@ -933,7 +933,8 @@ namespace OpenRCT2::RCT2
             dst->reliability = src->reliability;
             dst->unreliabilityFactor = src->unreliabilityFactor;
             dst->downtime = src->downtime;
-            dst->inspectionInterval = src->inspectionInterval;
+            auto clampedInspectionInterval = std::clamp<uint8_t>(src->inspectionInterval, 0, EnumValue(RideInspection::never));
+            dst->inspectionInterval = static_cast<RideInspection>(clampedInspectionInterval);
             dst->lastInspection = src->lastInspection;
 
             for (uint8_t i = 0; i < Limits::kDowntimeHistorySize; i++)

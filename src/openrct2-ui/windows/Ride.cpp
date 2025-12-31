@@ -3785,7 +3785,7 @@ namespace OpenRCT2::Ui::Windows
                         { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height(),
                         colours[1], 0, Dropdown::Flag::StayOpen, 7, widgets[widgetIndex].right - dropdownWidget->left);
 
-                    gDropdown.items[ride->inspectionInterval].setChecked(true);
+                    gDropdown.items[EnumValue(ride->inspectionInterval)].setChecked(true);
                     break;
 
                 case WIDX_FORCE_BREAKDOWN:
@@ -3984,7 +3984,7 @@ namespace OpenRCT2::Ui::Windows
             auto ft = Formatter::Common();
             ride->formatNameTo(ft);
 
-            widgets[WIDX_INSPECTION_INTERVAL].text = kRideInspectionIntervalNames[ride->inspectionInterval];
+            widgets[WIDX_INSPECTION_INTERVAL].text = kRideInspectionIntervalNames[EnumValue(ride->inspectionInterval)];
 
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_10);
 

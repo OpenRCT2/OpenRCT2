@@ -98,7 +98,7 @@ namespace OpenRCT2::GameActions
                 }
                 break;
             case RideSetSetting::InspectionInterval:
-                if (_value > RIDE_INSPECTION_NEVER)
+                if (_value > EnumValue(RideInspection::never))
                 {
                     LOG_ERROR("Invalid inspection interval: %u", _value);
                     return Result(Status::invalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_ERR_VALUE_OUT_OF_RANGE);
@@ -190,12 +190,12 @@ namespace OpenRCT2::GameActions
                 break;
             case RideSetSetting::InspectionInterval:
 
-                if (_value == RIDE_INSPECTION_NEVER)
+                if (_value == EnumValue(RideInspection::never))
                 {
                     ride->lifecycleFlags &= ~RIDE_LIFECYCLE_DUE_INSPECTION;
                 }
 
-                ride->inspectionInterval = _value;
+                ride->inspectionInterval = static_cast<RideInspection>(_value);
                 break;
             case RideSetSetting::Music:
                 ride->lifecycleFlags &= ~RIDE_LIFECYCLE_MUSIC;

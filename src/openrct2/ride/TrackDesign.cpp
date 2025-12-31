@@ -31,6 +31,7 @@
 #include "../actions/WallPlaceAction.h"
 #include "../actions/WallRemoveAction.h"
 #include "../audio/Audio.h"
+#include "../config/Config.h"
 #include "../core/DataSerialiser.h"
 #include "../core/File.h"
 #include "../core/Numerics.hpp"
@@ -1859,7 +1860,8 @@ int32_t TrackDesignGetZPlacement(const TrackDesign& td, Ride& ride, const Coords
 static money64 TrackDesignCreateRide(int32_t type, int32_t subType, CommandFlags flags, RideId* outRideIndex)
 {
     // Don't set colours as will be set correctly later.
-    auto gameAction = GameActions::RideCreateAction(type, subType, 0, 0, getGameState().lastEntranceStyle);
+    auto gameAction = GameActions::RideCreateAction(
+        type, subType, 0, 0, getGameState().lastEntranceStyle, Config::Get().general.defaultInspectionInterval);
     gameAction.SetFlags(flags);
 
     auto& gameState = getGameState();
