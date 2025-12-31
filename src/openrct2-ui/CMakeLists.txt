@@ -209,6 +209,8 @@ if(MACOS_BUNDLE)
         list(APPEND BUNDLE_RESOURCES ${CMAKE_BINARY_DIR}/fonts.dat)
         target_sources(openrct2 PUBLIC ${CMAKE_BINARY_DIR}/tracks.dat)
         list(APPEND BUNDLE_RESOURCES ${CMAKE_BINARY_DIR}/tracks.dat)
+        target_sources(openrct2 PUBLIC ${CMAKE_BINARY_DIR}/palettes.dat)
+        list(APPEND BUNDLE_RESOURCES ${CMAKE_BINARY_DIR}/palettes.dat)
     endif()
 
 
