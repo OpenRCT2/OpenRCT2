@@ -9,6 +9,7 @@
 
 #include "ImageImporter.h"
 
+#include "../core/Guard.hpp"
 #include "../core/Imaging.h"
 #include "../core/Json.hpp"
 
@@ -57,6 +58,53 @@ namespace OpenRCT2::Drawing
         result.Buffer = std::move(buffer);
         result.Element.offset = result.Buffer.data();
         return result;
+    }
+
+    PaletteImportResult ImageImporter::importJSONPalette(json_t& jPalette) const
+    {
+        Guard::Assert(jPalette.is_object(), "ImageImporter::importJSONPalette expects parameter jPalette to be object");
+
+        auto jColours = jPalette["colours"];
+        auto numColours = jColours.size();
+
+        std::vector<BGRColour> buffer;
+        buffer.reserve(numColours);
+
+        for (auto& jColour : jColours)
+        {
+            BGRColour colour{};
+            if (jColour.is_string())
+            {
+                colour = parseJSONPaletteColour(Json::GetString(jColour));
+            }
+            buffer.push_back(colour);
+        }
+
+        G1Palette outElement = {};
+        outElement.numColours = static_cast<int16_t>(numColours);
+        outElement.startIndex = Json::GetNumber<int16_t>(jPalette["index"]);
+        outElement.flags = { G1Flag::isPalette };
+
+        PaletteImportResult result;
+        result.element = outElement;
+        result.buffer = std::move(buffer);
+        result.element.palette = result.buffer.data();
+        return result;
+    }
+
+    BGRColour ImageImporter::parseJSONPaletteColour(const std::string& s) const
+    {
+        uint8_t r = 0;
+        uint8_t g = 0;
+        uint8_t b = 0;
+        if (s[0] == '#' && s.size() == 7)
+        {
+            // Expect #RRGGBB
+            r = std::stoul(s.substr(1, 2), nullptr, 16) & 0xFF;
+            g = std::stoul(s.substr(3, 2), nullptr, 16) & 0xFF;
+            b = std::stoul(s.substr(5, 2), nullptr, 16) & 0xFF;
+        }
+        return { b, g, r };
     }
 
     std::vector<int32_t> ImageImporter::GetPixels(const Image& image, const ImageImportMeta& meta)
