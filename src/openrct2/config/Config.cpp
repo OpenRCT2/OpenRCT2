@@ -30,6 +30,7 @@
 #include "../paint/VirtualFloor.h"
 #include "../platform/Platform.h"
 #include "../rct1/Csg.h"
+#include "../ride/Ride.h"
 #include "../scenario/Scenario.h"
 #include "../ui/UiContext.h"
 #include "ConfigEnum.hpp"
@@ -131,6 +132,16 @@ namespace OpenRCT2::Config
         ConfigEnumEntry<VirtualFloorStyles>("GLASSY", VirtualFloorStyles::Glassy),
     });
 
+    static const auto Enum_RideInspectionInterval = ConfigEnum<RideInspection>({
+        ConfigEnumEntry<RideInspection>("EVERY_10_MINUTES", RideInspection::every10Minutes),
+        ConfigEnumEntry<RideInspection>("EVERY_20_MINUTES", RideInspection::every20Minutes),
+        ConfigEnumEntry<RideInspection>("EVERY_30_MINUTES", RideInspection::every30Minutes),
+        ConfigEnumEntry<RideInspection>("EVERY_45_MINUTES", RideInspection::every45Minutes),
+        ConfigEnumEntry<RideInspection>("EVERY_HOUR", RideInspection::everyHour),
+        ConfigEnumEntry<RideInspection>("EVERY_2_HOURS", RideInspection::every2Hours),
+        ConfigEnumEntry<RideInspection>("NEVER", RideInspection::never),
+    });
+
     /**
      * Config enum wrapping LanguagesDescriptors.
      */
@@ -204,7 +215,8 @@ namespace OpenRCT2::Config
             model->dateFormat = reader->GetEnum<int32_t>("date_format", Platform::GetLocaleDateFormat(), Enum_DateFormat);
             model->autoStaffPlacement = reader->GetBoolean("auto_staff", true);
             model->handymenMowByDefault = reader->GetBoolean("handymen_mow_default", false);
-            model->defaultInspectionInterval = reader->GetInt32("default_inspection_interval", 2);
+            model->defaultInspectionInterval = reader->GetEnum<RideInspection>(
+                "default_inspection_interval", RideInspection::every30Minutes, Enum_RideInspectionInterval);
             model->lastRunVersion = reader->GetString("last_run_version", "");
             model->invertViewportDrag = reader->GetBoolean("invert_viewport_drag", false);
             model->loadSaveSort = reader->GetEnum<FileBrowserSort>(
@@ -309,7 +321,8 @@ namespace OpenRCT2::Config
         writer->WriteEnum<int32_t>("date_format", model->dateFormat, Enum_DateFormat);
         writer->WriteBoolean("auto_staff", model->autoStaffPlacement);
         writer->WriteBoolean("handymen_mow_default", model->handymenMowByDefault);
-        writer->WriteInt32("default_inspection_interval", model->defaultInspectionInterval);
+        writer->WriteEnum<RideInspection>(
+            "default_inspection_interval", model->defaultInspectionInterval, Enum_RideInspectionInterval);
         writer->WriteString("last_run_version", model->lastRunVersion);
         writer->WriteBoolean("invert_viewport_drag", model->invertViewportDrag);
         writer->WriteEnum<FileBrowserSort>("load_save_sort", model->loadSaveSort, Enum_FileBrowserSort);

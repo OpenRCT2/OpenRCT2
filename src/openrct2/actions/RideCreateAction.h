@@ -21,12 +21,13 @@ namespace OpenRCT2::GameActions
         ObjectEntryIndex _entranceObjectIndex{ kObjectEntryIndexNull };
         uint8_t _trackColourPreset{ COLOUR_NULL };
         uint8_t _vehicleColourPreset{ COLOUR_NULL };
+        RideInspection _inspectionInterval{ RideInspection::every30Minutes };
 
     public:
         RideCreateAction() = default;
         RideCreateAction(
             ride_type_t rideType, ObjectEntryIndex subType, uint8_t trackColourPreset, uint8_t vehicleColourPreset,
-            ObjectEntryIndex entranceStyleIndex);
+            ObjectEntryIndex entranceStyleIndex, RideInspection inspectionInterval);
 
         void AcceptParameters(GameActionParameterVisitor&) final;
 
