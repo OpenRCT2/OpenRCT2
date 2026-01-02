@@ -87,8 +87,7 @@ static constexpr CoordsXY kMetalSupportBoundBoxOffsets[] = {
     { 16, 28 },
 };
 
-/** rct2: 0x0097AF32 */
-static constexpr uint8_t kMetalSupportSegmentOffsets[] = {
+static constexpr std::array<uint8_t, kMetalSupportSkip> kMetalSupportSegmentOffsets0 = {
     5, 2, 5, 2, 5, 2, 5, 2,
     7, 1, 7, 1, 7, 1, 7, 1,
     6, 3, 6, 3, 6, 3, 6, 3,
@@ -98,7 +97,8 @@ static constexpr uint8_t kMetalSupportSegmentOffsets[] = {
     0, 3, 0, 3, 0, 3, 0, 3,
     3, 1, 3, 1, 3, 1, 3, 1,
     2, 0, 2, 0, 2, 0, 2, 0,
-
+};
+static constexpr std::array<uint8_t, kMetalSupportSkip> kMetalSupportSegmentOffsets1 = {
     6, 1, 6, 1, 6, 1, 6, 1,
     5, 0, 5, 0, 5, 0, 5, 0,
     8, 2, 8, 2, 8, 2, 8, 2,
@@ -108,7 +108,8 @@ static constexpr uint8_t kMetalSupportSegmentOffsets[] = {
     2, 1, 2, 1, 2, 1, 2, 1,
     1, 3, 1, 3, 1, 3, 1, 3,
     3, 2, 3, 2, 3, 2, 3, 2,
-
+};
+static constexpr std::array<uint8_t, kMetalSupportSkip> kMetalSupportSegmentOffsets2 = {
     1, 6, 1, 6, 1, 6, 1, 6,
     3, 5, 3, 5, 3, 5, 3, 5,
     0, 7, 0, 7, 0, 7, 0, 7,
@@ -118,7 +119,8 @@ static constexpr uint8_t kMetalSupportSegmentOffsets[] = {
     4, 2, 4, 2, 4, 2, 4, 2,
     4, 0, 4, 0, 4, 0, 4, 0,
     4, 3, 4, 3, 4, 3, 4, 3,
-
+};
+static constexpr std::array<uint8_t, kMetalSupportSkip> kMetalSupportSegmentOffsets3 = {
     2, 5, 2, 5, 2, 5, 2, 5,
     0, 4, 0, 4, 0, 4, 0, 4,
     3, 6, 3, 6, 3, 6, 3, 6,
@@ -128,6 +130,14 @@ static constexpr uint8_t kMetalSupportSegmentOffsets[] = {
     7, 6, 7, 6, 7, 6, 7, 6,
     6, 4, 6, 4, 6, 4, 6, 4,
     5, 7, 5, 7, 5, 7, 5, 7,
+};
+
+/** rct2: 0x0097AF32 */
+static constexpr std::array<std::array<uint8_t, kMetalSupportSkip>, 4> kMetalSupportSegmentOffsets = {
+    kMetalSupportSegmentOffsets0,
+    kMetalSupportSegmentOffsets1,
+    kMetalSupportSegmentOffsets2,
+    kMetalSupportSegmentOffsets3,
 };
 
 /** rct2: 0x0097B052, 0x0097B053 */
@@ -325,28 +335,18 @@ static bool MetalSupportsPaintSetupCommon(
             return false;
 
         uint16_t baseIndex = session.CurrentRotation * 2;
-        uint8_t newSegment = kMetalSupportSegmentOffsets[baseIndex + segment * 8];
-        if (currentHeight <= supportSegments[newSegment].height)
+        uint8_t attempt = 0;
+        uint8_t newSegment = 0;
+        for (; attempt < kMetalSupportSegmentOffsets.size(); attempt++)
         {
-            baseIndex += kMetalSupportSkip;
-            newSegment = kMetalSupportSegmentOffsets[baseIndex + segment * 8];
-            if (currentHeight <= supportSegments[newSegment].height)
-            {
-                baseIndex += kMetalSupportSkip;
-                newSegment = kMetalSupportSegmentOffsets[baseIndex + segment * 8];
-                if (currentHeight <= supportSegments[newSegment].height)
-                {
-                    baseIndex += kMetalSupportSkip;
-                    newSegment = kMetalSupportSegmentOffsets[baseIndex + segment * 8];
-                    if (currentHeight <= supportSegments[newSegment].height)
-                    {
-                        return false;
-                    }
-                }
-            }
-        }
+            newSegment = kMetalSupportSegmentOffsets[attempt][baseIndex + segment * 8];
+            if (currentHeight > supportSegments[newSegment].height)
+                break;
 
-        const uint8_t crossBeamIndex = kMetalSupportSegmentOffsets[baseIndex + segment * 8 + 1];
+            if (attempt == kMetalSupportSegmentOffsets.size() - 1)
+                return false;
+        }
+        const uint8_t crossBeamIndex = kMetalSupportSegmentOffsets[attempt][baseIndex + segment * 8 + 1];
         if constexpr (typeB)
         {
             if (crossBeamIndex >= kMetalSupportCrossbeamTwoSegmentOffsetIndex)
