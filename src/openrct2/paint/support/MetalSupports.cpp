@@ -21,8 +21,6 @@ using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
 using namespace OpenRCT2::Numerics;
 
-constexpr auto kMetalSupportSkip = 9 * 4 * 2;
-
 // There are 13 types of metal support graphics, including rotated versions. A graphic showing all of them is available here:
 // https://cloud.githubusercontent.com/assets/737603/19420485/7eaba28e-93ec-11e6-83cb-03190accc094.png
 enum class MetalSupportGraphic : uint8_t
@@ -87,53 +85,110 @@ static constexpr CoordsXY kMetalSupportBoundBoxOffsets[] = {
     { 16, 28 },
 };
 
-static constexpr std::array<uint8_t, kMetalSupportSkip> kMetalSupportSegmentOffsets0 = {
-    5, 2, 5, 2, 5, 2, 5, 2,
-    7, 1, 7, 1, 7, 1, 7, 1,
-    6, 3, 6, 3, 6, 3, 6, 3,
-    8, 0, 8, 0, 8, 0, 8, 0,
-    5, 3, 6, 0, 8, 1, 7, 2,
-    1, 2, 1, 2, 1, 2, 1, 2,
-    0, 3, 0, 3, 0, 3, 0, 3,
-    3, 1, 3, 1, 3, 1, 3, 1,
-    2, 0, 2, 0, 2, 0, 2, 0,
+struct RepositionPair
+{
+    MetalSupportPlace place;
+    uint8_t crossBeamIndex;
 };
-static constexpr std::array<uint8_t, kMetalSupportSkip> kMetalSupportSegmentOffsets1 = {
-    6, 1, 6, 1, 6, 1, 6, 1,
-    5, 0, 5, 0, 5, 0, 5, 0,
-    8, 2, 8, 2, 8, 2, 8, 2,
-    7, 3, 7, 3, 7, 3, 7, 3,
-    6, 0, 8, 1, 7, 2, 5, 3,
-    0, 0, 0, 0, 0, 0, 0, 0,
-    2, 1, 2, 1, 2, 1, 2, 1,
-    1, 3, 1, 3, 1, 3, 1, 3,
-    3, 2, 3, 2, 3, 2, 3, 2,
+struct RepositionRow
+{
+    std::array<RepositionPair, kNumOrthogonalDirections> pairs;
+    
+    constexpr RepositionRow(const RepositionPair pair)
+    {
+        pairs = { pair, pair, pair, pair };
+    }
+    
+    constexpr RepositionRow(const RepositionPair pair1, const RepositionPair pair2, const RepositionPair pair3, const RepositionPair pair4)
+    {
+        pairs = { pair1, pair2, pair3, pair4 };
+    }
+    
+    constexpr RepositionPair operator[](const Direction direction) const noexcept
+    {
+        return pairs[direction];
+    }
 };
-static constexpr std::array<uint8_t, kMetalSupportSkip> kMetalSupportSegmentOffsets2 = {
-    1, 6, 1, 6, 1, 6, 1, 6,
-    3, 5, 3, 5, 3, 5, 3, 5,
-    0, 7, 0, 7, 0, 7, 0, 7,
-    2, 4, 2, 4, 2, 4, 2, 4,
-    8, 1, 7, 2, 5, 3, 6, 0,
-    4, 1, 4, 1, 4, 1, 4, 1,
-    4, 2, 4, 2, 4, 2, 4, 2,
-    4, 0, 4, 0, 4, 0, 4, 0,
-    4, 3, 4, 3, 4, 3, 4, 3,
+
+constexpr uint8_t kNumMetalSupportPlaces = 9;
+using RepositionAttempt = std::array<RepositionRow, kNumMetalSupportPlaces>;
+
+static constexpr RepositionAttempt kMetalSupportSegmentOffsets0 = {
+    {
+        { { MetalSupportPlace::topLeftSide, 2 } },
+        { { MetalSupportPlace::bottomLeftSide, 1 } },
+        { { MetalSupportPlace::topRightSide, 3 } },
+        { { MetalSupportPlace::bottomRightSide, 0 } },
+        { 
+            { MetalSupportPlace::topLeftSide, 3 }, 
+            { MetalSupportPlace::topRightSide, 0 }, 
+            { MetalSupportPlace::bottomRightSide, 1 }, 
+            { MetalSupportPlace::bottomLeftSide, 2 } 
+        },
+        { { MetalSupportPlace::leftCorner, 2 } },
+        { { MetalSupportPlace::topCorner, 3 } },
+        { { MetalSupportPlace::bottomCorner, 1 } },
+        { { MetalSupportPlace::rightCorner, 0 } },
+    }
 };
-static constexpr std::array<uint8_t, kMetalSupportSkip> kMetalSupportSegmentOffsets3 = {
-    2, 5, 2, 5, 2, 5, 2, 5,
-    0, 4, 0, 4, 0, 4, 0, 4,
-    3, 6, 3, 6, 3, 6, 3, 6,
-    1, 7, 1, 7, 1, 7, 1, 7,
-    7, 2, 5, 3, 6, 0, 8, 1,
-    8, 5, 8, 5, 8, 5, 8, 5,
-    7, 6, 7, 6, 7, 6, 7, 6,
-    6, 4, 6, 4, 6, 4, 6, 4,
-    5, 7, 5, 7, 5, 7, 5, 7,
+
+static constexpr RepositionAttempt kMetalSupportSegmentOffsets1 = {
+{
+        { { MetalSupportPlace::topRightSide, 1 } },
+        { { MetalSupportPlace::topLeftSide, 0 } },
+        { { MetalSupportPlace::bottomRightSide, 2 } },
+        { { MetalSupportPlace::bottomLeftSide, 3 } },
+        { 
+            { MetalSupportPlace::topRightSide, 0 }, 
+            { MetalSupportPlace::bottomRightSide, 1}, 
+            { MetalSupportPlace::bottomLeftSide, 2}, 
+            { MetalSupportPlace::topLeftSide, 3 } 
+        },
+        { { MetalSupportPlace::topCorner, 0 } },
+        { { MetalSupportPlace::rightCorner, 1 } },
+        { { MetalSupportPlace::leftCorner, 3 } },
+        { { MetalSupportPlace::bottomCorner, 2 } },
+    }
+};
+static constexpr RepositionAttempt kMetalSupportSegmentOffsets2 = {
+    {
+        { { MetalSupportPlace::leftCorner, 6 } },
+        { { MetalSupportPlace::bottomCorner, 5 } },
+        { { MetalSupportPlace::topCorner, 7 } },
+        { { MetalSupportPlace::rightCorner, 4 } },
+        { 
+            { MetalSupportPlace::bottomRightSide, 1 }, 
+            { MetalSupportPlace::bottomLeftSide, 2 }, 
+            { MetalSupportPlace::topLeftSide, 3 }, 
+            { MetalSupportPlace::topRightSide, 0 } 
+        },
+        { { MetalSupportPlace::centre, 1 } }, 
+        { { MetalSupportPlace::centre, 2 } }, 
+        { { MetalSupportPlace::centre, 0 } }, 
+        { { MetalSupportPlace::centre, 3 } }, 
+    }
+};
+static constexpr RepositionAttempt kMetalSupportSegmentOffsets3 = {
+    {
+        { { MetalSupportPlace::rightCorner, 5 } }, 
+        { { MetalSupportPlace::topCorner, 4 } }, 
+        { { MetalSupportPlace::bottomCorner, 6 } }, 
+        { { MetalSupportPlace::leftCorner, 7 } }, 
+        { 
+            { MetalSupportPlace::bottomLeftSide, 2 },
+            { MetalSupportPlace::topLeftSide, 3 }, 
+            { MetalSupportPlace::topRightSide, 0 }, 
+            { MetalSupportPlace::bottomRightSide, 1 } 
+        },
+        { { MetalSupportPlace::bottomRightSide, 5 } },
+        { { MetalSupportPlace::bottomLeftSide, 6 } },
+        { { MetalSupportPlace::topRightSide, 4 } },
+        { { MetalSupportPlace::topLeftSide, 7 } },
+    }
 };
 
 /** rct2: 0x0097AF32 */
-static constexpr std::array<std::array<uint8_t, kMetalSupportSkip>, 4> kMetalSupportSegmentOffsets = {
+static constexpr std::array<RepositionAttempt, 4> kMetalSupportSegmentOffsets = {
     kMetalSupportSegmentOffsets0,
     kMetalSupportSegmentOffsets1,
     kMetalSupportSegmentOffsets2,
@@ -334,19 +389,18 @@ static bool MetalSupportsPaintSetupCommon(
         if (currentHeight < 0)
             return false;
 
-        uint16_t baseIndex = session.CurrentRotation * 2;
         uint8_t attempt = 0;
-        uint8_t newSegment = 0;
+        MetalSupportPlace newPlacement = MetalSupportPlace::centre;
         for (; attempt < kMetalSupportSegmentOffsets.size(); attempt++)
         {
-            newSegment = kMetalSupportSegmentOffsets[attempt][baseIndex + segment * 8];
-            if (currentHeight > supportSegments[newSegment].height)
+            newPlacement = kMetalSupportSegmentOffsets[attempt][segment][session.CurrentRotation].place;
+            if (currentHeight > supportSegments[EnumValue(newPlacement)].height)
                 break;
 
             if (attempt == kMetalSupportSegmentOffsets.size() - 1)
                 return false;
         }
-        const uint8_t crossBeamIndex = kMetalSupportSegmentOffsets[attempt][baseIndex + segment * 8 + 1];
+        const uint8_t crossBeamIndex = kMetalSupportSegmentOffsets[attempt][segment][session.CurrentRotation].crossBeamIndex;
         if constexpr (typeB)
         {
             if (crossBeamIndex >= kMetalSupportCrossbeamTwoSegmentOffsetIndex)
@@ -358,7 +412,7 @@ static bool MetalSupportsPaintSetupCommon(
             { kMetalSupportBoundBoxOffsets[segment] + kMetalSupportCrossBeamBoundBoxOffsets[crossBeamIndex], currentHeight },
             { kMetalSupportCrossBeamBoundBoxLengths[crossBeamIndex], 1 });
 
-        segment = newSegment;
+        segment = EnumValue(newPlacement);
     }
 
     const int16_t crossbeamHeight = currentHeight;
