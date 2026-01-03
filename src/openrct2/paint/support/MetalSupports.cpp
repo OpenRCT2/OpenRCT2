@@ -115,75 +115,75 @@ using RepositionAttempt = std::array<RepositionRow, kNumMetalSupportPlaces>;
 
 static constexpr RepositionAttempt kMetalSupportSegmentOffsets0 = {
     {
-        { { MetalSupportPlace::topLeftSide, 2 } },
-        { { MetalSupportPlace::bottomLeftSide, 1 } },
-        { { MetalSupportPlace::topRightSide, 3 } },
-        { { MetalSupportPlace::bottomRightSide, 0 } },
-        { 
-            { MetalSupportPlace::topLeftSide, 3 }, 
-            { MetalSupportPlace::topRightSide, 0 }, 
-            { MetalSupportPlace::bottomRightSide, 1 }, 
-            { MetalSupportPlace::bottomLeftSide, 2 } 
-        },
-        { { MetalSupportPlace::leftCorner, 2 } },
-        { { MetalSupportPlace::topCorner, 3 } },
-        { { MetalSupportPlace::bottomCorner, 1 } },
-        { { MetalSupportPlace::rightCorner, 0 } },
+         { { MetalSupportPlace::topLeftSide, 2 } },     /* topCorner          */
+         { { MetalSupportPlace::bottomLeftSide, 1 } },  /* leftCorner         */
+         { { MetalSupportPlace::topRightSide, 3 } },    /* rightCorner        */
+         { { MetalSupportPlace::bottomRightSide, 0 } }, /* bottomCorner       */
+         {                                               
+             { MetalSupportPlace::topLeftSide, 3 },            /* centre, rotation 0 */
+             { MetalSupportPlace::topRightSide, 0 },           /* centre, rotation 1 */
+             { MetalSupportPlace::bottomRightSide, 1 },        /* centre, rotation 2 */
+             { MetalSupportPlace::bottomLeftSide, 2 }          /* centre, rotation 3 */
+         },                                             
+         { { MetalSupportPlace::leftCorner, 2 } },      /* topLeftSide        */
+         { { MetalSupportPlace::topCorner, 3 } },       /* topRightSide       */
+         { { MetalSupportPlace::bottomCorner, 1 } },    /* bottomLeftSide     */
+         { { MetalSupportPlace::rightCorner, 0 } },     /* bottomRightSide    */
     }
 };
 
 static constexpr RepositionAttempt kMetalSupportSegmentOffsets1 = {
 {
-        { { MetalSupportPlace::topRightSide, 1 } },
-        { { MetalSupportPlace::topLeftSide, 0 } },
-        { { MetalSupportPlace::bottomRightSide, 2 } },
-        { { MetalSupportPlace::bottomLeftSide, 3 } },
-        { 
-            { MetalSupportPlace::topRightSide, 0 }, 
-            { MetalSupportPlace::bottomRightSide, 1}, 
-            { MetalSupportPlace::bottomLeftSide, 2}, 
-            { MetalSupportPlace::topLeftSide, 3 } 
-        },
-        { { MetalSupportPlace::topCorner, 0 } },
-        { { MetalSupportPlace::rightCorner, 1 } },
-        { { MetalSupportPlace::leftCorner, 3 } },
-        { { MetalSupportPlace::bottomCorner, 2 } },
+         { { MetalSupportPlace::topRightSide, 1 } },    /* topCorner          */
+         { { MetalSupportPlace::topLeftSide, 0 } },     /* leftCorner         */
+         { { MetalSupportPlace::bottomRightSide, 2 } }, /* rightCorner        */
+         { { MetalSupportPlace::bottomLeftSide, 3 } },  /* bottomCorner       */
+         { 
+             { MetalSupportPlace::topRightSide, 0 },           /* centre, rotation 0 */
+             { MetalSupportPlace::bottomRightSide, 1},         /* centre, rotation 1 */
+             { MetalSupportPlace::bottomLeftSide, 2},          /* centre, rotation 2 */
+             { MetalSupportPlace::topLeftSide, 3 }             /* centre, rotation 3 */
+         },
+         { { MetalSupportPlace::topCorner, 0 } },       /* topLeftSide        */
+         { { MetalSupportPlace::rightCorner, 1 } },     /* topRightSide       */
+         { { MetalSupportPlace::leftCorner, 3 } },      /* bottomLeftSide     */
+         { { MetalSupportPlace::bottomCorner, 2 } },    /* bottomRightSide    */
     }
 };
 static constexpr RepositionAttempt kMetalSupportSegmentOffsets2 = {
     {
-        { { MetalSupportPlace::leftCorner, 6 } },
-        { { MetalSupportPlace::bottomCorner, 5 } },
-        { { MetalSupportPlace::topCorner, 7 } },
-        { { MetalSupportPlace::rightCorner, 4 } },
-        { 
-            { MetalSupportPlace::bottomRightSide, 1 }, 
-            { MetalSupportPlace::bottomLeftSide, 2 }, 
-            { MetalSupportPlace::topLeftSide, 3 }, 
-            { MetalSupportPlace::topRightSide, 0 } 
-        },
-        { { MetalSupportPlace::centre, 1 } }, 
-        { { MetalSupportPlace::centre, 2 } }, 
-        { { MetalSupportPlace::centre, 0 } }, 
-        { { MetalSupportPlace::centre, 3 } }, 
+         { { MetalSupportPlace::leftCorner, 6 } },      /* topCorner          */ 
+         { { MetalSupportPlace::bottomCorner, 5 } },    /* leftCorner         */
+         { { MetalSupportPlace::topCorner, 7 } },       /* rightCorner        */
+         { { MetalSupportPlace::rightCorner, 4 } },     /* bottomCorner       */
+         {                                               
+             { MetalSupportPlace::bottomRightSide, 1 },        /* centre, rotation 0 */ 
+             { MetalSupportPlace::bottomLeftSide, 2 },         /* centre, rotation 1 */
+             { MetalSupportPlace::topLeftSide, 3 },            /* centre, rotation 2 */
+             { MetalSupportPlace::topRightSide, 0 }            /* centre, rotation 3 */
+         },                                             
+         { { MetalSupportPlace::centre, 1 } },          /* topLeftSide        */
+         { { MetalSupportPlace::centre, 2 } },          /* topRightSide       */
+         { { MetalSupportPlace::centre, 0 } },          /* bottomLeftSide     */
+         { { MetalSupportPlace::centre, 3 } },          /* bottomRightSide    */
     }
 };
 static constexpr RepositionAttempt kMetalSupportSegmentOffsets3 = {
     {
-        { { MetalSupportPlace::rightCorner, 5 } }, 
-        { { MetalSupportPlace::topCorner, 4 } }, 
-        { { MetalSupportPlace::bottomCorner, 6 } }, 
-        { { MetalSupportPlace::leftCorner, 7 } }, 
-        { 
-            { MetalSupportPlace::bottomLeftSide, 2 },
-            { MetalSupportPlace::topLeftSide, 3 }, 
-            { MetalSupportPlace::topRightSide, 0 }, 
-            { MetalSupportPlace::bottomRightSide, 1 } 
-        },
-        { { MetalSupportPlace::bottomRightSide, 5 } },
-        { { MetalSupportPlace::bottomLeftSide, 6 } },
-        { { MetalSupportPlace::topRightSide, 4 } },
-        { { MetalSupportPlace::topLeftSide, 7 } },
+         { { MetalSupportPlace::rightCorner, 5 } },     /* topCorner          */
+         { { MetalSupportPlace::topCorner, 4 } },       /* leftCorner         */
+         { { MetalSupportPlace::bottomCorner, 6 } },    /* rightCorner        */
+         { { MetalSupportPlace::leftCorner, 7 } },      /* bottomCorner       */
+         {                                               
+             { MetalSupportPlace::bottomLeftSide, 2 },         /* centre, rotation 0 */
+             { MetalSupportPlace::topLeftSide, 3 },            /* centre, rotation 1 */
+             { MetalSupportPlace::topRightSide, 0 },           /* centre, rotation 2 */
+             { MetalSupportPlace::bottomRightSide, 1 }         /* centre, rotation 3 */
+         },                                             
+         { { MetalSupportPlace::bottomRightSide, 5 } }, /* topLeftSide        */
+         { { MetalSupportPlace::bottomLeftSide, 6 } },  /* topRightSide       */
+         { { MetalSupportPlace::topRightSide, 4 } },    /* bottomLeftSide     */
+         { { MetalSupportPlace::topLeftSide, 7 } },     /* bottomRightSide    */
     }
 };
 
