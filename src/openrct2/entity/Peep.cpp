@@ -1279,12 +1279,9 @@ void PeepUpdateDaysInQueue()
 {
     for (auto peep : EntityList<Guest>())
     {
-        if (!peep->OutsideOfPark && peep->State == PeepState::queuing)
+        if (!peep->OutsideOfPark && (peep->State == PeepState::queuing))
         {
-            if (peep->DaysInQueue < 255)
-            {
-                peep->DaysInQueue += 1;
-            }
+            peep->DaysInQueue = AddClamp<uint8_t>(peep->DaysInQueue, 1);
         }
     }
 }
