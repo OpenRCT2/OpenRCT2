@@ -1,27 +1,65 @@
+openrct2 (0.4.30-develop-1) unstable; urgency=medium
+
+ * Improved: [#24912] Staff now use an appropriate standing animation while waiting at level crossings.
+ * Improved: [#25515] Path dragging can now be disabled via multiplayer group permissions.
+ * Improved: [#25529] The map selection grid no longer redraws every frame if it has not changed.
+ * Improved: [#25530] Wall dragging can now be cancelled without closing the Scenery window.
+ * Improved: [#25575] Updated the network protocol to a new format that supports larger packets, allowing clients to connect reliably to servers with many objects or large maps.
+ * Improved: [#25621] Added the Polish Złoty (PLN) to the list of available currencies.
+ * Improved: [#25625] Renewing and refurbishing rides now also resets the downtime.
+ * Improved: [#25662] The sprite build command is faster when building sprites from the same image file.
+ * Change: [#21912] Toilet income is now categorised as shop sales instead of ride tickets.
+ * Change: [#25403] Guests will not slide down the Spiral Slide if it's broken, even if they have already entered the ride structure.
+ * Change: [#25485] Make the enlarged pressed swatch sprite more pronounced.
+ * Change: [#25544] The default game window size is now 1280×720px instead of 640×480px.
+ * Fix: [#9895] Stand-up coaster gets wrong intensity boost from the synchronisation bonus.
+ * Fix: [#11617] Path corner connections are broken when hovering track design ghosts with paths over them in zero clearances.
+ * Fix: [#22484] Lingering ghost entrance after placing park entrance.
+ * Fix: [#24952] Duplicate track designs when running via Steam without having RCT1 linked.
+ * Fix: [#25187] On-ride photo platform does not render as ghost when placing track design.
+ * Fix: [#25229] Excessive logging of game actions, reduced to top-level game actions and filters ghost related ones.
+ * Fix: [#25469] Drawing in the ui.imageManager.draw callback causes an assertion.
+ * Fix: [#25524] The track construction arrow does not immediately change position when deleting track pieces.
+ * Fix: [#25552] Clear Scenery does not show an error message about insufficient money if cash is negative.
+ * Fix: [#25565] Chairlift station ends are missing tunnels at certain rotations.
+ * Fix: [#25569] Placing park entrances in multiplayer does not show for other players, causing desyncs.
+ * Fix: [#25571] Potential crash due to drawing a Crooked House ride.
+ * Fix: [#25588] When the master server becomes unreachable the server would not register again until a restart.
+ * Fix: [#25592] Log flume, river rapids, & splash boats can get control failure breakdown instead of brakes failure.
+ * Fix: [#25595] Invisible entrance is added to imported SV4 saves.
+ * Fix: [#25601] Inspection interval of a ride gets reset when opening the construction window.
+ * Fix: [#25628] Availability of AVX2 and SSE4.1 is not detected correctly.
+ * Fix: [#25639] Scenery window crashes when a no longer present object is still selected.
+ * Fix: [#25641] Desync because of mismatching inspection intervals.
+ * Fix: [#25642] The selection marker for purchasing land rights is not drawn with the correct colours.
+ * Fix: [#25646] It is possible to remove scenery and paths when setting staff patrol areas and purchasing land.
+ * Fix: [#25660] After saving a track design with scenery, that ride’s entrances and exits are visible in ‘Highlight path issues’ mode.
+ * Fix: [#25717] Umbrellas given to guests by means of cheats do not use the full (extended) range of colours.
+
 openrct2 (0.4.29-develop-1) unstable; urgency=medium
 
-* Feature: [#25459] Wall line dragging tool.
-* Improved: [#25028] Stalls now support colour presets, just like regular rides.
-* Improved: [#25426] Building the track designs index is now quicker.
-* Improved: [#25490] The ‘New Ride’ window can now be resized.
-* Fix: [#6228] The saved queue line path connections are not preserved when placing track designs (original bug).
-* Fix: [#14365] Track designs with scenery below the lowest track piece do not preview correctly.
-* Fix: [#25451] Dropdown item tooltips stay open if the mouse is moved over an empty space.
-* Fix: [#25454] Opening the land tool while building a path bridge or tunnel closes the Footpaths window.
-* Fix: [#25461] Path connections in raised track designs are sometimes broken when placed.
-* Fix: [#25467] Paths are not connected together correctly in track design previews.
-* Fix: [#25476] When both RCT2 and RCT1 are present, autodetection fails.
-* Fix: [#25480] The mini track design preview and price are misaligned in Enlarged UI mode.
-* Fix: [#25488] Crash in headless mode.
-* Fix: [#25494] The Go-Karts steep to flat track does not draw correctly in the flat side tunnel.
-* Fix: [#25518] The virtual floor does not draw correctly if expanded on the positive x and y axes.
-* Fix: [#25519] Crackling audio when sampling frequencies do not match.
-* Fix: [objects#401] Round tunnels on down slopes glitch.
-* Fix: [objects#404] Wooden Wild Mine cars incorrectly allow setting a third remap colour.
-* Fix: [objects#408] Australian fountain sets have confusing naming.
-* Fix: [objects#409] LIM Launched Coaster trains incorrectly have a 10% intensity modifier set (original bug).
-* Fix: [objects#410] Large scenery from the Wacky Worlds Africa theming have incorrect previews when using specific versions of the RCT2 base game.
-* Fix: [objects#415] Penguin bobsleigh trains show incorrect sprites on the 12° down slope (original bug).
+ * Feature: [#25459] Wall line dragging tool.
+ * Improved: [#25028] Stalls now support colour presets, just like regular rides.
+ * Improved: [#25426] Building the track designs index is now quicker.
+ * Improved: [#25490] The ‘New Ride’ window can now be resized.
+ * Fix: [#6228] The saved queue line path connections are not preserved when placing track designs (original bug).
+ * Fix: [#14365] Track designs with scenery below the lowest track piece do not preview correctly.
+ * Fix: [#25451] Dropdown item tooltips stay open if the mouse is moved over an empty space.
+ * Fix: [#25454] Opening the land tool while building a path bridge or tunnel closes the Footpaths window.
+ * Fix: [#25461] Path connections in raised track designs are sometimes broken when placed.
+ * Fix: [#25467] Paths are not connected together correctly in track design previews.
+ * Fix: [#25476] When both RCT2 and RCT1 are present, autodetection fails.
+ * Fix: [#25480] The mini track design preview and price are misaligned in Enlarged UI mode.
+ * Fix: [#25488] Crash in headless mode.
+ * Fix: [#25494] The Go-Karts steep to flat track does not draw correctly in the flat side tunnel.
+ * Fix: [#25518] The virtual floor does not draw correctly if expanded on the positive x and y axes.
+ * Fix: [#25519] Crackling audio when sampling frequencies do not match.
+ * Fix: [objects#401] Round tunnels on down slopes glitch.
+ * Fix: [objects#404] Wooden Wild Mine cars incorrectly allow setting a third remap colour.
+ * Fix: [objects#408] Australian fountain sets have confusing naming.
+ * Fix: [objects#409] LIM Launched Coaster trains incorrectly have a 10% intensity modifier set (original bug).
+ * Fix: [objects#410] Large scenery from the Wacky Worlds Africa theming have incorrect previews when using specific versions of the RCT2 base game.
+ * Fix: [objects#415] Penguin bobsleigh trains show incorrect sprites on the 12° down slope (original bug).
 
 openrct2 (0.4.28-develop-1) unstable; urgency=medium
 
