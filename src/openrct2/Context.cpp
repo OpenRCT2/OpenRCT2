@@ -19,6 +19,7 @@
 #include "Game.h"
 #include "GameState.h"
 #include "GameStateSnapshots.h"
+#include "Input.h"
 #include "OpenRCT2.h"
 #include "ParkImporter.h"
 #include "PlatformEnvironment.h"
@@ -42,6 +43,7 @@
 #include "drawing/Image.h"
 #include "drawing/LightFX.h"
 #include "entity/EntityTweener.h"
+#include "entity/PatrolArea.h"
 #include "interface/Chat.h"
 #include "interface/StdInOutConsole.h"
 #include "interface/Viewport.h"
@@ -72,6 +74,7 @@
 #include "ui/UiContext.h"
 #include "ui/WindowManager.h"
 #include "world/MapAnimation.h"
+#include "world/MapSelection.h"
 
 #include <chrono>
 #include <cmath>
@@ -535,9 +538,8 @@ namespace OpenRCT2
                 Drawing::LightFx::Init();
             }
 
-            ViewportInitAll();
-
             ContextInit();
+            ResetSubsystems();
 
             if (!gOpenRCT2Headless)
             {
@@ -555,6 +557,28 @@ namespace OpenRCT2
             }
 
             return true;
+        }
+
+        /**
+         *  rct2: 0x006E6EAC
+         */
+        void ResetSubsystems() override
+        {
+            if (!gOpenRCT2NoGraphics)
+            {
+                ColoursInitMaps();
+            }
+
+            WindowInitAll();
+
+            gInputFlags.clearAll();
+            InputSetState(InputState::Reset);
+            gPressedWidget.windowClassification = WindowClass::null;
+            gPickupPeepImage = ImageId();
+            ResetTooltipNotShown();
+            gMapSelectFlags.clearAll();
+            ClearPatrolAreaToRender();
+            TextinputCancel();
         }
 
     private:
@@ -1217,7 +1241,7 @@ namespace OpenRCT2
 
             if (!gOpenRCT2Headless)
             {
-                _preloaderScene->SetOnComplete([&]() { SwitchToStartUpScene(); });
+                GetPreloaderScene()->SetOnComplete([&]() { SwitchToStartUpScene(); });
             }
             else
             {
@@ -1600,6 +1624,11 @@ namespace OpenRCT2
     void ContextInit()
     {
         GetWindowManager()->Init();
+    }
+
+    void ContextResetSubsystems()
+    {
+        GetContext()->ResetSubsystems();
     }
 
     bool ContextLoadParkFromStream(void* stream)

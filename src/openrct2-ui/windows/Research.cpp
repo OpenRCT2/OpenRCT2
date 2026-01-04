@@ -246,7 +246,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void onDraw(RenderTarget& rt) override
+        void onDraw(Drawing::RenderTarget& rt) override
         {
             drawWidgets(rt);
             DrawTabImages(rt);
@@ -266,7 +266,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void DrawTabImage(RenderTarget& rt, int32_t tabPage, int32_t spriteIndex)
+        void DrawTabImage(Drawing::RenderTarget& rt, int32_t tabPage, int32_t spriteIndex)
         {
             WidgetIndex widgetIndex = WIDX_TAB_1 + tabPage;
 
@@ -286,7 +286,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void DrawTabImages(RenderTarget& rt)
+        void DrawTabImages(Drawing::RenderTarget& rt)
         {
             DrawTabImage(rt, WINDOW_RESEARCH_PAGE_DEVELOPMENT, SPR_TAB_FINANCES_RESEARCH_0);
             DrawTabImage(rt, WINDOW_RESEARCH_PAGE_FUNDING, SPR_TAB_FINANCES_SUMMARY_0);
@@ -340,7 +340,7 @@ namespace OpenRCT2::Ui::Windows
         }
     }
 
-    void WindowResearchDevelopmentDraw(WindowBase* w, RenderTarget& rt, WidgetIndex baseWidgetIndex)
+    void WindowResearchDevelopmentDraw(WindowBase* w, Drawing::RenderTarget& rt, WidgetIndex baseWidgetIndex)
     {
         const auto& gameState = getGameState();
 
@@ -573,7 +573,7 @@ namespace OpenRCT2::Ui::Windows
         }
     }
 
-    void WindowResearchFundingDraw(WindowBase* w, RenderTarget& rt)
+    void WindowResearchFundingDraw(WindowBase* w, Drawing::RenderTarget& rt)
     {
         const auto& gameState = getGameState();
         if (gameState.park.flags & PARK_FLAGS_NO_MONEY)

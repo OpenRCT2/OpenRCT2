@@ -75,7 +75,7 @@ Vehicle* CableLiftSegmentCreate(
     z += ride.getRideTypeDescriptor().Heights.VehicleZOffset;
 
     current->MoveTo({ 16, 16, z });
-    current->SetTrackType(TrackElemType::CableLiftHill);
+    current->SetTrackType(TrackElemType::cableLiftHill);
     current->SetTrackDirection(current->Orientation >> 3);
     current->track_progress = 164;
     current->Flags = VehicleFlags::CollisionDisabled;
@@ -242,7 +242,7 @@ bool Vehicle::CableLiftUpdateTrackMotionForwards()
     for (; remaining_distance >= 13962; _vehicleUnkF64E10++)
     {
         auto trackType = GetTrackType();
-        if (trackType == TrackElemType::CableLiftHill && track_progress == 160)
+        if (trackType == TrackElemType::cableLiftHill && track_progress == 160)
         {
             _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_1;
         }
@@ -323,8 +323,8 @@ bool Vehicle::CableLiftUpdateTrackMotionBackwards()
 
             // Doesn't check for diagonal block brakes because there is no diagonal cable lift piece,
             // no way for a cable lift to start from a diagonal brake.
-            if (output.begin_element->AsTrack()->GetTrackType() == TrackElemType::EndStation
-                || output.begin_element->AsTrack()->GetTrackType() == TrackElemType::BlockBrakes)
+            if (output.begin_element->AsTrack()->GetTrackType() == TrackElemType::endStation
+                || output.begin_element->AsTrack()->GetTrackType() == TrackElemType::blockBrakes)
             {
                 _vehicleMotionTrackFlags = VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_STATION;
             }

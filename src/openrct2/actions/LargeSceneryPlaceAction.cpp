@@ -242,7 +242,7 @@ namespace OpenRCT2::GameActions
 
             banner->text = {};
             banner->colour = 2;
-            banner->textColour = TextColour::white;
+            banner->textColour = Drawing::TextColour::white;
             banner->flags = { BannerFlag::isLargeScenery };
             banner->type = 0;
             banner->position = TileCoordsXY(_loc);
@@ -287,7 +287,7 @@ namespace OpenRCT2::GameActions
             const auto clearanceData = canBuild.getData<ConstructClearResult>();
             resultData.GroundFlags = clearanceData.GroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
 
-            if (!(GetFlags().has(CommandFlag::ghost)))
+            if (!GetFlags().has(CommandFlag::ghost))
             {
                 FootpathRemoveLitter({ curTile, zLow });
                 if (!getGameState().cheats.disableClearanceChecks)

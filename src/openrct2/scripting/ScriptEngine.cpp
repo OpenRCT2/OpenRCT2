@@ -537,18 +537,18 @@ void ScriptEngine::RegisterConstants()
 {
     ConstantBuilder builder(_context);
     builder.Namespace("TrackSlope")
-        .Constant("None", EnumValue(TrackPitch::None))
-        .Constant("Up25", EnumValue(TrackPitch::Up25))
-        .Constant("Up60", EnumValue(TrackPitch::Up60))
-        .Constant("Down25", EnumValue(TrackPitch::Down25))
-        .Constant("Down60", EnumValue(TrackPitch::Down60))
-        .Constant("Up90", EnumValue(TrackPitch::Up90))
-        .Constant("Down90", EnumValue(TrackPitch::Down90));
+        .Constant("None", EnumValue(TrackPitch::none))
+        .Constant("Up25", EnumValue(TrackPitch::up25))
+        .Constant("Up60", EnumValue(TrackPitch::up60))
+        .Constant("Down25", EnumValue(TrackPitch::down25))
+        .Constant("Down60", EnumValue(TrackPitch::down60))
+        .Constant("Up90", EnumValue(TrackPitch::up90))
+        .Constant("Down90", EnumValue(TrackPitch::down90));
     builder.Namespace("TrackBanking")
-        .Constant("None", EnumValue(TrackRoll::None))
-        .Constant("BankLeft", EnumValue(TrackRoll::Left))
-        .Constant("BankRight", EnumValue(TrackRoll::Right))
-        .Constant("UpsideDown", EnumValue(TrackRoll::UpsideDown));
+        .Constant("None", EnumValue(TrackRoll::none))
+        .Constant("BankLeft", EnumValue(TrackRoll::left))
+        .Constant("BankRight", EnumValue(TrackRoll::right))
+        .Constant("UpsideDown", EnumValue(TrackRoll::upsideDown));
 }
 
 void ScriptEngine::RefreshPlugins()

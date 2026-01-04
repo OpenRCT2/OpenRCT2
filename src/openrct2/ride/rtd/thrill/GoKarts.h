@@ -21,7 +21,7 @@ namespace OpenRCT2
 constexpr RideTypeDescriptor GoKartsRTD =
 {
     .Category = RideCategory::thrill,
-    .StartTrackPiece = TrackElemType::EndStation,
+    .StartTrackPiece = TrackElemType::endStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::goKarts,
         .supportType = WoodenSupportType::truss,

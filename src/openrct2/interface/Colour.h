@@ -98,18 +98,20 @@ enum
 
 enum PaletteIndex : uint8_t
 {
-    pi0 = 0,     // Transparent
-    pi10 = 10,   // Black (0-dark), Dark grey (0)
-    pi11 = 11,   // Black (middark)
-    pi12 = 12,   // Black (midlight), Dark grey (1-darkest)
-    pi14 = 14,   // Black (lighter), Dark grey (dark)
-    pi13 = 13,   //
-    pi16 = 16,   //
-    pi17 = 17,   // Black (11), Dark grey (light), White (dark)
+    pi0 = 0,   // Transparent
+    pi10 = 10, // Black (0-dark), Dark grey (0)
+    pi11 = 11, // Black (middark)
+    pi12 = 12, // Black (midlight), Dark grey (1-darkest)
+    pi14 = 14, // Black (lighter), Dark grey (dark)
+    pi13 = 13, //
+    pi16 = 16, //
+    pi17 = 17, // Black (11), Dark grey (light), White (dark)
+    pi18 = 18,
     pi20 = 20,   // Dark grey (10), White (light)
     pi21 = 21,   // Dark grey (11), White (lighter-11)
     pi40 = 40,   //
     pi42 = 42,   // Light Brown (lighter), Saturated brown (11)
+    pi43 = 43,   //
     pi44 = 44,   // Construction marker
     pi46 = 46,   // Tertiary remap 0  / Yellow (darkest)
     pi47 = 47,   // Tertiary remap 1  / Yellow
@@ -126,6 +128,7 @@ enum PaletteIndex : uint8_t
     pi61 = 61,   // Bordeaux Red (darker)
     pi62 = 62,   //
     pi68 = 68,   //
+    pi69 = 69,   //
     pi73 = 73,   //
     pi99 = 99,   //
     pi102 = 102, // Bright green (lighter)
@@ -135,17 +138,22 @@ enum PaletteIndex : uint8_t
     pi135 = 135, //
     pi136 = 136, // Dark Blue (10-11), Light Blue (midlight), Icy Blue (darker)
     pi138 = 138, // Light Blue (lighter), Icy Blue (middark)
+    pi139 = 139,
     pi141 = 141, //
     pi144 = 144, // Dark Green (1-darkest,
+    pi152 = 152,
     pi161 = 161, // Bright Purple (light)
     pi162 = 162, //
+    pi164 = 164, //
     pi171 = 171, // Saturated Red (lightest) Bright Red (middark)
     pi172 = 172, // Saturated Red (10-11), Bright Red (midlight)
     pi173 = 173, // Used to draw intense lines in the Ride Graphs window
     pi183 = 183, // Used to draw rides in the Map window
     pi186 = 186, //
+    pi187 = 187, //
     pi194 = 194, //
     pi195 = 195, //
+    pi199 = 199, //
     pi202 = 202, // Secondary remap 0  / Pink (darkest)
     pi203 = 203, // Secondary remap 1  / Pink
     pi204 = 204, // Secondary remap 2  / Pink
@@ -159,6 +167,7 @@ enum PaletteIndex : uint8_t
     pi212 = 212, // Secondary remap 10 / Pink
     pi213 = 213, // Secondary remap 11 / Pink (lightest)
     pi222 = 222, //
+    pi223 = 223, //
     pi230 = 230, // Water (waves)
     pi231 = 231, // Water (waves)
     pi232 = 232, // Water (waves)

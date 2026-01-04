@@ -4,7 +4,7 @@
 
 #include <cstdint>
 
-namespace OpenRCT2
+namespace OpenRCT2::Drawing
 {
     enum class TextColour : uint8_t
     {
@@ -24,4 +24,13 @@ namespace OpenRCT2
         paleSilver = 13,
     };
     constexpr size_t kNumTextColours = 14;
-} // namespace OpenRCT2
+
+    struct TextColours
+    {
+        PaletteIndex fill{};
+        PaletteIndex sunnyOutline{};
+        PaletteIndex shadowOutline{};
+    };
+
+    TextColours getTextColourMapping(TextColour textColour);
+} // namespace OpenRCT2::Drawing

@@ -46,7 +46,7 @@ namespace OpenRCT2::CommandLine::Sprite
             return -1;
         }
 
-        const uint32_t maxIndex = spriteFile->Header.num_entries;
+        const uint32_t maxIndex = spriteFile->Header.numEntries;
         const int32_t numbers = static_cast<int32_t>(std::floor(std::log10(maxIndex) + 1));
 
         std::ostringstream oss; // TODO: Remove when C++20 is enabled and std::format can be used

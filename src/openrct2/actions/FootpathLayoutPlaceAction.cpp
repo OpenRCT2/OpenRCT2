@@ -104,7 +104,7 @@ namespace OpenRCT2::GameActions
         res.expenditure = ExpenditureType::landscaping;
         res.position = _loc.ToTileCentre();
 
-        if (!(GetFlags().has(CommandFlag::ghost)))
+        if (!GetFlags().has(CommandFlag::ghost))
         {
             FootpathInterruptPeeps(_loc);
         }
@@ -191,7 +191,7 @@ namespace OpenRCT2::GameActions
     {
         bool entrancePath = false, entranceIsSamePath = false;
 
-        if (!(GetFlags().hasAny(CommandFlag::allowDuringPaused, CommandFlag::ghost)))
+        if (!GetFlags().hasAny(CommandFlag::allowDuringPaused, CommandFlag::ghost))
         {
             FootpathRemoveLitter(_loc);
         }
@@ -247,7 +247,7 @@ namespace OpenRCT2::GameActions
 
         if (entrancePath)
         {
-            if (!(GetFlags().has(CommandFlag::ghost)) && !entranceIsSamePath)
+            if (!GetFlags().has(CommandFlag::ghost) && !entranceIsSamePath)
             {
                 if (_constructFlags & PathConstructFlag::IsLegacyPathObject)
                 {

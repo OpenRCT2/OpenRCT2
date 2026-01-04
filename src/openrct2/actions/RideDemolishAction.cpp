@@ -14,7 +14,7 @@
 #include "../Diagnostic.h"
 #include "../GameState.h"
 #include "../core/MemoryStream.h"
-#include "../drawing/Drawing.h"
+#include "../drawing/ScrollingText.h"
 #include "../entity/EntityList.h"
 #include "../management/NewsItem.h"
 #include "../peep/RideUseSystem.h"
@@ -171,7 +171,7 @@ namespace OpenRCT2::GameActions
         windowMgr->BroadcastIntent(Intent(INTENT_ACTION_REFRESH_RIDE_LIST));
         windowMgr->BroadcastIntent(Intent(INTENT_ACTION_REFRESH_GUEST_LIST));
 
-        ScrollingTextInvalidate();
+        Drawing::ScrollingText::invalidate();
         GfxInvalidateScreen();
 
         return res;
@@ -179,7 +179,7 @@ namespace OpenRCT2::GameActions
 
     money64 RideDemolishAction::MazeRemoveTrack(GameState_t& gameState, const CoordsXYZD& coords) const
     {
-        auto setMazeTrack = MazeSetTrackAction(coords, false, _rideIndex, GC_SET_MAZE_TRACK_FILL);
+        auto setMazeTrack = MazeSetTrackAction(coords, false, _rideIndex, MazeBuildMode::fill);
         setMazeTrack.SetFlags(GetFlags());
 
         auto execRes = ExecuteNested(&setMazeTrack, gameState);
@@ -224,7 +224,7 @@ namespace OpenRCT2::GameActions
                     const auto location = CoordsXYZD(tileCoords, trackElement->GetBaseZ(), trackElement->GetDirection());
                     const auto type = trackElement->GetTrackType();
 
-                    if (type != TrackElemType::Maze)
+                    if (type != TrackElemType::maze)
                     {
                         auto trackRemoveAction = TrackRemoveAction(type, trackElement->GetSequenceIndex(), location);
                         trackRemoveAction.SetFlags({ CommandFlag::noSpend });

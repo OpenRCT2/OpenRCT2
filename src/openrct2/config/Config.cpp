@@ -30,6 +30,7 @@
 #include "../paint/VirtualFloor.h"
 #include "../platform/Platform.h"
 #include "../rct1/Csg.h"
+#include "../ride/Ride.h"
 #include "../scenario/Scenario.h"
 #include "../ui/UiContext.h"
 #include "ConfigEnum.hpp"
@@ -131,6 +132,16 @@ namespace OpenRCT2::Config
         ConfigEnumEntry<VirtualFloorStyles>("GLASSY", VirtualFloorStyles::Glassy),
     });
 
+    static const auto Enum_RideInspectionInterval = ConfigEnum<RideInspection>({
+        ConfigEnumEntry<RideInspection>("EVERY_10_MINUTES", RideInspection::every10Minutes),
+        ConfigEnumEntry<RideInspection>("EVERY_20_MINUTES", RideInspection::every20Minutes),
+        ConfigEnumEntry<RideInspection>("EVERY_30_MINUTES", RideInspection::every30Minutes),
+        ConfigEnumEntry<RideInspection>("EVERY_45_MINUTES", RideInspection::every45Minutes),
+        ConfigEnumEntry<RideInspection>("EVERY_HOUR", RideInspection::everyHour),
+        ConfigEnumEntry<RideInspection>("EVERY_2_HOURS", RideInspection::every2Hours),
+        ConfigEnumEntry<RideInspection>("NEVER", RideInspection::never),
+    });
+
     /**
      * Config enum wrapping LanguagesDescriptors.
      */
@@ -204,7 +215,8 @@ namespace OpenRCT2::Config
             model->dateFormat = reader->GetEnum<int32_t>("date_format", Platform::GetLocaleDateFormat(), Enum_DateFormat);
             model->autoStaffPlacement = reader->GetBoolean("auto_staff", true);
             model->handymenMowByDefault = reader->GetBoolean("handymen_mow_default", false);
-            model->defaultInspectionInterval = reader->GetInt32("default_inspection_interval", 2);
+            model->defaultInspectionInterval = reader->GetEnum<RideInspection>(
+                "default_inspection_interval", RideInspection::every30Minutes, Enum_RideInspectionInterval);
             model->lastRunVersion = reader->GetString("last_run_version", "");
             model->invertViewportDrag = reader->GetBoolean("invert_viewport_drag", false);
             model->loadSaveSort = reader->GetEnum<FileBrowserSort>(
@@ -309,7 +321,8 @@ namespace OpenRCT2::Config
         writer->WriteEnum<int32_t>("date_format", model->dateFormat, Enum_DateFormat);
         writer->WriteBoolean("auto_staff", model->autoStaffPlacement);
         writer->WriteBoolean("handymen_mow_default", model->handymenMowByDefault);
-        writer->WriteInt32("default_inspection_interval", model->defaultInspectionInterval);
+        writer->WriteEnum<RideInspection>(
+            "default_inspection_interval", model->defaultInspectionInterval, Enum_RideInspectionInterval);
         writer->WriteString("last_run_version", model->lastRunVersion);
         writer->WriteBoolean("invert_viewport_drag", model->invertViewportDrag);
         writer->WriteEnum<FileBrowserSort>("load_save_sort", model->loadSaveSort, Enum_FileBrowserSort);
@@ -716,13 +729,24 @@ namespace OpenRCT2::Config
             }
         }
 
-        auto steamPath = Platform::GetSteamPath();
-        if (!steamPath.empty())
+        auto steamPaths = Platform::GetSteamPaths();
+        if (steamPaths.isSteamPresent())
         {
-            std::string location = Path::Combine(steamPath, Platform::GetRCT1SteamDir());
-            if (RCT1DataPresentAtLocation(location))
+            for (const auto& root : steamPaths.roots)
             {
-                return location;
+                auto nativePath = Path::Combine(root, steamPaths.nativeFolder, Platform::kSteamRCT1Data.nativeFolder);
+                if (RCT1DataPresentAtLocation(nativePath))
+                {
+                    return nativePath;
+                }
+                if (!steamPaths.downloadDepotFolder.empty())
+                {
+                    auto downloadDepotPath = steamPaths.getDownloadDepotFolder(root, Platform::kSteamRCT1Data);
+                    if (RCT1DataPresentAtLocation(downloadDepotPath))
+                    {
+                        return downloadDepotPath;
+                    }
+                }
             }
         }
 
@@ -731,6 +755,39 @@ namespace OpenRCT2::Config
         {
             return exePath;
         }
+        return {};
+    }
+
+    static u8string FindRCT2SteamPath()
+    {
+        auto steamPaths = Platform::GetSteamPaths();
+        if (steamPaths.isSteamPresent())
+        {
+            const std::array<Platform::SteamGameData, 2> gamesToCheck = {
+                Platform::kSteamRCT2Data,
+                Platform::kSteamRCTCData,
+            };
+            for (const auto& root : steamPaths.roots)
+            {
+                for (const auto& game : gamesToCheck)
+                {
+                    auto nativePath = Path::Combine(root, steamPaths.nativeFolder, game.nativeFolder);
+                    if (Platform::OriginalGameDataExists(nativePath))
+                    {
+                        return nativePath;
+                    }
+                    if (!steamPaths.downloadDepotFolder.empty())
+                    {
+                        auto downloadDepotPath = steamPaths.getDownloadDepotFolder(root, game);
+                        if (Platform::OriginalGameDataExists(downloadDepotPath))
+                        {
+                            return downloadDepotPath;
+                        }
+                    }
+                }
+            }
+        }
+
         return {};
     }
 
@@ -753,20 +810,11 @@ namespace OpenRCT2::Config
             }
         }
 
-        auto steamPath = Platform::GetSteamPath();
+        // Will only return a path if the RCT2 data is present, so no need to check twice.
+        auto steamPath = FindRCT2SteamPath();
         if (!steamPath.empty())
         {
-            std::string location = Path::Combine(steamPath, Platform::GetRCT2SteamDir());
-            if (Platform::OriginalGameDataExists(location))
-            {
-                return location;
-            }
-
-            std::string location2 = Path::Combine(steamPath, Platform::GetRCTClassicSteamDir());
-            if (Platform::OriginalGameDataExists(location2))
-            {
-                return location2;
-            }
+            return steamPath;
         }
 
         auto discordPath = Platform::GetFolderPath(SpecialFolder::rct2Discord);
@@ -874,6 +922,7 @@ namespace OpenRCT2::Config
                 {
                     uiContext.ShowMessageBox(LanguageGetString(STR_NEEDS_RCT2_FILES));
                     std::string gog = LanguageGetString(STR_OWN_ON_GOG);
+                    std::string steam = LanguageGetString(STR_OWN_ON_STEAM);
                     std::string hdd = LanguageGetString(STR_INSTALLED_ON_HDD);
 
                     std::vector<std::string> options;
@@ -883,6 +932,7 @@ namespace OpenRCT2::Config
                     {
                         options.push_back(hdd);
                         options.push_back(gog);
+                        options.push_back(steam);
                         int optionIndex = uiContext.ShowMenuDialog(
                             options, LanguageGetString(STR_OPENRCT2_SETUP), LanguageGetString(STR_WHICH_APPLIES_BEST));
                         if (optionIndex < 0 || static_cast<uint32_t>(optionIndex) >= options.size())
@@ -939,6 +989,21 @@ namespace OpenRCT2::Config
                         // New installer extracts to ‘dest’, old installer installs in ‘dest/app’.
                         possibleInstallPaths.emplace_back(dest);
                         possibleInstallPaths.emplace_back(Path::Combine(dest, u8"app"));
+                    }
+                    else if (chosenOption == steam)
+                    {
+                        uiContext.ShowMessageBox(LanguageGetString(STR_PLEASE_CLOSE_STEAM));
+
+                        Platform::triggerSteamDownload();
+
+                        uiContext.ShowMessageBox(LanguageGetString(STR_WAIT_FOR_STEAM_DOWNLOAD));
+
+                        auto steamPath = FindRCT2SteamPath();
+                        if (!steamPath.empty())
+                        {
+                            Get().general.rct2Path = steamPath;
+                            return true;
+                        }
                     }
                     if (possibleInstallPaths.empty())
                     {

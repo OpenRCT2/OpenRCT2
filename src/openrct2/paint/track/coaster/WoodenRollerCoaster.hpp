@@ -303,7 +303,7 @@ static void WoodenRCTrackLeftQuarterTurn3Bank(
         kSegmentsAll,
     };
 
-    DrawSupportForSequenceA<OpenRCT2::TrackElemType::LeftBankedQuarterTurn3Tiles>(
+    DrawSupportForSequenceA<OpenRCT2::TrackElemType::leftBankedQuarterTurn3Tiles>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments[trackSequence], direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -521,7 +521,7 @@ static void WoodenRCTrackBankedRightQuarterTurn5(
         kSegmentsAll,
     };
 
-    DrawSupportForSequenceA<OpenRCT2::TrackElemType::BankedRightQuarterTurn5Tiles>(
+    DrawSupportForSequenceA<OpenRCT2::TrackElemType::bankedRightQuarterTurn5Tiles>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments[trackSequence], direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -2964,7 +2964,7 @@ static void WoodenRCTrackDiagFlatToBank(
             break;
     }
 
-    DrawSupportForSequenceA<OpenRCT2::TrackElemType::DiagFlat>(
+    DrawSupportForSequenceA<OpenRCT2::TrackElemType::diagFlat>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -3032,7 +3032,7 @@ static void WoodenRCTrackDiagBankTo25DegUp(
             break;
     }
 
-    DrawSupportForSequenceA<OpenRCT2::TrackElemType::DiagFlatToUp25>(
+    DrawSupportForSequenceA<OpenRCT2::TrackElemType::diagFlatToUp25>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48);
@@ -3100,7 +3100,7 @@ static void WoodenRCTrackDiagUp25ToBank(
             break;
     }
 
-    DrawSupportForSequenceB<OpenRCT2::TrackElemType::DiagUp25ToFlat>(
+    DrawSupportForSequenceB<OpenRCT2::TrackElemType::diagUp25ToFlat>(
         session, supportType.wooden, trackSequence, direction, height + 16, session.SupportColours);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56);
@@ -3168,7 +3168,7 @@ static void WoodenRCTrackDiagLeftBank(
             break;
     }
 
-    DrawSupportForSequenceA<OpenRCT2::TrackElemType::DiagLeftBank>(
+    DrawSupportForSequenceA<OpenRCT2::TrackElemType::diagLeftBank>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -3336,7 +3336,7 @@ static void WoodenRCTrackLeftEighthBankToDiag(
             break;
     }
 
-    DrawSupportForSequenceA<OpenRCT2::TrackElemType::LeftEighthBankToDiag>(
+    DrawSupportForSequenceA<OpenRCT2::TrackElemType::leftEighthBankToDiag>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -3504,7 +3504,7 @@ static void WoodenRCTrackRightEighthBankToDiag(
             break;
     }
 
-    DrawSupportForSequenceA<OpenRCT2::TrackElemType::RightEighthBankToDiag>(
+    DrawSupportForSequenceA<OpenRCT2::TrackElemType::rightEighthBankToDiag>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);

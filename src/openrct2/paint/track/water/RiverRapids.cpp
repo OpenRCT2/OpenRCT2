@@ -195,7 +195,7 @@ static void PaintRiverRapidsTrackFlat(
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 10, 10, height }, { 1, 2, 5 } });
     }
 
-    DrawSupportForSequenceA<TrackElemType::Flat>(
+    DrawSupportForSequenceA<TrackElemType::flat>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
     if (direction & 1)
@@ -237,7 +237,7 @@ static void PaintRiverRapidsTrack25Deg(
     imageId = session.TrackColours.WithIndex(sprites[direction][1]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 27, height + 16 }, { 32, 1, 34 } });
 
-    DrawSupportForSequenceA<TrackElemType::Up25>(session, supportType.wooden, 0, direction, height, session.SupportColours);
+    DrawSupportForSequenceA<TrackElemType::up25>(session, supportType.wooden, 0, direction, height, session.SupportColours);
 
     int8_t tunnelHeightOffset = isStart ? -8 : 8;
     auto tunnelSubType = isStart ? TunnelSubType::SlopeStart : TunnelSubType::SlopeEnd;
@@ -291,7 +291,7 @@ static void PaintRiverRapidsTrack25DegToFlatA(
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 27, 0, height + 16 }, { 1, 32, 18 } });
             break;
     }
-    DrawSupportForSequenceA<TrackElemType::Up25ToFlat>(
+    DrawSupportForSequenceA<TrackElemType::up25ToFlat>(
         session, supportType.wooden, 0, direction, height, session.SupportColours);
 
     int8_t heightOffset = isStart ? -8 : 8;
@@ -344,7 +344,7 @@ static void PaintRiverRapidsTrack25DegToFlatB(
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 27, 0, height + 16 }, { 1, 32, 26 } });
             break;
     }
-    DrawSupportForSequenceA<TrackElemType::FlatToUp25>(
+    DrawSupportForSequenceA<TrackElemType::flatToUp25>(
         session, supportType.wooden, 0, direction, height, session.SupportColours);
 
     const auto tunnelType = direction == 0 || direction == 3 ? TunnelSubType::Flat : TunnelSubType::SlopeEnd;
@@ -574,7 +574,7 @@ static void PaintRiverRapidsTrackWaterfall(
         PaintAddImageAsChild(session, imageId, { 0, 0, height }, bb);
     }
 
-    DrawSupportForSequenceA<TrackElemType::Waterfall>(
+    DrawSupportForSequenceA<TrackElemType::waterfall>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
     if (direction & 1)
@@ -616,7 +616,7 @@ static void PaintRiverRapidsTrackRapids(
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 27, height + 17 }, { 32, 1, 11 } });
     }
 
-    DrawSupportForSequenceA<TrackElemType::Rapids>(
+    DrawSupportForSequenceA<TrackElemType::rapids>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
     if (direction & 1)
@@ -686,7 +686,7 @@ static void PaintRiverRapidsTrackWhirlpool(
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, bb);
     }
 
-    DrawSupportForSequenceA<TrackElemType::Whirlpool>(
+    DrawSupportForSequenceA<TrackElemType::whirlpool>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
     if (direction & 1)
@@ -709,43 +709,43 @@ TrackPaintFunction GetTrackPaintFunctionRiverRapids(OpenRCT2::TrackElemType trac
 {
     switch (trackType)
     {
-        case TrackElemType::Flat:
+        case TrackElemType::flat:
             return PaintRiverRapidsTrackFlat;
 
-        case TrackElemType::EndStation:
-        case TrackElemType::BeginStation:
-        case TrackElemType::MiddleStation:
+        case TrackElemType::endStation:
+        case TrackElemType::beginStation:
+        case TrackElemType::middleStation:
             return PaintRiverRapidsStation;
 
-        case TrackElemType::Up25:
+        case TrackElemType::up25:
             return PaintRiverRapidsTrack25DegUp;
-        case TrackElemType::FlatToUp25:
+        case TrackElemType::flatToUp25:
             return PaintRiverRapidsTrackFlatTo25DegUp;
-        case TrackElemType::Up25ToFlat:
+        case TrackElemType::up25ToFlat:
             return PaintRiverRapidsTrack25DegUpToFlat;
 
-        case TrackElemType::Down25:
+        case TrackElemType::down25:
             return PaintRiverRapidsTrack25DegDown;
-        case TrackElemType::FlatToDown25:
+        case TrackElemType::flatToDown25:
             return PaintRiverRapidsTrackFlatTo25DegDown;
-        case TrackElemType::Down25ToFlat:
+        case TrackElemType::down25ToFlat:
             return PaintRiverRapidsTrack25DegDownToFlat;
 
-        case TrackElemType::LeftQuarterTurn1Tile:
+        case TrackElemType::leftQuarterTurn1Tile:
             return PaintRiverRapidsTrackLeftQuarterTurn1Tile;
-        case TrackElemType::RightQuarterTurn1Tile:
+        case TrackElemType::rightQuarterTurn1Tile:
             return PaintRiverRapidsTrackRightQuarterTurn1Tile;
 
-        case TrackElemType::Waterfall:
+        case TrackElemType::waterfall:
             return PaintRiverRapidsTrackWaterfall;
 
-        case TrackElemType::Rapids:
+        case TrackElemType::rapids:
             return PaintRiverRapidsTrackRapids;
 
-        case TrackElemType::OnRidePhoto:
+        case TrackElemType::onRidePhoto:
             return PaintRiverRapidsTrackOnRidePhoto;
 
-        case TrackElemType::Whirlpool:
+        case TrackElemType::whirlpool:
             return PaintRiverRapidsTrackWhirlpool;
         default:
             return TrackPaintFunctionDummy;

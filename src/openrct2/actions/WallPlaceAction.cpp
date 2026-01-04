@@ -92,7 +92,7 @@ namespace OpenRCT2::GameActions
         }
 
         auto mapSizeMax = GetMapSizeMaxXY();
-        if (gLegacyScene != LegacyScene::scenarioEditor && !(GetFlags().has(CommandFlag::trackDesign))
+        if (gLegacyScene != LegacyScene::scenarioEditor && !GetFlags().has(CommandFlag::trackDesign)
             && !gameState.cheats.sandboxMode)
         {
             if (_loc.z == 0)
@@ -252,7 +252,7 @@ namespace OpenRCT2::GameActions
         clearanceHeight += wallEntry->height;
 
         bool wallAcrossTrack = false;
-        if (!(GetFlags().has(CommandFlag::trackDesign)) && !gameState.cheats.disableClearanceChecks)
+        if (!GetFlags().has(CommandFlag::trackDesign) && !gameState.cheats.disableClearanceChecks)
         {
             auto result = WallCheckObstruction(wallEntry, targetHeight / 8, clearanceHeight, &wallAcrossTrack);
             if (result.error != Status::ok)
@@ -326,7 +326,7 @@ namespace OpenRCT2::GameActions
         clearanceHeight += wallEntry->height;
 
         bool wallAcrossTrack = false;
-        if (!(GetFlags().has(CommandFlag::trackDesign)) && !gameState.cheats.disableClearanceChecks)
+        if (!GetFlags().has(CommandFlag::trackDesign) && !gameState.cheats.disableClearanceChecks)
         {
             auto result = WallCheckObstruction(wallEntry, targetHeight / kCoordsZStep, clearanceHeight, &wallAcrossTrack);
             if (result.error != Status::ok)
@@ -347,7 +347,7 @@ namespace OpenRCT2::GameActions
 
             banner->text = {};
             banner->colour = COLOUR_WHITE;
-            banner->textColour = TextColour::white;
+            banner->textColour = Drawing::TextColour::white;
             banner->flags = { BannerFlag::isWall };
             banner->type = 0; // Banner must be deleted after this point in an early return
             banner->position = TileCoordsXY(_loc);
@@ -443,7 +443,7 @@ namespace OpenRCT2::GameActions
                 return false;
             }
 
-            if (ted.definition.rollStart == TrackRoll::None)
+            if (ted.definition.rollStart == TrackRoll::none)
             {
                 if (!(ted.coordinates.rotationBegin & 4))
                 {
@@ -467,7 +467,7 @@ namespace OpenRCT2::GameActions
             return false;
         }
 
-        if (ted.definition.rollEnd != TrackRoll::None)
+        if (ted.definition.rollEnd != TrackRoll::none)
         {
             return false;
         }

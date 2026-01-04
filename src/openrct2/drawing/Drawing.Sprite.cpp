@@ -30,6 +30,7 @@
 #include <vector>
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::Drawing;
 using namespace OpenRCT2::Ui;
 
 /**
@@ -121,7 +122,7 @@ static void OverrideElementOffsets(size_t index, G1Element& element)
     switch (index)
     {
         case 25285:
-            element.x_offset -= 1;
+            element.xOffset -= 1;
             break;
         case 25286:
         case 25317:
@@ -287,24 +288,24 @@ static void OverrideElementOffsets(size_t index, G1Element& element)
         case 25850:
         case 25851:
         case 25852:
-            element.y_offset += 1;
+            element.yOffset += 1;
             break;
         case 25307:
         case 25315:
         case 25319:
-            element.x_offset -= 1;
-            element.y_offset += 1;
+            element.xOffset -= 1;
+            element.yOffset += 1;
             break;
         case 25802:
-            element.y_offset += 2;
+            element.yOffset += 2;
             break;
     }
 }
 
 static void ReadAndConvertGxDat(IStream* stream, size_t count, bool is_rctc, G1Element* elements)
 {
-    auto g1Elements32 = std::make_unique<RCTG1Element[]>(count);
-    stream->Read(g1Elements32.get(), count * sizeof(RCTG1Element));
+    auto g1Elements32 = std::make_unique<StoredG1Element[]>(count);
+    stream->Read(g1Elements32.get(), count * sizeof(StoredG1Element));
     if (is_rctc)
     {
         // Process RCTC's g1.dat file
@@ -333,24 +334,24 @@ static void ReadAndConvertGxDat(IStream* stream, size_t count, bool is_rctc, G1E
                     break;
             }
 
-            const RCTG1Element& src = g1Elements32[rctc];
+            const StoredG1Element& src = g1Elements32[rctc];
 
             // Double cast to silence compiler warning about casting to
             // pointer from integer of mismatched length.
             elements[i].offset = reinterpret_cast<uint8_t*>(static_cast<uintptr_t>(src.offset));
             elements[i].width = src.width;
             elements[i].height = src.height;
-            elements[i].x_offset = src.x_offset;
-            elements[i].y_offset = src.y_offset;
+            elements[i].xOffset = src.xOffset;
+            elements[i].yOffset = src.yOffset;
             elements[i].flags = src.flags;
 
-            if (src.flags & G1_FLAG_HAS_ZOOM_SPRITE)
+            if (src.flags.has(G1Flag::hasZoomSprite))
             {
-                elements[i].zoomed_offset = static_cast<int32_t>(i - rctc_to_rct2_index(rctc - src.zoomed_offset));
+                elements[i].zoomedOffset = static_cast<int32_t>(i - rctc_to_rct2_index(rctc - src.zoomedOffset));
             }
             else
             {
-                elements[i].zoomed_offset = src.zoomed_offset;
+                elements[i].zoomedOffset = src.zoomedOffset;
             }
 
             ++rctc;
@@ -363,8 +364,8 @@ static void ReadAndConvertGxDat(IStream* stream, size_t count, bool is_rctc, G1E
         {
             for (auto i = 0u; i < SPR_PEEP_PICKUP_COUNT; ++i)
             {
-                elements[animation.start + i].x_offset -= animation.x_offset;
-                elements[animation.start + i].y_offset -= animation.y_offset;
+                elements[animation.start + i].xOffset -= animation.x_offset;
+                elements[animation.start + i].yOffset -= animation.y_offset;
             }
         }
     }
@@ -372,17 +373,17 @@ static void ReadAndConvertGxDat(IStream* stream, size_t count, bool is_rctc, G1E
     {
         for (size_t i = 0; i < count; i++)
         {
-            const RCTG1Element& src = g1Elements32[i];
+            const StoredG1Element& src = g1Elements32[i];
 
             // Double cast to silence compiler warning about casting to
             // pointer from integer of mismatched length.
             elements[i].offset = reinterpret_cast<uint8_t*>(static_cast<uintptr_t>(src.offset));
             elements[i].width = src.width;
             elements[i].height = src.height;
-            elements[i].x_offset = src.x_offset;
-            elements[i].y_offset = src.y_offset;
+            elements[i].xOffset = src.xOffset;
+            elements[i].yOffset = src.yOffset;
             elements[i].flags = src.flags;
-            elements[i].zoomed_offset = src.zoomed_offset;
+            elements[i].zoomedOffset = src.zoomedOffset;
         }
     }
 }
@@ -437,7 +438,7 @@ static Gx _g2 = {};
 static Gx _fonts = {};
 static Gx _tracks = {};
 static Gx _csg = {};
-static G1Element _scrollingText[kMaxScrollingTextEntries]{};
+static G1Element _scrollingText[Drawing::ScrollingText::kMaxEntries]{};
 static bool _csgLoaded = false;
 
 static G1Element _g1Temp = {};
@@ -454,25 +455,25 @@ bool GfxLoadG1(const IPlatformEnvironment& env)
     {
         auto path = env.FindFile(DirBase::rct2, DirId::data, u8"g1.dat");
         auto fs = FileStream(path, FileMode::open);
-        _g1.header = fs.ReadValue<RCTG1Header>();
+        _g1.header = fs.ReadValue<G1Header>();
 
-        LOG_VERBOSE("g1.dat, number of entries: %u", _g1.header.num_entries);
+        LOG_VERBOSE("g1.dat, number of entries: %u", _g1.header.numEntries);
 
-        if (_g1.header.num_entries < SPR_G1_END)
+        if (_g1.header.numEntries < SPR_G1_END)
         {
             throw std::runtime_error("Not enough elements in g1.dat");
         }
 
         // Read element headers
-        bool is_rctc = _g1.header.num_entries == SPR_RCTC_G1_END;
-        _g1.elements.resize(_g1.header.num_entries);
-        ReadAndConvertGxDat(&fs, _g1.header.num_entries, is_rctc, _g1.elements.data());
+        bool is_rctc = _g1.header.numEntries == SPR_RCTC_G1_END;
+        _g1.elements.resize(_g1.header.numEntries);
+        ReadAndConvertGxDat(&fs, _g1.header.numEntries, is_rctc, _g1.elements.data());
 
         // Read element data
-        _g1.data = fs.ReadArray<uint8_t>(_g1.header.total_size);
+        _g1.data = fs.ReadArray<uint8_t>(_g1.header.totalSize);
 
         // Fix entry data offsets
-        for (uint32_t i = 0; i < _g1.header.num_entries; i++)
+        for (uint32_t i = 0; i < _g1.header.numEntries; i++)
         {
             if (_g1.elements[i].offset == nullptr)
             {
@@ -538,19 +539,19 @@ static bool GfxLoadOpenRCT2Gx(std::string filename, Gx& target, size_t expectedN
     try
     {
         auto fs = FileStream(path, FileMode::open);
-        target.header = fs.ReadValue<RCTG1Header>();
+        target.header = fs.ReadValue<G1Header>();
 
         // Read element headers
-        target.elements.resize(target.header.num_entries);
-        ReadAndConvertGxDat(&fs, target.header.num_entries, false, target.elements.data());
+        target.elements.resize(target.header.numEntries);
+        ReadAndConvertGxDat(&fs, target.header.numEntries, false, target.elements.data());
 
         // Read element data
-        target.data = fs.ReadArray<uint8_t>(target.header.total_size);
+        target.data = fs.ReadArray<uint8_t>(target.header.totalSize);
 
-        if (target.header.num_entries != expectedNumItems)
+        if (target.header.numEntries != expectedNumItems)
         {
             std::string errorMessage = "Mismatched " + filename + " size.\nExpected: " + std::to_string(expectedNumItems)
-                + "\nActual: " + std::to_string(target.header.num_entries) + "\n" + filename
+                + "\nActual: " + std::to_string(target.header.numEntries) + "\n" + filename
                 + " may be installed improperly.\nPath to " + filename + ": " + path;
 
             LOG_ERROR(errorMessage.c_str());
@@ -567,7 +568,7 @@ static bool GfxLoadOpenRCT2Gx(std::string filename, Gx& target, size_t expectedN
         }
 
         // Fix entry data offsets
-        for (uint32_t i = 0; i < target.header.num_entries; i++)
+        for (uint32_t i = 0; i < target.header.numEntries; i++)
         {
             if (target.elements[i].offset == nullptr)
             {
@@ -621,8 +622,8 @@ bool GfxLoadCsg()
         size_t fileHeaderSize = fileHeader.GetLength();
         size_t fileDataSize = fileData.GetLength();
 
-        _csg.header.num_entries = static_cast<uint32_t>(fileHeaderSize / sizeof(RCTG1Element));
-        _csg.header.total_size = static_cast<uint32_t>(fileDataSize);
+        _csg.header.numEntries = static_cast<uint32_t>(fileHeaderSize / sizeof(StoredG1Element));
+        _csg.header.totalSize = static_cast<uint32_t>(fileDataSize);
 
         if (!CsgIsUsable(_csg))
         {
@@ -631,14 +632,14 @@ bool GfxLoadCsg()
         }
 
         // Read element headers
-        _csg.elements.resize(_csg.header.num_entries);
-        ReadAndConvertGxDat(&fileHeader, _csg.header.num_entries, false, _csg.elements.data());
+        _csg.elements.resize(_csg.header.numEntries);
+        ReadAndConvertGxDat(&fileHeader, _csg.header.numEntries, false, _csg.elements.data());
 
         // Read element data
-        _csg.data = fileData.ReadArray<uint8_t>(_csg.header.total_size);
+        _csg.data = fileData.ReadArray<uint8_t>(_csg.header.totalSize);
 
         // Fix entry data offsets
-        for (uint32_t i = 0; i < _csg.header.num_entries; i++)
+        for (uint32_t i = 0; i < _csg.header.numEntries; i++)
         {
             if (_csg.elements[i].offset == nullptr)
             {
@@ -649,9 +650,9 @@ bool GfxLoadCsg()
                 _csg.elements[i].offset += reinterpret_cast<uintptr_t>(_csg.data.get());
             }
             // RCT1 used zoomed offsets that counted from the beginning of the file, rather than from the current sprite.
-            if (_csg.elements[i].flags & G1_FLAG_HAS_ZOOM_SPRITE)
+            if (_csg.elements[i].flags.has(G1Flag::hasZoomSprite))
             {
-                _csg.elements[i].zoomed_offset = i - _csg.elements[i].zoomed_offset;
+                _csg.elements[i].zoomedOffset = i - _csg.elements[i].zoomedOffset;
             }
         }
         _csgLoaded = true;
@@ -674,14 +675,14 @@ std::optional<Gx> GfxLoadGx(const std::vector<uint8_t>& buffer)
         OpenRCT2::MemoryStream istream(buffer.data(), buffer.size());
         Gx gx;
 
-        gx.header = istream.ReadValue<RCTG1Header>();
+        gx.header = istream.ReadValue<G1Header>();
 
         // Read element headers
-        gx.elements.resize(gx.header.num_entries);
-        ReadAndConvertGxDat(&istream, gx.header.num_entries, false, gx.elements.data());
+        gx.elements.resize(gx.header.numEntries);
+        ReadAndConvertGxDat(&istream, gx.header.numEntries, false, gx.elements.data());
 
         // Read element data
-        gx.data = istream.ReadArray<uint8_t>(gx.header.total_size);
+        gx.data = istream.ReadArray<uint8_t>(gx.header.totalSize);
 
         return std::make_optional(std::move(gx));
     }
@@ -767,7 +768,7 @@ void FASTCALL GfxDrawSpritePaletteSetSoftware(
         return;
     }
 
-    if (zoomLevel > ZoomLevel{ 0 } && (g1->flags & G1_FLAG_HAS_ZOOM_SPRITE))
+    if (zoomLevel > ZoomLevel{ 0 } && g1->flags.has(G1Flag::hasZoomSprite))
     {
         RenderTarget zoomedRT = rt;
         zoomedRT.bits = rt.bits;
@@ -780,11 +781,11 @@ void FASTCALL GfxDrawSpritePaletteSetSoftware(
 
         const auto spriteCoords = ScreenCoordsXY{ coords.x / 2, coords.y / 2 };
         GfxDrawSpritePaletteSetSoftware(
-            zoomedRT, imageId.WithIndex(imageId.GetIndex() - g1->zoomed_offset), spriteCoords, paletteMap);
+            zoomedRT, imageId.WithIndex(imageId.GetIndex() - g1->zoomedOffset), spriteCoords, paletteMap);
         return;
     }
 
-    if (zoomLevel > ZoomLevel{ 0 } && (g1->flags & G1_FLAG_NO_ZOOM_DRAW))
+    if (zoomLevel > ZoomLevel{ 0 } && g1->flags.has(G1Flag::noZoomDraw))
     {
         return;
     }
@@ -794,11 +795,11 @@ void FASTCALL GfxDrawSpritePaletteSetSoftware(
     //       For the moment, I've added this block here just for magnification with the old code continuing below.
     if (zoomLevel < ZoomLevel{ 0 })
     {
-        ScreenCoordsXY spriteTopLeft = { zoomLevel.ApplyInversedTo(coords.x + g1->x_offset),
-                                         zoomLevel.ApplyInversedTo(coords.y + g1->y_offset) };
+        ScreenCoordsXY spriteTopLeft = { zoomLevel.ApplyInversedTo(coords.x + g1->xOffset),
+                                         zoomLevel.ApplyInversedTo(coords.y + g1->yOffset) };
 
-        ScreenCoordsXY spriteBottomLeft{ zoomLevel.ApplyInversedTo(coords.x + g1->x_offset + g1->width),
-                                         zoomLevel.ApplyInversedTo(coords.y + g1->y_offset + g1->height) };
+        ScreenCoordsXY spriteBottomLeft{ zoomLevel.ApplyInversedTo(coords.x + g1->xOffset + g1->width),
+                                         zoomLevel.ApplyInversedTo(coords.y + g1->yOffset + g1->height) };
 
         const int32_t width = std::min(spriteBottomLeft.x, rt.x + rt.width) - std::max(spriteTopLeft.x, rt.x);
         const int32_t height = std::min(spriteBottomLeft.y, rt.y + rt.height) - std::max(spriteTopLeft.y, rt.y);
@@ -819,7 +820,7 @@ void FASTCALL GfxDrawSpritePaletteSetSoftware(
 
     const int32_t zoom_mask = zoomLevel > ZoomLevel{ 0 } ? zoomLevel.ApplyTo(0xFFFFFFFF) : 0xFFFFFFFF;
 
-    if (zoomLevel > ZoomLevel{ 0 } && g1->flags & G1_FLAG_RLE_COMPRESSION)
+    if (zoomLevel > ZoomLevel{ 0 } && g1->flags.has(G1Flag::hasRLECompression))
     {
         x -= ~zoom_mask;
         y -= ~zoom_mask;
@@ -829,11 +830,11 @@ void FASTCALL GfxDrawSpritePaletteSetSoftware(
     int32_t height = g1->height;
 
     // This is the start y coordinate on the destination
-    int16_t dest_start_y = y + g1->y_offset;
+    int16_t dest_start_y = y + g1->yOffset;
 
     // For whatever reason the RLE version does not use
     // the zoom mask on the y coordinate but does on x.
-    if (g1->flags & G1_FLAG_RLE_COMPRESSION)
+    if (g1->flags.has(G1Flag::hasRLECompression))
     {
         dest_start_y -= rt.WorldY();
     }
@@ -861,7 +862,7 @@ void FASTCALL GfxDrawSpritePaletteSetSoftware(
     }
     else
     {
-        if ((g1->flags & G1_FLAG_RLE_COMPRESSION) && zoomLevel > ZoomLevel{ 0 })
+        if (g1->flags.has(G1Flag::hasRLECompression) && zoomLevel > ZoomLevel{ 0 })
         {
             source_start_y -= dest_start_y & ~zoom_mask;
             height += dest_start_y & ~zoom_mask;
@@ -888,7 +889,7 @@ void FASTCALL GfxDrawSpritePaletteSetSoftware(
     // This is the source start x coordinate
     int32_t source_start_x = 0;
     // This is the destination start x coordinate
-    int16_t dest_start_x = ((x + g1->x_offset + ~zoom_mask) & zoom_mask) - rt.WorldX();
+    int16_t dest_start_x = ((x + g1->xOffset + ~zoom_mask) & zoom_mask) - rt.WorldX();
 
     if (dest_start_x < 0)
     {
@@ -907,7 +908,7 @@ void FASTCALL GfxDrawSpritePaletteSetSoftware(
     }
     else
     {
-        if ((g1->flags & G1_FLAG_RLE_COMPRESSION) && zoomLevel > ZoomLevel{ 0 })
+        if (g1->flags.has(G1Flag::hasRLECompression) && zoomLevel > ZoomLevel{ 0 })
         {
             source_start_x -= dest_start_x & ~zoom_mask;
         }
@@ -937,11 +938,11 @@ void FASTCALL GfxDrawSpritePaletteSetSoftware(
 
 void FASTCALL GfxSpriteToBuffer(RenderTarget& rt, const DrawSpriteArgs& args)
 {
-    if (args.SourceImage.flags & G1_FLAG_RLE_COMPRESSION)
+    if (args.SourceImage.flags.has(G1Flag::hasRLECompression))
     {
         GfxRleSpriteToBuffer(rt, args);
     }
-    else if (!(args.SourceImage.flags & G1_FLAG_1))
+    else if (!args.SourceImage.flags.has(G1Flag::one))
     {
         GfxBmpSpriteToBuffer(rt, args);
     }
@@ -965,7 +966,7 @@ void FASTCALL GfxDrawSpriteRawMaskedSoftware(
     }
 
     // Must have transparency in order to pass check
-    if (!(imgMask->flags & G1_FLAG_HAS_TRANSPARENCY) || !(imgColour->flags & G1_FLAG_HAS_TRANSPARENCY))
+    if (!imgMask->flags.has(G1Flag::hasTransparency) || !imgColour->flags.has(G1Flag::hasTransparency))
     {
         GfxDrawSpriteSoftware(rt, colourImage, scrCoords);
         return;
@@ -980,7 +981,7 @@ void FASTCALL GfxDrawSpriteRawMaskedSoftware(
     width = zoom.ApplyInversedTo(std::min(imgMask->width, imgColour->width));
     height = zoom.ApplyInversedTo(std::min(imgMask->height, imgColour->height));
 
-    ScreenCoordsXY offsetCoords = scrCoords + ScreenCoordsXY{ imgMask->x_offset, imgMask->y_offset };
+    ScreenCoordsXY offsetCoords = scrCoords + ScreenCoordsXY{ imgMask->xOffset, imgMask->yOffset };
     offsetCoords.x = zoom.ApplyInversedTo(offsetCoords.x);
     offsetCoords.y = zoom.ApplyInversedTo(offsetCoords.y);
 
@@ -1045,7 +1046,7 @@ const G1Element* GfxGetG1Element(ImageIndex image_id)
     else if (offset < SPR_G2_END)
     {
         size_t idx = offset - SPR_G2_BEGIN;
-        if (idx < _g2.header.num_entries)
+        if (idx < _g2.header.numEntries)
         {
             return &_g2.elements[idx];
         }
@@ -1055,7 +1056,7 @@ const G1Element* GfxGetG1Element(ImageIndex image_id)
     else if (offset < SPR_FONTS_END)
     {
         size_t idx = offset - SPR_FONTS_BEGIN;
-        if (idx < _fonts.header.num_entries)
+        if (idx < _fonts.header.numEntries)
         {
             return &_fonts.elements[idx];
         }
@@ -1065,7 +1066,7 @@ const G1Element* GfxGetG1Element(ImageIndex image_id)
     else if (offset < SPR_TRACKS_END)
     {
         size_t idx = offset - SPR_TRACKS_BEGIN;
-        if (idx < _tracks.header.num_entries)
+        if (idx < _tracks.header.numEntries)
         {
             return &_tracks.elements[idx];
         }
@@ -1077,7 +1078,7 @@ const G1Element* GfxGetG1Element(ImageIndex image_id)
         if (IsCsgLoaded())
         {
             size_t idx = offset - SPR_CSG_BEGIN;
-            if (idx < _csg.header.num_entries)
+            if (idx < _csg.header.numEntries)
             {
                 return &_csg.elements[idx];
             }
@@ -1160,12 +1161,12 @@ bool IsCsgLoaded()
 
 size_t G1CalculateDataSize(const G1Element* g1)
 {
-    if (g1->flags & G1_FLAG_PALETTE)
+    if (g1->flags.has(G1Flag::isPalette))
     {
-        return g1->width * 3;
+        return g1->numColours * 3;
     }
 
-    if (g1->flags & G1_FLAG_RLE_COMPRESSION)
+    if (g1->flags.has(G1Flag::hasRLECompression))
     {
         if (g1->offset == nullptr)
         {

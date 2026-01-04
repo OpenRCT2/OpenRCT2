@@ -351,7 +351,7 @@ bool Vehicle::CloseRestraints()
                 curRide->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST
                     | RIDE_INVALIDATE_RIDE_MAINTENANCE;
 
-                curRide->mechanicStatus = RIDE_MECHANIC_STATUS_CALLING;
+                curRide->mechanicStatus = MechanicStatus::calling;
 
                 Vehicle* broken_vehicle = getGameState().entities.GetEntity<Vehicle>(curRide->vehicles[curRide->brokenTrain]);
                 if (broken_vehicle != nullptr)
@@ -467,7 +467,7 @@ bool Vehicle::OpenRestraints()
                 curRide->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST
                     | RIDE_INVALIDATE_RIDE_MAINTENANCE;
 
-                curRide->mechanicStatus = RIDE_MECHANIC_STATUS_CALLING;
+                curRide->mechanicStatus = MechanicStatus::calling;
 
                 Vehicle* broken_vehicle = getGameState().entities.GetEntity<Vehicle>(curRide->vehicles[curRide->brokenTrain]);
                 if (broken_vehicle != nullptr)
@@ -496,8 +496,7 @@ bool Vehicle::OpenRestraints()
 void RideUpdateMeasurementsSpecialElements_Default(Ride& ride, const OpenRCT2::TrackElemType trackType)
 {
     const auto& ted = GetTrackElementDescriptor(trackType);
-    uint16_t trackFlags = ted.flags;
-    if (trackFlags & TRACK_ELEM_FLAG_NORMAL_TO_INVERSION)
+    if (ted.flags.has(TrackElementFlag::normalToInversion))
     {
         if (ride.numInversions < OpenRCT2::Limits::kMaxInversions)
             ride.numInversions++;
@@ -507,8 +506,7 @@ void RideUpdateMeasurementsSpecialElements_Default(Ride& ride, const OpenRCT2::T
 void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const OpenRCT2::TrackElemType trackType)
 {
     const auto& ted = GetTrackElementDescriptor(trackType);
-    uint16_t trackFlags = ted.flags;
-    if (trackFlags & TRACK_ELEM_FLAG_IS_GOLF_HOLE)
+    if (ted.flags.has(TrackElementFlag::isGolfHole))
     {
         if (ride.numHoles < OpenRCT2::Limits::kMaxGolfHoles)
             ride.numHoles++;
@@ -517,7 +515,7 @@ void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const OpenRCT2::
 
 void RideUpdateMeasurementsSpecialElements_WaterCoaster(Ride& ride, const OpenRCT2::TrackElemType trackType)
 {
-    if (trackType >= TrackElemType::FlatCovered && trackType <= TrackElemType::RightQuarterTurn3TilesCovered)
+    if (trackType >= TrackElemType::flatCovered && trackType <= TrackElemType::rightQuarterTurn3TilesCovered)
     {
         ride.specialTrackElements.set(SpecialElement::splash);
     }
@@ -613,9 +611,9 @@ void Vehicle::UpdateMeasurements()
             return;
 
         auto trackElemType = GetTrackType();
-        if (trackElemType == TrackElemType::PoweredLift || HasFlag(VehicleFlags::OnLiftHill))
+        if (trackElemType == TrackElemType::poweredLift || HasFlag(VehicleFlags::OnLiftHill))
         {
-            if (!(curRide->testingFlags.has(RideTestingFlag::poweredLift)))
+            if (!curRide->testingFlags.has(RideTestingFlag::poweredLift))
             {
                 curRide->testingFlags.set(RideTestingFlag::poweredLift);
                 if (curRide->numPoweredLifts < OpenRCT2::Limits::kRideMaxNumPoweredLiftsCount)
@@ -632,22 +630,22 @@ void Vehicle::UpdateMeasurements()
 
         switch (trackElemType)
         {
-            case TrackElemType::Rapids:
+            case TrackElemType::rapids:
                 curRide->specialTrackElements.set(SpecialElement::rapids);
                 break;
-            case TrackElemType::SpinningTunnel:
+            case TrackElemType::spinningTunnel:
                 curRide->specialTrackElements.set(SpecialElement::spinningTunnel);
                 break;
-            case TrackElemType::Waterfall:
+            case TrackElemType::waterfall:
                 curRide->specialTrackElements.set(SpecialElement::waterfall);
                 break;
-            case TrackElemType::LogFlumeReverser:
+            case TrackElemType::logFlumeReverser:
                 curRide->specialTrackElements.set(SpecialElement::reverser);
                 break;
-            case TrackElemType::Whirlpool:
+            case TrackElemType::whirlpool:
                 curRide->specialTrackElements.set(SpecialElement::whirlpool);
                 break;
-            case TrackElemType::Watersplash:
+            case TrackElemType::watersplash:
                 if (velocity >= 11.0_mph)
                 {
                     curRide->specialTrackElements.set(SpecialElement::splash);
@@ -658,14 +656,13 @@ void Vehicle::UpdateMeasurements()
         }
 
         const auto& ted = GetTrackElementDescriptor(trackElemType);
-        uint16_t trackFlags = ted.flags;
         auto testingFlags = curRide->testingFlags;
-        if (testingFlags.has(RideTestingFlag::turnLeft) && trackFlags & TRACK_ELEM_FLAG_TURN_LEFT)
+        if (testingFlags.has(RideTestingFlag::turnLeft) && ted.flags.has(TrackElementFlag::turnLeft))
         {
             // 0x800 as this is masked to kCurrentTurnCountMask
             curRide->turnCountDefault += 0x800;
         }
-        else if (testingFlags.has(RideTestingFlag::turnRight) && trackFlags & TRACK_ELEM_FLAG_TURN_RIGHT)
+        else if (testingFlags.has(RideTestingFlag::turnRight) && ted.flags.has(TrackElementFlag::turnRight))
         {
             // 0x800 as this is masked to kCurrentTurnCountMask
             curRide->turnCountDefault += 0x800;
@@ -677,10 +674,10 @@ void Vehicle::UpdateMeasurements()
                 RideTestingFlag::turnSloped);
 
             uint8_t turnType = 1;
-            if (!(testingFlags.has(RideTestingFlag::turnBanked)))
+            if (!testingFlags.has(RideTestingFlag::turnBanked))
             {
                 turnType = 2;
-                if (!(testingFlags.has(RideTestingFlag::turnSloped)))
+                if (!testingFlags.has(RideTestingFlag::turnSloped))
                 {
                     turnType = 0;
                 }
@@ -703,31 +700,31 @@ void Vehicle::UpdateMeasurements()
         }
         else
         {
-            if (trackFlags & TRACK_ELEM_FLAG_TURN_LEFT)
+            if (ted.flags.has(TrackElementFlag::turnLeft))
             {
                 curRide->testingFlags.set(RideTestingFlag::turnLeft);
                 curRide->turnCountDefault &= ~kCurrentTurnCountMask;
 
-                if (trackFlags & TRACK_ELEM_FLAG_TURN_BANKED)
+                if (ted.flags.has(TrackElementFlag::turnBanked))
                 {
                     curRide->testingFlags.set(RideTestingFlag::turnBanked);
                 }
-                if (trackFlags & TRACK_ELEM_FLAG_TURN_SLOPED)
+                if (ted.flags.has(TrackElementFlag::turnSloped))
                 {
                     curRide->testingFlags.set(RideTestingFlag::turnSloped);
                 }
             }
 
-            if (trackFlags & TRACK_ELEM_FLAG_TURN_RIGHT)
+            if (ted.flags.has(TrackElementFlag::turnRight))
             {
                 curRide->testingFlags.set(RideTestingFlag::turnRight);
                 curRide->turnCountDefault &= ~kCurrentTurnCountMask;
 
-                if (trackFlags & TRACK_ELEM_FLAG_TURN_BANKED)
+                if (ted.flags.has(TrackElementFlag::turnBanked))
                 {
                     curRide->testingFlags.set(RideTestingFlag::turnBanked);
                 }
-                if (trackFlags & TRACK_ELEM_FLAG_TURN_SLOPED)
+                if (ted.flags.has(TrackElementFlag::turnSloped))
                 {
                     curRide->testingFlags.set(RideTestingFlag::turnSloped);
                 }
@@ -736,7 +733,7 @@ void Vehicle::UpdateMeasurements()
 
         if (testingFlags.has(RideTestingFlag::dropDown))
         {
-            if (velocity < 0 || !(trackFlags & TRACK_ELEM_FLAG_DOWN))
+            if (velocity < 0 || !ted.flags.has(TrackElementFlag::down))
             {
                 curRide->testingFlags.unset(RideTestingFlag::dropDown);
 
@@ -751,7 +748,7 @@ void Vehicle::UpdateMeasurements()
                 }
             }
         }
-        else if (trackFlags & TRACK_ELEM_FLAG_DOWN && velocity >= 0)
+        else if (ted.flags.has(TrackElementFlag::down) && velocity >= 0)
         {
             curRide->testingFlags.unset(RideTestingFlag::dropUp);
             curRide->testingFlags.set(RideTestingFlag::dropDown);
@@ -765,7 +762,7 @@ void Vehicle::UpdateMeasurements()
 
         if (testingFlags.has(RideTestingFlag::dropUp))
         {
-            if (velocity > 0 || !(trackFlags & TRACK_ELEM_FLAG_UP))
+            if (velocity > 0 || !ted.flags.has(TrackElementFlag::up))
             {
                 curRide->testingFlags.unset(RideTestingFlag::dropUp);
 
@@ -780,7 +777,7 @@ void Vehicle::UpdateMeasurements()
                 }
             }
         }
-        else if (trackFlags & TRACK_ELEM_FLAG_UP && velocity <= 0)
+        else if (ted.flags.has(TrackElementFlag::up) && velocity <= 0)
         {
             curRide->testingFlags.unset(RideTestingFlag::dropDown);
             curRide->testingFlags.set(RideTestingFlag::dropUp);
@@ -791,7 +788,7 @@ void Vehicle::UpdateMeasurements()
             curRide->startDropHeight = z / kCoordsZStep;
         }
 
-        if (trackFlags & TRACK_ELEM_FLAG_HELIX)
+        if (ted.flags.has(TrackElementFlag::helix))
         {
             if (curRide->numHelices < OpenRCT2::Limits::kMaxHelices)
                 curRide->numHelices++;
@@ -858,7 +855,7 @@ void Vehicle::UpdateMeasurements()
         }
     }
 
-    if (!(curRide->testingFlags.has(RideTestingFlag::sheltered)))
+    if (!curRide->testingFlags.has(RideTestingFlag::sheltered))
     {
         curRide->testingFlags.set(RideTestingFlag::sheltered);
 
@@ -2127,7 +2124,7 @@ bool Vehicle::CurrentTowerElementIsTop()
         if (trackElement->GetRideIndex() != ride)
             continue;
 
-        if (trackElement->GetTrackType() != TrackElemType::TowerSection)
+        if (trackElement->GetTrackType() != TrackElemType::towerSection)
             continue;
 
         return false;
@@ -2153,7 +2150,7 @@ void Vehicle::UpdateTravellingBoatHireSetup()
     var_35 = 0;
     // No longer on a track so reset to 0 for import/export
     SetTrackDirection(0);
-    SetTrackType(TrackElemType::Flat);
+    SetTrackType(TrackElemType::flat);
     SetState(Vehicle::Status::travellingBoat);
     remaining_distance += 27924;
 
@@ -2206,7 +2203,7 @@ void Vehicle::UpdateDeparting()
 
             curRide->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST
                 | RIDE_INVALIDATE_RIDE_MAINTENANCE;
-            curRide->mechanicStatus = RIDE_MECHANIC_STATUS_CALLING;
+            curRide->mechanicStatus = MechanicStatus::calling;
             curRide->inspectionStation = current_station;
             curRide->breakdownReason = curRide->breakdownReasonPending;
             velocity = 0;
@@ -2999,7 +2996,7 @@ void Vehicle::UpdateArriving()
     bool hasBrakesFailure = curRide->lifecycleFlags & RIDE_LIFECYCLE_BROKEN_DOWN
         && curRide->breakdownReasonPending == BREAKDOWN_BRAKES_FAILURE;
     if (hasBrakesFailure && curRide->inspectionStation == current_station
-        && curRide->mechanicStatus != RIDE_MECHANIC_STATUS_HAS_FIXED_STATION_BRAKES)
+        && curRide->mechanicStatus != MechanicStatus::hasFixedStationBrakes)
     {
         stationBrakesWork = false;
     }
@@ -3234,7 +3231,7 @@ void Vehicle::UpdateTravellingCableLift()
             curRide->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST
                 | RIDE_INVALIDATE_RIDE_MAINTENANCE;
 
-            curRide->mechanicStatus = RIDE_MECHANIC_STATUS_CALLING;
+            curRide->mechanicStatus = MechanicStatus::calling;
             curRide->inspectionStation = current_station;
             curRide->breakdownReason = curRide->breakdownReasonPending;
             velocity = 0;
@@ -5262,7 +5259,7 @@ void Vehicle::CheckAndApplyBlockSectionStopSite()
 
     switch (trackType)
     {
-        case TrackElemType::BlockBrakes:
+        case TrackElemType::blockBrakes:
             // Check if this brake is the start of a cable lift
             if (curRide->lifecycleFlags & RIDE_LIFECYCLE_CABLE_LIFT)
             {
@@ -5277,26 +5274,26 @@ void Vehicle::CheckAndApplyBlockSectionStopSite()
                 }
             }
             [[fallthrough]];
-        case TrackElemType::DiagBlockBrakes:
+        case TrackElemType::diagBlockBrakes:
             if (curRide->isBlockSectioned() && trackElement->AsTrack()->IsBrakeClosed())
                 ApplyStopBlockBrake();
             else
                 ApplyNonStopBlockBrake();
 
             break;
-        case TrackElemType::EndStation:
+        case TrackElemType::endStation:
             if (trackElement->AsTrack()->IsBrakeClosed())
                 _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_BLOCK_BRAKE;
 
             break;
-        case TrackElemType::Up25ToFlat:
-        case TrackElemType::Up60ToFlat:
-        case TrackElemType::CableLiftHill:
-        case TrackElemType::DiagUp25ToFlat:
-        case TrackElemType::DiagUp60ToFlat:
+        case TrackElemType::up25ToFlat:
+        case TrackElemType::up60ToFlat:
+        case TrackElemType::cableLiftHill:
+        case TrackElemType::diagUp25ToFlat:
+        case TrackElemType::diagUp60ToFlat:
             if (curRide->isBlockSectioned())
             {
-                if (trackType == TrackElemType::CableLiftHill || trackElement->AsTrack()->HasChain())
+                if (trackType == TrackElemType::cableLiftHill || trackElement->AsTrack()->HasChain())
                 {
                     if (trackElement->AsTrack()->IsBrakeClosed())
                     {
@@ -5347,7 +5344,7 @@ static void BlockBrakesOpenPreviousSection(const Ride& ride, const CoordsXYZ& ve
     MapInvalidateElement(location, reinterpret_cast<TileElement*>(trackElement));
 
     auto trackType = trackElement->GetTrackType();
-    if (trackType == TrackElemType::EndStation)
+    if (trackType == TrackElemType::endStation)
     {
         OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::blockBrakeClose, location);
     }
@@ -5362,40 +5359,40 @@ int32_t Vehicle::GetSwingAmount() const
 {
     switch (GetTrackType())
     {
-        case TrackElemType::LeftQuarterTurn5Tiles:
-        case TrackElemType::BankedLeftQuarterTurn5Tiles:
-        case TrackElemType::LeftQuarterTurn5TilesUp25:
-        case TrackElemType::LeftQuarterTurn5TilesDown25:
-        case TrackElemType::LeftQuarterTurn5TilesCovered:
-        case TrackElemType::LeftHalfBankedHelixUpLarge:
-        case TrackElemType::LeftHalfBankedHelixDownLarge:
-        case TrackElemType::LeftQuarterBankedHelixLargeUp:
-        case TrackElemType::LeftQuarterBankedHelixLargeDown:
-        case TrackElemType::LeftQuarterHelixLargeUp:
-        case TrackElemType::LeftQuarterHelixLargeDown:
-        case TrackElemType::LeftBankedQuarterTurn5TileUp25:
-        case TrackElemType::LeftBankedQuarterTurn5TileDown25:
+        case TrackElemType::leftQuarterTurn5Tiles:
+        case TrackElemType::bankedLeftQuarterTurn5Tiles:
+        case TrackElemType::leftQuarterTurn5TilesUp25:
+        case TrackElemType::leftQuarterTurn5TilesDown25:
+        case TrackElemType::leftQuarterTurn5TilesCovered:
+        case TrackElemType::leftHalfBankedHelixUpLarge:
+        case TrackElemType::leftHalfBankedHelixDownLarge:
+        case TrackElemType::leftQuarterBankedHelixLargeUp:
+        case TrackElemType::leftQuarterBankedHelixLargeDown:
+        case TrackElemType::leftQuarterHelixLargeUp:
+        case TrackElemType::leftQuarterHelixLargeDown:
+        case TrackElemType::leftBankedQuarterTurn5TileUp25:
+        case TrackElemType::leftBankedQuarterTurn5TileDown25:
             // Loc6D67E1
             return 14;
 
-        case TrackElemType::RightQuarterTurn5Tiles:
-        case TrackElemType::BankedRightQuarterTurn5Tiles:
-        case TrackElemType::RightQuarterTurn5TilesUp25:
-        case TrackElemType::RightQuarterTurn5TilesDown25:
-        case TrackElemType::RightQuarterTurn5TilesCovered:
-        case TrackElemType::RightHalfBankedHelixUpLarge:
-        case TrackElemType::RightHalfBankedHelixDownLarge:
-        case TrackElemType::RightQuarterBankedHelixLargeUp:
-        case TrackElemType::RightQuarterBankedHelixLargeDown:
-        case TrackElemType::RightQuarterHelixLargeUp:
-        case TrackElemType::RightQuarterHelixLargeDown:
-        case TrackElemType::RightBankedQuarterTurn5TileUp25:
-        case TrackElemType::RightBankedQuarterTurn5TileDown25:
+        case TrackElemType::rightQuarterTurn5Tiles:
+        case TrackElemType::bankedRightQuarterTurn5Tiles:
+        case TrackElemType::rightQuarterTurn5TilesUp25:
+        case TrackElemType::rightQuarterTurn5TilesDown25:
+        case TrackElemType::rightQuarterTurn5TilesCovered:
+        case TrackElemType::rightHalfBankedHelixUpLarge:
+        case TrackElemType::rightHalfBankedHelixDownLarge:
+        case TrackElemType::rightQuarterBankedHelixLargeUp:
+        case TrackElemType::rightQuarterBankedHelixLargeDown:
+        case TrackElemType::rightQuarterHelixLargeUp:
+        case TrackElemType::rightQuarterHelixLargeDown:
+        case TrackElemType::rightBankedQuarterTurn5TileUp25:
+        case TrackElemType::rightBankedQuarterTurn5TileDown25:
             // Loc6D6804
             return -14;
 
-        case TrackElemType::SBendLeft:
-        case TrackElemType::SBendLeftCovered:
+        case TrackElemType::sBendLeft:
+        case TrackElemType::sBendLeftCovered:
             // Loc6D67EF
             if (track_progress < 48)
             {
@@ -5403,8 +5400,8 @@ int32_t Vehicle::GetSwingAmount() const
             }
             return -15;
 
-        case TrackElemType::SBendRight:
-        case TrackElemType::SBendRightCovered:
+        case TrackElemType::sBendRight:
+        case TrackElemType::sBendRightCovered:
             // Loc6D67CC
             if (track_progress < 48)
             {
@@ -5412,59 +5409,59 @@ int32_t Vehicle::GetSwingAmount() const
             }
             return 15;
 
-        case TrackElemType::LeftQuarterTurn3Tiles:
-        case TrackElemType::LeftBankedQuarterTurn3Tiles:
-        case TrackElemType::LeftQuarterTurn3TilesUp25:
-        case TrackElemType::LeftQuarterTurn3TilesDown25:
-        case TrackElemType::LeftQuarterTurn3TilesCovered:
-        case TrackElemType::LeftHalfBankedHelixUpSmall:
-        case TrackElemType::LeftHalfBankedHelixDownSmall:
-        case TrackElemType::LeftBankToLeftQuarterTurn3TilesUp25:
-        case TrackElemType::LeftQuarterTurn3TilesDown25ToLeftBank:
-        case TrackElemType::LeftCurvedLiftHill:
-        case TrackElemType::LeftBankedQuarterTurn3TileUp25:
-        case TrackElemType::LeftBankedQuarterTurn3TileDown25:
+        case TrackElemType::leftQuarterTurn3Tiles:
+        case TrackElemType::leftBankedQuarterTurn3Tiles:
+        case TrackElemType::leftQuarterTurn3TilesUp25:
+        case TrackElemType::leftQuarterTurn3TilesDown25:
+        case TrackElemType::leftQuarterTurn3TilesCovered:
+        case TrackElemType::leftHalfBankedHelixUpSmall:
+        case TrackElemType::leftHalfBankedHelixDownSmall:
+        case TrackElemType::leftBankToLeftQuarterTurn3TilesUp25:
+        case TrackElemType::leftQuarterTurn3TilesDown25ToLeftBank:
+        case TrackElemType::leftCurvedLiftHill:
+        case TrackElemType::leftBankedQuarterTurn3TileUp25:
+        case TrackElemType::leftBankedQuarterTurn3TileDown25:
             // Loc6D67BE
             return 13;
 
-        case TrackElemType::RightQuarterTurn3Tiles:
-        case TrackElemType::RightBankedQuarterTurn3Tiles:
-        case TrackElemType::RightQuarterTurn3TilesUp25:
-        case TrackElemType::RightQuarterTurn3TilesDown25:
-        case TrackElemType::RightQuarterTurn3TilesCovered:
-        case TrackElemType::RightHalfBankedHelixUpSmall:
-        case TrackElemType::RightHalfBankedHelixDownSmall:
-        case TrackElemType::RightBankToRightQuarterTurn3TilesUp25:
-        case TrackElemType::RightQuarterTurn3TilesDown25ToRightBank:
-        case TrackElemType::RightCurvedLiftHill:
-        case TrackElemType::RightBankedQuarterTurn3TileUp25:
-        case TrackElemType::RightBankedQuarterTurn3TileDown25:
+        case TrackElemType::rightQuarterTurn3Tiles:
+        case TrackElemType::rightBankedQuarterTurn3Tiles:
+        case TrackElemType::rightQuarterTurn3TilesUp25:
+        case TrackElemType::rightQuarterTurn3TilesDown25:
+        case TrackElemType::rightQuarterTurn3TilesCovered:
+        case TrackElemType::rightHalfBankedHelixUpSmall:
+        case TrackElemType::rightHalfBankedHelixDownSmall:
+        case TrackElemType::rightBankToRightQuarterTurn3TilesUp25:
+        case TrackElemType::rightQuarterTurn3TilesDown25ToRightBank:
+        case TrackElemType::rightCurvedLiftHill:
+        case TrackElemType::rightBankedQuarterTurn3TileUp25:
+        case TrackElemType::rightBankedQuarterTurn3TileDown25:
             // Loc6D67B0
             return -13;
 
-        case TrackElemType::LeftQuarterTurn1Tile:
-        case TrackElemType::LeftQuarterTurn1TileUp60:
-        case TrackElemType::LeftQuarterTurn1TileDown60:
+        case TrackElemType::leftQuarterTurn1Tile:
+        case TrackElemType::leftQuarterTurn1TileUp60:
+        case TrackElemType::leftQuarterTurn1TileDown60:
             // Loc6D67A2
             return 12;
 
-        case TrackElemType::RightQuarterTurn1Tile:
-        case TrackElemType::RightQuarterTurn1TileUp60:
-        case TrackElemType::RightQuarterTurn1TileDown60:
+        case TrackElemType::rightQuarterTurn1Tile:
+        case TrackElemType::rightQuarterTurn1TileUp60:
+        case TrackElemType::rightQuarterTurn1TileDown60:
             // Loc6D6794
             return -12;
 
-        case TrackElemType::LeftEighthToDiag:
-        case TrackElemType::LeftEighthToOrthogonal:
-        case TrackElemType::LeftEighthBankToDiag:
-        case TrackElemType::LeftEighthBankToOrthogonal:
+        case TrackElemType::leftEighthToDiag:
+        case TrackElemType::leftEighthToOrthogonal:
+        case TrackElemType::leftEighthBankToDiag:
+        case TrackElemType::leftEighthBankToOrthogonal:
             // Loc6D67D3
             return 15;
 
-        case TrackElemType::RightEighthToDiag:
-        case TrackElemType::RightEighthToOrthogonal:
-        case TrackElemType::RightEighthBankToDiag:
-        case TrackElemType::RightEighthBankToOrthogonal:
+        case TrackElemType::rightEighthToDiag:
+        case TrackElemType::rightEighthToOrthogonal:
+        case TrackElemType::rightEighthBankToDiag:
+        case TrackElemType::rightEighthBankToOrthogonal:
             // Loc6D67F6
             return -15;
         default:
@@ -5553,15 +5550,15 @@ void Vehicle::UpdateSwingingCar()
         auto trackType = GetTrackType();
         switch (trackType)
         {
-            case TrackElemType::BankedLeftQuarterTurn5Tiles:
-            case TrackElemType::LeftBank:
-            case TrackElemType::LeftBankedQuarterTurn3Tiles:
+            case TrackElemType::bankedLeftQuarterTurn5Tiles:
+            case TrackElemType::leftBank:
+            case TrackElemType::leftBankedQuarterTurn3Tiles:
                 dx = 10831;
                 cx = -819;
                 break;
-            case TrackElemType::BankedRightQuarterTurn5Tiles:
-            case TrackElemType::RightBank:
-            case TrackElemType::RightBankedQuarterTurn3Tiles:
+            case TrackElemType::bankedRightQuarterTurn5Tiles:
+            case TrackElemType::rightBank:
+            case TrackElemType::rightBankedQuarterTurn3Tiles:
                 dx = 819;
                 cx = -10831;
                 break;
@@ -6215,7 +6212,7 @@ void Vehicle::UpdateHandleWaterSplash() const
     }
     else
     {
-        if (trackType == TrackElemType::Down25ToFlat)
+        if (trackType == TrackElemType::down25ToFlat)
         {
             if (track_progress == 12)
             {
@@ -6225,7 +6222,7 @@ void Vehicle::UpdateHandleWaterSplash() const
     }
     if (IsHead())
     {
-        if (trackType == TrackElemType::Watersplash)
+        if (trackType == TrackElemType::watersplash)
         {
             if (track_progress == 48)
             {
@@ -6502,7 +6499,7 @@ void Vehicle::Sub6DBF3E()
 
     auto trackType = GetTrackType();
     const auto& ted = GetTrackElementDescriptor(trackType);
-    if (!(ted.sequences[0].flags.has(SequenceFlag::trackOrigin)))
+    if (!ted.sequences[0].flags.has(SequenceFlag::trackOrigin))
     {
         return;
     }
@@ -6525,7 +6522,7 @@ void Vehicle::Sub6DBF3E()
         _vehicleStationIndex = tileElement->AsTrack()->GetStationIndex();
     }
 
-    if (trackType == TrackElemType::TowerBase && this == gCurrentVehicle)
+    if (trackType == TrackElemType::towerBase && this == gCurrentVehicle)
     {
         if (track_progress > 3 && !HasFlag(VehicleFlags::PoweredCarInReverse))
         {
@@ -6545,7 +6542,7 @@ void Vehicle::Sub6DBF3E()
         }
     }
 
-    if (trackType != TrackElemType::EndStation || this != gCurrentVehicle)
+    if (trackType != TrackElemType::endStation || this != gCurrentVehicle)
     {
         return;
     }
@@ -6651,7 +6648,7 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(
         return false;
     }
 
-    if (trackType == TrackElemType::CableLiftHill && this == gCurrentVehicle)
+    if (trackType == TrackElemType::cableLiftHill && this == gCurrentVehicle)
     {
         _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_11;
     }
@@ -6661,7 +6658,7 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(
         if (next_vehicle_on_train.IsNull())
         {
             SetBrakeClosedMultiTile(*tileElement->AsTrack(), TrackLocation, true);
-            if (TrackTypeIsBlockBrakes(trackType) || trackType == TrackElemType::EndStation)
+            if (TrackTypeIsBlockBrakes(trackType) || trackType == TrackElemType::endStation)
             {
                 if (!(rideEntry.Cars[0].flags & CAR_ENTRY_FLAG_POWERED))
                 {
@@ -6726,8 +6723,8 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(
             tileElement = xyElement.element;
             location = { xyElement, curZ, static_cast<Direction>(direction) };
         }
-        if (tileElement->AsTrack()->GetTrackType() == TrackElemType::LeftReverser
-            || tileElement->AsTrack()->GetTrackType() == TrackElemType::RightReverser)
+        if (tileElement->AsTrack()->GetTrackType() == TrackElemType::leftReverser
+            || tileElement->AsTrack()->GetTrackType() == TrackElemType::rightReverser)
         {
             if (IsHead() && velocity <= 3.0_mph)
             {
@@ -6771,12 +6768,12 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(
     if ((carEntry->flags & CAR_ENTRY_FLAG_GO_KART) && TrackSubposition < VehicleTrackSubposition::GoKartsMovingToRightLane)
     {
         trackType = tileElement->AsTrack()->GetTrackType();
-        if (trackType == TrackElemType::Flat || trackType == TrackElemType::LeftQuarterTurn3Tiles
-            || trackType == TrackElemType::RightQuarterTurn3Tiles || trackType == TrackElemType::LeftQuarterTurn5Tiles
-            || trackType == TrackElemType::RightQuarterTurn5Tiles || trackType == TrackElemType::LeftEighthToDiag
-            || trackType == TrackElemType::RightEighthToDiag || trackType == TrackElemType::LeftEighthToOrthogonal
-            || trackType == TrackElemType::RightEighthToOrthogonal || trackType == TrackElemType::DiagFlat
-            || trackType == TrackElemType::SBendLeft || trackType == TrackElemType::SBendRight
+        if (trackType == TrackElemType::flat || trackType == TrackElemType::leftQuarterTurn3Tiles
+            || trackType == TrackElemType::rightQuarterTurn3Tiles || trackType == TrackElemType::leftQuarterTurn5Tiles
+            || trackType == TrackElemType::rightQuarterTurn5Tiles || trackType == TrackElemType::leftEighthToDiag
+            || trackType == TrackElemType::rightEighthToDiag || trackType == TrackElemType::leftEighthToOrthogonal
+            || trackType == TrackElemType::rightEighthToOrthogonal || trackType == TrackElemType::diagFlat
+            || trackType == TrackElemType::sBendLeft || trackType == TrackElemType::sBendRight
             || ((curRide.lifecycleFlags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING) && tileElement->AsTrack()->IsStation()))
         {
             UpdateGoKartAttemptSwitchLanes();
@@ -6807,7 +6804,7 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(
     }
 
     trackType = tileElement->AsTrack()->GetTrackType();
-    if (trackType != TrackElemType::Brakes)
+    if (trackType != TrackElemType::brakes)
     {
         target_seat_rotation = tileElement->AsTrack()->GetSeatRotation();
     }
@@ -6818,12 +6815,12 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(
     {
         ClearFlag(VehicleFlags::StoppedOnHoldingBrake);
     }
-    if (trackType == TrackElemType::OnRidePhoto)
+    if (trackType == TrackElemType::onRidePhoto)
     {
         tileElement->AsTrack()->SetPhotoTimeout();
         MapAnimations::CreateTemporary(TrackLocation, MapAnimations::TemporaryType::onRidePhoto);
     }
-    if (trackType == TrackElemType::RotationControlToggle)
+    if (trackType == TrackElemType::rotationControlToggle)
     {
         Flags ^= VehicleFlags::SpinningIsLocked;
     }
@@ -6844,7 +6841,7 @@ bool Vehicle::UpdateTrackMotionForwards(const CarEntry* carEntry, const Ride& cu
     while (true)
     {
         auto trackType = GetTrackType();
-        if (trackType == TrackElemType::HeartLineTransferUp || trackType == TrackElemType::HeartLineTransferDown)
+        if (trackType == TrackElemType::heartLineTransferUp || trackType == TrackElemType::heartLineTransferDown)
         {
             if (track_progress == 80)
             {
@@ -6864,7 +6861,7 @@ bool Vehicle::UpdateTrackMotionForwards(const CarEntry* carEntry, const Ride& cu
         {
             bool hasBrakesFailure = curRide.lifecycleFlags & RIDE_LIFECYCLE_BROKEN_DOWN
                 && curRide.breakdownReasonPending == BREAKDOWN_BRAKES_FAILURE;
-            if (!hasBrakesFailure || curRide.mechanicStatus == RIDE_MECHANIC_STATUS_HAS_FIXED_STATION_BRAKES)
+            if (!hasBrakesFailure || curRide.mechanicStatus == MechanicStatus::hasFixedStationBrakes)
             {
                 auto brakeSpeed = ChooseBrakeSpeed() << kTrackSpeedShiftAmount;
 
@@ -6896,13 +6893,13 @@ bool Vehicle::UpdateTrackMotionForwards(const CarEntry* carEntry, const Ride& cu
             acceleration += CalculateRiderBraking();
         }
 
-        if ((trackType == TrackElemType::Flat && curRide.getRideTypeDescriptor().HasFlag(RtdFlag::hasLsmBehaviourOnFlat))
-            || (trackType == TrackElemType::PoweredLift))
+        if ((trackType == TrackElemType::flat && curRide.getRideTypeDescriptor().HasFlag(RtdFlag::hasLsmBehaviourOnFlat))
+            || (trackType == TrackElemType::poweredLift))
         {
             acceleration = GetRideTypeDescriptor(curRide.type).LegacyBoosterSettings.PoweredLiftAcceleration
                 << kBoosterAccelerationShiftAmount;
         }
-        if (trackType == TrackElemType::BrakeForDrop)
+        if (trackType == TrackElemType::brakeForDrop)
         {
             if (IsHead())
             {
@@ -6920,7 +6917,7 @@ bool Vehicle::UpdateTrackMotionForwards(const CarEntry* carEntry, const Ride& cu
                 }
             }
         }
-        if (trackType == TrackElemType::LogFlumeReverser)
+        if (trackType == TrackElemType::logFlumeReverser)
         {
             if (track_progress != 16 || velocity < 4.0_mph)
             {
@@ -6966,7 +6963,7 @@ bool Vehicle::UpdateTrackMotionForwards(const CarEntry* carEntry, const Ride& cu
                              moveInfo->z + GetRideTypeDescriptor(curRide.type).Heights.VehicleZOffset };
 
             bool useReverserDistance = TrackSubposition == VehicleTrackSubposition::ReverserRCFrontBogie
-                && (trackType == TrackElemType::LeftReverser || trackType == TrackElemType::RightReverser)
+                && (trackType == TrackElemType::leftReverser || trackType == TrackElemType::rightReverser)
                 && track_progress >= 30 && track_progress <= 66;
 
             // Loc6DB8A5
@@ -6974,7 +6971,7 @@ bool Vehicle::UpdateTrackMotionForwards(const CarEntry* carEntry, const Ride& cu
                 nextVehiclePosition - _vehicleCurPosition, useReverserDistance);
 
             if (TrackSubposition == VehicleTrackSubposition::ReverserRCRearBogie
-                && (trackType == TrackElemType::LeftReverser || trackType == TrackElemType::RightReverser)
+                && (trackType == TrackElemType::leftReverser || trackType == TrackElemType::rightReverser)
                 && track_progress == 96)
             {
                 ReverseReverserCar();
@@ -7113,7 +7110,7 @@ bool Vehicle::UpdateTrackMotionBackwardsGetNewTrack(TrackElemType trackType, con
         tileElement = trackBeginEnd.begin_element;
 
         trackType = tileElement->AsTrack()->GetTrackType();
-        if (trackType == TrackElemType::LeftReverser || trackType == TrackElemType::RightReverser)
+        if (trackType == TrackElemType::leftReverser || trackType == TrackElemType::rightReverser)
         {
             return false;
         }
@@ -7185,7 +7182,7 @@ bool Vehicle::UpdateTrackMotionBackwardsGetNewTrack(TrackElemType trackType, con
             {
                 trackType = tileElement->AsTrack()->GetTrackType();
                 const auto& ted = GetTrackElementDescriptor(trackType);
-                if (!(ted.flags & TRACK_ELEM_FLAG_DOWN))
+                if (!ted.flags.has(TrackElementFlag::down))
                 {
                     _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_9;
                 }
@@ -7209,7 +7206,7 @@ bool Vehicle::UpdateTrackMotionBackwardsGetNewTrack(TrackElemType trackType, con
     }
 
     trackType = tileElement->AsTrack()->GetTrackType();
-    if (trackType != TrackElemType::Brakes)
+    if (trackType != TrackElemType::brakes)
     {
         target_seat_rotation = tileElement->AsTrack()->GetSeatRotation();
     }
@@ -7238,7 +7235,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
     while (true)
     {
         auto trackType = GetTrackType();
-        if (trackType == TrackElemType::Flat && curRide.getRideTypeDescriptor().HasFlag(RtdFlag::hasLsmBehaviourOnFlat))
+        if (trackType == TrackElemType::flat && curRide.getRideTypeDescriptor().HasFlag(RtdFlag::hasLsmBehaviourOnFlat))
         {
             int32_t unkVelocity = _vehicleVelocityF64E08;
             if (unkVelocity < -524288)
@@ -7906,12 +7903,12 @@ void Vehicle::Loc6DCE02(const Ride& curRide)
 
     auto trackType = GetTrackType();
     const auto& ted = GetTrackElementDescriptor(trackType);
-    if (!(ted.sequences[0].flags.has(SequenceFlag::trackOrigin)))
+    if (!ted.sequences[0].flags.has(SequenceFlag::trackOrigin))
     {
         return;
     }
     _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_3;
-    if (trackType != TrackElemType::EndStation)
+    if (trackType != TrackElemType::endStation)
     {
         return;
     }
@@ -8073,11 +8070,11 @@ static uint8_t modified_speed(TrackElemType trackType, VehicleTrackSubposition t
 
     uint8_t speedModifier = FULL_SPEED;
 
-    if (trackType == TrackElemType::LeftQuarterTurn1Tile)
+    if (trackType == TrackElemType::leftQuarterTurn1Tile)
     {
         speedModifier = (trackSubposition == VehicleTrackSubposition::GoKartsLeftLane) ? HALF_SPEED : THREE_QUARTER_SPEED;
     }
-    else if (trackType == TrackElemType::RightQuarterTurn1Tile)
+    else if (trackType == TrackElemType::rightQuarterTurn1Tile)
     {
         speedModifier = (trackSubposition == VehicleTrackSubposition::GoKartsRightLane) ? HALF_SPEED : THREE_QUARTER_SPEED;
     }
@@ -8363,7 +8360,7 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
         }
     }
 
-    if (vehicle->GetTrackType() == TrackElemType::Watersplash)
+    if (vehicle->GetTrackType() == TrackElemType::watersplash)
     {
         if (vehicle->track_progress >= 48 && vehicle->track_progress <= 128)
         {

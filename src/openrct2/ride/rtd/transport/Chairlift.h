@@ -21,7 +21,7 @@ namespace OpenRCT2
 constexpr RideTypeDescriptor ChairliftRTD =
 {
     .Category = RideCategory::transport,
-    .StartTrackPiece = TrackElemType::EndStation,
+    .StartTrackPiece = TrackElemType::endStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::chairlift,
         .supportType = MetalSupportType::truss,

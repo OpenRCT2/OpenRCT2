@@ -83,7 +83,7 @@ namespace OpenRCT2::GameActions
         res.expenditure = ExpenditureType::landscaping;
         res.position = { _loc.x + 16, _loc.y + 16, _loc.z };
 
-        if (!(GetFlags().has(CommandFlag::ghost)))
+        if (!GetFlags().has(CommandFlag::ghost))
         {
             FootpathInterruptPeeps(_loc);
             FootpathRemoveLitter(_loc);

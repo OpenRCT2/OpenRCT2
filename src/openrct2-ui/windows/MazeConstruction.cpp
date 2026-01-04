@@ -34,6 +34,7 @@
 
 using OpenRCT2::GameActions::CommandFlag;
 using OpenRCT2::GameActions::CommandFlags;
+using OpenRCT2::GameActions::MazeBuildMode;
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -304,7 +305,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void onDraw(RenderTarget& rt) override
+        void onDraw(Drawing::RenderTarget& rt) override
         {
             drawWidgets(rt);
         }
@@ -399,7 +400,8 @@ namespace OpenRCT2::Ui::Windows
 
         void WindowMazeConstructionConstruct(int32_t direction)
         {
-            int32_t x, y, z, mode;
+            int32_t x, y, z;
+            MazeBuildMode mode;
             CommandFlags actionFlags = {};
 
             _currentTrackSelectionFlags.clearAll();
@@ -413,15 +415,15 @@ namespace OpenRCT2::Ui::Windows
             switch (_rideConstructionState)
             {
                 case RideConstructionState::MazeBuild:
-                    mode = GC_SET_MAZE_TRACK_BUILD;
+                    mode = MazeBuildMode::build;
                     break;
                 case RideConstructionState::MazeMove:
-                    mode = GC_SET_MAZE_TRACK_MOVE;
+                    mode = MazeBuildMode::move;
                     actionFlags = { CommandFlag::allowDuringPaused };
                     break;
                 default:
                 case RideConstructionState::MazeFill:
-                    mode = GC_SET_MAZE_TRACK_FILL;
+                    mode = MazeBuildMode::fill;
                     break;
             }
 

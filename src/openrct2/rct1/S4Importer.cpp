@@ -50,6 +50,7 @@
 #include "../rct12/CSStringConverter.h"
 #include "../rct12/EntryList.h"
 #include "../rct12/ScenarioPatcher.h"
+#include "../ride/Ride.h"
 #include "../ride/RideData.h"
 #include "../ride/RideManager.hpp"
 #include "../ride/Station.h"
@@ -1007,7 +1008,8 @@ namespace OpenRCT2::RCT1
 
             // Maintenance
             dst->buildDate = static_cast<int32_t>(src->buildDate);
-            dst->inspectionInterval = src->inspectionInterval;
+            auto clampedInspectionInterval = std::clamp<uint8_t>(src->inspectionInterval, 0, EnumValue(RideInspection::never));
+            dst->inspectionInterval = static_cast<RideInspection>(clampedInspectionInterval);
             dst->lastInspection = src->lastInspection;
             dst->reliability = src->reliability;
             dst->unreliabilityFactor = src->unreliabilityFactor;
@@ -1561,7 +1563,8 @@ namespace OpenRCT2::RCT1
             AppendRequiredObjects(result, ObjectType::footpathSurface, _footpathSurfaceEntries);
             AppendRequiredObjects(result, ObjectType::footpathRailings, _footpathRailingsEntries);
             AppendRequiredObjects(result, ObjectType::peepNames, std::vector<std::string_view>({ "rct2.peep_names.original" }));
-            RCT12AddDefaultObjects(result);
+            AppendRequiredObjects(result, ObjectType::station, kDefaultStationStyles);
+            RCT12AddDefaultMusic(result);
 
             // Normalise the name to make the scenario as recognisable as possible
             auto normalisedName = ScenarioSources::NormaliseName(_s4.ScenarioName);
@@ -1752,18 +1755,18 @@ namespace OpenRCT2::RCT1
                     }
                     else
                     {
-                        dst2->SetSeatRotation(DEFAULT_SEAT_ROTATION);
+                        dst2->SetSeatRotation(kDefaultSeatRotation);
                     }
                     // Skipping IsHighlighted()
 
                     auto trackType = dst2->GetTrackType();
                     // Brakes import as closed to preserve legacy behaviour
-                    dst2->SetBrakeClosed(trackType == TrackElemType::Brakes);
+                    dst2->SetBrakeClosed(trackType == TrackElemType::brakes);
                     if (TrackTypeHasSpeedSetting(trackType))
                     {
                         dst2->SetBrakeBoosterSpeed(src2->GetBrakeBoosterSpeed());
                     }
-                    else if (trackType == TrackElemType::OnRidePhoto)
+                    else if (trackType == TrackElemType::onRidePhoto)
                     {
                         dst2->SetPhotoTimeout(src2->GetPhotoTimeout());
                     }
@@ -2676,10 +2679,10 @@ namespace OpenRCT2::RCT1
                             auto trackType = tileElement->AsTrack()->GetTrackType();
                             switch (trackType)
                             {
-                                case TrackElemType::Up25ToFlat:
-                                case TrackElemType::Up60ToFlat:
-                                case TrackElemType::DiagUp25ToFlat:
-                                case TrackElemType::DiagUp60ToFlat:
+                                case TrackElemType::up25ToFlat:
+                                case TrackElemType::up60ToFlat:
+                                case TrackElemType::diagUp25ToFlat:
+                                case TrackElemType::diagUp60ToFlat:
                                     break;
                                 default:
                                     continue;
@@ -2857,8 +2860,8 @@ namespace OpenRCT2::RCT1
         dst->roll = src->roll;
 
         // Seat rotation was not in RCT1
-        dst->target_seat_rotation = DEFAULT_SEAT_ROTATION;
-        dst->seat_rotation = DEFAULT_SEAT_ROTATION;
+        dst->target_seat_rotation = kDefaultSeatRotation;
+        dst->seat_rotation = kDefaultSeatRotation;
 
         // Vehicle links (indexes converted later)
         dst->prev_vehicle_on_ride = EntityId::FromUnderlying(src->PrevVehicleOnRide);
@@ -2895,7 +2898,7 @@ namespace OpenRCT2::RCT1
         {
             dst->BoatLocation = TileCoordsXY{ src->BoatLocation.x, src->BoatLocation.y }.ToCoordsXY();
             dst->SetTrackDirection(0);
-            dst->SetTrackType(OpenRCT2::TrackElemType::Flat);
+            dst->SetTrackType(OpenRCT2::TrackElemType::flat);
         }
         dst->track_progress = src->TrackProgress;
         dst->vertical_drop_countdown = src->VerticalDropCountdown;

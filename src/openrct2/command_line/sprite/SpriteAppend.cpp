@@ -52,9 +52,11 @@ namespace OpenRCT2::CommandLine::Sprite
 
         constexpr uint8_t importFlags = EnumToFlag(ImportFlags::RLE);
         ImageImportMeta meta = { { xOffset, yOffset }, Palette::OpenRCT2, importFlags, spriteMode };
-        auto importResult = SpriteImageImport(imagePath, meta);
-        if (!importResult.has_value())
+        const auto image = SpriteImageLoad(imagePath, meta);
+        if (!image.has_value())
             return -1;
+        ImageImporter importer;
+        auto importResult = importer.Import(image.value(), meta);
 
         auto spriteFile = SpriteFile::Open(spriteFilePath);
         if (!spriteFile.has_value())
@@ -63,7 +65,7 @@ namespace OpenRCT2::CommandLine::Sprite
             return -1;
         }
 
-        spriteFile->AddImage(importResult.value());
+        spriteFile->AddImage(importResult);
 
         if (!spriteFile->Save(spriteFilePath))
             return -1;

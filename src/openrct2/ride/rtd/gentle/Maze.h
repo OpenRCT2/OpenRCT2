@@ -22,7 +22,7 @@ namespace OpenRCT2
 constexpr RideTypeDescriptor MazeRTD =
 {
     .Category = RideCategory::gentle,
-    .StartTrackPiece = TrackElemType::Maze,
+    .StartTrackPiece = TrackElemType::maze,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::maze,
         .enabledTrackGroups = {},

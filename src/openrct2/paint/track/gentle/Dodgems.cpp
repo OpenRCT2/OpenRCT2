@@ -18,6 +18,7 @@
 #include "../../track/Segment.h"
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::Drawing;
 
 enum
 {
@@ -110,7 +111,7 @@ static void PaintDodgems(
  */
 TrackPaintFunction GetTrackPaintFunctionDodgems(OpenRCT2::TrackElemType trackType)
 {
-    if (trackType != TrackElemType::FlatTrack4x4)
+    if (trackType != TrackElemType::flatTrack4x4)
     {
         return TrackPaintFunctionDummy;
     }

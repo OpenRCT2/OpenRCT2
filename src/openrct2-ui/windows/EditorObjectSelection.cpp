@@ -655,8 +655,8 @@ namespace OpenRCT2::Ui::Windows
             const auto objectSelectResult = WindowEditorObjectSelectionSelectObject(0, inputFlags, listItem->repositoryItem);
             if (!objectSelectResult.Successful)
             {
-                StringId error_title = (inputFlags.has(EditorInputFlag::select)) ? STR_UNABLE_TO_SELECT_THIS_OBJECT
-                                                                                 : STR_UNABLE_TO_DE_SELECT_THIS_OBJECT;
+                StringId error_title = inputFlags.has(EditorInputFlag::select) ? STR_UNABLE_TO_SELECT_THIS_OBJECT
+                                                                               : STR_UNABLE_TO_DE_SELECT_THIS_OBJECT;
 
                 ContextShowError(error_title, objectSelectResult.Message, {});
                 return;
@@ -725,7 +725,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
+        void onScrollDraw(int32_t scrollIndex, Drawing::RenderTarget& rt) override
         {
             // ScrollPaint
             ScreenCoordsXY screenCoords;
@@ -917,7 +917,7 @@ namespace OpenRCT2::Ui::Windows
             for (size_t i = 0; i < std::size(ObjectSelectionPages); i++)
             {
                 auto& widget = widgets[WIDX_TAB_1 + i];
-                if (ObjectSelectionPages[i].Image != kSpriteIdNull)
+                if (ObjectSelectionPages[i].Image != kImageIndexUndefined)
                 {
                     widget.type = WidgetType::tab;
                     widget.left = x;
@@ -1008,7 +1008,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_PREVIEW].right = widgets[WIDX_PREVIEW].left + kPreviewSize;
         }
 
-        void onDraw(RenderTarget& rt) override
+        void onDraw(Drawing::RenderTarget& rt) override
         {
             drawWidgets(rt);
 
@@ -1248,7 +1248,7 @@ namespace OpenRCT2::Ui::Windows
             _listItems.shrink_to_fit();
         }
 
-        void DrawDescriptions(RenderTarget& rt)
+        void DrawDescriptions(Drawing::RenderTarget& rt)
         {
             auto screenPos = windowPos + ScreenCoordsXY{ widgets[WIDX_PREVIEW].midX(), widgets[WIDX_PREVIEW].bottom + 3 };
             auto descriptionWidth = width - widgets[WIDX_LIST].right - 12;
@@ -1356,7 +1356,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void DrawDebugData(RenderTarget& rt)
+        void DrawDebugData(Drawing::RenderTarget& rt)
         {
             ObjectListItem* listItem = &_listItems[selectedListItem];
             auto screenPos = windowPos + ScreenCoordsXY{ width - 5, height - (kListRowHeight * 6) };

@@ -266,6 +266,11 @@ namespace OpenRCT2::Network
                 GameCommand::EditScenarioOptions,
             },
         },
+        NetworkAction{
+            STR_ACTION_PATH_DRAG_AREA,
+            "PERMISSION_DRAG_PATH_AREA",
+            {},
+        },
     };
 } // namespace OpenRCT2::Network
 

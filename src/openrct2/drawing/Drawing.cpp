@@ -84,8 +84,10 @@ int32_t gPickupPeepX;
 int32_t gPickupPeepY;
 
 // Originally 0x9ABE04
-uint8_t gTextPalette[0x8] = {
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+OpenRCT2::Drawing::TextColours gTextPalette = {
+    PaletteIndex::pi0,
+    PaletteIndex::pi0,
+    PaletteIndex::pi0,
 };
 
 bool gPaintForceRedraw{ false };
@@ -698,7 +700,7 @@ void GfxTransposePalette(int32_t pal, uint8_t product)
     if (g1 != nullptr)
     {
         int32_t width = g1->width;
-        int32_t x = g1->x_offset;
+        int32_t x = g1->xOffset;
         uint8_t* source_pointer = g1->offset;
 
         for (; width > 0; width--)
@@ -741,7 +743,7 @@ void LoadPalette()
     if (g1 != nullptr)
     {
         int32_t width = g1->width;
-        int32_t x = g1->x_offset;
+        int32_t x = g1->xOffset;
         uint8_t* src = g1->offset;
         for (; width > 0; width--)
         {
@@ -833,8 +835,8 @@ void GfxInvalidatePickedUpPeep()
         auto* g1 = GfxGetG1Element(imageId);
         if (g1 != nullptr)
         {
-            int32_t left = gPickupPeepX + g1->x_offset;
-            int32_t top = gPickupPeepY + g1->y_offset;
+            int32_t left = gPickupPeepX + g1->xOffset;
+            int32_t top = gPickupPeepY + g1->yOffset;
             int32_t right = left + g1->width;
             int32_t bottom = top + g1->height;
             GfxSetDirtyBlocks({ { left, top }, { right, bottom } });
@@ -871,23 +873,6 @@ std::optional<PaletteMap> GetPaletteMapForColour(colour_t paletteId)
         }
     }
     return std::nullopt;
-}
-
-uint8_t* RenderTarget::GetBitsOffset(const ScreenCoordsXY& pos) const
-{
-    return bits + pos.x + pos.y * LineStride();
-}
-
-RenderTarget RenderTarget::Crop(const ScreenCoordsXY& pos, const ScreenSize& size) const
-{
-    RenderTarget result = *this;
-    result.bits = GetBitsOffset(pos);
-    result.x = pos.x;
-    result.y = pos.y;
-    result.width = size.width;
-    result.height = size.height;
-    result.pitch = width + pitch - size.width;
-    return result;
 }
 
 FilterPaletteID GetGlassPaletteId(colour_t c)
@@ -971,7 +956,7 @@ void UpdatePaletteEffects()
         const G1Element* g1 = GfxGetG1Element(palette);
         if (g1 != nullptr)
         {
-            int32_t xoffset = g1->x_offset;
+            int32_t xoffset = g1->xOffset;
 
             for (int32_t i = 0; i < g1->width; i++)
             {
@@ -1000,7 +985,7 @@ void UpdatePaletteEffects()
             const G1Element* g1 = GfxGetG1Element(palette);
             if (g1 != nullptr)
             {
-                int32_t xoffset = g1->x_offset;
+                int32_t xoffset = g1->xOffset;
 
                 for (int32_t i = 0; i < g1->width; i++)
                 {

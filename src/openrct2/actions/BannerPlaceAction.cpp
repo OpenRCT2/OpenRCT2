@@ -138,7 +138,7 @@ namespace OpenRCT2::GameActions
         }
         banner->flags = {};
         banner->text = {};
-        banner->textColour = TextColour::white;
+        banner->textColour = Drawing::TextColour::white;
         banner->type = _bannerType; // Banner must be deleted after this point in an early return
         banner->colour = _primaryColour;
         banner->position = TileCoordsXY(_loc);
@@ -170,7 +170,7 @@ namespace OpenRCT2::GameActions
             if (!(pathElement->GetEdges() & (1 << _loc.direction)))
                 continue;
 
-            if (pathElement->IsGhost() && !(GetFlags().has(CommandFlag::ghost)))
+            if (pathElement->IsGhost() && !GetFlags().has(CommandFlag::ghost))
                 continue;
 
             return pathElement;

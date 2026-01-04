@@ -30,6 +30,7 @@
 #include <memory>
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::Drawing;
 using namespace OpenRCT2::Audio;
 
 struct WeatherTrait

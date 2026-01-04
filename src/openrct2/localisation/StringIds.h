@@ -1602,6 +1602,9 @@ enum : StringId
     STR_THIS_WILL_TAKE_A_FEW_MINUTES = 6407,
     STR_INSTALL_INNOEXTRACT = 6408,
     STR_NOT_THE_GOG_INSTALLER = 6409,
+    STR_OWN_ON_STEAM = 7014,
+    STR_PLEASE_CLOSE_STEAM = 7015,
+    STR_WAIT_FOR_STEAM_DOWNLOAD = 7016,
 
     STR_TILE_INSPECTOR_TOGGLE_INVISIBILITY_TIP = 6436,
 
@@ -1761,6 +1764,8 @@ enum : StringId
 
     STR_REPLAY_FILE_NOT_FOUND = 7010,
     STR_REPLAY_NOT_STARTED = 7011,
+
+    STR_ACTION_PATH_DRAG_AREA = 7013,
 
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings

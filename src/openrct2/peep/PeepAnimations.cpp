@@ -289,7 +289,7 @@ namespace OpenRCT2
 
         uint8_t bitmap[kHeight][kWidth] = { 0 };
 
-        RenderTarget rt = {
+        Drawing::RenderTarget rt = {
             .bits = reinterpret_cast<uint8_t*>(bitmap),
             .x = -(kWidth / 2),
             .y = -(kHeight / 2),

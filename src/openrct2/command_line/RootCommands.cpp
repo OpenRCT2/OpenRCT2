@@ -135,6 +135,7 @@ namespace OpenRCT2
         DefineCommand("set-rct2", "<path>",                 kStandardOptions, HandleCommandSetRCT2),
         DefineCommand("scan-objects", "<path>",             kStandardOptions, HandleCommandScanObjects),
         DefineCommand("handle-uri", "openrct2://.../",      kStandardOptions, CommandLine::HandleCommandUri),
+        DefineCommand("trigger-steam-download", "",         kStandardOptions, CommandLine::HandleCommandTriggerSteamDownload),
 
     #if defined(_WIN32)
         DefineCommand("register-shell", "", RegisterShellOptions, HandleCommandRegisterShell),
@@ -495,5 +496,15 @@ namespace OpenRCT2
         Console::WriteLine();
 
         // TODO Print other potential information (e.g. user, hardware)
+    }
+
+    exitcode_t CommandLine::HandleCommandTriggerSteamDownload([[maybe_unused]] CommandLineArgEnumerator* enumerator)
+    {
+        if (!Platform::triggerSteamDownload())
+        {
+            return EXITCODE_FAIL;
+        }
+
+        return EXITCODE_OK;
     }
 } // namespace OpenRCT2

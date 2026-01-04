@@ -260,7 +260,7 @@ TrackPaintFunction GetTrackPaintFunctionMagicCarpet(OpenRCT2::TrackElemType trac
 {
     switch (trackType)
     {
-        case TrackElemType::FlatTrack1x4A:
+        case TrackElemType::flatTrack1x4A:
             return PaintMagicCarpet;
         default:
             return TrackPaintFunctionDummy;

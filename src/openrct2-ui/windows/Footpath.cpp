@@ -29,6 +29,7 @@
 #include <openrct2/audio/Audio.h>
 #include <openrct2/core/FlagHolder.hpp>
 #include <openrct2/localisation/Formatter.h>
+#include <openrct2/network/NetworkAction.h>
 #include <openrct2/object/FootpathObject.h>
 #include <openrct2/object/FootpathRailingsObject.h>
 #include <openrct2/object/FootpathSurfaceObject.h>
@@ -532,6 +533,18 @@ namespace OpenRCT2::Ui::Windows
                 ? WidgetType::imgBtn
                 : WidgetType::empty;
 
+#ifndef DISABLE_NETWORK
+            bool canDrag = true;
+            if (Network::GetMode() == Network::Mode::client)
+            {
+                canDrag = Network::CanPerformAction(Network::GetCurrentPlayerGroupIndex(), Network::Permission::dragPathArea);
+            }
+            if (canDrag)
+                disabledWidgets &= ~(1uLL << WIDX_CONSTRUCT_DRAG_AREA);
+            else
+                disabledWidgets |= (1uLL << WIDX_CONSTRUCT_DRAG_AREA);
+#endif
+
             if (gFootpathSelection.LegacyPath == kObjectEntryIndexNull)
             {
                 widgets[WIDX_RAILINGS_TYPE].type = WidgetType::flatBtn;
@@ -542,7 +555,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void onDraw(RenderTarget& rt) override
+        void onDraw(Drawing::RenderTarget& rt) override
         {
             ScreenCoordsXY screenCoords;
             WindowDrawWidgets(*this, rt);
@@ -630,7 +643,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Update provisional bridge mode path
-            if (!(_provisionalFootpath.flags.has(ProvisionalPathFlag::placed)))
+            if (!_provisionalFootpath.flags.has(ProvisionalPathFlag::placed))
             {
                 ObjectEntryIndex type;
                 ObjectEntryIndex railings = gFootpathSelection.Railings;
@@ -670,13 +683,13 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void WindowFootpathDrawDropdownButtons(RenderTarget& rt)
+        void WindowFootpathDrawDropdownButtons(Drawing::RenderTarget& rt)
         {
             if (gFootpathSelection.LegacyPath == kObjectEntryIndexNull)
             {
                 // Set footpath and queue type button images
-                auto pathImage = kSpriteIdNull;
-                auto queueImage = kSpriteIdNull;
+                auto pathImage = kImageIndexUndefined;
+                auto queueImage = kImageIndexUndefined;
                 auto pathEntry = GetPathSurfaceEntry(gFootpathSelection.NormalSurface);
                 if (pathEntry != nullptr)
                 {
@@ -693,7 +706,7 @@ namespace OpenRCT2::Ui::Windows
                 WindowFootpathDrawDropdownButton(rt, WIDX_QUEUELINE_TYPE, queueImage);
 
                 // Set railing
-                auto railingsImage = kSpriteIdNull;
+                auto railingsImage = kImageIndexUndefined;
                 auto railingsEntry = GetPathRailingsEntry(gFootpathSelection.Railings);
                 if (railingsEntry != nullptr)
                 {
@@ -706,8 +719,8 @@ namespace OpenRCT2::Ui::Windows
                 auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
 
                 // Set footpath and queue type button images
-                auto pathImage = kSpriteIdNull;
-                auto queueImage = kSpriteIdNull;
+                auto pathImage = kImageIndexUndefined;
+                auto queueImage = kImageIndexUndefined;
                 const auto* pathObj = objManager.GetLoadedObject<FootpathObject>(gFootpathSelection.LegacyPath);
                 if (pathObj != nullptr)
                 {
@@ -721,7 +734,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void WindowFootpathDrawDropdownButton(RenderTarget& rt, WidgetIndex widgetIndex, ImageIndex image)
+        void WindowFootpathDrawDropdownButton(Drawing::RenderTarget& rt, WidgetIndex widgetIndex, ImageIndex image)
         {
             const auto& widget = widgets[widgetIndex];
             GfxDrawSprite(rt, ImageId(image), { windowPos.x + widget.left, windowPos.y + widget.top });
@@ -1044,7 +1057,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
 
             // Check for change
-            if ((_provisionalFootpath.flags.has(ProvisionalPathFlag::placed)) && _provisionalFootpath.positionA == mapPos
+            if (_provisionalFootpath.flags.has(ProvisionalPathFlag::placed) && _provisionalFootpath.positionA == mapPos
                 && _provisionalFootpath.startZ == _footpathPlaceZ)
             {
                 return;
@@ -1105,7 +1118,7 @@ namespace OpenRCT2::Ui::Windows
             gMapSelectFlags.unset(MapSelectFlag::enableArrow);
 
             // Check for change
-            if ((_provisionalFootpath.flags.has(ProvisionalPathFlag::placed)) && range.Point1 == _provisionalFootpath.positionA
+            if (_provisionalFootpath.flags.has(ProvisionalPathFlag::placed) && range.Point1 == _provisionalFootpath.positionA
                 && range.Point2 == _provisionalFootpath.positionB && baseZ == _provisionalFootpath.startZ)
             {
                 return;

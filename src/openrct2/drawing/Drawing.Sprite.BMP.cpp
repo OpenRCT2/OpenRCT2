@@ -9,6 +9,8 @@
 
 #include "Drawing.h"
 
+using namespace OpenRCT2::Drawing;
+
 template<DrawBlendOp TBlendOp>
 static void FASTCALL DrawBMPSpriteMagnify(RenderTarget& rt, const DrawSpriteArgs& args)
 {
@@ -104,7 +106,7 @@ void FASTCALL GfxBmpSpriteToBuffer(RenderTarget& rt, const DrawSpriteArgs& args)
         // Used for glass.
         DrawBMPSprite<kBlendTransparent | kBlendDst>(rt, args);
     }
-    else if (!(args.SourceImage.flags & G1_FLAG_HAS_TRANSPARENCY))
+    else if (!args.SourceImage.flags.has(G1Flag::hasTransparency))
     {
         // Copy raw bitmap data to target
         DrawBMPSprite<kBlendNone>(rt, args);

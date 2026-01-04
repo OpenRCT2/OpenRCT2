@@ -259,7 +259,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_PREVIEW].image = ImageId(LandTool::SizeToSpriteIndex(gLandToolSize));
         }
 
-        void onDraw(RenderTarget& rt) override
+        void onDraw(Drawing::RenderTarget& rt) override
         {
             ScreenCoordsXY screenCoords;
             int32_t numTiles;
@@ -461,7 +461,7 @@ namespace OpenRCT2::Ui::Windows
                 return state_changed;
             }
 
-            if (!(gMapSelectFlags.has(MapSelectFlag::enable)))
+            if (!gMapSelectFlags.has(MapSelectFlag::enable))
             {
                 gMapSelectFlags.set(MapSelectFlag::enable);
                 state_changed++;
@@ -616,7 +616,7 @@ namespace OpenRCT2::Ui::Windows
 
             if (gCurrentToolId == Tool::upDownArrow)
             {
-                if (!(gMapSelectFlags.has(MapSelectFlag::enable)))
+                if (!gMapSelectFlags.has(MapSelectFlag::enable))
                     return;
 
                 money64 lower_cost = SelectionLowerLand(SelectionMode::query);
@@ -660,7 +660,7 @@ namespace OpenRCT2::Ui::Windows
 
                 uint8_t state_changed = 0;
 
-                if (!(gMapSelectFlags.has(MapSelectFlag::enable)))
+                if (!gMapSelectFlags.has(MapSelectFlag::enable))
                 {
                     gMapSelectFlags.set(MapSelectFlag::enable);
                     state_changed++;
@@ -737,7 +737,7 @@ namespace OpenRCT2::Ui::Windows
 
             uint8_t state_changed = 0;
 
-            if (!(gMapSelectFlags.has(MapSelectFlag::enable)))
+            if (!gMapSelectFlags.has(MapSelectFlag::enable))
             {
                 gMapSelectFlags.set(MapSelectFlag::enable);
                 state_changed++;
@@ -843,7 +843,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void DrawDropdownButtons(RenderTarget& rt)
+        void DrawDropdownButtons(Drawing::RenderTarget& rt)
         {
             auto& objManager = GetContext()->GetObjectManager();
             const auto* surfaceObj = objManager.GetLoadedObject<TerrainSurfaceObject>(_selectedFloorTexture);
@@ -866,7 +866,7 @@ namespace OpenRCT2::Ui::Windows
             DrawDropdownButton(rt, WIDX_WALL, edgeImage);
         }
 
-        void DrawDropdownButton(RenderTarget& rt, WidgetIndex widgetIndex, ImageId image)
+        void DrawDropdownButton(Drawing::RenderTarget& rt, WidgetIndex widgetIndex, ImageId image)
         {
             const auto& widget = widgets[widgetIndex];
             GfxDrawSprite(rt, image, { windowPos.x + widget.left, windowPos.y + widget.top });

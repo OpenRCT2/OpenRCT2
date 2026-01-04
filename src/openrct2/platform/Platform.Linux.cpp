@@ -340,65 +340,52 @@ namespace OpenRCT2::Platform
         return MeasurementFormat::Metric;
     }
 
-    std::string GetSteamPath()
+    SteamPaths GetSteamPaths()
     {
+        SteamPaths ret = {};
+        ret.nativeFolder = "steamapps/common";
+        ret.downloadDepotFolder = "ubuntu12_32/steamapps/content";
+        ret.manifests = "steamapps";
+
         const char* steamRoot = getenv("STEAMROOT");
         if (steamRoot != nullptr)
         {
-            return Path::Combine(steamRoot, u8"ubuntu12_32/steamapps/content");
+            ret.roots.emplace_back(steamRoot);
         }
 
         const char* localSharePath = getenv("XDG_DATA_HOME");
         if (localSharePath != nullptr)
         {
-            auto steamPath = Path::Combine(localSharePath, u8"Steam/ubuntu12_32/steamapps/content");
-            if (Path::DirectoryExists(steamPath))
+            auto xdgDataHomeSteamPath = Path::Combine(localSharePath, u8"Steam");
+            if (Path::DirectoryExists(xdgDataHomeSteamPath))
             {
-                return steamPath;
+                ret.roots.emplace_back(xdgDataHomeSteamPath);
             }
         }
 
         const char* homeDir = getpwuid(getuid())->pw_dir;
-        if (homeDir == nullptr)
+        if (homeDir != nullptr)
         {
-            return {};
+            auto localShareSteamPath = Path::Combine(homeDir, u8".local/share/Steam");
+            if (Path::DirectoryExists(localShareSteamPath))
+            {
+                ret.roots.emplace_back(localShareSteamPath);
+            }
+
+            auto oldSteamPath = Path::Combine(homeDir, u8".steam/steam");
+            if (Path::DirectoryExists(oldSteamPath))
+            {
+                ret.roots.emplace_back(oldSteamPath);
+            }
+
+            auto snapLocalShareSteamPath = Path::Combine(homeDir, u8"snap/steam/common/.local/share/Steam");
+            if (Path::DirectoryExists(snapLocalShareSteamPath))
+            {
+                ret.roots.emplace_back(snapLocalShareSteamPath);
+            }
         }
 
-        // Prefer new path for Steam, which is the default when using with Proton
-        auto steamPath = Path::Combine(homeDir, u8".local/share/Steam/steamapps/common");
-        if (Path::DirectoryExists(steamPath))
-        {
-            return steamPath;
-        }
-
-        // Fallback paths
-        steamPath = Path::Combine(homeDir, u8".local/share/Steam/ubuntu12_32/steamapps/content");
-        if (Path::DirectoryExists(steamPath))
-        {
-            return steamPath;
-        }
-
-        steamPath = Path::Combine(homeDir, u8".steam/steam/ubuntu12_32/steamapps/content");
-        if (Path::DirectoryExists(steamPath))
-        {
-            return steamPath;
-        }
-        return {};
-    }
-
-    u8string GetRCT1SteamDir()
-    {
-        return u8"Rollercoaster Tycoon Deluxe";
-    }
-
-    u8string GetRCT2SteamDir()
-    {
-        return u8"Rollercoaster Tycoon 2";
-    }
-
-    u8string GetRCTClassicSteamDir()
-    {
-        return u8"RollerCoaster Tycoon Classic";
+        return ret;
     }
 
     std::vector<std::string_view> GetSearchablePathsRCT1()

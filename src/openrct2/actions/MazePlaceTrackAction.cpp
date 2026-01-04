@@ -162,7 +162,7 @@ namespace OpenRCT2::GameActions
         }
 
         auto flags = GetFlags();
-        if (!(flags.has(CommandFlag::ghost)))
+        if (!flags.has(CommandFlag::ghost))
         {
             FootpathRemoveLitter(_loc);
             WallRemoveAt({ _loc.ToTileStart(), _loc.z, _loc.z + 32 });
@@ -188,7 +188,7 @@ namespace OpenRCT2::GameActions
         Guard::Assert(trackElement != nullptr);
 
         trackElement->SetClearanceZ(clearanceHeight);
-        trackElement->SetTrackType(TrackElemType::Maze);
+        trackElement->SetTrackType(TrackElemType::maze);
         trackElement->SetRideType(ride->type);
         trackElement->SetRideIndex(_rideIndex);
         trackElement->SetMazeEntry(_mazeEntry);

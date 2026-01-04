@@ -9,6 +9,7 @@
 
 #include "../Context.h"
 #include "../core/String.hpp"
+#include "../drawing/ScrollingText.h"
 #include "../interface/FontFamilies.h"
 #include "../interface/Window.h"
 #include "../object/ObjectManager.h"
@@ -81,7 +82,7 @@ namespace OpenRCT2
             localisationService.OpenLanguage(id);
             // Objects and their localised strings need to be refreshed
             objectManager.ResetObjects();
-            ScrollingTextInvalidate();
+            Drawing::ScrollingText::invalidate();
             WindowNotifyLanguageChange();
             return true;
         }

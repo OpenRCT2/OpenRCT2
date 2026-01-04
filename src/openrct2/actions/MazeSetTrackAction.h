@@ -13,17 +13,24 @@
 
 namespace OpenRCT2::GameActions
 {
+    enum class MazeBuildMode : uint8_t
+    {
+        build,
+        move,
+        fill,
+    };
+
     class MazeSetTrackAction final : public GameActionBase<GameCommand::SetMazeTrack>
     {
     private:
         CoordsXYZD _loc;
         bool _initialPlacement{};
         RideId _rideIndex{ RideId::GetNull() };
-        uint8_t _mode{};
+        MazeBuildMode _mode{};
 
     public:
         MazeSetTrackAction() = default;
-        MazeSetTrackAction(const CoordsXYZD& location, bool initialPlacement, RideId rideIndex, uint8_t mode);
+        MazeSetTrackAction(const CoordsXYZD& location, bool initialPlacement, RideId rideIndex, MazeBuildMode mode);
 
         void AcceptParameters(GameActionParameterVisitor&) final;
         void Serialise(DataSerialiser& stream) override;

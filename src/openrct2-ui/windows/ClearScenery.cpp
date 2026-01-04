@@ -171,7 +171,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_PREVIEW].image = ImageId(LandTool::SizeToSpriteIndex(gLandToolSize));
         }
 
-        void onDraw(RenderTarget& rt) override
+        void onDraw(Drawing::RenderTarget& rt) override
         {
             drawWidgets(rt);
 
@@ -227,7 +227,7 @@ namespace OpenRCT2::Ui::Windows
                 return state_changed;
             }
 
-            if (!(gMapSelectFlags.has(MapSelectFlag::enable)))
+            if (!gMapSelectFlags.has(MapSelectFlag::enable))
             {
                 gMapSelectFlags.set(MapSelectFlag::enable);
                 state_changed++;
@@ -329,7 +329,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_BACKGROUND:
                 {
                     auto* windowMgr = GetWindowManager();
-                    if (windowMgr->FindByClass(WindowClass::error) == nullptr && (gMapSelectFlags.has(MapSelectFlag::enable)))
+                    if (windowMgr->FindByClass(WindowClass::error) == nullptr && gMapSelectFlags.has(MapSelectFlag::enable))
                     {
                         auto action = GetClearAction();
                         GameActions::Execute(&action, getGameState());

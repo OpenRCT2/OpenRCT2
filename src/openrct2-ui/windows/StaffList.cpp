@@ -273,7 +273,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_STAFF_LIST_HIRE_BUTTON].right = width - 11;
         }
 
-        void onDraw(RenderTarget& rt) override
+        void onDraw(Drawing::RenderTarget& rt) override
         {
             drawWidgets(rt);
             DrawTabImages(rt);
@@ -367,7 +367,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
+        void onScrollDraw(int32_t scrollIndex, Drawing::RenderTarget& rt) override
         {
             auto rtCoords = ScreenCoordsXY{ rt.x, rt.y };
             Rectangle::fill(
@@ -595,7 +595,7 @@ namespace OpenRCT2::Ui::Windows
             return static_cast<StaffType>(_selectedTab);
         }
 
-        void DrawTabImages(RenderTarget& rt) const
+        void DrawTabImages(Drawing::RenderTarget& rt) const
         {
             const auto& gameState = getGameState();
             DrawTabImage(rt, WINDOW_STAFF_LIST_TAB_HANDYMEN, AnimationPeepType::handyman, gameState.park.staffHandymanColour);
@@ -604,7 +604,7 @@ namespace OpenRCT2::Ui::Windows
             DrawTabImage(rt, WINDOW_STAFF_LIST_TAB_ENTERTAINERS, AnimationPeepType::entertainer);
         }
 
-        void DrawTabImage(RenderTarget& rt, int32_t tabIndex, AnimationPeepType type, colour_t colour) const
+        void DrawTabImage(Drawing::RenderTarget& rt, int32_t tabIndex, AnimationPeepType type, colour_t colour) const
         {
             PeepAnimationsObject* animObj = findPeepAnimationsObjectForType(type);
             if (animObj == nullptr)
@@ -622,7 +622,7 @@ namespace OpenRCT2::Ui::Windows
                 windowPos + ScreenCoordsXY{ (widget.left + widget.right) / 2, widget.bottom - 6 });
         }
 
-        void DrawTabImage(RenderTarget& rt, int32_t tabIndex, AnimationPeepType type) const
+        void DrawTabImage(Drawing::RenderTarget& rt, int32_t tabIndex, AnimationPeepType type) const
         {
             PeepAnimationsObject* animObj = findPeepAnimationsObjectForType(type);
             if (animObj == nullptr)

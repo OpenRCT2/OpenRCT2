@@ -21,6 +21,7 @@
 #include <openrct2/SpriteIds.h>
 #include <openrct2/actions/TrackDesignAction.h>
 #include <openrct2/audio/Audio.h>
+#include <openrct2/config/Config.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/paint/VirtualFloor.h>
 #include <openrct2/ride/RideConstruction.h>
@@ -225,7 +226,9 @@ namespace OpenRCT2::Ui::Windows
                 if (res.error == GameActions::Status::ok)
                 {
                     // Valid location found. Place the ghost at the location.
-                    auto tdAction = GameActions::TrackDesignAction(ghostTrackLoc, *_trackDesign, !gTrackDesignSceneryToggle);
+                    auto tdAction = GameActions::TrackDesignAction(
+                        ghostTrackLoc, *_trackDesign, !gTrackDesignSceneryToggle,
+                        Config::Get().general.defaultInspectionInterval);
                     tdAction.SetFlags({ CommandFlag::noSpend, CommandFlag::ghost });
                     tdAction.SetCallback([&](const GameActions::GameAction*, const GameActions::Result* result) {
                         if (result->error == GameActions::Status::ok)
@@ -297,7 +300,8 @@ namespace OpenRCT2::Ui::Windows
             _placingTrackDesign = true;
 
             auto tdAction = GameActions::TrackDesignAction(
-                { trackLoc, _currentTrackPieceDirection }, *_trackDesign, !gTrackDesignSceneryToggle);
+                { trackLoc, _currentTrackPieceDirection }, *_trackDesign, !gTrackDesignSceneryToggle,
+                Config::Get().general.defaultInspectionInterval);
             tdAction.SetCallback([&, trackLoc](const GameActions::GameAction*, const GameActions::Result* result) {
                 if (result->error != GameActions::Status::ok)
                 {
@@ -351,14 +355,14 @@ namespace OpenRCT2::Ui::Windows
             DrawMiniPreview(*_trackDesign);
         }
 
-        void onDraw(RenderTarget& rt) override
+        void onDraw(Drawing::RenderTarget& rt) override
         {
             auto ft = Formatter::Common();
             ft.Add<char*>(_trackDesign->gameStateData.name.c_str());
             WindowDrawWidgets(*this, rt);
 
             // Draw mini tile preview
-            RenderTarget clippedRT;
+            Drawing::RenderTarget clippedRT;
             const auto& previewWidget = widgets[WIDX_PREVIEW];
             const auto previewCoords = windowPos + ScreenCoordsXY{ previewWidget.left, previewWidget.top };
             if (ClipDrawPixelInfo(clippedRT, rt, previewCoords, previewWidget.width(), previewWidget.height()))
@@ -400,7 +404,8 @@ namespace OpenRCT2::Ui::Windows
             if (_hasPlacementGhost)
             {
                 auto tdAction = GameActions::TrackDesignAction(
-                    { _placementGhostLoc }, *_trackDesign, !gTrackDesignSceneryToggle);
+                    { _placementGhostLoc }, *_trackDesign, !gTrackDesignSceneryToggle,
+                    Config::Get().general.defaultInspectionInterval);
                 tdAction.SetFlags({ CommandFlag::noSpend, CommandFlag::ghost });
                 auto res = GameActions::Execute(&tdAction, getGameState());
                 if (res.error != GameActions::Status::ok)
@@ -747,7 +752,8 @@ namespace OpenRCT2::Ui::Windows
             for (int32_t i = 0; i < 7; i++, loc.z += kCoordsZStep)
             {
                 auto tdAction = GameActions::TrackDesignAction(
-                    CoordsXYZD{ loc.x, loc.y, loc.z, _currentTrackPieceDirection }, *_trackDesign, !gTrackDesignSceneryToggle);
+                    CoordsXYZD{ loc.x, loc.y, loc.z, _currentTrackPieceDirection }, *_trackDesign, !gTrackDesignSceneryToggle,
+                    Config::Get().general.defaultInspectionInterval);
                 tdAction.SetFlags(newFlags);
                 res = GameActions::Query(&tdAction, getGameState());
 

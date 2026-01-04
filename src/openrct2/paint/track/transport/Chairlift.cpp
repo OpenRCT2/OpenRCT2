@@ -152,7 +152,7 @@ static const TrackElement* ChairliftPaintUtilMapGetTrackElementAtFromRideFuzzy(
 static bool ChairliftPaintUtilIsFirstTrack(
     const Ride& ride, const TrackElement& trackElement, const CoordsXY& pos, OpenRCT2::TrackElemType trackType)
 {
-    if (trackElement.GetTrackType() != TrackElemType::BeginStation)
+    if (trackElement.GetTrackType() != TrackElemType::beginStation)
     {
         return false;
     }
@@ -172,7 +172,7 @@ static bool ChairliftPaintUtilIsFirstTrack(
 static bool ChairliftPaintUtilIsLastTrack(
     const Ride& ride, const TrackElement& trackElement, const CoordsXY& pos, OpenRCT2::TrackElemType trackType)
 {
-    if (trackElement.GetTrackType() != TrackElemType::EndStation)
+    if (trackElement.GetTrackType() != TrackElemType::endStation)
     {
         return false;
     }
@@ -666,31 +666,31 @@ TrackPaintFunction GetTrackPaintFunctionChairlift(OpenRCT2::TrackElemType trackT
 {
     switch (trackType)
     {
-        case TrackElemType::BeginStation:
-        case TrackElemType::MiddleStation:
-        case TrackElemType::EndStation:
+        case TrackElemType::beginStation:
+        case TrackElemType::middleStation:
+        case TrackElemType::endStation:
             return ChairliftPaintStation;
 
-        case TrackElemType::Flat:
+        case TrackElemType::flat:
             return ChairliftPaintFlat;
 
-        case TrackElemType::FlatToUp25:
+        case TrackElemType::flatToUp25:
             return ChairliftPaintFlatTo25DegUp;
-        case TrackElemType::Up25:
+        case TrackElemType::up25:
             return ChairliftPaint25DegUp;
-        case TrackElemType::Up25ToFlat:
+        case TrackElemType::up25ToFlat:
             return ChairliftPaint25DegUpToFlat;
 
-        case TrackElemType::FlatToDown25:
+        case TrackElemType::flatToDown25:
             return ChairliftPaintFlatTo25DegDown;
-        case TrackElemType::Down25:
+        case TrackElemType::down25:
             return ChairliftPaint25DegDown;
-        case TrackElemType::Down25ToFlat:
+        case TrackElemType::down25ToFlat:
             return ChairliftPaint25DegDownToFlat;
 
-        case TrackElemType::LeftQuarterTurn1Tile:
+        case TrackElemType::leftQuarterTurn1Tile:
             return ChairliftPaintLeftQuarterTurn1Tile;
-        case TrackElemType::RightQuarterTurn1Tile:
+        case TrackElemType::rightQuarterTurn1Tile:
             return ChairliftPaintRightQuarterTurn1Tile;
         default:
             return TrackPaintFunctionDummy;

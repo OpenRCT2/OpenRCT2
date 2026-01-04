@@ -31,8 +31,12 @@ namespace OpenRCT2
 {
     class ObjectList;
     enum class TrackElemType : uint16_t;
-    enum class TextColour : uint8_t;
 } // namespace OpenRCT2
+
+namespace OpenRCT2::Drawing
+{
+    enum class TextColour : uint8_t;
+}
 
 namespace OpenRCT2::RCT12
 {
@@ -472,6 +476,23 @@ enum : uint32_t
 {
     TRACK_FLAGS2_CONTAINS_LOG_FLUME_REVERSER = (1 << 1),
     TRACK_FLAGS2_SIX_FLAGS_RIDE_DEPRECATED = (1u << 31) // Not used anymore.
+};
+
+static constexpr std::string_view kNoEntranceNoPlatformIdentifier = "openrct2.station.noplatformnoentrance";
+
+constexpr std::string_view kDefaultStationStyles[] = {
+    "rct2.station.plain",        // RCT12_STATION_STYLE_PLAIN
+    "rct2.station.wooden",       // RCT12_STATION_STYLE_WOODEN
+    "rct2.station.canvas_tent",  // RCT12_STATION_STYLE_CANVAS_TENT
+    "rct2.station.castle_grey",  // RCT12_STATION_STYLE_CASTLE_GREY
+    "rct2.station.castle_brown", // RCT12_STATION_STYLE_CASTLE_BROWN
+    "rct2.station.jungle",       // RCT12_STATION_STYLE_JUNGLE
+    "rct2.station.log",          // RCT12_STATION_STYLE_LOG_CABIN
+    "rct2.station.classical",    // RCT12_STATION_STYLE_CLASSICAL
+    "rct2.station.abstract",     // RCT12_STATION_STYLE_ABSTRACT
+    "rct2.station.snow",         // RCT12_STATION_STYLE_SNOW
+    "rct2.station.pagoda",       // RCT12_STATION_STYLE_PAGODA
+    "rct2.station.space",        // RCT12_STATION_STYLE_SPACE
 };
 
 #pragma pack(push, 1)
@@ -1150,9 +1171,9 @@ struct RCT12Banner
         uint8_t Colour;    // 0x04
         uint8_t RideIndex; // 0x04
     };
-    OpenRCT2::TextColour textColour; // 0x05
-    uint8_t x;                       // 0x06
-    uint8_t y;                       // 0x07
+    OpenRCT2::Drawing::TextColour textColour; // 0x05
+    uint8_t x;                                // 0x06
+    uint8_t y;                                // 0x07
 };
 static_assert(sizeof(RCT12Banner) == 8);
 
@@ -1212,7 +1233,7 @@ OpenRCT2::RCT12::TrackElemType OpenRCT2FlatTrackTypeToRCT12(OpenRCT2::TrackElemT
 std::string_view GetStationIdentifierFromStyle(uint8_t style);
 uint8_t GetStationStyleFromIdentifier(u8string_view identifier);
 std::optional<uint8_t> GetStyleFromMusicIdentifier(std::string_view identifier);
-void RCT12AddDefaultObjects(OpenRCT2::ObjectList& objectList);
+void RCT12AddDefaultMusic(OpenRCT2::ObjectList& objectList);
 void AppendRequiredObjects(
     OpenRCT2::ObjectList& objectList, OpenRCT2::ObjectType objectType, std::span<const std::string_view> objectNames);
 void AppendRequiredObjects(

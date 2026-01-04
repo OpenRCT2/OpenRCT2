@@ -29,7 +29,7 @@ static void PaintShop(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    bool hasSupports = DrawSupportForSequenceA<TrackElemType::FlatTrack1x1A>(
+    bool hasSupports = DrawSupportForSequenceA<TrackElemType::flatTrack1x1A>(
         session, supportType.wooden, trackSequence, direction, height, GetShopSupportColourScheme(session, trackElement));
 
     auto rideEntry = ride.getRideEntry();
@@ -69,8 +69,8 @@ TrackPaintFunction GetTrackPaintFunctionShop(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
-        case TrackElemType::FlatTrack1x1A:
-        case TrackElemType::FlatTrack1x1B:
+        case TrackElemType::flatTrack1x1A:
+        case TrackElemType::flatTrack1x1B:
             return PaintShop;
         default:
             return TrackPaintFunctionDummy;

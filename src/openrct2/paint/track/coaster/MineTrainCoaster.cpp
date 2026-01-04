@@ -119,7 +119,7 @@ static void MineTrainRCTrackFlat(
                 break;
         }
     }
-    DrawSupportForSequenceA<TrackElemType::Flat>(
+    DrawSupportForSequenceA<TrackElemType::flat>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -137,7 +137,7 @@ static void MineTrainRCTrackStation(
         20064,
         20065,
     };
-    if (trackElement.GetTrackType() == TrackElemType::EndStation)
+    if (trackElement.GetTrackType() == TrackElemType::endStation)
     {
         bool isClosed = trackElement.IsBrakeClosed();
         PaintAddImageAsParentRotated(
@@ -156,7 +156,7 @@ static void MineTrainRCTrackStation(
     }
     else
     {
-        DrawSupportForSequenceA<TrackElemType::Flat>(
+        DrawSupportForSequenceA<TrackElemType::flat>(
             session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
     }
     TrackPaintUtilDrawStationTunnel(session, direction, height);
@@ -222,7 +222,7 @@ static void MineTrainRCTrack25DegUp(
         }
     }
 
-    DrawSupportForSequenceA<TrackElemType::Up25>(
+    DrawSupportForSequenceA<TrackElemType::up25>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
     if (direction == 0 || direction == 3)
@@ -266,7 +266,7 @@ static void MineTrainRCTrack60DegUp(
             break;
     }
 
-    DrawSupportForSequenceA<TrackElemType::Up60>(
+    DrawSupportForSequenceA<TrackElemType::up60>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
     if (direction == 0 || direction == 3)
@@ -339,7 +339,7 @@ static void MineTrainRCTrackFlatTo25DegUp(
         }
     }
 
-    DrawSupportForSequenceA<TrackElemType::FlatToUp25>(
+    DrawSupportForSequenceA<TrackElemType::flatToUp25>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
     if (direction == 0 || direction == 3)
@@ -389,7 +389,7 @@ static void MineTrainRCTrack25DegUpTo60DegUp(
             break;
     }
 
-    DrawSupportForSequenceA<TrackElemType::Up25ToUp60>(
+    DrawSupportForSequenceA<TrackElemType::up25ToUp60>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
     if (direction == 0 || direction == 3)
@@ -439,7 +439,7 @@ static void MineTrainRCTrack60DegUpTo25DegUp(
             break;
     }
 
-    DrawSupportForSequenceA<TrackElemType::Up60ToUp25>(
+    DrawSupportForSequenceA<TrackElemType::up60ToUp25>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
     if (direction == 0 || direction == 3)
@@ -512,7 +512,7 @@ static void MineTrainRCTrack25DegUpToFlat(
         }
     }
 
-    DrawSupportForSequenceA<TrackElemType::Up25ToFlat>(
+    DrawSupportForSequenceA<TrackElemType::up25ToFlat>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
     if (direction == 0 || direction == 3)
@@ -606,7 +606,7 @@ static void MineTrainRCTrackLeftQuarterTurn5(
                         { { 0, 6, height }, { 32, 20, 1 } });
                     break;
             }
-            DrawSupportForSequenceA<TrackElemType::LeftQuarterTurn5Tiles>(
+            DrawSupportForSequenceA<TrackElemType::leftQuarterTurn5Tiles>(
                 session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
@@ -645,7 +645,7 @@ static void MineTrainRCTrackLeftQuarterTurn5(
                         { { 0, 16, height }, { 32, 16, 1 } });
                     break;
             }
-            DrawSupportForSequenceA<TrackElemType::LeftQuarterTurn5Tiles>(
+            DrawSupportForSequenceA<TrackElemType::leftQuarterTurn5Tiles>(
                 session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -680,7 +680,7 @@ static void MineTrainRCTrackLeftQuarterTurn5(
                         session, direction, session.TrackColours.WithIndex(20148), { 0, 0, height }, { 16, 16, 1 });
                     break;
             }
-            DrawSupportForSequenceA<TrackElemType::LeftQuarterTurn5Tiles>(
+            DrawSupportForSequenceA<TrackElemType::leftQuarterTurn5Tiles>(
                 session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -722,7 +722,7 @@ static void MineTrainRCTrackLeftQuarterTurn5(
                         { { 16, 0, height }, { 16, 32, 1 } });
                     break;
             }
-            DrawSupportForSequenceA<TrackElemType::LeftQuarterTurn5Tiles>(
+            DrawSupportForSequenceA<TrackElemType::leftQuarterTurn5Tiles>(
                 session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -758,7 +758,7 @@ static void MineTrainRCTrackLeftQuarterTurn5(
                         { { 6, 0, height }, { 20, 32, 1 } });
                     break;
             }
-            DrawSupportForSequenceA<TrackElemType::LeftQuarterTurn5Tiles>(
+            DrawSupportForSequenceA<TrackElemType::leftQuarterTurn5Tiles>(
                 session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             switch (direction)
             {
@@ -818,7 +818,7 @@ static void MineTrainRCTrackFlatToLeftBank(
                 { { 0, 6, height }, { 32, 20, 1 } });
             break;
     }
-    DrawSupportForSequenceA<TrackElemType::FlatToLeftBank>(
+    DrawSupportForSequenceA<TrackElemType::flatToLeftBank>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -859,7 +859,7 @@ static void MineTrainRCTrackFlatToRightBank(
                 { { 0, 27, height }, { 32, 1, 26 } });
             break;
     }
-    DrawSupportForSequenceA<TrackElemType::FlatToRightBank>(
+    DrawSupportForSequenceA<TrackElemType::flatToRightBank>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -900,7 +900,7 @@ static void MineTrainRCTrackLeftBankToFlat(
                 { { 0, 6, height }, { 32, 20, 1 } });
             break;
     }
-    DrawSupportForSequenceA<TrackElemType::LeftBankToFlat>(
+    DrawSupportForSequenceA<TrackElemType::leftBankToFlat>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -941,7 +941,7 @@ static void MineTrainRCTrackRightBankToFlat(
                 { { 0, 27, height }, { 32, 1, 26 } });
             break;
     }
-    DrawSupportForSequenceA<TrackElemType::RightBankToFlat>(
+    DrawSupportForSequenceA<TrackElemType::rightBankToFlat>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -982,7 +982,7 @@ static void MineTrainRCTrackBankedLeftQuarterTurn5(
                         { { 0, 6, height }, { 32, 20, 1 } });
                     break;
             }
-            DrawSupportForSequenceA<TrackElemType::BankedLeftQuarterTurn5Tiles>(
+            DrawSupportForSequenceA<TrackElemType::bankedLeftQuarterTurn5Tiles>(
                 session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
@@ -1020,7 +1020,7 @@ static void MineTrainRCTrackBankedLeftQuarterTurn5(
                         { { 0, 16, height }, { 32, 16, 1 } });
                     break;
             }
-            DrawSupportForSequenceA<TrackElemType::BankedLeftQuarterTurn5Tiles>(
+            DrawSupportForSequenceA<TrackElemType::bankedLeftQuarterTurn5Tiles>(
                 session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -1055,7 +1055,7 @@ static void MineTrainRCTrackBankedLeftQuarterTurn5(
                     break;
             }
 
-            DrawSupportForSequenceA<TrackElemType::BankedLeftQuarterTurn5Tiles>(
+            DrawSupportForSequenceA<TrackElemType::bankedLeftQuarterTurn5Tiles>(
                 session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
             PaintUtilSetSegmentSupportHeight(
@@ -1098,7 +1098,7 @@ static void MineTrainRCTrackBankedLeftQuarterTurn5(
                         { { 16, 0, height }, { 16, 32, 1 } });
                     break;
             }
-            DrawSupportForSequenceA<TrackElemType::BankedLeftQuarterTurn5Tiles>(
+            DrawSupportForSequenceA<TrackElemType::bankedLeftQuarterTurn5Tiles>(
                 session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -1136,7 +1136,7 @@ static void MineTrainRCTrackBankedLeftQuarterTurn5(
                         { { 6, 0, height }, { 20, 32, 1 } });
                     break;
             }
-            DrawSupportForSequenceA<TrackElemType::BankedLeftQuarterTurn5Tiles>(
+            DrawSupportForSequenceA<TrackElemType::bankedLeftQuarterTurn5Tiles>(
                 session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             switch (direction)
             {
@@ -1199,7 +1199,7 @@ static void MineTrainRCTrackLeftBankTo25DegUp(
             break;
     }
 
-    DrawSupportForSequenceA<TrackElemType::LeftBankToUp25>(
+    DrawSupportForSequenceA<TrackElemType::leftBankToUp25>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
     if (direction == 0 || direction == 3)
@@ -1249,7 +1249,7 @@ static void MineTrainRCTrackRightBankTo25DegUp(
             break;
     }
 
-    DrawSupportForSequenceA<TrackElemType::RightBankToUp25>(
+    DrawSupportForSequenceA<TrackElemType::rightBankToUp25>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
     if (direction == 0 || direction == 3)
@@ -1299,7 +1299,7 @@ static void MineTrainRCTrack25DegUpToLeftBank(
             break;
     }
 
-    DrawSupportForSequenceA<TrackElemType::Up25ToLeftBank>(
+    DrawSupportForSequenceA<TrackElemType::up25ToLeftBank>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
     if (direction == 0 || direction == 3)
@@ -1349,7 +1349,7 @@ static void MineTrainRCTrack25DegUpToRightBank(
             break;
     }
 
-    DrawSupportForSequenceA<TrackElemType::Up25ToRightBank>(
+    DrawSupportForSequenceA<TrackElemType::up25ToRightBank>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
     if (direction == 0 || direction == 3)
@@ -1424,7 +1424,7 @@ static void MineTrainRCTrackLeftBank(
                 { { 0, 6, height }, { 32, 20, 1 } });
             break;
     }
-    DrawSupportForSequenceA<TrackElemType::LeftBank>(
+    DrawSupportForSequenceA<TrackElemType::leftBank>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -1471,7 +1471,7 @@ static void MineTrainRCTrackLeftQuarterTurn525DegUp(
                     break;
             }
 
-            DrawSupportForSequenceA<TrackElemType::LeftQuarterTurn5TilesUp25>(
+            DrawSupportForSequenceA<TrackElemType::leftQuarterTurn5TilesUp25>(
                 session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
             if (direction == 0 || direction == 3)
@@ -1513,7 +1513,7 @@ static void MineTrainRCTrackLeftQuarterTurn525DegUp(
                         { { 0, 16, height }, { 32, 16, 1 } });
                     break;
             }
-            DrawSupportForSequenceA<TrackElemType::LeftQuarterTurn5TilesUp25>(
+            DrawSupportForSequenceA<TrackElemType::leftQuarterTurn5TilesUp25>(
                 session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -1549,7 +1549,7 @@ static void MineTrainRCTrackLeftQuarterTurn525DegUp(
                         { { 0, 0, height }, { 16, 16, 1 } });
                     break;
             }
-            DrawSupportForSequenceA<TrackElemType::LeftQuarterTurn5TilesUp25>(
+            DrawSupportForSequenceA<TrackElemType::leftQuarterTurn5TilesUp25>(
                 session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -1593,7 +1593,7 @@ static void MineTrainRCTrackLeftQuarterTurn525DegUp(
                         { { 16, 0, height }, { 16, 32, 1 } });
                     break;
             }
-            DrawSupportForSequenceA<TrackElemType::LeftQuarterTurn5TilesUp25>(
+            DrawSupportForSequenceA<TrackElemType::leftQuarterTurn5TilesUp25>(
                 session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -5346,7 +5346,7 @@ static void MineTrainRCTrackDiag25DegUp(
             break;
     }
 
-    DrawSupportForSequenceA<TrackElemType::DiagUp25>(
+    DrawSupportForSequenceA<TrackElemType::diagUp25>(
         session, supportType.wooden, trackSequence, direction, height + 16, session.SupportColours);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56);
@@ -7228,203 +7228,203 @@ TrackPaintFunction GetTrackPaintFunctionMineTrainRC(OpenRCT2::TrackElemType trac
 {
     switch (trackType)
     {
-        case TrackElemType::Flat:
+        case TrackElemType::flat:
             return MineTrainRCTrackFlat;
-        case TrackElemType::EndStation:
-        case TrackElemType::BeginStation:
-        case TrackElemType::MiddleStation:
+        case TrackElemType::endStation:
+        case TrackElemType::beginStation:
+        case TrackElemType::middleStation:
             return MineTrainRCTrackStation;
-        case TrackElemType::Up25:
+        case TrackElemType::up25:
             return MineTrainRCTrack25DegUp;
-        case TrackElemType::Up60:
+        case TrackElemType::up60:
             return MineTrainRCTrack60DegUp;
-        case TrackElemType::FlatToUp25:
+        case TrackElemType::flatToUp25:
             return MineTrainRCTrackFlatTo25DegUp;
-        case TrackElemType::Up25ToUp60:
+        case TrackElemType::up25ToUp60:
             return MineTrainRCTrack25DegUpTo60DegUp;
-        case TrackElemType::Up60ToUp25:
+        case TrackElemType::up60ToUp25:
             return MineTrainRCTrack60DegUpTo25DegUp;
-        case TrackElemType::Up25ToFlat:
+        case TrackElemType::up25ToFlat:
             return MineTrainRCTrack25DegUpToFlat;
-        case TrackElemType::Down25:
+        case TrackElemType::down25:
             return MineTrainRCTrack25DegDown;
-        case TrackElemType::Down60:
+        case TrackElemType::down60:
             return MineTrainRCTrack60DegDown;
-        case TrackElemType::FlatToDown25:
+        case TrackElemType::flatToDown25:
             return MineTrainRCTrackFlatTo25DegDown;
-        case TrackElemType::Down25ToDown60:
+        case TrackElemType::down25ToDown60:
             return MineTrainRCTrack25DegDownTo60DegDown;
-        case TrackElemType::Down60ToDown25:
+        case TrackElemType::down60ToDown25:
             return MineTrainRCTrack60DegDownTo25DegDown;
-        case TrackElemType::Down25ToFlat:
+        case TrackElemType::down25ToFlat:
             return MineTrainRCTrack25DegDownToFlat;
-        case TrackElemType::LeftQuarterTurn5Tiles:
+        case TrackElemType::leftQuarterTurn5Tiles:
             return MineTrainRCTrackLeftQuarterTurn5;
-        case TrackElemType::RightQuarterTurn5Tiles:
+        case TrackElemType::rightQuarterTurn5Tiles:
             return MineTrainRCTrackRightQuarterTurn5;
-        case TrackElemType::FlatToLeftBank:
+        case TrackElemType::flatToLeftBank:
             return MineTrainRCTrackFlatToLeftBank;
-        case TrackElemType::FlatToRightBank:
+        case TrackElemType::flatToRightBank:
             return MineTrainRCTrackFlatToRightBank;
-        case TrackElemType::LeftBankToFlat:
+        case TrackElemType::leftBankToFlat:
             return MineTrainRCTrackLeftBankToFlat;
-        case TrackElemType::RightBankToFlat:
+        case TrackElemType::rightBankToFlat:
             return MineTrainRCTrackRightBankToFlat;
-        case TrackElemType::BankedLeftQuarterTurn5Tiles:
+        case TrackElemType::bankedLeftQuarterTurn5Tiles:
             return MineTrainRCTrackBankedLeftQuarterTurn5;
-        case TrackElemType::BankedRightQuarterTurn5Tiles:
+        case TrackElemType::bankedRightQuarterTurn5Tiles:
             return MineTrainRCTrackBankedRightQuarterTurn5;
-        case TrackElemType::LeftBankToUp25:
+        case TrackElemType::leftBankToUp25:
             return MineTrainRCTrackLeftBankTo25DegUp;
-        case TrackElemType::RightBankToUp25:
+        case TrackElemType::rightBankToUp25:
             return MineTrainRCTrackRightBankTo25DegUp;
-        case TrackElemType::Up25ToLeftBank:
+        case TrackElemType::up25ToLeftBank:
             return MineTrainRCTrack25DegUpToLeftBank;
-        case TrackElemType::Up25ToRightBank:
+        case TrackElemType::up25ToRightBank:
             return MineTrainRCTrack25DegUpToRightBank;
-        case TrackElemType::LeftBankToDown25:
+        case TrackElemType::leftBankToDown25:
             return MineTrainRCTrackLeftBankTo25DegDown;
-        case TrackElemType::RightBankToDown25:
+        case TrackElemType::rightBankToDown25:
             return MineTrainRCTrackRightBankTo25DegDown;
-        case TrackElemType::Down25ToLeftBank:
+        case TrackElemType::down25ToLeftBank:
             return MineTrainRCTrack25DegDownToLeftBank;
-        case TrackElemType::Down25ToRightBank:
+        case TrackElemType::down25ToRightBank:
             return MineTrainRCTrack25DegDownToRightBank;
-        case TrackElemType::LeftBank:
+        case TrackElemType::leftBank:
             return MineTrainRCTrackLeftBank;
-        case TrackElemType::RightBank:
+        case TrackElemType::rightBank:
             return MineTrainRCTrackRightBank;
-        case TrackElemType::LeftQuarterTurn5TilesUp25:
+        case TrackElemType::leftQuarterTurn5TilesUp25:
             return MineTrainRCTrackLeftQuarterTurn525DegUp;
-        case TrackElemType::RightQuarterTurn5TilesUp25:
+        case TrackElemType::rightQuarterTurn5TilesUp25:
             return MineTrainRCTrackRightQuarterTurn525DegUp;
-        case TrackElemType::LeftQuarterTurn5TilesDown25:
+        case TrackElemType::leftQuarterTurn5TilesDown25:
             return MineTrainRCTrackLeftQuarterTurn525DegDown;
-        case TrackElemType::RightQuarterTurn5TilesDown25:
+        case TrackElemType::rightQuarterTurn5TilesDown25:
             return MineTrainRCTrackRightQuarterTurn525DegDown;
-        case TrackElemType::SBendLeft:
+        case TrackElemType::sBendLeft:
             return MineTrainRCTrackSBendLeft;
-        case TrackElemType::SBendRight:
+        case TrackElemType::sBendRight:
             return MineTrainRCTrackSBendRight;
-        case TrackElemType::LeftQuarterTurn3Tiles:
+        case TrackElemType::leftQuarterTurn3Tiles:
             return MineTrainRCTrackLeftQuarterTurn3;
-        case TrackElemType::RightQuarterTurn3Tiles:
+        case TrackElemType::rightQuarterTurn3Tiles:
             return MineTrainRCTrackRightQuarterTurn3;
-        case TrackElemType::LeftBankedQuarterTurn3Tiles:
+        case TrackElemType::leftBankedQuarterTurn3Tiles:
             return MineTrainRCTrackLeftQuarterTurn3Bank;
-        case TrackElemType::RightBankedQuarterTurn3Tiles:
+        case TrackElemType::rightBankedQuarterTurn3Tiles:
             return MineTrainRCTrackRightQuarterTurn3Bank;
-        case TrackElemType::LeftQuarterTurn3TilesUp25:
+        case TrackElemType::leftQuarterTurn3TilesUp25:
             return MineTrainRCTrackLeftQuarterTurn325DegUp;
-        case TrackElemType::RightQuarterTurn3TilesUp25:
+        case TrackElemType::rightQuarterTurn3TilesUp25:
             return MineTrainRCTrackRightQuarterTurn325DegUp;
-        case TrackElemType::LeftQuarterTurn3TilesDown25:
+        case TrackElemType::leftQuarterTurn3TilesDown25:
             return MineTrainRCTrackLeftQuarterTurn325DegDown;
-        case TrackElemType::RightQuarterTurn3TilesDown25:
+        case TrackElemType::rightQuarterTurn3TilesDown25:
             return MineTrainRCTrackRightQuarterTurn325DegDown;
-        case TrackElemType::LeftHalfBankedHelixUpSmall:
+        case TrackElemType::leftHalfBankedHelixUpSmall:
             return MineTrainRCTrackLeftHalfBankedHelixUpSmall;
-        case TrackElemType::RightHalfBankedHelixUpSmall:
+        case TrackElemType::rightHalfBankedHelixUpSmall:
             return MineTrainRCTrackRightHalfBankedHelixUpSmall;
-        case TrackElemType::LeftHalfBankedHelixDownSmall:
+        case TrackElemType::leftHalfBankedHelixDownSmall:
             return MineTrainRCTrackLeftHalfBankedHelixDownSmall;
-        case TrackElemType::RightHalfBankedHelixDownSmall:
+        case TrackElemType::rightHalfBankedHelixDownSmall:
             return MineTrainRCTrackRightHalfBankedHelixDownSmall;
-        case TrackElemType::LeftHalfBankedHelixUpLarge:
+        case TrackElemType::leftHalfBankedHelixUpLarge:
             return MineTrainRCTrackLeftHalfBankedHelixUpLarge;
-        case TrackElemType::RightHalfBankedHelixUpLarge:
+        case TrackElemType::rightHalfBankedHelixUpLarge:
             return MineTrainRCTrackRightHalfBankedHelixUpLarge;
-        case TrackElemType::LeftHalfBankedHelixDownLarge:
+        case TrackElemType::leftHalfBankedHelixDownLarge:
             return MineTrainRCTrackLeftHalfBankedHelixDownLarge;
-        case TrackElemType::RightHalfBankedHelixDownLarge:
+        case TrackElemType::rightHalfBankedHelixDownLarge:
             return MineTrainRCTrackRightHalfBankedHelixDownLarge;
-        case TrackElemType::Brakes:
+        case TrackElemType::brakes:
             return MineTrainRCTrackBrakes;
-        case TrackElemType::OnRidePhoto:
+        case TrackElemType::onRidePhoto:
             return MineTrainRCTrackOnRidePhoto;
-        case TrackElemType::LeftEighthToDiag:
+        case TrackElemType::leftEighthToDiag:
             return MineTrainRCTrackLeftEighthToDiag;
-        case TrackElemType::RightEighthToDiag:
+        case TrackElemType::rightEighthToDiag:
             return MineTrainRCTrackRightEighthToDiag;
-        case TrackElemType::LeftEighthToOrthogonal:
+        case TrackElemType::leftEighthToOrthogonal:
             return MineTrainRCTrackLeftEighthToOrthogonal;
-        case TrackElemType::RightEighthToOrthogonal:
+        case TrackElemType::rightEighthToOrthogonal:
             return MineTrainRCTrackRightEighthToOrthogonal;
-        case TrackElemType::LeftEighthBankToDiag:
+        case TrackElemType::leftEighthBankToDiag:
             return MineTrainRCTrackLeftEighthBankToDiag;
-        case TrackElemType::RightEighthBankToDiag:
+        case TrackElemType::rightEighthBankToDiag:
             return MineTrainRCTrackRightEighthBankToDiag;
-        case TrackElemType::LeftEighthBankToOrthogonal:
+        case TrackElemType::leftEighthBankToOrthogonal:
             return MineTrainRCTrackLeftEighthBankToOrthogonal;
-        case TrackElemType::RightEighthBankToOrthogonal:
+        case TrackElemType::rightEighthBankToOrthogonal:
             return MineTrainRCTrackRightEighthBankToOrthogonal;
-        case TrackElemType::DiagFlat:
+        case TrackElemType::diagFlat:
             return MineTrainRCTrackDiagFlat;
-        case TrackElemType::DiagUp25:
+        case TrackElemType::diagUp25:
             return MineTrainRCTrackDiag25DegUp;
-        case TrackElemType::DiagUp60:
+        case TrackElemType::diagUp60:
             return MineTrainRCTrackDiag60DegUp;
-        case TrackElemType::DiagFlatToUp25:
+        case TrackElemType::diagFlatToUp25:
             return MineTrainRCTrackDiagFlatTo25DegUp;
-        case TrackElemType::DiagUp25ToUp60:
+        case TrackElemType::diagUp25ToUp60:
             return MineTrainRCTrackDiag25DegUpTo60DegUp;
-        case TrackElemType::DiagUp60ToUp25:
+        case TrackElemType::diagUp60ToUp25:
             return MineTrainRCTrackDiag60DegUpTo25DegUp;
-        case TrackElemType::DiagUp25ToFlat:
+        case TrackElemType::diagUp25ToFlat:
             return MineTrainRCTrackDiag25DegUpToFlat;
-        case TrackElemType::DiagDown25:
+        case TrackElemType::diagDown25:
             return MineTrainRCTrackDiag25DegDown;
-        case TrackElemType::DiagDown60:
+        case TrackElemType::diagDown60:
             return MineTrainRCTrackDiag60DegDown;
-        case TrackElemType::DiagFlatToDown25:
+        case TrackElemType::diagFlatToDown25:
             return MineTrainRCTrackDiagFlatTo25DegDown;
-        case TrackElemType::DiagDown25ToDown60:
+        case TrackElemType::diagDown25ToDown60:
             return MineTrainRCTrackDiag25DegDownTo60DegDown;
-        case TrackElemType::DiagDown60ToDown25:
+        case TrackElemType::diagDown60ToDown25:
             return MineTrainRCTrackDiag60DegDownTo25DegDown;
-        case TrackElemType::DiagDown25ToFlat:
+        case TrackElemType::diagDown25ToFlat:
             return MineTrainRCTrackDiag25DegDownToFlat;
-        case TrackElemType::DiagFlatToLeftBank:
+        case TrackElemType::diagFlatToLeftBank:
             return MineTrainRCTrackDiagFlatToLeftBank;
-        case TrackElemType::DiagFlatToRightBank:
+        case TrackElemType::diagFlatToRightBank:
             return MineTrainRCTrackDiagFlatToRightBank;
-        case TrackElemType::DiagLeftBankToFlat:
+        case TrackElemType::diagLeftBankToFlat:
             return MineTrainRCTrackDiagLeftBankToFlat;
-        case TrackElemType::DiagRightBankToFlat:
+        case TrackElemType::diagRightBankToFlat:
             return MineTrainRCTrackDiagRightBankToFlat;
-        case TrackElemType::DiagLeftBankToUp25:
+        case TrackElemType::diagLeftBankToUp25:
             return MineTrainRCTrackDiagLeftBankTo25DegUp;
-        case TrackElemType::DiagRightBankToUp25:
+        case TrackElemType::diagRightBankToUp25:
             return MineTrainRCTrackDiagRightBankTo25DegUp;
-        case TrackElemType::DiagUp25ToLeftBank:
+        case TrackElemType::diagUp25ToLeftBank:
             return MineTrainRCTrackDiag25DegUpToLeftBank;
-        case TrackElemType::DiagUp25ToRightBank:
+        case TrackElemType::diagUp25ToRightBank:
             return MineTrainRCTrackDiag25DegUpToRightBank;
-        case TrackElemType::DiagLeftBankToDown25:
+        case TrackElemType::diagLeftBankToDown25:
             return MineTrainRCTrackDiagLeftBankTo25DegDown;
-        case TrackElemType::DiagRightBankToDown25:
+        case TrackElemType::diagRightBankToDown25:
             return MineTrainRCTrackDiagRightBankTo25DegDown;
-        case TrackElemType::DiagDown25ToLeftBank:
+        case TrackElemType::diagDown25ToLeftBank:
             return MineTrainRCTrackDiag25DegDownToLeftBank;
-        case TrackElemType::DiagDown25ToRightBank:
+        case TrackElemType::diagDown25ToRightBank:
             return MineTrainRCTrackDiag25DegDownToRightBank;
-        case TrackElemType::DiagLeftBank:
+        case TrackElemType::diagLeftBank:
             return MineTrainRCTrackDiagLeftBank;
-        case TrackElemType::DiagRightBank:
+        case TrackElemType::diagRightBank:
             return MineTrainRCTrackDiagRightBank;
-        case TrackElemType::BlockBrakes:
+        case TrackElemType::blockBrakes:
             return MineTrainRCTrackBlockBrakes;
-        case TrackElemType::DiagBrakes:
+        case TrackElemType::diagBrakes:
             return MineTrainRCTrackDiagBrakes;
-        case TrackElemType::DiagBlockBrakes:
+        case TrackElemType::diagBlockBrakes:
             return MineTrainRCTrackDiagBlockBrakes;
-        case TrackElemType::FlatToUp60LongBase:
+        case TrackElemType::flatToUp60LongBase:
             return MineTrainRCTrackFlatTo60DegUpLongBase;
-        case TrackElemType::Up60ToFlatLongBase:
+        case TrackElemType::up60ToFlatLongBase:
             return MineTrainRCTrack60DegUpToFlatLongBase;
-        case TrackElemType::FlatToDown60LongBase:
+        case TrackElemType::flatToDown60LongBase:
             return MineTrainRCTrackFlatTo60DegDownLongBase;
-        case TrackElemType::Down60ToFlatLongBase:
+        case TrackElemType::down60ToFlatLongBase:
             return MineTrainRCTrack60DegDownToFlatLongBase;
         default:
             return TrackPaintFunctionDummy;

@@ -62,6 +62,17 @@ constexpr money64 kRideMaxPrice = 20.00_GBP;
 
 extern const StringId kRideInspectionIntervalNames[];
 
+enum class RideInspection : uint8_t
+{
+    every10Minutes,
+    every20Minutes,
+    every30Minutes,
+    every45Minutes,
+    everyHour,
+    every2Hours,
+    never,
+};
+
 enum class RideTestingFlag : uint8_t
 {
     sheltered,
@@ -118,6 +129,15 @@ enum class RideClassification
     ride,
     shopOrStall,
     kioskOrFacility
+};
+
+enum class MechanicStatus : uint8_t
+{
+    undefined,
+    calling,
+    heading,
+    fixing,
+    hasFixedStationBrakes
 };
 
 namespace OpenRCT2::ShelteredSectionsBits
@@ -253,7 +273,7 @@ struct Ride
     EntityId raceWinner{};
     uint32_t musicPosition{};
     uint8_t breakdownReasonPending{};
-    uint8_t mechanicStatus{};
+    MechanicStatus mechanicStatus{};
     EntityId mechanic{ EntityId::GetNull() };
     StationIndex inspectionStation{ StationIndex::GetNull() };
     uint8_t brokenTrain{};
@@ -273,7 +293,7 @@ struct Ride
     uint8_t unreliabilityFactor{};
     // Range from [0, 100]
     uint8_t downtime{};
-    uint8_t inspectionInterval{};
+    RideInspection inspectionInterval{};
     uint8_t lastInspection{};
     uint8_t downtimeHistory[OpenRCT2::Limits::kDowntimeHistorySize]{};
     uint32_t numPrimaryItemsSold{};
@@ -350,7 +370,6 @@ public:
     void renew();
     void remove();
     void crash(uint8_t vehicleIndex);
-    void setToDefaultInspectionInterval();
     void setRideEntry(OpenRCT2::ObjectEntryIndex entryIndex);
 
     void setNumTrains(int32_t newNumTrains);
@@ -752,15 +771,6 @@ enum
 
 enum
 {
-    RIDE_MECHANIC_STATUS_UNDEFINED,
-    RIDE_MECHANIC_STATUS_CALLING,
-    RIDE_MECHANIC_STATUS_HEADING,
-    RIDE_MECHANIC_STATUS_FIXING,
-    RIDE_MECHANIC_STATUS_HAS_FIXED_STATION_BRAKES
-};
-
-enum
-{
     RIDE_DEPART_WAIT_FOR_LOAD_MASK = 7,
     RIDE_DEPART_WAIT_FOR_LOAD = 1 << 3,
     RIDE_DEPART_LEAVE_WHEN_ANOTHER_ARRIVES = 1 << 4,
@@ -778,17 +788,6 @@ enum
     WAIT_FOR_LOAD_ANY,
 
     WAIT_FOR_LOAD_COUNT,
-};
-
-enum
-{
-    RIDE_INSPECTION_EVERY_10_MINUTES,
-    RIDE_INSPECTION_EVERY_20_MINUTES,
-    RIDE_INSPECTION_EVERY_30_MINUTES,
-    RIDE_INSPECTION_EVERY_45_MINUTES,
-    RIDE_INSPECTION_EVERY_HOUR,
-    RIDE_INSPECTION_EVERY_2_HOURS,
-    RIDE_INSPECTION_NEVER
 };
 
 // Flags used by ride->windowInvalidateFlags

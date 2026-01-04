@@ -31,6 +31,7 @@
 #include <openrct2/core/File.h>
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/IDrawingEngine.h>
+#include <openrct2/drawing/ScrollingText.h>
 #include <openrct2/localisation/Currency.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Language.h>
@@ -627,7 +628,7 @@ namespace OpenRCT2::Ui::Windows
             CommonPrepareDrawAfter();
         }
 
-        void onDraw(RenderTarget& rt) override
+        void onDraw(Drawing::RenderTarget& rt) override
         {
             drawWidgets(rt);
             DrawTabImages(rt);
@@ -1018,7 +1019,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_FRAME_RATE_LIMIT].text = kFrameRateLimitStringIds[activeItem];
         }
 
-        void DisplayDraw(RenderTarget& rt)
+        void DisplayDraw(Drawing::RenderTarget& rt)
         {
             auto ft = Formatter();
             ft.Add<int32_t>(static_cast<int32_t>(Config::Get().general.windowScale * 100));
@@ -1072,7 +1073,7 @@ namespace OpenRCT2::Ui::Windows
                     Config::Get().general.upperCaseBanners ^= 1;
                     Config::Save();
                     invalidate();
-                    ScrollingTextInvalidate();
+                    Drawing::ScrollingText::invalidate();
                     break;
                 case WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX:
                     Config::Get().general.disableLightningEffect ^= 1;
@@ -1946,7 +1947,8 @@ namespace OpenRCT2::Ui::Windows
                     }
 
                     ShowDropdown(widget, 7);
-                    gDropdown.items[Config::Get().general.defaultInspectionInterval].setChecked(true);
+                    auto selectedIndex = EnumValue(Config::Get().general.defaultInspectionInterval);
+                    gDropdown.items[selectedIndex].setChecked(true);
                     break;
             }
         }
@@ -1974,9 +1976,9 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 }
                 case WIDX_DEFAULT_INSPECTION_INTERVAL_DROPDOWN:
-                    if (dropdownIndex != Config::Get().general.defaultInspectionInterval)
+                    if (dropdownIndex != EnumValue(Config::Get().general.defaultInspectionInterval))
                     {
-                        Config::Get().general.defaultInspectionInterval = static_cast<uint8_t>(dropdownIndex);
+                        Config::Get().general.defaultInspectionInterval = static_cast<RideInspection>(dropdownIndex);
                         Config::Save();
                         invalidate();
                     }
@@ -2039,8 +2041,8 @@ namespace OpenRCT2::Ui::Windows
 
             setCheckboxValue(WIDX_SCENARIO_UNLOCKING, Config::Get().general.scenarioUnlockingEnabled);
 
-            widgets[WIDX_DEFAULT_INSPECTION_INTERVAL].text = kRideInspectionIntervalNames
-                [Config::Get().general.defaultInspectionInterval];
+            auto selectedIndex = EnumValue(Config::Get().general.defaultInspectionInterval);
+            widgets[WIDX_DEFAULT_INSPECTION_INTERVAL].text = kRideInspectionIntervalNames[selectedIndex];
         }
 
 #pragma endregion
@@ -2223,7 +2225,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_ASSET_PACKS].bottom = widgets[WIDX_GROUP_ADVANCED].bottom - 6;
         }
 
-        void AdvancedDraw(RenderTarget& rt)
+        void AdvancedDraw(Drawing::RenderTarget& rt)
         {
             auto ft = Formatter();
             ft.Add<int32_t>(static_cast<int32_t>(Config::Get().general.autosaveAmount));
@@ -2300,7 +2302,7 @@ namespace OpenRCT2::Ui::Windows
                 Dropdown::Flag::StayOpen, num_items, widget->width() - 4);
         }
 
-        void DrawTabImages(RenderTarget& rt)
+        void DrawTabImages(Drawing::RenderTarget& rt)
         {
             DrawTabImage(rt, WINDOW_OPTIONS_PAGE_DISPLAY, SPR_G2_MONITOR_TAB_START);
             DrawTabImage(rt, WINDOW_OPTIONS_PAGE_RENDERING, SPR_G2_TAB_TREE);
@@ -2312,7 +2314,7 @@ namespace OpenRCT2::Ui::Windows
             DrawTabImage(rt, WINDOW_OPTIONS_PAGE_ADVANCED, SPR_TAB_WRENCH_0);
         }
 
-        void DrawTabImage(RenderTarget& rt, int32_t p, int32_t spriteIndex)
+        void DrawTabImage(Drawing::RenderTarget& rt, int32_t p, int32_t spriteIndex)
         {
             WidgetIndex widgetIndex = WIDX_FIRST_TAB + p;
             Widget* widget = &widgets[widgetIndex];

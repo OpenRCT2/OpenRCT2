@@ -123,7 +123,7 @@ static void PaintCircus(
 
 TrackPaintFunction GetTrackPaintFunctionCircus(OpenRCT2::TrackElemType trackType)
 {
-    if (trackType != TrackElemType::FlatTrack3x3)
+    if (trackType != TrackElemType::flatTrack3x3)
     {
         return TrackPaintFunctionDummy;
     }

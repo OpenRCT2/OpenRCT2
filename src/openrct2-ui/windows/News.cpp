@@ -260,7 +260,7 @@ namespace OpenRCT2::Ui::Windows
             setWidgetPressed(WIDX_TAB_OPTIONS, page == optionsTab);
         }
 
-        void DrawTabImages(RenderTarget& rt)
+        void DrawTabImages(Drawing::RenderTarget& rt)
         {
             if (!isWidgetDisabled(WIDX_TAB_NEWS))
             {
@@ -308,7 +308,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void onDraw(RenderTarget& rt) override
+        void onDraw(Drawing::RenderTarget& rt) override
         {
             drawWidgets(rt);
             DrawTabImages(rt);
@@ -441,7 +441,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
+        void onScrollDraw(int32_t scrollIndex, Drawing::RenderTarget& rt) override
         {
             int32_t lineHeight = FontGetLineHeight(FontStyle::small);
             int32_t itemHeight = CalculateNewsItemHeight();

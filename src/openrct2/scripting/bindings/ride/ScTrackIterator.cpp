@@ -64,7 +64,7 @@ DukValue ScTrackIterator::segment_get() const
     auto& scriptEngine = GetContext()->GetScriptEngine();
     auto ctx = scriptEngine.GetContext();
 
-    if (_type >= TrackElemType::Count)
+    if (_type >= TrackElemType::count)
         return ToDuk(ctx, nullptr);
 
     return GetObjectAsDukValue(ctx, std::make_shared<ScTrackSegment>(_type));

@@ -127,7 +127,7 @@ namespace OpenRCT2::GameActions
 
         const auto& rtd = ride->getRideTypeDescriptor();
 
-        if ((ride->lifecycleFlags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK) && _trackType == TrackElemType::EndStation)
+        if ((ride->lifecycleFlags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK) && _trackType == TrackElemType::endStation)
         {
             return Result(
                 Status::disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NOT_ALLOWED_TO_MODIFY_STATION);
@@ -145,7 +145,7 @@ namespace OpenRCT2::GameActions
 
         if (!rtd.HasFlag(RtdFlag::isFlatRide))
         {
-            if (_trackType == TrackElemType::OnRidePhoto)
+            if (_trackType == TrackElemType::onRidePhoto)
             {
                 if (ride->lifecycleFlags & RIDE_LIFECYCLE_ON_RIDE_PHOTO)
                 {
@@ -154,7 +154,7 @@ namespace OpenRCT2::GameActions
                         STR_ONLY_ONE_ON_RIDE_PHOTO_PER_RIDE);
                 }
             }
-            else if (_trackType == TrackElemType::CableLiftHill)
+            else if (_trackType == TrackElemType::cableLiftHill)
             {
                 if (ride->lifecycleFlags & RIDE_LIFECYCLE_CABLE_LIFT_HILL_COMPONENT_USED)
                 {
@@ -168,7 +168,7 @@ namespace OpenRCT2::GameActions
                 && !gameState.cheats.enableChainLiftOnAllTrack)
             {
                 const auto& ted = GetTrackElementDescriptor(_trackType);
-                if (ted.flags & TRACK_ELEM_FLAG_IS_STEEP_UP)
+                if (ted.flags.has(TrackElementFlag::isSteepUp))
                 {
                     return Result(
                         Status::disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_TOO_STEEP_FOR_LIFT_HILL);
@@ -205,7 +205,7 @@ namespace OpenRCT2::GameActions
 
         if (!gameState.cheats.allowTrackPlaceInvalidHeights)
         {
-            if (ted.flags & TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT)
+            if (ted.flags.has(TrackElementFlag::startsAtHalfHeight))
             {
                 if ((_origin.z & 0x0F) != 8)
                 {
@@ -254,12 +254,12 @@ namespace OpenRCT2::GameActions
 
             clearanceZ = floor2(clearanceZ, kCoordsZStep) + baseZ;
 
-            if (clearanceZ > MAX_TRACK_HEIGHT)
+            if (clearanceZ > kMaximumTrackHeight)
             {
                 return Result(Status::invalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_TOO_HIGH);
             }
 
-            auto crossingMode = (rtd.HasFlag(RtdFlag::supportsLevelCrossings) && _trackType == TrackElemType::Flat)
+            auto crossingMode = (rtd.HasFlag(RtdFlag::supportsLevelCrossings) && _trackType == TrackElemType::flat)
                 ? CreateCrossingMode::trackOverPath
                 : CreateCrossingMode::none;
             auto canBuild = MapCanConstructWithClearAt(
@@ -274,7 +274,7 @@ namespace OpenRCT2::GameActions
 
             const auto clearanceData = canBuild.getData<ConstructClearResult>();
             uint8_t mapGroundFlags = clearanceData.GroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
-            if (!(ted.flags & TRACK_ELEM_FLAG_CAN_BE_PARTLY_UNDERGROUND))
+            if (!ted.flags.has(TrackElementFlag::canBePartlyUnderground))
             {
                 if (resultData.GroundFlags != 0 && (resultData.GroundFlags & mapGroundFlags) == 0)
                 {
@@ -285,7 +285,7 @@ namespace OpenRCT2::GameActions
             }
 
             resultData.GroundFlags = mapGroundFlags;
-            if (ted.flags & TRACK_ELEM_FLAG_ONLY_ABOVE_GROUND)
+            if (ted.flags.has(TrackElementFlag::onlyAboveGround))
             {
                 if (resultData.GroundFlags & ELEMENT_IS_UNDERGROUND)
                 {
@@ -295,7 +295,7 @@ namespace OpenRCT2::GameActions
                 }
             }
 
-            if (ted.flags & TRACK_ELEM_FLAG_ONLY_UNDERWATER)
+            if (ted.flags.has(TrackElementFlag::onlyUnderwater))
             { // No element has this flag
                 if (clearanceData.GroundFlags & ELEMENT_IS_UNDERWATER)
                 {
@@ -345,7 +345,7 @@ namespace OpenRCT2::GameActions
                 }
             }
 
-            if ((ted.sequences[0].flags.has(SequenceFlag::trackOrigin)) && blockIndex == 0)
+            if (ted.sequences[0].flags.has(SequenceFlag::trackOrigin) && blockIndex == 0)
             {
                 const auto addElementResult = TrackAddStationElement(
                     { mapLoc, baseZ, _origin.direction }, _rideIndex, {}, _fromTrackDesign);
@@ -463,7 +463,7 @@ namespace OpenRCT2::GameActions
             clearanceZ = floor2(clearanceZ, kCoordsZStep) + baseZ;
             const auto mapLocWithClearance = CoordsXYRangedZ(mapLoc, baseZ, clearanceZ);
 
-            auto crossingMode = (rtd.HasFlag(RtdFlag::supportsLevelCrossings) && _trackType == TrackElemType::Flat)
+            auto crossingMode = (rtd.HasFlag(RtdFlag::supportsLevelCrossings) && _trackType == TrackElemType::flat)
                 ? CreateCrossingMode::trackOverPath
                 : CreateCrossingMode::none;
             auto canBuild = MapCanConstructWithClearAt(
@@ -477,7 +477,7 @@ namespace OpenRCT2::GameActions
             costs += canBuild.cost;
 
             // When building a level crossing, remove any pre-existing path furniture.
-            if (crossingMode == CreateCrossingMode::trackOverPath && !(GetFlags().has(CommandFlag::ghost)))
+            if (crossingMode == CreateCrossingMode::trackOverPath && !GetFlags().has(CommandFlag::ghost))
             {
                 auto footpathElement = MapGetFootpathElement(mapLoc);
                 if (footpathElement != nullptr && footpathElement->HasAddition())
@@ -486,7 +486,7 @@ namespace OpenRCT2::GameActions
                 }
             }
 
-            if (!(GetFlags().has(CommandFlag::ghost)) && !gameState.cheats.disableClearanceChecks)
+            if (!GetFlags().has(CommandFlag::ghost) && !gameState.cheats.disableClearanceChecks)
             {
                 FootpathRemoveLitter(mapLoc);
                 if (rtd.HasFlag(RtdFlag::noWallsAroundTrack))
@@ -511,7 +511,7 @@ namespace OpenRCT2::GameActions
 
             const auto clearanceData = canBuild.getData<ConstructClearResult>();
             uint8_t mapGroundFlags = clearanceData.GroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
-            if (!(ted.flags & TRACK_ELEM_FLAG_CAN_BE_PARTLY_UNDERGROUND))
+            if (!ted.flags.has(TrackElementFlag::canBePartlyUnderground))
             {
                 if (resultData.GroundFlags != 0 && (resultData.GroundFlags & mapGroundFlags) == 0)
                 {
@@ -542,7 +542,7 @@ namespace OpenRCT2::GameActions
             bool isOrigin = false;
             if (!ride->overallView.IsNull())
             {
-                if (!(GetFlags().has(CommandFlag::noSpend)))
+                if (!GetFlags().has(CommandFlag::noSpend))
                 {
                     isOrigin = ted.sequences[0].flags.has(SequenceFlag::trackOrigin);
                 }
@@ -572,14 +572,14 @@ namespace OpenRCT2::GameActions
 
             switch (_trackType)
             {
-                case TrackElemType::Waterfall:
-                case TrackElemType::Rapids:
-                case TrackElemType::Whirlpool:
-                case TrackElemType::SpinningTunnel:
+                case TrackElemType::waterfall:
+                case TrackElemType::rapids:
+                case TrackElemType::whirlpool:
+                case TrackElemType::spinningTunnel:
                     MapAnimations::MarkTileForInvalidation(TileCoordsXY(mapLoc));
                     break;
-                case TrackElemType::Brakes:
-                case TrackElemType::DiagBrakes:
+                case TrackElemType::brakes:
+                case TrackElemType::diagBrakes:
                     trackElement->SetBrakeClosed(true);
                     break;
                 default:
@@ -611,7 +611,7 @@ namespace OpenRCT2::GameActions
                 uint32_t connectionSides = ted.sequences[0].getEntranceConnectionSides();
                 if (connectionSides != 0)
                 {
-                    if (!(GetFlags().has(CommandFlag::ghost)) && !gameState.cheats.disableClearanceChecks)
+                    if (!GetFlags().has(CommandFlag::ghost) && !gameState.cheats.disableClearanceChecks)
                     {
                         for (int32_t chosenDirection = Numerics::bitScanForward(connectionSides); chosenDirection != -1;
                              chosenDirection = Numerics::bitScanForward(connectionSides))
@@ -632,7 +632,7 @@ namespace OpenRCT2::GameActions
             // Don't do this if the tile is a ghost to prevent desyncs
             // However, ghost tiles from track designs need to modify station data to display properly
             if (ted.sequences[0].flags.has(SequenceFlag::trackOrigin)
-                && (!(GetFlags().has(CommandFlag::ghost)) || _fromTrackDesign))
+                && (!GetFlags().has(CommandFlag::ghost) || _fromTrackDesign))
             {
                 if (blockIndex == 0)
                 {
@@ -654,7 +654,7 @@ namespace OpenRCT2::GameActions
                 }
             }
 
-            if (!gameState.cheats.disableClearanceChecks || !(GetFlags().has(CommandFlag::ghost)))
+            if (!gameState.cheats.disableClearanceChecks || !GetFlags().has(CommandFlag::ghost))
             {
                 FootpathConnectEdges(mapLoc, tileElement, GetFlags());
             }
@@ -662,21 +662,21 @@ namespace OpenRCT2::GameActions
         }
 
         // Update ride stats and block brake count if the piece was successfully built
-        if (!(GetFlags().has(CommandFlag::ghost)))
+        if (!GetFlags().has(CommandFlag::ghost))
         {
             switch (_trackType)
             {
-                case TrackElemType::OnRidePhoto:
+                case TrackElemType::onRidePhoto:
                     ride->lifecycleFlags |= RIDE_LIFECYCLE_ON_RIDE_PHOTO;
                     InvalidateTestResults(*ride);
                     break;
-                case TrackElemType::CableLiftHill:
+                case TrackElemType::cableLiftHill:
                     ride->lifecycleFlags |= RIDE_LIFECYCLE_CABLE_LIFT_HILL_COMPONENT_USED;
                     ride->cableLiftLoc = originLocation;
                     InvalidateTestResults(*ride);
                     break;
-                case TrackElemType::DiagBlockBrakes:
-                case TrackElemType::BlockBrakes:
+                case TrackElemType::diagBlockBrakes:
+                case TrackElemType::blockBrakes:
                 {
                     ride->numBlockBrakes++;
 
@@ -701,14 +701,14 @@ namespace OpenRCT2::GameActions
 
             switch (_trackType)
             {
-                case TrackElemType::Up25ToFlat:
-                case TrackElemType::Up60ToFlat:
-                case TrackElemType::DiagUp25ToFlat:
-                case TrackElemType::DiagUp60ToFlat:
+                case TrackElemType::up25ToFlat:
+                case TrackElemType::up60ToFlat:
+                case TrackElemType::diagUp25ToFlat:
+                case TrackElemType::diagUp60ToFlat:
                     if (!_trackPlaceFlags.has(LiftHillAndInverted::liftHill))
                         break;
                     [[fallthrough]];
-                case TrackElemType::CableLiftHill:
+                case TrackElemType::cableLiftHill:
                     ride->numBlockBrakes++;
                     break;
                 default:

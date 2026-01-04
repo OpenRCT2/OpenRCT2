@@ -63,7 +63,7 @@ namespace OpenRCT2
         void Load() override;
         void Unload() override;
 
-        void DrawPreview(RenderTarget& rt, int32_t width, int32_t height) const override;
+        void DrawPreview(Drawing::RenderTarget& rt, int32_t width, int32_t height) const override;
 
         ImageId GetImageId(
             const CoordsXY& position, uint8_t length, uint8_t rotation, uint8_t offset, bool grid, bool underground) const;

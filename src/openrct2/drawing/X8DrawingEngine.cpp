@@ -744,8 +744,8 @@ void X8DrawingContext::DrawTTFBitmap(
     RenderTarget& rt, TextDrawInfo* info, TTFSurface* surface, int32_t x, int32_t y, uint8_t hintingThreshold)
 {
 #ifndef DISABLE_TTF
-    const uint8_t fgColor = info->palette[1];
-    const uint8_t bgColor = info->palette[3];
+    const uint8_t fgColor = info->palette.fill;
+    const uint8_t bgColor = info->palette.shadowOutline;
 
     if (info->colourFlags.has(ColourFlag::withOutline))
     {

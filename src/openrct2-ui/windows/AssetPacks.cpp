@@ -187,12 +187,12 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_APPLY].top = widgets[WIDX_APPLY].bottom - 24;
         }
 
-        void onDraw(RenderTarget& rt) override
+        void onDraw(Drawing::RenderTarget& rt) override
         {
             drawWidgets(rt);
         }
 
-        void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
+        void onScrollDraw(int32_t scrollIndex, Drawing::RenderTarget& rt) override
         {
             auto rtCoords = ScreenCoordsXY{ rt.x, rt.y };
             Rectangle::fill(
@@ -237,7 +237,7 @@ namespace OpenRCT2::Ui::Windows
         }
 
     private:
-        void PaintItem(RenderTarget& rt, int32_t y, Formatter& ft, bool isChecked, bool isSelected, bool isHighlighted)
+        void PaintItem(Drawing::RenderTarget& rt, int32_t y, Formatter& ft, bool isChecked, bool isSelected, bool isHighlighted)
         {
             auto listWidth = widgets[WIDX_LIST].right - widgets[WIDX_LIST].left;
             auto stringId = STR_BLACK_STRING;
@@ -258,7 +258,7 @@ namespace OpenRCT2::Ui::Windows
             PaintCheckbox(rt, { { 2, y + 1 }, { 2 + checkboxSize + 1, y + 1 + checkboxSize } }, isChecked);
         }
 
-        void PaintCheckbox(RenderTarget& rt, const ScreenRect& rect, bool checked)
+        void PaintCheckbox(Drawing::RenderTarget& rt, const ScreenRect& rect, bool checked)
         {
             Rectangle::fillInset(
                 rt, rect, colours[1], Rectangle::BorderStyle::inset, Rectangle::FillBrightness::dark,

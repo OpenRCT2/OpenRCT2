@@ -20,7 +20,7 @@ namespace OpenRCT2
 constexpr RideTypeDescriptor LiftRTD =
 {
     .Category = RideCategory::transport,
-    .StartTrackPiece = TrackElemType::TowerBase,
+    .StartTrackPiece = TrackElemType::towerBase,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::lift,
         .enabledTrackGroups = {TrackGroup::tower},

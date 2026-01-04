@@ -30,6 +30,7 @@
 #include <limits>
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::Drawing;
 
 static constexpr uint16_t kVirtualFloorBaseSize = 5 * kCoordsXYStep;
 static constexpr CoordsXY kVirtualFloorBaseSizeXY = { kVirtualFloorBaseSize, kVirtualFloorBaseSize };
@@ -202,7 +203,7 @@ static void VirtualFloorGetTileProperties(
     *tileOwned = false;
 
     // See if we are a selected tile
-    if ((gMapSelectFlags.has(MapSelectFlag::enable)))
+    if (gMapSelectFlags.has(MapSelectFlag::enable))
     {
         if (loc >= gMapSelectPositionA && loc <= gMapSelectPositionB)
         {

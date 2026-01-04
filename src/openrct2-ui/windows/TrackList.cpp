@@ -452,7 +452,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void onDraw(RenderTarget& rt) override
+        void onDraw(Drawing::RenderTarget& rt) override
         {
             drawWidgets(rt);
 
@@ -511,7 +511,7 @@ namespace OpenRCT2::Ui::Windows
             g1temp.offset = _trackDesignPreviewPixels.data() + (_currentTrackPieceDirection * kTrackPreviewImageSize);
             g1temp.width = 370;
             g1temp.height = 217;
-            g1temp.flags = G1_FLAG_HAS_TRANSPARENCY;
+            g1temp.flags = { G1Flag::hasTransparency };
             GfxSetG1Element(SPR_TEMP, &g1temp);
             DrawingEngineInvalidateImage(SPR_TEMP);
             GfxDrawSprite(rt, ImageId(SPR_TEMP), trackPreview);
@@ -673,7 +673,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void onScrollDraw(const int32_t scrollIndex, RenderTarget& rt) override
+        void onScrollDraw(const int32_t scrollIndex, Drawing::RenderTarget& rt) override
         {
             uint8_t paletteIndex = ColourMapA[colours[0].colour].mid_light;
             GfxClear(rt, paletteIndex);

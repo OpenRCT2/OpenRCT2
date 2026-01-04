@@ -71,7 +71,7 @@ static void PaintFlyingSaucers(
  */
 TrackPaintFunction GetTrackPaintFunctionFlyingSaucers(OpenRCT2::TrackElemType trackType)
 {
-    if (trackType != TrackElemType::FlatTrack4x4)
+    if (trackType != TrackElemType::flatTrack4x4)
     {
         return TrackPaintFunctionDummy;
     }

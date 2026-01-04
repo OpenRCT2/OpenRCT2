@@ -17,6 +17,7 @@
 #include "../localisation/LocalisationService.h"
 #include "../rct12/CSChar.h"
 #include "Drawing.h"
+#include "ScrollingText.h"
 #include "TTF.h"
 
 #include <iterator>
@@ -273,13 +274,13 @@ void FontSpriteInitialiseCharacters()
             int32_t width = 0;
             if (g1 != nullptr)
             {
-                width = g1->width + (2 * g1->x_offset) - 1;
+                width = g1->width + (2 * g1->xOffset) - 1;
             }
             _spriteFontCharacterWidths[EnumValue(fontStyle)][glyphIndex] = static_cast<uint8_t>(width);
         }
     }
 
-    ScrollingTextInitialiseBitmaps();
+    Drawing::ScrollingText::initialiseBitmaps();
 }
 
 int32_t FontSpriteGetCodepointOffset(int32_t codepoint)

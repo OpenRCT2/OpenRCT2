@@ -43,6 +43,7 @@ namespace OpenRCT2::Network
         passwordlessLogin,
         modifyTile,
         editScenarioOptions,
+        dragPathArea,
 
         count,
     };

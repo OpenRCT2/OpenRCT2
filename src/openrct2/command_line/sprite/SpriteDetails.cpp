@@ -35,8 +35,8 @@ namespace OpenRCT2::CommandLine::Sprite
                 return -1;
             }
 
-            printf("sprites: %u\n", spriteFile->Header.num_entries);
-            printf("data size: %u\n", spriteFile->Header.total_size);
+            printf("sprites: %u\n", spriteFile->Header.numEntries);
+            printf("data size: %u\n", spriteFile->Header.totalSize);
             return 0;
         }
 
@@ -49,7 +49,7 @@ namespace OpenRCT2::CommandLine::Sprite
             return -1;
         }
 
-        if (spriteIndex < 0 || spriteIndex >= static_cast<int32_t>(spriteFile->Header.num_entries))
+        if (spriteIndex < 0 || spriteIndex >= static_cast<int32_t>(spriteFile->Header.numEntries))
         {
             fprintf(stderr, "Sprite #%d does not exist in sprite file.\n", spriteIndex);
             return -1;
@@ -58,8 +58,8 @@ namespace OpenRCT2::CommandLine::Sprite
         G1Element* g1 = &spriteFile->Entries[spriteIndex];
         printf("width: %d\n", g1->width);
         printf("height: %d\n", g1->height);
-        printf("x offset: %d\n", g1->x_offset);
-        printf("y offset: %d\n", g1->y_offset);
+        printf("x offset: %d\n", g1->xOffset);
+        printf("y offset: %d\n", g1->yOffset);
         printf("data offset: %p\n", g1->offset);
         return 0;
     }

@@ -103,7 +103,7 @@ namespace OpenRCT2::Ui::Windows
             UpdatePosition(gTooltipCursor);
         }
 
-        void onDraw(RenderTarget& rt) override
+        void onDraw(Drawing::RenderTarget& rt) override
         {
             int32_t left = windowPos.x;
             int32_t top = windowPos.y;

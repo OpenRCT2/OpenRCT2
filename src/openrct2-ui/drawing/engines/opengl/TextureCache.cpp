@@ -226,7 +226,7 @@ void TextureCache::GeneratePaletteTexture()
             const auto* element = GfxGetG1Element(g1Index.value());
             if (element != nullptr)
             {
-                GfxDrawSpriteSoftware(rt, ImageId(g1Index.value()), { -element->x_offset, y - element->y_offset });
+                GfxDrawSpriteSoftware(rt, ImageId(g1Index.value()), { -element->xOffset, y - element->yOffset });
             }
         }
     }
@@ -361,7 +361,7 @@ RenderTarget TextureCache::GetImageAsDPI(const ImageId imageId)
     int32_t height = g1Element->height;
 
     RenderTarget rt = CreateDPI(width, height);
-    GfxDrawSpriteSoftware(rt, imageId, { -g1Element->x_offset, -g1Element->y_offset });
+    GfxDrawSpriteSoftware(rt, imageId, { -g1Element->xOffset, -g1Element->yOffset });
     return rt;
 }
 
@@ -373,7 +373,7 @@ RenderTarget TextureCache::GetGlyphAsDPI(const ImageId imageId, const PaletteMap
 
     RenderTarget rt = CreateDPI(width, height);
 
-    const auto glyphCoords = ScreenCoordsXY{ -g1Element->x_offset, -g1Element->y_offset };
+    const auto glyphCoords = ScreenCoordsXY{ -g1Element->xOffset, -g1Element->yOffset };
     GfxDrawSpritePaletteSetSoftware(rt, imageId, glyphCoords, palette);
     return rt;
 }

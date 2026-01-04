@@ -21,7 +21,7 @@ namespace OpenRCT2
 constexpr RideTypeDescriptor DodgemsRTD =
 {
     .Category = RideCategory::gentle,
-    .StartTrackPiece = TrackElemType::FlatTrack4x4,
+    .StartTrackPiece = TrackElemType::flatTrack4x4,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::dodgems,
         .enabledTrackGroups = {},

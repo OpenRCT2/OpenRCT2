@@ -15,7 +15,6 @@
 #include <memory>
 #include <vector>
 
-struct RenderTarget;
 enum class RideCategory : uint8_t;
 
 namespace OpenRCT2::Localisation

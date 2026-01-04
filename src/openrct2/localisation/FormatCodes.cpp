@@ -140,16 +140,16 @@ namespace OpenRCT2
         }
     }
 
-    TextColour FormatTokenToTextColour(FormatToken token)
+    Drawing::TextColour FormatTokenToTextColour(FormatToken token)
     {
         uint8_t value = EnumValue(token) - EnumValue(FormatToken::colourBlack);
-        if (value >= kNumTextColours)
-            return TextColour::black;
+        if (value >= Drawing::kNumTextColours)
+            return Drawing::TextColour::black;
 
-        return static_cast<TextColour>(value);
+        return static_cast<Drawing::TextColour>(value);
     }
 
-    FormatToken FormatTokenFromTextColour(TextColour textColour)
+    FormatToken FormatTokenFromTextColour(Drawing::TextColour textColour)
     {
         static constexpr FormatToken tokens[] = {
             FormatToken::colourBlack,        // TextColour::black

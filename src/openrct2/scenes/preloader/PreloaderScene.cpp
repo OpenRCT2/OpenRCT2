@@ -37,7 +37,7 @@ void PreloaderScene::Load()
 
     gLegacyScene = LegacyScene::playing;
     gameStateInitAll(getGameState(), kDefaultMapSize);
-    ViewportInitAll();
+    ContextResetSubsystems();
     ContextOpenWindow(WindowClass::mainWindow);
     WindowSetFlagForAllViewports(VIEWPORT_FLAG_RENDERING_INHIBITED, true);
     WindowResizeGui(ContextGetWidth(), ContextGetHeight());

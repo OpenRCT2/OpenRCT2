@@ -27,6 +27,7 @@
 #include "Paint.TileElement.h"
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::Drawing;
 
 // kBannerBoundBoxes[rotation][0] is for the pole in the back
 // kBannerBoundBoxes[rotation][1] is for the pole and the banner in the front
@@ -49,7 +50,7 @@ static void PaintBannerScrollingText(
         return;
 
     auto scrollingMode = bannerEntry.scrolling_mode + (direction & 3);
-    if (scrollingMode >= kMaxScrollingTextModes)
+    if (scrollingMode >= Drawing::ScrollingText::kMaxModes)
     {
         return;
     }
@@ -69,7 +70,7 @@ static void PaintBannerScrollingText(
 
     auto stringWidth = GfxGetStringWidth(text, FontStyle::tiny);
     auto scroll = stringWidth > 0 ? (getGameState().currentTicks / 2) % stringWidth : 0;
-    auto imageId = ScrollingTextSetup(session, STR_BANNER_TEXT_FORMAT, ft, scroll, scrollingMode, COLOUR_BLACK);
+    auto imageId = Drawing::ScrollingText::setup(session, STR_BANNER_TEXT_FORMAT, ft, scroll, scrollingMode, PaletteIndex::pi0);
     PaintAddImageAsChild(session, imageId, { 0, 0, height + 22 }, { bbOffset, { 1, 1, 21 } });
 }
 

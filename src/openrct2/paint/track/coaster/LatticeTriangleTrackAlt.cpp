@@ -69,7 +69,7 @@ static void LatticeTriangleTrackAltStation(
             SPR_TRACKS_LATTICE_TRIANGLE_TRACK_DRIVE_TYRE_SW_NE,
             SPR_TRACKS_LATTICE_TRIANGLE_TRACK_DRIVE_TYRE_SE_NW,
         };
-        if (trackElement.GetTrackType() == TrackElemType::EndStation)
+        if (trackElement.GetTrackType() == TrackElemType::endStation)
         {
             bool isClosed = trackElement.IsBrakeClosed();
             PaintAddImageAsParentRotated(
@@ -258,23 +258,23 @@ TrackPaintFunction GetTrackPaintFunctionLatticeTriangleTrackAlt(TrackElemType tr
 {
     switch (trackType)
     {
-        case TrackElemType::EndStation:
-        case TrackElemType::BeginStation:
-        case TrackElemType::MiddleStation:
+        case TrackElemType::endStation:
+        case TrackElemType::beginStation:
+        case TrackElemType::middleStation:
             return LatticeTriangleTrackAltStation;
-        case TrackElemType::Brakes:
+        case TrackElemType::brakes:
             return LatticeTriangleTrackAltBrakes;
-        case TrackElemType::BlockBrakes:
+        case TrackElemType::blockBrakes:
             return LatticeTriangleTrackAltBlockBrakes;
-        case TrackElemType::Booster:
+        case TrackElemType::booster:
             return LatticeTriangleTrackAltBooster;
-        case TrackElemType::PoweredLift:
+        case TrackElemType::poweredLift:
             return LatticeTriangleTrackAltPoweredLift;
-        case TrackElemType::DiagBooster:
+        case TrackElemType::diagBooster:
             return LatticeTriangleTrackAltDiagBooster;
-        case TrackElemType::DiagBlockBrakes:
+        case TrackElemType::diagBlockBrakes:
             return LatticeTriangleTrackAltDiagBlockBrake;
-        case TrackElemType::DiagBrakes:
+        case TrackElemType::diagBrakes:
             return LatticeTriangleTrackAltDiagBrake;
 
         default:

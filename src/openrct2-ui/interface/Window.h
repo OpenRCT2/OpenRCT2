@@ -23,8 +23,8 @@ namespace OpenRCT2::Ui
 
     struct Window : WindowBase
     {
-        void onDraw(RenderTarget& rt) override;
-        void onDrawWidget(WidgetIndex widgetIndex, RenderTarget& rt) override;
+        void onDraw(Drawing::RenderTarget& rt) override;
+        void onDrawWidget(WidgetIndex widgetIndex, Drawing::RenderTarget& rt) override;
 
         void scrollToViewport();
         void initScrollWidgets();
@@ -36,7 +36,7 @@ namespace OpenRCT2::Ui
         void setWidgetDisabledAndInvalidate(WidgetIndex widgetIndex, bool value);
         void setWidgetPressed(WidgetIndex widgetIndex, bool value);
         void setCheckboxValue(WidgetIndex widgetIndex, bool value);
-        void drawWidgets(RenderTarget& rt);
+        void drawWidgets(Drawing::RenderTarget& rt);
         void close();
         void closeOthers();
         void closeOthersOfThisClass();
@@ -86,8 +86,8 @@ namespace OpenRCT2::Ui::Windows
 
     void InvalidateAllWindowsAfterInput();
 
-    void WindowDrawWidgets(WindowBase& w, RenderTarget& rt);
-    void WindowDrawViewport(RenderTarget& rt, WindowBase& w);
+    void WindowDrawWidgets(WindowBase& w, Drawing::RenderTarget& rt);
+    void WindowDrawViewport(Drawing::RenderTarget& rt, WindowBase& w);
 
     void WindowZoomIn(WindowBase& w, bool atCursor);
     void WindowZoomOut(WindowBase& w, bool atCursor);

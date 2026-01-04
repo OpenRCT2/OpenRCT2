@@ -132,7 +132,7 @@ namespace OpenRCT2::GameActions
         res.expenditure = ExpenditureType::landscaping;
         res.position = _loc.ToTileCentre();
 
-        if (!(GetFlags().has(CommandFlag::ghost)))
+        if (!GetFlags().has(CommandFlag::ghost))
         {
             FootpathInterruptPeeps(_loc);
         }
@@ -142,7 +142,7 @@ namespace OpenRCT2::GameActions
         // Force ride construction to recheck area
         _currentTrackSelectionFlags.set(TrackSelectionFlag::recheck);
 
-        if (!(GetFlags().has(CommandFlag::ghost)))
+        if (!GetFlags().has(CommandFlag::ghost))
         {
             if (_direction != kInvalidDirection && !getGameState().cheats.disableClearanceChecks)
             {
@@ -239,7 +239,7 @@ namespace OpenRCT2::GameActions
 
         FootpathQueueChainReset();
 
-        if (!(GetFlags().has(CommandFlag::trackDesign)))
+        if (!GetFlags().has(CommandFlag::trackDesign))
         {
             FootpathRemoveEdgesAt(_loc, reinterpret_cast<TileElement*>(pathElement));
         }
@@ -355,7 +355,7 @@ namespace OpenRCT2::GameActions
     {
         bool entrancePath = false, entranceIsSamePath = false;
 
-        if (!(GetFlags().hasAny(CommandFlag::allowDuringPaused, CommandFlag::ghost)))
+        if (!GetFlags().hasAny(CommandFlag::allowDuringPaused, CommandFlag::ghost))
         {
             FootpathRemoveLitter(_loc);
         }
@@ -410,7 +410,7 @@ namespace OpenRCT2::GameActions
 
         if (entrancePath)
         {
-            if (!(GetFlags().has(CommandFlag::ghost)) && !entranceIsSamePath)
+            if (!GetFlags().has(CommandFlag::ghost) && !entranceIsSamePath)
             {
                 if (_constructFlags & PathConstructFlag::IsLegacyPathObject)
                 {
@@ -449,11 +449,11 @@ namespace OpenRCT2::GameActions
 
             FootpathQueueChainReset();
 
-            if (!(GetFlags().has(CommandFlag::trackDesign)))
+            if (!GetFlags().has(CommandFlag::trackDesign))
             {
                 FootpathRemoveEdgesAt(_loc, pathElement->as<TileElement>());
             }
-            if (gLegacyScene == LegacyScene::scenarioEditor && !(GetFlags().has(CommandFlag::ghost)))
+            if (gLegacyScene == LegacyScene::scenarioEditor && !GetFlags().has(CommandFlag::ghost))
             {
                 AutomaticallySetPeepSpawn();
             }
@@ -505,7 +505,7 @@ namespace OpenRCT2::GameActions
 
     void FootpathPlaceAction::RemoveIntersectingWalls(PathElement* pathElement) const
     {
-        if (pathElement->IsSloped() && !(GetFlags().has(CommandFlag::ghost)))
+        if (pathElement->IsSloped() && !GetFlags().has(CommandFlag::ghost))
         {
             auto direction = pathElement->GetSlopeDirection();
             int32_t z = pathElement->GetBaseZ();
@@ -520,7 +520,7 @@ namespace OpenRCT2::GameActions
             }
         }
 
-        if (!(GetFlags().has(CommandFlag::trackDesign)))
+        if (!GetFlags().has(CommandFlag::trackDesign))
             FootpathConnectEdges(_loc, reinterpret_cast<TileElement*>(pathElement), GetFlags());
 
         FootpathUpdateQueueChains();

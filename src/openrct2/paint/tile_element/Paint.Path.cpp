@@ -47,6 +47,7 @@
 #include "Segment.h"
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::Drawing;
 
 bool gPaintWidePathsAsGhost = false;
 
@@ -179,7 +180,8 @@ static void PathPaintQueueBanner(
         uint16_t scroll = stringWidth > 0 ? (getGameState().currentTicks / 2) % stringWidth : 0;
 
         PaintAddImageAsChild(
-            session, ScrollingTextSetup(session, STR_BANNER_TEXT_FORMAT, ft, scroll, scrollingMode, COLOUR_BLACK),
+            session,
+            Drawing::ScrollingText::setup(session, STR_BANNER_TEXT_FORMAT, ft, scroll, scrollingMode, PaletteIndex::pi0),
             { 0, 0, height + 7 }, { boundBoxOffsets, { 1, 1, 21 } });
     }
 
@@ -893,7 +895,7 @@ static BoundBoxXYZ PathPaintGetBoundbox(const PaintSession& session, int32_t hei
     // If we are on the same tile as a straight track, add the offset 2 so we
     //  can clip above gravel part of the track sprite
     if (session.TrackElementOnSameHeight != nullptr
-        && session.TrackElementOnSameHeight->AsTrack()->GetTrackType() == TrackElemType::Flat)
+        && session.TrackElementOnSameHeight->AsTrack()->GetTrackType() == TrackElemType::flat)
     {
         boundingBoxZOffset = 2;
     }

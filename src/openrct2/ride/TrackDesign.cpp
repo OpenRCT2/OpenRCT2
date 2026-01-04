@@ -31,6 +31,7 @@
 #include "../actions/WallPlaceAction.h"
 #include "../actions/WallRemoveAction.h"
 #include "../audio/Audio.h"
+#include "../config/Config.h"
 #include "../core/DataSerialiser.h"
 #include "../core/File.h"
 #include "../core/Numerics.hpp"
@@ -224,7 +225,7 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
         const auto& element = trackElement.element->AsTrack();
 
         // Remove this check for new track design format
-        if (element->GetTrackType() > TrackElemType::HighestAlias)
+        if (element->GetTrackType() > TrackElemType::highestAlias)
         {
             return { false, STR_TRACK_ELEM_UNSUPPORTED_TD6 };
         }
@@ -237,7 +238,7 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
         track.seatRotation = element->GetSeatRotation();
 
         // This warning will not apply to new track design format
-        if (track.type == TrackElemType::BlockBrakes && element->GetBrakeBoosterSpeed() != kRCT2DefaultBlockBrakeSpeed)
+        if (track.type == TrackElemType::blockBrakes && element->GetBrakeBoosterSpeed() != kRCT2DefaultBlockBrakeSpeed)
         {
             warningMessage = STR_TRACK_DESIGN_BLOCK_BRAKE_SPEED_RESET;
         }
@@ -1859,7 +1860,8 @@ int32_t TrackDesignGetZPlacement(const TrackDesign& td, Ride& ride, const Coords
 static money64 TrackDesignCreateRide(int32_t type, int32_t subType, CommandFlags flags, RideId* outRideIndex)
 {
     // Don't set colours as will be set correctly later.
-    auto gameAction = GameActions::RideCreateAction(type, subType, 0, 0, getGameState().lastEntranceStyle);
+    auto gameAction = GameActions::RideCreateAction(
+        type, subType, 0, 0, getGameState().lastEntranceStyle, Config::Get().general.defaultInspectionInterval);
     gameAction.SetFlags(flags);
 
     auto& gameState = getGameState();

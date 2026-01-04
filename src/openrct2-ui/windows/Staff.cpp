@@ -228,7 +228,7 @@ namespace OpenRCT2::Ui::Windows
             CommonPrepareDrawAfter();
         }
 
-        void onDraw(RenderTarget& rt) override
+        void onDraw(Drawing::RenderTarget& rt) override
         {
             drawWidgets(rt);
             DrawTabImages(rt);
@@ -540,7 +540,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_FIRE].right = width - 2;
         }
 
-        void OverviewDraw(RenderTarget& rt)
+        void OverviewDraw(Drawing::RenderTarget& rt)
         {
             // Draw the viewport no sound sprite
             if (viewport != nullptr)
@@ -567,7 +567,7 @@ namespace OpenRCT2::Ui::Windows
             DrawTextEllipsised(rt, screenPos, widgetWidth, STR_BLACK_STRING, ft, { TextAlignment::centre });
         }
 
-        void DrawOverviewTabImage(RenderTarget& rt)
+        void DrawOverviewTabImage(Drawing::RenderTarget& rt)
         {
             if (isWidgetDisabled(WIDX_TAB_1))
                 return;
@@ -579,7 +579,7 @@ namespace OpenRCT2::Ui::Windows
             if (page == WINDOW_STAFF_OVERVIEW)
                 widgetHeight++;
 
-            RenderTarget clippedRT;
+            Drawing::RenderTarget clippedRT;
             if (!ClipDrawPixelInfo(clippedRT, rt, screenCoords, widgetWidth, widgetHeight))
             {
                 return;
@@ -928,7 +928,7 @@ namespace OpenRCT2::Ui::Windows
 #pragma endregion
 
 #pragma region Statistics tab events
-        void StatsDraw(RenderTarget& rt)
+        void StatsDraw(Drawing::RenderTarget& rt)
         {
             auto staff = GetStaff();
             if (staff == nullptr)
@@ -1185,14 +1185,14 @@ namespace OpenRCT2::Ui::Windows
             WindowFollowSprite(*main, EntityId::FromUnderlying(number));
         }
 
-        void DrawTabImages(RenderTarget& rt)
+        void DrawTabImages(Drawing::RenderTarget& rt)
         {
             DrawOverviewTabImage(rt);
             DrawTabImage(rt, WINDOW_STAFF_OPTIONS, SPR_TAB_STAFF_OPTIONS_0);
             DrawTabImage(rt, WINDOW_STAFF_STATISTICS, SPR_TAB_STATS_0);
         }
 
-        void DrawTabImage(RenderTarget& rt, int32_t p, int32_t baseImageId)
+        void DrawTabImage(Drawing::RenderTarget& rt, int32_t p, int32_t baseImageId)
         {
             WidgetIndex widgetIndex = WIDX_TAB_1 + p;
             Widget* widget = &widgets[widgetIndex];

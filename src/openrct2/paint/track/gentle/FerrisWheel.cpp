@@ -176,7 +176,7 @@ static void PaintFerrisWheel(
 
 TrackPaintFunction GetTrackPaintFunctionFerrisWheel(OpenRCT2::TrackElemType trackType)
 {
-    if (trackType != TrackElemType::FlatTrack1x4C)
+    if (trackType != TrackElemType::flatTrack1x4C)
     {
         return TrackPaintFunctionDummy;
     }

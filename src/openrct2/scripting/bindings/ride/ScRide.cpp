@@ -454,7 +454,7 @@ namespace OpenRCT2::Scripting
     uint8_t ScRide::inspectionInterval_get() const
     {
         auto ride = GetRide();
-        return ride != nullptr ? ride->inspectionInterval : 0;
+        return ride != nullptr ? EnumValue(ride->inspectionInterval) : 0;
     }
     void ScRide::inspectionInterval_set(uint8_t value)
     {
@@ -462,7 +462,9 @@ namespace OpenRCT2::Scripting
         auto ride = GetRide();
         if (ride != nullptr)
         {
-            ride->inspectionInterval = std::clamp<uint8_t>(value, RIDE_INSPECTION_EVERY_10_MINUTES, RIDE_INSPECTION_NEVER);
+            auto clamped = std::clamp<uint8_t>(
+                value, EnumValue(RideInspection::every10Minutes), EnumValue(RideInspection::never));
+            ride->inspectionInterval = static_cast<RideInspection>(clamped);
         }
     }
 

@@ -53,14 +53,16 @@ namespace OpenRCT2::CommandLine::Sprite
         // keep sprite file entirely in memory until ready to write out a complete,
         // correct file
         SpriteFile spriteFile;
-        spriteFile.Header.num_entries = 0;
-        spriteFile.Header.total_size = 0;
+        spriteFile.Header.numEntries = 0;
+        spriteFile.Header.totalSize = 0;
 
         fprintf(stdout, "Building: %s\n", spriteFilePath);
 
         json_t sprite_description;
 
         uint32_t numSuccessful = 0;
+
+        std::unordered_map<u8string, Image> images{};
 
         // Note: jsonSprite is deliberately left non-const: json_t behaviour changes when const
         for (auto& [jsonKey, jsonSprite] : jsonSprites.items())
@@ -84,14 +86,28 @@ namespace OpenRCT2::CommandLine::Sprite
 
             auto imagePath = Path::GetAbsolute(Path::Combine(directoryPath, strPath));
 
-            auto importResult = SpriteImageImport(imagePath, meta);
-            if (importResult == std::nullopt)
+            const auto image_iter = images.find(imagePath);
+            if (image_iter != images.end())
             {
-                fprintf(stderr, "Could not import image file: %s\nCanceling\n", imagePath.c_str());
-                return -1;
+                ImageImporter importer;
+                auto importResult = importer.Import(image_iter->second, meta);
+                spriteFile.AddImage(importResult);
             }
+            else
+            {
+                const auto image = SpriteImageLoad(imagePath, meta);
+                if (image == std::nullopt)
+                {
+                    fprintf(stderr, "Could not read image file: %s\nCanceling\n", imagePath.c_str());
+                    return -1;
+                }
+                images[imagePath] = image.value();
 
-            spriteFile.AddImage(importResult.value());
+                ImageImporter importer;
+                auto importResult = importer.Import(image.value(), meta);
+
+                spriteFile.AddImage(importResult);
+            }
 
             if (!silent)
                 fprintf(stdout, "Added: %s\n", imagePath.c_str());
