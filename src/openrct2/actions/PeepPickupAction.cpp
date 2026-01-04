@@ -51,19 +51,19 @@ namespace OpenRCT2::GameActions
         if (_entityId.ToUnderlying() >= kMaxEntities || _entityId.IsNull())
         {
             LOG_ERROR("Failed to pick up peep for sprite %d", _entityId);
-            return Result(Status::InvalidParameters, STR_ERR_CANT_PLACE_PERSON_HERE, kStringIdNone);
+            return Result(Status::invalidParameters, STR_ERR_CANT_PLACE_PERSON_HERE, kStringIdNone);
         }
 
         if (!_loc.IsNull() && !LocationValid(_loc))
         {
-            return Result(Status::InvalidParameters, STR_ERR_CANT_PLACE_PERSON_HERE, kStringIdNone);
+            return Result(Status::invalidParameters, STR_ERR_CANT_PLACE_PERSON_HERE, kStringIdNone);
         }
 
         auto* const peep = getGameState().entities.TryGetEntity<Peep>(_entityId);
         if (peep == nullptr)
         {
             LOG_ERROR("Failed to pick up peep for sprite %d", _entityId);
-            return Result(Status::InvalidParameters, STR_ERR_CANT_PLACE_PERSON_HERE, kStringIdNone);
+            return Result(Status::invalidParameters, STR_ERR_CANT_PLACE_PERSON_HERE, kStringIdNone);
         }
 
         auto res = Result();
@@ -72,10 +72,10 @@ namespace OpenRCT2::GameActions
         {
             case PeepPickupType::Pickup:
             {
-                res.Position = peep->GetLocation();
+                res.position = peep->GetLocation();
                 if (!peep->CanBePickedUp())
                 {
-                    return Result(Status::Disallowed, STR_ERR_CANT_PLACE_PERSON_HERE, kStringIdNone);
+                    return Result(Status::disallowed, STR_ERR_CANT_PLACE_PERSON_HERE, kStringIdNone);
                 }
                 Peep* existing = Network::GetPickupPeep(_owner);
                 if (existing != nullptr)
@@ -94,23 +94,23 @@ namespace OpenRCT2::GameActions
             }
             break;
             case PeepPickupType::Cancel:
-                res.Position = peep->GetLocation();
+                res.position = peep->GetLocation();
                 break;
             case PeepPickupType::Place:
-                res.Position = _loc;
+                res.position = _loc;
                 if (Network::GetPickupPeep(_owner) != peep)
                 {
-                    return Result(Status::Unknown, STR_ERR_CANT_PLACE_PERSON_HERE, kStringIdNone);
+                    return Result(Status::unknown, STR_ERR_CANT_PLACE_PERSON_HERE, kStringIdNone);
                 }
 
-                if (auto res2 = peep->Place(TileCoordsXYZ(_loc), false); res2.Error != Status::Ok)
+                if (auto res2 = peep->Place(TileCoordsXYZ(_loc), false); res2.error != Status::ok)
                 {
                     return res2;
                 }
                 break;
             default:
                 LOG_ERROR("Invalid peep pickup type %u", _type);
-                return Result(Status::InvalidParameters, STR_ERR_CANT_PLACE_PERSON_HERE, kStringIdNone);
+                return Result(Status::invalidParameters, STR_ERR_CANT_PLACE_PERSON_HERE, kStringIdNone);
         }
         return res;
     }
@@ -121,7 +121,7 @@ namespace OpenRCT2::GameActions
         if (peep == nullptr)
         {
             LOG_ERROR("Failed to pick up peep for sprite %d", _entityId);
-            return Result(Status::InvalidParameters, STR_ERR_CANT_PLACE_PERSON_HERE, kStringIdNone);
+            return Result(Status::invalidParameters, STR_ERR_CANT_PLACE_PERSON_HERE, kStringIdNone);
         }
 
         auto res = Result();
@@ -130,7 +130,7 @@ namespace OpenRCT2::GameActions
         {
             case PeepPickupType::Pickup:
             {
-                res.Position = peep->GetLocation();
+                res.position = peep->GetLocation();
 
                 Peep* existing = Network::GetPickupPeep(_owner);
                 if (existing != nullptr)
@@ -159,7 +159,7 @@ namespace OpenRCT2::GameActions
             break;
             case PeepPickupType::Cancel:
             {
-                res.Position = peep->GetLocation();
+                res.position = peep->GetLocation();
 
                 Peep* const pickedUpPeep = Network::GetPickupPeep(_owner);
                 if (pickedUpPeep != nullptr)
@@ -170,8 +170,8 @@ namespace OpenRCT2::GameActions
             }
             break;
             case PeepPickupType::Place:
-                res.Position = _loc;
-                if (auto res2 = peep->Place(TileCoordsXYZ(_loc), true); res2.Error != Status::Ok)
+                res.position = _loc;
+                if (auto res2 = peep->Place(TileCoordsXYZ(_loc), true); res2.error != Status::ok)
                 {
                     return res2;
                 }
@@ -179,7 +179,7 @@ namespace OpenRCT2::GameActions
                 break;
             default:
                 LOG_ERROR("Invalid peep pickup type %u", _type);
-                return Result(Status::InvalidParameters, STR_ERR_CANT_PLACE_PERSON_HERE, kStringIdNone);
+                return Result(Status::invalidParameters, STR_ERR_CANT_PLACE_PERSON_HERE, kStringIdNone);
         }
         return res;
     }

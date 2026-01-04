@@ -91,7 +91,7 @@ namespace OpenRCT2::Ui::Windows
                     gDropdown.items[1] = Dropdown::MenuLabel(STR_SUFFIX);
 
                     WindowDropdownShowTextCustomWidth(
-                        { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height() + 1, colours[1], 0,
+                        { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height(), colours[1], 0,
                         Dropdown::Flag::StayOpen, 2, widget->width() - 4);
 
                     if (CurrencyDescriptors[EnumValue(CurrencyType::custom)].affix_unicode == CurrencyAffix::prefix)
@@ -187,14 +187,14 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void onDraw(RenderTarget& rt) override
+        void onDraw(Drawing::RenderTarget& rt) override
         {
             auto ft = Formatter::Common();
             ft.Add<money64>(10.00_GBP);
 
             drawWidgets(rt);
 
-            auto screenCoords = windowPos + ScreenCoordsXY{ 10, 18 + widgets[WIDX_TITLE].height() };
+            auto screenCoords = windowPos + ScreenCoordsXY{ 10, 18 + widgets[WIDX_TITLE].height() - 1 };
 
             DrawTextBasic(rt, screenCoords, STR_RATE, {}, { colours[1] });
 

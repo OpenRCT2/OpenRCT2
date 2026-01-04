@@ -102,12 +102,12 @@ void DrawText(RenderTarget& rt, const ScreenCoordsXY& coords, const TextPaint& p
     {
         Rectangle::fill(
             rt, { { alignedCoords + ScreenCoordsXY{ 0, 11 } }, { alignedCoords + ScreenCoordsXY{ width, 11 } } },
-            gTextPalette[1]);
-        if (gTextPalette[2] != 0)
+            gTextPalette.fill);
+        if (gTextPalette.sunnyOutline != 0)
         {
             Rectangle::fill(
                 rt, { { alignedCoords + ScreenCoordsXY{ 1, 12 } }, { alignedCoords + ScreenCoordsXY{ width + 1, 12 } } },
-                gTextPalette[2]);
+                gTextPalette.sunnyOutline);
         }
     }
 }

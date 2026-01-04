@@ -46,7 +46,7 @@ namespace OpenRCT2::Ui::Windows
             invalidate();
         }
 
-        void onDraw(RenderTarget& rt) override
+        void onDraw(Drawing::RenderTarget& rt) override
         {
             StringId stringId;
             std::memcpy(&stringId, _mapTooltipArgs.Data(), sizeof(StringId));
@@ -86,7 +86,7 @@ namespace OpenRCT2::Ui::Windows
 
         // Check for cursor movement
         _cursorHoldDuration++;
-        if (abs(cursorChange.x) > 5 || abs(cursorChange.y) > 5 || (gInputFlags.has(InputFlag::rightMousePressed))
+        if (abs(cursorChange.x) > 5 || abs(cursorChange.y) > 5 || gInputFlags.has(InputFlag::rightMousePressed)
             || InputGetState() == InputState::ViewportRight)
             _cursorHoldDuration = 0;
 

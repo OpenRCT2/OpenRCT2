@@ -20,7 +20,7 @@ namespace OpenRCT2
 constexpr RideTypeDescriptor RotoDropRTD =
 {
     .Category = RideCategory::thrill,
-    .StartTrackPiece = TrackElemType::TowerBase,
+    .StartTrackPiece = TrackElemType::towerBase,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::rotoDrop,
         .enabledTrackGroups = {TrackGroup::tower},

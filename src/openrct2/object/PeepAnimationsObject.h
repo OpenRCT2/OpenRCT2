@@ -57,7 +57,7 @@ namespace OpenRCT2
             return _noRandomPlacement;
         }
 
-        void DrawPreview(RenderTarget& rt, int32_t width, int32_t height) const override;
+        void DrawPreview(Drawing::RenderTarget& rt, int32_t width, int32_t height) const override;
         void SetRepositoryItem(ObjectRepositoryItem* item) const override;
     };
 } // namespace OpenRCT2

@@ -3839,3 +3839,8 @@ STR_7004    :Força que es torni a dibuixar
 STR_7005    :Dibuixa una àrea de camí
 STR_7006    :Dibuixa una vora al voltant de les imatges dels botons
 STR_7007    :Tipus d’atracció
+STR_7008    :Tipus d’atracció desconegut ({INT32})
+STR_7009    :Es reben scripts nous…
+STR_7010    :No s’ha pogut iniciar la repetició. El fitxer «{STRING}» no existeix o no és vàlid.
+STR_7011    :No s’ha pogut iniciar la repetició.
+STR_7012    :Złoty polonès (PLN)

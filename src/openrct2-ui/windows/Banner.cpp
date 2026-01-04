@@ -88,7 +88,7 @@ namespace OpenRCT2::Ui::Windows
             const auto& viewportWidget = widgets[WIDX_VIEWPORT];
             ViewportCreate(
                 *this, windowPos + ScreenCoordsXY{ viewportWidget.left + 1, viewportWidget.top + 1 },
-                viewportWidget.width() - 2, (viewportWidget.height()) - 1, Focus(_bannerViewPos));
+                viewportWidget.width() - 2, viewportWidget.height() - 2, Focus(_bannerViewPos));
 
             if (viewport != nullptr)
                 viewport->flags = Config::Get().general.alwaysShowGridlines ? VIEWPORT_FLAG_GRIDLINES : VIEWPORT_FLAG_NONE;
@@ -176,7 +176,7 @@ namespace OpenRCT2::Ui::Windows
                     widget--;
 
                     WindowDropdownShowTextCustomWidth(
-                        { widget->left + windowPos.x, widget->top + windowPos.y }, widget->height() + 1, colours[1], 0,
+                        { widget->left + windowPos.x, widget->top + windowPos.y }, widget->height(), colours[1], 0,
                         Dropdown::Flag::StayOpen, numItems, widget->width() - 1 + 3);
 
                     gDropdown.items[EnumValue(banner->textColour) - 1].setChecked(true);
@@ -269,7 +269,7 @@ namespace OpenRCT2::Ui::Windows
             createViewport();
         }
 
-        void onDraw(RenderTarget& rt) override
+        void onDraw(Drawing::RenderTarget& rt) override
         {
             drawWidgets(rt);
 

@@ -18,6 +18,7 @@
 #include "../Paint.h"
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::Drawing;
 using namespace OpenRCT2::Numerics;
 
 constexpr auto kMetalSupportSkip = 9 * 4 * 2;

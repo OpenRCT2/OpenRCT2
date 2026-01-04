@@ -20,7 +20,7 @@ namespace OpenRCT2
 constexpr RideTypeDescriptor RiverRaftsRTD =
 {
     .Category = RideCategory::water,
-    .StartTrackPiece = TrackElemType::EndStation,
+    .StartTrackPiece = TrackElemType::endStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::splashBoats,
         .supportType = WoodenSupportType::truss,

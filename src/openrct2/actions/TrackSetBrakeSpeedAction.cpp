@@ -57,27 +57,27 @@ namespace OpenRCT2::GameActions
     {
         auto res = Result();
 
-        res.Position = _loc;
-        res.Position.x += 16;
-        res.Position.y += 16;
-        res.Expenditure = ExpenditureType::rideConstruction;
+        res.position = _loc;
+        res.position.x += 16;
+        res.position.y += 16;
+        res.expenditure = ExpenditureType::rideConstruction;
 
         if (!LocationValid(_loc))
         {
-            return Result(Status::InvalidParameters, STR_CANT_CHANGE_THIS, STR_OFF_EDGE_OF_MAP);
+            return Result(Status::invalidParameters, STR_CANT_CHANGE_THIS, STR_OFF_EDGE_OF_MAP);
         }
 
         TileElement* tileElement = MapGetTrackElementAtOfType(_loc, _trackType);
         if (tileElement == nullptr)
         {
             LOG_ERROR("Track element of type %u not found at x = %d, y = %d, z = %d", _trackType, _loc.x, _loc.y, _loc.z);
-            return Result(Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_TILE_ELEMENT_NOT_FOUND);
+            return Result(Status::invalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_TILE_ELEMENT_NOT_FOUND);
         }
 
         if (_brakeSpeed > kMaximumTrackSpeed)
         {
             LOG_WARNING("Invalid speed for track, speed = %d", _brakeSpeed);
-            return Result(Status::InvalidParameters, STR_SPEED_TOO_HIGH, kStringIdNone);
+            return Result(Status::invalidParameters, STR_SPEED_TOO_HIGH, kStringIdNone);
         }
 
         if (isExecuting)

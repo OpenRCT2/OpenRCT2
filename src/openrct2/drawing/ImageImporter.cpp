@@ -45,12 +45,12 @@ namespace OpenRCT2::Drawing
         G1Element outElement;
         outElement.width = meta.srcSize.width;
         outElement.height = meta.srcSize.height;
-        outElement.flags = isRLE ? G1_FLAG_RLE_COMPRESSION : G1_FLAG_HAS_TRANSPARENCY;
-        outElement.x_offset = meta.offset.x;
-        outElement.y_offset = meta.offset.y;
-        outElement.zoomed_offset = meta.zoomedOffset;
+        outElement.flags = { isRLE ? G1Flag::hasRLECompression : G1Flag::hasTransparency };
+        outElement.xOffset = meta.offset.x;
+        outElement.yOffset = meta.offset.y;
+        outElement.zoomedOffset = meta.zoomedOffset;
         if (HasFlag(meta.importFlags, ImportFlags::NoDrawOnZoom))
-            outElement.flags |= G1_FLAG_NO_ZOOM_DRAW;
+            outElement.flags.set(G1Flag::noZoomDraw);
 
         ImageImporter::ImportResult result;
         result.Element = outElement;

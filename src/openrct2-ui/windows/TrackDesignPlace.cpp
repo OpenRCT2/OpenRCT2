@@ -21,6 +21,7 @@
 #include <openrct2/SpriteIds.h>
 #include <openrct2/actions/TrackDesignAction.h>
 #include <openrct2/audio/Audio.h>
+#include <openrct2/config/Config.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/paint/VirtualFloor.h>
 #include <openrct2/ride/RideConstruction.h>
@@ -40,6 +41,8 @@
 
 using namespace OpenRCT2::Numerics;
 using namespace OpenRCT2::TrackMetaData;
+using OpenRCT2::GameActions::CommandFlag;
+using OpenRCT2::GameActions::CommandFlags;
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -108,7 +111,7 @@ namespace OpenRCT2::Ui::Windows
             setWidgets(_trackPlaceWidgets);
             WindowInitScrollWidgets(*this);
             ToolSet(*this, WIDX_PRICE, Tool::crosshair);
-            gInputFlags.set(InputFlag::unk6);
+            gInputFlags.set(InputFlag::allowRightMouseRemoval);
             WindowPushOthersRight(*this);
             ShowGridlines();
             _miniPreview.resize(kTrackMiniPreviewSize.width * kTrackMiniPreviewSize.height);
@@ -121,7 +124,6 @@ namespace OpenRCT2::Ui::Windows
         {
             ClearProvisional();
             ViewportSetVisibility(ViewportVisibility::standard);
-            MapInvalidateMapSelectionTiles();
             gMapSelectFlags.unset(MapSelectFlag::enableConstruct);
             gMapSelectFlags.unset(MapSelectFlag::enableArrow);
             HideGridlines();
@@ -172,7 +174,6 @@ namespace OpenRCT2::Ui::Windows
         {
             TrackDesignState tds{};
 
-            MapInvalidateMapSelectionTiles();
             gMapSelectFlags.unset(MapSelectFlag::enable);
             gMapSelectFlags.unset(MapSelectFlag::enableConstruct);
             gMapSelectFlags.unset(MapSelectFlag::enableArrow);
@@ -220,23 +221,25 @@ namespace OpenRCT2::Ui::Windows
             {
                 ClearProvisional();
                 CoordsXYZD ghostTrackLoc = trackLoc;
-                auto res = FindValidTrackDesignPlaceHeight(ghostTrackLoc, GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
+                auto res = FindValidTrackDesignPlaceHeight(ghostTrackLoc, { CommandFlag::noSpend, CommandFlag::ghost });
 
-                if (res.Error == GameActions::Status::Ok)
+                if (res.error == GameActions::Status::ok)
                 {
                     // Valid location found. Place the ghost at the location.
-                    auto tdAction = GameActions::TrackDesignAction(ghostTrackLoc, *_trackDesign, !gTrackDesignSceneryToggle);
-                    tdAction.SetFlags(GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
+                    auto tdAction = GameActions::TrackDesignAction(
+                        ghostTrackLoc, *_trackDesign, !gTrackDesignSceneryToggle,
+                        Config::Get().general.defaultInspectionInterval);
+                    tdAction.SetFlags({ CommandFlag::noSpend, CommandFlag::ghost });
                     tdAction.SetCallback([&](const GameActions::GameAction*, const GameActions::Result* result) {
-                        if (result->Error == GameActions::Status::Ok)
+                        if (result->error == GameActions::Status::ok)
                         {
-                            _placementGhostRideId = result->GetData<RideId>();
+                            _placementGhostRideId = result->getData<RideId>();
                             _placementGhostLoc = ghostTrackLoc;
                             _hasPlacementGhost = true;
                         }
                     });
                     res = GameActions::Execute(&tdAction, getGameState());
-                    cost = res.Error == GameActions::Status::Ok ? res.Cost : kMoney64Undefined;
+                    cost = res.error == GameActions::Status::ok ? res.cost : kMoney64Undefined;
 
                     VirtualFloorSetHeight(ghostTrackLoc.z);
                 }
@@ -256,7 +259,6 @@ namespace OpenRCT2::Ui::Windows
         void onToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
             ClearProvisional();
-            MapInvalidateMapSelectionTiles();
             gMapSelectFlags.unset(MapSelectFlag::enable);
             gMapSelectFlags.unset(MapSelectFlag::enableConstruct);
             gMapSelectFlags.unset(MapSelectFlag::enableArrow);
@@ -284,30 +286,31 @@ namespace OpenRCT2::Ui::Windows
 
             // Try increasing Z until a feasible placement is found
             CoordsXYZ trackLoc = { mapCoords, maybeMapZ.value() };
-            auto res = FindValidTrackDesignPlaceHeight(trackLoc, 0);
-            if (res.Error != GameActions::Status::Ok)
+            auto res = FindValidTrackDesignPlaceHeight(trackLoc, {});
+            if (res.error != GameActions::Status::ok)
             {
                 // Unable to build track
                 Audio::Play3D(Audio::SoundId::error, trackLoc);
 
                 auto windowManager = GetWindowManager();
-                windowManager->ShowError(res.GetErrorTitle(), res.GetErrorMessage());
+                windowManager->ShowError(res.getErrorTitle(), res.getErrorMessage());
                 return;
             }
 
             _placingTrackDesign = true;
 
             auto tdAction = GameActions::TrackDesignAction(
-                { trackLoc, _currentTrackPieceDirection }, *_trackDesign, !gTrackDesignSceneryToggle);
+                { trackLoc, _currentTrackPieceDirection }, *_trackDesign, !gTrackDesignSceneryToggle,
+                Config::Get().general.defaultInspectionInterval);
             tdAction.SetCallback([&, trackLoc](const GameActions::GameAction*, const GameActions::Result* result) {
-                if (result->Error != GameActions::Status::Ok)
+                if (result->error != GameActions::Status::ok)
                 {
-                    Audio::Play3D(Audio::SoundId::error, result->Position);
+                    Audio::Play3D(Audio::SoundId::error, result->position);
                     _placingTrackDesign = false;
                     return;
                 }
 
-                rideId = result->GetData<RideId>();
+                rideId = result->getData<RideId>();
                 auto getRide = GetRide(rideId);
                 if (getRide != nullptr)
                 {
@@ -352,14 +355,14 @@ namespace OpenRCT2::Ui::Windows
             DrawMiniPreview(*_trackDesign);
         }
 
-        void onDraw(RenderTarget& rt) override
+        void onDraw(Drawing::RenderTarget& rt) override
         {
             auto ft = Formatter::Common();
             ft.Add<char*>(_trackDesign->gameStateData.name.c_str());
             WindowDrawWidgets(*this, rt);
 
             // Draw mini tile preview
-            RenderTarget clippedRT;
+            Drawing::RenderTarget clippedRT;
             const auto& previewWidget = widgets[WIDX_PREVIEW];
             const auto previewCoords = windowPos + ScreenCoordsXY{ previewWidget.left, previewWidget.top };
             if (ClipDrawPixelInfo(clippedRT, rt, previewCoords, previewWidget.width(), previewWidget.height()))
@@ -401,10 +404,11 @@ namespace OpenRCT2::Ui::Windows
             if (_hasPlacementGhost)
             {
                 auto tdAction = GameActions::TrackDesignAction(
-                    { _placementGhostLoc }, *_trackDesign, !gTrackDesignSceneryToggle);
-                tdAction.SetFlags(GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
+                    { _placementGhostLoc }, *_trackDesign, !gTrackDesignSceneryToggle,
+                    Config::Get().general.defaultInspectionInterval);
+                tdAction.SetFlags({ CommandFlag::noSpend, CommandFlag::ghost });
                 auto res = GameActions::Execute(&tdAction, getGameState());
-                if (res.Error != GameActions::Status::Ok)
+                if (res.error != GameActions::Status::ok)
                 {
                     _hasPlacementGhost = false;
                 }
@@ -651,7 +655,7 @@ namespace OpenRCT2::Ui::Windows
                             auto bits = trackBlock.quarterTile.Rotate(curTrackRotation & 3).GetBaseQuarterOccupied();
 
                             // Station track is a lighter colour
-                            uint8_t colour = (ted.sequences[0].flags & TRACK_SEQUENCE_FLAG_ORIGIN) ? kPaletteIndexColourStation
+                            uint8_t colour = ted.sequences[0].flags.has(SequenceFlag::trackOrigin) ? kPaletteIndexColourStation
                                                                                                    : kPaletteIndexColourTrack;
 
                             for (int32_t i = 0; i < 4; i++)
@@ -742,19 +746,20 @@ namespace OpenRCT2::Ui::Windows
             return &_miniPreview[pixel.y * kTrackMiniPreviewSize.width + pixel.x];
         }
 
-        GameActions::Result FindValidTrackDesignPlaceHeight(CoordsXYZ& loc, uint32_t newFlags)
+        GameActions::Result FindValidTrackDesignPlaceHeight(CoordsXYZ& loc, CommandFlags newFlags)
         {
             GameActions::Result res;
             for (int32_t i = 0; i < 7; i++, loc.z += kCoordsZStep)
             {
                 auto tdAction = GameActions::TrackDesignAction(
-                    CoordsXYZD{ loc.x, loc.y, loc.z, _currentTrackPieceDirection }, *_trackDesign, !gTrackDesignSceneryToggle);
+                    CoordsXYZD{ loc.x, loc.y, loc.z, _currentTrackPieceDirection }, *_trackDesign, !gTrackDesignSceneryToggle,
+                    Config::Get().general.defaultInspectionInterval);
                 tdAction.SetFlags(newFlags);
                 res = GameActions::Query(&tdAction, getGameState());
 
                 // If successful don't keep trying.
                 // If failure due to no money then increasing height only makes problem worse
-                if (res.Error == GameActions::Status::Ok || res.Error == GameActions::Status::InsufficientFunds)
+                if (res.error == GameActions::Status::ok || res.error == GameActions::Status::insufficientFunds)
                 {
                     return res;
                 }

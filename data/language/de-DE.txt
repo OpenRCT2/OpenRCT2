@@ -3831,3 +3831,4 @@ STR_7004    :Erzwinge Neuzeichnung
 STR_7005    :Baue eine Fläche aus Fußwegen
 STR_7006    :Zeichne Ränder um Bildknöpfe
 STR_7007    :Achterbahntyp
+STR_7008    :Unbekannter Fahrgeschäftstyp ({INT32})

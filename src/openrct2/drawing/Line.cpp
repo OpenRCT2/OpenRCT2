@@ -12,6 +12,8 @@
 #include <cmath>
 #include <cstdlib>
 
+using namespace OpenRCT2::Drawing;
+
 /**
  * Draws a horizontal line of specified colour to a buffer.
  *  rct2: 0x0068474C

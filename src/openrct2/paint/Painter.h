@@ -16,13 +16,12 @@
 #include <sfl/segmented_vector.hpp>
 #include <vector>
 
-struct RenderTarget;
-
 namespace OpenRCT2
 {
     namespace Drawing
     {
         struct IDrawingEngine;
+        struct RenderTarget;
     } // namespace Drawing
 
     namespace Ui
@@ -46,13 +45,13 @@ namespace OpenRCT2
             explicit Painter(Ui::IUiContext& uiContext);
             void Paint(Drawing::IDrawingEngine& de);
 
-            PaintSession* CreateSession(RenderTarget& rt, uint32_t viewFlags, uint8_t rotation);
+            PaintSession* CreateSession(Drawing::RenderTarget& rt, uint32_t viewFlags, uint8_t rotation);
             void ReleaseSession(PaintSession* session);
             ~Painter();
 
         private:
-            void PaintReplayNotice(RenderTarget& rt, const char* text);
-            void PaintFPS(RenderTarget& rt);
+            void PaintReplayNotice(Drawing::RenderTarget& rt, const char* text);
+            void PaintFPS(Drawing::RenderTarget& rt);
             void MeasureFPS();
         };
     } // namespace Paint

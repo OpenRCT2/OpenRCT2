@@ -45,18 +45,18 @@ namespace OpenRCT2::GameActions
         auto& park = getGameState().park;
         if (_value > park.bankLoan && _value > park.maxBankLoan)
         {
-            return Result(Status::Disallowed, STR_CANT_BORROW_ANY_MORE_MONEY, STR_BANK_REFUSES_TO_INCREASE_LOAN);
+            return Result(Status::disallowed, STR_CANT_BORROW_ANY_MORE_MONEY, STR_BANK_REFUSES_TO_INCREASE_LOAN);
         }
         if (_value < park.bankLoan && _value < 0.00_GBP)
         {
-            return Result(Status::InvalidParameters, STR_CANT_PAY_BACK_LOAN, STR_LOAN_CANT_BE_NEGATIVE);
+            return Result(Status::invalidParameters, STR_CANT_PAY_BACK_LOAN, STR_LOAN_CANT_BE_NEGATIVE);
         }
         // The “isPayingBack” check is needed to allow increasing the loan when the player is in debt.
         const auto isPayingBack = park.bankLoan > _value;
         const auto amountToPayBack = park.bankLoan - _value;
         if (isPayingBack && amountToPayBack > park.cash)
         {
-            return Result(Status::InsufficientFunds, STR_CANT_PAY_BACK_LOAN, STR_NOT_ENOUGH_CASH_AVAILABLE);
+            return Result(Status::insufficientFunds, STR_CANT_PAY_BACK_LOAN, STR_NOT_ENOUGH_CASH_AVAILABLE);
         }
         return Result();
     }

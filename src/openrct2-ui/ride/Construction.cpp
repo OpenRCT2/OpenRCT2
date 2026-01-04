@@ -13,6 +13,7 @@
 
 #include <openrct2/GameState.h>
 #include <openrct2/actions/RideCreateAction.h>
+#include <openrct2/config/Config.h>
 #include <openrct2/ride/Ride.h>
 #include <openrct2/ride/RideConstruction.h>
 #include <openrct2/ride/RideData.h>
@@ -25,200 +26,200 @@ using namespace OpenRCT2::TrackMetaData;
 
 namespace OpenRCT2
 {
-    constexpr auto kSeparator = TrackElemType::None;
+    constexpr auto kSeparator = TrackElemType::none;
 
     /**
      * Order of special track elements dropdown. Elements with the same name string must be sequential or they show up twice.
      */
     constexpr std::array kSpecialElementsDropdownOrder = {
-        TrackElemType::EndStation,
+        TrackElemType::endStation,
 
         // Brakes
-        TrackElemType::Brakes,
-        TrackElemType::DiagBrakes,
-        TrackElemType::Down25Brakes,
-        TrackElemType::DiagDown25Brakes,
-        TrackElemType::BlockBrakes,
-        TrackElemType::DiagBlockBrakes,
+        TrackElemType::brakes,
+        TrackElemType::diagBrakes,
+        TrackElemType::down25Brakes,
+        TrackElemType::diagDown25Brakes,
+        TrackElemType::blockBrakes,
+        TrackElemType::diagBlockBrakes,
 
         // Boosters
-        TrackElemType::Booster,
-        TrackElemType::DiagBooster,
+        TrackElemType::booster,
+        TrackElemType::diagBooster,
 
         // Photo sections
-        TrackElemType::OnRidePhoto,
+        TrackElemType::onRidePhoto,
 
         // Rotation control
-        TrackElemType::RotationControlToggle,
+        TrackElemType::rotationControlToggle,
 
         // (Curved) lift (hills) pieces
-        TrackElemType::LeftCurvedLiftHill,
-        TrackElemType::RightCurvedLiftHill,
-        TrackElemType::CableLiftHill,
-        TrackElemType::PoweredLift,
+        TrackElemType::leftCurvedLiftHill,
+        TrackElemType::rightCurvedLiftHill,
+        TrackElemType::cableLiftHill,
+        TrackElemType::poweredLift,
         kSeparator,
 
         // Heart Line pieces
-        TrackElemType::HeartLineTransferUp,
-        TrackElemType::HeartLineTransferDown,
-        TrackElemType::LeftHeartLineRoll,
-        TrackElemType::RightHeartLineRoll,
+        TrackElemType::heartLineTransferUp,
+        TrackElemType::heartLineTransferDown,
+        TrackElemType::leftHeartLineRoll,
+        TrackElemType::rightHeartLineRoll,
         kSeparator,
 
         // Brake for drop
-        TrackElemType::BrakeForDrop,
+        TrackElemType::brakeForDrop,
         kSeparator,
 
         // Tower
-        TrackElemType::TowerBase,
-        TrackElemType::TowerSection,
+        TrackElemType::towerBase,
+        TrackElemType::towerSection,
         kSeparator,
 
         // Mini Golf pieces
-        TrackElemType::MinigolfHoleA,
-        TrackElemType::MinigolfHoleB,
-        TrackElemType::MinigolfHoleC,
-        TrackElemType::MinigolfHoleD,
-        TrackElemType::MinigolfHoleE,
+        TrackElemType::minigolfHoleA,
+        TrackElemType::minigolfHoleB,
+        TrackElemType::minigolfHoleC,
+        TrackElemType::minigolfHoleD,
+        TrackElemType::minigolfHoleE,
         kSeparator,
 
         // S-Bends
-        TrackElemType::SBendLeft,
-        TrackElemType::SBendRight,
+        TrackElemType::sBendLeft,
+        TrackElemType::sBendRight,
         kSeparator,
 
         // Helixes
-        TrackElemType::LeftHalfBankedHelixUpSmall,
-        TrackElemType::RightHalfBankedHelixUpSmall,
-        TrackElemType::LeftHalfBankedHelixDownSmall,
-        TrackElemType::RightHalfBankedHelixDownSmall,
-        TrackElemType::LeftHalfBankedHelixUpLarge,
-        TrackElemType::RightHalfBankedHelixUpLarge,
-        TrackElemType::LeftHalfBankedHelixDownLarge,
-        TrackElemType::RightHalfBankedHelixDownLarge,
-        TrackElemType::LeftQuarterBankedHelixLargeUp,
-        TrackElemType::RightQuarterBankedHelixLargeUp,
-        TrackElemType::LeftQuarterBankedHelixLargeDown,
-        TrackElemType::RightQuarterBankedHelixLargeDown,
-        TrackElemType::LeftQuarterHelixLargeUp,
-        TrackElemType::RightQuarterHelixLargeUp,
-        TrackElemType::LeftQuarterHelixLargeDown,
-        TrackElemType::RightQuarterHelixLargeDown,
+        TrackElemType::leftHalfBankedHelixUpSmall,
+        TrackElemType::rightHalfBankedHelixUpSmall,
+        TrackElemType::leftHalfBankedHelixDownSmall,
+        TrackElemType::rightHalfBankedHelixDownSmall,
+        TrackElemType::leftHalfBankedHelixUpLarge,
+        TrackElemType::rightHalfBankedHelixUpLarge,
+        TrackElemType::leftHalfBankedHelixDownLarge,
+        TrackElemType::rightHalfBankedHelixDownLarge,
+        TrackElemType::leftQuarterBankedHelixLargeUp,
+        TrackElemType::rightQuarterBankedHelixLargeUp,
+        TrackElemType::leftQuarterBankedHelixLargeDown,
+        TrackElemType::rightQuarterBankedHelixLargeDown,
+        TrackElemType::leftQuarterHelixLargeUp,
+        TrackElemType::rightQuarterHelixLargeUp,
+        TrackElemType::leftQuarterHelixLargeDown,
+        TrackElemType::rightQuarterHelixLargeDown,
         kSeparator,
 
         // (Wooden) water splash
-        TrackElemType::Watersplash,
+        TrackElemType::watersplash,
         kSeparator,
 
         // River Rapids
-        TrackElemType::Waterfall,
-        TrackElemType::Rapids, // Also used for Monster Trucks
-        TrackElemType::Whirlpool,
+        TrackElemType::waterfall,
+        TrackElemType::rapids, // Also used for Monster Trucks
+        TrackElemType::whirlpool,
         kSeparator,
 
         // Spinning tunnel
-        TrackElemType::SpinningTunnel,
+        TrackElemType::spinningTunnel,
         kSeparator,
 
         // Reverser pieces
-        TrackElemType::LeftReverser,
-        TrackElemType::RightReverser,
-        TrackElemType::LogFlumeReverser,
+        TrackElemType::leftReverser,
+        TrackElemType::rightReverser,
+        TrackElemType::logFlumeReverser,
         kSeparator,
 
         // Reverse freefall pieces
-        TrackElemType::ReverseFreefallSlope,
-        TrackElemType::ReverseFreefallVertical,
+        TrackElemType::reverseFreefallSlope,
+        TrackElemType::reverseFreefallVertical,
 
         // Air thrust pieces
-        TrackElemType::AirThrustTopCap,
-        TrackElemType::AirThrustVerticalDown,
-        TrackElemType::AirThrustVerticalDownToLevel,
+        TrackElemType::airThrustTopCap,
+        TrackElemType::airThrustVerticalDown,
+        TrackElemType::airThrustVerticalDownToLevel,
         kSeparator,
 
         // Corkscrews
-        TrackElemType::LeftCorkscrewUp,
-        TrackElemType::LeftCorkscrewDown,
-        TrackElemType::RightCorkscrewUp,
-        TrackElemType::RightCorkscrewDown,
-        TrackElemType::LeftFlyerCorkscrewUp,
-        TrackElemType::LeftFlyerCorkscrewDown,
-        TrackElemType::RightFlyerCorkscrewUp,
-        TrackElemType::RightFlyerCorkscrewDown,
-        TrackElemType::LeftLargeCorkscrewUp,
-        TrackElemType::LeftLargeCorkscrewDown,
-        TrackElemType::RightLargeCorkscrewUp,
-        TrackElemType::RightLargeCorkscrewDown,
+        TrackElemType::leftCorkscrewUp,
+        TrackElemType::leftCorkscrewDown,
+        TrackElemType::rightCorkscrewUp,
+        TrackElemType::rightCorkscrewDown,
+        TrackElemType::leftFlyerCorkscrewUp,
+        TrackElemType::leftFlyerCorkscrewDown,
+        TrackElemType::rightFlyerCorkscrewUp,
+        TrackElemType::rightFlyerCorkscrewDown,
+        TrackElemType::leftLargeCorkscrewUp,
+        TrackElemType::leftLargeCorkscrewDown,
+        TrackElemType::rightLargeCorkscrewUp,
+        TrackElemType::rightLargeCorkscrewDown,
         kSeparator,
 
         // Loops
-        TrackElemType::LeftVerticalLoop,
-        TrackElemType::RightVerticalLoop,
-        TrackElemType::HalfLoopUp,
-        TrackElemType::HalfLoopDown,
-        TrackElemType::FlyerHalfLoopUninvertedUp,
-        TrackElemType::FlyerHalfLoopInvertedDown,
-        TrackElemType::FlyerHalfLoopInvertedUp,
-        TrackElemType::FlyerHalfLoopUninvertedDown,
-        TrackElemType::LeftMediumHalfLoopUp,
-        TrackElemType::LeftMediumHalfLoopDown,
-        TrackElemType::RightMediumHalfLoopUp,
-        TrackElemType::RightMediumHalfLoopDown,
-        TrackElemType::LeftLargeHalfLoopUp,
-        TrackElemType::LeftLargeHalfLoopDown,
-        TrackElemType::RightLargeHalfLoopUp,
-        TrackElemType::RightLargeHalfLoopDown,
-        TrackElemType::LeftFlyerLargeHalfLoopUninvertedUp,
-        TrackElemType::LeftFlyerLargeHalfLoopInvertedDown,
-        TrackElemType::LeftFlyerLargeHalfLoopInvertedUp,
-        TrackElemType::LeftFlyerLargeHalfLoopUninvertedDown,
-        TrackElemType::RightFlyerLargeHalfLoopUninvertedUp,
-        TrackElemType::RightFlyerLargeHalfLoopInvertedDown,
-        TrackElemType::RightFlyerLargeHalfLoopInvertedUp,
-        TrackElemType::RightFlyerLargeHalfLoopUninvertedDown,
-        TrackElemType::MultiDimInvertedFlatToDown90QuarterLoop,
-        TrackElemType::Up90ToInvertedFlatQuarterLoop,
-        TrackElemType::InvertedFlatToDown90QuarterLoop,
-        TrackElemType::MultiDimUp90ToInvertedFlatQuarterLoop,
-        TrackElemType::MultiDimFlatToDown90QuarterLoop,
-        TrackElemType::MultiDimInvertedUp90ToFlatQuarterLoop,
+        TrackElemType::leftVerticalLoop,
+        TrackElemType::rightVerticalLoop,
+        TrackElemType::halfLoopUp,
+        TrackElemType::halfLoopDown,
+        TrackElemType::flyerHalfLoopUninvertedUp,
+        TrackElemType::flyerHalfLoopInvertedDown,
+        TrackElemType::flyerHalfLoopInvertedUp,
+        TrackElemType::flyerHalfLoopUninvertedDown,
+        TrackElemType::leftMediumHalfLoopUp,
+        TrackElemType::leftMediumHalfLoopDown,
+        TrackElemType::rightMediumHalfLoopUp,
+        TrackElemType::rightMediumHalfLoopDown,
+        TrackElemType::leftLargeHalfLoopUp,
+        TrackElemType::leftLargeHalfLoopDown,
+        TrackElemType::rightLargeHalfLoopUp,
+        TrackElemType::rightLargeHalfLoopDown,
+        TrackElemType::leftFlyerLargeHalfLoopUninvertedUp,
+        TrackElemType::leftFlyerLargeHalfLoopInvertedDown,
+        TrackElemType::leftFlyerLargeHalfLoopInvertedUp,
+        TrackElemType::leftFlyerLargeHalfLoopUninvertedDown,
+        TrackElemType::rightFlyerLargeHalfLoopUninvertedUp,
+        TrackElemType::rightFlyerLargeHalfLoopInvertedDown,
+        TrackElemType::rightFlyerLargeHalfLoopInvertedUp,
+        TrackElemType::rightFlyerLargeHalfLoopUninvertedDown,
+        TrackElemType::multiDimInvertedFlatToDown90QuarterLoop,
+        TrackElemType::up90ToInvertedFlatQuarterLoop,
+        TrackElemType::invertedFlatToDown90QuarterLoop,
+        TrackElemType::multiDimUp90ToInvertedFlatQuarterLoop,
+        TrackElemType::multiDimFlatToDown90QuarterLoop,
+        TrackElemType::multiDimInvertedUp90ToFlatQuarterLoop,
         kSeparator,
 
         // Zero-G Rolls, Dive Loops
-        TrackElemType::LeftZeroGRollUp,
-        TrackElemType::LeftZeroGRollDown,
-        TrackElemType::RightZeroGRollUp,
-        TrackElemType::RightZeroGRollDown,
-        TrackElemType::LeftLargeZeroGRollUp,
-        TrackElemType::LeftLargeZeroGRollDown,
-        TrackElemType::RightLargeZeroGRollUp,
-        TrackElemType::RightLargeZeroGRollDown,
-        TrackElemType::LeftEighthDiveLoopUpToOrthogonal,
-        TrackElemType::LeftEighthDiveLoopDownToDiag,
-        TrackElemType::RightEighthDiveLoopUpToOrthogonal,
-        TrackElemType::RightEighthDiveLoopDownToDiag,
+        TrackElemType::leftZeroGRollUp,
+        TrackElemType::leftZeroGRollDown,
+        TrackElemType::rightZeroGRollUp,
+        TrackElemType::rightZeroGRollDown,
+        TrackElemType::leftLargeZeroGRollUp,
+        TrackElemType::leftLargeZeroGRollDown,
+        TrackElemType::rightLargeZeroGRollUp,
+        TrackElemType::rightLargeZeroGRollDown,
+        TrackElemType::leftEighthDiveLoopUpToOrthogonal,
+        TrackElemType::leftEighthDiveLoopDownToDiag,
+        TrackElemType::rightEighthDiveLoopUpToOrthogonal,
+        TrackElemType::rightEighthDiveLoopDownToDiag,
         kSeparator,
 
         // Barrel Rolls
-        TrackElemType::LeftBarrelRollUpToDown,
-        TrackElemType::LeftBarrelRollDownToUp,
-        TrackElemType::RightBarrelRollUpToDown,
-        TrackElemType::RightBarrelRollDownToUp,
+        TrackElemType::leftBarrelRollUpToDown,
+        TrackElemType::leftBarrelRollDownToUp,
+        TrackElemType::rightBarrelRollUpToDown,
+        TrackElemType::rightBarrelRollDownToUp,
         kSeparator,
 
         // Twists
-        TrackElemType::LeftTwistDownToUp,
-        TrackElemType::LeftTwistUpToDown,
-        TrackElemType::RightTwistDownToUp,
-        TrackElemType::RightTwistUpToDown,
-        TrackElemType::LeftFlyerTwistUp,
-        TrackElemType::LeftFlyerTwistDown,
-        TrackElemType::RightFlyerTwistUp,
-        TrackElemType::RightFlyerTwistDown,
+        TrackElemType::leftTwistDownToUp,
+        TrackElemType::leftTwistUpToDown,
+        TrackElemType::rightTwistDownToUp,
+        TrackElemType::rightTwistUpToDown,
+        TrackElemType::leftFlyerTwistUp,
+        TrackElemType::leftFlyerTwistDown,
+        TrackElemType::rightFlyerTwistUp,
+        TrackElemType::rightFlyerTwistDown,
     };
 
     // Update the magic number with the current number of track elements to silence
-    static_assert(EnumValue(TrackElemType::Count) == 350, "Reminder to add new track element to special dropdown list");
+    static_assert(EnumValue(TrackElemType::count) == 350, "Reminder to add new track element to special dropdown list");
 
     /**
      *
@@ -231,12 +232,13 @@ namespace OpenRCT2
         int32_t colour2 = RideGetUnusedPresetVehicleColour(rideEntryIndex);
 
         auto gameAction = GameActions::RideCreateAction(
-            listItem.Type, listItem.EntryIndex, colour1, colour2, getGameState().lastEntranceStyle);
+            listItem.Type, listItem.EntryIndex, colour1, colour2, getGameState().lastEntranceStyle,
+            Config::Get().general.defaultInspectionInterval);
 
         gameAction.SetCallback([](const GameActions::GameAction* ga, const GameActions::Result* result) {
-            if (result->Error != GameActions::Status::Ok)
+            if (result->error != GameActions::Status::ok)
                 return;
-            const auto rideIndex = result->GetData<RideId>();
+            const auto rideIndex = result->getData<RideId>();
             auto ride = GetRide(rideIndex);
             RideConstructionStart(*ride);
         });
@@ -278,7 +280,7 @@ namespace OpenRCT2
             }
 
             // Additional tower bases can only be built if the ride allows for it (elevator)
-            if (trackType == TrackElemType::TowerBase
+            if (trackType == TrackElemType::towerBase
                 && !currentRide.getRideTypeDescriptor().HasFlag(RtdFlag::allowExtraTowerBases))
                 entryIsDisabled = true;
 
@@ -341,7 +343,7 @@ namespace OpenRCT2
                 break;
 
             auto trackPiece = elements[list.PreferredNumRows + i].TrackType;
-            if (trackPiece == TrackElemType::None)
+            if (trackPiece == TrackElemType::none)
             {
                 list.PreferredNumRows += i + 1;
                 break;
@@ -377,9 +379,9 @@ namespace OpenRCT2
                 if (trackElement->GetRideIndex() == gRideEntranceExitPlaceRideIndex)
                 {
                     const auto& ted = GetTrackElementDescriptor(trackElement->GetTrackType());
-                    if (ted.sequences[0].flags & TRACK_SEQUENCE_FLAG_ORIGIN)
+                    if (ted.sequences[0].flags.has(SequenceFlag::trackOrigin))
                     {
-                        if (trackElement->GetTrackType() == TrackElemType::Maze)
+                        if (trackElement->GetTrackType() == TrackElemType::maze)
                         {
                             gRideEntranceExitPlaceStationIndex = StationIndex::FromUnderlying(0);
                         }
@@ -457,7 +459,7 @@ namespace OpenRCT2
                     auto* trackElement = tileElement->AsTrack();
                     if (trackElement->GetRideIndex() != gRideEntranceExitPlaceRideIndex)
                         continue;
-                    if (trackElement->GetTrackType() == TrackElemType::Maze)
+                    if (trackElement->GetTrackType() == TrackElemType::maze)
                     {
                         // if it's a maze, it can place the entrance and exit immediately
                         entranceExitCoords.direction = DirectionReverse(entranceExitCoords.direction);
@@ -472,7 +474,8 @@ namespace OpenRCT2
                     // get the ride entrance's side relative to the TrackElement
                     Direction direction = (DirectionReverse(entranceExitCoords.direction) - tileElement->GetDirection()) & 3;
                     const auto& ted = GetTrackElementDescriptor(trackElement->GetTrackType());
-                    if (ted.sequences[trackElement->GetSequenceIndex()].flags & (1 << direction))
+                    auto connectionSides = ted.sequences[trackElement->GetSequenceIndex()].getEntranceConnectionSides();
+                    if (connectionSides & (1 << direction))
                     {
                         // if that side of the TrackElement supports stations, the ride entrance is valid and faces away from
                         // the station

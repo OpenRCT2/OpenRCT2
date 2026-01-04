@@ -149,7 +149,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void onDraw(RenderTarget& rt) override
+        void onDraw(Drawing::RenderTarget& rt) override
         {
             drawWidgets(rt);
 
@@ -163,7 +163,7 @@ namespace OpenRCT2::Ui::Windows
             g1temp.offset = _trackDesignPreviewPixels.data() + (_currentTrackPieceDirection * kTrackPreviewImageSize);
             g1temp.width = 370;
             g1temp.height = 217;
-            g1temp.flags = G1_FLAG_HAS_TRANSPARENCY;
+            g1temp.flags = { G1Flag::hasTransparency };
             GfxSetG1Element(SPR_TEMP, &g1temp);
             DrawingEngineInvalidateImage(SPR_TEMP);
             GfxDrawSprite(rt, ImageId(SPR_TEMP), screenPos);

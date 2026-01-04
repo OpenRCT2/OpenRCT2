@@ -1062,7 +1062,7 @@ STR_1676    :Ustaw limit prędkości hamowania
 STR_1677    :{WINDOW_COLOUR_2}Popularność: {BLACK}Nieznana
 STR_1678    :{WINDOW_COLOUR_2}Popularność: {BLACK}{COMMA16}%
 STR_1679    :Spirala w górę (lewo)
-STR_1680    :Spirala w dół (prawo)
+STR_1680    :Spirala w górę (prawo)
 STR_1681    :Spirala w dół (lewo)
 STR_1682    :Spirala w dół (prawo)
 STR_1683    :Wymiary bazowe 2 × 2
@@ -3081,7 +3081,7 @@ STR_5998    :Dodaj pieniądze
 STR_5999    :Ustaw pieniądze
 STR_6000    :Wprowadź nową wartość:
 STR_6001    :Włącz efekty świetlne (eksperymentalne)
-STR_6002    :Lampy i atrakcje będą świeciły w nocy.{NEWLINE}Wymaga włączenia silnika sprzętowego.
+STR_6002    :Lampy i atrakcje będą świeciły w nocy.{NEWLINE}Wymaga włączenia renderowania sprzętowego.
 STR_6003    :Widok przekroju
 STR_6004    :Widok przekroju
 STR_6005    :Włącz widok przekroju
@@ -3769,3 +3769,73 @@ STR_6739    :{WINDOW_COLOUR_2}Data: {BLACK}{STRINGID}
 STR_6740    :{WINDOW_COLOUR_2}Gotówka: {BLACK}{CURRENCY2DP}
 STR_6741    :{WINDOW_COLOUR_2}Liczba atrakcji: {BLACK}{UINT16}
 STR_6742    :{WINDOW_COLOUR_2}Liczba gości: {BLACK}{UINT16}
+STR_6743    :Klimat
+STR_6744    :{WINDOW_COLOUR_2}{UINT16}%
+STR_6745    :{WINDOW_COLOUR_2}Preferencje intensywności gości:
+STR_6746    :Brak preferencji
+STR_6747    :Różne preferencje (domyślne)
+STR_6748    :Tylko mniej intensywne przejażdżki
+STR_6749    :Tylko bardziej intensywne przejażdżki
+STR_6750    :Wybierz preferencje nowych gości dot. intensywności przejażdżek.
+STR_6751    :Zakolejkowane ścieżki nie mogą być na przejeździe kolejowym!
+STR_6752    :Opcje scenariusza - Cele
+STR_6753    :Opcje scenariusza - Szczegóły scenariusza
+STR_6754    :Opcje scenariusza - Ograniczenia terenu
+STR_6755    :Pokaż opcje celów
+STR_6756    :Pokaż opcje szczegółów scenariusza
+STR_6757    :Pokaż opcje ograniczenia terenu
+STR_6758    :Opcje pożyczki
+STR_6759    :Model biznesowy
+STR_6760    :Zarobki:
+STR_6761    :Szczegóły scenariusza
+STR_6762    :Interfejs
+STR_6763    :RollerCoaster Tycoon 1
+STR_6764    :Zapisywanie i auto. zapisy
+STR_6765    :Zaawansowane
+STR_6766    :Wyczyść
+STR_6767    :Okno
+STR_6768    :Renderowanie
+STR_6769    :Zachowanie
+STR_6770    :Limit klatek/sek.:
+STR_6771    :Prędkość wewnętrzna (domyślne)
+STR_6772    :Synchronizacja pionowa
+STR_6773    :Nielimitowane
+STR_6774    :Czas od ostatniej inspekcji
+STR_6775    :{COMMA16} minuta
+STR_6776    :{COMMA16} minuty
+STR_6777    :więcej niż 4 godziny
+STR_6778    :Podgląd scenariuszy poprzez:
+STR_6779    :Wybierz rodzaj obrazka podglądowego, który będzie używany na ekranie wyboru scenariusza.
+STR_6780    :Miniatury map
+STR_6781    :Zrzuty ekranu
+STR_6782    :Powiadomienia parku
+STR_6783    :Powiadomienia przejażdżki
+STR_6784    :Powiadomienia gości
+STR_6785    :Kontroler
+STR_6786    :Martwa strefa:
+STR_6787    :Martwa strefa gałki analogowej (minimalny wymagany ruch gałką)
+STR_6788    :Czułość:
+STR_6789    :Mnożnik czułości gałki analogowej
+STR_6790    :Martwa strefa: {COMMA32}%
+STR_6791    :Czułość: {COMMA32}%
+STR_6792    :Budynki wejściowe
+STR_6793    :Goście i pracownicy
+STR_6794    :Scenerie i style
+STR_6795    :{MOVE_X}{10}{STRINGID}
+STR_6796    :•{MOVE_X}{10}{STRINGID}
+STR_6797    :Brak podglądu
+STR_6798    :Zrzut ekranu
+STR_6799    :Miniatura mapy
+STR_7000    :lub
+STR_7001    :Nazwa przejażdżki
+STR_7002    :{STRINGID} {STRINGID}
+STR_7003    :Plik audio ‘{STRING}’ jest wybrakowany. Oczekiwano próbki {INT32}, ale jedynie {INT32} jest dostępna. Rozważ przeinstalowanie RCT2.
+STR_7004    :Wymuś przerysowanie
+STR_7005    :Przeciągnij obszar chodnika
+STR_7006    :Rysuj ramkę wokół przycisków
+STR_7007    :Rodzaj przejażdżki
+STR_7008    :Nieznany rodzaj przejażdżki ({INT32})
+STR_7009    :Otrzymywanie skryptów…
+STR_7010    :Nie udało się uruchomić powtórki, plik ‘{STRING}’ nie istnieje lub jest nieprawidłowy
+STR_7011    :Nie udało się uruchomić powtórki
+STR_7012    :Polski Złoty (zł)

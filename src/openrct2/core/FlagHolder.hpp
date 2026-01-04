@@ -68,7 +68,7 @@ struct FlagHolder
     }
 
     template<typename... TTypes>
-    constexpr FlagHolder with(TTypes... types)
+    [[nodiscard]] constexpr FlagHolder with(TTypes... types)
     {
         FlagHolder res = *this;
         res.set(types...);
@@ -76,7 +76,7 @@ struct FlagHolder
     }
 
     template<typename... TTypes>
-    constexpr FlagHolder without(TTypes... types)
+    [[nodiscard]] constexpr FlagHolder without(TTypes... types)
     {
         FlagHolder res = *this;
         res.unset(types...);

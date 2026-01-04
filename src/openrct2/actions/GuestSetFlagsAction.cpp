@@ -47,7 +47,7 @@ namespace OpenRCT2::GameActions
         if (peep == nullptr)
         {
             LOG_ERROR("Guest entity not found for peepID %u", _peepId.ToUnderlying());
-            return Result(Status::InvalidParameters, STR_CANT_CHANGE_THIS, kStringIdNone);
+            return Result(Status::invalidParameters, STR_CANT_CHANGE_THIS, kStringIdNone);
         }
         return Result();
     }
@@ -58,7 +58,7 @@ namespace OpenRCT2::GameActions
         if (peep == nullptr)
         {
             LOG_ERROR("Guest entity not found for peepID %u", _peepId.ToUnderlying());
-            return Result(Status::InvalidParameters, STR_CANT_CHANGE_THIS, kStringIdNone);
+            return Result(Status::invalidParameters, STR_CANT_CHANGE_THIS, kStringIdNone);
         }
 
         peep->PeepFlags = _newFlags;

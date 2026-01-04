@@ -250,7 +250,7 @@ namespace OpenRCT2::Scripting
             auto widget = GetWidget();
             if (widget != nullptr)
             {
-                return widget->height() + 1;
+                return widget->height();
             }
             return 0;
         }
@@ -371,7 +371,7 @@ namespace OpenRCT2::Scripting
             if (IsCustomWindow())
             {
                 auto widget = GetWidget();
-                if (widget != nullptr && (widget->flags.has(WidgetFlag::textIsString)) && widget->string != nullptr)
+                if (widget != nullptr && widget->flags.has(WidgetFlag::textIsString) && widget->string != nullptr)
                 {
                     return widget->string;
                 }

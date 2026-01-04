@@ -356,7 +356,7 @@ namespace OpenRCT2::Ui::Windows
                 onViewportRotateOverview();
             }
         }
-        void onDraw(RenderTarget& rt) override
+        void onDraw(Drawing::RenderTarget& rt) override
         {
             switch (page)
             {
@@ -419,7 +419,7 @@ namespace OpenRCT2::Ui::Windows
                 onScrollMouseDownRides(scrollIndex, screenCoords);
             }
         }
-        void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
+        void onScrollDraw(int32_t scrollIndex, Drawing::RenderTarget& rt) override
         {
             if (page == WINDOW_GUEST_RIDES)
             {
@@ -543,14 +543,14 @@ namespace OpenRCT2::Ui::Windows
 
 #pragma region Overview
 
-        void OverviewTabDraw(RenderTarget& rt)
+        void OverviewTabDraw(Drawing::RenderTarget& rt)
         {
             if (widgetIsDisabled(*this, WIDX_TAB_1))
                 return;
 
             const auto& widget = widgets[WIDX_TAB_1];
             int32_t widgWidth = widget.width() - 2;
-            int32_t widgHeight = widget.height() - 1;
+            int32_t widgHeight = widget.height() - 2;
             auto screenCoords = windowPos + ScreenCoordsXY{ widget.left + 1, widget.top + 1 };
             if (page == WINDOW_GUEST_OVERVIEW)
                 widgHeight++;
@@ -625,7 +625,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 const auto& widget = widgets[WIDX_VIEWPORT];
                 const auto reqViewportWidth = widget.width() - 2;
-                const auto reqViewportHeight = widget.height() - 1;
+                const auto reqViewportHeight = widget.height() - 2;
                 viewport->pos = windowPos + ScreenCoordsXY{ widget.left + 1, widget.top + 1 };
                 if (viewport->width != reqViewportWidth || viewport->height != reqViewportHeight)
                 {
@@ -661,7 +661,7 @@ namespace OpenRCT2::Ui::Windows
                                                                 Network::GetCurrentPlayerId() };
                     pickupAction.SetCallback(
                         [peepnum = number](const GameActions::GameAction* ga, const GameActions::Result* result) {
-                            if (result->Error != GameActions::Status::Ok)
+                            if (result->error != GameActions::Status::ok)
                                 return;
                             auto* windowMgr = GetWindowManager();
                             WindowBase* wind = windowMgr->FindByNumber(WindowClass::peep, peepnum);
@@ -728,7 +728,7 @@ namespace OpenRCT2::Ui::Windows
             };
 
             WindowDropdownShowText(
-                { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height() + 1, colours[1], 0, dropdownItems);
+                { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height(), colours[1], 0, dropdownItems);
             gDropdown.defaultIndex = 0;
         }
 
@@ -767,7 +767,7 @@ namespace OpenRCT2::Ui::Windows
                 const auto& viewWidget = widgets[WIDX_VIEWPORT];
                 auto screenPos = ScreenCoordsXY{ viewWidget.left + 1 + windowPos.x, viewWidget.top + 1 + windowPos.y };
                 int32_t widgWidth = viewWidget.width() - 2;
-                int32_t widgHeight = viewWidget.height() - 1;
+                int32_t widgHeight = viewWidget.height() - 2;
 
                 ViewportCreate(*this, screenPos, widgWidth, widgHeight, focus.value());
                 if (viewport != nullptr && reCreateViewport)
@@ -780,7 +780,7 @@ namespace OpenRCT2::Ui::Windows
             invalidate();
         }
 
-        void onDrawOverview(RenderTarget& rt)
+        void onDrawOverview(Drawing::RenderTarget& rt)
         {
             drawWidgets(rt);
             OverviewTabDraw(rt);
@@ -823,7 +823,7 @@ namespace OpenRCT2::Ui::Windows
             auto marqWidth = marqueeWidget.width() - 4;
             int32_t left = marqueeWidget.left + 2 + windowPos.x;
             int32_t top = marqueeWidget.top + windowPos.y;
-            int32_t marqHeight = marqueeWidget.height();
+            int32_t marqHeight = marqueeWidget.height() - 1;
             RenderTarget rtMarquee;
             if (!ClipDrawPixelInfo(rtMarquee, rt, { left, top }, marqWidth, marqHeight))
             {
@@ -977,8 +977,6 @@ namespace OpenRCT2::Ui::Windows
             if (widgetIndex != WIDX_PICKUP)
                 return;
 
-            MapInvalidateSelectionRect();
-
             gMapSelectFlags.unset(MapSelectFlag::enable);
 
             auto mapCoords = FootpathGetCoordinatesFromPos({ screenCoords.x, screenCoords.y + 16 }, nullptr, nullptr);
@@ -988,7 +986,6 @@ namespace OpenRCT2::Ui::Windows
                 gMapSelectType = MapSelectType::full;
                 gMapSelectPositionA = mapCoords;
                 gMapSelectPositionB = mapCoords;
-                MapInvalidateSelectionRect();
             }
 
             gPickupPeepImage = ImageId();
@@ -1030,7 +1027,7 @@ namespace OpenRCT2::Ui::Windows
                                                         { destCoords, tileElement->GetBaseZ() },
                                                         Network::GetCurrentPlayerId() };
             pickupAction.SetCallback([](const GameActions::GameAction* ga, const GameActions::Result* result) {
-                if (result->Error != GameActions::Status::Ok)
+                if (result->error != GameActions::Status::ok)
                     return;
                 ToolCancel();
                 gPickupPeepImage = ImageId();
@@ -1053,7 +1050,7 @@ namespace OpenRCT2::Ui::Windows
 #pragma endregion
 
 #pragma region Stats
-        void StatsTabDraw(RenderTarget& rt)
+        void StatsTabDraw(Drawing::RenderTarget& rt)
         {
             if (widgetIsDisabled(*this, WIDX_TAB_2))
                 return;
@@ -1110,7 +1107,7 @@ namespace OpenRCT2::Ui::Windows
             return std::clamp(newValue, newMin, 100);
         }
 
-        void onDrawStats(RenderTarget& rt)
+        void onDrawStats(Drawing::RenderTarget& rt)
         {
             // ebx
             const auto peep = GetGuest();
@@ -1209,7 +1206,7 @@ namespace OpenRCT2::Ui::Windows
 #pragma endregion
 
 #pragma region Rides
-        void RidesTabDraw(RenderTarget& rt)
+        void RidesTabDraw(Drawing::RenderTarget& rt)
         {
             if (widgetIsDisabled(*this, WIDX_TAB_3))
                 return;
@@ -1318,7 +1315,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_RIDE_SCROLL].bottom = height - 15;
         }
 
-        void onDrawRides(RenderTarget& rt)
+        void onDrawRides(Drawing::RenderTarget& rt)
         {
             drawWidgets(rt);
             OverviewTabDraw(rt);
@@ -1355,7 +1352,7 @@ namespace OpenRCT2::Ui::Windows
             DrawTextEllipsised(rt, screenCoords, width - 14, STR_FAVOURITE_RIDE, ft);
         }
 
-        void onScrollDrawRides(int32_t scrollIndex, RenderTarget& rt)
+        void onScrollDrawRides(int32_t scrollIndex, Drawing::RenderTarget& rt)
         {
             auto colour = ColourMapA[colours[1].colour].mid_light;
             Rectangle::fill(rt, { { rt.x, rt.y }, { rt.x + rt.width - 1, rt.y + rt.height - 1 } }, colour);
@@ -1382,7 +1379,7 @@ namespace OpenRCT2::Ui::Windows
 #pragma endregion
 
 #pragma region Finance
-        void FinanceTabDraw(RenderTarget& rt)
+        void FinanceTabDraw(Drawing::RenderTarget& rt)
         {
             if (widgetIsDisabled(*this, WIDX_TAB_4))
                 return;
@@ -1408,7 +1405,7 @@ namespace OpenRCT2::Ui::Windows
             invalidateWidget(WIDX_TAB_4);
         }
 
-        void onDrawFinance(RenderTarget& rt)
+        void onDrawFinance(Drawing::RenderTarget& rt)
         {
             drawWidgets(rt);
             OverviewTabDraw(rt);
@@ -1520,7 +1517,7 @@ namespace OpenRCT2::Ui::Windows
 #pragma endregion
 
 #pragma region Thoughts
-        void ThoughtsTabDraw(RenderTarget& rt)
+        void ThoughtsTabDraw(Drawing::RenderTarget& rt)
         {
             if (widgetIsDisabled(*this, WIDX_TAB_5))
                 return;
@@ -1557,7 +1554,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void onDrawThoughts(RenderTarget& rt)
+        void onDrawThoughts(Drawing::RenderTarget& rt)
         {
             drawWidgets(rt);
             OverviewTabDraw(rt);
@@ -1598,7 +1595,7 @@ namespace OpenRCT2::Ui::Windows
 #pragma endregion
 
 #pragma region Inventory
-        void InventoryTabDraw(RenderTarget& rt)
+        void InventoryTabDraw(Drawing::RenderTarget& rt)
         {
             if (widgetIsDisabled(*this, WIDX_TAB_6))
                 return;
@@ -1738,7 +1735,7 @@ namespace OpenRCT2::Ui::Windows
             return std::make_pair(itemImage, ft);
         }
 
-        void onDrawInventory(RenderTarget& rt)
+        void onDrawInventory(Drawing::RenderTarget& rt)
         {
             drawWidgets(rt);
             OverviewTabDraw(rt);
@@ -1788,7 +1785,7 @@ namespace OpenRCT2::Ui::Windows
 #pragma endregion
 
 #pragma region Debug
-        void DebugTabDraw(RenderTarget& rt)
+        void DebugTabDraw(Drawing::RenderTarget& rt)
         {
             if (widgetIsDisabled(*this, WIDX_TAB_7))
                 return;
@@ -1811,7 +1808,7 @@ namespace OpenRCT2::Ui::Windows
             invalidate();
         }
 
-        void onDrawDebug(RenderTarget& rt)
+        void onDrawDebug(Drawing::RenderTarget& rt)
         {
             char buffer[512]{};
             char buffer2[512]{};

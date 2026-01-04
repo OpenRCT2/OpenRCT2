@@ -46,17 +46,17 @@ namespace OpenRCT2::GameActions
         if ((getGameState().park.flags & PARK_FLAGS_NO_MONEY) != 0)
         {
             LOG_ERROR("Can't set park entrance fee because the park has no money");
-            return Result(Status::Disallowed, STR_ERR_CANT_CHANGE_PARK_ENTRANCE_FEE, kStringIdNone);
+            return Result(Status::disallowed, STR_ERR_CANT_CHANGE_PARK_ENTRANCE_FEE, kStringIdNone);
         }
         else if (!Park::EntranceFeeUnlocked())
         {
             LOG_ERROR("Park entrance fee is locked");
-            return Result(Status::Disallowed, STR_ERR_CANT_CHANGE_PARK_ENTRANCE_FEE, kStringIdNone);
+            return Result(Status::disallowed, STR_ERR_CANT_CHANGE_PARK_ENTRANCE_FEE, kStringIdNone);
         }
         else if (_fee < 0.00_GBP || _fee > kMaxEntranceFee)
         {
             LOG_ERROR("Invalid park entrance fee %d", _fee);
-            return Result(Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
+            return Result(Status::invalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
         }
 
         return Result();

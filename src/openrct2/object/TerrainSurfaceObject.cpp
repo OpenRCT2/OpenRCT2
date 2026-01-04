@@ -49,7 +49,7 @@ namespace OpenRCT2
         NumEntries = 0;
     }
 
-    void TerrainSurfaceObject::DrawPreview(RenderTarget& rt, int32_t width, int32_t height) const
+    void TerrainSurfaceObject::DrawPreview(Drawing::RenderTarget& rt, int32_t width, int32_t height) const
     {
         auto imageId = ImageId(GetImageId({}, 1, 0, 0, false, false));
         if (Colour != kNoValue)

@@ -57,27 +57,27 @@ namespace OpenRCT2::GameActions
     Result BannerSetColourAction::QueryExecute(bool isExecuting) const
     {
         auto res = Result();
-        res.Expenditure = ExpenditureType::landscaping;
-        res.Position.x = _loc.x + 16;
-        res.Position.y = _loc.y + 16;
-        res.Position.z = _loc.z;
-        res.ErrorTitle = STR_CANT_REPAINT_THIS;
+        res.expenditure = ExpenditureType::landscaping;
+        res.position.x = _loc.x + 16;
+        res.position.y = _loc.y + 16;
+        res.position.z = _loc.z;
+        res.errorTitle = STR_CANT_REPAINT_THIS;
 
         if (!LocationValid(_loc))
         {
             LOG_ERROR("Invalid x / y coordinates: x = %d, y = %d", _loc.x, _loc.y);
-            return Result(Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_OFF_EDGE_OF_MAP);
+            return Result(Status::invalidParameters, STR_CANT_REPAINT_THIS, STR_OFF_EDGE_OF_MAP);
         }
 
         if (_primaryColour > 31)
         {
             LOG_ERROR("Invalid primary colour %u", _primaryColour);
-            return Result(Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_ERR_INVALID_COLOUR);
+            return Result(Status::invalidParameters, STR_CANT_REPAINT_THIS, STR_ERR_INVALID_COLOUR);
         }
 
         if (!MapCanBuildAt({ _loc.x, _loc.y, _loc.z - 16 }))
         {
-            return Result(Status::NotOwned, STR_CANT_REPAINT_THIS, STR_LAND_NOT_OWNED_BY_PARK);
+            return Result(Status::notOwned, STR_CANT_REPAINT_THIS, STR_LAND_NOT_OWNED_BY_PARK);
         }
 
         auto bannerElement = MapGetBannerElementAt(_loc, _loc.direction);
@@ -85,7 +85,7 @@ namespace OpenRCT2::GameActions
         if (bannerElement == nullptr)
         {
             LOG_ERROR("No banner at x = %d, y = %d, z = %d, direction = %u", _loc.x, _loc.y, _loc.z, _loc.direction);
-            return Result(Status::Unknown, STR_CANT_REPAINT_THIS, STR_ERR_BANNER_ELEMENT_NOT_FOUND);
+            return Result(Status::unknown, STR_CANT_REPAINT_THIS, STR_ERR_BANNER_ELEMENT_NOT_FOUND);
         }
 
         auto index = bannerElement->GetIndex();
@@ -93,7 +93,7 @@ namespace OpenRCT2::GameActions
         if (banner == nullptr)
         {
             LOG_ERROR("Invalid banner index %u", index);
-            return Result(Status::InvalidParameters, STR_CANT_REPAINT_THIS, kStringIdNone);
+            return Result(Status::invalidParameters, STR_CANT_REPAINT_THIS, kStringIdNone);
         }
 
         if (isExecuting)

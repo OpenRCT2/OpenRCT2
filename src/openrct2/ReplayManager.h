@@ -60,7 +60,7 @@ namespace OpenRCT2
         virtual bool StopRecording(bool discard = false) = 0;
         virtual bool GetCurrentReplayInfo(ReplayRecordInfo& info) const = 0;
 
-        virtual bool StartPlayback(const std::string& file) = 0;
+        virtual void StartPlayback(const std::string& file) = 0;
         virtual bool IsPlaybackStateMismatching() const = 0;
         virtual bool StopPlayback() = 0;
 

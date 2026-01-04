@@ -751,11 +751,11 @@ static void ConsoleSetVariableAction(InteractiveConsole& console, std::string va
 {
     auto action = TAction(std::forward<TArgs>(args)...);
     action.SetCallback([&console, var](const GameActions::GameAction*, const GameActions::Result* res) {
-        if (res->Error != GameActions::Status::Ok)
+        if (res->error != GameActions::Status::ok)
             console.WriteLineError(
                 String::stdFormat(
-                    "set %s command failed: %s - %s.", var.c_str(), res->GetErrorTitle().c_str(),
-                    res->GetErrorMessage().c_str()));
+                    "set %s command failed: %s - %s.", var.c_str(), res->getErrorTitle().c_str(),
+                    res->getErrorMessage().c_str()));
         else
             console.Execute(String::stdFormat("get %s", var.c_str()));
         console.EndAsyncExecution();
@@ -1485,25 +1485,33 @@ static void ConsoleCommandReplayStart(InteractiveConsole& console, const argumen
     std::string name = argv[0];
 
     auto* replayManager = OpenRCT2::GetContext()->GetReplayManager();
-    if (replayManager->StartPlayback(name))
+
+    try
     {
-        OpenRCT2::ReplayRecordInfo info;
-        replayManager->GetCurrentReplayInfo(info);
-
-        std::time_t ts = info.TimeRecorded;
-
-        char recordingDate[128] = {};
-        std::strftime(recordingDate, sizeof(recordingDate), "%c", std::localtime(&ts));
-
-        const char* logFmt = "Replay playback started: %s\n"
-                             "  Date Recorded: %s\n"
-                             "  Ticks: %u\n"
-                             "  Commands: %u\n"
-                             "  Checksums: %u";
-
-        console.WriteFormatLine(logFmt, info.FilePath.c_str(), recordingDate, info.Ticks, info.NumCommands, info.NumChecksums);
-        Console::WriteLine(logFmt, info.FilePath.c_str(), recordingDate, info.Ticks, info.NumCommands, info.NumChecksums);
+        replayManager->StartPlayback(name);
     }
+    catch (const std::exception& e)
+    {
+        console.WriteLine(e.what());
+        return;
+    }
+
+    OpenRCT2::ReplayRecordInfo info;
+    replayManager->GetCurrentReplayInfo(info);
+
+    std::time_t ts = info.TimeRecorded;
+
+    char recordingDate[128] = {};
+    std::strftime(recordingDate, sizeof(recordingDate), "%c", std::localtime(&ts));
+
+    const char* logFmt = "Replay playback started: %s\n"
+                         "  Date Recorded: %s\n"
+                         "  Ticks: %u\n"
+                         "  Commands: %u\n"
+                         "  Checksums: %u";
+
+    console.WriteFormatLine(logFmt, info.FilePath.c_str(), recordingDate, info.Ticks, info.NumCommands, info.NumChecksums);
+    Console::WriteLine(logFmt, info.FilePath.c_str(), recordingDate, info.Ticks, info.NumCommands, info.NumChecksums);
 }
 
 static void ConsoleCommandReplayStop(InteractiveConsole& console, const arguments_t& argv)

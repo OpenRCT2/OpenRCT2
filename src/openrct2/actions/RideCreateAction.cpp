@@ -32,12 +32,13 @@ namespace OpenRCT2::GameActions
 {
     RideCreateAction::RideCreateAction(
         ride_type_t rideType, ObjectEntryIndex subType, uint8_t trackColourPreset, uint8_t vehicleColourPreset,
-        ObjectEntryIndex entranceObjectIndex)
+        ObjectEntryIndex entranceObjectIndex, RideInspection inspectionInterval)
         : _rideType(rideType)
         , _subType(subType)
         , _entranceObjectIndex(entranceObjectIndex)
         , _trackColourPreset(trackColourPreset)
         , _vehicleColourPreset(vehicleColourPreset)
+        , _inspectionInterval(inspectionInterval)
     {
     }
 
@@ -48,6 +49,7 @@ namespace OpenRCT2::GameActions
         visitor.Visit("entranceObject", _entranceObjectIndex);
         visitor.Visit("colour1", _trackColourPreset);
         visitor.Visit("colour2", _vehicleColourPreset);
+        visitor.Visit("inspectionInterval", _inspectionInterval);
     }
 
     ride_type_t RideCreateAction::GetRideType() const
@@ -70,53 +72,59 @@ namespace OpenRCT2::GameActions
         GameAction::Serialise(stream);
 
         stream << DS_TAG(_rideType) << DS_TAG(_subType) << DS_TAG(_entranceObjectIndex) << DS_TAG(_trackColourPreset)
-               << DS_TAG(_vehicleColourPreset);
+               << DS_TAG(_vehicleColourPreset) << DS_TAG(_inspectionInterval);
     }
 
     Result RideCreateAction::Query(GameState_t& gameState) const
     {
+        if (_inspectionInterval > RideInspection::never)
+        {
+            LOG_ERROR("Invalid inspection interval: %u", EnumValue(_inspectionInterval));
+            return Result(Status::invalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_ERR_VALUE_OUT_OF_RANGE);
+        }
+
         auto rideIndex = GetNextFreeRideId();
         if (rideIndex.IsNull())
         {
             // No more free slots available.
-            return Result(Status::NoFreeElements, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_TOO_MANY_RIDES);
+            return Result(Status::noFreeElements, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_TOO_MANY_RIDES);
         }
 
         if (_rideType >= RIDE_TYPE_COUNT)
         {
             LOG_ERROR("Invalid ride type %d", _rideType);
-            return Result(Status::InvalidParameters, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_INVALID_RIDE_TYPE);
+            return Result(Status::invalidParameters, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_INVALID_RIDE_TYPE);
         }
 
         int32_t rideEntryIndex = RideGetEntryIndex(_rideType, _subType);
         if (rideEntryIndex >= kMaxRideObjects)
         {
             LOG_ERROR("Ride entry not found for rideType %d, subType %d", _rideType, _subType);
-            return Result(Status::InvalidParameters, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_INVALID_RIDE_TYPE);
+            return Result(Status::invalidParameters, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_INVALID_RIDE_TYPE);
         }
 
         const auto& colourPresets = GetRideTypeDescriptor(_rideType).ColourPresets;
         if (_trackColourPreset >= colourPresets.count)
         {
             LOG_ERROR("Can't create ride, invalid colour preset %d", _trackColourPreset);
-            return Result(Status::InvalidParameters, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_ERR_INVALID_COLOUR);
+            return Result(Status::invalidParameters, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_ERR_INVALID_COLOUR);
         }
 
         const auto* rideEntry = GetRideEntryByIndex(rideEntryIndex);
         if (rideEntry == nullptr)
         {
             LOG_ERROR("Ride entry not found for rideEntryIndex %d", rideEntryIndex);
-            return Result(Status::InvalidParameters, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_UNKNOWN_OBJECT_TYPE);
+            return Result(Status::invalidParameters, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_UNKNOWN_OBJECT_TYPE);
         }
 
         const auto* presetList = rideEntry->vehicle_preset_list;
         if ((presetList->count > 0 && presetList->count != 255) && _vehicleColourPreset >= presetList->count)
         {
-            return Result(Status::InvalidParameters, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, kStringIdNone);
+            return Result(Status::invalidParameters, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, kStringIdNone);
         }
 
         auto res = Result();
-        res.SetData(RideId{ rideIndex });
+        res.setData(RideId{ rideIndex });
 
         return res;
     }
@@ -135,7 +143,7 @@ namespace OpenRCT2::GameActions
             LOG_ERROR(
                 "Ride entry not found for index rideEntryIndex %u (from rideType %u, subType %u)", rideEntryIndex, _rideType,
                 _subType);
-            return Result(Status::Unknown, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_UNKNOWN_OBJECT_TYPE);
+            return Result(Status::unknown, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_UNKNOWN_OBJECT_TYPE);
         }
 
         ride->type = _rideType;
@@ -274,7 +282,7 @@ namespace OpenRCT2::GameActions
         ride->upkeepCost = kMoney64Undefined;
         ride->reliability = kRideInitialReliability;
         ride->unreliabilityFactor = 1;
-        ride->inspectionInterval = RIDE_INSPECTION_EVERY_30_MINUTES;
+        ride->inspectionInterval = _inspectionInterval;
         ride->lastCrashType = RIDE_CRASH_TYPE_NONE;
         ride->incomePerHour = kMoney64Undefined;
         ride->profit = kMoney64Undefined;
@@ -294,8 +302,8 @@ namespace OpenRCT2::GameActions
         auto* windowMgr = Ui::GetWindowManager();
         windowMgr->InvalidateByClass(WindowClass::rideList);
 
-        res.Expenditure = ExpenditureType::rideConstruction;
-        res.SetData(RideId{ rideIndex });
+        res.expenditure = ExpenditureType::rideConstruction;
+        res.setData(RideId{ rideIndex });
 
         return res;
     }

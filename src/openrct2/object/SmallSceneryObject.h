@@ -36,7 +36,7 @@ namespace OpenRCT2
         void Load() override;
         void Unload() override;
 
-        void DrawPreview(RenderTarget& rt, int32_t width, int32_t height) const override;
+        void DrawPreview(Drawing::RenderTarget& rt, int32_t width, int32_t height) const override;
 
     private:
         static std::vector<uint8_t> ReadFrameOffsets(IStream* stream);

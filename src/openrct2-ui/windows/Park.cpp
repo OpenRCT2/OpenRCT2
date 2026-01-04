@@ -357,7 +357,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void onDraw(RenderTarget& rt) override
+        void onDraw(Drawing::RenderTarget& rt) override
         {
             switch (page)
             {
@@ -451,7 +451,7 @@ namespace OpenRCT2::Ui::Windows
                 gDropdown.items[0] = Dropdown::MenuLabel(STR_CLOSE_PARK);
                 gDropdown.items[1] = Dropdown::MenuLabel(STR_OPEN_PARK);
                 WindowDropdownShowText(
-                    { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height() + 1, colours[1], 0, 2);
+                    { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height(), colours[1], 0, 2);
 
                 if (Park::IsOpen(getGameState().park))
                 {
@@ -585,7 +585,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void onDrawEntrance(RenderTarget& rt)
+        void onDrawEntrance(Drawing::RenderTarget& rt)
         {
             drawWidgets(rt);
             DrawTabImages(rt);
@@ -646,7 +646,7 @@ namespace OpenRCT2::Ui::Windows
                     Widget* viewportWidget = &widgets[WIDX_VIEWPORT];
                     ViewportCreate(
                         *this, windowPos + ScreenCoordsXY{ viewportWidget->left + 1, viewportWidget->top + 1 },
-                        viewportWidget->width() - 2, viewportWidget->height() - 1, focus.value());
+                        viewportWidget->width() - 2, viewportWidget->height() - 2, focus.value());
                     flags |= WindowFlag::noScrolling;
                     invalidate();
                 }
@@ -700,7 +700,7 @@ namespace OpenRCT2::Ui::Windows
                 kGraphNumYLabels, kParkRatingHistorySize);
         }
 
-        void onDrawRating(RenderTarget& rt)
+        void onDrawRating(Drawing::RenderTarget& rt)
         {
             drawWidgets(rt);
             DrawTabImages(rt);
@@ -781,7 +781,7 @@ namespace OpenRCT2::Ui::Windows
                 kGraphNumYLabels, kGuestsInParkHistorySize);
         }
 
-        void onDrawGuests(RenderTarget& rt)
+        void onDrawGuests(Drawing::RenderTarget& rt)
         {
             drawWidgets(rt);
             DrawTabImages(rt);
@@ -882,7 +882,7 @@ namespace OpenRCT2::Ui::Windows
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_7);
         }
 
-        void onDrawPrice(RenderTarget& rt)
+        void onDrawPrice(Drawing::RenderTarget& rt)
         {
             drawWidgets(rt);
             DrawTabImages(rt);
@@ -942,7 +942,7 @@ namespace OpenRCT2::Ui::Windows
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_7);
         }
 
-        void onDrawStats(RenderTarget& rt)
+        void onDrawStats(Drawing::RenderTarget& rt)
         {
             drawWidgets(rt);
             DrawTabImages(rt);
@@ -1068,7 +1068,7 @@ namespace OpenRCT2::Ui::Windows
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_7);
         }
 
-        void onDrawObjective(RenderTarget& rt)
+        void onDrawObjective(Drawing::RenderTarget& rt)
         {
             auto& gameState = getGameState();
             drawWidgets(rt);
@@ -1134,7 +1134,7 @@ namespace OpenRCT2::Ui::Windows
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_7);
         }
 
-        void onDrawAwards(RenderTarget& rt)
+        void onDrawAwards(Drawing::RenderTarget& rt)
         {
             drawWidgets(rt);
             DrawTabImages(rt);
@@ -1208,7 +1208,7 @@ namespace OpenRCT2::Ui::Windows
             pressedWidgets |= 1LL << (WIDX_TAB_1 + page);
         }
 
-        void DrawTabImages(RenderTarget& rt)
+        void DrawTabImages(Drawing::RenderTarget& rt)
         {
             // Entrance tab
             if (!widgetIsDisabled(*this, WIDX_TAB_1))

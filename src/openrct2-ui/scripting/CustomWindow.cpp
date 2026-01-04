@@ -520,7 +520,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     auto& listView = _info.ListViews[scrollIndex];
                     auto wwidth = widget.width() - 2;
-                    auto wheight = widget.height() + 1 - 2;
+                    auto wheight = widget.height() - 2;
                     if (listView.GetScrollbars() == ScrollbarType::Horizontal
                         || listView.GetScrollbars() == ScrollbarType::Both)
                     {
@@ -536,7 +536,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void onDraw(RenderTarget& rt) override
+        void onDraw(Drawing::RenderTarget& rt) override
         {
             WindowDrawWidgets(*this, rt);
             DrawTabImages(rt);
@@ -562,7 +562,7 @@ namespace OpenRCT2::Ui::Windows
                     RenderTarget widgetDpi;
                     if (ClipDrawPixelInfo(
                             widgetDpi, rt, { windowPos.x + widget.left, windowPos.y + widget.top }, widget.width() - 1,
-                            widget.height()))
+                            widget.height() - 1))
                     {
                         auto ctx = onDraw.context();
                         auto dukWidget = ScWidget::ToDukValue(ctx, this, widgetIndex);
@@ -653,8 +653,8 @@ namespace OpenRCT2::Ui::Windows
                         gDropdown.items[i] = Dropdown::MenuLabel(items[i].c_str());
                     }
                     WindowDropdownShowTextCustomWidth(
-                        { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height() + 1,
-                        colours[widget->colour], 0, Dropdown::Flag::StayOpen, numItems, widget->width() - 4);
+                        { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height(), colours[widget->colour], 0,
+                        Dropdown::Flag::StayOpen, numItems, widget->width() - 4);
 
                     if (selectedIndex >= 0 && selectedIndex < static_cast<int32_t>(numItems))
                         gDropdown.items[selectedIndex].setChecked(true);
@@ -810,7 +810,7 @@ namespace OpenRCT2::Ui::Windows
                     auto left = windowPos.x + viewportWidget->left + 1;
                     auto top = windowPos.y + viewportWidget->top + 1;
                     auto wwidth = viewportWidget->width() - 2;
-                    auto wheight = viewportWidget->height() - 1;
+                    auto wheight = viewportWidget->height() - 2;
                     if (viewport == nullptr)
                     {
                         ViewportCreate(*this, { left, top }, wwidth, wheight, Focus(CoordsXYZ(0, 0, 0)));

@@ -136,7 +136,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_PREVIEW].image = ImageId(LandTool::SizeToSpriteIndex(gLandToolSize));
         }
 
-        void onDraw(RenderTarget& rt) override
+        void onDraw(Drawing::RenderTarget& rt) override
         {
             drawWidgets(rt);
 
@@ -159,7 +159,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
 
             auto stateChanged = false;
-            if (!(gMapSelectFlags.has(MapSelectFlag::enable)))
+            if (!gMapSelectFlags.has(MapSelectFlag::enable))
                 stateChanged = true;
 
             if (gMapSelectType != MapSelectType::full)
@@ -181,15 +181,10 @@ namespace OpenRCT2::Ui::Windows
 
             if (stateChanged)
             {
-                // Invalidate previous area
-                MapInvalidateSelectionRect();
-
-                // Update and invalidate new area
                 gMapSelectFlags.set(MapSelectFlag::enable);
                 gMapSelectType = MapSelectType::full;
                 gMapSelectPositionA = posA;
                 gMapSelectPositionB = posB;
-                MapInvalidateSelectionRect();
             }
         }
 
@@ -254,7 +249,6 @@ namespace OpenRCT2::Ui::Windows
                 if (!ToolSet(*this, 0, Tool::walkDown))
                 {
                     ShowGridlines();
-                    gInputFlags.set(InputFlag::unk6);
                     SetPatrolAreaToRender(_staffId);
                     GfxInvalidateScreen();
                 }

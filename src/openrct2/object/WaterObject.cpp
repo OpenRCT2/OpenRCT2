@@ -56,7 +56,7 @@ namespace OpenRCT2
         _legacyType.palette_index_2 = 0;
     }
 
-    void WaterObject::DrawPreview(RenderTarget& rt, int32_t width, int32_t height) const
+    void WaterObject::DrawPreview(Drawing::RenderTarget& rt, int32_t width, int32_t height) const
     {
         // Write (no image)
         auto screenCoords = ScreenCoordsXY{ width / 2, height / 2 };
@@ -123,9 +123,9 @@ namespace OpenRCT2
 
         G1Element g1 = {};
         g1.offset = data.get();
-        g1.width = static_cast<int16_t>(numColours);
-        g1.x_offset = Json::GetNumber<int16_t>(jPalette["index"]);
-        g1.flags = G1_FLAG_PALETTE;
+        g1.numColours = static_cast<int16_t>(numColours);
+        g1.startIndex = Json::GetNumber<int16_t>(jPalette["index"]);
+        g1.flags = { G1Flag::isPalette };
 
         auto& imageTable = GetImageTable();
         imageTable.AddImage(&g1);

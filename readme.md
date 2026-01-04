@@ -19,7 +19,7 @@
 ### Download
 | Latest release                                                                                                       | Latest development build |
 |----------------------------------------------------------------------------------------------------------------------|--------------------------|
-| [![OpenRCT2.io](https://img.shields.io/badge/master-v0.4.29-green.svg)](https://openrct2.io/download/release/latest) | [![OpenRCT2.io](https://img.shields.io/github/last-commit/OpenRCT2/OpenRCT2/develop)](https://openrct2.io/download/develop/latest) |
+| [![OpenRCT2.io](https://img.shields.io/github/v/release/OpenRCT2/OpenRCT2.svg?color=green)](https://openrct2.io/download/release/latest) | [![OpenRCT2.io](https://img.shields.io/github/last-commit/OpenRCT2/OpenRCT2/develop?color=green)](https://openrct2.io/download/develop/latest) |
 
 ---
 
@@ -85,7 +85,6 @@ Some Linux distributions offer native packages:
 
 Some \*BSD operating systems offer native packages:
 * FreeBSD: [games/openrct2](https://www.freshports.org/games/openrct2)
-* OpenBSD: [games/openrct2](https://openports.se/games/openrct2)
 
 ---
 

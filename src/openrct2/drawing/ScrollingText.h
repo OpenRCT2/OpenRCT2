@@ -1,8 +1,35 @@
+/*****************************************************************************
+ * Copyright (c) 2014-2025 OpenRCT2 developers
+ *
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
+ *
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
+ *****************************************************************************/
+
 #pragma once
+
+#include <cstdint>
+
+enum PaletteIndex : uint8_t;
+struct ImageId;
+struct PaintSession;
+using StringId = uint16_t;
 
 namespace OpenRCT2
 {
-    static auto constexpr kMaxScrollingTextLegacyEntries = 32;
-    static auto constexpr kMaxScrollingTextEntries = 256;
+    class Formatter;
+}
 
-} // namespace OpenRCT2
+namespace OpenRCT2::Drawing::ScrollingText
+{
+    static auto constexpr kMaxLegacyEntries = 32;
+    static auto constexpr kMaxEntries = 256;
+    constexpr int8_t kMaxModes = 38;
+
+    void initialiseBitmaps();
+    void invalidate();
+    ImageId setup(
+        PaintSession& session, StringId stringId, OpenRCT2::Formatter& ft, uint16_t scroll, uint16_t scrollingMode,
+        PaletteIndex colour);
+} // namespace OpenRCT2::Drawing::ScrollingText

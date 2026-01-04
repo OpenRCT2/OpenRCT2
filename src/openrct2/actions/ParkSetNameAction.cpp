@@ -48,7 +48,7 @@ namespace OpenRCT2::GameActions
         if (_name.empty())
         {
             LOG_ERROR("Can't set park name to empty string");
-            return Result(Status::InvalidParameters, STR_CANT_RENAME_PARK, STR_INVALID_NAME_FOR_PARK);
+            return Result(Status::invalidParameters, STR_CANT_RENAME_PARK, STR_INVALID_NAME_FOR_PARK);
         }
         return Result();
     }
@@ -60,7 +60,7 @@ namespace OpenRCT2::GameActions
         if (_name != park.name)
         {
             park.name = _name;
-            ScrollingTextInvalidate();
+            Drawing::ScrollingText::invalidate();
             GfxInvalidateScreen();
         }
         return Result();

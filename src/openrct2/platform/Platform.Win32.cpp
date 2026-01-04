@@ -737,7 +737,7 @@ namespace OpenRCT2::Platform
         return isElevated;
     }
 
-    std::string GetSteamPath()
+    SteamPaths GetSteamPaths()
     {
         wchar_t* wSteamPath;
         HKEY hKey;
@@ -759,12 +759,18 @@ namespace OpenRCT2::Platform
         result = RegQueryValueExW(hKey, L"SteamPath", nullptr, &type, reinterpret_cast<LPBYTE>(wSteamPath), &size);
         if (result == ERROR_SUCCESS)
         {
-            auto utf8SteamPath = String::toUtf8(wSteamPath);
-            outPath = Path::Combine(utf8SteamPath, u8"steamapps", u8"common");
+            outPath = String::toUtf8(wSteamPath);
         }
         free(wSteamPath);
         RegCloseKey(hKey);
-        return outPath;
+
+        SteamPaths ret = {};
+        ret.roots.emplace_back(outPath);
+        ret.nativeFolder = "steamapps/common";
+        ret.downloadDepotFolder = "steamapps/content";
+        ret.manifests = "steamapps";
+
+        return ret;
     }
 
     std::string GetFontPath(const TTFFontDescriptor& font)
@@ -794,21 +800,6 @@ namespace OpenRCT2::Platform
     int32_t GetDrives()
     {
         return GetLogicalDrives();
-    }
-
-    u8string GetRCT1SteamDir()
-    {
-        return u8"Rollercoaster Tycoon Deluxe";
-    }
-
-    u8string GetRCT2SteamDir()
-    {
-        return u8"Rollercoaster Tycoon 2";
-    }
-
-    u8string GetRCTClassicSteamDir()
-    {
-        return u8"RollerCoaster Tycoon Classic";
     }
 
     time_t FileGetModifiedTime(u8string_view path)

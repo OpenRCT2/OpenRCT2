@@ -20,7 +20,7 @@ namespace OpenRCT2
 constexpr RideTypeDescriptor SpaceRingsRTD =
 {
     .Category = RideCategory::gentle,
-    .StartTrackPiece = TrackElemType::FlatTrack3x3,
+    .StartTrackPiece = TrackElemType::flatTrack3x3,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::spaceRings,
         .enabledTrackGroups = {},

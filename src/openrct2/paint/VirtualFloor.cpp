@@ -30,6 +30,7 @@
 #include <limits>
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::Drawing;
 
 static constexpr uint16_t kVirtualFloorBaseSize = 5 * kCoordsXYStep;
 static constexpr CoordsXY kVirtualFloorBaseSizeXY = { kVirtualFloorBaseSize, kVirtualFloorBaseSize };
@@ -107,7 +108,7 @@ void VirtualFloorInvalidate(const bool alwaysInvalidate)
 
     if (gMapSelectFlags.has(MapSelectFlag::enableConstruct))
     {
-        for (const auto& tile : gMapSelectionTiles)
+        for (const auto& tile : MapSelection::getSelectedTiles())
         {
             min_position.x = std::min(min_position.x, tile.x);
             min_position.y = std::min(min_position.y, tile.y);
@@ -177,7 +178,7 @@ bool VirtualFloorTileIsFloor(const CoordsXY& loc)
     if (gMapSelectFlags.has(MapSelectFlag::enableConstruct))
     {
         // Check if we are anywhere near the selection tiles (larger scenery / rides)
-        for (const auto& tile : gMapSelectionTiles)
+        for (const auto& tile : MapSelection::getSelectedTiles())
         {
             if (loc.x >= tile.x - kVirtualFloorBaseSize && loc.y >= tile.y - kVirtualFloorBaseSize
                 && loc.x <= tile.x + kVirtualFloorBaseSize && loc.y <= tile.y + kVirtualFloorBaseSize)
@@ -202,7 +203,7 @@ static void VirtualFloorGetTileProperties(
     *tileOwned = false;
 
     // See if we are a selected tile
-    if ((gMapSelectFlags.has(MapSelectFlag::enable)))
+    if (gMapSelectFlags.has(MapSelectFlag::enable))
     {
         if (loc >= gMapSelectPositionA && loc <= gMapSelectPositionB)
         {
@@ -213,7 +214,7 @@ static void VirtualFloorGetTileProperties(
     // See if we are on top of the selection tiles
     if (gMapSelectFlags.has(MapSelectFlag::enableConstruct))
     {
-        for (const auto& tile : gMapSelectionTiles)
+        for (const auto& tile : MapSelection::getSelectedTiles())
         {
             if (tile == loc)
             {

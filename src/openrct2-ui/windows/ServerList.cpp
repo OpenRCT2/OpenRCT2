@@ -305,7 +305,7 @@ namespace OpenRCT2::Ui::Windows
             return { fallback, ft };
         }
 
-        void onDraw(RenderTarget& rt) override
+        void onDraw(Drawing::RenderTarget& rt) override
         {
             drawWidgets(rt);
 
@@ -326,7 +326,7 @@ namespace OpenRCT2::Ui::Windows
             DrawTextBasic(rt, windowPos + ScreenCoordsXY{ 8, height - 15 }, _statusText, ft, { COLOUR_WHITE });
         }
 
-        void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
+        void onScrollDraw(int32_t scrollIndex, Drawing::RenderTarget& rt) override
         {
             uint8_t paletteIndex = ColourMapA[colours[1].colour].mid_light;
             GfxClear(rt, paletteIndex);

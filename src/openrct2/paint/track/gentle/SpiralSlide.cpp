@@ -255,7 +255,7 @@ static void PaintSpiralSlide(
  */
 TrackPaintFunction GetTrackPaintFunctionSpiralSlide(OpenRCT2::TrackElemType trackType)
 {
-    if (trackType != TrackElemType::FlatTrack2x2)
+    if (trackType != TrackElemType::flatTrack2x2)
     {
         return TrackPaintFunctionDummy;
     }

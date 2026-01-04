@@ -2094,112 +2094,112 @@ TrackPaintFunction GetTrackPaintFunctionClassicWoodenTwisterRC(OpenRCT2::TrackEl
 
     switch (trackType)
     {
-        case TrackElemType::FlatToLeftBank:
+        case TrackElemType::flatToLeftBank:
             return WoodenRCTrackFlatToBank<false, kFlatToLeftBankImages>;
-        case TrackElemType::FlatToRightBank:
+        case TrackElemType::flatToRightBank:
             return WoodenRCTrackFlatToBank<false, kFlatToRightBankImages>;
-        case TrackElemType::LeftBankToFlat:
+        case TrackElemType::leftBankToFlat:
             return ClassicWoodenTwisterRCTrackLeftBankToFlat;
-        case TrackElemType::RightBankToFlat:
+        case TrackElemType::rightBankToFlat:
             return ClassicWoodenTwisterRCTrackRightBankToFlat;
-        case TrackElemType::LeftBank:
+        case TrackElemType::leftBank:
             return WoodenRCTrackFlatToBank<false, kLeftBankImages>;
-        case TrackElemType::RightBank:
+        case TrackElemType::rightBank:
             return ClassicWoodenTwisterRCTrackRightBank;
-        case TrackElemType::Up25ToLeftBank:
+        case TrackElemType::up25ToLeftBank:
             return WoodenRCTrack25DegUpToBank<false, kUp25ToLeftBankImages>;
-        case TrackElemType::Up25ToRightBank:
+        case TrackElemType::up25ToRightBank:
             return WoodenRCTrack25DegUpToBank<false, kUp25ToRightBankImages>;
-        case TrackElemType::LeftBankToDown25:
+        case TrackElemType::leftBankToDown25:
             return ClassicWoodenTwisterRCTrackLeftBankTo25DegDown;
-        case TrackElemType::RightBankToDown25:
+        case TrackElemType::rightBankToDown25:
             return ClassicWoodenTwisterRCTrackRightBankTo25DegDown;
 
-        case TrackElemType::LeftBankToUp25:
+        case TrackElemType::leftBankToUp25:
             return WoodenRCTrackBankTo25DegUp<false, kLeftBankToUp25Images>;
-        case TrackElemType::RightBankToUp25:
+        case TrackElemType::rightBankToUp25:
             return WoodenRCTrackBankTo25DegUp<false, kRightBankToUp25Images>;
-        case TrackElemType::Down25ToLeftBank:
+        case TrackElemType::down25ToLeftBank:
             return ClassicWoodenTwisterRCTrack25DegDownToLeftBank;
-        case TrackElemType::Down25ToRightBank:
+        case TrackElemType::down25ToRightBank:
             return ClassicWoodenTwisterRCTrack25DegDownToRightBank;
 
-        case TrackElemType::LeftBankedQuarterTurn3Tiles:
+        case TrackElemType::leftBankedQuarterTurn3Tiles:
             return WoodenRCTrackLeftQuarterTurn3Bank<false, kBankedQuarterTurn3Images>;
-        case TrackElemType::RightBankedQuarterTurn3Tiles:
+        case TrackElemType::rightBankedQuarterTurn3Tiles:
             return ClassicWoodenTwisterRCTrackRightQuarterTurn3Bank;
 
-        case TrackElemType::BankedLeftQuarterTurn5Tiles:
+        case TrackElemType::bankedLeftQuarterTurn5Tiles:
             return ClassicWoodenTwisterRCTrackBankedLeftQuarterTurn5;
-        case TrackElemType::BankedRightQuarterTurn5Tiles:
+        case TrackElemType::bankedRightQuarterTurn5Tiles:
             return WoodenRCTrackBankedRightQuarterTurn5<false, kBankedQuarterTurn5Images>;
 
-        case TrackElemType::LeftHalfBankedHelixUpSmall:
+        case TrackElemType::leftHalfBankedHelixUpSmall:
             return WoodenRCTrackLeftHalfBankedHelixUpSmall<false, kLeftHalfBankedHelixUpSmallImages>;
-        case TrackElemType::RightHalfBankedHelixUpSmall:
+        case TrackElemType::rightHalfBankedHelixUpSmall:
             return WoodenRCTrackRightHalfBankedHelixUpSmall<false, kRightHalfBankedHelixUpSmallImages>;
-        case TrackElemType::LeftHalfBankedHelixDownSmall:
+        case TrackElemType::leftHalfBankedHelixDownSmall:
             return ClassicWoodenTwisterRCTrackLeftHalfBankedHelixDownSmall;
-        case TrackElemType::RightHalfBankedHelixDownSmall:
+        case TrackElemType::rightHalfBankedHelixDownSmall:
             return ClassicWoodenTwisterRCTrackRightHalfBankedHelixDownSmall;
 
-        case TrackElemType::LeftHalfBankedHelixUpLarge:
+        case TrackElemType::leftHalfBankedHelixUpLarge:
             return WoodenRCTrackLeftHalfBankedHelixUpLarge<false, kLeftHalfBankedHelixUpLargeImages>;
-        case TrackElemType::RightHalfBankedHelixUpLarge:
+        case TrackElemType::rightHalfBankedHelixUpLarge:
             return WoodenRCTrackRightHalfBankedHelixUpLarge<false, kRightHalfBankedHelixUpLargeImages>;
-        case TrackElemType::LeftHalfBankedHelixDownLarge:
+        case TrackElemType::leftHalfBankedHelixDownLarge:
             return ClassicWoodenTwisterRCTrackLeftHalfBankedHelixDownLarge;
-        case TrackElemType::RightHalfBankedHelixDownLarge:
+        case TrackElemType::rightHalfBankedHelixDownLarge:
             return ClassicWoodenTwisterRCTrackRightHalfBankedHelixDownLarge;
 
-        case TrackElemType::LeftBankToLeftQuarterTurn3TilesUp25:
+        case TrackElemType::leftBankToLeftQuarterTurn3TilesUp25:
             return WoodenRCTrackLeftBankToLeftQuarterTurn325DegUp<false, kLeftBankToLeftQuarterTurn325DegUpImages>;
-        case TrackElemType::RightBankToRightQuarterTurn3TilesUp25:
+        case TrackElemType::rightBankToRightQuarterTurn3TilesUp25:
             return WoodenRCTrackRightBankToRightQuarterTurn325DegUp<false, kRightBankToRightQuarterTurn325DegUpImages>;
-        case TrackElemType::LeftQuarterTurn3TilesDown25ToLeftBank:
+        case TrackElemType::leftQuarterTurn3TilesDown25ToLeftBank:
             return ClassicWoodenTwisterRCTrackLeftQuarterTurn325DegDownToLeftBank;
-        case TrackElemType::RightQuarterTurn3TilesDown25ToRightBank:
+        case TrackElemType::rightQuarterTurn3TilesDown25ToRightBank:
             return ClassicWoodenTwisterRCTrackRightQuarterTurn325DegDownToRightBank;
 
-        case TrackElemType::DiagFlatToLeftBank:
+        case TrackElemType::diagFlatToLeftBank:
             return WoodenRCTrackDiagFlatToBank<false, kDiagFlatToLeftBankImages>;
-        case TrackElemType::DiagFlatToRightBank:
+        case TrackElemType::diagFlatToRightBank:
             return WoodenRCTrackDiagFlatToBank<false, kDiagFlatToRightBankImages>;
-        case TrackElemType::DiagLeftBankToFlat:
+        case TrackElemType::diagLeftBankToFlat:
             return ClassicWoodenTwisterRCTrackDiagLeftBankToFlat;
-        case TrackElemType::DiagRightBankToFlat:
+        case TrackElemType::diagRightBankToFlat:
             return ClassicWoodenTwisterRCTrackDiagRightBankToFlat;
 
-        case TrackElemType::DiagLeftBankToUp25:
+        case TrackElemType::diagLeftBankToUp25:
             return WoodenRCTrackDiagBankTo25DegUp<false, kDiagLeftBankTo25DegUpImages>;
-        case TrackElemType::DiagRightBankToUp25:
+        case TrackElemType::diagRightBankToUp25:
             return WoodenRCTrackDiagBankTo25DegUp<false, kDiagRightBankTo25DegUpImages>;
-        case TrackElemType::DiagDown25ToLeftBank:
+        case TrackElemType::diagDown25ToLeftBank:
             return ClassicWoodenTwisterRCTrackDiagDown25ToLeftBank;
-        case TrackElemType::DiagDown25ToRightBank:
+        case TrackElemType::diagDown25ToRightBank:
             return ClassicWoodenTwisterRCTrackDiagDown25ToRightBank;
 
-        case TrackElemType::DiagUp25ToLeftBank:
+        case TrackElemType::diagUp25ToLeftBank:
             return WoodenRCTrackDiagUp25ToBank<false, kDiagUp25ToLeftBankImages>;
-        case TrackElemType::DiagUp25ToRightBank:
+        case TrackElemType::diagUp25ToRightBank:
             return WoodenRCTrackDiagUp25ToBank<false, kDiagUp25ToRightBankImages>;
-        case TrackElemType::DiagLeftBankToDown25:
+        case TrackElemType::diagLeftBankToDown25:
             return ClassicWoodenTwisterRCTrackDiagLeftBankToDown25;
-        case TrackElemType::DiagRightBankToDown25:
+        case TrackElemType::diagRightBankToDown25:
             return ClassicWoodenTwisterRCTrackDiagRightBankToDown25;
 
-        case TrackElemType::DiagLeftBank:
+        case TrackElemType::diagLeftBank:
             return WoodenRCTrackDiagLeftBank<false, kDiagLeftBankImages>;
-        case TrackElemType::DiagRightBank:
+        case TrackElemType::diagRightBank:
             return ClassicWoodenTwisterRCTrackDiagRightBank;
 
-        case TrackElemType::LeftEighthBankToDiag:
+        case TrackElemType::leftEighthBankToDiag:
             return WoodenRCTrackLeftEighthBankToDiag<false, kLeftEighthBankToDiagImages>;
-        case TrackElemType::RightEighthBankToDiag:
+        case TrackElemType::rightEighthBankToDiag:
             return WoodenRCTrackRightEighthBankToDiag<false, kRightEighthBankToDiagImages>;
-        case TrackElemType::LeftEighthBankToOrthogonal:
+        case TrackElemType::leftEighthBankToOrthogonal:
             return ClassicWoodenTwisterRCTrackLeftEighthBankToOrthogonal;
-        case TrackElemType::RightEighthBankToOrthogonal:
+        case TrackElemType::rightEighthBankToOrthogonal:
             return ClassicWoodenTwisterRCTrackRightEighthBankToOrthogonal;
 
         default:

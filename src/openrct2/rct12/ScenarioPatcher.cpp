@@ -45,6 +45,7 @@
 #include <iostream>
 
 using namespace OpenRCT2;
+using OpenRCT2::GameActions::CommandFlag;
 
 static bool _dryRun = false;
 
@@ -284,13 +285,13 @@ static void ApplyWaterFixes(const json_t& scenarioPatch)
 static TrackElemType toTrackType(const u8string_view trackTypeString)
 {
     if (trackTypeString == "flat")
-        return TrackElemType::Flat;
+        return TrackElemType::flat;
     else if (trackTypeString == "flat_covered")
-        return TrackElemType::FlatCovered;
+        return TrackElemType::flatCovered;
     else
     {
         Guard::Assert(0, "Unsupported track type conversion");
-        return TrackElemType::None;
+        return TrackElemType::none;
     }
 }
 
@@ -531,7 +532,7 @@ static void SwapRideEntranceAndExit(RideId rideId)
         FootpathQueueChainReset();
         FootpathConnectEdges(
             entranceCoords.ToCoordsXY(), reinterpret_cast<TileElement*>(entranceElement),
-            GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
+            { CommandFlag::apply, CommandFlag::allowDuringPaused });
         FootpathUpdateQueueChains();
     }
 }
@@ -662,7 +663,7 @@ static void ApplyPathFixes(const json_t& scenarioPatch)
                 coordinate.ToCoordsXYZ(), slope, surfaceObjIndex, railingsObjIndex, direction, constructionFlags);
             auto& gameState = getGameState();
             auto result = footpathPlaceAction.Execute(gameState);
-            if (result.Error != GameActions::Status::Ok)
+            if (result.error != GameActions::Status::ok)
             {
                 Guard::Assert(0, "Could not patch path");
             }

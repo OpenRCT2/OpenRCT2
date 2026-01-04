@@ -50,6 +50,8 @@
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::TrackMetaData;
+using OpenRCT2::GameActions::CommandFlag;
+using OpenRCT2::GameActions::CommandFlags;
 
 money64 _currentTrackPrice;
 
@@ -533,7 +535,6 @@ void RideConstructionInvalidateCurrentTrack()
             {
                 _currentTrackSelectionFlags.unset(TrackSelectionFlag::arrow);
                 gMapSelectFlags.unset(MapSelectFlag::enableArrow);
-                MapInvalidateTileFull(_currentTrackBegin);
             }
             RideConstructionRemoveGhosts();
             break;
@@ -555,20 +556,20 @@ static void ride_construction_reset_current_piece()
     if (rtd.HasFlag(RtdFlag::hasTrack) || ride->numStations == 0)
     {
         _currentlySelectedTrack = rtd.StartTrackPiece;
-        _currentTrackPitchEnd = TrackPitch::None;
-        _currentTrackRollEnd = TrackRoll::None;
+        _currentTrackPitchEnd = TrackPitch::none;
+        _currentTrackRollEnd = TrackRoll::none;
         _currentTrackHasLiftHill = false;
         _currentTrackAlternative.clearAll();
         if (rtd.HasFlag(RtdFlag::startConstructionInverted))
         {
             _currentTrackAlternative.set(AlternativeTrackFlag::inverted);
         }
-        _previousTrackPitchEnd = TrackPitch::None;
-        _previousTrackRollEnd = TrackRoll::None;
+        _previousTrackPitchEnd = TrackPitch::none;
+        _previousTrackRollEnd = TrackRoll::none;
     }
     else
     {
-        _currentlySelectedTrack = TrackElemType::None;
+        _currentlySelectedTrack = TrackElemType::none;
         _rideConstructionState = RideConstructionState::State0;
     }
 }
@@ -633,9 +634,9 @@ void RideConstructionSetDefaultNextPiece()
             // Set track banking
             if (rtd.HasFlag(RtdFlag::hasInvertedVariant))
             {
-                if (bank == TrackRoll::UpsideDown)
+                if (bank == TrackRoll::upsideDown)
                 {
-                    bank = TrackRoll::None;
+                    bank = TrackRoll::none;
                     _currentTrackAlternative.flip(AlternativeTrackFlag::inverted);
                 }
             }
@@ -648,7 +649,7 @@ void RideConstructionSetDefaultNextPiece()
             _currentTrackPitchEnd = slope;
             _previousTrackPitchEnd = slope;
             _currentTrackHasLiftHill = trackElement->HasChain()
-                && ((slope != TrackPitch::Down25 && slope != TrackPitch::Down60)
+                && ((slope != TrackPitch::down25 && slope != TrackPitch::down60)
                     || getGameState().cheats.enableChainLiftOnAllTrack);
 
             if (TrackTypeHasSpeedSetting(trackElement->GetTrackType()))
@@ -692,9 +693,9 @@ void RideConstructionSetDefaultNextPiece()
             // Set track banking
             if (rtd.HasFlag(RtdFlag::hasInvertedVariant))
             {
-                if (bank == TrackRoll::UpsideDown)
+                if (bank == TrackRoll::upsideDown)
                 {
-                    bank = TrackRoll::None;
+                    bank = TrackRoll::none;
                     _currentTrackAlternative.flip(AlternativeTrackFlag::inverted);
                 }
             }
@@ -888,7 +889,7 @@ static bool ride_modify_entrance_or_exit(const CoordsXYE& tileElement)
         gRideEntranceExitPlaceType = entranceType;
         gRideEntranceExitPlaceRideIndex = rideIndex;
         gRideEntranceExitPlaceStationIndex = stationIndex;
-        gInputFlags.set(InputFlag::unk6);
+        gInputFlags.set(InputFlag::allowRightMouseRemoval);
         if (_rideConstructionState != RideConstructionState::EntranceExit)
         {
             gRideEntranceExitPlacePreviousRideConstructionState = _rideConstructionState;
@@ -1079,19 +1080,19 @@ int32_t RideInitialiseConstructionWindow(Ride& ride)
     w = ride_create_or_find_construction_window(ride.id);
 
     ToolSet(*w, WC_RIDE_CONSTRUCTION__WIDX_CONSTRUCT, Tool::crosshair);
-    gInputFlags.set(InputFlag::unk6);
+    gInputFlags.set(InputFlag::allowRightMouseRemoval);
 
     _currentlySelectedTrack = ride.getRideTypeDescriptor().StartTrackPiece;
-    _currentTrackPitchEnd = TrackPitch::None;
-    _currentTrackRollEnd = TrackRoll::None;
+    _currentTrackPitchEnd = TrackPitch::none;
+    _currentTrackRollEnd = TrackRoll::none;
     _currentTrackHasLiftHill = false;
     _currentTrackAlternative.clearAll();
 
     if (ride.getRideTypeDescriptor().HasFlag(RtdFlag::startConstructionInverted))
         _currentTrackAlternative.set(AlternativeTrackFlag::inverted);
 
-    _previousTrackRollEnd = TrackRoll::None;
-    _previousTrackPitchEnd = TrackPitch::None;
+    _previousTrackRollEnd = TrackRoll::none;
+    _previousTrackPitchEnd = TrackPitch::none;
 
     _currentTrackPieceDirection = 0;
     _rideConstructionState = RideConstructionState::Place;
@@ -1132,11 +1133,11 @@ money64 RideGetRefundPrice(const Ride& ride)
         auto trackRemoveAction = GameActions::TrackRemoveAction(
             trackElement.element->AsTrack()->GetTrackType(), trackElement.element->AsTrack()->GetSequenceIndex(),
             { trackElement.x, trackElement.y, trackElement.element->GetBaseZ(), direction });
-        trackRemoveAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
+        trackRemoveAction.SetFlags(CommandFlag::allowDuringPaused);
 
         auto res = GameActions::Query(&trackRemoveAction, getGameState());
 
-        cost += res.Cost;
+        cost += res.cost;
 
         if (!TrackBlockGetNext(&trackElement, &trackElement, nullptr, nullptr))
         {
@@ -1163,18 +1164,18 @@ money64 SetOperatingSetting(RideId rideId, GameActions::RideSetSetting setting, 
 {
     auto rideSetSetting = GameActions::RideSetSettingAction(rideId, setting, value);
     auto res = GameActions::Execute(&rideSetSetting, getGameState());
-    return res.Error == GameActions::Status::Ok ? 0 : kMoney64Undefined;
+    return res.error == GameActions::Status::ok ? 0 : kMoney64Undefined;
 }
 
-money64 SetOperatingSettingNested(RideId rideId, GameActions::RideSetSetting setting, uint8_t value, uint8_t flags)
+money64 SetOperatingSettingNested(RideId rideId, GameActions::RideSetSetting setting, uint8_t value, CommandFlags flags)
 {
     auto rideSetSetting = GameActions::RideSetSettingAction(rideId, setting, value);
     rideSetSetting.SetFlags(flags);
 
     auto& gameState = getGameState();
-    auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&rideSetSetting, gameState)
-                                               : GameActions::QueryNested(&rideSetSetting, gameState);
-    return res.Error == GameActions::Status::Ok ? 0 : kMoney64Undefined;
+    auto res = flags.has(CommandFlag::apply) ? GameActions::ExecuteNested(&rideSetSetting, gameState)
+                                             : GameActions::QueryNested(&rideSetSetting, gameState);
+    return res.error == GameActions::Status::ok ? 0 : kMoney64Undefined;
 }
 
 /**
@@ -1224,7 +1225,7 @@ void Ride::validateStations()
 
                     const auto& ted = GetTrackElementDescriptor(tileElement->AsTrack()->GetTrackType());
                     // keep searching for a station piece (coaster station, tower ride base, shops, and flat ride base)
-                    if (!(ted.sequences[0].flags & TRACK_SEQUENCE_FLAG_ORIGIN))
+                    if (!ted.sequences[0].flags.has(SequenceFlag::trackOrigin))
                         continue;
 
                     trackFound = true;
@@ -1274,7 +1275,7 @@ void Ride::validateStations()
                         continue;
 
                     const auto& ted2 = GetTrackElementDescriptor(tileElement->AsTrack()->GetTrackType());
-                    if (!(ted2.sequences[0].flags & TRACK_SEQUENCE_FLAG_ORIGIN))
+                    if (!ted2.sequences[0].flags.has(SequenceFlag::trackOrigin))
                         continue;
 
                     trackFound = true;
@@ -1372,7 +1373,7 @@ void Ride::validateStations()
 
                 // get the StationIndex for the station
                 StationIndex stationId = StationIndex::FromUnderlying(0);
-                if (trackType != TrackElemType::Maze)
+                if (trackType != TrackElemType::maze)
                 {
                     uint8_t trackSequence = trackElement->AsTrack()->GetSequenceIndex();
 
@@ -1381,7 +1382,8 @@ void Ride::validateStations()
 
                     // if the ride entrance is not on a valid side, remove it
                     const auto& ted = GetTrackElementDescriptor(trackType);
-                    if (!(ted.sequences[trackSequence].flags & (1 << direction)))
+                    auto connectionSides = ted.sequences[trackSequence].getEntranceConnectionSides();
+                    if (!(connectionSides & (1 << direction)))
                     {
                         continue;
                     }
@@ -1538,5 +1540,5 @@ OpenRCT2::TrackElemType GetTrackTypeFromCurve(
         return trackDescriptor->trackElement;
     }
 
-    return TrackElemType::None;
+    return TrackElemType::none;
 }

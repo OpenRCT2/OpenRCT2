@@ -9,6 +9,11 @@
 
 #include "ZoomLevel.h"
 
+ZoomLevel ZoomLevel::min()
+{
+    return ZoomLevel{ -2 };
+}
+
 ZoomLevel ZoomLevel::operator++(int)
 {
     ZoomLevel tmp(*this);

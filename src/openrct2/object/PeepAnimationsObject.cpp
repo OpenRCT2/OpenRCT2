@@ -205,7 +205,7 @@ namespace OpenRCT2
         return _animationGroups[EnumValue(animGroup)].isSlowWalking;
     }
 
-    void PeepAnimationsObject::DrawPreview(RenderTarget& rt, int32_t width, int32_t height) const
+    void PeepAnimationsObject::DrawPreview(Drawing::RenderTarget& rt, int32_t width, int32_t height) const
     {
         auto centre = ScreenCoordsXY{ width / 2, height / 2 };
 

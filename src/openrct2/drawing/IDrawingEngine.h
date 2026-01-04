@@ -38,8 +38,6 @@ enum DrawingEngineFlag
 };
 using DrawingEngineFlags = FlagHolder<uint8_t, DrawingEngineFlag>;
 
-struct RenderTarget;
-
 namespace OpenRCT2::Ui
 {
     struct IUiContext;
@@ -48,6 +46,7 @@ namespace OpenRCT2::Ui
 namespace OpenRCT2::Drawing
 {
     struct IDrawingContext;
+    struct RenderTarget;
 
     struct IDrawingEngine
     {

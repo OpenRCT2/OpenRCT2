@@ -94,7 +94,7 @@ static void HeartlineTwisterRCTrackFlat(
         }
     }
 
-    DrawSupportForSequenceA<TrackElemType::Flat>(
+    DrawSupportForSequenceA<TrackElemType::flat>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -124,7 +124,7 @@ static void HeartlineTwisterRCTrackStation(
         PaintAddImageAsParentRotated(
             session, direction, session.TrackColours.WithIndex(imageIds[direction][1]), { 0, 0, height },
             { { 0, 27, height }, { 32, 1, 26 } });
-        DrawSupportForSequenceA<TrackElemType::Flat>(
+        DrawSupportForSequenceA<TrackElemType::flat>(
             session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
     }
     TrackPaintUtilDrawStationTunnel(session, direction, height);
@@ -214,7 +214,7 @@ static void HeartlineTwisterRCTrack25DegUp(
         }
     }
 
-    DrawSupportForSequenceA<TrackElemType::Up25>(
+    DrawSupportForSequenceA<TrackElemType::up25>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
     if (direction == 0 || direction == 3)
@@ -311,7 +311,7 @@ static void HeartlineTwisterRCTrack60DegUp(
         }
     }
 
-    DrawSupportForSequenceA<TrackElemType::Up60>(
+    DrawSupportForSequenceA<TrackElemType::up60>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
     if (direction == 0 || direction == 3)
@@ -408,7 +408,7 @@ static void HeartlineTwisterRCTrackFlatTo25DegUp(
         }
     }
 
-    DrawSupportForSequenceA<TrackElemType::FlatToUp25>(
+    DrawSupportForSequenceA<TrackElemType::flatToUp25>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
     if (direction == 0 || direction == 3)
@@ -505,7 +505,7 @@ static void HeartlineTwisterRCTrack25DegUpTo60DegUp(
         }
     }
 
-    DrawSupportForSequenceA<TrackElemType::Up25ToUp60>(
+    DrawSupportForSequenceA<TrackElemType::up25ToUp60>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
     if (direction == 0 || direction == 3)
@@ -602,7 +602,7 @@ static void HeartlineTwisterRCTrack60DegUpTo25DegUp(
         }
     }
 
-    DrawSupportForSequenceA<TrackElemType::Up60ToUp25>(
+    DrawSupportForSequenceA<TrackElemType::up60ToUp25>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
     if (direction == 0 || direction == 3)
@@ -699,7 +699,7 @@ static void HeartlineTwisterRCTrack25DegUpToFlat(
         }
     }
 
-    DrawSupportForSequenceA<TrackElemType::Up25ToFlat>(
+    DrawSupportForSequenceA<TrackElemType::up25ToFlat>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
     if (direction == 0 || direction == 3)
@@ -808,7 +808,7 @@ static void HeartlineTwisterRCTrackHeartlineTransferUp(
                     break;
             }
 
-            DrawSupportForSequenceA<TrackElemType::HeartLineTransferUp>(
+            DrawSupportForSequenceA<TrackElemType::heartLineTransferUp>(
                 session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
             if (direction == 0 || direction == 3)
@@ -883,7 +883,7 @@ static void HeartlineTwisterRCTrackHeartlineTransferUp(
                     break;
             }
 
-            DrawSupportForSequenceA<TrackElemType::HeartLineTransferUp>(
+            DrawSupportForSequenceA<TrackElemType::heartLineTransferUp>(
                 session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -926,7 +926,7 @@ static void HeartlineTwisterRCTrackHeartlineTransferUp(
                     break;
             }
 
-            DrawSupportForSequenceA<TrackElemType::HeartLineTransferUp>(
+            DrawSupportForSequenceA<TrackElemType::heartLineTransferUp>(
                 session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -1097,7 +1097,7 @@ static void HeartlineTwisterRCTrackHeartlineTransferDown(
                     break;
             }
 
-            DrawSupportForSequenceA<TrackElemType::HeartLineTransferDown>(
+            DrawSupportForSequenceA<TrackElemType::heartLineTransferDown>(
                 session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -1140,7 +1140,7 @@ static void HeartlineTwisterRCTrackHeartlineTransferDown(
                     break;
             }
 
-            DrawSupportForSequenceA<TrackElemType::HeartLineTransferDown>(
+            DrawSupportForSequenceA<TrackElemType::heartLineTransferDown>(
                 session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -1183,7 +1183,7 @@ static void HeartlineTwisterRCTrackHeartlineTransferDown(
                     break;
             }
 
-            DrawSupportForSequenceA<TrackElemType::HeartLineTransferDown>(
+            DrawSupportForSequenceA<TrackElemType::heartLineTransferDown>(
                 session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
             if (direction == 0 || direction == 3)
@@ -1431,7 +1431,7 @@ static void HeartlineTwisterRCTrackLeftHeartlineRoll(
             break;
     }
 
-    DrawSupportForSequenceA<TrackElemType::LeftHeartLineRoll>(
+    DrawSupportForSequenceA<TrackElemType::leftHeartLineRoll>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -1670,7 +1670,7 @@ static void HeartlineTwisterRCTrackRightHeartlineRoll(
             break;
     }
 
-    DrawSupportForSequenceA<TrackElemType::RightHeartLineRoll>(
+    DrawSupportForSequenceA<TrackElemType::rightHeartLineRoll>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -1682,43 +1682,43 @@ TrackPaintFunction GetTrackPaintFunctionHeartlineTwisterRC(OpenRCT2::TrackElemTy
 {
     switch (trackType)
     {
-        case TrackElemType::Flat:
+        case TrackElemType::flat:
             return HeartlineTwisterRCTrackFlat;
-        case TrackElemType::EndStation:
-        case TrackElemType::BeginStation:
-        case TrackElemType::MiddleStation:
+        case TrackElemType::endStation:
+        case TrackElemType::beginStation:
+        case TrackElemType::middleStation:
             return HeartlineTwisterRCTrackStation;
-        case TrackElemType::Up25:
+        case TrackElemType::up25:
             return HeartlineTwisterRCTrack25DegUp;
-        case TrackElemType::Up60:
+        case TrackElemType::up60:
             return HeartlineTwisterRCTrack60DegUp;
-        case TrackElemType::FlatToUp25:
+        case TrackElemType::flatToUp25:
             return HeartlineTwisterRCTrackFlatTo25DegUp;
-        case TrackElemType::Up25ToUp60:
+        case TrackElemType::up25ToUp60:
             return HeartlineTwisterRCTrack25DegUpTo60DegUp;
-        case TrackElemType::Up60ToUp25:
+        case TrackElemType::up60ToUp25:
             return HeartlineTwisterRCTrack60DegUpTo25DegUp;
-        case TrackElemType::Up25ToFlat:
+        case TrackElemType::up25ToFlat:
             return HeartlineTwisterRCTrack25DegUpToFlat;
-        case TrackElemType::Down25:
+        case TrackElemType::down25:
             return HeartlineTwisterRCTrack25DegDown;
-        case TrackElemType::Down60:
+        case TrackElemType::down60:
             return HeartlineTwisterRCTrack60DegDown;
-        case TrackElemType::FlatToDown25:
+        case TrackElemType::flatToDown25:
             return HeartlineTwisterRCTrackFlatTo25DegDown;
-        case TrackElemType::Down25ToDown60:
+        case TrackElemType::down25ToDown60:
             return HeartlineTwisterRCTrack25DegDownTo60DegDown;
-        case TrackElemType::Down60ToDown25:
+        case TrackElemType::down60ToDown25:
             return HeartlineTwisterRCTrack60DegDownTo25DegDown;
-        case TrackElemType::Down25ToFlat:
+        case TrackElemType::down25ToFlat:
             return HeartlineTwisterRCTrack25DegDownToFlat;
-        case TrackElemType::HeartLineTransferUp:
+        case TrackElemType::heartLineTransferUp:
             return HeartlineTwisterRCTrackHeartlineTransferUp;
-        case TrackElemType::HeartLineTransferDown:
+        case TrackElemType::heartLineTransferDown:
             return HeartlineTwisterRCTrackHeartlineTransferDown;
-        case TrackElemType::LeftHeartLineRoll:
+        case TrackElemType::leftHeartLineRoll:
             return HeartlineTwisterRCTrackLeftHeartlineRoll;
-        case TrackElemType::RightHeartLineRoll:
+        case TrackElemType::rightHeartLineRoll:
             return HeartlineTwisterRCTrackRightHeartlineRoll;
         default:
             return TrackPaintFunctionDummy;

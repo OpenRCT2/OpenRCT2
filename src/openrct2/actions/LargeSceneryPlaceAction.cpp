@@ -67,12 +67,12 @@ namespace OpenRCT2::GameActions
     Result LargeSceneryPlaceAction::Query(GameState_t& gameState) const
     {
         auto res = Result();
-        res.ErrorTitle = STR_CANT_POSITION_THIS_HERE;
-        res.Expenditure = ExpenditureType::landscaping;
+        res.errorTitle = STR_CANT_POSITION_THIS_HERE;
+        res.expenditure = ExpenditureType::landscaping;
         int16_t surfaceHeight = TileElementHeight(_loc);
-        res.Position.x = _loc.x + 16;
-        res.Position.y = _loc.y + 16;
-        res.Position.z = surfaceHeight;
+        res.position.x = _loc.x + 16;
+        res.position.y = _loc.y + 16;
+        res.position.z = surfaceHeight;
 
         auto resultData = LargeSceneryPlaceActionResult{};
 
@@ -81,29 +81,29 @@ namespace OpenRCT2::GameActions
         if (_primaryColour >= COLOUR_COUNT)
         {
             LOG_ERROR("Invalid primary colour %u", _primaryColour);
-            return Result(Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_ERR_INVALID_COLOUR);
+            return Result(Status::invalidParameters, STR_CANT_POSITION_THIS_HERE, STR_ERR_INVALID_COLOUR);
         }
         else if (_secondaryColour >= COLOUR_COUNT)
         {
             LOG_ERROR("Invalid secondary colour %u", _secondaryColour);
-            return Result(Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_ERR_INVALID_COLOUR);
+            return Result(Status::invalidParameters, STR_CANT_POSITION_THIS_HERE, STR_ERR_INVALID_COLOUR);
         }
         else if (_tertiaryColour >= COLOUR_COUNT)
         {
             LOG_ERROR("Invalid tertiary colour %u", _tertiaryColour);
-            return Result(Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_ERR_INVALID_COLOUR);
+            return Result(Status::invalidParameters, STR_CANT_POSITION_THIS_HERE, STR_ERR_INVALID_COLOUR);
         }
         else if (_sceneryType >= kMaxLargeSceneryObjects)
         {
             LOG_ERROR("Invalid sceneryType %u", _sceneryType);
-            return Result(Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_ERR_VALUE_OUT_OF_RANGE);
+            return Result(Status::invalidParameters, STR_CANT_POSITION_THIS_HERE, STR_ERR_VALUE_OUT_OF_RANGE);
         }
 
         auto* sceneryEntry = ObjectManager::GetObjectEntry<LargeSceneryEntry>(_sceneryType);
         if (sceneryEntry == nullptr)
         {
             LOG_ERROR("Large scenery entry not found for sceneryType %u", _sceneryType);
-            return Result(Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_UNKNOWN_OBJECT_TYPE);
+            return Result(Status::invalidParameters, STR_CANT_POSITION_THIS_HERE, STR_UNKNOWN_OBJECT_TYPE);
         }
 
         const auto totalNumTiles = sceneryEntry->tiles.size();
@@ -114,14 +114,14 @@ namespace OpenRCT2::GameActions
             maxHeight = _loc.z;
         }
 
-        res.Position.z = maxHeight;
+        res.position.z = maxHeight;
 
         if (sceneryEntry->scrolling_mode != kScrollingModeNone)
         {
             if (HasReachedBannerLimit())
             {
                 LOG_ERROR("No free banners available");
-                return Result(Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_TOO_MANY_BANNERS_IN_GAME);
+                return Result(Status::invalidParameters, STR_CANT_POSITION_THIS_HERE, STR_TOO_MANY_BANNERS_IN_GAME);
             }
         }
 
@@ -138,28 +138,28 @@ namespace OpenRCT2::GameActions
             QuarterTile quarterTile = QuarterTile{ tile.corners, 0 }.Rotate(_loc.direction);
             const auto isTree = (sceneryEntry->flags & LARGE_SCENERY_FLAG_IS_TREE) != 0;
             auto canBuild = MapCanConstructWithClearAt(
-                { curTile, zLow, zHigh }, &MapPlaceSceneryClearFunc, quarterTile, GetFlags(), kTileSlopeFlat,
+                { curTile, zLow, zHigh }, MapPlaceSceneryClearFunc, quarterTile, GetFlags(), kTileSlopeFlat,
                 CreateCrossingMode::none, isTree);
-            if (canBuild.Error != Status::Ok)
+            if (canBuild.error != Status::ok)
             {
-                canBuild.ErrorTitle = STR_CANT_POSITION_THIS_HERE;
+                canBuild.errorTitle = STR_CANT_POSITION_THIS_HERE;
                 return canBuild;
             }
 
-            supportsCost += canBuild.Cost;
+            supportsCost += canBuild.cost;
 
-            const auto clearanceData = canBuild.GetData<ConstructClearResult>();
+            const auto clearanceData = canBuild.getData<ConstructClearResult>();
             int32_t tempSceneryGroundFlags = clearanceData.GroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
             if (!gameState.cheats.disableClearanceChecks)
             {
                 if ((clearanceData.GroundFlags & ELEMENT_IS_UNDERWATER) || (clearanceData.GroundFlags & ELEMENT_IS_UNDERGROUND))
                 {
-                    return Result(Status::Disallowed, STR_CANT_POSITION_THIS_HERE, STR_CANT_BUILD_THIS_UNDERWATER);
+                    return Result(Status::disallowed, STR_CANT_POSITION_THIS_HERE, STR_CANT_BUILD_THIS_UNDERWATER);
                 }
                 if (resultData.GroundFlags && !(resultData.GroundFlags & tempSceneryGroundFlags))
                 {
                     return Result(
-                        Status::Disallowed, STR_CANT_POSITION_THIS_HERE, STR_CANT_BUILD_PARTLY_ABOVE_AND_PARTLY_BELOW_GROUND);
+                        Status::disallowed, STR_CANT_POSITION_THIS_HERE, STR_CANT_BUILD_PARTLY_ABOVE_AND_PARTLY_BELOW_GROUND);
                 }
             }
 
@@ -167,27 +167,27 @@ namespace OpenRCT2::GameActions
 
             if (!LocationValid(curTile) || MapIsEdge(curTile))
             {
-                return Result(Status::Disallowed, STR_CANT_POSITION_THIS_HERE, STR_OFF_EDGE_OF_MAP);
+                return Result(Status::disallowed, STR_CANT_POSITION_THIS_HERE, STR_OFF_EDGE_OF_MAP);
             }
 
             if (gLegacyScene != LegacyScene::scenarioEditor && !MapIsLocationOwned({ curTile, zLow })
                 && !gameState.cheats.sandboxMode)
             {
-                return Result(Status::Disallowed, STR_CANT_POSITION_THIS_HERE, STR_LAND_NOT_OWNED_BY_PARK);
+                return Result(Status::disallowed, STR_CANT_POSITION_THIS_HERE, STR_LAND_NOT_OWNED_BY_PARK);
             }
         }
 
         if (!CheckMapCapacity(sceneryEntry->tiles, totalNumTiles))
         {
             LOG_ERROR("No free map elements available");
-            return Result(Status::NoFreeElements, STR_CANT_POSITION_THIS_HERE, STR_TILE_ELEMENT_LIMIT_REACHED);
+            return Result(Status::noFreeElements, STR_CANT_POSITION_THIS_HERE, STR_TILE_ELEMENT_LIMIT_REACHED);
         }
 
         // Force ride construction to recheck area
         _currentTrackSelectionFlags.set(TrackSelectionFlag::recheck);
 
-        res.Cost = sceneryEntry->price + supportsCost;
-        res.SetData(std::move(resultData));
+        res.cost = sceneryEntry->price + supportsCost;
+        res.setData(std::move(resultData));
 
         return res;
     }
@@ -195,13 +195,13 @@ namespace OpenRCT2::GameActions
     Result LargeSceneryPlaceAction::Execute(GameState_t& gameState) const
     {
         auto res = Result();
-        res.ErrorTitle = STR_CANT_POSITION_THIS_HERE;
-        res.Expenditure = ExpenditureType::landscaping;
+        res.errorTitle = STR_CANT_POSITION_THIS_HERE;
+        res.expenditure = ExpenditureType::landscaping;
 
         int16_t surfaceHeight = TileElementHeight(_loc);
-        res.Position.x = _loc.x + 16;
-        res.Position.y = _loc.y + 16;
-        res.Position.z = surfaceHeight;
+        res.position.x = _loc.x + 16;
+        res.position.y = _loc.y + 16;
+        res.position.z = surfaceHeight;
 
         auto resultData = LargeSceneryPlaceActionResult{};
 
@@ -211,13 +211,13 @@ namespace OpenRCT2::GameActions
         if (sceneryEntry == nullptr)
         {
             LOG_ERROR("Large scenery entry not found for sceneryType = %u", _sceneryType);
-            return Result(Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_UNKNOWN_OBJECT_TYPE);
+            return Result(Status::invalidParameters, STR_CANT_POSITION_THIS_HERE, STR_UNKNOWN_OBJECT_TYPE);
         }
 
         if (sceneryEntry->tiles.empty())
         {
             LOG_ERROR("Invalid large scenery object, sceneryType = %u", _sceneryType);
-            return Result(Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, kStringIdNone);
+            return Result(Status::invalidParameters, STR_CANT_POSITION_THIS_HERE, kStringIdNone);
         }
 
         int16_t maxHeight = GetMaxSurfaceHeight(sceneryEntry->tiles);
@@ -227,7 +227,7 @@ namespace OpenRCT2::GameActions
             maxHeight = _loc.z;
         }
 
-        res.Position.z = maxHeight;
+        res.position.z = maxHeight;
 
         // Allocate banner
         Banner* banner = nullptr;
@@ -237,12 +237,12 @@ namespace OpenRCT2::GameActions
             if (banner == nullptr)
             {
                 LOG_ERROR("No free banners available");
-                return Result(Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_TOO_MANY_BANNERS_IN_GAME);
+                return Result(Status::invalidParameters, STR_CANT_POSITION_THIS_HERE, STR_TOO_MANY_BANNERS_IN_GAME);
             }
 
             banner->text = {};
             banner->colour = 2;
-            banner->textColour = TextColour::white;
+            banner->textColour = Drawing::TextColour::white;
             banner->flags = { BannerFlag::isLargeScenery };
             banner->type = 0;
             banner->position = TileCoordsXY(_loc);
@@ -270,24 +270,24 @@ namespace OpenRCT2::GameActions
             QuarterTile quarterTile = QuarterTile{ tile.corners, 0 }.Rotate(_loc.direction);
             const auto isTree = (sceneryEntry->flags & LARGE_SCENERY_FLAG_IS_TREE) != 0;
             auto canBuild = MapCanConstructWithClearAt(
-                { curTile, zLow, zHigh }, &MapPlaceSceneryClearFunc, quarterTile, GetFlags(), kTileSlopeFlat,
+                { curTile, zLow, zHigh }, MapPlaceSceneryClearFunc, quarterTile, GetFlags(), kTileSlopeFlat,
                 CreateCrossingMode::none, isTree);
-            if (canBuild.Error != Status::Ok)
+            if (canBuild.error != Status::ok)
             {
                 if (banner != nullptr)
                 {
                     DeleteBanner(banner->id);
                 }
-                canBuild.ErrorTitle = STR_CANT_POSITION_THIS_HERE;
+                canBuild.errorTitle = STR_CANT_POSITION_THIS_HERE;
                 return canBuild;
             }
 
-            supportsCost += canBuild.Cost;
+            supportsCost += canBuild.cost;
 
-            const auto clearanceData = canBuild.GetData<ConstructClearResult>();
+            const auto clearanceData = canBuild.getData<ConstructClearResult>();
             resultData.GroundFlags = clearanceData.GroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
 
-            if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
+            if (!GetFlags().has(CommandFlag::ghost))
             {
                 FootpathRemoveLitter({ curTile, zLow });
                 if (!getGameState().cheats.disableClearanceChecks)
@@ -319,8 +319,8 @@ namespace OpenRCT2::GameActions
         // Force ride construction to recheck area
         _currentTrackSelectionFlags.set(TrackSelectionFlag::recheck);
 
-        res.Cost = sceneryEntry->price + supportsCost;
-        res.SetData(std::move(resultData));
+        res.cost = sceneryEntry->price + supportsCost;
+        res.setData(std::move(resultData));
 
         return res;
     }
@@ -389,7 +389,7 @@ namespace OpenRCT2::GameActions
         sceneryElement.SetSecondaryColour(_secondaryColour);
         sceneryElement.SetTertiaryColour(_tertiaryColour);
 
-        if (GetFlags() & GAME_COMMAND_FLAG_GHOST)
+        if (GetFlags().has(CommandFlag::ghost))
         {
             sceneryElement.SetGhost(true);
         }

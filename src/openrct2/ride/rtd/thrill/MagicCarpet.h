@@ -20,7 +20,7 @@ namespace OpenRCT2
 constexpr RideTypeDescriptor MagicCarpetRTD =
 {
     .Category = RideCategory::thrill,
-    .StartTrackPiece = TrackElemType::FlatTrack1x4A,
+    .StartTrackPiece = TrackElemType::flatTrack1x4A,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::magicCarpet,
         .enabledTrackGroups = {},

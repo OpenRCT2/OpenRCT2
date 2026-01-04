@@ -162,7 +162,7 @@ namespace OpenRCT2::CommandLine::Sprite
         }
     }
 
-    std::optional<ImageImporter::ImportResult> SpriteImageImport(u8string_view path, ImageImportMeta meta)
+    std::optional<Image> SpriteImageLoad(u8string_view path, ImageImportMeta meta)
     {
         try
         {
@@ -171,11 +171,7 @@ namespace OpenRCT2::CommandLine::Sprite
             {
                 format = ImageFormat::png;
             }
-
-            ImageImporter importer;
-            auto image = Imaging::ReadFromFile(path, format);
-
-            return importer.Import(image, meta);
+            return Imaging::ReadFromFile(path, format);
         }
         catch (const std::exception& e)
         {

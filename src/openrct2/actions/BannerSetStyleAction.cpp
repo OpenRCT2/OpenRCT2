@@ -11,6 +11,7 @@
 
 #include "../Context.h"
 #include "../Diagnostic.h"
+#include "../drawing/ScrollingText.h"
 #include "../localisation/StringIdType.h"
 #include "../management/Finance.h"
 #include "../windows/Intent.h"
@@ -61,19 +62,19 @@ namespace OpenRCT2::GameActions
         if (banner == nullptr)
         {
             LOG_ERROR("Banner not found for bannerIndex %d", _bannerIndex);
-            return Result(Status::InvalidParameters, errorTitle, STR_ERR_BANNER_ELEMENT_NOT_FOUND);
+            return Result(Status::invalidParameters, errorTitle, STR_ERR_BANNER_ELEMENT_NOT_FOUND);
         }
 
-        res.Expenditure = ExpenditureType::landscaping;
+        res.expenditure = ExpenditureType::landscaping;
         auto location = banner->position.ToCoordsXY().ToTileCentre();
-        res.Position = { location, TileElementHeight(location) };
+        res.position = { location, TileElementHeight(location) };
 
         TileElement* tileElement = BannerGetTileElement(_bannerIndex);
 
         if (tileElement == nullptr)
         {
             LOG_ERROR("Banner tile element not found for bannerIndex %d", _bannerIndex);
-            return Result(Status::InvalidParameters, errorTitle, STR_ERR_BANNER_ELEMENT_NOT_FOUND);
+            return Result(Status::invalidParameters, errorTitle, STR_ERR_BANNER_ELEMENT_NOT_FOUND);
         }
 
         BannerElement* bannerElement = tileElement->AsBanner();
@@ -81,11 +82,11 @@ namespace OpenRCT2::GameActions
 
         if (!LocationValid(loc))
         {
-            return Result(Status::InvalidParameters, errorTitle, STR_OFF_EDGE_OF_MAP);
+            return Result(Status::invalidParameters, errorTitle, STR_OFF_EDGE_OF_MAP);
         }
         if (!MapCanBuildAt({ loc.x, loc.y, loc.z - 16 }))
         {
-            return Result(Status::NotOwned, errorTitle, STR_LAND_NOT_OWNED_BY_PARK);
+            return Result(Status::notOwned, errorTitle, STR_LAND_NOT_OWNED_BY_PARK);
         }
 
         switch (_type)
@@ -94,7 +95,7 @@ namespace OpenRCT2::GameActions
                 if (_parameter > COLOUR_COUNT)
                 {
                     LOG_ERROR("Invalid primary colour %u", _parameter);
-                    return Result(Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_ERR_INVALID_COLOUR);
+                    return Result(Status::invalidParameters, STR_CANT_REPAINT_THIS, STR_ERR_INVALID_COLOUR);
                 }
                 break;
 
@@ -102,19 +103,19 @@ namespace OpenRCT2::GameActions
                 if (_parameter > 13)
                 {
                     LOG_ERROR("Invalid text colour %u", _parameter);
-                    return Result(Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_ERR_INVALID_COLOUR);
+                    return Result(Status::invalidParameters, STR_CANT_REPAINT_THIS, STR_ERR_INVALID_COLOUR);
                 }
                 break;
             case BannerSetStyleType::NoEntry:
                 if (tileElement->AsBanner() == nullptr)
                 {
                     LOG_ERROR("Tile element was not a banner.");
-                    return Result(Status::Unknown, STR_CANT_RENAME_BANNER, kStringIdNone);
+                    return Result(Status::unknown, STR_CANT_RENAME_BANNER, kStringIdNone);
                 }
                 break;
             default:
                 LOG_ERROR("Invalid banner style type %u", _type);
-                return Result(Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_ERR_VALUE_OUT_OF_RANGE);
+                return Result(Status::invalidParameters, STR_CANT_REPAINT_THIS, STR_ERR_VALUE_OUT_OF_RANGE);
         }
         return res;
     }
@@ -127,19 +128,19 @@ namespace OpenRCT2::GameActions
         if (banner == nullptr)
         {
             LOG_ERROR("Banner not found for bannerIndex %d", _bannerIndex);
-            return Result(Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_ERR_BANNER_ELEMENT_NOT_FOUND);
+            return Result(Status::invalidParameters, STR_CANT_REPAINT_THIS, STR_ERR_BANNER_ELEMENT_NOT_FOUND);
         }
 
-        res.Expenditure = ExpenditureType::landscaping;
+        res.expenditure = ExpenditureType::landscaping;
         auto location = banner->position.ToCoordsXY().ToTileCentre();
-        res.Position = { location, TileElementHeight(location) };
+        res.position = { location, TileElementHeight(location) };
 
         TileElement* tileElement = BannerGetTileElement(_bannerIndex);
 
         if (tileElement == nullptr)
         {
             LOG_ERROR("Banner tile element not found for bannerIndex &u", _bannerIndex);
-            return Result(Status::InvalidParameters, STR_CANT_REPAINT_THIS, kStringIdNone);
+            return Result(Status::invalidParameters, STR_CANT_REPAINT_THIS, kStringIdNone);
         }
 
         switch (_type)
@@ -148,7 +149,7 @@ namespace OpenRCT2::GameActions
                 banner->colour = _parameter;
                 break;
             case BannerSetStyleType::TextColour:
-                banner->textColour = static_cast<TextColour>(_parameter);
+                banner->textColour = static_cast<Drawing::TextColour>(_parameter);
                 break;
             case BannerSetStyleType::NoEntry:
             {
@@ -156,7 +157,7 @@ namespace OpenRCT2::GameActions
                 if (bannerElement == nullptr)
                 {
                     LOG_ERROR("Tile element was not a banner.");
-                    return Result(Status::Unknown, STR_CANT_REPAINT_THIS, STR_ERR_BANNER_ELEMENT_NOT_FOUND);
+                    return Result(Status::unknown, STR_CANT_REPAINT_THIS, STR_ERR_BANNER_ELEMENT_NOT_FOUND);
                 }
 
                 banner->flags.set(BannerFlag::noEntry, (_parameter != 0));
@@ -170,14 +171,14 @@ namespace OpenRCT2::GameActions
             }
             default:
                 LOG_ERROR("Invalid banner style type %u", _type);
-                return Result(Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_ERR_VALUE_OUT_OF_RANGE);
+                return Result(Status::invalidParameters, STR_CANT_REPAINT_THIS, STR_ERR_VALUE_OUT_OF_RANGE);
         }
 
         auto intent = Intent(INTENT_ACTION_UPDATE_BANNER);
         intent.PutExtra(INTENT_EXTRA_BANNER_INDEX, _bannerIndex);
         ContextBroadcastIntent(&intent);
 
-        ScrollingTextInvalidate();
+        Drawing::ScrollingText::invalidate();
         GfxInvalidateScreen();
 
         return res;

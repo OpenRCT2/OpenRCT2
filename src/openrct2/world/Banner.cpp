@@ -389,7 +389,7 @@ void UnlinkAllBannersForRide(RideId rideId)
     auto& gameState = getGameState();
     for (auto& banner : gameState.banners)
     {
-        if (!banner.isNull() && (banner.flags.has(BannerFlag::linkedToRide)) && banner.rideIndex == rideId)
+        if (!banner.isNull() && banner.flags.has(BannerFlag::linkedToRide) && banner.rideIndex == rideId)
         {
             banner.flags.unset(BannerFlag::linkedToRide);
             banner.rideIndex = RideId::GetNull();
@@ -442,7 +442,7 @@ Banner* CreateBanner()
         banner->type = 0;
         banner->text = {};
         banner->colour = COLOUR_WHITE;
-        banner->textColour = TextColour::white;
+        banner->textColour = Drawing::TextColour::white;
     }
     return banner;
 }

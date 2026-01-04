@@ -94,7 +94,7 @@ namespace OpenRCT2::Ui
 
         if (scroll.flags & VSCROLLBAR_VISIBLE)
         {
-            int32_t size = widget->height() - 1;
+            int32_t size = widget->height() - 2;
             if (scroll.flags & HSCROLLBAR_VISIBLE)
                 size -= 11;
             size = std::max(0, scroll.contentHeight - size);
@@ -1024,7 +1024,7 @@ namespace OpenRCT2::Ui::Windows
      */
     void WindowDrawWidgets(WindowBase& w, RenderTarget& rt)
     {
-        if ((w.flags.has(WindowFlag::transparent)) && !(w.flags.has(WindowFlag::noBackground)))
+        if (w.flags.has(WindowFlag::transparent) && !w.flags.has(WindowFlag::noBackground))
             Rectangle::filter(
                 rt, { w.windowPos, w.windowPos + ScreenCoordsXY{ w.width - 1, w.height - 1 } }, FilterPaletteID::palette51);
 

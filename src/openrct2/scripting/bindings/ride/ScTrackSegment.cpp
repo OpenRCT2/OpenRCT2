@@ -50,21 +50,21 @@ void ScTrackSegment::Register(duk_context* ctx)
     dukglue_register_property(ctx, &ScTrackSegment::getTrackPitchDirection, nullptr, "slopeDirection");
 
     dukglue_register_property(
-        ctx, &ScTrackSegment::getTrackFlag<TRACK_ELEM_FLAG_ONLY_UNDERWATER>, nullptr, "onlyAllowedUnderwater");
+        ctx, &ScTrackSegment::getTrackFlag<TrackElementFlag::onlyUnderwater>, nullptr, "onlyAllowedUnderwater");
     dukglue_register_property(
-        ctx, &ScTrackSegment::getTrackFlag<TRACK_ELEM_FLAG_ONLY_ABOVE_GROUND>, nullptr, "onlyAllowedAboveGround");
-    dukglue_register_property(ctx, &ScTrackSegment::getTrackFlag<TRACK_ELEM_FLAG_ALLOW_LIFT_HILL>, nullptr, "allowsChainLift");
-    dukglue_register_property(ctx, &ScTrackSegment::getTrackFlag<TRACK_ELEM_FLAG_BANKED>, nullptr, "isBanked");
-    dukglue_register_property(ctx, &ScTrackSegment::getTrackFlag<TRACK_ELEM_FLAG_INVERSION_TO_NORMAL>, nullptr, "isInversion");
-    dukglue_register_property(ctx, &ScTrackSegment::getTrackFlag<TRACK_ELEM_FLAG_IS_STEEP_UP>, nullptr, "isSteepUp");
+        ctx, &ScTrackSegment::getTrackFlag<TrackElementFlag::onlyAboveGround>, nullptr, "onlyAllowedAboveGround");
+    dukglue_register_property(ctx, &ScTrackSegment::getTrackFlag<TrackElementFlag::allowLiftHill>, nullptr, "allowsChainLift");
+    dukglue_register_property(ctx, &ScTrackSegment::getTrackFlag<TrackElementFlag::banked>, nullptr, "isBanked");
+    dukglue_register_property(ctx, &ScTrackSegment::getTrackFlag<TrackElementFlag::inversionToNormal>, nullptr, "isInversion");
+    dukglue_register_property(ctx, &ScTrackSegment::getTrackFlag<TrackElementFlag::isSteepUp>, nullptr, "isSteepUp");
     dukglue_register_property(
-        ctx, &ScTrackSegment::getTrackFlag<TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT>, nullptr, "startsHalfHeightUp");
-    dukglue_register_property(ctx, &ScTrackSegment::getTrackFlag<TRACK_ELEM_FLAG_IS_GOLF_HOLE>, nullptr, "countsAsInversion");
-    dukglue_register_property(ctx, &ScTrackSegment::getTrackFlag<TRACK_ELEM_FLAG_TURN_BANKED>, nullptr, "isBankedTurn");
-    dukglue_register_property(ctx, &ScTrackSegment::getTrackFlag<TRACK_ELEM_FLAG_TURN_SLOPED>, nullptr, "isSlopedTurn");
-    dukglue_register_property(ctx, &ScTrackSegment::getTrackFlag<TRACK_ELEM_FLAG_HELIX>, nullptr, "isHelix");
+        ctx, &ScTrackSegment::getTrackFlag<TrackElementFlag::startsAtHalfHeight>, nullptr, "startsHalfHeightUp");
+    dukglue_register_property(ctx, &ScTrackSegment::getTrackFlag<TrackElementFlag::isGolfHole>, nullptr, "countsAsInversion");
+    dukglue_register_property(ctx, &ScTrackSegment::getTrackFlag<TrackElementFlag::turnBanked>, nullptr, "isBankedTurn");
+    dukglue_register_property(ctx, &ScTrackSegment::getTrackFlag<TrackElementFlag::turnSloped>, nullptr, "isSlopedTurn");
+    dukglue_register_property(ctx, &ScTrackSegment::getTrackFlag<TrackElementFlag::helix>, nullptr, "isHelix");
     dukglue_register_property(
-        ctx, &ScTrackSegment::getTrackFlag<TRACK_ELEM_FLAG_NORMAL_TO_INVERSION>, nullptr, "countsAsInversion");
+        ctx, &ScTrackSegment::getTrackFlag<TrackElementFlag::normalToInversion>, nullptr, "countsAsInversion");
 
     dukglue_register_method(ctx, &ScTrackSegment::getSubpositionLength, "getSubpositionLength");
     dukglue_register_method(ctx, &ScTrackSegment::getSubpositions, "getSubpositions");
@@ -199,15 +199,15 @@ static DukValue _trackCurveToString(duk_context* ctx, TrackCurve curve)
 {
     static const EnumMap<TrackCurve> map(
         {
-            { "straight", TrackCurve::None },
-            { "left", TrackCurve::Left },
-            { "right", TrackCurve::Right },
-            { "left_small", TrackCurve::LeftSmall },
-            { "right_small", TrackCurve::RightSmall },
-            { "left_very_small", TrackCurve::LeftVerySmall },
-            { "right_very_small", TrackCurve::RightVerySmall },
-            { "left_large", TrackCurve::LeftLarge },
-            { "right_large", TrackCurve::RightLarge },
+            { "straight", TrackCurve::none },
+            { "left", TrackCurve::left },
+            { "right", TrackCurve::right },
+            { "left_small", TrackCurve::leftSmall },
+            { "right_small", TrackCurve::rightSmall },
+            { "left_very_small", TrackCurve::leftVerySmall },
+            { "right_very_small", TrackCurve::rightVerySmall },
+            { "left_large", TrackCurve::leftLarge },
+            { "right_large", TrackCurve::rightLarge },
         });
 
     u8string text = u8string(map[curve]);
@@ -242,7 +242,7 @@ DukValue ScTrackSegment::getMirrorElement() const
 {
     const auto ctx = GetContext()->GetScriptEngine().GetContext();
     const auto& ted = GetTrackElementDescriptor(_type);
-    if (ted.mirrorElement == TrackElemType::None)
+    if (ted.mirrorElement == TrackElemType::none)
         return ToDuk(ctx, nullptr);
     return ToDuk<int32_t>(ctx, EnumValue(ted.mirrorElement));
 }
@@ -251,7 +251,7 @@ DukValue ScTrackSegment::getAlternativeElement() const
 {
     const auto ctx = GetContext()->GetScriptEngine().GetContext();
     const auto& ted = GetTrackElementDescriptor(_type);
-    if (ted.alternativeType == TrackElemType::None)
+    if (ted.alternativeType == TrackElemType::none)
         return ToDuk(ctx, nullptr);
     return ToDuk<int32_t>(ctx, EnumValue(ted.alternativeType));
 }
@@ -263,12 +263,12 @@ int32_t ScTrackSegment::getPriceModifier() const
     return ted.priceModifier;
 }
 
-template<uint16_t flag>
+template<TrackElementFlag flag>
 bool ScTrackSegment::getTrackFlag() const
 {
     const auto& ted = GetTrackElementDescriptor(_type);
 
-    return ted.flags & flag;
+    return ted.flags.has(flag);
 }
 
 int32_t ScTrackSegment::getTrackGroup() const
@@ -281,9 +281,9 @@ int32_t ScTrackSegment::getTrackGroup() const
 std::string ScTrackSegment::getTrackCurvature() const
 {
     const auto& ted = GetTrackElementDescriptor(_type);
-    if (ted.flags & TRACK_ELEM_FLAG_TURN_LEFT)
+    if (ted.flags.has(TrackElementFlag::turnLeft))
         return "left";
-    if (ted.flags & TRACK_ELEM_FLAG_TURN_RIGHT)
+    if (ted.flags.has(TrackElementFlag::turnRight))
         return "right";
     return "straight";
 }
@@ -291,9 +291,9 @@ std::string ScTrackSegment::getTrackCurvature() const
 std::string ScTrackSegment::getTrackPitchDirection() const
 {
     const auto& ted = GetTrackElementDescriptor(_type);
-    if (ted.flags & TRACK_ELEM_FLAG_UP)
+    if (ted.flags.has(TrackElementFlag::up))
         return "up";
-    if (ted.flags & TRACK_ELEM_FLAG_DOWN)
+    if (ted.flags.has(TrackElementFlag::down))
         return "down";
     return "flat";
 }

@@ -49,31 +49,31 @@ namespace OpenRCT2::GameActions
     Result WaterSetHeightAction::Query(GameState_t& gameState) const
     {
         auto res = Result();
-        res.Expenditure = ExpenditureType::landscaping;
-        res.Position = { _coords, _height * kCoordsZStep };
+        res.expenditure = ExpenditureType::landscaping;
+        res.position = { _coords, _height * kCoordsZStep };
 
         if (gLegacyScene != LegacyScene::scenarioEditor && !gameState.cheats.sandboxMode
             && gameState.park.flags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES)
         {
-            return Result(Status::Disallowed, kStringIdNone, STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY);
+            return Result(Status::disallowed, kStringIdNone, STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY);
         }
 
         StringId errorMsg = CheckParameters();
         if (errorMsg != kStringIdNone)
         {
-            return Result(Status::InvalidParameters, kStringIdNone, errorMsg);
+            return Result(Status::invalidParameters, kStringIdNone, errorMsg);
         }
 
         if (!LocationValid(_coords))
         {
-            return Result(Status::NotOwned, kStringIdNone, STR_LAND_NOT_OWNED_BY_PARK);
+            return Result(Status::notOwned, kStringIdNone, STR_LAND_NOT_OWNED_BY_PARK);
         }
 
         if (gLegacyScene != LegacyScene::scenarioEditor && !gameState.cheats.sandboxMode)
         {
             if (!MapIsLocationInPark(_coords))
             {
-                return Result(Status::Disallowed, kStringIdNone, STR_LAND_NOT_OWNED_BY_PARK);
+                return Result(Status::disallowed, kStringIdNone, STR_LAND_NOT_OWNED_BY_PARK);
             }
         }
 
@@ -81,7 +81,7 @@ namespace OpenRCT2::GameActions
         if (surfaceElement == nullptr)
         {
             LOG_ERROR("No surface element at: x %u, y %u", _coords.x, _coords.y);
-            return Result(Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
+            return Result(Status::invalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
         }
 
         int32_t zHigh = surfaceElement->GetBaseZ();
@@ -97,16 +97,16 @@ namespace OpenRCT2::GameActions
             zLow = temp;
         }
 
-        if (auto res2 = MapCanConstructAt({ _coords, zLow, zHigh }, { 0b1111, 0b1111 }); res2.Error != Status::Ok)
+        if (auto res2 = MapCanConstructAt({ _coords, zLow, zHigh }, { 0b1111, 0b1111 }); res2.error != Status::ok)
         {
             return res2;
         }
         if (surfaceElement->HasTrackThatNeedsWater())
         {
-            return Result(Status::Disallowed, STR_ERR_INVALID_PARAMETER, STR_ERR_TRACK_ON_THIS_TILE_NEEDS_WATER);
+            return Result(Status::disallowed, STR_ERR_INVALID_PARAMETER, STR_ERR_TRACK_ON_THIS_TILE_NEEDS_WATER);
         }
 
-        res.Cost = 250;
+        res.cost = 250;
 
         return res;
     }
@@ -114,8 +114,8 @@ namespace OpenRCT2::GameActions
     Result WaterSetHeightAction::Execute(GameState_t& gameState) const
     {
         auto res = Result();
-        res.Expenditure = ExpenditureType::landscaping;
-        res.Position = { _coords, _height * kCoordsZStep };
+        res.expenditure = ExpenditureType::landscaping;
+        res.position = { _coords, _height * kCoordsZStep };
 
         int32_t surfaceHeight = TileElementHeight(_coords);
         FootpathRemoveLitter({ _coords, surfaceHeight });
@@ -126,7 +126,7 @@ namespace OpenRCT2::GameActions
         if (surfaceElement == nullptr)
         {
             LOG_ERROR("No surface element at: x %u, y %u", _coords.x, _coords.y);
-            return Result(Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
+            return Result(Status::invalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
         }
 
         if (_height > surfaceElement->BaseHeight)
@@ -139,7 +139,7 @@ namespace OpenRCT2::GameActions
         }
         MapInvalidateTileFull(_coords);
 
-        res.Cost = 250;
+        res.cost = 250;
 
         return res;
     }

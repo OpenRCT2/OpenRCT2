@@ -299,7 +299,7 @@ namespace OpenRCT2::Ui::Windows
             pressedWidgets |= 1LL << (WIDX_TAB_1 + page);
         }
 
-        void DrawTabImage(RenderTarget& rt, int32_t newPage, int32_t spriteIndex)
+        void DrawTabImage(Drawing::RenderTarget& rt, int32_t newPage, int32_t spriteIndex)
         {
             WidgetIndex widgetIndex = WIDX_TAB_1 + newPage;
 
@@ -317,7 +317,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void DrawTabImages(RenderTarget& rt)
+        void DrawTabImages(Drawing::RenderTarget& rt)
         {
             DrawTabImage(rt, WINDOW_MAPGEN_PAGE_BASE, SPR_TAB_GEARS_0);
             DrawTabImage(rt, WINDOW_MAPGEN_PAGE_TERRAIN, SPR_G2_MAP_GEN_TERRAIN_TAB);
@@ -461,7 +461,7 @@ namespace OpenRCT2::Ui::Windows
 
                     Widget* ddWidget = &widgets[widgetIndex - 1];
                     WindowDropdownShowTextCustomWidth(
-                        { windowPos.x + ddWidget->left, windowPos.y + ddWidget->top }, ddWidget->height() + 1, colours[1], 0,
+                        { windowPos.x + ddWidget->left, windowPos.y + ddWidget->top }, ddWidget->height(), colours[1], 0,
                         Dropdown::Flag::StayOpen, std::size(items), ddWidget->width() - 3);
 
                     gDropdown.items[EnumValue(_settings.algorithm)].setChecked(true);
@@ -597,7 +597,7 @@ namespace OpenRCT2::Ui::Windows
             // clang-format on
         }
 
-        void BaseDraw(RenderTarget& rt)
+        void BaseDraw(Drawing::RenderTarget& rt)
         {
             drawWidgets(rt);
             DrawTabImages(rt);
@@ -759,7 +759,7 @@ namespace OpenRCT2::Ui::Windows
             setWidgetDisabled(WIDX_TREE_ALTITUDE_MAX_DOWN, !_settings.trees || isFlatland);
         }
 
-        void ForestsDraw(RenderTarget& rt)
+        void ForestsDraw(Drawing::RenderTarget& rt)
         {
             drawWidgets(rt);
             DrawTabImages(rt);
@@ -863,7 +863,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void SimplexDraw(RenderTarget& rt)
+        void SimplexDraw(Drawing::RenderTarget& rt)
         {
             drawWidgets(rt);
             DrawTabImages(rt);
@@ -973,7 +973,7 @@ namespace OpenRCT2::Ui::Windows
             setCheckboxValue(WIDX_HEIGHTMAP_NORMALIZE, _settings.normalize_height);
         }
 
-        void HeightmapDraw(RenderTarget& rt)
+        void HeightmapDraw(Drawing::RenderTarget& rt)
         {
             const auto enabledColour = colours[1];
             const auto disabledColour = enabledColour.withFlag(ColourFlag::inset, true);
@@ -1159,7 +1159,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void DrawDropdownButton(RenderTarget& rt, WidgetIndex widgetIndex, ImageId image)
+        void DrawDropdownButton(Drawing::RenderTarget& rt, WidgetIndex widgetIndex, ImageId image)
         {
             const auto& widget = widgets[widgetIndex];
             ScreenCoordsXY pos = { windowPos.x + widget.left, windowPos.y + widget.top };
@@ -1181,7 +1181,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void DrawDropdownButtons(RenderTarget& rt, WidgetIndex floorWidgetIndex, WidgetIndex edgeWidgetIndex)
+        void DrawDropdownButtons(Drawing::RenderTarget& rt, WidgetIndex floorWidgetIndex, WidgetIndex edgeWidgetIndex)
         {
             auto& objManager = GetContext()->GetObjectManager();
             const auto* surfaceObj = objManager.GetLoadedObject<TerrainSurfaceObject>(_settings.landTexture);
@@ -1223,7 +1223,7 @@ namespace OpenRCT2::Ui::Windows
             SetPressedTab();
         }
 
-        void TerrainDraw(RenderTarget& rt)
+        void TerrainDraw(Drawing::RenderTarget& rt)
         {
             drawWidgets(rt);
             DrawTabImages(rt);
@@ -1334,7 +1334,7 @@ namespace OpenRCT2::Ui::Windows
             SetPressedTab();
         }
 
-        void WaterDraw(RenderTarget& rt)
+        void WaterDraw(Drawing::RenderTarget& rt)
         {
             drawWidgets(rt);
             DrawTabImages(rt);
@@ -1446,7 +1446,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void onDraw(RenderTarget& rt) override
+        void onDraw(Drawing::RenderTarget& rt) override
         {
             switch (page)
             {

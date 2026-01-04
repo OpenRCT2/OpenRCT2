@@ -376,7 +376,8 @@ namespace OpenRCT2
         _legacyType.images_offset = 0;
     }
 
-    void RideObject::DrawPreview(RenderTarget& rt, [[maybe_unused]] int32_t width, [[maybe_unused]] int32_t height) const
+    void RideObject::DrawPreview(
+        Drawing::RenderTarget& rt, [[maybe_unused]] int32_t width, [[maybe_unused]] int32_t height) const
     {
         uint32_t imageId = _legacyType.images_offset;
 

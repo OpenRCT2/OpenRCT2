@@ -364,7 +364,7 @@ void GameLoadInit()
 
     if (!gLoadKeepWindowsOpen)
     {
-        ViewportInitAll();
+        ContextResetSubsystems();
         GameCreateWindows();
     }
     else

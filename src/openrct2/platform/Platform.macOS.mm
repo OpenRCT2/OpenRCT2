@@ -235,7 +235,7 @@ namespace OpenRCT2::Platform
         }
     }
 
-    std::string GetSteamPath()
+    SteamPaths GetSteamPaths()
     {
         const char* homeDir = getpwuid(getuid())->pw_dir;
         if (homeDir == nullptr)
@@ -244,27 +244,18 @@ namespace OpenRCT2::Platform
         }
 
         auto steamPath = Path::Combine(homeDir, "Library/Application Support/Steam");
-        if (Path::DirectoryExists(steamPath))
+        if (!Path::DirectoryExists(steamPath))
         {
-            return steamPath;
+            return {};
         }
 
-        return {};
-    }
+        SteamPaths ret = {};
+        ret.roots.emplace_back(steamPath);
+        ret.nativeFolder = "steamapps/common";
+        ret.downloadDepotFolder = "Steam.AppBundle/Steam/Contents/MacOS/steamapps/content";
+        ret.manifests = "steamapps";
 
-    u8string GetRCT1SteamDir()
-    {
-        return u8"Steam.AppBundle/Steam/Contents/MacOS/steamapps/content/app_285310/depot_285311";
-    }
-
-    u8string GetRCT2SteamDir()
-    {
-        return u8"Steam.AppBundle/Steam/Contents/MacOS/steamapps/content/app_285330/depot_285331";
-    }
-
-    u8string GetRCTClassicSteamDir()
-    {
-        return u8"steamapps/common/RollerCoaster Tycoon Classic";
+        return ret;
     }
 
     std::string GetFontPath(const TTFFontDescriptor& font)

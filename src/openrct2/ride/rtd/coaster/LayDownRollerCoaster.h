@@ -20,7 +20,7 @@ namespace OpenRCT2
 constexpr RideTypeDescriptor LayDownRollerCoasterRTD =
 {
     .Category = RideCategory::rollerCoaster,
-    .StartTrackPiece = TrackElemType::EndStation,
+    .StartTrackPiece = TrackElemType::endStation,
     .TrackPaintFunctions = TrackDrawerDescriptor(
         {
             .trackStyle = TrackStyle::corkscrewRollerCoaster,
@@ -98,7 +98,7 @@ constexpr RideTypeDescriptor LayDownRollerCoasterRTD =
 constexpr RideTypeDescriptor LayDownRollerCoasterAltRTD =
 {
     .Category = RideCategory::none,
-    .StartTrackPiece = TrackElemType::EndStation,
+    .StartTrackPiece = TrackElemType::endStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({ 
         .trackStyle = TrackStyle::null,
         .enabledTrackGroups = {  },

@@ -499,6 +499,7 @@ void TrackPaintUtilLeftQuarterTurn1TilePaint(
     const ImageId colourFlags, const uint32_t* sprites);
 void TrackPaintUtilSpinningTunnelPaint(PaintSession& session, int8_t thickness, int16_t height, Direction direction);
 
+void TrackPaintUtilOnridePhotoPlatformPaintBase(PaintSession& session, int32_t height);
 /**
  * Renders the black metal platform and the supports of the on-ride photo section.
  *

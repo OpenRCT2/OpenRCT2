@@ -2595,7 +2595,7 @@ static bool FindVehicleToEnter(
             if (vehicle->next_free_seat >= vehicle->num_seats)
                 continue;
 
-            if (vehicle->status != Vehicle::Status::WaitingForPassengers)
+            if (vehicle->status != Vehicle::Status::waitingForPassengers)
                 continue;
             chosen_train = i;
             break;
@@ -4235,7 +4235,7 @@ void Guest::UpdateRideLeaveVehicle()
                  vehicle = gameState.entities.GetEntity<Vehicle>(vehicle->prev_vehicle_on_ride))
             {
                 auto trackType = vehicle->GetTrackType();
-                if (trackType == TrackElemType::Flat || trackType > TrackElemType::MiddleStation)
+                if (trackType == TrackElemType::flat || trackType > TrackElemType::middleStation)
                     continue;
 
                 bool foundStation = false;
@@ -4804,7 +4804,7 @@ void Guest::UpdateRideOnSpiralSlide()
 
                 return;
             case PeepSpiralSlideSubState::prepareToSlide:
-                if (ride->slideInUse)
+                if (ride->slideInUse || ride->lifecycleFlags & RIDE_LIFECYCLE_BROKEN_DOWN)
                     return;
 
                 ride->slideInUse = 1;
@@ -5695,44 +5695,6 @@ void Guest::UpdateWalking()
     {
         InsertNewThought(PeepThoughtType::Scenery);
     }
-}
-
-void Guest::UpdateWaitingAtCrossing()
-{
-    if (!IsActionInterruptable())
-    {
-        UpdateAction();
-        Invalidate();
-        if (!IsActionWalking())
-            return;
-    }
-
-    Action = PeepActionType::idle;
-    NextAnimationType = PeepAnimationType::watchRide;
-    SwitchNextAnimationType();
-
-    if (HasFoodOrDrink())
-    {
-        if ((ScenarioRand() & 0xFFFF) <= 1310)
-        {
-            Action = PeepActionType::eatFood;
-            AnimationFrameNum = 0;
-            AnimationImageIdOffset = 0;
-        }
-
-        UpdateCurrentAnimationType();
-
-        return;
-    }
-
-    if ((ScenarioRand() & 0xFFFF) <= 64)
-    {
-        Action = PeepActionType::wave2;
-        AnimationFrameNum = 0;
-        AnimationImageIdOffset = 0;
-    }
-
-    UpdateCurrentAnimationType();
 }
 
 /**

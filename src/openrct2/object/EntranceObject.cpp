@@ -45,7 +45,7 @@ namespace OpenRCT2
         _legacyType.image_id = 0;
     }
 
-    void EntranceObject::DrawPreview(RenderTarget& rt, int32_t width, int32_t height) const
+    void EntranceObject::DrawPreview(Drawing::RenderTarget& rt, int32_t width, int32_t height) const
     {
         auto screenCoords = ScreenCoordsXY{ width / 2, height / 2 };
         GfxDrawSprite(rt, ImageId(_legacyType.image_id + 1), screenCoords + ScreenCoordsXY{ -32, 14 });

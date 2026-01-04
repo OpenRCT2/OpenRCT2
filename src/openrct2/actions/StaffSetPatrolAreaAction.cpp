@@ -66,7 +66,7 @@ namespace OpenRCT2::GameActions
         if (staff == nullptr)
         {
             LOG_ERROR("Staff entity not found for spriteID %u", _spriteId.ToUnderlying());
-            return Result(Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_STAFF_NOT_FOUND);
+            return Result(Status::invalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_STAFF_NOT_FOUND);
         }
 
         auto validRange = ClampRangeWithinMap(_range);
@@ -76,7 +76,7 @@ namespace OpenRCT2::GameActions
             {
                 if (!LocationValid({ x, y }))
                 {
-                    return Result(Status::InvalidParameters, STR_SET_PATROL_AREA, STR_OFF_EDGE_OF_MAP);
+                    return Result(Status::invalidParameters, STR_SET_PATROL_AREA, STR_OFF_EDGE_OF_MAP);
                 }
             }
         }

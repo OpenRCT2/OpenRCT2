@@ -15,7 +15,6 @@
 #include "../../SpriteIds.h"
 #include "../../config/Config.h"
 #include "../../core/Numerics.hpp"
-#include "../../drawing/Drawing.h"
 #include "../../entity/EntityRegistry.h"
 #include "../../entity/PatrolArea.h"
 #include "../../entity/Peep.h"
@@ -42,6 +41,7 @@
 #include <iterator>
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::Drawing;
 
 // Needed to make the sign appear above footpaths.
 static constexpr int16_t ForSaleSignZOffset = 3;
@@ -1136,7 +1136,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
             {
                 auto [waterHeight, waterSurfaceShape] = SurfaceGetHeightAboveWater(tileElement, height, surfaceShape);
 
-                const auto fpId = FilterPaletteID::paletteGlassLightPurple;
+                const auto fpId = FilterPaletteID::paletteSceneryGroundMarker;
                 const auto imageId1 = ImageId(SPR_TERRAIN_SELECTION_CORNER + Byte97B444[surfaceShape], fpId);
                 PaintAttachToPreviousPS(session, imageId1, 0, 0);
 
@@ -1168,7 +1168,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
     {
         const CoordsXY& pos = session.MapPosition;
 
-        for (const auto& tile : gMapSelectionTiles)
+        for (const auto& tile : MapSelection::getSelectedTiles())
         {
             if (tile.x != pos.x || tile.y != pos.y)
             {

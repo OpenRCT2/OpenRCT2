@@ -762,55 +762,55 @@ TrackPaintFunction GetTrackPaintFunctionInvertedImpulseRC(OpenRCT2::TrackElemTyp
 {
     switch (trackType)
     {
-        case TrackElemType::Flat:
+        case TrackElemType::flat:
             return InvertedImpulseRCTrackFlat;
-        case TrackElemType::EndStation:
-        case TrackElemType::BeginStation:
-        case TrackElemType::MiddleStation:
+        case TrackElemType::endStation:
+        case TrackElemType::beginStation:
+        case TrackElemType::middleStation:
             return InvertedImpulseRCTrackStation;
-        case TrackElemType::Up25:
+        case TrackElemType::up25:
             return InvertedImpulseRCTrack25DegUp;
-        case TrackElemType::Up60:
+        case TrackElemType::up60:
             return InvertedImpulseRCTrack60DegUp;
-        case TrackElemType::FlatToUp25:
+        case TrackElemType::flatToUp25:
             return InvertedImpulseRCTrackFlatTo25DegUp;
-        case TrackElemType::Up25ToUp60:
+        case TrackElemType::up25ToUp60:
             return InvertedImpulseRCTrack25DegUpTo60DegUp;
-        case TrackElemType::Up60ToUp25:
+        case TrackElemType::up60ToUp25:
             return InvertedImpulseRCTrack60DegUpTo25DegUp;
-        case TrackElemType::Up25ToFlat:
+        case TrackElemType::up25ToFlat:
             return InvertedImpulseRCTrack25DegUpToFlat;
-        case TrackElemType::Down25:
+        case TrackElemType::down25:
             return InvertedImpulseRCTrack25DegDown;
-        case TrackElemType::Down60:
+        case TrackElemType::down60:
             return InvertedImpulseRCTrack60DegDown;
-        case TrackElemType::FlatToDown25:
+        case TrackElemType::flatToDown25:
             return InvertedImpulseRCTrackFlatTo25DegDown;
-        case TrackElemType::Down25ToDown60:
+        case TrackElemType::down25ToDown60:
             return InvertedImpulseRCTrack25DegDownTo60DegDown;
-        case TrackElemType::Down60ToDown25:
+        case TrackElemType::down60ToDown25:
             return InvertedImpulseRCTrack60DegDownTo25DegDown;
-        case TrackElemType::Down25ToFlat:
+        case TrackElemType::down25ToFlat:
             return InvertedImpulseRCTrack25DegDownToFlat;
-        case TrackElemType::Up90:
+        case TrackElemType::up90:
             return InvertedImpulseRCTrack90DegUp;
-        case TrackElemType::Down90:
+        case TrackElemType::down90:
             return InvertedImpulseRCTrack90DegDown;
-        case TrackElemType::Up60ToUp90:
+        case TrackElemType::up60ToUp90:
             return InvertedImpulseRCTrack60DegUpTo90DegUp;
-        case TrackElemType::Down90ToDown60:
+        case TrackElemType::down90ToDown60:
             return InvertedImpulseRCTrack90DegDownTo60DegDown;
-        case TrackElemType::Up90ToUp60:
+        case TrackElemType::up90ToUp60:
             return InvertedImpulseRCTrack90DegUpTo60DegUp;
-        case TrackElemType::Down60ToDown90:
+        case TrackElemType::down60ToDown90:
             return InvertedImpulseRCTrack60DegDownTo90DegDown;
-        case TrackElemType::LeftQuarterTurn1TileUp90:
+        case TrackElemType::leftQuarterTurn1TileUp90:
             return InvertedImpulseRCTrackLeftQuarterTurn190DegUp;
-        case TrackElemType::RightQuarterTurn1TileUp90:
+        case TrackElemType::rightQuarterTurn1TileUp90:
             return InvertedImpulseRCTrackRightQuarterTurn190DegUp;
-        case TrackElemType::LeftQuarterTurn1TileDown90:
+        case TrackElemType::leftQuarterTurn1TileDown90:
             return InvertedImpulseRCTrackLeftQuarterTurn190DegDown;
-        case TrackElemType::RightQuarterTurn1TileDown90:
+        case TrackElemType::rightQuarterTurn1TileDown90:
             return InvertedImpulseRCTrackRightQuarterTurn190DegDown;
         default:
             return TrackPaintFunctionDummy;

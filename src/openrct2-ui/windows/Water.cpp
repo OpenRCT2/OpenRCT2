@@ -149,7 +149,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_PREVIEW].image = ImageId(LandTool::SizeToSpriteIndex(gLandToolSize));
         }
 
-        void onDraw(RenderTarget& rt) override
+        void onDraw(Drawing::RenderTarget& rt) override
         {
             auto screenCoords = ScreenCoordsXY{ windowPos.x + widgets[WIDX_PREVIEW].midX(),
                                                 windowPos.y + widgets[WIDX_PREVIEW].midY() };
@@ -224,7 +224,6 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_BACKGROUND:
-                    MapInvalidateSelectionRect();
                     gMapSelectFlags.unset(MapSelectFlag::enable);
                     gCurrentToolId = Tool::waterDown;
                     break;
@@ -295,14 +294,12 @@ namespace OpenRCT2::Ui::Windows
          */
         void ToolUpdateWater(const ScreenCoordsXY& screenPos)
         {
-            MapInvalidateSelectionRect();
-
             auto* windowMgr = Ui::GetWindowManager();
             auto& gameState = getGameState();
 
             if (gCurrentToolId == Tool::upDownArrow)
             {
-                if (!(gMapSelectFlags.has(MapSelectFlag::enable)))
+                if (!gMapSelectFlags.has(MapSelectFlag::enable))
                     return;
 
                 auto waterLowerAction = GameActions::WaterLowerAction(
@@ -311,10 +308,10 @@ namespace OpenRCT2::Ui::Windows
                     { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y });
 
                 auto res = GameActions::Query(&waterLowerAction, gameState);
-                money64 lowerCost = res.Error == GameActions::Status::Ok ? res.Cost : kMoney64Undefined;
+                money64 lowerCost = res.error == GameActions::Status::ok ? res.cost : kMoney64Undefined;
 
                 res = GameActions::Query(&waterRaiseAction, gameState);
-                money64 raiseCost = res.Error == GameActions::Status::Ok ? res.Cost : kMoney64Undefined;
+                money64 raiseCost = res.error == GameActions::Status::ok ? res.cost : kMoney64Undefined;
 
                 if (_waterToolRaiseCost != raiseCost || _waterToolLowerCost != lowerCost)
                 {
@@ -345,7 +342,7 @@ namespace OpenRCT2::Ui::Windows
 
             uint8_t state_changed = 0;
 
-            if (!(gMapSelectFlags.has(MapSelectFlag::enable)))
+            if (!gMapSelectFlags.has(MapSelectFlag::enable))
             {
                 gMapSelectFlags.set(MapSelectFlag::enable);
                 state_changed++;
@@ -392,7 +389,6 @@ namespace OpenRCT2::Ui::Windows
                 state_changed++;
             }
 
-            MapInvalidateSelectionRect();
             if (!state_changed)
                 return;
 
@@ -402,10 +398,10 @@ namespace OpenRCT2::Ui::Windows
                 { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y });
 
             auto res = GameActions::Query(&waterLowerAction, gameState);
-            money64 lowerCost = res.Error == GameActions::Status::Ok ? res.Cost : kMoney64Undefined;
+            money64 lowerCost = res.error == GameActions::Status::ok ? res.cost : kMoney64Undefined;
 
             res = GameActions::Query(&waterRaiseAction, gameState);
-            money64 raiseCost = res.Error == GameActions::Status::Ok ? res.Cost : kMoney64Undefined;
+            money64 raiseCost = res.error == GameActions::Status::ok ? res.cost : kMoney64Undefined;
 
             if (_waterToolRaiseCost != raiseCost || _waterToolLowerCost != lowerCost)
             {
@@ -447,7 +443,7 @@ namespace OpenRCT2::Ui::Windows
             ShowGridlines();
             auto* toolWindow = ContextOpenWindow(WindowClass::water);
             ToolSet(*toolWindow, WIDX_BACKGROUND, Tool::waterDown);
-            gInputFlags.set(InputFlag::unk6);
+            gInputFlags.set(InputFlag::allowRightMouseRemoval);
         }
     }
 } // namespace OpenRCT2::Ui::Windows

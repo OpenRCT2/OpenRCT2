@@ -148,22 +148,7 @@ namespace OpenRCT2::Platform
         return isImperial == JNI_TRUE ? MeasurementFormat::Imperial : MeasurementFormat::Metric;
     }
 
-    std::string GetSteamPath()
-    {
-        return {};
-    }
-
-    u8string GetRCT1SteamDir()
-    {
-        return {};
-    }
-
-    u8string GetRCT2SteamDir()
-    {
-        return {};
-    }
-
-    u8string GetRCTClassicSteamDir()
+    SteamPaths GetSteamPaths()
     {
         return {};
     }

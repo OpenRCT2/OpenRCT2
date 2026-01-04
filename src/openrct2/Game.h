@@ -26,6 +26,11 @@ namespace OpenRCT2
     // The maximum threshold to advance.
     constexpr float kGameUpdateMaxThreshold = kGameUpdateTimeMS * kGameMaxUpdates;
 
+    // The network update runs at a different rate to the game update.
+    constexpr uint32_t kNetworkUpdateFPS = 140;
+    // The network update interval in milliseconds, (1000 / 140fps) = ~7.14ms
+    constexpr float kNetworkUpdateTimeMS = 1.0f / kNetworkUpdateFPS;
+
     constexpr float kGameMinTimeScale = 0.1f;
     constexpr float kGameMaxTimeScale = 5.0f;
 } // namespace OpenRCT2
@@ -119,19 +124,6 @@ enum class GameCommand : int32_t
     SetGameSpeed,
     SetRestrictedScenery,
     Count,
-};
-
-enum : uint32_t
-{
-    GAME_COMMAND_FLAG_APPLY = (1 << 0),  // If this flag is set, the command is applied, otherwise only the cost is retrieved
-    GAME_COMMAND_FLAG_REPLAY = (1 << 1), // Command was issued from replay manager.
-    GAME_COMMAND_FLAG_2 = (1 << 2),      // Unused
-    GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED = (1 << 3), // Allow while paused
-    GAME_COMMAND_FLAG_4 = (1 << 4),                   // Unused
-    GAME_COMMAND_FLAG_NO_SPEND = (1 << 5),            // Game command is not networked
-    GAME_COMMAND_FLAG_GHOST = (1 << 6),               // Game command is not networked
-    GAME_COMMAND_FLAG_TRACK_DESIGN = (1 << 7),
-    GAME_COMMAND_FLAG_NETWORKED = (1u << 31) // Game command is coming from network
 };
 
 enum

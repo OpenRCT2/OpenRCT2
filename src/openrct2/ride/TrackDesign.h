@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../Limits.h"
+#include "../actions/CommandFlag.h"
 #include "../actions/GameActionResult.h"
 #include "../core/EnumUtils.hpp"
 #include "../object/Object.h"
@@ -100,7 +101,7 @@ enum class TrackDesignTrackElementFlag : uint8_t
 
 struct TrackDesignTrackElement
 {
-    OpenRCT2::TrackElemType type = OpenRCT2::TrackElemType::Flat;
+    OpenRCT2::TrackElemType type = OpenRCT2::TrackElemType::flat;
     uint8_t flags = 0;
     uint8_t colourScheme = 0;
     ::StationIndex stationIndex = StationIndex::FromUnderlying(0);
@@ -238,7 +239,7 @@ extern RideId gTrackDesignSaveRideIndex;
 void TrackDesignMirror(TrackDesign& td);
 
 OpenRCT2::GameActions::Result TrackDesignPlace(
-    const TrackDesign& td, uint32_t flags, bool placeScenery, Ride& ride, const CoordsXYZD& coords);
+    const TrackDesign& td, OpenRCT2::GameActions::CommandFlags flags, bool placeScenery, Ride& ride, const CoordsXYZD& coords);
 void TrackDesignPreviewRemoveGhosts(const TrackDesign& td, Ride& ride, const CoordsXYZD& coords);
 void TrackDesignPreviewDrawOutlines(
     TrackDesignState& tds, const TrackDesign& td, Ride& ride, const CoordsXYZD& coords, bool placeScenery);

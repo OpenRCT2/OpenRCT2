@@ -178,11 +178,11 @@ void JumpingFountain::Update()
     switch (FountainType)
     {
         case JumpingFountainType::Water:
-            if (frame == 11 && (fountainFlags.has(FountainFlag::fast)))
+            if (frame == 11 && fountainFlags.has(FountainFlag::fast))
             {
                 AdvanceAnimation();
             }
-            if (frame == 16 && !(fountainFlags.has(FountainFlag::fast)))
+            if (frame == 16 && !fountainFlags.has(FountainFlag::fast))
             {
                 AdvanceAnimation();
             }
@@ -411,7 +411,7 @@ void JumpingFountain::Paint(PaintSession& session, int32_t imageDirection) const
     constexpr uint32_t kJumpingFountainSnowBaseImage = 23037;
     constexpr uint32_t kJumpingFountainWaterBaseImage = 22973;
 
-    RenderTarget& rt = session.DPI;
+    auto& rt = session.DPI;
     if (rt.zoom_level > ZoomLevel{ 0 })
     {
         return;

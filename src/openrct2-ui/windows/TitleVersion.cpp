@@ -24,7 +24,7 @@ namespace OpenRCT2::Ui::Windows
 
     class TitleVersionWindow final : public Window
     {
-        void onDraw(RenderTarget& rt) override
+        void onDraw(Drawing::RenderTarget& rt) override
         {
             // Write name and version information
             const auto whiteOutline = ColourWithFlags{ COLOUR_WHITE }.withFlag(ColourFlag::withOutline, true);

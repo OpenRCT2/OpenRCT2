@@ -109,7 +109,6 @@ namespace OpenRCT2::Ui::Windows
             _landRightsMode = mode;
 
             ToolSet(*this, widgetIndex, Tool::upArrow);
-            gInputFlags.set(InputFlag::unk6);
 
             if (kLandRightsVisibleByMode[EnumValue(mode)])
                 ShowLandRights();
@@ -393,7 +392,7 @@ namespace OpenRCT2::Ui::Windows
             invalidate();
         }
 
-        void onDraw(RenderTarget& rt) override
+        void onDraw(Drawing::RenderTarget& rt) override
         {
             auto screenCoords = ScreenCoordsXY{ windowPos.x + widgets[WIDX_PREVIEW].midX(),
                                                 windowPos.y + widgets[WIDX_PREVIEW].midY() };
@@ -459,7 +458,6 @@ namespace OpenRCT2::Ui::Windows
 
         void onToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
-            MapInvalidateSelectionRect();
             gMapSelectFlags.unset(MapSelectFlag::enable);
 
             auto info = GetMapCoordinatesFromPos(
@@ -479,7 +477,7 @@ namespace OpenRCT2::Ui::Windows
 
             uint8_t state_changed = 0;
 
-            if (!(gMapSelectFlags.has(MapSelectFlag::enable)))
+            if (!gMapSelectFlags.has(MapSelectFlag::enable))
             {
                 gMapSelectFlags.set(MapSelectFlag::enable);
                 state_changed++;
@@ -529,7 +527,6 @@ namespace OpenRCT2::Ui::Windows
                 state_changed++;
             }
 
-            MapInvalidateSelectionRect();
             if (!state_changed)
                 return;
 
@@ -538,13 +535,13 @@ namespace OpenRCT2::Ui::Windows
             {
                 auto landSetRightsAction = GetLandSetAction();
                 auto res = GameActions::Query(&landSetRightsAction, gameState);
-                _landRightsCost = res.Error == GameActions::Status::Ok ? res.Cost : kMoney64Undefined;
+                _landRightsCost = res.error == GameActions::Status::ok ? res.cost : kMoney64Undefined;
             }
             else
             {
                 auto landBuyRightsAction = GetLandBuyAction();
                 auto res = GameActions::Query(&landBuyRightsAction, gameState);
-                _landRightsCost = res.Error == GameActions::Status::Ok ? res.Cost : kMoney64Undefined;
+                _landRightsCost = res.error == GameActions::Status::ok ? res.cost : kMoney64Undefined;
             }
         }
 

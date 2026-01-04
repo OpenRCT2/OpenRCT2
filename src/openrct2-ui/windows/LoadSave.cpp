@@ -404,7 +404,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void DrawPreview(RenderTarget& rt)
+        void DrawPreview(Drawing::RenderTarget& rt)
         {
             // Find preview image to draw
             PreviewImage* image = nullptr;
@@ -731,7 +731,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void onDraw(RenderTarget& rt) override
+        void onDraw(Drawing::RenderTarget& rt) override
         {
             drawWidgets(rt);
 
@@ -919,7 +919,7 @@ namespace OpenRCT2::Ui::Windows
             Widget* widget = &widgets[WIDX_SORT_CUSTOMISE];
 
             WindowDropdownShowTextCustomWidth(
-                { windowPos.x + widget->left - 70, windowPos.y + widget->top }, widget->height() + 1, colours[1], 0,
+                { windowPos.x + widget->left - 70, windowPos.y + widget->top }, widget->height(), colours[1], 0,
                 Dropdown::Flag::StayOpen, 7, 90);
 
             auto& config = Config::Get().general;
@@ -1077,7 +1077,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
+        void onScrollDraw(int32_t scrollIndex, Drawing::RenderTarget& rt) override
         {
             Rectangle::fill(
                 rt, { { rt.x, rt.y }, { rt.x + rt.width - 1, rt.y + rt.height - 1 } }, ColourMapA[colours[1].colour].mid_light);

@@ -50,17 +50,17 @@ namespace OpenRCT2::GameActions
         if (_year < 0 || _year >= kMaxYear)
         {
             LOG_ERROR("Invalid park date year %d", _year);
-            return Result(Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
+            return Result(Status::invalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
         }
         else if (_month < 0 || _month >= MONTH_COUNT)
         {
             LOG_ERROR("Invalid park date month %d", _year);
-            return Result(Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
+            return Result(Status::invalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
         }
         else if (_day < 0 || _day >= 31)
         {
             LOG_ERROR("Invalid park date day %d", _year);
-            return Result(Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
+            return Result(Status::invalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
         }
 
         return Result();

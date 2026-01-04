@@ -20,7 +20,7 @@ namespace OpenRCT2
 constexpr RideTypeDescriptor RiverRapidsRTD =
 {
     .Category = RideCategory::water,
-    .StartTrackPiece = TrackElemType::EndStation,
+    .StartTrackPiece = TrackElemType::endStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::riverRapids,
         .supportType = WoodenSupportType::truss,
@@ -39,7 +39,7 @@ constexpr RideTypeDescriptor RiverRapidsRTD =
     .DefaultMode = RideMode::continuousCircuit,
     .Naming = { STR_RIDE_NAME_RIVER_RAPIDS, STR_RIDE_DESCRIPTION_RIVER_RAPIDS },
     .NameConvention = { RideComponentType::Boat, RideComponentType::Track, RideComponentType::Station },
-    .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_CONTROL_FAILURE),
+    .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_BRAKES_FAILURE),
     .Heights = { 9, 32, 14, 15, },
     .MaxMass = 255,
     .LiftData = { Audio::SoundId::liftFlume, 5, 5 },

@@ -119,7 +119,7 @@ namespace OpenRCT2::GameActions
         GameCommand const _type;
 
         Network::PlayerId_t _playerId = { -1 }; // Callee
-        uint32_t _flags = 0;                    // GAME_COMMAND_FLAGS
+        CommandFlags _flags = {};
         uint32_t _networkId = 0;
         Callback_t _callback;
 
@@ -139,7 +139,7 @@ namespace OpenRCT2::GameActions
 
         void AcceptFlags(GameActionParameterVisitor& visitor)
         {
-            visitor.Visit("flags", _flags);
+            visitor.Visit("flags", _flags.holder);
         }
 
         Network::PlayerId_t GetPlayer() const
@@ -160,12 +160,12 @@ namespace OpenRCT2::GameActions
             // Make sure we execute some things only on the client.
             uint16_t flags = 0;
 
-            if ((GetFlags() & GAME_COMMAND_FLAG_GHOST) != 0 || (GetFlags() & GAME_COMMAND_FLAG_NO_SPEND) != 0)
+            if ((GetFlags().has(CommandFlag::ghost)) != 0 || (GetFlags().has(CommandFlag::noSpend)) != 0)
             {
                 flags |= OpenRCT2::GameActions::Flags::ClientOnly;
             }
 
-            if (GetFlags() & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED)
+            if (GetFlags().has(CommandFlag::allowDuringPaused))
             {
                 flags |= OpenRCT2::GameActions::Flags::AllowWhilePaused;
             }
@@ -173,15 +173,12 @@ namespace OpenRCT2::GameActions
             return flags;
         }
 
-        /**
-         * Currently used for GAME_COMMAND_FLAGS, needs refactoring once everything is replaced.
-         */
-        uint32_t GetFlags() const
+        CommandFlags GetFlags() const
         {
             return _flags;
         }
 
-        uint32_t SetFlags(uint32_t flags)
+        CommandFlags SetFlags(CommandFlags flags)
         {
             return _flags = flags;
         }
@@ -213,7 +210,7 @@ namespace OpenRCT2::GameActions
 
         virtual void Serialise(DataSerialiser& stream)
         {
-            stream << DS_TAG(_networkId) << DS_TAG(_flags) << DS_TAG(_playerId);
+            stream << DS_TAG(_networkId) << DS_TAG(_flags.holder) << DS_TAG(_playerId);
         }
 
         // Helper function, allows const Objects to still serialize into DataSerialiser while being const.

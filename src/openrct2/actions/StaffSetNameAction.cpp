@@ -52,14 +52,14 @@ namespace OpenRCT2::GameActions
         if (_spriteIndex.ToUnderlying() >= kMaxEntities || _spriteIndex.IsNull())
         {
             LOG_ERROR("Invalid sprite index %u", _spriteIndex);
-            return Result(Status::InvalidParameters, STR_STAFF_ERROR_CANT_NAME_STAFF_MEMBER, STR_ERR_VALUE_OUT_OF_RANGE);
+            return Result(Status::invalidParameters, STR_STAFF_ERROR_CANT_NAME_STAFF_MEMBER, STR_ERR_VALUE_OUT_OF_RANGE);
         }
 
         auto staff = getGameState().entities.TryGetEntity<Staff>(_spriteIndex);
         if (staff == nullptr)
         {
             LOG_ERROR("Staff entity not found for spriteIndex %u", _spriteIndex);
-            return Result(Status::InvalidParameters, STR_STAFF_ERROR_CANT_NAME_STAFF_MEMBER, STR_ERR_STAFF_NOT_FOUND);
+            return Result(Status::invalidParameters, STR_STAFF_ERROR_CANT_NAME_STAFF_MEMBER, STR_ERR_STAFF_NOT_FOUND);
         }
 
         return Result();
@@ -71,7 +71,7 @@ namespace OpenRCT2::GameActions
         if (staff == nullptr)
         {
             LOG_ERROR("Staff entity not found for spriteIndex %u", _spriteIndex);
-            return Result(Status::InvalidParameters, STR_STAFF_ERROR_CANT_NAME_STAFF_MEMBER, STR_ERR_STAFF_NOT_FOUND);
+            return Result(Status::invalidParameters, STR_STAFF_ERROR_CANT_NAME_STAFF_MEMBER, STR_ERR_STAFF_NOT_FOUND);
         }
 
         auto curName = staff->GetName();
@@ -82,7 +82,7 @@ namespace OpenRCT2::GameActions
 
         if (!staff->SetName(_name))
         {
-            return Result(Status::Unknown, STR_CANT_NAME_GUEST, kStringIdNone);
+            return Result(Status::unknown, STR_CANT_NAME_GUEST, kStringIdNone);
         }
 
         GfxInvalidateScreen();
@@ -91,7 +91,7 @@ namespace OpenRCT2::GameActions
         ContextBroadcastIntent(&intent);
 
         auto res = Result();
-        res.Position = staff->GetLocation();
+        res.position = staff->GetLocation();
 
         return res;
     }

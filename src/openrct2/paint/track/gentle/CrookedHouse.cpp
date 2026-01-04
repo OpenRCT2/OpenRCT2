@@ -85,6 +85,7 @@ static void PaintCrookedHouseStructure(
         { { boundBox.offset, height + 3 }, { boundBox.length, 127 } });
 
     session.CurrentlyDrawnEntity = nullptr;
+    session.InteractionType = ViewportInteractionItem::ride;
 }
 
 static void PaintCrookedHouse(
@@ -148,7 +149,7 @@ static void PaintCrookedHouse(
 
 TrackPaintFunction GetTrackPaintFunctionCrookedHouse(OpenRCT2::TrackElemType trackType)
 {
-    if (trackType != TrackElemType::FlatTrack3x3)
+    if (trackType != TrackElemType::flatTrack3x3)
     {
         return TrackPaintFunctionDummy;
     }

@@ -20,7 +20,7 @@ namespace OpenRCT2
 constexpr RideTypeDescriptor HeartlineTwisterCoasterRTD =
 {
     .Category = RideCategory::rollerCoaster,
-    .StartTrackPiece = TrackElemType::EndStation,
+    .StartTrackPiece = TrackElemType::endStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::heartlineTwisterCoaster,
         .supportType = WoodenSupportType::mine,

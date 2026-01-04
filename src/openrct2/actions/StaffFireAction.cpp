@@ -43,23 +43,23 @@ namespace OpenRCT2::GameActions
         if (_spriteId.ToUnderlying() >= kMaxEntities || _spriteId.IsNull())
         {
             LOG_ERROR("Invalid spriteId %u", _spriteId);
-            return Result(Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
+            return Result(Status::invalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
         }
 
         auto staff = getGameState().entities.TryGetEntity<Staff>(_spriteId);
         if (staff == nullptr)
         {
             LOG_ERROR("Staff entity not found for spriteId %u", _spriteId);
-            return Result(Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_STAFF_NOT_FOUND);
+            return Result(Status::invalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_STAFF_NOT_FOUND);
         }
 
         if (staff->State == PeepState::fixing)
         {
-            return Result(Status::Disallowed, STR_CANT_FIRE_STAFF_FIXING, kStringIdNone);
+            return Result(Status::disallowed, STR_CANT_FIRE_STAFF_FIXING, kStringIdNone);
         }
         else if (staff->State == PeepState::inspecting)
         {
-            return Result(Status::Disallowed, STR_CANT_FIRE_STAFF_INSPECTING, kStringIdNone);
+            return Result(Status::disallowed, STR_CANT_FIRE_STAFF_INSPECTING, kStringIdNone);
         }
 
         return Result();
@@ -71,7 +71,7 @@ namespace OpenRCT2::GameActions
         if (staff == nullptr)
         {
             LOG_ERROR("Staff entity not found for spriteId %u", _spriteId);
-            return Result(Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_STAFF_NOT_FOUND);
+            return Result(Status::invalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_STAFF_NOT_FOUND);
         }
 
         auto* windowMgr = Ui::GetWindowManager();

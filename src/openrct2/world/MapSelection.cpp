@@ -19,44 +19,15 @@ CoordsXY gMapSelectPositionB;
 CoordsXYZ gMapSelectArrowPosition;
 uint8_t gMapSelectArrowDirection;
 
-std::vector<CoordsXY> gMapSelectionTiles;
+static std::vector<CoordsXY> _mapSelectionTiles;
+static bool _mapSelectionTilesInvalidate = false;
 
-/**
- *
- *  rct2: 0x0068AB1B
- */
-void MapInvalidateMapSelectionTiles()
-{
-    if (!(gMapSelectFlags.has(MapSelectFlag::enableConstruct)))
-        return;
-
-    for (const auto& position : gMapSelectionTiles)
-        MapInvalidateTileFull(position);
-}
-
-/**
- *
- *  rct2: 0x0068AAE1
- */
-void MapInvalidateSelectionRect()
-{
-    int32_t x0, y0, x1, y1, left, right, top, bottom;
-
-    if (!(gMapSelectFlags.has(MapSelectFlag::enable)))
-        return;
-
-    x0 = gMapSelectPositionA.x + 16;
-    y0 = gMapSelectPositionA.y + 16;
-    x1 = gMapSelectPositionB.x + 16;
-    y1 = gMapSelectPositionB.y + 16;
-    MapGetBoundingBox({ x0, y0, x1, y1 }, &left, &top, &right, &bottom);
-    left -= 32;
-    right += 32;
-    bottom += 32;
-    top -= 32 + 2080;
-
-    OpenRCT2::ViewportsInvalidate({ { left, top }, { right, bottom } });
-}
+static MapSelectFlags _previousMapSelectFlags;
+static MapSelectType _previousMapSelectType;
+static CoordsXY _previousMapSelectPositionA;
+static CoordsXY _previousMapSelectPositionB;
+static CoordsXYZ _previousMapSelectArrowPosition;
+static uint8_t _previousMapSelectArrowDirection;
 
 MapRange getMapSelectRange()
 {
@@ -74,3 +45,85 @@ void setMapSelectRange(const CoordsXY coords)
 {
     setMapSelectRange({ coords, coords });
 }
+
+namespace OpenRCT2::MapSelection
+{
+    void clearSelectedTiles()
+    {
+        for (const CoordsXY& coords : _mapSelectionTiles)
+        {
+            MapInvalidateTileFull(coords);
+        }
+        _mapSelectionTiles.clear();
+        _mapSelectionTilesInvalidate = false;
+    }
+
+    void addSelectedTile(const CoordsXY& coords)
+    {
+        _mapSelectionTiles.push_back(coords);
+        _mapSelectionTilesInvalidate = true;
+    }
+
+    const std::vector<CoordsXY>& getSelectedTiles()
+    {
+        return _mapSelectionTiles;
+    }
+
+    void invalidate()
+    {
+        if (!_previousMapSelectFlags.has(MapSelectFlag::enable) && gMapSelectFlags.has(MapSelectFlag::enable))
+        {
+            MapInvalidateRegion(gMapSelectPositionA, gMapSelectPositionB);
+        }
+        else if (_previousMapSelectFlags.has(MapSelectFlag::enable) && !gMapSelectFlags.has(MapSelectFlag::enable))
+        {
+            MapInvalidateRegion(_previousMapSelectPositionA, _previousMapSelectPositionB);
+        }
+        else if (
+            gMapSelectFlags.has(MapSelectFlag::enable)
+            && (_previousMapSelectPositionA != gMapSelectPositionA || _previousMapSelectPositionB != gMapSelectPositionB))
+        {
+            MapInvalidateRegion(_previousMapSelectPositionA, _previousMapSelectPositionB);
+            MapInvalidateRegion(gMapSelectPositionA, gMapSelectPositionB);
+        }
+        else if (_previousMapSelectType != gMapSelectType)
+        {
+            MapInvalidateRegion(gMapSelectPositionA, gMapSelectPositionB);
+        }
+
+        if (!_previousMapSelectFlags.has(MapSelectFlag::enableArrow) && gMapSelectFlags.has(MapSelectFlag::enableArrow))
+        {
+            MapInvalidateTile({ gMapSelectArrowPosition, gMapSelectArrowPosition.z });
+        }
+        else if (_previousMapSelectFlags.has(MapSelectFlag::enableArrow) && !gMapSelectFlags.has(MapSelectFlag::enableArrow))
+        {
+            MapInvalidateTile({ _previousMapSelectArrowPosition, _previousMapSelectArrowPosition.z });
+        }
+        else if (gMapSelectFlags.has(MapSelectFlag::enableArrow) && _previousMapSelectArrowPosition != gMapSelectArrowPosition)
+        {
+            MapInvalidateTile({ _previousMapSelectArrowPosition, _previousMapSelectArrowPosition.z });
+            MapInvalidateTile({ gMapSelectArrowPosition, gMapSelectArrowPosition.z });
+        }
+        else if (_previousMapSelectArrowDirection != gMapSelectArrowDirection)
+        {
+            MapInvalidateTile({ gMapSelectArrowPosition, gMapSelectArrowPosition.z });
+        }
+
+        if (_previousMapSelectFlags.has(MapSelectFlag::enableConstruct) != gMapSelectFlags.has(MapSelectFlag::enableConstruct)
+            || _mapSelectionTilesInvalidate)
+        {
+            for (const CoordsXY& coords : _mapSelectionTiles)
+            {
+                MapInvalidateTileFull(coords);
+            }
+            _mapSelectionTilesInvalidate = false;
+        }
+
+        _previousMapSelectFlags = gMapSelectFlags;
+        _previousMapSelectType = gMapSelectType;
+        _previousMapSelectPositionA = gMapSelectPositionA;
+        _previousMapSelectPositionB = gMapSelectPositionB;
+        _previousMapSelectArrowPosition = gMapSelectArrowPosition;
+        _previousMapSelectArrowDirection = gMapSelectArrowDirection;
+    }
+} // namespace OpenRCT2::MapSelection

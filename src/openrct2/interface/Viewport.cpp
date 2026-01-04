@@ -13,7 +13,6 @@
 #include "../Diagnostic.h"
 #include "../Game.h"
 #include "../GameState.h"
-#include "../Input.h"
 #include "../OpenRCT2.h"
 #include "../config/Config.h"
 #include "../core/Guard.hpp"
@@ -24,7 +23,6 @@
 #include "../drawing/Rectangle.h"
 #include "../entity/EntityList.h"
 #include "../entity/Guest.h"
-#include "../entity/PatrolArea.h"
 #include "../entity/Staff.h"
 #include "../interface/Cursors.h"
 #include "../object/LargeSceneryEntry.h"
@@ -39,7 +37,6 @@
 #include "../ui/WindowManager.h"
 #include "../world/Climate.h"
 #include "../world/Map.h"
-#include "../world/MapSelection.h"
 #include "../world/tile_element/LargeSceneryElement.h"
 #include "../world/tile_element/SmallSceneryElement.h"
 #include "../world/tile_element/TileElement.h"
@@ -89,31 +86,6 @@ namespace OpenRCT2
     static void ViewportUpdateSmartFollowStaff(WindowBase* window, const Staff& peep);
     static void ViewportUpdateSmartFollowVehicle(WindowBase* window);
     static void ViewportInvalidate(const Viewport* viewport, const ScreenRect& screenRect);
-
-    /**
-     * This is not a viewport function. It is used to setup many variables for
-     * multiple things.
-     *  rct2: 0x006E6EAC
-     */
-    void ViewportInitAll()
-    {
-        if (!gOpenRCT2NoGraphics)
-        {
-            ColoursInitMaps();
-        }
-
-        WindowInitAll();
-
-        // ?
-        gInputFlags.clearAll();
-        InputSetState(InputState::Reset);
-        gPressedWidget.windowClassification = WindowClass::null;
-        gPickupPeepImage = ImageId();
-        ResetTooltipNotShown();
-        gMapSelectFlags.clearAll();
-        ClearPatrolAreaToRender();
-        TextinputCancel();
-    }
 
     /**
      * Converts between 3d point of a sprite to 2d coordinates for centring on that
@@ -444,7 +416,7 @@ namespace OpenRCT2
         for (; it != gWindowList.end(); it++)
         {
             auto w = it->get();
-            if (!(w->flags.has(WindowFlag::transparent)) || (w->flags.has(WindowFlag::dead)))
+            if (!w->flags.has(WindowFlag::transparent) || w->flags.has(WindowFlag::dead))
                 continue;
             if (w->viewport == window->viewport)
                 continue;
@@ -1526,7 +1498,7 @@ namespace OpenRCT2
         uint8_t* index = g1->offset + (y * g1->width) + x;
 
         // Needs investigation as it has no consideration for pure BMP maps.
-        if (!(g1->flags & G1_FLAG_HAS_TRANSPARENCY))
+        if (!g1->flags.has(G1Flag::hasTransparency))
         {
             return false;
         }
@@ -1588,16 +1560,16 @@ namespace OpenRCT2
 
         if (rt.zoom_level > ZoomLevel{ 0 })
         {
-            if (g1->flags & G1_FLAG_NO_ZOOM_DRAW)
+            if (g1->flags.has(G1Flag::noZoomDraw))
             {
                 return false;
             }
 
-            while (g1->flags & G1_FLAG_HAS_ZOOM_SPRITE && zoomLevel > ZoomLevel{ 0 })
+            while (g1->flags.has(G1Flag::hasZoomSprite) && zoomLevel > ZoomLevel{ 0 })
             {
-                imageId = imageId.WithIndex(imageId.GetIndex() - g1->zoomed_offset);
+                imageId = imageId.WithIndex(imageId.GetIndex() - g1->zoomedOffset);
                 g1 = GfxGetG1Element(imageId);
-                if (g1 == nullptr || g1->flags & G1_FLAG_NO_ZOOM_DRAW)
+                if (g1 == nullptr || g1->flags.has(G1Flag::noZoomDraw))
                 {
                     return false;
                 }
@@ -1609,8 +1581,8 @@ namespace OpenRCT2
             }
         }
 
-        origin.x += g1->x_offset;
-        origin.y += g1->y_offset;
+        origin.x += g1->xOffset;
+        origin.y += g1->yOffset;
         interactionPoint -= origin;
 
         if (interactionPoint.x < 0 || interactionPoint.y < 0 || interactionPoint.x >= g1->width
@@ -1619,12 +1591,12 @@ namespace OpenRCT2
             return false;
         }
 
-        if (g1->flags & G1_FLAG_RLE_COMPRESSION)
+        if (g1->flags.has(G1Flag::hasRLECompression))
         {
             return IsPixelPresentRLE(g1->offset, interactionPoint.x, interactionPoint.y);
         }
 
-        if (!(g1->flags & G1_FLAG_1))
+        if (!g1->flags.has(G1Flag::one))
         {
             return IsPixelPresentBMP(imageType, g1, interactionPoint.x, interactionPoint.y, paletteMap);
         }
@@ -2030,8 +2002,3 @@ namespace OpenRCT2
         return viewports;
     }
 } // namespace OpenRCT2
-
-ZoomLevel ZoomLevel::min()
-{
-    return ZoomLevel{ -2 };
-}

@@ -22,6 +22,7 @@
 #include "../../track/Support.h"
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::Drawing;
 
 static constexpr TunnelGroup kTunnelGroup = TunnelGroup::Square;
 
@@ -1547,7 +1548,7 @@ static void PaintMiniatureRailwayTrackLeftEighthToDiag(
     };
 
     bool isSupported = false;
-    bool isRightEighthToOrthog = trackElement.GetTrackType() == TrackElemType::RightEighthToOrthogonal;
+    bool isRightEighthToOrthog = trackElement.GetTrackType() == TrackElemType::rightEighthToOrthogonal;
     // Right eighth to orthogonal calls this function but we do not want to have a support call for it
     // for track sequence 4
     if (trackSequence != 4 || !isRightEighthToOrthog)
@@ -1715,7 +1716,7 @@ static void PaintMiniatureRailwayTrackRightEighthToDiag(
     };
 
     bool isSupported = false;
-    bool isLeftEighthToOrthog = trackElement.GetTrackType() == TrackElemType::LeftEighthToOrthogonal;
+    bool isLeftEighthToOrthog = trackElement.GetTrackType() == TrackElemType::leftEighthToOrthogonal;
     // Right eighth to orthogonal calls this function but we do not want to have a support call for it
     // for track sequence 4
     if (trackSequence != 4 || !isLeftEighthToOrthog)
@@ -2309,65 +2310,65 @@ TrackPaintFunction GetTrackPaintFunctionMiniatureRailway(OpenRCT2::TrackElemType
 {
     switch (trackType)
     {
-        case TrackElemType::Flat:
+        case TrackElemType::flat:
             return PaintMiniatureRailwayTrackFlat;
 
-        case TrackElemType::EndStation:
-        case TrackElemType::BeginStation:
-        case TrackElemType::MiddleStation:
+        case TrackElemType::endStation:
+        case TrackElemType::beginStation:
+        case TrackElemType::middleStation:
             return PaintMiniatureRailwayStation;
 
-        case TrackElemType::Up25:
+        case TrackElemType::up25:
             return PaintMiniatureRailwayTrack25DegUp;
-        case TrackElemType::FlatToUp25:
+        case TrackElemType::flatToUp25:
             return PaintMiniatureRailwayTrackFlatTo25DegUp;
-        case TrackElemType::Up25ToFlat:
+        case TrackElemType::up25ToFlat:
             return PaintMiniatureRailwayTrack25DegUpToFlat;
 
-        case TrackElemType::Down25:
+        case TrackElemType::down25:
             return PaintMiniatureRailwayTrack25DegDown;
-        case TrackElemType::FlatToDown25:
+        case TrackElemType::flatToDown25:
             return PaintMiniatureRailwayTrackFlatTo25DegDown;
-        case TrackElemType::Down25ToFlat:
+        case TrackElemType::down25ToFlat:
             return PaintMiniatureRailwayTrack25DegDownToFlat;
 
-        case TrackElemType::LeftQuarterTurn5Tiles:
+        case TrackElemType::leftQuarterTurn5Tiles:
             return PaintMiniatureRailwayTrackLeftQuarterTurn5Tiles;
-        case TrackElemType::RightQuarterTurn5Tiles:
+        case TrackElemType::rightQuarterTurn5Tiles:
             return PaintMiniatureRailwayTrackRightQuarterTurn5Tiles;
 
-        case TrackElemType::SBendLeft:
+        case TrackElemType::sBendLeft:
             return PaintMiniatureRailwayTrackSBendLeft;
-        case TrackElemType::SBendRight:
+        case TrackElemType::sBendRight:
             return PaintMiniatureRailwayTrackSBendRight;
 
-        case TrackElemType::LeftQuarterTurn3Tiles:
+        case TrackElemType::leftQuarterTurn3Tiles:
             return PaintMiniatureRailwayTrackLeftQuarterTurn3Tiles;
-        case TrackElemType::RightQuarterTurn3Tiles:
+        case TrackElemType::rightQuarterTurn3Tiles:
             return PaintMiniatureRailwayTrackRightQuarterTurn3Tiles;
 
-        case TrackElemType::LeftEighthToDiag:
+        case TrackElemType::leftEighthToDiag:
             return PaintMiniatureRailwayTrackLeftEighthToDiag;
-        case TrackElemType::RightEighthToDiag:
+        case TrackElemType::rightEighthToDiag:
             return PaintMiniatureRailwayTrackRightEighthToDiag;
-        case TrackElemType::LeftEighthToOrthogonal:
+        case TrackElemType::leftEighthToOrthogonal:
             return PaintMiniatureRailwayTrackLeftEighthToOrthogonal;
-        case TrackElemType::RightEighthToOrthogonal:
+        case TrackElemType::rightEighthToOrthogonal:
             return PaintMiniatureRailwayTrackRightEighthToOrthogonal;
 
-        case TrackElemType::DiagFlat:
+        case TrackElemType::diagFlat:
             return MiniatureRailwayTrackDiagFlat;
-        case TrackElemType::DiagUp25:
+        case TrackElemType::diagUp25:
             return MiniatureRailwayTrackDiag25DegUp;
-        case TrackElemType::DiagFlatToUp25:
+        case TrackElemType::diagFlatToUp25:
             return MiniatureRailwayTrackDiagFlatTo25DegUp;
-        case TrackElemType::DiagUp25ToFlat:
+        case TrackElemType::diagUp25ToFlat:
             return MiniatureRailwayTrackDiag25DegUpToFlat;
-        case TrackElemType::DiagDown25:
+        case TrackElemType::diagDown25:
             return MiniatureRailwayTrackDiag25DegDown;
-        case TrackElemType::DiagFlatToDown25:
+        case TrackElemType::diagFlatToDown25:
             return MiniatureRailwayTrackDiagFlatTo25DegDown;
-        case TrackElemType::DiagDown25ToFlat:
+        case TrackElemType::diagDown25ToFlat:
             return MiniatureRailwayTrackDiag25DegDownToFlat;
         default:
             return TrackPaintFunctionDummy;

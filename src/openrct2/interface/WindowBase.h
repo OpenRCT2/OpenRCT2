@@ -161,10 +161,10 @@ namespace OpenRCT2
         virtual void onPrepareDraw()
         {
         }
-        virtual void onDraw(RenderTarget& rt)
+        virtual void onDraw(Drawing::RenderTarget& rt)
         {
         }
-        virtual void onDrawWidget(WidgetIndex widgetIndex, RenderTarget& rt)
+        virtual void onDrawWidget(WidgetIndex widgetIndex, Drawing::RenderTarget& rt)
         {
         }
         virtual OpenRCT2String onTooltip(WidgetIndex widgetIndex, StringId fallback)
@@ -199,7 +199,7 @@ namespace OpenRCT2
         virtual void onScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
         {
         }
-        virtual void onScrollDraw(int32_t scrollIndex, RenderTarget& rt)
+        virtual void onScrollDraw(int32_t scrollIndex, Drawing::RenderTarget& rt)
         {
         }
         virtual void onToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)

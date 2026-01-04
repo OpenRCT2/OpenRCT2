@@ -108,6 +108,9 @@ public:
         {
             default:
             case DirBase::rct1:
+                if (basePath.empty())
+                    return {};
+
                 directoryName = kDirectoryNamesRCT2[EnumValue(did)];
                 break;
             case DirBase::rct2:

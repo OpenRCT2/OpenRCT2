@@ -19,7 +19,7 @@ namespace OpenRCT2
 constexpr RideTypeDescriptor MotionSimulatorRTD =
 {
     .Category = RideCategory::thrill,
-    .StartTrackPiece = TrackElemType::FlatTrack2x2,
+    .StartTrackPiece = TrackElemType::flatTrack2x2,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::motionSimulator,
         .enabledTrackGroups = {},

@@ -666,25 +666,25 @@ OpenRCT2::TrackElemType RCT12FlatTrackTypeToOpenRCT2(OpenRCT2::RCT12::TrackElemT
     switch (origTrackType)
     {
         case OpenRCT2::RCT12::TrackElemType::flatTrack1x4A_Alias:
-            return TrackElemType::FlatTrack1x4A;
+            return TrackElemType::flatTrack1x4A;
         case OpenRCT2::RCT12::TrackElemType::flatTrack2x2_Alias:
-            return TrackElemType::FlatTrack2x2;
+            return TrackElemType::flatTrack2x2;
         case OpenRCT2::RCT12::TrackElemType::flatTrack4x4_Alias:
-            return TrackElemType::FlatTrack4x4;
+            return TrackElemType::flatTrack4x4;
         case OpenRCT2::RCT12::TrackElemType::flatTrack2x4_Alias:
-            return TrackElemType::FlatTrack2x4;
+            return TrackElemType::flatTrack2x4;
         case OpenRCT2::RCT12::TrackElemType::flatTrack1x5_Alias:
-            return TrackElemType::FlatTrack1x5;
+            return TrackElemType::flatTrack1x5;
         case OpenRCT2::RCT12::TrackElemType::flatTrack1x1A_Alias:
-            return TrackElemType::FlatTrack1x1A;
+            return TrackElemType::flatTrack1x1A;
         case OpenRCT2::RCT12::TrackElemType::flatTrack1x4B_Alias:
-            return TrackElemType::FlatTrack1x4B;
+            return TrackElemType::flatTrack1x4B;
         case OpenRCT2::RCT12::TrackElemType::flatTrack1x1B_Alias:
-            return TrackElemType::FlatTrack1x1B;
+            return TrackElemType::flatTrack1x1B;
         case OpenRCT2::RCT12::TrackElemType::flatTrack1x4C_Alias:
-            return TrackElemType::FlatTrack1x4C;
+            return TrackElemType::flatTrack1x4C;
         case OpenRCT2::RCT12::TrackElemType::flatTrack3x3_Alias:
-            return TrackElemType::FlatTrack3x3;
+            return TrackElemType::flatTrack3x3;
         default:
             return static_cast<OpenRCT2::TrackElemType>(origTrackType);
     }
@@ -694,36 +694,45 @@ OpenRCT2::RCT12::TrackElemType OpenRCT2FlatTrackTypeToRCT12(OpenRCT2::TrackElemT
 {
     switch (origTrackType)
     {
-        case TrackElemType::FlatTrack1x4A:
+        case TrackElemType::flatTrack1x4A:
             return OpenRCT2::RCT12::TrackElemType::flatTrack1x4A_Alias;
-        case TrackElemType::FlatTrack2x2:
+        case TrackElemType::flatTrack2x2:
             return OpenRCT2::RCT12::TrackElemType::flatTrack2x2_Alias;
-        case TrackElemType::FlatTrack4x4:
+        case TrackElemType::flatTrack4x4:
             return OpenRCT2::RCT12::TrackElemType::flatTrack4x4_Alias;
-        case TrackElemType::FlatTrack2x4:
+        case TrackElemType::flatTrack2x4:
             return OpenRCT2::RCT12::TrackElemType::flatTrack2x4_Alias;
-        case TrackElemType::FlatTrack1x5:
+        case TrackElemType::flatTrack1x5:
             return OpenRCT2::RCT12::TrackElemType::flatTrack1x5_Alias;
-        case TrackElemType::FlatTrack1x1A:
+        case TrackElemType::flatTrack1x1A:
             return OpenRCT2::RCT12::TrackElemType::flatTrack1x1A_Alias;
-        case TrackElemType::FlatTrack1x4B:
+        case TrackElemType::flatTrack1x4B:
             return OpenRCT2::RCT12::TrackElemType::flatTrack1x4B_Alias;
-        case TrackElemType::FlatTrack1x1B:
+        case TrackElemType::flatTrack1x1B:
             return OpenRCT2::RCT12::TrackElemType::flatTrack1x1B_Alias;
-        case TrackElemType::FlatTrack1x4C:
+        case TrackElemType::flatTrack1x4C:
             return OpenRCT2::RCT12::TrackElemType::flatTrack1x4C_Alias;
-        case TrackElemType::FlatTrack3x3:
+        case TrackElemType::flatTrack3x3:
             return OpenRCT2::RCT12::TrackElemType::flatTrack3x3_Alias;
         default:
             return static_cast<OpenRCT2::RCT12::TrackElemType>(origTrackType);
     }
 }
 
-static constexpr std::string_view _stationStyles[] = {
-    "rct2.station.plain",          "rct2.station.wooden", "rct2.station.canvas_tent", "rct2.station.castle_grey",
-    "rct2.station.castle_brown",   "rct2.station.jungle", "rct2.station.log",         "rct2.station.classical",
-    "rct2.station.abstract",       "rct2.station.snow",   "rct2.station.pagoda",      "rct2.station.space",
-    "openrct2.station.noentrance",
+static constexpr std::string_view _stationStyleMap[] = {
+    "rct2.station.plain",          // RCT12_STATION_STYLE_PLAIN
+    "rct2.station.wooden",         // RCT12_STATION_STYLE_WOODEN
+    "rct2.station.canvas_tent",    // RCT12_STATION_STYLE_CANVAS_TENT
+    "rct2.station.castle_grey",    // RCT12_STATION_STYLE_CASTLE_GREY
+    "rct2.station.castle_brown",   // RCT12_STATION_STYLE_CASTLE_BROWN
+    "rct2.station.jungle",         // RCT12_STATION_STYLE_JUNGLE
+    "rct2.station.log",            // RCT12_STATION_STYLE_LOG_CABIN
+    "rct2.station.classical",      // RCT12_STATION_STYLE_CLASSICAL
+    "rct2.station.abstract",       // RCT12_STATION_STYLE_ABSTRACT
+    "rct2.station.snow",           // RCT12_STATION_STYLE_SNOW
+    "rct2.station.pagoda",         // RCT12_STATION_STYLE_PAGODA
+    "rct2.station.space",          // RCT12_STATION_STYLE_SPACE
+    "openrct2.station.noentrance", // RCT12_STATION_STYLE_INVISIBLE
 };
 
 static constexpr std::string_view _musicStyles[] = {
@@ -764,22 +773,22 @@ static constexpr std::string_view _musicStyles[] = {
 
 std::string_view GetStationIdentifierFromStyle(uint8_t style)
 {
-    if (style < std::size(_stationStyles))
+    if (style < std::size(_stationStyleMap))
     {
-        return _stationStyles[style];
+        return _stationStyleMap[style];
     }
-    return _stationStyles[RCT12_STATION_STYLE_INVISIBLE];
+    return _stationStyleMap[RCT12_STATION_STYLE_INVISIBLE];
 }
 
 uint8_t GetStationStyleFromIdentifier(u8string_view identifier)
 {
     // Not supported in TD6, closest match.
-    if (identifier == "openrct2.station.noplatformnoentrance")
+    if (identifier == kNoEntranceNoPlatformIdentifier)
         return RCT12_STATION_STYLE_INVISIBLE;
 
-    for (uint8_t i = RCT12_STATION_STYLE_PLAIN; i < std::size(_stationStyles); i++)
+    for (uint8_t i = RCT12_STATION_STYLE_PLAIN; i < std::size(_stationStyleMap); i++)
     {
-        if (_stationStyles[i] == identifier)
+        if (_stationStyleMap[i] == identifier)
         {
             return i;
         }
@@ -798,14 +807,8 @@ std::optional<uint8_t> GetStyleFromMusicIdentifier(std::string_view identifier)
     return std::nullopt;
 }
 
-void RCT12AddDefaultObjects(ObjectList& objectList)
+void RCT12AddDefaultMusic(ObjectList& objectList)
 {
-    // Stations
-    for (size_t i = 0; i < std::size(_stationStyles); i++)
-    {
-        objectList.SetObject(ObjectType::station, static_cast<ObjectEntryIndex>(i), _stationStyles[i]);
-    }
-
     // Music
     for (size_t i = 0; i < std::size(_musicStyles); i++)
     {

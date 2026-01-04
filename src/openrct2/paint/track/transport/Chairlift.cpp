@@ -152,7 +152,7 @@ static const TrackElement* ChairliftPaintUtilMapGetTrackElementAtFromRideFuzzy(
 static bool ChairliftPaintUtilIsFirstTrack(
     const Ride& ride, const TrackElement& trackElement, const CoordsXY& pos, OpenRCT2::TrackElemType trackType)
 {
-    if (trackElement.GetTrackType() != TrackElemType::BeginStation)
+    if (trackElement.GetTrackType() != TrackElemType::beginStation)
     {
         return false;
     }
@@ -172,7 +172,7 @@ static bool ChairliftPaintUtilIsFirstTrack(
 static bool ChairliftPaintUtilIsLastTrack(
     const Ride& ride, const TrackElement& trackElement, const CoordsXY& pos, OpenRCT2::TrackElemType trackType)
 {
-    if (trackElement.GetTrackType() != TrackElemType::EndStation)
+    if (trackElement.GetTrackType() != TrackElemType::endStation)
     {
         return false;
     }
@@ -368,10 +368,9 @@ static void ChairliftPaintStationSeNw(
         imageId = session.TrackColours.WithIndex(SPR_CHAIRLIFT_STATION_COLUMN_SE_NW);
         PaintAddImageAsParent(
             session, imageId, { 16, 30, height + 2 }, { { 16, 1, height + 2 }, { 1, 1, 7 } }); // bound offset x is wrong?
-
-        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
     }
 
+    PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
@@ -667,31 +666,31 @@ TrackPaintFunction GetTrackPaintFunctionChairlift(OpenRCT2::TrackElemType trackT
 {
     switch (trackType)
     {
-        case TrackElemType::BeginStation:
-        case TrackElemType::MiddleStation:
-        case TrackElemType::EndStation:
+        case TrackElemType::beginStation:
+        case TrackElemType::middleStation:
+        case TrackElemType::endStation:
             return ChairliftPaintStation;
 
-        case TrackElemType::Flat:
+        case TrackElemType::flat:
             return ChairliftPaintFlat;
 
-        case TrackElemType::FlatToUp25:
+        case TrackElemType::flatToUp25:
             return ChairliftPaintFlatTo25DegUp;
-        case TrackElemType::Up25:
+        case TrackElemType::up25:
             return ChairliftPaint25DegUp;
-        case TrackElemType::Up25ToFlat:
+        case TrackElemType::up25ToFlat:
             return ChairliftPaint25DegUpToFlat;
 
-        case TrackElemType::FlatToDown25:
+        case TrackElemType::flatToDown25:
             return ChairliftPaintFlatTo25DegDown;
-        case TrackElemType::Down25:
+        case TrackElemType::down25:
             return ChairliftPaint25DegDown;
-        case TrackElemType::Down25ToFlat:
+        case TrackElemType::down25ToFlat:
             return ChairliftPaint25DegDownToFlat;
 
-        case TrackElemType::LeftQuarterTurn1Tile:
+        case TrackElemType::leftQuarterTurn1Tile:
             return ChairliftPaintLeftQuarterTurn1Tile;
-        case TrackElemType::RightQuarterTurn1Tile:
+        case TrackElemType::rightQuarterTurn1Tile:
             return ChairliftPaintRightQuarterTurn1Tile;
         default:
             return TrackPaintFunctionDummy;

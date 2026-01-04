@@ -20,7 +20,7 @@ namespace OpenRCT2 {
 constexpr RideTypeDescriptor MonorailRTD =
 {
     .Category = RideCategory::transport,
-    .StartTrackPiece = TrackElemType::EndStation,
+    .StartTrackPiece = TrackElemType::endStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::monorail,
         .supportType = MetalSupportType::boxed,

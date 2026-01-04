@@ -128,7 +128,7 @@ namespace OpenRCT2::Ui::Windows
 
             auto& widget = widgets[WIDX_SCROLL];
             ScreenSize scrollSize = onScrollGetSize(0);
-            scrolls[0].contentOffsetY = std::max(0, scrollSize.height - (widget.height() - 1));
+            scrolls[0].contentOffsetY = std::max(0, scrollSize.height - (widget.height() - 2));
             widgetScrollUpdateThumbs(*this, WIDX_SCROLL);
         }
 
@@ -178,7 +178,7 @@ namespace OpenRCT2::Ui::Windows
 
                     groupWidgetsToInsert.emplace_back(groupWidget);
                     lastGroup = def.group;
-                    y += groupWidget.height();
+                    y += groupWidget.height() - 1;
                 }
 
                 // Create checkbox widgets
@@ -260,7 +260,7 @@ namespace OpenRCT2::Ui::Windows
             setWidgetPressed(WIDX_TAB_OPTIONS, page == optionsTab);
         }
 
-        void DrawTabImages(RenderTarget& rt)
+        void DrawTabImages(Drawing::RenderTarget& rt)
         {
             if (!isWidgetDisabled(WIDX_TAB_NEWS))
             {
@@ -308,7 +308,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void onDraw(RenderTarget& rt) override
+        void onDraw(Drawing::RenderTarget& rt) override
         {
             drawWidgets(rt);
             DrawTabImages(rt);
@@ -441,7 +441,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
+        void onScrollDraw(int32_t scrollIndex, Drawing::RenderTarget& rt) override
         {
             int32_t lineHeight = FontGetLineHeight(FontStyle::small);
             int32_t itemHeight = CalculateNewsItemHeight();
@@ -450,7 +450,7 @@ namespace OpenRCT2::Ui::Windows
 
             const auto backgroundPaletteIndex = ColourMapA[colours[3].colour].light;
             // Fill the scrollbar gap if no scrollbar is visible
-            const bool scrollbarVisible = scrolls[0].contentHeight > widgets[WIDX_SCROLL].height();
+            const bool scrollbarVisible = scrolls[0].contentHeight > widgets[WIDX_SCROLL].height() - 1;
             const auto scrollbarFill = scrollbarVisible ? 0 : kScrollBarWidth;
 
             for (const auto& newsItem : getGameState().newsItems.GetArchived())

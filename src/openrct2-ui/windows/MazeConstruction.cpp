@@ -32,6 +32,10 @@
 #include <openrct2/world/MapSelection.h>
 #include <openrct2/world/tile_element/EntranceElement.h>
 
+using OpenRCT2::GameActions::CommandFlag;
+using OpenRCT2::GameActions::CommandFlags;
+using OpenRCT2::GameActions::MazeBuildMode;
+
 namespace OpenRCT2::Ui::Windows
 {
 #pragma region Widgets
@@ -118,7 +122,6 @@ namespace OpenRCT2::Ui::Windows
             RideConstructionInvalidateCurrentTrack();
             ViewportSetVisibility(ViewportVisibility::standard);
 
-            MapInvalidateMapSelectionTiles();
             gMapSelectFlags.unset(MapSelectFlag::enableConstruct);
             gMapSelectFlags.unset(MapSelectFlag::enableArrow);
 
@@ -134,7 +137,7 @@ namespace OpenRCT2::Ui::Windows
                 if (currentRide->overallView.IsNull())
                 {
                     auto gameAction = GameActions::RideDemolishAction(currentRide->id, GameActions::RideModifyType::demolish);
-                    gameAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
+                    gameAction.SetFlags({ CommandFlag::allowDuringPaused });
                     GameActions::Execute(&gameAction, getGameState());
                 }
                 else
@@ -302,7 +305,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void onDraw(RenderTarget& rt) override
+        void onDraw(Drawing::RenderTarget& rt) override
         {
             drawWidgets(rt);
         }
@@ -317,7 +320,7 @@ namespace OpenRCT2::Ui::Windows
                                                                            : ENTRANCE_TYPE_RIDE_EXIT;
             gRideEntranceExitPlaceRideIndex = rideId;
             gRideEntranceExitPlaceStationIndex = StationIndex::FromUnderlying(0);
-            gInputFlags.set(InputFlag::unk6);
+            gInputFlags.set(InputFlag::allowRightMouseRemoval);
 
             RideConstructionInvalidateCurrentTrack();
 
@@ -344,8 +347,6 @@ namespace OpenRCT2::Ui::Windows
         {
             RideConstructionInvalidateCurrentTrack();
 
-            MapInvalidateSelectionRect();
-
             gMapSelectFlags.unset(MapSelectFlag::enable);
             gMapSelectFlags.unset(MapSelectFlag::enableArrow);
 
@@ -364,10 +365,10 @@ namespace OpenRCT2::Ui::Windows
 
             rideEntranceExitPlaceAction.SetCallback([=, this](
                                                         const GameActions::GameAction* ga, const GameActions::Result* result) {
-                if (result->Error != GameActions::Status::Ok)
+                if (result->error != GameActions::Status::ok)
                     return;
 
-                OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::placeItem, result->Position);
+                OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::placeItem, result->position);
 
                 auto* windowMgr = Ui::GetWindowManager();
 
@@ -399,7 +400,9 @@ namespace OpenRCT2::Ui::Windows
 
         void WindowMazeConstructionConstruct(int32_t direction)
         {
-            int32_t x, y, z, actionFlags = 0, mode;
+            int32_t x, y, z;
+            MazeBuildMode mode;
+            CommandFlags actionFlags = {};
 
             _currentTrackSelectionFlags.clearAll();
             _rideConstructionNextArrowPulse = 0;
@@ -412,15 +415,15 @@ namespace OpenRCT2::Ui::Windows
             switch (_rideConstructionState)
             {
                 case RideConstructionState::MazeBuild:
-                    mode = GC_SET_MAZE_TRACK_BUILD;
+                    mode = MazeBuildMode::build;
                     break;
                 case RideConstructionState::MazeMove:
-                    mode = GC_SET_MAZE_TRACK_MOVE;
-                    actionFlags = GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED;
+                    mode = MazeBuildMode::move;
+                    actionFlags = { CommandFlag::allowDuringPaused };
                     break;
                 default:
                 case RideConstructionState::MazeFill:
-                    mode = GC_SET_MAZE_TRACK_FILL;
+                    mode = MazeBuildMode::fill;
                     break;
             }
 
@@ -428,7 +431,7 @@ namespace OpenRCT2::Ui::Windows
             auto action = GameActions::MazeSetTrackAction(loc, false, _currentRideIndex, mode);
             action.SetFlags(actionFlags);
             const auto res = GameActions::Execute(&action, getGameState());
-            if (res.Error != GameActions::Status::Ok)
+            if (res.error != GameActions::Status::ok)
             {
                 return;
             }

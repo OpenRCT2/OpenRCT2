@@ -161,7 +161,7 @@ TEST_F(TileElementWantsFootpathConnection, MapEdge)
 
     // Calculate the connected edges and set the appropriate edge flags
     // FIXME: The footpath functions should only take PathElement and not TileElement.
-    FootpathConnectEdges({ 16, 64 }, pathElement->as<TileElement>(), 0);
+    FootpathConnectEdges({ 16, 64 }, pathElement->as<TileElement>(), {});
     auto edges = pathElement->GetEdges();
 
     // The tiles alongside in the Y direction are both on the map edge so should be marked as an edge

@@ -21,7 +21,7 @@ namespace OpenRCT2
 constexpr RideTypeDescriptor MonsterTrucksRTD =
 {
     .Category = RideCategory::gentle,
-    .StartTrackPiece = TrackElemType::EndStation,
+    .StartTrackPiece = TrackElemType::endStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::carRide,
         .supportType = MetalSupportType::boxed,

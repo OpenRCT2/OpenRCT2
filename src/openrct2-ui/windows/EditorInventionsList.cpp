@@ -269,7 +269,7 @@ namespace OpenRCT2::Ui::Windows
             WindowEditorInventionsListDragOpen(researchItem, windowPos, widgets[WIDX_PRE_RESEARCHED_SCROLL].right);
         }
 
-        void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
+        void onScrollDraw(int32_t scrollIndex, Drawing::RenderTarget& rt) override
         {
             const auto& gameState = getGameState();
 
@@ -354,7 +354,7 @@ namespace OpenRCT2::Ui::Windows
             return fallback;
         }
 
-        void onDraw(RenderTarget& rt) override
+        void onDraw(Drawing::RenderTarget& rt) override
         {
             drawWidgets(rt);
 
@@ -403,7 +403,7 @@ namespace OpenRCT2::Ui::Windows
                 RenderTarget clipDPI;
                 screenPos = windowPos + ScreenCoordsXY{ bkWidget.left + 1, bkWidget.top + 1 };
                 const auto clipWidth = bkWidget.width() - 2;
-                const auto clipHeight = bkWidget.height() - 1;
+                const auto clipHeight = bkWidget.height() - 2;
                 if (ClipDrawPixelInfo(clipDPI, rt, screenPos, clipWidth, clipHeight))
                 {
                     object->DrawPreview(clipDPI, clipWidth, clipHeight);
@@ -655,7 +655,7 @@ namespace OpenRCT2::Ui::Windows
             close();
         }
 
-        void onDraw(RenderTarget& rt) override
+        void onDraw(Drawing::RenderTarget& rt) override
         {
             auto screenCoords = windowPos + ScreenCoordsXY{ 0, 2 };
 

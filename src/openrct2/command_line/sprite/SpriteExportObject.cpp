@@ -71,7 +71,7 @@ namespace OpenRCT2::CommandLine::Sprite
                 }
 
                 path = fs::u8path(path).generic_u8string();
-                fprintf(stdout, "{ \"path\": \"%s\", \"x\": %d, \"y\": %d }", path.c_str(), g1.x_offset, g1.y_offset);
+                fprintf(stdout, "{ \"path\": \"%s\", \"x\": %d, \"y\": %d }", path.c_str(), g1.xOffset, g1.yOffset);
             }
 
             fprintf(stdout, (spriteIndex + 1 != maxIndex) ? ",\n" : "\n");

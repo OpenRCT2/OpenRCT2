@@ -220,7 +220,7 @@ namespace OpenRCT2::Ui::Windows
 
                             WindowDropdownShowTextCustomWidth(
                                 { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top },
-                                dropdownWidget->height() + 1, colours[1], 0, Dropdown::Flag::StayOpen, numItems,
+                                dropdownWidget->height(), colours[1], 0, Dropdown::Flag::StayOpen, numItems,
                                 dropdownWidget->width() - 4);
                         }
                     }
@@ -240,9 +240,8 @@ namespace OpenRCT2::Ui::Windows
                         }
 
                         WindowDropdownShowTextCustomWidth(
-                            { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top },
-                            dropdownWidget->height() + 1, colours[1], 0, Dropdown::Flag::StayOpen, numItems,
-                            dropdownWidget->width() - 4);
+                            { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height(),
+                            colours[1], 0, Dropdown::Flag::StayOpen, numItems, dropdownWidget->width() - 4);
                     }
                     break;
                     // In RCT2, the maximum was 6 weeks
@@ -269,7 +268,7 @@ namespace OpenRCT2::Ui::Windows
                     auto gameAction = GameActions::ParkMarketingAction(
                         Campaign.campaign_type, Campaign.RideId.ToUnderlying(), Campaign.no_weeks);
                     gameAction.SetCallback([](const GameActions::GameAction* ga, const GameActions::Result* result) {
-                        if (result->Error == GameActions::Status::Ok)
+                        if (result->error == GameActions::Status::ok)
                         {
                             auto* windowMgr = Ui::GetWindowManager();
                             windowMgr->CloseByClass(WindowClass::newCampaign);
@@ -354,7 +353,7 @@ namespace OpenRCT2::Ui::Windows
                 widgetSetDisabled(*this, WIDX_START_BUTTON, true);
         }
 
-        void onDraw(RenderTarget& rt) override
+        void onDraw(Drawing::RenderTarget& rt) override
         {
             ScreenCoordsXY screenCoords{};
 

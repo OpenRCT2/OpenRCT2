@@ -449,7 +449,6 @@ namespace OpenRCT2::Ui::Windows
         {
             int32_t direction;
             TileElement* tileElement;
-            MapInvalidateSelectionRect();
             gMapSelectFlags.unset(MapSelectFlag::enable, MapSelectFlag::enableArrow);
             auto mapCoords = FootpathBridgeGetInfoFromPos(screenCoords, &direction, &tileElement);
             if (mapCoords.IsNull())
@@ -470,7 +469,6 @@ namespace OpenRCT2::Ui::Windows
             gMapSelectPositionB = mapCoords;
             gMapSelectArrowPosition = CoordsXYZ{ mapCoords, mapZ };
             gMapSelectArrowDirection = DirectionReverse(direction);
-            MapInvalidateSelectionRect();
         }
 
         void SetPeepSpawnToolDown(const ScreenCoordsXY& screenCoords)
@@ -486,9 +484,9 @@ namespace OpenRCT2::Ui::Windows
 
             auto gameAction = GameActions::PeepSpawnPlaceAction({ mapCoords, mapZ, static_cast<Direction>(direction) });
             auto result = GameActions::Execute(&gameAction, getGameState());
-            if (result.Error == GameActions::Status::Ok)
+            if (result.error == GameActions::Status::ok)
             {
-                Audio::Play3D(Audio::SoundId::placeItem, result.Position);
+                Audio::Play3D(Audio::SoundId::placeItem, result.position);
             }
         }
 
@@ -535,7 +533,7 @@ namespace OpenRCT2::Ui::Windows
             auto& mapArea = widgets[WIDX_MAP];
             if (size.width >= mapArea.width() - 1)
                 size.width -= kScrollBarWidth;
-            if (size.height >= mapArea.height())
+            if (size.height >= mapArea.height() - 1)
                 size.height -= kScrollBarWidth;
 
             return size;
@@ -568,7 +566,7 @@ namespace OpenRCT2::Ui::Windows
             onScrollMouseDown(scrollIndex, screenCoords);
         }
 
-        void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
+        void onScrollDraw(int32_t scrollIndex, Drawing::RenderTarget& rt) override
         {
             GfxClear(rt, PaletteIndex::pi10);
 
@@ -663,7 +661,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void onDraw(RenderTarget& rt) override
+        void onDraw(Drawing::RenderTarget& rt) override
         {
             drawWidgets(rt);
             DrawTabImages(rt);
@@ -739,7 +737,7 @@ namespace OpenRCT2::Ui::Windows
             // calculate width and height of minimap
             auto& widget = widgets[WIDX_MAP];
             auto mapWidth = widget.width() - 1 - kScrollBarWidth - 1;
-            auto mapHeight = widget.height() - kScrollBarWidth - 1;
+            auto mapHeight = widget.height() - 1 - kScrollBarWidth - 1;
 
             centreX = std::max(centreX - (mapWidth >> 1), 0);
             centreY = std::max(centreY - (mapHeight >> 1), 0);
@@ -949,7 +947,7 @@ namespace OpenRCT2::Ui::Windows
             return colourB;
         }
 
-        void PaintPeepOverlay(RenderTarget& rt, const ScreenCoordsXY& offset)
+        void PaintPeepOverlay(Drawing::RenderTarget& rt, const ScreenCoordsXY& offset)
         {
             auto flashColour = GetGuestFlashColour();
             for (auto guest : EntityList<Guest>())
@@ -963,7 +961,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void DrawMapPeepPixel(Peep* peep, const uint8_t flashColour, RenderTarget& rt, const ScreenCoordsXY& offset)
+        void DrawMapPeepPixel(Peep* peep, const uint8_t flashColour, Drawing::RenderTarget& rt, const ScreenCoordsXY& offset)
         {
             if (peep->x == kLocationNull)
                 return;
@@ -1009,7 +1007,7 @@ namespace OpenRCT2::Ui::Windows
             return colour;
         }
 
-        void PaintTrainOverlay(RenderTarget& rt, const ScreenCoordsXY& offset)
+        void PaintTrainOverlay(Drawing::RenderTarget& rt, const ScreenCoordsXY& offset)
         {
             for (auto train : TrainManager::View())
             {
@@ -1031,7 +1029,7 @@ namespace OpenRCT2::Ui::Windows
          * The call to Rectangle::fill was originally wrapped in Sub68DABD which made sure that arguments were ordered
          * correctly, but it doesn't look like it's ever necessary here so the call was removed.
          */
-        void PaintHudRectangle(RenderTarget& rt, const ScreenCoordsXY& widgetOffset)
+        void PaintHudRectangle(Drawing::RenderTarget& rt, const ScreenCoordsXY& widgetOffset)
         {
             WindowBase* mainWindow = WindowGetMain();
             if (mainWindow == nullptr)
@@ -1069,7 +1067,7 @@ namespace OpenRCT2::Ui::Windows
             Rectangle::fill(rt, { rightBottom - ScreenCoordsXY{ 0, 3 }, rightBottom }, PaletteIndex::pi56);
         }
 
-        void DrawTabImages(RenderTarget& rt)
+        void DrawTabImages(Drawing::RenderTarget& rt)
         {
             // Guest tab image (animated)
             uint32_t guestTabImage = SPR_TAB_GUESTS_0;

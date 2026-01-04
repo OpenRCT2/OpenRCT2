@@ -50,41 +50,41 @@ namespace OpenRCT2::GameActions
     {
         auto res = Result();
 
-        res.Position = _loc + CoordsXYZ{ 8, 8, 0 };
-        res.Expenditure = ExpenditureType::rideConstruction;
-        res.ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
+        res.position = _loc + CoordsXYZ{ 8, 8, 0 };
+        res.expenditure = ExpenditureType::rideConstruction;
+        res.errorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
         if ((_loc.z & 0xF) != 0)
         {
-            res.Error = Status::Unknown;
-            res.ErrorMessage = STR_INVALID_HEIGHT;
+            res.error = Status::unknown;
+            res.errorMessage = STR_INVALID_HEIGHT;
             return res;
         }
 
         if (!LocationValid(_loc))
         {
-            res.Error = Status::InvalidParameters;
-            res.ErrorMessage = STR_OFF_EDGE_OF_MAP;
+            res.error = Status::invalidParameters;
+            res.errorMessage = STR_OFF_EDGE_OF_MAP;
             return res;
         }
 
         if (!MapIsLocationOwned(_loc) && !gameState.cheats.sandboxMode)
         {
-            res.Error = Status::NotOwned;
-            res.ErrorMessage = STR_LAND_NOT_OWNED_BY_PARK;
+            res.error = Status::notOwned;
+            res.errorMessage = STR_LAND_NOT_OWNED_BY_PARK;
             return res;
         }
 
         if (!MapCheckCapacityAndReorganise(_loc))
         {
-            res.Error = Status::NoFreeElements;
-            res.ErrorMessage = STR_TILE_ELEMENT_LIMIT_REACHED;
+            res.error = Status::noFreeElements;
+            res.errorMessage = STR_TILE_ELEMENT_LIMIT_REACHED;
             return res;
         }
         auto surfaceElement = MapGetSurfaceElementAt(_loc);
         if (surfaceElement == nullptr)
         {
-            res.Error = Status::Unknown;
-            res.ErrorMessage = STR_INVALID_SELECTION_OF_OBJECTS;
+            res.error = Status::unknown;
+            res.errorMessage = STR_INVALID_SELECTION_OF_OBJECTS;
             return res;
         }
 
@@ -100,33 +100,33 @@ namespace OpenRCT2::GameActions
             const auto& rtd = ride->getRideTypeDescriptor();
             if (heightDifference > rtd.Heights.MaxHeight)
             {
-                res.Error = Status::TooHigh;
-                res.ErrorMessage = STR_TOO_HIGH_FOR_SUPPORTS;
+                res.error = Status::tooHigh;
+                res.errorMessage = STR_TOO_HIGH_FOR_SUPPORTS;
                 return res;
             }
         }
 
         auto canBuild = MapCanConstructWithClearAt(
-            { _loc.ToTileStart(), baseHeight, clearanceHeight }, &MapPlaceNonSceneryClearFunc, { 0b1111, 0 }, GetFlags(),
+            { _loc.ToTileStart(), baseHeight, clearanceHeight }, MapPlaceNonSceneryClearFunc, { 0b1111, 0 }, GetFlags(),
             kTileSlopeFlat);
-        if (canBuild.Error != Status::Ok)
+        if (canBuild.error != Status::ok)
         {
-            canBuild.ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
+            canBuild.errorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
             return canBuild;
         }
 
-        const auto clearanceData = canBuild.GetData<ConstructClearResult>();
+        const auto clearanceData = canBuild.getData<ConstructClearResult>();
         if (clearanceData.GroundFlags & ELEMENT_IS_UNDERWATER)
         {
-            res.Error = Status::NoClearance;
-            res.ErrorMessage = STR_RIDE_CANT_BUILD_THIS_UNDERWATER;
+            res.error = Status::noClearance;
+            res.errorMessage = STR_RIDE_CANT_BUILD_THIS_UNDERWATER;
             return res;
         }
 
         if (clearanceData.GroundFlags & ELEMENT_IS_UNDERGROUND)
         {
-            res.Error = Status::NoClearance;
-            res.ErrorMessage = STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND;
+            res.error = Status::noClearance;
+            res.errorMessage = STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND;
             return res;
         }
 
@@ -134,12 +134,12 @@ namespace OpenRCT2::GameActions
         if (ride == nullptr || ride->type == kRideTypeNull)
         {
             LOG_ERROR("Ride not found for rideIndex %u", _rideIndex);
-            res.Error = Status::InvalidParameters;
-            res.ErrorMessage = STR_ERR_RIDE_NOT_FOUND;
+            res.error = Status::invalidParameters;
+            res.errorMessage = STR_ERR_RIDE_NOT_FOUND;
             return res;
         }
 
-        res.Cost = MazeCalculateCost(canBuild.Cost, *ride, _loc);
+        res.cost = MazeCalculateCost(canBuild.cost, *ride, _loc);
 
         return res;
     }
@@ -148,21 +148,21 @@ namespace OpenRCT2::GameActions
     {
         auto res = Result();
 
-        res.Position = _loc + CoordsXYZ{ 8, 8, 0 };
-        res.Expenditure = ExpenditureType::rideConstruction;
-        res.ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
+        res.position = _loc + CoordsXYZ{ 8, 8, 0 };
+        res.expenditure = ExpenditureType::rideConstruction;
+        res.errorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
 
         auto ride = GetRide(_rideIndex);
         if (ride == nullptr)
         {
             LOG_ERROR("Ride not found for rideIndex %u", _rideIndex);
-            res.Error = Status::InvalidParameters;
-            res.ErrorMessage = STR_ERR_RIDE_NOT_FOUND;
+            res.error = Status::invalidParameters;
+            res.errorMessage = STR_ERR_RIDE_NOT_FOUND;
             return res;
         }
 
-        uint32_t flags = GetFlags();
-        if (!(flags & GAME_COMMAND_FLAG_GHOST))
+        auto flags = GetFlags();
+        if (!flags.has(CommandFlag::ghost))
         {
             FootpathRemoveLitter(_loc);
             WallRemoveAt({ _loc.ToTileStart(), _loc.z, _loc.z + 32 });
@@ -172,15 +172,15 @@ namespace OpenRCT2::GameActions
         auto clearanceHeight = _loc.z + kMazeClearanceHeight;
 
         auto canBuild = MapCanConstructWithClearAt(
-            { _loc.ToTileStart(), baseHeight, clearanceHeight }, &MapPlaceNonSceneryClearFunc, { 0b1111, 0 },
-            GetFlags() | GAME_COMMAND_FLAG_APPLY, kTileSlopeFlat);
-        if (canBuild.Error != Status::Ok)
+            { _loc.ToTileStart(), baseHeight, clearanceHeight }, MapPlaceNonSceneryClearFunc, { 0b1111, 0 },
+            GetFlags().with(CommandFlag::apply), kTileSlopeFlat);
+        if (canBuild.error != Status::ok)
         {
-            canBuild.ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
+            canBuild.errorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
             return canBuild;
         }
 
-        res.Cost = MazeCalculateCost(canBuild.Cost, *ride, _loc);
+        res.cost = MazeCalculateCost(canBuild.cost, *ride, _loc);
 
         auto startLoc = _loc.ToTileStart();
 
@@ -188,11 +188,11 @@ namespace OpenRCT2::GameActions
         Guard::Assert(trackElement != nullptr);
 
         trackElement->SetClearanceZ(clearanceHeight);
-        trackElement->SetTrackType(TrackElemType::Maze);
+        trackElement->SetTrackType(TrackElemType::maze);
         trackElement->SetRideType(ride->type);
         trackElement->SetRideIndex(_rideIndex);
         trackElement->SetMazeEntry(_mazeEntry);
-        trackElement->SetGhost(flags & GAME_COMMAND_FLAG_GHOST);
+        trackElement->SetGhost(flags.has(CommandFlag::ghost));
 
         MapInvalidateTileFull(startLoc);
 

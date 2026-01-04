@@ -41,15 +41,15 @@ namespace OpenRCT2
     {
         switch (GetTrackType())
         {
-            case TrackElemType::EndStation:
-            case TrackElemType::CableLiftHill:
-            case TrackElemType::BlockBrakes:
-            case TrackElemType::DiagBlockBrakes:
+            case TrackElemType::endStation:
+            case TrackElemType::cableLiftHill:
+            case TrackElemType::blockBrakes:
+            case TrackElemType::diagBlockBrakes:
                 return true;
-            case TrackElemType::Up25ToFlat:
-            case TrackElemType::Up60ToFlat:
-            case TrackElemType::DiagUp25ToFlat:
-            case TrackElemType::DiagUp60ToFlat:
+            case TrackElemType::up25ToFlat:
+            case TrackElemType::up60ToFlat:
+            case TrackElemType::diagUp25ToFlat:
+            case TrackElemType::diagUp60ToFlat:
                 return HasChain();
             default:
                 return false;
@@ -65,7 +65,7 @@ namespace OpenRCT2
     {
         const auto* ride = GetRide(GetRideIndex());
         if (ride != nullptr && ride->getRideTypeDescriptor().HasFlag(RtdFlag::hasLandscapeDoors))
-            return DEFAULT_SEAT_ROTATION;
+            return kDefaultSeatRotation;
 
         return URide.ColourScheme >> 4;
     }

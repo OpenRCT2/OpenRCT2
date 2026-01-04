@@ -38,7 +38,7 @@ static void FlyingRCTrackStation(
         { 17155, 17151 },
     };
 
-    if (trackElement.GetTrackType() == TrackElemType::EndStation)
+    if (trackElement.GetTrackType() == TrackElemType::endStation)
     {
         PaintAddImageAsParentRotated(
             session, direction, session.TrackColours.WithIndex(imageIds[direction][1]), { 0, 0, height },
@@ -851,35 +851,35 @@ TrackPaintFunction GetTrackPaintFunctionFlyingRC(OpenRCT2::TrackElemType trackTy
 {
     switch (trackType)
     {
-        case TrackElemType::EndStation:
-        case TrackElemType::BeginStation:
-        case TrackElemType::MiddleStation:
+        case TrackElemType::endStation:
+        case TrackElemType::beginStation:
+        case TrackElemType::middleStation:
             return FlyingRCTrackStation;
         // OpenRCT2-specific paint code
-        case TrackElemType::MultiDimInvertedFlatToDown90QuarterLoop:
+        case TrackElemType::multiDimInvertedFlatToDown90QuarterLoop:
             return FlyingRCTrackInvertedFlatTo90DegQuarterLoopDown;
-        case TrackElemType::MultiDimUp90ToInvertedFlatQuarterLoop:
+        case TrackElemType::multiDimUp90ToInvertedFlatQuarterLoop:
             return FlyingRCTrack90DegToInvertedFlatQuarterLoopUp;
             // OpenRCT2-specific track elements
-        case TrackElemType::LeftFlyerLargeHalfLoopUninvertedUp:
+        case TrackElemType::leftFlyerLargeHalfLoopUninvertedUp:
             return TwisterRCTrackLeftLargeHalfLoopUp;
-        case TrackElemType::RightFlyerLargeHalfLoopUninvertedUp:
+        case TrackElemType::rightFlyerLargeHalfLoopUninvertedUp:
             return TwisterRCTrackRightLargeHalfLoopUp;
-        case TrackElemType::LeftFlyerLargeHalfLoopInvertedDown:
+        case TrackElemType::leftFlyerLargeHalfLoopInvertedDown:
             return TwisterRCTrackLeftLargeHalfLoopDown;
-        case TrackElemType::RightFlyerLargeHalfLoopInvertedDown:
+        case TrackElemType::rightFlyerLargeHalfLoopInvertedDown:
             return TwisterRCTrackRightLargeHalfLoopDown;
-        case TrackElemType::FlyerHalfLoopInvertedUp:
+        case TrackElemType::flyerHalfLoopInvertedUp:
             return FlyingRCTrackHalfLoopInvertedUp;
-        case TrackElemType::FlyerHalfLoopUninvertedDown:
+        case TrackElemType::flyerHalfLoopUninvertedDown:
             return FlyingRCTrackHalfLoopUninvertedDown;
-        case TrackElemType::LeftFlyerLargeHalfLoopInvertedUp:
+        case TrackElemType::leftFlyerLargeHalfLoopInvertedUp:
             return FlyingRCTrackLeftFlyingLargeHalfLoopInvertedUp;
-        case TrackElemType::RightFlyerLargeHalfLoopInvertedUp:
+        case TrackElemType::rightFlyerLargeHalfLoopInvertedUp:
             return FlyingRCTrackRightFlyingLargeHalfLoopInvertedUp;
-        case TrackElemType::LeftFlyerLargeHalfLoopUninvertedDown:
+        case TrackElemType::leftFlyerLargeHalfLoopUninvertedDown:
             return FlyingRCTrackLeftFlyingLargeHalfLoopUninvertedDown;
-        case TrackElemType::RightFlyerLargeHalfLoopUninvertedDown:
+        case TrackElemType::rightFlyerLargeHalfLoopUninvertedDown:
             return FlyingRCTrackRightFlyingLargeHalfLoopUninvertedDown;
         default:
             return GetTrackPaintFunctionTwisterRC(trackType);

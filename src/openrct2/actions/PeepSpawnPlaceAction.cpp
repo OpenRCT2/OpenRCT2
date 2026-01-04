@@ -48,37 +48,37 @@ namespace OpenRCT2::GameActions
     {
         if (!isInEditorMode() && !getGameState().cheats.sandboxMode)
         {
-            return Result(Status::NotInEditorMode, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, kStringIdNone);
+            return Result(Status::notInEditorMode, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, kStringIdNone);
         }
 
         auto res = Result();
-        res.Expenditure = ExpenditureType::landPurchase;
-        res.Position = _location;
+        res.expenditure = ExpenditureType::landPurchase;
+        res.position = _location;
 
         auto mapSizeUnits = GetMapSizeUnits() - CoordsXY{ 16, 16 };
         if (!LocationValid(_location) || _location.x <= 16 || _location.y <= 16 || _location.x >= mapSizeUnits.x
             || _location.y >= mapSizeUnits.y)
         {
-            return Result(Status::InvalidParameters, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_OFF_EDGE_OF_MAP);
+            return Result(Status::invalidParameters, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_OFF_EDGE_OF_MAP);
         }
 
         // Verify footpath exists at location, and retrieve coordinates
         auto pathElement = MapGetPathElementAt(TileCoordsXYZ{ _location });
         if (pathElement == nullptr)
         {
-            return Result(Status::InvalidParameters, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_CAN_ONLY_BE_BUILT_ON_PATHS);
+            return Result(Status::invalidParameters, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_CAN_ONLY_BE_BUILT_ON_PATHS);
         }
 
         // Verify location is unowned
         auto surfaceMapElement = MapGetSurfaceElementAt(_location);
         if (surfaceMapElement == nullptr)
         {
-            return Result(Status::Unknown, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
+            return Result(Status::unknown, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
         }
         if (surfaceMapElement->GetOwnership() != OWNERSHIP_UNOWNED)
         {
             return Result(
-                Status::InvalidParameters, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_ERR_MUST_BE_OUTSIDE_PARK_BOUNDARIES);
+                Status::invalidParameters, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_ERR_MUST_BE_OUTSIDE_PARK_BOUNDARIES);
         }
 
         return res;
@@ -87,8 +87,8 @@ namespace OpenRCT2::GameActions
     Result PeepSpawnPlaceAction::Execute(GameState_t& gameState) const
     {
         auto res = Result();
-        res.Expenditure = ExpenditureType::landPurchase;
-        res.Position = _location;
+        res.expenditure = ExpenditureType::landPurchase;
+        res.position = _location;
 
         // Shift the spawn point to the edge of the tile
         auto spawnPos = CoordsXY{ _location.ToTileCentre() }

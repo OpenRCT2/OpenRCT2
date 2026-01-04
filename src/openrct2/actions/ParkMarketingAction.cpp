@@ -52,12 +52,12 @@ namespace OpenRCT2::GameActions
     {
         if (static_cast<size_t>(_type) >= std::size(AdvertisingCampaignPricePerWeek) || _numWeeks >= 256)
         {
-            return Result(Status::InvalidParameters, STR_CANT_START_MARKETING_CAMPAIGN, STR_ERR_VALUE_OUT_OF_RANGE);
+            return Result(Status::invalidParameters, STR_CANT_START_MARKETING_CAMPAIGN, STR_ERR_VALUE_OUT_OF_RANGE);
         }
         if (getGameState().park.flags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN)
         {
             return Result(
-                Status::Disallowed, STR_CANT_START_MARKETING_CAMPAIGN, STR_MARKETING_CAMPAIGNS_FORBIDDEN_BY_LOCAL_AUTHORITY);
+                Status::disallowed, STR_CANT_START_MARKETING_CAMPAIGN, STR_MARKETING_CAMPAIGNS_FORBIDDEN_BY_LOCAL_AUTHORITY);
         }
 
         return CreateResult();
@@ -89,9 +89,9 @@ namespace OpenRCT2::GameActions
     Result ParkMarketingAction::CreateResult() const
     {
         auto result = Result();
-        result.ErrorTitle = STR_CANT_START_MARKETING_CAMPAIGN;
-        result.Expenditure = ExpenditureType::marketing;
-        result.Cost = CalculatePrice();
+        result.errorTitle = STR_CANT_START_MARKETING_CAMPAIGN;
+        result.expenditure = ExpenditureType::marketing;
+        result.cost = CalculatePrice();
         return result;
     }
 

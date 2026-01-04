@@ -14,7 +14,6 @@
 #include "../../SpriteIds.h"
 #include "../../config/Config.h"
 #include "../../core/Numerics.hpp"
-#include "../../drawing/Drawing.h"
 #include "../../interface/Viewport.h"
 #include "../../profiling/Profiling.h"
 #include "../../ride/RideData.h"
@@ -36,6 +35,7 @@
 #include "Segment.h"
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::Drawing;
 
 static void BlankTilesPaint(PaintSession& session, int32_t x, int32_t y);
 static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoords);
@@ -163,7 +163,7 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
     int32_t screenMinY = Translate3DTo2DWithZ(rotation, { coords, 0 }).y;
 
     // Display little yellow arrow when building footpaths?
-    if ((gMapSelectFlags.has(MapSelectFlag::enableArrow)) && session.MapPosition.x == gMapSelectArrowPosition.x
+    if (gMapSelectFlags.has(MapSelectFlag::enableArrow) && session.MapPosition.x == gMapSelectArrowPosition.x
         && session.MapPosition.y == gMapSelectArrowPosition.y)
     {
         uint8_t arrowRotation = (rotation + (gMapSelectArrowDirection & 3)) & 3;
