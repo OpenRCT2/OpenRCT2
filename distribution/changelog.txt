@@ -1,4 +1,4 @@
-0.4.30 (in development)
+0.4.30 (2026-01-04)
 ------------------------------------------------------------------------
 - Improved: [#24912] Staff now use an appropriate standing animation while waiting at level crossings.
 - Improved: [#25515] Path dragging can now be disabled via multiplayer group permissions.
@@ -30,7 +30,7 @@
 - Fix: [#25601] Inspection interval of a ride gets reset when opening the construction window.
 - Fix: [#25628] Availability of AVX2 and SSE4.1 is not detected correctly.
 - Fix: [#25639] Scenery window crashes when a no longer present object is still selected.
-- Fix: [#25641] Desync because of mismatching inspection intervals. 
+- Fix: [#25641] Desync because of mismatching inspection intervals.
 - Fix: [#25642] The selection marker for purchasing land rights is not drawn with the correct colours.
 - Fix: [#25646] It is possible to remove scenery and paths when setting staff patrol areas and purchasing land.
 - Fix: [#25660] After saving a track design with scenery, that ride’s entrances and exits are visible in ‘Highlight path issues’ mode.
