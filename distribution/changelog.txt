@@ -1,3 +1,6 @@
+0.4.31 (in development)
+------------------------------------------------------------------------
+
 0.4.30 (2026-01-04)
 ------------------------------------------------------------------------
 - Improved: [#24912] Staff now use an appropriate standing animation while waiting at level crossings.
