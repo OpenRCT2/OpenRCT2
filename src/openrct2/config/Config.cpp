@@ -50,6 +50,11 @@ static constexpr bool kEnlargedUiDefault = true;
 #else
 static constexpr bool kEnlargedUiDefault = false;
 #endif
+#ifdef __HAIKU__ // Multi-threading is unstable here
+static constexpr bool kMultiThreadingDefault = false;
+#else
+static constexpr bool kMultiThreadingDefault = true;
+#endif
 
 namespace OpenRCT2::Config
 {
@@ -238,7 +243,7 @@ namespace OpenRCT2::Config
             // Always have multi-threading disabled in debug builds, this makes things slower.
             model->multiThreading = false;
 #else
-            model->multiThreading = reader->GetBoolean("multithreading", true);
+            model->multiThreading = reader->GetBoolean("multithreading", kMultiThreadingDefault);
 #endif // _DEBUG
             model->trapCursor = reader->GetBoolean("trap_cursor", false);
             model->autoOpenShops = reader->GetBoolean("auto_open_shops", false);

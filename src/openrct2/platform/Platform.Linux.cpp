@@ -158,10 +158,12 @@ namespace OpenRCT2::Platform
             "/usr/local/share/openrct2",
             "/var/lib/openrct2",
             "/usr/share/openrct2",
-            "/boot/system/data/openrct2", //Haiku
-            "/boot/home/config/data/openrct2", //Haiku
-            "/boot/system/non-packaged/data/openrct2", //Haiku (non-packaged)
-            "/boot/home/config/non-packaged/data/openrct2", //Haiku (non-packaged)
+    #ifdef __HAIKU__
+            "/boot/system/data/openrct2",
+            "/boot/home/config/data/openrct2",
+            "/boot/system/non-packaged/data/openrct2",
+            "/boot/home/config/non-packaged/data/openrct2",
+    #endif
         };
         // clang-format on
         for (const auto& prefix : prefixes)
