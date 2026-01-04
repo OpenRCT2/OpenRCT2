@@ -147,7 +147,7 @@ namespace OpenRCT2::Platform
 
     SteamPaths GetSteamPaths();
     bool triggerSteamDownload();
-#if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__)) || defined(__FreeBSD__) || defined(__NetBSD__)             \
+#if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__)) || defined(__FreeBSD__) || defined(__NetBSD__)              \
     || defined(__HAIKU__)
     std::string GetEnvironmentPath(const char* name);
     std::string GetHomePath();
