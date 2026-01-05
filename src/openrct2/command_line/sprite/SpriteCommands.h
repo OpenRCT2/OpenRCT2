@@ -9,15 +9,16 @@
 
 #pragma once
 
+#include "../../core/StringTypes.h"
 #include "../../drawing/ImageImporter.h"
 
 #include <cstdint>
 #include <optional>
-#include <string_view>
 
-struct G1Element;
-using utf8 = char;
-using u8string_view = std::basic_string_view<utf8>;
+namespace OpenRCT2
+{
+    struct G1Element;
+}
 
 namespace OpenRCT2::CommandLine::Sprite
 {
