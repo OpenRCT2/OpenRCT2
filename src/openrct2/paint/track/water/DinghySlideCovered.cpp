@@ -951,7 +951,7 @@ static void DinghySlideTrackCovered60DegDownTo25DegDown(
         session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
-TrackPaintFunction GetTrackPaintFunctionDinghySlideCovered(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionDinghySlideCovered(TrackElemType trackType)
 {
     switch (trackType)
     {

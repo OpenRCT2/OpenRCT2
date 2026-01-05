@@ -65,7 +65,7 @@ static void PaintShop(
         PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
 }
 
-TrackPaintFunction GetTrackPaintFunctionShop(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionShop(TrackElemType trackType)
 {
     switch (trackType)
     {

@@ -20416,7 +20416,7 @@ static void CorkscrewRCTrackRightEighthDiveLoopToDownOrthogonal(
         session, ride, 5 - trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
-TrackPaintFunction GetTrackPaintFunctionCorkscrewRC(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionCorkscrewRC(TrackElemType trackType)
 {
     switch (trackType)
     {

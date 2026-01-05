@@ -9611,7 +9611,7 @@ static void CompactInvertedRCTrackBlockBrakes(
     PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
-TrackPaintFunction GetTrackPaintFunctionCompactInvertedRC(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionCompactInvertedRC(TrackElemType trackType)
 {
     switch (trackType)
     {

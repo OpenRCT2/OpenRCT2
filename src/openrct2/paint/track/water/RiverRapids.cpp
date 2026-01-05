@@ -705,7 +705,7 @@ static void PaintRiverRapidsTrackWhirlpool(
 /**
  * rct2: 0x0075745C
  **/
-TrackPaintFunction GetTrackPaintFunctionRiverRapids(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionRiverRapids(TrackElemType trackType)
 {
     switch (trackType)
     {

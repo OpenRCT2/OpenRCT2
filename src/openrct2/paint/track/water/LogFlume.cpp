@@ -985,7 +985,7 @@ static void LogFlumeTrack60Down25(
     PaintUtilSetGeneralSupportHeight(session, height + 72);
 }
 
-TrackPaintFunction GetTrackPaintFunctionLogFlume(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionLogFlume(TrackElemType trackType)
 {
     switch (trackType)
     {

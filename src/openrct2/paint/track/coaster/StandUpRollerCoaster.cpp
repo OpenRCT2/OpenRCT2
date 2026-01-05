@@ -18361,7 +18361,7 @@ static void StandUpRCTrackRightLargeZeroGRollDown(
         session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
-TrackPaintFunction GetTrackPaintFunctionStandUpRC(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionStandUpRC(TrackElemType trackType)
 {
     switch (trackType)
     {

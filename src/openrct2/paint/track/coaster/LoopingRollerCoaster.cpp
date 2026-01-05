@@ -10307,7 +10307,7 @@ static void LoopingRCTrackBooster(
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
-TrackPaintFunction GetTrackPaintFunctionLoopingRC(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionLoopingRC(TrackElemType trackType)
 {
     switch (trackType)
     {

@@ -2306,7 +2306,7 @@ static void MiniatureRailwayTrackDiag25DegDownToFlat(
 /**
  * rct2: 0x008ACE48
  */
-TrackPaintFunction GetTrackPaintFunctionMiniatureRailway(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionMiniatureRailway(TrackElemType trackType)
 {
     switch (trackType)
     {

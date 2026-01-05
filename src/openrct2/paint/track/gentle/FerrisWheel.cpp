@@ -174,7 +174,7 @@ static void PaintFerrisWheel(
     PaintUtilSetGeneralSupportHeight(session, height + 176);
 }
 
-TrackPaintFunction GetTrackPaintFunctionFerrisWheel(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionFerrisWheel(TrackElemType trackType)
 {
     if (trackType != TrackElemType::flatTrack1x4C)
     {

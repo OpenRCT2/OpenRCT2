@@ -559,7 +559,7 @@ static void PaintGhostTrainTrackBrakes(
 /**
  * rct2: 0x00770924
  */
-TrackPaintFunction GetTrackPaintFunctionGhostTrain(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionGhostTrain(TrackElemType trackType)
 {
     switch (trackType)
     {

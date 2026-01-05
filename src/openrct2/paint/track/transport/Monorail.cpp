@@ -1212,7 +1212,7 @@ static void PaintMonorailTrackDiag25DegDownToFlat(
 /**
  * rct2: 0x008ADF34
  */
-TrackPaintFunction GetTrackPaintFunctionMonorail(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionMonorail(TrackElemType trackType)
 {
     switch (trackType)
     {

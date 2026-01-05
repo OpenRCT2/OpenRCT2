@@ -80,7 +80,7 @@ static void PaintFacility(
 }
 
 /* 0x00762D44 */
-TrackPaintFunction GetTrackPaintFunctionFacility(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionFacility(TrackElemType trackType)
 {
     switch (trackType)
     {

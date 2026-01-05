@@ -1231,7 +1231,7 @@ static void PaintBoatHireTrackSBendRight(
 /**
  * rct2: 0x008B0D60
  */
-TrackPaintFunction GetTrackPaintFunctionBoatHire(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionBoatHire(TrackElemType trackType)
 {
     switch (trackType)
     {

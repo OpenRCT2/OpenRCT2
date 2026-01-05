@@ -7180,7 +7180,7 @@ namespace OpenRCT2::AlpineRC
         }
     }
 
-    TrackPaintFunction GetTrackPaintFunction(OpenRCT2::TrackElemType trackType)
+    TrackPaintFunction GetTrackPaintFunction(TrackElemType trackType)
     {
         switch (trackType)
         {

@@ -4079,7 +4079,7 @@ static void BobsleighRCTrackOnRidePhoto(
     TrackPaintUtilOnridePhotoPaint2(session, direction, trackElement, height);
 }
 
-TrackPaintFunction GetTrackPaintFunctionBobsleighRC(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionBobsleighRC(TrackElemType trackType)
 {
     switch (trackType)
     {

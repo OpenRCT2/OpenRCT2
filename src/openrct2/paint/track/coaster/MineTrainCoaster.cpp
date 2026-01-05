@@ -7224,7 +7224,7 @@ static void MineTrainRCTrack60DegDownToFlatLongBase(
         session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
-TrackPaintFunction GetTrackPaintFunctionMineTrainRC(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionMineTrainRC(TrackElemType trackType)
 {
     switch (trackType)
     {

@@ -1007,7 +1007,7 @@ static void AirPoweredVerticalRCTrackOnridePhoto(
     TrackPaintUtilOnridePhotoPaint2(session, direction, trackElement, height);
 }
 
-TrackPaintFunction GetTrackPaintFunctionAirPoweredVerticalRC(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionAirPoweredVerticalRC(TrackElemType trackType)
 {
     switch (trackType)
     {

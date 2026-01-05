@@ -154,7 +154,7 @@ static void PaintRotoDropTowerSection(
 /**
  * rct2: 0x00886074
  */
-TrackPaintFunction GetTrackPaintFunctionRotoDrop(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionRotoDrop(TrackElemType trackType)
 {
     switch (trackType)
     {

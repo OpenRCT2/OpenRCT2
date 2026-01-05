@@ -8985,7 +8985,7 @@ static void MiniRCTrackBooster(
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
-TrackPaintFunction GetTrackPaintFunctionMiniRC(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionMiniRC(TrackElemType trackType)
 {
     switch (trackType)
     {

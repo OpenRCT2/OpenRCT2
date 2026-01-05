@@ -175,7 +175,7 @@ static void PaintEnterprise(
     PaintUtilSetGeneralSupportHeight(session, height + 160);
 }
 
-TrackPaintFunction GetTrackPaintFunctionEnterprise(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionEnterprise(TrackElemType trackType)
 {
     if (trackType != TrackElemType::flatTrack4x4)
     {

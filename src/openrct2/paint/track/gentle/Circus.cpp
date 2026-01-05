@@ -121,7 +121,7 @@ static void PaintCircus(
     PaintUtilSetGeneralSupportHeight(session, height + 128);
 }
 
-TrackPaintFunction GetTrackPaintFunctionCircus(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionCircus(TrackElemType trackType)
 {
     if (trackType != TrackElemType::flatTrack3x3)
     {
