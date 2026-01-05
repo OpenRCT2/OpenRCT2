@@ -21,6 +21,7 @@
 #include <openrct2/actions/CheatSetAction.h>
 #include <openrct2/actions/ParkSetDateAction.h>
 #include <openrct2/core/EnumUtils.hpp>
+#include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Currency.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.Date.h>

@@ -12,7 +12,7 @@
 #include "Window.h"
 
 #include <openrct2-ui/UiStringIds.h>
-#include <openrct2/drawing/Drawing.h>
+#include <openrct2/drawing/FilterPaletteIds.h>
 #include <openrct2/interface/Widget.h>
 
 namespace OpenRCT2::Ui

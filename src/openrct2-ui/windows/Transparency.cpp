@@ -20,6 +20,7 @@
 #include <openrct2/actions/CheatSetAction.h>
 #include <openrct2/actions/ParkSetDateAction.h>
 #include <openrct2/config/Config.h>
+#include <openrct2/drawing/Drawing.h>
 #include <openrct2/entity/Staff.h>
 #include <openrct2/localisation/Localisation.Date.h>
 #include <openrct2/network/Network.h>

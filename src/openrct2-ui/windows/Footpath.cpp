@@ -28,6 +28,7 @@
 #include <openrct2/actions/FootpathRemoveAction.h>
 #include <openrct2/audio/Audio.h>
 #include <openrct2/core/FlagHolder.hpp>
+#include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/network/NetworkAction.h>
 #include <openrct2/object/FootpathObject.h>

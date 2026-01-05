@@ -20,6 +20,7 @@
 #include <openrct2/core/File.h>
 #include <openrct2/core/Path.hpp>
 #include <openrct2/core/UnitConversion.h>
+#include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/object/ObjectManager.h>

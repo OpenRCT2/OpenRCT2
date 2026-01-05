@@ -11,6 +11,7 @@
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/core/Guard.hpp>
+#include <openrct2/drawing/Drawing.h>
 #include <openrct2/interface/ColourWithFlags.h>
 #include <openrct2/localisation/Language.h>
 #include <openrct2/localisation/LocalisationService.h>

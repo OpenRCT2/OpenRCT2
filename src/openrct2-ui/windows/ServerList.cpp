@@ -19,8 +19,8 @@
     #include <openrct2/SpriteIds.h>
     #include <openrct2/config/Config.h>
     #include <openrct2/core/Json.hpp>
+    #include <openrct2/drawing/Drawing.h>
     #include <openrct2/drawing/Rectangle.h>
-    #include <openrct2/drawing/Text.h>
     #include <openrct2/interface/Colour.h>
     #include <openrct2/localisation/Formatter.h>
     #include <openrct2/network/Network.h>
