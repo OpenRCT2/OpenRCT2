@@ -15,7 +15,6 @@
 #include <array>
 #include <cassert>
 #include <openrct2/SpriteIds.h>
-#include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/DrawingLock.hpp>
 #include <unordered_map>
 #include <vector>
