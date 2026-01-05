@@ -9,7 +9,10 @@
 
 #pragma once
 
-#include "../object/Object.h"
+#include "../localisation/StringIdType.h"
+#include "../ride/RideTypes.h"
+#include "ObjectSourceGame.h"
+#include "ObjectTypes.h"
 
 #include <memory>
 #include <vector>
@@ -19,7 +22,9 @@ namespace OpenRCT2
     struct IObjectRepository;
     class Object;
     class ObjectList;
+    struct ObjectEntryDescriptor;
     struct ObjectRepositoryItem;
+    struct RCTObjectEntry;
 
     struct IObjectManager
     {

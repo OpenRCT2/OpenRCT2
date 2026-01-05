@@ -1,6 +1,7 @@
 #include "ObjectEntryManager.h"
 
 #include "../Context.h"
+#include "Object.h"
 #include "ObjectManager.h"
 
 namespace OpenRCT2::ObjectManager
