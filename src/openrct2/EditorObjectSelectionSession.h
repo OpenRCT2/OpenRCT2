@@ -11,9 +11,16 @@
 
 #include "core/EnumUtils.hpp"
 #include "core/FlagHolder.hpp"
-#include "object/Object.h"
+#include "localisation/StringIdType.h"
+#include "object/ObjectTypes.h"
 
 #include <vector>
+
+namespace OpenRCT2
+{
+    struct ObjectEntryDescriptor;
+    struct ObjectRepositoryItem;
+} // namespace OpenRCT2
 
 struct ResultWithMessage;
 
