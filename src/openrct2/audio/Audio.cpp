@@ -130,7 +130,10 @@ namespace OpenRCT2::Audio
 
         // The first device is always system default
         std::string defaultDevice = LanguageGetString(STR_OPTIONS_SOUND_VALUE_DEFAULT);
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wnull-dereference"
         devices.insert(devices.begin(), defaultDevice);
+#pragma GCC diagnostic pop
 
         _audioDevices = devices;
     }
