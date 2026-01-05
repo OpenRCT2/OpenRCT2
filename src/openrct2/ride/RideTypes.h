@@ -21,6 +21,12 @@ struct Ride;
 using ride_type_t = uint16_t;
 static ride_type_t constexpr kRideTypeNull = 0xFF;
 
+struct RideFilters
+{
+    uint8_t category[2];
+    ride_type_t ride_type;
+};
+
 /**
  * Couples a ride type and subtype together.
  */

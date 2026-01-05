@@ -22,8 +22,6 @@
 #include <string_view>
 #include <vector>
 
-using ride_type_t = uint16_t;
-
 namespace OpenRCT2::Drawing
 {
     struct RenderTarget;
@@ -111,12 +109,6 @@ namespace OpenRCT2
     static_assert(sizeof(RCTObjectEntry) == 0x10);
 
 #pragma pack(pop)
-
-    struct RideFilters
-    {
-        uint8_t category[2];
-        ride_type_t ride_type;
-    };
 
     enum class ObjectGeneration : uint8_t
     {

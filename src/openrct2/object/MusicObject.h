@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../ride/RideTypes.h"
 #include "AudioSampleTable.h"
 #include "Object.h"
 
