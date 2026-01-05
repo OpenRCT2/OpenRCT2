@@ -1696,7 +1696,7 @@ static bool try_add_synchronised_station(const CoordsXYZ& coords)
         return false;
     }
 
-    TileElement* tileElement = GetStationPlatform({ coords, coords.z + 2 * kCoordsZStep });
+    TileElement* tileElement = GetStationPlatform({ coords, 2 * kCoordsZStep });
     if (tileElement == nullptr)
     {
         /* No station platform element found,
