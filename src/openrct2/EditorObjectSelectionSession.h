@@ -14,6 +14,7 @@
 #include "localisation/StringIdType.h"
 #include "object/ObjectTypes.h"
 
+#include <optional>
 #include <vector>
 
 namespace OpenRCT2
