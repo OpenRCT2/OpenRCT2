@@ -14,6 +14,7 @@
 #include "../drawing/ImageIndexType.h"
 #include "ImageTable.h"
 #include "ObjectAsset.h"
+#include "ObjectSourceGame.h"
 #include "ObjectTypes.h"
 #include "StringTable.h"
 
@@ -44,18 +45,6 @@ namespace OpenRCT2
         constexpr uint8_t Flag6 = (1 << 5);
         constexpr uint8_t AllFlags = 0xFF;
     }; // namespace ObjectSelectionFlags
-
-    enum class ObjectSourceGame : uint8_t
-    {
-        custom,
-        wackyWorlds,
-        timeTwister,
-        openRCT2Official,
-        rct1,
-        addedAttractions,
-        loopyLandscapes,
-        rct2 = 8,
-    };
 
 #pragma pack(push, 1)
     /**
