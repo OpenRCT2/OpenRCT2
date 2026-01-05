@@ -46,7 +46,7 @@ namespace OpenRCT2::Ui::Windows
 {
     static constexpr StringId WindowTitle = kStringIdNone;
     static constexpr int32_t kWindowHeightResearch = 194;
-    static constexpr int32_t RideListItemsMax = 384;
+    static constexpr int32_t RideListItemsMax = kMaxRideObjects;
     static constexpr int32_t RideTabCount = 6;
     static constexpr int32_t GroupByTrackTypeWidth = 172;
     static constexpr int32_t kScrollItemSize = 116;
