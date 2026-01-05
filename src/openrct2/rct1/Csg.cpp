@@ -90,4 +90,4 @@ namespace OpenRCT2
         csg.header.totalSize = static_cast<uint32_t>(fileDataSize);
         return CsgIsUsable(csg);
     }
-}
+} // namespace OpenRCT2
