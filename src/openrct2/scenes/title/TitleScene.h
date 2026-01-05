@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include "../../drawing/Drawing.h"
 #include "../Scene.h"
 
 struct ITitleSequencePlayer;

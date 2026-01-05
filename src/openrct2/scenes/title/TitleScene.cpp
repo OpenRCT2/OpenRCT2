@@ -18,6 +18,7 @@
 #include "../../audio/Audio.h"
 #include "../../config/Config.h"
 #include "../../core/Console.hpp"
+#include "../../drawing/Drawing.h"
 #include "../../drawing/Text.h"
 #include "../../interface/Screenshot.h"
 #include "../../network/Network.h"
