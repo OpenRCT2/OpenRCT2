@@ -11,7 +11,7 @@
 
 #include "OpenGLAPI.h"
 
-#include <openrct2/drawing/Drawing.h>
+#include <openrct2/drawing/RenderTarget.h>
 #include <vector>
 
 struct SDL_Window;

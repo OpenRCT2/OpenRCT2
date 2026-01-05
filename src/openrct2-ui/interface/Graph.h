@@ -11,7 +11,7 @@
 
 #include <openrct2/Context.h>
 #include <openrct2/core/Money.hpp>
-#include <openrct2/drawing/Drawing.h>
+#include <openrct2/drawing/RenderTarget.h>
 #include <openrct2/interface/ColourWithFlags.h>
 #include <openrct2/world/Location.hpp>
 

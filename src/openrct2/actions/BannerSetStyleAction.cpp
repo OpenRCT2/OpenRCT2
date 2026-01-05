@@ -11,6 +11,7 @@
 
 #include "../Context.h"
 #include "../Diagnostic.h"
+#include "../drawing/Drawing.h"
 #include "../drawing/ScrollingText.h"
 #include "../localisation/StringIdType.h"
 #include "../management/Finance.h"

@@ -13,8 +13,8 @@
 
     #include "CustomImages.h"
 
+    #include <openrct2/drawing/Drawing.h>
     #include <openrct2/drawing/Rectangle.h>
-    #include <openrct2/drawing/Text.h>
     #include <openrct2/scripting/Duktape.hpp>
 
 using namespace OpenRCT2::Drawing;

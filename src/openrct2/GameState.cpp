@@ -16,6 +16,7 @@
 #include "ReplayManager.h"
 #include "actions/GameAction.h"
 #include "config/Config.h"
+#include "drawing/Drawing.h"
 #include "entity/EntityTweener.h"
 #include "entity/PatrolArea.h"
 #include "interface/Screenshot.h"

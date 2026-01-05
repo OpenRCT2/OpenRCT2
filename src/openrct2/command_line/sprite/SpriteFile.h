@@ -9,20 +9,25 @@
 
 #pragma once
 
-#include "../../drawing/Drawing.h"
-#include "../../drawing/ImageImporter.h"
+#include "../../core/StringTypes.h"
+#include "../../drawing/G1Element.h"
+
+#include <optional>
+
+namespace OpenRCT2::Drawing
+{
+    struct ImageImportResult;
+}
 
 namespace OpenRCT2::CommandLine::Sprite
 {
-    using OpenRCT2::Drawing::ImageImporter;
-
     class SpriteFile
     {
     public:
-        G1Header Header{};
-        std::vector<G1Element> Entries;
+        OpenRCT2::G1Header Header{};
+        std::vector<OpenRCT2::G1Element> Entries;
         std::vector<uint8_t> Data;
-        void AddImage(ImageImporter::ImportResult& image);
+        void AddImage(Drawing::ImageImportResult& image);
         bool Save(const utf8* path);
         static std::optional<SpriteFile> Open(const utf8* path);
 

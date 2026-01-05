@@ -14,6 +14,7 @@
 #include "../ReplayManager.h"
 #include "../config/Config.h"
 #include "../core/Guard.hpp"
+#include "../drawing/Drawing.h"
 #include "../drawing/IDrawingEngine.h"
 #include "../drawing/Text.h"
 #include "../interface/Viewport.h"

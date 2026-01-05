@@ -12,7 +12,8 @@
 #include "../core/EnumUtils.hpp"
 #include "../core/Imaging.h"
 #include "../core/JsonFwd.hpp"
-#include "Drawing.h"
+#include "../drawing/G1Element.h"
+#include "../world/Location.hpp"
 
 #include <string_view>
 #include <tuple>
@@ -51,19 +52,19 @@ namespace OpenRCT2::Drawing
         int32_t zoomedOffset{};
     };
 
+    struct ImageImportResult
+    {
+        G1Element Element{};
+        std::vector<uint8_t> Buffer;
+    };
+
     /**
      * Imports images to the internal RCT G1 format.
      */
     class ImageImporter
     {
     public:
-        struct ImportResult
-        {
-            G1Element Element{};
-            std::vector<uint8_t> Buffer;
-        };
-
-        ImportResult Import(const Image& image, ImageImportMeta& meta) const;
+        ImageImportResult Import(const Image& image, ImageImportMeta& meta) const;
 
     private:
         enum class PaletteIndexType : uint8_t

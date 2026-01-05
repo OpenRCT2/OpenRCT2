@@ -11,7 +11,7 @@
 
 #include "../Context.h"
 #include "../GameState.h"
-#include "../drawing/IDrawingEngine.h"
+#include "../drawing/Drawing.h"
 #include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
 #include "../windows/Intent.h"

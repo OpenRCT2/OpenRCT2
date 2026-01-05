@@ -11,6 +11,7 @@
 #include "../Diagnostic.h"
 #include "../Game.h"
 #include "../audio/Audio.h"
+#include "../drawing/Drawing.h"
 #include "../interface/Viewport.h"
 #include "../localisation/StringIds.h"
 #include "../object/FootpathObject.h"

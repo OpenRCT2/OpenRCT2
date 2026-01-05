@@ -14,6 +14,7 @@
 #include "../../GameState.h"
 #include "../../config/Config.h"
 #include "../../core/Numerics.hpp"
+#include "../../drawing/Drawing.h"
 #include "../../entity/PatrolArea.h"
 #include "../../interface/Viewport.h"
 #include "../../localisation/Formatter.h"

@@ -10,7 +10,6 @@
 #pragma once
 
 #include "../core/CallingConventions.h"
-#include "../core/FlagHolder.hpp"
 #include "../core/StringTypes.h"
 #include "../interface/Colour.h"
 #include "../interface/ZoomLevel.h"
@@ -18,6 +17,7 @@
 #include "ColourPalette.h"
 #include "FilterPaletteIds.h"
 #include "Font.h"
+#include "G1Element.h"
 #include "ImageId.hpp"
 #include "RenderTarget.h"
 #include "Text.h"
@@ -45,64 +45,6 @@ namespace OpenRCT2::Drawing
 {
     struct IDrawingEngine;
 }
-
-enum class G1Flag : uint8_t
-{
-    hasTransparency, // Image data contains transparent pixels (0XFF) which will not be rendered
-    one,
-    hasRLECompression, // Image data is encoded using RCT2's form of run length encoding
-    isPalette,         // Image data is a sequence of palette entries R8G8B8
-    hasZoomSprite,     // Use a different sprite for higher zoom levels
-    noZoomDraw,        // Does not get drawn at higher zoom levels (only zoom 0)
-};
-using G1Flags = FlagHolder<uint16_t, G1Flag>;
-
-struct G1Element
-{
-    uint8_t* offset = nullptr; // 0x00
-    union
-    {
-        int16_t width = 0;  // 0x04
-        int16_t numColours; // If G1Flag::isPalette is set
-    };
-    int16_t height = 0; // 0x06
-    union
-    {
-        int16_t xOffset = 0; // 0x08
-        int16_t startIndex;  // If G1Flag::isPalette is set
-    };
-    int16_t yOffset = 0;      // 0x0A
-    G1Flags flags = {};       // 0x0C
-    int32_t zoomedOffset = 0; // 0x0E
-};
-
-#pragma pack(push, 1)
-struct G1Header
-{
-    uint32_t numEntries = 0;
-    uint32_t totalSize = 0;
-};
-static_assert(sizeof(G1Header) == 8);
-#pragma pack(pop)
-
-struct Gx
-{
-    G1Header header;
-    std::vector<G1Element> elements;
-    std::unique_ptr<uint8_t[]> data;
-};
-
-struct StoredG1Element
-{
-    uint32_t offset;       // 0x00 note: uint32_t always!
-    int16_t width;         // 0x04
-    int16_t height;        // 0x06
-    int16_t xOffset;       // 0x08
-    int16_t yOffset;       // 0x0A
-    G1Flags flags;         // 0x0C
-    uint16_t zoomedOffset; // 0x0E
-};
-static_assert(sizeof(StoredG1Element) == 0x10);
 
 using DrawBlendOp = uint8_t;
 
@@ -183,7 +125,7 @@ struct DrawSpriteArgs
 {
     ImageId Image;
     PaletteMap PalMap;
-    const G1Element& SourceImage;
+    const OpenRCT2::G1Element& SourceImage;
     int32_t SrcX;
     int32_t SrcY;
     int32_t Width;
@@ -191,8 +133,8 @@ struct DrawSpriteArgs
     uint8_t* DestinationBits;
 
     DrawSpriteArgs(
-        ImageId image, const PaletteMap& palMap, const G1Element& sourceImage, int32_t srcX, int32_t srcY, int32_t width,
-        int32_t height, uint8_t* destinationBits)
+        ImageId image, const PaletteMap& palMap, const OpenRCT2::G1Element& sourceImage, int32_t srcX, int32_t srcY,
+        int32_t width, int32_t height, uint8_t* destinationBits)
         : Image(image)
         , PalMap(palMap)
         , SourceImage(sourceImage)
@@ -323,10 +265,10 @@ bool GfxLoadCsg();
 void GfxUnloadG1();
 void GfxUnloadG2AndFonts();
 void GfxUnloadCsg();
-const G1Element* GfxGetG1Element(const ImageId imageId);
-const G1Element* GfxGetG1Element(ImageIndex image_id);
-void GfxSetG1Element(ImageIndex imageId, const G1Element* g1);
-std::optional<Gx> GfxLoadGx(const std::vector<uint8_t>& buffer);
+const OpenRCT2::G1Element* GfxGetG1Element(const ImageId imageId);
+const OpenRCT2::G1Element* GfxGetG1Element(ImageIndex image_id);
+void GfxSetG1Element(ImageIndex imageId, const OpenRCT2::G1Element* g1);
+std::optional<OpenRCT2::Gx> GfxLoadGx(const std::vector<uint8_t>& buffer);
 bool IsCsgLoaded();
 void FASTCALL GfxSpriteToBuffer(OpenRCT2::Drawing::RenderTarget& rt, const DrawSpriteArgs& args);
 void FASTCALL GfxBmpSpriteToBuffer(OpenRCT2::Drawing::RenderTarget& rt, const DrawSpriteArgs& args);
@@ -368,7 +310,7 @@ void TTFDrawString(
     OpenRCT2::Drawing::RenderTarget& rt, const_utf8string text, ColourWithFlags colour, const ScreenCoordsXY& coords,
     bool noFormatting, FontStyle fontStyle, TextDarkness darkness);
 
-size_t G1CalculateDataSize(const G1Element* g1);
+size_t G1CalculateDataSize(const OpenRCT2::G1Element* g1);
 
 void MaskScalar(
     int32_t width, int32_t height, const uint8_t* RESTRICT maskSrc, const uint8_t* RESTRICT colourSrc, uint8_t* RESTRICT dst,

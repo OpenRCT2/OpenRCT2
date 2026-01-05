@@ -14,6 +14,7 @@
 #include "../Diagnostic.h"
 #include "../GameState.h"
 #include "../core/MemoryStream.h"
+#include "../drawing/Drawing.h"
 #include "../drawing/ScrollingText.h"
 #include "../entity/EntityList.h"
 #include "../management/NewsItem.h"

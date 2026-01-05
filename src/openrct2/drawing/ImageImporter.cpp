@@ -20,7 +20,7 @@ namespace OpenRCT2::Drawing
 {
     static constexpr int32_t kPaletteTransparent = -1;
 
-    ImageImporter::ImportResult ImageImporter::Import(const Image& image, ImageImportMeta& meta) const
+    ImageImportResult ImageImporter::Import(const Image& image, ImageImportMeta& meta) const
     {
         if (meta.srcSize.width == 0)
             meta.srcSize.width = image.Width;
@@ -52,7 +52,7 @@ namespace OpenRCT2::Drawing
         if (HasFlag(meta.importFlags, ImportFlags::NoDrawOnZoom))
             outElement.flags.set(G1Flag::noZoomDraw);
 
-        ImageImporter::ImportResult result;
+        ImageImportResult result;
         result.Element = outElement;
         result.Buffer = std::move(buffer);
         result.Element.offset = result.Buffer.data();

@@ -13,6 +13,7 @@
 #include "../../OpenRCT2.h"
 #include "../../core/Memory.hpp"
 #include "../../core/String.hpp"
+#include "../../drawing/Drawing.h"
 #include "../../object/ObjectFactory.h"
 #include "../CommandLine.hpp"
 

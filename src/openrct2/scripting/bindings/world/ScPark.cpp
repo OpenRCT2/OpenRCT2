@@ -15,6 +15,7 @@
     #include "../../../Date.h"
     #include "../../../GameState.h"
     #include "../../../core/String.hpp"
+    #include "../../../drawing/Drawing.h"
     #include "../../../entity/Guest.h"
     #include "../../../management/Finance.h"
     #include "../../../management/NewsItem.h"

@@ -17,6 +17,7 @@
     #include <openrct2/ParkImporter.h>
     #include <openrct2/config/Config.h>
     #include <openrct2/core/String.hpp>
+    #include <openrct2/drawing/Drawing.h>
     #include <openrct2/interface/Chat.h>
     #include <openrct2/network/Network.h>
     #include <openrct2/ui/WindowManager.h>

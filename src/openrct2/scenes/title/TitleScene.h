@@ -9,8 +9,9 @@
 
 #pragma once
 
-#include "../../drawing/Drawing.h"
 #include "../Scene.h"
+
+#include <cstdint>
 
 struct ITitleSequencePlayer;
 

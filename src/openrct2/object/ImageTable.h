@@ -10,7 +10,7 @@
 #pragma once
 
 #include "../core/JsonFwd.hpp"
-#include "../drawing/Drawing.h"
+#include "../drawing/G1Element.h"
 
 #include <memory>
 #include <vector>

@@ -10,6 +10,7 @@
 #include "SpriteFile.h"
 
 #include "../../core/FileStream.h"
+#include "../../drawing/ImageImporter.h"
 
 namespace OpenRCT2::CommandLine::Sprite
 {
@@ -73,7 +74,7 @@ namespace OpenRCT2::CommandLine::Sprite
         isAbsolute = false;
     }
 
-    void SpriteFile::AddImage(ImageImporter::ImportResult& image)
+    void SpriteFile::AddImage(Drawing::ImageImportResult& image)
     {
         Header.numEntries++;
         // New image will have its data inserted after previous image
