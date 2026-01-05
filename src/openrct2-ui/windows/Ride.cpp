@@ -4174,8 +4174,7 @@ namespace OpenRCT2::Ui::Windows
             auto z = info.Element->GetBaseZ();
             auto direction = info.Element->GetDirection();
             auto gameAction = GameActions::RideSetColourSchemeAction(
-                CoordsXYZD{ info.Loc, z, static_cast<Direction>(direction) }, info.Element->AsTrack()->GetTrackType(),
-                newColourScheme);
+                CoordsXYZD{ info.Loc, z, direction }, info.Element->AsTrack()->GetTrackType(), newColourScheme);
             GameActions::Execute(&gameAction, getGameState());
         }
 

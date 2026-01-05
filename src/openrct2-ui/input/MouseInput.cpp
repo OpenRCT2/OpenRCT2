@@ -515,7 +515,7 @@ namespace OpenRCT2
 
     static void InputWindowResizeContinue(WindowBase& w, const ScreenCoordsXY& screenCoords)
     {
-        if (screenCoords.y < static_cast<int32_t>(ContextGetHeight()) - 2)
+        if (screenCoords.y < (ContextGetHeight() - 2))
         {
             auto differentialCoords = screenCoords - gInputDragLast;
             int32_t targetWidth = _originalWindowWidth + differentialCoords.x - w.width;

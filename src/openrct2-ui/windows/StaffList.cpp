@@ -331,7 +331,7 @@ namespace OpenRCT2::Ui::Windows
             auto i = static_cast<size_t>(screenCoords.y / kScrollableRowHeight);
             if (i != _highlightedIndex)
             {
-                _highlightedIndex = static_cast<size_t>(i);
+                _highlightedIndex = i;
                 invalidate();
             }
         }

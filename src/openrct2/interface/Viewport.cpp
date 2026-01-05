@@ -1724,8 +1724,7 @@ namespace OpenRCT2
         Viewport* viewport = window->viewport;
         auto viewLoc = screenCoords;
         viewLoc -= viewport->pos;
-        if (viewLoc.x >= 0 && viewLoc.x < static_cast<int32_t>(viewport->width) && viewLoc.y >= 0
-            && viewLoc.y < static_cast<int32_t>(viewport->height))
+        if ((viewLoc.x >= 0) && (viewLoc.x < viewport->width) && (viewLoc.y >= 0) && (viewLoc.y < viewport->height))
         {
             viewLoc.x = viewport->zoom.ApplyTo(viewLoc.x);
             viewLoc.y = viewport->zoom.ApplyTo(viewLoc.y);

@@ -773,9 +773,7 @@ namespace OpenRCT2::Network
             {
                 const char* bufferStart = static_cast<const char*>(buffer) + totalSent;
                 size_t remainingSize = size - totalSent;
-                int32_t sentBytes = sendto(
-                    _socket, bufferStart, static_cast<int32_t>(remainingSize), FLAG_NO_PIPE, static_cast<const sockaddr*>(ss),
-                    ss_len);
+                int32_t sentBytes = sendto(_socket, bufferStart, static_cast<int32_t>(remainingSize), FLAG_NO_PIPE, ss, ss_len);
                 if (sentBytes == SOCKET_ERROR)
                 {
                     return totalSent;

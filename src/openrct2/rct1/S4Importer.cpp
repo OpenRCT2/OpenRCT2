@@ -592,7 +592,7 @@ namespace OpenRCT2::RCT1
                                 RCT12::EntryList* entries = GetEntryList(objectType);
 
                                 // Check if there are spare entries available
-                                size_t maxEntries = static_cast<size_t>(getObjectEntryGroupCount(objectType));
+                                size_t maxEntries = getObjectEntryGroupCount(objectType);
                                 if (entries != nullptr && entries->GetCount() < maxEntries)
                                 {
                                     entries->GetOrAddEntry(objectName);
