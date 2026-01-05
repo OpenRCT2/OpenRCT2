@@ -23,6 +23,7 @@
 #include "core/EnumUtils.hpp"
 #include "core/Path.hpp"
 #include "core/String.hpp"
+#include "drawing/Drawing.h"
 #include "entity/EntityList.h"
 #include "entity/EntityRegistry.h"
 #include "entity/Guest.h"

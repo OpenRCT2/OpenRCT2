@@ -14,6 +14,7 @@
 #include "../core/EnumMap.hpp"
 #include "../core/Guard.hpp"
 #include "../core/Json.hpp"
+#include "../drawing/Drawing.h"
 #include "../peep/PeepAnimations.h"
 #include "../rct12/RCT12.h"
 #include "ObjectRepository.h"

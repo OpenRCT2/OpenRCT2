@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../core/Money.hpp"
+#include "../interface/Colour.h"
 #include "Object.h"
 
 struct CoordsXY;

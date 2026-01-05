@@ -13,6 +13,7 @@
 #include "../PlatformEnvironment.h"
 #include "../core/Guard.hpp"
 #include "../core/Json.hpp"
+#include "../drawing/Drawing.h"
 
 namespace OpenRCT2
 {

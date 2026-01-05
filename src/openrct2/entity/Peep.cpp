@@ -25,6 +25,7 @@
 #include "../core/EnumUtils.hpp"
 #include "../core/Guard.hpp"
 #include "../core/String.hpp"
+#include "../drawing/Drawing.h"
 #include "../drawing/LightFX.h"
 #include "../entity/Balloon.h"
 #include "../entity/EntityList.h"

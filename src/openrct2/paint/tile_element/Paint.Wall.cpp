@@ -12,6 +12,7 @@
 #include "../../Game.h"
 #include "../../GameState.h"
 #include "../../config/Config.h"
+#include "../../drawing/Drawing.h"
 #include "../../interface/Colour.h"
 #include "../../interface/Viewport.h"
 #include "../../localisation/Formatting.h"

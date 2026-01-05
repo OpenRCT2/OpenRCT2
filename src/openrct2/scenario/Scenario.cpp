@@ -26,6 +26,7 @@
 #include "../core/Path.hpp"
 #include "../core/Random.hpp"
 #include "../core/UnitConversion.h"
+#include "../drawing/Drawing.h"
 #include "../entity/Duck.h"
 #include "../entity/Guest.h"
 #include "../entity/Staff.h"

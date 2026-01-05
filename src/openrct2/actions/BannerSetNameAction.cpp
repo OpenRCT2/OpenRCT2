@@ -12,6 +12,7 @@
 #include "../Context.h"
 #include "../Diagnostic.h"
 #include "../core/String.hpp"
+#include "../drawing/Drawing.h"
 #include "../drawing/ScrollingText.h"
 #include "../localisation/StringIds.h"
 #include "../windows/Intent.h"
