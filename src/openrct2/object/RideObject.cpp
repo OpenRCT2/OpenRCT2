@@ -132,7 +132,7 @@ namespace OpenRCT2
         }
     }
 
-    enum CarSpriteFlag : uint8_t
+    enum class CarSpriteFlag : uint8_t
     {
         flat,
         gentleSlopes,
