@@ -11,6 +11,8 @@
 
 #include "../Scene.h"
 
+#include <cstdint>
+
 struct ITitleSequencePlayer;
 
 namespace OpenRCT2
