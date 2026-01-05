@@ -2,7 +2,6 @@
 
 #include "../System.hpp"
 #include "../actions/GameAction.h"
-#include "../object/Object.h"
 #include "../scenario/Scenario.h"
 #include "NetworkConnection.h"
 #include "NetworkGroup.h"
@@ -21,7 +20,8 @@
 namespace OpenRCT2
 {
     struct IContext;
-}
+    struct ObjectRepositoryItem;
+} // namespace OpenRCT2
 
 namespace OpenRCT2::Network
 {
