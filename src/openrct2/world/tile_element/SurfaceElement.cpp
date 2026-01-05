@@ -69,7 +69,7 @@ namespace OpenRCT2
         const auto* surfaceObject = objMgr.GetLoadedObject<TerrainSurfaceObject>(surfaceStyle);
         if (surfaceObject != nullptr)
         {
-            if (surfaceObject->Flags & TerrainSurfaceFlags::canGrow)
+            if (surfaceObject->Flags.has(TerrainSurfaceFlag::canGrow))
             {
                 return true;
             }

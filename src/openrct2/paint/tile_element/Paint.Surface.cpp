@@ -256,7 +256,7 @@ static bool SurfaceShouldSmoothSelf(const TerrainSurfaceObject* surfaceObject)
     if (surfaceObject == nullptr)
         return false;
 
-    return surfaceObject->Flags & TerrainSurfaceFlags::smoothWithSelf;
+    return surfaceObject->Flags.has(TerrainSurfaceFlag::smoothWithSelf);
 }
 
 static bool SurfaceShouldSmooth(const TerrainSurfaceObject* surfaceObject)
@@ -264,7 +264,7 @@ static bool SurfaceShouldSmooth(const TerrainSurfaceObject* surfaceObject)
     if (surfaceObject == nullptr)
         return false;
 
-    return surfaceObject->Flags & TerrainSurfaceFlags::smoothWithOther;
+    return surfaceObject->Flags.has(TerrainSurfaceFlag::smoothWithOther);
 }
 
 static ImageId GetEdgeImageWithOffset(const TerrainEdgeObject* edgeObject, uint32_t offset)
