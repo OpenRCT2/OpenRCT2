@@ -5422,9 +5422,9 @@ TileElement* GetStationPlatform(const CoordsXYRangedZ& coords)
             /* Check if tileElement is a station platform. */
             if (!tileElement->AsTrack()->IsStation())
                 continue;
-            if (coords.baseZ - coords.clearanceZ > tileElement->GetBaseZ() ||
-                coords.baseZ + coords.clearanceZ < tileElement->GetBaseZ()
-            ) {
+            if (coords.baseZ - coords.clearanceZ > tileElement->GetBaseZ()
+                || coords.baseZ + coords.clearanceZ < tileElement->GetBaseZ())
+            {
                 /* The base height if tileElement is not within
                  * the z tolerance. */
                 continue;
