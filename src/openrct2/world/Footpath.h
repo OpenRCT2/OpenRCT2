@@ -11,7 +11,12 @@
 
 #include "../Identifiers.h"
 #include "../actions/CommandFlag.h"
-#include "../object/Object.h"
+#include "../interface/Colour.h"
+#include "../localisation/StringIdType.h"
+#include "../object/ObjectTypes.h"
+#include "Location.hpp"
+
+#include <array>
 
 namespace OpenRCT2
 {

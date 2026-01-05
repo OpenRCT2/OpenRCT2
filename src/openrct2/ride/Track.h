@@ -11,9 +11,9 @@
 
 #include "../Identifiers.h"
 #include "../actions/CommandFlag.h"
-#include "../object/Object.h"
 #include "../world/Location.hpp"
 #include "../world/QuarterTile.h"
+#include "RideTypes.h"
 
 #include <optional>
 

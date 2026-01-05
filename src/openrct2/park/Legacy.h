@@ -10,7 +10,7 @@
 #pragma once
 
 #include "../core/FlagHolder.hpp"
-#include "../object/Object.h"
+#include "../object/ObjectTypes.h"
 
 #include <cstdint>
 #include <optional>

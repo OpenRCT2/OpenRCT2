@@ -9,7 +9,9 @@
 
 #pragma once
 
-#include "object/Object.h"
+#include "core/StringTypes.h"
+#include "localisation/StringIdType.h"
+#include "object/ObjectTypes.h"
 
 struct ResultWithMessage;
 

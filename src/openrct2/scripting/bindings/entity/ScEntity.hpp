@@ -13,7 +13,6 @@
 
     #include "../../../Context.h"
     #include "../../../GameState.h"
-    #include "../../../entity/EntityList.h"
     #include "../../../entity/EntityRegistry.h"
     #include "../../../entity/Peep.h"
     #include "../../Duktape.hpp"

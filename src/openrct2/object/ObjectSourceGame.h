@@ -10,7 +10,18 @@
 #pragma once
 
 #include <cstdint>
-#include <cstdio>
 
-uint8_t LowerSurfaceCornerFlags(size_t SelectedCorner, size_t CurrentSlope);
-uint8_t RaiseSurfaceCornerFlags(size_t SelectedCorner, size_t CurrentSlope);
+namespace OpenRCT2
+{
+    enum class ObjectSourceGame : uint8_t
+    {
+        custom,
+        wackyWorlds,
+        timeTwister,
+        openRCT2Official,
+        rct1,
+        addedAttractions,
+        loopyLandscapes,
+        rct2 = 8,
+    };
+}

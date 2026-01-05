@@ -14,6 +14,7 @@
 #include "../drawing/ImageIndexType.h"
 #include "ImageTable.h"
 #include "ObjectAsset.h"
+#include "ObjectSourceGame.h"
 #include "ObjectTypes.h"
 #include "StringTable.h"
 
@@ -21,8 +22,6 @@
 #include <optional>
 #include <string_view>
 #include <vector>
-
-using ride_type_t = uint16_t;
 
 namespace OpenRCT2::Drawing
 {
@@ -46,18 +45,6 @@ namespace OpenRCT2
         constexpr uint8_t Flag6 = (1 << 5);
         constexpr uint8_t AllFlags = 0xFF;
     }; // namespace ObjectSelectionFlags
-
-    enum class ObjectSourceGame : uint8_t
-    {
-        custom,
-        wackyWorlds,
-        timeTwister,
-        openRCT2Official,
-        rct1,
-        addedAttractions,
-        loopyLandscapes,
-        rct2 = 8,
-    };
 
 #pragma pack(push, 1)
     /**
@@ -111,12 +98,6 @@ namespace OpenRCT2
     static_assert(sizeof(RCTObjectEntry) == 0x10);
 
 #pragma pack(pop)
-
-    struct RideFilters
-    {
-        uint8_t category[2];
-        ride_type_t ride_type;
-    };
 
     enum class ObjectGeneration : uint8_t
     {

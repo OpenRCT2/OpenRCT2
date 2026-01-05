@@ -358,6 +358,7 @@
     <ClInclude Include="object\ObjectList.h" />
     <ClInclude Include="object\ObjectManager.h" />
     <ClInclude Include="object\ObjectRepository.h" />
+    <ClInclude Include="object\ObjectSourceGame.h" />
     <ClInclude Include="object\ObjectType.h" />
     <ClInclude Include="object\ObjectTypes.h" />
     <ClInclude Include="object\PathAdditionEntry.h" />

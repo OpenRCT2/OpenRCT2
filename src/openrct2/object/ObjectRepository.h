@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "../object/Object.h"
+#include "ObjectTypes.h"
 #include "RideObject.h"
 
 #include <memory>

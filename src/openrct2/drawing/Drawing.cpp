@@ -17,7 +17,6 @@
 #include "../SpriteIds.h"
 #include "../config/Config.h"
 #include "../core/Guard.hpp"
-#include "../object/Object.h"
 #include "../object/ObjectEntryManager.h"
 #include "../object/WaterEntry.h"
 #include "../platform/Platform.h"
