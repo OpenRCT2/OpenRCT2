@@ -128,11 +128,9 @@ namespace OpenRCT2::Audio
             }
         }
 
-#if not defined(__linux__) && not defined(__HAIKU__)
-        // The first device is always system default on Windows and macOS
+        // The first device is always system default
         std::string defaultDevice = LanguageGetString(STR_OPTIONS_SOUND_VALUE_DEFAULT);
         devices.insert(devices.begin(), defaultDevice);
-#endif
 
         _audioDevices = devices;
     }
