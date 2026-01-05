@@ -40,7 +40,6 @@
 #include "../management/Award.h"
 #include "../management/Finance.h"
 #include "../management/NewsItem.h"
-#include "../object/Object.h"
 #include "../object/ObjectLimits.h"
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"

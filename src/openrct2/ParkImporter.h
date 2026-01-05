@@ -10,7 +10,6 @@
 #pragma once
 
 #include "core/StringTypes.h"
-#include "object/Object.h"
 #include "object/ObjectList.h"
 
 #include <memory>

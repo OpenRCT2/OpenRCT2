@@ -38,7 +38,6 @@
 #include "../management/Finance.h"
 #include "../management/Marketing.h"
 #include "../management/NewsItem.h"
-#include "../object/Object.h"
 #include "../object/ObjectLimits.h"
 #include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"

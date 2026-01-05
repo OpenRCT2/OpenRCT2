@@ -50,7 +50,6 @@
 #include "../management/NewsItem.h"
 #include "../management/Research.h"
 #include "../network/Network.h"
-#include "../object/Object.h"
 #include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
