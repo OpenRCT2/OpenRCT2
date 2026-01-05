@@ -9,6 +9,7 @@
 
 #include "ImageImporter.h"
 
+#include "../core/Guard.hpp"
 #include "../core/Imaging.h"
 #include "../core/Json.hpp"
 
@@ -57,6 +58,56 @@ namespace OpenRCT2::Drawing
         result.Buffer = std::move(buffer);
         result.Element.offset = result.Buffer.data();
         return result;
+    }
+
+    ImageImporter::ImportResult ImageImporter::importJSONPalette(json_t& jPalette) const
+    {
+        Guard::Assert(jPalette.is_object(), "ImageImporter::importJSONPalette expects parameter jPalette to be object");
+
+        auto jColours = jPalette["colours"];
+        auto numColours = jColours.size();
+
+        std::vector<uint8_t> buffer;
+        buffer.reserve(numColours * 3);
+        size_t dataIndex = 0;
+
+        for (auto& jColour : jColours)
+        {
+            if (jColour.is_string())
+            {
+                auto colour = parseJSONPaletteColour(Json::GetString(jColour));
+                buffer[dataIndex + 0] = (colour >> 16) & 0xFF;
+                buffer[dataIndex + 1] = (colour >> 8) & 0xFF;
+                buffer[dataIndex + 2] = colour & 0xFF;
+            }
+            dataIndex += 3;
+        }
+
+        G1Element outElement = {};
+        outElement.numColours = static_cast<int16_t>(numColours);
+        outElement.startIndex = Json::GetNumber<int16_t>(jPalette["index"]);
+        outElement.flags = { G1Flag::isPalette };
+
+        ImageImporter::ImportResult result;
+        result.Element = outElement;
+        result.Buffer = std::move(buffer);
+        result.Element.offset = result.Buffer.data();
+        return result;
+    }
+
+    uint32_t ImageImporter::parseJSONPaletteColour(const std::string& s) const
+    {
+        uint8_t r = 0;
+        uint8_t g = 0;
+        uint8_t b = 0;
+        if (s[0] == '#' && s.size() == 7)
+        {
+            // Expect #RRGGBB
+            r = std::stoul(s.substr(1, 2), nullptr, 16) & 0xFF;
+            g = std::stoul(s.substr(3, 2), nullptr, 16) & 0xFF;
+            b = std::stoul(s.substr(5, 2), nullptr, 16) & 0xFF;
+        }
+        return (b << 16) | (g << 8) | r;
     }
 
     std::vector<int32_t> ImageImporter::GetPixels(const Image& image, const ImageImportMeta& meta)

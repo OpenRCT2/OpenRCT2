@@ -38,12 +38,9 @@ enum
 
 void ColoursInitMaps()
 {
-    // Get colour maps from g1
     for (int32_t i = 0; i < COLOUR_COUNT; i++)
     {
-        // Get palette index in g1 / g2
-        const auto paletteIndex = (i < kColourNumOriginal) ? SPR_PALETTE_2_START : SPR_G2_PALETTE_BEGIN - kColourNumOriginal;
-        const G1Element* g1 = GfxGetG1Element(paletteIndex + i);
+        const G1Element* g1 = GfxGetG1Element(SPR_PALETTE_2_START + i);
         if (g1 != nullptr)
         {
             ColourMapA[i].colour_0 = static_cast<PaletteIndex>(g1->offset[INDEX_COLOUR_0]);

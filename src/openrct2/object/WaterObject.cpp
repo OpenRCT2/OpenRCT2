@@ -14,6 +14,7 @@
 #include "../OpenRCT2.h"
 #include "../core/IStream.hpp"
 #include "../core/Json.hpp"
+#include "../drawing/ImageImporter.h"
 #include "../localisation/Formatter.h"
 #include "../localisation/Language.h"
 #include "../localisation/StringIds.h"
@@ -100,49 +101,10 @@ namespace OpenRCT2
 
     void WaterObject::ReadJsonPalette(json_t& jPalette)
     {
-        Guard::Assert(jPalette.is_object(), "WaterObject::ReadJsonPalette expects parameter jPalette to be object");
-
-        auto jColours = jPalette["colours"];
-        auto numColours = jColours.size();
-
-        // This pointer gets memcopied in ImageTable::AddImage so it's fine for the unique_ptr to go out of scope
-        auto data = std::make_unique<uint8_t[]>(numColours * 3);
-        size_t dataIndex = 0;
-
-        for (auto& jColour : jColours)
-        {
-            if (jColour.is_string())
-            {
-                auto colour = ParseColour(Json::GetString(jColour));
-                data[dataIndex + 0] = (colour >> 16) & 0xFF;
-                data[dataIndex + 1] = (colour >> 8) & 0xFF;
-                data[dataIndex + 2] = colour & 0xFF;
-            }
-            dataIndex += 3;
-        }
-
-        G1Element g1 = {};
-        g1.offset = data.get();
-        g1.numColours = static_cast<int16_t>(numColours);
-        g1.startIndex = Json::GetNumber<int16_t>(jPalette["index"]);
-        g1.flags = { G1Flag::isPalette };
+        auto importer = Drawing::ImageImporter();
+        const auto importResult = importer.importJSONPalette(jPalette);
 
         auto& imageTable = GetImageTable();
-        imageTable.AddImage(&g1);
-    }
-
-    uint32_t WaterObject::ParseColour(const std::string& s) const
-    {
-        uint8_t r = 0;
-        uint8_t g = 0;
-        uint8_t b = 0;
-        if (s[0] == '#' && s.size() == 7)
-        {
-            // Expect #RRGGBB
-            r = std::stoul(s.substr(1, 2), nullptr, 16) & 0xFF;
-            g = std::stoul(s.substr(3, 2), nullptr, 16) & 0xFF;
-            b = std::stoul(s.substr(5, 2), nullptr, 16) & 0xFF;
-        }
-        return (b << 16) | (g << 8) | r;
+        imageTable.AddImage(&importResult.Element);
     }
 } // namespace OpenRCT2

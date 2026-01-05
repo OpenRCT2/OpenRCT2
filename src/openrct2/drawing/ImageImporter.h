@@ -64,6 +64,7 @@ namespace OpenRCT2::Drawing
         };
 
         ImportResult Import(const Image& image, ImageImportMeta& meta) const;
+        ImportResult importJSONPalette(json_t& jPalette) const;
 
     private:
         enum class PaletteIndexType : uint8_t
@@ -87,6 +88,7 @@ namespace OpenRCT2::Drawing
         static bool IsChangablePixel(int32_t paletteIndex);
         static PaletteIndexType GetPaletteIndexType(int32_t paletteIndex);
         static int32_t GetClosestPaletteIndex(const GamePalette& palette, const int16_t* colour);
+        uint32_t parseJSONPaletteColour(const std::string& s) const;
     };
 
     // Note: jsonSprite is deliberately left non-const: json_t behaviour changes when const.
