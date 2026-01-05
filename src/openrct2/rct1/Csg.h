@@ -11,12 +11,15 @@
 
 #include "../core/StringTypes.h"
 
-struct Gx;
+namespace OpenRCT2
+{
+    struct Gx;
 
-bool RCT1DataPresentAtLocation(u8string_view path);
-std::string FindCsg1datAtLocation(u8string_view path);
-bool Csg1datPresentAtLocation(u8string_view path);
-std::string FindCsg1idatAtLocation(u8string_view path);
-bool Csg1idatPresentAtLocation(u8string_view path);
-bool CsgIsUsable(const Gx& csg);
-bool CsgAtLocationIsUsable(u8string_view path);
+    bool RCT1DataPresentAtLocation(u8string_view path);
+    std::string FindCsg1datAtLocation(u8string_view path);
+    bool Csg1datPresentAtLocation(u8string_view path);
+    std::string FindCsg1idatAtLocation(u8string_view path);
+    bool Csg1idatPresentAtLocation(u8string_view path);
+    bool CsgIsUsable(const Gx& csg);
+    bool CsgAtLocationIsUsable(u8string_view path);
+} // namespace OpenRCT2
