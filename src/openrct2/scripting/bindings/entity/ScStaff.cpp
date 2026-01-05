@@ -16,6 +16,7 @@
     #include "../../../object/ObjectManager.h"
     #include "../../../object/PeepAnimationsObject.h"
     #include "../../../peep/PeepAnimations.h"
+    #include "../../../rct12/RCT12.h"
     #include "../../../world/Map.h"
 
 namespace OpenRCT2::Scripting
