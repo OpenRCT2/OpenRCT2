@@ -296,12 +296,12 @@ namespace OpenRCT2::Ui::FileBrowser
                     case (LoadSaveType::scenario):
                     {
                         SetAndSaveConfigPath(Config::Get().general.lastSaveScenarioDirectory, pathBuffer);
-                        int32_t parkFlagsBackup = gameState.park.flags;
-                        gameState.park.flags &= ~PARK_FLAGS_SPRITES_INITIALISED;
+                        int32_t parkFlagsBackup = getPlayerPark(gameState).flags;
+                        getPlayerPark(gameState).flags &= ~PARK_FLAGS_SPRITES_INITIALISED;
                         gameState.editorStep = EditorStep::Invalid;
                         gameState.scenarioFileName = std::string(String::toStringView(pathBuffer, std::size(pathBuffer)));
                         int32_t success = ScenarioSave(gameState, pathBuffer, Config::Get().general.savePluginData ? 3 : 2);
-                        gameState.park.flags = parkFlagsBackup;
+                        getPlayerPark(gameState).flags = parkFlagsBackup;
 
                         if (success)
                         {
@@ -385,12 +385,12 @@ namespace OpenRCT2::Ui::FileBrowser
                     case LoadSaveType::scenario:
                     {
                         SetAndSaveConfigPath(Config::Get().general.lastSaveScenarioDirectory, pathBuffer);
-                        int32_t parkFlagsBackup = gameState.park.flags;
-                        gameState.park.flags &= ~PARK_FLAGS_SPRITES_INITIALISED;
+                        int32_t parkFlagsBackup = getPlayerPark(gameState).flags;
+                        getPlayerPark(gameState).flags &= ~PARK_FLAGS_SPRITES_INITIALISED;
                         gameState.editorStep = EditorStep::Invalid;
                         gameState.scenarioFileName = std::string(String::toStringView(pathBuffer, std::size(pathBuffer)));
                         int32_t success = ScenarioSave(gameState, pathBuffer, Config::Get().general.savePluginData ? 3 : 2);
-                        gameState.park.flags = parkFlagsBackup;
+                        getPlayerPark(gameState).flags = parkFlagsBackup;
 
                         if (success)
                         {
@@ -524,7 +524,8 @@ namespace OpenRCT2::Ui::FileBrowser
             }
             else
             {
-                auto buffer = getGameState().park.name;
+                const auto& gameState = getGameState();
+                auto buffer = getPlayerPark(gameState).name;
                 if (buffer.empty())
                 {
                     buffer = LanguageGetString(STR_UNNAMED_PARK);

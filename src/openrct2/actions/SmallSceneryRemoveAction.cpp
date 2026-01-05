@@ -78,7 +78,7 @@ namespace OpenRCT2::GameActions
             && !getGameState().cheats.sandboxMode)
         {
             // Check if allowed to remove item
-            if (getGameState().park.flags & PARK_FLAGS_FORBID_TREE_REMOVAL)
+            if (getUpdatingPark(gameState).flags & PARK_FLAGS_FORBID_TREE_REMOVAL)
             {
                 if (entry->HasFlag(SMALL_SCENERY_FLAG_IS_TREE))
                 {
