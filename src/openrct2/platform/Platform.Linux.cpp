@@ -7,7 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#if defined(__unix__) && !defined(__ANDROID__) && !defined(__APPLE__) && !defined(__EMSCRIPTEN__)
+#if (defined(__unix__) || defined(__HAIKU__)) && !defined(__ANDROID__) && !defined(__APPLE__) && !defined(__EMSCRIPTEN__)
 
     #include "../Diagnostic.h"
 
@@ -37,6 +37,10 @@
     #include "../core/Path.hpp"
     #include "../localisation/Language.h"
     #include "Platform.h"
+
+    #ifdef __HAIKU__
+        #include <image.h>
+    #endif
 
 namespace OpenRCT2::Platform
 {
@@ -154,6 +158,12 @@ namespace OpenRCT2::Platform
             "/usr/local/share/openrct2",
             "/var/lib/openrct2",
             "/usr/share/openrct2",
+    #ifdef __HAIKU__
+            "/boot/system/data/openrct2",
+            "/boot/home/config/data/openrct2",
+            "/boot/system/non-packaged/data/openrct2",
+            "/boot/home/config/non-packaged/data/openrct2",
+    #endif
         };
         // clang-format on
         for (const auto& prefix : prefixes)
@@ -179,6 +189,18 @@ namespace OpenRCT2::Platform
         if (bytesRead == -1)
         {
             LOG_FATAL("failed to read /proc/self/exe");
+        }
+    #elif defined(__HAIKU__)
+        image_info info;
+        int32 cookie = 0;
+
+        while (get_next_image_info(B_CURRENT_TEAM, &cookie, &info) >= B_OK)
+        {
+            if (info.type == B_APP_IMAGE)
+            {
+                strlcpy(exePath, info.name, sizeof(exePath));
+                break;
+            }
         }
     #elif defined(__FreeBSD__) || defined(__NetBSD__)
         #if defined(__FreeBSD__)

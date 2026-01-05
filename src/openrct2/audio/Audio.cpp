@@ -128,11 +128,12 @@ namespace OpenRCT2::Audio
             }
         }
 
-#ifndef __linux__
-        // The first device is always system default on Windows and macOS
+        // The first device is always system default
         std::string defaultDevice = LanguageGetString(STR_OPTIONS_SOUND_VALUE_DEFAULT);
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wnull-dereference"
         devices.insert(devices.begin(), defaultDevice);
-#endif
+#pragma GCC diagnostic pop
 
         _audioDevices = devices;
     }

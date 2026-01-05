@@ -72,6 +72,9 @@
 #ifdef __EMSCRIPTEN__
     #define OPENRCT2_PLATFORM "Emscripten"
 #endif
+#ifdef __HAIKU__
+    #define OPENRCT2_PLATFORM "Haiku"
+#endif
 #ifndef OPENRCT2_PLATFORM
     #error Unknown platform!
 #endif

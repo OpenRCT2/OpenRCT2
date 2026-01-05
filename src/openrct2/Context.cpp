@@ -483,6 +483,7 @@ namespace OpenRCT2
             }
 #endif
 
+#ifndef __HAIKU__ // Haiku's user is always root, skip warning them about it.
             if (Platform::ProcessIsElevated())
             {
                 std::string elevationWarning = _localisationService->GetString(STR_ADMIN_NOT_RECOMMENDED);
@@ -495,6 +496,7 @@ namespace OpenRCT2
                     _uiContext->ShowMessageBox(elevationWarning);
                 }
             }
+#endif
 
             if (Platform::IsRunningInWine())
             {

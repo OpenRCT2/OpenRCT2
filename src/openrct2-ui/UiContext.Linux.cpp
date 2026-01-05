@@ -7,7 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#if (defined(__unix__) || defined(__EMSCRIPTEN__)) && !defined(__ANDROID__) && !defined(__APPLE__)
+#if (defined(__unix__) || defined(__HAIKU__) || defined(__EMSCRIPTEN__)) && !defined(__ANDROID__) && !defined(__APPLE__)
 
     #include "UiContext.h"
 
@@ -129,14 +129,22 @@ namespace OpenRCT2::Ui
 
         void OpenFolder(const std::string& path) override
         {
+    #ifdef __HAIKU__
+            const char* args[] = { "open", path.c_str(), nullptr };
+    #else
             const char* args[] = { "xdg-open", path.c_str(), nullptr };
+    #endif
             Platform::Execute(args);
         }
 
         void OpenURL(const std::string& url) override
         {
     #ifndef __EMSCRIPTEN__
+        #ifdef __HAIKU__
+            const char* args[] = { "open", url.c_str(), nullptr };
+        #else
             const char* args[] = { "xdg-open", url.c_str(), nullptr };
+        #endif
             Platform::Execute(args);
     #else
             MAIN_THREAD_EM_ASM({ window.open(UTF8ToString($0)); }, url.c_str());

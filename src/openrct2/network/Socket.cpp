@@ -72,6 +72,10 @@
         #define FLAG_NO_PIPE 0
     #endif // defined(__linux__)
 #endif // _WIN32
+
+#ifdef __HAIKU__
+    #include <sys/sockio.h>
+#endif
 // clang-format on
 
     #include "Socket.h"
