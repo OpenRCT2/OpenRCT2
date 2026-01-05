@@ -247,6 +247,7 @@
     <ClInclude Include="drawing\Drawing.String.h" />
     <ClInclude Include="drawing\FilterPaletteIds.h" />
     <ClInclude Include="drawing\Font.h" />
+    <ClInclude Include="drawing\G1Element.h" />
     <ClInclude Include="drawing\IDrawingContext.h" />
     <ClInclude Include="drawing\IDrawingEngine.h" />
     <ClInclude Include="drawing\Image.h" />

@@ -9,6 +9,7 @@
 
 #include "Drawing.h"
 
+using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
 
 template<DrawBlendOp TBlendOp>
