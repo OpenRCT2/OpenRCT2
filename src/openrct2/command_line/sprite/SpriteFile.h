@@ -12,6 +12,8 @@
 #include "../../core/StringTypes.h"
 #include "../../drawing/G1Element.h"
 
+#include <optional>
+
 namespace OpenRCT2::Drawing
 {
     struct ImageImportResult;
