@@ -17,7 +17,6 @@
 #include "../world/ParkData.h"
 #include "Limits.h"
 
-#include <tuple>
 #include <vector>
 
 struct RideObjectEntry;
