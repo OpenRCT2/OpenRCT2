@@ -48,17 +48,34 @@ using namespace OpenRCT2::Drawing;
 
 namespace OpenRCT2::Ui::Windows
 {
-    static constexpr uint16_t MapColour2(uint8_t colourA, uint8_t colourB)
+    struct ColourPair
     {
-        return (colourA << 8) | colourB;
-    }
-    static constexpr uint16_t MapColour(uint8_t colour)
+        PaletteIndex a = PaletteIndex::pi0;
+        PaletteIndex b = PaletteIndex::pi0;
+
+        constexpr ColourPair() = default;
+
+        constexpr ColourPair(PaletteIndex _a)
+            : a(_a)
+            , b(_a)
+        {
+        }
+
+        constexpr ColourPair(PaletteIndex _a, PaletteIndex _b)
+            : a(_a)
+            , b(_b)
+        {
+        }
+
+        constexpr bool operator==(const ColourPair& rhs) const
+        {
+            return a == rhs.a && b == rhs.b;
+        }
+    };
+
+    static constexpr ColourPair MapColourUnowned(ColourPair colour)
     {
-        return MapColour2(colour, colour);
-    }
-    static constexpr uint16_t MapColourUnowned(uint16_t colour)
-    {
-        return MapColour2((colour & 0xFF00) >> 8, PaletteIndex::pi10);
+        return ColourPair(colour.a, PaletteIndex::pi10);
     }
     static int32_t getPracticalMapSize()
     {
@@ -167,15 +184,15 @@ namespace OpenRCT2::Ui::Windows
         STR_MAP_INFO_KIOSK, STR_MAP_FIRST_AID,  STR_MAP_CASH_MACHINE, STR_MAP_TOILET,
     };
 
-    static constexpr uint16_t RideKeyColours[] = {
-        MapColour(PaletteIndex::pi61),  // COLOUR_KEY_RIDE
-        MapColour(PaletteIndex::pi42),  // COLOUR_KEY_FOOD
-        MapColour(PaletteIndex::pi20),  // COLOUR_KEY_DRINK
-        MapColour(PaletteIndex::pi209), // COLOUR_KEY_SOUVENIR
-        MapColour(PaletteIndex::pi136), // COLOUR_KEY_KIOSK
-        MapColour(PaletteIndex::pi102), // COLOUR_KEY_FIRST_AID
-        MapColour(PaletteIndex::pi55),  // COLOUR_KEY_CASH_MACHINE
-        MapColour(PaletteIndex::pi161), // COLOUR_KEY_TOILETS
+    static constexpr ColourPair kRideKeyColours[] = {
+        ColourPair(PaletteIndex::pi61),  // COLOUR_KEY_RIDE
+        ColourPair(PaletteIndex::pi42),  // COLOUR_KEY_FOOD
+        ColourPair(PaletteIndex::pi20),  // COLOUR_KEY_DRINK
+        ColourPair(PaletteIndex::pi209), // COLOUR_KEY_SOUVENIR
+        ColourPair(PaletteIndex::pi136), // COLOUR_KEY_KIOSK
+        ColourPair(PaletteIndex::pi102), // COLOUR_KEY_FIRST_AID
+        ColourPair(PaletteIndex::pi55),  // COLOUR_KEY_CASH_MACHINE
+        ColourPair(PaletteIndex::pi161), // COLOUR_KEY_TOILETS
     };
 
     static constexpr PaletteIndex DefaultPeepMapColour = PaletteIndex::pi20;
@@ -184,28 +201,17 @@ namespace OpenRCT2::Ui::Windows
     static constexpr PaletteIndex StaffMapColour = PaletteIndex::pi138;
     static constexpr PaletteIndex StaffMapColourAlternate = PaletteIndex::pi10;
 
-    static constexpr uint16_t WaterColour = MapColour(PaletteIndex::pi195);
+    static constexpr auto kWaterColour = ColourPair(PaletteIndex::pi195);
 
-    static constexpr uint16_t ElementTypeMaskColour[] = {
-        0xFFFF, // TILE_ELEMENT_TYPE_SURFACE
-        0x0000, // TILE_ELEMENT_TYPE_PATH
-        0x00FF, // TILE_ELEMENT_TYPE_TRACK
-        0xFF00, // TILE_ELEMENT_TYPE_SMALL_SCENERY
-        0x0000, // TILE_ELEMENT_TYPE_ENTRANCE
-        0xFFFF, // TILE_ELEMENT_TYPE_WALL
-        0x0000, // TILE_ELEMENT_TYPE_LARGE_SCENERY
-        0xFFFF, // TILE_ELEMENT_TYPE_BANNER
-    };
-
-    static constexpr uint16_t ElementTypeAddColour[] = {
-        MapColour(PaletteIndex::pi0),                       // TILE_ELEMENT_TYPE_SURFACE
-        MapColour(PaletteIndex::pi17),                      // TILE_ELEMENT_TYPE_PATH
-        MapColour2(PaletteIndex::pi183, PaletteIndex::pi0), // TILE_ELEMENT_TYPE_TRACK
-        MapColour2(PaletteIndex::pi0, PaletteIndex::pi99),  // TILE_ELEMENT_TYPE_SMALL_SCENERY
-        MapColour(PaletteIndex::pi186),                     // TILE_ELEMENT_TYPE_ENTRANCE
-        MapColour(PaletteIndex::pi0),                       // TILE_ELEMENT_TYPE_WALL
-        MapColour(PaletteIndex::pi99),                      // TILE_ELEMENT_TYPE_LARGE_SCENERY
-        MapColour(PaletteIndex::pi0),                       // TILE_ELEMENT_TYPE_BANNER
+    static constexpr ColourPair kElementTypeOverwriteColour[] = {
+        ColourPair(PaletteIndex::pi0),                      // TILE_ELEMENT_TYPE_SURFACE
+        ColourPair(PaletteIndex::pi17),                     // TILE_ELEMENT_TYPE_PATH
+        ColourPair(PaletteIndex::pi183, PaletteIndex::pi0), // TILE_ELEMENT_TYPE_TRACK
+        ColourPair(PaletteIndex::pi0, PaletteIndex::pi99),  // TILE_ELEMENT_TYPE_SMALL_SCENERY
+        ColourPair(PaletteIndex::pi186),                    // TILE_ELEMENT_TYPE_ENTRANCE
+        ColourPair(PaletteIndex::pi0),                      // TILE_ELEMENT_TYPE_WALL
+        ColourPair(PaletteIndex::pi99),                     // TILE_ELEMENT_TYPE_LARGE_SCENERY
+        ColourPair(PaletteIndex::pi0),                      // TILE_ELEMENT_TYPE_BANNER
     };
 
     namespace MapFlashingFlags
@@ -674,13 +680,13 @@ namespace OpenRCT2::Ui::Windows
                 {
                     auto screenCoords = windowPos + ScreenCoordsXY{ 4, widgets[WIDX_MAP].bottom + 2 };
 
-                    static_assert(std::size(RideKeyColours) == std::size(MapLabels));
+                    static_assert(std::size(kRideKeyColours) == std::size(MapLabels));
 
-                    for (uint32_t i = 0; i < std::size(RideKeyColours); i++)
+                    for (uint32_t i = 0; i < std::size(kRideKeyColours); i++)
                     {
                         Rectangle::fill(
                             rt, { screenCoords + ScreenCoordsXY{ 0, 2 }, screenCoords + ScreenCoordsXY{ 6, 8 } },
-                            static_cast<PaletteIndex>(RideKeyColours[i] & 0xFF));
+                            kRideKeyColours[i].b);
                         DrawTextBasic(rt, screenCoords + ScreenCoordsXY{ kListRowHeight, 0 }, MapLabels[i], {});
                         screenCoords.y += kListRowHeight;
                         if (i == 3)
@@ -820,7 +826,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 if (!MapIsEdge({ x, y }))
                 {
-                    uint16_t colour = 0;
+                    ColourPair colour{};
                     switch (selectedTab)
                     {
                         case PAGE_PEEPS:
@@ -830,8 +836,8 @@ namespace OpenRCT2::Ui::Windows
                             colour = GetPixelColourRide({ x, y });
                             break;
                     }
-                    destination[0] = (colour >> 8) & 0xFF;
-                    destination[1] = colour;
+                    destination[0] = colour.a;
+                    destination[1] = colour.b;
                 }
                 x += dx;
                 y += dy;
@@ -845,30 +851,30 @@ namespace OpenRCT2::Ui::Windows
                 _currentLine = 0;
         }
 
-        uint16_t GetPixelColourPeep(const CoordsXY& c)
+        ColourPair GetPixelColourPeep(const CoordsXY& c)
         {
             auto* surfaceElement = MapGetSurfaceElementAt(c);
             if (surfaceElement == nullptr)
-                return 0;
+                return { PaletteIndex::pi0, PaletteIndex::pi0 };
 
-            uint16_t colour = MapColour(PaletteIndex::pi0);
+            auto colour = ColourPair(PaletteIndex::pi0);
             const auto* surfaceObject = surfaceElement->GetSurfaceObject();
             if (surfaceObject != nullptr)
-                colour = MapColour2(surfaceObject->MapColours[0], surfaceObject->MapColours[1]);
+                colour = ColourPair(surfaceObject->MapColours[0], surfaceObject->MapColours[1]);
 
             if (surfaceElement->GetWaterHeight() > 0)
-                colour = WaterColour;
+                colour = kWaterColour;
 
             if (!(surfaceElement->GetOwnership() & OWNERSHIP_OWNED))
                 colour = MapColourUnowned(colour);
 
-            const int32_t maxSupportedTileElementType = static_cast<int32_t>(std::size(ElementTypeAddColour));
+            const int32_t maxSupportedTileElementType = static_cast<int32_t>(std::size(kElementTypeOverwriteColour));
             auto tileElement = reinterpret_cast<TileElement*>(surfaceElement);
             while (!(tileElement++)->IsLastForTile())
             {
                 if (tileElement->IsGhost())
                 {
-                    colour = MapColour(PaletteIndex::pi21);
+                    colour = ColourPair(PaletteIndex::pi21);
                     break;
                 }
 
@@ -877,17 +883,24 @@ namespace OpenRCT2::Ui::Windows
                 {
                     tileElementType = TileElementType::Surface;
                 }
-                colour &= ElementTypeMaskColour[EnumValue(tileElementType)];
-                colour |= ElementTypeAddColour[EnumValue(tileElementType)];
+                const auto overwriteColours = kElementTypeOverwriteColour[EnumValue(tileElementType)];
+                if (overwriteColours.a != PaletteIndex::pi0)
+                {
+                    colour.a = overwriteColours.a;
+                }
+                if (overwriteColours.b != PaletteIndex::pi0)
+                {
+                    colour.b = overwriteColours.b;
+                }
             }
 
             return colour;
         }
 
-        uint16_t GetPixelColourRide(const CoordsXY& c)
+        ColourPair GetPixelColourRide(const CoordsXY& c)
         {
-            uint16_t colourA = 0;                             // highlight colour
-            uint16_t colourB = MapColour(PaletteIndex::pi13); // surface colour (dark grey)
+            ColourPair colourA{};                                // highlight colour
+            ColourPair colourB = ColourPair(PaletteIndex::pi13); // surface colour (dark grey)
 
             // as an improvement we could use first_element to show underground stuff?
             TileElement* tileElement = reinterpret_cast<TileElement*>(MapGetSurfaceElementAt(c));
@@ -898,7 +911,7 @@ namespace OpenRCT2::Ui::Windows
 
                 if (tileElement->IsGhost())
                 {
-                    colourA = MapColour(PaletteIndex::pi21);
+                    colourA = ColourPair(PaletteIndex::pi21);
                     break;
                 }
 
@@ -907,12 +920,12 @@ namespace OpenRCT2::Ui::Windows
                     case TileElementType::Surface:
                         if (tileElement->AsSurface()->GetWaterHeight() > 0)
                             // Why is this a different water colour as above (195)?
-                            colourB = MapColour(PaletteIndex::pi194);
+                            colourB = ColourPair(PaletteIndex::pi194);
                         if (!(tileElement->AsSurface()->GetOwnership() & OWNERSHIP_OWNED))
                             colourB = MapColourUnowned(colourB);
                         break;
                     case TileElementType::Path:
-                        colourA = MapColour(PaletteIndex::pi14); // lighter grey
+                        colourA = ColourPair(PaletteIndex::pi14); // lighter grey
                         break;
                     case TileElementType::Entrance:
                     {
@@ -922,7 +935,7 @@ namespace OpenRCT2::Ui::Windows
                         if (targetRide != nullptr)
                         {
                             const auto& colourKey = targetRide->getRideTypeDescriptor().ColourKey;
-                            colourA = RideKeyColours[EnumValue(colourKey)];
+                            colourA = kRideKeyColours[EnumValue(colourKey)];
                         }
                         break;
                     }
@@ -932,7 +945,7 @@ namespace OpenRCT2::Ui::Windows
                         if (targetRide != nullptr)
                         {
                             const auto& colourKey = targetRide->getRideTypeDescriptor().ColourKey;
-                            colourA = RideKeyColours[EnumValue(colourKey)];
+                            colourA = kRideKeyColours[EnumValue(colourKey)];
                         }
 
                         break;
@@ -942,7 +955,7 @@ namespace OpenRCT2::Ui::Windows
                 }
             } while (!(tileElement++)->IsLastForTile());
 
-            if (colourA != 0)
+            if (colourA != ColourPair(PaletteIndex::pi0, PaletteIndex::pi0))
                 return colourA;
 
             return colourB;
