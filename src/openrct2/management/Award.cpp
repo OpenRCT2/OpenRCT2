@@ -13,6 +13,7 @@
 #include "../config/Config.h"
 #include "../entity/EntityList.h"
 #include "../entity/Guest.h"
+#include "../localisation/Formatter.h"
 #include "../profiling/Profiling.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"

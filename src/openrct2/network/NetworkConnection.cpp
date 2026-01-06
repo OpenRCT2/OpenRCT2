@@ -13,6 +13,7 @@
 
     #include "../Diagnostic.h"
     #include "../core/Diagnostics.hpp"
+    #include "../core/Guard.hpp"
     #include "../core/String.hpp"
     #include "../localisation/Formatting.h"
     #include "../platform/Platform.h"

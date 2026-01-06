@@ -10,6 +10,7 @@
 
 #include "../Diagnostic.h"
 #include "../GameState.h"
+#include "../core/Guard.hpp"
 #include "../management/Finance.h"
 #include "../ride/MazeCost.h"
 #include "../ride/RideData.h"

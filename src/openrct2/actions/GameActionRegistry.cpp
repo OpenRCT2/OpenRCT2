@@ -91,6 +91,7 @@
 #include "WaterLowerAction.h"
 #include "WaterRaiseAction.h"
 #include "WaterSetHeightAction.h"
+#include "../core/Guard.hpp"
 
 #include <array>
 

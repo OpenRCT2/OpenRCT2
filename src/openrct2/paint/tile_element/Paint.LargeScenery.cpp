@@ -18,6 +18,7 @@
 #include "../../core/UTF8.h"
 #include "../../drawing/Drawing.h"
 #include "../../interface/Viewport.h"
+#include "../../localisation/Formatter.h"
 #include "../../localisation/Formatting.h"
 #include "../../localisation/StringIds.h"
 #include "../../object/LargeSceneryEntry.h"

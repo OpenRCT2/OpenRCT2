@@ -19,6 +19,7 @@
 #include "../ui/WindowManager.h"
 #include "../world/Map.h"
 #include "../world/Park.h"
+#include "ResultWithMessage.h"
 
 namespace OpenRCT2::GameActions
 {

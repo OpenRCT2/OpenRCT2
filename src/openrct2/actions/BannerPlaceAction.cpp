@@ -10,6 +10,7 @@
 #include "BannerPlaceAction.h"
 
 #include "../Diagnostic.h"
+#include "../core/Guard.hpp"
 #include "../management/Finance.h"
 #include "../object/BannerSceneryEntry.h"
 #include "../object/ObjectEntryManager.h"

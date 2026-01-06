@@ -30,6 +30,7 @@
 #include <openrct2/SpriteIds.h>
 #include <openrct2/actions/GameAction.h>
 #include <openrct2/actions/ParkSetParameterAction.h>
+#include <openrct2/actions/ResultWithMessage.h>
 #include <openrct2/actions/RideSetAppearanceAction.h>
 #include <openrct2/actions/RideSetColourSchemeAction.h>
 #include <openrct2/actions/RideSetNameAction.h>

@@ -10,13 +10,9 @@
 #pragma once
 
 #include "../Limits.h"
-#include "../actions/ResultWithMessage.h"
 #include "../core/BitSet.hpp"
 #include "../core/FixedPoint.hpp"
 #include "../core/FlagHolder.hpp"
-#include "../localisation/Formatter.h"
-#include "../object/MusicObject.h"
-#include "../rct2/DATLimits.h"
 #include "../rct2/Limits.h"
 #include "RideColour.h"
 #include "RideEntry.h"
@@ -35,6 +31,7 @@ struct IObjectManager;
 struct Ride;
 struct RideTypeDescriptor;
 struct Guest;
+struct OpenRCT2String;
 struct Staff;
 struct Vehicle;
 struct RideObjectEntry;
@@ -43,6 +40,7 @@ struct ResultWithMessage;
 namespace OpenRCT2
 {
     class Formatter;
+    class MusicObject;
     class StationObject;
 
     struct TileElement;

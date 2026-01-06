@@ -20,6 +20,7 @@
 #include "../world/Map.h"
 #include "../world/tile_element/SurfaceElement.h"
 #include "../world/tile_element/TrackElement.h"
+#include "ResultWithMessage.h"
 #include "RideSetSettingAction.h"
 
 namespace OpenRCT2::GameActions

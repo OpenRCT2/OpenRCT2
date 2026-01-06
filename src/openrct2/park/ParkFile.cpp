@@ -37,6 +37,7 @@
 #include "../entity/PatrolArea.h"
 #include "../entity/Staff.h"
 #include "../interface/Viewport.h"
+#include "../localisation/Formatter.h"
 #include "../management/Award.h"
 #include "../management/Finance.h"
 #include "../management/NewsItem.h"

@@ -15,6 +15,7 @@
 #include "../../drawing/Drawing.h"
 #include "../../interface/Colour.h"
 #include "../../interface/Viewport.h"
+#include "../../localisation/Formatter.h"
 #include "../../localisation/Formatting.h"
 #include "../../localisation/StringIds.h"
 #include "../../object/WallSceneryEntry.h"
