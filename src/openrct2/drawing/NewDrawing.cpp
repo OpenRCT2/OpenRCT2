@@ -154,7 +154,7 @@ void GfxSetDirtyBlocks(const ScreenRect& rect)
     }
 }
 
-void GfxClear(RenderTarget& rt, uint8_t paletteIndex)
+void GfxClear(RenderTarget& rt, PaletteIndex paletteIndex)
 {
     auto drawingEngine = rt.DrawingEngine;
     if (drawingEngine != nullptr)

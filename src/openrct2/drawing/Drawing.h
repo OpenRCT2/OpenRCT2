@@ -246,7 +246,7 @@ void GfxTransposePalette(int32_t pal, uint8_t product);
 void LoadPalette();
 
 // other
-void GfxClear(OpenRCT2::Drawing::RenderTarget& rt, uint8_t paletteIndex);
+void GfxClear(OpenRCT2::Drawing::RenderTarget& rt, PaletteIndex paletteIndex);
 void GfxFilterPixel(
     OpenRCT2::Drawing::RenderTarget& rt, const ScreenCoordsXY& coords, OpenRCT2::Drawing::FilterPaletteID palette);
 void GfxInvalidatePickedUpPeep();

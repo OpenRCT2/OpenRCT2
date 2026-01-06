@@ -373,7 +373,7 @@ X8DrawingContext::X8DrawingContext(X8DrawingEngine* engine)
     _engine = engine;
 }
 
-void X8DrawingContext::Clear(RenderTarget& rt, uint8_t paletteIndex)
+void X8DrawingContext::Clear(RenderTarget& rt, PaletteIndex paletteIndex)
 {
     Guard::Assert(_isDrawing == true);
 
@@ -383,60 +383,13 @@ void X8DrawingContext::Clear(RenderTarget& rt, uint8_t paletteIndex)
 
     for (int32_t y = 0; y < h; y++)
     {
-        std::fill_n(ptr, w, paletteIndex);
+        std::fill_n(ptr, w, EnumValue(paletteIndex));
         ptr += w + rt.pitch;
     }
 }
 
-/** rct2: 0x0097FF04 */
-// clang-format off
-static constexpr uint16_t kPattern[] = {
-    0b0111111110000000,
-    0b0011111111000000,
-    0b0001111111100000,
-    0b0000111111110000,
-    0b0000011111111000,
-    0b0000001111111100,
-    0b0000000111111110,
-    0b0000000011111111,
-    0b1000000001111111,
-    0b1100000000111111,
-    0b1110000000011111,
-    0b1111000000001111,
-    0b1111100000000111,
-    0b1111110000000011,
-    0b1111111000000001,
-    0b1111111100000000,
-};
-
-/** rct2: 0x0097FF14 */
-static constexpr uint16_t kPatternInverse[] = {
-    0b1000000001111111,
-    0b1100000000111111,
-    0b1110000000011111,
-    0b1111000000001111,
-    0b1111100000000111,
-    0b1111110000000011,
-    0b1111111000000001,
-    0b1111111100000000,
-    0b0111111110000000,
-    0b0011111111000000,
-    0b0001111111100000,
-    0b0000111111110000,
-    0b0000011111111000,
-    0b0000001111111100,
-    0b0000000111111110,
-    0b0000000011111111,
-};
-
-/** rct2: 0x0097FEFC */
-static constexpr const uint16_t* kPatterns[] = {
-    kPattern,
-    kPatternInverse,
-};
-// clang-format on
-
-void X8DrawingContext::FillRect(RenderTarget& rt, uint32_t colour, int32_t left, int32_t top, int32_t right, int32_t bottom)
+void X8DrawingContext::FillRect(
+    RenderTarget& rt, PaletteIndex paletteIndex, int32_t left, int32_t top, int32_t right, int32_t bottom, bool crossHatch)
 {
     Guard::Assert(_isDrawing == true);
 
@@ -485,7 +438,7 @@ void X8DrawingContext::FillRect(RenderTarget& rt, uint32_t colour, int32_t left,
     int32_t width = endX - startX;
     int32_t height = endY - startY;
 
-    if (colour & 0x1000000)
+    if (crossHatch)
     {
         // Cross hatching
         uint8_t* dst = startY * rt.LineStride() + startX + rt.bits;
@@ -501,49 +454,11 @@ void X8DrawingContext::FillRect(RenderTarget& rt, uint32_t colour, int32_t left,
                 p = p ^ 0x80000000;
                 if (p & 0x80000000)
                 {
-                    *dst = colour & 0xFF;
+                    *dst = EnumValue(paletteIndex);
                 }
                 dst++;
             }
             crosskPattern ^= 1;
-            dst = nextdst;
-        }
-    }
-    else if (colour & 0x2000000)
-    {
-        assert(false);
-    }
-    else if (colour & 0x4000000)
-    {
-        uint8_t* dst = startY * rt.LineStride() + startX + rt.bits;
-
-        // The pattern loops every 15 lines this is which
-        // part the pattern is on.
-        int32_t patternY = (startY + rt.y) % 16;
-
-        // The pattern loops every 15 pixels this is which
-        // part the pattern is on.
-        int32_t startkPatternX = (startX + rt.x) % 16;
-        int32_t patternX = startkPatternX;
-
-        const uint16_t* patternsrc = kPatterns[colour >> 28]; // or possibly uint8_t)[esi*4] ?
-
-        for (int32_t numLines = height; numLines > 0; numLines--)
-        {
-            uint8_t* nextdst = dst + rt.LineStride();
-            uint16_t pattern = patternsrc[patternY];
-
-            for (int32_t numPixels = width; numPixels > 0; numPixels--)
-            {
-                if (pattern & (1 << patternX))
-                {
-                    *dst = colour & 0xFF;
-                }
-                patternX = (patternX + 1) % 16;
-                dst++;
-            }
-            patternX = startkPatternX;
-            patternY = (patternY + 1) % 16;
             dst = nextdst;
         }
     }
@@ -552,7 +467,7 @@ void X8DrawingContext::FillRect(RenderTarget& rt, uint32_t colour, int32_t left,
         uint8_t* dst = startY * rt.LineStride() + startX + rt.bits;
         for (int32_t i = 0; i < height; i++)
         {
-            std::fill_n(dst, width, colour & 0xFF);
+            std::fill_n(dst, width, EnumValue(paletteIndex));
             dst += rt.LineStride();
         }
     }

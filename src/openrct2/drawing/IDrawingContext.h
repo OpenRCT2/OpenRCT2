@@ -22,8 +22,11 @@ namespace OpenRCT2::Drawing
     {
         virtual ~IDrawingContext() = default;
 
-        virtual void Clear(RenderTarget& rt, uint8_t paletteIndex) = 0;
-        virtual void FillRect(RenderTarget& rt, uint32_t colour, int32_t left, int32_t top, int32_t right, int32_t bottom) = 0;
+        virtual void Clear(RenderTarget& rt, PaletteIndex paletteIndex) = 0;
+        virtual void FillRect(
+            RenderTarget& rt, PaletteIndex paletteIndex, int32_t left, int32_t top, int32_t right, int32_t bottom,
+            bool crossHatch = false)
+            = 0;
         virtual void FilterRect(
             RenderTarget& rt, FilterPaletteID palette, int32_t left, int32_t top, int32_t right, int32_t bottom)
             = 0;

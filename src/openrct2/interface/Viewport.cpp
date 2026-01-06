@@ -852,10 +852,10 @@ namespace OpenRCT2
                    | VIEWPORT_FLAG_CLIP_VIEW)
             && (~session.ViewFlags & VIEWPORT_FLAG_TRANSPARENT_BACKGROUND))
         {
-            uint8_t colour = COLOUR_AQUAMARINE;
+            PaletteIndex colour = PaletteIndex::pi10;
             if (session.ViewFlags & VIEWPORT_FLAG_HIDE_ENTITIES)
             {
-                colour = COLOUR_BLACK;
+                colour = PaletteIndex::pi0;
             }
             GfxClear(session.DPI, colour);
         }

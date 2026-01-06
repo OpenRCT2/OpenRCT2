@@ -12,6 +12,7 @@
 #include <cstdint>
 
 struct ScreenRect;
+enum PaletteIndex : uint8_t;
 
 namespace OpenRCT2
 {
@@ -44,7 +45,7 @@ namespace OpenRCT2::Drawing::Rectangle
         dontLightenWhenInset,
     };
 
-    void fill(RenderTarget& rt, const ScreenRect& rect, int32_t colour);
+    void fill(RenderTarget& rt, const ScreenRect& rect, PaletteIndex paletteIndex, bool crossHatch = false);
     void fillInset(
         RenderTarget& rt, const ScreenRect& rect, ColourWithFlags colour, BorderStyle borderStyle = BorderStyle::outset,
         FillBrightness brightness = FillBrightness::light, FillMode fillMode = FillMode::standard);

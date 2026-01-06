@@ -178,11 +178,11 @@ namespace OpenRCT2::Ui::Windows
         MapColour(PaletteIndex::pi161), // COLOUR_KEY_TOILETS
     };
 
-    static constexpr uint8_t DefaultPeepMapColour = PaletteIndex::pi20;
-    static constexpr uint8_t GuestMapColour = PaletteIndex::pi172;
-    static constexpr uint8_t GuestMapColourAlternate = PaletteIndex::pi21;
-    static constexpr uint8_t StaffMapColour = PaletteIndex::pi138;
-    static constexpr uint8_t StaffMapColourAlternate = PaletteIndex::pi10;
+    static constexpr PaletteIndex DefaultPeepMapColour = PaletteIndex::pi20;
+    static constexpr PaletteIndex GuestMapColour = PaletteIndex::pi172;
+    static constexpr PaletteIndex GuestMapColourAlternate = PaletteIndex::pi21;
+    static constexpr PaletteIndex StaffMapColour = PaletteIndex::pi138;
+    static constexpr PaletteIndex StaffMapColourAlternate = PaletteIndex::pi10;
 
     static constexpr uint16_t WaterColour = MapColour(PaletteIndex::pi195);
 
@@ -680,7 +680,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         Rectangle::fill(
                             rt, { screenCoords + ScreenCoordsXY{ 0, 2 }, screenCoords + ScreenCoordsXY{ 6, 8 } },
-                            RideKeyColours[i]);
+                            static_cast<PaletteIndex>(RideKeyColours[i] & 0xFF));
                         DrawTextBasic(rt, screenCoords + ScreenCoordsXY{ kListRowHeight, 0 }, MapLabels[i], {});
                         screenCoords.y += kListRowHeight;
                         if (i == 3)
@@ -962,7 +962,8 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void DrawMapPeepPixel(Peep* peep, const uint8_t flashColour, Drawing::RenderTarget& rt, const ScreenCoordsXY& offset)
+        void DrawMapPeepPixel(
+            Peep* peep, const PaletteIndex flashColour, Drawing::RenderTarget& rt, const ScreenCoordsXY& offset)
         {
             if (peep->x == kLocationNull)
                 return;
@@ -970,7 +971,7 @@ namespace OpenRCT2::Ui::Windows
             MapCoordsXY c = TransformToMapCoords({ peep->x, peep->y });
             auto leftTop = ScreenCoordsXY{ c.x, c.y } + offset;
             auto rightBottom = leftTop;
-            uint8_t colour = DefaultPeepMapColour;
+            auto colour = DefaultPeepMapColour;
             if (getGameState().entities.EntityGetFlashing(peep))
             {
                 colour = flashColour;
@@ -984,9 +985,9 @@ namespace OpenRCT2::Ui::Windows
             Rectangle::fill(rt, { leftTop, rightBottom }, colour);
         }
 
-        uint8_t GetGuestFlashColour() const
+        PaletteIndex GetGuestFlashColour() const
         {
-            uint8_t colour = DefaultPeepMapColour;
+            auto colour = DefaultPeepMapColour;
             if ((_flashingFlags & MapFlashingFlags::FlashGuests) != 0)
             {
                 colour = GuestMapColour;
@@ -996,9 +997,9 @@ namespace OpenRCT2::Ui::Windows
             return colour;
         }
 
-        uint8_t GetStaffFlashColour() const
+        PaletteIndex GetStaffFlashColour() const
         {
-            uint8_t colour = DefaultPeepMapColour;
+            auto colour = DefaultPeepMapColour;
             if ((_flashingFlags & MapFlashingFlags::FlashStaff) != 0)
             {
                 colour = StaffMapColour;

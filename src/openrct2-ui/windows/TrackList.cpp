@@ -471,7 +471,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Track preview
             auto& tdWidget = widgets[WIDX_TRACK_PREVIEW];
-            int32_t colour = ColourMapA[colours[0].colour].darkest;
+            auto colour = ColourMapA[colours[0].colour].darkest;
             u8string path = _trackDesigns[trackIndex].path;
 
             // Show track file path (in debug mode)
@@ -676,7 +676,7 @@ namespace OpenRCT2::Ui::Windows
 
         void onScrollDraw(const int32_t scrollIndex, Drawing::RenderTarget& rt) override
         {
-            uint8_t paletteIndex = ColourMapA[colours[0].colour].mid_light;
+            auto paletteIndex = ColourMapA[colours[0].colour].mid_light;
             GfxClear(rt, paletteIndex);
 
             auto screenCoords = ScreenCoordsXY{ 0, 0 };

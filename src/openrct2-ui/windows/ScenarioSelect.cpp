@@ -542,7 +542,7 @@ namespace OpenRCT2::Ui::Windows
 
         void onScrollDraw(int32_t scrollIndex, Drawing::RenderTarget& rt) override
         {
-            uint8_t paletteIndex = ColourMapA[colours[1].colour].mid_light;
+            auto paletteIndex = ColourMapA[colours[1].colour].mid_light;
             GfxClear(rt, paletteIndex);
 
             StringId highlighted_format = STR_WINDOW_COLOUR_2_STRINGID;

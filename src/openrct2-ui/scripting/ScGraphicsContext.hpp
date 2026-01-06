@@ -32,7 +32,7 @@ namespace OpenRCT2::Scripting
         std::optional<colour_t> _tertiaryColour{};
         std::optional<uint8_t> _paletteId{};
         uint8_t _stroke{};
-        uint8_t _fill{};
+        PaletteIndex _fill{};
 
     public:
         ScGraphicsContext(duk_context* ctx, const RenderTarget& rt)
@@ -124,12 +124,12 @@ namespace OpenRCT2::Scripting
 
         uint8_t fill_get() const
         {
-            return _fill;
+            return EnumValue(_fill);
         }
 
         void fill_set(uint8_t value)
         {
-            _fill = value;
+            _fill = static_cast<PaletteIndex>(value);
         }
 
         uint8_t stroke_get() const
@@ -230,7 +230,7 @@ namespace OpenRCT2::Scripting
                 width -= 2;
                 height -= 2;
             }
-            if (_fill != 0)
+            if (_fill != PaletteIndex::pi0)
             {
                 Rectangle::fill(_rt, { x, y, x + width - 1, y + height - 1 }, _fill);
             }

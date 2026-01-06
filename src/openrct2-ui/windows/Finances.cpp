@@ -415,7 +415,7 @@ namespace OpenRCT2::Ui::Windows
                         rt,
                         { screenCoords - ScreenCoordsXY{ 0, 1 },
                           screenCoords + ScreenCoordsXY{ row_width, (kTableCellHeight - 2) } },
-                        ColourMapA[colours[1].colour].lighter | 0x1000000);
+                        ColourMapA[colours[1].colour].lighter, true);
 
                 screenCoords.y += kTableCellHeight;
             }
@@ -609,7 +609,7 @@ namespace OpenRCT2::Ui::Windows
                     Rectangle::fill(
                         rt,
                         { screenCoords - ScreenCoordsXY{ 0, 1 }, screenCoords + ScreenCoordsXY{ 121, (kTableCellHeight - 2) } },
-                        ColourMapA[colours[1].colour].lighter | 0x1000000);
+                        ColourMapA[colours[1].colour].lighter, true);
 
                 DrawTextBasic(rt, screenCoords - ScreenCoordsXY{ 0, 1 }, _windowFinancesSummaryRowLabels[i]);
                 screenCoords.y += kTableCellHeight;

@@ -610,7 +610,7 @@ void CustomListView::Paint(WindowBase* w, RenderTarget& rt, const ScrollArea* sc
                 {
                     Rectangle::fill(
                         rt, { { rt.x, y }, { rt.x + rt.width, y + (kListRowHeight - 1) } },
-                        ColourMapA[w->colours[1].colour].lighter | 0x1000000);
+                        ColourMapA[w->colours[1].colour].lighter, true);
                 }
 
                 // Columns

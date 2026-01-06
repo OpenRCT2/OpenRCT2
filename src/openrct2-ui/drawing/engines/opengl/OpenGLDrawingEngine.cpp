@@ -115,8 +115,10 @@ public:
     void StartNewDraw();
     void FinishDraw();
 
-    void Clear(RenderTarget& rt, uint8_t paletteIndex) override;
-    void FillRect(RenderTarget& rt, uint32_t colour, int32_t x, int32_t y, int32_t w, int32_t h) override;
+    void Clear(RenderTarget& rt, PaletteIndex paletteIndex) override;
+    void FillRect(
+        RenderTarget& rt, PaletteIndex paletteIndex, int32_t x, int32_t y, int32_t w, int32_t h,
+        bool crossHatch = false) override;
     void FilterRect(
         RenderTarget& rt, FilterPaletteID palette, int32_t left, int32_t top, int32_t right, int32_t bottom) override;
     void DrawLine(RenderTarget& rt, uint32_t colour, const ScreenLine& line) override;
@@ -682,14 +684,15 @@ void OpenGLDrawingContext::FinishDraw()
     _inDraw = false;
 }
 
-void OpenGLDrawingContext::Clear(RenderTarget& rt, uint8_t paletteIndex)
+void OpenGLDrawingContext::Clear(RenderTarget& rt, PaletteIndex paletteIndex)
 {
     Guard::Assert(_inDraw == true);
 
     FillRect(rt, paletteIndex, rt.x, rt.y, rt.x + rt.width, rt.y + rt.height);
 }
 
-void OpenGLDrawingContext::FillRect(RenderTarget& rt, uint32_t colour, int32_t left, int32_t top, int32_t right, int32_t bottom)
+void OpenGLDrawingContext::FillRect(
+    RenderTarget& rt, PaletteIndex paletteIndex, int32_t left, int32_t top, int32_t right, int32_t bottom, bool crossHatch)
 {
     Guard::Assert(_inDraw == true);
 
@@ -708,21 +711,16 @@ void OpenGLDrawingContext::FillRect(RenderTarget& rt, uint32_t colour, int32_t l
     command.texMaskAtlas = 0;
     command.texMaskBounds = { 0.0f, 0.0f, 0.0f, 0.0f };
     command.palettes = { 0, 0, 0 };
-    command.colour = colour & 0xFF;
+    command.colour = EnumValue(paletteIndex);
     command.bounds = { left, top, right + 1, bottom + 1 };
     command.flags = DrawRectCommand::FLAG_NO_TEXTURE;
     command.depth = _drawCount++;
     command.zoom = 1.0f;
 
-    if (colour & 0x1000000)
+    if (crossHatch)
     {
         // cross-pattern
         command.flags |= DrawRectCommand::FLAG_CROSS_HATCH;
-    }
-    else if (colour & 0x2000000)
-    {
-        assert(false);
-        // Should be FilterRect
     }
 }
 
