@@ -7,6 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../core/Guard.hpp"
 #include "BalloonPressAction.h"
 #include "BannerPlaceAction.h"
 #include "BannerRemoveAction.h"
@@ -91,7 +92,6 @@
 #include "WaterLowerAction.h"
 #include "WaterRaiseAction.h"
 #include "WaterSetHeightAction.h"
-#include "../core/Guard.hpp"
 
 #include <array>
 

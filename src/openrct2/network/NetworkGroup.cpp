@@ -10,10 +10,11 @@
 #ifndef DISABLE_NETWORK
 
     #include "NetworkGroup.h"
-    #include "NetworkAction.h"
-    #include "NetworkTypes.h"
+
     #include "../core/Guard.hpp"
     #include "../core/Json.hpp"
+    #include "NetworkAction.h"
+    #include "NetworkTypes.h"
 
 namespace OpenRCT2::Network
 {
