@@ -12,6 +12,7 @@
 #include "../GameState.h"
 #include "../config/Config.h"
 #include "../core/UnitConversion.h"
+#include "../localisation/Formatter.h"
 #include "../object/ObjectLimits.h"
 #include "../ride/RideManager.hpp"
 #include "Scenario.h"

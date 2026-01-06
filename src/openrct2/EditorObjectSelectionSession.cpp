@@ -15,6 +15,7 @@
 #include "Game.h"
 #include "GameState.h"
 #include "OpenRCT2.h"
+#include "actions/ResultWithMessage.h"
 #include "drawing/Drawing.h"
 #include "entity/EntityList.h"
 #include "entity/Guest.h"

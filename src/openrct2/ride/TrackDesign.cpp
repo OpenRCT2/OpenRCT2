@@ -21,6 +21,7 @@
 #include "../actions/LargeSceneryPlaceAction.h"
 #include "../actions/LargeSceneryRemoveAction.h"
 #include "../actions/MazePlaceTrackAction.h"
+#include "../actions/ResultWithMessage.h"
 #include "../actions/RideCreateAction.h"
 #include "../actions/RideDemolishAction.h"
 #include "../actions/RideEntranceExitPlaceAction.h"

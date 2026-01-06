@@ -13,6 +13,7 @@
 
     #include "../../../GameState.h"
     #include "../../../entity/Guest.h"
+    #include "../../../localisation/Formatter.h"
     #include "../../../localisation/Formatting.h"
     #include "../../../object/ObjectManager.h"
     #include "../../../object/PeepAnimationsObject.h"

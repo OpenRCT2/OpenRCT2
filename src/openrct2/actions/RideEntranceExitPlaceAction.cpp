@@ -12,6 +12,7 @@
 #include "../Diagnostic.h"
 #include "../GameState.h"
 #include "../actions/RideEntranceExitRemoveAction.h"
+#include "../core/Guard.hpp"
 #include "../management/Finance.h"
 #include "../ride/Ride.h"
 #include "../ride/Station.h"

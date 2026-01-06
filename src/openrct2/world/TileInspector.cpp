@@ -11,6 +11,7 @@
 
 #include "../Diagnostic.h"
 #include "../actions/GameAction.h"
+#include "../core/Guard.hpp"
 #include "../object/LargeSceneryEntry.h"
 #include "../ride/Station.h"
 #include "../ride/Track.h"

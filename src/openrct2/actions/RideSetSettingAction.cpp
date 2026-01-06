@@ -13,6 +13,7 @@
 #include "../Diagnostic.h"
 #include "../GameState.h"
 #include "../drawing/Drawing.h"
+#include "../object/MusicObject.h"
 #include "../object/ObjectManager.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"

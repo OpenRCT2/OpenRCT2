@@ -12,6 +12,7 @@
 #include "../Context.h"
 #include "../GameState.h"
 #include "../Input.h"
+#include "../actions/ResultWithMessage.h"
 #include "../actions/RideEntranceExitRemoveAction.h"
 #include "../actions/RideSetSettingAction.h"
 #include "../actions/RideSetStatusAction.h"

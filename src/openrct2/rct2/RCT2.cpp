@@ -18,6 +18,7 @@
 #include "../ride/Track.h"
 
 #include <cstdint>
+#include <cstring>
 
 namespace OpenRCT2::RCT2
 {

@@ -12,6 +12,7 @@
     #include "ScAward.hpp"
 
     #include "../../../GameState.h"
+    #include "../../../localisation/Formatter.h"
     #include "../../../localisation/Formatting.h"
     #include "../../../management/Award.h"
     #include "../../../windows/Intent.h"

@@ -14,6 +14,7 @@
 #include "../GameState.h"
 #include "../config/Config.h"
 #include "../core/EnumUtils.hpp"
+#include "../core/Guard.hpp"
 #include "../core/String.hpp"
 #include "../drawing/Drawing.h"
 #include "../entity/Duck.h"

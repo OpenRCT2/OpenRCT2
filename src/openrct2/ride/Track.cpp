@@ -13,6 +13,7 @@
 #include "../Diagnostic.h"
 #include "../Game.h"
 #include "../GameState.h"
+#include "../actions/ResultWithMessage.h"
 #include "../audio/Audio.h"
 #include "../config/Config.h"
 #include "../interface/Viewport.h"
