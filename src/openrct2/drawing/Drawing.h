@@ -44,7 +44,8 @@ namespace OpenRCT2
 namespace OpenRCT2::Drawing
 {
     struct IDrawingEngine;
-}
+    enum class FilterPaletteID : int32_t;
+} // namespace OpenRCT2::Drawing
 
 using DrawBlendOp = uint8_t;
 
@@ -326,8 +327,8 @@ void MaskFn(
     int32_t width, int32_t height, const uint8_t* RESTRICT maskSrc, const uint8_t* RESTRICT colourSrc, uint8_t* RESTRICT dst,
     int32_t maskWrap, int32_t colourWrap, int32_t dstWrap);
 
-std::optional<uint32_t> GetPaletteG1Index(colour_t paletteId);
-std::optional<PaletteMap> GetPaletteMapForColour(colour_t paletteId);
+std::optional<uint32_t> GetPaletteG1Index(OpenRCT2::Drawing::FilterPaletteID paletteId);
+std::optional<PaletteMap> GetPaletteMapForColour(OpenRCT2::Drawing::FilterPaletteID paletteId);
 void UpdatePalette(std::span<const OpenRCT2::Drawing::PaletteBGRA> palette, int32_t start_index, int32_t num_colours);
 void UpdatePaletteEffects();
 

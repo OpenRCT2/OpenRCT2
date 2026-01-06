@@ -606,7 +606,7 @@ void X8DrawingContext::FilterRect(
     uint8_t* dst = rt.bits + (startY * rt.LineStride() + startX);
 
     // Find colour in colour table?
-    auto paletteMap = GetPaletteMapForColour(EnumValue(palette));
+    auto paletteMap = GetPaletteMapForColour(palette);
     if (paletteMap.has_value())
     {
         const auto& paletteEntries = paletteMap.value();

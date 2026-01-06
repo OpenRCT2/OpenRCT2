@@ -1627,7 +1627,7 @@ namespace OpenRCT2
             {
                 paletteIndex = imageId.GetRemap();
             }
-            if (auto pm = GetPaletteMapForColour(paletteIndex); pm.has_value())
+            if (auto pm = GetPaletteMapForColour(static_cast<FilterPaletteID>(paletteIndex)); pm.has_value())
             {
                 paletteMap = pm.value();
             }
