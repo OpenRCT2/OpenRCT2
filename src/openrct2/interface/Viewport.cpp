@@ -468,7 +468,7 @@ namespace OpenRCT2
 
         if (DrawingEngineHasDirtyOptimisations())
         {
-            RenderTarget& rt = DrawingEngineGetDpi();
+            RenderTarget& rt = DrawingEngineGetRT();
             ViewportShiftPixels(rt, w, { left, top, right, bottom }, { x_diff, y_diff });
         }
         else
@@ -815,7 +815,7 @@ namespace OpenRCT2
      *  bx: top
      *  dx: right
      *  esi: viewport
-     *  edi: dpi
+     *  edi: rt
      *  ebp: bottom
      */
     void ViewportRender(RenderTarget& rt, const Viewport* viewport)
@@ -857,7 +857,7 @@ namespace OpenRCT2
             {
                 colour = PaletteIndex::pi0;
             }
-            GfxClear(session.DPI, colour);
+            GfxClear(session.rt, colour);
         }
 
         PaintDrawStructs(session);
@@ -865,12 +865,12 @@ namespace OpenRCT2
         if (Config::Get().general.renderWeatherGloom && !gTrackDesignSaveMode
             && !(session.ViewFlags & VIEWPORT_FLAG_HIDE_ENTITIES) && !(session.ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
         {
-            ViewportPaintWeatherGloom(session.DPI);
+            ViewportPaintWeatherGloom(session.rt);
         }
 
         if (session.PSStringHead != nullptr)
         {
-            PaintDrawMoneyStructs(session.DPI, session.PSStringHead);
+            PaintDrawMoneyStructs(session.rt, session.PSStringHead);
         }
     }
 
@@ -881,7 +881,7 @@ namespace OpenRCT2
      *  ebx: top
      *  edx: right
      *  esi: viewport
-     *  edi: dpi
+     *  edi: rt
      *  ebp: bottom
      */
     static void ViewportPaint(const Viewport* viewport, RenderTarget& rt)
@@ -933,7 +933,7 @@ namespace OpenRCT2
             PaintSession* session = PaintSessionAlloc(worldRT, viewport->flags, viewport->rotation);
             _paintColumns.push_back(session);
 
-            RenderTarget& columnRT = session->DPI;
+            RenderTarget& columnRT = session->rt;
             if (x >= columnRT.x)
             {
                 const int32_t leftPitch = x - columnRT.x;
@@ -1662,7 +1662,7 @@ namespace OpenRCT2
             while (next_ps != nullptr)
             {
                 ps = next_ps;
-                if (IsSpriteInteractedWith(session->DPI, ps->image_id, ps->ScreenPos))
+                if (IsSpriteInteractedWith(session->rt, ps->image_id, ps->ScreenPos))
                 {
                     if (PSInteractionTypeIsInFilter(ps, filter)
                         && GetPaintStructVisibility(ps, viewFlags) == VisibilityKind::visible)
@@ -1677,7 +1677,7 @@ namespace OpenRCT2
 #pragma GCC diagnostic ignored "-Wnull-dereference"
             for (AttachedPaintStruct* attached_ps = ps->Attached; attached_ps != nullptr; attached_ps = attached_ps->NextEntry)
             {
-                if (IsSpriteInteractedWith(session->DPI, attached_ps->image_id, ps->ScreenPos + attached_ps->RelativePos))
+                if (IsSpriteInteractedWith(session->rt, attached_ps->image_id, ps->ScreenPos + attached_ps->RelativePos))
                 {
                     if (PSInteractionTypeIsInFilter(ps, filter)
                         && GetPaintStructVisibility(ps, viewFlags) == VisibilityKind::visible)

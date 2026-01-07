@@ -260,11 +260,6 @@ IDrawingContext* X8DrawingEngine::GetDrawingContext()
     return _drawingContext;
 }
 
-RenderTarget* X8DrawingEngine::GetDrawingPixelInfo()
-{
-    return &_mainRT;
-}
-
 DrawingEngineFlags X8DrawingEngine::GetFlags()
 {
     return { DrawingEngineFlag::dirtyOptimisations, DrawingEngineFlag::parallelDrawing };
@@ -275,7 +270,7 @@ void X8DrawingEngine::InvalidateImage([[maybe_unused]] uint32_t image)
     // Not applicable for this engine
 }
 
-RenderTarget* X8DrawingEngine::GetDPI()
+RenderTarget* X8DrawingEngine::getRT()
 {
     return &_mainRT;
 }

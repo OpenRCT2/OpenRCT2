@@ -27,7 +27,7 @@ void DrawingEngineSetPalette(const OpenRCT2::Drawing::GamePalette& colours);
 void DrawingEngineCopyRect(int32_t x, int32_t y, int32_t width, int32_t height, int32_t dx, int32_t dy);
 void DrawingEngineDispose();
 
-OpenRCT2::Drawing::RenderTarget& DrawingEngineGetDpi();
+OpenRCT2::Drawing::RenderTarget& DrawingEngineGetRT();
 bool DrawingEngineHasDirtyOptimisations();
 void DrawingEngineInvalidateImage(uint32_t image);
 void DrawingEngineSetVSync(bool vsync);

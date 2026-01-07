@@ -512,7 +512,7 @@ namespace OpenRCT2::Ui::Windows
                         case News::ItemType::peepOnRide:
                         {
                             RenderTarget clippedRT;
-                            if (!ClipDrawPixelInfo(clippedRT, rt, screenCoords + ScreenCoordsXY{ 1, 1 }, 22, 22))
+                            if (!ClipRenderTarget(clippedRT, rt, screenCoords + ScreenCoordsXY{ 1, 1 }, 22, 22))
                             {
                                 break;
                             }

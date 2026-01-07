@@ -106,11 +106,9 @@ namespace OpenRCT2
             void CopyRect(int32_t x, int32_t y, int32_t width, int32_t height, int32_t dx, int32_t dy) override;
             std::string Screenshot() override;
             IDrawingContext* GetDrawingContext() override;
-            RenderTarget* GetDrawingPixelInfo() override;
+            RenderTarget* getRT() override;
             DrawingEngineFlags GetFlags() override;
             void InvalidateImage(uint32_t image) override;
-
-            RenderTarget* GetDPI();
 
         protected:
             void ConfigureBits(uint32_t width, uint32_t height, uint32_t pitch);

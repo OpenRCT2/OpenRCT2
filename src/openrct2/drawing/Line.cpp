@@ -66,9 +66,9 @@ static void GfxDrawLineOnBuffer(RenderTarget& rt, char colour, const ScreenCoord
 }
 
 /**
- * Draws a line on dpi if within dpi boundaries
+ * Draws a line on rt if within rt boundaries
  *  rct2: 0x00684466
- * dpi (edi)
+ * rt (edi)
  * x1 (ax)
  * y1 (bx)
  * x2 (cx)

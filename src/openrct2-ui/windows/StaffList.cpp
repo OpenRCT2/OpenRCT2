@@ -631,16 +631,16 @@ namespace OpenRCT2::Ui::Windows
             auto widgetIndex = WIDX_STAFF_LIST_HANDYMEN_TAB + tabIndex;
             const auto& widget = widgets[widgetIndex];
 
-            RenderTarget clippedDpi;
-            if (ClipDrawPixelInfo(
-                    clippedDpi, rt, windowPos + ScreenCoordsXY{ widget.left + 1, widget.top + 1 },
+            RenderTarget clippedRT;
+            if (ClipRenderTarget(
+                    clippedRT, rt, windowPos + ScreenCoordsXY{ widget.left + 1, widget.top + 1 },
                     widget.right - widget.left - 1, widget.bottom - widget.top - 1))
             {
                 auto frame = _selectedTab == tabIndex ? _tabAnimationIndex / 4 : 0;
                 auto& anim = animObj->GetPeepAnimation(PeepAnimationGroup::normal);
                 auto imageId = anim.baseImage + 1 + anim.frameOffsets[frame] * 4;
 
-                GfxDrawSprite(clippedDpi, ImageId(imageId), { 15, 23 });
+                GfxDrawSprite(clippedRT, ImageId(imageId), { 15, 23 });
             }
         }
 

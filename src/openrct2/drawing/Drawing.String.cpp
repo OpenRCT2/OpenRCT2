@@ -317,7 +317,7 @@ static void ColourCharacterWindow(colour_t colour, bool withOutline, Drawing::Te
  * top      : dx
  * numLines : bp
  * text     : esi
- * dpi      : edi
+ * rt      : edi
  */
 void DrawStringCentredRaw(
     RenderTarget& rt, const ScreenCoordsXY& coords, int32_t numLines, const utf8* text, FontStyle fontStyle)
@@ -410,7 +410,7 @@ int32_t StringGetHeightRaw(std::string_view text, FontStyle fontStyle)
  * x        : cx
  * y        : dx
  * text     : esi
- * dpi      : edi
+ * rt      : edi
  * width    : bp
  * ticks    : ebp >> 16
  */

@@ -1750,7 +1750,7 @@ namespace OpenRCT2::Ui::Windows
                 }
 
                 RenderTarget clippedRT;
-                if (ClipDrawPixelInfo(
+                if (ClipRenderTarget(
                         clippedRT, rt, topLeft + ScreenCoordsXY{ 1, 1 }, kSceneryButtonWidth - 2, kSceneryButtonHeight - 2))
                 {
                     DrawSceneryItem(clippedRT, currentSceneryGlobal);

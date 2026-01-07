@@ -601,9 +601,9 @@ namespace OpenRCT2::Ui::Windows
                 ft.Add<StringId>(strId);
                 ft.Add<StringId>(indicatorId);
 
-                auto cdpi = const_cast<const RenderTarget&>(rt);
+                auto cRT = const_cast<const RenderTarget&>(rt);
                 DrawTextEllipsised(
-                    cdpi, windowPos + ScreenCoordsXY{ widget.left + 1, widget.top + 1 }, widget.width() - 1,
+                    cRT, windowPos + ScreenCoordsXY{ widget.left + 1, widget.top + 1 }, widget.width() - 1,
                     STR_RIDE_LIST_HEADER_FORMAT, ft, { colours[1] });
             };
 

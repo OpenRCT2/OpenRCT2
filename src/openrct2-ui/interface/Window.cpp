@@ -1010,7 +1010,7 @@ namespace OpenRCT2::Ui::Windows
      *
      *  rct2: 0x00685BE1
      *
-     * @param dpi (edi)
+     * @param rt (edi)
      * @param w (esi)
      */
     void WindowDrawViewport(RenderTarget& rt, WindowBase& w)

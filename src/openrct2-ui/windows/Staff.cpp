@@ -581,7 +581,7 @@ namespace OpenRCT2::Ui::Windows
                 widgetHeight++;
 
             Drawing::RenderTarget clippedRT;
-            if (!ClipDrawPixelInfo(clippedRT, rt, screenCoords, widgetWidth, widgetHeight))
+            if (!ClipRenderTarget(clippedRT, rt, screenCoords, widgetWidth, widgetHeight))
             {
                 return;
             }

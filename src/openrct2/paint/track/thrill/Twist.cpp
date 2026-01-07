@@ -69,7 +69,7 @@ static void PaintTwistStructure(
     };
     PaintAddImageAsParent(session, imageId, { xOffset, yOffset, height }, bb);
 
-    if (session.DPI.zoom_level < ZoomLevel{ 1 } && ride.lifecycleFlags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
+    if (session.rt.zoom_level < ZoomLevel{ 1 } && ride.lifecycleFlags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
     {
         for (int32_t i = 0; i < vehicle->num_peeps; i += 2)
         {

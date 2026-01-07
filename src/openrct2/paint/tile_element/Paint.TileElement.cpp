@@ -93,11 +93,11 @@ static void BlankTilesPaint(PaintSession& session, int32_t x, int32_t y)
     dx -= 16;
     int32_t bx = dx + 32;
 
-    if (bx <= session.DPI.WorldY())
+    if (bx <= session.rt.WorldY())
         return;
     dx -= 20;
-    dx -= session.DPI.WorldHeight();
-    if (dx >= session.DPI.WorldY())
+    dx -= session.rt.WorldHeight();
+    if (dx >= session.rt.WorldY())
         return;
 
     session.SpritePosition.x = x;
@@ -179,7 +179,7 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
         PaintAddImageAsParent(session, imageId, { 0, 0, arrowZ }, { { 0, 0, arrowZ + 18 }, { 32, 32, -1 } });
     }
 
-    if (screenMinY + 52 <= session.DPI.WorldY())
+    if (screenMinY + 52 <= session.rt.WorldY())
         return;
 
     const TileElement* element = tile_element; // push tile_element
@@ -203,7 +203,7 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
         maxHeight = std::max(maxHeight, VirtualFloorGetHeight());
     }
 
-    if (screenMinY - (maxHeight + 32) >= session.DPI.WorldY() + session.DPI.WorldHeight())
+    if (screenMinY - (maxHeight + 32) >= session.rt.WorldY() + session.rt.WorldHeight())
         return;
 
     session.SpritePosition.x = coords.x;
@@ -391,6 +391,6 @@ uint16_t PaintUtilRotateSegments(uint16_t segments, uint8_t rotation)
 
 bool PaintShouldShowHeightMarkers(const PaintSession& session, const uint32_t viewportFlag)
 {
-    auto rt = &session.DPI;
+    auto rt = &session.rt;
     return (session.ViewFlags & viewportFlag) && (rt->zoom_level <= ZoomLevel{ 0 });
 }

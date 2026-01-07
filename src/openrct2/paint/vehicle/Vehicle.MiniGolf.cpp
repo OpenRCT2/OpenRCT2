@@ -105,7 +105,7 @@ namespace OpenRCT2
             return;
         }
 
-        if (session.DPI.zoom_level >= ZoomLevel{ 2 })
+        if (session.rt.zoom_level >= ZoomLevel{ 2 })
         {
             return;
         }
@@ -141,7 +141,7 @@ namespace OpenRCT2
             return;
         }
 
-        if (session.DPI.zoom_level >= ZoomLevel{ 1 })
+        if (session.rt.zoom_level >= ZoomLevel{ 1 })
         {
             return;
         }

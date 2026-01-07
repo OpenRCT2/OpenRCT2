@@ -776,7 +776,7 @@ void GfxInvalidateScreen()
  * height (dx)
  * drawpixelinfo (edi)
  */
-bool ClipDrawPixelInfo(RenderTarget& dst, RenderTarget& src, const ScreenCoordsXY& coords, int32_t width, int32_t height)
+bool ClipRenderTarget(RenderTarget& dst, RenderTarget& src, const ScreenCoordsXY& coords, int32_t width, int32_t height)
 {
     assert(src.zoom_level == ZoomLevel{ 0 });
     int32_t right = coords.x + width;
@@ -1106,7 +1106,7 @@ void ToggleWindowedMode()
     Config::Save();
 }
 
-void DebugDPI(RenderTarget& rt)
+void DebugRT(RenderTarget& rt)
 {
     ScreenCoordsXY topLeft = { rt.x, rt.y };
     ScreenCoordsXY bottomRight = { rt.x + rt.width - 1, rt.y + rt.height - 1 };

@@ -105,7 +105,7 @@ static void PaintSessionAddPSToQuadrant(PaintSession& session, PaintStruct* ps)
     session.QuadrantFrontIndex = std::max(session.QuadrantFrontIndex, paintQuadrantIndex);
 }
 
-static constexpr bool imageWithinDPI(const ScreenCoordsXY& imagePos, const G1Element& g1, const RenderTarget& rt)
+static constexpr bool imageWithinRT(const ScreenCoordsXY& imagePos, const G1Element& g1, const RenderTarget& rt)
 {
     const int32_t left = imagePos.x + g1.xOffset;
     const int32_t bottom = imagePos.y + g1.yOffset;
@@ -188,7 +188,7 @@ static PaintStruct* CreateNormalPaintStruct(
 
     const auto imagePos = Translate3DTo2DWithZ(session.CurrentRotation, swappedRotCoord);
 
-    if (!imageWithinDPI(imagePos, *g1, session.DPI))
+    if (!imageWithinRT(imagePos, *g1, session.rt))
     {
         return nullptr;
     }
@@ -236,7 +236,7 @@ static PaintStruct* CreateNormalPaintStructHeight(
 
     const auto imagePos = Translate3DTo2DWithZ(session.CurrentRotation, swappedRotCoord);
 
-    if (!imageWithinDPI(imagePos, *g1, session.DPI))
+    if (!imageWithinRT(imagePos, *g1, session.rt))
     {
         return nullptr;
     }
@@ -273,7 +273,7 @@ template<uint8_t direction>
 void PaintSessionGenerateRotate(PaintSession& session)
 {
     // Optimised modified version of ViewportPosToMapPos
-    ScreenCoordsXY screenCoord = { floor2(session.DPI.WorldX(), 32), floor2((session.DPI.WorldY() - 16), 32) };
+    ScreenCoordsXY screenCoord = { floor2(session.rt.WorldX(), 32), floor2((session.rt.WorldY() - 16), 32) };
     CoordsXY mapTile = { screenCoord.y - screenCoord.x / 2, screenCoord.y + screenCoord.x / 2 };
     mapTile = mapTile.Rotate(direction);
 
@@ -283,7 +283,7 @@ void PaintSessionGenerateRotate(PaintSession& session)
     }
     mapTile = mapTile.ToTileStart();
 
-    uint16_t numVerticalTiles = (session.DPI.WorldHeight() + 2128) >> 5;
+    uint16_t numVerticalTiles = (session.rt.WorldHeight() + 2128) >> 5;
 
     // Adjacent tiles to also check due to overlapping of sprites
     constexpr CoordsXY adjacentTiles[] = {
@@ -709,11 +709,11 @@ static inline void PaintDrawStruct(PaintSession& session, PaintStruct* ps)
     auto screenPos = ps->ScreenPos;
     if (ps->InteractionItem == ViewportInteractionItem::entity)
     {
-        if (session.DPI.zoom_level >= ZoomLevel{ 1 })
+        if (session.rt.zoom_level >= ZoomLevel{ 1 })
         {
             screenPos.x = floor2(screenPos.x, 2);
             screenPos.y = floor2(screenPos.y, 2);
-            if (session.DPI.zoom_level >= ZoomLevel{ 2 })
+            if (session.rt.zoom_level >= ZoomLevel{ 2 })
             {
                 screenPos.x = floor2(screenPos.x, 4);
                 screenPos.y = floor2(screenPos.y, 4);
@@ -727,7 +727,7 @@ static inline void PaintDrawStruct(PaintSession& session, PaintStruct* ps)
     }
     else
     {
-        GfxDrawSprite(session.DPI, imageId, screenPos);
+        GfxDrawSprite(session.rt, imageId, screenPos);
     }
 
     if (ps->Children != nullptr)
@@ -736,7 +736,7 @@ static inline void PaintDrawStruct(PaintSession& session, PaintStruct* ps)
     }
     else
     {
-        PaintAttachedPS(session.DPI, ps, session.ViewFlags);
+        PaintAttachedPS(session.rt, ps, session.ViewFlags);
     }
 }
 
@@ -756,7 +756,7 @@ void PaintDrawStructs(PaintSession& session)
 
 static void PaintPSImageWithBoundingBoxes(PaintSession& session, PaintStruct* ps, ImageId imageId, int32_t x, int32_t y)
 {
-    auto& rt = session.DPI;
+    auto& rt = session.rt;
 
     const uint8_t colour = BoundBoxDebugColours[EnumValue(ps->InteractionItem)];
     const uint8_t rotation = session.CurrentRotation;

@@ -342,14 +342,13 @@ namespace OpenRCT2::Ui::Windows
                         rt, { coords, coords + ScreenCoordsXY{ kImageSize - 1, kImageSize - 1 } }, colours[1], borderStyle,
                         fillBrightness);
 
-                RenderTarget clipDPI;
+                RenderTarget clipRT;
                 auto screenPos = coords + ScreenCoordsXY{ kScrollPadding, kScrollPadding };
-                if (ClipDrawPixelInfo(
-                        clipDPI, rt, screenPos, kImageSize - (2 * kScrollPadding), kImageSize - (2 * kScrollPadding)))
+                if (ClipRenderTarget(
+                        clipRT, rt, screenPos, kImageSize - (2 * kScrollPadding), kImageSize - (2 * kScrollPadding)))
                 {
                     PaintPreview(
-                        clipDPI, entranceType.imageId, ScreenCoordsXY{ kImageSize / 2, kImageSize / 2 },
-                        gWindowSceneryRotation);
+                        clipRT, entranceType.imageId, ScreenCoordsXY{ kImageSize / 2, kImageSize / 2 }, gWindowSceneryRotation);
                 }
 
                 // Next position

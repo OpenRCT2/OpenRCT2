@@ -1440,7 +1440,7 @@ static constexpr const int16_t* kScrollPositions[kMaxModes] = {
 
         assert(scrollingMode < kMaxModes);
 
-        if (session.DPI.zoom_level > ZoomLevel{ 0 })
+        if (session.rt.zoom_level > ZoomLevel{ 0 })
             return ImageId(SPR_SCROLLING_TEXT_DEFAULT);
 
         _drawSCrollNextIndex++;

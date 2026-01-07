@@ -34,7 +34,7 @@ static void PaintRiders(
     PaintSession& session, const Ride& ride, const RideObjectEntry& rideEntry, const Vehicle& vehicle, int32_t rotationOffset,
     const CoordsXYZ& offset, const BoundBoxXYZ& bb)
 {
-    if (session.DPI.zoom_level > ZoomLevel{ 0 })
+    if (session.rt.zoom_level > ZoomLevel{ 0 })
         return;
     if (!(ride.lifecycleFlags & RIDE_LIFECYCLE_ON_TRACK))
         return;

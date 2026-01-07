@@ -723,7 +723,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
 
             if (!colours[1].flags.has(ColourFlag::translucent))
-                // Rectangle::fill(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1,
+                // Rectangle::fill(rt, rt->x, rt->y, rt->x + rt->width - 1, rt->y + rt->height - 1,
                 // ColourMapA[colours[1].colour].mid_light);
                 GfxClear(rt, ColourMapA[colours[1].colour].mid_light);
             screenCoords.y = 0;

@@ -42,7 +42,7 @@ void Painter::Paint(IDrawingEngine& de)
 {
     PROFILED_FUNCTION();
 
-    auto rt = de.GetDrawingPixelInfo();
+    auto rt = de.getRT();
 
     if (IntroIsPlaying())
     {
@@ -171,7 +171,7 @@ PaintSession* Painter::CreateSession(RenderTarget& rt, uint32_t viewFlags, uint8
         session = &_paintSessionPool.emplace_back();
     }
 
-    session->DPI = rt;
+    session->rt = rt;
     session->ViewFlags = viewFlags;
     session->QuadrantBackIndex = std::numeric_limits<uint32_t>::max();
     session->QuadrantFrontIndex = 0;

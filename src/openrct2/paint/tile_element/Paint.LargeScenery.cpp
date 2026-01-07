@@ -204,7 +204,7 @@ static void PaintLargeScenery3DText(
         }
     }
 
-    if (session.DPI.zoom_level > ZoomLevel{ 1 })
+    if (session.rt.zoom_level > ZoomLevel{ 1 })
         return;
 
     auto banner = tileElement.GetBanner();
@@ -413,7 +413,7 @@ void PaintLargeScenery(PaintSession& session, uint8_t direction, uint16_t height
         {
             PaintLargeScenery3DText(session, *sceneryEntry, tile, tileElement, direction, height, isGhost);
         }
-        else if (session.DPI.zoom_level <= ZoomLevel{ 0 })
+        else if (session.rt.zoom_level <= ZoomLevel{ 0 })
         {
             auto sequenceDirection2 = (tileElement.GetSequenceIndex() - 1) & 3;
             if (sequenceDirection2 == direction)

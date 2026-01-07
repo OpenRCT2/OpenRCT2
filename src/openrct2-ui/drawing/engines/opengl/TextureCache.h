@@ -224,11 +224,11 @@ namespace OpenRCT2::Ui
         AtlasTextureInfo LoadGlyphTexture(const ImageId image, const PaletteMap& paletteMap);
         AtlasTextureInfo AllocateImage(int32_t imageWidth, int32_t imageHeight);
         AtlasTextureInfo LoadBitmapTexture(ImageIndex image, const void* pixels, size_t width, size_t height);
-        static Drawing::RenderTarget GetImageAsDPI(const ImageId imageId);
-        static Drawing::RenderTarget GetGlyphAsDPI(const ImageId imageId, const PaletteMap& paletteMap);
+        static Drawing::RenderTarget GetImageAsRT(const ImageId imageId);
+        static Drawing::RenderTarget GetGlyphAsRT(const ImageId imageId, const PaletteMap& paletteMap);
         void FreeTextures();
 
-        static Drawing::RenderTarget CreateDPI(int32_t width, int32_t height);
-        static void DeleteDPI(Drawing::RenderTarget rt);
+        static Drawing::RenderTarget CreateRT(int32_t width, int32_t height);
+        static void DeleteRT(Drawing::RenderTarget rt);
     };
 } // namespace OpenRCT2::Ui

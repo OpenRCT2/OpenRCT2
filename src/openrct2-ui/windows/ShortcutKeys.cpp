@@ -304,7 +304,7 @@ namespace OpenRCT2::Ui::Windows
                 rt, { rtCoords, rtCoords + ScreenCoordsXY{ rt.width - 1, rt.height - 1 } },
                 ColourMapA[colours[1].colour].mid_light);
 
-            // TODO: the line below is a workaround for what is presumably a bug with dpi->width
+            // TODO: the line below is a workaround for what is presumably a bug with rt->width
             //       see https://github.com/OpenRCT2/OpenRCT2/issues/11238 for details
             const auto scrollWidth = width - kScrollBarWidth - 10;
 

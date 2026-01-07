@@ -401,13 +401,13 @@ namespace OpenRCT2::Ui::Windows
             const auto* object = ObjectEntryGetObject(objectEntryType, researchItem->entryIndex);
             if (object != nullptr)
             {
-                RenderTarget clipDPI;
+                RenderTarget clipRT;
                 screenPos = windowPos + ScreenCoordsXY{ bkWidget.left + 1, bkWidget.top + 1 };
                 const auto clipWidth = bkWidget.width() - 2;
                 const auto clipHeight = bkWidget.height() - 2;
-                if (ClipDrawPixelInfo(clipDPI, rt, screenPos, clipWidth, clipHeight))
+                if (ClipRenderTarget(clipRT, rt, screenPos, clipWidth, clipHeight))
                 {
-                    object->DrawPreview(clipDPI, clipWidth, clipHeight);
+                    object->DrawPreview(clipRT, clipWidth, clipHeight);
                 }
             }
 

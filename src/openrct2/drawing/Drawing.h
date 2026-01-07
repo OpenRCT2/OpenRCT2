@@ -235,7 +235,7 @@ extern int32_t gPickupPeepX;
 extern int32_t gPickupPeepY;
 extern bool gPaintForceRedraw;
 
-bool ClipDrawPixelInfo(
+bool ClipRenderTarget(
     OpenRCT2::Drawing::RenderTarget& dst, OpenRCT2::Drawing::RenderTarget& src, const ScreenCoordsXY& coords, int32_t width,
     int32_t height);
 void GfxSetDirtyBlocks(const ScreenRect& rect);
@@ -335,6 +335,6 @@ void UpdatePaletteEffects();
 void RefreshVideo();
 void ToggleWindowedMode();
 
-void DebugDPI(OpenRCT2::Drawing::RenderTarget& rt);
+void DebugRT(OpenRCT2::Drawing::RenderTarget& rt);
 
 #include "NewDrawing.h"

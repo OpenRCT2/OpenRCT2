@@ -1281,8 +1281,8 @@ namespace OpenRCT2::Ui::Windows
 
                 screenCoords += windowPos;
 
-                RenderTarget clipDPI;
-                if (!ClipDrawPixelInfo(clipDPI, rt, screenCoords, clipWidth, clipHeight))
+                RenderTarget clipRT;
+                if (!ClipRenderTarget(clipRT, rt, screenCoords, clipWidth, clipHeight))
                 {
                     return;
                 }
@@ -1291,7 +1291,7 @@ namespace OpenRCT2::Ui::Windows
 
                 if (isHalfScale)
                 {
-                    clipDPI.zoom_level = ZoomLevel{ 1 };
+                    clipRT.zoom_level = ZoomLevel{ 1 };
                     spriteCoords.x *= 2;
                     spriteCoords.y *= 2;
                 }
@@ -1313,7 +1313,7 @@ namespace OpenRCT2::Ui::Windows
                 imageIndex *= carEntry.base_num_frames;
                 imageIndex += carEntry.base_image_id;
                 auto imageId = ImageId(imageIndex, vehicleColour.Body, vehicleColour.Trim, vehicleColour.Tertiary);
-                GfxDrawSprite(clipDPI, imageId, spriteCoords);
+                GfxDrawSprite(clipRT, imageId, spriteCoords);
             }
         }
 
@@ -4801,7 +4801,7 @@ namespace OpenRCT2::Ui::Windows
         void ColourOnDraw(Drawing::RenderTarget& rt)
         {
             // TODO: This should use lists and identified sprites
-            RenderTarget clippedDpi;
+            RenderTarget clippedRT;
 
             auto ride = GetRide(rideId);
             if (ride == nullptr)
@@ -4875,12 +4875,12 @@ namespace OpenRCT2::Ui::Windows
             const auto& entrancePreviewWidget = widgets[WIDX_ENTRANCE_PREVIEW];
             if (entrancePreviewWidget.type != WidgetType::empty)
             {
-                if (ClipDrawPixelInfo(
-                        clippedDpi, rt,
+                if (ClipRenderTarget(
+                        clippedRT, rt,
                         windowPos + ScreenCoordsXY{ entrancePreviewWidget.left + 1, entrancePreviewWidget.top + 1 },
                         entrancePreviewWidget.width() - 1, entrancePreviewWidget.height() - 1))
                 {
-                    GfxClear(clippedDpi, PaletteIndex::pi12);
+                    GfxClear(clippedRT, PaletteIndex::pi12);
 
                     auto stationObj = ride->getStationObject();
                     if (stationObj != nullptr && stationObj->BaseImageId != kImageIndexUndefined)
@@ -4888,16 +4888,16 @@ namespace OpenRCT2::Ui::Windows
                         auto imageId = ImageId(stationObj->BaseImageId, trackColour.main, trackColour.additional);
 
                         // Back
-                        GfxDrawSprite(clippedDpi, imageId, { 34, 20 });
+                        GfxDrawSprite(clippedRT, imageId, { 34, 20 });
 
                         // Front
-                        GfxDrawSprite(clippedDpi, imageId.WithIndexOffset(4), { 34, 20 });
+                        GfxDrawSprite(clippedRT, imageId.WithIndexOffset(4), { 34, 20 });
 
                         // Glass
                         if (stationObj->Flags & StationObjectFlags::isTransparent)
                         {
                             auto glassImageId = ImageId(stationObj->BaseImageId + 20).WithTransparency(trackColour.main);
-                            GfxDrawSprite(clippedDpi, glassImageId, { 34, 20 });
+                            GfxDrawSprite(clippedRT, glassImageId, { 34, 20 });
                         }
                     }
                 }
@@ -5243,11 +5243,11 @@ namespace OpenRCT2::Ui::Windows
             int32_t clipHeight = previewWidget.height() - 2;
 
             // Draw the preview image
-            RenderTarget clipDPI;
+            RenderTarget clipRT;
             auto screenPos = windowPos + ScreenCoordsXY{ previewWidget.left + 1, previewWidget.top + 1 };
-            if (ClipDrawPixelInfo(clipDPI, rt, screenPos, clipWidth, clipHeight))
+            if (ClipRenderTarget(clipRT, rt, screenPos, clipWidth, clipHeight))
             {
-                musicObj->DrawPreview(clipDPI, clipWidth, clipHeight);
+                musicObj->DrawPreview(clipRT, clipWidth, clipHeight);
             }
         }
 
