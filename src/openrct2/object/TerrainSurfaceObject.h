@@ -17,12 +17,13 @@ struct CoordsXY;
 
 namespace OpenRCT2
 {
-    enum TerrainSurfaceFlags
+    enum class TerrainSurfaceFlag : uint8_t
     {
-        smoothWithSelf = 1 << 0,
-        smoothWithOther = 1 << 1,
-        canGrow = 1 << 2,
+        smoothWithSelf,
+        smoothWithOther,
+        canGrow,
     };
+    using TerrainSurfaceFlags = FlagHolder<uint8_t, TerrainSurfaceFlag>;
 
     class TerrainSurfaceObject final : public Object
     {
