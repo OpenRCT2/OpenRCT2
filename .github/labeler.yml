@@ -1,0 +1,41 @@
+# Rules for automatically applying labels to PRs
+# See also: https://github.com/actions/labeler
+
+# General labels
+'build':
+  - changed-files:
+    - any-glob-to-any-file:
+      - '.github/*'
+      - '.github/**/*'
+      - 'cmake/*'
+      - 'cmake/**/*'
+      - 'scripts/*'
+      - 'CMakeLists.txt'
+      - '**/CMakeLists.txt'
+      - '*.sln'
+      - '**/*.vcxproj'
+'documentation':
+  - changed-files:
+    - any-glob-to-any-file:
+      - '*.md'
+      - '**/*.md'
+
+# Game components
+'mapgen':
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'src/openrct2/world/map_generator/*'
+'network':
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'src/openrct2/network/*'
+
+# Platform code
+'platform':
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'src/openrct2/platform/*'
+'android':
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'src/openrct2-android/*'
