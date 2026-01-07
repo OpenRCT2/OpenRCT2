@@ -224,7 +224,7 @@ inline bool PathAdditionIsVisible(uint32_t viewFlags, const PathAdditionEntry& p
     return false;
 }
 
-void Sub6A3F61PathAddition(PaintSession& session, const PathElement& pathElement, uint16_t height, ImageId sceneryImageTemplate)
+void paintPathAddition(PaintSession& session, const PathElement& pathElement, uint16_t height, ImageId sceneryImageTemplate)
 {
     // Path additions get drawn on edges that are not connected, so we need to flip them.
     const auto edges = pathElement.GetEdges() ^ 0b1111;

@@ -623,7 +623,7 @@ static void PathPaintFencesAdditionsTunnels(
         {
             if (pathElement.HasAddition())
             {
-                Sub6A3F61PathAddition(session, pathElement, height, sceneryImageTemplate);
+                paintPathAddition(session, pathElement, height, sceneryImageTemplate);
             }
         }
 

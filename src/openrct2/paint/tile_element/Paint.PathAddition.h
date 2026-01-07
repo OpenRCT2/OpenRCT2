@@ -20,6 +20,6 @@ namespace OpenRCT2
     struct PathElement;
 }
 
-void Sub6A3F61PathAddition(
+void paintPathAddition(
     PaintSession& session, const OpenRCT2::PathElement& pathElement, uint16_t height, ImageId sceneryImageTemplate);
 void PaintLampLightEffects(PaintSession& session, const OpenRCT2::PathElement& pathEl, uint16_t height);
