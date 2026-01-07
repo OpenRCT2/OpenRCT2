@@ -315,7 +315,7 @@ namespace OpenRCT2::Ui::Windows
 
             WindowDropdownShowText(
                 { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height(),
-                colours[1].withFlag(ColourFlag::translucent, true), 0, TOP_TOOLBAR_VIEW_MENU_COUNT);
+                colours[1].withFlag(ColourFlag::translucent, true), Dropdown::Flag::StayOpen, TOP_TOOLBAR_VIEW_MENU_COUNT);
 
             auto mvpFlags = WindowGetMain()->viewport->flags;
             gDropdown.items[DDIDX_UNDERGROUND_INSIDE].setChecked(mvpFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE);
