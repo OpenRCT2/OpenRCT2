@@ -1211,7 +1211,7 @@ namespace OpenRCT2::Ui
         {
             auto colour = ColourMapA[w.colours[1].colour].mid_light;
             auto y = topLeft.y + 1 + widget.height() - 5;
-            Rectangle::fill(rt, { { curX, y }, { curX + width, y } }, static_cast<PaletteIndex>(colour + 5));
+            Rectangle::fill(rt, { { curX, y }, { curX + width, y } }, static_cast<PaletteIndex>(EnumValue(colour) + 5));
         }
     }
 

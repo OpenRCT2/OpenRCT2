@@ -1504,7 +1504,7 @@ namespace OpenRCT2
 
         if (imageType & IMAGE_TYPE_REMAP)
         {
-            return paletteMap[*index] != 0;
+            return paletteMap[*index] != PaletteIndex::pi0;
         }
 
         if (imageType & IMAGE_TYPE_TRANSPARENT)

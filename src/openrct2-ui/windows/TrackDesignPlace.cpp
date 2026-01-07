@@ -42,6 +42,7 @@
 
 using namespace OpenRCT2::Numerics;
 using namespace OpenRCT2::TrackMetaData;
+using OpenRCT2::Drawing::PaletteIndex;
 using OpenRCT2::GameActions::CommandFlag;
 using OpenRCT2::GameActions::CommandFlags;
 
@@ -51,10 +52,10 @@ namespace OpenRCT2::Ui::Windows
     static constexpr ScreenSize kWindowSize = { 200, 124 };
     static constexpr ScreenSize kTrackMiniPreviewSize = { 168, 78 };
 
-    static constexpr uint8_t kPaletteIndexColourEntrance = PaletteIndex::pi20; // White
-    static constexpr uint8_t kPaletteIndexColourExit = PaletteIndex::pi10;     // Black
-    static constexpr uint8_t kPaletteIndexColourTrack = PaletteIndex::pi248;   // Grey (dark)
-    static constexpr uint8_t kPaletteIndexColourStation = PaletteIndex::pi252; // Grey (light)
+    static constexpr auto kPaletteIndexColourEntrance = PaletteIndex::pi20; // White
+    static constexpr auto kPaletteIndexColourExit = PaletteIndex::pi10;     // Black
+    static constexpr auto kPaletteIndexColourTrack = PaletteIndex::pi248;   // Grey (dark)
+    static constexpr auto kPaletteIndexColourStation = PaletteIndex::pi252; // Grey (light)
 
     enum
     {
@@ -94,7 +95,7 @@ namespace OpenRCT2::Ui::Windows
         money64 _placementCost;
         CoordsXYZD _placementGhostLoc;
 
-        std::vector<uint8_t> _miniPreview;
+        std::vector<PaletteIndex> _miniPreview;
 
         bool _trackPlaceCtrlState = false;
         int32_t _trackPlaceCtrlZ;
@@ -369,7 +370,7 @@ namespace OpenRCT2::Ui::Windows
             if (ClipRenderTarget(clippedRT, rt, previewCoords, previewWidget.width(), previewWidget.height()))
             {
                 G1Element g1temp = {};
-                g1temp.offset = _miniPreview.data();
+                g1temp.offset = reinterpret_cast<uint8_t*>(_miniPreview.data());
                 g1temp.width = kTrackMiniPreviewSize.width;
                 g1temp.height = kTrackMiniPreviewSize.height;
                 GfxSetG1Element(SPR_TEMP, &g1temp);
@@ -609,8 +610,8 @@ namespace OpenRCT2::Ui::Windows
                     auto pixelPosition = DrawMiniPreviewGetPixelPosition(rotatedAndOffsetEntrance);
                     if (DrawMiniPreviewIsPixelInBounds(pixelPosition))
                     {
-                        uint8_t* pixel = DrawMiniPreviewGetPixelPtr(pixelPosition);
-                        uint8_t colour = entrance.isExit ? kPaletteIndexColourExit : kPaletteIndexColourEntrance;
+                        PaletteIndex* pixel = DrawMiniPreviewGetPixelPtr(pixelPosition);
+                        auto colour = entrance.isExit ? kPaletteIndexColourExit : kPaletteIndexColourEntrance;
                         for (int32_t i = 0; i < 4; i++)
                         {
                             pixel[338 + i] = colour; // x + 2, y + 2
@@ -651,13 +652,13 @@ namespace OpenRCT2::Ui::Windows
                         auto pixelPosition = DrawMiniPreviewGetPixelPosition(rotatedAndOffsetTrackBlock);
                         if (DrawMiniPreviewIsPixelInBounds(pixelPosition))
                         {
-                            uint8_t* pixel = DrawMiniPreviewGetPixelPtr(pixelPosition);
+                            PaletteIndex* pixel = DrawMiniPreviewGetPixelPtr(pixelPosition);
 
                             auto bits = trackBlock.quarterTile.Rotate(curTrackRotation & 3).GetBaseQuarterOccupied();
 
                             // Station track is a lighter colour
-                            uint8_t colour = ted.sequences[0].flags.has(SequenceFlag::trackOrigin) ? kPaletteIndexColourStation
-                                                                                                   : kPaletteIndexColourTrack;
+                            auto colour = ted.sequences[0].flags.has(SequenceFlag::trackOrigin) ? kPaletteIndexColourStation
+                                                                                                : kPaletteIndexColourTrack;
 
                             for (int32_t i = 0; i < 4; i++)
                             {
@@ -714,9 +715,9 @@ namespace OpenRCT2::Ui::Windows
                     auto pixelPosition = DrawMiniPreviewGetPixelPosition(rotatedMazeCoords);
                     if (DrawMiniPreviewIsPixelInBounds(pixelPosition))
                     {
-                        uint8_t* pixel = DrawMiniPreviewGetPixelPtr(pixelPosition);
+                        auto* pixel = DrawMiniPreviewGetPixelPtr(pixelPosition);
 
-                        uint8_t colour = kPaletteIndexColourTrack;
+                        auto colour = kPaletteIndexColourTrack;
                         for (int32_t i = 0; i < 4; i++)
                         {
                             pixel[338 + i] = colour; // x + 2, y + 2
@@ -742,7 +743,7 @@ namespace OpenRCT2::Ui::Windows
             return pixel.x >= 0 && pixel.y >= 0 && pixel.x <= 160 && pixel.y <= 75;
         }
 
-        uint8_t* DrawMiniPreviewGetPixelPtr(const ScreenCoordsXY& pixel)
+        PaletteIndex* DrawMiniPreviewGetPixelPtr(const ScreenCoordsXY& pixel)
         {
             return &_miniPreview[pixel.y * kTrackMiniPreviewSize.width + pixel.x];
         }

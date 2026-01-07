@@ -11,7 +11,6 @@
 
 #include <cstdint>
 
-enum PaletteIndex : uint8_t;
 struct ImageId;
 struct PaintSession;
 using StringId = uint16_t;
@@ -19,6 +18,11 @@ using StringId = uint16_t;
 namespace OpenRCT2
 {
     class Formatter;
+}
+
+namespace OpenRCT2::Drawing
+{
+    enum class PaletteIndex : uint8_t;
 }
 
 namespace OpenRCT2::Drawing::ScrollingText

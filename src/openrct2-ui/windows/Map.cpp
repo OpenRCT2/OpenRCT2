@@ -227,7 +227,7 @@ namespace OpenRCT2::Ui::Windows
         uint32_t _currentLine;
         uint16_t _landRightsToolSize;
         int32_t _firstColumnWidth;
-        std::vector<uint8_t> _mapImageData;
+        std::vector<PaletteIndex> _mapImageData;
 
         bool _mapWidthAndHeightLinked = true;
         bool _recalculateScrollbars = false;
@@ -584,7 +584,7 @@ namespace OpenRCT2::Ui::Windows
                 screenOffset += ScreenCoordsXY(mapOffset, mapOffset - kScrollBarWidth);
 
             G1Element g1temp = {};
-            g1temp.offset = _mapImageData.data();
+            g1temp.offset = reinterpret_cast<uint8_t*>(_mapImageData.data());
             g1temp.width = getMiniMapWidth();
             g1temp.height = getMiniMapWidth();
             GfxSetG1Element(SPR_TEMP, &g1temp);

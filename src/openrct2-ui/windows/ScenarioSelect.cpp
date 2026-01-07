@@ -639,8 +639,8 @@ namespace OpenRCT2::Ui::Windows
         void DrawCategoryHeading(Drawing::RenderTarget& rt, int32_t left, int32_t right, int32_t y, StringId stringId) const
         {
             auto baseColour = colours[1];
-            colour_t lightColour = ColourMapA[baseColour.colour].lighter;
-            colour_t darkColour = ColourMapA[baseColour.colour].mid_dark;
+            auto lightColour = ColourMapA[baseColour.colour].lighter;
+            auto darkColour = ColourMapA[baseColour.colour].mid_dark;
 
             // Draw string
             int32_t centreX = (left + right) / 2;

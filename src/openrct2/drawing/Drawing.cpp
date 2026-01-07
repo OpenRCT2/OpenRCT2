@@ -35,8 +35,11 @@ using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
 
 static auto _defaultPaletteMapping = []() {
-    std::array<uint8_t, 256> res;
-    std::iota(res.begin(), res.end(), 0);
+    std::array<PaletteIndex, 256> res;
+    for (size_t i = 0; i < std::size(res); i++)
+    {
+        res[i] = static_cast<PaletteIndex>(i);
+    }
     return res;
 }();
 
@@ -45,33 +48,35 @@ PaletteMap PaletteMap::GetDefault()
     return PaletteMap(_defaultPaletteMapping);
 }
 
-uint8_t& PaletteMap::operator[](size_t index)
+PaletteIndex& PaletteMap::operator[](size_t index)
 {
     return _data[index];
 }
 
-uint8_t PaletteMap::operator[](size_t index) const
+PaletteIndex PaletteMap::operator[](size_t index) const
 {
     return _data[index];
 }
 
-uint8_t PaletteMap::Blend(uint8_t src, uint8_t dst) const
+PaletteIndex PaletteMap::Blend(PaletteIndex src, PaletteIndex dst) const
 {
 #ifdef _DEBUG
     // src = 0 would be transparent so there is no blend palette for that, hence (src - 1)
     assert(src != 0 && (src - 1) < _numMaps);
     assert(dst < _mapLength);
 #endif
-    auto idx = ((src - 1) * 256) + dst;
+    auto idx = ((EnumValue(src) - 1) * 256) + EnumValue(dst);
     return _data[idx];
 }
 
-void PaletteMap::Copy(size_t dstIndex, const PaletteMap& src, size_t srcIndex, size_t length)
+void PaletteMap::Copy(PaletteIndex dstIndex, const PaletteMap& src, PaletteIndex srcIndex, size_t length)
 {
-    auto maxLength = std::min(_data.size() - srcIndex, _data.size() - dstIndex);
+    auto srcOffset = EnumValue(srcIndex);
+    auto dstOffset = EnumValue(dstIndex);
+    auto maxLength = std::min(_data.size() - srcOffset, _data.size() - dstOffset);
     assert(length <= maxLength);
     auto copyLength = std::min(length, maxLength);
-    std::copy(src._data.begin() + srcIndex, src._data.begin() + srcIndex + copyLength, _data.begin() + dstIndex);
+    std::copy(src._data.begin() + srcOffset, src._data.begin() + srcOffset + copyLength, _data.begin() + dstOffset);
 }
 
 OpenRCT2::Drawing::GamePalette gPalette;
@@ -714,7 +719,7 @@ void GfxTransposePalette(int32_t pal, uint8_t product)
 
             x++;
         }
-        UpdatePalette(gGamePalette, 10, 236);
+        UpdatePalette(gGamePalette, PaletteIndex::pi10, 236);
     }
 }
 
@@ -754,7 +759,7 @@ void LoadPalette()
             x++;
         }
     }
-    UpdatePalette(gGamePalette, 10, 236);
+    UpdatePalette(gGamePalette, PaletteIndex::pi10, 236);
     GfxInvalidateScreen();
 }
 
@@ -868,7 +873,7 @@ std::optional<PaletteMap> GetPaletteMapForColour(FilterPaletteID paletteId)
         auto g1 = GfxGetG1Element(g1Index.value());
         if (g1 != nullptr)
         {
-            return PaletteMap(g1->offset, g1->height, g1->width);
+            return PaletteMap(reinterpret_cast<PaletteIndex*>(g1->offset), g1->height, g1->width);
         }
     }
     return std::nullopt;
@@ -879,9 +884,9 @@ FilterPaletteID GetGlassPaletteId(colour_t c)
     return kGlassPaletteIds[c];
 }
 
-void UpdatePalette(std::span<const OpenRCT2::Drawing::PaletteBGRA> palette, int32_t start_index, int32_t num_colours)
+void UpdatePalette(std::span<const OpenRCT2::Drawing::PaletteBGRA> palette, PaletteIndex startIndex, int32_t numColours)
 {
-    for (int32_t i = start_index; i < num_colours + start_index; i++)
+    for (int32_t i = EnumValue(startIndex); i < numColours + EnumValue(startIndex); i++)
     {
         const auto& colour = palette[i];
         uint8_t b = colour.Blue;
@@ -1024,7 +1029,7 @@ void UpdatePaletteEffects()
             int32_t n = kPaletteLengthWaterWaves;
             for (int32_t i = 0; i < n; i++)
             {
-                auto& vd = gGamePalette[kPaletteOffsetWaterWaves + i];
+                auto& vd = gGamePalette[EnumValue(kPaletteOffsetWaterWaves) + i];
                 vd.Blue = vs[0];
                 vd.Green = vs[1];
                 vd.Red = vs[2];
@@ -1049,7 +1054,7 @@ void UpdatePaletteEffects()
             int32_t n = kPaletteLengthWaterSparkles;
             for (int32_t i = 0; i < n; i++)
             {
-                auto& vd = gGamePalette[kPaletteOffsetWaterSparkles + i];
+                auto& vd = gGamePalette[EnumValue(kPaletteOffsetWaterSparkles) + i];
                 vd.Blue = vs[0];
                 vd.Green = vs[1];
                 vd.Red = vs[2];
@@ -1070,7 +1075,7 @@ void UpdatePaletteEffects()
             int32_t n = 3;
             for (int32_t i = 0; i < n; i++)
             {
-                auto& vd = gGamePalette[PaletteIndex::pi243 + i];
+                auto& vd = gGamePalette[EnumValue(PaletteIndex::pi243) + i];
                 vd.Blue = vs[0];
                 vd.Green = vs[1];
                 vd.Red = vs[2];

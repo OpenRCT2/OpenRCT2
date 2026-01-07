@@ -164,7 +164,7 @@ void GfxClear(RenderTarget& rt, PaletteIndex paletteIndex)
     }
 }
 
-void GfxDrawLine(RenderTarget& rt, const ScreenLine& line, int32_t colour)
+void GfxDrawLine(RenderTarget& rt, const ScreenLine& line, PaletteIndex colour)
 {
     auto drawingEngine = rt.DrawingEngine;
     if (drawingEngine != nullptr)
@@ -175,7 +175,7 @@ void GfxDrawLine(RenderTarget& rt, const ScreenLine& line, int32_t colour)
 }
 
 void GfxDrawDashedLine(
-    RenderTarget& rt, const ScreenLine& screenLine, const int32_t dashedLineSegmentLength, const int32_t color)
+    RenderTarget& rt, const ScreenLine& screenLine, const int32_t dashedLineSegmentLength, const PaletteIndex colour)
 {
     assert(dashedLineSegmentLength > 0);
 
@@ -202,7 +202,7 @@ void GfxDrawDashedLine(
         {
             x = screenLine.GetX1() + dxPrecise * i * 2 / kPrecisionFactor;
             y = screenLine.GetY1() + dyPrecise * i * 2 / kPrecisionFactor;
-            dc->DrawLine(rt, color, { { x, y }, { x + dxPrecise / kPrecisionFactor, y + dyPrecise / kPrecisionFactor } });
+            dc->DrawLine(rt, colour, { { x, y }, { x + dxPrecise / kPrecisionFactor, y + dyPrecise / kPrecisionFactor } });
         }
     }
 }
@@ -238,7 +238,7 @@ void FASTCALL
     }
 }
 
-void FASTCALL GfxDrawSpriteSolid(RenderTarget& rt, const ImageId image, const ScreenCoordsXY& coords, uint8_t colour)
+void FASTCALL GfxDrawSpriteSolid(RenderTarget& rt, const ImageId image, const ScreenCoordsXY& coords, PaletteIndex colour)
 {
     auto drawingEngine = rt.DrawingEngine;
     if (drawingEngine != nullptr)

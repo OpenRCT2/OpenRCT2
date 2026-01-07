@@ -18,7 +18,7 @@ using namespace OpenRCT2::Drawing;
  * Draws a horizontal line of specified colour to a buffer.
  *  rct2: 0x0068474C
  */
-static void GfxDrawLineOnBuffer(RenderTarget& rt, char colour, const ScreenCoordsXY& coords, int32_t no_pixels)
+static void GfxDrawLineOnBuffer(RenderTarget& rt, PaletteIndex colour, const ScreenCoordsXY& coords, int32_t no_pixels)
 {
     ScreenCoordsXY offset{ coords.x - rt.x, coords.y - rt.y };
 
@@ -56,7 +56,7 @@ static void GfxDrawLineOnBuffer(RenderTarget& rt, char colour, const ScreenCoord
     }
 
     // Get the buffer we are drawing to and move to the first coordinate.
-    uint8_t* bits_pointer = rt.bits + offset.y * rt.LineStride() + offset.x;
+    PaletteIndex* bits_pointer = reinterpret_cast<PaletteIndex*>(rt.bits + offset.y * rt.LineStride() + offset.x);
 
     // Draw the line to the specified colour
     for (; no_pixels > 0; --no_pixels, ++bits_pointer)
@@ -76,7 +76,7 @@ static void GfxDrawLineOnBuffer(RenderTarget& rt, char colour, const ScreenCoord
  * colour (ebp)
  */
 
-void GfxDrawLineSoftware(RenderTarget& rt, const ScreenLine& line, int32_t colour)
+void GfxDrawLineSoftware(RenderTarget& rt, const ScreenLine& line, PaletteIndex colour)
 {
     const ZoomLevel zoom = rt.zoom_level;
     int32_t x1 = zoom.ApplyInversedTo(line.GetX1());
