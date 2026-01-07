@@ -10,7 +10,6 @@
 #include <openrct2/Context.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/command_line/CommandLine.hpp>
-#include <openrct2/platform/Platform.h>
 
 using namespace OpenRCT2;
 

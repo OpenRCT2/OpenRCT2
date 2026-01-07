@@ -23,8 +23,6 @@
 #include <iterator>
 #include <openrct2-ui/Ui.h>
 #include <openrct2/core/String.hpp>
-#include <stdio.h>
-#include <stdlib.h>
 #include <string>
 #include <vector>
 
