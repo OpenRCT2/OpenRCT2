@@ -2778,7 +2778,7 @@ void Peep::Paint(PaintSession& session, int32_t imageDirection) const
         }
     }
 
-    if (session.DPI.zoom_level > ZoomLevel{ 2 })
+    if (session.rt.zoom_level > ZoomLevel{ 2 })
     {
         return;
     }

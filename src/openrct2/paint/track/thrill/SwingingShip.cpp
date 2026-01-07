@@ -64,7 +64,7 @@ static void PaintSwingingShipRiders(
     PaintSession& session, const Ride& ride, const Vehicle& vehicle, ImageIndex baseImageIndex, Direction direction,
     const CoordsXYZ& offset, const BoundBoxXYZ& bb)
 {
-    if (session.DPI.zoom_level > ZoomLevel{ 1 })
+    if (session.rt.zoom_level > ZoomLevel{ 1 })
         return;
 
     if (!(ride.lifecycleFlags & RIDE_LIFECYCLE_ON_TRACK))

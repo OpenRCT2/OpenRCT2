@@ -770,9 +770,9 @@ namespace OpenRCT2::Ui::Windows
                     auto ft = Formatter();
                     ft.Add<StringId>(indicatorId);
 
-                    auto cdpi = const_cast<const RenderTarget&>(rt);
+                    auto cRT = const_cast<const RenderTarget&>(rt);
                     DrawTextEllipsised(
-                        cdpi, windowPos + ScreenCoordsXY{ widget.left + 5, widget.top + 1 }, widget.width() - 1, strId, ft,
+                        cRT, windowPos + ScreenCoordsXY{ widget.left + 5, widget.top + 1 }, widget.width() - 1, strId, ft,
                         { COLOUR_GREY });
                 };
 

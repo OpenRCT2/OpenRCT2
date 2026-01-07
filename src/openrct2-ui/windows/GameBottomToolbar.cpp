@@ -272,7 +272,7 @@ namespace OpenRCT2::Ui::Windows
                         break;
 
                     RenderTarget clippedRT;
-                    if (!ClipDrawPixelInfo(clippedRT, rt, screenCoords + ScreenCoordsXY{ 1, 1 }, 22, 22))
+                    if (!ClipRenderTarget(clippedRT, rt, screenCoords + ScreenCoordsXY{ 1, 1 }, 22, 22))
                     {
                         break;
                     }

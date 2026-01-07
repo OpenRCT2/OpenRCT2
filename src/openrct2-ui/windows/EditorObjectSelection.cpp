@@ -1110,13 +1110,13 @@ namespace OpenRCT2::Ui::Windows
 
             // Draw preview
             {
-                RenderTarget clipDPI;
+                RenderTarget clipRT;
                 auto screenPos = windowPos + ScreenCoordsXY{ previewWidget.left + 1, previewWidget.top + 1 };
                 int32_t previewWidth = previewWidget.width() - 2;
                 int32_t previewHeight = previewWidget.height() - 2;
-                if (ClipDrawPixelInfo(clipDPI, rt, screenPos, previewWidth, previewHeight))
+                if (ClipRenderTarget(clipRT, rt, screenPos, previewWidth, previewHeight))
                 {
-                    _loadedObject->DrawPreview(clipDPI, previewWidth, previewHeight);
+                    _loadedObject->DrawPreview(clipRT, previewWidth, previewHeight);
                 }
             }
 

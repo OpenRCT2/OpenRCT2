@@ -556,8 +556,8 @@ namespace OpenRCT2::Ui::Windows
             if (page == WINDOW_GUEST_OVERVIEW)
                 widgHeight++;
 
-            RenderTarget clipDpi;
-            if (!ClipDrawPixelInfo(clipDpi, rt, screenCoords, widgWidth, widgHeight))
+            RenderTarget clipRT;
+            if (!ClipRenderTarget(clipRT, rt, screenCoords, widgWidth, widgHeight))
             {
                 return;
             }
@@ -584,7 +584,7 @@ namespace OpenRCT2::Ui::Windows
             animationFrame += animationFrameOffset;
 
             auto spriteId = ImageId(animationFrame, peep->TshirtColour, peep->TrousersColour);
-            GfxDrawSprite(clipDpi, spriteId, screenCoords);
+            GfxDrawSprite(clipRT, spriteId, screenCoords);
 
             auto* guest = peep->As<Guest>();
             if (guest == nullptr)
@@ -597,21 +597,21 @@ namespace OpenRCT2::Ui::Windows
             {
                 auto itemOffset = kPeepSpriteHatItemStart + 1;
                 auto imageId = ImageId(itemOffset + itemFrame * 4, guest->HatColour);
-                GfxDrawSprite(clipDpi, imageId, screenCoords);
+                GfxDrawSprite(clipRT, imageId, screenCoords);
             }
 
             if (guest->AnimationGroup == PeepAnimationGroup::balloon)
             {
                 auto itemOffset = kPeepSpriteBalloonItemStart + 1;
                 auto imageId = ImageId(itemOffset + itemFrame * 4, guest->BalloonColour);
-                GfxDrawSprite(clipDpi, imageId, screenCoords);
+                GfxDrawSprite(clipRT, imageId, screenCoords);
             }
 
             if (guest->AnimationGroup == PeepAnimationGroup::umbrella)
             {
                 auto itemOffset = kPeepSpriteUmbrellaItemStart + 1;
                 auto imageId = ImageId(itemOffset + itemFrame * 4, guest->UmbrellaColour);
-                GfxDrawSprite(clipDpi, imageId, screenCoords);
+                GfxDrawSprite(clipRT, imageId, screenCoords);
             }
         }
 
@@ -826,7 +826,7 @@ namespace OpenRCT2::Ui::Windows
             int32_t top = marqueeWidget.top + windowPos.y;
             int32_t marqHeight = marqueeWidget.height() - 1;
             RenderTarget rtMarquee;
-            if (!ClipDrawPixelInfo(rtMarquee, rt, { left, top }, marqWidth, marqHeight))
+            if (!ClipRenderTarget(rtMarquee, rt, { left, top }, marqWidth, marqHeight))
             {
                 return;
             }

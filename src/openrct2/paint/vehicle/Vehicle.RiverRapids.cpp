@@ -84,7 +84,7 @@ namespace OpenRCT2
         }
         PaintAddImageAsParent(session, image_id, { 0, 0, z }, bb);
 
-        if (session.DPI.zoom_level < ZoomLevel{ 2 } && vehicle->num_peeps > 0 && !vehicle->IsGhost())
+        if (session.rt.zoom_level < ZoomLevel{ 2 } && vehicle->num_peeps > 0 && !vehicle->IsGhost())
         {
             // Draw peeps: (this particular vehicle doesn't sort them back to front like others so the back ones sometimes clip,
             // but that's how the original does it...)

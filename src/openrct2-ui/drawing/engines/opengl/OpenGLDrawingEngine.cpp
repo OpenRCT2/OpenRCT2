@@ -520,7 +520,7 @@ public:
         return _drawingContext.get();
     }
 
-    RenderTarget* GetDrawingPixelInfo() override
+    RenderTarget* getRT() override
     {
         return &_mainRT;
     }
@@ -533,11 +533,6 @@ public:
     void InvalidateImage(uint32_t image) override
     {
         _drawingContext->GetTextureCache()->InvalidateImage(image);
-    }
-
-    RenderTarget* GetDPI()
-    {
-        return &_mainRT;
     }
 
 private:
@@ -1347,7 +1342,7 @@ ScreenRect OpenGLDrawingContext::CalculateClipping(const RenderTarget& rt) const
 {
     // mber: Calculating the screen coordinates by dividing the difference between pointers like this is a dirty hack.
     //       It's also quite slow. In future the drawing code needs to be refactored to avoid this somehow.
-    const RenderTarget* mainRT = _engine.GetDPI();
+    const RenderTarget* mainRT = _engine.getRT();
     const int32_t bytesPerRow = mainRT->LineStride();
     const int32_t bitsOffset = static_cast<int32_t>(rt.bits - mainRT->bits);
     #ifndef NDEBUG

@@ -69,7 +69,7 @@ namespace OpenRCT2::Drawing
         virtual std::string Screenshot() = 0;
 
         virtual IDrawingContext* GetDrawingContext() = 0;
-        virtual RenderTarget* GetDrawingPixelInfo() = 0;
+        virtual RenderTarget* getRT() = 0;
 
         virtual DrawingEngineFlags GetFlags() = 0;
 

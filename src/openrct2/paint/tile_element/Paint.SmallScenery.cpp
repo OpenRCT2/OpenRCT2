@@ -220,7 +220,7 @@ static void PaintSmallSceneryBody(
     {
         const auto currentTicks = getGameState().currentTicks;
 
-        if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_VISIBLE_WHEN_ZOOMED) || (session.DPI.zoom_level <= ZoomLevel{ 1 }))
+        if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_VISIBLE_WHEN_ZOOMED) || (session.rt.zoom_level <= ZoomLevel{ 1 }))
         {
             if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_FOUNTAIN_SPRAY_1))
             {

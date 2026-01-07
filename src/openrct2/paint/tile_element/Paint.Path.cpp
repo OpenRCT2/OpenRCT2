@@ -617,7 +617,7 @@ static void PathPaintFencesAdditionsTunnels(
     // Probably drawing benches etc.
     PROFILED_FUNCTION();
 
-    if (session.DPI.zoom_level <= ZoomLevel{ 1 })
+    if (session.rt.zoom_level <= ZoomLevel{ 1 })
     {
         if (!gTrackDesignSaveMode)
         {

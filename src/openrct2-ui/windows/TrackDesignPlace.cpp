@@ -366,7 +366,7 @@ namespace OpenRCT2::Ui::Windows
             Drawing::RenderTarget clippedRT;
             const auto& previewWidget = widgets[WIDX_PREVIEW];
             const auto previewCoords = windowPos + ScreenCoordsXY{ previewWidget.left, previewWidget.top };
-            if (ClipDrawPixelInfo(clippedRT, rt, previewCoords, previewWidget.width(), previewWidget.height()))
+            if (ClipRenderTarget(clippedRT, rt, previewCoords, previewWidget.width(), previewWidget.height()))
             {
                 G1Element g1temp = {};
                 g1temp.offset = _miniPreview.data();

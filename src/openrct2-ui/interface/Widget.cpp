@@ -742,7 +742,7 @@ namespace OpenRCT2::Ui
         // Create a new inner scroll render target
         RenderTarget scrollRT = rt;
 
-        // Clip the scroll dpi against the outer dpi
+        // Clip the scroll RT against the outer RT
         int32_t cl = std::max<int32_t>(rt.x, topLeft.x);
         int32_t ct = std::max<int32_t>(rt.y, topLeft.y);
         int32_t cr = std::min<int32_t>(rt.x + rt.width, bottomRight.x);

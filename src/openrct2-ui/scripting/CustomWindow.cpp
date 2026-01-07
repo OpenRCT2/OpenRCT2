@@ -559,14 +559,14 @@ namespace OpenRCT2::Ui::Windows
                 auto& onDraw = widgetDesc->OnDraw;
                 if (onDraw.is_function())
                 {
-                    RenderTarget widgetDpi;
-                    if (ClipDrawPixelInfo(
-                            widgetDpi, rt, { windowPos.x + widget.left, windowPos.y + widget.top }, widget.width() - 1,
+                    RenderTarget widgetRT;
+                    if (ClipRenderTarget(
+                            widgetRT, rt, { windowPos.x + widget.left, windowPos.y + widget.top }, widget.width() - 1,
                             widget.height() - 1))
                     {
                         auto ctx = onDraw.context();
                         auto dukWidget = ScWidget::ToDukValue(ctx, this, widgetIndex);
-                        auto dukG = GetObjectAsDukValue(ctx, std::make_shared<ScGraphicsContext>(ctx, widgetDpi));
+                        auto dukG = GetObjectAsDukValue(ctx, std::make_shared<ScGraphicsContext>(ctx, widgetRT));
                         auto& scriptEngine = GetContext()->GetScriptEngine();
                         scriptEngine.ExecutePluginCall(_info.Owner, widgetDesc->OnDraw, dukWidget, { dukG }, false);
                     }

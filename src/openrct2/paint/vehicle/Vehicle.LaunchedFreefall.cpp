@@ -41,7 +41,7 @@ namespace OpenRCT2
         PaintAddImageAsParent(session, image_id, { 0, 0, z }, { { -5, -5, z + 1 }, { 16, 16, 41 } });
 
         // Draw peeps:
-        if (session.DPI.zoom_level < ZoomLevel{ 2 } && vehicle->num_peeps > 0 && !vehicle->IsGhost())
+        if (session.rt.zoom_level < ZoomLevel{ 2 } && vehicle->num_peeps > 0 && !vehicle->IsGhost())
         {
             baseImage_id = carEntry->base_image_id + 9;
             if ((vehicle->restraints_position / 64) == 3)

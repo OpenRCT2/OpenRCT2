@@ -1132,7 +1132,7 @@ static void vehicle_sprite_paint(
         session, imageId, { 0, 0, z },
         { { bb.offset_x, bb.offset_y, bb.offset_z + z }, { bb.length_x, bb.length_y, bb.length_z } });
 
-    auto& rt = session.DPI;
+    auto& rt = session.rt;
     if (rt.zoom_level < ZoomLevel{ 2 } && vehicle->num_peeps > 0 && carEntry->no_seating_rows > 0)
     {
         PaintVehicleRiders(session, vehicle, carEntry, baseImageId, z, bb);

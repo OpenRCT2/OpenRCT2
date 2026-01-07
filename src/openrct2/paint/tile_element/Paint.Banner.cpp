@@ -79,7 +79,7 @@ void PaintBanner(PaintSession& session, uint8_t direction, int32_t height, const
 {
     PROFILED_FUNCTION();
 
-    if (session.DPI.zoom_level > ZoomLevel{ 1 } || gTrackDesignSaveMode
+    if (session.rt.zoom_level > ZoomLevel{ 1 } || gTrackDesignSaveMode
         || (session.ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
         return;
 

@@ -255,7 +255,7 @@ void Sub6A3F61PathAddition(PaintSession& session, const PathElement& pathElement
             PathAdditionBenchesPaint(session, *pathAddEntry, pathElement, height, rotatedEdges, sceneryImageTemplate);
             break;
         case PathAdditionDrawType::jumpingFountain:
-            PathAdditionJumpingFountainsPaint(session, *pathAddEntry, height, sceneryImageTemplate, session.DPI);
+            PathAdditionJumpingFountainsPaint(session, *pathAddEntry, height, sceneryImageTemplate, session.rt);
             break;
     }
 

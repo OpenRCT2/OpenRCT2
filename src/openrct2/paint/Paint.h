@@ -197,7 +197,7 @@ struct PaintNodeStorage
 
 struct PaintSession : public PaintSessionCore
 {
-    OpenRCT2::Drawing::RenderTarget DPI;
+    OpenRCT2::Drawing::RenderTarget rt;
     PaintNodeStorage paintEntries;
 
     PaintStruct* AllocateNormalPaintEntry() noexcept

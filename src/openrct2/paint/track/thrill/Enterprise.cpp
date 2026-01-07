@@ -29,7 +29,7 @@ static void PaintEnterpriseRiders(
     PaintSession& session, const RideObjectEntry& rideEntry, Vehicle& vehicle, uint32_t imageOffset, const CoordsXYZ& offset,
     const BoundBoxXYZ& bb)
 {
-    if (session.DPI.zoom_level > ZoomLevel{ 0 })
+    if (session.rt.zoom_level > ZoomLevel{ 0 })
         return;
     if (imageOffset >= 12)
         return;

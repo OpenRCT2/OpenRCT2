@@ -105,7 +105,7 @@ static void PaintMagicCarpetRiders(
     PaintSession& session, const RideObjectEntry& rideEntry, const Vehicle& vehicle, Direction direction,
     const CoordsXYZ& offset, const BoundBoxXYZ& bb)
 {
-    if (session.DPI.zoom_level > ZoomLevel{ 1 })
+    if (session.rt.zoom_level > ZoomLevel{ 1 })
         return;
 
     auto baseImageIndex = rideEntry.Cars[0].base_image_id + 4 + direction;

@@ -224,7 +224,7 @@ namespace OpenRCT2::Ui::Windows
     void WindowResearchFundingMouseUp(WidgetIndex widgetIndex, WidgetIndex baseWidgetIndex);
     void WindowResearchFundingDropdown(WidgetIndex widgetIndex, int32_t selectedIndex, WidgetIndex baseWidgetIndex);
     void WindowResearchFundingPrepareDraw(WindowBase* w, WidgetIndex baseWidgetIndex);
-    void WindowResearchFundingDraw(WindowBase* w, Drawing::RenderTarget& dpi);
+    void WindowResearchFundingDraw(WindowBase* w, Drawing::RenderTarget& rt);
 
     // Ride
     WindowBase* RideMainOpen(const Ride& ride);

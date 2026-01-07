@@ -41,7 +41,7 @@ static void PaintTopSpinRiders(
     PaintSession& session, const Vehicle& vehicle, ImageIndex seatImageIndex, const CoordsXYZ& seatCoords,
     const BoundBoxXYZ& bb)
 {
-    if (session.DPI.zoom_level >= ZoomLevel{ 2 })
+    if (session.rt.zoom_level >= ZoomLevel{ 2 })
         return;
 
     for (int i = 0; i < 4; i++)

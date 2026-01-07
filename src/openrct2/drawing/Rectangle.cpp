@@ -34,7 +34,7 @@ namespace OpenRCT2::Drawing::Rectangle
      * Draw a rectangle, with optional border or fill
      *
      *  rct2: 0x006E6F81
-     * dpi (edi)
+     * rt (edi)
      * left (ax)
      * top (cx)
      * right (bx)

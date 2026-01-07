@@ -751,7 +751,7 @@ void FASTCALL GfxDrawSpriteSoftware(RenderTarget& rt, const ImageId imageId, con
  * image_id (ebx) and also (0x00EDF81C)
  * palette_pointer (0x9ABDA4)
  * unknown_pointer (0x9E3CDC)
- * dpi (edi)
+ * rt (edi)
  * x (cx)
  * y (dx)
  */
