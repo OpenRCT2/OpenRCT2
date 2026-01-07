@@ -275,7 +275,7 @@ namespace OpenRCT2::Ui::Windows
             const auto& gameState = getGameState();
 
             // Draw background
-            uint8_t paletteIndex = ColourMapA[colours[1].colour].mid_light;
+            auto paletteIndex = ColourMapA[colours[1].colour].mid_light;
             GfxClear(rt, paletteIndex);
 
             int16_t boxWidth = widgets[WIDX_RESEARCH_ORDER_SCROLL].width() - 1;

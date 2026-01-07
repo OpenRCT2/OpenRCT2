@@ -770,7 +770,7 @@ namespace OpenRCT2::Ui
         // Trough
         Rectangle::fill(rt, { { l + kScrollBarWidth, t }, { r - kScrollBarWidth, b } }, ColourMapA[colour.colour].lighter);
         Rectangle::fill(
-            rt, { { l + kScrollBarWidth, t }, { r - kScrollBarWidth, b } }, 0x1000000 | ColourMapA[colour.colour].mid_dark);
+            rt, { { l + kScrollBarWidth, t }, { r - kScrollBarWidth, b } }, ColourMapA[colour.colour].mid_dark, true);
         Rectangle::fill(
             rt, { { l + kScrollBarWidth, t + 2 }, { r - kScrollBarWidth, t + 2 } }, ColourMapA[colour.colour].mid_dark);
         Rectangle::fill(
@@ -817,7 +817,7 @@ namespace OpenRCT2::Ui
         // Trough
         Rectangle::fill(rt, { { l, t + kScrollBarWidth }, { r, b - kScrollBarWidth } }, ColourMapA[colour.colour].lighter);
         Rectangle::fill(
-            rt, { { l, t + kScrollBarWidth }, { r, b - kScrollBarWidth } }, 0x1000000 | ColourMapA[colour.colour].mid_dark);
+            rt, { { l, t + kScrollBarWidth }, { r, b - kScrollBarWidth } }, ColourMapA[colour.colour].mid_dark, true);
         Rectangle::fill(
             rt, { { l + 2, t + kScrollBarWidth }, { l + 2, b - kScrollBarWidth } }, ColourMapA[colour.colour].mid_dark);
         Rectangle::fill(
@@ -1211,7 +1211,7 @@ namespace OpenRCT2::Ui
         {
             auto colour = ColourMapA[w.colours[1].colour].mid_light;
             auto y = topLeft.y + 1 + widget.height() - 5;
-            Rectangle::fill(rt, { { curX, y }, { curX + width, y } }, colour + 5);
+            Rectangle::fill(rt, { { curX, y }, { curX + width, y } }, static_cast<PaletteIndex>(colour + 5));
         }
     }
 

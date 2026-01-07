@@ -769,11 +769,11 @@ namespace OpenRCT2::Ui::Windows
                         }
                         else
                         {
-                            colour = ColourMapA[colours[1].colour].mid_dark;
-                            Rectangle::fill(rt, { leftTop, rightBottom }, colour.colour);
+                            auto fillColour = ColourMapA[colours[1].colour].mid_dark;
+                            Rectangle::fill(rt, { leftTop, rightBottom }, fillColour);
 
-                            colour = ColourMapA[colours[1].colour].lightest;
-                            Rectangle::fill(rt, { leftTop + yPixelOffset, rightBottom + yPixelOffset }, colour.colour);
+                            fillColour = ColourMapA[colours[1].colour].lightest;
+                            Rectangle::fill(rt, { leftTop + yPixelOffset, rightBottom + yPixelOffset }, fillColour);
                         }
                     }
 

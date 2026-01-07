@@ -1623,10 +1623,10 @@ static uint64_t PageDisabledWidgets[] = {
                 if (selectedRow)
                     Rectangle::fill(rt, fillRectangle, ColourMapA[colours[1].colour].mid_dark);
                 else if (hoveredRow)
-                    Rectangle::fill(rt, fillRectangle, ColourMapA[colours[1].colour].mid_dark | 0x1000000);
+                    Rectangle::fill(rt, fillRectangle, ColourMapA[colours[1].colour].mid_dark, true);
                 // Zebra stripes
                 else if (((windowTileInspectorElementCount - i) & 1) == 0)
-                    Rectangle::fill(rt, fillRectangle, ColourMapA[colours[1].colour].light | 0x1000000);
+                    Rectangle::fill(rt, fillRectangle, ColourMapA[colours[1].colour].light, true);
 
                 StringId stringFormat = STR_WINDOW_COLOUR_2_STRINGID;
                 if (selectedRow || hoveredRow)

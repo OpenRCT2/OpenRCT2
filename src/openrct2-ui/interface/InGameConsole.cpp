@@ -377,13 +377,13 @@ void InGameConsole::Draw(RenderTarget& rt) const
     if (_consoleCaretTicks < kConsoleCaretFlashThreshold)
     {
         auto caret = screenCoords + ScreenCoordsXY{ _caretScreenPosX, lineHeight };
-        uint8_t caretColour = ColourMapA[textColour.colour].lightest;
+        auto caretColour = ColourMapA[textColour.colour].lightest;
         Rectangle::fill(rt, { caret, caret + ScreenCoordsXY{ kConsoleCaretWidth, 1 } }, caretColour);
     }
 
     // What about border colours?
-    uint8_t borderColour1 = ColourMapA[backgroundColour.colour].light;
-    uint8_t borderColour2 = ColourMapA[backgroundColour.colour].mid_dark;
+    auto borderColour1 = ColourMapA[backgroundColour.colour].light;
+    auto borderColour2 = ColourMapA[backgroundColour.colour].mid_dark;
 
     // Input area top border
     Rectangle::fill(

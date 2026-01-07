@@ -157,7 +157,7 @@ namespace OpenRCT2::Ui::Windows
             // Track preview
             Widget* widget = &widgets[WIDX_TRACK_PREVIEW];
             auto screenPos = windowPos + ScreenCoordsXY{ widget->left + 1, widget->top + 1 };
-            int32_t colour = ColourMapA[colours[0].colour].darkest;
+            auto colour = ColourMapA[colours[0].colour].darkest;
             Rectangle::fill(rt, { screenPos, screenPos + ScreenCoordsXY{ 369, 216 } }, colour);
 
             G1Element g1temp = {};

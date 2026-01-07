@@ -218,9 +218,10 @@ void TextureCache::GeneratePaletteTexture()
 
     for (int i = 0; i < kPaletteTotalOffsets; ++i)
     {
-        GLint y = PaletteToY(static_cast<FilterPaletteID>(i));
+        auto filterPaletteId = static_cast<FilterPaletteID>(i);
+        GLint y = PaletteToY(filterPaletteId);
 
-        auto g1Index = GetPaletteG1Index(i);
+        auto g1Index = GetPaletteG1Index(filterPaletteId);
         if (g1Index.has_value())
         {
             const auto* element = GfxGetG1Element(g1Index.value());

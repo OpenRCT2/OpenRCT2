@@ -136,8 +136,10 @@ namespace OpenRCT2
 
             void BeginDraw();
             void EndDraw();
-            void Clear(RenderTarget& rt, uint8_t paletteIndex) override;
-            void FillRect(RenderTarget& rt, uint32_t colour, int32_t x, int32_t y, int32_t w, int32_t h) override;
+            void Clear(RenderTarget& rt, PaletteIndex paletteIndex) override;
+            void FillRect(
+                RenderTarget& rt, PaletteIndex paletteIndex, int32_t x, int32_t y, int32_t w, int32_t h,
+                bool crossHatch) override;
             void FilterRect(
                 RenderTarget& rt, FilterPaletteID palette, int32_t left, int32_t top, int32_t right, int32_t bottom) override;
             void DrawLine(RenderTarget& rt, uint32_t colour, const ScreenLine& line) override;

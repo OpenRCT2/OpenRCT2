@@ -851,16 +851,16 @@ void GfxDrawPickedUpPeep(RenderTarget& rt)
     }
 }
 
-std::optional<uint32_t> GetPaletteG1Index(colour_t paletteId)
+std::optional<uint32_t> GetPaletteG1Index(FilterPaletteID paletteId)
 {
-    if (paletteId < kPaletteTotalOffsets)
+    if (EnumValue(paletteId) < kPaletteTotalOffsets)
     {
-        return kPaletteToG1Offset[paletteId];
+        return kPaletteToG1Offset[EnumValue(paletteId)];
     }
     return std::nullopt;
 }
 
-std::optional<PaletteMap> GetPaletteMapForColour(colour_t paletteId)
+std::optional<PaletteMap> GetPaletteMapForColour(FilterPaletteID paletteId)
 {
     auto g1Index = GetPaletteG1Index(paletteId);
     if (g1Index.has_value())

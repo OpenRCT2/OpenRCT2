@@ -5262,7 +5262,7 @@ namespace OpenRCT2::Ui::Windows
             if (!isMusicActivated)
                 return;
 
-            uint8_t paletteIndex = ColourMapA[colours[1].colour].mid_light;
+            auto paletteIndex = ColourMapA[colours[1].colour].mid_light;
             GfxClear(rt, paletteIndex);
 
             auto* musicObj = ride->getMusicObject();
@@ -6066,8 +6066,8 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Vertical grid lines
-            const uint8_t lightColour = ColourMapA[COLOUR_SATURATED_GREEN].mid_light;
-            const uint8_t darkColour = ColourMapA[COLOUR_SATURATED_GREEN].mid_dark;
+            const auto lightColour = ColourMapA[COLOUR_SATURATED_GREEN].mid_light;
+            const auto darkColour = ColourMapA[COLOUR_SATURATED_GREEN].mid_dark;
 
             int32_t time = 0;
             for (int32_t x = 0; x < rt.x + rt.width; x += 80)
@@ -6101,7 +6101,7 @@ namespace OpenRCT2::Ui::Windows
             for (int32_t y = widget->height() - 14; y >= 8; y -= yInterval, yUnit += yUnitInterval)
             {
                 // Minor / major line
-                int32_t colour = yUnit == 0 ? lightColour : darkColour;
+                auto colour = yUnit == 0 ? lightColour : darkColour;
                 Rectangle::fill(rt, { { rt.x, y }, { rt.x + rt.width - 1, y } }, colour);
 
                 int16_t scaled_yUnit = yUnit;
