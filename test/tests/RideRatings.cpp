@@ -32,7 +32,7 @@ protected:
         auto& gameState = getGameState();
         for (const auto& ride : RideManager(gameState))
         {
-            OpenRCT2::RideRating::UpdateRide(ride);
+            RideRating::UpdateRide(ride);
         }
     }
 
@@ -48,7 +48,7 @@ protected:
 
     std::string FormatRatings(const Ride& ride)
     {
-        OpenRCT2::RideRating::Tuple ratings = ride.ratings;
+        RideRating::Tuple ratings = ride.ratings;
         auto name = std::string(ride.getRideTypeDescriptor().Name);
         std::string line = String::stdFormat(
             "%s: (%d, %d, %d)", name.c_str(), static_cast<int>(ratings.excitement), static_cast<int>(ratings.intensity),
