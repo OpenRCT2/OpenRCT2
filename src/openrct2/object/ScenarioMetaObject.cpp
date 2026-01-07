@@ -64,7 +64,7 @@ namespace OpenRCT2
         preview.width = g1->width;
         preview.height = g1->height;
 
-        std::copy_n(g1->offset, g1->width * g1->height, preview.pixels);
+        std::copy_n(g1->offset, g1->width * g1->height, reinterpret_cast<uint8_t*>(preview.pixels));
 
         return preview;
     }
@@ -81,7 +81,7 @@ namespace OpenRCT2
         preview.width = g1->width;
         preview.height = g1->height;
 
-        std::copy_n(g1->offset, g1->width * g1->height, preview.pixels);
+        std::copy_n(g1->offset, g1->width * g1->height, reinterpret_cast<uint8_t*>(preview.pixels));
 
         return preview;
     }

@@ -31,7 +31,7 @@ namespace OpenRCT2::Scripting
         std::optional<colour_t> _secondaryColour{};
         std::optional<colour_t> _tertiaryColour{};
         std::optional<uint8_t> _paletteId{};
-        uint8_t _stroke{};
+        PaletteIndex _stroke{};
         PaletteIndex _fill{};
 
     public:
@@ -134,12 +134,12 @@ namespace OpenRCT2::Scripting
 
         uint8_t stroke_get() const
         {
-            return _stroke;
+            return EnumValue(_stroke);
         }
 
         void stroke_set(uint8_t value)
         {
-            _stroke = value;
+            _stroke = static_cast<PaletteIndex>(value);
         }
 
         int32_t width_get() const
@@ -218,7 +218,7 @@ namespace OpenRCT2::Scripting
 
         void rect(int32_t x, int32_t y, int32_t width, int32_t height)
         {
-            if (_stroke != 0)
+            if (_stroke != PaletteIndex::pi0)
             {
                 line(x, y, x + width, y);
                 line(x + width - 1, y + 1, x + width - 1, y + height - 1);

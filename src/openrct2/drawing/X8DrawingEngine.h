@@ -140,11 +140,11 @@ namespace OpenRCT2
                 bool crossHatch) override;
             void FilterRect(
                 RenderTarget& rt, FilterPaletteID palette, int32_t left, int32_t top, int32_t right, int32_t bottom) override;
-            void DrawLine(RenderTarget& rt, uint32_t colour, const ScreenLine& line) override;
+            void DrawLine(RenderTarget& rt, PaletteIndex colour, const ScreenLine& line) override;
             void DrawSprite(RenderTarget& rt, const ImageId imageId, int32_t x, int32_t y) override;
             void DrawSpriteRawMasked(
                 RenderTarget& rt, int32_t x, int32_t y, const ImageId maskImage, const ImageId colourImage) override;
-            void DrawSpriteSolid(RenderTarget& rt, const ImageId image, int32_t x, int32_t y, uint8_t colour) override;
+            void DrawSpriteSolid(RenderTarget& rt, const ImageId image, int32_t x, int32_t y, PaletteIndex colour) override;
             void DrawGlyph(RenderTarget& rt, const ImageId image, int32_t x, int32_t y, const PaletteMap& paletteMap) override;
             void DrawTTFBitmap(
                 RenderTarget& rt, TextDrawInfo* info, TTFSurface* surface, int32_t x, int32_t y,

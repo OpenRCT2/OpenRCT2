@@ -269,11 +269,11 @@ namespace OpenRCT2::Ui::Windows
 
                     if (_cursorBlink > 15)
                     {
-                        uint8_t colour = ColourMapA[colours[1].colour].mid_light;
+                        auto colour = ColourMapA[colours[1].colour].mid_light;
                         // TODO: palette index addition
                         Rectangle::fill(
                             rt, { { cursorX, screenCoords.y + 9 }, { cursorX + textWidth, screenCoords.y + 9 } },
-                            static_cast<PaletteIndex>(colour + 5));
+                            static_cast<PaletteIndex>(EnumValue(colour) + 5));
                     }
 
                     cur_drawn++;

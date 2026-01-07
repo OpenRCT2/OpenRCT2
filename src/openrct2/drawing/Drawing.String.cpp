@@ -485,7 +485,7 @@ static void TTFDrawCharacterSprite(RenderTarget& rt, int32_t codepoint, TextDraw
             screenCoords.y += *info->yOffset++;
         }
 
-        uint8_t palette[8]{};
+        PaletteIndex palette[8]{};
         palette[1] = info->palette.fill;
         palette[2] = info->palette.sunnyOutline;
         palette[3] = info->palette.shadowOutline;

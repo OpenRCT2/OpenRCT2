@@ -121,11 +121,11 @@ public:
         bool crossHatch = false) override;
     void FilterRect(
         RenderTarget& rt, FilterPaletteID palette, int32_t left, int32_t top, int32_t right, int32_t bottom) override;
-    void DrawLine(RenderTarget& rt, uint32_t colour, const ScreenLine& line) override;
+    void DrawLine(RenderTarget& rt, PaletteIndex colour, const ScreenLine& line) override;
     void DrawSprite(RenderTarget& rt, const ImageId imageId, int32_t x, int32_t y) override;
     void DrawSpriteRawMasked(
         RenderTarget& rt, int32_t x, int32_t y, const ImageId maskImage, const ImageId colourImage) override;
-    void DrawSpriteSolid(RenderTarget& rt, const ImageId image, int32_t x, int32_t y, uint8_t colour) override;
+    void DrawSpriteSolid(RenderTarget& rt, const ImageId image, int32_t x, int32_t y, PaletteIndex colour) override;
     void DrawGlyph(RenderTarget& rt, const ImageId image, int32_t x, int32_t y, const PaletteMap& palette) override;
     void DrawTTFBitmap(
         RenderTarget& rt, TextDrawInfo* info, TTFSurface* surface, int32_t x, int32_t y, uint8_t hintingThreshold) override;
@@ -177,7 +177,7 @@ public:
                 uint32_t xPixelOffset = pixelOffset;
                 xPixelOffset += (static_cast<uint8_t>(patternX - patternStartXOffset)) % patternXSpace;
 
-                auto patternPixel = pattern[patternYPos * 2 + 1];
+                auto patternPixel = static_cast<PaletteIndex>(pattern[patternYPos * 2 + 1]);
                 for (; xPixelOffset < finalPixelOffset; xPixelOffset += patternXSpace)
                 {
                     int32_t pixelX = xPixelOffset % rt.width;
@@ -830,7 +830,7 @@ bool OpenGLDrawingContext::CohenSutherlandLineClip(ScreenLine& line, const Rende
     }
 }
 
-void OpenGLDrawingContext::DrawLine(RenderTarget& rt, uint32_t colour, const ScreenLine& line)
+void OpenGLDrawingContext::DrawLine(RenderTarget& rt, PaletteIndex colour, const ScreenLine& line)
 {
     Guard::Assert(_inDraw == true);
 
@@ -849,7 +849,7 @@ void OpenGLDrawingContext::DrawLine(RenderTarget& rt, uint32_t colour, const Scr
     const int32_t y2 = trimmedLine.GetY2() - rt.y + clip.GetTop();
 
     command.bounds = { x1, y1, x2, y2 };
-    command.colour = colour & 0xFF;
+    command.colour = static_cast<GLuint>(colour);
     command.depth = _drawCount++;
 }
 
@@ -1056,7 +1056,7 @@ void OpenGLDrawingContext::DrawSpriteRawMasked(
     command.zoom = zoom;
 }
 
-void OpenGLDrawingContext::DrawSpriteSolid(RenderTarget& rt, const ImageId image, int32_t x, int32_t y, uint8_t colour)
+void OpenGLDrawingContext::DrawSpriteSolid(RenderTarget& rt, const ImageId image, int32_t x, int32_t y, PaletteIndex colour)
 {
     Guard::Assert(_inDraw == true);
 
@@ -1102,7 +1102,7 @@ void OpenGLDrawingContext::DrawSpriteSolid(RenderTarget& rt, const ImageId image
     command.texMaskBounds = texture.coords;
     command.palettes = { 0, 0, 0 };
     command.flags = DrawRectCommand::FLAG_NO_TEXTURE | DrawRectCommand::FLAG_MASK;
-    command.colour = colour & 0xFF;
+    command.colour = static_cast<GLuint>(colour);
     command.bounds = { left, top, right, bottom };
     command.depth = _drawCount++;
     command.zoom = 1.0f;
@@ -1222,7 +1222,7 @@ void OpenGLDrawingContext::DrawTTFBitmap(
             command.texMaskBounds = { 0.0f, 0.0f, 0.0f, 0.0f };
             command.palettes = { 0, 0, 0 };
             command.flags = DrawRectCommand::FLAG_TTF_TEXT;
-            command.colour = info->palette.shadowOutline;
+            command.colour = static_cast<GLuint>(info->palette.shadowOutline);
             command.bounds = b;
             command.depth = _drawCount++;
             command.zoom = 1.0f;
@@ -1238,7 +1238,7 @@ void OpenGLDrawingContext::DrawTTFBitmap(
         command.texMaskBounds = { 0.0f, 0.0f, 0.0f, 0.0f };
         command.palettes = { 0, 0, 0 };
         command.flags = DrawRectCommand::FLAG_TTF_TEXT;
-        command.colour = info->palette.shadowOutline;
+        command.colour = static_cast<GLuint>(info->palette.shadowOutline);
         command.bounds = { left + 1, top + 1, right + 1, bottom + 1 };
         command.depth = _drawCount++;
         command.zoom = 1.0f;
@@ -1252,7 +1252,7 @@ void OpenGLDrawingContext::DrawTTFBitmap(
     command.texMaskBounds = { 0.0f, 0.0f, 0.0f, 0.0f };
     command.palettes = { 0, 0, 0 };
     command.flags = DrawRectCommand::FLAG_TTF_TEXT | (hintingThreshold << 8);
-    command.colour = info->palette.fill;
+    command.colour = static_cast<GLuint>(info->palette.fill);
     command.bounds = { left, top, right, bottom };
     command.depth = _drawCount++;
     command.zoom = 1.0f;

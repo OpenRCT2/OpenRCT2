@@ -100,7 +100,7 @@ namespace OpenRCT2
                 if (mapColoursAreValid)
                     MapColours[i] = mapColours[i];
                 else
-                    MapColours[i] = PaletteIndex::pi0;
+                    MapColours[i] = OpenRCT2::Drawing::PaletteIndex::pi0;
             }
 
             for (auto& el : properties["special"])

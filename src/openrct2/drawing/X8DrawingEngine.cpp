@@ -513,7 +513,7 @@ void X8DrawingContext::FilterRect(
     int32_t width = endX - startX;
     int32_t height = endY - startY;
 
-    uint8_t* dst = rt.bits + (startY * rt.LineStride() + startX);
+    PaletteIndex* dst = reinterpret_cast<PaletteIndex*>(rt.bits + (startY * rt.LineStride() + startX));
 
     // Find colour in colour table?
     auto paletteMap = GetPaletteMapForColour(palette);
@@ -527,17 +527,17 @@ void X8DrawingContext::FilterRect(
         auto c = height;
         for (int32_t i = 0; i < c; i++)
         {
-            uint8_t* nextdst = dst + step * i;
+            PaletteIndex* nextdst = dst + step * i;
             for (int32_t j = 0; j < scaled_width; j++)
             {
                 auto index = *(nextdst + j);
-                *(nextdst + j) = paletteEntries[index];
+                *(nextdst + j) = paletteEntries[EnumValue(index)];
             }
         }
     }
 }
 
-void X8DrawingContext::DrawLine(RenderTarget& rt, uint32_t colour, const ScreenLine& line)
+void X8DrawingContext::DrawLine(RenderTarget& rt, PaletteIndex colour, const ScreenLine& line)
 {
     Guard::Assert(_isDrawing == true);
 
@@ -559,13 +559,13 @@ void X8DrawingContext::DrawSpriteRawMasked(
     GfxDrawSpriteRawMaskedSoftware(rt, { x, y }, maskImage, colourImage);
 }
 
-void X8DrawingContext::DrawSpriteSolid(RenderTarget& rt, const ImageId image, int32_t x, int32_t y, uint8_t colour)
+void X8DrawingContext::DrawSpriteSolid(RenderTarget& rt, const ImageId image, int32_t x, int32_t y, PaletteIndex colour)
 {
     Guard::Assert(_isDrawing == true);
 
-    uint8_t palette[256];
+    PaletteIndex palette[256];
     std::fill_n(palette, sizeof(palette), colour);
-    palette[0] = 0;
+    palette[0] = PaletteIndex::pi0;
 
     const auto spriteCoords = ScreenCoordsXY{ x, y };
     GfxDrawSpritePaletteSetSoftware(rt, ImageId(image.GetIndex(), 0), spriteCoords, PaletteMap(palette));
@@ -581,7 +581,7 @@ void X8DrawingContext::DrawGlyph(RenderTarget& rt, const ImageId image, int32_t 
 #ifndef DISABLE_TTF
 template<bool TUseHinting>
 static void DrawTTFBitmapInternal(
-    RenderTarget& rt, uint8_t colour, TTFSurface* surface, int32_t x, int32_t y, uint8_t hintingThreshold)
+    RenderTarget& rt, PaletteIndex colour, TTFSurface* surface, int32_t x, int32_t y, uint8_t hintingThreshold)
 {
     assert(rt.zoom_level == ZoomLevel{ 0 });
     const int32_t surfaceWidth = surface->w;
@@ -598,7 +598,7 @@ static void DrawTTFBitmapInternal(
     int32_t skipY = y - rt.y;
 
     auto src = static_cast<const uint8_t*>(surface->pixels);
-    uint8_t* dst = rt.bits;
+    PaletteIndex* dst = reinterpret_cast<PaletteIndex*>(rt.bits);
 
     if (skipX < 0)
     {
@@ -654,8 +654,8 @@ void X8DrawingContext::DrawTTFBitmap(
     RenderTarget& rt, TextDrawInfo* info, TTFSurface* surface, int32_t x, int32_t y, uint8_t hintingThreshold)
 {
 #ifndef DISABLE_TTF
-    const uint8_t fgColor = info->palette.fill;
-    const uint8_t bgColor = info->palette.shadowOutline;
+    const auto fgColor = info->palette.fill;
+    const auto bgColor = info->palette.shadowOutline;
 
     if (info->colourFlags.has(ColourFlag::withOutline))
     {

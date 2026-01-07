@@ -102,12 +102,12 @@ BasicTextureInfo TextureCache::GetOrLoadGlyphTexture(const ImageId imageId, cons
 
     // Try to read cached texture first.
     {
-        uint8_t glyphMap[8];
+        PaletteIndex glyphMap[8];
         for (uint8_t i = 0; i < 8; i++)
         {
             glyphMap[i] = paletteMap[i];
         }
-        std::copy_n(glyphMap, sizeof(glyphId.Palette), reinterpret_cast<uint8_t*>(&glyphId.Palette));
+        std::copy_n(glyphMap, sizeof(glyphId.Palette), reinterpret_cast<PaletteIndex*>(&glyphId.Palette));
 
         auto kvp = _glyphTextureMap.find(glyphId);
         if (kvp != _glyphTextureMap.end())

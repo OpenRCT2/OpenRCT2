@@ -37,7 +37,7 @@ namespace OpenRCT2::Drawing::ScrollingText
         uint16_t position;
         uint16_t mode;
         uint32_t id;
-        uint8_t bitmap[64 * 40];
+        PaletteIndex bitmap[64 * 40];
     };
 
     static DrawScrollText _drawScrollTextList[kMaxEntries];
@@ -46,9 +46,9 @@ namespace OpenRCT2::Drawing::ScrollingText
     static std::mutex _mutex;
 
     static void setBitmapForSprite(
-        std::string_view text, int32_t scroll, uint8_t* bitmap, const int16_t* scrollPositionOffsets, PaletteIndex colour);
+        std::string_view text, int32_t scroll, PaletteIndex* bitmap, const int16_t* scrollPositionOffsets, PaletteIndex colour);
     static void setBitmapForTTF(
-        std::string_view text, int32_t scroll, uint8_t* bitmap, const int16_t* scrollPositionOffsets, PaletteIndex colour);
+        std::string_view text, int32_t scroll, PaletteIndex* bitmap, const int16_t* scrollPositionOffsets, PaletteIndex colour);
 
     static void initialiseCharacterBitmaps(uint32_t glyphStart, uint16_t count)
     {
@@ -88,7 +88,7 @@ namespace OpenRCT2::Drawing::ScrollingText
 
             // Initialize the scrolling text sprite.
             G1Element g1{};
-            g1.offset = _drawScrollTextList[i].bitmap;
+            g1.offset = reinterpret_cast<uint8_t*>(_drawScrollTextList[i].bitmap);
             g1.xOffset = -32;
             g1.yOffset = 0;
             g1.flags = { G1Flag::hasTransparency };
@@ -1464,7 +1464,7 @@ static constexpr const int16_t* kScrollPositions[kMaxModes] = {
 
         const int16_t* scrollingModePositions = kScrollPositions[scrollingMode];
 
-        std::fill_n(scrollText->bitmap, 320 * 8, 0x00);
+        std::fill_n(scrollText->bitmap, 320 * 8, PaletteIndex::pi0);
         if (LocalisationService_UseTrueTypeFont())
         {
             setBitmapForTTF(scrollString, scroll, scrollText->bitmap, scrollingModePositions, colour);
@@ -1480,7 +1480,7 @@ static constexpr const int16_t* kScrollPositions[kMaxModes] = {
     }
 
     static void setBitmapForSprite(
-        std::string_view text, int32_t scroll, uint8_t* bitmap, const int16_t* scrollPositionOffsets, PaletteIndex colour)
+        std::string_view text, int32_t scroll, PaletteIndex* bitmap, const int16_t* scrollPositionOffsets, PaletteIndex colour)
     {
         auto characterColour = colour;
         auto fmt = FmtString(text);
@@ -1536,7 +1536,7 @@ static constexpr const int16_t* kScrollPositions[kMaxModes] = {
     }
 
     static void setBitmapForTTF(
-        std::string_view text, int32_t scroll, uint8_t* bitmap, const int16_t* scrollPositionOffsets, PaletteIndex colour)
+        std::string_view text, int32_t scroll, PaletteIndex* bitmap, const int16_t* scrollPositionOffsets, PaletteIndex colour)
     {
 #ifndef DISABLE_TTF
         auto fontDesc = TTFGetFontFromSpriteBase(FontStyle::tiny);
@@ -1595,7 +1595,7 @@ static constexpr const int16_t* kScrollPositions[kMaxModes] = {
 
                 if (scrollPosition > -1)
                 {
-                    uint8_t* dst = &bitmap[scrollPosition];
+                    auto* dst = &bitmap[scrollPosition];
 
                     for (int32_t y = min_vpos; y < max_vpos; y++)
                     {

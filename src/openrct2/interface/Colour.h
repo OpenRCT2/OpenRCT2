@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../core/StringTypes.h"
+#include "../drawing/PaletteIndex.h"
 
 #include <cstdint>
 #include <string_view>
@@ -96,124 +97,25 @@ enum
     COLOUR_DEEP_WATER = 50
 };
 
-enum PaletteIndex : uint8_t
-{
-    pi0 = 0,   // Transparent
-    pi10 = 10, // Black (0-dark), Dark grey (0)
-    pi11 = 11, // Black (middark)
-    pi12 = 12, // Black (midlight), Dark grey (1-darkest)
-    pi14 = 14, // Black (lighter), Dark grey (dark)
-    pi13 = 13, //
-    pi16 = 16, //
-    pi17 = 17, // Black (11), Dark grey (light), White (dark)
-    pi18 = 18,
-    pi20 = 20,   // Dark grey (10), White (light)
-    pi21 = 21,   // Dark grey (11), White (lighter-11)
-    pi40 = 40,   //
-    pi42 = 42,   // Light Brown (lighter), Saturated brown (11)
-    pi43 = 43,   //
-    pi44 = 44,   // Construction marker
-    pi46 = 46,   // Tertiary remap 0  / Yellow (darkest)
-    pi47 = 47,   // Tertiary remap 1  / Yellow
-    pi48 = 48,   // Tertiary remap 2  / Yellow
-    pi49 = 49,   // Tertiary remap 3  / Yellow
-    pi50 = 50,   // Tertiary remap 4  / Yellow
-    pi51 = 51,   // Tertiary remap 5  / Yellow
-    pi52 = 52,   // Tertiary remap 6  / Yellow
-    pi53 = 53,   // Tertiary remap 7  / Yellow
-    pi54 = 54,   // Tertiary remap 8  / Yellow
-    pi55 = 55,   // Tertiary remap 9  / Yellow
-    pi56 = 56,   // Tertiary remap 10 / Yellow
-    pi57 = 57,   // Tertiary remap 11 / Yellow (lightest)
-    pi61 = 61,   // Bordeaux Red (darker)
-    pi62 = 62,   //
-    pi68 = 68,   //
-    pi69 = 69,   //
-    pi73 = 73,   //
-    pi99 = 99,   //
-    pi102 = 102, // Bright green (lighter)
-    pi108 = 108, //
-    pi111 = 111, //
-    pi129 = 129, // Light Purple (11)
-    pi135 = 135, //
-    pi136 = 136, // Dark Blue (10-11), Light Blue (midlight), Icy Blue (darker)
-    pi138 = 138, // Light Blue (lighter), Icy Blue (middark)
-    pi139 = 139,
-    pi141 = 141, //
-    pi144 = 144, // Dark Green (1-darkest,
-    pi152 = 152,
-    pi161 = 161, // Bright Purple (light)
-    pi162 = 162, //
-    pi164 = 164, //
-    pi171 = 171, // Saturated Red (lightest) Bright Red (middark)
-    pi172 = 172, // Saturated Red (10-11), Bright Red (midlight)
-    pi173 = 173, // Used to draw intense lines in the Ride Graphs window
-    pi183 = 183, // Used to draw rides in the Map window
-    pi186 = 186, //
-    pi187 = 187, //
-    pi194 = 194, //
-    pi195 = 195, //
-    pi199 = 199, //
-    pi202 = 202, // Secondary remap 0  / Pink (darkest)
-    pi203 = 203, // Secondary remap 1  / Pink
-    pi204 = 204, // Secondary remap 2  / Pink
-    pi205 = 205, // Secondary remap 3  / Pink
-    pi206 = 206, // Secondary remap 4  / Pink
-    pi207 = 207, // Secondary remap 5  / Pink
-    pi208 = 208, // Secondary remap 6  / Pink
-    pi209 = 209, // Secondary remap 7  / Pink
-    pi210 = 210, // Secondary remap 8  / Pink
-    pi211 = 211, // Secondary remap 9  / Pink
-    pi212 = 212, // Secondary remap 10 / Pink
-    pi213 = 213, // Secondary remap 11 / Pink (lightest)
-    pi222 = 222, //
-    pi223 = 223, //
-    pi230 = 230, // Water (waves)
-    pi231 = 231, // Water (waves)
-    pi232 = 232, // Water (waves)
-    pi233 = 233, // Water (waves)
-    pi234 = 234, // Water (waves)
-    pi235 = 235, // Water (sparkles)
-    pi236 = 236, // Water (sparkles)
-    pi237 = 237, // Water (sparkles)
-    pi238 = 238, // Water (sparkles)
-    pi239 = 239, // Water (sparkles)
-    pi240 = 240, // Track rails
-    pi241 = 241, // Track rails
-    pi242 = 242, // Track rails
-    pi243 = 243, // Primary remap 0
-    pi244 = 244, // Primary remap 1
-    pi245 = 245, // Primary remap 2
-    pi246 = 246, // Primary remap 3
-    pi247 = 247, // Primary remap 4
-    pi248 = 248, // Primary remap 5
-    pi249 = 249, // Primary remap 6
-    pi250 = 250, // Primary remap 7
-    pi251 = 251, // Primary remap 8
-    pi252 = 252, // Primary remap 9
-    pi253 = 253, // Primary remap 10
-    pi254 = 254, // Primary remap 11
-};
-
 constexpr size_t kPaletteCount = 256;
 
-constexpr auto kPaletteOffsetDynamic = PaletteIndex::pi10;
+constexpr auto kPaletteOffsetDynamic = OpenRCT2::Drawing::PaletteIndex::pi10;
 constexpr uint8_t kPaletteLengthDynamic = 236;
 
-constexpr auto kPaletteOffsetWaterWaves = PaletteIndex::pi230;
-constexpr auto kPaletteOffsetWaterSparkles = PaletteIndex::pi235;
+constexpr auto kPaletteOffsetWaterWaves = OpenRCT2::Drawing::PaletteIndex::pi230;
+constexpr auto kPaletteOffsetWaterSparkles = OpenRCT2::Drawing::PaletteIndex::pi235;
 constexpr uint8_t kPaletteLengthWaterWaves = 5;
 constexpr uint8_t kPaletteLengthWaterSparkles = 5;
 
-constexpr auto kPaletteOffsetTrackRails = PaletteIndex::pi240;
+constexpr auto kPaletteOffsetTrackRails = OpenRCT2::Drawing::PaletteIndex::pi240;
 constexpr uint8_t kPaletteLengthTrackRails = 3;
 
-constexpr auto kPaletteOffsetRemapPrimary = PaletteIndex::pi243;
-constexpr auto kPaletteOffsetRemapSecondary = PaletteIndex::pi202;
-constexpr auto kPaletteOffsetRemapTertiary = PaletteIndex::pi46;
+constexpr auto kPaletteOffsetRemapPrimary = OpenRCT2::Drawing::PaletteIndex::pi243;
+constexpr auto kPaletteOffsetRemapSecondary = OpenRCT2::Drawing::PaletteIndex::pi202;
+constexpr auto kPaletteOffsetRemapTertiary = OpenRCT2::Drawing::PaletteIndex::pi46;
 constexpr uint8_t kPaletteLengthRemap = 12;
 
-constexpr auto kPaletteOffsetAnimated = PaletteIndex::pi230;
+constexpr auto kPaletteOffsetAnimated = OpenRCT2::Drawing::PaletteIndex::pi230;
 constexpr uint8_t kPaletteLengthAnimated = 16;
 
 constexpr uint8_t kColourNumOriginal = 32;
@@ -224,18 +126,18 @@ constexpr colour_t kTextColour255 = 255;
 
 struct ColourShadeMap
 {
-    PaletteIndex colour_0;
-    PaletteIndex colour_1;
-    PaletteIndex darkest;
-    PaletteIndex darker;
-    PaletteIndex dark;
-    PaletteIndex mid_dark;
-    PaletteIndex mid_light;
-    PaletteIndex light;
-    PaletteIndex lighter;
-    PaletteIndex lightest;
-    PaletteIndex colour_10;
-    PaletteIndex colour_11;
+    OpenRCT2::Drawing::PaletteIndex colour_0;
+    OpenRCT2::Drawing::PaletteIndex colour_1;
+    OpenRCT2::Drawing::PaletteIndex darkest;
+    OpenRCT2::Drawing::PaletteIndex darker;
+    OpenRCT2::Drawing::PaletteIndex dark;
+    OpenRCT2::Drawing::PaletteIndex mid_dark;
+    OpenRCT2::Drawing::PaletteIndex mid_light;
+    OpenRCT2::Drawing::PaletteIndex light;
+    OpenRCT2::Drawing::PaletteIndex lighter;
+    OpenRCT2::Drawing::PaletteIndex lightest;
+    OpenRCT2::Drawing::PaletteIndex colour_10;
+    OpenRCT2::Drawing::PaletteIndex colour_11;
 };
 
 extern ColourShadeMap ColourMapA[COLOUR_COUNT];
@@ -249,8 +151,9 @@ namespace OpenRCT2::Colour
 } // namespace OpenRCT2::Colour
 
 #ifndef DISABLE_TTF
-uint8_t BlendColours(const uint8_t paletteIndex1, const uint8_t paletteIndex2);
+OpenRCT2::Drawing::PaletteIndex BlendColours(
+    const OpenRCT2::Drawing::PaletteIndex paletteIndex1, const OpenRCT2::Drawing::PaletteIndex paletteIndex2);
 #endif
 
-typedef uint8_t BlendColourMapType[kPaletteCount][kPaletteCount];
+typedef OpenRCT2::Drawing::PaletteIndex BlendColourMapType[kPaletteCount][kPaletteCount];
 BlendColourMapType* GetBlendColourMap();

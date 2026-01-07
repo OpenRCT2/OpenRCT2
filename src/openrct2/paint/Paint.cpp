@@ -40,20 +40,20 @@ uint8_t gClipHeight = 128; // Default to middle value
 CoordsXY gClipSelectionA = { 0, 0 };
 CoordsXY gClipSelectionB = { kMaximumTileStartXY, kMaximumTileStartXY };
 
-static constexpr uint8_t BoundBoxDebugColours[] = {
-    0,   // NONE
-    102, // TERRAIN
-    114, // SPRITE
-    229, // RIDE
-    126, // WATER
-    138, // SCENERY
-    150, // FOOTPATH
-    162, // FOOTPATH_ITEM
-    174, // PARK
-    186, // WALL
-    198, // LARGE_SCENERY
-    210, // LABEL
-    222, // BANNER
+static constexpr PaletteIndex kBoundBoxDebugColours[] = {
+    PaletteIndex::pi0,   // NONE
+    PaletteIndex::pi102, // TERRAIN
+    PaletteIndex::pi114, // SPRITE
+    PaletteIndex::pi229, // RIDE
+    PaletteIndex::pi126, // WATER
+    PaletteIndex::pi138, // SCENERY
+    PaletteIndex::pi150, // FOOTPATH
+    PaletteIndex::pi162, // FOOTPATH_ITEM
+    PaletteIndex::pi174, // PARK
+    PaletteIndex::pi186, // WALL
+    PaletteIndex::pi198, // LARGE_SCENERY
+    PaletteIndex::pi210, // LABEL
+    PaletteIndex::pi222, // BANNER
 };
 
 bool gShowDirtyVisuals;
@@ -758,7 +758,7 @@ static void PaintPSImageWithBoundingBoxes(PaintSession& session, PaintStruct* ps
 {
     auto& rt = session.rt;
 
-    const uint8_t colour = BoundBoxDebugColours[EnumValue(ps->InteractionItem)];
+    const PaletteIndex colour = kBoundBoxDebugColours[EnumValue(ps->InteractionItem)];
     const uint8_t rotation = session.CurrentRotation;
 
     const CoordsXYZ frontTop = {
