@@ -190,7 +190,7 @@ static void PaintSpaceRings(
 /**
  * rct2: 0x0x00767A40
  */
-TrackPaintFunction GetTrackPaintFunctionSpaceRings(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionSpaceRings(TrackElemType trackType)
 {
     if (trackType != TrackElemType::flatTrack3x3)
     {

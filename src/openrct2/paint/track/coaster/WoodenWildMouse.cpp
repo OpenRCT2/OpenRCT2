@@ -716,7 +716,7 @@ static void WoodenWildMouseTrack60DegDownToFlat(
     WoodenWildMouseTrackFlatTo60DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
-TrackPaintFunction GetTrackPaintFunctionWoodenWildMouse(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionWoodenWildMouse(TrackElemType trackType)
 {
     switch (trackType)
     {

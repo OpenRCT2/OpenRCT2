@@ -1678,7 +1678,7 @@ static void HeartlineTwisterRCTrackRightHeartlineRoll(
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
-TrackPaintFunction GetTrackPaintFunctionHeartlineTwisterRC(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionHeartlineTwisterRC(TrackElemType trackType)
 {
     switch (trackType)
     {

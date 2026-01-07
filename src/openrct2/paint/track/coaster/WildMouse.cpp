@@ -941,7 +941,7 @@ static void WildMouseTrackBlockBrakes(
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
-TrackPaintFunction GetTrackPaintFunctionWildMouse(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionWildMouse(TrackElemType trackType)
 {
     switch (trackType)
     {

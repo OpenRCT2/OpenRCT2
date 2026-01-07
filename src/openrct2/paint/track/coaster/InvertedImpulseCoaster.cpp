@@ -758,7 +758,7 @@ static void InvertedImpulseRCTrackRightQuarterTurn190DegDown(
         session, ride, trackSequence, (direction - 1) & 3, height, trackElement, supportType);
 }
 
-TrackPaintFunction GetTrackPaintFunctionInvertedImpulseRC(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionInvertedImpulseRC(TrackElemType trackType)
 {
     switch (trackType)
     {

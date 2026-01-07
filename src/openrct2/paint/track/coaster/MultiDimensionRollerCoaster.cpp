@@ -14516,7 +14516,7 @@ static void MultiDimensionRCTrackMultidimInverted90DegUpToFlatQuarterLoop(
     }
 }
 
-TrackPaintFunction GetTrackPaintFunctionMultiDimensionRC(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionMultiDimensionRC(TrackElemType trackType)
 {
     switch (trackType)
     {

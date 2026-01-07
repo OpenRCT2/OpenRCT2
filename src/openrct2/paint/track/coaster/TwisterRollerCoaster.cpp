@@ -20051,7 +20051,7 @@ static void TwisterRCTrackRightEighthDiveLoopToDownOrthogonal(
         session, ride, 5 - trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
-TrackPaintFunction GetTrackPaintFunctionTwisterRC(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionTwisterRC(TrackElemType trackType)
 {
     switch (trackType)
     {

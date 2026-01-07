@@ -125,7 +125,7 @@ static void PaintHauntedHouse(
     PaintUtilSetGeneralSupportHeight(session, height + 128);
 }
 
-TrackPaintFunction GetTrackPaintFunctionHauntedHouse(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionHauntedHouse(TrackElemType trackType)
 {
     if (trackType != TrackElemType::flatTrack3x3)
     {

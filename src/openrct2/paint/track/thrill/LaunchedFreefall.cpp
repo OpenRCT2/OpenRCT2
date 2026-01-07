@@ -141,7 +141,7 @@ static void PaintLaunchedFreefallTowerSection(
 /**
  * rct2: 0x006FD0E8
  */
-TrackPaintFunction GetTrackPaintFunctionLaunchedFreefall(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionLaunchedFreefall(TrackElemType trackType)
 {
     switch (trackType)
     {

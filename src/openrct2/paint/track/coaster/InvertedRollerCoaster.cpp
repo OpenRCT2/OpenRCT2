@@ -11330,7 +11330,7 @@ static void InvertedRCTrackBooster(
     PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
-TrackPaintFunction GetTrackPaintFunctionInvertedRC(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionInvertedRC(TrackElemType trackType)
 {
     switch (trackType)
     {

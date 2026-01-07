@@ -172,7 +172,7 @@ static void SubmarineRidePaintTrackRightQuarterTurn1Tile(
 /**
  * rct2: 0x008995D4
  */
-TrackPaintFunction GetTrackPaintFunctionSubmarineRide(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionSubmarineRide(TrackElemType trackType)
 {
     switch (trackType)
     {

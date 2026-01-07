@@ -5423,7 +5423,7 @@ static void MineRideTrackDiagRightBank(
     }
 }
 
-TrackPaintFunction GetTrackPaintFunctionMineRide(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionMineRide(TrackElemType trackType)
 {
     switch (trackType)
     {

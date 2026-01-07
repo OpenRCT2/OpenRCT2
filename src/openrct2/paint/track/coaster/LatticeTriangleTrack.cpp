@@ -19556,7 +19556,7 @@ static void LatticeTriangleTrackRightEighthDiveLoopToDownOrthogonal(
         session, ride, 5 - trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
-TrackPaintFunction GetTrackPaintFunctionLatticeTriangleTrack(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionLatticeTriangleTrack(TrackElemType trackType)
 {
     switch (trackType)
     {

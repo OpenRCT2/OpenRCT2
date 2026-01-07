@@ -1382,7 +1382,7 @@ static void InvertedHairpinRCTrackBlockBrakes(
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
-TrackPaintFunction GetTrackPaintFunctionInvertedHairpinRC(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionInvertedHairpinRC(TrackElemType trackType)
 {
     switch (trackType)
     {

@@ -5772,7 +5772,7 @@ static void LimLaunchedRCTrackBooster(
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
-TrackPaintFunction GetTrackPaintFunctionLimLaunchedRC(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionLimLaunchedRC(TrackElemType trackType)
 {
     switch (trackType)
     {

@@ -2909,7 +2909,7 @@ static void SideFrictionRCTrackDiag60DegDownTo25DegDown(
         session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 };
 
-TrackPaintFunction GetTrackPaintFunctionSideFrictionRC(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionSideFrictionRC(TrackElemType trackType)
 {
     switch (trackType)
     {

@@ -140,7 +140,7 @@ static void PaintObservationTowerSection(
 /**
  * rct2: 0x0070DC5C
  */
-TrackPaintFunction GetTrackPaintFunctionObservationTower(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionObservationTower(TrackElemType trackType)
 {
     switch (trackType)
     {

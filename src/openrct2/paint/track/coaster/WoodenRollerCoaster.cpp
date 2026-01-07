@@ -13359,7 +13359,7 @@ static void WoodenRCTrackRightLargeHalfLoopDown(
 }
 
 template<bool isClassic>
-TrackPaintFunction GetTrackPaintFunctionWoodenAndClassicWoodenRC(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionWoodenAndClassicWoodenRC(TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -13678,12 +13678,12 @@ TrackPaintFunction GetTrackPaintFunctionWoodenAndClassicWoodenRC(OpenRCT2::Track
     }
 }
 
-TrackPaintFunction GetTrackPaintFunctionWoodenRC(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionWoodenRC(TrackElemType trackType)
 {
     return GetTrackPaintFunctionWoodenAndClassicWoodenRC<false>(trackType);
 }
 
-TrackPaintFunction GetTrackPaintFunctionClassicWoodenRCFallback(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionClassicWoodenRCFallback(TrackElemType trackType)
 {
     return GetTrackPaintFunctionWoodenAndClassicWoodenRC<true>(trackType);
 }

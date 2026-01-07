@@ -591,7 +591,7 @@ static void PaintMonorailCyclesTrackSBendRight(
 /**
  * rct2: 0x0088ac88
  */
-TrackPaintFunction GetTrackPaintFunctionMonorailCycles(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionMonorailCycles(TrackElemType trackType)
 {
     switch (trackType)
     {

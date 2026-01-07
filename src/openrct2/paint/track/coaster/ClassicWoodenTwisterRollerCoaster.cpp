@@ -2086,7 +2086,7 @@ static void ClassicWoodenTwisterRCTrackRightEighthBankToOrthogonal(
 // Stylistically, this coaster is _very_ similar to the regular Wooden Roller Coaster.
 // The only difference is the degree of the banking.
 // As such, all non-banked pieces are simply drawn as regular wooden roller coaster pieces.
-TrackPaintFunction GetTrackPaintFunctionClassicWoodenTwisterRC(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionClassicWoodenTwisterRC(TrackElemType trackType)
 {
     if (!IsCsgLoaded())
     {

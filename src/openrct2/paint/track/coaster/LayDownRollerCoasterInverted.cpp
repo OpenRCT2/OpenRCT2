@@ -8165,7 +8165,7 @@ static void LayDownRCTrackHalfLoopInvertedUp(
     }
 }
 
-TrackPaintFunction GetTrackPaintFunctionLayDownRCInverted(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionLayDownRCInverted(TrackElemType trackType)
 {
     switch (trackType)
     {

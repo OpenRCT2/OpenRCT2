@@ -109,7 +109,7 @@ static void PaintDodgems(
 /**
  * rct2:
  */
-TrackPaintFunction GetTrackPaintFunctionDodgems(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionDodgems(TrackElemType trackType)
 {
     if (trackType != TrackElemType::flatTrack4x4)
     {

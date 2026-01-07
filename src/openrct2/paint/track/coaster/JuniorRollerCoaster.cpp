@@ -5767,7 +5767,7 @@ static void JuniorRCTrackOnRidePhoto(
 
 /* 0x008AAA0C */
 template<JuniorRCSubType TSubType>
-TrackPaintFunction GetTrackPaintFunctionJuniorRCTemplate(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionJuniorRCTemplate(TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -5996,12 +5996,12 @@ TrackPaintFunction GetTrackPaintFunctionJuniorRCTemplate(OpenRCT2::TrackElemType
     }
 }
 
-TrackPaintFunction GetTrackPaintFunctionJuniorRC(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionJuniorRC(TrackElemType trackType)
 {
     return GetTrackPaintFunctionJuniorRCTemplate<JuniorRCSubType::Junior>(trackType);
 }
 
-TrackPaintFunction GetTrackPaintFunctionWaterRC(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionWaterRC(TrackElemType trackType)
 {
     return GetTrackPaintFunctionJuniorRCTemplate<JuniorRCSubType::WaterCoaster>(trackType);
 }

@@ -1971,7 +1971,7 @@ static void SuspendedMonorailTrackDiag25DegDownToFlat(
     }
 }
 
-TrackPaintFunction GetTrackPaintFunctionSuspendedMonorail(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionSuspendedMonorail(TrackElemType trackType)
 {
     switch (trackType)
     {
