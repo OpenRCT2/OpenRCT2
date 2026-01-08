@@ -49,9 +49,9 @@ namespace OpenRCT2::GameActions
 
     private:
         bool RideIsModeValid(const Ride& ride) const;
-        bool RideIsValidLiftHillSpeed(const Ride& ride) const;
-        bool RideIsValidNumCircuits() const;
-        bool RideIsValidOperationOption(const Ride& ride) const;
+        bool RideIsValidLiftHillSpeed(GameState_t& gameState, const Ride& ride) const;
+        bool RideIsValidNumCircuits(GameState_t& gameState) const;
+        bool RideIsValidOperationOption(GameState_t& gameState, const Ride& ride) const;
         StringId GetOperationErrorMessage(const Ride& ride) const;
     };
 } // namespace OpenRCT2::GameActions

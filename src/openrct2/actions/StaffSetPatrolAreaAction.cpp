@@ -48,12 +48,12 @@ namespace OpenRCT2::GameActions
 
     Result StaffSetPatrolAreaAction::Query(GameState_t& gameState) const
     {
-        return QueryExecute(false);
+        return QueryExecute(gameState, false);
     }
 
     Result StaffSetPatrolAreaAction::Execute(GameState_t& gameState) const
     {
-        return QueryExecute(true);
+        return QueryExecute(gameState, true);
     }
 
     static void InvalidatePatrolTiles(const MapRange& range)
@@ -61,9 +61,9 @@ namespace OpenRCT2::GameActions
         MapInvalidateRegion(range.Point1, range.Point2);
     }
 
-    Result StaffSetPatrolAreaAction::QueryExecute(bool executing) const
+    Result StaffSetPatrolAreaAction::QueryExecute(GameState_t& gameState, bool executing) const
     {
-        auto staff = getGameState().entities.TryGetEntity<Staff>(_spriteId);
+        auto staff = gameState.entities.TryGetEntity<Staff>(_spriteId);
         if (staff == nullptr)
         {
             LOG_ERROR("Staff entity not found for spriteID %u", _spriteId.ToUnderlying());

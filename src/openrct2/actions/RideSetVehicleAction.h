@@ -43,7 +43,7 @@ namespace OpenRCT2::GameActions
         Result Execute(GameState_t& gameState) const override;
 
     private:
-        bool RideIsVehicleTypeValid(const Ride& ride) const;
+        bool RideIsVehicleTypeValid(GameState_t& gameState, const Ride& ride) const;
 
         static_assert(sizeof(_value) >= sizeof(ObjectEntryIndex));
     };

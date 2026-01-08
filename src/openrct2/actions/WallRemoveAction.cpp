@@ -51,7 +51,7 @@ namespace OpenRCT2::GameActions
         }
 
         const bool isGhost = GetFlags().has(CommandFlag::ghost);
-        if (!isGhost && gLegacyScene != LegacyScene::scenarioEditor && !getGameState().cheats.sandboxMode
+        if (!isGhost && gLegacyScene != LegacyScene::scenarioEditor && !gameState.cheats.sandboxMode
             && !MapIsLocationOwned(_loc))
         {
             return Result(Status::notOwned, STR_CANT_REMOVE_THIS, STR_LAND_NOT_OWNED_BY_PARK);

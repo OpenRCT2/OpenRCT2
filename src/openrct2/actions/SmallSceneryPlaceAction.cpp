@@ -361,7 +361,7 @@ namespace OpenRCT2::GameActions
         if (!GetFlags().has(CommandFlag::ghost))
         {
             FootpathRemoveLitter({ _loc, targetHeight });
-            if (!getGameState().cheats.disableClearanceChecks && (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_NO_WALLS)))
+            if (!gameState.cheats.disableClearanceChecks && (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_NO_WALLS)))
             {
                 WallRemoveAt({ _loc, targetHeight, targetHeight + sceneryEntry->height });
             }

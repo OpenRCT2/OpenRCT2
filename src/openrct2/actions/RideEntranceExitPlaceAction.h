@@ -36,6 +36,6 @@ namespace OpenRCT2::GameActions
         Result Query(GameState_t& gameState) const override;
         Result Execute(GameState_t& gameState) const override;
 
-        static Result TrackPlaceQuery(const CoordsXYZ& loc, const bool isExit);
+        static Result TrackPlaceQuery(GameState_t& gameState, const CoordsXYZ& loc, const bool isExit);
     };
 } // namespace OpenRCT2::GameActions

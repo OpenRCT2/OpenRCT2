@@ -60,7 +60,7 @@ namespace OpenRCT2::GameActions
 
     Result ParkEntrancePlaceAction::Query(GameState_t& gameState) const
     {
-        if (!isInEditorMode() && !getGameState().cheats.sandboxMode)
+        if (!isInEditorMode() && !gameState.cheats.sandboxMode)
         {
             return Result(Status::notInEditorMode, STR_CANT_BUILD_THIS_HERE, kStringIdNone);
         }
@@ -126,7 +126,7 @@ namespace OpenRCT2::GameActions
 
         auto flags = GetFlags();
 
-        getGameState().park.entrances.push_back(_loc);
+        gameState.park.entrances.push_back(_loc);
 
         auto zLow = _loc.z;
         auto zHigh = zLow + ParkEntranceHeight;
