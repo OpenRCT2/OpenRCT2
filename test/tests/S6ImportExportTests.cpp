@@ -116,7 +116,7 @@ static bool ExportSave(MemoryStream& stream, std::unique_ptr<IContext>& context)
     exporter->ExportObjectsList = objManager.GetPackableObjects();
 
     auto& gameState = getGameState();
-    exporter->Export(gameState, stream, OpenRCT2::kParkFileSaveCompressionLevel);
+    exporter->Export(gameState, stream, kParkFileSaveCompressionLevel);
 
     return true;
 }

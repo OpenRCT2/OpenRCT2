@@ -28,7 +28,7 @@ static auto Enum_Currency = ConfigEnum<int32_t>({
 
 TEST_F(IniWriterTest, create_empty)
 {
-    OpenRCT2::MemoryStream ms(0);
+    MemoryStream ms(0);
     ASSERT_EQ(ms.CanRead(), true);
     ASSERT_EQ(ms.CanWrite(), true);
     auto iw = CreateIniWriter(&ms);
@@ -37,7 +37,7 @@ TEST_F(IniWriterTest, create_empty)
 
 TEST_F(IniWriterTest, create_one_section)
 {
-    OpenRCT2::MemoryStream ms(1000);
+    MemoryStream ms(1000);
     auto iw = CreateIniWriter(&ms);
     ASSERT_NE(iw, nullptr);
     iw->WriteSection("OpenRCT2");
@@ -53,7 +53,7 @@ TEST_F(IniWriterTest, create_one_section)
 
 TEST_F(IniWriterTest, create_multiple_sections)
 {
-    OpenRCT2::MemoryStream ms(1000);
+    MemoryStream ms(1000);
     auto iw = CreateIniWriter(&ms);
     ASSERT_NE(iw, nullptr);
     iw->WriteSection("OpenRCT1");
@@ -75,7 +75,7 @@ TEST_F(IniWriterTest, create_multiple_sections)
 
 TEST_F(IniWriterTest, create_loose_bool_entry)
 {
-    OpenRCT2::MemoryStream ms(1000);
+    MemoryStream ms(1000);
     auto iw = CreateIniWriter(&ms);
     ASSERT_NE(iw, nullptr);
     iw->WriteBoolean("boolval", true);
@@ -91,7 +91,7 @@ TEST_F(IniWriterTest, create_loose_bool_entry)
 
 TEST_F(IniWriterTest, create_loose_enum_entry)
 {
-    OpenRCT2::MemoryStream ms(1000);
+    MemoryStream ms(1000);
     auto iw = CreateIniWriter(&ms);
     ASSERT_NE(iw, nullptr);
     iw->WriteEnum("by_string", "stringval");
@@ -108,7 +108,7 @@ TEST_F(IniWriterTest, create_loose_enum_entry)
 
 TEST_F(IniWriterTest, create_loose_float_entry)
 {
-    OpenRCT2::MemoryStream ms(1000);
+    MemoryStream ms(1000);
     auto iw = CreateIniWriter(&ms);
     ASSERT_NE(iw, nullptr);
     iw->WriteFloat("one", 1.);
@@ -125,7 +125,7 @@ TEST_F(IniWriterTest, create_loose_float_entry)
 
 TEST_F(IniWriterTest, create_loose_int32_t_entry)
 {
-    OpenRCT2::MemoryStream ms(1000);
+    MemoryStream ms(1000);
     auto iw = CreateIniWriter(&ms);
     ASSERT_NE(iw, nullptr);
     iw->WriteInt32("one", 1);
@@ -148,7 +148,7 @@ TEST_F(IniWriterTest, create_loose_int32_t_entry)
 
 TEST_F(IniWriterTest, create_loose_string_entry)
 {
-    OpenRCT2::MemoryStream ms(1000);
+    MemoryStream ms(1000);
     auto iw = CreateIniWriter(&ms);
     ASSERT_NE(iw, nullptr);
     iw->WriteString("path", u8"C:'\\some/dir\\here/神鷹暢遊");
@@ -165,7 +165,7 @@ TEST_F(IniWriterTest, create_loose_string_entry)
 
 TEST_F(IniWriterTest, create_multiple_section_with_values)
 {
-    OpenRCT2::MemoryStream ms(1000);
+    MemoryStream ms(1000);
     auto iw = CreateIniWriter(&ms);
     ASSERT_NE(iw, nullptr);
     iw->WriteSection("bool");
@@ -191,7 +191,7 @@ TEST_F(IniWriterTest, create_multiple_section_with_values)
 
 TEST_F(IniWriterTest, create_duplicate_sections)
 {
-    OpenRCT2::MemoryStream ms(1000);
+    MemoryStream ms(1000);
     auto iw = CreateIniWriter(&ms);
     ASSERT_NE(iw, nullptr);
     iw->WriteSection("section");
