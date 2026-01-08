@@ -17,8 +17,7 @@
 
 namespace OpenRCT2::GameActions
 {
-    TrackSetBrakeSpeedAction::TrackSetBrakeSpeedAction(
-        const CoordsXYZ& loc, OpenRCT2::TrackElemType trackType, uint8_t brakeSpeed)
+    TrackSetBrakeSpeedAction::TrackSetBrakeSpeedAction(const CoordsXYZ& loc, TrackElemType trackType, uint8_t brakeSpeed)
         : _loc(loc)
         , _trackType(trackType)
         , _brakeSpeed(brakeSpeed)

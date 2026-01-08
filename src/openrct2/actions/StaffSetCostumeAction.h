@@ -18,11 +18,11 @@ namespace OpenRCT2::GameActions
     {
     private:
         EntityId _spriteIndex{ EntityId::GetNull() };
-        ObjectEntryIndex _costume = OpenRCT2::kObjectEntryIndexNull;
+        ObjectEntryIndex _costume = kObjectEntryIndexNull;
 
     public:
         StaffSetCostumeAction() = default;
-        StaffSetCostumeAction(EntityId spriteIndex, OpenRCT2::ObjectEntryIndex costume);
+        StaffSetCostumeAction(EntityId spriteIndex, ObjectEntryIndex costume);
 
         void AcceptParameters(GameActionParameterVisitor&) final;
 

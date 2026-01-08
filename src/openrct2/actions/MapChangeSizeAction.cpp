@@ -80,7 +80,7 @@ namespace OpenRCT2::GameActions
             MapRemoveOutOfRangeElements();
         }
 
-        auto* ctx = OpenRCT2::GetContext();
+        auto* ctx = GetContext();
         auto& uiContext = ctx->GetUiContext();
         auto* windowManager = uiContext.GetWindowManager();
 

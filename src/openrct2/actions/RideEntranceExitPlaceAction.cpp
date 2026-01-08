@@ -89,8 +89,7 @@ namespace OpenRCT2::GameActions
 
         if (!location.IsNull())
         {
-            auto rideEntranceExitRemove = GameActions::RideEntranceExitRemoveAction(
-                location.ToCoordsXY(), _rideIndex, _stationNum, _isExit);
+            auto rideEntranceExitRemove = RideEntranceExitRemoveAction(location.ToCoordsXY(), _rideIndex, _stationNum, _isExit);
             rideEntranceExitRemove.SetFlags(GetFlags());
 
             auto result = QueryNested(&rideEntranceExitRemove, gameState);
@@ -165,8 +164,7 @@ namespace OpenRCT2::GameActions
         const auto location = _isExit ? station.Exit : station.Entrance;
         if (!location.IsNull())
         {
-            auto rideEntranceExitRemove = GameActions::RideEntranceExitRemoveAction(
-                location.ToCoordsXY(), _rideIndex, _stationNum, _isExit);
+            auto rideEntranceExitRemove = RideEntranceExitRemoveAction(location.ToCoordsXY(), _rideIndex, _stationNum, _isExit);
             rideEntranceExitRemove.SetFlags(GetFlags());
 
             auto result = ExecuteNested(&rideEntranceExitRemove, gameState);

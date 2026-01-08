@@ -80,7 +80,7 @@ namespace OpenRCT2::GameActions
         MarketingNewCampaign(campaign);
 
         // We are only interested in invalidating the finances (marketing) window
-        auto windowManager = OpenRCT2::Ui::GetWindowManager();
+        auto windowManager = Ui::GetWindowManager();
         windowManager->BroadcastIntent(Intent(INTENT_ACTION_UPDATE_CASH));
 
         return CreateResult();

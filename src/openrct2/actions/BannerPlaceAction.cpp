@@ -97,7 +97,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_CANT_POSITION_THIS_HERE, STR_TOO_MANY_BANNERS_IN_GAME);
         }
 
-        auto* bannerEntry = OpenRCT2::ObjectManager::GetObjectEntry<BannerSceneryEntry>(_bannerType);
+        auto* bannerEntry = ObjectManager::GetObjectEntry<BannerSceneryEntry>(_bannerType);
         if (bannerEntry == nullptr)
         {
             LOG_ERROR("Banner entry not found for bannerType %u", _bannerType);
@@ -124,7 +124,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::noFreeElements, STR_CANT_POSITION_THIS_HERE, STR_TILE_ELEMENT_LIMIT_REACHED);
         }
 
-        auto* bannerEntry = OpenRCT2::ObjectManager::GetObjectEntry<BannerSceneryEntry>(_bannerType);
+        auto* bannerEntry = ObjectManager::GetObjectEntry<BannerSceneryEntry>(_bannerType);
         if (bannerEntry == nullptr)
         {
             LOG_ERROR("Banner entry not found for bannerType %u", _bannerType);

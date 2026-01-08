@@ -499,7 +499,7 @@ namespace OpenRCT2::GameActions
                     // Remove walls in the directions this track intersects
                     uint8_t intersectingDirections = ted.sequences[blockIndex].allowedWallEdges;
                     intersectingDirections ^= 0x0F;
-                    intersectingDirections = Numerics::rol4(intersectingDirections, _origin.direction);
+                    intersectingDirections = rol4(intersectingDirections, _origin.direction);
                     for (int32_t i = 0; i < kNumOrthogonalDirections; i++)
                     {
                         if (intersectingDirections & (1 << i))
@@ -614,8 +614,8 @@ namespace OpenRCT2::GameActions
                 {
                     if (!GetFlags().has(CommandFlag::ghost) && !gameState.cheats.disableClearanceChecks)
                     {
-                        for (int32_t chosenDirection = Numerics::bitScanForward(connectionSides); chosenDirection != -1;
-                             chosenDirection = Numerics::bitScanForward(connectionSides))
+                        for (int32_t chosenDirection = bitScanForward(connectionSides); chosenDirection != -1;
+                             chosenDirection = bitScanForward(connectionSides))
                         {
                             connectionSides &= ~(1 << chosenDirection);
                             CoordsXY tempLoc{ mapLoc.x, mapLoc.y };
@@ -688,8 +688,8 @@ namespace OpenRCT2::GameActions
                         if (canSwitch)
                         {
                             ride->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_OPERATING;
-                            auto rideSetSetting = GameActions::RideSetSettingAction(
-                                ride->id, GameActions::RideSetSetting::Mode, static_cast<uint8_t>(newMode));
+                            auto rideSetSetting = RideSetSettingAction(
+                                ride->id, RideSetSetting::Mode, static_cast<uint8_t>(newMode));
                             ExecuteNested(&rideSetSetting, gameState);
                         }
                     }

@@ -113,7 +113,7 @@ namespace OpenRCT2::GameActions
     {
     public:
         using Ptr = std::unique_ptr<GameAction>;
-        using Callback_t = std::function<void(const class GameAction*, const OpenRCT2::GameActions::Result*)>;
+        using Callback_t = std::function<void(const class GameAction*, const Result*)>;
 
     private:
         GameCommand const _type;
@@ -160,14 +160,14 @@ namespace OpenRCT2::GameActions
             // Make sure we execute some things only on the client.
             uint16_t flags = 0;
 
-            if ((GetFlags().has(CommandFlag::ghost)) != 0 || (GetFlags().has(CommandFlag::noSpend)) != 0)
+            if (GetFlags().hasAny(CommandFlag::ghost, CommandFlag::noSpend))
             {
-                flags |= OpenRCT2::GameActions::Flags::ClientOnly;
+                flags |= Flags::ClientOnly;
             }
 
             if (GetFlags().has(CommandFlag::allowDuringPaused))
             {
-                flags |= OpenRCT2::GameActions::Flags::AllowWhilePaused;
+                flags |= Flags::AllowWhilePaused;
             }
 
             return flags;

@@ -70,6 +70,6 @@ namespace OpenRCT2::GameActions
          * Some thin tracks for example are allowed to have walls either side of the track, but wider tracks can not.
          */
         static bool TrackIsAllowedWallEdges(
-            ride_type_t rideType, OpenRCT2::TrackElemType trackType, uint8_t trackSequence, uint8_t direction);
+            ride_type_t rideType, TrackElemType trackType, uint8_t trackSequence, uint8_t direction);
     };
 } // namespace OpenRCT2::GameActions

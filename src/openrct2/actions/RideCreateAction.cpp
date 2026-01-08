@@ -178,7 +178,7 @@ namespace OpenRCT2::GameActions
         {
             ride->proposedNumTrains = 32;
         }
-        ride->maxTrains = OpenRCT2::Limits::kMaxTrainsPerRide;
+        ride->maxTrains = Limits::kMaxTrainsPerRide;
         ride->numCarsPerTrain = 1;
         ride->proposedNumCarsPerTrain = rideEntry->max_cars_in_train;
         ride->minWaitingTime = 10;
@@ -188,7 +188,7 @@ namespace OpenRCT2::GameActions
         const auto& rtd = ride->getRideTypeDescriptor();
         if (rtd.HasFlag(RtdFlag::allowMusic))
         {
-            auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
+            auto& objManager = GetContext()->GetObjectManager();
             ride->music = objManager.GetLoadedObjectEntryIndex(rtd.DefaultMusic);
             if (ride->music != kObjectEntryIndexNull)
             {
