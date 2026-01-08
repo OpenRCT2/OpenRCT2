@@ -703,21 +703,21 @@ void GfxTransposePalette(int32_t pal, uint8_t product)
     const G1Element* g1 = GfxGetG1Element(pal);
     if (g1 != nullptr)
     {
-        int32_t width = g1->width;
-        int32_t x = g1->xOffset;
-        uint8_t* source_pointer = g1->offset;
+        auto numColours = g1->numColours;
+        auto index = g1->startIndex;
+        auto* src = g1->palette;
 
-        for (; width > 0; width--)
+        for (; numColours > 0; numColours--)
         {
-            auto& dest_pointer = gGamePalette[x];
-            // Make sure the image never gets darker than the void colour (not-quite-block), to the background colour jumping
-            // between void and 100% black.
-            dest_pointer.Blue = std::max<uint8_t>(35, ((source_pointer[0] * product) >> 8));
-            dest_pointer.Green = std::max<uint8_t>(35, ((source_pointer[1] * product) >> 8));
-            dest_pointer.Red = std::max<uint8_t>(23, ((source_pointer[2] * product) >> 8));
-            source_pointer += 3;
+            auto& dst = gGamePalette[index];
+            // Make sure the image never gets darker than the void colour (not-quite-black), to avoid the background colour
+            // jumping between void and 100% black.
+            dst.Blue = std::max<uint8_t>(35, ((src->blue * product) >> 8));
+            dst.Green = std::max<uint8_t>(35, ((src->green * product) >> 8));
+            dst.Red = std::max<uint8_t>(23, ((src->red * product) >> 8));
+            src++;
 
-            x++;
+            index++;
         }
         UpdatePalette(gGamePalette, PaletteIndex::pi10, 236);
     }
@@ -746,17 +746,17 @@ void LoadPalette()
     const G1Element* g1 = GfxGetG1Element(palette);
     if (g1 != nullptr)
     {
-        int32_t width = g1->width;
-        int32_t x = g1->xOffset;
-        uint8_t* src = g1->offset;
-        for (; width > 0; width--)
+        auto numColours = g1->numColours;
+        auto index = g1->startIndex;
+        auto* src = g1->palette;
+        for (; numColours > 0; numColours--)
         {
-            auto& dst = gGamePalette[x];
-            dst.Blue = src[0];
-            dst.Green = src[1];
-            dst.Red = src[2];
-            src += 3;
-            x++;
+            auto& dst = gGamePalette[index];
+            dst.Blue = src->blue;
+            dst.Green = src->green;
+            dst.Red = src->red;
+            src++;
+            index++;
         }
     }
     UpdatePalette(gGamePalette, PaletteIndex::pi10, 236);
@@ -960,14 +960,15 @@ void UpdatePaletteEffects()
         const G1Element* g1 = GfxGetG1Element(palette);
         if (g1 != nullptr)
         {
-            int32_t xoffset = g1->xOffset;
+            auto startIndex = g1->startIndex;
 
-            for (int32_t i = 0; i < g1->width; i++)
+            for (int32_t i = 0; i < g1->numColours; i++)
             {
-                auto& paletteOffset = gGamePalette[xoffset + i];
-                paletteOffset.Blue = -((0xFF - g1->offset[(i * 3) + 0]) / 2) - 1;
-                paletteOffset.Green = -((0xFF - g1->offset[(i * 3) + 1]) / 2) - 1;
-                paletteOffset.Red = -((0xFF - g1->offset[(i * 3) + 2]) / 2) - 1;
+                auto& paletteOffset = gGamePalette[startIndex + i];
+                const auto& g1PaletteEntry = g1->palette[i];
+                paletteOffset.Blue = -((0xFF - g1PaletteEntry.blue) / 2) - 1;
+                paletteOffset.Green = -((0xFF - g1PaletteEntry.green) / 2) - 1;
+                paletteOffset.Red = -((0xFF - g1PaletteEntry.red) / 2) - 1;
             }
 
             UpdatePalette(gGamePalette, kPaletteOffsetDynamic, kPaletteLengthDynamic);
@@ -989,14 +990,15 @@ void UpdatePaletteEffects()
             const G1Element* g1 = GfxGetG1Element(palette);
             if (g1 != nullptr)
             {
-                int32_t xoffset = g1->xOffset;
+                auto startIndex = g1->startIndex;
 
-                for (int32_t i = 0; i < g1->width; i++)
+                for (int32_t i = 0; i < g1->numColours; i++)
                 {
-                    auto& paletteOffset = gGamePalette[xoffset + i];
-                    paletteOffset.Blue = g1->offset[(i * 3) + 0];
-                    paletteOffset.Green = g1->offset[(i * 3) + 1];
-                    paletteOffset.Red = g1->offset[(i * 3) + 2];
+                    auto& paletteOffset = gGamePalette[startIndex + i];
+                    const auto& g1PaletteEntry = g1->palette[i];
+                    paletteOffset.Blue = g1PaletteEntry.blue;
+                    paletteOffset.Green = g1PaletteEntry.green;
+                    paletteOffset.Red = g1PaletteEntry.red;
                 }
             }
         }
@@ -1025,18 +1027,18 @@ void UpdatePaletteEffects()
         const G1Element* g1 = GfxGetG1Element(shade + waterId);
         if (g1 != nullptr)
         {
-            uint8_t* vs = &g1->offset[j * 3];
+            const auto* g1PaletteEntry = &g1->palette[j];
             int32_t n = kPaletteLengthWaterWaves;
             for (int32_t i = 0; i < n; i++)
             {
                 auto& vd = gGamePalette[EnumValue(kPaletteOffsetWaterWaves) + i];
-                vd.Blue = vs[0];
-                vd.Green = vs[1];
-                vd.Red = vs[2];
-                vs += 9;
-                if (vs >= &g1->offset[9 * n])
+                vd.Blue = g1PaletteEntry->blue;
+                vd.Green = g1PaletteEntry->green;
+                vd.Red = g1PaletteEntry->red;
+                g1PaletteEntry += 3;
+                if (g1PaletteEntry >= &g1->palette[3 * n])
                 {
-                    vs -= 9 * n;
+                    g1PaletteEntry -= 3 * n;
                 }
             }
         }
@@ -1050,18 +1052,18 @@ void UpdatePaletteEffects()
         g1 = GfxGetG1Element(shade + waterId);
         if (g1 != nullptr)
         {
-            uint8_t* vs = &g1->offset[j * 3];
+            auto* src = &g1->palette[j];
             int32_t n = kPaletteLengthWaterSparkles;
             for (int32_t i = 0; i < n; i++)
             {
                 auto& vd = gGamePalette[EnumValue(kPaletteOffsetWaterSparkles) + i];
-                vd.Blue = vs[0];
-                vd.Green = vs[1];
-                vd.Red = vs[2];
-                vs += 9;
-                if (vs >= &g1->offset[9 * n])
+                vd.Blue = src->blue;
+                vd.Green = src->green;
+                vd.Red = src->red;
+                src += 3;
+                if (src >= &g1->palette[3 * n])
                 {
-                    vs -= 9 * n;
+                    src -= 3 * n;
                 }
             }
         }
@@ -1071,18 +1073,18 @@ void UpdatePaletteEffects()
         g1 = GfxGetG1Element(shade + waterId);
         if (g1 != nullptr)
         {
-            uint8_t* vs = &g1->offset[j * 3];
-            int32_t n = 3;
+            auto* src = &g1->palette[j];
+            const int32_t n = 3;
             for (int32_t i = 0; i < n; i++)
             {
                 auto& vd = gGamePalette[EnumValue(PaletteIndex::pi243) + i];
-                vd.Blue = vs[0];
-                vd.Green = vs[1];
-                vd.Red = vs[2];
-                vs += 3;
-                if (vs >= &g1->offset[3 * n])
+                vd.Blue = src->blue;
+                vd.Green = src->green;
+                vd.Red = src->red;
+                src++;
+                if (src >= &g1->palette[3])
                 {
-                    vs -= 3 * n;
+                    src -= n;
                 }
             }
         }
