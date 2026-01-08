@@ -15,6 +15,11 @@
 #include <memory>
 #include <vector>
 
+namespace OpenRCT2::Drawing
+{
+    struct BGRColour;
+}
+
 namespace OpenRCT2
 {
     enum class G1Flag : uint8_t
@@ -30,21 +35,28 @@ namespace OpenRCT2
 
     struct G1Element
     {
-        uint8_t* offset = nullptr; // 0x00
         union
         {
-            int16_t width = 0;  // 0x04
-            int16_t numColours; // If G1Flag::isPalette is set
+            struct
+            {
+                uint8_t* offset = nullptr;
+                int16_t width = 0;
+                int16_t height = 0;
+                int16_t xOffset = 0;
+                int16_t yOffset = 0;
+            } imageEntry;
+            // If G1Flag::isPalette is set
+            struct
+            {
+                Drawing::BGRColour* palette;
+                int16_t numColours;
+                int16_t pad; // Not used for palettes
+                int16_t startIndex;
+            } paletteEntry;
         };
-        int16_t height = 0; // 0x06
-        union
-        {
-            int16_t xOffset = 0; // 0x08
-            int16_t startIndex;  // If G1Flag::isPalette is set
-        };
-        int16_t yOffset = 0;      // 0x0A
-        G1Flags flags = {};       // 0x0C
-        int32_t zoomedOffset = 0; // 0x0E
+
+        G1Flags flags = {};
+        int32_t zoomedOffset = 0;
     };
 
 #pragma pack(push, 1)

@@ -36,6 +36,6 @@ namespace OpenRCT2
 
     private:
         void ReadJsonPalette(json_t& jPalette);
-        uint32_t ParseColour(const std::string& s) const;
+        Drawing::BGRColour ParseColour(const std::string& s) const;
     };
 } // namespace OpenRCT2
