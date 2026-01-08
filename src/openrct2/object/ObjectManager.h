@@ -15,6 +15,7 @@
 #include "ObjectTypes.h"
 
 #include <memory>
+#include <string_view>
 #include <vector>
 
 namespace OpenRCT2
