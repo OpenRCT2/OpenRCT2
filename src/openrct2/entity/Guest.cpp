@@ -2348,7 +2348,7 @@ void Guest::SpendMoney(money64& peep_expend_type, money64 amount, ExpenditureTyp
 {
     assert(!(getGameState().park.flags & PARK_FLAGS_NO_MONEY));
 
-    CashInPocket = std::max(0.00_GBP, static_cast<money64>(CashInPocket) - amount);
+    CashInPocket = std::max(0.00_GBP, CashInPocket - amount);
     CashSpent += amount;
 
     peep_expend_type += amount;

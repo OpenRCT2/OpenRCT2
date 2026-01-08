@@ -55,8 +55,7 @@ namespace OpenRCT2::GameActions
         auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
         if (_surfaceStyle != kObjectEntryIndexNull)
         {
-            const auto surfaceObj = static_cast<TerrainSurfaceObject*>(
-                objManager.GetLoadedObject<TerrainSurfaceObject>(_surfaceStyle));
+            const auto surfaceObj = objManager.GetLoadedObject<TerrainSurfaceObject>(_surfaceStyle);
 
             if (surfaceObj == nullptr)
             {

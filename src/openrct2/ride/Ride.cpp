@@ -5631,7 +5631,7 @@ void DetermineRideEntranceAndExitLocations()
                 }
                 else
                 {
-                    station.Entrance.direction = static_cast<uint8_t>(entranceElement->GetDirection());
+                    station.Entrance.direction = entranceElement->GetDirection();
                 }
             }
 
@@ -5646,7 +5646,7 @@ void DetermineRideEntranceAndExitLocations()
                 }
                 else
                 {
-                    station.Exit.direction = static_cast<uint8_t>(entranceElement->GetDirection());
+                    station.Exit.direction = entranceElement->GetDirection();
                 }
             }
 
@@ -5697,8 +5697,7 @@ void DetermineRideEntranceAndExitLocations()
                                 }
 
                                 // Found our entrance
-                                station.Entrance = { x, y, entranceElement->BaseHeight,
-                                                     static_cast<uint8_t>(entranceElement->GetDirection()) };
+                                station.Entrance = { x, y, entranceElement->BaseHeight, entranceElement->GetDirection() };
                                 alreadyFoundEntrance = true;
 
                                 LOG_VERBOSE(
@@ -5716,8 +5715,7 @@ void DetermineRideEntranceAndExitLocations()
                                 }
 
                                 // Found our exit
-                                station.Exit = { x, y, entranceElement->BaseHeight,
-                                                 static_cast<uint8_t>(entranceElement->GetDirection()) };
+                                station.Exit = { x, y, entranceElement->BaseHeight, entranceElement->GetDirection() };
                                 alreadyFoundExit = true;
 
                                 LOG_VERBOSE(

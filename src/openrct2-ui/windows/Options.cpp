@@ -2229,7 +2229,7 @@ namespace OpenRCT2::Ui::Windows
         void AdvancedDraw(Drawing::RenderTarget& rt)
         {
             auto ft = Formatter();
-            ft.Add<int32_t>(static_cast<int32_t>(Config::Get().general.autosaveAmount));
+            ft.Add<int32_t>(Config::Get().general.autosaveAmount);
             DrawTextBasic(
                 rt, windowPos + ScreenCoordsXY{ widgets[WIDX_AUTOSAVE_AMOUNT].left + 1, widgets[WIDX_AUTOSAVE_AMOUNT].top + 1 },
                 STR_WINDOW_COLOUR_2_COMMA32, ft, { colours[1] });
