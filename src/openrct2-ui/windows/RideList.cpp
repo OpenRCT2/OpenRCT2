@@ -977,9 +977,9 @@ namespace OpenRCT2::Ui::Windows
                 // Get the ride name once and use it for both filtering and storage
                 auto rideName = rideRef.getName();
 
-                if (rideRef.windowInvalidateFlags & RIDE_INVALIDATE_RIDE_LIST)
+                if (rideRef.windowInvalidateFlags.has(RideInvalidateFlag::list))
                 {
-                    rideRef.windowInvalidateFlags &= ~RIDE_INVALIDATE_RIDE_LIST;
+                    rideRef.windowInvalidateFlags.unset(RideInvalidateFlag::list);
                 }
 
                 const auto filterApplies = IsFiltered(rideName);

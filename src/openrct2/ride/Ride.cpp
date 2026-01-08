@@ -409,7 +409,7 @@ void RideUpdateFavouritedStat()
             if (ride != nullptr)
             {
                 ride->guestsFavourite = AddClamp(ride->guestsFavourite, 1u);
-                ride->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_CUSTOMER;
+                ride->windowInvalidateFlags.set(RideInvalidateFlag::customers);
             }
         }
     }
@@ -1133,10 +1133,10 @@ void Ride::update()
         numCustomers[0] = curNumCustomers;
 
         curNumCustomers = 0;
-        windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_CUSTOMER;
+        windowInvalidateFlags.set(RideInvalidateFlag::customers);
 
         incomePerHour = calculateIncomePerHour();
-        windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_INCOME;
+        windowInvalidateFlags.set(RideInvalidateFlag::income);
 
         if (upkeepCost != kMoney64Undefined)
             profit = incomePerHour - (upkeepCost * 16);
@@ -1209,7 +1209,7 @@ void Ride::updateSatisfaction(const uint8_t happiness)
         satisfaction = satisfactionNext >> 2;
         satisfactionNext = 0;
         satisfactionTimeout = 0;
-        windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_CUSTOMER;
+        windowInvalidateFlags.set(RideInvalidateFlag::customers);
     }
 }
 
@@ -1231,7 +1231,7 @@ void Ride::updatePopularity(const uint8_t pop_amount)
     popularity = popularityNext;
     popularityNext = 0;
     popularityTimeout = 0;
-    windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_CUSTOMER;
+    windowInvalidateFlags.set(RideInvalidateFlag::customers);
 }
 
 /** rct2: 0x0098DDB8, 0x0098DDBA */
@@ -1333,7 +1333,7 @@ static void RideInspectionUpdate(Ride& ride)
         return;
 
     ride.lastInspection = AddClamp<decltype(ride.lastInspection)>(ride.lastInspection, 1);
-    ride.windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAINTENANCE;
+    ride.windowInvalidateFlags.set(RideInvalidateFlag::maintenance);
 
     int32_t inspectionIntervalMinutes = RideInspectionInterval[EnumValue(ride.inspectionInterval)];
     // An inspection interval of 0 minutes means the ride is set to never be inspected.
@@ -1419,7 +1419,7 @@ static void RideBreakdownUpdate(Ride& ride)
         }
         ride.downtimeHistory[0] = 0;
 
-        ride.windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAINTENANCE;
+        ride.windowInvalidateFlags.set(RideInvalidateFlag::maintenance);
     }
 
     if (ride.lifecycleFlags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED))
@@ -1436,7 +1436,7 @@ static void RideBreakdownUpdate(Ride& ride)
     // Calculate breakdown probability?
     int32_t unreliabilityAccumulator = ride.unreliabilityFactor + getAgePenalty(ride);
     ride.reliability = static_cast<uint16_t>(std::max(0, (ride.reliability - unreliabilityAccumulator)));
-    ride.windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAINTENANCE;
+    ride.windowInvalidateFlags.set(RideInvalidateFlag::maintenance);
 
     // Random probability of a breakdown. Roughly this is 1 in
     //
@@ -1679,8 +1679,7 @@ static void RideMechanicStatusUpdate(Ride& ride, MechanicStatus mechanicStatus)
             || breakdownReason == BREAKDOWN_CONTROL_FAILURE)
         {
             ride.lifecycleFlags |= RIDE_LIFECYCLE_BROKEN_DOWN;
-            ride.windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAINTENANCE | RIDE_INVALIDATE_RIDE_LIST
-                | RIDE_INVALIDATE_RIDE_MAIN;
+            ride.windowInvalidateFlags.set(RideInvalidateFlag::maintenance, RideInvalidateFlag::list, RideInvalidateFlag::main);
             ride.breakdownReason = breakdownReason;
             RideBreakdownAddNewsItem(ride);
         }
@@ -1712,7 +1711,7 @@ static void RideMechanicStatusUpdate(Ride& ride, MechanicStatus mechanicStatus)
                 || mechanic->CurrentRide != ride.id)
             {
                 ride.mechanicStatus = MechanicStatus::calling;
-                ride.windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAINTENANCE;
+                ride.windowInvalidateFlags.set(RideInvalidateFlag::maintenance);
                 RideMechanicStatusUpdate(ride, MechanicStatus::calling);
             }
             // if the ride is broken down, but a mechanic was heading for an inspection, update orders to fix
@@ -1732,7 +1731,7 @@ static void RideMechanicStatusUpdate(Ride& ride, MechanicStatus mechanicStatus)
                     && mechanic->State != PeepState::inspecting && mechanic->State != PeepState::answering))
             {
                 ride.mechanicStatus = MechanicStatus::calling;
-                ride.windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAINTENANCE;
+                ride.windowInvalidateFlags.set(RideInvalidateFlag::maintenance);
                 RideMechanicStatusUpdate(ride, MechanicStatus::calling);
             }
             break;
@@ -1751,7 +1750,7 @@ static void RideCallMechanic(Ride& ride, Peep* mechanic, int32_t forInspection)
     mechanic->SetState(forInspection ? PeepState::headingToInspection : PeepState::answering);
     mechanic->SubState = 0;
     ride.mechanicStatus = MechanicStatus::heading;
-    ride.windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAINTENANCE;
+    ride.windowInvalidateFlags.set(RideInvalidateFlag::maintenance);
     ride.mechanic = mechanic->Id;
     mechanic->CurrentRide = ride.id;
     mechanic->CurrentRideStation = ride.inspectionStation;
@@ -4706,7 +4705,7 @@ void RideFixBreakdown(Ride& ride, int32_t reliabilityIncreaseFactor)
     ride.lifecycleFlags &= ~RIDE_LIFECYCLE_BREAKDOWN_PENDING;
     ride.lifecycleFlags &= ~RIDE_LIFECYCLE_BROKEN_DOWN;
     ride.lifecycleFlags &= ~RIDE_LIFECYCLE_DUE_INSPECTION;
-    ride.windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST | RIDE_INVALIDATE_RIDE_MAINTENANCE;
+    ride.windowInvalidateFlags.set(RideInvalidateFlag::main, RideInvalidateFlag::list, RideInvalidateFlag::maintenance);
 
     if (ride.lifecycleFlags & RIDE_LIFECYCLE_ON_TRACK)
     {

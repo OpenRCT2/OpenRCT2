@@ -537,7 +537,7 @@ namespace OpenRCT2::GameActions
                 }
 
                 RideFixBreakdown(ride, 0);
-                ride.windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
+                ride.windowInvalidateFlags.set(RideInvalidateFlag::main, RideInvalidateFlag::list);
             }
         }
     }

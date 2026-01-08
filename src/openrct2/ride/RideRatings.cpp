@@ -894,7 +894,7 @@ static void RideRatingsCalculate(RideRating::UpdateState& state, Ride& ride)
             break;
         case RatingsCalculationType::Stall:
             ride.upkeepCost = RideComputeUpkeep(state, ride);
-            ride.windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_INCOME;
+            ride.windowInvalidateFlags.set(RideInvalidateFlag::income);
             // Exit ratings
             return;
     }
@@ -1057,11 +1057,11 @@ static void RideRatingsCalculate(RideRating::UpdateState& state, Ride& ride)
     if (ride.ratings != ratings)
     {
         ride.ratings = ratings;
-        ride.windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_RATINGS;
+        ride.windowInvalidateFlags.set(RideInvalidateFlag::ratings);
     }
 
     ride.upkeepCost = RideComputeUpkeep(state, ride);
-    ride.windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_INCOME;
+    ride.windowInvalidateFlags.set(RideInvalidateFlag::income);
 
 #ifdef ORIGINAL_RATINGS
     if (!ride.ratings.isNull())

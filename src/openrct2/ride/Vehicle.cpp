@@ -340,8 +340,8 @@ bool Vehicle::CloseRestraints()
 
                 RideBreakdownAddNewsItem(*curRide);
 
-                curRide->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST
-                    | RIDE_INVALIDATE_RIDE_MAINTENANCE;
+                curRide->windowInvalidateFlags.set(
+                    RideInvalidateFlag::main, RideInvalidateFlag::list, RideInvalidateFlag::maintenance);
 
                 curRide->mechanicStatus = MechanicStatus::calling;
 
@@ -456,8 +456,8 @@ bool Vehicle::OpenRestraints()
 
                 RideBreakdownAddNewsItem(*curRide);
 
-                curRide->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST
-                    | RIDE_INVALIDATE_RIDE_MAINTENANCE;
+                curRide->windowInvalidateFlags.set(
+                    RideInvalidateFlag::main, RideInvalidateFlag::list, RideInvalidateFlag::maintenance);
 
                 curRide->mechanicStatus = MechanicStatus::calling;
 
@@ -2001,7 +2001,7 @@ static void test_finish(Ride& ride)
 {
     ride.lifecycleFlags &= ~RIDE_LIFECYCLE_TEST_IN_PROGRESS;
     ride.lifecycleFlags |= RIDE_LIFECYCLE_TESTED;
-    ride.windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_RATINGS;
+    ride.windowInvalidateFlags.set(RideInvalidateFlag::ratings);
 
     auto rideStations = ride.getStations();
     for (int32_t i = ride.numStations - 1; i >= 1; i--)
@@ -2193,8 +2193,8 @@ void Vehicle::UpdateDeparting()
             curRide->lifecycleFlags |= RIDE_LIFECYCLE_BROKEN_DOWN;
             RideBreakdownAddNewsItem(*curRide);
 
-            curRide->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST
-                | RIDE_INVALIDATE_RIDE_MAINTENANCE;
+            curRide->windowInvalidateFlags.set(
+                RideInvalidateFlag::main, RideInvalidateFlag::list, RideInvalidateFlag::maintenance);
             curRide->mechanicStatus = MechanicStatus::calling;
             curRide->inspectionStation = current_station;
             curRide->breakdownReason = curRide->breakdownReasonPending;
@@ -2549,7 +2549,7 @@ void Vehicle::UpdateCollisionSetup()
     }
 
     curRide->lifecycleFlags |= RIDE_LIFECYCLE_CRASHED;
-    curRide->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
+    curRide->windowInvalidateFlags.set(RideInvalidateFlag::main, RideInvalidateFlag::list);
     KillAllPassengersInTrain();
 
     Vehicle* lastVehicle = this;
@@ -3220,8 +3220,8 @@ void Vehicle::UpdateTravellingCableLift()
 
             curRide->lifecycleFlags |= RIDE_LIFECYCLE_BROKEN_DOWN;
             RideBreakdownAddNewsItem(*curRide);
-            curRide->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST
-                | RIDE_INVALIDATE_RIDE_MAINTENANCE;
+            curRide->windowInvalidateFlags.set(
+                RideInvalidateFlag::main, RideInvalidateFlag::list, RideInvalidateFlag::maintenance);
 
             curRide->mechanicStatus = MechanicStatus::calling;
             curRide->inspectionStation = current_station;
@@ -4339,7 +4339,7 @@ void Vehicle::CrashOnLand()
         }
     }
     curRide->lifecycleFlags |= RIDE_LIFECYCLE_CRASHED;
-    curRide->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
+    curRide->windowInvalidateFlags.set(RideInvalidateFlag::main, RideInvalidateFlag::list);
 
     if (IsHead())
     {
@@ -4407,7 +4407,7 @@ void Vehicle::CrashOnWater()
         }
     }
     curRide->lifecycleFlags |= RIDE_LIFECYCLE_CRASHED;
-    curRide->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
+    curRide->windowInvalidateFlags.set(RideInvalidateFlag::main, RideInvalidateFlag::list);
 
     if (IsHead())
     {

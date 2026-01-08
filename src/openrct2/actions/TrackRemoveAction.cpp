@@ -464,7 +464,7 @@ namespace OpenRCT2::GameActions
                                 || getGameState().cheats.showAllOperatingModes;
                             if (canSwitch)
                             {
-                                ride->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_OPERATING;
+                                ride->windowInvalidateFlags.set(RideInvalidateFlag::operatingSettings);
                                 auto rideSetSetting = GameActions::RideSetSettingAction(
                                     ride->id, GameActions::RideSetSetting::Mode, static_cast<uint8_t>(newMode));
                                 ExecuteNested(&rideSetSetting, gameState);
