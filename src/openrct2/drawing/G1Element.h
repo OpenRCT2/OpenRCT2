@@ -39,11 +39,11 @@ namespace OpenRCT2
         {
             struct
             {
-                uint8_t* offset = nullptr;
-                int16_t width = 0;
-                int16_t height = 0;
-                int16_t xOffset = 0;
-                int16_t yOffset = 0;
+                uint8_t* offset;
+                int16_t width;
+                int16_t height;
+                int16_t xOffset;
+                int16_t yOffset;
             };
             // If G1Flag::isPalette is set
             struct
