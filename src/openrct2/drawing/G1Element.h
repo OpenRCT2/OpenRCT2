@@ -44,15 +44,16 @@ namespace OpenRCT2
                 int16_t height = 0;
                 int16_t xOffset = 0;
                 int16_t yOffset = 0;
-            } imageEntry;
+            };
             // If G1Flag::isPalette is set
             struct
             {
                 Drawing::BGRColour* palette;
                 int16_t numColours;
-                int16_t pad; // Not used for palettes
+                int16_t pad1; // unused for palettes
                 int16_t startIndex;
-            } paletteEntry;
+                int16_t pad2; // unused for palettes
+            };
         };
 
         G1Flags flags = {};
