@@ -20,8 +20,6 @@
 #include "../../track/Segment.h"
 #include "../../track/Support.h"
 
-using namespace OpenRCT2;
-
 static constexpr TunnelGroup kTunnelGroup = TunnelGroup::Standard;
 
 namespace OpenRCT2::SingleRailRC

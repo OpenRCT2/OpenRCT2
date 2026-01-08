@@ -150,7 +150,7 @@ static const TrackElement* ChairliftPaintUtilMapGetTrackElementAtFromRideFuzzy(
 };
 
 static bool ChairliftPaintUtilIsFirstTrack(
-    const Ride& ride, const TrackElement& trackElement, const CoordsXY& pos, OpenRCT2::TrackElemType trackType)
+    const Ride& ride, const TrackElement& trackElement, const CoordsXY& pos, TrackElemType trackType)
 {
     if (trackElement.GetTrackType() != TrackElemType::beginStation)
     {
@@ -170,7 +170,7 @@ static bool ChairliftPaintUtilIsFirstTrack(
 }
 
 static bool ChairliftPaintUtilIsLastTrack(
-    const Ride& ride, const TrackElement& trackElement, const CoordsXY& pos, OpenRCT2::TrackElemType trackType)
+    const Ride& ride, const TrackElement& trackElement, const CoordsXY& pos, TrackElemType trackType)
 {
     if (trackElement.GetTrackType() != TrackElemType::endStation)
     {
@@ -662,7 +662,7 @@ static void ChairliftPaintRightQuarterTurn1Tile(
 }
 
 /* 0x008AAA0C */
-TrackPaintFunction GetTrackPaintFunctionChairlift(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionChairlift(TrackElemType trackType)
 {
     switch (trackType)
     {

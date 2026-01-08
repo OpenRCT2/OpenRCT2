@@ -181,8 +181,7 @@ static void PathPaintQueueBanner(
         uint16_t scroll = stringWidth > 0 ? (getGameState().currentTicks / 2) % stringWidth : 0;
 
         PaintAddImageAsChild(
-            session,
-            Drawing::ScrollingText::setup(session, STR_BANNER_TEXT_FORMAT, ft, scroll, scrollingMode, PaletteIndex::pi0),
+            session, ScrollingText::setup(session, STR_BANNER_TEXT_FORMAT, ft, scroll, scrollingMode, PaletteIndex::pi0),
             { 0, 0, height + 7 }, { boundBoxOffsets, { 1, 1, 21 } });
     }
 

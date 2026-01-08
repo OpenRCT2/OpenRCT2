@@ -48,7 +48,7 @@ namespace OpenRCT2
             {
                 baseImage_id += 2; // Draw peeps sitting without transparent area between them for restraints
             }
-            auto directionOffset = OpenRCT2::Entity::Yaw::YawTo4(imageDirection);
+            auto directionOffset = Entity::Yaw::YawTo4(imageDirection);
             image_id = ImageId(
                 baseImage_id + (((directionOffset + 0) & 3) * 3), vehicle->peep_tshirt_colours[0],
                 vehicle->peep_tshirt_colours[1]);

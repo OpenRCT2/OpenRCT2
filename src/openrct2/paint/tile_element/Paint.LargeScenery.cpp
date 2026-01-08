@@ -36,7 +36,6 @@
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
-using namespace OpenRCT2::Numerics;
 
 // clang-format off
 static constexpr BoundBoxXY LargeSceneryBoundBoxes[] = {
@@ -80,7 +79,7 @@ static void PaintLargeScenerySupports(
     WoodenBSupportsPaintSetupRotated(
         session, WoodenSupportType::truss, WoodenSupportSubType::neSw, direction, supportHeight, imageTemplate, transitionType);
 
-    int32_t clearanceHeight = ceil2(tileElement.GetClearanceZ() + 15, 16);
+    int32_t clearanceHeight = Numerics::ceil2(tileElement.GetClearanceZ() + 15, 16);
     if (tile.allowSupportsAbove)
     {
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, clearanceHeight, 0x20);
@@ -221,7 +220,7 @@ static void PaintLargeScenery3DText(
     char signString[256];
     auto ft = Formatter();
     banner->formatTextTo(ft);
-    OpenRCT2::FormatStringLegacy(signString, sizeof(signString), STR_STRINGID, ft.Data());
+    FormatStringLegacy(signString, sizeof(signString), STR_STRINGID, ft.Data());
 
     auto offsetY = text->offset[(direction & 1)].y * 2;
     if (text->flags & LARGE_SCENERY_TEXT_FLAG_VERTICAL)
@@ -326,13 +325,13 @@ static void PaintLargeSceneryScrollingText(
     }
     else
     {
-        OpenRCT2::FormatStringLegacy(text, sizeof(text), STR_SCROLLING_SIGN_TEXT, ft.Data());
+        FormatStringLegacy(text, sizeof(text), STR_SCROLLING_SIGN_TEXT, ft.Data());
     }
 
     auto scrollMode = sceneryEntry.scrolling_mode + ((direction + 1) & 3);
     auto stringWidth = GfxGetStringWidth(text, FontStyle::tiny);
     auto scroll = stringWidth > 0 ? (getGameState().currentTicks / 2) % stringWidth : 0;
-    auto imageId = Drawing::ScrollingText::setup(session, STR_SCROLLING_SIGN_TEXT, ft, scroll, scrollMode, textPaletteIndex);
+    auto imageId = ScrollingText::setup(session, STR_SCROLLING_SIGN_TEXT, ft, scroll, scrollMode, textPaletteIndex);
     PaintAddImageAsChild(session, imageId, { 0, 0, height + 25 }, { bbOffset, { 1, 1, 21 } });
 }
 
