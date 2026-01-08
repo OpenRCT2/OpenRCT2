@@ -39,6 +39,7 @@
 #include "core/Path.hpp"
 #include "core/String.hpp"
 #include "core/Timer.hpp"
+#include "drawing/Drawing.h"
 #include "drawing/IDrawingEngine.h"
 #include "drawing/Image.h"
 #include "drawing/LightFX.h"

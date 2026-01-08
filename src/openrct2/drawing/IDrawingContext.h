@@ -9,14 +9,18 @@
 
 #pragma once
 
-#include "Drawing.h"
+#include "../world/Location.hpp"
+#include "FilterPaletteIds.h"
+#include "PaletteIndex.h"
 #include "TTF.h"
 
+struct PaletteMap;
 struct TextDrawInfo;
 
 namespace OpenRCT2::Drawing
 {
     struct IDrawingEngine;
+    struct RenderTarget;
 
     struct IDrawingContext
     {
