@@ -40,7 +40,7 @@ namespace OpenRCT2::GameActions
         Result Execute(GameState_t& gameState) const override;
 
     private:
-        Result QueryExecute(bool execute) const;
-        void AutoPositionNewStaff(Peep* newPeep) const;
+        Result QueryExecute(GameState_t& gameState, bool execute) const;
+        void AutoPositionNewStaff(GameState_t& gameState, Peep* newPeep) const;
     };
 } // namespace OpenRCT2::GameActions

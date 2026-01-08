@@ -56,7 +56,7 @@ namespace OpenRCT2::GameActions
 
     Result ParkSetParameterAction::Execute(GameState_t& gameState) const
     {
-        auto& park = getGameState().park;
+        auto& park = gameState.park;
         auto* windowMgr = Ui::GetWindowManager();
 
         switch (_parameter)

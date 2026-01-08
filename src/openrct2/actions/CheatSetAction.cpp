@@ -158,10 +158,10 @@ namespace OpenRCT2::GameActions
                 SetScenarioNoMoney(gameState, _param1 != 0);
                 break;
             case CheatType::addMoney:
-                AddMoney(_param1);
+                AddMoney(gameState, _param1);
                 break;
             case CheatType::setMoney:
-                SetMoney(_param1);
+                SetMoney(gameState, _param1);
                 break;
             case CheatType::clearLoan:
                 ClearLoan(gameState);
@@ -239,7 +239,7 @@ namespace OpenRCT2::GameActions
                 windowMgr->InvalidateByClass(WindowClass::ride);
                 break;
             case CheatType::ownAllLand:
-                OwnAllLand();
+                OwnAllLand(gameState);
                 break;
             case CheatType::disableRideValueAging:
                 gameState.cheats.disableRideValueAging = _param1 != 0;
@@ -598,18 +598,18 @@ namespace OpenRCT2::GameActions
         windowMgr->InvalidateByClass(WindowClass::cheats);
     }
 
-    void CheatSetAction::SetMoney(money64 amount) const
+    void CheatSetAction::SetMoney(GameState_t& gameState, money64 amount) const
     {
-        getGameState().park.cash = amount;
+        gameState.park.cash = amount;
 
         auto* windowMgr = Ui::GetWindowManager();
         windowMgr->InvalidateByClass(WindowClass::finances);
         windowMgr->InvalidateByClass(WindowClass::bottomToolbar);
     }
 
-    void CheatSetAction::AddMoney(money64 amount) const
+    void CheatSetAction::AddMoney(GameState_t& gameState, money64 amount) const
     {
-        auto& park = getGameState().park;
+        auto& park = gameState.park;
         park.cash = AddClamp(park.cash, amount);
 
         auto* windowMgr = Ui::GetWindowManager();
@@ -620,7 +620,7 @@ namespace OpenRCT2::GameActions
     void CheatSetAction::ClearLoan(GameState_t& gameState) const
     {
         // First give money
-        AddMoney(getGameState().park.bankLoan);
+        AddMoney(gameState, gameState.park.bankLoan);
 
         // Then pay the loan
         auto gameAction = ParkSetLoanAction(0.00_GBP);
@@ -726,8 +726,8 @@ namespace OpenRCT2::GameActions
 
             for (auto trainIndex : ride.vehicles)
             {
-                for (Vehicle* vehicle = getGameState().entities.TryGetEntity<Vehicle>(trainIndex); vehicle != nullptr;
-                     vehicle = getGameState().entities.TryGetEntity<Vehicle>(vehicle->next_vehicle_on_train))
+                for (Vehicle* vehicle = gameState.entities.TryGetEntity<Vehicle>(trainIndex); vehicle != nullptr;
+                     vehicle = gameState.entities.TryGetEntity<Vehicle>(vehicle->next_vehicle_on_train))
                 {
                     auto i = 0;
                     for (auto& peepInTrainIndex : vehicle->peep)
@@ -735,7 +735,7 @@ namespace OpenRCT2::GameActions
                         if (i >= vehicle->num_peeps)
                             break;
 
-                        auto peep = getGameState().entities.TryGetEntity<Guest>(peepInTrainIndex);
+                        auto peep = gameState.entities.TryGetEntity<Guest>(peepInTrainIndex);
                         if (peep != nullptr && peep->CurrentRide == ride.id)
                         {
                             if ((peep->State == PeepState::onRide && peep->RideSubState == PeepRideSubState::onRide)
@@ -781,7 +781,7 @@ namespace OpenRCT2::GameActions
         }
     }
 
-    void CheatSetAction::OwnAllLand() const
+    void CheatSetAction::OwnAllLand(GameState_t& gameState) const
     {
         const auto min = CoordsXY{ kCoordsXYStep, kCoordsXYStep };
         const auto max = GetMapSizeUnits() - CoordsXY{ kCoordsXYStep, kCoordsXYStep };
@@ -812,7 +812,7 @@ namespace OpenRCT2::GameActions
         }
 
         // Completely unown peep spawn points
-        for (const auto& spawn : getGameState().peepSpawns)
+        for (const auto& spawn : gameState.peepSpawns)
         {
             auto* surfaceElement = MapGetSurfaceElementAt(spawn);
             if (surfaceElement != nullptr)

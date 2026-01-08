@@ -54,7 +54,7 @@ namespace OpenRCT2::GameActions
         {
             return Result(Status::invalidParameters, STR_CANT_START_MARKETING_CAMPAIGN, STR_ERR_VALUE_OUT_OF_RANGE);
         }
-        if (getGameState().park.flags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN)
+        if (gameState.park.flags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN)
         {
             return Result(
                 Status::disallowed, STR_CANT_START_MARKETING_CAMPAIGN, STR_MARKETING_CAMPAIGNS_FORBIDDEN_BY_LOCAL_AUTHORITY);

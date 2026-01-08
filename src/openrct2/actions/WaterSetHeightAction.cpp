@@ -119,7 +119,7 @@ namespace OpenRCT2::GameActions
 
         int32_t surfaceHeight = TileElementHeight(_coords);
         FootpathRemoveLitter({ _coords, surfaceHeight });
-        if (!getGameState().cheats.disableClearanceChecks)
+        if (!gameState.cheats.disableClearanceChecks)
             WallRemoveAtZ({ _coords, surfaceHeight });
 
         SurfaceElement* surfaceElement = MapGetSurfaceElementAt(_coords);

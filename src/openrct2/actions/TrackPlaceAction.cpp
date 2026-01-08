@@ -684,7 +684,7 @@ namespace OpenRCT2::GameActions
                     auto newMode = RideModeGetBlockSectionedCounterpart(ride->mode);
                     if (ride->mode != newMode)
                     {
-                        bool canSwitch = rtd.SupportsRideMode(newMode) || getGameState().cheats.showAllOperatingModes;
+                        bool canSwitch = rtd.SupportsRideMode(newMode) || gameState.cheats.showAllOperatingModes;
                         if (canSwitch)
                         {
                             ride->windowInvalidateFlags.set(RideInvalidateFlag::operatingSettings);

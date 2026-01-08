@@ -1407,7 +1407,7 @@ static std::optional<GameActions::Result> TrackDesignPlaceEntrances(
                 }
                 else
                 {
-                    auto res = GameActions::RideEntranceExitPlaceAction::TrackPlaceQuery(newCoords, false);
+                    auto res = GameActions::RideEntranceExitPlaceAction::TrackPlaceQuery(gameState, newCoords, false);
                     if (res.error != GameActions::Status::ok)
                     {
                         return res;

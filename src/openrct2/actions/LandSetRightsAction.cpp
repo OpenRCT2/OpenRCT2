@@ -66,15 +66,15 @@ namespace OpenRCT2::GameActions
 
     Result LandSetRightsAction::Query(GameState_t& gameState) const
     {
-        return QueryExecute(false);
+        return QueryExecute(gameState, false);
     }
 
     Result LandSetRightsAction::Execute(GameState_t& gameState) const
     {
-        return QueryExecute(true);
+        return QueryExecute(gameState, true);
     }
 
-    Result LandSetRightsAction::QueryExecute(bool isExecuting) const
+    Result LandSetRightsAction::QueryExecute(GameState_t& gameState, bool isExecuting) const
     {
         auto res = Result();
 
@@ -86,7 +86,7 @@ namespace OpenRCT2::GameActions
         res.position = centre;
         res.expenditure = ExpenditureType::landPurchase;
 
-        if (!isInEditorMode() && !getGameState().cheats.sandboxMode)
+        if (!isInEditorMode() && !gameState.cheats.sandboxMode)
         {
             return Result(Status::notInEditorMode, kStringIdNone, STR_LAND_NOT_FOR_SALE);
         }
@@ -98,7 +98,7 @@ namespace OpenRCT2::GameActions
             {
                 if (!LocationValid({ x, y }))
                     continue;
-                auto result = MapBuyLandRightsForTile({ x, y }, isExecuting);
+                auto result = MapBuyLandRightsForTile(gameState, { x, y }, isExecuting);
                 if (result.error == Status::ok)
                 {
                     res.cost += result.cost;
@@ -114,7 +114,7 @@ namespace OpenRCT2::GameActions
         return res;
     }
 
-    Result LandSetRightsAction::MapBuyLandRightsForTile(const CoordsXY& loc, bool isExecuting) const
+    Result LandSetRightsAction::MapBuyLandRightsForTile(GameState_t& gameState, const CoordsXY& loc, bool isExecuting) const
     {
         SurfaceElement* surfaceElement = MapGetSurfaceElementAt(loc);
         if (surfaceElement == nullptr)
@@ -187,7 +187,6 @@ namespace OpenRCT2::GameActions
                     }
                 }
 
-                auto& gameState = getGameState();
                 const uint8_t currentOwnership = surfaceElement->GetOwnership();
 
                 // Are land rights or construction rights currently owned?

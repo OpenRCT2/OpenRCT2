@@ -171,14 +171,15 @@ namespace OpenRCT2
                 }
 
                 // Keep updating the money effect even when paused.
-                getGameState().entities.UpdateMoneyEffect();
+                auto& gameState = getGameState();
+                gameState.entities.UpdateMoneyEffect();
 
                 // Post-tick network update
                 Network::PostTick();
 
                 // Post-tick game actions.
-                GameActions::ProcessQueue();
-                getGameState().entities.UpdateEntitiesSpatialIndex();
+                GameActions::ProcessQueue(gameState);
+                gameState.entities.UpdateEntitiesSpatialIndex();
             }
         }
 
@@ -349,7 +350,7 @@ namespace OpenRCT2
             gLastAutoSaveUpdate = Platform::GetTicks();
         }
 
-        GameActions::ProcessQueue();
+        GameActions::ProcessQueue(gameState);
 
         Network::PostTick();
         Network::Flush();

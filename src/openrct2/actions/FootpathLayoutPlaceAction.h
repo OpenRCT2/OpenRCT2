@@ -39,7 +39,7 @@ namespace OpenRCT2::GameActions
         Result Execute(GameState_t& gameState) const override;
 
     private:
-        Result ElementInsertQuery(Result res) const;
+        Result ElementInsertQuery(GameState_t& gameState, Result res) const;
         Result ElementInsertExecute(Result res) const;
         bool IsSameAsEntranceElement(const EntranceElement& entranceElement) const;
     };

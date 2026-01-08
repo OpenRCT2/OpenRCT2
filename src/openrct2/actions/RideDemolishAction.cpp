@@ -67,7 +67,7 @@ namespace OpenRCT2::GameActions
 
         if ((ride->lifecycleFlags & (RIDE_LIFECYCLE_INDESTRUCTIBLE | RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK)
              && _modifyType == RideModifyType::demolish)
-            && !getGameState().cheats.makeAllDestructible)
+            && !gameState.cheats.makeAllDestructible)
         {
             return Result(
                 Status::noClearance, STR_CANT_DEMOLISH_RIDE,

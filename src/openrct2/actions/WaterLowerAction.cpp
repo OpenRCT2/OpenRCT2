@@ -81,7 +81,7 @@ namespace OpenRCT2::GameActions
                 if (surfaceElement == nullptr)
                     continue;
 
-                if (gLegacyScene != LegacyScene::scenarioEditor && !getGameState().cheats.sandboxMode)
+                if (gLegacyScene != LegacyScene::scenarioEditor && !gameState.cheats.sandboxMode)
                 {
                     if (!MapIsLocationInPark(CoordsXY{ x, y }))
                     {
@@ -139,7 +139,7 @@ namespace OpenRCT2::GameActions
         {
             for (int32_t x = validRange.GetX1(); x <= validRange.GetX2(); x += kCoordsXYStep)
             {
-                if (gLegacyScene != LegacyScene::scenarioEditor && !getGameState().cheats.sandboxMode)
+                if (gLegacyScene != LegacyScene::scenarioEditor && !gameState.cheats.sandboxMode)
                 {
                     if (!MapIsLocationInPark(CoordsXY{ x, y }))
                     {
