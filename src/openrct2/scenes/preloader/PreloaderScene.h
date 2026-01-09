@@ -10,7 +10,6 @@
 #pragma once
 
 #include "../../core/JobPool.h"
-#include "../../drawing/Drawing.h"
 #include "../Scene.h"
 
 namespace OpenRCT2

@@ -15,6 +15,7 @@
 
     #include <openrct2/drawing/Drawing.h>
     #include <openrct2/drawing/Rectangle.h>
+    #include <openrct2/drawing/RenderTarget.h>
     #include <openrct2/scripting/Duktape.hpp>
 
 using namespace OpenRCT2::Drawing;
