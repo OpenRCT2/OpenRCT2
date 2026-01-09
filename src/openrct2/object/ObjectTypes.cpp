@@ -74,7 +74,7 @@ namespace OpenRCT2
 
     bool ShouldFreeObjectType(ObjectType type)
     {
-        return type != ObjectType::audio;
+        return ObjectTypeIsTransient(type) || type == ObjectType::scenarioMeta;
     }
 
     std::span<const ObjectType> getAllObjectTypes()
