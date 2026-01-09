@@ -565,7 +565,7 @@ namespace OpenRCT2::Ui::Windows
                         auto newLoan = gameState.park.bankLoan - 1000.00_GBP;
                         if (gameState.park.bankLoan > 0)
                         {
-                            newLoan = std::max(static_cast<money64>(0LL), newLoan);
+                            newLoan = std::max(0.00_GBP, newLoan);
                         }
                         auto gameAction = GameActions::ParkSetLoanAction(newLoan);
                         GameActions::Execute(&gameAction, gameState);

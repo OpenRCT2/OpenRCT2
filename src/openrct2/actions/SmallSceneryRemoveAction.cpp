@@ -74,11 +74,10 @@ namespace OpenRCT2::GameActions
         res.expenditure = ExpenditureType::landscaping;
         res.position = _loc;
 
-        if (gLegacyScene != LegacyScene::scenarioEditor && !GetFlags().has(CommandFlag::ghost)
-            && !getGameState().cheats.sandboxMode)
+        if (gLegacyScene != LegacyScene::scenarioEditor && !GetFlags().has(CommandFlag::ghost) && !gameState.cheats.sandboxMode)
         {
             // Check if allowed to remove item
-            if (getGameState().park.flags & PARK_FLAGS_FORBID_TREE_REMOVAL)
+            if (gameState.park.flags & PARK_FLAGS_FORBID_TREE_REMOVAL)
             {
                 if (entry->HasFlag(SMALL_SCENERY_FLAG_IS_TREE))
                 {

@@ -98,7 +98,7 @@ namespace OpenRCT2::GameActions
                 if (surfaceElement == nullptr)
                     continue;
 
-                if (gLegacyScene != LegacyScene::scenarioEditor && !getGameState().cheats.sandboxMode)
+                if (gLegacyScene != LegacyScene::scenarioEditor && !gameState.cheats.sandboxMode)
                 {
                     if (!MapIsLocationInPark(CoordsXY{ x, y }))
                     {

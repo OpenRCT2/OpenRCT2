@@ -45,7 +45,7 @@ namespace OpenRCT2::GameActions
         Result Execute(GameState_t& gameState) const override;
 
     private:
-        Result QueryExecute(bool isExecuting) const;
-        Result MapBuyLandRightsForTile(const CoordsXY& loc, bool isExecuting) const;
+        Result QueryExecute(GameState_t& gameState, bool isExecuting) const;
+        Result MapBuyLandRightsForTile(GameState_t& gameState, const CoordsXY& loc, bool isExecuting) const;
     };
 } // namespace OpenRCT2::GameActions

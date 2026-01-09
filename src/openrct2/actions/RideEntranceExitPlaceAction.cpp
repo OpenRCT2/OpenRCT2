@@ -105,7 +105,7 @@ namespace OpenRCT2::GameActions
         {
             return Result(Status::invalidParameters, errorTitle, STR_OFF_EDGE_OF_MAP);
         }
-        if (!getGameState().cheats.sandboxMode && !MapIsLocationOwned({ _loc, z }))
+        if (!gameState.cheats.sandboxMode && !MapIsLocationOwned({ _loc, z }))
         {
             return Result(Status::notOwned, errorTitle, STR_LAND_NOT_OWNED_BY_PARK);
         }
@@ -177,7 +177,7 @@ namespace OpenRCT2::GameActions
 
         auto z = station.GetBaseZ();
         if (!GetFlags().has(CommandFlag::allowDuringPaused) && !GetFlags().has(CommandFlag::ghost)
-            && !getGameState().cheats.disableClearanceChecks)
+            && !gameState.cheats.disableClearanceChecks)
         {
             FootpathRemoveLitter({ _loc, z });
             WallRemoveAtZ({ _loc, z });
@@ -236,12 +236,12 @@ namespace OpenRCT2::GameActions
         return res;
     }
 
-    Result RideEntranceExitPlaceAction::TrackPlaceQuery(const CoordsXYZ& loc, const bool isExit)
+    Result RideEntranceExitPlaceAction::TrackPlaceQuery(GameState_t& gameState, const CoordsXYZ& loc, const bool isExit)
     {
         const auto errorTitle = isExit ? STR_CANT_BUILD_MOVE_EXIT_FOR_THIS_RIDE_ATTRACTION
                                        : STR_CANT_BUILD_MOVE_ENTRANCE_FOR_THIS_RIDE_ATTRACTION;
 
-        if (!getGameState().cheats.sandboxMode && !MapIsLocationOwned(loc))
+        if (!gameState.cheats.sandboxMode && !MapIsLocationOwned(loc))
         {
             return Result(Status::notOwned, errorTitle, STR_LAND_NOT_OWNED_BY_PARK);
         }

@@ -46,7 +46,7 @@ namespace OpenRCT2::GameActions
 
     Result PeepSpawnPlaceAction::Query(GameState_t& gameState) const
     {
-        if (!isInEditorMode() && !getGameState().cheats.sandboxMode)
+        if (!isInEditorMode() && !gameState.cheats.sandboxMode)
         {
             return Result(Status::notInEditorMode, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, kStringIdNone);
         }

@@ -285,8 +285,7 @@ static TrackDesignAddStatus TrackDesignSaveAddLargeScenery(const CoordsXY& loc, 
         auto direction = tileElement->GetDirection();
         auto sequence = tileElement->GetSequenceIndex();
 
-        auto sceneryOrigin = MapLargeSceneryGetOrigin(
-            { loc.x, loc.y, z << 3, static_cast<Direction>(direction) }, sequence, nullptr);
+        auto sceneryOrigin = MapLargeSceneryGetOrigin({ loc.x, loc.y, z << 3, direction }, sequence, nullptr);
         if (!sceneryOrigin.has_value())
         {
             return TrackDesignAddStatus::Success();
@@ -300,7 +299,7 @@ static TrackDesignAddStatus TrackDesignSaveAddLargeScenery(const CoordsXY& loc, 
 
             CoordsXYZ tileLoc = { sceneryOrigin->x + rotatedOffsetPos.x, sceneryOrigin->y + rotatedOffsetPos.y,
                                   sceneryOrigin->z + tile.offset.z };
-            auto largeElement = MapGetLargeScenerySegment({ tileLoc, static_cast<Direction>(direction) }, tile.index);
+            auto largeElement = MapGetLargeScenerySegment({ tileLoc, direction }, tile.index);
             if (largeElement != nullptr)
             {
                 if (tile.index == 0)
@@ -501,8 +500,7 @@ static void TrackDesignSaveRemoveLargeScenery(const CoordsXY& loc, LargeSceneryE
         auto direction = tileElement->GetDirection();
         auto sequence = tileElement->GetSequenceIndex();
 
-        auto sceneryOrigin = MapLargeSceneryGetOrigin(
-            { loc.x, loc.y, z << 3, static_cast<Direction>(direction) }, sequence, nullptr);
+        auto sceneryOrigin = MapLargeSceneryGetOrigin({ loc.x, loc.y, z << 3, direction }, sequence, nullptr);
         if (!sceneryOrigin)
         {
             return;
@@ -516,7 +514,7 @@ static void TrackDesignSaveRemoveLargeScenery(const CoordsXY& loc, LargeSceneryE
 
             CoordsXYZ tileLoc = { sceneryOrigin->x + rotatedOffsetPos.x, sceneryOrigin->y + rotatedOffsetPos.y,
                                   sceneryOrigin->z + tile.offset.z };
-            auto largeElement = MapGetLargeScenerySegment({ tileLoc, static_cast<Direction>(direction) }, tile.index);
+            auto largeElement = MapGetLargeScenerySegment({ tileLoc, direction }, tile.index);
             if (largeElement != nullptr)
             {
                 if (tile.index == 0)

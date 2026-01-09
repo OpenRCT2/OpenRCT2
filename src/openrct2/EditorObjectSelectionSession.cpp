@@ -143,12 +143,12 @@ void SetupInUseSelectionFlags()
     {
         for (auto i = 0u; i < getObjectEntryGroupCount(objectType); i++)
         {
-            Editor::ClearSelectedObject(static_cast<ObjectType>(objectType), i, ObjectSelectionFlags::AllFlags);
+            Editor::ClearSelectedObject(objectType, i, ObjectSelectionFlags::AllFlags);
 
-            auto loadedObj = objectMgr.GetLoadedObject(static_cast<ObjectType>(objectType), i);
+            auto loadedObj = objectMgr.GetLoadedObject(objectType, i);
             if (loadedObj != nullptr)
             {
-                Editor::SetSelectedObject(static_cast<ObjectType>(objectType), i, ObjectSelectionFlags::Selected);
+                Editor::SetSelectedObject(objectType, i, ObjectSelectionFlags::Selected);
             }
         }
     }

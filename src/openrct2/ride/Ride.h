@@ -71,6 +71,20 @@ enum class RideInspection : uint8_t
     never,
 };
 
+// Flags used by ride->windowInvalidateFlags
+enum class RideInvalidateFlag : uint8_t
+{
+    customers,
+    income,
+    main,
+    list,
+    operatingSettings,
+    maintenance,
+    music,
+    ratings,
+};
+using RideInvalidateFlags = FlagHolder<uint8_t, RideInvalidateFlag>;
+
 enum class RideTestingFlag : uint8_t
 {
     sheltered,
@@ -249,8 +263,8 @@ struct Ride
     uint8_t satisfaction{};
     uint8_t satisfactionTimeout{};
     uint8_t satisfactionNext{};
-    // Various flags stating whether a window needs to be refreshed
-    uint8_t windowInvalidateFlags{};
+    // Various flags stating whether a ride window needs to be refreshed
+    RideInvalidateFlags windowInvalidateFlags{};
     uint32_t totalCustomers{};
     money64 totalProfit{};
     uint8_t popularity{};
@@ -786,19 +800,6 @@ enum
     WAIT_FOR_LOAD_ANY,
 
     WAIT_FOR_LOAD_COUNT,
-};
-
-// Flags used by ride->windowInvalidateFlags
-enum
-{
-    RIDE_INVALIDATE_RIDE_CUSTOMER = 1,
-    RIDE_INVALIDATE_RIDE_INCOME = 1 << 1,
-    RIDE_INVALIDATE_RIDE_MAIN = 1 << 2,
-    RIDE_INVALIDATE_RIDE_LIST = 1 << 3,
-    RIDE_INVALIDATE_RIDE_OPERATING = 1 << 4,
-    RIDE_INVALIDATE_RIDE_MAINTENANCE = 1 << 5,
-    RIDE_INVALIDATE_RIDE_MUSIC = 1 << 6,
-    RIDE_INVALIDATE_RIDE_RATINGS = 1 << 7,
 };
 
 enum

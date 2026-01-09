@@ -81,7 +81,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_OFF_EDGE_OF_MAP);
         }
 
-        if (!(gLegacyScene == LegacyScene::scenarioEditor || getGameState().cheats.sandboxMode) && !MapIsLocationOwned(_loc))
+        if (!(gLegacyScene == LegacyScene::scenarioEditor || gameState.cheats.sandboxMode) && !MapIsLocationOwned(_loc))
         {
             return Result(Status::disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_LAND_NOT_OWNED_BY_PARK);
         }
@@ -96,7 +96,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_TOO_HIGH);
         }
 
-        return ElementInsertQuery(std::move(res));
+        return ElementInsertQuery(gameState, std::move(res));
     }
 
     Result FootpathLayoutPlaceAction::Execute(GameState_t& gameState) const
@@ -119,7 +119,7 @@ namespace OpenRCT2::GameActions
         return ElementInsertExecute(std::move(res));
     }
 
-    Result FootpathLayoutPlaceAction::ElementInsertQuery(Result res) const
+    Result FootpathLayoutPlaceAction::ElementInsertQuery(GameState_t& gameState, Result res) const
     {
         bool entrancePath = false, entranceIsSamePath = false;
 
@@ -168,7 +168,7 @@ namespace OpenRCT2::GameActions
         const auto clearanceData = canBuild.getData<ConstructClearResult>();
         gFootpathGroundFlags = clearanceData.GroundFlags;
 
-        if (!getGameState().cheats.disableClearanceChecks && (clearanceData.GroundFlags & ELEMENT_IS_UNDERWATER))
+        if (!gameState.cheats.disableClearanceChecks && (clearanceData.GroundFlags & ELEMENT_IS_UNDERWATER))
         {
             return Result(Status::disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_CANT_BUILD_THIS_UNDERWATER);
         }

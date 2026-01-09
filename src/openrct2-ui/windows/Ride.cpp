@@ -1969,7 +1969,7 @@ namespace OpenRCT2::Ui::Windows
             auto* ride = GetRide(rideId);
             if (ride != nullptr)
             {
-                if (!(ride->windowInvalidateFlags & RIDE_INVALIDATE_RIDE_MAIN))
+                if (!ride->windowInvalidateFlags.has(RideInvalidateFlag::main))
                 {
                     if (_viewIndex > 0)
                     {
@@ -2252,7 +2252,7 @@ namespace OpenRCT2::Ui::Windows
             auto ride = GetRide(rideId);
             if (ride != nullptr)
             {
-                if (!(ride->windowInvalidateFlags & RIDE_INVALIDATE_RIDE_MAIN))
+                if (!ride->windowInvalidateFlags.has(RideInvalidateFlag::main))
                 {
                     if (_viewIndex == 0)
                         return;
@@ -2270,7 +2270,7 @@ namespace OpenRCT2::Ui::Windows
                         }
                     }
                 }
-                ride->windowInvalidateFlags &= ~RIDE_INVALIDATE_RIDE_MAIN;
+                ride->windowInvalidateFlags.unset(RideInvalidateFlag::main);
             }
             invalidateWidget(WIDX_STATUS);
         }
@@ -3386,9 +3386,9 @@ namespace OpenRCT2::Ui::Windows
             invalidateWidget(WIDX_TAB_3);
 
             auto ride = GetRide(rideId);
-            if (ride != nullptr && ride->windowInvalidateFlags & RIDE_INVALIDATE_RIDE_OPERATING)
+            if (ride != nullptr && ride->windowInvalidateFlags.has(RideInvalidateFlag::operatingSettings))
             {
-                ride->windowInvalidateFlags &= ~RIDE_INVALIDATE_RIDE_OPERATING;
+                ride->windowInvalidateFlags.unset(RideInvalidateFlag::operatingSettings);
                 invalidate();
             }
         }
@@ -3965,9 +3965,9 @@ namespace OpenRCT2::Ui::Windows
             invalidateWidget(WIDX_TAB_4);
 
             auto ride = GetRide(rideId);
-            if (ride != nullptr && ride->windowInvalidateFlags & RIDE_INVALIDATE_RIDE_MAINTENANCE)
+            if (ride != nullptr && ride->windowInvalidateFlags.has(RideInvalidateFlag::maintenance))
             {
-                ride->windowInvalidateFlags &= ~RIDE_INVALIDATE_RIDE_MAINTENANCE;
+                ride->windowInvalidateFlags.unset(RideInvalidateFlag::maintenance);
                 invalidate();
             }
         }
@@ -4173,8 +4173,7 @@ namespace OpenRCT2::Ui::Windows
             auto z = info.Element->GetBaseZ();
             auto direction = info.Element->GetDirection();
             auto gameAction = GameActions::RideSetColourSchemeAction(
-                CoordsXYZD{ info.Loc, z, static_cast<Direction>(direction) }, info.Element->AsTrack()->GetTrackType(),
-                newColourScheme);
+                CoordsXYZD{ info.Loc, z, direction }, info.Element->AsTrack()->GetTrackType(), newColourScheme);
             GameActions::Execute(&gameAction, getGameState());
         }
 
@@ -4957,7 +4956,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 int32_t activateMusic = (ride->lifecycleFlags & RIDE_LIFECYCLE_MUSIC) ? 0 : 1;
                 SetOperatingSetting(rideId, GameActions::RideSetSetting::Music, activateMusic);
-                ride->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MUSIC;
+                ride->windowInvalidateFlags.set(RideInvalidateFlag::music);
             }
         }
 
@@ -5105,9 +5104,9 @@ namespace OpenRCT2::Ui::Windows
             onPrepareDraw();
             invalidateWidget(WIDX_TAB_6);
 
-            if (auto ride = GetRide(rideId); ride != nullptr && ride->windowInvalidateFlags & RIDE_INVALIDATE_RIDE_MUSIC)
+            if (auto ride = GetRide(rideId); ride != nullptr && ride->windowInvalidateFlags.has(RideInvalidateFlag::music))
             {
-                ride->windowInvalidateFlags &= ~RIDE_INVALIDATE_RIDE_MUSIC;
+                ride->windowInvalidateFlags.unset(RideInvalidateFlag::music);
                 invalidate();
                 onResize();
                 onPrepareDraw();
@@ -5491,10 +5490,10 @@ namespace OpenRCT2::Ui::Windows
             invalidateWidget(WIDX_TAB_7);
 
             Ride* const ride = GetRide(rideId);
-            if (ride && ride->windowInvalidateFlags & RIDE_INVALIDATE_RIDE_RATINGS)
+            if (ride && ride->windowInvalidateFlags.has(RideInvalidateFlag::ratings))
             {
                 invalidate();
-                ride->windowInvalidateFlags &= ~RIDE_INVALIDATE_RIDE_RATINGS;
+                ride->windowInvalidateFlags.unset(RideInvalidateFlag::ratings);
             }
         }
 
@@ -6465,9 +6464,9 @@ namespace OpenRCT2::Ui::Windows
             invalidateWidget(WIDX_TAB_9);
 
             auto ride = GetRide(rideId);
-            if (ride != nullptr && ride->windowInvalidateFlags & RIDE_INVALIDATE_RIDE_INCOME)
+            if (ride != nullptr && ride->windowInvalidateFlags.has(RideInvalidateFlag::income))
             {
-                ride->windowInvalidateFlags &= ~RIDE_INVALIDATE_RIDE_INCOME;
+                ride->windowInvalidateFlags.unset(RideInvalidateFlag::income);
                 invalidate();
             }
         }
@@ -6764,9 +6763,9 @@ namespace OpenRCT2::Ui::Windows
             invalidateWidget(WIDX_TAB_10);
 
             auto ride = GetRide(rideId);
-            if (ride != nullptr && ride->windowInvalidateFlags & RIDE_INVALIDATE_RIDE_CUSTOMER)
+            if (ride != nullptr && ride->windowInvalidateFlags.has(RideInvalidateFlag::customers))
             {
-                ride->windowInvalidateFlags &= ~RIDE_INVALIDATE_RIDE_CUSTOMER;
+                ride->windowInvalidateFlags.unset(RideInvalidateFlag::customers);
                 invalidate();
             }
         }

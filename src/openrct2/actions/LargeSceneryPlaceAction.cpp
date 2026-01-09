@@ -291,7 +291,7 @@ namespace OpenRCT2::GameActions
             if (!GetFlags().has(CommandFlag::ghost))
             {
                 FootpathRemoveLitter({ curTile, zLow });
-                if (!getGameState().cheats.disableClearanceChecks)
+                if (!gameState.cheats.disableClearanceChecks)
                 {
                     WallRemoveAt({ curTile, zLow, zHigh });
                 }

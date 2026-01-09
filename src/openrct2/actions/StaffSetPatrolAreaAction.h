@@ -27,7 +27,7 @@ namespace OpenRCT2::GameActions
         MapRange _range;
         StaffSetPatrolAreaMode _mode;
 
-        Result QueryExecute(bool executing) const;
+        Result QueryExecute(GameState_t& gameState, bool executing) const;
 
     public:
         StaffSetPatrolAreaAction() = default;

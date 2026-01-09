@@ -52,7 +52,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
         }
 
-        auto* staff = getGameState().entities.TryGetEntity<Staff>(_spriteIndex);
+        auto* staff = gameState.entities.TryGetEntity<Staff>(_spriteIndex);
         if (staff == nullptr
             || (staff->AssignedStaffType != StaffType::handyman && staff->AssignedStaffType != StaffType::mechanic))
         {
@@ -65,7 +65,7 @@ namespace OpenRCT2::GameActions
 
     Result StaffSetOrdersAction::Execute(GameState_t& gameState) const
     {
-        auto* staff = getGameState().entities.TryGetEntity<Staff>(_spriteIndex);
+        auto* staff = gameState.entities.TryGetEntity<Staff>(_spriteIndex);
         if (staff == nullptr)
         {
             LOG_ERROR("Staff entity not found for spriteIndex %u", _spriteIndex);

@@ -1407,7 +1407,7 @@ static std::optional<GameActions::Result> TrackDesignPlaceEntrances(
                 }
                 else
                 {
-                    auto res = GameActions::RideEntranceExitPlaceAction::TrackPlaceQuery(newCoords, false);
+                    auto res = GameActions::RideEntranceExitPlaceAction::TrackPlaceQuery(gameState, newCoords, false);
                     if (res.error != GameActions::Status::ok)
                     {
                         return res;
@@ -1642,8 +1642,8 @@ static GameActions::Result TrackDesignPlaceRide(
                 }
 
                 auto trackPlaceAction = GameActions::TrackPlaceAction(
-                    ride.id, trackType, ride.type, { newCoords, tempZ, static_cast<uint8_t>(rotation) },
-                    track.brakeBoosterSpeed, track.colourScheme, track.seatRotation, liftHillAndAlternativeState, true);
+                    ride.id, trackType, ride.type, { newCoords, tempZ, rotation }, track.brakeBoosterSpeed, track.colourScheme,
+                    track.seatRotation, liftHillAndAlternativeState, true);
                 trackPlaceAction.SetFlags(flags);
 
                 auto res = flags.has(CommandFlag::apply) ? GameActions::ExecuteNested(&trackPlaceAction, gameState)

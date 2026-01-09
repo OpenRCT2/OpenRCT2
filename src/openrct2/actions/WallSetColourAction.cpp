@@ -67,7 +67,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_CANT_REPAINT_THIS, STR_OFF_EDGE_OF_MAP);
         }
 
-        if (gLegacyScene != LegacyScene::scenarioEditor && !MapIsLocationInPark(_loc) && !getGameState().cheats.sandboxMode)
+        if (gLegacyScene != LegacyScene::scenarioEditor && !MapIsLocationInPark(_loc) && !gameState.cheats.sandboxMode)
         {
             return Result(Status::notOwned, STR_CANT_REPAINT_THIS, STR_LAND_NOT_OWNED_BY_PARK);
         }

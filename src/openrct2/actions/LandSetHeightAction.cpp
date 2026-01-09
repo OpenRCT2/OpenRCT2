@@ -160,7 +160,7 @@ namespace OpenRCT2::GameActions
         auto surfaceHeight = TileElementHeight(_coords);
         FootpathRemoveLitter({ _coords, surfaceHeight });
 
-        if (!getGameState().cheats.disableClearanceChecks)
+        if (!gameState.cheats.disableClearanceChecks)
         {
             WallRemoveAt({ _coords, _height * 8 - 16, _height * 8 + 32 });
             cost += GetSmallSceneryRemovalCost();

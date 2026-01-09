@@ -639,12 +639,12 @@ struct RCT12TileElement : public RCT12TileElementBase
     template<typename TType, RCT12TileElementType TClass>
     const TType* as() const
     {
-        return static_cast<RCT12TileElementType>(GetType()) == TClass ? reinterpret_cast<const TType*>(this) : nullptr;
+        return GetType() == TClass ? reinterpret_cast<const TType*>(this) : nullptr;
     }
     template<typename TType, RCT12TileElementType TClass>
     TType* as()
     {
-        return static_cast<RCT12TileElementType>(GetType()) == TClass ? reinterpret_cast<TType*>(this) : nullptr;
+        return GetType() == TClass ? reinterpret_cast<TType*>(this) : nullptr;
     }
 
     const RCT12SurfaceElement* AsSurface() const

@@ -424,7 +424,7 @@ namespace OpenRCT2::GameActions
 
             InvalidateTestResults(*ride);
             FootpathQueueChainReset();
-            if (!getGameState().cheats.disableClearanceChecks || !(tileElement->IsGhost()))
+            if (!gameState.cheats.disableClearanceChecks || !(tileElement->IsGhost()))
             {
                 FootpathRemoveEdgesAt(mapLoc, tileElement);
             }
@@ -461,10 +461,10 @@ namespace OpenRCT2::GameActions
                         if (ride->mode != newMode)
                         {
                             bool canSwitch = ride->getRideTypeDescriptor().SupportsRideMode(newMode)
-                                || getGameState().cheats.showAllOperatingModes;
+                                || gameState.cheats.showAllOperatingModes;
                             if (canSwitch)
                             {
-                                ride->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_OPERATING;
+                                ride->windowInvalidateFlags.set(RideInvalidateFlag::operatingSettings);
                                 auto rideSetSetting = RideSetSettingAction(
                                     ride->id, RideSetSetting::Mode, static_cast<uint8_t>(newMode));
                                 ExecuteNested(&rideSetSetting, gameState);

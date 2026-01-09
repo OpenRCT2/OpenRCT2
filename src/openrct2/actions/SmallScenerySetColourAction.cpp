@@ -61,15 +61,15 @@ namespace OpenRCT2::GameActions
 
     Result SmallScenerySetColourAction::Query(GameState_t& gameState) const
     {
-        return QueryExecute(false);
+        return QueryExecute(gameState, false);
     }
 
     Result SmallScenerySetColourAction::Execute(GameState_t& gameState) const
     {
-        return QueryExecute(true);
+        return QueryExecute(gameState, true);
     }
 
-    Result SmallScenerySetColourAction::QueryExecute(bool isExecuting) const
+    Result SmallScenerySetColourAction::QueryExecute(GameState_t& gameState, bool isExecuting) const
     {
         auto res = Result();
         res.expenditure = ExpenditureType::landscaping;
@@ -83,7 +83,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_CANT_REPAINT_THIS, STR_OFF_EDGE_OF_MAP);
         }
 
-        if (gLegacyScene != LegacyScene::scenarioEditor && !getGameState().cheats.sandboxMode)
+        if (gLegacyScene != LegacyScene::scenarioEditor && !gameState.cheats.sandboxMode)
         {
             if (!MapIsLocationOwned(_loc))
             {

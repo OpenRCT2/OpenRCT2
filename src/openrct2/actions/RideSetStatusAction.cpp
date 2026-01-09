@@ -161,7 +161,7 @@ namespace OpenRCT2::GameActions
                 ride->status = RideStatus::closed;
                 ride->lifecycleFlags &= ~RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING;
                 ride->raceWinner = EntityId::GetNull();
-                ride->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
+                ride->windowInvalidateFlags.set(RideInvalidateFlag::main, RideInvalidateFlag::list);
                 windowMgr->InvalidateByNumber(WindowClass::ride, _rideIndex.ToUnderlying());
                 break;
             case RideStatus::simulating:
@@ -184,7 +184,7 @@ namespace OpenRCT2::GameActions
                 ride->currentIssues = 0;
                 ride->lastIssueTime = 0;
                 ride->getMeasurement();
-                ride->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
+                ride->windowInvalidateFlags.set(RideInvalidateFlag::main, RideInvalidateFlag::list);
                 windowMgr->InvalidateByNumber(WindowClass::ride, _rideIndex.ToUnderlying());
                 break;
             }
@@ -237,7 +237,7 @@ namespace OpenRCT2::GameActions
                 ride->currentIssues = 0;
                 ride->lastIssueTime = 0;
                 ride->getMeasurement();
-                ride->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
+                ride->windowInvalidateFlags.set(RideInvalidateFlag::main, RideInvalidateFlag::list);
                 windowMgr->InvalidateByNumber(WindowClass::ride, _rideIndex.ToUnderlying());
                 break;
             }

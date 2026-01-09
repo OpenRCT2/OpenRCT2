@@ -67,7 +67,7 @@ namespace OpenRCT2::GameActions
 
         if ((ride->lifecycleFlags & (RIDE_LIFECYCLE_INDESTRUCTIBLE | RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK)
              && _modifyType == RideModifyType::demolish)
-            && !getGameState().cheats.makeAllDestructible)
+            && !gameState.cheats.makeAllDestructible)
         {
             return Result(
                 Status::noClearance, STR_CANT_DEMOLISH_RIDE,
@@ -280,7 +280,7 @@ namespace OpenRCT2::GameActions
         ride.lifecycleFlags &= ~RIDE_LIFECYCLE_EVER_BEEN_OPENED;
         ride.lastCrashType = RIDE_CRASH_TYPE_NONE;
 
-        ride.windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAINTENANCE | RIDE_INVALIDATE_RIDE_CUSTOMER;
+        ride.windowInvalidateFlags.set(RideInvalidateFlag::maintenance, RideInvalidateFlag::customers);
 
         if (!ride.overallView.IsNull())
         {

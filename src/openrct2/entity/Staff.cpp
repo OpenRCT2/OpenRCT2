@@ -1375,7 +1375,7 @@ void Staff::UpdateAnswering()
         if (MechanicTimeSinceCall > 2500)
         {
             ride->mechanicStatus = MechanicStatus::calling;
-            ride->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAINTENANCE;
+            ride->windowInvalidateFlags.set(RideInvalidateFlag::maintenance);
             SetState(PeepState::falling);
             return;
         }
@@ -2075,7 +2075,7 @@ void Staff::UpdateFixing(int32_t steps)
 bool Staff::UpdateFixingEnterStation(Ride& ride) const
 {
     ride.mechanicStatus = MechanicStatus::fixing;
-    ride.windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAINTENANCE;
+    ride.windowInvalidateFlags.set(RideInvalidateFlag::maintenance);
 
     return true;
 }
@@ -2452,7 +2452,7 @@ bool Staff::UpdateFixingFixStationBrakes(bool firstRun, Ride& ride)
     if (AnimationFrameNum == 0x28)
     {
         ride.mechanicStatus = MechanicStatus::hasFixedStationBrakes;
-        ride.windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAINTENANCE;
+        ride.windowInvalidateFlags.set(RideInvalidateFlag::maintenance);
     }
 
     if (AnimationFrameNum == 0x13 || AnimationFrameNum == 0x19 || AnimationFrameNum == 0x1F || AnimationFrameNum == 0x25
@@ -2516,13 +2516,13 @@ bool Staff::UpdateFixingFinishFixOrInspect(bool firstRun, int32_t steps, Ride& r
             UpdateRideInspected(CurrentRide);
 
             StaffRidesInspected = AddClamp(StaffRidesInspected, 1u);
-            WindowInvalidateFlags |= RIDE_INVALIDATE_RIDE_INCOME | RIDE_INVALIDATE_RIDE_LIST;
+            WindowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
             ride.mechanicStatus = MechanicStatus::undefined;
             return true;
         }
 
         StaffRidesFixed = AddClamp(StaffRidesFixed, 1u);
-        WindowInvalidateFlags |= RIDE_INVALIDATE_RIDE_INCOME | RIDE_INVALIDATE_RIDE_LIST;
+        WindowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
 
         Orientation = PeepDirection << 3;
         Action = PeepActionType::staffAnswerCall2;
@@ -2601,7 +2601,7 @@ void Staff::UpdateRideInspected(RideId rideIndex)
         ride->lifecycleFlags &= ~RIDE_LIFECYCLE_DUE_INSPECTION;
         ride->reliability += ((100 - ride->reliabilityPercentage) / 4) * (ScenarioRand() & 0xFF);
         ride->lastInspection = 0;
-        ride->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAINTENANCE | RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
+        ride->windowInvalidateFlags.set(RideInvalidateFlag::maintenance, RideInvalidateFlag::main, RideInvalidateFlag::list);
     }
 }
 

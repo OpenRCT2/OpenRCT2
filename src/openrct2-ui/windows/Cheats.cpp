@@ -884,29 +884,25 @@ static StringId window_cheats_page_titles[] = {
                 case WIDX_MONTH_UP:
                     _monthSpinnerValue++;
                     _monthSpinnerValue = std::clamp(_monthSpinnerValue, 1, static_cast<int32_t>(MONTH_COUNT));
-                    _daySpinnerValue = std::clamp(
-                        _daySpinnerValue, 1, static_cast<int32_t>(Date::GetDaysInMonth(_monthSpinnerValue - 1)));
+                    _daySpinnerValue = std::clamp(_daySpinnerValue, 1, Date::GetDaysInMonth(_monthSpinnerValue - 1));
                     invalidateWidget(WIDX_MONTH_BOX);
                     invalidateWidget(WIDX_DAY_BOX);
                     break;
                 case WIDX_MONTH_DOWN:
                     _monthSpinnerValue--;
                     _monthSpinnerValue = std::clamp(_monthSpinnerValue, 1, static_cast<int32_t>(MONTH_COUNT));
-                    _daySpinnerValue = std::clamp(
-                        _daySpinnerValue, 1, static_cast<int32_t>(Date::GetDaysInMonth(_monthSpinnerValue - 1)));
+                    _daySpinnerValue = std::clamp(_daySpinnerValue, 1, Date::GetDaysInMonth(_monthSpinnerValue - 1));
                     invalidateWidget(WIDX_MONTH_BOX);
                     invalidateWidget(WIDX_DAY_BOX);
                     break;
                 case WIDX_DAY_UP:
                     _daySpinnerValue++;
-                    _daySpinnerValue = std::clamp(
-                        _daySpinnerValue, 1, static_cast<int32_t>(Date::GetDaysInMonth(_monthSpinnerValue - 1)));
+                    _daySpinnerValue = std::clamp(_daySpinnerValue, 1, Date::GetDaysInMonth(_monthSpinnerValue - 1));
                     invalidateWidget(WIDX_DAY_BOX);
                     break;
                 case WIDX_DAY_DOWN:
                     _daySpinnerValue--;
-                    _daySpinnerValue = std::clamp(
-                        _daySpinnerValue, 1, static_cast<int32_t>(Date::GetDaysInMonth(_monthSpinnerValue - 1)));
+                    _daySpinnerValue = std::clamp(_daySpinnerValue, 1, Date::GetDaysInMonth(_monthSpinnerValue - 1));
                     invalidateWidget(WIDX_DAY_BOX);
                     break;
                 case WIDX_DATE_SET:
