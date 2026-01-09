@@ -1771,7 +1771,7 @@ namespace OpenRCT2::Ui::Windows
             uint8_t quadrant;
             Direction rotation;
 
-            Sub6E1F34SmallScenery(screenPos, selection.EntryIndex, mapTile, &quadrant, &rotation);
+            updatePlacementSmallScenery(screenPos, selection.EntryIndex, mapTile, &quadrant, &rotation);
 
             if (mapTile.IsNull())
             {
@@ -1848,7 +1848,7 @@ namespace OpenRCT2::Ui::Windows
             CoordsXY mapTile = {};
             int32_t z;
 
-            Sub6E1F34PathItem(screenPos, selection.EntryIndex, mapTile, &z);
+            updatePlacementPathItem(screenPos, selection.EntryIndex, mapTile, &z);
 
             if (mapTile.IsNull())
             {
@@ -1888,7 +1888,7 @@ namespace OpenRCT2::Ui::Windows
             CoordsXY mapTile = {};
             uint8_t edge;
 
-            Sub6E1F34Wall(screenPos, selection.EntryIndex, mapTile, &edge);
+            updatePlacementWall(screenPos, selection.EntryIndex, mapTile, &edge);
 
             if (mapTile.IsNull())
             {
@@ -1938,7 +1938,7 @@ namespace OpenRCT2::Ui::Windows
             CoordsXY mapTile = {};
             Direction direction;
 
-            Sub6E1F34LargeScenery(screenPos, selection.EntryIndex, mapTile, &direction);
+            updatePlacementLargeScenery(screenPos, selection.EntryIndex, mapTile, &direction);
 
             if (mapTile.IsNull())
             {
@@ -1997,7 +1997,7 @@ namespace OpenRCT2::Ui::Windows
             Direction direction;
             int32_t z;
 
-            Sub6E1F34Banner(screenPos, selection.EntryIndex, mapTile, &z, &direction);
+            updatePlacementBanner(screenPos, selection.EntryIndex, mapTile, &z, &direction);
 
             if (mapTile.IsNull())
             {
@@ -2378,7 +2378,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void Sub6E1F34UpdateScreenCoordsAndButtonsPressed(bool canRaiseItem, ScreenCoordsXY& screenPos)
+        void updatePlacementUpdateScreenCoordsAndButtonsPressed(bool canRaiseItem, ScreenCoordsXY& screenPos)
         {
             if (!canRaiseItem && !getGameState().cheats.disableSupportLimits)
             {
@@ -2452,19 +2452,10 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void Sub6E1F34SmallScenery(
+        void updatePlacementSmallScenery(
             const ScreenCoordsXY& sourceScreenPos, ObjectEntryIndex sceneryIndex, CoordsXY& gridPos, uint8_t* outQuadrant,
             Direction* outRotation)
         {
-            auto* windowMgr = GetWindowManager();
-            auto* w = windowMgr->FindByClass(WindowClass::scenery);
-
-            if (w == nullptr)
-            {
-                gridPos.SetNull();
-                return;
-            }
-
             auto screenPos = sourceScreenPos;
             uint16_t maxPossibleHeight = ZoomLevel::max().ApplyTo(
                 std::numeric_limits<decltype(TileElement::BaseHeight)>::max() - 32);
@@ -2483,7 +2474,7 @@ namespace OpenRCT2::Ui::Windows
                 can_raise_item = true;
             }
 
-            Sub6E1F34UpdateScreenCoordsAndButtonsPressed(can_raise_item, screenPos);
+            updatePlacementUpdateScreenCoordsAndButtonsPressed(can_raise_item, screenPos);
 
             // Small scenery
             if (!sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_FULL_TILE))
@@ -2651,22 +2642,13 @@ namespace OpenRCT2::Ui::Windows
             *outRotation = rotation;
         }
 
-        void Sub6E1F34PathItem(
+        void updatePlacementPathItem(
             const ScreenCoordsXY& sourceScreenPos, ObjectEntryIndex sceneryIndex, CoordsXY& gridPos, int32_t* outZ)
         {
-            auto* windowMgr = GetWindowManager();
-            auto* w = windowMgr->FindByClass(WindowClass::scenery);
-
-            if (w == nullptr)
-            {
-                gridPos.SetNull();
-                return;
-            }
-
             auto screenPos = sourceScreenPos;
-            Sub6E1F34UpdateScreenCoordsAndButtonsPressed(false, screenPos);
+            updatePlacementUpdateScreenCoordsAndButtonsPressed(false, screenPos);
 
-            // Path bits
+            // Path additions
             constexpr auto flag = EnumsToFlags(ViewportInteractionItem::footpath, ViewportInteractionItem::pathAddition);
             auto info = GetMapCoordinatesFromPos(screenPos, flag);
             gridPos = info.Loc;
@@ -2685,18 +2667,9 @@ namespace OpenRCT2::Ui::Windows
             *outZ = info.Element->GetBaseZ();
         }
 
-        void Sub6E1F34Wall(
+        void updatePlacementWall(
             const ScreenCoordsXY& sourceScreenPos, ObjectEntryIndex sceneryIndex, CoordsXY& gridPos, uint8_t* outEdges)
         {
-            auto* windowMgr = GetWindowManager();
-            auto* w = windowMgr->FindByClass(WindowClass::scenery);
-
-            if (w == nullptr)
-            {
-                gridPos.SetNull();
-                return;
-            }
-
             auto screenPos = sourceScreenPos;
             uint16_t maxPossibleHeight = ZoomLevel::max().ApplyTo(
                 std::numeric_limits<decltype(TileElement::BaseHeight)>::max() - 32);
@@ -2707,7 +2680,7 @@ namespace OpenRCT2::Ui::Windows
                 maxPossibleHeight -= wallEntry->height;
             }
 
-            Sub6E1F34UpdateScreenCoordsAndButtonsPressed(true, screenPos);
+            updatePlacementUpdateScreenCoordsAndButtonsPressed(true, screenPos);
 
             // Walls
             uint8_t edge;
@@ -2778,18 +2751,9 @@ namespace OpenRCT2::Ui::Windows
             *outEdges = edge;
         }
 
-        void Sub6E1F34LargeScenery(
+        void updatePlacementLargeScenery(
             const ScreenCoordsXY& sourceScreenPos, ObjectEntryIndex sceneryIndex, CoordsXY& gridPos, Direction* outDirection)
         {
-            auto* windowMgr = GetWindowManager();
-            auto* w = windowMgr->FindByClass(WindowClass::scenery);
-
-            if (w == nullptr)
-            {
-                gridPos.SetNull();
-                return;
-            }
-
             auto screenPos = sourceScreenPos;
             uint16_t maxPossibleHeight = ZoomLevel::max().ApplyTo(
                 std::numeric_limits<decltype(TileElement::BaseHeight)>::max() - 32);
@@ -2805,7 +2769,7 @@ namespace OpenRCT2::Ui::Windows
                 maxPossibleHeight = std::max(0, maxPossibleHeight - maxClearZ);
             }
 
-            Sub6E1F34UpdateScreenCoordsAndButtonsPressed(true, screenPos);
+            updatePlacementUpdateScreenCoordsAndButtonsPressed(true, screenPos);
 
             // Large scenery
             // If CTRL not pressed
@@ -2879,21 +2843,12 @@ namespace OpenRCT2::Ui::Windows
             *outDirection = rotation;
         }
 
-        void Sub6E1F34Banner(
+        void updatePlacementBanner(
             const ScreenCoordsXY& sourceScreenPos, ObjectEntryIndex sceneryIndex, CoordsXY& gridPos, int32_t* outZ,
             Direction* outDirection)
         {
-            auto* windowMgr = GetWindowManager();
-            auto* w = windowMgr->FindByClass(WindowClass::scenery);
-
-            if (w == nullptr)
-            {
-                gridPos.SetNull();
-                return;
-            }
-
             auto screenPos = sourceScreenPos;
-            Sub6E1F34UpdateScreenCoordsAndButtonsPressed(false, screenPos);
+            updatePlacementUpdateScreenCoordsAndButtonsPressed(false, screenPos);
 
             // Banner
             constexpr auto flag = EnumsToFlags(ViewportInteractionItem::footpath, ViewportInteractionItem::pathAddition);
@@ -2935,7 +2890,7 @@ namespace OpenRCT2::Ui::Windows
             uint8_t quadrant;
             Direction rotation;
 
-            Sub6E1F34SmallScenery(screenCoords, selectedScenery, gridPos, &quadrant, &rotation);
+            updatePlacementSmallScenery(screenCoords, selectedScenery, gridPos, &quadrant, &rotation);
             if (gridPos.IsNull())
                 return;
 
@@ -3062,7 +3017,7 @@ namespace OpenRCT2::Ui::Windows
             CoordsXY gridPos;
             int32_t z;
 
-            Sub6E1F34PathItem(screenCoords, selectedScenery, gridPos, &z);
+            updatePlacementPathItem(screenCoords, selectedScenery, gridPos, &z);
             if (gridPos.IsNull())
                 return;
 
@@ -3109,7 +3064,7 @@ namespace OpenRCT2::Ui::Windows
         {
             CoordsXY gridPos;
             uint8_t edges;
-            Sub6E1F34Wall(screenCoords, selectedScenery, gridPos, &edges);
+            updatePlacementWall(screenCoords, selectedScenery, gridPos, &edges);
             if (gridPos.IsNull())
                 return;
 
@@ -3310,7 +3265,7 @@ namespace OpenRCT2::Ui::Windows
         {
             CoordsXY gridPos;
             Direction direction;
-            Sub6E1F34LargeScenery(screenCoords, selectedScenery, gridPos, &direction);
+            updatePlacementLargeScenery(screenCoords, selectedScenery, gridPos, &direction);
             if (gridPos.IsNull())
                 return;
 
@@ -3372,7 +3327,7 @@ namespace OpenRCT2::Ui::Windows
             CoordsXY gridPos;
             int32_t z;
             Direction direction;
-            Sub6E1F34Banner(screenCoords, selectedScenery, gridPos, &z, &direction);
+            updatePlacementBanner(screenCoords, selectedScenery, gridPos, &z, &direction);
             if (gridPos.IsNull())
                 return;
 
