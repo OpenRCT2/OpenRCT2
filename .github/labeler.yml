@@ -21,6 +21,10 @@
       - '**/*.md'
 
 # Game components
+'actions':
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'src/openrct2/actions/*'
 'mapgen':
   - changed-files:
     - any-glob-to-any-file:
@@ -29,6 +33,10 @@
   - changed-files:
     - any-glob-to-any-file:
       - 'src/openrct2/network/*'
+'paint':
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'src/openrct2/paint/*'
 
 # Platform code
 'platform':
