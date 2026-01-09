@@ -1051,7 +1051,7 @@
     <ClCompile Include="paint\vehicle\Vehicle.RotoDrop.cpp" />
     <ClCompile Include="paint\vehicle\Vehicle.SplashBoats.cpp" />
     <ClCompile Include="paint\vehicle\Vehicle.Submarine.cpp" />
-    <ClCompile Include="paint\vehicle\Vehicle.VirginaReel.cpp" />
+    <ClCompile Include="paint\vehicle\Vehicle.VirginiaReel.cpp" />
     <ClCompile Include="paint\VirtualFloor.cpp" />
     <ClCompile Include="ParkImporter.cpp" />
     <ClCompile Include="park\Legacy.cpp" />
