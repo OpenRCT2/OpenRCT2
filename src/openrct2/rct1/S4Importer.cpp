@@ -1222,7 +1222,7 @@ namespace OpenRCT2::RCT1
 
         void ImportRideMeasurement(RideMeasurement& dst, const RCT12RideMeasurement& src)
         {
-            dst.flags = src.Flags;
+            dst.flags.holder = src.Flags;
             dst.last_use_tick = src.LastUseTick;
             dst.num_items = src.NumItems;
             dst.current_item = src.CurrentItem;

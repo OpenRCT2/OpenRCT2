@@ -5967,7 +5967,7 @@ namespace OpenRCT2::Ui::Windows
                 if (ride != nullptr)
                 {
                     auto [measurement, message] = ride->getMeasurement();
-                    if (measurement != nullptr && (measurement->flags & RIDE_MEASUREMENT_FLAG_RUNNING))
+                    if (measurement != nullptr && measurement->flags.has(RideMeasurementFlag::running))
                     {
                         auto ft = Formatter();
                         ft.Increment(2);
