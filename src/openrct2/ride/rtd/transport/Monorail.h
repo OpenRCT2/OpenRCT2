@@ -64,7 +64,7 @@ constexpr RideTypeDescriptor MonorailRTD =
         RatingsCalculationType::Normal,
         { RideRating::make(2, 00), RideRating::make(0, 00), RideRating::make(0, 00) },
         14,
-        -1,
+        kDynamicRideShelterRating,
         false,
         {
             { RatingsModifierType::BonusLength,            6000,     764, 0, 0 },

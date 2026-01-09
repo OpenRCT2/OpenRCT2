@@ -66,7 +66,7 @@ constexpr RideTypeDescriptor HypercoasterRTD =
         RatingsCalculationType::Normal,
         { RideRating::make(3, 00), RideRating::make(0, 50), RideRating::make(0, 20) },
         16,
-        -1,
+        kDynamicRideShelterRating,
         true,
         {
             { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },

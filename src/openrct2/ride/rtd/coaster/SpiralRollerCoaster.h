@@ -61,7 +61,7 @@ constexpr RideTypeDescriptor SpiralRollerCoasterRTD =
         RatingsCalculationType::Normal,
         { RideRating::make(3, 30), RideRating::make(0, 30), RideRating::make(0, 30) },
         14,
-        -1,
+        kDynamicRideShelterRating,
         false,
         {
             { RatingsModifierType::BonusLength,           6000,             819, 0, 0 },

@@ -235,12 +235,14 @@ struct RatingsModifier
     int32_t nausea;
 };
 
+constexpr int8_t kDynamicRideShelterRating = -1;
+
 struct RideRatingsDescriptor
 {
     RatingsCalculationType Type;
     OpenRCT2::RideRating::Tuple BaseRatings;
     uint8_t Unreliability;
-    // Used for rides with a set sheltered 8ths value (-1 = normal calculation)
+    // Used for rides with a set sheltered 8ths value (kDynamicRideShelterRating = normal calculation)
     int8_t RideShelter;
     bool RelaxRequirementsIfInversions;
     RatingsModifier Modifiers[32];

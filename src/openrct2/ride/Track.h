@@ -756,3 +756,5 @@ constexpr bool TrackPieceDirectionIsDiagonal(const uint8_t direction)
 {
     return direction & kTrackDirectionDiagonalMask;
 }
+
+bool TrackGetIsSheltered(const CoordsXYZ& input);

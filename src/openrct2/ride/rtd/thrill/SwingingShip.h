@@ -60,7 +60,7 @@ constexpr RideTypeDescriptor SwingingShipRTD =
         RatingsCalculationType::FlatRide,
         { RideRating::make(1, 50), RideRating::make(1, 90), RideRating::make(1, 41) },
         10,
-        0,
+        kDynamicRideShelterRating,
         false,
         {
             { RatingsModifierType::BonusOperationOption, 0, 5, 5, 10 }, 
