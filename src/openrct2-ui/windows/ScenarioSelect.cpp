@@ -666,7 +666,8 @@ namespace OpenRCT2::Ui::Windows
         }
 
     private:
-        void DrawCategoryHeading(Drawing::RenderTarget& rt, int32_t left, int32_t right, int32_t y, const ScenarioListItem& headerItem) const
+        void DrawCategoryHeading(
+            Drawing::RenderTarget& rt, int32_t left, int32_t right, int32_t y, const ScenarioListItem& headerItem) const
         {
             auto baseColour = colours[1];
             auto lightColour = ColourMapA[baseColour.colour].lighter;
