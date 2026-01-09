@@ -293,7 +293,7 @@ namespace OpenRCT2::GameActions
         // Some actions are not recorded in the replay.
         const auto ignoreForReplays = (actionFlags & Flags::IgnoreForReplays) != 0;
 
-        auto* replayManager = OpenRCT2::GetContext()->GetReplayManager();
+        auto* replayManager = GetContext()->GetReplayManager();
         if (replayManager != nullptr && (replayManager->IsReplaying() || replayManager->IsNormalising()))
         {
             // We only accept replay commands as long the replay is active.
@@ -472,7 +472,7 @@ namespace OpenRCT2::GameActions
 
     const char* GameAction::GetName() const
     {
-        return OpenRCT2::GameActions::GetName(_type);
+        return GameActions::GetName(_type);
     }
 
     bool GameAction::LocationValid(const CoordsXY& coords) const
@@ -494,7 +494,7 @@ namespace OpenRCT2::GameActions
             obj.Set("type", EnumValue(_type));
 
             auto flags = GetActionFlags();
-            obj.Set("isClientOnly", (flags & GameActions::Flags::ClientOnly) != 0);
+            obj.Set("isClientOnly", (flags & Flags::ClientOnly) != 0);
             obj.Set("result", true);
 
             // Call the subscriptions

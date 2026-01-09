@@ -81,7 +81,7 @@ namespace OpenRCT2::GameActions
 
         if (isExecuting)
         {
-            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::placeItem, { _coords.x, _coords.y, TileElementHeight(_coords) });
+            Audio::Play3D(Audio::SoundId::placeItem, { _coords.x, _coords.y, TileElementHeight(_coords) });
         }
 
         uint8_t maxHeight = MapGetHighestLandHeight(validRange);

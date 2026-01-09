@@ -41,7 +41,7 @@ namespace OpenRCT2::GameActions
 
     uint16_t RideSetAppearanceAction::GetActionFlags() const
     {
-        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
+        return GameAction::GetActionFlags() | Flags::AllowWhilePaused;
     }
 
     void RideSetAppearanceAction::Serialise(DataSerialiser& stream)
@@ -50,14 +50,13 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_rideIndex) << DS_TAG(_type) << DS_TAG(_value) << DS_TAG(_index);
     }
 
-    GameActions::Result RideSetAppearanceAction::Query(GameState_t& gameState) const
+    Result RideSetAppearanceAction::Query(GameState_t& gameState) const
     {
         auto ride = GetRide(_rideIndex);
         if (ride == nullptr)
         {
             LOG_ERROR("Ride not found for rideIndex %u", _rideIndex.ToUnderlying());
-            return GameActions::Result(
-                GameActions::Status::invalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_RIDE_NOT_FOUND);
+            return Result(Status::invalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_RIDE_NOT_FOUND);
         }
 
         switch (_type)
@@ -68,8 +67,7 @@ namespace OpenRCT2::GameActions
                 if (_index >= std::size(ride->trackColours))
                 {
                     LOG_ERROR("Invalid track colour %u", _index);
-                    return GameActions::Result(
-                        GameActions::Status::invalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_INVALID_COLOUR);
+                    return Result(Status::invalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_INVALID_COLOUR);
                 }
                 break;
             case RideSetAppearanceType::VehicleColourBody:
@@ -78,8 +76,7 @@ namespace OpenRCT2::GameActions
                 if (_index >= std::size(ride->vehicleColours))
                 {
                     LOG_ERROR("Invalid vehicle colour %u", _index);
-                    return GameActions::Result(
-                        GameActions::Status::invalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_INVALID_COLOUR);
+                    return Result(Status::invalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_INVALID_COLOUR);
                 }
                 break;
             case RideSetAppearanceType::VehicleColourScheme:
@@ -88,21 +85,19 @@ namespace OpenRCT2::GameActions
                 break;
             default:
                 LOG_ERROR("Invalid ride appearance type %u", _type);
-                return GameActions::Result(
-                    GameActions::Status::invalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
+                return Result(Status::invalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
         }
 
-        return GameActions::Result();
+        return Result();
     }
 
-    GameActions::Result RideSetAppearanceAction::Execute(GameState_t& gameState) const
+    Result RideSetAppearanceAction::Execute(GameState_t& gameState) const
     {
         auto ride = GetRide(_rideIndex);
         if (ride == nullptr)
         {
             LOG_ERROR("Ride not found for rideIndex %u", _rideIndex.ToUnderlying());
-            return GameActions::Result(
-                GameActions::Status::invalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_RIDE_NOT_FOUND);
+            return Result(Status::invalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_RIDE_NOT_FOUND);
         }
 
         switch (_type)
@@ -151,7 +146,7 @@ namespace OpenRCT2::GameActions
         auto* windowMgr = Ui::GetWindowManager();
         windowMgr->InvalidateByNumber(WindowClass::ride, _rideIndex.ToUnderlying());
 
-        auto res = GameActions::Result();
+        auto res = Result();
         if (!ride->overallView.IsNull())
         {
             auto location = ride->overallView.ToTileCentre();

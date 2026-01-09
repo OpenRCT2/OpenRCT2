@@ -245,7 +245,7 @@ namespace OpenRCT2::GameActions
                 Guard::Assert(false, "Invalid ride status %u", _status);
                 break;
         }
-        auto windowManager = OpenRCT2::Ui::GetWindowManager();
+        auto windowManager = Ui::GetWindowManager();
         windowManager->BroadcastIntent(Intent(INTENT_ACTION_REFRESH_CAMPAIGN_RIDE_LIST));
 
         return res;

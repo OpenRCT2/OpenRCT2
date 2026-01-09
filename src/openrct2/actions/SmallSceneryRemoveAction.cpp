@@ -64,7 +64,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_CANT_REMOVE_THIS, STR_OFF_EDGE_OF_MAP);
         }
 
-        auto* entry = OpenRCT2::ObjectManager::GetObjectEntry<SmallSceneryEntry>(_sceneryType);
+        auto* entry = ObjectManager::GetObjectEntry<SmallSceneryEntry>(_sceneryType);
         if (entry == nullptr)
         {
             return Result(Status::invalidParameters, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
@@ -111,7 +111,7 @@ namespace OpenRCT2::GameActions
     {
         Result res = Result();
 
-        auto* entry = OpenRCT2::ObjectManager::GetObjectEntry<SmallSceneryEntry>(_sceneryType);
+        auto* entry = ObjectManager::GetObjectEntry<SmallSceneryEntry>(_sceneryType);
         if (entry == nullptr)
         {
             LOG_ERROR("Invalid small scenery type %u", _sceneryType);

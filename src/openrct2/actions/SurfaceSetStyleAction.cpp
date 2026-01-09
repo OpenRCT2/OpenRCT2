@@ -52,7 +52,7 @@ namespace OpenRCT2::GameActions
         res.expenditure = ExpenditureType::landscaping;
 
         auto validRange = ClampRangeWithinMap(_range.Normalise());
-        auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
+        auto& objManager = GetContext()->GetObjectManager();
         if (_surfaceStyle != kObjectEntryIndexNull)
         {
             const auto surfaceObj = objManager.GetLoadedObject<TerrainSurfaceObject>(_surfaceStyle);
@@ -185,7 +185,7 @@ namespace OpenRCT2::GameActions
 
                     if (_surfaceStyle != curSurfaceStyle)
                     {
-                        auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
+                        auto& objManager = GetContext()->GetObjectManager();
                         const auto* surfaceObject = objManager.GetLoadedObject<TerrainSurfaceObject>(_surfaceStyle);
                         if (surfaceObject != nullptr)
                         {
