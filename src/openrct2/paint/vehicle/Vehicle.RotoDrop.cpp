@@ -25,7 +25,7 @@ namespace OpenRCT2
         PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
         const CarEntry* carEntry)
     {
-        imageDirection = OpenRCT2::Entity::Yaw::YawTo32(imageDirection);
+        imageDirection = Entity::Yaw::YawTo32(imageDirection);
 
         auto imageFlags = ImageId(0, vehicle->colours.Body, vehicle->colours.Trim);
         if (vehicle->IsGhost())

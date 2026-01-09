@@ -123,7 +123,7 @@ namespace OpenRCT2
             return;
 
         uint8_t frame = MiniGolfPeepAnimationFrames[EnumValue(vehicle->mini_golf_current_animation)][vehicle->animation_frame];
-        uint32_t ebx = (frame << 2) + OpenRCT2::Entity::Yaw::YawTo4(imageDirection);
+        uint32_t ebx = (frame << 2) + Entity::Yaw::YawTo4(imageDirection);
 
         ImageIndex index = rideEntry->Cars[0].base_image_id + 1 + ebx;
         auto image = ImageId(index, peep->TshirtColour, peep->TrousersColour);

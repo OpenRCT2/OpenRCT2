@@ -80,8 +80,7 @@ static void PaintRideEntranceExitScrollingText(
     auto scroll = stringWidth > 0 ? (getGameState().currentTicks / 2) % stringWidth : 0;
 
     PaintAddImageAsChild(
-        session,
-        Drawing::ScrollingText::setup(session, STR_BANNER_TEXT_FORMAT, ft, scroll, stationObj.ScrollingMode, PaletteIndex::pi0),
+        session, ScrollingText::setup(session, STR_BANNER_TEXT_FORMAT, ft, scroll, stationObj.ScrollingMode, PaletteIndex::pi0),
         { 0, 0, height + stationObj.Height }, { { 2, 2, height + stationObj.Height }, { 28, 28, 51 } });
 }
 
@@ -261,7 +260,7 @@ static void PaintParkEntranceScrollingText(
 
     auto stringWidth = GfxGetStringWidth(text, FontStyle::tiny);
     auto scroll = stringWidth > 0 ? (gameState.currentTicks / 2) % stringWidth : 0;
-    auto imageIndex = Drawing::ScrollingText::setup(
+    auto imageIndex = ScrollingText::setup(
         session, STR_BANNER_TEXT_FORMAT, ft, scroll, scrollingMode + direction / 2, PaletteIndex::pi0);
     auto textHeight = height + entrance.GetTextHeight();
     PaintAddImageAsChild(session, imageIndex, { 0, 0, textHeight }, { { 2, 2, textHeight }, { 28, 28, 47 } });

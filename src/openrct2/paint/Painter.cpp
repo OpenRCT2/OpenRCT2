@@ -106,7 +106,7 @@ static bool ShouldShowFPS()
     if (gLegacyScene == LegacyScene::titleSequence)
         return true;
 
-    auto* windowMgr = Ui::GetWindowManager();
+    auto* windowMgr = GetWindowManager();
     return windowMgr->FindByClass(WindowClass::topToolbar);
 }
 
@@ -188,7 +188,7 @@ PaintSession* Painter::CreateSession(RenderTarget& rt, uint32_t viewFlags, uint8
     session->CurrentlyDrawnEntity = nullptr;
     session->CurrentlyDrawnTileElement = nullptr;
     session->Surface = nullptr;
-    session->SelectedElement = OpenRCT2::TileInspector::GetSelectedElement();
+    session->SelectedElement = TileInspector::GetSelectedElement();
     session->InteractionType = ViewportInteractionItem::none;
     session->PathElementOnSameHeight = nullptr;
     session->TrackElementOnSameHeight = nullptr;
