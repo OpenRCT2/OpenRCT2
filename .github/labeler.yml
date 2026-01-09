@@ -20,6 +20,12 @@
       - '*.md'
       - '**/*.md'
 
+# Localisation
+'localisation':
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'data/language/en-GB.txt'
+
 # Game components
 'actions':
   - changed-files:
