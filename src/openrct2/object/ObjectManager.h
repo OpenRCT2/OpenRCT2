@@ -34,6 +34,8 @@ namespace OpenRCT2
         }
 
         virtual Object* GetLoadedObject(ObjectType objectType, size_t index) = 0;
+        virtual std::vector<Object*>& GetObjectList(ObjectType objectType) = 0;
+        virtual size_t GetObjectTypeCount(ObjectType objectType) = 0;
         template<typename TClass>
         TClass* GetLoadedObject(size_t index)
         {
@@ -52,6 +54,7 @@ namespace OpenRCT2
         virtual Object* LoadObject(const ObjectEntryDescriptor& descriptor, ObjectEntryIndex slot) = 0;
         virtual Object* LoadRepositoryItem(const ObjectRepositoryItem& ori) = 0;
         virtual void LoadObjects(const ObjectList& entries, const bool reportProgress = false) = 0;
+        virtual void LoadCampaignObjects() = 0;
         virtual void UnloadObjects(const std::vector<ObjectEntryDescriptor>& entries) = 0;
         virtual void UnloadAllTransient() = 0;
         virtual void UnloadAll() = 0;

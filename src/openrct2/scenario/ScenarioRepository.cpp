@@ -732,6 +732,12 @@ const ScenarioIndexEntry* ScenarioRepositoryGetByIndex(size_t index)
     return repo->GetByIndex(index);
 }
 
+const ScenarioIndexEntry* ScenarioRepositoryGetByFilename(u8string_view filename)
+{
+    IScenarioRepository* repo = GetScenarioRepository();
+    return repo->GetByFilename(filename);
+}
+
 bool ScenarioRepositoryTryRecordHighscore(const utf8* scenarioFileName, money64 companyValue, const utf8* name)
 {
     IScenarioRepository* repo = GetScenarioRepository();

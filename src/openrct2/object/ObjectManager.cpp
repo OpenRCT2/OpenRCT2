@@ -107,6 +107,18 @@ namespace OpenRCT2
             return list[index];
         }
 
+        std::vector<Object*>& GetObjectList(ObjectType type) override
+        {
+            auto typeIndex = EnumValue(type);
+            return _loadedObjects[typeIndex];
+        }
+
+        size_t GetObjectTypeCount(ObjectType type) override
+        {
+            auto typeIndex = EnumValue(type);
+            return _loadedObjects[typeIndex].size();
+        }
+
         Object* GetLoadedObject(const ObjectEntryDescriptor& entry) override
         {
             const ObjectRepositoryItem* ori = _objectRepository.FindObject(entry);
@@ -329,17 +341,11 @@ namespace OpenRCT2
         }
 
     private:
-        std::vector<Object*>& GetObjectList(ObjectType type)
-        {
-            auto typeIndex = EnumValue(type);
-            return _loadedObjects[typeIndex];
-        }
-
         void UnloadAll(bool onlyTransient)
         {
             for (auto type : getAllObjectTypes())
             {
-                if (!onlyTransient || !IsIntransientObjectType(type))
+                if (!onlyTransient || ShouldFreeObjectType(type))
                 {
                     auto& list = GetObjectList(type);
                     for (auto* loadedObject : list)
@@ -399,6 +405,16 @@ namespace OpenRCT2
                 }
             }
             return loadedObject;
+        }
+
+        void LoadCampaignObjects() override
+        {
+            const std::vector<const ObjectRepositoryItem*> repoObjects = _objectRepository.GetObjectsOfType(
+                ObjectType::campaign);
+            for (const ObjectRepositoryItem* ori : repoObjects)
+            {
+                RepositoryItemToObject(ori);
+            }
         }
 
         std::optional<ObjectEntryIndex> FindSpareSlot(ObjectType objectType)
@@ -470,7 +486,7 @@ namespace OpenRCT2
             size_t numObjectsUnloaded = 0;
             for (auto type : getAllObjectTypes())
             {
-                if (!IsIntransientObjectType(type))
+                if (ShouldFreeObjectType(type))
                 {
                     auto& list = GetObjectList(type);
                     for (auto& object : list)
@@ -706,7 +722,7 @@ namespace OpenRCT2
             // Set the new object lists
             for (auto type : getAllObjectTypes())
             {
-                if (!IsIntransientObjectType(type))
+                if (ShouldFreeObjectType(type))
                 {
                     auto& list = GetObjectList(type);
                     list.clear();

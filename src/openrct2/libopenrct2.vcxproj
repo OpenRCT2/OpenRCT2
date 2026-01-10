@@ -340,6 +340,7 @@
     <ClInclude Include="object\AudioSampleTable.h" />
     <ClInclude Include="object\BannerObject.h" />
     <ClInclude Include="object\BannerSceneryEntry.h" />
+    <ClInclude Include="object\CampaignObject.h" />
     <ClInclude Include="object\ClimateObject.h" />
     <ClInclude Include="object\DefaultObjects.h" />
     <ClInclude Include="object\EntranceEntry.h" />
@@ -912,6 +913,7 @@
     <ClCompile Include="object\AudioObject.cpp" />
     <ClCompile Include="object\AudioSampleTable.cpp" />
     <ClCompile Include="object\BannerObject.cpp" />
+    <ClCompile Include="object\CampaignObject.cpp" />
     <ClCompile Include="object\ClimateObject.cpp" />
     <ClCompile Include="object\DefaultObjects.cpp" />
     <ClCompile Include="object\EntranceObject.cpp" />

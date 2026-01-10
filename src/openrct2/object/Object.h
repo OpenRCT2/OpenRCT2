@@ -343,11 +343,6 @@ namespace OpenRCT2
     void* ObjectEntryGetChunk(ObjectType objectType, ObjectEntryIndex index);
     const Object* ObjectEntryGetObject(ObjectType objectType, ObjectEntryIndex index);
 
-    constexpr bool IsIntransientObjectType(ObjectType type)
-    {
-        return type == ObjectType::audio;
-    }
-
     u8string VersionString(const ObjectVersion& version);
     ObjectVersion VersionTuple(std::string_view version);
 } // namespace OpenRCT2
