@@ -1018,7 +1018,8 @@ static StringId window_cheats_page_titles[] = {
 
                     WindowDropdownShowTextCustomWidth(
                         { windowPos.x - 30 + dropdownWidget.left, windowPos.y + dropdownWidget.bottom }, 0, colours[1], 20,
-                        Dropdown::Flag::CustomHeight, std::size(kWeatherTypes), dropdownWidget.width() + 26);
+                        Dropdown::Flag::CustomHeight | Dropdown::Flag::StayOpen, std::size(kWeatherTypes),
+                        dropdownWidget.width() + 26);
                 }
             }
         }
