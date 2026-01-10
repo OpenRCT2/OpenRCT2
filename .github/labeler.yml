@@ -31,7 +31,7 @@
   - changed-files:
     - any-glob-to-any-file:
       - 'src/openrct2/actions/*'
-'mapgen':
+'map generator':
   - changed-files:
     - any-glob-to-any-file:
       - 'src/openrct2/world/map_generator/*'
