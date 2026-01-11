@@ -3271,7 +3271,7 @@ static Vehicle* VehicleCreateCar(
     *remainingDistance -= halfSpacing;
     vehicle->remaining_distance = *remainingDistance;
 
-    if (!(carEntry.flags & CAR_ENTRY_FLAG_GO_KART))
+    if (!carEntry.flags.has(CarEntryFlag::isGoKart))
     {
         *remainingDistance -= halfSpacing;
     }
@@ -3310,7 +3310,7 @@ static Vehicle* VehicleCreateCar(
     }
 
     const auto& rtd = ride.getRideTypeDescriptor();
-    if (carEntry.flags & CAR_ENTRY_FLAG_DODGEM_CAR_PLACEMENT)
+    if (carEntry.flags.has(CarEntryFlag::useDodgemCarPlacement))
     {
         // Loc6DDCA4:
         vehicle->TrackSubposition = VehicleTrackSubposition::Default;
@@ -3347,12 +3347,12 @@ static Vehicle* VehicleCreateCar(
     else
     {
         VehicleTrackSubposition subposition = VehicleTrackSubposition::Default;
-        if (carEntry.flags & CAR_ENTRY_FLAG_CHAIRLIFT)
+        if (carEntry.flags.has(CarEntryFlag::isChairlift))
         {
             subposition = VehicleTrackSubposition::ChairliftGoingOut;
         }
 
-        if (carEntry.flags & CAR_ENTRY_FLAG_GO_KART)
+        if (carEntry.flags.has(CarEntryFlag::isGoKart))
         {
             // Choose which lane Go Kart should start in
             subposition = VehicleTrackSubposition::GoKartsLeftLane;
@@ -3361,21 +3361,21 @@ static Vehicle* VehicleCreateCar(
                 subposition = VehicleTrackSubposition::GoKartsRightLane;
             }
         }
-        if (carEntry.flags & CAR_ENTRY_FLAG_MINI_GOLF)
+        if (carEntry.flags.has(CarEntryFlag::isMiniGolf))
         {
             subposition = VehicleTrackSubposition::MiniGolfStart9;
             vehicle->var_D3 = 0;
             vehicle->mini_golf_current_animation = MiniGolfAnimation::Walk;
             vehicle->mini_golf_flags = 0;
         }
-        if (carEntry.flags & CAR_ENTRY_FLAG_REVERSER_BOGIE)
+        if (carEntry.flags.has(CarEntryFlag::isReverserCoasterBogie))
         {
             if (vehicle->IsHead())
             {
                 subposition = VehicleTrackSubposition::ReverserRCFrontBogie;
             }
         }
-        if (carEntry.flags & CAR_ENTRY_FLAG_REVERSER_PASSENGER_CAR)
+        if (carEntry.flags.has(CarEntryFlag::isReverserCoasterPassengerCar))
         {
             subposition = VehicleTrackSubposition::ReverserRCRearBogie;
         }
@@ -3420,12 +3420,12 @@ static Vehicle* VehicleCreateCar(
         vehicle->SetTrackType(trackElement->GetTrackType());
         vehicle->SetTrackDirection(vehicle->Orientation >> 3);
         vehicle->track_progress = 31;
-        if (carEntry.flags & CAR_ENTRY_FLAG_MINI_GOLF)
+        if (carEntry.flags.has(CarEntryFlag::isMiniGolf))
         {
             vehicle->track_progress = 15;
         }
         vehicle->Flags = VehicleFlags::CollisionDisabled;
-        if (carEntry.flags & CAR_ENTRY_FLAG_HAS_INVERTED_SPRITE_SET)
+        if (carEntry.flags.has(CarEntryFlag::hasInvertedSpriteSet))
         {
             if (trackElement->IsInverted())
             {
@@ -3689,7 +3689,7 @@ ResultWithMessage Ride::createVehicles(const CoordsXYE& element, bool isApplying
 
                 auto carEntry = vehicle->Entry();
 
-                if (!(carEntry->flags & CAR_ENTRY_FLAG_DODGEM_CAR_PLACEMENT))
+                if (!carEntry->flags.has(CarEntryFlag::useDodgemCarPlacement))
                 {
                     vehicle->UpdateTrackMotion(nullptr);
                 }

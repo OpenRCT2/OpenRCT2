@@ -1082,7 +1082,7 @@ static void PaintVehicleRiders(
         if (vehicle->num_peeps > (i * 2) && carEntry->no_seating_rows > i)
         {
             auto offsetImageId = baseImageId;
-            if (i == 0 && (carEntry->flags & CAR_ENTRY_FLAG_RIDER_ANIMATION))
+            if (i == 0 && carEntry->flags.has(CarEntryFlag::hasRiderAnimation))
             {
                 offsetImageId += (carEntry->NumCarImages * vehicle->animation_frame);
             }
@@ -1114,11 +1114,11 @@ static void vehicle_sprite_paint(
     }
 
     auto baseImageId = static_cast<uint32_t>(spriteIndex);
-    if (carEntry->flags & CAR_ENTRY_FLAG_SPINNING_COMBINED_WITH_NONSPINNING)
+    if (carEntry->flags.has(CarEntryFlag::hasSpinningCombinedWithNonSpinning))
     {
         baseImageId += carEntry->spinningNumFrames * vehicle->spin_sprite / 256;
     }
-    if (carEntry->flags & CAR_ENTRY_FLAG_VEHICLE_ANIMATION)
+    if (carEntry->flags.has(CarEntryFlag::hasVehicleAnimation))
     {
         baseImageId += vehicle->animation_frame;
     }
