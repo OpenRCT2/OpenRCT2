@@ -10,7 +10,6 @@
 #pragma once
 
 #include "../../Identifiers.h"
-#include "../Banner.h"
 #include "TileElementBase.h"
 
 namespace OpenRCT2

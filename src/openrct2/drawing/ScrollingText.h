@@ -15,6 +15,8 @@ struct ImageId;
 struct PaintSession;
 using StringId = uint16_t;
 
+constexpr uint8_t kScrollingModeNone = 255;
+
 namespace OpenRCT2
 {
     class Formatter;

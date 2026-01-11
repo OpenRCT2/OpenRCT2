@@ -13,6 +13,7 @@
 
     #include "../../../Context.h"
     #include "../../../core/Guard.hpp"
+    #include "../../../drawing/ScrollingText.h"
     #include "../../../entity/EntityRegistry.h"
     #include "../../../object/LargeSceneryEntry.h"
     #include "../../../object/WallSceneryEntry.h"

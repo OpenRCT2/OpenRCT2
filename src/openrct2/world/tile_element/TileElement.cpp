@@ -11,6 +11,7 @@
 
 #include "../../Diagnostic.h"
 #include "../../core/Guard.hpp"
+#include "../../drawing/ScrollingText.h"
 #include "../../interface/WindowClasses.h"
 #include "../../ui/WindowManager.h"
 #include "BannerElement.h"

@@ -14,7 +14,7 @@
 #include "../core/Json.hpp"
 #include "../core/String.hpp"
 #include "../drawing/Drawing.h"
-#include "../world/Banner.h"
+#include "../drawing/ScrollingText.h"
 
 namespace OpenRCT2
 {
