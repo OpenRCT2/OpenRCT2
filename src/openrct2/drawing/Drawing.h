@@ -157,7 +157,7 @@ bool FASTCALL
     if constexpr (TBlendOp & kBlendTransparent)
     {
         // Ignore transparent pixels
-        if (*src == OpenRCT2::Drawing::PaletteIndex::pi0)
+        if (*src == OpenRCT2::Drawing::PaletteIndex::transparent)
         {
             return false;
         }
@@ -168,7 +168,7 @@ bool FASTCALL
         auto pixel = paletteMap.Blend(*src, *dst);
         if constexpr (TBlendOp & kBlendTransparent)
         {
-            if (pixel == OpenRCT2::Drawing::PaletteIndex::pi0)
+            if (pixel == OpenRCT2::Drawing::PaletteIndex::transparent)
             {
                 return false;
             }
@@ -181,7 +181,7 @@ bool FASTCALL
         auto pixel = paletteMap[EnumValue(*src)];
         if constexpr (TBlendOp & kBlendTransparent)
         {
-            if (pixel == OpenRCT2::Drawing::PaletteIndex::pi0)
+            if (pixel == OpenRCT2::Drawing::PaletteIndex::transparent)
             {
                 return false;
             }
@@ -194,7 +194,7 @@ bool FASTCALL
         auto pixel = paletteMap[EnumValue(*dst)];
         if constexpr (TBlendOp & kBlendTransparent)
         {
-            if (pixel == OpenRCT2::Drawing::PaletteIndex::pi0)
+            if (pixel == OpenRCT2::Drawing::PaletteIndex::transparent)
             {
                 return false;
             }

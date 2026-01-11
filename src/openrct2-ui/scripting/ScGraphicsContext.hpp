@@ -219,7 +219,7 @@ namespace OpenRCT2::Scripting
 
         void rect(int32_t x, int32_t y, int32_t width, int32_t height)
         {
-            if (_stroke != PaletteIndex::pi0)
+            if (_stroke != PaletteIndex::transparent)
             {
                 line(x, y, x + width, y);
                 line(x + width - 1, y + 1, x + width - 1, y + height - 1);
@@ -231,7 +231,7 @@ namespace OpenRCT2::Scripting
                 width -= 2;
                 height -= 2;
             }
-            if (_fill != PaletteIndex::pi0)
+            if (_fill != PaletteIndex::transparent)
             {
                 Rectangle::fill(_rt, { x, y, x + width - 1, y + height - 1 }, _fill);
             }

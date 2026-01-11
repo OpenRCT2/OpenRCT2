@@ -102,20 +102,12 @@ constexpr size_t kPaletteCount = 256;
 constexpr auto kPaletteOffsetDynamic = OpenRCT2::Drawing::PaletteIndex::pi10;
 constexpr uint8_t kPaletteLengthDynamic = 236;
 
-constexpr auto kPaletteOffsetWaterWaves = OpenRCT2::Drawing::PaletteIndex::pi230;
-constexpr auto kPaletteOffsetWaterSparkles = OpenRCT2::Drawing::PaletteIndex::pi235;
 constexpr uint8_t kPaletteLengthWaterWaves = 5;
 constexpr uint8_t kPaletteLengthWaterSparkles = 5;
 
-constexpr auto kPaletteOffsetTrackRails = OpenRCT2::Drawing::PaletteIndex::pi240;
-constexpr uint8_t kPaletteLengthTrackRails = 3;
-
-constexpr auto kPaletteOffsetRemapPrimary = OpenRCT2::Drawing::PaletteIndex::pi243;
-constexpr auto kPaletteOffsetRemapSecondary = OpenRCT2::Drawing::PaletteIndex::pi202;
-constexpr auto kPaletteOffsetRemapTertiary = OpenRCT2::Drawing::PaletteIndex::pi46;
 constexpr uint8_t kPaletteLengthRemap = 12;
 
-constexpr auto kPaletteOffsetAnimated = OpenRCT2::Drawing::PaletteIndex::pi230;
+constexpr auto kPaletteOffsetAnimated = OpenRCT2::Drawing::PaletteIndex::waterWaves0;
 constexpr uint8_t kPaletteLengthAnimated = 16;
 
 constexpr uint8_t kColourNumOriginal = 32;
