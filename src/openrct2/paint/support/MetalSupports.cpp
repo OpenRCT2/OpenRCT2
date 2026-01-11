@@ -87,8 +87,13 @@ static constexpr CoordsXY kMetalSupportBoundBoxOffsets[] = {
 
 struct RepositionPair
 {
-    MetalSupportPlace place;
-    uint8_t crossBeamIndex;
+    MetalSupportPlace place = MetalSupportPlace::centre;
+    uint8_t crossBeamIndex = 0xFF;
+    
+    constexpr bool isNull() const
+    {
+        return crossBeamIndex == 0xFF;
+    }
 };
 struct RepositionRow
 {
@@ -389,18 +394,22 @@ static bool MetalSupportsPaintSetupCommon(
         if (currentHeight < 0)
             return false;
 
-        uint8_t attempt = 0;
-        MetalSupportPlace newPlacement = MetalSupportPlace::centre;
-        for (; attempt < kMetalSupportSegmentOffsets.size(); attempt++)
+        RepositionPair newPlacement = {};
+        for (size_t attempt = 0; attempt < kMetalSupportSegmentOffsets.size(); attempt++)
         {
-            newPlacement = kMetalSupportSegmentOffsets[attempt][segment][session.CurrentRotation].place;
-            if (currentHeight > supportSegments[EnumValue(newPlacement)].height)
+            const auto& candidate = kMetalSupportSegmentOffsets[attempt][segment][session.CurrentRotation];
+            if (currentHeight > supportSegments[EnumValue(candidate.place)].height)
+            {
+                newPlacement = candidate;
                 break;
-
-            if (attempt == kMetalSupportSegmentOffsets.size() - 1)
-                return false;
+            }
         }
-        const uint8_t crossBeamIndex = kMetalSupportSegmentOffsets[attempt][segment][session.CurrentRotation].crossBeamIndex;
+        if (newPlacement.isNull())
+        {
+            return false;
+        }
+
+        const uint8_t crossBeamIndex = newPlacement.crossBeamIndex;
         if constexpr (typeB)
         {
             if (crossBeamIndex >= kMetalSupportCrossbeamTwoSegmentOffsetIndex)
@@ -412,7 +421,7 @@ static bool MetalSupportsPaintSetupCommon(
             { kMetalSupportBoundBoxOffsets[segment] + kMetalSupportCrossBeamBoundBoxOffsets[crossBeamIndex], currentHeight },
             { kMetalSupportCrossBeamBoundBoxLengths[crossBeamIndex], 1 });
 
-        segment = EnumValue(newPlacement);
+        segment = EnumValue(newPlacement.place);
     }
 
     const int16_t crossbeamHeight = currentHeight;
