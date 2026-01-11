@@ -513,7 +513,7 @@ void DrawSupportsSideBySide(
  */
 bool PathPoleSupportsPaintSetup(
     PaintSession& session, const MetalSupportPlace supportPlace, const bool isSloped, const int32_t height,
-    ImageId imageTemplate, const FootpathPaintInfo& pathPaintInfo)
+    ImageId imageTemplate, const PathRailingsDescriptor& railings)
 {
     auto segment = EnumValue(supportPlace);
 
@@ -541,7 +541,7 @@ bool PathPoleSupportsPaintSetup(
     uint16_t baseHeight;
 
     if ((supportSegments[segment].slope & kTileSlopeAboveTrackOrScenery) || (height - supportSegments[segment].height < 6)
-        || !(pathPaintInfo.RailingFlags & RAILING_ENTRY_FLAG_HAS_SUPPORT_BASE_SPRITE))
+        || !(railings.flags & RAILING_ENTRY_FLAG_HAS_SUPPORT_BASE_SPRITE))
     {
         baseHeight = supportSegments[segment].height;
     }
@@ -551,7 +551,7 @@ bool PathPoleSupportsPaintSetup(
         baseHeight = supportSegments[segment].height;
 
         PaintAddImageAsParent(
-            session, imageTemplate.WithIndex(pathPaintInfo.BridgeImageId + 37 + imageOffset),
+            session, imageTemplate.WithIndex(railings.bridgeImage + 37 + imageOffset),
             { kMetalSupportBoundBoxOffsets[segment].x, kMetalSupportBoundBoxOffsets[segment].y, baseHeight }, { 0, 0, 5 });
         baseHeight += 6;
     }
@@ -570,7 +570,7 @@ bool PathPoleSupportsPaintSetup(
     if (heightDiff > 0)
     {
         PaintAddImageAsParent(
-            session, imageTemplate.WithIndex(pathPaintInfo.BridgeImageId + 20 + (heightDiff - 1)),
+            session, imageTemplate.WithIndex(railings.bridgeImage + 20 + (heightDiff - 1)),
             { kMetalSupportBoundBoxOffsets[segment], baseHeight }, { 0, 0, heightDiff - 1 });
     }
 
@@ -603,7 +603,7 @@ bool PathPoleSupportsPaintSetup(
             }
 
             PaintAddImageAsParent(
-                session, imageTemplate.WithIndex(pathPaintInfo.BridgeImageId + 20 + (z - 1)),
+                session, imageTemplate.WithIndex(railings.bridgeImage + 20 + (z - 1)),
                 { kMetalSupportBoundBoxOffsets[segment], baseHeight }, { 0, 0, (z - 1) });
 
             baseHeight += z;
@@ -614,7 +614,7 @@ bool PathPoleSupportsPaintSetup(
             break;
         }
 
-        ImageIndex imageIndex = pathPaintInfo.BridgeImageId + 20 + (z - 1);
+        ImageIndex imageIndex = railings.bridgeImage + 20 + (z - 1);
         if (z == kMetalSupportMaxSectionHeight)
         {
             imageIndex += 1;
@@ -649,7 +649,7 @@ bool PathPoleSupportsPaintSetup(
                 break;
             }
 
-            ImageIndex imageIndex = pathPaintInfo.BridgeImageId + 20 + (z - 1);
+            ImageIndex imageIndex = railings.bridgeImage + 20 + (z - 1);
             PaintAddImageAsParent(
                 session, imageTemplate.WithIndex(imageIndex), { kMetalSupportBoundBoxOffsets[segment], baseHeight },
                 { 0, 0, 0 });

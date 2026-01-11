@@ -12,6 +12,7 @@
 #include "../../SpriteIds.h"
 #include "../../interface/Viewport.h"
 #include "../../ride/TrackData.h"
+#include "../../world/Footpath.h"
 #include "../../world/tile_element/Slope.h"
 #include "../Boundbox.h"
 #include "../Paint.SessionFlags.h"
@@ -625,17 +626,17 @@ bool WoodenBSupportsPaintSetupRotated(
  */
 bool PathBoxSupportsPaintSetup(
     PaintSession& session, WoodenSupportSubType supportType, bool isSloped, Direction slopeRotation, int32_t height,
-    ImageId imageTemplate, const FootpathPaintInfo& pathPaintInfo)
+    ImageId imageTemplate, const PathRailingsDescriptor& railings)
 {
     auto supportOrientationOffset = (supportType == WoodenSupportSubType::nwSe) ? 24 : 0;
 
     uint16_t baseHeight = 0;
     bool hasSupports = false;
     SupportsIdDescriptor supportIds = {
-        .Full = pathPaintInfo.BridgeImageId + 22 + supportOrientationOffset,
-        .Half = pathPaintInfo.BridgeImageId + 23 + supportOrientationOffset,
-        .Flat = pathPaintInfo.BridgeImageId + 48,
-        .Slope = pathPaintInfo.BridgeImageId + supportOrientationOffset,
+        .Full = railings.bridgeImage + 22 + supportOrientationOffset,
+        .Half = railings.bridgeImage + 23 + supportOrientationOffset,
+        .Flat = railings.bridgeImage + 48,
+        .Slope = railings.bridgeImage + supportOrientationOffset,
     };
 
     if (!WoodenSupportsPaintSetupCommon<11, false>(session, supportIds, height, imageTemplate, hasSupports, baseHeight))
@@ -645,7 +646,7 @@ bool PathBoxSupportsPaintSetup(
 
     if (isSloped)
     {
-        ImageIndex imageIndex = pathPaintInfo.BridgeImageId + 55 + slopeRotation;
+        ImageIndex imageIndex = railings.bridgeImage + 55 + slopeRotation;
 
         PaintSlopeTransitions(kSlopedPathSupportsDescriptor, imageIndex, session, imageTemplate, baseHeight);
         hasSupports = true;

@@ -30,6 +30,7 @@
 #include "../Paint.SessionFlags.h"
 #include "../Paint.h"
 #include "../VirtualFloor.h"
+#include "Paint.Path.h"
 #include "Paint.Surface.h"
 #include "Segment.h"
 

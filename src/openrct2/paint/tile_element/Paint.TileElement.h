@@ -55,7 +55,6 @@ void TileElementPaintSetup(PaintSession& session, const CoordsXY& mapCoords, boo
 void PaintEntrance(PaintSession& session, uint8_t direction, int32_t height, const OpenRCT2::EntranceElement& entranceElement);
 void PaintBanner(PaintSession& session, uint8_t direction, int32_t height, const OpenRCT2::BannerElement& bannerElement);
 void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, const OpenRCT2::SurfaceElement& tileElement);
-void PaintPath(PaintSession& session, uint16_t height, const OpenRCT2::PathElement& tileElement);
 void PaintSmallScenery(
     PaintSession& session, uint8_t direction, int32_t height, const OpenRCT2::SmallSceneryElement& sceneryElement);
 void PaintWall(PaintSession& session, uint8_t direction, int32_t height, const OpenRCT2::WallElement& tileElement);
