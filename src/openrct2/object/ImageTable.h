@@ -68,5 +68,6 @@ namespace OpenRCT2
             return static_cast<uint32_t>(_entries.size());
         }
         void AddImage(const G1Element* g1);
+        void addPalette(const G1Palette& g1);
     };
 } // namespace OpenRCT2

@@ -15,6 +15,11 @@
 #include <memory>
 #include <vector>
 
+namespace OpenRCT2::Drawing
+{
+    struct BGRColour;
+}
+
 namespace OpenRCT2
 {
     enum class G1Flag : uint8_t
@@ -28,24 +33,37 @@ namespace OpenRCT2
     };
     using G1Flags = FlagHolder<uint16_t, G1Flag>;
 
+    struct G1Palette
+    {
+        Drawing::BGRColour* palette = nullptr;
+        int16_t numColours = 0;
+        int16_t pad1 = 0; // unused for palettes
+        int16_t startIndex = 0;
+        int16_t pad2 = 0; // unused for palettes
+        G1Flags flags = { G1Flag::isPalette };
+        int32_t pad3 = 0; // unused for palettes
+    };
+
     struct G1Element
     {
-        uint8_t* offset = nullptr; // 0x00
-        union
+        uint8_t* offset = nullptr;
+        int16_t width = 0;
+        int16_t height = 0;
+        int16_t xOffset = 0;
+        int16_t yOffset = 0;
+
+        G1Flags flags = {};
+        int32_t zoomedOffset = 0;
+
+        const G1Palette* asPalette() const
         {
-            int16_t width = 0;  // 0x04
-            int16_t numColours; // If G1Flag::isPalette is set
-        };
-        int16_t height = 0; // 0x06
-        union
-        {
-            int16_t xOffset = 0; // 0x08
-            int16_t startIndex;  // If G1Flag::isPalette is set
-        };
-        int16_t yOffset = 0;      // 0x0A
-        G1Flags flags = {};       // 0x0C
-        int32_t zoomedOffset = 0; // 0x0E
+            if (!flags.has(G1Flag::isPalette))
+                return nullptr;
+
+            return reinterpret_cast<const G1Palette*>(this);
+        }
     };
+    static_assert(sizeof(G1Palette) == sizeof(G1Element));
 
 #pragma pack(push, 1)
     struct G1Header

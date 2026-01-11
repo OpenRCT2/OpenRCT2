@@ -1105,6 +1105,15 @@ const G1Element* GfxGetG1Element(ImageIndex image_id)
     return nullptr;
 }
 
+const G1Palette* GfxGetG1Palette(ImageIndex imageId)
+{
+    const auto* element = GfxGetG1Element(imageId);
+    if (element == nullptr)
+        return nullptr;
+
+    return element->asPalette();
+}
+
 void GfxSetG1Element(ImageIndex imageId, const G1Element* g1)
 {
     bool isTemp = imageId == SPR_TEMP;
@@ -1161,9 +1170,9 @@ bool IsCsgLoaded()
 
 size_t G1CalculateDataSize(const G1Element* g1)
 {
-    if (g1->flags.has(G1Flag::isPalette))
+    if (const auto* asPalette = g1->asPalette())
     {
-        return g1->numColours * 3;
+        return asPalette->numColours * 3;
     }
 
     if (g1->flags.has(G1Flag::hasRLECompression))

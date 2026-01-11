@@ -245,7 +245,7 @@ void GfxSetDirtyBlocks(const ScreenRect& rect);
 void GfxInvalidateScreen();
 
 // palette
-void GfxTransposePalette(int32_t pal, uint8_t product);
+void GfxTransposePalette(ImageIndex pal, uint8_t product);
 void LoadPalette();
 
 // other
@@ -271,6 +271,7 @@ void GfxUnloadG2AndFonts();
 void GfxUnloadCsg();
 const OpenRCT2::G1Element* GfxGetG1Element(const ImageId imageId);
 const OpenRCT2::G1Element* GfxGetG1Element(ImageIndex image_id);
+const OpenRCT2::G1Palette* GfxGetG1Palette(ImageIndex imageId);
 void GfxSetG1Element(ImageIndex imageId, const OpenRCT2::G1Element* g1);
 std::optional<OpenRCT2::Gx> GfxLoadGx(const std::vector<uint8_t>& buffer);
 bool IsCsgLoaded();

@@ -107,32 +107,28 @@ namespace OpenRCT2
         auto numColours = jColours.size();
 
         // This pointer gets memcopied in ImageTable::AddImage so it's fine for the unique_ptr to go out of scope
-        auto data = std::make_unique<uint8_t[]>(numColours * 3);
+        auto data = std::make_unique<Drawing::BGRColour[]>(numColours);
         size_t dataIndex = 0;
 
         for (auto& jColour : jColours)
         {
             if (jColour.is_string())
             {
-                auto colour = ParseColour(Json::GetString(jColour));
-                data[dataIndex + 0] = (colour >> 16) & 0xFF;
-                data[dataIndex + 1] = (colour >> 8) & 0xFF;
-                data[dataIndex + 2] = colour & 0xFF;
+                data[dataIndex] = ParseColour(Json::GetString(jColour));
             }
-            dataIndex += 3;
+            dataIndex++;
         }
 
-        G1Element g1 = {};
-        g1.offset = data.get();
+        G1Palette g1 = {};
+        g1.palette = data.get();
         g1.numColours = static_cast<int16_t>(numColours);
         g1.startIndex = Json::GetNumber<int16_t>(jPalette["index"]);
-        g1.flags = { G1Flag::isPalette };
 
         auto& imageTable = GetImageTable();
-        imageTable.AddImage(&g1);
+        imageTable.addPalette(g1);
     }
 
-    uint32_t WaterObject::ParseColour(const std::string& s) const
+    Drawing::BGRColour WaterObject::ParseColour(const std::string& s) const
     {
         uint8_t r = 0;
         uint8_t g = 0;
@@ -144,6 +140,6 @@ namespace OpenRCT2
             g = std::stoul(s.substr(3, 2), nullptr, 16) & 0xFF;
             b = std::stoul(s.substr(5, 2), nullptr, 16) & 0xFF;
         }
-        return (b << 16) | (g << 8) | r;
+        return { b, g, r };
     }
 } // namespace OpenRCT2
