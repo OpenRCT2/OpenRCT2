@@ -15,9 +15,9 @@
 #include "../core/Json.hpp"
 #include "../core/Memory.hpp"
 #include "../drawing/Drawing.h"
+#include "../drawing/ScrollingText.h"
 #include "../interface/Cursors.h"
 #include "../localisation/Language.h"
-#include "../world/Banner.h"
 #include "../world/Location.hpp"
 
 #include <iterator>

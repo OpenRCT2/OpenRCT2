@@ -28,8 +28,6 @@ namespace OpenRCT2
 constexpr OpenRCT2::ObjectEntryIndex kBannerNull = OpenRCT2::kObjectEntryIndexNull;
 constexpr size_t kMaxBanners = 8192;
 
-constexpr uint8_t kScrollingModeNone = 255;
-
 enum class BannerFlag : uint8_t
 {
     noEntry = 0,
