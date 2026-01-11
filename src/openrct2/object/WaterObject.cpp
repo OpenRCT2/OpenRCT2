@@ -119,14 +119,13 @@ namespace OpenRCT2
             dataIndex++;
         }
 
-        G1Element g1 = {};
+        G1Palette g1 = {};
         g1.palette = data.get();
         g1.numColours = static_cast<int16_t>(numColours);
         g1.startIndex = Json::GetNumber<int16_t>(jPalette["index"]);
-        g1.flags = { G1Flag::isPalette };
 
         auto& imageTable = GetImageTable();
-        imageTable.AddImage(&g1);
+        imageTable.addPalette(g1);
     }
 
     Drawing::BGRColour WaterObject::ParseColour(const std::string& s) const

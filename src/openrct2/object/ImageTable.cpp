@@ -643,4 +643,11 @@ namespace OpenRCT2
         }
         _entries.push_back(std::move(newg1));
     }
+
+    void ImageTable::addPalette(const G1Palette& g1)
+    {
+        Guard::Assert(g1.flags.has(G1Flag::isPalette));
+        const auto base = reinterpret_cast<const G1Element*>(&g1);
+        AddImage(base);
+    }
 } // namespace OpenRCT2

@@ -698,29 +698,28 @@ void GfxFilterPixel(RenderTarget& rt, const ScreenCoordsXY& coords, FilterPalett
  * a1 (ebx)
  * product (cl)
  */
-void GfxTransposePalette(int32_t pal, uint8_t product)
+void GfxTransposePalette(ImageIndex pal, uint8_t product)
 {
-    const G1Element* g1 = GfxGetG1Element(pal);
-    if (g1 != nullptr)
+    const auto* g1 = GfxGetG1Palette(pal);
+    if (g1 == nullptr)
+        return;
+
+    auto index = g1->startIndex;
+    auto* src = g1->palette;
+
+    for (auto numColours = g1->numColours; numColours > 0; numColours--)
     {
-        auto numColours = g1->numColours;
-        auto index = g1->startIndex;
-        auto* src = g1->palette;
+        auto& dst = gGamePalette[index];
+        // Make sure the image never gets darker than the void colour (not-quite-black), to avoid the background colour
+        // jumping between void and 100% black.
+        dst.Blue = std::max<uint8_t>(35, ((src->blue * product) >> 8));
+        dst.Green = std::max<uint8_t>(35, ((src->green * product) >> 8));
+        dst.Red = std::max<uint8_t>(23, ((src->red * product) >> 8));
+        src++;
 
-        for (; numColours > 0; numColours--)
-        {
-            auto& dst = gGamePalette[index];
-            // Make sure the image never gets darker than the void colour (not-quite-black), to avoid the background colour
-            // jumping between void and 100% black.
-            dst.Blue = std::max<uint8_t>(35, ((src->blue * product) >> 8));
-            dst.Green = std::max<uint8_t>(35, ((src->green * product) >> 8));
-            dst.Red = std::max<uint8_t>(23, ((src->red * product) >> 8));
-            src++;
-
-            index++;
-        }
-        UpdatePalette(gGamePalette, PaletteIndex::pi10, 236);
+        index++;
     }
+    UpdatePalette(gGamePalette, PaletteIndex::pi10, 236);
 }
 
 /**
@@ -743,13 +742,12 @@ void LoadPalette()
         palette = water_type->image_id;
     }
 
-    const G1Element* g1 = GfxGetG1Element(palette);
+    const auto* g1 = GfxGetG1Palette(palette);
     if (g1 != nullptr)
     {
-        auto numColours = g1->numColours;
         auto index = g1->startIndex;
         auto* src = g1->palette;
-        for (; numColours > 0; numColours--)
+        for (auto numColours = g1->numColours; numColours > 0; numColours--)
         {
             auto& dst = gGamePalette[index];
             dst.Blue = src->blue;
@@ -957,7 +955,7 @@ void UpdatePaletteEffects()
         {
             palette = water_type->image_id;
         }
-        const G1Element* g1 = GfxGetG1Element(palette);
+        const auto* g1 = GfxGetG1Palette(palette);
         if (g1 != nullptr)
         {
             auto startIndex = g1->startIndex;
@@ -987,7 +985,7 @@ void UpdatePaletteEffects()
                 palette = water_type->image_id;
             }
 
-            const G1Element* g1 = GfxGetG1Element(palette);
+            const auto* g1 = GfxGetG1Palette(palette);
             if (g1 != nullptr)
             {
                 auto startIndex = g1->startIndex;
@@ -1024,7 +1022,7 @@ void UpdatePaletteEffects()
         {
             waterId = water_type->palette_index_1;
         }
-        const G1Element* g1 = GfxGetG1Element(shade + waterId);
+        const auto* g1 = GfxGetG1Palette(shade + waterId);
         if (g1 != nullptr)
         {
             const auto* g1PaletteEntry = &g1->palette[j];
@@ -1049,7 +1047,7 @@ void UpdatePaletteEffects()
             waterId = water_type->palette_index_2;
         }
 
-        g1 = GfxGetG1Element(shade + waterId);
+        g1 = GfxGetG1Palette(shade + waterId);
         if (g1 != nullptr)
         {
             auto* src = &g1->palette[j];
@@ -1070,7 +1068,7 @@ void UpdatePaletteEffects()
 
         j = (static_cast<uint16_t>(gPaletteEffectFrame * -960) * 3) >> 16;
         waterId = SPR_GAME_PALETTE_4;
-        g1 = GfxGetG1Element(shade + waterId);
+        g1 = GfxGetG1Palette(shade + waterId);
         if (g1 != nullptr)
         {
             auto* src = &g1->palette[j];

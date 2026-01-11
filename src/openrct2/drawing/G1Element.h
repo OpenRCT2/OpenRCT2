@@ -33,32 +33,37 @@ namespace OpenRCT2
     };
     using G1Flags = FlagHolder<uint16_t, G1Flag>;
 
+    struct G1Palette
+    {
+        Drawing::BGRColour* palette = nullptr;
+        int16_t numColours = 0;
+        int16_t pad1 = 0; // unused for palettes
+        int16_t startIndex = 0;
+        int16_t pad2 = 0; // unused for palettes
+        G1Flags flags = { G1Flag::isPalette };
+        int32_t pad3 = 0; // unused for palettes
+    };
+
     struct G1Element
     {
-        union
-        {
-            struct
-            {
-                uint8_t* offset;
-                int16_t width;
-                int16_t height;
-                int16_t xOffset;
-                int16_t yOffset;
-            };
-            // If G1Flag::isPalette is set
-            struct
-            {
-                Drawing::BGRColour* palette;
-                int16_t numColours;
-                int16_t pad1; // unused for palettes
-                int16_t startIndex;
-                int16_t pad2; // unused for palettes
-            };
-        };
+        uint8_t* offset = nullptr;
+        int16_t width = 0;
+        int16_t height = 0;
+        int16_t xOffset = 0;
+        int16_t yOffset = 0;
 
         G1Flags flags = {};
         int32_t zoomedOffset = 0;
+
+        const G1Palette* asPalette() const
+        {
+            if (!flags.has(G1Flag::isPalette))
+                return nullptr;
+
+            return reinterpret_cast<const G1Palette*>(this);
+        }
     };
+    static_assert(sizeof(G1Palette) == sizeof(G1Element));
 
 #pragma pack(push, 1)
     struct G1Header
