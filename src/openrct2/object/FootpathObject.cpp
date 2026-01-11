@@ -42,15 +42,15 @@ namespace OpenRCT2
         _legacyType.image = LoadImages();
         _legacyType.bridge_image = _legacyType.image + 109;
 
-        _pathSurfaceDescriptor.Name = _legacyType.string_idx;
-        _pathSurfaceDescriptor.Image = _legacyType.image;
-        _pathSurfaceDescriptor.PreviewImage = _legacyType.GetPreviewImage();
-        _pathSurfaceDescriptor.Flags = _legacyType.flags;
+        _pathSurfaceDescriptor.name = _legacyType.string_idx;
+        _pathSurfaceDescriptor.image = _legacyType.image;
+        _pathSurfaceDescriptor.previewImage = _legacyType.GetPreviewImage();
+        _pathSurfaceDescriptor.flags = _legacyType.flags;
 
-        _queueSurfaceDescriptor.Name = _legacyType.string_idx;
-        _queueSurfaceDescriptor.Image = _legacyType.GetQueueImage();
-        _queueSurfaceDescriptor.PreviewImage = _legacyType.GetQueuePreviewImage();
-        _queueSurfaceDescriptor.Flags = _legacyType.flags | FOOTPATH_ENTRY_FLAG_IS_QUEUE;
+        _queueSurfaceDescriptor.name = _legacyType.string_idx;
+        _queueSurfaceDescriptor.image = _legacyType.GetQueueImage();
+        _queueSurfaceDescriptor.previewImage = _legacyType.GetQueuePreviewImage();
+        _queueSurfaceDescriptor.flags = _legacyType.flags | FOOTPATH_ENTRY_FLAG_IS_QUEUE;
 
         _pathRailingsDescriptor.Name = _legacyType.string_idx;
         _pathRailingsDescriptor.BridgeImage = _legacyType.bridge_image;
@@ -73,8 +73,8 @@ namespace OpenRCT2
     void FootpathObject::DrawPreview(Drawing::RenderTarget& rt, int32_t width, int32_t height) const
     {
         auto screenCoords = ScreenCoordsXY{ width / 2, height / 2 };
-        GfxDrawSprite(rt, ImageId(_pathSurfaceDescriptor.PreviewImage), screenCoords - ScreenCoordsXY{ 49, 17 });
-        GfxDrawSprite(rt, ImageId(_queueSurfaceDescriptor.PreviewImage), screenCoords + ScreenCoordsXY{ 4, -17 });
+        GfxDrawSprite(rt, ImageId(_pathSurfaceDescriptor.previewImage), screenCoords - ScreenCoordsXY{ 49, 17 });
+        GfxDrawSprite(rt, ImageId(_queueSurfaceDescriptor.previewImage), screenCoords + ScreenCoordsXY{ 4, -17 });
     }
 
     void FootpathObject::ReadJson(IReadObjectContext* context, json_t& root)

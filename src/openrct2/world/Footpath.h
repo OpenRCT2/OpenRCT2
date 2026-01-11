@@ -11,6 +11,7 @@
 
 #include "../Identifiers.h"
 #include "../actions/CommandFlag.h"
+#include "../drawing/ImageIndexType.h"
 #include "../interface/Colour.h"
 #include "../localisation/StringIdType.h"
 #include "../object/ObjectTypes.h"
@@ -43,10 +44,10 @@ enum class RailingEntrySupportType : uint8_t
 
 struct PathSurfaceDescriptor
 {
-    StringId Name;
-    uint32_t Image;
-    uint32_t PreviewImage;
-    uint8_t Flags;
+    StringId name;
+    ImageIndex image;
+    ImageIndex previewImage;
+    uint8_t flags;
 };
 
 struct PathRailingsDescriptor

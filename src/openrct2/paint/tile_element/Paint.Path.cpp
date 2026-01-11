@@ -685,8 +685,8 @@ static FootpathPaintInfo GetFootpathPaintInfo(const PathElement& pathEl)
     const auto* surfaceDescriptor = pathEl.GetSurfaceDescriptor();
     if (surfaceDescriptor != nullptr)
     {
-        pathPaintInfo.SurfaceImageId = surfaceDescriptor->Image;
-        pathPaintInfo.SurfaceFlags = surfaceDescriptor->Flags;
+        pathPaintInfo.SurfaceImageId = surfaceDescriptor->image;
+        pathPaintInfo.SurfaceFlags = surfaceDescriptor->flags;
     }
 
     const auto* railingsDescriptor = pathEl.GetRailingsDescriptor();

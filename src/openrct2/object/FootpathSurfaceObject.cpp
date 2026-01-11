@@ -31,10 +31,10 @@ namespace OpenRCT2
             BaseImageId = PreviewImageId + 1;
         }
 
-        _descriptor.Name = NameStringId;
-        _descriptor.Image = BaseImageId;
-        _descriptor.PreviewImage = PreviewImageId;
-        _descriptor.Flags = Flags;
+        _descriptor.name = NameStringId;
+        _descriptor.image = BaseImageId;
+        _descriptor.previewImage = PreviewImageId;
+        _descriptor.flags = Flags;
     }
 
     void FootpathSurfaceObject::Unload()
