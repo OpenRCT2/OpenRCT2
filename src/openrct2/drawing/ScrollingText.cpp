@@ -1464,7 +1464,7 @@ static constexpr const int16_t* kScrollPositions[kMaxModes] = {
 
         const int16_t* scrollingModePositions = kScrollPositions[scrollingMode];
 
-        std::fill_n(scrollText->bitmap, 320 * 8, PaletteIndex::pi0);
+        std::fill_n(scrollText->bitmap, 320 * 8, PaletteIndex::transparent);
         if (LocalisationService_UseTrueTypeFont())
         {
             setBitmapForTTF(scrollString, scroll, scrollText->bitmap, scrollingModePositions, colour);

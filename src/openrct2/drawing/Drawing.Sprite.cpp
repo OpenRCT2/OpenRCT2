@@ -713,21 +713,22 @@ static std::optional<PaletteMap> FASTCALL GfxDrawSpriteGetPalette(ImageId imageI
         if (tertiaryPaletteMap.has_value())
         {
             paletteMap.Copy(
-                kPaletteOffsetRemapTertiary, tertiaryPaletteMap.value(), kPaletteOffsetRemapPrimary, kPaletteLengthRemap);
+                PaletteIndex::tertiaryRemap0, tertiaryPaletteMap.value(), PaletteIndex::primaryRemap0, kPaletteLengthRemap);
         }
     }
 
     auto primaryPaletteMap = GetPaletteMapForColour(static_cast<FilterPaletteID>(imageId.GetPrimary()));
     if (primaryPaletteMap.has_value())
     {
-        paletteMap.Copy(kPaletteOffsetRemapPrimary, primaryPaletteMap.value(), kPaletteOffsetRemapPrimary, kPaletteLengthRemap);
+        paletteMap.Copy(
+            PaletteIndex::primaryRemap0, primaryPaletteMap.value(), PaletteIndex::primaryRemap0, kPaletteLengthRemap);
     }
 
     auto secondaryPaletteMap = GetPaletteMapForColour(static_cast<FilterPaletteID>(imageId.GetSecondary()));
     if (secondaryPaletteMap.has_value())
     {
         paletteMap.Copy(
-            kPaletteOffsetRemapSecondary, secondaryPaletteMap.value(), kPaletteOffsetRemapPrimary, kPaletteLengthRemap);
+            PaletteIndex::secondaryRemap0, secondaryPaletteMap.value(), PaletteIndex::primaryRemap0, kPaletteLengthRemap);
     }
 
     return paletteMap;

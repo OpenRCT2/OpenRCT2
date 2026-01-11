@@ -565,7 +565,7 @@ void X8DrawingContext::DrawSpriteSolid(RenderTarget& rt, const ImageId image, in
 
     PaletteIndex palette[256];
     std::fill_n(palette, sizeof(palette), colour);
-    palette[0] = PaletteIndex::pi0;
+    palette[0] = PaletteIndex::transparent;
 
     const auto spriteCoords = ScreenCoordsXY{ x, y };
     GfxDrawSpritePaletteSetSoftware(rt, ImageId(image.GetIndex(), 0), spriteCoords, PaletteMap(palette));

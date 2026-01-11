@@ -855,7 +855,7 @@ namespace OpenRCT2
             PaletteIndex colour = PaletteIndex::pi10;
             if (session.ViewFlags & VIEWPORT_FLAG_HIDE_ENTITIES)
             {
-                colour = PaletteIndex::pi0;
+                colour = PaletteIndex::transparent;
             }
             GfxClear(session.rt, colour);
         }
@@ -1504,7 +1504,7 @@ namespace OpenRCT2
 
         if (imageType & IMAGE_TYPE_REMAP)
         {
-            return paletteMap[*index] != PaletteIndex::pi0;
+            return paletteMap[*index] != PaletteIndex::transparent;
         }
 
         if (imageType & IMAGE_TYPE_TRANSPARENT)

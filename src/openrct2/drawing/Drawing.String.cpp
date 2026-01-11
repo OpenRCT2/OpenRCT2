@@ -283,8 +283,8 @@ static void ColourCharacter(TextColour colour, bool withOutline, TextColours& te
 
     if (!withOutline)
     {
-        mapping.sunnyOutline = PaletteIndex::pi0;
-        mapping.shadowOutline = PaletteIndex::pi0;
+        mapping.sunnyOutline = PaletteIndex::transparent;
+        mapping.shadowOutline = PaletteIndex::transparent;
     }
 
     textPalette = mapping;
@@ -298,8 +298,8 @@ static void ColourCharacterWindow(colour_t colour, bool withOutline, TextColours
 {
     TextColours mapping = {
         getColourMap(colour).colour11,
-        PaletteIndex::pi0,
-        PaletteIndex::pi0,
+        PaletteIndex::transparent,
+        PaletteIndex::transparent,
     };
 
     if (withOutline)

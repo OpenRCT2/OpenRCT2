@@ -205,7 +205,7 @@ void ChatDraw(RenderTarget& rt, ColourWithFlags chatBackgroundColor)
             int32_t caretX = screenCoords.x + GfxGetStringWidth(lineBuffer, FontStyle::medium);
             int32_t caretY = screenCoords.y + 14;
 
-            Rectangle::fill(rt, { { caretX, caretY }, { caretX + 6, caretY + 1 } }, PaletteIndex::pi56);
+            Rectangle::fill(rt, { { caretX, caretY }, { caretX + 6, caretY + 1 } }, PaletteIndex::yellow10);
         }
     }
 }
