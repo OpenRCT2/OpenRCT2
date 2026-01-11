@@ -685,19 +685,19 @@ static FootpathPaintInfo GetFootpathPaintInfo(const PathElement& pathEl)
     const auto* surfaceDescriptor = pathEl.GetSurfaceDescriptor();
     if (surfaceDescriptor != nullptr)
     {
-        pathPaintInfo.SurfaceImageId = surfaceDescriptor->Image;
-        pathPaintInfo.SurfaceFlags = surfaceDescriptor->Flags;
+        pathPaintInfo.SurfaceImageId = surfaceDescriptor->image;
+        pathPaintInfo.SurfaceFlags = surfaceDescriptor->flags;
     }
 
     const auto* railingsDescriptor = pathEl.GetRailingsDescriptor();
     if (railingsDescriptor != nullptr)
     {
-        pathPaintInfo.BridgeImageId = railingsDescriptor->BridgeImage;
-        pathPaintInfo.RailingsImageId = railingsDescriptor->RailingsImage;
-        pathPaintInfo.RailingFlags = railingsDescriptor->Flags;
-        pathPaintInfo.ScrollingMode = railingsDescriptor->ScrollingMode;
-        pathPaintInfo.SupportType = railingsDescriptor->SupportType;
-        pathPaintInfo.SupportColour = railingsDescriptor->SupportColour;
+        pathPaintInfo.BridgeImageId = railingsDescriptor->bridgeImage;
+        pathPaintInfo.RailingsImageId = railingsDescriptor->railingsImage;
+        pathPaintInfo.RailingFlags = railingsDescriptor->flags;
+        pathPaintInfo.ScrollingMode = railingsDescriptor->scrollingMode;
+        pathPaintInfo.SupportType = railingsDescriptor->supportType;
+        pathPaintInfo.SupportColour = railingsDescriptor->supportColour;
     }
 
     return pathPaintInfo;
@@ -834,7 +834,7 @@ void PaintPath(PaintSession& session, uint16_t height, const PathElement& tileEl
 
     auto hasSupports = ShouldDrawSupports(session, tileElement, height);
     auto pathPaintInfo = GetFootpathPaintInfo(tileElement);
-    if (pathPaintInfo.SupportType == RailingEntrySupportType::Pole)
+    if (pathPaintInfo.SupportType == RailingEntrySupportType::pole)
     {
         PathPaintPoleSupport(session, tileElement, height, pathPaintInfo, hasSupports, imageTemplate, sceneryImageTemplate);
     }

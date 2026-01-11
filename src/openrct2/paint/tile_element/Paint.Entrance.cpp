@@ -309,7 +309,7 @@ static void PaintParkEntrance(PaintSession& session, uint8_t direction, int32_t 
             auto surfaceDescriptor = entranceEl.GetPathSurfaceDescriptor();
             if (surfaceDescriptor != nullptr)
             {
-                auto imageIndex = (surfaceDescriptor->Image + 5 * (1 + (direction & 1)));
+                auto imageIndex = (surfaceDescriptor->image + 5 * (1 + (direction & 1)));
                 PaintAddImageAsParent(
                     session, imageTemplate.WithIndex(imageIndex), { 0, 0, height }, { { 0, 2, height }, { 32, 28, 0 } });
             }
