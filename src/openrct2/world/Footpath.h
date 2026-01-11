@@ -71,15 +71,15 @@ namespace OpenRCT2::PathConstructFlag
 
 struct FootpathSelection
 {
-    OpenRCT2::ObjectEntryIndex LegacyPath = OpenRCT2::kObjectEntryIndexNull;
-    OpenRCT2::ObjectEntryIndex NormalSurface = OpenRCT2::kObjectEntryIndexNull;
-    OpenRCT2::ObjectEntryIndex QueueSurface = OpenRCT2::kObjectEntryIndexNull;
-    OpenRCT2::ObjectEntryIndex Railings = OpenRCT2::kObjectEntryIndexNull;
-    bool IsQueueSelected{};
+    OpenRCT2::ObjectEntryIndex legacyPath = OpenRCT2::kObjectEntryIndexNull;
+    OpenRCT2::ObjectEntryIndex normalSurface = OpenRCT2::kObjectEntryIndexNull;
+    OpenRCT2::ObjectEntryIndex queueSurface = OpenRCT2::kObjectEntryIndexNull;
+    OpenRCT2::ObjectEntryIndex railings = OpenRCT2::kObjectEntryIndexNull;
+    bool isQueueSelected{};
 
-    OpenRCT2::ObjectEntryIndex GetSelectedSurface() const
+    OpenRCT2::ObjectEntryIndex getSelectedSurface() const
     {
-        return IsQueueSelected ? QueueSurface : NormalSurface;
+        return isQueueSelected ? queueSurface : normalSurface;
     }
 };
 

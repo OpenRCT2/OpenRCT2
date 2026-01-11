@@ -203,8 +203,8 @@ namespace OpenRCT2::Ui::Windows
 
             ParkEntranceRemoveGhost();
 
-            bool isLegacyPath = (gFootpathSelection.LegacyPath != kObjectEntryIndexNull);
-            auto pathIndex = isLegacyPath ? gFootpathSelection.LegacyPath : gFootpathSelection.NormalSurface;
+            bool isLegacyPath = (gFootpathSelection.legacyPath != kObjectEntryIndexNull);
+            auto pathIndex = isLegacyPath ? gFootpathSelection.legacyPath : gFootpathSelection.normalSurface;
             auto gameAction = GameActions::ParkEntrancePlaceAction(
                 parkEntrancePosition, pathIndex, _selectedEntranceType, isLegacyPath);
             gameAction.SetFlags({ CommandFlag::ghost });
@@ -226,8 +226,8 @@ namespace OpenRCT2::Ui::Windows
             CoordsXYZD parkEntrancePosition = PlaceParkEntranceGetMapPosition(screenCoords);
             if (!parkEntrancePosition.IsNull())
             {
-                bool isLegacyPath = (gFootpathSelection.LegacyPath != kObjectEntryIndexNull);
-                auto pathIndex = isLegacyPath ? gFootpathSelection.LegacyPath : gFootpathSelection.NormalSurface;
+                bool isLegacyPath = (gFootpathSelection.legacyPath != kObjectEntryIndexNull);
+                auto pathIndex = isLegacyPath ? gFootpathSelection.legacyPath : gFootpathSelection.normalSurface;
                 auto gameAction = GameActions::ParkEntrancePlaceAction(
                     parkEntrancePosition, pathIndex, _selectedEntranceType, isLegacyPath);
                 gameAction.SetCallback(
