@@ -52,13 +52,13 @@ namespace OpenRCT2
         _queueSurfaceDescriptor.previewImage = _legacyType.GetQueuePreviewImage();
         _queueSurfaceDescriptor.flags = _legacyType.flags | FOOTPATH_ENTRY_FLAG_IS_QUEUE;
 
-        _pathRailingsDescriptor.Name = _legacyType.string_idx;
-        _pathRailingsDescriptor.BridgeImage = _legacyType.bridge_image;
-        _pathRailingsDescriptor.PreviewImage = _legacyType.GetPreviewImage();
-        _pathRailingsDescriptor.Flags = _legacyType.flags;
-        _pathRailingsDescriptor.ScrollingMode = _legacyType.scrolling_mode;
-        _pathRailingsDescriptor.SupportType = _legacyType.support_type;
-        _pathRailingsDescriptor.RailingsImage = _legacyType.GetRailingsImage();
+        _pathRailingsDescriptor.name = _legacyType.string_idx;
+        _pathRailingsDescriptor.bridgeImage = _legacyType.bridge_image;
+        _pathRailingsDescriptor.previewImage = _legacyType.GetPreviewImage();
+        _pathRailingsDescriptor.flags = _legacyType.flags;
+        _pathRailingsDescriptor.scrollingMode = _legacyType.scrolling_mode;
+        _pathRailingsDescriptor.supportType = _legacyType.support_type;
+        _pathRailingsDescriptor.railingsImage = _legacyType.GetRailingsImage();
     }
 
     void FootpathObject::Unload()

@@ -52,14 +52,14 @@ struct PathSurfaceDescriptor
 
 struct PathRailingsDescriptor
 {
-    StringId Name;
-    uint32_t PreviewImage;
-    uint32_t BridgeImage;
-    uint32_t RailingsImage;
-    RailingEntrySupportType SupportType;
-    colour_t SupportColour;
-    uint8_t Flags;
-    uint8_t ScrollingMode;
+    StringId name;
+    ImageIndex previewImage;
+    ImageIndex bridgeImage;
+    ImageIndex railingsImage;
+    RailingEntrySupportType supportType;
+    colour_t supportColour;
+    uint8_t flags;
+    uint8_t scrollingMode;
 };
 
 using PathConstructFlags = uint8_t;

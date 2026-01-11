@@ -692,12 +692,12 @@ static FootpathPaintInfo GetFootpathPaintInfo(const PathElement& pathEl)
     const auto* railingsDescriptor = pathEl.GetRailingsDescriptor();
     if (railingsDescriptor != nullptr)
     {
-        pathPaintInfo.BridgeImageId = railingsDescriptor->BridgeImage;
-        pathPaintInfo.RailingsImageId = railingsDescriptor->RailingsImage;
-        pathPaintInfo.RailingFlags = railingsDescriptor->Flags;
-        pathPaintInfo.ScrollingMode = railingsDescriptor->ScrollingMode;
-        pathPaintInfo.SupportType = railingsDescriptor->SupportType;
-        pathPaintInfo.SupportColour = railingsDescriptor->SupportColour;
+        pathPaintInfo.BridgeImageId = railingsDescriptor->bridgeImage;
+        pathPaintInfo.RailingsImageId = railingsDescriptor->railingsImage;
+        pathPaintInfo.RailingFlags = railingsDescriptor->flags;
+        pathPaintInfo.ScrollingMode = railingsDescriptor->scrollingMode;
+        pathPaintInfo.SupportType = railingsDescriptor->supportType;
+        pathPaintInfo.SupportColour = railingsDescriptor->supportColour;
     }
 
     return pathPaintInfo;

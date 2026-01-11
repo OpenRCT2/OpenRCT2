@@ -299,7 +299,7 @@ namespace OpenRCT2
     bool PathElement::ShouldDrawPathOverSupports() const
     {
         // TODO: make this an actual decision of the tile element.
-        return (GetRailingsDescriptor()->Flags & RAILING_ENTRY_FLAG_DRAW_PATH_OVER_SUPPORTS);
+        return (GetRailingsDescriptor()->flags & RAILING_ENTRY_FLAG_DRAW_PATH_OVER_SUPPORTS);
     }
 
     void PathElement::SetShouldDrawPathOverSupports(bool on)

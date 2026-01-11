@@ -29,14 +29,14 @@ namespace OpenRCT2
             RailingsImageId = PreviewImageId + 1;
         }
 
-        _descriptor.Name = NameStringId;
-        _descriptor.BridgeImage = BridgeImageId;
-        _descriptor.PreviewImage = PreviewImageId;
-        _descriptor.Flags = Flags;
-        _descriptor.ScrollingMode = ScrollingMode;
-        _descriptor.SupportType = SupportType;
-        _descriptor.SupportColour = Colour;
-        _descriptor.RailingsImage = RailingsImageId;
+        _descriptor.name = NameStringId;
+        _descriptor.bridgeImage = BridgeImageId;
+        _descriptor.previewImage = PreviewImageId;
+        _descriptor.flags = Flags;
+        _descriptor.scrollingMode = ScrollingMode;
+        _descriptor.supportType = SupportType;
+        _descriptor.supportColour = Colour;
+        _descriptor.railingsImage = RailingsImageId;
     }
 
     void FootpathRailingsObject::Unload()
