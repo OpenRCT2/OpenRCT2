@@ -347,13 +347,8 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void onUpdate() override
+        void onUpdateNews()
         {
-            currentFrame++;
-
-            if (page != newsTab)
-                return;
-
             if (_pressedNewsItemIndex == -1 || --_suspendUpdateTicks != 0)
             {
                 return;
@@ -389,6 +384,25 @@ namespace OpenRCT2::Ui::Windows
                 {
                     WindowScrollToLocation(*_mainWindow, subjectLoc.value());
                 }
+            }
+        }
+
+        void onUpdateOptions()
+        {
+            currentFrame++;
+            invalidateWidget(WIDX_TAB_OPTIONS);
+        }
+
+        void onUpdate() override
+        {
+            switch (page)
+            {
+                case newsTab:
+                    onUpdateNews();
+                    break;
+                case optionsTab:
+                    onUpdateOptions();
+                    break;
             }
         }
 
