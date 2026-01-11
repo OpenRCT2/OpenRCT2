@@ -12,6 +12,7 @@
 #include "../Identifiers.h"
 #include "../actions/CommandFlag.h"
 #include "../drawing/ImageIndexType.h"
+#include "../drawing/ScrollingText.h"
 #include "../interface/Colour.h"
 #include "../localisation/StringIdType.h"
 #include "../object/ObjectTypes.h"
@@ -44,23 +45,25 @@ enum class RailingEntrySupportType : uint8_t
 
 struct PathSurfaceDescriptor
 {
-    StringId name;
-    ImageIndex image;
-    ImageIndex previewImage;
-    uint8_t flags;
+    StringId name = kStringIdNone;
+    ImageIndex image{};
+    ImageIndex previewImage{};
+    uint8_t flags{};
 };
+constexpr PathSurfaceDescriptor kPathSurfaceDescriptorDummy{};
 
 struct PathRailingsDescriptor
 {
-    StringId name;
-    ImageIndex previewImage;
-    ImageIndex bridgeImage;
-    ImageIndex railingsImage;
-    RailingEntrySupportType supportType;
-    colour_t supportColour;
-    uint8_t flags;
-    uint8_t scrollingMode;
+    StringId name = kStringIdNone;
+    ImageIndex previewImage{};
+    ImageIndex bridgeImage{};
+    ImageIndex railingsImage{};
+    RailingEntrySupportType supportType{};
+    colour_t supportColour = COLOUR_NULL;
+    uint8_t flags{};
+    uint8_t scrollingMode = kScrollingModeNone;
 };
+constexpr PathRailingsDescriptor kPathRailingsDescriptorDummy{};
 
 using PathConstructFlags = uint8_t;
 namespace OpenRCT2::PathConstructFlag

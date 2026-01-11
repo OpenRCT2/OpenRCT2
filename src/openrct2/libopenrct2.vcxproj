@@ -392,6 +392,7 @@
     <ClInclude Include="paint\Painter.h" />
     <ClInclude Include="paint\support\MetalSupports.h" />
     <ClInclude Include="paint\support\WoodenSupports.h" />
+    <ClInclude Include="paint\tile_element\Paint.Path.h" />
     <ClInclude Include="paint\tile_element\Paint.PathAddition.h" />
     <ClInclude Include="paint\tile_element\Paint.Surface.h" />
     <ClInclude Include="paint\tile_element\Paint.TileElement.h" />

@@ -83,8 +83,8 @@ namespace OpenRCT2
         const FootpathRailingsObject* GetRailingsEntry() const;
         void SetRailingsEntryIndex(ObjectEntryIndex newIndex);
 
-        const PathSurfaceDescriptor* GetSurfaceDescriptor() const;
-        const PathRailingsDescriptor* GetRailingsDescriptor() const;
+        const PathSurfaceDescriptor& GetSurfaceDescriptor() const;
+        const PathRailingsDescriptor& GetRailingsDescriptor() const;
 
         uint8_t GetQueueBannerDirection() const;
         void SetQueueBannerDirection(uint8_t direction);
