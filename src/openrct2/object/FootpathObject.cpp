@@ -29,7 +29,7 @@ namespace OpenRCT2
         GetImageTable().Read(context, stream);
 
         // Validate properties
-        if (_legacyType.support_type >= RailingEntrySupportType::Count)
+        if (_legacyType.support_type >= RailingEntrySupportType::count)
         {
             context->LogError(ObjectError::invalidProperty, "RailingEntrySupportType not supported.");
         }

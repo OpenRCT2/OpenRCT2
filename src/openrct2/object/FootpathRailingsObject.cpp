@@ -58,7 +58,7 @@ namespace OpenRCT2
         if (Colour != COLOUR_NULL)
             helper = helper.WithPrimary(Colour);
 
-        if (SupportType == RailingEntrySupportType::Pole)
+        if (SupportType == RailingEntrySupportType::pole)
         {
             auto img = helper.WithIndex(BridgeImageId + 20 + 15);
             for (int i = 0; i < 2; i++)
@@ -106,8 +106,8 @@ namespace OpenRCT2
     RailingEntrySupportType FootpathRailingsObject::ParseSupportType(std::string_view s)
     {
         if (s == "pole")
-            return RailingEntrySupportType::Pole;
+            return RailingEntrySupportType::pole;
         else /* if (s == "box") */
-            return RailingEntrySupportType::Box;
+            return RailingEntrySupportType::box;
     }
 } // namespace OpenRCT2

@@ -834,7 +834,7 @@ void PaintPath(PaintSession& session, uint16_t height, const PathElement& tileEl
 
     auto hasSupports = ShouldDrawSupports(session, tileElement, height);
     auto pathPaintInfo = GetFootpathPaintInfo(tileElement);
-    if (pathPaintInfo.SupportType == RailingEntrySupportType::Pole)
+    if (pathPaintInfo.SupportType == RailingEntrySupportType::pole)
     {
         PathPaintPoleSupport(session, tileElement, height, pathPaintInfo, hasSupports, imageTemplate, sceneryImageTemplate);
     }

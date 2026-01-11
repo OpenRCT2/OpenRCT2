@@ -36,9 +36,9 @@ constexpr auto kPathClearance = 4 * kCoordsZStep;
 
 enum class RailingEntrySupportType : uint8_t
 {
-    Box = 0,
-    Pole = 1,
-    Count
+    box = 0,
+    pole = 1,
+    count
 };
 
 struct PathSurfaceDescriptor
