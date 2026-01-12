@@ -14,10 +14,13 @@
     #include "../../Duktape.hpp"
 
     #include <cstdint>
+    #include <memory>
     #include <string>
+    #include <vector>
 
 namespace OpenRCT2::Scripting
 {
+    class ScRide;
     template<>
     inline DukValue ToDuk(duk_context* ctx, const VehicleInfo& value)
     {
@@ -69,6 +72,8 @@ namespace OpenRCT2::Scripting
         bool getTrackFlag() const;
         std::string getTrackCurvature() const;
         std::string getTrackPitchDirection() const;
+        std::vector<std::shared_ptr<ScTrackSegment>> getNextValidSegments(
+            const std::shared_ptr<ScRide>& scRide) const;
     };
 
 } // namespace OpenRCT2::Scripting

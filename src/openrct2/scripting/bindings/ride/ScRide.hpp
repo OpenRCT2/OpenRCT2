@@ -198,6 +198,8 @@ namespace OpenRCT2::Scripting
 
         std::string getBreakdown() const;
 
+        friend class ScTrackSegment;
+
     public:
         static void Register(duk_context* ctx);
     };
