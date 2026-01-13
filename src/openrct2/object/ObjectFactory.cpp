@@ -219,7 +219,7 @@ namespace OpenRCT2::ObjectFactory
      * @note jRoot is deliberately left non-const: json_t behaviour changes when const
      */
     static std::unique_ptr<Object> CreateObjectFromJson(
-        json_t& jRoot, const IFileDataRetriever* fileRetriever, bool loadImageTable, const std::string_view path);
+        json_t& jRoot, const IFileDataRetriever* fileRetriever, bool loadImageTable, std::string_view path);
 
     static ObjectSourceGame ParseSourceGame(const std::string_view s)
     {

@@ -213,7 +213,7 @@ namespace OpenRCT2::Scripting
 
     public:
         static const LargeSceneryElement* GetOtherLargeSceneryElement(
-            const CoordsXY& loc, const LargeSceneryElement* const largeScenery);
+            const CoordsXY& loc, const LargeSceneryElement* largeScenery);
         static void Register(duk_context* ctx);
     };
 

@@ -322,5 +322,5 @@ namespace OpenRCT2::News
     void AddItemToQueue(Item* newNewsItem);
     void RemoveItem(int32_t index);
 
-    void importNewsItems(GameState_t& gameState, const std::span<const Item> recent, const std::span<const Item> archived);
+    void importNewsItems(GameState_t& gameState, std::span<const Item> recent, std::span<const Item> archived);
 } // namespace OpenRCT2::News

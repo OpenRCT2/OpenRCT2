@@ -131,7 +131,7 @@ void TileElementIteratorRestartForTile(TileElementIterator* it);
 void MapUpdateTiles();
 int32_t MapGetHighestZ(const CoordsXY& loc);
 
-bool TileElementWantsPathConnectionTowards(const TileCoordsXYZD& coords, const OpenRCT2::TileElement* const elementToBeRemoved);
+bool TileElementWantsPathConnectionTowards(const TileCoordsXYZD& coords, const OpenRCT2::TileElement* elementToBeRemoved);
 
 void MapRemoveOutOfRangeElements();
 void MapExtendBoundarySurfaceX();

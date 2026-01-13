@@ -341,8 +341,7 @@ private:
     bool CurrentTowerElementIsTop();
     bool UpdateTrackMotionForwards(const CarEntry* carEntry, const Ride& curRide, const RideObjectEntry& rideEntry);
     bool UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& curRide, const RideObjectEntry& rideEntry);
-    int32_t UpdateTrackMotionPoweredRideAcceleration(
-        const CarEntry* carEntry, uint32_t totalMass, const int32_t curAcceleration);
+    int32_t UpdateTrackMotionPoweredRideAcceleration(const CarEntry* carEntry, uint32_t totalMass, int32_t curAcceleration);
     int32_t NumPeepsUntilTrainTail() const;
     void InvalidateWindow();
     void TestReset();
