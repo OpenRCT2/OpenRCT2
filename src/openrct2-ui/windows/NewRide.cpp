@@ -21,6 +21,7 @@
 #include <openrct2/audio/Audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/String.hpp>
+#include <openrct2/drawing/ColourMap.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
 #include <openrct2/localisation/Formatter.h>
@@ -496,7 +497,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            GfxClear(rt, ColourMapA[colours[1].colour].midLight);
+            GfxClear(rt, getColourMap(colours[1].colour).midLight);
 
             ScreenCoordsXY coords{ 1, 1 };
             RideSelection* listItem = _windowNewRideListItems;

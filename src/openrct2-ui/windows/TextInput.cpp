@@ -16,6 +16,7 @@
 #include <openrct2/Input.h>
 #include <openrct2/core/String.hpp>
 #include <openrct2/core/UTF8.h>
+#include <openrct2/drawing/ColourMap.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
 #include <openrct2/localisation/Formatting.h>
@@ -269,7 +270,7 @@ namespace OpenRCT2::Ui::Windows
 
                     if (_cursorBlink > 15)
                     {
-                        auto colour = ColourMapA[colours[1].colour].midLight;
+                        auto colour = getColourMap(colours[1].colour).midLight;
                         // TODO: palette index addition
                         Rectangle::fill(
                             rt, { { cursorX, screenCoords.y + 9 }, { cursorX + textWidth, screenCoords.y + 9 } },

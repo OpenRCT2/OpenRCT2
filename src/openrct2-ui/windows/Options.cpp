@@ -30,6 +30,7 @@
 #include <openrct2/core/EnumUtils.hpp>
 #include <openrct2/core/File.h>
 #include <openrct2/core/String.hpp>
+#include <openrct2/drawing/ColourMap.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/IDrawingEngine.h>
 #include <openrct2/drawing/ScrollingText.h>
@@ -58,6 +59,7 @@ extern void ImportPersistentData();
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Audio;
+using namespace OpenRCT2::Drawing;
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -629,7 +631,7 @@ namespace OpenRCT2::Ui::Windows
             CommonPrepareDrawAfter();
         }
 
-        void onDraw(Drawing::RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
             drawWidgets(rt);
             DrawTabImages(rt);
@@ -1019,7 +1021,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_FRAME_RATE_LIMIT].text = kFrameRateLimitStringIds[activeItem];
         }
 
-        void DisplayDraw(Drawing::RenderTarget& rt)
+        void DisplayDraw(RenderTarget& rt)
         {
             auto ft = Formatter();
             ft.Add<int32_t>(static_cast<int32_t>(Config::Get().general.windowScale * 100));
@@ -1073,7 +1075,7 @@ namespace OpenRCT2::Ui::Windows
                     Config::Get().general.upperCaseBanners ^= 1;
                     Config::Save();
                     invalidate();
-                    Drawing::ScrollingText::invalidate();
+                    ScrollingText::invalidate();
                     break;
                 case WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX:
                     Config::Get().general.disableLightningEffect ^= 1;
@@ -2225,7 +2227,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_ASSET_PACKS].bottom = widgets[WIDX_GROUP_ADVANCED].bottom - 6;
         }
 
-        void AdvancedDraw(Drawing::RenderTarget& rt)
+        void AdvancedDraw(RenderTarget& rt)
         {
             auto ft = Formatter();
             ft.Add<int32_t>(Config::Get().general.autosaveAmount);
@@ -2302,7 +2304,7 @@ namespace OpenRCT2::Ui::Windows
                 Dropdown::Flag::StayOpen, num_items, widget->width() - 4);
         }
 
-        void DrawTabImages(Drawing::RenderTarget& rt)
+        void DrawTabImages(RenderTarget& rt)
         {
             DrawTabImage(rt, WINDOW_OPTIONS_PAGE_DISPLAY, SPR_G2_MONITOR_TAB_START);
             DrawTabImage(rt, WINDOW_OPTIONS_PAGE_RENDERING, SPR_G2_TAB_TREE);
@@ -2314,7 +2316,7 @@ namespace OpenRCT2::Ui::Windows
             DrawTabImage(rt, WINDOW_OPTIONS_PAGE_ADVANCED, SPR_TAB_WRENCH_0);
         }
 
-        void DrawTabImage(Drawing::RenderTarget& rt, int32_t p, int32_t spriteIndex)
+        void DrawTabImage(RenderTarget& rt, int32_t p, int32_t spriteIndex)
         {
             WidgetIndex widgetIndex = WIDX_FIRST_TAB + p;
             Widget* widget = &widgets[widgetIndex];
@@ -2339,10 +2341,10 @@ namespace OpenRCT2::Ui::Windows
 
                 // Draw greyed out (light border bottom right shadow)
                 GfxDrawSpriteSolid(
-                    rt, ImageId(spriteIndex), screenCoords + ScreenCoordsXY{ 1, 1 }, ColourMapA[windowColour].lighter);
+                    rt, ImageId(spriteIndex), screenCoords + ScreenCoordsXY{ 1, 1 }, getColourMap(windowColour).lighter);
 
                 // Draw greyed out (dark)
-                GfxDrawSpriteSolid(rt, ImageId(spriteIndex), screenCoords, ColourMapA[windowColour].midLight);
+                GfxDrawSpriteSolid(rt, ImageId(spriteIndex), screenCoords, getColourMap(windowColour).midLight);
             }
         }
 

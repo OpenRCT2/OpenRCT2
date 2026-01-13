@@ -17,6 +17,7 @@
 #include <openrct2/SpriteIds.h>
 #include <openrct2/actions/ParkEntrancePlaceAction.h>
 #include <openrct2/audio/Audio.h>
+#include <openrct2/drawing/ColourMap.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
 #include <openrct2/object/EntranceObject.h>
@@ -318,7 +319,7 @@ namespace OpenRCT2::Ui::Windows
 
         void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
-            GfxClear(rt, ColourMapA[colours[1].colour].midLight);
+            GfxClear(rt, getColourMap(colours[1].colour).midLight);
 
             ScreenCoordsXY coords{ 1, 1 };
 

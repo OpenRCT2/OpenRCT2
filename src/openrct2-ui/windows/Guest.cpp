@@ -25,6 +25,7 @@
 #include <openrct2/config/Config.h>
 #include <openrct2/core/EnumUtils.hpp>
 #include <openrct2/core/String.hpp>
+#include <openrct2/drawing/ColourMap.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
 #include <openrct2/entity/Guest.h>
@@ -1355,7 +1356,7 @@ namespace OpenRCT2::Ui::Windows
 
         void onScrollDrawRides(int32_t scrollIndex, RenderTarget& rt)
         {
-            auto colour = ColourMapA[colours[1].colour].midLight;
+            auto colour = getColourMap(colours[1].colour).midLight;
             Rectangle::fill(rt, { { rt.x, rt.y }, { rt.x + rt.width - 1, rt.y + rt.height - 1 } }, colour);
 
             for (int32_t listIndex = 0; listIndex < static_cast<int32_t>(_riddenRides.size()); listIndex++)

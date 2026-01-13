@@ -27,6 +27,7 @@
 #include <openrct2/config/Config.h>
 #include <openrct2/core/EnumUtils.hpp>
 #include <openrct2/core/String.hpp>
+#include <openrct2/drawing/ColourMap.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
 #include <openrct2/entity/EntityList.h>
@@ -372,7 +373,7 @@ namespace OpenRCT2::Ui::Windows
             auto rtCoords = ScreenCoordsXY{ rt.x, rt.y };
             Rectangle::fill(
                 rt, { rtCoords, rtCoords + ScreenCoordsXY{ rt.width - 1, rt.height - 1 } },
-                ColourMapA[colours[1].colour].midLight);
+                getColourMap(colours[1].colour).midLight);
 
             // How much space do we have for the name and action columns? (Discount scroll area and icons.)
             const int32_t nonIconSpace = widgets[WIDX_STAFF_LIST_LIST].width() - 1 - 15 - 68;

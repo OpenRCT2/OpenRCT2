@@ -12,6 +12,7 @@
 #include "../interface/Colour.h"
 #include "../interface/ColourWithFlags.h"
 #include "../world/Location.hpp"
+#include "ColourMap.h"
 #include "Drawing.h"
 #include "IDrawingContext.h"
 #include "IDrawingEngine.h"
@@ -94,15 +95,15 @@ namespace OpenRCT2::Drawing::Rectangle
             PaletteIndex shadow, fill, hilight;
             if (brightness == FillBrightness::dark)
             {
-                shadow = ColourMapA[colour.colour].dark;
-                fill = ColourMapA[colour.colour].midLight;
-                hilight = ColourMapA[colour.colour].lighter;
+                shadow = getColourMap(colour.colour).dark;
+                fill = getColourMap(colour.colour).midLight;
+                hilight = getColourMap(colour.colour).lighter;
             }
             else
             {
-                shadow = ColourMapA[colour.colour].midDark;
-                fill = ColourMapA[colour.colour].light;
-                hilight = ColourMapA[colour.colour].lighter;
+                shadow = getColourMap(colour.colour).midDark;
+                fill = getColourMap(colour.colour).light;
+                hilight = getColourMap(colour.colour).lighter;
             }
 
             switch (borderStyle)
@@ -122,7 +123,7 @@ namespace OpenRCT2::Drawing::Rectangle
                     {
                         if (fillMode != FillMode::dontLightenWhenInset)
                         {
-                            fill = ColourMapA[colour.colour].lighter;
+                            fill = getColourMap(colour.colour).lighter;
                         }
                         Rectangle::fill(rt, { leftTop + ScreenCoordsXY{ 1, 1 }, rightBottom - ScreenCoordsXY{ 1, 1 } }, fill);
                     }

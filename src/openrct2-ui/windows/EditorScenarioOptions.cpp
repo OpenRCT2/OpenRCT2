@@ -22,6 +22,7 @@
 #include <openrct2/actions/ParkSetNameAction.h>
 #include <openrct2/actions/ScenarioSetSettingAction.h>
 #include <openrct2/core/String.hpp>
+#include <openrct2/drawing/ColourMap.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Font.h>
 #include <openrct2/drawing/Rectangle.h>
@@ -2338,7 +2339,7 @@ namespace OpenRCT2::Ui::Windows
          */
         void RidesOnScrollDraw(RenderTarget& rt, int32_t scrollIndex)
         {
-            auto colour = ColourMapA[colours[1].colour].midLight;
+            auto colour = getColourMap(colours[1].colour).midLight;
             Rectangle::fill(rt, { { rt.x, rt.y }, { rt.x + rt.width - 1, rt.y + rt.height - 1 } }, colour);
 
             for (int32_t i = 0; i < static_cast<int32_t>(_rideableRides.size()); i++)

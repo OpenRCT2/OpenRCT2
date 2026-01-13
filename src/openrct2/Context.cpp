@@ -39,6 +39,7 @@
 #include "core/Path.hpp"
 #include "core/String.hpp"
 #include "core/Timer.hpp"
+#include "drawing/ColourMap.h"
 #include "drawing/Drawing.h"
 #include "drawing/IDrawingEngine.h"
 #include "drawing/Image.h"
@@ -563,7 +564,7 @@ namespace OpenRCT2
         {
             if (!gOpenRCT2NoGraphics)
             {
-                ColoursInitMaps();
+                Drawing::initColourMaps();
             }
 
             WindowInitAll();

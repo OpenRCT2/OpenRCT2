@@ -28,6 +28,7 @@
 #include <openrct2/core/EnumUtils.hpp>
 #include <openrct2/core/Path.hpp>
 #include <openrct2/core/String.hpp>
+#include <openrct2/drawing/ColourMap.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
 #include <openrct2/localisation/Formatter.h>
@@ -732,7 +733,7 @@ namespace OpenRCT2::Ui::Windows
             ScreenCoordsXY screenCoords;
             bool ridePage = (GetSelectedObjectType() == ObjectType::ride);
 
-            auto paletteIndex = ColourMapA[colours[1].colour].midLight;
+            auto paletteIndex = getColourMap(colours[1].colour).midLight;
             GfxClear(rt, paletteIndex);
 
             screenCoords.y = 0;
@@ -1067,7 +1068,7 @@ namespace OpenRCT2::Ui::Windows
                 rt,
                 { windowPos + ScreenCoordsXY{ previewWidget.left + 1, previewWidget.top + 1 },
                   windowPos + ScreenCoordsXY{ previewWidget.right - 1, previewWidget.bottom - 1 } },
-                ColourMapA[colours[1].colour].darkest);
+                getColourMap(colours[1].colour).darkest);
 
             // Draw number of selected items
             if (!(gLegacyScene == LegacyScene::trackDesignsManager))
