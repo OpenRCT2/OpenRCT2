@@ -1223,8 +1223,8 @@ static_assert(sizeof(RCT12VehicleColour) == 2);
 
 #pragma pack(pop)
 
-OpenRCT2::ObjectEntryIndex RCTEntryIndexToOpenRCT2EntryIndex(const RCT12ObjectEntryIndex index);
-RideId RCT12RideIdToOpenRCT2RideId(const RCT12RideId rideId);
+OpenRCT2::ObjectEntryIndex RCTEntryIndexToOpenRCT2EntryIndex(RCT12ObjectEntryIndex index);
+RideId RCT12RideIdToOpenRCT2RideId(RCT12RideId rideId);
 bool IsLikelyUTF8(std::string_view s);
 std::string RCT12RemoveFormattingUTF8(std::string_view s);
 std::string ConvertFormattedStringToOpenRCT2(std::string_view buffer);

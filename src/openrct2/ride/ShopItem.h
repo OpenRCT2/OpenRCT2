@@ -128,7 +128,7 @@ enum
     SHOP_ITEM_FLAG_IS_RECOLOURABLE = (1 << 5),
 };
 
-money64 ShopItemGetCommonPrice(Ride* forRide, const ShopItem shopItem);
-bool ShopItemHasCommonPrice(const ShopItem shopItem);
+money64 ShopItemGetCommonPrice(Ride* forRide, ShopItem shopItem);
+bool ShopItemHasCommonPrice(ShopItem shopItem);
 
 const ShopItemDescriptor& GetShopItemDescriptor(ShopItem item);

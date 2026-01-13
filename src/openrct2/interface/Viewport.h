@@ -70,13 +70,13 @@ namespace OpenRCT2
             return (sPos.x >= pos.x && sPos.x < pos.x + width && sPos.y >= pos.y && sPos.y < pos.y + height);
         }
 
-        [[nodiscard]] bool ContainsTile(const TileCoordsXY coords) const noexcept;
+        [[nodiscard]] bool ContainsTile(TileCoordsXY coords) const noexcept;
 
         [[nodiscard]] ScreenCoordsXY ScreenToViewportCoord(const ScreenCoordsXY& screenCoord) const;
 
         void Invalidate() const;
 
-        void Invalidate(const int32_t x, const int32_t y, const int32_t z0, const int32_t z1, const ZoomLevel maxZoom) const;
+        void Invalidate(int32_t x, int32_t y, int32_t z0, int32_t z1, ZoomLevel maxZoom) const;
     };
 
     struct Focus;

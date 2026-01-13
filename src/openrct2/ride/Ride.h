@@ -458,8 +458,8 @@ public:
      */
     void updateRideTypeForAllPieces();
 
-    void updateSatisfaction(const uint8_t happiness);
-    void updatePopularity(const uint8_t pop_amount);
+    void updateSatisfaction(uint8_t happiness);
+    void updatePopularity(uint8_t pop_amount);
     void removePeeps();
 
     int32_t getTotalLength() const;

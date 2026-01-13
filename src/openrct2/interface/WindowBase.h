@@ -119,7 +119,7 @@ namespace OpenRCT2
         void setViewportLocation(const CoordsXYZ& coords);
         void invalidate();
         void removeViewport();
-        void setWidgets(const std::span<const Widget> newWidgets);
+        void setWidgets(std::span<const Widget> newWidgets);
         void resizeFrame();
 
         int16_t getTitleBarTargetHeight() const;

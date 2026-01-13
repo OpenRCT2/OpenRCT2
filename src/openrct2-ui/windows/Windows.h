@@ -189,8 +189,7 @@ namespace OpenRCT2::Ui::Windows
 
     // OverwritePrompt
     WindowBase* WindowOverwritePromptOpen(
-        const std::string_view name, const std::string_view path, LoadSaveAction action, LoadSaveType type,
-        TrackDesign* trackDesignPtr);
+        std::string_view name, std::string_view path, LoadSaveAction action, LoadSaveType type, TrackDesign* trackDesignPtr);
     void WindowLoadSaveOverwritePromptInputKey(WindowBase* w, uint32_t keycode);
 
     // Park
@@ -271,9 +270,9 @@ namespace OpenRCT2::Ui::Windows
     // Scenery
     WindowBase* SceneryOpen();
     void WindowScenerySetSelectedItem(
-        const ScenerySelection& sceneryconst, std::optional<colour_t> primary, const std::optional<colour_t> secondary,
-        const std::optional<colour_t> tertiary, const std::optional<colour_t> rotation);
-    void WindowScenerySetSelectedTab(const ObjectEntryIndex sceneryGroupIndex);
+        const ScenerySelection& sceneryconst, std::optional<colour_t> primary, std::optional<colour_t> secondary,
+        std::optional<colour_t> tertiary, std::optional<colour_t> rotation);
+    void WindowScenerySetSelectedTab(ObjectEntryIndex sceneryGroupIndex);
     void WindowScenerySetDefaultPlacementConfiguration();
     void WindowSceneryInit();
     void WindowSceneryResetSelectedSceneryItems();

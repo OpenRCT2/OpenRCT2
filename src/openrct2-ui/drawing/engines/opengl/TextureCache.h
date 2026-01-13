@@ -39,7 +39,7 @@ namespace OpenRCT2::Ui
             size_t operator()(const GlyphId& k) const
             {
                 size_t hash = k.Image * 7;
-                hash += (k.Palette & 0xFFFFFFFFUL) * 13;
+                hash += (k.Palette & 0xFFFFFFFFuL) * 13;
                 hash += (k.Palette >> 32uL) * 23;
                 return hash;
             }
@@ -207,8 +207,8 @@ namespace OpenRCT2::Ui
         TextureCache();
         ~TextureCache();
         void InvalidateImage(ImageIndex image);
-        BasicTextureInfo GetOrLoadImageTexture(const ImageId imageId);
-        BasicTextureInfo GetOrLoadGlyphTexture(const ImageId imageId, const PaletteMap& paletteMap);
+        BasicTextureInfo GetOrLoadImageTexture(ImageId imageId);
+        BasicTextureInfo GetOrLoadGlyphTexture(ImageId imageId, const PaletteMap& paletteMap);
         BasicTextureInfo GetOrLoadBitmapTexture(ImageIndex image, const void* pixels, size_t width, size_t height);
 
         GLuint GetAtlasesTexture();
@@ -220,12 +220,12 @@ namespace OpenRCT2::Ui
         void CreateTextures();
         void GeneratePaletteTexture();
         void EnlargeAtlasesTexture(GLuint newEntries);
-        AtlasTextureInfo LoadImageTexture(const ImageId image);
-        AtlasTextureInfo LoadGlyphTexture(const ImageId image, const PaletteMap& paletteMap);
+        AtlasTextureInfo LoadImageTexture(ImageId image);
+        AtlasTextureInfo LoadGlyphTexture(ImageId image, const PaletteMap& paletteMap);
         AtlasTextureInfo AllocateImage(int32_t imageWidth, int32_t imageHeight);
         AtlasTextureInfo LoadBitmapTexture(ImageIndex image, const void* pixels, size_t width, size_t height);
-        static Drawing::RenderTarget GetImageAsRT(const ImageId imageId);
-        static Drawing::RenderTarget GetGlyphAsRT(const ImageId imageId, const PaletteMap& paletteMap);
+        static Drawing::RenderTarget GetImageAsRT(ImageId imageId);
+        static Drawing::RenderTarget GetGlyphAsRT(ImageId imageId, const PaletteMap& paletteMap);
         void FreeTextures();
 
         static Drawing::RenderTarget CreateRT(int32_t width, int32_t height);

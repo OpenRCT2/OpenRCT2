@@ -253,7 +253,7 @@ extern bool gPaintWidePathsAsGhost;
 extern bool gPaintStableSort;
 
 PaintStruct* PaintAddImageAsParent(
-    PaintSession& session, const ImageId image_id, const CoordsXYZ& offset, const BoundBoxXYZ& boundBox);
+    PaintSession& session, ImageId image_id, const CoordsXYZ& offset, const BoundBoxXYZ& boundBox);
 /**
  *  rct2: 0x006861AC, 0x00686337, 0x006864D0, 0x0068666B, 0x0098196C
  *
@@ -267,23 +267,21 @@ PaintStruct* PaintAddImageAsParent(
  * @return (ebp) PaintStruct on success (CF == 0), nullptr on failure (CF == 1)
  */
 inline PaintStruct* PaintAddImageAsParent(
-    PaintSession& session, const ImageId image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize)
+    PaintSession& session, ImageId image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize)
 {
     return PaintAddImageAsParent(session, image_id, offset, { offset, boundBoxSize });
 }
 
 [[nodiscard]] PaintStruct* PaintAddImageAsOrphan(
-    PaintSession& session, const ImageId image_id, const CoordsXYZ& offset, const BoundBoxXYZ& boundBox);
+    PaintSession& session, ImageId image_id, const CoordsXYZ& offset, const BoundBoxXYZ& boundBox);
 PaintStruct* PaintAddImageAsChild(
-    PaintSession& session, const ImageId image_id, const CoordsXYZ& offset, const BoundBoxXYZ& boundBox);
+    PaintSession& session, ImageId image_id, const CoordsXYZ& offset, const BoundBoxXYZ& boundBox);
 
 PaintStruct* PaintAddImageAsChildRotated(
-    PaintSession& session, const uint8_t direction, const ImageId image_id, const CoordsXYZ& offset,
-    const BoundBoxXYZ& boundBox);
+    PaintSession& session, uint8_t direction, ImageId image_id, const CoordsXYZ& offset, const BoundBoxXYZ& boundBox);
 
 PaintStruct* PaintAddImageAsParentRotated(
-    PaintSession& session, const uint8_t direction, const ImageId imageId, const CoordsXYZ& offset,
-    const BoundBoxXYZ& boundBox);
+    PaintSession& session, uint8_t direction, ImageId imageId, const CoordsXYZ& offset, const BoundBoxXYZ& boundBox);
 
 inline PaintStruct* PaintAddImageAsParentRotated(
     PaintSession& session, const uint8_t direction, const ImageId imageId, const CoordsXYZ& offset,
@@ -293,10 +291,10 @@ inline PaintStruct* PaintAddImageAsParentRotated(
 }
 
 PaintStruct* PaintAddImageAsParentHeight(
-    PaintSession& session, const ImageId imageId, const int32_t height, const CoordsXYZ& offset, const BoundBoxXYZ& boundBox);
+    PaintSession& session, ImageId imageId, int32_t height, const CoordsXYZ& offset, const BoundBoxXYZ& boundBox);
 
-bool PaintAttachToPreviousAttach(PaintSession& session, const ImageId imageId, int32_t x, int32_t y);
-bool PaintAttachToPreviousPS(PaintSession& session, const ImageId image_id, int32_t x, int32_t y);
+bool PaintAttachToPreviousAttach(PaintSession& session, ImageId imageId, int32_t x, int32_t y);
+bool PaintAttachToPreviousPS(PaintSession& session, ImageId image_id, int32_t x, int32_t y);
 void PaintFloatingMoneyEffect(
     PaintSession& session, money64 amount, StringId string_id, int32_t y, int32_t z, int8_t y_offsets[], int32_t offset_x,
     uint32_t rotation);

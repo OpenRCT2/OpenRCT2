@@ -31,7 +31,7 @@ namespace OpenRCT2::GameActions
 
     public:
         StaffSetPatrolAreaAction() = default;
-        StaffSetPatrolAreaAction(EntityId spriteId, const MapRange& range, const StaffSetPatrolAreaMode mode);
+        StaffSetPatrolAreaAction(EntityId spriteId, const MapRange& range, StaffSetPatrolAreaMode mode);
 
         uint16_t GetActionFlags() const override;
 

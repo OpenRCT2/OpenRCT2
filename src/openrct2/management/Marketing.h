@@ -73,4 +73,4 @@ void MarketingSetGuestCampaign(Guest* peep, int32_t campaign);
 bool MarketingIsCampaignTypeApplicable(int32_t campaignType);
 MarketingCampaign* MarketingGetCampaign(int32_t campaignType);
 void MarketingNewCampaign(const MarketingCampaign& campaign);
-void MarketingCancelCampaignsForRide(const RideId rideId);
+void MarketingCancelCampaignsForRide(RideId rideId);
