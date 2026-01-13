@@ -12,16 +12,16 @@ namespace OpenRCT2::Drawing
         uint8_t red{};
     };
 
-    struct PaletteBGRA
+    struct BGRAColour
     {
-        uint8_t Blue{};
-        uint8_t Green{};
-        uint8_t Red{};
-        uint8_t Alpha{};
+        uint8_t blue{};
+        uint8_t green{};
+        uint8_t red{};
+        uint8_t alpha{};
     };
 
     constexpr auto kGamePaletteSize = 256u;
 
-    using GamePalette = std::array<PaletteBGRA, kGamePaletteSize>;
+    using GamePalette = std::array<BGRAColour, kGamePaletteSize>;
 
 } // namespace OpenRCT2::Drawing

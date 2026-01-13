@@ -333,7 +333,7 @@ void MaskFn(
 std::optional<uint32_t> GetPaletteG1Index(OpenRCT2::Drawing::FilterPaletteID paletteId);
 std::optional<PaletteMap> GetPaletteMapForColour(OpenRCT2::Drawing::FilterPaletteID paletteId);
 void UpdatePalette(
-    std::span<const OpenRCT2::Drawing::PaletteBGRA> palette, OpenRCT2::Drawing::PaletteIndex startIndex, int32_t numColours);
+    std::span<const OpenRCT2::Drawing::BGRAColour> palette, OpenRCT2::Drawing::PaletteIndex startIndex, int32_t numColours);
 void UpdatePaletteEffects();
 
 void RefreshVideo();

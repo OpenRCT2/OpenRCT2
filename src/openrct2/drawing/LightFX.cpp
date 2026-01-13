@@ -1006,11 +1006,11 @@ namespace OpenRCT2::Drawing::LightFx
                     (-overExpose + static_cast<float>(*b) * reduceColourNat * natLightB + envFog * fogB + addLightNatB))));
 
             auto dstEntry = &gPalette_light[i];
-            dstEntry->Red = static_cast<uint8_t>(
+            dstEntry->red = static_cast<uint8_t>(
                 std::min<float>(0xFF, (static_cast<float>(*r) * reduceColourLit * boost + lightFog) * elecMultR));
-            dstEntry->Green = static_cast<uint8_t>(
+            dstEntry->green = static_cast<uint8_t>(
                 std::min<float>(0xFF, (static_cast<float>(*g) * reduceColourLit * boost + lightFog) * elecMultG));
-            dstEntry->Blue = static_cast<uint8_t>(
+            dstEntry->blue = static_cast<uint8_t>(
                 std::min<float>(0xFF, (static_cast<float>(*b) * reduceColourLit * boost + lightFog) * elecMultB));
         }
     }

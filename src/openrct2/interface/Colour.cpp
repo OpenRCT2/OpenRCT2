@@ -153,8 +153,8 @@ static PaletteIndex FindClosestPaletteIndex(uint8_t red, uint8_t green, uint8_t 
     for (auto i = PaletteIndex::pi0; i < PaletteIndex::pi230; i = static_cast<PaletteIndex>(EnumValue(i) + 1))
     {
         const auto& paletteEntry = gPalette[EnumValue(i)];
-        const int32_t distance = std::pow(paletteEntry.Red - red, 2) + std::pow(paletteEntry.Green - green, 2)
-            + std::pow(paletteEntry.Blue - blue, 2);
+        const int32_t distance = std::pow(paletteEntry.red - red, 2) + std::pow(paletteEntry.green - green, 2)
+            + std::pow(paletteEntry.blue - blue, 2);
 
         if (distance < closestDistance)
         {
@@ -172,9 +172,9 @@ static void InitBlendColourMap()
     {
         for (size_t j = i; j < kGamePaletteSize; j++)
         {
-            uint8_t red = (gPalette[i].Red + gPalette[j].Red) / 2;
-            uint8_t green = (gPalette[i].Green + gPalette[j].Green) / 2;
-            uint8_t blue = (gPalette[i].Blue + gPalette[j].Blue) / 2;
+            uint8_t red = (gPalette[i].red + gPalette[j].red) / 2;
+            uint8_t green = (gPalette[i].green + gPalette[j].green) / 2;
+            uint8_t blue = (gPalette[i].blue + gPalette[j].blue) / 2;
 
             auto colour = FindClosestPaletteIndex(red, green, blue);
             BlendColourMap[i][j] = colour;
