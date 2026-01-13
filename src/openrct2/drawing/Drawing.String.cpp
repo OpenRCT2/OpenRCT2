@@ -296,7 +296,7 @@ static void ColourCharacter(TextColour colour, bool withOutline, TextColours& te
 static void ColourCharacterWindow(colour_t colour, bool withOutline, TextColours& textPalette)
 {
     TextColours mapping = {
-        ColourMapA[colour].colour_11,
+        ColourMapA[colour].colour11,
         PaletteIndex::pi0,
         PaletteIndex::pi0,
     };
@@ -762,16 +762,16 @@ static void TTFProcessInitialColour(ColourWithFlags colour, TextDrawInfo* info)
             {
                 case TextDarkness::extraDark:
                     newPalette.fill = ColourMapA[colour.colour].dark;
-                    newPalette.shadowOutline = ColourMapA[colour.colour].mid_light;
+                    newPalette.shadowOutline = ColourMapA[colour.colour].midLight;
                     break;
 
                 case TextDarkness::dark:
-                    newPalette.fill = ColourMapA[colour.colour].mid_dark;
+                    newPalette.fill = ColourMapA[colour.colour].midDark;
                     newPalette.shadowOutline = ColourMapA[colour.colour].light;
                     break;
 
                 case TextDarkness::regular:
-                    newPalette.fill = ColourMapA[colour.colour].mid_light;
+                    newPalette.fill = ColourMapA[colour.colour].midLight;
                     newPalette.shadowOutline = ColourMapA[colour.colour].lighter;
                     break;
             }

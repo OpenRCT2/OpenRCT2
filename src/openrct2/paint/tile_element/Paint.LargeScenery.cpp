@@ -309,7 +309,7 @@ static void PaintLargeSceneryScrollingText(
     PROFILED_FUNCTION();
 
     auto textColour = isGhost ? static_cast<colour_t>(COLOUR_GREY) : tileElement.GetSecondaryColour();
-    auto textPaletteIndex = direction == 0 ? ColourMapA[textColour].mid_dark : ColourMapA[textColour].light;
+    auto textPaletteIndex = direction == 0 ? ColourMapA[textColour].midDark : ColourMapA[textColour].light;
 
     auto banner = tileElement.GetBanner();
     if (banner == nullptr)

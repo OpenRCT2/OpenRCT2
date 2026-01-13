@@ -1080,7 +1080,7 @@ namespace OpenRCT2::Ui::Windows
         void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
             Rectangle::fill(
-                rt, { { rt.x, rt.y }, { rt.x + rt.width - 1, rt.y + rt.height - 1 } }, ColourMapA[colours[1].colour].mid_light);
+                rt, { { rt.x, rt.y }, { rt.x + rt.width - 1, rt.y + rt.height - 1 } }, ColourMapA[colours[1].colour].midLight);
 
             const int32_t listWidth = widgets[WIDX_SCROLL].width() - 1;
             const auto sizeColumnLeft = widgets[WIDX_SORT_SIZE].left;

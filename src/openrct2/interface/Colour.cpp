@@ -46,18 +46,18 @@ void ColoursInitMaps()
         const auto* g1 = GfxGetG1Element(paletteIndex + i);
         if (g1 != nullptr)
         {
-            ColourMapA[i].colour_0 = static_cast<PaletteIndex>(g1->offset[INDEX_COLOUR_0]);
-            ColourMapA[i].colour_1 = static_cast<PaletteIndex>(g1->offset[INDEX_COLOUR_1]);
+            ColourMapA[i].colour0 = static_cast<PaletteIndex>(g1->offset[INDEX_COLOUR_0]);
+            ColourMapA[i].colour1 = static_cast<PaletteIndex>(g1->offset[INDEX_COLOUR_1]);
             ColourMapA[i].darkest = static_cast<PaletteIndex>(g1->offset[INDEX_DARKEST]);
             ColourMapA[i].darker = static_cast<PaletteIndex>(g1->offset[INDEX_DARKER]);
             ColourMapA[i].dark = static_cast<PaletteIndex>(g1->offset[INDEX_DARK]);
-            ColourMapA[i].mid_dark = static_cast<PaletteIndex>(g1->offset[INDEX_MID_DARK]);
-            ColourMapA[i].mid_light = static_cast<PaletteIndex>(g1->offset[INDEX_MID_LIGHT]);
+            ColourMapA[i].midDark = static_cast<PaletteIndex>(g1->offset[INDEX_MID_DARK]);
+            ColourMapA[i].midLight = static_cast<PaletteIndex>(g1->offset[INDEX_MID_LIGHT]);
             ColourMapA[i].light = static_cast<PaletteIndex>(g1->offset[INDEX_LIGHT]);
             ColourMapA[i].lighter = static_cast<PaletteIndex>(g1->offset[INDEX_LIGHTER]);
             ColourMapA[i].lightest = static_cast<PaletteIndex>(g1->offset[INDEX_LIGHTEST]);
-            ColourMapA[i].colour_10 = static_cast<PaletteIndex>(g1->offset[INDEX_COLOUR_10]);
-            ColourMapA[i].colour_11 = static_cast<PaletteIndex>(g1->offset[INDEX_COLOUR_11]);
+            ColourMapA[i].colour10 = static_cast<PaletteIndex>(g1->offset[INDEX_COLOUR_10]);
+            ColourMapA[i].colour11 = static_cast<PaletteIndex>(g1->offset[INDEX_COLOUR_11]);
         }
     }
 }

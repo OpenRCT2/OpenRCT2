@@ -383,7 +383,7 @@ void InGameConsole::Draw(RenderTarget& rt) const
 
     // What about border colours?
     auto borderColour1 = ColourMapA[backgroundColour.colour].light;
-    auto borderColour2 = ColourMapA[backgroundColour.colour].mid_dark;
+    auto borderColour2 = ColourMapA[backgroundColour.colour].midDark;
 
     // Input area top border
     Rectangle::fill(

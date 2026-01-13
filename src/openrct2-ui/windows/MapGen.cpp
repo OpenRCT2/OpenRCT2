@@ -1172,7 +1172,7 @@ namespace OpenRCT2::Ui::Windows
 
                 // Draw greyed out (dark)
                 colour = colours[widget.colour].colour;
-                paletteIndex = ColourMapA[colour].mid_light;
+                paletteIndex = ColourMapA[colour].midLight;
                 GfxDrawSpriteSolid(rt, image, pos, paletteIndex);
             }
             else

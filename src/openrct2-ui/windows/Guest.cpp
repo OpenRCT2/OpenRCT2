@@ -1355,7 +1355,7 @@ namespace OpenRCT2::Ui::Windows
 
         void onScrollDrawRides(int32_t scrollIndex, RenderTarget& rt)
         {
-            auto colour = ColourMapA[colours[1].colour].mid_light;
+            auto colour = ColourMapA[colours[1].colour].midLight;
             Rectangle::fill(rt, { { rt.x, rt.y }, { rt.x + rt.width - 1, rt.y + rt.height - 1 } }, colour);
 
             for (int32_t listIndex = 0; listIndex < static_cast<int32_t>(_riddenRides.size()); listIndex++)

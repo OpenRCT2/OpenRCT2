@@ -515,23 +515,23 @@ namespace OpenRCT2::Ui
         uint8_t colour = w.colours[widget.colour].colour;
 
         // Border left of text
-        Rectangle::fill(rt, { { l, t }, { l + 4, t } }, ColourMapA[colour].mid_dark);
+        Rectangle::fill(rt, { { l, t }, { l + 4, t } }, ColourMapA[colour].midDark);
         Rectangle::fill(rt, { { l + 1, t + 1 }, { l + 4, t + 1 } }, ColourMapA[colour].lighter);
 
         // Border right of text
-        Rectangle::fill(rt, { { textRight, t }, { r - 1, t } }, ColourMapA[colour].mid_dark);
+        Rectangle::fill(rt, { { textRight, t }, { r - 1, t } }, ColourMapA[colour].midDark);
         Rectangle::fill(rt, { { textRight, t + 1 }, { r - 2, t + 1 } }, ColourMapA[colour].lighter);
 
         // Border right
-        Rectangle::fill(rt, { { r - 1, t + 1 }, { r - 1, b - 1 } }, ColourMapA[colour].mid_dark);
+        Rectangle::fill(rt, { { r - 1, t + 1 }, { r - 1, b - 1 } }, ColourMapA[colour].midDark);
         Rectangle::fill(rt, { { r, t }, { r, b } }, ColourMapA[colour].lighter);
 
         // Border bottom
-        Rectangle::fill(rt, { { l, b - 1 }, { r - 2, b - 1 } }, ColourMapA[colour].mid_dark);
+        Rectangle::fill(rt, { { l, b - 1 }, { r - 2, b - 1 } }, ColourMapA[colour].midDark);
         Rectangle::fill(rt, { { l, b }, { r - 1, b } }, ColourMapA[colour].lighter);
 
         // Border left
-        Rectangle::fill(rt, { { l, t + 1 }, { l, b - 2 } }, ColourMapA[colour].mid_dark);
+        Rectangle::fill(rt, { { l, t + 1 }, { l, b - 2 } }, ColourMapA[colour].midDark);
         Rectangle::fill(rt, { { l + 1, t + 2 }, { l + 1, b - 2 } }, ColourMapA[colour].lighter);
     }
 
@@ -770,13 +770,13 @@ namespace OpenRCT2::Ui
         // Trough
         Rectangle::fill(rt, { { l + kScrollBarWidth, t }, { r - kScrollBarWidth, b } }, ColourMapA[colour.colour].lighter);
         Rectangle::fill(
-            rt, { { l + kScrollBarWidth, t }, { r - kScrollBarWidth, b } }, ColourMapA[colour.colour].mid_dark, true);
+            rt, { { l + kScrollBarWidth, t }, { r - kScrollBarWidth, b } }, ColourMapA[colour.colour].midDark, true);
         Rectangle::fill(
-            rt, { { l + kScrollBarWidth, t + 2 }, { r - kScrollBarWidth, t + 2 } }, ColourMapA[colour.colour].mid_dark);
+            rt, { { l + kScrollBarWidth, t + 2 }, { r - kScrollBarWidth, t + 2 } }, ColourMapA[colour.colour].midDark);
         Rectangle::fill(
             rt, { { l + kScrollBarWidth, t + 3 }, { r - kScrollBarWidth, t + 3 } }, ColourMapA[colour.colour].lighter);
         Rectangle::fill(
-            rt, { { l + kScrollBarWidth, t + 7 }, { r - kScrollBarWidth, t + 7 } }, ColourMapA[colour.colour].mid_dark);
+            rt, { { l + kScrollBarWidth, t + 7 }, { r - kScrollBarWidth, t + 7 } }, ColourMapA[colour.colour].midDark);
         Rectangle::fill(
             rt, { { l + kScrollBarWidth, t + 8 }, { r - kScrollBarWidth, t + 8 } }, ColourMapA[colour.colour].lighter);
 
@@ -817,13 +817,13 @@ namespace OpenRCT2::Ui
         // Trough
         Rectangle::fill(rt, { { l, t + kScrollBarWidth }, { r, b - kScrollBarWidth } }, ColourMapA[colour.colour].lighter);
         Rectangle::fill(
-            rt, { { l, t + kScrollBarWidth }, { r, b - kScrollBarWidth } }, ColourMapA[colour.colour].mid_dark, true);
+            rt, { { l, t + kScrollBarWidth }, { r, b - kScrollBarWidth } }, ColourMapA[colour.colour].midDark, true);
         Rectangle::fill(
-            rt, { { l + 2, t + kScrollBarWidth }, { l + 2, b - kScrollBarWidth } }, ColourMapA[colour.colour].mid_dark);
+            rt, { { l + 2, t + kScrollBarWidth }, { l + 2, b - kScrollBarWidth } }, ColourMapA[colour.colour].midDark);
         Rectangle::fill(
             rt, { { l + 3, t + kScrollBarWidth }, { l + 3, b - kScrollBarWidth } }, ColourMapA[colour.colour].lighter);
         Rectangle::fill(
-            rt, { { l + 7, t + kScrollBarWidth }, { l + 7, b - kScrollBarWidth } }, ColourMapA[colour.colour].mid_dark);
+            rt, { { l + 7, t + kScrollBarWidth }, { l + 7, b - kScrollBarWidth } }, ColourMapA[colour.colour].midDark);
         Rectangle::fill(
             rt, { { l + 8, t + kScrollBarWidth }, { l + 8, b - kScrollBarWidth } }, ColourMapA[colour.colour].lighter);
 
@@ -877,7 +877,7 @@ namespace OpenRCT2::Ui
             GfxDrawSpriteSolid(rt, image, screenCoords + ScreenCoordsXY{ 1, 1 }, mappedColour);
 
             // Draw greyed out (dark)
-            mappedColour = ColourMapA[colour].mid_light;
+            mappedColour = ColourMapA[colour].midLight;
             GfxDrawSpriteSolid(rt, image, screenCoords, mappedColour);
         }
         else
@@ -1209,7 +1209,7 @@ namespace OpenRCT2::Ui
 
         if (Windows::TextBoxCaretIsFlashed())
         {
-            auto colour = ColourMapA[w.colours[1].colour].mid_light;
+            auto colour = ColourMapA[w.colours[1].colour].midLight;
             auto y = topLeft.y + 1 + widget.height() - 5;
             Rectangle::fill(rt, { { curX, y }, { curX + width, y } }, static_cast<PaletteIndex>(EnumValue(colour) + 5));
         }

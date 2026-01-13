@@ -172,7 +172,7 @@ static void PaintWallScrollingText(
         return;
 
     auto textColour = isGhost ? static_cast<colour_t>(COLOUR_GREY) : wallElement.GetSecondaryColour();
-    auto textPaletteIndex = direction == 0 ? ColourMapA[textColour].mid_dark : ColourMapA[textColour].light;
+    auto textPaletteIndex = direction == 0 ? ColourMapA[textColour].midDark : ColourMapA[textColour].light;
 
     auto ft = Formatter();
     banner->formatTextTo(ft);

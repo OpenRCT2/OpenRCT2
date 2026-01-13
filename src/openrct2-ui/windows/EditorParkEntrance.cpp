@@ -318,7 +318,7 @@ namespace OpenRCT2::Ui::Windows
 
         void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
-            GfxClear(rt, ColourMapA[colours[1].colour].mid_light);
+            GfxClear(rt, ColourMapA[colours[1].colour].midLight);
 
             ScreenCoordsXY coords{ 1, 1 };
 

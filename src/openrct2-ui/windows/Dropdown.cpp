@@ -134,7 +134,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     else
                     {
-                        Rectangle::fill(rt, { leftTop, rightBottom }, ColourMapA[colours[0].colour].mid_dark);
+                        Rectangle::fill(rt, { leftTop, rightBottom }, ColourMapA[colours[0].colour].midDark);
                         Rectangle::fill(
                             rt, { leftTop + shadowOffset, rightBottom + shadowOffset }, ColourMapA[colours[0].colour].lightest);
                     }

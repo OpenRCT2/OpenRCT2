@@ -2342,7 +2342,7 @@ namespace OpenRCT2::Ui::Windows
                     rt, ImageId(spriteIndex), screenCoords + ScreenCoordsXY{ 1, 1 }, ColourMapA[windowColour].lighter);
 
                 // Draw greyed out (dark)
-                GfxDrawSpriteSolid(rt, ImageId(spriteIndex), screenCoords, ColourMapA[windowColour].mid_light);
+                GfxDrawSpriteSolid(rt, ImageId(spriteIndex), screenCoords, ColourMapA[windowColour].midLight);
             }
         }
 

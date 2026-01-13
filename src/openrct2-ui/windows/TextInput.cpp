@@ -269,7 +269,7 @@ namespace OpenRCT2::Ui::Windows
 
                     if (_cursorBlink > 15)
                     {
-                        auto colour = ColourMapA[colours[1].colour].mid_light;
+                        auto colour = ColourMapA[colours[1].colour].midLight;
                         // TODO: palette index addition
                         Rectangle::fill(
                             rt, { { cursorX, screenCoords.y + 9 }, { cursorX + textWidth, screenCoords.y + 9 } },

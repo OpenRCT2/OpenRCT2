@@ -1587,7 +1587,7 @@ static uint64_t PageDisabledWidgets[] = {
         {
             const int32_t listWidth = widgets[WIDX_LIST].width() - 1;
             Rectangle::fill(
-                rt, { { rt.x, rt.y }, { rt.x + rt.width - 1, rt.y + rt.height - 1 } }, ColourMapA[colours[1].colour].mid_light);
+                rt, { { rt.x, rt.y }, { rt.x + rt.width - 1, rt.y + rt.height - 1 } }, ColourMapA[colours[1].colour].midLight);
 
             // Show usage hint when nothing is selected
             if (!_tileSelected)
@@ -1621,9 +1621,9 @@ static uint64_t PageDisabledWidgets[] = {
                 auto fillRectangle = ScreenRect{ { 0, screenCoords.y },
                                                  { listWidth, screenCoords.y + kScrollableRowHeight - 1 } };
                 if (selectedRow)
-                    Rectangle::fill(rt, fillRectangle, ColourMapA[colours[1].colour].mid_dark);
+                    Rectangle::fill(rt, fillRectangle, ColourMapA[colours[1].colour].midDark);
                 else if (hoveredRow)
-                    Rectangle::fill(rt, fillRectangle, ColourMapA[colours[1].colour].mid_dark, true);
+                    Rectangle::fill(rt, fillRectangle, ColourMapA[colours[1].colour].midDark, true);
                 // Zebra stripes
                 else if (((windowTileInspectorElementCount - i) & 1) == 0)
                     Rectangle::fill(rt, fillRectangle, ColourMapA[colours[1].colour].light, true);
