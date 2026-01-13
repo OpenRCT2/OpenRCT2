@@ -547,7 +547,10 @@ namespace OpenRCT2::Network
 
             if (!ProcessConnection(*connection))
             {
-                LOG_INFO("Disconnecting player %s", connection->player->Name.c_str());
+                if (connection->player != nullptr)
+                    LOG_INFO("Disconnecting player %s", connection->player->Name.c_str());
+                else
+                    LOG_INFO("Disconnecting unknown player");
                 connection->Disconnect();
             }
             else
