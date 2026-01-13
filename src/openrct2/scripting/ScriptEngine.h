@@ -13,6 +13,7 @@
 
     #include "../actions/CustomAction.h"
     #include "../core/FileWatcher.h"
+    #include "../core/Guard.hpp"
     #include "../management/Finance.h"
     #include "HookEngine.h"
     #include "Plugin.h"
