@@ -1175,7 +1175,7 @@ void PeepUpdateCrowdNoise()
 {
     PROFILED_FUNCTION();
 
-    if (OpenRCT2::Audio::gGameSoundsOff)
+    if (gGameSoundsOff)
         return;
 
     if (!Config::Get().sound.soundEnabled)
@@ -1237,7 +1237,7 @@ void PeepUpdateCrowdNoise()
             _crowdSoundChannel = CreateAudioChannel(SoundId::crowdAmbience, true, 0);
             if (_crowdSoundChannel != nullptr)
             {
-                _crowdSoundChannel->SetGroup(OpenRCT2::Audio::MixerGroup::Sound);
+                _crowdSoundChannel->SetGroup(MixerGroup::Sound);
             }
         }
         if (_crowdSoundChannel != nullptr)
@@ -1272,7 +1272,7 @@ void PeepApplause()
     }
 
     // Play applause noise
-    OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::applause, 0, ContextGetWidth() / 2);
+    Play(SoundId::applause, 0, ContextGetWidth() / 2);
 }
 
 /**
@@ -2571,12 +2571,12 @@ int32_t PeepCompare(const EntityId sprite_index_a, const EntityId sprite_index_b
     char nameA[256]{};
     Formatter ft;
     peep_a->FormatNameTo(ft);
-    OpenRCT2::FormatStringLegacy(nameA, sizeof(nameA), STR_STRINGID, ft.Data());
+    FormatStringLegacy(nameA, sizeof(nameA), STR_STRINGID, ft.Data());
 
     char nameB[256]{};
     ft.Rewind();
     peep_b->FormatNameTo(ft);
-    OpenRCT2::FormatStringLegacy(nameB, sizeof(nameB), STR_STRINGID, ft.Data());
+    FormatStringLegacy(nameB, sizeof(nameB), STR_STRINGID, ft.Data());
     return String::logicalCmp(nameA, nameB);
 }
 

@@ -253,7 +253,7 @@ Ride* GetRide(RideId index)
 
 const RideObjectEntry* GetRideEntryByIndex(ObjectEntryIndex index)
 {
-    auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
+    auto& objMgr = GetContext()->GetObjectManager();
 
     auto obj = objMgr.GetLoadedObject<RideObject>(index);
     if (obj == nullptr)
@@ -1027,7 +1027,7 @@ void Ride::updateAll()
     for (auto& ride : RideManager(gameState))
         ride.update();
 
-    OpenRCT2::RideAudio::UpdateMusicChannels();
+    RideAudio::UpdateMusicChannels();
 }
 
 std::unique_ptr<TrackDesign> Ride::saveToTrackDesign(TrackDesignState& tds) const
@@ -1114,7 +1114,7 @@ void Ride::update()
     // Update stations
     const auto& rtd = getRideTypeDescriptor();
     if (rtd.specialType != RtdSpecialType::maze)
-        for (StationIndex::UnderlyingType i = 0; i < OpenRCT2::Limits::kMaxStationsPerRide; i++)
+        for (StationIndex::UnderlyingType i = 0; i < Limits::kMaxStationsPerRide; i++)
             RideUpdateStation(*this, StationIndex::FromUnderlying(i));
 
     // Update financial statistics
@@ -1126,7 +1126,7 @@ void Ride::update()
         numCustomersTimeout = 0;
 
         // Shift number of customers history, start of the array is the most recent one
-        for (int32_t i = OpenRCT2::Limits::kCustomerHistorySize - 1; i > 0; i--)
+        for (int32_t i = Limits::kCustomerHistorySize - 1; i > 0; i--)
         {
             numCustomers[i] = numCustomers[i - 1];
         }
@@ -1288,7 +1288,7 @@ void updateSpiralSlide(Ride& ride)
 
     const uint8_t current_rotation = GetCurrentRotation();
     // Invalidate something related to station start
-    for (int32_t i = 0; i < OpenRCT2::Limits::kMaxStationsPerRide; i++)
+    for (int32_t i = 0; i < Limits::kMaxStationsPerRide; i++)
     {
         if (ride.stations[i].Start.IsNull())
             continue;
@@ -1406,14 +1406,14 @@ static void RideBreakdownUpdate(Ride& ride)
     {
         int32_t totalDowntime = 0;
 
-        for (int32_t i = 0; i < OpenRCT2::Limits::kDowntimeHistorySize; i++)
+        for (int32_t i = 0; i < Limits::kDowntimeHistorySize; i++)
         {
             totalDowntime += ride.downtimeHistory[i];
         }
 
         ride.downtime = std::min(totalDowntime / 2, 100);
 
-        for (int32_t i = OpenRCT2::Limits::kDowntimeHistorySize - 1; i > 0; i--)
+        for (int32_t i = Limits::kDowntimeHistorySize - 1; i > 0; i--)
         {
             ride.downtimeHistory[i] = ride.downtimeHistory[i - 1];
         }
@@ -1951,7 +1951,7 @@ void CircusMusicUpdate(Ride& ride)
 
     const auto sampleRate = RideMusicSampleRate(ride);
 
-    OpenRCT2::RideAudio::UpdateMusicInstance(ride, rideCoords, sampleRate);
+    RideAudio::UpdateMusicInstance(ride, rideCoords, sampleRate);
 }
 
 /**
@@ -1989,7 +1989,7 @@ void DefaultMusicUpdate(Ride& ride)
 
     int32_t sampleRate = RideMusicSampleRate(ride);
 
-    OpenRCT2::RideAudio::UpdateMusicInstance(ride, rideCoords, sampleRate);
+    RideAudio::UpdateMusicInstance(ride, rideCoords, sampleRate);
 }
 
 static void RideMusicUpdate(Ride& ride)
@@ -3036,7 +3036,7 @@ static void RideSetBoatHireReturnPoint(Ride& ride, const CoordsXYE& startElement
 static void RideSetMazeEntranceExitPoints(Ride& ride)
 {
     // Needs room for an entrance and an exit per station, plus one position for the list terminator.
-    TileCoordsXYZD positions[(OpenRCT2::Limits::kMaxStationsPerRide * 2) + 1];
+    TileCoordsXYZD positions[(Limits::kMaxStationsPerRide * 2) + 1];
 
     // Create a list of all the entrance and exit positions
     TileCoordsXYZD* position = positions;
@@ -3293,13 +3293,13 @@ static Vehicle* VehicleCreateCar(
     vehicle->spin_sprite = 0;
     vehicle->spin_speed = 0;
     vehicle->sound2_flags = 0;
-    vehicle->sound1_id = OpenRCT2::Audio::SoundId::null;
-    vehicle->sound2_id = OpenRCT2::Audio::SoundId::null;
+    vehicle->sound1_id = Audio::SoundId::null;
+    vehicle->sound2_id = Audio::SoundId::null;
     vehicle->next_vehicle_on_train = EntityId::GetNull();
     vehicle->CollisionDetectionTimer = 0;
     vehicle->animation_frame = 0;
     vehicle->animationState = 0;
-    vehicle->scream_sound_id = OpenRCT2::Audio::SoundId::null;
+    vehicle->scream_sound_id = Audio::SoundId::null;
     vehicle->pitch = VehiclePitch::flat;
     vehicle->roll = VehicleRoll::unbanked;
     vehicle->target_seat_rotation = 4;
@@ -3516,7 +3516,7 @@ static bool VehicleCreateTrains(Ride& ride, const CoordsXYZ& trainsPos, TrackEle
         }
         lastTrain = train;
 
-        for (int32_t i = 0; i <= OpenRCT2::Limits::kMaxTrainsPerRide; i++)
+        for (int32_t i = 0; i <= Limits::kMaxTrainsPerRide; i++)
         {
             if (ride.vehicles[i].IsNull())
             {
@@ -3662,7 +3662,7 @@ ResultWithMessage Ride::createVehicles(const CoordsXYE& element, bool isApplying
     // Initialise station departs
     // 006DDDD0:
     lifecycleFlags |= RIDE_LIFECYCLE_ON_TRACK;
-    for (int32_t i = 0; i < OpenRCT2::Limits::kMaxStationsPerRide; i++)
+    for (int32_t i = 0; i < Limits::kMaxStationsPerRide; i++)
     {
         stations[i].Depart = (stations[i].Depart & kStationDepartFlag) | 1;
     }
@@ -4395,7 +4395,7 @@ void Ride::setNameToDefault()
         Formatter ft;
         formatNameTo(ft);
         FormatStringLegacy(rideNameBuffer, 256, STR_STRINGID, ft.Data());
-    } while (Ride::nameExists(rideNameBuffer, id));
+    } while (nameExists(rideNameBuffer, id));
 }
 
 /**
@@ -4737,7 +4737,7 @@ void RideUpdateVehicleColours(const Ride& ride)
         GfxInvalidateScreen();
     }
 
-    for (int32_t i = 0; i <= OpenRCT2::Limits::kMaxTrainsPerRide; i++)
+    for (int32_t i = 0; i <= Limits::kMaxTrainsPerRide; i++)
     {
         int32_t carIndex = 0;
         VehicleColour colours = {};
@@ -4757,11 +4757,11 @@ void RideUpdateVehicleColours(const Ride& ride)
                     if (vehicle->HasFlag(VehicleFlags::CarIsReversed))
                     {
                         colours = ride.vehicleColours[std::min(
-                            (ride.numCarsPerTrain - 1) - carIndex, OpenRCT2::Limits::kMaxCarsPerTrain - 1)];
+                            (ride.numCarsPerTrain - 1) - carIndex, Limits::kMaxCarsPerTrain - 1)];
                     }
                     else
                     {
-                        colours = ride.vehicleColours[std::min(carIndex, OpenRCT2::Limits::kMaxCarsPerTrain - 1)];
+                        colours = ride.vehicleColours[std::min(carIndex, Limits::kMaxCarsPerTrain - 1)];
                     }
                     break;
             }
@@ -4805,7 +4805,7 @@ struct NecessarySpriteGroup
 };
 
 // Finds track pieces that a given ride entry has sprites for
-OpenRCT2::BitSet<EnumValue(TrackGroup::count)> RideEntryGetSupportedTrackPieces(const RideObjectEntry& rideEntry)
+BitSet<EnumValue(TrackGroup::count)> RideEntryGetSupportedTrackPieces(const RideObjectEntry& rideEntry)
 {
     // TODO: Use a std::span when C++20 available as 6 is due to jagged array
     static const std::array<NecessarySpriteGroup, 9> trackPieceRequiredSprites[] = {
@@ -5026,7 +5026,7 @@ static std::optional<int32_t> RideGetSmallestStationLength(const Ride& ride)
 static int32_t RideGetTrackLength(const Ride& ride)
 {
     TileElement* tileElement = nullptr;
-    OpenRCT2::TrackElemType trackType;
+    TrackElemType trackType;
     CoordsXYZ trackStart;
     bool foundTrack = false;
 
@@ -5160,7 +5160,7 @@ void Ride::updateMaxVehicles()
         {
             case RideMode::continuousCircuitBlockSectioned:
             case RideMode::poweredLaunchBlockSectioned:
-                maxNumTrains = std::clamp<int32_t>(numStations + numBlockBrakes - 1, 1, OpenRCT2::Limits::kMaxTrainsPerRide);
+                maxNumTrains = std::clamp<int32_t>(numStations + numBlockBrakes - 1, 1, Limits::kMaxTrainsPerRide);
                 break;
             case RideMode::reverseInclineLaunchedShuttle:
             case RideMode::poweredLaunchPasstrough:
@@ -5192,7 +5192,7 @@ void Ride::updateMaxVehicles()
                 if ((mode != RideMode::stationToStation && mode != RideMode::continuousCircuit)
                     || !rtd.HasFlag(RtdFlag::allowMoreVehiclesThanStationFits))
                 {
-                    maxNumTrains = std::min(maxNumTrains, int32_t(OpenRCT2::Limits::kMaxTrainsPerRide));
+                    maxNumTrains = std::min(maxNumTrains, int32_t(Limits::kMaxTrainsPerRide));
                 }
                 else
                 {
@@ -5221,7 +5221,7 @@ void Ride::updateMaxVehicles()
                     {
                         maxNumTrains++;
                         length += totalSpacing;
-                    } while (maxNumTrains < OpenRCT2::Limits::kMaxTrainsPerRide && length < trackLength);
+                    } while (maxNumTrains < Limits::kMaxTrainsPerRide && length < trackLength);
                 }
                 break;
         }
@@ -5240,7 +5240,7 @@ void Ride::updateMaxVehicles()
 
     if (getGameState().cheats.disableTrainLengthLimit)
     {
-        maxNumTrains = OpenRCT2::Limits::kMaxTrainsPerRide;
+        maxNumTrains = Limits::kMaxTrainsPerRide;
     }
     auto newNumTrains = std::min(proposedNumTrains, static_cast<uint8_t>(maxNumTrains));
 
@@ -5332,7 +5332,7 @@ uint32_t RideCustomersInLast5Minutes(const Ride& ride)
 {
     uint32_t sum = 0;
 
-    for (int32_t i = 0; i < OpenRCT2::Limits::kCustomerHistorySize; i++)
+    for (int32_t i = 0; i < Limits::kCustomerHistorySize; i++)
     {
         sum += ride.numCustomers[i];
     }
