@@ -92,7 +92,7 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* EditorScenarioOptionsOpen();
 
     // Error
-    WindowBase* ErrorOpen(StringId title, StringId message, class Formatter& formatter, bool autoClose = false);
+    WindowBase* ErrorOpen(StringId title, StringId message, const class Formatter& formatter, bool autoClose = false);
     WindowBase* ErrorOpen(std::string_view title, std::string_view message, bool autoClose = false);
 
     // Finances
@@ -352,7 +352,7 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* TopToolbarOpen();
 
     // TrackDesignPlace
-    WindowBase* TrackPlaceOpen(struct TrackDesignFileRef* tdFileRef);
+    WindowBase* TrackPlaceOpen(const struct TrackDesignFileRef* tdFileRef);
     void TrackPlaceClearProvisionalTemporarily();
     void TrackPlaceRestoreProvisional();
 
