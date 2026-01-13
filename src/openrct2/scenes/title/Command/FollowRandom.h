@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2026 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -18,16 +18,15 @@
 
 namespace OpenRCT2::Title
 {
-    struct FollowEntityCommand
+    struct FollowRandomCommand
     {
-        static constexpr const char* Name = "Follow Entity Command";
-        static constexpr const char* ScriptingName = "follow";
+        static constexpr const char* Name = "Follow Random Command";
+        static constexpr const char* ScriptingName = "random";
 
         struct
         {
-            EntityId SpriteIndex{ EntityId::GetNull() };
+            EntityType Type{ EntityType::null };
             bool ScrollToLocation{ false };
-            utf8 SpriteName[kUserStringMaxLength]{};
         } Follow;
 
         int16_t operator()(int16_t timer);

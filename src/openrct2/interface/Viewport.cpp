@@ -523,10 +523,11 @@ namespace OpenRCT2
         if (!window->viewportTargetSprite.IsNull())
         {
             ViewportUpdateFollowSprite(window);
-            return;
         }
-
-        ViewportSetUndergroundFlag(0, window, viewport);
+        else
+        {
+            ViewportSetUndergroundFlag(0, window, viewport);
+        }
 
         auto viewportMidPoint = ScreenCoordsXY{ window->savedViewPos.x + viewport->ViewWidth() / 2,
                                                 window->savedViewPos.y + viewport->ViewHeight() / 2 };
@@ -618,7 +619,6 @@ namespace OpenRCT2
                 return;
             }
 
-            if (gLegacyScene != LegacyScene::titleSequence)
             {
                 int32_t height = TileElementHeight({ sprite->x, sprite->y }) - 16;
                 int32_t underground = sprite->z < height;
@@ -629,7 +629,6 @@ namespace OpenRCT2
             if (centreLoc.has_value())
             {
                 window->savedViewPos = *centreLoc;
-                ViewportMove(*centreLoc, window, window->viewport);
             }
         }
     }
@@ -1367,6 +1366,7 @@ namespace OpenRCT2
                     switch (ps->Entity->Type)
                     {
                         case EntityType::vehicle:
+                        case EntityType::steamParticle:
                         {
                             if (viewFlags & VIEWPORT_FLAG_HIDE_VEHICLES || clipped)
                             {
@@ -1391,6 +1391,7 @@ namespace OpenRCT2
                             break;
                         }
                         case EntityType::guest:
+                        case EntityType::balloon:
                             if (viewFlags & VIEWPORT_FLAG_HIDE_GUESTS)
                             {
                                 return VisibilityKind::hidden;
