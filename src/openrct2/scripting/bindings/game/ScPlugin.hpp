@@ -36,19 +36,19 @@ namespace OpenRCT2::Scripting
         duk_context* getContext()
         {
             // Get the context from the script engine
-            OpenRCT2::Scripting::ScriptEngine& scriptEngine = GetContext()->GetScriptEngine();
+            ScriptEngine& scriptEngine = GetContext()->GetScriptEngine();
             return scriptEngine.GetContext();
         }
 
-        const std::vector<std::shared_ptr<OpenRCT2::Scripting::Plugin>> getallPlugins()
+        const std::vector<std::shared_ptr<Plugin>> getallPlugins()
         {
             // Get all of the plugins from the script engine
-            OpenRCT2::Scripting::ScriptEngine& scriptEngine = GetContext()->GetScriptEngine();
+            ScriptEngine& scriptEngine = GetContext()->GetScriptEngine();
             return scriptEngine.GetPlugins();
         }
 
         const std::vector<DukValue> formatMetadata(
-            duk_context* ctx, const std::vector<std::shared_ptr<OpenRCT2::Scripting::Plugin>>& allPlugins)
+            duk_context* ctx, const std::vector<std::shared_ptr<Plugin>>& allPlugins)
         {
             std::vector<DukValue> formattedMetadata;
             duk_idx_t dukIdx = DUK_INVALID_INDEX;
@@ -56,8 +56,8 @@ namespace OpenRCT2::Scripting
             for (const auto& pluginPtr : allPlugins)
             {
                 // Pull out metadata
-                OpenRCT2::Scripting::Plugin& plugin = *pluginPtr;
-                OpenRCT2::Scripting::PluginMetadata metadata = plugin.GetMetadata();
+                Plugin& plugin = *pluginPtr;
+                PluginMetadata metadata = plugin.GetMetadata();
                 // Create object using Duk stack
                 dukIdx = duk_push_object(ctx);
                 // Name and Version

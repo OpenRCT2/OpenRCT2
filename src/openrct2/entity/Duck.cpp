@@ -325,7 +325,7 @@ void Duck::Create(const CoordsXY& pos)
     }
     duck->Orientation = direction << 3;
     duck->MoveTo({ targetPos.x, targetPos.y, 496 });
-    duck->state = Duck::DuckState::FlyToWater;
+    duck->state = DuckState::FlyToWater;
     duck->frame = 0;
 }
 
@@ -353,7 +353,7 @@ void Duck::Update()
 
 void Duck::Press()
 {
-    OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::quack, { x, y, z });
+    OpenRCT2::Audio::Play3D(Audio::SoundId::quack, { x, y, z });
 }
 
 void Duck::RemoveAll()

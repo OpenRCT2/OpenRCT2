@@ -141,7 +141,7 @@ void JumpingFountain::StartAnimation(const JumpingFountainType newType, const Co
 }
 
 void JumpingFountain::Create(
-    const JumpingFountainType newType, const CoordsXYZ& newLoc, const int32_t direction, const OpenRCT2::FountainFlags newFlags,
+    const JumpingFountainType newType, const CoordsXYZ& newLoc, const int32_t direction, const FountainFlags newFlags,
     const int32_t iteration)
 {
     auto* jumpingFountain = getGameState().entities.CreateEntity<JumpingFountain>();
@@ -356,14 +356,14 @@ void JumpingFountain::Split(const CoordsXYZ& newLoc, int32_t availableDirections
             {
                 auto copiedFlags = fountainFlags;
                 copiedFlags.unset(FountainFlag::direction);
-                JumpingFountain::Create(newType, newLoc, direction >> 1, copiedFlags, Iteration + 1);
+                Create(newType, newLoc, direction >> 1, copiedFlags, Iteration + 1);
             }
             direction++;
             if (availableDirections & (1 << direction))
             {
                 auto copiedFlags = fountainFlags;
                 copiedFlags.set(FountainFlag::direction);
-                JumpingFountain::Create(newType, newLoc, direction >> 1, copiedFlags, Iteration + 1);
+                Create(newType, newLoc, direction >> 1, copiedFlags, Iteration + 1);
             }
         }
     }
@@ -388,7 +388,7 @@ void JumpingFountain::CreateNext(const CoordsXYZ& newLoc, int32_t direction) con
     const auto newType = GetType();
     auto newFlags = fountainFlags;
     newFlags.set(FountainFlag::direction, !!(direction & 1));
-    JumpingFountain::Create(newType, newLoc, direction >> 1, newFlags, Iteration);
+    Create(newType, newLoc, direction >> 1, newFlags, Iteration);
 }
 
 void JumpingFountain::Serialise(DataSerialiser& stream)

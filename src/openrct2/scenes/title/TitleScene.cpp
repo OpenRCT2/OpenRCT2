@@ -334,7 +334,7 @@ bool TitleScene::TryLoadSequence(bool loadPreview)
 
 void TitleCreateWindows()
 {
-    auto* context = OpenRCT2::GetContext();
+    auto* context = GetContext();
     auto* titleScene = static_cast<TitleScene*>(context->GetTitleScene());
     if (titleScene != nullptr)
     {
@@ -344,7 +344,7 @@ void TitleCreateWindows()
 
 void* TitleGetSequencePlayer()
 {
-    auto* context = OpenRCT2::GetContext();
+    auto* context = GetContext();
     auto* titleScene = static_cast<TitleScene*>(context->GetTitleScene());
     if (titleScene != nullptr)
     {
@@ -355,7 +355,7 @@ void* TitleGetSequencePlayer()
 
 void TitleSequenceChangePreset(size_t preset)
 {
-    auto* context = OpenRCT2::GetContext();
+    auto* context = GetContext();
     auto* titleScene = static_cast<TitleScene*>(context->GetTitleScene());
     if (titleScene != nullptr)
     {
@@ -370,7 +370,7 @@ size_t TitleGetConfigSequence()
 
 size_t TitleGetCurrentSequence()
 {
-    auto* context = OpenRCT2::GetContext();
+    auto* context = GetContext();
     auto* titleScene = static_cast<TitleScene*>(context->GetTitleScene());
     if (titleScene != nullptr)
     {
@@ -381,7 +381,7 @@ size_t TitleGetCurrentSequence()
 
 bool TitlePreviewSequence(size_t value)
 {
-    auto* context = OpenRCT2::GetContext();
+    auto* context = GetContext();
     auto* titleScene = static_cast<TitleScene*>(context->GetTitleScene());
     if (titleScene != nullptr)
     {
@@ -392,7 +392,7 @@ bool TitlePreviewSequence(size_t value)
 
 void TitleStopPreviewingSequence()
 {
-    auto* context = OpenRCT2::GetContext();
+    auto* context = GetContext();
     auto* titleScene = static_cast<TitleScene*>(context->GetTitleScene());
     if (titleScene != nullptr)
     {
@@ -402,7 +402,7 @@ void TitleStopPreviewingSequence()
 
 bool TitleIsPreviewingSequence()
 {
-    auto* context = OpenRCT2::GetContext();
+    auto* context = GetContext();
     auto* titleScene = static_cast<TitleScene*>(context->GetTitleScene());
     if (titleScene != nullptr)
     {
