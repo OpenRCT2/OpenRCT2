@@ -1878,9 +1878,9 @@ static void GuestPickRideToGoOn(Guest& guest)
     }
 }
 
-static BitSet<Limits::kMaxRidesInPark> GuestFindRidesToGoOn(Guest& guest)
+static OpenRCT2::BitSet<Limits::kMaxRidesInPark> GuestFindRidesToGoOn(Guest& guest)
 {
-    BitSet<Limits::kMaxRidesInPark> rideConsideration;
+    OpenRCT2::BitSet<Limits::kMaxRidesInPark> rideConsideration;
 
     // FIX  Originally checked for a toy, likely a mistake and should be a map,
     //      but then again this seems to only allow the peep to go on
@@ -3191,7 +3191,7 @@ static void PeepHeadForNearestRide(Guest& guest, bool considerOnlyCloseRides, T 
         }
     }
 
-    BitSet<Limits::kMaxRidesInPark> rideConsideration;
+    OpenRCT2::BitSet<Limits::kMaxRidesInPark> rideConsideration;
     if (!considerOnlyCloseRides && (guest.HasItem(ShopItem::map)))
     {
         // Consider all rides in the park
