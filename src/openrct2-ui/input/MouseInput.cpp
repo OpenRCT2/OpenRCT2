@@ -229,7 +229,7 @@ namespace OpenRCT2
 
         widgetScrollUpdateThumbs(*w, widgetIndex);
 
-        auto* windowMgr = Ui::GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         windowMgr->InvalidateByNumber(w->classification, w->number);
 
         ScreenCoordsXY fixedCursorPosition = {
@@ -710,7 +710,7 @@ namespace OpenRCT2
         }
         widgetScrollUpdateThumbs(w, widgetIndex);
 
-        auto* windowMgr = Ui::GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         windowMgr->InvalidateByNumber(w.classification, w.number);
     }
 
@@ -1124,7 +1124,7 @@ namespace OpenRCT2
             case WidgetType::custom:
                 if (!widgetIsDisabled(*w, widgetIndex))
                 {
-                    OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::click1, 0, w->windowPos.x + widget.midX());
+                    OpenRCT2::Audio::Play(Audio::SoundId::click1, 0, w->windowPos.x + widget.midX());
 
                     // Set new cursor down widget
                     gPressedWidget.windowClassification = windowClass;
@@ -1419,7 +1419,7 @@ namespace OpenRCT2
 
                 {
                     int32_t mid_point_x = widget->midX() + w->windowPos.x;
-                    OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::click2, 0, mid_point_x);
+                    OpenRCT2::Audio::Play(Audio::SoundId::click2, 0, mid_point_x);
                 }
                 if (cursor_w_class != w->classification || cursor_w_number != w->number || widgetIndex != cursor_widgetIndex)
                     break;

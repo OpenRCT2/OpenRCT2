@@ -354,7 +354,7 @@ void InputManager::process(const InputEvent& e)
             {
                 if (e.state == InputEventState::release)
                 {
-                    OpenRCT2::Ui::Windows::WindowTextInputKey(w, e.button);
+                    Windows::WindowTextInputKey(w, e.button);
                 }
                 return;
             }
@@ -365,7 +365,7 @@ void InputManager::process(const InputEvent& e)
             {
                 if (e.state == InputEventState::release)
                 {
-                    OpenRCT2::Ui::Windows::WindowLoadSaveOverwritePromptInputKey(w, e.button);
+                    Windows::WindowLoadSaveOverwritePromptInputKey(w, e.button);
                 }
                 return;
             }
@@ -376,12 +376,12 @@ void InputManager::process(const InputEvent& e)
             {
                 if (e.state == InputEventState::release)
                 {
-                    OpenRCT2::Ui::Windows::WindowLoadSaveInputKey(w, e.button);
+                    Windows::WindowLoadSaveInputKey(w, e.button);
                 }
                 return;
             }
 
-            if (OpenRCT2::Ui::Windows::IsUsingWidgetTextBox())
+            if (Windows::IsUsingWidgetTextBox())
             {
                 return;
             }
@@ -572,7 +572,7 @@ bool InputManager::getState(const ShortcutInput& shortcut) const
 
 bool InputManager::hasTextInputFocus() const
 {
-    if (OpenRCT2::Ui::Windows::IsUsingWidgetTextBox() || gChatOpen)
+    if (Windows::IsUsingWidgetTextBox() || gChatOpen)
         return true;
 
     auto* windowMgr = GetWindowManager();

@@ -39,7 +39,7 @@ namespace OpenRCT2::TrackMetaData
         TrackCurve trackCurve;
         TrackPitch slopeEnd;
         TrackRoll rollEnd;
-        OpenRCT2::TrackElemType trackElement;
+        TrackElemType trackElement;
     };
 
     enum class SpinFunction : uint8_t
@@ -69,13 +69,13 @@ namespace OpenRCT2::TrackMetaData
         uint8_t bottom;
     };
 
-    constexpr DodgemsTrackSize GetDodgemsTrackSize(OpenRCT2::TrackElemType type)
+    constexpr DodgemsTrackSize GetDodgemsTrackSize(TrackElemType type)
     {
-        if (type == OpenRCT2::TrackElemType::flatTrack2x2)
+        if (type == TrackElemType::flatTrack2x2)
             return { 4, 4, 59, 59 };
-        if (type == OpenRCT2::TrackElemType::flatTrack4x4)
+        if (type == TrackElemType::flatTrack4x4)
             return { 4, 4, 123, 123 };
-        if (type == OpenRCT2::TrackElemType::flatTrack2x4)
+        if (type == TrackElemType::flatTrack2x4)
             return { 4, 4, 59, 123 };
         return { 0, 0, 0, 0 };
     }
@@ -124,11 +124,11 @@ namespace OpenRCT2::TrackMetaData
         // Piece the ride construction window automatically selects next
         TrackCurveChain curveChain;
         // Track element to build when building "covered"/"splashdown" track
-        OpenRCT2::TrackElemType alternativeType;
+        TrackElemType alternativeType;
         // Price Modifier should be used as in the following calculation:
         // (RideTrackPrice * TED::PriceModifier) / 65536
         uint32_t priceModifier;
-        OpenRCT2::TrackElemType mirrorElement;
+        TrackElemType mirrorElement;
         TrackFlags flags;
 
         uint8_t numSequences{};
@@ -141,5 +141,5 @@ namespace OpenRCT2::TrackMetaData
         TrackComputeFunction lateralFactor;
     };
 
-    const TrackElementDescriptor& GetTrackElementDescriptor(OpenRCT2::TrackElemType type);
+    const TrackElementDescriptor& GetTrackElementDescriptor(TrackElemType type);
 } // namespace OpenRCT2::TrackMetaData
