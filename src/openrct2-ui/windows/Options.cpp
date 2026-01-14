@@ -953,16 +953,16 @@ namespace OpenRCT2::Ui::Windows
                     switch (dropdownIndex)
                     {
                         case 0: // vanilla
-                            config.uncapFPS = 0;
-                            config.useVSync = 0;
+                            config.uncapFPS = false;
+                            config.useVSync = false;
                             break;
                         case 1: // vsync
-                            config.uncapFPS = 1;
-                            config.useVSync = 1;
+                            config.uncapFPS = true;
+                            config.useVSync = true;
                             break;
                         case 2: // uncapped
-                            config.uncapFPS = 1;
-                            config.useVSync = 0;
+                            config.uncapFPS = true;
+                            config.useVSync = false;
                             break;
                     }
 
@@ -1275,11 +1275,11 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WIDX_HEIGHT_LABELS_DROPDOWN:
                     // reset flag and set it to 1 if height as units is selected
-                    Config::Get().general.showHeightAsUnits = 0;
+                    Config::Get().general.showHeightAsUnits = false;
 
                     if (dropdownIndex == 0)
                     {
-                        Config::Get().general.showHeightAsUnits = 1;
+                        Config::Get().general.showHeightAsUnits = true;
                     }
                     Config::Save();
                     UpdateHeightMarkers();
