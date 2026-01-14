@@ -944,7 +944,7 @@ bool Staff::DoPathFinding()
 
         default:
             assert(false);
-            return 0;
+            return false;
     }
 }
 

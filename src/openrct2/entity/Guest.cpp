@@ -6270,7 +6270,7 @@ bool Guest::UpdateWalkingFindBin()
         chosen_edge = (chosen_edge + 1) & 0x3;
         bin_quantities = Numerics::ror8(bin_quantities, 2);
         if ((free_edge - 1) == 0)
-            return 0;
+            return false;
     }
 
     peep->Var37 = chosen_edge;
