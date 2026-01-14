@@ -86,10 +86,6 @@
 #include <string>
 
 using namespace OpenRCT2;
-using namespace OpenRCT2::Drawing;
-using namespace OpenRCT2::Localisation;
-using namespace OpenRCT2::Paint;
-using namespace OpenRCT2::Scripting;
 using namespace OpenRCT2::Ui;
 
 using OpenRCT2::Audio::IAudioContext;
@@ -112,7 +108,7 @@ namespace OpenRCT2
         std::unique_ptr<IUiContext> const _uiContext;
 
         // Services
-        std::unique_ptr<LocalisationService> _localisationService;
+        std::unique_ptr<Localisation::LocalisationService> _localisationService;
         std::unique_ptr<IObjectRepository> _objectRepository;
         std::unique_ptr<IObjectManager> _objectManager;
         std::unique_ptr<ITrackDesignRepository> _trackDesignRepository;
@@ -125,7 +121,7 @@ namespace OpenRCT2
 #endif
         StdInOutConsole _stdInOutConsole;
 #ifdef ENABLE_SCRIPTING
-        ScriptEngine _scriptEngine;
+        Scripting::ScriptEngine _scriptEngine;
 #endif
 #ifndef DISABLE_NETWORK
         Network::NetworkBase _network;
@@ -139,8 +135,8 @@ namespace OpenRCT2
         IScene* _activeScene = nullptr;
 
         DrawingEngine _drawingEngineType = DrawingEngine::SoftwareWithHardwareDisplay;
-        std::unique_ptr<IDrawingEngine> _drawingEngine;
-        std::unique_ptr<Painter> _painter;
+        std::unique_ptr<Drawing::IDrawingEngine> _drawingEngine;
+        std::unique_ptr<Paint::Painter> _painter;
 
         bool _initialised = false;
 
@@ -177,7 +173,7 @@ namespace OpenRCT2
             : _env(std::move(env))
             , _audioContext(std::move(audioContext))
             , _uiContext(std::move(uiContext))
-            , _localisationService(std::make_unique<LocalisationService>(*_env))
+            , _localisationService(std::make_unique<Localisation::LocalisationService>(*_env))
             , _replayManager(CreateReplayManager())
             , _gameStateSnapshots(CreateGameStateSnapshots())
 #ifdef ENABLE_SCRIPTING
@@ -186,7 +182,7 @@ namespace OpenRCT2
 #ifndef DISABLE_NETWORK
             , _network(*this)
 #endif
-            , _painter(std::make_unique<Painter>(*_uiContext))
+            , _painter(std::make_unique<Paint::Painter>(*_uiContext))
         {
             // Can't have more than one context currently.
             Guard::Assert(Instance == nullptr);
@@ -210,7 +206,7 @@ namespace OpenRCT2
             _network.Close();
 #endif
 
-            auto* windowMgr = Ui::GetWindowManager();
+            auto* windowMgr = GetWindowManager();
             windowMgr->CloseAll();
 
             // Unload objects after closing all windows, this is to overcome windows like
@@ -296,7 +292,7 @@ namespace OpenRCT2
             return _drawingEngineType;
         }
 
-        IDrawingEngine* GetDrawingEngine() override
+        Drawing::IDrawingEngine* GetDrawingEngine() override
         {
             return _drawingEngine.get();
         }
@@ -637,7 +633,7 @@ namespace OpenRCT2
         {
             assert(_drawingEngine == nullptr);
 
-            const auto initializeEngine = [&](DrawingEngine engine) -> std::unique_ptr<IDrawingEngine> {
+            const auto initializeEngine = [&](DrawingEngine engine) -> std::unique_ptr<Drawing::IDrawingEngine> {
                 try
                 {
                     auto drawingEngineFactory = _uiContext->GetDrawingEngineFactory();
@@ -732,7 +728,7 @@ namespace OpenRCT2
             if (!gOpenRCT2Headless && isMainThread)
             {
                 _uiContext->ProcessMessages();
-                auto* windowMgr = Ui::GetWindowManager();
+                auto* windowMgr = GetWindowManager();
                 windowMgr->InvalidateByClass(WindowClass::progressWindow);
                 Draw();
             }
@@ -1742,55 +1738,55 @@ namespace OpenRCT2
 
     WindowBase* ContextOpenWindow(WindowClass wc)
     {
-        auto windowManager = Ui::GetWindowManager();
+        auto windowManager = GetWindowManager();
         return windowManager->OpenWindow(wc);
     }
 
     WindowBase* ContextOpenWindowView(WindowView view)
     {
-        auto windowManager = Ui::GetWindowManager();
+        auto windowManager = GetWindowManager();
         return windowManager->openView(view);
     }
 
     WindowBase* ContextOpenDetailWindow(WindowDetail type, int32_t id)
     {
-        auto windowManager = Ui::GetWindowManager();
+        auto windowManager = GetWindowManager();
         return windowManager->openDetails(type, id);
     }
 
     WindowBase* ContextOpenIntent(Intent* intent)
     {
-        auto windowManager = Ui::GetWindowManager();
+        auto windowManager = GetWindowManager();
         return windowManager->OpenIntent(intent);
     }
 
     void ContextBroadcastIntent(Intent* intent)
     {
-        auto windowManager = Ui::GetWindowManager();
+        auto windowManager = GetWindowManager();
         windowManager->BroadcastIntent(*intent);
     }
 
     void ContextForceCloseWindowByClass(WindowClass windowClass)
     {
-        auto windowManager = Ui::GetWindowManager();
+        auto windowManager = GetWindowManager();
         windowManager->ForceClose(windowClass);
     }
 
     WindowBase* ContextShowError(StringId title, StringId message, const Formatter& args, const bool autoClose /* = false */)
     {
-        auto windowManager = Ui::GetWindowManager();
+        auto windowManager = GetWindowManager();
         return windowManager->ShowError(title, message, args, autoClose);
     }
 
     void ContextHandleInput()
     {
-        auto windowManager = Ui::GetWindowManager();
+        auto windowManager = GetWindowManager();
         windowManager->HandleInput();
     }
 
     void ContextInputHandleKeyboard(bool isTitle)
     {
-        auto windowManager = Ui::GetWindowManager();
+        auto windowManager = GetWindowManager();
         windowManager->HandleKeyboard(isTitle);
     }
 
@@ -1799,7 +1795,7 @@ namespace OpenRCT2
         GetContext()->Quit();
     }
 
-    u8string ContextOpenCommonFileDialog(Ui::FileDialogDesc& desc)
+    u8string ContextOpenCommonFileDialog(FileDialogDesc& desc)
     {
         try
         {
