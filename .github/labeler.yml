@@ -46,6 +46,7 @@
 'plug-in':
   - changed-files:
     - any-glob-to-any-file:
+      - 'distribution/openrct2.d.ts'
       - 'src/openrct2/scripting/*'
       - 'src/openrct2-ui/scripting/*'
 
