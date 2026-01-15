@@ -484,8 +484,8 @@ static bool MetalSupportsPaintSetupCommon(
 
     // Draw extra support segments above height with a zero height bounding box
     currentHeight = heightExtra < 0 ? height - 1 : height;
-    const auto extraSupportBeamImageIndex = typeB ? kSupportBasesAndBeams[supportType].beamUncapped
-                                                  : kSupportBasesAndBeams[supportType].beamCapped;
+    const auto extraSupportBeamImageIndex = heightExtra >= 0 ? kSupportBasesAndBeams[supportType].beamUncapped
+                                                             : kSupportBasesAndBeams[supportType].beamCapped;
     const auto totalHeightExtra = heightExtra < 0 ? currentHeight + (-heightExtra) : currentHeight + heightExtra;
     const CoordsXYZ boundBoxOffset = CoordsXYZ(kMetalSupportBoundBoxOffsets[originalSegment], currentHeight);
     while (true)
