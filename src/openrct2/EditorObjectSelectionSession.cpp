@@ -137,7 +137,7 @@ static void SetupTrackDesignerObjects()
  */
 void SetupInUseSelectionFlags()
 {
-    auto& objectMgr = OpenRCT2::GetContext()->GetObjectManager();
+    auto& objectMgr = GetContext()->GetObjectManager();
 
     for (auto objectType : getTransientObjectTypes())
     {
@@ -370,7 +370,7 @@ void EditorObjectFlagsClear()
  */
 static void RemoveSelectedObjectsFromResearch(const ObjectEntryDescriptor& descriptor)
 {
-    auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
+    auto& objManager = GetContext()->GetObjectManager();
     auto obj = objManager.GetLoadedObject(descriptor);
     if (obj != nullptr)
     {
@@ -471,7 +471,7 @@ static void selectTrackDesignerObjects()
  */
 static void ReplaceSelectedWaterPalette(const ObjectRepositoryItem* item)
 {
-    auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
+    auto& objectManager = GetContext()->GetObjectManager();
     auto* oldPalette = objectManager.GetLoadedObject<WaterObject>(0);
 
     if (oldPalette != nullptr)
@@ -522,7 +522,7 @@ void FinishObjectSelection()
         SetEveryRideTypeInvented();
         SetEveryRideEntryInvented();
 
-        auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
+        auto& objManager = GetContext()->GetObjectManager();
         gameState.lastEntranceStyle = objManager.GetLoadedObjectEntryIndex("rct2.station.plain");
         if (gameState.lastEntranceStyle == kObjectEntryIndexNull)
         {
@@ -613,7 +613,7 @@ ResultWithMessage WindowEditorObjectSelectionSelectObject(
         return { true };
     }
 
-    if (item->Flags & ObjectItemFlags::IsCompatibilityObject)
+    if (item->Flags & IsCompatibilityObject)
     {
         return ObjectSelectionError(isMasterObject, STR_OBJECT_SELECTION_ERR_COMPAT_OBJECT);
     }
@@ -671,7 +671,7 @@ ResultWithMessage WindowEditorObjectSelectionSelectObject(
 ResultWithMessage WindowEditorObjectSelectionSelectObject(
     uint8_t isMasterObject, EditorInputFlags flags, const ObjectEntryDescriptor& descriptor)
 {
-    auto& objectRepository = OpenRCT2::GetContext()->GetObjectRepository();
+    auto& objectRepository = GetContext()->GetObjectRepository();
     const auto* item = objectRepository.FindObject(descriptor);
     return WindowEditorObjectSelectionSelectObject(isMasterObject, flags, item);
 }

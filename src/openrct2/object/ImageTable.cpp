@@ -430,7 +430,7 @@ namespace OpenRCT2
         }
     }
 
-    void ImageTable::Read(IReadObjectContext* context, OpenRCT2::IStream* stream)
+    void ImageTable::Read(IReadObjectContext* context, IStream* stream)
     {
         if (gOpenRCT2NoGraphics)
         {

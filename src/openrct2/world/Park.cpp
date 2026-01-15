@@ -304,7 +304,7 @@ namespace OpenRCT2::Park
         gameState.researchFundingLevel = RESEARCH_FUNDING_NORMAL;
 
         gameState.scenarioOptions.guestInitialCash = 50.00_GBP;
-        gameState.scenarioOptions.guestInitialHappiness = Park::CalculateGuestInitialHappiness(50);
+        gameState.scenarioOptions.guestInitialHappiness = CalculateGuestInitialHappiness(50);
         gameState.scenarioOptions.guestInitialHunger = 200;
         gameState.scenarioOptions.guestInitialThirst = 200;
         gameState.scenarioOptions.objective.Type = Scenario::ObjectiveType::guestsBy;
@@ -353,7 +353,7 @@ namespace OpenRCT2::Park
         // Every ~102 seconds
         if (currentTicks % 4096 == 0)
         {
-            Park::UpdateSize(park);
+            UpdateSize(park);
         }
 
         generateGuests(park, gameState);

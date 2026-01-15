@@ -29,7 +29,7 @@ namespace OpenRCT2::RCT2
         T6Exporter(const TrackDesign& trackDesign);
 
         bool SaveTrack(const utf8* path);
-        bool SaveTrack(OpenRCT2::IStream* stream);
+        bool SaveTrack(IStream* stream);
 
     private:
         const TrackDesign& _trackDesign;

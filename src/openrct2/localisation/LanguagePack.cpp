@@ -45,7 +45,7 @@ namespace OpenRCT2
 
             try
             {
-                OpenRCT2::FileStream fs = OpenRCT2::FileStream(path, OpenRCT2::FileMode::open);
+                FileStream fs = FileStream(path, FileMode::open);
 
                 size_t fileLength = static_cast<size_t>(fs.GetLength());
                 if (fileLength > kMaxLanguageSize)
@@ -300,7 +300,7 @@ namespace OpenRCT2::LanguagePackFactory
 
     std::unique_ptr<ILanguagePack> FromLanguageId(uint16_t id)
     {
-        auto path = OpenRCT2::GetContext()->GetLocalisationService().GetLanguagePath(id);
+        auto path = GetContext()->GetLocalisationService().GetLanguagePath(id);
         return LanguagePack::FromFile(id, path.c_str());
     }
 

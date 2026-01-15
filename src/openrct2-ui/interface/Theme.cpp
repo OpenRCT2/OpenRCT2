@@ -641,9 +641,9 @@ namespace OpenRCT2::Ui
 
         static bool LoadThemeByConfigName(const utf8* name)
         {
-            for (size_t i = 0; i < ThemeManager::AvailableThemes.size(); i++)
+            for (size_t i = 0; i < AvailableThemes.size(); i++)
             {
-                const auto& theme = ThemeManager::AvailableThemes[i];
+                const auto& theme = AvailableThemes[i];
                 if (String::equals(name, theme.Name))
                 {
                     if (theme.Path.empty())
@@ -663,7 +663,7 @@ namespace OpenRCT2::Ui
 
         static void Initialise()
         {
-            ThemeManager::GetAvailableThemes(&ThemeManager::AvailableThemes);
+            GetAvailableThemes(&AvailableThemes);
             LoadTheme(const_cast<UITheme*>(&kPredefinedThemeRCT2));
             ActiveAvailableThemeIndex = 1;
 

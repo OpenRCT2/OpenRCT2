@@ -116,7 +116,7 @@ namespace OpenRCT2::Audio
 
     void PopulateDevices()
     {
-        auto& audioContext = OpenRCT2::GetContext()->GetAudioContext();
+        auto& audioContext = GetContext()->GetAudioContext();
         std::vector<std::string> devices = audioContext.GetOutputDevices();
 
         // Replace blanks with localised unknown string

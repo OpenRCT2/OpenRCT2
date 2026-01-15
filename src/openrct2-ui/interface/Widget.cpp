@@ -497,7 +497,7 @@ namespace OpenRCT2::Ui
                 colour.flags.set(ColourFlag::inset, true);
 
             utf8 buffer[512] = { 0 };
-            OpenRCT2::FormatStringLegacy(buffer, sizeof(buffer), stringId, rawFt.Data());
+            FormatStringLegacy(buffer, sizeof(buffer), stringId, rawFt.Data());
 
             auto ft = Formatter();
             ft.Add<utf8*>(buffer);
@@ -1158,7 +1158,7 @@ namespace OpenRCT2::Ui
         ScreenCoordsXY topLeft{ w.windowPos + ScreenCoordsXY{ widget.left, widget.top } };
         ScreenCoordsXY bottomRight{ w.windowPos + ScreenCoordsXY{ widget.right, widget.bottom } };
 
-        auto& tbIdent = OpenRCT2::Ui::Windows::GetCurrentTextBox();
+        auto& tbIdent = Windows::GetCurrentTextBox();
         bool active = w.classification == tbIdent.window.classification && w.number == tbIdent.window.number
             && widgetIndex == tbIdent.widgetIndex;
 
@@ -1170,7 +1170,7 @@ namespace OpenRCT2::Ui
         // Figure out where the text should be positioned vertically.
         topLeft.y = w.windowPos.y + widget.textTop();
 
-        auto* textInput = OpenRCT2::Ui::Windows::GetTextboxSession();
+        auto* textInput = Windows::GetTextboxSession();
         if (!active || textInput == nullptr)
         {
             if (widget.text != 0)
@@ -1207,7 +1207,7 @@ namespace OpenRCT2::Ui
                 4);
         }
 
-        if (OpenRCT2::Ui::Windows::TextBoxCaretIsFlashed())
+        if (Windows::TextBoxCaretIsFlashed())
         {
             auto colour = ColourMapA[w.colours[1].colour].mid_light;
             auto y = topLeft.y + 1 + widget.height() - 5;

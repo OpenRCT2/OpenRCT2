@@ -52,7 +52,7 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr ScreenSize kWindowSize = { 192, 157 };
     // clang-format off
-    
+
     static constexpr auto kCommonPlayerWidgets = makeWidgets(
         makeWindowShim(STR_STRING, kWindowSize),
         makeWidget({ 0, 43}, {192, 114}, WidgetType::resize, WindowColour::secondary),
@@ -535,7 +535,7 @@ namespace OpenRCT2::Ui::Windows
                 [windowHandle](const GameActions::GameAction* ga, const GameActions::Result* result) {
                     if (result->error == GameActions::Status::ok)
                     {
-                        auto* windowMgr = Ui::GetWindowManager();
+                        auto* windowMgr = GetWindowManager();
                         windowMgr->InvalidateByNumber(windowHandle.first, windowHandle.second);
                     }
                 });

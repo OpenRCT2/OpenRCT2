@@ -358,7 +358,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void onDraw(Drawing::RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
             switch (page)
             {
@@ -586,7 +586,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void onDrawEntrance(Drawing::RenderTarget& rt)
+        void onDrawEntrance(RenderTarget& rt)
         {
             drawWidgets(rt);
             DrawTabImages(rt);
@@ -701,7 +701,7 @@ namespace OpenRCT2::Ui::Windows
                 kGraphNumYLabels, kParkRatingHistorySize);
         }
 
-        void onDrawRating(Drawing::RenderTarget& rt)
+        void onDrawRating(RenderTarget& rt)
         {
             drawWidgets(rt);
             DrawTabImages(rt);
@@ -782,7 +782,7 @@ namespace OpenRCT2::Ui::Windows
                 kGraphNumYLabels, kGuestsInParkHistorySize);
         }
 
-        void onDrawGuests(Drawing::RenderTarget& rt)
+        void onDrawGuests(RenderTarget& rt)
         {
             drawWidgets(rt);
             DrawTabImages(rt);
@@ -883,7 +883,7 @@ namespace OpenRCT2::Ui::Windows
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_7);
         }
 
-        void onDrawPrice(Drawing::RenderTarget& rt)
+        void onDrawPrice(RenderTarget& rt)
         {
             drawWidgets(rt);
             DrawTabImages(rt);
@@ -943,7 +943,7 @@ namespace OpenRCT2::Ui::Windows
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_7);
         }
 
-        void onDrawStats(Drawing::RenderTarget& rt)
+        void onDrawStats(RenderTarget& rt)
         {
             drawWidgets(rt);
             DrawTabImages(rt);
@@ -1069,7 +1069,7 @@ namespace OpenRCT2::Ui::Windows
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_7);
         }
 
-        void onDrawObjective(Drawing::RenderTarget& rt)
+        void onDrawObjective(RenderTarget& rt)
         {
             auto& gameState = getGameState();
             drawWidgets(rt);
@@ -1135,7 +1135,7 @@ namespace OpenRCT2::Ui::Windows
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_7);
         }
 
-        void onDrawAwards(Drawing::RenderTarget& rt)
+        void onDrawAwards(RenderTarget& rt)
         {
             drawWidgets(rt);
             DrawTabImages(rt);
@@ -1209,7 +1209,7 @@ namespace OpenRCT2::Ui::Windows
             pressedWidgets |= 1LL << (WIDX_TAB_1 + page);
         }
 
-        void DrawTabImages(Drawing::RenderTarget& rt)
+        void DrawTabImages(RenderTarget& rt)
         {
             // Entrance tab
             if (!widgetIsDisabled(*this, WIDX_TAB_1))

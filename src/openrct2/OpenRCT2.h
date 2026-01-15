@@ -58,7 +58,7 @@ namespace OpenRCT2::Network
 
 namespace OpenRCT2
 {
-    extern OpenRCT2::Network::Mode gNetworkStart;
+    extern Network::Mode gNetworkStart;
     extern std::string gNetworkStartHost;
     extern int32_t gNetworkStartPort;
     extern std::string gNetworkStartAddress;

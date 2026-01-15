@@ -546,7 +546,7 @@ public:
                 break;
 
             case INTENT_ACTION_UPDATE_VEHICLE_SOUNDS:
-                OpenRCT2::Audio::UpdateVehicleSounds();
+                Audio::UpdateVehicleSounds();
                 break;
 
             case INTENT_ACTION_SET_MAP_TOOLTIP:
@@ -907,7 +907,7 @@ public:
         if (!flags.hasAny(WindowFlag::stickToBack, WindowFlag::stickToFront))
         {
             wp->flash();
-            OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::windowOpen, 0, pos.x + (windowSize.width / 2));
+            Audio::Play(Audio::SoundId::windowOpen, 0, pos.x + (windowSize.width / 2));
         }
 
         wp->windowPos = pos;
@@ -1400,7 +1400,7 @@ public:
     }
 };
 
-std::unique_ptr<IWindowManager> OpenRCT2::Ui::CreateWindowManager()
+std::unique_ptr<IWindowManager> Ui::CreateWindowManager()
 {
     return std::make_unique<WindowManager>();
 }
