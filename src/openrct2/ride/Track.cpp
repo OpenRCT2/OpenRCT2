@@ -489,11 +489,10 @@ bool TrackCircuitIteratorsMatch(const TrackCircuitIterator* firstIt, const Track
 
 void TrackGetBack(const CoordsXYE& input, CoordsXYE* output)
 {
-    CoordsXYE lastTrack;
+    CoordsXYE lastTrack = input;
     TrackBeginEnd currentTrack;
     bool result;
 
-    lastTrack = input;
     do
     {
         result = TrackBlockGetPrevious(lastTrack, &currentTrack);

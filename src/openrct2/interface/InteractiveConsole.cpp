@@ -108,8 +108,7 @@ static bool InvalidArguments(bool* invalid, bool arguments);
 static int32_t ConsoleParseInt(const std::string& src, bool* valid)
 {
     utf8* end;
-    int32_t value;
-    value = static_cast<int32_t>(strtol(src.c_str(), &end, 10));
+    int32_t value = static_cast<int32_t>(strtol(src.c_str(), &end, 10));
     *valid = (*end == '\0');
     return value;
 }
@@ -117,8 +116,7 @@ static int32_t ConsoleParseInt(const std::string& src, bool* valid)
 static double ConsoleParseDouble(const std::string& src, bool* valid)
 {
     utf8* end;
-    double value;
-    value = strtod(src.c_str(), &end);
+    double value = strtod(src.c_str(), &end);
     *valid = (*end == '\0');
     return value;
 }

@@ -345,8 +345,6 @@ namespace OpenRCT2::PathFinding
     static PathSearchResult FootpathElementNextInDirection(
         TileCoordsXYZ loc, PathElement* pathElement, Direction chosenDirection)
     {
-        TileElement* nextTileElement;
-
         if (pathElement->IsSloped())
         {
             if (pathElement->GetSlopeDirection() == chosenDirection)
@@ -356,7 +354,7 @@ namespace OpenRCT2::PathFinding
         }
 
         loc += TileDirectionDelta[chosenDirection];
-        nextTileElement = MapGetFirstElementAt(loc);
+        TileElement* nextTileElement = MapGetFirstElementAt(loc);
         do
         {
             if (nextTileElement == nullptr)

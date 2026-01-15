@@ -782,15 +782,14 @@ void FootpathChainRideQueue(
     RideId rideIndex, StationIndex entranceIndex, const CoordsXY& initialFootpathPos, TileElement* const initialTileElement,
     int32_t direction)
 {
-    TileElement *lastPathElement, *lastQueuePathElement;
+    TileElement* lastPathElement = nullptr;
+    TileElement* lastQueuePathElement = nullptr;
     auto tileElement = initialTileElement;
     auto curQueuePos = initialFootpathPos;
     auto lastPath = curQueuePos;
     int32_t baseZ = tileElement->GetBaseZ();
     int32_t lastPathDirection = direction;
 
-    lastPathElement = nullptr;
-    lastQueuePathElement = nullptr;
     for (;;)
     {
         if (tileElement->GetType() == TileElementType::Path)

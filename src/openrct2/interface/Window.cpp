@@ -227,9 +227,7 @@ static constexpr float kWindowScrollLocations[][2] = {
 
     int32_t WindowGetScrollDataIndex(const WindowBase& w, WidgetIndex widget_index)
     {
-        int32_t i, result;
-
-        result = 0;
+        int32_t i, result = 0;
         for (i = 0; i < widget_index; i++)
         {
             const auto& widget = w.widgets[i];

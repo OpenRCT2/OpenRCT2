@@ -4141,13 +4141,11 @@ void Vehicle::UpdateTopSpinOperating()
  */
 void Vehicle::UpdateShowingFilm()
 {
-    int32_t currentTime, totalTime;
-
     if (_vehicleBreakdown == 0)
         return;
 
-    totalTime = kRideFilmLength[sub_state];
-    currentTime = current_time + 1;
+    int32_t totalTime = kRideFilmLength[sub_state];
+    int32_t currentTime = current_time + 1;
     if (currentTime <= totalTime)
     {
         current_time = currentTime;
