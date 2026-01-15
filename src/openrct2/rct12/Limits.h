@@ -40,9 +40,9 @@ namespace OpenRCT2::RCT12::Limits
 
     constexpr uint16_t kRideMeasurementMaxItems = 4800;
 
-    constexpr uint16_t const kMaxInversions = 31;
-    constexpr uint16_t const kMaxGolfHoles = 31;
-    constexpr uint16_t const kMaxHelices = 31;
+    constexpr uint16_t kMaxInversions = 31;
+    constexpr uint16_t kMaxGolfHoles = 31;
+    constexpr uint16_t kMaxHelices = 31;
     constexpr uint8_t kMaxElementHeight = 255;
     constexpr uint8_t kCustomerHistorySize = 10;
 

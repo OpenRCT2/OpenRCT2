@@ -67,7 +67,7 @@ namespace OpenRCT2::Scripting
         std::string_view GetPath() const
         {
             return _path;
-        };
+        }
 
         bool HasPath() const
         {
