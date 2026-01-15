@@ -5643,7 +5643,7 @@ void Guest::UpdateWalking()
 
     uint8_t chosen_edge = ScenarioRand() & 0x3;
 
-    for (; !(edges & (1 << chosen_edge));)
+    while (!(edges & (1 << chosen_edge)))
         chosen_edge = (chosen_edge + 1) & 3;
 
     RideId ride_to_view;
@@ -5671,7 +5671,7 @@ void Guest::UpdateWalking()
 
     uint8_t chosen_position = ScenarioRand() & 0x3;
 
-    for (; !(positions_free & (1 << chosen_position));)
+    while (!(positions_free & (1 << chosen_position)))
         chosen_position = (chosen_position + 1) & 3;
 
     CurrentRide = ride_to_view;
@@ -6161,7 +6161,7 @@ bool Guest::UpdateWalkingFindBench()
         return false;
     uint8_t chosen_edge = ScenarioRand() & 0x3;
 
-    for (; !(edges & (1 << chosen_edge));)
+    while (!(edges & (1 << chosen_edge)))
         chosen_edge = (chosen_edge + 1) & 0x3;
 
     uint8_t free_edge = 3;
