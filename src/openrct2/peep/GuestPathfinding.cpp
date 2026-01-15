@@ -2077,7 +2077,6 @@ namespace OpenRCT2::PathFinding
             {
                 bestScore = score;
                 closestStationNum = stationIndex;
-                continue;
             }
         }
 

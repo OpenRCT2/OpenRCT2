@@ -359,8 +359,6 @@ namespace OpenRCT2::CommandLine
                 Console::Error::WriteLine("All options must be passed at the end of the command line.");
                 return false;
             }
-
-            continue;
         }
 
         return true;

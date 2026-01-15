@@ -1942,7 +1942,6 @@ static bool ride_station_can_depart_synchronised(const Ride& ride, StationIndex 
                     /* Sync exception - train is not arriving at the station
                      * and there are less than half the trains for the ride
                      * travelling. */
-                    continue;
                 }
             }
         }
@@ -8212,7 +8211,6 @@ void Vehicle::UpdateTrackMotionPreUpdate(
         }
         car.acceleration = Geometry::getAccelerationFromPitch(car.pitch);
         _vehicleUnkF64E10++;
-        continue;
     }
     // Loc6DBF20
     car.MoveTo(_vehicleCurPosition);

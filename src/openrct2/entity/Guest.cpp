@@ -1377,7 +1377,6 @@ void Guest::UpdateSitting()
         AnimationFrameNum = 0;
         AnimationImageIdOffset = 0;
         UpdateCurrentAnimationType();
-        return;
     }
 }
 
@@ -5066,7 +5065,6 @@ void Guest::UpdateRideMazePathfinding()
     if (auto loc = UpdateAction(); loc.has_value())
     {
         MoveTo({ loc.value(), z });
-        return;
     }
 }
 

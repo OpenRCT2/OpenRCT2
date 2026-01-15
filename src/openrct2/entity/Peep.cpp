@@ -860,8 +860,6 @@ void Peep::UpdateFalling()
                 saved_height = map_height;
                 saved_map = tile_element;
             } // If not a path or surface go see next element
-            else
-                continue;
         } while (!(tile_element++)->IsLastForTile());
     }
 
