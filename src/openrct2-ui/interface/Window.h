@@ -76,6 +76,7 @@ namespace OpenRCT2::Ui::Windows
     void WindowResizeByDelta(WindowBase& w, int16_t dw, int16_t dh);
     void WindowInitScrollWidgets(WindowBase& w);
     void WindowUpdateScrollWidgets(WindowBase& w);
+    void WindowResetScrollWidget(WindowBase& w, int32_t targetScrollIndex);
 
     void WindowMovePosition(WindowBase& w, const ScreenCoordsXY& screenCoords);
     void WindowSetPosition(WindowBase& w, const ScreenCoordsXY& screenCoords);

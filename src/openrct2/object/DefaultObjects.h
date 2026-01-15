@@ -29,4 +29,10 @@ namespace OpenRCT2
      * Used only by the Scenario Editor.
      */
     extern const std::array<std::string_view, 37> kDefaultScenarioObjects;
+
+    /**
+     * Used to distinguish official campaigns from user-created ones. Also determines the order of official campaigns in the
+     * Scenario UI.
+     */
+    extern const std::array<std::string_view, 12> kDefaultCampaignObjects;
 } // namespace OpenRCT2

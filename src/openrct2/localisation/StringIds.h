@@ -13,6 +13,7 @@
 
 enum : StringId
 {
+    STR_EMPTY = 0,
     STR_RIDE_NAME_DEFAULT = 1,
 
     STR_GUEST_X = 767,
@@ -1766,6 +1767,18 @@ enum : StringId
     STR_REPLAY_NOT_STARTED = 7011,
 
     STR_ACTION_PATH_DRAG_AREA = 7013,
+
+    STR_BONUS_PARKS = 7017,
+    STR_RCT_CLASSIC_GRAPHITE_GROUP = 7018,
+    STR_RCT_CLASSIC_EMERALD_GROUP = 7019,
+    STR_RCT_CLASSIC_RUBY_GROUP = 7020,
+    STR_RCT_CLASSIC_SAPPHIRE_GROUP = 7021,
+    STR_RCT_CLASSIC_AMETHYST_GROUP = 7022,
+    STR_RCT_CLASSIC_CORAL_GROUP = 7023,
+    STR_RCT_CLASSIC_IVORY_GROUP = 7024,
+    STR_RCT_CLASSIC_BRONZE_GROUP = 7025,
+    STR_RCT_CLASSIC_SILVER_GROUP = 7026,
+    STR_RCT_CLASSIC_GOLD_GROUP = 7027,
 
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings

@@ -86,6 +86,7 @@ namespace OpenRCT2
         [[nodiscard]] virtual const ObjectRepositoryItem* FindObject(std::string_view identifier) const = 0;
         [[nodiscard]] virtual const ObjectRepositoryItem* FindObject(const RCTObjectEntry* objectEntry) const = 0;
         [[nodiscard]] virtual const ObjectRepositoryItem* FindObject(const ObjectEntryDescriptor& oed) const = 0;
+        [[nodiscard]] virtual std::vector<const ObjectRepositoryItem*> GetObjectsOfType(ObjectType objectType) = 0;
 
         [[nodiscard]] virtual std::unique_ptr<Object> LoadObject(const ObjectRepositoryItem* ori) = 0;
         [[nodiscard]] virtual std::unique_ptr<Object> LoadObject(const ObjectRepositoryItem* ori, bool loadImages) = 0;

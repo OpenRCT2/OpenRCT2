@@ -33,7 +33,6 @@
 #include "../sawyer_coding/SawyerChunkWriter.h"
 #include "../sawyer_coding/SawyerCoding.h"
 #include "../scenario/ScenarioRepository.h"
-#include "Object.h"
 #include "ObjectFactory.h"
 #include "ObjectList.h"
 #include "ObjectManager.h"
@@ -88,6 +87,7 @@ namespace OpenRCT2
                   std::vector<std::string>{
                       env.GetDirectoryPath(DirBase::openrct2, DirId::objects),
                       env.GetDirectoryPath(DirBase::user, DirId::objects),
+                      env.GetDirectoryPath(DirBase::user, DirId::campaigns),
                   })
         {
         }
@@ -250,6 +250,20 @@ namespace OpenRCT2
                 return FindObject(&entry.Entry);
 
             return FindObject(entry.Identifier);
+        }
+
+        std::vector<const ObjectRepositoryItem*> GetObjectsOfType(ObjectType objectType) override
+        {
+            std::vector<const ObjectRepositoryItem*> result;
+            for (int32_t i = 0; i < static_cast<int32_t>(_items.size()); i++)
+            {
+                ObjectRepositoryItem* object = &_items.at(i);
+                if (object->Type == objectType)
+                {
+                    result.push_back(object);
+                }
+            }
+            return result;
         }
 
         std::unique_ptr<Object> LoadObject(const ObjectRepositoryItem* ori) override
