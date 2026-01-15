@@ -303,7 +303,7 @@ namespace OpenRCT2
         }
 
         bool IsCompatibilityObject() const;
-        void SetIsCompatibilityObject(const bool on);
+        void SetIsCompatibilityObject(bool on);
 
         const ImageTable& GetImageTable() const
         {

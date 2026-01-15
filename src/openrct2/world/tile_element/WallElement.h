@@ -66,7 +66,7 @@ namespace OpenRCT2
         void SetAnimationFrame(uint8_t frameNum);
 
         bool IsAnimating() const;
-        void SetIsAnimating(const bool isAnimating);
+        void SetIsAnimating(bool isAnimating);
 
         Banner* GetBanner() const;
         BannerIndex GetBannerIndex() const;

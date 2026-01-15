@@ -66,7 +66,7 @@ namespace OpenRCT2::Ui::Windows
 
     static money64 FootpathProvisionalSet(
         ObjectEntryIndex type, ObjectEntryIndex railingsType, const CoordsXY& footpathLocA, const CoordsXY& footpathLocB,
-        int32_t startZ, const std::span<const ProvisionalTile> tiles, PathConstructFlags constructFlags);
+        int32_t startZ, std::span<const ProvisionalTile> tiles, PathConstructFlags constructFlags);
 
     enum class PathConstructionMode : uint8_t
     {

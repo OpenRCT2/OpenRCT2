@@ -71,14 +71,13 @@ namespace OpenRCT2
         PeepAnimation animations[37]{};
     };
 
-    ObjectEntryIndex findPeepAnimationsIndexForType(const AnimationPeepType type);
-    PeepAnimationsObject* findPeepAnimationsObjectForType(const AnimationPeepType type);
+    ObjectEntryIndex findPeepAnimationsIndexForType(AnimationPeepType type);
+    PeepAnimationsObject* findPeepAnimationsObjectForType(AnimationPeepType type);
 
-    std::vector<ObjectEntryIndex> findAllPeepAnimationsIndexesForType(const AnimationPeepType type, bool randomOnly = false);
-    std::vector<PeepAnimationsObject*> findAllPeepAnimationsObjectForType(
-        const AnimationPeepType type, bool randomOnly = false);
+    std::vector<ObjectEntryIndex> findAllPeepAnimationsIndexesForType(AnimationPeepType type, bool randomOnly = false);
+    std::vector<PeepAnimationsObject*> findAllPeepAnimationsObjectForType(AnimationPeepType type, bool randomOnly = false);
 
-    ObjectEntryIndex findRandomPeepAnimationsIndexForType(const AnimationPeepType type);
+    ObjectEntryIndex findRandomPeepAnimationsIndexForType(AnimationPeepType type);
 
     struct AnimationGroupResult
     {
@@ -89,7 +88,7 @@ namespace OpenRCT2
         std::string_view scriptName;
     };
 
-    std::vector<AnimationGroupResult> getAnimationGroupsByPeepType(const AnimationPeepType type);
+    std::vector<AnimationGroupResult> getAnimationGroupsByPeepType(AnimationPeepType type);
 
     struct AvailableCostume
     {
@@ -99,7 +98,7 @@ namespace OpenRCT2
         std::string friendlyName;
     };
 
-    std::vector<AvailableCostume> getAvailableCostumeStrings(const AnimationPeepType type);
+    std::vector<AvailableCostume> getAvailableCostumeStrings(AnimationPeepType type);
 
     SpriteBounds inferMaxAnimationDimensions(const PeepAnimation& anim);
 } // namespace OpenRCT2

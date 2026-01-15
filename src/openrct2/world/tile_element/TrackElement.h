@@ -86,7 +86,7 @@ namespace OpenRCT2
         void SetTrackType(TrackElemType newEntryIndex);
 
         ride_type_t GetRideType() const;
-        void SetRideType(const ride_type_t rideType);
+        void SetRideType(ride_type_t rideType);
 
         uint8_t GetSequenceIndex() const;
         void SetSequenceIndex(uint8_t newSequenceIndex);

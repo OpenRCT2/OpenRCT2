@@ -450,7 +450,7 @@ static void GuestRideIsTooIntense(Guest& guest, Ride& ride, bool peepAtRide);
 static void GuestResetRideHeading(Guest& guest);
 static void GuestTriedToEnterFullQueue(Guest& guest, Ride& ride);
 static int16_t GuestCalculateRideSatisfaction(Guest& guest, const Ride& ride);
-static void GuestUpdateFavouriteRide(Guest& guest, const Ride& ride, const uint8_t satisfaction);
+static void GuestUpdateFavouriteRide(Guest& guest, const Ride& ride, uint8_t satisfaction);
 static int16_t GuestCalculateRideValueSatisfaction(Guest& guest, const Ride& ride);
 static int16_t GuestCalculateRideIntensityNauseaSatisfaction(Guest& guest, const Ride& ride);
 static void GuestUpdateRideNauseaGrowth(Guest& guest, const Ride& ride);

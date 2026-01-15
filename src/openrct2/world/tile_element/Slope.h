@@ -50,6 +50,6 @@ namespace OpenRCT2
         uint8_t left;
     };
 
-    SlopeRelativeCornerHeights GetSlopeRelativeCornerHeights(const uint8_t slope);
-    TileCornersZ GetSlopeCornerHeights(const int32_t height, const uint8_t slope);
+    SlopeRelativeCornerHeights GetSlopeRelativeCornerHeights(uint8_t slope);
+    TileCornersZ GetSlopeCornerHeights(int32_t height, uint8_t slope);
 } // namespace OpenRCT2

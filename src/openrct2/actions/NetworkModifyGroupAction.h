@@ -43,7 +43,7 @@ namespace OpenRCT2::GameActions
     public:
         NetworkModifyGroupAction() = default;
         NetworkModifyGroupAction(
-            ModifyGroupType type, uint8_t groupId = std::numeric_limits<uint8_t>::max(), const std::string name = "",
+            ModifyGroupType type, uint8_t groupId = std::numeric_limits<uint8_t>::max(), std::string name = "",
             uint32_t permissionIndex = 0, PermissionState permissionState = PermissionState::Count);
 
         void AcceptParameters(GameActionParameterVisitor&) final;

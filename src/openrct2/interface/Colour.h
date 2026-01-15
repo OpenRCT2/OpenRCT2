@@ -152,7 +152,7 @@ namespace OpenRCT2::Colour
 
 #ifndef DISABLE_TTF
 OpenRCT2::Drawing::PaletteIndex BlendColours(
-    const OpenRCT2::Drawing::PaletteIndex paletteIndex1, const OpenRCT2::Drawing::PaletteIndex paletteIndex2);
+    OpenRCT2::Drawing::PaletteIndex paletteIndex1, OpenRCT2::Drawing::PaletteIndex paletteIndex2);
 #endif
 
 typedef OpenRCT2::Drawing::PaletteIndex BlendColourMapType[kPaletteCount][kPaletteCount];
