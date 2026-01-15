@@ -118,7 +118,6 @@ namespace OpenRCT2::GameActions
         if (!withinOwnership)
         {
             return Result(Status::disallowed, STR_CANT_LOWER_WATER_LEVEL_HERE, STR_LAND_NOT_OWNED_BY_PARK);
-            ;
         }
 
         if (isExecuting && hasChanged)
