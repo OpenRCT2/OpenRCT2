@@ -7,9 +7,9 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <string>
-
 #pragma once
+
+#include <string>
 
 namespace TestData
 {
