@@ -1469,8 +1469,7 @@ namespace OpenRCT2::Ui::Windows
 
         void SetPressedTab()
         {
-            int32_t i;
-            for (i = 0; i < WINDOW_RIDE_PAGE_COUNT; i++)
+            for (int32_t i = 0; i < WINDOW_RIDE_PAGE_COUNT; i++)
                 pressedWidgets &= ~(1 << (WIDX_TAB_1 + i));
             pressedWidgets |= 1LL << (WIDX_TAB_1 + page);
         }

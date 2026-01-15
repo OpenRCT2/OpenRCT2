@@ -268,7 +268,6 @@ namespace OpenRCT2::Ui
     static InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoords)
     {
         Ride* ride;
-        int32_t i;
         InteractionInfo info{};
         // No click input for title screen or track manager
         if (gLegacyScene == LegacyScene::titleSequence || gLegacyScene == LegacyScene::trackDesignsManager)
@@ -400,7 +399,7 @@ namespace OpenRCT2::Ui
                 else
                     stationIndex = tileElement->AsTrack()->GetStationIndex().ToUnderlying();
 
-                for (i = stationIndex; i >= 0; i--)
+                for (int32_t i = stationIndex; i >= 0; i--)
                     if (ride->getStations()[i].Start.IsNull())
                         stationIndex--;
                 stationIndex++;
