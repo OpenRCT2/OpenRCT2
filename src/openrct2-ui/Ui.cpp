@@ -53,12 +53,12 @@ int main(int argc, const char** argv)
         Module.canvas.addEventListener("contextmenu", function(e) { e.preventDefault(); });
     });
 #endif
-    std::unique_ptr<IContext> context;
     int32_t rc = EXIT_SUCCESS;
     int runGame = CommandLineRun(argv, argc);
     RegisterBitmapReader();
     if (runGame == EXITCODE_CONTINUE)
     {
+        std::unique_ptr<IContext> context;
         if (gOpenRCT2Headless)
         {
             // Run OpenRCT2 with a plain context

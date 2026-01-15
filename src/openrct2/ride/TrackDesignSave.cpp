@@ -345,11 +345,10 @@ static TrackDesignAddStatus TrackDesignSaveAddWall(const CoordsXY& loc, WallElem
 
 static std::optional<RCTObjectEntry> TrackDesignSaveFootpathGetBestEntry(const PathElement& pathElement)
 {
-    RCTObjectEntry pathEntry;
     auto legacyPathObj = pathElement.GetLegacyPathEntry();
     if (legacyPathObj != nullptr)
     {
-        pathEntry = legacyPathObj->GetObjectEntry();
+        RCTObjectEntry pathEntry = legacyPathObj->GetObjectEntry();
         if (!pathEntry.IsEmpty())
         {
             return pathEntry;
