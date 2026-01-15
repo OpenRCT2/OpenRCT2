@@ -39,6 +39,19 @@
 
 enum class ResearchCategory : uint8_t;
 
+// Gentle Rides
+constexpr uint8_t kDefaultCircusHeight = 16 * kCoordsZStep;
+constexpr uint8_t kDefaultCrookedHouseHeight = 16 * kCoordsZStep;
+constexpr uint8_t kDefaultFlyingSaucersHeight = 6 * kCoordsZStep;
+constexpr uint8_t kDefaultMerryGoRoundHeight = 8 * kCoordsZStep;
+constexpr uint8_t kDefaultSpaceRingsHeight = 6 * kCoordsZStep;
+// Thrill Rides
+constexpr uint8_t kDefault3DCinemaHeight = 16 * kCoordsZStep;
+constexpr uint8_t kDefaultEnterpriseHeight = 20 * kCoordsZStep;
+constexpr uint8_t kDefaultMagicCarpetHeight = 22 * kCoordsZStep;
+constexpr uint8_t kDefaultSwingingShipHeight = 14 * kCoordsZStep;
+constexpr uint8_t kDefaultTwistHeight = 8 * kCoordsZStep;
+// Shops and Stalls
 constexpr uint8_t kDefaultFoodStallHeight = 8 * kCoordsZStep;
 constexpr uint8_t kDefaultDrinksStallHeight = 8 * kCoordsZStep;
 constexpr uint8_t kDefaultShopHeight = 8 * kCoordsZStep;
