@@ -171,7 +171,7 @@ static std::optional<std::string> ScreenshotGetNextPath()
 
     LOG_ERROR("You have too many saved screenshots saved at exactly the same date and time.");
     return std::nullopt;
-};
+}
 
 std::string ScreenshotDumpPNG(RenderTarget& rt)
 {

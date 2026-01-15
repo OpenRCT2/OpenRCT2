@@ -225,4 +225,4 @@ namespace OpenRCT2::UnicodeChar
     // Misc
     constexpr char32_t superscript_minus_one = 0x207B;
 
-}; // namespace OpenRCT2::UnicodeChar
+} // namespace OpenRCT2::UnicodeChar

@@ -37,7 +37,7 @@ namespace OpenRCT2
         constexpr uint8_t Centre = 0;
         constexpr uint8_t Left = 1;
         constexpr uint8_t Right = 2;
-    }; // namespace EntranceSequence
+    } // namespace EntranceSequence
 
 #pragma pack(push, 1)
     struct EntranceElement;

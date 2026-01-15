@@ -49,6 +49,6 @@ namespace OpenRCT2::Scripting
 
         void Launch(const DukValue& value);
     };
-}; // namespace OpenRCT2::Scripting
+} // namespace OpenRCT2::Scripting
 
 #endif

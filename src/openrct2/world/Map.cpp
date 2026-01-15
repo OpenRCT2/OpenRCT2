@@ -2018,7 +2018,7 @@ TileElement* MapGetTrackElementAtOfTypeFromRide(const CoordsXYZ& trackPos, Track
     } while (!(tileElement++)->IsLastForTile());
 
     return nullptr;
-};
+}
 
 /**
  * Gets the track element at x, y, z that is the given track type and sequence.
@@ -2045,7 +2045,7 @@ TileElement* MapGetTrackElementAtFromRide(const CoordsXYZ& trackPos, RideId ride
     } while (!(tileElement++)->IsLastForTile());
 
     return nullptr;
-};
+}
 
 TileElement* MapGetTrackElementAtBeforeSurfaceFromRide(const CoordsXYZ& trackPos, const RideId rideIndex)
 {
@@ -2068,7 +2068,7 @@ TileElement* MapGetTrackElementAtBeforeSurfaceFromRide(const CoordsXYZ& trackPos
     } while (!(tileElement++)->IsLastForTile());
 
     return nullptr;
-};
+}
 
 /**
  * Gets the track element at x, y, z that is the given track type and sequence.
@@ -2098,7 +2098,7 @@ TileElement* MapGetTrackElementAtWithDirectionFromRide(const CoordsXYZD& trackPo
     } while (!(tileElement++)->IsLastForTile());
 
     return nullptr;
-};
+}
 
 WallElement* MapGetWallElementAt(const CoordsXYRangedZ& coords)
 {

@@ -78,7 +78,7 @@ namespace OpenRCT2::Drawing::ScrollingText
                 _characterBitmaps[i][x] = val;
             }
         }
-    };
+    }
 
     static void initialiseScrollingText()
     {

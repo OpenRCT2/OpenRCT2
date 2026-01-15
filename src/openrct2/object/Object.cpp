@@ -75,7 +75,7 @@ namespace OpenRCT2
     bool ObjectEntryDescriptor::HasValue() const
     {
         return Generation != ObjectGeneration::JSON || !Identifier.empty();
-    };
+    }
 
     ObjectType ObjectEntryDescriptor::GetType() const
     {

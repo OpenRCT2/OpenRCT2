@@ -101,7 +101,7 @@ namespace OpenRCT2
         constexpr uint32_t PREVIEW              = 0x39;
         constexpr uint32_t PACKED_OBJECTS       = 0x80;
         // clang-format on
-    }; // namespace ParkFileChunkType
+    } // namespace ParkFileChunkType
 
     class ParkFile
     {
