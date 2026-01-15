@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -41,14 +41,14 @@ namespace OpenRCT2
         PaintAddImageAsParent(session, image_id, { 0, 0, z }, { { -5, -5, z + 1 }, { 16, 16, 41 } });
 
         // Draw peeps:
-        if (session.DPI.zoom_level < ZoomLevel{ 2 } && vehicle->num_peeps > 0 && !vehicle->IsGhost())
+        if (session.rt.zoom_level < ZoomLevel{ 2 } && vehicle->num_peeps > 0 && !vehicle->IsGhost())
         {
             baseImage_id = carEntry->base_image_id + 9;
             if ((vehicle->restraints_position / 64) == 3)
             {
                 baseImage_id += 2; // Draw peeps sitting without transparent area between them for restraints
             }
-            auto directionOffset = OpenRCT2::Entity::Yaw::YawTo4(imageDirection);
+            auto directionOffset = Entity::Yaw::YawTo4(imageDirection);
             image_id = ImageId(
                 baseImage_id + (((directionOffset + 0) & 3) * 3), vehicle->peep_tshirt_colours[0],
                 vehicle->peep_tshirt_colours[1]);

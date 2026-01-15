@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -50,6 +50,6 @@ namespace OpenRCT2
         uint8_t left;
     };
 
-    SlopeRelativeCornerHeights GetSlopeRelativeCornerHeights(const uint8_t slope);
-    TileCornersZ GetSlopeCornerHeights(const int32_t height, const uint8_t slope);
+    SlopeRelativeCornerHeights GetSlopeRelativeCornerHeights(uint8_t slope);
+    TileCornersZ GetSlopeCornerHeights(int32_t height, uint8_t slope);
 } // namespace OpenRCT2

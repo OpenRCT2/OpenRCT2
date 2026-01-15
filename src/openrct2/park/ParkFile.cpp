@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -37,10 +37,10 @@
 #include "../entity/PatrolArea.h"
 #include "../entity/Staff.h"
 #include "../interface/Viewport.h"
+#include "../localisation/Formatter.h"
 #include "../management/Award.h"
 #include "../management/Finance.h"
 #include "../management/NewsItem.h"
-#include "../object/Object.h"
 #include "../object/ObjectLimits.h"
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
@@ -263,7 +263,7 @@ namespace OpenRCT2
                     cs.readWrite(image.type);
                     cs.readWrite(image.width);
                     cs.readWrite(image.height);
-                    cs.readWriteArray(image.pixels, [&cs](uint8_t& pixel) {
+                    cs.readWriteArray(image.pixels, [&cs](OpenRCT2::Drawing::PaletteIndex& pixel) {
                         cs.readWrite(pixel);
                         return true;
                     });
@@ -547,7 +547,7 @@ namespace OpenRCT2
                     cs.readWrite(image.type);
                     cs.readWrite(image.width);
                     cs.readWrite(image.height);
-                    cs.readWriteArray(image.pixels, [&cs](uint8_t& pixel) {
+                    cs.readWriteArray(image.pixels, [&cs](OpenRCT2::Drawing::PaletteIndex& pixel) {
                         cs.readWrite(pixel);
                         return true;
                     });
@@ -1737,7 +1737,7 @@ namespace OpenRCT2
 
         static void ReadWriteRideMeasurement(OrcaStream::ChunkStream& cs, RideMeasurement& measurement)
         {
-            cs.readWrite(measurement.flags);
+            cs.readWrite(measurement.flags.holder);
             cs.readWrite(measurement.last_use_tick);
             cs.readWrite(measurement.num_items);
             cs.readWrite(measurement.current_item);

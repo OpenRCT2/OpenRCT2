@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -25,6 +25,7 @@
 #include <openrct2/Input.h>
 #include <openrct2/SpriteIds.h>
 #include <openrct2/actions/MazeSetTrackAction.h>
+#include <openrct2/actions/ResultWithMessage.h>
 #include <openrct2/actions/RideDemolishAction.h>
 #include <openrct2/actions/RideEntranceExitPlaceAction.h>
 #include <openrct2/actions/RideSetStatusAction.h>
@@ -34,6 +35,7 @@
 #include <openrct2/audio/Audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/Numerics.hpp>
+#include <openrct2/drawing/Drawing.h>
 #include <openrct2/interface/Viewport.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/network/Network.h>
@@ -1708,7 +1710,7 @@ namespace OpenRCT2::Ui::Windows
             auto screenCoords = ScreenCoordsXY{ windowPos.x + widget->left + 1, windowPos.y + widget->top + 1 };
             widgetWidth = widget->width() - 2;
             widgetHeight = widget->height() - 2;
-            if (ClipDrawPixelInfo(clippedRT, rt, screenCoords, widgetWidth, widgetHeight))
+            if (ClipRenderTarget(clippedRT, rt, screenCoords, widgetWidth, widgetHeight))
             {
                 DrawTrackPiece(
                     clippedRT, rideIndex, trackType, trackDirection, liftHillAndInvertedState, widgetWidth, widgetHeight);
@@ -2631,8 +2633,8 @@ namespace OpenRCT2::Ui::Windows
                 ddWidth -= 30;
 
             WindowDropdownShowTextCustomWidth(
-                { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height(), colours[1], 0, 0, elements.size(),
-                ddWidth, targetColumnSize);
+                { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height(), colours[1], 0,
+                Dropdown::Flag::StayOpen, elements.size(), ddWidth, targetColumnSize);
 
             for (size_t j = 0; j < elements.size(); j++)
             {

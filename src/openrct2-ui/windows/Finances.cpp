@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,6 +14,7 @@
 #include <openrct2/GameState.h>
 #include <openrct2/SpriteIds.h>
 #include <openrct2/actions/ParkSetLoanAction.h>
+#include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Formatting.h>
@@ -414,7 +415,7 @@ namespace OpenRCT2::Ui::Windows
                         rt,
                         { screenCoords - ScreenCoordsXY{ 0, 1 },
                           screenCoords + ScreenCoordsXY{ row_width, (kTableCellHeight - 2) } },
-                        ColourMapA[colours[1].colour].lighter | 0x1000000);
+                        ColourMapA[colours[1].colour].lighter, true);
 
                 screenCoords.y += kTableCellHeight;
             }
@@ -564,7 +565,7 @@ namespace OpenRCT2::Ui::Windows
                         auto newLoan = gameState.park.bankLoan - 1000.00_GBP;
                         if (gameState.park.bankLoan > 0)
                         {
-                            newLoan = std::max(static_cast<money64>(0LL), newLoan);
+                            newLoan = std::max(0.00_GBP, newLoan);
                         }
                         auto gameAction = GameActions::ParkSetLoanAction(newLoan);
                         GameActions::Execute(&gameAction, gameState);
@@ -608,7 +609,7 @@ namespace OpenRCT2::Ui::Windows
                     Rectangle::fill(
                         rt,
                         { screenCoords - ScreenCoordsXY{ 0, 1 }, screenCoords + ScreenCoordsXY{ 121, (kTableCellHeight - 2) } },
-                        ColourMapA[colours[1].colour].lighter | 0x1000000);
+                        ColourMapA[colours[1].colour].lighter, true);
 
                 DrawTextBasic(rt, screenCoords - ScreenCoordsXY{ 0, 1 }, _windowFinancesSummaryRowLabels[i]);
                 screenCoords.y += kTableCellHeight;

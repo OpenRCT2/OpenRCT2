@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -29,7 +29,7 @@ static void PaintEnterpriseRiders(
     PaintSession& session, const RideObjectEntry& rideEntry, Vehicle& vehicle, uint32_t imageOffset, const CoordsXYZ& offset,
     const BoundBoxXYZ& bb)
 {
-    if (session.DPI.zoom_level > ZoomLevel{ 0 })
+    if (session.rt.zoom_level > ZoomLevel{ 0 })
         return;
     if (imageOffset >= 12)
         return;
@@ -175,7 +175,7 @@ static void PaintEnterprise(
     PaintUtilSetGeneralSupportHeight(session, height + 160);
 }
 
-TrackPaintFunction GetTrackPaintFunctionEnterprise(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionEnterprise(TrackElemType trackType)
 {
     if (trackType != TrackElemType::flatTrack4x4)
     {

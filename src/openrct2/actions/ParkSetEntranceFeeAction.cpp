@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -43,7 +43,7 @@ namespace OpenRCT2::GameActions
 
     Result ParkSetEntranceFeeAction::Query(GameState_t& gameState) const
     {
-        if ((getGameState().park.flags & PARK_FLAGS_NO_MONEY) != 0)
+        if ((gameState.park.flags & PARK_FLAGS_NO_MONEY) != 0)
         {
             LOG_ERROR("Can't set park entrance fee because the park has no money");
             return Result(Status::disallowed, STR_ERR_CANT_CHANGE_PARK_ENTRANCE_FEE, kStringIdNone);
@@ -64,7 +64,7 @@ namespace OpenRCT2::GameActions
 
     Result ParkSetEntranceFeeAction::Execute(GameState_t& gameState) const
     {
-        getGameState().park.entranceFee = _fee;
+        gameState.park.entranceFee = _fee;
 
         auto* windowMgr = Ui::GetWindowManager();
         windowMgr->InvalidateByClass(WindowClass::parkInformation);

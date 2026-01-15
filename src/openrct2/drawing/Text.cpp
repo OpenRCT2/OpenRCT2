@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -103,7 +103,7 @@ void DrawText(RenderTarget& rt, const ScreenCoordsXY& coords, const TextPaint& p
         Rectangle::fill(
             rt, { { alignedCoords + ScreenCoordsXY{ 0, 11 } }, { alignedCoords + ScreenCoordsXY{ width, 11 } } },
             gTextPalette.fill);
-        if (gTextPalette.sunnyOutline != 0)
+        if (gTextPalette.sunnyOutline != PaletteIndex::pi0)
         {
             Rectangle::fill(
                 rt, { { alignedCoords + ScreenCoordsXY{ 1, 12 } }, { alignedCoords + ScreenCoordsXY{ width + 1, 12 } } },

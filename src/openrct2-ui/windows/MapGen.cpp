@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -1167,13 +1167,13 @@ namespace OpenRCT2::Ui::Windows
             {
                 // Draw greyed out (light border bottom right shadow)
                 auto colour = colours[widget.colour].colour;
-                colour = ColourMapA[colour].lighter;
-                GfxDrawSpriteSolid(rt, image, pos + ScreenCoordsXY{ 1, 1 }, colour);
+                auto paletteIndex = ColourMapA[colour].lighter;
+                GfxDrawSpriteSolid(rt, image, pos + ScreenCoordsXY{ 1, 1 }, paletteIndex);
 
                 // Draw greyed out (dark)
                 colour = colours[widget.colour].colour;
-                colour = ColourMapA[colour].mid_light;
-                GfxDrawSpriteSolid(rt, image, pos, colour);
+                paletteIndex = ColourMapA[colour].mid_light;
+                GfxDrawSpriteSolid(rt, image, pos, paletteIndex);
             }
             else
             {

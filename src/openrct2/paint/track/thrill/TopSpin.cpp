@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -41,7 +41,7 @@ static void PaintTopSpinRiders(
     PaintSession& session, const Vehicle& vehicle, ImageIndex seatImageIndex, const CoordsXYZ& seatCoords,
     const BoundBoxXYZ& bb)
 {
-    if (session.DPI.zoom_level >= ZoomLevel{ 2 })
+    if (session.rt.zoom_level >= ZoomLevel{ 2 })
         return;
 
     for (int i = 0; i < 4; i++)
@@ -249,7 +249,7 @@ static void PaintTopSpin(
     PaintUtilSetGeneralSupportHeight(session, height + 112);
 }
 
-TrackPaintFunction GetTrackPaintFunctionTopspin(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionTopspin(TrackElemType trackType)
 {
     if (trackType != TrackElemType::flatTrack3x3)
     {

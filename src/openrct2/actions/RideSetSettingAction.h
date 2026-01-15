@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -49,9 +49,9 @@ namespace OpenRCT2::GameActions
 
     private:
         bool RideIsModeValid(const Ride& ride) const;
-        bool RideIsValidLiftHillSpeed(const Ride& ride) const;
-        bool RideIsValidNumCircuits() const;
-        bool RideIsValidOperationOption(const Ride& ride) const;
+        bool RideIsValidLiftHillSpeed(GameState_t& gameState, const Ride& ride) const;
+        bool RideIsValidNumCircuits(GameState_t& gameState) const;
+        bool RideIsValidOperationOption(GameState_t& gameState, const Ride& ride) const;
         StringId GetOperationErrorMessage(const Ride& ride) const;
     };
 } // namespace OpenRCT2::GameActions

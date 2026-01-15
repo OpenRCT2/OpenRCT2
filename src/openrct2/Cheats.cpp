@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -78,7 +78,7 @@ void CheatsSerialise(DataSerialiser& ds)
 
     if (ds.IsSaving())
     {
-        OpenRCT2::IStream& stream = ds.GetStream();
+        IStream& stream = ds.GetStream();
 
         // Temporarily write 0, will be updated after every cheat is written.
         uint64_t countOffset = stream.GetPosition();

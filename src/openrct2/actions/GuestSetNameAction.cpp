@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -63,7 +63,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_CANT_NAME_GUEST, STR_ERR_VALUE_OUT_OF_RANGE);
         }
 
-        auto guest = getGameState().entities.TryGetEntity<Guest>(_spriteIndex);
+        auto guest = gameState.entities.TryGetEntity<Guest>(_spriteIndex);
         if (guest == nullptr)
         {
             LOG_ERROR("Guest entity not found for spriteIndex %u", _spriteIndex);
@@ -75,7 +75,7 @@ namespace OpenRCT2::GameActions
 
     Result GuestSetNameAction::Execute(GameState_t& gameState) const
     {
-        auto guest = getGameState().entities.TryGetEntity<Guest>(_spriteIndex);
+        auto guest = gameState.entities.TryGetEntity<Guest>(_spriteIndex);
         if (guest == nullptr)
         {
             LOG_ERROR("Guest entity not found for spriteIndex %u", _spriteIndex);

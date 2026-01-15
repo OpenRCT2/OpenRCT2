@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -1132,7 +1132,7 @@ static void vehicle_sprite_paint(
         session, imageId, { 0, 0, z },
         { { bb.offset_x, bb.offset_y, bb.offset_z + z }, { bb.length_x, bb.length_y, bb.length_z } });
 
-    auto& rt = session.DPI;
+    auto& rt = session.rt;
     if (rt.zoom_level < ZoomLevel{ 2 } && vehicle->num_peeps > 0 && carEntry->no_seating_rows > 0)
     {
         PaintVehicleRiders(session, vehicle, carEntry, baseImageId, z, bb);
@@ -4700,8 +4700,7 @@ void VehicleVisualDefault(
         if (vehicle->HasFlag(VehicleFlags::CarIsReversed))
         {
             auto imagePitch = PitchInvertTable[EnumValue(vehicle->pitch)];
-            auto imageYaw = (imageDirection + (OpenRCT2::Entity::Yaw::kBaseRotation / 2))
-                & (OpenRCT2::Entity::Yaw::kBaseRotation - 1);
+            auto imageYaw = (imageDirection + (kBaseRotation / 2)) & (kBaseRotation - 1);
             PaintFunctionsByPitch[EnumValue(imagePitch)](session, vehicle, imageYaw, z, carEntry, kBoundBoxIndexUndefined);
         }
         else

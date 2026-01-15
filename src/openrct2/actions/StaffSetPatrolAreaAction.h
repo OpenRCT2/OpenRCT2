@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -27,11 +27,11 @@ namespace OpenRCT2::GameActions
         MapRange _range;
         StaffSetPatrolAreaMode _mode;
 
-        Result QueryExecute(bool executing) const;
+        Result QueryExecute(GameState_t& gameState, bool executing) const;
 
     public:
         StaffSetPatrolAreaAction() = default;
-        StaffSetPatrolAreaAction(EntityId spriteId, const MapRange& range, const StaffSetPatrolAreaMode mode);
+        StaffSetPatrolAreaAction(EntityId spriteId, const MapRange& range, StaffSetPatrolAreaMode mode);
 
         uint16_t GetActionFlags() const override;
 

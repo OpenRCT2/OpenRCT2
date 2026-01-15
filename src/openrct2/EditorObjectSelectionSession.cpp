@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,6 +15,7 @@
 #include "Game.h"
 #include "GameState.h"
 #include "OpenRCT2.h"
+#include "actions/ResultWithMessage.h"
 #include "drawing/Drawing.h"
 #include "entity/EntityList.h"
 #include "entity/Guest.h"
@@ -136,18 +137,18 @@ static void SetupTrackDesignerObjects()
  */
 void SetupInUseSelectionFlags()
 {
-    auto& objectMgr = OpenRCT2::GetContext()->GetObjectManager();
+    auto& objectMgr = GetContext()->GetObjectManager();
 
     for (auto objectType : getTransientObjectTypes())
     {
         for (auto i = 0u; i < getObjectEntryGroupCount(objectType); i++)
         {
-            Editor::ClearSelectedObject(static_cast<ObjectType>(objectType), i, ObjectSelectionFlags::AllFlags);
+            Editor::ClearSelectedObject(objectType, i, ObjectSelectionFlags::AllFlags);
 
-            auto loadedObj = objectMgr.GetLoadedObject(static_cast<ObjectType>(objectType), i);
+            auto loadedObj = objectMgr.GetLoadedObject(objectType, i);
             if (loadedObj != nullptr)
             {
-                Editor::SetSelectedObject(static_cast<ObjectType>(objectType), i, ObjectSelectionFlags::Selected);
+                Editor::SetSelectedObject(objectType, i, ObjectSelectionFlags::Selected);
             }
         }
     }
@@ -369,7 +370,7 @@ void EditorObjectFlagsClear()
  */
 static void RemoveSelectedObjectsFromResearch(const ObjectEntryDescriptor& descriptor)
 {
-    auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
+    auto& objManager = GetContext()->GetObjectManager();
     auto obj = objManager.GetLoadedObject(descriptor);
     if (obj != nullptr)
     {
@@ -470,7 +471,7 @@ static void selectTrackDesignerObjects()
  */
 static void ReplaceSelectedWaterPalette(const ObjectRepositoryItem* item)
 {
-    auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
+    auto& objectManager = GetContext()->GetObjectManager();
     auto* oldPalette = objectManager.GetLoadedObject<WaterObject>(0);
 
     if (oldPalette != nullptr)
@@ -521,7 +522,7 @@ void FinishObjectSelection()
         SetEveryRideTypeInvented();
         SetEveryRideEntryInvented();
 
-        auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
+        auto& objManager = GetContext()->GetObjectManager();
         gameState.lastEntranceStyle = objManager.GetLoadedObjectEntryIndex("rct2.station.plain");
         if (gameState.lastEntranceStyle == kObjectEntryIndexNull)
         {
@@ -612,7 +613,7 @@ ResultWithMessage WindowEditorObjectSelectionSelectObject(
         return { true };
     }
 
-    if (item->Flags & ObjectItemFlags::IsCompatibilityObject)
+    if (item->Flags & IsCompatibilityObject)
     {
         return ObjectSelectionError(isMasterObject, STR_OBJECT_SELECTION_ERR_COMPAT_OBJECT);
     }
@@ -670,7 +671,7 @@ ResultWithMessage WindowEditorObjectSelectionSelectObject(
 ResultWithMessage WindowEditorObjectSelectionSelectObject(
     uint8_t isMasterObject, EditorInputFlags flags, const ObjectEntryDescriptor& descriptor)
 {
-    auto& objectRepository = OpenRCT2::GetContext()->GetObjectRepository();
+    auto& objectRepository = GetContext()->GetObjectRepository();
     const auto* item = objectRepository.FindObject(descriptor);
     return WindowEditorObjectSelectionSelectObject(isMasterObject, flags, item);
 }

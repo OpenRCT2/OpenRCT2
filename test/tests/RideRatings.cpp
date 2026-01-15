@@ -14,11 +14,9 @@
 #include <openrct2/Game.h>
 #include <openrct2/GameState.h>
 #include <openrct2/OpenRCT2.h>
-#include <openrct2/audio/AudioContext.h>
 #include <openrct2/core/File.h>
 #include <openrct2/core/Path.hpp>
 #include <openrct2/core/String.hpp>
-#include <openrct2/platform/Platform.h>
 #include <openrct2/ride/Ride.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/RideManager.hpp>
@@ -34,7 +32,7 @@ protected:
         auto& gameState = getGameState();
         for (const auto& ride : RideManager(gameState))
         {
-            OpenRCT2::RideRating::UpdateRide(ride);
+            RideRating::UpdateRide(ride);
         }
     }
 
@@ -50,7 +48,7 @@ protected:
 
     std::string FormatRatings(const Ride& ride)
     {
-        OpenRCT2::RideRating::Tuple ratings = ride.ratings;
+        RideRating::Tuple ratings = ride.ratings;
         auto name = std::string(ride.getRideTypeDescriptor().Name);
         std::string line = String::stdFormat(
             "%s: (%d, %d, %d)", name.c_str(), static_cast<int>(ratings.excitement), static_cast<int>(ratings.intensity),

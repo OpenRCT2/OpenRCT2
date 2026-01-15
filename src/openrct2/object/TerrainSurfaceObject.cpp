@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -25,7 +25,7 @@ namespace OpenRCT2
         GetStringTable().Sort();
         NameStringId = LanguageAllocateObjectString(GetName());
         IconImageId = LoadImages();
-        if ((Flags & TerrainSurfaceFlags::smoothWithSelf) || (Flags & TerrainSurfaceFlags::smoothWithOther))
+        if (Flags.hasAny(TerrainSurfaceFlag::smoothWithSelf, TerrainSurfaceFlag::smoothWithOther))
         {
             PatternBaseImageId = IconImageId + 1;
             EntryBaseImageId = PatternBaseImageId + 6;
@@ -87,11 +87,11 @@ namespace OpenRCT2
             Colour = Colour::FromString(Json::GetString(properties["colour"]), kNoValue);
             Rotations = Json::GetNumber<int8_t>(properties["rotations"], 1);
             Price = Json::GetNumber<money64>(properties["price"]);
-            Flags = Json::GetFlags<TerrainSurfaceFlags>(
+            Flags = Json::GetFlagHolder<TerrainSurfaceFlags, TerrainSurfaceFlag>(
                 properties,
-                { { "smoothWithSelf", TerrainSurfaceFlags::smoothWithSelf },
-                  { "smoothWithOther", TerrainSurfaceFlags::smoothWithOther },
-                  { "canGrow", TerrainSurfaceFlags::canGrow } });
+                { { "smoothWithSelf", TerrainSurfaceFlag::smoothWithSelf },
+                  { "smoothWithOther", TerrainSurfaceFlag::smoothWithOther },
+                  { "canGrow", TerrainSurfaceFlag::canGrow } });
 
             const auto mapColours = properties["mapColours"];
             const bool mapColoursAreValid = mapColours.is_array() && mapColours.size() == std::size(MapColours);
@@ -100,7 +100,7 @@ namespace OpenRCT2
                 if (mapColoursAreValid)
                     MapColours[i] = mapColours[i];
                 else
-                    MapColours[i] = PaletteIndex::pi0;
+                    MapColours[i] = OpenRCT2::Drawing::PaletteIndex::pi0;
             }
 
             for (auto& el : properties["special"])

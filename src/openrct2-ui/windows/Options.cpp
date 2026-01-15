@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -30,6 +30,7 @@
 #include <openrct2/core/EnumUtils.hpp>
 #include <openrct2/core/File.h>
 #include <openrct2/core/String.hpp>
+#include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/IDrawingEngine.h>
 #include <openrct2/drawing/ScrollingText.h>
 #include <openrct2/localisation/Currency.h>
@@ -952,16 +953,16 @@ namespace OpenRCT2::Ui::Windows
                     switch (dropdownIndex)
                     {
                         case 0: // vanilla
-                            config.uncapFPS = 0;
-                            config.useVSync = 0;
+                            config.uncapFPS = false;
+                            config.useVSync = false;
                             break;
                         case 1: // vsync
-                            config.uncapFPS = 1;
-                            config.useVSync = 1;
+                            config.uncapFPS = true;
+                            config.useVSync = true;
                             break;
                         case 2: // uncapped
-                            config.uncapFPS = 1;
-                            config.useVSync = 0;
+                            config.uncapFPS = true;
+                            config.useVSync = false;
                             break;
                     }
 
@@ -1274,11 +1275,11 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WIDX_HEIGHT_LABELS_DROPDOWN:
                     // reset flag and set it to 1 if height as units is selected
-                    Config::Get().general.showHeightAsUnits = 0;
+                    Config::Get().general.showHeightAsUnits = false;
 
                     if (dropdownIndex == 0)
                     {
-                        Config::Get().general.showHeightAsUnits = 1;
+                        Config::Get().general.showHeightAsUnits = true;
                     }
                     Config::Save();
                     UpdateHeightMarkers();
@@ -2228,7 +2229,7 @@ namespace OpenRCT2::Ui::Windows
         void AdvancedDraw(Drawing::RenderTarget& rt)
         {
             auto ft = Formatter();
-            ft.Add<int32_t>(static_cast<int32_t>(Config::Get().general.autosaveAmount));
+            ft.Add<int32_t>(Config::Get().general.autosaveAmount);
             DrawTextBasic(
                 rt, windowPos + ScreenCoordsXY{ widgets[WIDX_AUTOSAVE_AMOUNT].left + 1, widgets[WIDX_AUTOSAVE_AMOUNT].top + 1 },
                 STR_WINDOW_COLOUR_2_COMMA32, ft, { colours[1] });

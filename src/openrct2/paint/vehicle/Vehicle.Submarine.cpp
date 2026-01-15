@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -55,7 +55,7 @@ namespace OpenRCT2
             imageId1 = ImageId(baseImageId + 1).WithRemap(Drawing::FilterPaletteID::paletteGhost);
         }
 
-        const auto& bb = VehicleBoundboxes[carEntry->draw_order][OpenRCT2::Entity::Yaw::YawTo16(imageDirection)];
+        const auto& bb = VehicleBoundboxes[carEntry->draw_order][Entity::Yaw::YawTo16(imageDirection)];
         PaintAddImageAsParent(
             session, imageId0, { 0, 0, z },
             { { bb.offset_x, bb.offset_y, bb.offset_z + z }, { bb.length_x, bb.length_y, bb.length_z } });

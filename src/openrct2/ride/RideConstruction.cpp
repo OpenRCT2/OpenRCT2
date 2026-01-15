@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -12,6 +12,7 @@
 #include "../Context.h"
 #include "../GameState.h"
 #include "../Input.h"
+#include "../actions/ResultWithMessage.h"
 #include "../actions/RideEntranceExitRemoveAction.h"
 #include "../actions/RideSetSettingAction.h"
 #include "../actions/RideSetStatusAction.h"
@@ -24,7 +25,6 @@
 #include "../network/Network.h"
 #include "../ui/WindowManager.h"
 #include "../windows/Intent.h"
-#include "../world/Banner.h"
 #include "../world/Climate.h"
 #include "../world/Entrance.h"
 #include "../world/Footpath.h"
@@ -224,7 +224,7 @@ void RideClearForConstruction(Ride& ride)
     ride.measurement = {};
 
     ride.lifecycleFlags &= ~(RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN);
-    ride.windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
+    ride.windowInvalidateFlags.set(RideInvalidateFlag::main, RideInvalidateFlag::list);
 
     // Open circuit rides will go directly into building mode (creating ghosts) where it would normally clear the stats,
     // however this causes desyncs since it's directly run from the window and other clients would not get it.
@@ -344,7 +344,7 @@ void Ride::removePeeps()
     }
     numRiders = 0;
     slideInUse = 0;
-    windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAIN;
+    windowInvalidateFlags.set(RideInvalidateFlag::main);
 }
 
 void RideClearBlockedTiles(const Ride& ride)

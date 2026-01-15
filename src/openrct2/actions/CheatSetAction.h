@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -45,15 +45,15 @@ namespace OpenRCT2::GameActions
         void ResetRideCrashStatus(GameState_t& gameState) const;
         void Set10MinuteInspection(GameState_t& gameState) const;
         void SetScenarioNoMoney(GameState_t& gameState, bool enabled) const;
-        void SetMoney(money64 amount) const;
-        void AddMoney(money64 amount) const;
+        void SetMoney(GameState_t& gameState, money64 amount) const;
+        void AddMoney(GameState_t& gameState, money64 amount) const;
         void ClearLoan(GameState_t& gameState) const;
         void GenerateGuests(int32_t count) const;
         void SetGuestParameter(int32_t parameter, int32_t value) const;
         void GiveObjectToGuests(int32_t object) const;
         void RemoveAllGuests(GameState_t& gameState) const;
         void SetStaffSpeed(uint8_t value) const;
-        void OwnAllLand() const;
+        void OwnAllLand(GameState_t& gameState) const;
         void ParkSetOpen(bool isOpen, GameState_t& gameState) const;
         void CreateDucks(int count) const;
         void RemoveParkFences() const;

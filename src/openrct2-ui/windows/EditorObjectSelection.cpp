@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -22,13 +22,14 @@
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/SpriteIds.h>
 #include <openrct2/actions/LoadOrQuitAction.h>
+#include <openrct2/actions/ResultWithMessage.h>
 #include <openrct2/audio/Audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/EnumUtils.hpp>
 #include <openrct2/core/Path.hpp>
 #include <openrct2/core/String.hpp>
+#include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
-#include <openrct2/drawing/Text.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/object/ClimateObject.h>
 #include <openrct2/object/MusicObject.h>
@@ -731,7 +732,7 @@ namespace OpenRCT2::Ui::Windows
             ScreenCoordsXY screenCoords;
             bool ridePage = (GetSelectedObjectType() == ObjectType::ride);
 
-            uint8_t paletteIndex = ColourMapA[colours[1].colour].mid_light;
+            auto paletteIndex = ColourMapA[colours[1].colour].mid_light;
             GfxClear(rt, paletteIndex);
 
             screenCoords.y = 0;
@@ -1109,13 +1110,13 @@ namespace OpenRCT2::Ui::Windows
 
             // Draw preview
             {
-                RenderTarget clipDPI;
+                RenderTarget clipRT;
                 auto screenPos = windowPos + ScreenCoordsXY{ previewWidget.left + 1, previewWidget.top + 1 };
                 int32_t previewWidth = previewWidget.width() - 2;
                 int32_t previewHeight = previewWidget.height() - 2;
-                if (ClipDrawPixelInfo(clipDPI, rt, screenPos, previewWidth, previewHeight))
+                if (ClipRenderTarget(clipRT, rt, screenPos, previewWidth, previewHeight))
                 {
-                    _loadedObject->DrawPreview(clipDPI, previewWidth, previewHeight);
+                    _loadedObject->DrawPreview(clipRT, previewWidth, previewHeight);
                 }
             }
 

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -12,6 +12,7 @@
 #include "../Diagnostic.h"
 #include "../GameState.h"
 #include "../OpenRCT2.h"
+#include "../core/Guard.hpp"
 #include "../management/Finance.h"
 #include "../object/LargeSceneryEntry.h"
 #include "../object/ObjectEntryManager.h"
@@ -290,7 +291,7 @@ namespace OpenRCT2::GameActions
             if (!GetFlags().has(CommandFlag::ghost))
             {
                 FootpathRemoveLitter({ curTile, zLow });
-                if (!getGameState().cheats.disableClearanceChecks)
+                if (!gameState.cheats.disableClearanceChecks)
                 {
                     WallRemoveAt({ curTile, zLow, zHigh });
                 }

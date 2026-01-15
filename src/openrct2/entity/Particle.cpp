@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -136,7 +136,7 @@ void VehicleCrashParticle::Update()
     if (waterZ != 0 && z >= waterZ && newLoc.z <= waterZ)
     {
         // Splash
-        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::water2, { x, y, waterZ });
+        Audio::Play3D(Audio::SoundId::water2, { x, y, waterZ });
         CrashSplashParticle::Create({ x, y, waterZ });
         getGameState().entities.EntityRemove(this);
         return;
@@ -176,7 +176,7 @@ void VehicleCrashParticle::Paint(PaintSession& session, int32_t imageDirection) 
 {
     PROFILED_FUNCTION();
 
-    auto& rt = session.DPI;
+    auto& rt = session.rt;
     if (rt.zoom_level > ZoomLevel{ 0 })
     {
         return;

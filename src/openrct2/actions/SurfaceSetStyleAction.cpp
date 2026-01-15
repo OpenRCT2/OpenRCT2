@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -52,11 +52,10 @@ namespace OpenRCT2::GameActions
         res.expenditure = ExpenditureType::landscaping;
 
         auto validRange = ClampRangeWithinMap(_range.Normalise());
-        auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
+        auto& objManager = GetContext()->GetObjectManager();
         if (_surfaceStyle != kObjectEntryIndexNull)
         {
-            const auto surfaceObj = static_cast<TerrainSurfaceObject*>(
-                objManager.GetLoadedObject<TerrainSurfaceObject>(_surfaceStyle));
+            const auto surfaceObj = objManager.GetLoadedObject<TerrainSurfaceObject>(_surfaceStyle);
 
             if (surfaceObj == nullptr)
             {
@@ -168,7 +167,7 @@ namespace OpenRCT2::GameActions
                 if (!LocationValid(coords))
                     continue;
 
-                if (gLegacyScene != LegacyScene::scenarioEditor && !getGameState().cheats.sandboxMode)
+                if (gLegacyScene != LegacyScene::scenarioEditor && !gameState.cheats.sandboxMode)
                 {
                     if (!MapIsLocationInPark(coords))
                         continue;
@@ -186,7 +185,7 @@ namespace OpenRCT2::GameActions
 
                     if (_surfaceStyle != curSurfaceStyle)
                     {
-                        auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
+                        auto& objManager = GetContext()->GetObjectManager();
                         const auto* surfaceObject = objManager.GetLoadedObject<TerrainSurfaceObject>(_surfaceStyle);
                         if (surfaceObject != nullptr)
                         {

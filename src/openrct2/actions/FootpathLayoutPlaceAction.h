@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -39,7 +39,7 @@ namespace OpenRCT2::GameActions
         Result Execute(GameState_t& gameState) const override;
 
     private:
-        Result ElementInsertQuery(Result res) const;
+        Result ElementInsertQuery(GameState_t& gameState, Result res) const;
         Result ElementInsertExecute(Result res) const;
         bool IsSameAsEntranceElement(const EntranceElement& entranceElement) const;
     };

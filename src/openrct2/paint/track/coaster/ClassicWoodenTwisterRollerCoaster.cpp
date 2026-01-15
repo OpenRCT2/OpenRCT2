@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -8,6 +8,7 @@
  *****************************************************************************/
 
 #include "../../../SpriteIds.h"
+#include "../../../drawing/Drawing.h"
 #include "../../../ride/Track.h"
 #include "../../../ride/TrackPaint.h"
 #include "../../tile_element/Paint.Tunnel.h"
@@ -2085,7 +2086,7 @@ static void ClassicWoodenTwisterRCTrackRightEighthBankToOrthogonal(
 // Stylistically, this coaster is _very_ similar to the regular Wooden Roller Coaster.
 // The only difference is the degree of the banking.
 // As such, all non-banked pieces are simply drawn as regular wooden roller coaster pieces.
-TrackPaintFunction GetTrackPaintFunctionClassicWoodenTwisterRC(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionClassicWoodenTwisterRC(TrackElemType trackType)
 {
     if (!IsCsgLoaded())
     {

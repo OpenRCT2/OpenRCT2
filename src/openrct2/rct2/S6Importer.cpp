@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -25,7 +25,6 @@
 #include "../entity/PatrolArea.h"
 #include "../entity/Staff.h"
 #include "../localisation/Formatting.h"
-#include "../object/ObjectLimits.h"
 #include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
@@ -42,7 +41,6 @@
 #include "../ride/RideData.h"
 #include "../ride/Vehicle.h"
 #include "../sawyer_coding/SawyerChunkReader.h"
-#include "../sawyer_coding/SawyerCoding.h"
 #include "../scenario/Scenario.h"
 #include "../scenario/ScenarioRepository.h"
 #include "../scenario/ScenarioSources.h"
@@ -1093,7 +1091,7 @@ namespace OpenRCT2::RCT2
 
         void ImportRideMeasurement(RideMeasurement& dst, const RCT12RideMeasurement& src)
         {
-            dst.flags = src.Flags;
+            dst.flags.holder = src.Flags;
             dst.last_use_tick = src.LastUseTick;
             dst.num_items = src.NumItems;
             dst.current_item = src.CurrentItem;

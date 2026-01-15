@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -347,13 +347,8 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void onUpdate() override
+        void onUpdateNews()
         {
-            currentFrame++;
-
-            if (page != newsTab)
-                return;
-
             if (_pressedNewsItemIndex == -1 || --_suspendUpdateTicks != 0)
             {
                 return;
@@ -389,6 +384,25 @@ namespace OpenRCT2::Ui::Windows
                 {
                     WindowScrollToLocation(*_mainWindow, subjectLoc.value());
                 }
+            }
+        }
+
+        void onUpdateOptions()
+        {
+            currentFrame++;
+            invalidateWidget(WIDX_TAB_OPTIONS);
+        }
+
+        void onUpdate() override
+        {
+            switch (page)
+            {
+                case newsTab:
+                    onUpdateNews();
+                    break;
+                case optionsTab:
+                    onUpdateOptions();
+                    break;
             }
         }
 
@@ -512,7 +526,7 @@ namespace OpenRCT2::Ui::Windows
                         case News::ItemType::peepOnRide:
                         {
                             RenderTarget clippedRT;
-                            if (!ClipDrawPixelInfo(clippedRT, rt, screenCoords + ScreenCoordsXY{ 1, 1 }, 22, 22))
+                            if (!ClipRenderTarget(clippedRT, rt, screenCoords + ScreenCoordsXY{ 1, 1 }, 22, 22))
                             {
                                 break;
                             }

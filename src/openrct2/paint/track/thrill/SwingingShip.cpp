@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -64,7 +64,7 @@ static void PaintSwingingShipRiders(
     PaintSession& session, const Ride& ride, const Vehicle& vehicle, ImageIndex baseImageIndex, Direction direction,
     const CoordsXYZ& offset, const BoundBoxXYZ& bb)
 {
-    if (session.DPI.zoom_level > ZoomLevel{ 1 })
+    if (session.rt.zoom_level > ZoomLevel{ 1 })
         return;
 
     if (!(ride.lifecycleFlags & RIDE_LIFECYCLE_ON_TRACK))
@@ -299,7 +299,7 @@ static void PaintSwingingShip(
     PaintUtilSetGeneralSupportHeight(session, height + 112);
 }
 
-TrackPaintFunction GetTrackPaintFunctionSwingingShip(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionSwingingShip(TrackElemType trackType)
 {
     if (trackType != TrackElemType::flatTrack1x5)
     {

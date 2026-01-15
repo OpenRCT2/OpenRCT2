@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -117,15 +117,15 @@ namespace OpenRCT2
         }
 
         // Use only with imports that must happen at a specified index
-        EntityBase* CreateEntityAt(const EntityId index, const EntityType type);
+        EntityBase* CreateEntityAt(EntityId index, EntityType type);
         // Use only with imports that must happen at a specified index
         template<typename T>
-        T* CreateEntityAt(const EntityId index)
+        T* CreateEntityAt(EntityId index)
         {
             return static_cast<T*>(CreateEntityAt(index, T::cEntityType));
         }
 
-        const std::list<EntityId>& GetEntityList(const EntityType id);
+        const std::list<EntityId>& GetEntityList(EntityType id);
         uint16_t GetMiscEntityCount();
 
         void ResetAllEntities();
@@ -184,7 +184,7 @@ namespace OpenRCT2
         void AddToEntityList(EntityBase& entity);
         void AddToFreeList(EntityId index);
         void RemoveFromEntityList(EntityBase& entity);
-        void PrepareNewEntity(EntityBase& base, const EntityType type);
+        void PrepareNewEntity(EntityBase& base, EntityType type);
         void EntitySpatialInsert(EntityBase& entity, const CoordsXY& newLoc);
         void EntitySpatialRemove(EntityBase& entity);
         void FreeEntity(EntityBase& entity);

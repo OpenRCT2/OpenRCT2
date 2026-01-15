@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -206,43 +206,43 @@ namespace OpenRCT2
         return (Flags2 & FOOTPATH_ELEMENT_FLAGS2_LEGACY_PATH_ENTRY) != 0;
     }
 
-    const PathSurfaceDescriptor* PathElement::GetSurfaceDescriptor() const
+    const PathSurfaceDescriptor& PathElement::GetSurfaceDescriptor() const
     {
         if (HasLegacyPathEntry())
         {
             const auto* legacyPathEntry = GetLegacyPathEntry();
             if (legacyPathEntry == nullptr)
-                return nullptr;
+                return kPathSurfaceDescriptorDummy;
 
             if (IsQueue())
-                return &legacyPathEntry->GetQueueSurfaceDescriptor();
+                return legacyPathEntry->GetQueueSurfaceDescriptor();
 
-            return &legacyPathEntry->GetPathSurfaceDescriptor();
+            return legacyPathEntry->GetPathSurfaceDescriptor();
         }
 
         const auto* surfaceEntry = GetSurfaceEntry();
         if (surfaceEntry == nullptr)
-            return nullptr;
+            return kPathSurfaceDescriptorDummy;
 
-        return &surfaceEntry->GetDescriptor();
+        return surfaceEntry->GetDescriptor();
     }
 
-    const PathRailingsDescriptor* PathElement::GetRailingsDescriptor() const
+    const PathRailingsDescriptor& PathElement::GetRailingsDescriptor() const
     {
         if (HasLegacyPathEntry())
         {
             const auto* legacyPathEntry = GetLegacyPathEntry();
             if (legacyPathEntry == nullptr)
-                return nullptr;
+                return kPathRailingsDescriptorDummy;
 
-            return &legacyPathEntry->GetPathRailingsDescriptor();
+            return legacyPathEntry->GetPathRailingsDescriptor();
         }
 
         const auto* railingsEntry = GetRailingsEntry();
         if (railingsEntry == nullptr)
-            return nullptr;
+            return kPathRailingsDescriptorDummy;
 
-        return &railingsEntry->GetDescriptor();
+        return railingsEntry->GetDescriptor();
     }
 
     ObjectEntryIndex PathElement::GetSurfaceEntryIndex() const
@@ -299,7 +299,7 @@ namespace OpenRCT2
     bool PathElement::ShouldDrawPathOverSupports() const
     {
         // TODO: make this an actual decision of the tile element.
-        return (GetRailingsDescriptor()->Flags & RAILING_ENTRY_FLAG_DRAW_PATH_OVER_SUPPORTS);
+        return (GetRailingsDescriptor().flags & RAILING_ENTRY_FLAG_DRAW_PATH_OVER_SUPPORTS);
     }
 
     void PathElement::SetShouldDrawPathOverSupports(bool on)

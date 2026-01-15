@@ -1,0 +1,18 @@
+# This workflow automatically labels new pull requests
+# See labeler.yml for the label rules involved
+
+name: Apply labels to pull request
+on: pull_request_target
+
+jobs:
+  labeler:
+    permissions:
+      contents: read
+      issues: write        # automatically creates labels
+      pull-requests: write # assigning labels to PRs
+    runs-on: ubuntu-latest
+    if: github.repository == 'OpenRCT2/OpenRCT2'
+    steps:
+    - uses: actions/labeler@v6
+      with:
+        repo-token: ${{ secrets.GITHUB_TOKEN }}

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,13 +10,9 @@
 #pragma once
 
 #include "../Limits.h"
-#include "../actions/ResultWithMessage.h"
 #include "../core/BitSet.hpp"
 #include "../core/FixedPoint.hpp"
 #include "../core/FlagHolder.hpp"
-#include "../localisation/Formatter.h"
-#include "../object/MusicObject.h"
-#include "../rct2/DATLimits.h"
 #include "../rct2/Limits.h"
 #include "RideColour.h"
 #include "RideEntry.h"
@@ -35,6 +31,7 @@ struct IObjectManager;
 struct Ride;
 struct RideTypeDescriptor;
 struct Guest;
+struct OpenRCT2String;
 struct Staff;
 struct Vehicle;
 struct RideObjectEntry;
@@ -43,6 +40,7 @@ struct ResultWithMessage;
 namespace OpenRCT2
 {
     class Formatter;
+    class MusicObject;
     class StationObject;
 
     struct TileElement;
@@ -72,6 +70,28 @@ enum class RideInspection : uint8_t
     every2Hours,
     never,
 };
+
+// Flags used by ride->windowInvalidateFlags
+enum class RideInvalidateFlag : uint8_t
+{
+    customers,
+    income,
+    main,
+    list,
+    operatingSettings,
+    maintenance,
+    music,
+    ratings,
+};
+using RideInvalidateFlags = FlagHolder<uint8_t, RideInvalidateFlag>;
+
+enum class RideMeasurementFlag : uint8_t
+{
+    running,
+    unloading,
+    gForces
+};
+using RideMeasurementFlags = FlagHolder<uint8_t, RideMeasurementFlag>;
 
 enum class RideTestingFlag : uint8_t
 {
@@ -112,7 +132,7 @@ struct RideMeasurement
 {
     static constexpr size_t kMaxItems = 4800;
 
-    uint8_t flags{};
+    RideMeasurementFlags flags{};
     uint32_t last_use_tick{};
     uint16_t num_items{};
     uint16_t current_item{};
@@ -251,8 +271,8 @@ struct Ride
     uint8_t satisfaction{};
     uint8_t satisfactionTimeout{};
     uint8_t satisfactionNext{};
-    // Various flags stating whether a window needs to be refreshed
-    uint8_t windowInvalidateFlags{};
+    // Various flags stating whether a ride window needs to be refreshed
+    RideInvalidateFlags windowInvalidateFlags{};
     uint32_t totalCustomers{};
     money64 totalProfit{};
     uint8_t popularity{};
@@ -438,8 +458,8 @@ public:
      */
     void updateRideTypeForAllPieces();
 
-    void updateSatisfaction(const uint8_t happiness);
-    void updatePopularity(const uint8_t pop_amount);
+    void updateSatisfaction(uint8_t happiness);
+    void updatePopularity(uint8_t pop_amount);
     void removePeeps();
 
     int32_t getTotalLength() const;
@@ -788,26 +808,6 @@ enum
     WAIT_FOR_LOAD_ANY,
 
     WAIT_FOR_LOAD_COUNT,
-};
-
-// Flags used by ride->windowInvalidateFlags
-enum
-{
-    RIDE_INVALIDATE_RIDE_CUSTOMER = 1,
-    RIDE_INVALIDATE_RIDE_INCOME = 1 << 1,
-    RIDE_INVALIDATE_RIDE_MAIN = 1 << 2,
-    RIDE_INVALIDATE_RIDE_LIST = 1 << 3,
-    RIDE_INVALIDATE_RIDE_OPERATING = 1 << 4,
-    RIDE_INVALIDATE_RIDE_MAINTENANCE = 1 << 5,
-    RIDE_INVALIDATE_RIDE_MUSIC = 1 << 6,
-    RIDE_INVALIDATE_RIDE_RATINGS = 1 << 7,
-};
-
-enum
-{
-    RIDE_MEASUREMENT_FLAG_RUNNING = 1 << 0,
-    RIDE_MEASUREMENT_FLAG_UNLOADING = 1 << 1,
-    RIDE_MEASUREMENT_FLAG_G_FORCES = 1 << 2
 };
 
 enum

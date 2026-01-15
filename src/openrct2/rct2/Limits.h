@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -27,9 +27,7 @@ namespace OpenRCT2::RCT2::Limits
     constexpr uint8_t kMaxResearchedRideEntryQuads = 8; // With 32 bits per uint32_t, this means there is room for
                                                         // 256 entries.
     constexpr uint8_t kMaxResearchedSceneryItemQuads = 56;
-    constexpr const uint16_t kMaxResearchedSceneryItems = (kMaxResearchedSceneryItemQuads * 32); // There are 32
-                                                                                                 // bits per
-                                                                                                 // quad.
+    constexpr uint16_t kMaxResearchedSceneryItems = (kMaxResearchedSceneryItemQuads * 32); // There are 32 bits per quad.
     constexpr uint16_t kMaxResearchItems = 500;
 
     constexpr uint16_t kTD6MaxTrackElements = 8192;

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -21,6 +21,7 @@ namespace OpenRCT2
 namespace OpenRCT2::Drawing
 {
     enum class FilterPaletteID : int32_t;
+    enum class PaletteIndex : uint8_t;
     struct RenderTarget;
 } // namespace OpenRCT2::Drawing
 
@@ -44,7 +45,7 @@ namespace OpenRCT2::Drawing::Rectangle
         dontLightenWhenInset,
     };
 
-    void fill(RenderTarget& rt, const ScreenRect& rect, int32_t colour);
+    void fill(RenderTarget& rt, const ScreenRect& rect, PaletteIndex paletteIndex, bool crossHatch = false);
     void fillInset(
         RenderTarget& rt, const ScreenRect& rect, ColourWithFlags colour, BorderStyle borderStyle = BorderStyle::outset,
         FillBrightness brightness = FillBrightness::light, FillMode fillMode = FillMode::standard);

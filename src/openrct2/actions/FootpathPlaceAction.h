@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -40,9 +40,9 @@ namespace OpenRCT2::GameActions
     private:
         Result ElementUpdateQuery(PathElement* pathElement, Result res) const;
         Result ElementUpdateExecute(PathElement* pathElement, Result res) const;
-        Result ElementInsertQuery(Result res) const;
-        Result ElementInsertExecute(Result res) const;
-        void AutomaticallySetPeepSpawn() const;
+        Result ElementInsertQuery(GameState_t& gameState, Result res) const;
+        Result ElementInsertExecute(GameState_t& gameState, Result res) const;
+        void AutomaticallySetPeepSpawn(GameState_t& gameState) const;
         void RemoveIntersectingWalls(PathElement* pathElement) const;
         PathElement* MapGetFootpathElementWithSlope(const CoordsXYZ& footpathPos, FootpathSlope slope) const;
         bool IsSameAsPathElement(const PathElement* pathElement) const;

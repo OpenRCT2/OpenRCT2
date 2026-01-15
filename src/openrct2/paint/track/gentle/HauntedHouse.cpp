@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -54,7 +54,7 @@ static void PaintHauntedHouseStructure(
     auto bb = BoundBoxXYZ{ { boundBox.offset, height }, { boundBox.length, 127 } };
     PaintAddImageAsParent(session, stationColour.WithIndex(imageIndex), { xOffset, yOffset, height }, bb);
 
-    if (session.DPI.zoom_level <= ZoomLevel{ 0 } && frameNum != 0)
+    if (session.rt.zoom_level <= ZoomLevel{ 0 } && frameNum != 0)
     {
         imageIndex = baseImageIndex + 3 + ((direction & 3) * 18) + frameNum;
         PaintAddImageAsChild(
@@ -125,7 +125,7 @@ static void PaintHauntedHouse(
     PaintUtilSetGeneralSupportHeight(session, height + 128);
 }
 
-TrackPaintFunction GetTrackPaintFunctionHauntedHouse(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionHauntedHouse(TrackElemType trackType)
 {
     if (trackType != TrackElemType::flatTrack3x3)
     {

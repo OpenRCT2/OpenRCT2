@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -196,7 +196,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void onDraw(Drawing::RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
             drawWidgets(rt);
 
@@ -269,10 +269,11 @@ namespace OpenRCT2::Ui::Windows
 
                     if (_cursorBlink > 15)
                     {
-                        uint8_t colour = ColourMapA[colours[1].colour].mid_light;
+                        auto colour = ColourMapA[colours[1].colour].mid_light;
                         // TODO: palette index addition
                         Rectangle::fill(
-                            rt, { { cursorX, screenCoords.y + 9 }, { cursorX + textWidth, screenCoords.y + 9 } }, colour + 5);
+                            rt, { { cursorX, screenCoords.y + 9 }, { cursorX + textWidth, screenCoords.y + 9 } },
+                            static_cast<PaletteIndex>(EnumValue(colour) + 5));
                     }
 
                     cur_drawn++;

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -29,7 +29,7 @@ namespace OpenRCT2
         GetImageTable().Read(context, stream);
 
         // Validate properties
-        if (_legacyType.support_type >= RailingEntrySupportType::Count)
+        if (_legacyType.support_type >= RailingEntrySupportType::count)
         {
             context->LogError(ObjectError::invalidProperty, "RailingEntrySupportType not supported.");
         }
@@ -42,23 +42,23 @@ namespace OpenRCT2
         _legacyType.image = LoadImages();
         _legacyType.bridge_image = _legacyType.image + 109;
 
-        _pathSurfaceDescriptor.Name = _legacyType.string_idx;
-        _pathSurfaceDescriptor.Image = _legacyType.image;
-        _pathSurfaceDescriptor.PreviewImage = _legacyType.GetPreviewImage();
-        _pathSurfaceDescriptor.Flags = _legacyType.flags;
+        _pathSurfaceDescriptor.name = _legacyType.string_idx;
+        _pathSurfaceDescriptor.image = _legacyType.image;
+        _pathSurfaceDescriptor.previewImage = _legacyType.GetPreviewImage();
+        _pathSurfaceDescriptor.flags = _legacyType.flags;
 
-        _queueSurfaceDescriptor.Name = _legacyType.string_idx;
-        _queueSurfaceDescriptor.Image = _legacyType.GetQueueImage();
-        _queueSurfaceDescriptor.PreviewImage = _legacyType.GetQueuePreviewImage();
-        _queueSurfaceDescriptor.Flags = _legacyType.flags | FOOTPATH_ENTRY_FLAG_IS_QUEUE;
+        _queueSurfaceDescriptor.name = _legacyType.string_idx;
+        _queueSurfaceDescriptor.image = _legacyType.GetQueueImage();
+        _queueSurfaceDescriptor.previewImage = _legacyType.GetQueuePreviewImage();
+        _queueSurfaceDescriptor.flags = _legacyType.flags | FOOTPATH_ENTRY_FLAG_IS_QUEUE;
 
-        _pathRailingsDescriptor.Name = _legacyType.string_idx;
-        _pathRailingsDescriptor.BridgeImage = _legacyType.bridge_image;
-        _pathRailingsDescriptor.PreviewImage = _legacyType.GetPreviewImage();
-        _pathRailingsDescriptor.Flags = _legacyType.flags;
-        _pathRailingsDescriptor.ScrollingMode = _legacyType.scrolling_mode;
-        _pathRailingsDescriptor.SupportType = _legacyType.support_type;
-        _pathRailingsDescriptor.RailingsImage = _legacyType.GetRailingsImage();
+        _pathRailingsDescriptor.name = _legacyType.string_idx;
+        _pathRailingsDescriptor.bridgeImage = _legacyType.bridge_image;
+        _pathRailingsDescriptor.previewImage = _legacyType.GetPreviewImage();
+        _pathRailingsDescriptor.flags = _legacyType.flags;
+        _pathRailingsDescriptor.scrollingMode = _legacyType.scrolling_mode;
+        _pathRailingsDescriptor.supportType = _legacyType.support_type;
+        _pathRailingsDescriptor.railingsImage = _legacyType.GetRailingsImage();
     }
 
     void FootpathObject::Unload()
@@ -73,8 +73,8 @@ namespace OpenRCT2
     void FootpathObject::DrawPreview(Drawing::RenderTarget& rt, int32_t width, int32_t height) const
     {
         auto screenCoords = ScreenCoordsXY{ width / 2, height / 2 };
-        GfxDrawSprite(rt, ImageId(_pathSurfaceDescriptor.PreviewImage), screenCoords - ScreenCoordsXY{ 49, 17 });
-        GfxDrawSprite(rt, ImageId(_queueSurfaceDescriptor.PreviewImage), screenCoords + ScreenCoordsXY{ 4, -17 });
+        GfxDrawSprite(rt, ImageId(_pathSurfaceDescriptor.previewImage), screenCoords - ScreenCoordsXY{ 49, 17 });
+        GfxDrawSprite(rt, ImageId(_queueSurfaceDescriptor.previewImage), screenCoords + ScreenCoordsXY{ 4, -17 });
     }
 
     void FootpathObject::ReadJson(IReadObjectContext* context, json_t& root)

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -81,7 +81,6 @@
 #include <span>
 
 using namespace OpenRCT2;
-using namespace OpenRCT2::Numerics;
 
 static const uint8_t kTicksToGoUpSpiralSlide = 30;
 
@@ -451,7 +450,7 @@ static void GuestRideIsTooIntense(Guest& guest, Ride& ride, bool peepAtRide);
 static void GuestResetRideHeading(Guest& guest);
 static void GuestTriedToEnterFullQueue(Guest& guest, Ride& ride);
 static int16_t GuestCalculateRideSatisfaction(Guest& guest, const Ride& ride);
-static void GuestUpdateFavouriteRide(Guest& guest, const Ride& ride, const uint8_t satisfaction);
+static void GuestUpdateFavouriteRide(Guest& guest, const Ride& ride, uint8_t satisfaction);
 static int16_t GuestCalculateRideValueSatisfaction(Guest& guest, const Ride& ride);
 static int16_t GuestCalculateRideIntensityNauseaSatisfaction(Guest& guest, const Ride& ride);
 static void GuestUpdateRideNauseaGrowth(Guest& guest, const Ride& ride);
@@ -950,7 +949,7 @@ void Guest::Tick128UpdateGuest(uint32_t index)
     {
         if (State == PeepState::walking || State == PeepState::sitting)
         {
-            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::crash, GetLocation());
+            Audio::Play3D(Audio::SoundId::crash, GetLocation());
 
             ExplosionCloud::Create({ x, y, z + 16 });
             ExplosionFlare::Create({ x, y, z + 16 });
@@ -1750,10 +1749,10 @@ static bool GuestDecideAndBuyItem(Guest& guest, Ride& ride, const ShopItem shopI
         guest.SpendMoney(*expend_type, price, expenditure);
     }
     ride.totalProfit = AddClamp(ride.totalProfit, price - shopItemDescriptor.Cost);
-    ride.windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_INCOME;
+    ride.windowInvalidateFlags.set(RideInvalidateFlag::income);
     ride.curNumCustomers++;
     ride.totalCustomers = AddClamp(ride.totalCustomers, 1u);
-    ride.windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_CUSTOMER;
+    ride.windowInvalidateFlags.set(RideInvalidateFlag::customers);
 
     return true;
 }
@@ -1829,20 +1828,20 @@ void Guest::OnExitRide(Ride& ride)
     {
         InsertNewThought(PeepThoughtType::WasGreat, ride.id);
 
-        static constexpr OpenRCT2::Audio::SoundId laughs[3] = {
-            OpenRCT2::Audio::SoundId::laugh1,
-            OpenRCT2::Audio::SoundId::laugh2,
-            OpenRCT2::Audio::SoundId::laugh3,
+        static constexpr Audio::SoundId laughs[3] = {
+            Audio::SoundId::laugh1,
+            Audio::SoundId::laugh2,
+            Audio::SoundId::laugh3,
         };
         int32_t laughType = ScenarioRand() & 7;
         if (laughType < 3)
         {
-            OpenRCT2::Audio::Play3D(laughs[laughType], GetLocation());
+            Audio::Play3D(laughs[laughType], GetLocation());
         }
     }
 
     ride.totalCustomers = AddClamp(ride.totalCustomers, 1u);
-    ride.windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_CUSTOMER;
+    ride.windowInvalidateFlags.set(RideInvalidateFlag::customers);
 }
 
 /**
@@ -1879,9 +1878,9 @@ static void GuestPickRideToGoOn(Guest& guest)
     }
 }
 
-static OpenRCT2::BitSet<OpenRCT2::Limits::kMaxRidesInPark> GuestFindRidesToGoOn(Guest& guest)
+static OpenRCT2::BitSet<Limits::kMaxRidesInPark> GuestFindRidesToGoOn(Guest& guest)
 {
-    OpenRCT2::BitSet<OpenRCT2::Limits::kMaxRidesInPark> rideConsideration;
+    OpenRCT2::BitSet<Limits::kMaxRidesInPark> rideConsideration;
 
     // FIX  Originally checked for a toy, likely a mistake and should be a map,
     //      but then again this seems to only allow the peep to go on
@@ -1902,8 +1901,8 @@ static OpenRCT2::BitSet<OpenRCT2::Limits::kMaxRidesInPark> GuestFindRidesToGoOn(
     {
         // Take nearby rides into consideration
         constexpr auto radius = 10 * 32;
-        int32_t cx = floor2(guest.x, 32);
-        int32_t cy = floor2(guest.y, 32);
+        int32_t cx = Numerics::floor2(guest.x, 32);
+        int32_t cy = Numerics::floor2(guest.y, 32);
         for (int32_t tileX = cx - radius; tileX <= cx + radius; tileX += kCoordsXYStep)
         {
             for (int32_t tileY = cy - radius; tileY <= cy + radius; tileY += kCoordsXYStep)
@@ -2348,7 +2347,7 @@ void Guest::SpendMoney(money64& peep_expend_type, money64 amount, ExpenditureTyp
 {
     assert(!(getGameState().park.flags & PARK_FLAGS_NO_MONEY));
 
-    CashInPocket = std::max(0.00_GBP, static_cast<money64>(CashInPocket) - amount);
+    CashInPocket = std::max(0.00_GBP, CashInPocket - amount);
     CashSpent += amount;
 
     peep_expend_type += amount;
@@ -2360,29 +2359,29 @@ void Guest::SpendMoney(money64& peep_expend_type, money64 amount, ExpenditureTyp
 
     MoneyEffect::CreateAt(amount, GetLocation(), true);
 
-    OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::purchase, GetLocation());
+    Audio::Play3D(Audio::SoundId::purchase, GetLocation());
 }
 
 void Guest::SetHasRidden(const Ride& ride)
 {
-    OpenRCT2::RideUse::GetHistory().Add(Id, ride.id);
+    RideUse::GetHistory().Add(Id, ride.id);
 
     SetHasRiddenRideType(ride.type);
 }
 
 bool Guest::HasRidden(const Ride& ride) const
 {
-    return OpenRCT2::RideUse::GetHistory().Contains(Id, ride.id);
+    return RideUse::GetHistory().Contains(Id, ride.id);
 }
 
 void Guest::SetHasRiddenRideType(ride_type_t rideType)
 {
-    OpenRCT2::RideUse::GetTypeHistory().Add(Id, rideType);
+    RideUse::GetTypeHistory().Add(Id, rideType);
 }
 
 bool Guest::HasRiddenRideType(ride_type_t rideType) const
 {
-    return OpenRCT2::RideUse::GetTypeHistory().Contains(Id, rideType);
+    return RideUse::GetTypeHistory().Contains(Id, rideType);
 }
 
 void Guest::SetParkEntryTime(int32_t entryTime)
@@ -2579,7 +2578,7 @@ void Guest::GoToRideEntrance(const Ride& ride)
 }
 
 static bool FindVehicleToEnter(
-    Guest& guest, const Ride& ride, sfl::static_vector<uint8_t, OpenRCT2::Limits::kMaxTrainsPerRide>& car_array)
+    Guest& guest, const Ride& ride, sfl::static_vector<uint8_t, Limits::kMaxTrainsPerRide>& car_array)
 {
     uint8_t chosen_train = RideStation::kNoTrain;
 
@@ -2607,7 +2606,7 @@ static bool FindVehicleToEnter(
     {
         chosen_train = ride.getStation(guest.CurrentRideStation).TrainAtStation;
     }
-    if (chosen_train >= OpenRCT2::Limits::kMaxTrainsPerRide)
+    if (chosen_train >= Limits::kMaxTrainsPerRide)
     {
         return false;
     }
@@ -3192,7 +3191,7 @@ static void PeepHeadForNearestRide(Guest& guest, bool considerOnlyCloseRides, T 
         }
     }
 
-    OpenRCT2::BitSet<OpenRCT2::Limits::kMaxRidesInPark> rideConsideration;
+    OpenRCT2::BitSet<Limits::kMaxRidesInPark> rideConsideration;
     if (!considerOnlyCloseRides && (guest.HasItem(ShopItem::map)))
     {
         // Consider all rides in the park
@@ -3209,8 +3208,8 @@ static void PeepHeadForNearestRide(Guest& guest, bool considerOnlyCloseRides, T 
     {
         // Take nearby rides into consideration
         constexpr auto kSearchRadius = 10 * 32;
-        int32_t cx = floor2(guest.x, 32);
-        int32_t cy = floor2(guest.y, 32);
+        int32_t cx = Numerics::floor2(guest.x, 32);
+        int32_t cy = Numerics::floor2(guest.y, 32);
         for (auto x = cx - kSearchRadius; x <= cx + kSearchRadius; x += kCoordsXYStep)
         {
             for (auto y = cy - kSearchRadius; y <= cy + kSearchRadius; y += kCoordsXYStep)
@@ -3236,7 +3235,7 @@ static void PeepHeadForNearestRide(Guest& guest, bool considerOnlyCloseRides, T 
     }
 
     // Filter the considered rides
-    RideId potentialRides[OpenRCT2::Limits::kMaxRidesInPark];
+    RideId potentialRides[Limits::kMaxRidesInPark];
     size_t numPotentialRides = 0;
 
     auto& gameState = getGameState();
@@ -3374,7 +3373,7 @@ static bool PeepShouldUseCashMachine(Guest& guest, RideId rideIndex)
         ride->updateSatisfaction(guest.Happiness >> 6);
         ride->curNumCustomers++;
         ride->totalCustomers = AddClamp(ride->totalCustomers, 1u);
-        ride->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_CUSTOMER;
+        ride->windowInvalidateFlags.set(RideInvalidateFlag::customers);
     }
     return true;
 }
@@ -3530,7 +3529,7 @@ void Guest::UpdateRideAtEntrance()
         }
     }
 
-    sfl::static_vector<uint8_t, OpenRCT2::Limits::kMaxTrainsPerRide> carArray;
+    sfl::static_vector<uint8_t, Limits::kMaxTrainsPerRide> carArray;
 
     if (ride->getRideTypeDescriptor().HasFlag(RtdFlag::noVehicles))
     {
@@ -3850,7 +3849,7 @@ static void PeepGoToRideExit(Guest& guest, const Ride& ride, int16_t x, int16_t 
 
     guest.MoveTo({ x, y, z });
 
-    Guard::Assert(guest.CurrentRideStation.ToUnderlying() < OpenRCT2::Limits::kMaxStationsPerRide);
+    Guard::Assert(guest.CurrentRideStation.ToUnderlying() < Limits::kMaxStationsPerRide);
     auto exit = ride.getStation(guest.CurrentRideStation).Exit;
     x = exit.x;
     y = exit.y;
@@ -3911,7 +3910,7 @@ void Guest::UpdateRideFreeVehicleEnterRide(Ride& ride)
         else
         {
             ride.totalProfit = AddClamp<money64>(ride.totalProfit, ridePrice);
-            ride.windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_INCOME;
+            ride.windowInvalidateFlags.set(RideInvalidateFlag::income);
             SpendMoney(PaidOnRides, ridePrice, ExpenditureType::parkRideTickets);
         }
     }
@@ -4201,7 +4200,7 @@ void Guest::UpdateRideLeaveVehicle()
     vehicle->ApplyMass(-Mass);
     vehicle->Invalidate();
 
-    if (ride_station.ToUnderlying() >= OpenRCT2::Limits::kMaxStationsPerRide)
+    if (ride_station.ToUnderlying() >= Limits::kMaxStationsPerRide)
     {
         // HACK #5658: Some parks have hacked rides which end up in this state
         auto bestStationIndex = RideGetFirstValidStationExit(*ride);
@@ -4220,7 +4219,7 @@ void Guest::UpdateRideLeaveVehicle()
 
     const auto* carEntry = &rideEntry->Cars[vehicle->vehicle_type];
 
-    assert(CurrentRideStation.ToUnderlying() < OpenRCT2::Limits::kMaxStationsPerRide);
+    assert(CurrentRideStation.ToUnderlying() < Limits::kMaxStationsPerRide);
     auto& station = ride->getStation(CurrentRideStation);
 
     if (!(carEntry->flags & CAR_ENTRY_FLAG_LOADING_WAYPOINTS))
@@ -5181,7 +5180,7 @@ void Guest::UpdateRideShopInteract()
     // Do not play toilet flush sound on title screen as it's considered loud and annoying
     if (gLegacyScene != LegacyScene::titleSequence)
     {
-        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::toiletFlush, GetLocation());
+        Audio::Play3D(Audio::SoundId::toiletFlush, GetLocation());
     }
 
     RideSubState = PeepRideSubState::leaveShop;
@@ -5218,7 +5217,7 @@ void Guest::UpdateRideShopLeave()
     if (ride != nullptr)
     {
         ride->totalCustomers = AddClamp(ride->totalCustomers, 1u);
-        ride->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_CUSTOMER;
+        ride->windowInvalidateFlags.set(RideInvalidateFlag::customers);
         ride->updateSatisfaction(Happiness / 64);
     }
 }
@@ -6270,7 +6269,7 @@ bool Guest::UpdateWalkingFindBin()
         chosen_edge = (chosen_edge + 1) & 0x3;
         bin_quantities = Numerics::ror8(bin_quantities, 2);
         if ((free_edge - 1) == 0)
-            return 0;
+            return false;
     }
 
     peep->Var37 = chosen_edge;
@@ -6940,7 +6939,7 @@ void Guest::UpdateAnimationGroup()
             if ((ScenarioRand() & 0xFFFF) <= 13107)
             {
                 isBalloonPopped = true;
-                OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::balloonPop, { x, y, z });
+                Audio::Play3D(Audio::SoundId::balloonPop, { x, y, z });
             }
             Balloon::Create({ x, y, z + 9 }, BalloonColour, isBalloonPopped);
         }
@@ -7399,18 +7398,18 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
     IncrementGuestsHeadingForPark();
 
 #ifdef ENABLE_SCRIPTING
-    auto& hookEngine = OpenRCT2::GetContext()->GetScriptEngine().GetHookEngine();
-    if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HookType::guestGeneration))
+    auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
+    if (hookEngine.HasSubscriptions(Scripting::HookType::guestGeneration))
     {
-        auto ctx = OpenRCT2::GetContext()->GetScriptEngine().GetContext();
+        auto ctx = GetContext()->GetScriptEngine().GetContext();
 
         // Create event args object
-        auto obj = OpenRCT2::Scripting::DukObject(ctx);
+        auto obj = Scripting::DukObject(ctx);
         obj.Set("id", peep->Id.ToUnderlying());
 
         // Call the subscriptions
         auto e = obj.Take();
-        hookEngine.Call(OpenRCT2::Scripting::HookType::guestGeneration, e, true);
+        hookEngine.Call(Scripting::HookType::guestGeneration, e, true);
     }
 #endif
 
@@ -7790,14 +7789,14 @@ void Guest::ThrowUp()
     const auto curLoc = GetLocation();
     Litter::Create({ curLoc, Orientation }, (Id.ToUnderlying() & 1) ? Litter::Type::vomitAlt : Litter::Type::vomit);
 
-    static constexpr OpenRCT2::Audio::SoundId coughs[4] = {
-        OpenRCT2::Audio::SoundId::cough1,
-        OpenRCT2::Audio::SoundId::cough2,
-        OpenRCT2::Audio::SoundId::cough3,
-        OpenRCT2::Audio::SoundId::cough4,
+    static constexpr Audio::SoundId coughs[4] = {
+        Audio::SoundId::cough1,
+        Audio::SoundId::cough2,
+        Audio::SoundId::cough3,
+        Audio::SoundId::cough4,
     };
     auto soundId = coughs[ScenarioRand() & 3];
-    OpenRCT2::Audio::Play3D(soundId, curLoc);
+    Audio::Play3D(soundId, curLoc);
 }
 
 void Guest::Serialise(DataSerialiser& stream)

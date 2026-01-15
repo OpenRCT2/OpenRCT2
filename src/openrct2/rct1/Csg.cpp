@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,78 +14,80 @@
 #include "../drawing/Drawing.h"
 #include "../rct1/Limits.h"
 
-using namespace OpenRCT2;
-
-std::string FindCsg1datAtLocation(u8string_view path)
+namespace OpenRCT2
 {
-    auto checkPath1 = Path::Combine(path, u8"Data", u8"CSG1.DAT");
-    auto checkPath2 = Path::Combine(path, u8"Data", u8"CSG1.1");
-
-    // Since Linux is case sensitive (and macOS sometimes too), make sure we handle case properly.
-    std::string path1result = Path::ResolveCasing(checkPath1);
-    if (!path1result.empty())
+    std::string FindCsg1datAtLocation(u8string_view path)
     {
-        return path1result;
+        auto checkPath1 = Path::Combine(path, u8"Data", u8"CSG1.DAT");
+        auto checkPath2 = Path::Combine(path, u8"Data", u8"CSG1.1");
+
+        // Since Linux is case sensitive (and macOS sometimes too), make sure we handle case properly.
+        std::string path1result = Path::ResolveCasing(checkPath1);
+        if (!path1result.empty())
+        {
+            return path1result;
+        }
+
+        std::string path2result = Path::ResolveCasing(checkPath2);
+        return path2result;
     }
 
-    std::string path2result = Path::ResolveCasing(checkPath2);
-    return path2result;
-}
-
-bool Csg1datPresentAtLocation(u8string_view path)
-{
-    auto location = FindCsg1datAtLocation(path);
-    return !location.empty();
-}
-
-u8string FindCsg1idatAtLocation(u8string_view path)
-{
-    auto result1 = Path::ResolveCasing(Path::Combine(path, u8"Data", u8"CSG1I.DAT"));
-    if (!result1.empty())
+    bool Csg1datPresentAtLocation(u8string_view path)
     {
-        return result1;
-    }
-    auto result2 = Path::ResolveCasing(Path::Combine(path, u8"RCTdeluxe_install", u8"Data", u8"CSG1I.DAT"));
-    return result2;
-}
-
-bool Csg1idatPresentAtLocation(u8string_view path)
-{
-    std::string location = FindCsg1idatAtLocation(path);
-    return !location.empty();
-}
-
-bool RCT1DataPresentAtLocation(u8string_view path)
-{
-    return Csg1datPresentAtLocation(path) && Csg1idatPresentAtLocation(path) && CsgAtLocationIsUsable(path);
-}
-
-bool CsgIsUsable(const Gx& csg)
-{
-    return csg.header.totalSize == RCT1::Limits::kLLCsg1DatFileSize && csg.header.numEntries == RCT1::Limits::kNumLLCsgEntries;
-}
-
-bool CsgAtLocationIsUsable(u8string_view path)
-{
-    auto csg1HeaderPath = FindCsg1idatAtLocation(path);
-    if (csg1HeaderPath.empty())
-    {
-        return false;
+        auto location = FindCsg1datAtLocation(path);
+        return !location.empty();
     }
 
-    auto csg1DataPath = FindCsg1datAtLocation(path);
-    if (csg1DataPath.empty())
+    u8string FindCsg1idatAtLocation(u8string_view path)
     {
-        return false;
+        auto result1 = Path::ResolveCasing(Path::Combine(path, u8"Data", u8"CSG1I.DAT"));
+        if (!result1.empty())
+        {
+            return result1;
+        }
+        auto result2 = Path::ResolveCasing(Path::Combine(path, u8"RCTdeluxe_install", u8"Data", u8"CSG1I.DAT"));
+        return result2;
     }
 
-    auto fileHeader = FileStream(csg1HeaderPath, FileMode::open);
-    auto fileData = FileStream(csg1DataPath, FileMode::open);
-    size_t fileHeaderSize = fileHeader.GetLength();
-    size_t fileDataSize = fileData.GetLength();
+    bool Csg1idatPresentAtLocation(u8string_view path)
+    {
+        std::string location = FindCsg1idatAtLocation(path);
+        return !location.empty();
+    }
 
-    Gx csg = {};
-    csg.header.numEntries = static_cast<uint32_t>(fileHeaderSize / sizeof(StoredG1Element));
-    csg.header.totalSize = static_cast<uint32_t>(fileDataSize);
-    return CsgIsUsable(csg);
-}
+    bool RCT1DataPresentAtLocation(u8string_view path)
+    {
+        return Csg1datPresentAtLocation(path) && Csg1idatPresentAtLocation(path) && CsgAtLocationIsUsable(path);
+    }
+
+    bool CsgIsUsable(const Gx& csg)
+    {
+        return csg.header.totalSize == RCT1::Limits::kLLCsg1DatFileSize
+            && csg.header.numEntries == RCT1::Limits::kNumLLCsgEntries;
+    }
+
+    bool CsgAtLocationIsUsable(u8string_view path)
+    {
+        auto csg1HeaderPath = FindCsg1idatAtLocation(path);
+        if (csg1HeaderPath.empty())
+        {
+            return false;
+        }
+
+        auto csg1DataPath = FindCsg1datAtLocation(path);
+        if (csg1DataPath.empty())
+        {
+            return false;
+        }
+
+        auto fileHeader = FileStream(csg1HeaderPath, FileMode::open);
+        auto fileData = FileStream(csg1DataPath, FileMode::open);
+        size_t fileHeaderSize = fileHeader.GetLength();
+        size_t fileDataSize = fileData.GetLength();
+
+        Gx csg = {};
+        csg.header.numEntries = static_cast<uint32_t>(fileHeaderSize / sizeof(StoredG1Element));
+        csg.header.totalSize = static_cast<uint32_t>(fileDataSize);
+        return CsgIsUsable(csg);
+    }
+} // namespace OpenRCT2

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -48,8 +48,8 @@ namespace OpenRCT2::Network
             return a.Local ? -1 : 1;
         }
 
-        bool serverACompatible = a.Version == Network::GetVersion();
-        bool serverBCompatible = b.Version == Network::GetVersion();
+        bool serverACompatible = a.Version == GetVersion();
+        bool serverBCompatible = b.Version == GetVersion();
         if (serverACompatible != serverBCompatible)
         {
             return serverACompatible ? -1 : 1;
@@ -70,7 +70,7 @@ namespace OpenRCT2::Network
 
     bool ServerListEntry::IsVersionValid() const noexcept
     {
-        return Version.empty() || Version == Network::GetVersion();
+        return Version.empty() || Version == GetVersion();
     }
 
     std::optional<ServerListEntry> ServerListEntry::FromJson(json_t& server)

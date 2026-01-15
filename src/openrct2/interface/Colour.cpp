@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -43,7 +43,7 @@ void ColoursInitMaps()
     {
         // Get palette index in g1 / g2
         const auto paletteIndex = (i < kColourNumOriginal) ? SPR_PALETTE_2_START : SPR_G2_PALETTE_BEGIN - kColourNumOriginal;
-        const G1Element* g1 = GfxGetG1Element(paletteIndex + i);
+        const auto* g1 = GfxGetG1Element(paletteIndex + i);
         if (g1 != nullptr)
         {
             ColourMapA[i].colour_0 = static_cast<PaletteIndex>(g1->offset[INDEX_COLOUR_0]);
@@ -141,19 +141,20 @@ namespace OpenRCT2::Colour
 } // namespace OpenRCT2::Colour
 
 #ifndef DISABLE_TTF
-static BlendColourMapType BlendColourMap = { 0 };
+static BlendColourMapType BlendColourMap = {};
 
 static bool BlendColourMapInitialised = false;
 
-static uint8_t FindClosestPaletteIndex(uint8_t red, uint8_t green, uint8_t blue)
+static PaletteIndex FindClosestPaletteIndex(uint8_t red, uint8_t green, uint8_t blue)
 {
-    int16_t closest = -1;
+    PaletteIndex closest = PaletteIndex::pi255;
     int32_t closestDistance = INT32_MAX;
 
-    for (int i = PaletteIndex::pi0; i < PaletteIndex::pi230; i++)
+    for (auto i = PaletteIndex::pi0; i < PaletteIndex::pi230; i = static_cast<PaletteIndex>(EnumValue(i) + 1))
     {
-        const int32_t distance = std::pow(gPalette[i].Red - red, 2) + std::pow(gPalette[i].Green - green, 2)
-            + std::pow(gPalette[i].Blue - blue, 2);
+        const auto& paletteEntry = gPalette[EnumValue(i)];
+        const int32_t distance = std::pow(paletteEntry.Red - red, 2) + std::pow(paletteEntry.Green - green, 2)
+            + std::pow(paletteEntry.Blue - blue, 2);
 
         if (distance < closestDistance)
         {
@@ -192,13 +193,13 @@ BlendColourMapType* GetBlendColourMap()
     return &BlendColourMap;
 }
 
-uint8_t BlendColours(const uint8_t paletteIndex1, const uint8_t paletteIndex2)
+PaletteIndex BlendColours(const PaletteIndex paletteIndex1, const PaletteIndex paletteIndex2)
 {
     if (!BlendColourMapInitialised)
     {
         InitBlendColourMap();
     }
-    return BlendColourMap[paletteIndex1][paletteIndex2];
+    return BlendColourMap[EnumValue(paletteIndex1)][EnumValue(paletteIndex2)];
 }
 #else
 BlendColourMapType* GetBlendColourMap()

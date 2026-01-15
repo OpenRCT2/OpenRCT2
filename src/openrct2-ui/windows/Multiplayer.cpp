@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -17,8 +17,8 @@
 #include <openrct2/actions/NetworkModifyGroupAction.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/String.hpp>
+#include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
-#include <openrct2/drawing/Text.h>
 #include <openrct2/interface/ColourWithFlags.h>
 #include <openrct2/network/Network.h>
 #include <openrct2/ui/WindowManager.h>
@@ -185,8 +185,8 @@ namespace OpenRCT2::Ui::Windows
 
         void informationPaint(Drawing::RenderTarget& rt)
         {
-            RenderTarget clippedDPI;
-            if (ClipDrawPixelInfo(clippedDPI, rt, windowPos, width, height))
+            RenderTarget clippedRT;
+            if (ClipRenderTarget(clippedRT, rt, windowPos, width, height))
             {
                 auto screenCoords = ScreenCoordsXY{ 3, widgets[WIDX_CONTENT_PANEL].top + 7 };
                 int32_t newWidth = width - 6;
@@ -195,7 +195,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     auto ft = Formatter();
                     ft.Add<const char*>(name.c_str());
-                    screenCoords.y += DrawTextWrapped(clippedDPI, screenCoords, newWidth, STR_STRING, ft, { colours[1] });
+                    screenCoords.y += DrawTextWrapped(clippedRT, screenCoords, newWidth, STR_STRING, ft, { colours[1] });
                     screenCoords.y += kListRowHeight / 2;
                 }
 
@@ -204,7 +204,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     auto ft = Formatter();
                     ft.Add<const char*>(description.c_str());
-                    screenCoords.y += DrawTextWrapped(clippedDPI, screenCoords, newWidth, STR_STRING, ft, { colours[1] });
+                    screenCoords.y += DrawTextWrapped(clippedRT, screenCoords, newWidth, STR_STRING, ft, { colours[1] });
                     screenCoords.y += kListRowHeight / 2;
                 }
 
@@ -213,7 +213,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     auto ft = Formatter();
                     ft.Add<const char*>(providerName.c_str());
-                    DrawTextBasic(clippedDPI, screenCoords, STR_PROVIDER_NAME, ft);
+                    DrawTextBasic(clippedRT, screenCoords, STR_PROVIDER_NAME, ft);
                     screenCoords.y += kListRowHeight;
                 }
 
@@ -222,7 +222,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     auto ft = Formatter();
                     ft.Add<const char*>(providerEmail.c_str());
-                    DrawTextBasic(clippedDPI, screenCoords, STR_PROVIDER_EMAIL, ft);
+                    DrawTextBasic(clippedRT, screenCoords, STR_PROVIDER_EMAIL, ft);
                     screenCoords.y += kListRowHeight;
                 }
 
@@ -231,7 +231,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     auto ft = Formatter();
                     ft.Add<const char*>(providerWebsite.c_str());
-                    DrawTextBasic(clippedDPI, screenCoords, STR_PROVIDER_WEBSITE, ft);
+                    DrawTextBasic(clippedRT, screenCoords, STR_PROVIDER_WEBSITE, ft);
                 }
             }
         }

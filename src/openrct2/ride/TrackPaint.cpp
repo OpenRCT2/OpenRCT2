@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -203,7 +203,7 @@ static_assert(std::size(kStationBaseTypeSpriteIndexes) == kStationBaseTypeCount)
 
 static bool TrackPaintUtilDrawStationImpl(
     PaintSession& session, const Ride& ride, Direction direction, uint16_t height, uint16_t coverHeight,
-    const TrackElement& trackElement, const StationBaseType baseType, const int32_t baseOffsetZ, int32_t fenceOffsetA,
+    const TrackElement& trackElement, StationBaseType baseType, int32_t baseOffsetZ, int32_t fenceOffsetA,
     int32_t fenceOffsetB);
 
 bool TrackPaintUtilDrawStation(

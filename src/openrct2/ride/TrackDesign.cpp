@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -21,6 +21,7 @@
 #include "../actions/LargeSceneryPlaceAction.h"
 #include "../actions/LargeSceneryRemoveAction.h"
 #include "../actions/MazePlaceTrackAction.h"
+#include "../actions/ResultWithMessage.h"
 #include "../actions/RideCreateAction.h"
 #include "../actions/RideDemolishAction.h"
 #include "../actions/RideEntranceExitPlaceAction.h"
@@ -1406,7 +1407,7 @@ static std::optional<GameActions::Result> TrackDesignPlaceEntrances(
                 }
                 else
                 {
-                    auto res = GameActions::RideEntranceExitPlaceAction::TrackPlaceQuery(newCoords, false);
+                    auto res = GameActions::RideEntranceExitPlaceAction::TrackPlaceQuery(gameState, newCoords, false);
                     if (res.error != GameActions::Status::ok)
                     {
                         return res;
@@ -1641,8 +1642,8 @@ static GameActions::Result TrackDesignPlaceRide(
                 }
 
                 auto trackPlaceAction = GameActions::TrackPlaceAction(
-                    ride.id, trackType, ride.type, { newCoords, tempZ, static_cast<uint8_t>(rotation) },
-                    track.brakeBoosterSpeed, track.colourScheme, track.seatRotation, liftHillAndAlternativeState, true);
+                    ride.id, trackType, ride.type, { newCoords, tempZ, rotation }, track.brakeBoosterSpeed, track.colourScheme,
+                    track.seatRotation, liftHillAndAlternativeState, true);
                 trackPlaceAction.SetFlags(flags);
 
                 auto res = flags.has(CommandFlag::apply) ? GameActions::ExecuteNested(&trackPlaceAction, gameState)

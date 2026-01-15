@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -189,8 +189,7 @@ namespace OpenRCT2::Ui::Windows
 
     // OverwritePrompt
     WindowBase* WindowOverwritePromptOpen(
-        const std::string_view name, const std::string_view path, LoadSaveAction action, LoadSaveType type,
-        TrackDesign* trackDesignPtr);
+        std::string_view name, std::string_view path, LoadSaveAction action, LoadSaveType type, TrackDesign* trackDesignPtr);
     void WindowLoadSaveOverwritePromptInputKey(WindowBase* w, uint32_t keycode);
 
     // Park
@@ -224,7 +223,7 @@ namespace OpenRCT2::Ui::Windows
     void WindowResearchFundingMouseUp(WidgetIndex widgetIndex, WidgetIndex baseWidgetIndex);
     void WindowResearchFundingDropdown(WidgetIndex widgetIndex, int32_t selectedIndex, WidgetIndex baseWidgetIndex);
     void WindowResearchFundingPrepareDraw(WindowBase* w, WidgetIndex baseWidgetIndex);
-    void WindowResearchFundingDraw(WindowBase* w, Drawing::RenderTarget& dpi);
+    void WindowResearchFundingDraw(WindowBase* w, Drawing::RenderTarget& rt);
 
     // Ride
     WindowBase* RideMainOpen(const Ride& ride);
@@ -271,9 +270,9 @@ namespace OpenRCT2::Ui::Windows
     // Scenery
     WindowBase* SceneryOpen();
     void WindowScenerySetSelectedItem(
-        const ScenerySelection& sceneryconst, std::optional<colour_t> primary, const std::optional<colour_t> secondary,
-        const std::optional<colour_t> tertiary, const std::optional<colour_t> rotation);
-    void WindowScenerySetSelectedTab(const ObjectEntryIndex sceneryGroupIndex);
+        const ScenerySelection& sceneryconst, std::optional<colour_t> primary, std::optional<colour_t> secondary,
+        std::optional<colour_t> tertiary, std::optional<colour_t> rotation);
+    void WindowScenerySetSelectedTab(ObjectEntryIndex sceneryGroupIndex);
     void WindowScenerySetDefaultPlacementConfiguration();
     void WindowSceneryInit();
     void WindowSceneryResetSelectedSceneryItems();

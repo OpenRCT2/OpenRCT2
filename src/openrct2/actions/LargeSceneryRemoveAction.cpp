@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -88,9 +88,9 @@ namespace OpenRCT2::GameActions
 
             auto currentTile = CoordsXYZ{ firstTile.x, firstTile.y, firstTile.z } + currentTileRotatedOffset;
 
-            if (gLegacyScene != LegacyScene::scenarioEditor && !getGameState().cheats.sandboxMode)
+            if (gLegacyScene != LegacyScene::scenarioEditor && !gameState.cheats.sandboxMode)
             {
-                if (getGameState().park.flags & PARK_FLAGS_FORBID_TREE_REMOVAL)
+                if (gameState.park.flags & PARK_FLAGS_FORBID_TREE_REMOVAL)
                 {
                     if (sceneryEntry->HasFlag(LARGE_SCENERY_FLAG_IS_TREE))
                     {
@@ -167,7 +167,7 @@ namespace OpenRCT2::GameActions
 
             auto currentTile = CoordsXYZ{ firstTile.x, firstTile.y, firstTile.z } + rotatedCurrentTile;
 
-            if (gLegacyScene != LegacyScene::scenarioEditor && !getGameState().cheats.sandboxMode)
+            if (gLegacyScene != LegacyScene::scenarioEditor && !gameState.cheats.sandboxMode)
             {
                 if (!MapIsLocationOwned({ currentTile.x, currentTile.y, currentTile.z }))
                 {

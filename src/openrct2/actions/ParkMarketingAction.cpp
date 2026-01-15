@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -54,7 +54,7 @@ namespace OpenRCT2::GameActions
         {
             return Result(Status::invalidParameters, STR_CANT_START_MARKETING_CAMPAIGN, STR_ERR_VALUE_OUT_OF_RANGE);
         }
-        if (getGameState().park.flags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN)
+        if (gameState.park.flags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN)
         {
             return Result(
                 Status::disallowed, STR_CANT_START_MARKETING_CAMPAIGN, STR_MARKETING_CAMPAIGNS_FORBIDDEN_BY_LOCAL_AUTHORITY);
@@ -80,7 +80,7 @@ namespace OpenRCT2::GameActions
         MarketingNewCampaign(campaign);
 
         // We are only interested in invalidating the finances (marketing) window
-        auto windowManager = OpenRCT2::Ui::GetWindowManager();
+        auto windowManager = Ui::GetWindowManager();
         windowManager->BroadcastIntent(Intent(INTENT_ACTION_UPDATE_CASH));
 
         return CreateResult();

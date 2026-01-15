@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -16,6 +16,7 @@
 #include "../core/String.hpp"
 #include "../core/UTF8.h"
 #include "../core/UnicodeChar.h"
+#include "../drawing/Drawing.h"
 #include "../drawing/IDrawingContext.h"
 #include "../drawing/IDrawingEngine.h"
 #include "../drawing/Text.h"
@@ -317,7 +318,7 @@ static void ColourCharacterWindow(colour_t colour, bool withOutline, Drawing::Te
  * top      : dx
  * numLines : bp
  * text     : esi
- * dpi      : edi
+ * rt      : edi
  */
 void DrawStringCentredRaw(
     RenderTarget& rt, const ScreenCoordsXY& coords, int32_t numLines, const utf8* text, FontStyle fontStyle)
@@ -410,7 +411,7 @@ int32_t StringGetHeightRaw(std::string_view text, FontStyle fontStyle)
  * x        : cx
  * y        : dx
  * text     : esi
- * dpi      : edi
+ * rt      : edi
  * width    : bp
  * ticks    : ebp >> 16
  */
@@ -485,7 +486,7 @@ static void TTFDrawCharacterSprite(RenderTarget& rt, int32_t codepoint, TextDraw
             screenCoords.y += *info->yOffset++;
         }
 
-        uint8_t palette[8]{};
+        PaletteIndex palette[8]{};
         palette[1] = info->palette.fill;
         palette[2] = info->palette.sunnyOutline;
         palette[3] = info->palette.shadowOutline;

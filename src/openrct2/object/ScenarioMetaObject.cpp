@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -13,6 +13,7 @@
 #include "../PlatformEnvironment.h"
 #include "../core/Guard.hpp"
 #include "../core/Json.hpp"
+#include "../drawing/Drawing.h"
 
 namespace OpenRCT2
 {
@@ -63,7 +64,7 @@ namespace OpenRCT2
         preview.width = g1->width;
         preview.height = g1->height;
 
-        std::copy_n(g1->offset, g1->width * g1->height, preview.pixels);
+        std::copy_n(g1->offset, g1->width * g1->height, reinterpret_cast<uint8_t*>(preview.pixels));
 
         return preview;
     }
@@ -80,7 +81,7 @@ namespace OpenRCT2
         preview.width = g1->width;
         preview.height = g1->height;
 
-        std::copy_n(g1->offset, g1->width * g1->height, preview.pixels);
+        std::copy_n(g1->offset, g1->width * g1->height, reinterpret_cast<uint8_t*>(preview.pixels));
 
         return preview;
     }

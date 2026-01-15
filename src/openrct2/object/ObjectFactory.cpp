@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -219,7 +219,7 @@ namespace OpenRCT2::ObjectFactory
      * @note jRoot is deliberately left non-const: json_t behaviour changes when const
      */
     static std::unique_ptr<Object> CreateObjectFromJson(
-        json_t& jRoot, const IFileDataRetriever* fileRetriever, bool loadImageTable, const std::string_view path);
+        json_t& jRoot, const IFileDataRetriever* fileRetriever, bool loadImageTable, std::string_view path);
 
     static ObjectSourceGame ParseSourceGame(const std::string_view s)
     {
@@ -237,7 +237,7 @@ namespace OpenRCT2::ObjectFactory
         return (result != LookupTable.end()) ? result->second : ObjectSourceGame::custom;
     }
 
-    static void ReadObjectLegacy(Object& object, IReadObjectContext* context, OpenRCT2::IStream* stream)
+    static void ReadObjectLegacy(Object& object, IReadObjectContext* context, IStream* stream)
     {
         try
         {
@@ -261,16 +261,16 @@ namespace OpenRCT2::ObjectFactory
         if (String::iequals(extension, ".json"))
         {
             auto pathStr = u8string(path);
-            object = ObjectFactory::CreateObjectFromJsonFile(pathStr, loadImages);
+            object = CreateObjectFromJsonFile(pathStr, loadImages);
         }
         else if (String::iequals(extension, ".parkobj"))
         {
-            object = ObjectFactory::CreateObjectFromZipFile(path, loadImages);
+            object = CreateObjectFromZipFile(path, loadImages);
         }
         else
         {
             auto pathStr = u8string(path);
-            object = ObjectFactory::CreateObjectFromLegacyFile(pathStr.c_str(), loadImages);
+            object = CreateObjectFromLegacyFile(pathStr.c_str(), loadImages);
         }
 
         return object;
@@ -283,7 +283,7 @@ namespace OpenRCT2::ObjectFactory
         std::unique_ptr<Object> result;
         try
         {
-            auto fs = OpenRCT2::FileStream(path, OpenRCT2::FileMode::open);
+            auto fs = FileStream(path, FileMode::open);
             auto chunkReader = SawyerChunkReader(&fs);
 
             RCTObjectEntry entry = fs.ReadValue<RCTObjectEntry>();
@@ -292,7 +292,7 @@ namespace OpenRCT2::ObjectFactory
             {
                 result = CreateObject(entry.GetType());
                 result->SetDescriptor(ObjectEntryDescriptor(entry));
-                result->SetFileName(OpenRCT2::Path::GetFileNameWithoutExtension(path));
+                result->SetFileName(Path::GetFileNameWithoutExtension(path));
 
                 utf8 objectName[kDatNameLength + 1] = { 0 };
                 ObjectEntryGetNameFixed(objectName, sizeof(objectName), &entry);
@@ -301,7 +301,7 @@ namespace OpenRCT2::ObjectFactory
                 auto chunk = chunkReader.ReadChunk();
                 LOG_VERBOSE("  size: %zu", chunk->GetLength());
 
-                auto chunkStream = OpenRCT2::MemoryStream(chunk->GetData(), chunk->GetLength());
+                auto chunkStream = MemoryStream(chunk->GetData(), chunk->GetLength());
                 auto readContext = ReadObjectContext(objectName, loadImages, nullptr);
                 ReadObjectLegacy(*result, &readContext, &chunkStream);
                 if (readContext.WasError())
@@ -332,7 +332,7 @@ namespace OpenRCT2::ObjectFactory
             ObjectEntryGetNameFixed(objectName, sizeof(objectName), entry);
 
             auto readContext = ReadObjectContext(objectName, !gOpenRCT2NoGraphics, nullptr);
-            auto chunkStream = OpenRCT2::MemoryStream(data, dataSize);
+            auto chunkStream = MemoryStream(data, dataSize);
             ReadObjectLegacy(*result, &readContext, &chunkStream);
 
             if (readContext.WasError())
@@ -523,7 +523,7 @@ namespace OpenRCT2::ObjectFactory
 
     static bool isUsingClassic()
     {
-        auto& env = OpenRCT2::GetContext()->GetPlatformEnvironment();
+        auto& env = GetContext()->GetPlatformEnvironment();
         return env.IsUsingClassic();
     }
 
@@ -546,11 +546,11 @@ namespace OpenRCT2::ObjectFactory
             auto id = Json::GetString(jRoot["id"]);
 
             // Base audio files are renamed to a common, virtual name so asset packs can override it correctly.
-            const bool isRCT2BaseAudio = id == OpenRCT2::Audio::AudioObjectIdentifiers::kRCT2Base && !isUsingClassic();
-            const bool isRCTCBaseAudio = id == OpenRCT2::Audio::AudioObjectIdentifiers::kRCTCBase && isUsingClassic();
+            const bool isRCT2BaseAudio = id == Audio::AudioObjectIdentifiers::kRCT2Base && !isUsingClassic();
+            const bool isRCTCBaseAudio = id == Audio::AudioObjectIdentifiers::kRCTCBase && isUsingClassic();
             if (isRCT2BaseAudio || isRCTCBaseAudio)
             {
-                id = OpenRCT2::Audio::AudioObjectIdentifiers::kRCT2;
+                id = Audio::AudioObjectIdentifiers::kRCT2;
             }
 
             auto version = VersionTuple(Json::GetString(jRoot["version"]));
@@ -587,7 +587,7 @@ namespace OpenRCT2::ObjectFactory
             result->SetVersion(version);
             result->SetIdentifier(id);
             result->SetDescriptor(descriptor);
-            result->SetFileName(OpenRCT2::Path::GetFileNameWithoutExtension(path));
+            result->SetFileName(Path::GetFileNameWithoutExtension(path));
             result->MarkAsJsonObject();
             auto readContext = ReadObjectContext(id, loadImageTable, fileRetriever);
             result->ReadJson(&readContext, jRoot);

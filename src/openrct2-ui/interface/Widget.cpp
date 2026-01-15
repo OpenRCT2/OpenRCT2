@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -19,6 +19,7 @@
 #include <openrct2/Input.h>
 #include <openrct2/SpriteIds.h>
 #include <openrct2/config/Config.h>
+#include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
 #include <openrct2/drawing/Text.h>
 #include <openrct2/interface/ColourWithFlags.h>
@@ -496,7 +497,7 @@ namespace OpenRCT2::Ui
                 colour.flags.set(ColourFlag::inset, true);
 
             utf8 buffer[512] = { 0 };
-            OpenRCT2::FormatStringLegacy(buffer, sizeof(buffer), stringId, rawFt.Data());
+            FormatStringLegacy(buffer, sizeof(buffer), stringId, rawFt.Data());
 
             auto ft = Formatter();
             ft.Add<utf8*>(buffer);
@@ -741,7 +742,7 @@ namespace OpenRCT2::Ui
         // Create a new inner scroll render target
         RenderTarget scrollRT = rt;
 
-        // Clip the scroll dpi against the outer dpi
+        // Clip the scroll RT against the outer RT
         int32_t cl = std::max<int32_t>(rt.x, topLeft.x);
         int32_t ct = std::max<int32_t>(rt.y, topLeft.y);
         int32_t cr = std::min<int32_t>(rt.x + rt.width, bottomRight.x);
@@ -769,7 +770,7 @@ namespace OpenRCT2::Ui
         // Trough
         Rectangle::fill(rt, { { l + kScrollBarWidth, t }, { r - kScrollBarWidth, b } }, ColourMapA[colour.colour].lighter);
         Rectangle::fill(
-            rt, { { l + kScrollBarWidth, t }, { r - kScrollBarWidth, b } }, 0x1000000 | ColourMapA[colour.colour].mid_dark);
+            rt, { { l + kScrollBarWidth, t }, { r - kScrollBarWidth, b } }, ColourMapA[colour.colour].mid_dark, true);
         Rectangle::fill(
             rt, { { l + kScrollBarWidth, t + 2 }, { r - kScrollBarWidth, t + 2 } }, ColourMapA[colour.colour].mid_dark);
         Rectangle::fill(
@@ -816,7 +817,7 @@ namespace OpenRCT2::Ui
         // Trough
         Rectangle::fill(rt, { { l, t + kScrollBarWidth }, { r, b - kScrollBarWidth } }, ColourMapA[colour.colour].lighter);
         Rectangle::fill(
-            rt, { { l, t + kScrollBarWidth }, { r, b - kScrollBarWidth } }, 0x1000000 | ColourMapA[colour.colour].mid_dark);
+            rt, { { l, t + kScrollBarWidth }, { r, b - kScrollBarWidth } }, ColourMapA[colour.colour].mid_dark, true);
         Rectangle::fill(
             rt, { { l + 2, t + kScrollBarWidth }, { l + 2, b - kScrollBarWidth } }, ColourMapA[colour.colour].mid_dark);
         Rectangle::fill(
@@ -1157,7 +1158,7 @@ namespace OpenRCT2::Ui
         ScreenCoordsXY topLeft{ w.windowPos + ScreenCoordsXY{ widget.left, widget.top } };
         ScreenCoordsXY bottomRight{ w.windowPos + ScreenCoordsXY{ widget.right, widget.bottom } };
 
-        auto& tbIdent = OpenRCT2::Ui::Windows::GetCurrentTextBox();
+        auto& tbIdent = Windows::GetCurrentTextBox();
         bool active = w.classification == tbIdent.window.classification && w.number == tbIdent.window.number
             && widgetIndex == tbIdent.widgetIndex;
 
@@ -1169,7 +1170,7 @@ namespace OpenRCT2::Ui
         // Figure out where the text should be positioned vertically.
         topLeft.y = w.windowPos.y + widget.textTop();
 
-        auto* textInput = OpenRCT2::Ui::Windows::GetTextboxSession();
+        auto* textInput = Windows::GetTextboxSession();
         if (!active || textInput == nullptr)
         {
             if (widget.text != 0)
@@ -1206,11 +1207,11 @@ namespace OpenRCT2::Ui
                 4);
         }
 
-        if (OpenRCT2::Ui::Windows::TextBoxCaretIsFlashed())
+        if (Windows::TextBoxCaretIsFlashed())
         {
             auto colour = ColourMapA[w.colours[1].colour].mid_light;
             auto y = topLeft.y + 1 + widget.height() - 5;
-            Rectangle::fill(rt, { { curX, y }, { curX + width, y } }, colour + 5);
+            Rectangle::fill(rt, { { curX, y }, { curX + width, y } }, static_cast<PaletteIndex>(EnumValue(colour) + 5));
         }
     }
 

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -1496,12 +1496,12 @@ namespace OpenRCT2::RCT1
     }
     // clang-format on
 
-    OpenRCT2::TrackElemType RCT1TrackTypeToOpenRCT2(OpenRCT2::RCT12::TrackElemType origTrackType, ride_type_t rideType)
+    TrackElemType RCT1TrackTypeToOpenRCT2(RCT12::TrackElemType origTrackType, ride_type_t rideType)
     {
         if (GetRideTypeDescriptor(rideType).HasFlag(RtdFlag::isFlatRide))
             return RCT12FlatTrackTypeToOpenRCT2(origTrackType);
 
-        return static_cast<OpenRCT2::TrackElemType>(origTrackType);
+        return static_cast<TrackElemType>(origTrackType);
     }
 
     bool VehicleTypeIsReversed(const VehicleType vehicleType)

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -17,6 +17,7 @@
 #include <openrct2/SpriteIds.h>
 #include <openrct2/actions/ParkEntrancePlaceAction.h>
 #include <openrct2/audio/Audio.h>
+#include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
 #include <openrct2/object/EntranceObject.h>
 #include <openrct2/object/ObjectLimits.h>
@@ -202,8 +203,8 @@ namespace OpenRCT2::Ui::Windows
 
             ParkEntranceRemoveGhost();
 
-            bool isLegacyPath = (gFootpathSelection.LegacyPath != kObjectEntryIndexNull);
-            auto pathIndex = isLegacyPath ? gFootpathSelection.LegacyPath : gFootpathSelection.NormalSurface;
+            bool isLegacyPath = (gFootpathSelection.legacyPath != kObjectEntryIndexNull);
+            auto pathIndex = isLegacyPath ? gFootpathSelection.legacyPath : gFootpathSelection.normalSurface;
             auto gameAction = GameActions::ParkEntrancePlaceAction(
                 parkEntrancePosition, pathIndex, _selectedEntranceType, isLegacyPath);
             gameAction.SetFlags({ CommandFlag::ghost });
@@ -225,8 +226,8 @@ namespace OpenRCT2::Ui::Windows
             CoordsXYZD parkEntrancePosition = PlaceParkEntranceGetMapPosition(screenCoords);
             if (!parkEntrancePosition.IsNull())
             {
-                bool isLegacyPath = (gFootpathSelection.LegacyPath != kObjectEntryIndexNull);
-                auto pathIndex = isLegacyPath ? gFootpathSelection.LegacyPath : gFootpathSelection.NormalSurface;
+                bool isLegacyPath = (gFootpathSelection.legacyPath != kObjectEntryIndexNull);
+                auto pathIndex = isLegacyPath ? gFootpathSelection.legacyPath : gFootpathSelection.normalSurface;
                 auto gameAction = GameActions::ParkEntrancePlaceAction(
                     parkEntrancePosition, pathIndex, _selectedEntranceType, isLegacyPath);
                 gameAction.SetCallback(
@@ -341,14 +342,13 @@ namespace OpenRCT2::Ui::Windows
                         rt, { coords, coords + ScreenCoordsXY{ kImageSize - 1, kImageSize - 1 } }, colours[1], borderStyle,
                         fillBrightness);
 
-                RenderTarget clipDPI;
+                RenderTarget clipRT;
                 auto screenPos = coords + ScreenCoordsXY{ kScrollPadding, kScrollPadding };
-                if (ClipDrawPixelInfo(
-                        clipDPI, rt, screenPos, kImageSize - (2 * kScrollPadding), kImageSize - (2 * kScrollPadding)))
+                if (ClipRenderTarget(
+                        clipRT, rt, screenPos, kImageSize - (2 * kScrollPadding), kImageSize - (2 * kScrollPadding)))
                 {
                     PaintPreview(
-                        clipDPI, entranceType.imageId, ScreenCoordsXY{ kImageSize / 2, kImageSize / 2 },
-                        gWindowSceneryRotation);
+                        clipRT, entranceType.imageId, ScreenCoordsXY{ kImageSize / 2, kImageSize / 2 }, gWindowSceneryRotation);
                 }
 
                 // Next position

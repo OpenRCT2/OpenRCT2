@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -105,7 +105,7 @@ namespace OpenRCT2
             return;
         }
 
-        if (session.DPI.zoom_level >= ZoomLevel{ 2 })
+        if (session.rt.zoom_level >= ZoomLevel{ 2 })
         {
             return;
         }
@@ -123,7 +123,7 @@ namespace OpenRCT2
             return;
 
         uint8_t frame = MiniGolfPeepAnimationFrames[EnumValue(vehicle->mini_golf_current_animation)][vehicle->animation_frame];
-        uint32_t ebx = (frame << 2) + OpenRCT2::Entity::Yaw::YawTo4(imageDirection);
+        uint32_t ebx = (frame << 2) + Entity::Yaw::YawTo4(imageDirection);
 
         ImageIndex index = rideEntry->Cars[0].base_image_id + 1 + ebx;
         auto image = ImageId(index, peep->TshirtColour, peep->TrousersColour);
@@ -141,7 +141,7 @@ namespace OpenRCT2
             return;
         }
 
-        if (session.DPI.zoom_level >= ZoomLevel{ 1 })
+        if (session.rt.zoom_level >= ZoomLevel{ 1 })
         {
             return;
         }

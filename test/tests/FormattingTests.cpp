@@ -19,7 +19,6 @@
 #include <openrct2/localisation/Language.h>
 #include <openrct2/localisation/StringIds.h>
 #include <openrct2/ride/RideStringIds.h>
-#include <sstream>
 #include <string>
 
 using namespace OpenRCT2;

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -21,6 +21,7 @@
 #include <openrct2/SpriteIds.h>
 #include <openrct2/actions/TileModifyAction.h>
 #include <openrct2/core/Guard.hpp>
+#include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/object/FootpathObject.h>
@@ -1622,10 +1623,10 @@ static uint64_t PageDisabledWidgets[] = {
                 if (selectedRow)
                     Rectangle::fill(rt, fillRectangle, ColourMapA[colours[1].colour].mid_dark);
                 else if (hoveredRow)
-                    Rectangle::fill(rt, fillRectangle, ColourMapA[colours[1].colour].mid_dark | 0x1000000);
+                    Rectangle::fill(rt, fillRectangle, ColourMapA[colours[1].colour].mid_dark, true);
                 // Zebra stripes
                 else if (((windowTileInspectorElementCount - i) & 1) == 0)
-                    Rectangle::fill(rt, fillRectangle, ColourMapA[colours[1].colour].light | 0x1000000);
+                    Rectangle::fill(rt, fillRectangle, ColourMapA[colours[1].colour].light, true);
 
                 StringId stringFormat = STR_WINDOW_COLOUR_2_STRINGID;
                 if (selectedRow || hoveredRow)

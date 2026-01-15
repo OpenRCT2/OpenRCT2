@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -160,7 +160,7 @@ namespace OpenRCT2::GameActions
         auto surfaceHeight = TileElementHeight(_coords);
         FootpathRemoveLitter({ _coords, surfaceHeight });
 
-        if (!getGameState().cheats.disableClearanceChecks)
+        if (!gameState.cheats.disableClearanceChecks)
         {
             WallRemoveAt({ _coords, _height * 8 - 16, _height * 8 + 32 });
             cost += GetSmallSceneryRemovalCost();

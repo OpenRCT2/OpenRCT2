@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -19,6 +19,7 @@
 #include "../audio/AudioMixer.h"
 #include "../config/Config.h"
 #include "../core/EnumUtils.hpp"
+#include "../drawing/Drawing.h"
 #include "../object/ClimateObject.h"
 #include "../object/ObjectManager.h"
 #include "../profiling/Profiling.h"
@@ -76,7 +77,7 @@ static ThunderStatus _thunderStatus[kMaxThunderInstances] = {
     ThunderStatus::none,
     ThunderStatus::none,
 };
-static OpenRCT2::Audio::SoundId _thunderSoundId;
+static SoundId _thunderSoundId;
 static int32_t _thunderVolume;
 static int32_t _thunderStereoEcho = 0;
 static std::shared_ptr<IAudioChannel> _weatherSoundChannel;
@@ -94,7 +95,7 @@ static void ClimateUpdateWeatherSound();
 static void ClimateUpdateThunderSound();
 static void ClimateUpdateLightning();
 static void ClimateUpdateThunder();
-static void ClimatePlayThunder(int32_t instanceIndex, OpenRCT2::Audio::SoundId soundId, int32_t volume, int32_t pan);
+static void ClimatePlayThunder(int32_t instanceIndex, SoundId soundId, int32_t volume, int32_t pan);
 
 int32_t ClimateCelsiusToFahrenheit(int32_t celsius)
 {
@@ -256,7 +257,7 @@ void ClimateUpdateSound()
 {
     PROFILED_FUNCTION();
 
-    if (!OpenRCT2::Audio::IsAvailable())
+    if (!IsAvailable())
         return;
 
     if (gLegacyScene == LegacyScene::titleSequence)
@@ -472,8 +473,7 @@ static void ClimateUpdateThunder()
             if (_thunderStatus[0] == ThunderStatus::none && _thunderStatus[1] == ThunderStatus::none)
             {
                 // Play thunder on left side
-                _thunderSoundId = (randomNumber & 0x20000) ? OpenRCT2::Audio::SoundId::thunder1
-                                                           : OpenRCT2::Audio::SoundId::thunder2;
+                _thunderSoundId = (randomNumber & 0x20000) ? SoundId::thunder1 : SoundId::thunder2;
                 _thunderVolume = (-(static_cast<int32_t>((randomNumber >> 18) & 0xFF))) * 8;
                 ClimatePlayThunder(0, _thunderSoundId, _thunderVolume, -10000);
 
@@ -485,8 +485,7 @@ static void ClimateUpdateThunder()
         {
             if (_thunderStatus[0] == ThunderStatus::none)
             {
-                _thunderSoundId = (randomNumber & 0x20000) ? OpenRCT2::Audio::SoundId::thunder1
-                                                           : OpenRCT2::Audio::SoundId::thunder2;
+                _thunderSoundId = (randomNumber & 0x20000) ? SoundId::thunder1 : SoundId::thunder2;
                 int32_t pan = (((randomNumber >> 18) & 0xFF) - 128) * 16;
                 ClimatePlayThunder(0, _thunderSoundId, 0, pan);
             }
@@ -494,7 +493,7 @@ static void ClimateUpdateThunder()
     }
 }
 
-static void ClimatePlayThunder(int32_t instanceIndex, OpenRCT2::Audio::SoundId soundId, int32_t volume, int32_t pan)
+static void ClimatePlayThunder(int32_t instanceIndex, SoundId soundId, int32_t volume, int32_t pan)
 {
     _thunderSoundChannels[instanceIndex] = CreateAudioChannel(soundId, false, DStoMixerVolume(volume), DStoMixerPan(pan));
     if (_thunderSoundChannels[instanceIndex] != nullptr)

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -161,7 +161,7 @@ namespace OpenRCT2::Dropdown
 
     constexpr ItemExt ExtSeparator()
     {
-        return ItemExt(-1, Dropdown::kSeparatorString, kStringIdEmpty);
+        return ItemExt(-1, kSeparatorString, kStringIdEmpty);
     }
 
     /**
@@ -197,7 +197,7 @@ namespace OpenRCT2::Dropdown
     struct DropdownState
     {
         int32_t numItems{};
-        std::array<Dropdown::Item, Dropdown::kItemsMaxSize> items{};
+        std::array<Item, kItemsMaxSize> items{};
         bool hasTooltips{};
         int32_t lastTooltipHover{};
         int32_t highlightedIndex{};
@@ -205,24 +205,24 @@ namespace OpenRCT2::Dropdown
     };
 
     template<int N>
-    void SetItems(const Dropdown::ItemExt (&items)[N])
+    void SetItems(const ItemExt (&items)[N])
     {
         for (int i = 0; i < N; ++i)
         {
             const ItemExt& item = items[i];
             if (item.itemFormat == kSeparatorString)
-                OpenRCT2::Ui::Windows::gDropdown.items[i] = Separator();
+                Ui::Windows::gDropdown.items[i] = Separator();
             else
-                OpenRCT2::Ui::Windows::gDropdown.items[i] = ToggleOption(item.stringId);
+                Ui::Windows::gDropdown.items[i] = ToggleOption(item.stringId);
         }
     }
 
     template<int N>
-    constexpr bool ItemIDsMatchIndices(const Dropdown::ItemExt (&items)[N])
+    constexpr bool ItemIDsMatchIndices(const ItemExt (&items)[N])
     {
         for (int i = 0; i < N; ++i)
         {
-            const Dropdown::ItemExt& item = items[i];
+            const ItemExt& item = items[i];
             if (item.expectedItemIndex >= 0 && item.expectedItemIndex != i)
                 return false;
         }

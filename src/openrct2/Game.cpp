@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -31,6 +31,7 @@
 #include "core/Money.hpp"
 #include "core/Path.hpp"
 #include "core/String.hpp"
+#include "drawing/Drawing.h"
 #include "entity/EntityList.h"
 #include "entity/EntityRegistry.h"
 #include "entity/PatrolArea.h"
@@ -154,7 +155,7 @@ void PauseToggle()
 
     if (gGamePaused & GAME_PAUSED_NORMAL)
     {
-        OpenRCT2::Audio::StopAll();
+        Audio::StopAll();
     }
 }
 
@@ -241,7 +242,7 @@ static void FixPeepsWithInvalidRideReference()
     // Fix possibly invalid field values
     for (auto peep : EntityList<Guest>())
     {
-        if (peep->CurrentRideStation.ToUnderlying() >= OpenRCT2::Limits::kMaxStationsPerRide)
+        if (peep->CurrentRideStation.ToUnderlying() >= Limits::kMaxStationsPerRide)
         {
             const auto srcStation = peep->CurrentRideStation;
             const auto rideIdx = peep->CurrentRide;
@@ -719,7 +720,7 @@ void GameLoadOrQuitNoSavePrompt()
             EmscriptenResetAutosave();
 #endif
 
-            auto* context = OpenRCT2::GetContext();
+            auto* context = GetContext();
             context->SetActiveScene(context->GetTitleScene());
             break;
         }
@@ -744,11 +745,11 @@ void GameLoadOrQuitNoSavePrompt()
 void StartSilentRecord()
 {
     std::string name = Path::Combine(
-        OpenRCT2::GetContext()->GetPlatformEnvironment().GetDirectoryPath(OpenRCT2::DirBase::user), u8"debug_replay.parkrep");
-    auto* replayManager = OpenRCT2::GetContext()->GetReplayManager();
-    if (replayManager->StartRecording(name, OpenRCT2::k_MaxReplayTicks, OpenRCT2::IReplayManager::RecordType::SILENT))
+        GetContext()->GetPlatformEnvironment().GetDirectoryPath(DirBase::user), u8"debug_replay.parkrep");
+    auto* replayManager = GetContext()->GetReplayManager();
+    if (replayManager->StartRecording(name, k_MaxReplayTicks, IReplayManager::RecordType::SILENT))
     {
-        OpenRCT2::ReplayRecordInfo info;
+        ReplayRecordInfo info;
         replayManager->GetCurrentReplayInfo(info);
         gSilentRecordingName = info.FilePath;
 
@@ -759,13 +760,13 @@ void StartSilentRecord()
 
 bool StopSilentRecord()
 {
-    auto* replayManager = OpenRCT2::GetContext()->GetReplayManager();
+    auto* replayManager = GetContext()->GetReplayManager();
     if (!replayManager->IsRecording() && !replayManager->IsNormalising())
     {
         return false;
     }
 
-    OpenRCT2::ReplayRecordInfo info;
+    ReplayRecordInfo info;
     replayManager->GetCurrentReplayInfo(info);
 
     if (replayManager->StopRecording())
@@ -790,9 +791,9 @@ void PrepareMapForSave()
 #ifdef ENABLE_SCRIPTING
     auto& scriptEngine = GetContext()->GetScriptEngine();
     auto& hookEngine = scriptEngine.GetHookEngine();
-    if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HookType::mapSave))
+    if (hookEngine.HasSubscriptions(Scripting::HookType::mapSave))
     {
-        hookEngine.Call(OpenRCT2::Scripting::HookType::mapSave, false);
+        hookEngine.Call(Scripting::HookType::mapSave, false);
     }
 #endif
 }

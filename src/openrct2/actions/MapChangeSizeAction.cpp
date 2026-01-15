@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,7 +11,7 @@
 
 #include "../Context.h"
 #include "../GameState.h"
-#include "../drawing/IDrawingEngine.h"
+#include "../drawing/Drawing.h"
 #include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
 #include "../windows/Intent.h"
@@ -80,7 +80,7 @@ namespace OpenRCT2::GameActions
             MapRemoveOutOfRangeElements();
         }
 
-        auto* ctx = OpenRCT2::GetContext();
+        auto* ctx = GetContext();
         auto& uiContext = ctx->GetUiContext();
         auto* windowManager = uiContext.GetWindowManager();
 

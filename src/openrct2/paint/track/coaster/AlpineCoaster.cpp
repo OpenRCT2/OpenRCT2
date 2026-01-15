@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -19,8 +19,6 @@
 #include "../../tile_element/Segment.h"
 #include "../../track/Segment.h"
 #include "../../track/Support.h"
-
-using namespace OpenRCT2;
 
 static constexpr TunnelGroup kTunnelGroup = TunnelGroup::Standard;
 
@@ -7180,7 +7178,7 @@ namespace OpenRCT2::AlpineRC
         }
     }
 
-    TrackPaintFunction GetTrackPaintFunction(OpenRCT2::TrackElemType trackType)
+    TrackPaintFunction GetTrackPaintFunction(TrackElemType trackType)
     {
         switch (trackType)
         {

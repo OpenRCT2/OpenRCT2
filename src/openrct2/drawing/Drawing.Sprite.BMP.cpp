@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,6 +9,7 @@
 
 #include "Drawing.h"
 
+using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
 
 template<DrawBlendOp TBlendOp>
@@ -16,7 +17,7 @@ static void FASTCALL DrawBMPSpriteMagnify(RenderTarget& rt, const DrawSpriteArgs
 {
     auto& paletteMap = args.PalMap;
     auto src0 = args.SourceImage.offset;
-    auto dst = args.DestinationBits;
+    auto dst = reinterpret_cast<PaletteIndex*>(args.DestinationBits);
     auto srcX = args.SrcX;
     auto srcY = args.SrcY;
     auto width = args.Width;
@@ -30,7 +31,8 @@ static void FASTCALL DrawBMPSpriteMagnify(RenderTarget& rt, const DrawSpriteArgs
         auto nextDst = dst + dstLineWidth;
         for (int32_t x = 0; x < width; x++, dst++)
         {
-            auto src = src0 + (srcLineWidth * zoom.ApplyTo(srcY + y) + zoom.ApplyTo(srcX + x));
+            PaletteIndex* src = reinterpret_cast<PaletteIndex*>(
+                src0 + (srcLineWidth * zoom.ApplyTo(srcY + y) + zoom.ApplyTo(srcX + x)));
             BlitPixel<TBlendOp>(src, dst, paletteMap);
         }
         dst = nextDst;
@@ -41,8 +43,8 @@ template<DrawBlendOp TBlendOp>
 static void FASTCALL DrawBMPSpriteMinify(RenderTarget& rt, const DrawSpriteArgs& args)
 {
     auto& g1 = args.SourceImage;
-    auto src = g1.offset + ((static_cast<size_t>(g1.width) * args.SrcY) + args.SrcX);
-    auto dst = args.DestinationBits;
+    auto* src = reinterpret_cast<PaletteIndex*>(g1.offset + ((static_cast<size_t>(g1.width) * args.SrcY) + args.SrcX));
+    auto* dst = reinterpret_cast<PaletteIndex*>(args.DestinationBits);
     auto& paletteMap = args.PalMap;
     auto width = args.Width;
     auto height = args.Height;

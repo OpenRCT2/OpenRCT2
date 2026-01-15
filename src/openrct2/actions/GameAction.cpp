@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -91,7 +91,7 @@ namespace OpenRCT2::GameActions
         _actionQueue.emplace(tick, std::move(ga), _nextUniqueId++);
     }
 
-    void ProcessQueue()
+    void ProcessQueue(GameState_t& gameState)
     {
         if (_suspended)
         {
@@ -99,7 +99,7 @@ namespace OpenRCT2::GameActions
             return;
         }
 
-        const uint32_t currentTick = getGameState().currentTicks;
+        const uint32_t currentTick = gameState.currentTicks;
 
         while (_actionQueue.begin() != _actionQueue.end())
         {
@@ -142,7 +142,7 @@ namespace OpenRCT2::GameActions
 
             Guard::Assert(action != nullptr);
 
-            Result result = Execute(action, getGameState());
+            Result result = Execute(action, gameState);
             if (result.error == Status::ok && Network::GetMode() == Network::Mode::server)
             {
                 // Relay this action to all other clients.
@@ -177,11 +177,11 @@ namespace OpenRCT2::GameActions
         return ga;
     }
 
-    static bool CheckActionInPausedMode(uint32_t actionFlags)
+    static bool CheckActionInPausedMode(const GameState_t& gameState, uint32_t actionFlags)
     {
         if (gGamePaused == 0)
             return true;
-        if (getGameState().cheats.buildInPauseMode)
+        if (gameState.cheats.buildInPauseMode)
             return true;
         if (actionFlags & Flags::AllowWhilePaused)
             return true;
@@ -193,7 +193,7 @@ namespace OpenRCT2::GameActions
         Guard::ArgumentNotNull(action);
 
         uint16_t actionFlags = action->GetActionFlags();
-        if (topLevel && !CheckActionInPausedMode(actionFlags))
+        if (topLevel && !CheckActionInPausedMode(gameState, actionFlags))
         {
             Result result = Result();
 
@@ -243,13 +243,13 @@ namespace OpenRCT2::GameActions
         MemoryStream output;
     };
 
-    static void LogActionBegin(ActionLogContext& ctx, const GameAction* action)
+    static void LogActionBegin(const GameState_t& gameState, ActionLogContext& ctx, const GameAction* action)
     {
         MemoryStream& output = ctx.output;
 
         char temp[128] = {};
         snprintf(
-            temp, sizeof(temp), "[%s] Tick: %u, GA: %s (%08X) (", GetRealm(), getGameState().currentTicks, action->GetName(),
+            temp, sizeof(temp), "[%s] Tick: %u, GA: %s (%08X) (", GetRealm(), gameState.currentTicks, action->GetName(),
             EnumValue(action->GetType()));
 
         output.Write(temp, strlen(temp));
@@ -293,7 +293,7 @@ namespace OpenRCT2::GameActions
         // Some actions are not recorded in the replay.
         const auto ignoreForReplays = (actionFlags & Flags::IgnoreForReplays) != 0;
 
-        auto* replayManager = OpenRCT2::GetContext()->GetReplayManager();
+        auto* replayManager = GetContext()->GetReplayManager();
         if (replayManager != nullptr && (replayManager->IsReplaying() || replayManager->IsNormalising()))
         {
             // We only accept replay commands as long the replay is active.
@@ -342,7 +342,7 @@ namespace OpenRCT2::GameActions
                     if (!(actionFlags & Flags::ClientOnly) && !flags.has(CommandFlag::networked))
                     {
                         LOG_VERBOSE("[%s] GameAction::Execute %s (Queue)", GetRealm(), action->GetName());
-                        Enqueue(action, getGameState().currentTicks);
+                        Enqueue(action, gameState.currentTicks);
 
                         return result;
                     }
@@ -352,7 +352,7 @@ namespace OpenRCT2::GameActions
             ActionLogContext logContext;
             if (topLevel && !flags.has(CommandFlag::ghost))
             {
-                LogActionBegin(logContext, action);
+                LogActionBegin(gameState, logContext, action);
             }
 
             // Execute the action, changing the game state
@@ -417,7 +417,7 @@ namespace OpenRCT2::GameActions
                     }
                     if (recordAction)
                     {
-                        replayManager->AddGameAction(getGameState().currentTicks, action);
+                        replayManager->AddGameAction(gameState.currentTicks, action);
                     }
                 }
             }
@@ -472,7 +472,7 @@ namespace OpenRCT2::GameActions
 
     const char* GameAction::GetName() const
     {
-        return OpenRCT2::GameActions::GetName(_type);
+        return GameActions::GetName(_type);
     }
 
     bool GameAction::LocationValid(const CoordsXY& coords) const
@@ -494,7 +494,7 @@ namespace OpenRCT2::GameActions
             obj.Set("type", EnumValue(_type));
 
             auto flags = GetActionFlags();
-            obj.Set("isClientOnly", (flags & GameActions::Flags::ClientOnly) != 0);
+            obj.Set("isClientOnly", (flags & Flags::ClientOnly) != 0);
             obj.Set("result", true);
 
             // Call the subscriptions

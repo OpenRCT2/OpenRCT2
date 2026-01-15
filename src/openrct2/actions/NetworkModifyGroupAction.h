@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -43,7 +43,7 @@ namespace OpenRCT2::GameActions
     public:
         NetworkModifyGroupAction() = default;
         NetworkModifyGroupAction(
-            ModifyGroupType type, uint8_t groupId = std::numeric_limits<uint8_t>::max(), const std::string name = "",
+            ModifyGroupType type, uint8_t groupId = std::numeric_limits<uint8_t>::max(), std::string name = "",
             uint32_t permissionIndex = 0, PermissionState permissionState = PermissionState::Count);
 
         void AcceptParameters(GameActionParameterVisitor&) final;

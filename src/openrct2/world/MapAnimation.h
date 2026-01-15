@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -19,11 +19,11 @@ namespace OpenRCT2::MapAnimations
         landEdgeDoor,
     };
 
-    void MarkTileForInvalidation(const TileCoordsXY coords);
-    void MarkTileForUpdate(const TileCoordsXY coords);
-    void CreateTemporary(const CoordsXYZ& coords, const TemporaryType type);
+    void MarkTileForInvalidation(TileCoordsXY coords);
+    void MarkTileForUpdate(TileCoordsXY coords);
+    void CreateTemporary(const CoordsXYZ& coords, TemporaryType type);
     void MarkAllTiles();
     void InvalidateAndUpdateAll();
     void ClearAll();
-    void ShiftAll(const TileCoordsXY amount);
+    void ShiftAll(TileCoordsXY amount);
 } // namespace OpenRCT2::MapAnimations

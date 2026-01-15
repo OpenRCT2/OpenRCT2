@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -44,7 +44,7 @@ namespace OpenRCT2::GameActions
 
     Result ParkEntranceRemoveAction::Query(GameState_t& gameState) const
     {
-        if (!isInEditorMode() && !getGameState().cheats.sandboxMode)
+        if (!isInEditorMode() && !gameState.cheats.sandboxMode)
         {
             return Result(Status::notInEditorMode, STR_CANT_REMOVE_THIS, kStringIdNone);
         }
@@ -80,7 +80,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_CANT_REMOVE_THIS, kStringIdNone);
         }
 
-        auto& park = getGameState().park;
+        auto& park = gameState.park;
         auto direction = (park.entrances[entranceIndex].direction - 1) & 3;
 
         // Centre (sign)

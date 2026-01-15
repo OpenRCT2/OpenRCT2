@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -325,7 +325,7 @@ void Duck::Create(const CoordsXY& pos)
     }
     duck->Orientation = direction << 3;
     duck->MoveTo({ targetPos.x, targetPos.y, 496 });
-    duck->state = Duck::DuckState::FlyToWater;
+    duck->state = DuckState::FlyToWater;
     duck->frame = 0;
 }
 
@@ -353,7 +353,7 @@ void Duck::Update()
 
 void Duck::Press()
 {
-    OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::quack, { x, y, z });
+    OpenRCT2::Audio::Play3D(Audio::SoundId::quack, { x, y, z });
 }
 
 void Duck::RemoveAll()
@@ -377,7 +377,7 @@ void Duck::Paint(PaintSession& session, int32_t imageDirection) const
 {
     PROFILED_FUNCTION();
 
-    auto& rt = session.DPI;
+    auto& rt = session.rt;
     if (rt.zoom_level > ZoomLevel{ 1 })
         return;
 

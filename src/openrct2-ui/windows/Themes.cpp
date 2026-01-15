@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -16,8 +16,8 @@
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
 #include <openrct2/SpriteIds.h>
+#include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
-#include <openrct2/drawing/Text.h>
 #include <openrct2/interface/ColourWithFlags.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Formatting.h>
@@ -723,7 +723,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
 
             if (!colours[1].flags.has(ColourFlag::translucent))
-                // Rectangle::fill(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1,
+                // Rectangle::fill(rt, rt->x, rt->y, rt->x + rt->width - 1, rt->y + rt->height - 1,
                 // ColourMapA[colours[1].colour].mid_light);
                 GfxClear(rt, ColourMapA[colours[1].colour].mid_light);
             screenCoords.y = 0;
@@ -769,11 +769,11 @@ namespace OpenRCT2::Ui::Windows
                         }
                         else
                         {
-                            colour = ColourMapA[colours[1].colour].mid_dark;
-                            Rectangle::fill(rt, { leftTop, rightBottom }, colour.colour);
+                            auto fillColour = ColourMapA[colours[1].colour].mid_dark;
+                            Rectangle::fill(rt, { leftTop, rightBottom }, fillColour);
 
-                            colour = ColourMapA[colours[1].colour].lightest;
-                            Rectangle::fill(rt, { leftTop + yPixelOffset, rightBottom + yPixelOffset }, colour.colour);
+                            fillColour = ColourMapA[colours[1].colour].lightest;
+                            Rectangle::fill(rt, { leftTop + yPixelOffset, rightBottom + yPixelOffset }, fillColour);
                         }
                     }
 

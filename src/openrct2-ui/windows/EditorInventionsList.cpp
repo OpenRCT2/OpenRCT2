@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -16,6 +16,7 @@
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/SpriteIds.h>
+#include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
 #include <openrct2/interface/ColourWithFlags.h>
 #include <openrct2/interface/Cursors.h>
@@ -274,7 +275,7 @@ namespace OpenRCT2::Ui::Windows
             const auto& gameState = getGameState();
 
             // Draw background
-            uint8_t paletteIndex = ColourMapA[colours[1].colour].mid_light;
+            auto paletteIndex = ColourMapA[colours[1].colour].mid_light;
             GfxClear(rt, paletteIndex);
 
             int16_t boxWidth = widgets[WIDX_RESEARCH_ORDER_SCROLL].width() - 1;
@@ -400,13 +401,13 @@ namespace OpenRCT2::Ui::Windows
             const auto* object = ObjectEntryGetObject(objectEntryType, researchItem->entryIndex);
             if (object != nullptr)
             {
-                RenderTarget clipDPI;
+                RenderTarget clipRT;
                 screenPos = windowPos + ScreenCoordsXY{ bkWidget.left + 1, bkWidget.top + 1 };
                 const auto clipWidth = bkWidget.width() - 2;
                 const auto clipHeight = bkWidget.height() - 2;
-                if (ClipDrawPixelInfo(clipDPI, rt, screenPos, clipWidth, clipHeight))
+                if (ClipRenderTarget(clipRT, rt, screenPos, clipWidth, clipHeight))
                 {
-                    object->DrawPreview(clipDPI, clipWidth, clipHeight);
+                    object->DrawPreview(clipRT, clipWidth, clipHeight);
                 }
             }
 

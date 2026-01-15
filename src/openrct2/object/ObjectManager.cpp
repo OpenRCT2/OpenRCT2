@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -275,9 +275,9 @@ namespace OpenRCT2
             ResetTypeToRideEntryIndexMap();
 
             // We will need to replay the title music if the title music object got reloaded
-            OpenRCT2::Audio::StopTitleMusic();
-            OpenRCT2::Audio::PlayTitleMusic();
-            OpenRCT2::RideAudio::StopAllChannels();
+            Audio::StopTitleMusic();
+            Audio::PlayTitleMusic();
+            RideAudio::StopAllChannels();
         }
 
         std::vector<const ObjectRepositoryItem*> GetPackableObjects() override
@@ -589,7 +589,7 @@ namespace OpenRCT2
             constexpr auto kObjectLoadProgressRange = kObjectLoadMaxProgress - kObjectLoadMinProgress;
 
             const auto currentProgress = kObjectLoadMinProgress + (numLoaded * kObjectLoadProgressRange / numRequired);
-            OpenRCT2::GetContext()->SetProgress(static_cast<uint32_t>(currentProgress), 100, STR_STRING_M_PERCENT);
+            GetContext()->SetProgress(static_cast<uint32_t>(currentProgress), 100, STR_STRING_M_PERCENT);
         }
 
         void LoadObjects(std::vector<ObjectToLoad>& requiredObjects, bool reportProgress)
@@ -797,14 +797,14 @@ namespace OpenRCT2
 
     Object* ObjectManagerGetLoadedObject(const ObjectEntryDescriptor& entry)
     {
-        auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
+        auto& objectManager = GetContext()->GetObjectManager();
         Object* loadedObject = objectManager.GetLoadedObject(entry);
         return loadedObject;
     }
 
     ObjectEntryIndex ObjectManagerGetLoadedObjectEntryIndex(const Object* loadedObject)
     {
-        auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
+        auto& objectManager = GetContext()->GetObjectManager();
         auto entryIndex = objectManager.GetLoadedObjectEntryIndex(loadedObject);
         return entryIndex;
     }
@@ -816,20 +816,20 @@ namespace OpenRCT2
 
     Object* ObjectManagerLoadObject(const RCTObjectEntry* entry)
     {
-        auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
+        auto& objectManager = GetContext()->GetObjectManager();
         Object* loadedObject = objectManager.LoadObject(entry);
         return loadedObject;
     }
 
     void ObjectManagerUnloadObjects(const std::vector<ObjectEntryDescriptor>& entries)
     {
-        auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
+        auto& objectManager = GetContext()->GetObjectManager();
         objectManager.UnloadObjects(entries);
     }
 
     void ObjectManagerUnloadAllObjects()
     {
-        auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
+        auto& objectManager = GetContext()->GetObjectManager();
         objectManager.UnloadAllTransient();
     }
 

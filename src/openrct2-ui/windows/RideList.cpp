@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -601,9 +601,9 @@ namespace OpenRCT2::Ui::Windows
                 ft.Add<StringId>(strId);
                 ft.Add<StringId>(indicatorId);
 
-                auto cdpi = const_cast<const RenderTarget&>(rt);
+                auto cRT = const_cast<const RenderTarget&>(rt);
                 DrawTextEllipsised(
-                    cdpi, windowPos + ScreenCoordsXY{ widget.left + 1, widget.top + 1 }, widget.width() - 1,
+                    cRT, windowPos + ScreenCoordsXY{ widget.left + 1, widget.top + 1 }, widget.width() - 1,
                     STR_RIDE_LIST_HEADER_FORMAT, ft, { colours[1] });
             };
 
@@ -977,9 +977,9 @@ namespace OpenRCT2::Ui::Windows
                 // Get the ride name once and use it for both filtering and storage
                 auto rideName = rideRef.getName();
 
-                if (rideRef.windowInvalidateFlags & RIDE_INVALIDATE_RIDE_LIST)
+                if (rideRef.windowInvalidateFlags.has(RideInvalidateFlag::list))
                 {
-                    rideRef.windowInvalidateFlags &= ~RIDE_INVALIDATE_RIDE_LIST;
+                    rideRef.windowInvalidateFlags.unset(RideInvalidateFlag::list);
                 }
 
                 const auto filterApplies = IsFiltered(rideName);

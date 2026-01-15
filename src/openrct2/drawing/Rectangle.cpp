@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -20,13 +20,13 @@ using OpenRCT2::Drawing::IDrawingContext;
 
 namespace OpenRCT2::Drawing::Rectangle
 {
-    void fill(RenderTarget& rt, const ScreenRect& rect, int32_t colour)
+    void fill(RenderTarget& rt, const ScreenRect& rect, PaletteIndex paletteIndex, bool crossHatch)
     {
         auto drawingEngine = rt.DrawingEngine;
         if (drawingEngine != nullptr)
         {
             IDrawingContext* dc = drawingEngine->GetDrawingContext();
-            dc->FillRect(rt, colour, rect.GetLeft(), rect.GetTop(), rect.GetRight(), rect.GetBottom());
+            dc->FillRect(rt, paletteIndex, rect.GetLeft(), rect.GetTop(), rect.GetRight(), rect.GetBottom(), crossHatch);
         }
     }
 
@@ -34,7 +34,7 @@ namespace OpenRCT2::Drawing::Rectangle
      * Draw a rectangle, with optional border or fill
      *
      *  rct2: 0x006E6F81
-     * dpi (edi)
+     * rt (edi)
      * left (ax)
      * top (cx)
      * right (bx)
@@ -91,7 +91,7 @@ namespace OpenRCT2::Drawing::Rectangle
         }
         else
         {
-            uint8_t shadow, fill, hilight;
+            PaletteIndex shadow, fill, hilight;
             if (brightness == FillBrightness::dark)
             {
                 shadow = ColourMapA[colour.colour].dark;

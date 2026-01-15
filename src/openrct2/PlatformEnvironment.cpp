@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -120,13 +120,13 @@ public:
                         directoryName = kDirectoryNamesRCT2[EnumValue(did)];
                         break;
                     case RCT2Variant::rctClassicWindows:
-                        directoryName = OpenRCT2::Platform::kRCTClassicWindowsDataFolder;
+                        directoryName = Platform::kRCTClassicWindowsDataFolder;
                         break;
                     case RCT2Variant::rctClassicMac:
-                        directoryName = OpenRCT2::Platform::kRCTClassicMacOSDataFolder;
+                        directoryName = Platform::kRCTClassicMacOSDataFolder;
                         break;
                     case RCT2Variant::rctClassicPlusMac:
-                        directoryName = OpenRCT2::Platform::kRCTClassicPlusMacOSDataFolder;
+                        directoryName = Platform::kRCTClassicPlusMacOSDataFolder;
                         break;
                 }
                 break;
@@ -277,7 +277,7 @@ std::unique_ptr<IPlatformEnvironment> OpenRCT2::CreatePlatformEnvironment()
         basePaths[EnumValue(DirBase::documentation)] = basePaths[EnumValue(DirBase::openrct2)];
     }
 
-    auto env = OpenRCT2::CreatePlatformEnvironment(basePaths);
+    auto env = CreatePlatformEnvironment(basePaths);
 
     // Now load the config so we can get the RCT1 and RCT2 paths
     auto configPath = env->GetFilePath(PathId::config);

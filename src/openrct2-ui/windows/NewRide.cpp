@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -21,6 +21,7 @@
 #include <openrct2/audio/Audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/String.hpp>
+#include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/LocalisationService.h>
@@ -46,7 +47,7 @@ namespace OpenRCT2::Ui::Windows
 {
     static constexpr StringId WindowTitle = kStringIdNone;
     static constexpr int32_t kWindowHeightResearch = 194;
-    static constexpr int32_t RideListItemsMax = 384;
+    static constexpr int32_t RideListItemsMax = kMaxRideObjects;
     static constexpr int32_t RideTabCount = 6;
     static constexpr int32_t GroupByTrackTypeWidth = 172;
     static constexpr int32_t kScrollItemSize = 116;

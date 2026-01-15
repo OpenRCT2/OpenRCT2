@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -52,7 +52,7 @@ void EntityPaintSetup(PaintSession& session, const CoordsXY& pos)
         return;
     }
 
-    if (session.DPI.zoom_level > ZoomLevel{ 2 })
+    if (session.rt.zoom_level > ZoomLevel{ 2 })
     {
         return;
     }
@@ -109,11 +109,11 @@ void EntityPaintSetup(PaintSession& session, const CoordsXY& pos)
             screenCoords - ScreenCoordsXY{ entity->SpriteData.Width, entity->SpriteData.HeightMin },
             screenCoords + ScreenCoordsXY{ entity->SpriteData.Width, entity->SpriteData.HeightMax });
 
-        const ZoomLevel zoom = session.DPI.zoom_level;
-        if (session.DPI.y + session.DPI.height <= zoom.ApplyInversedTo(spriteRect.GetTop())
-            || zoom.ApplyInversedTo(spriteRect.GetBottom()) <= session.DPI.y
-            || session.DPI.x + session.DPI.width <= zoom.ApplyInversedTo(spriteRect.GetLeft())
-            || zoom.ApplyInversedTo(spriteRect.GetRight()) <= session.DPI.x)
+        const ZoomLevel zoom = session.rt.zoom_level;
+        if (session.rt.y + session.rt.height <= zoom.ApplyInversedTo(spriteRect.GetTop())
+            || zoom.ApplyInversedTo(spriteRect.GetBottom()) <= session.rt.y
+            || session.rt.x + session.rt.width <= zoom.ApplyInversedTo(spriteRect.GetLeft())
+            || zoom.ApplyInversedTo(spriteRect.GetRight()) <= session.rt.x)
         {
             continue;
         }

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,6 +14,7 @@
 #include "../Diagnostic.h"
 #include "../GameState.h"
 #include "../OpenRCT2.h"
+#include "../core/Guard.hpp"
 #include "../core/MemoryStream.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
@@ -88,7 +89,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_CANT_BUILD_FOOTPATH_HERE, STR_OFF_EDGE_OF_MAP);
         }
 
-        if (!(gLegacyScene == LegacyScene::scenarioEditor || getGameState().cheats.sandboxMode) && !MapIsLocationOwned(_loc))
+        if (!(gLegacyScene == LegacyScene::scenarioEditor || gameState.cheats.sandboxMode) && !MapIsLocationOwned(_loc))
         {
             return Result(Status::disallowed, STR_CANT_BUILD_FOOTPATH_HERE, STR_LAND_NOT_OWNED_BY_PARK);
         }
@@ -120,7 +121,7 @@ namespace OpenRCT2::GameActions
         auto tileElement = MapGetFootpathElementWithSlope(_loc, _slope);
         if (tileElement == nullptr)
         {
-            return ElementInsertQuery(std::move(res));
+            return ElementInsertQuery(gameState, std::move(res));
         }
         return ElementUpdateQuery(tileElement, std::move(res));
     }
@@ -144,7 +145,7 @@ namespace OpenRCT2::GameActions
 
         if (!GetFlags().has(CommandFlag::ghost))
         {
-            if (_direction != kInvalidDirection && !getGameState().cheats.disableClearanceChecks)
+            if (_direction != kInvalidDirection && !gameState.cheats.disableClearanceChecks)
             {
                 // It is possible, let's remove walls between the old and new piece of path
                 auto zLow = _loc.z;
@@ -161,7 +162,7 @@ namespace OpenRCT2::GameActions
         auto tileElement = MapGetFootpathElementWithSlope(_loc, _slope);
         if (tileElement == nullptr)
         {
-            return ElementInsertExecute(std::move(res));
+            return ElementInsertExecute(gameState, std::move(res));
         }
         return ElementUpdateExecute(tileElement, std::move(res));
     }
@@ -283,7 +284,7 @@ namespace OpenRCT2::GameActions
         return res;
     }
 
-    Result FootpathPlaceAction::ElementInsertQuery(Result res) const
+    Result FootpathPlaceAction::ElementInsertQuery(GameState_t& gameState, Result res) const
     {
         bool entrancePath = false, entranceIsSamePath = false;
 
@@ -331,7 +332,7 @@ namespace OpenRCT2::GameActions
         const auto clearanceData = canBuild.getData<ConstructClearResult>();
 
         gFootpathGroundFlags = clearanceData.GroundFlags;
-        if (!getGameState().cheats.disableClearanceChecks && (clearanceData.GroundFlags & ELEMENT_IS_UNDERWATER))
+        if (!gameState.cheats.disableClearanceChecks && (clearanceData.GroundFlags & ELEMENT_IS_UNDERWATER))
         {
             return Result(Status::disallowed, STR_CANT_BUILD_FOOTPATH_HERE, STR_CANT_BUILD_THIS_UNDERWATER);
         }
@@ -351,7 +352,7 @@ namespace OpenRCT2::GameActions
         return res;
     }
 
-    Result FootpathPlaceAction::ElementInsertExecute(Result res) const
+    Result FootpathPlaceAction::ElementInsertExecute(GameState_t& gameState, Result res) const
     {
         bool entrancePath = false, entranceIsSamePath = false;
 
@@ -455,7 +456,7 @@ namespace OpenRCT2::GameActions
             }
             if (gLegacyScene == LegacyScene::scenarioEditor && !GetFlags().has(CommandFlag::ghost))
             {
-                AutomaticallySetPeepSpawn();
+                AutomaticallySetPeepSpawn(gameState);
             }
 
             RemoveIntersectingWalls(pathElement);
@@ -472,7 +473,7 @@ namespace OpenRCT2::GameActions
      *
      *  rct2: 0x006A65AD
      */
-    void FootpathPlaceAction::AutomaticallySetPeepSpawn() const
+    void FootpathPlaceAction::AutomaticallySetPeepSpawn(GameState_t& gameState) const
     {
         auto mapSizeUnits = GetMapSizeUnits();
         uint8_t direction = 0;
@@ -491,7 +492,6 @@ namespace OpenRCT2::GameActions
             }
         }
 
-        auto& gameState = getGameState();
         if (gameState.peepSpawns.empty())
         {
             gameState.peepSpawns.emplace_back();

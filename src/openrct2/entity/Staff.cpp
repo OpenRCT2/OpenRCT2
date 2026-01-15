@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,38 +11,26 @@
 
 #include "../Context.h"
 #include "../Diagnostic.h"
-#include "../Game.h"
 #include "../GameState.h"
-#include "../Input.h"
 #include "../actions/StaffSetOrdersAction.h"
 #include "../audio/Audio.h"
 #include "../core/DataSerialiser.h"
-#include "../core/EnumUtils.hpp"
 #include "../entity/EntityList.h"
 #include "../entity/EntityRegistry.h"
 #include "../interface/Viewport.h"
 #include "../localisation/StringIds.h"
-#include "../management/Finance.h"
-#include "../network/Network.h"
-#include "../object/ObjectEntryManager.h"
-#include "../object/ObjectLimits.h"
-#include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
 #include "../object/PathAdditionEntry.h"
 #include "../object/PeepAnimationsObject.h"
-#include "../object/SceneryGroupEntry.h"
 #include "../object/SmallSceneryEntry.h"
-#include "../object/TerrainSurfaceObject.h"
 #include "../paint/tile_element/Paint.TileElement.h"
 #include "../peep/GuestPathfinding.h"
 #include "../ride/RideData.h"
-#include "../ride/Station.h"
 #include "../ride/Track.h"
 #include "../ride/Vehicle.h"
 #include "../scenario/Scenario.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
-#include "../world/Entrance.h"
 #include "../world/Footpath.h"
 #include "../world/Map.h"
 #include "../world/Scenery.h"
@@ -956,7 +944,7 @@ bool Staff::DoPathFinding()
 
         default:
             assert(false);
-            return 0;
+            return false;
     }
 }
 
@@ -1387,7 +1375,7 @@ void Staff::UpdateAnswering()
         if (MechanicTimeSinceCall > 2500)
         {
             ride->mechanicStatus = MechanicStatus::calling;
-            ride->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAINTENANCE;
+            ride->windowInvalidateFlags.set(RideInvalidateFlag::maintenance);
             SetState(PeepState::falling);
             return;
         }
@@ -2087,7 +2075,7 @@ void Staff::UpdateFixing(int32_t steps)
 bool Staff::UpdateFixingEnterStation(Ride& ride) const
 {
     ride.mechanicStatus = MechanicStatus::fixing;
-    ride.windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAINTENANCE;
+    ride.windowInvalidateFlags.set(RideInvalidateFlag::maintenance);
 
     return true;
 }
@@ -2464,13 +2452,13 @@ bool Staff::UpdateFixingFixStationBrakes(bool firstRun, Ride& ride)
     if (AnimationFrameNum == 0x28)
     {
         ride.mechanicStatus = MechanicStatus::hasFixedStationBrakes;
-        ride.windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAINTENANCE;
+        ride.windowInvalidateFlags.set(RideInvalidateFlag::maintenance);
     }
 
     if (AnimationFrameNum == 0x13 || AnimationFrameNum == 0x19 || AnimationFrameNum == 0x1F || AnimationFrameNum == 0x25
         || AnimationFrameNum == 0x2B)
     {
-        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::mechanicFix, GetLocation());
+        Audio::Play3D(Audio::SoundId::mechanicFix, GetLocation());
     }
 
     return false;
@@ -2528,13 +2516,13 @@ bool Staff::UpdateFixingFinishFixOrInspect(bool firstRun, int32_t steps, Ride& r
             UpdateRideInspected(CurrentRide);
 
             StaffRidesInspected = AddClamp(StaffRidesInspected, 1u);
-            WindowInvalidateFlags |= RIDE_INVALIDATE_RIDE_INCOME | RIDE_INVALIDATE_RIDE_LIST;
+            WindowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
             ride.mechanicStatus = MechanicStatus::undefined;
             return true;
         }
 
         StaffRidesFixed = AddClamp(StaffRidesFixed, 1u);
-        WindowInvalidateFlags |= RIDE_INVALIDATE_RIDE_INCOME | RIDE_INVALIDATE_RIDE_LIST;
+        WindowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
 
         Orientation = PeepDirection << 3;
         Action = PeepActionType::staffAnswerCall2;
@@ -2613,7 +2601,7 @@ void Staff::UpdateRideInspected(RideId rideIndex)
         ride->lifecycleFlags &= ~RIDE_LIFECYCLE_DUE_INSPECTION;
         ride->reliability += ((100 - ride->reliabilityPercentage) / 4) * (ScenarioRand() & 0xFF);
         ride->lastInspection = 0;
-        ride->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAINTENANCE | RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
+        ride->windowInvalidateFlags.set(RideInvalidateFlag::maintenance, RideInvalidateFlag::main, RideInvalidateFlag::list);
     }
 }
 

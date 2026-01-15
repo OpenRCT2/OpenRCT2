@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -377,13 +377,13 @@ void InGameConsole::Draw(RenderTarget& rt) const
     if (_consoleCaretTicks < kConsoleCaretFlashThreshold)
     {
         auto caret = screenCoords + ScreenCoordsXY{ _caretScreenPosX, lineHeight };
-        uint8_t caretColour = ColourMapA[textColour.colour].lightest;
+        auto caretColour = ColourMapA[textColour.colour].lightest;
         Rectangle::fill(rt, { caret, caret + ScreenCoordsXY{ kConsoleCaretWidth, 1 } }, caretColour);
     }
 
     // What about border colours?
-    uint8_t borderColour1 = ColourMapA[backgroundColour.colour].light;
-    uint8_t borderColour2 = ColourMapA[backgroundColour.colour].mid_dark;
+    auto borderColour1 = ColourMapA[backgroundColour.colour].light;
+    auto borderColour2 = ColourMapA[backgroundColour.colour].mid_dark;
 
     // Input area top border
     Rectangle::fill(

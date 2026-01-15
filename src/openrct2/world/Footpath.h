@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,7 +11,14 @@
 
 #include "../Identifiers.h"
 #include "../actions/CommandFlag.h"
-#include "../object/Object.h"
+#include "../drawing/ImageIndexType.h"
+#include "../drawing/ScrollingText.h"
+#include "../interface/Colour.h"
+#include "../localisation/StringIdType.h"
+#include "../object/ObjectTypes.h"
+#include "Location.hpp"
+
+#include <array>
 
 namespace OpenRCT2
 {
@@ -31,30 +38,32 @@ constexpr auto kPathClearance = 4 * kCoordsZStep;
 
 enum class RailingEntrySupportType : uint8_t
 {
-    Box = 0,
-    Pole = 1,
-    Count
+    box = 0,
+    pole = 1,
+    count
 };
 
 struct PathSurfaceDescriptor
 {
-    StringId Name;
-    uint32_t Image;
-    uint32_t PreviewImage;
-    uint8_t Flags;
+    StringId name = kStringIdNone;
+    ImageIndex image{};
+    ImageIndex previewImage{};
+    uint8_t flags{};
 };
+constexpr PathSurfaceDescriptor kPathSurfaceDescriptorDummy{};
 
 struct PathRailingsDescriptor
 {
-    StringId Name;
-    uint32_t PreviewImage;
-    uint32_t BridgeImage;
-    uint32_t RailingsImage;
-    RailingEntrySupportType SupportType;
-    colour_t SupportColour;
-    uint8_t Flags;
-    uint8_t ScrollingMode;
+    StringId name = kStringIdNone;
+    ImageIndex previewImage{};
+    ImageIndex bridgeImage{};
+    ImageIndex railingsImage{};
+    RailingEntrySupportType supportType{};
+    colour_t supportColour = COLOUR_NULL;
+    uint8_t flags{};
+    uint8_t scrollingMode = kScrollingModeNone;
 };
+constexpr PathRailingsDescriptor kPathRailingsDescriptorDummy{};
 
 using PathConstructFlags = uint8_t;
 namespace OpenRCT2::PathConstructFlag
@@ -65,15 +74,15 @@ namespace OpenRCT2::PathConstructFlag
 
 struct FootpathSelection
 {
-    OpenRCT2::ObjectEntryIndex LegacyPath = OpenRCT2::kObjectEntryIndexNull;
-    OpenRCT2::ObjectEntryIndex NormalSurface = OpenRCT2::kObjectEntryIndexNull;
-    OpenRCT2::ObjectEntryIndex QueueSurface = OpenRCT2::kObjectEntryIndexNull;
-    OpenRCT2::ObjectEntryIndex Railings = OpenRCT2::kObjectEntryIndexNull;
-    bool IsQueueSelected{};
+    OpenRCT2::ObjectEntryIndex legacyPath = OpenRCT2::kObjectEntryIndexNull;
+    OpenRCT2::ObjectEntryIndex normalSurface = OpenRCT2::kObjectEntryIndexNull;
+    OpenRCT2::ObjectEntryIndex queueSurface = OpenRCT2::kObjectEntryIndexNull;
+    OpenRCT2::ObjectEntryIndex railings = OpenRCT2::kObjectEntryIndexNull;
+    bool isQueueSelected{};
 
-    OpenRCT2::ObjectEntryIndex GetSelectedSurface() const
+    OpenRCT2::ObjectEntryIndex getSelectedSurface() const
     {
-        return IsQueueSelected ? QueueSurface : NormalSurface;
+        return isQueueSelected ? queueSurface : normalSurface;
     }
 };
 

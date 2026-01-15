@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -52,10 +52,10 @@ namespace OpenRCT2
 
         auto sourcePath = Path::GetAbsolute(rawSourcePath);
 
-        auto context = OpenRCT2::CreateContext();
+        auto context = CreateContext();
         context->Initialise();
 
-        auto stream = OpenRCT2::FileStream(sourcePath, OpenRCT2::FileMode::open);
+        auto stream = FileStream(sourcePath, FileMode::open);
         ClassifiedFileInfo info;
         if (!TryClassifyFile(&stream, &info))
         {
@@ -129,7 +129,7 @@ namespace OpenRCT2
                     // Empty object slot don't output anything
                     continue;
                 }
-                auto* ori = OpenRCT2::GetContext()->GetObjectRepository().FindObject(obj);
+                auto* ori = GetContext()->GetObjectRepository().FindObject(obj);
                 Console::WriteFormat("%s Object: ", sourceGameToName[EnumValue(ori->GetFirstSourceGame())]);
 
                 std::string name{ obj.GetName() };

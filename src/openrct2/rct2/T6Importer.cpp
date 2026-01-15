@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -41,7 +41,7 @@ namespace OpenRCT2::RCT2
     class TD6Importer final : public ITrackImporter
     {
     private:
-        OpenRCT2::MemoryStream _stream;
+        MemoryStream _stream;
         std::string _name;
 
     public:
@@ -55,14 +55,14 @@ namespace OpenRCT2::RCT2
             if (String::iequals(extension, ".td6"))
             {
                 _name = GetNameFromTrackPath(path);
-                auto fs = OpenRCT2::FileStream(path, OpenRCT2::FileMode::open);
+                auto fs = FileStream(path, FileMode::open);
                 return LoadFromStream(&fs);
             }
 
             throw std::runtime_error("Invalid RCT2 track extension.");
         }
 
-        bool LoadFromStream(OpenRCT2::IStream* stream) override
+        bool LoadFromStream(IStream* stream) override
         {
             auto chunkReader = SawyerChunkReader(stream);
             auto data = chunkReader.ReadChunkTrack();
@@ -159,8 +159,8 @@ namespace OpenRCT2::RCT2
                     _stream.Read(&t6TrackElement, sizeof(TD46TrackElement));
                     TrackDesignTrackElement trackElement{};
 
-                    OpenRCT2::TrackElemType trackType;
-                    if (t6TrackElement.Type == OpenRCT2::RCT12::TrackElemType::invertedUp90ToFlatQuarterLoopAlias)
+                    TrackElemType trackType;
+                    if (t6TrackElement.Type == RCT12::TrackElemType::invertedUp90ToFlatQuarterLoopAlias)
                     {
                         trackType = TrackElemType::multiDimInvertedUp90ToFlatQuarterLoop;
                     }

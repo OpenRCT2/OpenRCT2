@@ -1,0 +1,61 @@
+# Rules for automatically applying labels to PRs
+# See also: https://github.com/actions/labeler
+
+# General labels
+'build':
+  - changed-files:
+    - any-glob-to-any-file:
+      - '.github/*'
+      - '.github/**/*'
+      - 'cmake/*'
+      - 'cmake/**/*'
+      - 'scripts/*'
+      - 'CMakeLists.txt'
+      - '**/CMakeLists.txt'
+      - '*.sln'
+      - '**/*.vcxproj'
+'documentation':
+  - changed-files:
+    - any-glob-to-any-file:
+      - '*.md'
+      - '**/*.md'
+
+# Localisation
+'localisation':
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'data/language/en-GB.txt'
+
+# Game components
+'actions':
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'src/openrct2/actions/*'
+'map generator':
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'src/openrct2/world/map_generator/*'
+'network':
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'src/openrct2/network/*'
+'paint':
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'src/openrct2/paint/*'
+'plug-in':
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'distribution/openrct2.d.ts'
+      - 'src/openrct2/scripting/*'
+      - 'src/openrct2-ui/scripting/*'
+
+# Platform code
+'platform':
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'src/openrct2/platform/*'
+'android':
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'src/openrct2-android/*'

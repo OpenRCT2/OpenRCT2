@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -104,7 +104,7 @@ void JumpingFountain::StartAnimation(const JumpingFountainType newType, const Co
             // 0, 1, 2, 3
             for (int32_t i = 0; i < kNumOrthogonalDirections; i++)
             {
-                JumpingFountain::Create(
+                Create(
                     newType, { newLoc + _fountainDirectionsPositive[i], newZ }, _fountainDirections[i],
                     _fountainDirectionFlags[i] | _fountainPatternFlags[pattern], 0);
             }
@@ -114,7 +114,7 @@ void JumpingFountain::StartAnimation(const JumpingFountainType newType, const Co
             randomIndex = ScenarioRand() & 1;
             for (int32_t i = randomIndex; i < kNumOrthogonalDirections; i += 2)
             {
-                JumpingFountain::Create(
+                Create(
                     newType, { newLoc + _fountainDirectionsPositive[i], newZ }, _fountainDirections[i],
                     _fountainDirectionFlags[i] | _fountainPatternFlags[pattern], 0);
             }
@@ -122,18 +122,18 @@ void JumpingFountain::StartAnimation(const JumpingFountainType newType, const Co
         case Pattern::racingPairs:
             // random [0 - 3 and 4 - 7]
             randomIndex = ScenarioRand() & 3;
-            JumpingFountain::Create(
+            Create(
                 newType, { newLoc + _fountainDirectionsPositive[randomIndex], newZ }, _fountainDirections[randomIndex],
                 _fountainDirectionFlags[randomIndex] | _fountainPatternFlags[pattern], 0);
             randomIndex += 4;
-            JumpingFountain::Create(
+            Create(
                 newType, { newLoc + _fountainDirectionsPositive[randomIndex], newZ }, _fountainDirections[randomIndex],
                 _fountainDirectionFlags[randomIndex] | _fountainPatternFlags[pattern], 0);
             break;
         default:
             // random [0 - 7]
             randomIndex = ScenarioRand() & 7;
-            JumpingFountain::Create(
+            Create(
                 newType, { newLoc + _fountainDirectionsPositive[randomIndex], newZ }, _fountainDirections[randomIndex],
                 _fountainDirectionFlags[randomIndex] | _fountainPatternFlags[pattern], 0);
             break;
@@ -141,7 +141,7 @@ void JumpingFountain::StartAnimation(const JumpingFountainType newType, const Co
 }
 
 void JumpingFountain::Create(
-    const JumpingFountainType newType, const CoordsXYZ& newLoc, const int32_t direction, const OpenRCT2::FountainFlags newFlags,
+    const JumpingFountainType newType, const CoordsXYZ& newLoc, const int32_t direction, const FountainFlags newFlags,
     const int32_t iteration)
 {
     auto* jumpingFountain = getGameState().entities.CreateEntity<JumpingFountain>();
@@ -356,14 +356,14 @@ void JumpingFountain::Split(const CoordsXYZ& newLoc, int32_t availableDirections
             {
                 auto copiedFlags = fountainFlags;
                 copiedFlags.unset(FountainFlag::direction);
-                JumpingFountain::Create(newType, newLoc, direction >> 1, copiedFlags, Iteration + 1);
+                Create(newType, newLoc, direction >> 1, copiedFlags, Iteration + 1);
             }
             direction++;
             if (availableDirections & (1 << direction))
             {
                 auto copiedFlags = fountainFlags;
                 copiedFlags.set(FountainFlag::direction);
-                JumpingFountain::Create(newType, newLoc, direction >> 1, copiedFlags, Iteration + 1);
+                Create(newType, newLoc, direction >> 1, copiedFlags, Iteration + 1);
             }
         }
     }
@@ -388,7 +388,7 @@ void JumpingFountain::CreateNext(const CoordsXYZ& newLoc, int32_t direction) con
     const auto newType = GetType();
     auto newFlags = fountainFlags;
     newFlags.set(FountainFlag::direction, !!(direction & 1));
-    JumpingFountain::Create(newType, newLoc, direction >> 1, newFlags, Iteration);
+    Create(newType, newLoc, direction >> 1, newFlags, Iteration);
 }
 
 void JumpingFountain::Serialise(DataSerialiser& stream)
@@ -411,7 +411,7 @@ void JumpingFountain::Paint(PaintSession& session, int32_t imageDirection) const
     constexpr uint32_t kJumpingFountainSnowBaseImage = 23037;
     constexpr uint32_t kJumpingFountainWaterBaseImage = 22973;
 
-    auto& rt = session.DPI;
+    auto& rt = session.rt;
     if (rt.zoom_level > ZoomLevel{ 0 })
     {
         return;

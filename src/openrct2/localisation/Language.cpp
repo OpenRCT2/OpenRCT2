@@ -1,11 +1,13 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
+
+#include "Language.h"
 
 #include "../Context.h"
 #include "../core/String.hpp"
@@ -68,13 +70,13 @@ namespace OpenRCT2
 
     const char* LanguageGetString(StringId id)
     {
-        const auto& localisationService = OpenRCT2::GetContext()->GetLocalisationService();
+        const auto& localisationService = GetContext()->GetLocalisationService();
         return localisationService.GetString(id);
     }
 
     bool LanguageOpen(int32_t id)
     {
-        auto context = OpenRCT2::GetContext();
+        auto context = GetContext();
         auto& localisationService = context->GetLocalisationService();
         auto& objectManager = context->GetObjectManager();
         try
@@ -94,13 +96,13 @@ namespace OpenRCT2
 
     void LanguageFreeObjectString(StringId stringId)
     {
-        auto& localisationService = OpenRCT2::GetContext()->GetLocalisationService();
+        auto& localisationService = GetContext()->GetLocalisationService();
         localisationService.FreeObjectString(stringId);
     }
 
     StringId LanguageAllocateObjectString(const std::string& target)
     {
-        auto& localisationService = OpenRCT2::GetContext()->GetLocalisationService();
+        auto& localisationService = GetContext()->GetLocalisationService();
         return localisationService.AllocateObjectString(target);
     }
 } // namespace OpenRCT2

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -213,7 +213,7 @@ namespace OpenRCT2::Scripting
 
     public:
         static const LargeSceneryElement* GetOtherLargeSceneryElement(
-            const CoordsXY& loc, const LargeSceneryElement* const largeScenery);
+            const CoordsXY& loc, const LargeSceneryElement* largeScenery);
         static void Register(duk_context* ctx);
     };
 

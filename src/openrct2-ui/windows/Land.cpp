@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -127,11 +127,11 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 case WIDX_MOUNTAINMODE:
                     _landToolMountainMode ^= 1;
-                    _landToolPaintMode = 0;
+                    _landToolPaintMode = false;
                     invalidate();
                     break;
                 case WIDX_PAINTMODE:
-                    _landToolMountainMode = 0;
+                    _landToolMountainMode = false;
                     _landToolPaintMode ^= 1;
                     invalidate();
                     break;

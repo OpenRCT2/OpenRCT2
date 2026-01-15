@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,6 +10,7 @@
 #include "BannerPlaceAction.h"
 
 #include "../Diagnostic.h"
+#include "../core/Guard.hpp"
 #include "../management/Finance.h"
 #include "../object/BannerSceneryEntry.h"
 #include "../object/ObjectEntryManager.h"
@@ -96,7 +97,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_CANT_POSITION_THIS_HERE, STR_TOO_MANY_BANNERS_IN_GAME);
         }
 
-        auto* bannerEntry = OpenRCT2::ObjectManager::GetObjectEntry<BannerSceneryEntry>(_bannerType);
+        auto* bannerEntry = ObjectManager::GetObjectEntry<BannerSceneryEntry>(_bannerType);
         if (bannerEntry == nullptr)
         {
             LOG_ERROR("Banner entry not found for bannerType %u", _bannerType);
@@ -123,7 +124,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::noFreeElements, STR_CANT_POSITION_THIS_HERE, STR_TILE_ELEMENT_LIMIT_REACHED);
         }
 
-        auto* bannerEntry = OpenRCT2::ObjectManager::GetObjectEntry<BannerSceneryEntry>(_bannerType);
+        auto* bannerEntry = ObjectManager::GetObjectEntry<BannerSceneryEntry>(_bannerType);
         if (bannerEntry == nullptr)
         {
             LOG_ERROR("Banner entry not found for bannerType %u", _bannerType);

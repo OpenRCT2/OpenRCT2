@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -28,6 +28,7 @@
 #include "../world/tile_element/Slope.h"
 #include "../world/tile_element/SurfaceElement.h"
 #include "../world/tile_element/TrackElement.h"
+#include "ResultWithMessage.h"
 #include "RideSetSettingAction.h"
 
 namespace OpenRCT2::GameActions
@@ -498,7 +499,7 @@ namespace OpenRCT2::GameActions
                     // Remove walls in the directions this track intersects
                     uint8_t intersectingDirections = ted.sequences[blockIndex].allowedWallEdges;
                     intersectingDirections ^= 0x0F;
-                    intersectingDirections = Numerics::rol4(intersectingDirections, _origin.direction);
+                    intersectingDirections = rol4(intersectingDirections, _origin.direction);
                     for (int32_t i = 0; i < kNumOrthogonalDirections; i++)
                     {
                         if (intersectingDirections & (1 << i))
@@ -613,8 +614,8 @@ namespace OpenRCT2::GameActions
                 {
                     if (!GetFlags().has(CommandFlag::ghost) && !gameState.cheats.disableClearanceChecks)
                     {
-                        for (int32_t chosenDirection = Numerics::bitScanForward(connectionSides); chosenDirection != -1;
-                             chosenDirection = Numerics::bitScanForward(connectionSides))
+                        for (int32_t chosenDirection = bitScanForward(connectionSides); chosenDirection != -1;
+                             chosenDirection = bitScanForward(connectionSides))
                         {
                             connectionSides &= ~(1 << chosenDirection);
                             CoordsXY tempLoc{ mapLoc.x, mapLoc.y };
@@ -683,12 +684,12 @@ namespace OpenRCT2::GameActions
                     auto newMode = RideModeGetBlockSectionedCounterpart(ride->mode);
                     if (ride->mode != newMode)
                     {
-                        bool canSwitch = rtd.SupportsRideMode(newMode) || getGameState().cheats.showAllOperatingModes;
+                        bool canSwitch = rtd.SupportsRideMode(newMode) || gameState.cheats.showAllOperatingModes;
                         if (canSwitch)
                         {
-                            ride->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_OPERATING;
-                            auto rideSetSetting = GameActions::RideSetSettingAction(
-                                ride->id, GameActions::RideSetSetting::Mode, static_cast<uint8_t>(newMode));
+                            ride->windowInvalidateFlags.set(RideInvalidateFlag::operatingSettings);
+                            auto rideSetSetting = RideSetSettingAction(
+                                ride->id, RideSetSetting::Mode, static_cast<uint8_t>(newMode));
                             ExecuteNested(&rideSetSetting, gameState);
                         }
                     }

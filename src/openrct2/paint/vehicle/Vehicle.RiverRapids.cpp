@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -32,7 +32,7 @@ namespace OpenRCT2
         PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
         const CarEntry* carEntry)
     {
-        imageDirection = OpenRCT2::Entity::Yaw::YawTo32(imageDirection);
+        imageDirection = Entity::Yaw::YawTo32(imageDirection);
 
         ImageId image_id;
         int32_t baseImage_id = imageDirection;
@@ -84,7 +84,7 @@ namespace OpenRCT2
         }
         PaintAddImageAsParent(session, image_id, { 0, 0, z }, bb);
 
-        if (session.DPI.zoom_level < ZoomLevel{ 2 } && vehicle->num_peeps > 0 && !vehicle->IsGhost())
+        if (session.rt.zoom_level < ZoomLevel{ 2 } && vehicle->num_peeps > 0 && !vehicle->IsGhost())
         {
             // Draw peeps: (this particular vehicle doesn't sort them back to front like others so the back ones sometimes clip,
             // but that's how the original does it...)

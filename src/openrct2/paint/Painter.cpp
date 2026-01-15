@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,6 +14,7 @@
 #include "../ReplayManager.h"
 #include "../config/Config.h"
 #include "../core/Guard.hpp"
+#include "../drawing/Drawing.h"
 #include "../drawing/IDrawingEngine.h"
 #include "../drawing/Text.h"
 #include "../interface/Viewport.h"
@@ -41,7 +42,7 @@ void Painter::Paint(IDrawingEngine& de)
 {
     PROFILED_FUNCTION();
 
-    auto rt = de.GetDrawingPixelInfo();
+    auto rt = de.getRT();
 
     if (IntroIsPlaying())
     {
@@ -105,7 +106,7 @@ static bool ShouldShowFPS()
     if (gLegacyScene == LegacyScene::titleSequence)
         return true;
 
-    auto* windowMgr = Ui::GetWindowManager();
+    auto* windowMgr = GetWindowManager();
     return windowMgr->FindByClass(WindowClass::topToolbar);
 }
 
@@ -170,7 +171,7 @@ PaintSession* Painter::CreateSession(RenderTarget& rt, uint32_t viewFlags, uint8
         session = &_paintSessionPool.emplace_back();
     }
 
-    session->DPI = rt;
+    session->rt = rt;
     session->ViewFlags = viewFlags;
     session->QuadrantBackIndex = std::numeric_limits<uint32_t>::max();
     session->QuadrantFrontIndex = 0;
@@ -187,7 +188,7 @@ PaintSession* Painter::CreateSession(RenderTarget& rt, uint32_t viewFlags, uint8
     session->CurrentlyDrawnEntity = nullptr;
     session->CurrentlyDrawnTileElement = nullptr;
     session->Surface = nullptr;
-    session->SelectedElement = OpenRCT2::TileInspector::GetSelectedElement();
+    session->SelectedElement = TileInspector::GetSelectedElement();
     session->InteractionType = ViewportInteractionItem::none;
     session->PathElementOnSameHeight = nullptr;
     session->TrackElementOnSameHeight = nullptr;

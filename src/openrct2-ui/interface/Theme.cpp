@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -641,9 +641,9 @@ namespace OpenRCT2::Ui
 
         static bool LoadThemeByConfigName(const utf8* name)
         {
-            for (size_t i = 0; i < ThemeManager::AvailableThemes.size(); i++)
+            for (size_t i = 0; i < AvailableThemes.size(); i++)
             {
-                const auto& theme = ThemeManager::AvailableThemes[i];
+                const auto& theme = AvailableThemes[i];
                 if (String::equals(name, theme.Name))
                 {
                     if (theme.Path.empty())
@@ -663,7 +663,7 @@ namespace OpenRCT2::Ui
 
         static void Initialise()
         {
-            ThemeManager::GetAvailableThemes(&ThemeManager::AvailableThemes);
+            GetAvailableThemes(&AvailableThemes);
             LoadTheme(const_cast<UITheme*>(&kPredefinedThemeRCT2));
             ActiveAvailableThemeIndex = 1;
 

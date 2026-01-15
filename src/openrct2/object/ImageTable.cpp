@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -21,6 +21,7 @@
 #include "../core/Json.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
+#include "../drawing/Drawing.h"
 #include "../drawing/ImageImporter.h"
 #include "Object.h"
 #include "ObjectFactory.h"
@@ -429,7 +430,7 @@ namespace OpenRCT2
         }
     }
 
-    void ImageTable::Read(IReadObjectContext* context, OpenRCT2::IStream* stream)
+    void ImageTable::Read(IReadObjectContext* context, IStream* stream)
     {
         if (gOpenRCT2NoGraphics)
         {
@@ -641,5 +642,12 @@ namespace OpenRCT2
             std::copy_n(g1->offset, length, newg1.offset);
         }
         _entries.push_back(std::move(newg1));
+    }
+
+    void ImageTable::addPalette(const G1Palette& g1)
+    {
+        Guard::Assert(g1.flags.has(G1Flag::isPalette));
+        const auto base = reinterpret_cast<const G1Element*>(&g1);
+        AddImage(base);
     }
 } // namespace OpenRCT2

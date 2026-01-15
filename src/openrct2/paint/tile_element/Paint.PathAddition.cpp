@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -224,7 +224,7 @@ inline bool PathAdditionIsVisible(uint32_t viewFlags, const PathAdditionEntry& p
     return false;
 }
 
-void Sub6A3F61PathAddition(PaintSession& session, const PathElement& pathElement, uint16_t height, ImageId sceneryImageTemplate)
+void paintPathAddition(PaintSession& session, const PathElement& pathElement, uint16_t height, ImageId sceneryImageTemplate)
 {
     // Path additions get drawn on edges that are not connected, so we need to flip them.
     const auto edges = pathElement.GetEdges() ^ 0b1111;
@@ -255,7 +255,7 @@ void Sub6A3F61PathAddition(PaintSession& session, const PathElement& pathElement
             PathAdditionBenchesPaint(session, *pathAddEntry, pathElement, height, rotatedEdges, sceneryImageTemplate);
             break;
         case PathAdditionDrawType::jumpingFountain:
-            PathAdditionJumpingFountainsPaint(session, *pathAddEntry, height, sceneryImageTemplate, session.DPI);
+            PathAdditionJumpingFountainsPaint(session, *pathAddEntry, height, sceneryImageTemplate, session.rt);
             break;
     }
 

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -16,14 +16,16 @@
 #include "../../core/EnumUtils.hpp"
 #include "../../core/Numerics.hpp"
 #include "../../core/UTF8.h"
+#include "../../drawing/Drawing.h"
+#include "../../drawing/ScrollingText.h"
 #include "../../interface/Viewport.h"
+#include "../../localisation/Formatter.h"
 #include "../../localisation/Formatting.h"
 #include "../../localisation/StringIds.h"
 #include "../../object/LargeSceneryEntry.h"
 #include "../../profiling/Profiling.h"
 #include "../../ride/Ride.h"
 #include "../../ride/TrackDesign.h"
-#include "../../world/Banner.h"
 #include "../../world/Scenery.h"
 #include "../../world/TileInspector.h"
 #include "../../world/tile_element/LargeSceneryElement.h"
@@ -34,7 +36,6 @@
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
-using namespace OpenRCT2::Numerics;
 
 // clang-format off
 static constexpr BoundBoxXY LargeSceneryBoundBoxes[] = {
@@ -78,7 +79,7 @@ static void PaintLargeScenerySupports(
     WoodenBSupportsPaintSetupRotated(
         session, WoodenSupportType::truss, WoodenSupportSubType::neSw, direction, supportHeight, imageTemplate, transitionType);
 
-    int32_t clearanceHeight = ceil2(tileElement.GetClearanceZ() + 15, 16);
+    int32_t clearanceHeight = Numerics::ceil2(tileElement.GetClearanceZ() + 15, 16);
     if (tile.allowSupportsAbove)
     {
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, clearanceHeight, 0x20);
@@ -202,7 +203,7 @@ static void PaintLargeScenery3DText(
         }
     }
 
-    if (session.DPI.zoom_level > ZoomLevel{ 1 })
+    if (session.rt.zoom_level > ZoomLevel{ 1 })
         return;
 
     auto banner = tileElement.GetBanner();
@@ -219,7 +220,7 @@ static void PaintLargeScenery3DText(
     char signString[256];
     auto ft = Formatter();
     banner->formatTextTo(ft);
-    OpenRCT2::FormatStringLegacy(signString, sizeof(signString), STR_STRINGID, ft.Data());
+    FormatStringLegacy(signString, sizeof(signString), STR_STRINGID, ft.Data());
 
     auto offsetY = text->offset[(direction & 1)].y * 2;
     if (text->flags & LARGE_SCENERY_TEXT_FLAG_VERTICAL)
@@ -324,13 +325,13 @@ static void PaintLargeSceneryScrollingText(
     }
     else
     {
-        OpenRCT2::FormatStringLegacy(text, sizeof(text), STR_SCROLLING_SIGN_TEXT, ft.Data());
+        FormatStringLegacy(text, sizeof(text), STR_SCROLLING_SIGN_TEXT, ft.Data());
     }
 
     auto scrollMode = sceneryEntry.scrolling_mode + ((direction + 1) & 3);
     auto stringWidth = GfxGetStringWidth(text, FontStyle::tiny);
     auto scroll = stringWidth > 0 ? (getGameState().currentTicks / 2) % stringWidth : 0;
-    auto imageId = Drawing::ScrollingText::setup(session, STR_SCROLLING_SIGN_TEXT, ft, scroll, scrollMode, textPaletteIndex);
+    auto imageId = ScrollingText::setup(session, STR_SCROLLING_SIGN_TEXT, ft, scroll, scrollMode, textPaletteIndex);
     PaintAddImageAsChild(session, imageId, { 0, 0, height + 25 }, { bbOffset, { 1, 1, 21 } });
 }
 
@@ -411,7 +412,7 @@ void PaintLargeScenery(PaintSession& session, uint8_t direction, uint16_t height
         {
             PaintLargeScenery3DText(session, *sceneryEntry, tile, tileElement, direction, height, isGhost);
         }
-        else if (session.DPI.zoom_level <= ZoomLevel{ 0 })
+        else if (session.rt.zoom_level <= ZoomLevel{ 0 })
         {
             auto sequenceDirection2 = (tileElement.GetSequenceIndex() - 1) & 3;
             if (sequenceDirection2 == direction)
