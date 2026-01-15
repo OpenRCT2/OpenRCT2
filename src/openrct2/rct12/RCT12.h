@@ -352,7 +352,7 @@ constexpr uint16_t kRCT12TileElementLargeTypeMask = 0x3FF;
 constexpr uint8_t kRCT12TrackElementTypeFlagChainLift = 1 << 7;
 constexpr uint8_t kRCT12TrackElementSequenceGreenLight = 1 << 7;
 
-constexpr uint16_t const kRCT12xy8Undefined = 0xFFFF;
+constexpr uint16_t kRCT12xy8Undefined = 0xFFFF;
 
 using RCT12ObjectEntryIndex = uint8_t;
 constexpr RCT12ObjectEntryIndex kRCT12ObjectEntryIndexNull = 255;
