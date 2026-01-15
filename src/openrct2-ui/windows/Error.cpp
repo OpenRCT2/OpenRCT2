@@ -122,7 +122,7 @@ namespace OpenRCT2::Ui::Windows
         }
 
         // Close any existing error windows if they exist.
-        auto* windowMgr = Ui::GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         windowMgr->CloseByClass(WindowClass::error);
 
         // How wide is the error string?

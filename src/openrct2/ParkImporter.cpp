@@ -23,7 +23,7 @@ namespace OpenRCT2::ParkImporter
     {
         std::unique_ptr<IParkImporter> parkImporter;
         std::string extension = Path::GetExtension(hintPath);
-        auto* context = OpenRCT2::GetContext();
+        auto* context = GetContext();
         if (ExtensionIsOpenRCT2ParkFile(extension))
         {
             parkImporter = CreateParkFile(context->GetObjectRepository());

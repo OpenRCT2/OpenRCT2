@@ -653,7 +653,7 @@ void AwardUpdateAll()
         }
 
         // Check if there was a free award entry
-        if (currentAwards.size() < OpenRCT2::Limits::kMaxAwards)
+        if (currentAwards.size() < Limits::kMaxAwards)
         {
             // Get a random award type not already active
             AwardType awardType;
@@ -679,7 +679,7 @@ void AwardGrant(AwardType type)
     std::erase_if(currentAwards, [type](const Award& award) { return award.Type == type; });
 
     // Ensure there is space for the award
-    if (currentAwards.size() >= OpenRCT2::Limits::kMaxAwards)
+    if (currentAwards.size() >= Limits::kMaxAwards)
     {
         currentAwards.erase(currentAwards.begin());
     }

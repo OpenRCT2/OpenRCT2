@@ -294,7 +294,7 @@ namespace OpenRCT2::Ui::Windows
          */
         void ToolUpdateWater(const ScreenCoordsXY& screenPos)
         {
-            auto* windowMgr = Ui::GetWindowManager();
+            auto* windowMgr = GetWindowManager();
             auto& gameState = getGameState();
 
             if (gCurrentToolId == Tool::upDownArrow)

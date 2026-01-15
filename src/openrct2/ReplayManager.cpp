@@ -89,7 +89,7 @@ namespace OpenRCT2
         uint32_t magic;
         uint16_t version;
         uint64_t uncompressedSize;
-        OpenRCT2::MemoryStream data;
+        MemoryStream data;
     };
 
     struct ReplayRecordData
@@ -97,9 +97,9 @@ namespace OpenRCT2
         uint32_t magic;
         uint16_t version;
         std::string networkId;
-        OpenRCT2::MemoryStream parkData;
-        OpenRCT2::MemoryStream parkParams;
-        OpenRCT2::MemoryStream cheatData;
+        MemoryStream parkData;
+        MemoryStream parkParams;
+        MemoryStream cheatData;
         std::string name;      // Name of play
         std::string filePath;  // File path of replay.
         uint64_t timeRecorded; // Posix Time.
@@ -108,7 +108,7 @@ namespace OpenRCT2
         std::multiset<ReplayCommand> commands;
         std::vector<std::pair<uint32_t, EntitiesChecksum>> checksums;
         uint32_t checksumIndex;
-        OpenRCT2::MemoryStream gameStateSnapshots;
+        MemoryStream gameStateSnapshots;
     };
 
     class ReplayManager final : public IReplayManager
@@ -165,7 +165,7 @@ namespace OpenRCT2
             if (_currentRecording == nullptr)
                 return;
 
-            auto ga = GameActions::Clone(action);
+            auto ga = Clone(action);
 
             _currentRecording->commands.emplace(tick, std::move(ga), _commandId++);
         }
@@ -707,7 +707,7 @@ namespace OpenRCT2
 
             if (serialiser.IsLoading())
             {
-                command.action = GameActions::Create(static_cast<GameCommand>(actionType));
+                command.action = Create(static_cast<GameCommand>(actionType));
             }
 
             Guard::Assert(command.action != nullptr);
@@ -863,8 +863,8 @@ namespace OpenRCT2
                 GameAction* action = command.action.get();
                 action->SetFlags(action->GetFlags().with(CommandFlag::replay));
 
-                GameActions::Result result = GameActions::Execute(action, gameState);
-                if (result.error == GameActions::Status::ok)
+                Result result = Execute(action, gameState);
+                if (result.error == Status::ok)
                 {
                     isPositionValid = true;
                 }

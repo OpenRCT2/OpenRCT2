@@ -63,7 +63,7 @@ namespace OpenRCT2::Ui::Windows
     static void WindowTitleMenuScenarioselectCallback(const utf8* path)
     {
         GameNotifyMapChange();
-        OpenRCT2::GetContext()->LoadParkFromFile(path, false, true);
+        GetContext()->LoadParkFromFile(path, false, true);
         GameLoadScripts();
         GameNotifyMapChanged();
     }
@@ -71,11 +71,11 @@ namespace OpenRCT2::Ui::Windows
     static void InvokeCustomToolboxMenuItem(size_t index)
     {
 #ifdef ENABLE_SCRIPTING
-        const auto& customMenuItems = OpenRCT2::Scripting::CustomMenuItems;
+        const auto& customMenuItems = Scripting::CustomMenuItems;
         size_t i = 0;
         for (const auto& item : customMenuItems)
         {
-            if (item.Kind == OpenRCT2::Scripting::CustomToolbarMenuItemKind::Toolbox)
+            if (item.Kind == Scripting::CustomToolbarMenuItemKind::Toolbox)
             {
                 if (i == index)
                 {
@@ -188,12 +188,12 @@ namespace OpenRCT2::Ui::Windows
 
 #ifdef ENABLE_SCRIPTING
                 auto hasCustomItems = false;
-                const auto& customMenuItems = OpenRCT2::Scripting::CustomMenuItems;
+                const auto& customMenuItems = Scripting::CustomMenuItems;
                 if (!customMenuItems.empty())
                 {
                     for (const auto& item : customMenuItems)
                     {
-                        if (item.Kind == OpenRCT2::Scripting::CustomToolbarMenuItemKind::Toolbox)
+                        if (item.Kind == Scripting::CustomToolbarMenuItemKind::Toolbox)
                         {
                             if (!hasCustomItems)
                             {
@@ -245,10 +245,10 @@ namespace OpenRCT2::Ui::Windows
                         break;
                     case DDIDX_OPEN_CONTENT_FOLDER:
                     {
-                        auto context = OpenRCT2::GetContext();
+                        auto context = GetContext();
                         auto& env = context->GetPlatformEnvironment();
                         auto& uiContext = context->GetUiContext();
-                        uiContext.OpenFolder(env.GetDirectoryPath(OpenRCT2::DirBase::user));
+                        uiContext.OpenFolder(env.GetDirectoryPath(DirBase::user));
                         break;
                     }
                     default:
@@ -268,14 +268,14 @@ namespace OpenRCT2::Ui::Windows
         {
             _filterRect = { windowPos + ScreenCoordsXY{ 0, UpdateButtonDims.height },
                             windowPos + ScreenCoordsXY{ width - 1, MenuButtonDims.height + UpdateButtonDims.height - 1 } };
-            if (OpenRCT2::GetContext()->HasNewVersionInfo())
+            if (GetContext()->HasNewVersionInfo())
             {
                 widgets[WIDX_NEW_VERSION].type = WidgetType::button;
                 _filterRect.Point1.y = windowPos.y;
             }
         }
 
-        void onDraw(Drawing::RenderTarget& rt) override
+        void onDraw(RenderTarget& rt) override
         {
             Rectangle::filter(rt, _filterRect, FilterPaletteID::palette51);
             drawWidgets(rt);

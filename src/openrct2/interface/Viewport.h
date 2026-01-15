@@ -200,7 +200,7 @@ namespace OpenRCT2
     void ViewportUpdateSmartFollowGuest(WindowBase* window, const Guest& peep);
     void ViewportRotateSingle(WindowBase* window, int32_t direction);
     void ViewportRotateAll(int32_t direction);
-    void ViewportRender(OpenRCT2::Drawing::RenderTarget& rt, const Viewport* viewport);
+    void ViewportRender(Drawing::RenderTarget& rt, const Viewport* viewport);
 
     CoordsXYZ ViewportAdjustForMapHeight(const ScreenCoordsXY& startCoords, uint8_t rotation);
 

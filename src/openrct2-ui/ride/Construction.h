@@ -20,7 +20,7 @@ namespace OpenRCT2
 
     struct SpecialElement
     {
-        OpenRCT2::TrackElemType TrackType;
+        TrackElemType TrackType;
         bool Disabled;
     };
 

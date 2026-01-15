@@ -1607,7 +1607,7 @@ namespace OpenRCT2
     }
 
     std::unique_ptr<IContext> CreateContext(
-        std::unique_ptr<IPlatformEnvironment>&& env, std::unique_ptr<Audio::IAudioContext>&& audioContext,
+        std::unique_ptr<IPlatformEnvironment>&& env, std::unique_ptr<IAudioContext>&& audioContext,
         std::unique_ptr<IUiContext>&& uiContext)
     {
         return std::make_unique<Context>(std::move(env), std::move(audioContext), std::move(uiContext));

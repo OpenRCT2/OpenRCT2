@@ -1893,7 +1893,7 @@ TrackElement* MapGetTrackElementAt(const CoordsXYZ& trackPos)
  * @param y y units, not tiles.
  * @param z Base height.
  */
-TileElement* MapGetTrackElementAtOfType(const CoordsXYZ& trackPos, OpenRCT2::TrackElemType trackType)
+TileElement* MapGetTrackElementAtOfType(const CoordsXYZ& trackPos, TrackElemType trackType)
 {
     TileElement* tileElement = MapGetFirstElementAt(trackPos);
     if (tileElement == nullptr)
@@ -1920,7 +1920,7 @@ TileElement* MapGetTrackElementAtOfType(const CoordsXYZ& trackPos, OpenRCT2::Tra
  * @param y y units, not tiles.
  * @param z Base height.
  */
-TileElement* MapGetTrackElementAtOfTypeSeq(const CoordsXYZ& trackPos, OpenRCT2::TrackElemType trackType, int32_t sequence)
+TileElement* MapGetTrackElementAtOfTypeSeq(const CoordsXYZ& trackPos, TrackElemType trackType, int32_t sequence)
 {
     TileElement* tileElement = MapGetFirstElementAt(trackPos);
     auto trackTilePos = TileCoordsXYZ{ trackPos };
@@ -1943,7 +1943,7 @@ TileElement* MapGetTrackElementAtOfTypeSeq(const CoordsXYZ& trackPos, OpenRCT2::
     return nullptr;
 }
 
-TrackElement* MapGetTrackElementAtOfType(const CoordsXYZD& location, OpenRCT2::TrackElemType trackType)
+TrackElement* MapGetTrackElementAtOfType(const CoordsXYZD& location, TrackElemType trackType)
 {
     auto tileElement = MapGetFirstElementAt(location);
     if (tileElement != nullptr)
@@ -1966,7 +1966,7 @@ TrackElement* MapGetTrackElementAtOfType(const CoordsXYZD& location, OpenRCT2::T
     return nullptr;
 }
 
-TrackElement* MapGetTrackElementAtOfTypeSeq(const CoordsXYZD& location, OpenRCT2::TrackElemType trackType, int32_t sequence)
+TrackElement* MapGetTrackElementAtOfTypeSeq(const CoordsXYZD& location, TrackElemType trackType, int32_t sequence)
 {
     auto tileElement = MapGetFirstElementAt(location);
     if (tileElement != nullptr)
@@ -1997,7 +1997,7 @@ TrackElement* MapGetTrackElementAtOfTypeSeq(const CoordsXYZD& location, OpenRCT2
  * @param y y units, not tiles.
  * @param z Base height.
  */
-TileElement* MapGetTrackElementAtOfTypeFromRide(const CoordsXYZ& trackPos, OpenRCT2::TrackElemType trackType, RideId rideIndex)
+TileElement* MapGetTrackElementAtOfTypeFromRide(const CoordsXYZ& trackPos, TrackElemType trackType, RideId rideIndex)
 {
     TileElement* tileElement = MapGetFirstElementAt(trackPos);
     if (tileElement == nullptr)
