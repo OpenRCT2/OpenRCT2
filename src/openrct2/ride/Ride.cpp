@@ -781,6 +781,42 @@ bool TrackBlockGetPrevious(const CoordsXYE& trackPos, TrackBeginEnd* outTrackBeg
 
 /**
  *
+ * Gets the next track block coordinates from the
+ * coordinates of the input element of a track block.
+ * Useful for iterating over flat ride 'track'. Start with
+ * input = ride.GetStation(RideGetFirstValidStationStart(ride)).GetStart()
+ */
+bool TrackSequenceGetNext(const CoordsXYE& input, CoordsXYE* output)
+{
+    auto inputElement = input.element->AsTrack();
+    auto sequenceIndex = inputElement->GetSequenceIndex();
+    auto trackType = inputElement->GetTrackType();
+    const auto& ted = GetTrackElementDescriptor(trackType);
+
+    if (sequenceIndex >= ted.numSequences - 1)
+        return false;
+
+    uint8_t rotation = inputElement->GetDirection();
+    const auto& inputClearance = ted.sequences[sequenceIndex].clearance;
+    CoordsXY inputOffset = { inputClearance.x, inputClearance.y };
+    CoordsXY inputCoords = { input.x, input.y };
+    auto origin = inputCoords + inputOffset.Rotate(DirectionReverse(rotation));
+
+    const auto& nextClearance = ted.sequences[sequenceIndex + 1].clearance;
+    CoordsXY nextOffset = { nextClearance.x, nextClearance.y };
+    CoordsXY nextCoords = origin + nextOffset.Rotate(rotation);
+
+    auto inputZ = inputElement->GetBaseZ();
+    auto rideIndex = inputElement->GetRideIndex();
+    auto* tileElement = MapGetTrackElementAtOfTypeFromRide({ nextCoords, inputZ }, trackType, rideIndex);
+
+    *output = { nextCoords, tileElement };
+
+    return true;
+}
+
+/**
+ *
  * Make sure to pass in the x and y of the start track element too.
  *  rct2: 0x006CB02F
  * ax result x

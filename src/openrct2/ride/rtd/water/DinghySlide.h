@@ -76,7 +76,7 @@ constexpr RideTypeDescriptor DinghySlideRTD =
         RatingsCalculationType::Normal,
         { RideRating::make(2, 70), RideRating::make(2, 00), RideRating::make(1, 50) },
         13,
-        -1,
+        kDynamicRideShelterRating,
         false,
         {
             { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },

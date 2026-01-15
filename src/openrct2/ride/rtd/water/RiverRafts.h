@@ -60,7 +60,7 @@ constexpr RideTypeDescriptor RiverRaftsRTD =
         RatingsCalculationType::Normal,
         { RideRating::make(1, 45), RideRating::make(0, 25), RideRating::make(0, 34) },
         12,
-        -1,
+        kDynamicRideShelterRating,
         false,
         {
             { RatingsModifierType::BonusLength,           2000,             7208, 0, 0 },
