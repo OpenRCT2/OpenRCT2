@@ -179,9 +179,9 @@ void RideRating::ResetUpdateStates()
  */
 void RideRating::UpdateRide(const Ride& ride)
 {
-    UpdateState state;
     if (ride.status != RideStatus::closed)
     {
+        UpdateState state;
         state.CurrentRide = ride.id;
         state.State = RIDE_RATINGS_STATE_INITIALISE;
         while (state.State != RIDE_RATINGS_STATE_FIND_NEXT_RIDE)

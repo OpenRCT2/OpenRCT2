@@ -10790,7 +10790,6 @@ static void LayDownRCTrackHalfLoopUninvertedDown(
 {
     auto function = GetTrackPaintFunctionLayDownRCInverted(TrackElemType::flyerHalfLoopInvertedUp);
     function(session, ride, 3 - trackSequence, direction, height, trackElement, supportType);
-    return;
 }
 
 static void CorkscrewRCTrackFlatTo60DegUp(

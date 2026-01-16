@@ -930,11 +930,11 @@ namespace OpenRCT2::Config
                     std::string steam = LanguageGetString(STR_OWN_ON_STEAM);
                     std::string hdd = LanguageGetString(STR_INSTALLED_ON_HDD);
 
-                    std::vector<std::string> options;
                     std::string chosenOption;
 
                     if (uiContext.HasMenuSupport())
                     {
+                        std::vector<std::string> options;
                         options.push_back(hdd);
                         options.push_back(gog);
                         options.push_back(steam);

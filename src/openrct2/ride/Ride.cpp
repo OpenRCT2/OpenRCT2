@@ -899,16 +899,16 @@ void Ride::formatStatusTo(Formatter& ft) const
 
 int32_t Ride::getTotalLength() const
 {
-    int32_t i, totalLength = 0;
-    for (i = 0; i < numStations; i++)
+    int32_t totalLength = 0;
+    for (int32_t i = 0; i < numStations; i++)
         totalLength += stations[i].SegmentLength;
     return totalLength;
 }
 
 int32_t Ride::getTotalTime() const
 {
-    int32_t i, totalTime = 0;
-    for (i = 0; i < numStations; i++)
+    int32_t totalTime = 0;
+    for (int32_t i = 0; i < numStations; i++)
         totalTime += stations[i].SegmentTime;
     return totalTime;
 }

@@ -7159,7 +7159,6 @@ static void LayDownRCTrackRightFlyerCorkscrewDown(
 {
     auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::leftFlyerCorkscrewUp);
     function(session, ride, 2 - trackSequence, (direction + 3) % 4, height, trackElement, supportType);
-    return;
 }
 
 /** rct2: 0x00824FEC */

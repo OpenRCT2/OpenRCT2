@@ -196,7 +196,6 @@ namespace OpenRCT2
                 if (currentTicks >= _currentRecording->tickEnd)
                 {
                     StopRecording();
-                    return;
                 }
             }
             else if (_mode == ReplayMode::PLAYING)
@@ -215,7 +214,6 @@ namespace OpenRCT2
                 if (currentTicks >= _currentReplay->tickEnd)
                 {
                     StopPlayback();
-                    return;
                 }
             }
             else if (_mode == ReplayMode::NORMALISATION)
@@ -230,7 +228,6 @@ namespace OpenRCT2
 
                     // Reset mode, in normalisation nothing will set it.
                     _mode = ReplayMode::NONE;
-                    return;
                 }
             }
         }

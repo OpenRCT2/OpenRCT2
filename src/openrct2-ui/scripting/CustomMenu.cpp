@@ -206,10 +206,10 @@ namespace OpenRCT2::Scripting
             }
             else if (info.Element != nullptr)
             {
-                int32_t index = 0;
                 auto el = MapGetFirstElementAt(info.Loc);
                 if (el != nullptr)
                 {
+                    int32_t index = 0;
                     do
                     {
                         if (el == info.Element)

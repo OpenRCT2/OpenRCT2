@@ -489,7 +489,7 @@ bool ScenarioCreateDucks()
 const random_engine_t::state_type& ScenarioRandState()
 {
     return getGameState().scenarioRand.state();
-};
+}
 
 void ScenarioRandSeed(random_engine_t::result_type s0, random_engine_t::result_type s1)
 {

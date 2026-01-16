@@ -1054,7 +1054,7 @@ void Vehicle::UpdateMovingToEndOfStation()
             {
                 acceleration = -3298;
             }
-            if (velocity < -131940)
+            else
             {
                 velocity -= velocity / 16;
                 acceleration = 0;
@@ -1942,7 +1942,6 @@ static bool ride_station_can_depart_synchronised(const Ride& ride, StationIndex 
                     /* Sync exception - train is not arriving at the station
                      * and there are less than half the trains for the ride
                      * travelling. */
-                    continue;
                 }
             }
         }
@@ -4142,13 +4141,11 @@ void Vehicle::UpdateTopSpinOperating()
  */
 void Vehicle::UpdateShowingFilm()
 {
-    int32_t currentTime, totalTime;
-
     if (_vehicleBreakdown == 0)
         return;
 
-    totalTime = kRideFilmLength[sub_state];
-    currentTime = current_time + 1;
+    int32_t totalTime = kRideFilmLength[sub_state];
+    int32_t currentTime = current_time + 1;
     if (currentTime <= totalTime)
     {
         current_time = currentTime;
@@ -8212,7 +8209,6 @@ void Vehicle::UpdateTrackMotionPreUpdate(
         }
         car.acceleration = Geometry::getAccelerationFromPitch(car.pitch);
         _vehicleUnkF64E10++;
-        continue;
     }
     // Loc6DBF20
     car.MoveTo(_vehicleCurPosition);

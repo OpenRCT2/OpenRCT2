@@ -584,8 +584,7 @@ namespace OpenRCT2::Ui::Windows
 
         void SetPressedTab()
         {
-            int32_t i;
-            for (i = 0; i < WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_COUNT; i++)
+            for (int32_t i = 0; i < WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_COUNT; i++)
                 setWidgetPressed(WIDX_TAB_1 + i, false);
             setWidgetPressed(WIDX_TAB_1 + page, true);
         }

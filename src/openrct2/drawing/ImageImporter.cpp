@@ -407,5 +407,5 @@ namespace OpenRCT2::Drawing
 
         return ImageImportMeta{ { xOffset, yOffset },    palette,     flags, ImportMode::Default, { srcX, srcY },
                                 { srcWidth, srcHeight }, zoomedOffset };
-    };
+    }
 } // namespace OpenRCT2::Drawing

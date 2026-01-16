@@ -1377,7 +1377,6 @@ void Guest::UpdateSitting()
         AnimationFrameNum = 0;
         AnimationImageIdOffset = 0;
         UpdateCurrentAnimationType();
-        return;
     }
 }
 
@@ -4356,10 +4355,9 @@ void Guest::UpdateRideLeaveVehicle()
         return;
     }
 
-    CoordsXYZ waypointLoc;
     const auto& rtd = ride->getRideTypeDescriptor();
-    waypointLoc = { rtd.GetGuestWaypointLocation(*vehicle, *ride, CurrentRideStation),
-                    exitLocation.z + ride->getRideTypeDescriptor().Heights.PlatformHeight };
+    CoordsXYZ waypointLoc = { rtd.GetGuestWaypointLocation(*vehicle, *ride, CurrentRideStation),
+                              exitLocation.z + ride->getRideTypeDescriptor().Heights.PlatformHeight };
 
     rideEntry = vehicle->GetRideEntry();
     carEntry = &rideEntry->Cars[vehicle->vehicle_type];
@@ -4560,10 +4558,9 @@ void Guest::UpdateRideApproachVehicleWaypoints()
 
 void UpdateRideApproachVehicleWaypointsMotionSimulator(Guest& guest, const CoordsXY& loc, int16_t& xy_distance)
 {
-    int16_t actionZ;
     auto ride = GetRide(guest.CurrentRide);
-    // Motion simulators have steps this moves the peeps up the steps
-    actionZ = ride->getStation(guest.CurrentRideStation).GetBaseZ() + 2;
+    // Motion simulators have steps. This moves the peeps up the steps.
+    int16_t actionZ = ride->getStation(guest.CurrentRideStation).GetBaseZ() + 2;
 
     uint8_t waypoint = guest.Var37 & 3;
     if (waypoint == 2)
@@ -5066,7 +5063,6 @@ void Guest::UpdateRideMazePathfinding()
     if (auto loc = UpdateAction(); loc.has_value())
     {
         MoveTo({ loc.value(), z });
-        return;
     }
 }
 
@@ -5645,7 +5641,7 @@ void Guest::UpdateWalking()
 
     uint8_t chosen_edge = ScenarioRand() & 0x3;
 
-    for (; !(edges & (1 << chosen_edge));)
+    while (!(edges & (1 << chosen_edge)))
         chosen_edge = (chosen_edge + 1) & 3;
 
     RideId ride_to_view;
@@ -5673,7 +5669,7 @@ void Guest::UpdateWalking()
 
     uint8_t chosen_position = ScenarioRand() & 0x3;
 
-    for (; !(positions_free & (1 << chosen_position));)
+    while (!(positions_free & (1 << chosen_position)))
         chosen_position = (chosen_position + 1) & 3;
 
     CurrentRide = ride_to_view;
@@ -6163,7 +6159,7 @@ bool Guest::UpdateWalkingFindBench()
         return false;
     uint8_t chosen_edge = ScenarioRand() & 0x3;
 
-    for (; !(edges & (1 << chosen_edge));)
+    while (!(edges & (1 << chosen_edge)))
         chosen_edge = (chosen_edge + 1) & 0x3;
 
     uint8_t free_edge = 3;
@@ -6489,11 +6485,8 @@ bool Loc690FD0(Guest& guest, RideId* rideToView, uint8_t* rideSeatToView, TileEl
  */
 static bool GuestFindRideToLookAt(Guest& guest, uint8_t edge, RideId* rideToView, uint8_t* rideSeatToView)
 {
-    TileElement* tileElement;
-
     auto surfaceElement = MapGetSurfaceElementAt(guest.NextLoc);
-
-    tileElement = reinterpret_cast<TileElement*>(surfaceElement);
+    TileElement* tileElement = reinterpret_cast<TileElement*>(surfaceElement);
     if (tileElement == nullptr)
     {
         return false;

@@ -491,10 +491,10 @@ namespace OpenRCT2::Ui
         assert(start_tab_id < w->widgets.size());
         assert(end_tab_id < w->widgets.size());
 
-        int32_t i, x = w->widgets[start_tab_id].left;
+        int32_t x = w->widgets[start_tab_id].left;
         int32_t tab_width = w->widgets[start_tab_id].width() - 1;
 
-        for (i = start_tab_id; i <= end_tab_id; i++)
+        for (int32_t i = start_tab_id; i <= end_tab_id; i++)
         {
             auto& widget = w->widgets[i];
             assert(widget.type == WidgetType::tab);

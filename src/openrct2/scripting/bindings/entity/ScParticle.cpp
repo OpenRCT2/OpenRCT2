@@ -225,6 +225,6 @@ namespace OpenRCT2::Scripting
             entity->Invalidate();
         }
     }
-}; // namespace OpenRCT2::Scripting
+} // namespace OpenRCT2::Scripting
 
 #endif

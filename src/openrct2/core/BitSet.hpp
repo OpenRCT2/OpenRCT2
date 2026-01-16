@@ -19,128 +19,125 @@
 
 namespace OpenRCT2
 {
-    namespace Detail
+    namespace Detail::BitSet
     {
-        namespace BitSet
+        static constexpr size_t kBitsPerByte = std::numeric_limits<std::underlying_type_t<std::byte>>::digits;
+
+        template<size_t TNumBits>
+        static constexpr size_t ByteAlignBits()
         {
-            static constexpr size_t kBitsPerByte = std::numeric_limits<std::underlying_type_t<std::byte>>::digits;
-
-            template<size_t TNumBits>
-            static constexpr size_t ByteAlignBits()
+            const auto remainder = TNumBits % kBitsPerByte;
+            if constexpr (remainder == 0u)
             {
-                const auto remainder = TNumBits % kBitsPerByte;
-                if constexpr (remainder == 0u)
-                {
-                    return TNumBits;
-                }
-                else
-                {
-                    return TNumBits + (kBitsPerByte - (TNumBits % kBitsPerByte));
-                }
+                return TNumBits;
             }
-
-            static_assert(ByteAlignBits<1>() == 8);
-            static_assert(ByteAlignBits<4>() == 8);
-            static_assert(ByteAlignBits<8>() == 8);
-            static_assert(ByteAlignBits<9>() == 16);
-            static_assert(ByteAlignBits<9>() == 16);
-            static_assert(ByteAlignBits<17>() == 24);
-            static_assert(ByteAlignBits<24>() == 24);
-            static_assert(ByteAlignBits<31>() == 32);
-
-            // Returns the amount of bytes required for a single block.
-            template<size_t TNumBits>
-            static constexpr size_t ComputeBlockSize()
+            else
             {
-                constexpr size_t numBits = ByteAlignBits<TNumBits>();
-                if constexpr (numBits >= std::numeric_limits<uintptr_t>::digits)
-                {
-                    return sizeof(uintptr_t);
-                }
-                else
-                {
-                    const auto numBytes = numBits / kBitsPerByte;
-                    auto mask = 1u;
-                    while (mask < numBytes)
-                    {
-                        mask <<= 1u;
-                    }
-                    return mask;
-                }
+                return TNumBits + (kBitsPerByte - (TNumBits % kBitsPerByte));
             }
+        }
 
-            template<size_t TNumBits, size_t TBlockSizeBytes>
-            static constexpr size_t ComputekBlockCount()
+        static_assert(ByteAlignBits<1>() == 8);
+        static_assert(ByteAlignBits<4>() == 8);
+        static_assert(ByteAlignBits<8>() == 8);
+        static_assert(ByteAlignBits<9>() == 16);
+        static_assert(ByteAlignBits<9>() == 16);
+        static_assert(ByteAlignBits<17>() == 24);
+        static_assert(ByteAlignBits<24>() == 24);
+        static_assert(ByteAlignBits<31>() == 32);
+
+        // Returns the amount of bytes required for a single block.
+        template<size_t TNumBits>
+        static constexpr size_t ComputeBlockSize()
+        {
+            constexpr size_t numBits = ByteAlignBits<TNumBits>();
+            if constexpr (numBits >= std::numeric_limits<uintptr_t>::digits)
             {
-                size_t numBits = TNumBits;
-                size_t numBlocks = 0;
-                while (numBits > 0)
-                {
-                    numBlocks++;
-                    numBits -= std::min(TBlockSizeBytes * kBitsPerByte, numBits);
-                }
-                return numBlocks;
+                return sizeof(uintptr_t);
             }
-
-            static_assert(ComputeBlockSize<1>() == sizeof(uint8_t));
-            static_assert(ComputeBlockSize<4>() == sizeof(uint8_t));
-            static_assert(ComputeBlockSize<8>() == sizeof(uint8_t));
-            static_assert(ComputeBlockSize<9>() == sizeof(uint16_t));
-            static_assert(ComputeBlockSize<14>() == sizeof(uint16_t));
-            static_assert(ComputeBlockSize<16>() == sizeof(uint16_t));
-            static_assert(ComputeBlockSize<18>() == sizeof(uint32_t));
-            static_assert(ComputeBlockSize<31>() == sizeof(uint32_t));
-            static_assert(ComputeBlockSize<33>() == sizeof(uintptr_t));
-
-            // TODO: Replace with std::popcount when C++20 is enabled.
-            template<typename T>
-            static constexpr size_t popcount(const T val)
+            else
             {
-                size_t res = 0;
-                auto x = static_cast<std::make_unsigned_t<T>>(val);
-                while (x > 0u)
+                const auto numBytes = numBits / kBitsPerByte;
+                auto mask = 1u;
+                while (mask < numBytes)
                 {
-                    if (x & 1u)
-                        res++;
-                    x >>= 1u;
+                    mask <<= 1u;
                 }
-                return res;
+                return mask;
             }
+        }
 
-            template<size_t TByteSize>
-            struct StorageBlockType;
-
-            template<>
-            struct StorageBlockType<1>
+        template<size_t TNumBits, size_t TBlockSizeBytes>
+        static constexpr size_t ComputekBlockCount()
+        {
+            size_t numBits = TNumBits;
+            size_t numBlocks = 0;
+            while (numBits > 0)
             {
-                using value_type = uint8_t;
-            };
+                numBlocks++;
+                numBits -= std::min(TBlockSizeBytes * kBitsPerByte, numBits);
+            }
+            return numBlocks;
+        }
 
-            template<>
-            struct StorageBlockType<2>
-            {
-                using value_type = uint16_t;
-            };
+        static_assert(ComputeBlockSize<1>() == sizeof(uint8_t));
+        static_assert(ComputeBlockSize<4>() == sizeof(uint8_t));
+        static_assert(ComputeBlockSize<8>() == sizeof(uint8_t));
+        static_assert(ComputeBlockSize<9>() == sizeof(uint16_t));
+        static_assert(ComputeBlockSize<14>() == sizeof(uint16_t));
+        static_assert(ComputeBlockSize<16>() == sizeof(uint16_t));
+        static_assert(ComputeBlockSize<18>() == sizeof(uint32_t));
+        static_assert(ComputeBlockSize<31>() == sizeof(uint32_t));
+        static_assert(ComputeBlockSize<33>() == sizeof(uintptr_t));
 
-            template<>
-            struct StorageBlockType<4>
+        // TODO: Replace with std::popcount when C++20 is enabled.
+        template<typename T>
+        static constexpr size_t popcount(const T val)
+        {
+            size_t res = 0;
+            auto x = static_cast<std::make_unsigned_t<T>>(val);
+            while (x > 0u)
             {
-                using value_type = uint32_t;
-            };
+                if (x & 1u)
+                    res++;
+                x >>= 1u;
+            }
+            return res;
+        }
 
-            template<>
-            struct StorageBlockType<8>
-            {
-                using value_type = uint64_t;
-            };
+        template<size_t TByteSize>
+        struct StorageBlockType;
 
-            template<size_t TBitSize>
-            struct storage_block_type_aligned
-            {
-                using value_type = typename StorageBlockType<ComputeBlockSize<TBitSize>()>::value_type;
-            };
-        } // namespace BitSet
-    } // namespace Detail
+        template<>
+        struct StorageBlockType<1>
+        {
+            using value_type = uint8_t;
+        };
+
+        template<>
+        struct StorageBlockType<2>
+        {
+            using value_type = uint16_t;
+        };
+
+        template<>
+        struct StorageBlockType<4>
+        {
+            using value_type = uint32_t;
+        };
+
+        template<>
+        struct StorageBlockType<8>
+        {
+            using value_type = uint64_t;
+        };
+
+        template<size_t TBitSize>
+        struct storage_block_type_aligned
+        {
+            using value_type = typename StorageBlockType<ComputeBlockSize<TBitSize>()>::value_type;
+        };
+    } // namespace Detail::BitSet
 
     template<size_t TBitSize>
     class BitSet
